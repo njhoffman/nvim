@@ -1,13 +1,14 @@
 local M = {}
-
 M.b = vim.b
 M.vi_mode_utils = require("feline.providers.vi_mode")
 M.lsp = require("feline.providers.lsp")
+local config = require('config')
 
-if Theming.statusline_color == nil or Theming.statusline_color:gsub("%s+", "") == "" then
+
+if config.Theming.statusline_color == nil or config.Theming.statusline_color:gsub("%s+", "") == "" then
     M.status_color = "nord"
 else
-    M.status_color = Theming.statusline_color:gsub("%s+", "")
+    M.status_color = config.Theming.statusline_color:gsub("%s+", "")
 end
 
 M.properties = {

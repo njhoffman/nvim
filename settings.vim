@@ -1,13 +1,3 @@
-" ********** Global Settings **********
-set runtimepath-=~/.config/nvim
-set runtimepath-=~/.config/nvim/after
-set runtimepath-=~/.local/share/nvim/site
-set runtimepath-=~/.local/share/nvim/site/after
-
-set runtimepath^=~/.config/nvim
-set runtimepath+=~/.config/nvim/after
-set runtimepath^=~/.local/share/nvim/site
-set runtimepath+=~/.local/share/nvim/site/after
 
 " change mapleader to ,
 let mapleader=","
@@ -21,6 +11,7 @@ set smartcase                        " ignore case if search pattern is all lowe
 set smarttab                         " insert tabs on the start of a line according to shiftwidth
 set autoindent                       " always autoindent
 set copyindent	 	 			             " copy previous indentation on autoindenting
+set breakindent                      " works with linebreka to preserve indent on wrapped lines
 set nowrap                           " no line wrapping
 set number                           " turn line numbers on
 set hlsearch                         " highlight all matching search terms
@@ -45,8 +36,6 @@ set numberwidth=4                    " give numbers odd number for big icon sign
 set relativenumber                   " show numbers relative to cursor
 set backup
 set backupcopy=yes                   " prevents vim from renaming original file/creating a new one screwing up file watchers
-set backupdir=$HOME/.vim/backup/     " put backup files, double slashes avoid name collisions
-set directory=$HOME/.vim/swap/       " put swp files here, double slashes avoid name collisions
 set writebackup
 set mouse=a                          " mouse support for 'all' of vim
 set encoding=utf-8                   " vim bad at detecting encoding, if no BOM assumes it is latin-1
@@ -115,9 +104,38 @@ set updatetime=300
 set pumheight=20                     " menu hegiht
 
 " omnicomplete inserts longest common text of all matches instead of 1st match
-set completeopt=menuone
-set completeopt+=noinsert
-set completeopt-=preview
+" 'completeopt' 'cot'	string	(default: "menu,preview")
+"       global
+"   A comma separated list of options for Insert mode completion
+"   |ins-completion|.  The supported values are:
+
+"      menu	    Use a popup menu to show the possible completions.  The
+"         menu is only shown when there is more than one match and
+"         sufficient colors are available.  |ins-completion-menu|
+
+"      menuone  Use the popup menu also when there is only one match.
+"         Useful when there is additional information about the
+"         match, e.g., what file it comes from.
+
+"      longest  Only insert the longest common text of the matches.  If
+"         the menu is displayed you can use CTRL-L to add more
+"         characters.  Whether case is ignored depends on the kind
+"         of completion.  For buffer text the 'ignorecase' option is
+"         used.
+
+"      preview  Show extra information about the currently selected
+"         completion in the preview window.  Only works in
+"         combination with "menu" or "menuone".
+
+"     noinsert  Do not insert any text for a match until the user selects
+"         a match from the menu. Only works in combination with
+"         "menu" or "menuone". No effect if "longest" is present.
+
+"     noselect  Do not select a match in the menu, force the user to
+"         select one from the menu. Only works in combination with
+"         "menu" or "menuone".
+
+set completeopt=menuone,menuone,noselect
 " filetype plugin indent on
 
 " embed lua syntax in vim files
