@@ -1,13 +1,13 @@
 " ********** Global Settings **********
-set runtimepath-=~/.config/nvim
-set runtimepath-=~/.config/nvim/after
-set runtimepath-=~/.local/share/nvim/site
-set runtimepath-=~/.local/share/nvim/site/after
-
-set runtimepath+=~/.config/nvim/after
-set runtimepath^=~/.config/nvim
-set runtimepath+=~/.local/share/nvim/site/after
-set runtimepath^=~/.local/share/nvim/site
+ set runtimepath-=~/.config/nvim
+ set runtimepath-=~/.config/nvim/after
+ set runtimepath-=~/.local/share/nvim/site
+ set runtimepath-=~/.local/share/nvim/site/after
+ 
+ set runtimepath+=~/.config/nvim/after
+ set runtimepath^=~/.config/nvim
+ set runtimepath+=~/.local/share/nvim/site/after
+ set runtimepath^=~/.local/share/nvim/site
 
 
 if (&term =~ '^xterm' && &t_Co == 256)
@@ -21,7 +21,6 @@ if has("termguicolors")     " set true colors
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
     set termguicolors
 endif
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 
 " hi! Normal guibg=#000000 ctermbg=16
 " hi! NonText guibg=#000000 ctermbg=16
@@ -36,6 +35,7 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 "clear out previous autocmds to stop them being duplicated when resourcing
 "  this file
 " autocmd!
+
 source $HOME/.config/nvim/functions.fzf.vim
 source $HOME/.config/nvim/functions.unimpaired.vim
 

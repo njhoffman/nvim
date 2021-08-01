@@ -94,7 +94,7 @@ function! s:registers(...) abort
   call fzf#run(fzf#wrap(l:opts))
 endfunction
 
-command! -bang Registers call s:registers('<bang>' ==# '!')
+command! -bang Reg call s:registers('<bang>' ==# '!')
 
 """"""""""""
 " :Highlights

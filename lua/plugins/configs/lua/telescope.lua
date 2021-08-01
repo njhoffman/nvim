@@ -134,7 +134,7 @@ telescope.setup {
     generic_sorter = require"telescope.sorters".get_generic_fuzzy_sorter,
     grep_previewer = previewers.vim_buffer_vimgrep.new,
     qflist_previewer = previewers.vim_buffer_qflist.new,
-    path_display = "shorten", -- tail, hidden, absolute, shorten
+    path_display = {"shorten"}, -- tail, hidden, absolute, shorten
     file_ignore_patterns = {},
   },
   extensions = { fzy_native = { override_generic_sorter = false, override_file_sorter = true } },

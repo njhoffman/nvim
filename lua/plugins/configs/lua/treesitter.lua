@@ -95,9 +95,9 @@ tsconfig.setup {
   },
 }
 
-require"treesitter-context.config".setup {
-  enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-}
+-- require"treesitter-context.config".setup {
+--   enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+-- }
 
 -- -------------------- TEXT OBJECTS --------------------------
 -- for _, ch in ipairs({

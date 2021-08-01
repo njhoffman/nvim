@@ -1,19 +1,19 @@
 -- dofile('/home/wil/.config/nvim/lua/profiler.lua')
 -- require("debug.typescript")
-local logger = require("logger");
+-- local logger = require("logger");
 
-require "plugins-bootstrap"
+-- require "plugins-bootstrap"
 require "plugins"
 require "plugins-config"
 
-logger.debug("Loaded plugins")
+-- logger.debug("Loaded plugins")
 
 -- general settings
 require "main.options"
 -- require "main.colorscheme"
 
 require "lsp.setup"
-logger.debug("Loaded LSP")
+-- logger.debug("Loaded LSP")
 
 require "mappings"
 require "mappings.lsp"

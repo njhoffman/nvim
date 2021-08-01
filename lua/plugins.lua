@@ -1,7 +1,9 @@
 -- require"utils.bootstrap_packer"
 -- local packer = require "packer"
-local packer = require "/home/nicholas/.local/share/nvim/site/pack/packer/start/packer.nvim"
+local packer = require "packer"
 local config = require "config"
+
+-- vim._update_package_paths()
 
 return packer.startup({
   function(use)
@@ -36,7 +38,7 @@ return packer.startup({
       use { "p00f/nvim-ts-rainbow", requires = "nvim-treesitter" }
       use { "windwp/nvim-ts-autotag", requires = "nvim-treesitter" }
       use { "nvim-treesitter/playground", requires = "nvim-treesitter" }
-      use { "romgrk/nvim-treesitter-context", requires = "nvim-treesitter" }
+      -- use { "romgrk/nvim-treesitter-context", requires = "nvim-treesitter" }
       use { "nvim-treesitter/nvim-treesitter-refactor", requires = "nvim-treesitter" }
       use { "nvim-treesitter/nvim-treesitter-textobjects", requires = "nvim-treesitter" }
 
@@ -279,6 +281,7 @@ return packer.startup({
     use "ncm2/float-preview.nvim"
     use "voldikss/vim-floaterm"
     use "voldikss/fzf-floaterm"
+    use "tversteeg/registers.nvim"
 
     -- use { "voldikss/LeaderF-floaterm", requires = "Yggdroot/LeaderF" }
     -- use 'windwp/vim-floaterm-repl'
@@ -294,7 +297,13 @@ return packer.startup({
     -- Themes
     use { "romgrk/barbar.nvim", requires = "romgrk/doom-one.vim" }
     use { "famiu/feline.nvim" }
-    use { "rktjmp/lush.nvim" }
+    use {
+      "rktjmp/lush.nvim",
+      config = function()
+        vim.cmd("colorscheme nord-nick")
+        vim.cmd("source $HOME/.config/nvim/colors/barbar-colors.vim")
+      end,
+    }
   end,
   config = {
     profile = {

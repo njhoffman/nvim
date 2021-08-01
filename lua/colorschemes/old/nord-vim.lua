@@ -1,4 +1,4 @@
-vim.cmd("colorscheme nord")
+vim.cmd("colorscheme nord-nvim")
 vim.cmd("hi! Normal guibg=NONE ctermbg=NONE")
 vim.cmd("hi! EndOfBuffer guibg=NONE ctermbg=NONE")
 vim.cmd("hi! SignColumn guibg=NONE ctermbg=NONE")
@@ -11,7 +11,7 @@ vim.cmd("hi! CursorLineNr guifg=#afd7ff ctermfg=Black")
 vim.cmd("hi! CursorColumn guibg=NONE ctermbg=NONE")
 vim.cmd("hi! Comment gui=italic")
 
---html
+-- html
 vim.cmd("hi! htmlTag guifg=#7f90aa")
 vim.cmd("hi! htmlEndTag guifg=#7f90aa")
 vim.cmd("hi! htmlArg guifg=#7f90aa")

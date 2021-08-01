@@ -1,7 +1,7 @@
 " sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs
 " https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-call plug#begin(stdpath('data') . '/plugged')
+call plug#begin(stdpath('data') . '/../nvimpager/plugged')
 
 " Make sure you use single quotes
 

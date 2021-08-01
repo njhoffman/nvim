@@ -86,6 +86,7 @@ require("plugins.configs.lua.neuron")
 require("plugins.configs.vim.vimux")
 require("plugins.configs.vim.asynctasks")
 require("plugins.configs.vim.vim-ripple")
+require("plugins.configs.vim.registers")
 
 -- interfaces
 require("plugins.configs.lua.nvim_bqf")
@@ -195,8 +196,5 @@ require("feline").setup({
   components = components,
   separators = separators,
 })
-
-vim.cmd("colorscheme nord-nick")
-vim.cmd("source $HOME/.config/nvim/colors/barbar-colors.vim")
 
 -- require("plugins.configs.lua.barbar")

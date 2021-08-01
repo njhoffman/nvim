@@ -298,10 +298,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/nvim-treesitter"
   },
-  ["nvim-treesitter-context"] = {
-    loaded = true,
-    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/nvim-treesitter-context"
-  },
   ["nvim-treesitter-refactor"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/nvim-treesitter-refactor"
@@ -345,6 +341,10 @@ _G.packer_plugins = {
   ["popup.nvim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/popup.nvim"
+  },
+  ["registers.nvim"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/registers.nvim"
   },
   ["scrollbar.nvim"] = {
     loaded = true,

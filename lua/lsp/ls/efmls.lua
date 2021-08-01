@@ -100,7 +100,7 @@ local filetypes = {
   "ruby",
   "rust",
   "scss",
-  "sh",
+  -- "sh",
   "terraform",
   -- "typescript",
   -- "typescriptreact",
