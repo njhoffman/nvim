@@ -1,4 +1,5 @@
 local config = require "config"
+local M = {}
 
 if config.DAP.enabled ~= 0 and config.DAP.enabled ~= false then
   require("plugins.configs.lua.dapui")
@@ -6,11 +7,13 @@ if config.DAP.enabled ~= 0 and config.DAP.enabled ~= false then
 end
 
 -- basic key mappings
+-- vim-surround and unimpaired separately loaded
 require("plugins.configs.lua.surround")
 
 -- project management
 require("plugins.configs.lua.auto-session")
 require("plugins.configs.lua.session-lens")
+require("plugins.configs.vim.prosession")
 require("plugins.configs.vim.vim-rooter")
 
 -- treesitter & syntax
@@ -67,11 +70,13 @@ vim.g.vim_markdown_fenced_languages = {
   "sass",
   "xml",
 }
+-- https://github.com/Yohannfra/Nvim-Switch-Buffer
 
 vim.g.vim_markdown_no_extensions_in_markdown = 1
 
 -- formatting
 -- require("plugins.configs.lua.neoformat")
+require("plugins.configs.lua.iswap")
 require("plugins.configs.lua.todo_comments")
 require("plugins.configs.lua.kommentary")
 require("plugins.configs.vim.easyalign")
@@ -97,6 +102,7 @@ require("plugins.configs.lua.nvim_toggleterm")
 require("plugins.configs.lua.nvim_hlslens")
 require("plugins.configs.lua.diffview")
 require("plugins.configs.lua.which_key")
+require("plugins.configs.lua.nvim_mapper")
 require("plugins.configs.lua.snap")
 
 require("plugins.configs.vim.vim_yoink")
@@ -117,6 +123,55 @@ require("plugins.configs.vim.vimade")
 require("plugins.configs.vim.scrollbar")
 require("plugins.configs.lua.truezen")
 require("plugins.configs.vim.vim_plugin_AnsiEsc")
+require("plugins.configs.vim.wilder")
+-- require("plugins.configs.vim.indent-line")
+
+--  default keymap : <leader>MM, :Telescope mapper.
+require("nvim-mapper").setup({
+  no_map = false, -- do not assign the default keymap (<leader>MM)
+  search_path = os.getenv("HOME") .. "/.config/nvim/lua", -- default config search path is ~/.config/nvim/lua
+})
+-- A stock keymap
+vim.api.nvim_set_keymap("n", "<leader>P", ":MarkdownPreview<CR>", { silent = true, noremap = true })
+-- The same using nvim-mapper
+Mapper = require("nvim-mapper")
+Mapper.map("n", "<leader>P", ":MarkdownPreview<CR>", { silent = true, noremap = true }, "Markdown", "md_preview",
+           "Display Markdown preview in Qutebrowser")
+-- A stock buffer keymap
+vim.api
+    .nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
+
+-- The same using nvim-mapper
+Mapper = require("nvim-mapper")
+Mapper.map_buf(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true }, "LSP",
+               "lsp_definitions", "Go to definition")
+
+-- Not all keymaps are ones you defined yourself. You can also create "virtual" keymaps to document other keymaps, such as default keymaps. Here is an example with nvim-treesitter-textobjects configuration :
+function M.treesitter_text_objects()
+  require("nvim-treesitter.configs").setup {
+    textobjects = {
+      select = {
+        enable = true,
+        lookahead = true,
+        -- The keymaps are defined in the configuration table, no way to get our Mapper in there !
+        keymaps = {
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+          ["ac"] = "@class.outer",
+          ["ic"] = "@class.inner",
+        },
+      },
+    },
+  }
+
+  M.treesitter_text_objects()
+
+  -- Hopefully we can still document them
+  Mapper.map_virtual("o", "af", "", {}, "Navigation", "treesitter_function_outer", "Function outer motion")
+  Mapper.map_virtual("o", "if", "", {}, "Navigation", "treesitter_function_inner", "Function inner motion")
+  Mapper.map_virtual("o", "ac", "", {}, "Navigation", "treesitter_class_outer", "Class outer motion")
+  Mapper.map_virtual("o", "ic", "", {}, "Navigation", "treesitter_class_inner", "Class inner motion")
+end
 
 -- reload
 require("plugins.configs.lua.nvim_reload")

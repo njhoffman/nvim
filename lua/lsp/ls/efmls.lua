@@ -107,7 +107,7 @@ local filetypes = {
   "vim",
   "vue",
   "yaml",
-  "zsh",
+  -- "zsh",
 }
 
 lspconfig.efm.setup {

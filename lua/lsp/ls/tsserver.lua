@@ -55,7 +55,7 @@ capabilities = vim.tbl_extend("keep", capabilities or {}, lsp_status.capabilitie
 
 local on_attach = function(client, bufnr)
   -- disable tsserver formatting if you plan on formatting via null-ls
-  -- client.resolved_capabilities.document_formatting = false
+  client.resolved_capabilities.document_formatting = false
 
   local lspTsUtils = require("nvim-lsp-ts-utils")
   lspTsUtils.setup(ts_utils_settings)

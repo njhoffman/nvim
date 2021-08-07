@@ -115,7 +115,7 @@ settings.Treesitter = {
   enabled = true,
   rainbow = false,
   indent = true,
-  highlight = false,
+  highlight = true,
   -------------
   -- Parsers --
   -------------

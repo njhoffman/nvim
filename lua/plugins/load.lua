@@ -25,6 +25,8 @@ return packer.startup({
     -- Project management
     use "airblade/vim-rooter"
     use "rmagatti/auto-session"
+    use "tpope/vim-obsession"
+    use "dhruvasagar/vim-prosession"
     use "wakatime/vim-wakatime" -- WakaTimeToday, WakaTimeApiKey, WakaTimeDebugEnable
 
     -- ====================================
@@ -145,42 +147,55 @@ return packer.startup({
     use { "skywind3000/asynctasks.vim", requires = "skywind3000/asyncrun.vim" }
     use { "vim-test/vim-test" }
     use { "urbainvaes/vim-ripple" }
+    use { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } }
     use {
-      "lewis6991/gitsigns.nvim",
-      requires = "nvim-lua/plenary.nvim",
-      -- config = [[require('plugins.configs.lua.gitsigns')]]
       "tpope/vim-fugitive",
-      -- cmd = {
-      --   "GBrowse",
-      --   "GDelete",
-      --   "GMove",
-      --   "GRemove",
-      --   "GRename",
-      --   "Gblame",
-      --   "Gdiff",
-      --   "Gdiffsplit",
-      --   "Gedit",
-      --   "Gfetch",
-      --   "Ggrep",
-      --   "Git",
-      --   "Glgrep",
-      --   "Gpull",
-      --   "Gpush",
-      --   "Gread",
-      --   "Gsplit",
-      --   "Gstatus",
-      --   "Gvdiffsplit",
-      --   "Gwrite"
-      -- }
-      --   "Gvdiffsplit",
+      cmd = {
+        "GBrowse",
+        "GDelete",
+        "GMove",
+        "GRemove",
+        "GRename",
+        "Gblame",
+        "Gdiff",
+        "Gdiffsplit",
+        "Gedit",
+        "Gfetch",
+        "Ggrep",
+        "Git",
+        "Glgrep",
+        "Gpull",
+        "Gpush",
+        "Gread",
+        "Gsplit",
+        "Gstatus",
+        "Gvdiffsplit",
+        "Gwrite",
+      },
+      -- "Gvdiffsplit",
       -- { "TimUntersberger/neogit" },
       -- }
     }
-    -- { "TimUntersberger/neogit" },
 
     -- ====================================
     -- Pickers (telescope, fzf)
     use "matbme/JABS.nvim"
+    use "Yohannfra/Nvim-Switch-Buffer"
+    -- " Feel free to map the shortcut you want
+    -- nnoremap S :SwitchBuffer <cr>
+
+    -- set switchbuf=usetab
+    -- You can also hide the buffer numbers with
+
+    -- let g:switch_buffer_hide_numbers = 1
+    -- How to use
+    -- Navigate in the window using j/k or Up/Down
+    -- Press Enter or Space to open the buffer
+    -- Press s to open the buffer in a horizontal split
+    -- Press v to open the buffer in a vertical split
+    -- Press t to open the buffer in a new tab
+    -- Press dd to close a buffer (you can't close the current buffer)
+    -- Press S or :q to close the window
     use { "camspiers/snap", rocks = { "fzy" } }
     use { "junegunn/fzf.vim", requires = { "junegunn/fzf", dir = "~/.fzf", run = "./install --all" } }
     use {
@@ -196,7 +211,7 @@ return packer.startup({
         "kyazdani42/nvim-web-devicons",
         "nvim-lua/popup.nvim",
         "nvim-lua/plenary.nvim",
-        -- {'nvim-telescope/telescope-frecency.nvim', requires = 'tami5/sql.nvim'}
+        { "nvim-telescope/telescope-frecency.nvim", requires = "tami5/sql.nvim" },
       },
     }
     -- FzyLsAg - list files using the silversearcher, respects .gitignore and .agignore and open it in the current buffer.
@@ -205,6 +220,9 @@ return packer.startup({
     -- FzyGem - list all gems, then list all files in the selected gem.
     -- FzyBuffer - fzy select :ls
 
+    use { "lazytanuki/nvim-mapper", before = "telescope.nvim" }
+    use { "nvim-telescope/telescope-node-modules.nvim", requires = { "nvim-telescope/telescope.nvim" } }
+    use { "dhruvmanila/telescope-bookmarks.nvim", requires = { "nvim-telescope/telescope.nvim" } }
     use {
       "oberblastmeister/neuron.nvim", -- "njhoffman/neuron.nvim",
       branch = "unstable",
@@ -238,6 +256,7 @@ return packer.startup({
     use "TaDaa/vimade"
     use "romainl/vim-cool"
     use "Pocco81/TrueZen.nvim"
+    -- use "lukas-reineke/indent-blankline.nvim"
 
     -- ====================================
     -- Motion plugins
@@ -254,6 +273,11 @@ return packer.startup({
     use "terryma/vim-multiple-cursors"
     use "dhruvasagar/vim-table-mode"
     use "nicwest/vim-camelsnek"
+    use "mizlan/iswap.nvim"
+
+    -- Text-subjects smart: Classes, structs, functions, methods.
+    -- Text subjects outer container: comments, consecutive line comments, function calls, function definitions
+    -- class definitions, loops, if statements, return values, arguments.
 
     -- ====================================
     -- System utils
@@ -282,6 +306,11 @@ return packer.startup({
     use "voldikss/vim-floaterm"
     use "voldikss/fzf-floaterm"
     use "tversteeg/registers.nvim"
+    use {
+      "gelguy/wilder.nvim",
+      rocks = { "luarocks-fetch-gitrec", "pcre2" },
+      requires = { "romgrk/fzy-lua-native", "kyazdani42/nvim-web-devicons", "nixprime/cpsm" },
+    }
 
     -- use { "voldikss/LeaderF-floaterm", requires = "Yggdroot/LeaderF" }
     -- use 'windwp/vim-floaterm-repl'

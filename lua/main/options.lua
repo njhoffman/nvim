@@ -64,10 +64,15 @@ opt("undolevels", 1000)
 opt("updatetime", 300)
 opt("whichwrap", o.whichwrap .. "<,>,h,l")
 opt("wildignore", "*.o,*~,*.pyc")
+-- wildchar/charm for wildmenu
+-- 0x1a ^Z, 0x1b ^[, 0x0e C-n
+-- opt("wc", 0x0e)
+-- opt("wcm", 0x0e)
+
 opt("wildmode", "longest:full,full")
 opt("writebackup", false)
 opt("timeoutlen", 500)
-opt("pumheight", 20)
+opt("pumheight", 15)
 opt("sessionoptions", "curdir,folds,winsize")
 opt("fileencoding", "utf-8")
 opt("whichwrap", "b,s,<,>,[,],h,l")

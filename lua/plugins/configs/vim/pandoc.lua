@@ -1,16 +1,12 @@
-vim.cmd([[
-  hi! Underlined gui=NONE
-]])
-
-vim.cmd([[
-  hi! pandocReferenceURL gui=NONE
-]])
-
+-- vim.cmd([[
+--   hi! Underlined gui=NONE
+-- ]])
+-- vim.cmd([[
+--   hi! pandocReferenceURL gui=NONE
+-- ]])
 vim.cmd([[ let g:pandoc#syntax#style#underline_special = 0 ]])
-
-vim.cmd([[let g:pandoc#syntax#conceal#use = 1]])
-
-vim.cmd([[let g:pandoc#syntax#conceal#urls = 1]])
+vim.cmd([[ let g:pandoc#syntax#conceal#use = 1 ]])
+vim.cmd([[ let g:pandoc#syntax#conceal#urls = 1 ]])
 -- + *g:pandoc#syntax#conceal#urls*
 -- a = accents/ligatures
 -- b = bold and italic

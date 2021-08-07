@@ -1,5 +1,3 @@
-local plugin = {}
-
 -- Overview:
 --   "Hello *world!"           ds"         Hello world!
 --   [123+4*56]/2              cs])        (123+456)/2
@@ -32,9 +30,7 @@ local plugin = {}
 --  "hello"                 ysWfprint<cr>     print("hello")
 --  "hello"                 ysWFprint<cr>     print( "hello" )
 --  "hello"                 ysW<C-f>print<cr> (print "hello")
-
-function plugin.setup(use)
-  use {"tpope/vim-surround"}
-end
-
+--
+local plugin = {}
+function plugin.setup(use) use { "tpope/vim-surround" } end
 return plugin

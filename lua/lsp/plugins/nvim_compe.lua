@@ -8,7 +8,7 @@ require("compe").setup {
   enabled = config.enabled,
   autocomplete = true,
   debug = false,
-  min_length = 0,
+  min_length = 1,
   preselect = "enable", -- enable, always
   throttle_time = 80,
   source_timeout = 200,
@@ -34,9 +34,7 @@ require("compe").setup {
   },
 }
 
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
+local t = function(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
 
 local check_back_space = function()
   local col = vim.fn.col(".") - 1
@@ -50,6 +48,7 @@ end
 -- Use (s-)tab to:
 --- move to prev/next item in completion menuone
 --- jump to prev/next snippet's placeholder
+
 _G.tab_complete = function()
   if vim.fn.pumvisible() == -1 then
     return t "<C-n>"
@@ -84,23 +83,17 @@ map("i", "<C-b>", "[[compe#scroll({ 'delta': -4 })]]", opts)
 
 vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", { expr = true })
 vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", { expr = true })
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()",
-                        { expr = true })
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()",
-                        { expr = true })
+vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", { expr = true })
+vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", { expr = true })
 
 -- set completeopt=menuone,noselect
-vim.api.nvim_set_keymap("s", "<S-j>",
-                        [[vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<S-j>']],
+vim.api.nvim_set_keymap("s", "<S-j>", [[vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<S-j>']],
                         { expr = true })
-vim.api.nvim_set_keymap("i", "<S-l>",
-                        [[vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<S-l>']],
+vim.api.nvim_set_keymap("i", "<S-l>", [[vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<S-l>']],
                         { expr = true })
-vim.api.nvim_set_keymap("s", "<S-l>",
-                        [[vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<S-l>']],
+vim.api.nvim_set_keymap("s", "<S-l>", [[vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<S-l>']],
                         { expr = true })
-vim.api.nvim_set_keymap("i", "<S-j>",
-                        [[vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<S-j>']],
+vim.api.nvim_set_keymap("i", "<S-j>", [[vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<S-j>']],
                         { expr = true })
 
 -- local map = require('config.utils').map

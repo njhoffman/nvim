@@ -32,17 +32,23 @@
 -- :CamelB       " converts to camelback case ('foo bar' -> 'fooBar')
 -- :Kebab        " converts to kebab case     ('foo bar' -> 'foo-bar')
 --
+-- TODO: come up with iswap key bindings
+-- ISwap, ISwapWith: ists, arrays, function arguments, function parameters
+--
 local formatters_map = {
   ["<leader>s"] = {
     name = "+surround",
     ["a"] = "add surrounding",
-    ["bd"] = "automatically seearch and delete",
-    ["br"] = "automatically search and select to replace",
     ["d"] = "delete surrounding",
     ["r"] = "replace surrounding",
+    ["bd"] = "search and delete",
+    ["br"] = "search and replace",
   },
   ["<leader>t"] = {
-    name = "+text",
+    name = "+text format",
+    ["t"] = "toggle markdown checkbox",
+    ["m"] = "toggle table mode",
+    ["r"] = "toggle table realign",
     [","] = "add comma to end of line",
     [";"] = "add semicolon to end of line",
     [":"] = "add colon to end of line",

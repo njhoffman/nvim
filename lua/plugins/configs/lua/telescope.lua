@@ -46,6 +46,7 @@ local with_preview = {
   preview_title = false,
   -- layout_config = { preview_width = 0.5 },
 }
+
 local sorters = require "telescope.sorters"
 local previewers = require "telescope.previewers"
 local actions = require("telescope.actions")
@@ -58,13 +59,16 @@ local telescope = require("telescope")
 -- )
 
 -- Fuzzy find over current tasks
--- telescope.load_extension("frecency")
+telescope.load_extension("frecency")
+telescope.load_extension("bookmarks")
 -- telescope.load_extension('ultisnips')
 -- telescope.load_extension('octo')
 telescope.load_extension("session-lens")
 telescope.load_extension("dap")
 telescope.load_extension("fzy_native")
+telescope.load_extension("mapper")
 -- telescope.load_extension("project")
+telescope.load_extension "node_modules"
 telescope.load_extension("asynctasks")
 -- telescope.extensions.asynctasks.all()
 
@@ -134,10 +138,29 @@ telescope.setup {
     generic_sorter = require"telescope.sorters".get_generic_fuzzy_sorter,
     grep_previewer = previewers.vim_buffer_vimgrep.new,
     qflist_previewer = previewers.vim_buffer_qflist.new,
-    path_display = {"shorten"}, -- tail, hidden, absolute, shorten
+    path_display = { "shorten" }, -- tail, hidden, absolute, shorten
     file_ignore_patterns = {},
   },
-  extensions = { fzy_native = { override_generic_sorter = false, override_file_sorter = true } },
+  extensions = {
+    frecency = { -- .extensions.frecency.frecency(), :tag: :<Tab> for filters
+      show_scores = true,
+      show_unindexed = true,
+      ignore_patterns = { "*.git/*", "*/tmp/*" },
+      workspaces = {
+        ["zettel"] = "/home/zettelkasten",
+        ["nvim"] = "/home/.config/nvim",
+        ["fileman"] = "/home/projects/personal/fileman",
+        ["spadash-www"] = "/home/projects/spadash-www/development",
+      },
+    },
+    bookmarks = { -- .extensions.bookmarks.bookmarks(opts)
+      selected_browser = "google_chrome",
+      url_open_command = "xdg-open",
+      url_open_plugin = nil, -- vim_external, open_browser
+      firefox_profile_name = nil,
+    },
+    fzy_native = { override_generic_sorter = false, override_file_sorter = true },
+  },
 }
 -- set_mappings()
 

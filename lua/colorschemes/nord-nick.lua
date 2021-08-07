@@ -62,7 +62,7 @@ local spec = lush.extends({ nord }).with(function()
     -- String { fg = "#22bb99" },
     Function { fg = "#6e99c6" },
     String { fg = "#00a0a9" },
-    Comment { fg = "#5c667a", gui = "italic" },
+    Comment { fg = "#4f667f", gui = "italic" },
     Constant { fg = "#5679b3" },
     Identifier { fg = "#6e99c6" },
     Keyword { fg = "#6177b8" },
@@ -76,18 +76,18 @@ local spec = lush.extends({ nord }).with(function()
     Search { bg = "#0d314c" },
     IncSearch { fg = "#eceff4", bg = "#5d81ac" },
     -- IncSearch { fg = "#eceff4", bg = "#5d81ac" },
-    -- IncSearch =				{ fg = material.highlight, bg = material.title, style = 'reverse' },
+    -- IncSearch 	{ fg = material.highlight, bg = material.title, style = 'reverse' },
     -- IncSearch { fg = clrs.nord6, bg = clrs.nord10, gui = spec.underline },
-
-    --
     TSTagDelimiter { fg = "#7f90aa" },
+    TSPunctSpecial { fg = '#888698' }, -- For special punctutation that does not fall in the catagories before.
+    TSPunctBracket { fg = '#888698' }, -- For special punctutation that does not fall in the catagories before.
+    TSLabel { fg = '#6688ba' }, -- For labels: `label:` in C and `:label:` in Lua.
     TSURI { fg = "#8eb9f6", gui = "none" },
     yamlTSField { fg = "#717cb4" },
     yamlBlockMappingKey { yamlTSField },
     --
     liquidExpression { Type },
     liquidDelimiter { fg = clr_over.orange },
-    pandocReferenceURL = { gui = "none " },
     -- jsx-pretty
     -- jsxElement {fg = "#ff6600"},
     jsxTag { fg = clr_over.orange },
@@ -98,19 +98,15 @@ local spec = lush.extends({ nord }).with(function()
     -- jsxCloseString {fg = "#ff6600"},
     jsxAttrib { fg = "#88bbdd" },
     jsxEqual { fg = "#6699bb" },
-
-    -- BufferInactiveIndex = { bg = "#000000" },
-    -- BufferInactive = { bg = "#000000" },
+    -- BufferInactiveIndex { bg = "#000000" },
+    -- BufferInactive  { bg = "#000000" },
     NonText { bg = "#000000", fg = "#555555" },
     EndOfBuffer { fg = "#555555" },
     LspDiagnosticsSignWarning { fg = "#675023" },
     healthSuccess { fg = "#22BB99", bg = "#none" },
     healthWarning { fg = "#EBCA89", bg = "#none" },
     healthError { fg = "#BE6069", bg = "#none" },
-    -- healthError = {fg = clrs.error},
-    -- healthSuccess = {fg = clrs.nord14},
-    -- healthWarning = {fg = clrs.nord15},
-
+    jsonKeyword { fg = '#446688' },
     -- js-other
     -- jsVariableType {fg = jsStorageClass.fg},
     -- jsIf {fg = jsConditional.fg},
@@ -152,6 +148,7 @@ local spec = lush.extends({ nord }).with(function()
     -- markdownH {},
     markdownTSTitle {},
     SpecialKey {},
+    Special { fg = "#487a98"},
     htmlH1 { fg = "#45a5f8" },
     htmlH2 { fg = "#45a5e8" },
     htmlH3 { fg = "#45a5d8" },
@@ -166,11 +163,21 @@ local spec = lush.extends({ nord }).with(function()
     markdownH6 { fg = "#45a5a8" },
     mkdHeading { fg = "#557588" },
     markdownLinkText { fg = "#00ccff" },
-    pandocUListItem { gui = "none", bg = "none" },
+    pandocEmphasis { gui = "italic", fg="#ddddee", },
+    pandocStrong { gui = "bold", fg="#ddddee", },
+    pandocReferenceLabel { gui = "none", fg = "#4488cc" },
+    pandocListItemBullet {fg = "#66a8dc"  },
+    pandocListItemBulletId {fg = "#66a8dc"  },
+    -- pandocListItem {},
+    -- pandocUListItem { gui = "none", bg = "none" },
+    -- pandocReferenceDefinition { fg = "#7788ff", bg = "none" },
+    -- pandocAtxHeader { fg = "#4575b8" },
+    pandocPipeTable { fg = '#4789aa' },
+    pandocPipeTableDelims { fg = "#555577" },
     pandocNoFormatted { bg = "none" },
-    pandocOperator { bg = "none" },
-    pandocReferenceDefinition { fg = "#7788ff", bg = "none" },
-    pandocAtxHeader { fg = "#4575b8" },
+    pandocOperator { bg = "none", fg = "#aa6600" },
+    pandocReferenceDefinition { fg = "#4488cc", bg = "none" },
+    pandocAtxHeader { fg = "#8595f8" },
     pandocAtxHeaderMark { fg = "#4575f8" },
     pandocAtxStart { fg = "#4575f8" },
     helpHyperTextJump { fg = "#6585b8" },
@@ -178,35 +185,16 @@ local spec = lush.extends({ nord }).with(function()
     Folded { fg = "#6D778a", bg = "#121212", gui = "bold" },
     FoldColumn { fg = "#4D576A", bg = "#121212" },
     Scrollbar { bg = "#111111", fg = "#334863" },
-
     -- FoldColumn { fg = clrs.nord3, bg = clrs.nord0 },
     -- SignColumn { fg = clrs.nord1.li(2), bg = clrs.nord0 },
-
-    -- { "FileType", "markdown.pandoc", "hi! Underlined gui=NONE" },
-    -- { "FileType", "markdown.pandoc", "hi! pandocAtxStart guifg=#45a5f8" },
-    -- { "FileType", "markdown.pandoc", "hi! pandocAtxHeader guifg=#4575b8 gui=bold" },
-
-    -- TSStrike = {},
-    -- TSUnderline = {},
+    -- TSStrike  {},
+    -- TSUnderline  {},
     -- Underline {},
     -- Underlined {},
-    -- htmlLink = {},
-    -- htmlUnderline = {},
-    -- htmlUnderlineItalic = {},
-    -- htmlUnderLineItalic = {}
+    -- htmlLink  {},
+    -- htmlUnderline  {},
+    -- htmlUnderLineItalic  {}
     -- Underlined, CursorLine, TSUnderline, htmlUnderline, htmlUnderlineItalic, htmlUnderLineItalic,
-    -- vim.cmd("hi! htmlTag guifg=#7f90aa")
-    -- vim.cmd("hi! htmlEndTag guifg=#7f90aa")
-    -- vim.cmd("hi! htmlArg guifg=#7f90aa")
-    -- vim.cmd("hi! htmlTagName guifg=#7f90aa")
-
-    -- vim.cmd("hi! link jsVariableType Type")
-    -- vim.cmd("hi! link jsxComponentName jsxTag")
-    -- vim.cmd("hi! link jsxRegexpString javascriptRegExpString")
-    -- vim.cmd("hi! link jsTemplateVar javascriptTemplateVar")
-    -- vim.cmd("hi! link jsTemplateDelim javascriptTemplateDelim")
-    -- vim.cmd("hi! link jsTemplateString javascriptTemplateString")
-
     DAPLogPointSign { fg = "#00f1f5" },
     DAPBreakpointSign { fg = "#4790ff" },
     DAPStopSign { fg = "#07ffc0" },
@@ -227,23 +215,19 @@ local spec = lush.extends({ nord }).with(function()
     DapUIBreakpointsInfo { fg = "#A9FF68" },
     DapUIBreakpointsCurrentLine { fg = "#A9FF68", gui = "bold" },
     DapUIVariable { fg = "#6484cF" },
-    jsonKeyword { fg = '#446688' },
-    TSLabel { fg = '#6688ba' }, -- For labels: `label:` in C and `:label:` in Lua.
-
     -- DapUIFrameName { Normal },
     -- DapUIBreakpointsLive { DapUILineNumber },
     -- DapVariableTreeType { Comment },
     -- DapVariableTreeOperator { Operator },
     -- DapVariableTreeString { String },
     -- DapVariableTreeNumber { Number },
-    -- TreesitterContext { NormalFloat  },
     -- -- WhichKey
     WhichKey { fg = "#f78077", style = "bold" },
     WhichKeyGroup { fg = "#619cf4" },
-    -- WhichKeyDesc = { fg = clrs.nord7, style = "italic" },
-    -- WhichKeySeperator = { fg = clrs.fg },
-    -- WhichKeyFloating = { bg = clrs.float },
-    -- WhichKeyFloat = { bg = clrs.float },
+    -- WhichKeyDesc  { fg = clrs.nord7, style = "italic" },
+    -- WhichKeySeperator  { fg = clrs.fg },
+    -- WhichKeyFloating  { bg = clrs.float },
+    -- WhichKeyFloat  { bg = clrs.float },
   }
 end)
 

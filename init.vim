@@ -3,7 +3,7 @@
  set runtimepath-=~/.config/nvim/after
  set runtimepath-=~/.local/share/nvim/site
  set runtimepath-=~/.local/share/nvim/site/after
- 
+
  set runtimepath+=~/.config/nvim/after
  set runtimepath^=~/.config/nvim
  set runtimepath+=~/.local/share/nvim/site/after
@@ -52,7 +52,7 @@ function! AltCommand(path, vim_command)
 endfunction
 
 " Find the alternate file for the current path and open it
-" source $HOME/.config/nvim/functions.surround.vim
+source $HOME/.config/nvim/functions.surround.vim
 
 function! Remove_comments(code)
   return substitute(a:code, "^#[^\r]*\r\\|\r#[^\r]*", "", "g")

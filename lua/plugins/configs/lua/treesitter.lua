@@ -27,11 +27,19 @@ tsconfig.setup {
   highlight = {
     enable = { enable = config.highlight },
     use_languagetree = true,
+    -- disable = { "javascript" },
+    custom_captures = {
+      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
+      ["foo.bar"] = "Identifier",
+    },
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = true,
-    disable = { "javascript" },
   },
   refactor = {
-    smart_rename = { enable = true, keymaps = { smart_rename = "grr" } },
+    smart_rename = { enable = true, keymaps = { smart_rename = "gr" } },
     highlight_definitions = { enable = true },
     highlight_current_scope = { enable = true },
     navigation = {
@@ -86,13 +94,14 @@ tsconfig.setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "gnn",
-      -- visual modes
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
+      -- init_selection = "gnn",
+      -- -- visual modes
+      -- node_incremental = "grn",
+      -- scope_incremental = "grc",
+      -- node_decremental = "grm",
     },
   },
+  textsubjects = { enable = true, keymaps = { ["."] = "textsubjects-smart", [";"] = "textsubjects-container-outer" } },
 }
 
 -- require"treesitter-context.config".setup {

@@ -21,8 +21,8 @@ local movement_map = {
   ["g*"] = { "g*<Cmd>lua require('hlslens').start()<CR>" },
   ["g#"] = { "g#<Cmd>lua require('hlslens').start()<CR>" },
   -- Treesitter
-  ["grr"] = { "rename symbol under cursor" },
-  ["gnn"] = { "start incremental selection" },
+  ["gr"] = { "rename symbol under cursor" },
+  ["gn"] = { "start incremental selection" },
   ["gH"] = { "<cmd>TSHighlightCapturesUnderCursor<cr>", "show ts syntax under cursor" },
   -- ["da*"] = { "delete around *" }, -- f: function       w/W: word
   -- ["di*"] = { "delete inside *" }, -- c: class          a: parameter

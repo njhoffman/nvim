@@ -37,7 +37,7 @@ local autocmds = {
     { "BufNewFile,BufRead", "*.bash*", "let b:is_bash = 1 | setfiletype sh" },
     { "BufNewFile,BufRead", ".env.*", "setlocal ft=config syn=config" },
     { "BufNewFile,BufRead", "*.env", "setlocal ft=config syn=config" },
-    { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=3 nospell wrap" },
+    { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=3 nospell" },
     { "BufNewFile,BufRead", ".tasks", "setlocal ft=dosini" },
     { "BufNewFile,BufRead", ".vimtasks", "setlocal ft=dosini" },
     { "BufNewFile,BufRead", "Dockerfile*", "setlocal ft=dockerfile" },
@@ -85,6 +85,10 @@ local autocmds = {
     -- { "FileType", "*", "setlocal formatoptions-=c formatoptions-=r formatoptions-=o" },
     { "FileType", "toggleterm", "setlocal nonumber norelativenumber" },
   },
+  shutdown = {
+    -- save session on exit (:h v:this_session)
+    { "BufEnter,VimLeavePre", "*", "execute 'mksession! " .. vim.fn.stdpath("data") .. "/sessions/previous.vim'" },
+  },
   Shape = {
     -- { "FocusLost", "*", "hi TermCursor cterm=NONE gui=NONE" },
     -- { "FocusGained", "*", "hi TermCursor cterm=reverse gui=reverse"},
@@ -92,8 +96,8 @@ local autocmds = {
   },
   terminal = { { "TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]] }, { "TermOpen", "*", "set nonu" } },
   packer = {
-    { "BufWritePost", "plugins.lua", "PackerCompile" },
-    { "BufWritePost", "plugins-config.lua", "PackerCompile" },
+    -- { "BufWritePost", "plugins.lua", "PackerCompile" },
+    -- { "BufWritePost", "plugins-config.lua", "PackerCompile" },
     {
       "User",
       "PackerComplete,PackerCompileDone",
@@ -120,7 +124,6 @@ local trim_whitespaces = {
 
 -- insert tables if true or nil
 if Opts.preserve_cursor == true or Opts.preserve_cursor == nil then table.insert(autocmds, preserve_cursor) end
-
 if Opts.highlight_yank == true or Opts.highlight_yank == nil then table.insert(autocmds, hl_yank) end
 
 --[[ if Formatting.format_on_save == true or Formatting.format_on_save == nil then
