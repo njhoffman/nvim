@@ -75,7 +75,7 @@ local autocmds = {
   },
   filetypes = {
     { "FileType", "lua.lush", "" },
-    { "FileType", "markdown.pandoc", "set conceallevel=3 nospell wrap" },
+    { "FileType", "markdown.pandoc", "set conceallevel=2 nospell" },
     { "FileType", "markdown.pandoc", "hi! markdownH1 guifg=#45a5f8" },
     { "FileType", "markdown.pandoc", "hi! markdownH2 guifg=#45a5e8" },
     { "FileType", "markdown.pandoc", "hi! markdownH3 guifg=#45a5d8" },

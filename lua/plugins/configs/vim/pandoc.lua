@@ -42,7 +42,7 @@ vim.cmd([[ let g:pandoc#syntax#conceal#urls = 1 ]])
 -- - inlinecode
 
 vim.cmd([[
-  let g:pandoc#syntax#codeblocks#embeds#langs = ["shell=sh", "javascript", "cpp", "c", "go", "sh", "bash=sh", "cpp", "ruby", "python", "sql", "lua", "css", "terraform"]
+  let g:pandoc#syntax#codeblocks#embeds#langs = ["shell=sh", "javascript", "cpp", "c", "go", "sh", "bash=sh", "cpp", "go", "ruby", "python", "sql", "lua", "css", "terraform"]
 ]])
 
 -- vim.cmd([[let g:pandoc#syntax#conceal#cchar_overrides = {"footnote" : "*"}]])

@@ -46,7 +46,7 @@ local formatters_map = {
   },
   ["<leader>t"] = {
     name = "+text format",
-    ["t"] = "toggle markdown checkbox",
+    ["t"] = { "<cmd>ToggleCB<cr>", "toggle checkbox" },
     ["m"] = "toggle table mode",
     ["r"] = "toggle table realign",
     [","] = "add comma to end of line",

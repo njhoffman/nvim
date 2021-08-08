@@ -2,8 +2,8 @@ local map = require("utils.core").map
 
 local insert_map = {
   ["<c-s>"] = { "<esc><cmd>w<cr>", "Quick save" },
-  ["||"] = { "enable table mode" },
-  ["__"] = { "disable table mode" },
+  -- ["||"] = { "enable table mode" },
+  -- ["__"] = { "disable table mode" },
   ["<C-u>"] = { "<C-g>u<C-u>", "which_key_ignore" }, -- Make <C-u> undo-friendly
   ["<C-w>"] = { "<C-g>u<C-w>", "which_key_ignore" }, -- Make <C-w> undo-friendly
 };

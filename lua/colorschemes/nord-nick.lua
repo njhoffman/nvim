@@ -78,7 +78,9 @@ local spec = lush.extends({ nord }).with(function()
     -- IncSearch { fg = "#eceff4", bg = "#5d81ac" },
     -- IncSearch 	{ fg = material.highlight, bg = material.title, style = 'reverse' },
     -- IncSearch { fg = clrs.nord6, bg = clrs.nord10, gui = spec.underline },
-    TSTagDelimiter { fg = "#7f90aa" },
+    TSTag {fg = clr_over.orange },
+    TSTagDelimiter { fg = clr_over.orange },
+    -- TSTagDelimiter { fg = "#7f90aa" },
     TSPunctSpecial { fg = '#888698' }, -- For special punctutation that does not fall in the catagories before.
     TSPunctBracket { fg = '#888698' }, -- For special punctutation that does not fall in the catagories before.
     TSLabel { fg = '#6688ba' }, -- For labels: `label:` in C and `:label:` in Lua.
@@ -155,6 +157,8 @@ local spec = lush.extends({ nord }).with(function()
     htmlH4 { fg = "#45a5c8" },
     htmlH5 { fg = "#45a5b8" },
     htmlH6 { fg = "#45a5a8" },
+    htmlEndTag { fg = "#7f90aa" },
+    htmlTagN { fg = clr_over.orange },
     markdownH1 { fg = "#45a5f8" },
     markdownH2 { fg = "#45a5e8" },
     markdownH3 { fg = "#45a5d8" },
@@ -163,6 +167,7 @@ local spec = lush.extends({ nord }).with(function()
     markdownH6 { fg = "#45a5a8" },
     mkdHeading { fg = "#557588" },
     markdownLinkText { fg = "#00ccff" },
+    pandocStrikeout { gui = "strikethrough" },
     pandocEmphasis { gui = "italic", fg="#ddddee", },
     pandocStrong { gui = "bold", fg="#ddddee", },
     pandocReferenceLabel { gui = "none", fg = "#4488cc" },

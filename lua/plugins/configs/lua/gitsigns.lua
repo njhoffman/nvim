@@ -1,5 +1,5 @@
-bars = { thick = "▎", thin = "│" }
-signs_config_1 = {
+local bars = { thick = "▎", thin = "│" }
+local signs_config_1 = {
   add = { hl = "GitSignsAddFaded", text = bars.thin },
   change = { hl = "GitSignsChangeFaded", text = bars.thin },
   delete = { hl = "GitSignsDeleteFaded", text = bars.thin },
@@ -7,16 +7,12 @@ signs_config_1 = {
   changedelete = { hl = "GitSignsChangeDeleteFaded", text = bars.thin },
 }
 
-signs_config_2 = {
+local signs_config_2 = {
   add = { hl = "GreenSign", text = bars.thick, numhl = "GitSignsAddNr" },
   change = { hl = "BlueSign", text = bars.thick, numhl = "GitSignsChangeNr" },
   delete = { hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr" },
   topdelete = { hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr" },
-  changedelete = {
-    hl = "PurpleSign",
-    text = bars.thick,
-    numhl = "GitSignsChangeDeleteNr",
-  },
+  changedelete = { hl = "PurpleSign", text = bars.thick, numhl = "GitSignsChangeDeleteNr" },
 }
 
 require("gitsigns").setup {
@@ -45,7 +41,6 @@ require("gitsigns").setup {
   sign_priority = 6,
   update_debounce = 200,
   status_formatter = nil, -- Use default
-  use_decoration_api = true,
   use_internal_diff = true,
 }
 

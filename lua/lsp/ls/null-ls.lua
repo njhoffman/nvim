@@ -11,7 +11,7 @@ end
 
 local sources = {
   -- b.formatting.prettierd.with({ filetypes = { "html", "json", "yaml", "markdown" } }),
-  b.formatting.prettierd.with({ filetypes = { "yaml", "markdown" } }),
+  b.formatting.prettierd.with({ filetypes = { "markdown" } }),
   -- b.formatting.stylua.with({
   --   args = {
   --     "--config-path",
