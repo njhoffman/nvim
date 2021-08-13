@@ -9,15 +9,13 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local on_attach = function(client, bufnr)
   -- vim.cmd [[autocmd BufWritePre *.go lua require'lsp.formatters'.format()]]
   on_attach_hook.common_on_attach(client, bufnr)
-  print("'" .. client.name .. "' server attached " .. bufnr)
 end
 
 lspconfig.gopls.setup {
   cmd = lsp_cmds.go,
   filetypes = { "go", "gomod" },
   root_dir = function(fname)
-    return lspconfig.util.root_pattern(".git")(fname) or
-               lspconfig.util.root_pattern("go.mod")(fname) or
+    return lspconfig.util.root_pattern(".git")(fname) or lspconfig.util.root_pattern("go.mod")(fname) or
                lspconfig.util.path.dirname(fname)
   end,
   settings = {

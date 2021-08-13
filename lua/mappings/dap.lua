@@ -4,21 +4,12 @@ local dap_maps = {
   ["<F9>"] = { "<cmd>lua require('dap').step_over()<cr>", "dap step-over" },
   ["<F10>"] = { "<cmd>lua require('dap').step_into()<cr>", "dap step-into" },
   ["<F11>"] = { "<cmd>lua require('dap').step_out()<cr>", "dap step-out" },
-  ["<S-F12>"] = {
-    "<cmd>lua require('dap').repl.run_last()<cr>",
-    "dap repl run last",
-  },
+  ["<S-F12>"] = { "<cmd>lua require('dap').repl.run_last()<cr>", "dap repl run last" },
   ["<leader>b"] = {
     name = "+breakpoints",
     ["p"] = { "<cmd>lua require'dap'.set_breakpoint()<cr>", "set breakpoint" },
-    ["b"] = {
-      "<cmd>lua require'dap'.toggle_breakpoint()<cr>",
-      "toggle breakpoint",
-    },
-    ["t"] = {
-      "<cmd>lua require'dap'.toggle_breakpoint()<cr>",
-      "toggle breakpoint",
-    },
+    ["b"] = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "toggle breakpoint" },
+    ["t"] = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "toggle breakpoint" },
     ["c"] = {
       "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
       "conditional breakpoint",
@@ -32,10 +23,7 @@ local dap_maps = {
     name = "+dap",
     ["t"] = { "<cmd>lua require'dapui'.toggle()<cr>", "toggle dap ui" },
     [" "] = { "<cmd>lua require'dap'.continue()<cr>", "start lua dap" },
-    ["s"] = {
-      "<cmd>lua require'dapui'.toggle('sidebar')<cr>",
-      "toggle ui sidebar",
-    },
+    ["s"] = { "<cmd>lua require'dapui'.toggle('sidebar')<cr>", "toggle ui sidebar" },
     ["c"] = { "<cmd>lua require'dap'.continue()<cr>", "dap continue" },
     ["i"] = { "<cmd>lua require('dap').step_into()<cr>", "dap step-into" },
     ["o"] = { "<cmd>lua require('dap').step_over()<cr>", "dap step-over" },
@@ -56,28 +44,11 @@ local dap_maps = {
 -- nnoremap <silent> <leader>dn :lua require('dap-python').test_method()<CR>
 -- vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<CR>
 
-local dap_v_maps = {
-  ["<M-k>"] = {
-    "<cmd>lua require('dapui').eval()<CR>>",
-    "dap evaluate under cursor",
-  },
-}
+local dap_v_maps = { ["<M-k>"] = { "<cmd>lua require('dapui').eval()<CR>>", "dap evaluate under cursor" } }
 
-local dap_opts = {
-  mode = "n",
-  buffer = nil,
-  silent = true,
-  noremap = true,
-  nowait = false,
-}
+local dap_opts = { mode = "n", buffer = nil, silent = true, noremap = true, nowait = false }
 
-local dap_v_opts = {
-  mode = "v",
-  buffer = nil,
-  silent = true,
-  noremap = true,
-  nowait = false,
-}
+local dap_v_opts = { mode = "v", buffer = nil, silent = true, noremap = true, nowait = false }
 
 require("which-key").register(dap_v_maps, dap_v_opts)
 require("which-key").register(dap_maps, dap_opts)

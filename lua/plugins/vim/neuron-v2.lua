@@ -1,0 +1,37 @@
+-- let g:neuron_backlinks_size = get(g:, 'neuron_backlinks_size', 40)
+-- let g:neuron_backlinks_vsplit = get(g:, 'neuron_backlinks_vsplit', 1)
+-- let g:neuron_backlinks_vsplit_right = get(g:, 'neuron_backlinks_vsplit_right', 1)
+-- let g:neuron_debug_enable = get(g:, 'neuron_debug_enable', 0)
+-- let g:neuron_executable = get(g:, 'neuron_executable', system('which neuron | tr -d "\n"'))
+-- let g:neuron_fullscreen_search = get(g:, 'neuron_fullscreen_search', 0)
+-- let g:neuron_inline_backlinks = get(g:, 'neuron_inline_backlinks', 1)
+-- let g:neuron_tags_name = get(g:, 'neuron_tags_name', 'tags')
+-- let g:neuron_tags_style = get(g:, 'neuron_tags_style', 'multiline')
+-- let g:neuron_tmp_filename = get(g:, 'neuron_tmp_filename', '/tmp/neuronzettelsbuffer')
+-- let g:neuron_fzf_options = get(g:, 'neuron_fzf_options', ['-d',':','--with-nth','2'])
+--
+vim.g.neuron_no_mappings = 1
+vim.g.neuron_dir = "/home/nicholas/zettelkasten/"
+--
+-- gzn <Plug>EditZettelNew
+-- gzc <Plug>NewZettel
+-- gzN <Plug>EditZettelNewFromCword
+-- vm gzN <esc><Plug>EditZettelNewFromVisual
+-- gzr <Plug>NeuronRefreshCache
+-- gzu <Plug>EditZettelLast gzU :<C-U>call neuron#move_history(-1)<cr>
+-- gzP :<C-U>call neuron#move_history(1)<cr>
+-- gzz <Plug>EditZettelSelect
+-- gzZ <Plug>EditZettelBacklink
+-- gzo <Plug>EditZettelUnderCursor
+-- gzs <Plug>EditZettelSearchContent
+-- gzS <Plug>EditZettelSearchContentUnderCursor
+-- gzl <Plug>InsertZettelLast
+-- gzi <Plug>InsertZettelSelect
+-- gzL :<C-U>call neuron#insert_zettel_last(1)<cr>
+-- gzI :<C-U>call neuron#insert_zettel_select(1)<cr>
+-- gzv <Plug>ToggleBacklinks
+-- gzt <Plug>TagsAddNew
+-- gzT <Plug>TagsAddSelect
+-- gzts <Plug>TagsZettelSearch
+-- ino <expr> <c-x><c-u> neuron#insert_zettel_complete(0)
+-- ino <expr> <c-x><c-y> neuron#insert_zettel_complete(1)

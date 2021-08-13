@@ -6,7 +6,6 @@ local on_attach_hook = require("lsp.on_attach_hook")
 local on_attach = function(client, bufnr)
   -- require'completion'.on_attach(client)
   on_attach_hook.common_on_attach(client, bufnr)
-  print("'" .. client.name .. "' server attached")
 end
 
 lspconfig.vimls.setup {

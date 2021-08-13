@@ -34,10 +34,10 @@ local autocmds = {
 
   FiletypeDetect = {
     { "BufNewFile,BufRead", "*.ejs", "set ft=html" },
-    { "BufNewFile,BufRead", "*.bash*", "let b:is_bash = 1 | setfiletype sh" },
+    { "BufNewFile,BufRead", "*.bash*", "let b:is_bash = 1 | setfiletype bash" },
     { "BufNewFile,BufRead", ".env.*", "setlocal ft=config syn=config" },
     { "BufNewFile,BufRead", "*.env", "setlocal ft=config syn=config" },
-    { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=3 nospell" },
+    { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 nospell" },
     { "BufNewFile,BufRead", ".tasks", "setlocal ft=dosini" },
     { "BufNewFile,BufRead", ".vimtasks", "setlocal ft=dosini" },
     { "BufNewFile,BufRead", "Dockerfile*", "setlocal ft=dockerfile" },
@@ -75,6 +75,7 @@ local autocmds = {
   },
   filetypes = {
     { "FileType", "lua.lush", "" },
+    { "FileType", "sh", "set ft=bash | let b:is_bash=1" },
     { "FileType", "markdown.pandoc", "set conceallevel=2 nospell" },
     { "FileType", "markdown.pandoc", "hi! markdownH1 guifg=#45a5f8" },
     { "FileType", "markdown.pandoc", "hi! markdownH2 guifg=#45a5e8" },
@@ -129,6 +130,9 @@ if Opts.highlight_yank == true or Opts.highlight_yank == nil then table.insert(a
 --[[ if Formatting.format_on_save == true or Formatting.format_on_save == nil then
   -- table.insert(autocmds, format)
 end ]]
+
+-- " Return to last edit position when opening files (You want this!)
+-- au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 if Formatting.trim_trailing_space == true or Formatting.trim_trailing_space == nil then
   table.insert(autocmds, trim_whitespaces)

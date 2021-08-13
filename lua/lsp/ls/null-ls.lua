@@ -6,12 +6,11 @@ local on_attach = function(client, bufnr)
   client.resolved_capabilities.document_formatting = false
   -- if vim.bo.filetype == "lua" then client.resolved_capabilities.document_formatting = false end
   on_attach_hook.common_on_attach(client, bufnr)
-  -- print("'" .. vim.inspect(client) .. "' server attached")
 end
 
 local sources = {
   -- b.formatting.prettierd.with({ filetypes = { "html", "json", "yaml", "markdown" } }),
-  b.formatting.prettierd.with({ filetypes = { "markdown" } }),
+  -- b.formatting.prettierd.with({ filetypes = { "markdown", "markdown.pandoc" } }),
   -- b.formatting.stylua.with({
   --   args = {
   --     "--config-path",
@@ -21,8 +20,11 @@ local sources = {
   -- }),
   b.formatting.trim_whitespace.with({ filetypes = { "tmux", "fish", "teal" } }),
   b.formatting.shfmt,
-  b.diagnostics.write_good,
-  b.diagnostics.markdownlint,
+  -- b.diagnostics.write_good,
+  b.diagnostics.markdownlint.with({
+    filetypes = { "markdown", "markdown.pandoc" },
+    args = { "--config", vim.fn.stdpath("config") .. "/lua/.markdownlint.jsonc", "--stdin" },
+  }),
   b.diagnostics.teal,
   b.diagnostics.shellcheck,
   b.code_actions.gitsigns,

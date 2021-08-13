@@ -19,7 +19,6 @@ local on_attach = function(client, bufnr)
   -- require'completion'.on_attach(client)
   client.resolved_capabilities.document_formatting = false
   on_attach_hook.common_on_attach(client, bufnr)
-  -- print("'" .. client.name .. "' server attached")
 end
 
 lspconfig.dockerls.setup {

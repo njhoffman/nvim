@@ -2,6 +2,7 @@ local g = vim.g
 local cmd = vim.cmd
 local o, wo, bo = vim.o, vim.wo, vim.bo
 local opt = require("utils.core").opt
+local config = require("config")
 -- -- Disable some built-in plugins we don't want
 -- local disabled_built_ins = {
 --   'gzip', 'man', 'matchit', 'matchparen', 'shada_plugin', 'tarPlugin', 'tar', 'zipPlugin', 'zip',
@@ -9,7 +10,6 @@ local opt = require("utils.core").opt
 -- }
 -- for i = 1, 10 do g['loaded_' .. disabled_built_ins[i]] = 1 end
 
--- Leader/local leader
 g.mapleader = [[,]]
 g.maplocalleader = [[,]]
 
@@ -22,25 +22,22 @@ opt("backup", false)
 opt("confirm", true)
 opt("wb", false)
 opt("lbr", true)
-opt("wrap", false)
 opt("tw", 1000)
 opt("swapfile", false)
 opt("clipboard", "unnamedplus")
-opt("cmdheight", 2)
--- opt("cmdheight", 1)
+opt("cmdheight", 2) -- 1
 opt("cmdwinheight", 7)
 opt("completeopt", "noinsert,noselect,menuone")
 opt("cpoptions", "aABceFs_")
 opt("display", "msgsep")
 opt("encoding", "UTF-8")
 opt("guicursor", [[n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50]])
--- opt("guicursor", "")
 opt("hidden", true)
+opt("inccommand", "split")
 opt("incsearch", true)
 opt("magic", true)
 opt("hlsearch", true)
 opt("ignorecase", true)
-opt("inccommand", "nosplit")
 opt("joinspaces", false)
 opt("laststatus", 2)
 opt("lazyredraw", true)
@@ -60,15 +57,8 @@ opt("splitbelow", true)
 opt("splitright", true)
 opt("termguicolors", true)
 opt("undolevels", 1000)
--- opt("undodir", "~/.vim/undo")
-opt("updatetime", 300)
-opt("whichwrap", o.whichwrap .. "<,>,h,l")
+opt("updatetime", 50)
 opt("wildignore", "*.o,*~,*.pyc")
--- wildchar/charm for wildmenu
--- 0x1a ^Z, 0x1b ^[, 0x0e C-n
--- opt("wc", 0x0e)
--- opt("wcm", 0x0e)
-
 opt("wildmode", "longest:full,full")
 opt("writebackup", false)
 opt("timeoutlen", 500)
@@ -88,7 +78,8 @@ opt("cursorline", true, window)
 opt("number", true, window)
 opt("relativenumber", true, window)
 opt("signcolumn", "yes:1", window)
-opt("wrap", false, window)
+opt("wrap", config.Opts.wrap, window)
+-- vim.wo.wrap = O.wrap_lines -- Display long lines as just one line
 
 -- buffer scope
 opt("expandtab", true, buffer)
@@ -102,8 +93,6 @@ opt("textwidth", 100, buffer)
 opt("undofile", true, buffer)
 opt("fileformat", "unix", buffer)
 
--- vim.o.guifont = "FiraCode Nerd Font:h17"
-
 vim.cmd [[autocmd BufReadPost * lua goto_last_pos()]]
 function goto_last_pos()
   local last_pos = vim.fn.line("'\"")
@@ -112,21 +101,18 @@ end
 
 -- " Set to auto read when a file is changed from the outside
 -- au FocusGained,BufEnter * checktime
--- enable syntax highlighting
 vim.cmd([[set syntax=on]])
-
--- " Enable filetype plugins
 vim.cmd([[filetype plugin on]])
 vim.cmd([[filetype indent on]])
 
+-- wildchar/charm for wildmenu
+-- 0x1a ^Z, 0x1b ^[, 0x0e C-n
+-- opt("wc", 0x0e)
+-- opt("wcm", 0x0e)
+
 -- vim.cmd('set iskeyword+=-') -- treat dash separated words as a word text object"
--- vim.cmd('set shortmess+=c') -- Don't pass messages to |ins-completion-menu|.
--- vim.cmd('set inccommand=split') -- Make substitution work in realtime
 -- TERMINAL = vim.fn.expand('$TERMINAL')
 -- vim.o.titlestring="%<%F%=%l/%L - nvim"
--- vim.wo.wrap = O.wrap_lines -- Display long lines as just one line
 -- vim.o.pumheight = 10 -- Makes popup menu smaller
--- vim.cmd('set colorcolumn=99999') -- fix indentline for now
--- vim.o.conceallevel = 0 -- So that I can see `` in markdown files
 -- vim.o.timeoutlen = O.timeoutlen -- By default timeoutlen is 1000 ms
 -- vim.g.nvim_tree_disable_netrw = O.nvim_tree_disable_netrw

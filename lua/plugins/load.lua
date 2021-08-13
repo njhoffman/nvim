@@ -9,19 +9,17 @@ return packer.startup({
   function(use)
     use "wbthomason/packer.nvim"
 
-    -- luarocks install luaposix
-    -- packer.use_rocks { "luaposix" }
-
     -- ====================================
     -- Basic key mappings
-    use "tpope/vim-repeat"
-    use "blackCauldron7/surround.nvim"
-    use "moll/vim-bbye"
-    use "mhinz/vim-sayonara"
     use "aymericbeaumet/vim-symlink"
-    use "lambdalisue/suda.vim"
+    use "blackCauldron7/surround.nvim"
     use "jkramer/vim-checkbox"
+    use "lambdalisue/suda.vim"
+    use "mhinz/vim-sayonara"
+    use "moll/vim-bbye"
+    use "tpope/vim-repeat"
 
+    -- ====================================
     -- Project management
     use "airblade/vim-rooter"
     use "rmagatti/auto-session"
@@ -30,32 +28,26 @@ return packer.startup({
     use "wakatime/vim-wakatime" -- WakaTimeToday, WakaTimeApiKey, WakaTimeDebugEnable
 
     -- ====================================
-    -- -- Treesitter
+    -- Treesitter
     if config.Treesitter.enabled ~= 0 and config.Treesitter.enabled ~= false then
-      use {
-        "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
-        requires = { "nvim-lua/plenary.nvim", "ikatyang/tree-sitter-markdown" },
-      }
-      use { "p00f/nvim-ts-rainbow", requires = "nvim-treesitter" }
-      use { "windwp/nvim-ts-autotag", requires = "nvim-treesitter" }
-      use { "nvim-treesitter/playground", requires = "nvim-treesitter" }
-      -- use { "romgrk/nvim-treesitter-context", requires = "nvim-treesitter" }
+      use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", requires = "nvim-lua/plenary.nvim" }
+      use { "ikatyang/tree-sitter-markdown", requires = "nvim-treesitter" }
+      use { "JoosepAlviste/nvim-ts-context-commentstring", requires = "nvim-treesitter" }
       use { "nvim-treesitter/nvim-treesitter-refactor", requires = "nvim-treesitter" }
       use { "nvim-treesitter/nvim-treesitter-textobjects", requires = "nvim-treesitter" }
-
+      use { "nvim-treesitter/playground", requires = "nvim-treesitter" }
+      use { "p00f/nvim-ts-rainbow", requires = "nvim-treesitter" }
+      -- use { "romgrk/nvim-treesitter-context", requires = "nvim-treesitter" }
+      use { "theHamsta/nvim-treesitter-pairs", requires = "nvim-treesitter" }
+      use { "windwp/nvim-ts-autotag", requires = "nvim-treesitter" }
     end
 
     -- ====================================
-    -- -- Syntax
-    use "vim-pandoc/vim-pandoc-syntax"
+    -- Syntax
     use "yuezk/vim-js"
     use "HerringtonDarkholme/yats.vim"
     use "maxmellon/vim-jsx-pretty"
-    -- use { "xolox/vim-lua-ftplugin", requires = "xolox/vim-misc" }
     use "godlygeek/tabular"
-    -- use "kchmck/vim-coffee-script"
-
     use "GutenYe/json5.vim"
     use "StanAngeloff/php.vim"
     use "andrewstuart/vim-kubernetes"
@@ -78,59 +70,53 @@ return packer.startup({
     use "wgwoods/vim-systemd-syntax"
     use "zinit-zsh/zinit-vim-syntax"
     use "LnL7/vim-nix"
-
-    use "PotatoesMaster/i3-vim-syntax"
     use "plasticboy/vim-markdown"
     use "bfrg/vim-jq"
     use "mtdl9/vim-log-highlighting"
+
+    use "vim-pandoc/vim-pandoc-syntax"
     use "njhoffman/vim-liquid"
+    use "PotatoesMaster/i3-vim-syntax"
+    use "SidOfc/mkdx"
+
     -- use "tpope/vim-liquid"
+    -- use { "xolox/vim-lua-ftplugin", requires = "xolox/vim-misc" }
+    -- use "kchmck/vim-coffee-script"
 
     -- ====================================
     -- LSP, Autocomplete and snippets
     if config.LSP.enabled ~= 0 and config.LSP.enabled ~= false then
-      use {
-        "neovim/nvim-lspconfig",
-        requires = {
-          "jose-elias-alvarez/nvim-lsp-ts-utils",
-          "jose-elias-alvarez/null-ls.nvim",
-          "kabouzeid/nvim-lspinstall",
-          "nvim-lua/lsp-status.nvim",
-          "nvim-lua/lsp_extensions.nvim",
-          "onsails/lspkind-nvim",
-          "nvim-lua/popup.nvim",
-          "nvim-lua/plenary.nvim",
-        },
-      }
-      -- use { "tsuyoshicho/vim-efm-langserver-settings", requires = "prabirshrestha/vim-lsp"}
-      -- use {"hrsh7th/vim-vsnip", event = "InsertEnter *", config = [[require('config.vsnip')]]}
-      -- use {"hrsh7th/nvim-compe", event = "InsertEnter *", config = [[require('config.compe')]]}
-      use "ido-nvim/core"
-      use "folke/lua-dev.nvim"
-      use "kosayoda/nvim-lightbulb"
+      use "neovim/nvim-lspconfig"
+      use "kabouzeid/nvim-lspinstall"
+      use "nvim-lua/lsp_extensions.nvim"
+      use "onsails/lspkind-nvim"
+      use "nvim-lua/lsp-status.nvim"
       use "folke/lsp-colors.nvim"
+      use "folke/lua-dev.nvim"
       use "glepnir/lspsaga.nvim"
+      use "hrsh7th/nvim-compe" -- event = "InsertEnter *"
+      use "ido-nvim/core"
+      use "kosayoda/nvim-lightbulb"
       use "ray-x/lsp_signature.nvim"
-      use "hrsh7th/nvim-compe"
-
-      -- might have to: cd .local/share/nvim/site/pack/packer/start/compe-tabnine && ./install.sh
+      use { "jose-elias-alvarez/nvim-lsp-ts-utils", requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" } }
+      use { "jose-elias-alvarez/null-ls.nvim", requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" } }
       use { "tzachar/compe-tabnine", run = "./install.sh", requires = "hrsh7th/nvim-compe" }
-
+      -- might have to: cd .local/share/nvim/site/pack/packer/start/compe-tabnine && ./install.sh
       -- snippets
       use "hrsh7th/vim-vsnip"
       use "rafamadriz/friendly-snippets"
       use "norcalli/snippets.nvim"
+      use "xabikos/vscode-javascript"
       -- use { 'cstrap/python-snippets' }
       -- use { 'ylcnfrht/vscode-python-snippet-pack' }
-      use { "xabikos/vscode-javascript" }
       -- use { 'golang/vscode-go' }
       -- use { 'rust-lang/vscode-rust' }
-
     end
 
     -- ====================================
     -- DAP
     if config.DAP.enabled ~= 0 and config.DAP.enabled ~= false then
+      use { "mfussenegger/nvim-dap" }
       use { "rcarriga/nvim-dap-ui", requires = { "theHamsta/nvim-dap-virtual-text", "mfussenegger/nvim-dap" } }
       use { "jbyuki/one-small-step-for-vimkind", requires = { "mfussenegger/nvim-dap" } }
       use { "mfussenegger/nvim-dap-python", requires = { "mfussenegger/nvim-dap" } }
@@ -138,16 +124,16 @@ return packer.startup({
 
     -- ====================================
     -- Integrations
+    use "AndrewRadev/id3.vim"
     use "preservim/vimux"
-    -- use "tools-life/taskwiki"
-    -- use "xarthurx/vim-taskwarrior"
-
-    -- use {"vimwiki/vimwiki", branch = "dev"}
-    -- use "chiefnoah/neuron-v2.vim"
+    use { "pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons" }
     use { "skywind3000/asynctasks.vim", requires = "skywind3000/asyncrun.vim" }
     use { "vim-test/vim-test" }
     use { "urbainvaes/vim-ripple" }
+    use { "vuki656/package-info.nvim" }
     use { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } }
+    use { "iamcco/markdown-preview.nvim", run = "cd app && yarn install" }
+
     use {
       "tpope/vim-fugitive",
       cmd = {
@@ -181,21 +167,6 @@ return packer.startup({
     -- Pickers (telescope, fzf)
     use "matbme/JABS.nvim"
     use "Yohannfra/Nvim-Switch-Buffer"
-    -- " Feel free to map the shortcut you want
-    -- nnoremap S :SwitchBuffer <cr>
-
-    -- set switchbuf=usetab
-    -- You can also hide the buffer numbers with
-
-    -- let g:switch_buffer_hide_numbers = 1
-    -- How to use
-    -- Navigate in the window using j/k or Up/Down
-    -- Press Enter or Space to open the buffer
-    -- Press s to open the buffer in a horizontal split
-    -- Press v to open the buffer in a vertical split
-    -- Press t to open the buffer in a new tab
-    -- Press dd to close a buffer (you can't close the current buffer)
-    -- Press S or :q to close the window
     use { "camspiers/snap", rocks = { "fzy" } }
     use { "junegunn/fzf.vim", requires = { "junegunn/fzf", dir = "~/.fzf", run = "./install --all" } }
     use {
@@ -204,15 +175,40 @@ return packer.startup({
       branch = "release/rpc",
       requires = { "junegunn/fzf", "ryanoasis/vim-devicons" },
     }
-
+    use {
+      "ibhagwan/fzf-lua",
+      requires = { "vijaymarupudi/nvim-fzf", "kyazdani42/nvim-web-devicons" }, -- optional for icons
+    }
+    use {
+      "lazytanuki/nvim-mapper",
+      before = "nvim-telescope/telescope.nvim",
+      config = function() require("nvim-mapper").setup {} end,
+    }
     use {
       "nvim-telescope/telescope.nvim",
-      requires = {
-        "kyazdani42/nvim-web-devicons",
-        "nvim-lua/popup.nvim",
-        "nvim-lua/plenary.nvim",
-        { "nvim-telescope/telescope-frecency.nvim", requires = "tami5/sql.nvim" },
-      },
+      requires = { "kyazdani42/nvim-web-devicons", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim" },
+    }
+    use { "dhruvmanila/telescope-bookmarks.nvim", requires = { "nvim-telescope/telescope.nvim" } }
+    use { "cljoly/telescope-repo.nvim", requires = "nvim-telescope/telescope.nvim" }
+    use { "rmagatti/session-lens", requires = { "rmagatti/auto-session", "nvim-telescope/telescope.nvim" } }
+    use { "sudormrfbin/cheatsheet.nvim", requires = "nvim-telescope/telescope.nvim" }
+    use { "nvim-telescope/telescope-dap.nvim", requires = { "mfussenegger/nvim-dap", "nvim-telescope/telescope.nvim" } }
+    use { "nvim-telescope/telescope-frecency.nvim", requires = { "nvim-telescope/telescope.nvim", "tami5/sql.nvim" } }
+    use { "nvim-telescope/telescope-fzf-native.nvim", requires = "nvim-telescope/telescope.nvim" }
+    use { "nvim-telescope/telescope-fzy-native.nvim", requires = { "nvim-telescope/telescope.nvim", "Dkendal/fzy-vim" } }
+    use { "nvim-telescope/telescope-github.nvim", requires = "nvim-telescope/telescope.nvim" }
+    use { "nvim-telescope/telescope-media-files.nvim", requires = "nvim-telescope/telescope.nvim" }
+    use { "nvim-telescope/telescope-node-modules.nvim", requires = "nvim-telescope/telescope.nvim" }
+    -- use { "nvim-telescope/telescope-packer.nvim", requires = "nvim-telescope/telescope.nvim" }
+    use { "chiefnoah/neuron-v2.vim", requires = "junegunn/fzf.vim" }
+    use {
+      "oberblastmeister/neuron.nvim", -- "njhoffman/neuron.nvim",
+      branch = "unstable",
+      requires = { "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
+    }
+    use {
+      "GustavoKatel/telescope-asynctasks.nvim",
+      requires = { "skywind3000/asynctasks.vim", "nvim-telescope/telescope.nvim" },
     }
     -- FzyLsAg - list files using the silversearcher, respects .gitignore and .agignore and open it in the current buffer.
     -- FzyTag - list tags, open tag defintion in current buffer - a better :tselect.
@@ -220,31 +216,8 @@ return packer.startup({
     -- FzyGem - list all gems, then list all files in the selected gem.
     -- FzyBuffer - fzy select :ls
 
-    use { "lazytanuki/nvim-mapper", before = "telescope.nvim" }
-    use { "nvim-telescope/telescope-node-modules.nvim", requires = { "nvim-telescope/telescope.nvim" } }
-    use { "dhruvmanila/telescope-bookmarks.nvim", requires = { "nvim-telescope/telescope.nvim" } }
-    use {
-      "oberblastmeister/neuron.nvim", -- "njhoffman/neuron.nvim",
-      branch = "unstable",
-      requires = { "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
-    }
-    use { "nvim-telescope/telescope-fzy-native.nvim", requires = { "nvim-telescope/telescope.nvim", "Dkendal/fzy-vim" } }
-    --[[ use {
-    "nvim-telescope/telescope-project.nvim",
-    requires = "nvim-telescope/telescope.nvim"
-  } ]]
-    use { "nvim-telescope/telescope-fzf-native.nvim", requires = "nvim-telescope/telescope.nvim" }
-    use { "nvim-telescope/telescope-packer.nvim", requires = "nvim-telescope/telescope.nvim" }
-    use { "nvim-telescope/telescope-dap.nvim", requires = { "mfussenegger/nvim-dap", "nvim-telescope/telescope.nvim" } }
-    use { "rmagatti/session-lens", requires = { "rmagatti/auto-session", "nvim-telescope/telescope.nvim" } }
-    use {
-      "GustavoKatel/telescope-asynctasks.nvim",
-      requires = { "skywind3000/asynctasks.vim", "nvim-telescope/telescope.nvim" },
-    }
-    use {
-      "sudormrfbin/cheatsheet.nvim",
-      requires = { { "nvim-telescope/telescope.nvim" }, { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } },
-    }
+    -- use { "nvim-telescope/telescope-project.nvim", requires = "nvim-telescope/telescope.nvim" }
+    -- use { "fhill2/telescope-ultisnips.nvim", requires = "nvim-telescope/telescope.nvim" }
 
     -- ====================================
     -- Visual enhancements
@@ -256,14 +229,16 @@ return packer.startup({
     use "TaDaa/vimade"
     use "romainl/vim-cool"
     use "Pocco81/TrueZen.nvim"
+    use "folke/twilight.nvim"
     -- use "lukas-reineke/indent-blankline.nvim"
 
     -- ====================================
     -- Motion plugins
     use "psliwka/vim-smoothie"
     use "chaoren/vim-wordmotion"
-    use { "andymass/vim-matchup", event = "BufEnter" }
-    use { "AckslD/nvim-anywise-reg.lua" }
+    use "andymass/vim-matchup" -- event = "BufEnter" %, g%, [%, ]%, z% - i%, a%
+    -- use "AckslD/nvim-anywise-reg.lua"
+
     -- ====================================
     -- Formatting utils
     use "junegunn/vim-easy-align"
@@ -275,10 +250,6 @@ return packer.startup({
     use "nicwest/vim-camelsnek"
     use "mizlan/iswap.nvim"
 
-    -- Text-subjects smart: Classes, structs, functions, methods.
-    -- Text subjects outer container: comments, consecutive line comments, function calls, function definitions
-    -- class definitions, loops, if statements, return values, arguments.
-
     -- ====================================
     -- System utils
     -- Delete, Unlink, Move, Rename, Chmod, Mkdir, Cfind/locate, Lfind/locate, Wall, SudoWrite/Edit
@@ -287,40 +258,36 @@ return packer.startup({
     use "tweekmonster/startuptime.vim"
     use "qpkorr/vim-renamer"
     use { "famiu/nvim-reload", branch = "master" } -- experimental
+    use "henriquehbr/nvim-startup.lua"
     -- vim-profiler.py nvim -n 10
     -- vim-profiler.py -n 5 nvim foo.cc -c ":exec ':normal ia' | :q\!"
     -- strace gvim -V9log.txt file.tex > stdout.txt 2> stderr.txt
 
     -- ====================================
     -- Interface plugins
+
+    use "akinsho/nvim-toggleterm.lua"
+    use "folke/trouble.nvim"
+    use "folke/which-key.nvim"
     use "glepnir/dashboard-nvim"
     use "kevinhwang91/nvim-bqf"
-    use "folke/trouble.nvim"
-    use { "kyazdani42/nvim-tree.lua", requires = "kyazdani42/nvim-web-devicons" }
-    use "akinsho/nvim-toggleterm.lua"
-    use "sindrets/diffview.nvim"
-    use "simnalamburt/vim-mundo"
-    use "folke/which-key.nvim"
-    use "svermeulen/vim-yoink"
     use "ncm2/float-preview.nvim"
-    use "voldikss/vim-floaterm"
-    use "voldikss/fzf-floaterm"
+    use "simnalamburt/vim-mundo"
+    use "sindrets/diffview.nvim"
+    use "svermeulen/vim-yoink"
     use "tversteeg/registers.nvim"
+    use "rcarriga/nvim-notify"
+    use "voldikss/fzf-floaterm"
+    use "voldikss/vim-floaterm"
+    use "romgrk/fzy-lua-native"
+    use "liuchengxu/vista.vim"
+    use { "kyazdani42/nvim-tree.lua", requires = "kyazdani42/nvim-web-devicons" }
     use {
       "gelguy/wilder.nvim",
       rocks = { "luarocks-fetch-gitrec", "pcre2" },
-      requires = { "romgrk/fzy-lua-native", "kyazdani42/nvim-web-devicons", "nixprime/cpsm" },
+      requires = { "romgrk/fzy-lua-native", "kyazdani42/nvim-web-devicons" }, -- , "nixprime/cpsm" },
     }
-
-    -- use { "voldikss/LeaderF-floaterm", requires = "Yggdroot/LeaderF" }
-    -- use 'windwp/vim-floaterm-repl'
-    -- use "mtth/scratch.vim"
-    -- use 'windwp/nvim-spectre'
-    --   use 'nacro90/numb.nvim'
-    -- use 'dyng/ctrlsf.vim'
-    -- use 'dstein64/nvim-scrollview'
-    -- use 'chaoren/vim-wordmotion'
-    -- ====================================
+    -- use "preservim/vim-pencil"
 
     -- ====================================
     -- Themes
@@ -350,30 +317,24 @@ return packer.startup({
     },
   },
 })
-
 -- ====================================
--- Motion
--- vim-wordmotion, vim-sneak, 'terryma/vim-expand-region'
--- Git
--- use {
---   {'tpope/vim-fugitive', cmd = {'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull'}}, {
---     'lewis6991/gitsigns.nvim',
---     requires = {'nvim-lua/plenary.nvim'},
---     config = [[require('config.gitsigns')]],
---     event = 'BufEnter'
---   },
--- }
--- "tsuyoshicho/vim-efm-langserver-settings", -- auto config efm lsp
--- "gfanto/fzf-lsp.nvim"
--- -- Terminal
---   use 'voldikss/vim-floaterm'
--- Path navigation
---    use 'tools-life/taskwiki'
+-- vim-sneak,
+-- use 'terryma/vim-expand-region'
+-- use 'windwp/vim-floaterm-repl'
+-- use "mtth/scratch.vim"
+-- use 'windwp/nvim-spectre'
+-- use 'nacro90/numb.nvim'
+-- use 'dyng/ctrlsf.vim'
+-- use 'dstein64/nvim-scrollview'
+-- use "tsuyoshicho/vim-efm-langserver-settings", -- auto config efm lsp
+-- https://github.com/Yohannfra/Nvim-Switch-Buffer
+-- use "gfanto/fzf-lsp.nvim"
+-- use 'tools-life/taskwiki'
+-- use "xarthurx/vim-taskwarrior"
 -- use 'justinmk/vim-dirvish'
--- Plugin development
---  Plug "rafcamlet/nvim_luapad"
--- "machakann/vim_sandwich",
---   "windwp/nvim_autopairs",
---   {"turbio/bracey.vim", run = "npm install_server"},
---   {"iamcco/markdown_preview.nvim", run = "cd app && yarn install"}
--- "~/repos/friendly_snippets"
+-- use "rafcamlet/nvim_luapad"
+-- use "machakann/vim_sandwich",
+-- use "windwp/nvim_autopairs",
+-- use { "voldikss/LeaderF-floaterm", requires = "Yggdroot/LeaderF" }
+-- use { "turbio/bracey.vim", run = "npm install_server" },
+-- use "~/repos/friendly_snippets"

@@ -1,47 +1,38 @@
 local map = require("utils.core").map
 
 map("n", "<leader>tS", ":luafile %<CR>", { silent = false })
-map("n", "<BS>", "<C-^>")
 map("n", "<leader>nf", [[:e <C-R>=expand("%:p:h") . "/" <CR>]], { silent = false })
 map("n", "<leader>ns", [[:vsp <C-R>=expand("%:p:h") . "/" <CR>]], { silent = false })
 map("n", "<leader>nt", [[:tabedit <C-R>=expand("%:p:h") . "/" <CR>]], { silent = false })
 
 -- map("n", ",gdb", "<Plug>(EasyAlign)", {noremap = false, silent = true})
--- map("n", "<C-n>", ":NvimTreeToggle<CR>")
 -- vim.api.nvim_set_keymap("n", "<Leader>d", ":Sayonara<CR>", {noremap = true, silent = true})
-
--- " toggle fold under cursor
--- nnoremap <silent> zz zA
--- nnoremap <silent> <Leader>z zA
--- " close all folds
--- nnoremap <silent> zZ zM
--- " open all folds
--- nnoremap <silent> ZZ zR
 
 -- " map current directory
 -- nnoremap <silent> <Leader>cd :cd %:h<CR>
 -- nnoremap <silent> <Leader>cdh :cd ~<CR>
 -- nnoremap <silent> <Leader>cdr :cd /<CR>
--- new files
--- nnoremap q; q:
 
 local buffer_map = {
   -- ["q"] = {"<cmd>update | bdelete<CR>", "Save and safely remove buffer"},
   -- [":"] = { ":<C-f>", "auto open task window" },
   -- ["<Leader>s"] = { "<cmd>call scratch#insert(0)<cr>", "scratch clear"},
   -- ["<Leader>S"] = { "<cmd>call scratch#insert(1)<cr>", "scratch reuse"},
+  ["q;"] = { "q:", "open command window" },
   ["Q"] = { "<nop>" },
   ["_"] = { "<cmd>noh<cr> | :nohlsearch<cr>", "remove highlight" },
+  ["D"] = { "d$", "delete to line end" },
+  ["H"] = { "<cmd>BufferPrev<CR>", "Buffer left" },
+  ["L"] = { "<cmd>BufferNext<CR>", "Buffer right" },
+  ["p"] = { "p`]", "Jump to end of pasted text" },
+  ["ZZ"] = { "Write if modified and exit" },
+  ["<bs>"] = { "<C-^>", "back to prev file" },
+  ["^[^M"] = { "] ", "insert line" },
   ["<c-q>"] = { "<cmd>silent! tabclose | qa<cr>", "Quick exit without saving" },
   ["<c-x>"] = { "<cmd>silent! tabclose | xa!<cr>", "Quick exit with saving" },
   ["<C-s>"] = { "<cmd>w<cr><esc>", "Quick save" },
   ["<tab>"] = { "<cmd>bn<CR>", "Cycle buffers" },
   ["<s-tab>"] = { "<cmd>bp<CR>", "Cycle buffers" },
-  ["D"] = { "d$", "delete to line end" },
-  ["H"] = { "<cmd>BufferPrev<CR>", "Buffer left" },
-  ["L"] = { "<cmd>BufferNext<CR>", "Buffer right" },
-  ["ZZ"] = "Write if modified and exit",
-  ["p"] = { "p`]", "Jump to end of pasted text" },
   ["<leader>"] = {
     ["<cr>"] = { "<cmd>noh<cr>", "remove highlight" },
     ["q"] = { "<cmd>silent! tabclose | Sayonara<cr>", "Close window saving" },

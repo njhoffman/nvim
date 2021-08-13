@@ -28,7 +28,7 @@ require("compe").setup {
     spell = config.spell,
     emoji = config.emoji,
     tabnine = false,
-    tags = false,
+    tags = true,
     snippets_nvim = true,
     treesitter = true,
   },

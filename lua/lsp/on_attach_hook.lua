@@ -92,9 +92,9 @@ local function documentSignature()
   })
 end
 
-local function log_capabilities(client)
+local function reduce_capabilities(client)
+  local capabilities = client.resolved_capabilities
   -- @param filter = table {"hover"}
-  local capabilities = client.resolved_capabilities;
   local reduce = function(filter)
     local result = {}
     for k, _ in pairs(capabilities) do
@@ -102,18 +102,83 @@ local function log_capabilities(client)
     end
     return f.flatten(result)
   end
+  return reduce({})
+end
 
-  -- local log = utils.log_to_file("/tmp/neovim-lsp-capabilities.log")
-  require("logger").debug(client.name, vim.inspect(reduce(capabilities)))
+local function count_capabilities(client)
+  local capabilities = client.resolved_capabilities
+  local count = 0
+  for k, _ in pairs(capabilities) do if _ == true then count = count + 1 end end
+  -- print(vim.inspect(count))
+  return count
+end
+
+local function log_capabilities(client, full_desc)
+  local capabilities = client.resolved_capabilities
+
+  local capability_map = {
+    call_hierarchy = "call",
+    code_lens = "clens",
+    code_lens_resolve = "clens-res",
+    completion = "comp",
+    declaration = "dec",
+    document_formatting = "doc-form",
+    document_highlight = "doc-hl",
+    document_range_formatting = "doc-range",
+    execute_command = "exec",
+    find_references = "find",
+    goto_definition = "goto",
+    hover = "hover",
+    implementation = "impl",
+    rename = "ren",
+    signature_help = "sig",
+    signature_help_trigger_characters = "sig-char",
+    text_document_did_change = "td-change",
+    text_document_open_close = "td-open",
+    text_document_save = "td-save",
+    text_document_save_include_text = "td-savetxt",
+    text_document_will_save = "td-willsave",
+    text_document_will_save_wait_until = "td-willsaveuntil",
+    type_definition = "type",
+    workspace_symbol = "ws-symbol",
+    workspace_folder_changeNotifications = "ws-change",
+    workspace_folder_supported = "ws-folder",
+  }
+
+  local desc = ""
+  local count = 0
+  local append_desc = function(key)
+    if full_desc then
+      desc = desc .. key .. " "
+    else
+      if capabilities[key] then
+        desc = desc .. capability_map[key] .. " "
+      else
+        desc = desc .. key .. " "
+      end
+    end
+    count = count + 1
+  end
+
+  for k, _ in pairs(capability_map) do
+    if k == "signature_help_trigger_characters" then
+      if capabilities[k] ~= {} then append_desc(k) end
+    elseif k == "workspace_folder_changeNotifications" then
+      if capabilities["workspace_folder_properties"]["changeNotifications"] == true then append_desc("ws-change") end
+    elseif k == "workspace_folder_supported" then
+      if capabilities["workspace_folder_properties"]["supported"] == true then append_desc("ws-folder") end
+    else
+      if capabilities[k] == true then append_desc(k) end
+    end
+  end
+
+  return desc
 end
 
 local M = {}
 
 function M.common_on_attach(client, bufnr)
   -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-  -- require"logger".debug("client.name: " .. client.name .. "\n" ..
-  --                           vim.inspect(client.resolved_capabilities))
-  -- util.log("client.name: " .. client.name .. "\n" .. vim.inspect(client.resolved_capabilities))
   documentHoverDiagnostic()
   documentSignature()
   documentFormat(client)
@@ -122,6 +187,9 @@ function M.common_on_attach(client, bufnr)
   if config.LSP.highlight_word == nil or config.LSP.highlight_word == true then documentHighlight(client) end
 
   lsp_status.on_attach(client)
+
+  local title_msg = "'" .. client.name .. "' attached to " .. bufnr .. " (" .. count_capabilities(client) .. ")"
+  vim.notify(log_capabilities(client), "info", { title = title_msg })
 
 end
 

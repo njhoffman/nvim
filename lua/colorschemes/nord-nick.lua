@@ -40,15 +40,17 @@ local clr_over = {
   green_faded = "#128A67",
   blue_faded = "#5171A1",
 }
+
 local spec = lush.extends({ nord }).with(function()
   return {
+    Visual { fg = "none", bg = clr_over.selection },
     Underline = { gui = "none" },
     Underlined = { gui = "none" },
     -- ui components
-    NormalFloat { fg = "#8f93a2", bg = "#090b20" }, -- normal text and background color for floating windows
-    FloatBorder { fg = "#8f93a2", bg = "#090b20" }, --
-    Pmenu { fg = "#718cc4", bg = "#060614" },
-    PmenuSel { fg = "#84ffff", bg = "#1a1c2b" },
+    NormalFloat { fg = "#8f93a2", bg = "#0c101f" }, -- normal text and background color for floating windows
+    FloatBorder { fg = "#4f73a2", bg = "#0f1218" }, --
+    Pmenu { fg = "#618cc4", bg = "#090918" },
+    PmenuSel { fg = "#74efff", bg = "#1a1f2f" },
     PmenuSbar { fg = "#717cb4", bg = "#202331" },
     PmenuThumb { fg = "#8f93a2", bg = "#84ffff" },
     SignColumn { bg = "none" },
@@ -62,15 +64,15 @@ local spec = lush.extends({ nord }).with(function()
     -- String { fg = "#22bb99" },
     Function { fg = "#6e99c6" },
     String { fg = "#00a0a9" },
-    Comment { fg = "#4f667f", gui = "italic" },
+    Comment { fg = "#445674", gui = "italic" },
     Constant { fg = "#5679b3" },
     Identifier { fg = "#6e99c6" },
-    Keyword { fg = "#6177b8" },
+    Keyword { fg = "#6177b2" },
+    TSKeyword { fg = "#6177a8" },
     -- Type { fg = "#818cc4" },
     Type { fg = "#718cb4" },
     MatchParen { fg = "#60a0a0", bg = "000022" },
     MatchParenCursor { fg = "#a0c0b0" },
-    Visual { fg = "none", bg = clr_over.selection },
     VisualNOS { fg = "none", bg = clr_over.selection },
     -- Search { fg = "#7dafff" },
     Search { bg = "#0d314c" },
@@ -80,11 +82,13 @@ local spec = lush.extends({ nord }).with(function()
     -- IncSearch { fg = clrs.nord6, bg = clrs.nord10, gui = spec.underline },
     TSTag {fg = clr_over.orange },
     TSTagDelimiter { fg = clr_over.orange },
+    TSConditional {fg = '#897785' },
     -- TSTagDelimiter { fg = "#7f90aa" },
     TSPunctSpecial { fg = '#888698' }, -- For special punctutation that does not fall in the catagories before.
     TSPunctBracket { fg = '#888698' }, -- For special punctutation that does not fall in the catagories before.
     TSLabel { fg = '#6688ba' }, -- For labels: `label:` in C and `:label:` in Lua.
     TSURI { fg = "#8eb9f6", gui = "none" },
+    TSBoolean { fg = "#7d6f9c" },
     yamlTSField { fg = "#717cb4" },
     yamlBlockMappingKey { yamlTSField },
     --
@@ -148,9 +152,8 @@ local spec = lush.extends({ nord }).with(function()
     GitSignsDeleteLnFaded { fg = clr_over.red_faded },
     -- html
     -- markdownH {},
-    markdownTSTitle {},
-    SpecialKey {},
-    Special { fg = "#487a98"},
+    -- markdownTSTitle {},
+    Special { fg = "#487a98" },
     htmlH1 { fg = "#45a5f8" },
     htmlH2 { fg = "#45a5e8" },
     htmlH3 { fg = "#45a5d8" },
@@ -168,19 +171,19 @@ local spec = lush.extends({ nord }).with(function()
     mkdHeading { fg = "#557588" },
     markdownLinkText { fg = "#00ccff" },
     pandocStrikeout { gui = "strikethrough" },
-    pandocEmphasis { gui = "italic", fg="#ddddee", },
+    pandocEmphasis { gui = "italic", fg="#bbbbcc", },
     pandocStrong { gui = "bold", fg="#ddddee", },
-    pandocReferenceLabel { gui = "none", fg = "#4488cc" },
+    -- pandocReferenceLabel { gui = "none", fg = clr_over.orange },
     pandocListItemBullet {fg = "#66a8dc"  },
     pandocListItemBulletId {fg = "#66a8dc"  },
+    pandocOperator { bg = "none", fg = "#aa6600" },
     -- pandocListItem {},
-    -- pandocUListItem { gui = "none", bg = "none" },
+    -- pandocUListItem { gui = "none", bg = "none", fg = "#aa6600" },
     -- pandocReferenceDefinition { fg = "#7788ff", bg = "none" },
     -- pandocAtxHeader { fg = "#4575b8" },
     pandocPipeTable { fg = '#4789aa' },
     pandocPipeTableDelims { fg = "#555577" },
     pandocNoFormatted { bg = "none" },
-    pandocOperator { bg = "none", fg = "#aa6600" },
     pandocReferenceDefinition { fg = "#4488cc", bg = "none" },
     pandocAtxHeader { fg = "#8595f8" },
     pandocAtxHeaderMark { fg = "#4575f8" },
@@ -226,7 +229,25 @@ local spec = lush.extends({ nord }).with(function()
     -- DapVariableTreeOperator { Operator },
     -- DapVariableTreeString { String },
     -- DapVariableTreeNumber { Number },
+    --
+    PackageInfoOutdatedVersion { fg = "#d19a66"},
+    PackageInfoUpToDateVersion { fg = "#3C4048"},
+    -- Notify
+    NotifyERROR { fg="#79491D"},
+    NotifyWARN { fg="#79491D"},
+    NotifyINFO { fg="#4F6752"},
+    NotifyDEBUG { fg="#8B8B8B"},
+    NotifyTRACE { fg="#4F3552"},
+    NotifyERRORTitle { fg="#F70067"},
+    NotifyWARNTitle { fg="#F79000"},
+    NotifyINFOTitle { fg="#A9FF68"},
+    NotifyDEBUGTitle { fg="#8B8B8B"},
+    NotifyTRACETitle { fg="#D484FF"},
     -- -- WhichKey
+    LSPDiagnosticInformation {
+      fg = "#f78077",
+      gui = "italic",
+    },
     WhichKey { fg = "#f78077", style = "bold" },
     WhichKeyGroup { fg = "#619cf4" },
     -- WhichKeyDesc  { fg = clrs.nord7, style = "italic" },

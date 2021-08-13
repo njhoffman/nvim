@@ -1,8 +1,6 @@
--- ["<F5>"] = {"<cmd>MundoToggle<CR>"},
--- gitsigns
---   buffer = true?
 local integrations_map = {
-  ["<CR>"] = { "enter zettel link" },
+  ["\"\""] = { "<cmd>Registers<cr>", "view registers" },
+  ["<cr>"] = { "<plug>EditZettelUnderCursor", "enter zettel link" },
   ["<F2>"] = { "<cmd>WhichKey<cr>", "toggle whichkey" },
   ["<F3>"] = { "<cmd>NvimTreeToggle<cr>", "toggle explorer" },
   ["<F4>"] = { "<cmd>MundoToggle<cr>", "toggle undo tree" },
@@ -25,18 +23,42 @@ local integrations_map = {
     ["c"] = { "<cmd>PackerClean<cr>", "clean" },
     ["S"] = { "<cmd>PackerStatus<cr>", "status" },
   },
-  ["z"] = {
+  ["gz"] = {
     name = "+zettelkasten",
-    ["n"] = { "create new note" },
-    ["i"] = { "open zettel home" },
-    ["z"] = { "search, open/create note" },
-    ["Z"] = { "search, insert id" },
-    ["b"] = { "find backlinks" },
-    ["B"] = { "find backlinks, insert" },
-    ["t"] = { "find tags, insert" },
-    ["s"] = { "start server" },
-    ["]"] = { "next zettel link" },
-    ["["] = { "prev zettel link" },
+    ["n"] = { "<plug>EditZettelNew", "edit new zettel" },
+    ["u"] = { "<plug>EditZettelLast", "edit last zetel" },
+    ["c"] = { "<plug>NewZettel", "new zettel" },
+    ["N"] = { "<plug>EditZettelNewFromCword", "new zettel from cursor" },
+    ["r"] = { "<plug>NeuronRefreshCache", "neuron refresh cache" },
+    ["U"] = { ":<C-U>call neuron#move_history(-1)<cr>", "neuron prev history" },
+    ["P"] = { ":<C-U>call neuron#move_history-1)<cr>", "neuron next history" },
+    ["z"] = { "<plug>EditZettelSelect", "edit zettel select" },
+    ["Z"] = { "<plug>EditZettelBacklink", "edit zettel backlink" },
+    ["o"] = { "<plug>EditZettelUnderCursor", "edit zettel from cursor" },
+    ["s"] = { "<plug>EditZettelSearchContent", "edit zettel from search" },
+    ["S"] = { "<plug>EditZettelSearchContentUnderCursor", "edit zettel search cursor" },
+    ["l"] = { "<plug>InsertZettelLast", "inesrt zettel last" },
+    ["i"] = { "<cmd>lua require'neuron'.goto_index()<cr>", "goto zettel index" },
+    ["L"] = { ":<C-U>call neuron#insert_zettel_last(1)<cr>", "neuron insert zettel last" },
+    ["I"] = { ":<C-U>call neuron#insert_zettel_select(1)<cr>", "neuron insert zettel select" },
+    ["v"] = { "<plug>ToggleBacklinks<cr>", "toggle backlinks" },
+    ["t"] = { "<plug>TagsAddNew", "add new tag" },
+    ["T"] = { "<plug>TagsAddSelect", "add existing tag" },
+    ["ts"] = { "<plug>TagsZettelSearch", "search zettel tags" },
+    -- vm gzN <esc><Plug>EditZettelNewFromVisual
+    -- ino <expr> <c-x><c-u> neuron#insert_zettel_complete(0)
+    -- ino <expr> <c-x><c-y> neuron#insert_zettel_complete(1)
+    -- ["vm"] = { " gzN <esc><Plug>EditZettelNewFromVisual" }
+    --   ["n"] = { "create new note" },
+    --   ["i"] = { "open zettel home" },
+    --   ["z"] = { "search, open/create note" },
+    --   ["Z"] = { "search, insert id" },
+    --   ["b"] = { "find backlinks" },
+    --   ["B"] = { "find backlinks, insert" },
+    --   ["t"] = { "find tags, insert" },
+    --   ["s"] = { "start server" },
+    --   ["]"] = { "next zettel link" },
+    --   ["["] = { "prev zettel link" },
   },
 
   ["<leader>g"] = {

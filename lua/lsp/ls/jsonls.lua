@@ -11,7 +11,6 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local on_attach = function(client, server)
   client.resolved_capabilities.document_formatting = true
   on_attach_hook.common_on_attach(client, server)
-  print("'" .. client.name .. "' server attached")
 end
 
 lspconfig.jsonls.setup {

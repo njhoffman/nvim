@@ -17,12 +17,8 @@ map("t", "jj", [[<C-\><C-n>]])
 -- prevent "write partial file" nonsense
 vim.cmd([[cabbrev <expr> w getcmdtype()==':' && getcmdline() == "'<,'>w" ? '<c-u>w' : 'w']])
 
--- " Return to last edit position when opening files (You want this!)
--- au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
 -- vim.cmd([[xmap <leader>s <plug>(scratch-selection-reuse)]])
 -- vim.cmd([[xmap <leader>S <plug>(scratch-selection-clear)]])
--- map("n", "<F5>", ":lua require('utils.core')._lazygit_toggle()<CR>")
 -- :map <C-X> <ESC>:x<CR>
 -- :imap <C-X> <ESC>:x<CR>
 
@@ -32,3 +28,8 @@ vim.cmd([[cabbrev <expr> w getcmdtype()==':' && getcmdline() == "'<,'>w" ? '<c-u
 -- vim.api.nvim_del_keymap("i", "<C-S>")
 -- surround insert unmappings
 -- vim.cmd([[iunmap <C-S>]])
+
+local Mapper = require("nvim-mapper")
+Mapper.map_virtual("n", "<leader>t", "", {}, "Navigation", "text_transform", "Transform text")
+Mapper.map("n", "<leader>mp", ":MarkdownPreview<CR>", { silent = true, noremap = true }, "Markdown", "md_preview",
+           "display markdown preview")

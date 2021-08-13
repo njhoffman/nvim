@@ -66,7 +66,6 @@ local on_attach = function(client, bufnr)
   --           u.buf_map("n", "qq", ":TSLspFixCurrent<CR>", nil, bufnr)
   --           u.buf_map("i", ".", ".<C-x><C-o>", nil, bufnr)
   on_attach_hook.common_on_attach(client, bufnr)
-  -- print("'" .. client.name .. "' server attached")
 end
 
 lspconfig.tsserver.setup {

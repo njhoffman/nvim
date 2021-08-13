@@ -9,10 +9,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities = vim.tbl_extend("keep", capabilities or {}, lsp_status.capabilities)
 -- client.resolved_capabilities.document_formatting = true
 
-local on_attach = function(client, bufnr)
-  on_attach_hook.common_on_attach(client, bufnr)
-  -- print("'" .. client.name .. "' server attached")
-end
+local on_attach = function(client, bufnr) on_attach_hook.common_on_attach(client, bufnr) end
 
 local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "?.lua")

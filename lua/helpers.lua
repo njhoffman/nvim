@@ -81,6 +81,7 @@ function H.is_plugin_installed(check_plugin_name)
   return false
 end
 
+function H.sleep(n) os.execute("sleep " .. tonumber(n)) end
 function _G.dump(...)
   local objects = tbl_map(vim.inspect, { ... })
   print(unpack(objects))

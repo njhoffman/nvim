@@ -52,9 +52,3 @@ vim.g.indent_blankline_use_treesitter = true
 vim.g.loaded_ruby_provider = false
 
 require "main.autocommands"
-
-if packer_plugins ~= nil then
-  local count = 0
-  for _ in pairs(packer_plugins) do count = count + 1 end
-  -- logger.debug("Loaded plugins: " .. count)
-end

@@ -12,7 +12,6 @@ local on_attach = function(client, server)
   client.resolved_capabilities.document_formatting = true
   -- let efm server handles linting and formatting stuff
   on_attach_hook.common_on_attach(client, server)
-  print("'" .. client.name .. "' server attached")
 end
 
 lspconfig.cssls.setup {

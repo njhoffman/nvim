@@ -32,7 +32,7 @@ local eslint_prettier = { formatCommand = node_utils.get_formatter_command(), fo
 local prettier = {
   -- parser <flow|babel|babel-flow|babel-ts|typescript|espree|meriyah|css|less|scss|
   -- json|json5|json-stringify|graphql|markdown|mdx|vue|yaml|glimmer|html|angular|lwc|ruby|rbs|haml>
-  formatCommand = "prettier --stdin-filepath ${INPUT} --single-quote --arrow-parens 'avoid' --trailing-comma all",
+  formatCommand = "prettier --stdin-filepath ${INPUT} --print-width 120 --single-quote --arrow-parens 'avoid' --trailing-comma all",
   formatStdin = true,
 }
 
@@ -42,7 +42,7 @@ local languages = {
   graphql = { prettier },
   -- html = { prettier },
   -- json = { prettier },
-  markdown = { prettier },
+  -- markdown = { prettier },
   scss = { prettier },
   yaml = { prettier },
   -- python = {black, isort, flake8, mypy},
@@ -95,6 +95,7 @@ local filetypes = {
   "lua",
   "make",
   -- "markdown",
+  -- "markdown.pandoc",
   "proto",
   "python",
   "ruby",

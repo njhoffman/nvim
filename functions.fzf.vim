@@ -36,9 +36,9 @@ function! GFilesFallback()
   let prefix = get(g:, 'fzf_command_prefix', '')
   if v:shell_error == 0
     " exec "normal :" . prefix . "GFiles\<CR>"
-    exec "normal :FzfPreviewFromResources project old\<CR>"
+    exec "normal :FzfPreviewFromResources project\<CR>"
   else
-    exec "normal :FzfPreviewFromResources directory old\<CR>"
+    exec "normal :FzfPreviewFromResources directory\<CR>"
     " exec "normal :" . prefix . "Files\<CR>"
   endif
   return 0
@@ -169,7 +169,7 @@ command! Jumps FzfPreviewJumpsRpc()
 " Dots
 
 let dotbare_cmd = 'dotbare ls-files --full-name --directory "${DOTBARE_TREE}" | awk -v home="${DOTBARE_TREE}/" "{print home \$0}"'
-command! Dots call fzf#run(fzf#wrap({  'source': dotbare_cmd, 'sink': 'e', 'options': [ '--multi', '--preview', 'cat {}' ] }))
+command! Dots call fzf#run(fzf#wrap({  'source': dotbare_cmd, 'sink': 'e', 'options': [ '--multi'], 'window': _fzf_get_window_props() }))
 
 """"""""""""
 " Yanks
@@ -291,3 +291,31 @@ function! TmapHandler(tmap)
 endfunction
 
 command! TMaps call fzf#run(fzf#wrap({ 'source': Gettmaps(), 'sink': function('tmapHandler'),  'window': _fzf_get_window_props()}))
+
+
+""""""""""""
+" :Fasd
+" function! s:fasd_update() abort
+function! Fasd_update() abort
+  if empty(&buftype) || &filetype ==# 'dirvish'
+    call jobstart(['fasd', '-A', expand('%:p')])
+  endif
+endfunction
+
+""""""""""""
+"  :Fzy
+function! FzyCommand(choice_command, vim_command)
+  try
+    let output = system(a:choice_command . " | fzy ")
+  catch /Vim:Interrupt/
+    " Swallow errors from ^C, allow redraw! below
+  endtry
+  redraw!
+  if v:shell_error == 0 && !empty(output)
+    exec a:vim_command . ' ' . output
+  endif
+endfunction
+
+nnoremap <leader>e :call FzyCommand("find . -type f", ":e")<cr>
+nnoremap <leader>v :call FzyCommand("find . -type f", ":vs")<cr>
+nnoremap <leader>s :call FzyCommand("find . -type f", ":sp")<cr>

@@ -1,9 +1,3 @@
--- text
--- map("n", [[<leader>tu]], [[guw]])
--- map("n", [[<leader>tU]], [[gUw]])
--- map("n", "<leader>t,", "A,<ESC>")
--- map("n", "<leader>t;", "A;<ESC>")
--- map("n", "<leader>t:", "A:<ESC>")
 -- yoinks
 -- Change current yank and see a preview of it in the status bar
 -- nmap [y <plug>(YoinkRotateBack)
@@ -36,7 +30,7 @@
 -- ISwap, ISwapWith: ists, arrays, function arguments, function parameters
 --
 local formatters_map = {
-  ["<leader>s"] = {
+  ["s"] = {
     name = "+surround",
     ["a"] = "add surrounding",
     ["d"] = "delete surrounding",
@@ -49,11 +43,11 @@ local formatters_map = {
     ["t"] = { "<cmd>ToggleCB<cr>", "toggle checkbox" },
     ["m"] = "toggle table mode",
     ["r"] = "toggle table realign",
-    [","] = "add comma to end of line",
-    [";"] = "add semicolon to end of line",
-    [":"] = "add colon to end of line",
-    ["u"] = "lowercase",
-    ["U"] = "uppercase",
+    [","] = { "A,<esc>", "add comma to end of line" },
+    [";"] = { "A;<esc>", "add semicolon to end of line" },
+    [":"] = { "A:<esc>", "add colon to end of line" },
+    ["u"] = { "guw", "lowercase word" },
+    ["U"] = { "gUw", "uppercase word" },
     ["S"] = "source file",
   },
 }

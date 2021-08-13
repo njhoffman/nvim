@@ -1,0 +1,179 @@
+local H = require "helpers"
+
+if H.is_module_available("feline") then
+  local components = require("feline.presets")["default"].components
+  local properties = require("feline.presets")["default"].properties
+
+  local function LspStatus()
+    if #vim.lsp.buf_get_clients() > 0 then return require("lsp-status").status() end
+    return ""
+    -- return require("lsp-status").status_progress()
+  end
+
+  local function LspLightbulb()
+    if #vim.lsp.buf_get_clients() > 0 then return require"nvim-lightbulb".get_status_text() end
+    return ""
+  end
+
+  table.insert(components.right.active, 1, { provider = LspStatus, hl = { fg = "cyan", bg = "bg", style = "bold" } })
+  -- table.insert(components.right.active, { provider = LspStatus, hl = { fg = "cyan", bg = "bg", style = "bold" } })
+
+  -- table.insert(components.right.active, 1, {
+  --   provider = LspLightbulb, -- hl = { fg = "cyan", bg = "bg", style = "bold" },
+  -- })
+
+  table.insert(properties.force_inactive.filetypes, "dapui_scopes")
+  table.insert(properties.force_inactive.filetypes, "dapui_watches")
+  table.insert(properties.force_inactive.filetypes, "dapui_breakpoints")
+  table.insert(properties.force_inactive.filetypes, "dapui_stacks")
+  table.insert(properties.force_inactive.filetypes, "dap-repl")
+  -- properties = {
+  --   force_inactive = {
+  --     bufnames = {},
+  --     buftypes = { "terminal" },
+  --     filetypes = {
+  --       "NvimTree",
+  --       "dbui",
+  --       "packer",
+  --       "startify",
+  --       "fugitive",
+  --       "fugitiveblame",
+  --       "dashboard",
+  --     },
+  --   },
+  -- }
+
+  local separators = {
+    vertical_bar = "┃",
+    vertical_bar_thin = "│",
+    left = "",
+    right = "",
+    block = "█",
+    left_filled = "  ",
+    right_filled = "  ",
+    slant_left = " ",
+    slant_left_thin = " ",
+    slant_right = " ",
+    slant_right_thin = " ",
+    slant_left_2 = " ",
+    slant_left_2_thin = "  ",
+    slant_right_2 = " ",
+    slant_right_2_thin = " ",
+    left_rounded = "  ",
+    left_rounded_thin = "  ",
+    right_rounded = "   ",
+    right_rounded_thin = "  ",
+    circle = "●",
+  }
+
+  components.left.active[3] = {
+    provider = "file_info",
+    hl = { fg = "white", bg = "dodgerblue3", style = "bold" },
+    left_sep = { "slant_left", { hl = { bg = "NONE", fg = "dodgerblue3" }, " " } },
+    right_sep = { "slant_right_2", " " },
+  }
+
+  -- local project_path = nil
+  -- local last_buffer = nil
+  -- local project_name = nil
+
+  -- local function get_project_path()
+  --   if vim.fn.bufnr() ~= last_buffer then
+  --     project_path = nil
+  --     project_name = nil
+  --     last_buffer = nil
+  --   end
+  --   if project_name == nil or project_name == "" then
+  --     project_path = vim.fn.FindRootDirectory()
+  --     if project_path == nil or project_path == "" then
+  --       project_name = string.gsub(vim.fn.getcwd(), os.getenv("HOME"), "~")
+  --     else
+  --       project_path, project_name = string.match(project_path, "(.*)%/(.*)")
+  --     end
+  --     last_buffer = vim.fn.bufnr()
+  --   end
+  -- end
+
+  -- components.left.active[3] = {
+  --   provider = function()
+  --     get_project_path()
+  --     return project_name or ""
+  --   end,
+  --   hl = function()
+  --     if project_path == nil or project_path == "" then
+  --       return { fg = "white", bg = "#333333" }
+  --     end
+  --     return { fg = "white", bg = "#440088" }
+  --   end,
+  --   -- left_sep = {str = "slant_left", hl = {fg = "#224488", bg = "NONE"}},
+  --   left_sep = function()
+
+  --     local val = {
+  --       str = "slant_left",
+  --       fg = "white",
+  --       bg = "#224488",
+  --       style = "bold",
+  --     }
+  --     if project_path == nil then val.bg = "#333333" end
+  --     return val
+  --   end,
+  --   right_sep = { "slant_right_2" },
+  -- }
+  -- local active_clients = nil
+  -- local last_active_client_buffer = vim.fn.bufnr()
+
+  -- local function lsp_active_status()
+  --   -- lsp_status:                ⏻ ⏼ ⭘      
+  --   if vim.fn.bufnr() ~= last_active_client_buffer then
+  --     active_clients = vim.lsp.buf_get_clients()
+  --     last_active_client_buffer = vim.fn.bufnr()
+  --   end
+
+  --   -- if active_clients == nil or #active_clients == 0 then
+  --   --   active_clients = vim.lsp.buf_get_clients()
+  --   -- end
+
+  --   -- if #active_clients == 0 then return " " end
+  --   -- if #active_clients > 1 then return #active_clients end
+  --   -- if active_clients[1].name == "efm" then return "" end
+  --   return ""
+  -- end
+
+  -- components.right.active[5] = {
+  --   provider = function() return vim.bo.filetype:lower() end,
+  --   hl = function()
+  --     if active_clients == nil or #active_clients == 0 then
+  --       return { fg = "fg" }
+  --     else
+  --       if active_clients[1].name == "efm" then
+  --         return { fg = "#6688cc", style = "italic" }
+  --       end
+  --       return { fg = "#00aacc", style = "italic" }
+  --     end
+  --   end,
+  -- }
+
+  -- components.right.active[6] = {
+  --   provider = lsp_active_status,
+  --   hl = function()
+  --     if active_clients == nil or #active_clients == 0 then
+  --       return { fg = "none" }
+  --     end
+  --     if #active_clients > 1 then return { fg = "#ff0000", style = "bold" } end
+  --     if active_clients[1].name == "efm" then
+  --       return { fg = "#6688ff", style = "none" }
+  --     end
+  --     return { fg = "#00ccff", style = "none" }
+  --   end,
+
+  --   left_sep = " ",
+  --   right_sep = " ",
+  -- }
+
+  require("feline").setup({
+    default_fg = "#909090",
+    default_bg = "#0F1216",
+    components = components,
+    separators = separators,
+  })
+end

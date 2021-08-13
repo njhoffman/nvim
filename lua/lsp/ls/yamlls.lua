@@ -13,7 +13,6 @@ local on_attach = function(client, bufnr)
   client.resolved_capabilities.document_formatting = true
   -- require"logger".debug(client.resolved_capabilities)
   on_attach_hook.common_on_attach(client, bufnr)
-  -- print("'" .. client.name .. "' server attached " .. bufnr)
 end
 
 lspconfig.yamlls.setup {

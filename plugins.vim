@@ -51,8 +51,8 @@ call plug#begin(stdpath('data') . '/../nvimpager/plugged')
 
   let g:vim_markdown_conceal_code_blocks = 1
   let g:vim_markdown_fenced_languages = [
-        \ 'coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript',
-        \ 'python', 'css', 'sh', 'bash=sh', 'html', 'sql', 'zsh', 'ruby', 'sass', 'xml', 'viml=vim']
+        \ 'coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ts=typescript',
+        \ 'python', 'rust', 'sh', 'bash=sh', 'html', 'sql', 'zsh', 'ruby', 'sass', 'xml', 'viml=vim']
 
   let g:vim_markdown_no_extensions_in_markdown = 1
 

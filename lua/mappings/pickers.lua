@@ -1,52 +1,26 @@
---  telescope mappings
---  nnoremap <leader><space> :Telescope git_files<CR>
---  nnoremap <leader>ff :Telescope live_grep<CR>
---  nnoremap <leader>FF :Telescope find_files<CR>
---  nnoremap <leader>fg :Telescope git_branches<CR>
-vim.api.nvim_command(
-    "command! -nargs=0 SnapVimGrep lua require(\"plugins.configs.lua.snap\").snapVimGrep()")
-vim.api.nvim_command(
-    "command! -nargs=0 SnapVimGrepFzf lua require(\"plugins.configs.lua.snap\").snapVimGrepFzf()")
-vim.api.nvim_command(
-    "command! -nargs=0 SnapRipGrepSystem lua require(\"plugins.configs.lua.snap\").snapRipGrepSystem()")
-vim.api.nvim_command(
-    "command! -nargs=0 SnapFzyRipGrep lua require(\"plugins.configs.lua.snap\").snapFzyRipGrep()")
-vim.api.nvim_command(
-    "command! -nargs=0 SnapFzfRipGrep lua require(\"plugins.configs.lua.snap\").snapFzfRipGrep()")
-vim.api.nvim_command(
-    "command! -nargs=0 SnapFindOldFiles lua require(\"plugins.configs.lua.snap\").snapFindOldFiles()")
-vim.api.nvim_command(
-    "command! -nargs=0 SnapFindBuffers lua require(\"plugins.configs.lua.snap\").snapFindBuffers()")
-vim.api.nvim_command(
-    "command! -nargs=0 SnapFindGitFilesFallback lua require(\"plugins.configs.lua.snap\").snapFindGitFilesFallback()")
-vim.api.nvim_command(
-    "command! -nargs=0 SnapFindHelpTags lua require(\"plugins.configs.lua.snap\").snapFindHelpTags()")
-vim.api.nvim_command(
-    "command! -nargs=0 SnapSearchMainPaths lua require(\"plugins.configs.lua.snap\").snapSearchMainPaths()")
-
 local unused_alternates = {
   ["<A-s>"] = { ":<C-u>:Rg<CR>", "search (ag)" },
-  -- ["<A-s>"] = {":<C-u>:FzfPreviewProjectGrepRpc<CR>", "search (grep)"}
+  ["<A-p>"] = { "<cmd>FzfPreviewDirectoryFilesRpc<cr>", "directory files" },
+  ["<A-s>"] = { ":<C-u>:FzfPreviewProjectGrepRpc<CR>", "search (grep)" },
   ["<A-/>"] = { "<cmd>Helptags<cr>", "helptags" },
+  ["<A-s>"] = { "<cmd>FzfPreviewProjectGrepRpcRecall<cr>", "search (rg)" },
 }
 
 local picker_maps = {
-  ["<C-p>"] = { "<cmd>call GFilesFallback()<cr>", "project files" },
-  ["<A-p>"] = { "<cmd>FzfPreviewFromResources directory<cr>", "directory files" },
-  -- ["<A-p>"] = {"<cmd>FzfPreviewDirectoryFilesRpc<cr>", "directory files"},
+  ["<C-p>"] = { "<cmd>FzfLua files<cr>", "project files" },
+  ["<A-p>"] = { "<cmd>FzfLua lsp_workspace_diagnostics<cr>", "workspace diagnostics" },
   ["<A-o>"] = { "<cmd>FzfPreviewDirectoryFilesRpc ~<cr>", "home files" },
   ["<C-g>"] = { "<cmd>FzfPreviewGitActionsRpc<cr>", "git actions" },
   ["<A-g>"] = { "<cmd>FzfPreviewGitStatus<cr>", "git status" },
-  ["<C-u>"] = { "<cmd>FzfPreviewFromResources old<cr>", "mru files" },
+  ["<C-u>"] = { "<cmd>FzfLua oldfiles<cr>", "mru files" },
   ["<A-u>"] = { "<cmd>FzfPreviewCommandPaletteRpc<cr>", "commands" },
   ["<C-d>"] = { "<cmd>FzfPreviewGitCurrentLogsRpc<cr>", "git file log" },
   ["<A-d>"] = { "<cmd>FzfPreviewGitLogsRpc<cr>", "git log" },
-  ["<C-e>"] = { "<cmd>FzfPreviewAllBuffersRpc<cr>", "buffers" },
+  ["<C-e>"] = { "<cmd>FzfLua buffers<cr>", "buffers" },
   ["<A-e>"] = { "<cmd>Sessions<cr>", "sessions" },
   ["<A-j>"] = { "<cmd>FzfPreviewJumpsRpc<cr>", "jumps" },
-  ["<A-/>"] = { "<cmd>SnapFindHelpTags<cr>", "helptags" },
+  ["<A-/>"] = { "<cmd>Telescope help_tags<cr>", "helptags" },
   ["<A-m>"] = { "<cmd>FzfPreviewLocationListRpc<cr>", "location list" },
-  -- ["<A-s>"] = {"<cmd>FzfPreviewProjectGrepRpcRecall<cr>", "search (rg)"},
   ["<A-s>"] = { "<cmd>Rg<cr>", "search (rg)" },
   ["<leader>f"] = {
     name = "+find",
@@ -55,10 +29,7 @@ local picker_maps = {
     ["f"] = { "<cmd>Telescope find_files<cr>", "file" },
     ["g"] = { "<cmd>Telescope live_grep<cr>", "grep text" },
     ["h"] = { "<cmd>Telescope help_tags<cr>", "vim tags" },
-    ["n"] = {
-      "<cmd>lua require('utils.core').search_nvim()<cr>",
-      "nvim dotfiles",
-    },
+    ["n"] = { "<cmd>lua require('utils.core').search_nvim()<cr>", "nvim dotfiles" },
     ["o"] = { "<cmd>Telescope oldfiles<cr>", "recent files" },
     ["m"] = { "<plug>(fzf-maps-n)", "mappings (normal)" },
     ["mi"] = { "<plug>(fzf-maps-i)", "mappings (insert)" },
