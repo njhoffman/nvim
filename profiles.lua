@@ -10,40 +10,28 @@
     \  \::/       \  \:\        \  \::/       \  \::/      \__\::::/      \__\/      \  \:\
      \__\/         \__\/         \__\/         \__\/           ~~~~                   \__\/
 
---]]
-
-local profiles = {
-  default = {
-    "$HOME/.config/nvim-profiles/default",
-    { preconfigure = "packer:start", config = "PackerSync" },
+--]] local profiles = {
+  nick = {
+    "$HOME/.config/nvim-profiles/nick",
+    { url = false, plugins = "packer", preconfigure = "packer:start" },
+    -- { preconfigure = "packer:start", config = "PackerSync" },
   },
-  development = { "$HOME/.config/nvim-profiles/development", config = "PackerSync" },
+  development = { "$HOME/.config/nvim-profiles/development", { url = false, config = "PackerSync" } },
   doom_nvim = {
     "$HOME/.config/nvim-profiles/doom-nvim",
-    { preconfigure = "doom-nvim" }
+    -- "https://github.com/NTBBloodbath/doom-nvim",
+    { url = false, plugins = "packer", preconfigure = "doom-nvim" },
   },
-  starvim = {
-    "$HOME/.config/nvim-profiles/StarVim",
-    {  preconfigure = "starvim" }
-  },
-  lunarvim = {
-    "$HOME/.config/nvim-profiles/LunarVim",
-    { preconfigure = "lunarvim" }
-  },
+  starvim = { "$HOME/.config/nvim-profiles/StarVim", { url = false, preconfigure = "starvim" } },
+  lunarvim = { "$HOME/.config/nvim-profiles/LunarVim", { url = false, preconfigure = "lunarvim" } },
 
-  nv_ide = {
-    "$HOME/.config/nvim-profiles/nv-ide",
-    { preconfigure = "nv-ide" }
-  },
-  vapournvim = {
-    "$HOME/.config/nvim-profiles/VapourNvim",
-    { preconfigure = "vapournvim" }
-  },
-    --
+  nv_ide = { "$HOME/.config/nvim-profiles/nv-ide", { url = false, preconfigure = "nv-ide" } },
+  vapournvim = { "$HOME/.config/nvim-profiles/VapourNvim", { url = false, preconfigure = "vapournvim" } },
+  --
   -- preconfigure = "{packer|paq-nvim}:{start|opt}:<branch> | doom-nvim | lunarvim | nv-ide | vapournvim | lvim",
 }
 --
-return "default", profiles
+return "nick", profiles
 --
 --[[
   <name_of_config> = { <path_to_config>, {
