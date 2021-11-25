@@ -13,8 +13,8 @@
 --]] local profiles = {
   nick = {
     "$HOME/.config/nvim-profiles/nick",
-    { url = false, plugins = "packer", preconfigure = "packer:start" },
-    -- { preconfigure = "packer:start", config = "PackerSync" },
+    { plugins = "packer", preconfigure = "packer" },
+    -- { url = false, plugins = "packer", preconfigure = "packer:start" },
   },
   development = { "$HOME/.config/nvim-profiles/development", { url = false, config = "PackerSync" } },
   doom_nvim = {
