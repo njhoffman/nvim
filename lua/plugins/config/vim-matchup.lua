@@ -1,0 +1,28 @@
+vim.g.matchup_matchparen_deferred = 1
+vim.g.matchup_matchparen_offscreen = { method = "popup" }
+-- To disable the plugin entirely,
+-- let g:matchup_enabled = 0
+-- default: 1
+-- To disable a particular module,
+-- let g:matchup_matchparen_enabled = 0
+-- let g:matchup_motion_enabled = 0
+-- let g:matchup_text_obj_enabled = 0
+-- defaults: 1
+-- To enable the delete surrounding (ds%) and change surrounding (cs%) maps,
+-- let g:matchup_surround_enabled = 1
+-- default: 0
+-- To enable the experimental transmute module,
+-- let g:matchup_transmute_enabled = 1
+-- default: 0
+-- To configure the number of lines to search in either direction while using motions and text objects. Does not apply to match highlighting (see g:matchup_matchparen_stopline instead).
+-- let g:matchup_delim_stopline = 1500
+-- default: 1500
+-- To disable matching within strings and comments,
+-- let g:matchup_delim_noskips = 1   " recognize symbols within comments
+-- let g:matchup_delim_noskips = 2   " don't recognize anything in comments
+-- default: 0 (matching is enabled within strings and comments)
+-- Variables
+-- match-up understands the following variables from matchit.
+-- b:match_words
+-- b:match_skip
+-- b:match_ignorecase

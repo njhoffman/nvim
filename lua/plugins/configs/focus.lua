@@ -1,0 +1,94 @@
+-- Set Focus Auto Sign Column
+local focus = require("focus")
+focus.enable = false
+-- Displays a sign column in the focussed window only not displayed in unfocussed windows
+focus.signcolumn = false
+
+-- :FocusDisable	Disable the plugin per session. Splits will be normalised back to defaults and then spaced evenly.
+-- :FocusEnable	Enable the plugin per session. Splits will be resized back to your configs or defaults if not set.
+-- :FocusToggle	Toggle focus on and off again.
+-- :FocusSplitNicely	Split a window based on the golden ratio rule
+-- :FocusSplitLeft	Move to existing or create a new split to the left of your current window
+-- :FocusSplitDown	Move to existing or create a new split to the bottom of your current window
+-- :FocusSplitUp	Move to existing or create a new split to the top of your current window
+-- :FocusSplitRight	Move to existing or create a new split to the right of your current window
+-- +----------------+------------+
+-- |                |    S1      |
+-- |                |            |
+-- |                +------------+
+-- |                |            |
+-- |   MAIN PANE    |    S2      |
+-- |                |            |
+-- |                |            |
+-- |                |            |
+-- +----------------+------------+
+-- To get this view you would press the key combination 2 times.
+-- Split nicely with <C-L>
+-- vim.api.nvim_set_keymap('n', '<c-l>', ':FocusSplitNicely<CR>', { silent = true })
+-- Auto Splitting Directionally
+-- Instead of worrying about multiple commands and shortcuts, simply think about splits as to which direction you would like to go
+-- Calling a focus split command i.e :FocusSplitRight will do one of two things, it will attempt to move across to the window in the specified direction. Otherwise, if no window exists in the specified direction relative to the current window then it will instead create a new blank buffer window in the direction specified, and then move to that window.
+-- Recommended commands, leverage hjkl to move and create your splits directionally with ease
+-- vim.api.nvim_set_keymap('n', '<leader>h', ':FocusSplitLeft<CR>', { silent = true })
+-- vim.api.nvim_set_keymap('n', '<leader>j', ':FocusSplitDown<CR>', { silent = true })
+-- vim.api.nvim_set_keymap('n', '<leader>k', ':FocusSplitUp<CR>', { silent = true })
+-- vim.api.nvim_set_keymap('n', '<leader>l', ':FocusSplitRight<CR>', { silent = true })
+-- Configuration
+-- NOTE: If for example your screen resolution is 1024x768 --> i.e on the smaller side, you may notice that focus by default can maximise a window too much. That is, the window will sort of 'crush' some of your other splits due to the limited screen real estate. This is not an issue with focus, but an issue with minimal screen real estate. In this case, you can simply reduce the width/height of focus by following the below instructions to set them.
+-- Enable/Disable Focus
+-- local focus = require('focus')
+-- -- Completely disable this plugin
+-- -- Default: true
+-- focus.enable = false
+-- Set Focus Width
+-- local focus = require('focus')
+-- -- Force width for the focused window
+-- -- Default: Calculated based on golden ratio
+-- focus.width = 120
+-- Set Focus Height
+-- local focus = require('focus')
+-- -- Force height for the focused window
+-- -- Default: Calculated based on golden ratio
+-- focus.height = 40
+-- Set Focus Tree Width
+-- local focus = require('focus')
+-- -- Sets the width of directory tree buffers such as NerdTree, NvimTree and CHADTree
+-- -- Default: vim.g.nvim_tree_width or 30
+-- focus.treewidth = 20
+-- Set Focus Auto Cursorline
+-- local focus = require('focus')
+-- -- Displays a cursorline in the focussed window only
+-- -- Not displayed in unfocussed windows
+-- -- Default: true
+-- focus.cursorline = false
+-- Set Focus Auto Numbers
+-- local focus = require('focus')
+-- -- Displays line numbers in the focussed window only
+-- -- Not displayed in unfocussed windows
+-- -- Default: true
+-- focus.number = false
+-- Set Focus Auto Relative Numbers
+-- local focus = require('focus')
+-- -- Displays relative line numbers in the focussed window only
+-- -- Not displayed in unfocussed windows
+-- -- See :h relativenumber
+-- -- Default: false
+-- focus.relativenumber = true
+-- Set Focus Auto Hybrid Numbers
+-- local focus = require('focus')
+-- -- Displays hybrid line numbers in the focussed window only
+-- -- Not displayed in unfocussed windows
+-- -- Combination of :h relativenumber, but also displays the line number of the current line only
+-- -- Default: false
+-- focus.hybridnumber = true
+-- Set Focus Window Highlighting
+-- local focus = require('focus')
+-- -- Enable auto highlighting for focussed/unfocussed windows
+-- -- Default: false
+-- focus.winhighlight = true
+-- -- By default, the highlight groups are setup as such:
+-- --   hi default link FocusedWindow VertSplit
+-- --   hi default link UnfocusedWindow Normal
+-- -- To change them, you can link them to a different highlight group, see `:h hi-default` for more info.
+-- vim.cmd('hi link UnfocusedWindow CursorLine')
+-- vim.cmd('hi link FocusedWindow VisualNOS')

@@ -1,0 +1,20 @@
+local M = require("mappings.mapper")
+
+M.map("Format", "n", "<leader>[", "indent_all")
+M.map("Format", "n", "<leader>]", "unindent_all")
+M.map("Format", "n", "<leader>fx", "swap")
+M.map("Format", "n", "<leader>fU", "uppercase2")
+M.map("Format", "n", "<leader>fu", "lowercase2")
+M.map("Format", "n", "<leader>fs", "snakecase")
+M.map("Format", "n", "<leader>fk", "kebabcase")
+M.map("Format", "n", "<leader>fc", "camelcase")
+M.map("Format", "n", "<leader>fC", "camelbcase")
+M.map("Format", "v", "<leader>fs", "v_snakecase")
+M.map("Format", "v", "<leader>fk", "v_kebabcase")
+M.map("Format", "v", "<leader>fc", "v_camelcase")
+M.map("Format", "v", "<leader>fC", "v_camelbcase")
+M.map("Format", "v", "<", "v_unindent")
+M.map("Format", "v", ">", "v_indent")
+M.map("Format", "n", "gu", "lowercase1") -- virtual
+M.map("Format", "n", "gU", "uppercase1") -- virtual
+M.map("Format", "n", "gR", "rename") -- virtual

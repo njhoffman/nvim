@@ -1,0 +1,11 @@
+local M = require("mappings.mapper")
+
+M.map("Search", "n", "_", "rmhl")
+M.map("Search", "n", "n", "next")
+M.map("Search", "n", "N", "prev")
+M.map("Search", "n", "*", "cursor_next1")
+M.map("Search", "n", "#", "cursor_prev1")
+M.map("Search", "n", "g*", "cursor_next2")
+M.map("Search", "n", "g#", "cursor_prev2")
+M.map("Search", "n", "gn", "last_match")
+M.map("Search", "n", "<leader>sr", "cursor_replace")

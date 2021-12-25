@@ -1,0 +1,36 @@
+
+CLIP Clipboard (+)
+PRIM Primary (*)
+TMUX
+
+== current ==
+* [ ] X11 yank:      CLIP + PRIM  #3983135b
+* [ ] X11 paste:     CLIP  #cd39434a
+* [ ] vim delete:    CLIP  #e46ba327
+* [ ] vim paste: (p) CLIP  #5a75876a
+* [ ] vim yank:  (y) CLIP  #c1863dd7
+
+
+== desired|project:clipboard ==
+* [ ] X11 yanks to CLIP + PRIM  #e48a0590
+    * [ ] daemon syncs to tmux buffers  #33965b34
+    * [ ] daemon saves to .x11 extension  #5994632a
+    * [ ] hotkey for naming yank  #fe676ad8
+    * [ ] yank shows in file history on vim  #721f8fdc
+* [ ] X11 pastes from CLIP  #c5e4ea47
+    * [ ] hotkey to paste named/previous pastes  #14d4f412
+* [ ] VIM deletes to CLIP  #a18872ce
+* [ ] VIM yanks to CLIP + PRIM  #db332168
+    * [ ] if yank is less than a full line, trim eol  #2dff10a1
+    * [ ] hotkey to name yank  #4b3f7d9f
+    * [ ] add to TMUX ring  #51627ea1
+* [ ] VIM paste (p) from CLIP  #254b0e1e
+* [ ] VIM paste (P) from PRIM  #aa1e7578
+* [ ] TMUX yank: CLIP + PRIM  #a8dbf71f
+    * [ ] hotkey to yank named/previous pastes  #5443c97b
+* [ ] VIM paste CLIP (j)  #7b2901fc
+  * [ ] VIM paste PRIM (P)  #7b2901fc
+
+
+tmux copy: buffer0, buffer1-0, buffer2-1-0
+vim yank: + " 0, 1 2, 2 3

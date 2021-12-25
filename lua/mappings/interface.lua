@@ -1,0 +1,20 @@
+local M = require("mappings.mapper")
+
+M.map("Interface", "n", '""', "registers")
+M.map("Interface", "n", "<F2>", "whichkey")
+M.map("Interface", "n", "<F3>", "nvim_tree")
+M.map("Interface", "n", "<F4>", "mundo1")
+-- M.map("Interface", "n", "<F5>", "term1")
+M.map("Interface", "n", "<F6>", "treesitter")
+M.map("Interface", "n", "<F7>", "aerial")
+M.map("Interface", "n", "<S-F7>", "aerial_float")
+M.map("Interface", "n", "gU", "mundo2")
+M.map("Interface", "n", "cll", "conceal_clear")
+M.map("Interface", "n", "cl0", "conceal_0")
+M.map("Interface", "n", "cl1", "conceal_1")
+M.map("Interface", "n", "cl2", "conceal_2")
+M.map("Interface", "n", "cl3", "conceal_3")
+M.map("Interface", "n", "gh", "ts_highlights")
+-- M.map("Interface", "n", "gH", "ts_highlights")
+M.map("Interface", "n", "gnD", "list_definitions") -- virtual
+M.map("Interface", "n", "g0", "toc_definitions") -- virtual
