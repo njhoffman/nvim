@@ -9,13 +9,31 @@ end
 
 local function dash_footer()
   local footer = {}
-  local plugin_stats = require('plugins.pluginmap').stats
+  local plugstats = require('plugins.pluginmap').stats
+  local keystats = require("stats.keymaps").get_stats()
 
   local plugin_length = length(_G.packer_plugins)
 
-  table.insert(footer, '   ' .. plugin_length .. ' plugins (' .. plugin_stats.loaded .. ' mapped)')
-  table.insert(footer, plugin_stats.fork_loaded .. ' forked   ' .. plugin_stats.local_loaded .. ' local  ' .. plugin_stats.skipped .. ' skipped')
-  table.insert(footer, plugin_stats.config_loaded .. ' configs  ' .. plugin_stats.lazy_loaded .. ' lazy   ' .. plugin_stats.disabled .. ' disabled')
+
+  -- 252 plugins   85 mapped   36 configs
+  -- 408 neovim   317  mapper  431  whichkey
+  -- 56 todo  0 dupes  10  conflicts
+
+  table.insert(footer, plugin_length .. ' plugins   ' .. plugstats.loaded .. ' mapped   ' .. plugstats.config_loaded .. ' configs')
+  table.insert(footer, keystats.neovim.total .. ' neovim   ' .. keystats.mapper.total .. '  mapper  ' .. keystats.whichkey.total .. '  whichkey')
+  table.insert(footer, keystats.whichkey_todo.total .. ' todo      ' .. keystats.duplicates.total ..' duplicates  ' .. keystats.conflicts.total .. '  conflicts')
+  -- table.insert(footer, plugstats.fork_loaded .. ' forked   ' .. plugstats.local_loaded .. ' local  ' .. plugstats.skipped .. ' skipped')
+  -- table.insert(footer,  .. plugstats.lazy_loaded .. ' lazy   ' .. plugstats.disabled .. ' disabled')
+
+
+         --    252 plugins (85 mapped)
+         -- 0 forked   0 local  0 skipped
+         -- 36 configs  0 lazy   0 disabled
+         -- 408 neovim  317 mapper 431 whichkey
+         -- 56 todo 0 dupes 10conflicts
+  --
+
+  -- mapper_todo = {},
   return footer
 end
 

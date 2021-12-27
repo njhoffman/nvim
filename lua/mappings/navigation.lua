@@ -10,7 +10,7 @@ M.map("Navigation", "v", ":", "quick_cmdwin_v", { noremap = true, nowait = true 
 M.map("Navigation", "n", "<BS>", "buffer_last")
 M.map("Navigation", "n", "H", "buffer_left1")
 M.map("Navigation", "n", "L", "buffer_right1")
-M.map("Navigation", "n", "!", "repeat_cmd")
+M.map("Navigation", "n", "!!", "repeat_cmd")
 M.map("Navigation", "n", "<M-r>", "restart")
 M.map("Navigation", "n", "<C-x>", "nowrite_exit1")
 M.map("Navigation", "n", "<A-x>", "write_exit1")

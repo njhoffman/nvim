@@ -1,4 +1,4 @@
-local Mapper = require("mappings.mapper")
+local keystats = require("stats.keymaps")
 
 local M = {}
 
@@ -9,57 +9,7 @@ local function length(T)
 end
 
 function M.stats()
-  -- local whichkeys = Mapper.whichkey_dump()
-  -- local conflicts = Mapper.whichkey_conflicts()
-  -- local duplicates = Mapper.whichkey_duplicates()
-
-  local stats = {
-    neovim = {
-      normal   = length(vim.api.nvim_get_keymap('n')),
-      insert   = length(vim.api.nvim_get_keymap('i')),
-      command  = length(vim.api.nvim_get_keymap('c')),
-      operator = length(vim.api.nvim_get_keymap('o')),
-      visual   = length(vim.api.nvim_get_keymap('v')),
-    },
-    mapper = Mapper.stats,
-    whichkey = {
-      total    = length(Mapper.whichkey_lists.ok),
-      normal   = 0,
-      insert   = 0,
-      command  = 0,
-      operator = 0,
-      visual   = 0
-    },
-    whichkey_todo = {
-      total    = length(Mapper.whichkey_lists.todo),
-      normal   = 0,
-      insert   = 0,
-      command  = 0,
-      operator = 0,
-      visual   = 0
-    },
-    duplicates = {
-      total    = length(Mapper.whichkey_lists.duplicates),
-      normal   = 0,
-      insert   = 0,
-      command  = 0,
-      operator = 0,
-      visual   = 0
-    },
-    conflicts = {
-      total    = length(Mapper.whichkey_lists.conflicts),
-      normal   = 0,
-      insert   = 0,
-      command  = 0,
-      operator = 0,
-      visual   = 0
-    },
-    -- mapper_todo = {},
-    -- whichkey_group = {},
-    -- whichkey_nogroup = {}
-  }
-  stats.mapper.total = stats.mapper.normal + stats.mapper.visual + stats.mapper.insert + stats.mapper.operator + stats.mapper.command
-  stats.neovim.total = stats.neovim.normal + stats.neovim.visual + stats.neovim.insert + stats.neovim.operator + stats.neovim.command
+  local stats = keystats.stats()
 
   print("                    total  normal  visual  insert  operator  command ")
   print("---------------------------------------------------------------------")

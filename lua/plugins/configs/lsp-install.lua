@@ -40,4 +40,3 @@ local DEFAULT_SETTINGS = {
 
 -- Provide settings first!
 lsp_installer.settings = DEFAULT_SETTINGS
-lsp_installer.on_server_ready(function (server) server:setup {} end)

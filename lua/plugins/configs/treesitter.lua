@@ -26,7 +26,11 @@ tsconfig.setup {
   highlight = {
     enable = true,
     use_languagetree = true,
-    disable = { "bash", "markdown" }, -- lua
+    disable = {
+      -- 'lua',
+      "bash",
+      "markdown",
+    },
     custom_captures = {
       -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
       ["foo.bar"] = "Identifier",

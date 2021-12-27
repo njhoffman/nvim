@@ -123,6 +123,10 @@ vim.g.indent_blankline_filetype = { "rust", "go", "lua", "json", "ruby" }
 vim.g.indent_blankline_use_treesitter = true
 vim.g.loaded_ruby_provider = false
 
+-- fixes unlisted buffer error
+-- https://github.com/romgrk/barbar.nvim/issues/82#issuecomment-748498951
+vim.g.netrw_bufsettings = 'noma nomod nonu nowrap ro buflisted'
+
 -- Allows users to specify the type of embedded script highlighting they want:  (perl/python/ruby/tcl support)
 vim.g.vimsyn_embed = "--lmpPr"
 

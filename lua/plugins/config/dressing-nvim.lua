@@ -116,23 +116,22 @@ local test_select = function(backend, backend_opt, cb)
   end)
 end
 
-M.test_select = function(cb)
+_G.test_select = function(cb)
   cb = cb or function(sel) print('Selected ' .. sel) end
   test_select('telescope', cb)
 end
 
-M.test_select_telescope = function(cb)
+_G.test_select_telescope = function(cb)
   local backend = require("dressing.select.telescope")
   test_select(backend, defaults.select['telescope'], cb)
 end
 
-M.test_select_nui = function(cb)
+_G.test_select_nui = function(cb)
   local backend = require("dressing.select.nui")
   test_select(backend, defaults.select['nui'], cb)
 end
 
-
-M.test_select_builtin = function(cb)
+_G.test_select_builtin = function(cb)
   local backend = require("dressing.select.builtin")
   test_select(backend, defaults.select['builtin'], cb)
 end

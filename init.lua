@@ -11,7 +11,7 @@ vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")),
 local function load_module(mod_name)
   local ok, err = pcall(require, mod_name)
   if not ok then
-    local msg = "calling module: "..mod_name.." fail: "..err
+    local msg = "failed loading: "..mod_name.."\n "..err
     vim.notify(msg, "error")
   end
 end
@@ -38,6 +38,7 @@ if (config.Load.type == "async") then
 
           for _, mod_name in ipairs({
             'lsp.setup',
+            'debuglog',
             'main.autocommands',
             'mappings',
             'mappings.ignored',
@@ -62,7 +63,6 @@ else
 
   for _, mod_name in ipairs({
     'options.options-test',
-    'dashboard_options',
     'main.options',
     'plugins.load',
   }) do
@@ -80,8 +80,11 @@ else
 -- for _, mod_name in ipairs({'lsp.setup', 'main.autocommands', 'mappings', 'mappings.ignored' }) do
   for _, mod_name in ipairs({
     'lsp.lsp-config',
+    'lsp.lsp-servers',
+    'debuglog',
     'main.autocommands',
     'mappings',
+    'dashboard'
   }) do
     load_module(mod_name)
   end

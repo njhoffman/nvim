@@ -3,16 +3,6 @@ local u = require("utils.core")
 local Formatting = config.Formatting
 local Opts = config.Opts
 
-if config.transparent_window then
-	vim.cmd("au ColorScheme * hi Normal ctermbg=none guibg=none")
-	vim.cmd("au ColorScheme * hi SignColumn ctermbg=none guibg=none")
-	vim.cmd("au ColorScheme * hi NormalNC ctermbg=none guibg=none")
-	vim.cmd("au ColorScheme * hi MsgArea ctermbg=none guibg=none")
-	vim.cmd("au ColorScheme * hi TelescopeBorder ctermbg=none guibg=none")
-	vim.cmd("au ColorScheme * hi NvimTreeNormal ctermbg=none guibg=none")
-	vim.cmd("let &fcs='eob: '")
-end
-
 function goto_last_pos()
 	local last_pos = vim.fn.line("'\"")
 	if last_pos > 0 and last_pos <= vim.fn.line("$") then
@@ -21,23 +11,7 @@ function goto_last_pos()
 end
 -- vim.cmd [[autocmd BufReadPost * lua goto_last_pos()]]
 
--- relative in normal mode, absolute in insert
--- af(
---   "BufEnter,FocusGained,InsertLeave",
---   "*",
---   function()
---     if vim.bo.filetype ~= "dashboard" then
---       vim.wo.relativenumber = true
---     end
---   end
--- )
--- af(
---   "BufLeave,FocusLost,InsertEnter",
---   "*",
---   function()
---     vim.wo.relativenumber = false
---   end
--- )
+
 -- local M = {}
 
 -- M.vimadeCheck = function()
@@ -83,7 +57,18 @@ vim.cmd([[
 -- au TermClose * call feedkeys("i")
 
 local autocmds = {
+  Marks= { {
+      "BufRead,BufEnter", "*", "lua require('marks').refresh()"
+    }, {
+      "BufRead,BufDelete", "*", "lua require('marks')._on_delete()"
+    }
+    -- { "BufEnter", "*", "if &buftype == 'prompt' | MarksToggleSigns | endif" },
+  },
 	SecondaryBuffers = {
+    -- {
+    -- "BufRead,BufEnter", "*", "echom &filetype . ' ' . &buftype"
+    -- }
+
 		-- { "FileType", "man", "nnoremap <buffer> q :BufDel<cr> | nnoremap <buffer>  :BufDel<cr>" },
 		-- { "FileType", "man", "nnoremap <buffer> q :BufDel<cr>" },
 	},
@@ -121,6 +106,7 @@ local autocmds = {
 		{ "BufNewFile,BufRead", ".dockerignore", "setlocal ft=gitignore" },
 		{ "BufNewFile,BufRead", "nord-nick-lush.lua", "setlocal ft=lush syn=lua" },
 		{ "BufNewFile,BufRead", "nord-nvim.lua", "setlocal ft=lush syn=lua" },
+    { "BufNewFile,BufRead", "*.t", "setlocal ft=tangle" },
     { "BufNewFile,BufRead", "git", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
 
 		--   au BufNewFile,BufRead *.module setlocal ft=php syn=php
@@ -155,6 +141,9 @@ local autocmds = {
 		-- { "BufEnter", "dapui_stacks", "VimadeBufDisable" },
 		-- { "BufEnter", "dap-repl", "VimadeBufDisable" },
 	},
+  BufferRedraws = {
+    { "VimEnter", "*", "BarbarColors"}
+  },
 	FileTypes = {
 		-- { "FileType", "lua.lush", "" },
 		{ "FileType", "markdown.pandoc", "set conceallevel=2 nospell | lua require('neuron').update_virtual_titles()" },
@@ -177,22 +166,19 @@ local autocmds = {
 		{ "VimLeave,VimSuspend", "*", "set guicursor=a:block-blinkon90" },
 	},
 
-  -- Error executing vim.schedule lua callback: ...ck/packer/start/nvim-lspconfig/lua/lspconfig/configs.lua:176: Vim(autocmd):E68
-  -- 0: <buffer=61>: invalid buffer number
-  -- stack traceback:
-  -- [C]: in function 'nvim_command'
-  -- ...ck/packer/start/nvim-lspconfig/lua/lspconfig/configs.lua:176: in function 'cb'
-  -- vim.lua:285: in function <vim.lua:285>
-	terminal = { { "TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]] }, { "TermOpen", "*", "set nonumber | set norelativenumber" } },
+  terminal = {
+    { "TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]] },
+    { "TermOpen", "*", "set nonumber norelativenumber" },
+    { "TermLeave", "*", "set number relativenumber" }
 
-	-- packer = {
-	--   { "BufWritePost", "load.lua", "PackerCompile" },
-	--   {
-	--     "User",
-	--     "PackerComplete,PackerCompileDone",
-	--     "call bufferline#highlight#setup() | lua require('feline').reset_highlights()",
-	--   },
-	-- },
+  },
+  writeEventts = {
+    { "BufWritePost", ".tmux.conf", [[execute ':!tmux source-file %']] },
+    --   { "BufWritePost", "load.lua", "PackerCompile" },
+  },
+	packer = {
+	  { "User", "PackerComplete,PackerCompileDone", "BarbarColors" },
+	},
 }
 
 -- lsp = {
@@ -202,6 +188,17 @@ local autocmds = {
 local shadaEvents = require("main.shada")
 
 table.insert(autocmds, shadaEvents)
+
+
+local number_toggle = { {
+  "BufEnter,FocusGained,InsertLeave",
+  "*",
+  "if &filetype != 'dashboard' && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif"
+  }, {
+    "BufLeave,FocusLost,InsertEnter", "*", 'set norelativenumber'
+  }
+}
+table.insert(autocmds, number_toggle)
 
 -- define tables to insert
 local hl_yank = { { "TextYankPost", "*", "silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=400 }" } }

@@ -213,12 +213,22 @@ M.plugins = {
   -- ['wilder.nvim'] = {},
 }
 
+M.search_plugins = {
+  ['vim-searchsavy'] = { use = { "idbrii/vim-searchsavvy" } }
+}
+
+M.treesitter_plugins = {
+  ['tree-sitter-ntangle'] = { use = { "jbyuki/tree-sitter-ntangle" } }
+}
+
 M.dap_plugins = {
   ['dap-install'] = { use = "Pocco81/DAPInstall.nvim" },
   ['nvim-dap'] = { use = { "mfussenegger/nvim-dap" } },
   ['nvim-dap-ui'] = { use = { "rcarriga/nvim-dap-ui", requires = { "theHamsta/nvim-dap-virtual-text", "mfussenegger/nvim-dap" } }} ,
   ['one-small-step-for-vimkind'] = { use = { "jbyuki/one-small-step-for-vimkind", requires = "mfussenegger/nvim-dap" } },
-  ['nvim-dap-python'] = { use = { "mfussenegger/nvim-dap-python", requires = "mfussenegger/nvim-dap" } }
+  ['nvim-dap-python'] = { use = { "mfussenegger/nvim-dap-python", requires = "mfussenegger/nvim-dap" } },
+  ['dash.nvim'] = { use = { "jbyuki/dash.nvim", requires = "jbyuki/ntangle.nvim" }},
+  ['Telegraph.nvim'] = { use = { "WaylonWalker/Telegraph.nvim" } }
 }
 
 M.picker_plugins = {
@@ -236,6 +246,7 @@ M.motion_plugins = {
   ['vim-wordmotion'] = { use = "chaoren/vim-wordmotion"},
   ['vim-smoothie'] = { use = "psliwka/vim-smoothie"},
   ['clever-f'] = { use = "rhysd/clever-f.vim"},
+  ['marks.nvim'] = { use = "chentau/marks.nvim" },
 }
 
 M.format_plugins = {
@@ -306,8 +317,8 @@ M.ui_plugins = {
   ['aerial.nvim']   = { use = 'stevearc/aerial.nvim' },
   ['nvim-notify']   = { use = "rcarriga/nvim-notify" },
   ["dressing-nvim"] = { use = { 'stevearc/dressing.nvim', requires = "MunifTanjim/nui.nvim" } },
-  ['vim-bling'] = { use = "ivyl/vim-bling" },
-  ['specs.nvim'] = { use =  'edluffy/specs.nvim' },
+  ['vim-bling']     = { use = "ivyl/vim-bling" },
+  ['specs.nvim']    = { use =  'edluffy/specs.nvim' },
 }
 
 M.project_plugins = {
@@ -319,6 +330,7 @@ M.project_plugins = {
 }
 
 M.interface_plugins = {
+  ['quickmath-nvim'] = { use = "jbyuki/quickmath.nvim" },
   ['yank-history']   = { use =  "yazgoo/yank-history" },
   ['vim-yoink']      = { use =  "svermeulen/vim-yoink" },
   ["nvim-bqf"]       = { use =  "kevinhwang91/nvim-bqf" },
@@ -326,7 +338,10 @@ M.interface_plugins = {
   ["vim-qf-history"] = { use =  "bfrg/vim-qf-history" },
 }
 
-
+M.lsp_plugins = {
+  ['null-ls.nvim'] = { use = { "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" } } ,
+  ['jbyuki/ntangle-lsp.nvim'] = { use = { "jbyuki/ntangle-lsp.nvim", requires = { 'jbyuki/ntangle-ts.nvim' ,'neovim/nvim-lspconfig' }}},
+}
 
 M.check_require_exists = function(fname)
   local res = pcall(require, fname)
@@ -380,7 +395,7 @@ end
 
 M.plugin_config = function(name)
   name = name:gsub("[\\.]+", "-")
-  local fname = "plugins.config." .. name
+  local fname = "plugins.config." .. string.lower(name)
   local config = nil
 -- TODO: check if actual file exists, report if can't load
   -- print('checking ' .. fname)
@@ -403,11 +418,14 @@ M.load_plugins = function(use, load_config)
     M.dap_plugins,
     M.ui_plugins,
     M.format_plugins,
+    M.lsp_plugins,
     M.motion_plugins,
     M.interface_plugins,
     M.picker_plugins,
     M.project_plugins,
     M.syntax_plugins,
+    M.treesitter_plugins,
+    M.search_plugins
   }
 
   for _, plugin_set in pairs(all_plugins) do

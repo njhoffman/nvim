@@ -33,3 +33,5 @@ M.map("Pickers", "n", "<leader>Fm", "find_mappings_n")
 M.map("Pickers", "n", "<leader>Fmi", "find_mappings_i")
 M.map("Pickers", "n", "<leader>Fmv", "find_mappings_v")
 M.map("Pickers", "n", "<leader>Fmo", "find_mappings_o")
+
+vim.cmd("ab T Telescope")

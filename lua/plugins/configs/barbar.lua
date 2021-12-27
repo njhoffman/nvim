@@ -1,5 +1,34 @@
 local plugin = {}
 
+-- local sources = { null_ls.builtins.formatting.shellharden }
+--  sources = { null_ls.builtins.formatting.shellharden }
+-- filetypes = { "sh" }
+-- command = "shellharden"
+-- args = { "--transform", "$FILENAME" }
+
+-- shfmt
+-- A shell parser, formatter, and interpreter with bash support.
+
+
+-- Usage
+-- local sources = { null_ls.builtins.formatting.shfmt }
+-- Defaults
+-- filetypes = { "sh" }
+-- command = "shfmt"
+-- args = { "-filename", "$FILENAME" }
+
+
+-- shellcheck
+-- About
+-- A shell script static analysis tool.
+
+-- Usage
+-- local sources = { null_ls.builtins.diagnostics.shellcheck }
+-- Defaults
+-- filetypes = { "sh" }
+-- command = "shellcheck"
+-- args = { "--format", "json1", "--source-path=$DIRNAME", "--external-sources", "-" }
+
 function set_config()
   if vim.g.bufferline ~= nil then
     vim.g.bufferline.animation = true
@@ -64,3 +93,5 @@ function set_mapping()
 end
 
 set_config()
+
+vim.cmd([[exec 'source'. stdpath('config') . '/lua/plugins/config/barbar-colors.vim']])

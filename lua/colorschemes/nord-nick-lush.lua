@@ -58,7 +58,7 @@ local spec = lush.extends({ nord }).with(function()
     Underlined = { gui = "none" },
     -- ui components
     NormalFloat { fg = "#8f93a2", bg = "#0c101f" }, -- normal text and background color for floating windows
-    FloatBorder { fg = "#4f73a2" }, --
+    FloatBorder { fg = "#4f73a2", bg = NormalFloat.bg }, --
     Pmenu { fg = "#618cc4", bg = "#090918" },
     PmenuSel { fg = "#74efff", bg = "#1a1f2f" },
     PmenuSbar { fg = "#717cb4", bg = "#202331" },
@@ -95,7 +95,7 @@ local spec = lush.extends({ nord }).with(function()
     SpecialChar { fg = "#b88698" }, -- For special punctutation that does not fall in the catagories before.
     String { fg = "#00a0a9" },
     Type { fg = "#718cb4" },
-    VertSplit { fg = "#646Dcf", bg = "#2C2343", gui = "NONE" },
+    VertSplit { fg = "#646Dcf", bg = "none", gui = "NONE" },-- bg = "#2C2343",
     VisualNOS { fg = "none", bg = clr_over.selection },
     healthError { fg = "#BE6069", bg = "#none" },
     healthSuccess { fg = "#22BB99", bg = "#none" },
@@ -114,6 +114,7 @@ local spec = lush.extends({ nord }).with(function()
     MoreMsg { fg = clrs.nord8 },
     Question { fg = clrs.nord4 },
     --
+    LspFloatWinBorder = { bg = 'none' },
     LSPDiagnosticsSignWarning { fg = "#675023" },
     LspDiagnosticsWarning { fg = clrs.nord13 },
     LspDiagnosticsError { fg = clrs.nord11 },
@@ -349,11 +350,21 @@ local spec = lush.extends({ nord }).with(function()
     --
     PackageInfoOutdatedVersion { fg = "#d19a66" },
     PackageInfoUpToDateVersion { fg = "#3C4048" },
-    -- -- WhichKey
     SpecsCursor { bg = "#274087" },
-    WhichKey { fg = "#f78077", style = "bold" },
-    WhichKeyGroup { fg = "#619cf4" },
-    InfoWindowFloat { fg = "#2886bf", bg = "#000000" },
+    -- -- WhichKey
+--     WhichKey = { fg = clrs.accent, style = "bold" },
+--     WhichKeyGroup = { fg = clrs.text },
+--     WhichKeyDesc = { fg = clrs.nord7, style = "italic" },
+--     WhichKeySeperator = { fg = clrs.fg },
+--     WhichKeyFloating = { bg = clrs.float },
+--     WhichKeyFloat = { bg = clrs.float },
+    WhichKey { fg = "#f78077", style = "bold" }, --Function
+    WhichKeyGroup { fg = "#619cf4" }, -- Keyword
+    -- WhichKeyDesc  { fg = clrs.nord7, style = "italic" }, -- Identifier
+    -- WhichKeySeperator  { fg = clrs.fg }, -- DiffAdded
+    WhichKeyFloat  { bg = NormalFloat.bg }, -- NormalFloat
+    -- WhichKeyValue { bg = clrs.float }, -- Comment
+    InfoWindowFloat { fg = "#2886bf", bg = "none" },
     BqfPreviewFloat { Normal },
     BqfPreviewBorder { Normal },
     -- BqfPreviewCursor { Cursor },
@@ -361,10 +372,6 @@ local spec = lush.extends({ nord }).with(function()
     BqfSign { fg = "cyan" },
     -- zshVariableDef { Normal },
     -- zshDeref { fg = '#2886bf' },
-    -- WhichKeyDesc  { fg = clrs.nord7, style = "italic" },
-    -- WhichKeySeperator  { fg = clrs.fg },
-    -- WhichKeyFloating  { bg = clrs.float },
-    -- WhichKeyFloat  { bg = clrs.float },
     -- Notify
     NotifyERRORBorder { fg = "#8A1F1F"},
     NotifyWARNBorder { fg = "#79491D"},

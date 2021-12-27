@@ -8,59 +8,31 @@ local wk = require("which-key")
 
 local M = {}
 
-function M.inspect(tbl, depth, n)
-	n = n or 2
-	depth = depth or 5
-
-	if depth == 0 then
-		print(string.rep(" ", n) .. "...")
-		return
-	end
-
-	if n == 0 then
-		print(" ")
-	end
-
-	for key, value in pairs(tbl) do
-		if key and type(key) == "number" or type(key) == "string" then
-			key = string.format('["%s"]', key)
-
-			if type(value) == "table" then
-				if next(value) then
-					print(string.rep(" ", n) .. key .. " = {")
-					M.inspect(value, depth - 1, n + 4)
-					print(string.rep(" ", n) .. "},")
-				else
-					print(string.rep(" ", n) .. key .. " = {},")
-				end
-			else
-				if type(value) == "string" then
-					value = string.format('"%s"', value)
-				else
-					value = tostring(value)
-				end
-
-				print(string.rep(" ", n) .. key .. " = " .. value .. ",")
-			end
-		end
-	end
-
-	if n == 0 then
-		print(" ")
-	end
-end
 
 -- OK:   448
 -- TODO: 238
+-- :nmap  :nnoremap :nunmap    Normal
+-- :vmap  :vnoremap :vunmap    Visual and Select
+-- :smap  :snoremap :sunmap    Select
+-- :xmap  :xnoremap :xunmap    Visual
+-- :omap  :onoremap :ounmap    Operator-pending
+-- :map!  :noremap! :unmap!    Insert and Command-line
+-- :imap  :inoremap :iunmap    Insert
+-- :lmap  :lnoremap :lunmap    Insert, Command-line, Lang-Arg
+-- :cmap  :cnoremap :cunmap    Command-line
+-- :tmap  :tnoremap :tunmap    Terminal
 
-M.stats = { normal = 0, insert = 0, command = 0, operator = 0, visual = 0, visual_select = 0  }
-M.whichkey_lists = { conflicts = {}, duplicates = {}, ok = {}, todo = {} }
-M.whichkey_map = { n = {}, v = {}, c = {}, i = {}, o = {}, x = {} }
+
+M.stats = { normal = 0, insert = 0, command = 0, operator = 0, visual = 0, select = 0, terminal = 0, language = 0 }
+M.whichkey_map = { n = {}, v = {}, c = {}, i = {}, o = {}, x = {}, s = {}, t = {}, m = {}, l = {}  }
 
 M.update_stats = function(mode)
 	if mode == "n" then
 		M.stats.normal = M.stats.normal + 1
 	end
+  if mode == "t" then
+    M.stats.terminal = M.stats.terminal + 1
+  end
 	if mode == "i" then
 		M.stats.insert = M.stats.insert + 1
 	end
@@ -71,20 +43,13 @@ M.update_stats = function(mode)
 		M.stats.operator = M.stats.operator + 1
 	end
 	if mode == "v" then
-		M.stats.visual_select = M.stats.visual_select + 1
     M.stats.visual = M.stats.visual + 1
+    M.stats.select = M.stats.select + 1
 	end
   if mode == "x" then
     M.stats.visual = M.stats.visual + 1
   end
 
-end
-
-local function walk(cb, node)
-	cb(node)
-	for _, child in pairs(node.children) do
-		walk(cb, child)
-	end
 end
 
 local function length(T)
@@ -93,72 +58,6 @@ local function length(T)
 		count = count + 1
 	end
 	return count
-end
-
-M.whichkey_stats = function()
-	local conflicts = {}
-  local wk_keys = require("which-key.keys")
-
-  -- print(vim.inspect(wk_keys.mappings))
-
-	-- for _, tree in pairs(wk_keys.mappings) do
-	-- 	wk.update_keymaps(tree.mode, tree.buf)
-	-- 	tree.tree:walk(function(node)
-	-- 		local count = 0
-	-- 		for _ in pairs(node.children) do
-	-- 			count = count + 1
-	-- 		end
-	-- 		local auto_prefix = not node.mapping or (node.mapping.group == true and not node.mapping.cmd)
-	-- 		if node.prefix ~= "" and count > 0 and not auto_prefix then
-	-- 			local cmd = node.mapping.cmd or " "
-	-- 			table.insert(conflicts, { mode = tree.mode, lhs = node.mapping.prefix, rhs = cmd })
-	-- 		end
-	-- 	end)
-	-- end
-	-- M.whichkey_lists.conflicts = conflicts
-
-	-- local ok = {}
-	-- local todo = {}
-	-- for _, mapping in pairs(mappings) do
-	-- 	local bufnr = mapping.buf
-	-- 	if bufnr == nil then
-	-- 		bufnr = "root"
-	-- 	end
-	-- 	walk(function(node)
-	-- 		if node.mapping then
-	-- 			if node.mapping.label then
-	-- 				if type(ok[node.mapping.prefix]) == "nil" then
-	-- 					ok[node.mapping.prefix] = {}
-	-- 				end
-	-- 				table.insert(ok[node.mapping.prefix], bufnr)
-	-- 				todo[node.mapping.prefix] = nil
-	-- 			elseif not ok[node.mapping.prefix] then
-	-- 				if type(todo[node.mapping.prefix]) ~= "nil" then
-	-- 					table.insert(todo[node.mapping.prefix].buffers, bufnr)
-	-- 				else
-	-- 					todo[node.mapping.prefix] = { buffers = { bufnr }, cmd = node.mapping.cmd or "" }
-	-- 				end
-	-- 			end
-	-- 		end
-	-- 	end, mapping.tree.root)
-	-- end
-	-- M.whichkey_lists.todo = todo
-	-- M.whichkey_lists.ok = ok
-
-	-- local duplicates = {}
-
-	-- for _, dup in pairs(wk_keys.duplicates) do
-	-- 	table.insert(duplicates, {
-	-- 		old_rhs = dup.other.rhs,
-	-- 		rhs = dup.cmd or "",
-	-- 		mode = dup.mode,
-	-- 		lhs = dup.prefix,
-	-- 		other_buffer = (dup.buf ~= dup.other.buffer),
-	-- 	})
-	-- end
-	-- M.whichkey_lists.duplicates = duplicates
-
-	-- print(vim.inspect(M.whichkey_lists))
 end
 
 M.parse_params = function(category, mode, keys, cmd_id, mods)
@@ -217,14 +116,12 @@ M.registerWhichkey = function()
 	wk.register(M.whichkey_map.c, { mode = "c" })
 	wk.register(M.whichkey_map.o, { mode = "o" })
 	wk.register(M.whichkey_map.i, { mode = "i" })
-
 	-- print(vim.inspect(M.whichkey_lists))
   wk.load()
 
   local wk_keys = require("which-key.keys")
   -- vim.logger:debug("REGISTER")
   -- vim.logger:debug(vim.inspect(wk_keys.mappings))
-  M.whichkey_stats()
 end
 
 -- wk.register({

@@ -42,7 +42,6 @@ function! dashboard#instance(on_vimenter) abort
         \ colorcolumn=
         \ foldcolumn=0
         \ matchpairs=
-        \ nobuflisted
         \ nocursorcolumn
         \ nocursorline
         \ nolist
@@ -52,6 +51,8 @@ function! dashboard#instance(on_vimenter) abort
         \ noswapfile
         \ signcolumn=no
         \ synmaxcol&
+
+  " nobuflisted
 
   " config the header margin-top
   call append('$', s:empty_lines)
@@ -70,7 +71,7 @@ function! dashboard#instance(on_vimenter) abort
     else
       let preview_winid = dashboard#preview#preview_file()
       set filetype=dashpreview
-      silent! setlocal nobuflisted
+      " silent! setlocal nobuflisted
       exec "normal \<C-W>\<C-w>"
       call nvim_win_set_var(0,'dashboard_preview_winid',preview_winid)
     endif

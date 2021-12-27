@@ -26,6 +26,5 @@ lsp_status.config {
   -- indicator_hint = '❗'
 }
 
-lsp_status.register_progress()
 
-return lsp_status
+lsp_status.register_progress()

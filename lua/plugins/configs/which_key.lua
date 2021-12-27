@@ -40,10 +40,11 @@ require("which-key").setup {
     group = "+", -- symbol prepended to a group
   },
   window = {
+    winblend = 15,
     border = "single", -- none, single, double, shadow
     position = "bottom", -- bottom, top
     margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
-    padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
+    padding = { 1, 0, 1, 0 }, -- extra window padding [top, right, bottom, left]
   },
   layout = {
     height = { min = 4, max = 25 }, -- min and max height of the columns
@@ -62,6 +63,7 @@ require("which-key").setup {
     -- list of mode / prefixes that should never be hooked by WhichKey
     -- this is mostly relevant for key maps that start with a native binding
     -- most people should not need to change this
+    c = { ";", ':', '%'  },
     n = { ">", "<", "@", "x" },
     i = { "j", "k" },
     v = { "j", "k" },

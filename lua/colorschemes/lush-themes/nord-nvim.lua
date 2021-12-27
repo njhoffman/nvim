@@ -247,7 +247,7 @@ local theme = lush(function()
     Number { fg = clrs.nord15 },
     Operator { fg = clrs.nord9, gui = "NONE" },
     PreProc { fg = clrs.nord9, gui = "NONE" },
-    Repeat { fg = clrs.nord9 },
+    -- Repeat { fg = clrs.nord9 },
     Special { fg = clrs.nord4 },
     SpecialChar { fg = clrs.nord13 },
     SpecialComment { fg = clrs.nord8, gui = spec.italicize_comments },
@@ -316,7 +316,7 @@ local theme = lush(function()
     TSComment = { fg = clrs.nord3_bright },
     TSConditional = { fg = clrs.nord9 }, -- For keywords related to conditionnals.
     TSKeyword = { fg = clrs.nord9 }, -- For keywords that don't fall in previous categories.
-    TSRepeat = { fg = clrs.nord9 }, -- For keywords related to loops.
+    -- TSRepeat = { fg = clrs.nord9 }, -- For keywords related to loops.
     TSKeywordFunction = { fg = clrs.nord8 },
     TSFunction = { fg = clrs.nord8 }, -- For fuction (calls and definitions).
     TSMethod = { fg = clrs.nord7 }, -- For method calls and definitions.
@@ -738,12 +738,6 @@ local theme = lush(function()
     LspDiagnosticsInformation = { fg = clrs.nord10 },
     LspDiagnosticsHint = { fg = clrs.nord9 },
     -- WhichKey
-    WhichKey = { fg = clrs.accent, style = "bold" },
-    WhichKeyGroup = { fg = clrs.text },
-    WhichKeyDesc = { fg = clrs.nord7, style = "italic" },
-    WhichKeySeperator = { fg = clrs.fg },
-    WhichKeyFloating = { bg = clrs.float },
-    WhichKeyFloat = { bg = clrs.float },
     -- LspSaga
     DiagnosticError = { fg = clrs.error },
     DiagnosticWarning = { fg = clrs.nord15 },

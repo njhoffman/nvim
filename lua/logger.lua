@@ -135,7 +135,7 @@ local function log_level_number(name)
   local levels = { "trace", "debug", "info", "warn", "error" }
   local level_n = 1
   for i, level in ipairs(levels) do
-    if level == name then level_n = i - 1 end
+    if level == name then level_n = i end
   end
   return level_n
 end
@@ -276,10 +276,10 @@ vim.notify = function(message, level, ...)
     local notif_time = vim.fn.strftime("%H:%M")
     local level_n = log_level_number(level)
 
-    local msg = parse_message(message)
-
     local cols = math.floor(vim.opt.columns:get() / 3)
     if level_n >= 4 then cols = math.floor(vim.opt.columns:get() / 2) end
+
+    local msg = parse_message(message)
     local notify_msg = notify_parse_message(message, cols)
 
     -- TODO: interate through visible windows to detect if telescope is open
@@ -337,7 +337,8 @@ vim.notify = function(message, level, ...)
       if level_n == 3 then timeout = 4000 end
       if level_n >= 4 then timeout = 6000 end
       if level_n == 5 then
-        args.keep = function() return true end
+        timeout = 8000
+        -- args.keep = function() return true end
       end
       args.timeout = args.timeout or timeout
       args.render = args.render or renderFunc(renderType)
@@ -346,43 +347,49 @@ vim.notify = function(message, level, ...)
   end, 0)
 end
 
+
 -- FIXME: lua vim.notify(vim.inspect(vim.fn.getbufinfo(1)), "warn")
 
 vim.logger = M.initLogger("root")
 
-vim.dbg = function(message, ...)
-  local args = ... or {}
-
-  local level_n = log_level_number(level)
-
-  local msg = parse_message(message, level_n)
-  vim.logger:debug(msg)
-  require("notify")(msg, 'debug', { title = args.title or 'debugger' })
-
-end
-
-vim.cmd([[
-  function DebugLog(msg)
-    call luaeval('vim.dbg(_A[1])', [a:msg])
-  endfunction
-  command -nargs=? Log call DebugLog('<args>')
-]])
-
-
-vim.notify_example = function()
-  vim.notify({ "Fixing problem.", "Please wait..." }, "info", {
-    title = 'notify example',
-    timeout = 3000,
-    on_close = function()
-      vim.notify("Problem solved", nil, { title = 'notify example' })
-      vim.notify("Error code 0x0395AF", 1, { title = 'notify example' })
-    end,
-  })
-end
-
 return M
 
+-- nvim_buf_add_highlight({buffer}, {ns_id}, {hl_group}, {line}, {col_start},
+--                        {col_end})
+--                 Adds a highlight to buffer.
 
+--                 Useful for plugins that dynamically generate highlights to a
+--                 buffer (like a semantic highlighter or linter). The function
+--                 adds a single highlight to a buffer. Unlike |matchaddpos()|
+--                 highlights follow changes to line numbering (as lines are
+--                 inserted/removed above the highlighted line), like signs and
+--                 marks do.
+
+--                 Namespaces are used for batch deletion/updating of a set of
+--                 highlights. To create a namespace, use
+--                 |nvim_create_namespace()| which returns a namespace id. Pass
+--                 it in to this function as `ns_id` to add highlights to the
+--                 namespace. All highlights in the same namespace can then be
+--                 cleared with single call to |nvim_buf_clear_namespace()|. If
+--                 the highlight never will be deleted by an API call, pass
+--                 `ns_id = -1` .
+
+--                 As a shorthand, `ns_id = 0` can be used to create a new
+--                 namespace for the highlight, the allocated id is then
+--                 returned. If `hl_group` is the empty string no highlight is
+--                 added, but a new `ns_id` is still returned. This is supported
+--                 for backwards compatibility, new code should use
+--                 |nvim_create_namespace()| to create a new empty namespace.
+
+--                 Parameters: ~
+--                     {buffer}     Buffer handle, or 0 for current buffer
+--                     {ns_id}      namespace to use or -1 for ungrouped
+--                                  highlight
+--                     {hl_group}   Name of the highlight group to use
+--                     {line}       Line to highlight (zero-indexed)
+--                     {col_start}  Start of (byte-indexed) column range to
+--                                  highlight
+--                     {col_end}    End of (byte-indexed) column range to
 -- load.lua : vim.notify('error')
 
 

@@ -182,9 +182,9 @@ cmp.setup({
 	},
 	sources = cmp.config.sources({
 		-- { name = "cmp_tabnine" },
-    { name = "nvim_lsp", priority = 1 },
     { name = "nvim_lua", priority = 1 },
-    { name = "path" , priority = 2 },
+    { name = "nvim_lsp", priority = 2 },
+    { name = "path" , priority = 3 },
 		{ name = "vsnip", priority = 3 },
 		{ name = "calc", priority = 4 },
 		{
@@ -212,7 +212,7 @@ cmp.setup({
 	},
     {
       name = 'buffer',
-      priority = 2,
+      priority = 3,
       -- get_bufnrs = function()
       --   return vim.api.nvim_get_current_buffer()
       --   -- return vim.api.nvim_list_bufs() -- use all buffers

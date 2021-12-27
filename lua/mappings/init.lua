@@ -32,9 +32,6 @@ for _, mod_name in ipairs(mapfiles) do
   load_module(mod_name)
 end
 
-
-
-
 M.map("REPL", "n", "<M-CR>", "tmux_send")
 
 -- print(M.inspect(M.whichkey_map))
