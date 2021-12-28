@@ -4,7 +4,7 @@ local notify = require("notify")
 local fade_in_slide_out_stages = require("notify.stages").fade_in_slide_out
 fade_in_slide_out_stages[2] = function()
   return {
-    opacity = { 100, frequency = 2 },
+    opacity = { 100, frequency = 3 },
     col = { vim.opt.columns:get() },
   }
 end
@@ -13,7 +13,7 @@ local config = {
   -- stages = "fade_in_slide_out", "fade", "slide", "static"
   stages = fade_in_slide_out_stages,
   -- Default timeout for notifications
-  timeout = 4000,
+  timeout = 2000,
   -- Function called when a window is closed
   on_close = nil,
   -- For stages that change opacity this is treated as the highlight behind the window
@@ -26,28 +26,14 @@ local config = {
     -- vim.api.nvim_win_set_option(win, "wrap", true)
     -- vim.api.nvim_win_set_config(win, { zindex = 100 })
   end,
+  -- keep: Function that returns whether or not to keep the window open instead of using a timeout
   render = 'default'
 }
 
-notify.setup(config)
+local ret = notify.setup(config)
 
 return notify
 
--- notify.dismiss
--- notify({ "Fixing problem.", "Please wait..." }, "info", {
---   title = plugin,
---   timeout = 3000,
---   on_close = function()
---     notify("Problem solved", nil, { title = plugin })
---     notify("Error code 0x0395AF", 1, { title = plugin })
---   end,
--- })
--- timeout: Number of milliseconds to show the window (default 5000)
--- on_open: A function to call with the window ID as an argument after opening
--- on_close: A function to call with the window ID as an argument after closing
--- title: Title string for the header
--- icon: Icon to use for the header
--- keep: Function that returns whether or not to keep the window open instead of using a timeout
 
 -- You can also use plenary's async library to avoid using callbacks:
 -- local async = require("plenary.async")

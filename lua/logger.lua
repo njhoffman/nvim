@@ -334,15 +334,15 @@ vim.notify = function(message, level, ...)
         end
       end
       if type(args.title) ~= "nil" then renderType = 'default' end
-      if level_n == 3 then timeout = 4000 end
-      if level_n >= 4 then timeout = 6000 end
-      if level_n == 5 then
+      if level_n == 3 then timeout = 2000
+      elseif level_n == 4 then timeout = 5000
+      elseif level_n == 5 then
         timeout = 8000
         -- args.keep = function() return true end
       end
       args.timeout = args.timeout or timeout
       args.render = args.render or renderFunc(renderType)
-      require("notify")(notify_msg, level, args)
+      require('notify')(notify_msg, level, args)
     end
   end, 0)
 end

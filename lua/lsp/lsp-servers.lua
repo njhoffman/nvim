@@ -1,5 +1,5 @@
 local lsp_installer = require("nvim-lsp-installer")
-local lsp_status = require('lsp-status')
+-- local lsp_status = require('lsp-status')
 local util = require('lspconfig.util')
 local api = vim.api
 local lsp = vim.lsp
@@ -9,6 +9,32 @@ local lsp = vim.lsp
 local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
+
+local show_documentation = function(bufnr)
+  local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+
+  if (ft == 'lua') then
+  else
+  end
+-- " Use K to show documentation in preview window
+-- nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+-- function! s:show_documentation()
+--   if (&filetype == 'lua')
+--     let s:word = expand('<cWORD>')
+--     echo s:word
+--     if (stridx(s:word, 'vim.api.') >= 0 || stridx(s:word, 'api.') >= 0)
+--       execute 'h ' . expand('<cword>')
+--     else
+--       call CocAction('doHover')
+--     endif
+--   elseif (index(['vim','help'], &filetype) >= 0)
+--     execute 'h '.expand('<cword>')
+--   else
+--     call CocAction('doHover')
+--   endif
+-- endfunction
+end
 
 local custom_attach = function(client, bufnr)
   local function buf_set_keymap(...)

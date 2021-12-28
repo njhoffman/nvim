@@ -44,7 +44,6 @@ require"nvim-startup".setup({
       local timer = vim.loop.new_timer()
       timer:start(3000, 0, function()
         vim.notify(message, message_lvl, {
-          timeout = 8000,
           icon = " ",
           title = "Startup Time",
         })

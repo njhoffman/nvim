@@ -100,6 +100,7 @@ local autocmds = {
 		{ "BufNewFile,BufRead", "*.env", "setlocal ft=config syn=config" },
 		{ "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 synmaxcol=500" },
 		{ "BufNewFile,BufRead", ".tasks", "setlocal ft=dosini" },
+    { "BufNewFile,BufRead", "*.visidatarc", "setlocal ft=python" },
 		{ "BufNewFile,BufRead", ".vimtasks", "setlocal ft=dosini" },
 		{ "BufNewFile,BufRead", "Dockerfile*", "setlocal ft=Dockerfile" },
     { "BufNewFile,BufRead", "Dockerfile.*", "setlocal ft=Dockerfile" },

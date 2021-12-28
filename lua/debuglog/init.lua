@@ -71,22 +71,6 @@ end
 
 local M = {}
 
-
--- local fade_in_slide_out_stages = require("notify.stages").fade_in_slide_out
--- fade_in_slide_out_stages[2] = function()
---   return {
---     opacity = { 100, frequency = 2 },
---     col = { vim.opt.columns:get() },
---   }
--- end
--- notify_config.stages = fade_in_slide_out_stages
-
-
-vim.cmd[[
-]]
-
-
-
 M.log = function(...)
   local msg = ... or {}
   local cols = math.floor(vim.opt.columns:get() / 3)

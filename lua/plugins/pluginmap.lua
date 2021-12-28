@@ -234,7 +234,8 @@ M.dap_plugins = {
 M.picker_plugins = {
   ["fzf.vim"] = { use = { "junegunn/fzf.vim" , requires = { "junegunn/fzf", "ryanoasis/vim-devicons" } } },
   ["fzf-preview.vim"] = { use = { "yuki-yano/fzf-preview.vim", requires = { "junegunn/fzf", dir = "~/.fzf", run = "./install --all" } } },
-  ["fzf-lua"] = { use = { "ibhagwan/fzf-lua", requires = { "vijaymarupudi/nvim-fzf", "kyazdani42/nvim-web-devicons" } } }
+  ["fzf-lua"] = { use = { "ibhagwan/fzf-lua", requires = { "vijaymarupudi/nvim-fzf", "kyazdani42/nvim-web-devicons" } } },
+  ["nvim-spotify"] = { use = {  "KadoBOT/nvim-spotify", requires = 'nvim-telescope/telescope.nvim', run = 'make' } }
 }
 
 M.skipped_plugins = {

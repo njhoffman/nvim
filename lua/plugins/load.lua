@@ -122,12 +122,12 @@ return require('packer').startup({
 				end,
 			})
 			use("nvim-lua/lsp_extensions.nvim")
-			use({
-				"nvim-lua/lsp-status.nvim",
-				config = function()
-					require("plugins.configs.lsp-status")
-				end,
-			})
+			-- use({
+			-- 	"nvim-lua/lsp-status.nvim",
+			-- 	config = function()
+			-- 		require("plugins.configs.lsp-status")
+			-- 	end,
+			-- })
 			use({
 				"folke/lsp-colors.nvim",
 				config = function()
