@@ -40,8 +40,8 @@ require("telegraph").setup(default_config)
 -- tmux_popup runs command in a tmux popup window.
 -- tmux_popup_session runs command in a tmux session and displays it in a popup
 -- subprocess runs command in a subprocess
--- format strings
 
+-- format strings
 -- Telegraph will replace the following variables enclosed in braces.
 -- cword - the current word under the cursor
 -- cWORD - the current BIG Word under the cursor

@@ -4,7 +4,7 @@ local telescope = require("telescope")
 local actions = require("telescope.actions")
 local action_set = require "telescope.actions.set"
 local layout_actions = require "telescope.actions.layout"
-local action_state = require('telescope.actions.state')
+local action_state = require("telescope.actions.state")
 local H = require("helpers")
 
 -- TODO: why can't replicate fuzzy matching behavior of fzf-lua
@@ -25,7 +25,7 @@ function custom_actions._multiopen(prompt_bufnr, open_cmd)
     for _, entry in ipairs(picker:get_multi_selection()) do
       vim.cmd(string.format("%s %s%s", open_cmd, cwd, entry.value))
     end
-    vim.cmd('stopinsert')
+    vim.cmd("stopinsert")
   else
     if open_cmd == "vsplit" then
       actions.file_vsplit(prompt_bufnr)
@@ -40,19 +40,10 @@ function custom_actions._multiopen(prompt_bufnr, open_cmd)
   end
 end
 
-function custom_actions.multi_selection_open_vsplit(prompt_bufnr)
-  custom_actions._multiopen(prompt_bufnr, "vsplit")
-end
-function custom_actions.multi_selection_open_split(prompt_bufnr)
-  custom_actions._multiopen(prompt_bufnr, "split")
-end
-function custom_actions.multi_selection_open_tab(prompt_bufnr)
-  custom_actions._multiopen(prompt_bufnr, "tabe")
-end
-function custom_actions.multi_selection_open(prompt_bufnr)
-  custom_actions._multiopen(prompt_bufnr, "edit")
-end
-
+function custom_actions.multi_selection_open_vsplit(prompt_bufnr) custom_actions._multiopen(prompt_bufnr, "vsplit") end
+function custom_actions.multi_selection_open_split(prompt_bufnr) custom_actions._multiopen(prompt_bufnr, "split") end
+function custom_actions.multi_selection_open_tab(prompt_bufnr) custom_actions._multiopen(prompt_bufnr, "tabe") end
+function custom_actions.multi_selection_open(prompt_bufnr) custom_actions._multiopen(prompt_bufnr, "edit") end
 
 local telescopeConfig = {
   defaults = {
@@ -71,32 +62,10 @@ local telescopeConfig = {
     hidden = true,
     no_ignore = false,
     layout_config = {
-      bottom_pane = {
-        height = 25,
-        preview_cutoff = 100,
-        prompt_position = "top"
-      },
-      center = {
-        preview_height = 0.5,
-        height = 0.4,
-        preview_cutoff = 40,
-        prompt_position = "top",
-        width = 0.5
-      },
-      cursor = {
-        height = 0.9,
-        preview_cutoff = 40,
-        width = 0.8
-      },
-      horizontal = {
-        height = 0.9,
-        prompt_position = "bottom",
-        width = 0.8,
-        preview_cutoff = 80,
-        prompt_position = "top",
-        preview_width = 0.5,
-
-      },
+      bottom_pane = { height = 25, preview_cutoff = 100, prompt_position = "top" },
+      center = { preview_height = 0.5, height = 0.4, preview_cutoff = 40, prompt_position = "top", width = 0.5 },
+      cursor = { height = 0.9, preview_cutoff = 40, width = 0.8 },
+      horizontal = { height = 0.9, prompt_position = "top", width = 0.8, preview_cutoff = 80, preview_width = 0.5 },
       vertical = {
         height = 0.9,
         preview_cutoff = 40,
@@ -157,7 +126,7 @@ local telescopeConfig = {
         -- ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
       },
     },
-    file_sorter =  require'telescope.sorters'.get_fuzzy_file,
+    file_sorter = require"telescope.sorters".get_fuzzy_file,
     -- file_previewer = previewers.vim_buffer_cat.new,
     generic_sorter = require"telescope.sorters".get_generic_fuzzy_sorter,
     -- generic_sorter = require"telescope.sorters".generic_sorter,
@@ -188,26 +157,25 @@ local telescopeConfig = {
             require("telescope.actions").close(prompt_bufnr)
             -- Depending on what you want put `cd`, `lcd`, `tcd`
             vim.cmd(string.format("silent lcd %s", dir))
-          end
-        }
-      }
+          end,
+        },
+      },
     },
   },
   extensions = {},
 }
 
-
 -- You don't need to set any of these options.
+local fb_actions = require"telescope".extensions.file_browser.actions
+
 telescopeConfig.extensions.file_browser = {
   theme = "ivy",
-  mappings = {
-    ["i"] = {
-      -- your custom insert mode mappings
-    },
-    ["n"] = {
-      -- your custom normal mode mappings
-    },
-  },
+  -- mappings = {
+  --   ["i"] = { ["<C-,>"] = fb_actions.goto_parent_dir(vim.fn.nvim_get_current_buf(), true) },
+  --   -- ["n"] = {}, -- your custom normal mode mappings
+  -- },
+}
+
 -- Insert / Normal	Action
 -- <C-f>/f	Toggle between file and folder browser
 -- <C-y>/y	Copy (multi-selected) files or folders to cwd
@@ -220,7 +188,6 @@ telescopeConfig.extensions.file_browser = {
 -- <C-g>/g	Go to parent directory
 -- <C-w>/w	Go to current working directory
 -- <A-e>/--	Toggle all entires ignoring ./ and ../
-}
 
 telescopeConfig.extensions.frecency = {
   -- db_safe_mode = false,
@@ -234,17 +201,19 @@ telescopeConfig.extensions.frecency = {
   -- specify filter like :directory_name: or  :*:'.
   -- :etc: -> workspace browser (tab autocompletes)
   workspaces = {
-    ["etc"]        = "/etc",
-    ["bin"]        = vim.fn.expand("$HOME") .. "/bin",
-    ["nvim"]       = vim.fn.stdpath('config'),
-    ["plugins"]    = vim.fn.stdpath('data') .. "/site/pack/packer/start",
-    ["nvim-cache"] = vim.fn.stdpath('config'),
-    ["nvim-data"]  = vim.fn.stdpath('data'),
+    ["etc"] = "/etc",
+    ["bin"] = vim.fn.expand("$HOME") .. "/bin",
+    ["nvim"] = vim.fn.stdpath("config"),
+    ["home"] = vim.fn.expand("$HOME"),
+    ["config"] = vim.fn.expand("$HOME") .. "/.config",
+    ["plugins"] = vim.fn.stdpath("data") .. "/site/pack/packer/start",
+    ["nvim-cache"] = vim.fn.stdpath("config"),
+    ["nvim-data"] = vim.fn.stdpath("data"),
     ["prettyfile"] = vim.fn.expand("$HOME") .. "/git/prettyfile",
-    ["zettel"]     = vim.fn.expand("$HOME") .. "/zettelkasten",
-    ["zk"]         = vim.fn.expand("$HOME") .. "/zettelkasten",
-    ["zinit"]      = vim.fn.expand("$HOME") .. "/.zinit",
-    ["zsh"]        = vim.fn.expand("$HOME") .. "/.config/zsh",
+    ["zettel"] = vim.fn.expand("$HOME") .. "/zettelkasten",
+    ["zk"] = vim.fn.expand("$HOME") .. "/zettelkasten",
+    ["zinit"] = vim.fn.expand("$HOME") .. "/.zinit",
+    ["zsh"] = vim.fn.expand("$HOME") .. "/.config/zsh",
   },
 }
 
@@ -287,12 +256,11 @@ telescopeConfig.extensions.lsp_handlers = {
 }
 
 telescopeConfig.extensions.mapper = {
-  sorter = sorters.fuzzy_with_index_bias
+  sorter = sorters.fuzzy_with_index_bias,
   -- sorter = sorters.highlighter_only
 }
 
 telescope.setup(telescopeConfig)
-
 
 if H.is_plugin_installed("aerial.nvim") then telescope.load_extension("aerial") end
 if H.is_plugin_installed("telescope-arecibo.nvim") then telescope.load_extension("arecibo") end
@@ -329,10 +297,7 @@ if H.is_plugin_installed("nvim-neoclip.lua") then
   telescope.load_extension("neoclip")
 end
 
-if H.is_plugin_installed("telescope-heading.nvim") then
-  pcall(telescope.load_extension, "heading")
-end
-
+if H.is_plugin_installed("telescope-heading.nvim") then pcall(telescope.load_extension, "heading") end
 
 pcall(telescope.load_extension, "file_browser")
 pcall(telescope.load_extension, "fzf")
@@ -347,9 +312,7 @@ pcall(telescope.load_extension, "fzf")
 -- !.mp3$	inverse-suffix-exact-match	Items that do not end with .mp3
 -- A single bar character term acts as an OR ope
 
-if H.is_plugin_installed("telescope-vimwiki.nvim") then
-  pcall(telescope.load_extension, "vimwiki")
-end
+if H.is_plugin_installed("telescope-vimwiki.nvim") then pcall(telescope.load_extension, "vimwiki") end
 
 if H.is_plugin_installed("nvim-mapper") then
   require("plugins.configs.nvim_mapper")
@@ -363,32 +326,20 @@ end
 
 if H.is_plugin_installed("nvim-notify") then telescope.load_extension("notify") end
 
-if H.is_plugin_installed("telescope-ui-select.nvim") then
-  pcall(telescope.load_extension, "ui-select")
-end
+if H.is_plugin_installed("telescope-ui-select.nvim") then pcall(telescope.load_extension, "ui-select") end
 
-if H.is_plugin_installed("telescope-hop.nvim") then
-  pcall(telescope.load_extension, "hop")
-end
+if H.is_plugin_installed("telescope-hop.nvim") then pcall(telescope.load_extension, "hop") end
 
 -- if H.is_plugin_installed("telescope-packer.nvim") then
 --   pcall(telescope.load_extension, 'packer')
 --   pcall(telescope.extensions.packer.plugins, {})
 -- end
 
-if H.is_plugin_installed("telescope-rg.nvim") then
-  pcall(telescope.load_extension, "rg")
-end
+if H.is_plugin_installed("telescope-rg.nvim") then pcall(telescope.load_extension, "rg") end
 
-if H.is_plugin_installed("github-notifications") then
-  pcall(telescope.load_extension, "ghn")
-end
+if H.is_plugin_installed("github-notifications") then pcall(telescope.load_extension, "ghn") end
 
-
-if H.is_plugin_installed("telescope-npm.nvim") then
-  pcall(telescope.load_extension, "npm")
-end
-
+if H.is_plugin_installed("telescope-npm.nvim") then pcall(telescope.load_extension, "npm") end
 
 -- sorters.fuzzy_with_index_bias = function(opts)
 --   opts = opts or {}
@@ -413,8 +364,6 @@ end
 --     end,
 --   }
 -- end
-
-
 
 -- sorters.get_generic_fuzzy_sorter = function(opts)
 --   opts = opts or {}
@@ -504,8 +453,6 @@ end
 --     end,
 --   }
 -- end
-
-
 
 -- -- telescope-config.lua
 -- local M = {}

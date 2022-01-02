@@ -119,6 +119,12 @@ end
 -- M.buf('hello')
 -- M.log(vim.api.nvim_get_all_options_info())
 -- M.buf(_G._get_stats_keymaps())
+vim.cmd([[
+  highlight! NotifyINSPECTBorder guifg=#2A70fF
+  highlight! NotifyINSPECTIcon guifg=#67b0f7
+  highlight! NotifyINSPECTTitle  guifg=#2760f7
+  highlight! link NotifyINSPECTBody Normal
+]])
 
 
 vim.dbg = M.log

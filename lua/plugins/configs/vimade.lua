@@ -60,7 +60,7 @@ vim.g.vimade = {
   },
   rowbufsize = 15,
   colbufsize = 15,
-  fadelevel = 0.6,
+  fadelevel = 0.7,
   signsretentionperiod = 1000,
   fadepriority = 100,
   enablesigns = 1,
@@ -71,7 +71,7 @@ vim.g.vimade = {
   groupdiff = 1,
   groupscrollbind = 1,
   detecttermcolors = 1,
-  usecursorhold = 0
+  usecursorhold = 0,
 }
 
 -- window instead of bufer fading

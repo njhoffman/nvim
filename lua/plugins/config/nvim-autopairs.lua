@@ -1,10 +1,8 @@
-
 -- require("nvim-autopairs.completion.cmp").setup({
 --   map_cr = true,
 --   map_complete = true,
 --   auto_select = true,
 -- })
-
 require("nvim-autopairs").setup({
   check_ts = true,
   ts_config = {
@@ -18,13 +16,13 @@ require("nvim-autopairs").setup({
   disable_filetype = { "TelescopePrompt" },
   disable_in_macro = true, -- disable when recording or executing a macro
   enable_moveright = true,
-  enable_afterquote = true, -- add bracket pairs after quote
+  enable_afterquote = false, -- add bracket pairs after quote
   map_bs = false, -- map the <BS> key
   map_c_w = false, -- map <c-w> to delete an pair if possible
   fast_wrap = {
     map = "<M-S>",
     -- map = '<M-e>',
-    chars = { "{", "[", "(", '"', "'" },
+    chars = { "{", "[", "(", "\"", "'" },
     pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
     offset = 0, -- Offset from pattern match
     end_key = "$",

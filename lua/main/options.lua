@@ -11,6 +11,8 @@ g.maplocalleader = [[,]]
 local buffer = { o, bo }
 local window = { o, wo }
 
+vim.cmd [[let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1]]
+
 -- global scope
 opt("background", "dark")
 opt("backup", false)
@@ -32,9 +34,37 @@ opt("cmdwinheight", 10)
 --  noselect Do not select a match in the menu, force the user to
 opt("completeopt", "noinsert,noselect,menuone")
 opt("cpoptions", "aABceFs_")
-opt("display", "msgsep")
+-- opt("display", "msgsep")
 opt("encoding", "UTF-8")
-opt("guicursor", [[n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50]])
+
+vim.cmd [[
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+let &t_SI = "\e[5 q"
+let &t_EI = "\e[0 q"
+
+autocmd InsertLeave,InsertEnter * set cul!
+]]
+
+-- vim.cmd([[set guicursor+=a:-blinkwait175-blinkoff150-blinkon175]])
+-- opt("guicursor", "n-v-c:block-blinkoff150-blinkon175,i-ci-ve:ver25,r-cr:hor20,o:hor50")
+-- if os.getenv("TERMINAL") == "wezterm" then
+--   -- opt("guicursor",
+--   --     "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursorzf,sm:block-blinkwait175-blinkoff150-blinkon175")
+-- vim.cmd [[
+--   set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+--   \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+--   \,sm:block-blinkwait175-blinkoff150-blinkon175
+-- ]]
+
+-- end
+
 opt("hidden", true)
 opt("inccommand", "split") -- "split" causes vimade problems
 opt("incsearch", true)
@@ -86,7 +116,7 @@ opt("conceallevel", 2, window)
 opt("cursorline", true, window)
 opt("number", true, window)
 opt("relativenumber", true, window)
-opt("signcolumn", "yes:1", window)
+opt("signcolumn", "yes:2", window)
 opt("wrap", config.Opts.wrap, window)
 -- vim.wo.wrap = O.wrap_lines -- Display long lines as just one line
 
@@ -125,7 +155,7 @@ vim.g.loaded_ruby_provider = false
 
 -- fixes unlisted buffer error
 -- https://github.com/romgrk/barbar.nvim/issues/82#issuecomment-748498951
-vim.g.netrw_bufsettings = 'noma nomod nonu nowrap ro buflisted'
+vim.g.netrw_bufsettings = "noma nomod nonu nowrap ro buflisted"
 
 -- Allows users to specify the type of embedded script highlighting they want:  (perl/python/ruby/tcl support)
 vim.g.vimsyn_embed = "--lmpPr"

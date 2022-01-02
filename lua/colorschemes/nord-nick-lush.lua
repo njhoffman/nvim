@@ -30,6 +30,7 @@ local clrs = {
   nord14 = "#22BB99",
   -- nord15 = hsl(311, 20, 63), -- #B48EAD
   nord15 = "#646EAD",
+  nord16 = "#56a9b3",
   none = "NONE",
   highlight = "#1F2233",
   disabled = "#464B5D",
@@ -67,12 +68,12 @@ local spec = lush.extends({ nord }).with(function()
     LineNr { fg = clrs.nord3 },
     CursorLine { bg = "#101018", gui = "none" },
     CursorLineNr { fg = "#afd7ff", bg = CursorLine.bg },
-    CursorColumn {},
+    CursorColumn { bg = "#7722ff"},
     -- base groups
     Statement { fg = "#5191C1" },
     Comment { fg = "#495a74", gui = "italic" },
     Conceal { bg = "none" },
-    Constant { fg = "#5679b3" },
+    Constant { fg = clrs.nord16},
     Delimiter { fg = "#5f6fa2" },
     Directory { fg = "#187298" },
     FoldColumn { fg = "#4D576A", bg = "#121212" },
