@@ -61,6 +61,7 @@ local telescopeConfig = {
     find_command = { "rg", "--ignore", "--hidden", "--files", "prompt_prefix=🔍" },
     hidden = true,
     no_ignore = false,
+    multi_icon = '◆ ',
     layout_config = {
       bottom_pane = { height = 25, preview_cutoff = 100, prompt_position = "top" },
       center = { preview_height = 0.5, height = 0.4, preview_cutoff = 40, prompt_position = "top", width = 0.5 },
