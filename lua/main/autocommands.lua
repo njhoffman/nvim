@@ -70,6 +70,7 @@ local autocmds = {
     { "BufRead,BufEnter", "*", "lua require('marks').refresh()" },
     { "BufRead,BufDelete", "*", "lua require('marks')._on_delete()" },
     -- { "BufEnter", "*", "if &buftype == 'prompt' | MarksToggleSigns | endif" },
+    -- { "BufEnter", "*", "if &filetype == 'nofile' | MarksToggleSigns | endif" },
     { "BufRead,BufDelete", "*.md", "lua require('neuron').update_virtual_titles()" },
   },
   SecondaryBuffers = {

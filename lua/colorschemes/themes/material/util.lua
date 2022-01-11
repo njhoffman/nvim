@@ -28,10 +28,10 @@ end
 util.contrast = function()
   vim.cmd [[augroup Material]]
   vim.cmd [[  autocmd!]]
-  vim.cmd [[  autocmd ColorScheme * lua require("colorschemes.themes.material.util").onColorScheme()]]
-  vim.cmd [[  autocmd TermOpen * setlocal winhighlight=Normal:NormalFloat,SignColumn:NormalFloat]]
-  vim.cmd [[  autocmd FileType packer setlocal winhighlight=Normal:NormalFloat,SignColumn:NormalFloat]]
-  vim.cmd [[  autocmd FileType qf setlocal winhighlight=Normal:NormalFloat,SignColumn:NormalFloat]]
+  vim.cmd [[  autocmd ColorScheme * lua require("colorschemes.themes.material.util").onColorScheme() ]]
+  vim.cmd [[  autocmd TermOpen * setlocal winhighlight=Normal:NormalFloat,SignColumn:NormalFloat ]]
+  vim.cmd [[  autocmd FileType packer setlocal winhighlight=Normal:NormalFloat,SignColumn:NormalFloat ]]
+  vim.cmd [[  autocmd FileType qf setlocal winhighlight=Normal:NormalFloat,SignColumn:NormalFloat ]]
   vim.cmd [[augroup end]]
 end
 

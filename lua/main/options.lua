@@ -48,8 +48,9 @@ endif
 
 let &t_SI = "\e[5 q"
 let &t_EI = "\e[0 q"
+" TODO: only set cursorline for normal buffers
+" autocmd InsertLeave,InsertEnter * set cul!
 
-autocmd InsertLeave,InsertEnter * set cul!
 ]]
 
 -- vim.cmd([[set guicursor+=a:-blinkwait175-blinkoff150-blinkon175]])
