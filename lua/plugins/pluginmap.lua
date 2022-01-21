@@ -315,11 +315,13 @@ M.syntax_plugins = {
 
 
 M.ui_plugins = {
-  ['aerial.nvim']   = { use = 'stevearc/aerial.nvim' },
-  ['nvim-notify']   = { use = "rcarriga/nvim-notify" },
-  ["dressing-nvim"] = { use = { 'stevearc/dressing.nvim', requires = "MunifTanjim/nui.nvim" } },
-  ['vim-bling']     = { use = "ivyl/vim-bling" },
-  ['specs.nvim']    = { use =  'edluffy/specs.nvim' },
+  ['aerial.nvim']    = { use = 'stevearc/aerial.nvim' },
+  ['nvim-notify']    = { use = 'rcarriga/nvim-notify' },
+  ['dressing-nvim']  = { use = { 'stevearc/dressing.nvim', requires = 'MunifTanjim/nui.nvim' } },
+  ['vim-bling']      = { use = 'ivyl/vim-bling' },
+  ['specs.nvim']     = { use = 'edluffy/specs.nvim' },
+  ['nvim-scrollbar'] = { use = 'petertriho/nvim-scrollbar' }
+
 }
 
 M.project_plugins = {

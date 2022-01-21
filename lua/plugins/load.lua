@@ -552,6 +552,8 @@ return require("packer").startup({
         "nvim-telescope/telescope-ui-select.nvim",
         "nvim-telescope/telescope-hop.nvim",
         "nvim-telescope/telescope-rg.nvim",
+        -- <c-a>: append env name, <cr>: append env value, <c-e>: edit env value
+        "LinArcX/telescope-env.nvim",
         "crispgm/telescope-heading.nvim",
         "ElPiloto/telescope-vimwiki.nvim",
         "cljoly/telescope-repo.nvim",

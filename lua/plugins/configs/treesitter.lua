@@ -5,6 +5,7 @@ local tsconfig = require "nvim-treesitter.configs"
 tsconfig.setup {
   -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = "all",
+  ignore_install = {'phpdoc'},
   playground = {
     enable = true,
     disable = {},

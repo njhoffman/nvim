@@ -24,7 +24,7 @@ opt("linebreak", true)
 opt("textwidth", 1000)
 opt("swapfile", false)
 opt("clipboard", "unnamedplus")
-opt("cmdheight", 2) -- 1
+opt("cmdheight", 1) -- 1
 opt("cmdwinheight", 10)
 --  menu	   Use a popup menu to show the possible completions.
 --  menuone  Use the popup menu also when there is only one match.

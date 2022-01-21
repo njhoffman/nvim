@@ -300,6 +300,7 @@ end
 
 if H.is_plugin_installed("telescope-heading.nvim") then pcall(telescope.load_extension, "heading") end
 
+pcall(telescope.load_extension, "env")
 pcall(telescope.load_extension, "file_browser")
 pcall(telescope.load_extension, "fzf")
 --  FZF Syntax:
