@@ -178,7 +178,6 @@ M.plugins = {
   -- ['vim-liquid'] = {},
   -- ['vim-log-highlighting'] = {},
   -- ['vim-lua'] = {},
-  -- ['vim-man'] = {},
   -- ['vim-mundo'] = {},
   -- ['vim-nix'] = {},
   -- ['vim-node'] = {},
@@ -261,6 +260,7 @@ M.format_plugins = {
   ['vim-camelsnek']   = { use = { "nicwest/vim-camelsnek" } },
   ['vim-checkbox']    = { use = { "jkramer/vim-checkbox" } },
   ['vim-sort-motion'] = { use = { "christoomey/vim-sort-motion" } },
+  ["telekasten.nvim"] = { use = { "renerocksai/telekasten.nvim", requires = { "renerocksai/calendar-vim" } }},
 }
 
 
@@ -298,6 +298,7 @@ M.syntax_plugins = {
   ["vim-liquid"]                 = { use = "njhoffman/vim-liquid" },
   ["vim-log-highlighting"]       = { use = "mtdl9/vim-log-highlighting" },
   ["vim-lua"]                    = { use = "tbastos/vim-lua" },
+  ["vim-man"]                    = { use = "njhoffman/vim-man" }, -- "vim-utils/vim-man"
   ["vim-nix"]                    = { use = "lnl7/vim-nix" },
   ["vim-node"]                   = { use = "moll/vim-node" },
   ["vim-pandoc-syntax"]          = { use = "vim-pandoc/vim-pandoc-syntax" },
@@ -321,7 +322,6 @@ M.ui_plugins = {
   ['vim-bling']      = { use = 'ivyl/vim-bling' },
   ['specs.nvim']     = { use = 'edluffy/specs.nvim' },
   ['nvim-scrollbar'] = { use = 'petertriho/nvim-scrollbar' }
-
 }
 
 M.project_plugins = {
@@ -330,7 +330,7 @@ M.project_plugins = {
   ["vim-fugitive"]  = { use = "tpope/vim-fugitive" },
   ["vim-rhubarb"]   = { use = "tpope/vim-rhubarb" },
   ['vim-flog']      = { use = 'rbong/vim-flog' },
-}
+  ["competitest.nvim"] = { use = {'xeluxee/competitest.nvim', requires = 'MunifTanjim/nui.nvim', }} }
 
 M.interface_plugins = {
   ['quickmath-nvim'] = { use = "jbyuki/quickmath.nvim" },
@@ -342,6 +342,7 @@ M.interface_plugins = {
 }
 
 M.lsp_plugins = {
+  ['fidget.nvim']  = { use = "j-hui/fidget.nvim"  },
   ['null-ls.nvim'] = { use = { "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" } } ,
   ['jbyuki/ntangle-lsp.nvim'] = { use = { "jbyuki/ntangle-lsp.nvim", requires = { 'jbyuki/ntangle-ts.nvim' ,'neovim/nvim-lspconfig' }}},
 }

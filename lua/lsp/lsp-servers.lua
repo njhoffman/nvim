@@ -143,8 +143,23 @@ lspservers["dockerls"] = {
   single_file_support = true,
 }
 
-lspservers["gopls"] = { cmd = { "gopls" }, filetypes = { "go", "gomod" },
-                        root_dir = util.root_pattern("go.mod", ".git") }
+lspservers["gopls"] = {
+  cmd = { "gopls" },
+  filetypes = { "go", "gomod" },
+  root_dir = util.root_pattern("go.mod", ".git"),
+  single_file_support = true
+}
+
+lspservers["golangci_lint_ls"] = {
+  cmd = { "golangci-lint-langserver" },
+  filetypes = { "go", "gomod" },
+  init_options = {
+    command = { "golangci-lint", "run", "--out-format", "json" },
+  },
+  root_dir = util.root_pattern('go.work') or util.root_pattern('go.mod', '.golangci.yaml', '.git'),
+  single_file_support = true
+
+}
 
 lspservers["jsonls"] = {
   cmd = { "vscode-json-language-server", "--stdio" },
@@ -293,6 +308,8 @@ lspservers["terraformls"] = {
   cmd = { "terraform-ls", "serve" },
   filetypes = { "terraform" },
   root_dir = util.root_pattern(".terraform", ".git"),
+  single_file_support = true
+
 }
 
 lspservers["yamlls"] = {
