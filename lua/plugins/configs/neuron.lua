@@ -1,14 +1,17 @@
--- neuron.nvim
--- these are all the default values
+-- NOTE: run neuron gen in ~/zettelkasten after install
+-- install:
+--   curl -L https://nixos.org/nix/install | sh
+--   nix-env -iA cachix -f https://cachix.org/api/v1/install && cachix use srid
+--   nix-env -if https://github.com/srid/neuron/archive/master.tar.gz
 
 local neuron = require("neuron")
 
 local config = neuron.setup {
   virtual_titles = true,
   mappings = false,
-  run = function()
-    neuron.update_virtual_titles()
-  end,
+  -- run = function()
+  --   neuron.update_virtual_titles()
+  -- end,
   neuron_dir = vim.fn.expand("~/zettelkasten"),
   leader = "gz", -- the leader key to for all mappings, remember with 'go zettel'
 }

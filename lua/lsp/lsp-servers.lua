@@ -105,27 +105,6 @@ end
 
 local lspservers = {}
 
-lspservers["pylsp"] = {
-  root_dir = function(fname)
-    local root_files = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile" }
-    return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
-  end,
-  single_file_support = true,
-  settings = {
-    pylsp = {
-      plugins = {
-        pylint = { enabled = true, executable = "pylint" },
-        pyflakes = { enabled = false },
-        pycodestyle = { enabled = false },
-        jedi_completion = { fuzzy = true },
-        pyls_isort = { enabled = true },
-        pylsp_mypy = { enabled = true },
-      },
-    },
-  },
-  flags = { debounce_text_changes = 200 },
-}
-
 lspservers["bashls"] = {
   cmd = { "bash-language-server", "start" },
   cmd_env = { GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)" },
@@ -212,6 +191,60 @@ lspservers["sumneko_lua"] = {
     },
   },
 }
+
+lspservers["pylsp"] = {
+  root_dir = function(fname)
+    local root_files = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile" }
+    return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
+  end,
+  single_file_support = true,
+  settings = {
+    pylsp = {
+      plugins = {
+        pylint = { enabled = true, executable = "pylint" },
+        pyflakes = { enabled = false },
+        pycodestyle = { enabled = false },
+        jedi_completion = { fuzzy = true },
+        pyls_isort = { enabled = true },
+        pylsp_mypy = { enabled = true },
+      },
+    },
+  },
+  flags = { debounce_text_changes = 200 },
+}
+
+lspservers["sqls"] = {
+  filetypes = { "sql", "mysql", "pgsql" },
+  settings = {
+    sqls = {
+      connections = {
+        {
+          driver = "postgresql",
+          dataSourceName = "host=localhost port=5432 user=spadash password=spadash dbname=spadash_august sslmode=disable",
+        },
+      },
+    },
+  },
+}
+
+lspservers["terraformls"] = {
+  cmd = { "terraform-ls", "serve" },
+  filetypes = { "terraform" },
+  root_dir = util.root_pattern(".terraform", ".git"),
+  single_file_support = true
+
+}
+
+lspservers["yamlls"] = {
+  cmd = { "yaml-language-server", "--stdio" },
+  filetypes = { "yaml", "yaml.docker-compose" },
+  settings = { redhat = { telemetry = { enabled = false } } },
+  single_file_support = true,
+  root_dir = util.find_git_ancestor,
+}
+
+lspservers["vimls"] = { flags = { debounce_text_changes = 500 } }
+
 -- -- Formatting via efm
 -- local prettier = require "efm/prettier"
 -- -- local eslint = require "efm/eslint"
@@ -289,38 +322,6 @@ lspservers["efm"] = {
     },
   },
 }
-
-lspservers["sqls"] = {
-  filetypes = { "sql", "mysql", "pgsql" },
-  settings = {
-    sqls = {
-      connections = {
-        {
-          driver = "postgresql",
-          dataSourceName = "host=localhost port=5432 user=spadash password=spadash dbname=spadash_august sslmode=disable",
-        },
-      },
-    },
-  },
-}
-
-lspservers["terraformls"] = {
-  cmd = { "terraform-ls", "serve" },
-  filetypes = { "terraform" },
-  root_dir = util.root_pattern(".terraform", ".git"),
-  single_file_support = true
-
-}
-
-lspservers["yamlls"] = {
-  cmd = { "yaml-language-server", "--stdio" },
-  filetypes = { "yaml", "yaml.docker-compose" },
-  settings = { redhat = { telemetry = { enabled = false } } },
-  single_file_support = true,
-  root_dir = util.find_git_ancestor,
-}
-
-lspservers["vimls"] = { flags = { debounce_text_changes = 500 } }
 
 local capabilities = require("cmp_nvim_lsp").update_capabilities(lsp.protocol.make_client_capabilities())
 capabilities.textDocument.completion.completionItem.snippetSupport = true

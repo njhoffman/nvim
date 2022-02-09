@@ -330,7 +330,9 @@ M.project_plugins = {
   ["vim-fugitive"]  = { use = "tpope/vim-fugitive" },
   ["vim-rhubarb"]   = { use = "tpope/vim-rhubarb" },
   ['vim-flog']      = { use = 'rbong/vim-flog' },
-  ["competitest.nvim"] = { use = {'xeluxee/competitest.nvim', requires = 'MunifTanjim/nui.nvim', }} }
+  ["competitest.nvim"] = { use = {'xeluxee/competitest.nvim', requires = 'MunifTanjim/nui.nvim' }},
+  ["cpbooster.vim"] = { use = "searleser97/cpbooster.vim"}
+}
 
 M.interface_plugins = {
   ['quickmath-nvim'] = { use = "jbyuki/quickmath.nvim" },

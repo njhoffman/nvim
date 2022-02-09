@@ -16,7 +16,7 @@
 
 require('neoclip').setup({
   history = 1000,
-  enable_persistant_history = true,
+  enable_persistent_history = true,
   db_path = vim.fn.getenv("HOME") .. "/.vim/databases/neoclip.sqlite3",
   filter = nil,
   preview = true,
