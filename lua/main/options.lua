@@ -67,7 +67,7 @@ let &t_EI = "\e[0 q"
 -- end
 
 opt("hidden", true)
-opt("inccommand", "split") -- "split" causes vimade problems
+opt("inccommand", "split")
 opt("incsearch", true)
 opt("magic", true)
 opt("hlsearch", true)

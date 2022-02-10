@@ -91,10 +91,9 @@ local custom_attach = function(client, bufnr)
     vim.api.nvim_command([[augroup Format]])
     vim.api.nvim_command([[autocmd! * <buffer>]])
     vim.api.nvim_command([[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_sync(nil, 500)]])
-    vim.api.nvim_command([[augroup END]])
     -- vim.cmd([[ autocmd BufWritePre * :lua vim.lsp.buf.formatting_sync(nil, 500) ]])
-    -- if client.name ~= "tsserver" then
-    -- end
+    vim.api.nvim_command([[augroup END]])
+    -- if client.name ~= "tsserver" then end
     vim.notify(string.format("Formatting supported %s", client.name), "debug")
   end
 
@@ -246,22 +245,31 @@ lspservers["yamlls"] = {
 lspservers["vimls"] = { flags = { debounce_text_changes = 500 } }
 
 -- -- Formatting via efm
+-- https://github.com/tsuyoshicho/vim-efm-langserver-settings
 -- local prettier = require "efm/prettier"
 -- -- local eslint = require "efm/eslint"
 -- local luafmt = require "efm/luafmt"
 -- local rustfmt = require "efm/rustfmt"
 -- -- local autopep = require "efm/autopep8"
 
-local luafmt = {
+local lua_format = {
   formatCommand = "lua-format -i --config=$HOME/.config/nvim/lua/lsp/efm/lua-format.cfg",
+  formatStdin = true,
+
+}
+
+local luafmt = {
+  formatCommand = "luafmt --indent-count 2 --line-width 120",
   formatStdin = true,
 }
 
 local shellcheck = {
   lintCommand = "shellcheck -f gcc -x -",
+  -- lintCommand = "shellcheck -f gcc -x",
   lintStdin = true,
   lintIgnoreExitCode = true,
-  lintFormats = { "%f=%l:%c: %trror: %m", "%f=%l:%c: %tarning: %m", "%f=%l:%c: %tote: %m" },
+  -- lintFormats = { "%f=%l:%c: %trror: %m", "%f=%l:%c: %tarning: %m", "%f=%l:%c: %tote: %m" },
+  lintFormats = { '%f:%l:%c: %trror: %m', '%f:%l:%c: %tarning: %m', '%f:%l:%c: %tote: %m' },
 }
 
 local luacheck = {
@@ -283,6 +291,7 @@ local shfmt = { formatCommand = "shfmt -ln bash -i 2 -bn -ci -sr -kp", lintIgnor
 local languages = {
   lua = { luafmt, luacheck },
   yaml = { prettier },
+  bash = { shfmt, shellcheck },
   sh = { shfmt, shellcheck },
   json = { prettier },
   -- typescript = {prettier, eslint},
