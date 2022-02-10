@@ -231,7 +231,16 @@ lspservers["terraformls"] = {
   filetypes = { "terraform" },
   root_dir = util.root_pattern(".terraform", ".git"),
   single_file_support = true
+}
 
+lspservers["tsserver"] = {
+  cmd = { "typescript-language-server", "--stdio" },
+  single_file_support = true,
+  filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+  init_options = {
+    hostInfo = "neovim",
+  },
+  root_dir = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git")
 }
 
 lspservers["yamlls"] = {
