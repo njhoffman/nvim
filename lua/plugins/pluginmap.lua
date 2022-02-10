@@ -7,7 +7,8 @@ M.search_plugins = {
 }
 
 M.treesitter_plugins = {
-  ["tree-sitter-ntangle"] = {use = {"jbyuki/tree-sitter-ntangle"}}
+  ["tree-sitter-ntangle"] = {use = {"jbyuki/tree-sitter-ntangle"}},
+  ["nvim-treesitter-endwise"] = {use = {"RRethy/nvim-treesitter-endwise"}}
 }
 
 M.dap_plugins = {

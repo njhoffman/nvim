@@ -153,6 +153,9 @@ tsconfig.setup {
       -- [";"] = "textsubjects-container-outer",
       -- ["."] = "textsubjects-smart",
     }
+  },
+  endwise = {
+    enable = true
   }
 }
 
