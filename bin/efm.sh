@@ -39,10 +39,10 @@ function install-efm-deps {
   # pwsh
   # valac (and meson & ninja)
   # rebar3
-
   # Julia
+  asdf install julia latest
 
   # PHP & Composer
-  apt install rec2 libgd-dev libonig-dev
+  apt install re2c libgd-dev libonig-dev libzip-dev libxml2-dev
   asdf install php latest
 }

@@ -36,6 +36,7 @@
 --   [[let g:fzf_preview_filelist_command = "rg --files --hidden --no-ignore-vcs --follow --no-messages -g !\"* *\""]]
 -- )
 -- vim.cmd([[let g:fzf_preview_fzf_color_option = "bg:#000008,bg+:#002222,spinner:#98BC99,hl:#58aeb5,fg:#a3a3b6,header:#586e75,info:#cb4b16,pointer:#07ae71,marker:#07ae71,fg+:#a3d3e6,prompt:#55FFFF,hl+:#07cea1"]])
+
 vim.g.fzf_preview_preview_key_bindings =
     "Ctrl-/:toggle-preview,ctrl-p:up,ctrl-n:down,tab:down,shift-tab:up,ctrl-b:page-up,ctrl-f:page-down,alt-g:top,alt-b:page-up+page-up+page-up,alt-f:page-down+page-down+page-down,alt-n:toggle-down,alt-p:toggle-up,alt-space:toggle,ctrl-alt-a:toggle-all,alt-a:toggle-all,up:preview-up,down:preview-down,pgup:preview-page-up,pgdn:preview-page-down,shift-up:preview-page-up,shift-down:preview-page-down,ctrl-y:execute-silent(echo {+} | xsel --clipboard),ctrl-e:execute(nvim {+} < /dev/tty > /dev/tty 2>&1),ctrl-v:execute(code {+})"
 

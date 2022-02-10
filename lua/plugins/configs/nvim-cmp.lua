@@ -232,16 +232,6 @@ cmp.setup.cmdline("/", {{{name = "buffer"}}})
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(":", {sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline"}})})
 
-function _G.MyOmniFunc(findstart, prefix)
-  if findstart == 1 then
-    return vim.fn.col(".")
-  end
-  require("cmp").complete()
-  return {}
-end
-
-vim.opt.omnifunc = _G.MyOmniFunc
-
 require("cmp-npm").setup({ignore = {}, only_semantic_versions = false})
 
 -- cmp-vimwiki-tags

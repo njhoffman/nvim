@@ -29,6 +29,7 @@ tsconfig.setup {
     use_languagetree = true,
     disable = {
       -- 'lua',
+      "latex",
       "bash",
       "markdown"
     },
