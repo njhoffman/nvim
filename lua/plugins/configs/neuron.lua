@@ -9,9 +9,9 @@ local neuron = require("neuron")
 local config = neuron.setup {
   virtual_titles = true,
   mappings = false,
-  -- run = function()
-  --   neuron.update_virtual_titles()
-  -- end,
+  run = function()
+    neuron.update_virtual_titles()
+  end,
   neuron_dir = vim.fn.expand("~/zettelkasten"),
   leader = "gz", -- the leader key to for all mappings, remember with 'go zettel'
 }

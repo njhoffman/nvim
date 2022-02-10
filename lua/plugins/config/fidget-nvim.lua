@@ -1,5 +1,5 @@
 
-local default_options = {
+  local default_options = {
   text = {
     spinner = "pipe",         -- animation shown when tasks are ongoing
     done = "✔",               -- character shown when all tasks are complete

@@ -5,7 +5,7 @@ local tsconfig = require "nvim-treesitter.configs"
 tsconfig.setup {
   -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = "all",
-  ignore_install = {'phpdoc'},
+  ignore_install = {"phpdoc", "latex"},
   playground = {
     enable = true,
     disable = {},
@@ -21,8 +21,8 @@ tsconfig.setup {
       unfocus_language = "F",
       update = "R",
       goto_node = "<cr>",
-      show_help = "?",
-    },
+      show_help = "?"
+    }
   },
   highlight = {
     enable = true,
@@ -30,19 +30,19 @@ tsconfig.setup {
     disable = {
       -- 'lua',
       "bash",
-      "markdown",
+      "markdown"
     },
     custom_captures = {
       -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-      ["foo.bar"] = "Identifier",
+      ["foo.bar"] = "Identifier"
     },
-    additional_vim_regex_highlighting = true,
+    additional_vim_regex_highlighting = true
   },
-  context_commentstring = { enable = true, enable_autocmd = false },
+  context_commentstring = {enable = true, enable_autocmd = false},
   refactor = {
-    smart_rename = { enable = true, keymaps = { smart_rename = "gR" } },
-    highlight_definitions = { enable = true },
-    highlight_current_scope = { enable = config.highlight },
+    smart_rename = {enable = true, keymaps = {smart_rename = "gR"}},
+    highlight_definitions = {enable = true},
+    highlight_current_scope = {enable = config.highlight},
     navigation = {
       enable = true,
       keymaps = {
@@ -50,13 +50,13 @@ tsconfig.setup {
         list_definitions = "gnD",
         list_definitions_toc = "gO",
         goto_next_usage = "<a-*>",
-        goto_previous_usage = "<a-#>",
-      },
-    },
+        goto_previous_usage = "<a-#>"
+      }
+    }
   },
   autotag = {
     enable = config.autotag,
-    filetypes = { "html", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue" },
+    filetypes = {"html", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue"},
     skip_tags = {
       "area",
       "base",
@@ -75,11 +75,11 @@ tsconfig.setup {
       "source",
       "track",
       "wbr",
-      "menuitem",
-    },
+      "menuitem"
+    }
   },
   indent = {
-    enable = config.indent,
+    enable = config.indent
   },
   textobjects = {
     select = {
@@ -91,29 +91,29 @@ tsconfig.setup {
         ["af"] = "@function.outer",
         ["if"] = "@function.inner",
         ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-      },
+        ["ic"] = "@class.inner"
+      }
     },
     swap = {
       enable = true,
-      swap_next = { ["<leader>a"] = "@parameter.inner" },
-      swap_previous = { ["<leader>A"] = "@parameter.inner" },
+      swap_next = {["<leader>a"] = "@parameter.inner"},
+      swap_previous = {["<leader>A"] = "@parameter.inner"}
     },
     move = {
       enable = true,
       set_jumps = true,
-      goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-      goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
+      goto_next_start = {["]f"] = "@function.outer", ["]c"] = "@class.outer"},
+      goto_previous_start = {["[f"] = "@function.outer", ["[c"] = "@class.outer"}
     },
     lsp_interop = {
       enable = true,
       border = "none",
-      peek_definition_code = { ["gp"] = "@function.outer", ["gP"] = "@class.outer" },
-    },
+      peek_definition_code = {["gp"] = "@function.outer", ["gP"] = "@class.outer"}
+    }
   },
-  rainbow = { enable = config.rainbow },
+  rainbow = {enable = config.rainbow},
   matchup = {
-    enable = true, -- mandatory, false will disable the whole extension
+    enable = true -- mandatory, false will disable the whole extension
     -- disable = {"c", "ruby"} -- optional, list of language that will be disabled
   },
   pairs = {
@@ -123,36 +123,36 @@ tsconfig.setup {
     highlight_self = false, -- whether to highlight also the part of the pair under cursor (or only the partner)
     goto_right_end = false, -- whether to go to the end of the right partner or the beginning
     fallback_cmd_normal = "call matchit#Match_wrapper('',1,'n')", -- What command to issue when we can't find a pair (e.g. "normal! %")
-    keymaps = { goto_partner = "<leader>%" },
+    keymaps = {goto_partner = "<leader>%"}
   },
   -- TODO: incremental selection, text objects, textsubjects or treehopper text hints?
   incremental_selection = {
     enable = true,
-    disable = { "markdown" },
+    disable = {"markdown"},
     keymaps = {
       -- <CR><CR> ... / <CR><TAB><TAB>...
-      init_selection = '<CR>',
-      scope_incremental = '<CR>',
-      node_incremental = '<TAB>',
-      node_decremental = '<S-TAB>',
+      init_selection = "<CR>",
+      scope_incremental = "<CR>",
+      node_incremental = "<TAB>",
+      node_decremental = "<S-TAB>"
       -- defaults --
       -- init_selection = "gnn",
       -- node_incremental = "grn", -- visual
       -- scope_incremental = "grc", -- visual
       -- node_decremental = "grm", -- visual
-    },
+    }
   },
   textsubjects = {
     -- Lua, Rust, Go, Ruby, Python, JavaScript / JSX, TypeScript / TSX, Elixir, Julia.
     -- v<CR><CR>...
-    enable  = false,
+    enable = false,
     keymaps = {
-      ['<cr>'] = 'textsubjects-smart', -- works in visual mode
+      ["<cr>"] = "textsubjects-smart" -- works in visual mode
       -- ["<tab>"] = "textsubjects-container-outer",
       -- [";"] = "textsubjects-container-outer",
       -- ["."] = "textsubjects-smart",
-    },
-  },
+    }
+  }
 }
 
 -- require"treesitter-context.config".setup {
@@ -171,7 +171,6 @@ tsconfig.setup {
 --   swap_textobject(query_string, 1)
 --   pcall(vim.fn["repeat#set"], ":TSTextobjectSwapNext "..query_string..CR)
 -- end
-
 
 -- -------------------- TEXT OBJECTS --------------------------
 -- for _, ch in ipairs({

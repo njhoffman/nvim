@@ -3,15 +3,11 @@ local o, wo, bo = vim.o, vim.wo, vim.bo
 local opt = require("utils.core").opt
 local config = require("config")
 
--- TODO: set global directory values from config
-
 g.mapleader = [[,]]
 g.maplocalleader = [[,]]
 
 local buffer = { o, bo }
 local window = { o, wo }
-
-vim.cmd [[let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1]]
 
 -- global scope
 opt("background", "dark")
