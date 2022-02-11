@@ -117,7 +117,7 @@ M.ui_plugins = {
 
 M.project_plugins = {
   -- VimEnter necessary Otherwise it produces an error when a :Git buffer is open.
-  ["gitsigns.nvim"] = {use = {"lewis6991/gitsigns.nvim", requires = {"nvim-lua/plenary.nvim"}, event = "VimEnter"}},
+  ["gitsigns.nvim"] = {use = {"lewis6991/gitsigns.nvim", requires = {"nvim-lua/plenary.nvim"}}},
   ["vim-fugitive"] = {use = "tpope/vim-fugitive"},
   ["vim-rhubarb"] = {use = "tpope/vim-rhubarb"},
   ["vim-flog"] = {use = "rbong/vim-flog"},
@@ -141,6 +141,12 @@ M.lsp_plugins = {
     use = {"jbyuki/ntangle-lsp.nvim", requires = {"jbyuki/ntangle-ts.nvim", "neovim/nvim-lspconfig"}}
   }
 }
+
+M.theme_plugins = {
+  ["feline.nvim"] = {use = "famiu/feline.nvim" },
+  -- branch = 'develop',
+}
+
 
 M.check_require_exists = function(fname)
   local res = pcall(require, fname)
@@ -224,6 +230,7 @@ M.load_plugins = function(use, load_config)
     M.project_plugins,
     M.syntax_plugins,
     M.treesitter_plugins,
+    M.theme_plugins,
     M.search_plugins
   }
 
