@@ -1,14 +1,27 @@
 local components = require("feline.presets")["default"].components
 local properties = require("feline.presets")["default"].properties
 
+vim.cmd("hi link diffAdded DiffAdd")
+vim.cmd("hi link diffRemoved DiffDelete")
+vim.cmd("hi link diffChanged DiffChange")
+vim.cmd("hi link diffLine DiffText")
+vim.cmd("hi link diffNewFile DiffAdd")
+vim.cmd("hi link diffFile DiffText")
+vim.cmd("hi link diffIndexFile DiffText")
+-- call remote#host#UpdateRemotePlugins()
+
 local function LspStatus()
-  if #vim.lsp.buf_get_clients() > 0 then return require("lsp-status").status() end
+  if #vim.lsp.buf_get_clients() > 0 then
+    return require("lsp-status").status()
+  end
   return ""
   -- return require("lsp-status").status_progress()
 end
 
 local function LspLightbulb()
-  if #vim.lsp.buf_get_clients() > 0 then return require"nvim-lightbulb".get_status_text() end
+  if #vim.lsp.buf_get_clients() > 0 then
+    return require "nvim-lightbulb".get_status_text()
+  end
   return ""
 end
 
@@ -28,7 +41,7 @@ vim.cmd [[set termguicolors]]
 -- }
 -- table.insert(components.right.active, 1, { provider = LspStatus, hl = { fg = "cyan", bg = "bg", style = "bold" } })
 
-require("feline").setup({ colors = { fg = "#909090", bg = "#0F1216" } })
+require("feline").setup({colors = {fg = "#909090", bg = "#0F1216"}})
 
 -- table.insert(components.right.active, { provider = LspStatus, hl = { fg = "cyan", bg = "bg", style = "bold" } })
 

@@ -6,8 +6,8 @@ local config = require("config")
 g.mapleader = [[,]]
 g.maplocalleader = [[,]]
 
-local buffer = { o, bo }
-local window = { o, wo }
+local buffer = {o, bo}
+local window = {o, wo}
 
 -- global scope
 opt("background", "dark")
@@ -91,7 +91,7 @@ opt("sidescrolloff", 5)
 opt("smartcase", true)
 opt("splitbelow", true)
 opt("splitright", true)
-opt("termguicolors", true)
+
 opt("undolevels", 1000)
 opt("updatetime", 4000)
 opt("wildignore", "*.o,*~,*.pyc")
@@ -129,9 +129,13 @@ opt("tabstop", 2, buffer)
 opt("undofile", true, buffer)
 opt("fileformat", "unix", buffer)
 
+opt("termguicolors", true)
+opt("background", "dark")
+vim.cmd [[colorscheme nord-nick]]
+
 vim.g.qf_disable_statusline = true -- This should be the default
 vim.g.Eunuch_find_executable = "fd" -- I use my fork of vim-eunuch
-vim.g.Illuminate_ftblacklist = { ".*" } -- Only use lsp highlighting from the plugin
+vim.g.Illuminate_ftblacklist = {".*"} -- Only use lsp highlighting from the plugin
 vim.g.netrw_banner = false
 vim.g.netrw_silent = 1
 -- vim.g.netrw_http_cmd = 'curl'
@@ -141,12 +145,12 @@ vim.g.tex_flavor = "latex"
 vim.g.vimtex_view_method = "skim"
 vim.g.vimtex_quickfix_mode = true
 vim.g.vimtex_compiler_latexmk = {
-  options = { "-pdf", "-shell-escape", "-verbose", "-file-line-error", "-synctex=1", "-interaction=nonstopmode" },
+  options = {"-pdf", "-shell-escape", "-verbose", "-file-line-error", "-synctex=1", "-interaction=nonstopmode"}
 }
 vim.g["test#strategy"] = "neovim"
 vim.g.tex_flavor = "latex"
 vim.g.indent_blankline_char = "│"
-vim.g.indent_blankline_filetype = { "rust", "go", "lua", "json", "ruby" }
+vim.g.indent_blankline_filetype = {"rust", "go", "lua", "json", "ruby"}
 vim.g.indent_blankline_use_treesitter = true
 vim.g.loaded_ruby_provider = false
 

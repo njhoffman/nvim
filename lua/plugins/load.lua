@@ -742,28 +742,14 @@ return require("packer").startup({
     -- ====================================
     -- Themes
     use({ "rktjmp/lush.nvim" })
+
+    vim.cmd("colorscheme nord-nick")
+
     use({
       "romgrk/barbar.nvim",
       requires = "romgrk/doom-one.vim",
       config = function() require("plugins.configs.barbar") end,
     })
-    use({
-      "famiu/feline.nvim",
-      -- branch = 'develop',
-      config = function()
-        vim.cmd("colorscheme nord-nick")
-        require("plugins.configs.feline")
-        vim.cmd("hi link diffAdded DiffAdd")
-        vim.cmd("hi link diffRemoved DiffDelete")
-        vim.cmd("hi link diffChanged DiffChange")
-        vim.cmd("hi link diffLine DiffText")
-        vim.cmd("hi link diffNewFile DiffAdd")
-        vim.cmd("hi link diffFile DiffText")
-        vim.cmd("hi link diffIndexFile DiffText")
-      end,
-      -- call remote#host#UpdateRemotePlugins()
-    })
-
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if packer_bootstrap then

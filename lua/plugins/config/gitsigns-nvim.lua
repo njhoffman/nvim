@@ -1,24 +1,68 @@
-local bars = { thick = "▎", thin = "│" }
-local signs_config_1 = {
-  add = { hl = "GitSignsAddFaded", text = bars.thin },
-  change = { hl = "GitSignsChangeFaded", text = bars.thin },
-  delete = { hl = "GitSignsDeleteFaded", text = bars.thin },
-  topdelete = { hl = "GitSignsDeleteFaded", text = bars.thin },
-  changedelete = { hl = "GitSignsChangeDeleteFaded", text = bars.thin },
+local bars = {thick = "▎", thin = "│"}
+local signs_thin = {
+  add = {hl = "GitSignsAddFaded", text = bars.thin},
+  change = {hl = "GitSignsChangeFaded", text = bars.thin},
+  delete = {hl = "GitSignsDeleteFaded", text = bars.thin},
+  topdelete = {hl = "GitSignsDeleteFaded", text = bars.thin},
+  changedelete = {hl = "GitSignsChangeDeleteFaded", text = bars.thin}
 }
 
-local signs_config_2 = {
-  add = { hl = "GreenSign", text = bars.thick, numhl = "GitSignsAddNr" },
-  change = { hl = "BlueSign", text = bars.thick, numhl = "GitSignsChangeNr" },
-  delete = { hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr" },
-  topdelete = { hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr" },
-  changedelete = { hl = "PurpleSign", text = bars.thick, numhl = "GitSignsChangeDeleteNr" },
+local signs_thick = {
+  add = {hl = "GreenSign", text = bars.thick, numhl = "GitSignsAddNr"},
+  change = {hl = "BlueSign", text = bars.thick, numhl = "GitSignsChangeNr"},
+  delete = {hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr"},
+  topdelete = {hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr"},
+  changedelete = {hl = "PurpleSign", text = bars.thick, numhl = "GitSignsChangeDeleteNr"}
 }
 
-require("gitsigns").setup {
-  signs = signs_config_1,
-  numhl = false,
-  linehl = false,
+local defaultSettings = {
+  signs = {
+    add = {hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn"},
+    change = {hl = "GitSignsChange", text = "│", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn"},
+    delete = {hl = "GitSignsDelete", text = "_", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn"},
+    topdelete = {hl = "GitSignsDelete", text = "‾", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn"},
+    changedelete = {hl = "GitSignsChange", text = "~", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn"}
+  },
+  signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
+  numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
+  linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+  word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
+  watch_gitdir = {
+    interval = 1000,
+    follow_files = true
+  },
+  attach_to_untracked = true,
+  current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  current_line_blame_opts = {
+    virt_text = true,
+    virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+    delay = 1000,
+    ignore_whitespace = false
+  },
+  current_line_blame_formatter_opts = {
+    relative_time = false
+  },
+  sign_priority = 6,
+  update_debounce = 100,
+  status_formatter = nil, -- Use default
+  max_file_length = 40000,
+  preview_config = {
+    -- Options passed to nvim_open_win
+    border = "single",
+    style = "minimal",
+    relative = "cursor",
+    row = 0,
+    col = 1
+  },
+  yadm = {
+    enable = false
+  }
+}
+
+local mySettings = {
+  signs = signs_thick,
+  current_line_blame_opts = {delay = 1000, virt_text_pos = "eol"},
+  update_debounce = 200
   -- keymaps = {
   --   -- Default keymap options
   --   noremap = true,
@@ -34,27 +78,38 @@ require("gitsigns").setup {
   --   ["o ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>',
   --   ["x ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>'
   -- },
-
-  -- 21:03:08 [INFO] notify: use_internal_diff is now deprecated, please use diff_opts.internal {  title="gitsigns" }, file="start/cheovim/lua/logger.lua", line=110
-  -- 21:03:08 [INFO] notify: watch_index is now deprecated, please use watch_gitdir {  title="gitsigns" }, file="start/cheovim/lua/logger.lua", line=110
   -- diff_opts { internal = { title = "gitsigns" } },
   -- watch_gitdir = { title = "gitsigns", interval = 1000 },
-  current_line_blame = false,
-  current_line_blame_opts = { delay = 1000, virt_text_pos = "eol" },
-  sign_priority = 6,
-  update_debounce = 200,
-  status_formatter = nil, -- Use default
 }
 
--- signs = {
---   add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
---   change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
---   delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
---   topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
---   changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
---
--- add          = {hl = 'GitSignsAdd'   , text = ' ', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
--- change       = {hl = 'GitSignsChange', text = '▎', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
--- delete       = {hl = 'GitSignsDelete', text = ' ', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
--- topdelete    = {hl = 'GitSignsDelete', text = ' ', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
--- changedelete = {hl = 'GitSignsChangeDelete', text = '▎', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+require("gitsigns").setup(mySettings)
+
+local on_attach = function(bufnr)
+  local gs = package.loaded.gitsigns
+
+  local function map(mode, l, r, opts)
+    opts = opts or {}
+    opts.buffer = bufnr
+    vim.keymap.set(mode, l, r, opts)
+  end
+
+  -- Navigation
+  map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
+  map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
+
+  -- Actions
+  map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+  map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+  map('n', '<leader>hS', gs.stage_buffer)
+  map('n', '<leader>hu', gs.undo_stage_hunk)
+  map('n', '<leader>hR', gs.reset_buffer)
+  map('n', '<leader>hp', gs.preview_hunk)
+  map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+  map('n', '<leader>tb', gs.toggle_current_line_blame)
+  map('n', '<leader>hd', gs.diffthis)
+  map('n', '<leader>hD', function() gs.diffthis('~') end)
+  map('n', '<leader>td', gs.toggle_deleted)
+
+  -- Text object
+  map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+end
