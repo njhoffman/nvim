@@ -76,10 +76,10 @@ vim.cmd(
 local autocmds = {
   Marks = {
     {"BufRead,BufEnter", "*", "lua require('marks').refresh()"},
-    {"BufRead,BufDelete", "*", "lua require('marks')._on_delete()"},
+    {"BufRead,BufDelete", "*", "lua require('marks')._on_delete()"}
     -- { "BufEnter", "*", "if &buftype == 'prompt' | MarksToggleSigns | endif" },
     -- { "BufEnter", "*", "if &filetype == 'nofile' | MarksToggleSigns | endif" },
-    {"BufEnter", "*.md", "lua require('neuron').update_virtual_titles()"}
+    -- {"BufRead", "*.md", "lua require('neuron').update_virtual_titles()"}
   },
   SecondaryBuffers = {},
   SecondaryWindows = {

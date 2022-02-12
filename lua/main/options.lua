@@ -20,6 +20,7 @@ opt("linebreak", true)
 opt("textwidth", 1000)
 opt("swapfile", false)
 opt("clipboard", "unnamedplus")
+
 opt("cmdheight", 1) -- 1
 opt("cmdwinheight", 10)
 --  menu	   Use a popup menu to show the possible completions.
@@ -131,7 +132,23 @@ opt("fileformat", "unix", buffer)
 
 opt("termguicolors", true)
 opt("background", "dark")
+
 vim.cmd [[colorscheme nord-nick]]
+
+-- vim.g.clipboard = {
+--   name = "yankToAllClip",
+--   copy = {
+--     ["+"] = {"tmux", "load-buffer", "-"},
+--     ["*"] = {"tmux", "load-buffer", "-"}
+--   },
+--   paste = {
+--     ["+"] = "+",
+--     ["*"] = "*"
+--     -- ["+"] = {"tmux", "save-buffer", "-"},
+--     -- ["*"] = {"tmux", "save-buffer", "-"}
+--   },
+--   cache_enabled = 1
+-- }
 
 vim.g.qf_disable_statusline = true -- This should be the default
 vim.g.Eunuch_find_executable = "fd" -- I use my fork of vim-eunuch
