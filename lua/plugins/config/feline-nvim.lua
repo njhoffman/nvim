@@ -10,23 +10,6 @@ vim.cmd("hi link diffFile DiffText")
 vim.cmd("hi link diffIndexFile DiffText")
 -- call remote#host#UpdateRemotePlugins()
 
-local function LspStatus()
-  if #vim.lsp.buf_get_clients() > 0 then
-    return require("lsp-status").status()
-  end
-  return ""
-  -- return require("lsp-status").status_progress()
-end
-
-local function LspLightbulb()
-  if #vim.lsp.buf_get_clients() > 0 then
-    return require "nvim-lightbulb".get_status_text()
-  end
-  return ""
-end
-
-vim.cmd [[set termguicolors]]
-
 -- local package = require("package-info")
 
 -- components.right.active[5] = {

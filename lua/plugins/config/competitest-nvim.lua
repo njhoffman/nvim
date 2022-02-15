@@ -103,7 +103,7 @@ local mySettings = {
     cpp = {exec = "./$(FNOEXT)"},
     go = {exec = "go", args = {"run", "$(FNAME)"}},
     java = {exec = "java", args = {"$(FNOEXT)"}},
-    js = {exec = "node", args = {"$(FNAME)"}},
+    javascript = {exec = "node", args = {"$(FNAME)"}},
     lua = {exec = "lua", args = {"$(FNAME)"}},
     python = {exec = "python", args = {"$(FNAME)"}},
     ruby = {exec = "ruby", args = {"$(FNAME)"}},

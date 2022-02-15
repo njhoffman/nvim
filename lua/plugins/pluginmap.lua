@@ -7,6 +7,21 @@ M.search_plugins = {
 }
 
 M.treesitter_plugins = {
+  ["nvim-treesitter"] = {
+    use = {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate", requires = "nvim-lua/plenary.nvim"}
+  },
+  ["nvim-ts-context-commentstring"] = {
+    use = {"JoosepAlviste/nvim-ts-context-commentstring", requires = "nvim-treesitter"}
+  },
+  ["nvim-treesitter-refactor"] = {use = {"nvim-treesitter/nvim-treesitter-refactor", requires = "nvim-treesitter"}},
+  ["playground"] = {use = {"nvim-treesitter/playground", requires = "nvim-treesitter"}},
+  ["nvim-treesitter-textobjects"] = {
+    use = {"nvim-treesitter/nvim-treesitter-textobjects", requires = "nvim-treesitter"}
+  },
+  ["nvim-treesitter-textsubjects"] = {use = {"RRethy/nvim-treesitter-textsubjects", requires = "nvim-treesitter"}},
+  ["nvim-ts-rainbow"] = {use = {"p00f/nvim-ts-rainbow", requires = "nvim-treesitter"}},
+  ["nvim-treesitter-pairs"] = {use = {"theHamsta/nvim-treesitter-pairs", requires = "nvim-treesitter"}},
+  ["nvim-ts-autotag"] = {use = {"windwp/nvim-ts-autotag", requires = "nvim-treesitter"}},
   ["tree-sitter-ntangle"] = {use = {"jbyuki/tree-sitter-ntangle"}},
   ["nvim-treesitter-endwise"] = {use = {"RRethy/nvim-treesitter-endwise"}}
 }
@@ -126,7 +141,8 @@ M.project_plugins = {
 }
 
 M.interface_plugins = {
-  ["quickmath-nvim"] = {use = "jbyuki/quickmath.nvim"},
+  ["perfanno.nvim"] = {use = "t-troebst/perfanno.nvim"},
+  ["quickmath.nvim"] = {use = "jbyuki/quickmath.nvim"},
   ["yank-history"] = {use = "yazgoo/yank-history"},
   ["vim-yoink"] = {use = "svermeulen/vim-yoink"},
   ["nvim-bqf"] = {use = "kevinhwang91/nvim-bqf"},
@@ -137,16 +153,17 @@ M.interface_plugins = {
 M.lsp_plugins = {
   ["fidget.nvim"] = {use = "j-hui/fidget.nvim"},
   ["null-ls.nvim"] = {use = {"jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim"}},
+  ["lua-dev.nvim"] = {use = "folke/lua-dev.nvim"},
   ["jbyuki/ntangle-lsp.nvim"] = {
     use = {"jbyuki/ntangle-lsp.nvim", requires = {"jbyuki/ntangle-ts.nvim", "neovim/nvim-lspconfig"}}
   }
 }
 
 M.theme_plugins = {
-  ["feline.nvim"] = {use = "famiu/feline.nvim" },
+  ["barbar"] = {use = {"romgrk/barbar.nvim"}},
+  ["feline.nvim"] = {use = "feline-nvim/feline.nvim"}
   -- branch = 'develop',
 }
-
 
 M.check_require_exists = function(fname)
   local res = pcall(require, fname)
@@ -269,7 +286,6 @@ M.load_plugins = function(use, load_config)
 
   return M.stats
 end
-
 
 return M
 -- use {

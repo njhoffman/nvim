@@ -159,17 +159,19 @@ function! ShadaWrite()
     let l:buftype = &buftype || "<empty>"
     let l:summary = 'ShadaWrite: ' . buffer_name()  . ' : ' . &ft
     let l:summary2 = 'type: ' . l:buftype . ', listed: ' . &buflisted
-    " lua vim.notify({ vim.api.nvim_eval('l:summary'), vim.api.nvim_eval('l:summary2') }, 'debug', { title = 'shada' })
     " lua vim.notify( vim.api.nvim_eval('l:summary'), 'debug', { title = 'shada' })
+    " lua vim.notify({ vim.api.nvim_eval('l:summary'), vim.api.nvim_eval('l:summary2') }, 'debug', { title = 'shada' })
     exec 'silent! wshada'
     exec 'silent! !' . s:shada_script . ' ' . buffer_name()
   endif
 endfunction
+command ShadaWrite call ShadaWrite()
 
 function! ShadaRead()
   " lua vim.notify('Received USR1 signal for ShadaRead', 'debug', { title = 'shada' })
   exec "silent! rshada!"
 endfunction
+command ShadaRead call ShadaRead()
 
 " prevent "write partial file" nonsense
 cabbrev <expr> w getcmdtype()==':' && getcmdline() == "'<,'>w" ? '<c-u>w' : 'w'

@@ -196,4 +196,4 @@ function! LoadBarbarColors()
 endfunction
 command! BarbarColors call LoadBarbarColors()
 
-BarbarColors
+" BarbarColors
