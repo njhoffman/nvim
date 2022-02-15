@@ -81,39 +81,6 @@ return require("packer").startup(
         }
       )
       -- ====================================
-      -- Project management
-      use("wakatime/vim-wakatime") -- WakaTimeToday, WakaTimeApiKey, WakaTimeDebugEnable
-
-      use(
-        {
-          "windwp/nvim-projectconfig",
-          config = function()
-            -- I want to change my directory inside neovim and load project config.
-            require("nvim-projectconfig").load_project_config()
-            vim.cmd(
-              [[
-          augroup NvimProjectConfig
-          autocmd!
-          autocmd DirChanged * lua require('nvim-projectconfig').load_project_config()
-          augroup end
-        ]]
-            )
-          end
-        }
-      )
-      -- https://github.com/goolord/alpha-nvim
-      -- use "tpope/vim-obsession"
-      -- use "dhruvasagar/vim-prosession"
-      use(
-        {
-          "rmagatti/auto-session",
-          config = function()
-            require("plugins.configs.auto-session")
-          end
-        }
-      )
-
-      -- ====================================
       -- LSP, Autocomplete and snippets
       -- lua << EOF
       -- require"ntangle-lsp".setup {
@@ -258,7 +225,6 @@ return require("packer").startup(
 
       -- ====================================
       -- Integrations
-      use("AndrewRadev/id3.vim")
       use(
         {
           "preservim/vimux",
@@ -267,14 +233,7 @@ return require("packer").startup(
           end
         }
       )
-      use(
-        {
-          "dbeniamine/cheat.sh-vim",
-          config = function()
-            require("plugins.configs.cheat_sh-vim")
-          end
-        }
-      )
+
       use(
         {
           "tools-life/taskwiki",
@@ -324,25 +283,6 @@ return require("packer").startup(
       -- Visual Selection <C-U>PastebinPaste - <C-U>, PastebinPasteAll, PastebinPasteList
       vim.g.enabled_pastebin_service = "dpaste.org"
 
-      use("vim-test/vim-test")
-
-      use(
-        {
-          "urbainvaes/vim-ripple",
-          config = function()
-            require("plugins.configs.vim-ripple")
-          end
-        }
-      )
-      use(
-        {
-          "vuki656/package-info.nvim",
-          requires = "MunifTanjim/nui.nvim",
-          config = function()
-            require("plugins.configs.package-info")
-          end
-        }
-      )
 
       use(
         {
@@ -496,12 +436,9 @@ return require("packer").startup(
 
       -- ====================================
       -- System utils
-      -- Delete, Unlink, Move, Rename, Chmod, Mkdir, Cfind/locate, Lfind/locate, Wall, SudoWrite/Edit
-      use("tpope/vim-eunuch")
       use("bchretien/vim-profiler")
       use("tweekmonster/startuptime.vim")
-      use("qpkorr/vim-renamer")
-      use("jamestthompson3/nvim-remote-containers")
+      -- Delete, Unlink, Move, Rename, Chmod, Mkdir, Cfind/locate, Lfind/locate, Wall, SudoWrite/Edit
       use(
         {
           "henriquehbr/nvim-startup.lua",
@@ -547,7 +484,6 @@ return require("packer").startup(
       -- \ 'wp': 'mysql://root@localhost/wp_awesome',
       -- \ }
       -- Just make sure to NOT COMMIT these. I suggest using project local vim config (:help exrc)
-
       use(
         {
           "nanotee/sqls.nvim",
@@ -603,15 +539,6 @@ return require("packer").startup(
           "folke/which-key.nvim",
           config = function()
             require("plugins.configs.which_key")
-          end
-        }
-      )
-      use(
-        {
-          "goolord/alpha-nvim",
-          requires = {"kyazdani42/nvim-web-devicons"},
-          config = function()
-            require("plugins.configs.alpha-nvim")
           end
         }
       )

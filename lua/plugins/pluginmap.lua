@@ -2,6 +2,10 @@ local M = {}
 
 M.plugins = {}
 
+M.skipped_plugins = {
+  ["vista.vim"] = {use = "liuchengxu/vista.vim"}
+}
+
 M.search_plugins = {
   ["vim-searchsavy"] = {use = {"idbrii/vim-searchsavvy"}}
 }
@@ -43,10 +47,6 @@ M.picker_plugins = {
   ["fzf-preview.vim"] = {use = {"yuki-yano/fzf-preview.vim", branch = "release/remote", requires = {"junegunn/fzf"}}},
   ["fzf-lua"] = {use = {"ibhagwan/fzf-lua", requires = {"vijaymarupudi/nvim-fzf", "kyazdani42/nvim-web-devicons"}}},
   ["nvim-spotify"] = {use = {"KadoBOT/nvim-spotify", requires = "nvim-telescope/telescope.nvim", run = "make"}}
-}
-
-M.skipped_plugins = {
-  ["vista.vim"] = {use = "liuchengxu/vista.vim"}
 }
 
 M.motion_plugins = {
@@ -131,13 +131,15 @@ M.ui_plugins = {
 }
 
 M.project_plugins = {
-  -- VimEnter necessary Otherwise it produces an error when a :Git buffer is open.
+  ["auto-session"] = {use = "rmagatti/auto-session"},
+  ["competitest.nvim"] = {use = {"xeluxee/competitest.nvim", requires = "MunifTanjim/nui.nvim"}},
+  ["cpbooster.vim"] = {use = "searleser97/cpbooster.vim"},
   ["gitsigns.nvim"] = {use = {"lewis6991/gitsigns.nvim", requires = {"nvim-lua/plenary.nvim"}}},
+  ["nvim-projectconfig"] = {use = "windwp/nvim-projectconfig"},
+  ["vim-flog"] = {use = "rbong/vim-flog"},
   ["vim-fugitive"] = {use = "tpope/vim-fugitive"},
   ["vim-rhubarb"] = {use = "tpope/vim-rhubarb"},
-  ["vim-flog"] = {use = "rbong/vim-flog"},
-  ["competitest.nvim"] = {use = {"xeluxee/competitest.nvim", requires = "MunifTanjim/nui.nvim"}},
-  ["cpbooster.vim"] = {use = "searleser97/cpbooster.vim"}
+  ["vim-wakatime"] = {use = "wakatime/vim-wakatime"}
 }
 
 M.interface_plugins = {
@@ -147,14 +149,29 @@ M.interface_plugins = {
   ["vim-yoink"] = {use = "svermeulen/vim-yoink"},
   ["nvim-bqf"] = {use = "kevinhwang91/nvim-bqf"},
   ["vim-qf"] = {use = "romainl/vim-qf"},
-  ["vim-qf-history"] = {use = "bfrg/vim-qf-history"}
+  ["vim-qf-history"] = {use = "bfrg/vim-qf-history"},
+  ["alpha-nvim"] = {use = {"goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons"}}
+}
+
+M.integration_plugins = {
+  ["id3.vim"] = {use = "AndrewRadev/id3.vim"},
+  ["cheat.sh-vim"] = {use = "dbeniamine/cheat.sh-vim"},
+  ["vim-test"] = {use = "vim-test/vim-test"},
+  ["vim-ripple"] = {use = "urbainvaes/vim-ripple"},
+  ["package-info.nvim"] = {use = {"vuki656/package-info.nvim", requires = "MunifTanjim/nui.nvim"}}
+}
+
+M.sysutil_plugins = {
+  ["vim-eunuch"] = {use = "tpope/vim-eunuch"},
+  ["vim-renamer"] = {use = "qpkorr/vim-renamer"},
+  ["nvim-remote-containers"] = {use = "jamestthompson3/nvim-remote-containers"}
 }
 
 M.lsp_plugins = {
   ["fidget.nvim"] = {use = "j-hui/fidget.nvim"},
   ["null-ls.nvim"] = {use = {"jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim"}},
   ["lua-dev.nvim"] = {use = "folke/lua-dev.nvim"},
-  ["jbyuki/ntangle-lsp.nvim"] = {
+  ["ntangle-lsp.nvim"] = {
     use = {"jbyuki/ntangle-lsp.nvim", requires = {"jbyuki/ntangle-ts.nvim", "neovim/nvim-lspconfig"}}
   }
 }
@@ -238,17 +255,19 @@ M.load_plugins = function(use, load_config)
 
   local all_plugins = {
     M.dap_plugins,
-    M.ui_plugins,
     M.format_plugins,
+    M.integration_plugins,
+    M.interface_plugins,
     M.lsp_plugins,
     M.motion_plugins,
-    M.interface_plugins,
     M.picker_plugins,
     M.project_plugins,
+    M.search_plugins,
     M.syntax_plugins,
-    M.treesitter_plugins,
+    M.sysutil_plugins,
     M.theme_plugins,
-    M.search_plugins
+    M.treesitter_plugins,
+    M.ui_plugins
   }
 
   for _, plugin_set in pairs(all_plugins) do

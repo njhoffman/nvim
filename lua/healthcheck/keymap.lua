@@ -21,6 +21,6 @@ function M.stats(healthCheck)
   p(("duplicates           %4d    %4d     %4d     %4d     %4d     %4d     "):format(s.duplicates.total, s.duplicates.normal, s.duplicates.visual, s.duplicates.insert, s.duplicates.operator, s.duplicates.command))
 end
 
-_G._stats_keymaps = M.stats
+_G._stats_keys = M.stats
 
 return M

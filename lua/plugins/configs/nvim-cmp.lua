@@ -167,28 +167,18 @@ cmp.setup(
         compare.order
       }
     },
-    -- sorting = {
-    -- 	comparators = {
-    -- 		cmp.config.compare.offset,
-    -- 		cmp.config.compare.exact,
-    -- 		cmp.config.compare.sort_text,
-    -- 		cmp.config.compare.score,
-    -- 		require("cmp-under-comparator").under,
-    -- 		cmp.config.compare.kind,
-    -- 		cmp.config.compare.length,
-    -- 		cmp.config.compare.order,
-    -- 	},
-    -- },
-    snippet = {expand = function(args)
+    snippet = {
+      expand = function(args)
         vim.fn["vsnip#anonymous"](args.body)
-      end},
+      end
+    },
     sources = cmp.config.sources(
       {
         -- { name = "cmp_tabnine" },
         {name = "nvim_lua", priority = 7},
-        {name = "nvim_lsp", priority = 7},
+        {name = "nvim_lsp", priority = 8},
         {name = "vim-dadbod-completion", priority = 5},
-        {name = "path", priority = 4},
+        {name = "path", priority = 5},
         {name = "vsnip", priority = 4},
         {name = "calc", priority = 4},
         {

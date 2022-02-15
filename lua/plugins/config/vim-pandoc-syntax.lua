@@ -1,12 +1,16 @@
 vim.cmd([[ let g:pandoc#syntax#style#underline_special = 0 ]])
 vim.cmd([[ let g:pandoc#syntax#conceal#use = 1 ]])
 vim.cmd([[ let g:pandoc#syntax#conceal#urls = 1 ]])
-vim.cmd([[
+
+-- NOTE: vim syntax messing up, assigning to vimwiki for now
+vim.cmd(
+  [[
   let g:pandoc#syntax#codeblocks#embeds#langs =
     \ ["shell=sh", "rust", "ts=typescript", "javascript", "html", "cpp", "c",
     \ "go", "sh", "bash=sh", "yaml", "go", "ruby", "python", "json",
-    \ "sql", "lua", "css", "terraform"]
-]])
+    \ "sql", "lua", "css", "terraform", "vim=vimwiki"]
+  ]]
+)
 
 -- E403: syntax sync: line continuations pattern specified twice
 -- E403: syntax sync: line continuations pattern specified twice
@@ -71,14 +75,6 @@ vim.cmd([[
 -- + *g:pandoc#syntax#codeblocks#embeds#use*
 --   Use embedded highlighting for delimited codeblocks where a language is
 --   specified. Default = 1
-
--- + *g:pandoc#syntax#codeblocks#embeds#langs*
---   For what languages and using what syntax files to highlight embeds. This is
---   a list of language names. When the language pandoc and vim use don't match,
---   you can use the "PANDOC=VIM" syntax. For example:
-
---       let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby",
---       "literatehaskell=lhaskell", "bash=sh"]
 
 -- + *g:pandoc#syntax#style#emphases*
 --   Use italics and strong in emphases. Default = 1
