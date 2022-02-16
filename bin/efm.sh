@@ -1,6 +1,37 @@
 #!/bin/bash
 
 # curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux.gz | gunzip -f > "$HOME"/.local/bin/rust-analyzer && chmod +x "$HOME"/.local/bin/rust-analyzer
+# https://megalinter.github.io/latest/all_linters/
+# https://github.com/caramelomartins/awesome-linters
+
+function install-other-lint {
+  dockerfilelint (dockerlint)
+  golint
+  jsonlint
+  checkmake
+  vint
+  yamllint
+  ansible-lint
+  clang-format
+  clang-tidy / cppcheck / cpplint
+  csslint
+  stylelint
+  dotenv-linter
+  graphql-schema-linter
+  htmlhint
+  htmlvalidate
+  eslint
+  prettier
+  putout
+  npm-package-json-lint
+  perlcritic
+  Perltidy
+  black / flake8 / pylint / yala
+  rubocop
+  rust-clippy
+  sass-lint
+  sqlfluff
+}
 
 function install-efm-tools {
   # markdownlint-cli, llvm
@@ -13,7 +44,8 @@ function install-efm-tools {
     prettier-plugin-toml \
     markdownlint \
     diagnostic-languageserver \
-    typescript typescript-language-server \
+    typescript \
+    typescript-language-server \
     dockerfile-language-server-nodejs
 
   # npm install -g lua-check
