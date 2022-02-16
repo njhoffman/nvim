@@ -5,11 +5,12 @@
 # https://github.com/caramelomartins/awesome-linters
 
 function install-other-lint {
+  pip3 install vint
+
   dockerfilelint (dockerlint)
   golint
   jsonlint
   checkmake
-  vint
   yamllint
   ansible-lint
   clang-format
