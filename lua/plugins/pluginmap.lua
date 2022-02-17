@@ -154,6 +154,7 @@ M.interface_plugins = {
 }
 
 M.integration_plugins = {
+  ["nvim-magic"] = { use = {  "jameshiew/nvim-magic", 	requires = { 'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim' } }},
   ["id3.vim"] = {use = "AndrewRadev/id3.vim"},
   ["cheat.sh-vim"] = {use = "dbeniamine/cheat.sh-vim"},
   ["vim-test"] = {use = "vim-test/vim-test"},
