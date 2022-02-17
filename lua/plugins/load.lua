@@ -35,6 +35,7 @@ local packerConfig = {
     -- open_cmd = '65vnew \\[packer\\]', -- An optional command to open a window for packer's display
     working_sym = "⟳", -- The symbol for a plugin being installed/updated
     error_sym = "✗", -- The symbol for a plugin with an error in installation/updating
+    clone_timeout = 180, -- Timeout, in seconds, for git clones
     done_sym = "✓", -- The symbol for a plugin which has completed installation/updating
     removed_sym = "-", -- The symbol for an unused plugin which was removed
     moved_sym = "→", -- The symbol for a plugin which was moved (e.g. from opt to start)

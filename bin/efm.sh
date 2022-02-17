@@ -3,6 +3,17 @@
 # curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux.gz | gunzip -f > "$HOME"/.local/bin/rust-analyzer && chmod +x "$HOME"/.local/bin/rust-analyzer
 # https://megalinter.github.io/latest/all_linters/
 # https://github.com/caramelomartins/awesome-linters
+# •rolname        ┃ rdsadmin ┃
+# •rolsuper       ┃ True     ┃
+# •rolinherit     ┃ True     ┃
+# •rolcreaterole  ┃ True     ┃
+# •rolcreatedb    ┃ True     ┃
+# •rolcanlogin    ┃ True     ┃
+# •rolconnlimit   ┃ -1       ┃
+# •rolvaliduntil  ┃ infinity ┃
+# •memberof       ┃ []       ┃
+# •rolreplication ┃ True     ┃
+
 
 function install-other-lint {
   pip3 install vint
@@ -74,8 +85,3 @@ function install-efm-deps {
   # rebar3
   # Julia
   asdf install julia latest
-
-  # PHP & Composer
-  apt install re2c libgd-dev libonig-dev libzip-dev libxml2-dev
-  asdf install php latest
-}

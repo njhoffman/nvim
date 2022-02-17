@@ -1,8 +1,6 @@
 -- ----------------------------------------------------------------------------
 -- SQL Language Server configuration
---
 -- Requires : npm install -g sql-language-server
---
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#sqlls
 -- ----------------------------------------------------------------------------
 local lspconfig = require "lspconfig"
@@ -30,7 +28,7 @@ require'lspconfig'.sqls.setup{
       connections = {
         {
           driver = 'postgresql',
-          dataSourceName = 'host=localhost port=5432 user=spadash password=spadash dbname=spadash_local sslmode=disable',
+          dataSourceName = 'host=localhost port=5432 user=spadash password=spadash dbname=spadash sslmode=disable',
         },
       },
     },
