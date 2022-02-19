@@ -690,6 +690,11 @@ M.Movement = {
     short = "scroll backwards",
     long = "smooth scroll backwards"
   },
+  scroll_forwardsx3 = {
+    cmd = "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)",
+    short = "scroll forwards",
+    long = "smooth scroll forwards"
+  },
   scroll_bottom = {cmd = "<Plug>(Smoothie_G)", short = "scroll to bottom", long = "smooth scroll to bottom"},
   scroll_top = {cmd = "<Plug>(Smoothie_gg)", short = "scroll to top", long = "smooth scroll to top"},
   select_last = {
