@@ -170,14 +170,14 @@ local autocmds = {
   --   { "VimLeavePre", "*", "execute 'mksession! " .. vim.fn.stdpath("data") .. "/sessions/previous.vim'" },
   -- },
   Shape = {
-    -- { "FocusLost", "*", "hi TermCursor cterm=NONE gui=NONE" },
-    -- { "FocusGained", "*", "hi TermCursor cterm=reverse gui=reverse"},
+    {"FocusLost", "*", "hi TermCursor cterm=NONE gui=NONE"},
+    {"FocusGained", "*", "hi TermCursor cterm=reverse gui=reverse"},
     {"VimLeave,VimSuspend", "*", "set guicursor=a:block-blinkon90"}
   },
   terminal = {
-    {"TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]]},
-    {"TermOpen", "*", "set nonumber norelativenumber"},
-    {"TermLeave", "*", "set number relativenumber"}
+    {"TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]]}
+    -- {"TermOpen", "*", "set nonumber norelativenumber"},
+    -- {"TermLeave", "*", "set number relativenumber"}
   },
   writeEventts = {
     {"BufWritePost", ".tmux.conf", [[execute ':!tmux source-file %']]}
