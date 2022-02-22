@@ -8,30 +8,30 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities = vim.tbl_extend("keep", capabilities or {}, lsp_status.capabilities)
 
 local efm_cfg = {
-  flags = {debounce_text_changes = 2000},
+  flags = { debounce_text_changes = 2000 },
   cmd = lsp_cmds.efm,
   -- cmd = {'efm-langserver', '-loglevel', '1', '-logfile', vim.fn.expand("$HOME") .. '/tmp/efm.log'}, -- 1~10
   init_options = {
     documentFormatting = true,
-    codeAction         = true,
-    completion         = true,
-    documentSymbol     = true,
-    hover              = true,
+    codeAction = true,
+    completion = true,
+    documentSymbol = true,
+    hover = true,
   },
   -- root_dir = util.root_pattern(".git")(fname) or util.path.dirname(fname)
   -- root_dir = require'lspconfig'.util.root_pattern({'.git/', 'package.json', '.'}),
   on_attach = function(client, bufnr)
-    client.resolved_capabilities.document_formatting = true
-    client.resolved_capabilities.goto_definition = false
-    -- vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]])
+      client.resolved_capabilities.document_formatting = true
+      client.resolved_capabilities.goto_definition = false
+      -- vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]])
       on_attach_hook.common_on_attach(client, bufnr)
   end,
   filetypes = {
-    'go', 'lua','sql',
+    'go', 'sql',
   },
 
   settings = {
-    rootMarkers = {".git/"},
+    rootMarkers = { ".git/" },
     log_level = 5,
     log_file = "~/.cache/nvim/nvim-lsp-efm.log",
     lintDebounce = "1s",

@@ -89,6 +89,7 @@ local sumneko_config = {
   flags = {debounce_text_changes = 500},
   settings = {
     Lua = {
+      format = {enable = false},
       -- completion = {keywordSnippet = "Disable"},
       -- runtime = {version = "LuaJIT", path = runtime_path},
       diagnostics = {globals = {"vim", "use"}, disable = {"lowercase-global"}},
@@ -103,7 +104,7 @@ local sumneko_config = {
   }
 }
 
-local lua_dev = require("lua-dev").setup({ runtime_path = false, lspconfig = sumneko_config})
+local lua_dev = require("lua-dev").setup({runtime_path = false, lspconfig = sumneko_config})
 
 lspservers["sumneko_lua"] = lua_dev
 
@@ -222,7 +223,7 @@ local languages = {
   lua = {luafmt, luacheck},
   yaml = {prettier},
   bash = {shfmt, shellcheck},
-  sh = {shfmt, shellcheck},
+  sh = {shfmt, shellcheck}
   -- json = {prettier}
   -- typescript = {prettier, eslint},
   -- javascript = {prettier, eslint},
@@ -278,6 +279,8 @@ require("nvim-lsp-installer").on_server_ready(
         require("sqls").setup {picker = "telescope"}
         custom_attach(client, bufnr)
       end
+    elseif (server.name == "sumneko_lua") then
+      client.resolved_capabilities.formatting = false
     else
       server_config.on_attach = custom_attach
     end

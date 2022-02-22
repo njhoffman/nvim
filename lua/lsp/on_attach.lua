@@ -31,7 +31,7 @@ M.custom_attach = function(client, bufnr)
 
   -- lsp_status.on_attach(client)
   require "lsp_signature".on_attach(
-    {
+  {
       bind = true, -- This is mandatory, otherwise border config won't get registered.
       handler_opts = {border = "rounded"}
     },
@@ -82,6 +82,7 @@ M.custom_attach = function(client, bufnr)
     )
   end
 
+  local has_formatting = "false"
   if client.resolved_capabilities.document_formatting then
     buf_set_keymap("n", "<Leader>aa", "<cmd>lua vim.lsp.buf.formatting()<cr>", {})
     vim.api.nvim_command([[augroup Format]])
@@ -90,11 +91,11 @@ M.custom_attach = function(client, bufnr)
     -- vim.cmd([[ autocmd BufWritePre * :lua vim.lsp.buf.formatting_sync(nil, 500) ]])
     vim.api.nvim_command([[augroup END]])
     -- if client.name ~= "tsserver" then end
-    vim.notify(string.format("+Formatting %s", client.name), "debug")
+    has_formatting = "true"
   end
 
   vim.api.nvim_command("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
-  local msg = string.format("LSP server %s started", client.name)
+  local msg = string.format("LSP server %s started: %s", client.name, has_formatting)
   vim.notify(msg, "trace", {title = "nvim lsp-config"})
 end
 
