@@ -519,11 +519,6 @@ M.Pickers = {
     short = "git status fzf",
     long = "git status (fzf-prev)"
   },
-  frecency_files_tele = {
-    cmd = "<cmd>lua _G._FindOldFiles()<cr>",
-    short = "frecency ",
-    long = "frecency files telescope t"
-  },
   mru_files_fzflua = {cmd = "<cmd>FzfLua oldfiles<cr>", short = "mru files fzf", long = "mru files (fzf-lua)"},
   mru_files_fzflua_ivy = {
     cmd = "lua require('fzf-lua').oldfiles({ winopts = { split = 'belowright new' } })",
@@ -649,7 +644,66 @@ M.Pickers = {
   -- nmap("Pickers", "<C-d>", "<cmd>FzfPreviewGitCurrentLogs<cr>", "buffer_log", "git buffer log")
 }
 
+-- nmap cs  <Plug>Csurround
+-- nmap cS  <Plug>CSurround
+-- nmap ys  <Plug>Ysurround
+-- nmap yS  <Plug>YSurround
+-- nmap yss <Plug>Yssurround
+-- nmap ySs <Plug>YSsurround
+-- nmap ySS <Plug>YSsurround
+
+-- xmap S   <Plug>VSurround
+-- xmap gS  <Plug>VgSurround
+
+-- nmap sa  <Plug>Ysurround
+-- nmap sA  <Plug>YSurround
+-- nmap sas <Plug>Yssurround
+-- nmap saS <Plug>YSsurround
+-- nmap sAA <Plug>YSsurround
+
 M.Movement = {
+  -- ds: delete_surround <Plug>Dsurround
+  s_delete_paren1 = {
+    short = "delete surround paren )"
+  },
+  s_delete_paren2 = {
+    short = "delete surround paren ("
+  },
+  s_delete_brace1 = {
+    short = "delete surround brace }"
+  },
+  s_delete_brace2 = {
+    short = "delete surround brace {"
+  },
+  s_delete_bracket1 = {
+    short = "delete surround bracket ]"
+  },
+  s_delete_bracket2 = {
+    short = "delete surround bracket ["
+  },
+  s_delete_block1 = {
+    short = "delete surround block"
+  },
+  s_delete_block2 = {
+    short = "delete surround Block"
+  },
+  s_delete_func = {
+    short = "delete surround function"
+  },
+  s_delete_quote = {
+    short = 'delete surround quote "'
+  },
+  s_delete_grave = {
+    short = "delete surround grave mark`"
+  },
+  s_delete_single_quote = {
+    short = "delete surround single-quote"
+  },
+  -- cs: change (replace) surround
+  -- ys: you surround (add)
+  -- as: add surround alias
+  -- s: add surround visual
+  -- add surround insert
   quick_insert_esc1 = {cmd = "<esc>", short = "insert mode escape", long = "quickly escape insert mode"},
   quick_insert_esc2 = {cmd = "<esc>", short = "insert mode escape", long = "quickly escape insert mode"},
   c_u_undo_friendly = {cmd = "<C-g>u<C-u>", short = "ctrl+u undo friendly", long = "make ctrl+u undo friendly"},

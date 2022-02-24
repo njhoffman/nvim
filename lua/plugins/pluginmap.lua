@@ -50,6 +50,7 @@ M.picker_plugins = {
 }
 
 M.motion_plugins = {
+  -- ["vim-sandwhich"] = {use = "machakann/vim-sandwich"},
   ["vim-matchup"] = {use = "andymass/vim-matchup"},
   ["vim-wordmotion"] = {use = "chaoren/vim-wordmotion"},
   ["vim-smoothie"] = {use = "psliwka/vim-smoothie"},
@@ -122,12 +123,20 @@ M.syntax_plugins = {
 }
 
 M.ui_plugins = {
+  -- ["startup.nvim"] = {
+  --   use = {"startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}}
+  -- },
+  ["vimade"] = {use = "TaDaa/vimade"},
+  ["twilight.nvim"] = {use = "folke/twilight.nvim"},
+  ["zen-mode.nvim"] = {use = "folke/zen-mode.nvim"},
   ["aerial.nvim"] = {use = "stevearc/aerial.nvim"},
+  ["nvim-hlslens"] = {use = "kevinhwang91/nvim-hlslens"},
   ["nvim-notify"] = {use = "rcarriga/nvim-notify"},
   ["dressing-nvim"] = {use = {"stevearc/dressing.nvim", requires = "MunifTanjim/nui.nvim"}},
   ["vim-bling"] = {use = "ivyl/vim-bling"},
   ["specs.nvim"] = {use = "edluffy/specs.nvim"},
-  ["nvim-scrollbar"] = {use = "petertriho/nvim-scrollbar"}
+  ["nvim-scrollbar"] = {use = "petertriho/nvim-scrollbar"},
+  ["stabilize.nvim"] = {use = "luukvbaal/stabilize.nvim"}
 }
 
 M.project_plugins = {
@@ -154,7 +163,7 @@ M.interface_plugins = {
 }
 
 M.integration_plugins = {
-  ["nvim-magic"] = { use = {  "jameshiew/nvim-magic", 	requires = { 'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim' } }},
+  ["nvim-magic"] = {use = {"jameshiew/nvim-magic", requires = {"nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim"}}},
   ["id3.vim"] = {use = "AndrewRadev/id3.vim"},
   ["cheat.sh-vim"] = {use = "dbeniamine/cheat.sh-vim"},
   ["vim-test"] = {use = "vim-test/vim-test"},

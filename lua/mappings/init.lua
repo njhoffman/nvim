@@ -5,9 +5,12 @@ local logger = require("logger").initLogger("mapper")
 local function load_module(mod_name)
   local ok, err = pcall(require, mod_name)
   if not ok then
-    local msg = "calling module: "..mod_name.." fail"
+    local msg = "calling module: " .. mod_name .. " fail"
+    vim.notify(err, "error", {title = msg})
     logger:error(msg)
     logger:error(err)
+  else
+    -- logger:trace(mod_name .. ' keymap loaded')
   end
 end
 
@@ -26,8 +29,9 @@ local mapfiles = {
   "mappings.search",
   "mappings.unimpaired",
   "mappings.window",
-  "mappings.zettel",
-  }
+  "mappings.zettel"
+}
+
 for _, mod_name in ipairs(mapfiles) do
   load_module(mod_name)
 end
@@ -55,7 +59,7 @@ vim.cmd([[nnoremap gp <plug>(YoinkPaste_gp) \| kJxJx]])
 vim.cmd([[nnoremap gP <plug>(YoinkPaste_gP) \| kJxJx]])
 vim.cmd([[nmap [y <plug>(YoinkRotateBack)]])
 vim.cmd([[nmap ]y <plug>(YoinkRotateForward)]])
-vim.cmd([[nmap y <plug>(YoinkYankPreserveCursorPosition)]])
+vim.cmd([[nmap y <plug>(YoinkYankPreserveCursorPosition) \| !xsel -ip ]])
 vim.cmd([[xmap y <plug>(YoinkYankPreserveCursorPosition)]])
 -- hitting <c-=> after a paste will toggle between formatted and unformatted (equivalent to using the = key).
 -- By default pastes will not be formatted until you toggle it afterwards using <c-=> (however you can also change this with the yoinkAutoFormatPaste setting as described below)
@@ -73,14 +77,12 @@ vim.cmd([[vmap <c-Down> <Plug>(dial-decrement)]])
 vim.cmd([[vmap g<c-Up> <Plug>(dial-increment-additional)]])
 vim.cmd([[vmap g<c-Down> <Plug>(dial-decrement-additional)]])
 
-
 -- vim.cmd[[nmap - <Plug>(dial-increment)]]
 -- vim.cmd[[nmap = <Plug>(dial-decrement)]]
 -- vim.cmd[[vmap - <Plug>(dial-increment)]]
 -- vim.cmd[[vmap = <Plug>(dial-decrement)]]
 -- vim.cmd[[vmap g- <Plug>(dial-increment-additional)]]
 -- vim.cmd[[vmap g= <Plug>(dial-decrement-additional)]]
-
 
 M.registerWhichkey()
 

@@ -244,8 +244,8 @@ lspservers["efm"] = {
   init_options = {documentFormatting = true, hover = true, documentSymbol = true, codeAction = true},
   settings = {
     languages = languages,
-    log_level = 1,
-    log_file = vim.fn.stdpath("cache") .. "/efm.log",
+    -- log_level = 1,
+    log_file = vim.fn.stdpath("cache") .. "/lsp/efm.log",
     rootMarkers = {
       -- ".eslintrc.cjs",
       -- ".eslintrc",

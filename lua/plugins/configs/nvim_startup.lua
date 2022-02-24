@@ -1,5 +1,6 @@
 local H = require("helpers")
 
+
 require"nvim-startup".setup({
   startup_file = "/tmp/nvim-startuptime", -- sets startup log path (string)
   message = function(time) -- function-based custom message

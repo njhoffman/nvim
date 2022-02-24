@@ -10,7 +10,6 @@ local compare = require("cmp.config.compare")
 if not cmp then
   return
 end
-
 --  local after_line = string.sub(line, cursor + 1, -1)
 local lsp_symbols = {
   Text = " ",

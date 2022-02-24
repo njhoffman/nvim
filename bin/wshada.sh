@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WRITE_LOG=0
+WRITE_LOG=1
 WRITE_SYSLOG=0
 LOG_FILE="$HOME/.cache/nvim/shada.log"
 log_cmd="logger --tag=nvim "

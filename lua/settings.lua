@@ -13,6 +13,8 @@ settings.Logging = {
   notify_level = 'debug',
   log_level = 'trace',
   console_level = 'info',
+  lsp_level = "warn",
+
 }
 
 settings.Opts = {
@@ -50,7 +52,6 @@ settings.DAP = {
 settings.LSP = {
 	enabled = true,
 	-- TODO: efm or other lsp format boolean
-	log_level = "warn",
 	underline = false,
 	update_in_insert = true,
 	signs = true,

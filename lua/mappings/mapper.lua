@@ -8,7 +8,6 @@ local wk = require("which-key")
 
 local M = {}
 
-
 -- OK:   448
 -- TODO: 238
 -- :nmap  :nnoremap :nunmap    Normal
@@ -22,101 +21,98 @@ local M = {}
 -- :cmap  :cnoremap :cunmap    Command-line
 -- :tmap  :tnoremap :tunmap    Terminal
 
-
-M.stats = { normal = 0, insert = 0, command = 0, operator = 0, visual = 0, select = 0, terminal = 0, language = 0 }
-M.whichkey_map = { n = {}, v = {}, c = {}, i = {}, o = {}, x = {}, s = {}, t = {}, m = {}, l = {}  }
+M.stats = {normal = 0, insert = 0, command = 0, operator = 0, visual = 0, select = 0, terminal = 0, language = 0}
+M.whichkey_map = {n = {}, v = {}, c = {}, i = {}, o = {}, x = {}, s = {}, t = {}, m = {}, l = {}}
 
 M.update_stats = function(mode)
-	if mode == "n" then
-		M.stats.normal = M.stats.normal + 1
-	end
+  if mode == "n" then
+    M.stats.normal = M.stats.normal + 1
+  end
   if mode == "t" then
     M.stats.terminal = M.stats.terminal + 1
   end
-	if mode == "i" then
-		M.stats.insert = M.stats.insert + 1
-	end
-	if mode == "c" then
-		M.stats.command = M.stats.command + 1
-	end
-	if mode == "o" then
-		M.stats.operator = M.stats.operator + 1
-	end
-	if mode == "v" then
+  if mode == "i" then
+    M.stats.insert = M.stats.insert + 1
+  end
+  if mode == "c" then
+    M.stats.command = M.stats.command + 1
+  end
+  if mode == "o" then
+    M.stats.operator = M.stats.operator + 1
+  end
+  if mode == "v" then
     M.stats.visual = M.stats.visual + 1
     M.stats.select = M.stats.select + 1
-	end
+  end
   if mode == "x" then
     M.stats.visual = M.stats.visual + 1
   end
-
 end
 
 local function length(T)
-	local count = 0
-	for _ in pairs(T) do
-		count = count + 1
-	end
-	return count
+  local count = 0
+  for _ in pairs(T) do
+    count = count + 1
+  end
+  return count
 end
 
 M.parse_params = function(category, mode, keys, cmd_id, mods)
-	local params = { mods = { silent = false, noremap = true } }
-	local mapped = keymap[category][cmd_id]
+  local params = {mods = {silent = false, noremap = true}}
+  local mapped = keymap[category][cmd_id]
 
-	if mapped == nil then
-		local msg = "Cannot find mapping - category: " .. category .. " - id: " .. cmd_id;
-		-- require("notify")({ "Cannot find mapping: " .. category .. " : ", cmd_id }, "error")
-    vim.notify({ msg, { cmd_id, category, mode, keys, mods }}, 'error')
+  if mapped == nil then
+    local msg = "Cannot find mapping - category: " .. category .. " - id: " .. cmd_id
+    vim.notify({msg, {cmd_id, category, mode, keys, mods}}, "error")
     -- logger:error()
-		error({ msg = msg, code = 100 })
-	end
+    error({msg = msg, code = 100})
+  end
 
-	mods = mods or {}
-	if mods.silent ~= nil then
-		params.mods.silent = mods.silent
-	end
-	if mods.noremap ~= nil then
-		params.mods.noremap = mods.noremap
-	end
-	if mods.nowait ~= nil then
-		params.mods.nowait = mods.nowait
-	end
+  mods = mods or {}
+  if mods.silent ~= nil then
+    params.mods.silent = mods.silent
+  end
+  if mods.noremap ~= nil then
+    params.mods.noremap = mods.noremap
+  end
+  if mods.nowait ~= nil then
+    params.mods.nowait = mods.nowait
+  end
 
-	params.mode = mode
-	params.cat = category
-	params.desc_long = mapped.long or mapped.short or ""
-	params.desc_short = mapped.short or mapped.long or ""
-	params.id = category:lower() .. "_" .. cmd_id
-	params.keys = keys
-	if mapped.cmd then
-		params.cmd = mapped.cmd
-		params.virtual = false
-	else
-		params.virtual = true
-	end
-	return params
+  params.mode = mode
+  params.cat = category
+  params.desc_long = mapped.long or mapped.short or ""
+  params.desc_short = mapped.short or mapped.long or ""
+  params.id = category:lower() .. "_" .. cmd_id
+  params.keys = keys
+  if mapped.cmd then
+    params.cmd = mapped.cmd
+    params.virtual = false
+  else
+    params.virtual = true
+  end
+  return params
 end
 
 local wk_default_mods = {
-	mode = "n", -- NORMAL mode
-	-- prefix: use "<leader>f" for example for mapping everything related to finding files
-	-- the prefix is prepended to every mapping part of `mappings`
-	prefix = "",
-	buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-	silent = true, -- use `silent` when creating keymaps
-	noremap = true, -- use `noremap` when creating keymaps
-	nowait = false, -- use `nowait` when creating keymaps
+  mode = "n", -- NORMAL mode
+  -- prefix: use "<leader>f" for example for mapping everything related to finding files
+  -- the prefix is prepended to every mapping part of `mappings`
+  prefix = "",
+  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+  silent = true, -- use `silent` when creating keymaps
+  noremap = true, -- use `noremap` when creating keymaps
+  nowait = false -- use `nowait` when creating keymaps
 }
 
 M.registerWhichkey = function()
-	wk.register(M.whichkey_map.n, { mode = "n" })
-	wk.register(M.whichkey_map.v, { mode = "v" })
-  wk.register(M.whichkey_map.x, { mode = "x" })
-	wk.register(M.whichkey_map.c, { mode = "c" })
-	wk.register(M.whichkey_map.o, { mode = "o" })
-	wk.register(M.whichkey_map.i, { mode = "i" })
-	-- print(vim.inspect(M.whichkey_lists))
+  wk.register(M.whichkey_map.n, {mode = "n"})
+  wk.register(M.whichkey_map.v, {mode = "v"})
+  wk.register(M.whichkey_map.x, {mode = "x"})
+  wk.register(M.whichkey_map.c, {mode = "c"})
+  wk.register(M.whichkey_map.o, {mode = "o"})
+  wk.register(M.whichkey_map.i, {mode = "i"})
+  -- print(vim.inspect(M.whichkey_lists))
   wk.load()
 
   local wk_keys = require("which-key.keys")
@@ -176,26 +172,25 @@ end
 
 M.map = function(category, mode, keys, cmd_id, mods)
   -- TODO: add 'plugin' and 'aucommand' mods
-	M.update_stats(mode)
-	local params = M.parse_params(category, mode, keys, cmd_id, mods)
+  M.update_stats(mode)
+
+  local params = M.parse_params(category, mode, keys, cmd_id, mods)
 
   -- print("ADDING " .. params.keys .. '\t' .. params.desc_short)
-	M.whichkey_map[params.mode][params.keys] = params.desc_short
+  M.whichkey_map[params.mode][params.keys] = params.desc_short
   -- wk.register({ [params.keys] = params.desc_short }, { mode = mode })
 
-	if params.virtual then
-		NvimMapper.map_virtual(params.mode, params.keys, "", {}, params.cat, params.id, params.desc_long)
-	else
-		NvimMapper.map(params.mode, params.keys, params.cmd, params.mods, params.cat, params.id, params.desc_long)
-	end
+  if params.virtual then
+    NvimMapper.map_virtual(params.mode, params.keys, "", {}, params.cat, params.id, params.desc_long)
+  else
+    NvimMapper.map(params.mode, params.keys, params.cmd, params.mods, params.cat, params.id, params.desc_long)
+  end
   -- Mapper.map_buf(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {noremap = true, silent = true}, "LSP", "lsp_definitions", "Go to definition")
 end
 
-
 M.prefix = function(prefix, name)
-	wk.register({ [prefix] = { name = "+" .. name } })
+  wk.register({[prefix] = {name = "+" .. name}})
 end
-
 
 return M
 

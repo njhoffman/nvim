@@ -77,7 +77,7 @@ opt("modelines", 5)
 opt("mouse", "nivh")
 opt("previewheight", 7)
 opt("scrolloff", 7)
-opt("shada", [[!,'1000,<500,s50,n~/.vim/.shada]])
+opt("shada", [[!,'2000,<500,s200,n~/.vim/.shada]])
 -- Specify the behavior when switching between buffers Use the current tab for openning files from quickfix.
 opt("switchbuf", "useopen,usetab")
 opt("showtabline", 1)
@@ -134,17 +134,70 @@ opt("termguicolors", true)
 opt("background", "dark")
 vim.cmd [[colorscheme nord-nick]]
 
+-- " To force a reload:
+-- 10	"   :unlet g:loaded_clipboard_provider
+-- 11	"   :runtime autoload/provider/clipboard.vim
+-- 12	let g:loaded_clipboard_provider = 1
+-- 13
+-- 14	let s:copy = {}
+-- 15	let s:paste = {}
+-- 16	let s:clipboard = {}
+-- 17
+-- 18	" When caching is enabled, store the jobid of the xclip/xsel process keeping
+-- elseif !empty($DISPLAY) && executable('xsel') && s:cmd_ok('xsel -o -b')
+-- -> get(g:, 'foo', []" Wayland clipboard provider that strips carriage returns (GTK3 issue).
+-- " This is needed because currently there's an issue where GTK3 applications on
+-- " Wayland contain carriage returns at the end of the lines (this is a root
+-- " issue that needs to be fixed).
+-- let g:clipboard = {
+--       \   'name': 'wayland-strip-carriage',
+--       \   'copy': {
+--       \      '+': 'wl-copy --foreground --type text/plain',
+--       \      '*': 'wl-copy --foreground --type text/plain --primary',
+--       \    },
+--       \   'paste': {
+--       \      '+': {-> systemlist('wl-paste --no-newline | tr -d "\r"')},
+--       \      '*': {-> systemlist('wl-paste --no-newline --primary | tr -d "\r"')},
+--       \   },
+--       \   'cache_enabled': 1,
+--       \ })},
+--   let s:copy['+'] = ['xsel', '--nodetach', '-i', '-b']
+--   let s:paste['+'] = ['xsel', '-o', '-b']
+--   let s:copy['*'] = ['xsel', '--nodetach', '-i', '-p']
+--   let s:paste['*'] = ['xsel', '-o', '-p']
+--   return 'xsel'
+-- \      '+': {-> systemlist('xsel --nodetach -ib -')},
+-- \      '*': {-> systemlist('tmux load-buffer -')},
+
+vim.cmd(
+  [[
+  let g:clipboard =  {
+    \   'name': 'YanktoAllClip',
+    \   'copy': {
+  \      '+': 'xsel --nodetach -ib -ob',
+  \      '*': 'xsel --nodetach -ip -op',
+    \    },
+    \   'paste': {
+    \      '+': {-> systemlist('xsel -o -b | tr -d "\r"')},
+    \      '*': {-> systemlist('xsel -o -p | tr -d "\r"')},
+    \   },
+    \   'cache_enabled': 1,
+    \ }
+  ]]
+)
+
 -- vim.g.clipboard = {
 --   name = "yankToAllClip",
 --   copy = {
---     ["+"] = {"tmux", "load-buffer", "-"},
+--     -- \      '+': {-> systemlist('wl-paste --no-newline | sed -e "s/\r$//"')},
+--     ['+'] = {-> systemlist('wl-paste --no-newline | sed -e "s/\r$//"')},
+
+--     ["+"] = {"xsel", "--nodetach", "-i", "-b"},
 --     ["*"] = {"tmux", "load-buffer", "-"}
 --   },
 --   paste = {
---     ["+"] = "+",
---     ["*"] = "*"
---     -- ["+"] = {"tmux", "save-buffer", "-"},
---     -- ["*"] = {"tmux", "save-buffer", "-"}
+--     ["+"] = {"xsel", "-o", "-b"},
+--     ["*"] = {"tmux", "save-buffer", "-"}
 --   },
 --   cache_enabled = 1
 -- }

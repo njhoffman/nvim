@@ -1,11 +1,7 @@
 local sorters = require "telescope.sorters"
 local previewers = require "telescope.previewers"
-local pickers = require "telescope.previewers"
-local finders = require "telescope.finders"
 local telescope = require("telescope")
 local actions = require("telescope.actions")
-local utils = require("telescope.utils")
-local from_entry = require "telescope.from_entry"
 local actions_layout = require "telescope.actions.layout"
 local actions_state = require("telescope.actions.state")
 local actions_set = require "telescope.actions.set"
@@ -62,12 +58,12 @@ end
 
 function custom_actions.switch_to_frecency(prompt_bufnr)
   actions.close(prompt_bufnr)
-  local picker = actions_state.get_current_picker(prompt_bufnr)
-  local ok = pcall(require "telescope".extensions.frecency.frecency)
+  -- local picker = actions_state.get_current_picker(prompt_bufnr)
+  -- local ok = pcall(require "telescope".extensions.frecency.frecency)
   vim.schedule(
     function()
       vim.cmd [[startinsert]]
-      vim.api.nvim_put({symbol}, "", true, true)
+      -- vim.api.nvim_put({symbol}, "", true, true)
     end
   )
 end
@@ -76,12 +72,10 @@ function custom_actions.directory_up(prompt_bufnr)
   local selection = actions_state.get_selected_entry()
   local picker = actions_state.get_current_picker(prompt_bufnr)
   local dir = picker.cwd or selection.cwd or vim.fn.getcwd()
-  dir = string.split(dir, "/")
-  -- local dir = string.split(vim.fn.getcwd(), "/")
   table.remove(dir)
   dir = table.concat(dir, "/")
   actions.close(prompt_bufnr)
-  opts = {
+  local opts = {
     results_title = dir,
     find_command = {"rg", "--ignore", "--hidden", "--sort", "path", "--files"},
     cwd = dir,
@@ -208,7 +202,8 @@ local telescopeConfig = {
   },
   pickers = {
     find_files = {
-      find_command = {"fd", "--type", "f", "--strip-cwd-prefix"},
+      find_command = {"rg", "--ignore", "--hidden", "--sort", "path", "--files"},
+      -- find_command = {"fd", "--type", "f", "--strip-cwd-prefix"},
       mappings = {
         i = {
           -- change directory functionality

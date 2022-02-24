@@ -361,8 +361,8 @@ function! s:insert(...) " {{{1
   return "\<Del>"
 endfunction " }}}1
 
-function! s:reindent() " {{{1
-  if exists("b:surround_indent") ? b:surround_indent : (!exists("g:surround_indent") || g:surround_indent)
+function! s:reindent() abort " {{{1
+  if get(b:, 'surround_indent', get(g:, 'surround_indent', 1)) && (!empty(&equalprg) || !empty(&indentexpr) || &cindent || &smartindent || &lisp)
     silent norm! '[=']
   endif
 endfunction " }}}1
@@ -606,13 +606,20 @@ if !exists("g:surround_no_mappings") || ! g:surround_no_mappings
   nmap yss <Plug>Yssurround
   nmap ySs <Plug>YSsurround
   nmap ySS <Plug>YSsurround
+
   xmap S   <Plug>VSurround
   xmap gS  <Plug>VgSurround
+
+  nmap sa  <Plug>Ysurround
+  nmap sA  <Plug>YSurround
+  nmap sas <Plug>Yssurround
+  nmap saS <Plug>YSsurround
+  nmap sAA <Plug>YSsurround
+
   if !exists("g:surround_no_insert_mappings") || ! g:surround_no_insert_mappings
-    " if !hasmapto("<Plug>Isurround","i") && "" == mapcheck("<C-S>","i")
-    "   imap    <C-S> <Plug>Isurround
-    " endif
+    imap      <M-S>s <Plug>Isurround
     imap      <C-G>s <Plug>Isurround
+    imap      <M-S>S <Plug>ISurround
     imap      <C-G>S <Plug>ISurround
   endif
 endif

@@ -67,7 +67,7 @@ local spec = lush.extends({ nord }).with(function()
     SignColumn { bg = "none" },
     LineNr { fg = clrs.nord3 },
     CursorLine { bg = "#101018", gui = "none" },
-    CursorLineNr { fg = "#afd7ff", bg = CursorLine.bg },
+    CursorLineNr { fg = '#44aaff', bg = CursorLine.bg, gui= "italic" },
     CursorColumn { bg = "#7722ff"},
     -- base groups
     Statement { fg = "#5191C1" },
