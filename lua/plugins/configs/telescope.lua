@@ -72,6 +72,8 @@ function custom_actions.directory_up(prompt_bufnr)
   local selection = actions_state.get_selected_entry()
   local picker = actions_state.get_current_picker(prompt_bufnr)
   local dir = picker.cwd or selection.cwd or vim.fn.getcwd()
+  dir=string.split(dir, "/")
+
   table.remove(dir)
   dir = table.concat(dir, "/")
   actions.close(prompt_bufnr)
