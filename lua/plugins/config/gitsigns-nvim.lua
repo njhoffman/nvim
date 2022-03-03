@@ -58,32 +58,6 @@ local defaultSettings = {
     enable = false
   }
 }
-
-local mySettings = {
-  signs = signs_thick,
-  current_line_blame_opts = {delay = 1000, virt_text_pos = "eol"},
-  update_debounce = 200
-  -- keymaps = {
-  --   -- Default keymap options
-  --   noremap = true,
-  --   buffer = true,
-  --   ["n ]c"] = {expr = true, '&diff ? \']c\' : \'<cmd>lua require"gitsigns".next_hunk()<CR>\''},
-  --   ["n [c"] = {expr = true, '&diff ? \'[c\' : \'<cmd>lua require"gitsigns".prev_hunk()<CR>\''},
-  --   ["n <leader>hs"] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
-  --   ["n <leader>hu"] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
-  --   ["n <leader>hr"] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-  --   ["n <leader>hp"] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-  --   ["n <leader>hb"] = '<cmd>lua require"gitsigns".blame_line()<CR>',
-  --   -- Text objects
-  --   ["o ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>',
-  --   ["x ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>'
-  -- },
-  -- diff_opts { internal = { title = "gitsigns" } },
-  -- watch_gitdir = { title = "gitsigns", interval = 1000 },
-}
-
-require("gitsigns").setup(mySettings)
-
 local on_attach = function(bufnr)
   if vim.api.nvim_buf_get_name(bufnr):match("quicknotes/daily") then
     return false
@@ -128,3 +102,30 @@ local on_attach = function(bufnr)
   -- Text object
   map({"o", "x"}, "ih", ":<C-U>Gitsigns select_hunk<CR>")
 end
+
+local mySettings = {
+  on_attach = on_attach,
+  signs = signs_thick,
+  current_line_blame_opts = {delay = 1000, virt_text_pos = "eol"},
+  attach_to_untracked = false,
+  update_debounce = 200
+  -- keymaps = {
+  --   -- Default keymap options
+  --   noremap = true,
+  --   buffer = true,
+  --   ["n ]c"] = {expr = true, '&diff ? \']c\' : \'<cmd>lua require"gitsigns".next_hunk()<CR>\''},
+  --   ["n [c"] = {expr = true, '&diff ? \'[c\' : \'<cmd>lua require"gitsigns".prev_hunk()<CR>\''},
+  --   ["n <leader>hs"] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
+  --   ["n <leader>hu"] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
+  --   ["n <leader>hr"] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+  --   ["n <leader>hp"] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+  --   ["n <leader>hb"] = '<cmd>lua require"gitsigns".blame_line()<CR>',
+  --   -- Text objects
+  --   ["o ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>',
+  --   ["x ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>'
+  -- },
+  -- diff_opts { internal = { title = "gitsigns" } },
+  -- watch_gitdir = { title = "gitsigns", interval = 1000 },
+}
+
+require("gitsigns").setup(mySettings)

@@ -174,7 +174,7 @@ cmp.setup(
     sources = cmp.config.sources(
       {
         -- { name = "cmp_tabnine" },
-        {name = "nvim_lua", priority = 7},
+        -- {name = "nvim_lua", priority = 7},
         {name = "nvim_lsp", priority = 8},
         {name = "vim-dadbod-completion", priority = 5},
         {name = "path", priority = 5},

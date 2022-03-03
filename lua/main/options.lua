@@ -77,7 +77,7 @@ opt("modelines", 5)
 opt("mouse", "nivh")
 opt("previewheight", 7)
 opt("scrolloff", 7)
-opt("shada", [[!,'2000,<500,s200,n~/.vim/.shada]])
+opt("shada", [[!,'2000,<1000,s500,n~/.vim/.shada]])
 -- Specify the behavior when switching between buffers Use the current tab for openning files from quickfix.
 opt("switchbuf", "useopen,usetab")
 opt("showtabline", 1)
@@ -134,11 +134,22 @@ opt("termguicolors", true)
 opt("background", "dark")
 vim.cmd [[colorscheme nord-nick]]
 
+vim.g.clipboard = {
+  name = 'xsel',
+  copy = {
+    ['+'] = {'xsel', '--nodetach', '-i', '-b'},
+    ['*'] = {'xsel', '--nodetach', '-i', '-p'},
+  },
+  paste = {
+    ['+'] = {'xsel', '-o', '-b'},
+    ['*'] = {'xsel', '-o', '-p'},
+  },
+  cache_enabled = 1,
+}
 -- " To force a reload:
 -- 10	"   :unlet g:loaded_clipboard_provider
 -- 11	"   :runtime autoload/provider/clipboard.vim
 -- 12	let g:loaded_clipboard_provider = 1
-
 
 vim.g.qf_disable_statusline = true -- This should be the default
 vim.g.Eunuch_find_executable = "fd" -- I use my fork of vim-eunuch

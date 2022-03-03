@@ -14,9 +14,9 @@ local defaultConfig = {
   -- },
 }
 
-require("lua-dev").setup(
-  {
-    runtime_path = false -- enable this to get completion in require strings. Slow!
-    -- pass any additional options that will be merged in the final lsp config
-  }
-)
+-- require("lua-dev").setup(
+--   {
+--     runtime_path = false -- enable this to get completion in require strings. Slow!
+--     -- pass any additional options that will be merged in the final lsp config
+--   }
+-- )

@@ -38,9 +38,10 @@ function! YankSyncGetRegLines(regname)
 endfunction
 
 " Triggered when text is yanked in vim
-function! YankSyncPush(regname)
-	if empty(a:regname)
-		let contents = YankSyncGetRegLines(a:regname)
+function! YankSyncPush(ev)
+  " if empty(a:ev.regname)
+  if (a:ev.operator == 'y') && empty(a:ev.regname)
+		let contents = YankSyncGetRegLines(a:ev.regname)
 		call system(s:ysshpush, contents)
 	endif
 endfunction
@@ -60,6 +61,7 @@ function! YankSyncPull()
 	endif
 endfunction
 
+" TMUX -> Vim
 " Synchronizes all numbered registers to external buffers
 function! YankSyncPullAll()
 	"for i in [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
@@ -73,7 +75,7 @@ endfunction
 
 augroup clipmgmt
 	autocmd!
-	autocmd TextYankPost * call YankSyncPush(v:event['regname'])
+	autocmd TextYankPost * call YankSyncPush(copy(v:event))
 	silent! autocmd Signal SIGUSR1 call YankSyncPull()
 	autocmd VimEnter * call YankSyncPullAll()
 augroup END

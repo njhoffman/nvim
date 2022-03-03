@@ -59,8 +59,12 @@ vim.cmd([[nnoremap gp <plug>(YoinkPaste_gp) \| kJxJx]])
 vim.cmd([[nnoremap gP <plug>(YoinkPaste_gP) \| kJxJx]])
 vim.cmd([[nmap [y <plug>(YoinkRotateBack)]])
 vim.cmd([[nmap ]y <plug>(YoinkRotateForward)]])
-vim.cmd([[nmap y <plug>(YoinkYankPreserveCursorPosition) \| !xsel -ip ]])
+
+-- vim.cmd([[nmap y <plug>(YoinkYankPreserveCursorPosition) \| <cmd>call system("xsel -ip", getreg("@+"))<cr> ]])
+-- vim.cmd([[xmap y <plug>(YoinkYankPreserveCursorPosition) \| <cmd>call system("xsel -ip", getreg("@+"))<cr> ]])
+vim.cmd([[nmap y <plug>(YoinkYankPreserveCursorPosition)]])
 vim.cmd([[xmap y <plug>(YoinkYankPreserveCursorPosition)]])
+
 -- hitting <c-=> after a paste will toggle between formatted and unformatted (equivalent to using the = key).
 -- By default pastes will not be formatted until you toggle it afterwards using <c-=> (however you can also change this with the yoinkAutoFormatPaste setting as described below)
 -- vim.cmd([[nmap = <plug>(YoinkPostPasteToggleFormat)]])

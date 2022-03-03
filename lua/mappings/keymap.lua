@@ -570,6 +570,17 @@ M.Pickers = {
     short = "git commit log",
     long = "git commit log (fzf-lua)"
   },
+  commit_log_telescope = {
+    cmd = "<cmd>Telescope git_commits<cr>",
+    short = "git commit log telescope",
+    long = "telescope git commit log"
+  },
+  bcommit_log_telescope = {
+    cmd = "<cmd>Telescope git_bcommits<cr>",
+    short = "git bcommit log telescope",
+    long = "telescope git bcommit log"
+  },
+
   buffers_fzflua = {cmd = "<cmd>FzfLua buffers<cr>", short = "buffers fzf", long = "buffers (fzf-lua)"},
   buffers_teledropdown = {
     cmd = "<cmd>lua _G._FindBufferDropdown()<cr>",

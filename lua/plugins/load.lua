@@ -1,6 +1,5 @@
 local config = require("config")
 local pluginmap = require("plugins.pluginmap")
--- local logger = require("logger").initLogger("plugins")
 
 local fn = vim.fn
 local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
@@ -191,9 +190,6 @@ return require("packer").startup(
 
       -- snippets
       -- use {'neovim/nvim-lspconfig', requires = 'mfussenegger/nvim-jdtls'}
-      -- use 'hrsh7th/vim-vsnip'
-      -- use 'hrsh7th/nvim-cmp'
-      -- use 'hrsh7th/cmp-vsnip'
       -- use 'rafamadriz/friendly-snippets'
       -- use 'hrsh7th/cmp-nvim-lsp'
       -- use 'hrsh7th/cmp-buffer'
@@ -209,9 +205,6 @@ return require("packer").startup(
             "hrsh7th/vim-vsnip",
             {"rafamadriz/friendly-snippets", after = "cmp-vsnip"},
             {"kitagry/vs-snippets", after = "cmp-vsnip"}
-
-            -- { "norcalli/snippets.nvim", after="vim-vsnip" } ,
-            -- { "xabikos/vscode-javascript" },
           }
         }
       )
@@ -399,39 +392,6 @@ return require("packer").startup(
       -- ====================================
       -- Interface plugins
       use("voldikss/fzf-floaterm")
-      use("tpope/vim-dadbod")
-      -- :DB sqlite:myfile.sqlite3 select count(*) from widgets
-      -- :DB redis:/// CLIENT LIST
-      -- :%DB mysql://root@localhost/bazquux
-      -- :DB mongodb:///test < big_query.js
-
-      use(
-        {
-          "kristijanhusak/vim-dadbod-ui",
-          requires = "tpope/vim-dadbod",
-          config = function()
-            vim.g.db_ui_show_database_icon = 1
-            vim.g.db_ui_use_nerd_fonts = 1
-            -- let g:db_ui_table_helpers = {
-            -- \ 	'postgresql': {
-            -- \ 		'List': 'select * from {table} order by id asc'
-            -- \ 	}
-            -- \ }
-          end
-        }
-      )
-      -- let g:db_ui_env_variable_url = 'DATABASE_URL'
-      -- let g:db_ui_env_variable_name = 'DATABASE_NAME'
-      -- # .env
-      -- DB_UI_DEV=...          # becomes the `dev` connection
-      -- DB_UI_PRODUCTION=...   # becomes the `production` connection
-      -- let g:db_ui_dotenv_variable_prefix = 'MYPREFIX_'
-      -- let g:dbs = {
-      -- \ 'dev': 'postgres://postgres:mypassword@localhost:5432/my-dev-db',
-      -- \ 'staging': 'postgres://postgres:mypassword@localhost:5432/my-staging-db',
-      -- \ 'wp': 'mysql://root@localhost/wp_awesome',
-      -- \ }
-      -- Just make sure to NOT COMMIT these. I suggest using project local vim config (:help exrc)
       use(
         {
           "nanotee/sqls.nvim",
@@ -446,6 +406,7 @@ return require("packer").startup(
         }
       )
       -- use { "stevearc/stickybuf.nvim", config = function() require("plugins.configs.stickybuf") end }
+
       use("ThePrimeagen/vim-apm") -- VimApmShutdown, VimAp, ~/apm.csvm
 
       -- use "markonm/traces.vim"

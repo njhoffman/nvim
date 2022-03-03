@@ -7,7 +7,7 @@
 local neuron = require("neuron")
 
 local config = {
-virtual_titles = true,
+  virtual_titles = false,
   mappings = false,
   -- run = function()
   --   neuron.update_virtual_titles()

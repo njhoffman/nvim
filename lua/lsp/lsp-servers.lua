@@ -80,7 +80,6 @@ lspservers["jsonls"] = {
 local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
-
 local sumneko_config = {
   root_dir = util.root_pattern(".project", ".git"),
   -- root_dir = util.root_pattern('.project', '.git') or bufdir,
@@ -93,19 +92,17 @@ local sumneko_config = {
       -- completion = {keywordSnippet = "Disable"},
       -- runtime = {version = "LuaJIT", path = runtime_path},
       diagnostics = {globals = {"vim", "use"}, disable = {"lowercase-global"}},
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true)
-        -- library = {[vim.fn.expand("$VIMRUNTIME/lua")] = true, [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true}
-      },
+      -- workspace = {
+      --   -- Make the server aware of Neovim runtime files
+      --   library = vim.api.nvim_get_runtime_file("", true)
+      --   -- library = {[vim.fn.expand("$VIMRUNTIME/lua")] = true, [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true}
+      -- },
       -- Do not send telemetry data containing a randomized but unique identifier
       telemetry = {enable = false}
     }
   }
 }
-
 local lua_dev = require("lua-dev").setup({runtime_path = false, lspconfig = sumneko_config})
-
 lspservers["sumneko_lua"] = lua_dev
 
 lspservers["pylsp"] = {
@@ -130,14 +127,16 @@ lspservers["pylsp"] = {
 }
 
 lspservers["sqls"] = {
-  filetypes = {"sql", "mysql", "pgsql"},
+  filetypes = {"sql", "mysql", "pgsql", "psql"},
   flags = {debounce_text_changes = 500},
   settings = {
+    format = {enable = false},
     sqls = {
+      lowercaseKeywords = false,
       connections = {
         {
           driver = "postgresql",
-          dataSourceName = "host=localhost port=5432 user=spadash password=spadash dbname=spadash_august sslmode=disable"
+          dataSourceName = "host=localhost port=5432 user=spadash password=spadash database=spadash sslmode=disable"
         }
       }
     }
@@ -210,6 +209,11 @@ local shellcheck = {
   lintFormats = {"%f:%l:%c: %trror: %m", "%f:%l:%c: %tarning: %m", "%f:%l:%c: %tote: %m"}
 }
 
+local sqlFormat = {
+  formatCommand = "sqlformat -a --keywords upper --identifiers lower -",
+  formatStdin = true
+}
+
 local prettier = {
   -- parser flow|babel|babel-flow|babel-ts|typescript|espree|meriyah|css|less|scss|
   -- json|json5|json-stringify|graphql|markdown|mdx|vue|yaml|glimmer|html|angular|lwc|ruby|rbs|haml
@@ -223,7 +227,9 @@ local languages = {
   lua = {luafmt, luacheck},
   yaml = {prettier},
   bash = {shfmt, shellcheck},
-  sh = {shfmt, shellcheck}
+  sh = {shfmt, shellcheck},
+  sql = {sqlFormat},
+  pgsql = {sqlFormat}
   -- json = {prettier}
   -- typescript = {prettier, eslint},
   -- javascript = {prettier, eslint},
@@ -274,13 +280,19 @@ require("nvim-lsp-installer").on_server_ready(
     server_config.capabilities = capabilities
     if (server.name == "sqls") then
       server_config.on_attach = function(client, bufnr)
+        require("sqls").setup {picker = "default"} -- telescope, fzf, default
         client.resolved_capabilities.execute_command = true
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
         client.commands = require("sqls").commands -- Neovim 0.6+ only
-        require("sqls").setup {picker = "telescope"}
         custom_attach(client, bufnr)
       end
     elseif (server.name == "sumneko_lua") then
-      client.resolved_capabilities.formatting = false
+      server_config.on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+        custom_attach(client, bufnr)
+      end
     else
       server_config.on_attach = custom_attach
     end

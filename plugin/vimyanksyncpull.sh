@@ -3,10 +3,13 @@
 # sync clipboard with zsh
 
 # The script vimyanksyncpull.sh fundamentally just has to output the current clipboard contents.
-# A bit of extra logic is needed to handle edge cases.
-# Since SIGUSR1 is shared as the notification mechanism between different things, we want to avoid getting nvim bogged down with spurious clipboard fetch requests, so only return a buffer if it was created within the last few seconds. Also check to make sure it’s below a specified maximum size. Return a nonzero exit status if no clipboard is available.
+# Since SIGUSR1 is shared as the notification mechanism between different things,
+# we want to avoid getting nvim bogged down with spurious clipboard fetch requests,
+# so only return a buffer if it was created within the last few seconds.
+# Also check to make sure it’s below a specified maximum size.
+# Return a nonzero exit status if no clipboard is available.
 
-CWD=$(dirname ${BASH_SOURCE[0]})
+CWD="$(realpath "$(dirname "$0")")"
 source "$CWD/cliplog.sh"
 s="vimyanksyncpull.sh"
 
@@ -21,7 +24,6 @@ csv="$(tmux list-buffers -F \
 
 if [ $? -ne 0 ]; then exit 1; fi
 
-debug "$s: loading csv from tmux buffers"
 csv="$(echo "$csv" | head -n1)"
 
 if [ -z "$csv" ]; then exit 1; fi
@@ -30,10 +32,23 @@ ctime="$(echo "$csv" | cut -d , -f 1)"
 bsize="$(echo "$csv" | cut -d , -f 2)"
 bname="$(echo "$csv" | cut -d , -f 3-)"
 now="$(date +%s)"
+diff=$(expr $now - $ctime)
 
-if [ $(expr $now - $ctime) -gt $MAX_TIME_DIFF ]; then exit 1; fi
+if [ $diff -gt $MAX_TIME_DIFF ]; then
+  debug "$s: tmux show-buffer - skip (too old) - $diff"
+  exit 1
+fi
 
-if [ $bsize -gt $MAX_SIZE ]; then exit 1; fi
+if [ $bsize -gt $MAX_SIZE ]; then
+  debug "$s: tmux show-buffer - skip (too large) - $bsize"
+  exit 1
+fi
 
-debug "$s: outputting into tmux $bname"
+log_msg="tmux show-buffer - $(echo "$csv" | wc -l) lines"
+if [[ $(echo "$csv" |  wc -l) -eq 0 ]]; then
+  log_msg="tmux show-buffer - $(echo "$csv" | wc -c) chars"
+fi
+
+debug "$s: $log_msg - $(expr $now - $ctime) - $bname"
+
 tmux show-buffer -b "$bname"

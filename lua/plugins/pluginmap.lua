@@ -46,8 +46,19 @@ M.picker_plugins = {
   ["fzf.vim"] = {use = {"junegunn/fzf.vim", requires = {"junegunn/fzf", "ryanoasis/vim-devicons"}}},
   ["fzf-preview.vim"] = {use = {"yuki-yano/fzf-preview.vim", branch = "release/remote", requires = {"junegunn/fzf"}}},
   ["fzf-lua"] = {use = {"ibhagwan/fzf-lua", requires = {"vijaymarupudi/nvim-fzf", "kyazdani42/nvim-web-devicons"}}},
-  ["nvim-spotify"] = {use = {"KadoBOT/nvim-spotify", requires = "nvim-telescope/telescope.nvim", run = "make"}}
+  ["nvim-spotify"] = {use = {"KadoBOT/nvim-spotify", requires = "nvim-telescope/telescope.nvim", run = "make"}},
+  ["harpoon"] = {
+    use = "ThePrimeagen/harpoon",
+    requires = "nvim-lua/plenary.nvim"
+  }
 }
+require("harpoon").setup(
+  {
+    menu = {
+      width = vim.api.nvim_win_get_width(0) - 4
+    }
+  }
+)
 
 M.motion_plugins = {
   -- ["vim-sandwhich"] = {use = "machakann/vim-sandwich"},
@@ -154,7 +165,7 @@ M.project_plugins = {
 M.interface_plugins = {
   ["perfanno.nvim"] = {use = "t-troebst/perfanno.nvim"},
   ["quickmath.nvim"] = {use = "jbyuki/quickmath.nvim"},
-  ["yank-history"] = {use = "yazgoo/yank-history"},
+  -- ["yank-history"] = {use = "yazgoo/yank-history"},
   ["vim-yoink"] = {use = "svermeulen/vim-yoink"},
   ["nvim-bqf"] = {use = "kevinhwang91/nvim-bqf"},
   ["vim-qf"] = {use = "romainl/vim-qf"},
@@ -163,6 +174,7 @@ M.interface_plugins = {
 }
 
 M.integration_plugins = {
+  ["vim-dadbod-ui"] = {use = {"kristijanhusak/vim-dadbod-ui", requires = "tpope/vim-dadbod"}},
   ["nvim-magic"] = {use = {"jameshiew/nvim-magic", requires = {"nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim"}}},
   ["id3.vim"] = {use = "AndrewRadev/id3.vim"},
   ["cheat.sh-vim"] = {use = "dbeniamine/cheat.sh-vim"},

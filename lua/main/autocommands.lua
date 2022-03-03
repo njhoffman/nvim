@@ -3,16 +3,9 @@ local u = require("utils.core")
 local Formatting = config.Formatting
 local Opts = config.Opts
 
+-- #{?pane_in_mode,#[fg=white#,bg=red],#[fg=red#,bg=white]}#W .
 vim.cmd [[
-  let g:dbs = {
-  \ 'dev': 'postgres://spadash:spadash@localhost:5432/spadash_august',
-  \ 'staging': 'postgres://postgres:mypassword@localhost:5432/my-staging-db',
-  \ 'wp': 'mysql://root@localhost/wp_awesome',
-  \ }
-]]
-
-vim.cmd [[
-  command! SqlVis silent !tmux display-popup -E -h 70\% -w90\% "psql --csv postgres://spadash:spadash@localhost/spadash_august --file=%:p | /bin/zsh -c 'vd -f csv --color-default=\"8 on black\"' "
+  command! SqlVis silent !tmux display-popup -b rounded -S 'fg=\#2255AA' -T '' -E -h 70\% -w90\% "psql --csv postgres://spadash:spadash@localhost/spadash --file=%:p | /bin/zsh -c 'vd -f csv --color-default=\"8 on black\" '"
 ]]
 
 function goto_last_pos()
@@ -205,7 +198,15 @@ local number_toggle = {
 table.insert(autocmds, number_toggle)
 
 -- define tables to insert
-local hl_yank = {{"TextYankPost", "*", "silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=400 }"}}
+local hl_yank = {{
+  "TextYankPost",
+  "*",
+  "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=400 }",
+}}
+
+if Opts.highlight_yank == true or Opts.highlight_yank == nil then
+  table.insert(autocmds, hl_yank)
+end
 
 local preserve_cursor = {{"BufReadPost", "*", "lua goto_last_pos()"}}
 
@@ -218,9 +219,6 @@ local trim_whitespaces = {
 -- insert tables if true or nil
 if Opts.preserve_cursor == true or Opts.preserve_cursor == nil then
   table.insert(autocmds, preserve_cursor)
-end
-if Opts.highlight_yank == true or Opts.highlight_yank == nil then
-  table.insert(autocmds, hl_yank)
 end
 
 --[[ if Formatting.format_on_save == true or Formatting.format_on_save == nil then

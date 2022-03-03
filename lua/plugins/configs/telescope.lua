@@ -13,32 +13,43 @@ local H = require("helpers")
 local custom_actions = {}
 function custom_actions._multiopen(prompt_bufnr, open_cmd)
   local picker = actions_state.get_current_picker(prompt_bufnr)
+  local selected_entry = actions_state.get_selected_entry()
   local num_selections = #picker:get_multi_selection()
-  if num_selections > 1 then
-    local cwd = picker.cwd
-    if cwd == nil then
-      cwd = ""
-    else
-      cwd = string.format("%s/", cwd)
-    end
-    vim.cmd("bw!") -- wipe the prompt buffer
-    for _, entry in ipairs(picker:get_multi_selection()) do
-      vim.cmd(string.format("%s %s%s", open_cmd, cwd, entry.value))
-    end
-    vim.cmd("stopinsert")
-  else
-    if open_cmd == "vsplit" then
-      actions.file_vsplit(prompt_bufnr)
-    elseif open_cmd == "split" then
-      actions.file_split(prompt_bufnr)
-    elseif open_cmd == "tabe" then
-      actions.file_tab(prompt_bufnr)
-    else
-      -- actions.file_edit(prompt_bufnr)
-      actions.select_default(prompt_bufnr)
-    end
+  if not num_selections or num_selections <= 1 then
+    actions.add_selection(prompt_bufnr)
   end
+  actions.send_selected_to_qflist(prompt_bufnr)
+  vim.cmd("cfdo " .. open_cmd)
 end
+
+-- function custom_actions._multiopen(prompt_bufnr, open_cmd)
+--   local picker = actions_state.get_current_picker(prompt_bufnr)
+--   local num_selections = #picker:get_multi_selection()
+--   if num_selections > 1 then
+--     local cwd = picker.cwd
+--     if cwd == nil then
+--       cwd = ""
+--     else
+--       cwd = string.format("%s/", cwd)
+--     end
+--     vim.cmd("bw!") -- wipe the prompt buffer
+--     for _, entry in ipairs(picker:get_multi_selection()) do
+--       vim.cmd(string.format("%s %s%s", open_cmd, cwd, entry.value))
+--     end
+--     vim.cmd("stopinsert")
+--   else
+--     if open_cmd == "vsplit" then
+--       actions.file_vsplit(prompt_bufnr)
+--     elseif open_cmd == "split" then
+--       actions.file_split(prompt_bufnr)
+--     elseif open_cmd == "tabe" then
+--       actions.file_tab(prompt_bufnr)
+--     else
+--       -- actions.file_edit(prompt_bufnr)
+--       actions.select_default(prompt_bufnr)
+--     end
+--   end
+-- end
 
 function custom_actions.multi_selection_open_vsplit(prompt_bufnr)
   custom_actions._multiopen(prompt_bufnr, "vsplit")
@@ -59,7 +70,7 @@ end
 function custom_actions.switch_to_frecency(prompt_bufnr)
   actions.close(prompt_bufnr)
   -- local picker = actions_state.get_current_picker(prompt_bufnr)
-  -- local ok = pcall(require "telescope".extensions.frecency.frecency)
+  local ok = pcall(require "telescope".extensions.frecency.frecency)
   vim.schedule(
     function()
       vim.cmd [[startinsert]]
@@ -72,7 +83,7 @@ function custom_actions.directory_up(prompt_bufnr)
   local selection = actions_state.get_selected_entry()
   local picker = actions_state.get_current_picker(prompt_bufnr)
   local dir = picker.cwd or selection.cwd or vim.fn.getcwd()
-  dir=string.split(dir, "/")
+  dir = string.split(dir, "/")
 
   table.remove(dir)
   dir = table.concat(dir, "/")
@@ -128,7 +139,7 @@ local telescopeConfig = {
     },
     dynamic_preview_title = true,
     -- prompt_prefix = "λ ",
-    prompt_prefix = "🔍 ",
+    prompt_prefix = " 🔍 ",
     selection_caret = "▶ ",
     selection_strategy = "reset", -- follow, reset, row
     sorting_strategy = "ascending",
@@ -145,18 +156,18 @@ local telescopeConfig = {
         ["<c-b>"] = function(prompt_bufnr)
           actions_set.shift_selection(prompt_bufnr, -15)
         end,
-        -- ["<c-u>"] = false,
+        ["<c-u>"] = false,
         ["<a-n>"] = actions.toggle_selection + actions.move_selection_next,
         ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous,
-        -- ["<cr>"] = actions.select_default + actions.center,
-        ["<cr>"] = custom_actions.multi_selection_open,
+        ["<cr>"] = actions.select_default + actions.center,
         ["<c-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
         ["<c-q>"] = actions.send_to_qflist + actions.open_qflist + actions.center,
         ["<c-_>"] = function(prompt_bufnr)
           actions_layout.toggle_preview(prompt_bufnr)
         end,
-        ["<M-/>"] = actions.which_key
-
+        ["<M-/>"] = actions.which_key,
+        ["<C-DOWN>"] = require("telescope.actions").cycle_history_next,
+        ["<C-UP>"] = require("telescope.actions").cycle_history_prev
         -- ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
         -- ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
         -- ["<C-h>"] = actions.goto_file_selection_split,
@@ -211,7 +222,8 @@ local telescopeConfig = {
           -- change directory functionality
           [":bd"] = custom_actions.directory_up,
           ["<C-g>"] = custom_actions.directory_up,
-          ["<A-U>"] = custom_actions.switch_to_frecency
+          ["<A-U>"] = custom_actions.switch_to_frecency,
+          ["<cr>"] = custom_actions.multi_selection_open
         }
       }
     }
@@ -337,8 +349,8 @@ telescopeConfig.extensions.bookmarks = {
 }
 
 telescopeConfig.extensions.media_files = {
-  filetypes = {"png", "webp", "jpg", "jpeg", "webm", "pdf", "mp4"},
-  find_cmd = "rg" -- find command (defaults to `fd`)
+  filetypes = {"png", "webp", "jpg", "jpeg", "webm", "pdf", "mp4", ".svg"},
+  find_cmd = "fd" -- find command (defaults to `fd`)
 }
 
 telescopeConfig.extensions.arecibo = {

@@ -5,9 +5,11 @@ vim.g.yoinkMaxItems = 100
 vim.g.yoinkSavePersistently = 1
 vim.g.yoinkAutoFormatPaste = 1
 vim.g.yoinkIncludeNamedRegisters = 1
+vim.g.yoinkIncludeDeleteOperations = 0
 vim.g.yoinkMoveCursorToEndOfPaste = 1
 vim.g.yoinkSyncSystemClipboardOnFocus = 1
 vim.g.yoinkSyncNumberedRegisters = 1
+
 
 -- g:yoinkSyncNumberedRegisters - When set to 1, every time the yank history changes the numbered registers 1 - 9 will be updated to sync with the first 9 entries in the yank history. See here for an explanation of why we would want do do this. Default: 0.
 -- g:yoinkIncludeDeleteOperations - When set to 1, delete operations such as x or d or s will also be added to the yank history. Default: 0

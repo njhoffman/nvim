@@ -1,10 +1,4 @@
 -- exclude notify windows from nvim-tree
-vim.g.nvim_tree_window_picker_exclude = {
-  filetype = {
-    "notify",
-  }
-}
-
 -- following options are the default
 require"nvim-tree".setup {
   -- disables netrw completely
