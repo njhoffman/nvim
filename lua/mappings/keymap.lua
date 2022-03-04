@@ -606,6 +606,12 @@ M.Pickers = {
     short = "location list",
     long = "location list"
   },
+
+  telescope_grep_search = {
+    cmd = "<cmd>Telescope grep_string<cr>",
+    short = "grep string search (telescope)",
+    long = "grep string search (telescope)"
+  },
   telescope_live_search = {
     cmd = "<cmd>Telescope live_grep<cr>",
     short = "live search (telescope)",

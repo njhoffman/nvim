@@ -63,14 +63,11 @@ return require("packer").startup(
       pluginmap.load_plugins(use, load_config)
 
       -- Basic key mappings
-      use("aymericbeaumet/vim-symlink")
-      use("lambdalisue/suda.vim")
       use("mhinz/vim-sayonara")
       use("moll/vim-bbye")
       use("ojroques/nvim-bufdel")
       use("tpope/vim-repeat")
       use("Konfekt/vim-alias")
-      use("tpope/vim-scriptease") -- use 'antoinemadec/FixCursorHold.nvim'
       use(
         {
           "meain/vim-printer",
@@ -209,7 +206,6 @@ return require("packer").startup(
         }
       )
 
-      -- use { "hrsh7th/vim-vsnip", config = function() require("plugins.configs.vim-vsnip") end }
       -- use "honza/vim-snippets"
       -- use "SirVer/UltiSnips"
       -- use { 'cstrap/python-snippets' }
@@ -224,6 +220,66 @@ return require("packer").startup(
           "preservim/vimux",
           config = function()
             require("plugins.configs.vimux")
+          end
+        }
+      )
+      use(
+        {
+          "nvim-telescope/telescope.nvim",
+          requires = {
+            "kyazdani42/nvim-web-devicons",
+            "nvim-lua/popup.nvim",
+            "nvim-lua/plenary.nvim",
+            "tami5/sqlite.lua",
+            {"AckslD/nvim-neoclip.lua", requires = {"tami5/sqlite.lua", module = "sqlite"}},
+            "ahmedkhalf/project.nvim",
+            {
+              "lazytanuki/nvim-mapper",
+              before = "telescope.nvim",
+              config = function()
+                require("nvim-mapper").setup({})
+              end
+            },
+            "skywind3000/asynctasks.vim",
+            "sudormrfbin/cheatsheet.nvim",
+            --
+            "nvim-telescope/telescope-file-browser.nvim",
+            "rmagatti/session-lens",
+            "GustavoKatel/telescope-asynctasks.nvim",
+            "camgraff/telescope-tmux.nvim",
+            "dhruvmanila/telescope-bookmarks.nvim",
+            "gbrlsnchs/telescope-lsp-handlers.nvim",
+            "nvim-telescope/telescope-dap.nvim",
+            "nvim-telescope/telescope-frecency.nvim",
+            "nvim-telescope/telescope-symbols.nvim",
+            {"nvim-telescope/telescope-fzf-native.nvim", run = "make"},
+            "nvim-telescope/telescope-ghq.nvim",
+            "nvim-telescope/telescope-github.nvim",
+            "nvim-telescope/telescope-media-files.nvim",
+            "nvim-telescope/telescope-packer.nvim",
+            "nvim-telescope/telescope-z.nvim",
+            --
+            "nvim-telescope/telescope-arecibo.nvim",
+            "nvim-telescope/telescope-node-modules.nvim",
+            "nvim-telescope/telescope-ui-select.nvim",
+            "nvim-telescope/telescope-hop.nvim",
+            "nvim-telescope/telescope-rg.nvim",
+            -- <c-a>: append env name, <cr>: append env value, <c-e>: edit env value
+            "LinArcX/telescope-command-palette.nvim",
+            "tamago324/telescope-openbrowser.nvim",
+            "LinArcX/telescope-env.nvim",
+            "crispgm/telescope-heading.nvim",
+            "ElPiloto/telescope-vimwiki.nvim",
+            "cljoly/telescope-repo.nvim",
+            "elianiva/telescope-npm.nvim",
+            "rlch/github-notifications.nvim",
+            "frenchtoasters/telescope-kubectl.nvim"
+            -- "nvim-telescope/telescope-vimspector",
+            -- "benfowler/telescope-luasnip.nvim",
+          },
+          config = function()
+            require("plugins.configs.telescope")
+            require("plugins.configs.telescope-pickers")
           end
         }
       )
@@ -279,24 +335,6 @@ return require("packer").startup(
 
       use(
         {
-          "pwntester/octo.nvim",
-          requires = "kyazdani42/nvim-web-devicons",
-          config = function()
-            require("plugins.configs.octo")
-          end
-        }
-      )
-      use(
-        {
-          "skywind3000/asynctasks.vim",
-          requires = "skywind3000/asyncrun.vim",
-          config = function()
-            require("plugins.configs.asynctasks")
-          end
-        }
-      )
-      use(
-        {
           "iamcco/markdown-preview.nvim",
           run = "cd app && yarn install",
           config = function()
@@ -307,11 +345,9 @@ return require("packer").startup(
 
       -- ====================================
       -- Visual enhancements
-      use("romainl/vim-cool")
       use(
         {
           "phaazon/hop.nvim",
-          branch = "v1", -- optional but strongly recommended
           config = function()
             -- you can configure Hop the way you like here; see :h hop-config
             require("hop").setup({keys = "etovxqpdygfblzhckisuran"})
@@ -323,24 +359,6 @@ return require("packer").startup(
         }
       )
 
-      use("gerw/vim-HiLinkTrace")
-      use(
-        {
-          "joeysino/vim-plugin-AnsiEsc",
-          config = function()
-            require("plugins.configs.vim_plugin_AnsiEsc")
-          end
-        }
-      )
-      use(
-        {
-          "RRethy/vim-hexokinase",
-          run = "make hexokinase",
-          config = function()
-            require("plugins.configs.vim_hexokinase")
-          end
-        }
-      )
       use(
         {
           "winston0410/range-highlight.nvim",
@@ -357,6 +375,15 @@ return require("packer").startup(
       --   "sunjon/Shade.nvim",
       --   config = function() require("plugins.configs.shade") end
       -- }
+
+
+      require("harpoon").setup(
+      {
+          menu = {
+            width = vim.api.nvim_win_get_width(0) - 4
+          }
+        }
+      )
 
       -- ====================================
       -- Motion plugins
@@ -379,7 +406,6 @@ return require("packer").startup(
       -- System utils
       use("bchretien/vim-profiler")
       use("tweekmonster/startuptime.vim")
-      -- Delete, Unlink, Move, Rename, Chmod, Mkdir, Cfind/locate, Lfind/locate, Wall, SudoWrite/Edit
       use(
         {
           "henriquehbr/nvim-startup.lua",
@@ -429,73 +455,9 @@ return require("packer").startup(
       -- }
       use(
         {
-          "folke/todo-comments.nvim",
-          config = function()
-            require("plugins.configs.todo_comments")
-          end
-        }
-      )
-      use(
-        {
-          "folke/trouble.nvim",
-          config = function()
-            require("plugins.configs.trouble")
-          end
-        }
-      )
-      use(
-        {
-          "folke/which-key.nvim",
-          config = function()
-            require("plugins.configs.which_key")
-          end
-        }
-      )
-      use(
-        {
           "ncm2/float-preview.nvim",
           config = function()
             require("plugins.configs.float-preview")
-          end
-        }
-      )
-      use(
-        {
-          "kyazdani42/nvim-tree.lua",
-          config = function()
-            require("plugins.configs.nvim_tree")
-          end
-        }
-      )
-      use(
-        {
-          "simnalamburt/vim-mundo",
-          config = function()
-            require("plugins.configs.vim_mundo")
-          end
-        }
-      )
-      use(
-        {
-          "sindrets/diffview.nvim",
-          config = function()
-            require("plugins.configs.diffview")
-          end
-        }
-      )
-      use(
-        {
-          "tversteeg/registers.nvim",
-          config = function()
-            require("plugins.configs.registers")
-          end
-        }
-      )
-      use(
-        {
-          "voldikss/vim-floaterm",
-          config = function()
-            require("plugins.configs.vim-floaterm")
           end
         }
       )
@@ -518,153 +480,11 @@ return require("packer").startup(
         {
           "luukvbaal/nnn.nvim",
           config = function()
-            --  NnnPicker ()-F mode), NnnExplorer (-P mode)
-
-            -- Bind NnnExplorer/NnnPicker to toggle the plugin on/off in normal and terminal mode. The commands accept a path as optional argument. To always open nnn in the directory of the currently active buffer, use %:p:h as argument:
-            -- tnoremap <C-A-n> <cmd>NnnExplorer<CR>
-            -- nnoremap <C-A-n> <cmd>NnnExplorer %:p:h<CR>
-            -- tnoremap <C-A-p> <cmd>NnnPicker<CR>
-            -- nnoremap <C-A-p> <cmd>NnnPicker<CR>
-            local builtin = require("nnn").builtin
-            mappings = {
-              {"<C-t>", builtin.open_in_tab}, -- open file(s) in tab
-              {"<C-s>", builtin.open_in_split}, -- open file(s) in split
-              {"<C-v>", builtin.open_in_vsplit}, -- open file(s) in vertical split
-              {"<C-p>", builtin.open_in_preview}, -- open file in preview split keeping nnn focused
-              {"<C-y>", builtin.copy_to_clipboard}, -- copy file(s) to clipboard
-              {"<C-w>", builtin.cd_to_path}, -- cd to file directory
-              {"<C-e>", builtin.populate_cmdline} -- populate cmdline (:) with file(s)
-            }
-            local cfg = {
-              explorer = {
-                cmd = "nnn -G", -- command overrride (-F1 flag is implied, -a flag is invalid!)
-                width = 24, -- width of the vertical split
-                side = "topleft", -- or "botright", location of the explorer window
-                session = "", -- or "global" / "local" / "shared"
-                tabs = true -- seperate nnn instance per tab
-              },
-              picker = {
-                cmd = "tmux new-session nnn -Pp",
-                style = {
-                  border = "rounded",
-                  width = 0.9, -- width in percentage of the viewport
-                  height = 0.8, -- height in percentage of the viewport
-                  xoffset = 0.5, -- xoffset in percentage
-                  yoffset = 0.5 -- yoffset in percentage
-                },
-                session = "" -- or "global" / "local" / "shared"
-              },
-              auto_open = {
-                setup = nil, -- or "explorer" / "picker", auto open on setup function
-                tabpage = nil, -- or "explorer" / "picker", auto open when opening new tabpage
-                empty = false, -- only auto open on empty buffer
-                ft_ignore = {
-                  -- dont auto open for these filetypes
-                  "gitcommit"
-                }
-              },
-              auto_close = false, -- close tabpage/nvim when nnn is last window
-              replace_netrw = nil, -- or "explorer" / "picker"
-              mappings = {}, -- table containing mappings, see below
-              windownav = {
-                -- window movement mappings to navigate out of nnn
-                left = "<C-w>h",
-                right = "<C-w>l"
-              }
-            }
-            require("nnn").setup(config)
+            require("plugins.configs.nnn")
           end
         }
       )
       use("Yohannfra/Nvim-Switch-Buffer")
-      use(
-        {
-          "matbme/JABS.nvim",
-          config = function()
-            require("plugins.configs.jabs")
-          end
-        }
-      )
-
-      -- NOTE: must be called before telescope, otherwise rg hangs on plenary job
-      use(
-        {
-          "lazytanuki/nvim-mapper",
-          config = function()
-            require("nvim-mapper").setup({})
-          end,
-          before = "telescope.nvim"
-        }
-      )
-
-      use(
-        {
-          "nvim-telescope/telescope.nvim",
-          requires = {
-            "kyazdani42/nvim-web-devicons",
-            "nvim-lua/popup.nvim",
-            "nvim-lua/plenary.nvim",
-            "tami5/sqlite.lua",
-            {"AckslD/nvim-neoclip.lua", requires = {"tami5/sqlite.lua", module = "sqlite"}},
-            "ahmedkhalf/project.nvim",
-            "lazytanuki/nvim-mapper",
-            "skywind3000/asynctasks.vim",
-            "sudormrfbin/cheatsheet.nvim",
-            --
-            "nvim-telescope/telescope-file-browser.nvim",
-            "rmagatti/session-lens",
-            "GustavoKatel/telescope-asynctasks.nvim",
-            "camgraff/telescope-tmux.nvim",
-            "dhruvmanila/telescope-bookmarks.nvim",
-            "gbrlsnchs/telescope-lsp-handlers.nvim",
-            "nvim-telescope/telescope-dap.nvim",
-            "nvim-telescope/telescope-frecency.nvim",
-            "nvim-telescope/telescope-symbols.nvim",
-            {"nvim-telescope/telescope-fzf-native.nvim", run = "make"},
-            "nvim-telescope/telescope-ghq.nvim",
-            "nvim-telescope/telescope-github.nvim",
-            "nvim-telescope/telescope-media-files.nvim",
-            "nvim-telescope/telescope-packer.nvim",
-            "nvim-telescope/telescope-z.nvim",
-            --
-            "nvim-telescope/telescope-arecibo.nvim",
-            "nvim-telescope/telescope-node-modules.nvim",
-            "nvim-telescope/telescope-ui-select.nvim",
-            "nvim-telescope/telescope-hop.nvim",
-            "nvim-telescope/telescope-rg.nvim",
-            -- <c-a>: append env name, <cr>: append env value, <c-e>: edit env value
-            "LinArcX/telescope-command-palette.nvim",
-            "tamago324/telescope-openbrowser.nvim",
-            "LinArcX/telescope-env.nvim",
-            "crispgm/telescope-heading.nvim",
-            "ElPiloto/telescope-vimwiki.nvim",
-            "cljoly/telescope-repo.nvim",
-            "elianiva/telescope-npm.nvim",
-            "rlch/github-notifications.nvim",
-            "frenchtoasters/telescope-kubectl.nvim"
-            -- "nvim-telescope/telescope-vimspector",
-            -- "benfowler/telescope-luasnip.nvim",
-          },
-          config = function()
-            require("plugins.configs.telescope")
-            require("plugins.configs.telescope-pickers")
-          end
-        }
-      )
-
-      use(
-        {
-          "~/git/telescope-extensions",
-          -- "njhoffman/telescope-extensions",
-          -- "~/projects/telescope-extensions",
-          requires = {{"nvim-telescope/telescope.nvim"}},
-          -- for arecibo websearch
-          rocks = {"openssl", "lua-http-parser"},
-          config = function()
-            -- require"telescope".load_extension "context-pickers"
-          end
-        }
-      )
 
       -- ====================================
       -- Treesitter
@@ -777,7 +597,6 @@ return require("packer").startup(
 
       -- ====================================
       -- Themes
-      use({"rktjmp/lush.nvim"})
 
       -- Automatically set up your configuration after cloning packer.nvim
       -- Put this at the end after all plugins

@@ -52,13 +52,6 @@ M.picker_plugins = {
     requires = "nvim-lua/plenary.nvim"
   }
 }
-require("harpoon").setup(
-  {
-    menu = {
-      width = vim.api.nvim_win_get_width(0) - 4
-    }
-  }
-)
 
 M.motion_plugins = {
   -- ["vim-sandwhich"] = {use = "machakann/vim-sandwich"},
@@ -137,17 +130,23 @@ M.ui_plugins = {
   -- ["startup.nvim"] = {
   --   use = {"startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}}
   -- },
-  ["vimade"] = {use = "TaDaa/vimade"},
-  ["twilight.nvim"] = {use = "folke/twilight.nvim"},
-  ["zen-mode.nvim"] = {use = "folke/zen-mode.nvim"},
   ["aerial.nvim"] = {use = "stevearc/aerial.nvim"},
+  ["dressing-nvim"] = {use = {"stevearc/dressing.nvim", requires = "MunifTanjim/nui.nvim"}},
   ["nvim-hlslens"] = {use = "kevinhwang91/nvim-hlslens"},
   ["nvim-notify"] = {use = "rcarriga/nvim-notify"},
-  ["dressing-nvim"] = {use = {"stevearc/dressing.nvim", requires = "MunifTanjim/nui.nvim"}},
-  ["vim-bling"] = {use = "ivyl/vim-bling"},
-  ["specs.nvim"] = {use = "edluffy/specs.nvim"},
   ["nvim-scrollbar"] = {use = "petertriho/nvim-scrollbar"},
-  ["stabilize.nvim"] = {use = "luukvbaal/stabilize.nvim"}
+  ["specs.nvim"] = {use = "edluffy/specs.nvim"},
+  ["stabilize.nvim"] = {use = "luukvbaal/stabilize.nvim"},
+  ["todo-comments.nvim"] = {use = "folke/todo-comments.nvim"},
+  ["twilight.nvim"] = {use = "folke/twilight.nvim"},
+  ["vim-HiLinkTrace"] = {use = "gerw/vim-HiLinkTrace"},
+  ["vim-bling"] = {use = "ivyl/vim-bling"},
+  ["vim-cool"] = {use = "romainl/vim-cool"},
+  ["vim-hexokinase"] = {use = {"RRethy/vim-hexokinase", run = "make hexokinase"}},
+  ["vim-plugin-AnsiEsc"] = {use = "joeysino/vim-plugin-AnsiEsc"},
+  ["vimade"] = {use = "TaDaa/vimade"},
+  ["which-key.nvim"] = {use = "folke/which-key.nvim"},
+  ["zen-mode.nvim"] = {use = "folke/zen-mode.nvim"}
 }
 
 M.project_plugins = {
@@ -156,6 +155,7 @@ M.project_plugins = {
   ["cpbooster.vim"] = {use = "searleser97/cpbooster.vim"},
   ["gitsigns.nvim"] = {use = {"lewis6991/gitsigns.nvim", requires = {"nvim-lua/plenary.nvim"}}},
   ["nvim-projectconfig"] = {use = "windwp/nvim-projectconfig"},
+  ["octo.nvim"] = {use = {"pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons"}},
   ["vim-flog"] = {use = "rbong/vim-flog"},
   ["vim-fugitive"] = {use = "tpope/vim-fugitive"},
   ["vim-rhubarb"] = {use = "tpope/vim-rhubarb"},
@@ -163,36 +163,46 @@ M.project_plugins = {
 }
 
 M.interface_plugins = {
+  -- ["yank-history"] = {use = "yazgoo/yank-history"},
+  ["alpha-nvim"] = {use = {"goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons"}},
+  ["diffview.nvim"] = {use = "sindrets/diffview.nvim"},
+  ["nvim-bqf"] = {use = "kevinhwang91/nvim-bqf"},
+  ["nvim-tree.lua"] = {use = "kyazdani42/nvim-tree.lua"},
   ["perfanno.nvim"] = {use = "t-troebst/perfanno.nvim"},
   ["quickmath.nvim"] = {use = "jbyuki/quickmath.nvim"},
-  -- ["yank-history"] = {use = "yazgoo/yank-history"},
-  ["vim-yoink"] = {use = "svermeulen/vim-yoink"},
-  ["nvim-bqf"] = {use = "kevinhwang91/nvim-bqf"},
+  ["registers.nvim"] = {use = "tversteeg/registers.nvim"},
+  ["vim-floaterm"] = {use = "voldikss/vim-floaterm"},
+  ["vim-mundo"] = {use = "simnalamburt/vim-mundo"},
   ["vim-qf"] = {use = "romainl/vim-qf"},
   ["vim-qf-history"] = {use = "bfrg/vim-qf-history"},
-  ["alpha-nvim"] = {use = {"goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons"}}
+  ["vim-yoink"] = {use = "svermeulen/vim-yoink"}
 }
 
 M.integration_plugins = {
-  ["vim-dadbod-ui"] = {use = {"kristijanhusak/vim-dadbod-ui", requires = "tpope/vim-dadbod"}},
-  ["nvim-magic"] = {use = {"jameshiew/nvim-magic", requires = {"nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim"}}},
-  ["id3.vim"] = {use = "AndrewRadev/id3.vim"},
+  ["asynctasks.vim"] = {use = {"skywind3000/asynctasks.vim", requires = "skywind3000/asyncrun.vim"}},
   ["cheat.sh-vim"] = {use = "dbeniamine/cheat.sh-vim"},
-  ["vim-test"] = {use = "vim-test/vim-test"},
+  ["id3.vim"] = {use = "AndrewRadev/id3.vim"},
+  ["nvim-magic"] = {use = {"jameshiew/nvim-magic", requires = {"nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim"}}},
+  ["package-info.nvim"] = {use = {"vuki656/package-info.nvim", requires = "MunifTanjim/nui.nvim"}},
+  ["vim-dadbod-ui"] = {use = {"kristijanhusak/vim-dadbod-ui", requires = "tpope/vim-dadbod"}},
   ["vim-ripple"] = {use = "urbainvaes/vim-ripple"},
-  ["package-info.nvim"] = {use = {"vuki656/package-info.nvim", requires = "MunifTanjim/nui.nvim"}}
+  ["vim-test"] = {use = "vim-test/vim-test"}
 }
 
 M.sysutil_plugins = {
   ["vim-eunuch"] = {use = "tpope/vim-eunuch"},
   ["vim-renamer"] = {use = "qpkorr/vim-renamer"},
-  ["nvim-remote-containers"] = {use = "jamestthompson3/nvim-remote-containers"}
+  ["nvim-remote-containers"] = {use = "jamestthompson3/nvim-remote-containers"},
+  ["suda.vim"] = {use = "lambdalisue/suda.vim"},
+  ["vim-scriptease"] = {use = "tpope/vim-scriptease"},
+  ["vim-symlink"] = {use = "aymericbeaumet/vim-symlink"}
 }
 
 M.lsp_plugins = {
   ["fidget.nvim"] = {use = "j-hui/fidget.nvim"},
   ["null-ls.nvim"] = {use = {"jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim"}},
   ["lua-dev.nvim"] = {use = "folke/lua-dev.nvim"},
+  ["trouble.nvim"] = {use = "folke/trouble.nvim"},
   ["ntangle-lsp.nvim"] = {
     use = {"jbyuki/ntangle-lsp.nvim", requires = {"jbyuki/ntangle-ts.nvim", "neovim/nvim-lspconfig"}}
   }
@@ -200,8 +210,8 @@ M.lsp_plugins = {
 
 M.theme_plugins = {
   ["barbar"] = {use = {"romgrk/barbar.nvim"}},
+  ["lush.nvim"] = {use = "rktjmp/lush.nvim"},
   ["feline.nvim"] = {use = "feline-nvim/feline.nvim"}
-  -- branch = 'develop',
 }
 
 M.check_require_exists = function(fname)
@@ -262,6 +272,8 @@ M.plugin_config = function(name)
   -- print('checking ' .. fname)
   if M.check_require_exists(fname) then
     config = M.load_config(fname)
+  -- else
+  --   -- print("config not found: " .. fname)
   end
   return config
 end
