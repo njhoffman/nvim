@@ -36,8 +36,11 @@ augroup END
 function! s:loaded_dashboard() abort
   if !argc() && line2byte('$') == -1
     if !get(g:, 'dashboard_disable_at_vimenter')
-      call dashboard#instance(1)
-    endif
+      " NOTE: added this for telescope start fix
+        if stridx(join(get(v:, 'argv'), ' '), 'Telescope') == -1
+          call dashboard#instance(1)
+        endif
+      endif
   endif
   autocmd! dashboard VimEnter
 endfunction

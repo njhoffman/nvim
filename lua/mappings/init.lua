@@ -10,7 +10,7 @@ local function load_module(mod_name)
     logger:error(msg)
     logger:error(err)
   else
-    -- logger:trace(mod_name .. ' keymap loaded')
+    -- logger:trace(mod_name .. " keymap loaded")
   end
 end
 
@@ -37,6 +37,11 @@ for _, mod_name in ipairs(mapfiles) do
 end
 
 M.map("REPL", "n", "<M-CR>", "tmux_send")
+
+vim.cmd([[vmap <M-a> <C-a> ]])
+vim.cmd([[vmap <M-x> <C-x> ]])
+vim.cmd([[vmap g<M-a> g<C-a> ]])
+vim.cmd([[vmap g<M-x> g<C-x> ]])
 
 -- print(M.inspect(M.whichkey_map))
 -- print(M.inspect(M.stats))
@@ -68,25 +73,6 @@ vim.cmd([[xmap y <plug>(YoinkYankPreserveCursorPosition)]])
 -- hitting <c-=> after a paste will toggle between formatted and unformatted (equivalent to using the = key).
 -- By default pastes will not be formatted until you toggle it afterwards using <c-=> (however you can also change this with the yoinkAutoFormatPaste setting as described below)
 -- vim.cmd([[nmap = <plug>(YoinkPostPasteToggleFormat)]])
-
-vim.cmd([[nmap <leader>fi <Plug>(dial-increment)]])
-vim.cmd([[nmap <leader>fd <Plug>(dial-decrement)]])
-vim.cmd([[vmap <leader>fi <Plug>(dial-increment)]])
-vim.cmd([[vmap <leader>fd <Plug>(dial-decrement)]])
-
-vim.cmd([[nmap <c-Up> <Plug>(dial-increment)]])
-vim.cmd([[nmap <c-Down> <Plug>(dial-decrement)]])
-vim.cmd([[vmap <c-Up> <Plug>(dial-increment)]])
-vim.cmd([[vmap <c-Down> <Plug>(dial-decrement)]])
-vim.cmd([[vmap g<c-Up> <Plug>(dial-increment-additional)]])
-vim.cmd([[vmap g<c-Down> <Plug>(dial-decrement-additional)]])
-
--- vim.cmd[[nmap - <Plug>(dial-increment)]]
--- vim.cmd[[nmap = <Plug>(dial-decrement)]]
--- vim.cmd[[vmap - <Plug>(dial-increment)]]
--- vim.cmd[[vmap = <Plug>(dial-decrement)]]
--- vim.cmd[[vmap g- <Plug>(dial-increment-additional)]]
--- vim.cmd[[vmap g= <Plug>(dial-decrement-additional)]]
 
 M.registerWhichkey()
 

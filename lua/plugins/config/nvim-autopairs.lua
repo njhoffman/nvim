@@ -13,7 +13,7 @@ require("nvim-autopairs").setup({
   enable_check_bracket_line = true, --- check bracket in same line
   ignored_next_char = "[%w%.]", -- will ignore alphanumeric and `.` symbol
   -- ignored_next_char = string.gsub([[ [%w%%%'%[%"%.] ]],"%s+", ""),
-  disable_filetype = { "TelescopePrompt" },
+  disable_filetype = { "TelescopePrompt", 'sh', 'zsh', 'bash' },
   disable_in_macro = true, -- disable when recording or executing a macro
   enable_moveright = true,
   enable_afterquote = false, -- add bracket pairs after quote

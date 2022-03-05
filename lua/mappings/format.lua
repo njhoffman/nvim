@@ -18,3 +18,14 @@ M.map("Format", "v", ">", "v_indent")
 M.map("Format", "n", "gu", "lowercase1") -- virtual
 M.map("Format", "n", "gU", "uppercase1") -- virtual
 M.map("Format", "n", "gR", "rename") -- virtual
+
+M.map("Format", "n", "<C-Up>", "dial_increment1")
+M.map("Format", "n", "<C-Down>", "dial_decrement1")
+M.map("Format", "n", "<leader>fi", "dial_increment2")
+M.map("Format", "n", "<leader>fd", "dial_decrement2")
+M.map("Format", "v", "<C-Up>", "v_dial_increment1")
+M.map("Format", "v", "<C-Down>", "v_dial_decrement1")
+M.map("Format", "v", "<leader>fi", "v_dial_increment2")
+M.map("Format", "v", "<leader>fd", "v_dial_decrement2")
+M.map("Format", "v", "g<M-a>", "v_dial_increment_additional", {noremap = true, nowait = true})
+M.map("Format", "v", "g<M-x>", "v_dial_decrement_additional", {noremap = true, nowait = true})

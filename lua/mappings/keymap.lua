@@ -580,7 +580,6 @@ M.Pickers = {
     short = "git bcommit log telescope",
     long = "telescope git bcommit log"
   },
-
   buffers_fzflua = {cmd = "<cmd>FzfLua buffers<cr>", short = "buffers fzf", long = "buffers (fzf-lua)"},
   buffers_teledropdown = {
     cmd = "<cmd>lua _G._FindBufferDropdown()<cr>",
@@ -606,7 +605,6 @@ M.Pickers = {
     short = "location list",
     long = "location list"
   },
-
   telescope_grep_search = {
     cmd = "<cmd>Telescope grep_string<cr>",
     short = "grep string search (telescope)",
@@ -1029,15 +1027,43 @@ M.CommandWin = {
   prev2 = {short = "prev item", long = "prev item"} -- virtual
 }
 
--- dial-nvim increment/decrement
--- vim.cmd[[nmap <C-a> <Plug>(dial-increment)]]
--- vim.cmd[[nmap <C-x> <Plug>(dial-decrement)]]
--- vim.cmd[[vmap <C-a> <Plug>(dial-increment)]]
--- vim.cmd[[vmap <C-x> <Plug>(dial-decrement)]]
--- vim.cmd[[vmap g<C-a> <Plug>(dial-increment-additional)]]
--- vim.cmd[[vmap g<C-x> <Plug>(dial-decrement-additional)]]
-
 M.Format = {
+  dial_increment1 = {cmd = "<Plug>(dial-increment)", short = "dial increment", long = "increment item(s)"},
+  dial_decrement1 = {cmd = "<Plug>(dial-decrement)", short = "dial decrement", long = "decrement item(s)"},
+  dial_increment2 = {cmd = "<Plug>(dial-increment)", short = "dial increment", long = "increment item(s)"},
+  dial_decrement2 = {cmd = "<Plug>(dial-decrement)", short = "dial decrement", long = "decrement item(s)"},
+  v_dial_increment1 = {
+    cmd = "<Plug>(dial-increment)",
+    short = "dial increment",
+    long = "increment item(s) selected in visual mode"
+  },
+  v_dial_decrement1 = {
+    cmd = "<Plug>(dial-decrement)",
+    short = "dial decrement",
+    long = "decrement item(s) selected in visual mode"
+  },
+  v_dial_increment2 = {
+    cmd = "<Plug>(dial-increment)",
+    short = "dial increment",
+    long = "increment item(s) selected in visual mode"
+  },
+  v_dial_decrement2 = {
+    cmd = "<Plug>(dial-decrement)",
+    short = "dial decrement",
+    long = "decrement item(s) selected in visual mode"
+  },
+  v_dial_increment_additional = {
+    -- cmd = "g<C-a>"
+    -- cmd = "<Plug>(dial-increment-additional)",
+    short = "dial increment additional",
+    long = "increment item(s) selected in visual mode"
+  },
+  v_dial_decrement_additional = {
+    -- cmd = "g<C-x>"
+    -- cmd = "<Plug>(dial-decrement-additional)",
+    short = "dial decrement additional",
+    long = "decrement item(s) selected in visual mode"
+  },
   swap = {cmd = "<cmd>ISwap<cr>", short = "swap", long = "swap/exchange text objects with text hints"},
   indent_all = {cmd = "`[V`]<", short = "indent all lines", long = "indent all lines"},
   unindent_all = {cmd = "`[V`]>", short = "unindent all lines", long = "unindent all lines"},

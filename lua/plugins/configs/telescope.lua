@@ -248,7 +248,7 @@ local telescopeConfig = {
   },
   extensions = extensions.telescope_configs()
 }
-
 telescope.setup(telescopeConfig)
-
 extensions.load_extensions(telescope)
+
+return telescope
