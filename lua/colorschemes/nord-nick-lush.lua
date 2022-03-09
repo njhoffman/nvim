@@ -256,6 +256,13 @@ local spec = lush.extends({ nord }).with(function()
     zshLoop { fg = "#80788a" },
     zshConditional { fg = "#80788a" },
     zshCommands { fg = "#6180b2" },
+    ZinitForCommand { fg = '#a78087' },
+    ZinitPlugin {fg = "#95b5ed", gui= "italic"}, -- Macro, Define
+    ZinitSnippet {fg = "#95b5ed" }, -- Macro, Define
+    ZinitIce { fg = '#7799ee'}, -- Type
+    ZinitContinue { fg = '#4878a8'},
+    ZinitIceDoubleQuoteParam { fg = "#30b0d9" }, -- Special
+    ZinitIceSingleQuoteParam {fg = "#30c0e9"},
     yamlTSField { fg = "#717cb4" },
     yamlBlockMappingKey { yamlTSField },
     -- html

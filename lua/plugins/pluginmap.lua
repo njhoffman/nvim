@@ -155,6 +155,7 @@ M.project_plugins = {
   ["cpbooster.vim"] = {use = "searleser97/cpbooster.vim"},
   ["gitsigns.nvim"] = {use = {"lewis6991/gitsigns.nvim", requires = {"nvim-lua/plenary.nvim"}}},
   ["nvim-projectconfig"] = {use = "windwp/nvim-projectconfig"},
+  ["project-nvim"] = { use = "ahmedkhalf/project.nvim" }, -- TODO: load before telescope
   ["octo.nvim"] = {use = {"pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons"}},
   ["vim-flog"] = {use = "rbong/vim-flog"},
   ["vim-fugitive"] = {use = "tpope/vim-fugitive"},

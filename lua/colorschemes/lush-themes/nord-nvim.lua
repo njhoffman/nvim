@@ -26,7 +26,7 @@ local clrs = {
   nord1 = hsl(222, 16, 28), -- #3C4353
   nord2 = hsl(220, 17, 32), -- #444D5F
   nord3 = hsl(220, 16, 36), -- #4D576A
-  nord3_bright = hsl(220, 17, 46), -- #616F89
+  nord3_bright = hsl(220, 20, 60), -- #616F89
   nord4 = hsl(219, 28, 88), -- #D8DEE9
   nord5 = hsl(218, 27, 92), -- #E5E9F0
   nord6 = hsl(218, 27, 94), -- #ECEFF4
@@ -259,7 +259,6 @@ local theme = lush(function()
     Todo { fg = clrs.nord13, bg = nil, gui = "bold, italic" },
     Type { fg = clrs.nord9, gui = "NONE" },
     Typedef { fg = clrs.nord9 },
-    Macro { Define },
     PreCondit { PreProc },
     Conceal { bg = Normal.bg, fg = Normal.fg.ro(10) },
     -- +----------------------+

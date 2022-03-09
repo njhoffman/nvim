@@ -1,32 +1,44 @@
 local H = require("helpers")
 
 -- Dropdown list theme using a builtin theme definitions :
-local dropdown = require"telescope.themes".get_dropdown({
-  find_command = { "rg", "--ignore", "--hidden", "--files", "prompt_prefix=🔍" },
-  winblend = 10,
-  layout_config = { width = 0.5 },
-  prompt = " ",
-  -- results_height = 15,
-  previewer = false,
-})
+local dropdown =
+  require "telescope.themes".get_dropdown(
+  {
+    find_command = {
+      "~/.zinit/plugins/BurntSushi---ripgrep/rg/rg",
+      "--ignore",
+      "--hidden",
+      "--files",
+      "prompt_prefix=🔍"
+    },
+    winblend = 10,
+    layout_config = {width = 0.5},
+    prompt = " ",
+    -- results_height = 15,
+    previewer = false
+  }
+)
 
-local ivy = require"telescope.themes".get_ivy({ winblend = 10 })
+local ivy = require "telescope.themes".get_ivy({winblend = 10})
 
-local dropdown_preview = require"telescope.themes".get_dropdown({
-  find_command = { "rg", "--ignore", "--hidden", "--files", "prompt_prefix=🔍" },
-  winblend = 10,
-  prompt = " ",
-  -- results_height = 15,
-  layout_config = { width = 0.5 },
-})
+local dropdown_preview =
+  require "telescope.themes".get_dropdown(
+  {
+    find_command = {"~/.zinit/plugins/BurntSushi---ripgrep/rg/rg", "--ignore", "--hidden", "--files", "prompt_prefix=🔍"},
+    winblend = 10,
+    prompt = " ",
+    -- results_height = 15,
+    layout_config = {width = 0.5}
+  }
+)
 
 -- Settings for with preview option
 local with_preview = {
-  find_command = { "rg", "--ignore", "--hidden", "--files", "prompt_prefix=🔍" },
+  find_command = {"~/.zinit/polaris/bin/rg", "--ignore", "--hidden", "--files", "prompt_prefix=🔍"},
   winblend = 10,
   show_line = false,
   results_title = false,
-  preview_title = false,
+  preview_title = false
   -- layout_config = { preview_width = 0.5 },
 }
 
@@ -68,40 +80,46 @@ end
 -- FindFiles project
 _G._FindFiles = function()
   local opts = vim.deepcopy(with_preview)
-  local project_root = require("project_nvim.project").get_project_root() or ""
-  -- opts.hidden = true
-  opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
-  opts.cwd = project_root
-  -- opts.find_command = { "rg", "--hidden", "--files" }
-  -- opts.winblend = 5
-  -- opts.border = true
-  -- require("telescope.builtin").find_files(opts)
-  require("telescope.builtin").find_files()
+  -- local project_root = require("project_nvim.project").get_project_root() or ""
+  -- opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
+  opts.hidden = true --
+  -- opts.cwd = project_root
+  local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
+  opts.cwd = directory
+  opts.find_command = {"rg", "--ignore", "--hidden", "--files"}
+  require("telescope.builtin").find_files(opts)
 end
 
 _G._FindFilesCenter = function()
   local opts = vim.deepcopy(dropdown_preview)
-  local project_root = require("project_nvim.project").get_project_root() or ""
-  opts.cwd = project_root
+  -- local project_root = require("project_nvim.project").get_project_root() or ""
+  -- opts.cwd = project_root
+
+  local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
+  opts.cwd = directory
   opts.hidden = true
-  opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
+  -- opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
   require("telescope.builtin").find_files(opts)
 end
 
 _G._FindFilesDropdown = function()
   local opts = vim.deepcopy(dropdown)
-  local project_root = require("project_nvim.project").get_project_root() or ""
-  opts.cwd = project_root
+  -- local project_root = require("project_nvim.project").get_project_root() or ""
+  -- opts.cwd = project_root
+  local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
+  opts.cwd = directory
   opts.hidden = true
-  opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
+  -- opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
   require("telescope.builtin").find_files(opts)
 end
 
 _G._FindFilesIvy = function()
   local opts = vim.deepcopy(ivy)
-  local project_root = require("project_nvim.project").get_project_root() or ""
+  -- local project_root = require("project_nvim.project").get_project_root() or ""
   opts.hidden = true
-  opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
+  local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
+  opts.cwd = directory
+  -- opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
   require("telescope.builtin").find_files(opts)
 end
 
@@ -113,7 +131,7 @@ _G._FindFilesDirectory = function()
   -- opts.hidden = true
   -- opts.cwd = directory
   -- require("telescope.builtin").find_files(opts)
-  require("telescope.builtin").find_files({ cwd = directory })
+  require("telescope.builtin").find_files({cwd = directory})
 end
 
 _G._FindFilesDirectoryCenter = function()
@@ -174,7 +192,10 @@ end
 
 _G._FindString = function()
   local opts = vim.deepcopy(with_preview)
-  for _, preview_opt in ipairs(preview_opts) do table.insert(opts, preview_opt) end
+  local preview_opts = vim.deepcopy(with_preview)
+  for _, preview_opt in ipairs(preview_opts) do
+    table.insert(opts, preview_opt)
+  end
   opts.search = vim.fn.input("Grep for > ")
   opts.prompt_title = "Filter results"
   require("telescope.builtin").grep_string(opts)
@@ -183,7 +204,10 @@ end
 _G._FindStringCenter = function()
   -- local opts = vim.deepcopy(with_preview)
   local opts = vim.deepcopy(dropdown_preview)
-  for _, preview_opt in ipairs(preview_opts) do table.insert(opts, preview_opt) end
+  local preview_opts = vim.deepcopy(with_preview)
+  for _, preview_opt in ipairs(preview_opts) do
+    table.insert(opts, preview_opt)
+  end
   opts.search = vim.fn.input("Grep for > ")
   opts.prompt_title = "Filter results"
   require("telescope.builtin").grep_string(opts)
@@ -193,7 +217,9 @@ _G._FindStringDropdown = function()
   -- local opts = vim.deepcopy(with_preview)
   local opts = vim.deepcopy(dropdown)
   local preview_opts = vim.deepcopy(with_preview)
-  for _, preview_opt in ipairs(preview_opts) do table.insert(opts, preview_opt) end
+  for _, preview_opt in ipairs(preview_opts) do
+    table.insert(opts, preview_opt)
+  end
   opts.search = vim.fn.input("Grep for > ")
   opts.prompt_title = "Filter results"
   require("telescope.builtin").grep_string(opts)
@@ -482,7 +508,6 @@ if H.is_plugin_installed("cheatsheet.nvim") then
     local opts = vim.deepcopy(dropdown)
     opts.prompt_title = "Cheatsheet Plugins"
     require("cheatsheet.telescope").pick_cheat(opts)
-
   end
 
   _G._FindCheatsheetIvy = function()
@@ -767,84 +792,84 @@ if H.is_plugin_installed("telescope-z.nvim") then
   _G._FindZDirectories = function()
     local opts = vim.deepcopy(with_preview)
     opts.prompt_title = "Z Directories"
-    opts.cmd = { "/home/nicholas/.zinit/plugins/skywind3000---z.lua/z.lua", "-l" }
+    opts.cmd = {"/home/nicholas/.zinit/plugins/skywind3000---z.lua/z.lua", "-l"}
     require("telescope").extensions.z.list(opts)
   end
 
   _G._FindZDirectoriesCenter = function()
     local opts = vim.deepcopy(dropdown_preview)
     opts.prompt_title = "Z Directories"
-    opts.cmd = { "/home/nicholas/.zinit/plugins/skywind3000---z.lua/z.lua", "-l" }
+    opts.cmd = {"/home/nicholas/.zinit/plugins/skywind3000---z.lua/z.lua", "-l"}
     require("telescope").extensions.z.list(opts)
   end
 
   _G._FindZDirectoriesDropdown = function()
     local opts = vim.deepcopy(dropdown)
     opts.prompt_title = "Z Directories"
-    opts.cmd = { "/home/nicholas/.zinit/plugins/skywind3000---z.lua/z.lua", "-l" }
+    opts.cmd = {"/home/nicholas/.zinit/plugins/skywind3000---z.lua/z.lua", "-l"}
     require("telescope").extensions.z.list(opts)
   end
 
   _G._FindZDirectoriesIvy = function()
     local opts = vim.deepcopy(ivy)
     opts.prompt_title = "Z Directories"
-    opts.cmd = { "/home/nicholas/.zinit/plugins/skywind3000---z.lua/z.lua", "-l" }
+    opts.cmd = {"/home/nicholas/.zinit/plugins/skywind3000---z.lua/z.lua", "-l"}
     require("telescope").extensions.z.list(opts)
   end
 
   _G._FindZoxideDirectories = function()
     local opts = vim.deepcopy(with_preview)
     opts.prompt_title = "Zoxide Directories"
-    opts.cmd = { "zoxide", "query", "-sl" }
+    opts.cmd = {"zoxide", "query", "-sl"}
     require("telescope").extensions.z.list(opts)
   end
 
   _G._FindZoxideDirectoriesCenter = function()
     local opts = vim.deepcopy(dropdown_preview)
     opts.prompt_title = "Zoxide Directories"
-    opts.cmd = { "zoxide", "query", "-sl" }
+    opts.cmd = {"zoxide", "query", "-sl"}
     require("telescope").extensions.z.list(opts)
   end
 
   _G._FindZoxideDirectoriesDropdown = function()
     local opts = vim.deepcopy(dropdown)
     opts.prompt_title = "Zoxide Directories"
-    opts.cmd = { "zoxide", "query", "-sl" }
+    opts.cmd = {"zoxide", "query", "-sl"}
     require("telescope").extensions.z.list(opts)
   end
 
   _G._FindZoxideDirectoriesIvy = function()
     local opts = vim.deepcopy(ivy)
     opts.prompt_title = "Zoxide Directories"
-    opts.cmd = { "zoxide", "query", "-sl" }
+    opts.cmd = {"zoxide", "query", "-sl"}
     require("telescope").extensions.z.list(opts)
   end
 
   _G._FindFasdDirectories = function()
     local opts = vim.deepcopy(with_preview)
     opts.prompt_title = "Fasd Directories"
-    opts.cmd = { "zoxide", "query", "-sl" }
+    opts.cmd = {"zoxide", "query", "-sl"}
     require("telescope").extensions.z.list(opts)
   end
 
   _G._FindFasdDirectoriesCenter = function()
     local opts = vim.deepcopy(dropdown_preview)
     opts.prompt_title = "Fasd Directories"
-    opts.cmd = { "fasd", "-d" }
+    opts.cmd = {"fasd", "-d"}
     require("telescope").extensions.z.list(opts)
   end
 
   _G._FindFasdDirectoriesDropdown = function()
     local opts = vim.deepcopy(dropdown)
     opts.prompt_title = "Fasd Directories"
-    opts.cmd = { "fasd", "-d" }
+    opts.cmd = {"fasd", "-d"}
     require("telescope").extensions.z.list(opts)
   end
 
   _G._FindFasdDirectoriesIvy = function()
     local opts = vim.deepcopy(ivy)
     opts.prompt_title = "Fasd Directories"
-    opts.cmd = { "fasd", "-d" }
+    opts.cmd = {"fasd", "-d"}
     require("telescope").extensions.z.list(opts)
   end
 end
@@ -859,62 +884,63 @@ end
 _G._FindZettels = function()
   local opts = vim.deepcopy(with_preview)
   opts.prompt_title = "Zettel"
-  require'neuron/telescope'.find_zettels(opts)
+  require "neuron/telescope".find_zettels(opts)
 end
 
 _G._FindZettelsCenter = function()
   local opts = vim.deepcopy(dropdown_preview)
   opts.prompt_title = "Zettel"
-  require'neuron/telescope'.find_zettels(opts)
+  require "neuron/telescope".find_zettels(opts)
 end
 
 _G._FindZettelsDropdown = function()
   local opts = vim.deepcopy(dropdown)
   opts.prompt_title = "Zettel"
-  require'neuron/telescope'.find_zettels(opts)
+  require "neuron/telescope".find_zettels(opts)
 end
 
 _G._FindZettelsIvy = function()
   local opts = vim.deepcopy(ivy)
   opts.prompt_title = "Zettel"
-  require'neuron/telescope'.find_zettels(opts)
+  require "neuron/telescope".find_zettels(opts)
 end
 
 _G._FindZettelTags = function()
   local opts = vim.deepcopy(with_preview)
   opts.prompt_title = "Zettel Tags"
-  require'neuron/telescope'.find_tags(opts)
+  require "neuron/telescope".find_tags(opts)
 end
 
 _G._FindZettelTagsCenter = function()
   local opts = vim.deepcopy(dropdown_preview)
   opts.prompt_title = "Zettel Tags"
-  require'neuron/telescope'.find_tags(opts)
+  require "neuron/telescope".find_tags(opts)
 end
 
 _G._FindZettelTagsDropdown = function()
   local opts = vim.deepcopy(dropdown)
   opts.prompt_title = "Zettel Tags"
-  require'neuron/telescope'.find_tags(opts)
+  require "neuron/telescope".find_tags(opts)
 end
 
 _G._FindZettelTagsIvy = function()
   local opts = vim.deepcopy(ivy)
   opts.prompt_title = "Zettel Tags"
-  require'neuron/telescope'.find_tags(opts)
+  require "neuron/telescope".find_tags(opts)
 end
 
 -- FindGitBranches
 _G._FindGitBranches = function()
-  require("telescope.builtin").git_branches({
-    attach_mappings = function(_, mapKey)
-      mapKey("i", "<c-d>", actions.git_delete_branch)
-      mapKey("n", "<c-d>", actions.git_delete_branch)
-      return true
-    end,
-  })
+  require("telescope.builtin").git_branches(
+    {
+      attach_mappings = function(_, mapKey)
+        mapKey("i", "<c-d>", actions.git_delete_branch)
+        mapKey("n", "<c-d>", actions.git_delete_branch)
+        return true
+      end
+    }
+  )
 end
-
 
 -- FindGitBranches
 _G._FindNotifications = function()

@@ -232,7 +232,6 @@ return require("packer").startup(
             "nvim-lua/plenary.nvim",
             "tami5/sqlite.lua",
             {"AckslD/nvim-neoclip.lua", requires = {"tami5/sqlite.lua", module = "sqlite"}},
-            "ahmedkhalf/project.nvim",
             {
               "lazytanuki/nvim-mapper",
               before = "telescope.nvim",
@@ -279,7 +278,6 @@ return require("packer").startup(
           },
           config = function()
             require("plugins.configs.telescope")
-            require("plugins.configs.telescope-pickers")
           end
         }
       )

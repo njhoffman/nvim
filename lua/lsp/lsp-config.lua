@@ -83,7 +83,7 @@ vim.fn.sign_define(
 -- global config for diagnostic
 vim.diagnostic.config(
   {
-    update_in_insert = true,
+    update_in_insert = false,
     underline = false,
     virtual_text = false,
     signs = true,

@@ -8,34 +8,73 @@ function H.create_augroup(group_name, definition)
   cmd("augroup " .. group_name)
   cmd("autocmd!")
   for _, def in ipairs(definition) do
-    local command = table.concat(vim.tbl_flatten { "autocmd", def }, " ")
+    local command = table.concat(vim.tbl_flatten {"autocmd", def}, " ")
     cmd(command)
   end
   cmd("augroup END")
 end
 
+H.table_len = function(T)
+  local count = 0
+  for _ in pairs(T) do
+    count = count + 1
+  end
+  return count
+end
+
+function H.split_string(str, pat)
+  local t = {} -- NOTE: use {n = 0} in Lua-5.0
+  local fpat = "(.-)" .. pat
+  local last_end = 1
+  local s, e, cap = str:find(fpat, 1)
+  while s do
+    if s ~= 1 or cap ~= "" then
+      table.insert(t, cap)
+    end
+    last_end = e + 1
+    s, e, cap = str:find(fpat, last_end)
+  end
+  if last_end <= #str then
+    cap = str:sub(last_end)
+    table.insert(t, cap)
+  end
+  return t
+end
+
 local function split_string(s, delimiter)
   local result = {}
-  for match in (s .. delimiter):gmatch("(.-)" .. delimiter) do table.insert(result, match) end
+  for match in (s .. delimiter):gmatch("(.-)" .. delimiter) do
+    table.insert(result, match)
+  end
   return result
 end
 
 -- for comma-separated strings, remove a value from the list
 function H.minus_equals(setting, value)
-  if setting == nil or setting == "" then return "" end
+  if setting == nil or setting == "" then
+    return ""
+  end
 
   local t = split_string(setting, ",")
 
-  for key, val in pairs(t) do if val == value then table.remove(t, key) end end
+  for key, val in pairs(t) do
+    if val == value then
+      table.remove(t, key)
+    end
+  end
 
   return table.concat(t, ",")
 end
 
 -- for comma-separated strings, add a value to the list
 function H.plus_equals(setting, value)
-  if setting == nil then setting = "" end
+  if setting == nil then
+    setting = ""
+  end
 
-  if setting == "" then return value end
+  if setting == "" then
+    return value
+  end
 
   local t = split_string(setting, ",")
 
@@ -82,10 +121,12 @@ function H.is_plugin_installed(check_plugin_name)
   return true
 end
 
-function H.sleep(n) os.execute("sleep " .. tonumber(n)) end
+function H.sleep(n)
+  os.execute("sleep " .. tonumber(n))
+end
 
 function _G.dump(...)
-  local objects = tbl_map(vim.inspect, { ... })
+  local objects = tbl_map(vim.inspect, {...})
   print(unpack(objects))
 end
 
