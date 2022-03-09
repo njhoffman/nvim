@@ -5,7 +5,7 @@ local dropdown =
   require "telescope.themes".get_dropdown(
   {
     find_command = {
-      "~/.zinit/plugins/BurntSushi---ripgrep/rg/rg",
+      "rg",
       "--ignore",
       "--hidden",
       "--files",
@@ -24,7 +24,13 @@ local ivy = require "telescope.themes".get_ivy({winblend = 10})
 local dropdown_preview =
   require "telescope.themes".get_dropdown(
   {
-    find_command = {"~/.zinit/plugins/BurntSushi---ripgrep/rg/rg", "--ignore", "--hidden", "--files", "prompt_prefix=🔍"},
+    find_command = {
+      "rg",
+      "--ignore",
+      "--hidden",
+      "--files",
+      "prompt_prefix=🔍"
+    },
     winblend = 10,
     prompt = " ",
     -- results_height = 15,
@@ -34,7 +40,7 @@ local dropdown_preview =
 
 -- Settings for with preview option
 local with_preview = {
-  find_command = {"~/.zinit/polaris/bin/rg", "--ignore", "--hidden", "--files", "prompt_prefix=🔍"},
+  find_command = {"rg", "--ignore", "--hidden", "--files", "prompt_prefix=🔍"},
   winblend = 10,
   show_line = false,
   results_title = false,

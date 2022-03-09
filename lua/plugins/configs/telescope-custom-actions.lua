@@ -30,7 +30,8 @@ function custom_actions._multiopen(prompt_bufnr, open_cmd)
   local multi_targets = picker:get_multi_selection()
   local num_selections = #multi_targets
   if not num_selections or num_selections <= 1 then
-    actions.add_selection(prompt_bufnr)
+    actions.select_default(prompt_bufnr)
+    -- actions.add_selection(prompt_bufnr)
   elseif (open_method == "quickfix") then
     custom_actions._open_buffer(open_cmd, prompt_bufnr)
   else -- insert method
