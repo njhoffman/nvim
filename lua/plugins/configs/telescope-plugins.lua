@@ -1,5 +1,6 @@
 local M = {}
 local sorters = require "telescope.sorters"
+local tele_mappings = require("plugins.configs.telescope-mappings")
 local H = require("helpers")
 
 M.load_extensions = function(telescope)

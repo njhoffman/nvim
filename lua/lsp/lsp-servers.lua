@@ -222,7 +222,7 @@ local prettier = {
 }
 
 local shfmt = {
-  formatCommand = "shfmt -ln bash -i 2 -bn -s",
+  formatCommand = "shfmt -ln bash -i 2 -ci -bn -s",
   lintIgnoreExitCode = true,
   formatStdin = true
 }

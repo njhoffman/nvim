@@ -105,6 +105,7 @@ local autocmds = {
     {"BufNewFile,BufRead", ".tasks", "setlocal ft=dosini"},
     {"BufNewFile,BufRead", "*.visidatarc", "setlocal ft=python"},
     {"BufNewFile,BufRead", ".vimtasks", "setlocal ft=dosini"},
+    {"BufNewFile,BufRead", "*.cheat", "setlocal ft=bash | let b:is_bash =1"},
     {"BufNewFile,BufRead", "Dockerfile*", "setlocal ft=Dockerfile"},
     {"BufNewFile,BufRead", "Dockerfile.*", "setlocal ft=Dockerfile"},
     {"BufNewFile,BufRead", ".dockerignore", "setlocal ft=gitignore"},
@@ -198,11 +199,13 @@ local number_toggle = {
 table.insert(autocmds, number_toggle)
 
 -- define tables to insert
-local hl_yank = {{
-  "TextYankPost",
-  "*",
-  "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=400 }",
-}}
+local hl_yank = {
+  {
+    "TextYankPost",
+    "*",
+    "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=400 }"
+  }
+}
 
 if Opts.highlight_yank == true or Opts.highlight_yank == nil then
   table.insert(autocmds, hl_yank)

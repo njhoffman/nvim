@@ -22,6 +22,7 @@ mappings.main = {
     ["<c-_>"] = function(prompt_bufnr)
       actions_layout.toggle_preview(prompt_bufnr)
     end,
+    ["<A-U>"] = custom_actions.switch_picker_type,
     ["<M-/>"] = actions.which_key,
     ["<C-DOWN>"] = require("telescope.actions").cycle_history_next,
     ["<C-UP>"] = require("telescope.actions").cycle_history_prev
@@ -56,9 +57,8 @@ mappings.main = {
 mappings.file_picker = {
   i = {
     -- change directory functionality
-    [":bd"] = custom_actions.directory_up,
     ["<C-g>"] = custom_actions.directory_up,
-    ["<A-U>"] = custom_actions.switch_to_frecency,
+    [":bd"] = custom_actions.directory_up,
     ["<cr>"] = custom_actions.multi_selection_open
   }
 }

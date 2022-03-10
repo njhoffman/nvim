@@ -135,16 +135,16 @@ opt("background", "dark")
 vim.cmd [[colorscheme nord-nick]]
 
 vim.g.clipboard = {
-  name = 'xsel',
+  name = "xsel",
   copy = {
-    ['+'] = {'xsel', '--nodetach', '-i', '-b'},
-    ['*'] = {'xsel', '--nodetach', '-i', '-p'},
+    ["+"] = {"xsel", "--nodetach", "-i", "-b"},
+    ["*"] = {"xsel", "--nodetach", "-i", "-p"}
   },
   paste = {
-    ['+'] = {'xsel', '-o', '-b'},
-    ['*'] = {'xsel', '-o', '-p'},
+    ["+"] = {"xsel", "-o", "-b"},
+    ["*"] = {"xsel", "-o", "-p"}
   },
-  cache_enabled = 1,
+  cache_enabled = 1
 }
 -- " To force a reload:
 -- 10	"   :unlet g:loaded_clipboard_provider
@@ -178,6 +178,13 @@ vim.g.netrw_bufsettings = "noma nomod nonu nowrap ro buflisted"
 
 -- Allows users to specify the type of embedded script highlighting they want:  (perl/python/ruby/tcl support)
 vim.g.vimsyn_embed = "--lmpPr"
+
+-- filetype.nvim -- requires nightly
+
+if (vim.v.version >= 800) then
+  vim.g.do_filetype_lua = 1
+  vim.g.did_load_filetypes = 0
+end
 
 -- bats
 -- Whether or not to add dollar sign to iskeyword.

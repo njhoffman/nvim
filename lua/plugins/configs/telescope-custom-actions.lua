@@ -30,8 +30,8 @@ function custom_actions._multiopen(prompt_bufnr, open_cmd)
   local multi_targets = picker:get_multi_selection()
   local num_selections = #multi_targets
   if not num_selections or num_selections <= 1 then
-    actions.select_default(prompt_bufnr)
     -- actions.add_selection(prompt_bufnr)
+    actions.select_default(prompt_bufnr)
   elseif (open_method == "quickfix") then
     custom_actions._open_buffer(open_cmd, prompt_bufnr)
   else -- insert method
@@ -65,10 +65,16 @@ function custom_actions.multi_selection_open(prompt_bufnr)
   custom_actions._multiopen(prompt_bufnr, "edit")
 end
 
-function custom_actions.switch_to_frecency(prompt_bufnr)
+function custom_actions.switch_picker_type(prompt_bufnr)
+  local picker = actions_state.get_current_picker(prompt_bufnr)
   actions.close(prompt_bufnr)
-  -- local picker = actions_state.get_current_picker(prompt_bufnr)
-  local ok = pcall(require "telescope".extensions.frecency.frecency)
+  if picker.prompt_title == "Frecency" then
+    local ok = pcall(require "telescope.builtin".oldfiles)
+  elseif picker.prompt_title == "Find Files" then
+    local ok = pcall(require "telescope".extensions.frecency.frecency)
+  else
+    local ok = pcall(require "telescope.builtin".find_files)
+  end
   vim.schedule(
     function()
       vim.cmd [[startinsert]]
@@ -80,26 +86,30 @@ end
 function custom_actions.directory_up(prompt_bufnr)
   local selection = actions_state.get_selected_entry()
   local picker = actions_state.get_current_picker(prompt_bufnr)
-  local dir = picker.cwd or selection.cwd or vim.fn.getcwd()
-  dir = H.split_string(dir, "/")
-  table.remove(dir)
-  dir = "/" .. table.concat(dir, "/")
-  actions.close(prompt_bufnr)
-  local opts = {
-    results_title = dir,
-    find_command = {"rg", "--ignore", "--hidden", "--sort", "path", "--files"},
-    cwd = dir,
-    follow = true,
-    prompt_prefix = "🔍 "
-  }
+  local dir = picker.cwd or vim.fn.getcwd() or selection.cwd
+  if not string.match(dir, "^/") then
+    dir = vim.fn.getcwd() .. "/" .. picker.cwd
+  end
 
-  local ok = pcall(require "telescope.builtin".find_files, opts)
-  vim.schedule(
-    function()
-      vim.cmd [[startinsert]]
-      -- vim.api.nvim_put({symbol}, "", true, true)
-    end
-  )
+  if dir ~= "/" then
+    dir = H.split_string(dir, "/")
+    table.remove(dir)
+    dir = "/" .. table.concat(dir, "/")
+    actions.close(prompt_bufnr)
+    local opts = {
+      results_title = dir,
+      find_command = {"rg", "--ignore", "--hidden", "--sort", "path", "--files"},
+      cwd = dir,
+      follow = true,
+      prompt_prefix = "🔍 "
+    }
+    local ok = pcall(require "telescope.builtin".find_files, opts)
+    vim.schedule(
+      function()
+        vim.cmd [[startinsert]]
+      end
+    )
+  end
 end
 
 -- splits 'str' into pieces matching 'pat', returns them as an array

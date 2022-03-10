@@ -4,13 +4,6 @@ local H = require("helpers")
 local dropdown =
   require "telescope.themes".get_dropdown(
   {
-    find_command = {
-      "rg",
-      "--ignore",
-      "--hidden",
-      "--files",
-      "prompt_prefix=🔍"
-    },
     winblend = 10,
     layout_config = {width = 0.5},
     prompt = " ",
@@ -24,13 +17,6 @@ local ivy = require "telescope.themes".get_ivy({winblend = 10})
 local dropdown_preview =
   require "telescope.themes".get_dropdown(
   {
-    find_command = {
-      "rg",
-      "--ignore",
-      "--hidden",
-      "--files",
-      "prompt_prefix=🔍"
-    },
     winblend = 10,
     prompt = " ",
     -- results_height = 15,
@@ -90,8 +76,8 @@ _G._FindFiles = function()
   -- opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
   opts.hidden = true --
   -- opts.cwd = project_root
-  local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
-  opts.cwd = directory
+  -- local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
+  -- opts.cwd = vim.fn.getcwd() or directory
   opts.find_command = {"rg", "--ignore", "--hidden", "--files"}
   require("telescope.builtin").find_files(opts)
 end
@@ -100,9 +86,8 @@ _G._FindFilesCenter = function()
   local opts = vim.deepcopy(dropdown_preview)
   -- local project_root = require("project_nvim.project").get_project_root() or ""
   -- opts.cwd = project_root
-
-  local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
-  opts.cwd = directory
+  -- local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
+  -- opts.cwd = vim.fn.getcwd() or directory
   opts.hidden = true
   -- opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
   require("telescope.builtin").find_files(opts)
@@ -112,8 +97,8 @@ _G._FindFilesDropdown = function()
   local opts = vim.deepcopy(dropdown)
   -- local project_root = require("project_nvim.project").get_project_root() or ""
   -- opts.cwd = project_root
-  local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
-  opts.cwd = directory
+  -- local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
+  -- opts.cwd = vim.fn.getcwd() or directory
   opts.hidden = true
   -- opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
   require("telescope.builtin").find_files(opts)
@@ -124,7 +109,7 @@ _G._FindFilesIvy = function()
   -- local project_root = require("project_nvim.project").get_project_root() or ""
   opts.hidden = true
   local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
-  opts.cwd = directory
+  -- opts.cwd = directory
   -- opts.prompt_title = "Find in project '" .. project_root:gsub(os.getenv("HOME"), "~") .. "'"
   require("telescope.builtin").find_files(opts)
 end
@@ -145,14 +130,14 @@ _G._FindFilesDirectoryCenter = function()
   local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
   opts.prompt_title = "Find in directory '" .. directory .. "'"
   opts.hidden = true
-  opts.cwd = directory
+  -- opts.cwd = directory
   require("telescope.builtin").find_files(opts)
 end
 
 _G._FindFilesDirectoryDropdown = function()
   local opts = vim.deepcopy(dropdown)
   local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
-  opts.cwd = directory
+  -- opts.cwd = directory
   opts.hidden = true
   opts.prompt_title = "Find in directory '" .. directory .. "'"
   require("telescope.builtin").find_files(opts)
@@ -164,7 +149,7 @@ _G._FindFilesDirectoryIvy = function()
   -- foo = (foo or '')=='' and 'default value' or foo
   opts.prompt_title = "Find in directory '" .. directory .. "'"
   opts.hidden = true
-  opts.cwd = directory
+  -- opts.cwd = directory
   require("telescope.builtin").find_files(opts)
 end
 
