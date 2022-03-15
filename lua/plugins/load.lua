@@ -1,56 +1,8 @@
 local config = require("config")
 local pluginmap = require("plugins.pluginmap")
+local packerConfig = require("plugins.packer-config")
 
-local fn = vim.fn
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-
-if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap =
-    fn.system(
-    {
-      "git",
-      "clone",
-      "--depth",
-      "1",
-      "https://github.com/wbthomason/packer.nvim",
-      install_path
-    }
-  )
-end
 -- $ nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-
-local packerConfig = {
-  log = {level = "info"}, -- The default print log level. One of: "trace", "debug", "info", "warn", "error", "fatal".
-  profile = {
-    enable = false,
-    threshold = 1 -- the amount in ms that a plugins load time must be over for it to be included in the profile
-  },
-  compile_path = fn.stdpath("config") .. "/lua/packer_compiled.lua",
-  display = {
-    non_interactive = false, -- If true, disable display windows for all operations
-    open_fn = function()
-      return require("packer.util").float {border = "single"}
-    end,
-    -- open_cmd = '65vnew \\[packer\\]', -- An optional command to open a window for packer's display
-    working_sym = "⟳", -- The symbol for a plugin being installed/updated
-    error_sym = "✗", -- The symbol for a plugin with an error in installation/updating
-    clone_timeout = 180, -- Timeout, in seconds, for git clones
-    done_sym = "✓", -- The symbol for a plugin which has completed installation/updating
-    removed_sym = "-", -- The symbol for an unused plugin which was removed
-    moved_sym = "→", -- The symbol for a plugin which was moved (e.g. from opt to start)
-    header_sym = "━", -- The symbol for the header line in packer's display
-    show_all_info = true, -- Should packer show all update details automatically?
-    prompt_border = "double", -- Border style of prompt popups.
-    keybindings = {
-      -- Keybindings for the display window
-      quit = "<esc>",
-      toggle_info = "<CR>",
-      diff = "d",
-      prompt_revert = "r"
-    }
-  }
-}
-
 return require("packer").startup(
   {
     function(use)
@@ -131,39 +83,6 @@ return require("packer").startup(
           end
         }
       )
-      -- use "wellle/tmux-complete.vim"  not available for nvim-cmp yet
-      use(
-        {
-          "hrsh7th/nvim-cmp",
-          requires = {
-            -- "lukas-reineke/cmp-rg",
-            "lukas-reineke/cmp-under-comparator",
-            "ray-x/cmp-treesitter",
-            "f3fora/cmp-spell",
-            "David-Kunz/cmp-npm",
-            -- "uga-rosa/cmp-dictionary",
-            "tamago324/cmp-zsh",
-            "pontusk/cmp-vimwiki-tags",
-            "jc-doyle/cmp-pandoc-references",
-            {"tzachar/cmp-tabnine", run = "./install.sh"},
-            {"petertriho/cmp-git", requires = "nvim-lua/plenary.nvim"},
-            {"kristijanhusak/vim-dadbod-completion", requires = "tpope/vim-dadbod"},
-            -- { "andersevenrud/compe-tmux" },
-            "hrsh7th/cmp-emoji",
-            "hrsh7th/cmp-nvim-lua",
-            "hrsh7th/cmp-calc",
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-cmdline"
-            -- 'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
-            -- 'L3MON4D3/LuaSnip' -- Snippets plugin
-          },
-          config = function()
-            require("plugins.configs.nvim-cmp")
-          end
-        }
-      )
 
       use(
         {
@@ -183,35 +102,6 @@ return require("packer").startup(
       )
       use({"jose-elias-alvarez/nvim-lsp-ts-utils", requires = {"nvim-lua/plenary.nvim", "neovim/nvim-lspconfig"}})
       -- use({ "jose-elias-alvarez/null-ls.nvim", requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" } })
-      -- use { "tzachar/compe-tabnine", run = "./install.sh", requires = "hrsh7th/nvim-compe" } -- might have to: cd .local/share/nvim/site/pack/packer/start/compe-tabnine && ./install.sh
-
-      -- snippets
-      -- use {'neovim/nvim-lspconfig', requires = 'mfussenegger/nvim-jdtls'}
-      -- use 'rafamadriz/friendly-snippets'
-      -- use 'hrsh7th/cmp-nvim-lsp'
-      -- use 'hrsh7th/cmp-buffer'
-      -- use 'hrsh7th/cmp-path'
-      -- use 'ray-x/cmp-treesitter'
-      -- use 'f3fora/cmp-spell'
-
-      use(
-        {
-          "hrsh7th/cmp-vsnip",
-          after = "nvim-cmp",
-          requires = {
-            "hrsh7th/vim-vsnip",
-            {"rafamadriz/friendly-snippets", after = "cmp-vsnip"},
-            {"kitagry/vs-snippets", after = "cmp-vsnip"}
-          }
-        }
-      )
-
-      -- use "honza/vim-snippets"
-      -- use "SirVer/UltiSnips"
-      -- use { 'cstrap/python-snippets' }
-      -- use { 'ylcnfrht/vscode-python-snippet-pack' }
-      -- use { 'golang/vscode-go' }
-      -- use { 'rust-lang/vscode-rust' }
 
       -- ====================================
       -- Integrations
@@ -331,31 +221,8 @@ return require("packer").startup(
       -- Visual Selection <C-U>PastebinPaste - <C-U>, PastebinPasteAll, PastebinPasteList
       vim.g.enabled_pastebin_service = "dpaste.org"
 
-      use(
-        {
-          "iamcco/markdown-preview.nvim",
-          run = "cd app && yarn install",
-          config = function()
-            require("plugins.configs.markdown-preview")
-          end
-        }
-      )
-
       -- ====================================
       -- Visual enhancements
-      use(
-        {
-          "phaazon/hop.nvim",
-          config = function()
-            -- you can configure Hop the way you like here; see :h hop-config
-            require("hop").setup({keys = "etovxqpdygfblzhckisuran"})
-            -- place this in one of your configuration file(s)
-            -- place this in one of your configuration file(s)
-            -- vim.api.nvim_set_keymap('n', '<M-;>', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
-            -- vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
-          end
-        }
-      )
 
       use(
         {
@@ -374,9 +241,8 @@ return require("packer").startup(
       --   config = function() require("plugins.configs.shade") end
       -- }
 
-
       require("harpoon").setup(
-      {
+        {
           menu = {
             width = vim.api.nvim_win_get_width(0) - 4
           }
@@ -581,17 +447,6 @@ return require("packer").startup(
       -- end
       -- -- toggle keymappings for venn using <leader>v
       -- vim.api.nvim_set_keymap('n', '<leader>v', ":lua Toggle_venn()<CR>", { noremap = true})
-
-      use(
-        {
-          "oberblastmeister/neuron.nvim", -- "njhoffman/neuron.nvim",
-          branch = "unstable",
-          requires = {"nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", {"nvim-telescope/telescope.nvim"}},
-          config = function()
-            require("plugins.configs.neuron")
-          end
-        }
-      )
 
       -- ====================================
       -- Themes

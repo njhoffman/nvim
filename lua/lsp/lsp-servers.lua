@@ -201,7 +201,7 @@ local luacheck = {
 -- shellcheck shortcomings/bad advice
 -- https://freebsdfrau.gitbook.io/serious-shell-programming/shellcheck/introduction
 local shellcheck = {
-  lintCommand = "shellcheck -x -P SCRIPTDIR -f gcc -e SC2004,SC2034,SC2166,SC2169 -",
+  lintCommand = "shellcheck -x -f gcc -P SCRIPTDIR/ -e SC2004,SC2034,SC2166,SC2169 -",
   -- lintCommand = "shellcheck -f gcc -x",
   lintStdin = true,
   lintIgnoreExitCode = true,

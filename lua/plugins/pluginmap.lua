@@ -59,7 +59,14 @@ M.motion_plugins = {
   ["vim-wordmotion"] = {use = "chaoren/vim-wordmotion"},
   ["vim-smoothie"] = {use = "psliwka/vim-smoothie"},
   ["clever-f"] = {use = "rhysd/clever-f.vim"},
-  ["marks.nvim"] = {use = "chentau/marks.nvim"}
+  ["marks.nvim"] = {use = "chentau/marks.nvim"},
+  ["markdown-preview.nvim"] = {use = "iamcco/markdown-preview.nvim", run = "cd app && yarn install"},
+  ["neuron.nvim"] = {
+    use = {
+      "njhoffman/neuron.nvim",
+      requires = {"nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim"}
+    }
+  }
 }
 
 M.format_plugins = {
@@ -119,12 +126,52 @@ M.syntax_plugins = {
   ["vim-terraform"] = {use = "hashivim/vim-terraform"},
   ["yats.vim"] = {use = "herringtondarkholme/yats.vim"},
   ["zinit-vim-syntax"] = {use = "zdharma-continuum/zinit-vim-syntax"}
+
   -- use "plasticboy/vim-markdown"
   -- use "xolox/vim-lua-inspect"
   -- use { "xolox/vim-lua-ftplugin", requires = "xolox/vim-misc" }
   -- use "tpope/vim-liquid"
   -- use "kchmck/vim-coffee-script"
 }
+
+M.completion_plugins = {
+  ["nvim-cmp"] = {use = "hrsh7th/nvim-cmp"},
+  ["cmp-under-comparator"] = {use = {"lukas-reineke/cmp-under-comparator", after = "nvim-cmp"}},
+  ["cmp-treesitter"] = {use = {"ray-x/cmp-treesitter", after = "nvim-cmp"}},
+  ["cmp-spell"] = {use = {"f3fora/cmp-spell", after = "nvim-cmp"}},
+  ["cmp-npm"] = {use = {"David-Kunz/cmp-npm", after = "nvim-cmp"}},
+  ["cmp-zsh"] = {use = {"tamago324/cmp-zsh", after = "nvim-cmp"}},
+  ["cmp-vimwiki-tags"] = {use = {"pontusk/cmp-vimwiki-tags", after = "nvim-cmp"}},
+  ["cmp-pandoc-references"] = {use = {"jc-doyle/cmp-pandoc-references", after = "nvim-cmp"}},
+  ["cmp-tabnine"] = {use = {"tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp"}},
+  ["cmp-git"] = {use = {"petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", after = "nvim-cmp"}},
+  ["cmp-emoji"] = {use = {"hrsh7th/cmp-emoji", after = "nvim-cmp"}},
+  ["cmp-nvim-lua"] = {use = {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp"}},
+  ["cmp-nvim-lsp"] = {use = {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp"}},
+  ["cmp-buffer"] = {use = {"hrsh7th/cmp-buffer", after = "nvim-cmp"}},
+  ["cmp-calc"] = {use = {"hrsh7th/cmp-calc", after = "nvim-cmp"}},
+  ["cmp-path"] = {use = {"hrsh7th/cmp-path", after = "nvim-cmp"}},
+  ["cmp-cmdline"] = {use = {"hrsh7th/cmp-cmdline", after = "nvim-cmp"}},
+  ["vim-dadbod-completion"] = {
+    use = {"kristijanhusak/vim-dadbod-completion", requires = "tpope/vim-dadbod", after = "nvim-cmp"}
+  },
+  ["cmp-vsnip"] = {use = {"hrsh7th/cmp-vsnip", after = "nvim-cmp", requires = "hrsh7th/vim-vsnip"}},
+  ["friendly-snippets"] = {use = {"rafamadriz/friendly-snippets", after = "cmp-vsnip"}},
+  ["vs-snippets"] = {use = {"kitagry/vs-snippets", after = "cmp-vsnip"}}
+}
+-- use "wellle/tmux-complete.vim"  not available for nvim-cmp yet
+-- use {'neovim/nvim-lspconfig', requires = 'mfussenegger/nvim-jdtls'}
+-- "lukas-reineke/cmp-rg",
+-- "uga-rosa/cmp-dictionary",
+-- { "andersevenrud/compe-tmux" },
+-- 'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
+-- 'L3MON4D3/LuaSnip' -- Snippets plugin
+-- use "honza/vim-snippets"
+-- use "SirVer/UltiSnips"
+-- use { 'cstrap/python-snippets' }
+-- use { 'ylcnfrht/vscode-python-snippet-pack' }
+-- use { 'golang/vscode-go' }
+-- use { 'rust-lang/vscode-rust' }
 
 M.ui_plugins = {
   -- ["startup.nvim"] = {
@@ -146,7 +193,8 @@ M.ui_plugins = {
   ["vim-plugin-AnsiEsc"] = {use = "joeysino/vim-plugin-AnsiEsc"},
   ["vimade"] = {use = "TaDaa/vimade"},
   ["which-key.nvim"] = {use = "folke/which-key.nvim"},
-  ["zen-mode.nvim"] = {use = "folke/zen-mode.nvim"}
+  ["zen-mode.nvim"] = {use = "folke/zen-mode.nvim"},
+  ["hop.nvim"] =  { use = "phaazon/hop.nvim" },
 }
 
 M.project_plugins = {
@@ -155,7 +203,7 @@ M.project_plugins = {
   ["cpbooster.vim"] = {use = "searleser97/cpbooster.vim"},
   ["gitsigns.nvim"] = {use = {"lewis6991/gitsigns.nvim", requires = {"nvim-lua/plenary.nvim"}}},
   ["nvim-projectconfig"] = {use = "windwp/nvim-projectconfig"},
-  ["project-nvim"] = { use = "ahmedkhalf/project.nvim" }, -- TODO: load before telescope
+  ["project-nvim"] = {use = "ahmedkhalf/project.nvim"}, -- TODO: load before telescope
   ["octo.nvim"] = {use = {"pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons"}},
   ["vim-flog"] = {use = "rbong/vim-flog"},
   ["vim-fugitive"] = {use = "tpope/vim-fugitive"},
@@ -187,7 +235,16 @@ M.integration_plugins = {
   ["package-info.nvim"] = {use = {"vuki656/package-info.nvim", requires = "MunifTanjim/nui.nvim"}},
   ["vim-dadbod-ui"] = {use = {"kristijanhusak/vim-dadbod-ui", requires = "tpope/vim-dadbod"}},
   ["vim-ripple"] = {use = "urbainvaes/vim-ripple"},
-  ["vim-test"] = {use = "vim-test/vim-test"}
+  ["vim-test"] = {use = "vim-test/vim-test"},
+  ["nvim-regexplainer"] = {
+    use = {
+      "bennypowers/nvim-regexplainer",
+      requires = {
+        "nvim-lua/plenary.nvim",
+        "MunifTanjim/nui.nvim"
+      }
+    }
+  }
 }
 
 M.sysutil_plugins = {
@@ -294,6 +351,7 @@ M.load_plugins = function(use, load_config)
     M.integration_plugins,
     M.interface_plugins,
     M.lsp_plugins,
+    M.completion_plugins,
     M.motion_plugins,
     M.picker_plugins,
     M.project_plugins,

@@ -90,7 +90,8 @@ local defaultSettings = {
 local mySettings = {
   input_name = "in",
   output_name = "ans",
-  testcases_files_format = "$(INOUT)$(TCNUM).txt",
+  testcases_files_format = "$(FNOEXT).$(INOUT)$(TCNUM)",
+  -- testcases_files_format = "$(INOUT)$(TCNUM).txt",
   compile_command = {
     c = {exec = "gcc", args = {"-Wall", "$(FNAME)", "-o", "$(FNOEXT)"}},
     cpp = {exec = "g++", args = {"-Wall", "$(FNAME)", "-o", "$(FNOEXT)"}},

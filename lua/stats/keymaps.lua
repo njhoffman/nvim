@@ -85,7 +85,7 @@ M.get_whichkey_lists = function()
   return wk_lists
 end
 
-M.get_stats = function()
+M.get_counts = function()
   local wk_lists = M.get_whichkey_lists()
   -- M.whichkey_lists = { conflicts = {}, duplicates = {}, ok = {}, todo = {} }
   -- n v x s o m i l c t

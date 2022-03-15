@@ -66,13 +66,14 @@ vim.cmd(
 -- exit terminal when shell exits
 -- au TermClose * call feedkeys("i")
 
+
 local autocmds = {
   Marks = {
     {"BufRead,BufEnter", "*", "lua require('marks').refresh()"},
-    {"BufRead,BufDelete", "*", "lua require('marks')._on_delete()"}
+    {"BufRead,BufDelete", "*", "lua require('marks')._on_delete()"},
     -- { "BufEnter", "*", "if &buftype == 'prompt' | MarksToggleSigns | endif" },
     -- { "BufEnter", "*", "if &filetype == 'nofile' | MarksToggleSigns | endif" },
-    -- {"BufRead", "*.md", "lua require('neuron').update_virtual_titles()"}
+    {"BufRead", "*.md", "lua require('neuron').update_virtual_titles()"}
   },
   SecondaryBuffers = {},
   SecondaryWindows = {

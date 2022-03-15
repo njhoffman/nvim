@@ -8,7 +8,7 @@ local function length(T)
 end
 
 function M.stats(healthCheck)
-  local s = keystats.get_stats()
+  local s = keystats.get_counts()
   local p = healthCheck and vim.fn["health#report_info"] or print
 
   p("                    total  normal  visual  insert  operator  command ")

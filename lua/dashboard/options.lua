@@ -10,7 +10,7 @@ end
 local function dash_footer()
   local footer = {}
   local plugstats = require('plugins.pluginmap').stats
-  local keystats = require("stats.keymaps").get_stats()
+  local keystats = require("stats.keymaps").get_counts()
 
   local plugin_length = length(_G.packer_plugins)
 
