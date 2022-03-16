@@ -274,6 +274,9 @@ function! DebugStart()
 endfunction
 command -nargs=? DebugStart call DebugStart(<args>)
 
+" read pdfs by converting to text first
+command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -
+
 
 " https://konfekt.github.io/blog/2016/10/03/get-the-leader-right
 " are consistent with f/F,t/T, (g)n/N and //?, more intuitive than ;/,.
