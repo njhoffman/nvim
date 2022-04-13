@@ -6,6 +6,12 @@ local lsp = vim.lsp
 
 local lspservers = {}
 
+lspservers["awk_ls"] = {
+  cmd = {"awk-language-server"},
+  filetypes = {"awk"},
+  single_file_support = true
+}
+
 lspservers["bashls"] = {
   cmd = {"bash-language-server", "start"},
   cmd_env = {GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)"},
@@ -15,6 +21,18 @@ lspservers["bashls"] = {
 }
 
 lspservers["clangd"] = {filetypes = {"c", "cpp", "cc"}, flags = {debounce_text_changes = 500}}
+
+lspservers["cmake"] = {
+  cmd = {"cmake-language-server"},
+  filetypes = {"cmake"},
+  init_options = {
+    buildDirectory = "build"
+  },
+  -- root_dir = function(dirname) {
+  --   return util.root_pattern(".git", "compile_commands.json", "build") or dirname
+  -- },
+  single_file_support = true
+}
 
 lspservers["dockerls"] = {
   cmd = {"docker-langserver", "--stdio"},
@@ -41,6 +59,12 @@ lspservers["golangci_lint_ls"] = {
   },
   root_dir = util.root_pattern("go.work") or util.root_pattern("go.mod", ".golangci.yaml", ".git"),
   single_file_support = true
+}
+
+lspservers["graphql"] = {
+  cmd = {"graphql-lsp", "server", "-m", "stream"},
+  filetypes = {"graphql", "typescriptreact", "javascriptreact"},
+  root_dir = util.root_pattern(".git", ".graphqlrc*", ".graphql.config.*")
 }
 
 lspservers["jsonls"] = {

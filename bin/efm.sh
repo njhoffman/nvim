@@ -17,7 +17,6 @@
 
 function install-other-lint {
   pip3 install vint
-
   dockerfilelint (dockerlint)
   golint
   jsonlint
