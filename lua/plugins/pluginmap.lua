@@ -184,7 +184,7 @@ M.ui_plugins = {
   ["nvim-scrollbar"] = {use = "petertriho/nvim-scrollbar"},
   ["specs.nvim"] = {use = "edluffy/specs.nvim"},
   ["stabilize.nvim"] = {use = "luukvbaal/stabilize.nvim"},
-  ["todo-comments.nvim"] = {use = "folke/todo-comments.nvim"},
+  ["todo-comments.nvim"] = {use = "robertgzr/todo-comments.nvim"}, -- folke/todo-comments
   ["twilight.nvim"] = {use = "folke/twilight.nvim"},
   ["vim-HiLinkTrace"] = {use = "gerw/vim-HiLinkTrace"},
   ["vim-bling"] = {use = "ivyl/vim-bling"},
@@ -194,7 +194,7 @@ M.ui_plugins = {
   ["vimade"] = {use = "TaDaa/vimade"},
   ["which-key.nvim"] = {use = "folke/which-key.nvim"},
   ["zen-mode.nvim"] = {use = "folke/zen-mode.nvim"},
-  ["hop.nvim"] =  { use = "phaazon/hop.nvim" },
+  ["hop.nvim"] = {use = "phaazon/hop.nvim"}
 }
 
 M.project_plugins = {
