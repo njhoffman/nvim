@@ -2,6 +2,7 @@ local keymap = require("healthcheck.keymap")
 local envmap = require("healthcheck.envmap")
 local plugins = require("healthcheck.plugins")
 
+local M = {}
 function M.check_health()
   vim.fn["health#report_start"]("Nick: checking keymap statistics")
   keymap.stats(true)
