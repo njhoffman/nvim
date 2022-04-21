@@ -66,7 +66,6 @@ vim.cmd(
 -- exit terminal when shell exits
 -- au TermClose * call feedkeys("i")
 
-
 local autocmds = {
   Marks = {
     {"BufRead,BufEnter", "*", "lua require('marks').refresh()"},
@@ -113,7 +112,11 @@ local autocmds = {
     {"BufNewFile,BufRead", "nord-nick-lush.lua", "setlocal ft=lush syn=lua"},
     {"BufNewFile,BufRead", "nord-nvim.lua", "setlocal ft=lush syn=lua"},
     {"BufNewFile,BufRead", "*.t", "setlocal ft=tangle"},
-    {"BufNewFile,BufRead", "git", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>"}
+    {"BufNewFile,BufRead", "git", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>"},
+    {"BufNewFile,BufRead", "*.conf", "setlocal ft=conf"},
+    {"BufNewFile,BufRead", "*.pa", "setlocal ft=conf"},
+    {"BufNewFile,BufRead", "*.service", "setlocal ft=systemd"},
+    {"BufNewFile,BufRead", "*.sock", "setlocal ft=systemd"}
 
     --   au BufNewFile,BufRead *.module setlocal ft=php syn=php
     --   " force bash syntax for shell scripts by default custom syntax extension assignments
@@ -127,8 +130,6 @@ local autocmds = {
     --   au BufNewFile,BufRead *.j2,*/ansible/*/templates/* set ft=config.jinja2
     --   au BufNewFile,BufRead bundles.txt setlocal ft=sh
     --   au BufNewFile,BufRead bundles.*.txt setlocal ft=sh
-    --   au BufNewFile,BufRead *.sock setlocal ft=systemd
-    --   au BufNewFile,BufRead *.service setlocal ft=systemd
     --   " au BufEnter * if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' | setf preview | endif
   },
   vimade = {

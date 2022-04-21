@@ -1,0 +1,6 @@
+SDL_DestroyTexture(grid_texture);
+
+SDL_DestroyRenderer(renderer);
+
+SDL_DestroyWindow(window);
+

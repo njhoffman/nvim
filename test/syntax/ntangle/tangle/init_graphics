@@ -1,0 +1,24 @@
+window = SDL_CreateWindow("Game of life",
+  SDL_WINDOWPOS_UNDEFINED,
+  SDL_WINDOWPOS_UNDEFINED,
+  WIDTH, HEIGHT, SDL_WINDOW_ALLOW_HIGHDPI);
+
+if(window == nullptr) {
+  std::cerr << "ERROR(SDL_CreateWindow): " << SDL_GetError() << std::endl;
+  return EXIT_FAILURE;
+}
+
+renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+if(renderer == nullptr) {
+  std::cerr << "ERROR(SDL_CreateRenderer): " << SDL_GetError() << std::endl;
+  return EXIT_FAILURE;
+}
+
+grid_texture = SDL_CreateTexture(
+    renderer, SDL_PIXELFORMAT_ARGB8888,
+    SDL_TEXTUREACCESS_STREAMING,
+    GRID_SIZE, GRID_SIZE);
+
+format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
+

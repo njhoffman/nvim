@@ -47,6 +47,7 @@ M.picker_plugins = {
   ["fzf-preview.vim"] = {use = {"yuki-yano/fzf-preview.vim", branch = "release/remote", requires = {"junegunn/fzf"}}},
   ["fzf-lua"] = {use = {"ibhagwan/fzf-lua", requires = {"vijaymarupudi/nvim-fzf", "kyazdani42/nvim-web-devicons"}}},
   ["nvim-spotify"] = {use = {"KadoBOT/nvim-spotify", requires = "nvim-telescope/telescope.nvim", run = "make"}},
+  ["tmuxjump.vim"] = {use = { "shivamashtikar/tmuxjump.vim", requires = "junegunn/fzf.vim" }},
   ["harpoon"] = {
     use = "ThePrimeagen/harpoon",
     requires = "nvim-lua/plenary.nvim"

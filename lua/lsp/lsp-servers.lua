@@ -297,6 +297,15 @@ lspservers["efm"] = {
   }
 }
 
+local lsp_installer = require "nvim-lsp-installer"
+for name, def in pairs(lspservers) do
+  local server_is_found, server = lsp_installer.get_server(name)
+  if server_is_found and not server:is_installed() then
+    vim.notify("Installing " .. name, "info")
+    server:install()
+  end
+end
+
 local custom_attach = require("lsp/on_attach").custom_attach
 local capabilities = require("cmp_nvim_lsp").update_capabilities(lsp.protocol.make_client_capabilities())
 capabilities.textDocument.completion.completionItem.snippetSupport = true

@@ -10,6 +10,8 @@ if has("termguicolors")     " set true colors
   set termguicolors
 endif
 
+" https://github.com/shivamashtikar/tmuxjump.vim
+let g:tmuxjump_telescope = v:true
 
 let s:file = expand("$HOME") . '/.cache/nvim/v-dump.vim'
 let s:level = 20
