@@ -180,15 +180,17 @@ extensions.fzf = {
 }
 
 extensions.bookmarks = {
-  selected_browser = "google_chrome",
+  selected_browser = "chrome",
   url_open_command = "xdg-open",
   url_open_plugin = nil, -- vim_external, open_browser
   firefox_profile_name = nil
 }
 
 extensions.media_files = {
-  filetypes = {"png", "webp", "jpg", "jpeg", "webm", "pdf", "mp4", ".svg"},
+  filetypes = {"png", "webp", "jpg", "jpeg", "webm", "pdf", "mp4", "svg", "mpv", "mkv"},
   find_cmd = "fd" -- find command (defaults to `fd`)
+  -- sudo apt install uberzug ffmpegthumbnailer poppler-utils epub-utils
+  -- font-viewer (fontpreview)? fd, rg, etc
 }
 
 extensions.arecibo = {

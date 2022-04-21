@@ -12,7 +12,13 @@ local dropdown =
   }
 )
 
-local ivy = require "telescope.themes".get_ivy({winblend = 10})
+local ivy =
+  require "telescope.themes".get_ivy(
+  {
+    winblend = 10,
+    layout_config = {height = 15}
+  }
+)
 
 local dropdown_preview =
   require "telescope.themes".get_dropdown(
