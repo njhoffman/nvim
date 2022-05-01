@@ -39,67 +39,8 @@ return require("packer").startup(
       --   },
       -- }
       -- EOF
-      use("ido-nvim/core")
-      use("neovim/nvim-lspconfig")
-      use(
-        {
-          -- https://github.com/kosayoda/nvim-lightbulb
-          "weilbith/nvim-code-action-menu",
-          cmd = "CodeActionMenu"
-          -- vim.g.code_action_menu_show_details = false,
-          -- vim.g.code_action_menu_show_diff = false
-        }
-      )
-      use(
-        {
-          "williamboman/nvim-lsp-installer",
-          requires = "neovim/nvim-lspconfig",
-          config = function()
-            require("plugins.configs.lsp-install")
-          end
-        }
-      )
-      use("nvim-lua/lsp_extensions.nvim")
-      -- use({
-      -- 	"nvim-lua/lsp-status.nvim",
-      -- 	config = function()
-      -- 		require("plugins.configs.lsp-status")
-      -- 	end,
-      -- })
-      use(
-        {
-          "folke/lsp-colors.nvim",
-          config = function()
-            require("plugins.configs.lsp-colors")
-          end
-        }
-      )
+      -- use("ido-nvim/core")
 
-      use(
-        {
-          "glepnir/lspsaga.nvim",
-          config = function()
-            require("plugins.configs.lspsaga")
-          end
-        }
-      )
-
-      use(
-        {
-          "kosayoda/nvim-lightbulb",
-          config = function()
-            require("plugins.configs.nvim-lightbulb")
-          end
-        }
-      )
-      use(
-        {
-          "ray-x/lsp_signature.nvim",
-          config = function()
-            require("plugins.configs.lsp_signature")
-          end
-        }
-      )
       use({"jose-elias-alvarez/nvim-lsp-ts-utils", requires = {"nvim-lua/plenary.nvim", "neovim/nvim-lspconfig"}})
       -- use({ "jose-elias-alvarez/null-ls.nvim", requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" } })
 
@@ -241,14 +182,6 @@ return require("packer").startup(
       --   config = function() require("plugins.configs.shade") end
       -- }
 
-      require("harpoon").setup(
-        {
-          menu = {
-            width = vim.api.nvim_win_get_width(0) - 4
-          }
-        }
-      )
-
       -- ====================================
       -- Motion plugins
       -- use { "terryma/vim-multiple-cursors", config = function() require("plugins.configs.vim_multiple_cursors") end }
@@ -263,7 +196,7 @@ return require("packer").startup(
             require("plugins.configs.tabout")
           end
         }
-      ) -- after = { "nvim-compe" },
+      )
       -- use "AckslD/nvim-anywise-reg.lua"
 
       -- ====================================
@@ -282,22 +215,8 @@ return require("packer").startup(
       -- ====================================
       -- Interface plugins
       use("voldikss/fzf-floaterm")
-      use(
-        {
-          "nanotee/sqls.nvim",
-          requires = {"neovim/nvim-lspconfig"},
-          config = function()
-            require("sqls").setup(
-              {
-                picker = "default" -- default, telescope, fzf,
-              }
-            )
-          end
-        }
-      )
-      -- use { "stevearc/stickybuf.nvim", config = function() require("plugins.configs.stickybuf") end }
-
       use("ThePrimeagen/vim-apm") -- VimApmShutdown, VimAp, ~/apm.csvm
+      -- use { "stevearc/stickybuf.nvim", config = function() require("plugins.configs.stickybuf") end }
 
       -- use "markonm/traces.vim"
       -- let g:traces_enabled             = get(g:, 'traces_enabled', 1)

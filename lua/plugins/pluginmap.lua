@@ -47,7 +47,7 @@ M.picker_plugins = {
   ["fzf-preview.vim"] = {use = {"yuki-yano/fzf-preview.vim", branch = "release/remote", requires = {"junegunn/fzf"}}},
   ["fzf-lua"] = {use = {"ibhagwan/fzf-lua", requires = {"vijaymarupudi/nvim-fzf", "kyazdani42/nvim-web-devicons"}}},
   ["nvim-spotify"] = {use = {"KadoBOT/nvim-spotify", requires = "nvim-telescope/telescope.nvim", run = "make"}},
-  ["tmuxjump.vim"] = {use = { "shivamashtikar/tmuxjump.vim", requires = "junegunn/fzf.vim" }},
+  ["tmuxjump.vim"] = {use = {"shivamashtikar/tmuxjump.vim", requires = "junegunn/fzf.vim"}},
   ["harpoon"] = {
     use = "ThePrimeagen/harpoon",
     requires = "nvim-lua/plenary.nvim"
@@ -249,7 +249,6 @@ M.integration_plugins = {
 }
 
 M.sysutil_plugins = {
-  ["vim-eunuch"] = {use = "tpope/vim-eunuch"},
   ["vim-renamer"] = {use = "qpkorr/vim-renamer"},
   ["nvim-remote-containers"] = {use = "jamestthompson3/nvim-remote-containers"},
   ["suda.vim"] = {use = "lambdalisue/suda.vim"},
@@ -261,10 +260,18 @@ M.lsp_plugins = {
   ["fidget.nvim"] = {use = "j-hui/fidget.nvim"},
   ["null-ls.nvim"] = {use = {"jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim"}},
   ["lua-dev.nvim"] = {use = "folke/lua-dev.nvim"},
+  ["lsp-colors.nvim"] = {use = "folke/lsp-colors.nvim"},
+  ["nvim-lightbulb"] = {use = "kosayoda/nvim-lightbulb"},
+  ["lsp_signature.nvim"] = {use = "ray-x/lsp_signature.nvim"},
+  ["lspsaga.nvim"] = {use = "glepnir/lspsaga.nvim"},
+  ["nvim-code-action-menu"] = {use = "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu"},
+  ["nvim-lsp-installer"] = {use = "williamboman/nvim-lsp-installer", requires = "neovim/nvim-lspconfig"},
+  ["nvim-lspconfig"] = {use = "neovim/nvim-lspconfig"},
   ["trouble.nvim"] = {use = "folke/trouble.nvim"},
   ["ntangle-lsp.nvim"] = {
     use = {"jbyuki/ntangle-lsp.nvim", requires = {"jbyuki/ntangle-ts.nvim", "neovim/nvim-lspconfig"}}
-  }
+  },
+  ["sqls.nvim"] = {use = "nanotee/sqls.nvim", requires = "neovim/nvim-lspconfig"}
 }
 
 M.theme_plugins = {
