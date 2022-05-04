@@ -41,9 +41,6 @@ return require("packer").startup(
       -- EOF
       -- use("ido-nvim/core")
 
-      use({"jose-elias-alvarez/nvim-lsp-ts-utils", requires = {"nvim-lua/plenary.nvim", "neovim/nvim-lspconfig"}})
-      -- use({ "jose-elias-alvarez/null-ls.nvim", requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" } })
-
       -- ====================================
       -- Integrations
       use(
@@ -57,6 +54,7 @@ return require("packer").startup(
       use(
         {
           "nvim-telescope/telescope.nvim",
+          -- commit = "23e28d0",
           requires = {
             "kyazdani42/nvim-web-devicons",
             "nvim-lua/popup.nvim",
@@ -94,7 +92,6 @@ return require("packer").startup(
             "nvim-telescope/telescope-ui-select.nvim",
             "nvim-telescope/telescope-hop.nvim",
             "nvim-telescope/telescope-rg.nvim",
-            -- <c-a>: append env name, <cr>: append env value, <c-e>: edit env value
             "LinArcX/telescope-command-palette.nvim",
             "tamago324/telescope-openbrowser.nvim",
             "LinArcX/telescope-env.nvim",
@@ -132,39 +129,13 @@ return require("packer").startup(
           -- TODO: also needs taskwarrior, tasklib, pip install --upgrade git+git://github.com/tbabej/tasklib@develop
         }
       )
-      use(
-        {
-          "rafcamlet/nvim-luapad",
-          config = function()
-            require("plugins.configs.nvim-luapad")
-          end
-        }
-      )
-      use(
-        {
-          "michaelb/sniprun",
-          run = "bash ./install.sh",
-          config = function()
-            require("plugins.configs.sniprun")
-          end
-        }
-      )
       use("njhoffman/slimux")
-      use(
-        {
-          "NTBBloodbath/rest.nvim",
-          config = function()
-            require("plugins.configs.rest-nvim")
-          end
-        }
-      )
       use("sefeng211/vim-pastebins")
       -- Visual Selection <C-U>PastebinPaste - <C-U>, PastebinPasteAll, PastebinPasteList
       vim.g.enabled_pastebin_service = "dpaste.org"
 
       -- ====================================
       -- Visual enhancements
-
       use(
         {
           "winston0410/range-highlight.nvim",
@@ -201,8 +172,6 @@ return require("packer").startup(
 
       -- ====================================
       -- System utils
-      use("bchretien/vim-profiler")
-      use("tweekmonster/startuptime.vim")
       use(
         {
           "henriquehbr/nvim-startup.lua",
@@ -244,29 +213,11 @@ return require("packer").startup(
           end
         }
       )
-      use(
-        {
-          "gelguy/wilder.nvim",
-          rocks = {"luarocks-fetch-gitrec", "pcre2"},
-          requires = {"romgrk/fzy-lua-native", "kyazdani42/nvim-web-devicons"},
-          config = function()
-            require("plugins.configs.wilder")
-          end
-        }
-      )
       -- use "preservim/vim-pencil"
 
       -- ====================================
       -- Pickers (telescope, fzf)
 
-      use(
-        {
-          "luukvbaal/nnn.nvim",
-          config = function()
-            require("plugins.configs.nnn")
-          end
-        }
-      )
       use("Yohannfra/Nvim-Switch-Buffer")
 
       -- ====================================
@@ -278,8 +229,6 @@ return require("packer").startup(
       --     -- vnoremap <silent> m :lua require('tsht').nodes()<CR>
       --   end
       -- }
-      require "nvim-treesitter.configs".setup {autotag = {enable = true}}
-      use {"romgrk/nvim-treesitter-context", requires = "nvim-treesitter"}
 
       -- https://github.com/willchao612/vim-diagon
       -- https://github.com/ArthurSonzogni/Diagon
@@ -366,9 +315,6 @@ return require("packer").startup(
       -- end
       -- -- toggle keymappings for venn using <leader>v
       -- vim.api.nvim_set_keymap('n', '<leader>v', ":lua Toggle_venn()<CR>", { noremap = true})
-
-      -- ====================================
-      -- Themes
 
       -- Automatically set up your configuration after cloning packer.nvim
       -- Put this at the end after all plugins

@@ -10,7 +10,7 @@ settings.Load = {
 }
 
 settings.Logging = {
-  notify_level = 'debug',
+  notify_level = 'trace',
   log_level = 'trace',
   console_level = 'info',
   lsp_level = "warn",

@@ -7,7 +7,7 @@ local helpers = require("helpers")
 local logger = require("logger").initLogger("lsp")
 
 local function documentFormat(client)
-	if client.resolved_capabilities.document_formatting then
+	if client.server_capabilities.document_formatting then
 		vim.cmd([[augroup Format]])
 		vim.cmd([[autocmd! * <buffer>]])
 		vim.api.nvim_command([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 2000)]])
@@ -16,7 +16,7 @@ local function documentFormat(client)
 		-- vim.cmd [[autocmd BufWritePost <buffer> lua require'lsp.formatters'.format()]]
 		vim.cmd([[augroup END]])
 		-- print("Formatting supported %s", client.name)
-	elseif client.resolved_capabilities.document_range_formatting then
+	elseif client.server_capabilities.document_range_formatting then
 		vim.api.nvim_command([[autocmd BufWritePre <buffer> lua vim.lsp.buf.range_formatting()]])
 		-- vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
 		-- utils.keymap({"n", "<Leader>aa", "<cmd>lua vim.lsp.buf.formatting()<cr>", {}})
@@ -26,7 +26,7 @@ local function documentFormat(client)
 end
 
 local function documentCodeAction(client)
-	if client.resolved_capabilities.code_action then
+	if client.server_capabilities.code_action then
 		vim.cmd([[augroup CodeAction]])
 		vim.cmd([[autocmd! * <buffer>]])
 		vim.cmd([[autocmd CursorHold * lua require'plugins.configs.nvim-lightbulb']])
@@ -36,7 +36,7 @@ end
 
 local function documentHighlight(client)
 	-- Set autocommands conditional on server_capabilities
-	if client.resolved_capabilities.document_highlight then
+	if client.server_capabilities.document_highlight then
 		vim.api.nvim_exec(
 			[[
     hi LspReferenceRead cterm=bold ctermbg=red guibg=#464646
@@ -110,7 +110,7 @@ local function documentSignature()
 end
 
 local function reduce_capabilities(client)
-	local capabilities = client.resolved_capabilities
+	local capabilities = client.server_capabilities
 	-- @param filter = table {"hover"}
 	local reduce = function(filter)
 		local result = {}
@@ -128,7 +128,7 @@ local function reduce_capabilities(client)
 end
 
 local function count_capabilities(client)
-	local capabilities = client.resolved_capabilities
+	local capabilities = client.server_capabilities
 	local count = 0
 	for k, _ in pairs(capabilities) do
 		if _ == true then
@@ -140,9 +140,9 @@ local function count_capabilities(client)
 end
 
 local function log_capabilities(client, verbosity)
-	local capabilities = client.resolved_capabilities
+	local capabilities = client.server_capabilities
     -- {
-    --   resolved_capabilities = {
+    --   server_capabilities = {
     --   call_hierarchy                     = false,
     --   code_action                        = {      codeActionKinds = { "", "quickfix", "refactor.rewrite", "refactor.extract" },      resolveProvider = false    },
     --   code_lens                          = false,
@@ -257,7 +257,7 @@ function M.common_on_attach(client, bufnr)
   -- local capabilities_count = count_capabilities(client)
   -- local title_msg = "'" .. client.name .. "' attached to " .. bufnr .. " (" .. capabilities_count .. " capabilties)"
   -- logger:info(title_msg)
-  -- logger:debug(inspect(client.resolved_capabilities))
+  -- logger:debug(inspect(client.server_capabilities))
   -- local verbosity = 2
   -- log_capabilities(client, verbosity)
 

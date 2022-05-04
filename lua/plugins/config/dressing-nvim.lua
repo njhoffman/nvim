@@ -40,12 +40,12 @@ local defaults = {
     -- Priority list of preferred vim.select implementations
     backend = {"telescope", "fzf_lua", "fzf", "builtin", "nui"},
     -- Options for telescope selector
-    telescope = {
-      -- can be 'dropdown', 'cursor', or 'ivy'
-      -- or you can use a configuration directly:
-      -- theme = require('telescope.themes').get_ivy({...})
-      theme = "dropdown"
-    },
+    -- telescope = {
+    --   -- can be 'dropdown', 'cursor', or 'ivy'
+    --   -- or you can use a configuration directly:
+    --   -- theme = require('telescope.themes').get_ivy({...})
+    --   theme = "dropdown"
+    -- },
     -- Options for fzf selector
     fzf = {
       window = {
@@ -137,13 +137,18 @@ local test_select = function(backend, backend_opt, cb)
   }
   local selected
   opts.prompt = opts.prompt or "Title Test"
-  backend.select( backend_opt, items, opts,
+  backend.select(
+    backend_opt,
+    items,
+    opts,
     function(item)
       selected = item
       if selected then
         print("made selection with " .. backend .. " - " .. selected.name)
       end
-      if cb then cb(selected) end
+      if cb then
+        cb(selected)
+      end
     end
   )
 end

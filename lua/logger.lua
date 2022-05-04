@@ -1,104 +1,113 @@
 local M = {}
 local logfile = vim.fn.stdpath("cache") .. "/nvim.log"
 local log = require("structlog")
-local config = require('config')
+local config = require("config")
 
 M.messages = {}
 
 function M.inspect(tbl, depth, n)
-  n = n or 2;
-  depth = depth or 5;
+  n = n or 2
+  depth = depth or 5
 
   if (depth == 0) then
-    print(string.rep(" ", n) .. "...");
-    return;
+    print(string.rep(" ", n) .. "...")
+    return
   end
 
-  if (n == 0) then print(" "); end
+  if (n == 0) then
+    print(" ")
+  end
 
   for key, value in pairs(tbl) do
     if (key and type(key) == "number" or type(key) == "string") then
-      key = string.format("[\"%s\"]", key);
+      key = string.format('["%s"]', key)
 
       if (type(value) == "table") then
         if (next(value)) then
-          print(string.rep(" ", n) .. key .. " = {");
-          H.inspect(value, depth - 1, n + 4);
-          print(string.rep(" ", n) .. "},");
+          print(string.rep(" ", n) .. key .. " = {")
+          H.inspect(value, depth - 1, n + 4)
+          print(string.rep(" ", n) .. "},")
         else
-          print(string.rep(" ", n) .. key .. " = {},");
+          print(string.rep(" ", n) .. key .. " = {},")
         end
       else
         if (type(value) == "string") then
-          value = string.format("\"%s\"", value);
+          value = string.format('"%s"', value)
         else
-          value = tostring(value);
+          value = tostring(value)
         end
 
-        print(string.rep(" ", n) .. key .. " = " .. value .. ",");
+        print(string.rep(" ", n) .. key .. " = " .. value .. ",")
       end
     end
   end
 
-  if (n == 0) then print(" "); end
+  if (n == 0) then
+    print(" ")
+  end
 end
 
 -- TODO: make message sink for telescope
 -- TODO: parse '\n'
 function M.initLogger(name)
   name = name or "root"
-  log.configure({
-    [name] = {
-      sinks = {
-        -- log.sinks.Console(log.level.WARN, {
-        --     processors = {
-        --       log.processors.Namer(),
-        --       -- log.processors.Timestamper("%H:%M:%S"),
-        --     },
-        --     formatter = log.formatters.FormatColorizer(
-        --       "[%s] %s: %-30s",
-        --     { "level", "logger_name", "msg" },
-        --     { level = log.formatters.FormatColorizer.color_level() }
-        --     -- "%s [%s] %s: %-30s",
-        --       -- { "timestamp", "level", "logger_name", "msg" },
-        --     ),
-        --   }
-        -- ),
-        -- log.sinks.NvimNotify(
-        --   log.level.WARN,
-        --   {
-        --     processors = {
-        --       log.processors.Namer(),
-        --     },
-        --     formatter = log.formatters.Format( --
-        --       "%s",
-        --       { "msg" },
-        --       { blacklist = { "level", "logger_name" } }
-        --     ),
-        --     params_map = { title = "logger_name" },
-        --   }),
-        log.sinks.File(log.level.TRACE, logfile, {
-           processors = {
-            log.processors.Namer(),
-            log.processors.StackWriter({ "line", "file" }, { max_parents = 12, stack_level = 0 }),
-            log.processors.Timestamper("%H:%M:%S"),
-          },
-          formatter = log.formatters.Format( --
-            "%s [%s] %s: %-30s",
-            { "timestamp", "level", "logger_name", "msg" },
-            { level = log.formatters.FormatColorizer.color_level() }
-          ),
-        })
+  log.configure(
+    {
+      [name] = {
+        sinks = {
+          -- log.sinks.Console(log.level.WARN, {
+          --     processors = {
+          --       log.processors.Namer(),
+          --       -- log.processors.Timestamper("%H:%M:%S"),
+          --     },
+          --     formatter = log.formatters.FormatColorizer(
+          --       "[%s] %s: %-30s",
+          --     { "level", "logger_name", "msg" },
+          --     { level = log.formatters.FormatColorizer.color_level() }
+          --     -- "%s [%s] %s: %-30s",
+          --       -- { "timestamp", "level", "logger_name", "msg" },
+          --     ),
+          --   }
+          -- ),
+          -- log.sinks.NvimNotify(
+          --   log.level.WARN,
+          --   {
+          --     processors = {
+          --       log.processors.Namer(),
+          --     },
+          --     formatter = log.formatters.Format( --
+          --       "%s",
+          --       { "msg" },
+          --       { blacklist = { "level", "logger_name" } }
+          --     ),
+          --     params_map = { title = "logger_name" },
+          --   }),
+          log.sinks.File(
+            log.level.TRACE,
+            logfile,
+            {
+              processors = {
+                log.processors.Namer(),
+                log.processors.StackWriter({"line", "file"}, {max_parents = 12, stack_level = 0}),
+                log.processors.Timestamper("%H:%M:%S")
+              },
+              formatter = log.formatters.Format( --
+                "%s [%s] %s: %-30s",
+                {"timestamp", "level", "logger_name", "msg"},
+                {level = log.formatters.FormatColorizer.color_level()}
+              )
+            }
+          )
+        }
       }
     }
-  })
+  )
   return log.get_logger(name)
   -- function logger:inspect(obj) return H.inspect(obj).toString() end
   -- logger:warn("A log message with keyword arguments", { warning = "something happened" })
 
   -- dap.log, log, lsp.log, nvim.log, packer.nvim.log
 end
-
 
 local function is_module_available(name)
   if package.loaded[name] then
@@ -116,45 +125,56 @@ local function is_module_available(name)
 end
 
 local function wrap(str, limit, indent, indent1)
-  if type(str) ~= "string" then return str end
+  if type(str) ~= "string" then
+    return str
+  end
   indent = indent or ""
   indent1 = indent1 or indent
   limit = limit or 30
-  local here = 1-#indent1
-  return indent1..str:gsub("(%s+)()(%S+)()",
-    function(sp, st, word, fi)
-      if fi-here > limit then
-        here = st - #indent
-        return "\n"..indent..word
+  local here = 1 - #indent1
+  return indent1 ..
+    str:gsub(
+      "(%s+)()(%S+)()",
+      function(sp, st, word, fi)
+        if fi - here > limit then
+          here = st - #indent
+          return "\n" .. indent .. word
+        end
       end
-    end)
+    )
 end
 
 local function log_level_number(name)
   name = name or "info"
-  local levels = { "trace", "debug", "info", "warn", "error" }
+  local levels = {"trace", "debug", "info", "warn", "error"}
   local level_n = 1
   for i, level in ipairs(levels) do
-    if level == name then level_n = i end
+    if level == name then
+      level_n = i
+    end
   end
   return level_n
 end
 
 local function log_level_name(num)
-  local levels = { "trace", "debug", "info", "warn", "error" }
+  local levels = {"trace", "debug", "info", "warn", "error"}
   local level_name = ""
   for i, level in ipairs(levels) do
-    if i == num + 1 then level_name  = level end
+    if i == num + 1 then
+      level_name = level
+    end
   end
   return level_name
 end
 
 local parse_message = function(message, cols)
-  local msg = ''
+  local msg = ""
   if type(message) == "table" then
     for i, line in ipairs(message) do
-      if i > 1 then msg = msg .. "\n  " end
-      if type(line) == 'table' then
+      if i > 1 then
+        msg = msg .. "\n  "
+      end
+      if type(line) == "table" then
         line = vim.inspect(line)
       elseif type(cols) == "number" then
         line = wrap(line, cols, " ", "")
@@ -170,26 +190,17 @@ local parse_message = function(message, cols)
   return msg
 end
 
-
--- nvim_echo({chunks}, {history}, {opts})                           *nvim_echo()*
---                 Echo a message.
-
---                 Parameters: ~
---                     {chunks}   A list of [text, hl_group] arrays, each
---                                representing a text chunk with specified
---                                highlight. `hl_group` element can be omitted
---                                for no highlight.
---                     {history}  if true, add to |message-history|.
---                     {opts}     Optional parameters. Reserved for future use.
--- :lua vim.api.nvim_echo({{'HEY', 'Constant'}},true,{})
 local notify_parse_message = function(message, cols)
   --    
   local msg = message
-  if type(msg) == "string" and  string.find(msg, "Set CWD to") == 1 then
-    local path, pattern = string.match(msg, 'Set CWD to ([^%s]+) using pattern (.*)' )
+  if type(msg) == "string" and string.find(msg, "Set CWD to") == 1 then
+    local path, pattern = string.match(msg, "Set CWD to ([^%s]+) using pattern (.*)")
     local icon = pattern == ".git" and "  " or "  "
-    path = path:gsub(vim.fn.getenv('HOME'), '~')
-    msg = icon .. ' ' .. path
+    if path == nil then
+      path = ""
+    end
+    path = path:gsub(vim.fn.getenv("HOME"), "~")
+    msg = icon .. " " .. path
   else
     msg = parse_message(message, cols)
   end
@@ -223,16 +234,18 @@ local traceback = function()
   local out = {}
   while true do
     local info = debug.getinfo(level, "Sln")
-    if not info then break end
+    if not info then
+      break
+    end
     local msg = ""
-    if info.what == "C" then   -- is a C function?
-      msg = level .. ': ' .. 'C function'
+    if info.what == "C" then -- is a C function?
+      msg = level .. ": " .. "C function"
       if type(info.name) == "string" and info.name ~= "" then
         msg = msg .. " -> " .. info.namewhat .. ":" .. info.name
       end
-    else   -- a Lua function
+    else -- a Lua function
       -- out = out .. '\n' .. string.format('[%s]:%d', info.short_src, info.currentline)
-      msg = string.format('%d:[%s]:%d', level, info.source, info.currentline)
+      msg = string.format("%d:[%s]:%d", level, info.source, info.currentline)
       if type(info.name) == "string" and info.name ~= "" then
         msg = msg .. " -> " .. info.namewhat .. ":" .. info.name
       end
@@ -246,6 +259,7 @@ end
 local renderFunc = function(renderType)
   return function(bufnr, notif, highlights)
     -- local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+    -- print("renderFunc", renderType)
     return require("notify.render." .. renderType)(bufnr, notif, highlights)
   end
 
@@ -271,210 +285,94 @@ vim.notify = function(message, level, ...)
   local args = ... or {}
   local tb = traceback()
 
-  vim.defer_fn(function()
-    -- TODO: pull msg strings out, vim.inspect rest of keyed objects
-    local notif_time = vim.fn.strftime("%H:%M")
-    local level_n = log_level_number(level)
-
-    local cols = math.floor(vim.opt.columns:get() / 3)
-    if level_n >= 4 then cols = math.floor(vim.opt.columns:get() / 2) end
-
-    local msg = parse_message(message)
-    local notify_msg = notify_parse_message(message, cols)
-
-    -- TODO: interate through visible windows to detect if telescope is open
-    local bufnr = vim.api.nvim_get_current_buf()
-    local winnr = vim.api.nvim_get_current_win()
-    local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
-
-    if type(level) == "number"  then
-      level = log_level_name(level)
-    else
-      level = level and string.lower(level) or "debug"
-    end
-
-    local min_log_level = log_level_number(config.Logging.log_level)
-    local min_notify_level = log_level_number(config.Logging.notify_level)
-
-    local logger = M.initLogger("notify")
-
-    if level_n >= min_log_level then
-      if level_n == 1 then
-        logger:trace(msg)
-      elseif level_n == 2 then
-        logger:debug(msg)
-      elseif level_n == 3 then
-        logger:info(msg)
-      elseif level_n == 4 then
-        logger:warn(msg)
-      elseif level_n == 5 then
-        logger:info(vim.inspect(tb))
-        logger:error(msg)
+  vim.defer_fn(
+    function()
+      -- TODO: pull msg strings out, vim.inspect rest of keyed objects
+      local notif_time = vim.fn.strftime("%H:%M")
+      if type(level) == "number" then
+        level = log_level_name(level)
+      else
+        level = level and string.lower(level) or "debug"
       end
-    end
 
-    local skip_render = false
-    -- NOTE: quick hack to see if other windows open on start
+      local level_n = log_level_number(level)
+      local cols = math.floor(vim.opt.columns:get() / 3)
+      if level_n >= 4 then
+        cols = math.floor(vim.opt.columns:get() / 2)
+      end
 
-    if level_n < min_notify_level then
-      skip_render = true
-    elseif winnr ~= 1000 then
-      skip_render = true
-      logger:warn("skipping winnr: " .. winnr .. " -- (" .. notify_msg .. ")")
-    end
+      local msg = parse_message(message)
+      local notify_msg = notify_parse_message(message, cols)
 
-    if is_module_available("notify") and skip_render == false then
-      local timeout = 2000
-      local renderType = 'minimal'
-      if type(args.title) == "nil" then
-        if level_n == 4 then
-          args.title = 'WARN'
+      -- TODO: interate through visible windows to detect if telescope is open
+      local bufnr = vim.api.nvim_get_current_buf()
+      local winnr = vim.api.nvim_get_current_win()
+      local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+
+      local min_log_level = log_level_number(config.Logging.log_level)
+      local min_notify_level = log_level_number(config.Logging.notify_level)
+
+      local logger = M.initLogger("notify")
+
+      if level_n >= min_log_level then
+        if level_n == 1 then
+          logger:trace(msg)
+        elseif level_n == 2 then
+          logger:debug(msg)
+        elseif level_n == 3 then
+          logger:info(msg)
+        elseif level_n == 4 then
+          logger:warn(msg)
         elseif level_n == 5 then
-          args.title = {'ERROR', notif_time}
+          logger:info(vim.inspect(tb))
+          logger:error(msg)
         end
       end
-      if type(args.title) ~= "nil" then renderType = 'default' end
-      if level_n == 3 then timeout = 2000
-      elseif level_n == 4 then timeout = 5000
-      elseif level_n == 5 then
-        timeout = 8000
-        -- args.keep = function() return true end
-      end
-      args.timeout = args.timeout or timeout
-      args.render = args.render or renderFunc(renderType)
-      require('notify')(notify_msg, level, args)
-    end
-  end, 0)
-end
 
+      local skip_render = false
+      -- NOTE: quick hack to see if other windows open on start
+
+      if level_n < min_notify_level then
+        skip_render = true
+      elseif winnr ~= 1000 then
+        skip_render = true
+        logger:warn("skipping winnr: " .. winnr .. " -- (" .. notify_msg .. ")")
+      end
+
+      if is_module_available("notify") and skip_render == false then
+        local notify = require("notify")
+        local timeout = 2000
+        local renderType = "minimal"
+        if type(args.title) == "nil" then
+          if level_n == 4 then
+            args.title = "WARN"
+          elseif level_n == 5 then
+            args.title = {"ERROR", notif_time}
+          end
+        end
+        -- select renderType that displays title
+        if type(args.title) ~= "nil" then
+          renderType = "default"
+        end
+        if level_n <= 3 then
+          timeout = 2000
+        elseif level_n == 4 then
+          timeout = 5000
+        elseif level_n == 5 then
+          timeout = 8000
+        -- args.keep = function() return true end
+        end
+        args.timeout = args.timeout or timeout
+        args.render = args.render or renderFunc(renderType)
+        notify(notify_msg, level, args)
+      end
+    end,
+    0
+  )
+end
 
 -- FIXME: lua vim.notify(vim.inspect(vim.fn.getbufinfo(1)), "warn")
 
 vim.logger = M.initLogger("root")
 
 return M
-
--- nvim_buf_add_highlight({buffer}, {ns_id}, {hl_group}, {line}, {col_start},
---                        {col_end})
---                 Adds a highlight to buffer.
-
---                 Useful for plugins that dynamically generate highlights to a
---                 buffer (like a semantic highlighter or linter). The function
---                 adds a single highlight to a buffer. Unlike |matchaddpos()|
---                 highlights follow changes to line numbering (as lines are
---                 inserted/removed above the highlighted line), like signs and
---                 marks do.
-
---                 Namespaces are used for batch deletion/updating of a set of
---                 highlights. To create a namespace, use
---                 |nvim_create_namespace()| which returns a namespace id. Pass
---                 it in to this function as `ns_id` to add highlights to the
---                 namespace. All highlights in the same namespace can then be
---                 cleared with single call to |nvim_buf_clear_namespace()|. If
---                 the highlight never will be deleted by an API call, pass
---                 `ns_id = -1` .
-
---                 As a shorthand, `ns_id = 0` can be used to create a new
---                 namespace for the highlight, the allocated id is then
---                 returned. If `hl_group` is the empty string no highlight is
---                 added, but a new `ns_id` is still returned. This is supported
---                 for backwards compatibility, new code should use
---                 |nvim_create_namespace()| to create a new empty namespace.
-
---                 Parameters: ~
---                     {buffer}     Buffer handle, or 0 for current buffer
---                     {ns_id}      namespace to use or -1 for ungrouped
---                                  highlight
---                     {hl_group}   Name of the highlight group to use
---                     {line}       Line to highlight (zero-indexed)
---                     {col_start}  Start of (byte-indexed) column range to
---                                  highlight
---                     {col_end}    End of (byte-indexed) column range to
--- load.lua : vim.notify('error')
-
-
-
--- 23.1.1 – Accessing Local Variables
--- You can access the local variables of any active function by calling getlocal, from the debug library. It has two parameters: the stack level of the function you are querying and a variable index. It returns two values: the name and the current value of that variable. If the variable index is larger than the number of active variables, getlocal returns nil. If the stack level is invalid, it raises an error. (You can use debug.getinfo to check the validity of a stack level.)
-
--- Lua numbers local variables in the order that they appear in a function, counting only the variables that are active in the current scope of the function. For instance, the code
-
---     function foo (a,b)
---       local x
---       do local c = a - b end
---       local a = 1
---       while true do
---         local name, value = debug.getlocal(1, a)
---         if not name then break end
---         print(name, value)
---         a = a + 1
---       end
---     end
-
---     foo(10, 20)
--- will print
---     a       10
---     b       20
---     x       nil
---     a       4
--- The variable with index 1 is a (the first parameter), 2 is b, 3 is x, and 4 is another a. At the point where getlocal is called, c is already out of scope, while name and value are not yet in scope. (Remember that local variables are only visible after their initialization code.)
--- You can also change the values of local variables, with debug.setlocal. Its first two parameters are a stack level and a variable index, like in getlocal. Its third parameter is the new value for that variable. It returns the variable name, or nil if the variable index is out of scope.
-
--- 23.1.2 – Accessing Upvalues
--- The debug library also allows us to access the upvalues that a Lua function uses, with getupvalue. Unlike local variables, however, a function has its upvalues even when it is not active (this is what closures are about, after all). Therefore, the first argument for getupvalue is not a stack level, but a function (a closure, more precisely). The second argument is the upvalue index. Lua numbers upvalues in the order they are first referred in a function, but this order is not relevant, because a function cannot have two upvalues with the same name.
-
--- You can also update upvalues, with debug.setupvalue. As you might expect, it has three parameters: a closure, an upvalue index, and the new value. Like setlocal, it returns the name of the upvalue, or nil if the upvalue index is out of range.
-
--- The following code shows how we can access the value of any given variable of a calling function, given the variable name:
-
---     function getvarvalue (name)
---       local value, found
-
---       -- try local variables
---       local i = 1
---       while true do
---         local n, v = debug.getlocal(2, i)
---         if not n then break end
---         if n == name then
---           value = v
---           found = true
---         end
---         i = i + 1
---       end
---       if found then return value end
-
---       -- try upvalues
---       local func = debug.getinfo(2).func
---       i = 1
---       while true do
---         local n, v = debug.getupvalue(func, i)
---         if not n then break end
---         if n == name then return v end
---         i = i + 1
---       end
-
---       -- not found; get global
---       return getfenv(func)[name]
---     end
-
-
-  -- function NotificationService:dismiss(opts)
-  --   local bufs = vim.api.nvim_list_bufs()
-  --   local notif_wins = {}
-  --   for _, buf in pairs(bufs) do
-  --     local win = vim.fn.bufwinid(buf)
-  --     if win ~= -1 and vim.api.nvim_buf_get_option(buf, "filetype") == "notify" then
-  --       notif_wins[#notif_wins + 1] = win
-  --     end
-  --   end
-  --   for _, win in pairs(notif_wins) do
-  --     pcall(vim.api.nvim_win_close, win, true)
-  --   end
-  --   if opts.pending then
-  --     local cleared = 0
-  --     while self._pending:pop() do
-  --       cleared = cleared + 1
-  --     end
-  --     vim.notify("Cleared " .. cleared .. " pending notifications")
-  --   end
-  -- end

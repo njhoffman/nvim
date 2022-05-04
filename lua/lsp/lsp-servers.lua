@@ -318,16 +318,16 @@ require("nvim-lsp-installer").on_server_ready(
     if (server.name == "sqls") then
       server_config.on_attach = function(client, bufnr)
         require("sqls").setup {picker = "default"} -- telescope, fzf, default
-        client.resolved_capabilities.execute_command = true
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
+        client.server_capabilities.execute_command = true
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.document_range_formatting = false
         client.commands = require("sqls").commands -- Neovim 0.6+ only
         custom_attach(client, bufnr)
       end
     elseif (server.name == "sumneko_lua") then
       server_config.on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.document_range_formatting = false
         custom_attach(client, bufnr)
       end
     else

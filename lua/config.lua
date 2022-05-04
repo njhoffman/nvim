@@ -74,7 +74,7 @@ end
 
 -- Logging
 if Logging.notify_level == nil then
-  Logging.notify_level = "info"
+  Logging.notify_level = "debug"
 end
 if Logging.log_level == nil then
   Logging.log_level = "debug"

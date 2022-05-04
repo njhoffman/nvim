@@ -31,7 +31,7 @@ M.custom_attach = function(client, bufnr)
 
   -- lsp_status.on_attach(client)
   require "lsp_signature".on_attach(
-  {
+    {
       bind = true, -- This is mandatory, otherwise border config won't get registered.
       handler_opts = {border = "rounded"}
     },
@@ -59,15 +59,15 @@ M.custom_attach = function(client, bufnr)
   ]])
 
   -- Set some key bindings conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.document_formatting then
     buf_set_keymap("n", "<leader>F", "<cmd>lua vim.lsp.buf.formatting_sync()<CR>", opts)
   end
-  if client.resolved_capabilities.document_range_formatting then
+  if client.server_capabilities.document_range_formatting then
     buf_set_keymap("x", "<leader>F", "<cmd>lua vim.lsp.buf.range_formatting()<CR><ESC>", opts)
   end
 
   -- The blow command will highlight the current variable and its usages in the buffer.
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.document_highlight then
     vim.cmd(
       [[
       hi link LspReferenceRead Visual
@@ -83,7 +83,7 @@ M.custom_attach = function(client, bufnr)
   end
 
   local has_formatting = "false"
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.document_formatting then
     buf_set_keymap("n", "<Leader>aa", "<cmd>lua vim.lsp.buf.formatting()<cr>", {})
     vim.api.nvim_command([[augroup Format]])
     vim.api.nvim_command([[autocmd! * <buffer>]])

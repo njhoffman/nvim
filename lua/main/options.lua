@@ -95,8 +95,6 @@ opt("splitright", true)
 
 opt("undolevels", 1000)
 opt("updatetime", 4000)
-opt("wildignore", "*.o,*~,*.pyc")
-opt("wildmode", "longest:full,full")
 opt("timeoutlen", 500)
 opt("ttimeoutlen", 50)
 opt("pumheight", 15)
@@ -195,8 +193,11 @@ vim.g.sql_type_default = "pgsql"
 
 -- wildchar/charm for wildmenu
 -- 0x1a ^Z, 0x1b ^[, 0x0e C-n
--- opt("wc", 0x0e)
--- opt("wcm", 0x0e)
+opt("wildignore", "*.o,*~,*.pyc")
+-- opt("wildmenu", 1)
+-- opt("wildmode", "") -- full, longest, list, lastused, list:longest, list:full, longest:full
+opt("wc", 0x0e)
+opt("wcm", 0x0e)
 
 -- vim.cmd('set iskeyword+=-') -- treat dash separated words as a word text object"
 -- TERMINAL = vim.fn.expand('$TERMINAL')

@@ -93,26 +93,26 @@ end
 
 -- local mark_id = vim.api.nvim_buf_set_extmark(bnr, ns_id, line_num, col_num, opts)
 
-local ts_utils = require("nvim-treesitter.ts_utils")
-utils.find_virtual_text_nodes = function(validator, ft, opts)
-  local result = {}
-  local node = ts_utils.get_node_at_cursor()
-  -- local config = require('nvim_context_vt.config')
-  local config = {}
+-- local ts_utils = require("nvim-treesitter.ts_utils")
+-- utils.find_virtual_text_nodes = function(validator, ft, opts)
+--   local result = {}
+--   local node = ts_utils.get_node_at_cursor()
+--   -- local config = require('nvim_context_vt.config')
+--   local config = {}
 
-  while node ~= nil and not vim.tbl_contains(config.ignore_root_targets, node:type()) do
-    if validator(node, ft, opts) then
-      local target_line = node:end_()
-      if not result[target_line] then
-        result[target_line] = {}
-      end
-      table.insert(result[target_line], node)
-    end
+--   while node ~= nil and not vim.tbl_contains(config.ignore_root_targets, node:type()) do
+--     if validator(node, ft, opts) then
+--       local target_line = node:end_()
+--       if not result[target_line] then
+--         result[target_line] = {}
+--       end
+--       table.insert(result[target_line], node)
+--     end
 
-    node = node:parent()
-  end
-  return result
-end
+--     node = node:parent()
+--   end
+--   return result
+-- end
 
 -- Telescope
 function utils.search_nvim()

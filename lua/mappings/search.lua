@@ -20,9 +20,10 @@ local M = require("mappings.mapper")
 -- " no-magic searching
 -- noremap /v/ /\V
 -- noremap ?V? ?\V
-M.map("Search", "n", "/", "search_magic_1")
-M.map("Search", "v", "/", "search_magic_2")
-M.map("Search", "c", "%s/", "sub_magic_1")
+-- TODO: make this an option
+-- M.map("Search", "n", "/", "search_magic_1")
+-- M.map("Search", "v", "/", "search_magic_2")
+-- M.map("Search", "c", "%s/", "sub_magic_1")
 M.map("Search", "n", "<M-S>", "sub_magic_3")
 M.map("Search", "v", "<M-S>", "sub_magic_4")
 -- ,/ : toggle whole word matching

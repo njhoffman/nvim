@@ -1,12 +1,6 @@
 local cmp = require("cmp")
 local compare = require("cmp.config.compare")
 
--- TODO: Add completion delay
--- TODO: Map C-n to lsp_complete
--- TODO: Prevent word replace unless selected (or map escape)
--- TODO: C-f/C-b when popup on command line
--- TODO: Fix tab/s-tab
-
 if not cmp then
   return
 end
@@ -60,7 +54,7 @@ end
 
 cmp.setup(
   {
-    -- preselect = cmp.PreselectMode.None,
+    preselect = cmp.PreselectMode.None,
     completion = {
       completeopt = "menuone,noinsert,noselect"
       -- completeopt = "noselect,menuone,preview"
@@ -68,60 +62,81 @@ cmp.setup(
       -- completeopt = 'menu,menuone,noinsert',
     },
     mapping = {
-      -- inoremap <C-x><C-s> <Cmd>lua vimrc.cmp.snippet()<CR>
       ["<C-x><C-o>"] = cmp.mapping.complete(),
       ["<C-x><C-s>"] = cmp.mapping.complete({config = {sources = {{name = "vsnip"}}}}),
-      ["<C-n>"] = function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item()
-        else
-          -- fallback()
-          cmp.mapping.complete()
+      ["<C-n>"] = {
+        i = function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          else
+            -- fallback()
+            cmp.mapping.complete()
+          end
         end
-      end,
-      ["<C-p>"] = function(fallback)
-        if cmp.visible() then
-          cmp.select_prev_item()
-        else
-          -- fallback()
-          cmp.mapping.complete()
+        -- c = cmp.config.disable
+      },
+      ["<C-p>"] = {
+        i = function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          else
+            -- fallback()
+            cmp.mapping.complete()
+          end
         end
-      end,
-      ["<PageUp>"] = cmp.mapping.scroll_docs(-4),
-      ["<PageDown>"] = cmp.mapping.scroll_docs(4),
-      ["<c-b>"] = function(fallback)
-        for i = 1, 10 do
-          cmp.mapping.select_prev_item()(nil)
+        -- c = cmp.config.disable
+      },
+      ["<PageUp>"] = {
+        i = cmp.mapping.scroll_docs(-4)
+      },
+      ["<PageDown>"] = {
+        i = cmp.mapping.scroll_docs(4)
+      },
+      ["<c-b>"] = {
+        i = function(fallback)
+          for i = 1, 10 do
+            cmp.mapping.select_prev_item()(nil)
+          end
         end
-      end,
-      ["<c-f>"] = function(fallback)
-        for i = 1, 10 do
-          cmp.mapping.select_next_item()(nil)
+      },
+      ["<c-f>"] = {
+        i = function(fallback)
+          for i = 1, 10 do
+            cmp.mapping.select_next_item()(nil)
+          end
         end
-      end,
+      },
       -- ["<C-Space>"] = cmp.mapping.complete(),
-      ["<C-e>"] = cmp.mapping.abort(),
-      ["<Tab>"] = function(fallback)
-        if vim.fn.pumvisible() == 1 then
-          return t("<C-n>")
-        elseif vim.fn.call("vsnip#available", {1}) == 1 then
-          return t("<Plug>(vsnip-expand-or-jump)")
-        elseif check_back_space() then
-          return t("<Tab>")
-        else
-          return cmp.mapping.complete()
+      ["<C-e>"] = {
+        i = cmp.mapping.abort()
+      },
+      ["<Tab>"] = {
+        i = function(fallback)
+          if vim.fn.pumvisible() == 1 then
+            return t("<C-n>")
+          elseif vim.fn.call("vsnip#available", {1}) == 1 then
+            return t("<Plug>(vsnip-expand-or-jump)")
+          elseif check_back_space() then
+            return t("<Tab>")
+          else
+            return cmp.mapping.complete()
+          end
         end
-      end,
-      ["<S-Tab>"] = function(fallback)
-        if vim.fn.pumvisible() == 1 then
-          return t("<C-p>")
-        elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-          return t("<Plug>(vsnip-jump-prev)")
-        else
-          -- If <S-Tab> is not working in your terminal, change it to <C-h>
-          return t("<S-Tab>")
+        -- c = cmp.config.disable
+      },
+      ["<S-Tab>"] = {
+        i = function(fallback)
+          if vim.fn.pumvisible() == 1 then
+            return t("<C-p>")
+          elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
+            return t("<Plug>(vsnip-jump-prev)")
+          else
+            -- If <S-Tab> is not working in your terminal, change it to <C-h>
+            return t("<S-Tab>")
+          end
         end
-      end
+        -- c = cmp.config.disable
+      }
     },
     formatting = {
       --   format = lspkind.cmp_format({
@@ -215,11 +230,11 @@ cmp.setup(
   }
 )
 
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline("/", {{{name = "buffer"}}})
+-- -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+-- cmp.setup.cmdline("/", {{{name = "buffer"}}})
 
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(":", {sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline"}})})
+-- -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+-- cmp.setup.cmdline(":", {sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline"}})})
 
 require("cmp-npm").setup({ignore = {}, only_semantic_versions = false})
 

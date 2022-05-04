@@ -21,6 +21,7 @@ M.load_extensions = function(telescope)
     ["gh"] = "telescope-github.nvim",
     ["heading"] = "telescope-heading.nvim",
     ["hop"] = "telescope-hop.nvim",
+    ["lazygit"] = "lazygit.nvim",
     ["mapper"] = "telescope-mapper.nvim",
     ["media_files"] = "telescope-media-files.nvim",
     ["neoclip"] = "nvim-neoclip.lua",

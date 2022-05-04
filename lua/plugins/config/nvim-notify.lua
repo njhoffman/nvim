@@ -4,8 +4,8 @@ local notify = require("notify")
 local fade_in_slide_out_stages = require("notify.stages").fade_in_slide_out
 fade_in_slide_out_stages[2] = function()
   return {
-    opacity = { 100, frequency = 3 },
-    col = { vim.opt.columns:get() },
+    opacity = {100, frequency = 3},
+    col = {vim.opt.columns:get()}
   }
 end
 
@@ -19,7 +19,7 @@ local config = {
   -- For stages that change opacity this is treated as the highlight behind the window
   background_colour = "#000000",
   -- Icons for the different levels
-  icons = { ERROR = "", WARN = "", INFO = "", DEBUG = "", TRACE = "✎" },
+  icons = {ERROR = "", WARN = "", INFO = "", DEBUG = "", TRACE = "✎"},
   -- Minimum width for notification windows
   minimum_width = 20,
   on_open = function(win)
@@ -27,13 +27,11 @@ local config = {
     -- vim.api.nvim_win_set_config(win, { zindex = 100 })
   end,
   -- keep: Function that returns whether or not to keep the window open instead of using a timeout
-  render = 'default'
+  render = "default"
 }
 
-local ret = notify.setup(config)
-
+notify.setup(config)
 return notify
-
 
 -- You can also use plenary's async library to avoid using callbacks:
 -- local async = require("plenary.async")
