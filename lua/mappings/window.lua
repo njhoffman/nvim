@@ -11,6 +11,7 @@ M.map("Window", "n", "<C-w>-", "decrease_height") -- virtual
 M.map("Window", "n", "<C-w><", "increase_width") -- virtual
 M.map("Window", "n", "<C-w>>", "decrease_width") -- virtual
 M.map("Window", "n", "<C-w>=", "resize_even1") -- virtual
+M.map("Window", "n", "<leader>o", "exit_others_2")
 M.map("Window", "n", "<leader>=", "resize_even2")
 M.map("Window", "n", "<leader>:", "prev")
 M.map("Window", "n", "<leader>;", "next")

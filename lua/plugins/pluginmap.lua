@@ -126,7 +126,7 @@ M.syntax_plugins = {
   ["vim-liquid"] = {"njhoffman/vim-liquid"},
   ["vim-log-highlighting"] = {"mtdl9/vim-log-highlighting"},
   ["vim-lua"] = {"tbastos/vim-lua"},
-  ["vim-man"] = {"njhoffman/vim-man"}, -- "vim-utils/vim-man"
+  ["vim-man"] = {"njhoffman/vim-man"}, -- {"vim-utils/vim-man"},
   ["vim-nix"] = {"lnl7/vim-nix"},
   ["vim-node"] = {"moll/vim-node"},
   ["vim-pandoc-syntax"] = {"vim-pandoc/vim-pandoc-syntax"},
@@ -171,33 +171,18 @@ M.completion_plugins = {
   ["vs-snippets"] = {"kitagry/vs-snippets", after = "cmp-vsnip"}
 }
 
--- use "wellle/tmux-complete.vim"  not available for nvim-cmp yet
--- use {'neovim/nvim-lspconfig', requires = 'mfussenegger/nvim-jdtls'}
--- "lukas-reineke/cmp-rg",
--- "uga-rosa/cmp-dictionary",
--- { "andersevenrud/compe-tmux" },
--- 'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
--- 'L3MON4D3/LuaSnip' -- Snippets plugin
--- use "honza/vim-snippets"
--- use "SirVer/UltiSnips"
--- use { 'cstrap/python-snippets' }
--- use { 'ylcnfrht/vscode-python-snippet-pack' }
--- use { 'golang/vscode-go' }
--- use { 'rust-lang/vscode-rust' }
-
 M.ui_plugins = {
   -- ["startup.nvim"] = {
   --   use = {"startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}}
   -- },
   ["aerial.nvim"] = {"stevearc/aerial.nvim"},
   ["dressing-nvim"] = {"stevearc/dressing.nvim", requires = "MunifTanjim/nui.nvim"},
-  -- ["nvim-hlslens"] = {"kevinhwang91/nvim-hlslens"},
+  ["nvim-hlslens"] = {"kevinhwang91/nvim-hlslens"},
   ["nvim-notify"] = {"rcarriga/nvim-notify"},
   ["nvim-scrollbar"] = {"petertriho/nvim-scrollbar"},
   ["specs.nvim"] = {"edluffy/specs.nvim"},
   ["stabilize.nvim"] = {"luukvbaal/stabilize.nvim"},
   ["todo-comments.nvim"] = {"robertgzr/todo-comments.nvim"}, -- folke/todo-comments
-  ["traces.vim"] = {"markonm/traces.vim"},
   ["twilight.nvim"] = {"folke/twilight.nvim"},
   ["vim-HiLinkTrace"] = {"gerw/vim-HiLinkTrace"},
   ["vim-bling"] = {"ivyl/vim-bling"},

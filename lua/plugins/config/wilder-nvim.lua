@@ -119,8 +119,10 @@ local popupmenu_renderer =
   wilder.popupmenu_renderer(
   wilder.popupmenu_border_theme(
     {
-      border = "rounded",
       -- empty_message = wilder.popupmenu_empty_message_with_spinner(),
+      border = {'╭', '─', '╮',
+                '│',      '│',
+                '│', '',  '│'},
       highlighter = highlighters,
       left = {
         " ",
@@ -134,10 +136,32 @@ local popupmenu_renderer =
       },
       right = {
         " ",
-        wilder.popupmenu_scrollbar()
+        wilder.popupmenu_scrollbar({
+          -- thumb_hl = 'PmenuThumb',
+          scrollbar_hl = 'PmenuSbar',
+          thumb_hl = 'Comment',
+          -- Pmenu { fg = "#618cc4", bg = "#090918" },
+          -- PmenuSel { fg = "#74efff", bg = "#1a1f2f" },
+          -- PmenuSbar { fg = "#717cb4", bg = "#202331" },
+          -- PmenuThumb { fg = "#8f93a2", bg = "#84ffff" },
+        })
       },
       highlights = {
+        border = 'Comment', -- FloatBoarder
         accent = wilder.make_hl("WilderAccent", "Pmenu", {{a = 1}, {a = 1}, {foreground = "#f4468f"}})
+        -- `default` The default highlight group. - StatusLine
+        -- `selected` The highlight group used for a selected candidate. - WildMenu
+        -- `error` The highlight group used for the error message. - ErrorMsg
+        -- `separator` The highlight group used for the separators.
+        -- `accent` The highlight group used for accents. See the `highlighter` option.
+        -- `selected_accent` The highlight group used for accents for a selected candidate.
+        -- WildMenu, WilderWildmenuSelectedAccent, WilderWildmenuAccent,
+        -- WilderPopupMenuSelectedAccent, WilderPopupMenuAccent, WilderAccent
+        -- call wilder#set_option('renderer', wilder#popupmenu_renderer(
+        --   \ wilder#popupmenu_border_theme({
+        --     \   'highlights': {'border': 'FloatBorder'},
+        --     \ })))
+
       }
     }
   )
@@ -173,7 +197,7 @@ wilder.set_option(
   wilder.renderer_mux(
     {
       [":"] = popupmenu_renderer,
-      ["/"] = popupmenu_renderer
+      -- ["/"] = popupmenu_renderer
       -- substitute = popupmenu_renderer
     }
   )

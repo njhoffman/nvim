@@ -98,6 +98,8 @@ local autocmds = {
     {"BufNewFile,BufRead", "*", "setlocal signcolumn=yes:1"},
     {"BufNewFile,BufRead", "*.ejs", "set ft=html"},
     {"BufNewFile,BufRead", "*.bash*", "let b:is_bash = 1 | setfiletype bash"},
+    {"BufNewFile,BufRead", "*.theme", "setlocal ft=config syn=config"},
+    {"BufNewFile,BufRead", ".*rc", "setlocal ft=config syn=config"},
     {"BufNewFile,BufRead", ".env.*", "setlocal ft=config syn=config"},
     {"BufNewFile,BufRead", "*.env", "setlocal ft=config syn=config"},
     -- { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 synmaxcol=500" },

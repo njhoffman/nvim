@@ -107,6 +107,7 @@ M.Window = {
   resize_even1 = {short = "resize even", long = "resize windows evenly"},
   resize_even2 = {cmd = "<C-w>=", short = "resize even", long = "resize windows evenly"},
   exit_others = {short = "exit others", long = "exit other windows except current"},
+  exit_others_2 = {cmd = "<C-w>o", short = "exit others", long = "exit other windows except current"},
   swap = {short = "swap windows", long = "swap windows"},
   increase_height = {short = "increase height", long = "increase height of focused window"},
   decrease_height = {short = "decrease height", long = "decrease height of focused window"},
