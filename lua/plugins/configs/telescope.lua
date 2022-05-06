@@ -72,6 +72,11 @@ local telescopeConfig = {
       find_command = {"rg", "--ignore", "--hidden", "--sort", "path", "--files"},
       -- find_command = {"fd", "--type", "f", "--strip-cwd-prefix"},
       mappings = tele_mappings.file_picker
+    },
+    oldfiles = {
+      find_command = {"rg", "--ignore", "--hidden", "--sort", "path", "--files"},
+      -- find_command = {"fd", "--type", "f", "--strip-cwd-prefix"},
+      mappings = tele_mappings.file_picker
     }
   },
   extensions = tele_plugins.extensions

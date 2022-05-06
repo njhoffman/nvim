@@ -87,7 +87,8 @@ local extensions = {}
 local fb_actions = require "telescope".extensions.file_browser.actions
 
 extensions.file_browser = {
-  theme = "ivy"
+  theme = "ivy",
+  mappings = tele_mappings.file_picker
   -- mappings = {
   --   ["i"] = { ["<C-,>"] = fb_actions.goto_parent_dir(vim.fn.nvim_get_current_buf(), true) },
   --   -- ["n"] = {}, -- your custom normal mode mappings
@@ -156,13 +157,15 @@ extensions.frecency = {
   show_scores = true,
   show_unindexed = true,
   ignore_patterns = {"*.git/*", "*/tmp/*"},
+  mappings = tele_mappings.file_picker,
   workspaces = {
     ["etc"] = "/etc",
     ["bin"] = vim.fn.expand("$HOME") .. "/bin",
     ["nvim"] = vim.fn.stdpath("config"),
     ["home"] = vim.fn.expand("$HOME"),
     ["config"] = vim.fn.expand("$HOME") .. "/.config",
-    ["plugins"] = vim.fn.stdpath("data") .. "/site/pack/packer/start",
+    -- ["plugins"] = vim.fn.stdpath("data") .. "/site/pack/packer/start",
+    ["plugins"] = vim.fn.expand("$HOME") .. "/nvim/plugs",
     ["nvim-cache"] = vim.fn.stdpath("config"),
     ["nvim-data"] = vim.fn.stdpath("data"),
     ["prettyfile"] = vim.fn.expand("$HOME") .. "/git/prettyfile",

@@ -41,7 +41,7 @@ local clrs = {
 local clr_over = {
   -- select ion = "#2F3243",
   -- -selection = "#0f2a56",
-  selection = "#0f2a46",
+  selection = "#122244",
   orange = "#cc8877",
   yellow = "#bdb994",
   yellow_faded = "#7B6B3B",
@@ -53,7 +53,7 @@ local clr_over = {
 
 local spec = lush.extends({ nord }).with(function()
   return {
-    Visual { fg = "none", bg = clr_over.selection },
+    Visual { fg = "none", bg = clr_over.selection},
     Error { fg = "#bF211A", bg = 'none' },
     Underline = { gui = "none" },
     Underlined = { gui = "none" },

@@ -17,6 +17,7 @@ mappings.main = {
     ["<a-n>"] = actions.toggle_selection + actions.move_selection_next,
     ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous,
     ["<cr>"] = actions.select_default + actions.center,
+    -- ["<cr>"] = custom_actions.multi_selection_open,
     ["<c-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
     ["<c-q>"] = actions.send_to_qflist + actions.open_qflist + actions.center,
     ["<c-_>"] = function(prompt_bufnr)
