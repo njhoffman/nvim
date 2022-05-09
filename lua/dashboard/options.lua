@@ -75,8 +75,7 @@ vim.g.dashboard_custom_section = {
   e = { description = { "  Grep Files         " }, command = "Telescope live_grep" },
   f = { description = { "  Notifications      " }, command = "Telescope notify" },
   g = { description = { "  Man Pages          " }, command = "Telescope man_pages" },
-  h = { description = { "  Plugin Info        " }, command = "Telescope man_pages" },
-  i = { description = { "  Environment Info   " }, command = "Telescope man_pages" },
+  i = { description = { "  Environment Info   " }, command = "lua _G._stats_fetch()" },
 }
 
 vim.g.dashboard_custom_header = {
