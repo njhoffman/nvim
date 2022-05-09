@@ -5,7 +5,7 @@ local config = require("config")
 
 M.messages = {}
 
-function M.inspect(tbl, depth, n)
+  function M.inspect(tbl, depth, n)
   n = n or 2
   depth = depth or 5
 

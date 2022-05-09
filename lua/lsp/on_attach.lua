@@ -1,6 +1,148 @@
 local api = vim.api
 local M = {}
 
+local function reduce_capabilities(client)
+  local capabilities = client.server_capabilities
+  -- @param filter = table {"hover"}
+  local reduce = function(filter)
+    local result = {}
+    for k, _ in pairs(capabilities) do
+      table.insert(
+        result,
+        f.map(function(v)
+          return { v = capabilities[v] }
+        end)(f.filter(f.contains(k))(filter))
+      )
+    end
+    return f.flatten(result)
+  end
+  return reduce({})
+end
+
+local function count_capabilities(client)
+  local capabilities = client.server_capabilities
+  local count = 0
+  for k, _ in pairs(capabilities) do
+    if _ == true then
+      count = count + 1
+    end
+  end
+  -- print(vim.inspect(count))
+  return count
+end
+
+local function log_capabilities(client, verbosity)
+  local capabilities = client.server_capabilities
+  -- {
+  --   server_capabilities = {
+  --   call_hierarchy                     = false,
+  --   code_action                        = {      codeActionKinds = { "", "quickfix", "refactor.rewrite", "refactor.extract" },      resolveProvider = false    },
+  --   code_lens                          = false,
+  --   code_lens_resolve                  = false,
+  --   completion                         = true,
+  --   declaration                        = false,
+  --   document_formatting                = false,
+  --   document_highlight                 = true,
+  --   document_range_formatting          = false,
+  --   document_symbol                    = true,
+  --   execute_command                    = true,
+  --   find_references                    = true,
+  --   goto_definition                    = true,
+  --   hover                              = true,
+  --   implementation                     = false,
+  --   rename                             = true,
+  --   signature_help                     = true,
+  --   signature_help_trigger_characters  = { "(", "," },
+  --   text_document_did_change           = 2,
+  --   text_document_open_close           = true,
+  --   text_document_save                 = false,
+  --   text_document_save_include_text    = false,
+  --   text_document_will_save            = false,
+  --   text_document_will_save_wait_until = false,
+  --   type_definition                    = true,
+  --   workspace_folder_properties        = {      changeNotifications = false,      supported = false    },
+  --   workspace_symbol                   = true,
+  -- }}
+
+  local capability_map = {
+    call_hierarchy = "call",
+    code_lens = "clens",
+    code_lens_resolve = "clens-res",
+    completion = "comp",
+    declaration = "dec",
+    document_formatting = "doc-form",
+    document_highlight = "doc-hl",
+    document_range_formatting = "doc-range",
+    execute_command = "exec",
+    find_references = "find",
+    goto_definition = "goto",
+    hover = "hover",
+    implementation = "impl",
+    rename = "ren",
+    signature_help = "sig",
+    signature_help_trigger_characters = "sig-char",
+    text_document_did_change = "td-change",
+    text_document_open_close = "td-open",
+    text_document_save = "td-save",
+    text_document_save_include_text = "td-savetxt",
+    text_document_will_save = "td-willsave",
+    text_document_will_save_wait_until = "td-willsaveuntil",
+    type_definition = "type",
+    workspace_symbol = "ws-symbol",
+    workspace_folder_changeNotifications = "ws-change",
+    workspace_folder_supported = "ws-folder",
+  }
+
+  local desc = ""
+  local count = 0
+  local append_desc = function(key)
+    count = count + 1
+    if verbosity == 3 then
+      -- each key on own line
+      desc = desc .. key .. " : " .. capabilities[key] .. "\n  "
+    elseif verbosity == 2 then
+      -- each set key on own line
+      if capabilities[key] then
+        desc = desc .. key .. "\n  "
+      end
+    elseif verbosity == 1 then
+      -- abbreviations of only set
+      if capabilities[key] then
+        desc = desc .. key .. " "
+      end
+    else
+      -- short abbreviations of only set
+      if capabilities[key] then
+        desc = desc .. capability_map[key] .. " "
+      end
+    end
+  end
+
+  if verbosity >= 2 then desc = count_capabilities(client) .. " capabilities" .. desc .. "\n  " end
+
+  for k, _ in pairs(capability_map) do
+    if k == "signature_help_trigger_characters" then
+      if capabilities[k] ~= {} then
+        append_desc(k)
+      end
+    elseif k == "workspace_folder_changeNotifications" then
+      if capabilities["workspace_folder_properties"]["changeNotifications"] == true then
+        append_desc("ws-change")
+      end
+    elseif k == "workspace_folder_supported" then
+      if capabilities["workspace_folder_properties"]["supported"] == true then
+        append_desc("ws-folder")
+      end
+    else
+      append_desc(k)
+    end
+  end
+
+  logger:info(desc)
+  -- vim.notify(log_capabilities(client), "info", { title = title_msg })
+end
+
+
 local show_documentation = function(bufnr)
   local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
 
@@ -59,15 +201,15 @@ M.custom_attach = function(client, bufnr)
   ]])
 
   -- Set some key bindings conditional on server capabilities
-  if client.server_capabilities.document_formatting then
-    buf_set_keymap("n", "<leader>F", "<cmd>lua vim.lsp.buf.formatting_sync()<CR>", opts)
+  if client.server_capabilities.documentFormattingProvider then
+    buf_set_keymap("n", "<leader>F", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
   end
   if client.server_capabilities.document_range_formatting then
     buf_set_keymap("x", "<leader>F", "<cmd>lua vim.lsp.buf.range_formatting()<CR><ESC>", opts)
   end
 
   -- The blow command will highlight the current variable and its usages in the buffer.
-  if client.server_capabilities.document_highlight then
+  if client.server_capabilities.documentHighlight then
     vim.cmd(
       [[
       hi link LspReferenceRead Visual
@@ -83,12 +225,12 @@ M.custom_attach = function(client, bufnr)
   end
 
   local has_formatting = "false"
-  if client.server_capabilities.document_formatting then
+  if client.server_capabilities.documentFormattingProvider then
     buf_set_keymap("n", "<Leader>aa", "<cmd>lua vim.lsp.buf.formatting()<cr>", {})
     vim.api.nvim_command([[augroup Format]])
     vim.api.nvim_command([[autocmd! * <buffer>]])
-    vim.api.nvim_command([[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_sync(nil, 500)]])
-    -- vim.cmd([[ autocmd BufWritePre * :lua vim.lsp.buf.formatting_sync(nil, 500) ]])
+    vim.api.nvim_command([[autocmd BufWritePost <buffer> lua vim.lsp.buf.format(nil, 500)]])
+    -- vim.cmd([[ autocmd BufWritePre * :lua vim.lsp.buf.format(nil, 500) ]])
     vim.api.nvim_command([[augroup END]])
     -- if client.name ~= "tsserver" then end
     has_formatting = "true"
