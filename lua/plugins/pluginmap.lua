@@ -161,11 +161,11 @@ M.completion_plugins = {
   ["cmp-calc"] = {"hrsh7th/cmp-calc", after = "nvim-cmp"},
   ["cmp-path"] = {"hrsh7th/cmp-path", after = "nvim-cmp"},
   ["cmp-cmdline"] = {"hrsh7th/cmp-cmdline", after = "nvim-cmp"},
-  ["vim-dadbod-completion"] = {
-    "kristijanhusak/vim-dadbod-completion",
-    requires = "tpope/vim-dadbod",
-    after = "nvim-cmp"
-  },
+  -- ["vim-dadbod-completion"] = {
+  --   "kristijanhusak/vim-dadbod-completion",
+  --   requires = "tpope/vim-dadbod",
+  --   after = "nvim-cmp"
+  -- },
   ["cmp-vsnip"] = {"hrsh7th/cmp-vsnip", after = "nvim-cmp", requires = "hrsh7th/vim-vsnip"},
   ["friendly-snippets"] = {"rafamadriz/friendly-snippets", after = "cmp-vsnip"},
   ["vs-snippets"] = {"kitagry/vs-snippets", after = "cmp-vsnip"}

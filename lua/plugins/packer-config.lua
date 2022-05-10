@@ -16,11 +16,11 @@ end
 -- $ nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 local packerConfig = {
-  log = {level = "info"}, -- The default print log level. One of: "trace", "debug", "info", "warn", "error", "fatal".
-  profile = {
-    enable = false,
-    threshold = 1 -- the amount in ms that a plugins load time must be over for it to be included in the profile
-  },
+  -- log = {level = "info"}, -- The default print log level. One of: "trace", "debug", "info", "warn", "error", "fatal".
+  -- profile = {
+  --   enable = false,
+  --   threshold = 1 -- the amount in ms that a plugins load time must be over for it to be included in the profile
+  -- },
   compile_path = fn.stdpath("config") .. "/lua/packer_compiled.lua",
   display = {
     non_interactive = false, -- If true, disable display windows for all operations
@@ -47,4 +47,4 @@ local packerConfig = {
   }
 }
 
-return packerConfig;
+return packerConfig
