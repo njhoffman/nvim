@@ -45,7 +45,7 @@ local shfmt = {
 }
 
 local languages = {
-  lua = { luafmt, luacheck },
+  -- lua = { luafmt, luacheck },
   yaml = { prettier },
   bash = { shfmt, shellcheck },
   sh = { shfmt, shellcheck },
@@ -68,12 +68,12 @@ local M = {}
 
 M.setup = function(on_attach, capabilities)
   local lspconfig = require "lspconfig"
-  local path = vim.fn.stdpath('data')
+  local path = vim.fn.stdpath("data")
   lspconfig.efm.setup {
     on_attach = on_attach,
     cmd = { path .. "/lsp_servers/efm/efm-langserver" },
     flags = {
-      debounce_text_changes = 150,
+      debounce_text_changes = 150
     },
     capabilities = capabilities,
     root_dir = lspconfig.util.root_pattern({ "yarn.lock", "package.json", ".project", ".git", vim.fn.getcwd() }),
@@ -99,7 +99,6 @@ M.setup = function(on_attach, capabilities)
         ".prettier.config.cjs"
       }
     }
-
   }
 end
 

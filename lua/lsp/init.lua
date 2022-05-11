@@ -146,15 +146,11 @@ end
 vim.diagnostic.config {
   virtual_text = {
     source = false, -- "if_many", "always", false
-    prefix = " ",
-    spacing = 6,
+    prefix = "",
+    spacing = 2,
     severity = {min = vim.diagnostic.severity.INFO}
-
     -- vim.diagnostic.get(0, { severity = {min=vim.diagnostic.severity.WARN} })
-    -- vim.diagnostic.severity.ERROR
-    -- vim.diagnostic.severity.WARN
-    -- vim.diagnostic.severity.INFO
-    -- vim.diagnostic.severity.HINT
+    -- vim.diagnostic.severity.ERROR, WARN, INFO, HINT
   },
   float = {
     header = false,
@@ -164,7 +160,6 @@ vim.diagnostic.config {
   underline = false, -- { severity = ... }
   update_in_insert = false,
   severity_sort = true
-
   -- format =  function(diagnostic)
   --     if diagnostic.severity == vim.diagnostic.severity.ERROR then
   --       return string.format("E: %s", diagnostic.message)

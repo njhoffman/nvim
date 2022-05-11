@@ -1,4 +1,5 @@
 ---@diagnostic disable: undefined-global
+
 -- https://github.com/kunzaatko/nord.nvim
 -- https://github.com/shaunsingh/nord.nvim
 local lush = require("lush")
@@ -9,19 +10,6 @@ v.nord_uniform_diff_background = 0
 v.nord_underline = 0
 v.colors_name = "nord-nvim"
 
--- material.bg =			'#0F111A'
--- material.bg_alt =		'#090B10'
--- material.fg =			'#8F93A2'
--- material.text =			'#717CB4'
--- material.comments =		'#464B5D'
--- material.selection = 	'#1F2233'
--- material.contrast =		'#090B10'
--- material.active =		'#1A1C25'
--- material.border =		'#1f2233'
--- material.line_numbers =	'#3B3F51'
--- material.highlight =	'#1F2233'
--- material.disabled =		'#464B5D'
--- material.accent =		'#84FFFF'
 local clrs = {
   nord0 = hsl(220, 16, 22), -- #2F3541
   nord1 = hsl(222, 16, 28), -- #3C4353

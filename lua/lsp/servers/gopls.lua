@@ -6,8 +6,8 @@ M.setup = function(on_attach, capabilities)
 
   lspconfig.gopls.setup {
     on_attach = on_attach,
-    cmd = {path .. "/lsp_servers/go/gopls", "--stdio"},
-    filetypes = {"go", "gomod"},
+    cmd = { path .. "/lsp_servers/go/gopls" },
+    filetypes = { "go", "gomod" },
     single_file_support = true,
     -- root_dir = util.root_pattern("go.mod", ".git"),
     flags = {
