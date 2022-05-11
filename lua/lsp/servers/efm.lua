@@ -1,0 +1,106 @@
+local lua_format = {
+  formatCommand = "lua-format -i --config=$HOME/.config/nvim/lua/lsp/efm/lua-format.cfg",
+  formatStdin = true
+}
+
+local luafmt = {
+  formatCommand = "luafmt --indent-count 2 --line-width 120 --stdin",
+  formatStdin = true
+}
+
+local luacheck = {
+  lintCommand = "luacheck --globals vim --formatter visual_studio -",
+  lintIgnoreExitCode = true,
+  lintStdin = true,
+  lintFormats = { "%f(%l,%c) : %tarning %m", "%f(%l,%c) : %trror %m" }
+}
+
+-- shellcheck shortcomings/bad advice
+-- https://freebsdfrau.gitbook.io/serious-shell-programming/shellcheck/introduction
+local shellcheck = {
+  lintCommand = "shellcheck -x -f gcc -P SCRIPTDIR/ -e SC2004,SC2034,SC2166,SC2169 -",
+  -- lintCommand = "shellcheck -f gcc -x",
+  lintStdin = true,
+  lintIgnoreExitCode = true,
+  -- lintFormats = { "%f=%l:%c: %trror: %m", "%f=%l:%c: %tarning: %m", "%f=%l:%c: %tote: %m" },
+  lintFormats = { "%f:%l:%c: %trror: %m", "%f:%l:%c: %tarning: %m", "%f:%l:%c: %tote: %m" }
+}
+
+local sqlFormat = {
+  formatCommand = "sqlformat -a --keywords upper --identifiers lower -",
+  formatStdin = true
+}
+
+local prettier = {
+  -- parser flow|babel|babel-flow|babel-ts|typescript|espree|meriyah|css|less|scss|
+  -- json|json5|json-stringify|graphql|markdown|mdx|vue|yaml|glimmer|html|angular|lwc|ruby|rbs|haml
+  formatCommand = "prettier --stdin-filepath ${INPUT} --print-width 120 --single-quote --arrow-parens 'avoid' --trailing-comma all",
+  formatStdin = true
+}
+
+local shfmt = {
+  formatCommand = "shfmt -ln bash -i 2 -ci -bn -s",
+  lintIgnoreExitCode = true,
+  formatStdin = true
+}
+
+local languages = {
+  lua = { luafmt, luacheck },
+  yaml = { prettier },
+  bash = { shfmt, shellcheck },
+  sh = { shfmt, shellcheck },
+  sql = { sqlFormat },
+  pgsql = { sqlFormat }
+  -- json = {prettier}
+  -- typescript = {prettier, eslint},
+  -- javascript = {prettier, eslint},
+  -- typescriptreact = {prettier, eslint},
+  -- javascriptreact = {prettier, eslint},
+  -- html = {prettier},
+  -- scss = {prettier},
+  -- css = {prettier},
+  -- markdown = {prettier},
+  -- rust = {rustfmt}
+  -- python = {autopep}
+}
+
+local M = {}
+
+M.setup = function(on_attach, capabilities)
+  local lspconfig = require "lspconfig"
+  local path = vim.fn.stdpath('data')
+  lspconfig.efm.setup {
+    on_attach = on_attach,
+    cmd = { path .. "/lsp_servers/efm/efm-langserver" },
+    flags = {
+      debounce_text_changes = 150,
+    },
+    capabilities = capabilities,
+    root_dir = lspconfig.util.root_pattern({ "yarn.lock", "package.json", ".project", ".git", vim.fn.getcwd() }),
+    single_file_support = true,
+    filetypes = vim.tbl_keys(languages),
+    init_options = { documentFormatting = true, hover = true, documentSymbol = true, codeAction = true },
+    settings = {
+      languages = languages,
+      -- log_level = 1,
+      log_file = vim.fn.stdpath("cache") .. "/lsp/efm.log",
+      rootMarkers = {
+        -- ".eslintrc.cjs",
+        -- ".eslintrc",
+        -- ".eslintrc.json",
+        -- ".eslintrc.js",
+        ".lua-format",
+        ".prettierrc",
+        ".prettierrc.js",
+        ".prettierrc.json",
+        ".prettierrc.yml",
+        ".prettierrc.yaml",
+        ".prettier.config.js",
+        ".prettier.config.cjs"
+      }
+    }
+
+  }
+end
+
+return M

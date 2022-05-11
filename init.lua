@@ -19,15 +19,15 @@ end
 if config.Load.impatient == true then
   vim.notify("Using impatient optimization", "trace")
   load_module("impatient.lua.impatient")
--- lua require'impatient'.enable_profile()
+  -- lua require'impatient'.enable_profile()
 end
 
 for _, mod_name in ipairs(
   {
-    "options.options-test",
-    "main.options",
-    "plugins.load"
-  }
+  "options.options-test",
+  "main.options",
+  "plugins.load"
+}
 ) do
   load_module(mod_name)
 end
@@ -42,14 +42,14 @@ end
 
 -- for _, mod_name in ipairs({'lsp.setup', 'main.autocommands', 'mappings', 'mappings.ignored' }) do
 for _, mod_name in ipairs({
-    "lsp.lsp-config",
-    "lsp.lsp-servers",
-    "debuglog",
-    "main.autocommands",
-    "stats.list",
-    "mappings",
-    "dashboard"
-  }
+  "lsp",
+  "debuglog",
+  "main.autocommands",
+  "commands",
+  "stats.list",
+  "mappings",
+  "dashboard"
+}
 ) do
   load_module(mod_name)
 end

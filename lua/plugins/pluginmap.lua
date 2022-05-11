@@ -145,6 +145,16 @@ M.syntax_plugins = {
 
 M.completion_plugins = {
   ["nvim-cmp"] = {"hrsh7th/nvim-cmp"},
+  ["cmp-nvim-lsp-document-symbol"] = {"hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp"},
+  ["cmp-emoji"] = {"hrsh7th/cmp-emoji", after = "nvim-cmp"},
+  ["cmp-nvim-lua"] = {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp"},
+  ["cmp-nvim-lsp"] = {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp"},
+  ["cmp-buffer"] = {"hrsh7th/cmp-buffer", after = "nvim-cmp"},
+  ["cmp-calc"] = {"hrsh7th/cmp-calc", after = "nvim-cmp"},
+  ["cmp-path"] = {"hrsh7th/cmp-path", after = "nvim-cmp"},
+  ["cmp-cmdline"] = {"hrsh7th/cmp-cmdline", after = "nvim-cmp"},
+  ["cmp-vsnip"] = {"hrsh7th/cmp-vsnip", after = "nvim-cmp", requires = "hrsh7th/vim-vsnip"},
+  ["cmp-nvim-lsp-signature-help"] = {"hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp"},
   ["cmp-under-comparator"] = {"lukas-reineke/cmp-under-comparator", after = "nvim-cmp"},
   ["cmp-treesitter"] = {"ray-x/cmp-treesitter", after = "nvim-cmp"},
   ["cmp-spell"] = {"f3fora/cmp-spell", after = "nvim-cmp"},
@@ -154,21 +164,14 @@ M.completion_plugins = {
   ["cmp-pandoc-references"] = {"jc-doyle/cmp-pandoc-references", after = "nvim-cmp"},
   ["cmp-tabnine"] = {"tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp"},
   ["cmp-git"] = {"petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", after = "nvim-cmp"},
-  ["cmp-emoji"] = {"hrsh7th/cmp-emoji", after = "nvim-cmp"},
-  ["cmp-nvim-lua"] = {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp"},
-  ["cmp-nvim-lsp"] = {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp"},
-  ["cmp-buffer"] = {"hrsh7th/cmp-buffer", after = "nvim-cmp"},
-  ["cmp-calc"] = {"hrsh7th/cmp-calc", after = "nvim-cmp"},
-  ["cmp-path"] = {"hrsh7th/cmp-path", after = "nvim-cmp"},
-  ["cmp-cmdline"] = {"hrsh7th/cmp-cmdline", after = "nvim-cmp"},
   -- ["vim-dadbod-completion"] = {
   --   "kristijanhusak/vim-dadbod-completion",
   --   requires = "tpope/vim-dadbod",
   --   after = "nvim-cmp"
   -- },
-  ["cmp-vsnip"] = {"hrsh7th/cmp-vsnip", after = "nvim-cmp", requires = "hrsh7th/vim-vsnip"},
-  ["friendly-snippets"] = {"rafamadriz/friendly-snippets", after = "cmp-vsnip"},
-  ["vs-snippets"] = {"kitagry/vs-snippets", after = "cmp-vsnip"}
+  ["friendly-snippets"] = {"rafamadriz/friendly-snippets"},
+  ["vs-snippets"] = {"kitagry/vs-snippets"},
+  ["vscode-es7-javascript-react-snippets"] = { "dsznajder/vscode-es7-javascript-react-snippets", run = "yarn install --frozen-lockfile && yarn compile", }
 }
 
 M.ui_plugins = {

@@ -1,5 +1,5 @@
 local DATA_PATH = vim.fn.stdpath("data")
-local lspinstall = DATA_PATH .. "/lsp_servers/"
+  local lspinstall = DATA_PATH .. "/lsp_servers/"
 
 local lsp_commands = {
   bash = { lspinstall .. "bash/node_modules/.bin/bash-language-server", "start" },
