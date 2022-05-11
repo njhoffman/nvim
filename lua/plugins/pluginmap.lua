@@ -164,6 +164,7 @@ M.completion_plugins = {
   ["cmp-pandoc-references"] = {"jc-doyle/cmp-pandoc-references", after = "nvim-cmp"},
   ["cmp-tabnine"] = {"tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp"},
   ["cmp-git"] = {"petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", after = "nvim-cmp"},
+  ["cmp-tmux"] = {"andersevenrud/cmp-tmux", after = "nvim-cmp"},
   -- ["vim-dadbod-completion"] = {
   --   "kristijanhusak/vim-dadbod-completion",
   --   requires = "tpope/vim-dadbod",
@@ -171,7 +172,10 @@ M.completion_plugins = {
   -- },
   ["friendly-snippets"] = {"rafamadriz/friendly-snippets"},
   ["vs-snippets"] = {"kitagry/vs-snippets"},
-  ["vscode-es7-javascript-react-snippets"] = { "dsznajder/vscode-es7-javascript-react-snippets", run = "yarn install --frozen-lockfile && yarn compile", }
+  ["vscode-es7-javascript-react-snippets"] = {
+    "dsznajder/vscode-es7-javascript-react-snippets",
+    run = "yarn install --frozen-lockfile && yarn compile"
+  }
 }
 
 M.ui_plugins = {

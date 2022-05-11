@@ -14,6 +14,7 @@ function goto_last_pos()
     vim.api.nvim_win_set_cursor(0, {last_pos, 0})
   end
 end
+
 -- vim.cmd [[autocmd BufReadPost * lua goto_last_pos()]]
 
 -- local M = {}
@@ -188,7 +189,12 @@ local autocmds = {
 --   {"CursorHold,CursorHoldI", "*", "lua require'nvim-lightbulb'.update_lightbulb()"}
 -- }
 
-local shadaEvents = require("main.shada")
+-- | if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' && &buftype =~ hidden | silent! wshada | silent! !~/bin/wshada.sh | endif",
+-- local shadaEvents = { { "BufWrite", "*", [[call ShadaWrite()]] }, { "Signal", "SIGUSR1", [[call ShadaRead()]] } }
+local shadaEvents = {
+  {"BufRead", "*", [[call ShadaWrite()]]},
+  {"Signal", "SIGUSR1", [[call ShadaRead()]]}
+}
 
 table.insert(autocmds, shadaEvents)
 

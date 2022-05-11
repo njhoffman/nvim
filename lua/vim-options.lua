@@ -130,6 +130,7 @@ opt("fileformat", "unix", buffer)
 
 opt("termguicolors", true)
 opt("background", "dark")
+
 vim.cmd [[colorscheme nord-nick]]
 
 vim.g.clipboard = {
