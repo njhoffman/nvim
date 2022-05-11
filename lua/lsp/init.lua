@@ -36,7 +36,7 @@ end
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
   opts = opts or {}
-  opts.border = opts.border or {{" ", "FloatBorder"}}
+  opts.border = opts.border or { { " ", "FloatBorder" } }
   return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
@@ -73,7 +73,7 @@ if type(vim.lsp.buf.format) == "function" then
   end
 end
 
-local opts = {noremap = true, silent = true, nowait = true}
+local opts = { noremap = true, silent = true, nowait = true }
 
 vim.api.nvim_set_keymap("n", "<space>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<space>lp", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
@@ -107,18 +107,18 @@ local on_attach = function(client, bufnr)
       bufnr,
       "LspFormatting",
       function()
-        lsp_formatting(bufnr)
-      end
+      lsp_formatting(bufnr)
+    end
     )
 
-    vim.api.nvim_clear_autocmds {group = augroup, buffer = bufnr}
+    vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
     vim.api.nvim_create_autocmd(
       "BufWritePre",
       {
-        group = augroup,
-        buffer = bufnr,
-        command = "LspFormatting"
-      }
+      group = augroup,
+      buffer = bufnr,
+      command = "LspFormatting"
+    }
     )
   end
 end
@@ -139,7 +139,7 @@ end
 -- Gutter sign icons
 for type, icon in pairs(utils.signs) do
   local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = ""})
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
 -- Prefix diagnostic virtual text
@@ -148,7 +148,7 @@ vim.diagnostic.config {
     source = false, -- "if_many", "always", false
     prefix = "",
     spacing = 2,
-    severity = {min = vim.diagnostic.severity.INFO}
+    severity = { min = vim.diagnostic.severity.HINT }
     -- vim.diagnostic.get(0, { severity = {min=vim.diagnostic.severity.WARN} })
     -- vim.diagnostic.severity.ERROR, WARN, INFO, HINT
   },

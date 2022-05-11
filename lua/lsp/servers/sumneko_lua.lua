@@ -7,7 +7,7 @@ local M = {}
 local settings = {
   Lua = {
     --   completion = {keywordSnippet = "Disable"},
-    format = {enable = true},
+    format = { enable = true },
     runtime = {
       -- version = "LuaJIT", path = runtime_path
       version = "LuaJIT"
@@ -46,15 +46,14 @@ M.setup = function(on_attach, capabilities)
 
   local lua_settings = {
     root_dir = lspconfig.util.root_pattern(".project", ".git"),
-    --   root_dir = util.root_pattern(".project", ".git"),
-    --   -- root_dir = util.root_pattern('.project', '.git') or bufdir,
+    -- root_dir = util.root_pattern('.project', '.git') or bufdir,
     single_file_support = true,
     on_attach = function(client, bufnr)
       -- client.resolved_capabilities.document_formatting = false
       -- client.resolved_capabilities.range_formatting = false
       on_attach(client, bufnr)
     end,
-    cmd = {path .. "/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server"},
+    cmd = { path .. "/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server" },
     settings = settings,
     flags = {
       debounce_text_changes = 150
@@ -63,18 +62,18 @@ M.setup = function(on_attach, capabilities)
   }
 
   local luadev =
-    require("lua-dev").setup(
+  require("lua-dev").setup(
     {
-      library = {
-        vimruntime = false, -- runtime path
-        types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-        plugins = true -- installed opt or start plugins in packpath
-        -- you can also specify the list of plugins to make available as a workspace library
-        -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
-      },
-      runtime_path = false,
-      lspconfig = lua_settings
-    }
+    library = {
+      vimruntime = false, -- runtime path
+      types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
+      plugins = true -- installed opt or start plugins in packpath
+      -- you can also specify the list of plugins to make available as a workspace library
+      -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
+    },
+    runtime_path = false,
+    lspconfig = lua_settings
+  }
   )
   lspconfig.sumneko_lua.setup(luadev)
   -- lspconfig.sumneko_lua.setup(lua_settings)
