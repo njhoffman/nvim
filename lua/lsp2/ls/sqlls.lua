@@ -21,7 +21,7 @@ end
 --   -- cmd = {"sql-language-server", "up", "--method", "stdio"};
 -- }
 
-require'lspconfig'.sqls.setup{
+require 'lspconfig'.sqls.setup {
   on_attach = on_attach,
   settings = {
     sqls = {

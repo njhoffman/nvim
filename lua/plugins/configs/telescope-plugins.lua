@@ -31,11 +31,11 @@ M.load_extensions = function(telescope)
     ["openbrowser"] = "telescope-openbrowser.nvim",
     ["packer"] = "telescope-packer.nvim",
     ["projects"] = "project.nvim",
-    ["rg"] = "telescope-rg.nvim",
+    -- ["rg"] = "telescope-rg.nvim",
     ["session-lens"] = "session-lens",
     ["tmux"] = "telescope-tmux.nvim",
     ["ui-select"] = "telescope-ui-select.nvim",
-    ["ultisnips"] = "telescope-ultisnips.nvim",
+    -- ["ultisnips"] = "telescope-ultisnips.nvim",
     ["vimwiki"] = "telescope-vimwiki.nvim",
     ["z"] = "telescope-z.nvim"
   }
@@ -62,24 +62,24 @@ end
 
 require("cheatsheet").setup(
   {
-    -- Whether to show bundled cheatsheets
-    -- For generic cheatsheets like default, unicode, nerd-fonts, etc
-    bundled_cheatsheets = true,
-    -- bundled_cheatsheets = {
-    --     enabled = {},
-    --     disabled = {},
-    -- },
-    -- For plugin specific cheatsheets
-    bundled_plugin_cheatsheets = true,
-    -- bundled_plugin_cheatsheets = {
-    --     enabled = {},
-    --     disabled = {},
-    -- }
-    -- For bundled plugin cheatsheets, do not show a sheet if you
-    -- don't have the plugin installed (searches runtimepath for
-    -- same directory name)
-    include_only_installed_plugins = true
-  }
+  -- Whether to show bundled cheatsheets
+  -- For generic cheatsheets like default, unicode, nerd-fonts, etc
+  bundled_cheatsheets = true,
+  -- bundled_cheatsheets = {
+  --     enabled = {},
+  --     disabled = {},
+  -- },
+  -- For plugin specific cheatsheets
+  bundled_plugin_cheatsheets = true,
+  -- bundled_plugin_cheatsheets = {
+  --     enabled = {},
+  --     disabled = {},
+  -- }
+  -- For bundled plugin cheatsheets, do not show a sheet if you
+  -- don't have the plugin installed (searches runtimepath for
+  -- same directory name)
+  include_only_installed_plugins = true
+}
 )
 
 local extensions = {}
@@ -106,43 +106,43 @@ extensions.openbrowser = {
 extensions.command_palette = {
   {
     "File",
-    {"entire selection (C-a)", ':call feedkeys("GVgg")'},
-    {"save current file (C-s)", ":w"},
-    {"save all files (C-A-s)", ":wa"},
-    {"quit (C-q)", ":qa"},
-    {"file browser (C-i)", ":lua require'telescope'.extensions.file_browser.file_browser()", 1},
-    {"search word (A-w)", ":lua require('telescope.builtin').live_grep()", 1},
-    {"git files (A-f)", ":lua require('telescope.builtin').git_files()", 1},
-    {"files (C-f)", ":lua require('telescope.builtin').find_files()", 1}
+    { "entire selection (C-a)", ':call feedkeys("GVgg")' },
+    { "save current file (C-s)", ":w" },
+    { "save all files (C-A-s)", ":wa" },
+    { "quit (C-q)", ":qa" },
+    { "file browser (C-i)", ":lua require'telescope'.extensions.file_browser.file_browser()", 1 },
+    { "search word (A-w)", ":lua require('telescope.builtin').live_grep()", 1 },
+    { "git files (A-f)", ":lua require('telescope.builtin').git_files()", 1 },
+    { "files (C-f)", ":lua require('telescope.builtin').find_files()", 1 }
   },
   {
     "Help",
-    {"tips", ":help tips"},
-    {"cheatsheet", ":help index"},
-    {"tutorial", ":help tutor"},
-    {"summary", ":help summary"},
-    {"quick reference", ":help quickref"},
-    {"search help(F1)", ":lua require('telescope.builtin').help_tags()", 1}
+    { "tips", ":help tips" },
+    { "cheatsheet", ":help index" },
+    { "tutorial", ":help tutor" },
+    { "summary", ":help summary" },
+    { "quick reference", ":help quickref" },
+    { "search help(F1)", ":lua require('telescope.builtin').help_tags()", 1 }
   },
   {
     "Vim",
-    {"reload vimrc", ":source $MYVIMRC"},
-    {"check health", ":checkhealth"},
-    {"jumps (Alt-j)", ":lua require('telescope.builtin').jumplist()"},
-    {"commands", ":lua require('telescope.builtin').commands()"},
-    {"command history", ":lua require('telescope.builtin').command_history()"},
-    {"registers (A-e)", ":lua require('telescope.builtin').registers()"},
-    {"colorshceme", ":lua require('telescope.builtin').colorscheme()", 1},
-    {"vim options", ":lua require('telescope.builtin').vim_options()"},
-    {"keymaps", ":lua require('telescope.builtin').keymaps()"},
-    {"buffers", ":Telescope buffers"},
-    {"search history (C-h)", ":lua require('telescope.builtin').search_history()"},
-    {"paste mode", ":set paste!"},
-    {"cursor line", ":set cursorline!"},
-    {"cursor column", ":set cursorcolumn!"},
-    {"spell checker", ":set spell!"},
-    {"relative number", ":set relativenumber!"},
-    {"search highlighting (F12)", ":set hlsearch!"}
+    { "reload vimrc", ":source $MYVIMRC" },
+    { "check health", ":checkhealth" },
+    { "jumps (Alt-j)", ":lua require('telescope.builtin').jumplist()" },
+    { "commands", ":lua require('telescope.builtin').commands()" },
+    { "command history", ":lua require('telescope.builtin').command_history()" },
+    { "registers (A-e)", ":lua require('telescope.builtin').registers()" },
+    { "colorshceme", ":lua require('telescope.builtin').colorscheme()", 1 },
+    { "vim options", ":lua require('telescope.builtin').vim_options()" },
+    { "keymaps", ":lua require('telescope.builtin').keymaps()" },
+    { "buffers", ":Telescope buffers" },
+    { "search history (C-h)", ":lua require('telescope.builtin').search_history()" },
+    { "paste mode", ":set paste!" },
+    { "cursor line", ":set cursorline!" },
+    { "cursor column", ":set cursorcolumn!" },
+    { "spell checker", ":set spell!" },
+    { "relative number", ":set relativenumber!" },
+    { "search highlighting (F12)", ":set hlsearch!" }
   }
 }
 
@@ -156,7 +156,7 @@ extensions.frecency = {
   db_safe_mode = false,
   show_scores = true,
   show_unindexed = true,
-  ignore_patterns = {"*.git/*", "*/tmp/*"},
+  ignore_patterns = { "*.git/*", "*/tmp/*" },
   mappings = tele_mappings.file_picker,
   workspaces = {
     ["etc"] = "/etc",
@@ -191,7 +191,7 @@ extensions.bookmarks = {
 }
 
 extensions.media_files = {
-  filetypes = {"png", "webp", "jpg", "jpeg", "webm", "pdf", "mp4", "svg", "mpv", "mkv"},
+  filetypes = { "png", "webp", "jpg", "jpeg", "webm", "pdf", "mp4", "svg", "mpv", "mkv" },
   find_cmd = "fd" -- find command (defaults to `fd`)
   -- sudo apt install uberzug ffmpegthumbnailer poppler-utils epub-utils
   -- font-viewer (fontpreview)? fd, rg, etc
@@ -206,9 +206,9 @@ extensions.arecibo = {
 
 extensions.lsp_handlers = {
   disable = {},
-  location = {telescope = {}, no_results_message = "No references found"},
-  symbol = {telescope = {}, no_results_message = "No symbols found"},
-  call_hierarchy = {telescope = {}, no_results_message = "No calls found"},
+  location = { telescope = {}, no_results_message = "No references found" },
+  symbol = { telescope = {}, no_results_message = "No symbols found" },
+  call_hierarchy = { telescope = {}, no_results_message = "No calls found" },
   code_action = {
     telescope = require("telescope.themes").get_dropdown({}),
     no_results_message = "No code actions available",

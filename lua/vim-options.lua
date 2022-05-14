@@ -6,8 +6,8 @@ local config = require("config")
 g.mapleader = [[,]]
 g.maplocalleader = [[,]]
 
-local buffer = {o, bo}
-local window = {o, wo}
+local buffer = { o, bo }
+local window = { o, wo }
 
 -- global scope
 opt("background", "dark")
@@ -23,12 +23,6 @@ opt("clipboard", "unnamedplus")
 
 opt("cmdheight", 1) -- 1
 opt("cmdwinheight", 10)
---  menu	   Use a popup menu to show the possible completions.
---  menuone  Use the popup menu also when there is only one match.
---  longest  Only insert the longest common text of the matches.  If
---  preview  Show extra information about the currently selected
---  noinsert Do not insert any text for a match until the user selects
---  noselect Do not select a match in the menu, force the user to
 opt("completeopt", "noinsert,noselect,menuone")
 opt("cpoptions", "aABceFs_")
 -- opt("display", "msgsep")
@@ -136,12 +130,12 @@ vim.cmd [[colorscheme nord-nick]]
 vim.g.clipboard = {
   name = "xsel",
   copy = {
-    ["+"] = {"xsel", "--nodetach", "-i", "-b"},
-    ["*"] = {"xsel", "--nodetach", "-i", "-p"}
+    ["+"] = { "xsel", "--nodetach", "-i", "-b" },
+    ["*"] = { "xsel", "--nodetach", "-i", "-p" }
   },
   paste = {
-    ["+"] = {"xsel", "-o", "-b"},
-    ["*"] = {"xsel", "-o", "-p"}
+    ["+"] = { "xsel", "-o", "-b" },
+    ["*"] = { "xsel", "-o", "-p" }
   },
   cache_enabled = 1
 }
@@ -152,7 +146,7 @@ vim.g.clipboard = {
 
 vim.g.qf_disable_statusline = true -- This should be the default
 vim.g.Eunuch_find_executable = "fd" -- I use my fork of vim-eunuch
-vim.g.Illuminate_ftblacklist = {".*"} -- Only use lsp highlighting from the plugin
+vim.g.Illuminate_ftblacklist = { ".*" } -- Only use lsp highlighting from the plugin
 vim.g.netrw_banner = false
 vim.g.netrw_silent = 1
 -- vim.g.netrw_http_cmd = 'curl'
@@ -162,12 +156,12 @@ vim.g.tex_flavor = "latex"
 vim.g.vimtex_view_method = "skim"
 vim.g.vimtex_quickfix_mode = true
 vim.g.vimtex_compiler_latexmk = {
-  options = {"-pdf", "-shell-escape", "-verbose", "-file-line-error", "-synctex=1", "-interaction=nonstopmode"}
+  options = { "-pdf", "-shell-escape", "-verbose", "-file-line-error", "-synctex=1", "-interaction=nonstopmode" }
 }
 vim.g["test#strategy"] = "neovim"
 vim.g.tex_flavor = "latex"
 vim.g.indent_blankline_char = "│"
-vim.g.indent_blankline_filetype = {"rust", "go", "lua", "json", "ruby"}
+vim.g.indent_blankline_filetype = { "rust", "go", "lua", "json", "ruby" }
 vim.g.indent_blankline_use_treesitter = true
 vim.g.loaded_ruby_provider = false
 

@@ -4,11 +4,11 @@ vim.cmd([[ let g:pandoc#syntax#conceal#urls = 1 ]])
 
 -- NOTE: vim syntax messing up, assigning to vimwiki for now
 vim.cmd(
-  [[
+[[
   let g:pandoc#syntax#codeblocks#embeds#langs =
     \ ["shell=sh", "rust", "ts=typescript", "javascript", "html", "cpp", "c",
     \ "go", "sh", "bash=sh", "yaml", "go", "ruby", "python", "json",
-    \ "sql", "lua", "css", "terraform", "vim=vimwiki"]
+    \ "sql", "lua", "css", "awk", "terraform", "vim=vimwiki"]
   ]]
 )
 
