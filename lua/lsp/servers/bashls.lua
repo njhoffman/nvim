@@ -5,6 +5,7 @@ M.setup = function(on_attach, capabilities)
   lspconfig.bashls.setup {
     cmd = { path .. "/lsp_servers/bash/node_modules/.bin/bash-language-server", "start" },
     root_dir = lspconfig.util.find_git_ancestor,
+    filetypes = { "sh", "bash", "bats" },
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,

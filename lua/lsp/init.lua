@@ -2,7 +2,7 @@ local utils = require "utils"
 
 local servers = {
   "awk_ls",
-  "bashls",
+  -- "bashls",
   "clangd",
   "cssls",
   "dockerls",
@@ -168,50 +168,6 @@ vim.diagnostic.config {
   --   end
 }
 
--- require('lspconfig').rust_analyzer.setup {
---   handlers = {
---     ["textDocument/publishDiagnostics"] = vim.lsp.with(
---       vim.lsp.diagnostic.on_publish_diagnostics, {
---         -- Disable virtual_text
---         virtual_text = false
---       }
---     ),
---   }
--- }
-
--- Handlers can be set by:
-
--- - Setting a field in vim.lsp.handlers.                      *vim.lsp.handlers*
--- vim.lsp.handlers is a global table that contains the default mapping of
--- |lsp-method| names to |lsp-handlers|.
-
--- To override the handler for the `"textDocument/definition"` method: >
-
--- vim.lsp.handlers["textDocument/definition"] = my_custom_default_definition
--- <
--- - The {handlers} parameter for |vim.lsp.start_client|.
--- This will set the |lsp-handler| as the default handler for this server.
-
--- For example: >
-
--- vim.lsp.start_client {
--- ..., -- Other configuration omitted.
--- handlers = {
--- ["textDocument/definition"] = my_custom_server_definition
---     },
---   }
-
--- - The {handler} parameter for |vim.lsp.buf_request()|.
--- This will set the |lsp-handler| ONLY for the current request.
-
--- For example: >
-
--- vim.lsp.buf_request(
--- 0,
--- "textDocument/definition",
--- definition_params,
--- my_request_custom_definition
-
 -- callHierarchy/incomingCalls
 -- callHierarchy/outgoingCalls
 -- textDocument/codeAction
@@ -236,15 +192,9 @@ vim.diagnostic.config {
 -- workspace/symbol
 
 --    FormattingOptions
---    * Size of a tab in spaces.
---   tabSize: uinteger;
---    * Prefer spaces over tabs.
---   insertSpaces: boolean;
---    * Trim trailing whitespace on a line.
---   trimTrailingWhitespace?: boolean;
---    * Insert a newline character at the end of the file if one does not exist.
---   insertFinalNewline?: boolean;
---    * Trim all newlines after the final newline at the end of the file.
---   trimFinalNewlines?: boolean;
---    * Signature for further properties.
---   [key: string]: boolean | integer | string;
+--   tabSize: uinteger; * Size of a tab in spaces.
+--   insertSpaces: boolean; * Prefer spaces over tabs.
+--   trimTrailingWhitespace?: boolean; * Trim trailing whitespace on a line.
+--   insertFinalNewline?: boolean; * Insert a newline character at the end of the file if one does not exist.
+--   trimFinalNewlines?: boolean; * Trim all newlines after the final newline at the end of the file.
+--   [key: string]: boolean | integer | string; * Signature for further properties.

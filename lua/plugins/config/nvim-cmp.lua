@@ -113,9 +113,6 @@ local setupConfig = {
   formatting = {
     fields = { "kind", "abbr", "menu" },
     -- offset, exact, score, recently_used, locality, kind, sort_text, length, order
-    -- format = lspkind.cmp_format,
-    -- format = lspkind.cmp_format({ mode = "symbol_text", format = function(entry, vim_item) })
-    -- vim_item.menu = vim_item.kind
     format = function(entry, vim_item)
       vim_item.menu = lsp_sources[entry.source.name]
       vim_item.kind = lsp_symbols[vim_item.kind]
@@ -175,12 +172,43 @@ local setupConfig = {
     -- { name = "rg" },
     -- { name = "dictionary", keyword_length = 2, },
     -- { name = "neorg" },
-    -- # unknown source names
-    -- - vim-dadbod-completion
-    -- - cmp_git
-    -- - npm
   }
   )
 }
 
 cmp.setup(setupConfig)
+
+-- cmp.setup.cmdline("/", { { { name = "buffer" } } })
+-- cmp.setup.cmdline(":", { sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }) })
+
+-- -- cmp-vimwiki-tags
+-- -- I use this shell script to launch Vimwiki. It opens the Vimwiki directory and then immediately opens either the file with the name of the first argument (which will create that file if it does not exist), or the index file in case of no arguments. If you pass more than one argument it will add them as tags to the top of the file.
+-- -- function note_fn() {
+-- --   if [[ "$1" == "" ]]; then
+-- --     cd "$vimwiki_path" && nvim -c "e index.md" .
+-- --   elif [[ "$2" == "" ]]; then
+-- --     cd "$vimwiki_path" && nvim -c "e $1.md" .
+-- --   else
+-- --     tags=":"
+-- --     for tag in "${@:2}"; do
+-- --       tags="$tags$tag:"
+-- --     done
+-- --     cd "$vimwiki_path" && nvim -c "e $1.md | execute 'normal ggO$tags'" .
+-- --   fi
+-- -- }
+-- -- alias note=note_fn
+
+-- -- vim.cmd([[ autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }, { name = 'nvim_lsp' } } }) ]])
+
+-- -- vim.cmd(
+-- --     [[autocmd FileType sql,mysql,pgsql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }, { name = "nvim_lsp" "}} })]])
+-- -- vim.cmd([[let g:completion_chain_complete_list = { 'sql': [  {'complete_items': ['vim-dadbod-completion']}, ], }]])
+-- -- " Source is automatically added, you just need to include it in the chain complete list
+-- vim.cmd(
+--   [[
+--   augroup NvimCmp
+--   au!
+--   au FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
+--   augroup END
+-- ]]
+-- )
