@@ -5,7 +5,7 @@ M.setup = function(on_attach, capabilities)
 
   lspconfig.jsonls.setup {
     on_attach = on_attach,
-    cmd = { path .. "/lsp_servers/json/node_modules/.bin/vscode-json-language-server", "--stdio" },
+    cmd = { path .. "/lsp_servers/jsonls/node_modules/.bin/vscode-json-language-server", "--stdio" },
     -- filetypes = {"json"},
     -- root_dir = lspconfig.util.find_git_ancestor,
     flags = {
