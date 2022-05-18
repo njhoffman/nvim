@@ -1,7 +1,7 @@
 local ok, cmp = pcall(require, "cmp")
 if not ok then return end
 
-local mapping = require('plugin.config.nvim-cmp.mapping')
+local mapping = require('plugins.config.nvim-cmp-mapping')
 local compare = require("cmp.config.compare")
 local WIDE_HEIGHT = 25 -- 40
 
@@ -129,50 +129,50 @@ local setupConfig = {
   },
   sources = cmp.config.sources(
     {
-    { name = "nvim_lsp", priority = 8 },
-    -- {name = "nvim_lua", priority = 7},
-    -- {name = "nvim_lsp_signature_help", priority = 7},
-    -- {name = "nvim_lsp_document_symbol", priority = 7},
-    { name = "vim-dadbod-completion", priority = 5 },
-    { name = "path", priority = 5 },
-    { name = "vsnip", priority = 4 },
-    -- {name = "cmp_tabnine", priority = 3},
-    {
-      name = "buffer",
-      keyword_length = 2,
-      max_item_count = 10,
-      priority = 3
-      -- get_bufnrs = function()
-      --   return vim.api.nvim_get_current_buffer()
-      --   -- return vim.api.nvim_list_bufs() -- use all buffers
-      -- end
-    },
-    { name = "calc", priority = 3 },
-    { name = "spell", priority = 3 },
-    { name = "cmp_git", priority = 3 },
-    { name = "zsh", priority = 2, keyword_length = 3, max_item_count = 10 },
-    { name = "pandoc_references", priority = 3 },
-    { name = "emoji", priority = 2 },
-    { name = "treesitter", priority = 1 },
-    { name = "vimwiki-tags", priority = 1 },
-    { name = "npm", keyword_length = 1 },
-    {
-      name = "tmux",
-      max_item_count = 10,
-      keyword_length = 3,
-      priority = 1,
-      option = {
-        all_panes = false,
-        label = "tmux",
-        trigger_characters = { "." },
-        trigger_characters_ft = {}
-        -- trigger_characters_ft = {markdown = {}}
+      { name = "nvim_lsp", priority = 8 },
+      -- {name = "nvim_lua", priority = 7},
+      -- {name = "nvim_lsp_signature_help", priority = 7},
+      -- {name = "nvim_lsp_document_symbol", priority = 7},
+      { name = "vim-dadbod-completion", priority = 5 },
+      { name = "path", priority = 5 },
+      { name = "vsnip", priority = 4 },
+      -- {name = "cmp_tabnine", priority = 3},
+      {
+        name = "buffer",
+        keyword_length = 2,
+        max_item_count = 10,
+        priority = 3
+        -- get_bufnrs = function()
+        --   return vim.api.nvim_get_current_buffer()
+        --   -- return vim.api.nvim_list_bufs() -- use all buffers
+        -- end
+      },
+      { name = "calc", priority = 3 },
+      { name = "spell", priority = 3 },
+      { name = "cmp_git", priority = 3 },
+      { name = "zsh", priority = 2, keyword_length = 3, max_item_count = 10 },
+      { name = "pandoc_references", priority = 3 },
+      { name = "emoji", priority = 2 },
+      { name = "treesitter", priority = 1 },
+      { name = "vimwiki-tags", priority = 1 },
+      { name = "npm", keyword_length = 1 },
+      {
+        name = "tmux",
+        max_item_count = 10,
+        keyword_length = 3,
+        priority = 1,
+        option = {
+          all_panes = false,
+          label = "tmux",
+          trigger_characters = { "." },
+          trigger_characters_ft = {}
+          -- trigger_characters_ft = {markdown = {}}
+        }
       }
+      -- { name = "rg" },
+      -- { name = "dictionary", keyword_length = 2, },
+      -- { name = "neorg" },
     }
-    -- { name = "rg" },
-    -- { name = "dictionary", keyword_length = 2, },
-    -- { name = "neorg" },
-  }
   )
 }
 
