@@ -175,11 +175,9 @@ local setupConfig = {
     }
   )
 }
-
 cmp.setup(setupConfig)
-
--- cmp.setup.cmdline("/", { { { name = "buffer" } } })
--- cmp.setup.cmdline(":", { sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }) })
+cmp.setup.cmdline("/", { { { name = "buffer" } } })
+cmp.setup.cmdline(":", { sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }) })
 
 -- -- cmp-vimwiki-tags
 -- -- I use this shell script to launch Vimwiki. It opens the Vimwiki directory and then immediately opens either the file with the name of the first argument (which will create that file if it does not exist), or the index file in case of no arguments. If you pass more than one argument it will add them as tags to the top of the file.

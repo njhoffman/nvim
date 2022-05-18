@@ -61,7 +61,9 @@ M.dap_plugins = {
 
 M.picker_plugins = {
   ["fzf.vim"] = { "junegunn/fzf.vim", requires = { "junegunn/fzf", "ryanoasis/vim-devicons" } },
-  ["fzf-preview.vim"] = { "yuki-yano/fzf-preview.vim", branch = "release/remote", requires = { "junegunn/fzf" } },
+  -- needs tool-versions nodejs 15.14.0
+  -- ["fzf-preview.vim"] = { "yuki-yano/fzf-preview.vim", branch = "release/remote", requires = { "junegunn/fzf" }, run = "function() vim.cmd('UpdateRemotePlugins') end" },
+  ["fzf-preview.vim"] = { "yuki-yano/fzf-preview.vim", branch = "release/rpc", requires = { "junegunn/fzf" }, run = "function() vim.cmd('FzfPreviewInstall') end" },
   ["fzf-lua"] = { "ibhagwan/fzf-lua", requires = { "vijaymarupudi/nvim-fzf", "kyazdani42/nvim-web-devicons" } },
   ["nvim-spotify"] = { "KadoBOT/nvim-spotify", requires = "nvim-telescope/telescope.nvim", run = "make" },
   ["tmuxjump.vim"] = { "shivamashtikar/tmuxjump.vim", requires = "junegunn/fzf.vim" },
@@ -211,11 +213,11 @@ M.ui_plugins = {
   ["which-key.nvim"] = { "folke/which-key.nvim" },
   ["zen-mode.nvim"] = { "folke/zen-mode.nvim" },
   ["hop.nvim"] = { "phaazon/hop.nvim" },
-  ["wilder.nvim"] = {
-    "gelguy/wilder.nvim",
-    rocks = { "luarocks-fetch-gitrec", "pcre2" },
-    requires = { "romgrk/fzy-lua-native", "kyazdani42/nvim-web-devicons" }
-  }
+  -- ["wilder.nvim"] = {
+  --   "gelguy/wilder.nvim",
+  --   rocks = { "luarocks-fetch-gitrec", "pcre2" },
+  --   requires = { "romgrk/fzy-lua-native", "kyazdani42/nvim-web-devicons" }
+  -- }
 }
 
 M.project_plugins = {

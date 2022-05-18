@@ -148,4 +148,4 @@ local insertOnlyMapping = {
   }
 }
 
-return insertOnlyMapping
+return mapping

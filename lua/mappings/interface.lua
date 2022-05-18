@@ -1,20 +1,24 @@
-local M = require("mappings.mapper")
-
-M.map("Interface", "n", '""', "registers")
-M.map("Interface", "n", "<F2>", "whichkey")
-M.map("Interface", "n", "<F3>", "nvim_tree")
-M.map("Interface", "n", "<F4>", "mundo1")
--- M.map("Interface", "n", "<F5>", "term1")
-M.map("Interface", "n", "<F6>", "treesitter")
-M.map("Interface", "n", "<F7>", "aerial")
-M.map("Interface", "n", "<S-F7>", "aerial_float")
-M.map("Interface", "n", "gU", "mundo2")
-M.map("Interface", "n", "cll", "conceal_clear")
-M.map("Interface", "n", "cl0", "conceal_0")
-M.map("Interface", "n", "cl1", "conceal_1")
-M.map("Interface", "n", "cl2", "conceal_2")
-M.map("Interface", "n", "cl3", "conceal_3")
-M.map("Interface", "n", "gh", "ts_highlights")
--- M.map("Interface", "n", "gH", "ts_highlights")
-M.map("Interface", "n", "gnD", "list_definitions") -- virtual
-M.map("Interface", "n", "g0", "toc_definitions") -- virtual
+local M = {
+  registers = { cmd = "<cmd>Registers<cr>", short = "view registers", long = "view registers" },
+  whichkey = { cmd = "<cmd>WhichKey<cr>", short = "toggle whichkey", long = "toggle whichkey" },
+  nvim_tree = { cmd = "<cmd>NvimTreeToggle<cr>", short = "toggle nvim-tree", long = "toggle nvim-tree" },
+  mundo1 = { cmd = "<cmd>MundoToggle<cr>", short = "toggle mundo", long = "toggle mundo" },
+  term1 = { cmd = "<cmd>FloatermToggle<cr>", short = "toggle floaterm", long = "toggle floaterm" },
+  treesitter = { cmd = "<cmd>TSPlaygroundToggle<cr>", short = "toggle treesitter", long = "toggle treesitter" },
+  aerial = { cmd = "<cmd>AerialToggle!right<cr>", short = "toggle aerial", long = "toggle aerial" },
+  aerial_float = { cmd = "<cmd>AerialToggle!float<cr>", short = "toggle aerial float", long = "toggle aerial float" },
+  mundo2 = { cmd = "<cmd>MundoToggle<cr>", short = "toggle mundo", long = "toggle mundo" },
+  conceal_clear = { cmd = "<cmd>set conceallevel=0<cr>", short = "clear conceal", long = "clear conceal" },
+  conceal_0 = { cmd = "<cmd>set conceallevel=0<cr>", short = "set conceal 0", long = "set conceal 0" },
+  conceal_1 = { cmd = "<cmd>set conceallevel=1<cr>", short = "set conceal 1", long = "set conceal 1" },
+  conceal_2 = { cmd = "<cmd>set conceallevel=2<cr>", short = "set conceal 2", long = "set conceal 2" },
+  conceal_3 = { cmd = "<cmd>set conceallevel=3<cr>", short = "set conceal 3", long = "set conceal 3" },
+  ts_highlights = {
+    cmd = "<cmd>TSHighlightCapturesUnderCursor<cr>",
+    short = "ts highlight cursor",
+    long = "ts highlight cursor"
+  },
+  list_definitions = { short = "list ts definitions", long = "list ts definitions" }, -- virtual
+  toc_definitions = { short = "toc ts definitions", long = "toc ts definitions" } -- virtual
+}
+return M

@@ -1,45 +1,46 @@
-local M = require("mappings.mapper")
+local M = {
+  toggle_background = { short = "toggle background", long = "toggle light/dark background" },
+  toggle_cursorline = { short = "toggle cursorline", long = "toggle cursorline" },
+  toggle_diff = { short = "toggle diff", long = "toggle diff" },
+  toggle_search_highlight = { short = "toggle search highlight", long = "toggle search highlight" },
+  toggle_search_case_ignore = { short = "toggle search case ignore", long = "toggle search case ignore" },
+  toggle_list = { short = "toggle list", long = "toggle list" },
+  toggle_number = { short = "toggle number", long = "toggle number" },
+  toggle_relative_number = { short = "toggle relative number", long = "toggle relative number" },
+  toggle_spell_check = { short = "toggle spell check", long = "toggle spell check" },
+  toggle_cursorcolumn = { short = "toggle cursorcolumn", long = "toggle cursorcolumn" },
+  toggle_virtualedit_text = { short = "toggle virtualedit txt", long = "toggle virtualedit text" },
+  toggle_word_wrap = { short = "toggle word wrap", long = "toggle word wrap" },
+  toggle_crosshairs = { short = "toggle crosshairs", long = "toggle crosshairs" },
+  paste_after = { short = "paste after", long = "paste after" },
+  paste_before = { short = "paste before", long = "paste before" },
+  paste_after_indent1 = { short = "paste after indent", long = "paste after line increasing indent" },
+  paste_before_indent1 = { short = "paste before indent", long = "paste before line increasing indent" },
+  paste_after_unindent1 = { short = "paste after unindent", long = "paste after line decreasing indent" },
+  paste_before_unindent1 = { short = "paste before unindent", long = "paste before line decreasing indent" },
+  paste_after_indent2 = { short = "paste after indent", long = "paste after line increasing indent" },
+  paste_before_indent2 = { short = "paste before indent", long = "paste before line increasing indent" },
+  paste_after_unindent2 = { short = "paste after unindent", long = "paste after line decreasing indent" },
+  paste_before_unindent2 = { short = "paste before unindent", long = "paste before line decreasing indent" },
+  paste_after_reindent = { short = "paste after reindent", long = "paste after line reindenting" },
+  paste_before_reindent = { short = "paste before reindent", long = "paste before line reindenting" },
+  paste_within = { short = "paste within", long = "patse within" },
+  pairs_edit_prev_files = { short = "edit prev files", long = "edit previous files" },
+  pairs_edit_next_files = { short = "edit next files", long = "edit next files" },
+  pairs_prev_buffer = { short = "prev buffer", long = "previous buffer" },
+  pairs_next_buffer = { short = "next buffer", long = "next buffer" },
+  pairs_prev_location = { short = "prev loc", long = "previous location" },
+  pairs_next_location = { short = "next loc", long = "next location" },
+  pairs_prev_location_file = { short = "prev loc in file", long = "previous location in file" },
+  pairs_next_location_file = { short = "next loc in file", long = "next location in file" },
+  pairs_prev_tag = { short = "prev tag", long = "previous location" },
+  pairs_next_tag = { short = "next tag", long = "next location" },
+  pairs_prev_tag_window = { short = "prev loc in prev window", long = "previous location in previous window" },
+  pairs_next_tag_window = { short = "next loc in prev window", long = "next location in previous window" },
+  pairs_prev_qf = { short = "prev qf", long = "previous quickfix" },
+  pairs_next_qf = { short = "next qf", long = "next quickfix" },
+  pairs_prev_qf_file = { short = "prev loc in file", long = "previous quickfix in file" },
+  pairs_next_qf_file = { short = "next loc in file", long = "next quickfix in file" }
+}
 
-M.map("Unimpaired", "n", "yob", "toggle_background")
-M.map("Unimpaired", "n", "yoc", "toggle_cursorline")
-M.map("Unimpaired", "n", "yod", "toggle_diff")
-M.map("Unimpaired", "n", "yoh", "toggle_search_highlight")
-M.map("Unimpaired", "n", "yoi", "toggle_search_case_ignore")
-M.map("Unimpaired", "n", "yol", "toggle_list")
-M.map("Unimpaired", "n", "yon", "toggle_number")
-M.map("Unimpaired", "n", "yor", "toggle_relative_number")
-M.map("Unimpaired", "n", "yos", "toggle_spell_check")
-M.map("Unimpaired", "n", "you", "toggle_cursorcolumn")
-M.map("Unimpaired", "n", "yov", "toggle_virtualedit_text")
-M.map("Unimpaired", "n", "yow", "toggle_word_wrap")
-M.map("Unimpaired", "n", "yox", "toggle_crosshairs")
-M.map("Unimpaired", "n", "]p", "paste_after_indent1")
-M.map("Unimpaired", "n", "[p", "paste_before_indent1")
-M.map("Unimpaired", "n", "]P", "paste_after_unindent1")
-M.map("Unimpaired", "n", "[P", "paste_before_unindent1")
-M.map("Unimpaired", "n", ">p", "paste_after_indent2")
-M.map("Unimpaired", "n", ">P", "paste_before_indent2")
-M.map("Unimpaired", "n", "<p", "paste_after_unindent2")
-M.map("Unimpaired", "n", "<P", "paste_before_unindent2")
-M.map("Unimpaired", "n", "=p", "paste_after_reindent")
-M.map("Unimpaired", "n", "=P", "paste_before_reindent")
-M.map("Unimpaired", "n", "]op", "paste_after")
-M.map("Unimpaired", "n", "[op", "paste_before")
-M.map("Unimpaired", "n", "yop", "paste_within")
-
-M.map("Unimpaired", "n", "[a", "pairs_edit_prev_files")
-M.map("Unimpaired", "n", "]a", "pairs_edit_next_files")
-M.map("Unimpaired", "n", "[b", "pairs_prev_buffer")
-M.map("Unimpaired", "n", "]b", "pairs_next_buffer")
-M.map("Unimpaired", "n", "[l", "pairs_prev_location")
-M.map("Unimpaired", "n", "]l", "pairs_next_location")
-M.map("Unimpaired", "n", "[<C-L>", "pairs_prev_location_file")
-M.map("Unimpaired", "n", "]<C-L>", "pairs_next_location_file")
-M.map("Unimpaired", "n", "[q", "pairs_prev_qf")
-M.map("Unimpaired", "n", "]q", "pairs_next_qf")
-M.map("Unimpaired", "n", "[<C-Q>", "pairs_prev_qf_file")
-M.map("Unimpaired", "n", "]<C-Q>", "pairs_next_qf_file")
-M.map("Unimpaired", "n", "[t", "pairs_prev_tag")
-M.map("Unimpaired", "n", "]t", "pairs_next_tag")
-M.map("Unimpaired", "n", "[<C-T>", "pairs_prev_tag_window")
-M.map("Unimpaired", "n", "]<C-T>", "pairs_next_tag_window")
+return M

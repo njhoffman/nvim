@@ -11,7 +11,7 @@ vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")),
 local function load_module(mod_name)
   local ok, err = pcall(require, mod_name)
   if not ok then
-    local msg = "failed loading: " .. mod_name .. "\n " .. err
+    local msg = "failed loading: " .. mod_name .. "\n " .. vim.inspect(err)
     vim.notify(msg, "error")
   end
 end
@@ -19,7 +19,7 @@ end
 if config.Load.impatient == true then
   vim.notify("Using impatient optimization", "trace")
   load_module("impatient.lua.impatient")
--- lua require'impatient'.enable_profile()
+  -- lua require'impatient'.enable_profile()
 end
 
 for _, mod_name in ipairs(

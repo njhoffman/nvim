@@ -1,25 +1,69 @@
-local M = require("mappings.mapper")
-
-M.map("Git", "n", "<leader>gf", "telescope_files")
-M.map("Git", "n", "<leader>gc", "telescope_commits")
-M.map("Git", "n", "<leader>gC", "telescope_bcommits")
-M.map("Git", "n", "<leader>gb", "telescope_branches")
-M.map("Git", "n", "<leader>gs", "telescope_status")
-M.map("Git", "n", "<leader>gn", "signs_next_hunk")
-M.map("Git", "n", "<leader>gp", "signs_prev_hunk")
-M.map("Git", "n", "<leader>gv", "signs_preview_hunk")
-M.map("Git", "n", "<leader>gr", "signs_reset_hunk")
-M.map("Git", "n", "<leader>gR", "signs_reset_buffer")
-M.map("Git", "n", "<C-C>", "fzf_bcommits2")
-M.map("Git", "n", "<A-c>", "fzf_commits2")
--- Git log, Git diff, Git difftool, Git mergetool, Git blame, Gdiff, Gedit HEAD-3:%, Ggrep
--- http://vimcasts.org/episodes/fugitive-vim-resolving-merge-conflicts-with-vimdiff/
--- DiffviewOpen, DiffviewFileHistory
--- g!;
--- :DiffviewOpen HEAD~2
--- :DiffviewOpen HEAD~4..HEAD~2
--- :DiffviewOpen d4a7b0d
--- :DiffviewOpen d4a7b0d..519b30e
--- :DiffviewOpen origin/main...HEAD
--- :DiffviewOpen HEAD~2 -- lua/diffview plugin
--- :DiffviewOpen d4a7b0d -uno
+local M = {
+  telescope_files = {
+    cmd = "<cmd>Telescope git_files<cr>",
+    short = "telescope git files",
+    long = "telescope git files"
+  },
+  telescope_commits = {
+    cmd = "<cmd>Telescope git_commits<cr>",
+    short = "telescope git commits",
+    long = "telescope git project commits"
+  },
+  telescope_bcommits = {
+    cmd = "<cmd>Telescope git_bcommits<cr>",
+    short = "telescope git bcommits",
+    long = "telescope git file commits"
+  },
+  fzf_commits2 = {
+    cmd = "<cmd>FzfPreviewGitLogs<cr>",
+    short = "fzf preview git commits",
+    long = "fzf preview git project commits"
+  },
+  fzf_bcommits2 = {
+    cmd = "<cmd>FzfPreviewGitCurrentLogs<cr>",
+    short = "fzf preview git bcommits",
+    long = "fzf preview file commits"
+  },
+  fzf_commits = {
+    cmd = "<cmd>FzfLua git_commits<cr>",
+    short = "fzf git commits",
+    long = "fzf git project commits"
+  },
+  fzf_bcommits = {
+    cmd = "<cmd>FzfLua git_bcommits<cr>",
+    short = "fzf git bcommits",
+    long = "fzf file commits"
+  },
+  telescope_branches = {
+    cmd = "<cmd>Telescope git_branches<cr>",
+    short = "telescope git branches",
+    long = "telescope git branches"
+  },
+  telescope_status = {
+    cmd = "<cmd>Telescope git_status<cr>",
+    short = "telescope git status",
+    long = "telescope git status files"
+  },
+  signs_next_hunk = { cmd = "<cmd>Gitsigns next_hunk<cr>", short = "git next hunk", long = "gitsigns next hunk" },
+  signs_prev_hunk = {
+    cmd = "<cmd>Gitsigns prev_hunk<cr>",
+    short = "git prev hunk",
+    long = "gitsigns previous hunk"
+  },
+  signs_preview_hunk = {
+    cmd = "<cmd>Gitsigns preview_hunk<cr>",
+    short = "git preview hunk",
+    long = "gitsigns preview hunk"
+  },
+  signs_reset_hunk = {
+    cmd = "<cmd>Gitsigns reset_hunk<cr>",
+    short = "git reset hunk",
+    long = "gitsigns reset hunk"
+  },
+  signs_reset_buffer = {
+    cmd = "<cmd>Gitsigns reset_buffer<cr>",
+    short = "git reset buffer",
+    long = "gitsigns reset buffer"
+  }
+}
+return M
