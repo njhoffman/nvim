@@ -62,24 +62,24 @@ end
 
 require("cheatsheet").setup(
   {
-  -- Whether to show bundled cheatsheets
-  -- For generic cheatsheets like default, unicode, nerd-fonts, etc
-  bundled_cheatsheets = true,
-  -- bundled_cheatsheets = {
-  --     enabled = {},
-  --     disabled = {},
-  -- },
-  -- For plugin specific cheatsheets
-  bundled_plugin_cheatsheets = true,
-  -- bundled_plugin_cheatsheets = {
-  --     enabled = {},
-  --     disabled = {},
-  -- }
-  -- For bundled plugin cheatsheets, do not show a sheet if you
-  -- don't have the plugin installed (searches runtimepath for
-  -- same directory name)
-  include_only_installed_plugins = true
-}
+    -- Whether to show bundled cheatsheets
+    -- For generic cheatsheets like default, unicode, nerd-fonts, etc
+    bundled_cheatsheets = true,
+    -- bundled_cheatsheets = {
+    --     enabled = {},
+    --     disabled = {},
+    -- },
+    -- For plugin specific cheatsheets
+    bundled_plugin_cheatsheets = true,
+    -- bundled_plugin_cheatsheets = {
+    --     enabled = {},
+    --     disabled = {},
+    -- }
+    -- For bundled plugin cheatsheets, do not show a sheet if you
+    -- don't have the plugin installed (searches runtimepath for
+    -- same directory name)
+    include_only_installed_plugins = true
+  }
 )
 
 local extensions = {}
@@ -161,12 +161,11 @@ extensions.frecency = {
   workspaces = {
     ["etc"] = "/etc",
     ["bin"] = vim.fn.expand("$HOME") .. "/bin",
-    ["nvim"] = vim.fn.stdpath("config"),
     ["home"] = vim.fn.expand("$HOME"),
     ["config"] = vim.fn.expand("$HOME") .. "/.config",
-    -- ["plugins"] = vim.fn.stdpath("data") .. "/site/pack/packer/start",
-    ["plugins"] = vim.fn.expand("$HOME") .. "/nvim/plugs",
-    ["nvim-cache"] = vim.fn.stdpath("config"),
+    ["nvim"] = vim.fn.stdpath("config"),
+    ["plugins"] = vim.fn.expand("$HOME") .. "/_/nvim-plugs",
+    ["nvim-cache"] = vim.fn.expand("$HOME") .. "/_/nvim-cache",
     ["nvim-data"] = vim.fn.stdpath("data"),
     ["prettyfile"] = vim.fn.expand("$HOME") .. "/git/prettyfile",
     ["zettel"] = vim.fn.expand("$HOME") .. "/zettelkasten",

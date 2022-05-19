@@ -45,8 +45,9 @@ local mapping = {
       cmp.mapping.select_next_item()(nil)
     end
   end,
-  -- ["<C-Space>"] = cmp.mapping.complete(),
-  ["<C-e>"] = cmp.mapping.abort(),
+  ["<M-Space>"] = cmp.mapping.complete(),
+  ["<C-d>"] = cmp.mapping.abort(),
+  ["<C-e>"] = cmp.mapping.complete(),
   ["<Tab>"] = function()
     if vim.fn.pumvisible() == 1 then
       return t("<C-n>")

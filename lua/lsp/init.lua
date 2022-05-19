@@ -107,22 +107,21 @@ local on_attach = function(client, bufnr)
       bufnr,
       "LspFormatting",
       function()
-      lsp_formatting(bufnr)
-    end
+        lsp_formatting(bufnr)
+      end
     )
 
     vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
     vim.api.nvim_create_autocmd(
       "BufWritePre",
       {
-      group = augroup,
-      buffer = bufnr,
-      command = "LspFormatting"
-    }
+        group = augroup,
+        buffer = bufnr,
+        command = "LspFormatting"
+      }
     )
   end
 end
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 local had_cmp_nvim_lsp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if had_cmp_nvim_lsp then
@@ -148,7 +147,7 @@ vim.diagnostic.config {
     source = false, -- "if_many", "always", false
     prefix = "",
     spacing = 2,
-    severity = { min = vim.diagnostic.severity.HINT }
+    severity = { min = vim.diagnostic.severity.WARN }
     -- vim.diagnostic.get(0, { severity = {min=vim.diagnostic.severity.WARN} })
     -- vim.diagnostic.severity.ERROR, WARN, INFO, HINT
   },
