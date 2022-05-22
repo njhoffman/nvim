@@ -175,7 +175,7 @@ M.completion_plugins = {
   ["cmp-zsh"] = { "tamago324/cmp-zsh", after = "nvim-cmp" },
   ["cmp-vimwiki-tags"] = { "pontusk/cmp-vimwiki-tags", after = "nvim-cmp" },
   ["cmp-pandoc-references"] = { "jc-doyle/cmp-pandoc-references", after = "nvim-cmp" },
-  ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },
+  -- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },
   ["cmp-git"] = { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", after = "nvim-cmp" },
   ["cmp-tmux"] = { "andersevenrud/cmp-tmux", after = "nvim-cmp" },
   -- ["vim-dadbod-completion"] = {
@@ -303,9 +303,9 @@ M.lsp_plugins = {
 }
 
 M.theme_plugins = {
+  ["feline.nvim"] = { "feline-nvim/feline.nvim" },
   ["barbar"] = { "romgrk/barbar.nvim" },
   ["lush.nvim"] = { "rktjmp/lush.nvim" },
-  ["feline.nvim"] = { "feline-nvim/feline.nvim" }
 }
 
 M.check_require_exists = function(fname)

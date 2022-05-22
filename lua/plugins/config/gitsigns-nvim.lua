@@ -1,27 +1,27 @@
-local bars = {thick = "▎", thin = "│"}
+local bars = { thick = "▎", thin = "│" }
 local signs_thin = {
-  add = {hl = "GitSignsAddFaded", text = bars.thin},
-  change = {hl = "GitSignsChangeFaded", text = bars.thin},
-  delete = {hl = "GitSignsDeleteFaded", text = bars.thin},
-  topdelete = {hl = "GitSignsDeleteFaded", text = bars.thin},
-  changedelete = {hl = "GitSignsChangeDeleteFaded", text = bars.thin}
+  add = { hl = "GitSignsAddFaded", text = bars.thin },
+  change = { hl = "GitSignsChangeFaded", text = bars.thin },
+  delete = { hl = "GitSignsDeleteFaded", text = bars.thin },
+  topdelete = { hl = "GitSignsDeleteFaded", text = bars.thin },
+  changedelete = { hl = "GitSignsChangeDeleteFaded", text = bars.thin }
 }
 
 local signs_thick = {
-  add = {hl = "GreenSign", text = bars.thick, numhl = "GitSignsAddNr"},
-  change = {hl = "BlueSign", text = bars.thick, numhl = "GitSignsChangeNr"},
-  delete = {hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr"},
-  topdelete = {hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr"},
-  changedelete = {hl = "PurpleSign", text = bars.thick, numhl = "GitSignsChangeDeleteNr"}
+  add = { hl = "GreenSign", text = bars.thick, numhl = "GitSignsAddNr" },
+  change = { hl = "BlueSign", text = bars.thick, numhl = "GitSignsChangeNr" },
+  delete = { hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr" },
+  topdelete = { hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr" },
+  changedelete = { hl = "PurpleSign", text = bars.thick, numhl = "GitSignsChangeDeleteNr" }
 }
 
 local defaultSettings = {
   signs = {
-    add = {hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn"},
-    change = {hl = "GitSignsChange", text = "│", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn"},
-    delete = {hl = "GitSignsDelete", text = "_", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn"},
-    topdelete = {hl = "GitSignsDelete", text = "‾", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn"},
-    changedelete = {hl = "GitSignsChange", text = "~", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn"}
+    add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+    change = { hl = "GitSignsChange", text = "│", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
+    delete = { hl = "GitSignsDelete", text = "_", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+    topdelete = { hl = "GitSignsDelete", text = "‾", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+    changedelete = { hl = "GitSignsChange", text = "~", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" }
   },
   signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
   numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
@@ -71,12 +71,12 @@ local on_attach = function(bufnr)
   end
 
   -- Navigation
-  map("n", "]c", "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr = true})
-  map("n", "[c", "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr = true})
+  map("n", "]c", "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", { expr = true })
+  map("n", "[c", "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", { expr = true })
 
   -- Actions
-  map({"n", "v"}, "<leader>hs", ":Gitsigns stage_hunk<CR>")
-  map({"n", "v"}, "<leader>hr", ":Gitsigns reset_hunk<CR>")
+  map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>")
+  map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>")
   map("n", "<leader>hS", gs.stage_buffer)
   map("n", "<leader>hu", gs.undo_stage_hunk)
   map("n", "<leader>hR", gs.reset_buffer)
@@ -85,7 +85,7 @@ local on_attach = function(bufnr)
     "n",
     "<leader>hb",
     function()
-      gs.blame_line {full = true}
+      gs.blame_line { full = true }
     end
   )
   map("n", "<leader>tb", gs.toggle_current_line_blame)
@@ -100,13 +100,13 @@ local on_attach = function(bufnr)
   map("n", "<leader>td", gs.toggle_deleted)
 
   -- Text object
-  map({"o", "x"}, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+  map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
 end
 
 local mySettings = {
   on_attach = on_attach,
-  signs = signs_thick,
-  current_line_blame_opts = {delay = 1000, virt_text_pos = "eol"},
+  signs = signs_thin,
+  current_line_blame_opts = { delay = 1000, virt_text_pos = "eol" },
   attach_to_untracked = false,
   update_debounce = 200
   -- keymaps = {

@@ -11,7 +11,7 @@ vim.cmd [[
 function goto_last_pos()
   local last_pos = vim.fn.line('\'"')
   if last_pos > 0 and last_pos <= vim.fn.line("$") then
-    vim.api.nvim_win_set_cursor(0, {last_pos, 0})
+    vim.api.nvim_win_set_cursor(0, { last_pos, 0 })
   end
 end
 
@@ -69,57 +69,54 @@ vim.cmd(
 
 local autocmds = {
   Marks = {
-    {"BufRead,BufEnter", "*", "lua require('marks').refresh()"},
-    {"BufRead,BufDelete", "*", "lua require('marks')._on_delete()"},
-    -- { "BufEnter", "*", "if &buftype == 'prompt' | MarksToggleSigns | endif" },
-    -- { "BufEnter", "*", "if &filetype == 'nofile' | MarksToggleSigns | endif" },
-    {"BufRead", "*.md", "lua require('neuron').update_virtual_titles()"}
+    { "BufRead", "*.md", "lua require('neuron').update_virtual_titles()" }
   },
   SecondaryBuffers = {},
   SecondaryWindows = {
     -- quickix, locations, help, man, undo, and other windows I want to exit easily from
     -- todo: think of an easy way to close theese windows without focus
-    {"FileType", "dashboard", "nnoremap <buffer> q :BufferDelete<cr> | nnoremap <buffer>  :BufferDelete<cr>"},
-    {"FileType", "fugitive", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>"},
-    {"FileType", "notify", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>"},
-    {"FileType", "qf", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>"},
-    {"FileType", "nerdtree", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>"},
-    {"FileType", "help", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>"},
-    {"FileType", "Mundo", "nnoremap <buffer>  :q<cr>"},
-    {"FileType", "MundoDiff", "nnoremap <buffer>  :q<cr>"}
+    { "FileType", "dashboard", "nnoremap <buffer> q :BufferDelete<cr> | nnoremap <buffer>  :BufferDelete<cr>" },
+    { "FileType", "fugitive", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
+    { "FileType", "notify", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
+    { "FileType", "qf", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
+    { "FileType", "nerdtree", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
+    { "FileType", "help", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
+    { "FileType", "Mundo", "nnoremap <buffer>  :q<cr>" },
+    { "FileType", "MundoDiff", "nnoremap <buffer>  :q<cr>" }
   },
-  fasd = {{"BufWinEnter,BufFilePost", "*", [[call Fasd_update()]]}},
+  fasd = { { "BufWinEnter,BufFilePost", "*", [[call Fasd_update()]] } },
   CommandWin = {
-    {"CmdwinEnter", "*", "let b:cpt_save = &cpt | set cpt=."},
-    {"CmdwinLeave", "*", "let &cpt = b:cpt_save | let g:lens#disabled = 1"},
-    {"CmdwinEnter", "*", "nnoremap <buffer><esc> <C-c><C-c>"},
-    {"CmdwinEnter", "*", "setlocal nonumber norelativenumber signcolumn=yes:1 | startinsert"}
+    { "CmdwinEnter", "*", "let b:cpt_save = &cpt | set cpt=." },
+    { "CmdwinLeave", "*", "let &cpt = b:cpt_save | let g:lens#disabled = 1" },
+    { "CmdwinEnter", "*", "nnoremap <buffer><esc> <C-c><C-c>" },
+    { "CmdwinEnter", "*", "setlocal nonumber norelativenumber signcolumn=yes:1 | startinsert" }
   },
   FiletypeDetect = {
-    {"BufNewFile,BufRead", "*", "setlocal signcolumn=yes:1"},
-    {"BufNewFile,BufRead", "*.ejs", "set ft=html"},
-    {"BufNewFile,BufRead", "*.bash*", "let b:is_bash = 1 | setfiletype bash"},
-    {"BufNewFile,BufRead", "*.theme", "setlocal ft=config syn=config"},
-    {"BufNewFile,BufRead", ".*rc", "setlocal ft=config syn=config"},
-    {"BufNewFile,BufRead", ".env.*", "setlocal ft=config syn=config"},
-    {"BufNewFile,BufRead", "*.env", "setlocal ft=config syn=config"},
+    { "BufNewFile,BufRead", "*", "setlocal signcolumn=yes:1" },
+    { "BufNewFile,BufRead", "*.ejs", "set ft=html" },
+    { "BufNewFile,BufRead", "*.bash*", "let b:is_bash = 1 | setfiletype bash" },
+    { "BufNewFile,BufRead", "*.theme", "setlocal ft=config syn=config" },
+    { "BufNewFile,BufRead", ".*rc", "setlocal ft=config syn=config" },
+    { "BufNewFile,BufRead", ".env.*", "setlocal ft=config syn=config" },
+    { "BufNewFile,BufRead", "*.env", "setlocal ft=config syn=config" },
+    { "BufNewFile,BufRead", "conf.*", "setlocal ft=config syn=config" },
     -- { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 synmaxcol=500" },
-    {"BufRead,BufEnter", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 nospell"},
-    {"BufNewFile,BufRead", ".tasks", "setlocal ft=dosini"},
-    {"BufNewFile,BufRead", "*.visidatarc", "setlocal ft=python"},
-    {"BufNewFile,BufRead", ".vimtasks", "setlocal ft=dosini"},
-    {"BufNewFile,BufRead", "*.cheat", "setlocal ft=bash | let b:is_bash =1"},
-    {"BufNewFile,BufRead", "Dockerfile*", "setlocal ft=Dockerfile"},
-    {"BufNewFile,BufRead", "Dockerfile.*", "setlocal ft=Dockerfile"},
-    {"BufNewFile,BufRead", ".dockerignore", "setlocal ft=gitignore"},
-    {"BufNewFile,BufRead", "nord-nick-lush.lua", "setlocal ft=lush syn=lua"},
-    {"BufNewFile,BufRead", "nord-nvim.lua", "setlocal ft=lush syn=lua"},
-    {"BufNewFile,BufRead", "*.t", "setlocal ft=tangle"},
-    {"BufNewFile,BufRead", "git", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>"},
-    {"BufNewFile,BufRead", "*.conf", "setlocal ft=conf"},
-    {"BufNewFile,BufRead", "*.pa", "setlocal ft=conf"},
-    {"BufNewFile,BufRead", "*.service", "setlocal ft=systemd"},
-    {"BufNewFile,BufRead", "*.sock", "setlocal ft=systemd"}
+    { "BufRead,BufEnter", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 nospell" },
+    { "BufNewFile,BufRead", ".tasks", "setlocal ft=dosini" },
+    { "BufNewFile,BufRead", "*.visidatarc", "setlocal ft=python" },
+    { "BufNewFile,BufRead", ".vimtasks", "setlocal ft=dosini" },
+    { "BufNewFile,BufRead", "*.cheat", "setlocal ft=bash | let b:is_bash =1" },
+    { "BufNewFile,BufRead", "Dockerfile*", "setlocal ft=Dockerfile" },
+    { "BufNewFile,BufRead", "Dockerfile.*", "setlocal ft=Dockerfile" },
+    { "BufNewFile,BufRead", ".dockerignore", "setlocal ft=gitignore" },
+    { "BufNewFile,BufRead", "nord-nick-lush.lua", "setlocal ft=lush syn=lua" },
+    { "BufNewFile,BufRead", "nord-nvim.lua", "setlocal ft=lush syn=lua" },
+    { "BufNewFile,BufRead", "*.t", "setlocal ft=tangle" },
+    { "BufNewFile,BufRead", "git", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
+    { "BufNewFile,BufRead", "*.conf", "setlocal ft=conf" },
+    { "BufNewFile,BufRead", "*.pa", "setlocal ft=conf" },
+    { "BufNewFile,BufRead", "*.service", "setlocal ft=systemd" },
+    { "BufNewFile,BufRead", "*.sock", "setlocal ft=systemd" }
 
     --   au BufNewFile,BufRead *.module setlocal ft=php syn=php
     --   " force bash syntax for shell scripts by default custom syntax extension assignments
@@ -136,11 +133,11 @@ local autocmds = {
     --   " au BufEnter * if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' | setf preview | endif
   },
   vimade = {
-    {"FileType", "Trouble", "VimadeBufDisable"},
-    {"FileType", "qf", "VimadeBufDisable"},
-    {"FileType", "nerdtree", "VimadeBufDisable"},
-    {"FileType", "Mundo", "VimadeBufDisable"},
-    {"FileType", "MundoDiff", "VimadeBufDisable"}
+    { "FileType", "Trouble", "VimadeBufDisable" },
+    { "FileType", "qf", "VimadeBufDisable" },
+    { "FileType", "nerdtree", "VimadeBufDisable" },
+    { "FileType", "Mundo", "VimadeBufDisable" },
+    { "FileType", "MundoDiff", "VimadeBufDisable" }
     -- { "CompleteChanged", "*", "redraw" },
     -- { "FocusLost", "*", "VimadeFadeActive" },
     -- { "FocusGained", "*", "VimadeUnfadeActive" },
@@ -151,7 +148,7 @@ local autocmds = {
     -- { "BufEnter", "dapui_stacks", "VimadeBufDisable" },
     -- { "BufEnter", "dap-repl", "VimadeBufDisable" },
   },
-  BufferRedraws = {{"VimEnter", "*", "BarbarColors"}},
+  BufferRedraws = { { "VimEnter", "*", "BarbarColors" } },
   -- FileTypes = {
   --   -- { "FileType", "lua.lush", "" },
   --   {"FileType", "markdown.pandoc", "set conceallevel=2 nospell"},
@@ -169,20 +166,20 @@ local autocmds = {
   --   { "VimLeavePre", "*", "execute 'mksession! " .. vim.fn.stdpath("data") .. "/sessions/previous.vim'" },
   -- },
   Shape = {
-    {"FocusLost", "*", "hi TermCursor cterm=NONE gui=NONE"},
-    {"FocusGained", "*", "hi TermCursor cterm=reverse gui=reverse"},
-    {"VimLeave,VimSuspend", "*", "set guicursor=a:block-blinkon90"}
+    { "FocusLost", "*", "hi TermCursor cterm=NONE gui=NONE" },
+    { "FocusGained", "*", "hi TermCursor cterm=reverse gui=reverse" },
+    { "VimLeave,VimSuspend", "*", "set guicursor=a:block-blinkon90" }
   },
   terminal = {
-    {"TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]]}
+    { "TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]] }
     -- {"TermOpen", "*", "set nonumber norelativenumber"},
     -- {"TermLeave", "*", "set number relativenumber"}
   },
   writeEventts = {
-    {"BufWritePost", ".tmux.conf", [[execute ':!tmux source-file %']]}
+    { "BufWritePost", ".tmux.conf", [[execute ':!tmux source-file %']] }
     --   { "BufWritePost", "load.lua", "PackerCompile" },
   },
-  packer = {{"User", "PackerComplete,PackerCompileDone", "BarbarColors"}}
+  packer = { { "User", "PackerComplete,PackerCompileDone", "BarbarColors" } }
 }
 
 -- lsp = {
@@ -192,8 +189,8 @@ local autocmds = {
 -- | if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' && &buftype =~ hidden | silent! wshada | silent! !~/bin/wshada.sh | endif",
 -- local shadaEvents = { { "BufWrite", "*", [[call ShadaWrite()]] }, { "Signal", "SIGUSR1", [[call ShadaRead()]] } }
 local shadaEvents = {
-  {"BufRead", "*", [[call ShadaWrite()]]},
-  {"Signal", "SIGUSR1", [[call ShadaRead()]]}
+  { "BufRead", "*", [[call ShadaWrite()]] },
+  { "Signal", "SIGUSR1", [[call ShadaRead()]] }
 }
 
 table.insert(autocmds, shadaEvents)
@@ -204,7 +201,7 @@ local number_toggle = {
     "*",
     "if &filetype != 'dashboard' && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif"
   },
-  {"BufLeave,FocusLost,InsertEnter", "*", "set norelativenumber"}
+  { "BufLeave,FocusLost,InsertEnter", "*", "set norelativenumber" }
 }
 table.insert(autocmds, number_toggle)
 
@@ -221,11 +218,11 @@ if Opts.highlight_yank == true or Opts.highlight_yank == nil then
   table.insert(autocmds, hl_yank)
 end
 
-local preserve_cursor = {{"BufReadPost", "*", "lua goto_last_pos()"}}
+local preserve_cursor = { { "BufReadPost", "*", "lua goto_last_pos()" } }
 
 local trim_whitespaces = {
-  {"BufWritePre", "*", [[%s/\s\+$//e]]},
-  {"BufWritePre", "*", [[%s/\n\+\%$//e]]}
+  { "BufWritePre", "*", [[%s/\s\+$//e]] },
+  { "BufWritePre", "*", [[%s/\n\+\%$//e]] }
   -- {"BufWritePre", "*.[ch]", [[*.[ch] %s/\%$/\r/e]]}
 }
 

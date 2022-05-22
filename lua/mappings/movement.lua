@@ -1,5 +1,19 @@
 local M = {
   -- ds: delete_surround <Plug>Dsurround
+  you_surround_nl = { short = "you surround on new line" },
+  you_surround = { short = "you surround" },
+  surround_around_nl = { short = "surround around line on new line, trimmed" },
+  surround_around = { short = "surround around line, whitespace trimmed" },
+  you_surround_line_trim_nl1 = { short = "you surround line on new line, trimmed" },
+  you_surround_line_trim_nl2 = { short = "you surround line on new line, trimmed" },
+  you_surround_line_trim = { short = "you surround line trimmed" },
+  surround_around_line_trim_nl2 = { short = "surround around line on new line, trimmed" },
+  surround_around_line_trim_nl1 = { short = "surround around line on new line, trimmed" },
+  surround_around_line_trim = { short = "surround around line whitespace trimmed" },
+  surround_visual1 = { short = "surround visual selection" },
+  surround_visual2 = { short = "surround visual selection" },
+  surround_visual_nl = { short = "surround visual selection new line whitespace no indent" },
+
   s_delete_paren1 = {
     short = "delete surround paren )"
   },
@@ -131,6 +145,10 @@ local M = {
   -- omap <silent> _  <Plug>(inner_line)
   -- nmap <silent> d_ <Plug>(inner_line_delete)
   -- xmap <silent> _  <Plug>(inner_line)
+  swap_visual_block = {
+    cmd = "<Esc>`.``gvP``P",
+    short = "swap visual selected block with register"
+  },
   delete_inner_line = {
     cmd = "0D", -- nmap dil 0D
     -- "<cmd>line#inner_delete(v:register)<cr>",

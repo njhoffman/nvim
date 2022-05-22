@@ -48,7 +48,7 @@ local nui_options = {
   border = {
     style = "rounded"
   },
-  max_width = 80,
+  max_width = 120,
   max_height = 40
 }
 

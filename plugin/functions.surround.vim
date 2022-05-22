@@ -598,23 +598,27 @@ inoremap <silent> <Plug>Isurround  <C-R>=<SID>insert()<CR>
 inoremap <silent> <Plug>ISurround  <C-R>=<SID>insert(1)<CR>
 
 if !exists("g:surround_no_mappings") || ! g:surround_no_mappings
+  " ds: delete surround
+  " cs cS: change surround | on new line
+  " ys/sa yS/sA: you surround/surround around | on new line
+  " s/S gS: surround visual selection | no indent/trimmed (allows jagged blockwise selections)
+  " yss/sas ySS/sAS: you surround/surround around line no indent/trimmed | on new line
   nmap ds  <Plug>Dsurround
   nmap cs  <Plug>Csurround
   nmap cS  <Plug>CSurround
   nmap ys  <Plug>Ysurround
+  nmap sa  <Plug>Ysurround
   nmap yS  <Plug>YSurround
+  nmap sA  <Plug>YSurround
   nmap yss <Plug>Yssurround
-  nmap ySs <Plug>YSsurround
+  nmap sas <Plug>Yssurround
+  nmap ysS <Plug>YSsurround
   nmap ySS <Plug>YSsurround
-
+  nmap saS <Plug>YSsurround
+  nmap sAS <Plug>YSsurround
+  xmap s   <Plug>VSurround
   xmap S   <Plug>VSurround
   xmap gS  <Plug>VgSurround
-
-  nmap sa  <Plug>Ysurround
-  nmap sA  <Plug>YSurround
-  nmap sas <Plug>Yssurround
-  nmap saS <Plug>YSsurround
-  nmap sAA <Plug>YSsurround
 
   if !exists("g:surround_no_insert_mappings") || ! g:surround_no_insert_mappings
     imap      <M-S>s <Plug>Isurround

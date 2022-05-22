@@ -1,13 +1,13 @@
-local components = require("feline.presets")["default"].components
-local properties = require("feline.presets")["default"].properties
+-- local components = require("feline.presets")["default"].components
+-- local properties = require("feline.presets")["default"].properties
 
-vim.cmd("hi link diffAdded DiffAdd")
-vim.cmd("hi link diffRemoved DiffDelete")
-vim.cmd("hi link diffChanged DiffChange")
-vim.cmd("hi link diffLine DiffText")
-vim.cmd("hi link diffNewFile DiffAdd")
-vim.cmd("hi link diffFile DiffText")
-vim.cmd("hi link diffIndexFile DiffText")
+-- vim.cmd("hi link diffAdded DiffAdd")
+-- vim.cmd("hi link diffRemoved DiffDelete")
+-- vim.cmd("hi link diffChanged DiffChange")
+-- vim.cmd("hi link diffLine DiffText")
+-- vim.cmd("hi link diffNewFile DiffAdd")
+-- vim.cmd("hi link diffFile DiffText")
+-- vim.cmd("hi link diffIndexFile DiffText")
 -- call remote#host#UpdateRemotePlugins()
 
 -- local package = require("package-info")
@@ -23,8 +23,10 @@ vim.cmd("hi link diffIndexFile DiffText")
 --   right_sep = " ",
 -- }
 -- table.insert(components.right.active, 1, { provider = LspStatus, hl = { fg = "cyan", bg = "bg", style = "bold" } })
+local ok, feline = pcall(require, "feline")
+if not ok then return end
 
-require("feline").setup({colors = {fg = "#909090", bg = "#0F1216"}})
+feline.setup({ colors = { fg = "#909090", bg = "#0F1216" } })
 
 -- table.insert(components.right.active, { provider = LspStatus, hl = { fg = "cyan", bg = "bg", style = "bold" } })
 

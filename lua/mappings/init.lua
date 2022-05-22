@@ -60,6 +60,50 @@ M.map("Window", "n", "<leader>_", "max_vert")
 M.map("Window", "n", "<leader>|", "max_horiz")
 M.map("Window", "n", "<leader>q", "close")
 
+M.map("Movement", "n", "sAS", "surround_around_line_trim_nl1")
+M.map("Movement", "n", "yS", "you_surround_nl")
+M.map("Movement", "n", "ys", "you_surround")
+M.map("Movement", "n", "sA", "surround_around_nl")
+M.map("Movement", "n", "sa", "surround_around")
+M.map("Movement", "n", "ySS", "you_surround_line_trim_nl1")
+M.map("Movement", "n", "ysS", "you_surround_line_trim_nl2")
+M.map("Movement", "n", "yss", "you_surround_line_trim")
+M.map("Movement", "n", "saS", "surround_around_line_trim_nl2")
+M.map("Movement", "n", "sas", "surround_around_line_trim")
+M.map("Movement", "x", "s", "surround_visual1")
+M.map("Movement", "x", "S", "surround_visual2")
+M.map("Movement", "x", "gS", "surround_visual_nl")
+
+
+-- aw	a word (with white space)			|v_aw|
+-- iw	inner word					|v_iw|
+-- aW	a WORD (with white space)			|v_aW|
+-- iW	inner WORD					|v_iW|
+-- as	a sentence (with white space)			|v_as|
+-- is	inner sentence					|v_is|
+-- ap	a paragraph (with white space)			|v_ap|
+-- ip	inner paragraph					|v_ip|
+-- ab	a () block (with parentheses)			|v_ab|
+-- ib	inner () block					|v_ib|
+-- aB	a {} block (with braces)			|v_aB|
+-- iB	inner {} block					|v_iB|
+-- at	a <tag> </tag> block (with tags)		|v_at|
+-- it	inner <tag> </tag> block			|v_it|
+-- a<	a <> block (with <>)				|v_a<|
+-- i<	inner <> block					|v_i<|
+-- a[	a [] block (with [])				|v_a[|
+-- i[	inner [] block					|v_i[|
+-- a"	a double quoted string (with quotes)		|v_aquote|
+--   i"	inner double quoted string			|v_iquote|
+-- a'	a single quoted string (with quotes)		|v_a'|
+-- i'	inner simple quoted string			|v_i'|
+-- a`	a string in backticks (with backticks)		|v_a`|
+-- i`	inner string in backticks			|v_i`|
+
+-- In linewise visual mode, the
+-- surroundings are placed on separate lines and indented.  In blockwise visual
+-- mode, each line is surrounded.
+
 M.map("Movement", "n", "ds)", "s_delete_paren1")
 M.map("Movement", "n", "ds(", "s_delete_paren2")
 M.map("Movement", "n", "ds}", "s_delete_brace1")
@@ -80,7 +124,7 @@ M.map("Movement", "i", "kj", "quick_insert_esc2")
 M.map("Movement", "i", "<C-u>", "c_u_undo_friendly") -- Make <C-u> undo-friendly
 M.map("Movement", "i", "<C-w>", "c_w_undo_friendly") -- Make <C-w> undo-friendly)
 M.map("Movement", "n", "D", "delete_end")
-M.map("Movement", "v", "$", "select_end_no_eol")
+-- M.map("Movement", "v", "$", "select_end_no_eol")
 M.map("Movement", "v", "al", "select_a_line")
 M.map("Movement", "v", "il", "select_inside_line")
 M.map("Movement", "o", "al", "op_a_line", { noremap = false })
@@ -116,6 +160,7 @@ M.map("Movement", "x", "<S-TAB>", "incremental_selection_shrink", { noremap = tr
 -- o  <CR>        *@:lua require("nvim-treesitter.textsubjects").select("textsubjects-smart", false, vim.fn.getpos("."), vim.fn.getpos("."))<CR>
 -- x  <Tab>       *@:lua require("nvim-treesitter.textsubjects").select("textsubjects-container-outer", true, vim.fn.getpos("'<"), vim.fn.getpos("'>"))<CR>
 -- o  <Tab>       *@:lua require("nvim-treesitter.textsubjects").select("textsubjects-container-outer", false, vim.fn.getpos("."), vim.fn.getpos("."))<CR>
+
 M.map("Movement", "n", "gnd", "goto_definition")
 M.map("Movement", "x", "il", "yank_in_line_no_eol")
 M.map("Movement", "o", "il", "yank_in_line_no_eol_o")
@@ -131,6 +176,7 @@ M.map("Movement", "n", "<M-.>", "qfc_next")
 M.map("Movement", "n", "<C-q>", "qfc_toggle")
 M.map("Movement", "n", "<M-'>", "hop_to_word")
 M.map("Movement", "n", "<M-;>", "hop_to_line")
+M.map("Movement", "v", "<C-X>", "swap_visual_block")
 -- M.map("Movement", "n", "<M-\">", "hop_to_line")
 -- M.map("Movement", "n", "<M-;>", "hop_to_word")
 -- M.map("Movement", "n", "<M-:>", "hop_to_line")
