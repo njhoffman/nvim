@@ -1,18 +1,3 @@
-local fn = vim.fn
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap =
-    fn.system(
-    {
-      "git",
-      "clone",
-      "--depth",
-      "1",
-      "https://github.com/wbthomason/packer.nvim",
-      install_path
-    }
-  )
-end
 -- $ nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 local packerConfig = {
@@ -21,11 +6,11 @@ local packerConfig = {
   --   enable = false,
   --   threshold = 1 -- the amount in ms that a plugins load time must be over for it to be included in the profile
   -- },
-  compile_path = fn.stdpath("config") .. "/lua/packer_compiled.lua",
+  compile_path = vim.fn.stdpath("config") .. "/plugin/packer_compiled.lua",
   display = {
     non_interactive = false, -- If true, disable display windows for all operations
     open_fn = function()
-      return require("packer.util").float {border = "single"}
+      return require("packer.util").float { border = "single" }
     end,
     -- open_cmd = '65vnew \\[packer\\]', -- An optional command to open a window for packer's display
     working_sym = "⟳", -- The symbol for a plugin being installed/updated

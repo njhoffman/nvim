@@ -376,27 +376,8 @@ return function()
     BqfSign { fg = "cyan" },
     -- zshVariableDef { Normal },
     -- zshDeref { fg = '#2886bf' },
-    -- Notify
-    NotifyERRORBorder { fg = "#8A1F1F" },
-    NotifyWARNBorder { fg = "#79491D" },
-    NotifyINFOBorder { fg = "#4Fa792" },
-    NotifyDEBUGBorder { fg = "#4B4BBB" },
-    NotifyTRACEBorder { fg = "#7B7BCC" },
-    NotifyERRORIcon { fg = "#F74047" },
-    NotifyWARNIcon { fg = "#F79000" },
-    NotifyINFOIcon { fg = "#29cFa8" },
-    NotifyDEBUGIcon { fg = "#6B6BFF" },
-    NotifyTRACEIcon { fg = "#7BABFF" },
-    NotifyERRORTitle { fg = "#F74047" },
-    NotifyWARNTitle { fg = "#F79000" },
-    NotifyINFOTitle { fg = "#29cFa8" },
-    NotifyDEBUGTitle { fg = "#6B6BFF" },
-    NotifyTRACETitle { fg = "#7BABFF" },
-    NotifyERRORBody { Normal },
-    NotifyWARNBody { Normal },
-    NotifyINFOBody { Normal },
-    NotifyDEBUGBody { Normal },
-    NotifyTRACEBody { Normal },
+
+
     --- nvim-hlslens
     HlSearchLensCur { fg = "#ff2266", bg = "#003333" },
     HlSearchLens { fg = "#00ddff", bg = "none" },
@@ -406,27 +387,6 @@ return function()
     DashboardCenter { fg = "#4499ff" },
     --DashboardShortcut {Boolean},
     --DashboardFooter {Keyword},
-    -- Telescope
-    TelescopeNormal { fg = "#6D778a", bg = "none" },
-    TelescopeResultsBorder { fg = "#476F9F", bg = "none" },
-    TelescopePromptNormal { bg = "none" },
-    TelescopePromptBorder { fg = "#2299cc", bg = "none" },
-    TelescopeMultiIcon { fg = "#0066ff" },
-    TelescopePreviewBorder { fg = "#416191" },
-    TelescopeSelectionCaret { fg = "#44c9fc" },
-    TelescopeSelection { fg = "#28ddff", gui = "bold", bg = "#0f1a26" }, -- bg = "#202324"
-    TelescopePromptPrefix { fg = "#2977FF", bg = "none" },
-    TelescopeMatching { fg = "#7997FF", bg = "none" },
-    TelescopeFrecencyScores { fg = "#34799c" },
-    TelescopeBufferLoaded { fg = "#47a0f0" },
-    TelescopeMultiSelection { fg = "#4060ff", gui = "italic" }
-
-    --     -- Make telescope look a bit better with alternate non-current background
-    --     if config.fade_nc then
-    --     plugins.TelescopePromptBorder["bg"] = colors.bg
-    --     plugins.TelescopeResultsBorder["bg"] = colors.bg
-    --     plugins.TelescopePreviewBorder["bg"] = colors.bg
-    -- end
 
     -- -- Disable nvim-tree background
     -- if config.disable.background then
@@ -449,10 +409,6 @@ return function()
     -- " hi mkdCodeStart ctermfg=239 guifg=#9E9E9E ctermbg=None gui=bold
     -- " hi mkdCodeEnd ctermfg=239 guifg=#9E9E9E ctermbg=None gui=bold
     -- " hi mkdCode ctermfg=88  guifg=#427b58 ctermbg=None cterm=bold
-    --    index          = 'TelescopeAreciboNumber',
-    --    url            = 'TelescopeAreciboUrl',
-    --    prompt_default = 'TelescopePromptPrefix',
-    --    prompt_query   = 'TelescopeAreciboPrompt',
   }
 end
 

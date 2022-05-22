@@ -32,7 +32,7 @@ function utils.define_augroups(definitions) -- {{{1
     vim.cmd("autocmd!")
 
     for _, def in pairs(definition) do
-      local command = table.concat(vim.tbl_flatten {"autocmd", def}, " ")
+      local command = table.concat(vim.tbl_flatten { "autocmd", def }, " ")
       vim.cmd(command)
     end
 
@@ -43,7 +43,7 @@ end
 -- local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
 
 function utils.opt(o, v, scopes)
-  scopes = scopes or {vim.o}
+  scopes = scopes or { vim.o }
   for _, s in ipairs(scopes) do
     s[o] = v
   end
@@ -51,12 +51,12 @@ end
 
 -- mappings
 function utils.map(modes, key, result, opts)
-  local options = {noremap = true, silent = true}
+  local options = { noremap = true, silent = true }
   if opts then
     options = vim.tbl_extend("force", options, opts)
   end
   if type(modes) == "string" then
-    modes = {modes}
+    modes = { modes }
   end
   for _, mode in ipairs(modes) do
     vim.api.nvim_set_keymap(mode, key, result, options)
@@ -68,7 +68,7 @@ local has_toggleterm, toggleterm = pcall(require, "toggleterm")
 if has_toggleterm then
   local Terminal = require("toggleterm.terminal").Terminal
   local lazygit =
-    Terminal:new(
+  Terminal:new(
     {
       cmd = "lazygit",
       direction = "float",
@@ -142,7 +142,7 @@ utils.keymaps = function(maps)
 end
 
 -- Skip these servers for formatting
-local skip_formatting_lsp = {"diagnosticls", "sumneko_lua", "tsserver"}
+local skip_formatting_lsp = { "diagnosticls", "sumneko_lua", "tsserver" }
 
 -- Format the file using the lsp formatter
 utils.lsp_format = function()

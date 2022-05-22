@@ -4,7 +4,7 @@ local lua_format = {
 }
 
 local luafmt = {
-  formatCommand = "luafmt --indent-count 2 --line-width 120 --stdin",
+  formatCommand = "luafmt --indent-count 2 --line-width 100 --stdin",
   formatStdin = true
 }
 
@@ -46,6 +46,7 @@ local shfmt = {
 
 local languages = {
   -- lua = { luafmt, luacheck },
+  lua = { luacheck },
   yaml = { prettier },
   bash = { shfmt, shellcheck },
   sh = { shfmt, shellcheck },
@@ -66,12 +67,19 @@ local languages = {
 }
 
 local M = {}
+local config = require("settings")
 
 M.setup = function(on_attach, capabilities)
   local lspconfig = require "lspconfig"
   local path = vim.fn.stdpath("data")
   lspconfig.efm.setup {
-    on_attach = on_attach,
+    on_attach = function(client, bufnr)
+      if vim.bo.filetype == 'lua' then
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.range_formatting = false
+      end
+      on_attach(client, bufnr)
+    end,
     cmd = { path .. "/lsp_servers/efm/efm-langserver" },
     flags = {
       debounce_text_changes = 150
@@ -83,7 +91,7 @@ M.setup = function(on_attach, capabilities)
     init_options = { documentFormatting = true, hover = true, documentSymbol = true, codeAction = true },
     settings = {
       languages = languages,
-      -- log_level = 1,
+      log_level = config.Logging.numeric.lsp_level,
       log_file = vim.fn.stdpath("cache") .. "/lsp/efm.log",
       rootMarkers = {
         -- ".eslintrc.cjs",

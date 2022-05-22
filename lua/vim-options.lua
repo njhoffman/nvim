@@ -163,7 +163,7 @@ vim.g.tex_flavor = "latex"
 vim.g.indent_blankline_char = "│"
 vim.g.indent_blankline_filetype = { "rust", "go", "lua", "json", "ruby" }
 vim.g.indent_blankline_use_treesitter = true
-vim.g.loaded_ruby_provider = false
+vim.g.loaded_ruby_provider = true
 
 -- fixes unlisted buffer error
 -- https://github.com/romgrk/barbar.nvim/issues/82#issuecomment-748498951

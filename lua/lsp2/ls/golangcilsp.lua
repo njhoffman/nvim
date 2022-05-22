@@ -7,7 +7,17 @@ if not lspconfig.golangcilsp then
     default_config = {
       cmd = { "golangci-lint-langserver" },
       root_dir = lspconfig.util.root_pattern(".git", "go.mod"),
-      init_options = { command = { "golangci-lint", "run", "--enable-all", "--disable", "lll", "--out-format", "json" } },
+      init_options = {
+        command = {
+          "golangci-lint",
+          "run",
+          "--enable-all",
+          "--disable",
+          "lll",
+          "--out-format",
+          "json",
+        },
+      },
     },
   }
 end
@@ -21,7 +31,7 @@ lspconfig.golangcilsp.setup {
   cmd = { "golangci-lint-langserver" },
   root_dir = function(fname)
     return lspconfig.util.root_pattern(".git")(fname) or lspconfig.util.root_pattern("go.mod")(fname) or
-               lspconfig.util.path.dirname(fname)
+      lspconfig.util.path.dirname(fname)
   end,
   filetypes = { "go", "gomod" },
   on_attach = on_attach,

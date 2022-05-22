@@ -9,26 +9,38 @@ fade_in_slide_out_stages[2] = function()
   }
 end
 
+
 local config = {
+  level = "info",
+  timeout = 5000,
+  fps = 30,
   -- stages = "fade_in_slide_out", "fade", "slide", "static"
   stages = fade_in_slide_out_stages,
   -- Default timeout for notifications
   timeout = 2000,
+  minimum_width = 20,
   -- Function called when a window is closed
-  on_close = nil,
+  -- on_close = nil,
+  --   max_width = nil,
+  --   max_height = nil,
+  -- on_open = nil,
   -- For stages that change opacity this is treated as the highlight behind the window
   background_colour = "#000000",
   -- Icons for the different levels
   icons = {ERROR = "", WARN = "", INFO = "", DEBUG = "", TRACE = "✎"},
   -- Minimum width for notification windows
-  minimum_width = 20,
-  on_open = function(win)
-    -- vim.api.nvim_win_set_option(win, "wrap", true)
-    -- vim.api.nvim_win_set_config(win, { zindex = 100 })
-  end,
   -- keep: Function that returns whether or not to keep the window open instead of using a timeout
   render = "default"
 }
+
+-- "title",
+-- "icon",
+-- "timeout",
+-- "keep",
+-- "on_open",
+-- "on_close",
+-- "render",
+-- "hide_from_history",
 
 notify.setup(config)
 return notify

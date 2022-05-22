@@ -7,6 +7,8 @@ local custom_actions = require("plugins.configs.telescope-custom-actions")
 mappings.main = {
   i = {
     ["<esc>"] = actions.close,
+    ["jk"] = actions.close,
+    ["kj"] = actions.close,
     ["<c-f>"] = function(prompt_bufnr)
       actions_set.shift_selection(prompt_bufnr, 15)
     end,
@@ -63,6 +65,10 @@ mappings.file_picker = {
     ["<cr>"] = custom_actions.multi_selection_open
   }
 }
+
+--  TODO: grep live
+--  opts.search_dirs -- list of directory to search in
+--  opts.grep_open_files -- boolean to restrict search to open files
 
 return mappings
 

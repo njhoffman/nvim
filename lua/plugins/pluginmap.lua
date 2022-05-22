@@ -75,13 +75,14 @@ M.picker_plugins = {
 
 M.motion_plugins = {
   -- ["vim-sandwhich"] = {"machakann/vim-sandwich"},
-  ["vim-matchup"] = { "andymass/vim-matchup" },
-  ["vim-wordmotion"] = { "chaoren/vim-wordmotion" },
-  ["vim-smoothie"] = { "psliwka/vim-smoothie", commit = "10fd0aa" }, -- f2aaab1
-  ["clever-f"] = { "rhysd/clever-f.vim" },
-  ["marks.nvim"] = { "chentoast/marks.nvim" },
+  ["vim-matchup"]           = { "andymass/vim-matchup" },
+  ["vim-wordmotion"]        = { "chaoren/vim-wordmotion" },
+  ["vim-smoothie"]          = { "psliwka/vim-smoothie", commit = "10fd0aa" }, -- f2aaab1
+  ["clever-f"]              = { "rhysd/clever-f.vim" },
+  ["marks.nvim"]            = { "chentoast/marks.nvim" },
   ["markdown-preview.nvim"] = { "iamcco/markdown-preview.nvim", run = "cd app && yarn install" },
-  ["neuron.nvim"] = {
+  -- ["neuron-v2.vim"]         = { "chiefnoah/neuron-v2.vim" },
+  ["neuron.nvim"]           = {
     "njhoffman/neuron.nvim",
     requires = {
       "nvim-lua/popup.nvim",
@@ -92,15 +93,15 @@ M.motion_plugins = {
 }
 
 M.format_plugins = {
-  ["kommentary"] = { "b3nj5m1n/kommentary" },
-  ["nvim-autopairs"] = { "windwp/nvim-autopairs" }, -- jiangmiao/auto-pairs
-  ["splitjoin.vim"] = { "andrewradev/splitjoin.vim" }, -- FooSoft/vim-argwrap
-  ["vim-easy-align"] = { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
-  ["vim-table-mode"] = { "dhruvasagar/vim-table-mode" },
-  ["dial.nvim"] = { "monaqa/dial.nvim" },
-  ["iswap.nvim"] = { "mizlan/iswap.nvim" },
-  ["vim-camelsnek"] = { "nicwest/vim-camelsnek" },
-  ["vim-checkbox"] = { "jkramer/vim-checkbox" },
+  ["kommentary"]      = { "b3nj5m1n/kommentary" },
+  ["nvim-autopairs"]  = { "windwp/nvim-autopairs" }, -- jiangmiao/auto-pairs
+  ["splitjoin.vim"]   = { "andrewradev/splitjoin.vim" }, -- FooSoft/vim-argwrap
+  ["vim-easy-align"]  = { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
+  ["vim-table-mode"]  = { "dhruvasagar/vim-table-mode" },
+  ["dial.nvim"]       = { "monaqa/dial.nvim" },
+  ["iswap.nvim"]      = { "mizlan/iswap.nvim" },
+  ["vim-camelsnek"]   = { "nicwest/vim-camelsnek" },
+  ["vim-checkbox"]    = { "jkramer/vim-checkbox" },
   ["vim-sort-motion"] = { "christoomey/vim-sort-motion" },
   ["telekasten.nvim"] = { "renerocksai/telekasten.nvim", requires = { "renerocksai/calendar-vim" } }
 }
@@ -221,33 +222,33 @@ M.ui_plugins = {
 }
 
 M.project_plugins = {
-  ["auto-session"] = { "rmagatti/auto-session" },
-  ["competitest.nvim"] = { "xeluxee/competitest.nvim", requires = "MunifTanjim/nui.nvim" },
-  ["cpbooster.vim"] = { "searleser97/cpbooster.vim" },
-  ["gitsigns.nvim"] = { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
+  ["auto-session"]       = { "rmagatti/auto-session" },
+  ["competitest.nvim"]   = { "xeluxee/competitest.nvim", requires = "MunifTanjim/nui.nvim" },
+  ["cpbooster.vim"]      = { "searleser97/cpbooster.vim" },
+  ["gitsigns.nvim"]      = { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
   ["nvim-projectconfig"] = { "windwp/nvim-projectconfig" },
-  ["project-nvim"] = { "ahmedkhalf/project.nvim" }, -- TODO: load before telescope
-  ["octo.nvim"] = { "pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons" },
-  ["vim-flog"] = { "rbong/vim-flog" },
-  ["vim-fugitive"] = { "tpope/vim-fugitive" },
-  ["vim-rhubarb"] = { "tpope/vim-rhubarb" },
-  ["vim-wakatime"] = { "wakatime/vim-wakatime" }
+  ["project-nvim"]       = { "ahmedkhalf/project.nvim" }, -- TODO: load before telescope
+  ["octo.nvim"]          = { "pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons" },
+  ["vim-flog"]           = { "rbong/vim-flog" },
+  ["vim-fugitive"]       = { "tpope/vim-fugitive" },
+  ["vim-rhubarb"]        = { "tpope/vim-rhubarb" },
+  ["vim-wakatime"]       = { "wakatime/vim-wakatime" }
 }
 
 M.interface_plugins = {
   -- ["yank-history"] = {"yazgoo/yank-history"},
-  ["alpha-nvim"] = { "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" },
-  ["diffview.nvim"] = { "sindrets/diffview.nvim" },
-  ["nvim-bqf"] = { "kevinhwang91/nvim-bqf" },
-  ["nvim-tree.lua"] = { "kyazdani42/nvim-tree.lua" },
-  ["perfanno.nvim"] = { "t-troebst/perfanno.nvim" },
+  ["alpha-nvim"]     = { "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" },
+  ["diffview.nvim"]  = { "sindrets/diffview.nvim" },
+  ["nvim-bqf"]       = { "kevinhwang91/nvim-bqf" },
+  ["nvim-tree.lua"]  = { "kyazdani42/nvim-tree.lua" },
+  ["perfanno.nvim"]  = { "t-troebst/perfanno.nvim" },
   ["quickmath.nvim"] = { "jbyuki/quickmath.nvim" },
   ["registers.nvim"] = { "tversteeg/registers.nvim" },
-  ["vim-floaterm"] = { "voldikss/vim-floaterm" },
-  ["vim-mundo"] = { "simnalamburt/vim-mundo" },
-  ["vim-qf"] = { "romainl/vim-qf" },
+  ["vim-floaterm"]   = { "voldikss/vim-floaterm" },
+  ["vim-mundo"]      = { "simnalamburt/vim-mundo" },
+  ["vim-qf"]         = { "romainl/vim-qf" },
   ["vim-qf-history"] = { "bfrg/vim-qf-history" },
-  ["vim-yoink"] = { "svermeulen/vim-yoink" }
+  ["vim-yoink"]      = { "svermeulen/vim-yoink" }
 }
 
 M.integration_plugins = {

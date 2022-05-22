@@ -65,15 +65,32 @@ function custom_actions.multi_selection_open(prompt_bufnr)
   custom_actions._multiopen(prompt_bufnr, "edit")
 end
 
+-- TODO: add special highglight for project
+-- if self.prompt_prefix ~= "" then
+--   vim.api.nvim_buf_add_highlight(
+--     self.prompt_bufnr,
+--     ns_telescope_prompt_prefix,
+--     self._current_prefix_hl_group or "TelescopePromptPrefix",
+--     0,
+--     0,
+--     #self.prompt_prefix
+--   )
+-- end
+-- end
 function custom_actions.switch_picker_type(prompt_bufnr)
   local picker = actions_state.get_current_picker(prompt_bufnr)
+  local prompt_text = picker:_get_prompt()
   actions.close(prompt_bufnr)
+
+  local opts = {
+    default_text = prompt_text
+  }
   if picker.prompt_title == "Frecency" then
-    local ok = pcall(require "telescope.builtin".oldfiles)
+    local ok = pcall(require "telescope.builtin".oldfiles, opts)
   elseif picker.prompt_title == "Find Files" then
-    local ok = pcall(require "telescope".extensions.frecency.frecency)
+    local ok = pcall(require "telescope".extensions.frecency.frecency, opts)
   else
-    local ok = pcall(require "telescope.builtin".find_files)
+    local ok = pcall(require "telescope.builtin".find_files, opts)
   end
   vim.schedule(
     function()
@@ -94,11 +111,14 @@ function custom_actions.directory_up(prompt_bufnr)
   if dir ~= "/" then
     dir = H.split_string(dir, "/")
     table.remove(dir)
+
     dir = "/" .. table.concat(dir, "/")
+    dir = dir:gsub(vim.fn.getenv("HOME"), "~")
     actions.close(prompt_bufnr)
+
     local opts = {
       results_title = dir,
-      find_command = {"rg", "--ignore", "--hidden", "--sort", "path", "--files"},
+      find_command = { "rg", "--ignore", "--hidden", "--sort", "path", "--files" },
       cwd = dir,
       follow = true,
       prompt_prefix = "🔍 "

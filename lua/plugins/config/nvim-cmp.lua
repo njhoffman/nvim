@@ -130,9 +130,9 @@ local setupConfig = {
   sources = cmp.config.sources(
     {
       { name = "nvim_lsp", priority = 8 },
-      -- {name = "nvim_lua", priority = 7},
-      -- {name = "nvim_lsp_signature_help", priority = 7},
-      -- {name = "nvim_lsp_document_symbol", priority = 7},
+      { name = "nvim_lua", priority = 7 },
+      { name = "nvim_lsp_signature_help", priority = 7 },
+      { name = "nvim_lsp_document_symbol", priority = 7 },
       { name = "vim-dadbod-completion", priority = 5 },
       { name = "path", priority = 5 },
       { name = "vsnip", priority = 4 },
@@ -172,8 +172,10 @@ local setupConfig = {
       -- { name = "rg" },
       -- { name = "dictionary", keyword_length = 2, },
       -- { name = "neorg" },
-    }
-  )
+    }, {
+    { name = 'buffer' },
+    { name = 'cmdline' }
+  })
 }
 
 cmp.setup(setupConfig)

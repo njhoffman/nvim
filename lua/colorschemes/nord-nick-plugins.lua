@@ -1,5 +1,43 @@
 ---@diagnostic disable: undefined-global
 
+
+local tokyoColors = {}
+
+tokyoColors = {
+  none = "NONE",
+  bg_dark = "#1f2335",
+  bg = "#24283b",
+  bg_highlight = "#292e42",
+  terminal_black = "#414868",
+  fg = "#c0caf5",
+  fg_dark = "#a9b1d6",
+  fg_gutter = "#3b4261",
+  dark3 = "#545c7e",
+  comment = "#565f89",
+  dark5 = "#737aa2",
+  blue0 = "#3d59a1",
+  blue = "#7aa2f7",
+  cyan = "#7dcfff",
+  blue1 = "#2ac3de",
+  blue2 = "#0db9d7",
+  blue5 = "#89ddff",
+  blue6 = "#B4F9F8",
+  blue7 = "#394b70",
+  magenta = "#bb9af7",
+  magenta2 = "#ff007c",
+  purple = "#9d7cd8",
+  orange = "#ff9e64",
+  yellow = "#e0af68",
+  green = "#9ece6a",
+  green1 = "#73daca",
+  green2 = "#41a6b5",
+  teal = "#1abc9c",
+  red = "#f7768e",
+  red1 = "#db4b4b",
+  git = { change = "#6183bb", add = "#449dab", delete = "#914c54", conflict = "#bb7a61" },
+  gitSigns = { add = "#164846", change = "#394b70", delete = "#823c41" },
+}
+
 return function()
   local colors = {
     fg = "#C8D0E0",
@@ -24,32 +62,186 @@ return function()
     none = "NONE"
   }
   return {
+    -- Telescope
+    TelescopeNormal { fg = "#6D778a", bg = "none" },
+    TelescopeBorder { bg = "none" },
+    TelescopePrompt { bg = "none" },
+    TelescopePromptNormal { bg = "none" },
+    TelescopePromptBorder { fg = "#2299cc", bg = "none" },
+    TelescopePromptPrefix { fg = "#2977FF", bg = "none" },
+    -- fg_bg("TelescopePromptPrefix", red, black2)
+    -- fg_bg("TelescopePromptTitle", black, red)
+    TelescopeMultiIcon { fg = "#0066ff" },
+    TelescopePreviewTitle { fg = "#47a0f0", bg = "none" },
+    TelescopePreviewBorder { fg = "#416191", bg = 'none' },
+    TelescopeResults { bg = "none" },
+    TelescopeResultsBorder { fg = "#476F9F", bg = "none" },
+    TelescopeResultsTitle { fg = "#34799c", bg = "none" },
+    TelescopeSelectionCaret { fg = "#44c9fc" },
+    TelescopeSelection { fg = "#28ddff", gui = "bold", bg = "#0f1a20" }, -- bg = "#202324"
+    TelescopeMatching { fg = "#7997FF", bg = "none" },
+    TelescopeFrecencyScores { fg = "#34799c" },
+    TelescopeBufferLoaded { fg = "#47a0f0" },
+    TelescopeMultiSelection { fg = "#4060ff", gui = "italic" },
+    -- -- keybinds cheatsheet
+    -- fg_bg("CheatsheetBorder", black, black)
+    -- bg("CheatsheetSectionContent", black)
+    -- fg("CheatsheetHeading", white)
+    -- local section_title_colors = {
+    --   white,
+    --   blue,
+    --   red,
+    --   green,
+    --   yellow,
+    --   purple,
+    --   orange,
+    -- }
+    -- for i, color in ipairs(section_title_colors) do
+    --   vim.cmd(
+    --     "highlight CheatsheetTitle"
+    --       .. i
+    --       .. " guibg = "
+    --       .. color
+    --       .. " guifg="
+    --       .. black
+    --   )
+    -- end
+
+    -- TelescopePromptCounter { NonText },
+    -- TelescopePathSeparator { fg = '#667788' },
+    -- TelescopeQueryFilter { fg = '#4466FF'},
+    -- TelescopeResultsIdentifier = {},
+    -- TelescopeResultsComment = {},
+    -- TelescopeMultiSelection guifg=#928374          " Multisections
+
+    --    " Sets the highlight for selected items within the picker.
+    --    highlight default link TelescopeSelection Visual
+    --    highlight default link TelescopeSelectionCaret TelescopeSelection
+    --    highlight default link TelescopeMultiSelection Type
+    --
+    --    " "Normal" in the floating windows created by telescope.
+    --    highlight default link TelescopeNormal Normal
+    --    highlight default link TelescopePreviewNormal TelescopeNormal
+    --    highlight default link TelescopePromptNormal TelescopeNormal
+    --    highlight default link TelescopeResultsNormal TelescopeNormal
+    --
+    --    " Border highlight groups.
+    --    "   Use TelescopeBorder to override the default.
+    --    "   Otherwise set them specifically
+    --    highlight default link TelescopeBorder TelescopeNormal
+    --    highlight default link TelescopePromptBorder TelescopeBorder
+    --    highlight default link TelescopeResultsBorder TelescopeBorder
+    --    highlight default link TelescopePreviewBorder TelescopeBorder
+    --
+    --    " Title highlight groups.
+    --    "   Use TelescopeTitle to override the default.
+    --    "   Otherwise set them specifically
+    --    highlight default link TelescopeTitle TelescopeBorder
+    --    highlight default link TelescopePromptTitle TelescopeTitle
+    --    highlight default link TelescopeResultsTitle TelescopeTitle
+    --    highlight default link TelescopePreviewTitle TelescopeTitle
+    --
+    --    highlight default link TelescopePromptCounter NonText
+    --
+    --    " Used for highlighting characters that you match.
+    --    highlight default link TelescopeMatching Special
+    --
+    --    " Used for the prompt prefix
+    --    highlight default link TelescopePromptPrefix Identifier
+    --
+    --    " Used for highlighting the matched line inside Previewer. Works only for (vim_buffer_ previewer)
+    --    highlight default link TelescopePreviewLine Visual
+    --    highlight default link TelescopePreviewMatch Search
+    --
+    --    highlight default link TelescopePreviewPipe Constant
+    --    highlight default link TelescopePreviewCharDev Constant
+    --    highlight default link TelescopePreviewDirectory Directory
+    --    highlight default link TelescopePreviewBlock Constant
+    --    highlight default link TelescopePreviewLink Special
+    --    highlight default link TelescopePreviewSocket Statement
+    --    highlight default link TelescopePreviewNormal Normal
+    --    highlight default link TelescopePreviewRead Constant
+    --    highlight default link TelescopePreviewWrite Statement
+    --    highlight default link TelescopePreviewExecute String
+    --    highlight default link TelescopePreviewHyphen NonText
+    --    highlight default link TelescopePreviewSticky Keyword
+    --    highlight default link TelescopePreviewSize String
+    --    highlight default link TelescopePreviewUser Constant
+    --    highlight default link TelescopePreviewGroup Constant
+    --    highlight default link TelescopePreviewDate Directory
+    --    highlight default link TelescopePreviewMessage TelescopePreviewNormal
+    --    highlight default link TelescopePreviewMessageFillchar TelescopePreviewMessage
+    --
+    --    " Used for Picker specific Results highlighting
+    --    highlight default link TelescopeResultsClass Function
+    --    highlight default link TelescopeResultsConstant Constant
+    --    highlight default link TelescopeResultsField Function
+    --    highlight default link TelescopeResultsFunction Function
+    --    highlight default link TelescopeResultsMethod Method
+    --    highlight default link TelescopeResultsOperator Operator
+    --    highlight default link TelescopeResultsStruct Struct
+    --    highlight default link TelescopeResultsVariable SpecialChar
+    --
+    --    highlight default link TelescopeResultsLineNr LineNr
+    --    highlight default link TelescopeResultsIdentifier Identifier
+    --    highlight default link TelescopeResultsNumber Number
+    --    highlight default link TelescopeResultsComment Comment
+    --    highlight default link TelescopeResultsSpecialComment SpecialComment
+    --
+    --    " Used for git status Results highlighting
+    --    highlight default link TelescopeResultsDiffChange DiffChange
+    --    highlight default link TelescopeResultsDiffAdd DiffAdd
+    --    highlight default link TelescopeResultsDiffDelete DiffDelete
+    --    highlight default link TelescopeResultsDiffUntracked NonText
+
+
     -- Cmp
-    CmpItemAbbr {fg = colors.fg},
-    CmpItemAbbrDeprecated {fg = colors.fg},
-    CmpItemAbbrMatch {fg = colors.blue, style = "bold"},
-    CmpItemAbbrMatchFuzzy {fg = colors.blue, underline = true},
-    CmpItemMenu {fg = colors.light_gray},
-    CmpItemKindText {fg = colors.orange},
-    CmpItemKindMethod {fg = colors.blue},
-    CmpItemKindFunction {fg = colors.blue},
-    CmpItemKindConstructor {fg = colors.yellow},
-    CmpItemKindField {fg = colors.blue},
-    CmpItemKindClass {fg = colors.yellow},
-    CmpItemKindInterface {fg = colors.yellow},
-    CmpItemKindModule {fg = colors.blue},
-    CmpItemKindProperty {fg = colors.blue},
-    CmpItemKindValue {fg = colors.orange},
-    CmpItemKindEnum {fg = colors.yellow},
-    CmpItemKindKeyword {fg = colors.purple},
-    CmpItemKindSnippet {fg = colors.green},
-    CmpItemKindFile {fg = colors.blue},
-    CmpItemKindEnumMember {fg = colors.cyan},
-    CmpItemKindConstant {fg = colors.orange},
-    CmpItemKindStruct {fg = colors.yellow},
-    CmpItemKindTypeParameter {fg = colors.yellow}
+    CmpItemAbbr { fg = colors.fg },
+    CmpItemAbbrDeprecated { fg = colors.fg },
+    CmpItemAbbrMatch { fg = colors.blue, style = "bold" },
+    CmpItemAbbrMatchFuzzy { fg = colors.blue, underline = true },
+    CmpItemMenu { fg = colors.light_gray },
+    CmpItemKindText { fg = colors.orange },
+    CmpItemKindMethod { fg = colors.blue },
+    CmpItemKindFunction { fg = colors.blue },
+    CmpItemKindConstructor { fg = colors.yellow },
+    CmpItemKindField { fg = colors.blue },
+    CmpItemKindClass { fg = colors.yellow },
+    CmpItemKindInterface { fg = colors.yellow },
+    CmpItemKindModule { fg = colors.blue },
+    CmpItemKindProperty { fg = colors.blue },
+    CmpItemKindValue { fg = colors.orange },
+    CmpItemKindEnum { fg = colors.yellow },
+    CmpItemKindKeyword { fg = colors.purple },
+    CmpItemKindSnippet { fg = colors.green },
+    CmpItemKindFile { fg = colors.blue },
+    CmpItemKindEnumMember { fg = colors.cyan },
+    CmpItemKindConstant { fg = colors.orange },
+    CmpItemKindStruct { fg = colors.yellow },
+    CmpItemKindTypeParameter { fg = colors.yellow },
 
     -- Notify
+    -- Notify
+    NotifyERRORBorder { fg = "#8A1F1F" },
+    NotifyWARNBorder { fg = "#79491D" },
+    NotifyINFOBorder { fg = "#4Fa792" },
+    NotifyDEBUGBorder { fg = "#4B4BBB" },
+    NotifyTRACEBorder { fg = "#7B7BCC" },
+    NotifyERRORIcon { fg = "#F74047" },
+    NotifyWARNIcon { fg = "#F79000" },
+    NotifyINFOIcon { fg = "#29cFa8" },
+    NotifyDEBUGIcon { fg = "#6B6BFF" },
+    NotifyTRACEIcon { fg = "#7BABFF" },
+    NotifyERRORTitle { fg = "#F74047" },
+    NotifyWARNTitle { fg = "#F79000" },
+    NotifyINFOTitle { fg = "#29cFa8" },
+    NotifyDEBUGTitle { fg = "#6B6BFF" },
+    NotifyTRACETitle { fg = "#7BABFF" },
+    -- NotifyERRORBody { Normal },
+    -- NotifyWARNBody { Normal },
+    -- NotifyINFOBody { Normal },
+    -- NotifyDEBUGBody { Normal },
+    -- NotifyTRACEBody { Normal },
     -- NotifyERRORBorder = { fg = colors.error },
     -- NotifyWARNBorder = { fg = colors.warn },
     -- NotifyINFOBorder = { fg = colors.info },
@@ -277,93 +469,6 @@ return function()
   --   OctoStateCommented	Normal
   --   OctoStateDismissed	OctoStateClosed
 
-  -- TelescopePromptCounter { NonText },
-  -- TelescopePathSeparator { fg = '#667788' },
-  -- TelescopeQueryFilter { fg = '#4466FF'},
-  -- TelescopeResultsIdentifier = {},
-  -- TelescopeResultsComment = {},
-  -- TelescopeMultiSelection guifg=#928374          " Multisections
-
-  --    " Sets the highlight for selected items within the picker.
-  --    highlight default link TelescopeSelection Visual
-  --    highlight default link TelescopeSelectionCaret TelescopeSelection
-  --    highlight default link TelescopeMultiSelection Type
-  --
-  --    " "Normal" in the floating windows created by telescope.
-  --    highlight default link TelescopeNormal Normal
-  --    highlight default link TelescopePreviewNormal TelescopeNormal
-  --    highlight default link TelescopePromptNormal TelescopeNormal
-  --    highlight default link TelescopeResultsNormal TelescopeNormal
-  --
-  --    " Border highlight groups.
-  --    "   Use TelescopeBorder to override the default.
-  --    "   Otherwise set them specifically
-  --    highlight default link TelescopeBorder TelescopeNormal
-  --    highlight default link TelescopePromptBorder TelescopeBorder
-  --    highlight default link TelescopeResultsBorder TelescopeBorder
-  --    highlight default link TelescopePreviewBorder TelescopeBorder
-  --
-  --    " Title highlight groups.
-  --    "   Use TelescopeTitle to override the default.
-  --    "   Otherwise set them specifically
-  --    highlight default link TelescopeTitle TelescopeBorder
-  --    highlight default link TelescopePromptTitle TelescopeTitle
-  --    highlight default link TelescopeResultsTitle TelescopeTitle
-  --    highlight default link TelescopePreviewTitle TelescopeTitle
-  --
-  --    highlight default link TelescopePromptCounter NonText
-  --
-  --    " Used for highlighting characters that you match.
-  --    highlight default link TelescopeMatching Special
-  --
-  --    " Used for the prompt prefix
-  --    highlight default link TelescopePromptPrefix Identifier
-  --
-  --    " Used for highlighting the matched line inside Previewer. Works only for (vim_buffer_ previewer)
-  --    highlight default link TelescopePreviewLine Visual
-  --    highlight default link TelescopePreviewMatch Search
-  --
-  --    highlight default link TelescopePreviewPipe Constant
-  --    highlight default link TelescopePreviewCharDev Constant
-  --    highlight default link TelescopePreviewDirectory Directory
-  --    highlight default link TelescopePreviewBlock Constant
-  --    highlight default link TelescopePreviewLink Special
-  --    highlight default link TelescopePreviewSocket Statement
-  --    highlight default link TelescopePreviewNormal Normal
-  --    highlight default link TelescopePreviewRead Constant
-  --    highlight default link TelescopePreviewWrite Statement
-  --    highlight default link TelescopePreviewExecute String
-  --    highlight default link TelescopePreviewHyphen NonText
-  --    highlight default link TelescopePreviewSticky Keyword
-  --    highlight default link TelescopePreviewSize String
-  --    highlight default link TelescopePreviewUser Constant
-  --    highlight default link TelescopePreviewGroup Constant
-  --    highlight default link TelescopePreviewDate Directory
-  --    highlight default link TelescopePreviewMessage TelescopePreviewNormal
-  --    highlight default link TelescopePreviewMessageFillchar TelescopePreviewMessage
-  --
-  --    " Used for Picker specific Results highlighting
-  --    highlight default link TelescopeResultsClass Function
-  --    highlight default link TelescopeResultsConstant Constant
-  --    highlight default link TelescopeResultsField Function
-  --    highlight default link TelescopeResultsFunction Function
-  --    highlight default link TelescopeResultsMethod Method
-  --    highlight default link TelescopeResultsOperator Operator
-  --    highlight default link TelescopeResultsStruct Struct
-  --    highlight default link TelescopeResultsVariable SpecialChar
-  --
-  --    highlight default link TelescopeResultsLineNr LineNr
-  --    highlight default link TelescopeResultsIdentifier Identifier
-  --    highlight default link TelescopeResultsNumber Number
-  --    highlight default link TelescopeResultsComment Comment
-  --    highlight default link TelescopeResultsSpecialComment SpecialComment
-  --
-  --    " Used for git status Results highlighting
-  --    highlight default link TelescopeResultsDiffChange DiffChange
-  --    highlight default link TelescopeResultsDiffAdd DiffAdd
-  --    highlight default link TelescopeResultsDiffDelete DiffDelete
-  --    highlight default link TelescopeResultsDiffUntracked NonText
-
   -- DiffAdd {
   --   fg = clrs.nord14,
   --   bg = cfg.nord_uniform_diff_background == 0 and clrs.nord0 or clrs.nord1,
@@ -474,3 +579,32 @@ return function()
   -- WhichKeyFloating = { bg = clrs.float },
   -- WhichKeyFloat = { bg = clrs.float },
 end
+
+
+
+--   colors.bg = "#1a1b26"
+--   colors.bg_dark = "#16161e"
+-- colors.diff = {
+--   add = util.darken(colors.green2, 0.15),
+--   delete = util.darken(colors.red1, 0.15),
+--   change = util.darken(colors.blue7, 0.15),
+--   text = colors.blue7,
+-- }
+-- colors.git.ignore = colors.dark3
+-- colors.black = util.darken(colors.bg, 0.8, "#000000")
+-- colors.border_highlight = colors.blue0
+-- colors.border = colors.black
+-- -- Popups and statusline always get a dark background
+-- colors.bg_popup = colors.bg_dark
+-- colors.bg_statusline = colors.bg_dark
+-- -- Sidebar and Floats are configurable
+-- colors.bg_sidebar = (config.transparentSidebar and colors.none) or config.darkSidebar and colors.bg_dark or colors.bg
+-- colors.bg_float = config.darkFloat and colors.bg_dark or colors.bg
+-- colors.bg_visual = util.darken(colors.blue0, 0.7)
+-- colors.bg_search = colors.blue0
+-- colors.fg_sidebar = colors.fg_dark
+-- colors.error = colors.red1
+-- colors.warning = colors.yellow
+-- colors.info = colors.blue2
+-- colors.hint = colors.teal
+-- util.color_overrides(colors, config)

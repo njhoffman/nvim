@@ -22,7 +22,42 @@ local servers = {
   -- "null-ls",
 }
 
-local lsp_installer = require "nvim-lsp-installer"
+local ok, lsplog = pcall(require, "vim.lsp.log")
+if not ok then return end
+local ok, lsp_installer = pcall(require, "nvim-lsp-installer")
+if not ok then return end
+local config = require("settings")
+
+
+function len(t)
+  local count = 0
+  for _ in pairs(t) do
+    count = count + 1
+  end
+  return count
+end
+
+lsplog.set_level(config.Logging.lsp_level)
+-- vim.lsp.set_log_level(1)
+-- vim.lsp.log.set_format_func(vim.inspect)
+
+lsplog.set_format_func(
+  function(messages)
+    local inspected = vim.inspect(messages)
+    local formatted = ""
+    if type(messages) == "table" then
+      formatted = formatted .. "Length: " .. len(messages) .. "\n"
+    end
+    for line in string.gmatch(inspected, "[^\n\r]+") do
+      formatted = formatted .. "\n  " .. line
+    end
+    return formatted
+  end
+)
+
+-- local format_func = function(arg)
+--   return vim.inspect(arg, { newline = '' })
+-- end
 
 for _, name in ipairs(servers) do
   local server_is_found, server = lsp_installer.get_server(name)
@@ -122,8 +157,10 @@ local on_attach = function(client, bufnr)
     )
   end
 end
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 local had_cmp_nvim_lsp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+
 if had_cmp_nvim_lsp then
   capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 end
@@ -147,7 +184,8 @@ vim.diagnostic.config {
     source = false, -- "if_many", "always", false
     prefix = "",
     spacing = 2,
-    severity = { min = vim.diagnostic.severity.WARN }
+    severity = 0
+    -- severity = { min = vim.diagnostic.severity.WARN }
     -- vim.diagnostic.get(0, { severity = {min=vim.diagnostic.severity.WARN} })
     -- vim.diagnostic.severity.ERROR, WARN, INFO, HINT
   },

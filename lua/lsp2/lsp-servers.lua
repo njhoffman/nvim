@@ -9,24 +9,24 @@ local lsp = vim.lsp
 local lspservers = {}
 
 lspservers["awk_ls"] = {
-  cmd = {"awk-language-server"},
-  filetypes = {"awk"},
+  cmd = { "awk-language-server" },
+  filetypes = { "awk" },
   single_file_support = true
 }
 
 lspservers["bashls"] = {
-  cmd = {"bash-language-server", "start"},
-  cmd_env = {GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)"},
-  filetypes = {"sh"},
+  cmd = { "bash-language-server", "start" },
+  cmd_env = { GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)" },
+  filetypes = { "sh" },
   single_file_support = true,
   root_dir = util.find_git_ancestor
 }
 
-lspservers["clangd"] = {filetypes = {"c", "cpp", "cc"}, flags = {debounce_text_changes = 500}}
+lspservers["clangd"] = { filetypes = { "c", "cpp", "cc" }, flags = { debounce_text_changes = 500 } }
 
 lspservers["cmake"] = {
-  cmd = {"cmake-language-server"},
-  filetypes = {"cmake"},
+  cmd = { "cmake-language-server" },
+  filetypes = { "cmake" },
   init_options = {
     buildDirectory = "build"
   },
@@ -37,63 +37,63 @@ lspservers["cmake"] = {
 }
 
 lspservers["dockerls"] = {
-  cmd = {"docker-langserver", "--stdio"},
-  filetypes = {"dockerfile"},
-  flags = {debounce_text_changes = 500},
+  cmd = { "docker-langserver", "--stdio" },
+  filetypes = { "dockerfile" },
+  flags = { debounce_text_changes = 500 },
   root_dir = util.root_pattern("Dockerfile"),
   single_file_support = true
 }
 
 lspservers["gopls"] = {
-  cmd = {"gopls"},
-  filetypes = {"go", "gomod"},
-  flags = {debounce_text_changes = 500},
+  cmd = { "gopls" },
+  filetypes = { "go", "gomod" },
+  flags = { debounce_text_changes = 500 },
   root_dir = util.root_pattern("go.mod", ".git"),
   single_file_support = true
 }
 
 lspservers["golangci_lint_ls"] = {
-  cmd = {"golangci-lint-langserver"},
-  filetypes = {"go", "gomod"},
-  flags = {debounce_text_changes = 500},
+  cmd = { "golangci-lint-langserver" },
+  filetypes = { "go", "gomod" },
+  flags = { debounce_text_changes = 500 },
   init_options = {
-    command = {"golangci-lint", "run", "--out-format", "json"}
+    command = { "golangci-lint", "run", "--out-format", "json" }
   },
   root_dir = util.root_pattern("go.work") or util.root_pattern("go.mod", ".golangci.yaml", ".git"),
   single_file_support = true
 }
 
 lspservers["graphql"] = {
-  cmd = {"graphql-lsp", "server", "-m", "stream"},
-  filetypes = {"graphql", "typescriptreact", "javascriptreact"},
+  cmd = { "graphql-lsp", "server", "-m", "stream" },
+  filetypes = { "graphql", "typescriptreact", "javascriptreact" },
   root_dir = util.root_pattern(".git", ".graphqlrc*", ".graphql.config.*")
 }
 
 lspservers["jsonls"] = {
-  cmd = {"vscode-json-language-server", "--stdio"},
-  filetypes = {"json"},
+  cmd = { "vscode-json-language-server", "--stdio" },
+  filetypes = { "json" },
   single_file_support = true,
-  flags = {debounce_text_changes = 500},
+  flags = { debounce_text_changes = 500 },
   root_dir = util.find_git_ancestor,
-  init_options = {provideFormatter = true},
+  init_options = { provideFormatter = true },
   settings = {
     json = {
       schemas = {
-        {fileMatch = {"package.json"}, url = "https://json.schemastore.org/package.json"},
-        {fileMatch = {"tsconfig*.json"}, url = "https://json.schemastore.org/tsconfig.json"},
+        { fileMatch = { "package.json" }, url = "https://json.schemastore.org/package.json" },
+        { fileMatch = { "tsconfig*.json" }, url = "https://json.schemastore.org/tsconfig.json" },
         {
-          fileMatch = {".prettierrc", ".prettierrc.json", "prettier.config.json"},
+          fileMatch = { ".prettierrc", ".prettierrc.json", "prettier.config.json" },
           url = "https://json.schemastore.org/prettierrc.json"
         },
-        {fileMatch = {".eslintrc", ".eslintrc.json"}, url = "https://json.schemastore.org/eslintrc.json"},
+        { fileMatch = { ".eslintrc", ".eslintrc.json" }, url = "https://json.schemastore.org/eslintrc.json" },
         {
-          fileMatch = {".babelrc", ".babelrc.json", "babel.config.json"},
+          fileMatch = { ".babelrc", ".babelrc.json", "babel.config.json" },
           url = "https://json.schemastore.org/babelrc.json"
         },
-        {fileMatch = {"lerna.json"}, url = "https://json.schemastore.org/lerna.json"},
-        {fileMatch = {"now.json", "vercel.json"}, url = "https://json.schemastore.org/now.json"},
+        { fileMatch = { "lerna.json" }, url = "https://json.schemastore.org/lerna.json" },
+        { fileMatch = { "now.json", "vercel.json" }, url = "https://json.schemastore.org/now.json" },
         {
-          fileMatch = {".stylelintrc", ".stylelintrc.json", "stylelint.config.json"},
+          fileMatch = { ".stylelintrc", ".stylelintrc.json", "stylelint.config.json" },
           url = "http://json.schemastore.org/stylelintrc.json"
         }
       }
@@ -111,52 +111,52 @@ local sumneko_config = {
   -- root_dir = util.root_pattern('.project', '.git') or bufdir,
   -- cmd = { sumneko_binary_path, "-E", sumneko_root_path .. "/main.lua" },
   single_file_support = true,
-  flags = {debounce_text_changes = 500},
+  flags = { debounce_text_changes = 500 },
   settings = {
     Lua = {
-      format = {enable = false},
+      format = { enable = false },
       -- completion = {keywordSnippet = "Disable"},
       -- runtime = {version = "LuaJIT", path = runtime_path},
-      diagnostics = {globals = {"vim", "use"}, disable = {"lowercase-global"}},
+      diagnostics = { globals = { "vim", "use" }, disable = { "lowercase-global" } },
       -- workspace = {
       --   -- Make the server aware of Neovim runtime files
       --   library = vim.api.nvim_get_runtime_file("", true)
       --   -- library = {[vim.fn.expand("$VIMRUNTIME/lua")] = true, [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true}
       -- },
       -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {enable = false}
+      telemetry = { enable = false }
     }
   }
 }
-local lua_dev = require("lua-dev").setup({runtime_path = false, lspconfig = sumneko_config})
+local lua_dev = require("lua-dev").setup({ runtime_path = false, lspconfig = sumneko_config })
 lspservers["sumneko_lua"] = lua_dev
 
 lspservers["pylsp"] = {
   root_dir = function(fname)
-    local root_files = {"pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile"}
+    local root_files = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile" }
     return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
   end,
   single_file_support = true,
-  flags = {debounce_text_changes = 500},
+  flags = { debounce_text_changes = 500 },
   settings = {
     pylsp = {
       plugins = {
-        pylint = {enabled = true, executable = "pylint"},
-        pyflakes = {enabled = false},
-        pycodestyle = {enabled = false},
-        jedi_completion = {fuzzy = true},
-        pyls_isort = {enabled = true},
-        pylsp_mypy = {enabled = true}
+        pylint = { enabled = true, executable = "pylint" },
+        pyflakes = { enabled = false },
+        pycodestyle = { enabled = false },
+        jedi_completion = { fuzzy = true },
+        pyls_isort = { enabled = true },
+        pylsp_mypy = { enabled = true }
       }
     }
   }
 }
 
 lspservers["sqls"] = {
-  filetypes = {"sql", "mysql", "pgsql", "psql"},
-  flags = {debounce_text_changes = 500},
+  filetypes = { "sql", "mysql", "pgsql", "psql" },
+  flags = { debounce_text_changes = 500 },
   settings = {
-    format = {enable = false},
+    format = { enable = false },
     sqls = {
       lowercaseKeywords = false,
       connections = {
@@ -170,18 +170,18 @@ lspservers["sqls"] = {
 }
 
 lspservers["terraformls"] = {
-  cmd = {"terraform-ls", "serve"},
-  filetypes = {"terraform"},
-  flags = {debounce_text_changes = 500},
+  cmd = { "terraform-ls", "serve" },
+  filetypes = { "terraform" },
+  flags = { debounce_text_changes = 500 },
   root_dir = util.root_pattern(".terraform", ".git"),
   single_file_support = true
 }
 
 lspservers["tsserver"] = {
-  cmd = {"typescript-language-server", "--stdio"},
+  cmd = { "typescript-language-server", "--stdio" },
   single_file_support = true,
-  flags = {debounce_text_changes = 500},
-  filetypes = {"javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx"},
+  flags = { debounce_text_changes = 500 },
+  filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
   init_options = {
     hostInfo = "neovim"
   },
@@ -189,15 +189,15 @@ lspservers["tsserver"] = {
 }
 
 lspservers["yamlls"] = {
-  cmd = {"yaml-language-server", "--stdio"},
-  filetypes = {"yaml", "yaml.docker-compose"},
-  flags = {debounce_text_changes = 500},
-  settings = {redhat = {telemetry = {enabled = false}}},
+  cmd = { "yaml-language-server", "--stdio" },
+  filetypes = { "yaml", "yaml.docker-compose" },
+  flags = { debounce_text_changes = 500 },
+  settings = { redhat = { telemetry = { enabled = false } } },
   single_file_support = true,
   root_dir = util.find_git_ancestor
 }
 
-lspservers["vimls"] = {flags = {debounce_text_changes = 500}}
+lspservers["vimls"] = { flags = { debounce_text_changes = 500 } }
 
 -- -- Formatting via efm
 -- https://github.com/tsuyoshicho/vim-efm-langserver-settings
@@ -221,7 +221,7 @@ local luacheck = {
   lintCommand = "luacheck --globals vim --formatter visual_studio -",
   lintIgnoreExitCode = true,
   lintStdin = true,
-  lintFormats = {"%f(%l,%c) : %tarning %m", "%f(%l,%c) : %trror %m"}
+  lintFormats = { "%f(%l,%c) : %tarning %m", "%f(%l,%c) : %trror %m" }
 }
 
 -- shellcheck shortcomings/bad advice
@@ -232,7 +232,7 @@ local shellcheck = {
   lintStdin = true,
   lintIgnoreExitCode = true,
   -- lintFormats = { "%f=%l:%c: %trror: %m", "%f=%l:%c: %tarning: %m", "%f=%l:%c: %tote: %m" },
-  lintFormats = {"%f:%l:%c: %trror: %m", "%f:%l:%c: %tarning: %m", "%f:%l:%c: %tote: %m"}
+  lintFormats = { "%f:%l:%c: %trror: %m", "%f:%l:%c: %tarning: %m", "%f:%l:%c: %tote: %m" }
 }
 
 local sqlFormat = {
@@ -254,12 +254,12 @@ local shfmt = {
 }
 
 local languages = {
-  lua = {luafmt, luacheck},
-  yaml = {prettier},
-  bash = {shfmt, shellcheck},
-  sh = {shfmt, shellcheck},
-  sql = {sqlFormat},
-  pgsql = {sqlFormat}
+  lua = { luafmt, luacheck },
+  yaml = { prettier },
+  bash = { shfmt, shellcheck },
+  sh = { shfmt, shellcheck },
+  sql = { sqlFormat },
+  pgsql = { sqlFormat }
   -- json = {prettier}
   -- typescript = {prettier, eslint},
   -- javascript = {prettier, eslint},
@@ -274,10 +274,10 @@ local languages = {
 }
 
 lspservers["efm"] = {
-  root_dir = util.root_pattern({"yarn.lock", "package.json", ".project", ".git", vim.fn.getcwd()}),
+  root_dir = util.root_pattern({ "yarn.lock", "package.json", ".project", ".git", vim.fn.getcwd() }),
   single_file_support = true,
   filetypes = vim.tbl_keys(languages),
-  init_options = {documentFormatting = true, hover = true, documentSymbol = true, codeAction = true},
+  init_options = { documentFormatting = true, hover = true, documentSymbol = true, codeAction = true },
   settings = {
     languages = languages,
     -- log_level = 1,
@@ -303,7 +303,7 @@ lspservers["efm"] = {
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
   opts = opts or {}
-  opts.border = opts.border or {{" ", "FloatBorder"}}
+  opts.border = opts.border or { { " ", "FloatBorder" } }
   return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
@@ -334,7 +334,7 @@ local lsp_formatting = function(bufnr)
   }
 end
 
-local opts = {noremap = true, silent = true, nowait = true}
+local opts = { noremap = true, silent = true, nowait = true }
 
 vim.api.nvim_set_keymap("n", "<space>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<space>lp", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
@@ -371,7 +371,7 @@ local on_attach = function(client, bufnr)
       end
     )
 
-    vim.api.nvim_clear_autocmds {group = augroup, buffer = bufnr}
+    vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
     vim.api.nvim_create_autocmd(
       "BufWritePre",
       {
@@ -400,7 +400,7 @@ end
 -- Gutter sign icons
 for type, icon in pairs(utils.signs) do
   local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = ""})
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
 -- Prefix diagnostic virtual text
