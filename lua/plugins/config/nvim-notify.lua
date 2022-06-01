@@ -1,24 +1,14 @@
-local ok, _ = pcall(require, "notify")
-if not ok then
-  return
-end
 -- increase fade in frequency
-local fade_in_slide_out_stages = require("notify.stages").fade_in_slide_out
-
+local stages = require("plugins.config.nvim-notify-stages")
 local cols = math.floor(vim.opt.columns:get() / 3 * 2)
-fade_in_slide_out_stages[2] = function()
-  return {
-    opacity = { 100, frequency = 3 },
-    col = { vim.opt.columns:get() }
-  }
-end
 
 local config = {
   level = "info",
   fps = 30,
-  stages = fade_in_slide_out_stages,
+  stages = stages.fade_in_slide_out_stages,
   render = "default",
   background_colour = "FloatShadow",
+  -- background_colour = "#000000",
   -- Default timeout for notifications
   timeout = 5000,
   -- maximium_width = 90,

@@ -8,12 +8,13 @@ local function notify_output(command, opts)
       opts or {},
       { title = table.concat(command, " "), replace = notification }
     )
+    msg = string.sub(msg, 0, -2)
     notification = vim.notify(msg, level, notify_opts)
   end
 
   local on_data = function(_, data)
     output = output .. table.concat(data, "\n")
-    notify(output, "info")
+    notify(output, "task")
   end
 
   local on_error = function(_, data)
@@ -39,4 +40,6 @@ end
 
 -- notify_output({ "echo", "hello world" })
 -- notify_output("echo hello world")
-notify_output({ "pidstat" })
+-- notify_output({ "pidstat" })
+-- /usr/bin/time -f "%E real\t%x exit"
+notify_output({ "/usr/bin/zsh", "-c", ". ~/.aliases/audio.sh && eval mpc" }, { title = "mpc" })

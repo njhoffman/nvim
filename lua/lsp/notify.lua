@@ -14,6 +14,17 @@ M.message_handler = function(err, method, params, client_id)
   notify(method.message, severity[params.type])
 end
 
+-- It's good practice to namespace custom handlers to avoid collisions
+M.diagnostic_handler = {
+  show = function(namespace, bufnr, diagnostics, opts)
+    -- In our example, the opts table has a "log_level" option
+    local level = opts["my/notify"].log_level
+    local name = vim.diagnostic.get_namespace(namespace).name
+    local msg = string.format("%d diagnostics in buffer %d from %s", #diagnostics, bufnr, name)
+    vim.notify(msg, level)
+  end
+}
+
 M.progress_handler = function(_, result, ctx)
   local client_id = ctx.client_id
   local val = result.value

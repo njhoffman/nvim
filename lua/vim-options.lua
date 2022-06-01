@@ -188,9 +188,9 @@ vim.g.sql_type_default = "pgsql"
 -- wildchar/charm for wildmenu
 -- 0x1a ^Z, 0x1b ^[, 0x0e C-n
 opt("wildignore", "*.o,*~,*.pyc")
--- opt("wildmenu", 1)
+opt("wildmenu", 1)
+opt("wildmode", "longest:full,full")
 -- opt("wildmode", "") -- full, longest, list, lastused, list:longest, list:full, longest:full
--- opt("wildmode", "longest:full,full")
 -- opt("wc", 0x0e)
 -- opt("wcm", 0x0e)
 

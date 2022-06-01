@@ -10,14 +10,15 @@ local DAP = config.DAP
 -- mfussenegger/nvim-dap
 -- C/C++/Rust Go Java Mockdebug Python Ruby Dart Haskell Javascript/Node PHP Scala Neovim Lua .NET
 if DAP.log_level ~= nil or DAP.log_level ~= false or DAP.log_level ~= 0 then
-  dap.set_log_level(DAP.log_level);
+  dap.set_log_level(DAP.log_level)
+  -- nvim-dap/lua/dap/log.lua:29
 end
 
 dap.adapters.go = {
   type = "executable",
   -- command = "node",
   command = os.getenv("HOME") .. "/.nvm/versions/node/v12.18.2/bin/node",
-  args = { vim.fn.stdpath("data") .. "/adapters/vscode-go/dist/debugAdapter.js" },
+  args = { vim.fn.stdpath("data") .. "/adapters/vscode-go/dist/debugAdapter.js" }
 }
 
 dap.configurations.go = {
@@ -29,35 +30,38 @@ dap.configurations.go = {
     showLog = false,
     program = "${workspaceFolder}/${file}",
     -- program = "${file}",
-    dlvToolPath = vim.fn.exepath("dlv"), -- Adjust to where delve is installed
-  },
+    dlvToolPath = vim.fn.exepath("dlv") -- Adjust to where delve is installed
+  }
 }
 
-dap.configurations.lua = { {
-  type = "nlua",
-  request = "attach",
-  name = "Attach to running Neovim instance",
-  --   host = function()
-  --     local value = vim.fn.input('Host [127.0.0.1]: ')
-  --     if value ~= "" then
-  --       return value
-  --     end
-  --     return '127.0.0.1'
-  --   end,
-  --   port = function()
-  --     local val = tonumber(vim.fn.input('Port: '))
-  --     assert(val, "Please provide a port number")
-  --     return val
-  --   end,
+dap.configurations.lua = {
+  {
+    type = "nlua",
+    request = "attach",
+    name = "Attach to running Neovim instance"
+    --   host = function()
+    --     local value = vim.fn.input('Host [127.0.0.1]: ')
+    --     if value ~= "" then
+    --       return value
+    --     end
+    --     return '127.0.0.1'
+    --   end,
+    --   port = function()
+    --     local val = tonumber(vim.fn.input('Port: '))
+    --     assert(val, "Please provide a port number")
+    --     return val
+    --   end,
   }
 }
 
 dap.adapters.nlua = function(callback, lua_config)
-  callback({
-    type = "server",
-    host = lua_config.host or "127.0.0.1",
-    port = lua_config.port or 8090,
-  })
+  callback(
+    {
+      type = "server",
+      host = lua_config.host or "127.0.0.1",
+      port = lua_config.port or 8090
+    }
+  )
   -- callback({ type = "server", host = lua_config.host, port = lua_config.port })
 end
 
@@ -69,8 +73,8 @@ dap.configurations.javascript = {
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
     protocol = "inspector",
-    console = "integratedTerminal",
-  },
+    console = "integratedTerminal"
+  }
 }
 
 dap.configurations.javascriptreact = {
@@ -81,8 +85,8 @@ dap.configurations.javascriptreact = {
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
     protocol = "inspector",
-    console = "integratedTerminal",
-  },
+    console = "integratedTerminal"
+  }
 }
 
 dap.configurations.typescript = {
@@ -93,8 +97,8 @@ dap.configurations.typescript = {
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
     protocol = "inspector",
-    console = "integratedTerminal",
-  },
+    console = "integratedTerminal"
+  }
 }
 -- NODE / TYPESCRIPT
 dap.adapters.node2 = {
@@ -102,15 +106,11 @@ dap.adapters.node2 = {
   -- command = os.getenv("HOME") .. "/.nvm/versions/node/v12.18.2/bin/node",
   command = "node",
   args = {
-    vim.fn.stdpath("data") ..
-        "/adapters/vscode-node-debug2/out/src/nodeDebug.js",
-  },
+    vim.fn.stdpath("data") .. "/adapters/vscode-node-debug2/out/src/nodeDebug.js"
+  }
 }
 
-require("dap-python").setup(
-    "/home/linuxbrew/.linuxbrew/opt/python@3.8/bin/python3.8")
-
-
+require("dap-python").setup("/home/linuxbrew/.linuxbrew/opt/python@3.8/bin/python3.8")
 
 -- dap.adapters.go = function(cb, config)
 --   local cb_input = {
@@ -147,7 +147,6 @@ require("dap-python").setup(
 --   Place breakpoint
 --   Invoke require"osv".run_this()
 --   vim.fn.stdpath('data') .. osv.log
-
 
 -- RUBY
 -- C/CPP
@@ -237,7 +236,6 @@ require("dap-python").setup(
 -- cd vscode-go
 -- npm install && npm run compile
 -- manual: dlv dap -l 127.0.0.1:38697 --log --log-output="dap"
-
 
 -- =============================
 --         CONFIGURATIONS

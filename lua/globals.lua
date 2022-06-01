@@ -17,6 +17,7 @@ vim.dbg = require("debuglog").dbg
 vim.dbg_test = function()
   vim.dbg(vim.api.nvim_get_all_options_info())
 end
+
 vim.notify_test = function()
   local str = "Error loading telescope plugin: telescope-find-pickers - .../start/telescope.nvim/"
   str = str .. "lua/telescope/_extensions/init.lua:10: 'telescope-find-pickers' extension doesn't "

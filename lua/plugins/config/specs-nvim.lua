@@ -67,7 +67,13 @@ local wide_config = {
     resizer = shrink_resizer
   },
   ignore_filetypes = {},
-  ignore_buftypes = { nofile = true, nowrite = true, quickfix = true, terminal = true, prompt = true }
+  ignore_buftypes = {
+    nofile = true,
+    nowrite = true,
+    quickfix = true,
+    terminal = true,
+    prompt = true
+  }
 }
 
 local quick_config = {

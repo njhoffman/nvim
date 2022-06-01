@@ -21,8 +21,8 @@ local diagnostic_config = {
 }
 
 vim.diagnostic.config(diagnostic_config)
-vim.lsp.handlers["textDocument/publishDiagnostics"] =
-  vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, diagnostic_config)
+-- vim.lsp.handlers["textDocument/publishDiagnostics"] =
+--   vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, diagnostic_config)
 
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, lsp_opts, ...)
@@ -38,7 +38,7 @@ end
 -- Gutter sign icons
 for type, icon in pairs(utils.signs) do
   local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = ""})
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
 local lsplog = require("vim.lsp.log")
@@ -51,6 +51,16 @@ vim.lsp.handlers["textDocument/hover"] = hover_handler
 local lspnotify = require("lsp.notify")
 vim.lsp.handlers["window/showMessage"] = lspnotify.message_handler
 -- vim.lsp.handlers["$/progress"] = lspnotify.progress_handler
+
+-- Users can configure the handler
+vim.diagnostic.config(
+  {
+    ["my/notify"] = {
+      log_level = vim.log.levels.OFF
+    }
+  }
+)
+vim.diagnostic.handlers["my/notify"] = lspnotify.diagnostic_handler
 
 -- local function len(t)
 --   local count = 0

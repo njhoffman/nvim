@@ -27,13 +27,14 @@ local hlslens_config = {
     render.set_virt(0, lnum - 1, col - 1, chunks, nearest)
   end,
   auto_enable = true,
-  calm_down = false,
-  nearest_only = false,
+  calm_down = true,
+  nearest_only = true,
   nearest_float_when = "auto",
-  virt_priority = 100,
+  virt_priority = 100
 }
 
-require"hlslens".setup(hlslens_config)
+require "hlslens".setup(hlslens_config)
+-- vim.cmd [[nmap <silent> n nzz:call BlingHighight()<CR>]]
 
 -- integrate with vim-visual-multi multiple cursors
 -- aug VMlens

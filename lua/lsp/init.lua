@@ -103,6 +103,7 @@ local on_attach = function(client, bufnr)
   )
   keymap("n", "<leader>a", "<cmd>Telescope lsp_code_actions<CR>", opts)
   keymap("n", "K", ":lua show_documentation()<cr>", opts)
+  keymap("n", "gh", ":lua show_help()<cr>", opts)
 end
 
 function show_documentation()
@@ -114,6 +115,10 @@ function show_documentation()
   else
     vim.lsp.buf.hover({ border = "single" })
   end
+end
+
+function show_help()
+  vim.cmd("h " .. vim.fn.expand("<cword>"))
 end
 
 for _, server in ipairs(servers) do

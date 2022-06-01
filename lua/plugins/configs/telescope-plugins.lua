@@ -38,6 +38,7 @@ local tele_plugs = {
   ["packer"] = "telescope-packer.nvim",
   ["ports"] = "telescope-ports.nvim",
   ["project"] = "telescope-project.nvim",
+  ["repo"] = "telescope-repo.nvim",
   ["session-lens"] = "session-lens",
   ["telescope-code-fence"] = "telescope-code-fence.nvim",
   ["tmux"] = "telescope-tmux.nvim",
@@ -236,6 +237,16 @@ M.extensions.project = {
     {path = '~/dev/src4'},
     {path = '~/dev/src5', max_depth = 2},
   }, ]]
+  base_dirs = {
+    {
+      path = "~/git",
+      max_depth = 4
+    },
+    {
+      path = "~/ghq",
+      max_depth = 4
+    }
+  },
   hidden_files = true,
   theme = "dropdown"
 }

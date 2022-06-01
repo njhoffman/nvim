@@ -14,8 +14,6 @@ local function dir_separator()
   -- Look at package.config for directory separator string (it's the first line)
   if package.config then
     return string.match(package.config, "^[^\n]")
-  elseif vim.fn.has("win32") == 1 then
-    return "\\"
   else
     return "/"
   end
@@ -24,8 +22,6 @@ end
 -- Search for lua traditional include paths.
 -- This mimics how require internally works.
 local function include_paths(fname, ext)
-  ext = ext or "lua"
-  local sep = dir_separator()
   local paths = string.gsub(package.path, "%?", fname)
   for path in split(paths, "%;") do
     if vim.fn.filereadable(path) == 1 then
@@ -88,6 +84,8 @@ vim.opt_local.include = [=[\v<((do|load)file|require)\s*\(?['"]\zs[^'"]+\ze['"]]
 vim.opt_local.includeexpr = "v:lua.find_required_path(v:fname)"
 
 -- lua.vim
--- setlocal suffixesadd^=.lua
--- setlocal suffixesadd^=init.lua
+-- vim.cmd [[
+--   setlocal suffixesadd^=.lua
+--   setlocal suffixesadd^=init.lua
+-- ]]
 -- let &l:path .= ','.stdpath('config').'/lua'

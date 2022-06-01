@@ -38,7 +38,8 @@ local settings = {
         "undefined-global",
         -- "unused-local",
         -- "unused-function",
-        -- "unused-vararg",
+        "missing-parameter",
+        "unused-vararg",
         "trailing-space"
       }
     }

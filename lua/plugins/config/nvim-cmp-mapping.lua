@@ -44,7 +44,7 @@ local insert_override = {
     i = cmp.mapping.abort()
   },
   ["<C-Space>"] = { i = cmp.mapping.complete() },
-  ["<CR>"] = { i = cmp.mapping.confirm({ select = true }) },
+  ["<CR>"] = { i = cmp.mapping.confirm({ select = false }) },
   ["<PageUp>"] = { i = cmp.mapping.scroll_docs(-2) },
   ["<PageDown>"] = { i = cmp.mapping.scroll_docs(2) },
   ["<Up>"] = { i = cmp.mapping.scroll_docs(-2) },

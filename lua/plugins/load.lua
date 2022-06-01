@@ -22,6 +22,7 @@ local packerConfig = require("plugins.packer-config")
 return require("packer").startup(
   {
     function(use)
+      -- use("lewis6991/impatient.nvim")
       use("wbthomason/packer.nvim")
       local load_config = { skip = { "vista.vim" }, disable = { "options.nvim" } }
       pluginmap.load_plugins(use, load_config)

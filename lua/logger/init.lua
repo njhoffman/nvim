@@ -1,6 +1,6 @@
 local M = {}
 local log = require("structlog")
-local logfile = vim.fn.stdpath("cache") .. "/nvim.log"
+local logfile = vim.fn.stdpath("log") .. "/nvim.log"
 
 local console_sink = function()
   return log.sinks.Console(

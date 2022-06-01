@@ -6,7 +6,7 @@ local project_chdir = function(dir, method)
   if method == ".git" then
     icon = "  "
     msg = icon .. " " .. method
-  elseif lsp ~= "" then
+  elseif lsp ~= "" and lsp ~= nil then
     icon = "" -- 
     msg = icon .. "[" .. lsp .. "] " .. dir
   end
@@ -32,7 +32,7 @@ local project_cfg = {
   -- Ex: { "~/.cargo/*", ... }
   exclude_dirs = {},
   -- Show hidden files in telescope
-  show_hidden = false,
+  show_hidden = true,
   -- When set to false, you will get a message when project.nvim changes your
   -- directory.
   silent_chdir = false,
@@ -51,6 +51,17 @@ vim.api.nvim_create_user_command(
   {
     nargs = 0,
     desc = "Get project root"
+  }
+)
+vim.api.nvim_create_user_command(
+  "ProjectGetRecent",
+  function()
+    local history = require("project_nvim.utils.history")
+    vim.notify(history.get_recent_projects(), "inspect")
+  end,
+  {
+    nargs = 0,
+    desc = "Get recent projects list"
   }
 )
 

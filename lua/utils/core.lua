@@ -17,6 +17,8 @@ function utils.info(modl, message)
   vim.cmd('echo "[' .. modl .. "]: " .. message .. '"')
 end
 
+-- Creating an autocommand in 0.7
+
 -- autocommands
 function utils.define_augroups(definitions) -- {{{1
   -- Create autocommand groups based on the passed definitions
@@ -27,10 +29,30 @@ function utils.define_augroups(definitions) -- {{{1
   --    2. Pattern
   --    3. Text
   -- just like how they would normally be defined from Vim itself
+  -- vim.api.nvim_create_autocmd("BufEnter", {
+  --     pattern = "*",
+  --     callback = function(args)
+  --         print("Entered buffer " .. args.buf .. "!")
+  --     end,
+  --     desc = "Tell me when I enter a buffer",
+  -- })
+
   for group_name, definition in pairs(definitions) do
+    -- vim.dbglog(group_name)
+    -- vim.api.nvim_create_augroup(group_name, { clear = true })
+    -- for _, def in pairs(definition) do
+    --   vim.api.nvim_create_autocmd(
+    --     def[1],
+    --     {
+    --       pattern = def[2],
+    --       callback = def[3],
+    --       desc = def[4]
+    --     }
+    --   )
+    -- end
+
     vim.cmd("augroup " .. group_name)
     vim.cmd("autocmd!")
-
     for _, def in pairs(definition) do
       local command = table.concat(vim.tbl_flatten { "autocmd", def }, " ")
       vim.cmd(command)
@@ -141,38 +163,6 @@ utils.keymaps = function(maps)
   end
 end
 
--- Skip these servers for formatting
-local skip_formatting_lsp = { "diagnosticls", "sumneko_lua", "tsserver" }
-
--- Format the file using the lsp formatter
-utils.lsp_format = function()
-  -- @param client lsp client
-  local format = function(client)
-    print(string.format("Formatting for attached client: %s", client.name))
-
-    vim.lsp.buf.formatting_sync(nil, 1000)
-  end
-
-  -- Run the function if it passes all the checks
-  -- @param client lsp client
-  local once = function(client)
-    return function(skip, f)
-      for _, key in ipairs(skip) do
-        if client.name == key then
-          return
-        end
-      end
-
-      f(client)
-    end
-  end
-
-  -- Run our formatters
-  for _, client in pairs(vim.lsp.buf_get_clients()) do
-    once(client)(skip_formatting_lsp, format)
-  end
-end
-
 utils.log_to_file = function(logfile)
   return function(log_value)
     local file = io.open(logfile, "a")
@@ -183,6 +173,14 @@ utils.log_to_file = function(logfile)
 
     file:write(log_value .. "\n")
     file:close()
+  end
+end
+
+utils.find = function(array, key, val)
+  for _, v in ipairs(array) do
+    if v[key] == val then
+      return v
+    end
   end
 end
 

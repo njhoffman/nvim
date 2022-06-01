@@ -3,15 +3,6 @@ local u = require("utils.core")
 local Formatting = config.Formatting
 local Opts = config.Opts
 
--- Creating an autocommand in 0.7
--- vim.api.nvim_create_autocmd("BufEnter", {
---     pattern = "*",
---     callback = function(args)
---         print("Entered buffer " .. args.buf .. "!")
---     end,
---     desc = "Tell me when I enter a buffer",
--- })
-
 -- #{?pane_in_mode,#[fg=white#,bg=red],#[fg=red#,bg=white]}#W .
 vim.cmd [[
   command! SqlVis silent !tmux display-popup -b rounded -S 'fg=\#2255AA' -T '' -E -h 70\% -w90\% "psql --csv postgres://spadash:spadash@localhost/spadash --file=%:p | /bin/zsh -c 'vd -f csv --color-default=\"8 on black\" '"
@@ -56,10 +47,10 @@ augroup END
 
 vim.cmd(
   [[
-  augroup ime
+  augroup IME
     autocmd InsertEnter * call chansend(v:stderr, "\e[?737769h")
     autocmd InsertLeave * call chansend(v:stderr, "\e[?737769l")
-  augroup END
+  augroup end
 ]]
 )
 
@@ -77,14 +68,14 @@ vim.cmd(
 -- au TermClose * call feedkeys("i")
 
 local autocmds = {
-  Marks = {
-    { "BufRead", "*.md", "lua require('neuron').update_virtual_titles()" }
-  },
-  SecondaryBuffers = {},
   SecondaryWindows = {
     -- quickix, locations, help, man, undo, and other windows I want to exit easily from
     -- todo: think of an easy way to close theese windows without focus
-    { "FileType", "dashboard", "nnoremap <buffer> q :BufferDelete<cr> | nnoremap <buffer>  :BufferDelete<cr>" },
+    {
+      "FileType",
+      "dashboard",
+      "nnoremap <buffer> q :BufferDelete<cr> | nnoremap <buffer>  :BufferDelete<cr>"
+    },
     { "FileType", "fugitive", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
     { "FileType", "notify", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
     { "FileType", "qf", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
@@ -102,6 +93,7 @@ local autocmds = {
   },
   FiletypeDetect = {
     { "BufNewFile,BufRead", "*", "setlocal signcolumn=yes:1" },
+    { "BufNewFile,BufRead", "*.log", "lua require('commands').create_cmd_truncate()" },
     { "BufNewFile,BufRead", "*.ejs", "set ft=html" },
     { "BufNewFile,BufRead", "*.bash*", "let b:is_bash = 1 | setfiletype bash" },
     { "BufNewFile,BufRead", "*.theme", "setlocal ft=config syn=config" },
@@ -125,23 +117,21 @@ local autocmds = {
     { "BufNewFile,BufRead", "*.conf", "setlocal ft=conf" },
     { "BufNewFile,BufRead", "*.pa", "setlocal ft=conf" },
     { "BufNewFile,BufRead", "*.service", "setlocal ft=systemd" },
-    { "BufNewFile,BufRead", "*.sock", "setlocal ft=systemd" }
-
-    --   au BufNewFile,BufRead *.module setlocal ft=php syn=php
-    --   " force bash syntax for shell scripts by default custom syntax extension assignments
+    { "BufNewFile,BufRead", "*.sock", "setlocal ft=systemd" },
+    { "BufNewFile,BufRead", "*.sock", "setlocal ft=systemd" },
+    { "BufNewFile,BufRead", "Chart.yaml", "set ft=helm" },
+    { "BufNewFile,BufRead", "values.yaml", "set ft=helm" },
+    { "BufNewFile,BufRead", "*/templates/*.yaml", "set ft=helm" },
+    { "BufNewFile,BufRead", "*/templates/*.tpl", "set ft=helm" },
+    { "BufNewFile,BufRead", "*/templates/*.txt", "set ft=helm" }
     --   au BufNewFile,BufRead .pa set ft=config
-    --   au BufNewFile,BufRead Chart.yaml  set ft=helm
-    --   au BufNewFile,BufRead values.yaml set ft=helm
-    --   au BufNewFile,BufRead */templates/*.yaml set ft=helm
-    --   au BufNewFile,BufRead */templates/*.tpl set ft=helm
-    --   au BufNewFile,BufRead */templates/*.txt set ft=helm
     --   au BufNewFile,BufRead */ansible/*.yml  set ft=yaml.ansible
     --   au BufNewFile,BufRead *.j2,*/ansible/*/templates/* set ft=config.jinja2
     --   au BufNewFile,BufRead bundles.txt setlocal ft=sh
     --   au BufNewFile,BufRead bundles.*.txt setlocal ft=sh
     --   " au BufEnter * if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' | setf preview | endif
   },
-  vimade = {
+  Vimade = {
     { "FileType", "Trouble", "VimadeBufDisable" },
     { "FileType", "qf", "VimadeBufDisable" },
     { "FileType", "nerdtree", "VimadeBufDisable" },
@@ -184,29 +174,24 @@ local autocmds = {
     -- {"TermOpen", "*", "set nonumber norelativenumber"},
     -- {"TermLeave", "*", "set number relativenumber"}
   },
-  writeEventts = {
+  WriteEvents = {
     { "BufWritePost", ".tmux.conf", [[execute ':!tmux source-file %']] }
     --   { "BufWritePost", "load.lua", "PackerCompile" },
   },
   packer = { { "User", "PackerComplete,PackerCompileDone", "BarbarColors" } }
 }
 
--- lsp = {
---   {"CursorHold,CursorHoldI", "*", "lua require'nvim-lightbulb'.update_lightbulb()"}
--- }
-
-
 -- | if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' && &buftype =~ hidden | silent! wshada | silent! !~/bin/wshada.sh | endif",
 -- local shadaEventsViml = { { "BufWrite", "*", [[call ShadaWrite()]] }, { "Signal", "SIGUSR1", [[call ShadaRead()]] } }
 
-local shadaEvents = { { "BufRead", "*", [[call ShadaWrite()]] }, { "Signal", "SIGUSR1", [[call ShadaRead()]] } }
-
-if Opts.shada_events == true  then
-  table.insert(autocmds, shadaEvents)
+if Opts.shada_events == true then
+  autocmds.ShadaEvents = {
+    { "BufRead", "*", [[call ShadaWrite()]] },
+    { "Signal", "SIGUSR1", [[call ShadaRead()]] }
+  }
 end
 
-
-local number_toggle = {
+autocmds.NumberToggle = {
   {
     "BufEnter,FocusGained,InsertLeave",
     "*",
@@ -214,42 +199,30 @@ local number_toggle = {
   },
   { "BufLeave,FocusLost,InsertEnter", "*", "set norelativenumber" }
 }
-table.insert(autocmds, number_toggle)
-
--- define tables to insert
-local hl_yank = {
-  {
-    "TextYankPost",
-    "*",
-    "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=400 }"
-  }
-}
 
 if Opts.highlight_yank == true or Opts.highlight_yank == nil then
-  table.insert(autocmds, hl_yank)
+  autocmds.HighlightYank = {
+    {
+      "TextYankPost",
+      "*",
+      "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=400 }"
+    }
+  }
 end
 
-local preserve_cursor = { { "BufReadPost", "*", "lua goto_last_pos()" } }
-
-local trim_whitespaces = {
-  { "BufWritePre", "*", [[%s/\s\+$//e]] },
-  { "BufWritePre", "*", [[%s/\n\+\%$//e]] }
-  -- {"BufWritePre", "*.[ch]", [[*.[ch] %s/\%$/\r/e]]}
-}
-
--- insert tables if true or nil
 if Opts.preserve_cursor == true or Opts.preserve_cursor == nil then
-  table.insert(autocmds, preserve_cursor)
+  autocmds.PreserveCursor = { { "BufReadPost", "*", "lua goto_last_pos()" } }
 end
 
---[[ if Formatting.format_on_save == true or Formatting.format_on_save == nil then
-  -- table.insert(autocmds, format)
-end ]]
 -- " Return to last edit position when opening files (You want this!)
 -- au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 if Formatting.trim_trailing_space == true or Formatting.trim_trailing_space == nil then
-  table.insert(autocmds, trim_whitespaces)
+  autocmds.TrimSpaces = {
+    { "BufWritePre", "*", [[%s/\s\+$//e]] },
+    { "BufWritePre", "*", [[%s/\n\+\%$//e]] }
+    -- {"BufWritePre", "*.[ch]", [[*.[ch] %s/\%$/\r/e]]}
+  }
 end
 
 u.define_augroups(autocmds)

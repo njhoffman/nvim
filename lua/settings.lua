@@ -14,7 +14,7 @@ settings.Logging = {
   notify_level = "trace",
   log_level = "debug",
   console_level = "debug",
-  lsp_level = "debug"
+  lsp_level = "info"
 }
 
 local levels = vim.lsp.log_levels
@@ -36,7 +36,6 @@ settings.Opts = {
   updatetime = 300,
   scrolloff = 10,
   explorer_side = "right",
-  log_path = vim.fn.stdpath("cache") .. "/nvim.log",
   log_stdout = false
 }
 
@@ -53,7 +52,7 @@ settings.Theming = {
 settings.DAP = {
   enabled = true,
   log_level = "error",
-  log_path = vim.fn.stdpath("cache") .. "/dap.log",
+  -- log_path = vim.fn.stdpath("log") .. "/dap.log",
   virtual_text = true,
   python = true,
   go = true,

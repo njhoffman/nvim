@@ -1,9 +1,11 @@
 vim.g.bling_no_map = 0
 vim.g.bling_no_expr = 0
-vim.g.bling_time = 15
-vim.g.bling_count = 2
+vim.g.bling_time = 30
+vim.g.bling_count = 1
 vim.g.bling_color_gui_fg = "red"
 vim.g.bling_color_gui_bg = "black"
+-- vim.cmd [[nmap <silent> n nzz:call BlingHighight()<CR>]]
+
 --       *'g:bling_time'* *bling_time*
 -- Use this options to change time of blink (in ms): >
 --   let g:bling_time = 25

@@ -3,24 +3,6 @@ local actions_set = require "telescope.actions.set"
 local custom_actions = require("plugins.configs.telescope-custom-actions")
 local actions = require("telescope.actions")
 
---[[ local baseMaps = {
-  i = {
-    ["<esc>"] = actions.close,
-    ["jk"] = actions.close,
-    ["kj"] = actions.close,
-    ["<c-f>"] = function(prompt_bufnr)
-      actions_set.shift_selection(prompt_bufnr, 15)
-    end,
-    ["<c-b>"] = function(prompt_bufnr)
-      actions_set.shift_selection(prompt_bufnr, -15)
-    end,
-    ["<a-n>"] = actions.toggle_selection + actions.move_selection_next,
-    ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous
-  },
-  n = {
-    ["<esc>"] = actions.close
-  }
-} ]]
 local mainMaps = {
   i = {
     ["<esc>"] = actions.close,
@@ -42,31 +24,43 @@ local mainMaps = {
     ["<c-_>"] = function(prompt_bufnr)
       actions_layout.toggle_preview(prompt_bufnr)
     end,
-    ["<A-U>"] = custom_actions.switch_picker_type,
-    ["<M-/>"] = actions.which_key,
+    ["<C-]>"] = custom_actions.switch_picker_type,
+    ["<M-/>"] = function(prompt_bufnr)
+      local whichkey_default = {
+        max_height = 0.4,
+        only_show_current_mode = true,
+        mode_width = 1,
+        keybind_width = 5,
+        name_width = 30,
+        line_padding = 1,
+        separator = " -> ",
+        close_with_action = true,
+        normal_hl = "TelescopePrompt",
+        border_hl = "TelescopePromptBorder",
+        winblend = 15, --  config.values.winblend,
+        column_padding = "  "
+      }
+
+      local whichkey_opts = {
+        name_width = 20,
+        separator = " ➜ ",
+        column_padding = " "
+      }
+      actions.which_key(prompt_bufnr, whichkey_opts)
+    end,
     ["<C-DOWN>"] = actions.cycle_history_next,
     ["<C-UP>"] = actions.cycle_history_prev,
-    ["<C-a>"] = actions.select_all,
-    ["<A-a>"] = actions.select_all
-    -- ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
-    -- ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
-    -- ["<C-h>"] = actions.goto_file_selection_split,
-    -- ["<C-v>"] = actions.goto_file_selection_vsplit
-    -- ["<c-v>"] = custom_actions.multi_selection_open_vsplit,
-    -- ["<c-s>"] = custom_actions.multi_selection_open_split,
-    -- ["<c-t>"] = custom_actions.multi_selection_open_tab,
-    -- ['<A- >'] = actions.toggle,
+    ["<A-a>"] = actions.toggle_all
   },
   n = {
-    ["<esc>"] = actions.close,
-    ["<A-a>"] = actions.select_all
+    ["<esc>"] = actions.close
   }
 }
 
 local fileMaps = {
   i = {
     -- change directory functionality
-    ["<C-g>"] = custom_actions.directory_up,
+    ["<A-U>"] = custom_actions.directory_up,
     [":bd"] = custom_actions.directory_up,
     ["<cr>"] = custom_actions.multi_selection_open
   }

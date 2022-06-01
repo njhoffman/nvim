@@ -45,7 +45,7 @@ local shfmt = {
 }
 
 local languages = {
-  lua = { luafmt, luacheck },
+  -- lua = { luafmt, luacheck },
   -- lua = { luacheck },
   yaml = { prettier },
   bash = { shfmt, shellcheck },
@@ -76,7 +76,7 @@ M.setup = function(on_attach, capabilities)
     cmd = {
       vim.fn.stdpath("data") .. "/lsp_servers/efm/efm-langserver",
       "-logfile",
-      vim.fn.stdpath("cache") .. "/lsp-efm.log",
+      vim.fn.stdpath("log") .. "/lsp-efm.log",
       "-loglevel",
       "2", -- default 1, up to 4
       "-q"

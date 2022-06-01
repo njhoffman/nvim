@@ -19,12 +19,13 @@ if config.Load.impatient == true then
   -- move packer_compiled.lua over to lua?
   vim.notify("Using impatient optimization", "trace")
   load_module("impatient.lua.impatient")
-  -- lua require'impatient'.enable_profile()
+  -- impatient.enable_profile()
 end
 
 for _, mod_name in ipairs(
   {
     -- "options.options-test",
+    "disable-builtins",
     "vim-options",
     "plugins.load"
   }
@@ -48,6 +49,6 @@ for _, mod_name in ipairs(
 end
 
 local end_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
-vim.notify("Finished loading in " .. end_time, "trace")
+vim.notify("Finished loading in " .. end_time, "debug")
 
 -- require"plenary.profile".stop()

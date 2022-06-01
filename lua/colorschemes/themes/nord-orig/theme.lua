@@ -1,3 +1,5 @@
+---@diagnostic disable
+--luacheck: ignore
 local nord = require("nord.colors")
 
 local theme = {}

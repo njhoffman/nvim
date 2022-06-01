@@ -1,3 +1,4 @@
+local coreutils = require("utils.core")
 local logutils = require("logger.utils")
 local log = require("debuglog.log")
 local M = {}
@@ -16,8 +17,10 @@ M.dbg = function(...)
   local notify = require("notify")
   local notify_msg = logutils.make_string(msg)
   local args = {}
+  local orig_map = coreutils.find(vim.api.nvim_get_keymap("n"), "lhs", "gF")
   args.timeout = 5000
   args.render = "minimal"
+  args.hide_from_history = true
   args.on_open = function(notify_win)
     local buf = vim.api.nvim_win_get_buf(notify_win)
     local cb = function()
@@ -27,8 +30,26 @@ M.dbg = function(...)
       M.buf(msg)
     end
     vim.api.nvim_buf_set_keymap(buf, "n", "gf", "", { callback = cb })
+    vim.api.nvim_set_keymap("n", "gF", "", { callback = cb })
     vim.api.nvim_buf_set_keymap(buf, "n", "<2-LeftMouse>", "", { callback = cb })
     vim.api.nvim_buf_set_option(buf, "filetype", "lua")
+  end
+
+  args.on_close = function(buf)
+    if type(orig_map) == "table" and type(orig_map.lhs) == 'string' then
+      pcall(vim.api.nvim_del_keymap, { "n", "gF" })
+      pcall(vim.api.nvim_set_keymap, {
+        orig_map.mode,
+        orig_map.lhs,
+        orig_map.rhs,
+        {
+          nowait = orig_map.nowait,
+          noremap = orig_map.noremap,
+          silent = 1,
+          callback = function() end
+        }
+      })
+    end
   end
 
   local lines = vim.split(notify_msg, "\n")

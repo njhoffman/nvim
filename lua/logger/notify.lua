@@ -10,6 +10,9 @@ M.renderFunc = function(renderType)
 end
 
 M.notify = function(message, level, ...)
+  if (level == 5 or (type(level) == "string" and string.lower(level) == "off")) then
+    return
+  end
   local args = ... or {}
   local tb = logutils.traceback()
   vim.defer_fn(
@@ -65,6 +68,10 @@ M.notify = function(message, level, ...)
         logger:warn("skipping winnr: " .. winnr .. " -- (" .. notify_msg .. ")")
       end
 
+      local p_ok, _ = pcall(require, "plugins.config.nvim-notify")
+      if not p_ok then
+        return
+      end
       local ok, notify = pcall(require, "notify")
       if not ok then
         return

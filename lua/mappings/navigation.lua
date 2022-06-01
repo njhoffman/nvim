@@ -155,8 +155,8 @@ local M = {
     long = "print path of current buffer"
   },
   goto_fileline = {
-    -- ":exec 'normal ^f\'''<bar>exec 'normal f\"'<bar> exec 'normal gf'<cr>"
-    cmd = '<cmd>exec "normal ^f(gf"<cr>',
+    -- cmd = '<cmd>exec "normal ^f(gf"<cr>',
+    cmd = '^/"\\|\'<cr>gF',
     short = "edit file under line",
     long = "edit file under line"
   },

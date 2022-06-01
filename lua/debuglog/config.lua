@@ -47,7 +47,7 @@ config.outfile = string.format(
   vim.api.nvim_call_function(
     "stdpath",
     {
-      "cache"
+      "log"
     }
   ),
   config.plugin
