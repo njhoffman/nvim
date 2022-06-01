@@ -1,5 +1,5 @@
 ---@diagnostic disable: undefined-global
-
+--luacheck: ignore
 
 local tokyoColors = {}
 
@@ -35,7 +35,7 @@ tokyoColors = {
   red = "#f7768e",
   red1 = "#db4b4b",
   git = { change = "#6183bb", add = "#449dab", delete = "#914c54", conflict = "#bb7a61" },
-  gitSigns = { add = "#164846", change = "#394b70", delete = "#823c41" },
+  gitSigns = { add = "#164846", change = "#394b70", delete = "#823c41" }
 }
 
 return function()
@@ -73,7 +73,7 @@ return function()
     -- fg_bg("TelescopePromptTitle", black, red)
     TelescopeMultiIcon { fg = "#0066ff" },
     TelescopePreviewTitle { fg = "#47a0f0", bg = "none" },
-    TelescopePreviewBorder { fg = "#416191", bg = 'none' },
+    TelescopePreviewBorder { fg = "#416191", bg = "none" },
     TelescopeResults { bg = "none" },
     TelescopeResultsBorder { fg = "#476F9F", bg = "none" },
     TelescopeResultsTitle { fg = "#34799c", bg = "none" },
@@ -194,7 +194,6 @@ return function()
     --    highlight default link TelescopeResultsDiffDelete DiffDelete
     --    highlight default link TelescopeResultsDiffUntracked NonText
 
-
     -- Cmp
     CmpItemAbbr { fg = colors.fg },
     CmpItemAbbrDeprecated { fg = colors.fg },
@@ -219,24 +218,37 @@ return function()
     CmpItemKindConstant { fg = colors.orange },
     CmpItemKindStruct { fg = colors.yellow },
     CmpItemKindTypeParameter { fg = colors.yellow },
-
     -- Notify
     -- Notify
     NotifyERRORBorder { fg = "#8A1F1F" },
-    NotifyWARNBorder { fg = "#79491D" },
-    NotifyINFOBorder { fg = "#4Fa792" },
     NotifyDEBUGBorder { fg = "#4B4BBB" },
-    NotifyTRACEBorder { fg = "#7B7BCC" },
+    -- NotifyTRACEBorder { fg = "#7B7BCC" },
+    -- NotifyTRACEBorder { Normal },
+    NotifyTRACEBorder { fg = "#637699" },
     NotifyERRORIcon { fg = "#F74047" },
-    NotifyWARNIcon { fg = "#F79000" },
-    NotifyINFOIcon { fg = "#29cFa8" },
-    NotifyDEBUGIcon { fg = "#6B6BFF" },
-    NotifyTRACEIcon { fg = "#7BABFF" },
     NotifyERRORTitle { fg = "#F74047" },
-    NotifyWARNTitle { fg = "#F79000" },
+    NotifyINFOIcon { fg = "#29cFa8" },
     NotifyINFOTitle { fg = "#29cFa8" },
+    NotifyINFOBorder { fg = "#4Fa792" },
+    NotifyDEBUGIcon { fg = "#6B6BFF" },
     NotifyDEBUGTitle { fg = "#6B6BFF" },
+    -- NotifyTRACEIcon { fg = "#7BABFF" },
+    NotifyTRACEIcon { fg = "#637699" },
+    NotifyWARNBorder { fg = "#79491D" },
+    NotifyWARNIcon { fg = "#F79000" },
+    NotifyWARNTitle { fg = "#F79000" },
     NotifyTRACETitle { fg = "#7BABFF" },
+    NotifyTRACEBody { fg = "#8396B9" },
+    NotifyINSPECTBorder { fg = "#2A70fF" },
+    NotifyINSPECTIcon { fg = "#67b0f7" },
+    NotifyINSPECTTitle { fg = "#2760f7" },
+    NotifyTASKBorder { fg = "#6a3246" },
+    NotifyTASKTitle { fg = "#6a3246" },
+    NotifyTASKIcon { fg = "#7a7697" },
+    NotifySTATUSBorder { fg = "#3a3286" },
+    NotifySTATUSTitle { fg = "#3a3286" },
+    NotifySTATUSIcon { fg = "#2a76b7" }
+    -- NotifyINSPECTBody{ Normal},
     -- NotifyERRORBody { Normal },
     -- NotifyWARNBody { Normal },
     -- NotifyINFOBody { Normal },
@@ -579,8 +591,6 @@ return function()
   -- WhichKeyFloating = { bg = clrs.float },
   -- WhichKeyFloat = { bg = clrs.float },
 end
-
-
 
 --   colors.bg = "#1a1b26"
 --   colors.bg_dark = "#16161e"

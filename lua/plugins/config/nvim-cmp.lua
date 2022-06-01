@@ -1,8 +1,12 @@
 local ok, cmp = pcall(require, "cmp")
-if not ok then return end
+if not ok then
+  return
+end
 
-local mapping = require('plugins.config.nvim-cmp-mapping')
+local mapping = require("plugins.config.nvim-cmp-mapping")
 local compare = require("cmp.config.compare")
+local types = require("cmp.types")
+
 local WIDE_HEIGHT = 25 -- 40
 
 --  local after_line = string.sub(line, cursor + 1, -1)
@@ -34,26 +38,28 @@ local lsp_symbols = {
   TypeParameter = ""
 }
 local lsp_sources = {
-  buffer = "buffer",
+  ["vim-dadbod-completion"] = "sql",
+  ["vimwiki-tags"] = "vimwiki",
+  -- buffer = "buffer",
   calc = "calc",
-  cmp_rg = "rg",
   cmp_git = "git",
+  cmp_rg = "rg",
   cmp_tabnine = "tab9",
   dictionary = "dict",
   emoji = "emoji",
+  fuzzy_buffer = "buf",
+  fuzzy_path = "path",
   look = "look",
+  luasnip = "snip",
   npm = "npm",
   nvim_lsp = "lsp",
+  nvim_lsp_document_symbol = "doc",
+  nvim_lsp_signature_help = "sig",
   nvim_lua = "lua",
-  nvim_lsp_signature_help = "lspsig",
-  nvim_lsp_document_symbol = "lspdoc",
-  path = "path",
+  -- path = "path",
   spell = "spell",
-  treesitter = "tree",
   tmux = "tmux",
-  ["vimwiki-tags"] = "vimwiki",
-  vsnip = "vsnip",
-  ["vim-dadbod-completion"] = "sql",
+  treesitter = "tree",
   zsh = "zsh"
 }
 
@@ -65,12 +71,13 @@ vim.opt.dictionary:append("/usr/share/dict/words")
 local setupConfig = {
   -- disable inside comments and telescope window
   enabled = function()
-    local in_prompt = vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt'
+    local in_prompt = vim.api.nvim_buf_get_option(0, "buftype") == "prompt"
     if in_prompt then -- this will disable cmp in the Telescope window (taken from the default config)
       return false
     end
     local context = require("cmp.config.context")
-    return not (context.in_treesitter_capture("comment") == true or context.in_syntax_group("Comment"))
+    return not (context.in_treesitter_capture("comment") == true or
+      context.in_syntax_group("Comment"))
   end,
   confirmation = {
     get_commit_characters = function()
@@ -83,15 +90,14 @@ local setupConfig = {
   },
   preselect = cmp.PreselectMode.None,
   completion = {
-    completeopt = "menuone,noinsert,noselect",
+    completeopt = "menuone,longest",
     keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
-    keyword_length = 1
-    --     autocomplete = {
-    --       types.cmp.TriggerEvent.TextChanged,
-    --     },
-    --     completeopt = 'menu,menuone,noselect',
+    keyword_length = 1,
+    autocomplete = {
+      types.cmp.TriggerEvent.TextChanged
+    }
   },
-  mapping = mapping,
+  mapping = cmp.mapping.preset.insert(mapping.insert_override),
   view = {
     entries = {
       name = "custom", -- can be "custom", "wildmenu" or "native"
@@ -99,16 +105,27 @@ local setupConfig = {
     }
   },
   window = {
-    completion = {
-      border = { "", "", "", "", "", "", "", "" },
-      winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
-    },
-    documentation = {
-      max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
-      max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
-      border = { "", "", "", " ", "", "", "", " " },
-      winhighlight = "FloatBorder:NormalFloat"
-    }
+    -- completion = {
+    --   border = { "", "", "", "", "", "", "", "" },
+    --   winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
+    -- },
+    -- documentation = {
+    --   max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
+    --   max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
+    --   border = { "", "", "", " ", "", "", "", " " },
+    --   winhighlight = "FloatBorder:NormalFloat"
+    -- }
+    documentation = cmp.config.window.bordered(
+      {
+        winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None"
+      }
+    ),
+    completion = cmp.config.window.bordered(
+      {
+        -- winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:Visual,Search:None",
+        winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None"
+      }
+    )
   },
   formatting = {
     fields = { "kind", "abbr", "menu" },
@@ -120,40 +137,43 @@ local setupConfig = {
     end
   },
   sorting = {
-    priority_weight = 2
+    priority_weight = 2,
+    comparators = {
+      require("cmp_fuzzy_path.compare"),
+      require("cmp_fuzzy_buffer.compare"),
+      compare.offset,
+      compare.exact,
+      compare.score,
+      compare.recently_used,
+      compare.kind,
+      compare.sort_text,
+      compare.length,
+      compare.order
+    }
   },
   snippet = {
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
+      require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
     end
   },
   sources = cmp.config.sources(
     {
       { name = "nvim_lsp", priority = 8 },
-      { name = "nvim_lua", priority = 7 },
+      -- { name = "nvim_lua", priority = 7 },
       { name = "nvim_lsp_signature_help", priority = 7 },
       { name = "nvim_lsp_document_symbol", priority = 7 },
-      { name = "vim-dadbod-completion", priority = 5 },
-      { name = "path", priority = 5 },
-      { name = "vsnip", priority = 4 },
+      -- { name = "vim-dadbod-completion", priority = 5 },
+      { name = "fuzzy_path", priority = 5 },
+      -- { name = "path", priority = 5 },
+      { name = "luasnip", priority = 4 },
       -- {name = "cmp_tabnine", priority = 3},
-      {
-        name = "buffer",
-        keyword_length = 2,
-        max_item_count = 10,
-        priority = 3
-        -- get_bufnrs = function()
-        --   return vim.api.nvim_get_current_buffer()
-        --   -- return vim.api.nvim_list_bufs() -- use all buffers
-        -- end
-      },
       { name = "calc", priority = 3 },
       { name = "spell", priority = 3 },
-      { name = "cmp_git", priority = 3 },
+      { name = "git", priority = 3 },
       { name = "zsh", priority = 2, keyword_length = 3, max_item_count = 10 },
       { name = "pandoc_references", priority = 3 },
       { name = "emoji", priority = 2 },
-      { name = "treesitter", priority = 1 },
+      -- { name = "treesitter", priority = 0 },
       { name = "vimwiki-tags", priority = 1 },
       { name = "npm", keyword_length = 1 },
       {
@@ -172,43 +192,60 @@ local setupConfig = {
       -- { name = "rg" },
       -- { name = "dictionary", keyword_length = 2, },
       -- { name = "neorg" },
-    }, {
-    { name = 'buffer' },
-    { name = 'cmdline' }
-  })
+    },
+    {
+      { name = "fuzzy_buffer", priority = 3 }
+      -- { name = 'buffer' },
+      -- { name = 'cmdline' }
+    }
+  )
 }
 
 cmp.setup(setupConfig)
 
 -- Set configuration for specific filetype.
-cmp.setup.filetype('gitcommit', {
-  sources = cmp.config.sources({
-    { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
-  }, {
-    { name = 'buffer' },
-  })
-})
+cmp.setup.filetype(
+  "gitcommit",
+  {
+    sources = cmp.config.sources(
+      {
+        { name = "git" } -- You can specify the `cmp_git` source if you were installed it.
+      },
+      {
+        { name = "fuzzy_buffer" }
+      }
+    )
+  }
+)
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline('/', {
-  mapping = cmp.mapping.preset.cmdline(),
-  -- mapping = mapping,
-  sources = {
-    { name = 'buffer' }
+cmp.setup.cmdline(
+  "/",
+  {
+    mapping = cmp.mapping.preset.cmdline(mapping.cmdline_override),
+    sources = {
+      { name = "fuzzy_buffer" }
+    }
   }
-})
+)
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  -- mapping = mapping,
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    { name = 'cmdline' }
-  })
-})
+cmp.setup.cmdline(
+  ":",
+  {
+    mapping = cmp.mapping.preset.cmdline(mapping.cmdline_override),
+    sources = cmp.config.sources(
+      {
+        { name = "fuzzy_path" }
+      },
+      {
+        { name = "cmdline" }
+      }
+    )
+  }
+)
 
+return cmp
 
 -- -- cmp-vimwiki-tags
 -- -- I use this shell script to launch Vimwiki. It opens the Vimwiki directory and then immediately opens either the file with the name of the first argument (which will create that file if it does not exist), or the index file in case of no arguments. If you pass more than one argument it will add them as tags to the top of the file.

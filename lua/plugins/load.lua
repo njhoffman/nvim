@@ -1,6 +1,7 @@
 local pluginmap = require("plugins.pluginmap")
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
+local packer_bootstrap = false
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.notify("Packer not detected, installing ...")
   packer_bootstrap = vim.fn.system(
@@ -22,8 +23,6 @@ return require("packer").startup(
   {
     function(use)
       use("wbthomason/packer.nvim")
-      -- TODO: cp impatient.nvim ../impatient
-      -- use {"lewis6991/impatient.nvim", rocks = "mpack"}
       local load_config = { skip = { "vista.vim" }, disable = { "options.nvim" } }
       pluginmap.load_plugins(use, load_config)
       -- Basic key mappings
@@ -38,14 +37,6 @@ return require("packer").startup(
       )
       -- ====================================
       -- Integrations
-      use(
-        {
-          "preservim/vimux",
-          config = function()
-            require("plugins.configs.vimux")
-          end
-        }
-      )
       use(
         {
           "nvim-telescope/telescope.nvim",
@@ -67,8 +58,13 @@ return require("packer").startup(
             --
             "nvim-telescope/telescope-file-browser.nvim",
             "rmagatti/session-lens",
+            "LinArcX/telescope-changes.nvim",
             "GustavoKatel/telescope-asynctasks.nvim",
+            "benfowler/telescope-luasnip.nvim",
             "camgraff/telescope-tmux.nvim",
+            "LinArcX/telescope-ports.nvim",
+            { "chip/telescope-code-fence.nvim", run = "luarocks --local install lunamark" },
+            "keyvchan/telescope-find-pickers.nvim",
             "dhruvmanila/telescope-bookmarks.nvim",
             "gbrlsnchs/telescope-lsp-handlers.nvim",
             "nvim-telescope/telescope-dap.nvim",
@@ -85,7 +81,12 @@ return require("packer").startup(
             "nvim-telescope/telescope-node-modules.nvim",
             "nvim-telescope/telescope-ui-select.nvim",
             "nvim-telescope/telescope-hop.nvim",
-            "nvim-telescope/telescope-rg.nvim",
+            {
+              "nvim-telescope/telescope-rg.nvim",
+              requires = {
+                { "nvim-telescope/telescope-live-grep-raw.nvim" }
+              }
+            },
             "LinArcX/telescope-command-palette.nvim",
             "tamago324/telescope-openbrowser.nvim",
             "LinArcX/telescope-env.nvim",
@@ -129,16 +130,6 @@ return require("packer").startup(
       vim.g.enabled_pastebin_service = "dpaste.org"
 
       -- ====================================
-      -- Visual enhancements
-      use(
-        {
-          "winston0410/range-highlight.nvim",
-          requires = "winston0410/cmd-parser.nvim",
-          config = function()
-            require("plugins.configs.range-highlight")
-          end
-        }
-      )
       -- use { "beauwilliams/focus.nvim", config = function() require("plugins.configs.focus") end }
       -- use "lukas-reineke/indent-blankline.nvim"
       -- https://github.com/simeji/winresizer
@@ -301,10 +292,9 @@ return require("packer").startup(
       if packer_bootstrap then
         local ok, packer = pcall(require, "packer")
         if not ok then
-          local msg = "calling module: packer, fail: " .. err
+          local msg = "calling module: packer, fail: " .. ok
           vim.notify(msg, "error", { title = "Packer Error" })
         else
-          vim.notify("GODDAMNIT DUDE")
           packer.sync()
         end
       end

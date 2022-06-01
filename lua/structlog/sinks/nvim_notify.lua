@@ -13,11 +13,14 @@ local KeyValue = require("structlog.formatters.key_value")
 -- @param opts.formatter The formatter to format the log entries
 -- @param opts.params_map The mapping between log entries and nvim-notify's parameters, default: {}
 -- @usage opts.params_map = {title="logger_name", timeout="timeout"}
-setmetatable(NvimNotify, {
-  __call = function(cls, ...)
-    return cls:new(...)
-  end,
-})
+setmetatable(
+  NvimNotify,
+  {
+    __call = function(cls, ...)
+      return cls:new(...)
+    end
+  }
+)
 
 function NvimNotify:new(level, opts)
   opts = opts or {}

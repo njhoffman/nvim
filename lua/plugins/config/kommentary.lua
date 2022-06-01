@@ -2,8 +2,11 @@ function toggle_comment_custom_commentstring(...)
   local args = { ... }
   local commentstring = vim.bo.commentstring
   vim.bo.commentstring = "{/*%s*/}"
-  require("kommentary.kommentary").toggle_comment_range(args[1], args[2],
-                                                        require("kommentary.config").get_modes().normal)
+  require("kommentary.kommentary").toggle_comment_range(
+    args[1],
+    args[2],
+    require("kommentary.config").get_modes().normal
+  )
   vim.api.nvim_buf_set_option(0, "commentstring", commentstring)
 end
 
@@ -27,11 +30,17 @@ end
 --                             require("kommentary.config").context.visual .. ", " ..
 --                             "'toggle_comment_custom_commentstring'" .. ")<cr>",
 --                         { noremap = true, silent = true })
-require("kommentary.config").configure_language("default", {
-  prefer_single_line_comments = true,
-  create_default_mappings = true,
-  hook_function = function() require("ts_context_commentstring.internal").update_commentstring() end,
-})
+
+require("kommentary.config").configure_language(
+  "default",
+  {
+    prefer_single_line_comments = true,
+    create_default_mappings = true,
+    hook_function = function()
+      require("ts_context_commentstring.internal").update_commentstring()
+    end
+  }
+)
 
 -- require("kommentary.config").configure_language("typescriptreact", {
 --   single_line_comment_string = "auto",

@@ -8,7 +8,7 @@ function H.create_augroup(group_name, definition)
   cmd("augroup " .. group_name)
   cmd("autocmd!")
   for _, def in ipairs(definition) do
-    local command = table.concat(vim.tbl_flatten {"autocmd", def}, " ")
+    local command = table.concat(vim.tbl_flatten { "autocmd", def }, " ")
     cmd(command)
   end
   cmd("augroup END")
@@ -108,17 +108,16 @@ function H.is_plugin_installed(check_plugin_name)
   end
 
   -- not pretty but it gets the job done
-  -- local plugin_utils = require("packer.plugin_utils")
-  -- local opt_plugins, start_plugins = plugin_utils.list_installed_plugins()
+  local plugin_utils = require("packer.plugin_utils")
+  local opt_plugins, start_plugins = plugin_utils.list_installed_plugins()
 
-  -- for typ, plugin_list in ipairs({ opt_plugins, start_plugins }) do
-  --   for plugin_path, _ in pairs(plugin_list) do
-  --     local plugin_name = fnamemodify(plugin_path, ":t")
-  --     if (check_plugin_name == plugin_name) then return true end
-  --   end
-  -- end
-  -- return false
-  return true
+  for typ, plugin_list in ipairs({ opt_plugins, start_plugins }) do
+    for plugin_path, _ in pairs(plugin_list) do
+      local plugin_name = fnamemodify(plugin_path, ":t")
+      if (check_plugin_name == plugin_name) then return true end
+    end
+  end
+  return false
 end
 
 function H.sleep(n)
@@ -126,7 +125,7 @@ function H.sleep(n)
 end
 
 function _G.dump(...)
-  local objects = tbl_map(vim.inspect, {...})
+  local objects = tbl_map(vim.inspect, { ... })
   print(unpack(objects))
 end
 

@@ -1,4 +1,5 @@
----@diagnostic disable: undefined-global
+---@diagnostic disable
+--luacheck: ignore
 
 local ok, lush = pcall(require, "lush")
 if not ok then
@@ -56,12 +57,16 @@ return function()
     Underline = { gui = "none" },
     Underlined = { gui = "none" },
     -- ui components
-    NormalFloat { fg = "#8f93a2", bg = "#0c101f" }, -- normal text and background color for floating windows
-    FloatBorder { fg = "#4f73a2", bg = NormalFloat.bg }, --
+    NormalFloat { fg = "#8f93a2", bg = "none" }, -- normal text and background color for floating windows
+    FloatBorder { fg = "#3f5382", bg = NormalFloat.bg }, --
+    -- Pmenu { fg = "#618cc4", bg = "#090918" },
+    -- PmenuSel { fg = "#74efff", bg = "#1a1f2f" },
+    -- PmenuSbar { fg = "#717cb4", bg = "#202331" },
+    -- PmenuThumb { fg = "#8f93a2", bg = "#84ffff" },
     Pmenu { fg = "#618cc4", bg = "#090918" },
-    PmenuSel { fg = "#74efff", bg = "#1a1f2f" },
-    PmenuSbar { fg = "#717cb4", bg = "#202331" },
-    PmenuThumb { fg = "#8f93a2", bg = "#84ffff" },
+    PmenuSel { fg = "#44bfcf", bg = "#1a1f2f" },
+    PmenuSbar { fg = "#313c84", bg = "#202331" },
+    PmenuThumb { fg = "#4f5362", bg = "#446faf" },
     SignColumn { bg = "none" },
     LineNr { fg = clrs.nord3 },
     CursorLine { bg = "#101018", gui = "none" },
@@ -81,7 +86,7 @@ return function()
     IncSearch { fg = "#eceff4", bg = "#5d61ec" },
     Search { fg = "#74efff", bg = "#0d314c", gui = "NONE" },
     Keyword { fg = "#6177b2" },
-    MatchParen { fg = "#60a0a0", bg = "000022" },
+    MatchParen { fg = "#60a0a0", bg = "#000022" },
     MatchParenCursor { fg = "#a0c0b0" },
     NonText { bg = "none", fg = "#555555" },
     Normal { fg = clrs.nord4.darken(30), bg = "none" },
@@ -94,12 +99,11 @@ return function()
     String { fg = "#00a0a9" },
     Type { fg = "#718cb4" },
     Special { fg = "#487a98" },
-    VertSplit { fg = "#646Dcf", bg = "none", gui = "NONE" },
-    -- bg = "#2C2343",
+    VertSplit { fg = "#444464", bg = "#090909", gui = "bold" },
     VisualNOS { fg = "none", bg = clr_over.selection },
-    healthError { fg = "#BE6069", bg = "#none" },
-    healthSuccess { fg = "#22BB99", bg = "#none" },
-    healthWarning { fg = "#EBCA89", bg = "#none" },
+    healthError { fg = "#BE6069", bg = "none" },
+    healthSuccess { fg = "#22BB99", bg = "none" },
+    healthWarning { fg = "#EBCA89", bg = "none" },
     qfFilename { Directory },
     -- qfLineNr { LineNr },
     -- qfError { Error },
@@ -115,9 +119,9 @@ return function()
     Question { fg = clrs.nord4 },
     --
     DiagnosticWarn { fg = clrs.nord13.da(40) },
-    DiagnosticVirtualTextWarn { fg = clrs.nord13.da(60), gui = 'italic' },
+    DiagnosticVirtualTextWarn { fg = clrs.nord13.da(60), gui = "italic" },
     DiagnosticHint { fg = "#447Ddf" },
-    DiagnosticVirtualTextHint { fg = "#246Daf", gui = 'italic' },
+    DiagnosticVirtualTextHint { fg = "#246Daf", gui = "italic" },
     LspFloatWinBorder = { bg = "none" },
     LspDiagnosticsError { fg = clrs.nord11 },
     LspDiagnosticsHint { fg = clrs.nord8 },
@@ -377,14 +381,13 @@ return function()
     -- zshVariableDef { Normal },
     -- zshDeref { fg = '#2886bf' },
 
-
     --- nvim-hlslens
     HlSearchLensCur { fg = "#ff2266", bg = "#003333" },
     HlSearchLens { fg = "#00ddff", bg = "none" },
     HlSearchCur { fg = "#00ffdd", bg = "none" },
     -- dashboardn.vim
     --DashboardHeader {Type},
-    DashboardCenter { fg = "#4499ff" },
+    DashboardCenter { fg = "#4499ff" }
     --DashboardShortcut {Boolean},
     --DashboardFooter {Keyword},
 
@@ -411,7 +414,6 @@ return function()
     -- " hi mkdCode ctermfg=88  guifg=#427b58 ctermbg=None cterm=bold
   }
 end
-
 
 -- local function remove_background(group)
 --   group["bg"] = colors.none

@@ -1,5 +1,9 @@
 local M = {
-  files_fzflua = { cmd = "<cmd>FzfLua files<cr>", short = "project files", long = "project files (fzf-lua)" },
+  files_fzflua = {
+    cmd = "<cmd>FzfLua files<cr>",
+    short = "project files",
+    long = "project files (fzf-lua)"
+  },
   files_fzflua_ivy = {
     cmd = "lua require('fzf-lua').files({ winopts = { split = 'belowright new' } })",
     short = "project files fzf-ivy",
@@ -70,7 +74,11 @@ local M = {
     short = "git status fzf",
     long = "git status (fzf-prev)"
   },
-  mru_files_fzflua = { cmd = "<cmd>FzfLua oldfiles<cr>", short = "mru files fzf", long = "mru files (fzf-lua)" },
+  mru_files_fzflua = {
+    cmd = "<cmd>FzfLua oldfiles<cr>",
+    short = "mru files fzf",
+    long = "mru files (fzf-lua)"
+  },
   mru_files_fzflua_ivy = {
     cmd = "lua require('fzf-lua').oldfiles({ winopts = { split = 'belowright new' } })",
     short = "project mru_files fzf-ivy",
@@ -131,7 +139,11 @@ local M = {
     short = "git bcommit log telescope",
     long = "telescope git bcommit log"
   },
-  buffers_fzflua = { cmd = "<cmd>FzfLua buffers<cr>", short = "buffers fzf", long = "buffers (fzf-lua)" },
+  buffers_fzflua = {
+    cmd = "<cmd>FzfLua buffers<cr>",
+    short = "buffers fzf",
+    long = "buffers (fzf-lua)"
+  },
   buffers_teledropdown = {
     cmd = "<cmd>lua _G._FindBufferDropdown()<cr>",
     short = "buffers telescope dropdown",
@@ -150,7 +162,11 @@ local M = {
   sessions = { cmd = "<cmd>Sessions<cr>", short = "sessions", long = "sessions" },
   jumps_fzfprev = { cmd = "<cmd>FzfPreviewJumps<cr>", short = "jumps", long = "jumps" },
   helptags_tele = { cmd = "<cmd>Telescope help_tags<cr>", short = "helptags", long = "helptags" },
-  manpages_tele = { cmd = "<cmd>Telescope man_pages<cr>", short = "man pages", long = "man pages telescope" },
+  manpages_tele = {
+    cmd = "<cmd>Telescope man_pages<cr>",
+    short = "man pages",
+    long = "man pages telescope"
+  },
   location_list_fzfprev = {
     cmd = "<cmd>FzfPreviewLocationList<cr>",
     short = "location list",
@@ -178,15 +194,31 @@ local M = {
     short = "find colorscheme",
     long = "find colorscheme"
   },
-  find_file_tele = { cmd = "<cmd>Telescope find_files<cr>", short = "find file", long = "find file" },
-  grep_text_tele = { cmd = "<cmd>Telescope live_grep<cr>", short = "grep text", long = "grep text" },
-  find_helptags_tele = { cmd = "<cmd>Telescope help_tags<cr>", short = "find helptags", long = "find helptags" },
+  find_file_tele = {
+    cmd = "<cmd>Telescope find_files<cr>",
+    short = "find file",
+    long = "find file"
+  },
+  grep_text_tele = {
+    cmd = "<cmd>Telescope live_grep<cr>",
+    short = "grep text",
+    long = "grep text"
+  },
+  find_helptags_tele = {
+    cmd = "<cmd>Telescope help_tags<cr>",
+    short = "find helptags",
+    long = "find helptags"
+  },
   find_nvim_dotfiles = {
     cmd = "<cmd>lua require('utils.core').search_nvim()<cr>",
     short = "find nvim dotfiles",
     long = "find nvim dotfiles"
   },
-  find_oldfiles = { cmd = "<cmd>Telescope oldfiles<cr>", short = "find oldfiles", long = "find oldfiles" },
+  find_oldfiles = {
+    cmd = "<cmd>Telescope oldfiles<cr>",
+    short = "find oldfiles",
+    long = "find oldfiles"
+  },
   find_mappings_n = {
     cmd = "<plug>(fzf-maps-n)",
     short = "find mappings (normal)",
@@ -207,6 +239,7 @@ local M = {
     short = "find mappings (operator)",
     long = "find mappings (operator)"
   }
+
   -- nmap("Pickers", "<C-d>", "<cmd>FzfPreviewGitCurrentLogs<cr>", "buffer_log", "git buffer log")
 }
 return M

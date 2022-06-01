@@ -2,6 +2,22 @@ local g = vim.g
 local o, wo, bo = vim.o, vim.wo, vim.bo
 local opt = require("utils.core").opt
 local config = require("config")
+vim.cmd [[
+  if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+  else
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+  endif
+
+  let &t_SI = "\e[5 q"
+  let &t_EI = "\e[0 q"
+  " autocmd InsertLeave,InsertEnter * set cul!
+]]
+
+opt("termguicolors", true)
+opt("background", "dark")
 
 g.mapleader = [[,]]
 g.maplocalleader = [[,]]
@@ -23,39 +39,13 @@ opt("clipboard", "unnamedplus")
 
 opt("cmdheight", 1) -- 1
 opt("cmdwinheight", 10)
-opt("completeopt", "noinsert,noselect,menuone")
-opt("cpoptions", "aABceFs_")
+opt("cedit", "<M-w>")
+
+-- TODO: change cedit to <M-f>
+vim.cmd [[:exe "set cedit=\<C-T>"]]
+opt("cpoptions", "aABceFsx_") -- C causes certain vim programs to screw up
 -- opt("display", "msgsep")
 opt("encoding", "UTF-8")
-
-vim.cmd [[
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
-
-let &t_SI = "\e[5 q"
-let &t_EI = "\e[0 q"
-" TODO: only set cursorline for normal buffers
-" autocmd InsertLeave,InsertEnter * set cul!
-
-]]
-
--- vim.cmd([[set guicursor+=a:-blinkwait175-blinkoff150-blinkon175]])
--- opt("guicursor", "n-v-c:block-blinkoff150-blinkon175,i-ci-ve:ver25,r-cr:hor20,o:hor50")
--- if os.getenv("TERMINAL") == "wezterm" then
---   -- opt("guicursor",
---   --     "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursorzf,sm:block-blinkwait175-blinkoff150-blinkon175")
--- vim.cmd [[
---   set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
---   \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
---   \,sm:block-blinkwait175-blinkoff150-blinkon175
--- ]]
-
--- end
 
 opt("hidden", true)
 opt("inccommand", "split")
@@ -86,16 +76,21 @@ opt("sidescrolloff", 5)
 opt("smartcase", true)
 opt("splitbelow", true)
 opt("splitright", true)
+opt("jumpoptions", "stack")
 
 opt("undolevels", 1000)
 opt("updatetime", 4000)
 opt("timeoutlen", 500)
-opt("ttimeoutlen", 50)
-opt("pumheight", 15)
+opt("ttimeoutlen", 20)
+opt("pumheight", 10)
 opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- winsize messes up on load
 opt("fileencoding", "utf-8")
 opt("whichwrap", "b,s,<,>,[,],h,l")
 opt("autoread", true)
+
+-- opt("completeopt", "menuone,longest")
+-- opt("completion_enable_snippet", "LuaSnip")
+-- opt("completion_matching_smart_case", 1)
 
 -- window scope
 opt("foldlevel", 0, window)
@@ -121,9 +116,6 @@ opt("tabstop", 2, buffer)
 -- opt("textwidth", 100, buffer) -- set per buffer
 opt("undofile", true, buffer)
 opt("fileformat", "unix", buffer)
-
-opt("termguicolors", true)
-opt("background", "dark")
 
 vim.cmd [[colorscheme nord-nick]]
 
@@ -156,7 +148,14 @@ vim.g.tex_flavor = "latex"
 vim.g.vimtex_view_method = "skim"
 vim.g.vimtex_quickfix_mode = true
 vim.g.vimtex_compiler_latexmk = {
-  options = { "-pdf", "-shell-escape", "-verbose", "-file-line-error", "-synctex=1", "-interaction=nonstopmode" }
+  options = {
+    "-pdf",
+    "-shell-escape",
+    "-verbose",
+    "-file-line-error",
+    "-synctex=1",
+    "-interaction=nonstopmode"
+  }
 }
 vim.g["test#strategy"] = "neovim"
 vim.g.tex_flavor = "latex"
@@ -191,8 +190,9 @@ vim.g.sql_type_default = "pgsql"
 opt("wildignore", "*.o,*~,*.pyc")
 -- opt("wildmenu", 1)
 -- opt("wildmode", "") -- full, longest, list, lastused, list:longest, list:full, longest:full
-opt("wc", 0x0e)
-opt("wcm", 0x0e)
+-- opt("wildmode", "longest:full,full")
+-- opt("wc", 0x0e)
+-- opt("wcm", 0x0e)
 
 -- vim.cmd('set iskeyword+=-') -- treat dash separated words as a word text object"
 -- TERMINAL = vim.fn.expand('$TERMINAL')

@@ -1,4 +1,6 @@
 -- f{char}/F, t{char}/T enhancement
+local luasnip = require("luasnip")
+
 local function nvim_default_config()
   require("tabout").setup {
     tabkey = "<Tab>", -- key to trigger tabout, set to an empty string to disable
@@ -9,14 +11,14 @@ local function nvim_default_config()
     completion = true, -- if the tabkey is used in a completion pum
     tabouts = {
       { open = "'", close = "'" },
-      { open = "\"", close = "\"" },
+      { open = '"', close = '"' },
       { open = "`", close = "`" },
       { open = "(", close = ")" },
       { open = "[", close = "]" },
-      { open = "{", close = "}" },
+      { open = "{", close = "}" }
     },
-    ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
-    exclude = {}, -- tabout will ignore these filetypes
+    ignore_beginning = true --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]] ,
+    exclude = {} -- tabout will ignore these filetypes
   }
 end
 
@@ -24,21 +26,25 @@ end
 -- TODO: if no tabout motion, move word forward/backwards
 
 local function nvim_compe_config()
-  require("tabout").setup({
-    tabkey = "",
-    backwards_tabkey = "",
-    act_as_tab = false, -- shift content if tab out is not possible
-    act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
-    ignore_beginning = true,
-  })
+  require("tabout").setup(
+    {
+      tabkey = "",
+      backwards_tabkey = "",
+      act_as_tab = false, -- shift content if tab out is not possible
+      act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
+      ignore_beginning = true
+    }
+  )
 
-  local function replace_keycodes(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
+  local function replace_keycodes(str)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+  end
 
   function _G.tab_binding()
     if vim.fn.pumvisible() ~= 0 then
       return replace_keycodes("<C-n>")
-    elseif vim.fn["vsnip#available"](1) ~= 0 then
-      return replace_keycodes("<Plug>(vsnip-expand-or-jump)")
+    elseif luasnip.expand_or_jumpable() then
+      luasnip.expand_or_jump()
     else
       return replace_keycodes("<Plug>(TaboutMulti)")
     end
@@ -47,8 +53,8 @@ local function nvim_compe_config()
   function _G.s_tab_binding()
     if vim.fn.pumvisible() ~= 0 then
       return replace_keycodes("<C-p>")
-    elseif vim.fn["vsnip#jumpable"](-1) ~= 0 then
-      return replace_keycodes("<Plug>(vsnip-jump-prev)")
+    elseif luasnip.jumpable(-1) then
+      luasnip.jump(-1)
     else
       return replace_keycodes("<Plug>(TaboutBackMulti)")
     end

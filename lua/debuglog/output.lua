@@ -1,17 +1,14 @@
 local M = {}
-
-local round = function(x, increment)
-  increment = increment or 1
-  x = x / increment
-  return (x > 0 and math.floor(x + .5) or math.ceil(x - .5)) * increment
-end
-
-
-M.output_log = function(config, level, level_config, message_maker, ...)
+local config = require("debuglog.config")
+M.output_log = function(level, level_config, message_maker, ...)
   -- Return early if we're below the config.level
   local levels = {}
-  for i, v in ipairs(config.modes) do levels[v.name] = i end
-  if level < levels[config.level] then return end
+  for i, v in ipairs(config.modes) do
+    levels[v.name] = i
+  end
+  if level < levels[config.level] then
+    return
+  end
   local nameupper = level_config.name:upper()
 
   local msg = message_maker(...)
@@ -20,16 +17,21 @@ M.output_log = function(config, level, level_config, message_maker, ...)
 
   -- Output to console
   if config.use_console then
-    local console_string = string.format("[%-6s%s] %s: %s", nameupper, os.date("%H:%M:%S"), lineinfo, msg)
+    local console_string =
+    string.format("[%-6s%s] %s: %s", nameupper, os.date("%H:%M:%S"), lineinfo, msg)
 
-    if config.highlights and level_config.hl then vim.cmd(string.format("echohl %s", level_config.hl)) end
+    if config.highlights and level_config.hl then
+      vim.cmd(string.format("echohl %s", level_config.hl))
+    end
 
     local split_console = vim.split(console_string, "\n")
     for _, v in ipairs(split_console) do
-      vim.cmd(string.format([[echom "[%s] %s"]], config.plugin, vim.fn.escape(v, "\"")))
+      vim.cmd(string.format([[echom "[%s] %s"]], config.plugin, vim.fn.escape(v, '"')))
     end
 
-    if config.highlights and level_config.hl then vim.cmd("echohl NONE") end
+    if config.highlights and level_config.hl then
+      vim.cmd("echohl NONE")
+    end
   end
 
   -- Output to log file

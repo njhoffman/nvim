@@ -6,7 +6,7 @@ M.setup = function(on_attach, capabilities)
 
   lspconfig.pylsp.setup {
     on_attach = on_attach,
-    -- cmd = { path .. "/lsp_servers/dockerls/docker-langserver", "--stdio" },
+    cmd = { path .. "/lsp_servers/pylsp/venv/bin/pylsp" },
     flags = {
       debounce_text_changes = 150,
     },

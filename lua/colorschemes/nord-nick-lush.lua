@@ -1,4 +1,5 @@
----@diagnostic disable: undefined-global
+---@diagnostic disable
+--luacheck: ignore
 
 local ok, lush = pcall(require, "lush")
 local ok_nord, nord = pcall(require, "colorschemes.lush-themes.nord-nvim")

@@ -1,10 +1,9 @@
-local mappings = {}
-local actions = require("telescope.actions")
 local actions_layout = require "telescope.actions.layout"
 local actions_set = require "telescope.actions.set"
 local custom_actions = require("plugins.configs.telescope-custom-actions")
+local actions = require("telescope.actions")
 
-mappings.main = {
+--[[ local baseMaps = {
   i = {
     ["<esc>"] = actions.close,
     ["jk"] = actions.close,
@@ -15,9 +14,27 @@ mappings.main = {
     ["<c-b>"] = function(prompt_bufnr)
       actions_set.shift_selection(prompt_bufnr, -15)
     end,
-    ["<c-u>"] = false,
+    ["<a-n>"] = actions.toggle_selection + actions.move_selection_next,
+    ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous
+  },
+  n = {
+    ["<esc>"] = actions.close
+  }
+} ]]
+local mainMaps = {
+  i = {
+    ["<esc>"] = actions.close,
+    -- ["jk"] = actions.close,
+    ["kj"] = actions.close,
+    ["<c-f>"] = function(prompt_bufnr)
+      actions_set.shift_selection(prompt_bufnr, 15)
+    end,
+    ["<c-b>"] = function(prompt_bufnr)
+      actions_set.shift_selection(prompt_bufnr, -15)
+    end,
     ["<a-n>"] = actions.toggle_selection + actions.move_selection_next,
     ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous,
+    ["<c-u>"] = false,
     ["<cr>"] = actions.select_default + actions.center,
     -- ["<cr>"] = custom_actions.multi_selection_open,
     ["<c-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
@@ -27,8 +44,10 @@ mappings.main = {
     end,
     ["<A-U>"] = custom_actions.switch_picker_type,
     ["<M-/>"] = actions.which_key,
-    ["<C-DOWN>"] = require("telescope.actions").cycle_history_next,
-    ["<C-UP>"] = require("telescope.actions").cycle_history_prev
+    ["<C-DOWN>"] = actions.cycle_history_next,
+    ["<C-UP>"] = actions.cycle_history_prev,
+    ["<C-a>"] = actions.select_all,
+    ["<A-a>"] = actions.select_all
     -- ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
     -- ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
     -- ["<C-h>"] = actions.goto_file_selection_split,
@@ -39,25 +58,12 @@ mappings.main = {
     -- ['<A- >'] = actions.toggle,
   },
   n = {
-    ["<esc>"] = actions.close
-    -- ["<c-j>"] = actions.move_selection_next,
-    -- ["<c-k>"] = actions.move_selection_previous,
-    -- ["<C-w>"] = actions.send_selected_to_qflist,
-    -- ["<C-q>"] = actions.send_to_qflist,
-    -- ["<c-f>"] = function(prompt_bufnr) action_set.shift_selection(prompt_bufnr, 15) end,
-    -- ["<c-b>"] = function(prompt_bufnr) action_set.shift_selection(prompt_bufnr, -15) end,
-    -- ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
-    -- ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
-    -- ["<cr>"] = custom_actions.multi_selection_open,
-    -- ["<c-v>"] = custom_actions.multi_selection_open_vsplit,
-    -- ["<c-s>"] = custom_actions.multi_selection_open_split,
-    -- ["<c-t>"] = custom_actions.multi_selection_open_tab,
-    -- ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
-    -- ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
+    ["<esc>"] = actions.close,
+    ["<A-a>"] = actions.select_all
   }
 }
 
-mappings.file_picker = {
+local fileMaps = {
   i = {
     -- change directory functionality
     ["<C-g>"] = custom_actions.directory_up,
@@ -65,11 +71,32 @@ mappings.file_picker = {
     ["<cr>"] = custom_actions.multi_selection_open
   }
 }
-
 --  TODO: grep live
 --  opts.search_dirs -- list of directory to search in
 --  opts.grep_open_files -- boolean to restrict search to open files
 
+function tableMerge(t1, t2)
+  for k, v in pairs(t2) do
+    if type(v) == "table" then
+      if type(t1[k] or false) == "table" then
+        tableMerge(t1[k] or {}, t2[k] or {})
+      else
+        t1[k] = v
+      end
+    else
+      t1[k] = v
+    end
+  end
+  return t1
+end
+
+--[[ tableMerge(baseMaps, fileMaps)
+tableMerge(baseMaps, mainMaps) ]]
+local mappings = {
+  base = baseMaps,
+  main = mainMaps,
+  file_picker = fileMaps
+}
 return mappings
 
 --  Z telescope plugin:

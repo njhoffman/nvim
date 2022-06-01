@@ -1,57 +1,54 @@
-local notify = require("notify")
-
+local ok, _ = pcall(require, "notify")
+if not ok then
+  return
+end
 -- increase fade in frequency
 local fade_in_slide_out_stages = require("notify.stages").fade_in_slide_out
+
+local cols = math.floor(vim.opt.columns:get() / 3 * 2)
 fade_in_slide_out_stages[2] = function()
   return {
-    opacity = {100, frequency = 3},
-    col = {vim.opt.columns:get()}
+    opacity = { 100, frequency = 3 },
+    col = { vim.opt.columns:get() }
   }
 end
 
-
 local config = {
   level = "info",
-  timeout = 5000,
   fps = 30,
-  -- stages = "fade_in_slide_out", "fade", "slide", "static"
   stages = fade_in_slide_out_stages,
+  render = "default",
+  background_colour = "FloatShadow",
   -- Default timeout for notifications
-  timeout = 2000,
+  timeout = 5000,
+  -- maximium_width = 90,
   minimum_width = 20,
-  -- Function called when a window is closed
-  -- on_close = nil,
-  --   max_width = nil,
-  --   max_height = nil,
-  -- on_open = nil,
+  maximum_width = cols,
   -- For stages that change opacity this is treated as the highlight behind the window
-  background_colour = "#000000",
   -- Icons for the different levels
-  icons = {ERROR = "", WARN = "", INFO = "", DEBUG = "", TRACE = "✎"},
-  -- Minimum width for notification windows
-  -- keep: Function that returns whether or not to keep the window open instead of using a timeout
-  render = "default"
+  icons = {
+    ERROR = "",
+    WARN = "",
+    INFO = "",
+    DEBUG = "",
+    TRACE = "✎",
+    INSPECT = "",
+    TASK = "",
+    STATUS = ""
+  }
 }
 
--- "title",
--- "icon",
--- "timeout",
--- "keep",
--- "on_open",
--- "on_close",
--- "render",
--- "hide_from_history",
-
-notify.setup(config)
-return notify
+require("notify").setup(config)
 
 -- You can also use plenary's async library to avoid using callbacks:
 -- local async = require("plenary.async")
 -- local notify = require("notify").async
--- async.run(function()
---   notify("Let's wait for this to close").close()
---   notify("It closed!")
--- end)
+-- async.run(
+--   function()
+--     notify("Let's wait for this to close").close()
+--     notify("It closed!")
+--   end
+-- )
 
 -- Custom functions should accept a buffer, a notification record and a highlights table
 --   render: fun(buf: integer, notification: NotificationRecord, highlights: NotificationHighlights)

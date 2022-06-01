@@ -1,15 +1,11 @@
 local NvimMapper = require("nvim-mapper")
-local logger = require("logger").initLogger("init")
 local wk = require("which-key")
-
-local logger = require("logger").initLogger("mapper")
+local logger = require("logger").init("mapper")
 local M = {}
 local keymap = {}
 
-
 -- TODO: notify when mapping not found
 -- TODO: handle duplicate assignments with suffix
-
 
 -- OK:   448
 -- TODO: 238
@@ -33,33 +29,56 @@ local function length(T)
 end
 
 local function load_module(file_name)
-  local ok, mod = pcall(require, 'mappings.' .. file_name)
+  local ok, mod = pcall(require, "mappings." .. file_name)
   if not ok then
     local msg = "failed loading: " .. file_name .. "\n " .. vim.inspect(mod)
     vim.notify(msg, "error")
     logger:error({ msg, mod })
   else
-    local mod_name = file_name:gsub("^%l", string.upper)
-    if mod_name == "Lsp" then mod_name = "LSP" end
-    keymap[mod_name] = mod
     -- logger:trace(mod_name .. " keymap loaded")
+    local mod_name = file_name:gsub("^%l", string.upper)
+    if mod_name == "Lsp" then
+      mod_name = "LSP"
+    end
+    keymap[mod_name] = mod
   end
 end
 
-M.stats = { normal = 0, insert = 0, command = 0, operator = 0, visual = 0, select = 0, terminal = 0, language = 0 }
+M.stats = {
+  normal = 0,
+  insert = 0,
+  command = 0,
+  operator = 0,
+  visual = 0,
+  select = 0,
+  terminal = 0,
+  language = 0
+}
 M.whichkey_map = { n = {}, v = {}, c = {}, i = {}, o = {}, x = {}, s = {}, t = {}, m = {}, l = {} }
 
 M.update_stats = function(mode)
-  if mode == "n" then M.stats.normal = M.stats.normal + 1 end
-  if mode == "t" then M.stats.terminal = M.stats.terminal + 1 end
-  if mode == "i" then M.stats.insert = M.stats.insert + 1 end
-  if mode == "c" then M.stats.command = M.stats.command + 1 end
-  if mode == "o" then M.stats.operator = M.stats.operator + 1 end
+  if mode == "n" then
+    M.stats.normal = M.stats.normal + 1
+  end
+  if mode == "t" then
+    M.stats.terminal = M.stats.terminal + 1
+  end
+  if mode == "i" then
+    M.stats.insert = M.stats.insert + 1
+  end
+  if mode == "c" then
+    M.stats.command = M.stats.command + 1
+  end
+  if mode == "o" then
+    M.stats.operator = M.stats.operator + 1
+  end
   if mode == "v" then
     M.stats.visual = M.stats.visual + 1
     M.stats.select = M.stats.select + 1
   end
-  if mode == "x" then M.stats.visual = M.stats.visual + 1 end
+  if mode == "x" then
+    M.stats.visual = M.stats.visual + 1
+  end
 end
 
 M.parse_params = function(category, mode, keys, cmd_id, mods)
@@ -74,9 +93,15 @@ M.parse_params = function(category, mode, keys, cmd_id, mods)
   end
 
   mods = mods or {}
-  if mods.silent ~= nil then params.mods.silent = mods.silent end
-  if mods.noremap ~= nil then params.mods.noremap = mods.noremap end
-  if mods.nowait ~= nil then params.mods.nowait = mods.nowait end
+  if mods.silent ~= nil then
+    params.mods.silent = mods.silent
+  end
+  if mods.noremap ~= nil then
+    params.mods.noremap = mods.noremap
+  end
+  if mods.nowait ~= nil then
+    params.mods.nowait = mods.nowait
+  end
 
   params.mode = mode
   params.cat = category
@@ -94,7 +119,6 @@ M.parse_params = function(category, mode, keys, cmd_id, mods)
 
   return params
 end
-
 
 M.registerWhichkey = function()
   wk.register(M.whichkey_map.n, { mode = "n" })
@@ -122,9 +146,25 @@ M.map = function(category, mode, keys, cmd_id, mods)
   -- wk.register({ [params.keys] = params.desc_short }, { mode = mode })
 
   if params.virtual then
-    NvimMapper.map_virtual(params.mode, params.keys, "", {}, params.cat, params.id, params.desc_long)
+    NvimMapper.map_virtual(
+      params.mode,
+      params.keys,
+      "",
+      {},
+      params.cat,
+      params.id,
+      params.desc_long
+    )
   else
-    NvimMapper.map(params.mode, params.keys, params.cmd, params.mods, params.cat, params.id, params.desc_long)
+    NvimMapper.map(
+      params.mode,
+      params.keys,
+      params.cmd,
+      params.mods,
+      params.cat,
+      params.id,
+      params.desc_long
+    )
   end
   -- Mapper.map_buf(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {noremap = true, silent = true}, "LSP", "lsp_definitions", "Go to definition")
 end
@@ -132,7 +172,6 @@ end
 M.prefix = function(prefix, name)
   wk.register({ [prefix] = { name = "+" .. name } })
 end
-
 
 local mapfiles = {
   "debug",
@@ -148,7 +187,7 @@ local mapfiles = {
   "system",
   "unimpaired",
   "window",
-  "zettel",
+  "zettel"
 }
 
 for _, mod_name in ipairs(mapfiles) do

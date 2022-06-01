@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+
 # curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux.gz | gunzip -f > "$HOME"/.local/bin/rust-analyzer && chmod +x "$HOME"/.local/bin/rust-analyzer
 # https://megalinter.github.io/latest/all_linters/
 # https://github.com/caramelomartins/awesome-linters

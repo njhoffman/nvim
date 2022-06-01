@@ -1,4 +1,4 @@
-const telescope = {
+  const telescope = {
   filePickers: {
     "builtin.find_files": "Lists files in your current working directory, respects .gitignore",
     "builtin.git_files": "Fuzzy search through the output of git ls-files command, respects .gitignore, optionally ignores untracked files",
@@ -49,10 +49,10 @@ const telescope = {
     "builtin.git_status": "Lists current changes per file with diff preview and add action. (Multi-selection still WIP)",
     "builtin.git_stash": "Lists stash items in current repository with ability to apply them on <cr>",
   }, listsPicker: {
-    "builtin.treesitter":"Lists Function names, variables, from Treesitter!",
-    "builtin.planets"	:"Use the telescope...",
+    "builtin.treesitter": "Lists Function names, variables, from Treesitter!",
+    "builtin.planets": "Use the telescope...",
     "builtin.builtin": "Lists Built-in pickers and run them on enter.",
-    "builtin.reloader":"Lists lua modules and reload them on enter.",
-    "builtin.symbols"	:"Lists symbols inside a file data/telescope-sources/*.json found in your rtp. More info and symbol sources can be found here",
+    "builtin.reloader": "Lists lua modules and reload them on enter.",
+    "builtin.symbols": "Lists symbols inside a file data/telescope-sources/*.json found in your rtp. More info and symbol sources can be found here",
   }
 };

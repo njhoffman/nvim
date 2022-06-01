@@ -22,7 +22,7 @@ local settings = {
     -- diagnostics = {globals = {"vim", "use"}, disable = {"lowercase-global"}},
     diagnostics = {
       neededFileStatus = {
-        ["codestyle-check"] = "Any",
+        ["codestyle-check"] = "Any"
       },
       globals = {
         "vim",
@@ -36,9 +36,9 @@ local settings = {
       disable = {
         "lowercase-global",
         "undefined-global",
-        "unused-local",
-        "unused-function",
-        "unused-vararg",
+        -- "unused-local",
+        -- "unused-function",
+        -- "unused-vararg",
         "trailing-space"
       }
     }
@@ -57,11 +57,7 @@ M.setup = function(on_attach, capabilities)
   local lua_settings = {
     root_dir = lspconfig.util.root_pattern(".git", ".project"),
     single_file_support = true,
-    on_attach = function(client, bufnr)
-      -- client.resolved_capabilities.document_formatting = false
-      -- client.resolved_capabilities.range_formatting = false
-      on_attach(client, bufnr)
-    end,
+    on_attach = on_attach,
     cmd = { path .. "/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server" },
     settings = settings,
     flags = { debounce_text_changes = 150 },
@@ -84,7 +80,5 @@ M.setup = function(on_attach, capabilities)
   lspconfig.sumneko_lua.setup(luadev)
   -- lspconfig.sumneko_lua.setup(lua_settings)
 end
-
--- local sumneko_config = {
 
 return M

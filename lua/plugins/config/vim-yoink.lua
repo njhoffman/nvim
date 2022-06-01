@@ -3,7 +3,7 @@
 
 vim.g.yoinkMaxItems = 100
 vim.g.yoinkSavePersistently = 1
-vim.g.yoinkAutoFormatPaste = 1
+vim.g.yoinkAutoFormatPaste = 0
 vim.g.yoinkIncludeNamedRegisters = 1
 vim.g.yoinkIncludeDeleteOperations = 0
 vim.g.yoinkMoveCursorToEndOfPaste = 1

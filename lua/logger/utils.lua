@@ -1,4 +1,5 @@
 local M = {}
+local config = require("debuglog.config")
 
 M.traceback = function()
   -- The main introspective function in the debug library is the debug.getinfo function. Its first parameter may be a function or a stack level. When you call debug.getinfo(foo) for some function foo, you get a table with some data about that function. The table may have the following fields:
@@ -81,12 +82,34 @@ M.inspect = function(tbl, depth, n)
       end
     end
   end
-
   if (n == 0) then
     print(" ")
   end
 end
 
+local round = function(x, increment)
+  increment = increment or 1
+  x = x / increment
+  return (x > 0 and math.floor(x + .5) or math.ceil(x - .5)) * increment
+end
+
+M.make_string = function(...)
+  local t = {}
+  for i = 1, select("#", ...) do
+    local x = select(i, ...)
+
+    if type(x) == "number" and config.float_precision then
+      x = tostring(round(x, config.float_precision))
+    elseif type(x) == "table" then
+      x = vim.inspect(x)
+    else
+      x = tostring(x)
+    end
+
+    t[#t + 1] = x
+  end
+  return table.concat(t, " ")
+end
 
 M.wrap = function(str, limit, indent, indent1)
   if type(str) ~= "string" then

@@ -2,10 +2,8 @@ local M = {}
 M.setup = function(on_attach, capabilities)
   local lspconfig = require "lspconfig"
   local path = vim.fn.stdpath('data')
-
   lspconfig.cssls.setup {
     on_attach = on_attach,
-    -- cmd = { path .. "/lsp_servers/cssls/vscode-css-language-server", "--stdio" },
     cmd = { path .. "/lsp_servers/css/node_modules/.bin/vscode-css-language-server", "--stdio" },
     flags = {
       debounce_text_changes = 150,

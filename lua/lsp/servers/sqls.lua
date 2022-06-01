@@ -3,11 +3,7 @@ M.setup = function(on_attach, capabilities)
   local lspconfig = require "lspconfig"
   local path = vim.fn.stdpath('data')
   lspconfig.sqls.setup {
-    on_attach = function(client, bufnr)
-      client.resolved_capabilities.document_formatting = false
-      client.resolved_capabilities.range_formatting = false
-      on_attach(client, bufnr)
-    end,
+    on_attach = on_attach,
     cmd = { path .. "/lsp_servers/sqls/sqls" }, -- "-config", "path/to/config.yml"}
     filetypes = { "sql", "mysql", "pgsql", "psql" },
     flags = {

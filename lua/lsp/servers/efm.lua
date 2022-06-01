@@ -45,8 +45,8 @@ local shfmt = {
 }
 
 local languages = {
-  -- lua = { luafmt, luacheck },
-  lua = { luacheck },
+  lua = { luafmt, luacheck },
+  -- lua = { luacheck },
   yaml = { prettier },
   bash = { shfmt, shellcheck },
   sh = { shfmt, shellcheck },
@@ -56,7 +56,7 @@ local languages = {
   typescript = { prettier }, -- {prettier, eslint}
   javascript = { prettier },
   typescriptreact = { prettier },
-  javascriptreact = { prettier },
+  javascriptreact = { prettier }
   -- json = {prettier}
   -- html = {prettier},
   -- scss = {prettier},
@@ -71,28 +71,32 @@ local config = require("settings")
 
 M.setup = function(on_attach, capabilities)
   local lspconfig = require "lspconfig"
-  local path = vim.fn.stdpath("data")
   lspconfig.efm.setup {
-    on_attach = function(client, bufnr)
-      if vim.bo.filetype == 'lua' then
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.range_formatting = false
-      end
-      on_attach(client, bufnr)
-    end,
-    cmd = { path .. "/lsp_servers/efm/efm-langserver" },
+    on_attach = on_attach,
+    cmd = {
+      vim.fn.stdpath("data") .. "/lsp_servers/efm/efm-langserver",
+      "-logfile",
+      vim.fn.stdpath("cache") .. "/lsp-efm.log",
+      "-loglevel",
+      "2", -- default 1, up to 4
+      "-q"
+    },
     flags = {
       debounce_text_changes = 150
     },
     capabilities = capabilities,
-    root_dir = lspconfig.util.root_pattern({ "yarn.lock", "package.json", ".project", ".git", vim.fn.getcwd() }),
+    -- root_dir = lspconfig.util.root_pattern({ "yarn.lock", "package.json", ".project", ".git", vim.fn.getcwd() }),
+    root_dir = lspconfig.util.root_pattern({ "yarn.lock", "package.json", ".project", ".git" }),
     single_file_support = true,
     filetypes = vim.tbl_keys(languages),
-    init_options = { documentFormatting = true, hover = true, documentSymbol = true, codeAction = true },
+    init_options = {
+      documentFormatting = true,
+      hover = true,
+      documentSymbol = true,
+      codeAction = true
+    },
     settings = {
       languages = languages,
-      log_level = config.Logging.numeric.lsp_level,
-      log_file = vim.fn.stdpath("cache") .. "/lsp/efm.log",
       rootMarkers = {
         -- ".eslintrc.cjs",
         -- ".eslintrc",

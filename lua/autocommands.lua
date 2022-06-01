@@ -3,6 +3,15 @@ local u = require("utils.core")
 local Formatting = config.Formatting
 local Opts = config.Opts
 
+-- Creating an autocommand in 0.7
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--     pattern = "*",
+--     callback = function(args)
+--         print("Entered buffer " .. args.buf .. "!")
+--     end,
+--     desc = "Tell me when I enter a buffer",
+-- })
+
 -- #{?pane_in_mode,#[fg=white#,bg=red],#[fg=red#,bg=white]}#W .
 vim.cmd [[
   command! SqlVis silent !tmux display-popup -b rounded -S 'fg=\#2255AA' -T '' -E -h 70\% -w90\% "psql --csv postgres://spadash:spadash@localhost/spadash --file=%:p | /bin/zsh -c 'vd -f csv --color-default=\"8 on black\" '"
@@ -186,14 +195,16 @@ local autocmds = {
 --   {"CursorHold,CursorHoldI", "*", "lua require'nvim-lightbulb'.update_lightbulb()"}
 -- }
 
--- | if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' && &buftype =~ hidden | silent! wshada | silent! !~/bin/wshada.sh | endif",
--- local shadaEvents = { { "BufWrite", "*", [[call ShadaWrite()]] }, { "Signal", "SIGUSR1", [[call ShadaRead()]] } }
-local shadaEvents = {
-  { "BufRead", "*", [[call ShadaWrite()]] },
-  { "Signal", "SIGUSR1", [[call ShadaRead()]] }
-}
 
-table.insert(autocmds, shadaEvents)
+-- | if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' && &buftype =~ hidden | silent! wshada | silent! !~/bin/wshada.sh | endif",
+-- local shadaEventsViml = { { "BufWrite", "*", [[call ShadaWrite()]] }, { "Signal", "SIGUSR1", [[call ShadaRead()]] } }
+
+local shadaEvents = { { "BufRead", "*", [[call ShadaWrite()]] }, { "Signal", "SIGUSR1", [[call ShadaRead()]] } }
+
+if Opts.shada_events == true  then
+  table.insert(autocmds, shadaEvents)
+end
+
 
 local number_toggle = {
   {

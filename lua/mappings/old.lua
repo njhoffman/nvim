@@ -32,8 +32,6 @@
 --               prefix = "<C-F>"
 -- -- More --
 
-
-
 -- local cmap = function(cat, keys, cmd, id, desc, nr)
 --   local mode = { silent = false, noremap = nr }
 --   Mapper.map("c", keys, cmd, mode, cat, id, desc)
@@ -418,8 +416,8 @@ local formatters_map = {
     ["d"] = "delete surrounding",
     ["r"] = "replace surrounding",
     ["bd"] = "search and delete",
-    ["br"] = "search and replace",
-  },
+    ["br"] = "search and replace"
+  }
   -- ["<leader>t"] = {
   --   name = "+text format",
   --   [","] = { "A,<esc>", "add comma to end of line" },
@@ -479,7 +477,7 @@ local buffer_map = {
   ["<C-u>"] = "picker mru files",
   ["<A-u>"] = "picker commands",
   ["<A-/>"] = "picker helptags",
-  ["\"\""] = "view registers",
+  ['""'] = "view registers",
   ["<F2>"] = "toggle whichkey",
   ["<F3>"] = "toggle explorer",
   ["<F4>"] = "toggle mundo tree",
@@ -496,7 +494,7 @@ local buffer_map = {
     ["s"] = "snake case",
     ["k"] = "kebab case",
     ["c"] = "camel case",
-    ["C"] = "camelB case",
+    ["C"] = "camelB case"
   },
   ["<leader>F"] = {
     name = "+find",
@@ -510,7 +508,7 @@ local buffer_map = {
     ["m"] = "maps (normal)",
     ["mi"] = "maps (insert)",
     ["mv"] = "maps (visual)",
-    ["mo"] = "maps (operator)",
+    ["mo"] = "maps (operator)"
   },
   ["g"] = {
     name = "+go actions",
@@ -539,7 +537,7 @@ local buffer_map = {
     ["u"] = "lowercase motion",
     ["v"] = "select last edited text",
     ["x"] = "open file under cursor",
-    ["y"] = "packer buffer definition",
+    ["y"] = "packer buffer definition"
   },
   ["gz"] = {
     name = "+zettelkasten",
@@ -562,7 +560,7 @@ local buffer_map = {
     ["v"] = "toggle backlinks",
     ["t"] = "add new tag",
     ["T"] = "add existing tag",
-    ["ts"] = "search zettel tags",
+    ["ts"] = "search zettel tags"
   },
   ["<leader>"] = {
     ["q"] = "close window with save",
@@ -583,7 +581,7 @@ local buffer_map = {
       name = "+new",
       ["f"] = "create new file",
       ["s"] = "create new file in a split",
-      ["t"] = "create new file in tab",
+      ["t"] = "create new file in tab"
     },
     ["i"] = {
       name = "+nvim internal",
@@ -592,7 +590,7 @@ local buffer_map = {
       ["s"] = "packer sync",
       ["c"] = "packer clean",
       ["S"] = "packer status",
-      ["e"] = "edit plugins",
+      ["e"] = "edit plugins"
     },
     ["g"] = {
       name = "+git",
@@ -604,7 +602,7 @@ local buffer_map = {
       ["p"] = "git prev hunk",
       ["v"] = "git preview hunk",
       ["r"] = "git reset hunk",
-      ["R"] = "git reset buffer",
+      ["R"] = "git reset buffer"
     },
     ["l"] = {
       name = "+lsp",
@@ -622,7 +620,7 @@ local buffer_map = {
       ["r"] = "rename",
       ["s"] = "document symbols",
       ["S"] = "workspace symbols",
-      [".a"] = "stop all",
+      [".a"] = "stop all"
     },
     ["y"] = {
       name = "+repl",
@@ -630,7 +628,7 @@ local buffer_map = {
       ["r"] = "send motion",
       ["p"] = "send previous",
       ["rr"] = "send line",
-      ["r<cr>"] = "send selection",
+      ["r<cr>"] = "send selection"
     },
     ["cl"] = {
       name = "+conceallevel",
@@ -638,8 +636,8 @@ local buffer_map = {
       ["0"] = { "set conceal 0" },
       ["1"] = { "set conceal 1" },
       ["2"] = { "set conceal 2" },
-      ["3"] = { "set conceal 3" },
-    },
+      ["3"] = { "set conceal 3" }
+    }
     -- ["<leader>s"] = {
     --   name = "+session",
     --   ["s"] = {"<cmd>SSave<cr>", "session save"},
@@ -647,7 +645,7 @@ local buffer_map = {
     --   ["d"] = {"<cmd>SDelete<cr>", "session delete"},
     --   ["l"] = {"<cmd>SLoad<cr>", "session load"}
     -- }
-  },
+  }
 }
 
 -- local buffer_opts = { mode = "n", buffer = nil, silent = true, noremap = true, nowait = false }
@@ -657,8 +655,8 @@ local insert_map = {
   ["<c-s>"] = "save in insert",
   ["jk"] = { "<esc>", "exit from insert" },
   ["<C-u>"] = { "<C-g>u<C-u>", "which_key_ignore" }, -- Make <C-u> undo-friendly
-  ["<C-w>"] = { "<C-g>u<C-w>", "which_key_ignore" }, -- Make <C-w> undo-friendly
-};
+  ["<C-w>"] = { "<C-g>u<C-w>", "which_key_ignore" } -- Make <C-w> undo-friendly
+}
 -- local insert_opts = { mode = "i", buffer = nil, silent = true, noremap = true, nowait = true }
 -- require("which-key").register(insert_map, insert_opts)
 
@@ -686,8 +684,8 @@ local visual_map = {
     ["s"] = "snake case",
     ["k"] = "kebab case",
     ["c"] = "camel case",
-    ["C"] = "camelB case",
-  },
+    ["C"] = "camelB case"
+  }
 }
 
 -- local visual_opts = { mode = "x", buffer = nil, silent = true, noremap = true, nowait = false }
@@ -708,7 +706,7 @@ local unimpaired_map = {
     ["u"] = "cursorcolumn",
     ["v"] = "virtualedit text",
     ["w"] = "word wrap",
-    ["x"] = "crosshairs",
+    ["x"] = "crosshairs"
   },
   ------- pasting
   ["]p"] = "Paste after line incr indent.",
@@ -740,7 +738,7 @@ local unimpaired_map = {
   ["[t"] = "tag previous",
   ["]t"] = "tag next",
   ["[<C-T>"] = "tag prev in prev window",
-  ["]<C-T>"] = "tag next in prev window",
+  ["]<C-T>"] = "tag next in prev window"
 }
 
 local opts = { mode = "n", buffer = nil, silent = true, noremap = true, nowait = false }
@@ -773,7 +771,7 @@ local command_map = {
   ["<C-n>"] = "next item",
   ["<C-p>"] = "prev item",
   ["<tab>"] = "next item",
-  ["<s-tab>"] = "prev item",
+  ["<s-tab>"] = "prev item"
 }
 
 --- DAP interactions
@@ -790,12 +788,12 @@ local dap_maps = {
     ["t"] = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "toggle breakpoint2" },
     ["c"] = {
       "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
-      "conditional breakpoint",
+      "conditional breakpoint"
     },
     ["l"] = {
       "<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
-      "logging breakpoint",
-    },
+      "logging breakpoint"
+    }
   },
   ["<leader>d"] = {
     name = "+dap",
@@ -805,9 +803,9 @@ local dap_maps = {
     ["c"] = { "<cmd>lua require'dap'.continue()<cr>", "dap continue" },
     ["i"] = { "<cmd>lua require('dap').step_into()<cr>", "dap step-into" },
     ["o"] = { "<cmd>lua require('dap').step_over()<cr>", "dap step-over" },
-    ["r"] = { "<cmd>lua require('dap').repl.toggle()<cr>", "dap repl toggle" },
+    ["r"] = { "<cmd>lua require('dap').repl.toggle()<cr>", "dap repl toggle" }
     -- ["s"] = { "<cmd>DebugStart<cr>", "Start" },
-  },
+  }
 }
 
 -- TODO: vimade buf disable, assign shortcuts to windows, investigate floats
@@ -822,7 +820,9 @@ local dap_maps = {
 -- nnoremap <silent> <leader>dn :lua require('dap-python').test_method()<CR>
 -- vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<CR>
 
-local dap_v_maps = { ["<M-k>"] = { "<cmd>lua require('dapui').eval()<CR>>", "dap evaluate under cursor" } }
+local dap_v_maps = {
+  ["<M-k>"] = { "<cmd>lua require('dapui').eval()<CR>>", "dap evaluate under cursor" }
+}
 
 local dap_opts = { mode = "n", buffer = nil, silent = true, noremap = true, nowait = false }
 

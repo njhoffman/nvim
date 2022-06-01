@@ -18,13 +18,11 @@ M.get_counts = function()
     plugins_size = 0
   }
 
-  counts.packer_lines =
-    table.remove(
-    vim.fn.systemlist("wc -l " .. vim.fn.stdpath("config") .. '/lua/packer_compiled.lua | tail -n1 | cut -f1 -d" "'),
+  counts.packer_lines = table.remove(
+    vim.fn.systemlist("wc -l " .. vim.fn.stdpath("config") .. '/plugin/packer_compiled.lua | tail -n1 | cut -f1 -d" "'),
     1
   )
-  counts.plugins_size =
-    table.remove(
+  counts.plugins_size = table.remove(
     vim.fn.systemlist("du -shc * " .. vim.fn.stdpath("data") .. "/site/pack/packer/start | tail -n1 | cut -f1"),
     1
   )

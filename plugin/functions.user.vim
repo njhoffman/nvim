@@ -1,17 +1,22 @@
 
-"clear out previous autocmds to stop them being duplicated when resourcing this file
-" autocmd!
-
-if has("termguicolors")     " set true colors
-  set t_8f=\[[38;2;%lu;%lu;%lum
-  set t_8b=\[[48;2;%lu;%lu;%lum
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
+" if has("termguicolors")     " set true colors
+"   set t_8f=\[[38;2;%lu;%lu;%lum
+"   set t_8b=\[[48;2;%lu;%lu;%lum
+"   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+"   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+"   set termguicolors
+" endif
 
 " https://github.com/shivamashtikar/tmuxjump.vim
 let g:tmuxjump_telescope = v:true
+
+function! FixFormatting()
+  %s/\r\(\n\)/\1/eg
+  retab
+  %s/\s\+$//e
+  nohlsearch
+  " GetVimIndent()
+endfunction
 
 let s:file = expand("$HOME") . '/.cache/nvim/v-dump.vim'
 let s:level = 20
@@ -37,6 +42,21 @@ endfunction
 
 command ToggleVerbose call Toggle_verbose()<cr>
 
+function! MergeTabs()
+ if tabpagenr() == 1
+    return
+  endif
+  let bufferName = bufname("%")
+  if tabpagenr("$") == tabpagenr()
+    close!
+  else
+    close!
+    tabprev
+  endif
+  vsplit
+  execute "buffer " . bufferName
+endfunction
+
 function! OutputExSplitWindow(...)
   " this function output the result of the Ex command into a split scratch buffer
   let cmd = join(a:000, ' ')
@@ -56,26 +76,6 @@ function! OutputExSplitWindow(...)
 endfunction
 command! -nargs=+ -complete=command OutputEx call OutputExSplitWindow(<f-args>)
 
-" function! UltiSnippets_list() abort
-"   if empty(UltiSnips#SnippetsInCurrentScope(1))
-"     return ''
-"   endif
-"   let word_to_complete = matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
-"   let contain_word = 'stridx(v:val, word_to_complete)>=0'
-"   let candidates = map(filter(keys(g:current_ulti_dict_info), contain_word),
-"         \  "{
-"         \      'word': v:val,
-"         \      'menu': g:current_ulti_dict_info[v:val]['description'],
-"         \      'dup' : 1,
-"         \   }")
-"   let from_where = col('.') - len(word_to_complete)
-"   if !empty(candidates)
-"     call complete(from_where, candidates)
-"   endif
-"   return ''
-" endfunction
-" command UltiSnippetsList call UltiSnippets_list()<cr>
-
 " use the 'alt' program to quickly load alternate file
 " Run a given vim command on the results of alt from a given path.
 function! AltCommand(path, vim_command)
@@ -92,9 +92,9 @@ function! Remove_comments(code)
 endfunction
 
 function Refresh_lsp()
-	lua vim.lsp.stop_client(vim.lsp.get_active_clients())
-	sleep 500m
-	edit
+  lua vim.lsp.stop_client(vim.lsp.get_active_clients())
+  sleep 500m
+  edit
 endfunction
 command RefreshLSP call Refresh_lsp()
 
@@ -136,7 +136,6 @@ function Restart()
   quitall
 endfunction
 command Restart call Restart()
-command Res call Restart()
 
 function RestartOn()
   " save session file to <servername>_always to indicate an idefinite reload cycle
@@ -151,7 +150,6 @@ function RestartOff()
   exe "!rm " . l:session_path
 endfunction
 command RestartOff call RestartOff()
-
 
 let s:shada_script = stdpath('config') .. '/bin/wshada.sh'
 
@@ -178,46 +176,7 @@ command ShadaRead call ShadaRead()
 " prevent "write partial file" nonsense
 cabbrev <expr> w getcmdtype()==':' && getcmdline() == "'<,'>w" ? '<c-u>w' : 'w'
 
-
 " Search prefix
-
-function GetSnippets()
-  " let l:offset = mode()[0] ==# 'i' ? 2 : 1
-  " let l:before_text = getline('.')[0 : col('.') - l:offset]
-  let l:before_text = ""
-  let l:before_text_len = strchars(l:before_text)
-
-  let l:sources = vsnip#get_complete_items(bufnr('%'))
-  echom l:sources
-endfunction
-command GetSnippets call GetSnippets()
-
-function GetLocalSnippets()
-  " let l:offset = mode()[0] ==# 'i' ? 2 : 1
-  " let l:before_text = getline('.')[0 : col('.') - l:offset]
-  let l:before_text = ""
-  let l:before_text_len = strchars(l:before_text)
-
-  let l:sources = vsnip#source#find(bufnr('%'))
-  for l:source in l:sources
-    for l:snippet in l:source
-      for l:prefix in l:snippet.prefix
-        let l:prefix_len = strchars(l:prefix)
-        echom l:snippet
-        if strcharpart(l:before_text, l:before_text_len - l:prefix_len, l:prefix_len) !=# l:prefix
-          continue
-        endif
-        if l:prefix =~# '^\h' && l:before_text !~# '\<\V' . escape(l:prefix, '\/?') . '\m$'
-          continue
-        endif
-        " return s:create_context(l:snippet, l:before_text_len, l:prefix_len)
-      endfor
-    endfor
-  endfor
-endfunction
-command GetLocalSnippets call GetLocalSnippets()
-
-
 function! s:create_context(snippet, before_text_len, prefix_len) abort
   let l:line = line('.') - 1
   return {
@@ -251,26 +210,6 @@ function! InspectMsgPack()
   exe ":new | put=v:lua.vim.inspect(msgpackparse(readfile('runtime/doc/api.mpack')))"
 endfunction
 
-function! Notify(method, kind, chunks, overwrite) abort
-  echomsg a:method
-  if a:kind !=# ''
-    echomsg a:kind
-  endif
-
-  if empty(a:chunks)
-    return
-  endif
-  echomsg a:chunks
-  let text = join(map(copy(a:chunks), { _, val -> type(val[1]) == v:t_list ? val[1][0][1] : val[1] }), "\n")
-  call luaeval('require("notify")(_A[1], "warn")', [text])
-  redraw
-endfunction
-command -nargs=? Notify call Notify(<args>)
-" set msgfunc=Notify
-
-" remap back and forth motions: back-and-forth motions ;/:
-
-
 function! DebugStart()
   lua require"osv".run_this({ log = true })
 endfunction
@@ -279,6 +218,60 @@ command -nargs=? DebugStart call DebugStart(<args>)
 " read pdfs by converting to text first
 command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -
 
+
+fun! SetupCommandAlias(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() is# ":" && getcmdline() is# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+
+endfun
+" This checks that the command type is : and the command is W
+" call SetupCommandAlias("W","w")
+
+
+" <test-running-functions>
+" Functions used to run tests in a terminal split and automatically closing
+" the split if the tests are green. If they're red, jump forward to the
+" word 'Failure'
+
+function! TerminalRun(cmd)
+  execute "new"
+  call termopen(a:cmd, {
+        \ 'on_exit': function('TerminalOnExit'),
+        \ 'buf': expand('<abuf>')
+        \})
+  execute "normal i"
+endfunction
+
+" bats-test.docker='docker run -it -v "${PWD}:/code" bats/bats:latest test | bats-pretty'
+  function! TerminalOnExit(job_id, exit_code, event) dict
+    if a:exit_code == 0
+      execute "bd! " . s:test_buffer_number
+      wincmd =
+    else
+      wincmd =
+    endif
+  endfunction
+
+  function! TerminalOnTermClose(buf)
+    let s:test_buffer_number = a:buf
+  endfunction
+  " </test-running-functions>
+
+  function! FifoRun(cmd)
+    let pwd = getcwd()
+    execute "silent !runner --pwd " . pwd . " --cmd '" . a:cmd . "'"
+  endfunction
+
+  function! SmartRun(cmd)
+    silent! let output = system('runner --check')
+
+    if output == "Found at least one instance running\n"
+      call FifoRun(a:cmd)
+    else
+      call TerminalRun(a:cmd)
+    endif
+  endfunction
 
 " https://konfekt.github.io/blog/2016/10/03/get-the-leader-right
 " are consistent with f/F,t/T, (g)n/N and //?, more intuitive than ;/,.

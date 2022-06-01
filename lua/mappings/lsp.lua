@@ -1,19 +1,39 @@
 local M = {
-  hover_doc1 = { cmd = "<cmd>Lspsaga hover_doc<cr>", short = "lsp hover document", long = "lsp hover document" },
-  definitions = { cmd = "<cmd>Telescope lsp_definitions<cr>", short = "lsp definitions", long = "lsp definitions" },
+  hover_doc1 = {
+    cmd   = "<cmd>Lspsaga hover_doc<cr>",
+    short = "lsp hover document",
+    long  = "lsp hover document",
+  },
+  definitions = {
+    cmd   = "<cmd>Telescope lsp_definitions<cr>",
+    short = "lsp definitions",
+    long  = "lsp definitions",
+  },
   declaration = {
     cmd = "<cmd>lua vim.lsp.buf_declaration()<cr>",
     short = "lsp declaration",
     long = "lsp declaration"
   },
-  hover_doc2 = { cmd = "<cmd>Lspsaga hover_doc<cr>", short = "lsp hover document ", long = "lsp hover document " },
+  hover_doc2 = {
+    cmd   = "<cmd>Lspsaga hover_doc<cr>",
+    short = "lsp hover document ",
+    long  = "lsp hover document ",
+  },
   organize_imports = {
     cmd = "<cmd>TSLspOrganize<cr>",
     short = "lsp organize imports",
     long = "lsp organize imports"
   },
-  finder1 = { cmd = "<cmd>Telescope lsp_finder<cr>", short = "lsp finder", long = "lsp finder" },
-  references = { cmd = "<cmd>Telescope lsp_references<cr>", short = "lsp references", long = "lsp references" },
+  finder1 = {
+    cmd   = "<cmd>Telescope lsp_finder<cr>",
+    short = "lsp finder",
+    long  = "lsp finder",
+  },
+  references = {
+    cmd   = "<cmd>Telescope lsp_references<cr>",
+    short = "lsp references",
+    long  = "lsp references",
+  },
   signature_help1 = {
     cmd = "<cmd>Telescope lsp_signature_help<cr>",
     short = "lsp signature help",

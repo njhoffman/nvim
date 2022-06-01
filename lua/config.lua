@@ -1,5 +1,3 @@
-local execute = vim.api.nvim_command
-local fn = vim.fn
 local userSettings = require("settings")
 
 local Load = userSettings.Load
@@ -69,7 +67,7 @@ if LSP.hover_diagnostic == nil then
 end
 
 if LSP.virtual_text == nil then
-  LSP.virtual_text = {spacing = 2, severity_limit = "Error"}
+  LSP.virtual_text = { spacing = 2, severity_limit = "Error" }
 end
 
 -- Logging
@@ -107,6 +105,9 @@ if Opts.log_path == nil then
 end
 if Opts.log_stdout == nil then
   Opts.log_stdout = false
+end
+if Opts.shada_events == nil then
+  Opts.shada_events = false
 end
 
 -- Completion

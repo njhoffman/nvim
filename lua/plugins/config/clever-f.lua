@@ -1,6 +1,6 @@
 -- f{char}/F, t{char}/T enhancement
 -- f;/F; to match all symbols
-vim.g.clever_f_chars_match_any_signs = ";"
+vim.g.clever_f_chars_match_any_signs = "*"
 vim.g.clever_f_show_prompt = false
 vim.g.clever_f_not_overwrites_standard_mappings = 1
 vim.g.clever_f_mark_direct = 0

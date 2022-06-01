@@ -1,18 +1,42 @@
 local M = {
   -- ds: delete_surround <Plug>Dsurround
-  you_surround_nl = { short = "you surround on new line" },
-  you_surround = { short = "you surround" },
+  you_surround_nl = {
+    short = "you surround on new line",
+  },
+  you_surround = {
+    short = "you surround",
+  },
   surround_around_nl = { short = "surround around line on new line, trimmed" },
-  surround_around = { short = "surround around line, whitespace trimmed" },
-  you_surround_line_trim_nl1 = { short = "you surround line on new line, trimmed" },
-  you_surround_line_trim_nl2 = { short = "you surround line on new line, trimmed" },
-  you_surround_line_trim = { short = "you surround line trimmed" },
-  surround_around_line_trim_nl2 = { short = "surround around line on new line, trimmed" },
-  surround_around_line_trim_nl1 = { short = "surround around line on new line, trimmed" },
-  surround_around_line_trim = { short = "surround around line whitespace trimmed" },
-  surround_visual1 = { short = "surround visual selection" },
-  surround_visual2 = { short = "surround visual selection" },
-  surround_visual_nl = { short = "surround visual selection new line whitespace no indent" },
+  surround_around = {
+    short = "surround around line, whitespace trimmed",
+  },
+  you_surround_line_trim_nl1 = {
+    short = "you surround line on new line, trimmed",
+  },
+  you_surround_line_trim_nl2 = {
+    short = "you surround line on new line, trimmed",
+  },
+  you_surround_line_trim = {
+    short = "you surround line trimmed",
+  },
+  surround_around_line_trim_nl2 = {
+    short = "surround around line on new line, trimmed",
+  },
+  surround_around_line_trim_nl1 = {
+    short = "surround around line on new line, trimmed",
+  },
+  surround_around_line_trim = {
+    short = "surround around line whitespace trimmed",
+  },
+  surround_visual1 = {
+    short = "surround visual selection",
+  },
+  surround_visual2 = {
+    short = "surround visual selection",
+  },
+  surround_visual_nl = {
+    short = "surround visual selection new line whitespace no indent",
+  },
 
   s_delete_paren1 = {
     short = "delete surround paren )"
@@ -108,13 +132,36 @@ local M = {
     short = "vis select last",
     long = "visual select last edited text"
   },
-  ascii = { cmd = "<cmd>ascii<cr>", short = "ascii cursor", long = "ascii under cursor" },
-  ascii_2 = { cmd = "<cmd>ascii<cr>", short = "ascii cursor", long = "ascii under cursor" },
-  last_insertion = { short = "move to last ins", long = "move to last insertion" }, -- virtual
-  begin_insertion = { short = "insert at beginning", long = "insert at beginning" }, -- virtual
-  last_visual = { short = "visual last paste", long = "visual select last paste" }, -- virtual
-  total_counts = { short = "chars/words/lines count", long = "show current and total characters, words and lines" }, -- virtual
-  goto_definition = { short = "goto ts definition", long = "goto ts definition" }, -- virtual
+  ascii = {
+    cmd   = "<cmd>ascii<cr>",
+    short = "ascii cursor",
+    long  = "ascii under cursor",
+  },
+  ascii_2 = {
+    cmd   = "<cmd>ascii<cr>",
+    short = "ascii cursor",
+    long  = "ascii under cursor",
+  },
+  last_insertion = {
+    short = "move to last ins",
+    long  = "move to last insertion",
+  }, -- virtual
+  begin_insertion = {
+    short = "insert at beginning",
+    long  = "insert at beginning",
+  }, -- virtual
+  last_visual = {
+    short = "visual last paste",
+    long  = "visual select last paste",
+  }, -- virtual
+  total_counts = {
+    short = "chars/words/lines count",
+    long  = "show current and total characters, words and lines",
+  }, -- virtual
+  goto_definition = {
+    short = "goto ts definition",
+    long  = "goto ts definition",
+  }, -- virtual
   incremental_selection_init = {
     -- cmd = "<cmd>lua require'nvim-treesitter.incremental_selection'.init_selection()<cr>",
     short = "init inc selection",

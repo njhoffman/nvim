@@ -3,7 +3,10 @@ local M = {
   toggle_cursorline = { short = "toggle cursorline", long = "toggle cursorline" },
   toggle_diff = { short = "toggle diff", long = "toggle diff" },
   toggle_search_highlight = { short = "toggle search highlight", long = "toggle search highlight" },
-  toggle_search_case_ignore = { short = "toggle search case ignore", long = "toggle search case ignore" },
+  toggle_search_case_ignore = {
+    short = "toggle search case ignore",
+    long = "toggle search case ignore"
+  },
   toggle_list = { short = "toggle list", long = "toggle list" },
   toggle_number = { short = "toggle number", long = "toggle number" },
   toggle_relative_number = { short = "toggle relative number", long = "toggle relative number" },
@@ -15,13 +18,31 @@ local M = {
   paste_after = { short = "paste after", long = "paste after" },
   paste_before = { short = "paste before", long = "paste before" },
   paste_after_indent1 = { short = "paste after indent", long = "paste after line increasing indent" },
-  paste_before_indent1 = { short = "paste before indent", long = "paste before line increasing indent" },
-  paste_after_unindent1 = { short = "paste after unindent", long = "paste after line decreasing indent" },
-  paste_before_unindent1 = { short = "paste before unindent", long = "paste before line decreasing indent" },
+  paste_before_indent1 = {
+    short = "paste before indent",
+    long = "paste before line increasing indent"
+  },
+  paste_after_unindent1 = {
+    short = "paste after unindent",
+    long = "paste after line decreasing indent"
+  },
+  paste_before_unindent1 = {
+    short = "paste before unindent",
+    long = "paste before line decreasing indent"
+  },
   paste_after_indent2 = { short = "paste after indent", long = "paste after line increasing indent" },
-  paste_before_indent2 = { short = "paste before indent", long = "paste before line increasing indent" },
-  paste_after_unindent2 = { short = "paste after unindent", long = "paste after line decreasing indent" },
-  paste_before_unindent2 = { short = "paste before unindent", long = "paste before line decreasing indent" },
+  paste_before_indent2 = {
+    short = "paste before indent",
+    long = "paste before line increasing indent"
+  },
+  paste_after_unindent2 = {
+    short = "paste after unindent",
+    long = "paste after line decreasing indent"
+  },
+  paste_before_unindent2 = {
+    short = "paste before unindent",
+    long = "paste before line decreasing indent"
+  },
   paste_after_reindent = { short = "paste after reindent", long = "paste after line reindenting" },
   paste_before_reindent = { short = "paste before reindent", long = "paste before line reindenting" },
   paste_within = { short = "paste within", long = "patse within" },
@@ -35,8 +56,14 @@ local M = {
   pairs_next_location_file = { short = "next loc in file", long = "next location in file" },
   pairs_prev_tag = { short = "prev tag", long = "previous location" },
   pairs_next_tag = { short = "next tag", long = "next location" },
-  pairs_prev_tag_window = { short = "prev loc in prev window", long = "previous location in previous window" },
-  pairs_next_tag_window = { short = "next loc in prev window", long = "next location in previous window" },
+  pairs_prev_tag_window = {
+    short = "prev loc in prev window",
+    long = "previous location in previous window"
+  },
+  pairs_next_tag_window = {
+    short = "next loc in prev window",
+    long = "next location in previous window"
+  },
   pairs_prev_qf = { short = "prev qf", long = "previous quickfix" },
   pairs_next_qf = { short = "next qf", long = "next quickfix" },
   pairs_prev_qf_file = { short = "prev loc in file", long = "previous quickfix in file" },

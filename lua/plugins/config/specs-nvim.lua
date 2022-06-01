@@ -51,7 +51,7 @@ local custom_config = {
   min_jump = 10,
   popup = { winhl = "SpecsCursor", fader = exp_fader, resizer = shrink_resizer },
   ignore_filetypes = {},
-  ignore_buftypes = { nofile = true },
+  ignore_buftypes = { nofile = true, nowrite, quickfix, terminal, prompt }
 }
 
 local wide_config = {
@@ -64,12 +64,10 @@ local wide_config = {
     width = 40,
     winhl = "SpecsCursor",
     fader = constant_blend,
-    resizer = shrink_resizer,
+    resizer = shrink_resizer
   },
   ignore_filetypes = {},
-  ignore_buftypes = {
-    -- nofile = true,
-  },
+  ignore_buftypes = { nofile = true, nowrite = true, quickfix = true, terminal = true, prompt = true }
 }
 
 local quick_config = {
@@ -91,13 +89,15 @@ local quick_config = {
   resizer = function(base_width, cursor_col, count)
     if count <= 100 then
       local factor = count / 100
-      if count > 50 then factor = 1 - factor end
+      if count > 50 then
+        factor = 1 - factor
+      end
       local width = math.floor(base_width * factor)
       return { width, cursor_col - (width / 2) }
     else
       return nil
     end
-  end,
+  end
 }
 
 local default_config = {
@@ -110,10 +110,10 @@ local default_config = {
     width = 15,
     winhl = "SpecsCursor",
     fader = require("specs").exp_fader,
-    resizer = require("specs").shrink_resizer,
+    resizer = require("specs").shrink_resizer
   },
-  ignore_filetypes = {},
-  ignore_buftypes = { nofile = true },
+  ignore_filetypes = { "" },
+  ignore_buftypes = { nofile = true, nowrite, quickfix, terminal, prompt }
 }
 
 require("specs").setup(default_config)

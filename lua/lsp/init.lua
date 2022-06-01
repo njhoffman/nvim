@@ -1,8 +1,9 @@
-local utils = require "utils"
+require("lsp.config")
+local attach_formatting = require("lsp.format")
 
 local servers = {
   "awk_ls",
-  -- "bashls",
+  "bashls",
   "clangd",
   "cssls",
   "dockerls",
@@ -22,43 +23,7 @@ local servers = {
   -- "null-ls",
 }
 
-local ok, lsplog = pcall(require, "vim.lsp.log")
-if not ok then return end
-local ok, lsp_installer = pcall(require, "nvim-lsp-installer")
-if not ok then return end
-local config = require("settings")
-
-
-function len(t)
-  local count = 0
-  for _ in pairs(t) do
-    count = count + 1
-  end
-  return count
-end
-
-lsplog.set_level(config.Logging.lsp_level)
--- vim.lsp.set_log_level(1)
--- vim.lsp.log.set_format_func(vim.inspect)
-
-lsplog.set_format_func(
-  function(messages)
-    local inspected = vim.inspect(messages)
-    local formatted = ""
-    if type(messages) == "table" then
-      formatted = formatted .. "Length: " .. len(messages) .. "\n"
-    end
-    for line in string.gmatch(inspected, "[^\n\r]+") do
-      formatted = formatted .. "\n  " .. line
-    end
-    return formatted
-  end
-)
-
--- local format_func = function(arg)
---   return vim.inspect(arg, { newline = '' })
--- end
-
+local lsp_installer = require("nvim-lsp-installer")
 for _, name in ipairs(servers) do
   local server_is_found, server = lsp_installer.get_server(name)
   if server_is_found and not server:is_installed() then
@@ -67,166 +32,93 @@ for _, name in ipairs(servers) do
   end
 end
 
--- Floating border
-local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-  opts = opts or {}
-  opts.border = opts.border or { { " ", "FloatBorder" } }
-  return orig_util_open_floating_preview(contents, syntax, opts, ...)
-end
+local cmp = require("cmp")
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
 
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-
-local lsp_formatting = function(bufnr)
-  vim.lsp.buf.formatting_sync {
-    bufnr = bufnr --, FormatOptions
-  }
-end
-
-if type(vim.lsp.buf.format) == "function" then
-  lsp_formatting = function(bufnr)
-    vim.lsp.buf.format {
-      bufnr = bufnr,
-      filter = function(clients)
-        return vim.tbl_filter(
-          function(client)
-            if client.name == "efm" then
-              return true
-            elseif client.name == "eslint" then
-              return true
-            end
-            -- if client.name == "null-ls" then
-            --   return not utils.table.some(clients, function(_, other_client)
-            --     return other_client.name == "eslint"
-            --   end)
-            -- end
-          end,
-          clients
-        )
-      end
-    }
-  end
-end
+local capabilities =
+require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = { "documentation", "detail", "additionalTextEdits" }
+}
 
 local opts = { noremap = true, silent = true, nowait = true }
-
-vim.api.nvim_set_keymap("n", "<space>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-vim.api.nvim_set_keymap("n", "<space>lp", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-vim.api.nvim_set_keymap("n", "<space>ln", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-vim.api.nvim_set_keymap("n", "<space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-
 local on_attach = function(client, bufnr)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(
-    bufnr,
+  local function keymap(...)
+    vim.api.nvim_buf_set_keymap(bufnr, ...)
+  end
+
+  local function option(...)
+    vim.api.nvim_buf_set_option(bufnr, ...)
+  end
+
+  attach_formatting(bufnr, client)
+  require("lsp_signature").on_attach(
+    {
+      bind = true,
+      handler_opts = {
+        border = "rounded"
+      }
+    },
+    bufnr
+  )
+  option("omnifunc", "v:lua.vim.lsp.omnifunc")
+
+  keymap("i", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+  keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+  keymap("n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+
+  -- diagnostics
+  keymap("n", "<leader>gi", "<cmd>Telescope lsp_implementations<CR>", opts)
+  keymap("n", "<leader>d", "<cmd>Telescope lsp_workspace_diagnostics<CR>", opts)
+  keymap("n", "<leader>c", "<cmd>lua vim.diagnostic.show_line_diagnostics()<CR>", opts)
+  keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev({ enable_popup = false })<CR>", opts)
+  keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next({ enable_popup = false })<CR>", opts)
+  keymap("n", "[g", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+  keymap("n", "]g", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
+  keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+
+  -- actions
+  keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+  keymap("n", "<leader>q", "<cmd>Telescope lsp_code_actions<CR>", opts)
+  keymap("n", "<leader>a", "<cmd>Telescope lsp_code_actions<CR>", opts)
+  keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+  keymap("n", "<leader>k", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+  keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+  keymap("n", "<space>lc", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+  keymap("n", "ca", "<cmd>CodeActionMenu<cr>", opts)
+  keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+  keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
+  keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+  keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+  keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+  keymap("n", "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+  keymap("n", "<leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+  keymap(
     "n",
-    "<space>wl",
+    "<leader>wl",
     "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
     opts
   )
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>lc", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>lf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  keymap("n", "<leader>a", "<cmd>Telescope lsp_code_actions<CR>", opts)
+  keymap("n", "K", ":lua show_documentation()<cr>", opts)
+end
 
-  if client.supports_method "textDocument/formatting" then
-    utils.buf_command(
-      bufnr,
-      "LspFormatting",
-      function()
-        lsp_formatting(bufnr)
-      end
-    )
-
-    vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
-    vim.api.nvim_create_autocmd(
-      "BufWritePre",
-      {
-        group = augroup,
-        buffer = bufnr,
-        command = "LspFormatting"
-      }
-    )
+function show_documentation()
+  local filetype = vim.bo.filetype
+  if vim.tbl_contains({ "vim", "help" }, filetype) then
+    vim.cmd("h " .. vim.fn.expand("<cword>"))
+  elseif vim.tbl_contains({ "man" }, filetype) then
+    vim.cmd("Man " .. vim.fn.expand("<cword>"))
+  else
+    vim.lsp.buf.hover({ border = "single" })
   end
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-local had_cmp_nvim_lsp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-
-if had_cmp_nvim_lsp then
-  capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+for _, server in ipairs(servers) do
+  require("lsp.servers." .. server).setup(on_attach, capabilities)
 end
-
-local had_lspconfig = pcall(require, "lspconfig")
-if had_lspconfig then
-  for _, server in ipairs(servers) do
-    require("lsp.servers." .. server).setup(on_attach, capabilities)
-  end
-end
-
--- Gutter sign icons
-for type, icon in pairs(utils.signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
-
--- Prefix diagnostic virtual text
-vim.diagnostic.config {
-  virtual_text = {
-    source = false, -- "if_many", "always", false
-    prefix = "",
-    spacing = 2,
-    severity = 0
-    -- severity = { min = vim.diagnostic.severity.WARN }
-    -- vim.diagnostic.get(0, { severity = {min=vim.diagnostic.severity.WARN} })
-    -- vim.diagnostic.severity.ERROR, WARN, INFO, HINT
-  },
-  float = {
-    header = false,
-    source = "always"
-  },
-  signs = true,
-  underline = false, -- { severity = ... }
-  update_in_insert = false,
-  severity_sort = true
-  -- format =  function(diagnostic)
-  --     if diagnostic.severity == vim.diagnostic.severity.ERROR then
-  --       return string.format("E: %s", diagnostic.message)
-  --     end
-  --     return diagnostic.message
-  --   end
-}
-
--- callHierarchy/incomingCalls
--- callHierarchy/outgoingCalls
--- textDocument/codeAction
--- textDocument/completion
--- textDocument/declaration*
--- textDocument/definition
--- textDocument/documentHighlight
--- textDocument/documentSymbol
--- textDocument/formatting
--- textDocument/hover
--- textDocument/implementation*
--- textDocument/publishDiagnostics
--- textDocument/rangeFormatting
--- textDocument/references
--- textDocument/rename
--- textDocument/signatureHelp
--- textDocument/typeDefinition*
--- window/logMessage
--- window/showMessage
--- window/showMessageRequest
--- workspace/applyEdit
--- workspace/symbol
 
 --    FormattingOptions
 --   tabSize: uinteger; * Size of a tab in spaces.

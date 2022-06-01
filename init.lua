@@ -1,12 +1,12 @@
-vim.g.start_time = vim.fn.reltime()
-local config = require("config")
-local logger = require("logger").initLogger("init")
-
 -- vim-profiler.py nvim -n 10
 -- vim-profiler.py -n 5 nvim foo.cc -c ":exec ':normal ia' | :q\!"
 -- strace gvim -V9log.txt file.tex > stdout.txt 2> stderr.txt
 
+require("globals")
+local config = require("config")
+
 vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")), "trace")
+
 local function load_module(mod_name)
   local ok, err = pcall(require, mod_name)
   if not ok then
@@ -22,19 +22,22 @@ if config.Load.impatient == true then
   -- lua require'impatient'.enable_profile()
 end
 
-for _, mod_name in ipairs({
-  -- "options.options-test",
-  "vim-options",
-  "plugins.load"
-}) do
+for _, mod_name in ipairs(
+  {
+    -- "options.options-test",
+    "vim-options",
+    "plugins.load"
+  }
+) do
   load_module(mod_name)
 end
 
 for _, mod_name in ipairs(
   {
-    "lsp",
-    "debuglog",
+    "project",
+    "buffers",
     "autocommands",
+    "lsp",
     "stats.list",
     "mappings",
     "commands",

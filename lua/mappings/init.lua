@@ -1,12 +1,13 @@
 local M = require("mappings.mapper")
 
-M.map("Navigation", "n", ";", "quick_cmd", { noremap = true, nowait = true })
-M.map("Navigation", "n", ":", "quick_cmdwin", { noremap = true, nowait = true })
-M.map("Navigation", "v", ";", "quick_cmd_v", { noremap = true, nowait = true })
-M.map("Navigation", "v", ":", "quick_cmdwin_v", { noremap = true, nowait = true })
+M.map("Navigation", "n", ";", "quick_cmd", { nowait = true })
+-- M.map("Navigation", "n", ":", "quick_cmdwin", { nowait = true })
+M.map("Navigation", "n", "-+:", "quick_cmdwin2", { nowait = true })
+M.map("Navigation", "v", ";", "quick_cmd_v", { nowait = true })
+M.map("Navigation", "v", ":", "quick_cmdwin_v", { nowait = true })
 M.map("Navigation", "n", "<BS>", "buffer_last")
-M.map("Navigation", "n", "H", "buffer_left1")
-M.map("Navigation", "n", "L", "buffer_right1")
+M.map("Navigation", "n", "H", "buffer_left3")
+M.map("Navigation", "n", "L", "buffer_right3")
 M.map("Navigation", "n", "!!", "repeat_cmd")
 M.map("Navigation", "n", "<M-r>", "restart")
 M.map("Navigation", "n", "<C-x>", "nowrite_exit1")
@@ -33,12 +34,17 @@ M.map("Navigation", "n", ",cd", "cd_buffer")
 M.map("Navigation", "n", ",cdh", "cd_home")
 M.map("Navigation", "n", ",cdr", "cd_root")
 
+-- M.map("Window", "c", "<C-[>", "cmd_open_cedit2")
+-- M.map("Window", "c", "<c-d>", "cmdwin_close")
+M.map("Window", "c", "<c-d>", "cmd_close")
 M.map("Window", "c", "<c-s>", "cmd_save")
 M.map("Window", "c", "<c-y>", "cmd_yank")
 M.map("Window", "c", "<C-n>", "cmd_next1") -- virtual
 M.map("Window", "c", "<C-p>", "cmd_prev1") -- virtual
 M.map("Window", "c", "<tab>", "cmd_next2") -- virtual
 M.map("Window", "c", "<s-tab>", "cmd_prev2") -- virtual
+M.map("Window", "c", "<M-f>", "cmd_open_cedit")
+-- M.map("Window", "n", "<M-f>", "cmd_open_n")
 M.map("Window", "n", "<C-j>", "down")
 M.map("Window", "n", "<C-k>", "up")
 M.map("Window", "n", "<C-h>", "left")
@@ -73,7 +79,6 @@ M.map("Movement", "n", "sas", "surround_around_line_trim")
 M.map("Movement", "x", "s", "surround_visual1")
 M.map("Movement", "x", "S", "surround_visual2")
 M.map("Movement", "x", "gS", "surround_visual_nl")
-
 
 -- aw	a word (with white space)			|v_aw|
 -- iw	inner word					|v_iw|
@@ -388,6 +393,8 @@ M.map("Pickers", "n", "<leader>Fmv", "find_mappings_v")
 M.map("Pickers", "n", "<leader>Fmo", "find_mappings_o")
 
 vim.cmd("cabbrev T Telescope")
+vim.cmd("cabbrev d lua vim.dbg(")
+vim.cmd("cabbrev D DebugLog")
 
 M.map("Zettel", "n", "<cr>", "enter2")
 M.map("Zettel", "n", "gzn", "new")
@@ -416,7 +423,6 @@ M.map("Zettel", "v", "gzN", "visual_new")
 -- NOTE: removed <expr>
 M.map("Zettel", "i", "<c-x><c-u>", "insert_last")
 M.map("Zettel", "i", "<c-x><c-y>", "insert_select")
-
 
 -- snip run, ,/ ,? vim-printer
 M.map("Markdown", "n", "<leader>mp", "preview")
@@ -486,36 +492,56 @@ M.map("LSP", "n", "<leader>l.a", "stop_all")
 M.map("LSP", "n", "<C-t>", "doc_diagnostics_ivy")
 M.map("LSP", "n", "<A-T>", "doc_diagnostics_2")
 
-
-vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>Trouble<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>xx",
+  "<cmd>Trouble<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
   { silent = true, noremap = true }
 )
-vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>Trouble lsp_workspace_diagnostics<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>xw",
+  "<cmd>Trouble lsp_workspace_diagnostics<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
   { silent = true, noremap = true }
 )
-vim.api.nvim_set_keymap("n", "<leader>xd", "<cmd>Trouble lsp_document_diagnostics<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>xd",
+  "<cmd>Trouble lsp_document_diagnostics<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
   { silent = true, noremap = true }
 )
-vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>Trouble loclist<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>xl",
+  "<cmd>Trouble loclist<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
   { silent = true, noremap = true }
 )
-vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>Trouble quickfix<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>xq",
+  "<cmd>Trouble quickfix<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
   { silent = true, noremap = true }
 )
-vim.api.nvim_set_keymap("n", "<leader>xr", "<cmd>Trouble lsp_references<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>xr",
+  "<cmd>Trouble lsp_references<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
   { silent = true, noremap = true }
 )
 
 -- TODO: enable cycling
 -- jump to the previous/next item, skipping the groups
-vim.api.nvim_set_keymap("n", "[x",
+vim.api.nvim_set_keymap(
+  "n",
+  "[x",
   "<cmd>lua require('trouble').previous({ skip_groups = true, jump = true, })<cr>",
   { silent = true, noremap = true }
 )
-vim.api.nvim_set_keymap("n", "]x",
+vim.api.nvim_set_keymap(
+  "n",
+  "]x",
   "<cmd>lua require('trouble').next({ skip_groups = true, jump = true, })<cr>",
   { silent = true, noremap = true }
-
 )
 
 vim.cmd([[vmap <M-a> <C-a> ]])
@@ -535,8 +561,12 @@ vim.cmd([[vmap g<M-x> g<C-x> ]])
 -- You might also want to add a map for toggling whether the current paste is formatted or not:
 -- normal p P will swap/cycle through yoinks
 
-vim.cmd([[nmap <expr> p yoink#canSwap() ? '<plug>(YoinkPostPasteSwapBack)' : '<plug>(YoinkPaste_p)']])
-vim.cmd([[nmap <expr> P yoink#canSwap() ? '<plug>(YoinkPostPasteSwapForward)' : '<plug>(YoinkPaste_P)']])
+vim.cmd(
+  [[nmap <expr> p yoink#canSwap() ? '<plug>(YoinkPostPasteSwapBack)' : '<plug>(YoinkPaste_p)']]
+)
+vim.cmd(
+  [[nmap <expr> P yoink#canSwap() ? '<plug>(YoinkPostPasteSwapForward)' : '<plug>(YoinkPaste_P)']]
+)
 -- TODO: paste linewise within
 -- Paste yanked line without line breaks before/after cursor position
 -- inoremap <c-a> <c-r>1<esc>k$Jxi
@@ -629,7 +659,6 @@ M.registerWhichkey()
 -- vmap("Movement", "K", "<cmd>move '<-2<CR>gv=gv<cr>", "movement_selected_up", "move selected text up")
 -- vmap("Movement", "J", "<cmd>move '<+1<CR>gv=gv<cr>", "movement_selected_down", "move selected text down")
 -- nmap("Navigation", ";", ":", "navigation_quick_cmd", "quickly open up command line", true)
--- nmap("Navigation", ":", ":<C-f>", "navigation_quick_cmdwin", "quickly open command line window")
 
 -- -- Directory
 -- wk.register({
@@ -658,7 +687,6 @@ M.registerWhichkey()
 -- nmap sas <Plug>Yssurround
 -- nmap saS <Plug>YSsurround
 -- nmap sAA <Plug>YSsurround
-
 
 -- TODO: maybe gn/gp will be better
 -- nmap <leader>qq	<Plug>(qf_qf_toggle)

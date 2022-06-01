@@ -1,101 +1,79 @@
-local M = {}
 local sorters = require "telescope.sorters"
 local tele_mappings = require("plugins.configs.telescope-mappings")
 local H = require("helpers")
+local actions = require("telescope.actions")
+local actions_set = require "telescope.actions.set"
 
-M.load_extensions = function(telescope)
-  local tele_plugs = {
-    ["aerial"] = "aerial.nvim",
-    ["arecibo"] = "telescope-arecibo.nvim",
-    ["asynctasks"] = "telescope-asynctasks.nvim",
-    ["bookmarks"] = "telescope-bookmarks.nvim",
-    ["cheatsheet"] = "cheatsheet.nvim",
-    ["command_palette"] = "telescope-command-palette.nvim",
-    ["dap"] = "telescope-dap.nvim",
-    ["env"] = "telescope-env.nvim",
-    ["file_browser"] = "telescope-file-browser.nvim",
-    ["frecency"] = "telescope-frecency.nvim",
-    ["fzf"] = "telescope-fzf-native.nvim",
-    ["ghn"] = "github-notifications",
-    ["ghq"] = "telescope-ghq.nvim",
-    ["gh"] = "telescope-github.nvim",
-    ["heading"] = "telescope-heading.nvim",
-    ["hop"] = "telescope-hop.nvim",
-    ["lazygit"] = "lazygit.nvim",
-    ["mapper"] = "telescope-mapper.nvim",
-    ["media_files"] = "telescope-media-files.nvim",
-    ["neoclip"] = "nvim-neoclip.lua",
-    ["node_modules"] = "telescope-node-modules.nvim",
-    ["notify"] = "nvim-notify",
-    ["npm"] = "telescope-npm.nvim",
-    ["openbrowser"] = "telescope-openbrowser.nvim",
-    ["packer"] = "telescope-packer.nvim",
-    ["projects"] = "project.nvim",
-    -- ["rg"] = "telescope-rg.nvim",
-    ["session-lens"] = "session-lens",
-    ["tmux"] = "telescope-tmux.nvim",
-    ["ui-select"] = "telescope-ui-select.nvim",
-    -- ["ultisnips"] = "telescope-ultisnips.nvim",
-    ["vimwiki"] = "telescope-vimwiki.nvim",
-    ["z"] = "telescope-z.nvim"
-  }
-
-  local installed = {}
-  for ext_name, plug_name in pairs(tele_plugs) do
-    if H.is_plugin_installed(plug_name) then
-      local ok, err = pcall(telescope.load_extension, ext_name)
-      if ok then
-        -- print(ext_name .. " : " .. plug_name)
-        table.insert(installed, 0, ext_name)
-      else
-        vim.logger:warn("Error loading telescope plugin: " .. ext_name .. " - " .. err)
-      end
-    else
-      vim.logger:warn("Error loading telescope plugin: " .. ext_name)
-    end
-  end
-  vim.logger:debug(
-    "Loaded " .. H.table_len(installed) .. " plugins out of " .. H.table_len(tele_plugs) .. " telescope plugins"
-  )
-  return installed
-end
-
-require("cheatsheet").setup(
-  {
-    -- Whether to show bundled cheatsheets
-    -- For generic cheatsheets like default, unicode, nerd-fonts, etc
-    bundled_cheatsheets = true,
-    -- bundled_cheatsheets = {
-    --     enabled = {},
-    --     disabled = {},
-    -- },
-    -- For plugin specific cheatsheets
-    bundled_plugin_cheatsheets = true,
-    -- bundled_plugin_cheatsheets = {
-    --     enabled = {},
-    --     disabled = {},
-    -- }
-    -- For bundled plugin cheatsheets, do not show a sheet if you
-    -- don't have the plugin installed (searches runtimepath for
-    -- same directory name)
-    include_only_installed_plugins = true
-  }
-)
-
-local extensions = {}
--- You don't need to set any of these options.
-local fb_actions = require "telescope".extensions.file_browser.actions
-
-extensions.file_browser = {
-  theme = "ivy",
-  mappings = tele_mappings.file_picker
-  -- mappings = {
-  --   ["i"] = { ["<C-,>"] = fb_actions.goto_parent_dir(vim.fn.nvim_get_current_buf(), true) },
-  --   -- ["n"] = {}, -- your custom normal mode mappings
-  -- },
+local M = {}
+M.extensions = {}
+local tele_plugs = {
+  ["aerial"] = "aerial.nvim",
+  ["arecibo"] = "telescope-arecibo.nvim",
+  ["asynctasks"] = "telescope-asynctasks.nvim",
+  ["bookmarks"] = "telescope-bookmarks.nvim",
+  ["changes"] = "telescope-changes.nvim",
+  ["cheatsheet"] = "cheatsheet.nvim",
+  ["command_palette"] = "telescope-command-palette.nvim",
+  ["dap"] = "telescope-dap.nvim",
+  ["env"] = "telescope-env.nvim",
+  ["file_browser"] = "telescope-file-browser.nvim",
+  ["find_pickers"] = "keyvchan/telescope-find-pickers.nvim",
+  ["frecency"] = "telescope-frecency.nvim",
+  ["fzf"] = "telescope-fzf-native.nvim",
+  ["gh"] = "telescope-github.nvim",
+  ["ghn"] = "github-notifications",
+  ["ghq"] = "telescope-ghq.nvim",
+  ["heading"] = "telescope-heading.nvim",
+  ["hop"] = "telescope-hop.nvim",
+  ["lazygit"] = "lazygit.nvim",
+  ["live_grep_raw"] = "telescope-rg.nvim",
+  ["luasnip"] = "telescope-luasnip.nvim",
+  ["mapper"] = "telescope-mapper.nvim",
+  ["media_files"] = "telescope-media-files.nvim",
+  ["neoclip"] = "nvim-neoclip.lua",
+  ["node_modules"] = "telescope-node-modules.nvim",
+  ["notify"] = "nvim-notify",
+  ["npm"] = "telescope-npm.nvim",
+  ["openbrowser"] = "telescope-openbrowser.nvim",
+  ["packer"] = "telescope-packer.nvim",
+  ["ports"] = "telescope-ports.nvim",
+  ["project"] = "telescope-project.nvim",
+  ["session-lens"] = "session-lens",
+  ["telescope-code-fence"] = "telescope-code-fence.nvim",
+  ["tmux"] = "telescope-tmux.nvim",
+  ["ui-select"] = "telescope-ui-select.nvim",
+  -- ["ultisnips"] = "telescope-ultisnips.nvim",
+  ["vimwiki"] = "telescope-vimwiki.nvim",
+  ["z"] = "telescope-z.nvim"
 }
 
-extensions.openbrowser = {
+M.load_extensions = function(telescope)
+  local installed = {}
+  for ext_name, plug_name in pairs(tele_plugs) do
+    local ok, err = pcall(telescope.load_extension, ext_name)
+    if ok then
+      table.insert(installed, 0, ext_name)
+    else
+      local err_str = vim.split(err, "\n")
+      local err_msg = "Error loading telescope plugin: " .. ext_name .. " - " .. err_str[1]
+      vim.notify(err_msg, "warn")
+    end
+  end
+
+  local end_msg =
+  "Loaded " ..
+    H.table_len(installed) .. " out of " .. H.table_len(tele_plugs) .. " telescope plugins"
+  -- vim.logger:debug(end_msg)
+  vim.notify(end_msg, "trace")
+  return telescope
+end
+
+M.extensions.file_browser = {
+  theme = "ivy",
+  mappings = tele_mappings.file_picker
+}
+
+M.extensions.openbrowser = {
   -- Add bookmark urls
   bookmarks = {
     ["luv docs"] = "https://github.com/luvit/luv/blob/master/docs.md"
@@ -103,7 +81,14 @@ extensions.openbrowser = {
   bookmark_filepath = "~/.vim/telescope_openbrowser_bookmarks"
 }
 
-extensions.command_palette = {
+M.extensions.packer = {
+  theme = "ivy",
+  layout_config = {
+    height = .5
+  }
+}
+
+M.extensions.command_palette = {
   {
     "File",
     { "entire selection (C-a)", ':call feedkeys("GVgg")' },
@@ -149,61 +134,89 @@ extensions.command_palette = {
 -- Frecency:
 --   Default workspace tag to filter by e.g. 'CWD' to filter by default to the current directory
 --   overridden by ':*:'
---   default_workspace = 'CWD',
 --   specify filter like :directory_name: or  :*:'.
 --   :etc: -> workspace browser (tab autocompletes)
-extensions.frecency = {
+local baseDirs = {
+  home = vim.fn.expand("$HOME"),
+  config = vim.fn.stdpath("config"),
+  data = vim.fn.stdpath("data")
+}
+
+M.extensions.frecency = {
+  -- default_workspace = "$HOME/.config",
   db_safe_mode = false,
-  show_scores = true,
+  auto_validate = true,
+  show_scores = false,
   show_unindexed = true,
-  ignore_patterns = { "*.git/*", "*/tmp/*" },
+  ignore_patterns = { "*.git/*", "/mnt/*", "*/tmp/*" },
   mappings = tele_mappings.file_picker,
   workspaces = {
     ["etc"] = "/etc",
-    ["bin"] = vim.fn.expand("$HOME") .. "/bin",
-    ["home"] = vim.fn.expand("$HOME"),
-    ["config"] = vim.fn.expand("$HOME") .. "/.config",
-    ["nvim"] = vim.fn.stdpath("config"),
-    ["plugins"] = vim.fn.expand("$HOME") .. "/_/nvim-plugs",
-    ["nvim-cache"] = vim.fn.expand("$HOME") .. "/_/nvim-cache",
-    ["nvim-data"] = vim.fn.stdpath("data"),
-    ["prettyfile"] = vim.fn.expand("$HOME") .. "/git/prettyfile",
-    ["zettel"] = vim.fn.expand("$HOME") .. "/zettelkasten",
-    ["zk"] = vim.fn.expand("$HOME") .. "/zettelkasten",
-    ["zinit"] = vim.fn.expand("$HOME") .. "/.zinit",
-    ["zsh"] = vim.fn.expand("$HOME") .. "/.config/zsh"
+    ["bin"] = baseDirs.home .. "/bin",
+    ["home"] = baseDirs.home,
+    ["config"] = baseDirs.home .. "/.config",
+    ["nvim"] = baseDirs.config,
+    ["plugins"] = baseDirs.home .. "/_/nvim-plugs",
+    ["nvim-cache"] = baseDirs.home .. "/_/nvim-cache",
+    ["nvim-data"] = baseDirs.data,
+    ["prettyfile"] = baseDirs.home .. "/git/prettyfile",
+    ["zettel"] = baseDirs.home .. "/zettelkasten",
+    ["zk"] = baseDirs.home .. "/zettelkasten",
+    ["zinit"] = baseDirs.home .. "/.zinit",
+    ["zsh"] = baseDirs.home .. "/.config/zsh"
   }
 }
 
-extensions.fzf = {
+M.extensions.fzf = {
   fuzzy = true, -- false will only do exact matching
   override_generic_sorter = true, -- override the generic sorter
   override_file_sorter = true, -- override the file sorter
   case_mode = "smart_case" -- or "ignore_case" or "respect_case"
 }
 
-extensions.bookmarks = {
+M.extensions.bookmarks = {
   selected_browser = "chrome",
   url_open_command = "xdg-open",
   url_open_plugin = nil, -- vim_external, open_browser
   firefox_profile_name = nil
 }
 
-extensions.media_files = {
+M.extensions.live_grep_raw = {
+  auto_quoting = true, -- enable/disable auto-quoting,
+  mappings = {
+    -- ... Your other configuration ...
+    --[[ ['<C-Space>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    },
+    ["<c-f>"] = function(prompt_bufnr)
+      actions_set.shift_selection(prompt_bufnr, 10)
+    end,
+    ["<c-b>"] = function(prompt_bufnr)
+      actions_set.shift_selection(prompt_bufnr, -10)
+    end, ]]
+    ["<c-u>"] = false,
+    ["<a-n>"] = actions.toggle_selection + actions.move_selection_next,
+    ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous,
+    ["<cr>"] = actions.select_default + actions.center
+  }
+}
+
+M.extensions.media_files = {
   filetypes = { "png", "webp", "jpg", "jpeg", "webm", "pdf", "mp4", "svg", "mpv", "mkv" },
   find_cmd = "fd" -- find command (defaults to `fd`)
   -- sudo apt install uberzug ffmpegthumbnailer poppler-utils epub-utils
   -- font-viewer (fontpreview)? fd, rg, etc
 }
 
-extensions.arecibo = {
+M.extensions.arecibo = {
   ["selected_engine"] = "google",
   ["url_open_command"] = "xdg-open",
   ["show_http_headers"] = false,
   ["show_domain_icons"] = true
 }
 
-extensions.lsp_handlers = {
+M.extensions.lsp_handlers = {
   disable = {},
   location = { telescope = {}, no_results_message = "No references found" },
   symbol = { telescope = {}, no_results_message = "No symbols found" },
@@ -215,13 +228,76 @@ extensions.lsp_handlers = {
   }
 }
 
-extensions.mapper = {
+M.extensions.project = {
+  --[[ base_dirs = {
+    '~/dev/src',
+    {'~/dev/src2'},
+    {'~/dev/src3', max_depth = 4},
+    {path = '~/dev/src4'},
+    {path = '~/dev/src5', max_depth = 2},
+  }, ]]
+  hidden_files = true,
+  theme = "dropdown"
+}
+
+M.extensions.mapper = {
   sorter = sorters.fuzzy_with_index_bias
   -- sorter = sorters.highlighter_only
 }
-
-M.extensions = extensions
-
--- local telescope_plugin = require("telescope")
--- M.load_extensions(telescope_plugin)
 return M
+
+-- local packer_attach = function(prompt_bufnr, map)
+--   local actions = require "telescope.actions"
+--   local builtin = require("telescope.builtin")
+--   local action_state = require "telescope.actions.state"
+--   actions.select_default:replace(
+--     function()
+--       local selection = action_state.get_selected_entry()
+--       actions.close(prompt_bufnr)
+--       vim.cmd(string.format(":e %s", selection.readme))
+--     end
+--   )
+
+--   local Job = require "plenary.job"
+--   local open_online = function()
+--     local selection = action_state.get_selected_entry()
+--     actions._close(prompt_bufnr)
+--     local cmd =
+--     vim.fn.has "win32" == 1 and "explorer" or vim.fn.has "mac" == 1 and "open" or "xdg-open"
+--     local url =
+--     vim.fn.trim(vim.fn.system(string.format("git -C %s ls-remote --get-url", selection.path)))
+--     Job:new({ command = cmd, args = { url } }):start()
+--   end
+
+--   local open_finder = function(prompt_bufnr)
+--     local selection = action_state.get_selected_entry()
+--     actions._close(prompt_bufnr, true)
+--     builtin.find_files({ cwd = selection.path })
+--   end
+
+--   local open_browser = function(prompt_bufnr)
+--     local ok, file_browser = pcall(require, "telescope._extensions.file_browser")
+--     if not ok then
+--       vim.notify(
+--         "nvim-telescope/telescope-file-browser.nvim is required to use this action",
+--         vim.log.levels.ERROR,
+--         { title = "Telescope" }
+--       )
+--       return
+--     end
+--     local selection = action_state.get_selected_entry()
+--     actions._close(prompt_bufnr, true)
+--     file_browser.exports.file_browser({ cwd = selection.path })
+--   end
+
+--   local open_grep = function(prompt_bufnr)
+--     local selection = action_state.get_selected_entry()
+--     actions._close(prompt_bufnr, true)
+--     builtin.live_grep({ cwd = selection.path })
+--   end
+
+--   vim.api.nvim_set_keymap(prompt_bufnr, "i", "<C-e>", open_online)
+--   vim.api.nvim_set_keymap(prompt_bufnr, "i", "<C-i>", open_finder)
+--   vim.api.nvim_set_keymap(prompt_bufnr, "i", "<C-x>", open_browser)
+--   vim.api.nvim_set_keymap(prompt_bufnr, "i", "<C-g>", open_grep)
+-- end

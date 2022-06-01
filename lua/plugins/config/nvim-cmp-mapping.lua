@@ -1,152 +1,95 @@
 local ok, cmp = pcall(require, "cmp")
-if not ok then return end
-
-local check_back_space = function()
-  local col = vim.fn.col(".") - 1
-  if col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
-    return true
-  else
-    return false
-  end
+if not ok then
+  return
 end
 
 local t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
-local mapping = {
-  ["<C-x><C-o>"] = cmp.mapping.complete(),
-  ["<C-x><C-s>"] = cmp.mapping.complete({ config = { sources = { { name = "vsnip" } } } }),
-  ["<C-n>"] = function()
-    if cmp.visible() then
-      cmp.select_next_item()
-    else
-      -- fallback()
-      cmp.mapping.complete()
-    end
-  end,
-  ["<C-p>"] = function()
-    if cmp.visible() then
-      cmp.select_prev_item()
-    else
-      -- fallback()
-      cmp.mapping.complete()
-    end
-  end,
-  ["<PageUp>"] = cmp.mapping.scroll_docs(-4),
-  ["<PageDown>"] = cmp.mapping.scroll_docs(4),
-  ["<c-b>"] = function(fallback)
-    for i = 1, 10 do
-      cmp.mapping.select_prev_item()(nil)
-    end
-  end,
-  ["<c-f>"] = function()
-    for i = 1, 10 do
-      cmp.mapping.select_next_item()(nil)
-    end
-  end,
-  ["<M-Space>"] = cmp.mapping.complete(),
-  ["<C-d>"] = cmp.mapping.abort(),
-  ["<C-e>"] = cmp.mapping.complete(),
-  ["<Tab>"] = function()
-    if vim.fn.pumvisible() == 1 then
-      return t("<C-n>")
-    elseif vim.fn.call("vsnip#available", { 1 }) == 1 then
-      return t("<Plug>(vsnip-expand-or-jump)")
-    elseif check_back_space() then
-      return t("<Tab>")
-    else
-      return cmp.mapping.complete()
-    end
-  end,
-  ["<S-Tab>"] = function()
-    if vim.fn.pumvisible() == 1 then
-      return t("<C-p>")
-    elseif vim.fn.call("vsnip#jumpable", { -1 }) == 1 then
-      return t("<Plug>(vsnip-jump-prev)")
-    else
-      -- If <S-Tab> is not working in your terminal, change it to <C-h>
-      return t("<S-Tab>")
-    end
-  end
-}
+-- mapping.preset.cmdline = function(override)
+--   return misc.merge(override or {}, {
+-- end
 
-local insertOnlyMapping = {
+local insert_override = {
   ["<C-x><C-o>"] = cmp.mapping.complete(),
-  ["<C-x><C-s>"] = cmp.mapping.complete({ config = { sources = { { name = "vsnip" } } } }),
-  ["<C-n>"] = {
-    i = function()
+  ["<C-x><C-s>"] = cmp.mapping.complete(
+    {
+      config = { sources = { { name = "luasnip" } } }
+    }
+  ),
+  ["<C-F>"] = {
+    i = function(fallback)
       if cmp.visible() then
-        cmp.select_next_item()
+        for _ = 1, 10 do
+          cmp.mapping.select_next_item()(nil)
+        end
       else
-        -- fallback()
-        cmp.mapping.complete()
+        fallback()
       end
     end
-    -- c = cmp.config.disable
   },
-  ["<C-p>"] = {
-    i = function()
+  ["<C-B>"] = {
+    i = function(fallback)
       if cmp.visible() then
-        cmp.select_prev_item()
+        for _ = 1, 10 do
+          cmp.mapping.select_prev_item()(nil)
+        end
       else
-        -- fallback()
-        cmp.mapping.complete()
-      end
-    end
-    -- c = cmp.config.disable
-  },
-  ["<PageUp>"] = {
-    i = cmp.mapping.scroll_docs(-4)
-  },
-  ["<PageDown>"] = {
-    i = cmp.mapping.scroll_docs(4)
-  },
-  ["<c-b>"] = {
-    i = function()
-      for i = 1, 10 do
-        cmp.mapping.select_prev_item()(nil)
+        fallback()
       end
     end
   },
-  ["<c-f>"] = {
-    i = function()
-      for i = 1, 10 do
-        cmp.mapping.select_next_item()(nil)
-      end
-    end
-  },
-  -- ["<C-Space>"] = cmp.mapping.complete(),
-  ["<C-e>"] = {
+  ["<C-D>"] = {
     i = cmp.mapping.abort()
   },
-  ["<Tab>"] = {
-    i = function()
-      if vim.fn.pumvisible() == 1 then
-        return t("<C-n>")
-      elseif vim.fn.call("vsnip#available", { 1 }) == 1 then
-        return t("<Plug>(vsnip-expand-or-jump)")
-      elseif check_back_space() then
-        return t("<Tab>")
-      else
-        return cmp.mapping.complete()
-      end
-    end
-    -- c = cmp.config.disable
-  },
-  ["<S-Tab>"] = {
-    i = function()
-      if vim.fn.pumvisible() == 1 then
-        return t("<C-p>")
-      elseif vim.fn.call("vsnip#jumpable", { -1 }) == 1 then
-        return t("<Plug>(vsnip-jump-prev)")
-      else
-        -- If <S-Tab> is not working in your terminal, change it to <C-h>
-        return t("<S-Tab>")
-      end
-    end
-    -- c = cmp.config.disable
-  }
+  ["<C-Space>"] = { i = cmp.mapping.complete() },
+  ["<CR>"] = { i = cmp.mapping.confirm({ select = true }) },
+  ["<PageUp>"] = { i = cmp.mapping.scroll_docs(-2) },
+  ["<PageDown>"] = { i = cmp.mapping.scroll_docs(2) },
+  ["<Up>"] = { i = cmp.mapping.scroll_docs(-2) },
+  ["<Down>"] = { i = cmp.mapping.scroll_docs(2) }
 }
 
-return mapping
+local cmdline_override = {
+  -- TODO: reconcile C-F, C-P with history
+  -- ["<C-F>"] = {
+  --   c = function(fallback)
+  --     cmp = require("cmp")
+  --     if cmp.visible() then
+  --       for _ = 1, 10 do
+  --         cmp.mapping.select_next_item()(nil)
+  --       end
+  --     else
+  --       fallback()
+  --     end
+  --   end
+  -- },
+  -- ["<C-B>"] = {
+  --   c = function(fallback)
+  --     cmp = require("cmp")
+  --     if cmp.visible() then
+  --       for _ = 1, 10 do
+  --         cmp.mapping.select_prev_item()(nil)
+  --       end
+  --     else
+  --       fallback()
+  --     end
+  --   end
+  -- },
+  ["<C-D>"] = {
+    c = cmp.mapping.close()
+  },
+  -- ["<C-Space>"] = { c = cmp.mapping.complete() },
+  -- ["<CR>"] = { c = cmp.mapping.confirm({ select = true }) },
+  ["<PageUp>"] = { c = cmp.mapping.scroll_docs(-2) },
+  ["<PageDown>"] = { c = cmp.mapping.scroll_docs(2) },
+  ["<Up>"] = { c = cmp.mapping.scroll_docs(-2) },
+  ["<Down>"] = { c = cmp.mapping.scroll_docs(2) }
+}
+
+local feedkeys = function(key, mode)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+end
+
+return { insert_override = insert_override, cmdline_override = cmdline_override }

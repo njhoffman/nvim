@@ -9,7 +9,7 @@ capabilities = vim.tbl_extend("keep", capabilities or {}, lsp_status.capabilitie
 
 -- function to attach completion when setting up lsp
 local on_attach = function(client, server)
-  client.resolved_capabilities.document_formatting = true
+  client.server_capabilities.document_formatting = true
   on_attach_hook.common_on_attach(client, server)
 end
 

@@ -11,12 +11,30 @@ local M = {
   -- x  ,/            <Plug>(searchsavvy-visual-block-search)
   -- Last set from ~/.local/share/nvim/site/pack/packer/start/vim-searchsavvy/plugin/searchsavvy.vim line 54
 
-  search_magic_1 = { cmd = "/\\v", short = "magic mode saerch" },
-  search_magic_2 = { cmd = "<Esc>/\\%V", short = "visual magic mode saerch" },
-  sub_magic_1 = { cmd = "%smagic/", short = "command substitute magic" },
-  sub_magic_3 = { cmd = ":%smagic/", short = "normal substitue magic quick" },
-  sub_magic_4 = { cmd = ":smagic/", short = "visual substitute magic quick" },
-  rmhl = { cmd = "<cmd>noh<cr> | :nohlsearch<cr>", short = "remove highlight" },
+  search_magic_1 = {
+    cmd = "/\\v",
+    short = "magic mode saerch"
+  },
+  search_magic_2 = {
+    cmd = "<Esc>/\\%V",
+    short = "visual magic mode saerch"
+  },
+  sub_magic_1 = {
+    cmd = "%smagic/",
+    short = "command substitute magic"
+  },
+  sub_magic_3 = {
+    cmd = ":%smagic/",
+    short = "normal substitue magic quick"
+  },
+  sub_magic_4 = {
+    cmd = ":smagic/",
+    short = "visual substitute magic quick"
+  },
+  rmhl = {
+    cmd = "<cmd>noh<cr> | :nohlsearch<cr>",
+    short = "remove highlight"
+  },
   rmhl_refresh = {
     cmd = "<cmd>noh<cr>|:RefreshLSP<cr>|:lua require'feline'.reset_highlights()<cr>",
     short = "remove hls, refresh colors and lsp"

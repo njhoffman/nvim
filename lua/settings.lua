@@ -6,22 +6,23 @@ settings.Load = {
   impatient = true,
   profile_load = false,
   profile_impatient = false,
-  profile_packer = false,
+  profile_packer = false
 }
 
+-- TODO: notify_level and notify_visual_level
 settings.Logging = {
-  notify_level = 'trace',
-  log_level = 'trace',
-  console_level = 'info',
-  lsp_level = "info",
+  notify_level = "trace",
+  log_level = "debug",
+  console_level = "debug",
+  lsp_level = "debug"
 }
 
 local levels = vim.lsp.log_levels
 settings.Logging.numeric = {
   notify_level = levels[settings.Logging.notify_level:upper()],
-  log_level = levels[settings.Logging.notify_level:upper()],
-  console_level = levels[settings.Logging.notify_level:upper()],
-  lsp_level = levels[settings.Logging.notify_level:upper()],
+  log_level = levels[settings.Logging.log_level:upper()],
+  console_level = levels[settings.Logging.console_level:upper()],
+  lsp_level = levels[settings.Logging.lsp_level:upper()]
 }
 
 settings.Opts = {
@@ -36,12 +37,17 @@ settings.Opts = {
   scrolloff = 10,
   explorer_side = "right",
   log_path = vim.fn.stdpath("cache") .. "/nvim.log",
-  log_stdout = false,
+  log_stdout = false
 }
 
 settings.Theming = {
   colorscheme = "nord",
-  diagnostic_colors = { Error = "#db4b4b", Warning = "#e0af68", Information = "#0db9d7", Hint = "#10B981" },
+  diagnostic_colors = {
+    Error = "#db4b4b",
+    Warning = "#e0af68",
+    Information = "#0db9d7",
+    Hint = "#10B981"
+  }
 }
 
 settings.DAP = {
@@ -51,7 +57,7 @@ settings.DAP = {
   virtual_text = true,
   python = true,
   go = true,
-  javascript = true,
+  javascript = true
 }
 
 -- -- trace, debug, info, warn, error
@@ -107,7 +113,7 @@ settings.LSP = {
   deno = false,
   diagnosticls = false,
   efm = true,
-  rome = false,
+  rome = false
 }
 
 settings.Completion = {
@@ -123,14 +129,14 @@ settings.Completion = {
   path = true,
   calc = true,
   spell = false,
-  emoji = true,
+  emoji = true
 }
 
 settings.Formatting = {
   -- if format_on_save is enable it will always trim trailing white spaces
   format_on_save = true,
   trim_trailing_space = true,
-  indent_size = 2,
+  indent_size = 2
 }
 
 settings.Treesitter = {
@@ -139,7 +145,7 @@ settings.Treesitter = {
   indent = true,
   highlight = false,
   context = false,
-  autotag = true,
+  autotag = true
   -------------
   -- Parsers --
   -------------
@@ -147,49 +153,5 @@ settings.Treesitter = {
 }
 
 settings.Plugins = { disabled = {} }
-
------------------------------- GENERAL SETTINGS -------------------------------
-Term = {}
-Term.shell = vim.o.shell -- or a string with the path to a shell binary
-Term.size = 10
-Term.shade = true
-Term.direction = "horizontal" -- horizontal, vertical, window, or float
-Term.floatBorder = "shadow" -- single, double, shadow, or curved
-
-DATA_PATH = vim.fn.stdpath("data")
-CACHE_PATH = vim.fn.stdpath("cache")
-
--------------------------- LANGAGE SPECIFIC SETTINGS --------------------------
--- See lua/lsp/efm/<language>.lua to add formatters or linters
--- Add languages in lua/lsp/efm/init.lua
-
-Python = {}
-Python.useKite = false
-Python.formatter = "black"
-Python.isort = false
-Python.linter = nil -- add an additional linter for more coverage than pyright
-
-Lua = {}
-Lua.formatter = "lua-format"
-Lua.formatLineLength = 120
-
-JS_TS = {}
-JS_TS.formatter = "prettier"
-JS_TS.linter = "eslint"
-
-Shell = {}
-Shell.formatter = "shfmt"
-Shell.linter = "shellcheck"
-
-Markdown = {}
--- true: refresh on edit
--- false: refresh on save
-Markdown.liveRefresh = false
-
--------------------------- DEBUGGER SETTINGS --------------------------
-Debugger = {}
-Debugger.pythonPath = "/usr/bin/python" -- path to python with debugpy installed
-Debugger.useExternalTerminal = false
-Debugger.externalTerminal = nil -- path to terminal
 
 return settings

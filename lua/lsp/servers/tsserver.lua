@@ -12,8 +12,8 @@ M.setup = function(on_attach, capabilities)
       -- vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ta", ":TypescriptAddMissingImports<CR>", opts)
       -- vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>tx", ":TypescriptFixAll<CR>", opts)
       -- vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>tr", ":TypescriptRenameFile<CR>", opts)
-      client.resolved_capabilities.document_formatting = false
-      client.resolved_capabilities.range_formatting = false
+      -- client.server_capabilities.documentFormattingProvider = false
+      -- client.server_capabilities.documentRangeFormattingProvider = false
       on_attach(client, bufnr)
     end,
     single_file_support = true,
