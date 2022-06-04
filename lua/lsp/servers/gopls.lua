@@ -10,10 +10,23 @@ M.setup = function(on_attach, capabilities)
     filetypes = { "go", "gomod" },
     single_file_support = true,
     -- root_dir = util.root_pattern("go.mod", ".git"),
+    capabilities = capabilities,
     flags = {
       debounce_text_changes = 150
     },
-    capabilities = capabilities
+    settings = {
+      gopls = {
+        experimentalPostfixCompletions = true,
+        analyses = {
+          unusedparams = true,
+          shadow = true,
+        },
+        staticcheck = true,
+      },
+    },
+    init_options = {
+      usePlaceholders = true,
+    }
   }
 end
 

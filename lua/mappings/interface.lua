@@ -74,10 +74,14 @@ local M = {
     short = "ts highlight cursor",
     long = "ts highlight cursor"
   },
-  list_definitions = {
-    short = "list ts definitions",
-    long  = "list ts definitions",
-  }, -- virtual
-  toc_definitions = { short = "toc ts definitions", long = "toc ts definitions" } -- virtual
+  ts_highlights2 = {
+    cmd = "<cmd>TSHighlightCapturesUnderCursor<cr>",
+    short = "ts highlight cursor",
+    long = "ts highlight cursor"
+  },
+  list_definitions = { short = "list ts definitions" }, -- virtual
+  toc_definitions = { short = "ts defs toc", long = "treesitter definitions toc" }, -- virtual
+  ts_next_usage = { short = "treesitter next ", long = "treesitter next usage" }, -- virtual
+  ts_prev_usage = { short = "treesitter prev", long = "treesitter_prev_usage" }, -- virtual
 }
 return M

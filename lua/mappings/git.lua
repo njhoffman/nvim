@@ -64,6 +64,19 @@ local M = {
     cmd = "<cmd>Gitsigns reset_buffer<cr>",
     short = "git reset buffer",
     long = "gitsigns reset buffer"
+  },
+  telescope_projetcts2 = {
+    cmd = "<cmd>Telescope projects<cr>",
+    short = "view projects in telescope",
+  },
+  telescope_bcommits2 = {
+    cmd = "<cmd>Telescope gcommits<cr>",
+    short = "git reset buffer",
+  },
+  telescope_gcommits2 = {
+    short = "telescope bcommits",
+    cmd = "<cmd>Telescope bcommits<Cr>"
   }
 }
+
 return M

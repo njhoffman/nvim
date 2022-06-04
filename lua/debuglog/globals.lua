@@ -74,8 +74,8 @@ M.inspect = function(...)
       local cb = function()
         dump_buffer(currwin, notify_win, msg)
       end
-      vim.api.nvim_buf_set_keymap(buf, "n", "gf", "", {callback = cb})
-      vim.api.nvim_buf_set_keymap(buf, "n", "<2-LeftMouse>", "", {callback = cb})
+      vim.api.nvim_buf_set_keymap(buf, "n", "gf", "", { callback = cb })
+      vim.api.nvim_buf_set_keymap(buf, "n", "<2-LeftMouse>", "", { callback = cb })
       vim.api.nvim_buf_set_option(buf, "filetype", "lua")
     end
   }

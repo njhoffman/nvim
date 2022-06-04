@@ -1,12 +1,11 @@
 local actions_layout = require "telescope.actions.layout"
 local actions_set = require "telescope.actions.set"
-local custom_actions = require("plugins.configs.telescope-custom-actions")
 local actions = require("telescope.actions")
+local custom = require("plugins.configs.telescope-custom")
 
 local mainMaps = {
   i = {
     ["<esc>"] = actions.close,
-    -- ["jk"] = actions.close,
     ["kj"] = actions.close,
     ["<c-f>"] = function(prompt_bufnr)
       actions_set.shift_selection(prompt_bufnr, 15)
@@ -18,13 +17,13 @@ local mainMaps = {
     ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous,
     ["<c-u>"] = false,
     ["<cr>"] = actions.select_default + actions.center,
-    -- ["<cr>"] = custom_actions.multi_selection_open,
+    -- ["<cr>"] = custom.actions.multi_selection_open,
     ["<c-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
     ["<c-q>"] = actions.send_to_qflist + actions.open_qflist + actions.center,
     ["<c-_>"] = function(prompt_bufnr)
       actions_layout.toggle_preview(prompt_bufnr)
     end,
-    ["<C-]>"] = custom_actions.switch_picker_type,
+    ["<C-]>"] = custom.actions.switch_picker_type,
     ["<M-/>"] = function(prompt_bufnr)
       local whichkey_default = {
         max_height = 0.4,
@@ -46,7 +45,7 @@ local mainMaps = {
         separator = " ➜ ",
         column_padding = " "
       }
-      actions.which_key(prompt_bufnr, whichkey_opts)
+      actions.which_key(prompt_bufnr, vim.tbl_deep_extend(whichkey_opts, whichkey_default))
     end,
     ["<C-DOWN>"] = actions.cycle_history_next,
     ["<C-UP>"] = actions.cycle_history_prev,
@@ -60,9 +59,9 @@ local mainMaps = {
 local fileMaps = {
   i = {
     -- change directory functionality
-    ["<A-U>"] = custom_actions.directory_up,
-    [":bd"] = custom_actions.directory_up,
-    ["<cr>"] = custom_actions.multi_selection_open
+    ["<A-U>"] = custom.actions.directory_up,
+    [":bd"] = custom.actions.directory_up,
+    ["<cr>"] = custom.actions.multi_selection_open
   }
 }
 --  TODO: grep live

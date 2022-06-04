@@ -2,10 +2,16 @@ local config = require("config").Treesitter
 
 local tsconfig = require "nvim-treesitter.configs"
 
+local custom_modules = require "plugins.config.nvim-treesitter-modules"
+
+local ts = require "nvim-treesitter"
+ts.define_modules(custom_modules)
+
 tsconfig.setup {
   -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = "all",
-  ignore_install = {"phpdoc", "latex"},
+  ignore_install = { "phpdoc", "latex" },
+
   playground = {
     enable = true,
     disable = {},
@@ -28,7 +34,7 @@ tsconfig.setup {
     enable = true,
     use_languagetree = true,
     disable = {
-      -- 'lua',
+      'lua',
       "latex",
       "bash",
       "markdown"
@@ -39,17 +45,17 @@ tsconfig.setup {
     },
     additional_vim_regex_highlighting = true
   },
-  context_commentstring = {enable = true, enable_autocmd = false},
+  context_commentstring = { enable = true, enable_autocmd = false },
   refactor = {
-    smart_rename = {enable = true, keymaps = {smart_rename = "gR"}},
-    highlight_definitions = {enable = true},
-    highlight_current_scope = {enable = config.highlight},
+    smart_rename = { enable = true, keymaps = { smart_rename = "gR" } },
+    highlight_definitions = { enable = true },
+    highlight_current_scope = { enable = config.highlight },
     navigation = {
       enable = true,
       keymaps = {
-        goto_definition = "gnd",
-        list_definitions = "gnD",
-        list_definitions_toc = "gO",
+        goto_definition = "gtd",
+        list_definitions = "gtD",
+        list_definitions_toc = "gt0",
         goto_next_usage = "<a-*>",
         goto_previous_usage = "<a-#>"
       }
@@ -57,7 +63,7 @@ tsconfig.setup {
   },
   autotag = {
     enable = config.autotag,
-    filetypes = {"html", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue"},
+    filetypes = { "html", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue" },
     skip_tags = {
       "area",
       "base",
@@ -97,22 +103,22 @@ tsconfig.setup {
     },
     swap = {
       enable = true,
-      swap_next = {["<leader>a"] = "@parameter.inner"},
-      swap_previous = {["<leader>A"] = "@parameter.inner"}
+      swap_next = { ["<leader>a"] = "@parameter.inner" },
+      swap_previous = { ["<leader>A"] = "@parameter.inner" }
     },
     move = {
       enable = true,
       set_jumps = true,
-      goto_next_start = {["]f"] = "@function.outer", ["]c"] = "@class.outer"},
-      goto_previous_start = {["[f"] = "@function.outer", ["[c"] = "@class.outer"}
+      goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
+      goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" }
     },
     lsp_interop = {
       enable = true,
       border = "none",
-      peek_definition_code = {["gp"] = "@function.outer", ["gP"] = "@class.outer"}
+      peek_definition_code = { ["gp"] = "@function.outer", ["gP"] = "@class.outer" }
     }
   },
-  rainbow = {enable = config.rainbow},
+  rainbow = { enable = config.rainbow },
   matchup = {
     enable = true -- mandatory, false will disable the whole extension
     -- disable = {"c", "ruby"} -- optional, list of language that will be disabled
@@ -120,38 +126,26 @@ tsconfig.setup {
   pairs = {
     enable = true,
     disable = {},
-    highlight_pair_events = {}, -- e.g. {"CursorMoved"}, -- when to highlight the pairs, use {} to deactivate highlighting
+    -- e.g. {"CursorMoved"}, -- when to highlight the pairs, use {} to deactivate highlighting
+    highlight_pair_events = {},
     highlight_self = false, -- whether to highlight also the part of the pair under cursor (or only the partner)
     goto_right_end = false, -- whether to go to the end of the right partner or the beginning
-    fallback_cmd_normal = "call matchit#Match_wrapper('',1,'n')", -- What command to issue when we can't find a pair (e.g. "normal! %")
-    keymaps = {goto_partner = "<leader>%"}
+    -- What command to issue when we can't find a pair (e.g. "normal! %")
+    fallback_cmd_normal = "call matchit#Match_wrapper('',1,'n')",
+    keymaps = { goto_partner = "<leader>%" }
   },
-  -- TODO: incremental selection, text objects, textsubjects or treehopper text hints?
-  incremental_selection = {
-    enable = true,
-    disable = {"markdown"},
-    keymaps = {
-      -- <CR><CR> ... / <CR><TAB><TAB>...
-      init_selection = "<CR>",
-      scope_incremental = "<CR>",
-      node_incremental = "<TAB>",
-      node_decremental = "<S-TAB>"
-      -- defaults --
-      -- init_selection = "gnn",
-      -- node_incremental = "grn", -- visual
-      -- scope_incremental = "grc", -- visual
-      -- node_decremental = "grm", -- visual
-    }
-  },
+  incremental_custom = tsmodules.incremental_custom,
   textsubjects = {
     -- Lua, Rust, Go, Ruby, Python, JavaScript / JSX, TypeScript / TSX, Elixir, Julia.
     -- v<CR><CR>...
     enable = false,
     keymaps = {
-      ["<cr>"] = "textsubjects-smart" -- works in visual mode
+      ["gts"] = "textsubjects-smart", -- works in visual mode
+      ["gto"] = "textsubjects-container-outer",
+      ["."] = "textsubjects-smart",
       -- ["<tab>"] = "textsubjects-container-outer",
       -- [";"] = "textsubjects-container-outer",
-      -- ["."] = "textsubjects-smart",
+      -- ["<cr>"] = "textsubjects-smart", -- works in visual mode
     }
   },
   endwise = {
@@ -159,9 +153,37 @@ tsconfig.setup {
   }
 }
 
--- require"treesitter-context.config".setup {
---   enable = config.context, -- Enable this plugin (Can be enabled/disabled later via commands)
--- }
+require 'treesitter-context'.setup {
+  enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+  max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+  patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+    -- For all filetypes
+    -- Note that setting an entry here replaces all other patterns for this entry.
+    -- By setting the 'default' entry below, you can control which nodes you want to
+    -- appear in the context window.
+    default = {
+      'class',
+      'function',
+      'method',
+      -- 'for', -- These won't appear in the context
+      -- 'while',
+      -- 'if',
+      -- 'switch',
+      -- 'case',
+    },
+    -- Example for a specific filetype.
+    -- If a pattern is missing, *open a PR* so everyone can benefit.
+    --   rust = {
+    --       'impl_item',
+    --   },
+  },
+  exact_patterns = {
+    -- Example for a specific filetype with Lua patterns
+    -- Treat patterns.rust as a Lua pattern (i.e "^impl_item$" will
+    -- exactly match "impl_item" only)
+    -- rust = true,
+  }
+}
 
 -- making dot repeatable
 -- --local CR = vim.api.nvim_replace_termcodes("<cr>", true, true, true)

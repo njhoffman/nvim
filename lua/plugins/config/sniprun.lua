@@ -14,7 +14,8 @@ require "sniprun".setup(
     },
     --# you can combo different display modes as desired
     display = {
-      "Classic", --# display results in the command-line  area
+      --@format disable
+      "TempFloatingWindow", --# display results in the command-line  area
       "VirtualTextOk" --# display ok results as virtual text (multiline is shortened)
 
       -- "VirtualTextErr",          --# display error results as virtual text
@@ -26,7 +27,7 @@ require "sniprun".setup(
       -- "Api"                      --# return output to a programming interface
     },
     display_options = {
-      terminal_width = 45, --# change the terminal display option width
+      terminal_width = 65, --# change the terminal display option width
       notification_timeout = 5 --# timeout for nvim_notify output
     },
     --# You can use the same keys to customize whether a sniprun producing

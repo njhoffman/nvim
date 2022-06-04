@@ -6,6 +6,28 @@ vim.api.nvim_create_user_command(
   }
 )
 
+vim.api.nvim_create_user_command(
+  "PasteChar",
+  function()
+    local txt = vim.g
+  end,
+  { desc = "Paste primary buffer charwise (strip line endings)" }
+)
+
+-- vim.api.nvim_create_user_command( "PasteLinewise"
+-- )
+
+-- vim.api.nvim_create_user_command(
+--   "LuaGetPaths",
+--   lua print(vim.o.packpath)
+--   ,
+--   {
+--     desc = "Format buffer using lsp"
+--   }
+-- )
+
+
+
 local truncate_log = function()
   local ext = vim.fn.expand("%:e")
   if ext ~= "log" then

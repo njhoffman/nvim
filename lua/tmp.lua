@@ -1,55 +1,67 @@
--- local ok, cmp = pcall(require, "plugins.config.nvim-cmp")
+-- -- local ok, cmp = pcall(require, "plugins.config.nvim-cmp")
+-- local Path = require "plenary.path"
+-- local utils = {}
+-- function utils.data_directory()
+--   local sourced_file = require("plenary.debug_utils").sourced_filepath()
+--   local base_directory = vim.fn.fnamemodify(sourced_file, ":h:h:h")
 
-local utils = {}
-utils.find = function(array, key, val)
-  for i, v in ipairs(array) do
-    vim.dbglog(i, v)
-    if v[key] == val then
-      return v
-    end
-  end
-end
+--   return Path:new({ base_directory, "data" }):absolute() .. Path.path.sep
+-- end
 
-local keys = {
-  {
-    buffer = 0,
-    expr = 0,
-    lhs = "<Plug>SnipRunOperator",
-    lnum = 0,
-    mode = "n",
-    noremap = 0,
-    nowait = 0,
-    rhs = ":set opfunc=SnipRunOperator<CR>g@",
-    script = 0,
-    sid = -8,
-    silent = 1
-  },
-  {
-    buffer = 0,
-    expr = 0,
-    lhs = "<Plug>SnipRun",
-    lnum = 0,
-    mode = "n",
-    noremap = 0,
-    nowait = 0,
-    rhs = ":lua require'sniprun'.run()<CR>",
-    script = 0,
-    sid = -8,
-    silent = 1
-  },
-  {
-    buffer = 0,
-    expr = 0,
-    lhs = "<C-L>",
-    lnum = 0,
-    mode = "n",
-    noremap = 1,
-    nowait = 0,
-    rhs = "<C-W>l",
-    script = 0,
-    sid = -8,
-    silent = 0
-  }
-}
+-- call writefile(msgpackdump([{}]), 'fname.mpack', 'b')
 
-vim.dbg(utils.find(keys, "lhs", "gF"))
+-- local fname = expand('~/.config/nvim/shada/main.shada')
+-- local mpack = readfile(fname, 'b')
+-- local shada_objects = msgpackparse(mpack)
+
+-- local lsps = {
+--   ["$/progress"] = <function 1>,
+--   ["callHierarchy/incomingCalls"] = <function 2>,
+--   ["callHierarchy/outgoingCalls"] = <function 3>,
+--   ["client/registerCapability"] = <function 4>,
+--   hover = <function 5>,
+--   signature_help = <function 6>,
+--   ["textDocument/codeLens"] = <function 7>,
+--   ["textDocument/completion"] = <function 8>,
+--   ["textDocument/declaration"] = <function 9>,
+--   ["textDocument/definition"] = <function 10>,
+--   ["textDocument/documentHighlight"] = <function 11>,
+--   ["textDocument/documentSymbol"] = <function 12>,
+--   ["textDocument/formatting"] = <function 13>,
+--   ["textDocument/hover"] = <function 14>,
+--   ["textDocument/implementation"] = <function 15>,
+--   ["textDocument/publishDiagnostics"] = <function 16>,
+--   ["textDocument/rangeFormatting"] = <function 17>,
+--   ["textDocument/references"] = <function 18>,
+--   ["textDocument/rename"] = <function 19>,
+--   ["textDocument/signatureHelp"] = <function 20>,
+--   ["textDocument/typeDefinition"] = <function 21>,
+--   ["window/logMessage"] = <function 22>,
+--   ["window/showMessage"] = <function 23>,
+--   ["window/showMessageRequest"] = <function 24>,
+--   ["window/workDoneProgress/create"] = <function 25>,
+--   ["workspace/applyEdit"] = <function 26>,
+--   ["workspace/configuration"] = <function 27>,
+--   ["workspace/executeCommand"] = <function 28>,
+--   ["workspace/symbol"] = <function 29>,
+--   ["workspace/workspaceFolders"] = <function 30>
+-- }
+
+-- -- require'lsp.capabilities()"
+-- local lspstats = {}
+-- local make_capabilities = function()
+--   bufnr = bufnr or vim.api."nvim-lsp-installer"
+--   lspstats.general = {
+--     bufnr opts.bufnr or 0,
+--     fname = opts.fname or "",
+--   }
+--   for pairs(handler, funcdef) in lsps; do
+--     lspstats[handler] = {
+--       funcdef = funcdef,
+--       hits = 0,
+--       time = os.timeHMS()
+--     }
+--     done
+--   end
+
+--   vim.dbg(vim.fn.getreg('*'))

@@ -10,7 +10,7 @@ if not ok or not ok_nord or not ok_plugins or not ok_main then
 end
 
 local plugins = lush.extends({ nord }).with(hl_plugins)
-local main = lush.extends({ plugins }).with(hl_main)
+local main    = lush.extends({ plugins }).with(hl_main)
 return main
 
 -- -- +----------------------+

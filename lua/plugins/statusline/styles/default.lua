@@ -70,9 +70,9 @@ components.left.active[3] = {
   },
   left_sep = {
     ' ', 'slant_left_2',
-    {str = ' ', hl = {bg = 'oceanblue', fg = 'NONE'}}
+    { str = ' ', hl = { bg = 'oceanblue', fg = 'NONE' } }
   },
-  right_sep = {'slant_right_2', ' '}
+  right_sep = { 'slant_right_2', ' ' }
 }
 
 components.left.active[4] = {
@@ -137,7 +137,7 @@ components.right.active[1] = {
     style = 'bold'
   },
   right_sep = function()
-    local val = {hl = {fg = 'NONE', bg = 'black'}}
+    local val = { hl = { fg = 'NONE', bg = 'black' } }
     if b.gitsigns_status_dict then val.str = ' ' else val.str = '' end
 
     return val
@@ -167,7 +167,7 @@ components.right.active[4] = {
     bg = 'black'
   },
   right_sep = function()
-    local val = {hl = {fg = 'NONE', bg = 'black'}}
+    local val = { hl = { fg = 'NONE', bg = 'black' } }
     if b.gitsigns_status_dict then val.str = ' ' else val.str = '' end
 
     return val

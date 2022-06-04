@@ -9,32 +9,32 @@ end
 local hsl = lush.hsl
 
 local clrs = {
-  nord0 = hsl(220, 16, 22), -- #2F3541
-  nord1 = hsl(222, 16, 28), -- #3C4353
-  nord2 = hsl(220, 17, 32), -- #444D5F
-  nord3 = hsl(220, 16, 36), -- #4D576A
+  nord0        = hsl(220, 16, 22), -- #2F3541
+  nord1        = hsl(222, 16, 28), -- #3C4353
+  nord2        = hsl(220, 17, 32), -- #444D5F
+  nord3        = hsl(220, 16, 36), -- #4D576A
   nord3_bright = hsl(220, 17, 46), -- #616F89
-  nord4 = hsl(219, 28, 88), -- #D8DEE9
-  nord5 = hsl(218, 27, 92), -- #E5E9F0
-  nord6 = hsl(218, 27, 94), -- #ECEFF4
+  nord4        = hsl(219, 28, 88), -- #D8DEE9
+  nord5        = hsl(218, 27, 92), -- #E5E9F0
+  nord6        = hsl(218, 27, 94), -- #ECEFF4
   -- nord7 = hsl(179, 25, 65), -- #8FBCBB
-  nord7 = "#6f9cbb",
-  nord8 = hsl(193, 43, 67), -- #87BFCF
-  nord9 = hsl(210, 34, 63), -- #81A1C1
-  nord10 = hsl(213, 32, 52), -- #5D81AC
-  nord11 = hsl(354, 42, 56), -- #BE6069
-  nord12 = hsl(14, 51, 63), -- #D18771
-  nord13 = hsl(40, 71, 73), -- #EBCA89
+  nord7        = "#6f9cbb",
+  nord8        = hsl(193, 43, 67), -- #87BFCF
+  nord9        = hsl(210, 34, 63), -- #81A1C1
+  nord10       = hsl(213, 32, 52), -- #5D81AC
+  nord11       = hsl(354, 42, 56), -- #BE6069
+  nord12       = hsl(14, 51, 63), -- #D18771
+  nord13       = hsl(40, 71, 73), -- #EBCA89
   -- nord14 = hsl(92, 28, 65), -- #A4BF8D
-  nord14 = "#22BB99",
+  nord14       = "#22BB99",
   -- nord15 = hsl(311, 20, 63), -- #B48EAD
-  nord15 = "#646EAD",
-  nord16 = "#56a9b3",
-  none = "NONE",
-  highlight = "#1F2233",
-  disabled = "#464B5D",
-  accent = "#84FFFF",
-  error = "#BE6069"
+  nord15       = "#646EAD",
+  nord16       = "#56a9b3",
+  none         = "NONE",
+  highlight    = "#1F2233",
+  disabled     = "#464B5D",
+  accent       = "#84FFFF",
+  error        = "#BE6069"
 }
 
 local clr_over = {
@@ -54,10 +54,11 @@ return function()
   return {
     Visual { fg = "none", bg = clr_over.selection },
     Error { fg = "#bF211A", bg = "none" },
-    Underline = { gui = "none" },
-    Underlined = { gui = "none" },
+    Underline { gui = "none" },
+    Underlined { gui = "none" },
     -- ui components
-    NormalFloat { fg = "#8f93a2", bg = "none" }, -- normal text and background color for floating windows
+    NormalFloat { fg = "#8f93a2", bg = "#101013" }, -- normal text and background color for floating windows
+    -- NormalFloat { fg = "#8f93a2", bg = "none" }, -- normal text and background color for floating windows
     FloatBorder { fg = "#3f5382", bg = NormalFloat.bg }, --
     -- Pmenu { fg = "#618cc4", bg = "#090918" },
     -- PmenuSel { fg = "#74efff", bg = "#1a1f2f" },
@@ -122,7 +123,7 @@ return function()
     DiagnosticVirtualTextWarn { fg = clrs.nord13.da(60), gui = "italic" },
     DiagnosticHint { fg = "#447Ddf" },
     DiagnosticVirtualTextHint { fg = "#246Daf", gui = "italic" },
-    LspFloatWinBorder = { bg = "none" },
+    LspFloatWinBorder { bg = "none" },
     LspDiagnosticsError { fg = clrs.nord11 },
     LspDiagnosticsHint { fg = clrs.nord8 },
     LspDiagnosticsInformation { fg = clrs.nord10 },
@@ -144,6 +145,7 @@ return function()
     --
     -- language groups
     --
+    TreesitterContext { bg = '#1a0606', gui = 'italic' },
     TSInclude { fg = "#4784a6" },
     TSBoolean { fg = "#4d6f9c" },
     TSConditional { fg = "#897785" },

@@ -2,31 +2,14 @@ local g = vim.g
 local o, wo, bo = vim.o, vim.wo, vim.bo
 local opt = require("utils.core").opt
 local config = require("config")
-vim.cmd [[
-  if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-  else
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-  endif
 
-  let &t_SI = "\e[5 q"
-  let &t_EI = "\e[0 q"
-  " autocmd InsertLeave,InsertEnter * set cul!
-]]
-
-opt("termguicolors", true)
-opt("background", "dark")
-
-g.mapleader = [[,]]
-g.maplocalleader = [[,]]
+g.mapleader = [[ ]]
+g.maplocalleader = [[ ]]
 
 local buffer = { o, bo }
 local window = { o, wo }
 
 -- global scope
-opt("background", "dark")
 opt("backup", false)
 opt("writebackup", true)
 opt("backupcopy", "auto")
@@ -77,7 +60,9 @@ opt("smartcase", true)
 opt("splitbelow", true)
 opt("splitright", true)
 opt("jumpoptions", "stack")
-
+opt("showbreak", "↳ ")
+opt("breakindent", true)
+opt("breakindentopt", "shift:2")
 opt("undolevels", 1000)
 opt("updatetime", 4000)
 opt("timeoutlen", 500)
@@ -89,10 +74,9 @@ opt("whichwrap", "b,s,<,>,[,],h,l")
 opt("autoread", true)
 
 -- opt("completeopt", "menuone,longest")
--- opt("completion_enable_snippet", "LuaSnip")
--- opt("completion_matching_smart_case", 1)
 
 -- window scope
+opt("foldopen", "block,hor,jump,mark,percent,quickfix,search,tag")
 opt("foldlevel", 0, window)
 opt("foldnestmax", 10, window)
 opt("foldenable", false, window)
@@ -117,7 +101,20 @@ opt("tabstop", 2, buffer)
 opt("undofile", true, buffer)
 opt("fileformat", "unix", buffer)
 
-vim.cmd [[colorscheme nord-nick]]
+-- Configure backspace so it acts as it should act
+opt("backspace", "eol,start,indent")
+-- opt.whichwrap:append(",<,>,h,l")
+-- Don't redraw while executing macros (good performance config)
+opt("lazyredraw", true)
+-- For regular expressions turn magic on
+opt("magic", true)
+-- Show matching brackets when text indicator is over them
+opt("showmatch", true)
+-- How many tenths of a second to blink when matching brackets
+opt("matchtime", 3)
+
+
+
 
 vim.g.clipboard = {
   name = "xsel",
@@ -188,8 +185,9 @@ vim.g.sql_type_default = "pgsql"
 -- wildchar/charm for wildmenu
 -- 0x1a ^Z, 0x1b ^[, 0x0e C-n
 opt("wildignore", "*.o,*~,*.pyc")
-opt("wildmenu", 1)
-opt("wildmode", "longest:full,full")
+
+-- opt("wildmenu", 1)
+-- opt("wildmode", "longest:full,full")
 -- opt("wildmode", "") -- full, longest, list, lastused, list:longest, list:full, longest:full
 -- opt("wc", 0x0e)
 -- opt("wcm", 0x0e)

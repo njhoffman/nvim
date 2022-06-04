@@ -74,6 +74,7 @@ M.notify = function(message, level, ...)
       end
       local ok, notify = pcall(require, "notify")
       if not ok then
+        logger:warn({ "notifications not ready yet", notify })
         return
       end
       if skip_render == false and ok then

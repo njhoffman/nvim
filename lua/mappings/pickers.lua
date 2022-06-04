@@ -238,6 +238,23 @@ local M = {
     cmd = "<plug>(fzf-maps-o)",
     short = "find mappings (operator)",
     long = "find mappings (operator)"
+  },
+  find_pickers = {
+    cmd = "<cmd>Telescope find_pickers<cr>",
+    short = "find mappings (operator)",
+    long = "find mappings (operator)"
+  },
+  tele_projects = {
+    cmd = "<cmd>Telescope projects<cr>",
+    short = "find projects in telescope picker",
+  },
+  tele_files = {
+    cmd = "<cmd>Telescope fd<cr>",
+    short = "telescope find files",
+  },
+  tele_grep = {
+    cmd = "<cmd>Telescope live_grep<cr>",
+    short = "telescope grep files live",
   }
 
   -- nmap("Pickers", "<C-d>", "<cmd>FzfPreviewGitCurrentLogs<cr>", "buffer_log", "git buffer log")

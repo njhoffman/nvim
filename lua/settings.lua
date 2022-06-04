@@ -9,7 +9,7 @@ settings.Load = {
   profile_packer = false
 }
 
--- TODO: notify_level and notify_visual_level
+-- TODO: notify_level and notify_visual_level, telescope log, dap log, efm log
 settings.Logging = {
   notify_level = "trace",
   log_level = "debug",
@@ -36,14 +36,15 @@ settings.Opts = {
   updatetime = 300,
   scrolloff = 10,
   explorer_side = "right",
-  log_stdout = false
+  log_stdout = false,
 }
 
 settings.Theming = {
   colorscheme = "nord",
   diagnostic_colors = {
     Error = "#db4b4b",
-    Warning = "#e0af68",
+    -- Warning = "#e0af68",
+    Warning = "#904f38",
     Information = "#0db9d7",
     Hint = "#10B981"
   }

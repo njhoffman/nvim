@@ -75,9 +75,5 @@ M.buf = function(...)
   vim.api.nvim_buf_set_lines(bufnr, 0, #lines, false, lines)
 end
 
--- local log = require("debuglog")
--- M.buf('hello')
--- M.log(vim.api.nvim_get_all_options_info())
--- M.buf(_G._get_stats_keymaps())
 
 return M

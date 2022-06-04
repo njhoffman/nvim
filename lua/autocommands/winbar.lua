@@ -1,0 +1,57 @@
+-- Parse Treesitter AST Symbols for Winbar {{{
+
+local parse_ast_symbols = function(symbols_tbl)
+  local result = ""
+  local sep = " > "
+  for _, symbol in pairs(symbols_tbl) do
+    result = string.format("%s%s%s %s", result, sep, symbol.icon, symbol.name)
+  end
+  return result
+end
+
+local get_filename = function()
+  local filename = vim.api.nvim_buf_get_name(0)
+  local t = {}
+  for str in string.gmatch(filename, "([^/]+)") do
+    table.insert(t, str)
+  end
+  return t[#t] or ""
+end
+
+local winbar_fmt = function()
+  local result = get_filename()
+  local ast_symbols = require("aerial").get_location()
+
+  if vim.tbl_isempty(ast_symbols) then return result end
+  return result .. parse_ast_symbols(ast_symbols)
+end
+
+local winbar_cmd = function()
+  local excluded_fts = {
+    "Prompt",
+    "startuptime",
+    "TelescopePrompt",
+    "TelescopeResults",
+    "alpha",
+    "help",
+    "NvimTree",
+    "packer"
+  }
+
+  if vim.tbl_contains(excluded_fts, vim.bo.filetype) then
+    vim.opt_local.winbar = nil
+    return
+  end
+  vim.opt_local.winbar = winbar_fmt()
+end
+
+vim.api.nvim_create_user_command(
+  "WinbarInit",
+  winbar_cmd,
+  { desc = "Initialize the buffer winbar" }
+)
+
+
+return {
+  { "CursorMoved,BufWinEnter,BufFilePost", "*", WinbarInit }
+}

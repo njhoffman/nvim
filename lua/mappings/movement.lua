@@ -182,10 +182,27 @@ local M = {
     short = "shrink inc selection",
     long = "shrink incremental selection"
   },
+  incremental_selection_init2 = {
+    -- cmd   = "<cmd>lua require'nvim-treesitter.incremental_selection'.init_selection()<cr>",
+    short = "init incremental",
+    long  = "start tree sitter incremental expansion",
+  },
+  incremental_selection_scope2 = {
+    -- cmd = "<cmd>lua require'nvim-treesitter.incremental_selection'.scope_incremental()<cr>",
+    -- cmd = '<cmd>visual <tab><cr>',
+    short = "expand incremental",
+    long = "expand tree sitter incremental visual expansion"
+  },
+  incremental_selection_shrink2 = {
+    -- cmd = "<cmd>lua require'nvim-treesitter.incremental_selection'.node_decremental()<cr>",
+    short = "shrink incremental",
+    long = "shrink tree sitter incremental visual selection"
+  },
   -- _ (underscore) - "inner line"
   -- Examples
   -- xnoremap il 0o$h onoremap il :normal vil<CR>
-  -- v_ visually selects all the text in a line, except the leading and trailing whitespace.
+  -- v_ visually selects all the text in a line,
+  -- except the leading and trailing whitespace.
   -- y_ yank "inner line".
   -- d_ delete the whole line, but only "inner line" gets into the register.
   -- It's shorter to type than ^vg_ + operator.

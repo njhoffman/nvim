@@ -22,10 +22,15 @@ local packerConfig = require("plugins.packer-config")
 return require("packer").startup(
   {
     function(use)
-      -- use("lewis6991/impatient.nvim")
       use("wbthomason/packer.nvim")
-      local load_config = { skip = { "vista.vim" }, disable = { "options.nvim" } }
+      use("lewis6991/impatient.nvim")
+      use("nathom/filetype.nvim")
+      use {
+        'yamatsum/nvim-nonicons',
+        requires = { 'kyazdani42/nvim-web-devicons' }
+      }
       pluginmap.load_plugins(use, load_config)
+
       -- Basic key mappings
       use(
         {
@@ -36,6 +41,7 @@ return require("packer").startup(
           end
         }
       )
+
       -- ====================================
       -- Integrations
       use(
@@ -142,18 +148,6 @@ return require("packer").startup(
       -- ====================================
       -- Motion plugins
       -- use { "terryma/vim-multiple-cursors", config = function() require("plugins.configs.vim_multiple_cursors") end }
-      use(
-        {
-          "abecodes/tabout.nvim",
-          requires = {
-            "nvim-treesitter/nvim-treesitter"
-            -- "hrsh7th/nvim-compe",
-          },
-          config = function()
-            require("plugins.configs.tabout")
-          end
-        }
-      )
       -- use "AckslD/nvim-anywise-reg.lua"
 
       -- ====================================
@@ -170,7 +164,8 @@ return require("packer").startup(
       -- ====================================
       -- Interface plugins
       use("voldikss/fzf-floaterm")
-      use("ThePrimeagen/vim-apm") -- VimApmShutdown, VimAp, ~/apm.csvm
+      -- use("ThePrimeagen/vim-apm") -- VimApmShutdown, VimAp, ~/apm.csvm
+
       -- use { "stevearc/stickybuf.nvim", config = function() require("plugins.configs.stickybuf") end }
 
       -- use { "jez/vim-superman" }

@@ -149,10 +149,22 @@ M.map("Movement", "n", "g<M-G>", "total_counts") -- virtual
 -- x  <CR>        *@:lua require'nvim-treesitter.incremental_selection'.scope_incremental()<CR>
 -- x  <CR>        * <Cmd>lua require'nvim-treesitter.incremental_selection'.scope_incremental()<CR>
 -- virtual until treesitter integration figured out
-M.map("Movement", "n", "<CR>", "incremental_selection_init", { noremap = true, silent = true })
-M.map("Movement", "x", "<TAB>", "incremental_selection_scope", { noremap = true, silent = true })
-M.map("Movement", "x", "<CR>", "incremental_selection_expand", { noremap = true, silent = true })
-M.map("Movement", "x", "<S-TAB>", "incremental_selection_shrink", { noremap = true, silent = true })
+M.map("Movement", "n", "<CR>", "incremental_selection_init")
+M.map("Movement", "x", "<TAB>", "incremental_selection_scope")
+M.map("Movement", "x", "<CR>", "incremental_selection_expand")
+M.map("Movement", "x", "<S-TAB>", "incremental_selection_shrink")
+
+-- M.map("Movement", "n", "vv", "incremental_selection_init2", { noremap = true, silent = true })
+-- M.map("Movement", "x", "v", "incremental_selection_node2", { noremap = false, silent = true })
+-- M.map("Movement", "x", "V", "incremental_selection_shrink2", { noremap = false, silent = true })
+-- vim.cmd([[
+--   nnoremap <buffer> v <cmd>lua require('nvim-treesitter.incremental_selection').init_selection()<cr>
+--   xnoremap <buffer> + <cmd>lua require('nvim-treesitter.incremental_selection').scope_incremental()<cr>
+--   xnoremap <buffer> = <cmd>lua require('nvim-treesitter.incremental_selection').node_decremental()<cr>
+-- ]])
+
+
+
 -- M.map("Movement", "v", "+", "incremental_selection_expand")
 -- M.map("Movement", "v", "-", "incremental_selection_shrink")
 -- defaults
@@ -185,7 +197,7 @@ M.map("Movement", "v", "<C-X>", "swap_visual_block")
 -- M.map("Movement", "n", "<M-\">", "hop_to_line")
 -- M.map("Movement", "n", "<M-;>", "hop_to_word")
 -- M.map("Movement", "n", "<M-:>", "hop_to_line")
--- vim.api.nvim_set_keymap('n', '<M-;>', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
+-- vim.api.nvim_set_keymap('n', '<M-;>', "<>cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
 -- vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
 
 M.map("Interface", "n", '""', "registers")
@@ -202,10 +214,13 @@ M.map("Interface", "n", "cl0", "conceal_0")
 M.map("Interface", "n", "cl1", "conceal_1")
 M.map("Interface", "n", "cl2", "conceal_2")
 M.map("Interface", "n", "cl3", "conceal_3")
-M.map("Interface", "n", "gh", "ts_highlights")
+M.map("Interface", "n", "gH", "ts_highlights")
 -- M.map("Interface", "n", "gH", "ts_highlights")
-M.map("Interface", "n", "gnD", "list_definitions") -- virtual
+M.map("Interface", "n", "gth", "ts_highlights2")
+M.map("Interface", "n", "gtd", "list_definitions") -- virtual
 M.map("Interface", "n", "g0", "toc_definitions") -- virtual
+M.map("Interface", "n", "<a-*>", "ts_next_usage") -- virtual
+M.map("Interface", "n", "<a-#>", "ts_prev_usage") -- virtual
 
 M.map("System", "n", "<leader>iu", "update")
 M.map("System", "n", "<leader>ii", "install")
@@ -288,6 +303,48 @@ M.map("Unimpaired", "n", "]t", "pairs_next_tag")
 M.map("Unimpaired", "n", "[<C-T>", "pairs_prev_tag_window")
 M.map("Unimpaired", "n", "]<C-T>", "pairs_next_tag_window")
 
+local map = function(mode, lhs, rhs, opts)
+  local options = {}
+  if opts then
+    options = vim.tbl_extend("force", options, opts)
+  end
+  if opts.buffer ~= nil then
+    assert(type(opts.buffer) == "number")
+
+    local bufnr = opts.buffer
+    options.buffer = nil
+    vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, options)
+  else
+    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  end
+end
+
+
+-- Disable highlight when <leader><cr> is pressed
+map("n", "<leader><CR>", ":nohlsearch<CR>", { silent = true })
+
+-- Jump to the previous git conflict start
+map("n", "[cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
+  silent = true,
+  noremap = true,
+})
+
+-- Jump to the previous git conflict end
+map("n", "[ce", ":call search('^>\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
+  silent = true,
+  noremap = true,
+})
+
+-- Jump to the next git conflict start
+map("n", "]cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'W')<CR>", { silent = true, noremap = true })
+-- Jump to the next git conflict end
+map("n", "]ce", ":call search('^>\\{4,\\} \\w\\+.*$', 'W')<CR>", { silent = true, noremap = true })
+-- Jump to previous divider
+map("n", "[cm", ":call search('^=\\{4,\\}$', 'Wb')<CR>", { silent = true, noremap = true })
+-- Jump to next divider
+map("n", "]cm", ":call search('^=\\{4,\\}$', 'W')<CR>", { silent = true, noremap = true })
+
+
 -- vim.cmd([[nnoremap / /\v]])
 -- vim.cmd([[vnoremap / /\v]])
 -- vim.cmd([[cnoremap %s/ %smagic/]])
@@ -344,8 +401,9 @@ M.map("Git", "n", "<leader>gp", "signs_prev_hunk")
 M.map("Git", "n", "<leader>gv", "signs_preview_hunk")
 M.map("Git", "n", "<leader>gr", "signs_reset_hunk")
 M.map("Git", "n", "<leader>gR", "signs_reset_buffer")
-M.map("Git", "n", "<C-g>", "telescope_bcommits")
-M.map("Git", "n", "<A-g>", "telescope_commits")
+M.map("Git", "n", "<leader>bc", "telescope_bcommits2")
+M.map("Git", "n", "<leader>gc", "telescope_gcommits2")
+-- M.map("Git", "n", "<A-g>", "telescope_commits")
 -- Git log, Git diff, Git difftool, Git mergetool, Git blame, Gdiff, Gedit HEAD-3:%, Ggrep
 -- http://vimcasts.org/episodes/fugitive-vim-resolving-merge-conflicts-with-vimdiff/
 -- DiffviewOpen, DiffviewFileHistory
@@ -391,6 +449,10 @@ M.map("Pickers", "n", "<leader>Fm", "find_mappings_n")
 M.map("Pickers", "n", "<leader>Fmi", "find_mappings_i")
 M.map("Pickers", "n", "<leader>Fmv", "find_mappings_v")
 M.map("Pickers", "n", "<leader>Fmo", "find_mappings_o")
+M.map("Pickers", "n", "<leader><leader>", "find_pickers")
+M.map("Pickers", "n", "<C-g>", "tele_projects")
+M.map("Pickers", "n", "<C-Space>", "tele_files")
+M.map("Pickers", "n", "<A-Space>", "tele_grep")
 
 vim.cmd("cabbrev T Telescope")
 vim.cmd("cabbrev d lua vim.dbg(")
@@ -492,6 +554,7 @@ M.map("LSP", "n", "<leader>l.a", "stop_all")
 M.map("LSP", "n", "<C-t>", "doc_diagnostics_ivy")
 M.map("LSP", "n", "<A-T>", "doc_diagnostics_2")
 
+
 vim.api.nvim_set_keymap(
   "n",
   "<leader>xx",
@@ -548,6 +611,86 @@ vim.cmd([[vmap <M-a> <C-a> ]])
 vim.cmd([[vmap <M-x> <C-x> ]])
 vim.cmd([[vmap g<M-a> g<C-a> ]])
 vim.cmd([[vmap g<M-x> g<C-x> ]])
+
+
+-- Moving around, tabs, windows and buffers {{{
+
+-- Disable highlight when <leader><cr> is pressed
+map("n", "<leader><CR>", ":nohlsearch<CR>", { silent = true })
+
+-- Jump to the previous git conflict start
+map("n", "[cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
+  silent = true,
+  noremap = true,
+})
+
+-- Jump to the previous git conflict end
+map("n", "[ce", ":call search('^>\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
+  silent = true,
+  noremap = true,
+})
+
+-- Jump to the next git conflict start
+map("n", "]cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'W')<CR>", { silent = true, noremap = true })
+
+-- Jump to the next git conflict end
+map("n", "]ce", ":call search('^>\\{4,\\} \\w\\+.*$', 'W')<CR>", { silent = true, noremap = true })
+
+-- Jump to previous divider
+map("n", "[cm", ":call search('^=\\{4,\\}$', 'Wb')<CR>", { silent = true, noremap = true })
+
+-- Jump to next divider
+map("n", "]cm", ":call search('^=\\{4,\\}$', 'W')<CR>", { silent = true, noremap = true })
+
+-- Maps, Commands {{{
+
+map("n", "]a", ':execute ":" . v:count . "next"<CR>', { silent = true, noremap = true })
+map("n", "[a", ':execute ":" . v:count . "previous"<CR>', { silent = true, noremap = true })
+
+map("n", "]l", ':execute ":" . v:count . "lnext"<CR>', { silent = true, noremap = true })
+map("n", "[l", ':execute ":" . v:count . "lprevious"<CR>', { silent = true, noremap = true })
+
+map("n", "]q", ':execute ":" . v:count . "cnext"<CR>', { silent = true, noremap = true })
+map("n", "[q", ':execute ":" . v:count . "cprevious"<CR>', { silent = true, noremap = true })
+
+map("n", "]b", ':execute ":" . v:count . "bnext"<CR>', { silent = true, noremap = true })
+map("n", "[b", ':execute ":" . v:count . "bprevious"<CR>', { silent = true, noremap = true })
+
+-- Switch to a terminal buffer using [count]gs.
+map(
+  "n",
+  "<leader>gt",
+  '<cmd>execute "lua require\\"vimrc.terminal\\".switch_to_terminal(" . v:count . ")"<CR>',
+  { silent = true, noremap = true }
+)
+
+-- Taking from here: https://github.com/stoeffel/.dotfiles/blob/master/vim/visual-at.vim
+-- Allows running macros only on selected files.
+map(
+  "x",
+  "@",
+  ':<C-u>echo "@".getcmdline() | execute ":\'<,\'>normal @" . nr2char(getchar())<CR>',
+  { silent = true, noremap = true }
+)
+
+map("x", ".", ":normal .<CR>", { silent = true })
+
+
+
+map("n", "Y", "y$", { silent = true })
+
+-- Pressing <leader>ss will toggle and untoggle spell checking
+map("n", "<leader>ss", ":setlocal spell!<CR>", { silent = true })
+
+map("t", "<C-d>", "<PageDown>", { silent = true })
+map("t", "<C-u>", "<PageUp>", { silent = true })
+
+map("t", "<C-w><C-q>", "<C-\\><C-n>", { silent = true, noremap = true })
+map("t", "<C-w><C-h>", "<C-\\><C-n><C-w>h", { silent = true, noremap = true })
+map("t", "<C-w><C-j>", "<C-\\><C-n><C-w>j", { silent = true, noremap = true })
+map("t", "<C-w><C-k>", "<C-\\><C-n><C-w>k", { silent = true, noremap = true })
+map("t", "<C-w><C-l>", "<C-\\><C-n><C-w>l", { silent = true, noremap = true })
+
 
 -- print(M.inspect(M.whichkey_map))
 -- print(M.inspect(M.stats))

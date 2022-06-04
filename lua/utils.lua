@@ -1,5 +1,9 @@
 local _M = {}
 
+_M.trim_empty_lines = require("vim.lsp.util").trim_empty_lines
+_M.open_floating_preview = require("vim.lsp.util").open_floating_preview
+_M.convert_input_to_markdown =require("vim.lsp.util").convert_input_to_markdown_lines
+
 _M.powerline = {
     circle = {
         left = "",

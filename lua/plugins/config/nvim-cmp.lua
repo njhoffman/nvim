@@ -7,35 +7,33 @@ local mapping = require("plugins.config.nvim-cmp-mapping")
 local compare = require("cmp.config.compare")
 local types = require("cmp.types")
 
-local WIDE_HEIGHT = 25 -- 40
-
 --  local after_line = string.sub(line, cursor + 1, -1)
 local lsp_symbols = {
-  Text = "", --   Text = "",
-  Method = "",
-  Function = "",
-  Constructor = "", --   Constructor = "⌘",
-  Field = "ﴲ", --   Field = "ﰠ",
-  Variable = "", --   Variable = "",
-  Class = "", --   Class = "ﴯ",
-  Interface = "ﰮ ", --   Interface = "",
-  Module = " ", --   Module = "",
-  Property = "襁", --   Property = "ﰠ",
-  Unit = "", --   Unit = "塞",
-  Value = "", --   Value = "",
-  Enum = "練", --   Enum = "",
-  Keyword = "", --   Keyword = "廓",
-  Snippet = "", --   Snippet = "",
-  Color = "", --   Color = "",
-  File = "", --   File = "",
-  Reference = "", --   Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "ﲀ", --   Constant = "",
-  Struct = "ﳤ", --   Struct = "פּ",
-  Event = "",
-  Operator = "", --   Operator = "",
-  TypeParameter = ""
+  Text = " ", --   Text = " ",
+  Method = " ",
+  Function = " ",
+  Constructor = " ", --   Constructor = "⌘ ",
+  Field = "ﴲ ", --   Field = "ﰠ ",
+  Variable = " ", --   Variable = " ",
+  Class = " ", --   Class = "ﴯ ",
+  Interface = "ﰮ ", --   Interface = " ",
+  Module = " ", --   Module = " ",
+  Property = "襁 ", --   Property = "ﰠ ",
+  Unit = " ", --   Unit = "塞 ",
+  Value = " ", --   Value = " ",
+  Enum = "練 ", --   Enum = " ",
+  Keyword = " ", --   Keyword = "廓 ",
+  Snippet = " ", --   Snippet = " ",
+  Color = " ", --   Color = " ",
+  File = " ", --   File = " ",
+  Reference = " ", --   Reference = " ",
+  Folder = " ",
+  EnumMember = " ",
+  Constant = "ﲀ ", --   Constant = " ",
+  Struct = "ﳤ ", --   Struct = "פּ ",
+  Event = " ",
+  Operator = " ", --   Operator = " ",
+  TypeParameter = " "
 }
 local lsp_sources = {
   ["vim-dadbod-completion"] = "sql",
@@ -79,25 +77,23 @@ local setupConfig = {
     return not (context.in_treesitter_capture("comment") == true or
       context.in_syntax_group("Comment"))
   end,
-  confirmation = {
-    get_commit_characters = function()
-      return {}
-    end
-  },
   experimental = {
     native_menu = false,
     ghost_text = true
   },
   preselect = cmp.PreselectMode.None,
   completion = {
-    completeopt = "menuone,longest",
+    completeopt = "menu,menuone,noinsert",
     keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
     keyword_length = 1,
     autocomplete = {
       types.cmp.TriggerEvent.TextChanged
     }
   },
-  mapping = cmp.mapping.preset.insert(mapping.insert_override),
+
+
+  mapping = cmp.mapping.preset.insert(mapping.cmp_mappings()),
+  -- mapping = mapping.cmp_mappings(),
   view = {
     entries = {
       name = "custom", -- can be "custom", "wildmenu" or "native"
@@ -117,6 +113,7 @@ local setupConfig = {
     -- }
     documentation = cmp.config.window.bordered(
       {
+        max_width = 40,
         winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None"
       }
     ),
@@ -131,10 +128,21 @@ local setupConfig = {
     fields = { "kind", "abbr", "menu" },
     -- offset, exact, score, recently_used, locality, kind, sort_text, length, order
     format = function(entry, vim_item)
+      local max_len = 50
+      if string.len(vim_item.abbr) > max_len then
+        vim_item.abbr = string.sub(vim_item.abbr, 1, max_len - 2) .. "··"
+      end
       vim_item.menu = lsp_sources[entry.source.name]
       vim_item.kind = lsp_symbols[vim_item.kind]
       return vim_item
-    end
+      -- format = lspkind.cmp_format({
+      -- 		mode = "symbol_text",
+      -- 		maxwidth = 50,
+      -- 		before = function(entrey, vim_item)
+      -- 			return vim_item
+      -- 		end
+      -- 	})
+    end,
   },
   sorting = {
     priority_weight = 2,
@@ -164,7 +172,6 @@ local setupConfig = {
       { name = "nvim_lsp_document_symbol", priority = 7 },
       -- { name = "vim-dadbod-completion", priority = 5 },
       { name = "fuzzy_path", priority = 5 },
-      -- { name = "path", priority = 5 },
       { name = "luasnip", priority = 4 },
       -- {name = "cmp_tabnine", priority = 3},
       { name = "calc", priority = 3 },
@@ -173,9 +180,17 @@ local setupConfig = {
       { name = "zsh", priority = 2, keyword_length = 3, max_item_count = 10 },
       { name = "pandoc_references", priority = 3 },
       { name = "emoji", priority = 2 },
-      -- { name = "treesitter", priority = 0 },
       { name = "vimwiki-tags", priority = 1 },
       { name = "npm", keyword_length = 1 },
+      {
+        name            = "treesitter",
+        priority        = 1,
+        keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%([\-]\w*\)*\)]],
+        keyword_length  = 3,
+        get_bufnrs      = function()
+          return { vim.api.nvim_get_current_buf() }
+        end
+      },
       {
         name = "tmux",
         max_item_count = 10,
@@ -194,9 +209,7 @@ local setupConfig = {
       -- { name = "neorg" },
     },
     {
-      { name = "fuzzy_buffer", priority = 3 }
-      -- { name = 'buffer' },
-      -- { name = 'cmdline' }
+      { name = "fuzzy_buffer", keyword_length = 3 }
     }
   )
 }
@@ -222,10 +235,11 @@ cmp.setup.filetype(
 cmp.setup.cmdline(
   "/",
   {
-    mapping = cmp.mapping.preset.cmdline(mapping.cmdline_override),
-    sources = {
-      { name = "fuzzy_buffer" }
-    }
+    mapping = cmp.mapping.preset.cmdline(mapping.cmp_mappings()),
+    -- mapping = mapping.cmp_mappings(),
+    sources = cmp.config.sources({
+      { name = 'buffer', opts = { keyword_pattern = [=[[^[:blank:]].*]=] } }
+    })
   }
 )
 
@@ -233,7 +247,8 @@ cmp.setup.cmdline(
 cmp.setup.cmdline(
   ":",
   {
-    mapping = cmp.mapping.preset.cmdline(mapping.cmdline_override),
+    mapping = cmp.mapping.preset.cmdline(mapping.cmp_mappings()),
+    -- mapping = mapping.cmp_mappings(),
     sources = cmp.config.sources(
       {
         { name = "fuzzy_path" }
@@ -244,6 +259,32 @@ cmp.setup.cmdline(
     )
   }
 )
+
+vim.cmd [[
+  " gray
+  highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
+  " blue
+  highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
+  highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#569CD6
+  " light blue
+  highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE
+  highlight! CmpItemKindInterface guibg=NONE guifg=#9CDCFE
+  highlight! CmpItemKindText guibg=NONE guifg=#9CDCFE
+  " pink
+  highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0
+  highlight! CmpItemKindMethod guibg=NONE guifg=#C586C0
+  " front
+  highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
+  highlight! CmpItemKindProperty guibg=NONE guifg=#D4D4D4
+  highlight! CmpItemKindUnit guibg=NONE guifg=#D4D4D4
+]]
+
+-- vim.cmd([[
+--   augroup NvimCmp
+--   au!
+--   au FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
+--   augroup END
+-- ]])
 
 return cmp
 

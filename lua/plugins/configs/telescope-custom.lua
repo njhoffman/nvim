@@ -1,12 +1,17 @@
+local previewers = require("telescope.previewers")
+local builtin = require("telescope.builtin")
 local actions = require("telescope.actions")
 local actions_state = require("telescope.actions.state")
 local H = require("helpers")
 
-local custom_actions = {}
+
+local M = {}
+M.previewers = {}
+M.actions = {}
 
 local open_method = "insert"
 
-function custom_actions._open_buffer(open_cmd, prompt_bufnr)
+M.actions._open_buffer = function(open_cmd, prompt_bufnr)
   if open_cmd == "vsplit" then
     actions.file_vsplit(prompt_bufnr)
   elseif open_cmd == "split" then
@@ -19,12 +24,12 @@ function custom_actions._open_buffer(open_cmd, prompt_bufnr)
   end
 end
 
-function custom_actions._multi_open_qf(open_cmd, prompt_bufnr)
+M.actions._multi_open_qf = function(open_cmd, prompt_bufnr)
   actions.send_selected_to_qflist(prompt_bufnr)
   vim.cmd("cfdo " .. open_cmd)
 end
 
-function custom_actions._multiopen(prompt_bufnr, open_cmd)
+M.actions._multiopen = function(prompt_bufnr, open_cmd)
   local picker = actions_state.get_current_picker(prompt_bufnr)
   local selected_entry = actions_state.get_selected_entry()
   local multi_targets = picker:get_multi_selection()
@@ -33,7 +38,7 @@ function custom_actions._multiopen(prompt_bufnr, open_cmd)
     -- actions.add_selection(prompt_bufnr)
     actions.select_default(prompt_bufnr)
   elseif (open_method == "quickfix") then
-    custom_actions._open_buffer(open_cmd, prompt_bufnr)
+    M.actions._open_buffer(open_cmd, prompt_bufnr)
   else -- insert method
     local cwd = picker.cwd
     if cwd == nil then
@@ -49,20 +54,20 @@ function custom_actions._multiopen(prompt_bufnr, open_cmd)
   end
 end
 
-function custom_actions.multi_selection_open_vsplit(prompt_bufnr)
-  custom_actions._multiopen(prompt_bufnr, "vsplit")
+M.actions.multi_selection_open_vsplit = function(prompt_bufnr)
+  M.actions._multiopen(prompt_bufnr, "vsplit")
 end
 
-function custom_actions.multi_selection_open_split(prompt_bufnr)
-  custom_actions._multiopen(prompt_bufnr, "split")
+M.actions.multi_selection_open_split = function(prompt_bufnr)
+  M.actions._multiopen(prompt_bufnr, "split")
 end
 
-function custom_actions.multi_selection_open_tab(prompt_bufnr)
-  custom_actions._multiopen(prompt_bufnr, "tabe")
+M.actions.multi_selection_open_tab = function(prompt_bufnr)
+  M.actions._multiopen(prompt_bufnr, "tabe")
 end
 
-function custom_actions.multi_selection_open(prompt_bufnr)
-  custom_actions._multiopen(prompt_bufnr, "edit")
+M.actions.multi_selection_open = function(prompt_bufnr)
+  M.actions._multiopen(prompt_bufnr, "edit")
 end
 
 -- TODO: add special highglight for project
@@ -77,7 +82,8 @@ end
 --   )
 -- end
 -- end
-function custom_actions.switch_picker_type(prompt_bufnr)
+
+M.actions.switch_picker_type = function(prompt_bufnr)
   local picker = actions_state.get_current_picker(prompt_bufnr)
   local prompt_text = picker:_get_prompt()
   actions.close(prompt_bufnr)
@@ -86,11 +92,11 @@ function custom_actions.switch_picker_type(prompt_bufnr)
     default_text = prompt_text
   }
   if picker.prompt_title == "Frecency" then
-    local ok = pcall(require "telescope.builtin".oldfiles, opts)
+    local _ = pcall(require "telescope.builtin".oldfiles, opts)
   elseif picker.prompt_title == "Find Files" then
-    local ok = pcall(require "telescope".extensions.frecency.frecency, opts)
+    local _ = pcall(require "telescope".extensions.frecency.frecency, opts)
   else
-    local ok = pcall(require "telescope.builtin".find_files, opts)
+    local _ = pcall(require "telescope.builtin".find_files, opts)
   end
   vim.schedule(
     function()
@@ -100,7 +106,7 @@ function custom_actions.switch_picker_type(prompt_bufnr)
   )
 end
 
-function custom_actions.directory_up(prompt_bufnr)
+M.actions.directory_up = function(prompt_bufnr)
   local selection = actions_state.get_selected_entry()
   local picker = actions_state.get_current_picker(prompt_bufnr)
   local dir = picker.cwd or vim.fn.getcwd() or selection.cwd
@@ -123,7 +129,7 @@ function custom_actions.directory_up(prompt_bufnr)
       follow = true,
       prompt_prefix = "🔍 "
     }
-    local ok = pcall(require "telescope.builtin".find_files, opts)
+    local _ = pcall(require "telescope.builtin".find_files, opts)
     vim.schedule(
       function()
         vim.cmd [[startinsert]]
@@ -131,6 +137,50 @@ function custom_actions.directory_up(prompt_bufnr)
     )
   end
 end
+
+M.previewers.git_bcommits = function(opts)
+  opts = opts or {}
+  opts.previewer = previewers.new_termopen_previewer({
+    get_command = function(entry)
+      return {
+        "git", "-c", "core.pager=delta", "-c", "delta.pager=less -R", "show", entry.value,
+      }
+    end,
+  })
+
+  builtin.git_bcommits(opts)
+end
+
+M.actions.git_status = function(opts)
+  opts = opts or {}
+  opts.previewer = previewers.new_termopen_previewer({
+    get_command = function(entry)
+      if entry.status == "D " then
+        return { "git", "show", "HEAD:" .. entry.value }
+      elseif entry.status == "??" then
+        return { "bat", "--style=plain", entry.value }
+      end
+      return {
+        "git", "-c", "core.pager=delta", "-c", "delta.pager=less -R", "diff", entry.value,
+      }
+    end,
+  })
+
+  -- Use icons that resemble the `git status` command line.
+  opts.git_icons = {
+    added = "A",
+    changed = "M",
+    copied = "C",
+    deleted = "-",
+    renamed = "R",
+    unmerged = "U",
+    untracked = "?",
+  }
+
+  builtin.git_status(opts)
+end
+
+return M
 
 -- splits 'str' into pieces matching 'pat', returns them as an array
 -- function custom_actions._multiopen(prompt_bufnr, open_cmd)
@@ -149,5 +199,3 @@ end
 --   else
 --   end
 -- end
-
-return custom_actions

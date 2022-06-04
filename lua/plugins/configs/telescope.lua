@@ -5,13 +5,14 @@ end
 
 local previewers = require "telescope.previewers"
 local sorters = require "telescope.sorters"
+local tele_custom = require "plugins.configs.telescope-custom"
 local tele_plugins = require("plugins.configs.telescope-plugins")
 local tele_mappings = require("plugins.configs.telescope-mappings")
 
 -- TODO: why can't replicate fuzzy matching behavior of fzf-lua
 -- TODO: calculate page length for ctrl-f/ctrl-b
 local command_rg = { "rg", "--ignore", "--hidden", "--sort", "path", "--files" }
-local command_fd = { "fd", "--type", "f", "--strip-cwd-prefix" }
+-- local command_fd = { "fd", "--type", "f", "--strip-cwd-prefix" }
 local command_vimgrep = {
   "rg",
   "--color=never",
@@ -88,7 +89,10 @@ local telescopeConfig = {
     grep_previewer = previewers.vim_buffer_vimgrep.new,
     qflist_previewer = previewers.vim_buffer_qflist.new,
     include_extensions = true,
-    path_display = { "absolute" }, -- tail, hidden, absolute, shorten
+    -- tail, hidden, absolute, shorten
+    path_display = function(_, path)
+      return string.gsub(path, "^./", "")
+    end,
     file_ignore_patterns = {},
     preview = {
       check_mime_type = true,
@@ -98,6 +102,7 @@ local telescopeConfig = {
       msg_bg_fillchar = "╱",
       hide_on_startup = hide_preview
     }
+
   },
   pickers = {
     find_files = {
@@ -110,18 +115,14 @@ local telescopeConfig = {
     },
     git_bcommits = {
       mappings = tele_mappings.file_picker,
-      git_command = { "git", "log", "--pretty=oneline", "--abbrev-commit" }
+      previewer = tele_custom.previewers.git_bcommits,
       -- git_command = { "git", "log", "--date=format:%m-%d-%y", "--format=%h%d %ad %s <%an>" }
       -- git_command = { "git", "log", '--format=%h%d (%ar) %s <%an>' }
     }
   },
   extensions = tele_plugins.extensions
 }
-
 telescope.setup(telescopeConfig)
-
 tele_plugins.load_extensions(telescope)
-
 require("plugins.configs.telescope-pickers")
-
 return telescope

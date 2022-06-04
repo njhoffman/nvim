@@ -1,52 +1,58 @@
-local project_chdir = function(dir, method)
-  dir = dir:gsub(vim.fn.getenv("HOME"), "~")
+-- local options = require('utils.options')
+local prjutils = require('utils.project')
+
+local M = {}
+M.project_chdir = function(dir, method)
+  local project = prjutils.change_project(dir, method)
+  vim.dbglog({ 'Project ' .. dir, project })
+
   local lsp = string.match(method, '"([^%s]+)" lsp')
+  local icon_map = {
+    awk_ls = " ",
+    bashls = " ",
+    clangd = " ",
+    cssls = " ",
+    dockerls = " ",
+    efm = " ",
+    golangci_lint_ls = " ",
+    gopls = " ",
+    graphql = " ",
+    html = " ",
+    jsonls = " ",
+    pylsp = "  ",
+    sqls = " ",
+    sumneko_lua = " ",
+    terraformls = " ",
+    tsserver = " ",
+    vimls = " ",
+    -- "yamlls"
+  }
+
   local icon = "  "
+  dir = dir:gsub(vim.fn.getenv("HOME"), "~")
   local msg = icon .. " " .. dir
   if method == ".git" then
     icon = "  "
     msg = icon .. " " .. method
-  elseif lsp ~= "" and lsp ~= nil then
-    icon = "" -- 
-    msg = icon .. "[" .. lsp .. "] " .. dir
+    vim.dbglog('git project: ' .. msg)
+
+  elseif type(lsp) == "string" and lsp ~= "" then
+    if type(icon_map[lsp]) == "string" then
+      icon = icon_map[lsp]
+    end
+    msg = icon .. " " .. dir
+    -- msg = icon .. "[" .. lsp .. "] " .. dir
+    vim.dbglog('lsp project: ' .. msg)
   end
-  vim.notify(msg, "trace")
+  vim.notify(msg, "debug")
 end
 
-local project_cfg = {
-  -- Manual mode doesn't automatically change your root directory, so you have
-  -- the option to manually do so using `:ProjectRoot` command.
-  manual_mode = false,
-  -- Methods of detecting the root directory. **"lsp"** uses the native neovim
-  -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
-  -- order matters: if one is not detected, the other is used as fallback. You
-  -- can also delete or rearangne the detection methods.
-  detection_methods = { "lsp", "pattern" },
-  -- All the patterns used to detect root dir, when **"pattern"** is in
-  -- detection_methods
-  patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
-  -- Table of lsp clients to ignore by name
-  -- eg: { "efm", ... }
-  ignore_lsp = {},
-  -- Don't calculate root dir on specific directories
-  -- Ex: { "~/.cargo/*", ... }
-  exclude_dirs = {},
-  -- Show hidden files in telescope
-  show_hidden = true,
-  -- When set to false, you will get a message when project.nvim changes your
-  -- directory.
-  silent_chdir = false,
-  -- Path where project.nvim will store the project history for use in
-  -- telescope
-  datapath = vim.fn.stdpath("data"),
-  chdir_func = project_chdir
-}
 
 vim.api.nvim_create_user_command(
   "ProjectGetRoot",
   function()
     local root = require("project_nvim.project").get_project_root()
-    vim.notify(root, "info")
+    vim.notify(root, "debug")
   end,
   {
     nargs = 0,
@@ -65,4 +71,5 @@ vim.api.nvim_create_user_command(
   }
 )
 
-require("project_nvim").setup(project_cfg)
+prjutils.chdir_func = M.project_chdir
+require("project_nvim").setup(prjutils.project_config)

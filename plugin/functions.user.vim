@@ -1,12 +1,4 @@
 
-" if has("termguicolors")     " set true colors
-"   set t_8f=\[[38;2;%lu;%lu;%lum
-"   set t_8b=\[[48;2;%lu;%lu;%lum
-"   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-"   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-"   set termguicolors
-" endif
-
 " https://github.com/shivamashtikar/tmuxjump.vim
 let g:tmuxjump_telescope = v:true
 

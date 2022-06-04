@@ -181,7 +181,7 @@ function M.set_pwd(dir, method)
         if (type(config.options.chdir_func) == "function") then
           config.options.chdir_func(dir, method)
         else
-          vim.notify("Set CWD to " .. dir .. " using " .. method)
+          vim.notify('CWD:' .. dir .. " (" .. method .. ') ', 'debug')
         end
       end
     end
@@ -193,6 +193,13 @@ end
 
 function M.get_project_root()
   -- returns project root, as well as method
+  if type(config) ~= 'table'
+    or type(config.options) ~= 'table'
+    or type(config.options.detection_methods) ~= 'table'
+  then
+    vim.dbglog({ 'Bad configuration file ...', config })
+    return
+  end
   for _, detection_method in ipairs(config.options.detection_methods) do
     if detection_method == "lsp" then
       local root, lsp_name = M.find_lsp_root()

@@ -13,6 +13,7 @@ M.search_plugins = {
 M.mapping_plugins = {
   ["vim-repeat"] = { "tpope/vim-repeat" },
   ["vim-alias"] = { "Konfekt/vim-alias" }
+
 }
 
 M.treesitter_plugins = {
@@ -237,7 +238,15 @@ M.ui_plugins = {
   ["vimade"] = { "TaDaa/vimade" },
   ["which-key.nvim"] = { "folke/which-key.nvim" },
   ["zen-mode.nvim"] = { "folke/zen-mode.nvim" },
-  ["hop.nvim"] = { "phaazon/hop.nvim" }
+  ["hop.nvim"] = { "phaazon/hop.nvim" },
+  ["tabout.nvim"] = { "abecodes/tabout.nvim",
+    wants = { 'nvim-treesitter' }, -- or require if not used so far
+    after = { 'nvim-cmp' }, -- if a completion plugin is using tabs load it before
+    config = function()
+      require("plugins.configs.tabout")
+    end
+  }
+
   -- ["vim-visual-multi"] = { "mg979/vim-visual-multi" },
   -- ["wilder.nvim"] = {
   --   "gelguy/wilder.nvim",
@@ -268,7 +277,8 @@ M.interface_plugins = {
   ["quickmath.nvim"] = { "jbyuki/quickmath.nvim" },
   ["registers.nvim"] = { "tversteeg/registers.nvim" },
   ["vim-floaterm"] = { "voldikss/vim-floaterm" },
-  ["vim-mundo"] = { "simnalamburt/vim-mundo" },
+  -- ["vim-mundo"] = { "simnalamburt/vim-mundo" },
+  ["undotree"] = { "mbbill/undotree" },
   ["vim-qf"] = { "romainl/vim-qf" },
   ["vim-qf-history"] = { "bfrg/vim-qf-history" },
   ["vim-yoink"] = { "svermeulen/vim-yoink" }
@@ -304,7 +314,8 @@ M.sysutil_plugins = {
   ["suda.vim"] = { "lambdalisue/suda.vim" },
   ["vim-symlink"] = { "aymericbeaumet/vim-symlink" },
   ["vim-profiler"] = { "bchretien/vim-profiler" },
-  ["startuptime.vim"] = { "tweekmonster/startuptime.vim" }
+  ["startuptime.vim"] = { "tweekmonster/startuptime.vim" },
+  ["plenary.nvim"] = { "nvim-lua/plenary.nvim" }
 }
 
 M.lsp_plugins = {
@@ -422,6 +433,7 @@ M.load_plugins = function(use, load_config)
     M.theme_plugins,
     M.treesitter_plugins,
     M.ui_plugins
+
   }
 
   for _, plugin_set in pairs(all_plugins) do

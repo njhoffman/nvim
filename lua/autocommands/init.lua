@@ -1,12 +1,7 @@
 local config = require("config")
-local u = require("utils.core")
+require('autocommands.misc')
 local Formatting = config.Formatting
 local Opts = config.Opts
-
--- #{?pane_in_mode,#[fg=white#,bg=red],#[fg=red#,bg=white]}#W .
-vim.cmd [[
-  command! SqlVis silent !tmux display-popup -b rounded -S 'fg=\#2255AA' -T '' -E -h 70\% -w90\% "psql --csv postgres://spadash:spadash@localhost/spadash --file=%:p | /bin/zsh -c 'vd -f csv --color-default=\"8 on black\" '"
-]]
 
 function goto_last_pos()
   local last_pos = vim.fn.line('\'"')
@@ -14,58 +9,6 @@ function goto_last_pos()
     vim.api.nvim_win_set_cursor(0, { last_pos, 0 })
   end
 end
-
--- vim.cmd [[autocmd BufReadPost * lua goto_last_pos()]]
-
--- local M = {}
-
--- M.vimadeCheck = function()
---   if vim.bo.filetype == "dapui_scopes" then vim.cmd([[VimadeBufDisable]]) end
---   -- print(vim.bo.filetype)
--- end
-
--- Print a short info of the selected list in the command-line after switching lists:
-vim.cmd(
-  [=[
-augroup qf-history
-    autocmd!
-    autocmd QuickFixCmdPost chistory echo printf('Quickfix %d of %d (%d items): %s',  getqflist({'nr': 0}).nr,  getqflist({'nr': '$'}).nr,  getqflist({'size': 0}).size,  getqflist({'title': 0}).title )
-    autocmd QuickFixCmdPost lhistory echo printf('Location-list %d of %d (%d items): %s',  getloclist(0, {'nr': 0}).nr,  getloclist(0, {'nr': '$'}).nr, getloclist(0, {'size': 0}).size, getloclist(0, {'title': 0}).title )
-augroup END
-]=]
-)
--- Automatically open the quickfix or location-list window after selecting a list in the popup menu:
-vim.cmd(
-  [[
-augroup qf-history
-  autocmd!
-  autocmd QuickFixCmdPost chistory cwindow
-  autocmd QuickFixCmdPost lhistory lwindow
-augroup END
-]]
-)
-
-vim.cmd(
-  [[
-  augroup IME
-    autocmd InsertEnter * call chansend(v:stderr, "\e[?737769h")
-    autocmd InsertLeave * call chansend(v:stderr, "\e[?737769l")
-  augroup end
-]]
-)
-
--- { "FileType", "nofile", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
---  getcmdwintype()
--- :	normal Ex command
--- >	debug mode command |debug-mode|
--- /	forward search string
--- ?	backward search string
--- =	expression for "= |expr-register|
--- @	string for |input()|
--- -	text for |:insert| or |:append|
-
--- exit terminal when shell exits
--- au TermClose * call feedkeys("i")
 
 local autocmds = {
   SecondaryWindows = {
@@ -84,7 +27,12 @@ local autocmds = {
     { "FileType", "Mundo", "nnoremap <buffer>  :q<cr>" },
     { "FileType", "MundoDiff", "nnoremap <buffer>  :q<cr>" }
   },
-  fasd = { { "BufWinEnter,BufFilePost", "*", [[call Fasd_update()]] } },
+  fasd = { {
+    "BufWinEnter,BufFilePost",
+    "*",
+    [[call Fasd_update()]],
+  } },
+
   CommandWin = {
     { "CmdwinEnter", "*", "let b:cpt_save = &cpt | set cpt=." },
     { "CmdwinLeave", "*", "let &cpt = b:cpt_save | let g:lens#disabled = 1" },
@@ -93,6 +41,7 @@ local autocmds = {
   },
   FiletypeDetect = {
     { "BufNewFile,BufRead", "*", "setlocal signcolumn=yes:1" },
+    { "BufNewFile,BufRead", "*startuptime.tsv", "setlocal ft=crontab syn=crontab" },
     { "BufNewFile,BufRead", "*.log", "lua require('commands').create_cmd_truncate()" },
     { "BufNewFile,BufRead", "*.ejs", "set ft=html" },
     { "BufNewFile,BufRead", "*.bash*", "let b:is_bash = 1 | setfiletype bash" },
@@ -103,9 +52,9 @@ local autocmds = {
     { "BufNewFile,BufRead", "conf.*", "setlocal ft=config syn=config" },
     -- { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 synmaxcol=500" },
     { "BufRead,BufEnter", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 nospell" },
-    { "BufNewFile,BufRead", ".tasks", "setlocal ft=dosini" },
+    { "BufNewFile,BufRead", ".tasks", "setlocal ft=asynctasks" },
     { "BufNewFile,BufRead", "*.visidatarc", "setlocal ft=python" },
-    { "BufNewFile,BufRead", ".vimtasks", "setlocal ft=dosini" },
+    { "BufNewFile,BufRead", ".vimtasks", "setlocal ft=asynctasks" },
     { "BufNewFile,BufRead", "*.cheat", "setlocal ft=bash | let b:is_bash =1" },
     { "BufNewFile,BufRead", "Dockerfile*", "setlocal ft=Dockerfile" },
     { "BufNewFile,BufRead", "Dockerfile.*", "setlocal ft=Dockerfile" },
@@ -136,7 +85,8 @@ local autocmds = {
     { "FileType", "qf", "VimadeBufDisable" },
     { "FileType", "nerdtree", "VimadeBufDisable" },
     { "FileType", "Mundo", "VimadeBufDisable" },
-    { "FileType", "MundoDiff", "VimadeBufDisable" }
+    { "FileType", "MundoDiff", "VimadeBufDisable" },
+    { "CmdwinEnter", "*", "VimadeBufDisable" },
     -- { "CompleteChanged", "*", "redraw" },
     -- { "FocusLost", "*", "VimadeFadeActive" },
     -- { "FocusGained", "*", "VimadeUnfadeActive" },
@@ -175,7 +125,7 @@ local autocmds = {
     -- {"TermLeave", "*", "set number relativenumber"}
   },
   WriteEvents = {
-    { "BufWritePost", ".tmux.conf", [[execute ':!tmux source-file %']] }
+    { "BufWritePost", "*tmux.conf", [[execute ':!tmux source-file %']] }
     --   { "BufWritePost", "load.lua", "PackerCompile" },
   },
   packer = { { "User", "PackerComplete,PackerCompileDone", "BarbarColors" } }
@@ -191,6 +141,10 @@ if Opts.shada_events == true then
   }
 end
 
+if Opts.winbar == true or Opts.winbar ~= nil then
+  autocmds.Winbar = require('autocommands.winbar')
+end
+
 autocmds.NumberToggle = {
   {
     "BufEnter,FocusGained,InsertLeave",
@@ -200,7 +154,7 @@ autocmds.NumberToggle = {
   { "BufLeave,FocusLost,InsertEnter", "*", "set norelativenumber" }
 }
 
-if Opts.highlight_yank == true or Opts.highlight_yank == nil then
+if Opts.highlight_yank == true or Opts.highlight_yank ~= nil then
   autocmds.HighlightYank = {
     {
       "TextYankPost",
@@ -225,4 +179,4 @@ if Formatting.trim_trailing_space == true or Formatting.trim_trailing_space == n
   }
 end
 
-u.define_augroups(autocmds)
+require("utils.core").define_augroups(autocmds)

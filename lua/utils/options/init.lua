@@ -1,10 +1,14 @@
--- TODO
+-- cmd [[autocmd BufReadPost modeline_test.yaml :lua require"options".set_modeline(vim.api.nvim_get_current_buf())]]
+
+vim.cmd([[command! -nargs=* -complete=customlist,options#complete Set :lua require'utils.options'.run_set_cmd(<q-args>, nil)]])
+vim.cmd([[command! -nargs=* -complete=customlist,options#complete_buf_local Setlocal :lua require'utils.options'.run_set_cmd(<q-args>, vim.api.nvim_get_current_buf())]])
+
 -- [ ] Add support for options.indentsize=4 syntax for init.lua
 local vim = vim
 local cmd = vim.cmd
 local fn = vim.fn
-local log = require("options.log")
-local typing = require("options.typing")
+local log = require("utils.options.log")
+local typing = require("utils.options.typing")
 local M = {}
 
 local s_registered_options = {}
@@ -30,7 +34,7 @@ local function init_variable_sync()
   cmd([[augroup options_nvim_var_watch]])
   cmd([[autocmd!]])
   cmd(
-    [[autocmd CmdlineEnter * if v:event.cmdtype == ":" | call luaeval('require"options".check_var_change()') | endif]]
+    [[autocmd CmdlineEnter * if v:event.cmdtype == ":" | call luaeval('require"utils.options".check_var_change()') | endif]]
   )
   cmd([[augroup END]])
 end
@@ -57,7 +61,7 @@ local function setup_buffer_var_sync()
 
   cmd([[augroup options_nvim_buffer_var_watch]])
   cmd([[autocmd!]])
-  cmd([[autocmd BufNew * lua require"options".sync_buffer_vars(vim.api.nvim_get_current_buf())]])
+  cmd([[autocmd BufNew * lua require"utils.options".sync_buffer_vars(vim.api.nvim_get_current_buf())]])
   cmd([[augroup END]])
 end
 
@@ -251,13 +255,14 @@ local function convert_value(value, option_info)
 end
 
 local function pre_process_set_option(name, value, bufnr)
+  name = name or ""
   if name == "" then
     echo_options(bufnr)
     return true
   end
 
   if is_option_registered(name) == false then
-    log.error("options", "This option is not registered: " .. name)
+    notify.error("options", "This option is not registered: " .. name)
     return true
   end
 
@@ -411,8 +416,7 @@ function M.register_option(opts)
   opts.global = opts.global or not opts.buffer_local
   opts.source = opts.source or ""
 
-  if
-    opts.buffer_local
+  if opts.buffer_local
     and opts.target_variable ~= nil
     and not s_buffer_sync_autocmd_initialized
   then
@@ -434,14 +438,12 @@ function M.register_option(opts)
     init_variable_sync()
   end
 
-  if
-    opts.target_variable ~= nil
+  if opts.target_variable ~= nil
     and opts.global
     and is_target_variable_set(opts.target_variable)
   then
     set_option(opts.name, get_target_variable_value(opts.target_variable))
-  elseif
-    opts.target_variable ~= nil
+  elseif opts.target_variable ~= nil
     and opts.global
     and not is_target_variable_set(opts.target_variable)
   then
@@ -470,6 +472,7 @@ function M.list_options(arg_lead, buffer_local)
   local options = {}
 
   for key, info in pairs(s_registered_options) do
+    arg_lead = arg_lead or "."
     if buffer_local == true and info.buffer_local == true then
       if string.match(key, "^" .. arg_lead) then
         table.insert(options, key)
@@ -482,6 +485,26 @@ function M.list_options(arg_lead, buffer_local)
   end
 
   return options
+end
+
+function M.enable_nvim_colorizer(bufnr)
+  require("colorizer").setup()
+  cmd("augroup nvim_colorizer_buf_" .. bufnr)
+  cmd([[ColorizerAttachToBuffer]])
+  cmd([[au!]])
+  cmd("autocmd FileType <buffer=" .. bufnr .. "> lua require'colorizer'.setup()")
+  cmd([[augroup END]])
+  cmd(
+    [[command! -buffer DisableNvimColorizer :lua require"vimrc".disable_nvim_colorizer(vim.api.nvim_get_current_buf())]]
+  )
+end
+
+function M.disable_nvim_colorizer(bufnr)
+  cmd("augroup nvim_colorizer_buf_" .. bufnr)
+  cmd([[au!]])
+  cmd([[augroup END]])
+  cmd([[delcommand DisableNvimColorizer]])
+  cmd([[ColorizerDetachFromBuffer]])
 end
 
 function M.register_callback(name, func)
@@ -538,6 +561,5 @@ function M.sync_buffer_vars(bufnr)
     end
   end
 end
-
 
 return M

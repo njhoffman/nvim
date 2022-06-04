@@ -32,7 +32,6 @@ M.get_counts = function()
   counts.virtual_memory = table.remove(vim.fn.systemlist("ps h -p " .. pid .. " -o vsz"), 1)
 
   -- local lazy_plugins_size  = vim.fn.systemlist('du -shc * ' .. vim.fn.stdpath('data') .. '/site/pack/packer/opt | tail -n1')
-
   vim.cmd [[
     let temp_reg = @" | redir @" | silent! execute ":command" | redir END
     let output = copy(@") | let @" = temp_reg | let w:output_len=len(split(output, "\n"))
