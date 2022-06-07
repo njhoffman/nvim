@@ -1,10 +1,4 @@
 -- require("lsp.config")
-local lspnotify = require('lsp.notify')
-local handlers = require('lsp.handlers')
-local on_attach = require("lsp.on_attach")
-
-local h = vim.lsp.handlers
-local with = vim.lsp.with
 
 -- h["$/progress"]                      = with(vim.lsp.handlers['$/progress'], lspnotify.progress_handler)
 -- h["window/showMessage"]              = with(vim.lsp.handlers["window/showMessage"], lspnotify.message_handler)

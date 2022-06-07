@@ -70,7 +70,7 @@ return require("packer").startup(
             "benfowler/telescope-luasnip.nvim",
             "camgraff/telescope-tmux.nvim",
             "LinArcX/telescope-ports.nvim",
-            { "chip/telescope-code-fence.nvim", run = "luarocks --local install lunamark" },
+            -- { "chip/telescope-code-fence.nvim", run = "luarocks --local install lunamark" },
             "keyvchan/telescope-find-pickers.nvim",
             "dhruvmanila/telescope-bookmarks.nvim",
             "gbrlsnchs/telescope-lsp-handlers.nvim",
@@ -91,7 +91,7 @@ return require("packer").startup(
             {
               "nvim-telescope/telescope-rg.nvim",
               requires = {
-                { "nvim-telescope/telescope-live-grep-raw.nvim" }
+                { "nvim-telescope/telescope-live-grep-args.nvim" }
               }
             },
             "LinArcX/telescope-command-palette.nvim",

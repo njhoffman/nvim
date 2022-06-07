@@ -338,9 +338,9 @@ M.lsp_plugins = {
 }
 
 M.theme_plugins = {
-  ["feline.nvim"] = { "feline-nvim/feline.nvim" },
+  ["lush.nvim"] = { "rktjmp/lush.nvim", commit = "fa7694f" },
   ["barbar"] = { "romgrk/barbar.nvim" },
-  ["lush.nvim"] = { "rktjmp/lush.nvim", commit = "fa7694f" }
+  ["feline.nvim"] = { "feline-nvim/feline.nvim" }
 }
 
 M.check_require_exists = function(fname)

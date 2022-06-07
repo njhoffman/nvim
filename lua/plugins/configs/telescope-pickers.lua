@@ -1,4 +1,5 @@
 local H = require("helpers")
+local command_rg = { "rg", "--ignore", "--hidden", "--sort", "path", "--files" }
 
 -- Dropdown list theme using a builtin theme definitions :
 local dropdown =
@@ -8,7 +9,8 @@ require "telescope.themes".get_dropdown(
     layout_config = { width = 0.5 },
     prompt = " ",
     -- results_height = 15,
-    previewer = false
+    previewer = false,
+    find_command = command_rg
   }
 )
 
@@ -16,7 +18,8 @@ local ivy =
 require "telescope.themes".get_ivy(
   {
     winblend = 10,
-    layout_config = { height = 15 }
+    layout_config = { height = 15 },
+    find_command = command_rg
   }
 )
 
@@ -26,12 +29,14 @@ require "telescope.themes".get_dropdown(
     winblend = 10,
     prompt = " ",
     -- results_height = 15,
-    layout_config = { width = 0.5 }
+    layout_config = { width = 0.5 },
+    find_command = command_rg
   }
 )
 
 -- Settings for with preview option
 local with_preview = {
+  find_command = command_rg,
   winblend = 10,
   show_line = false,
   results_title = false,

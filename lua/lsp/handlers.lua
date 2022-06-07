@@ -54,18 +54,6 @@ M.open_floating_preview = function(contents, syntax, lsp_opts, ...)
   return orig_float_preview(contents, syntax, lsp_opts, ...)
 end
 
-vim.diagnostic.config(diagnostic_config)
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-  border = 'round',
-  max_width = 80
-})
-
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-  border = 'round'
-})
-
---------per server handlers (reattach each time)
-
 M.attach_code_lens = function(_, ...)
   if client.resolved_capabilities.code_lens then
     vim.cmd([[

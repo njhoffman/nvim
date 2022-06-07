@@ -12,13 +12,12 @@ local function load_module(mod_name)
   end
 end
 
--- load_module("impatient").enable_profile()
-load_module("impatient")
+load_module("impatient") -- .enable_profile
 
 for _, mod_name in ipairs(
   {
-    "disable-builtins",
     "globals",
+    "disable-builtins",
     "user-options",
     "vim-options",
     "plugins.load"
@@ -42,6 +41,9 @@ for _, mod_name in ipairs(
   load_module(mod_name)
 end
 
+vim.cmd [[
+  BarbarColors
+]]
 
 local end_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
 vim.notify("Finished loading in" .. end_time, "debug")

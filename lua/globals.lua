@@ -1,8 +1,8 @@
 vim.cmd [[
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  set termguicolors
-  set background=dark
-  colorscheme nord-nick
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set termguicolors
+set background=dark
+colorscheme nord-nick
 "  hi Normal guibg=none ctermbg=none
 "  hi LineNr guibg=none ctermbg=none
 "  hi Folded guibg=none ctermbg=none
@@ -13,7 +13,7 @@ vim.cmd [[
 "  hi EndOfBuffer guibg=none ctermbg=none
 "  hi StatusLine guibg=NONE
 "  hi StatusLineNC guibg=NONE guifg=NONE
-  syntax sync fromstart
+" syntax sync fromstart
 ]]
 
 vim.g.start_time = vim.fn.reltime()
@@ -39,7 +39,7 @@ vim.lsp.log_levels["TASK"] = 4
 vim.lsp.log_levels["STATUS"] = 4
 
 vim.logger = require("logger").init("root")
-vim.notify = require("logger.notify").notify
+vim.notify = require("logger").notify
 vim.dbglog = require("debuglog").log
 vim.dbgbuf = require("debuglog").buf
 vim.dbg = require("debuglog").dbg

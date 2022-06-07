@@ -35,7 +35,6 @@ local diagnostic_config = {
     source = false, -- "if_many", "always", false
     prefix = "",
     spacing = 2,
-    severity = "none",
     -- severity = 0. -- ERROR, WARN, INFO, HINT
     -- severity = { min = vim.diagnostic.severity.WARN }
     -- vim.diagnostic.get(0, { severity = {min=vim.diagnostic.severity.WARN} })
@@ -89,6 +88,16 @@ M.setup = function()
 
   -- global one time lsp capabilities
   -- require("lsp-codelens").setup()
+
+  vim.diagnostic.config(diagnostic_config)
+  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+    border = 'round',
+    max_width = 80
+  })
+
+  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+    border = 'round'
+  })
 end
 
 return M

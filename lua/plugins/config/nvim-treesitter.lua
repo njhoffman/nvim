@@ -1,13 +1,10 @@
 local config = require("config").Treesitter
-
-local tsconfig = require "nvim-treesitter.configs"
-
-local custom_modules = require "plugins.config.nvim-treesitter-modules"
+local tsmodules = require "plugins.config.nvim-treesitter-modules"
 
 local ts = require "nvim-treesitter"
-ts.define_modules(custom_modules)
+ts.define_modules(tsmodules)
 
-tsconfig.setup {
+require "nvim-treesitter.configs".setup {
   -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = "all",
   ignore_install = { "phpdoc", "latex" },

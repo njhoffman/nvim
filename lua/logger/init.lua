@@ -1,6 +1,7 @@
 local M = {}
 local log = require("structlog")
-local logfile = vim.fn.stdpath("log") .. "/nvim.log"
+local logfile = vim.fn.stdpath("data") .. "/nvim.log"
+local notify = require('logger.notify').notify
 
 local console_sink = function()
   return log.sinks.Console(
@@ -69,5 +70,7 @@ M.init = function(name)
   )
   return log.get_logger(name)
 end
+
+M.notify = notify
 
 return M

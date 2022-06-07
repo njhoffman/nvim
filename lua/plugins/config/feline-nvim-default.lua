@@ -2,7 +2,7 @@ if not pcall(require, "feline") then
   return
 end
 
-local colors = require("plugins.config.feline-nvim-colors").main
+-- local colors = require("plugins.config.feline-nvim-colors").main
 
 local function file_osinfo()
   local os = vim.bo.fileformat:upper()

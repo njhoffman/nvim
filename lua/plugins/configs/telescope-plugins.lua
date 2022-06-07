@@ -26,21 +26,21 @@ local tele_plugs = {
   ["heading"] = "telescope-heading.nvim",
   ["hop"] = "telescope-hop.nvim",
   ["lazygit"] = "lazygit.nvim",
-  ["live_grep_raw"] = "telescope-rg.nvim",
+  ["live_grep_args"] = "telescope-rg.nvim",
   ["luasnip"] = "telescope-luasnip.nvim",
   ["mapper"] = "telescope-mapper.nvim",
   ["media_files"] = "telescope-media-files.nvim",
   ["neoclip"] = "nvim-neoclip.lua",
   ["node_modules"] = "telescope-node-modules.nvim",
-  ["notify"] = "nvim-notify",
+  -- ["notify"] = "nvim-notify",
   ["npm"] = "telescope-npm.nvim",
   ["openbrowser"] = "telescope-openbrowser.nvim",
-  ["packer"] = "telescope-packer.nvim",
+  -- ["packer"] = "telescope-packer.nvim",
   ["ports"] = "telescope-ports.nvim",
-  ["project"] = "telescope-project.nvim",
+  -- ["project"] = "telescope-project.nvim",
   ["repo"] = "telescope-repo.nvim",
   ["session-lens"] = "session-lens",
-  ["telescope-code-fence"] = "telescope-code-fence.nvim",
+  -- ["telescope-code-fence"] = "telescope-code-fence.nvim",
   ["tmux"] = "telescope-tmux.nvim",
   ["ui-select"] = "telescope-ui-select.nvim",
   -- ["ultisnips"] = "telescope-ultisnips.nvim",
@@ -182,7 +182,7 @@ M.extensions.bookmarks = {
   firefox_profile_name = nil
 }
 
-M.extensions.live_grep_raw = {
+M.extensions.live_grep_args = {
   auto_quoting = true, -- enable/disable auto-quoting,
   mappings = {
     -- ... Your other configuration ...
