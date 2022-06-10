@@ -1,19 +1,23 @@
 vim.cmd [[
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors
-set background=dark
-colorscheme nord-nick
-"  hi Normal guibg=none ctermbg=none
-"  hi LineNr guibg=none ctermbg=none
-"  hi Folded guibg=none ctermbg=none
-"  hi NonText guibg=none ctermbg=none
-"  hi SpecialKey guibg=none ctermbg=none
-"  hi VertSplit guibg=none ctermbg=none
-"  hi SignColumn guibg=none ctermbg=none
-"  hi EndOfBuffer guibg=none ctermbg=none
-"  hi StatusLine guibg=NONE
-"  hi StatusLineNC guibg=NONE guifg=NONE
+try
+  colorscheme nord-nick
+  set background=dark
+  hi Normal guibg=none ctermbg=none
+  hi LineNr guibg=none ctermbg=none
+  hi Folded guibg=none ctermbg=none
+  hi NonText guibg=none ctermbg=none
+  hi SpecialKey guibg=none ctermbg=none
+  hi VertSplit guibg=none ctermbg=none
+  hi SignColumn guibg=none ctermbg=none
+  hi EndOfBuffer guibg=none ctermbg=none
+  hi StatusLine guibg=NONE
+  hi StatusLineNC guibg=NONE guifg=NONE
 " syntax sync fromstart
+catch /^Vim\%((\a\+)\)\=:E185/
+  colorscheme default
+  set background=dark
 ]]
 
 vim.g.start_time = vim.fn.reltime()
@@ -64,6 +68,7 @@ function _G.__FNC__() return debug.getinfo(2, 'n').name end
 function _G.__FNCREF__() return debug.getinfo(2, 'f').func end
 
 vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")), "trace")
+
 -- vim.logger:trace("test")
 -- vim.logger:info("info test")
 -- vim.logger:error("error test")

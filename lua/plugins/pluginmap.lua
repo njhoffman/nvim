@@ -309,6 +309,7 @@ M.integration_plugins = {
 }
 
 M.sysutil_plugins = {
+  ["structlog"] = { "Tastyep/structlog.nvim" },
   ["vim-renamer"] = { "qpkorr/vim-renamer" },
   ["nvim-remote-containers"] = { "jamestthompson3/nvim-remote-containers" },
   ["suda.vim"] = { "lambdalisue/suda.vim" },

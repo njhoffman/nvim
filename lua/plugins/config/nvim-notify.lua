@@ -2,11 +2,11 @@
 local stages = require("plugins.config.nvim-notify-stages")
 local cols = math.floor(vim.opt.columns:get() / 3 * 2)
 
-local config = {
+local baseConfig = {
   level = "info",
   fps = 30,
+  render = 'default',
   stages = stages.fade_in_slide_out_stages,
-  render = "default",
   background_colour = "FloatShadow",
   -- background_colour = "#000000",
   -- Default timeout for notifications
@@ -28,7 +28,7 @@ local config = {
   }
 }
 
-require("notify").setup(config)
+require("notify").setup(baseConfig)
 
 -- You can also use plenary's async library to avoid using callbacks:
 -- local async = require("plenary.async")

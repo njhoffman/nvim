@@ -29,7 +29,6 @@ require("vim.lsp.protocol").CompletionItemKind = {
   "  TypeParameter", -- = 25;
 }
 
-
 local diagnostic_config = {
   virtual_text = {
     source = false, -- "if_many", "always", false
@@ -56,24 +55,30 @@ local diagnostic_config = {
 local M = {}
 
 M.getsigns = function()
-  local icons = require("nvim-nonicons")
-
+  -- local icons = require("nvim-nonicons")
   vim.fn.sign_define("DiagnosticSignError",
-    { text = icons.get("x-circle"), texthl = "LspDiagnosticsSignError" })
+    {
+      text   = '', -- icons.get("x-circle"),
+      texthl = "LspDiagnosticsSignError",
+    })
 
   vim.fn.sign_define("DiagnosticSignWarn",
-    { text = icons.get("alert"), texthl = "LspDiagnosticsSignWarn" })
+    {
+      text   = '', -- icons.get("alert"),
+      texthl = "LspDiagnosticsSignWarn",
+    })
 
   vim.fn.sign_define("DiagnosticSignInfo",
-    { text = icons.get("info"), texthl = "LspDiagnosticsSignInfo" })
+    {
+      text   = '', -- icons.get("info"),
+      texthl = "LspDiagnosticsSignInfo",
+    })
 
   vim.fn.sign_define("DiagnosticSignHint",
-    { text = icons.get("comment"), texthl = "LspDiagnosticsSignHint" })
-
-  -- sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=
-  -- sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=
-  -- sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=
-  -- sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=
+    {
+      text   = '', -- icons.get("comment"),
+      texthl = "LspDiagnosticsSignHint",
+    })
   -- Gutter sign icons
   -- for _, sign in ipairs(signs) do
   --   vim.lsp.diagnostic.config.signs_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
@@ -85,18 +90,19 @@ M.setup = function()
   local lsplog = require("vim.lsp.log")
   lsplog.set_level(config.Logging.lsp_level)
   -- local lspnotify = require("lsp.notify")
+  M.getsigns()
 
   -- global one time lsp capabilities
   -- require("lsp-codelens").setup()
 
   vim.diagnostic.config(diagnostic_config)
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = 'round',
+    border = 'rounded',
     max_width = 80
   })
 
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = 'round'
+    border = 'rounded'
   })
 end
 

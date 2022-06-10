@@ -25,10 +25,10 @@ return require("packer").startup(
       use("wbthomason/packer.nvim")
       use("lewis6991/impatient.nvim")
       use("nathom/filetype.nvim")
-      use {
-        'yamatsum/nvim-nonicons',
-        requires = { 'kyazdani42/nvim-web-devicons' }
-      }
+      -- use {
+      --   'yamatsum/nvim-nonicons',
+      --   requires = { 'kyazdani42/nvim-web-devicons' }
+      -- }
       pluginmap.load_plugins(use, load_config)
 
       -- Basic key mappings

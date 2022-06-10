@@ -3,11 +3,6 @@ local logutils = require("logger.utils")
 local logparsers = require("logger.parsers")
 
 local M = {}
-M.renderFunc = function(renderType)
-  return function(bufnr, notif, highlights)
-    return require("notify.render." .. renderType)(bufnr, notif, highlights)
-  end
-end
 
 M.notify = function(message, level, ...)
   if (level == 5 or (type(level) == "string" and string.lower(level) == "off")) then
@@ -67,14 +62,9 @@ M.notify = function(message, level, ...)
         skip_render = true
         logger:warn("skipping winnr: " .. winnr .. " -- (" .. notify_msg .. ")")
       end
-
-      local p_ok, _ = pcall(require, "plugins.config.nvim-notify")
-      if not p_ok then
-        return
-      end
       local ok, notify = pcall(require, "notify")
       if not ok then
-        logger:warn({ "notifications not ready yet", notify })
+        logger:warn("notifications not ready yet")
         return
       end
       if skip_render == false and ok then
@@ -89,7 +79,7 @@ M.notify = function(message, level, ...)
         end
         -- select renderType that displays title
         if type(args.title) ~= "nil" then
-          renderType = "default"
+          renderType = 'default'
         end
         if level_n <= 3 then
           timeout = 3000
@@ -99,10 +89,11 @@ M.notify = function(message, level, ...)
           timeout = 8000
           -- args.keep = function() return true end
         end
-
         args.timeout = args.timeout or timeout
-        args.render = args.render or M.renderFunc(renderType)
-        notify(notify_msg, level, args)
+        args.render = args.render or renderType
+        args.hide_from_history = args.hide_from_history or false
+
+        notify.notify(notify_msg, level, args)
       end
     end,
     0

@@ -1,4 +1,4 @@
-local lsp_installer = require("nvim-lsp-installer")
+local lspinstall = require("nvim-lsp-installer")
 local on_attach = require("lsp.on_attach").on_attach
 local make_config = require("lsp.on_attach").make_config
 
@@ -31,7 +31,7 @@ local M = {}
 M.init = function()
   local config = make_config()
   for _, name in ipairs(servers) do
-    local server_is_found, server = lsp_installer.get_server(name)
+    local server_is_found, server = lspinstall.get_server(name)
     if server_is_found and not server:is_installed() then
       vim.notify("Installing " .. name, "info")
       server:install()
