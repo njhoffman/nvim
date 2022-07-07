@@ -2,37 +2,28 @@ local H = require("helpers")
 local command_rg = { "rg", "--ignore", "--hidden", "--sort", "path", "--files" }
 
 -- Dropdown list theme using a builtin theme definitions :
-local dropdown =
-require "telescope.themes".get_dropdown(
-  {
-    winblend = 10,
-    layout_config = { width = 0.5 },
-    prompt = " ",
-    -- results_height = 15,
-    previewer = false,
-    find_command = command_rg
-  }
+local dropdown = require "telescope.themes".get_dropdown({
+  winblend = 20,
+  layout_config = { width = 0.5 },
+  -- results_height = 15,
+  previewer = false,
+  find_command = command_rg
+}
 )
 
-local ivy =
-require "telescope.themes".get_ivy(
-  {
-    winblend = 10,
-    layout_config = { height = 15 },
-    find_command = command_rg
-  }
-)
+local ivy = require "telescope.themes".get_ivy({
+  winblend = 20,
+  layout_config = { height = 15 },
+  find_command = command_rg
+})
 
-local dropdown_preview =
-require "telescope.themes".get_dropdown(
-  {
-    winblend = 10,
-    prompt = " ",
-    -- results_height = 15,
-    layout_config = { width = 0.5 },
-    find_command = command_rg
-  }
-)
+local dropdown_preview = require "telescope.themes".get_dropdown({
+  winblend = 20,
+  prompt = " ",
+  -- results_height = 15,
+  layout_config = { width = 0.5 },
+  find_command = command_rg
+})
 
 -- Settings for with preview option
 local with_preview = {
@@ -44,6 +35,12 @@ local with_preview = {
   -- layout_config = { preview_width = 0.5 },
 }
 
+_G._LoadTelescope = function(req_file, func_name)
+  --"telescope.builtin".oldfiles, opts)
+  --"telescope".extensions.frecency.frecency, opts)
+  print(req_file, func_name)
+end
+
 -- FindBuffer
 _G._FindBuffer = function()
   local opts = vim.deepcopy(with_preview)
@@ -53,17 +50,19 @@ end
 
 _G._FindBufferLeaderF = function()
   local leaderf = require("plugins.configs.telescope-leaderf")
-  local opts = vim.deepcopy(dropdown_preview)
+  -- local opts = vim.deepcopy(dropdown_preview)
+  local opts = {}
   opts.prompt_title = "Buffers"
-  opts.entry_maker = leaderf.gen_from_buffer()
+  opts.entry_maker = leaderf.gen_from_buffer_like_leaderf()
   require("telescope.builtin").buffers(opts)
 end
 
 _G._FindBufferLeaderFNoPreview = function()
   local leaderf = require("plugins.configs.telescope-leaderf")
-  local opts = vim.deepcopy(dropdown)
+  local opts = {}
+  -- local opts = vim.deepcopy(dropdown)
   opts.prompt_title = "Buffers"
-  opts.entry_maker = leaderf.gen_from_buffer()
+  opts.entry_maker = leaderf.gen_from_buffer_like_leaderf()
   require("telescope.builtin").buffers(opts)
 end
 

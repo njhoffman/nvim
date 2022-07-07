@@ -43,19 +43,9 @@ M.attach_document_highlight = function(_, result, ctx, config)
     ]], false)
 end
 
-local orig_float_preview = vim.lsp.util.open_flhating_preview
-M.open_floating_preview = function(contents, syntax, lsp_opts, ...)
-  lsp_opts = lsp_opts or {}
-  -- lsp_opts.border = lsp_opts.border or {{" ", "FloatBorder"}}
-  lsp_opts.border = lsp_opts.border or "rounded"
-  lsp_opts.source = lsp_opts.source or "never"
-  lsp_opts.pad_top = lsp_opts.pad_top or 0
-  lsp_opts.pad_top = lsp_opts.pad_bottom or 0
-  return orig_float_preview(contents, syntax, lsp_opts, ...)
-end
 
 M.attach_code_lens = function(_, ...)
-  if client.resolved_capabilities.code_lens then
+  if client.server_capabilities.code_lens then
     vim.cmd([[
       augroup lsp_codelens
       autocmd! * <buffer>
@@ -65,11 +55,6 @@ M.attach_code_lens = function(_, ...)
   end
 end
 
--- M.attach_document_colors = function(client, bufnr)
---   require "lsp-documentcolors".buf_attach(bufnr, {
---     single_column = true,
---   })
--- end
 local lsp_formatting = function(bufnr)
   local pos = vim.api.nvim_win_get_cursor(0)
   vim.lsp.buf.format(
@@ -121,6 +106,17 @@ M.attach_formatting = function(client, bufnr)
     --     command = "LspFormatting"
     --   }
     -- )
+  end
+end
+
+M.attach_code_lens = function(client, bufnr)
+  if client.server_capabilities.code_lens then
+    vim.cmd [[
+      augroup lsp_codelens
+      autocmd! * <buffer>
+      autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require"lsp-codelens".buf_codelens_refresh()
+      augroup END
+      ]]
   end
 end
 

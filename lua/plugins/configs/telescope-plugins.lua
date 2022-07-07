@@ -2,22 +2,24 @@ local sorters = require "telescope.sorters"
 local tele_mappings = require("plugins.configs.telescope-mappings")
 local H = require("helpers")
 local actions = require("telescope.actions")
-local actions_set = require "telescope.actions.set"
 
-local M = {}
-M.extensions = {}
 local tele_plugs = {
+  ["fences"] = "telescope-fences.nvim",
+  ["gotofile"] = "telescope-gotofiles.nvim",
+  ["env"] = "telescope-env.nvim",
+  ["find_pickers"] = "telescope-find-pickers.nvim",
+  ["options"] = "telescope-options.nvim",
+  ["variables"] = "telescope-variables.nvim",
   ["aerial"] = "aerial.nvim",
   ["arecibo"] = "telescope-arecibo.nvim",
   ["asynctasks"] = "telescope-asynctasks.nvim",
   ["bookmarks"] = "telescope-bookmarks.nvim",
   ["changes"] = "telescope-changes.nvim",
   ["cheatsheet"] = "cheatsheet.nvim",
+  ["cder"] = "cder.nvim",
   ["command_palette"] = "telescope-command-palette.nvim",
   ["dap"] = "telescope-dap.nvim",
-  ["env"] = "telescope-env.nvim",
   ["file_browser"] = "telescope-file-browser.nvim",
-  ["find_pickers"] = "keyvchan/telescope-find-pickers.nvim",
   ["frecency"] = "telescope-frecency.nvim",
   ["fzf"] = "telescope-fzf-native.nvim",
   ["gh"] = "telescope-github.nvim",
@@ -25,6 +27,7 @@ local tele_plugs = {
   ["ghq"] = "telescope-ghq.nvim",
   ["heading"] = "telescope-heading.nvim",
   ["hop"] = "telescope-hop.nvim",
+  ["howdoi"] = "howdoi.nvim",
   ["lazygit"] = "lazygit.nvim",
   ["live_grep_args"] = "telescope-rg.nvim",
   ["luasnip"] = "telescope-luasnip.nvim",
@@ -37,20 +40,21 @@ local tele_plugs = {
   ["openbrowser"] = "telescope-openbrowser.nvim",
   -- ["packer"] = "telescope-packer.nvim",
   ["ports"] = "telescope-ports.nvim",
-  -- ["project"] = "telescope-project.nvim",
+  ["project"] = "telescope-project.nvim",
   ["repo"] = "telescope-repo.nvim",
   ["session-lens"] = "session-lens",
-  -- ["telescope-code-fence"] = "telescope-code-fence.nvim",
   ["tmux"] = "telescope-tmux.nvim",
   ["ui-select"] = "telescope-ui-select.nvim",
-  -- ["ultisnips"] = "telescope-ultisnips.nvim",
   ["vimwiki"] = "telescope-vimwiki.nvim",
   ["z"] = "telescope-z.nvim"
 }
 
+local M = {}
+M.extensions = {}
 M.load_extensions = function(telescope)
   local installed = {}
   for ext_name, plug_name in pairs(tele_plugs) do
+    -- TODO: if pcall(require, plug_name)
     local ok, err = pcall(telescope.load_extension, ext_name)
     if ok then
       table.insert(installed, 0, ext_name)
@@ -61,10 +65,8 @@ M.load_extensions = function(telescope)
     end
   end
 
-  local end_msg =
-  "Loaded " ..
+  local end_msg = "Loaded " ..
     H.table_len(installed) .. " out of " .. H.table_len(tele_plugs) .. " telescope plugins"
-  -- vim.logger:debug(end_msg)
   vim.notify(end_msg, "trace")
   return telescope
 end
@@ -89,6 +91,97 @@ M.extensions.packer = {
   }
 }
 
+M.extensions.howdoi = vim.tbl_deep_extend('force', {
+  -- How many answers to return in the response.
+  num_answers = 3,
+  -- The binary to execute the howdoi command with.
+  command_executor = { 'bash', '-c' },
+  -- The command to pipe the results into for paging.
+  pager_command = 'less -RS',
+  -- Mapping	Action
+  -- Ctrl + d	Scroll the results down
+  -- Ctrl + u	Scroll the results up
+  -- Ctrl + y	Yank the results to the clipboard
+  -- Ctrl + p	Pastes the results into the current buffer
+  -- Ctrl + v	Pastes the results into a new vertical split
+  -- Ctrl + x	Pastes the results into a new horizontal split
+  -- Ctrl + r	Removes the selected query from the list
+}, require('telescope.themes').get_dropdown())
+
+M.extensions.cder = {
+  -- Ctrl + d	Scroll the preview down
+  -- Ctrl + u	Scroll the preview up
+  -- The title of the prompt.
+  prompt_title = 'cder',
+
+  -- The command used to generate a list of directories.
+  -- Defaults to fd on the home directory.
+  -- Example for showing hidden directories:
+  --   dir_command = { 'fd', '--hidden', '--type=d', '.', os.getenv('HOME') },
+  dir_command = { 'fd', '--type=d', '.', os.getenv('HOME') },
+
+  -- The binary used to execute previewer_command | pager_command.
+  -- This is needed because termopen in Neovim does not support piping
+  -- multiple commands, so we get around this by just using bash -c.
+  command_executer = { 'bash', '-c' },
+
+  -- The command used to preview directories. Defaults to ls.
+  previewer_command = 'exa ' ..
+    '-a ' ..
+    '--color=always ' ..
+    '-T ' ..
+    '--level=3 ' ..
+    '--icons ' ..
+    '--git-ignore ' ..
+    '--long ' ..
+    '--no-permissions ' ..
+    '--no-user ' ..
+    '--no-filesize ' ..
+    '--git ' ..
+    '--ignore-glob=.git',
+
+  -- The command used to page directory previews. Defaults to bat.
+  -- Receives the output of the previewer_command as input.
+  -- Example without bat:
+  --   pager_command = 'less -RS'
+  pager_command = 'bat --plain --paging=always --pager="less -RS"',
+
+  -- Function to create an entry in the picker given
+  -- a line outputted from the dir_command.
+  --   value is used as the directory in the :cd command
+  --   display is what is actually displayed, so this can
+  --     be a function that trims a path prefix for example.
+  entry_maker = function(line)
+    return {
+      value = line,
+      display = function(entry)
+        return ' ' ..
+          line:gsub(os.getenv('HOME') .. '/', ''), {
+            { { 1, 3 }, 'Directory' },
+          }
+      end,
+      ordinal = line,
+    }
+  end,
+}
+
+M.extensions["ui-select"] = {
+  require("telescope.themes").get_dropdown {
+    -- even more opts
+  }
+  -- pseudo code / specification for writing custom displays, like the one
+  -- for "codeactions"
+  -- specific_opts = {
+  --   [kind] = {
+  --     make_indexed = function(items) -> indexed_items, width,
+  --     make_displayer = function(widths) -> displayer
+  --     make_display = function(displayer) -> function(e)
+  --     make_ordinal = function(e) -> string
+  --   },
+  --   codeactions = false,
+  -- }
+}
+
 M.extensions.command_palette = {
   {
     "File",
@@ -100,8 +193,7 @@ M.extensions.command_palette = {
     { "search word (A-w)", ":lua require('telescope.builtin').live_grep()", 1 },
     { "git files (A-f)", ":lua require('telescope.builtin').git_files()", 1 },
     { "files (C-f)", ":lua require('telescope.builtin').find_files()", 1 }
-  },
-  {
+  }, {
     "Help",
     { "tips", ":help tips" },
     { "cheatsheet", ":help index" },
@@ -109,8 +201,7 @@ M.extensions.command_palette = {
     { "summary", ":help summary" },
     { "quick reference", ":help quickref" },
     { "search help(F1)", ":lua require('telescope.builtin').help_tags()", 1 }
-  },
-  {
+  }, {
     "Vim",
     { "reload vimrc", ":source $MYVIMRC" },
     { "check health", ":checkhealth" },
@@ -217,17 +308,6 @@ M.extensions.arecibo = {
   ["show_domain_icons"] = true
 }
 
-M.extensions.lsp_handlers = {
-  disable = {},
-  location = { telescope = {}, no_results_message = "No references found" },
-  symbol = { telescope = {}, no_results_message = "No symbols found" },
-  call_hierarchy = { telescope = {}, no_results_message = "No calls found" },
-  code_action = {
-    telescope = require("telescope.themes").get_dropdown({}),
-    no_results_message = "No code actions available",
-    prefix = ""
-  }
-}
 
 M.extensions.project = {
   --[[ base_dirs = {

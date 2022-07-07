@@ -1,4 +1,3 @@
-local M = {}
 -- local runtime_path = vim.split(package.path, ";")
 -- table.insert(runtime_path, "lua/?.lua")
 -- table.insert(runtime_path, "lua/?/init.lua")
@@ -52,33 +51,31 @@ local settings = {
   }
 }
 
+local M = {}
 M.setup = function(on_attach, capabilities)
   local lspconfig = require "lspconfig"
   local path = vim.fn.stdpath("data")
 
   local lua_settings = {
-    root_dir = lspconfig.util.root_pattern(".git", ".project"),
+    -- root_dir = lspconfig.util.root_pattern(".git", ".project"),
+    -- settings = settings,
     single_file_support = true,
     on_attach = on_attach,
     cmd = { path .. "/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server" },
-    settings = settings,
     flags = { debounce_text_changes = 150 },
     capabilities = capabilities
   }
 
-  local luadev =
-  require("lua-dev").setup(
-    {
-      library = {
-        vimruntime = false, -- runtime path
-        types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-        plugins = true -- installed opt or start plugins in packpath
-        -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
-      },
-      runtime_path = false,
-      lspconfig = lua_settings
-    }
-  )
+  local luadev = require("lua-dev").setup({
+    library = {
+      vimruntime = true, -- runtime path
+      types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
+      plugins = true -- installed opt or start plugins in packpath
+      -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
+    },
+    -- runtime_path = false,
+    lspconfig = lua_settings
+  })
   lspconfig.sumneko_lua.setup(luadev)
   -- lspconfig.sumneko_lua.setup(lua_settings)
 end

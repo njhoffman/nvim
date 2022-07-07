@@ -1,9 +1,5 @@
-local cmd = vim.cmd
-
-cmd([[command! -nargs=* -complete=customlist,options#complete Set :lua require'utils.options'.run_set_cmd(<q-args>, nil)]])
-cmd([[command! -nargs=* -complete=customlist,options#complete_buf_local Setlocal :lua require'utils.options'.run_set_cmd(<q-args>, vim.api.nvim_get_current_buf())]])
-
 local opt = require("utils.options")
+local cmd = vim.cmd
 
 opt.register_option({
   name = "indentsize",
@@ -18,8 +14,6 @@ opt.register_callback("indentsize", function()
   cmd(string.format("setlocal tabstop=%s softtabstop=%s shiftwidth=%s", isize, isize, isize))
   print("doing callback: " .. isize)
 end)
-
-
 
 opt.register_option({
   name = "projectpath",

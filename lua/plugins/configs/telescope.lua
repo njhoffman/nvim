@@ -1,7 +1,6 @@
+-- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
 local ok, telescope = pcall(require, "telescope")
-if not ok then
-  return
-end
+if not ok then return end
 
 local previewers = require "telescope.previewers"
 local sorters = require "telescope.sorters"
@@ -11,7 +10,16 @@ local tele_mappings = require("plugins.configs.telescope-mappings")
 
 -- TODO: why can't replicate fuzzy matching behavior of fzf-lua
 -- TODO: calculate page length for ctrl-f/ctrl-b
-local command_rg = { "rg", "--ignore", "--hidden", "--sort", "path", "--files" }
+local command_rg = {
+  "rg",
+  "--color=never",
+  "--ignore",
+  "--smart-case",
+  "--hidden",
+  "--files",
+  "--sort",
+  "path",
+}
 -- local command_fd = { "fd", "--type", "f", "--strip-cwd-prefix" }
 local command_vimgrep = {
   "rg",
@@ -72,26 +80,26 @@ local telescopeConfig = {
     },
     vimgrep_arguments = command_vimgrep,
     find_command = command_rg,
-    prompt_prefix = " 🔍 ",
+    prompt_prefix = "   ", -- " 🔍 ",
     selection_caret = "▶ ",
     selection_strategy = "reset", -- follow, reset, row
     sorting_strategy = "ascending",
     layout_strategy = "flex", -- flex, horizontal, veritical, center
     scroll_strategy = "cycle",
     color_devicons = true,
-    winblend = 15,
+    winblend = 20,
     mappings = tele_mappings.main,
     file_sorter = sorters.native_fzf_sorter,
-    generic_sorter = sorters.native_fzf_sorter,
-    -- get_fuzzy_file, fuzzy_with_index_bias
+    generic_sorter = sorters.native_fzf_sorter, -- get_fuzzy_file, fuzzy_with_index_bias
     -- file_previewer = previewers.vim_buffer_cat.new,
     -- generic_sorter = require"telescope.sorters".generic_sorter,
     grep_previewer = previewers.vim_buffer_vimgrep.new,
     qflist_previewer = previewers.vim_buffer_qflist.new,
     include_extensions = true,
-    -- tail, hidden, absolute, shorten
-    path_display = function(_, path)
-      return string.gsub(path, "^./", "")
+    path_display = function(_, path) -- tail, hidden, absolute, shorten
+      path = string.gsub(path, "^./", "")
+      path = string.gsub(path, os.getenv('HOME'), '~')
+      return path
     end,
     file_ignore_patterns = {},
     preview = {
@@ -102,12 +110,18 @@ local telescopeConfig = {
       msg_bg_fillchar = "╱",
       hide_on_startup = hide_preview
     }
-
   },
   pickers = {
+    pickers = false,
     find_files = {
       mappings = tele_mappings.file_picker,
       find_command = command_rg
+    },
+    buffers = {
+      show_all_buffers = true,
+      sort_mru = true,
+      ignore_current_buffer = false,
+      only_cwd = false
     },
     oldfiles = {
       mappings = tele_mappings.file_picker,
@@ -125,4 +139,3 @@ local telescopeConfig = {
 telescope.setup(telescopeConfig)
 tele_plugins.load_extensions(telescope)
 require("plugins.configs.telescope-pickers")
-return telescope

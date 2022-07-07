@@ -8,21 +8,18 @@
 
 local lspinstall = require("nvim-lsp-installer")
 require("lsp.config").setup()
-require("lsp.server").init()
 
-local cmp = require("cmp")
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
+local ok_fidget, fidget = pcall(require, "fidget")
+if ok_fidget then
+  fidget.setup({
+    fmt = { stack_upwards = false }
+  })
+end
 
--- local status_ok_fidget, fidget = pcall(require, "fidget")
--- if not status_ok_fidget then return end
--- fidget.setup({
---   fmt = { stack_upwards = false }
--- })
-
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
 -- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
 lspinstall.post_install_hook = function()
   require("lsp.server").init()
   vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
 end
+
+require("lsp.server").init()

@@ -1,56 +1,17 @@
-local function get_project_path()
-  if vim.fn.bufnr() ~= last_buffer then
-    project_path = ""
-    project_name = ""
-    last_buffer = nil
-  end
-
-  if project_path == "" then
-    project_path = require("project_nvim.project").get_project_root() or ""
-    vim.dbglog('prj: ' .. project_path)
-    if project_path == nil or project_path == "" then
-      project_path = string.gsub(vim.fn.getcwd(), os.getenv("HOME"), "~")
-    else
-      project_path = string.gsub(project_path, os.getenv("HOME"), "~")
-    end
-    if project_path ~= nil and project_path ~= "" then
-      project_path, project_name = string.match(project_path, "(.*)%/(.*)")
-      last_buffer = vim.fn.bufnr()
-    end
-  end
-end
-
--- vim.dbg(vim.fn.getreg('*'))
-
-
+local providers = require('plugins.config.feline-nvim-providers')
 local M = {}
 
 M.ProjectComponent = {
-
-  provider = function()
-    project_path = get_project_path()
-    project_name = project_name or ""
-    return "  " .. project_name .. " "
-  end,
-  hl = function()
-    if project_name == nil or project_name == "" then
-      return { fg = "white", bg = "#333333" }
-    end
-    return { fg = "white", bg = "#440088" }
-  end,
+  provider = {
+    name = "project",
+    opts = {},
+    -- update = { 'WinClosed', 'BufDelete' }
+  },
   { " " },
-  left_sep = function()
-    local val = {
-      str = "slant_left",
-      fg = "white",
-      bg = "#224488",
-      style = "bold",
-    }
-    if project_path == nil then val.bg = "#333333" end
-    return val
-  end,
-  " ",
-  right_sep = { "block", { hl = { bg = "NONE", fg = "dodgerblue3" } } },
+  hl = providers.project_hl,
+  left_sep = providers.project_left_sep,
+  { " " },
+  right_sep = providers.project_right_sep
 }
 
 return M

@@ -1,9 +1,3 @@
--- cmd [[autocmd BufReadPost modeline_test.yaml :lua require"options".set_modeline(vim.api.nvim_get_current_buf())]]
-
-vim.cmd([[command! -nargs=* -complete=customlist,options#complete Set :lua require'utils.options'.run_set_cmd(<q-args>, nil)]])
-vim.cmd([[command! -nargs=* -complete=customlist,options#complete_buf_local Setlocal :lua require'utils.options'.run_set_cmd(<q-args>, vim.api.nvim_get_current_buf())]])
-
--- [ ] Add support for options.indentsize=4 syntax for init.lua
 local vim = vim
 local cmd = vim.cmd
 local fn = vim.fn
@@ -17,17 +11,7 @@ local s_callbacks = {}
 local s_variable_sync_initialized = false
 local s_buffer_sync_autocmd_initialized = false
 
-
 -- Return the first index with the given value (or nil if not found).
-local function index_of(array, value)
-  for i, v in ipairs(array) do
-    if v == value then
-      return i
-    end
-  end
-  return nil
-end
-
 local function init_variable_sync()
   assert(s_variable_sync_initialized == false)
 
@@ -110,112 +94,6 @@ local function get_buffer_option(name, bufnr)
   return nil
 end
 
-local function echo_option(name, bufnr)
-  local option_info = get_option_info(name)
-  local value = M.get_option_value(name, bufnr)
-  if type(value) == "table" then
-    value = table.concat(value, ",")
-  end
-
-  if option_info.buffer_local == true then
-    log.info(option_info.source .. "-buflocal", name .. "=" .. tostring(value))
-  else
-    log.info(option_info.source, name .. "=" .. tostring(value))
-  end
-end
-
-local function echo_options(bufnr)
-  local processed = {}
-  local buffer_options = {}
-  local global_options = {}
-
-  for key, info in pairs(s_current_options) do
-    local value = nil
-    local buffer_option = nil
-    local option_info = get_option_info(key)
-    if bufnr ~= nil and option_info.buffer_local then
-      buffer_option = get_buffer_option(key, bufnr)
-    end
-
-    if buffer_option ~= nil then
-      value = buffer_option.value
-    elseif bufnr == nil and option_info.global == true then
-      value = info.value
-    end
-
-    if value ~= nil then
-      local val_str = ""
-      if type(value) == "table" then
-        val_str = table.concat(value, ",")
-      else
-        val_str = tostring(value)
-      end
-
-      local message = string.rep(" ", 2)
-        .. key
-        .. "="
-        .. val_str
-        .. " "
-        .. "[source: "
-        .. option_info.source
-        .. "]"
-
-      table.insert(processed, key)
-      if option_info.buffer_local then
-        table.insert(buffer_options, message)
-      else
-        table.insert(global_options, message)
-      end
-    end
-  end
-
-  for key, info in pairs(s_registered_options) do
-    local can_echo = false
-
-    if index_of(processed, key) == -1 then
-      if bufnr ~= nil and info.buffer_local == true then
-        can_echo = true
-      elseif bufnr == nil and info.global == true then
-        can_echo = true
-      end
-
-      if can_echo then
-        local option_info = get_option_info(key)
-        local val_str = ""
-        if type(info.default) == "table" then
-          val_str = table.concat(info.default, ",")
-        else
-          val_str = tostring(info.default)
-        end
-
-        local message = string.rep(" ", 2)
-          .. key
-          .. "="
-          .. val_str
-          .. " "
-          .. "[source: "
-          .. option_info.source
-          .. "]"
-
-        table.insert(processed, key)
-        if option_info.buffer_local then
-          table.insert(buffer_options, message)
-        else
-          table.insert(global_options, message)
-        end
-      end
-    end
-  end
-
-  if #global_options > 0 then
-    log.info("global-options", "--\\n" .. table.concat(global_options, "\\n"))
-  end
-
-  if #buffer_options > 0 then
-    log.info("buffer-options", "--\\n" .. table.concat(buffer_options, "\\n"))
-  end
-end
-
 local function execute_callbacks(option_name)
   if s_callbacks[option_name] == nil then
     return
@@ -227,7 +105,7 @@ local function execute_callbacks(option_name)
 end
 
 local function split_option_str(option_str)
-  local cmps = string.split(option_str, "=")
+  local cmps = vim.split(option_str, "=")
   local name = cmps[1]
   local value = nil
   if #cmps == 2 then
@@ -246,7 +124,7 @@ local function convert_value(value, option_info)
   elseif option_info.type_info == "string" then
     converted_value = tostring(value)
   elseif option_info.type_info == "table" then
-    converted_value = string.split(tostring(value), ",")
+    converted_value = vim.split(tostring(value), ",")
   elseif option_info.parser ~= nil then
     converted_value = option_info.parser(converted_value)
   end
@@ -272,6 +150,10 @@ local function pre_process_set_option(name, value, bufnr)
   end
 
   local option_info = get_option_info(name)
+  if option_info == nil then
+    log.error("cannot find option info for key: " .. key)
+    return
+  end
   if option_info.buffer_local == true and bufnr == nil then
     log.warning(
       "options",
@@ -298,6 +180,11 @@ local function set_option(name, value, bufnr)
   end
 
   local option_info = get_option_info(name)
+  if option_info == nil then
+    log.error("cannot find option info for key: " .. key)
+    return
+  end
+
   local converted_value = convert_value(value, option_info)
   if converted_value == nil then
     log.error("options", "Cannot convert `" .. value .. "` to " .. option_info.type_info .. ".")
@@ -314,7 +201,6 @@ local function set_option(name, value, bufnr)
     else
       s_current_options[name] = { value = converted_value, buffers = {} }
     end
-
     current_option = s_current_options[name]
     execute_callbacks(name)
   elseif bufnr == nil and current_option.value ~= converted_value then
@@ -326,7 +212,6 @@ local function set_option(name, value, bufnr)
       if buffer_option.value == converted_value then
         return
       end
-
       buffer_option.value = converted_value
     elseif buffer_option == nil then
       table.insert(
@@ -334,7 +219,6 @@ local function set_option(name, value, bufnr)
         { bufnr = bufnr, value = converted_value }
       )
     end
-
     execute_callbacks(name)
   end
 
@@ -375,6 +259,180 @@ local function check_for_buffer_var_change()
     end
   end
 end
+
+local function index_of(array, value)
+  for i, v in ipairs(array) do
+    if v == value then
+      return i
+    end
+  end
+  return nil
+end
+
+local function serialize_options(bufnr)
+  local processed = {}
+  local buffer_options = {}
+  local global_options = {}
+
+  for key, info in pairs(s_current_options) do
+    local value = nil
+    local buffer_option = nil
+    local option_info = get_option_info(key)
+    if option_info == nil then
+      log.error("cannot find option info for key: " .. key)
+      return
+    end
+
+    if bufnr ~= nil and option_info.buffer_local then
+      buffer_option = get_buffer_option(key, bufnr)
+    end
+
+    if buffer_option ~= nil then
+      value = buffer_option.value
+    elseif bufnr == nil and option_info.global == true then
+      value = info.value
+    end
+
+    if value ~= nil then
+      local val_str = ""
+      if type(value) == "table" then
+        val_str = table.concat(value, ",")
+      else
+        val_str = tostring(value)
+      end
+
+      local message = string.rep(" ", 2)
+        .. key
+        .. "="
+        .. val_str
+        .. " "
+        .. "[source: "
+        .. option_info.source
+        .. "]"
+
+      table.insert(processed, key)
+      if option_info.buffer_local then
+        table.insert(buffer_options, message)
+      else
+        table.insert(global_options, message)
+      end
+    end
+  end
+
+  for key, info in pairs(s_registered_options) do
+    local can_echo = false
+
+    if index_of(processed, key) == nil then
+      if bufnr ~= nil and info.buffer_local == true then
+        can_echo = true
+      elseif bufnr == nil and info.global == true then
+        can_echo = true
+      end
+
+      if can_echo then
+        local option_info = get_option_info(key)
+        if option_info == nil then
+          log.error("cannot find option info for key: " .. key)
+          return
+        end
+
+        local val_str = ""
+        if type(info.default) == "table" then
+          val_str = table.concat(info.default, ",")
+        else
+          val_str = tostring(info.default)
+        end
+
+        local message = string.rep(" ", 2)
+          .. key
+          .. "="
+          .. val_str
+          .. " "
+          .. "[source: "
+          .. option_info.source
+          .. "]"
+
+        table.insert(processed, key)
+        if option_info.buffer_local then
+          table.insert(buffer_options, message)
+        else
+          table.insert(global_options, message)
+        end
+      end
+    end
+  end
+  return { buffer = buffer_options, global = global_options }
+end
+
+local function notify_options(bufnr, prefix)
+  local serialized = serialize_options(bufnr)
+  local notify_msg = ""
+  if #serialized.global > 0 then
+    notify_msg = notify_msg .. "[global-options]"
+    for _, line in pairs(serialized.global) do
+      if string.find(line, "= [source", 1, true) == nil then
+        notify_msg = notify_msg .. "\n" .. line
+      else
+        notify_msg = notify_msg .. "\n" .. line
+      end
+    end
+  end
+
+  if #serialized.buffer > 0 then
+    notify_msg = notify_msg .. "[buffer-options]\n"
+    for _, line in pairs(serialized.buffer) do
+      if string.find(line, "= [source", 1, true) == nil then
+        notify_msg = notify_msg .. "\n" .. line
+      else
+        notify_msg = notify_msg .. "\n" .. line
+      end
+    end
+  end
+  vim.notify(notify_msg)
+end
+
+local function echo_options(bufnr, prefix)
+  local serialized = serialize_options(bufnr)
+  if #serialized.global > 0 then
+    log.log("options", "global-options")
+    for _, line in pairs(serialized.global) do
+      if string.find(line, "= [source", 1, true) == nil then
+        log.info(nil, line)
+      else
+        log.debug(nil, line)
+      end
+    end
+  end
+
+  if #serialized.buffer > 0 then
+    log.log("options", "buffer-options")
+    for _, line in pairs(serialized.buffer) do
+      if string.find(line, "= [source", 1, true) ~= nil then
+        log.debug(nil, line)
+      else
+        log.info(nil, line)
+      end
+    end
+  end
+end
+
+M.echo_option = function(name, bufnr)
+  local option_info = get_option_info(name)
+  local value = M.get_option_value(name, bufnr)
+  if option_info == nil then
+    log.error("cannot find option info for key: " .. key)
+    return
+  end
+  if type(value) == "table" then
+    value = table.concat(value, ",")
+  end
+  if option_info.buffer_local == true then
+    log.info(option_info.source .. "-buflocal", name .. "=" .. tostring(value))
+  else
+    log.info(option_info.source, name .. "=" .. tostring(value))
+  end
+end
+
 
 function M.get_option_value(name, bufnr)
   if is_option_registered(name) == false then
@@ -432,6 +490,8 @@ function M.register_option(opts)
     global = opts.global,
     parser = opts.parser,
     target_variable = opts.target_variable,
+    changed = 0,
+    last_changed = nil
   }
 
   if opts.target_variable ~= nil and s_variable_sync_initialized == false then
@@ -449,11 +509,6 @@ function M.register_option(opts)
   then
     set_target_variable(opts.target_variable, opts.default)
   end
-end
-
-function M.run_set_cmd(option_str, bufnr)
-  local opt = split_option_str(option_str)
-  set_option(opt.name, opt.value, bufnr)
 end
 
 function M.set(name, value)
@@ -483,7 +538,6 @@ function M.list_options(arg_lead, buffer_local)
       end
     end
   end
-
   return options
 end
 
@@ -539,7 +593,7 @@ function M.set_modeline(bufnr)
   end
 
   local modeline = string.sub(last_line, start_index, #last_line)
-  modeline = string.split(string.gsub(modeline, "Setlocal ", ""), " ")
+  modeline = vim.split(string.gsub(modeline, "Setlocal ", ""), " ")
   for _, opt in ipairs(modeline) do
     M.run_set_cmd(opt, bufnr)
   end
@@ -561,5 +615,24 @@ function M.sync_buffer_vars(bufnr)
     end
   end
 end
+
+function M.run_set_cmd(option_str, bufnr)
+  if option_str == nil or option_str == '' then
+    echo_options(bufnr)
+    -- notify_options(bufnr)
+  elseif not string.match(option_str, '=') then
+    echo_options(bufnr, option_str)
+    -- notify_options(bufnr, option_str)
+  else
+    local opt = split_option_str(option_str)
+    set_option(opt.name, opt.value, bufnr)
+  end
+end
+
+vim.cmd([[
+"  autocmd BufReadPost modeline_test.yaml :lua require"utils.options".set_modeline(vim.api.nvim_get_current_buf())
+  command! -nargs=* -complete=customlist,options#complete Set :lua require'utils.options'.run_set_cmd(<q-args>, nil)
+  command! -nargs=* -complete=customlist,options#complete_buf_local Setlocal :lua require'utils.options'.run_set_cmd(<q-args>, vim.api.nvim_get_current_buf())
+]])
 
 return M

@@ -1,58 +1,40 @@
+-- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
 local actions_layout = require "telescope.actions.layout"
-local actions_set = require "telescope.actions.set"
 local actions = require("telescope.actions")
 local custom = require("plugins.configs.telescope-custom")
 
 local mainMaps = {
   i = {
-    ["<esc>"] = actions.close,
+    ["<C-u>"] = false,
+    ["<C-d>"] = false,
+    ["<Esc>"] = actions.close,
     ["kj"] = actions.close,
-    ["<c-f>"] = function(prompt_bufnr)
-      actions_set.shift_selection(prompt_bufnr, 15)
-    end,
-    ["<c-b>"] = function(prompt_bufnr)
-      actions_set.shift_selection(prompt_bufnr, -15)
-    end,
-    ["<a-n>"] = actions.toggle_selection + actions.move_selection_next,
-    ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous,
-    ["<c-u>"] = false,
-    ["<cr>"] = actions.select_default + actions.center,
-    -- ["<cr>"] = custom.actions.multi_selection_open,
-    ["<c-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
-    ["<c-q>"] = actions.send_to_qflist + actions.open_qflist + actions.center,
-    ["<c-_>"] = function(prompt_bufnr)
-      actions_layout.toggle_preview(prompt_bufnr)
-    end,
-    ["<C-]>"] = custom.actions.switch_picker_type,
-    ["<M-/>"] = function(prompt_bufnr)
-      local whichkey_default = {
-        max_height = 0.4,
-        only_show_current_mode = true,
-        mode_width = 1,
-        keybind_width = 5,
-        name_width = 30,
-        line_padding = 1,
-        separator = " -> ",
-        close_with_action = true,
-        normal_hl = "TelescopePrompt",
-        border_hl = "TelescopePromptBorder",
-        winblend = 15, --  config.values.winblend,
-        column_padding = "  "
-      }
-
-      local whichkey_opts = {
-        name_width = 20,
-        separator = " ➜ ",
-        column_padding = " "
-      }
-      actions.which_key(prompt_bufnr, vim.tbl_deep_extend(whichkey_opts, whichkey_default))
-    end,
-    ["<C-DOWN>"] = actions.cycle_history_next,
-    ["<C-UP>"] = actions.cycle_history_prev,
+    ["<C-Space>"] = custom.actions.find_pickers,
+    ["<C-f>"] = custom.actions.results_page_down,
+    ["<C-b>"] = custom.actions.results_page_up,
+    ["<A-n>"] = custom.actions.results_toggle_down,
+    ["<A-p>"] = custom.actions.results_toggle_up,
+    ["<CR>"] = actions.select_default + actions.center,
+    ["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
+    ["<C-q>"] = actions.send_to_qflist + actions.open_qflist + actions.center,
+    ["<C-_>"] = actions_layout.toggle_preview,
+    ["<C-]>"] = custom.actions.switch_picker,
+    ["<M-/>"] = custom.actions.toggle_whichkey,
+    ["<C-Down>"] = actions.cycle_history_next,
+    ["<C-Up>"] = actions.cycle_history_prev,
+    ["<Down>"] = actions.preview_scrolling_down,
+    ["<Up>"] = actions.preview_scrolling_up,
     ["<A-a>"] = actions.toggle_all
+    -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
+    -- [S-F1-9] = add/remove secondary sort #
+    -- [??] = clear sort
+    -- ["<C-^>"] = custom.actions.switch_layout,
+    -- ["<M-.>"] = custom.actions.switch_preview_layout,
+    -- ["<C-]>"] = custom.actions.picker_prev,
+    -- ["<C-}>"] = custom.actions.switch_picker,
   },
   n = {
-    ["<esc>"] = actions.close
+    ["<Esc>"] = actions.close
   }
 }
 
@@ -60,28 +42,12 @@ local fileMaps = {
   i = {
     -- change directory functionality
     ["<A-U>"] = custom.actions.directory_up,
-    [":bd"] = custom.actions.directory_up,
-    ["<cr>"] = custom.actions.multi_selection_open
+    ["<CR>"] = custom.actions.multi_open
   }
 }
 --  TODO: grep live
 --  opts.search_dirs -- list of directory to search in
 --  opts.grep_open_files -- boolean to restrict search to open files
-
-function tableMerge(t1, t2)
-  for k, v in pairs(t2) do
-    if type(v) == "table" then
-      if type(t1[k] or false) == "table" then
-        tableMerge(t1[k] or {}, t2[k] or {})
-      else
-        t1[k] = v
-      end
-    else
-      t1[k] = v
-    end
-  end
-  return t1
-end
 
 --[[ tableMerge(baseMaps, fileMaps)
 tableMerge(baseMaps, mainMaps) ]]

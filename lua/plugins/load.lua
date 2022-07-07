@@ -24,7 +24,6 @@ return require("packer").startup(
     function(use)
       use("wbthomason/packer.nvim")
       use("lewis6991/impatient.nvim")
-      use("nathom/filetype.nvim")
       -- use {
       --   'yamatsum/nvim-nonicons',
       --   requires = { 'kyazdani42/nvim-web-devicons' }
@@ -71,9 +70,8 @@ return require("packer").startup(
             "camgraff/telescope-tmux.nvim",
             "LinArcX/telescope-ports.nvim",
             -- { "chip/telescope-code-fence.nvim", run = "luarocks --local install lunamark" },
-            "keyvchan/telescope-find-pickers.nvim",
+            -- "keyvchan/telescope-find-pickers.nvim",
             "dhruvmanila/telescope-bookmarks.nvim",
-            "gbrlsnchs/telescope-lsp-handlers.nvim",
             "nvim-telescope/telescope-dap.nvim",
             "nvim-telescope/telescope-frecency.nvim",
             "nvim-telescope/telescope-symbols.nvim",
@@ -96,12 +94,15 @@ return require("packer").startup(
             },
             "LinArcX/telescope-command-palette.nvim",
             "tamago324/telescope-openbrowser.nvim",
-            "LinArcX/telescope-env.nvim",
+            -- "LinArcX/telescope-env.nvim",
             "crispgm/telescope-heading.nvim",
+            -- "moevis/smartjump.nvim",
             "ElPiloto/telescope-vimwiki.nvim",
             "cljoly/telescope-repo.nvim",
             "elianiva/telescope-npm.nvim",
             "rlch/github-notifications.nvim",
+            "Zane-/cder.nvim",
+            "Zane-/howdoi.nvim",
             "frenchtoasters/telescope-kubectl.nvim"
             -- "nvim-telescope/telescope-vimspector",
             -- "benfowler/telescope-luasnip.nvim",

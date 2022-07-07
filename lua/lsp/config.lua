@@ -29,15 +29,16 @@ require("vim.lsp.protocol").CompletionItemKind = {
   "  TypeParameter", -- = 25;
 }
 
+local virtual_text_config = {
+  source = false, -- "if_ { severity = {min=vim.diagnostic.severity.WARN} })
+  prefix = "",
+  spacing = 2,
+  -- severity = 0. -- ERROR, WARN, INFO, HINT
+  severity = { min = vim.diagnostic.severity.WARN }
+}
+
 local diagnostic_config = {
-  virtual_text = {
-    source = false, -- "if_many", "always", false
-    prefix = "",
-    spacing = 2,
-    -- severity = 0. -- ERROR, WARN, INFO, HINT
-    -- severity = { min = vim.diagnostic.severity.WARN }
-    -- vim.diagnostic.get(0, { severity = {min=vim.diagnostic.severity.WARN} })
-  },
+  virtual_text = false,
   float = {
     focusable = false,
     style = "minimal",
@@ -56,29 +57,25 @@ local M = {}
 
 M.getsigns = function()
   -- local icons = require("nvim-nonicons")
-  vim.fn.sign_define("DiagnosticSignError",
-    {
-      text   = '', -- icons.get("x-circle"),
-      texthl = "LspDiagnosticsSignError",
-    })
+  vim.fn.sign_define("DiagnosticSignError", {
+    text = '', -- icons.get("x-circle"),
+    texthl = "LspDiagnosticsSignError",
+  })
 
-  vim.fn.sign_define("DiagnosticSignWarn",
-    {
-      text   = '', -- icons.get("alert"),
-      texthl = "LspDiagnosticsSignWarn",
-    })
+  vim.fn.sign_define("DiagnosticSignWarn", {
+    text = '', -- icons.get("alert"),
+    texthl = "LspDiagnosticsSignWarn",
+  })
 
-  vim.fn.sign_define("DiagnosticSignInfo",
-    {
-      text   = '', -- icons.get("info"),
-      texthl = "LspDiagnosticsSignInfo",
-    })
+  vim.fn.sign_define("DiagnosticSignInfo", {
+    text = '', -- icons.get("info"),
+    texthl = "LspDiagnosticsSignInfo",
+  })
 
-  vim.fn.sign_define("DiagnosticSignHint",
-    {
-      text   = '', -- icons.get("comment"),
-      texthl = "LspDiagnosticsSignHint",
-    })
+  vim.fn.sign_define("DiagnosticSignHint", {
+    text = '', -- icons.get("comment"),
+    texthl = "LspDiagnosticsSignHint",
+  })
   -- Gutter sign icons
   -- for _, sign in ipairs(signs) do
   --   vim.lsp.diagnostic.config.signs_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
@@ -104,6 +101,17 @@ M.setup = function()
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
     border = 'rounded'
   })
+
+  local orig_float_preview = vim.lsp.util.open_floating_preview
+  vim.lsp.util.open_floating_preview = function(contents, syntax, lsp_opts, ...)
+    lsp_opts = lsp_opts or {}
+    -- lsp_opts.border = lsp_opts.border or {{" ", "FloatBorder"}}
+    lsp_opts.border = lsp_opts.border or "rounded"
+    lsp_opts.source = lsp_opts.source or "never"
+    lsp_opts.pad_top = lsp_opts.pad_top or 0
+    lsp_opts.pad_top = lsp_opts.pad_bottom or 0
+    return orig_float_preview(contents, syntax, lsp_opts, ...)
+  end
 end
 
 return M

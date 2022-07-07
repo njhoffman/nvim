@@ -1,5 +1,5 @@
 -- local options = require('utils.options')
-local prjutils = require('utils.project')
+local prjutils = vim.import('utils.project')
 
 local M = {}
 M.project_chdir = function(dir, method)
@@ -8,23 +8,23 @@ M.project_chdir = function(dir, method)
 
   local lsp = string.match(method, '"([^%s]+)" lsp')
   local icon_map = {
-    awk_ls = " ",
-    bashls = " ",
-    clangd = " ",
-    cssls = " ",
-    dockerls = " ",
-    efm = " ",
+    awk_ls           = " ",
+    bashls           = " ",
+    clangd           = " ",
+    cssls            = " ",
+    dockerls         = " ",
+    efm              = " ",
     golangci_lint_ls = " ",
-    gopls = " ",
-    graphql = " ",
-    html = " ",
-    jsonls = " ",
-    pylsp = "  ",
-    sqls = " ",
-    sumneko_lua = " ",
-    terraformls = " ",
-    tsserver = " ",
-    vimls = " ",
+    gopls            = " ",
+    graphql          = " ",
+    html             = " ",
+    jsonls           = " ",
+    pylsp            = " ",
+    sqls             = " ",
+    sumneko_lua      = " ",
+    terraformls      = " ",
+    tsserver         = " ",
+    vimls            = " ",
     -- "yamlls"
   }
 

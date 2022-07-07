@@ -2,22 +2,6 @@ local handlers = require('lsp.handlers')
 local M = {}
 local opts = { noremap = true, silent = true }
 
-M.make_config = function()
-  local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = { "documentation", "detail", "additionalTextEdits" }
-  }
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.colorProvider = { dynamicRegistration = false }
-  return {
-    -- enable snippet support
-    capabilities = capabilities,
-    -- map buffer local keybindings when the language server attaches
-    on_attach = on_attach,
-  }
-end
-
 M.on_attach = function(client, bufnr)
   local function keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
@@ -27,24 +11,13 @@ M.on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, ...)
   end
 
-  -- if client.name == "gopls" then
-  --   vim.diagnostic.disable(vim.api.nvim_get_current_buf(), nil)
-  -- end
   handlers.attach_formatting(client, bufnr)
-  -- handlers.attach_document_colors(client, bufnr)
+  handlers.attach_code_lens(client, bufnr)
+  require "lsp_signature".on_attach(require('lsp.signature'), bufnr)
 
-  if client.server_capabilities.code_lens then
-    vim.cmd [[
-      augroup lsp_codelens
-      autocmd! * <buffer>
-      autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require"lsp-codelens".buf_codelens_refresh()
-      augroup END
-      ]]
-  end
-
-  -- if client.server_capabilities.colorProvider then
-  --   require "lsp-documentcolors".buf_attach(bufnr, { single_column = true })
-  -- end
+  -- vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
 
   if client.name == "tailwindcss" then
     if client.server_capabilities.colorProvider then
@@ -54,7 +27,7 @@ M.on_attach = function(client, bufnr)
     capabilities.textDocument.colorProvider = { dynamicRegistration = false }
   end
 
-  option("omnifunc", "v:lua.vim.lsp.omnifunc")
+
   keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev({ enable_popup = false })<CR>", opts)
   keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next({ enable_popup = false })<CR>", opts)
   keymap("n", "[g", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
@@ -88,5 +61,22 @@ M.on_attach = function(client, bufnr)
   keymap("n", "<leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
 end
 
+
+
+M.make_capabilities = function()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  local cmp_ok, cmp = pcall(require, "cmp_nvim_lsp")
+  if (cmp_ok) then
+    cmp.update_capabilities(capabilities)
+  else
+    vim.notify({ 'Completion error with CMP', cmp }, 'error')
+  end
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = { "documentation", "detail", "additionalTextEdits" }
+  }
+  capabilities.textDocument.colorProvider = { dynamicRegistration = false }
+  return capabilities
+end
 
 return M

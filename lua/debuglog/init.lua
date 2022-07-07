@@ -50,7 +50,7 @@ M.dbg = function(...)
     vim.api.nvim_buf_set_keymap(buf, "n", "<2-LeftMouse>", "", { callback = cb })
   end
 
-  args.on_close = function(buf)
+  args.on_close = function()
     if type(orig_map) == "table" and type(orig_map.lhs) == 'string' then
       pcall(vim.api.nvim_del_keymap, { "n", "gF" })
       pcall(vim.api.nvim_set_keymap, {

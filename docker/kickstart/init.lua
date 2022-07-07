@@ -226,7 +226,10 @@ end
 
 -- nvim-cmp supports additional completion capabilities
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+local cmp_ok, cmp = pcall(require, 'cmp_nvim_lsp')
+if (cmp_ok) then
+  capabilities = cmp.update_capabilities(capabilities)
+end
 
 -- Enable the following language servers
 local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver' }

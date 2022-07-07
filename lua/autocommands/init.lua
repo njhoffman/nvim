@@ -1,7 +1,18 @@
-local config = require("config")
-require('autocommands.misc')
+local config = vim.import("config")
+vim.import('autocommands.misc')
+
 local Formatting = config.Formatting
 local Opts = config.Opts
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  pattern = "*",
+  callback = function()
+    local end_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
+    end_time = string.sub(string.gsub(end_time, ' ', ''), 1, 5)
+    vim.notify("Loaded in " .. end_time .. 's', "debug")
+  end,
+  desc = "Create notification when vim is finished loading",
+})
 
 function goto_last_pos()
   local last_pos = vim.fn.line('\'"')
@@ -173,8 +184,8 @@ end
 
 if Formatting.trim_trailing_space == true or Formatting.trim_trailing_space == nil then
   autocmds.TrimSpaces = {
-    { "BufWritePre", "*", [[%s/\s\+$//e]] },
-    { "BufWritePre", "*", [[%s/\n\+\%$//e]] }
+    -- { "BufWritePre", "*", [[%s/\s\+$//e]] },
+    -- { "BufWritePre", "*", [[%s/\n\+\%$//e]] }
     -- {"BufWritePre", "*.[ch]", [[*.[ch] %s/\%$/\r/e]]}
   }
 end

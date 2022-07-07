@@ -41,7 +41,7 @@ local defaults = {
     -- Set to false to disable the vim.ui.select implementation
     enabled = true,
     -- Priority list of preferred vim.select implementations
-    backend = { "telescope", "fzf_lua", "fzf", "builtin", "nui" },
+    backend = { "telescope", "nui", "fzf_lua", "fzf", "builtin" },
     -- Options for telescope selector
     -- These are passed into the telescope picker directly. Can be used like:
     -- telescope = require('telescope.themes').get_ivy({...})
@@ -63,11 +63,12 @@ local defaults = {
     -- Options for nui Menu
     nui = {
       position = "50%",
-      size = nil,
       relative = "editor",
       border = {
         style = "rounded"
       },
+      min_width = 15,
+      min_height = 1,
       max_width = 120,
       max_height = 40
     },
@@ -106,13 +107,11 @@ local defaults = {
 
 require("dressing").setup(defaults)
 
-local M = {}
-M.test_input = function(cb)
+vim.ui._test_input = function(cb)
   local opts = {
     prompt = "Enter an input: ",
     default = "placeholder text"
   }
-  local choices
   vim.ui.input(
     opts,
     function(x)
@@ -124,7 +123,14 @@ M.test_input = function(cb)
   )
 end
 
-local test_select = function(backend, backend_opt, cb)
+local test_select = function(backend_name, cb)
+  local backend_opt = defaults.select[backend_name]
+
+  local ok, backend = pcall(require, string.format("dressing.select.%s", backend_name))
+  if not ok or not backend.is_supported() then
+    vim.notify({ "Error loading backend", backend }, error)
+  end
+
   local items = {
     { name = "Item 1" },
     { name = "Item 2" },
@@ -136,7 +142,6 @@ local test_select = function(backend, backend_opt, cb)
     end
   }
   local selected
-  vim.notify({ backend }, "info")
   opts.prompt = opts.prompt or "Title Test"
   backend.select(
     backend_opt,
@@ -145,7 +150,7 @@ local test_select = function(backend, backend_opt, cb)
     function(item)
       selected = item
       if selected then
-        print("made selection with " .. backend .. " - " .. selected.name)
+        print("made selection with " .. backend_name .. " - " .. selected.name)
       end
       if cb then
         cb(selected)
@@ -154,28 +159,25 @@ local test_select = function(backend, backend_opt, cb)
   )
 end
 
-_G.test_select_telescope = function(cb)
-  local backend = require("dressing.select.telescope")
-  test_select(backend, defaults.select["telescope"], cb)
+vim.ui._test_select_telescope = function(cb)
+  test_select('telescope', cb)
 end
 
-_G.test_select_nui = function(cb)
-  local backend = require("dressing.select.nui")
-  test_select(backend, defaults.select["nui"], cb)
+vim.ui._test_select_nui = function(cb)
+  test_select('nui', cb)
 end
 
-test_select_builtin = function(cb)
-  local backend = require("dressing.select.builtin")
-  test_select(backend, defaults.select["builtin"], cb)
+vim.ui._test_select_builtin = function(cb)
+  test_select('builtin', cb)
 end
 
-_G.test_select = function(_cb)
+vim.ui._test_select = function(_cb)
   cb = _cb or function(sel)
     print("Selected ", vim.inspect(sel))
   end
-  -- test_select_builtin(cb)
-  -- test_select_telescope(cb)
-  test_select_nui(cb)
+  vim.ui._test_select_builtin(cb)
+  -- vim.ui._test_select_telescope(cb)
+  -- vim.ui._test_select_nui(cb)
 end
 
 return M

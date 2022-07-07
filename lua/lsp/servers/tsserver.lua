@@ -22,6 +22,11 @@ M.setup = function(on_attach, capabilities)
     flags = {
       debounce_text_changes = 150
     },
+    settings = {
+      completions = {
+        completeFunctionCalls = true
+      }
+    },
     cmd = { path .. "/lsp_servers/tsserver/node_modules/.bin/typescript-language-server", "--stdio" },
     capabilities = capabilities
   }

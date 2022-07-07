@@ -12,7 +12,7 @@ local baseConfig = {
   -- Default timeout for notifications
   timeout = 5000,
   -- maximium_width = 90,
-  minimum_width = 20,
+  minimum_width = 15,
   maximum_width = cols,
   -- For stages that change opacity this is treated as the highlight behind the window
   -- Icons for the different levels

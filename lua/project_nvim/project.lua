@@ -39,12 +39,12 @@ function M.find_pattern_root()
   local last_dir_cache = ""
   local curr_dir_cache = {}
 
-  local function get_parent(path)
-    path = path:match("^(.*)/")
-    if path == "" then
-      path = "/"
+  local function get_parent(_path)
+    _path = _path:match("^(.*)/")
+    if _path == "" then
+      _path = "/"
     end
-    return path
+    return _path
   end
 
   local function get_files(file_dir)
@@ -72,22 +72,22 @@ function M.find_pattern_root()
   end
 
   local function sub(dir, identifier)
-    local path = get_parent(dir)
+    local _path = get_parent(dir)
     while true do
-      if is(path, identifier) then
+      if is(_path, identifier) then
         return true
       end
-      local current = path
-      path = get_parent(path)
-      if current == path then
+      local current = _path
+      _path = get_parent(_path)
+      if current == _path then
         return false
       end
     end
   end
 
   local function child(dir, identifier)
-    local path = get_parent(dir)
-    return is(path, identifier)
+    local _path = get_parent(dir)
+    return is(_path, identifier)
   end
 
   local function has(dir, identifier)
@@ -237,7 +237,6 @@ function M.on_buf_enter()
   if vim.v.vim_did_enter == 0 then
     return
   end
-
   if not M.is_file() then
     return
   end
@@ -266,8 +265,9 @@ function M.init()
 
   autocmds[#autocmds + 1] = 'autocmd VimLeavePre * lua require("project_nvim.utils.history").write_projects_to_history()'
 
-  vim.cmd([[augroup project_nvim
-            au!
+  vim.cmd([[
+    augroup project_nvim
+    au!
   ]])
   for _, value in ipairs(autocmds) do
     vim.cmd(value)

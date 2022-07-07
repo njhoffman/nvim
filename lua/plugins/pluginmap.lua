@@ -13,7 +13,6 @@ M.search_plugins = {
 M.mapping_plugins = {
   ["vim-repeat"] = { "tpope/vim-repeat" },
   ["vim-alias"] = { "Konfekt/vim-alias" }
-
 }
 
 M.treesitter_plugins = {
@@ -102,12 +101,14 @@ M.motion_plugins = {
 
 M.format_plugins = {
   ["kommentary"] = { "b3nj5m1n/kommentary" },
+  ["inc-rename.nvim"] = { "smjonas/inc-rename.nvim" },
   ["nvim-autopairs"] = { "windwp/nvim-autopairs" }, -- jiangmiao/auto-pairs
   ["splitjoin.vim"] = { "andrewradev/splitjoin.vim" }, -- FooSoft/vim-argwrap
   ["vim-easy-align"] = { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
   ["vim-table-mode"] = { "dhruvasagar/vim-table-mode" },
   ["dial.nvim"] = { "monaqa/dial.nvim" },
   ["iswap.nvim"] = { "mizlan/iswap.nvim" },
+  ["text-case.nvim"] = { "johmsalas/text-case.nvim" },
   ["vim-camelsnek"] = { "nicwest/vim-camelsnek" },
   ["vim-checkbox"] = { "jkramer/vim-checkbox" },
   ["vim-sort-motion"] = { "christoomey/vim-sort-motion" },
@@ -184,6 +185,7 @@ M.completion_plugins = {
   ["cmp-nvim-lua"] = { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
   ["cmp-nvim-lsp"] = { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
   ["cmp-calc"] = { "hrsh7th/cmp-calc", after = "nvim-cmp" },
+  ["cmp-omni"] = { "hrsh7th/cmp-omni", after = "nvim-cmp" },
   ["cmp-cmdline"] = { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
   ["cmp-fuzzy-path"] = {
     "tzachar/cmp-fuzzy-path",
@@ -195,9 +197,7 @@ M.completion_plugins = {
   },
   ["cmp_luasnip"] = { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp", requires = "L3MON4D3/LuaSnip" },
   ["cmp-nvim-lsp-signature-help"] = { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" },
-  ["cmp-under-comparator"] = { "lukas-reineke/cmp-under-comparator", after = "nvim-cmp" },
   ["cmp-treesitter"] = { "ray-x/cmp-treesitter", after = "nvim-cmp" },
-  -- ["ray-x"] = { "ray-x/navigator.lua" },
   ["cmp-spell"] = { "f3fora/cmp-spell", after = "nvim-cmp" },
   ["cmp-npm"] = { "David-Kunz/cmp-npm", after = "nvim-cmp" },
   ["cmp-zsh"] = { "tamago324/cmp-zsh", after = "nvim-cmp" },
@@ -214,7 +214,9 @@ M.completion_plugins = {
   ["vscode-es7-javascript-react-snippets"] = {
     "dsznajder/vscode-es7-javascript-react-snippets",
     run = "yarn install --frozen-lockfile && yarn compile"
-  }
+  },
+  ["nvim-luaref"] = { "milisims/nvim-luaref" },
+  ["luv-vimdocs"] = { "nanotee/luv-vimdocs" }
 }
 
 M.ui_plugins = {
@@ -247,6 +249,7 @@ M.ui_plugins = {
     end
   }
 
+  -- ["icon-picker.nvim"] = { "ziontee113/icon-picker.nvim"}
   -- ["vim-visual-multi"] = { "mg979/vim-visual-multi" },
   -- ["wilder.nvim"] = {
   --   "gelguy/wilder.nvim",
@@ -316,17 +319,17 @@ M.sysutil_plugins = {
   ["vim-symlink"] = { "aymericbeaumet/vim-symlink" },
   ["vim-profiler"] = { "bchretien/vim-profiler" },
   ["startuptime.vim"] = { "tweekmonster/startuptime.vim" },
-  ["plenary.nvim"] = { "nvim-lua/plenary.nvim" }
+  ["plenary.nvim"] = { "nvim-lua/plenary.nvim" },
 }
 
 M.lsp_plugins = {
-  ["fidget.nvim"] = { "j-hui/fidget.nvim" },
+  -- ["fidget.nvim"] = { "j-hui/fidget.nvim" },
   ["null-ls.nvim"] = { "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" },
   ["lua-dev.nvim"] = { "folke/lua-dev.nvim" },
   ["lsp-colors.nvim"] = { "folke/lsp-colors.nvim" },
   ["nvim-lightbulb"] = { "kosayoda/nvim-lightbulb" },
   ["lsp_signature.nvim"] = { "ray-x/lsp_signature.nvim" },
-  -- ["lspsaga.nvim"] = { "glepnir/lspsaga.nvim" },
+  ["lspsaga.nvim"] = { "tami5/lspsaga.nvim" },
   ["nvim-code-action-menu"] = { "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu" },
   ["nvim-lsp-installer"] = { "williamboman/nvim-lsp-installer", requires = "neovim/nvim-lspconfig" },
   ["nvim-lspconfig"] = { "neovim/nvim-lspconfig" },
@@ -347,8 +350,6 @@ M.theme_plugins = {
 M.check_require_exists = function(fname)
   local res = pcall(require, fname)
   return res
-  -- local f=io.open(name,"r")
-  -- if f ~= nil then io.close(f) return true else return false end
 end
 
 M.check_path_exists = function(path)
@@ -434,7 +435,6 @@ M.load_plugins = function(use, load_config)
     M.theme_plugins,
     M.treesitter_plugins,
     M.ui_plugins
-
   }
 
   for _, plugin_set in pairs(all_plugins) do
