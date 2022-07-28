@@ -41,7 +41,7 @@ local defaults = {
     -- Set to false to disable the vim.ui.select implementation
     enabled = true,
     -- Priority list of preferred vim.select implementations
-    backend = { "telescope", "nui", "fzf_lua", "fzf", "builtin" },
+    backend = { "nui", "telescope", "fzf_lua", "fzf", "builtin" },
     -- Options for telescope selector
     -- These are passed into the telescope picker directly. Can be used like:
     -- telescope = require('telescope.themes').get_ivy({...})
@@ -143,10 +143,7 @@ local test_select = function(backend_name, cb)
   }
   local selected
   opts.prompt = opts.prompt or "Title Test"
-  backend.select(
-    backend_opt,
-    items,
-    opts,
+  backend.select(backend_opt, items, opts,
     function(item)
       selected = item
       if selected then
@@ -179,8 +176,6 @@ vim.ui._test_select = function(_cb)
   -- vim.ui._test_select_telescope(cb)
   -- vim.ui._test_select_nui(cb)
 end
-
-return M
 
 -- For each of the input and select configs, there is an option get_config.
 -- This can be a function that accepts the opts parameter that is passed in to vim.select or vim.input.

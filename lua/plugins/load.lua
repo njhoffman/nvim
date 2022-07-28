@@ -46,6 +46,8 @@ return require("packer").startup(
       use(
         {
           "nvim-telescope/telescope.nvim",
+          -- "njhoffman/telescope.nvim",
+          -- "~/git/telescope.nvim",
           requires = {
             "kyazdani42/nvim-web-devicons",
             "nvim-lua/popup.nvim",

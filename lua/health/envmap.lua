@@ -3,10 +3,10 @@ local environment = require("stats.environment")
 
 function M.stats(healthCheck)
   local s = environment.get_counts()
-  local p = healthCheck and vim.fn["health#report_info"] or print
+  local p = healthCheck and vim.health.report_info or print
 
   p("------------------------------")
-  p(("startup time         %8s     "):format(s.start_time))
+  -- p(("startup time         %8s     "):format(s.start_time))
   p(("memory             %6s     "):format(s.memory))
   p(("virtual memory     %6s     "):format(s.virtual_memory))
   p(("packer lines         %4s     "):format(s.packer_lines))

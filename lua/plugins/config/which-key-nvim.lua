@@ -50,7 +50,7 @@ require("which-key").setup {
     padding = { 1, 0, 1, 0 } -- extra window padding [top, right, bottom, left]
   },
   layout = {
-    height = { min = 4, max = 10 }, -- min and max height of the columns
+    height = { min = 4, max = 15 }, -- min and max height of the columns
     width = { min = 25, max = 40 }, -- min and max width of the columns
     spacing = 3, -- spacing between columns
     align = "center" -- left, center, right

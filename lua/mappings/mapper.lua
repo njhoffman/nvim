@@ -184,6 +184,7 @@ local mapfiles = {
   "navigation",
   "pickers",
   "search",
+  "surround",
   "system",
   "unimpaired",
   "window",

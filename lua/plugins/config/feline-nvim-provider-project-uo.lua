@@ -44,20 +44,19 @@ local project_right_sep = function()
   return { "block", { hl = { bg = "NONE", fg = "dodgerblue3" } } }
 end
 
-local project = function()
+local project_uo = function()
   project_path = get_project_path()
   project_name = project_name or ""
   return " " .. project_name .. " "
 end
 
-local window_number = function()
-  return tostring(vim.api.nvim_win_get_number(0))
-end
-
 return {
-  project = project,
-  project_hl = project_hl,
-  project_left_sep = project_left_sep,
-  project_right_sep = project_right_sep,
-  window_number = window_number
+  provider = project_uo,
+  -- project = project_user_options,
+  hl = project_hl,
+  left_sep = project_left_sep,
+  right_sep = project_right_sep,
+  window_number = function()
+    return tostring(vim.api.nvim_win_get_number(0))
+  end
 }

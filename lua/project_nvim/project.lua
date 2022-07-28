@@ -169,25 +169,43 @@ function M.attach_to_lsp()
   M.attached_lsp = true
 end
 
+local set_user_option = function(dir, method)
+  local opt = vim.import('utils.options')
+  if type(opt) == 'table' then
+    local bufnr = vim.api.nvim_get_current_buf()
+    local project_path = string.gsub(dir, os.getenv("HOME"), "~")
+    local project_name = ""
+    if project_path ~= nil and project_path ~= "" then
+      project_path, project_name = string.match(project_path, "(.*)%/(.*)")
+      last_buffer = vim.fn.bufnr()
+    end
+    opt.set_local('projectmethod', method, bufnr)
+    opt.set_local('projectpath', project_path, bufnr)
+    opt.set_local('projectname', project_name, bufnr)
+  end
+end
+
+local set_cwd = function(dir, method)
+  vim.api.nvim_set_current_dir(dir)
+  if config.options.silent_chdir == false then
+    if (type(config.options.chdir_func) == "function") then
+      config.options.chdir_func(dir, method)
+    else
+      vim.notify('CWD:' .. dir .. " (" .. method .. ') ', 'debug')
+    end
+  end
+end
+
 function M.set_pwd(dir, method)
   if dir ~= nil then
     M.last_project = dir
     table.insert(history.session_projects, dir)
-
+    set_user_option(dir, method)
     if vim.fn.getcwd() ~= dir then
-      vim.api.nvim_set_current_dir(dir)
-
-      if config.options.silent_chdir == false then
-        if (type(config.options.chdir_func) == "function") then
-          config.options.chdir_func(dir, method)
-        else
-          vim.notify('CWD:' .. dir .. " (" .. method .. ') ', 'debug')
-        end
-      end
+      set_cwd(dir, method)
     end
     return true
   end
-
   return false
 end
 
@@ -197,7 +215,7 @@ function M.get_project_root()
     or type(config.options) ~= 'table'
     or type(config.options.detection_methods) ~= 'table'
   then
-    vim.dbglog({ 'Bad configuration file ...', config })
+    vim.notify({ 'Bad configuration file ...', config }, 'error')
     return
   end
   for _, detection_method in ipairs(config.options.detection_methods) do

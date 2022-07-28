@@ -1,18 +1,9 @@
 local config = vim.import("config")
 vim.import('autocommands.misc')
+vim.import('autocommands.startup')
 
 local Formatting = config.Formatting
 local Opts = config.Opts
-
-vim.api.nvim_create_autocmd("VimEnter", {
-  pattern = "*",
-  callback = function()
-    local end_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
-    end_time = string.sub(string.gsub(end_time, ' ', ''), 1, 5)
-    vim.notify("Loaded in " .. end_time .. 's', "debug")
-  end,
-  desc = "Create notification when vim is finished loading",
-})
 
 function goto_last_pos()
   local last_pos = vim.fn.line('\'"')

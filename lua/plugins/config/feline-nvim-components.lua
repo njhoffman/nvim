@@ -1,18 +1,58 @@
-local providers = require('plugins.config.feline-nvim-providers')
+local provider_project_nvim = require('plugins.config.feline-nvim-provider-project-nvim')
+local provider_project_uo = require('plugins.config.feline-nvim-provider-project-uo')
 local M = {}
 
-M.ProjectComponent = {
+M.ProjectNvimComponent = {
+  enabled = true,
   provider = {
-    name = "project",
+    name = "project_nvim",
     opts = {},
     -- update = { 'WinClosed', 'BufDelete' }
   },
   { " " },
-  hl = providers.project_hl,
-  left_sep = providers.project_left_sep,
+  hl = provider_project_nvim.hl,
+  left_sep = provider_project_nvim.left_sep,
   { " " },
-  right_sep = providers.project_right_sep
+  right_sep = provider_project_nvim.right_sep
 }
+
+M.ProjectUoComponent = {
+  enabled = true,
+  provider = {
+    name = "project_uo",
+    opts = {},
+    -- update = { 'WinClosed', 'BufDelete' }
+  },
+  { " " },
+  hl = provider_project_uo.hl,
+  left_sep = provider_project_uo.left_sep,
+  { " " },
+  right_sep = provider_project_uo.right_sep
+}
+
+-- Display <e> 0x65
+M.AsciiComponent = {}
+
+M.FiletypeComponent = {
+  -- Enable if current window width is higher than 100
+  enabled = function()
+    return vim.api.nvim_win_get_width(0) > 100
+  end,
+  provider = 'file_type',
+  left_sep = ' ',
+  right_sep = {
+    ' ',
+    {
+      str = 'slant_left_2_thin',
+      hl = {
+        fg = 'fg',
+        bg = 'bg',
+      },
+    },
+    ' ',
+  },
+}
+
 
 return M
 

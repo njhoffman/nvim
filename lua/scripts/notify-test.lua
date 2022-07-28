@@ -1,27 +1,41 @@
-local notify_cmds = {
-  "lua vim.notify('TESTING')",
-  "lua vim.notify('TESTING 5', 'warn')",
-  "lua vim.notify('TESTING 3', 'info')",
-  "lua vim.notify('TESTING')",
-  "lua vim.notify('TESTING 5', 'warn')",
-  "lua vim.notify('TESTING 3', 'info')",
-  "lua vim.notify('TESTING')",
-}
+local notify = require('notify')
 
-local dbg_test = function()
-  vim.dbg(vim.api.nvim_get_all_options_info())
+local render_options = function(bufnr, notif, highlights)
+  local notify = require('notify')
+  local namespace = vim.api.nvim_create_namespace("notify")
+  -- icon = "",
+  -- id = 2,
+  -- level = "WARN",
+  -- message = { "test message" },
+  -- render = <function 1>,
+  -- time = 1657933850,
+  -- title = { "test title", "20:10" },
+  local icon = notif.message[2].icon
+  local msg = notif.message[1]
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, msg)
+  vim.api.nvim_buf_set_extmark(bufnr, namespace, 0, 0, {
+    hl_group = highlights.icon,
+    end_line = #msg - 1,
+    end_col = #notif.message[#msg][1],
+  })
 end
 
-local notify_error = function()
-  local str = "Error loading telescope plugin: telescope-find-pickers - .../start/telescope.nvim/"
-  str = str .. "lua/telescope/_extensions/init.lua:10: 'telescope-find-pickers' extension doesn't "
-  str = str ..
-    "exist or isn't installed: module 'telescope._extensions.telescope-find-pickers' not found:"
-  vim.notify(str, "error")
-end
+local notify_test = function()
+  notify({
+    { '~/.config/nvim/lua/colorschemes/lush-themes/nord-nvim.lua' },
+    { icon = '' }
+  }, 'task', {
+    render = render_options,
+  })
 
-return {
-  notify_cmds = notify_cmds,
-  notify_error = notify_error,
-  dbg_test = dbg_test
-}
+  vim.fn.timer_start(3000, function()
+    notify.dismiss()
+    notify({
+      { '~/ghq/github.com/njhoffman/fzfmenu/proto-widgets/fzf-preview/fzf-preview.plugin.zsh' },
+      { icon = '' }
+    }, 'task', {
+      render = render_options,
+      anchor = 'TC'
+    })
+  end)
+end

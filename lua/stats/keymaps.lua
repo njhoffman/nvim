@@ -1,5 +1,5 @@
-local wk = require("which-key")
-local Mapper = require("mappings.mapper")
+local wk = vim.import("which-key")
+local Mapper = vim.import("mappings.mapper")
 
 local function length(T)
   local count = 0
@@ -12,12 +12,12 @@ end
 local M = {}
 
 M.get_whichkey_lists = function()
-  local wk_keys = require("which-key.keys")
-  local wk_lists = {conflicts = {}, duplicates = {}, ok = {}, todo = {}}
+  local wk_keys = vim.import("which-key.keys")
+  local wk_lists = { conflicts = {}, duplicates = {}, ok = {}, todo = {} }
 
   local conflicts = {}
   for _, tree in pairs(wk_keys.mappings) do
-    wk_keys.update_keymaps(tree.mode, tree.buf)
+    -- wk_keys.update_keymaps(tree.mode, tree.buf)
     tree.tree:walk(
       function(node)
         local count = 0
@@ -27,7 +27,7 @@ M.get_whichkey_lists = function()
         local auto_prefix = not node.mapping or (node.mapping.group == true and not node.mapping.cmd)
         if node.prefix ~= "" and count > 0 and not auto_prefix then
           local cmd = node.mapping.cmd or " "
-          table.insert(conflicts, {mode = tree.mode, lhs = node.mapping.prefix, rhs = cmd})
+          table.insert(conflicts, { mode = tree.mode, lhs = node.mapping.prefix, rhs = cmd })
         end
       end
     )
@@ -55,7 +55,7 @@ M.get_whichkey_lists = function()
             if type(todo[node.mapping.prefix]) ~= "nil" then
               table.insert(todo[node.mapping.prefix].buffers, bufnr)
             else
-              todo[node.mapping.prefix] = {buffers = {bufnr}, cmd = node.mapping.cmd or ""}
+              todo[node.mapping.prefix] = { buffers = { bufnr }, cmd = node.mapping.cmd or "" }
             end
           end
         end
@@ -134,10 +134,8 @@ M.get_counts = function()
     -- whichkey_group = {},
     -- whichkey_nogroup = {}
   }
-  stats.mapper.total =
-    stats.mapper.normal + stats.mapper.visual + stats.mapper.insert + stats.mapper.operator + stats.mapper.command
-  stats.neovim.total =
-    stats.neovim.normal + stats.neovim.visual + stats.neovim.insert + stats.neovim.operator + stats.neovim.command
+  stats.mapper.total = stats.mapper.normal + stats.mapper.visual + stats.mapper.insert + stats.mapper.operator + stats.mapper.command
+  stats.neovim.total = stats.neovim.normal + stats.neovim.visual + stats.neovim.insert + stats.neovim.operator + stats.neovim.command
 
   return stats
 end

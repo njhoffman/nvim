@@ -1,21 +1,23 @@
+-- https://raw.githubusercontent.com/rcarriga/nvim-notify/master/README.md
 -- increase fade in frequency
+-- local render = require("plugins.config.nvim-notify-render")
 local stages = require("plugins.config.nvim-notify-stages")
 local cols = math.floor(vim.opt.columns:get() / 3 * 2)
 
 local baseConfig = {
-  level = "info",
+  level = vim.log.levels.TRACE,
+  -- level = 0,
   fps = 30,
   render = 'default',
-  stages = stages.fade_in_slide_out_stages,
-  background_colour = "FloatShadow",
-  -- background_colour = "#000000",
+  -- stages = stages.fade_in_slide_out_stages,
+  stages = 'fade',
+  -- background_colour = "FloatShadow",
+  background_colour = "#000000",
   -- Default timeout for notifications
   timeout = 5000,
   -- maximium_width = 90,
   minimum_width = 15,
   maximum_width = cols,
-  -- For stages that change opacity this is treated as the highlight behind the window
-  -- Icons for the different levels
   icons = {
     ERROR = "",
     WARN = "",
@@ -27,6 +29,7 @@ local baseConfig = {
     STATUS = ""
   }
 }
+
 
 require("notify").setup(baseConfig)
 
@@ -60,49 +63,6 @@ require("notify").setup(baseConfig)
 --   api.nvim_buf_set_extmark(bufnr, namespace, 0, 0, {
 --     hl_group = highlights.icon,
 --     end_line = #notif.message - 1,
---     end_col = #notif.message[#notif.message],
---   })
--- end
-
--- default render
--- local api = vim.api
--- local namespace = api.nvim_create_namespace("nvim-notify")
-
--- return function(bufnr, notif, highlights)
---   local left_icon = notif.icon .. " "
---   local max_width = math.max(
---     math.max(unpack(vim.tbl_map(function(line)
---       return vim.fn.strchars(line)
---     end, notif.message))),
---     50
---   )
---   local left_title = notif.title[1] .. string.rep(" ", max_width)
---   local right_title = notif.title[2]
---   api.nvim_buf_set_lines(bufnr, 0, 1, false, { "", "" })
---   api.nvim_buf_set_extmark(bufnr, namespace, 0, 0, {
---     virt_text = {
---       { " " },
---       { left_icon, highlights.icon },
---       { left_title, highlights.title },
---     },
---     virt_text_win_col = 0,
---     priority = max_width,
---   })
---   api.nvim_buf_set_extmark(bufnr, namespace, 0, 0, {
---     virt_text = { { right_title, highlights.title }, { " " } },
---     virt_text_pos = "right_align",
---     priority = max_width,
---   })
---   api.nvim_buf_set_extmark(bufnr, namespace, 1, 0, {
---     virt_text = { { string.rep("━", max_width), highlights.border } },
---     virt_text_win_col = 0,
---     priority = max_width,
---   })
---   api.nvim_buf_set_lines(bufnr, 2, 2 + #notif.message, false, notif.message)
-
---   api.nvim_buf_set_extmark(bufnr, namespace, 2, 0, {
---     hl_group = highlights.body,
---     end_line = 1 + #notif.message,
 --     end_col = #notif.message[#notif.message],
 --   })
 -- end

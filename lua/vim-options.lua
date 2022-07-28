@@ -10,6 +10,7 @@ local buffer = { o, bo }
 local window = { o, wo }
 
 -- global scope
+opt("termguicolors", true)
 opt("backup", false)
 opt("writebackup", true)
 opt("backupcopy", "auto")
@@ -20,7 +21,7 @@ opt("textwidth", 1000)
 opt("swapfile", false)
 opt("clipboard", "unnamedplus")
 
-opt("cmdheight", 1) -- 1
+opt("cmdheight", 0) -- 1
 opt("cmdwinheight", 10)
 opt("cedit", "<M-w>")
 
@@ -72,7 +73,6 @@ opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- win
 opt("fileencoding", "utf-8")
 opt("whichwrap", "b,s,<,>,[,],h,l")
 opt("autoread", true)
-
 -- opt("completeopt", "menuone,longest")
 
 -- window scope
@@ -87,7 +87,6 @@ opt("number", true, window)
 opt("relativenumber", true, window)
 opt("signcolumn", "yes:2", window)
 opt("wrap", config.Opts.wrap, window)
--- vim.wo.wrap = O.wrap_lines -- Display long lines as just one line
 
 -- buffer scope
 opt("expandtab", true, buffer)
@@ -113,75 +112,6 @@ opt("showmatch", true)
 -- How many tenths of a second to blink when matching brackets
 opt("matchtime", 3)
 
-
-
-
-vim.g.clipboard = {
-  name = "xsel",
-  copy = {
-    ["+"] = { "xsel", "--nodetach", "-i", "-b" },
-    ["*"] = { "xsel", "--nodetach", "-i", "-p" }
-  },
-  paste = {
-    ["+"] = { "xsel", "-o", "-b" },
-    ["*"] = { "xsel", "-o", "-p" }
-  },
-  cache_enabled = 1
-}
--- " To force a reload:
--- 10	"   :unlet g:loaded_clipboard_provider
--- 11	"   :runtime autoload/provider/clipboard.vim
--- 12	let g:loaded_clipboard_provider = 1
-
-vim.g.qf_disable_statusline = true -- This should be the default
-vim.g.Eunuch_find_executable = "fd" -- I use my fork of vim-eunuch
-vim.g.Illuminate_ftblacklist = { ".*" } -- Only use lsp highlighting from the plugin
-vim.g.netrw_banner = false
-vim.g.netrw_silent = 1
--- vim.g.netrw_http_cmd = 'curl'
--- vim.g.netrw_http_xcmd = '-o'
-
-vim.g.tex_flavor = "latex"
-vim.g.vimtex_view_method = "skim"
-vim.g.vimtex_quickfix_mode = true
-vim.g.vimtex_compiler_latexmk = {
-  options = {
-    "-pdf",
-    "-shell-escape",
-    "-verbose",
-    "-file-line-error",
-    "-synctex=1",
-    "-interaction=nonstopmode"
-  }
-}
-vim.g["test#strategy"] = "neovim"
-vim.g.tex_flavor = "latex"
-vim.g.indent_blankline_char = "│"
-vim.g.indent_blankline_filetype = { "rust", "go", "lua", "json", "ruby" }
-vim.g.indent_blankline_use_treesitter = true
-vim.g.loaded_ruby_provider = true
-
--- fixes unlisted buffer error
--- https://github.com/romgrk/barbar.nvim/issues/82#issuecomment-748498951
-vim.g.netrw_bufsettings = "noma nomod nonu nowrap ro buflisted"
-
--- Allows users to specify the type of embedded script highlighting they want:  (perl/python/ruby/tcl support)
-vim.g.vimsyn_embed = "--lmpPr"
-
--- filetype.nvim -- requires nightly
-
-if (vim.v.version >= 800) then
-  vim.g.do_filetype_lua = 1
-  vim.g.did_load_filetypes = 0
-end
-
--- bats
--- Whether or not to add dollar sign to iskeyword.
-vim.g.bats_vim_consider_dollar_as_part_of_word = 1
-
--- pgsql default for sql files
-vim.g.sql_type_default = "pgsql"
-
 -- wildchar/charm for wildmenu
 -- 0x1a ^Z, 0x1b ^[, 0x0e C-n
 opt("wildignore", "*.o,*~,*.pyc")
@@ -198,23 +128,3 @@ opt("wildignore", "*.o,*~,*.pyc")
 -- vim.o.pumheight = 10 -- Makes popup menu smaller
 -- vim.o.timeoutlen = O.timeoutlen -- By default timeoutlen is 1000 ms
 -- vim.g.nvim_tree_disable_netrw = O.nvim_tree_disable_netrw
-
--- *sessionoptions*
---
--- blank        empty windows
--- buffers      hidden and unloaded buffers, not just those in windows
--- curdir       the current directory
--- folds        manually created folds, opened/closed folds and local fold options
--- globals      global variables that start with an uppercase letter and contain at least one lowercase letter.  Only String and Number types are stored.
--- help         the help window
--- localoptions options and mappings local to a window or buffer (not global values for local options)
--- options      all options and mappings (also global values for local options)
--- skiprtp      exclude 'runtimepath' and 'packpath' from the options
--- resize       size of the Vim window: 'lines' and 'columns'
--- sesdir       the directory in which the session file is located will become the current directory (useful with projects accessed over a network from different systems)
--- tabpages     all tab pages; without this only the current tab page is restored, so that you can make a session for each tab page separately
--- terminal     include terminal windows where the command can be restored
--- winpos       position of the whole Vim window
--- winsize      window sizes
--- slash        |deprecated| Always enabled. Uses "/" in filenames.
--- unix         |deprecated| Always enabled. Uses "\n" line endings.

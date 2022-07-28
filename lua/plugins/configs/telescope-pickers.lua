@@ -4,7 +4,7 @@ local command_rg = { "rg", "--ignore", "--hidden", "--sort", "path", "--files" }
 -- Dropdown list theme using a builtin theme definitions :
 local dropdown = require "telescope.themes".get_dropdown({
   winblend = 20,
-  layout_config = { width = 0.5 },
+  -- layout_config = { width = 0.5 },
   -- results_height = 15,
   previewer = false,
   find_command = command_rg
@@ -50,8 +50,8 @@ end
 
 _G._FindBufferLeaderF = function()
   local leaderf = require("plugins.configs.telescope-leaderf")
-  -- local opts = vim.deepcopy(dropdown_preview)
-  local opts = {}
+  local opts = vim.deepcopy(dropdown_preview)
+  -- local opts = {}
   opts.prompt_title = "Buffers"
   opts.entry_maker = leaderf.gen_from_buffer_like_leaderf()
   require("telescope.builtin").buffers(opts)
@@ -59,8 +59,8 @@ end
 
 _G._FindBufferLeaderFNoPreview = function()
   local leaderf = require("plugins.configs.telescope-leaderf")
-  local opts = {}
-  -- local opts = vim.deepcopy(dropdown)
+  -- local opts = {}
+  local opts = vim.deepcopy(dropdown)
   opts.prompt_title = "Buffers"
   opts.entry_maker = leaderf.gen_from_buffer_like_leaderf()
   require("telescope.builtin").buffers(opts)

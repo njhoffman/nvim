@@ -23,11 +23,13 @@ M.on_attach = function(client, bufnr)
     if client.server_capabilities.colorProvider then
       require("lsp.servers.tailwind-colorizer").buf_attach(bufnr)
     end
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-    capabilities.textDocument.colorProvider = { dynamicRegistration = false }
+    client.server_capabilities.textDocument.completion.completionItem.snippetSupport = true
+    client.server_capabilities.textDocument.colorProvider = { dynamicRegistration = false }
   end
 
 
+  -- keymap("n", "<C-]>", "gd tags or definitions or help or man, opts)
+  -- keymap("n", "<C-S-]>", "cyle references, diagnostics, gotofiles", opts)
   keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev({ enable_popup = false })<CR>", opts)
   keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next({ enable_popup = false })<CR>", opts)
   keymap("n", "[g", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)

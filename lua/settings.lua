@@ -1,5 +1,6 @@
 -- local treeParsers = require('settings-parsers')
 local settings = {}
+local get_option_value = require("utils.options").get_option_value
 
 settings.Load = {
   type = "normal", -- normal, async
@@ -11,15 +12,19 @@ settings.Load = {
 
 -- TODO: notify_level and notify_visual_level, telescope log, dap log, efm log
 settings.Logging = {
-  notify_level = "trace",
+  notify_level_show = get_option_value('notify_level_show'),
+  notify_level_record = get_option_value('notify_level_record'),
+  notify_level_log = get_option_value('notify_level_log'),
   log_level = "debug",
   console_level = "debug",
-  lsp_level = "info"
+  lsp_level = "warn"
 }
 
 local levels = vim.lsp.log_levels
 settings.Logging.numeric = {
-  notify_level = levels[settings.Logging.notify_level:upper()],
+  notify_level_show = levels[settings.Logging.notify_level_show:upper()],
+  notify_level_record = levels[settings.Logging.notify_level_record:upper()],
+  notify_level_log = levels[settings.Logging.notify_level_log:upper()],
   log_level = levels[settings.Logging.log_level:upper()],
   console_level = levels[settings.Logging.console_level:upper()],
   lsp_level = levels[settings.Logging.lsp_level:upper()]

@@ -3,27 +3,41 @@
 -- strace gvim -V9log.txt file.tex > stdout.txt 2> stderr.txt
 
 require("globals")
-for _, mod_name in ipairs(
-  {
-    "impatient",
-    "user-options",
-    "vim-options",
-    "mappings",
-    "plugins.load",
-    "project",
-    "buffers",
-    "lsp",
-    "stats.list",
-    "commands",
-    "autocommands",
-    "dashboard"
-  }
-) do
+for _, mod_name in ipairs({
+  "impatient",
+  "vim-options",
+  "project",
+  "mappings",
+  "plugins.load",
+  "buffers",
+  "lsp",
+  "stats.list",
+  "commands",
+  "autocommands",
+  "dashboard"
+}) do
   vim.import(mod_name)
 end
 
 vim.cmd [[
-  BarbarColors
+  try
+    colorscheme nord-nick
+    set background=dark
+  " hi Normal guibg=none ctermbg=none
+  " hi LineNr guibg=none ctermbg=none
+  " hi Folded guibg=none ctermbg=none
+  " hi NonText guibg=none ctermbg=none
+  " hi SpecialKey guibg=none ctermbg=none
+  " hi VertSplit guibg=none ctermbg=none
+  " hi SignColumn guibg=none ctermbg=none
+  " hi EndOfBuffer guibg=none ctermbg=none
+  " hi StatusLine guibg=NONE
+  " hi StatusLineNC guibg=NONE guifg=NONE
+    syntax sync fromstart
+    BarbarColors
+  catch /^Vim\%((\a\+)\)\=:E185/
+    colorscheme default
+    set background=dark
 ]]
 
 

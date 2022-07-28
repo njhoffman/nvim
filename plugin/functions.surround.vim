@@ -4,6 +4,8 @@
 " Version:      2.1
 " GetLatestVimScripts: 1697 1 :AutoInstall: surround.vim
 
+" should not need anymore
+finish
 if exists("g:loaded_surround") || &cp || v:version < 700
   finish
 endif

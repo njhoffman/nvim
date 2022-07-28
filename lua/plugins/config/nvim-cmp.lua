@@ -127,7 +127,7 @@ local setupConfig = {
     ),
     completion = cmp.config.window.bordered({
       -- winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:Visual,Search:None",
-      max_width = 40,
+      -- max_width = 80,
       winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None"
     })
   },
@@ -135,7 +135,7 @@ local setupConfig = {
     fields = { "kind", "abbr", "menu" },
     -- offset, exact, score, recently_used, locality, kind, sort_text, length, order
     format = function(entry, vim_item)
-      local max_len = 40
+      local max_len = 50
       if string.len(vim_item.abbr) > max_len then
         vim_item.abbr = string.sub(vim_item.abbr, 1, max_len - 2) .. "··"
       end

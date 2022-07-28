@@ -1,10 +1,10 @@
-local stats_list = require("stats.list")
+local stats_list = vim.import("stats.list")
 
-local Popup = require("nui.popup")
-local event = require("nui.utils.autocmd").event
+local Popup = vim.import("nui.popup")
+local event = vim.import("nui.utils.autocmd").event
 
 local popup = Popup({
-  position = { row = "90%", col = "100%"},
+  position = { row = "90%", col = "100%" },
   size = {
     width = 25,
     height = 20,
@@ -15,12 +15,12 @@ local popup = Popup({
   relative = "editor",
   border = {
     highlight = "FloatBorder",
-        padding = {
-          top = 1,
-          bottom = 1,
-          left = 1,
-          right = 1,
-        },
+    padding = {
+      top = 1,
+      bottom = 1,
+      left = 1,
+      right = 1,
+    },
 
     style = "rounded",
     text = {
@@ -28,10 +28,10 @@ local popup = Popup({
       top_align = "center",
     },
   },
-  -- buf_options = {
-  --   modifiable = false,
-  --   readonly = true,
-  -- },
+  buf_options = {
+    -- modifiable = false,
+    -- readonly = true,
+  },
   win_options = {
     winblend = 50,
     winhighlight = "Normal:Normal",

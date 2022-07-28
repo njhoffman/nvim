@@ -71,7 +71,8 @@ local M = {
     long = "delete buffer with sayonara"
   },
   bufclose_nosave = {
-    cmd = "<cmd>BufDel<cr>",
+    -- cmd = "<cmd>BufDel<cr>",
+    cmd = "<cmd>BufferDelete<cr>",
     short = "buffer close no save",
     long = "close buffer with without saving"
   },

@@ -1,15 +1,15 @@
 local feline = require('feline')
 local defaults = require('feline.default_components').statusline.icons
 -- local defaults = require('feline.default_components').winbar.icons
-local custom_comps = require('plugins.config.feline-nvim-components')
-local custom_providers = require('plugins.config.feline-nvim-providers')
 local colors = require('plugins.config.feline-nvim-colors')
+local custom_comps = require('plugins.config.feline-nvim-components')
+local provider_project_nvim = require('plugins.config.feline-nvim-provider-project-nvim')
+local provider_project_uo = require('plugins.config.feline-nvim-provider-project-uo')
 
 local components = {
   active = {},
   inactive = {}
 }
-
 
 ---@diagnostic disable
 --@format disable
@@ -20,8 +20,90 @@ local components = {
 -- table.insert(components.inactive, {})
 -- table.insert(components.inactive, {})
 
-table.insert(defaults.active[1], 3, custom_comps.ProjectComponent)
+-- defaults.active[1][0] = {
+--   provider = '▊ ',
+--   hl = {
+--     fg = 'skyblue',
+--   }
+-- }
+-- defaults.active[1][1] = {
+--   provider = 'vi_mode',
+--   hl = function()
+--     return {
+--       name = vi_mode_utils.get_mode_highlight_name(),
+--       fg = vi_mode_utils.get_mode_color(),
+--       style = 'bold',
+--     }
+--   end
+-- }
+
+-- defaults.active[1][2] = {
+--   provider = 'file_info',
+--   hl = {
+--     fg = 'white',
+--     bg = 'oceanblue',
+--     style = 'bold',
+--   },
+--   left_sep = {
+--     'slant_left_2',
+--     { str = ' ', hl = { bg = 'oceanblue', fg = 'NONE' } },
+--   },
+--   right_sep = {
+--     { str = ' ', hl = { bg = 'oceanblue', fg = 'NONE' } },
+--     'slant_right_2',
+--     ' ',
+--   },
+-- }
+-- defaults.active[1][3] = {
+--   provider = 'file_size',
+--   right_sep = {
+--     ' ',
+--     {
+--       str = 'slant_left_2_thin',
+--       hl = {
+--         fg = 'fg',
+--         bg = 'bg',
+--       },
+--     },
+--   },
+-- }
+-- defaults.active[1][4] = {
+--   provider = 'position',
+--   left_sep = ' ',
+--   right_sep = {
+--     ' ',
+--     {
+--       str = 'slant_right_2_thin',
+--       hl = {
+--         fg = 'fg',
+--         bg = 'bg',
+--       },
+--     },
+--   },
+-- }
+-- defaults.active[1][5] = {
+--   provider = 'diagnostic_errors',
+--   hl = { fg = 'red' },
+-- }
+-- defaults.active[1][6] = {
+--   provider = 'diagnostic_warnings',
+--   hl = { fg = 'yellow' },
+-- }
+-- defaults.active[1][7] = {
+--   provider = 'diagnostic_hints',
+--   hl = { fg = 'cyan' },
+-- }
+-- defaults.active[1][8] = {
+--   provider = 'diagnostic_info',
+--   hl = { fg = 'skyblue' },
+-- }
+
+-- table.insert(defaults.active[1], 3, custom_comps.ProjectNvimComponent)
+-- defaults.active[1][4].left_sep = { hl = { bg = "oceanblue" }, str = " " }
+table.insert(defaults.active[1], 3, custom_comps.ProjectUoComponent)
 defaults.active[1][4].left_sep = { hl = { bg = "oceanblue" }, str = " " }
+table.insert(defaults.active[1], 7, custom_comps.FiletypeComponent)
+--
 -- table.insert(components.active[1], defaults.active.vi_mode.left)
 -- table.insert(components.active[1], defaults.active[1])
 -- table.insert(components.active[1], custom_comps.ProjectComponent)
@@ -84,7 +166,10 @@ feline.setup({
     },
     bufnames = {},
   },
-  custom_providers = custom_providers
+  custom_providers = {
+    project_nvim = provider_project_nvim.provider,
+    project_uo = provider_project_uo.provider,
+  }
   -- highlight_reset_triggers = { 'SessionLoadPost', 'ColorScheme' }
   -- conditional_components = { {
   --  -- Only use this components table for the 2nd window

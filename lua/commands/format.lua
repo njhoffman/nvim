@@ -112,3 +112,26 @@ vim.api.nvim_create_user_command(
   trim_space,
   { nargs = '?', range = '%', addr = 'lines', preview = trim_space }
 )
+
+
+local function delete_special()
+  if vim.api.nvim_get_current_line():match("^%s*$") then
+    return "\"_dd"
+  else
+    return "dd"
+  end
+end
+
+-- vim.keymap.set("n", "dd", delete_special, { noremap = true, expr = true })
+
+local function delete_special_v()
+  local l, _ = unpack(vim.api.nvim_win_get_cursor(0))
+  for _, line in ipairs(vim.api.nvim_buf_get_lines(0, l - 1, l, true)) do
+    if line:match("^%s*$") then
+      return "\"_d"
+    end
+  end
+  return "d"
+end
+
+-- vim.keymap.set("v", "d", delete_special_v, { noremap = true, expr = true })

@@ -23,7 +23,7 @@ local cfg = {
   hi_parameter = "LspSignatureActiveParameter", -- how your parameter will be highlight
   max_height = 12, -- max height of signature floating_window, if content is more than max_height, you can scroll down
   doc_lines = 10, -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
-  max_width = 60, -- 80 max_width of signature floating_window, line will be wrapped if exceed max_width
+  max_width = 80, -- max_width of signature floating_window, line will be wrapped if exceed max_width
   -- to view the hiding contents
   close_timeout = 4000, -- close floating window after ms when laster parameter is entered
   handler_opts = {

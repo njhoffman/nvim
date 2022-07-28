@@ -118,9 +118,9 @@ lush(
       -- + UI Components +
       -- +---------------+
       -- +-- Attributes --+
-      Bold { sp = spec.bold },
-      Italic { sp = spec.italic },
-      Underline { sp = spec.underline },
+      Bold { gui = spec.bold },
+      Italic { gui = spec.italic },
+      Underline { gui = spec.underline },
       -- +-- Editor --+
       ColorColumn { bg = clrs.nord1 },
       Cursor { fg = clrs.nord0, bg = clrs.nord4 },
@@ -164,7 +164,7 @@ lush(
       VisualNOS { bg = clrs.nord2 },
       -- +-- Gutter --+
       CursorColumn { bg = clrs.nord1 },
-      CursorIM = { fg = clrs.cursor, bg = clrs.none, style = "reverse" }, -- like Cursor, but used when in IME mode
+      CursorIM = { fg = clrs.cursor, bg = clrs.none, gui = "reverse" }, -- like Cursor, but used when in IME mode
       CursorLineNr {
         fg = clrs.nord4,
         bg = cfg.nord_cursor_line_number_background == 1 and nil or clrs.nord1
@@ -209,20 +209,20 @@ lush(
         gui = "NONE"
       },
       -- +--- Other ---+
-      CommandMode = { fg = clrs.gray, bg = nord.none, style = "reverse" },
-      InsertMode = { fg = clrs.nord14, bg = nord.none, style = "reverse" },
-      NormalMode = { fg = clrs.accent, bg = nord.none, style = "reverse" },
-      ReplacelMode = { fg = clrs.nord11, bg = nord.none, style = "reverse" },
-      VisualMode = { fg = clrs.nord9, bg = nord.none, style = "reverse" },
+      CommandMode = { fg = clrs.gray, bg = nord.none, gui = "reverse" },
+      InsertMode = { fg = clrs.nord14, bg = nord.none, gui = "reverse" },
+      NormalMode = { fg = clrs.accent, bg = nord.none, gui = "reverse" },
+      ReplacelMode = { fg = clrs.nord11, bg = nord.none, gui = "reverse" },
+      VisualMode = { fg = clrs.nord9, bg = nord.none, gui = "reverse" },
       Debug = { fg = clrs.nord11 }, -- debugging statements
       Ignore = { fg = clrs.disabled }, -- left blank, hidden
-      QuickFixLine = { fg = clrs.highlight, clrs.nord6, style = "reverse" },
-      ToolbarButton = { fg = clrs.fg, bg = clrs.none, style = "bold" },
+      QuickFixLine = { fg = clrs.highlight, clrs.nord6, gui = "reverse" },
+      ToolbarButton = { fg = clrs.fg, bg = clrs.none, gui = "bold" },
       ToolbarLine = { fg = clrs.fg, bg = clrs.bg_alt },
       healthError = { fg = clrs.error },
       healthSuccess = { fg = clrs.nord14 },
       healthWarning = { fg = clrs.nord15 },
-      qfLineNr = { fg = clrs.highlight, clrs.nord6, style = "reverse" },
+      qfLineNr = { fg = clrs.highlight, clrs.nord6, gui = "reverse" },
       -- +----------------------+
       -- + Language Base Groups +
       -- +----------------------+
@@ -305,7 +305,7 @@ lush(
       TSEmphasis = { fg = clrs.nord10 }, -- For text to be represented with emphasis.
       TSUnderline = { fg = clrs.fg, bg = clrs.none }, -- For text to be represented with an underline.
       TSStrike = {}, -- For strikethrough text.
-      TSTitle = { fg = clrs.nord10, bg = clrs.none, style = "bold" }, -- Text that is part of a title.
+      TSTitle = { fg = clrs.nord10, bg = clrs.none, gui = "bold" }, -- Text that is part of a title.
       TSLiteral = { fg = clrs.fg }, -- Literal text.
       TSURI = { fg = clrs.link }, -- Any URI like a link or email.
       TSComment = { fg = clrs.nord3_bright },
@@ -453,8 +453,8 @@ lush(
       htmlH6 { markdownH1 },
       htmlSpecialChar { SpecialChar },
       htmlTagN { htmlTag },
-      pandocReferenceURL = { gui = "none", style = "none" },
-      pandocUListItem = { gui = "none", style = "none" },
+      pandocReferenceURL = { gui = "none", gui = "none" },
+      pandocUListItem = { gui = "none", gui = "none" },
       javaDocTags { fg = clrs.nord7 },
       javaCommentTitle { Comment },
       javaScriptBraces { Delimiter },
@@ -554,7 +554,7 @@ lush(
       DashboardShortCut = { fg = clrs.nord7 },
       DashboardHeader = { fg = clrs.nord9 },
       DashboardCenter = { fg = clrs.nord8 },
-      DashboardFooter = { fg = clrs.nord14, style = "italic" },
+      DashboardFooter = { fg = clrs.nord14, gui = "italic" },
       -- ALE
       -- > w0rp/ale
       ALEWarningSign { fg = clrs.nord13 },
@@ -700,12 +700,12 @@ lush(
       TelescopeMatching = { fg = clrs.nord8 },
       TelescopeNormal = { fg = clrs.fg, bg = clrs.float },
       -- NvimTree
-      NvimTreeRootFolder = { fg = clrs.nord7, style = "bold" },
+      NvimTreeRootFolder = { fg = clrs.nord7, gui = "bold" },
       NvimTreeGitDirty = { fg = clrs.nord15 },
       NvimTreeGitNew = { fg = clrs.nord14 },
       NvimTreeImageFile = { fg = clrs.nord15 },
       NvimTreeExecFile = { fg = clrs.nord14 },
-      NvimTreeSpecialFile = { fg = clrs.nord9, style = spec.underline },
+      NvimTreeSpecialFile = { fg = clrs.nord9, gui = spec.underline },
       NvimTreeFolderName = { fg = clrs.nord10 },
       NvimTreeEmptyFolderName = { fg = clrs.disabled },
       NvimTreeFolderIcon = { fg = clrs.accent },
@@ -717,7 +717,7 @@ lush(
       -- WhichKey
       -- LspSaga
       DiagnosticError = { fg = clrs.error },
-      -- DiagnosticWarn = { fg = clrs.nord15 },
+      DiagnosticWarn = { fg = clrs.nord15 },
       DiagnosticInformation = { fg = clrs.nord10 },
       -- DiagnosticHint = { fg = clrs.nord9 },
       DiagnosticTruncateLine = { fg = clrs.fg },

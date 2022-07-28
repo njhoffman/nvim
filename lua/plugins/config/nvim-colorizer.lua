@@ -1,20 +1,7 @@
-local plugin = {}
-
-function plugin.load()
-  require "colorizer".setup(
-    {
-      "*",
-      css = {mode = "background"}
-    },
-    {mode = "foreground", names = false}
-  )
-end
-
-function plugin.setup(use)
-  use {"norcalli/nvim-colorizer.lua", config = plugin.load}
-end
-
-return plugin
+require "colorizer".setup({
+  "*",
+  css = { mode = "background" }
+}, { mode = "background", names = false })
 
 -- RGB      = true;         -- #RGB hex codes
 -- RRGGBB   = true;         -- #RRGGBB hex codes

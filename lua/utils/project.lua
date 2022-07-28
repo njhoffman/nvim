@@ -1,32 +1,35 @@
 local M = {}
 
-local get_icon = function(dir, method, lsp)
+local get_icon = function(method, lsp)
   local icon_map = {
-    awk_ls = " ",
-    bashls = " ",
-    clangd = " ",
-    cssls = " ",
-    dockerls = " ",
-    efm = " ",
-    golangci_lint_ls = " ",
-    gopls = " ",
-    graphql = " ",
-    html = " ",
-    jsonls = " ",
-    pylsp = "  ",
-    sqls = " ",
-    sumneko_lua = " ",
-    terraformls = " ",
-    tsserver = " ",
-    vimls = " ",
+    awk_ls           = " ",
+    bashls           = " ",
+    clangd           = " ",
+    cssls            = " ",
+    dockerls         = " ",
+    efm              = " ",
+    golangci_lint_ls = " ",
+    gopls            = " ",
+    graphql          = " ",
+    html             = " ",
+    jsonls           = " ",
+    pylsp            = " ",
+    sqls             = " ",
+    sumneko_lua      = " ",
+    terraformls      = " ",
+    tsserver         = " ",
+    vimls            = " ",
     -- "yamlls"
   }
-  local icon = "  "
+
+  local icon = " "
   if method == ".git" then
-    icon = "  "
+    icon = " "
   elseif type(lsp) == "string" and lsp ~= "" then
     if type(icon_map[lsp]) == "string" then
       icon = icon_map[lsp]
+    else
+      vim.notify('no matching icon found: ' .. lsp, 'warn')
     end
   end
   return icon
@@ -35,16 +38,11 @@ end
 M.change_project = function(dir, method)
   local lsp = string.match(method, '"([^%s]+)" lsp')
   dir = dir:gsub(vim.fn.getenv("HOME"), "~")
-  local icon = get_icon(dir, method, lsp)
-  local msg = icon .. " " .. dir
-
-  if method == ".git" then
-    msg = icon .. " " .. method
-    vim.dbglog('git project: ' .. msg)
-  elseif type(lsp) == "string" and lsp ~= "" then
-    msg = icon .. " " .. dir
-  end
-  vim.notify(msg, "debug")
+  local icon = get_icon(method, lsp)
+  local msg = icon .. " "
+  msg = msg .. dir
+  -- msg = msg .. lsp .. " " .. dir
+  vim.notify(msg, "trace")
 end
 
 M.project_config = {
@@ -73,7 +71,7 @@ M.project_config = {
   -- Path where project.nvim will store the project history for use in
   -- telescope
   datapath = vim.fn.stdpath("data"),
-  chdir_func = project_chdir
+  chdir_func = M.change_project
 }
 
 return M

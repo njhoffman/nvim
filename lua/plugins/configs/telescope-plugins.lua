@@ -301,6 +301,12 @@ M.extensions.media_files = {
   -- font-viewer (fontpreview)? fd, rg, etc
 }
 
+M.extensions.z = {
+  cmd = { 'z', '-l' },
+  -- cmd = { vim.o.shell, '-c', 'z -l' },
+}
+
+
 M.extensions.arecibo = {
   ["selected_engine"] = "google",
   ["url_open_command"] = "xdg-open",

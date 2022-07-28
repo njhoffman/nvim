@@ -55,6 +55,7 @@ function my_make_entry.gen_from_buffer_like_leaderf(opts)
     local indicator = entry.flag .. hidden .. readonly .. changed
 
     local dir_name = vim.fn.fnamemodify(bufname, ":p:h")
+    dir_name = string.gsub(dir_name, os.getenv("HOME"), "~")
     local file_name = vim.fn.fnamemodify(bufname, ":p:t")
 
     local icons, highlight = devicons.get_icon(bufname, string.match(bufname, "%a+$"), { default = true })

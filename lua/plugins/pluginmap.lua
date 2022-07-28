@@ -74,7 +74,7 @@ M.picker_plugins = {
   -- },
   ["nvim-spotify"] = {
     "KadoBOT/nvim-spotify",
-    requires = "nvim-telescope/telescope.nvim",
+    requires = "telescope.nvim",
     run = "make"
   },
   ["tmuxjump.vim"] = { "shivamashtikar/tmuxjump.vim", requires = "junegunn/fzf.vim" }
@@ -100,17 +100,18 @@ M.motion_plugins = {
 }
 
 M.format_plugins = {
-  ["kommentary"] = { "b3nj5m1n/kommentary" },
+  ["kommentary"]      = { "b3nj5m1n/kommentary" },
   ["inc-rename.nvim"] = { "smjonas/inc-rename.nvim" },
-  ["nvim-autopairs"] = { "windwp/nvim-autopairs" }, -- jiangmiao/auto-pairs
-  ["splitjoin.vim"] = { "andrewradev/splitjoin.vim" }, -- FooSoft/vim-argwrap
-  ["vim-easy-align"] = { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
-  ["vim-table-mode"] = { "dhruvasagar/vim-table-mode" },
-  ["dial.nvim"] = { "monaqa/dial.nvim" },
-  ["iswap.nvim"] = { "mizlan/iswap.nvim" },
-  ["text-case.nvim"] = { "johmsalas/text-case.nvim" },
-  ["vim-camelsnek"] = { "nicwest/vim-camelsnek" },
-  ["vim-checkbox"] = { "jkramer/vim-checkbox" },
+  ["nvim-autopairs"]  = { "windwp/nvim-autopairs" }, -- jiangmiao/auto-pairs
+  ["nvim-surround"]   = { "kylechui/nvim-surround" },
+  ["splitjoin.vim"]   = { "andrewradev/splitjoin.vim" }, -- FooSoft/vim-argwrap
+  ["vim-easy-align"]  = { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
+  ["vim-table-mode"]  = { "dhruvasagar/vim-table-mode" },
+  ["dial.nvim"]       = { "monaqa/dial.nvim" },
+  ["iswap.nvim"]      = { "mizlan/iswap.nvim" },
+  ["text-case.nvim"]  = { "johmsalas/text-case.nvim" },
+  ["vim-camelsnek"]   = { "nicwest/vim-camelsnek" },
+  ["vim-checkbox"]    = { "jkramer/vim-checkbox" },
   ["vim-sort-motion"] = { "christoomey/vim-sort-motion" },
   ["telekasten.nvim"] = { "renerocksai/telekasten.nvim", requires = { "renerocksai/calendar-vim" } }
 }
@@ -121,127 +122,129 @@ M.syntax_plugins = {
   -- use "tpope/vim-liquid"
   -- use "xolox/vim-lua-inspect"
   -- use { "xolox/vim-lua-ftplugin", requires = "xolox/vim-misc" }
-  ["BetterLua.vim"] = { "euclidianace/betterlua.vim" },
-  ["Dockerfile.vim"] = { "ekalinin/dockerfile.vim" },
-  ["alchemist.vim"] = "slashmili/alchemist.vim",
-  ["ansible-vim"] = { "pearofducks/ansible-vim" },
-  ["bat.vim"] = { "jamespwilliams/bat.vim" },
-  ["bats.vim"] = { "aliou/bats.vim" },
-  ["conflict-marker.vim"] = { "rhysd/conflict-marker.vim" },
-  ["dash.vim"] = "rizzatti/dash.vim",
-  ["editorconfig-vim"] = { "editorconfig/editorconfig-vim" },
-  ["elm-vim"] = "elmcast/elm-vim",
-  ["emmet-vim"] = "mattn/emmet-vim",
-  ["glow.nvim"] = { "npxbr/glow.nvim" },
-  ["haskell-vim"] = "neovimhaskell/haskell-vim",
-  ["i3-vim-syntax"] = { "potatoesmaster/i3-vim-syntax" },
-  ["jshint.vim"] = "vim-scripts/jshint.vim",
-  ["json5.vim"] = { "gutenye/json5.vim" },
-  ["jsonc.vim"] = { "neoclide/jsonc.vim" },
-  ["mkdx"] = { "SidOfc/mkdx" },
-  ["nginx.vim"] = { "chr4/nginx.vim" },
-  ["pgsql.vim"] = { "lifepillar/pgsql.vim" },
-  ["php.vim"] = { "stanangeloff/php.vim" },
-  ["requirements.txt.vim"] = { "raimon49/requirements.txt.vim" },
-  ["scss-syntax.vim"] = { "cakebaker/scss-syntax.vim" },
-  ["tabular"] = { "godlygeek/tabular" },
-  ["tmux.vim"] = { "ericpruitt/tmux.vim" },
-  ["vim-autoprefixer"] = "Ioannis-Kapoulas/vim-autoprefixer",
-  ["vim-coffee-script"] = "kchmck/vim-coffee-script",
+  ["BetterLua.vim"]              = { "euclidianace/betterlua.vim" },
+  ["Dockerfile.vim"]             = { "ekalinin/dockerfile.vim" },
+  ["alchemist.vim"]              = "slashmili/alchemist.vim",
+  ["ansible-vim"]                = { "pearofducks/ansible-vim" },
+  ["bat.vim"]                    = { "jamespwilliams/bat.vim" },
+  ["bats.vim"]                   = { "aliou/bats.vim" },
+  ["conflict-marker.vim"]        = { "rhysd/conflict-marker.vim" },
+  ["dash.vim"]                   = "rizzatti/dash.vim",
+  ["editorconfig-vim"]           = { "editorconfig/editorconfig-vim" },
+  ["elm-vim"]                    = "elmcast/elm-vim",
+  ["emmet-vim"]                  = "mattn/emmet-vim",
+  ["glow.nvim"]                  = { "npxbr/glow.nvim" },
+  ["haskell-vim"]                = "neovimhaskell/haskell-vim",
+  ["i3-vim-syntax"]              = { "potatoesmaster/i3-vim-syntax" },
+  ["jshint.vim"]                 = "vim-scripts/jshint.vim",
+  ["json5.vim"]                  = { "gutenye/json5.vim" },
+  ["jsonc.vim"]                  = { "neoclide/jsonc.vim" },
+  ["mkdx"]                       = { "SidOfc/mkdx" },
+  ["nginx.vim"]                  = { "chr4/nginx.vim" },
+  ["pgsql.vim"]                  = { "lifepillar/pgsql.vim" },
+  ["php.vim"]                    = { "stanangeloff/php.vim" },
+  ["requirements.txt.vim"]       = { "raimon49/requirements.txt.vim" },
+  ["scss-syntax.vim"]            = { "cakebaker/scss-syntax.vim" },
+  ["tabular"]                    = { "godlygeek/tabular" },
+  ["tmux.vim"]                   = { "ericpruitt/tmux.vim" },
+  ["vim-autoprefixer"]           = "Ioannis-Kapoulas/vim-autoprefixer",
+  ["vim-coffee-script"]          = "kchmck/vim-coffee-script",
   ["vim-cpp-enhanced-highlight"] = { "octol/vim-cpp-enhanced-highlight" },
-  ["vim-elixir"] = "elixir-lang/vim-elixir",
-  ["vim-fireplace"] = "tpope/vim-fireplace",
-  ["vim-git"] = { "tpope/vim-git" },
-  ["vim-gitignore"] = { "gisphm/vim-gitignore" },
-  ["vim-glsl"] = { "tikhomirov/vim-glsl" },
-  ["vim-graphql"] = { "jparise/vim-graphql" },
-  ["vim-hindent"] = "alx741/vim-hindent",
-  ["vim-jinja2-syntax"] = { "glench/vim-jinja2-syntax" },
-  ["vim-jq"] = { "bfrg/vim-jq" },
-  ["vim-js"] = { "yuezk/vim-js" },
-  ["vim-jsbeautify"] = "maksimr/vim-jsbeautify",
-  ["vim-json"] = { "elzr/vim-json" },
-  ["vim-jsx-pretty"] = { "maxmellon/vim-jsx-pretty" },
-  ["vim-kubernetes"] = { "andrewstuart/vim-kubernetes" },
-  ["vim-liquid"] = { "njhoffman/vim-liquid" },
-  ["vim-log-highlighting"] = { "mtdl9/vim-log-highlighting" },
-  ["vim-lua"] = { "tbastos/vim-lua" },
-  ["vim-man"] = { "njhoffman/vim-man" }, -- {"vim-utils/vim-man"},
-  ["vim-nix"] = { "lnl7/vim-nix" },
-  ["vim-node"] = { "moll/vim-node" },
-  ["vim-pandoc-syntax"] = { "vim-pandoc/vim-pandoc-syntax" },
-  ["vim-puppet"] = { "rodjek/vim-puppet" },
-  ["vim-salve"] = "tpope/vim-salve",
-  ["vim-systemd-syntax"] = { "wgwoods/vim-systemd-syntax" },
-  ["vim-terraform"] = { "hashivim/vim-terraform" },
-  ["yats.vim"] = { "herringtondarkholme/yats.vim" },
-  ["zinit-vim-syntax"] = { "zdharma-continuum/zinit-vim-syntax" }
+  ["vim-elixir"]                 = "elixir-lang/vim-elixir",
+  ["vim-fireplace"]              = "tpope/vim-fireplace",
+  ["vim-git"]                    = { "tpope/vim-git" },
+  ["vim-gitignore"]              = { "gisphm/vim-gitignore" },
+  ["vim-glsl"]                   = { "tikhomirov/vim-glsl" },
+  ["vim-graphql"]                = { "jparise/vim-graphql" },
+  ["vim-hindent"]                = "alx741/vim-hindent",
+  ["vim-jinja2-syntax"]          = { "glench/vim-jinja2-syntax" },
+  ["vim-jq"]                     = { "bfrg/vim-jq" },
+  ["vim-js"]                     = { "yuezk/vim-js" },
+  ["vim-jsbeautify"]             = "maksimr/vim-jsbeautify",
+  ["vim-json"]                   = { "elzr/vim-json" },
+  ["vim-jsx-pretty"]             = { "maxmellon/vim-jsx-pretty" },
+  ["vim-kubernetes"]             = { "andrewstuart/vim-kubernetes" },
+  ["vim-liquid"]                 = { "njhoffman/vim-liquid" },
+  ["vim-log-highlighting"]       = { "mtdl9/vim-log-highlighting" },
+  ["vim-lua"]                    = { "tbastos/vim-lua" },
+  ["vim-man"]                    = { "njhoffman/vim-man" }, -- {"vim-utils/vim-man"},
+  ["vim-nix"]                    = { "lnl7/vim-nix" },
+  ["vim-node"]                   = { "moll/vim-node" },
+  ["vim-pandoc-syntax"]          = { "vim-pandoc/vim-pandoc-syntax" },
+  ["vim-puppet"]                 = { "rodjek/vim-puppet" },
+  ["vim-salve"]                  = "tpope/vim-salve",
+  ["vim-systemd-syntax"]         = { "wgwoods/vim-systemd-syntax" },
+  ["vim-terraform"]              = { "hashivim/vim-terraform" },
+  ["yats.vim"]                   = { "herringtondarkholme/yats.vim" },
+  ["zinit-vim-syntax"]           = { "zdharma-continuum/zinit-vim-syntax" }
 }
 
 M.completion_plugins = {
-  ["nvim-cmp"] = { "hrsh7th/nvim-cmp" },
-  ["cmp-nvim-lsp-document-symbol"] = { "hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp" },
-  ["cmp-emoji"] = { "hrsh7th/cmp-emoji", after = "nvim-cmp" },
-  ["cmp-nvim-lua"] = { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
-  ["cmp-nvim-lsp"] = { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
-  ["cmp-calc"] = { "hrsh7th/cmp-calc", after = "nvim-cmp" },
-  ["cmp-omni"] = { "hrsh7th/cmp-omni", after = "nvim-cmp" },
-  ["cmp-cmdline"] = { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
-  ["cmp-fuzzy-path"] = {
+  ["nvim-cmp"]                             = { "hrsh7th/nvim-cmp" },
+  -- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },
+  ["cmp-nvim-lsp-document-symbol"]         = { "hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp" },
+  ["cmp-emoji"]                            = { "hrsh7th/cmp-emoji", after = "nvim-cmp" },
+  ["cmp-nvim-lua"]                         = { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
+  ["cmp-nvim-lsp"]                         = { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
+  ["cmp-calc"]                             = { "hrsh7th/cmp-calc", after = "nvim-cmp" },
+  ["cmp-omni"]                             = { "hrsh7th/cmp-omni", after = "nvim-cmp" },
+  ["cmp-cmdline"]                          = { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
+  ["cmp-fuzzy-path"]                       = {
     "tzachar/cmp-fuzzy-path",
     requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" }
   },
-  ["cmp-fuzzy-buffer"] = {
+  ["cmp-fuzzy-buffer"]                     = {
     "tzachar/cmp-fuzzy-buffer",
     requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" }
   },
-  ["cmp_luasnip"] = { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp", requires = "L3MON4D3/LuaSnip" },
-  ["cmp-nvim-lsp-signature-help"] = { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" },
-  ["cmp-treesitter"] = { "ray-x/cmp-treesitter", after = "nvim-cmp" },
-  ["cmp-spell"] = { "f3fora/cmp-spell", after = "nvim-cmp" },
-  ["cmp-npm"] = { "David-Kunz/cmp-npm", after = "nvim-cmp" },
-  ["cmp-zsh"] = { "tamago324/cmp-zsh", after = "nvim-cmp" },
-  ["cmp-vimwiki-tags"] = { "pontusk/cmp-vimwiki-tags", after = "nvim-cmp" },
-  ["cmp-pandoc-references"] = { "jc-doyle/cmp-pandoc-references", after = "nvim-cmp" },
-  -- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },
-  ["cmp-git"] = { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", after = "nvim-cmp" },
-  ["cmp-tmux"] = { "andersevenrud/cmp-tmux", after = "nvim-cmp" },
-  ["LuaSnip"] = { "L3MON4D3/LuaSnip" },
-  ["LuaSnip-snippets.nvim"] = { "molleweide/LuaSnip-snippets.nvim" },
-  ["friendly-snippets"] = { "rafamadriz/friendly-snippets" },
-  ["vim-snippets"] = { "honza/vim-snippets" },
-  ["vs-snippets"] = { "kitagry/vs-snippets" },
+  ["cmp_luasnip"]                          = { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp", requires = "L3MON4D3/LuaSnip" },
+  ["cmp-nvim-lsp-signature-help"]          = { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" },
+  ["cmp-treesitter"]                       = { "ray-x/cmp-treesitter", after = "nvim-cmp" },
+  ["cmp-spell"]                            = { "f3fora/cmp-spell", after = "nvim-cmp" },
+  ["cmp-npm"]                              = { "David-Kunz/cmp-npm", after = "nvim-cmp" },
+  ["cmp-zsh"]                              = { "tamago324/cmp-zsh", after = "nvim-cmp" },
+  ["cmp-vimwiki-tags"]                     = { "pontusk/cmp-vimwiki-tags", after = "nvim-cmp" },
+  ["cmp-pandoc-references"]                = { "jc-doyle/cmp-pandoc-references", after = "nvim-cmp" },
+  ["cmp-git"]                              = { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", after = "nvim-cmp" },
+  ["cmp-tmux"]                             = { "andersevenrud/cmp-tmux", after = "nvim-cmp" },
+  ["LuaSnip"]                              = { "L3MON4D3/LuaSnip" },
+  ["LuaSnip-snippets.nvim"]                = { "molleweide/LuaSnip-snippets.nvim" },
+  ["friendly-snippets"]                    = { "rafamadriz/friendly-snippets" },
+  ["vim-snippets"]                         = { "honza/vim-snippets" },
+  ["vs-snippets"]                          = { "kitagry/vs-snippets" },
   ["vscode-es7-javascript-react-snippets"] = {
     "dsznajder/vscode-es7-javascript-react-snippets",
     run = "yarn install --frozen-lockfile && yarn compile"
   },
-  ["nvim-luaref"] = { "milisims/nvim-luaref" },
-  ["luv-vimdocs"] = { "nanotee/luv-vimdocs" }
+  ["nvim-luaref"]                          = { "milisims/nvim-luaref" },
+  ["luv-vimdocs"]                          = { "nanotee/luv-vimdocs" }
 }
 
 M.ui_plugins = {
   -- ["startup.nvim"] = {
   --   use = {"startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}}
   -- },
-  ["aerial.nvim"] = { "stevearc/aerial.nvim" },
-  ["dressing-nvim"] = { "stevearc/dressing.nvim", requires = "MunifTanjim/nui.nvim" },
-  ["nvim-hlslens"] = { "kevinhwang91/nvim-hlslens" },
-  ["nvim-notify"] = { "rcarriga/nvim-notify" },
-  ["nvim-scrollbar"] = { "petertriho/nvim-scrollbar" },
-  ["specs.nvim"] = { "edluffy/specs.nvim" },
-  ["stabilize.nvim"] = { "luukvbaal/stabilize.nvim" },
+  ["aerial.nvim"]        = { "stevearc/aerial.nvim" },
+  ["dressing-nvim"]      = { "stevearc/dressing.nvim", requires = "MunifTanjim/nui.nvim" },
+  ["nvim-hlslens"]       = { "kevinhwang91/nvim-hlslens" },
+  ["nvim-notify"]        = { "~/git/nvim-notify" },
+  ["nvim-scrollbar"]     = { "petertriho/nvim-scrollbar" },
+  ["specs.nvim"]         = { "edluffy/specs.nvim" },
+  ["stabilize.nvim"]     = { "luukvbaal/stabilize.nvim" },
   ["todo-comments.nvim"] = { "robertgzr/todo-comments.nvim" }, -- folke/todo-comments
-  ["twilight.nvim"] = { "folke/twilight.nvim" },
-  ["vim-HiLinkTrace"] = { "gerw/vim-HiLinkTrace" },
-  ["vim-bling"] = { "ivyl/vim-bling" },
-  ["vim-cool"] = { "romainl/vim-cool" },
-  ["vim-hexokinase"] = { "RRethy/vim-hexokinase", run = "make hexokinase" },
+  ["twilight.nvim"]      = { "folke/twilight.nvim" },
+  ["vim-HiLinkTrace"]    = { "gerw/vim-HiLinkTrace" },
+  ["vim-bling"]          = { "ivyl/vim-bling" },
+  ["vim-cool"]           = { "romainl/vim-cool" },
+  -- ["nvim-highlight-colors"] = { "brenoprata10/nvim-highlight-color" },
+  -- ["vim-hexokinase"]     = { "RRethy/vim-hexokinase", run = "make hexokinase" },
+  ["nvim-colorizer"]     = { "norcalli/nvim-colorizer.lua" },
   ["vim-plugin-AnsiEsc"] = { "joeysino/vim-plugin-AnsiEsc" },
-  ["vimade"] = { "TaDaa/vimade" },
-  ["which-key.nvim"] = { "folke/which-key.nvim" },
-  ["zen-mode.nvim"] = { "folke/zen-mode.nvim" },
-  ["hop.nvim"] = { "phaazon/hop.nvim" },
-  ["tabout.nvim"] = { "abecodes/tabout.nvim",
+  ["vimade"]             = { "TaDaa/vimade" },
+  ["which-key.nvim"]     = { "folke/which-key.nvim" },
+  ["zen-mode.nvim"]      = { "folke/zen-mode.nvim" },
+  ["hop.nvim"]           = { "phaazon/hop.nvim" },
+  ["tabout.nvim"]        = { "abecodes/tabout.nvim",
     wants = { 'nvim-treesitter' }, -- or require if not used so far
     after = { 'nvim-cmp' }, -- if a completion plugin is using tabs load it before
     config = function()
@@ -259,49 +262,51 @@ M.ui_plugins = {
 }
 
 M.project_plugins = {
-  ["auto-session"] = { "rmagatti/auto-session" },
+  ["auto-session"]     = { "rmagatti/auto-session" },
   ["competitest.nvim"] = { "xeluxee/competitest.nvim", requires = "MunifTanjim/nui.nvim" },
-  ["cpbooster.vim"] = { "searleser97/cpbooster.vim" },
-  ["gitsigns.nvim"] = { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
-  ["octo.nvim"] = { "pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons" },
-  ["vim-flog"] = { "rbong/vim-flog" },
-  ["vim-fugitive"] = { "tpope/vim-fugitive" },
-  ["vim-rhubarb"] = { "tpope/vim-rhubarb" },
-  ["vim-wakatime"] = { "wakatime/vim-wakatime" }
+  ["cpbooster.vim"]    = { "searleser97/cpbooster.vim" },
+  ["gitsigns.nvim"]    = { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
+  ["octo.nvim"]        = { "pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons" },
+  ["vim-flog"]         = { "rbong/vim-flog" },
+  ["vim-fugitive"]     = { "tpope/vim-fugitive" },
+  ["vim-rhubarb"]      = { "tpope/vim-rhubarb" },
+  ["vim-wakatime"]     = { "wakatime/vim-wakatime" }
 }
 
 M.interface_plugins = {
   -- ["yank-history"] = {"yazgoo/yank-history"},
-  ["alpha-nvim"] = { "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" },
-  ["diffview.nvim"] = { "sindrets/diffview.nvim" },
-  ["nvim-bqf"] = { "kevinhwang91/nvim-bqf" },
-  ["nvim-tree.lua"] = { "kyazdani42/nvim-tree.lua" },
-  ["perfanno.nvim"] = { "t-troebst/perfanno.nvim" },
+  ["alpha-nvim"]     = { "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" },
+  ["diffview.nvim"]  = { "sindrets/diffview.nvim" },
+  ["nvim-bqf"]       = { "kevinhwang91/nvim-bqf" },
+  ["nvim-tree.lua"]  = { "kyazdani42/nvim-tree.lua" },
+  ["perfanno.nvim"]  = { "t-troebst/perfanno.nvim" },
   ["quickmath.nvim"] = { "jbyuki/quickmath.nvim" },
   ["registers.nvim"] = { "tversteeg/registers.nvim" },
-  ["vim-floaterm"] = { "voldikss/vim-floaterm" },
+  ["vim-floaterm"]   = { "voldikss/vim-floaterm" },
   -- ["vim-mundo"] = { "simnalamburt/vim-mundo" },
-  ["undotree"] = { "mbbill/undotree" },
-  ["vim-qf"] = { "romainl/vim-qf" },
-  ["vim-qf-history"] = { "bfrg/vim-qf-history" },
-  ["vim-yoink"] = { "svermeulen/vim-yoink" }
+  ["undotree"]       = { "mbbill/undotree" },
+  ["vim-qf"]         = { "romainl/vim-qf" },
+  ["vim-yoink"]      = { "svermeulen/vim-yoink" }
 }
 
 M.integration_plugins = {
-  ["asynctasks.vim"] = { "skywind3000/asynctasks.vim", requires = "skywind3000/asyncrun.vim" },
-  ["cheat.sh-vim"] = { "dbeniamine/cheat.sh-vim" },
-  ["id3.vim"] = { "AndrewRadev/id3.vim" },
-  ["nvim-magic"] = {
+  ["asynctasks.vim"]    = { "skywind3000/asynctasks.vim", requires = "skywind3000/asyncrun.vim" },
+  ["tasks.nvim"]        = { "GustavoKatel/tasks.nvim" },
+  ["pantran.nvim"]      = { "potamides/pantran.nvim" },
+  ["colortils.nvim"]    = { "nvim-colortils/colortils.nvim" },
+  ["cheat.sh-vim"]      = { "dbeniamine/cheat.sh-vim" },
+  ["id3.vim"]           = { "AndrewRadev/id3.vim" },
+  ["nvim-magic"]        = {
     "jameshiew/nvim-magic",
     requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" }
   },
-  ["sniprun"] = { "michaelb/sniprun", run = "bash ./install.sh" },
+  ["sniprun"]           = { "michaelb/sniprun", run = "bash ./install.sh" },
   ["package-info.nvim"] = { "vuki656/package-info.nvim", requires = "MunifTanjim/nui.nvim" },
-  ["vim-ripple"] = { "urbainvaes/vim-ripple" },
-  ["vim-test"] = { "vim-test/vim-test" },
-  ["rest.nvim"] = { "NTBBloodbath/rest.nvim" },
-  ["lazygit.nvim"] = { "kdheepak/lazygit.nvim" },
-  ["tmux.nvim"] = { "aserowy/tmux.nvim" },
+  ["vim-ripple"]        = { "urbainvaes/vim-ripple" },
+  ["vim-test"]          = { "vim-test/vim-test" },
+  ["rest.nvim"]         = { "NTBBloodbath/rest.nvim" },
+  ["lazygit.nvim"]      = { "kdheepak/lazygit.nvim" },
+  ["tmux.nvim"]         = { "aserowy/tmux.nvim" },
   ["nvim-regexplainer"] = {
     "bennypowers/nvim-regexplainer",
     requires = {
@@ -312,38 +317,38 @@ M.integration_plugins = {
 }
 
 M.sysutil_plugins = {
-  ["structlog"] = { "Tastyep/structlog.nvim" },
-  ["vim-renamer"] = { "qpkorr/vim-renamer" },
+  ["structlog"]              = { "Tastyep/structlog.nvim" },
+  ["vim-renamer"]            = { "qpkorr/vim-renamer" },
   ["nvim-remote-containers"] = { "jamestthompson3/nvim-remote-containers" },
-  ["suda.vim"] = { "lambdalisue/suda.vim" },
-  ["vim-symlink"] = { "aymericbeaumet/vim-symlink" },
-  ["vim-profiler"] = { "bchretien/vim-profiler" },
-  ["startuptime.vim"] = { "tweekmonster/startuptime.vim" },
-  ["plenary.nvim"] = { "nvim-lua/plenary.nvim" },
+  ["suda.vim"]               = { "lambdalisue/suda.vim" },
+  ["vim-symlink"]            = { "aymericbeaumet/vim-symlink" },
+  ["vim-profiler"]           = { "bchretien/vim-profiler" },
+  ["startuptime.vim"]        = { "tweekmonster/startuptime.vim" },
+  ["plenary.nvim"]           = { "nvim-lua/plenary.nvim" },
 }
 
 M.lsp_plugins = {
-  -- ["fidget.nvim"] = { "j-hui/fidget.nvim" },
-  ["null-ls.nvim"] = { "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" },
-  ["lua-dev.nvim"] = { "folke/lua-dev.nvim" },
-  ["lsp-colors.nvim"] = { "folke/lsp-colors.nvim" },
-  ["nvim-lightbulb"] = { "kosayoda/nvim-lightbulb" },
-  ["lsp_signature.nvim"] = { "ray-x/lsp_signature.nvim" },
-  ["lspsaga.nvim"] = { "tami5/lspsaga.nvim" },
+  ["fidget.nvim"]           = { "j-hui/fidget.nvim" },
+  ["null-ls.nvim"]          = { "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" },
+  ["lua-dev.nvim"]          = { "folke/lua-dev.nvim" },
+  ["lsp-colors.nvim"]       = { "folke/lsp-colors.nvim" },
+  ["nvim-lightbulb"]        = { "kosayoda/nvim-lightbulb" },
+  ["lsp_signature.nvim"]    = { "ray-x/lsp_signature.nvim" },
+  ["lspsaga.nvim"]          = { "tami5/lspsaga.nvim" },
   ["nvim-code-action-menu"] = { "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu" },
-  ["nvim-lsp-installer"] = { "williamboman/nvim-lsp-installer", requires = "neovim/nvim-lspconfig" },
-  ["nvim-lspconfig"] = { "neovim/nvim-lspconfig" },
-  ["trouble.nvim"] = { "folke/trouble.nvim" },
-  ["ntangle-lsp.nvim"] = {
+  ["nvim-lsp-installer"]    = { "williamboman/nvim-lsp-installer", requires = "neovim/nvim-lspconfig" },
+  ["nvim-lspconfig"]        = { "neovim/nvim-lspconfig" },
+  ["trouble.nvim"]          = { "folke/trouble.nvim" },
+  ["ntangle-lsp.nvim"]      = {
     "jbyuki/ntangle-lsp.nvim",
     requires = { "jbyuki/ntangle-ts.nvim", "neovim/nvim-lspconfig" }
   },
-  ["sqls.nvim"] = { "nanotee/sqls.nvim", after = "nvim-lspconfig" }
+  ["sqls.nvim"]             = { "nanotee/sqls.nvim", after = "nvim-lspconfig" }
 }
 
 M.theme_plugins = {
-  ["lush.nvim"] = { "rktjmp/lush.nvim", commit = "fa7694f" },
-  ["barbar"] = { "romgrk/barbar.nvim" },
+  ["lush.nvim"]   = { "rktjmp/lush.nvim" },
+  ["barbar"]      = { "romgrk/barbar.nvim", commit = "fa3ff25" },
   ["feline.nvim"] = { "feline-nvim/feline.nvim" }
 }
 
@@ -419,13 +424,13 @@ M.load_plugins = function(use, load_config)
   -- local skip = M.concat_array(env_skip, load_config.skip)
 
   local all_plugins = {
+    M.completion_plugins,
     M.mapping_plugins,
     M.dap_plugins,
     M.format_plugins,
     M.integration_plugins,
     M.interface_plugins,
     M.lsp_plugins,
-    M.completion_plugins,
     M.motion_plugins,
     M.picker_plugins,
     M.project_plugins,
@@ -434,7 +439,7 @@ M.load_plugins = function(use, load_config)
     M.sysutil_plugins,
     M.theme_plugins,
     M.treesitter_plugins,
-    M.ui_plugins
+    M.ui_plugins,
   }
 
   for _, plugin_set in pairs(all_plugins) do

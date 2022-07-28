@@ -71,9 +71,16 @@ if LSP.virtual_text == nil then
 end
 
 -- Logging
-if Logging.notify_level == nil then
-  Logging.notify_level = "debug"
+if Logging.notify_level_show == nil then
+  Logging.notify_level_show = "debug"
 end
+if Logging.notify_level_record == nil then
+  Logging.notify_level_record = "trace"
+end
+if Logging.notify_level_log == nil then
+  Logging.notify_level_log = "trace"
+end
+
 if Logging.log_level == nil then
   Logging.log_level = "debug"
 end

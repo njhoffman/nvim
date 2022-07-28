@@ -40,14 +40,14 @@ local clrs = {
 local clr_over = {
   -- select ion = "#2F3243",
   -- -selection = "#0f2a56",
-  selection = "#122244",
-  orange = "#cc8877",
-  yellow = "#bdb994",
+  selection    = "#122244",
+  orange       = "#cc8877",
+  yellow       = "#bdb994",
   yellow_faded = "#7B6B3B",
   purple_faded = "#6A6CAB",
-  red_faded = "#7F212A",
-  green_faded = "#128A67",
-  blue_faded = "#5171A1"
+  red_faded    = "#7F212A",
+  green_faded  = "#128A67",
+  blue_faded   = "#5171A1"
 }
 
 return function()
@@ -59,6 +59,8 @@ return function()
     -- ui components
     NormalFloat { fg = "#8f93a2", bg = "none" }, -- normal text and background color for floating windows
     FloatBorder { fg = "#3f5382", bg = "none" }, --
+    ColorColumn { bg = "none" },
+
     Pmenu { fg = "#618cc4", bg = "#090918" },
     PmenuSel { fg = "#44bfcf", bg = "#1a1f2f" },
     PmenuSbar { fg = "#313c84", bg = "#202331" },
@@ -314,19 +316,6 @@ return function()
     pandocAtxStart { fg = "#4575f8" },
     helpHyperTextJump { fg = "#6585b8" },
     --
-    -- -- WhichKey
-    --     WhichKey = { fg = clrs.accent, style = "bold" },
-    --     WhichKeyGroup = { fg = clrs.text },
-    --     WhichKeyDesc = { fg = clrs.nord7, style = "italic" },
-    --     WhichKeySeperator = { fg = clrs.fg },
-    --     WhichKeyFloating = { bg = clrs.float },
-    --     WhichKeyFloat = { bg = clrs.float },
-    WhichKey { fg = "#f78077", style = "bold" }, --Function
-    WhichKeyGroup { fg = "#619cf4" }, -- Keyword
-    -- WhichKeyDesc  { fg = clrs.nord7, style = "italic" }, -- Identifier
-    -- WhichKeySeperator  { fg = clrs.fg }, -- DiffAdded
-    WhichKeyFloat { bg = NormalFloat.bg }, -- NormalFloat
-    -- WhichKeyValue { bg = clrs.float }, -- Comment
     InfoWindowFloat { fg = "#2886bf", bg = "none" },
     BqfPreviewFloat { Normal },
     BqfPreviewBorder { Normal },

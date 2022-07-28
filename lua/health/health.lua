@@ -4,12 +4,13 @@ local plugins = require("health.plugins")
 
 local M = {}
 function M.check()
-  vim.fn["health#report_start"]("checking keymap statistics")
+  vim.health.report_start("checking keymap statistics")
   keymap.stats(true)
-  vim.fn["health#report_ok"]("KeyMap Stats Finished")
-  vim.fn["health#report_start"]("checking environment statistics")
+  vim.health.report_ok("KeyMap Stats Finished")
+
+  vim.health.report_start("checking environment statistics")
   envmap.stats(true)
-  vim.fn["health#report_ok"]("Environment Stats Finished")
+  vim.health.report_ok("Environment Stats Finished")
   -- vim.fn["health#report_start"]("Nick: checking plugin statistics")
   -- plugins.stats()
   -- vim.fn["health#report_start"]("Nick: checking system statistics")
