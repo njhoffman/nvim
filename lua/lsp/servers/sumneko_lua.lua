@@ -1,3 +1,4 @@
+-- https://www.reddit.com/r/neovim/comments/wc0kzl/i_didnt_know_before_that_having_multiple_neovim/
 -- local runtime_path = vim.split(package.path, ";")
 -- table.insert(runtime_path, "lua/?.lua")
 -- table.insert(runtime_path, "lua/?/init.lua")
@@ -18,7 +19,6 @@ local settings = {
       -- version = "LuaJIT", path = runtime_path
       version = "LuaJIT"
     },
-    -- diagnostics = {globals = {"vim", "use"}, disable = {"lowercase-global"}},
     diagnostics = {
       neededFileStatus = {
         ["codestyle-check"] = "Any"
@@ -43,8 +43,9 @@ local settings = {
       }
     },
     workspace = {
+      -- library = vim.api.nvim_get_runtime_file("", true),
       library = {
-        [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+        -- [vim.fn.expand("$VIMRUNTIME/lua")] = true,
         [vim.fn.stdpath("config") .. "/lua"] = true
       }
     },
@@ -58,7 +59,7 @@ M.setup = function(on_attach, capabilities)
 
   local lua_settings = {
     -- root_dir = lspconfig.util.root_pattern(".git", ".project"),
-    -- settings = settings,
+    settings = settings,
     single_file_support = true,
     on_attach = on_attach,
     cmd = { path .. "/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server" },
@@ -76,8 +77,8 @@ M.setup = function(on_attach, capabilities)
     -- runtime_path = false,
     lspconfig = lua_settings
   })
-  lspconfig.sumneko_lua.setup(luadev)
-  -- lspconfig.sumneko_lua.setup(lua_settings)
+  -- lspconfig.sumneko_lua.setup(luadev)
+  lspconfig.sumneko_lua.setup(lua_settings)
 end
 
 return M

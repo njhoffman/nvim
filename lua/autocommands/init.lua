@@ -65,7 +65,7 @@ local autocmds = {
     { "BufNewFile,BufRead", "nord-nvim.lua", "setlocal ft=lush syn=lua" },
     { "BufNewFile,BufRead", "*.t", "setlocal ft=tangle" },
     { "BufNewFile,BufRead", "git", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
-    { "BufNewFile,BufRead", "*.conf", "setlocal ft=conf" },
+    { "BufNewFile,BufRead", "*.conf", "setlocal ft=dosini.conf" },
     { "BufNewFile,BufRead", "*.pa", "setlocal ft=conf" },
     { "BufNewFile,BufRead", "*.service", "setlocal ft=systemd" },
     { "BufNewFile,BufRead", "*.sock", "setlocal ft=systemd" },

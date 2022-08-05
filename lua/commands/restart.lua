@@ -26,14 +26,32 @@ vim.cmd([[
     let l:session_path = s:session_restart_path . s:server_name . '_runonce.vim'
     exe "PackerCompile"
     exe "mksession! " . l:session_path
-    " exit
     quitall
   endfunction
   command Restart call Restart()
 
+  function RestartCmd()
+    let l:session_path = s:session_restart_path . s:server_name . '_runonce.vim'
+    exe "PackerCompile"
+    exe "mksession! " . l:session_path
+    let l:cmds = []
+    for arg in v:argv
+      if arg =~ '^+.*'
+        let l:cmd = substitute(arg, "\+", "", "")
+        let l:cmds += [l:cmd]
+        " TODO: append line to length -1 to keep mode line at botom
+        call writefile([l:cmd], l:session_path, "a")
+      endif
+    endfor
+    call writefile(['let g:argv = ' . string(l:cmds)], l:session_path, "a")
+    " quitall
+  endfunction
+  command RestartCmd call RestartCmd()
+
   function RestartOn()
     " save session file to <servername>_always to indicate an idefinite reload cycle
     let l:session_path = s:session_restart_path . s:server_name . '_always.vim'
+    exe "PackerCompile"
     exe "mksession! " . l:session_path
   endfunction
   command RestartOn call RestartOn()

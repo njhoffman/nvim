@@ -70,7 +70,7 @@ function cmp_mappings()
       end
       fallback()
     end, { 'c' }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
     ['<C-e>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         return cmp.abort()

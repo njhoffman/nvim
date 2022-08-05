@@ -1,5 +1,3 @@
-require("nvim-lsp-installer").setup({})
-
 local make_capabilities = require("lsp.on_attach").make_capabilities
 local on_attach = require("lsp.on_attach").on_attach
 
