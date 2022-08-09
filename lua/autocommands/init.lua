@@ -44,7 +44,7 @@ local autocmds = {
   FiletypeDetect = {
     { "BufNewFile,BufRead", "*", "setlocal signcolumn=yes:1" },
     { "BufNewFile,BufRead", "*startuptime.tsv", "setlocal ft=crontab syn=crontab" },
-    { "BufNewFile,BufRead", "*.log", "lua require('commands').create_cmd_truncate()" },
+    { "BufNewFile,BufRead", "*.log", "lua require('commands').create_cmd_truncate() | setlocal ft=log syn=log" },
     { "BufNewFile,BufRead", "*.ejs", "set ft=html" },
     { "BufNewFile,BufRead", "*.bash*", "let b:is_bash = 1 | setfiletype bash" },
     { "BufNewFile,BufRead", "*.theme", "setlocal ft=config syn=config" },

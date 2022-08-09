@@ -1,7 +1,7 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
 local actions_layout = require "telescope.actions.layout"
 local actions = require("telescope.actions")
-local custom = require("plugins.configs.telescope-custom")
+local custom = require("plugins.config.telescope-custom")
 
 local mainMaps = {
   i = {

@@ -22,7 +22,6 @@ M.map("Navigation", "n", "<leader>!", "bufclose_all")
 M.map("Navigation", "n", "<M-d>", "bufclose_all2")
 M.map("Navigation", "n", "<leader>*", "bufwrite_all")
 M.map("Navigation", "n", "<leader>w", "bufwrite_noa")
-M.map("Navigation", "n", "<leader>d", "bufdelete")
 M.map("Navigation", "n", "<leader>.", "open_altfile")
 M.map("Navigation", "n", "<leader>fn", "open_newfile")
 M.map("Navigation", "n", "<leader>fs", "open_newsplit")
@@ -217,6 +216,7 @@ M.map("Movement", "v", "<C-X>", "swap_visual_block")
 M.map("Interface", "n", '""', "registers")
 M.map("Interface", "n", "<F2>", "whichkey")
 M.map("Interface", "n", "<F3>", "nvim_tree")
+M.map("Interface", "n", "\\", "nvim_tree_2")
 M.map("Interface", "n", "<F4>", "mundo1")
 -- M.map("Interface", "n", "<F5>", "term1")
 M.map("Interface", "n", "<F6>", "treesitter")
@@ -775,7 +775,6 @@ M.registerWhichkey()
 -- ["gf"] = {"<cmd>TSLspFixCurrent<cr>", "eslint fix"},
 -- ["gr"] = {"<cmd>TSLspRenameFile<cr>", "rename file"},
 -- ["gi"] = {"<cmd>TSLspImportAll<cr>", "import all"},
--- vim.api.nvim_set_keymap("n", "<Leader>d", ":Sayonara<CR>", {noremap = true, silent = true})
 -- vim.cmd([[xmap <leader>s <plug>(scratch-selection-reuse)]])
 -- vim.cmd([[xmap <leader>S <plug>(scratch-selection-clear)]])
 -- :map <C-X> <ESC>:x<CR>

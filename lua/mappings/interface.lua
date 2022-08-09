@@ -14,6 +14,11 @@ local M = {
     short = "toggle nvim-tree",
     long  = "toggle nvim-tree",
   },
+  nvim_tree_2 = {
+    cmd   = "<cmd>NvimTreeToggle<cr>",
+    short = "toggle nvim-tree",
+    long  = "toggle nvim-tree",
+  },
   mundo1 = {
     cmd   = "<cmd>MundoToggle<cr>",
     short = "toggle mundo",

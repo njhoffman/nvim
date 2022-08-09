@@ -1,16 +1,20 @@
 local M = {}
 
-M.plugins = {}
-
 M.skipped_plugins = {
-  ["vista.vim"] = { "liuchengxu/vista.vim" }
-}
-
-M.search_plugins = {
-  ["vim-searchsavy"] = { "idbrii/vim-searchsavvy" }
+  ["nvim-bufdel"] = { "ojroques/nvim-bufdel" },
+  ["vista.vim"]   = { "liuchengxu/vista.vim" },
+  ["neo-tree"]    = { "nvim-neo-tree/neo-tree.nvim", branch = "v2.x",
+    disable = true,
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "kyazdani42/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    }
+  }
 }
 
 M.mapping_plugins = {
+  ["vim-printer"] = { "meain/vim-printer" },
   ["vim-repeat"] = { "tpope/vim-repeat" },
   ["vim-alias"] = { "Konfekt/vim-alias" }
 }
@@ -65,13 +69,6 @@ M.dap_plugins = {
 M.picker_plugins = {
   ["cybu.nvim"] = { "ghillb/cybu.nvim" },
   ["legendary.nvim"] = { "mrjones2014/legendary.nvim" },
-  -- ["fzf.vim"] = { "junegunn/fzf.vim", requires = { "junegunn/fzf", "ryanoasis/vim-devicons" } },
-  -- needs tool-versions nodejs 15.14.0
-  -- ["fzf-preview.vim"] = { "yuki-yano/fzf-preview.vim", branch = "release/remote", requires = { "junegunn/fzf" }, run = "function() vim.cmd('UpdateRemotePlugins') end" },
-  -- ["fzf-lua"] = {
-  --   "ibhagwan/fzf-lua",
-  --   requires = { "vijaymarupudi/nvim-fzf", "kyazdani42/nvim-web-devicons" }
-  -- },
   ["nvim-spotify"] = {
     "KadoBOT/nvim-spotify",
     requires = "telescope.nvim",
@@ -81,14 +78,12 @@ M.picker_plugins = {
 }
 
 M.motion_plugins = {
-  -- ["vim-sandwhich"] = {"machakann/vim-sandwich"},
   ["vim-matchup"] = { "andymass/vim-matchup" },
   ["vim-wordmotion"] = { "chaoren/vim-wordmotion" },
   ["vim-smoothie"] = { "psliwka/vim-smoothie", commit = "10fd0aa" }, -- f2aaab1
+  ["vim-searchsavy"] = { "idbrii/vim-searchsavvy" },
   ["clever-f"] = { "rhysd/clever-f.vim" },
-  -- ["marks.nvim"]            = { "chentoast/marks.nvim" },
   ["markdown-preview.nvim"] = { "iamcco/markdown-preview.nvim", run = "cd app && yarn install" },
-  -- ["neuron-v2.vim"]         = { "chiefnoah/neuron-v2.vim" },
   ["neuron.nvim"] = {
     "njhoffman/neuron.nvim",
     requires = {
@@ -97,6 +92,9 @@ M.motion_plugins = {
       "nvim-telescope/telescope.nvim"
     }
   }
+  -- ["vim-sandwhich"] = {"machakann/vim-sandwich"},
+  -- ["marks.nvim"]            = { "chentoast/marks.nvim" },
+  -- ["neuron-v2.vim"]         = { "chiefnoah/neuron-v2.vim" },
 }
 
 M.format_plugins = {
@@ -117,26 +115,21 @@ M.format_plugins = {
 }
 
 M.syntax_plugins = {
-  -- use "kchmck/vim-coffee-script"
-  -- use "plasticboy/vim-markdown"
-  -- use "tpope/vim-liquid"
-  -- use "xolox/vim-lua-inspect"
-  -- use { "xolox/vim-lua-ftplugin", requires = "xolox/vim-misc" }
   ["BetterLua.vim"]              = { "euclidianace/betterlua.vim" },
   ["Dockerfile.vim"]             = { "ekalinin/dockerfile.vim" },
-  ["alchemist.vim"]              = "slashmili/alchemist.vim",
+  ["alchemist.vim"]              = { "slashmili/alchemist.vim" },
   ["ansible-vim"]                = { "pearofducks/ansible-vim" },
   ["bat.vim"]                    = { "jamespwilliams/bat.vim" },
   ["bats.vim"]                   = { "aliou/bats.vim" },
   ["conflict-marker.vim"]        = { "rhysd/conflict-marker.vim" },
-  ["dash.vim"]                   = "rizzatti/dash.vim",
+  ["dash.vim"]                   = { "rizzatti/dash.vim" },
   ["editorconfig-vim"]           = { "editorconfig/editorconfig-vim" },
-  ["elm-vim"]                    = "elmcast/elm-vim",
-  ["emmet-vim"]                  = "mattn/emmet-vim",
+  ["elm-vim"]                    = { "elmcast/elm-vim" },
+  ["emmet-vim"]                  = { "mattn/emmet-vim" },
   ["glow.nvim"]                  = { "npxbr/glow.nvim" },
-  ["haskell-vim"]                = "neovimhaskell/haskell-vim",
+  ["haskell-vim"]                = { "neovimhaskell/haskell-vim" },
   ["i3-vim-syntax"]              = { "potatoesmaster/i3-vim-syntax" },
-  ["jshint.vim"]                 = "vim-scripts/jshint.vim",
+  ["jshint.vim"]                 = { "vim-scripts/jshint.vim" },
   ["json5.vim"]                  = { "gutenye/json5.vim" },
   ["jsonc.vim"]                  = { "neoclide/jsonc.vim" },
   ["mkdx"]                       = { "SidOfc/mkdx" },
@@ -147,20 +140,20 @@ M.syntax_plugins = {
   ["scss-syntax.vim"]            = { "cakebaker/scss-syntax.vim" },
   ["tabular"]                    = { "godlygeek/tabular" },
   ["tmux.vim"]                   = { "ericpruitt/tmux.vim" },
-  ["vim-autoprefixer"]           = "Ioannis-Kapoulas/vim-autoprefixer",
-  ["vim-coffee-script"]          = "kchmck/vim-coffee-script",
+  ["vim-autoprefixer"]           = { "Ioannis-Kapoulas/vim-autoprefixer" },
+  ["vim-coffee-script"]          = { "kchmck/vim-coffee-script" },
   ["vim-cpp-enhanced-highlight"] = { "octol/vim-cpp-enhanced-highlight" },
-  ["vim-elixir"]                 = "elixir-lang/vim-elixir",
-  ["vim-fireplace"]              = "tpope/vim-fireplace",
+  ["vim-elixir"]                 = { "elixir-lang/vim-elixir" },
+  ["vim-fireplace"]              = { "tpope/vim-fireplace" },
   ["vim-git"]                    = { "tpope/vim-git" },
   ["vim-gitignore"]              = { "gisphm/vim-gitignore" },
   ["vim-glsl"]                   = { "tikhomirov/vim-glsl" },
   ["vim-graphql"]                = { "jparise/vim-graphql" },
-  ["vim-hindent"]                = "alx741/vim-hindent",
+  ["vim-hindent"]                = { "alx741/vim-hindent" },
   ["vim-jinja2-syntax"]          = { "glench/vim-jinja2-syntax" },
   ["vim-jq"]                     = { "bfrg/vim-jq" },
   ["vim-js"]                     = { "yuezk/vim-js" },
-  ["vim-jsbeautify"]             = "maksimr/vim-jsbeautify",
+  ["vim-jsbeautify"]             = { "maksimr/vim-jsbeautify" },
   ["vim-json"]                   = { "elzr/vim-json" },
   ["vim-jsx-pretty"]             = { "maxmellon/vim-jsx-pretty" },
   ["vim-kubernetes"]             = { "andrewstuart/vim-kubernetes" },
@@ -172,16 +165,78 @@ M.syntax_plugins = {
   ["vim-node"]                   = { "moll/vim-node" },
   ["vim-pandoc-syntax"]          = { "vim-pandoc/vim-pandoc-syntax" },
   ["vim-puppet"]                 = { "rodjek/vim-puppet" },
-  ["vim-salve"]                  = "tpope/vim-salve",
+  ["vim-salve"]                  = { "tpope/vim-salve" },
   ["vim-systemd-syntax"]         = { "wgwoods/vim-systemd-syntax" },
   ["vim-terraform"]              = { "hashivim/vim-terraform" },
   ["yats.vim"]                   = { "herringtondarkholme/yats.vim" },
   ["zinit-vim-syntax"]           = { "zdharma-continuum/zinit-vim-syntax" }
+  -- use "kchmck/vim-coffee-script"
+  -- use "plasticboy/vim-markdown"
+  -- use "tpope/vim-liquid"
+  -- use "xolox/vim-lua-inspect"
+  -- use { "xolox/vim-lua-ftplugin", requires = "xolox/vim-misc" }
+}
+
+M.telescope_plugins = {
+  -- "njhoffman/telescope.nvim",
+  -- "~/git/telescope.nvim",
+  ["nvim-web-devicons"]              = { "kyazdani42/nvim-web-devicons" },
+  ["telescope.nvim"]                 = { "nvim-telescope/telescope.nvim", requires = {
+    "kyazdani42/nvim-web-devicons",
+    "nvim-lua/popup.nvim",
+    "nvim-lua/plenary.nvim",
+  } },
+  ["nvim-neoclip.lua"]               = { "AckslD/nvim-neoclip.lua", requires = { "tami5/sqlite.lua", module = "sqlite" } },
+  ["nvim-mapper"]                    = { "lazytanuki/nvim-mapper", before = "telescope.nvim",
+    config = function()
+      require("nvim-mapper").setup({})
+    end
+  },
+  ["cheatsheet.nvim"]                = { "sudormrfbin/cheatsheet.nvim" },
+  ["telescope-arecibo.nvim"]         = { "nvim-telescope/telescope-arecibo.nvim" },
+  ["telescope-asynctasks.nvim"]      = { "GustavoKatel/telescope-asynctasks.nvim",
+    requires = "skywind3000/asynctasks.vim" },
+  ["telescope-bookmarks.nvim"]       = { "dhruvmanila/telescope-bookmarks.nvim" },
+  ["telescope-command-palette.nvim"] = { "LinArcX/telescope-command-palette.nvim" },
+  ["telescope-dap.nvim"]             = { "nvim-telescope/telescope-dap.nvim" },
+  ["telescope-file-browser.nvim"]    = { "nvim-telescope/telescope-file-browser.nvim" },
+  ["telescope-frecency.nvim"]        = { "nvim-telescope/telescope-frecency.nvim" },
+  ["telescope-fzf-native.nvim"]      = { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+  ["telescope-ghq.nvim"]             = { "nvim-telescope/telescope-ghq.nvim" },
+  ["telescope-github.nvim"]          = { "nvim-telescope/telescope-github.nvim" },
+  ["telescope-heading.nvim"]         = { "crispgm/telescope-heading.nvim" },
+  ["telescope-hop.nvim"]             = { "nvim-telescope/telescope-hop.nvim" },
+  ["telescope-kubectl.nvim"]         = { "frenchtoasters/telescope-kubectl.nvim" },
+  ["telescope-media-files.nvim"]     = { "nvim-telescope/telescope-media-files.nvim" },
+  ["telescope-node-modules.nvim"]    = { "nvim-telescope/telescope-node-modules.nvim" },
+  ["telescope-npm.nvim"]             = { "elianiva/telescope-npm.nvim" },
+  ["telescope-openbrowser.nvim"]     = { "tamago324/telescope-openbrowser.nvim" },
+  ["telescope-packer.nvim"]          = { "nvim-telescope/telescope-packer.nvim" },
+  ["telescope-repo.nvim"]            = { "cljoly/telescope-repo.nvim" },
+  ["telescope-rg.nvim"]              = { "nvim-telescope/telescope-rg.nvim",
+    requires = { "nvim-telescope/telescope-live-grep-args.nvim" } },
+  ["telescope-symbols.nvim"]         = { "nvim-telescope/telescope-symbols.nvim" },
+  ["telescope-ui-select.nvim"]       = { "nvim-telescope/telescope-ui-select.nvim" },
+  ["telescope-vimwiki.nvim"]         = { "ElPiloto/telescope-vimwiki.nvim" },
+  ["telescope-z.nvim"]               = { "nvim-telescope/telescope-z.nvim" },
+  ["session-lens"]                   = { "rmagatti/session-lens" },
+  ["telescope-changes.nvim"]         = { "LinArcX/telescope-changes.nvim" },
+  ["telescope-luasnip.nvim"]         = { "benfowler/telescope-luasnip.nvim" },
+  ["telescope-tmux.nvim"]            = { "camgraff/telescope-tmux.nvim" },
+  ["telescope-ports.nvim"]           = { "LinArcX/telescope-ports.nvim" },
+  ["github-notifications.nvim"]      = { "rlch/github-notifications.nvim" },
+  ["cder.nvim"]                      = { "Zane-/cder.nvim" },
+  ["howdoi.nvim"]                    = { "Zane-/howdoi.nvim" }
+  -- {"chip/telescope-code-fence.nvim", run = "luarocks --local install lunamark" },
+  -- "keyvchan/telescope-find-pickers.nvim",
+  -- "LinArcX/telescope-env.nvim",
+  -- "moevis/smartjump.nvim",
+  -- "nvim-telescope/telescope-vimspector",
+  -- "benfowler/telescope-luasnip.nvim",
 }
 
 M.completion_plugins = {
   ["nvim-cmp"]                             = { "hrsh7th/nvim-cmp" },
-  -- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },
   ["cmp-nvim-lsp-document-symbol"]         = { "hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp" },
   ["cmp-emoji"]                            = { "hrsh7th/cmp-emoji", after = "nvim-cmp" },
   ["cmp-nvim-lua"]                         = { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
@@ -197,7 +252,8 @@ M.completion_plugins = {
     "tzachar/cmp-fuzzy-buffer",
     requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" }
   },
-  ["cmp_luasnip"]                          = { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp", requires = "L3MON4D3/LuaSnip" },
+  ["cmp_luasnip"]                          = { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp",
+    requires = "L3MON4D3/LuaSnip" },
   ["cmp-nvim-lsp-signature-help"]          = { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" },
   ["cmp-treesitter"]                       = { "ray-x/cmp-treesitter", after = "nvim-cmp" },
   ["cmp-spell"]                            = { "f3fora/cmp-spell", after = "nvim-cmp" },
@@ -205,7 +261,8 @@ M.completion_plugins = {
   ["cmp-zsh"]                              = { "tamago324/cmp-zsh", after = "nvim-cmp" },
   ["cmp-vimwiki-tags"]                     = { "pontusk/cmp-vimwiki-tags", after = "nvim-cmp" },
   ["cmp-pandoc-references"]                = { "jc-doyle/cmp-pandoc-references", after = "nvim-cmp" },
-  ["cmp-git"]                              = { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim", after = "nvim-cmp" },
+  ["cmp-git"]                              = { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim",
+    after = "nvim-cmp" },
   ["cmp-tmux"]                             = { "andersevenrud/cmp-tmux", after = "nvim-cmp" },
   ["LuaSnip"]                              = { "L3MON4D3/LuaSnip" },
   ["LuaSnip-snippets.nvim"]                = { "molleweide/LuaSnip-snippets.nvim" },
@@ -218,12 +275,11 @@ M.completion_plugins = {
   },
   ["nvim-luaref"]                          = { "milisims/nvim-luaref" },
   ["luv-vimdocs"]                          = { "nanotee/luv-vimdocs" }
+  -- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },
+
 }
 
 M.ui_plugins = {
-  -- ["startup.nvim"] = {
-  --   use = {"startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}}
-  -- },
   ["aerial.nvim"]        = { "stevearc/aerial.nvim" },
   ["dressing-nvim"]      = { "stevearc/dressing.nvim", requires = "MunifTanjim/nui.nvim" },
   ["nvim-hlslens"]       = { "kevinhwang91/nvim-hlslens" },
@@ -236,8 +292,6 @@ M.ui_plugins = {
   ["vim-HiLinkTrace"]    = { "gerw/vim-HiLinkTrace" },
   ["vim-bling"]          = { "ivyl/vim-bling" },
   ["vim-cool"]           = { "romainl/vim-cool" },
-  -- ["nvim-highlight-colors"] = { "brenoprata10/nvim-highlight-color" },
-  -- ["vim-hexokinase"]     = { "RRethy/vim-hexokinase", run = "make hexokinase" },
   ["nvim-colorizer"]     = { "norcalli/nvim-colorizer.lua" },
   ["vim-plugin-AnsiEsc"] = { "joeysino/vim-plugin-AnsiEsc" },
   ["vimade"]             = { "TaDaa/vimade" },
@@ -251,7 +305,12 @@ M.ui_plugins = {
       require("plugins.configs.tabout")
     end
   }
-
+  -- ["nvim-highlight-colors"] = { "brenoprata10/nvim-highlight-color" },
+  -- ["vim-hexokinase"]     = { "RRethy/vim-hexokinase", run = "make hexokinase" },
+  -- ["nvim-noicons"] = { 'yamatsum/nvim-nonicons', requires = { 'kyazdani42/nvim-web-devicons' } }
+  -- ["startup.nvim"] = {
+  --   use = {"startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}}
+  -- },
   -- ["icon-picker.nvim"] = { "ziontee113/icon-picker.nvim"}
   -- ["vim-visual-multi"] = { "mg979/vim-visual-multi" },
   -- ["wilder.nvim"] = {
@@ -274,7 +333,6 @@ M.project_plugins = {
 }
 
 M.interface_plugins = {
-  -- ["yank-history"] = {"yazgoo/yank-history"},
   ["alpha-nvim"]     = { "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" },
   ["diffview.nvim"]  = { "sindrets/diffview.nvim" },
   ["nvim-bqf"]       = { "kevinhwang91/nvim-bqf" },
@@ -283,10 +341,11 @@ M.interface_plugins = {
   ["quickmath.nvim"] = { "jbyuki/quickmath.nvim" },
   ["registers.nvim"] = { "tversteeg/registers.nvim" },
   ["vim-floaterm"]   = { "voldikss/vim-floaterm" },
-  -- ["vim-mundo"] = { "simnalamburt/vim-mundo" },
   ["undotree"]       = { "mbbill/undotree" },
   ["vim-qf"]         = { "romainl/vim-qf" },
   ["vim-yoink"]      = { "svermeulen/vim-yoink" }
+  -- ["yank-history"] = {"yazgoo/yank-history"},
+  -- ["vim-mundo"] = { "simnalamburt/vim-mundo" },
 }
 
 M.integration_plugins = {
@@ -434,9 +493,9 @@ M.load_plugins = function(use, load_config)
     M.motion_plugins,
     M.picker_plugins,
     M.project_plugins,
-    M.search_plugins,
     M.syntax_plugins,
     M.sysutil_plugins,
+    M.telescope_plugins,
     M.theme_plugins,
     M.treesitter_plugins,
     M.ui_plugins,

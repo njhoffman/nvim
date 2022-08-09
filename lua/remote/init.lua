@@ -2,7 +2,7 @@ local output_error = function(err)
   vim.notify(err, 'error')
 end
 
-local next_server = '/tmp/nick_tickleshits'
+local next_server = '/tmp/tickleshits'
 
 local assign_target = function()
   return next_server
@@ -20,7 +20,7 @@ local watch_file = function()
   vim.notify('watch_file')
 end
 
-local run_commands = function(props, cmds)
+local run_commands = function(cmds, ignore_error)
   local addr = next_server
   local nvr_cmd = 'nvr --servername "' .. addr .. '"'
   for _, cmd in pairs(cmds) do
@@ -29,11 +29,12 @@ local run_commands = function(props, cmds)
   local cmd_txt = table.concat(string.split(nvr_cmd, '\t'), '\n  ')
   vim.notify('nvr send: ' .. addr .. '\n' .. cmd_txt, 'debug')
   local res = vim.fn.system(nvr_cmd)
-  if string.len(res) > 0 then output_error(res) end
+  -- TODO: ignore_error only if expected EOF error returned
+  if string.len(res) > 0 and not ignore_error then output_error(res) end
 end
 
 local run_command = function(props)
-  run_commands(props, props.fargs)()
+  run_commands(props.fargs)()
 end
 
 return {

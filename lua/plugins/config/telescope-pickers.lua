@@ -49,7 +49,7 @@ _G._FindBuffer = function()
 end
 
 _G._FindBufferLeaderF = function()
-  local leaderf = require("plugins.configs.telescope-leaderf")
+  local leaderf = require("plugins.config.telescope-leaderf")
   local opts = vim.deepcopy(dropdown_preview)
   -- local opts = {}
   opts.prompt_title = "Buffers"
@@ -58,7 +58,7 @@ _G._FindBufferLeaderF = function()
 end
 
 _G._FindBufferLeaderFNoPreview = function()
-  local leaderf = require("plugins.configs.telescope-leaderf")
+  local leaderf = require("plugins.config.telescope-leaderf")
   -- local opts = {}
   local opts = vim.deepcopy(dropdown)
   opts.prompt_title = "Buffers"

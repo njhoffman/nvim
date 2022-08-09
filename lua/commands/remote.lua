@@ -1,4 +1,4 @@
-local remote = vim.import('remote')
+local remote = vim.import('remote.init')
 local script = vim.import('scripts.notify-test')
 
 local cmd = vim.api.nvim_create_user_command
@@ -13,7 +13,6 @@ cmd("RemoteSend",
   nargs = '?',
   desc = "Run single command provided as an argument on remote target"
 })
-
 
 -- lua require("plenary.reload").reload_module "plenary"
 cmd("RemoteCommands",

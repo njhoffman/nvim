@@ -4,9 +4,9 @@ if not ok then return end
 
 local previewers = require "telescope.previewers"
 local sorters = require "telescope.sorters"
-local tele_custom = require "plugins.configs.telescope-custom"
-local tele_plugins = require("plugins.configs.telescope-plugins")
-local tele_mappings = require("plugins.configs.telescope-mappings")
+local tele_custom = require "plugins.config.telescope-custom"
+local tele_plugins = require("plugins.config.telescope-plugins")
+local tele_mappings = require("plugins.config.telescope-mappings")
 
 -- TODO: why can't replicate fuzzy matching behavior of fzf-lua
 -- TODO: calculate page length for ctrl-f/ctrl-b
@@ -138,4 +138,4 @@ local telescopeConfig = {
 }
 telescope.setup(telescopeConfig)
 tele_plugins.load_extensions(telescope)
-require("plugins.configs.telescope-pickers")
+require("plugins.config.telescope-pickers")

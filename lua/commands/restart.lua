@@ -1,20 +1,21 @@
-local remote = require('remote')
+local remote = vim.import('remote.init')
 
 local commands = {
-  "lua vim.notify('TESTING')",
-  "lua vim.notify('TESTING 5', 'warn')",
-  "lua vim.notify('TESTING 3', 'info')",
+  "RestartCmd"
+  -- "lua vim.notify('TESTING')",
+  -- "lua vim.notify('TESTING 5', 'warn')",
+  -- "lua vim.notify('TESTING 3', 'info')",
 }
 
 local restart_target = function()
-  remote.send_commands(commands)
+  remote.run_commands(commands, true)
 end
 
 vim.api.nvim_create_user_command("RestartTarget", restart_target, {
   desc = "Reload and run commands on external vim instance"
 })
 
--- NVIM_UNIQUE=0 NVIM_LISTEN_ADDRESS=/tmp/nick_tickleshits vim
+-- NVIM_UNIQUE=0 NVIM_LISTEN_ADDRESS=/tmp/tickleshits vim
 -- :exe "norm! yaw" | exe "silent! norm! b" | exe "norm! P"
 
 vim.cmd([[
@@ -26,6 +27,15 @@ vim.cmd([[
     let l:session_path = s:session_restart_path . s:server_name . '_runonce.vim'
     exe "PackerCompile"
     exe "mksession! " . l:session_path
+    let l:cmds = []
+    if exists("g:argv")
+      for arg in g:argv
+        let l:cmds += [arg]
+        " TODO: append line to length -1 to keep mode line at botom
+        call writefile([arg], l:session_path, "a")
+      endfor
+    endif
+    call writefile(['let g:argv = ' . string(l:cmds)], l:session_path, "a")
     quitall
   endfunction
   command Restart call Restart()
@@ -43,8 +53,15 @@ vim.cmd([[
         call writefile([l:cmd], l:session_path, "a")
       endif
     endfor
+    if exists("g:argv")
+      for arg in g:argv
+        let l:cmds += [arg]
+        " TODO: append line to length -1 to keep mode line at botom
+        call writefile([arg], l:session_path, "a")
+      endfor
+    endif
     call writefile(['let g:argv = ' . string(l:cmds)], l:session_path, "a")
-    " quitall
+    quitall
   endfunction
   command RestartCmd call RestartCmd()
 

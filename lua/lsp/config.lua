@@ -71,7 +71,7 @@ M.getsigns = function()
     text = '', -- icons.get("info"),
     texthl = "LspDiagnosticsSignInfo",
   })
-
+  -- 
   vim.fn.sign_define("DiagnosticSignHint", {
     text = '', -- icons.get("comment"),
     texthl = "LspDiagnosticsSignHint",

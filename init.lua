@@ -8,10 +8,9 @@ for _, mod_name in ipairs({
   "vim-options",
   "project",
   "mappings",
-  "plugins.load",
-  "buffers",
+  "plugins",
   "lsp",
-  "stats.list",
+  "stats",
   "commands",
   "autocommands",
   "dashboard"

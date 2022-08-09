@@ -65,11 +65,6 @@ local M = {
     long = "repeat last command"
   },
   -- TODO: consolidate, integrate "tabclose"
-  bufdelete = {
-    cmd = ":Sayonara<CR>",
-    short = "delete buffer",
-    long = "delete buffer with sayonara"
-  },
   bufclose_nosave = {
     -- cmd = "<cmd>BufDel<cr>",
     cmd = "<cmd>BufferDelete<cr>",
