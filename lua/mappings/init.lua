@@ -236,13 +236,12 @@ M.map("Interface", "n", "g0", "toc_definitions") -- virtual
 M.map("Interface", "n", "<a-*>", "ts_next_usage") -- virtual
 M.map("Interface", "n", "<a-#>", "ts_prev_usage") -- virtual
 
-M.map("System", "n", "<leader>iu", "update")
-M.map("System", "n", "<leader>ii", "install")
-M.map("System", "n", "<leader>is", "sync")
-M.map("System", "n", "<leader>ic", "compile")
-M.map("System", "n", "<leader>iC", "clean")
-M.map("System", "n", "<leader>iS", "status")
-M.map("System", "n", "<leader>ie", "edit")
+M.map("System", "n", "<leader>ii", "import_status")
+M.map("System", "n", "<leader>iu", "packer_update")
+M.map("System", "n", "<leader>is", "packer_sync")
+M.map("System", "n", "<leader>ic", "packer_compile")
+M.map("System", "n", "<leader>iS", "packer_status")
+M.map("System", "n", "<leader>ie", "plugins_edit")
 M.map("System", "n", "<leader>iO", "shada_edit")
 
 M.map("Format", "n", "<leader>[", "indent_all")
@@ -432,7 +431,6 @@ M.map("Git", "n", "<leader>gc", "telescope_gcommits2")
 
 -- nmap("Pickers", "<C-d>", "<cmd>FzfPreviewGitCurrentLogsRpc<cr>", "picker_buffer_log", "git buffer log")
 M.map("Pickers", "n", "<C-p>", "files_tele")
-M.map("Pickers", "n", "<A-p>", "files_fzflua")
 M.map("Pickers", "n", "<C-\\>", "files_directory_tele")
 M.map("Pickers", "n", "<M-i>", "notifications_teleivy")
 M.map("Pickers", "n", "<A-o>", "home_files_fzfprev")
@@ -468,9 +466,12 @@ M.map("Pickers", "n", "<leader><leader>", "find_pickers")
 M.map("Pickers", "n", "<C-Space>", "tele_files")
 M.map("Pickers", "n", "<A-Space>", "tele_grep")
 
-vim.cmd("cabbrev T Telescope")
-vim.cmd("cabbrev d lua vim.dbg(")
-vim.cmd("cabbrev D DebugLog")
+vim.cmd [[
+  cabbrev T Telescope
+  cabbrev d lua vim.dbg(
+  cabbrev D DebugLog
+  cabbrev Plug execute "normal \<Plug>(
+]]
 
 M.map("Zettel", "n", "<cr>", "enter2")
 M.map("Zettel", "n", "gzn", "new")

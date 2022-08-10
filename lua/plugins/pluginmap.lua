@@ -63,18 +63,13 @@ M.dap_plugins = {
   },
   ["nvim-dap-python"] = { "mfussenegger/nvim-dap-python", requires = "mfussenegger/nvim-dap" },
   ["dash.nvim"] = { "jbyuki/dash.nvim", requires = "jbyuki/ntangle.nvim" },
-  ["Telegraph.nvim"] = { "WaylonWalker/Telegraph.nvim" }
 }
 
 M.picker_plugins = {
   ["cybu.nvim"] = { "ghillb/cybu.nvim" },
   ["legendary.nvim"] = { "mrjones2014/legendary.nvim" },
-  ["nvim-spotify"] = {
-    "KadoBOT/nvim-spotify",
-    requires = "telescope.nvim",
-    run = "make"
-  },
-  ["tmuxjump.vim"] = { "shivamashtikar/tmuxjump.vim", requires = "junegunn/fzf.vim" }
+  ["nvim-spotify"] = { "KadoBOT/nvim-spotify", requires = 'nvim-telescope/telescope.nvim', run = "make" },
+  ["tmuxjump.vim"] = { "shivamashtikar/tmuxjump.vim", requires = "nvim-telescope/telescope.nvim" }
 }
 
 M.motion_plugins = {
@@ -181,12 +176,15 @@ M.telescope_plugins = {
   -- "njhoffman/telescope.nvim",
   -- "~/git/telescope.nvim",
   ["nvim-web-devicons"]              = { "kyazdani42/nvim-web-devicons" },
-  ["telescope.nvim"]                 = { "nvim-telescope/telescope.nvim", requires = {
-    "kyazdani42/nvim-web-devicons",
-    "nvim-lua/popup.nvim",
-    "nvim-lua/plenary.nvim",
-  } },
-  ["nvim-neoclip.lua"]               = { "AckslD/nvim-neoclip.lua", requires = { "tami5/sqlite.lua", module = "sqlite" } },
+  ["telescope.nvim"]                 = { "nvim-telescope/telescope.nvim",
+    requires = {
+      "kyazdani42/nvim-web-devicons",
+      "nvim-lua/popup.nvim",
+      "nvim-lua/plenary.nvim",
+    } },
+  ["nvim-neoclip.lua"]               = { "AckslD/nvim-neoclip.lua",
+    requires = { "tami5/sqlite.lua", module = "sqlite" },
+  },
   ["nvim-mapper"]                    = { "lazytanuki/nvim-mapper", before = "telescope.nvim",
     config = function()
       require("nvim-mapper").setup({})
@@ -366,6 +364,7 @@ M.integration_plugins = {
   ["rest.nvim"]         = { "NTBBloodbath/rest.nvim" },
   ["lazygit.nvim"]      = { "kdheepak/lazygit.nvim" },
   ["tmux.nvim"]         = { "aserowy/tmux.nvim" },
+  ["Telegraph.nvim"]    = { "WaylonWalker/Telegraph.nvim" },
   ["nvim-regexplainer"] = {
     "bennypowers/nvim-regexplainer",
     requires = {

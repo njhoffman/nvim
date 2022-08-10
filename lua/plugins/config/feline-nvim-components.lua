@@ -1,5 +1,8 @@
 local provider_project_nvim = require('plugins.config.feline-nvim-provider-project-nvim')
 local provider_project_uo = require('plugins.config.feline-nvim-provider-project-uo')
+local provider_git = require('plugins.config.feline-nvim-provider-git')
+local provider_cursor = require('plugins.config.feline-nvim-provider-cursor')
+
 local M = {}
 
 M.ProjectNvimComponent = {
@@ -30,33 +33,76 @@ M.ProjectUoComponent = {
   right_sep = provider_project_uo.right_sep
 }
 
+M.GitBranchComponent = {
+  provider = provider_git.git_branch,
+  hl = {
+    fg = 'white',
+    bg = 'black',
+    style = 'bold',
+  },
+  right_sep = {
+    str = ' ',
+    hl = {
+      fg = 'NONE',
+      bg = 'black',
+    },
+  },
+}
+
+M.GitDiffAddedComponent = {
+  provider = provider_git.git_diff_added,
+  hl = {
+    fg = 'green',
+    bg = 'black',
+  },
+}
+
+M.GitDiffChangedComponent = {
+  provider = provider_git.git_diff_changed,
+  hl = {
+    fg = 'orange',
+    bg = 'black',
+  },
+}
+
+M.GitDiffRemovedComponent = {
+  provider = provider_git.git_diff_removed,
+  hl = {
+    fg = 'red',
+    bg = 'black',
+  },
+  right_sep = {
+    str = ' ',
+    hl = {
+      fg = 'NONE',
+      bg = 'black',
+    },
+  },
+}
 -- Display <e> 0x65
-M.AsciiComponent = {}
+M.AsciiComponent = {
+  -- Enable if current window width is higher than 100
+  enabled = function()
+    return vim.api.nvim_win_get_width(0) > 100
+  end,
+  hl = { fg = "#988088" },
+  provider = provider_cursor.ascii,
+  left_sep = ' ',
+  right_sep = ' ',
+}
 
 M.FiletypeComponent = {
   -- Enable if current window width is higher than 100
   enabled = function()
     return vim.api.nvim_win_get_width(0) > 100
   end,
-  provider = 'file_type',
+  hl = { fg = "#988088" },
+  provider = { name = 'file_type', opts = { case = 'lowercase' } },
   left_sep = ' ',
-  right_sep = {
-    ' ',
-    {
-      str = 'slant_left_2_thin',
-      hl = {
-        fg = 'fg',
-        bg = 'bg',
-      },
-    },
-    ' ',
-  },
+  right_sep = ' ',
 }
 
-
 return M
-
-
 
 -- -- table.insert(components.right.active, 1, {
 -- --   provider = LspLightbulb, -- hl = { fg = "cyan", bg = "bg", style = "bold" },

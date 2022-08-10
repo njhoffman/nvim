@@ -477,4 +477,8 @@ vim.cmd([[
   command! -nargs=* -complete=customlist,options#complete_buf_local Setlocal :lua require'utils.options'.run_set_cmd(<q-args>, vim.api.nvim_get_current_buf())
 ]])
 
+function M.get_state()
+  return state
+end
+
 return M

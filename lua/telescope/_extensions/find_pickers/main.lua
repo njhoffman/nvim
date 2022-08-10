@@ -5,7 +5,6 @@ local telescope_config = require("telescope.config").values
 
 local actions = require("telescope._extensions.find_pickers.actions")
 local finders = require("telescope._extensions.find_pickers.finders")
-
 local M = {}
 
 local default_conf_opts = {
@@ -46,11 +45,11 @@ M.find_pickers = function(theme_opts, conf_opts)
   conf_opts = vim.tbl_deep_extend("force", default_conf_opts, conf_opts or {})
 
   pickers.new(theme_opts, {
-    prompt_title = "Find Pickers",
-    results_title = "Picker",
-    finder = finders.get_finder(conf_opts),
+    prompt_title    = "Find Pickers",
+    results_title   = "Picker",
+    finder          = finders.get_finder(conf_opts),
     attach_mappings = actions.attach_mappings,
-    sorter = telescope_config.file_sorter(theme_opts),
+    sorter          = telescope_config.file_sorter(theme_opts),
   }):find()
 end
 

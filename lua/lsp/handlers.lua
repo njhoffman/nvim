@@ -76,15 +76,25 @@ end
 
 M.attach_formatting = function(client, bufnr)
   if client.supports_method "textDocument/formatting" then
+    -- vim.api.nvim_exec(
+    --   [[
+    --   augroup LspAutocommands
+    --   autocmd! * <buffer>
+    --   autocmd BufWritePre <buffer> lua local pos = vim.api.nvim_win_get_cursor(0); vim.lsp.buf.format(); vim.cmd("$g/^$/d"); vim.api.nvim_win_set_cursor(0, pos)
+    --   augroup END
+    --   ]],
+    --   true
+    -- )
     vim.api.nvim_exec(
       [[
       augroup LspAutocommands
       autocmd! * <buffer>
-      autocmd BufWritePre <buffer> lua local pos = vim.api.nvim_win_get_cursor(0); vim.lsp.buf.format(); vim.cmd("$g/^$/d"); vim.api.nvim_win_set_cursor(0, pos)
+      autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
       augroup END
       ]],
       true
     )
+
     -- local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
     -- vim.api.nvim_buf_create_user_command(

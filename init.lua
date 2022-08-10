@@ -4,8 +4,6 @@
 
 require("globals")
 for _, mod_name in ipairs({
-  "impatient",
-  "vim-options",
   "project",
   "mappings",
   "plugins",
@@ -13,7 +11,7 @@ for _, mod_name in ipairs({
   "stats",
   "commands",
   "autocommands",
-  "dashboard"
+  -- "dashboard"
 }) do
   vim.import(mod_name)
 end

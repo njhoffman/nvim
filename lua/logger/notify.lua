@@ -1,7 +1,7 @@
 local config = require("config")
 local logutils = require("logger.utils")
 local logparsers = require("logger.parsers")
-local get_option_value = require("utils.options").get_option_value
+local get_opt = require("utils.options").get_option_value
 
 local M = {}
 
@@ -35,8 +35,8 @@ M.notify = function(message, level, ...)
       local winnr = vim.api.nvim_get_current_win()
       local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
 
-      local min_log_level = logutils.log_level_number(get_option_value('notify_level_log'))
-      local min_show_level = logutils.log_level_number(get_option_value('notify_level_show'))
+      local min_log_level = logutils.log_level_number(get_opt('notify_level_log'))
+      local min_show_level = logutils.log_level_number(get_opt('notify_level_show'))
 
       local logger = require("logger").init("notify")
 

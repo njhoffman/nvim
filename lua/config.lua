@@ -1,10 +1,10 @@
 local userSettings = require("settings")
 
-local Load = userSettings.Load
-local Logging = userSettings.Logging
-local DAP = userSettings.DAP
-local LSP = userSettings.LSP
-local Opts = userSettings.Opts
+local Load       = userSettings.Load
+local Logging    = userSettings.Logging
+local DAP        = userSettings.DAP
+local LSP        = userSettings.LSP
+local Opts       = userSettings.Opts
 local Completion = userSettings.Completion
 local Treesitter = userSettings.Treesitter
 
@@ -16,49 +16,6 @@ if Load.profile_load == nil then
 end
 if Load.impatient == nil then
   Load.impatient = true
-end
-
--- all available LSP from lspinstall
-local servers = {
-  "angular",
-  "bash",
-  "cmake",
-  "cpp",
-  "csharp",
-  "css",
-  "dockerfile",
-  "elixir",
-  "elm",
-  "go",
-  "graphql",
-  "html",
-  "java",
-  "json",
-  "kotlin",
-  "latex",
-  "lua",
-  "php",
-  "python",
-  "ruby",
-  "rust",
-  "svelte",
-  "tailwindcss",
-  "terraform",
-  -- "typescript",
-  "vim",
-  "vue",
-  "yaml",
-  -- non-language specific
-  "deno",
-  "diagnosticls",
-  "efm",
-  "rome"
-}
-
-for _, v in pairs(servers) do
-  if LSP[v] == nil then
-    LSP[v] = false
-  end
 end
 
 -- trace, debug, info, warn, error

@@ -29,28 +29,29 @@ require("vim.lsp.protocol").CompletionItemKind = {
 }
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
-  vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = { prefix = "●" } })
+vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = { prefix = "●" } })
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "single" })
 
 local icons = require("nvim-nonicons")
 vim.fn.sign_define("LspDiagnosticsSignError",
-                   { text = icons.get("x-circle"), texthl = "LspDiagnosticsSignError" })
+  { text = icons.get("x-circle"), texthl = "LspDiagnosticsSignError" })
 
 vim.fn.sign_define("LspDiagnosticsSignWarn",
-                   { text = icons.get("alert"), texthl = "LspDiagnosticsSignWarning" })
+  { text = icons.get("alert"), texthl = "LspDiagnosticsSignWarning" })
 
 vim.fn.sign_define("LspDiagnosticsSignInfo",
-                   { text = icons.get("info"), texthl = "LspDiagnosticsSignInformation" })
+  { text = icons.get("info"), texthl = "LspDiagnosticsSignInformation" })
 
 vim.fn.sign_define("LspDiagnosticsSignHint",
-                   { text = icons.get("comment"), texthl = "LspDiagnosticsSignHint" })
+  { text = icons.get("comment"), texthl = "LspDiagnosticsSignHint" })
 
 require("lsp-codelens").setup()
 
 -- keymaps
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
@@ -65,7 +66,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
   buf_set_keymap("n", "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
   buf_set_keymap("n", "<Leader>wl",
-                 "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
+    "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
   buf_set_keymap("n", "<Leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
   buf_set_keymap("n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
   buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
@@ -74,8 +75,8 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
   buf_set_keymap("n", "<Leader>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
   buf_set_keymap("n", "<Leader>p",
-                 "<cmd>lua vim.lsp.buf.formatting_seq_sync(nil, 1000, { 'html', 'php', 'efm' })<CR>",
-                 opts)
+    "<cmd>lua vim.lsp.buf.formatting_seq_sync(nil, 1000, { 'html', 'php', 'efm' })<CR>",
+    opts)
   buf_set_keymap("n", "<Leader>P", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
   buf_set_keymap("v", "<Leader>p", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   buf_set_keymap("n", "<Leader>l", "<cmd>lua require'lsp-codelens'.buf_codelens_action()<CR>", opts)
@@ -85,28 +86,6 @@ local on_attach = function(client, bufnr)
 
   -- Set autocommands conditional on server_capabilities
 end
-
--- Configure lua language server for neovim development
-local lua_settings = {
-  Lua = {
-    runtime = {
-      -- LuaJIT in the case of Neovim
-      version = "LuaJIT",
-      path = vim.split(package.path, ";"),
-    },
-    diagnostics = {
-      -- Get the language server to recognize the `vim` global
-      globals = { "vim" },
-    },
-    workspace = {
-      -- Make the server aware of Neovim runtime files
-      library = {
-        [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-        [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-      },
-    },
-  },
-}
 
 -- config that activates keymaps and enables snippet support
 local function make_config()
@@ -123,50 +102,29 @@ end
 
 -- lsp-install
 local function setup_servers()
-  require"lspinstall".setup()
+  require "lspinstall".setup()
 
   -- get all installed servers
-  local servers = require"lspinstall".installed_servers()
-  -- ... and add manually installed servers
-  table.insert(servers, "sourcekit")
-  table.insert(servers, "hls")
+  local servers = require "lspinstall".installed_servers()
 
   for _, server in pairs(servers) do
     local config = make_config()
 
     -- language specific config
-    if server == "lua" then
-      config.settings = lua_settings
-      config.root_dir = function(fname)
-        if fname:match("lush_theme") ~= nil then return nil end
-        local util = require "lspconfig/util"
-        return util.find_git_ancestor(fname) or util.path.dirname(fname)
-      end
-    end
-    if server == "sourcekit" then
-      config.filetypes = { "swift", "objective-c", "objective-cpp" } -- we don't want c and cpp!
-    end
     if server == "clangd" then
-      config.filetypes = { "c", "cpp" } -- we don't want objective-c and objective-cpp!
+      config.filetypes = { "c", "cpp", }
     end
-    if server == "efm" then config = vim.tbl_extend("force", config, require "efm") end
-    if server == "diagnosticls" then
-      config = vim.tbl_extend("force", config, require "diagnosticls")
+    if server == "vim" then
+      config.init_options = { isNeovim = true }
     end
-    if server == "vim" then config.init_options = { isNeovim = true } end
-    if server == "hls" then
-      config.root_dir = require"lspconfig/util".root_pattern("*.cabal", "stack.yaml",
-        "cabal.project", "package.yaml",
-        "hie.yaml", ".git");
-    end
-    require"lspconfig"[server].setup(config)
+    require "lspconfig"[server].setup(config)
   end
 end
 
 setup_servers()
 
 -- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require"lspinstall".post_install_hook = function()
+require "lspinstall".post_install_hook = function()
   setup_servers() -- reload installed servers
   vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
 end

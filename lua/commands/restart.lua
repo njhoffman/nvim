@@ -15,9 +15,6 @@ vim.api.nvim_create_user_command("RestartTarget", restart_target, {
   desc = "Reload and run commands on external vim instance"
 })
 
--- NVIM_UNIQUE=0 NVIM_LISTEN_ADDRESS=/tmp/tickleshits vim
--- :exe "norm! yaw" | exe "silent! norm! b" | exe "norm! P"
-
 vim.cmd([[
   let s:server_name = escape(substitute(substitute(v:servername, '\$', '', ''), '/tmp', '', ''), '\')
   let s:session_restart_path = expand("$HOME") . "/.vim/sessions/restart"
@@ -36,7 +33,7 @@ vim.cmd([[
       endfor
     endif
     call writefile(['let g:argv = ' . string(l:cmds)], l:session_path, "a")
-    quitall
+    quitall!
   endfunction
   command Restart call Restart()
 
@@ -61,7 +58,7 @@ vim.cmd([[
       endfor
     endif
     call writefile(['let g:argv = ' . string(l:cmds)], l:session_path, "a")
-    quitall
+    quitall!
   endfunction
   command RestartCmd call RestartCmd()
 

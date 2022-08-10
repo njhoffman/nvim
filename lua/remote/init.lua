@@ -2,7 +2,7 @@ local output_error = function(err)
   vim.notify(err, 'error')
 end
 
-local next_server = '/tmp/tickleshits'
+local next_server = string.gsub(vim.v.servername, 'nvim', 'nvim_linked')
 
 local assign_target = function()
   return next_server
@@ -26,7 +26,7 @@ local run_commands = function(cmds, ignore_error)
   for _, cmd in pairs(cmds) do
     nvr_cmd = nvr_cmd .. "\t" .. ' -c "' .. cmd .. '"'
   end
-  local cmd_txt = table.concat(string.split(nvr_cmd, '\t'), '\n  ')
+  local cmd_txt = table.concat(string.split(nvr_cmd, '\t'), '\n')
   vim.notify('nvr send: ' .. addr .. '\n' .. cmd_txt, 'debug')
   local res = vim.fn.system(nvr_cmd)
   -- TODO: ignore_error only if expected EOF error returned

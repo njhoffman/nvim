@@ -6,112 +6,20 @@ local custom_comps = require('plugins.config.feline-nvim-components')
 local provider_project_nvim = require('plugins.config.feline-nvim-provider-project-nvim')
 local provider_project_uo = require('plugins.config.feline-nvim-provider-project-uo')
 
-local components = {
-  active = {},
-  inactive = {}
-}
-
----@diagnostic disable
---@format disable
--- table.insert(components.active, {})
--- table.insert(components.active, {})
--- table.insert(components.active, {})
--- table.insert(components.inactive, {})
--- table.insert(components.inactive, {})
--- table.insert(components.inactive, {})
-
--- defaults.active[1][0] = {
---   provider = '▊ ',
---   hl = {
---     fg = 'skyblue',
---   }
--- }
--- defaults.active[1][1] = {
---   provider = 'vi_mode',
---   hl = function()
---     return {
---       name = vi_mode_utils.get_mode_highlight_name(),
---       fg = vi_mode_utils.get_mode_color(),
---       style = 'bold',
---     }
---   end
--- }
-
--- defaults.active[1][2] = {
---   provider = 'file_info',
---   hl = {
---     fg = 'white',
---     bg = 'oceanblue',
---     style = 'bold',
---   },
---   left_sep = {
---     'slant_left_2',
---     { str = ' ', hl = { bg = 'oceanblue', fg = 'NONE' } },
---   },
---   right_sep = {
---     { str = ' ', hl = { bg = 'oceanblue', fg = 'NONE' } },
---     'slant_right_2',
---     ' ',
---   },
--- }
--- defaults.active[1][3] = {
---   provider = 'file_size',
---   right_sep = {
---     ' ',
---     {
---       str = 'slant_left_2_thin',
---       hl = {
---         fg = 'fg',
---         bg = 'bg',
---       },
---     },
---   },
--- }
--- defaults.active[1][4] = {
---   provider = 'position',
---   left_sep = ' ',
---   right_sep = {
---     ' ',
---     {
---       str = 'slant_right_2_thin',
---       hl = {
---         fg = 'fg',
---         bg = 'bg',
---       },
---     },
---   },
--- }
--- defaults.active[1][5] = {
---   provider = 'diagnostic_errors',
---   hl = { fg = 'red' },
--- }
--- defaults.active[1][6] = {
---   provider = 'diagnostic_warnings',
---   hl = { fg = 'yellow' },
--- }
--- defaults.active[1][7] = {
---   provider = 'diagnostic_hints',
---   hl = { fg = 'cyan' },
--- }
--- defaults.active[1][8] = {
---   provider = 'diagnostic_info',
---   hl = { fg = 'skyblue' },
--- }
-
--- table.insert(defaults.active[1], 3, custom_comps.ProjectNvimComponent)
--- defaults.active[1][4].left_sep = { hl = { bg = "oceanblue" }, str = " " }
 table.insert(defaults.active[1], 3, custom_comps.ProjectUoComponent)
 defaults.active[1][4].left_sep = { hl = { bg = "oceanblue" }, str = " " }
-table.insert(defaults.active[1], 7, custom_comps.FiletypeComponent)
---
+table.insert(defaults.active[1], 7, custom_comps.AsciiComponent)
+table.insert(defaults.active[1], 8, custom_comps.FiletypeComponent)
+defaults.active[2][1] = custom_comps.GitBranchComponent
+defaults.active[2][2] = custom_comps.GitDiffAddedComponent
+defaults.active[2][3] = custom_comps.GitDiffChangedComponent
+defaults.active[2][4] = custom_comps.GitDiffRemovedComponent
+
+-- local components = { active = {}, inactive = {} }
 -- table.insert(components.active[1], defaults.active.vi_mode.left)
+-- table.insert(defaults.active[1], 3, custom_comps.ProjectNvimComponent)
 -- table.insert(components.active[1], defaults.active[1])
--- table.insert(components.active[1], custom_comps.ProjectComponent)
 -- table.insert(components.active[1], defaults.file.info)
--- table.insert(components.active[1], defaults.git.branch)
--- table.insert(components.active[1], defaults.git.add)
--- table.insert(components.active[1], defaults.git.change)
--- table.insert(components.active[1], defaults.git.remove)
 -- table.insert(components.inactive[1], defaults.vi_mode.left)
 -- table.insert(components.inactive[1], defaults.file.info)
 -- table.insert(components.active[3], defaults.diagnos.err)

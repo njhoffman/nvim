@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
 local get_command_val = function(name)
   local val = nil
-  for i, arg in vim.v.argv do
+  for i, arg in pairs(vim.v.argv) do
     if arg == '--' .. name then
       val = vim.v.argv[i + 1]
     end

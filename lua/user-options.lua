@@ -131,6 +131,8 @@ opt.register_option({
   global = true,
 })
 
+-- options.set("shell", vim.opt.shell:get())
+
 opt.register_option({
   name = "scratchpad",
   default = false,

@@ -77,8 +77,8 @@ M.setup = function(on_attach, capabilities)
     -- runtime_path = false,
     lspconfig = lua_settings
   })
-  -- lspconfig.sumneko_lua.setup(luadev)
-  lspconfig.sumneko_lua.setup(lua_settings)
+  lspconfig.sumneko_lua.setup(luadev)
+  -- lspconfig.sumneko_lua.setup(lua_settings)
 end
 
 return M

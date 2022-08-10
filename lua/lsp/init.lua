@@ -5,15 +5,14 @@
 -- h["textDocument/hover"]              = with(vim.lsp.handlers["textDocument/hover"], handlers.hover)
 -- h["textDocument/signatureHelp"]      = with(vim.lsp.handlers["textDocument/signatureHelp"], { border = "rounded" })
 -- h["textDocument/publishDiagnostics"] = with(vim.lsp.diagnostic.on_publish_diagnostics, diagnostic_config)
-
-require("lsp.config").setup()
-
-local ok_fidget, fidget = pcall(require, "fidget")
-if ok_fidget then
-  fidget.setup({
-    fmt = { stack_upwards = false }
-  })
-end
-
-
-require("lsp.server").init()
+vim.import("lsp.config", function(lspconfig)
+  vim.import('fidget', function(fidget)
+    vim.import("lsp.server", function(lspserver)
+      lspconfig.setup()
+      fidget.setup({
+        fmt = { stack_upwards = false }
+      })
+      lspserver.init()
+    end)
+  end)
+end)

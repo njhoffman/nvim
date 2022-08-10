@@ -1,12 +1,8 @@
-vim.g.start_time = vim.fn.reltime()
-vim.cmd [[
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  set termguicolors
-]]
-
 local home = os.getenv("HOME")
 package.path = home .. "/.luarocks/share/lua/5.4/?.lua;" .. package.path
 package.cpath = home .. "/.luarocks/lib/lua/5.4/?.so;" .. package.cpath
+
+vim.g.start_time = vim.fn.reltime()
 
 vim.g.clipboard = {
   name = "xsel",
@@ -70,18 +66,6 @@ vim.lsp.log_levels["INSPECT"] = 4
 vim.lsp.log_levels["TASK"] = 4
 vim.lsp.log_levels["STATUS"] = 4
 
-require("user-options")
-
-vim.inspect = require('inspect')
-vim.logger = require("logger").init("root")
-vim.notify = require("logger").notify
-vim.dbglog = require("debuglog").log
-vim.dbgbuf = require("debuglog").buf
-vim.dbg = require("debuglog").dbg
-vim.import = require('importer').import
-
-vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")), "trace")
-
 local disabled_built_ins = {
   -- "netrw",
   -- "netrwPlugin",
@@ -108,10 +92,7 @@ vim.tbl_map(
   disabled_built_ins
 )
 
-function _G.__FILE__() return debug.getinfo(2, 'S').source end
-
-function _G.__LINE__() return debug.getinfo(2, 'l').currentline end
-
-function _G.__FNC__() return debug.getinfo(2, 'n').name end
-
-function _G.__FNCREF__() return debug.getinfo(2, 'f').func end
+_G.__FILE__   = function() return debug.getinfo(2, 'S').source end
+_G.__LINE__   = function() return debug.getinfo(2, 'l').currentline end
+_G.__FNC__    = function() return debug.getinfo(2, 'n').name end
+_G.__FNCREF__ = function() return debug.getinfo(2, 'f').func end

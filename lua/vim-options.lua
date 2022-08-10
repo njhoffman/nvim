@@ -21,7 +21,7 @@ opt("textwidth", 1000)
 opt("swapfile", false)
 opt("clipboard", "unnamedplus")
 
-opt("cmdheight", 0) -- 1
+opt("cmdheight", 1) -- 0
 opt("cmdwinheight", 10)
 opt("cedit", "<M-w>")
 
