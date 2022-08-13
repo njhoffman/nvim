@@ -17,6 +17,32 @@ if not ok then
   vim.notify({ 'Error loading import wrapper', importer, }, "error")
 end
 
+local generate_lines = function(imported, view_width)
+  local title = #imported.successes .. " imported"
+  if #imported.failures > 0 then
+    title = title .. ' - ' .. #imported.failures .. ' failed'
+  end
+  title = title .. ' - ' .. math.floor(imported.time / 1000000 * 100) / 100 .. " ms total"
+  local title_padding = (view_width / 2) - (title:len() / 2)
+  title = string.rep(' ', title_padding) .. title
+
+  local lines = { title }
+  M.lines = { -1 }
+  for _, _failed_import in ipairs(imported.failures) do
+    table.insert(lines, M._format_module(_failed_import, imported.details[_failed_import]))
+    table.insert(M.lines, _failed_import)
+  end
+  table.insert(lines, "")
+  table.insert(M.lines, -1)
+  for _, _success_import in ipairs(imported.successes) do
+    table.insert(lines, M._format_module(
+      _success_import, imported.details[_success_import])
+    )
+    table.insert(M.lines, _success_import)
+  end
+  return lines
+end
+
 function M.display(opts)
   -- Short circuit if we are already displayed
   if M.is_displayed then return end
@@ -34,6 +60,7 @@ function M.display(opts)
   end
 
   local cur_ui = vim.api.nvim_list_uis()[1]
+
   local float_height = math.floor(cur_ui.height * .9)
   local float_width = math.floor(cur_ui.width * .9)
   local view_height = nil
@@ -82,41 +109,19 @@ function M.display(opts)
     style    = 'minimal'
   }
 
-  local failures = {}
-  local successes = {}
-  local import_details = {}
-  local time_total = 0
+  local imported = { failures = {}, successes = {}, details = {}, time = 0 }
   for _, module in ipairs(importer.get_imported_modules()) do
     local details = importer.get_status(module)
-    import_details[module] = details
-    time_total = time_total + details.import_time
+    imported.details[module] = details
+    imported.time = imported.time + details.import_time
     if details.imported then
-      table.insert(successes, module)
+      table.insert(imported.successes, module)
     else
-      table.insert(failures, module)
+      table.insert(imported.failures, module)
     end
   end
 
-  local title = #successes .. " imported"
-  if #failures > 0 then
-    title = title .. ' - ' .. #failures .. ' failed'
-  end
-  title = title .. ' - ' .. math.floor(time_total / 1000000 * 100) / 100 .. " ms total"
-  local title_padding = (view_width / 2) - (title:len() / 2)
-  title = string.rep(' ', title_padding) .. title
-
-  local lines = { title }
-  M.lines = { -1 }
-  for _, _failed_import in ipairs(failures) do
-    table.insert(lines, M._format_module(_failed_import, import_details[_failed_import]))
-    table.insert(M.lines, _failed_import)
-  end
-  table.insert(lines, "")
-  table.insert(M.lines, -1)
-  for _, _success_import in ipairs(successes) do
-    table.insert(lines, M._format_module(_success_import, import_details[_success_import]))
-    table.insert(M.lines, _success_import)
-  end
+  local lines = generate_lines(imported, view_width)
 
   vim.api.nvim_buf_set_option(M.buf_handle, 'modifiable', true)
   vim.api.nvim_buf_set_lines(M.buf_handle, 0, -1, false, lines)

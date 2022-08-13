@@ -1,10 +1,14 @@
 local coreutils = require("utils.core")
 local logutils = require("logger.utils")
 local log = require("debuglog.log")
+local timer = require("debuglog.timer")
+
 local M = {}
 
 log:new()
 M.log = log.info
+
+M.timer = timer
 
 M.buf = function(...)
   local msg = ... or {}

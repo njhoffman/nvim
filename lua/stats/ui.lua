@@ -1,4 +1,4 @@
-local stats_list = vim.import("stats.list")
+local stats_list = vim.import("stats")
 
 local Popup = vim.import("nui.popup")
 local event = vim.import("nui.utils.autocmd").event

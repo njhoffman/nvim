@@ -18,7 +18,7 @@ local function split_option_str(option_str)
   return { name = name, value = value }
 end
 
-function set_cmd(option_str, bufnr)
+local function set_cmd(option_str, bufnr)
   local arg_lead = option_str or ''
   bufnr = bufnr or 0
   if not string.match(arg_lead, '=') then

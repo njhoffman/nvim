@@ -7,9 +7,10 @@ vim.import("vim-options")
 vim.import('inspect', function(inspect)
   vim.inspect = inspect
   vim.import('debuglog', function(debuglog)
-    vim.dbg    = debuglog.dbg
-    vim.dbglog = debuglog.log
-    vim.dbgbuf = debuglog.buf
+    vim.dbg     = debuglog.dbg
+    vim.dbglog  = debuglog.log
+    vim.dbgbuf  = debuglog.buf
+    vim.dbgtime = debuglog.timer
     vim.import('logger', function(logger)
       vim.logger = logger.init("root")
       vim.notify = logger.notify

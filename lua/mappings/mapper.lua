@@ -20,39 +20,10 @@ local keymap = {}
 -- :cmap  :cnoremap :cunmap    Command-line
 -- :tmap  :tnoremap :tunmap    Terminal
 
-local function length(T)
-  local count = 0
-  for _ in pairs(T) do
-    count = count + 1
-  end
-  return count
-end
-
-local function load_module(file_name)
-  local ok, mod = pcall(require, "mappings." .. file_name)
-  if not ok then
-    local msg = "failed loading: " .. file_name .. "\n " .. vim.inspect(mod)
-    vim.notify(msg, "error")
-    logger:error({ msg, mod })
-  else
-    -- logger:trace(mod_name .. " keymap loaded")
-    local mod_name = file_name:gsub("^%l", string.upper)
-    if mod_name == "Lsp" then
-      mod_name = "LSP"
-    end
-    keymap[mod_name] = mod
-  end
-end
 
 M.stats = {
-  normal = 0,
-  insert = 0,
-  command = 0,
-  operator = 0,
-  visual = 0,
-  select = 0,
-  terminal = 0,
-  language = 0
+  normal = 0, insert = 0, command = 0, operator = 0, visual = 0,
+  select = 0, terminal = 0, language = 0
 }
 M.whichkey_map = { n = {}, v = {}, c = {}, i = {}, o = {}, x = {}, s = {}, t = {}, m = {}, l = {} }
 
@@ -191,8 +162,15 @@ local mapfiles = {
   "zettel"
 }
 
-for _, mod_name in ipairs(mapfiles) do
-  load_module(mod_name)
+for _, map_name in ipairs(mapfiles) do
+  local fname = "mappings." .. map_name
+  vim.import(fname, function(mod)
+    map_name = map_name:gsub("^%l", string.upper)
+    if map_name == "Lsp" then
+      map_name = "LSP"
+    end
+    keymap[map_name] = mod
+  end)
 end
 
 return M

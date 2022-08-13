@@ -10,6 +10,7 @@ local tele_plugs = {
   ["find_pickers"]    = "telescope-find-pickers.nvim",
   ["options"]         = "telescope-options.nvim",
   ["variables"]       = "telescope-variables.nvim",
+  ["filetypes"]       = "telescope-filetypes.nvim",
   --
   ["aerial"]          = "aerial.nvim",
   ["arecibo"]         = "telescope-arecibo.nvim",

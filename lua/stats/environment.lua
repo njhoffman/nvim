@@ -26,7 +26,8 @@ M.get_counts = function()
     vim.fn.systemlist("du -shc * " .. vim.fn.stdpath("data") .. "/site/pack/packer/start | tail -n1 | cut -f1"),
     1
   )
-  counts.start_time = table.remove(vim.fn.systemlist("cat /tmp/nvim-startuptime | tail -n1"), 1)
+  -- counts.start_time = table.remove(vim.fn.systemlist("cat /tmp/nvim-startuptime | tail -n1"), 1)
+  counts.start_time = vim.g.load_time
   local pid = vim.fn.getpid()
   counts.memory = table.remove(vim.fn.systemlist("ps h -p " .. pid .. " -o rss"), 1)
   counts.virtual_memory = table.remove(vim.fn.systemlist("ps h -p " .. pid .. " -o vsz"), 1)

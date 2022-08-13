@@ -7,5 +7,8 @@ return {
   output_split_type             = 'horizontal',
   import_failed_icon            = "⛔",
   import_success_icon           = "✅",
-  import_enable_better_printing = false
+  import_enable_better_printing = false,
+  import_show_intervals         = false,
+  import_show_percentages       = false,
+  import_sort_times             = false
 }

@@ -296,7 +296,14 @@ M.ui_plugins = {
   ["which-key.nvim"]     = { "folke/which-key.nvim" },
   ["zen-mode.nvim"]      = { "folke/zen-mode.nvim" },
   ["hop.nvim"]           = { "phaazon/hop.nvim" },
-  ["tabout.nvim"]        = { "abecodes/tabout.nvim",
+
+  ["nvim-nonicons"] = {
+    'yamatsum/nvim-nonicons',
+    requires = { 'kyazdani42/nvim-web-devicons', 'yamatsum/nonicons' },
+    cond = os.getenv('KITTY_WINDOW_ID') ~= nil
+  },
+  ["hologram.nvim"] = { 'edluffy/hologram.nvim', cond = os.getenv('KITTY_WINDOW_ID') ~= nil },
+  ["tabout.nvim"]   = { "abecodes/tabout.nvim",
     wants = { 'nvim-treesitter' }, -- or require if not used so far
     after = { 'nvim-cmp' }, -- if a completion plugin is using tabs load it before
     config = function()
@@ -305,7 +312,6 @@ M.ui_plugins = {
   }
   -- ["nvim-highlight-colors"] = { "brenoprata10/nvim-highlight-color" },
   -- ["vim-hexokinase"]     = { "RRethy/vim-hexokinase", run = "make hexokinase" },
-  -- ["nvim-noicons"] = { 'yamatsum/nvim-nonicons', requires = { 'kyazdani42/nvim-web-devicons' } }
   -- ["startup.nvim"] = {
   --   use = {"startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}}
   -- },
@@ -415,16 +421,9 @@ M.check_require_exists = function(fname)
   return res
 end
 
+local uv = require("luv")
 M.check_path_exists = function(path)
-  path = path:gsub("~", os.getenv { "HOME" })
-  local ok, err, code = os.rename(path, path)
-  if not ok then
-    if code == 13 then
-      -- Permission denied, but it exists
-      return true
-    end
-  end
-  return ok, err
+  return not vim.tbl_isempty(uv.fs_stat(path) or {})
 end
 
 M.split_env = function(env_name, sep)
@@ -455,19 +454,27 @@ M.stats = {
 M.load_config = function(fname)
   -- print("CONFIG ", fname)
   M.stats.config_loaded = M.stats.config_loaded + 1
-  pcall(require, fname)
+  vim.import(fname)
 end
 
 M.plugin_config = function(name)
+  local check_require = false
   name = name:gsub("[\\.]+", "-")
   local fname = "plugins.config." .. string.lower(name)
+  local fpath = vim.fn.stdpath('config') .. '/lua/plugins/config/' .. string.lower(name) .. '.lua'
   local config = nil
-  -- TODO: check if actual file exists, report if can't load
-  -- print('checking ' .. fname)
-  if M.check_require_exists(fname) then
-    config = M.load_config(fname)
-    -- else
-    --   -- print("config not found: " .. fname)
+
+  -- print('checking ' .. fname .. ' - ' .. fpath)
+  if check_require then
+    if M.check_require_exists(fname) then
+      config = M.load_config(fname)
+      -- else print("config not found: " .. fname)
+    end
+  else
+    if M.check_path_exists(fpath) then
+      config = M.load_config(fname)
+      -- else print("config not found: " .. fpath)
+    end
   end
   return config
 end

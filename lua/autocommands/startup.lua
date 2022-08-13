@@ -1,9 +1,15 @@
+local get_load_time = function()
+  local load_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
+  load_time = string.sub(string.gsub(load_time, ' ', ''), 1, 5)
+  vim.g.load_time = load_time
+  vim.notify("Loaded in " .. load_time .. 's', "debug", { anchor = 'TC' })
+end
+
 vim.api.nvim_create_autocmd("VimEnter", {
   pattern = "*",
   callback = function()
-    local end_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
-    end_time = string.sub(string.gsub(end_time, ' ', ''), 1, 5)
-    vim.notify("Loaded in " .. end_time .. 's', "debug", { anchor = 'TC' })
+    get_load_time()
+    -- run_startup_commands
   end,
   desc = "Create startup time notification when vim is finished loading",
 })
@@ -27,7 +33,6 @@ if cmd_val ~= nil then
     end,
     desc = "Run startup script after vim is finished loading",
   })
-
 end
 
 cmd_val = get_command_val('startup-command')

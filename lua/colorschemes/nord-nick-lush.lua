@@ -1,17 +1,30 @@
 ---@diagnostic disable
 --luacheck: ignore
 
+-- vim.import('lush', function(lush)
+--   vim.import('colorschemes.nord-nick-main', function(hl_main)
+--     vim.import('colorschemes.nord-nick-plugins', function(hl_plugins)
+--       vim.import('colorschemes.lush-themes.nord-nvim', function(hl_nord)
+--         local plugins = lush.extends({ hl_nord }).with(hl_plugins)
+--         local main    = lush.extends({ plugins }).with(hl_main)
+--         return main
+--       end)
+--     end)
+--   end)
+-- end)
+
 local ok, lush = pcall(require, "lush")
 local ok_main, hl_main = pcall(require, "colorschemes.nord-nick-main")
 local ok_plugins, hl_plugins = pcall(require, "colorschemes.nord-nick-plugins")
 local ok_nord, nord = pcall(require, "colorschemes.lush-themes.nord-nvim")
 if not ok or not ok_nord or not ok_plugins or not ok_main then
   return
+else
+  local plugins = lush.extends({ nord }).with(hl_plugins)
+  local main    = lush.extends({ plugins }).with(hl_main)
+  return main
 end
 
-local plugins = lush.extends({ nord }).with(hl_plugins)
-local main    = lush.extends({ plugins }).with(hl_main)
-return main
 
 -- -- +----------------------+
 -- -- + Treesitter

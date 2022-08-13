@@ -1,21 +1,20 @@
-local remote = vim.import('remote.init')
+vim.import('remote.init', function(remote)
+  local commands = {
+    "RestartCmd"
+    -- "lua vim.notify('TESTING')",
+    -- "lua vim.notify('TESTING 5', 'warn')",
+    -- "lua vim.notify('TESTING 3', 'info')",
+  }
 
-local commands = {
-  "RestartCmd"
-  -- "lua vim.notify('TESTING')",
-  -- "lua vim.notify('TESTING 5', 'warn')",
-  -- "lua vim.notify('TESTING 3', 'info')",
-}
+  local restart_target = function()
+    remote.run_commands(commands, true)
+  end
 
-local restart_target = function()
-  remote.run_commands(commands, true)
-end
+  vim.api.nvim_create_user_command("RestartTarget", restart_target, {
+    desc = "Reload and run commands on external vim instance"
+  })
 
-vim.api.nvim_create_user_command("RestartTarget", restart_target, {
-  desc = "Reload and run commands on external vim instance"
-})
-
-vim.cmd([[
+  vim.cmd([[
   let s:server_name = escape(substitute(substitute(v:servername, '\$', '', ''), '/tmp', '', ''), '\')
   let s:session_restart_path = expand("$HOME") . "/.vim/sessions/restart"
 
@@ -76,4 +75,5 @@ vim.cmd([[
     exe "!rm " . l:session_path
   endfunction
   command RestartOff call RestartOff()
-]])
+]] )
+end)
