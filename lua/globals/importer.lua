@@ -8,18 +8,7 @@ end
 
 local ok, importmod = pcall(require, 'import')
 if ok then
-  importmod.config({
-    keypress_select = "<Enter>",
-    keypress_close = '<Esc>',
-    keypress_scroll_output_down = '<C-Down>',
-    keypress_scroll_output_up = '<C-Up>',
-    output_split_type = 'horizontal',
-    -- "⨀ ","🔷","🔵 ", "✅",
-    import_failed_icon = "⛔",
-    import_success_icon = " ❎",
-    import_enable_better_printing = true
-    -- import_enable_better_printing = false
-  })
+  importmod.config()
 
   if importmod ~= nil and importmod.import ~= nil then
     vim.import = importmod.import
