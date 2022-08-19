@@ -3,13 +3,6 @@ if not ok then
   return
 end
 
--- TODO: hotkey for documentation window
--- TODO: position documentation window based on type
--- TODO: sticky lsp_signature
--- TODO: fix treesitter should only start with word character
--- TODO: look at ray-x dotfiles completions for further customization
--- TODO: lsp_signature above line < 3 covers cursor
-
 local cmp_mappings = require("plugins.config.nvim-cmp-mapping")
 local compare = require("cmp.config.compare")
 local types = require("cmp.types")
@@ -86,6 +79,22 @@ local lsp_sources = {
 -- vim.opt.spelllang = { 'en_us' }
 vim.opt.dictionary:append("/usr/share/dict/words")
 
+local cmp_helper = {
+  -- Deprioritize items starting with underscores (private or protected)
+  deprioritize_underscore = function(lhs, rhs)
+    local l = (lhs.completion_item.label:find "^_+") and 1 or 0
+    local r = (rhs.completion_item.label:find "^_+") and 1 or 0
+    if l ~= r then return l < r end
+  end,
+  -- Prioritize items that ends with "= ..." (usually for argument completion).
+  prioritize_argument = function(lhs, rhs)
+    local l = (lhs.completion_item.label:find "=$") and 1 or 0
+    local r = (rhs.completion_item.label:find "=$") and 1 or 0
+    if l ~= r then return l > r end
+  end,
+}
+
+
 local setupConfig = {
   enabled = function()
     -- disable inside comments and telescope window
@@ -103,7 +112,8 @@ local setupConfig = {
   },
   preselect = cmp.PreselectMode.Item, -- cmp.PreselectMode.None,
   completion = {
-    completeopt = "menuone,longest,noselect", --noinsert,noselect
+    -- completeopt = "menuone,longest,noselect", --noinsert,noselect
+    completeopt = "menu,menuone,noselect", --noinsert,noselect
     keyword_length = 1,
     -- keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
     -- autocomplete = {
@@ -118,18 +128,18 @@ local setupConfig = {
     }
   },
   window = {
-    -- documentation = cmp.config.disable,
     documentation = cmp.config.window.bordered({
       winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None"
       --   max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
       --   max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
-    }
-    ),
+    }),
     completion = cmp.config.window.bordered({
-      -- winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:Visual,Search:None",
-      -- max_width = 80,
+      --   border = { '┌', '─', '┐', '│', '┘', '─', '└', '│' },
+      --   winhighlight = 'Normal:CmpPmenu,FloatBorder:CmpPmenuBorder,CursorLine:PmenuSel,Search:None',
       winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None"
+      -- max_width = 80,
     })
+
   },
   formatting = {
     fields = { "kind", "abbr", "menu" },
@@ -150,12 +160,13 @@ local setupConfig = {
   sorting = {
     priority_weight = 2,
     comparators = {
-      require("cmp_fuzzy_path.compare"),
-      require("cmp_fuzzy_buffer.compare"),
       compare.offset,
       compare.exact,
       compare.score,
+      require("cmp_fuzzy_path.compare"),
+      require("cmp_fuzzy_buffer.compare"),
       sort_under,
+      function(...) return cmp_helper.prioritize_argument(...) end,
       compare.recently_used,
       compare.kind,
       compare.sort_text,
@@ -171,8 +182,8 @@ local setupConfig = {
   sources = cmp.config.sources({
     -- nvim_lua, nvim_lsp_signature_help, vim-dadbod-completion, cmp_tabnine
     { name = "nvim_lsp", priority = 100 },
-    { name = "fuzzy_path", priority = 50 },
-    { name = "luasnip", priority = 10 },
+    { name = "luasnip", priority = 30 },
+    { name = "fuzzy_path", priority = 10 },
     { name = "omni", priority = 5 },
     -- {
     --   name           = "treesitter",
@@ -253,25 +264,6 @@ cmp.setup.filetype({ 'markdown', 'help' }, {
     documentation = cmp.config.disable
   }
 })
-
-vim.cmd [[
-  " gray
-  highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
-  " blue
-  highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
-  highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#569CD6
-  " light blue
-  highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE
-  highlight! CmpItemKindInterface guibg=NONE guifg=#9CDCFE
-  highlight! CmpItemKindText guibg=NONE guifg=#9CDCFE
-  " pink
-  highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0
-  highlight! CmpItemKindMethod guibg=NONE guifg=#C586C0
-  " front
-  highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
-  highlight! CmpItemKindProperty guibg=NONE guifg=#D4D4D4
-  highlight! CmpItemKindUnit guibg=NONE guifg=#D4D4D4
-]]
 
 -- vim.cmd([[
 --   augroup NvimCmp

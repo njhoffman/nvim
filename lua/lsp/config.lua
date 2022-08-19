@@ -46,9 +46,26 @@ local diagnostic_config = {
     source = "always",
     header = "",
     prefix = "",
+    format = function(diagnostic)
+      -- See null-ls.nvim#632, neovim#17222 for how to pick up `code`
+      local user_data
+      user_data = diagnostic.user_data or {}
+      user_data = user_data.lsp or user_data.null_ls or user_data
+      local code = (
+        -- TODO: symbol is specific to pylint (will be removed)
+        diagnostic.symbol or diagnostic.code or
+          user_data.symbol or user_data.code
+        )
+      if code then
+        return string.format("%s (%s)", diagnostic.message, code)
+      else return diagnostic.message
+      end
+    end,
   },
   signs = true,
-  underline = false, -- { severity = ... }
+  underline = {
+    severity = { min = vim.diagnostic.severity.ERROR },
+  },
   update_in_insert = false,
   severity_sort = true
 }
@@ -57,6 +74,8 @@ local M = {}
 
 M.getsigns = function()
   -- local icons = require("nvim-nonicons")
+
+  -- ✘  i 
   vim.fn.sign_define("DiagnosticSignError", {
     text = '', -- icons.get("x-circle"),
     texthl = "LspDiagnosticsSignError",
@@ -96,10 +115,6 @@ M.setup = function()
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     border = 'rounded',
     max_width = 80
-  })
-
-  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = 'rounded'
   })
 
   local orig_float_preview = vim.lsp.util.open_floating_preview

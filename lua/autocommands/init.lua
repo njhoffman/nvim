@@ -34,7 +34,6 @@ vim.import('config', function(config)
       "*",
       [[call Fasd_update()]],
     } },
-
     CommandWin = {
       { "CmdwinEnter", "*", "let b:cpt_save = &cpt | set cpt=." },
       { "CmdwinLeave", "*", "let &cpt = b:cpt_save | let g:lens#disabled = 1" },
@@ -88,7 +87,6 @@ vim.import('config', function(config)
       { "FileType", "nerdtree", "VimadeBufDisable" },
       { "FileType", "Mundo", "VimadeBufDisable" },
       { "FileType", "MundoDiff", "VimadeBufDisable" },
-      { "CmdwinEnter", "*", "VimadeBufDisable" },
       -- { "CompleteChanged", "*", "redraw" },
       -- { "FocusLost", "*", "VimadeFadeActive" },
       -- { "FocusGained", "*", "VimadeUnfadeActive" },
@@ -99,7 +97,6 @@ vim.import('config', function(config)
       -- { "BufEnter", "dapui_stacks", "VimadeBufDisable" },
       -- { "BufEnter", "dap-repl", "VimadeBufDisable" },
     },
-    BufferRedraws = { { "VimEnter", "*", "BarbarColors" } },
     -- FileTypes = {
     --   -- { "FileType", "lua.lush", "" },
     --   {"FileType", "markdown.pandoc", "set conceallevel=2 nospell"},
@@ -147,23 +144,20 @@ vim.import('config', function(config)
     autocmds.Winbar = require('autocommands.winbar')
   end
 
-  autocmds.NumberToggle = {
-    {
-      "BufEnter,FocusGained,InsertLeave",
-      "*",
-      "if &filetype != 'dashboard' && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif"
-    },
-    { "BufLeave,FocusLost,InsertEnter", "*", "set norelativenumber" }
-  }
+  autocmds.NumberToggle = { {
+    "BufEnter,FocusGained,InsertLeave",
+    "*",
+    "if &filetype != 'dashboard' && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif"
+  }, {
+    "BufLeave,FocusLost,InsertEnter", "*", "set norelativenumber"
+  } }
 
   if Opts.highlight_yank == true or Opts.highlight_yank ~= nil then
-    autocmds.HighlightYank = {
-      {
-        "TextYankPost",
-        "*",
-        "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=400 }"
-      }
-    }
+    autocmds.HighlightYank = { {
+      "TextYankPost",
+      "*",
+      "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=400 }"
+    } }
   end
 
   if Opts.preserve_cursor == true or Opts.preserve_cursor == nil then

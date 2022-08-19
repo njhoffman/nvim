@@ -1,20 +1,23 @@
-local get_variables = function()
+-- allows_duplicates = true,
+-- commalist = false,
+-- default = true,
+-- flaglist = false,
+-- global_local = false,
+-- last_set_chan = 0,
+-- last_set_linenr = 0,
+-- last_set_sid = 0,
+-- name = "autoindent",
+-- scope = "buf",
+-- shortname = "ai",
+-- type = "boolean",
+-- was_set = true
+local get_options = function(scope, conf_opts)
   local res = {}
+  scope = scope or 'all'
   for _, v in pairs(vim.api.nvim_get_all_options_info()) do
-    -- allows_duplicates = true,
-    -- commalist = false,
-    -- default = true,
-    -- flaglist = false,
-    -- global_local = false,
-    -- last_set_chan = 0,
-    -- last_set_linenr = 0,
-    -- last_set_sid = 0,
-    -- name = "autoindent",
-    -- scope = "buf",
-    -- shortname = "ai",
-    -- type = "boolean",
-    -- was_set = true
-    table.insert(res, v)
+    if scope == 'all' or scope == v.scope then
+      table.insert(res, v)
+    end
   end
   table.sort(res, function(left, right)
     return left.scope .. left.name < right.scope .. right.name
@@ -23,5 +26,5 @@ local get_variables = function()
 end
 
 return {
-  get_variables = get_variables
+  get_options = get_options
 }

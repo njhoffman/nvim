@@ -46,7 +46,7 @@ opt("modelines", 5)
 opt("mouse", "nivh")
 opt("previewheight", 7)
 opt("scrolloff", 7)
-opt("shada", [[!,'2000,<1000,s500,n~/.vim/.shada]])
+opt("shada", [[!,'2000,<1000,s500]])
 -- Specify the behavior when switching between buffers Use the current tab for openning files from quickfix.
 opt("switchbuf", "useopen,usetab")
 opt("showtabline", 1)

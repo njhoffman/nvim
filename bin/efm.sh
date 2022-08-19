@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 # curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux.gz | gunzip -f > "$HOME"/.local/bin/rust-analyzer && chmod +x "$HOME"/.local/bin/rust-analyzer
 # https://megalinter.github.io/latest/all_linters/
 # https://github.com/caramelomartins/awesome-linters
@@ -16,11 +14,10 @@
 # •memberof       ┃ []       ┃
 # •rolreplication ┃ True     ┃
 
-
 function install-other-lint {
   pip3 install vint
-  dockerfilelint (dockerlint)
-  golint
+  # dockerfilelint (dockerlint)
+  # golint
   jsonlint
   checkmake
   yamllint
@@ -86,3 +83,4 @@ function install-efm-deps {
   # rebar3
   # Julia
   asdf install julia latest
+}

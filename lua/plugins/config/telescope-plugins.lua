@@ -11,6 +11,7 @@ local tele_plugs = {
   ["options"]         = "telescope-options.nvim",
   ["variables"]       = "telescope-variables.nvim",
   ["filetypes"]       = "telescope-filetypes.nvim",
+  ["mapper"]          = "telescope-mapper.nvim",
   --
   ["aerial"]          = "aerial.nvim",
   ["arecibo"]         = "telescope-arecibo.nvim",
@@ -33,7 +34,6 @@ local tele_plugs = {
   ["lazygit"]         = "lazygit.nvim",
   ["live_grep_args"]  = "telescope-rg.nvim",
   ["luasnip"]         = "telescope-luasnip.nvim",
-  ["mapper"]          = "telescope-mapper.nvim",
   ["media_files"]     = "telescope-media-files.nvim",
   ["neoclip"]         = "nvim-neoclip.lua",
   ["node_modules"]    = "telescope-node-modules.nvim",

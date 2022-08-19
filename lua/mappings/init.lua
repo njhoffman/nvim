@@ -1,20 +1,55 @@
-vim.import('mappings.mapper', function(M)
+vim.import('mapper', function(M)
+  -- M.plugin('treesitter', function()
+  --   return {
+  --     refactor = {
+  --       goto_definition = "gtd",
+  --       list_definitions = "gtD",
+  --       list_definitions_toc = "gt0",
+  --       goto_next_usage = "<a-*>",
+  --       goto_previous_usage = "<a-#>"
+  --     }
+  --   }
+  -- end)
+
+  -- virtual keymaps to document other/default keymaps
+  -- function M.treesitter_text_objects()
+  --   require("nvim-treesitter.configs").setup {
+  --     textobjects = {
+  --       select = {
+  --         enable = true,
+  --         lookahead = true,
+  --         -- The keymaps are defined in the configuration table, no way to get our Mapper in there !
+  --         keymaps = {
+  --           ["af"] = "@function.outer",
+  --           ["if"] = "@function.inner",
+  --           ["ac"] = "@class.outer",
+  --           ["ic"] = "@class.inner",
+  --         },
+  --       },
+  --     },
+  --   }
+  --   -- Hopefully we can still document them
+  --   Mapper.map_virtual("o", "af", "", {}, "Navigation", "treesitter_function_outer", "Function outer motion")
+  --   Mapper.map_virtual("o", "if", "", {}, "Navigation", "treesitter_function_inner", "Function inner motion")
+  --   Mapper.map_virtual("o", "ac", "", {}, "Navigation", "treesitter_class_outer", "Class outer motion")
+  --   Mapper.map_virtual("o", "ic", "", {}, "Navigation", "treesitter_class_inner", "Class inner motion")
+  -- end
+
   M.map("Navigation", "n", ";", "quick_cmd", { nowait = true })
-  -- M.map("Navigation", "n", ":", "quick_cmdwin", { nowait = true })
   M.map("Navigation", "n", "-+:", "quick_cmdwin2", { nowait = true })
-  M.map("Navigation", "v", ";", "quick_cmd_v", { nowait = true })
-  M.map("Navigation", "v", ":", "quick_cmdwin_v", { nowait = true })
+  M.map("Navigation", "v", ";", "quick_cmd", { nowait = true })
+  M.map("Navigation", "v", ":", "quick_cmdwin", { nowait = true })
   M.map("Navigation", "n", "<BS>", "buffer_last")
-  M.map("Navigation", "n", "H", "buffer_left3")
-  M.map("Navigation", "n", "L", "buffer_right3")
+  M.map("Navigation", "n", "H", "buffer_left2")
+  M.map("Navigation", "n", "L", "buffer_right2")
   M.map("Navigation", "n", "!!", "repeat_cmd")
   M.map("Navigation", "n", "<M-r>", "restart")
-  M.map("Navigation", "n", "<C-x>", "nowrite_exit1")
-  M.map("Navigation", "n", "<A-x>", "write_exit1")
+  M.map("Navigation", "n", "<C-x>", "nowrite_exit")
+  M.map("Navigation", "n", "<A-x>", "write_exit")
   M.map("Navigation", "n", "<C-d>", "bufclose_nosave")
   M.map("Navigation", "n", "<C-s>", "quick_save")
-  M.map("Navigation", "i", "<C-s>", "insert_quick_save")
-  M.map("Navigation", "n", "ZZ", "write_exit2") -- virtual
+  M.map("Navigation", "i", "<C-s>", "quick_save")
+  M.map("Navigation", "n", "ZZ", "write_exit_virt")
   M.map("Navigation", "n", "<leader>x", "bufclose_save")
   M.map("Navigation", "n", "<leader>z", "nowrite_exit2")
   M.map("Navigation", "n", "<leader>!", "bufclose_all")
@@ -25,9 +60,8 @@ vim.import('mappings.mapper', function(M)
   M.map("Navigation", "n", "<leader>fn", "open_newfile")
   M.map("Navigation", "n", "<leader>fs", "open_newsplit")
   M.map("Navigation", "n", "<leader>fp", "print_filename")
-  M.map("Navigation", "n", "gF", "goto_fileline") -- TODO: integrate goto definition
-  M.map("Navigation", "n", "gf", "goto_file") -- virtual
-  M.map("Navigation", "n", "gx", "open_file") -- virtual
+  M.map("Navigation", "n", "gf", "goto_fileline")
+  M.map("Navigation", "n", "gx", "open_file_virt")
   M.map("Navigation", "n", ",cd", "cd_buffer")
   M.map("Navigation", "n", ",cdh", "cd_home")
   M.map("Navigation", "n", ",cdr", "cd_root")
@@ -93,7 +127,6 @@ vim.import('mappings.mapper', function(M)
   -- surroundings are placed on separate lines and indented.  In blockwise visual
   -- mode, each line is surrounded.
 
-
   -- M.map("Surround", "n", "sAS", "surround_around_line_trim_nl1")
   -- M.map("Surround", "n", "sA", "surround_around_nl")
   -- M.map("Surround", "n", "yS", "you_surround_nl")
@@ -103,18 +136,18 @@ vim.import('mappings.mapper', function(M)
   M.map("Surround", "n", "yss", "you_surround_line_trim")
   M.map("Surround", "n", "saS", "surround_around_line_trim_nl2")
   M.map("Surround", "n", "sas", "surround_around_line_trim")
-  M.map("Surround", "x", "s", "surround_visual1")
-  M.map("Surround", "x", "S", "surround_visual2")
-  M.map("Surround", "x", "gS", "surround_visual_nl")
+  M.map("Surround", "x", "s", "surround_visual_add_inner")
+  M.map("Surround", "x", "S", "surround_visual_add_outer")
+  M.map("Surround", "x", "gS", "surround_visual_add_newline")
   M.map("Surround", "n", "ds", "delete_surround")
-  M.map("Surround", "n", "ds)", "delete_paren1")
-  M.map("Surround", "n", "ds(", "delete_paren2")
-  M.map("Surround", "n", "ds}", "delete_brace1")
-  M.map("Surround", "n", "ds{", "delete_brace2")
-  M.map("Surround", "n", "ds]", "delete_bracket1")
-  M.map("Surround", "n", "ds[", "delete_bracket2")
-  M.map("Surround", "n", "dsb", "delete_block1")
-  M.map("Surround", "n", "dsB", "delete_block2")
+  M.map("Surround", "n", "ds)", "delete_paren")
+  M.map("Surround", "n", "ds(", "delete_paren")
+  M.map("Surround", "n", "ds}", "delete_brace")
+  M.map("Surround", "n", "ds{", "delete_brace")
+  M.map("Surround", "n", "ds]", "delete_bracket")
+  M.map("Surround", "n", "ds[", "delete_bracket")
+  M.map("Surround", "n", "dsb", "delete_block")
+  M.map("Surround", "n", "dsB", "delete_block")
   M.map("Surround", "n", "dsf", "delete_func")
   M.map("Surround", "n", 'ds"', "delete_quote")
   M.map("Surround", "n", "ds`", "delete_grave")
@@ -122,14 +155,14 @@ vim.import('mappings.mapper', function(M)
   -- M.Map("Surround", "n", "dst", "delete_tag")
   -- TODO: cs)] ?
   M.map("Surround", "n", "cs", "change_surround")
-  M.map("Surround", "n", "cs)", "change_paren1")
-  M.map("Surround", "n", "cs(", "change_paren2")
-  M.map("Surround", "n", "cs}", "change_brace1")
-  M.map("Surround", "n", "cs{", "change_brace2")
-  M.map("Surround", "n", "cs]", "change_bracket1")
-  M.map("Surround", "n", "cs[", "change_bracket2")
-  M.map("Surround", "n", "csb", "change_block1")
-  M.map("Surround", "n", "csB", "change_block2")
+  M.map("Surround", "n", "cs)", "change_paren")
+  M.map("Surround", "n", "cs(", "change_paren")
+  M.map("Surround", "n", "cs}", "change_brace")
+  M.map("Surround", "n", "cs{", "change_brace")
+  M.map("Surround", "n", "cs]", "change_bracket")
+  M.map("Surround", "n", "cs[", "change_bracket")
+  M.map("Surround", "n", "csb", "change_block")
+  M.map("Surround", "n", "csB", "change_block")
   M.map("Surround", "n", "csf", "change_func")
   M.map("Surround", "n", 'cs"', "change_quote")
   M.map("Surround", "n", "cs`", "change_grave")

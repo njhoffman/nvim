@@ -1,22 +1,24 @@
 local config = { interval = 3000, list = {} }
+-- local get_changelist = require('watcher.changelist')
 
-local watch_list = function(get_data, config)
-  local curr_list = get_data()
-  for i, line in pairs(curr_list) do
-    local matches = line:gmatch("[ ]+[0-9]+")
-    print(vim.inspect(matches))
+local envlist = {
+  ["FONT_SIZE"] = 8.5,
+  ["PWD"] = '/home/nicholas/bin',
+  ["ZCONVEY_ID"] = 29
+}
+
+
+local get_envlist = function()
+  return envlist
+end
+
+local watch_list = function()
+  local curr = get_envlist()
+  for i, line in pairs(curr) do
+    vim.notify(line)
   end
 end
 
-local get_changes = function()
-  local lines = {}
-  local changes = vim.api.nvim_command_output("changes")
-
-  for change in changes:gmatch("[^\r\n]+") do
-    table.insert(lines, change)
-  end
-  table.remove(lines, 1)
-  return lines
-end
-
-watch_list(get_changes, config)
+local timer = vim.fn.timer_start(
+  config.interval, watch_list, { ["repeat"] = -1 }
+)

@@ -60,7 +60,14 @@ require "nvim-treesitter.configs".setup {
   },
   autotag = {
     enable = config.autotag,
-    filetypes = { "html", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue" },
+    filetypes = {
+      "html",
+      "javascript",
+      "javascriptreact",
+      "typescriptreact",
+      "svelte",
+      "vue",
+    },
     skip_tags = {
       "area",
       "base",

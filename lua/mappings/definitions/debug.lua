@@ -1,8 +1,24 @@
 local M = {
-  continue1 = { cmd = "<cmd>lua require('dap').continue()<cr>", short = "dap continue", long = "dap continue" },
-  step_over1 = { cmd = "<cmd>lua require('dap').step_over()<cr>", short = "dap step-over", long = "dap step-over" },
-  step_into1 = { cmd = "<cmd>lua require('dap').step_into()<cr>", short = "dap step-into", long = "dap step-into" },
-  step_out1 = { cmd = "<cmd>lua require('dap').step_out()<cr>", short = "dap step-out", long = "dap step-out" },
+  continue1 = {
+    cmd   = "<cmd>lua require('dap').continue()<cr>",
+    short = "dap continue",
+    long  = "dap continue",
+  },
+  step_over1 = {
+    cmd   = "<cmd>lua require('dap').step_over()<cr>",
+    short = "dap step-over",
+    long  = "dap step-over",
+  },
+  step_into1 = {
+    cmd   = "<cmd>lua require('dap').step_into()<cr>",
+    short = "dap step-into",
+    long  = "dap step-into",
+  },
+  step_out1 = {
+    cmd   = "<cmd>lua require('dap').step_out()<cr>",
+    short = "dap step-out",
+    long  = "dap step-out",
+  },
   repl_run_last = {
     cmd = "<cmd>lua require('dap').repl.run_last()<cr>",
     short = "dap repl run last",

@@ -13,33 +13,36 @@ local build_builtins = function(results)
 end
 
 local build_extensions = function(results)
-  for extension_name, commands in pairs(extensions_pickers.manager) do
+  for ext_name, commands in pairs(extensions_pickers.manager) do
     -- try to assign default command
     local command = nil
-    if commands[extension_name] ~= nil then
-      command = extension_name
+    if commands[ext_name] ~= nil then
+      command = ext_name
     elseif #vim.tbl_keys(commands) == 1 then
       command = vim.tbl_keys(commands)[1]
     end
+
     if command ~= nil then
       local item = {
-        extension = extension_name,
+        extension = ext_name,
         command   = command,
-        name      = extension_name,
+        name      = ext_name,
       }
       table.insert(results, #results + 1, item)
-    else
-      -- or list each extensions command as a list item
-      for cmd, _ in pairs(commands) do
-        local item = {
-          extension = extension_name,
-          command   = cmd,
-          name      = extension_name .. '_' .. cmd,
-        }
+    end
+    -- or list each extensions command as a list item, don't duplicate primary command
+    for cmd, _ in pairs(commands) do
+      local item = {
+        extension = ext_name,
+        command   = cmd,
+        name      = ext_name .. '_' .. cmd,
+      }
+      if command == nil or command ~= cmd then
         table.insert(results, #results + 1, item)
       end
     end
   end
+  return results
 end
 
 local build_metadata = function(results, opts)

@@ -6,6 +6,8 @@ local custom_comps = require('plugins.config.feline-nvim-components')
 local provider_project_nvim = require('plugins.config.feline-nvim-provider-project-nvim')
 local provider_project_uo = require('plugins.config.feline-nvim-provider-project-uo')
 
+-- require("lsp_signature").status_line(max_width)
+
 table.insert(defaults.active[1], 3, custom_comps.ProjectUoComponent)
 defaults.active[1][4].left_sep = { hl = { bg = "oceanblue" }, str = " " }
 table.insert(defaults.active[1], 7, custom_comps.AsciiComponent)

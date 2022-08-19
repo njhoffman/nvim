@@ -59,6 +59,7 @@ function cmp_mappings()
     ['<Down>'] = cmp.mapping(cmp.mapping.scroll_docs(2), { "c", "i", "s" }),
     ['<Up>'] = cmp.mapping(cmp.mapping.scroll_docs(-2), { "c", "i", "s" }),
     ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), { "c", "i", "s" }),
+    -- ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-Space>'] = cmp.mapping(
       cmp.mapping.confirm {
         behavior = cmp.ConfirmBehavior.Insert,
@@ -77,6 +78,11 @@ function cmp_mappings()
       end
       cmp.complete()
     end, { 'i', 'c', }),
+
+    -- ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }),
+    -- ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp_types.SelectBehavior.Select }),
+    -- ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Insert }),
+    -- ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp_types.SelectBehavior.Insert }),
   }
 end
 

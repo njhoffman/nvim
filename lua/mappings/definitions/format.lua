@@ -35,8 +35,16 @@ local M = {
     short = "dial decrement additional",
     long = "decrement item(s) selected in visual mode"
   },
-  swap = { cmd = "<cmd>ISwap<cr>", short = "swap", long = "swap/exchange text objects with text hints" },
-  indent_all = { cmd = "`[V`]<", short = "indent all lines", long = "indent all lines" },
+  swap = {
+    cmd   = "<cmd>ISwap<cr>",
+    short = "swap",
+    long  = "swap/exchange text objects with text hints",
+  },
+  indent_all = {
+    cmd   = "`[V`]<",
+    short = "indent all lines",
+    long  = "indent all lines",
+  },
   unindent_all = { cmd = "`[V`]>", short = "unindent all lines", long = "unindent all lines" },
   uppercase2 = { cmd = "gUw", short = "uppercase", long = "format uppercase" },
   lowercase2 = { cmd = "guw", short = "lowercase", long = "format lowercase" },

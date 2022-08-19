@@ -20,47 +20,27 @@ M.mapping_plugins = {
 }
 
 M.treesitter_plugins = {
-  ["nvim-treesitter"] = {
-    "nvim-treesitter/nvim-treesitter",
-    run = ":TSUpdate",
-    requires = "nvim-lua/plenary.nvim"
-  },
-  ["nvim-ts-context-commentstring"] = {
-    "JoosepAlviste/nvim-ts-context-commentstring",
-    requires = "nvim-treesitter"
-  },
+  ["nvim-treesitter"] = { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", requires = "nvim-lua/plenary.nvim" },
   ["nvim-treesitter-context"] = { "romgrk/nvim-treesitter-context", requires = "nvim-treesitter" },
-  ["nvim-treesitter-refactor"] = {
-    "nvim-treesitter/nvim-treesitter-refactor",
-    requires = "nvim-treesitter"
-  },
-  ["playground"] = { "nvim-treesitter/playground", requires = "nvim-treesitter" },
-  ["nvim-treesitter-textobjects"] = {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    requires = "nvim-treesitter"
-  },
-  ["nvim-treesitter-textsubjects"] = {
-    "RRethy/nvim-treesitter-textsubjects",
-    requires = "nvim-treesitter"
-  },
-  ["nvim-ts-rainbow"] = { "p00f/nvim-ts-rainbow", requires = "nvim-treesitter" },
+  ["nvim-treesitter-endwise"] = { "RRethy/nvim-treesitter-endwise" },
   ["nvim-treesitter-pairs"] = { "theHamsta/nvim-treesitter-pairs", requires = "nvim-treesitter" },
+  ["nvim-treesitter-refactor"] = { "nvim-treesitter/nvim-treesitter-refactor", requires = "nvim-treesitter" },
+  ["nvim-treesitter-textobjects"] = { "nvim-treesitter/nvim-treesitter-textobjects", requires = "nvim-treesitter" },
+  ["nvim-treesitter-textsubjects"] = { "RRethy/nvim-treesitter-textsubjects", requires = "nvim-treesitter" },
   ["nvim-ts-autotag"] = { "windwp/nvim-ts-autotag", requires = "nvim-treesitter" },
+  ["nvim-ts-context-commentstring"] = { "JoosepAlviste/nvim-ts-context-commentstring", requires = "nvim-treesitter" },
+  ["nvim-ts-rainbow"] = { "p00f/nvim-ts-rainbow", requires = "nvim-treesitter" },
+  ["playground"] = { "nvim-treesitter/playground", requires = "nvim-treesitter" },
   ["tree-sitter-ntangle"] = { "jbyuki/tree-sitter-ntangle" },
-  ["nvim-treesitter-endwise"] = { "RRethy/nvim-treesitter-endwise" }
 }
 
 M.dap_plugins = {
   ["dap-install"] = { "Pocco81/DAPInstall.nvim" },
   ["nvim-dap"] = { "mfussenegger/nvim-dap" },
-  ["nvim-dap-ui"] = {
-    "rcarriga/nvim-dap-ui",
+  ["nvim-dap-ui"] = { "rcarriga/nvim-dap-ui",
     requires = { "theHamsta/nvim-dap-virtual-text", "mfussenegger/nvim-dap" }
   },
-  ["one-small-step-for-vimkind"] = {
-    "jbyuki/one-small-step-for-vimkind",
-    requires = "mfussenegger/nvim-dap"
-  },
+  ["one-small-step-for-vimkind"] = { "jbyuki/one-small-step-for-vimkind", requires = "mfussenegger/nvim-dap" },
   ["nvim-dap-python"] = { "mfussenegger/nvim-dap-python", requires = "mfussenegger/nvim-dap" },
   ["dash.nvim"] = { "jbyuki/dash.nvim", requires = "jbyuki/ntangle.nvim" },
 }
@@ -185,11 +165,6 @@ M.telescope_plugins = {
   ["nvim-neoclip.lua"]               = { "AckslD/nvim-neoclip.lua",
     requires = { "tami5/sqlite.lua", module = "sqlite" },
   },
-  ["nvim-mapper"]                    = { "lazytanuki/nvim-mapper", before = "telescope.nvim",
-    config = function()
-      require("nvim-mapper").setup({})
-    end
-  },
   ["cheatsheet.nvim"]                = { "sudormrfbin/cheatsheet.nvim" },
   ["telescope-arecibo.nvim"]         = { "nvim-telescope/telescope-arecibo.nvim" },
   ["telescope-asynctasks.nvim"]      = { "GustavoKatel/telescope-asynctasks.nvim",
@@ -274,7 +249,6 @@ M.completion_plugins = {
   ["nvim-luaref"]                          = { "milisims/nvim-luaref" },
   ["luv-vimdocs"]                          = { "nanotee/luv-vimdocs" }
   -- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },
-
 }
 
 M.ui_plugins = {

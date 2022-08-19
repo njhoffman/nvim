@@ -39,4 +39,14 @@ local default_options = {
   },
 }
 
--- require "fidget".setup(default_options)
+
+require("fidget").setup {
+  text = {
+    --see ~/.vim/plugged/fidget.nvim/lua/fidget/spinners.lua
+    spinner = "zip",
+  },
+  window = {
+    relative = "win",
+    blend = 50,
+  },
+}

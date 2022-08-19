@@ -20,25 +20,8 @@ local servers = {
   -- "null-ls",
 }
 
-local M = {}
-M.init = function()
-  vim.import('nvim-lsp-installer', function(lspinstall)
-    for _, name in ipairs(servers) do
-      local server_is_found, server = lspinstall.get_server(name)
-      if server_is_found and not server:is_installed() then
-        vim.notify("Installing " .. name, "info")
-        server:install()
-      end
-    end
-  end)
+for _, server_name in ipairs(servers) do
+  local server = require("lsp.servers." .. server_name)
+  local lsp = require('lsp.on_attach')
+  server.setup(lsp.on_attach, lsp.make_capabilities())
 end
-
-for _, server in ipairs(servers) do
-  vim.import("lsp.servers." .. server, function(server)
-    vim.import('lsp.on_attach', function(lsp)
-      server.setup(lsp.on_attach, lsp.make_capabilities())
-    end)
-  end)
-end
-
-return M

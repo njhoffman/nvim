@@ -28,41 +28,30 @@ local M = {
   surround_around_line_trim = {
     short = "surround around line whitespace trimmed",
   },
-  surround_visual1 = {
-    short = "surround visual selection",
+  surround_visual_add_inner = {
+    short = "surround add inside visual selection",
   },
-  surround_visual2 = {
-    short = "surround visual selection",
+  surround_visual_add_outer = {
+    short = "surround add around visual selection",
   },
-  surround_visual_nl = {
-    short = "surround visual selection new line whitespace no indent",
+  surround_visual_add_newline = {
+    short = "surround add newline whitespace no indent",
+    long = "surround visual selection new line whitespace no indent",
   },
   change_surround = {
     short = "change surround"
   },
-  change_paren1 = {
-    short = "change surround paren )"
+  change_paren = {
+    short = "change surround paren ()"
   },
-  change_paren2 = {
-    short = "change surround paren ("
+  change_brace = {
+    short = "change surround brace {}"
   },
-  change_brace1 = {
-    short = "change surround brace }"
+  change_bracket = {
+    short = "change surround bracket []"
   },
-  change_brace2 = {
-    short = "change surround brace {"
-  },
-  change_bracket1 = {
-    short = "change surround bracket ]"
-  },
-  change_bracket2 = {
-    short = "change surround bracket ["
-  },
-  change_block1 = {
+  change_block = {
     short = "change surround block"
-  },
-  change_block2 = {
-    short = "change surround Block"
   },
   change_func = {
     short = "change surround function"
@@ -82,44 +71,32 @@ local M = {
   delete_surround = {
     short = "delete surround"
   },
-  delete_paren1 = {
-    short = "delete surround paren )"
+  delete_paren = {
+    short = "delete surround paren ()"
   },
-  delete_paren2 = {
-    short = "delete surround paren ("
+  delete_brace = {
+    short = "delete surround brace {}"
   },
-  delete_brace1 = {
-    short = "delete surround brace }"
+  delete_bracket = {
+    short = "delete surround bracket []"
   },
-  delete_brace2 = {
-    short = "delete surround brace {"
-  },
-  delete_bracket1 = {
-    short = "delete surround bracket ]"
-  },
-  delete_bracket2 = {
-    short = "delete surround bracket ["
-  },
-  delete_block1 = {
+  delete_block = {
     short = "delete surround block"
-  },
-  delete_block2 = {
-    short = "delete surround Block"
   },
   delete_func = {
     short = "delete surround function"
   },
   delete_quote = {
-    short = 'delete surround quote "'
+    short = 'delete surround quote ""'
   },
   delete_grave = {
     short = "delete surround grave mark`"
   },
   delete_single_quote = {
-    short = "delete surround single-quote"
+    short = "delete surround single-quote ''"
   },
   delete_tag = {
-    short = "delete surround tag"
+    short = "delete surround tag <></>"
   },
   -- cs: change (replace) surround
   -- ys: you surround (add)

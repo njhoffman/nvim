@@ -76,7 +76,31 @@ local DEFAULT_SETTINGS = {
 }
 
 local lspinstall = require("nvim-lsp-installer")
-lspinstall.setup(DEFAULT_SETTINGS)
+
+local settings = {
+  ensure_installed = {
+    "awk_ls",
+    -- "bashls",
+    "clangd",
+    "cssls",
+    "dockerls",
+    "efm",
+    "golangci_lint_ls",
+    "gopls",
+    "graphql",
+    "html",
+    "jsonls",
+    "pylsp",
+    "sqls",
+    "sumneko_lua",
+    "terraformls",
+    "tsserver",
+    "vimls",
+    "yamlls"
+    -- "null-ls",
+  }
+}
+lspinstall.setup(settings)
 
 -- -- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
 -- lspinstall.post_install_hook = function()

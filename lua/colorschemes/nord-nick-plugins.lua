@@ -232,14 +232,22 @@ return function()
     --    highlight default link TelescopeResultsDiffUntracked NonText
 
     -- +--- CMP ---+
+
+    --   " gray
+    --   " {✅Class, ✅Module, ✅Interface, Struct, ✅Function, ✅Method, ✅Constructor,
+    --   "  ✅Variable, ✅Property, Field, ✅Unit, Value, Enum, EnumMember, Event,
+    --   "  ✅Keyword, Color, File, Reference, Folder, Constant, Operator, TypeParameter,
+    --   "  ✅Snippet, ✅Text}
+    CmpPmenu { bg = '#242a30' },
+    CmpPmenuBorder { bg = '#242a30' },
     CmpItemAbbr { fg = colors.fg },
-    CmpItemAbbrDeprecated { fg = colors.fg },
+    CmpItemAbbrDeprecated { fg = colors.fg, gui = 'strikethrough' },
     CmpItemAbbrMatch { fg = colors.blue, gui = "bold" },
     CmpItemAbbrMatchFuzzy { fg = colors.blue, underline = true },
     CmpItemMenu { fg = colors.light_gray },
     CmpItemKindText { fg = colors.orange },
-    CmpItemKindMethod { fg = colors.blue },
-    CmpItemKindFunction { fg = colors.blue },
+    CmpItemKindMethod { fg = colors.purple },
+    CmpItemKindFunction { fg = colors.purple },
     CmpItemKindConstructor { fg = colors.yellow },
     CmpItemKindField { fg = colors.blue },
     CmpItemKindClass { fg = colors.yellow },
@@ -253,6 +261,7 @@ return function()
     CmpItemKindFile { fg = colors.blue },
     CmpItemKindEnumMember { fg = colors.cyan },
     CmpItemKindConstant { fg = colors.orange },
+    CmpItemKindUnit { fg = colors.orange },
     CmpItemKindStruct { fg = colors.yellow },
     CmpItemKindTypeParameter { fg = colors.yellow },
     -- +--- Notify ---+

@@ -1,35 +1,35 @@
-local M = {
+return {
   buffer_last = {
     cmd = ":e #<cr>",
     short = "last buffer",
     long = "select the last buffer"
   },
-  buffer_left3 = {
+  buffer_left2 = {
     cmd = "<cmd>BufferPrev<cr>",
     short = "buffer left",
     long = "select the buffer to the left"
   },
-  buffer_right3 = {
+  buffer_right2 = {
     cmd = "<cmd>BufferNext<cr>",
     short = "buffer right",
     long = "select the buffer to the right"
   },
-  buffer_left2 = {
+  buffer_left1 = {
     cmd = "<cmd>bprev<cr>",
     short = "buffer left",
     long = "select the buffer to the left"
   },
-  buffer_right2 = {
+  buffer_right1 = {
     cmd = "<cmd>bnext<cr>",
     short = "buffer right",
     long = "select the buffer to the right"
   },
-  buffer_left1 = {
+  buffer_cybu_left1 = {
     cmd = "<Plug>(CybuPrev)",
     short = "buffer left (cybu)",
     long = "select the buffer with cybu to the left"
   },
-  buffer_right1 = {
+  buffer_cybu_right1 = {
     cmd = "<Plug>(CybuNext)",
     short = "buffer right (cybu)",
     long = "select the buffer with cybu to the right"
@@ -44,17 +44,7 @@ local M = {
     short = "command line",
     long = "quickly open up command line"
   },
-  quick_cmd_v = {
-    cmd = ":",
-    short = "command line",
-    long = "quickly open up command line"
-  },
   quick_cmdwin = {
-    cmd = "q:",
-    short = "command line window",
-    long = "quickly open command line window"
-  },
-  quick_cmdwin_v = {
     cmd = "q:",
     short = "command line window",
     long = "quickly open command line window"
@@ -66,7 +56,6 @@ local M = {
   },
   -- TODO: consolidate, integrate "tabclose"
   bufclose_nosave = {
-    -- cmd = "<cmd>BufDel<cr>",
     cmd = "<cmd>BufferDelete<cr>",
     short = "buffer close no save",
     long = "close buffer with without saving"
@@ -76,22 +65,22 @@ local M = {
     short = "quit",
     long = "quit"
   },
-  nowrite_exit1 = {
+  nowrite_exit = {
     cmd = "<cmd>silent! tabclose | qa<cr>",
     short = "exit no save",
     long = "quick exit without saving"
   },
-  write_exit1 = {
+  write_exit = {
     cmd = "<cmd>silent! tabclose | xa<cr>",
     short = "exit prompt save",
-    "quick exit with prompt for save"
+    long = "quick exit with prompt for save"
   },
   quick_save = {
     cmd = "<cmd>w<cr><esc>",
     short = "quick save",
     long = "quick buffer save"
   },
-  write_exit2 = {
+  write_exit_virt = {
     short = "write and exit",
     long = "quick write with exit"
   },
@@ -151,21 +140,14 @@ local M = {
     long = "print path of current buffer"
   },
   goto_fileline = {
-    -- cmd = '<cmd>exec "normal ^f(gf"<cr>',
-    cmd = '^/"\\|\'<cr>gF',
+    cmd = '0/"\\|\'<cr>gF',
     short = "edit file under line",
-    long = "edit file under line"
   },
-  insert_quick_save = {
-    cmd = "<esc><cmd>w<cr>",
-    short = "save in insert",
-    long = "save in insert mode"
-  },
-  goto_file = {
+  goto_file_virt = {
     short = "goto file",
     long = "goto file under cursor"
   },
-  open_file = {
+  open_file_virt = {
     short = "open file",
     long = "open file under cursor"
   },
@@ -185,4 +167,3 @@ local M = {
     long = "cd to root"
   }
 }
-return M

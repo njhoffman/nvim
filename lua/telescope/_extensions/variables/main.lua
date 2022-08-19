@@ -10,11 +10,31 @@ local display = require("telescope._extensions.variables.display")
 local generate = require("telescope._extensions.variables.generate")
 local utils = require("telescope._extensions.variables.utils")
 local _previewer = require("telescope._extensions.variables.previewer")
-local previewers = require "telescope.previewers"
-
-local M = {}
 
 local default_conf_opts = {}
+
+local attach_mappings = function()
+  actions.select_default:replace(function()
+    local selection = action_state.get_selected_entry()
+    if selection == nil then
+      utils.__warn_no_selection "variables"
+      return
+    end
+    -- local esc = ""
+    -- if vim.fn.mode() == "i" then
+    --   esc = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
+    -- end
+
+    -- vim.api.nvim_feedkeys(
+    --   string.format("%s:set %s=%s", esc, selection.value.name, selection.value.value),
+    --   "m",
+    --   true
+    -- )
+  end)
+  return true
+end
+
+local M = {}
 
 M.setup = function(setup_config)
   -- if setup_config.base_dir then
@@ -41,29 +61,9 @@ M.all = function(theme_opts, conf_opts)
       results = parsed_table,
       entry_maker = display.entry_maker
     }),
-    -- previewer = previewers.display_content,
-    -- previewer = _previewers.previewer.new(opts),
+    previewer = _previewer.previewer.new(conf_opts),
     sorter = telescope_config.file_sorter(theme_opts),
-    attach_mappings = function()
-      actions.select_default:replace(function()
-        local selection = action_state.get_selected_entry()
-        if selection == nil then
-          utils.__warn_no_selection "variables"
-          return
-        end
-        -- local esc = ""
-        -- if vim.fn.mode() == "i" then
-        --   esc = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
-        -- end
-
-        -- vim.api.nvim_feedkeys(
-        --   string.format("%s:set %s=%s", esc, selection.value.name, selection.value.value),
-        --   "m",
-        --   true
-        -- )
-      end)
-      return true
-    end,
+    attach_mappings = attach_mappings
   }):find()
 end
 
@@ -79,17 +79,9 @@ M.buffer = function(theme_opts, conf_opts)
       results = parsed_table,
       entry_maker = display.entry_maker
     }),
+    previewer = _previewer.previewer.new(conf_opts),
     sorter = telescope_config.file_sorter(theme_opts),
-    attach_mappings = function()
-      actions.select_default:replace(function()
-        local selection = action_state.get_selected_entry()
-        if selection == nil then
-          utils.__warn_no_selection "variables"
-          return
-        end
-      end)
-      return true
-    end,
+    attach_mappings = attach_mappings
   }):find()
 end
 
@@ -105,17 +97,9 @@ M.predef = function(theme_opts, conf_opts)
       results = parsed_table,
       entry_maker = display.entry_maker
     }),
+    previewer = _previewer.previewer.new(conf_opts),
     sorter = telescope_config.file_sorter(theme_opts),
-    attach_mappings = function()
-      actions.select_default:replace(function()
-        local selection = action_state.get_selected_entry()
-        if selection == nil then
-          utils.__warn_no_selection "variables"
-          return
-        end
-      end)
-      return true
-    end,
+    attach_mappings = attach_mappings
   }):find()
 end
 
@@ -131,17 +115,9 @@ M.window = function(theme_opts, conf_opts)
       results = parsed_table,
       entry_maker = display.entry_maker
     }),
+    previewer = _previewer.previewer.new(conf_opts),
     sorter = telescope_config.file_sorter(theme_opts),
-    attach_mappings = function()
-      actions.select_default:replace(function()
-        local selection = action_state.get_selected_entry()
-        if selection == nil then
-          utils.__warn_no_selection "variables"
-          return
-        end
-      end)
-      return true
-    end,
+    attach_mappings = attach_mappings
   }):find()
 end
 
@@ -157,25 +133,10 @@ M.global = function(theme_opts, conf_opts)
       results = parsed_table,
       entry_maker = display.entry_maker
     }),
+    previewer = _previewer.previewer.new(conf_opts),
     sorter = telescope_config.file_sorter(theme_opts),
-    attach_mappings = function()
-      actions.select_default:replace(function()
-        local selection = action_state.get_selected_entry()
-        if selection == nil then
-          utils.__warn_no_selection "variables"
-          return
-        end
-      end)
-      return true
-    end,
+    attach_mappings = attach_mappings
   }):find()
 end
 
--- pickers.new(opts, {
---   prompt_title = "options",
---   finder = finders.new_table {
---     results = res,
---     entry_maker = opts.entry_maker or make_entry.gen_from_vimoptions(opts),
---   },
---   sorter = conf.generic_sorter(opts),
 return M
