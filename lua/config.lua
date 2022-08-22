@@ -65,7 +65,7 @@ if Opts.explorer_side == nil then
   Opts.explorer_side = "left"
 end
 if Opts.log_path == nil then
-  Opts.log_path = "/home/nicholas/.cache/nvim/nvim.log"
+  Opts.log_path = vim.fn.stdpath('data')
 end
 if Opts.log_stdout == nil then
   Opts.log_stdout = false

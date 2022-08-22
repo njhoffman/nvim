@@ -78,6 +78,7 @@ local telescopeConfig = {
       },
       flex = { flip_columns = 130 }
     },
+
     vimgrep_arguments = command_vimgrep,
     find_command = command_rg,
     prompt_prefix = "   ", -- " 🔍 ",
@@ -139,3 +140,4 @@ local telescopeConfig = {
 telescope.setup(telescopeConfig)
 tele_plugins.load_extensions(telescope)
 require("plugins.config.telescope-pickers")
+require("plugins.config.telescope-preconfigure")

@@ -1,7 +1,7 @@
 -- https://raw.githubusercontent.com/rcarriga/nvim-notify/master/README.md
 -- increase fade in frequency
 -- local render = require("plugins.config.nvim-notify-render")
-local stages = require("plugins.config.nvim-notify-stages")
+local stages = require("notify.stages")
 local cols = math.floor(vim.opt.columns:get() / 3 * 2)
 
 local baseConfig = {
@@ -29,7 +29,6 @@ local baseConfig = {
     STATUS = ""
   }
 }
-
 
 require("notify").setup(baseConfig)
 

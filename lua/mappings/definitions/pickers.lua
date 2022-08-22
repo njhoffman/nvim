@@ -175,20 +175,17 @@ local M = {
   telescope_grep_search = {
     cmd = "<cmd>Telescope grep_string<cr>",
     short = "grep string search (telescope)",
-    long = "grep string search (telescope)"
   },
-  telescope_live_search = {
-    cmd = "<cmd>Telescope live_grep<cr>",
-    short = "live search (telescope)",
-    long = "live search (telescope)"
+  telescope_buffer_search = {
+    cmd = "<cmd>FindBuffer<cr>",
+    short = "l('telescope.builtin').live_grep in only open buffers)",
   },
-  fzf_live_search_1 = { cmd = "<cmd>Rg<cr>", short = "live search (rg)", long = "live search (rg)" },
-  fzf_live_search_2 = {
-    cmd = "<cmd>FzfLua live_grep_glob<cr>",
-    short = "live search (fzf)",
-    long = "live search (fzf)"
+
+  find_buffer = {
+    cmd   = "<cmd>FindBuffer<cr>",
+    short = "find buffer",
+    long  = "find buffer",
   },
-  find_buffer = { cmd = "<cmd>FindBuffer<cr>", short = "find buffer", long = "find buffer" },
   find_colorscheme_tele = {
     cmd = "<cmd>Telescope colorscheme<cr>",
     short = "find colorscheme",
@@ -244,17 +241,21 @@ local M = {
     short = "find mappings (operator)",
     long = "find mappings (operator)"
   },
-  tele_projects = {
+  tele_find_projects = {
     cmd = "<cmd>Telescope projects<cr>",
     short = "find projects in telescope picker",
   },
-  tele_files = {
-    cmd = "<cmd>Telescope fd<cr>",
+  tele_find_files = {
+    cmd = "<cmd>lua _G.LoadTelescope('telescope.builtin', 'fd')<cr>",
     short = "telescope find files",
   },
-  tele_grep = {
-    cmd = "<cmd>Telescope live_grep<cr>",
+  tele_live_grep = {
+    cmd = "<cmd>lua _G.LoadTelescope('telescope.builtin', 'live_grep')<cr>",
     short = "telescope grep files live",
+  },
+  tele_grep_buffers = {
+    cmd = "<cmd>lua _G.LoadTelescope('telescope.builtin', 'live_grep', {grep_open_files=true})<cr>",
+    short = "Telescope grep within open bufers",
   }
 
   -- nmap("Pickers", "<C-d>", "<cmd>FzfPreviewGitCurrentLogs<cr>", "buffer_log", "git buffer log")

@@ -469,9 +469,8 @@ vim.import('mapper', function(M)
   M.map("Pickers", "n", "<A-o>", "home_files_fzfprev")
   M.map("Pickers", "n", "<C-U>", "frecency_files_teleivy")
   M.map("Pickers", "n", "<A-U>", "mru_files_teleivy")
-  M.map("Pickers", "n", "<C-E>", "buffers_teleleaderf_nopreview")
   M.map("Pickers", "n", "<A-j>", "jumps_fzfprev")
-  M.map("Pickers", "n", "<C-_>", "telescope_live_search")
+  -- M.map("Pickers", "n", "<C-_>", "telescope_live_search")
   -- M.map("Pickers", "n", "<M-/>", "telescope_grep_search")
   M.map("Pickers", "n", "<M-/>", "helptags_tele")
   M.map("Pickers", "n", "<A-m>", "location_list_fzfprev")
@@ -494,10 +493,12 @@ vim.import('mapper', function(M)
   M.map("Pickers", "n", "<leader>Fmi", "find_mappings_i")
   M.map("Pickers", "n", "<leader>Fmv", "find_mappings_v")
   M.map("Pickers", "n", "<leader>Fmo", "find_mappings_o")
-  M.map("Pickers", "n", "<C-g>", "tele_projects")
+  M.map("Pickers", "n", "<C-g>", "buffers_teleleaderf_nopreview")
+  M.map("Pickers", "n", "<A-g>", "tele_find_projects")
   M.map("Pickers", "n", "<leader><leader>", "find_pickers")
-  M.map("Pickers", "n", "<C-Space>", "tele_files")
-  M.map("Pickers", "n", "<A-Space>", "tele_grep")
+  M.map("Pickers", "n", "<C-Space>", "tele_find_files")
+  M.map("Pickers", "n", "<A-e>", "tele_live_grep")
+  M.map("Pickers", "n", "<C-e>", "tele_grep_buffers")
 
   vim.cmd [[
   cabbrev T Telescope
@@ -774,6 +775,10 @@ vim.import('mapper', function(M)
   -- hitting <c-=> after a paste will toggle between formatted and unformatted (equivalent to using the = key).
   -- By default pastes will not be formatted until you toggle it afterwards using <c-=> (however you can also change this with the yoinkAutoFormatPaste setting as described below)
   -- vim.cmd([[nmap = <plug>(YoinkPostPasteToggleFormat)]])
+
+  -- dont overwrite default register when pasting
+  -- vim.cmd([[ vnoremap p "_dP]])
+  vim.cmd([[vnoremap p :<C-U>let @p = @+<cr>gvp:let @+ = @p<cr>]])
 
   M.registerWhichkey()
 end)

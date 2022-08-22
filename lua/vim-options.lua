@@ -105,8 +105,6 @@ opt("backspace", "eol,start,indent")
 -- opt.whichwrap:append(",<,>,h,l")
 -- Don't redraw while executing macros (good performance config)
 opt("lazyredraw", true)
--- For regular expressions turn magic on
-opt("magic", true)
 -- Show matching brackets when text indicator is over them
 opt("showmatch", true)
 -- How many tenths of a second to blink when matching brackets

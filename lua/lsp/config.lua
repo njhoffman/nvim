@@ -63,9 +63,10 @@ local diagnostic_config = {
     end,
   },
   signs = true,
-  underline = {
-    severity = { min = vim.diagnostic.severity.ERROR },
-  },
+  underline = false,
+  -- underline = {
+  --   severity = { min = vim.diagnostic.severity.ERROR },
+  -- },
   update_in_insert = false,
   severity_sort = true
 }

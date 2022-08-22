@@ -113,6 +113,8 @@ M.prefix = function(prefix, name)
   wk.register({ [prefix] = { name = "+" .. name } })
 end
 
+M.stats = stats
+
 return M
 
 -- ["g"] = { name = "+git",

@@ -35,12 +35,6 @@ local with_preview = {
   -- layout_config = { preview_width = 0.5 },
 }
 
-_G._LoadTelescope = function(req_file, func_name)
-  --"telescope.builtin".oldfiles, opts)
-  --"telescope".extensions.frecency.frecency, opts)
-  print(req_file, func_name)
-end
-
 -- FindBuffer
 _G._FindBuffer = function()
   local opts = vim.deepcopy(with_preview)

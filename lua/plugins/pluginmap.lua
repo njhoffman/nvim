@@ -53,6 +53,7 @@ M.picker_plugins = {
 }
 
 M.motion_plugins = {
+  ["substitute.nvim"] = { "gbprod/substitute.nvim" },
   ["vim-matchup"] = { "andymass/vim-matchup" },
   ["vim-wordmotion"] = { "chaoren/vim-wordmotion" },
   ["vim-smoothie"] = { "psliwka/vim-smoothie", commit = "10fd0aa" }, -- f2aaab1

@@ -11,7 +11,7 @@ vim.g.clever_f_highlight_timeout_ms = 5000
 -- vim.cmd([[map ; <Plug>(clever-f-repeat-forward)]])
 -- vim.cmd([[map , <Plug>(clever-f-repeat-back)]])
 
-vim.cmd [[
+vim.cmd([[
     noremap <silent><expr><Plug>(clever-f-f)              clever_f#find_with('f')
     noremap <silent><expr><Plug>(clever-f-F)              clever_f#find_with('F')
     noremap <silent><expr><Plug>(clever-f-reset)          clever_f#reset()
@@ -23,4 +23,4 @@ vim.cmd [[
     nmap F <Plug>(clever-f-F)
     xmap F <Plug>(clever-f-F)
     omap F <Plug>(clever-f-F)
-  ]]
+    ]])

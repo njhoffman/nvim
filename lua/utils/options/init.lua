@@ -4,6 +4,7 @@ local log = require("utils.options.log")
 local typing = require("utils.options.typing")
 local display_print = require('utils.options.display.print')
 local display_notify = require('utils.options.display.notify')
+
 local M = {}
 
 local s_config = { notify = true }

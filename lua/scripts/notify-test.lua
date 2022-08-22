@@ -1,12 +1,4 @@
-local notify      = require('notify')
-local notify_warn = function()
-  notify(
-  -- '~/ghq/github.com/njhoffman/fzfmenu/proto-widgets/fzf-preview/fzf-preview.plugin.zsh',
-    '~/ghq/github.com/fzf-preview.plugin.zsh',
-    'warn',
-    { title = { 'Testing ', 'WARN' }, anchor = 'TL', icon = '' }
-  )
-end
+local notify = require('notify')
 
 local render_user_options = function(bufnr, notif, highlights)
   -- [global-opt]
@@ -42,17 +34,3 @@ local notify_user_options = function()
     { title = 'test', render = render_user_options }
   )
 end
-
-local notify_test = function(type)
-  local notify_type = type or 'warn'
-  if notify_type == 'options' then
-    notify_user_options()
-  elseif notify_type == 'warn' then
-    notify_warn()
-  end
-  -- vim.fn.timer_start(3000, function()
-  --   notify.dismiss()
-  -- end)
-end
-
--- notify_test('options')

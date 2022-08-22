@@ -19,7 +19,24 @@ settings.Logging = {
   lsp_level           = "warn"
 }
 
-local levels = vim.lsp.log_levels
+local levels = {
+  "DEBUG",
+  "INFO",
+  "WARN",
+  "ERROR",
+  "OFF",
+  [0]     = "TRACE",
+  TRACE   = 0,
+  DEBUG   = 1,
+  INFO    = 2,
+  WARN    = 3,
+  ERROR   = 4,
+  STATUS  = 4,
+  TASK    = 4,
+  INSPECT = 4,
+  OFF     = 5,
+}
+
 settings.Logging.numeric = {
   notify_level_show   = levels[settings.Logging.notify_level_show:upper()],
   notify_level_record = levels[settings.Logging.notify_level_record:upper()],

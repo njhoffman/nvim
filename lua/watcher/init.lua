@@ -1,24 +1,19 @@
-local config = { interval = 3000, list = {} }
--- local get_changelist = require('watcher.changelist')
+local config     = require('watcher.opts')
+local watchutils = require('watcher.utils')
+local logger     = require('watcher.logger')
 
-local envlist = {
-  ["FONT_SIZE"] = 8.5,
-  ["PWD"] = '/home/nicholas/bin',
-  ["ZCONVEY_ID"] = 29
-}
+local setup = function()
+  logger:debug('initializing watcher at ' .. os.date())
+  watchutils.clear_timers()
+  local n = 1
 
-
-local get_envlist = function()
-  return envlist
-end
-
-local watch_list = function()
-  local curr = get_envlist()
-  for i, line in pairs(curr) do
-    vim.notify(line)
+  for name, list in pairs(config.lists) do
+    list.name = name
+    logger = logger.init(list.name)
+    logger:debug(n .. '/' .. #config.lists .. ' init list:' .. list.name)
+    watchutils.create_timer(list)
+    n = n + 1
   end
 end
 
-local timer = vim.fn.timer_start(
-  config.interval, watch_list, { ["repeat"] = -1 }
-)
+setup()

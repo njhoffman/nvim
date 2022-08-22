@@ -5,15 +5,13 @@ local sinks = require('logger.sinks')
 local M = {}
 M.init = function(name)
   name = name or "root"
-  structlog.configure(
-    {
-      [name] = {
-        sinks = {
-          sinks.file()
-        }
+  structlog.configure({
+    [name] = {
+      sinks = {
+        sinks.file()
       }
     }
-  )
+  })
   return structlog.get_logger(name)
 end
 

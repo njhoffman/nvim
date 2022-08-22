@@ -1,17 +1,15 @@
 vim.import('stats.autocommands', function(austats)
   vim.import('stats.environment', function(envstats)
-    vim.import('stats.keymaps', function(keystats)
+    vim.import('stats.keystats', function(keystats)
       function reformatInt(i)
         return tostring(i):reverse():gsub("%d%d%d", "%1,"):reverse():gsub("^,", "")
       end
 
       local M = {}
       M.get_items = function()
-        vim.dbgtime()
         local env_counts = envstats.get_counts()
         local au_counts = austats.get_counts()
         local key_counts = keystats.get_counts()
-        vim.dbgtime()
 
         local items = {
           string.format("Filetype         %8s", env_counts.filetype),

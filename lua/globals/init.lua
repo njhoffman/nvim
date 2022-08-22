@@ -1,5 +1,6 @@
 pcall(require, 'globals.impatient')
 pcall(require, 'globals.importer')
+
 vim.import('globals.variables')
 vim.import("user-options")
 vim.import("vim-options")
