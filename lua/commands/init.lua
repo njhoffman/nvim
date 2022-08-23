@@ -1,6 +1,4 @@
 vim.import('commands.format')
-vim.import('commands.remote')
-vim.import('commands.restart')
 
 -- vim.api.nvim_create_user_command(
 --   "LuaGetPaths",

@@ -46,7 +46,13 @@ require("fidget").setup {
     spinner = "zip",
   },
   window = {
-    relative = "win",
+    relative = "editor",
     blend = 50,
   },
+  align = {
+    bottom = true, -- align fidgets along bottom edge of buffer
+    right = true, -- align fidgets along right edge of buffer
+  }
 }
+
+vim.api.nvim_create_autocmd("VimLeavePre", { command = [[silent! FidgetClose]] })

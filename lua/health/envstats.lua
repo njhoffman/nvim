@@ -1,5 +1,5 @@
 local M = {}
-local environment = require("stats.environment")
+local environment = require("stats.commands.environment")
 
 function M.stats(healthCheck)
   local s = environment.get_counts()

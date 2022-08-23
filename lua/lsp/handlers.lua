@@ -113,6 +113,7 @@ local lsp_formatting = function(bufnr)
   local pos = vim.api.nvim_win_get_cursor(0)
   vim.lsp.buf.format(
     {
+      async = true,
       bufnr = bufnr
       -- filter = function(clients)
       -- return vim.tbl_filter(function(client) end)
@@ -196,7 +197,7 @@ M.attach_formatting = function(client, bufnr)
       [[
       augroup LspAutocommands
       autocmd! * <buffer>
-      autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
+      autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })
       augroup END
       ]],
       true

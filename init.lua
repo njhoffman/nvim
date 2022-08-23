@@ -5,12 +5,13 @@
 require("globals")
 for _, mod_name in ipairs({
   "project",
+  "runner",
   "mappings",
   "plugins",
   "lsp",
-  "stats",
   "commands",
   "autocommands",
+  "stats",
   -- "dashboard"
 }) do
   vim.import(mod_name)

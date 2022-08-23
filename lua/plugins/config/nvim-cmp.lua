@@ -1,7 +1,4 @@
-local ok, cmp = pcall(require, "cmp")
-if not ok then
-  return
-end
+local cmp = require('cmp')
 
 local cmp_mappings = require("plugins.config.nvim-cmp-mapping")
 local compare = require("cmp.config.compare")

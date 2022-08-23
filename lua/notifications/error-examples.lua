@@ -20,5 +20,7 @@ stack traceback:
 ]]
 
 return {
-  error1, error2, error3
+  error1 = error1,
+  error2 = error2,
+  error3 = error3
 }

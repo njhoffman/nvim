@@ -3,6 +3,10 @@ local logutils = require("logger.utils")
 local logparsers = require("logger.parsers")
 local get_opt = require("utils.options").get_option_value
 
+
+-- Error running notification service: ...e/pack/packer/start/nvim-notify/lua/notify/util/init.lua:78:
+--  'relative' requires 'row'/'col' or 'bufpos'
+
 local M = {}
 
 M.notify = function(message, level, ...)

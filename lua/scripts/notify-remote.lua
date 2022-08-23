@@ -1,28 +1,32 @@
-local notify_cmds = {
-  "lua vim.notify('TESTING')",
-  "lua vim.notify('TESTING 5', 'warn')",
-  "lua vim.notify('TESTING 3', 'info')",
-  "lua vim.notify('TESTING')",
-  "lua vim.notify('TESTING 5', 'warn')",
-  "lua vim.notify('TESTING 3', 'info')",
-  "lua vim.notify('TESTING')",
-}
+-- local notify = require('notify')
+-- local task_error = require('notifications.task-error')
+-- task_error.test_render()
 
-local dbg_test = function()
-  vim.dbg(vim.api.nvim_get_all_options_info())
-end
+-- function _G.show_capabilities()
+--   for _, client in pairs(vim.lsp.buf_get_clients(0)) do
+--     print(
+--       vim.inspect(client.name)
+--       .. "\n\n"
+--       .. vim.inspect(client.server_capabilities)
+--       .. "\n\n"
+--     )
+--   end
+-- end
 
-local notify_error = function()
-  local str = "Error loading telescope plugin: telescope-find-pickers - .../start/telescope.nvim/"
-  str = str .. "lua/telescope/_extensions/init.lua:10: 'telescope-find-pickers' extension doesn't "
-  str = str ..
-    "exist or isn't installed: module 'telescope._extensions.telescope-find-pickers' not found:"
-  vim.notify(str, "error")
-end
+-- local handlers = {}
+-- for name in pairs(vim.lsp.handlers) do
+--   local request = vim.lsp._request_name_to_capability[name]
+--   if request ~= nil and not vim.tbl_isempty(request) then
+--     table.insert(handlers, { name, request[1] })
+--     vim.dbglog(name, request[1])
+--   else
+--     table.insert(handlers, { name })
+--     vim.dbglog(name)
+--   end
+-- end
 
+-- vim.dbg()
+-- _G.show_capabilities()
 
-return {
-  notify_cmds = notify_cmds,
-  notify_error = notify_error,
-  dbg_test = dbg_test
-}
+local importmod = require('import')
+vim.dbglog(importmod.get_imported_modules())

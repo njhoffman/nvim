@@ -1,5 +1,3 @@
--- vim.notify = require("notify")
-
 local function notify_output(command, opts)
   local output = ""
   local notification

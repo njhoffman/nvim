@@ -59,6 +59,7 @@ return function()
     -- ui components
     NormalFloat { fg = "#8f93a2", bg = "none" }, -- normal text and background color for floating windows
     FloatBorder { fg = "#3f5382", bg = "none" }, --
+    FloatTitle { fg = "#5f73c2", bg = "none" }, --
     ColorColumn { bg = "none" },
 
     Pmenu { fg = "#618cc4", bg = "#090918" },

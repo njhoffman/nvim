@@ -4,12 +4,7 @@ M.skipped_plugins = {
   ["nvim-bufdel"] = { "ojroques/nvim-bufdel" },
   ["vista.vim"]   = { "liuchengxu/vista.vim" },
   ["neo-tree"]    = { "nvim-neo-tree/neo-tree.nvim", branch = "v2.x",
-    disable = true,
-    requires = {
-      "nvim-lua/plenary.nvim",
-      "kyazdani42/nvim-web-devicons",
-      "MunifTanjim/nui.nvim",
-    }
+    requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" }
   }
 }
 
@@ -367,6 +362,11 @@ M.sysutil_plugins = {
 }
 
 M.lsp_plugins = {
+  ["mason.nvim"]            = { "williamboman/mason.nvim", requires = {
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
+    "WhoIsSethDaniel/mason-tool-installer.nvim"
+  } },
   ["fidget.nvim"]           = { "j-hui/fidget.nvim" },
   ["null-ls.nvim"]          = { "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" },
   ["lua-dev.nvim"]          = { "folke/lua-dev.nvim" },
@@ -375,8 +375,7 @@ M.lsp_plugins = {
   ["lsp_signature.nvim"]    = { "ray-x/lsp_signature.nvim" },
   ["lspsaga.nvim"]          = { "tami5/lspsaga.nvim" },
   ["nvim-code-action-menu"] = { "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu" },
-  ["nvim-lsp-installer"]    = { "williamboman/nvim-lsp-installer", requires = "neovim/nvim-lspconfig" },
-  ["nvim-lspconfig"]        = { "neovim/nvim-lspconfig" },
+  -- ["nvim-lsp-installer"]    = { "williamboman/nvim-lsp-installer", requires = "neovim/nvim-lspconfig" },
   ["trouble.nvim"]          = { "folke/trouble.nvim" },
   ["ntangle-lsp.nvim"]      = {
     "jbyuki/ntangle-lsp.nvim",
@@ -388,6 +387,7 @@ M.lsp_plugins = {
 M.theme_plugins = {
   ["lush.nvim"]   = { "rktjmp/lush.nvim" },
   ["barbar"]      = { "romgrk/barbar.nvim", commit = "fa3ff25" },
+  -- ["barbar"]      = { "romgrk/barbar.nvim" },
   ["feline.nvim"] = { "feline-nvim/feline.nvim" }
 }
 

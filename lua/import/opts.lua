@@ -1,4 +1,4 @@
-return {
+local default_opts = {
   keypress_select               = "<Enter>",
   keypress_close                = '<Esc>',
   keypress_scroll_output_down   = '<C-Down>',
@@ -13,4 +13,24 @@ return {
   import_show_intervals         = false,
   import_show_percentages       = false,
   import_sort_times             = false
+}
+
+local user_opts = vim.deepcopy(default_opts)
+
+local config = function(configuration)
+  configuration = configuration or {}
+  local _opts = vim.deepcopy(default_opts)
+  for key, value in pairs(configuration) do
+    if key == 'output_split_type'
+      and (value ~= 'horizontal' and value ~= 'vertical') then
+      value = 'horizontal'
+    end
+    _opts[key] = value
+  end
+  user_opts = _opts
+end
+
+return {
+  user_opts = user_opts,
+  config = config
 }

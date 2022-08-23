@@ -1,7 +1,9 @@
 local notify     = require('notify')
-local utils      = require('plugins.config.nvim-notify.utils')
 local path_utils = require('plenary.path')
+local utils      = require('notifications.utils')
 local devicons   = require('nvim-web-devicons')
+-- local ns_id = vim.api.nvim_create_namespace("nvim-notify")
+local ns_id      = 0
 
 vim.cmd([[
   highlight default link NotifyFileIcon Function
@@ -41,14 +43,13 @@ local render_current_file = function(bufnr, notif, highlights)
   paths.extension = dirs[#dirs]:match("^.*%.(.*)$") or ""
   -- paths.filetype  = devicons
 
-  local ns = vim.api.nvim_create_namespace("notify")
   local width = vim.api.nvim_win_get_width(0)
   local msg = notif.message
   local line = ''
   local hlmap = {}
   local render_icon = function(icon_name, hl_name, hl_def)
     if msg[icon_name] ~= nil then
-      vim.api.nvim_set_hl(ns, hl_name, hl_def)
+      vim.api.nvim_set_hl(ns_id, hl_name, hl_def)
       table.insert(hlmap, { hl_name, #line, #line + #msg[icon_name] })
       line = line .. msg[icon_name]
     end
@@ -60,10 +61,10 @@ local render_current_file = function(bufnr, notif, highlights)
   render_icon('git_icon', 'GitIcon', { fg = "#008080" })
   render_icon('watch_icon', 'WatchIcon', { fg = "#ffff00" })
 
-  vim.api.nvim_set_hl(ns, 'ParentPath', { fg = '#666666' })
-  vim.api.nvim_set_hl(ns, 'ProjectFolder', { fg = '#ffffff' })
-  vim.api.nvim_set_hl(ns, 'ProjectPath', { fg = '#999999' })
-  vim.api.nvim_set_hl(ns, 'ProjectFile', { fg = '#cccccc' })
+  vim.api.nvim_set_hl(ns_id, 'ParentPath', { fg = '#666666' })
+  vim.api.nvim_set_hl(ns_id, 'ProjectFolder', { fg = '#ffffff' })
+  vim.api.nvim_set_hl(ns_id, 'ProjectPath', { fg = '#999999' })
+  vim.api.nvim_set_hl(ns_id, 'ProjectFile', { fg = '#cccccc' })
 
   if msg.format == 'long' then
     -- table.insert(hlmap, { hl_name, #line, #line + #msg.file_path })
@@ -73,7 +74,7 @@ local render_current_file = function(bufnr, notif, highlights)
   local msgs = { line }
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, msgs)
   for _, hl in pairs(hlmap) do
-    vim.api.nvim_buf_add_highlight(bufnr, ns, hl[1], 0, hl[2], hl[3])
+    vim.api.nvim_buf_add_highlight(bufnr, ns_id, hl[1], 0, hl[2], hl[3])
   end
 end
 

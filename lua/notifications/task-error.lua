@@ -1,4 +1,4 @@
-local utils = require('notify.utils')
+local utils = require('notifications.utils')
 
 vim.cmd [[
   highlight default link NotifyRunErrorCode Error
@@ -33,12 +33,12 @@ local _get_parts = function(lines)
   return parts
 end
 
-local _notify_opts = function(parts, cmd)
+local _notify_opts = function(parts, open_cmd)
   -- local orig_map = coreutils.find(vim.api.nvim_get_keymap("n"), "lhs", "gF")
   local bufname = vim.api.nvim_buf_get_name(0)
-  local cmd_default = 'edit'
-  if bufname ~= parts.file then cmd_default = 'split' end
-  cmd = cmd or cmd_default
+  local open_cmd_default = 'edit'
+  if bufname ~= parts.file then open_cmd_default = 'split' end
+  open_cmd = open_cmd or open_cmd_default
 
   local on_open = function(notify_winnr)
     vim.cmd(':' .. cmd .. ' +' .. parts.line .. ' ' .. parts.file)
@@ -66,6 +66,7 @@ local _notify_opts = function(parts, cmd)
       file    = 'NotifyRunErrorFile',
       line    = 'NotifyRunErrorLine',
       message = 'NotifyRunErrorMessage',
+      command = 'NotifyRunErrorCommand',
       stack   = 'NotifyRunErrorStack',
     }
 
@@ -78,48 +79,55 @@ local _notify_opts = function(parts, cmd)
 
     utils.render_box(bufnr, highlights, { parts.code, parts.title }, width)
 
-    utils.build_line(bufnr, 2, {
-      { parts.message, hl.message },
-    })
+    utils.build_line(bufnr, 2, { { parts.command, hl.command } })
+    utils.build_line(bufnr, 3, { { parts.message, hl.message } })
 
-    utils.build_line(bufnr, 3, {
+    utils.build_line(bufnr, 4, {
       { '  ' .. parts.shortfile, hl.file },
       { ':', 'Normal' },
       { parts.line, hl.line }
     })
 
     for i, line in pairs(parts.stack) do
-      utils.build_line(bufnr, 3 + i, { { '    ' .. line, hl.stack } })
+      utils.build_line(bufnr, 4 + i, { { '    ' .. line, hl.stack } })
     end
   end
 
   return {
-    on_open = on_open,
+    on_open  = on_open,
     on_close = on_close,
-    render = render_error
+    render   = render_error,
+    anchor   = 'TC'
   }
 end
 
-local match_error = function(lines)
-  return string.match(lines[1], '[E%d]+')
+local is_match = function(lines)
+  local error_line = lines[1] or ''
+  return string.match(error_line, '[E%d]+')
 end
 
-local test_error = function()
+local test_render = function()
   local notify = require('notify')
-  local errors = require('notify.error-examples')
+  local errors = require('notifications.error-examples')
   local msg = errors.error3
-  local parts = _get_parts(msg)
-  notify(msg, 'error', _notify_opts(parts))
+  vim.dbglog(msg)
+  -- local parts = _get_parts(msg)
+  -- parts.command = 'test_cmd'
+  -- parts.time = 152353
+  -- vim.dbglog('testing', parts)
+  -- notify(msg, 'error', _notify_opts(parts))
 end
 
-local notify_error = function(msg)
+local notify = function(msg, cmd, time)
   local notify = require('notify')
   local parts = _get_parts(msg)
+  parts.command = cmd
+  parts.time = time
   notify(msg, 'error', _notify_opts(parts))
 end
 
 return {
-  test_render = test_error,
-  notify      = notify_error,
-  is_match    = match_error,
+  test_render = test_render,
+  notify      = notify,
+  is_match    = is_match,
 }

@@ -1,7 +1,6 @@
 -- https://raw.githubusercontent.com/rcarriga/nvim-notify/master/README.md
 -- increase fade in frequency
 -- local render = require("plugins.config.nvim-notify-render")
-local stages = require("notify.stages")
 local cols = math.floor(vim.opt.columns:get() / 3 * 2)
 
 local baseConfig = {
@@ -9,7 +8,6 @@ local baseConfig = {
   -- level = 0,
   fps = 30,
   render = 'default',
-  -- stages = stages.fade_in_slide_out_stages,
   stages = 'fade',
   -- background_colour = "FloatShadow",
   background_colour = "#000000",

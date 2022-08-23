@@ -139,5 +139,6 @@ local telescopeConfig = {
 }
 telescope.setup(telescopeConfig)
 tele_plugins.load_extensions(telescope)
+
 require("plugins.config.telescope-pickers")
 require("plugins.config.telescope-preconfigure")

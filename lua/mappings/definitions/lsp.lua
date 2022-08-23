@@ -100,7 +100,7 @@ return {
     short = "lsp signature help",
   },
   format_buffer = {
-    cmd = "<cmd>lua vim.lsp.buf.formatting()<cr>",
+    cmd = "<cmd>lua vim.lsp.buf.format({ async = true })<cr>",
     short = "lsp format buffer",
   },
   preview_definition = {

@@ -1,8 +1,10 @@
-local ns_id = vim.api.nvim_create_namespace("nvim-notify")
+local ns_id = 0
+-- local ns_id = vim.api.nvim_create_namespace("nvim-notify")
 
 local build_line = function(bufnr, linenum, parts)
   local line = ''
   local hls = {}
+
   for _, part in pairs(parts) do
     local col_start = string.len(line)
     line = line .. part[1]
@@ -65,15 +67,11 @@ local render_box = function(bufnr, highlights, title, width)
     priority = 10,
   })
   vim.api.nvim_buf_set_extmark(bufnr, ns_id, 1, 0, {
-    virt_text = {
-      {
-        string.rep(
-          "━",
-          math.max(vim.str_utfindex(left_buffer) + title_accum + 2, minimum_width)
-        ),
-        highlights.border,
-      },
-    },
+    virt_text = { {
+      string.rep("━",
+        math.max(vim.str_utfindex(left_buffer) + title_accum + 2, minimum_width)
+      ), highlights.border,
+    } },
     virt_text_win_col = 0,
     priority = 10,
   })

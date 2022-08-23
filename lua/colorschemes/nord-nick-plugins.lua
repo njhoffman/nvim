@@ -76,6 +76,9 @@ return function()
   }
   return {
 
+    TaskFloat { fg = '#9abcfb', gui = 'bold' },
+    TaskFloatBorder { fg = '#2151a1' },
+
     -- +--- GitSigns ---+
     GitSignsAddFaded { fg = clr_over.green_faded },
     GitSignsAddNrFaded { fg = clr_over.green_faded },
