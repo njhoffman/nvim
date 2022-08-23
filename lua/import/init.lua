@@ -19,7 +19,7 @@ local init = function(init_opts)
     local _reload = function(command_details)
       local modules = command_details.fargs
       if not modules then
-        modules = cmds.get_imported_modules()
+        modules = cmds.get_modules()
       end
       for _, module in ipairs(modules) do
         cmds.reload(module)
@@ -46,7 +46,7 @@ local init = function(init_opts)
 
     -- TODO: (Mike) Figure out why the sort here isn't being respected?
     local _complete = function()
-      return cmds.get_imported_modules()
+      return cmds.get_modules()
     end
 
     vim.api.nvim_create_user_command("Import", _import, { nargs = '+', })
@@ -56,9 +56,9 @@ local init = function(init_opts)
 end
 
 return {
-  init                 = init,
-  import               = cmds.import,
-  reload               = cmds.reload,
-  get_status           = cmds.get_status,
-  get_imported_modules = cmds.get_imported_modules
+  init        = init,
+  import      = cmds.import,
+  reload      = cmds.reload,
+  get_status  = cmds.get_status,
+  get_modules = cmds.get_modules
 }

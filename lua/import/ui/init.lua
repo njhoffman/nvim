@@ -175,7 +175,7 @@ local display = function(_opts)
   }
 
   local imported = { failures = {}, successes = {}, details = {}, time = 0 }
-  for _, module in ipairs(cmds.get_imported_modules()) do
+  for _, module in ipairs(cmds.get_all_modules()) do
     local details = cmds.get_status(module)
     imported.details[module] = details
     imported.time = imported.time + details.import_time

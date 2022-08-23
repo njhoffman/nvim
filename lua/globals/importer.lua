@@ -19,6 +19,6 @@ if import_ok then
   end
 else
   print('booooo ', vim.inspect(importer))
-  print('Error initializing import: ',  vim.inspect(importer))
+  print('Error initializing import: ', vim.inspect(importer))
   vim.import = backup_import
 end

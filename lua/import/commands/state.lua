@@ -25,7 +25,7 @@ local get_success_count = function()
 end
 
 --- Returns table (array) of modules (strings) that were imported (successfully or otherwise)
-local get_imported_modules = function()
+local get_all_modules = function()
   local results = {}
   for path, _ in pairs(import_status.info) do
     table.insert(results, path)
@@ -71,9 +71,9 @@ local get_status = function(module)
 end
 
 return {
-  import_status        = import_status,
-  get_status           = get_status,
-  get_failure_count    = get_failure_count,
-  get_success_count    = get_success_count,
-  get_imported_modules = get_imported_modules
+  import_status     = import_status,
+  get_status        = get_status,
+  get_failure_count = get_failure_count,
+  get_success_count = get_success_count,
+  get_all_modules   = get_all_modules
 }

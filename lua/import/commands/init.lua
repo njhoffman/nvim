@@ -6,5 +6,5 @@ return {
   reload = reload,
   import = import,
   get_status = state.get_status,
-  get_imported_modules = state.get_imported_modules
+  get_all_modules = state.get_all_modules
 }
