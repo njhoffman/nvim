@@ -110,7 +110,6 @@ local test_render = function()
   local notify = require('notify')
   local errors = require('notifications.error-examples')
   local msg = errors.error3
-  vim.dbglog(msg)
   -- local parts = _get_parts(msg)
   -- parts.command = 'test_cmd'
   -- parts.time = 152353

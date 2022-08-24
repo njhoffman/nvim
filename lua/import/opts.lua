@@ -12,7 +12,8 @@ local default_opts = {
   import_enable_better_printing = true,
   import_show_intervals         = false,
   import_show_percentages       = false,
-  import_sort_times             = false
+  import_sort_times             = false,
+  report_details                = true
 }
 
 local user_opts = vim.deepcopy(default_opts)
@@ -29,7 +30,6 @@ local config = function(configuration)
   end
   user_opts = _opts
 end
-
 return {
   user_opts = user_opts,
   config = config

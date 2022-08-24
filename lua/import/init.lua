@@ -35,12 +35,9 @@ local init = function(init_opts)
         return
       end
       local details = cmds.get_status(module)
-      local message = module ..
-        ': { imported=' ..
-        tostring(details.imported) ..
-        ', import_duration=' ..
-        tostring(details.import_time / 1000000) ..
-        ' milliseconds }'
+      local message = module .. ': { imported=' ..
+        tostring(details.imported) .. ', import_duration=' ..
+        tostring(details.import_time / 1000000) .. ' milliseconds }'
       print(message)
     end
 

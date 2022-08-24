@@ -31,14 +31,6 @@ local M = {
     cmd = ":smagic/",
     short = "visual substitute magic quick"
   },
-  rmhl = {
-    cmd = "<cmd>noh<cr> | :nohlsearch<cr>",
-    short = "remove highlight"
-  },
-  rmhl_refresh = {
-    cmd = "<cmd>noh<cr>|:RefreshLSP<cr>|:lua require'feline'.reset_highlights()<cr>",
-    short = "remove hls, refresh colors and lsp"
-  },
   next = {
     cmd = "<cmd>execute('normal! ' . v:count1 . 'n')<cr><cmd>lua require('hlslens').start()<cr>",
     short = "next matching",

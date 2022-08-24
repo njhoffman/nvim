@@ -62,9 +62,9 @@ vim.import('mapper', function(M)
   M.map("Navigation", "n", "<leader>fp", "print_filename")
   M.map("Navigation", "n", "gf", "goto_fileline")
   M.map("Navigation", "n", "gx", "open_file_virt")
-  M.map("Navigation", "n", ",cd", "cd_buffer")
-  M.map("Navigation", "n", ",cdh", "cd_home")
-  M.map("Navigation", "n", ",cdr", "cd_root")
+  M.map("Navigation", "n", "<leader>cd", "cd_buffer")
+  M.map("Navigation", "n", "<leader>cdh", "cd_home")
+  M.map("Navigation", "n", "<leader>cdr", "cd_root")
 
   -- M.map("Window", "c", "<C-[>", "cmd_open_cedit2")
   -- M.map("Window", "c", "<c-d>", "cmdwin_close")
@@ -229,7 +229,6 @@ vim.import('mapper', function(M)
   M.map("Movement", "o", "il", "yank_in_line_no_eol_o")
   M.map("Movement", "n", "yy", "yank_line_no_eol")
   M.map("Movement", "n", "<leader>py", "neoclip")
-  M.map("Movement", "n", "<leader>pY", "fzf_yanks")
   M.map("Movement", "n", "<leader>pp", "paste_primary")
   M.map("Movement", "n", "<leader>pc", "paste_comment")
   M.map("Movement", "n", "<leader>pm", "paste_mode_toggle")
@@ -255,20 +254,24 @@ vim.import('mapper', function(M)
   M.map("Interface", "n", "<F6>", "treesitter")
   M.map("Interface", "n", "<F7>", "aerial")
   M.map("Interface", "n", "<S-F7>", "aerial_float")
-  M.map("Interface", "n", "gU", "mundo2")
   M.map("Interface", "n", "cll", "conceal_clear")
   M.map("Interface", "n", "cl0", "conceal_0")
   M.map("Interface", "n", "cl1", "conceal_1")
   M.map("Interface", "n", "cl2", "conceal_2")
   M.map("Interface", "n", "cl3", "conceal_3")
   M.map("Interface", "n", "gH", "ts_highlights")
-  -- M.map("Interface", "n", "gH", "ts_highlights")
   M.map("Interface", "n", "gth", "ts_highlights2")
   M.map("Interface", "n", "gtd", "list_definitions") -- virtual
   M.map("Interface", "n", "g0", "toc_definitions") -- virtual
   M.map("Interface", "n", "<a-*>", "ts_next_usage") -- virtual
   M.map("Interface", "n", "<a-#>", "ts_prev_usage") -- virtual
+  M.map("Interface", "n", "_", "clear_hl")
+  M.map("Interface", "n", "<M-->", "clear_popups_hl")
+  M.map("Interface", "n", "<M-_>", "reset_lsp_clear_hl")
 
+  M.map("System", "n", "<leader>iy", "yank_filename")
+  M.map("System", "n", "<leader>iY", "yank_buffer")
+  M.map("System", "n", "<leader>if", "display_filename")
   M.map("System", "n", "<leader>ii", "import_status")
   M.map("System", "n", "<leader>iu", "packer_update")
   M.map("System", "n", "<leader>is", "packer_sync")
@@ -295,12 +298,12 @@ vim.import('mapper', function(M)
   M.map("Format", "n", "gu", "lowercase1") -- virtual
   M.map("Format", "n", "gU", "uppercase1") -- virtual
   M.map("Format", "n", "gR", "rename") -- virtual
-  M.map("Format", "n", "<C-Up>", "dial_increment1")
-  M.map("Format", "n", "<C-Down>", "dial_decrement1")
+  -- M.map("Format", "n", "<C-Up>", "dial_increment1")
+  -- M.map("Format", "n", "<C-Down>", "dial_decrement1")
   M.map("Format", "n", "<leader>fi", "dial_increment2")
   M.map("Format", "n", "<leader>fd", "dial_decrement2")
-  M.map("Format", "v", "<C-Up>", "v_dial_increment1")
-  M.map("Format", "v", "<C-Down>", "v_dial_decrement1")
+  -- M.map("Format", "v", "<C-Up>", "v_dial_increment1")
+  -- M.map("Format", "v", "<C-Down>", "v_dial_decrement1")
   M.map("Format", "v", "<leader>fi", "v_dial_increment2")
   M.map("Format", "v", "<leader>fd", "v_dial_decrement2")
   M.map("Format", "v", "g<M-a>", "v_dial_increment_additional", { noremap = true, nowait = true })
@@ -366,9 +369,6 @@ vim.import('mapper', function(M)
   end
 
 
-  -- Disable highlight when <leader><cr> is pressed
-  map("n", "<leader><CR>", ":nohlsearch<CR>", { silent = true })
-
   -- Jump to the previous git conflict start
   map("n", "[cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
     silent = true,
@@ -426,8 +426,6 @@ vim.import('mapper', function(M)
 
   -- Make g& work how you'd expect on visual selections: only act on the visual selection.
   -- Unlike &&, it uses the current search query.
-  M.map("Search", "n", "_", "rmhl")
-  M.map("Search", "n", "<M-_>", "rmhl_refresh")
   M.map("Search", "n", "n", "next")
   M.map("Search", "n", "N", "prev")
   M.map("Search", "n", "*", "cursor_next1")
@@ -438,8 +436,6 @@ vim.import('mapper', function(M)
   M.map("Search", "n", "<leader>sr", "cursor_replace")
 
   M.map("Git", "n", "<leader>gf", "telescope_files")
-  -- M.map("Git", "n", "<leader>gc", "telescope_commits")
-  -- M.map("Git", "n", "<leader>gC", "telescope_bcommits")
   M.map("Git", "n", "<leader>gb", "telescope_branches")
   M.map("Git", "n", "<leader>gs", "telescope_status")
   M.map("Git", "n", "<leader>gn", "signs_next_hunk")
@@ -447,12 +443,14 @@ vim.import('mapper', function(M)
   M.map("Git", "n", "<leader>gv", "signs_preview_hunk")
   M.map("Git", "n", "<leader>gr", "signs_reset_hunk")
   M.map("Git", "n", "<leader>gR", "signs_reset_buffer")
-  M.map("Git", "n", "<leader>bc", "telescope_bcommits2")
+  M.map("Git", "n", "<leader>gC", "telescope_bcommits2")
+
   M.map("Git", "n", "<leader>gc", "telescope_gcommits2")
   -- M.map("Git", "n", "<A-g>", "telescope_commits")
   -- Git log, Git diff, Git difftool, Git mergetool, Git blame, Gdiff, Gedit HEAD-3:%, Ggrep
   -- http://vimcasts.org/episodes/fugitive-vim-resolving-merge-conflicts-with-vimdiff/
   -- DiffviewOpen, DiffviewFileHistory
+
   -- g!;
   -- :DiffviewOpen HEAD~2
   -- :DiffviewOpen HEAD~4..HEAD~2
@@ -576,8 +574,8 @@ vim.import('mapper', function(M)
   M.map("Debug", "n", "<M-CR>", "tmux_send")
 
   M.map("LSP", "n", "K", "hover_doc1")
-  M.map("LSP", "n", "gd", "definitions")
-  M.map("LSP", "n", "gD", "declaration")
+  -- M.map("LSP", "n", "gd", "definitions")
+  -- M.map("LSP", "n", "gD", "declaration")
   M.map("LSP", "n", "gk", "hover_doc2")
   M.map("LSP", "n", "go", "organize_imports")
   M.map("LSP", "n", "gr", "references")
@@ -656,16 +654,13 @@ vim.import('mapper', function(M)
     { silent = true, noremap = true }
   )
 
-  vim.cmd([[vmap <M-a> <C-a> ]])
-  vim.cmd([[vmap <M-x> <C-x> ]])
-  vim.cmd([[vmap g<M-a> g<C-a> ]])
-  vim.cmd([[vmap g<M-x> g<C-x> ]])
+  -- vim.cmd([[vmap <M-a> <C-a> ]])
+  -- vim.cmd([[vmap <M-x> <C-x> ]])
+  -- vim.cmd([[vmap g<M-a> g<C-a> ]])
+  -- vim.cmd([[vmap g<M-x> g<C-x> ]])
 
 
   -- Moving around, tabs, windows and buffers {{{
-
-  -- Disable highlight when <leader><cr> is pressed
-  map("n", "<leader><CR>", ":nohlsearch<CR>", { silent = true })
 
   -- Jump to the previous git conflict start
   map("n", "[cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
@@ -731,8 +726,8 @@ vim.import('mapper', function(M)
   -- Pressing <leader>ss will toggle and untoggle spell checking
   map("n", "<leader>ss", ":setlocal spell!<CR>", { silent = true })
 
-  map("t", "<C-d>", "<PageDown>", { silent = true })
-  map("t", "<C-u>", "<PageUp>", { silent = true })
+  -- map("t", "<C-d>", "<PageDown>", { silent = true })
+  -- map("t", "<C-u>", "<PageUp>", { silent = true })
 
   map("t", "<C-w><C-q>", "<C-\\><C-n>", { silent = true, noremap = true })
   map("t", "<C-w><C-h>", "<C-\\><C-n><C-w>h", { silent = true, noremap = true })

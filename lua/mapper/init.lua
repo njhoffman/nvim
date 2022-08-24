@@ -1,5 +1,5 @@
-local NvimMapper = require("mapper.nvim-mapper")
 local wk = require("which-key")
+local NvimMapper = require("mapper.nvim-mapper")
 local keymap = require('mappings.keymap')
 
 -- OK:   448

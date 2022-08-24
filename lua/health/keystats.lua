@@ -1,4 +1,4 @@
-local keystats = require("stats.keystats")
+local keystats = require("stats.commands.keystats")
 
 local M = {}
 

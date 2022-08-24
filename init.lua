@@ -17,26 +17,6 @@ for _, mod_name in ipairs({
   vim.import(mod_name)
 end
 
-vim.cmd [[
-  try
-    colorscheme nord-nick
-    set background=dark
-  " hi Normal guibg=none ctermbg=none
-  " hi LineNr guibg=none ctermbg=none
-  " hi Folded guibg=none ctermbg=none
-  " hi NonText guibg=none ctermbg=none
-  " hi SpecialKey guibg=none ctermbg=none
-  " hi VertSplit guibg=none ctermbg=none
-  " hi SignColumn guibg=none ctermbg=none
-  " hi EndOfBuffer guibg=none ctermbg=none
-  " hi StatusLine guibg=NONE
-  " hi StatusLineNC guibg=NONE guifg=NONE
-    syntax sync fromstart
-    BarbarColors
-  catch /^Vim\%((\a\+)\)\=:E185/
-    colorscheme default
-    set background=dark
-]]
-
+vim.cmd [[ BarbarColors ]]
 
 -- require "plenary.profile".stop()

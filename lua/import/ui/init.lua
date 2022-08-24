@@ -3,29 +3,27 @@ local cmds = require('import.commands')
 local ui_state = require('import.ui.state')
 local detail_lines = require('import.ui.details')
 local summary_lines = require('import.ui.summary')
-local format_module = require('import.ui.format')
+local format_module = require('import.ui.format').module
 
 local _init = function(_opts)
   opts.config(_opts)
-  vim.cmd [[
-    highlight default link ImportSuccessIcon healthSuccess 
-    highlight default link ImportInfoIcon DiagnosticInfo  
-    highlight default link ImportErrorIcon DiagnosticError
-  ]]
+  ---Create highlights.
+  vim.api.nvim_set_hl(0, 'ImportFailedIcon', { link = 'Error' })
+  vim.api.nvim_set_hl(0, 'ImportFailedModule', { link = 'Error' })
 end
 
 local _update_main_buffer_line = function(lineno, new_text)
-  vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modifiable', true)
+  --[[ vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modifiable', true)
   vim.api.nvim_buf_set_lines(ui_state.buf_handle, lineno - 1, lineno, false, { new_text })
-  vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modifiable', false)
+  vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modifiable', false) ]]
 end
 
 local _selected_module = function(line)
-  local module = ui_state._get_module(line)
+  --[[ local module = ui_state._get_module(line)
   if not module then return end
   _update_main_buffer_line(line, "...")
   cmds.reload(module)
-  _update_main_buffer_line(line, format_module(module))
+  _update_main_buffer_line(line, format_module(module)) ]]
 end
 
 local _scroll_view_pane_down = function()
@@ -103,6 +101,7 @@ local _assign_window_props = function()
   vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modifiable', false)
   vim.api.nvim_buf_set_option(ui_state.buf_handle, 'filetype', "ImportManager")
   vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modified', false)
+
   vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modifiable', false)
   vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'filetype', "ImportManager")
   vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modified', false)
@@ -185,17 +184,15 @@ local display = function(_opts)
       table.insert(imported.failures, module)
     end
   end
-
-  local lines = summary_lines(imported, view_width)
-  vim.api.nvim_buf_set_lines(ui_state.buf_handle, 0, -1, false, lines)
-
-  _assign_window_props()
   _assign_keycodes()
   _assign_autocommands()
-
+  summary_lines(imported, view_width, ui_state.buf_handle)
+  _assign_window_props()
   ui_state.view_win_handle = vim.api.nvim_open_win(ui_state.view_buf_handle, 1, view_opts)
   ui_state.buf_win_handle = vim.api.nvim_open_win(ui_state.buf_handle, 1, float_opts)
 end
+--                                 AuG   AuC   Func  Opt  Var  Key  Cmd   HL
+--  plugins  35.4k  0.02s -2.5w
 
 return {
   _selected_module       = _selected_module,

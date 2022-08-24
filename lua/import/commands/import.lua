@@ -1,4 +1,5 @@
 local opts = require('import.opts')
+local reporter = require('import.reporter')
 local state = require('import.commands.state')
 local log_timestamp_format = '%Y-%m-%d %H:%M:%S'
 local import_defaults = { hide_output = false, hide_errors = false }
@@ -40,7 +41,7 @@ local import = function(path, success_callback, import_opts)
   for key, value in pairs(import_defaults) do
     if import_opts[key] == nil then import_opts[key] = value end
   end
-  -- TODO: (Mike) Consider making the import async?
+  -- TODO: Consider making the import async?
   local print_logs = {}
   local error_logs = {}
   local replay_log = {}
@@ -81,9 +82,11 @@ local import = function(path, success_callback, import_opts)
   -- global shenanigans
   _G.print = print_shim
   _G.error = error_shim
-  local start_time = vim.loop.hrtime()
+
+  local metrics = reporter.calc_metrics()
   local status, module_return = pcall(require, path)
-  local duration = vim.loop.hrtime() - start_time
+  reporter.calc_metrics(metrics)
+
   -- global shenanigans part 2, electric boogaloo
   _G.print = _print
   _G.error = _error
@@ -97,6 +100,7 @@ local import = function(path, success_callback, import_opts)
       print(log_info.log)
     end
   end
+
   local message = nil
   if not status then
     -- Import failed 😡
@@ -119,11 +123,12 @@ local import = function(path, success_callback, import_opts)
 
   state.import_status.info[path] = {
     import_message   = message,
-    import_time      = duration,
+    import_time      = metrics[3].duration,
     print_logs       = print_logs,
     error_logs       = error_logs,
     success_callback = success_callback
   }
+
   if state._is_in_error_state and not state._printed_error_state then
     state._printed_error_state = true
     print("There was an error with your imports")

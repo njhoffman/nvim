@@ -49,6 +49,11 @@ M.picker_plugins = {
 
 M.motion_plugins = {
   ["substitute.nvim"] = { "gbprod/substitute.nvim" },
+  ["vim-UnconditionalPaste"] = {
+    "inkarkat/vim-UnconditionalPaste",
+    requires = "inkarkat/vim-ingo-library",
+  },
+  ["bufjump.nvim"] = { "kwkarlwang/bufjump.nvim" },
   ["vim-matchup"] = { "andymass/vim-matchup" },
   ["vim-wordmotion"] = { "chaoren/vim-wordmotion" },
   ["vim-smoothie"] = { "psliwka/vim-smoothie", commit = "10fd0aa" }, -- f2aaab1
@@ -69,12 +74,15 @@ M.motion_plugins = {
 }
 
 M.format_plugins = {
-  ["kommentary"]      = { "b3nj5m1n/kommentary" },
+  -- ["kommentary"]      = { "b3nj5m1n/kommentary" },
+  ["Comment.nvim"]    = { "numToStr/Comment.nvim" },
   ["inc-rename.nvim"] = { "smjonas/inc-rename.nvim" },
   ["nvim-autopairs"]  = { "windwp/nvim-autopairs" }, -- jiangmiao/auto-pairs
   ["nvim-surround"]   = { "kylechui/nvim-surround" },
   ["splitjoin.vim"]   = { "andrewradev/splitjoin.vim" }, -- FooSoft/vim-argwrap
-  ["vim-easy-align"]  = { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
+  ["nvim-revJ"]       = { "AckslD/nvim-revJ.lua", requires = { 'kana/vim-textobj-user', 'sgur/vim-textobj-parameter' } },
+  -- ["vim-easy-align"]  = { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
+  ["vim-easy-align"]  = { "~/git/vim-easy-align" }, -- tommcdo/vim-lion
   ["vim-table-mode"]  = { "dhruvasagar/vim-table-mode" },
   ["dial.nvim"]       = { "monaqa/dial.nvim" },
   ["iswap.nvim"]      = { "mizlan/iswap.nvim" },
@@ -307,6 +315,7 @@ M.project_plugins = {
 }
 
 M.interface_plugins = {
+  ["goto-preview"]   = { 'rmagatti/goto-preview' },
   ["alpha-nvim"]     = { "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" },
   ["diffview.nvim"]  = { "sindrets/diffview.nvim" },
   ["nvim-bqf"]       = { "kevinhwang91/nvim-bqf" },
@@ -385,7 +394,9 @@ M.lsp_plugins = {
 }
 
 M.theme_plugins = {
-  ["lush.nvim"]   = { "rktjmp/lush.nvim" },
+  ["lush.nvim"]   = {
+    "rktjmp/lush.nvim",
+  },
   ["barbar"]      = { "romgrk/barbar.nvim", commit = "fa3ff25" },
   -- ["barbar"]      = { "romgrk/barbar.nvim" },
   ["feline.nvim"] = { "feline-nvim/feline.nvim" }

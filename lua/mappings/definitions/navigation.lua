@@ -56,7 +56,7 @@ return {
   },
   -- TODO: consolidate, integrate "tabclose"
   bufclose_nosave = {
-    cmd = "<cmd>BufferDelete<cr>",
+    cmd = "<cmd>silent! tabclose | BufferDelete<cr>",
     short = "buffer close no save",
     long = "close buffer with without saving"
   },
@@ -95,7 +95,7 @@ return {
     long = "restart vim with same session"
   },
   nowrite_exit2 = {
-    cmd = "<cmd>quitall<cr>",
+    cmd = "<cmd>silent! tabclose | quitall<cr>",
     short = "exit no write",
     long = "quick exit without saving"
   },
@@ -135,7 +135,7 @@ return {
     long = "create new file in a horizontal split"
   },
   print_filename = {
-    cmd = "<leader>pfn :echo expand('%:p')<CR>",
+    cmd = "<cmd>pfn :echo expand('%:p')<CR>",
     short = "print filename",
     long = "print path of current buffer"
   },

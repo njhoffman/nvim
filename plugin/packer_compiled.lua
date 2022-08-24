@@ -69,6 +69,11 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
+  ["Comment.nvim"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/Comment.nvim",
+    url = "https://github.com/numToStr/Comment.nvim"
+  },
   ["DAPInstall.nvim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/DAPInstall.nvim",
@@ -143,6 +148,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/betterlua.vim",
     url = "https://github.com/euclidianace/betterlua.vim"
+  },
+  ["bufjump.nvim"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/bufjump.nvim",
+    url = "https://github.com/kwkarlwang/bufjump.nvim"
   },
   ["calendar-vim"] = {
     loaded = true,
@@ -429,6 +439,11 @@ _G.packer_plugins = {
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/glow.nvim",
     url = "https://github.com/npxbr/glow.nvim"
   },
+  ["goto-preview"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/goto-preview",
+    url = "https://github.com/rmagatti/goto-preview"
+  },
   ["haskell-vim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/haskell-vim",
@@ -491,11 +506,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/jsonc.vim",
     url = "https://github.com/neoclide/jsonc.vim"
-  },
-  kommentary = {
-    loaded = true,
-    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/kommentary",
-    url = "https://github.com/b3nj5m1n/kommentary"
   },
   ["lazygit.nvim"] = {
     loaded = true,
@@ -702,6 +712,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/nvim-remote-containers",
     url = "https://github.com/jamestthompson3/nvim-remote-containers"
+  },
+  ["nvim-revJ.lua"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/nvim-revJ.lua",
+    url = "https://github.com/AckslD/nvim-revJ.lua"
   },
   ["nvim-scrollbar"] = {
     loaded = true,
@@ -1160,6 +1175,11 @@ _G.packer_plugins = {
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/vim-HiLinkTrace",
     url = "https://github.com/gerw/vim-HiLinkTrace"
   },
+  ["vim-UnconditionalPaste"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/vim-UnconditionalPaste",
+    url = "https://github.com/inkarkat/vim-UnconditionalPaste"
+  },
   ["vim-alias"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/vim-alias",
@@ -1203,7 +1223,7 @@ _G.packer_plugins = {
   ["vim-easy-align"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/vim-easy-align",
-    url = "https://github.com/junegunn/vim-easy-align"
+    url = "/home/nicholas/git/vim-easy-align"
   },
   ["vim-elixir"] = {
     loaded = true,
@@ -1254,6 +1274,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/vim-hindent",
     url = "https://github.com/alx741/vim-hindent"
+  },
+  ["vim-ingo-library"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/vim-ingo-library",
+    url = "https://github.com/inkarkat/vim-ingo-library"
   },
   ["vim-jinja2-syntax"] = {
     loaded = true,
@@ -1435,6 +1460,16 @@ _G.packer_plugins = {
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/vim-test",
     url = "https://github.com/vim-test/vim-test"
   },
+  ["vim-textobj-parameter"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/vim-textobj-parameter",
+    url = "https://github.com/sgur/vim-textobj-parameter"
+  },
+  ["vim-textobj-user"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/vim-textobj-user",
+    url = "https://github.com/kana/vim-textobj-user"
+  },
   ["vim-wakatime"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/vim-wakatime",
@@ -1494,10 +1529,6 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: nvim-startup.lua
-time([[Config for nvim-startup.lua]], true)
-try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.nvim_startup\frequire\0", "config", "nvim-startup.lua")
-time([[Config for nvim-startup.lua]], false)
 -- Config for: vimwiki
 time([[Config for vimwiki]], true)
 try_loadstring("\27LJ\2\nx\0\0\3\0\5\0\t6\0\0\0009\0\1\0)\1\0\0=\1\2\0006\0\0\0009\0\3\0'\2\4\0B\0\2\1K\0\1\0004let g:vimwiki_key_mappings = { 'all_maps': 0, }\bcmd\23vimwiki_global_ext\6g\bvim\0", "config", "vimwiki")
@@ -1506,40 +1537,44 @@ time([[Config for vimwiki]], false)
 time([[Config for float-preview.nvim]], true)
 try_loadstring("\27LJ\2\n=\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\"plugins.configs.float-preview\frequire\0", "config", "float-preview.nvim")
 time([[Config for float-preview.nvim]], false)
+-- Config for: nvim-startup.lua
+time([[Config for nvim-startup.lua]], true)
+try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.nvim_startup\frequire\0", "config", "nvim-startup.lua")
+time([[Config for nvim-startup.lua]], false)
 -- Conditional loads
-time([[Conditional loading of hologram.nvim]], true)
-  require("packer.load")({"hologram.nvim"}, {}, _G.packer_plugins)
-time([[Conditional loading of hologram.nvim]], false)
 time([[Conditional loading of nvim-nonicons]], true)
   require("packer.load")({"nvim-nonicons"}, {}, _G.packer_plugins)
 time([[Conditional loading of nvim-nonicons]], false)
+time([[Conditional loading of hologram.nvim]], true)
+  require("packer.load")({"hologram.nvim"}, {}, _G.packer_plugins)
+time([[Conditional loading of hologram.nvim]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
+vim.cmd [[ packadd nvim-lspconfig ]]
+vim.cmd [[ packadd sqls.nvim ]]
 vim.cmd [[ packadd nvim-cmp ]]
-vim.cmd [[ packadd cmp-nvim-lua ]]
+vim.cmd [[ packadd cmp-pandoc-references ]]
+vim.cmd [[ packadd cmp-git ]]
+vim.cmd [[ packadd cmp-cmdline ]]
+vim.cmd [[ packadd cmp-tmux ]]
+vim.cmd [[ packadd cmp-omni ]]
+vim.cmd [[ packadd cmp-calc ]]
 vim.cmd [[ packadd cmp-nvim-lsp ]]
-vim.cmd [[ packadd cmp-emoji ]]
+vim.cmd [[ packadd cmp-nvim-lua ]]
 vim.cmd [[ packadd tabout.nvim ]]
 
 -- Config for: tabout.nvim
 try_loadstring("\27LJ\2\n6\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\27plugins.configs.tabout\frequire\0", "config", "tabout.nvim")
 
+vim.cmd [[ packadd cmp-emoji ]]
 vim.cmd [[ packadd cmp-vimwiki-tags ]]
 vim.cmd [[ packadd cmp-nvim-lsp-document-symbol ]]
 vim.cmd [[ packadd cmp-zsh ]]
-vim.cmd [[ packadd cmp-git ]]
 vim.cmd [[ packadd cmp-npm ]]
 vim.cmd [[ packadd cmp-spell ]]
-vim.cmd [[ packadd cmp-pandoc-references ]]
 vim.cmd [[ packadd cmp-treesitter ]]
 vim.cmd [[ packadd cmp-nvim-lsp-signature-help ]]
 vim.cmd [[ packadd cmp_luasnip ]]
-vim.cmd [[ packadd cmp-cmdline ]]
-vim.cmd [[ packadd cmp-omni ]]
-vim.cmd [[ packadd cmp-calc ]]
-vim.cmd [[ packadd cmp-tmux ]]
-vim.cmd [[ packadd nvim-lspconfig ]]
-vim.cmd [[ packadd sqls.nvim ]]
 time([[Sequenced loading]], false)
 
 -- Command lazy-loads

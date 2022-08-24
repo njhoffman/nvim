@@ -1,4 +1,16 @@
 local M = {
+  clear_hl = {
+    cmd = "<cmd>noh<cr> | :nohlsearch<cr>",
+    short = "remove highlights"
+  },
+  clear_popups_hl = {
+    cmd = "<cmd>noh<cr>|:ClosePopups<cr>|:lua require'feline'.reset_highlights()<cr>",
+    short = "remove hls, refresh colors and lsp"
+  },
+  reset_lsp_clear_hl = {
+    cmd = "<cmd>noh<cr>|:RefreshLSP<cr>|:lua require'feline'.reset_highlights()<cr>",
+    short = "remove hls, refresh colors and lsp"
+  },
   registers = {
     cmd   = "<cmd>Registers<cr>",
     short = "view registers",

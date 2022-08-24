@@ -1,6 +1,6 @@
 local keys = require("health.keystats")
 local envs = require("health.envstats")
-local plugins = require("health.pluginstats")
+-- local plugins = require("health.pluginstats")
 
 local M = {}
 function M.check()

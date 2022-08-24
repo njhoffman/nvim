@@ -109,9 +109,7 @@ local tool_defaults = {
 }
 
 local tool_packages = require('plugins.config.mason-nvim-tools')
-local tool_settings = {
-  ensure_installed = tool_packages,
-}
+local tool_settings = { ensure_installed = tool_packages, }
 
 local lspconfig_settings = {
   ensure_installed = {
@@ -159,12 +157,9 @@ require 'mason-tool-installer'.setup(tool_settings)
 
 local lsp_formatting = function(bufnr)
   -- local pos = vim.api.nvim_win_get_cursor(0)
-  vim.lsp.buf.format({
-    async = false,
-    bufnr = bufnr
+  vim.lsp.buf.format({ async = false, bufnr = bufnr
     -- filter = function(clients) return vim.tbl_filter(function(client) end)
-  }
-  )
+  })
   -- vim.api.nvim_win_set_cursor(0, pos)
 end
 
@@ -172,8 +167,8 @@ local default_lsp_on_attach = function(client, bufnr)
   -- require("mappings").keys_lsp()
   -- client.server_capabilities.document_formatting = false
   -- client.server_capabilities.document_range_formatting = false
-  vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-  vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
+  -- vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
+  -- vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
 
   if client.server_capabilities.signatureHelpProvider == true then
     local lsp_sig = require('lsp.signature')

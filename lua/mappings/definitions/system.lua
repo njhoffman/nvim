@@ -39,6 +39,18 @@ local M = {
     short = "edit plugins",
     long = "edit packer plugin files"
   },
+  yank_filename = {
+    cmd = "!xsel -ib <<< %:p",
+    short = "yank the current filename",
+  },
+  yank_buffer = {
+    cmd = ":%y+<CR>",
+    short = "yank the current buffer"
+  },
+  display_filename = {
+    cmd = "lua print(expand('%:p'))",
+    short = "display current filename",
+  },
   shada_edit = {
     cmd = "<cmd>n $HOME/.vim/.shada",
     short = "view shada",

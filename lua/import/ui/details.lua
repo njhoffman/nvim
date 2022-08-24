@@ -1,6 +1,17 @@
 local cmds = require('import.commands')
 local ui_state = require('import.ui.state')
 
+
+-- local hl = {
+--   icon    = 'ImportErrorIcon',
+--   title   = 'ImportErrorTitle',
+--   file    = 'ImportErrorModule',
+--   line    = 'ImportErrorLine',
+--   message = 'ImportErrorMessage',
+--   command = 'ImportErrorCommand',
+--   stack   = 'ImportErrorStack',
+-- }
+
 local detail_lines = function()
   local module = ui_state._get_module(vim.api.nvim_win_get_cursor(0)[1])
   if not module then
