@@ -127,10 +127,10 @@ return function()
     SpecsCursor { bg = "#274087" },
 
     -- +--- Telescope ---+
-    TelescopeNormal { fg = "#6D778a", bg = "none" },
+    TelescopeNormal { fg = "#6D779a", bg ="none" },
     TelescopeBorder { bg = "none" },
     TelescopePrompt { bg = "none" },
-    TelescopePromptNormal { bg = "none" },
+    TelescopePromptNormal { fg = "#2299cc", bg = "none" },
     TelescopePromptBorder { fg = "#2299cc", bg = "none" },
     TelescopePromptPrefix { fg = "#2977FF", bg = "none" },
     -- fg_bg("TelescopePromptPrefix", red, black2)
@@ -145,7 +145,7 @@ return function()
     TelescopeFrecencyScores { fg = "#34799c" },
     TelescopeBufferLoaded { fg = "#47a0f0" },
     TelescopeMultiSelection { fg = "#4060ff", gui = "italic" },
-    TelescopeTitle { bg = "none", fg = '#0099ff', gui = 'bold ' },
+    TelescopeTitle { fg = '#2299ff', gui = 'bold ' },
     TelescopePromptTitle { bg = "none" },
     TelescopePreviewTitle { fg = "#47a0f0", bg = "none" },
     TelescopeResultsTitle { fg = '#64a9ec', bg = "none" },
@@ -156,84 +156,6 @@ return function()
     -- TelescopeResultsComment = {},
     -- TelescopeMultiSelection guifg=#928374          " Multisections
     -- Title highlight groups.
-    -- highlight default link TelescopeTitle TelescopeBorder
-    -- highlight default link TelescopePromptTitle TelescopeTitle
-    -- highlight default link TelescopeResultsTitle TelescopeTitle
-    -- highlight default link TelescopePreviewTitle TelescopeTitle
-
-
-    --    " Sets the highlight for selected items within the picker.
-    --    highlight default link TelescopeSelection Visual
-    --    highlight default link TelescopeSelectionCaret TelescopeSelection
-    --    highlight default link TelescopeMultiSelection Type
-    --
-    --    " "Normal" in the floating windows created by telescope.
-    --    highlight default link TelescopeNormal Normal
-    --    highlight default link TelescopePreviewNormal TelescopeNormal
-    --    highlight default link TelescopePromptNormal TelescopeNormal
-    --    highlight default link TelescopeResultsNormal TelescopeNormal
-    --
-    --    " Border highlight groups.
-    --    "   Use TelescopeBorder to override the default.
-    --    "   Otherwise set them specifically
-    --    highlight default link TelescopeBorder TelescopeNormal
-    --    highlight default link TelescopePromptBorder TelescopeBorder
-    --    highlight default link TelescopeResultsBorder TelescopeBorder
-    --    highlight default link TelescopePreviewBorder TelescopeBorder
-    --
-    --    highlight default link TelescopePromptCounter NonText
-    --
-    --    " Used for highlighting characters that you match.
-    --    highlight default link TelescopeMatching Special
-    --
-    --    " Used for the prompt prefix
-    --    highlight default link TelescopePromptPrefix Identifier
-    --
-    --    " Used for highlighting the matched line inside Previewer. Works only for (vim_buffer_ previewer)
-    --    highlight default link TelescopePreviewLine Visual
-    --    highlight default link TelescopePreviewMatch Search
-    --
-    --    highlight default link TelescopePreviewPipe Constant
-    --    highlight default link TelescopePreviewCharDev Constant
-    --    highlight default link TelescopePreviewDirectory Directory
-    --    highlight default link TelescopePreviewBlock Constant
-    --    highlight default link TelescopePreviewLink Special
-    --    highlight default link TelescopePreviewSocket Statement
-    --    highlight default link TelescopePreviewNormal Normal
-    --    highlight default link TelescopePreviewRead Constant
-    --    highlight default link TelescopePreviewWrite Statement
-    --    highlight default link TelescopePreviewExecute String
-    --    highlight default link TelescopePreviewHyphen NonText
-    --    highlight default link TelescopePreviewSticky Keyword
-    --    highlight default link TelescopePreviewSize String
-    --    highlight default link TelescopePreviewUser Constant
-    --    highlight default link TelescopePreviewGroup Constant
-    --    highlight default link TelescopePreviewDate Directory
-    --    highlight default link TelescopePreviewMessage TelescopePreviewNormal
-    --    highlight default link TelescopePreviewMessageFillchar TelescopePreviewMessage
-    --
-    --    " Used for Picker specific Results highlighting
-    --    highlight default link TelescopeResultsClass Function
-    --    highlight default link TelescopeResultsConstant Constant
-    --    highlight default link TelescopeResultsField Function
-    --    highlight default link TelescopeResultsFunction Function
-    --    highlight default link TelescopeResultsMethod Method
-    --    highlight default link TelescopeResultsOperator Operator
-    --    highlight default link TelescopeResultsStruct Struct
-    --    highlight default link TelescopeResultsVariable SpecialChar
-    --
-    --    highlight default link TelescopeResultsLineNr LineNr
-    --    highlight default link TelescopeResultsIdentifier Identifier
-    --    highlight default link TelescopeResultsNumber Number
-    --    highlight default link TelescopeResultsComment Comment
-    --    highlight default link TelescopeResultsSpecialComment SpecialComment
-    --
-    --    " Used for git status Results highlighting
-    --    highlight default link TelescopeResultsDiffChange DiffChange
-    --    highlight default link TelescopeResultsDiffAdd DiffAdd
-    --    highlight default link TelescopeResultsDiffDelete DiffDelete
-    --    highlight default link TelescopeResultsDiffUntracked NonText
-
     -- +--- CMP ---+
 
     --   " gray

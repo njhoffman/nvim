@@ -57,8 +57,15 @@ local get_status = function(module)
     details.imported = true
   end
   local message = {}
+
+-- Error detected while processing CursorMoved Autocommands for "<buffer=6>":
+-- Error executing lua callback: /home/nicholas/.config/nvim/lua/import/ui/state.lua:18: attempt t
+-- o index field 'lines' (a nil value)
+-- stack traceback:
   if import_status.info[module].import_message then
-    for line, _ in import_status.info[module].import_message:gmatch('([^\r\n]*)') do
+    for line, _ in import_status
+      .info[module].import_message:gmatch('([^\r\n]*)') do
+
       table.insert(message, line)
     end
   end

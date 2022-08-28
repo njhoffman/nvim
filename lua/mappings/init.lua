@@ -599,7 +599,7 @@ vim.import('mapper', function(M)
   M.map("LSP", "n", "<leader>lS", "workspace_symbols")
   M.map("LSP", "n", "<leader>l.a", "stop_all")
   M.map("LSP", "n", "<C-t>", "doc_diagnostics_ivy")
-  M.map("LSP", "n", "<A-T>", "doc_diagnostics_2")
+  -- M.map("LSP", "n", "<A-T>", "doc_diagnostics_2")
 
 
   vim.api.nvim_set_keymap(

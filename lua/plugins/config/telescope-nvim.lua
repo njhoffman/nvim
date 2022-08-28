@@ -1,7 +1,5 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
-local ok, telescope = pcall(require, "telescope")
-if not ok then return end
-
+local telescope = require('telescope')
 local previewers = require "telescope.previewers"
 local sorters = require "telescope.sorters"
 local tele_custom = require "plugins.config.telescope-custom"
@@ -88,7 +86,7 @@ local telescopeConfig = {
     layout_strategy = "flex", -- flex, horizontal, veritical, center
     scroll_strategy = "cycle",
     color_devicons = true,
-    winblend = 10,
+    -- winblend = 10,
     mappings = tele_mappings.main,
     file_sorter = sorters.native_fzf_sorter,
     generic_sorter = sorters.native_fzf_sorter, -- get_fuzzy_file, fuzzy_with_index_bias

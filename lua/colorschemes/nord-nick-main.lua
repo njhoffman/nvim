@@ -62,7 +62,7 @@ return function()
     FloatTitle { fg = "#5f73c2", bg = "none" }, --
     ColorColumn { bg = "none" },
 
-    Pmenu { fg = "#618cc4", bg = "#090918" },
+    Pmenu { fg = "#618cc4", bg = "none" },
     PmenuSel { fg = "#44bfcf", bg = "#1a1f2f" },
     PmenuSbar { fg = "#313c84", bg = "#202331" },
     PmenuThumb { fg = "#4f5362", bg = "#446faf" },
@@ -190,6 +190,7 @@ return function()
     liquidExpression { Type },
     liquidDelimiter { fg = clr_over.orange },
     luaTSFunction { TSMethod },
+
     -- betterlua
     -- set g:lua_subversion to change the highlighting of the standard library
     -- set g:BetterLua_enable_emmylua to 0 to turn off EmmyLua comment highlighting

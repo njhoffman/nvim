@@ -28,7 +28,7 @@ local dropdown_preview = require "telescope.themes".get_dropdown({
 -- Settings for with preview option
 local with_preview = {
   find_command = command_rg,
-  winblend = 10,
+  winblend = 20,
   show_line = false,
   results_title = false,
   preview_title = false

@@ -110,7 +110,6 @@ local get_option_local = function(...)
   if type(args[1]) ~= 'number' then
     table.insert(args, 1, 0)
   end
-  vim.dbglog({ getargs = args })
   return get_option(unpack(args))
 end
 

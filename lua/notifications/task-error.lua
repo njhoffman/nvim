@@ -47,7 +47,6 @@ local _notify_opts = function(parts, open_cmd)
       vim.api.nvim_set_current_win(currwin)
       vim.api.nvim_win_close(notify_winnr, true)
       -- notify.dismiss()
-      vim.dbglog('cb_close msg')
     end
 
     -- gT: telescope all line matches
@@ -110,10 +109,6 @@ local test_render = function()
   local notify = require('notify')
   local errors = require('notifications.error-examples')
   local msg = errors.error3
-  -- local parts = _get_parts(msg)
-  -- parts.command = 'test_cmd'
-  -- parts.time = 152353
-  -- vim.dbglog('testing', parts)
   -- notify(msg, 'error', _notify_opts(parts))
 end
 

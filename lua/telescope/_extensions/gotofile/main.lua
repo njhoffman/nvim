@@ -36,7 +36,6 @@ M.gotofile = function(theme_opts, conf_opts)
       action_set.select:enhance({
         post = function()
           local selection = action_state.get_selected_entry()
-          vim.dbglog("SELECTION", selection)
           -- if selection.lnum then
           --   vim.api.nvim_win_set_cursor(0, { selection.lnum, 0 })
           -- end

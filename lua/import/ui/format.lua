@@ -26,20 +26,6 @@ end
 --   command = 'ImportErrorCommand',
 --   stack   = 'ImportErrorStack',
 -- }
-local format_failed = function(module, details, file_width)
-  local icon = ""
-  if not details then details = cmds.get_status(module) end
-  icon = opts.user_opts.import_failed_icon
-  local items = {
-    { icon, 'ImportFailedIcon' },
-    { ' ', '' },
-    { module, 'ImportFailedModule' },
-    { ' ', '' },
-    { 'Some further details', 'Comment' },
-  }
-  return items
-end
-
 local format_success = function(module, details, file_width)
   local icon = ""
   if not details then
@@ -56,7 +42,6 @@ local format_success = function(module, details, file_width)
 end
 
 return {
-  module = format_module,
   failed = format_failed,
   success = format_success
 }

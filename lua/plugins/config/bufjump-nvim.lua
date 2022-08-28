@@ -1,6 +1,6 @@
 require("bufjump").setup({
-  forward = "<M-i>",
-  backward = "<>",
+  forward = "<C-i>",
+  backward = "<C-o>",
   on_success = function()
     vim.cmd([[execute "normal! g`\"zz"]])
   end,

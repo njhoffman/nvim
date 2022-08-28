@@ -9,7 +9,6 @@ local function get_project_path()
 
   if project_path == "" then
     project_path = require("project_nvim.project").get_project_root() or ""
-    -- vim.dbglog('prj: ' .. project_path)
     if project_path == nil or project_path == "" then
       project_path = string.gsub(vim.fn.getcwd(), os.getenv("HOME"), "~")
     else

@@ -1,4 +1,3 @@
-vim.dbglog("IM HERE")
 require("revj").setup {
   brackets = { first = '([{<', last = ')]}>' }, -- brackets to consider surrounding arguments
   new_line_before_last_bracket = true, -- add new line between last argument and last bracket (only if no last seperator)

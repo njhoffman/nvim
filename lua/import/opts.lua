@@ -30,6 +30,7 @@ local config = function(configuration)
   end
   user_opts = _opts
 end
+
 return {
   user_opts = user_opts,
   config = config

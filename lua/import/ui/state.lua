@@ -1,5 +1,12 @@
 local state = {
-  lines           = {},
+  failed = {
+    parts = {},
+    widths = {}
+  },
+  success = {
+    parts = {},
+    widths = {}
+  },
   is_displayed    = false,
   buf_handle      = nil,
   view_buf_handle = nil,

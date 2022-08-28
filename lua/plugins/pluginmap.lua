@@ -59,6 +59,7 @@ M.motion_plugins = {
   ["vim-smoothie"] = { "psliwka/vim-smoothie", commit = "10fd0aa" }, -- f2aaab1
   ["vim-searchsavy"] = { "idbrii/vim-searchsavvy" },
   ["clever-f"] = { "rhysd/clever-f.vim" },
+  ["nvim-femaco.lua"] = {"AckslD/nvim-FeMaco.lua"},
   ["markdown-preview.nvim"] = { "iamcco/markdown-preview.nvim", run = "cd app && yarn install" },
   ["neuron.nvim"] = {
     "njhoffman/neuron.nvim",
@@ -80,7 +81,8 @@ M.format_plugins = {
   ["nvim-autopairs"]  = { "windwp/nvim-autopairs" }, -- jiangmiao/auto-pairs
   ["nvim-surround"]   = { "kylechui/nvim-surround" },
   ["splitjoin.vim"]   = { "andrewradev/splitjoin.vim" }, -- FooSoft/vim-argwrap
-  ["nvim-revJ"]       = { "AckslD/nvim-revJ.lua", requires = { 'kana/vim-textobj-user', 'sgur/vim-textobj-parameter' } },
+  -- AckslD/nvim-trevJ.lua https://github.com/FooSoft/vim-argwrap
+  -- ["nvim-revJ"]       = { "AckslD/nvim-revJ.lua", requires = { 'kana/vim-textobj-user', 'sgur/vim-textobj-parameter' } }, 
   -- ["vim-easy-align"]  = { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
   ["vim-easy-align"]  = { "~/git/vim-easy-align" }, -- tommcdo/vim-lion
   ["vim-table-mode"]  = { "dhruvasagar/vim-table-mode" },
@@ -271,7 +273,8 @@ M.ui_plugins = {
   ["nvim-colorizer"]     = { "norcalli/nvim-colorizer.lua" },
   ["vim-plugin-AnsiEsc"] = { "joeysino/vim-plugin-AnsiEsc" },
   ["vimade"]             = { "TaDaa/vimade" },
-  ["which-key.nvim"]     = { "folke/which-key.nvim" },
+  ["which-key.nvim"]     = { "~/git/which-key.nvim" },
+  -- ["which-key.nvim"]     = { "folke/which-key.nvim" },
   ["zen-mode.nvim"]      = { "folke/zen-mode.nvim" },
   ["hop.nvim"]           = { "phaazon/hop.nvim" },
 
@@ -315,6 +318,7 @@ M.project_plugins = {
 }
 
 M.interface_plugins = {
+  ['numb.nvim']     = {'nacro90/numb.nvim'},
   ["goto-preview"]   = { 'rmagatti/goto-preview' },
   ["alpha-nvim"]     = { "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" },
   ["diffview.nvim"]  = { "sindrets/diffview.nvim" },
@@ -377,6 +381,7 @@ M.lsp_plugins = {
     "WhoIsSethDaniel/mason-tool-installer.nvim"
   } },
   ["fidget.nvim"]           = { "j-hui/fidget.nvim" },
+  ["nvim-lint"]             = {"mfussenegger/nvim-lint"},
   ["null-ls.nvim"]          = { "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" },
   ["lua-dev.nvim"]          = { "folke/lua-dev.nvim" },
   ["lsp-colors.nvim"]       = { "folke/lsp-colors.nvim" },

@@ -89,11 +89,11 @@ local _assign_autocommands = function()
     once = true
   })
 
-  vim.api.nvim_create_autocmd('CursorMoved', {
-    buffer = ui_state.buf_handle,
-    desc = "Loading Details into View Buffer",
-    callback = detail_lines
-  })
+  -- vim.api.nvim_create_autocmd('CursorMoved', {
+  --   buffer = ui_state.buf_handle,
+  --   desc = "Loading Details into View Buffer",
+  --   callback = detail_lines
+  -- })
 end
 
 local _assign_window_props = function()
@@ -184,10 +184,12 @@ local display = function(_opts)
       table.insert(imported.failures, module)
     end
   end
+
   _assign_keycodes()
   _assign_autocommands()
-  summary_lines(imported, view_width, ui_state.buf_handle)
+  summary_lines(imported)
   _assign_window_props()
+
   ui_state.view_win_handle = vim.api.nvim_open_win(ui_state.view_buf_handle, 1, view_opts)
   ui_state.buf_win_handle = vim.api.nvim_open_win(ui_state.buf_handle, 1, float_opts)
 end

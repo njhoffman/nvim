@@ -20,7 +20,6 @@ local fade_stages = {
     if not next_row then
       return nil
     end
-    vim.dbglog({ next_col = next_col })
     return {
       relative = "editor",
       anchor = "N",
