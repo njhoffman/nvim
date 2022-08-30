@@ -15,7 +15,7 @@ local reload = function(path, success_callback)
   state.import_status.successes[path] = nil
   local callback_message = ''
   if state.import_status.info[path] then
-    local _success_callback = M.import_state.info[path].success_callback
+    local _success_callback = state.import_status.info[path].success_callback
     if success_callback == nil then
       success_callback = _success_callback
       callback_message = "with cached callback"

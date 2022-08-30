@@ -1,12 +1,6 @@
 local state = {
-  failed = {
-    parts = {},
-    widths = {}
-  },
-  success = {
-    parts = {},
-    widths = {}
-  },
+  failed = {},
+  success = {},
   is_displayed    = false,
   buf_handle      = nil,
   view_buf_handle = nil,
@@ -14,10 +8,11 @@ local state = {
   view_win_handle = nil,
 }
 
-local get_module = function(line)
-  line = state.lines[line]
+local get_module = function(name)
+  local line = state.failed[name]
   if not line or line == -1 then
-    return
+    line = state.success[name]
+    return line
   end
   return line
 end

@@ -1,27 +1,17 @@
 local cmds = require('import.commands')
 local ui_state = require('import.ui.state')
 
-
--- local hl = {
---   icon    = 'ImportErrorIcon',
---   title   = 'ImportErrorTitle',
---   file    = 'ImportErrorModule',
---   line    = 'ImportErrorLine',
---   message = 'ImportErrorMessage',
---   command = 'ImportErrorCommand',
---   stack   = 'ImportErrorStack',
--- }
-
 local detail_lines = function()
-  -- local module = ui_state._get_module(vim.api.nvim_win_get_cursor(0)[1])
-  -- if not module then
-  --   vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modifiable', true)
-  --   vim.api.nvim_buf_set_lines(ui_state.view_buf_handle, 0, -1, false, {})
-  --   vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modifiable', true)
-  --   return
-  -- end
+  local module = ui_state._get_module(vim.api.nvim_win_get_cursor(0)[1] - 1)
+  if not module then
+    vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modifiable', true)
+    vim.api.nvim_buf_set_lines(ui_state.view_buf_handle, 0, -1, false, {})
+    vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modifiable', true)
+    return
+  end
   local details = cmds.get_status(module)
   local lines = {}
+
   table.insert(lines, module)
   table.insert(lines, "    Imported: " .. details.status)
   table.insert(lines, "    Import Time: " .. math.floor(details.import_time / 1000000 * 1000) / 1000 .. " ms")
@@ -65,11 +55,11 @@ local detail_lines = function()
       end
     end
   end
-  -- vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modifiable', true)
-  -- vim.api.nvim_buf_set_lines(ui_state.view_buf_handle, 0, -1, false, {})
-  -- vim.api.nvim_buf_set_lines(ui_state.view_buf_handle, 0, -1, false, lines)
-  -- vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modifiable', false)
-  -- vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modified', false)
+  vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modifiable', true)
+  vim.api.nvim_buf_set_lines(ui_state.view_buf_handle, 0, -1, false, {})
+  vim.api.nvim_buf_set_lines(ui_state.view_buf_handle, 0, -1, false, lines)
+  vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modifiable', false)
+  vim.api.nvim_buf_set_option(ui_state.view_buf_handle, 'modified', false)
 end
 
 return detail_lines

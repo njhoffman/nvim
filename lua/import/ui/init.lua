@@ -9,21 +9,26 @@ local _init = function(_opts)
   opts.config(_opts)
   ---Create highlights.
   vim.api.nvim_set_hl(0, 'ImportFailedIcon', { link = 'Error' })
-  vim.api.nvim_set_hl(0, 'ImportFailedModule', { link = 'Error' })
+  vim.api.nvim_set_hl(0, 'ImportFailedModule', { link = 'Comment' })
+  vim.api.nvim_set_hl(0, 'ImportFailedMessage', { link = 'DiagnosticHint' })
+  vim.api.nvim_set_hl(0, 'ImportSuccessIcon', { link = 'healthSuccess' })
+  vim.api.nvim_set_hl(0, 'ImportSuccessModule', { link = 'Comment' })
+  vim.api.nvim_set_hl(0, 'ImportSuccessMessage', { link = 'DiagnosticHint' })
 end
 
 local _update_main_buffer_line = function(lineno, new_text)
-  --[[ vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modifiable', true)
+  vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modifiable', true)
   vim.api.nvim_buf_set_lines(ui_state.buf_handle, lineno - 1, lineno, false, { new_text })
-  vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modifiable', false) ]]
+  vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modifiable', false)
 end
 
 local _selected_module = function(line)
-  --[[ local module = ui_state._get_module(line)
+  vim.dbglog('SELECTED MODULE', tostring(line))
+  local module = ui_state._get_module(line)
   if not module then return end
   _update_main_buffer_line(line, "...")
   cmds.reload(module)
-  _update_main_buffer_line(line, format_module(module)) ]]
+  _update_main_buffer_line(line, format_module(module))
 end
 
 local _scroll_view_pane_down = function()
@@ -89,11 +94,11 @@ local _assign_autocommands = function()
     once = true
   })
 
-  -- vim.api.nvim_create_autocmd('CursorMoved', {
-  --   buffer = ui_state.buf_handle,
-  --   desc = "Loading Details into View Buffer",
-  --   callback = detail_lines
-  -- })
+  vim.api.nvim_create_autocmd('CursorMoved', {
+    buffer = ui_state.buf_handle,
+    desc = "Loading Details into View Buffer",
+    callback = detail_lines
+  })
 end
 
 local _assign_window_props = function()
@@ -187,7 +192,7 @@ local display = function(_opts)
 
   _assign_keycodes()
   _assign_autocommands()
-  summary_lines(imported)
+  summary_lines(imported, view_width)
   _assign_window_props()
 
   ui_state.view_win_handle = vim.api.nvim_open_win(ui_state.view_buf_handle, 1, view_opts)

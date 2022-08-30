@@ -17,15 +17,6 @@ local format_module = function(module, details)
   end
   return " " .. icon .. " " .. tostring(module)
 end
-
---   icon    = 'ImportErrorIcon',
---   title   = 'ImportErrorTitle',
---   file    = 'ImportErrorFile',
---   line    = 'ImportErrorLine',
---   message = 'ImportErrorMessage',
---   command = 'ImportErrorCommand',
---   stack   = 'ImportErrorStack',
--- }
 local format_success = function(module, details, file_width)
   local icon = ""
   if not details then
