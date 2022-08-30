@@ -4,16 +4,30 @@ local build_test_parts = function()
       { " ", "ImportFailedIcon" },
       { "plugins.config.cmp-git", "ImportFailedModule" },
       { "an example error msg", "ImportFailedMessage" },
-      { "0.64 ms", "ImportFailedTime", { align = { 'right', 40 } } },
+      { "0.64 ms", "ImportFailedTime", { align = { "right", 100 } } },
     },
     {
       { " ", "ImportFailedIcon" },
       { "lsp", "ImportFailedModule" },
       { "different error", "ImportFailedMessage" },
-      { "10.22 ms", "ImportFailedTime", { align = { 'right', 40 } } },
+      { "10.22 ms", "ImportFailedTime", { align = { "right", 100 } } },
     },
   }
 end
+
+-- local lines_width = function(lines)
+--   return math.max(math.max(unpack(vim.tbl_map(
+--     function(line) return vim.fn.strchars(string.gsub(line, '^%s+', ''))
+--   end, lines))))
+-- end
+-- local lines_width = function(data, user_cb)
+--   local count_c = function(line)
+--     return vim.fn.strchars(string.gsub(user_cb(line), '^%s+', ''))
+--   end
+--   return math.max(math.max(unpack(
+--     vim.tbl_map(count_c, data)
+--   )))
+-- end
 
 local get_widths = function(part_lines)
   local widths = {}
@@ -49,7 +63,15 @@ end
 local build_lines = function(part_lines)
   local widths = get_widths(part_lines)
   local lines, highlights = format_lines(part_lines, widths)
-  vim.dbglog(lines, highlights)
+  return lines, highlights
+end
+
+local apply_highlights = function(highlights, linenum, bufnr)
+  for i, line in pairs(highlights) do
+    for _, hl in pairs(line) do
+      vim.api.nvim_buf_add_highlight(bufnr, 0, hl[1], linenum - 1 + i, hl[2], hl[3])
+    end
+  end
 end
 
 local parts = build_test_parts()

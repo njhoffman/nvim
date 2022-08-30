@@ -94,7 +94,7 @@ M.AsciiComponent = {
 M.FiletypeComponent = {
   -- Enable if current window width is higher than 100
   enabled = function()
-    return vim.api.nvim_win_get_width(0) > 100
+    return vim.api.nvim_win_get_width(0) > 120
   end,
   hl = { fg = "#988088" },
   provider = { name = 'file_type', opts = { case = 'lowercase' } },

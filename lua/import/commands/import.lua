@@ -1,7 +1,7 @@
-local opts = require('import.opts')
-local reporter = require('import.reporter')
-local state = require('import.commands.state')
-local log_timestamp_format = '%Y-%m-%d %H:%M:%S'
+local opts = require("import.opts")
+local reporter = require("import.reporter")
+local state = require("import.commands.state")
+local log_timestamp_format = "%Y-%m-%d %H:%M:%S"
 local import_defaults = { hide_output = false, hide_errors = false }
 
 --- Safely wraps the traditional require function that lua uses for importing modules
@@ -34,12 +34,16 @@ local import = function(path, success_callback, import_opts)
   -- TODO: (Mike) I am unsure if this is the best way to do handle an existing import or not?
   -- I dont think I want to fail as importing on an import is completely valid.
   if package.loaded[path] then
-    if success_callback then success_callback(package.loaded[path]) end
+    if success_callback then
+      success_callback(package.loaded[path])
+    end
     return
   end
   import_opts = import_opts or {}
   for key, value in pairs(import_defaults) do
-    if import_opts[key] == nil then import_opts[key] = value end
+    if import_opts[key] == nil then
+      import_opts[key] = value
+    end
   end
   -- TODO: Consider making the import async?
   local print_logs = {}
@@ -47,7 +51,7 @@ local import = function(path, success_callback, import_opts)
   local replay_log = {}
   local _print = print
   local _error = error
-  local log_format = '%s - [%s] %s'
+  local log_format = "%s - [%s] %s"
   -- print/error shim function to collect statements sent to both
   local print_shim = function(...)
     local print_safe_args = {}
@@ -58,9 +62,9 @@ local import = function(path, success_callback, import_opts)
     local print_log = string.format(log_format, path, os.date(log_timestamp_format), table.concat(print_safe_args))
     table.insert(print_logs, print_log)
     if opts.user_opts.import_enable_better_printing then
-      table.insert(replay_log, { level = 'print', log = print_log })
+      table.insert(replay_log, { level = "print", log = print_log })
     else
-      table.insert(replay_log, { level = 'print', log = ... })
+      table.insert(replay_log, { level = "print", log = ... })
     end
   end
   -- redirect errors to print to avoid breaking import
@@ -70,13 +74,13 @@ local import = function(path, success_callback, import_opts)
     for i = 1, #_ do
       table.insert(print_safe_args, tostring(_[i]))
     end
-    local error_log = string.format('ERROR: ' .. log_format, path, os.date(log_timestamp_format),
-      table.concat(print_safe_args))
+    local error_log =
+    string.format("ERROR: " .. log_format, path, os.date(log_timestamp_format), table.concat(print_safe_args))
     table.insert(error_logs, error_log)
     if opts.user_opts.import_enable_better_printing then
-      table.insert(replay_log, { level = 'error', log = error_log })
+      table.insert(replay_log, { level = "error", log = error_log })
     else
-      table.insert(replay_log, { level = 'error', log = ... })
+      table.insert(replay_log, { level = "error", log = ... })
     end
   end
   -- global shenanigans
@@ -123,10 +127,14 @@ local import = function(path, success_callback, import_opts)
 
   state.import_status.info[path] = {
     import_message   = message,
-    import_time      = metrics[3].duration,
+    import_start     = metrics.start,
+    import_end       = metrics.finish,
+    import_time      = metrics.duration,
+    load_n           = metrics.load_n,
+    report           = metrics.report,
     print_logs       = print_logs,
     error_logs       = error_logs,
-    success_callback = success_callback
+    success_callback = success_callback,
   }
 
   if state._is_in_error_state and not state._printed_error_state then

@@ -1,20 +1,56 @@
-local opts = require('import.opts')
+local opts = require("import.opts")
 
+local n = 0
 local simple_metrics = function(metrics)
   if metrics == nil then
+    n = n + 1
     metrics = {
-      { time = vim.loop.hrtime() },
-      { time = nil },
-      { duration = nil }
+      load_n = n,
+      start = vim.loop.hrtime(),
+      finish = nil,
+      duration = nil,
     }
   else
-    metrics[2].time = vim.loop.hrtime()
-    metrics[3].duration = metrics[2].time - metrics[1].time
+    metrics.finish = vim.loop.hrtime()
+    metrics.duration = metrics.finish - metrics.start
   end
   return metrics
 end
 
+local count_command = function(cmd)
+  vim.cmd([[ let temp_reg = @" | redir @" ]])
+  vim.cmd('silent! execute "' .. cmd .. '"')
+  vim.cmd([[
+    redir END
+    let output = copy(@") | let @" = temp_reg | let w:output_len=len(split(output, "\n"))
+  ]])
+  return vim.api.nvim_eval("w:output_len")
+end
+
+local get_command = function(cmd)
+  vim.cmd([[ let temp_reg = @" | redir @" ]])
+  vim.cmd('silent! execute "' .. cmd .. '"')
+  vim.cmd([[
+    redir END
+    let output = copy(@") | let @" = temp_reg | let w:output=split(output, "\n")
+  ]])
+  return vim.api.nvim_eval("w:output")
+end
+
 local detailed_metrics = function(metrics)
+  local cmd = get_command
+  metrics.report = {
+    -- autocommands = 0,
+    -- autogroups = 0,
+    -- global_variables = cmd("let g:"),
+    -- buffer_variables = cmd("let b:"),
+    -- global_options = cmd(":set"),
+    -- buffer_options = cmd(":setlocal"),
+    functions = cmd(":function"),
+    -- syntax_items = cmd(":syntax"),
+    -- commands = cmd(":command"),
+    -- highlights = cmd(":highlight"),
+  }
   return metrics
 end
 
@@ -27,5 +63,5 @@ local calc_metrics = function(prev)
 end
 
 return {
-  calc_metrics = calc_metrics
+  calc_metrics = calc_metrics,
 }

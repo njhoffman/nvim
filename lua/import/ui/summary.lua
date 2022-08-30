@@ -33,7 +33,7 @@ local build_failed_parts = function(imported)
       { time, "ImportFailedTime" },
     }
 
-    table.insert(ui_state.failed , name)
+    table.insert(ui_state.details, name)
     table.insert(part_lines, parts)
   end
   return part_lines
@@ -41,6 +41,10 @@ end
 
 local build_success_parts = function(imported)
   local part_lines = {}
+  table.sort(imported.successes, function(a, b)
+    return imported.details[a].import_start < imported.details[b].import_start
+  end)
+
   for _, name in ipairs(imported.successes) do
     local detail = imported.details[name]
     if not detail then
@@ -58,9 +62,8 @@ local build_success_parts = function(imported)
       { time, "ImportSuccessTime" },
     }
 
-    table.insert(ui_state.success, name)
-    table.insert(part_lines, parts)
-  end
+    table.insert(ui_state.details, name)
+    table.insert(part_lines, parts) end
   return part_lines
 end
 

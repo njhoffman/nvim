@@ -12,6 +12,7 @@ local get_icon = function(method, lsp)
     gopls            = "ﳑ ", -- 
     graphql          = " ",
     html             = " ",
+    ["null-ls"]      = " ",
     jsonls           = " ",
     pylsp            = " ",
     sqls             = " ",
@@ -42,7 +43,7 @@ local change_project = function(dir, method)
   local msg = icon .. " "
   msg = msg .. dir
   -- msg = msg .. lsp .. " " .. dir
-  vim.notify(msg, "trace")
+  vim.notify(msg, "debug")
 end
 
 local project_config = {

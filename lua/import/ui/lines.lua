@@ -4,13 +4,13 @@ local build_test_parts = function()
       { " ", "ImportFailedIcon" },
       { "plugins.config.cmp-git", "ImportFailedModule" },
       { "an example error msg", "ImportFailedMessage" },
-      { "0.64 ms", "ImportFailedTime", { align = { 'right', 40 } } },
+      { "0.64 ms", "ImportFailedTime", { align = { "right", 100 } } },
     },
     {
       { " ", "ImportFailedIcon" },
       { "lsp", "ImportFailedModule" },
       { "different error", "ImportFailedMessage" },
-      { "10.22 ms", "ImportFailedTime", { align = { 'right', 40 } } },
+      { "10.22 ms", "ImportFailedTime", { align = { "right", 100 } } },
     },
   }
 end
@@ -69,17 +69,14 @@ end
 local apply_highlights = function(highlights, linenum, bufnr)
   for i, line in pairs(highlights) do
     for _, hl in pairs(line) do
-      vim.api.nvim_buf_add_highlight(
-        bufnr, 0, hl[1], linenum - 1 + i, hl[2], hl[3]
-      )
+      vim.api.nvim_buf_add_highlight(bufnr, 0, hl[1], linenum - 1 + i, hl[2], hl[3])
     end
   end
 end
 
 return {
-  build_lines      = build_lines,
+  build_lines = build_lines,
   apply_highlights = apply_highlights,
 }
 -- local parts = build_test_parts()
 -- build_lines(parts)
-

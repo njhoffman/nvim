@@ -1,17 +1,14 @@
-local ok, spotify = pcall(require, "nvim-spotify")
-if not ok then return end
-
 -- NOTE: needs spotify-tui running
 -- :SpotifyDevices
 -- :Spotify
 
-spotify.setup {
+require("nvim-spotify").setup({
   -- default opts
   status = {
     update_interval = 10000, -- the interval (ms) to check for what's currently playing
-    format = '%s %t by %a' -- spotify-tui --format argument
-  }
-}
+    format = "%s %t by %a", -- spotify-tui --format argument
+  },
+})
 
 -- normal	Esc	Close
 -- normal	q	Close

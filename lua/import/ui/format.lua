@@ -1,5 +1,5 @@
-local opts = require('import.opts')
-local cmds = require('import.commands')
+local opts = require("import.opts")
+local cmds = require("import.commands")
 
 --  plugins.config.cmp-git  l
 
@@ -17,6 +17,7 @@ local format_module = function(module, details)
   end
   return " " .. icon .. " " .. tostring(module)
 end
+
 local format_success = function(module, details, file_width)
   local icon = ""
   if not details then
@@ -34,5 +35,5 @@ end
 
 return {
   failed = format_failed,
-  success = format_success
+  success = format_success,
 }

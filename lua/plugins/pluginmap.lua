@@ -2,16 +2,18 @@ local M = {}
 
 M.skipped_plugins = {
   ["nvim-bufdel"] = { "ojroques/nvim-bufdel" },
-  ["vista.vim"]   = { "liuchengxu/vista.vim" },
-  ["neo-tree"]    = { "nvim-neo-tree/neo-tree.nvim", branch = "v2.x",
-    requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" }
-  }
+  ["vista.vim"] = { "liuchengxu/vista.vim" },
+  ["neo-tree"] = {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x",
+    requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
+  },
 }
 
 M.mapping_plugins = {
   ["vim-printer"] = { "meain/vim-printer" },
   ["vim-repeat"] = { "tpope/vim-repeat" },
-  ["vim-alias"] = { "Konfekt/vim-alias" }
+  ["vim-alias"] = { "Konfekt/vim-alias" },
 }
 
 M.treesitter_plugins = {
@@ -32,8 +34,9 @@ M.treesitter_plugins = {
 M.dap_plugins = {
   ["dap-install"] = { "Pocco81/DAPInstall.nvim" },
   ["nvim-dap"] = { "mfussenegger/nvim-dap" },
-  ["nvim-dap-ui"] = { "rcarriga/nvim-dap-ui",
-    requires = { "theHamsta/nvim-dap-virtual-text", "mfussenegger/nvim-dap" }
+  ["nvim-dap-ui"] = {
+    "rcarriga/nvim-dap-ui",
+    requires = { "theHamsta/nvim-dap-virtual-text", "mfussenegger/nvim-dap" },
   },
   ["one-small-step-for-vimkind"] = { "jbyuki/one-small-step-for-vimkind", requires = "mfussenegger/nvim-dap" },
   ["nvim-dap-python"] = { "mfussenegger/nvim-dap-python", requires = "mfussenegger/nvim-dap" },
@@ -43,8 +46,8 @@ M.dap_plugins = {
 M.picker_plugins = {
   ["cybu.nvim"] = { "ghillb/cybu.nvim" },
   ["legendary.nvim"] = { "mrjones2014/legendary.nvim" },
-  ["nvim-spotify"] = { "KadoBOT/nvim-spotify", requires = 'nvim-telescope/telescope.nvim', run = "make" },
-  ["tmuxjump.vim"] = { "shivamashtikar/tmuxjump.vim", requires = "nvim-telescope/telescope.nvim" }
+  ["nvim-spotify"] = { "KadoBOT/nvim-spotify", requires = "nvim-telescope/telescope.nvim", run = "make" },
+  ["tmuxjump.vim"] = { "shivamashtikar/tmuxjump.vim", requires = "nvim-telescope/telescope.nvim" },
 }
 
 M.motion_plugins = {
@@ -59,16 +62,16 @@ M.motion_plugins = {
   ["vim-smoothie"] = { "psliwka/vim-smoothie", commit = "10fd0aa" }, -- f2aaab1
   ["vim-searchsavy"] = { "idbrii/vim-searchsavvy" },
   ["clever-f"] = { "rhysd/clever-f.vim" },
-  ["nvim-femaco.lua"] = {"AckslD/nvim-FeMaco.lua"},
+  ["nvim-femaco.lua"] = { "AckslD/nvim-FeMaco.lua" },
   ["markdown-preview.nvim"] = { "iamcco/markdown-preview.nvim", run = "cd app && yarn install" },
   ["neuron.nvim"] = {
     "njhoffman/neuron.nvim",
     requires = {
       "nvim-lua/popup.nvim",
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim"
-    }
-  }
+      "nvim-telescope/telescope.nvim",
+    },
+  },
   -- ["vim-sandwhich"] = {"machakann/vim-sandwich"},
   -- ["marks.nvim"]            = { "chentoast/marks.nvim" },
   -- ["neuron-v2.vim"]         = { "chiefnoah/neuron-v2.vim" },
@@ -76,81 +79,80 @@ M.motion_plugins = {
 
 M.format_plugins = {
   -- ["kommentary"]      = { "b3nj5m1n/kommentary" },
-  ["Comment.nvim"]    = { "numToStr/Comment.nvim" },
+  ["Comment.nvim"] = { "numToStr/Comment.nvim" },
   ["inc-rename.nvim"] = { "smjonas/inc-rename.nvim" },
-  ["nvim-autopairs"]  = { "windwp/nvim-autopairs" }, -- jiangmiao/auto-pairs
-  ["nvim-surround"]   = { "kylechui/nvim-surround" },
-  ["splitjoin.vim"]   = { "andrewradev/splitjoin.vim" }, -- FooSoft/vim-argwrap
-  -- AckslD/nvim-trevJ.lua https://github.com/FooSoft/vim-argwrap
-  -- ["nvim-revJ"]       = { "AckslD/nvim-revJ.lua", requires = { 'kana/vim-textobj-user', 'sgur/vim-textobj-parameter' } }, 
-  -- ["vim-easy-align"]  = { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
-  ["vim-easy-align"]  = { "~/git/vim-easy-align" }, -- tommcdo/vim-lion
-  ["vim-table-mode"]  = { "dhruvasagar/vim-table-mode" },
-  ["dial.nvim"]       = { "monaqa/dial.nvim" },
-  ["iswap.nvim"]      = { "mizlan/iswap.nvim" },
-  ["text-case.nvim"]  = { "johmsalas/text-case.nvim" },
-  ["vim-camelsnek"]   = { "nicwest/vim-camelsnek" },
-  ["vim-checkbox"]    = { "jkramer/vim-checkbox" },
+  ["nvim-autopairs"] = { "windwp/nvim-autopairs" }, -- jiangmiao/auto-pairs
+  ["nvim-surround"] = { "kylechui/nvim-surround" },
+  ["splitjoin.vim"] = { "andrewradev/splitjoin.vim" },
+  -- FooSoft/vim-argwrap https://github.com/FooSoft/vim-argwrap
+  ["nvim-trevJ"] = { "AckslD/nvim-trevJ.lua" },
+  ["vim-easy-align"] = { "~/git/vim-easy-align" }, -- { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
+  ["vim-table-mode"] = { "dhruvasagar/vim-table-mode" },
+  ["dial.nvim"] = { "monaqa/dial.nvim" },
+  ["iswap.nvim"] = { "mizlan/iswap.nvim" },
+  ["text-case.nvim"] = { "johmsalas/text-case.nvim" },
+  ["vim-camelsnek"] = { "nicwest/vim-camelsnek" },
+  ["vim-checkbox"] = { "jkramer/vim-checkbox" },
   ["vim-sort-motion"] = { "christoomey/vim-sort-motion" },
-  ["telekasten.nvim"] = { "renerocksai/telekasten.nvim", requires = { "renerocksai/calendar-vim" } }
+  ["telekasten.nvim"] = { "renerocksai/telekasten.nvim", requires = { "renerocksai/calendar-vim" } },
 }
 
 M.syntax_plugins = {
-  ["BetterLua.vim"]              = { "euclidianace/betterlua.vim" },
-  ["Dockerfile.vim"]             = { "ekalinin/dockerfile.vim" },
-  ["alchemist.vim"]              = { "slashmili/alchemist.vim" },
-  ["ansible-vim"]                = { "pearofducks/ansible-vim" },
-  ["bat.vim"]                    = { "jamespwilliams/bat.vim" },
-  ["bats.vim"]                   = { "aliou/bats.vim" },
-  ["conflict-marker.vim"]        = { "rhysd/conflict-marker.vim" },
-  ["dash.vim"]                   = { "rizzatti/dash.vim" },
-  ["editorconfig-vim"]           = { "editorconfig/editorconfig-vim" },
-  ["elm-vim"]                    = { "elmcast/elm-vim" },
-  ["emmet-vim"]                  = { "mattn/emmet-vim" },
-  ["glow.nvim"]                  = { "npxbr/glow.nvim" },
-  ["haskell-vim"]                = { "neovimhaskell/haskell-vim" },
-  ["i3-vim-syntax"]              = { "potatoesmaster/i3-vim-syntax" },
-  ["jshint.vim"]                 = { "vim-scripts/jshint.vim" },
-  ["json5.vim"]                  = { "gutenye/json5.vim" },
-  ["jsonc.vim"]                  = { "neoclide/jsonc.vim" },
-  ["mkdx"]                       = { "SidOfc/mkdx" },
-  ["nginx.vim"]                  = { "chr4/nginx.vim" },
-  ["pgsql.vim"]                  = { "lifepillar/pgsql.vim" },
-  ["php.vim"]                    = { "stanangeloff/php.vim" },
-  ["requirements.txt.vim"]       = { "raimon49/requirements.txt.vim" },
-  ["scss-syntax.vim"]            = { "cakebaker/scss-syntax.vim" },
-  ["tabular"]                    = { "godlygeek/tabular" },
-  ["tmux.vim"]                   = { "ericpruitt/tmux.vim" },
-  ["vim-autoprefixer"]           = { "Ioannis-Kapoulas/vim-autoprefixer" },
-  ["vim-coffee-script"]          = { "kchmck/vim-coffee-script" },
+  ["BetterLua.vim"] = { "euclidianace/betterlua.vim" },
+  ["Dockerfile.vim"] = { "ekalinin/dockerfile.vim" },
+  ["alchemist.vim"] = { "slashmili/alchemist.vim" },
+  ["ansible-vim"] = { "pearofducks/ansible-vim" },
+  ["bat.vim"] = { "jamespwilliams/bat.vim" },
+  ["bats.vim"] = { "aliou/bats.vim" },
+  ["conflict-marker.vim"] = { "rhysd/conflict-marker.vim" },
+  ["dash.vim"] = { "rizzatti/dash.vim" },
+  ["editorconfig-vim"] = { "editorconfig/editorconfig-vim" },
+  ["elm-vim"] = { "elmcast/elm-vim" },
+  ["emmet-vim"] = { "mattn/emmet-vim" },
+  ["glow.nvim"] = { "npxbr/glow.nvim" },
+  ["haskell-vim"] = { "neovimhaskell/haskell-vim" },
+  ["i3-vim-syntax"] = { "potatoesmaster/i3-vim-syntax" },
+  ["jshint.vim"] = { "vim-scripts/jshint.vim" },
+  ["json5.vim"] = { "gutenye/json5.vim" },
+  ["jsonc.vim"] = { "neoclide/jsonc.vim" },
+  ["mkdx"] = { "SidOfc/mkdx" },
+  ["nginx.vim"] = { "chr4/nginx.vim" },
+  ["pgsql.vim"] = { "lifepillar/pgsql.vim" },
+  ["php.vim"] = { "stanangeloff/php.vim" },
+  ["requirements.txt.vim"] = { "raimon49/requirements.txt.vim" },
+  ["scss-syntax.vim"] = { "cakebaker/scss-syntax.vim" },
+  ["tabular"] = { "godlygeek/tabular" },
+  ["tmux.vim"] = { "ericpruitt/tmux.vim" },
+  ["vim-autoprefixer"] = { "Ioannis-Kapoulas/vim-autoprefixer" },
+  ["vim-coffee-script"] = { "kchmck/vim-coffee-script" },
   ["vim-cpp-enhanced-highlight"] = { "octol/vim-cpp-enhanced-highlight" },
-  ["vim-elixir"]                 = { "elixir-lang/vim-elixir" },
-  ["vim-fireplace"]              = { "tpope/vim-fireplace" },
-  ["vim-git"]                    = { "tpope/vim-git" },
-  ["vim-gitignore"]              = { "gisphm/vim-gitignore" },
-  ["vim-glsl"]                   = { "tikhomirov/vim-glsl" },
-  ["vim-graphql"]                = { "jparise/vim-graphql" },
-  ["vim-hindent"]                = { "alx741/vim-hindent" },
-  ["vim-jinja2-syntax"]          = { "glench/vim-jinja2-syntax" },
-  ["vim-jq"]                     = { "bfrg/vim-jq" },
-  ["vim-js"]                     = { "yuezk/vim-js" },
-  ["vim-jsbeautify"]             = { "maksimr/vim-jsbeautify" },
-  ["vim-json"]                   = { "elzr/vim-json" },
-  ["vim-jsx-pretty"]             = { "maxmellon/vim-jsx-pretty" },
-  ["vim-kubernetes"]             = { "andrewstuart/vim-kubernetes" },
-  ["vim-liquid"]                 = { "njhoffman/vim-liquid" },
-  ["vim-log-highlighting"]       = { "mtdl9/vim-log-highlighting" },
-  ["vim-lua"]                    = { "tbastos/vim-lua" },
-  ["vim-man"]                    = { "njhoffman/vim-man" }, -- {"vim-utils/vim-man"},
-  ["vim-nix"]                    = { "lnl7/vim-nix" },
-  ["vim-node"]                   = { "moll/vim-node" },
-  ["vim-pandoc-syntax"]          = { "vim-pandoc/vim-pandoc-syntax" },
-  ["vim-puppet"]                 = { "rodjek/vim-puppet" },
-  ["vim-salve"]                  = { "tpope/vim-salve" },
-  ["vim-systemd-syntax"]         = { "wgwoods/vim-systemd-syntax" },
-  ["vim-terraform"]              = { "hashivim/vim-terraform" },
-  ["yats.vim"]                   = { "herringtondarkholme/yats.vim" },
-  ["zinit-vim-syntax"]           = { "zdharma-continuum/zinit-vim-syntax" }
+  ["vim-elixir"] = { "elixir-lang/vim-elixir" },
+  ["vim-fireplace"] = { "tpope/vim-fireplace" },
+  ["vim-git"] = { "tpope/vim-git" },
+  ["vim-gitignore"] = { "gisphm/vim-gitignore" },
+  ["vim-glsl"] = { "tikhomirov/vim-glsl" },
+  ["vim-graphql"] = { "jparise/vim-graphql" },
+  ["vim-hindent"] = { "alx741/vim-hindent" },
+  ["vim-jinja2-syntax"] = { "glench/vim-jinja2-syntax" },
+  ["vim-jq"] = { "bfrg/vim-jq" },
+  ["vim-js"] = { "yuezk/vim-js" },
+  ["vim-jsbeautify"] = { "maksimr/vim-jsbeautify" },
+  ["vim-json"] = { "elzr/vim-json" },
+  ["vim-jsx-pretty"] = { "maxmellon/vim-jsx-pretty" },
+  ["vim-kubernetes"] = { "andrewstuart/vim-kubernetes" },
+  ["vim-liquid"] = { "njhoffman/vim-liquid" },
+  ["vim-log-highlighting"] = { "mtdl9/vim-log-highlighting" },
+  ["vim-lua"] = { "tbastos/vim-lua" },
+  ["vim-man"] = { "njhoffman/vim-man" }, -- {"vim-utils/vim-man"},
+  ["vim-nix"] = { "lnl7/vim-nix" },
+  ["vim-node"] = { "moll/vim-node" },
+  ["vim-pandoc-syntax"] = { "vim-pandoc/vim-pandoc-syntax" },
+  ["vim-puppet"] = { "rodjek/vim-puppet" },
+  ["vim-salve"] = { "tpope/vim-salve" },
+  ["vim-systemd-syntax"] = { "wgwoods/vim-systemd-syntax" },
+  ["vim-terraform"] = { "hashivim/vim-terraform" },
+  ["yats.vim"] = { "herringtondarkholme/yats.vim" },
+  ["zinit-vim-syntax"] = { "zdharma-continuum/zinit-vim-syntax" },
   -- use "kchmck/vim-coffee-script"
   -- use "plasticboy/vim-markdown"
   -- use "tpope/vim-liquid"
@@ -161,51 +163,55 @@ M.syntax_plugins = {
 M.telescope_plugins = {
   -- "njhoffman/telescope.nvim",
   -- "~/git/telescope.nvim",
-  ["nvim-web-devicons"]              = { "kyazdani42/nvim-web-devicons" },
-  ["telescope.nvim"]                 = { "nvim-telescope/telescope.nvim",
+  ["nvim-web-devicons"] = { "kyazdani42/nvim-web-devicons" },
+  ["telescope.nvim"] = {
+    "nvim-telescope/telescope.nvim",
     requires = {
       "kyazdani42/nvim-web-devicons",
       "nvim-lua/popup.nvim",
       "nvim-lua/plenary.nvim",
-    } },
-  ["nvim-neoclip.lua"]               = { "AckslD/nvim-neoclip.lua",
-    requires = { "tami5/sqlite.lua", module = "sqlite" },
+    },
   },
-  ["cheatsheet.nvim"]                = { "sudormrfbin/cheatsheet.nvim" },
-  ["telescope-arecibo.nvim"]         = { "nvim-telescope/telescope-arecibo.nvim" },
-  ["telescope-asynctasks.nvim"]      = { "GustavoKatel/telescope-asynctasks.nvim",
-    requires = "skywind3000/asynctasks.vim" },
-  ["telescope-bookmarks.nvim"]       = { "dhruvmanila/telescope-bookmarks.nvim" },
+  ["nvim-neoclip.lua"] = { "AckslD/nvim-neoclip.lua", requires = { "tami5/sqlite.lua", module = "sqlite" } },
+  ["cheatsheet.nvim"] = { "sudormrfbin/cheatsheet.nvim" },
+  ["telescope-arecibo.nvim"] = { "nvim-telescope/telescope-arecibo.nvim" },
+  ["telescope-asynctasks.nvim"] = {
+    "GustavoKatel/telescope-asynctasks.nvim",
+    requires = "skywind3000/asynctasks.vim",
+  },
+  ["telescope-bookmarks.nvim"] = { "dhruvmanila/telescope-bookmarks.nvim" },
   ["telescope-command-palette.nvim"] = { "LinArcX/telescope-command-palette.nvim" },
-  ["telescope-dap.nvim"]             = { "nvim-telescope/telescope-dap.nvim" },
-  ["telescope-file-browser.nvim"]    = { "nvim-telescope/telescope-file-browser.nvim" },
-  ["telescope-frecency.nvim"]        = { "nvim-telescope/telescope-frecency.nvim" },
-  ["telescope-fzf-native.nvim"]      = { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
-  ["telescope-ghq.nvim"]             = { "nvim-telescope/telescope-ghq.nvim" },
-  ["telescope-github.nvim"]          = { "nvim-telescope/telescope-github.nvim" },
-  ["telescope-heading.nvim"]         = { "crispgm/telescope-heading.nvim" },
-  ["telescope-hop.nvim"]             = { "nvim-telescope/telescope-hop.nvim" },
-  ["telescope-kubectl.nvim"]         = { "frenchtoasters/telescope-kubectl.nvim" },
-  ["telescope-media-files.nvim"]     = { "nvim-telescope/telescope-media-files.nvim" },
-  ["telescope-node-modules.nvim"]    = { "nvim-telescope/telescope-node-modules.nvim" },
-  ["telescope-npm.nvim"]             = { "elianiva/telescope-npm.nvim" },
-  ["telescope-openbrowser.nvim"]     = { "tamago324/telescope-openbrowser.nvim" },
-  ["telescope-packer.nvim"]          = { "nvim-telescope/telescope-packer.nvim" },
-  ["telescope-repo.nvim"]            = { "cljoly/telescope-repo.nvim" },
-  ["telescope-rg.nvim"]              = { "nvim-telescope/telescope-rg.nvim",
-    requires = { "nvim-telescope/telescope-live-grep-args.nvim" } },
-  ["telescope-symbols.nvim"]         = { "nvim-telescope/telescope-symbols.nvim" },
-  ["telescope-ui-select.nvim"]       = { "nvim-telescope/telescope-ui-select.nvim" },
-  ["telescope-vimwiki.nvim"]         = { "ElPiloto/telescope-vimwiki.nvim" },
-  ["telescope-z.nvim"]               = { "nvim-telescope/telescope-z.nvim" },
-  ["session-lens"]                   = { "rmagatti/session-lens" },
-  ["telescope-changes.nvim"]         = { "LinArcX/telescope-changes.nvim" },
-  ["telescope-luasnip.nvim"]         = { "benfowler/telescope-luasnip.nvim" },
-  ["telescope-tmux.nvim"]            = { "camgraff/telescope-tmux.nvim" },
-  ["telescope-ports.nvim"]           = { "LinArcX/telescope-ports.nvim" },
-  ["github-notifications.nvim"]      = { "rlch/github-notifications.nvim" },
-  ["cder.nvim"]                      = { "Zane-/cder.nvim" },
-  ["howdoi.nvim"]                    = { "Zane-/howdoi.nvim" }
+  ["telescope-dap.nvim"] = { "nvim-telescope/telescope-dap.nvim" },
+  ["telescope-file-browser.nvim"] = { "nvim-telescope/telescope-file-browser.nvim" },
+  ["telescope-frecency.nvim"] = { "nvim-telescope/telescope-frecency.nvim" },
+  ["telescope-fzf-native.nvim"] = { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+  ["telescope-ghq.nvim"] = { "nvim-telescope/telescope-ghq.nvim" },
+  ["telescope-github.nvim"] = { "nvim-telescope/telescope-github.nvim" },
+  ["telescope-heading.nvim"] = { "crispgm/telescope-heading.nvim" },
+  ["telescope-hop.nvim"] = { "nvim-telescope/telescope-hop.nvim" },
+  ["telescope-kubectl.nvim"] = { "frenchtoasters/telescope-kubectl.nvim" },
+  ["telescope-media-files.nvim"] = { "nvim-telescope/telescope-media-files.nvim" },
+  ["telescope-node-modules.nvim"] = { "nvim-telescope/telescope-node-modules.nvim" },
+  ["telescope-npm.nvim"] = { "elianiva/telescope-npm.nvim" },
+  ["telescope-openbrowser.nvim"] = { "tamago324/telescope-openbrowser.nvim" },
+  ["telescope-packer.nvim"] = { "nvim-telescope/telescope-packer.nvim" },
+  ["telescope-repo.nvim"] = { "cljoly/telescope-repo.nvim" },
+  ["telescope-rg.nvim"] = {
+    "nvim-telescope/telescope-rg.nvim",
+    requires = { "nvim-telescope/telescope-live-grep-args.nvim" },
+  },
+  ["telescope-symbols.nvim"] = { "nvim-telescope/telescope-symbols.nvim" },
+  ["telescope-ui-select.nvim"] = { "nvim-telescope/telescope-ui-select.nvim" },
+  ["telescope-vimwiki.nvim"] = { "ElPiloto/telescope-vimwiki.nvim" },
+  ["telescope-z.nvim"] = { "nvim-telescope/telescope-z.nvim" },
+  ["session-lens"] = { "rmagatti/session-lens" },
+  ["telescope-changes.nvim"] = { "LinArcX/telescope-changes.nvim" },
+  ["telescope-luasnip.nvim"] = { "benfowler/telescope-luasnip.nvim" },
+  ["telescope-tmux.nvim"] = { "camgraff/telescope-tmux.nvim" },
+  ["telescope-ports.nvim"] = { "LinArcX/telescope-ports.nvim" },
+  ["github-notifications.nvim"] = { "rlch/github-notifications.nvim" },
+  ["cder.nvim"] = { "Zane-/cder.nvim" },
+  ["howdoi.nvim"] = { "Zane-/howdoi.nvim" },
   -- {"chip/telescope-code-fence.nvim", run = "luarocks --local install lunamark" },
   -- "keyvchan/telescope-find-pickers.nvim",
   -- "LinArcX/telescope-env.nvim",
@@ -215,82 +221,89 @@ M.telescope_plugins = {
 }
 
 M.completion_plugins = {
-  ["nvim-cmp"]                             = { "hrsh7th/nvim-cmp" },
-  ["cmp-nvim-lsp-document-symbol"]         = { "hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp" },
-  ["cmp-emoji"]                            = { "hrsh7th/cmp-emoji", after = "nvim-cmp" },
-  ["cmp-nvim-lua"]                         = { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
-  ["cmp-nvim-lsp"]                         = { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
-  ["cmp-calc"]                             = { "hrsh7th/cmp-calc", after = "nvim-cmp" },
-  ["cmp-omni"]                             = { "hrsh7th/cmp-omni", after = "nvim-cmp" },
-  ["cmp-cmdline"]                          = { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
-  ["cmp-fuzzy-path"]                       = {
+  ["nvim-cmp"] = { "hrsh7th/nvim-cmp" },
+  ["cmp-nvim-lsp-document-symbol"] = { "hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp" },
+  ["cmp-emoji"] = { "hrsh7th/cmp-emoji", after = "nvim-cmp" },
+  ["cmp-nvim-lua"] = { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
+  ["cmp-nvim-lsp"] = { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
+  ["cmp-calc"] = { "hrsh7th/cmp-calc", after = "nvim-cmp" },
+  ["cmp-omni"] = { "hrsh7th/cmp-omni", after = "nvim-cmp" },
+  ["cmp-cmdline"] = { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
+  ["cmp-fuzzy-path"] = {
     "tzachar/cmp-fuzzy-path",
-    requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" }
+    requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
   },
-  ["cmp-fuzzy-buffer"]                     = {
+  ["cmp-fuzzy-buffer"] = {
     "tzachar/cmp-fuzzy-buffer",
-    requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" }
+    requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
   },
-  ["cmp_luasnip"]                          = { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp",
-    requires = "L3MON4D3/LuaSnip" },
-  ["cmp-nvim-lsp-signature-help"]          = { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" },
-  ["cmp-treesitter"]                       = { "ray-x/cmp-treesitter", after = "nvim-cmp" },
-  ["cmp-spell"]                            = { "f3fora/cmp-spell", after = "nvim-cmp" },
-  ["cmp-npm"]                              = { "David-Kunz/cmp-npm", after = "nvim-cmp" },
-  ["cmp-zsh"]                              = { "tamago324/cmp-zsh", after = "nvim-cmp" },
-  ["cmp-vimwiki-tags"]                     = { "pontusk/cmp-vimwiki-tags", after = "nvim-cmp" },
-  ["cmp-pandoc-references"]                = { "jc-doyle/cmp-pandoc-references", after = "nvim-cmp" },
-  ["cmp-git"]                              = { "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim",
-    after = "nvim-cmp" },
-  ["cmp-tmux"]                             = { "andersevenrud/cmp-tmux", after = "nvim-cmp" },
-  ["LuaSnip"]                              = { "L3MON4D3/LuaSnip" },
-  ["LuaSnip-snippets.nvim"]                = { "molleweide/LuaSnip-snippets.nvim" },
-  ["friendly-snippets"]                    = { "rafamadriz/friendly-snippets" },
-  ["vim-snippets"]                         = { "honza/vim-snippets" },
-  ["vs-snippets"]                          = { "kitagry/vs-snippets" },
+  ["cmp_luasnip"] = {
+    "saadparwaiz1/cmp_luasnip",
+    after = "nvim-cmp",
+    requires = "L3MON4D3/LuaSnip",
+  },
+  ["cmp-nvim-lsp-signature-help"] = { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" },
+  ["cmp-treesitter"] = { "ray-x/cmp-treesitter", after = "nvim-cmp" },
+  ["cmp-spell"] = { "f3fora/cmp-spell", after = "nvim-cmp" },
+  ["cmp-npm"] = { "David-Kunz/cmp-npm", after = "nvim-cmp" },
+  ["cmp-zsh"] = { "tamago324/cmp-zsh", after = "nvim-cmp" },
+  ["cmp-vimwiki-tags"] = { "pontusk/cmp-vimwiki-tags", after = "nvim-cmp" },
+  ["cmp-pandoc-references"] = { "jc-doyle/cmp-pandoc-references", after = "nvim-cmp" },
+  ["cmp-git"] = {
+    "petertriho/cmp-git",
+    requires = "nvim-lua/plenary.nvim",
+    after = "nvim-cmp",
+  },
+  ["cmp-tmux"] = { "andersevenrud/cmp-tmux", after = "nvim-cmp" },
+  ["LuaSnip"] = { "L3MON4D3/LuaSnip" },
+  ["LuaSnip-snippets.nvim"] = { "molleweide/LuaSnip-snippets.nvim" },
+  ["friendly-snippets"] = { "rafamadriz/friendly-snippets" },
+  ["vim-snippets"] = { "honza/vim-snippets" },
+  ["vs-snippets"] = { "kitagry/vs-snippets" },
+  ["nvim-luaref"] = { "milisims/nvim-luaref" },
+  ["luv-vimdocs"] = { "nanotee/luv-vimdocs" },
   ["vscode-es7-javascript-react-snippets"] = {
     "dsznajder/vscode-es7-javascript-react-snippets",
-    run = "yarn install --frozen-lockfile && yarn compile"
+    run = "yarn install --frozen-lockfile && yarn compile",
   },
-  ["nvim-luaref"]                          = { "milisims/nvim-luaref" },
-  ["luv-vimdocs"]                          = { "nanotee/luv-vimdocs" }
   -- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },
 }
 
 M.ui_plugins = {
-  ["aerial.nvim"]        = { "stevearc/aerial.nvim" },
-  ["dressing-nvim"]      = { "stevearc/dressing.nvim", requires = "MunifTanjim/nui.nvim" },
-  ["nvim-hlslens"]       = { "kevinhwang91/nvim-hlslens" },
-  ["nvim-notify"]        = { "~/git/nvim-notify" },
-  ["nvim-scrollbar"]     = { "petertriho/nvim-scrollbar" },
-  ["specs.nvim"]         = { "edluffy/specs.nvim" },
-  ["stabilize.nvim"]     = { "luukvbaal/stabilize.nvim" },
+  ["aerial.nvim"] = { "stevearc/aerial.nvim" },
+  ["dressing-nvim"] = { "stevearc/dressing.nvim", requires = "MunifTanjim/nui.nvim" },
+  ["nvim-hlslens"] = { "kevinhwang91/nvim-hlslens" },
+  ["nvim-notify"] = { "~/git/nvim-notify" },
+  ["nvim-scrollbar"] = { "petertriho/nvim-scrollbar" },
+  ["specs.nvim"] = { "edluffy/specs.nvim" },
+  ["stabilize.nvim"] = { "luukvbaal/stabilize.nvim" },
   ["todo-comments.nvim"] = { "robertgzr/todo-comments.nvim" }, -- folke/todo-comments
-  ["twilight.nvim"]      = { "folke/twilight.nvim" },
-  ["vim-HiLinkTrace"]    = { "gerw/vim-HiLinkTrace" },
-  ["vim-bling"]          = { "ivyl/vim-bling" },
-  ["vim-cool"]           = { "romainl/vim-cool" },
-  ["nvim-colorizer"]     = { "norcalli/nvim-colorizer.lua" },
+  ["twilight.nvim"] = { "folke/twilight.nvim" },
+  ["vim-HiLinkTrace"] = { "gerw/vim-HiLinkTrace" },
+  ["vim-bling"] = { "ivyl/vim-bling" },
+  ["vim-cool"] = { "romainl/vim-cool" },
+  ["nvim-colorizer"] = { "norcalli/nvim-colorizer.lua" },
   ["vim-plugin-AnsiEsc"] = { "joeysino/vim-plugin-AnsiEsc" },
-  ["vimade"]             = { "TaDaa/vimade" },
-  ["which-key.nvim"]     = { "~/git/which-key.nvim" },
+  ["vimade"] = { "TaDaa/vimade" },
+  ["which-key.nvim"] = { "~/git/which-key.nvim" },
   -- ["which-key.nvim"]     = { "folke/which-key.nvim" },
-  ["zen-mode.nvim"]      = { "folke/zen-mode.nvim" },
-  ["hop.nvim"]           = { "phaazon/hop.nvim" },
+  ["zen-mode.nvim"] = { "folke/zen-mode.nvim" },
+  ["hop.nvim"] = { "phaazon/hop.nvim" },
 
   ["nvim-nonicons"] = {
-    'yamatsum/nvim-nonicons',
-    requires = { 'kyazdani42/nvim-web-devicons', 'yamatsum/nonicons' },
-    cond = os.getenv('KITTY_WINDOW_ID') ~= nil
+    "yamatsum/nvim-nonicons",
+    requires = { "kyazdani42/nvim-web-devicons", "yamatsum/nonicons" },
+    cond = os.getenv("KITTY_WINDOW_ID") ~= nil,
   },
-  ["hologram.nvim"] = { 'edluffy/hologram.nvim', cond = os.getenv('KITTY_WINDOW_ID') ~= nil },
-  ["tabout.nvim"]   = { "abecodes/tabout.nvim",
-    wants = { 'nvim-treesitter' }, -- or require if not used so far
-    after = { 'nvim-cmp' }, -- if a completion plugin is using tabs load it before
+  ["hologram.nvim"] = { "edluffy/hologram.nvim", cond = os.getenv("KITTY_WINDOW_ID") ~= nil },
+  ["tabout.nvim"] = {
+    "abecodes/tabout.nvim",
+    wants = { "nvim-treesitter" }, -- or require if not used so far
+    after = { "nvim-cmp" }, -- if a completion plugin is using tabs load it before
     config = function()
       require("plugins.configs.tabout")
-    end
-  }
+    end,
+  },
   -- ["nvim-highlight-colors"] = { "brenoprata10/nvim-highlight-color" },
   -- ["vim-hexokinase"]     = { "RRethy/vim-hexokinase", run = "make hexokinase" },
   -- ["startup.nvim"] = {
@@ -306,105 +319,108 @@ M.ui_plugins = {
 }
 
 M.project_plugins = {
-  ["auto-session"]     = { "rmagatti/auto-session" },
+  ["auto-session"] = { "rmagatti/auto-session" },
   ["competitest.nvim"] = { "xeluxee/competitest.nvim", requires = "MunifTanjim/nui.nvim" },
-  ["cpbooster.vim"]    = { "searleser97/cpbooster.vim" },
-  ["gitsigns.nvim"]    = { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
-  ["octo.nvim"]        = { "pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons" },
-  ["vim-flog"]         = { "rbong/vim-flog" },
-  ["vim-fugitive"]     = { "tpope/vim-fugitive" },
-  ["vim-rhubarb"]      = { "tpope/vim-rhubarb" },
-  ["vim-wakatime"]     = { "wakatime/vim-wakatime" }
+  ["cpbooster.vim"] = { "searleser97/cpbooster.vim" },
+  ["gitsigns.nvim"] = { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
+  ["octo.nvim"] = { "pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons" },
+  ["vim-flog"] = { "rbong/vim-flog" },
+  ["vim-fugitive"] = { "tpope/vim-fugitive" },
+  ["vim-rhubarb"] = { "tpope/vim-rhubarb" },
+  ["vim-wakatime"] = { "wakatime/vim-wakatime" },
 }
 
 M.interface_plugins = {
-  ['numb.nvim']     = {'nacro90/numb.nvim'},
-  ["goto-preview"]   = { 'rmagatti/goto-preview' },
-  ["alpha-nvim"]     = { "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" },
-  ["diffview.nvim"]  = { "sindrets/diffview.nvim" },
-  ["nvim-bqf"]       = { "kevinhwang91/nvim-bqf" },
-  ["nvim-tree.lua"]  = { "kyazdani42/nvim-tree.lua" },
-  ["perfanno.nvim"]  = { "t-troebst/perfanno.nvim" },
+  ["numb.nvim"] = { "nacro90/numb.nvim" },
+  ["goto-preview"] = { "rmagatti/goto-preview" },
+  ["alpha-nvim"] = { "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" },
+  ["diffview.nvim"] = { "sindrets/diffview.nvim" },
+  ["nvim-bqf"] = { "kevinhwang91/nvim-bqf" },
+  ["nvim-tree.lua"] = { "kyazdani42/nvim-tree.lua" },
+  ["perfanno.nvim"] = { "t-troebst/perfanno.nvim" },
   ["quickmath.nvim"] = { "jbyuki/quickmath.nvim" },
   ["registers.nvim"] = { "tversteeg/registers.nvim" },
-  ["vim-floaterm"]   = { "voldikss/vim-floaterm" },
-  ["undotree"]       = { "mbbill/undotree" },
-  ["vim-qf"]         = { "romainl/vim-qf" },
-  ["vim-yoink"]      = { "svermeulen/vim-yoink" }
+  ["vim-floaterm"] = { "voldikss/vim-floaterm" },
+  ["undotree"] = { "mbbill/undotree" },
+  ["vim-qf"] = { "romainl/vim-qf" },
+  ["vim-yoink"] = { "svermeulen/vim-yoink" },
   -- ["yank-history"] = {"yazgoo/yank-history"},
   -- ["vim-mundo"] = { "simnalamburt/vim-mundo" },
 }
 
 M.integration_plugins = {
-  ["asynctasks.vim"]    = { "skywind3000/asynctasks.vim", requires = "skywind3000/asyncrun.vim" },
-  ["tasks.nvim"]        = { "GustavoKatel/tasks.nvim" },
-  ["pantran.nvim"]      = { "potamides/pantran.nvim" },
-  ["colortils.nvim"]    = { "nvim-colortils/colortils.nvim" },
-  ["cheat.sh-vim"]      = { "dbeniamine/cheat.sh-vim" },
-  ["id3.vim"]           = { "AndrewRadev/id3.vim" },
-  ["nvim-magic"]        = {
+  ["asynctasks.vim"] = { "skywind3000/asynctasks.vim", requires = "skywind3000/asyncrun.vim" },
+  ["tasks.nvim"] = { "GustavoKatel/tasks.nvim" },
+  ["pantran.nvim"] = { "potamides/pantran.nvim" },
+  ["colortils.nvim"] = { "nvim-colortils/colortils.nvim" },
+  ["cheat.sh-vim"] = { "dbeniamine/cheat.sh-vim" },
+  ["id3.vim"] = { "AndrewRadev/id3.vim" },
+  ["nvim-magic"] = {
     "jameshiew/nvim-magic",
-    requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" }
+    requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
   },
-  ["sniprun"]           = { "michaelb/sniprun", run = "bash ./install.sh" },
+  ["sniprun"] = { "michaelb/sniprun", run = "bash ./install.sh" },
   ["package-info.nvim"] = { "vuki656/package-info.nvim", requires = "MunifTanjim/nui.nvim" },
-  ["vim-ripple"]        = { "urbainvaes/vim-ripple" },
-  ["vim-test"]          = { "vim-test/vim-test" },
-  ["rest.nvim"]         = { "NTBBloodbath/rest.nvim" },
-  ["lazygit.nvim"]      = { "kdheepak/lazygit.nvim" },
-  ["tmux.nvim"]         = { "aserowy/tmux.nvim" },
-  ["Telegraph.nvim"]    = { "WaylonWalker/Telegraph.nvim" },
+  ["vim-ripple"] = { "urbainvaes/vim-ripple" },
+  ["vim-test"] = { "vim-test/vim-test" },
+  ["rest.nvim"] = { "NTBBloodbath/rest.nvim" },
+  ["lazygit.nvim"] = { "kdheepak/lazygit.nvim" },
+  ["tmux.nvim"] = { "aserowy/tmux.nvim" },
+  ["Telegraph.nvim"] = { "WaylonWalker/Telegraph.nvim" },
   ["nvim-regexplainer"] = {
     "bennypowers/nvim-regexplainer",
     requires = {
       "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim"
-    }
-  }
+      "MunifTanjim/nui.nvim",
+    },
+  },
 }
 
 M.sysutil_plugins = {
-  ["structlog"]              = { "Tastyep/structlog.nvim" },
-  ["vim-renamer"]            = { "qpkorr/vim-renamer" },
+  ["structlog"] = { "Tastyep/structlog.nvim" },
+  ["vim-renamer"] = { "qpkorr/vim-renamer" },
   ["nvim-remote-containers"] = { "jamestthompson3/nvim-remote-containers" },
-  ["suda.vim"]               = { "lambdalisue/suda.vim" },
-  ["vim-symlink"]            = { "aymericbeaumet/vim-symlink" },
-  ["vim-profiler"]           = { "bchretien/vim-profiler" },
-  ["startuptime.vim"]        = { "tweekmonster/startuptime.vim" },
-  ["plenary.nvim"]           = { "nvim-lua/plenary.nvim" },
+  ["suda.vim"] = { "lambdalisue/suda.vim" },
+  ["vim-symlink"] = { "aymericbeaumet/vim-symlink" },
+  ["vim-profiler"] = { "bchretien/vim-profiler" },
+  ["startuptime.vim"] = { "tweekmonster/startuptime.vim" },
+  ["plenary.nvim"] = { "nvim-lua/plenary.nvim" },
 }
 
 M.lsp_plugins = {
-  ["mason.nvim"]            = { "williamboman/mason.nvim", requires = {
-    "williamboman/mason-lspconfig.nvim",
-    "neovim/nvim-lspconfig",
-    "WhoIsSethDaniel/mason-tool-installer.nvim"
-  } },
-  ["fidget.nvim"]           = { "j-hui/fidget.nvim" },
-  ["nvim-lint"]             = {"mfussenegger/nvim-lint"},
-  ["null-ls.nvim"]          = { "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" },
-  ["lua-dev.nvim"]          = { "folke/lua-dev.nvim" },
-  ["lsp-colors.nvim"]       = { "folke/lsp-colors.nvim" },
-  ["nvim-lightbulb"]        = { "kosayoda/nvim-lightbulb" },
-  ["lsp_signature.nvim"]    = { "ray-x/lsp_signature.nvim" },
-  ["lspsaga.nvim"]          = { "tami5/lspsaga.nvim" },
+  ["mason.nvim"] = {
+    "williamboman/mason.nvim",
+    requires = {
+      "williamboman/mason-lspconfig.nvim",
+      "neovim/nvim-lspconfig",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
+    },
+  },
+  ["fidget.nvim"] = { "j-hui/fidget.nvim" },
+  ["nvim-lint"] = { "mfussenegger/nvim-lint" },
+  ["null-ls.nvim"] = { "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" },
+  ["lua-dev.nvim"] = { "folke/lua-dev.nvim" },
+  ["lsp-colors.nvim"] = { "folke/lsp-colors.nvim" },
+  ["nvim-lightbulb"] = { "kosayoda/nvim-lightbulb" },
+  ["lsp_signature.nvim"] = { "ray-x/lsp_signature.nvim" },
+  ["lspsaga.nvim"] = { "tami5/lspsaga.nvim" },
   ["nvim-code-action-menu"] = { "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu" },
   -- ["nvim-lsp-installer"]    = { "williamboman/nvim-lsp-installer", requires = "neovim/nvim-lspconfig" },
-  ["trouble.nvim"]          = { "folke/trouble.nvim" },
-  ["ntangle-lsp.nvim"]      = {
+  ["trouble.nvim"] = { "folke/trouble.nvim" },
+  ["ntangle-lsp.nvim"] = {
     "jbyuki/ntangle-lsp.nvim",
-    requires = { "jbyuki/ntangle-ts.nvim", "neovim/nvim-lspconfig" }
+    requires = { "jbyuki/ntangle-ts.nvim", "neovim/nvim-lspconfig" },
   },
-  ["sqls.nvim"]             = { "nanotee/sqls.nvim", after = "nvim-lspconfig" }
+  ["sqls.nvim"] = { "nanotee/sqls.nvim", after = "nvim-lspconfig" },
 }
 
 M.theme_plugins = {
-  ["lush.nvim"]   = {
+  ["lush.nvim"] = {
     "rktjmp/lush.nvim",
   },
-  ["barbar"]      = { "romgrk/barbar.nvim", commit = "fa3ff25" },
+  ["barbar"] = { "romgrk/barbar.nvim", commit = "fa3ff25" },
   -- ["barbar"]      = { "romgrk/barbar.nvim" },
-  ["feline.nvim"] = { "feline-nvim/feline.nvim" }
+  ["feline.nvim"] = { "feline-nvim/feline.nvim" },
 }
 
 M.check_require_exists = function(fname)
@@ -439,7 +455,7 @@ M.stats = {
   lazy_loaded = 0,
   local_loaded = 0,
   fork_loaded = 0,
-  config_loaded = 0
+  config_loaded = 0,
 }
 
 M.load_config = function(fname)
@@ -452,7 +468,7 @@ M.plugin_config = function(name)
   local check_require = false
   name = name:gsub("[\\.]+", "-")
   local fname = "plugins.config." .. string.lower(name)
-  local fpath = vim.fn.stdpath('config') .. '/lua/plugins/config/' .. string.lower(name) .. '.lua'
+  local fpath = vim.fn.stdpath("config") .. "/lua/plugins/config/" .. string.lower(name) .. ".lua"
   local config = nil
 
   -- print('checking ' .. fname .. ' - ' .. fpath)
@@ -486,7 +502,6 @@ M.load_plugins = function(use, load_config)
     M.format_plugins,
     M.integration_plugins,
     M.interface_plugins,
-    M.lsp_plugins,
     M.motion_plugins,
     M.picker_plugins,
     M.project_plugins,
@@ -496,6 +511,7 @@ M.load_plugins = function(use, load_config)
     M.theme_plugins,
     M.treesitter_plugins,
     M.ui_plugins,
+    M.lsp_plugins,
   }
 
   for _, plugin_set in pairs(all_plugins) do

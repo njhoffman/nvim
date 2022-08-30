@@ -1,21 +1,6 @@
 -- https://raw.githubusercontent.com/williamboman/mason.nvim/main/README.md
 -- https://raw.githubusercontent.com/williamboman/mason-lspconfig.nvim/main/README.md
 
-local lspconfig_default = {
-  -- A list of servers to automatically install if they're not already installed. Example: { "rust_analyzer@nightly", "sumneko_lua" }
-  -- This setting has no relation with the `automatic_installation` setting.
-  ensure_installed = {},
-
-  -- Whether servers that are set up (via lspconfig) should be automatically installed if they're not already installed.
-  -- This setting has no relation with the `ensure_installed` setting.
-  -- Can either be:
-  --   - false: Servers are not automatically installed.
-  --   - true: All servers set up via lspconfig are automatically installed.
-  --   - { exclude: string[] }: All servers set up via lspconfig, except the ones provided in the list, are automatically installed.
-  --       Example: automatic_installation = { exclude = { "rust_analyzer", "solargraph" } }
-  automatic_installation = false,
-}
-
 local mason_default = {
   ui = {
     -- Whether to automatically check for new versions when opening the :Mason window.
@@ -108,17 +93,17 @@ local tool_defaults = {
   start_delay = 0,
 }
 
-local tool_packages = require('plugins.config.mason-nvim-tools')
-local tool_settings = { ensure_installed = tool_packages, }
+local tool_packages = require("plugins.config.mason-nvim-tools")
+local tool_settings = { ensure_installed = tool_packages }
 
 local lspconfig_settings = {
   ensure_installed = {
     "awk_ls",
-    "bashls",
+    -- "bashls",
     "clangd",
     "cssls",
     "dockerls",
-    "efm",
+    -- "efm",
     "golangci_lint_ls",
     "gopls",
     "graphql",
@@ -130,38 +115,31 @@ local lspconfig_settings = {
     "terraformls",
     "tsserver",
     "vimls",
-    "yamlls"
+    "yamlls",
     -- "null-ls",
-  }
+  },
+  automatic_installation = false,
 }
 
 local mason_settings = {
   ui = {
-    border = 'rounded',
+    border = "rounded",
     icons = {
       package_installed = "✓",
       package_pending = "➜",
-      package_uninstalled = "✗"
+      package_uninstalled = "✗",
     },
     keymaps = {
       -- Keymap to apply language filter
       apply_language_filter = "<leader>ff",
     },
-  }
+  },
 }
 
 -- ORDER IS IMPORTANT HERE
 require("mason").setup(mason_settings)
 require("mason-lspconfig").setup(lspconfig_settings)
-require 'mason-tool-installer'.setup(tool_settings)
-
-local lsp_formatting = function(bufnr)
-  -- local pos = vim.api.nvim_win_get_cursor(0)
-  vim.lsp.buf.format({ async = false, bufnr = bufnr
-    -- filter = function(clients) return vim.tbl_filter(function(client) end)
-  })
-  -- vim.api.nvim_win_set_cursor(0, pos)
-end
+require("mason-tool-installer").setup(tool_settings)
 
 local default_lsp_on_attach = function(client, bufnr)
   -- require("mappings").keys_lsp()
@@ -170,25 +148,26 @@ local default_lsp_on_attach = function(client, bufnr)
   -- vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
   -- vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
 
-  if client.server_capabilities.signatureHelpProvider == true then
-    local lsp_sig = require('lsp.signature')
+  if type(client.server_capabilities.signatureHelpProvider) == "table" then
+    local lsp_sig = require("lsp.signature")
     require("lsp_signature").on_attach(lsp_sig.cfg, bufnr)
   end
 
-  if client.server_capabilities.documentFormattingProvider == true then
-    local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+  local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+  if client.server_capabilities.documentFormattingProvider == true or
+    ft == 'sh' or
+    ft == 'bash'  then
+    local augroup = vim.api.nvim_create_augroup("Formatting", {})
     vim.api.nvim_create_autocmd("BufWritePre", {
       group = augroup,
       buffer = bufnr,
-      command = "LspFormatting"
+      command = "Format",
     })
-    vim.api.nvim_buf_create_user_command(bufnr, "LspFormatting",
-      function() lsp_formatting(bufnr) end, {})
   end
 end
 
-local default_lsp_capabilities =
-require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local default_lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
+-- require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local lspconfig = require("lspconfig")
 lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_config, {
@@ -201,14 +180,10 @@ require("mason-lspconfig").setup_handlers({
   -- and will be called for each installed server that doesn't have
   -- a dedicated handler.
   function(server_name) -- default handler (optional)
-    vim.notify('setting up lsp: ' .. server_name, 'trace')
+    vim.notify("setting up lsp: " .. server_name, "trace")
     -- local opts = vim.tbl_deep_extend("force", server_options, servers[server_name] or {})
     -- lspconfig[server_name].setup(opts)
-    lspconfig[server_name].setup {}
-  end,
-  -- -- Next, you can provide targeted overrides for specific servers.
-  ["efm"] = function()
-    require("lsp.servers2.efm").setup()
+    lspconfig[server_name].setup({})
   end,
   -- ["tsserver"] = function()
   --   -- local opts = vim.tbl_deep_extend("force", server_options, servers["tsserver"] or {})
@@ -219,11 +194,11 @@ require("mason-lspconfig").setup_handlers({
   --   }
   -- end,
   ["sumneko_lua"] = function()
-    lspconfig.sumneko_lua.setup(require("lua-dev").setup {
+    lspconfig.sumneko_lua.setup(require("lua-dev").setup({
       library = {
         vimruntime = true, -- runtime path
-        types      = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-        plugins    = false -- installed opt or start plugins in packpath
+        types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
+        plugins = false, -- installed opt or start plugins in packpath
         -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
       },
       runtime_path = false,
@@ -246,8 +221,8 @@ require("mason-lspconfig").setup_handlers({
           },
         },
       },
-    })
-  end
+    }))
+  end,
 })
 
 -- -- Capability-based keymaps.

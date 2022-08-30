@@ -25,7 +25,7 @@ null_ls.setup({
   sources = my_sources.sources,
   on_attach = on_attach,
   default_timeout = 5000,
-  root_dir = u.root_pattern(".null-ls-root", "Makefile", ".git"),
+  root_dir = u.root_pattern(".null-ls-root", "Makefile", ".git", ".luacheckrc"),
   -- should_attach = function(bufnr)
   --   local large_file = require("large_file")
   --

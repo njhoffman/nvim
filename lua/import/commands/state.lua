@@ -63,16 +63,18 @@ local get_status = function(module)
 -- o index field 'lines' (a nil value)
 -- stack traceback:
   if import_status.info[module].import_message then
-    for line, _ in import_status
-      .info[module].import_message:gmatch('([^\r\n]*)') do
-
+    for line, _ in import_status.info[module].import_message:gmatch('([^\r\n]*)') do
       table.insert(message, line)
     end
   end
   details.message = message
-  details.import_time = import_status.info[module].import_time
-  details.errors = import_status.info[module].error_logs
-  details.logs = import_status.info[module].print_logs
+  details.import_time  = import_status.info[module].import_time
+  details.import_start = import_status.info[module].import_start
+  details.import_end   = import_status.info[module].import_end
+  details.errors       = import_status.info[module].error_logs
+  details.load_n       = import_status.info[module].load_n
+  details.logs         = import_status.info[module].print_logs
+  details.report       = import_status.info[module].report
 
   return details
 end

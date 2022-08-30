@@ -21,12 +21,12 @@ opt("textwidth", 1000)
 opt("swapfile", false)
 opt("clipboard", "unnamedplus")
 
-opt("cmdheight", 1) -- 0
+opt("cmdheight", 0) -- 0
 opt("cmdwinheight", 10)
 opt("cedit", "<M-w>")
 
 -- TODO: change cedit to <M-f>
-vim.cmd [[:exe "set cedit=\<C-T>"]]
+vim.cmd([[:exe "set cedit=\<C-T>"]])
 opt("cpoptions", "aABceFsx_") -- C causes certain vim programs to screw up
 -- opt("display", "msgsep")
 opt("encoding", "UTF-8")

@@ -1,6 +1,5 @@
 local state = {
-  failed = {},
-  success = {},
+  details = {},
   is_displayed    = false,
   buf_handle      = nil,
   view_buf_handle = nil,
@@ -8,13 +7,8 @@ local state = {
   view_win_handle = nil,
 }
 
-local get_module = function(name)
-  local line = state.failed[name]
-  if not line or line == -1 then
-    line = state.success[name]
-    return line
-  end
-  return line
+local get_module = function(idx)
+  return state.details[idx]
 end
 
 state._get_module = get_module
