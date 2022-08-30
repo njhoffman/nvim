@@ -1,5 +1,5 @@
+require('globals.impatient')
 require('globals.importer')
--- require('globals.impatient')
 vim.import('globals.variables')
 vim.import("user-options")
 vim.import("vim-options")

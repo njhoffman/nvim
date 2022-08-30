@@ -126,20 +126,20 @@ local import = function(path, success_callback, import_opts)
   end
 
   state.import_status.info[path] = {
-    import_message   = message,
-    import_start     = metrics.start,
-    import_end       = metrics.finish,
-    import_time      = metrics.duration,
-    load_n           = metrics.load_n,
-    report           = metrics.report,
-    print_logs       = print_logs,
-    error_logs       = error_logs,
+    import_message = message,
+    import_start = metrics.start,
+    import_end = metrics.finish,
+    import_time = metrics.duration,
+    load_n = metrics.load_n,
+    report = metrics.report,
+    print_logs = print_logs,
+    error_logs = error_logs,
     success_callback = success_callback,
   }
 
   if state._is_in_error_state and not state._printed_error_state then
     state._printed_error_state = true
-    print("There was an error with your imports")
+    vim.notify("There was an error with your imports", "trace")
   end
 end
 

@@ -3,14 +3,14 @@ local opts = require("import.opts")
 local n = 0
 local simple_metrics = function(metrics)
   if metrics == nil then
-    n = n + 1
     metrics = {
-      load_n = n,
       start = vim.loop.hrtime(),
       finish = nil,
       duration = nil,
     }
   else
+    n = n + 1
+    metrics.load_n = n
     metrics.finish = vim.loop.hrtime()
     metrics.duration = metrics.finish - metrics.start
   end
@@ -46,7 +46,7 @@ local detailed_metrics = function(metrics)
     -- buffer_variables = cmd("let b:"),
     -- global_options = cmd(":set"),
     -- buffer_options = cmd(":setlocal"),
-    functions = cmd(":function"),
+    -- functions = cmd(":function"),
     -- syntax_items = cmd(":syntax"),
     -- commands = cmd(":command"),
     -- highlights = cmd(":highlight"),

@@ -42,7 +42,7 @@ end
 local build_success_parts = function(imported)
   local part_lines = {}
   table.sort(imported.successes, function(a, b)
-    return imported.details[a].import_start < imported.details[b].import_start
+    return imported.details[a].load_n < imported.details[b].load_n
   end)
 
   for _, name in ipairs(imported.successes) do
@@ -63,7 +63,8 @@ local build_success_parts = function(imported)
     }
 
     table.insert(ui_state.details, name)
-    table.insert(part_lines, parts) end
+    table.insert(part_lines, parts)
+  end
   return part_lines
 end
 
