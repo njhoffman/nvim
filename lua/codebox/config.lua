@@ -1,0 +1,40 @@
+local telescope = require("codebox.telescope")
+
+local default_conf = {
+  width = 120, -- Width of the floating window height = 15, -- Height of the floating window border = { "↖", "─", "┐", "│", "┘", "─", "└", "│" }, -- Border characters of the floating window
+  default_mappings = false, -- Bind default mappings
+  resizing_mappings = false, -- Binds arrow keys to resizing the floating window.
+  debug = false, -- Print debug information
+  opacity = nil, -- 0-100 opacity level of the floating window where 100 is fully transparent.
+  lsp_configs = { -- Lsp result configs
+    get_config = function(data)
+      require("codebox.utils").logger.debug("data from the lsp", vim.inspect(data))
+      local uri = data.targetUri or data.uri
+      local range = data.targetRange or data.range
+      return uri, { range.start.line + 1, range.start.character }
+    end,
+  },
+  post_open_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
+  references = {
+    telescope = telescope.has_telescope and telescope.themes.get_dropdown({
+      hide_preview = false,
+    }) or nil,
+  },
+  focus_on_open = true, -- Focus the floating window when opening it.
+  dismiss_on_move = false, -- Dismiss the floating window when moving the cursor.
+  force_close = true, -- passed into vim.api.nvim_win_close's second argument. See :h nvim_win_close
+  bufhidden = "wipe", -- the bufhidden option to set on the floating window. See :h bufhidden
+  stack_floating_preview_windows = true, -- Whether to nest floating windows
+}
+local conf = default_conf
+
+local setup = function(_conf)
+  _conf = conf or {}
+  conf = vim.tbl_deep_extend("force", default_conf, _conf) or {}
+end
+
+return {
+  conf    = conf,
+  setup   = setup,
+  default = default_conf,
+}
