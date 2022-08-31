@@ -161,11 +161,11 @@ M.syntax_plugins = {
 }
 
 M.telescope_plugins = {
-  -- "njhoffman/telescope.nvim",
-  -- "~/git/telescope.nvim",
   ["nvim-web-devicons"] = { "kyazdani42/nvim-web-devicons" },
   ["telescope.nvim"] = {
-    "nvim-telescope/telescope.nvim",
+    "~/git/telescope.nvim",
+    -- "njhoffman/telescope.nvim",
+    -- "nvim-telescope/telescope.nvim",
     requires = {
       "kyazdani42/nvim-web-devicons",
       "nvim-lua/popup.nvim",
@@ -496,6 +496,7 @@ M.load_plugins = function(use, load_config)
   -- local skip = M.concat_array(env_skip, load_config.skip)
 
   local all_plugins = {
+    M.theme_plugins,
     M.completion_plugins,
     M.mapping_plugins,
     M.dap_plugins,
@@ -508,7 +509,6 @@ M.load_plugins = function(use, load_config)
     M.syntax_plugins,
     M.sysutil_plugins,
     M.telescope_plugins,
-    M.theme_plugins,
     M.treesitter_plugins,
     M.ui_plugins,
     M.lsp_plugins,

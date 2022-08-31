@@ -19,16 +19,6 @@ local _init = function(_opts)
   vim.api.nvim_set_hl(0, "ImportSuccessTime", { link = "DiagnosticHint" })
 end
 
-local _assign_window_props = function()
-  vim.api.nvim_buf_set_option(ui_state.buf_handle, "modifiable", false)
-  vim.api.nvim_buf_set_option(ui_state.buf_handle, "filetype", "ImportManager")
-  vim.api.nvim_buf_set_option(ui_state.buf_handle, "modified", false)
-  vim.api.nvim_buf_set_option(ui_state.view_buf_handle, "modifiable", false)
-  vim.api.nvim_buf_set_option(ui_state.view_buf_handle, "filetype", "ImportManager")
-  vim.api.nvim_buf_set_option(ui_state.view_buf_handle, "modified", false)
-  vim.api.nvim_set_option_value("wrap", true, { scope = "local" })
-end
-
 local _get_sizes = function()
   local cur_ui = vim.api.nvim_list_uis()[1]
   local sizes = {
@@ -78,22 +68,22 @@ local display = function(_opts)
 
   local float_opts = {
     relative = "editor",
-    border   = "rounded",
-    width    = sizes.float_width,
-    height   = sizes.float_height,
-    col      = sizes.float_col,
-    row      = sizes.float_row,
-    style    = "minimal",
+    border = "rounded",
+    width = sizes.float_width,
+    height = sizes.float_height,
+    col = sizes.float_col,
+    row = sizes.float_row,
+    style = "minimal",
   }
 
   local view_opts = {
     relative = "editor",
-    border   = "rounded",
-    width    = sizes.view_width,
-    height   = sizes.view_height,
-    col      = sizes.view_col,
-    row      = sizes.view_row,
-    style    = "minimal",
+    border = "rounded",
+    width = sizes.view_width,
+    height = sizes.view_height,
+    col = sizes.view_col,
+    row = sizes.view_row,
+    style = "minimal",
   }
 
   local imported = { failures = {}, successes = {}, details = {}, time = 0 }
@@ -111,17 +101,22 @@ local display = function(_opts)
   assign_keycodes()
   assign_autocommands()
   summary_lines(imported, sizes.view_width)
-  _assign_window_props()
+
+  vim.api.nvim_buf_set_option(ui_state.buf_handle, "modifiable", false)
+  vim.api.nvim_buf_set_option(ui_state.buf_handle, "modified", false)
+  vim.api.nvim_buf_set_option(ui_state.view_buf_handle, "modifiable", false)
+  vim.api.nvim_buf_set_option(ui_state.view_buf_handle, "modified", false)
   ui_state.view_win_handle = vim.api.nvim_open_win(ui_state.view_buf_handle, 1, view_opts)
   ui_state.buf_win_handle = vim.api.nvim_open_win(ui_state.buf_handle, 1, float_opts)
+  vim.api.nvim_set_option_value("wrap", true, { buf = ui_state.view_buf_handle })
 end
 --                                 AuG   AuC   Func  Opt  Var  Key  Cmd   HL
 --  plugins  35.4k  0.02s -2.5w
 
 return {
-  _selected_module       = actions.selected_module,
+  _selected_module = actions.selected_module,
   _scroll_view_pane_down = actions.scroll_view_pane_down,
-  _scroll_view_pane_up   = actions.scroll_view_pane_up,
-  _close                 = actions.close,
-  display                = display,
+  _scroll_view_pane_up = actions.scroll_view_pane_up,
+  _close = actions.close,
+  display = display,
 }

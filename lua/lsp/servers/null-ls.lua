@@ -20,7 +20,8 @@ M.setup = function(on_attach)
       }),
       diagnostics.markdownlint,
       formatting.prettierd,
-      formatting.stylua,
+      formatting.lua_format,
+      -- formatting.stylua,
       formatting.gofmt,
       formatting.shfmt.with({
         filetypes = { "sh", "bash", "zsh" },

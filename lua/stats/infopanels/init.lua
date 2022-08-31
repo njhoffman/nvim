@@ -13,7 +13,7 @@ local utils = {}
 ---@param text string
 ---@param max_length number
 ---@return string
-utils.truncate_text= function(text, max_length)
+utils.truncate_text = function(text, max_length)
   if vim.api.nvim_strwidth(text) > max_length then
     return string.sub(text, 1, max_length - 1) .. "…"
   end
@@ -44,7 +44,6 @@ utils.align_text = function(text, align, line_length, gap_char)
   return gap_left .. text .. gap_right
 end
 
-
 local parse_line = function(line_item)
   -- local label = NuiText(line_item.label, 'MoreMsg')
   -- local value = NuiText(line_item.value, 'Comment')
@@ -54,8 +53,8 @@ local parse_line = function(line_item)
   -- local line = NuiLine({ label, value })
   -- local bufnr, linenr = 0, 1
   -- line:render(bufnr, linenr)
-  local line = { utils.align_text(label, 'left', 15), utils.align_text(value, 'right', 8) }
-  return {label, value, line }
+  local line = { utils.align_text(label, "left", 15), utils.align_text(value, "right", 8) }
+  return { label, value, line }
 end
 
 function refresh_lines(lines, popup, timer_n)
@@ -72,7 +71,6 @@ function refresh_lines(lines, popup, timer_n)
   -- local select_items = { tostring(timer_n), tostring(timer_n), tostring(timer_n) }
   vim.logger:debug("PARSED")
   vim.logger:debug(vim.inspect(parsed_lines))
-
 
   vim.api.nvim_buf_set_lines(popup.bufnr, -4, -1, false, parsed_lines)
 end
@@ -100,24 +98,26 @@ local new_panel = function(popup_opts, lines)
 
     local timer_n = 0
 
-    timer:start(0, 5000, vim.schedule_wrap(function()
-      timer_n = timer_n + 1
-      if popup.popup_state.mounted == nil then
-        print("STOPPED TIMER")
-        timer:close()
-      end
-      print('timer invoked! i='..tostring(timer_n))
-      refresh_lines(lines, popup, timer_n)
-    end))
+    timer:start(
+      0,
+      5000,
+      vim.schedule_wrap(function()
+        timer_n = timer_n + 1
+        if popup.popup_state.mounted == nil then
+          print("STOPPED TIMER")
+          timer:close()
+        end
+        print("timer invoked! i=" .. tostring(timer_n))
+        refresh_lines(lines, popup, timer_n)
+      end)
+    )
     vim.dbg({ "new timer", timer_n = timer_n })
 
     -- refresh_lines(lines, popup, timer_n)
   end
 
-
   function close_popup()
-    vim.dbg('CLOSING TIMER')
-    timer:close()  -- Always close handles to avoid leaks.
+    timer:close() -- Always close handles to avoid leaks.
     popup:unmount()
   end
 
@@ -125,7 +125,6 @@ local new_panel = function(popup_opts, lines)
 end
 
 local M = {}
-
 
 M.setup = function(opts)
   local panels = {}

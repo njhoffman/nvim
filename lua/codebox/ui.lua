@@ -1,4 +1,4 @@
-local lib = require "codebox.lib"
+local lib = require("codebox.lib")
 
 local M = {
   conf = {
@@ -21,7 +21,7 @@ local M = {
     },
     post_open_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
     references = {
-      telescope = lib.has_telescope and lib.telescope.themes.get_dropdown { hide_preview = false } or nil,
+      telescope = lib.has_telescope and lib.telescope.themes.get_dropdown({ hide_preview = false }) or nil,
     },
     focus_on_open = true, -- Focus the floating window when opening it.
     dismiss_on_move = false, -- Dismiss the floating window when moving the cursor.
@@ -47,18 +47,18 @@ M.setup = function(conf)
 end
 
 local function print_lsp_error(lsp_call)
-  print("goto-preview: Error calling LSP" + lsp_call + ". The current language lsp might not support it.")
+  print("codebox: Error calling LSP" + lsp_call + ". The current language lsp might not support it.")
 end
 
 --- Preview definition.
 --- @param opts table: Custom config
 ---        • focus_on_open boolean: Focus the floating window when opening it.
 ---        • dismiss_on_move boolean: Dismiss the floating window when moving the cursor.
---- @see require("goto-preview").setup()
-M.lsp_request_definition = function(opts)
+--- @see require("codebox").setup()
+M.lsp_request_definition = function(target, opts)
   local params = vim.lsp.util.make_position_params()
   local lsp_call = "textDocument/definition"
-  local success, _ = pcall(vim.lsp.buf_request, 0, lsp_call, params, lib.get_handler(lsp_call, opts))
+  local success, _ = pcall(vim.lsp.buf_request, 0, lsp_call, params, lib.get_handler(lsp_call, target, opts))
   if not success then
     print_lsp_error(lsp_call)
   end
@@ -68,7 +68,7 @@ end
 --- @param opts table: Custom config
 ---        • focus_on_open boolean: Focus the floating window when opening it.
 ---        • dismiss_on_move boolean: Dismiss the floating window when moving the cursor.
---- @see require("goto-preview").setup()
+--- @see require("codebox").setup()
 M.lsp_request_type_definition = function(opts)
   local params = vim.lsp.util.make_position_params()
   local lsp_call = "textDocument/typeDefinition"
@@ -82,7 +82,7 @@ end
 --- @param opts table: Custom config
 ---        • focus_on_open boolean: Focus the floating window when opening it.
 ---        • dismiss_on_move boolean: Dismiss the floating window when moving the cursor.
---- @see require("goto-preview").setup()
+--- @see require("codebox").setup()
 M.lsp_request_implementation = function(opts)
   local params = vim.lsp.util.make_position_params()
   local lsp_call = "textDocument/implementation"
@@ -122,6 +122,7 @@ end
 M.remove_win = lib.remove_win
 M.buffer_entered = lib.buffer_entered
 M.dismiss_preview = lib.dismiss_preview
+M.dock_to_edge = lib.dock_to_edge
 M.goto_preview_definition = M.lsp_request_definition
 M.goto_preview_type_definition = M.lsp_request_type_definition
 M.goto_preview_implementation = M.lsp_request_implementation
@@ -132,31 +133,21 @@ M.apply_default_mappings = function()
   if M.conf.default_mappings then
     vim.api.nvim_set_keymap(
       "n",
-      "gpd",
-      "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
-      { noremap = true }
-    )
-    vim.api.nvim_set_keymap(
-      "n",
       "gpt",
-      "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
+      "<cmd>lua require('codebox').goto_preview_type_definition()<CR>",
       { noremap = true }
     )
+
     vim.api.nvim_set_keymap(
       "n",
       "gpi",
-      "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
+      "<cmd>lua require('codebox').goto_preview_implementation()<CR>",
       { noremap = true }
     )
-    if lib.has_telescope then
-      vim.api.nvim_set_keymap(
-        "n",
-        "gpr",
-        "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
-        { noremap = true }
-      )
-    end
-    vim.api.nvim_set_keymap("n", "gP", "<cmd>lua require('goto-preview').close_all_win()<CR>", { noremap = true })
+
+    vim.api.nvim_set_keymap("n", "gpd", "<cmd>lua require('codebox').goto_preview_definition()<CR>", { noremap = true })
+
+    vim.api.nvim_set_keymap("n", "<esc>", "<cmd>lua require('codebox').close_all_win()<CR>", { noremap = true })
   end
 end
 
@@ -170,4 +161,3 @@ M.apply_resizing_mappings = function()
 end
 
 return M
-

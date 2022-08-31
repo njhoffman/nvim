@@ -17,40 +17,43 @@
 --   bufhidden = "wipe", -- the bufhidden option to set on the floating window. See :h bufhidden
 -- }
 
-require('goto-preview').setup {
-  opacity           = 20,
-  default_mappings  = false,
-  force_close       = true,
+require("goto-preview").setup({
+  opacity = 20,
+  default_mappings = false,
+  force_close = true,
   resizing_mappings = true,
-  focus_on_open     = false,
-}
+  focus_on_open = false,
+})
 
-
-vim.api.nvim_set_keymap("n", "gpt",
+vim.api.nvim_set_keymap(
+  "n",
+  "gpt",
   "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
   { noremap = true }
 )
 
-vim.api.nvim_set_keymap("n", "gpi",
+vim.api.nvim_set_keymap(
+  "n",
+  "gpi",
   "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
   { noremap = true }
 )
 
-vim.api.nvim_set_keymap("n", "gpd",
+vim.api.nvim_set_keymap(
+  "n",
+  "gpd",
   "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
   { noremap = true }
 )
 
-vim.api.nvim_set_keymap("n", "gpr",
+vim.api.nvim_set_keymap(
+  "n",
+  "gpr",
   "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
   { noremap = true }
 )
 
-vim.api.nvim_set_keymap("n", "",
-  "<cmd>lua require('goto-preview').close_all_win()<CR>",
-  { noremap = true }
-)
-
+vim.api.nvim_set_keymap("n", "", "<cmd>lua require('goto-preview').close_all_win()<CR>", { noremap = true })
 
 vim.cmd([[
   " nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<cr>

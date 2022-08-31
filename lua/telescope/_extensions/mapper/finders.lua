@@ -1,15 +1,14 @@
 local finders = require("telescope.finders")
-local strings = require("plenary.strings")
 local entry_display = require("telescope.pickers.entry_display")
 
 local M = {}
 
 local function mode_highlight(mode)
-  if (mode == "i") then
+  if mode == "i" then
     return "Special"
-  elseif (mode == "n") then
+  elseif mode == "n" then
     return "SpecialChar"
-  elseif (mode == "v") then
+  elseif mode == "v" then
     return "Visual"
   else
     return "Normal"
@@ -24,7 +23,7 @@ M.mapper_finder = function(mappers)
     category = 0,
     description = 0,
     mode = 0,
-    cmd = 0
+    cmd = 0,
   }
 
   -- The mapper has the following keys :
@@ -45,13 +44,12 @@ M.mapper_finder = function(mappers)
   for _, mapper in pairs(mappers) do
     mapper.description_display = mapper.description
     for key, value in pairs(widths) do
-      widths[key] = math.max(value,
-        strings.strdisplaywidth(mapper[key] or ''))
+      widths[key] = math.max(value, vim.fn.strdisplaywidth(mapper[key] or ""))
     end
   end
 
   -- The mapper display line
-  local displayer = entry_display.create {
+  local displayer = entry_display.create({
     -- separator = " | ",
     separator = " ▏",
     items = {
@@ -60,19 +58,18 @@ M.mapper_finder = function(mappers)
       { width = widths.keys },
       { width = widths.description },
       { width = widths.cmd },
-
-    }
-  }
+    },
+  })
   local make_display = function(mapper)
-    return displayer {
+    return displayer({
       { mapper.category, "TelescopeResultsClass" },
       { mapper.mode, mode_highlight(mapper.mode) },
       { mapper.keys, "TelescopeResultsComment" },
       { mapper.description },
-    }
+    })
   end
 
-  return finders.new_table {
+  return finders.new_table({
     results = mappers,
     entry_maker = function(mapper)
       mapper.value = mapper.description
@@ -81,8 +78,8 @@ M.mapper_finder = function(mappers)
       mapper.id = mapper.unique_identifier
       mapper.lines = mapper.lines
       return mapper
-    end
-  }
+    end,
+  })
 end
 
 return M

@@ -1,7 +1,7 @@
-local provider_project_nvim = require('plugins.config.feline-nvim-provider-project-nvim')
-local provider_project_uo = require('plugins.config.feline-nvim-provider-project-uo')
-local provider_git = require('plugins.config.feline-nvim-provider-git')
-local provider_cursor = require('plugins.config.feline-nvim-provider-cursor')
+local provider_project_nvim = require("plugins.config.feline-nvim-provider-project-nvim")
+local provider_project_uo = require("plugins.config.feline-nvim-provider-project-uo")
+local provider_git = require("plugins.config.feline-nvim-provider-git")
+local provider_cursor = require("plugins.config.feline-nvim-provider-cursor")
 
 local M = {}
 
@@ -16,7 +16,7 @@ M.ProjectNvimComponent = {
   hl = provider_project_nvim.hl,
   left_sep = provider_project_nvim.left_sep,
   { " " },
-  right_sep = provider_project_nvim.right_sep
+  right_sep = provider_project_nvim.right_sep,
 }
 
 M.ProjectUoComponent = {
@@ -30,21 +30,21 @@ M.ProjectUoComponent = {
   hl = provider_project_uo.hl,
   left_sep = provider_project_uo.left_sep,
   { " " },
-  right_sep = provider_project_uo.right_sep
+  right_sep = provider_project_uo.right_sep,
 }
 
 M.GitBranchComponent = {
   provider = provider_git.git_branch,
   hl = {
-    fg = 'white',
-    bg = 'black',
-    style = 'bold',
+    fg = "white",
+    bg = "black",
+    style = "bold",
   },
   right_sep = {
-    str = ' ',
+    str = " ",
     hl = {
-      fg = 'NONE',
-      bg = 'black',
+      fg = "NONE",
+      bg = "black",
     },
   },
 }
@@ -52,30 +52,30 @@ M.GitBranchComponent = {
 M.GitDiffAddedComponent = {
   provider = provider_git.git_diff_added,
   hl = {
-    fg = 'green',
-    bg = 'black',
+    fg = "green",
+    bg = "black",
   },
 }
 
 M.GitDiffChangedComponent = {
   provider = provider_git.git_diff_changed,
   hl = {
-    fg = 'orange',
-    bg = 'black',
+    fg = "orange",
+    bg = "black",
   },
 }
 
 M.GitDiffRemovedComponent = {
   provider = provider_git.git_diff_removed,
   hl = {
-    fg = 'red',
-    bg = 'black',
+    fg = "red",
+    bg = "black",
   },
   right_sep = {
-    str = ' ',
+    str = " ",
     hl = {
-      fg = 'NONE',
-      bg = 'black',
+      fg = "NONE",
+      bg = "black",
     },
   },
 }
@@ -83,12 +83,12 @@ M.GitDiffRemovedComponent = {
 M.AsciiComponent = {
   -- Enable if current window width is higher than 100
   enabled = function()
-    return vim.api.nvim_win_get_width(0) > 100
+    return vim.api.nvim_win_get_width(0) > 120
   end,
   hl = { fg = "#988088" },
   provider = provider_cursor.ascii,
-  left_sep = ' ',
-  right_sep = ' ',
+  left_sep = " ",
+  right_sep = " ",
 }
 
 M.FiletypeComponent = {
@@ -97,9 +97,9 @@ M.FiletypeComponent = {
     return vim.api.nvim_win_get_width(0) > 120
   end,
   hl = { fg = "#988088" },
-  provider = { name = 'file_type', opts = { case = 'lowercase' } },
-  left_sep = ' ',
-  right_sep = ' ',
+  provider = { name = "file_type", opts = { case = "lowercase" } },
+  left_sep = " ",
+  right_sep = " ",
 }
 
 return M
@@ -168,7 +168,6 @@ return M
 --   left_sep = { " ", "slant_left", { str = "", hl = { bg = bgcolor, fg = "NONE" } } },
 --   right_sep = { "slant_right_2", " " },
 -- }
-
 
 -- -- components.left.active[3] = {
 -- --   provider = function()
