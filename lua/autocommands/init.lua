@@ -147,7 +147,7 @@ vim.import('config', function(config)
   autocmds.NumberToggle = { {
     "BufEnter,FocusGained,InsertLeave",
     "*",
-    "if &filetype != 'dashboard' && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif"
+    "if &filetype != 'dashboard' && &readonly != 1 && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif"
   }, {
     "BufLeave,FocusLost,InsertEnter", "*", "set norelativenumber"
   } }
@@ -169,8 +169,8 @@ vim.import('config', function(config)
 
   if Formatting.trim_trailing_space == true or Formatting.trim_trailing_space == nil then
     autocmds.TrimSpaces = {
-      -- { "BufWritePre", "*", [[%s/\s\+$//e]] },
-      -- { "BufWritePre", "*", [[%s/\n\+\%$//e]] }
+      { "BufWritePre", "*", [[%s/\s\+$//e]] },
+      { "BufWritePre", "*", [[%s/\n\+\%$//e]] }
       -- {"BufWritePre", "*.[ch]", [[*.[ch] %s/\%$/\r/e]]}
     }
   end

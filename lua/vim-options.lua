@@ -66,8 +66,8 @@ opt("breakindent", true)
 opt("breakindentopt", "shift:2")
 opt("undolevels", 1000)
 opt("updatetime", 4000)
-opt("timeoutlen", 500)
-opt("ttimeoutlen", 20)
+opt("timeoutlen", 400) -- 1000
+opt("ttimeoutlen", 20) -- 50
 opt("pumheight", 10)
 opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- winsize messes up on load
 opt("fileencoding", "utf-8")

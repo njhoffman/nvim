@@ -23,10 +23,10 @@ local apply_default_mappings = function()
 end
 
 local apply_resizing_mappings = function()
-  vim.api.nvim_set_keymap("n", "<left>", "<C-w><", { noremap = true })
-  vim.api.nvim_set_keymap("n", "<right>", "<C-w>>", { noremap = true })
-  vim.api.nvim_set_keymap("n", "<up>", "<C-w>-", { noremap = true })
-  vim.api.nvim_set_keymap("n", "<down>", "<C-w>+", { noremap = true })
+  vim.api.nvim_set_keymap("n", "<left>", "<C-w>>", { noremap = true })
+  vim.api.nvim_set_keymap("n", "<right>", "<C-w><", { noremap = true })
+  vim.api.nvim_set_keymap("n", "<up>", "<C-w>+", { noremap = true })
+  vim.api.nvim_set_keymap("n", "<down>", "<C-w>-", { noremap = true })
 end
 
 return {

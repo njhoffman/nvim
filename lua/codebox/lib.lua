@@ -24,6 +24,7 @@ end
 local remove_win = function(win)
   local index = utils.table_find(M.windows, win or vim.api.nvim_get_current_win())
   if index then
+    vim.dbglog("remove_win", index, win)
     table.remove(M.windows, index)
   end
 end
@@ -54,8 +55,8 @@ local setup_aucmds = function()
   })
 
   vim.api.nvim_create_autocmd("BufEnter", {
-    callback = function(args)
-      buffer_entered(tonumber(args.match))
+    callback = function()
+      buffer_entered()
     end,
     group = "codebox",
     desc = "Run hook functions when entering codebox buffer",
@@ -66,6 +67,8 @@ local close_if_is_goto_preview = function(win_handle)
   local success, result = pcall(vim.api.nvim_win_get_var, win_handle, "is-codebox-window")
   if success and result == 1 then
     vim.api.nvim_win_close(win_handle, M.conf.force_close)
+    -- NOTE: must be triggered manually, autocmd not doing it
+    remove_win(win_handle)
   end
 end
 
@@ -90,6 +93,8 @@ local dock_to_edge = function(win, preview)
     }
     -- vim.api.nvim_win_set_width(preview, new_width)
     -- vim.api.nvim_win_set_height(preview, new_neight)
+
+    vim.cmd([[ highlight NormalFloat guibg=#060a1a ]])
     vim.api.nvim_clear_autocmds({ group = "codebox-vanish" })
 
     vim.api.nvim_win_set_config(preview, {
@@ -103,36 +108,19 @@ local dock_to_edge = function(win, preview)
 end
 
 local open_floating_win = function(target, position, opts)
+  opts = opts or {}
+  M.conf = vim.tbl_deep_extend("force", M.conf, opts)
+
   local preview_buffer = type(target) == "string" and vim.uri_to_bufnr(target) or target
   local bufpos = { vim.fn.line(".") - 1, vim.fn.col(".") } -- FOR relative='win'
   local zindex = vim.tbl_isempty(M.windows) and 1 or #M.windows + 1
-
-  opts = opts or {}
-  local enter = function()
-    if opts.focus_on_open ~= nil then
-      return opts.focus_on_open
-    else
-      return M.conf.focus_on_open
-    end
-  end
-
-  local stack_floating_preview_windows = function()
-    if opts.stack_floating_preview_windows ~= nil then
-      return opts.stack_floating_preview_windows
-    else
-      return M.conf.stack_floating_preview_windows
-    end
-  end
-
-  utils.logger.debug("focus_on_open", enter())
-  utils.logger.debug("stack_floating_preview_windows", stack_floating_preview_windows())
 
   local preview_window = {}
   local curr_win = vim.api.nvim_get_current_win()
   local success, result = pcall(vim.api.nvim_win_get_var, curr_win, "is-codebox-window")
 
-  local width = opts.width or M.conf.width
-  local height = opts.height or M.conf.height
+  local width = M.conf.width
+  local height = M.conf.height
 
   if string.find(tostring(width), "%%") then
     local pct = string.match(tostring(width), "([0-9]+)%%")
@@ -141,9 +129,11 @@ local open_floating_win = function(target, position, opts)
     vim.dbglog("new width", width, currwidth, pct)
   end
 
-  if not stack_floating_preview_windows() and
-    utils.is_floating(curr_win) and success and result == 1 then
-    preview_window = curr_win
+  if not M.conf.stack_floating_preview_windows and #M.windows > 0 then
+    preview_window = M.windows[1]
+    if utils.is_floating(curr_win) and success and result == 1 then
+      preview_window = curr_win
+    end
     vim.api.nvim_win_set_config(preview_window, {
       width = width,
       height = height,
@@ -151,7 +141,7 @@ local open_floating_win = function(target, position, opts)
     })
     vim.api.nvim_win_set_buf(preview_window, preview_buffer)
   else
-    preview_window = vim.api.nvim_open_win(preview_buffer, enter(), {
+    preview_window = vim.api.nvim_open_win(preview_buffer, M.conf.focus_on_open, {
       relative = "win",
       width = width,
       height = height,
@@ -160,25 +150,35 @@ local open_floating_win = function(target, position, opts)
       zindex = zindex,
       win = vim.api.nvim_get_current_win(),
     })
-
     table.insert(M.windows, preview_window)
-  end
 
-  vim.api.nvim_win_set_option(preview_window, "number", false)
-  vim.api.nvim_win_set_option(preview_window, "relativenumber", false)
-  if M.conf.opacity then
-    vim.api.nvim_win_set_option(preview_window, "winblend", M.conf.opacity)
-  end
+    utils.logger.debug("dismiss_on_move", M.conf.dismiss_on_move)
+    if M.conf.dismiss_on_move then
+      vim.api.nvim_clear_autocmds({ group = "codebox-vanish" })
+      local res = vim.api.nvim_create_autocmd("CursorMoved", {
+        callback = function()
+          dismiss_preview(preview_window)
+        end,
+        group = "codebox-vanish",
+        buffer = vim.api.nvim_win_get_buf(curr_win),
+        once = true,
+      })
+    end
 
-  if vim.api.nvim_get_current_buf() ~= preview_buffer then
-    vim.diagnostic.disable(preview_buffer)
-    vim.api.nvim_buf_set_option(preview_buffer, "modifiable", false)
-    vim.api.nvim_buf_set_option(preview_buffer, "modified", false)
+    vim.cmd([[ highlight NormalFloat guibg=none ]])
     vim.api.nvim_buf_set_option(preview_buffer, "readonly", true)
+    vim.api.nvim_buf_set_option(preview_buffer, "modifiable", false)
     vim.api.nvim_buf_set_option(preview_buffer, "bufhidden", M.conf.bufhidden)
+
+    local dock_cmd = string.format("<cmd>lua require('codebox').dock_to_edge(%d, %d)<CR>", curr_win, preview_window)
+    vim.api.nvim_set_keymap("n", "", dock_cmd, { noremap = true })
   end
 
   vim.api.nvim_win_set_var(preview_window, "is-codebox-window", 1)
+
+  if M.conf.opacity then
+    vim.api.nvim_win_set_option(preview_window, "winblend", M.conf.opacity)
+  end
 
   utils.logger.debug(vim.inspect({
     curr_window = curr_win,
@@ -189,44 +189,24 @@ local open_floating_win = function(target, position, opts)
     windows = M.windows,
   }))
 
-  local dismiss = function()
-    if opts.dismiss_on_move ~= nil then
-      return opts.dismiss_on_move
-    else
-      return M.conf.dismiss_on_move
-    end
-  end
-
-  utils.logger.debug("dismiss_on_move", dismiss())
-  if dismiss() then
-    vim.api.nvim_clear_autocmds({ group = "codebox-vanish" })
-    local res = vim.api.nvim_create_autocmd("CursorMoved", {
-      callback = function()
-        dismiss_preview(preview_window)
-      end,
-      group = "codebox-vanish",
-      buffer = vim.api.nvim_win_get_buf(curr_win),
-      once = true,
-    })
-  end
-
-  local dock_cmd = string.format("<cmd>lua require('codebox').dock_to_edge(%d, %d)<CR>", curr_win, preview_window)
-  vim.api.nvim_set_keymap("n", "", dock_cmd, { noremap = true })
-
   -- Set position of the preview buffer equal to the target position so that correct preview position shows
+  vim.diagnostic.disable(preview_buffer)
+  vim.api.nvim_win_set_option(preview_window, "relativenumber", false)
+  vim.api.nvim_win_set_option(preview_window, "number", false)
+  vim.api.nvim_win_set_option(preview_window, "signcolumn", "no")
   vim.api.nvim_win_set_cursor(preview_window, position)
 
   run_hook_function(preview_buffer, preview_window)
 end
 
-
 return {
-  open_floating_win        = open_floating_win,
+  open_floating_win = open_floating_win,
   close_if_is_goto_preview = close_if_is_goto_preview,
-  dock_to_edge             = dock_to_edge,
-  dismiss_preview          = dismiss_preview,
-  buffer_entered           = buffer_entered,
-  remove_win               = remove_win,
-  setup_lib                = setup_lib,
-  setup_aucmds             = setup_aucmds,
+  dock_to_edge = dock_to_edge,
+  dismiss_preview = dismiss_preview,
+  buffer_entered = buffer_entered,
+  remove_win = remove_win,
+  setup_lib = setup_lib,
+  setup_aucmds = setup_aucmds,
+  windows = M.windows,
 }

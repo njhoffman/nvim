@@ -1,7 +1,9 @@
 local telescope = require("codebox.telescope")
 
 local default_conf = {
-  width = 120, -- Width of the floating window height = 15, -- Height of the floating window border = { "↖", "─", "┐", "│", "┘", "─", "└", "│" }, -- Border characters of the floating window
+  width = 120, -- Width of the floating window
+  height = 15, -- Height of the floating window
+  border = { "↖", "─", "┐", "│", "┘", "─", "└", "│" }, -- Border characters of the floating window
   default_mappings = false, -- Bind default mappings
   resizing_mappings = false, -- Binds arrow keys to resizing the floating window.
   debug = false, -- Print debug information
@@ -26,15 +28,16 @@ local default_conf = {
   bufhidden = "wipe", -- the bufhidden option to set on the floating window. See :h bufhidden
   stack_floating_preview_windows = true, -- Whether to nest floating windows
 }
-local conf = default_conf
+local conf = vim.deepcopy(default_conf)
 
 local setup = function(_conf)
-  _conf = conf or {}
+  _conf = _conf or {}
   conf = vim.tbl_deep_extend("force", default_conf, _conf) or {}
+  return conf
 end
 
 return {
-  conf    = conf,
-  setup   = setup,
+  conf = conf,
+  setup = setup,
   default = default_conf,
 }

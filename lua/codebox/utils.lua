@@ -6,10 +6,10 @@ end
 
 local logger = {
   debug = function(...)
-    if config.conf.debug then
+    -- if config.conf.debug then
       -- print("codebox:", ...)
       vim.dbglog("codebox:", ...)
-    end
+    -- end
   end,
   info = function(...)
     vim.logger:info("codebox:", ...)
