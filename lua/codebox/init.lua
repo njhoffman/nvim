@@ -17,8 +17,7 @@
 --   bufhidden = "wipe", -- the bufhidden option to set on the floating window. See :h bufhidden
 -- }
 
-local codebox = require("codebox.ui")
-codebox.setup({
+local cfg = {
   -- ⌜⌟⌜⌝ ┘｢｣  ┒┑┓┏┌┍┎ 🭼 🭿 └ ┕ ┖ ┗   ⎡ ⎣ ⎤ ⎦ ˨   ◝ ◟ ◞ ╰ 「」ꜚ﹁ ⇱ ﹂｢｣ ╮ ╯╰ ╭ 𛲖─ ━ ━ ─ ＿ ⎽⎯🭻▁
   -- border = { "↖", "─", "╮", "│", "╯", "─", "╰", "│" },
   border = { "↖", "─", "╮", "│", "│", "_", "│", "│" },
@@ -29,20 +28,42 @@ codebox.setup({
   force_close = true,
   resizing_mappings = false,
   focus_on_open = false,
+  width = "70%",
   stack_floating_preview_windows = false,
-})
+}
 
-vim.cmd([[
-  " nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<cr>
-  " nnoremap gpt <cmd>lua require('goto-preview').goto_preview_type_definition()<cr>
-  " nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<cr>
-  " nnoremap gp <cmd>lua require('goto-preview').close_all_win()<cr>
-  " nnoremap gpr <cmd>lua require('goto-preview').goto_preview_references()<cr>
-  " nnoremap gDd <cmd>lua require('goto-preview').goto_preview_definition()<cr>
-  " nnoremap gDt <cmd>lua require('goto-preview').goto_preview_type_definition()<cr>
-  " nnoremap gDi <cmd>lua require('goto-preview').goto_preview_implementation()<cr>
-  " nnoremap gD0 <cmd>lua require('goto-preview').close_all_win()<cr>
-  " nnoremap gDr <cmd>lua require('goto-preview').goto_preview_references()<cr>
-]])
+local codebox = require("codebox.lib").setup(cfg)
+
+vim.api.nvim_create_user_command("SyntaxInfo", function()
+  codebox.view_syntax()
+end, { desc = "Open syntax highlights preview window" })
 
 return codebox
+
+-- M.remove_win = lib.remove_win
+-- M.buffer_entered = lib.buffer_entered
+-- M.dismiss_preview = lib.dismiss_preview
+-- M.dock_to_edge = lib.dock_to_edge
+-- M.view_syntax = lib.view_syntax
+-- M.setup = lib.setup
+--
+-- M.goto_preview_definition = lsp.request_definition
+-- M.goto_preview_type_definition = lsp.request_type_definition
+-- M.goto_preview_implementation = lsp.request_implementation
+-- M.goto_preview_references = lsp.request_references
+-- M.close_all_win = lib.close_all_win
+--
+-- vim.cmd([[
+--   " nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<cr>
+--   " nnoremap gpt <cmd>lua require('goto-preview').goto_preview_type_definition()<cr>
+--   " nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<cr>
+--   " nnoremap gp <cmd>lua require('goto-preview').close_all_win()<cr>
+--   " nnoremap gpr <cmd>lua require('goto-preview').goto_preview_references()<cr>
+--   " nnoremap gDd <cmd>lua require('goto-preview').goto_preview_definition()<cr>
+--   " nnoremap gDt <cmd>lua require('goto-preview').goto_preview_type_definition()<cr>
+--   " nnoremap gDi <cmd>lua require('goto-preview').goto_preview_implementation()<cr>
+--   " nnoremap gD0 <cmd>lua require('goto-preview').close_all_win()<cr>
+--   " nnoremap gDr <cmd>lua require('goto-preview').goto_preview_references()<cr>
+-- ]])
+--
+-- return codebox

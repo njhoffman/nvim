@@ -1,10 +1,44 @@
-local highlighter = require("vim.treesitter.highlighter")
-local ts_utils = require("nvim-treesitter.ts_utils")
-local parsers = require("nvim-treesitter.parsers")
+local ts_utils = require("nvim-treesitter-playground.utils")
 
-local M = {}
+function get_treesitter_hl()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  row = row - 1
 
-function M.show_hl_captures()
+  local results = ts_utils.get_hl_groups_at_position(bufnr, row, col)
+  local highlights = {}
+  for _, hl in pairs(results) do
+    local line = "* **@" .. hl.capture .. "**"
+    if hl.specific then
+      line = line .. " -> **" .. hl.specific .. "**"
+    end
+    if hl.general then
+      line = line .. " -> **" .. hl.general .. "**"
+    end
+    if hl.priority then
+      line = line .. "(" .. hl.priority .. ")"
+    end
+    table.insert(highlights, line)
+  end
+  return highlights
+end
+
+function get_syntax_hl()
+  local line = vim.fn.line(".")
+  local col = vim.fn.col(".")
+  local matches = {}
+
+  for _, i1 in ipairs(vim.fn.synstack(line, col)) do
+    local i2 = vim.fn.synIDtrans(i1)
+    local n1 = vim.fn.synIDattr(i1, "name")
+    local n2 = vim.fn.synIDattr(i2, "name")
+    table.insert(matches, "* " .. n1 .. " -> **" .. n2 .. "**")
+  end
+
+  return matches
+end
+
+function show_hl_captures()
   local buf = vim.api.nvim_get_current_buf()
   local result = {}
 
@@ -12,21 +46,20 @@ function M.show_hl_captures()
     if #matches == 0 then
       return
     end
-
     table.insert(result, "# " .. source)
-
     for _, match in ipairs(matches) do
       table.insert(result, match)
     end
   end
 
+  local highlighter = require("vim.treesitter.highlighter")
   if highlighter.active[buf] then
-    local matches = M.get_treesitter_hl()
+    local matches = get_treesitter_hl()
     add_to_result(matches, "Treesitter")
   end
 
   if vim.b.current_syntax ~= nil or #result == 0 then
-    local matches = M.get_syntax_hl()
+    local matches = get_syntax_hl()
     add_to_result(matches, "Syntax")
   end
 
@@ -34,7 +67,8 @@ function M.show_hl_captures()
     table.insert(result, "* No highlight groups found")
   end
 
-  vim.lsp.util.open_floating_preview(result, "markdown", { border = "single", pad_left = 4, pad_right = 4 })
+  return result
+  -- vim.lsp.util.open_floating_preview(result, "markdown", { border = "single", pad_left = 4, pad_right = 4 })
 end
 
 -- Show Node at Cursor
@@ -45,7 +79,7 @@ end
 ---             - highlight_node: (boolean, default true) highlight the current node
 ---             - hl_group: (string, default "TSPlaygroundFocus") name of group
 --- @return number|nil bufnr number
-function M.show_ts_node(opts)
+function show_ts_node(opts)
   opts = vim.tbl_deep_extend("keep", opts or {}, {
     full_path = false,
     show_range = true,
@@ -53,6 +87,8 @@ function M.show_ts_node(opts)
     highlight_node = true,
     hl_group = "TSPlaygroundFocus",
   })
+
+  local parsers = require("nvim-treesitter.parsers")
 
   if not parsers.has_parser() then
     return
@@ -142,7 +178,7 @@ function M.show_ts_node(opts)
   return vim.lsp.util.open_floating_preview(lines, "markdown", { border = "single", pad_left = 4, pad_right = 4 })
 end
 
-M.get_handler = function(args)
-  vim.dbglog("SYNTAX HANDLER", args)
-end
-return M
+return {
+  get_highlights = show_hl_captures,
+  get_node       = show_ts_node,
+}

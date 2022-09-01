@@ -12,11 +12,12 @@ for _, mod_name in ipairs({
   "commands",
   "autocommands",
   "stats",
+  "codebox",
   -- "dashboard"
 }) do
   vim.import(mod_name)
 end
 
-vim.cmd [[ BarbarColors ]]
+vim.cmd([[ BarbarColors ]])
 
 -- require "plenary.profile".stop()

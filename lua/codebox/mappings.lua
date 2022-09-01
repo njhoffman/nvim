@@ -1,3 +1,5 @@
+local config = require("codebox.config")
+
 local apply_default_mappings = function()
   vim.api.nvim_set_keymap(
     "n",
@@ -20,6 +22,9 @@ local apply_default_mappings = function()
   vim.api.nvim_set_keymap("n", "<esc>", "<cmd>lua require('codebox').close_all_win()<CR>", {
     noremap = true,
   })
+
+  local dock_cmd = string.format("<cmd>lua require('codebox').toggle_dock()<CR>")
+  vim.api.nvim_set_keymap("n", "", dock_cmd, { noremap = true })
 end
 
 local apply_resizing_mappings = function()

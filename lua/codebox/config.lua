@@ -8,14 +8,6 @@ local default_conf = {
   resizing_mappings = false, -- Binds arrow keys to resizing the floating window.
   debug = false, -- Print debug information
   opacity = nil, -- 0-100 opacity level of the floating window where 100 is fully transparent.
-  lsp_configs = { -- Lsp result configs
-    get_config = function(data)
-      require("codebox.utils").logger.debug("data from the lsp", vim.inspect(data))
-      local uri = data.targetUri or data.uri
-      local range = data.targetRange or data.range
-      return uri, { range.start.line + 1, range.start.character }
-    end,
-  },
   post_open_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
   references = {
     telescope = telescope.has_telescope and telescope.themes.get_dropdown({
@@ -28,6 +20,7 @@ local default_conf = {
   bufhidden = "wipe", -- the bufhidden option to set on the floating window. See :h bufhidden
   stack_floating_preview_windows = true, -- Whether to nest floating windows
 }
+
 local conf = vim.deepcopy(default_conf)
 
 local setup = function(_conf)
@@ -40,4 +33,11 @@ return {
   conf = conf,
   setup = setup,
   default = default_conf,
+  has_telescope = telescope.has_telescope,
+  telescope = telescope.has_telescope and {
+    themes = telescope.themes,
+  } or nil,
+  preview_window = nil,
+  windows = {},
+  anchored = {},
 }

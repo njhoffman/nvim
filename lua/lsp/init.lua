@@ -1,6 +1,5 @@
-
-vim.import('lsp.config', function(lspconfig)
-	lspconfig.setup()
+vim.import("lsp.config", function(lspconfig)
+  lspconfig.setup()
 end)
 
 -- luacheck: globals vim
@@ -8,8 +7,8 @@ end)
 local lspconfig = require("lspconfig")
 local lspconfig_configs = require("lspconfig.configs")
 
-local attach = require("plugins.lsp-attach")
-local css_settings = require("plugins.lsp.css_settings")
+local attach = require("plugins.config.lsp-attach")
+-- local css_settings = require("plugins.config.lsp.css_settings")
 
 -- For doing diagnostics:
 -- vim.lsp.set_log_level("info")
@@ -48,7 +47,7 @@ end
 
 local servers = {
   bashls = {},
-  cssls = css_settings.settings,
+  -- cssls = css_settings.settings,
   dockerls = {},
   gopls = {},
   jsonls = {},

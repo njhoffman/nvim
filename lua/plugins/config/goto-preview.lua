@@ -21,7 +21,7 @@ require("goto-preview").setup({
   opacity = 20,
   default_mappings = false,
   force_close = true,
-  resizing_mappings = true,
+  resizing_mappings = false,
   focus_on_open = false,
 })
 
