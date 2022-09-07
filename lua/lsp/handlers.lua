@@ -79,7 +79,7 @@ _G.PeekDefinition = function(lsp_request_method)
     local def_range = def_result.range or def_result.targetSelectionRange
 
     require("codebox").goto_preview_definition(vim.uri_to_fname(def_uri), {
-      width = "60%",
+      width = "80%",
     })
     --
     -- vim.fn['quickui#preview#open'](vim.uri_to_fname(def_uri), {

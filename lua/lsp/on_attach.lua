@@ -1,6 +1,5 @@
-local handlers = require('lsp.handlers')
+local handlers = require("lsp.handlers")
 local M = {}
-local opts = { noremap = true, silent = true }
 
 M.on_attach = function(client, bufnr)
   handlers.attach_formatting(client, bufnr)
@@ -23,14 +22,14 @@ end
 M.make_capabilities = function()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   local cmp_ok, cmp = pcall(require, "cmp_nvim_lsp")
-  if (cmp_ok) then
+  if cmp_ok then
     cmp.update_capabilities(capabilities)
   else
-    vim.notify({ 'Completion error with CMP', cmp }, 'error')
+    vim.notify({ "Completion error with CMP", cmp }, "error")
   end
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = { "documentation", "detail", "additionalTextEdits" }
+    properties = { "documentation", "detail", "additionalTextEdits" },
   }
   capabilities.textDocument.colorProvider = { dynamicRegistration = false }
   return capabilities

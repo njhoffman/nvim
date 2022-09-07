@@ -14,7 +14,7 @@ end
 local logger = {
   debug = function(...)
     -- log:debug(...)
-    vim.dbglog(...)
+    -- vim.dbglog(...)
   end,
   info = function(...)
     log:info(...)

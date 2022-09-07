@@ -1,12 +1,12 @@
-local cmp = require('cmp')
+local cmp = require("cmp")
 
 local cmp_mappings = require("plugins.config.nvim-cmp-mapping")
 local compare = require("cmp.config.compare")
 local types = require("cmp.types")
 
 local sort_under = function(entry1, entry2)
-  local _, entry1_under = entry1.completion_item.label:find "^_+"
-  local _, entry2_under = entry2.completion_item.label:find "^_+"
+  local _, entry1_under = entry1.completion_item.label:find("^_+")
+  local _, entry2_under = entry2.completion_item.label:find("^_+")
   entry1_under = entry1_under or 0
   entry2_under = entry2_under or 0
   if entry1_under > entry2_under then
@@ -16,34 +16,33 @@ local sort_under = function(entry1, entry2)
   end
 end
 
-
 --  local after_line = string.sub(line, cursor + 1, -1)
 local lsp_symbols = {
-  Text          = " ", --   Text = " ",
-  Method        = " ",
-  Function      = " ",
-  Constructor   = " ", --   Constructor = "⌘ ",
-  Field         = "ﴲ ", --   Field = "ﰠ ",
-  Variable      = " ", --   Variable = " ",
-  Class         = " ", --   Class = "ﴯ ",
-  Interface     = "ﰮ ", --   Interface = " ",
-  Module        = " ", --   Module = " ",
-  Property      = "襁 ", --   Property = "ﰠ ",
-  Unit          = " ", --   Unit = "塞 ",
-  Value         = " ",
-  Enum          = "練 ", --   Enum = " ",
-  Keyword       = " ", --   Keyword = "廓 ",
-  Snippet       = " ", --   Snippet = " ",
-  Color         = " ",
-  File          = " ", --   File = " ",
-  Reference     = " ", --   Reference = " ",
-  Folder        = " ",
-  EnumMember    = " ",
-  Constant      = "ﲀ ", --   Constant = " ",
-  Struct        = "ﳤ ", --   Struct = "פּ ",
-  Event         = " ",
-  Operator      = " ", --   Operator = " ",
-  TypeParameter = " "
+  Text = " ", --   Text = " ",
+  Method = " ",
+  Function = " ",
+  Constructor = " ", --   Constructor = "⌘ ",
+  Field = "ﴲ ", --   Field = "ﰠ ",
+  Variable = " ", --   Variable = " ",
+  Class = " ", --   Class = "ﴯ ",
+  Interface = "ﰮ ", --   Interface = " ",
+  Module = " ", --   Module = " ",
+  Property = "襁 ", --   Property = "ﰠ ",
+  Unit = " ", --   Unit = "塞 ",
+  Value = " ",
+  Enum = "練 ", --   Enum = " ",
+  Keyword = " ", --   Keyword = "廓 ",
+  Snippet = " ", --   Snippet = " ",
+  Color = " ",
+  File = " ", --   File = " ",
+  Reference = " ", --   Reference = " ",
+  Folder = " ",
+  EnumMember = " ",
+  Constant = "ﲀ ", --   Constant = " ",
+  Struct = "ﳤ ", --   Struct = "פּ ",
+  Event = " ",
+  Operator = " ", --   Operator = " ",
+  TypeParameter = " ",
 }
 
 local lsp_sources = {
@@ -68,7 +67,7 @@ local lsp_sources = {
   spell = "spell",
   tmux = "tmux",
   treesitter = "tree",
-  zsh = "zsh"
+  zsh = "zsh",
 }
 
 -- TODO: filetype specific spelling
@@ -79,18 +78,21 @@ vim.opt.dictionary:append("/usr/share/dict/words")
 local cmp_helper = {
   -- Deprioritize items starting with underscores (private or protected)
   deprioritize_underscore = function(lhs, rhs)
-    local l = (lhs.completion_item.label:find "^_+") and 1 or 0
-    local r = (rhs.completion_item.label:find "^_+") and 1 or 0
-    if l ~= r then return l < r end
+    local l = (lhs.completion_item.label:find("^_+")) and 1 or 0
+    local r = (rhs.completion_item.label:find("^_+")) and 1 or 0
+    if l ~= r then
+      return l < r
+    end
   end,
   -- Prioritize items that ends with "= ..." (usually for argument completion).
   prioritize_argument = function(lhs, rhs)
-    local l = (lhs.completion_item.label:find "=$") and 1 or 0
-    local r = (rhs.completion_item.label:find "=$") and 1 or 0
-    if l ~= r then return l > r end
+    local l = (lhs.completion_item.label:find("=$")) and 1 or 0
+    local r = (rhs.completion_item.label:find("=$")) and 1 or 0
+    if l ~= r then
+      return l > r
+    end
   end,
 }
-
 
 local setupConfig = {
   enabled = function()
@@ -100,12 +102,11 @@ local setupConfig = {
       return false
     end
     local context = require("cmp.config.context")
-    return not (context.in_treesitter_capture("comment") == true or
-      context.in_syntax_group("Comment"))
+    return not (context.in_treesitter_capture("comment") == true or context.in_syntax_group("Comment"))
   end,
   experimental = {
     native_menu = false,
-    ghost_text = true
+    ghost_text = true,
   },
   preselect = cmp.PreselectMode.Item, -- cmp.PreselectMode.None,
   completion = {
@@ -121,22 +122,21 @@ local setupConfig = {
   view = {
     entries = {
       name = "custom", -- can be "custom", "wildmenu" or "native"
-      selection_order = "top_down" -- near_cursor, top_down
-    }
+      selection_order = "top_down", -- near_cursor, top_down
+    },
   },
   window = {
     documentation = cmp.config.window.bordered({
-      winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None"
+      winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
       --   max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
       --   max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
     }),
     completion = cmp.config.window.bordered({
       --   border = { '┌', '─', '┐', '│', '┘', '─', '└', '│' },
       --   winhighlight = 'Normal:CmpPmenu,FloatBorder:CmpPmenuBorder,CursorLine:PmenuSel,Search:None',
-      winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None"
+      winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
       -- max_width = 80,
-    })
-
+    }),
   },
   formatting = {
     fields = { "kind", "abbr", "menu" },
@@ -163,18 +163,20 @@ local setupConfig = {
       require("cmp_fuzzy_path.compare"),
       require("cmp_fuzzy_buffer.compare"),
       sort_under,
-      function(...) return cmp_helper.prioritize_argument(...) end,
+      function(...)
+        return cmp_helper.prioritize_argument(...)
+      end,
       compare.recently_used,
       compare.kind,
       compare.sort_text,
       compare.length,
-      compare.order
-    }
+      compare.order,
+    },
   },
   snippet = {
     expand = function(args)
       require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-    end
+    end,
   },
   sources = cmp.config.sources({
     -- nvim_lua, nvim_lsp_signature_help, vim-dadbod-completion, cmp_tabnine
@@ -211,55 +213,50 @@ local setupConfig = {
         all_panes = false,
         label = "tmux",
         -- trigger_characters = { "." },
-        trigger_characters_ft = {}
+        trigger_characters_ft = {},
         -- trigger_characters_ft = {markdown = {}}
-      }
-    }
+      },
+    },
   }, {
-    { name = "fuzzy_buffer", keyword_pattern = [[\k\+]], keyword_length = 3 }
-  }
-  )
+    { name = "fuzzy_buffer", keyword_pattern = [[\k\+]], keyword_length = 3 },
+  }),
 }
 
 cmp.setup(setupConfig)
 
 -- Set configuration for specific filetype.
-cmp.setup.filetype(
-  "gitcommit", {
+cmp.setup.filetype("gitcommit", {
   sources = cmp.config.sources({
-    { name = "git" } -- You can specify the `cmp_git` source if you were installed it.
+    { name = "git" }, -- You can specify the `cmp_git` source if you were installed it.
   }, {
-    { name = "fuzzy_buffer" }
-  })
-}
-)
+    { name = "fuzzy_buffer" },
+  }),
+})
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(
-  "/", {
+cmp.setup.cmdline("/", {
   mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
   sources = cmp.config.sources({
     { name = "nvim_lsp_document_symbol" },
   }, {
-    { name = 'buffer', option = { keyword_pattern = [=[[^[:blank:]].*]=] } }
-  })
+    { name = "buffer", option = { keyword_pattern = [=[[^[:blank:]].*]=] } },
+  }),
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(
-  ":", {
+cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
   sources = cmp.config.sources({
-    { name = "fuzzy_path" }
+    { name = "fuzzy_path" },
   }, {
-    { name = "cmdline" }
-  })
+    { name = "cmdline" },
+  }),
 })
 
-cmp.setup.filetype({ 'markdown', 'help' }, {
+cmp.setup.filetype({ "markdown", "help" }, {
   window = {
-    documentation = cmp.config.disable
-  }
+    documentation = cmp.config.disable,
+  },
 })
 
 -- vim.cmd([[
@@ -270,45 +267,3 @@ cmp.setup.filetype({ 'markdown', 'help' }, {
 -- ]])
 
 return cmp
-
--- -- cmp-vimwiki-tags
--- -- I use this shell script to launch Vimwiki. It opens the Vimwiki directory and then immediately opens either the file with the name of the first argument (which will create that file if it does not exist), or the index file in case of no arguments. If you pass more than one argument it will add them as tags to the top of the file.
--- -- function note_fn() {
--- --   if [[ "$1" == "" ]]; then
--- --     cd "$vimwiki_path" && nvim -c "e index.md" .
--- --   elif [[ "$2" == "" ]]; then
--- --     cd "$vimwiki_path" && nvim -c "e $1.md" .
--- --   else
--- --     tags=":"
--- --     for tag in "${@:2}"; do
--- --       tags="$tags$tag:"
--- --     done
--- --     cd "$vimwiki_path" && nvim -c "e $1.md | execute 'normal ggO$tags'" .
--- --   fi
--- -- }
--- -- alias note=note_fn
-
--- -- vim.cmd([[ autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }, { name = 'nvim_lsp' } } }) ]])
-
--- -- vim.cmd(
--- --     [[autocmd FileType sql,mysql,pgsql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }, { name = "nvim_lsp" "}} })]])
--- -- vim.cmd([[let g:completion_chain_complete_list = { 'sql': [  {'complete_items': ['vim-dadbod-completion']}, ], }]])
--- -- " Source is automatically added, you just need to include it in the chain complete list
--- vim.cmd(
---   [[
---   augroup NvimCmp
---   au!
---   au FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
---   augroup END
--- ]]
--- )
-
--- In order to show completions defined in your zshrc you can setup cmp zsh like this. Note: This feature is experimental. If you enable it and don't get any results try disabling it.
--- require'cmp_zsh'.setup {
---   zshrc = true -- Source the zshrc (adding all custom completions)
--- }
--- Alternatively you can use this trick (if sourcing your zshrc is very slow): Add the directory of the complete function to $FPATH in ~/.zshenv.
--- # completions
--- if [ -d $HOME/.zsh/comp ]; then
---     export FPATH="$HOME/.zsh/comp:$FPATH"
--- fi

@@ -8,11 +8,15 @@ for _, mod_name in ipairs({
   "runner",
   "mappings",
   "plugins",
-  "lsp",
+  "lsp-globals",
+  "lsp-capabilities",
+  "lsp-config",
+  "lsp-servers",
   "commands",
   "autocommands",
   "stats",
   "codebox",
+  "hover.setup",
   -- "dashboard"
 }) do
   vim.import(mod_name)

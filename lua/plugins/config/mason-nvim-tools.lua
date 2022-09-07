@@ -1,6 +1,10 @@
+-- - ERROR: checkmake: the command "checkmake" is not executable.
+-- - ERROR: chktex: the command "chktex" is not executable.
+-- - ERROR: tidy: the command "tidy" is not executable.
+
 local formatters = {
   -- "autopep8",
-  -- "black",
+  "black",
   -- "blade-formatter",
   -- "blue",
   -- "buf",
@@ -12,8 +16,10 @@ local formatters = {
   -- "djlint",
   -- "elm-format",
   -- "fixjson",
+  "gomodifytags",
+  "gotests",
   "gofumpt",
-  -- "goimports",
+  "goimports",
   "golines",
   -- "isort",
   -- "joker",
@@ -21,18 +27,28 @@ local formatters = {
   -- "ktlint",
   "luaformatter",
   "markdownlint",
-  -- "prettier",
-  -- "prettierd",
-  -- "rubocop",
+  "prettier",
+  "prettierd",
+  "rubocop",
   "shellharden",
   "shfmt",
   "sql-formatter",
   "stylua",
   -- "verible",
-  -- "xmlformatter",
+  "xmlformatter",
   "yamlfmt",
   -- "yapf",
 }
+
+-- - INFO: gitsigns: cannot verify if the command is an executable.
+-- - INFO: refactoring: cannot verify if the command is an executable.
+-- - ERROR: remark: the command "remark" is not executable.
+-- - ERROR: checkmake: the command "checkmake" is not executable.
+-- - ERROR: chktex: the command "chktex" is not executable.
+-- - ERROR: mdl: the command "mdl" is not executable.
+-- - ERROR: tidy: the command "tidy" is not executable.
+-- - INFO: trail-space: cannot verify if the command is an executable.
+-- - INFO: todo-fixme: cannot verify if the command is an executable.
 
 local linters = {
   -- "actionlint",
@@ -48,42 +64,42 @@ local linters = {
   -- "djlint",
   "editorconfig-checker",
   -- "erb-lint",
-  -- "eslint_d",
-  -- "flake8",
-  -- "gitlint",
+  "eslint_d",
+  "flake8",
+  "gitlint",
   "golangci-lint",
   -- { 'golangci-lint', version = '1.47.0' },
-  -- "hadolint",
+  "hadolint",
   -- "haml-lint",
   -- "joker",
   -- "ktlint",
   "luacheck",
-  -- "markdownlint",
+  "markdownlint",
   "misspell",
   -- "mypy",
-  -- "proselint",
-  -- "pylint",
+  "proselint",
+  "pylint",
   -- "quick-lint-js",
   "revive",
   -- "rome",
-  -- "rubocop",
+  "rubocop",
   -- "selene",
   "shellcheck",
-  -- "shellharden",
+  "shellharden",
   -- "shopify-theme-check",
-  -- "sqlfluff",
+  "sqlfluff",
   "staticcheck",
   -- "textlint",
-  -- "tflint",
+  "tflint",
   -- "vale",
   -- "verible",
   "vint",
   -- "vulture",
-  -- "write-good",
+  "write-good",
   -- "xo",
-  -- "yamllint",
+  "yamllint",
 }
 
-local packages = {unpack(formatters)}
+local packages = { unpack(formatters) }
 table.move(linters, 1, #linters, #packages + 1, packages)
 return packages

@@ -41,13 +41,7 @@ local diagnostics_by_line = function(options)
     generator = {
       async = true,
       fn = function(params, done)
-        return done(
-          diagnostics_by_line_results(
-            params.content,
-            options.fn,
-            options.name
-          )
-        )
+        return done(diagnostics_by_line_results(params.content, options.fn, options.name))
       end,
     },
   }
@@ -55,14 +49,17 @@ end
 
 local REGEX_TODO = vim.regex("TODO")
 local REGEX_FIXME = vim.regex("FIXME")
+local actions = null_ls.builtins.code_actions
 
 M.sources = {
   -- Code actions
 
   null_ls.builtins.code_actions.shellcheck,
+  null_ls.builtins.code_actions.gitsigns,
+  null_ls.builtins.code_actions.proselint,
+  null_ls.builtins.code_actions.refactoring,
 
   -- Formatters
-
   null_ls.builtins.formatting.prettier.with({
     filetypes = { "css", "html", "less", "scss", "toml", "yaml" },
     extra_args = function(params)
@@ -98,33 +95,39 @@ M.sources = {
   null_ls.builtins.formatting.black.with({
     extra_args = function(params)
       return {
-        "--line-length=" .. vim.api.nvim_buf_get_option(
-          params.bufnr,
-          "textwidth"
-        ),
+        "--line-length=" .. vim.api.nvim_buf_get_option(params.bufnr, "textwidth"),
       }
     end,
   }),
-  null_ls.builtins.formatting.remark,
+  -- null_ls.builtins.formatting.remark,
   null_ls.builtins.formatting.trim_whitespace, -- only works for ff=unix
   null_ls.builtins.formatting.xmllint,
 
   -- Diagnostics
-
-  null_ls.builtins.diagnostics.checkmake,
-  null_ls.builtins.diagnostics.chktex,
-  null_ls.builtins.diagnostics.gitlint.with({
-    extra_args = {
-      "--ignore",
-      "B6",
-    },
+  -- null_ls.builtins.diagnostics.checkmake,
+  -- null_ls.builtins.diagnostics.chktex,
+  -- null_ls.builtins.diagnostics.gitlint.with({
+  --   extra_args = {
+  --     "--ignore",
+  --     "B6",
+  --   },
+  -- }),
+  -- null_ls.builtins.diagnostics.mdl.with({
+  --   extra_args = {
+  --     "--ignore-front-matter",
+  --     "-s",
+  --     vim.env.HOME .. "/.config/mdl/.mdl.rb",
+  --   },
+  -- }),
+  null_ls.builtins.diagnostics.misspell.with({
+    filetypes = { "markdown", "text", "txt" },
+    args = { "$FILENAME" },
   }),
-  null_ls.builtins.diagnostics.mdl.with({
-    extra_args = {
-      "--ignore-front-matter",
-      "-s",
-      vim.env.HOME .. "/.config/mdl/.mdl.rb",
-    },
+  null_ls.builtins.diagnostics.write_good.with({
+    filetypes = { "markdown", "tex", "" },
+    extra_filetypes = { "txt", "text" },
+    args = { "--text=$TEXT", "--parse" },
+    command = "write-good",
   }),
   null_ls.builtins.diagnostics.shellcheck.with({
     extra_args = {
@@ -139,17 +142,17 @@ M.sources = {
     },
   }),
   null_ls.builtins.diagnostics.sqlfluff,
-  null_ls.builtins.diagnostics.tidy,
-  null_ls.builtins.diagnostics.trail_space.with({
-    -- for 'mail' it's just annoying
-    disabled_filetypes = {
-      "dirbuf",
-      "gitcommit",
-      -- "lua",
-      "markdown",
-      "mail",
-    },
-  }),
+  -- null_ls.builtins.diagnostics.tidy,
+  -- null_ls.builtins.diagnostics.trail_space.with({
+  --   -- for 'mail' it's just annoying
+  --   disabled_filetypes = {
+  --     "dirbuf",
+  --     "gitcommit",
+  --     -- "lua",
+  --     "markdown",
+  --     "mail",
+  --   },
+  -- }),
   null_ls.builtins.diagnostics.zsh,
   diagnostics_by_line({
     name = "todo-fixme",

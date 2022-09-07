@@ -1,12 +1,12 @@
-vim.import('autocommands.misc')
-vim.import('autocommands.startup')
+vim.import("autocommands.misc")
+vim.import("autocommands.startup")
 
-vim.import('config', function(config)
+vim.import("config", function(config)
   local Formatting = config.Formatting
   local Opts = config.Opts
 
   function goto_last_pos()
-    local last_pos = vim.fn.line('\'"')
+    local last_pos = vim.fn.line("'\"")
     if last_pos > 0 and last_pos <= vim.fn.line("$") then
       vim.api.nvim_win_set_cursor(0, { last_pos, 0 })
     end
@@ -19,7 +19,7 @@ vim.import('config', function(config)
       {
         "FileType",
         "dashboard",
-        "nnoremap <buffer> q :BufferDelete<cr> | nnoremap <buffer>  :BufferDelete<cr>"
+        "nnoremap <buffer> q :BufferDelete<cr> | nnoremap <buffer>  :BufferDelete<cr>",
       },
       { "FileType", "fugitive", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
       { "FileType", "notify", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
@@ -27,7 +27,21 @@ vim.import('config', function(config)
       { "FileType", "nerdtree", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
       { "FileType", "help", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
       { "FileType", "Mundo", "nnoremap <buffer>  :q<cr>" },
-      { "FileType", "MundoDiff", "nnoremap <buffer>  :q<cr>" }
+      { "FileType", "MundoDiff", "nnoremap <buffer>  :q<cr>" },
+    },
+    wins = {
+      -- Highlight current line only on focused window
+      -- {"WinEnter,BufEnter,InsertLeave", "*", [[if ! &cursorline && &filetype !~# '^\(dashboard\|clap_\)' && ! &pvw | setlocal cursorline | endif]]};
+      -- {"WinLeave,BufLeave,InsertEnter", "*", [[if &cursorline && &filetype !~# '^\(dashboard\|clap_\|NvimTree\)' && ! &pvw | setlocal nocursorline | endif]]};
+      -- {"WinLeave,BufLeave,InsertEnter", "*", [[if &cursorline && &filetype !~# '^\(dashboard\|clap_\|NvimTree\)' && ! &pvw | setlocal nocursorcolumn | endif]]};
+      { "BufEnter", "NvimTree", [[setlocal cursorline]] },
+      -- Equalize window dimensions when resizing vim window
+      { "VimResized", "*", [[tabdo wincmd =]] },
+      -- Force write shada on leaving nvim
+      { "VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
+      -- Check if file changed when its window is focus, more eager than 'autoread'
+      { "FocusGained", "*", "checktime" },
+      -- -- {"CmdwinEnter,CmdwinLeave", "*", "lua require'wlfloatline'.toggle()"};
     },
     fasd = { {
       "BufWinEnter,BufFilePost",
@@ -38,7 +52,7 @@ vim.import('config', function(config)
       { "CmdwinEnter", "*", "let b:cpt_save = &cpt | set cpt=." },
       { "CmdwinLeave", "*", "let &cpt = b:cpt_save | let g:lens#disabled = 1" },
       { "CmdwinEnter", "*", "nnoremap <buffer><esc> <C-c><C-c>" },
-      { "CmdwinEnter", "*", "setlocal nonumber norelativenumber signcolumn=yes:1 | startinsert" }
+      { "CmdwinEnter", "*", "setlocal nonumber norelativenumber signcolumn=yes:1 | startinsert" },
     },
     FiletypeDetect = {
       { "BufNewFile,BufRead", "*", "setlocal signcolumn=yes:1" },
@@ -73,7 +87,7 @@ vim.import('config', function(config)
       { "BufNewFile,BufRead", "values.yaml", "set ft=helm" },
       { "BufNewFile,BufRead", "*/templates/*.yaml", "set ft=helm" },
       { "BufNewFile,BufRead", "*/templates/*.tpl", "set ft=helm" },
-      { "BufNewFile,BufRead", "*/templates/*.txt", "set ft=helm" }
+      { "BufNewFile,BufRead", "*/templates/*.txt", "set ft=helm" },
       --   au BufNewFile,BufRead .pa set ft=config
       --   au BufNewFile,BufRead */ansible/*.yml  set ft=yaml.ansible
       --   au BufNewFile,BufRead *.j2,*/ansible/*/templates/* set ft=config.jinja2
@@ -116,18 +130,18 @@ vim.import('config', function(config)
     Shape = {
       { "FocusLost", "*", "hi TermCursor cterm=NONE gui=NONE" },
       { "FocusGained", "*", "hi TermCursor cterm=reverse gui=reverse" },
-      { "VimLeave,VimSuspend", "*", "set guicursor=a:block-blinkon90" }
+      { "VimLeave,VimSuspend", "*", "set guicursor=a:block-blinkon90" },
     },
     terminal = {
-      { "TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]] }
+      { "TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]] },
       -- {"TermOpen", "*", "set nonumber norelativenumber"},
       -- {"TermLeave", "*", "set number relativenumber"}
     },
     WriteEvents = {
-      { "BufWritePost", "*tmux.conf", [[execute ':!tmux source-file %']] }
+      { "BufWritePost", "*tmux.conf", [[execute ':!tmux source-file %']] },
       --   { "BufWritePost", "load.lua", "PackerCompile" },
     },
-    packer = { { "User", "PackerComplete,PackerCompileDone", "BarbarColors" } }
+    packer = { { "User", "PackerComplete,PackerCompileDone", "BarbarColors" } },
   }
 
   -- | if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' && &buftype =~ hidden | silent! wshada | silent! !~/bin/wshada.sh | endif",
@@ -136,28 +150,35 @@ vim.import('config', function(config)
   if Opts.shada_events == true then
     autocmds.ShadaEvents = {
       { "BufRead", "*", [[call ShadaWrite()]] },
-      { "Signal", "SIGUSR1", [[call ShadaRead()]] }
+      { "Signal", "SIGUSR1", [[call ShadaRead()]] },
     }
   end
 
   if Opts.winbar == true or Opts.winbar ~= nil then
-    autocmds.Winbar = require('autocommands.winbar')
+    autocmds.Winbar = require("autocommands.winbar")
   end
 
-  autocmds.NumberToggle = { {
-    "BufEnter,FocusGained,InsertLeave",
-    "*",
-    "if &filetype != 'dashboard' && &readonly != 1 && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif"
-  }, {
-    "BufLeave,FocusLost,InsertEnter", "*", "set norelativenumber"
-  } }
+  autocmds.NumberToggle = {
+    {
+      "BufEnter,FocusGained,InsertLeave",
+      "*",
+      "if &filetype != 'dashboard' && &readonly != 1 && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif",
+    },
+    {
+      "BufLeave,FocusLost,InsertEnter",
+      "*",
+      "set norelativenumber",
+    },
+  }
 
   if Opts.highlight_yank == true or Opts.highlight_yank ~= nil then
-    autocmds.HighlightYank = { {
-      "TextYankPost",
-      "*",
-      "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=400 }"
-    } }
+    autocmds.HighlightYank = {
+      {
+        "TextYankPost",
+        "*",
+        "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=400 }",
+      },
+    }
   end
 
   if Opts.preserve_cursor == true or Opts.preserve_cursor == nil then
@@ -169,8 +190,8 @@ vim.import('config', function(config)
 
   if Formatting.trim_trailing_space == true or Formatting.trim_trailing_space == nil then
     autocmds.TrimSpaces = {
-      { "BufWritePre", "*", [[%s/\s\+$//e]] },
-      { "BufWritePre", "*", [[%s/\n\+\%$//e]] }
+      -- { "BufWritePre", "*", [[%s/\s\+$//e]] },
+      -- { "BufWritePre", "*", [[%s/\n\+\%$//e]] }
       -- {"BufWritePre", "*.[ch]", [[*.[ch] %s/\%$/\r/e]]}
     }
   end

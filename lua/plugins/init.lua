@@ -1,7 +1,7 @@
 -- $ nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-vim.import('plugins.pluginmap', function(pluginmap)
-  vim.import('plugins.packer', function(packerinit)
-    vim.import('packer', function(packer)
+vim.import("plugins.pluginmap", function(pluginmap)
+  vim.import("plugins.packer", function(packerinit)
+    vim.import("packer", function(packer)
       packer.startup({
         function(use)
           use("wbthomason/packer.nvim")
@@ -11,25 +11,23 @@ vim.import('plugins.pluginmap', function(pluginmap)
 
           -- ====================================
           -- Integrations
-          use(
-            {
-              "tools-life/taskwiki",
-              requires = {
-                {
-                  "vimwiki/vimwiki",
-                  branch = "dev",
-                  config = function()
-                    vim.g.vimwiki_global_ext = 0
-                    vim.cmd([[let g:vimwiki_key_mappings = { 'all_maps': 0, }]])
-                  end
-                },
-                "vim-plugin-AnsiEsc",
-                "farseer90718/vim-taskwarrior",
-                "preservim/tagbar"
-              }
-              -- TODO: also needs taskwarrior, tasklib, pip install --upgrade git+git://github.com/tbabej/tasklib@develop
-            }
-          )
+          use({
+            "tools-life/taskwiki",
+            requires = {
+              {
+                "vimwiki/vimwiki",
+                branch = "dev",
+                config = function()
+                  vim.g.vimwiki_global_ext = 0
+                  vim.cmd([[let g:vimwiki_key_mappings = { 'all_maps': 0, }]])
+                end,
+              },
+              "vim-plugin-AnsiEsc",
+              "farseer90718/vim-taskwarrior",
+              "preservim/tagbar",
+            },
+            -- TODO: also needs taskwarrior, tasklib, pip install --upgrade git+git://github.com/tbabej/tasklib@develop
+          })
           use("njhoffman/slimux")
           use("sefeng211/vim-pastebins")
           -- Visual Selection <C-U>PastebinPaste - <C-U>, PastebinPasteAll, PastebinPasteList
@@ -51,14 +49,12 @@ vim.import('plugins.pluginmap', function(pluginmap)
 
           -- ====================================
           -- System utils
-          use(
-            {
-              "henriquehbr/nvim-startup.lua",
-              config = function()
-                require("plugins.configs.nvim_startup")
-              end
-            }
-          )
+          use({
+            "henriquehbr/nvim-startup.lua",
+            config = function()
+              require("plugins.configs.nvim_startup")
+            end,
+          })
 
           -- ====================================
           -- Interface plugins
@@ -76,14 +72,6 @@ vim.import('plugins.pluginmap', function(pluginmap)
           --     vim.cmd("let g:lens#disabled_buftypes = ['nofile']")
           --   end,
           -- }
-          use(
-            {
-              "ncm2/float-preview.nvim",
-              config = function()
-                require("plugins.configs.float-preview")
-              end
-            }
-          )
           -- use "preservim/vim-pencil"
 
           -- ====================================
@@ -188,7 +176,7 @@ vim.import('plugins.pluginmap', function(pluginmap)
             packer.sync()
           end
         end,
-        config = packerinit.config
+        config = packerinit.config,
       })
     end)
   end)

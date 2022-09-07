@@ -1,6 +1,6 @@
-local u = require('null-ls.utils')
+local u = require("null-ls.utils")
 local null_ls = require("null-ls")
-local my_sources = require('plugins.config.null-ls-sources')
+local my_sources = require("plugins.config.null-ls-sources")
 
 local supports_method_for_filetype = function(filetype, method)
   local sources = require("null-ls.sources")
@@ -33,16 +33,16 @@ null_ls.setup({
   -- end,
 })
 
-local defaults = {
-  cmd = { "nvim" },
-  debounce = 250,
-  debug = true,
-  diagnostics_format = "#{m}",
-  fallback_severity = vim.diagnostic.severity.ERROR,
-  log_level = "info",
-  notify_format = "[null-ls] %s",
-  on_attach = nil,
-  on_init = nil,
-  on_exit = nil,
-  update_in_insert = false,
-}
+-- local defaults = {
+--   cmd = { "nvim" },
+--   debounce = 250,
+--   debug = true,
+--   diagnostics_format = "#{m}",
+--   fallback_severity = vim.diagnostic.severity.ERROR,
+--   log_level = "info",
+--   notify_format = "[null-ls] %s",
+--   on_attach = nil,
+--   on_init = nil,
+--   on_exit = nil,
+--   update_in_insert = false,
+-- }

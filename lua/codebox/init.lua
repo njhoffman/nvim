@@ -21,7 +21,7 @@ local cfg = {
   -- ⌜⌟⌜⌝ ┘｢｣  ┒┑┓┏┌┍┎ 🭼 🭿 └ ┕ ┖ ┗   ⎡ ⎣ ⎤ ⎦ ˨   ◝ ◟ ◞ ╰ 「」ꜚ﹁ ⇱ ﹂｢｣ ╮ ╯╰ ╭ 𛲖─ ━ ━ ─ ＿ ⎽⎯🭻▁
   -- border = { "↖", "─", "╮", "│", "╯", "─", "╰", "│" },
   border = { "↖", "─", "╮", "│", "│", "_", "│", "│" },
-  debug = true,
+  debug = false,
   opacity = 5,
   dismiss_on_move = true,
   default_mappings = true,

@@ -1,15 +1,16 @@
 require("lint").linters_by_ft = {
+  html = { "tidy" },
+  ansible = { "ansible_lint" },
   bash = { "shellcheck" },
   sh = { "shellcheck" },
   lua = { "luacheck" },
   markdown = { "vale" },
+  tex = { "chktex" },
 }
 
--- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
---   callback = function()
---     require("lint").try_lint()
---   end,
--- })
+vim.api.nvim_create_user_command("Lint", function()
+  require("lint").try_lint()
+end, {})
 
 -- Tool                    	 Linter name
 -- Set via makeprg         	 compiler

@@ -183,7 +183,7 @@ M.telescope_plugins = {
   ["telescope-command-palette.nvim"] = { "LinArcX/telescope-command-palette.nvim" },
   ["telescope-dap.nvim"] = { "nvim-telescope/telescope-dap.nvim" },
   ["telescope-file-browser.nvim"] = { "nvim-telescope/telescope-file-browser.nvim" },
-  ["telescope-frecency.nvim"] = { "nvim-telescope/telescope-frecency.nvim" },
+  ["telescope-frecency.nvim"] = { "nvim-telescope/telescope-frecency.nvim", requires = { "tami5/sqlite.lua" } },
   ["telescope-fzf-native.nvim"] = { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
   ["telescope-ghq.nvim"] = { "nvim-telescope/telescope-ghq.nvim" },
   ["telescope-github.nvim"] = { "nvim-telescope/telescope-github.nvim" },
@@ -388,14 +388,21 @@ M.sysutil_plugins = {
 }
 
 M.lsp_plugins = {
+  ["nvim-lspconfig"] = { "neovim/nvim-lspconfig" },
   ["mason.nvim"] = {
     "williamboman/mason.nvim",
     requires = {
+      "neovim/nvim-lspconfig",
       "williamboman/mason-lspconfig.nvim",
       "neovim/nvim-lspconfig",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
   },
+  -- use("rust-lang/rust.vim")
+  --  use("simrat39/rust-tools.nvim") -- additional rust goodies, mostly lsp related
+  ["nvim-navic"] = { "SmiteshP/nvim-navic" },
+  ["zk-nvim"] = { "mickael-menu/zk-nvim" },
+  ["schemastore.nvim"] = { "b0o/schemastore.nvim" }, -- for jsonls
   ["fidget.nvim"] = { "j-hui/fidget.nvim" },
   ["nvim-lint"] = { "mfussenegger/nvim-lint" },
   ["null-ls.nvim"] = { "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" },
