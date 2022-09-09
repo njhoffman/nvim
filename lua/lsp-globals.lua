@@ -1,4 +1,3 @@
-
 _G.LspDiagnosticsShowPopup = function()
   return vim.diagnostic.open_float(0, { scope = "cursor" })
 end
@@ -57,3 +56,12 @@ _G.PeekDefinition = function(lsp_request_method)
     print("PeekDefinition: " .. err)
   end
 end
+
+_G.update_lightbulb = function()
+  require("nvim-lightbulb").update_lightbulb({
+    sign = { enabled = false },
+    float = { enabled = false },
+    virtual_text = { enabled = true },
+  })
+end
+-- vim.cmd([[autocmd CursorHold,CursorHoldI * lua update_lightbulb()]])

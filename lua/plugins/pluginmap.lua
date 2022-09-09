@@ -11,7 +11,7 @@ M.skipped_plugins = {
 }
 
 M.mapping_plugins = {
-  ["vim-printer"] = { "meain/vim-printer" },
+  ["debugprint"] = { "andrewferrier/debugprint.nvim" },
   ["vim-repeat"] = { "tpope/vim-repeat" },
   ["vim-alias"] = { "Konfekt/vim-alias" },
 }
@@ -83,8 +83,7 @@ M.format_plugins = {
   ["inc-rename.nvim"] = { "smjonas/inc-rename.nvim" },
   ["nvim-autopairs"] = { "windwp/nvim-autopairs" }, -- jiangmiao/auto-pairs
   ["nvim-surround"] = { "kylechui/nvim-surround" },
-  ["splitjoin.vim"] = { "andrewradev/splitjoin.vim" },
-  -- FooSoft/vim-argwrap https://github.com/FooSoft/vim-argwrap
+  ["splitjoin.vim"] = { "andrewradev/splitjoin.vim" }, --  https://github.com/FooSoft/vim-argwrap
   ["nvim-trevJ"] = { "AckslD/nvim-trevJ.lua" },
   ["vim-easy-align"] = { "~/git/vim-easy-align" }, -- { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
   ["vim-table-mode"] = { "dhruvasagar/vim-table-mode" },
@@ -95,6 +94,9 @@ M.format_plugins = {
   ["vim-checkbox"] = { "jkramer/vim-checkbox" },
   ["vim-sort-motion"] = { "christoomey/vim-sort-motion" },
   ["telekasten.nvim"] = { "renerocksai/telekasten.nvim", requires = { "renerocksai/calendar-vim" } },
+  -- https://github.com/Furkanzmc/zettelkasten.nvim
+  -- https://github.com/phaazon/mind.nvim
+  -- https://github.com/mickael-menu/zk-nvim
 }
 
 M.syntax_plugins = {
@@ -161,6 +163,7 @@ M.syntax_plugins = {
 }
 
 M.telescope_plugins = {
+  ["sqlite"] = { "tami5/sqlite.lua" },
   ["nvim-web-devicons"] = { "kyazdani42/nvim-web-devicons" },
   ["telescope.nvim"] = {
     "~/git/telescope.nvim",

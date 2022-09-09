@@ -1,43 +1,19 @@
 -- local function tsserver_organize_imports()
+-- if lsp_name == "tsserver" then
+--     map_buf(bufnr, "cxo", tsserver_organize_imports)
+-- elseif lsp_name == "pyright" then
+--     map_buf(bufnr, "cxo", function()
+--         vim.cmd("silent PyrightOrganizeImports")
+--     end)
+-- end
 --   local params = {
 --     command = "_typescript.organizeImports",
 --     arguments = { vim.api.nvim_buf_get_name(0) },
 --   }
 --   vim.lsp.buf.execute_command(params)
 --   vim.notify("Imports organized.")
--- end
---
--- function _G.show_capabilities()
---   for _, client in pairs(vim.lsp.buf_get_clients(0)) do
---     print(
---       vim.inspect(client.name)
---       .. "\n\n"
---       .. vim.inspect(client.server_capabilities)
---       .. "\n\n"
---     )
---   end
 -- end
 
--- local function tsserver_organize_imports()
---   local params = {
---     command = "_typescript.organizeImports",
---     arguments = { vim.api.nvim_buf_get_name(0) },
---   }
---   vim.lsp.buf.execute_command(params)
---   vim.notify("Imports organized.")
--- end
---
--- function _G.show_capabilities()
---   for _, client in pairs(vim.lsp.buf_get_clients(0)) do
---     print(
---       vim.inspect(client.name)
---       .. "\n\n"
---       .. vim.inspect(client.server_capabilities)
---       .. "\n\n"
---     )
---   end
--- end
---
 local keymap = vim.api.nvim_set_keymap
 local keymap_buf = vim.api.nvim_buf_set_keymap
 local ts_utils = require("nvim-treesitter.ts_utils")
@@ -211,7 +187,6 @@ local rename_provider = function(bufnr)
   -- keymap("n", "gR", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 end
 
-
 local document_symbol_provider = function(client, bufnr)
   local navic = require("nvim-navic")
   navic.setup({ highlight = true })
@@ -316,8 +291,7 @@ local check_capability = function(client, bufnr, capability)
       })
       vim.dbglog("format: " .. client.name .. " - " .. capability .. " ft: " .. ft)
       document_formatting_provider(bufnr)
-    elseif capability == "documentSymbolProvider"
-      and type(client.server_capabilities[capability]) ~= nil then
+    elseif capability == "documentSymbolProvider" and type(client.server_capabilities[capability]) ~= nil then
       document_symbol_provider(client, bufnr)
     elseif handlers[capability] then
       vim.dbglog("lsp: " .. client.name .. " - " .. capability .. " ft: " .. ft)
