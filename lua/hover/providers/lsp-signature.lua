@@ -1,9 +1,9 @@
 require("hover").register({
-  name = "LSP",
+  name = "LSP-Sig",
   priority = 1000,
   enabled = function()
     for _, client in pairs(vim.lsp.buf_get_clients()) do
-      if client and client.supports_method("textDocument/hover") then
+      if client and client.supports_method("textDocument/signatureHelp") then
         return true
       end
     end
@@ -12,7 +12,7 @@ require("hover").register({
   execute = function(done)
     local util = require("vim.lsp.util")
     local params = util.make_position_params()
-    vim.lsp.buf_request(0, "textDocument/hover", params, function(_, result, _, _)
+    vim.lsp.buf_request(0, "textDocument/signatureHelp", params, function(_, result, _, _)
       if not result or not result.contents then
         done()
         return

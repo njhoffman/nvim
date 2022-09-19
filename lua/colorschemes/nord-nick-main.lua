@@ -88,7 +88,7 @@ return function()
     MatchParen({ fg = "#60a0a0", bg = "#000022" }),
     MatchParenCursor({ fg = "#a0c0b0" }),
     NonText({ bg = "none", fg = "#555555" }),
-    Normal({ fg = clrs.nord4.darken(30), bg = "none" }),
+    Normal({ fg = clrs.nord4.darken(40), bg = "none" }),
     NormalWindow({ fg = Normal.fg, bg = "none" }),
     Operator({ fg = "#4886bf" }),
     PreProc({ fg = "#4796bc" }),

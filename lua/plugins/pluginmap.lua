@@ -189,6 +189,7 @@ M.telescope_plugins = {
   ["telescope-frecency.nvim"] = { "nvim-telescope/telescope-frecency.nvim", requires = { "tami5/sqlite.lua" } },
   ["telescope-fzf-native.nvim"] = { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
   ["telescope-ghq.nvim"] = { "nvim-telescope/telescope-ghq.nvim" },
+  ["telescope-makefile"] = { "ptethng/telescope-makefile" },
   ["telescope-github.nvim"] = { "nvim-telescope/telescope-github.nvim" },
   ["telescope-heading.nvim"] = { "crispgm/telescope-heading.nvim" },
   ["telescope-hop.nvim"] = { "nvim-telescope/telescope-hop.nvim" },
@@ -347,6 +348,7 @@ M.interface_plugins = {
   ["undotree"] = { "mbbill/undotree" },
   ["vim-qf"] = { "romainl/vim-qf" },
   ["vim-yoink"] = { "svermeulen/vim-yoink" },
+  -- https://github.com/anuvyklack/windows.nvim
   -- ["yank-history"] = {"yazgoo/yank-history"},
   -- ["vim-mundo"] = { "simnalamburt/vim-mundo" },
 }
@@ -356,8 +358,9 @@ M.integration_plugins = {
   ["tasks.nvim"] = { "GustavoKatel/tasks.nvim" },
   ["pantran.nvim"] = { "potamides/pantran.nvim" },
   ["colortils.nvim"] = { "nvim-colortils/colortils.nvim" },
+  -- https://github.com/uga-rosa/ccc.nvim
   ["cheat.sh-vim"] = { "dbeniamine/cheat.sh-vim" },
-  ["id3.vim"] = { "AndrewRadev/id3.vim" },
+  ["id3.vim"] = { "thaffenden/id3.vim", branch = "task/support-id-tool" }, -- "AndrewRadev/id3.vim"
   ["nvim-magic"] = {
     "jameshiew/nvim-magic",
     requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
@@ -408,7 +411,12 @@ M.lsp_plugins = {
   ["schemastore.nvim"] = { "b0o/schemastore.nvim" }, -- for jsonls
   ["fidget.nvim"] = { "j-hui/fidget.nvim" },
   ["nvim-lint"] = { "mfussenegger/nvim-lint" },
-  ["null-ls.nvim"] = { "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" },
+  ["null-ls.nvim"] = {
+    "jose-elias-alvarez/null-ls.nvim",
+    -- https://github.com/jose-elias-alvarez/null-ls.nvim/issues/1110
+    commit = "76d0573fc159839a9c4e62a0ac4f1046845cdd50",
+    requires = "nvim-lua/plenary.nvim",
+  },
   ["lua-dev.nvim"] = { "folke/lua-dev.nvim" },
   ["lsp-colors.nvim"] = { "folke/lsp-colors.nvim" },
   ["nvim-lightbulb"] = { "kosayoda/nvim-lightbulb" },

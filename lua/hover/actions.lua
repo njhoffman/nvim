@@ -74,7 +74,7 @@ end
 
 -- Must be called in async context
 local function run_provider(provider)
-  api.nvim_echo({ { "hover.nvim: Running provider: " .. provider.name } }, false, {})
+  vim.notify("hover.nvim: Running provider: " .. provider.name, 'debug')
   local config = get_config()
   local opts = vim.deepcopy(config.preview_opts)
   opts.focus_id = "hover"
