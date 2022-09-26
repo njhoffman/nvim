@@ -3,8 +3,6 @@ local vim = vim
 local api = vim.api
 local npcall = vim.F.npcall
 
-local has_winbar = vim.fn.has("nvim-0.8") == 1
-
 local async = require("hover.async")
 
 local providers = require("hover.providers").providers
@@ -19,11 +17,6 @@ local function is_enabled(provider)
 end
 
 local function add_title(winnr, active_provider_id)
-  if not has_winbar then
-    vim.notify_once("hover.nvim: `config.title` requires neovim >= 0.8.0", vim.log.levels.WARN)
-    return
-  end
-
   local title = {}
 
   for _, p in ipairs(providers) do
@@ -74,7 +67,7 @@ end
 
 -- Must be called in async context
 local function run_provider(provider)
-  vim.notify("hover.nvim: Running provider: " .. provider.name, 'debug')
+  vim.notify("hover.nvim: Running provider: " .. provider.name, "debug")
   local config = get_config()
   local opts = vim.deepcopy(config.preview_opts)
   opts.focus_id = "hover"

@@ -57,43 +57,24 @@ end
 vim.cmd("highlight default link LspCodeLens NonText")
 vim.cmd("highlight default link LspCodeLensSeparator NonText")
 
-local code_lens_provider = function(bufnr)
+local code_lens_provider = function(_, bufnr)
   local group = vim.api.nvim_create_augroup("lsp_document_codelens", {})
   vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost", "CursorHold" }, {
     buffer = bufnr,
     group = group,
     callback = w(vim.lsp.codelens.refresh),
   })
-  keymap_buf(bufnr, "n", "<Leader>L", find_and_run_codelens, keymap_opts)
+  -- keymap_buf(bufnr, "n", "<Leader>L", find_and_run_codelens, keymap_opts)
 end
 
-local document_formatting_provider = function(bufnr)
-  local augroup = vim.api.nvim_create_augroup("Formatting", {})
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    group = augroup,
-    buffer = bufnr,
-    command = "Format",
-  })
-  keymap_buf(
-    bufnr,
-    "n",
-    "<Leader>p",
-    -- null-ls might run prettier and blade-formatter, which should have higher precedence than formatting by html and php language servers
-    "<cmd>lua vim.lsp.buf.formatting_seq_sync(nil, 1000, { 'html', 'php', 'null-ls' })<CR>",
-    keymap_opts
-  )
-  keymap_buf(bufnr, "n", "<Leader>P", "<cmd>lua vim.lsp.buf.formatting()<CR>", keymap_opts)
+local document_formatting_provider = function(_, bufnr)
+  local augroup = vim.api.nvim_create_augroup("Formatting", { clear = false })
+  -- null-ls might run prettier and blade-formatter, which should have higher precedence than formatting by html and php language servers
+  vim.api.nvim_create_autocmd("BufWritePre", { group = "Formatting", buffer = bufnr, command = "Format" })
+  keymap_buf(bufnr, "n", "<Leader>ff", "<cmd>Format<CR>", keymap_opts)
 end
 
 local document_formatting_range_provider = function(_, bufnr)
-  keymap_buf(
-    bufnr,
-    "n",
-    "<Leader>p",
-    -- null-ls might run prettier and blade-formatter, which should have higher precedence than formatting by html and php language servers
-    "<cmd>lua vim.lsp.buf.formatting_seq_sync(nil, 1000, { 'html', 'php', 'null-ls' })<CR>",
-    keymap_opts
-  )
   keymap_buf(bufnr, "v", "<Leader>p", ":'<,'>lua vim.lsp.buf.range_formatting()<CR>", keymap_opts)
 end
 
@@ -114,7 +95,7 @@ local function highlight_references()
   vim.lsp.buf.document_highlight()
 end
 
-local document_highlight_provider = function(bufnr)
+local document_highlight_provider = function(_, bufnr)
   local group = vim.api.nvim_create_augroup("lsp_document_highlight", {})
   vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
     buffer = bufnr,
@@ -128,20 +109,20 @@ local document_highlight_provider = function(bufnr)
   })
 end
 
-local type_definition_provider = function(bufnr)
+local type_definition_provider = function(_, bufnr)
   keymap_buf(bufnr, "n", "<Leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", keymap_opts)
   keymap("n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<CR>", keymap_opts)
   -- if vim.fn.exists(":Telescope") then
   --   -- buf_set_keymap('n', 'gt', '<cmd>Telescope lsp_type_definitions<CR>', opts)
 end
 
-local signature_help_provider = function(bufnr)
+local signature_help_provider = function(_, bufnr)
   local lsp_sig = require("lsp.signature")
   require("lsp_signature").on_attach(lsp_sig.cfg, bufnr)
   keymap_buf(bufnr, "n", "gK", "<cmd>lua vim.lsp.buf.signature_help()<CR>", keymap_opts)
 end
 
-local find_references_provider = function(bufnr)
+local find_references_provider = function(_, bufnr)
   keymap_buf(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", keymap_opts)
   -- keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
   -- -- keymap("n", "<C-S-]>", "cyle references, diagnostics, gotofiles", opts)
@@ -149,14 +130,14 @@ local find_references_provider = function(bufnr)
   --   -- buf_set_keymap('n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
 end
 
-local hover_provider = function(bufnr)
+local hover_provider = function(_, bufnr)
   -- vim already has builtin docs
   if vim.bo.ft ~= "vim" then
     vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", keymap_opts)
   end
 end
 
-local code_action_provider = function(bufnr)
+local code_action_provider = function(_, bufnr)
   keymap_buf(bufnr, "n", "<Leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
   keymap_buf(bufnr, "x", "<Leader>a", ":'<,'>lua vim.lsp.buf.range_code_action()<CR>", keymap_opts)
 
@@ -164,23 +145,23 @@ local code_action_provider = function(bufnr)
   -- keymap("n", "<leader>la", "<cmd>Telescope lsp_code_actions<CR>", opts)
 end
 
-local goto_definition_provider = function(bufnr)
+local goto_definition_provider = function(_, bufnr)
   keymap_buf(bufnr, "n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", keymap_opts)
 end
 
-local implementation_provider = function(bufnr)
+local implementation_provider = function(_, bufnr)
   keymap_buf(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", keymap_opts)
   -- keymap("n", "<leader>lI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
   -- if vim.fn.exists(":Telescope") then
   --   keymap("n", "<leader>gi", "<cmd>Telescope lsp_implementations<CR>", opts)
 end
 
-local declaration_provider = function(bufnr)
+local declaration_provider = function(_, bufnr)
   keymap_buf(bufnr, "n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", keymap_opts)
   -- keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 end
 
-local rename_provider = function(bufnr)
+local rename_provider = function(_, bufnr)
   keymap_buf(bufnr, "n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", keymap_opts)
 
   -- keymap("n", "<leader>gr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
@@ -193,7 +174,7 @@ local document_symbol_provider = function(client, bufnr)
   navic.attach(client, bufnr)
 end
 
-local workspace = function(bufnr)
+local workspace = function(_, bufnr)
   keymap_buf(bufnr, "n", "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", keymap_opts)
   keymap_buf(bufnr, "n", "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", keymap_opts)
   keymap_buf(
@@ -277,25 +258,21 @@ local handlers = {
 
 local check_capability = function(client, bufnr, capability)
   local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-  vim.dbglog("checking " .. capability)
+  vim.notify("checking " .. capability, "trace")
+  local function log_lsp()
+    vim.notify("lsp: " .. client.name .. " - " .. bufnr .. " " .. capability .. " ft: " .. ft, "trace")
+  end
+
   if client.server_capabilities[capability] then
     if capability == "documentFormattingProvider" and client.server_capabilities[capability] == true
       or ft == "sh"
       or ft == "bash"
     then
-      local augroup = vim.api.nvim_create_augroup("Formatting", {})
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = augroup,
-        buffer = bufnr,
-        command = "Format",
-      })
-      vim.dbglog("format: " .. client.name .. " - " .. capability .. " ft: " .. ft)
-      document_formatting_provider(bufnr)
-    elseif capability == "documentSymbolProvider" and type(client.server_capabilities[capability]) ~= nil then
-      document_symbol_provider(client, bufnr)
+      log_lsp()
+      document_formatting_provider(client, bufnr)
     elseif handlers[capability] then
-      vim.dbglog("lsp: " .. client.name .. " - " .. capability .. " ft: " .. ft)
-      handlers[capability](bufnr)
+      log_lsp()
+      handlers[capability](client, bufnr)
     end
   end
 end

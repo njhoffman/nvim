@@ -140,7 +140,7 @@ require("mason-lspconfig").setup_handlers({
     lspconfig.sumneko_lua.setup({
       Lua = {
         format = {
-          enable = false,
+          enable = true,
         },
         hint = {
           enable = true,

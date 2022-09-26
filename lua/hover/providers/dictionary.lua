@@ -1,9 +1,9 @@
 local async = require("hover.async")
 local job = require("hover.async.job").job
 
-local function enabled()
+local function enabled(done)
   local word = vim.fn.expand("<cword>")
-  return #vim.spell.check(word) == 0
+  done(#vim.spell.check(word) == 0)
 end
 
 local function process(result)
@@ -33,7 +33,6 @@ end
 
 local execute = async.void(function(done)
   local word = vim.fn.expand("<cword>")
-
   local output = job({
     "curl",
     "https://api.dictionaryapi.dev/api/v2/entries/en/" .. word,
@@ -47,7 +46,7 @@ local execute = async.void(function(done)
 end)
 
 require("hover").register({
-  name = "Dictionary",
+  name = "Dict",
   priority = 100,
   enabled = enabled,
   execute = execute,

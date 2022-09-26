@@ -1,5 +1,5 @@
 require("hover").register({
-  name = "LSP-TypeDef",
+  name = "TypeDef",
   priority = 1000,
   enabled = function()
     for _, client in pairs(vim.lsp.buf_get_clients()) do

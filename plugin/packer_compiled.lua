@@ -182,7 +182,7 @@ _G.packer_plugins = {
   ["clever-f.vim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/clever-f.vim",
-    url = "https://github.com/rhysd/clever-f.vim"
+    url = "/home/nicholas/git/clever-f.vim"
   },
   ["cmp-calc"] = {
     after_files = { "/home/nicholas/.local/share/nvim/site/pack/packer/opt/cmp-calc/after/plugin/cmp_calc.lua" },
@@ -199,6 +199,14 @@ _G.packer_plugins = {
     needs_bufread = false,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/opt/cmp-cmdline",
     url = "https://github.com/hrsh7th/cmp-cmdline"
+  },
+  ["cmp-cmdline-history"] = {
+    after_files = { "/home/nicholas/.local/share/nvim/site/pack/packer/opt/cmp-cmdline-history/after/plugin/cmp_cmdline_history.lua" },
+    load_after = {},
+    loaded = true,
+    needs_bufread = false,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/opt/cmp-cmdline-history",
+    url = "https://github.com/dmitmel/cmp-cmdline-history"
   },
   ["cmp-emoji"] = {
     after_files = { "/home/nicholas/.local/share/nvim/site/pack/packer/opt/cmp-emoji/after/plugin/cmp_emoji.lua" },
@@ -312,14 +320,6 @@ _G.packer_plugins = {
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/opt/cmp-vimwiki-tags",
     url = "https://github.com/pontusk/cmp-vimwiki-tags"
   },
-  ["cmp-zsh"] = {
-    after_files = { "/home/nicholas/.local/share/nvim/site/pack/packer/opt/cmp-zsh/after/plugin/cmp_zsh.lua" },
-    load_after = {},
-    loaded = true,
-    needs_bufread = false,
-    path = "/home/nicholas/.local/share/nvim/site/pack/packer/opt/cmp-zsh",
-    url = "https://github.com/tamago324/cmp-zsh"
-  },
   cmp_luasnip = {
     after_files = { "/home/nicholas/.local/share/nvim/site/pack/packer/opt/cmp_luasnip/after/plugin/cmp_luasnip.lua" },
     load_after = {},
@@ -411,7 +411,7 @@ _G.packer_plugins = {
   ["fidget.nvim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/fidget.nvim",
-    url = "https://github.com/j-hui/fidget.nvim"
+    url = "/home/nicholas/git/fidget.nvim"
   },
   ["friendly-snippets"] = {
     loaded = true,
@@ -1049,6 +1049,11 @@ _G.packer_plugins = {
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
     url = "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
   },
+  ["telescope-fzy-native.nvim"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-fzy-native.nvim",
+    url = "https://github.com/nvim-telescope/telescope-fzy-native.nvim"
+  },
   ["telescope-ghq.nvim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-ghq.nvim",
@@ -1562,37 +1567,37 @@ time([[Config for nvim-startup.lua]], true)
 try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.nvim_startup\frequire\0", "config", "nvim-startup.lua")
 time([[Config for nvim-startup.lua]], false)
 -- Conditional loads
-time([[Conditional loading of nvim-nonicons]], true)
-  require("packer.load")({"nvim-nonicons"}, {}, _G.packer_plugins)
-time([[Conditional loading of nvim-nonicons]], false)
 time([[Conditional loading of hologram.nvim]], true)
   require("packer.load")({"hologram.nvim"}, {}, _G.packer_plugins)
 time([[Conditional loading of hologram.nvim]], false)
+time([[Conditional loading of nvim-nonicons]], true)
+  require("packer.load")({"nvim-nonicons"}, {}, _G.packer_plugins)
+time([[Conditional loading of nvim-nonicons]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
 vim.cmd [[ packadd nvim-cmp ]]
 vim.cmd [[ packadd cmp-vimwiki-tags ]]
-vim.cmd [[ packadd cmp-pandoc-references ]]
-vim.cmd [[ packadd cmp-zsh ]]
+vim.cmd [[ packadd cmp-tmux ]]
 vim.cmd [[ packadd tabout.nvim ]]
 
 -- Config for: tabout.nvim
 try_loadstring("\27LJ\2\n6\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\27plugins.configs.tabout\frequire\0", "config", "tabout.nvim")
 
-vim.cmd [[ packadd cmp-npm ]]
-vim.cmd [[ packadd cmp_luasnip ]]
-vim.cmd [[ packadd cmp-spell ]]
-vim.cmd [[ packadd cmp-treesitter ]]
-vim.cmd [[ packadd cmp-nvim-lsp-signature-help ]]
-vim.cmd [[ packadd cmp-cmdline ]]
-vim.cmd [[ packadd cmp-omni ]]
-vim.cmd [[ packadd cmp-calc ]]
-vim.cmd [[ packadd cmp-nvim-lsp ]]
-vim.cmd [[ packadd cmp-nvim-lua ]]
-vim.cmd [[ packadd cmp-tmux ]]
-vim.cmd [[ packadd cmp-emoji ]]
 vim.cmd [[ packadd cmp-git ]]
+vim.cmd [[ packadd cmp-pandoc-references ]]
+vim.cmd [[ packadd cmp_luasnip ]]
 vim.cmd [[ packadd cmp-nvim-lsp-document-symbol ]]
+vim.cmd [[ packadd cmp-emoji ]]
+vim.cmd [[ packadd cmp-nvim-lua ]]
+vim.cmd [[ packadd cmp-nvim-lsp ]]
+vim.cmd [[ packadd cmp-spell ]]
+vim.cmd [[ packadd cmp-cmdline-history ]]
+vim.cmd [[ packadd cmp-calc ]]
+vim.cmd [[ packadd cmp-nvim-lsp-signature-help ]]
+vim.cmd [[ packadd cmp-omni ]]
+vim.cmd [[ packadd cmp-treesitter ]]
+vim.cmd [[ packadd cmp-cmdline ]]
+vim.cmd [[ packadd cmp-npm ]]
 vim.cmd [[ packadd nvim-lspconfig ]]
 vim.cmd [[ packadd sqls.nvim ]]
 time([[Sequenced loading]], false)

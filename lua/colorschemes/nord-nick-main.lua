@@ -40,7 +40,7 @@ local clrs = {
 local clr_over = {
   -- select ion = "#2F3243",
   -- -selection = "#0f2a56",
-  selection = "#122244",
+  selection = "#1c1f40",
   orange = "#cc8877",
   yellow = "#bdb994",
   yellow_faded = "#7B6B3B",
@@ -73,7 +73,7 @@ return function()
     CursorColumn({ bg = "#7722ff" }),
     -- base groups
     Statement({ fg = "#5191C1" }),
-    Comment({ fg = "#495a74", gui = "italic" }),
+    Comment({ fg = "#56667b", gui = "italic" }),
     Conceal({ bg = "none" }),
     Constant({ fg = clrs.nord16 }),
     Delimiter({ fg = "#5f6fa2" }),
@@ -88,7 +88,7 @@ return function()
     MatchParen({ fg = "#60a0a0", bg = "#000022" }),
     MatchParenCursor({ fg = "#a0c0b0" }),
     NonText({ bg = "none", fg = "#555555" }),
-    Normal({ fg = clrs.nord4.darken(40), bg = "none" }),
+    Normal({ fg = clrs.nord4.darken(30), bg = "none" }),
     NormalWindow({ fg = Normal.fg, bg = "none" }),
     Operator({ fg = "#4886bf" }),
     PreProc({ fg = "#4796bc" }),
@@ -158,7 +158,7 @@ return function()
     TSConditional({ fg = "#897785" }),
     TSException({ fg = "#867f88" }),
     TSFunction({ fg = "#988088" }),
-    TSKeyword({ fg = "#6177a8" }),
+    TSKeyword({ Keyword }),
     TSLabel({ fg = "#6688ba" }), -- For labels: `label:` in C and `:label:` in Lua.
     TSMethod({ fg = "#6e99c6" }),
     TSPunctBracket({ fg = "#888698" }), -- For special punctutation that does not fall in the catagories before.

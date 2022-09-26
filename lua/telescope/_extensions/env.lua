@@ -8,9 +8,13 @@ local conf = require("telescope.config").values
 -- iterate through table while sorting by keys or function
 local function sort_pairs(t, order)
   local keys = {}
-  for k in pairs(t) do keys[#keys + 1] = k end
+  for k in pairs(t) do
+    keys[#keys + 1] = k
+  end
   if order then
-    table.sort(keys, function(a, b) return order(t, a, b) end)
+    table.sort(keys, function(a, b)
+      return order(t, a, b)
+    end)
   else
     table.sort(keys)
   end
@@ -60,64 +64,73 @@ local function edit_environment_value(prompt_bufnr)
   if value == "" then
     return
   end
-  print("Setting env %s=%s", selection.value[1], value)
+  vim.notify({ "Setting env %s=%s", selection.value[1], value }, "debug")
   -- Only works for the current session
   vim.fn.setenv(selection.value[1], value)
 end
 
 local function show_environment_variables(opts)
   opts = opts or {}
-  pickers.new(opts, {
-    prompt_title = "Environment Variables",
-    finder = finders.new_table({
-      results = prepare_environment_variables(),
-      entry_maker = function(entry)
-        local columns = vim.o.columns
-        local width = conf.width
-          or conf.layout_config.width
-          or conf.layout_config[conf.layout_strategy].width
-          or columns
-        local telescope_width = width
-        if width < 1 then
-          telescope_width = math.floor(columns * width)
-        end
-        local env_name_width = 22
-        local env_value_width = math.floor(columns * 0.05)
+  pickers
+    .new(opts, {
+      prompt_title = "Environment Variables",
+      finder = finders.new_table({
+        results = prepare_environment_variables(),
+        entry_maker = function(entry)
+          local columns = vim.o.columns
+          local width = conf.width
+            or conf.layout_config.width
+            or conf.layout_config[conf.layout_strategy].width
+            or columns
+          local telescope_width = width
+          if width < 1 then
+            telescope_width = math.floor(columns * width)
+          end
+          local env_name_width = 22
+          local env_value_width = math.floor(columns * 0.05)
 
-        -- NOTE: the width calculating logic is not exact, but approx enough
-        local displayer = entry_display.create({
-          separator = " ▏",
-          items = {
-            { width = env_name_width },
-            { width = telescope_width - env_name_width - env_value_width },
-            { remaining = true },
-          },
-        })
-
-        local function make_display()
-          -- concatenating multiline env values
-          local concatenated_width = entry[2]:gsub("\r?\n", " ")
-          return displayer({
-            { entry[1], "TelescopeResultsClass" },
-            { concatenated_width },
+          -- NOTE: the width calculating logic is not exact, but approx enough
+          local displayer = entry_display.create({
+            separator = " ▏",
+            items = {
+              { width = env_name_width },
+              { width = telescope_width - env_name_width - env_value_width },
+              { remaining = true },
+            },
           })
-        end
 
-        return {
-          value = entry,
-          display = make_display,
-          ordinal = string.format("%s %s", entry[1], entry[2]),
-        }
+          local function make_display()
+            -- concatenating multiline env values
+            local concatenated_width = entry[2]:gsub("\r?\n", " ")
+            return displayer({
+              { entry[1], "TelescopeResultsClass" },
+              { concatenated_width },
+            })
+          end
+
+          return {
+            value = entry,
+            display = make_display,
+            ordinal = string.format("%s %s", entry[1], entry[2]),
+          }
+        end,
+      }),
+      sorter = conf.generic_sorter(opts),
+      attach_mappings = function(prompt_bufnr, map)
+        -- action_set.select:enhance {
+        --   post = function()
+        --     local selection = action_state.get_selected_entry()
+        --     if not selection then
+        --       return
+        --     end
+
+        actions.select_default:replace(append_environment_name)
+        map("i", "<c-a>", append_environment_value)
+        map("i", "<c-e>", edit_environment_value)
+        return true
       end,
-    }),
-    sorter = conf.generic_sorter(opts),
-    attach_mappings = function(prompt_bufnr, map)
-      actions.select_default:replace(append_environment_name)
-      map("i", "<c-a>", append_environment_value)
-      map("i", "<c-e>", edit_environment_value)
-      return true
-    end,
-  }):find()
+    })
+    :find()
 end
 
 local function run()

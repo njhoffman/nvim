@@ -21,7 +21,7 @@ opt("textwidth", 1000)
 opt("swapfile", false)
 opt("clipboard", "unnamedplus")
 
-opt("cmdheight", 0) -- 0
+opt("cmdheight", 1) -- 0
 opt("cmdwinheight", 10)
 opt("cedit", "<M-w>")
 
@@ -67,7 +67,7 @@ opt("breakindentopt", "shift:2")
 opt("undolevels", 1000)
 opt("updatetime", 4000)
 opt("timeoutlen", 400) -- 1000
-opt("ttimeoutlen", 20) -- 50
+opt("ttimeoutlen", 40) -- 50
 opt("pumheight", 10)
 opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- winsize messes up on load
 opt("fileencoding", "utf-8")

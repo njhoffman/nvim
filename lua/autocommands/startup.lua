@@ -1,8 +1,8 @@
 local get_load_time = function()
   local load_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
-  load_time = string.sub(string.gsub(load_time, ' ', ''), 1, 5)
+  load_time = string.sub(string.gsub(load_time, " ", ""), 1, 5)
   vim.g.load_time = load_time
-  vim.notify("Loaded in " .. load_time .. 's', "debug", { anchor = 'TC' })
+  vim.notify("Loaded in " .. load_time .. "s", "info", { anchor = "TC" })
 end
 
 vim.api.nvim_create_autocmd("VimEnter", {
@@ -17,30 +17,30 @@ vim.api.nvim_create_autocmd("VimEnter", {
 local get_command_val = function(name)
   local val = nil
   for i, arg in pairs(vim.v.argv) do
-    if arg == '--' .. name then
+    if arg == "--" .. name then
       val = vim.v.argv[i + 1]
     end
   end
   return val
 end
 
-local cmd_val = get_command_val('startup-script')
+local cmd_val = get_command_val("startup-script")
 if cmd_val ~= nil then
   vim.api.nvim_create_autocmd("VimEnter", {
     pattern = "*",
     callback = function()
-      vim.notify('Startup script: ' .. cmd_val)
+      vim.notify("Startup script: " .. cmd_val)
     end,
     desc = "Run startup script after vim is finished loading",
   })
 end
 
-cmd_val = get_command_val('startup-command')
+cmd_val = get_command_val("startup-command")
 if cmd_val ~= nil then
   vim.api.nvim_create_autocmd("VimEnter", {
     pattern = "*",
     callback = function()
-      vim.notify('Startup command: ' .. cmd_val)
+      vim.notify("Startup command: " .. cmd_val)
     end,
     desc = "Run startup commands after vim is finished loading",
   })

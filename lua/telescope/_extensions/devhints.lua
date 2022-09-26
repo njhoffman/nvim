@@ -8,6 +8,7 @@ end
 return telescope.register_extension({
   setup = main.setup,
   exports = {
-    devhints = main.all,
+    all = main.all,
+    bash = main.topic("bash"),
   },
 })

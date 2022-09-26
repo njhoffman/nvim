@@ -1,4 +1,4 @@
-vim.import('mapper', function(M)
+vim.import("mapper", function(M)
   -- M.plugin('treesitter', function()
   --   return {
   --     refactor = {
@@ -43,6 +43,7 @@ vim.import('mapper', function(M)
   M.map("Navigation", "n", "H", "buffer_left2")
   M.map("Navigation", "n", "L", "buffer_right2")
   M.map("Navigation", "n", "!!", "repeat_cmd")
+  M.map("Navigation", "n", "<M-T>", "restart_target")
   M.map("Navigation", "n", "<M-r>", "restart")
   M.map("Navigation", "n", "<C-x>", "nowrite_exit")
   M.map("Navigation", "n", "<A-x>", "write_exit")
@@ -75,8 +76,11 @@ vim.import('mapper', function(M)
   M.map("Window", "c", "<C-p>", "cmd_prev1") -- virtual
   M.map("Window", "c", "<tab>", "cmd_next2") -- virtual
   M.map("Window", "c", "<s-tab>", "cmd_prev2") -- virtual
-  M.map("Window", "c", "<M-f>", "cmd_open_cedit")
-  -- M.map("Window", "n", "<M-f>", "cmd_open_n")
+  M.map("Window", "c", "<M-f>", "cmd_open_cwin1")
+  M.map("Window", "c", "<M-b>", "cmd_open_cwin2") -- same keycode as Ctrl-Shift-[
+  M.map("Window", "c", "<M-g>", "cmd_insert_filename")
+  -- M.map("Window", "c", "<M-d>", "cmd_insert_filename")
+  M.map("Window", "n", "<M-f>", "open_cwin")
   M.map("Window", "n", "<C-j>", "down")
   M.map("Window", "n", "<C-k>", "up")
   M.map("Window", "n", "<C-h>", "left")
@@ -185,7 +189,11 @@ vim.import('mapper', function(M)
   -- M.map("Movement", "n", "<space>", "scroll_forwardsx3", {noremap = false})
   M.map("Movement", "n", "G", "scroll_bottom", { noremap = false })
   M.map("Movement", "n", "gg", "scroll_top", { noremap = false })
-  M.map("Movement", "n", "gv", "select_last")
+
+  -- get last copied text
+  M.map("Movement", "n", "gv", "select_last_visual")
+  -- vim.cmd([[nnoremap <expr> g<c-v> '`[' . strpart(getregtype(), 0, 1) . '`]']])
+
   M.map("Movement", "n", "g<M-g>", "ascii")
   M.map("Movement", "n", "gA", "ascii_2")
   M.map("Movement", "n", "gi", "last_insertion") -- virtual
@@ -208,8 +216,6 @@ vim.import('mapper', function(M)
   --   xnoremap <buffer> + <cmd>lua require('nvim-treesitter.incremental_selection').scope_incremental()<cr>
   --   xnoremap <buffer> = <cmd>lua require('nvim-treesitter.incremental_selection').node_decremental()<cr>
   -- ]])
-
-
 
   -- M.map("Movement", "v", "+", "incremental_selection_expand")
   -- M.map("Movement", "v", "-", "incremental_selection_shrink")
@@ -248,7 +254,7 @@ vim.import('mapper', function(M)
   M.map("Interface", "n", '""', "registers")
   M.map("Interface", "n", "<F2>", "whichkey")
   M.map("Interface", "n", "<F3>", "nvim_tree")
-  M.map("Interface", "n", "\\", "nvim_tree_2")
+  M.map("Interface", "n", "<M-Bslash>", "nvim_tree_2")
   M.map("Interface", "n", "<F4>", "mundo1")
   -- M.map("Interface", "n", "<F5>", "term1")
   M.map("Interface", "n", "<F6>", "treesitter")
@@ -266,8 +272,9 @@ vim.import('mapper', function(M)
   M.map("Interface", "n", "<a-*>", "ts_next_usage") -- virtual
   M.map("Interface", "n", "<a-#>", "ts_prev_usage") -- virtual
   M.map("Interface", "n", "_", "clear_hl")
-  M.map("Interface", "n", "<M-->", "clear_popups_hl")
+  M.map("Interface", "n", "<M-b>", "clear_popups_hl")
   M.map("Interface", "n", "<M-_>", "reset_lsp_clear_hl")
+  M.map("Interface", "n", "<M-->", "clear_popups_splits_hl")
 
   M.map("System", "n", "<leader>iy", "yank_filename")
   M.map("System", "n", "<leader>iY", "yank_buffer")
@@ -368,7 +375,6 @@ vim.import('mapper', function(M)
     end
   end
 
-
   -- Jump to the previous git conflict start
   map("n", "[cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
     silent = true,
@@ -389,7 +395,6 @@ vim.import('mapper', function(M)
   map("n", "[cm", ":call search('^=\\{4,\\}$', 'Wb')<CR>", { silent = true, noremap = true })
   -- Jump to next divider
   map("n", "]cm", ":call search('^=\\{4,\\}$', 'W')<CR>", { silent = true, noremap = true })
-
 
   -- vim.cmd([[nnoremap / /\v]])
   -- vim.cmd([[vnoremap / /\v]])
@@ -471,7 +476,7 @@ vim.import('mapper', function(M)
   -- M.map("Pickers", "n", "<C-_>", "telescope_live_search")
   -- M.map("Pickers", "n", "<M-/>", "telescope_grep_search")
   M.map("Pickers", "n", "<M-/>", "helptags_tele")
-  M.map("Pickers", "n", "<A-m>", "location_list_fzfprev")
+  M.map("Pickers", "n", "<M-m>", "location_list_fzfprev")
   -- M.map("Pickers", "n", "<A-u>", "commands_fzfprev")
   -- M.map("Pickers", "n", "<C-c>", "commit_log_fzfprev")
   -- M.map("Pickers", "n", "<C-e>", "buffers_fzflua")
@@ -491,19 +496,20 @@ vim.import('mapper', function(M)
   M.map("Pickers", "n", "<leader>Fmi", "find_mappings_i")
   M.map("Pickers", "n", "<leader>Fmv", "find_mappings_v")
   M.map("Pickers", "n", "<leader>Fmo", "find_mappings_o")
+  -- M.map("Pickers", "n", "<M-g>", "print_filename")
   M.map("Pickers", "n", "<C-g>", "buffers_teleleaderf_nopreview")
-  M.map("Pickers", "n", "<A-g>", "tele_find_projects")
+  -- M.map("Pickers", "n", "<A-g>", "tele_find_projects")
   M.map("Pickers", "n", "<leader><leader>", "find_pickers")
   M.map("Pickers", "n", "<C-Space>", "tele_find_files")
-  M.map("Pickers", "n", "<A-e>", "tele_live_grep")
+  M.map("Pickers", "n", "<M-e>", "tele_live_grep")
   M.map("Pickers", "n", "<C-e>", "tele_grep_buffers")
 
-  vim.cmd [[
+  vim.cmd([[
   cabbrev T Telescope
   cabbrev d lua vim.dbg(
   cabbrev D DebugLog
   cabbrev Plug execute "normal \<Plug>(
-]]
+]] )
 
   M.map("Zettel", "n", "<cr>", "enter2")
   M.map("Zettel", "n", "gzn", "new")
@@ -601,7 +607,6 @@ vim.import('mapper', function(M)
   M.map("LSP", "n", "<C-t>", "doc_diagnostics_ivy")
   -- M.map("LSP", "n", "<A-T>", "doc_diagnostics_2")
 
-
   vim.api.nvim_set_keymap(
     "n",
     "<leader>xx",
@@ -658,7 +663,6 @@ vim.import('mapper', function(M)
   -- vim.cmd([[vmap <M-x> <C-x> ]])
   -- vim.cmd([[vmap g<M-a> g<C-a> ]])
   -- vim.cmd([[vmap g<M-x> g<C-x> ]])
-
 
   -- Moving around, tabs, windows and buffers {{{
 
@@ -719,8 +723,6 @@ vim.import('mapper', function(M)
 
   map("x", ".", ":normal .<CR>", { silent = true })
 
-
-
   map("n", "Y", "y$", { silent = true })
 
   -- Pressing <leader>ss will toggle and untoggle spell checking
@@ -735,7 +737,6 @@ vim.import('mapper', function(M)
   map("t", "<C-w><C-k>", "<C-\\><C-n><C-w>k", { silent = true, noremap = true })
   map("t", "<C-w><C-l>", "<C-\\><C-n><C-w>l", { silent = true, noremap = true })
 
-
   -- print(M.inspect(M.whichkey_map))
   -- print(M.inspect(M.stats))
 
@@ -748,12 +749,8 @@ vim.import('mapper', function(M)
   -- You might also want to add a map for toggling whether the current paste is formatted or not:
   -- normal p P will swap/cycle through yoinks
 
-  vim.cmd(
-    [[nmap <expr> p yoink#canSwap() ? '<plug>(YoinkPostPasteSwapBack)' : '<plug>(YoinkPaste_p)']]
-  )
-  vim.cmd(
-    [[nmap <expr> P yoink#canSwap() ? '<plug>(YoinkPostPasteSwapForward)' : '<plug>(YoinkPaste_P)']]
-  )
+  vim.cmd([[nmap <expr> p yoink#canSwap() ? '<plug>(YoinkPostPasteSwapBack)' : '<plug>(YoinkPaste_p)']])
+  vim.cmd([[nmap <expr> P yoink#canSwap() ? '<plug>(YoinkPostPasteSwapForward)' : '<plug>(YoinkPaste_P)']])
   -- TODO: paste linewise within
   -- Paste yanked line without line breaks before/after cursor position
   -- inoremap <c-a> <c-r>1<esc>k$Jxi

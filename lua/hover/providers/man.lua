@@ -14,14 +14,12 @@ local execute = async.void(function(done)
   local is_tcl = vim.bo.filetype == "tcl"
 
   local output = job({ "man", is_tcl and "n" or "1", vim.fn.expand("<cword>") })
-
   if not output then
     done()
     return
   end
 
   local lines = vim.split(output, "\n")
-
   done({ lines = lines, filetype = "man" })
 end)
 

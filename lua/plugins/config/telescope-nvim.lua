@@ -8,9 +8,20 @@ local tele_mappings = require("plugins.config.telescope-mappings")
 
 -- TODO: why can't replicate fuzzy matching behavior of fzf-lua
 -- TODO: calculate page length for ctrl-f/ctrl-b
+local fzf_command = {
+  "fd",
+  "--hidden",
+  "--one-file-system",
+  "--follow",
+  "--no-ignore-vcs",
+  "--color=never",
+  "--full-path .",
+}
+
 local command_rg = {
   "rg",
   "--color=never",
+  "--one-file-system",
   "--ignore",
   "--smart-case",
   "--hidden",
@@ -18,6 +29,7 @@ local command_rg = {
   "--sort",
   "path",
 }
+
 -- local command_fd = { "fd", "--type", "f", "--strip-cwd-prefix" }
 local command_vimgrep = {
   "rg",

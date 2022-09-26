@@ -61,7 +61,7 @@ M.motion_plugins = {
   ["vim-wordmotion"] = { "chaoren/vim-wordmotion" },
   ["vim-smoothie"] = { "psliwka/vim-smoothie", commit = "10fd0aa" }, -- f2aaab1
   ["vim-searchsavy"] = { "idbrii/vim-searchsavvy" },
-  ["clever-f"] = { "rhysd/clever-f.vim" },
+  ["clever-f"] = { "~/git/clever-f.vim" }, -- rhysd/clever-f.vim
   ["nvim-femaco.lua"] = { "AckslD/nvim-FeMaco.lua" },
   ["markdown-preview.nvim"] = { "iamcco/markdown-preview.nvim", run = "cd app && yarn install" },
   ["neuron.nvim"] = {
@@ -173,6 +173,7 @@ M.telescope_plugins = {
       "kyazdani42/nvim-web-devicons",
       "nvim-lua/popup.nvim",
       "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope-fzy-native.nvim",
     },
   },
   ["nvim-neoclip.lua"] = { "AckslD/nvim-neoclip.lua", requires = { "tami5/sqlite.lua", module = "sqlite" } },
@@ -230,6 +231,7 @@ M.completion_plugins = {
   ["cmp-emoji"] = { "hrsh7th/cmp-emoji", after = "nvim-cmp" },
   ["cmp-nvim-lua"] = { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
   ["cmp-nvim-lsp"] = { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
+  ["cmp-cmdline-history"] = { "dmitmel/cmp-cmdline-history", after = "nvim-cmp" },
   ["cmp-calc"] = { "hrsh7th/cmp-calc", after = "nvim-cmp" },
   ["cmp-omni"] = { "hrsh7th/cmp-omni", after = "nvim-cmp" },
   ["cmp-cmdline"] = { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
@@ -250,7 +252,6 @@ M.completion_plugins = {
   ["cmp-treesitter"] = { "ray-x/cmp-treesitter", after = "nvim-cmp" },
   ["cmp-spell"] = { "f3fora/cmp-spell", after = "nvim-cmp" },
   ["cmp-npm"] = { "David-Kunz/cmp-npm", after = "nvim-cmp" },
-  ["cmp-zsh"] = { "tamago324/cmp-zsh", after = "nvim-cmp" },
   ["cmp-vimwiki-tags"] = { "pontusk/cmp-vimwiki-tags", after = "nvim-cmp" },
   ["cmp-pandoc-references"] = { "jc-doyle/cmp-pandoc-references", after = "nvim-cmp" },
   ["cmp-git"] = {
@@ -409,7 +410,7 @@ M.lsp_plugins = {
   ["nvim-navic"] = { "SmiteshP/nvim-navic" },
   ["zk-nvim"] = { "mickael-menu/zk-nvim" },
   ["schemastore.nvim"] = { "b0o/schemastore.nvim" }, -- for jsonls
-  ["fidget.nvim"] = { "j-hui/fidget.nvim" },
+  ["fidget.nvim"] = { "~/git/fidget.nvim" }, -- "j-hui/fidget.nvim"
   ["nvim-lint"] = { "mfussenegger/nvim-lint" },
   ["null-ls.nvim"] = {
     "jose-elias-alvarez/null-ls.nvim",

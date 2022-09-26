@@ -1,27 +1,26 @@
-vim.import('commands.format')
+vim.import("commands.format")
 local cmd = vim.api.nvim_create_user_command
 
 cmd("ClosePopups", function(cmd_props)
+  local n = 0
   for _, win in ipairs(vim.api.nvim_list_wins()) do
-    local n = 0
     local config = vim.api.nvim_win_get_config(win)
     if config.relative ~= "" then
       n = n + 1
       vim.api.nvim_win_close(win, false)
     end
-    print('Closed ' .. n .. ' popup windows')
   end
+  print("Closed " .. n .. " popup windows")
 end, { desc = "Format buffer using lsp" })
 
 cmd("LuaGetPaths", function(cmd_props)
-  for match in (vim.o.packpath .. ','):gmatch("(.-)" .. ',') do
-    print(match);
+  for match in (vim.o.packpath .. ","):gmatch("(.-)" .. ",") do
+    print(match)
   end
-end, { desc = "Get LSP o.packpath runtime directories" }
-)
+end, { desc = "Get LSP o.packpath runtime directories" })
 
 cmd("LogFiles", function(cmd_props)
-  for match in (vim.o.packpath .. ','):gmatch("(.-)" .. ',') do
+  for match in (vim.o.packpath .. ","):gmatch("(.-)" .. ",") do
 
     -- logfiles["auth"]="/var/log/auth.log"
     -- logfiles["boot"]="/var/log/boot.log"

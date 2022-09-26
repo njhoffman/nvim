@@ -1,9 +1,9 @@
 local defaultSettings = {
   enabled = function()
     local disabled = false
-    disabled = disabled or (vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt')
-    disabled = disabled or (vim.fn.reg_recording() ~= '')
-    disabled = disabled or (vim.fn.reg_executing() ~= '')
+    disabled = disabled or (vim.api.nvim_buf_get_option(0, "buftype") == "prompt")
+    disabled = disabled or (vim.fn.reg_recording() ~= "")
+    disabled = disabled or (vim.fn.reg_executing() ~= "")
     return not disabled
   end,
 
@@ -13,7 +13,7 @@ local defaultSettings = {
 
   snippet = {
     expand = function()
-      error('snippet engine is not configured.')
+      error("snippet engine is not configured.")
     end,
   },
 
@@ -21,13 +21,13 @@ local defaultSettings = {
     autocomplete = {
       types.cmp.TriggerEvent.TextChanged,
     },
-    completeopt = 'menu,menuone,noselect',
+    completeopt = "menu,menuone,noselect",
     keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
     keyword_length = 1,
   },
 
   formatting = {
-    fields = { 'abbr', 'kind', 'menu' },
+    fields = { "abbr", "kind", "menu" },
     format = function(_, vim_item)
       return vim_item
     end,
@@ -71,19 +71,19 @@ local defaultSettings = {
   },
 
   view = {
-    entries = { name = 'custom', selection_order = 'top_down' },
+    entries = { name = "custom", selection_order = "top_down" },
   },
 
   window = {
     completion = {
-      border = { '', '', '', '', '', '', '', '' },
-      winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None',
+      border = { "", "", "", "", "", "", "", "" },
+      winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
     },
     documentation = {
       max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
       max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
-      border = { '', '', '', ' ', '', '', '', ' ' },
-      winhighlight = 'FloatBorder:NormalFloat',
+      border = { "", "", "", " ", "", "", "", " " },
+      winhighlight = "FloatBorder:NormalFloat",
     },
   },
 }
@@ -125,6 +125,79 @@ local defaultSettings = {
 --     { name = "cmdline" },
 --   }),
 -- })
+
+mapping.preset.insert = function(override)
+  return merge_keymaps(override or {}, {
+    ["<Down>"] = {
+      i = mapping.select_next_item({ behavior = types.cmp.SelectBehavior.Select }),
+    },
+    ["<Up>"] = {
+      i = mapping.select_prev_item({ behavior = types.cmp.SelectBehavior.Select }),
+    },
+    ["<C-n>"] = {
+      i = mapping.select_next_item({ behavior = types.cmp.SelectBehavior.Insert }),
+    },
+    ["<C-p>"] = {
+      i = mapping.select_prev_item({ behavior = types.cmp.SelectBehavior.Insert }),
+    },
+    ["<C-y>"] = {
+      i = mapping.confirm({ select = false }),
+    },
+    ["<C-e>"] = {
+      i = mapping.abort(),
+    },
+  })
+end
+
+---Mapping preset cmdline-mode configuration.
+mapping.preset.cmdline = function(override)
+  return merge_keymaps(override or {}, {
+    ["<Tab>"] = {
+      c = function()
+        local cmp = require("cmp")
+        if cmp.visible() then
+          cmp.select_next_item()
+        else
+          feedkeys.call(keymap.t("<C-z>"), "n")
+        end
+      end,
+    },
+    ["<S-Tab>"] = {
+      c = function()
+        local cmp = require("cmp")
+        if cmp.visible() then
+          cmp.select_prev_item()
+        else
+          feedkeys.call(keymap.t("<C-z>"), "n")
+        end
+      end,
+    },
+    ["<C-n>"] = {
+      c = function(fallback)
+        local cmp = require("cmp")
+        if cmp.visible() then
+          cmp.select_next_item()
+        else
+          fallback()
+        end
+      end,
+    },
+    ["<C-p>"] = {
+      c = function(fallback)
+        local cmp = require("cmp")
+        if cmp.visible() then
+          cmp.select_prev_item()
+        else
+          fallback()
+        end
+      end,
+    },
+    ["<C-e>"] = {
+      c = mapping.close(),
+    },
+  })
+end
+
 -- -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 -- cmp.setup.cmdline("/", {{{name = "buffer"}}})
 -- -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).

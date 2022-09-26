@@ -15,18 +15,45 @@ function cmp_mappings()
     ["<C-x><C-s>"] = cmp.mapping.complete({
       config = { sources = { { name = "luasnip" } } },
     }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
+    ["<C-p>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
+        -- cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+      elseif has_words_before() then
+        cmp.complete()
       else
         fallback()
       end
+      -- if not cmp.visible() then
+      --   cmp.complete()
+      --   vim.wait(500, function()
+      --     return cmp.visible()
+      --   end)
+      -- end
+      -- cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
     end, { "i", "s", "c" }),
+
+    ["<C-n>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+        cmp.select_next_item()
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
+      end
+      -- if not cmp.visible() then
+      --   cmp.complete()
+      --   vim.wait(500, function()
+      --     return cmp.visible()
+      --   end)
+      -- end
+      -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+    end, { "i", "s", "c" }),
+
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_next_item()
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
       elseif luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
       elseif has_words_before() then
@@ -35,11 +62,22 @@ function cmp_mappings()
         fallback()
       end
     end, { "i", "s", "c" }),
+
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        -- cmp.select_prev_item()
+        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s", "c" }),
     ["<C-f>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_next_item({
-            behavior = require("cmp.types").cmp.SelectBehavior.Select,
+            behavior = cmp.SelectBehavior.Select,
           })(nil)
         end
       end
@@ -48,15 +86,21 @@ function cmp_mappings()
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_prev_item({
-            behavior = require("cmp.types").cmp.SelectBehavior.Select,
+            behavior = cmp.SelectBehavior.Select,
           })(nil)
         end
       end
     end, { "c", "i", "s" }),
-    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(2), { "c", "i", "s" }),
-    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-2), { "c", "i", "s" }),
+    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "c", "i", "s" }),
+    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "c", "i", "s" }),
     ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), { "c", "i", "s" }),
     -- ['<C-Space>'] = cmp.mapping.complete(),
+    -- ESC: only C ->
+    -- if cmp.visible() then
+    --   cmp.close()
+    -- else
+    --   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-c>', true, true, true), 'n', true)
+    -- end
     ["<C-Space>"] = cmp.mapping(
       cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Insert,
@@ -64,22 +108,13 @@ function cmp_mappings()
       }),
       { "c", "i", "s" }
     ),
-    ["<Right>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        return cmp.mapping.confirm({ select = true })()
-      end
-      fallback()
-    end, { "c" }),
-    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+    ["<CR>"] = cmp.mapping.confirm({ select = false }),
     ["<C-e>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         return cmp.abort()
       end
       cmp.complete()
     end, { "i", "c" }),
-
-    ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
-    ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
 
     -- ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }),
     -- ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp_types.SelectBehavior.Select }),

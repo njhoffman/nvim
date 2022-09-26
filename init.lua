@@ -3,6 +3,7 @@
 -- strace gvim -V9log.txt file.tex > stdout.txt 2> stderr.txt
 
 require("globals")
+
 for _, mod_name in ipairs({
   "project",
   "runner",

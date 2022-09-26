@@ -8,13 +8,13 @@ vim.g.clipboard = {
   name = "xsel",
   copy = {
     ["+"] = { "xsel", "--nodetach", "-i", "-b" },
-    ["*"] = { "xsel", "--nodetach", "-i", "-p" }
+    ["*"] = { "xsel", "--nodetach", "-i", "-p" },
   },
   paste = {
     ["+"] = { "xsel", "-o", "-b" },
-    ["*"] = { "xsel", "-o", "-p" }
+    ["*"] = { "xsel", "-o", "-p" },
   },
-  cache_enabled = 1
+  cache_enabled = 1,
 }
 vim.g.qf_disable_statusline = true -- This should be the default
 vim.g.Eunuch_find_executable = "fd" -- I use my fork of vim-eunuch
@@ -34,8 +34,8 @@ vim.g.vimtex_compiler_latexmk = {
     "-verbose",
     "-file-line-error",
     "-synctex=1",
-    "-interaction=nonstopmode"
-  }
+    "-interaction=nonstopmode",
+  },
 }
 vim.g["test#strategy"] = "neovim"
 vim.g.tex_flavor = "latex"
@@ -62,6 +62,33 @@ vim.g.indent_blankline_filetype_exclude = { "alpha", "NvimTree", "packer" }
 vim.g.indent_blankline_buftype_exclude = { "terminal" }
 vim.g.asyncrun_open = 6
 
+vim.g.markdown_fenced_languages = {
+  "awk",
+  "bash=sh",
+  "c",
+  "cpp",
+  "css",
+  "go",
+  "go",
+  "html",
+  "javascript",
+  "json",
+  "lua",
+  "python",
+  "ruby",
+  "rust",
+  "sh",
+  "shell=sh",
+  "sql",
+  "terraform",
+  "ts=typescript",
+  "vim=vimwiki",
+  "xml",
+  "yaml",
+  "yaml",
+  "zsh",
+}
+
 vim.lsp.log_levels["INSPECT"] = 4
 vim.lsp.log_levels["TASK"] = 4
 vim.lsp.log_levels["STATUS"] = 4
@@ -84,15 +111,22 @@ local disabled_built_ins = {
   "logipat",
   "rrhelper",
   "spellfile_plugin",
-  "matchit"
+  "matchit",
 }
 
-vim.tbl_map(
-  function(plugin) vim.g["loaded_" .. plugin] = 1 end,
-  disabled_built_ins
-)
+vim.tbl_map(function(plugin)
+  vim.g["loaded_" .. plugin] = 1
+end, disabled_built_ins)
 
-_G.__FILE__   = function() return debug.getinfo(2, 'S').source end
-_G.__LINE__   = function() return debug.getinfo(2, 'l').currentline end
-_G.__FNC__    = function() return debug.getinfo(2, 'n').name end
-_G.__FNCREF__ = function() return debug.getinfo(2, 'f').func end
+_G.__FILE__ = function()
+  return debug.getinfo(2, "S").source
+end
+_G.__LINE__ = function()
+  return debug.getinfo(2, "l").currentline
+end
+_G.__FNC__ = function()
+  return debug.getinfo(2, "n").name
+end
+_G.__FNCREF__ = function()
+  return debug.getinfo(2, "f").func
+end

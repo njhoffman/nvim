@@ -11,7 +11,7 @@ opt.register_option({
 
 opt.register_callback("indentsize", function()
   local bufnr = vim.api.nvim_get_current_buf()
-  local isize = opt.get_option_value('indentsize', bufnr)
+  local isize = opt.get_option_value("indentsize", bufnr)
   local format_str = "setlocal tabstop=%s softtabstop=%s shiftwidth=%s"
   cmd(string.format(format_str, isize, isize, isize))
   print("doing callback: " .. isize)
@@ -23,18 +23,18 @@ opt.register_option({
   type_info = "string",
   source = "user-options",
   global = true,
-  description = "Output method of user options (notifications or print)"
+  description = "Output method of user options (notifications or print)",
 })
 
 -- NOTIFICATIONS --
 -- notify_level_record, notify_level_show, notify_level_log
 opt.register_option({
   name = "notify_level_show",
-  default = "debug",
+  default = "info",
   type_info = "string",
   source = "settings",
   global = true,
-  description = "Cutoff level to show notifications (error, warn, info, debug, trace)"
+  description = "Cutoff level to show notifications (error, warn, info, debug, trace)",
 })
 opt.register_option({
   name = "notify_level_record",
@@ -42,7 +42,7 @@ opt.register_option({
   type_info = "string",
   source = "settings",
   global = true,
-  description = "Cutoff level to record notifications (error, warn, info, debug, trace)"
+  description = "Cutoff level to record notifications (error, warn, info, debug, trace)",
 })
 
 opt.register_option({
@@ -51,7 +51,7 @@ opt.register_option({
   type_info = "string",
   source = "settings",
   global = true,
-  description = "Cutoff level to log notifications (error, warn, info, debug, trace)"
+  description = "Cutoff level to log notifications (error, warn, info, debug, trace)",
 })
 
 -- PROJECT --
@@ -61,7 +61,7 @@ opt.register_option({
   type_info = "string",
   source = "project_nvim",
   buffer_local = true,
-  description = "Project path identified by lsp server or path"
+  description = "Project path identified by lsp server or path",
 })
 
 opt.register_option({
@@ -70,7 +70,7 @@ opt.register_option({
   type_info = "string",
   source = "project_nvim",
   buffer_local = true,
-  description = "Shortened project name for display"
+  description = "Shortened project name for display",
 })
 
 opt.register_option({
@@ -79,7 +79,7 @@ opt.register_option({
   type_info = "string",
   source = "project_nvim",
   buffer_local = true,
-  description = "Which LSP server or method identified the project"
+  description = "Which LSP server or method identified the project",
 })
 
 opt.register_option({

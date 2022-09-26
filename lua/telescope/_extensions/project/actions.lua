@@ -1,7 +1,7 @@
 local builtin = require("telescope.builtin")
 local actions = require("telescope.actions")
 local actions_state = require("telescope.actions.state")
-local transform_mod = require('telescope.actions.mt').transform_mod
+local transform_mod = require("telescope.actions.mt").transform_mod
 
 local _git = require("telescope._extensions.project.git")
 local _utils = require("telescope._extensions.project.utils")
@@ -39,14 +39,14 @@ M.add_project = function()
   end
 
   io.close(file)
-  print('Project added: ' .. path)
+  print("Project added: " .. path)
 end
 
 -- Rename the selected project within the `telescope_projects_file`.
 M.rename_project = function(prompt_bufnr)
   local selected_path = M.get_selected_path(prompt_bufnr)
   local selected_title = M.get_selected_title(prompt_bufnr)
-  local new_title = vim.fn.input('Rename ' .. selected_title .. ' to: ', selected_title)
+  local new_title = vim.fn.input("Rename " .. selected_title .. " to: ", selected_title)
   local projects = _utils.get_project_objects()
 
   local file = io.open(_utils.telescope_projects_file, "w")
@@ -64,19 +64,18 @@ end
 M.change_workspace = function(prompt_bufnr)
   local selected_path = M.get_selected_path(prompt_bufnr)
   local projects = _utils.get_project_objects()
-  local new_workspace = vim.fn.input('Move project to workspace: ')
+  local new_workspace = vim.fn.input("Move project to workspace: ")
 
   local file = io.open(_utils.telescope_projects_file, "w")
   for _, project in pairs(projects) do
     if project.path == selected_path then
-      project.workspace = 'w' .. new_workspace
+      project.workspace = "w" .. new_workspace
     end
     _utils.store_project(file, project)
   end
 
   io.close(file)
 end
-
 
 -- Delete (deactivate) the selected project from the `telescope_projects_file`
 M.delete_project = function(prompt_bufnr)
@@ -92,7 +91,7 @@ M.delete_project = function(prompt_bufnr)
   end
 
   io.close(file)
-  print('Project deleted: ' .. selected_path)
+  print("Project deleted: " .. selected_path)
 end
 
 -- Find files within the selected project using the
@@ -113,7 +112,11 @@ end
 M.browse_project_files = function(prompt_bufnr)
   local ok, file_browser = pcall(require, "telescope._extensions.file_browser")
   if not ok then
-    vim.notify("telescope-file-browser.nvim is required to use this action!", vim.log.levels.ERROR, { title = "telescope-project.nvim" })
+    vim.notify(
+      "telescope-file-browser.nvim is required to use this action!",
+      vim.log.levels.ERROR,
+      { title = "telescope-project.nvim" }
+    )
     return
   end
   local project_path = M.get_selected_path(prompt_bufnr)

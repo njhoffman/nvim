@@ -26,12 +26,7 @@ local default_options = {
       return string.format("%s %s", spinner, fidget_name)
     end,
     task = function(task_name, message, percentage)
-      return string.format(
-        "%s%s [%s]",
-        message,
-        percentage and string.format(" (%.0f%%)", percentage) or "",
-        task_name
-      )
+      return string.format("%s%s [%s]", message, percentage and string.format(" (%.0f%%)", percentage) or "", task_name)
     end,
   },
   debug = {
@@ -39,20 +34,18 @@ local default_options = {
   },
 }
 
-
-require("fidget").setup {
+require("fidget").setup({
   text = {
     --see ~/.vim/plugged/fidget.nvim/lua/fidget/spinners.lua
     spinner = "zip",
   },
   window = {
-    relative = "editor",
     blend = 50,
   },
   align = {
     bottom = true, -- align fidgets along bottom edge of buffer
     right = true, -- align fidgets along right edge of buffer
-  }
-}
+  },
+})
 
 vim.api.nvim_create_autocmd("VimLeavePre", { command = [[silent! FidgetClose]] })
