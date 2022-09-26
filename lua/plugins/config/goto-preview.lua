@@ -53,7 +53,7 @@ vim.api.nvim_set_keymap(
   { noremap = true }
 )
 
-vim.api.nvim_set_keymap("n", "", "<cmd>lua require('goto-preview').close_all_win()<CR>", { noremap = true })
+-- vim.api.nvim_set_keymap("n", "", "<cmd>lua require('goto-preview').close_all_win()<CR>", { noremap = true })
 
 vim.cmd([[
   " nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<cr>

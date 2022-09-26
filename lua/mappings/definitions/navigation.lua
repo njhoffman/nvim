@@ -145,7 +145,9 @@ return {
     long = "print path of current buffer",
   },
   goto_fileline = {
-    cmd = "0/\"\\|'<cr>gF",
+    cmd = "0/\"\\|'<cr>hgF",
+    -- cmd = [[0/"\|'/g]],
+    -- cmd = [[0/(["']\+.]],
     short = "edit file under line",
   },
   goto_file_virt = {

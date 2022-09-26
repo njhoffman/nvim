@@ -55,7 +55,8 @@ local setupConfig = {
     native_menu = false,
     ghost_text = true,
   },
-  preselect = types.cmp.PreselectMode.None, -- cmp.PreselectMode.None/Item,
+  -- preselect = types.cmp.PreselectMode.None, -- cmp.PreselectMode.None/Item,
+  preselect = types.cmp.PreselectMode.Item, -- cmp.PreselectMode.None/Item,
   completion = {
     get_trigger_characters = function(trigger_characters)
       local new_trigger_characters = {}
@@ -134,7 +135,6 @@ local setupConfig = {
       require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
     end,
   },
-
   -- {
   --   name           = "treesitter",
   --   priority       = 3,

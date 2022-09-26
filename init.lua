@@ -8,6 +8,7 @@ for _, mod_name in ipairs({
   "project",
   "runner",
   "devbox",
+  -- "codebox",
   "mappings",
   "plugins",
   "lsp-globals",
@@ -17,7 +18,6 @@ for _, mod_name in ipairs({
   "commands",
   "autocommands",
   "stats",
-  "codebox",
   "hover.setup",
   -- "dashboard"
 }) do

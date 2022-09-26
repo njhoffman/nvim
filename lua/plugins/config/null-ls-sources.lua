@@ -120,11 +120,11 @@ M.sources = {
   --   },
   -- }),
   null_ls.builtins.diagnostics.misspell.with({
-    filetypes = { "markdown", "text", "txt" },
+    filetypes = { "tex" },
     args = { "$FILENAME" },
   }),
   null_ls.builtins.diagnostics.write_good.with({
-    filetypes = { "markdown", "tex", "" },
+    filetypes = { "tex", "" },
     extra_filetypes = { "txt", "text" },
     args = { "--text=$TEXT", "--parse" },
     command = "write-good",

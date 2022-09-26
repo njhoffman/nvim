@@ -10,5 +10,7 @@ return telescope.register_extension({
   exports = {
     all = main.all,
     bash = main.topic("bash"),
+    -- lua = main.topic("lua"),
+    go = main.topic("go"),
   },
 })

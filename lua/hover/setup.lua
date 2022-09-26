@@ -16,7 +16,5 @@ require("hover").setup({
   title = false,
 })
 
--- Setup keymaps
-
 vim.keymap.set("n", "M", require("hover").hover, { desc = "hover.nvim" })
 vim.keymap.set("n", "gM", require("hover").hover_select, { desc = "hover.nvim (select)" })

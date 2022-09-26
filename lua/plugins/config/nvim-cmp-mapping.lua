@@ -10,6 +10,8 @@ end
 function cmp_mappings()
   local cmp = require("cmp")
   local luasnip = require("luasnip")
+  local sb_select = cmp.SelectBehavior.Select
+  local sb_insert = cmp.SelectBehavior.Insert
   return {
     ["<C-x><C-o>"] = cmp.mapping.complete(),
     ["<C-x><C-s>"] = cmp.mapping.complete({
@@ -17,8 +19,7 @@ function cmp_mappings()
     }),
     ["<C-p>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_prev_item()
-        -- cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+        cmp.select_prev_item({ behavior = sb_select })
       elseif has_words_before() then
         cmp.complete()
       else
@@ -35,8 +36,7 @@ function cmp_mappings()
 
     ["<C-n>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-        cmp.select_next_item()
+        cmp.select_next_item({ behavior = sb_select })
       elseif has_words_before() then
         cmp.complete()
       else
@@ -53,7 +53,7 @@ function cmp_mappings()
 
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+        cmp.select_next_item({ behavior = sb_select })
       elseif luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
       elseif has_words_before() then
@@ -62,11 +62,10 @@ function cmp_mappings()
         fallback()
       end
     end, { "i", "s", "c" }),
-
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         -- cmp.select_prev_item()
-        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+        cmp.select_prev_item({ behavior = sb_select })
       elseif luasnip.jumpable(-1) then
         luasnip.jump(-1)
       else
@@ -77,7 +76,7 @@ function cmp_mappings()
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_next_item({
-            behavior = cmp.SelectBehavior.Select,
+            behavior = sb_select,
           })(nil)
         end
       end
@@ -86,7 +85,7 @@ function cmp_mappings()
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_prev_item({
-            behavior = cmp.SelectBehavior.Select,
+            behavior = sb_select,
           })(nil)
         end
       end

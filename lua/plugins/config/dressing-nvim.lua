@@ -35,7 +35,7 @@ local defaults = {
       return conf
     end,
     -- see :help dressing_get_config
-    get_config = nil
+    get_config = nil,
   },
   select = {
     -- Set to false to disable the vim.ui.select implementation
@@ -45,32 +45,32 @@ local defaults = {
     -- Options for telescope selector
     -- These are passed into the telescope picker directly. Can be used like:
     -- telescope = require('telescope.themes').get_ivy({...})
-    telescope = nil,
+    telescope = require("telescope.themes").get_dropdown(),
     -- Options for fzf selector
     fzf = {
       window = {
         width = 0.5,
-        height = 0.4
-      }
+        height = 0.4,
+      },
     },
     -- Options for fzf_lua selector
     fzf_lua = {
       winopts = {
         width = 0.5,
-        height = 0.4
-      }
+        height = 0.4,
+      },
     },
     -- Options for nui Menu
     nui = {
       position = "50%",
       relative = "editor",
       border = {
-        style = "rounded"
+        style = "rounded",
       },
       min_width = 15,
       min_height = 1,
       max_width = 120,
-      max_height = 40
+      max_height = 40,
     },
     -- Options for built-in selector
     builtin = {
@@ -96,13 +96,13 @@ local defaults = {
         -- This is the config that will be passed to nvim_open_win.
         -- Change values here to customize the layout
         return conf
-      end
+      end,
     },
     -- Used to override format_item. See :help dressing-format
     format_item_override = {},
     -- see :help dressing_get_config
-    get_config = nil
-  }
+    get_config = nil,
+  },
 }
 
 require("dressing").setup(defaults)
@@ -110,17 +110,14 @@ require("dressing").setup(defaults)
 vim.ui._test_input = function(cb)
   local opts = {
     prompt = "Enter an input: ",
-    default = "placeholder text"
+    default = "placeholder text",
   }
-  vim.ui.input(
-    opts,
-    function(x)
-      print("Entered ", x)
-      if cb then
-        cb(x)
-      end
+  vim.ui.input(opts, function(x)
+    print("Entered ", x)
+    if cb then
+      cb(x)
     end
-  )
+  end)
 end
 
 local test_select = function(backend_name, cb)
@@ -134,38 +131,36 @@ local test_select = function(backend_name, cb)
   local items = {
     { name = "Item 1" },
     { name = "Item 2" },
-    { name = "Item 3" }
+    { name = "Item 3" },
   }
   local opts = {
     format_item = function(entry)
       return entry.name
-    end
+    end,
   }
   local selected
   opts.prompt = opts.prompt or "Title Test"
-  backend.select(backend_opt, items, opts,
-    function(item)
-      selected = item
-      if selected then
-        print("made selection with " .. backend_name .. " - " .. selected.name)
-      end
-      if cb then
-        cb(selected)
-      end
+  backend.select(backend_opt, items, opts, function(item)
+    selected = item
+    if selected then
+      print("made selection with " .. backend_name .. " - " .. selected.name)
     end
-  )
+    if cb then
+      cb(selected)
+    end
+  end)
 end
 
 vim.ui._test_select_telescope = function(cb)
-  test_select('telescope', cb)
+  test_select("telescope", cb)
 end
 
 vim.ui._test_select_nui = function(cb)
-  test_select('nui', cb)
+  test_select("nui", cb)
 end
 
 vim.ui._test_select_builtin = function(cb)
-  test_select('builtin', cb)
+  test_select("builtin", cb)
 end
 
 vim.ui._test_select = function(_cb)

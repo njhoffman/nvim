@@ -109,25 +109,10 @@ local document_highlight_provider = function(_, bufnr)
   })
 end
 
-local type_definition_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "<Leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", keymap_opts)
-  keymap("n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<CR>", keymap_opts)
-  -- if vim.fn.exists(":Telescope") then
-  --   -- buf_set_keymap('n', 'gt', '<cmd>Telescope lsp_type_definitions<CR>', opts)
-end
-
 local signature_help_provider = function(_, bufnr)
   local lsp_sig = require("lsp.signature")
   require("lsp_signature").on_attach(lsp_sig.cfg, bufnr)
   keymap_buf(bufnr, "n", "gK", "<cmd>lua vim.lsp.buf.signature_help()<CR>", keymap_opts)
-end
-
-local find_references_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", keymap_opts)
-  -- keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-  -- -- keymap("n", "<C-S-]>", "cyle references, diagnostics, gotofiles", opts)
-  -- if vim.fn.exists(":Telescope") then
-  --   -- buf_set_keymap('n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
 end
 
 local hover_provider = function(_, bufnr)
@@ -145,27 +130,68 @@ local code_action_provider = function(_, bufnr)
   -- keymap("n", "<leader>la", "<cmd>Telescope lsp_code_actions<CR>", opts)
 end
 
-local goto_definition_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", keymap_opts)
+local definition_provider = function(_, bufnr)
+  keymap_buf(bufnr, "n", "gqd", "<Cmd>lua vim.lsp.buf.definition()<CR>", keymap_opts)
+  if vim.fn.exists(":Telescope") then
+    local theme = 'require("telescope.themes").get_dropdown()'
+    keymap_buf(
+      bufnr,
+      "n",
+      "gd",
+      "<cmd>lua require('telescope.builtin').lsp_definitions(" .. theme .. ")<CR>",
+      keymap_opts
+    )
+  end
 end
 
 local implementation_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", keymap_opts)
-  -- keymap("n", "<leader>lI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  -- if vim.fn.exists(":Telescope") then
-  --   keymap("n", "<leader>gi", "<cmd>Telescope lsp_implementations<CR>", opts)
+  keymap_buf(bufnr, "n", "gqi", "<cmd>lua vim.lsp.buf.implementation()<CR>", keymap_opts)
+  if vim.fn.exists(":Telescope") then
+    local theme = 'require("telescope.themes").get_dropdown()'
+    keymap_buf(
+      bufnr,
+      "n",
+      "gI",
+      "<cmd>lua require('telescope.builtin').lsp_implementations(" .. theme .. ")<CR>",
+      keymap_opts
+    )
+  end
+end
+
+local references_provider = function(_, bufnr)
+  keymap_buf(bufnr, "n", "gqr", "<cmd>lua vim.lsp.buf.references()<CR>", keymap_opts)
+  if vim.fn.exists(":Telescope") then
+    local theme = 'require("telescope.themes").get_dropdown()'
+    keymap_buf(
+      bufnr,
+      "n",
+      "gr",
+      "<cmd>lua require('telescope.builtin').lsp_references(" .. theme .. ")<CR>",
+      keymap_opts
+    )
+  end
+end
+
+local type_definition_provider = function(_, bufnr)
+  keymap("n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<CR>", keymap_opts)
+  if vim.fn.exists(":Telescope") then
+    local theme = 'require("telescope.themes").get_dropdown()'
+    keymap_buf(
+      bufnr,
+      "n",
+      "gY",
+      "<cmd>lua require('telescope.builtin').lsp_type_definitions(" .. theme .. ")<CR>",
+      keymap_opts
+    )
+  end
 end
 
 local declaration_provider = function(_, bufnr)
   keymap_buf(bufnr, "n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", keymap_opts)
-  -- keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 end
 
 local rename_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", keymap_opts)
-
-  -- keymap("n", "<leader>gr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-  -- keymap("n", "gR", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+  keymap_buf(bufnr, "n", "gR", "<cmd>lua vim.lsp.buf.rename()<CR>", keymap_opts)
 end
 
 local document_symbol_provider = function(client, bufnr)
@@ -184,26 +210,11 @@ local workspace = function(_, bufnr)
     "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
     keymap_opts
   )
-
   -- keymap("n", "<leader>lwa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
   -- keymap("n", "<leader>lwr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
   -- keymap("n", "<leader>lwl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
 end
 
---
--- local function keybindings_hover_keyword(bufnr, server_capabilities, filetype)
---     if filetype == "lua" then
---         vim.opt_local.keywordprg = ":help"
---     elseif server_capabilities.hoverProvider then
---         if filetype ~= "vim" then
---             map_buf(bufnr, "K", vim.lsp.buf.hover)
---         end
---     else
---         map_buf(bufnr, "K", function()
---             vim.notify("Hover not supported by LSP.", vim.log.levels.ERROR)
---         end)
---     end
--- end
 --
 -- local function keybindings_organizeimports(bufnr, lsp_name)
 --     if lsp_name == "tsserver" then
@@ -230,9 +241,7 @@ end
 -- keymap("n", "<leader>ld", "<cmd>lua vim.diagnostic.show_line_diagnostics()<CR>", opts)
 -- keymap("n", "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 -- keymap("n", "<leader>k", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
--- keymap("n", "gff", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
 -- keymap("n", "ca", "<cmd>CodeActionMenu<cr>", opts)
---
 -- -- actions
 -- keymap("n", "<leader>lc", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 -- keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
@@ -242,12 +251,12 @@ local handlers = {
   codeLensProvider = code_lens_provider,
   colorProvider = color_provider,
   declarationProvider = declaration_provider,
+  definitionProvider = definition_provider,
   documentFormattingProvider = document_formatting_provider,
   documentFormattingRangeProvider = document_formatting_range_provider,
   documentHighlightProvider = document_highlight_provider,
   documentSymbolProvider = document_symbol_provider,
-  findReferencesProvider = find_references_provider,
-  gotoDefinitionProvider = goto_definition_provider,
+  referencesProvider = references_provider,
   hoverProvider = hover_provider,
   implementationProvider = implementation_provider,
   renameProvider = rename_provider,
