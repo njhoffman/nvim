@@ -19,7 +19,7 @@ local ext_methods = {
   { "cWORD", term_handler("cWORD") },
   { "man", man.handler },
   { "help", help.handler },
-  { "help", dict.handler },
+  -- { "help", dict.handler },
 }
 
 local lsp_methods = {

@@ -3,6 +3,7 @@ local M = {}
 local default_config = {
   preview_opts = {
     border = "single",
+    focusable = true,
   },
   title = true,
 }

@@ -17,7 +17,7 @@ function M.register(provider)
   end
 
   provider.execute = async.wrap(provider.execute, 1)
-  provider.enabled = async.wrap(provider.execute, 1)
+  provider.enabled = async.wrap(provider.enabled, 1)
   provider.id = id_cnt
   id_cnt = id_cnt + 1
 

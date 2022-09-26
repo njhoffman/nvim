@@ -28,4 +28,6 @@ local setup = function()
   au_commands.init(prev_bufnr, prev_winnr)
 end
 
-setup()
+vim.api.nvim_create_user_command("DevBox", function()
+  setup()
+end, { desc = "Open DevBox" })

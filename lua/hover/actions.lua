@@ -13,7 +13,11 @@ local M = {}
 local initialised = false
 
 local function is_enabled(provider)
-  return provider.enabled == nil or provider.enabled()
+  if type(provider.enabled == "function") then
+    return provider.enabled()
+  else
+    return provider.enabled
+  end
 end
 
 local function add_title(winnr, active_provider_id)
@@ -26,8 +30,12 @@ local function add_title(winnr, active_provider_id)
       title[#title + 1] = "%#Normal# "
     end
   end
-
-  vim.wo[winnr].winbar = table.concat(title, "")
+  local title_str = table.concat(title, "")
+  if string.len(vim.trim(title_str)) > 0 then
+    local win_height = vim.api.nvim_win_get_height(winnr)
+    vim.api.nvim_win_set_height(winnr, win_height + 1)
+  end
+  vim.wo[winnr].winbar = title_str
 end
 
 local function find_window_by_var(name, value)
@@ -59,7 +67,7 @@ end
 
 local function show_hover(provider_id, config, result, opts)
   local _, winnr = util.open_floating_preview(result.lines, result.filetype, opts)
-
+  vim.dbglog("CONFIG", config)
   if config.title then
     add_title(winnr, provider_id)
   end
@@ -115,7 +123,16 @@ end)
 M.hover_select = function()
   init()
 
-  vim.ui.select(vim.tbl_filter(is_enabled, providers), {
+  -- local enabled_providers = {}
+  -- for _, provider in ipairs(providers) do
+  --   if is_enabled(provider) then
+  --     table.insert(enabled_providers, provider)
+  --     return
+  --   end
+  -- end
+  local enabled_providers = providers
+
+  vim.ui.select(enabled_providers, {
     prompt = "Select hover:",
     format_item = function(provider)
       return provider.name

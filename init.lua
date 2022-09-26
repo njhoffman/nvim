@@ -7,6 +7,7 @@ require("globals")
 for _, mod_name in ipairs({
   "project",
   "runner",
+  "devbox",
   "mappings",
   "plugins",
   "lsp-globals",
