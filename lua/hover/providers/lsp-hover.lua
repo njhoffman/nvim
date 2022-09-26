@@ -1,12 +1,11 @@
-local async = require("hover.async")
+local util = vim.lsp.util
 
 local enabled = function(done)
-  for _, client in pairs(vim.lsp.buf_get_clients()) do
+  for _, client in pairs(vim.lsp.buf_get_active_clients()) do
     if client and client.supports_method("textDocument/hover") then
+      local params = util.make_position_params(0)
       vim.lsp.buf_request(0, "textDocument/hover", params, function(_, result, _, _)
-        if not result or not result.contents then
-          done(false)
-        else
+        if result and result.contents then
           done(true)
         end
       end)
@@ -16,16 +15,10 @@ local enabled = function(done)
 end
 
 local execute = function(done)
-  local util = require("vim.lsp.util")
-  local params = util.make_position_params()
+  local params = util.make_position_params(0)
   vim.lsp.buf_request(0, "textDocument/hover", params, function(_, result, _, _)
-    if not result or not result.contents then
-      done()
-      return
-    end
     local lines = util.convert_input_to_markdown_lines(result.contents)
     lines = util.trim_empty_lines(lines)
-
     if vim.tbl_isempty(lines) then
       done()
       return
