@@ -108,16 +108,15 @@ return function()
     -- +--- Prompt/Status ---+
     EndOfBuffer({ fg = clrs.nord1 }),
     ErrorMsg({ Error }),
-    -- ErrorMsg { fg = clrs.nord11 },
     WarningMsg({ fg = clrs.nord13 }),
     ModeMsg({ fg = clrs.nord10 }),
-    MoreMsg({ fg = clrs.nord8 }),
+    MoreMsg({ fg = clrs.nord8, gui = "bold" }),
     DebugMsg({ fg = Comment.fg }),
     Question({ fg = clrs.nord4 }),
     -- +--- LSP ---+
     DiagnosticWarn({ fg = clrs.nord13 }),
-    DiagnosticVirtualTextWarn({ fg = clrs.nord13.da(30), gui = "italic" }),
     DiagnosticHint({ fg = "#447Ddf" }),
+    DiagnosticVirtualTextWarn({ fg = clrs.nord13.da(30), gui = "italic" }),
     DiagnosticVirtualTextHint({ fg = "#246Daf", gui = "italic" }),
     LspFloatWinBorder({ bg = "none" }),
     LspDiagnosticsError({ fg = clrs.nord11 }),
@@ -126,10 +125,10 @@ return function()
     LspDiagnosticsDefaultError({ LspDiagnosticsError }),
     LspDiagnosticsDefaultHint({ LspDiagnosticsHint }),
     LspDiagnosticsDefaultInfo({ LspDiagnosticsInfo }),
+    LspDiagnosticsSignError({ fg = LspDiagnosticsError.fg.da(20) }),
     LspDiagnosticsSignWarn({ fg = clrs.nord13.da(20) }),
-    LspDiagnosticsSignError({ fg = LspDiagnosticsError.fg.da(40) }),
-    LspDiagnosticsSignHint({ fg = LspDiagnosticsHint.fg.da(40) }),
-    LspDiagnosticsSignInfo({ fg = LspDiagnosticsInfo.fg.da(40) }),
+    LspDiagnosticsSignHint({ fg = LspDiagnosticsHint.fg.da(20) }),
+    LspDiagnosticsSignInfo({ fg = LspDiagnosticsInfo.fg.da(20) }),
     DiffAdd({ bg = "#00361f" }), -- #00361f #001000 #22bb99
     DiffChange({ bg = "#003050" }), -- #003050 #001030 #646ead
     DiffDelete({ bg = "#3E0009" }), -- #3e0009 #300000 #be6069

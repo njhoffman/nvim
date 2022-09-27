@@ -6,6 +6,7 @@ let g:loaded_UnconditionalPaste = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
+
 let g:UnconditionalPaste_Mappings =
 \   [
 \       ['Char', 'c', '<C-c>'], ['Inlined', 'ci', '<C-i>'], ['JustJoined', 'cg'], ['CharCondensed', 'C', '<C-c><C-c>'],
@@ -103,8 +104,8 @@ endfunction
 call s:CreateMappings()
 delfunction s:CreateMappings
 
-nmap gP <Plug>UnconditionalPasteCharBefore
-nmap gp <Plug>UnconditionalPasteCharAfter
+nmap gP <plug>(YoinkPaste_gP)<Plug>(UnconditionalPasteCharBefore)
+nmap gp <plug>(YoinkPaste_gP)<Plug>(UnconditionalPasteCharAfter)
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

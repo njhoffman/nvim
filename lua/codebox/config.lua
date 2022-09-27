@@ -31,7 +31,7 @@ end
 
 return {
   conf = conf,
-  width = '80%',
+  width = "80%",
   setup = setup,
   default = default_conf,
   has_telescope = telescope.has_telescope,

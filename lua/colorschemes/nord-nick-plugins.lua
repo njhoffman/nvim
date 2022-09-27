@@ -79,6 +79,8 @@ return function()
 
     TaskFloat({ fg = "#9abcfb", gui = "bold" }),
     TaskFloatBorder({ fg = "#2151a1" }),
+    -- FoldIcon({ fg = "#4B4BBB" }),
+    FoldText({ fg = "#8181f1" }),
 
     -- +--- GitSigns ---+
     GitSignsAddFaded({ fg = clr_over.green_faded }),
@@ -383,7 +385,7 @@ return function()
     BufferInactiveMod({ fg = colors.yellow, bg = "#1C1F24" }),
     BufferInactiveSign({ fg = colors.light_gray, bg = "#1C1F24" }),
     BufferInactiveTarget({ fg = colors.red, bg = "#1C1F24", gui = "bold" }),
-    TabLineFill({ fg = "NONE", bg = colors.bg }),
+    TabLineFill({ fg = "NONE", bg = colors.bg_dark }),
     -- TabLine({ fg = colors.bg, bg = colors.bg_dark }),
     -- TabLineSel({ fg = colors.bg, bg = colors.bg_dark }),
 

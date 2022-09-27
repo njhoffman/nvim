@@ -84,17 +84,22 @@ require("mason").setup(mason_settings)
 require("mason-lspconfig").setup(lspconfig_settings)
 require("mason-tool-installer").setup(tool_settings)
 
-local def_capabilities = vim.lsp.protocol.make_client_capabilities()
-require("cmp_nvim_lsp").update_capabilities(def_capabilities)
-def_capabilities.textDocument.completion.completionItem.snippetSupport = true
-def_capabilities.textDocument.completion.completionItem.resolveSupport = {
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true,
+}
+require("cmp_nvim_lsp").update_capabilities(capabilities)
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = { "documentation", "detail", "additionalTextEdits" },
 }
 
 lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_config, {
   on_attach = on_attach,
-  capabilities = def_capabilities,
+  capabilities = capabilities,
 })
+
 require("mason-lspconfig").setup_handlers({
   function(server_name) -- default handler (optional)
     vim.notify("setting up lsp: " .. server_name, "trace")

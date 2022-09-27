@@ -74,6 +74,7 @@ opt("fileencoding", "utf-8")
 opt("whichwrap", "b,s,<,>,[,],h,l")
 opt("autoread", true)
 -- opt("completeopt", "menuone,longest")
+opt("foldmethod", "manual")
 
 -- window scope
 opt("concealcursor", "nc", window)
