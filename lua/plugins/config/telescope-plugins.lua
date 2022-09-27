@@ -1,57 +1,57 @@
-local sorters = require "telescope.sorters"
+local sorters = require("telescope.sorters")
 local tele_mappings = require("plugins.config.telescope-mappings")
 local H = require("helpers")
 local actions = require("telescope.actions")
 
 local tele_plugs = {
-  ["env"]             = "telescope-env.nvim",
-  ["devhints"]        = "devhints.nvim",
-  ["fences"]          = "telescope-fences.nvim",
-  ["filetypes"]       = "telescope-filetypes.nvim",
-  ["find_pickers"]    = "telescope-find-pickers.nvim",
-  ["gotofile"]        = "telescope-gotofiles.nvim",
-  ["mapper"]          = "telescope-mapper.nvim",
-  ["options"]         = "telescope-options.nvim",
-  ["variables"]       = "telescope-variables.nvim",
-  ["notify"]          = "telescope-notify.nvim",
-  ["which-key"]       = "which-key.nvim",
+  ["env"] = "telescope-env.nvim",
+  ["devhints"] = "devhints.nvim",
+  ["fences"] = "telescope-fences.nvim",
+  ["filetypes"] = "telescope-filetypes.nvim",
+  ["find_pickers"] = "telescope-find-pickers.nvim",
+  ["gotofile"] = "telescope-gotofiles.nvim",
+  ["mapper"] = "telescope-mapper.nvim",
+  ["options"] = "telescope-options.nvim",
+  ["variables"] = "telescope-variables.nvim",
+  ["notify"] = "telescope-notify.nvim",
+  ["which-key"] = "which-key.nvim",
   --
-  ["aerial"]          = "aerial.nvim",
-  ["arecibo"]         = "telescope-arecibo.nvim",
-  ["asynctasks"]      = "telescope-asynctasks.nvim",
-  ["bookmarks"]       = "telescope-bookmarks.nvim",
-  ["changes"]         = "telescope-changes.nvim",
-  ["cheatsheet"]      = "cheatsheet.nvim",
-  ["cder"]            = "cder.nvim",
+  ["aerial"] = "aerial.nvim",
+  ["arecibo"] = "telescope-arecibo.nvim",
+  ["asynctasks"] = "telescope-asynctasks.nvim",
+  ["bookmarks"] = "telescope-bookmarks.nvim",
+  ["changes"] = "telescope-changes.nvim",
+  ["cheatsheet"] = "cheatsheet.nvim",
+  ["cder"] = "cder.nvim",
   ["command_palette"] = "telescope-command-palette.nvim",
-  ["dap"]             = "telescope-dap.nvim",
-  ["file_browser"]    = "telescope-file-browser.nvim",
-  ["frecency"]        = "telescope-frecency.nvim",
-  ["fzf"]             = "telescope-fzf-native.nvim",
-  ["gh"]              = "telescope-github.nvim",
-  ["ghn"]             = "github-notifications",
-  ["ghq"]             = "telescope-ghq.nvim",
-  ["heading"]         = "telescope-heading.nvim",
-  ["hop"]             = "telescope-hop.nvim",
-  ["howdoi"]          = "howdoi.nvim",
-  ["lazygit"]         = "lazygit.nvim",
-  ["live_grep_args"]  = "telescope-rg.nvim",
-  ["luasnip"]         = "telescope-luasnip.nvim",
+  ["dap"] = "telescope-dap.nvim",
+  ["file_browser"] = "telescope-file-browser.nvim",
+  ["frecency"] = "telescope-frecency.nvim",
+  ["fzf"] = "telescope-fzf-native.nvim",
+  ["gh"] = "telescope-github.nvim",
+  ["ghn"] = "github-notifications",
+  ["ghq"] = "telescope-ghq.nvim",
+  ["heading"] = "telescope-heading.nvim",
+  ["hop"] = "telescope-hop.nvim",
+  ["howdoi"] = "howdoi.nvim",
+  ["lazygit"] = "lazygit.nvim",
+  ["live_grep_args"] = "telescope-rg.nvim",
+  ["luasnip"] = "telescope-luasnip.nvim",
   -- ["make"]            = "telescope-makefile",
-  ["media_files"]     = "telescope-media-files.nvim",
-  ["neoclip"]         = "nvim-neoclip.lua",
-  ["node_modules"]    = "telescope-node-modules.nvim",
-  ["npm"]             = "telescope-npm.nvim",
-  ["openbrowser"]     = "telescope-openbrowser.nvim",
+  ["media_files"] = "telescope-media-files.nvim",
+  ["neoclip"] = "nvim-neoclip.lua",
+  ["node_modules"] = "telescope-node-modules.nvim",
+  ["npm"] = "telescope-npm.nvim",
+  ["openbrowser"] = "telescope-openbrowser.nvim",
   -- ["packer"] = "telescope-packer.nvim",
-  ["ports"]           = "telescope-ports.nvim",
-  ["project"]         = "telescope-project.nvim",
-  ["repo"]            = "telescope-repo.nvim",
-  ["session-lens"]    = "session-lens",
-  ["tmux"]            = "telescope-tmux.nvim",
-  ["ui-select"]       = "telescope-ui-select.nvim",
-  ["vimwiki"]         = "telescope-vimwiki.nvim",
-  ["z"]               = "telescope-z.nvim"
+  ["ports"] = "telescope-ports.nvim",
+  ["project"] = "telescope-project.nvim",
+  ["repo"] = "telescope-repo.nvim",
+  ["session-lens"] = "session-lens",
+  ["tmux"] = "telescope-tmux.nvim",
+  ["ui-select"] = "telescope-ui-select.nvim",
+  ["vimwiki"] = "telescope-vimwiki.nvim",
+  ["z"] = "telescope-z.nvim",
 }
 
 local M = {}
@@ -70,39 +70,38 @@ M.load_extensions = function(telescope)
     end
   end
 
-  local end_msg = "Loaded " ..
-    H.table_len(installed) .. " out of " .. H.table_len(tele_plugs) .. " telescope plugins"
+  local end_msg = "Loaded " .. H.table_len(installed) .. " out of " .. H.table_len(tele_plugs) .. " telescope plugins"
   vim.notify(end_msg, "trace")
   return telescope
 end
 
 M.extensions.file_browser = {
   theme = "ivy",
-  mappings = tele_mappings.file_picker
+  mappings = tele_mappings.file_picker,
 }
 
 M.extensions.openbrowser = {
   -- Add bookmark urls
   bookmarks = {
-    ["luv docs"] = "https://github.com/luvit/luv/blob/master/docs.md"
+    ["luv docs"] = "https://github.com/luvit/luv/blob/master/docs.md",
   },
-  bookmark_filepath = "~/.vim/telescope_openbrowser_bookmarks"
+  bookmark_filepath = "~/.vim/telescope_openbrowser_bookmarks",
 }
 
 M.extensions.packer = {
   theme = "ivy",
   layout_config = {
-    height = .5
-  }
+    height = 0.5,
+  },
 }
 
-M.extensions.howdoi = vim.tbl_deep_extend('force', {
+M.extensions.howdoi = vim.tbl_deep_extend("force", {
   -- How many answers to return in the response.
   num_answers = 3,
   -- The binary to execute the howdoi command with.
-  command_executor = { 'bash', '-c' },
+  command_executor = { "bash", "-c" },
   -- The command to pipe the results into for paging.
-  pager_command = 'less -RS',
+  pager_command = "less -RS",
   -- Mapping	Action
   -- Ctrl + d	Scroll the results down
   -- Ctrl + u	Scroll the results up
@@ -111,39 +110,39 @@ M.extensions.howdoi = vim.tbl_deep_extend('force', {
   -- Ctrl + v	Pastes the results into a new vertical split
   -- Ctrl + x	Pastes the results into a new horizontal split
   -- Ctrl + r	Removes the selected query from the list
-}, require('telescope.themes').get_dropdown())
+}, require("telescope.themes").get_dropdown())
 
 M.extensions.cder = {
   -- Ctrl + d	Scroll the preview down
   -- Ctrl + u	Scroll the preview up
   -- The title of the prompt.
-  prompt_title = 'cder',
+  prompt_title = "cder",
 
   -- The command used to generate a list of directories.
   -- Defaults to fd on the home directory.
   -- Example for showing hidden directories:
   --   dir_command = { 'fd', '--hidden', '--type=d', '.', os.getenv('HOME') },
-  dir_command = { 'fd', '--type=d', '.', os.getenv('HOME') },
+  dir_command = { "fd", "--type=d", ".", os.getenv("HOME") },
 
   -- The binary used to execute previewer_command | pager_command.
   -- This is needed because termopen in Neovim does not support piping
   -- multiple commands, so we get around this by just using bash -c.
-  command_executer = { 'bash', '-c' },
+  command_executer = { "bash", "-c" },
 
   -- The command used to preview directories. Defaults to ls.
-  previewer_command = 'exa ' ..
-    '-a ' ..
-    '--color=always ' ..
-    '-T ' ..
-    '--level=3 ' ..
-    '--icons ' ..
-    '--git-ignore ' ..
-    '--long ' ..
-    '--no-permissions ' ..
-    '--no-user ' ..
-    '--no-filesize ' ..
-    '--git ' ..
-    '--ignore-glob=.git',
+  previewer_command = "exa "
+    .. "-a "
+    .. "--color=always "
+    .. "-T "
+    .. "--level=3 "
+    .. "--icons "
+    .. "--git-ignore "
+    .. "--long "
+    .. "--no-permissions "
+    .. "--no-user "
+    .. "--no-filesize "
+    .. "--git "
+    .. "--ignore-glob=.git",
 
   -- The command used to page directory previews. Defaults to bat.
   -- Receives the output of the previewer_command as input.
@@ -160,10 +159,9 @@ M.extensions.cder = {
     return {
       value = line,
       display = function(entry)
-        return ' ' ..
-          line:gsub(os.getenv('HOME') .. '/', ''), {
-            { { 1, 3 }, 'Directory' },
-          }
+        return " " .. line:gsub(os.getenv("HOME") .. "/", ""), {
+          { { 1, 3 }, "Directory" },
+        }
       end,
       ordinal = line,
     }
@@ -171,9 +169,9 @@ M.extensions.cder = {
 }
 
 M.extensions["ui-select"] = {
-  require("telescope.themes").get_dropdown {
+  require("telescope.themes").get_dropdown({
     -- even more opts
-  }
+  }),
   -- pseudo code / specification for writing custom displays, like the one
   -- for "codeactions"
   -- specific_opts = {
@@ -197,16 +195,18 @@ M.extensions.command_palette = {
     { "file browser (C-i)", ":lua require'telescope'.extensions.file_browser.file_browser()", 1 },
     { "search word (A-w)", ":lua require('telescope.builtin').live_grep()", 1 },
     { "git files (A-f)", ":lua require('telescope.builtin').git_files()", 1 },
-    { "files (C-f)", ":lua require('telescope.builtin').find_files()", 1 }
-  }, {
+    { "files (C-f)", ":lua require('telescope.builtin').find_files()", 1 },
+  },
+  {
     "Help",
     { "tips", ":help tips" },
     { "cheatsheet", ":help index" },
     { "tutorial", ":help tutor" },
     { "summary", ":help summary" },
     { "quick reference", ":help quickref" },
-    { "search help(F1)", ":lua require('telescope.builtin').help_tags()", 1 }
-  }, {
+    { "search help(F1)", ":lua require('telescope.builtin').help_tags()", 1 },
+  },
+  {
     "Vim",
     { "reload vimrc", ":source $MYVIMRC" },
     { "check health", ":checkhealth" },
@@ -224,8 +224,8 @@ M.extensions.command_palette = {
     { "cursor column", ":set cursorcolumn!" },
     { "spell checker", ":set spell!" },
     { "relative number", ":set relativenumber!" },
-    { "search highlighting (F12)", ":set hlsearch!" }
-  }
+    { "search highlighting (F12)", ":set hlsearch!" },
+  },
 }
 
 -- Frecency:
@@ -236,7 +236,7 @@ M.extensions.command_palette = {
 local baseDirs = {
   home = vim.fn.expand("$HOME"),
   config = vim.fn.stdpath("config"),
-  data = vim.fn.stdpath("data")
+  data = vim.fn.stdpath("data"),
 }
 
 M.extensions.frecency = {
@@ -260,22 +260,22 @@ M.extensions.frecency = {
     ["zettel"] = baseDirs.home .. "/zettelkasten",
     ["zk"] = baseDirs.home .. "/zettelkasten",
     ["zinit"] = baseDirs.home .. "/.zinit",
-    ["zsh"] = baseDirs.home .. "/.config/zsh"
-  }
+    ["zsh"] = baseDirs.home .. "/.config/zsh",
+  },
 }
 
 M.extensions.fzf = {
   fuzzy = true, -- false will only do exact matching
   override_generic_sorter = true, -- override the generic sorter
   override_file_sorter = true, -- override the file sorter
-  case_mode = "smart_case" -- or "ignore_case" or "respect_case"
+  case_mode = "smart_case", -- or "ignore_case" or "respect_case"
 }
 
 M.extensions.bookmarks = {
   selected_browser = "chrome",
   url_open_command = "xdg-open",
   url_open_plugin = nil, -- vim_external, open_browser
-  firefox_profile_name = nil
+  firefox_profile_name = nil,
 }
 
 M.extensions.live_grep_args = {
@@ -295,30 +295,28 @@ M.extensions.live_grep_args = {
     ["<c-u>"] = false,
     ["<a-n>"] = actions.toggle_selection + actions.move_selection_next,
     ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous,
-    ["<cr>"] = actions.select_default + actions.center
-  }
+    ["<cr>"] = actions.select_default + actions.center,
+  },
 }
 
 M.extensions.media_files = {
   filetypes = { "png", "webp", "jpg", "jpeg", "webm", "pdf", "mp4", "svg", "mpv", "mkv" },
-  find_cmd = "fd" -- find command (defaults to `fd`)
+  find_cmd = "fd", -- find command (defaults to `fd`)
   -- sudo apt install uberzug ffmpegthumbnailer poppler-utils epub-utils
   -- font-viewer (fontpreview)? fd, rg, etc
 }
 
 M.extensions.z = {
-  cmd = { 'z', '-l' },
+  cmd = { "z", "-l" },
   -- cmd = { vim.o.shell, '-c', 'z -l' },
 }
-
 
 M.extensions.arecibo = {
   ["selected_engine"] = "google",
   ["url_open_command"] = "xdg-open",
   ["show_http_headers"] = false,
-  ["show_domain_icons"] = true
+  ["show_domain_icons"] = true,
 }
-
 
 M.extensions.project = {
   --[[ base_dirs = {
@@ -331,19 +329,19 @@ M.extensions.project = {
   base_dirs = {
     {
       path = "~/git",
-      max_depth = 4
+      max_depth = 4,
     },
     {
       path = "~/ghq",
-      max_depth = 4
-    }
+      max_depth = 4,
+    },
   },
   hidden_files = true,
-  theme = "dropdown"
+  theme = "dropdown",
 }
 
 M.extensions.mapper = {
-  sorter = sorters.fuzzy_with_index_bias
+  sorter = sorters.fuzzy_with_index_bias,
   -- sorter = sorters.highlighter_only
 }
 return M

@@ -36,7 +36,7 @@ M.log = function(...)
   log:new(config)
   log.info(msg)
 
-  local notify = require("{notify")
+  local notify = require("notify")
   local notify_msg = logutils.make_string(msg)
   local args = {}
   args.timeout = 5000
@@ -47,7 +47,7 @@ M.log = function(...)
   end
 
   local lines = vim.split(notify_msg, "\n")
-  if (#lines >= currheight) then
+  if #lines >= currheight then
     notify_msg = table.concat(vim.list_slice(lines, 0, currheight - 3), "\n")
     notify_msg = notify_msg .. "\n..." .. #lines .. " more lines not shown"
   end
@@ -77,11 +77,11 @@ M.inspect = function(...)
       vim.api.nvim_buf_set_keymap(buf, "n", "gf", "", { callback = cb })
       vim.api.nvim_buf_set_keymap(buf, "n", "<2-LeftMouse>", "", { callback = cb })
       vim.api.nvim_buf_set_option(buf, "filetype", "lua")
-    end
+    end,
   }
 
   local lines = vim.split(notify_msg, "\n")
-  if (#lines >= currheight) then
+  if #lines >= currheight then
     notify_msg = table.concat(vim.list_slice(lines, 0, currheight - 3), "\n")
     notify_msg = notify_msg .. "\n..." .. #lines .. " more lines not shown"
   end

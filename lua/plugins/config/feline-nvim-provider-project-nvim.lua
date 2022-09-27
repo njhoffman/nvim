@@ -35,7 +35,9 @@ local project_left_sep = function()
     bg = "#224488",
     style = "bold",
   }
-  if project_path == nil then val.bg = "#333333" end
+  if project_path == nil then
+    val.bg = "#333333"
+  end
   return val
 end
 
@@ -57,5 +59,5 @@ return {
   right_sep = project_right_sep,
   window_number = function()
     return tostring(vim.api.nvim_win_get_number(0))
-  end
+  end,
 }

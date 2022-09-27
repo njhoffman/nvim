@@ -1,181 +1,146 @@
 vim.g.UnconditionalPaste_no_mappings = 1
 
--- nmap <Leader>Pc <Plug>UnconditionalPasteCharBefore
--- nmap <Leader>pc <Plug>UnconditionalPasteCharAfter
--- nmap <Leader>Pn <Plug>UnconditionalPasteInlinedBefore
--- nmap <Leader>pn <Plug>UnconditionalPasteInlinedAfter
+vim.cmd([=[
+  let g:UnconditionalPaste_Mappings =
+  \   [
+  \       ['Char', 'c', '<C-c>'], ['Inlined', 'ci', '<C-i>'], ['JustJoined', 'cg'], ['CharCondensed', 'C', '<C-c><C-c>'],
+  \   ]
+
+  function! s:CreateMappings()
+    for l:mapping in copy(g:UnconditionalPaste_Mappings)
+      let [l:pasteName, l:how] = l:mapping[0:1]
+      for [l:direction, l:pasteCmd] in [['After', 'p'], ['Before', 'P']]
+        let l:mappingName = 'UnconditionalPaste' . l:pasteName . l:direction
+        let l:plugMappingName = '<Plug>' . l:mappingName
+
+        " Do not create default mappings for the special paste repeats.
+        let l:pasteMappingDefaultKeys = (l:how[0] == '.' ? '' : l:how . l:pasteCmd)
+
+        if l:pasteName =~# 'Indent\|^Commented$'
+          if l:pasteName ==# 'Indented'
+              let l:pasteMappingDefaultKeys = ']' . l:pasteCmd
+          elseif l:pasteName ==# 'MoreIndent'
+              let l:pasteMappingDefaultKeys = ']]' . l:pasteCmd
+          elseif l:pasteName ==# 'LessIndent'
+              let l:pasteMappingDefaultKeys = '[[' . l:pasteCmd
+          endif
+          " This is a variant of forced linewise paste (glp) that uses ]p
+          " instead of p for pasting.
+          let l:pasteCmd = ']' . l:pasteCmd
+        elseif l:pasteName ==# 'Expression'
+          " ge / gE are built-in motions; we don't want to introduce a
+          " delay there by creating mappings starting with the same " key sequence.
+            let l:pasteMappingDefaultKeys = '=' . l:pasteCmd
+          elseif l:pasteName ==# 'RecallExpression'
+            let l:pasteMappingDefaultKeys = '==' . l:pasteCmd
+          endif
+
+          if index(['Delimited', 'Queried', 'Unjoin', 'Grep', 'InvertedGrep', 'Expression', 'Combinatorial'], l:pasteName) != -1
+            " On repeat of one of the mappings that query, we want to skip
+            " the query and recall the last queried separator instead.
+            let l:mappingName = 'UnconditionalPasteRecall' . l:pasteName . l:direction
+          elseif index(['Plus', 'GPlus'], l:pasteName) != -1
+            " On repeat of the UnconditionalPastePlus/GPlus mappings, we want to
+            " continue increasing with the last used (saved) offset, and at the same
+            " number position (after the first paste, the cursor will have jumped to the beginning of the pasted text).
+            let l:mappingName = 'UnconditionalPaste' . l:pasteName . 'Repeat' . l:direction
+          endif
+          execute printf('nnoremap <silent> %s :<C-u>' .
+            \   'execute ''silent! call repeat#setreg("\<lt>Plug>%s", v:register)''<Bar>' .
+            \   'if v:register ==# "="<Bar>' .
+            \   '    call UnconditionalPaste#HandleExprReg(getreg("="))<Bar>' .
+            \   'endif<Bar>' .
+            \   'if ! UnconditionalPaste#Paste(v:register, "n", %s, %s)<Bar>' .
+            \   '   echoerr ingo#err#Get()<Bar>' .
+            \   'endif<Bar>' .
+            \   'silent! call repeat#set("\<lt>Plug>%s", UnconditionalPaste#GetCount())<CR>',
+            \
+            \   l:plugMappingName,
+            \   l:mappingName,
+            \   string(l:how),
+            \   string(l:pasteCmd),
+            \   l:mappingName
+            \)
+          if ! exists('g:UnconditionalPaste_no_mappings') && ! hasmapto(l:plugMappingName, 'n') && ! empty(l:pasteMappingDefaultKeys)
+            execute printf('nmap g%s %s',
+              \   l:pasteMappingDefaultKeys,
+              \   l:plugMappingName
+              \)
+          endif
+      endfor
+    endfor
+
+    for [l:pasteName, l:how, l:pasteKey] in filter(copy(g:UnconditionalPaste_Mappings), '! empty(get(v:val, 2, ""))')
+      let l:plugMappingName = '<Plug>UnconditionalPaste' . l:pasteName . 'I'
+      " XXX: Can only use i_CTRL-R here (though I want literal insertion, not
+      " as typed); i_CTRL-R_CTRL-R with the expression register cannot insert
+      " newlines (^@ are inserted), and i_CTRL-R_CTRL-O inserts above the
+      " current line when the register ends with a newline.
+      for l:mode in ['i', 'c']
+        execute printf('%snoremap <silent> %s <C-r>=UnconditionalPaste#Insert(nr2char(getchar()), %s, %s, %d)<CR>',
+          \   l:mode,
+          \   l:plugMappingName,
+          \   string(l:mode),
+          \   string(l:how),
+          \   (l:mode ==# 'i')
+          \)
+        if ! exists('g:UnconditionalPaste_no_mappings') && ! hasmapto(l:plugMappingName, l:mode)
+          execute printf('%smap <C-r>%s %s',
+            \   l:mode,
+            \   l:pasteKey,
+            \   l:plugMappingName
+            \)
+        endif
+      endfor
+    endfor
+  endfunction
+
+  call s:CreateMappings()
+  delfunction s:CreateMappings
+
+  nmap gP <Plug>UnconditionalPasteCharBefore
+  nmap gp <Plug>UnconditionalPasteCharAfter
+]=])
+
+
 -- nmap <Leader>Pj <Plug>UnconditionalPasteJustJoinedBefore
--- nmap <Leader>pj <Plug>UnconditionalPasteJustJoinedAfter
 -- nmap <Leader>PC <Plug>UnconditionalPasteCharCondensedBefore
--- nmap <Leader>pC <Plug>UnconditionalPasteCharCondensedAfter
 -- nmap <Leader>Pl <Plug>UnconditionalPasteLineBefore
--- nmap <Leader>pl <Plug>UnconditionalPasteLineAfter
 -- nmap <Leader>Pb <Plug>UnconditionalPasteBlockBefore
--- nmap <Leader>pb <Plug>UnconditionalPasteBlockAfter
 -- nmap <Leader>Pi <Plug>UnconditionalPasteIndentedBefore
--- nmap <Leader>pi <Plug>UnconditionalPasteIndentedAfter
 -- nmap <Leader>Pm <Plug>UnconditionalPasteMoreIndentBefore
--- nmap <Leader>pm <Plug>UnconditionalPasteMoreIndentAfter
 -- nmap <Leader>Pl <Plug>UnconditionalPasteLessIndentBefore
--- nmap <Leader>pl <Plug>UnconditionalPasteLessIndentAfter
 -- nmap <Leader>P> <Plug>UnconditionalPasteShiftedBefore
--- nmap <Leader>p> <Plug>UnconditionalPasteShiftedAfter
 -- nmap <Leader>P# <Plug>UnconditionalPasteCommentedBefore
--- nmap <Leader>p# <Plug>UnconditionalPasteCommentedAfter
 -- nmap <Leader>Ps <Plug>UnconditionalPasteSpacedBefore
--- nmap <Leader>ps <Plug>UnconditionalPasteSpacedAfter
 -- nmap <Leader>PS <Plug>UnconditionalPasteParagraphedBefore
--- nmap <Leader>pS <Plug>UnconditionalPasteParagraphedAfter
 -- nmap <Leader>PB <Plug>UnconditionalPasteJaggedBefore
--- nmap <Leader>pB <Plug>UnconditionalPasteJaggedAfter
 -- nmap <Leader>Pd <Plug>UnconditionalPasteDelimitedBefore
--- nmap <Leader>pd <Plug>UnconditionalPasteDelimitedAfter
 -- nmap <Leader>PD <Plug>UnconditionalPasteRecallDelimitedBefore
--- nmap <Leader>pD <Plug>UnconditionalPasteRecallDelimitedAfter
 -- nmap <Leader>P, <Plug>UnconditionalPasteCommaBefore
--- nmap <Leader>p, <Plug>UnconditionalPasteCommaAfter
 -- nmap <Leader>P' <Plug>UnconditionalPasteCommaSingleQuoteBefore
--- nmap <Leader>p' <Plug>UnconditionalPasteCommaSingleQuoteAfter
 -- nmap <Leader>P" <Plug>UnconditionalPasteCommaDoubleQuoteBefore
--- nmap <Leader>p" <Plug>UnconditionalPasteCommaDoubleQuoteAfter
 -- nmap <Leader>P,n <<Plug>UnconditionalPasteCommaNorBefore
--- nmap <Leader>p,n <Plug>UnconditionalPasteCommaNorAfter
 -- nmap <Leader>P,o <Plug>UnconditionalPasteCommaOrBefore
--- nmap <Leader>p,o <Plug>UnconditionalPasteCommaOrAfter
--- nmap <Leader>P,a <Plug>UnconditionalPasteCommaAndBefore
--- nmap <Leader>p,a <Plug>UnconditionalPasteCommaAndAfter
--- nmap <Leader>Pq <Plug>UnconditionalPasteQueriedBefore
 -- nmap <Leader>pq <Plug>UnconditionalPasteQueriedAfter
--- nmap <Leader>PQ <Plug>UnconditionalPasteRecallQueriedBefore
 -- nmap <Leader>pQ <Plug>UnconditionalPasteRecallQueriedAfter
--- nmap <Leader>Pgq <Plug>UnconditionalPasteQueriedJoinedBefore
--- nmap <Leader>pgq <Plug>UnconditionalPasteQueriedJoinedAfter
 -- nmap <Leader>PgQ <Plug>UnconditionalPasteRecallQueriedJoinedBefore
--- nmap <Leader>pgQ <Plug>UnconditionalPasteRecallQueriedJoinedAfter
 -- nmap <Leader>Puj <Plug>UnconditionalPasteUnjoinBefore
--- nmap <Leader>puj <Plug>UnconditionalPasteUnjoinAfter
 -- nmap <Leader>PUJ <Plug>UnconditionalPasteRecallUnjoinBefore
--- nmap <Leader>pUJ <Plug>UnconditionalPasteRecallUnjoinAfter
 -- nmap <Leader>Pr <Plug>UnconditionalPasteGrepBefore
--- nmap <Leader>pr <Plug>UnconditionalPasteGrepAfter
 -- nmap <Leader>P! <Plug>UnconditionalPasteInvertedGrepBefore
--- nmap <Leader>p! <Plug>UnconditionalPasteInvertedGrepAfter
 -- nmap <Leader>PR <Plug>UnconditionalPasteRecallGrepBefore
--- nmap <Leader>pR <Plug>UnconditionalPasteRecallGrepAfter
 -- nmap <Leader>P1 <Plug>UnconditionalPasteRecallInvertedGrepBefore
--- nmap <Leader>p1 <Plug>UnconditionalPasteRecallInvertedGrepAfter
 -- nmap <Leader>Pe <Plug>UnconditionalPasteExpressionBefore
--- nmap <Leader>pe <Plug>UnconditionalPasteExpressionAfter
 -- nmap <Leader>PE <Plug>UnconditionalPasteRecallExpressionBefore
--- nmap <Leader>pE <Plug>UnconditionalPasteRecallExpressionAfter
 -- nmap <Leader>Px <Plug>UnconditionalPasteEscapeBefore
--- nmap <Leader>px <Plug>UnconditionalPasteEscapeAfter
 -- nmap <Leader>PX <Plug>UnconditionalPasteRecallEscapeBefore
--- nmap <Leader>pX <Plug>UnconditionalPasteRecallEscapeAfter
 -- nmap <Leader>Pp <Plug>UnconditionalPastePlusBefore
--- nmap <Leader>pp <Plug>UnconditionalPastePlusAfter
 -- nmap <Leader>PP <Plug>UnconditionalPasteGPlusBefore
--- nmap <Leader>pP <Plug>UnconditionalPasteGPlusAfter
 -- nmap <Leader>Pu <Plug>UnconditionalPasteLowercaseBefore
--- nmap <Leader>pu <Plug>UnconditionalPasteLowercaseAfter
 -- nmap <Leader>PU <Plug>UnconditionalPasteUppercaseBefore
--- nmap <Leader>pU <Plug>UnconditionalPasteUppercaseAfter
 -- nmap <Leader>pt <Plug>UnconditionalPasteTogglecaseBefore
 -- nmap <Leader>Pt <Plug>UnconditionalPasteTogglecaseAfter
--- nmap <Leader>Ph <Plug>UnconditionalPasteCombinatorialBefore
 -- nmap <Leader>ph <Plug>UnconditionalPasteCombinatorialAfter
 -- nmap <Leader>PH <Plug>UnconditionalPasteRecallCombinatorialBefore
--- nmap <Leader>pH <Plug>UnconditionalPasteRecallCombinatorialAfter
---
--- imap <C-G>c <Plug>UnconditionalPasteCharI
--- imap <C-G>n <Plug>UnconditionalPasteInlinedI
--- imap <C-G>C <Plug>UnconditionalPasteCharCondensedI
--- imap <C-G>, <Plug>UnconditionalPasteCommaI
--- imap <C-G>q <Plug>UnconditionalPasteQueriedI
--- imap <C-G>Q <Plug>UnconditionalPasteRecallQueriedI
--- imap <C-G>j <Plug>UnconditionalPasteQueriedJoinedI
--- imap <C-G>J <Plug>UnconditionalPasteRecallQueriedJoinedI
--- imap <C-G>u <Plug>UnconditionalPasteUnjoinI
--- imap <C-G>U <Plug>UnconditionalPasteRecallUnjoinI
--- imap <C-G>x <Plug>UnconditionalPasteEscapeI
--- imap <C-G>X <Plug>UnconditionalPasteRecallEscapeI
--- imap <C-G>~ <Plug>UnconditionalPasteTogglecaseI
--- imap <C-G>h <Plug>UnconditionalPasteCombinatorialI
--- imap <C-G>H <Plug>UnconditionalPasteRecallCombinatorialI
---
--- cmap <C-G>c <Plug>UnconditionalPasteCharI
--- cmap <C-G>n <Plug>UnconditionalPasteInlinedI
--- cmap <C-G>C <Plug>UnconditionalPasteCharCondensedI
--- cmap <C-G>, <Plug>UnconditionalPasteCommaI
--- cmap <C-G>q <Plug>UnconditionalPasteQueriedI
--- cmap <C-G>Q <Plug>UnconditionalPasteRecallQueriedI
--- cmap <C-G>j <Plug>UnconditionalPasteQueriedJoinedI
--- cmap <C-G>J <Plug>UnconditionalPasteRecallQueriedJoinedI
--- cmap <C-G>u <Plug>UnconditionalPasteUnjoinI
--- cmap <C-G>U <Plug>UnconditionalPasteRecallUnjoinI
--- cmap <C-G>x <Plug>UnconditionalPasteEscapeI
--- cmap <C-G>X <Plug>UnconditionalPasteRecallEscapeI
--- cmap <C-G>~ <Plug>UnconditionalPasteTogglecaseI
--- cmap <C-G>h <Plug>UnconditionalPasteCombinatorialI
--- cmap <C-G>H <Plug>UnconditionalPasteRecallCombinatorialI
-
--- For a permanent configuration, put the following commands into your vimrc:
---
--- The default separator string for the gQBp mapping is a <Tab> character; to preset another one (it will be overridden by gqbp), use:
---
--- let g:UnconditionalPaste_Separator = 'text'
--- The default separator string for the gQp and i_CTRL-R_CTRL-Q_CTRL-Q mappings is a <Tab> character; to preset another one (it will be overridden by gqp and i_CTRL-R_CTRL-Q), use:
---
--- let g:UnconditionalPaste_JoinSeparator = 'text'
--- The default separator pattern for the gUJp and i_CTRL-R_CTRL-U_CTRL-U mappings matches any whitespace and newlines (i.e. it will get rid of empty lines); to preset another one (it will be overridden by gujp and i_CTRL-R_CTRL-U), use:
---
--- let g:UnconditionalPaste_UnjoinSeparatorPattern = '-'
--- The default pattern for the gRp and gR!p mappings filter out whitespace-only lines; to preset another one (will be overridden by grp / gr!p), use:
---
--- let g:UnconditionalPaste_GrepPattern = 'pattern'
--- let g:UnconditionalPaste_InvertedGrepPattern = 'pattern'
--- The g>p / g>P mappings uses the AlignFromCursor.vim plugin's functionality (if installed) to only affect the whitespace between the original text and the pasted line. If you want to always :retab! all the whitespace in the entire line, disable this via:
---
--- let g:UnconditionalPaste_IsFullLineRetabOnShift = 1
--- By default, the g,ap, g,op, and g,np mappings use a comma immediately before the coordinating conjunction (also known as "Oxford comma"; unless exactly two lines are pasted); to turn this off:
---
--- let g:UnconditionalPaste_IsSerialComma = 0
--- By default, the gsp mapping does not insert a space on a side that already has whitespace. You can make other separators (e.g. quotes) be considered as existing space by tweaking the regular expression in :
---
--- let g:UnconditionalPaste_EmptySeparatorPattern = '\s'
--- For some cases (like avoiding a space when pasting inside a {...}) it matters whether the separator is before or after the paste. Instead of a single pattern, you can pass a List of two patterns there; the first one applies to separators before the paste (so it could match a { if you don't want a space when pasting after it, but you do want a space when pasting before it), the second applies to separators after the paste:
---
--- let g:UnconditionalPaste_EmptySeparatorPattern = ['[[:space:]{]', '[[:space:]}]']
--- By default, the gSp mapping does not add an empty line on a side that already just consists of whitespace. You can make other lines be considered empty by tweaking the regular expression:
---
--- let g:UnconditionalPaste_EmptyLinePattern = '^\s*$'
--- For some cases (like avoiding an empty line when pasting inside a { ... } block) it matters whether the line is above or below the paste. Instead of a single pattern, you can pass a List of two patterns there; the first one applies to lines above the paste (so it could match a { if you don't want an empty line when pasting after it, but you do want an empty line when pasting before it), the second applies to lines below the paste:
---
--- let g:UnconditionalPaste_EmptyLinePattern = ['^\s*{\?$', '^\s*}\?$']
--- By default, the g\p and i_CTRL-R_CTRL-\ mappings escape backslashes. You can change that (e.g. to also escape double quotes), or add more variants:
---
--- let g:UnconditionalPaste_Escapes = [{
--- \   'name': 'dquote',
--- \   'pattern': '[\"]',
--- \   'replacement': '\\&'
--- \}, ...]
--- Each configuration object attributes is optional; alternatively, you can also specify an expression (using v:val), or a Funcref that takes and returns a String:
---
--- let g:UnconditionalPaste_Escapes = [
--- \   {'Replacer': 'tr(v:val, "o", "X")'},
--- \   {'Replacer': function('MyReplacer')},
--- \...]
--- The buffer-local b:UnconditionalPaste_Escapes overrides that for particular buffers (filetypes if placed in a ftplugin).
---
--- This stores the last replacement used for g\\p and i_CTRL_R_CTRL-\. It is initialized with the first escape from the above configuration / entered / selected escape.
---
--- The default combination used for the gHp and i_CTRL-R_CTRL-H_CTRL-H mappings. Must be a List of 1 or 2-character strings between the g..p / g..P in the mappings; best obtained by selecting the desired algorithms via ghp once and then grabbing the variable value:
---
--- let g:UnconditionalPaste_Combinations = ['U', ',"', 's']
--- If you want no or only a few of the available mappings, you can completely turn off the creation of the default mappings by defining:
---
--- :let g:UnconditionalPaste_no_mappings = 1
--- This saves you from mapping dummy keys to all unwanted mapping targets.
---
--- If you want to use different mappings (e.g. starting with <Leader>), map your keys to the <Plug>UnconditionalPaste... mapping targets before sourcing this script (e.g. in your vimrc):
 --

@@ -14,6 +14,6 @@ vim.import("debuglog", function(debuglog)
   vim.import("logger", function(logger)
     vim.logger = logger.init("root")
     vim.notify = logger.notify
-    vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")), "trace")
+    vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")), "debug")
   end)
 end)

@@ -19,7 +19,7 @@ function cmp_mappings()
     }),
     ["<C-p>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_prev_item({ behavior = sb_select })
+        cmp.select_prev_item({ behavior = sb_insert })
       elseif has_words_before() then
         cmp.complete()
       else
@@ -36,7 +36,7 @@ function cmp_mappings()
 
     ["<C-n>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_next_item({ behavior = sb_select })
+        cmp.select_next_item({ behavior = sb_insert })
       elseif has_words_before() then
         cmp.complete()
       else

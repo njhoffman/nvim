@@ -66,8 +66,8 @@ opt("breakindent", true)
 opt("breakindentopt", "shift:2")
 opt("undolevels", 1000)
 opt("updatetime", 4000)
-opt("timeoutlen", 400) -- 1000
-opt("ttimeoutlen", 40) -- 50
+opt("timeoutlen", 500) -- 1000
+opt("ttimeoutlen", 20) -- 50
 opt("pumheight", 10)
 opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- winsize messes up on load
 opt("fileencoding", "utf-8")
@@ -76,10 +76,6 @@ opt("autoread", true)
 -- opt("completeopt", "menuone,longest")
 
 -- window scope
-opt("foldopen", "block,hor,jump,mark,percent,quickfix,search,tag")
-opt("foldlevel", 0, window)
-opt("foldnestmax", 10, window)
-opt("foldenable", false, window)
 opt("concealcursor", "nc", window)
 opt("conceallevel", 2, window)
 opt("cursorline", true, window)

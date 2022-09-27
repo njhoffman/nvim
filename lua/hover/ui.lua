@@ -61,6 +61,8 @@ local function show_hover_new(provider_id, config, result, opts)
     return
   end
 
+  local minwidth = 5
+
   -- lines get reduced when stylized to markdown
   local width = 0
   local scrolloff = get_height("50%")
@@ -69,10 +71,15 @@ local function show_hover_new(provider_id, config, result, opts)
   end
   vim.api.nvim_set_option_value("scrolloff", scrolloff, {})
 
+  local lines = {}
+  if result and type(result) == "table" and result.lines then
+    lines = result.lines
+  end
+
   if winnr and vim.api.nvim_win_is_valid(winnr) then
     local bufnr = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_option(bufnr, "filetype", "help")
-    vim.lsp.util.stylize_markdown(bufnr, result.lines, {
+    vim.lsp.util.stylize_markdown(bufnr, lines, {
       max_width = width,
     })
     local new_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
@@ -89,22 +96,30 @@ local function show_hover_new(provider_id, config, result, opts)
     end
     if width > max.w then
       width = max.w
+    elseif width < minwidth then
+      width = minwidth
     end
 
     vim.api.nvim_win_set_config(winnr, { width = width, height = height })
     vim.api.nvim_win_set_buf(winnr, bufnr)
     vim.api.nvim_set_option_value("wrap", true, { buf = bufnr })
   else
-    local height = #result.lines - 2
+    local height = #lines - 2
     if height > max.h then
       height = max.h
     elseif height < 1 then
       height = 1
     end
-    for _, line in ipairs(result.lines) do
+    for _, line in ipairs(lines) do
       if #line > width then
         width = #line
       end
+    end
+
+    if width > max.w then
+      width = max.w
+    elseif width < minwidth then
+      width = minwidth
     end
 
     winnr = vim.api.nvim_open_win(0, false, {
@@ -121,12 +136,13 @@ local function show_hover_new(provider_id, config, result, opts)
       style = "minimal",
     })
     vim.api.nvim_win_set_option(winnr, "winblend", 20)
+
     -- Setup keymaps
     require("hover.aucommands").init(winnr)
 
     local bufnr = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_option(bufnr, "filetype", "help")
-    vim.lsp.util.stylize_markdown(bufnr, result.lines, {
+    vim.lsp.util.stylize_markdown(bufnr, lines, {
       max_width = width,
     })
     -- vim.api.nvim_buf_set_option(bufnr, "modifiable", false)

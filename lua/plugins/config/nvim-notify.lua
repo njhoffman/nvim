@@ -7,8 +7,8 @@ local baseConfig = {
   level = vim.log.levels.TRACE,
   -- level = 0,
   fps = 30,
-  render = 'default',
-  stages = 'fade',
+  render = "default",
+  stages = "fade",
   -- background_colour = "FloatShadow",
   background_colour = "#000000",
   -- Default timeout for notifications
@@ -24,8 +24,8 @@ local baseConfig = {
     TRACE = "✎",
     INSPECT = "",
     TASK = "",
-    STATUS = ""
-  }
+    STATUS = "",
+  },
 }
 
 require("notify").setup(baseConfig)

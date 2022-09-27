@@ -53,7 +53,7 @@ end
 
 local telescopeConfig = {
   defaults = {
-    scrolling_limit = 2000,
+    scrolling_limit = 4000,
     dynamic_preview_title = true,
     hidden = true,
     no_ignore = false,
@@ -128,6 +128,9 @@ local telescopeConfig = {
     find_files = {
       mappings = tele_mappings.file_picker,
       find_command = command_rg,
+    },
+    frecency = {
+      mappings = tele_mappings.file_picker,
     },
     buffers = {
       show_all_buffers = true,

@@ -24,7 +24,7 @@ local clrs = {
   nord10 = hsl(213, 32, 52), -- #5D81AC
   nord11 = hsl(354, 42, 56), -- #BE6069
   nord12 = hsl(14, 51, 63), -- #D18771
-  nord13 = hsl(40, 71, 73), -- #EBCA89
+  nord13 = hsl(20, 10, 55), -- #EBCA89
   -- nord14 = hsl(92, 28, 65), -- #A4BF8D
   nord14 = "#22BB99",
   -- nord15 = hsl(311, 20, 63), -- #B48EAD
@@ -54,14 +54,14 @@ return function()
   return {
     Visual({ fg = "none", bg = clr_over.selection }),
     Error({ fg = "#bF211A", bg = "none" }),
-    Underline({ gui = "none" }),
-    Underlined({ gui = "none" }),
+    Underline({ gui = "underline" }),
+    Normal({ fg = clrs.nord4.darken(30), bg = "none" }),
     -- ui components
+    NormalWindow({ fg = Normal.fg, bg = "none" }),
     NormalFloat({ fg = "#8f93a2", bg = "none" }), -- normal text and background color for floating windows
     FloatBorder({ fg = "#3f5382", bg = "none" }), --
     FloatTitle({ fg = "#5f73c2", bg = "none" }), --
     ColorColumn({ bg = "none" }),
-
     Pmenu({ fg = "#618cc4", bg = "none" }),
     PmenuSel({ fg = "#44bfcf", bg = "#1a1f2f" }),
     PmenuSbar({ fg = "#313c84", bg = "#202331" }),
@@ -73,7 +73,6 @@ return function()
     CursorColumn({ bg = "#7722ff" }),
     -- base groups
     Statement({ fg = "#5191C1" }),
-    Comment({ fg = "#56667b", gui = "italic" }),
     Conceal({ bg = "none" }),
     Constant({ fg = clrs.nord16 }),
     Delimiter({ fg = "#5f6fa2" }),
@@ -88,8 +87,6 @@ return function()
     MatchParen({ fg = "#60a0a0", bg = "#000022" }),
     MatchParenCursor({ fg = "#a0c0b0" }),
     NonText({ bg = "none", fg = "#555555" }),
-    Normal({ fg = clrs.nord4.darken(30), bg = "none" }),
-    NormalWindow({ fg = Normal.fg, bg = "none" }),
     Operator({ fg = "#4886bf" }),
     PreProc({ fg = "#4796bc" }),
     QuickFixLine({ bg = "#172238" }),
@@ -118,25 +115,21 @@ return function()
     DebugMsg({ fg = Comment.fg }),
     Question({ fg = clrs.nord4 }),
     -- +--- LSP ---+
-    DiagnosticWarn({ fg = clrs.nord13.da(40) }),
-    DiagnosticVirtualTextWarn({ fg = clrs.nord13.da(60), gui = "italic" }),
+    DiagnosticWarn({ fg = clrs.nord13 }),
+    DiagnosticVirtualTextWarn({ fg = clrs.nord13.da(30), gui = "italic" }),
     DiagnosticHint({ fg = "#447Ddf" }),
     DiagnosticVirtualTextHint({ fg = "#246Daf", gui = "italic" }),
     LspFloatWinBorder({ bg = "none" }),
     LspDiagnosticsError({ fg = clrs.nord11 }),
     LspDiagnosticsHint({ fg = clrs.nord8 }),
-    LspDiagnosticsInformation({ fg = clrs.nord10 }),
+    LspDiagnosticsInfo({ fg = clrs.nord10 }),
     LspDiagnosticsDefaultError({ LspDiagnosticsError }),
     LspDiagnosticsDefaultHint({ LspDiagnosticsHint }),
-    LspDiagnosticsDefaultInformation({ LspDiagnosticsInformation }),
-    LspDiagnosticsSignWarn({ fg = clrs.nord13.da(70) }),
+    LspDiagnosticsDefaultInfo({ LspDiagnosticsInfo }),
+    LspDiagnosticsSignWarn({ fg = clrs.nord13.da(20) }),
     LspDiagnosticsSignError({ fg = LspDiagnosticsError.fg.da(40) }),
     LspDiagnosticsSignHint({ fg = LspDiagnosticsHint.fg.da(40) }),
-    LspDiagnosticsSignInfo({ fg = LspDiagnosticsInformation.fg.da(40) }),
-    -- LspDiagnosticsError = { fg = colors.error },
-    -- LspDiagnosticsWarning = { fg = colors.warn },
-    -- LspDiagnosticsInformation = { fg = colors.info },
-    -- LspDiagnosticsHint = { fg = colors.hint },
+    LspDiagnosticsSignInfo({ fg = LspDiagnosticsInfo.fg.da(40) }),
     DiffAdd({ bg = "#00361f" }), -- #00361f #001000 #22bb99
     DiffChange({ bg = "#003050" }), -- #003050 #001030 #646ead
     DiffDelete({ bg = "#3E0009" }), -- #3e0009 #300000 #be6069
@@ -157,17 +150,20 @@ return function()
     TSBoolean({ fg = "#4d6f9c" }),
     TSConditional({ fg = "#897785" }),
     TSException({ fg = "#867f88" }),
-    TSFunction({ fg = "#988088" }),
+    TSFunction({ Function }),
     TSKeyword({ Keyword }),
+    TSKeywordFunction({ Keyword }),
     TSLabel({ fg = "#6688ba" }), -- For labels: `label:` in C and `:label:` in Lua.
     TSMethod({ fg = "#6e99c6" }),
+    TSNameSpace({ Statement }),
     TSPunctBracket({ fg = "#888698" }), -- For special punctutation that does not fall in the catagories before.
     TSPunctSpecial({ fg = "#888698" }), -- For special punctutation that does not fall in the catagories before.
     TSTag({ fg = clr_over.orange }),
     TSTagDelimiter({ fg = clr_over.orange }),
     TSURI({ fg = "#8eb9f6", gui = "none" }),
     TSVariable({ Normal }),
-    TSVariableBuiltin({ PreProc }),
+    TSVariableBuiltin({ Identifier }),
+    luaTSFunction({ TSMethod }),
     --
     cssTSType({ fg = "#486795" }),
     cssTSPunctDelimiter({ fg = "#4784a6" }),
@@ -189,7 +185,6 @@ return function()
     --
     liquidExpression({ Type }),
     liquidDelimiter({ fg = clr_over.orange }),
-    luaTSFunction({ TSMethod }),
 
     -- betterlua
     -- set g:lua_subversion to change the highlighting of the standard library
@@ -217,7 +212,7 @@ return function()
     -- jsFunctionCall {fg = jsFuncCall.fg},
     -- jsFuncCall { fg = "#6e99c6" },
 
-    jsFunctionName({ fg = "#a78086" }),
+    -- jsFunctionName({ fg = "#a78086" }),
     jsxTag({ fg = clr_over.orange }),
     jsxComponentName({ fg = clr_over.orange }),
     jsxTagName({ fg = clr_over.orange }),
@@ -251,7 +246,7 @@ return function()
     shSubst({ fg = "#488aaf" }),
     shSubstDelim({ fg = "#5776bc" }),
     shParentheses({ fg = "#c78087" }),
-    shFunction({ fg = "#a78087" }),
+    shFunction({ Function }),
     shDeref({ fg = "#488aaf" }),
     shDerefSimple({ fg = "#488aaf" }),
     shLoop({ fg = "#80788a" }),
@@ -328,13 +323,9 @@ return function()
     -- zshVariableDef { Normal },
     -- zshDeref { fg = '#2886bf' },
 
-    --- nvim-hlslens
-    HlSearchLensCur({ fg = "#ff2266", bg = "#003333" }),
-    HlSearchLens({ fg = "#00ddff", bg = "none" }),
-    HlSearchCur({ fg = "#00ffdd", bg = "none" }),
     -- dashboardn.vim
     --DashboardHeader {Type},
-    DashboardCenter({ fg = "#4499ff" }),
+    -- DashboardCenter({ fg = "#4499ff" }),
     --DashboardShortcut {Boolean},
     --DashboardFooter {Keyword},
 

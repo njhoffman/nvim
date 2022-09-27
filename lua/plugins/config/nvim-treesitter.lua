@@ -31,7 +31,6 @@ require("nvim-treesitter.configs").setup({
     enable = true,
     use_languagetree = true,
     disable = {
-      -- 'lua',
       "help",
       "latex",
       "bash",
@@ -120,7 +119,7 @@ require("nvim-treesitter.configs").setup({
     lsp_interop = {
       enable = true,
       border = "none",
-      peek_definition_code = { ["gp"] = "@function.outer", ["gP"] = "@class.outer" },
+      peek_definition_code = { ["yoPf"] = "@function.outer", ["yoPc"] = "@class.outer" },
     },
   },
   rainbow = { enable = config.rainbow },

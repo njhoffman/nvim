@@ -6,7 +6,6 @@ vim.import("plugins.pluginmap", function(pluginmap)
         function(use)
           use("wbthomason/packer.nvim")
           use("lewis6991/impatient.nvim")
-
           pluginmap.load_plugins(use, load_config)
 
           -- ====================================

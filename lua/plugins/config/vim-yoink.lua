@@ -1,7 +1,7 @@
 -- :Yanks - Display the current yank history
 -- :ClearYanks - Delete history. This will reduce the history down to 1 entry taken from the default register.
 
-vim.g.yoinkMaxItems = 100
+vim.g.yoinkMaxItems = 10
 vim.g.yoinkSavePersistently = 1
 vim.g.yoinkAutoFormatPaste = 0
 vim.g.yoinkIncludeNamedRegisters = 1
@@ -9,6 +9,26 @@ vim.g.yoinkIncludeDeleteOperations = 0
 vim.g.yoinkMoveCursorToEndOfPaste = 1
 vim.g.yoinkSyncSystemClipboardOnFocus = 1
 vim.g.yoinkSyncNumberedRegisters = 1
+
+  vim.cmd([[nmap <expr> p yoink#canSwap() ? '<plug>(YoinkPostPasteSwapBack)' : '<plug>(YoinkPaste_p)']])
+  vim.cmd([[nmap <expr> P yoink#canSwap() ? '<plug>(YoinkPostPasteSwapForward)' : '<plug>(YoinkPaste_P)']])
+  -- Paste yanked line without line breaks before/after cursor position
+  -- inoremap <c-a> <c-r>1<esc>k$Jxi
+  -- vim.cmd([[nnoremap gp <plug>(YoinkPaste_gp) \| kJxJx]])
+  -- vim.cmd([[nnoremap gP <plug>(YoinkPaste_gP) \| kJxJx]])
+  vim.cmd([[nnoremap gp <plug>(YoinkPaste_gp)]])
+  vim.cmd([[nnoremap gP <plug>(YoinkPaste_gP)]])
+  vim.cmd([[nmap [y <plug>(YoinkRotateBack)]])
+  vim.cmd([[nmap ]y <plug>(YoinkRotateForward)]])
+
+  -- vim.cmd([[nmap y <plug>(YoinkYankPreserveCursorPosition) \| <cmd>call system("xsel -ip", getreg("@+"))<cr> ]])
+  -- vim.cmd([[xmap y <plug>(YoinkYankPreserveCursorPosition) \| <cmd>call system("xsel -ip", getreg("@+"))<cr> ]])
+  vim.cmd([[nmap y <plug>(YoinkYankPreserveCursorPosition)]])
+  vim.cmd([[xmap y <plug>(YoinkYankPreserveCursorPosition)]])
+
+  -- hitting <c-=> after a paste will toggle between formatted and unformatted (equivalent to using the = key).
+  -- By default pastes will not be formatted until you toggle it afterwards using <c-=> (however you can also change this with the yoinkAutoFormatPaste setting as described below)
+  -- vim.cmd([[nmap = <plug>(YoinkPostPasteToggleFormat)]])
 
 
 -- g:yoinkSyncNumberedRegisters - When set to 1, every time the yank history changes the numbered registers 1 - 9 will be updated to sync with the first 9 entries in the yank history. See here for an explanation of why we would want do do this. Default: 0.

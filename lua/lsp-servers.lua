@@ -1,5 +1,6 @@
 local lspdefs = require("lsp-definitions")
 local handlers = require("lsp-handlers")
+local async = require("plenary.async")
 
 local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
@@ -51,7 +52,6 @@ local servers = {
   "html",
   "intelephense",
   "jsonls",
-  "ltex",
   "pyright",
   "solargraph",
   "sqls",
@@ -66,7 +66,7 @@ local servers = {
   "vimls",
   "volar",
   "yamlls",
-  "zk",
+  -- "zk",
 }
 
 local lspconfig = require("lspconfig")
@@ -96,9 +96,6 @@ lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_c
   capabilities = def_capabilities,
 })
 require("mason-lspconfig").setup_handlers({
-  -- The first entry (without a key) will be the default handler
-  -- and will be called for each installed server that doesn't have
-  -- a dedicated handler.
   function(server_name) -- default handler (optional)
     vim.notify("setting up lsp: " .. server_name, "trace")
     -- local opts = vim.tbl_deep_extend("force", opts, lspconfig[server_name] or {})
@@ -118,23 +115,10 @@ require("mason-lspconfig").setup_handlers({
     local luadev_config = {
       library = {
         enabled = true, -- when not enabled, lua-dev will not change any settings to the LSP server
-        -- these settings will be used for your neovim config directory
         runtime = true, -- runtime path
         types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-        plugins = false, -- installed opt or start plugins in packpath
-        -- you can also specify the list of plugins to make available as a workspace library
-        -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
+        plugins = { "plenary.nvim", "telescope.nvim" },
       },
-      -- for your neovim config directory, the config.library settings will be used as is
-      -- for plugin directories (root_dirs having a /lua directory), config.library.plugins will be disabled
-      -- for any other directory, config.library.enabled will be set to false
-      override = function(root_dir, options) end,
-      -- override = function(root_dir, library)
-      --   if require("lua-dev.util").has_file(root_dir, "/etc/nixos") then
-      --     library.enabled = true
-      --     library.plugins = true
-      --   end
-      -- end,
     }
     require("lua-dev").setup(luadev_config)
     lspconfig.sumneko_lua.setup({

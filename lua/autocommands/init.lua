@@ -58,7 +58,7 @@ vim.import("config", function(config)
     FiletypeDetect = {
       { "BufNewFile,BufRead", "*", "setlocal signcolumn=yes:1" },
       { "BufNewFile,BufRead", "*startuptime.tsv", "setlocal ft=crontab syn=crontab" },
-      { "BufNewFile,BufRead", "*.log", "lua require('commands').create_cmd_truncate() | setlocal ft=log syn=log" },
+      { "BufNewFile,BufRead", "*.log", "lua require('commands.format').create_cmd_truncate()" },
       { "BufNewFile,BufRead", "*.ejs", "set ft=html" },
       { "BufNewFile,BufRead", "*.bash*", "let b:is_bash = 1 | setfiletype bash" },
       { "BufNewFile,BufRead", "*.theme", "setlocal ft=config syn=config" },
@@ -143,7 +143,6 @@ vim.import("config", function(config)
       { "BufWritePost", "*tmux.conf", [[execute ':!tmux source-file %']] },
       --   { "BufWritePost", "load.lua", "PackerCompile" },
     },
-    packer = { { "User", "PackerComplete,PackerCompileDone", "BarbarColors" } },
   }
 
   -- | if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' && &buftype =~ hidden | silent! wshada | silent! !~/bin/wshada.sh | endif",
@@ -189,14 +188,6 @@ vim.import("config", function(config)
 
   -- " Return to last edit position when opening files (You want this!)
   -- au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-  if Formatting.trim_trailing_space == true or Formatting.trim_trailing_space == nil then
-    autocmds.TrimSpaces = {
-      -- { "BufWritePre", "*", [[%s/\s\+$//e]] },
-      -- { "BufWritePre", "*", [[%s/\n\+\%$//e]] }
-      -- {"BufWritePre", "*.[ch]", [[*.[ch] %s/\%$/\r/e]]}
-    }
-  end
 
   vim.import("utils.core", function(core)
     core.define_augroups(autocmds)

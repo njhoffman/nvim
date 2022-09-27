@@ -5,25 +5,23 @@
 require("globals")
 
 for _, mod_name in ipairs({
-  "project",
-  "runner",
-  "devbox",
-  -- "codebox",
-  "mappings",
   "plugins",
+  "mappings",
   "lsp-globals",
   "lsp-capabilities",
   "lsp-config",
   "lsp-servers",
+  "devbox",
   "commands",
   "autocommands",
-  "stats",
+  "project",
+  "runner",
   "hover.setup",
+  -- "codebox",
+  "stats",
   -- "dashboard"
 }) do
   vim.import(mod_name)
 end
-
-vim.cmd([[ BarbarColors ]])
 
 -- require "plenary.profile".stop()

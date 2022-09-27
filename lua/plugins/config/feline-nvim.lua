@@ -1,10 +1,10 @@
-local feline = require('feline')
-local defaults = require('feline.default_components').statusline.icons
+local feline = require("feline")
+local defaults = require("feline.default_components").statusline.icons
 -- local defaults = require('feline.default_components').winbar.icons
-local colors = require('plugins.config.feline-nvim-colors')
-local custom_comps = require('plugins.config.feline-nvim-components')
-local provider_project_nvim = require('plugins.config.feline-nvim-provider-project-nvim')
-local provider_project_uo = require('plugins.config.feline-nvim-provider-project-uo')
+local colors = require("plugins.config.feline-nvim-colors")
+local custom_comps = require("plugins.config.feline-nvim-components")
+local provider_project_nvim = require("plugins.config.feline-nvim-provider-project-nvim")
+local provider_project_uo = require("plugins.config.feline-nvim-provider-project-uo")
 
 -- require("lsp_signature").status_line(max_width)
 
@@ -40,46 +40,46 @@ feline.setup({
   components = defaults,
   vi_mode_colors = colors.vi_mode,
   separators = {
-    vertical_bar = '┃',
-    vertical_bar_thin = '│',
-    left = '',
-    right = '',
-    block = '█',
-    left_filled = '',
-    right_filled = '',
-    slant_left = ' ',
-    slant_left_thin = ' ',
-    slant_right = ' ',
-    slant_right_thin = ' ',
-    slant_left_2 = ' ',
-    slant_left_2_thin = ' ',
-    slant_right_2 = ' ',
-    slant_right_2_thin = ' ',
-    left_rounded = '',
-    left_rounded_thin = '',
-    right_rounded = '',
-    right_rounded_thin = '',
-    circle = '●',
+    vertical_bar = "┃",
+    vertical_bar_thin = "│",
+    left = "",
+    right = "",
+    block = "█",
+    left_filled = "",
+    right_filled = "",
+    slant_left = " ",
+    slant_left_thin = " ",
+    slant_right = " ",
+    slant_right_thin = " ",
+    slant_left_2 = " ",
+    slant_left_2_thin = " ",
+    slant_right_2 = " ",
+    slant_right_2_thin = " ",
+    left_rounded = "",
+    left_rounded_thin = "",
+    right_rounded = "",
+    right_rounded_thin = "",
+    circle = "●",
   },
   force_inactive = {
     filetypes = {
-      '^NvimTree$',
-      '^packer$',
-      '^startify$',
-      '^fugitive$',
-      '^fugitiveblame$',
-      '^qf$',
-      '^help$'
+      "^NvimTree$",
+      "^packer$",
+      "^startify$",
+      "^fugitive$",
+      "^fugitiveblame$",
+      "^qf$",
+      "^help$",
     },
     buftypes = {
-      '^terminal$'
+      "^terminal$",
     },
     bufnames = {},
   },
   custom_providers = {
-    project_nvim = provider_project_nvim.provider,
+    -- project_nvim = provider_project_nvim.provider,
     project_uo = provider_project_uo.provider,
-  }
+  },
   -- highlight_reset_triggers = { 'SessionLoadPost', 'ColorScheme' }
   -- conditional_components = { {
   --  -- Only use this components table for the 2nd window

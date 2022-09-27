@@ -10,13 +10,13 @@ local _init = function(_opts)
   opts.config(_opts)
   ---Create highlights.
   vim.api.nvim_set_hl(0, "ImportFailedIcon", { link = "Error" })
-  vim.api.nvim_set_hl(0, "ImportFailedModule", { link = "Comment" })
+  vim.api.nvim_set_hl(0, "ImportFailedModule", { link = "ModeMsg" })
   vim.api.nvim_set_hl(0, "ImportFailedMessage", { link = "Normal" })
-  vim.api.nvim_set_hl(0, "ImportFailedTime", { link = "DiagnosticHint" })
+  vim.api.nvim_set_hl(0, "ImportFailedTime", { link = "Comment" })
   vim.api.nvim_set_hl(0, "ImportSuccessIcon", { link = "healthSuccess" })
-  vim.api.nvim_set_hl(0, "ImportSuccessModule", { link = "Comment" })
-  vim.api.nvim_set_hl(0, "ImportSuccessMessage", { link = "Normal" })
-  vim.api.nvim_set_hl(0, "ImportSuccessTime", { link = "DiagnosticHint" })
+  vim.api.nvim_set_hl(0, "ImportSuccessModule", { link = "Normal" })
+  vim.api.nvim_set_hl(0, "ImportSuccessMessage", { link = "DebugMsg" })
+  vim.api.nvim_set_hl(0, "ImportSuccessTime", { link = "Comment" })
 end
 
 local _get_sizes = function()

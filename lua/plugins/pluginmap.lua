@@ -52,10 +52,10 @@ M.picker_plugins = {
 
 M.motion_plugins = {
   ["substitute.nvim"] = { "gbprod/substitute.nvim" },
-  ["vim-UnconditionalPaste"] = {
-    "inkarkat/vim-UnconditionalPaste",
-    requires = "inkarkat/vim-ingo-library",
-  },
+  -- ["vim-UnconditionalPaste"] = {
+  --   "inkarkat/vim-UnconditionalPaste",
+  --   requires = "inkarkat/vim-ingo-library",
+  -- },
   ["bufjump.nvim"] = { "kwkarlwang/bufjump.nvim" },
   ["vim-matchup"] = { "andymass/vim-matchup" },
   ["vim-wordmotion"] = { "chaoren/vim-wordmotion" },
@@ -276,6 +276,7 @@ M.completion_plugins = {
 
 M.ui_plugins = {
   ["aerial.nvim"] = { "stevearc/aerial.nvim" },
+  ["nui.nvim"] = { "MunifTanjim/nui.nvim" },
   ["dressing-nvim"] = { "stevearc/dressing.nvim", requires = "MunifTanjim/nui.nvim" },
   ["nvim-hlslens"] = { "kevinhwang91/nvim-hlslens" },
   ["nvim-notify"] = { "~/git/nvim-notify" },
@@ -342,6 +343,7 @@ M.interface_plugins = {
   ["diffview.nvim"] = { "sindrets/diffview.nvim" },
   ["nvim-bqf"] = { "kevinhwang91/nvim-bqf" },
   ["nvim-tree.lua"] = { "kyazdani42/nvim-tree.lua" },
+  ["nvim-ufo"] = { "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" },
   ["perfanno.nvim"] = { "t-troebst/perfanno.nvim" },
   ["quickmath.nvim"] = { "jbyuki/quickmath.nvim" },
   ["registers.nvim"] = { "tversteeg/registers.nvim" },
@@ -361,6 +363,7 @@ M.integration_plugins = {
   ["colortils.nvim"] = { "nvim-colortils/colortils.nvim" },
   -- https://github.com/uga-rosa/ccc.nvim
   ["cheat.sh-vim"] = { "dbeniamine/cheat.sh-vim" },
+  ["go.nvim"] = { "ray-x/go.nvim", requires = "ray-x/guihua.lua" },
   ["id3.vim"] = { "thaffenden/id3.vim", branch = "task/support-id-tool" }, -- "AndrewRadev/id3.vim"
   ["nvim-magic"] = {
     "jameshiew/nvim-magic",
@@ -434,12 +437,9 @@ M.lsp_plugins = {
 }
 
 M.theme_plugins = {
-  ["lush.nvim"] = {
-    "rktjmp/lush.nvim",
-  },
-  ["barbar"] = { "romgrk/barbar.nvim", commit = "fa3ff25" },
-  -- ["barbar"]      = { "romgrk/barbar.nvim" },
+  ["lush.nvim"] = { "rktjmp/lush.nvim" },
   ["feline.nvim"] = { "feline-nvim/feline.nvim" },
+  ["barbar"] = { "romgrk/barbar.nvim" },
 }
 
 M.check_require_exists = function(fname)

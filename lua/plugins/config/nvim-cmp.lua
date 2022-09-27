@@ -55,26 +55,23 @@ local setupConfig = {
     native_menu = false,
     ghost_text = true,
   },
-  -- preselect = types.cmp.PreselectMode.None, -- cmp.PreselectMode.None/Item,
   preselect = types.cmp.PreselectMode.Item, -- cmp.PreselectMode.None/Item,
   completion = {
-    get_trigger_characters = function(trigger_characters)
-      local new_trigger_characters = {}
-      for _, char in ipairs(trigger_characters) do
-        if char ~= ">" then
-          table.insert(new_trigger_characters, char)
-        end
-      end
-      return new_trigger_characters
-    end,
+    -- completeopt = "menu,menuone,noinsert", --noinsert,noselect
+    -- get_trigger_characters = function(trigger_characters)
+    --   local new_trigger_characters = {}
+    --   for _, char in ipairs(trigger_characters) do
+    --     if char ~= ">" then
+    --       table.insert(new_trigger_characters, char)
+    --     end
+    --   end
+    --   return new_trigger_characters
+    -- end,
+    keyword_length = 1,
+    -- autocomplete = {
+    --   types.cmp.TriggerEvent.TextChanged,
+    -- },
   },
-  -- completion = {
-  --   -- completeopt = "menu,menuone,noinsert", --noinsert,noselect
-  --   keyword_length = 1,
-  --   autocomplete = {
-  --     types.cmp.TriggerEvent.TextChanged,
-  --   },
-  -- },
   mapping = cmp.mapping.preset.insert(cmp_mappings()),
   view = {
     entries = {
@@ -83,29 +80,27 @@ local setupConfig = {
     },
   },
   window = {
-    documentation = cmp.config.window.bordered({
-      winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
-      --   max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
-      --   max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
-    }),
     completion = cmp.config.window.bordered({
       --   border = { '┌', '─', '┐', '│', '┘', '─', '└', '│' },
       --   winhighlight = 'Normal:CmpPmenu,FloatBorder:CmpPmenuBorder,CursorLine:PmenuSel,Search:None',
       winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
-      -- max_width = 80,
+      -- max_width = 40,
+    }),
+    documentation = cmp.config.window.bordered({
+      winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
+      -- max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
+      -- max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
     }),
   },
   formatting = {
     fields = { "kind", "abbr", "menu" },
     -- offset, exact, score, recently_used, locality, kind, sort_text, length, order
     format = function(entry, vim_item)
-      local max_len = 50
+      local max_len = 40
       if string.len(vim_item.abbr) > max_len then
         vim_item.abbr = string.sub(vim_item.abbr, 1, max_len - 2) .. "··"
       end
-      vim_item.dup = ({
-        nvim_lua = 0,
-      })[entry.source.name] or 1
+      vim_item.dup = ({ nvim_lua = 0 })[entry.source.name] or 1
       vim_item.menu = sources.names[entry.source.name]
       vim_item.kind = sources.symbols[vim_item.kind]
       return vim_item
@@ -114,11 +109,11 @@ local setupConfig = {
   sorting = {
     priority_weight = 2,
     comparators = {
+      require("cmp_fuzzy_path.compare"),
+      require("cmp_fuzzy_buffer.compare"),
       compare.offset,
       compare.exact,
       compare.score,
-      require("cmp_fuzzy_path.compare"),
-      require("cmp_fuzzy_buffer.compare"),
       sort_under,
       function(...)
         return cmp_helper.prioritize_argument(...)
@@ -165,10 +160,9 @@ cmp.setup.filetype("gitcommit", {
 cmp.setup.cmdline("/", {
   mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
   sources = cmp.config.sources({
-    { name = "cmdline_history" },
-    { name = "nvim_lsp_document_symbol" },
-    { name = "fuzzy_buffer" },
-    -- { name = "buffer", option = { keyword_pattern = [=[[^[:blank:]].*]=] } },
+    { name = "cmdline_history", group_index = 1 },
+    { name = "nvim_lsp_document_symbol", group_index = 1 },
+    { name = "fuzzy_buffer", group_index = 2 },
   }),
 })
 
@@ -177,7 +171,7 @@ cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
   sources = cmp.config.sources({
     { name = "cmdline", priority = 100 },
-    { name = "cmdline_history", priority = 50 },
+    { name = "cmdline_history", priority = 30 },
     { name = "fuzzy_path", priority = 30 },
   }),
 })

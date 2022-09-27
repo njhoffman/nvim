@@ -1,6 +1,6 @@
-local austats = require('stats.commands.aucommands')
-local envstats = require('stats.commands.environment')
-local keystats = require('stats.commands.keystats')
+local austats = require("stats.commands.aucommands")
+local envstats = require("stats.commands.environment")
+local keystats = require("stats.commands.keystats")
 
 function reformatInt(i)
   return tostring(i):reverse():gsub("%d%d%d", "%1,"):reverse():gsub("^,", "")
@@ -31,14 +31,26 @@ local get_items = function()
     string.format("Changes          %8s", reformatInt(env_counts.changes)),
     string.format("NvimMapper Keys  %8s", reformatInt(key_counts.mapper.total)),
     string.format("WhichKey         %8s", reformatInt(key_counts.whichkey.total)),
-    string.format("Total Mapped     %8s", reformatInt(key_counts.neovim.total))
+    string.format("Total Mapped     %8s", reformatInt(key_counts.neovim.total)),
   }
   return items
 end
 
 local stats_select = function(items, opts, cb)
   opts.prompt = opts.prompt or "Title Test"
-  vim.ui.select(items, opts, cb)
+  local backend_opts = {
+    position = "50%",
+    relative = "editor",
+    border = {
+      style = "rounded",
+    },
+    min_width = 15,
+    min_height = 1,
+    max_width = 120,
+    max_height = 40,
+  }
+  require("dressing.select.nui").select(backend_opts, items, opts, cb)
+  -- vim.ui.select(, opts, cb)
 end
 
 local fetch_stats = function()
@@ -47,13 +59,12 @@ local fetch_stats = function()
     prompt = "Stats",
     format_item = function(item)
       return item
-    end
-  },
-    function(choice)
-      print(choice)
-    end)
+    end,
+  }, function(choice)
+    print(choice)
+  end)
 end
 
 return {
-  fetch_stats = fetch_stats
+  fetch_stats = fetch_stats,
 }

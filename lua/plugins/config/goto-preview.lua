@@ -27,28 +27,28 @@ require("goto-preview").setup({
 
 vim.api.nvim_set_keymap(
   "n",
-  "gpt",
+  "yoPt",
   "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
   { noremap = true }
 )
 
 vim.api.nvim_set_keymap(
   "n",
-  "gpi",
+  "yoPi",
   "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
   { noremap = true }
 )
 
 vim.api.nvim_set_keymap(
   "n",
-  "gpd",
+  "yoPd",
   "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
   { noremap = true }
 )
 
 vim.api.nvim_set_keymap(
   "n",
-  "gpr",
+  "yoPr",
   "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
   { noremap = true }
 )

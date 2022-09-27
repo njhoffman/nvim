@@ -2,24 +2,24 @@
 
 local get_icon = function(method, lsp)
   local icon_map = {
-    awk_ls           = " ", --  
-    bashls           = " ",
-    clangd           = " ",
-    cssls            = " ",
-    dockerls         = " ",
-    efm              = " ",
+    awk_ls = " ", --  
+    bashls = " ",
+    clangd = " ",
+    cssls = " ",
+    dockerls = " ",
+    efm = " ",
     golangci_lint_ls = " ",
-    gopls            = "ﳑ ", -- 
-    graphql          = " ",
-    html             = " ",
-    ["null-ls"]      = " ",
-    jsonls           = " ",
-    pylsp            = " ",
-    sqls             = " ",
-    sumneko_lua      = " ", -- 
-    terraformls      = " ",
-    tsserver         = " ", -- 
-    vimls            = " ",
+    gopls = "ﳑ ", -- 
+    graphql = " ",
+    html = " ",
+    ["null-ls"] = " ",
+    jsonls = " ",
+    pylsp = " ",
+    sqls = " ",
+    sumneko_lua = " ", -- 
+    terraformls = " ",
+    tsserver = " ", -- 
+    vimls = " ",
     -- "yamlls"
   }
 
@@ -30,7 +30,7 @@ local get_icon = function(method, lsp)
     if type(icon_map[lsp]) == "string" then
       icon = icon_map[lsp]
     else
-      vim.notify('no matching icon found: ' .. lsp, 'warn')
+      vim.notify("no matching icon found: " .. lsp, "warn")
     end
   end
   return icon
@@ -72,21 +72,24 @@ local project_config = {
   -- Path where project.nvim will store the project history for use in
   -- telescope
   datapath = vim.fn.stdpath("data"),
-  chdir_func = change_project
+  chdir_func = change_project,
 }
 
 require("project_nvim").setup(project_config)
 
 local cmd = vim.api.nvim_create_user_command
-
 local get_root = function()
   local path, method = require("project_nvim.project").get_project_root()
-  vim.notify({ path }, "info", { title = method })
+  local line = path
+  if method then
+    line = path .. "  [" .. method .. "]"
+  end
+  vim.notify(line, "info", { title = method, anchor = "TC" })
 end
 
 cmd("ProjectGetRoot", get_root, {
   nargs = 0,
-  desc = "Get project root path and method"
+  desc = "Get project root path and method",
 })
 
 local get_recent = function()
@@ -96,5 +99,5 @@ end
 
 cmd("ProjectGetRecent", get_recent, {
   nargs = 0,
-  desc = "Get recent projects list"
+  desc = "Get recent projects list",
 })

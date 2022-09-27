@@ -1,5 +1,5 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
-local actions_layout = require "telescope.actions.layout"
+local actions_layout = require("telescope.actions.layout")
 local actions = require("telescope.actions")
 local custom = require("plugins.config.telescope-custom")
 
@@ -24,7 +24,7 @@ local mainMaps = {
     ["<C-Up>"] = actions.cycle_history_prev,
     ["<Down>"] = actions.preview_scrolling_down,
     ["<Up>"] = actions.preview_scrolling_up,
-    ["<A-a>"] = actions.toggle_all
+    ["<A-a>"] = actions.toggle_all,
     -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
     -- [S-F1-9] = add/remove secondary sort #
     -- [??] = clear sort
@@ -34,16 +34,16 @@ local mainMaps = {
     -- ["<C-}>"] = custom.actions.switch_picker,
   },
   n = {
-    ["<Esc>"] = actions.close
-  }
+    ["<Esc>"] = actions.close,
+  },
 }
 
 local fileMaps = {
   i = {
     -- change directory functionality
     ["<A-U>"] = custom.actions.directory_up,
-    ["<CR>"] = custom.actions.multi_open
-  }
+    ["<CR>"] = custom.actions.multi_open,
+  },
 }
 --  TODO: grep live
 --  opts.search_dirs -- list of directory to search in
@@ -52,9 +52,8 @@ local fileMaps = {
 --[[ tableMerge(baseMaps, fileMaps)
 tableMerge(baseMaps, mainMaps) ]]
 local mappings = {
-  base = baseMaps,
   main = mainMaps,
-  file_picker = fileMaps
+  file_picker = fileMaps,
 }
 return mappings
 

@@ -50,7 +50,6 @@ vim.cmd([[
   " hi EndOfBuffer guibg=none ctermbg=none
   " hi StatusLine guibg=NONE
   " hi StatusLineNC guibg=NONE guifg=NONE
-    " BarbarColors
     syntax sync fromstart
   catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme default

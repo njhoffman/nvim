@@ -64,14 +64,6 @@ end
 --     vertical = false
 --   }
 
-local M = {}
-M.create_cmd_truncate = function(bufnr)
-  local bufnr = bufnr or vim.api.nvim_get_current_buf()
-  vim.api.nvim_buf_create_user_command(bufnr, "Truncate", truncate_log, {
-    desc = "Format buffer using lsp",
-  })
-end
-
 -- Trims trailing whitespace in the current buffer.
 -- Performs 'inccommand' preview if invoked as a preview cb (preview_ns is non-nil).
 local function trim_space(opts, preview_ns, preview_buf)
@@ -154,4 +146,12 @@ local function delete_special_v()
   return "d"
 end
 
+local M = {}
+M.create_cmd_truncate = function(bufnr)
+  local bufnr = bufnr or vim.api.nvim_get_current_buf()
+  vim.api.nvim_buf_create_user_command(bufnr, "Truncate", truncate_log, {
+    desc = "Format buffer using lsp",
+  })
+end
+return M
 -- vim.keymap.set("v", "d", delete_special_v, { noremap = true, expr = true })

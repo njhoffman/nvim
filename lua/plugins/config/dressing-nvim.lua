@@ -41,7 +41,8 @@ local defaults = {
     -- Set to false to disable the vim.ui.select implementation
     enabled = true,
     -- Priority list of preferred vim.select implementations
-    backend = { "nui", "telescope", "fzf_lua", "fzf", "builtin" },
+    -- backend = { "builtin", "nui", "telescope" },
+    backend = { "nui" },
     -- Options for telescope selector
     -- These are passed into the telescope picker directly. Can be used like:
     -- telescope = require('telescope.themes').get_ivy({...})
