@@ -1,8 +1,29 @@
 ---@diagnostic disable: unused-local, unused-function, undefined-field
 
+-- diff --git a/src/nvim/screen.c b/src/nvim/screen.c
+-- index 2ee7cd44f..8982bd2ee 100644
+-- --- a/src/nvim/screen.c
+-- +++ b/src/nvim/screen.c
+-- @@ -1931,12 +1931,8 @@ static size_t fill_foldcolumn(char_u *p, win_T *wp, foldinfo_T foldinfo, linenr_
+--      if (foldinfo.fi_lnum == lnum
+--          && first_level + i >= foldinfo.fi_low_level) {
+--        symbol = wp->w_p_fcs_chars.foldopen;
+-- -    } else if (first_level == 1) {
+-- -      symbol = wp->w_p_fcs_chars.foldsep;
+-- -    } else if (first_level + i <= 9) {
+-- -      symbol = '0' + first_level + i;
+--      } else {
+-- -      symbol = '>';
+-- +      symbol = wp->w_p_fcs_chars.foldsep;
+--      }
+--
+--      len = utf_char2bytes(symbol, (char *)&p[char_counter]);
+
 -- use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async'}
+
 local handler = require("plugins.config.nvim-ufo-handler")
 
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 vim.o.foldcolumn = "1"
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
@@ -14,7 +35,7 @@ vim.keymap.set("n", "zM", require("ufo").closeAllFolds, {})
 vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds, {})
 vim.keymap.set("n", "zm", require("ufo").closeFoldsWith, {}) -- closeAllFolds == closeFoldsWith(0)
 
-local toggle = 3
+local toggle = 1
 vim.keymap.set("n", "ZZ", function()
   if toggle == 0 then
     require("ufo").openAllFolds()
@@ -25,7 +46,7 @@ vim.keymap.set("n", "ZZ", function()
   end
 end, {})
 
-local foldlevel = 0
+local foldlevel = 1
 -- TODO: calculate maximum fold level
 local inspect_level = function()
   local bufnr = vim.api.nvim_get_current_buf()

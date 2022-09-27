@@ -79,8 +79,6 @@ return function()
 
     TaskFloat({ fg = "#9abcfb", gui = "bold" }),
     TaskFloatBorder({ fg = "#2151a1" }),
-    -- FoldIcon({ fg = "#4B4BBB" }),
-    FoldText({ fg = "#8181f1" }),
 
     -- +--- GitSigns ---+
     GitSignsAddFaded({ fg = clr_over.green_faded }),
