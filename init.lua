@@ -17,9 +17,8 @@ for _, mod_name in ipairs({
   "project",
   "runner",
   "hover.setup",
-  -- "codebox",
   "stats",
-  -- "dashboard"
+  -- "codebox",
 }) do
   vim.import(mod_name)
 end

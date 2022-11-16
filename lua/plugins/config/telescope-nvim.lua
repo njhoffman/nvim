@@ -53,7 +53,7 @@ end
 
 local telescopeConfig = {
   defaults = {
-    scrolling_limit = 4000,
+    scrolling_limit = 20000,
     dynamic_preview_title = true,
     hidden = true,
     no_ignore = false,

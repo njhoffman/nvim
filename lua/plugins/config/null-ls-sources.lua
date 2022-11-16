@@ -75,7 +75,12 @@ M.sources = {
   null_ls.builtins.formatting.shfmt.with({
     extra_args = function(params)
       return {
-        "-i",
+        "--case-indent",
+        "--space-redirects",
+        "--simplify",
+        "--language-dialect",
+        "bash",
+        "--indent",
         vim.api.nvim_buf_get_option(params.bufnr, "shiftwidth"),
       }
     end,

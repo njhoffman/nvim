@@ -16,6 +16,7 @@ M.notify = function(message, level, ...)
   local tb = logutils.traceback()
   vim.defer_fn(function()
     -- TODO: pull msg strings out, vim.inspect rest of keyed objects
+
     local notif_time = vim.fn.strftime("%H:%M")
     if type(level) == "number" then
       level = logutils.log_level_name(level)
@@ -61,10 +62,10 @@ M.notify = function(message, level, ...)
     -- NOTE: quick hack to see if other windows open on start
     if level_n < min_show_level then
       skip_render = true
-      logger:warn("skipping min_show_level: " .. min_show_level)
+      -- logger:warn("skipping min_show_level: " .. min_show_level)
     elseif false and winnr ~= 1000 then
       skip_render = true
-      logger:warn("skipping winnr: " .. winnr .. " -- (" .. notify_msg .. ")")
+      -- logger:warn("skipping winnr: " .. winnr .. " -- (" .. notify_msg .. ")")
     end
 
     local ok, notify = pcall(require, "notify")

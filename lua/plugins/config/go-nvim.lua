@@ -87,7 +87,7 @@ local defaults = {
 }
 
 local install_root_dir = table.concat({ vim.fn.stdpath("data"), "lsp_servers" }, "/")
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local config = {
   gopls_cmd = { install_root_dir .. "/go/gopls" },

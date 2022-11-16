@@ -24,6 +24,7 @@ local tele_plugs = {
   ["cheatsheet"] = "cheatsheet.nvim",
   ["cder"] = "cder.nvim",
   ["command_palette"] = "telescope-command-palette.nvim",
+  ["color_names"] = "telescope-color-names.nvim",
   ["dap"] = "telescope-dap.nvim",
   ["file_browser"] = "telescope-file-browser.nvim",
   ["frecency"] = "telescope-frecency.nvim",
@@ -53,6 +54,14 @@ local tele_plugs = {
   ["vimwiki"] = "telescope-vimwiki.nvim",
   ["z"] = "telescope-z.nvim",
 }
+
+require("dir-telescope").setup({
+  hidden = true,
+  respect_gitignore = true,
+})
+
+vim.keymap.set("n", "<leader>gfd", "<cmd>GrepInDirectory<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>gpd", "<cmd>FileInDirectory<CR>", { noremap = true, silent = true })
 
 local M = {}
 M.extensions = {}

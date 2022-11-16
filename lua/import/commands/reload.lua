@@ -1,5 +1,5 @@
-local import = require('import.commands.import')
-local state = require('import.commands.state')
+local import = require("import.commands.import")
+local state = require("import.commands.state")
 
 --- Will unload and reload the path (with import). Safe to call if path was not imported via the import function
 --- @param path string
@@ -13,7 +13,7 @@ local reload = function(path, success_callback)
   package.loaded[path] = nil
   state.import_status.failures[path] = nil
   state.import_status.successes[path] = nil
-  local callback_message = ''
+  local callback_message = ""
   if state.import_status.info[path] then
     local _success_callback = state.import_status.info[path].success_callback
     if success_callback == nil then
@@ -21,7 +21,7 @@ local reload = function(path, success_callback)
       callback_message = "with cached callback"
     end
   end
-  if callback_message == '' and success_callback then
+  if callback_message == "" and success_callback then
     callback_message = "with provided callback"
   end
   local message = "Reloading"

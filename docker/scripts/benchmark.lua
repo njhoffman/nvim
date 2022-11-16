@@ -1,0 +1,1 @@
+print("HELLO I AM A BENCHMARK")

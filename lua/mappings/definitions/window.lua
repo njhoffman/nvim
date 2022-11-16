@@ -5,22 +5,22 @@ local M = {
     long = "close window smartly wih sayonara",
   },
   down = {
-    cmd = "<C-w>j",
+    -- cmd = "<C-w>j",
     short = "window down",
     long = "focus window below",
   },
   up = {
-    cmd = "<C-w>k",
+    -- cmd = "<C-w>k",
     short = "window up",
     long = "focus window above",
   },
   left = {
-    cmd = "<C-w>h",
+    -- cmd = "<C-w>h",
     short = "window left",
     long = "focus window to the left",
   },
   right = {
-    cmd = "<C-w>l",
+    -- cmd = "<C-w>l",
     short = "window right",
     long = "focus window to the right",
   },
@@ -145,7 +145,7 @@ local M = {
   cmd_dbg = {
     cmd = "<M-d>",
     short = "surround with vim.dbg",
-    long = "surround any input on commandline with lua vim.dbg()"
+    long = "surround any input on commandline with lua vim.dbg()",
   },
   cmdwin_close = {
     cmd = "<C-c>",

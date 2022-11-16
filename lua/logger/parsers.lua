@@ -1,5 +1,5 @@
 local M = {}
-local logutils = require('logger.utils')
+local logutils = require("logger.utils")
 
 M.parse_message = function(message, cols)
   local msg = ""
@@ -34,8 +34,8 @@ M.notify_parse_message = function(message, cols)
   --   path = path:gsub(vim.fn.getenv("HOME"), "~")
   --   msg = icon .. " " .. path
   -- else
-    -- msg = M.parse_message(message, cols)
-    msg = M.parse_message(message)
+  -- msg = M.parse_message(message, cols)
+  msg = M.parse_message(message)
   -- end
   return msg
 end

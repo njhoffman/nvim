@@ -55,7 +55,7 @@ local servers = {
   "pyright",
   "solargraph",
   "sqls",
-  "stylelint-lsp",
+  "stylelint_lsp",
   "sumneko_lua",
   "svelte",
   "tailwindcss",
@@ -89,7 +89,7 @@ capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true,
 }
-require("cmp_nvim_lsp").update_capabilities(capabilities)
+require("cmp_nvim_lsp").default_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = { "documentation", "detail", "additionalTextEdits" },
@@ -117,7 +117,7 @@ require("mason-lspconfig").setup_handlers({
   --   })
   -- end,
   ["sumneko_lua"] = function()
-    local luadev_config = {
+    local neodev_config = {
       library = {
         enabled = true, -- when not enabled, lua-dev will not change any settings to the LSP server
         runtime = true, -- runtime path
@@ -125,7 +125,7 @@ require("mason-lspconfig").setup_handlers({
         plugins = { "plenary.nvim", "telescope.nvim" },
       },
     }
-    require("lua-dev").setup(luadev_config)
+    require("neodev").setup(neodev_config)
     lspconfig.sumneko_lua.setup({
       Lua = {
         format = {

@@ -1,6 +1,6 @@
-local cmds = require('import.commands')
+local cmds = require("import.commands")
 local ui = require("import.ui")
-local opts = require('import.opts')
+local opts = require("import.opts")
 
 local init = function(init_opts)
   if not vim.g._import_imported then
@@ -28,16 +28,19 @@ local init = function(init_opts)
 
     local _status = function(command_details)
       local module = command_details.args
-      if module:match('^%s*$') then
+      if module:match("^%s*$") then
         -- Nothing/empty string was passed, display UI
         vim.api.nvim_command('echon ""') -- Be cool if print worked...
         ui.display(opts.user_opts)
         return
       end
       local details = cmds.get_status(module)
-      local message = module .. ': { imported=' ..
-        tostring(details.imported) .. ', import_duration=' ..
-        tostring(details.import_time / 1000000) .. ' milliseconds }'
+      local message = module
+        .. ": { imported="
+        .. tostring(details.imported)
+        .. ", import_duration="
+        .. tostring(details.import_time / 1000000)
+        .. " milliseconds }"
       print(message)
     end
 
@@ -46,17 +49,17 @@ local init = function(init_opts)
       return cmds.get_all_modules()
     end
 
-    vim.api.nvim_create_user_command("Import", _import, { nargs = '+', })
-    vim.api.nvim_create_user_command("Reload", _reload, { nargs = '*', complete = _complete })
-    vim.api.nvim_create_user_command("ImportStatus", _status, { nargs = '?', complete = _complete })
+    vim.api.nvim_create_user_command("Import", _import, { nargs = "+" })
+    vim.api.nvim_create_user_command("Reload", _reload, { nargs = "*", complete = _complete })
+    vim.api.nvim_create_user_command("ImportStatus", _status, { nargs = "?", complete = _complete })
   end
 end
 
 return {
-  init        = init,
-  import      = cmds.import,
-  reload      = cmds.reload,
-  display     = ui.display,
-  get_status  = cmds.get_status,
-  get_modules = cmds.get_all_modules
+  init = init,
+  import = cmds.import,
+  reload = cmds.reload,
+  display = ui.display,
+  get_status = cmds.get_status,
+  get_modules = cmds.get_all_modules,
 }

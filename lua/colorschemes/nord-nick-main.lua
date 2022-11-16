@@ -50,7 +50,8 @@ local clr_over = {
   blue_faded = "#5171A1",
 }
 
-return function()
+return function(injected_functions)
+  local sym = injected_functions.sym
   return {
     Visual({ fg = "none", bg = clr_over.selection }),
     Error({ fg = "#bF211A", bg = "none" }),
@@ -116,21 +117,24 @@ return function()
     DebugMsg({ fg = Comment.fg }),
     Question({ fg = clrs.nord4 }),
     -- +--- LSP ---+
-    DiagnosticWarn({ fg = clrs.nord13 }),
-    DiagnosticHint({ fg = "#447Ddf" }),
-    DiagnosticVirtualTextWarn({ fg = clrs.nord13.da(30), gui = "italic" }),
-    DiagnosticVirtualTextHint({ fg = "#246Daf", gui = "italic" }),
     LspFloatWinBorder({ bg = "none" }),
-    LspDiagnosticsError({ fg = clrs.nord11 }),
-    LspDiagnosticsHint({ fg = clrs.nord8 }),
-    LspDiagnosticsInfo({ fg = clrs.nord10 }),
-    LspDiagnosticsDefaultError({ LspDiagnosticsError }),
-    LspDiagnosticsDefaultHint({ LspDiagnosticsHint }),
-    LspDiagnosticsDefaultInfo({ LspDiagnosticsInfo }),
-    LspDiagnosticsSignError({ fg = LspDiagnosticsError.fg.da(20) }),
-    LspDiagnosticsSignWarn({ fg = clrs.nord13.da(20) }),
-    LspDiagnosticsSignHint({ fg = LspDiagnosticsHint.fg.da(20) }),
-    LspDiagnosticsSignInfo({ fg = LspDiagnosticsInfo.fg.da(20) }),
+    DiagnosticError({ fg = clrs.nord11.da(30) }),
+    DiagnosticWarn({ fg = clrs.nord13.da(30) }),
+    DiagnosticHint({ fg = clrs.nord8.da(50) }),
+    DiagnosticInfo({ fg = clrs.nord10 }),
+    DiagnosticVirtualTextError({ fg = DiagnosticError.fg.da(20), gui = "italic" }),
+    DiagnosticVirtualTextWarn({ fg = DiagnosticWarn.fg, gui = "italic" }),
+    DiagnosticVirtualTextHint({ fg = DiagnosticHint.fg, gui = "italic" }),
+    DiagnosticVirtualTextInfo({ fg = DiagnosticInfo.fg, gui = "italic" }),
+    LspDiagnosticsDefaultError({ DiagnosticError }),
+    LspDiagnosticsDefaultWarn({ DiagnosticWarn }),
+    LspDiagnosticsDefaultHint({ DiagnosticHint }),
+    LspDiagnosticsDefaultInfo({ DiagnosticInfo }),
+    LspDiagnosticsSignError({ fg = DiagnosticError.fg.da(20) }),
+    LspDiagnosticsSignWarn({ fg = DiagnosticWarn.fg.da(20) }),
+    LspDiagnosticsSignHint({ fg = DiagnosticHint.fg.da(20) }),
+    LspDiagnosticsSignInfo({ fg = DiagnosticInfo.fg.da(20) }),
+
     DiffAdd({ bg = "#00361f" }), -- #00361f #001000 #22bb99
     DiffChange({ bg = "#003050" }), -- #003050 #001030 #646ead
     DiffDelete({ bg = "#3E0009" }), -- #3e0009 #300000 #be6069
@@ -147,24 +151,24 @@ return function()
     -- language groups
     --
     TreesitterContext({ bg = "#1a0606", gui = "italic" }),
-    TSInclude({ fg = "#4784a6" }),
-    TSBoolean({ fg = "#4d6f9c" }),
-    TSConditional({ fg = "#897785" }),
-    TSException({ fg = "#867f88" }),
-    TSFunction({ Function }),
-    TSKeyword({ Keyword }),
-    TSKeywordFunction({ Keyword }),
-    TSLabel({ fg = "#6688ba" }), -- For labels: `label:` in C and `:label:` in Lua.
-    TSMethod({ fg = "#6e99c6" }),
-    TSNameSpace({ Statement }),
-    TSPunctBracket({ fg = "#888698" }), -- For special punctutation that does not fall in the catagories before.
-    TSPunctSpecial({ fg = "#888698" }), -- For special punctutation that does not fall in the catagories before.
-    TSTag({ fg = clr_over.orange }),
-    TSTagDelimiter({ fg = clr_over.orange }),
-    TSURI({ fg = "#8eb9f6", gui = "none" }),
-    TSVariable({ Normal }),
-    TSVariableBuiltin({ Identifier }),
-    luaTSFunction({ TSMethod }),
+    sym("@include")({ fg = "#4784a6" }),
+    sym("@boolean")({ fg = "#4d6f9c" }),
+    sym("@conditional")({ fg = "#897785" }),
+    sym("@exception")({ fg = "#867f88" }),
+    sym("@function")({ Function }),
+    sym("@keyword")({ Keyword }),
+    sym("@keywordFunction")({ Keyword }),
+    sym("@label")({ fg = "#6688ba" }), -- For labels: `label:` in C and `:label:` in Lua.
+    sym("@method")({ fg = "#6e99c6" }),
+    sym("@nameSpace")({ Statement }),
+    sym("@punct.bracket")({ fg = "#888698" }), -- For special punctutation that does not fall in the catagories before.
+    sym("@punct.special")({ fg = "#888698" }), -- For special punctutation that does not fall in the catagories before.
+    sym("@tag")({ fg = clr_over.orange }),
+    sym("@tag.delimiter")({ fg = clr_over.orange }),
+    sym("@uri")({ fg = "#8eb9f6", gui = "none" }),
+    sym("@variable")({ Normal }),
+    sym("@variable.builtin")({ Identifier }),
+    -- luaTSFunction({ TSMethod }),
     --
     cssTSType({ fg = "#486795" }),
     cssTSPunctDelimiter({ fg = "#4784a6" }),
@@ -215,7 +219,7 @@ return function()
 
     -- jsFunctionName({ fg = "#a78086" }),
     jsxTag({ fg = clr_over.orange }),
-    jsxComponentName({ fg = clr_over.orange }),
+    -- jsxComponentName({ fg = clr_over.orange }),
     jsxTagName({ fg = clr_over.orange }),
     jsxOpenTag({ fg = clr_over.orange }),
     jsxCloseTag({ fg = "#7f90aa" }),

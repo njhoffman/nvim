@@ -6,14 +6,13 @@ vim.import("globals.variables")
 vim.import("user-options")
 vim.import("vim-options")
 
-vim.import("debuglog", function(debuglog)
-  vim.dbg = debuglog.dbg
-  vim.dbglog = debuglog.log
-  vim.dbgbuf = debuglog.buf
-  vim.dbgtime = debuglog.timer
-  vim.import("logger", function(logger)
-    vim.logger = logger.init("root")
-    vim.notify = logger.notify
-    vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")), "debug")
-  end)
-end)
+local debuglog = vim.import("debuglog")
+vim.dbg = debuglog.dbg
+vim.dbglog = debuglog.log
+vim.dbgbuf = debuglog.buf
+vim.dbgtime = debuglog.timer
+
+local logger = vim.import("logger")
+vim.logger = logger.init("root")
+vim.notify = logger.notify
+vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")), "debug")

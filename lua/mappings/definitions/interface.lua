@@ -7,9 +7,8 @@ local M = {
     cmd = "<cmd>noh<cr>|:ClosePopups<cr>",
     short = "remove hls, refresh colors and lsp",
   },
-  -- TODO: close splits
   clear_popups_splits_hl = {
-    cmd = "<cmd>noh<cr>|:ClosePopups<cr>",
+    cmd = "<cmd>:only<cr>|:ClosePopups<cr>",
     short = "remove hls, refresh colors and lsp",
   },
   reset_lsp_clear_hl = {

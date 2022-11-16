@@ -2,8 +2,8 @@ local vim = vim
 local fn = vim.fn
 local log = require("utils.options.log")
 local typing = require("utils.options.typing")
-local display_print = require('utils.options.display.print')
-local display_notify = require('utils.options.display.notify')
+local display_print = require("utils.options.display.print")
+local display_notify = require("utils.options.display.notify")
 
 local M = {}
 
@@ -14,7 +14,7 @@ local state = {
   current_options = {},
   callbacks = {},
   variable_sync_initialized = false,
-  buffer_sync_autocmd_initialized = false
+  buffer_sync_autocmd_initialized = false,
 }
 
 -- Return the first index with the given value (or nil if not found).
@@ -68,7 +68,7 @@ local output_options = function(bufnr)
   if s_config.notify == true then
     return display_notify.notify_options(bufnr, state, get_option_info, get_buffer_option)
   else
-    display_print.echo_options(bufnr, state)
+    -- display_print.echo_options(bufnr, state)
   end
 end
 
@@ -162,7 +162,7 @@ local function pre_process_set_option(name, value, bufnr)
   end
 
   if value == nil then
-    display_print.echo_option(name, bufnr, M.get_option_value, get_option_info)
+    -- display_print.echo_option(name, bufnr, M.get_option_value, get_option_info)
     return true
   end
 
@@ -172,10 +172,7 @@ local function pre_process_set_option(name, value, bufnr)
     return
   end
   if option_info.buffer_local == true and bufnr == nil then
-    log.warning(
-      "options",
-      "This is only a local option. Use `:Setlocal " .. name .. "` instead."
-    )
+    log.warning("options", "This is only a local option. Use `:Setlocal " .. name .. "` instead.")
     return true
   end
 
@@ -231,10 +228,7 @@ local function set_option(name, value, bufnr)
       end
       buffer_option.value = converted_value
     elseif buffer_option == nil then
-      table.insert(
-        state.current_options[name].buffers,
-        { bufnr = bufnr, value = converted_value }
-      )
+      table.insert(state.current_options[name].buffers, { bufnr = bufnr, value = converted_value })
     end
     execute_callbacks(name)
   end
@@ -307,20 +301,14 @@ function M.register_option(opts)
 
   assert(
     type(opts.default) == opts.type_info,
-    "Type of the default value does not match type_info: "
-    .. type(opts.default)
-    .. " != "
-    .. opts.type_info
+    "Type of the default value does not match type_info: " .. type(opts.default) .. " != " .. opts.type_info
   )
 
   opts.buffer_local = opts.buffer_local or false
   opts.global = opts.global or not opts.buffer_local
   opts.source = opts.source or ""
 
-  if opts.buffer_local
-    and opts.target_variable ~= nil
-    and not state.variable_sync_initialized
-  then
+  if opts.buffer_local and opts.target_variable ~= nil and not state.variable_sync_initialized then
     setup_buffer_var_sync()
     state.variable_sync_initialized = true
   end
@@ -334,22 +322,16 @@ function M.register_option(opts)
     parser = opts.parser,
     target_variable = opts.target_variable,
     changed = 0,
-    last_changed = nil
+    last_changed = nil,
   }
 
   if opts.target_variable ~= nil and state.buffer_sync_autocmd_initialized == false then
     init_variable_sync()
   end
 
-  if opts.target_variable ~= nil
-    and opts.global
-    and is_target_variable_set(opts.target_variable)
-  then
+  if opts.target_variable ~= nil and opts.global and is_target_variable_set(opts.target_variable) then
     set_option(opts.name, get_target_variable_value(opts.target_variable))
-  elseif opts.target_variable ~= nil
-    and opts.global
-    and not is_target_variable_set(opts.target_variable)
-  then
+  elseif opts.target_variable ~= nil and opts.global and not is_target_variable_set(opts.target_variable) then
     set_target_variable(opts.target_variable, opts.default)
   end
 end
@@ -397,7 +379,7 @@ end
 
 function M.disable_nvim_colorizer(bufnr)
   vim.cmd("augroup nvim_colorizer_buf_" .. bufnr)
-  vim.cmd([[ 
+  vim.cmd([[
     au!  | augroup END
     delcommand DisableNvimColorizer
     ColorizerDetachFromBuffer
@@ -460,9 +442,9 @@ function M.sync_buffer_vars(bufnr)
 end
 
 function M.run_set_cmd(option_str, bufnr)
-  if option_str == nil or option_str == '' then
+  if option_str == nil or option_str == "" then
     output_options(bufnr)
-  elseif not string.match(option_str, '=') then
+  elseif not string.match(option_str, "=") then
     -- TODO: only show option_str output
     output_options(bufnr)
     -- display_print.echo_option(bufnr, option_str)

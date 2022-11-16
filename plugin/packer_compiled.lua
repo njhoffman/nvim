@@ -378,6 +378,11 @@ _G.packer_plugins = {
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/diffview.nvim",
     url = "https://github.com/sindrets/diffview.nvim"
   },
+  ["dir-telescope.nvim"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/dir-telescope.nvim",
+    url = "https://github.com/princejoogie/dir-telescope.nvim"
+  },
   ["dockerfile.vim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/dockerfile.vim",
@@ -402,6 +407,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/emmet-vim",
     url = "https://github.com/mattn/emmet-vim"
+  },
+  ["escape.nvim"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/escape.nvim",
+    url = "https://github.com/m-gail/escape.nvim"
   },
   ["feline.nvim"] = {
     loaded = true,
@@ -531,6 +541,11 @@ _G.packer_plugins = {
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/legendary.nvim",
     url = "https://github.com/mrjones2014/legendary.nvim"
   },
+  ["live-command.nvim"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/live-command.nvim",
+    url = "https://github.com/smjonas/live-command.nvim"
+  },
   ["lsp-colors.nvim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/lsp-colors.nvim",
@@ -545,11 +560,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/lspsaga.nvim",
     url = "https://github.com/tami5/lspsaga.nvim"
-  },
-  ["lua-dev.nvim"] = {
-    loaded = true,
-    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/lua-dev.nvim",
-    url = "https://github.com/folke/lua-dev.nvim"
   },
   ["lush.nvim"] = {
     loaded = true,
@@ -585,6 +595,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/mkdx",
     url = "https://github.com/SidOfc/mkdx"
+  },
+  ["neodev.nvim"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/neodev.nvim",
+    url = "https://github.com/folke/neodev.nvim"
   },
   ["neuron.nvim"] = {
     loaded = true,
@@ -1043,6 +1058,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-changes.nvim",
     url = "https://github.com/LinArcX/telescope-changes.nvim"
+  },
+  ["telescope-color-names.nvim"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-color-names.nvim",
+    url = "https://github.com/nat-418/telescope-color-names.nvim"
   },
   ["telescope-command-palette.nvim"] = {
     loaded = true,
@@ -1568,14 +1588,14 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: nvim-startup.lua
-time([[Config for nvim-startup.lua]], true)
-try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.nvim_startup\frequire\0", "config", "nvim-startup.lua")
-time([[Config for nvim-startup.lua]], false)
 -- Config for: vimwiki
 time([[Config for vimwiki]], true)
 try_loadstring("\27LJ\2\nx\0\0\3\0\5\0\t6\0\0\0009\0\1\0)\1\0\0=\1\2\0006\0\0\0009\0\3\0'\2\4\0B\0\2\1K\0\1\0004let g:vimwiki_key_mappings = { 'all_maps': 0, }\bcmd\23vimwiki_global_ext\6g\bvim\0", "config", "vimwiki")
 time([[Config for vimwiki]], false)
+-- Config for: nvim-startup.lua
+time([[Config for nvim-startup.lua]], true)
+try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.nvim_startup\frequire\0", "config", "nvim-startup.lua")
+time([[Config for nvim-startup.lua]], false)
 -- Conditional loads
 time([[Conditional loading of hologram.nvim]], true)
   require("packer.load")({"hologram.nvim"}, {}, _G.packer_plugins)
@@ -1585,31 +1605,31 @@ time([[Conditional loading of nvim-nonicons]], true)
 time([[Conditional loading of nvim-nonicons]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
+vim.cmd [[ packadd nvim-lspconfig ]]
+vim.cmd [[ packadd sqls.nvim ]]
 vim.cmd [[ packadd nvim-cmp ]]
-vim.cmd [[ packadd cmp-git ]]
-vim.cmd [[ packadd cmp-emoji ]]
 vim.cmd [[ packadd cmp-pandoc-references ]]
-vim.cmd [[ packadd cmp-nvim-lsp-signature-help ]]
-vim.cmd [[ packadd cmp-treesitter ]]
-vim.cmd [[ packadd cmp-npm ]]
 vim.cmd [[ packadd cmp-vimwiki-tags ]]
 vim.cmd [[ packadd cmp-nvim-lsp-document-symbol ]]
-vim.cmd [[ packadd cmp_luasnip ]]
+vim.cmd [[ packadd cmp-spell ]]
+vim.cmd [[ packadd cmp-git ]]
+vim.cmd [[ packadd cmp-emoji ]]
+vim.cmd [[ packadd cmp-tmux ]]
+vim.cmd [[ packadd cmp-nvim-lua ]]
+vim.cmd [[ packadd cmp-nvim-lsp ]]
 vim.cmd [[ packadd tabout.nvim ]]
 
 -- Config for: tabout.nvim
 try_loadstring("\27LJ\2\n6\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\27plugins.configs.tabout\frequire\0", "config", "tabout.nvim")
 
-vim.cmd [[ packadd cmp-tmux ]]
-vim.cmd [[ packadd cmp-nvim-lua ]]
-vim.cmd [[ packadd cmp-spell ]]
-vim.cmd [[ packadd cmp-nvim-lsp ]]
 vim.cmd [[ packadd cmp-cmdline-history ]]
 vim.cmd [[ packadd cmp-calc ]]
+vim.cmd [[ packadd cmp_luasnip ]]
 vim.cmd [[ packadd cmp-omni ]]
 vim.cmd [[ packadd cmp-cmdline ]]
-vim.cmd [[ packadd nvim-lspconfig ]]
-vim.cmd [[ packadd sqls.nvim ]]
+vim.cmd [[ packadd cmp-nvim-lsp-signature-help ]]
+vim.cmd [[ packadd cmp-treesitter ]]
+vim.cmd [[ packadd cmp-npm ]]
 time([[Sequenced loading]], false)
 
 -- Command lazy-loads

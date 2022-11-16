@@ -23,7 +23,7 @@ M.make_capabilities = function()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   local cmp_ok, cmp = pcall(require, "cmp_nvim_lsp")
   if cmp_ok then
-    cmp.update_capabilities(capabilities)
+    cmp.default_capabilities(capabilities)
   else
     vim.notify({ "Completion error with CMP", cmp }, "error")
   end

@@ -42,15 +42,6 @@ local cmp_helper = {
 }
 
 local setupConfig = {
-  enabled = function()
-    -- disable inside comments and telescope window
-    local in_prompt = vim.api.nvim_buf_get_option(0, "buftype") == "prompt"
-    if in_prompt then
-      return false
-    end
-    local context = require("cmp.config.context")
-    return not (context.in_treesitter_capture("comment") == true or context.in_syntax_group("Comment"))
-  end,
   experimental = {
     native_menu = false,
     ghost_text = true,
@@ -93,7 +84,7 @@ local setupConfig = {
     }),
   },
   formatting = {
-    fields = { "kind", "abbr", "menu" },
+    fields = { "menu", "abbr", "kind" },
     -- offset, exact, score, recently_used, locality, kind, sort_text, length, order
     format = function(entry, vim_item)
       local max_len = 40
@@ -101,19 +92,19 @@ local setupConfig = {
         vim_item.abbr = string.sub(vim_item.abbr, 1, max_len - 2) .. "··"
       end
       vim_item.dup = ({ nvim_lua = 0 })[entry.source.name] or 1
-      vim_item.menu = sources.names[entry.source.name]
-      vim_item.kind = sources.symbols[vim_item.kind]
+      vim_item.menu = sources.names[entry.source.name] .. " "
+      vim_item.kind = " " .. sources.symbols[vim_item.kind]
       return vim_item
     end,
   },
   sorting = {
     priority_weight = 2,
     comparators = {
-      require("cmp_fuzzy_path.compare"),
-      require("cmp_fuzzy_buffer.compare"),
       compare.offset,
       compare.exact,
       compare.score,
+      require("cmp_fuzzy_path.compare"),
+      require("cmp_fuzzy_buffer.compare"),
       sort_under,
       function(...)
         return cmp_helper.prioritize_argument(...)
@@ -130,21 +121,10 @@ local setupConfig = {
       require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
     end,
   },
-  -- {
-  --   name           = "treesitter",
-  --   priority       = 3,
-  --   keyword_length = 3,
-  --   max_item_count = 10,
-  --   -- keyword_pattern = [[\k\+]],
-  --   -- keyword_pattern = [[\!\@<!\w*]]
-  --   -- keyword_pattern = [=[[^[:blank:]].*]=],
-  --   get_bufnrs     = function()
-  --     return { vim.api.nvim_get_current_buf() }
-  --   end
-  -- },
   sources = cmp.config.sources(sources.definitions),
 }
 
+-- cmp.setup()
 cmp.setup(setupConfig)
 
 -- Set configuration for specific filetype.

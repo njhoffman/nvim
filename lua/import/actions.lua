@@ -43,8 +43,8 @@ local _scroll_view_pane_up = function()
 end
 
 return {
-  scroll_view_pane_up   = _scroll_view_pane_up,
+  scroll_view_pane_up = _scroll_view_pane_up,
   scroll_view_pane_down = _scroll_view_pane_down,
-  close                 = _close,
-  selected_module       = _selected_module,
+  close = _close,
+  selected_module = _selected_module,
 }

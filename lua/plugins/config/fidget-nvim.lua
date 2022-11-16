@@ -40,7 +40,7 @@ require("fidget").setup({
     spinner = "zip",
   },
   window = {
-    blend = 50,
+    blend = 20,
   },
   align = {
     bottom = true, -- align fidgets along bottom edge of buffer

@@ -273,8 +273,8 @@ vim.import("mapper", function(M)
   M.map("Interface", "n", "<a-#>", "ts_prev_usage") -- virtual
   M.map("Interface", "n", "_", "clear_hl")
   M.map("Interface", "n", "<M-b>", "clear_popups_hl")
-  M.map("Interface", "n", "<M-_>", "reset_lsp_clear_hl")
-  M.map("Interface", "n", "<M-->", "clear_popups_splits_hl")
+  M.map("Interface", "n", "<M-->", "reset_lsp_clear_hl")
+  M.map("Interface", "n", "<M-C-_>", "clear_popups_splits_hl")
 
   M.map("System", "n", "<leader>iy", "yank_filename")
   M.map("System", "n", "<leader>iY", "yank_buffer")

@@ -267,7 +267,7 @@ local handlers = {
 
 local check_capability = function(client, bufnr, capability)
   local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-  vim.notify("checking " .. capability, "trace")
+  -- vim.notify("checking " .. capability, "trace")
   local function log_lsp()
     vim.notify("lsp: " .. client.name .. " - " .. bufnr .. " " .. capability .. " ft: " .. ft, "trace")
   end

@@ -83,6 +83,7 @@ M.format_plugins = {
   ["inc-rename.nvim"] = { "smjonas/inc-rename.nvim" },
   ["nvim-autopairs"] = { "windwp/nvim-autopairs" }, -- jiangmiao/auto-pairs
   ["nvim-surround"] = { "kylechui/nvim-surround" },
+  ["escape.nvim"] = { "m-gail/escape.nvim" },
   ["splitjoin.vim"] = { "andrewradev/splitjoin.vim" }, --  https://github.com/FooSoft/vim-argwrap
   ["nvim-trevJ"] = { "AckslD/nvim-trevJ.lua" },
   ["vim-easy-align"] = { "~/git/vim-easy-align" }, -- { "junegunn/vim-easy-align" }, -- tommcdo/vim-lion
@@ -178,6 +179,7 @@ M.telescope_plugins = {
   },
   ["nvim-neoclip.lua"] = { "AckslD/nvim-neoclip.lua", requires = { "tami5/sqlite.lua", module = "sqlite" } },
   ["cheatsheet.nvim"] = { "sudormrfbin/cheatsheet.nvim" },
+  ["dir-telescope.nvim"] = { "princejoogie/dir-telescope.nvim" },
   ["telescope-arecibo.nvim"] = { "nvim-telescope/telescope-arecibo.nvim" },
   ["telescope-asynctasks.nvim"] = {
     "GustavoKatel/telescope-asynctasks.nvim",
@@ -198,6 +200,7 @@ M.telescope_plugins = {
   ["telescope-media-files.nvim"] = { "nvim-telescope/telescope-media-files.nvim" },
   ["telescope-node-modules.nvim"] = { "nvim-telescope/telescope-node-modules.nvim" },
   ["telescope-npm.nvim"] = { "elianiva/telescope-npm.nvim" },
+  ["telescope-color-names.nvim"] = { "nat-418/telescope-color-names.nvim" },
   ["telescope-openbrowser.nvim"] = { "tamago324/telescope-openbrowser.nvim" },
   ["telescope-packer.nvim"] = { "nvim-telescope/telescope-packer.nvim" },
   ["telescope-repo.nvim"] = { "cljoly/telescope-repo.nvim" },
@@ -341,6 +344,7 @@ M.interface_plugins = {
   ["goto-preview"] = { "rmagatti/goto-preview" },
   ["alpha-nvim"] = { "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" },
   ["diffview.nvim"] = { "sindrets/diffview.nvim" },
+  ["live-command.nvim"] = { "smjonas/live-command.nvim" },
   ["nvim-bqf"] = { "kevinhwang91/nvim-bqf" },
   ["nvim-tree.lua"] = { "kyazdani42/nvim-tree.lua" },
   ["nvim-ufo"] = { "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" },
@@ -351,6 +355,7 @@ M.interface_plugins = {
   ["undotree"] = { "mbbill/undotree" },
   ["vim-qf"] = { "romainl/vim-qf" },
   ["vim-yoink"] = { "svermeulen/vim-yoink" },
+  -- ["codewindow.nvim"] = { "gorbit99/codewindow.nvim" },
   -- https://github.com/anuvyklack/windows.nvim
   -- ["yank-history"] = {"yazgoo/yank-history"},
   -- ["vim-mundo"] = { "simnalamburt/vim-mundo" },
@@ -421,7 +426,7 @@ M.lsp_plugins = {
     commit = "76d0573fc159839a9c4e62a0ac4f1046845cdd50",
     requires = "nvim-lua/plenary.nvim",
   },
-  ["lua-dev.nvim"] = { "folke/lua-dev.nvim" },
+  ["neodev.nvim"] = { "folke/neodev.nvim" },
   ["lsp-colors.nvim"] = { "folke/lsp-colors.nvim" },
   ["nvim-lightbulb"] = { "kosayoda/nvim-lightbulb" },
   ["lsp_signature.nvim"] = { "ray-x/lsp_signature.nvim" },
