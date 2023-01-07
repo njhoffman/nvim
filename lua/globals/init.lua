@@ -13,6 +13,9 @@ vim.dbgbuf = debuglog.buf
 vim.dbgtime = debuglog.timer
 
 local logger = vim.import("logger")
-vim.logger = logger.init("root")
-vim.notify = logger.notify
-vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")), "debug")
+if logger ~= nil and logger.init ~= nil then
+  vim.logger = logger.init("root")
+  vim.notify = logger.notify
+end
+
+-- vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")), "debug")

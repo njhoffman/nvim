@@ -333,11 +333,6 @@ _G.packer_plugins = {
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/colortils.nvim",
     url = "https://github.com/nvim-colortils/colortils.nvim"
   },
-  ["competitest.nvim"] = {
-    loaded = true,
-    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/competitest.nvim",
-    url = "https://github.com/xeluxee/competitest.nvim"
-  },
   ["conflict-marker.vim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/conflict-marker.vim",
@@ -1209,11 +1204,6 @@ _G.packer_plugins = {
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/text-case.nvim",
     url = "https://github.com/johmsalas/text-case.nvim"
   },
-  ["tmux.nvim"] = {
-    loaded = true,
-    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/tmux.nvim",
-    url = "https://github.com/aserowy/tmux.nvim"
-  },
   ["tmux.vim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/tmux.vim",
@@ -1597,25 +1587,15 @@ time([[Config for nvim-startup.lua]], true)
 try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.nvim_startup\frequire\0", "config", "nvim-startup.lua")
 time([[Config for nvim-startup.lua]], false)
 -- Conditional loads
-time([[Conditional loading of hologram.nvim]], true)
-  require("packer.load")({"hologram.nvim"}, {}, _G.packer_plugins)
-time([[Conditional loading of hologram.nvim]], false)
 time([[Conditional loading of nvim-nonicons]], true)
   require("packer.load")({"nvim-nonicons"}, {}, _G.packer_plugins)
 time([[Conditional loading of nvim-nonicons]], false)
+time([[Conditional loading of hologram.nvim]], true)
+  require("packer.load")({"hologram.nvim"}, {}, _G.packer_plugins)
+time([[Conditional loading of hologram.nvim]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
-vim.cmd [[ packadd nvim-lspconfig ]]
-vim.cmd [[ packadd sqls.nvim ]]
 vim.cmd [[ packadd nvim-cmp ]]
-vim.cmd [[ packadd cmp-pandoc-references ]]
-vim.cmd [[ packadd cmp-vimwiki-tags ]]
-vim.cmd [[ packadd cmp-nvim-lsp-document-symbol ]]
-vim.cmd [[ packadd cmp-spell ]]
-vim.cmd [[ packadd cmp-git ]]
-vim.cmd [[ packadd cmp-emoji ]]
-vim.cmd [[ packadd cmp-tmux ]]
-vim.cmd [[ packadd cmp-nvim-lua ]]
 vim.cmd [[ packadd cmp-nvim-lsp ]]
 vim.cmd [[ packadd tabout.nvim ]]
 
@@ -1623,18 +1603,34 @@ vim.cmd [[ packadd tabout.nvim ]]
 try_loadstring("\27LJ\2\n6\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\27plugins.configs.tabout\frequire\0", "config", "tabout.nvim")
 
 vim.cmd [[ packadd cmp-cmdline-history ]]
+vim.cmd [[ packadd cmp-spell ]]
 vim.cmd [[ packadd cmp-calc ]]
-vim.cmd [[ packadd cmp_luasnip ]]
+vim.cmd [[ packadd cmp-pandoc-references ]]
 vim.cmd [[ packadd cmp-omni ]]
+vim.cmd [[ packadd cmp_luasnip ]]
 vim.cmd [[ packadd cmp-cmdline ]]
+vim.cmd [[ packadd cmp-nvim-lsp-document-symbol ]]
 vim.cmd [[ packadd cmp-nvim-lsp-signature-help ]]
 vim.cmd [[ packadd cmp-treesitter ]]
 vim.cmd [[ packadd cmp-npm ]]
+vim.cmd [[ packadd cmp-vimwiki-tags ]]
+vim.cmd [[ packadd cmp-git ]]
+vim.cmd [[ packadd cmp-emoji ]]
+vim.cmd [[ packadd cmp-tmux ]]
+vim.cmd [[ packadd cmp-nvim-lua ]]
+vim.cmd [[ packadd nvim-lspconfig ]]
+vim.cmd [[ packadd sqls.nvim ]]
 time([[Sequenced loading]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file CodeActionMenu lua require("packer.load")({'nvim-code-action-menu'}, { cmd = "CodeActionMenu", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.api.nvim_create_user_command, 'CodeActionMenu', function(cmdargs)
+          require('packer.load')({'nvim-code-action-menu'}, { cmd = 'CodeActionMenu', l1 = cmdargs.line1, l2 = cmdargs.line2, bang = cmdargs.bang, args = cmdargs.args, mods = cmdargs.mods }, _G.packer_plugins)
+        end,
+        {nargs = '*', range = true, bang = true, complete = function()
+          require('packer.load')({'nvim-code-action-menu'}, { cmd = 'CodeActionMenu' }, _G.packer_plugins)
+          return vim.fn.getcompletion('CodeActionMenu ', 'cmdline')
+      end})
 time([[Defining lazy-load commands]], false)
 
 

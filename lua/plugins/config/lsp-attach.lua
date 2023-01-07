@@ -1,4 +1,3 @@
-
 local M = {}
 
 local function is_lsp_loaded(client_name)
@@ -21,10 +20,7 @@ end
 
 local function lsp_document_format()
   if not is_correct_lsp_loaded(vim.bo.filetype) then
-    vim.notify(
-      "Required LSPs not yet loaded, please wait a bit and retry.",
-      vim.log.levels.ERROR
-    )
+    vim.notify("Required LSPs not yet loaded, please wait a bit and retry.", vim.log.levels.ERROR)
 
     return
   end
@@ -57,25 +53,17 @@ end
 
 function _G.show_capabilities()
   for _, client in pairs(vim.lsp.buf_get_clients(0)) do
-    print(
-      vim.inspect(client.name)
-      .. "\n\n"
-      .. vim.inspect(client.server_capabilities)
-      .. "\n\n"
-    )
+    print(vim.inspect(client.name) .. "\n\n" .. vim.inspect(client.server_capabilities) .. "\n\n")
   end
 end
 
 M.keybindings_defaults = function()
   local map = function(keys, action_desc)
     vim.keymap.set("n", keys, function()
-      vim.notify(
-        "Don't know how to " .. action_desc .. " this filetype.",
-        vim.log.levels.ERROR
-      )
+      vim.notify("Don't know how to " .. action_desc .. " this filetype.", vim.log.levels.ERROR)
     end, {
-        silent = true,
-      })
+      silent = true,
+    })
   end
 
   map("cxo", "organize imports for")
@@ -138,7 +126,7 @@ M.on_attach = function(client, bufnr)
   local server_capabilities = client.server_capabilities
   local filetype = vim.bo.filetype
 
-  vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
+  -- vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
   vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
 
   keybindings_formatting_check(bufnr, server_capabilities)
@@ -146,11 +134,7 @@ M.on_attach = function(client, bufnr)
   keybindings_hover_keyword(bufnr, server_capabilities, filetype)
   keybindings_organizeimports(bufnr, lsp_name)
 
-  vim.api.nvim_create_user_command(
-    "LspWhatCapabilities",
-    "Capture call v:lua.show_capabilities()",
-    {}
-  )
+  vim.api.nvim_create_user_command("LspWhatCapabilities", "Capture call v:lua.show_capabilities()", {})
 end
 
 return M

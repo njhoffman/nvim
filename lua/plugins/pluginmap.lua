@@ -329,7 +329,7 @@ M.ui_plugins = {
 
 M.project_plugins = {
   ["auto-session"] = { "rmagatti/auto-session" },
-  ["competitest.nvim"] = { "xeluxee/competitest.nvim", requires = "MunifTanjim/nui.nvim" },
+  -- ["competitest.nvim"] = { "xeluxee/competitest.nvim", requires = "MunifTanjim/nui.nvim" },
   ["cpbooster.vim"] = { "searleser97/cpbooster.vim" },
   ["gitsigns.nvim"] = { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
   ["octo.nvim"] = { "pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons" },
@@ -380,7 +380,7 @@ M.integration_plugins = {
   ["vim-test"] = { "vim-test/vim-test" },
   ["rest.nvim"] = { "NTBBloodbath/rest.nvim" },
   ["lazygit.nvim"] = { "kdheepak/lazygit.nvim" },
-  ["tmux.nvim"] = { "aserowy/tmux.nvim" },
+  -- ["tmux.nvim"] = { "aserowy/tmux.nvim" },
   ["Telegraph.nvim"] = { "WaylonWalker/Telegraph.nvim" },
   ["nvim-regexplainer"] = {
     "bennypowers/nvim-regexplainer",

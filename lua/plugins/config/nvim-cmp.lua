@@ -46,8 +46,9 @@ local setupConfig = {
     native_menu = false,
     ghost_text = true,
   },
-  preselect = types.cmp.PreselectMode.Item, -- cmp.PreselectMode.None/Item,
+  -- preselect = types.cmp.PreselectMode.None, -- cmp.PreselectMode.None/Item,
   completion = {
+    -- completeopt = "noinsert,noselect",
     -- completeopt = "menu,menuone,noinsert", --noinsert,noselect
     -- get_trigger_characters = function(trigger_characters)
     --   local new_trigger_characters = {}
@@ -63,7 +64,7 @@ local setupConfig = {
     --   types.cmp.TriggerEvent.TextChanged,
     -- },
   },
-  mapping = cmp.mapping.preset.insert(cmp_mappings()),
+  -- mapping = cmp.mapping.preset.insert(cmp_mappings()),
   view = {
     entries = {
       name = "custom", -- can be "custom", "wildmenu" or "native"
@@ -127,15 +128,15 @@ local setupConfig = {
 -- cmp.setup()
 cmp.setup(setupConfig)
 
--- Set configuration for specific filetype.
-cmp.setup.filetype("gitcommit", {
-  sources = cmp.config.sources({
-    { name = "git" }, -- You can specify the `cmp_git` source if you were installed it.
-  }, {
-    { name = "fuzzy_buffer" },
-  }),
-})
-
+-- -- Set configuration for specific filetype.
+-- cmp.setup.filetype("gitcommit", {
+--   sources = cmp.config.sources({
+--     { name = "git" }, -- You can specify the `cmp_git` source if you were installed it.
+--   }, {
+--     { name = "fuzzy_buffer" },
+--   }),
+-- })
+--
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline("/", {
   mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
@@ -156,11 +157,15 @@ cmp.setup.cmdline(":", {
   }),
 })
 
-cmp.setup.filetype({ "markdown", "help" }, {
-  window = {
-    documentation = cmp.config.disable,
-  },
-})
+local opt = require("utils.core").opt
+opt("omnifunc", false)
+
+-- cmp.setup.filetype({ "markdown", "help" }, {
+--   window = {
+--     documentation = cmp.config.disable,
+--   },
+-- })
+--
 
 -- for _, cmd_type in ipairs({':', '/', '?', '@'}) do
 --   cmp.setup.cmdline(cmd_type, {

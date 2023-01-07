@@ -54,7 +54,8 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, ...)
   end
 
-  buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+  -- buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "")
 
   -- Mappings.
   local opts = { noremap = true, silent = true }

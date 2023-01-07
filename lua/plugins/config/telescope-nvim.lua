@@ -3,8 +3,8 @@ local telescope = require("telescope")
 local previewers = require("telescope.previewers")
 local sorters = require("telescope.sorters")
 local tele_custom = require("plugins.config.telescope-custom")
-local tele_plugins = require("plugins.config.telescope-plugins")
 local tele_mappings = require("plugins.config.telescope-mappings")
+local tele_plugins = require("plugins.config.telescope-plugins")
 
 -- TODO: why can't replicate fuzzy matching behavior of fzf-lua
 -- TODO: calculate page length for ctrl-f/ctrl-b

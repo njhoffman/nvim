@@ -23,4 +23,7 @@ for _, mod_name in ipairs({
   vim.import(mod_name)
 end
 
+local opt = require("utils.core").opt
+opt("omnifunc", false)
+
 -- require "plenary.profile".stop()

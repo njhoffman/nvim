@@ -2,6 +2,7 @@ local config = require("config").Treesitter
 local tsmodules = require("plugins.config.nvim-treesitter-modules")
 
 local ts = require("nvim-treesitter")
+
 ts.define_modules(tsmodules)
 
 require("nvim-treesitter.configs").setup({
@@ -188,6 +189,8 @@ require("treesitter-context").setup({
     -- rust = true,
   },
 })
+
+require("nvim-treesitter.install").prefer_git = true
 
 -- making dot repeatable
 -- --local CR = vim.api.nvim_replace_termcodes("<cr>", true, true, true)

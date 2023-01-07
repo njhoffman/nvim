@@ -5,10 +5,11 @@ M.on_attach = function(client, bufnr)
   handlers.attach_formatting(client, bufnr)
   handlers.attach_signature(client, bufnr)
   handlers.attach_keymaps(client, bufnr)
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "")
 
   -- vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
-  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-  vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
+  -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  -- vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
 
   if client.name == "tailwindcss" then
     if client.server_capabilities.colorProvider then
