@@ -236,7 +236,7 @@ M.completion_plugins = {
   ["cmp-nvim-lsp"] = { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
   ["cmp-cmdline-history"] = { "dmitmel/cmp-cmdline-history", after = "nvim-cmp" },
   ["cmp-calc"] = { "hrsh7th/cmp-calc", after = "nvim-cmp" },
-  ["cmp-omni"] = { "hrsh7th/cmp-omni", after = "nvim-cmp" },
+  -- ["cmp-omni"] = { "hrsh7th/cmp-omni", after = "nvim-cmp" },
   ["cmp-cmdline"] = { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
   ["cmp-fuzzy-path"] = {
     "tzachar/cmp-fuzzy-path",
@@ -369,7 +369,7 @@ M.integration_plugins = {
   -- https://github.com/uga-rosa/ccc.nvim
   ["cheat.sh-vim"] = { "dbeniamine/cheat.sh-vim" },
   ["go.nvim"] = { "ray-x/go.nvim", requires = "ray-x/guihua.lua" },
-  ["id3.vim"] = { "thaffenden/id3.vim", branch = "task/support-id-tool" }, -- "AndrewRadev/id3.vim"
+  ["id3.vim"] = { "AndrewRadev/id3.vim" }, -- "AndrewRadev/id3.vim"
   ["nvim-magic"] = {
     "jameshiew/nvim-magic",
     requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },

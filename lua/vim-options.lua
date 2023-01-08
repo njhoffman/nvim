@@ -75,7 +75,7 @@ opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- win
 opt("fileencoding", "utf-8")
 opt("whichwrap", "b,s,<,>,[,],h,l")
 opt("autoread", true)
--- opt("completeopt", "menuone,longest")
+opt("completeopt", "menu,menuone,noinsert,noselect")
 opt("foldmethod", "manual")
 
 -- window scope

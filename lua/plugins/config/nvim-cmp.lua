@@ -1,8 +1,6 @@
 local cmp = require("cmp")
-
 local cmp_mappings = require("plugins.config.nvim-cmp-mapping")
 local compare = require("cmp.config.compare")
-local types = require("cmp.types")
 local sources = require("plugins.config.nvim-cmp-sources")
 
 local sort_under = function(entry1, entry2)
@@ -44,7 +42,7 @@ local cmp_helper = {
 local setupConfig = {
   experimental = {
     native_menu = false,
-    ghost_text = true,
+    ghost_text = { hl_group = "CmpGhostText" },
   },
   -- preselect = types.cmp.PreselectMode.None, -- cmp.PreselectMode.None/Item,
   completion = {
@@ -64,7 +62,7 @@ local setupConfig = {
     --   types.cmp.TriggerEvent.TextChanged,
     -- },
   },
-  -- mapping = cmp.mapping.preset.insert(cmp_mappings()),
+  mapping = cmp.mapping.preset.insert(cmp_mappings()),
   view = {
     entries = {
       name = "custom", -- can be "custom", "wildmenu" or "native"

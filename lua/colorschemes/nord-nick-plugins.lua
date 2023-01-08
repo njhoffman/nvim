@@ -173,6 +173,7 @@ return function()
     --   "  ✅Variable, ✅Property, Field, ✅Unit, Value, Enum, EnumMember, Event,
     --   "  ✅Keyword, Color, File, Reference, Folder, Constant, Operator, TypeParameter,
     --   "  ✅Snippet, ✅Text}
+    CmpGhostText({ fg = "#16365b" }),
     CmpPmenu({ bg = "#242a30" }),
     CmpPmenuBorder({ bg = "#242a30" }),
     CmpItemAbbr({ fg = colors.fg }),

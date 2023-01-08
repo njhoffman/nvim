@@ -84,7 +84,7 @@ opt.register_option({
 
 opt.register_option({
   name = "tags_completion_enabled",
-  default = true,
+  default = false,
   type_info = "boolean",
   source = "lsp",
   buffer_local = true,

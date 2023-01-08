@@ -4,13 +4,12 @@ local async = require("plenary.async")
 
 local on_attach = function(client, bufnr)
   -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-  -- buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
-  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "")
+  -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "")
 
   -- Mappings.
   -- Set autocommands conditional on server_capabilities
   for _, providerKey in ipairs(lspdefs.display_keys) do
-    handlers.check_capability(client, bufnr, providerKey)
+    handlers.try_capability(client, bufnr, providerKey)
   end
 
   -- if lsp_name == "tsserver" then

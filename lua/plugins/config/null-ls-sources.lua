@@ -49,11 +49,11 @@ end
 
 local REGEX_TODO = vim.regex("TODO")
 local REGEX_FIXME = vim.regex("FIXME")
-local actions = null_ls.builtins.code_actions
 
 M.sources = {
   -- Code actions
 
+  null_ls.builtins.completion.spell,
   null_ls.builtins.code_actions.shellcheck,
   null_ls.builtins.code_actions.gitsigns,
   null_ls.builtins.code_actions.proselint,

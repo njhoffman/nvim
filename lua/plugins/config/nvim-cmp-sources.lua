@@ -65,7 +65,7 @@ local sources = {
   { name = "pandoc_references", priority = 3 },
   { name = "emoji", priority = 2 },
   { name = "vimwiki-tags", priority = 1 },
-  { name = "omni", priority = 1 },
+  -- { name = "omni", priority = 1 },
   { name = "luasnip", priority = 1, group_index = 1 },
   { name = "npm", keyword_length = 1 },
   -- {

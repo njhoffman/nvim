@@ -19,6 +19,7 @@ local keymap_buf = vim.api.nvim_buf_set_keymap
 local ts_utils = require("nvim-treesitter.ts_utils")
 
 local keymap_opts = { noremap = true, silent = true }
+
 local color_provider = function(_, bufnr)
   require("lsp-documentcolors").buf_attach(bufnr, { single_column = true })
 end
@@ -265,25 +266,20 @@ local handlers = {
   workspace = workspace,
 }
 
-local check_capability = function(client, bufnr, capability)
+local try_capability = function(client, bufnr, capability)
   local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
   -- vim.notify("checking " .. capability, "trace")
+
   local function log_lsp()
-    vim.notify("lsp: " .. client.name .. " - " .. bufnr .. " " .. capability .. " ft: " .. ft, "trace")
+    vim.notify("lsp: " .. client.name .. " - " .. bufnr .. " " .. capability .. " ft: " .. ft, 1)
   end
 
   if client.server_capabilities[capability] then
-    if capability == "documentFormattingProvider" and client.server_capabilities[capability] == true
-      or ft == "sh"
-      or ft == "bash"
-    then
-      log_lsp()
-      document_formatting_provider(client, bufnr)
-    elseif handlers[capability] then
+    if handlers[capability] and client.server_capabilities[capability] == true then
       log_lsp()
       handlers[capability](client, bufnr)
     end
   end
 end
 
-return { check_capability = check_capability }
+return { try_capability = try_capability }
