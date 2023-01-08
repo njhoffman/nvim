@@ -2,15 +2,13 @@ vim.cmd([[ let g:pandoc#syntax#style#underline_special = 0 ]])
 vim.cmd([[ let g:pandoc#syntax#conceal#use = 1 ]])
 vim.cmd([[ let g:pandoc#syntax#conceal#urls = 1 ]])
 
--- NOTE: vim syntax messing up, assigning to vimwiki for now
-vim.cmd(
-[[
+vim.cmd([[
+
   let g:pandoc#syntax#codeblocks#embeds#langs =
     \ ["shell=sh", "rust", "ts=typescript", "javascript", "html", "cpp", "c",
-    \ "go", "sh", "bash=sh", "yaml", "go", "ruby", "python", "json",
-    \ "sql", "lua", "css", "awk", "terraform", "vim=vimwiki"]
-  ]]
-)
+    \ "go", "sh", "bash=sh", "zsh", "yaml", "go", "ruby", "python", "json",
+    \ "sql", "lua", "css", "awk", "terraform", "yaml", "vim=vimwiki", "xml"]
+  ]])
 
 -- E403: syntax sync: line continuations pattern specified twice
 -- E403: syntax sync: line continuations pattern specified twice

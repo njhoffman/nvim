@@ -7,6 +7,7 @@ local default_config = {
 
 require("telegraph").setup(default_config)
 
+-- tmux display-popup -s 'bg=#000000' /bin/zsh -c 'man fzf'
 -- nnoremap <leader>s <cmd>Telegraph pipx run lookatme {filepath} --live-reload --style gruvbox-dark<cmd>
 -- tmux session
 -- nnoremap <leader><leader>s <cmd>lua require'telegraph'.telegraph({cmd='pipx run lookatme {filepath} --live-reload --style gruvbox-dark', how='tmux'})<CR>
@@ -17,6 +18,7 @@ require("telegraph").setup(default_config)
 -- :Telegraph cat {filename}
 -- :Telegraph man {cword}
 -- :Telegraph vd {cWORD}
+-- :Telegraph /bin/zsh -c 'node /home/nicholas/ghq/github.com/njhoffman/musicman/cli/lib/cli.cjs && sleep 4'
 
 -- Example usage
 -- Man Page Searcher

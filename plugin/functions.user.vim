@@ -2,6 +2,42 @@
 " https://github.com/shivamashtikar/tmuxjump.vim
 let g:tmuxjump_telescope = v:true
 
+" This function originates from https://www.reddit.com/r/neovim/comments/eq1xpt/how_open_help_in_floating_windows/; it isn't mine
+function! CreateCenteredFloatingWindow() abort
+    let width = min([&columns - 4, max([80, &columns - 20])])
+    let height = min([&lines - 4, max([20, &lines - 10])])
+    let top = ((&lines - height) / 2) - 1
+    let left = (&columns - width) / 2
+    let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
+
+    let top = "╭" . repeat("─", width - 2) . "╮"
+    let mid = "│" . repeat(" ", width - 2) . "│"
+    let bot = "╰" . repeat("─", width - 2) . "╯"
+    let lines = [top] + repeat([mid], height - 2) + [bot]
+    let s:buf = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
+    call nvim_open_win(s:buf, v:true, opts)
+    set winhl=Normal:Floating
+    let opts.row += 1
+    let opts.height -= 2
+    let opts.col += 2
+    let opts.width -= 4
+    let l:textbuf = nvim_create_buf(v:false, v:true)
+    call nvim_open_win(l:textbuf, v:true, opts)
+    au BufWipeout <buffer> exe 'bw '.s:buf
+    return l:textbuf
+endfunction
+
+function! FloatingWindowHelp(query) abort
+    let l:buf = CreateCenteredFloatingWindow()
+    call nvim_set_current_buf(l:buf)
+    setlocal filetype=help
+    setlocal buftype=help
+    execute 'help ' . a:query
+endfunction
+
+command! -complete=help -nargs=? Help call FloatingWindowHelp(<q-args>)
+
 function! FixFormatting()
   %s/\r\(\n\)/\1/eg
   retab
@@ -115,33 +151,6 @@ command! -nargs=* -complete=shellcmd R new | setlocal buftype=nofile bufhidden=h
 
 " paste date into buffer
 nnoremap <leader>pd m'A<C-R>="\t".strftime('%Y-%m-%d %H:%M')<CR><Esc>``
-
-let s:server_name = escape(substitute(substitute(v:servername, '\$', '', ''), '/tmp', '', ''), '\')
-let s:session_restart_path = expand("$HOME") . "/.vim/sessions/restart"
-
-function Restart()
-  " save session file to <servername>_runonce to indicate a one time reload
-  let l:session_path = s:session_restart_path . s:server_name . '_runonce.vim'
-  exe "PackerCompile"
-  exe "mksession! " . l:session_path
-  " exit
-  quitall
-endfunction
-command Restart call Restart()
-
-function RestartOn()
-  " save session file to <servername>_always to indicate an idefinite reload cycle
-  let l:session_path = s:session_restart_path . s:server_name . '_always.vim'
-  exe "mksession! " . l:session_path
-endfunction
-command RestartOn call RestartOn()
-
-function RestartOff()
-  " remove  <servername>_always file to prevent restarting
-  let l:session_path = s:session_restart_path . s:server_name . '_always.vim'
-  exe "!rm " . l:session_path
-endfunction
-command RestartOff call RestartOff()
 
 let s:shada_script = stdpath('config') .. '/bin/wshada.sh'
 
@@ -265,5 +274,15 @@ endfunction
     endif
   endfunction
 
+""""""""""""
+" :Fasd
+" function! s:fasd_update() abort
+function! Fasd_update() abort
+  if empty(&buftype) || &filetype ==# 'dirvish'
+    call jobstart(['fasd', '-A', expand('%:p')])
+  endif
+endfunction
+
 " https://konfekt.github.io/blog/2016/10/03/get-the-leader-right
+
 " are consistent with f/F,t/T, (g)n/N and //?, more intuitive than ;/,.

@@ -1,61 +1,108 @@
-local function get_project_path()
-  if vim.fn.bufnr() ~= last_buffer then
-    project_path = ""
-    project_name = ""
-    last_buffer = nil
-  end
-
-  if project_path == "" then
-    project_path = require("project_nvim.project").get_project_root() or ""
-    vim.dbglog('prj: ' .. project_path)
-    if project_path == nil or project_path == "" then
-      project_path = string.gsub(vim.fn.getcwd(), os.getenv("HOME"), "~")
-    else
-      project_path = string.gsub(project_path, os.getenv("HOME"), "~")
-    end
-    if project_path ~= nil and project_path ~= "" then
-      project_path, project_name = string.match(project_path, "(.*)%/(.*)")
-      last_buffer = vim.fn.bufnr()
-    end
-  end
-end
-
--- vim.dbg(vim.fn.getreg('*'))
-
+local provider_project_nvim = require("plugins.config.feline-nvim-provider-project-nvim")
+local provider_project_uo = require("plugins.config.feline-nvim-provider-project-uo")
+local provider_git = require("plugins.config.feline-nvim-provider-git")
+local provider_cursor = require("plugins.config.feline-nvim-provider-cursor")
 
 local M = {}
 
-M.ProjectComponent = {
-
-  provider = function()
-    project_path = get_project_path()
-    project_name = project_name or ""
-    return "  " .. project_name .. " "
-  end,
-  hl = function()
-    if project_name == nil or project_name == "" then
-      return { fg = "white", bg = "#333333" }
-    end
-    return { fg = "white", bg = "#440088" }
-  end,
+M.ProjectNvimComponent = {
+  enabled = true,
+  provider = {
+    name = "project_nvim",
+    opts = {},
+    -- update = { 'WinClosed', 'BufDelete' }
+  },
   { " " },
-  left_sep = function()
-    local val = {
-      str = "slant_left",
-      fg = "white",
-      bg = "#224488",
-      style = "bold",
-    }
-    if project_path == nil then val.bg = "#333333" end
-    return val
+  hl = provider_project_nvim.hl,
+  left_sep = provider_project_nvim.left_sep,
+  { " " },
+  right_sep = provider_project_nvim.right_sep,
+}
+
+M.ProjectUoComponent = {
+  enabled = true,
+  provider = {
+    name = "project_uo",
+    opts = {},
+    -- update = { 'WinClosed', 'BufDelete' }
+  },
+  { " " },
+  hl = provider_project_uo.hl,
+  left_sep = provider_project_uo.left_sep,
+  { " " },
+  right_sep = provider_project_uo.right_sep,
+}
+
+M.GitBranchComponent = {
+  provider = provider_git.git_branch,
+  hl = {
+    fg = "white",
+    bg = "black",
+    style = "bold",
+  },
+  right_sep = {
+    str = " ",
+    hl = {
+      fg = "NONE",
+      bg = "black",
+    },
+  },
+}
+
+M.GitDiffAddedComponent = {
+  provider = provider_git.git_diff_added,
+  hl = {
+    fg = "green",
+    bg = "black",
+  },
+}
+
+M.GitDiffChangedComponent = {
+  provider = provider_git.git_diff_changed,
+  hl = {
+    fg = "orange",
+    bg = "black",
+  },
+}
+
+M.GitDiffRemovedComponent = {
+  provider = provider_git.git_diff_removed,
+  hl = {
+    fg = "red",
+    bg = "black",
+  },
+  right_sep = {
+    str = " ",
+    hl = {
+      fg = "NONE",
+      bg = "black",
+    },
+  },
+}
+-- Display <e> 0x65
+M.AsciiComponent = {
+  -- Enable if current window width is higher than 100
+  enabled = function()
+    return vim.api.nvim_win_get_width(0) > 120
   end,
-  " ",
-  right_sep = { "block", { hl = { bg = "NONE", fg = "dodgerblue3" } } },
+  hl = { fg = "#988088" },
+  provider = provider_cursor.ascii,
+  left_sep = " ",
+  right_sep = " ",
+}
+
+M.FiletypeComponent = {
+  -- Enable if current window width is higher than 100
+  enabled = function()
+    return vim.api.nvim_win_get_width(0) > 120
+  end,
+  hl = { fg = "#988088" },
+  provider = { name = "file_type", opts = { case = "lowercase" } },
+  left_sep = " ",
+  right_sep = " ",
 }
 
 return M
-
-
 
 -- -- table.insert(components.right.active, 1, {
 -- --   provider = LspLightbulb, -- hl = { fg = "cyan", bg = "bg", style = "bold" },
@@ -121,7 +168,6 @@ return M
 --   left_sep = { " ", "slant_left", { str = "", hl = { bg = bgcolor, fg = "NONE" } } },
 --   right_sep = { "slant_right_2", " " },
 -- }
-
 
 -- -- components.left.active[3] = {
 -- --   provider = function()

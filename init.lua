@@ -2,48 +2,28 @@
 -- vim-profiler.py -n 5 nvim foo.cc -c ":exec ':normal ia' | :q\!"
 -- strace gvim -V9log.txt file.tex > stdout.txt 2> stderr.txt
 
-local function load_module(mod_name)
-  local ok, module = pcall(require, mod_name)
-  if not ok then
-    local msg = "failed loading: " .. mod_name .. "\n " .. vim.inspect(module)
-    vim.notify(msg, "error")
-  else
-    return impatient
-  end
+require("globals")
+
+for _, mod_name in ipairs({
+  "plugins",
+  "mappings",
+  "lsp-globals",
+  "lsp-capabilities",
+  "lsp-config",
+  "lsp-servers",
+  "devbox",
+  "commands",
+  "autocommands",
+  "project",
+  "runner",
+  "hover.setup",
+  "stats",
+  -- "codebox",
+}) do
+  vim.import(mod_name)
 end
 
--- load_module("impatient").enable_profile()
-load_module("impatient")
-
-for _, mod_name in ipairs(
-  {
-    "disable-builtins",
-    "globals",
-    "user-options",
-    "vim-options",
-    "plugins.load"
-  }
-) do
-  load_module(mod_name)
-end
-
-for _, mod_name in ipairs(
-  {
-    "project",
-    "buffers",
-    "lsp",
-    "stats.list",
-    "mappings",
-    "commands",
-    "autocommands",
-    "dashboard"
-  }
-) do
-  load_module(mod_name)
-end
-
-
-local end_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
-vim.notify("Finished loading in" .. end_time, "debug")
+local opt = require("utils.core").opt
+opt("omnifunc", false)
 
 -- require "plenary.profile".stop()

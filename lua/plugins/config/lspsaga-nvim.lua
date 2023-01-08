@@ -1,10 +1,10 @@
-require("lspsaga").init_lsp_saga {
+require("lspsaga").setup {
   use_saga_diagnostic_sign = true,
   error_sign = "﮻",
   warn_sign = "",
   hint_sign = "◆",
   infor_sign = "",
-  dianostic_header_icon = "   ",
+  diagnostic_header_icon = "   ",
   code_action_icon = "",
   code_action_prompt = { enable = false, sign = true, sign_priority = 20, virtual_text = true },
   finder_definition_icon = "   ",

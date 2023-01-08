@@ -1,3 +1,16 @@
+-- -- change background color when in insert mode
+-- vim.api.nvim_create_autocmd({ "InsertEnter" }, {
+--   callback = function()
+--     vim.api.nvim_set_hl(0, "Normal", { bg = "#030508" })
+--   end
+-- })
+
+-- vim.api.nvim_create_autocmd({ "InsertLeave" }, {
+--   callback = function()
+--     vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+--   end
+-- })
+
 vim.cmd(
   [=[
 augroup qf-history

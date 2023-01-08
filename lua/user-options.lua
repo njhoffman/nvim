@@ -1,9 +1,5 @@
-local cmd = vim.cmd
-
-cmd([[command! -nargs=* -complete=customlist,options#complete Set :lua require'utils.options'.run_set_cmd(<q-args>, nil)]])
-cmd([[command! -nargs=* -complete=customlist,options#complete_buf_local Setlocal :lua require'utils.options'.run_set_cmd(<q-args>, vim.api.nvim_get_current_buf())]])
-
 local opt = require("utils.options")
+local cmd = vim.cmd
 
 opt.register_option({
   name = "indentsize",
@@ -14,47 +10,86 @@ opt.register_option({
 })
 
 opt.register_callback("indentsize", function()
-  local isize = opt.get_option_value('indentsize', vim.api.nvim_get_current_buf())
-  cmd(string.format("setlocal tabstop=%s softtabstop=%s shiftwidth=%s", isize, isize, isize))
+  local bufnr = vim.api.nvim_get_current_buf()
+  local isize = opt.get_option_value("indentsize", bufnr)
+  local format_str = "setlocal tabstop=%s softtabstop=%s shiftwidth=%s"
+  cmd(string.format(format_str, isize, isize, isize))
   print("doing callback: " .. isize)
 end)
 
+opt.register_option({
+  name = "useroptions_output",
+  default = "notify",
+  type_info = "string",
+  source = "user-options",
+  global = true,
+  description = "Output method of user options (notifications or print)",
+})
 
+-- NOTIFICATIONS --
+-- notify_level_record, notify_level_show, notify_level_log
+opt.register_option({
+  name = "notify_level_show",
+  default = "info",
+  type_info = "string",
+  source = "settings",
+  global = true,
+  description = "Cutoff level to show notifications (error, warn, info, debug, trace)",
+})
+opt.register_option({
+  name = "notify_level_record",
+  default = "trace",
+  type_info = "string",
+  source = "settings",
+  global = true,
+  description = "Cutoff level to record notifications (error, warn, info, debug, trace)",
+})
 
+opt.register_option({
+  name = "notify_level_log",
+  default = "trace",
+  type_info = "string",
+  source = "settings",
+  global = true,
+  description = "Cutoff level to log notifications (error, warn, info, debug, trace)",
+})
+
+-- PROJECT --
 opt.register_option({
   name = "projectpath",
   default = "",
   type_info = "string",
-  source = "buffers",
-  global = true,
-  description = "Project path identified by lsp server or path"
+  source = "project_nvim",
+  buffer_local = true,
+  description = "Project path identified by lsp server or path",
 })
 
 opt.register_option({
   name = "projectname",
   default = "",
   type_info = "string",
-  source = "buffers",
-  global = true,
-  description = "Shortened project name for display"
+  source = "project_nvim",
+  buffer_local = true,
+  description = "Shortened project name for display",
 })
 
 opt.register_option({
-  name = "projecttype",
+  name = "projectmethod",
   default = "",
   type_info = "string",
-  source = "buffers",
-  global = true,
-  description = "Which LSP server or method identified the project"
+  source = "project_nvim",
+  buffer_local = true,
+  description = "Which LSP server or method identified the project",
 })
 
 opt.register_option({
   name = "tags_completion_enabled",
-  default = true,
+  default = false,
   type_info = "boolean",
   source = "lsp",
   buffer_local = true,
 })
+
 opt.register_option({
   name = "clstrailingwhitespace",
   default = true,
@@ -62,6 +97,7 @@ opt.register_option({
   source = "buffers",
   buffer_local = true,
 })
+
 opt.register_option({
   name = "lsptagfuncenabled",
   default = true,
@@ -95,6 +131,8 @@ opt.register_option({
   global = true,
 })
 
+-- options.set("shell", vim.opt.shell:get())
+
 opt.register_option({
   name = "scratchpad",
   default = false,
@@ -103,13 +141,16 @@ opt.register_option({
   buffer_local = true,
 })
 
+local s_scratch_buffer_count
 opt.register_callback("scratchpad", function()
-  bo[bufnr].buftype = "nofile"
-  bo[bufnr].bufhidden = "hide"
-  bo[bufnr].swapfile = false
-  bo[bufnr].buflisted = true
+  local bufnr = vim.api.nvim_get_current_buf()
+  vim.bo[bufnr].buftype = "nofile"
+  vim.bo[bufnr].bufhidden = "hide"
+  vim.bo[bufnr].swapfile = false
+  vim.bo[bufnr].buflisted = true
   cmd("file scratchpad-" .. s_scratch_buffer_count)
 end)
+
 opt.register_option({
   name = "markdownfenced",
   default = {},

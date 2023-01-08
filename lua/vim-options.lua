@@ -3,13 +3,14 @@ local o, wo, bo = vim.o, vim.wo, vim.bo
 local opt = require("utils.core").opt
 local config = require("config")
 
-g.mapleader = [[ ]]
-g.maplocalleader = [[ ]]
+g.mapleader = [[,]]
+g.maplocalleader = [[,]]
 
 local buffer = { o, bo }
 local window = { o, wo }
 
 -- global scope
+opt("termguicolors", true)
 opt("backup", false)
 opt("writebackup", true)
 opt("backupcopy", "auto")
@@ -20,15 +21,17 @@ opt("textwidth", 1000)
 opt("swapfile", false)
 opt("clipboard", "unnamedplus")
 
-opt("cmdheight", 1) -- 1
+opt("cmdheight", 1) -- 0
 opt("cmdwinheight", 10)
 opt("cedit", "<M-w>")
 
 -- TODO: change cedit to <M-f>
-vim.cmd [[:exe "set cedit=\<C-T>"]]
+vim.cmd([[:exe "set cedit=\<C-T>"]])
 opt("cpoptions", "aABceFsx_") -- C causes certain vim programs to screw up
 -- opt("display", "msgsep")
 opt("encoding", "UTF-8")
+
+opt("omnifunc", false)
 
 opt("hidden", true)
 opt("inccommand", "split")
@@ -36,6 +39,7 @@ opt("incsearch", true)
 opt("magic", true)
 opt("hlsearch", true)
 opt("ignorecase", true)
+opt("smartcase", true)
 opt("joinspaces", false)
 opt("laststatus", 3)
 opt("lazyredraw", false)
@@ -44,7 +48,7 @@ opt("modelines", 5)
 opt("mouse", "nivh")
 opt("previewheight", 7)
 opt("scrolloff", 7)
-opt("shada", [[!,'2000,<1000,s500,n~/.vim/.shada]])
+opt("shada", [[!,'2000,<1000,s500]])
 -- Specify the behavior when switching between buffers Use the current tab for openning files from quickfix.
 opt("switchbuf", "useopen,usetab")
 opt("showtabline", 1)
@@ -56,7 +60,6 @@ opt("showmatch", true)
 opt("showcmd", true)
 opt("showmode", false)
 opt("sidescrolloff", 5)
-opt("smartcase", true)
 opt("splitbelow", true)
 opt("splitright", true)
 opt("jumpoptions", "stack")
@@ -65,21 +68,17 @@ opt("breakindent", true)
 opt("breakindentopt", "shift:2")
 opt("undolevels", 1000)
 opt("updatetime", 4000)
-opt("timeoutlen", 500)
-opt("ttimeoutlen", 20)
+opt("timeoutlen", 500) -- 1000
+opt("ttimeoutlen", 40) -- 50
 opt("pumheight", 10)
 opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- winsize messes up on load
 opt("fileencoding", "utf-8")
 opt("whichwrap", "b,s,<,>,[,],h,l")
 opt("autoread", true)
-
--- opt("completeopt", "menuone,longest")
+opt("completeopt", "menu,menuone,noinsert,noselect")
+opt("foldmethod", "manual")
 
 -- window scope
-opt("foldopen", "block,hor,jump,mark,percent,quickfix,search,tag")
-opt("foldlevel", 0, window)
-opt("foldnestmax", 10, window)
-opt("foldenable", false, window)
 opt("concealcursor", "nc", window)
 opt("conceallevel", 2, window)
 opt("cursorline", true, window)
@@ -87,7 +86,6 @@ opt("number", true, window)
 opt("relativenumber", true, window)
 opt("signcolumn", "yes:2", window)
 opt("wrap", config.Opts.wrap, window)
--- vim.wo.wrap = O.wrap_lines -- Display long lines as just one line
 
 -- buffer scope
 opt("expandtab", true, buffer)
@@ -106,81 +104,10 @@ opt("backspace", "eol,start,indent")
 -- opt.whichwrap:append(",<,>,h,l")
 -- Don't redraw while executing macros (good performance config)
 opt("lazyredraw", true)
--- For regular expressions turn magic on
-opt("magic", true)
 -- Show matching brackets when text indicator is over them
 opt("showmatch", true)
 -- How many tenths of a second to blink when matching brackets
 opt("matchtime", 3)
-
-
-
-
-vim.g.clipboard = {
-  name = "xsel",
-  copy = {
-    ["+"] = { "xsel", "--nodetach", "-i", "-b" },
-    ["*"] = { "xsel", "--nodetach", "-i", "-p" }
-  },
-  paste = {
-    ["+"] = { "xsel", "-o", "-b" },
-    ["*"] = { "xsel", "-o", "-p" }
-  },
-  cache_enabled = 1
-}
--- " To force a reload:
--- 10	"   :unlet g:loaded_clipboard_provider
--- 11	"   :runtime autoload/provider/clipboard.vim
--- 12	let g:loaded_clipboard_provider = 1
-
-vim.g.qf_disable_statusline = true -- This should be the default
-vim.g.Eunuch_find_executable = "fd" -- I use my fork of vim-eunuch
-vim.g.Illuminate_ftblacklist = { ".*" } -- Only use lsp highlighting from the plugin
-vim.g.netrw_banner = false
-vim.g.netrw_silent = 1
--- vim.g.netrw_http_cmd = 'curl'
--- vim.g.netrw_http_xcmd = '-o'
-
-vim.g.tex_flavor = "latex"
-vim.g.vimtex_view_method = "skim"
-vim.g.vimtex_quickfix_mode = true
-vim.g.vimtex_compiler_latexmk = {
-  options = {
-    "-pdf",
-    "-shell-escape",
-    "-verbose",
-    "-file-line-error",
-    "-synctex=1",
-    "-interaction=nonstopmode"
-  }
-}
-vim.g["test#strategy"] = "neovim"
-vim.g.tex_flavor = "latex"
-vim.g.indent_blankline_char = "│"
-vim.g.indent_blankline_filetype = { "rust", "go", "lua", "json", "ruby" }
-vim.g.indent_blankline_use_treesitter = true
-vim.g.loaded_ruby_provider = true
-
--- fixes unlisted buffer error
--- https://github.com/romgrk/barbar.nvim/issues/82#issuecomment-748498951
-vim.g.netrw_bufsettings = "noma nomod nonu nowrap ro buflisted"
-
--- Allows users to specify the type of embedded script highlighting they want:  (perl/python/ruby/tcl support)
-vim.g.vimsyn_embed = "--lmpPr"
-
--- filetype.nvim -- requires nightly
-
-if (vim.v.version >= 800) then
-  vim.g.do_filetype_lua = 1
-  vim.g.did_load_filetypes = 0
-end
-
--- bats
--- Whether or not to add dollar sign to iskeyword.
-vim.g.bats_vim_consider_dollar_as_part_of_word = 1
-
--- pgsql default for sql files
-vim.g.sql_type_default = "pgsql"
 
 -- wildchar/charm for wildmenu
 -- 0x1a ^Z, 0x1b ^[, 0x0e C-n
@@ -198,23 +125,3 @@ opt("wildignore", "*.o,*~,*.pyc")
 -- vim.o.pumheight = 10 -- Makes popup menu smaller
 -- vim.o.timeoutlen = O.timeoutlen -- By default timeoutlen is 1000 ms
 -- vim.g.nvim_tree_disable_netrw = O.nvim_tree_disable_netrw
-
--- *sessionoptions*
---
--- blank        empty windows
--- buffers      hidden and unloaded buffers, not just those in windows
--- curdir       the current directory
--- folds        manually created folds, opened/closed folds and local fold options
--- globals      global variables that start with an uppercase letter and contain at least one lowercase letter.  Only String and Number types are stored.
--- help         the help window
--- localoptions options and mappings local to a window or buffer (not global values for local options)
--- options      all options and mappings (also global values for local options)
--- skiprtp      exclude 'runtimepath' and 'packpath' from the options
--- resize       size of the Vim window: 'lines' and 'columns'
--- sesdir       the directory in which the session file is located will become the current directory (useful with projects accessed over a network from different systems)
--- tabpages     all tab pages; without this only the current tab page is restored, so that you can make a session for each tab page separately
--- terminal     include terminal windows where the command can be restored
--- winpos       position of the whole Vim window
--- winsize      window sizes
--- slash        |deprecated| Always enabled. Uses "/" in filenames.
--- unix         |deprecated| Always enabled. Uses "\n" line endings.

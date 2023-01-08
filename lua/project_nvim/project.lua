@@ -39,12 +39,12 @@ function M.find_pattern_root()
   local last_dir_cache = ""
   local curr_dir_cache = {}
 
-  local function get_parent(path)
-    path = path:match("^(.*)/")
-    if path == "" then
-      path = "/"
+  local function get_parent(_path)
+    _path = _path:match("^(.*)/")
+    if _path == "" then
+      _path = "/"
     end
-    return path
+    return _path
   end
 
   local function get_files(file_dir)
@@ -72,22 +72,22 @@ function M.find_pattern_root()
   end
 
   local function sub(dir, identifier)
-    local path = get_parent(dir)
+    local _path = get_parent(dir)
     while true do
-      if is(path, identifier) then
+      if is(_path, identifier) then
         return true
       end
-      local current = path
-      path = get_parent(path)
-      if current == path then
+      local current = _path
+      _path = get_parent(_path)
+      if current == _path then
         return false
       end
     end
   end
 
   local function child(dir, identifier)
-    local path = get_parent(dir)
-    return is(path, identifier)
+    local _path = get_parent(dir)
+    return is(_path, identifier)
   end
 
   local function has(dir, identifier)
@@ -169,25 +169,43 @@ function M.attach_to_lsp()
   M.attached_lsp = true
 end
 
+local set_user_option = function(dir, method)
+  local opt = vim.import('utils.options')
+  if type(opt) == 'table' then
+    local bufnr = vim.api.nvim_get_current_buf()
+    local project_path = string.gsub(dir, os.getenv("HOME"), "~")
+    local project_name = ""
+    if project_path ~= nil and project_path ~= "" then
+      project_path, project_name = string.match(project_path, "(.*)%/(.*)")
+      last_buffer = vim.fn.bufnr()
+    end
+    opt.set_local('projectmethod', method, bufnr)
+    opt.set_local('projectpath', project_path, bufnr)
+    opt.set_local('projectname', project_name, bufnr)
+  end
+end
+
+local set_cwd = function(dir, method)
+  vim.api.nvim_set_current_dir(dir)
+  if config.options.silent_chdir == false then
+    if (type(config.options.chdir_func) == "function") then
+      config.options.chdir_func(dir, method)
+    else
+      vim.notify('CWD:' .. dir .. " (" .. method .. ') ', 'debug')
+    end
+  end
+end
+
 function M.set_pwd(dir, method)
   if dir ~= nil then
     M.last_project = dir
     table.insert(history.session_projects, dir)
-
+    set_user_option(dir, method)
     if vim.fn.getcwd() ~= dir then
-      vim.api.nvim_set_current_dir(dir)
-
-      if config.options.silent_chdir == false then
-        if (type(config.options.chdir_func) == "function") then
-          config.options.chdir_func(dir, method)
-        else
-          vim.notify('CWD:' .. dir .. " (" .. method .. ') ', 'debug')
-        end
-      end
+      set_cwd(dir, method)
     end
     return true
   end
-
   return false
 end
 
@@ -197,7 +215,7 @@ function M.get_project_root()
     or type(config.options) ~= 'table'
     or type(config.options.detection_methods) ~= 'table'
   then
-    vim.dbglog({ 'Bad configuration file ...', config })
+    vim.notify({ 'Bad configuration file ...', config }, 'error')
     return
   end
   for _, detection_method in ipairs(config.options.detection_methods) do
@@ -237,7 +255,6 @@ function M.on_buf_enter()
   if vim.v.vim_did_enter == 0 then
     return
   end
-
   if not M.is_file() then
     return
   end
@@ -266,8 +283,9 @@ function M.init()
 
   autocmds[#autocmds + 1] = 'autocmd VimLeavePre * lua require("project_nvim.utils.history").write_projects_to_history()'
 
-  vim.cmd([[augroup project_nvim
-            au!
+  vim.cmd([[
+    augroup project_nvim
+    au!
   ]])
   for _, value in ipairs(autocmds) do
     vim.cmd(value)

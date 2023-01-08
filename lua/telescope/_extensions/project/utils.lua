@@ -1,11 +1,11 @@
-local Path = require("plenary.path")
+local Path = require('plenary.path')
 
 local M = {}
 
 -- The file path to telescope projects
-M.telescope_projects_file = vim.fn.stdpath("data") .. "/telescope-projects.txt"
+M.telescope_projects_file = vim.fn.stdpath('data') .. '/telescope-projects.txt'
 -- The file path to telescope workspaces
-M.telescope_workspaces_file = vim.fn.stdpath("data") .. "/telescope-workspaces.txt"
+M.telescope_workspaces_file = vim.fn.stdpath('data') .. '/telescope-workspaces.txt'
 
 -- Initialize file if does not exist
 M.init_files = function()
@@ -28,12 +28,9 @@ M.get_projects = function()
       table.insert(filtered_projects, project)
     end
   end
-  table.sort(
-    filtered_projects,
-    function(a, b)
-      return a.last_accessed > b.last_accessed
-    end
-  )
+  table.sort(filtered_projects, function(a, b)
+    return a.last_accessed > b.last_accessed
+  end)
   return filtered_projects
 end
 
@@ -61,7 +58,7 @@ M.parse_project_line = function(line)
   local title, path, workspace, activated = line:match("^(.-)=(.-)=(.-)=(.-)$")
   if not workspace then
     title, path = line:match("^(.-)=(.-)$")
-    workspace = "w0"
+    workspace = 'w0'
   end
   if not activated then
     title, path, workspace = line:match("^(.-)=(.-)=(.-)$")
@@ -80,7 +77,7 @@ end
 M.get_project_from_path = function(path)
   -- `tostring` to use plenary path and paths defined as strings
   local title = tostring(path):match("[^/]+$")
-  local workspace = "w0"
+  local workspace = 'w0'
   local activated = 1
   local line = title .. "=" .. path .. "=" .. workspace .. "=" .. activated
   return M.parse_project_line(line)
@@ -95,9 +92,7 @@ end
 
 -- Standardized way of storing project to file
 M.store_project = function(file, project)
-  local line =
-  project.title ..
-    "=" .. project.path .. "=" .. project.workspace .. "=" .. project.activated .. "\n"
+  local line = project.title .. "=" .. project.path .. "=" .. project.workspace .. "=" .. project.activated .. "\n"
   file:write(line)
 end
 
@@ -150,13 +145,10 @@ M.normalize_base_dir_configs = function(base_dirs)
   end
   local normalized_base_dir_configs = {}
   for _, dir in ipairs(base_dirs) do
-    table.insert(
-      normalized_base_dir_configs,
-      {
-        path = normalize_path(dir),
-        max_depth = normalize_max_depth(dir)
-      }
-    )
+    table.insert(normalized_base_dir_configs, {
+      path = normalize_path(dir),
+      max_depth = normalize_max_depth(dir)
+    })
   end
   return normalized_base_dir_configs
 end

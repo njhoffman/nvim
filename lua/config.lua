@@ -1,10 +1,10 @@
 local userSettings = require("settings")
 
-local Load = userSettings.Load
-local Logging = userSettings.Logging
-local DAP = userSettings.DAP
-local LSP = userSettings.LSP
-local Opts = userSettings.Opts
+local Load       = userSettings.Load
+local Logging    = userSettings.Logging
+local DAP        = userSettings.DAP
+local LSP        = userSettings.LSP
+local Opts       = userSettings.Opts
 local Completion = userSettings.Completion
 local Treesitter = userSettings.Treesitter
 
@@ -18,49 +18,6 @@ if Load.impatient == nil then
   Load.impatient = true
 end
 
--- all available LSP from lspinstall
-local servers = {
-  "angular",
-  "bash",
-  "cmake",
-  "cpp",
-  "csharp",
-  "css",
-  "dockerfile",
-  "elixir",
-  "elm",
-  "go",
-  "graphql",
-  "html",
-  "java",
-  "json",
-  "kotlin",
-  "latex",
-  "lua",
-  "php",
-  "python",
-  "ruby",
-  "rust",
-  "svelte",
-  "tailwindcss",
-  "terraform",
-  -- "typescript",
-  "vim",
-  "vue",
-  "yaml",
-  -- non-language specific
-  "deno",
-  "diagnosticls",
-  "efm",
-  "rome"
-}
-
-for _, v in pairs(servers) do
-  if LSP[v] == nil then
-    LSP[v] = false
-  end
-end
-
 -- trace, debug, info, warn, error
 if LSP.hover_diagnostic == nil then
   LSP.hover_diagnostic = false
@@ -71,9 +28,16 @@ if LSP.virtual_text == nil then
 end
 
 -- Logging
-if Logging.notify_level == nil then
-  Logging.notify_level = "debug"
+if Logging.notify_level_show == nil then
+  Logging.notify_level_show = "debug"
 end
+if Logging.notify_level_record == nil then
+  Logging.notify_level_record = "trace"
+end
+if Logging.notify_level_log == nil then
+  Logging.notify_level_log = "trace"
+end
+
 if Logging.log_level == nil then
   Logging.log_level = "debug"
 end
@@ -101,7 +65,7 @@ if Opts.explorer_side == nil then
   Opts.explorer_side = "left"
 end
 if Opts.log_path == nil then
-  Opts.log_path = "/home/nicholas/.cache/nvim/nvim.log"
+  Opts.log_path = vim.fn.stdpath('data')
 end
 if Opts.log_stdout == nil then
   Opts.log_stdout = false

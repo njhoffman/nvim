@@ -10,23 +10,25 @@ require("dapui").setup {
     remove = "d",
     edit = "e",
   },
-  sidebar = {
-    -- open_on_start = true,
-    elements = {
-      -- You can change the order of elements in the sidebar
-      "scopes",
-      "breakpoints",
-      "stacks",
-      "watches",
+  layouts = {
+    {
+      elements = {
+        'scopes',
+        'breakpoints',
+        'stacks',
+        'watches',
+      },
+      size = 40,
+      position = 'left',
     },
-    position = "left", -- Can be "left" or "right"
-    size = 40,
-  },
-  tray = {
-    -- open_on_start = false,
-    elements = { "repl" },
-    size = 10,
-    position = "bottom", -- Can be "bottom" or "top"
+    {
+      elements = {
+        'repl',
+        'console',
+      },
+      size = 10,
+      position = 'bottom',
+    },
   },
   floating = {
     max_height = nil, -- These can be integers or a float between 0 and 1.
@@ -56,7 +58,7 @@ vim.fn.sign_define("DapLogPoint", {
   -- numhl = "DAPLogPointSign",
 })
 vim.fn.sign_define("DapStopped",
-                   { text = "", texthl = "DAPStopSign", linehl = "DAPStopSignText", numhl = "DAPStopSign" })
+  { text = "", texthl = "DAPStopSign", linehl = "DAPStopSignText", numhl = "DAPStopSign" })
 
 -- " Completion
 -- au FileType dap-repl lua require('dap.ext.autocompl').attach()

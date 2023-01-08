@@ -1,10 +1,8 @@
 -- https://raw.githubusercontent.com/t-troebst/perfanno.nvim/master/README.md
+
 -- sudo apt-get install linux-tools-common linux-tools-generic linux-tools-`uname -r`
 -- perf record --call-graph dwarf {program} => perf.data
 -- node --perf-basic-prof-only-functions => perf.log
-
-local perfanno = require("perfanno")
-local util = require("perfanno.util")
 
 -- Load profiling data
 -- :PerfLoadFlat loads flat perf data. Obviously you will not be able to find callers of functions in this mode.
@@ -29,6 +27,7 @@ local default_options = {
   line_highlights = nil,
   -- Highlight used for virtual text annotations (or nil to disable virtual text)
   vt_highlight = nil,
+
   -- Annotation formats that can be cycled between via :PerfCycleFormat
   --   "percent" controls whether percentages or absolute counts should be displayed
   --   "format" is the format string that will be used to display counts / percentages
@@ -38,39 +37,44 @@ local default_options = {
     {percent = true, format = "%.2f%%", minimum = 0.5},
     {percent = false, format = "%d", minimum = 1}
   },
+
   -- Automatically annotate files after :PerfLoadFlat and :PerfLoadCallGraph
   annotate_after_load = true,
   -- Automatically annoate newly opened buffers if information is available
   annotate_on_open = true,
+
   -- Options for telescope-based hottest line finders
   telescope = {
     -- Enable if possible, otherwise the plugin will fall back to vim.ui.select
     enabled = pcall(require, "telescope"),
     -- Annotate inside of the preview window
-    annotate = true
+    annotate = true,
   },
+
   -- Node type patterns used to find the function that surrounds the cursor
   ts_function_patterns = {
     -- These should work for most languages (at least those used with perf)
     default = {
       "function",
-      "method"
-    }
+      "method",
+    },
     -- Otherwise you can add patterns for specific languages like:
     -- weirdlang = {
     --     "weirdfunc",
     -- }
   }
 }
--- The following config sets the highlights to a nice RGB color gradient between the background color and an orange red.
--- It also sets convenient keybindings for most of the standard commands.
 
+local perfanno = require("perfanno")
+local util = require("perfanno.util")
 local bgcolor = vim.fn.synIDattr(vim.fn.hlID("Normal"), "bg", "gui")
 
+-- The following config sets the highlights to a nice RGB color gradient between the background color and an orange red.
+-- It also sets convenient keybindings for most of the standard commands.
 perfanno.setup {
   -- Creates a 10-step RGB color gradient beween bgcolor and "#CC3300"
   line_highlights = util.make_bg_highlights(bgcolor, "#CC3300", 10),
-  vt_highlight = util.make_fg_highlight("#CC3300")
+  vt_highlight = util.make_fg_highlight("#CC3300"),
 }
 
 local keymap = vim.api.nvim_set_keymap

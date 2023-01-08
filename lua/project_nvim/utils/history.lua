@@ -111,17 +111,12 @@ function M.read_projects_from_history()
     function(_, fd)
       setup_watch()
       if fd ~= nil then
-        uv.fs_fstat(
-          fd,
+        uv.fs_fstat(fd,
           function(_, stat)
             if stat ~= nil then
-              uv.fs_read(
-                fd,
-                stat.size,
-                -1,
+              uv.fs_read(fd, stat.size, -1,
                 function(_, data)
-                  uv.fs_close(
-                    fd,
+                  uv.fs_close(fd,
                     function(_, _)
                     end
                   )

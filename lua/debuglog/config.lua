@@ -21,7 +21,7 @@ local config = {
 }
 
 config.outfile = string.format(
-  "%s/%s.log", vim.api.nvim_call_function("stdpath", { "log" }),
+  "%s/%s.log", vim.api.nvim_call_function("stdpath", { "data" }),
   config.plugin
 )
 config.start_time = os.clock()

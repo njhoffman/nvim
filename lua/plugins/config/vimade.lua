@@ -32,43 +32,37 @@
 --    enablesigns = 1,
 --    enablefocusfading = 1
 -- --  }
--- vim.cmd([[let g:vimade  = {}]])
--- vim.cmd([[let g:vimade.fadelevel = 0.6]])
--- vim.cmd([[let g:vimade.enabletreesitter = 1]])
--- vim.cmd([[let g:vimade.fadepriority = 50]])
--- vim.cmd([[let g:vimade.colbufsize = 15]])
--- vim.cmd([[let g:vimade.rowbufsize = 15]])
--- vim.cmd([[let g:vimade.signsretentionperiod = 1]])
--- vim.cmd([[let g:vimade.enablefocusfading = 1]])
 vim.g.vimade = {
   -- running = 0,
-  basebg = "#001133",
+  basebg = "#001144",
   basegroups = {
-    "CursorLine",
-    "CursorLineNr",
+    "LineNr",
     "DiffAdd",
     "DiffChange",
     "DiffDelete",
     "DiffText",
     "FoldColumn",
     "Folded",
-    "LineNr",
     "Search",
     "SignColumn",
     "Whitespace",
-    -- "VirtualText",
+    -- "Normal",
+    -- "CursorLine",
+    -- "CursorLineNr",
     -- "v2hexokinase",
   },
-  rowbufsize = 25,
-  colbufsize = 25,
-  fadelevel = 0.65,
-  signsretentionperiod = 4000,
+
+  enablebasegroups = 1,
+  rowbufsize = 10,
+  colbufsize = 10,
+  fadelevel = 0.60,
+  signsretentionperiod = 2000,
   fadepriority = 100,
   enablesigns = 1,
+  signspriority = 31,
   enabletreesitter = 1,
-  enablebasegroups = 1,
   enablefocusfading = 1,
-  checkinterval = 100,
+  checkinterval = 50,
   groupdiff = 0,
   groupscrollbind = 1,
   detecttermcolors = 1,

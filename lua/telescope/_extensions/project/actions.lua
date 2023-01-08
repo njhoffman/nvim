@@ -9,13 +9,13 @@ local _utils = require("telescope._extensions.project.utils")
 local M = {}
 
 -- Extracts project title from current buffer selection
-M.get_selected_title = function()
-  return actions_state.get_selected_entry().ordinal
+M.get_selected_title = function(prompt_bufnr)
+  return actions_state.get_selected_entry(prompt_bufnr).ordinal
 end
 
 -- Extracts project path from current buffer selection
-M.get_selected_path = function()
-  return actions_state.get_selected_entry().value
+M.get_selected_path = function(prompt_bufnr)
+  return actions_state.get_selected_entry(prompt_bufnr).value
 end
 
 -- Create a new project and add it to the list in the `telescope_projects_file`
@@ -101,11 +101,9 @@ M.find_project_files = function(prompt_bufnr, hidden_files)
   actions._close(prompt_bufnr, true)
   local cd_successful = _utils.change_project_dir(project_path)
   if cd_successful then
-    vim.schedule(
-      function()
-        builtin.find_files({ cwd = project_path, hidden = hidden_files })
-      end
-    )
+    vim.schedule(function()
+      builtin.find_files({ cwd = project_path, hidden = hidden_files })
+    end)
   end
 end
 
@@ -114,7 +112,7 @@ end
 M.browse_project_files = function(prompt_bufnr)
   local ok, file_browser = pcall(require, "telescope._extensions.file_browser")
   if not ok then
-    vim.logger:info(
+    vim.notify(
       "telescope-file-browser.nvim is required to use this action!",
       vim.log.levels.ERROR,
       { title = "telescope-project.nvim" }
@@ -125,11 +123,9 @@ M.browse_project_files = function(prompt_bufnr)
   actions._close(prompt_bufnr, true)
   local cd_successful = _utils.change_project_dir(project_path)
   if cd_successful then
-    vim.schedule(
-      function()
-        file_browser.exports.file_browser({ cwd = project_path })
-      end
-    )
+    vim.schedule(function()
+      file_browser.exports.file_browser({ cwd = project_path })
+    end)
   end
 end
 
@@ -140,11 +136,9 @@ M.search_in_project_files = function(prompt_bufnr)
   actions._close(prompt_bufnr, true)
   local cd_successful = _utils.change_project_dir(project_path)
   if cd_successful then
-    vim.schedule(
-      function()
-        builtin.live_grep({ cwd = project_path })
-      end
-    )
+    vim.schedule(function()
+      builtin.live_grep({ cwd = project_path })
+    end)
   end
 end
 
@@ -155,11 +149,9 @@ M.recent_project_files = function(prompt_bufnr)
   actions._close(prompt_bufnr, true)
   local cd_successful = _utils.change_project_dir(project_path)
   if cd_successful then
-    vim.schedule(
-      function()
-        builtin.oldfiles({ cwd_only = true })
-      end
-    )
+    vim.schedule(function()
+      builtin.oldfiles({ cwd_only = true })
+    end)
   end
 end
 
