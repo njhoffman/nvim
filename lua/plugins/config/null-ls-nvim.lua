@@ -13,7 +13,8 @@ local on_attach = function(_, bufnr)
 
   local attach = require("plugins.config.lsp-attach")
   if supports_method_for_filetype(filetype, "NULL_LS_FORMATTING") then
-    attach.keybindings_formatting(bufnr)
+    attach.keybindings_formatting(bufnr, "null-ls")
+    attach.format_on_save(bufnr, "null-ls")
   end
 
   if supports_method_for_filetype(filetype, "NULL_LS_CODE_ACTION") then
@@ -22,6 +23,7 @@ local on_attach = function(_, bufnr)
 end
 
 null_ls.setup({
+  log_level = "info",
   sources = my_sources.sources,
   on_attach = on_attach,
   default_timeout = 5000,

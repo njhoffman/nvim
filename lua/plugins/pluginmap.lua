@@ -294,7 +294,7 @@ M.ui_plugins = {
   ["nvim-colorizer"] = { "norcalli/nvim-colorizer.lua" },
   ["vim-plugin-AnsiEsc"] = { "joeysino/vim-plugin-AnsiEsc" },
   ["vimade"] = { "TaDaa/vimade" },
-  ["which-key.nvim"] = { "~/git/which-key.nvim" },
+  ["which-key.nvim"] = { "~/git/which-key.nvim", branch = "master" },
   -- ["which-key.nvim"]     = { "folke/which-key.nvim" },
   ["zen-mode.nvim"] = { "folke/zen-mode.nvim" },
   ["hop.nvim"] = { "phaazon/hop.nvim" },

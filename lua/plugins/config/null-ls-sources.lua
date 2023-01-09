@@ -52,7 +52,6 @@ local REGEX_FIXME = vim.regex("FIXME")
 
 M.sources = {
   -- Code actions
-
   null_ls.builtins.completion.spell,
   null_ls.builtins.code_actions.shellcheck,
   null_ls.builtins.code_actions.gitsigns,
@@ -72,7 +71,11 @@ M.sources = {
     end,
   }),
   null_ls.builtins.formatting.sqlfluff,
+  null_ls.builtins.formatting.shellharden.with({
+    filetypes = { "sh", "bash" },
+  }),
   null_ls.builtins.formatting.shfmt.with({
+    filetypes = { "sh", "bash" },
     extra_args = function(params)
       return {
         "--case-indent",
@@ -106,7 +109,7 @@ M.sources = {
   }),
   -- null_ls.builtins.formatting.remark,
   null_ls.builtins.formatting.trim_whitespace, -- only works for ff=unix
-  null_ls.builtins.formatting.xmllint,
+  -- null_ls.builtins.formatting.xmllint,
 
   -- Diagnostics
   -- null_ls.builtins.diagnostics.checkmake,
