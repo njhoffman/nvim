@@ -1081,6 +1081,11 @@ _G.packer_plugins = {
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-ghq.nvim",
     url = "https://github.com/nvim-telescope/telescope-ghq.nvim"
   },
+  ["telescope-git-diffs.nvim"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-git-diffs.nvim",
+    url = "https://github.com/paopaol/telescope-git-diffs.nvim"
+  },
   ["telescope-github.nvim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-github.nvim",
@@ -1161,6 +1166,11 @@ _G.packer_plugins = {
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-symbols.nvim",
     url = "https://github.com/nvim-telescope/telescope-symbols.nvim"
   },
+  ["telescope-terraform-doc.nvim"] = {
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-terraform-doc.nvim",
+    url = "https://github.com/ANGkeith/telescope-terraform-doc.nvim"
+  },
   ["telescope-tmux.nvim"] = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-tmux.nvim",
@@ -1170,6 +1180,12 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-ui-select.nvim",
     url = "https://github.com/nvim-telescope/telescope-ui-select.nvim"
+  },
+  ["telescope-undo.nvim"] = {
+    config = { "\27LJ\2\nö\3\0\0\n\0\26\0*6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\23\0005\3\21\0005\4\3\0005\5\4\0=\5\5\0046\5\6\0009\5\a\0059\5\b\5=\5\t\0045\5\18\0005\6\f\0006\a\0\0'\t\n\0B\a\2\0029\a\v\a=\a\r\0066\a\0\0'\t\n\0B\a\2\0029\a\14\a=\a\15\0066\a\0\0'\t\n\0B\a\2\0029\a\16\a=\a\17\6=\6\19\5=\5\20\4=\4\22\3=\3\24\2B\0\2\0016\0\0\0'\2\1\0B\0\2\0029\0\25\0'\2\22\0B\0\2\1K\0\1\0\19load_extension\15extensions\1\0\0\tundo\1\0\0\rmappings\6i\1\0\0\v<C-cr>\frestore\v<S-cr>\19yank_deletions\t<cr>\1\0\0\19yank_additions\27telescope-undo.actions\23diff_context_lines\14scrolloff\6o\bvim\18layout_config\1\0\1\19preview_height\4š³æÌ\t™³¦ÿ\3\1\0\4\17side_by_side\2\20layout_strategy\rvertical\17entry_format\29state #$ID, $STAT, $TIME\14use_delta\2\nsetup\14telescope\frequire\0" },
+    loaded = true,
+    path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-undo.nvim",
+    url = "https://github.com/debugloop/telescope-undo.nvim"
   },
   ["telescope-vimwiki.nvim"] = {
     loaded = true,
@@ -1565,14 +1581,18 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: vimwiki
-time([[Config for vimwiki]], true)
-try_loadstring("\27LJ\2\nx\0\0\3\0\5\0\t6\0\0\0009\0\1\0)\1\0\0=\1\2\0006\0\0\0009\0\3\0'\2\4\0B\0\2\1K\0\1\0004let g:vimwiki_key_mappings = { 'all_maps': 0, }\bcmd\23vimwiki_global_ext\6g\bvim\0", "config", "vimwiki")
-time([[Config for vimwiki]], false)
 -- Config for: nvim-startup.lua
 time([[Config for nvim-startup.lua]], true)
 try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.nvim_startup\frequire\0", "config", "nvim-startup.lua")
 time([[Config for nvim-startup.lua]], false)
+-- Config for: vimwiki
+time([[Config for vimwiki]], true)
+try_loadstring("\27LJ\2\nx\0\0\3\0\5\0\t6\0\0\0009\0\1\0)\1\0\0=\1\2\0006\0\0\0009\0\3\0'\2\4\0B\0\2\1K\0\1\0004let g:vimwiki_key_mappings = { 'all_maps': 0, }\bcmd\23vimwiki_global_ext\6g\bvim\0", "config", "vimwiki")
+time([[Config for vimwiki]], false)
+-- Config for: telescope-undo.nvim
+time([[Config for telescope-undo.nvim]], true)
+try_loadstring("\27LJ\2\nö\3\0\0\n\0\26\0*6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\23\0005\3\21\0005\4\3\0005\5\4\0=\5\5\0046\5\6\0009\5\a\0059\5\b\5=\5\t\0045\5\18\0005\6\f\0006\a\0\0'\t\n\0B\a\2\0029\a\v\a=\a\r\0066\a\0\0'\t\n\0B\a\2\0029\a\14\a=\a\15\0066\a\0\0'\t\n\0B\a\2\0029\a\16\a=\a\17\6=\6\19\5=\5\20\4=\4\22\3=\3\24\2B\0\2\0016\0\0\0'\2\1\0B\0\2\0029\0\25\0'\2\22\0B\0\2\1K\0\1\0\19load_extension\15extensions\1\0\0\tundo\1\0\0\rmappings\6i\1\0\0\v<C-cr>\frestore\v<S-cr>\19yank_deletions\t<cr>\1\0\0\19yank_additions\27telescope-undo.actions\23diff_context_lines\14scrolloff\6o\bvim\18layout_config\1\0\1\19preview_height\4š³æÌ\t™³¦ÿ\3\1\0\4\17side_by_side\2\20layout_strategy\rvertical\17entry_format\29state #$ID, $STAT, $TIME\14use_delta\2\nsetup\14telescope\frequire\0", "config", "telescope-undo.nvim")
+time([[Config for telescope-undo.nvim]], false)
 -- Conditional loads
 time([[Conditional loading of hologram.nvim]], true)
   require("packer.load")({"hologram.nvim"}, {}, _G.packer_plugins)
@@ -1585,27 +1605,27 @@ time([[Sequenced loading]], true)
 vim.cmd [[ packadd nvim-lspconfig ]]
 vim.cmd [[ packadd sqls.nvim ]]
 vim.cmd [[ packadd nvim-cmp ]]
-vim.cmd [[ packadd cmp-nvim-lsp-document-symbol ]]
-vim.cmd [[ packadd cmp-pandoc-references ]]
-vim.cmd [[ packadd cmp-emoji ]]
 vim.cmd [[ packadd cmp-tmux ]]
-vim.cmd [[ packadd cmp-nvim-lua ]]
+vim.cmd [[ packadd cmp-emoji ]]
 vim.cmd [[ packadd cmp-spell ]]
+vim.cmd [[ packadd cmp-nvim-lua ]]
 vim.cmd [[ packadd cmp-nvim-lsp ]]
 vim.cmd [[ packadd cmp-cmdline-history ]]
 vim.cmd [[ packadd cmp-calc ]]
-vim.cmd [[ packadd cmp_luasnip ]]
 vim.cmd [[ packadd cmp-cmdline ]]
+vim.cmd [[ packadd cmp-pandoc-references ]]
+vim.cmd [[ packadd cmp-nvim-lsp-signature-help ]]
+vim.cmd [[ packadd cmp-treesitter ]]
 vim.cmd [[ packadd tabout.nvim ]]
 
 -- Config for: tabout.nvim
 try_loadstring("\27LJ\2\n6\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\27plugins.configs.tabout\frequire\0", "config", "tabout.nvim")
 
-vim.cmd [[ packadd cmp-nvim-lsp-signature-help ]]
-vim.cmd [[ packadd cmp-treesitter ]]
 vim.cmd [[ packadd cmp-npm ]]
 vim.cmd [[ packadd cmp-vimwiki-tags ]]
+vim.cmd [[ packadd cmp_luasnip ]]
 vim.cmd [[ packadd cmp-git ]]
+vim.cmd [[ packadd cmp-nvim-lsp-document-symbol ]]
 time([[Sequenced loading]], false)
 
 -- Command lazy-loads

@@ -86,6 +86,8 @@ local display = function(_opts)
     style = "minimal",
   }
 
+  local debuglog = require("debuglog")
+
   local imported = { failures = {}, successes = {}, details = {}, time = 0 }
   for _, module in ipairs(cmds.get_all_modules()) do
     local details = cmds.get_status(module)
@@ -110,8 +112,6 @@ local display = function(_opts)
   ui_state.buf_win_handle = vim.api.nvim_open_win(ui_state.buf_handle, 1, float_opts)
   vim.api.nvim_set_option_value("wrap", true, { buf = ui_state.view_buf_handle })
 end
---                                 AuG   AuC   Func  Opt  Var  Key  Cmd   HL
---  plugins  35.4k  0.02s -2.5w
 
 return {
   _selected_module = actions.selected_module,

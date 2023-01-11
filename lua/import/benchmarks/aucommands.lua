@@ -1,13 +1,30 @@
 local util = require("import.util")
 local provider = {
-  name = "autocommands",
-  output = function(path, delta)
+  name = "aucommands",
+  diff = util.diff,
+  summary = function(delta)
+    local out = ""
+    if #delta.added > 0 then
+      out = out .. " " .. #delta.added
+    end
+    -- if #delta.removed > 0 then
+    --   out = out .. " +" .. #delta.removed
+    -- end
+    if #out > 0 then
+      out = " " .. out .. " au "
+    end
+    return string.format("%10s", out)
+  end,
+  report = function(path, delta)
+    local out = ""
     for _, added in ipairs(delta.added) do
-      vim.dbglog(" + aucmd " .. path .. " " .. added.event .. " " .. added.pattern)
+      out = out .. "\n" .. " + aucmd add " .. path .. " " .. added.event .. " " .. added.pattern
     end
     for _, removed in ipairs(delta.removed) do
-      vim.dbglog(" - aucmd " .. path .. " " .. removed.event .. " " .. removed.pattern)
+      out = out .. "\n" .. " - aucmd rem " .. path .. " " .. removed.event .. " " .. removed.pattern
     end
+    local summary = path .. "  +" .. #delta.added .. ":-" .. #delta.removed .. " lines for autocommands"
+    return summary .. out
   end,
   get = function(data)
     local autable = {}
@@ -23,29 +40,6 @@ local provider = {
       }
     end
     return autable
-  end,
-  diff = function(prev, next)
-    local delta = { added = {}, removed = {} }
-    for hash_next, next_item in pairs(next) do
-      for hash_prev, _ in pairs(prev) do
-        if hash_prev == hash_next then
-          goto continue
-        end
-      end
-      table.insert(delta.added, next_item)
-      ::continue::
-    end
-
-    for hash_prev, prev_item in pairs(prev) do
-      for hash_next, _ in pairs(next) do
-        if hash_prev == hash_next then
-          goto continue
-        end
-      end
-      table.insert(delta.removed, prev_item)
-      ::continue::
-    end
-    return delta
   end,
 }
 

@@ -50,6 +50,7 @@ local tele_plugs = {
   ["repo"] = "telescope-repo.nvim",
   ["session-lens"] = "session-lens",
   ["tmux"] = "telescope-tmux.nvim",
+  ["undo"] = "telescope-undo.nvim",
   ["ui-select"] = "telescope-ui-select.nvim",
   ["vimwiki"] = "telescope-vimwiki.nvim",
   ["z"] = "telescope-z.nvim",
@@ -62,6 +63,8 @@ require("dir-telescope").setup({
 
 vim.keymap.set("n", "<leader>gfd", "<cmd>GrepInDirectory<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>gpd", "<cmd>FileInDirectory<CR>", { noremap = true, silent = true })
+
+require("telescope").load_extension("terraform_doc")
 
 local M = {}
 M.extensions = {}
@@ -261,13 +264,10 @@ M.extensions.frecency = {
     ["bin"] = baseDirs.home .. "/bin",
     ["home"] = baseDirs.home,
     ["config"] = baseDirs.home .. "/.config",
-    ["nvim"] = baseDirs.config,
-    ["plugins"] = baseDirs.home .. "/_/nvim-plugs",
-    ["nvim-cache"] = baseDirs.home .. "/_/nvim-cache",
+    ["nvim-config"] = baseDirs.config,
     ["nvim-data"] = baseDirs.data,
-    ["prettyfile"] = baseDirs.home .. "/git/prettyfile",
+    ["nvim-plugs"] = baseDirs.home .. "/.local/share/nvim/site/pack/packer/start",
     ["zettel"] = baseDirs.home .. "/zettelkasten",
-    ["zk"] = baseDirs.home .. "/zettelkasten",
     ["zinit"] = baseDirs.home .. "/.zinit",
     ["zsh"] = baseDirs.home .. "/.config/zsh",
   },

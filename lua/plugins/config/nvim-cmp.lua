@@ -1,5 +1,5 @@
 local cmp = require("cmp")
-local cmp_mappings = require("plugins.config.nvim-cmp-mapping")
+-- local cmp_mappings = require("plugins.config.nvim-cmp-mapping")
 local compare = require("cmp.config.compare")
 local sources = require("plugins.config.nvim-cmp-sources")
 
@@ -44,10 +44,10 @@ local setupConfig = {
     native_menu = false,
     ghost_text = { hl_group = "CmpGhostText" },
   },
-  -- preselect = types.cmp.PreselectMode.None, -- cmp.PreselectMode.None/Item,
+  -- preselect = cmp.types.cmp.PreselectMode.Item, -- cmp.PreselectMode.None/Item,
   completion = {
     -- completeopt = "noinsert,noselect",
-    -- completeopt = "menu,menuone,noinsert", --noinsert,noselect
+    completeopt = "menu,menuone,noinsert", --noinsert,noselect
     -- get_trigger_characters = function(trigger_characters)
     --   local new_trigger_characters = {}
     --   for _, char in ipairs(trigger_characters) do
@@ -57,12 +57,45 @@ local setupConfig = {
     --   end
     --   return new_trigger_characters
     -- end,
-    keyword_length = 1,
+    -- keyword_length = 1,
     -- autocomplete = {
-    --   types.cmp.TriggerEvent.TextChanged,
+    --   cmp.types.cmp.TriggerEvent.TextChanged,
     -- },
   },
-  mapping = cmp.mapping.preset.insert(cmp_mappings()),
+  mapping = cmp.mapping.preset.insert({
+    ["<C-p>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+      else
+        fallback()
+      end
+    end, { "i" }),
+    ["<C-n>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+      else
+        fallback()
+      end
+    end, { "i" }),
+    ["<C-f>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        for _ = 1, 5 do
+          cmp.mapping.select_next_item({
+            behavior = cmp.SelectBehavior.Select,
+          })(nil)
+        end
+      end
+    end, { "i" }),
+    ["<C-B>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        for _ = 1, 5 do
+          cmp.mapping.select_prev_item({
+            behavior = cmp.SelectBehavior.Select,
+          })(nil)
+        end
+      end
+    end, { "i" }),
+  }),
   view = {
     entries = {
       name = "custom", -- can be "custom", "wildmenu" or "native"
@@ -137,7 +170,7 @@ cmp.setup(setupConfig)
 --
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline("/", {
-  mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
+  mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     { name = "cmdline_history", group_index = 1 },
     { name = "nvim_lsp_document_symbol", group_index = 1 },
@@ -147,16 +180,19 @@ cmp.setup.cmdline("/", {
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
+  -- mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
+
+  mapping = cmp.mapping.preset.cmdline(),
+  -- mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
   sources = cmp.config.sources({
     { name = "cmdline", priority = 100 },
-    { name = "cmdline_history", priority = 30 },
+    { name = "cmdline_history", priority = 50 },
     { name = "fuzzy_path", priority = 30 },
   }),
 })
 
-local opt = require("utils.core").opt
-opt("omnifunc", false)
+-- local opt = require("utils.core").opt
+-- opt("omnifunc", false)
 
 -- cmp.setup.filetype({ "markdown", "help" }, {
 --   window = {

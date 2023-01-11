@@ -1,10 +1,14 @@
 return {
+  show_line_diag = {
+    cmd = "<cmd>vim.lsp.diagnostic.show_line_diagnostics()",
+    short = "show line diagnostic",
+  },
   hover_doc1 = {
-    cmd   = "<cmd>Lspsaga hover_doc<cr>",
+    cmd = "<cmd>Lspsaga hover_doc<cr>",
     short = "lsp hover document",
   },
   definitions = {
-    cmd   = "<cmd>Telescope lsp_definitions<cr>",
+    cmd = "<cmd>Telescope lsp_definitions<cr>",
     short = "lsp definitions",
   },
   declaration = {
@@ -12,7 +16,7 @@ return {
     short = "lsp declaration",
   },
   hover_doc2 = {
-    cmd   = "<cmd>Lspsaga hover_doc<cr>",
+    cmd = "<cmd>Lspsaga hover_doc<cr>",
     short = "lsp hover document ",
   },
   organize_imports = {
@@ -20,11 +24,11 @@ return {
     short = "lsp organize imports",
   },
   finder1 = {
-    cmd   = "<cmd>Telescope lsp_finder<cr>",
+    cmd = "<cmd>Telescope lsp_finder<cr>",
     short = "lsp finder",
   },
   references = {
-    cmd   = "<cmd>Telescope lsp_references<cr>",
+    cmd = "<cmd>Telescope lsp_references<cr>",
     short = "lsp references",
   },
   signature_help1 = {
@@ -44,7 +48,7 @@ return {
     short = "lsp diagnostic next",
   },
   code_action = {
-    cmd   = "<cmd>Lspsaga code_action<cr>",
+    cmd = "<cmd>Lspsaga code_action<cr>",
     short = "lsp code action",
   },
   range_code_action = {
@@ -54,7 +58,7 @@ return {
   doc_diagnostics = {
     cmd = "<cmd>lua _G._LspDiagDocument()<cr>",
     short = "lsp document diagnostics",
-    long = "lsp document diagnostics"
+    long = "lsp document diagnostics",
   },
   doc_diagnostics_2 = {
     cmd = "<cmd>lua _G._LspDiagDocument()<cr>",
@@ -63,12 +67,12 @@ return {
   doc_diagnostics_ivy = {
     cmd = "<cmd>lua _G._LspDiagDocumentIvy()<cr>",
     short = "lsp document diagnostics",
-    long = "lsp document diagnostics ivy theme"
+    long = "lsp document diagnostics ivy theme",
   },
   doc_diagnostics_fzf = {
     cmd = "<cmd>FzfLua lsp_document_diagnostics<cr>",
     short = "lsp document diagnostics",
-    long = "lsp document diagnostics"
+    long = "lsp document diagnostics",
   },
   workspace_diagnostics = {
     cmd = "<cmd>lua _G._LspDiagWorkspace<cr>",
@@ -77,7 +81,7 @@ return {
   workspace_diagnostics_ivy = {
     cmd = "<cmd>lua _G._LspDiagWorkspaceIvy()<cr>",
     short = "lsp workspace diag ivy",
-    long = "lsp workspace diagnostics ivy theme"
+    long = "lsp workspace diagnostics ivy theme",
   },
   view_log = {
     cmd = "<cmd>lua vim.cmd('e'..vim.lsp.get_log_path())<cr>",
@@ -88,11 +92,11 @@ return {
     short = "lsp line diagnostics",
   },
   finder2 = {
-    cmd   = "<cmd>Lspsaga lsp_finder<cr>",
+    cmd = "<cmd>Lspsaga lsp_finder<cr>",
     short = "lsp finder",
   },
   server_info = {
-    cmd   = "<cmd>LspInfo<cr>",
+    cmd = "<cmd>LspInfo<cr>",
     short = "lsp server info",
   },
   signature_help2 = {
@@ -108,7 +112,7 @@ return {
     short = "lsp preview definition",
   },
   rename = {
-    cmd   = "<cmd>Lspsaga rename<cr>",
+    cmd = "<cmd>Lspsaga rename<cr>",
     short = "lsp rename",
   },
   doc_symbols = {
@@ -120,9 +124,9 @@ return {
     short = "lsp workspace symbols",
   },
   stop_all = {
-    cmd   = "<cmd>LspStop<cr>",
+    cmd = "<cmd>LspStop<cr>",
     short = "lsp stop all",
-  }
+  },
 }
 
 -- -- Add global keymappings for LSP actions

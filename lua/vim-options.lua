@@ -114,6 +114,7 @@ opt("matchtime", 3)
 opt("wildignore", "*.o,*~,*.pyc")
 
 -- opt("wildmenu", 1)
+-- opt("wildmode", "list:longest,full")
 -- opt("wildmode", "longest:full,full")
 -- opt("wildmode", "") -- full, longest, list, lastused, list:longest, list:full, longest:full
 -- opt("wc", 0x0e)

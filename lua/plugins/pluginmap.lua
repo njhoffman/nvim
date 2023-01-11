@@ -177,6 +177,7 @@ M.telescope_plugins = {
       "nvim-telescope/telescope-fzy-native.nvim",
     },
   },
+  ["telescope-git-diffs.nvim"] = { "paopaol/telescope-git-diffs.nvim" },
   ["nvim-neoclip.lua"] = { "AckslD/nvim-neoclip.lua", requires = { "tami5/sqlite.lua", module = "sqlite" } },
   ["cheatsheet.nvim"] = { "sudormrfbin/cheatsheet.nvim" },
   ["dir-telescope.nvim"] = { "princejoogie/dir-telescope.nvim" },
@@ -185,6 +186,45 @@ M.telescope_plugins = {
     "GustavoKatel/telescope-asynctasks.nvim",
     requires = "skywind3000/asynctasks.vim",
   },
+  ["telescope-undo.nvim"] = {
+    "debugloop/telescope-undo.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "debugloop/telescope-undo.nvim",
+    },
+    config = function()
+      require("telescope").setup({
+        extensions = {
+          undo = {
+            use_delta = true,
+            side_by_side = true,
+            layout_strategy = "vertical",
+            layout_config = {
+              preview_height = 0.8,
+            },
+            diff_context_lines = vim.o.scrolloff,
+            entry_format = "state #$ID, $STAT, $TIME",
+            mappings = {
+              i = {
+                -- IMPORTANT: Note that telescope-undo must be available when telescope is configured if
+                -- you want to replicate these defaults and use the following actions. This means
+                -- installing as a dependency of telescope in it's `requirements` and loading this
+                -- extension from there instead of having the separate plugin definition as outlined
+                -- above.
+                ["<cr>"] = require("telescope-undo.actions").yank_additions,
+                ["<S-cr>"] = require("telescope-undo.actions").yank_deletions,
+                ["<C-cr>"] = require("telescope-undo.actions").restore,
+              },
+            },
+          },
+        },
+      })
+
+      require("telescope").load_extension("undo")
+      -- optional: vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
+    end,
+  },
+  ["telescope-terraform-doc.nvim"] = { "ANGkeith/telescope-terraform-doc.nvim", requires = { "nvim-lua/plenary.nvim" } },
   ["telescope-bookmarks.nvim"] = { "dhruvmanila/telescope-bookmarks.nvim" },
   ["telescope-command-palette.nvim"] = { "LinArcX/telescope-command-palette.nvim" },
   ["telescope-dap.nvim"] = { "nvim-telescope/telescope-dap.nvim" },
@@ -359,6 +399,7 @@ M.interface_plugins = {
   -- https://github.com/anuvyklack/windows.nvim
   -- ["yank-history"] = {"yazgoo/yank-history"},
   -- ["vim-mundo"] = { "simnalamburt/vim-mundo" },
+  -- https://github.com/gbprod/yanky.nvim
 }
 
 M.integration_plugins = {

@@ -46,13 +46,14 @@ local detail_lines = function()
   end
 
   local details = cmds.get_status(module)
-  vim.dbglog(details)
   local lines = {}
 
   table.insert(lines, module)
   table.insert(lines, "    Imported: " .. details.status)
   table.insert(lines, "    Import Time: " .. math.floor(details.import_time / 1000000 * 1000) / 1000 .. " ms")
   table.insert(lines, "")
+
+  -- vim.dbglog(module, details)
 
   if details.errors and #details.errors > 0 then
     output_errors(lines, details.errors)

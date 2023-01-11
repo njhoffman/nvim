@@ -41,7 +41,7 @@ local init = function(init_opts)
         .. ", import_duration="
         .. tostring(details.import_time / 1000000)
         .. " milliseconds }"
-      print(message)
+      return message
     end
 
     -- TODO: Figure out why the sort here isn't being respected?

@@ -1,15 +1,20 @@
-local import_status = {
+local status = {
+  -- list of import names that failed
   failures = {},
+  -- list of import names that succeeded
   successes = {},
+  -- contains details of module and load status
   info = {},
-  _is_in_error_state = false,
-  _printed_error_state = false,
+  -- holds diagnostic data for later processing
+  benchmarks = {},
+  _error_state = false,
+  _error_printed = false,
 }
 
 --- Returns the number of failed imports
 local get_failure_count = function()
   local count = 0
-  for _, _ in pairs(import_status.failures) do
+  for _, _ in pairs(status.failures) do
     count = count + 1
   end
   return count
@@ -18,7 +23,7 @@ end
 --- Returns the number of successful imports
 local get_success_count = function()
   local count = 0
-  for _, _ in pairs(import_status.successes) do
+  for _, _ in pairs(status.successes) do
     count = count + 1
   end
   return count
@@ -27,7 +32,7 @@ end
 --- Returns table (array) of modules (strings) that were imported (successfully or otherwise)
 local get_all_modules = function()
   local results = {}
-  for path, _ in pairs(import_status.info) do
+  for path, _ in pairs(status.info) do
     table.insert(results, path)
   end
   table.sort(results, function(a, b)
@@ -49,43 +54,60 @@ end
 ---         errors  = errors,  -- Table: Any errors that the path threw during its import attempt
 ---         logs    = logs,    -- Table: Anything that was printed during the import (with approximate timestamps)
 ---     }
-local get_status = function(module)
-  local details = { status = "unknown", imported = false, import_time = -1 }
-  if not import_status.info[module] then
+
+local get_mod_status = function(module)
+  local details = {
+    status = "unknown",
+    imported = false,
+    import_time = -1,
+    summary = "",
+    report = "",
+    message = {},
+  }
+
+  local mod_info = status.info[module]
+  local mod_fail = status.failures[module]
+
+  if not mod_info then
+    details.summary = "Missing import state: " .. module
     return details
   end
-  if import_status.failures[module] then
+
+  if mod_fail then
     details.status = "failed"
   else
     details.status = "success"
     details.imported = true
   end
-  local message = {}
 
-  -- Error detected while processing CursorMoved Autocommands for "<buffer=6>":
-  -- Error executing lua callback: /home/nicholas/.config/nvim/lua/import/ui/state.lua:18: attempt t
-  -- o index field 'lines' (a nil value)
-  -- stack traceback:
-  if import_status.info[module].import_message then
-    for line, _ in import_status.info[module].import_message:gmatch("([^\r\n]*)") do
-      table.insert(message, line)
+  if type(mod_info.import_message) == "string" then
+    details.stack = {}
+    for line, _ in mod_info.import_message:gmatch("([^\r\n]*)") do
+      table.insert(details.message, line)
+      table.insert(details.stack, line)
     end
   end
-  details.message = message
-  details.import_time = import_status.info[module].import_time
-  details.import_start = import_status.info[module].import_start
-  details.import_end = import_status.info[module].import_end
-  details.errors = import_status.info[module].error_logs
-  details.load_n = import_status.info[module].load_n
-  details.logs = import_status.info[module].print_logs
-  details.report = import_status.info[module].report
 
+  local keymap = {
+    { "import_time", "import_time" },
+    { "errors", "error_logs" },
+    { "logs", "print_logs" },
+    { "summary", "summary" },
+    { "report", "report" },
+    { "load_n", "load_n" },
+  }
+
+  for _, v in pairs(keymap) do
+    details[v[1]] = mod_info[v[2]]
+  end
+
+  -- vim.dbglog(details)
   return details
 end
 
 return {
-  import_status = import_status,
-  get_status = get_status,
+  status = status,
+  get_mod_status = get_mod_status,
   get_failure_count = get_failure_count,
   get_success_count = get_success_count,
   get_all_modules = get_all_modules,

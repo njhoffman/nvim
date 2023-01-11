@@ -87,6 +87,33 @@ function M.crc32(s, crc)
   end
 end
 
+local diff = function(prev, next)
+  local delta = { added = {}, removed = {} }
+  for hash_next, next_item in pairs(next) do
+    for hash_prev, _ in pairs(prev) do
+      if hash_prev == hash_next then
+        goto continue
+      end
+    end
+    table.insert(delta.added, next_item)
+    ::continue::
+  end
+
+  for hash_prev, prev_item in pairs(prev) do
+    for hash_next, _ in pairs(next) do
+      if hash_prev == hash_next then
+        goto continue
+      end
+    end
+    table.insert(delta.removed, prev_item)
+    ::continue::
+  end
+  return delta
+end
+
 M.bit = bit -- bit library used
 
-return { get_crc = M.crc32_string }
+return {
+  get_crc = M.crc32_string,
+  diff = diff,
+}

@@ -65,15 +65,15 @@ return {
     short = "quit",
     long = "quit",
   },
-  nowrite_exit = {
+  write_exit = {
     cmd = "<cmd>silent! tabclose | qa<cr>",
     short = "exit no save",
-    long = "quick exit without saving",
+    long = "quick exit with prompt for save",
   },
-  write_exit = {
+  nowrite_exit = {
     cmd = "<cmd>silent! tabclose | xa<cr>",
     short = "exit prompt save",
-    long = "quick exit with prompt for save",
+    long = "quick exit without saving",
   },
   quick_save = {
     cmd = "<cmd>w<cr><esc>",

@@ -1,38 +1,48 @@
-local opts = require("import.opts")
+local user_opts = require("import.opts").user_opts
 local reporter = require("import.reporter")
 local state = require("import.commands.state")
-local log_timestamp_format = "%Y-%m-%d %H:%M:%S"
-local import_defaults = { hide_output = false, hide_errors = false }
+local log_fmt = "%Y-%m-%d %H:%M:%S"
+local benchmarks = require("import.benchmarks")
 
-local prepare_benchmarks = function(benchmarks)
-  for _, benchmark in ipairs(benchmarks) do
-    benchmark.prev = benchmark.get()
+local defaults = {
+  hide_output = false,
+  hide_errors = false,
+  benchmarks = { "keymaps", "aucommands" },
+}
+
+local prepare_benchmarks = function(path, bmarks)
+  state.status.benchmarks[path] = {}
+  for _, name in pairs(bmarks) do
+    benchmarks[name].prev = benchmarks[name].get()
+    state.status.benchmarks[path][name] = benchmarks[name]
   end
-  state.benchmarks = benchmarks
 end
 
 local finish_benchmarks = function(path)
-  local deltas = {}
-  for _, benchmark in ipairs(state.benchmarks) do
-    benchmark.next = benchmark.get()
-    benchmark.delta = benchmark.diff(benchmark.prev, benchmark.next)
-    benchmark.output(path, benchmark.delta)
-    table.insert(deltas, benchmark.delta)
+  local bmarks = state.status.benchmarks[path]
+  local mod_info = state.status.info[path]
+  if type(mod_info) == "table" then
+    for name, bmark in pairs(bmarks) do
+      bmark.next = bmark.get()
+      bmark.delta = bmark.diff(bmark.prev, bmark.next)
+      mod_info.summary = (mod_info.summary or "") .. bmark.summary(bmark.delta)
+      mod_info.report = (mod_info.report or "") .. bmark.report(path, bmark.delta) .. "\n"
+      -- debuglog.log(mod_info.report)
+    end
   end
-  return deltas
 end
 
 --- Safely wraps the traditional require function that lua uses for importing modules
 --- Use in place of "require"
 --- @param path string
 ---     The path to import, this should be exactly what you would pass to require
---- @param success_callback function
+--- @function[opt] success_cb
 ---     Optional: If provided, this function will be called on a successfull import of
 ---     the provided "path". This function will be provided the imported module as
 ---     its single parameter.
 ---     Note: This is saved for calling later on reload
----     EG: success_callback(imported_module)
---- @param import_opts table
+---     EG: success_cb(imported_module)
+--- @table[opt] import_opts
 ---     Optional: If provided, the following options are available to be used during
 ---     import.
 ---     hide_output = false,
@@ -44,12 +54,9 @@ end
 --- @return nil
 ---
 --- Examples
---- require("import.nvim") -- require the import package to get the ability to use its import functionality
 --- import("lualine", function(lualine) lualine.setup{ "do your module setup here" } end)
---- import("cmp", function(cmp) cmp.setup{ "do your module setup here" } end)
 --- import("netman") -- This module doesn't require setup so you dont need to specify it
 local import = function(path, success_cb, import_opts)
-  -- I dont think I want to fail as importing on an import is completely valid.
   if package.loaded[path] then
     if type(success_cb) == "function" then
       return success_cb(package.loaded[path])
@@ -59,15 +66,13 @@ local import = function(path, success_cb, import_opts)
   end
 
   import_opts = import_opts or {}
-  for key, value in pairs(import_defaults) do
+  for key, value in pairs(defaults) do
     if import_opts[key] == nil then
       import_opts[key] = value
     end
   end
 
-  local print_logs = {}
-  local error_logs = {}
-  local replay_log = {}
+  local logs = { print = {}, error = {}, replay = {} }
   local _print = print
   local _error = error
   local log_format = "%s - [%s] %s"
@@ -79,12 +84,12 @@ local import = function(path, success_cb, import_opts)
     for i = 1, #_ do
       table.insert(print_safe_args, tostring(_[i]))
     end
-    local print_log = string.format(log_format, path, os.date(log_timestamp_format), table.concat(print_safe_args))
-    table.insert(print_logs, print_log)
-    if opts.user_opts.import_enable_better_printing then
-      table.insert(replay_log, { level = "print", log = print_log })
+    local print_log = string.format(log_format, path, os.date(log_fmt), table.concat(print_safe_args))
+    table.insert(logs.print, print_log)
+    if user_opts.import_enable_better_printing then
+      table.insert(logs.replay, { level = "print", log = print_log })
     else
-      table.insert(replay_log, { level = "print", log = ... })
+      table.insert(logs.replay, { level = "print", log = ... })
     end
   end
   -- redirect errors to print to avoid breaking import
@@ -94,13 +99,12 @@ local import = function(path, success_cb, import_opts)
     for i = 1, #_ do
       table.insert(print_safe_args, tostring(_[i]))
     end
-    local error_log =
-    string.format("ERROR: " .. log_format, path, os.date(log_timestamp_format), table.concat(print_safe_args))
-    table.insert(error_logs, error_log)
-    if opts.user_opts.import_enable_better_printing then
-      table.insert(replay_log, { level = "error", log = error_log })
+    local error_log = string.format("ERROR: " .. log_format, path, os.date(log_fmt), table.concat(print_safe_args))
+    table.insert(logs.error, error_log)
+    if user_opts.import_enable_better_printing then
+      table.insert(logs.replay, { level = "error", log = error_log })
     else
-      table.insert(replay_log, { level = "error", log = ... })
+      table.insert(logs.replay, { level = "error", log = ... })
     end
   end
   -- global shenanigans
@@ -108,62 +112,55 @@ local import = function(path, success_cb, import_opts)
   _G.error = error_shim
 
   local metrics = reporter.calc_metrics()
-  prepare_benchmarks(import_opts.benchmarks or {})
-  local status, mod_ret = pcall(require, path)
+  prepare_benchmarks(path, import_opts.benchmarks or {})
+  local mod_status, mod_ret = pcall(require, path)
   reporter.calc_metrics(metrics)
 
   -- global shenanigans part 2, electric boogaloo
   _G.print = _print
   _G.error = _error
   if not import_opts.hide_output then
-    -- Since we silenced log output above, lets replay the print events to neovim outside
-    -- pcall. We are doing it this way since apparently prints dont always fire
-    -- in neovim during a require, but they _will_ fire during a pcall.
-    -- Thus to replicate the behavior, we are replaying the events to let neovim
-    -- do whatever wild neovims do
-    for _, log_info in ipairs(replay_log) do
+    -- Replay silenced print events from above print to neovim outside pcall.
+    -- Prints dont always fire in with a require, but they _will_ during a pcall.
+    -- Replicate behavior by replaying the events to neovim
+
+    for _, log_info in ipairs(logs.replay) do
       print(log_info.log)
     end
   end
 
-  if not status then
-    -- Import failed 😡
-    state.import_status.failures[path] = 1
-    state._is_in_error_state = true
-  else
-    -- Import was a success 😀
-    state.import_status.successes[path] = 1
-    if type(success_cb) == "function" then
-      local cb_status, _ = pcall(success_cb, mod_ret)
-      if not cb_status then
-        -- Callback failed 😡
-        error_shim(_)
-        state.import_status.successes[path] = nil
-        state.import_status.failures[path] = 1
-        finish_benchmarks(path)
-      end
-    else
-      state.import_status.successes[path] = nil
-      state.import_status.failures[path] = 1
-      finish_benchmarks(path)
-    end
-  end
-
-  state.import_status.info[path] = {
+  state.status.info[path] = {
     import_message = mod_ret,
     import_start = metrics.start,
     import_end = metrics.finish,
     import_time = metrics.duration,
     load_n = metrics.load_n,
-    report = metrics.report,
-    print_logs = print_logs,
-    error_logs = error_logs,
-    success_callback = success_cb,
+    print_logs = logs.print,
+    error_logs = logs.error,
+    success_cb = success_cb,
   }
 
-  if state._is_in_error_state and not state._printed_error_state then
-    state._printed_error_state = true
-    vim.notify("There was an error with your imports", "trace")
+  if not mod_status then
+    state.status.failures[path] = 1
+    state._error_state = true
+  else
+    if type(success_cb) == "function" then
+      local cb_status, _ = pcall(success_cb, mod_ret)
+      if not cb_status then
+        error_shim(_)
+        state.status.successes[path] = nil
+        state.status.failures[path] = 1
+      end
+    else
+      state.status.successes[path] = 1
+      state.status.failures[path] = nil
+    end
+    finish_benchmarks(path)
+  end
+
+  if state._error_state and not state._error_printed then
+    state._error_printed = true
+    vim.notify("There was an error with your imports", 1)
   end
 
   return mod_ret

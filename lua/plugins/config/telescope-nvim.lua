@@ -151,6 +151,24 @@ local telescopeConfig = {
   },
   extensions = tele_plugins.extensions,
 }
+
+local delta = previewers.new_termopen_previewer({
+  get_command = function(entry)
+    if entry.status == "??" or "A " then
+      return { "git", "diff", entry.value }
+    end
+
+    return { "git", "diff", entry.value .. "^!" }
+  end,
+})
+
+vim.keymap.set("n", "<Leader>Gs", function()
+  require("telescope.builtin").git_status({
+    previewer = delta,
+    layout_strategy = "vertical",
+  })
+end)
+
 telescope.setup(telescopeConfig)
 tele_plugins.load_extensions(telescope)
 

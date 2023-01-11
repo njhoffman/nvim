@@ -175,7 +175,6 @@ local M = {
     long = "yank line without ending new line character and return cursor to previous location",
   },
   neoclip = { cmd = "<cmd>Telescope neoclip<cr>", short = "telescope neoclip", long = "telescope neoclip" },
-  fzf_yanks = { cmd = "<cmd>FZFYanks<cr>", short = "fzf yanks", long = "fzf yanks" },
   paste_primary = { cmd = '"*p', short = "paste primary", long = "paste primary" },
   paste_comment = { cmd = '"+p<esc>gvgc^', short = "paste comment", long = "paste comment" },
   paste_mode_toggle = { cmd = "<cmd>set invpaste<cr>", short = "paste mode toggle", long = "paste mode toggle" },
@@ -239,6 +238,18 @@ local M = {
     short = "loc list nav prev",
     long = "navigate to prev location list entry",
     plugin = "vim-qf",
+  },
+  iswap = {
+    cmd = ":ISwapWith<CR>",
+    short = "swap two elements",
+  },
+  iswap_with = {
+    cmd = ":ISwapWith<CR>",
+    short = "swap elements under cursor",
+  },
+  iswap_with2 = {
+    cmd = ":ISwapWith<CR>",
+    short = "swap elements under cursor",
   },
 }
 return M

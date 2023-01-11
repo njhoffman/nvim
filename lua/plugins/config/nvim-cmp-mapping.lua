@@ -12,6 +12,7 @@ function cmp_mappings()
   local luasnip = require("luasnip")
   local sb_select = cmp.SelectBehavior.Select
   local sb_insert = cmp.SelectBehavior.Insert
+
   return {
     ["<C-x><C-o>"] = cmp.mapping.complete(),
     ["<C-x><C-s>"] = cmp.mapping.complete({
@@ -20,35 +21,23 @@ function cmp_mappings()
     ["<C-p>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item({ behavior = sb_insert })
-      elseif has_words_before() then
-        cmp.complete()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
       else
         fallback()
       end
-      -- if not cmp.visible() then
-      --   cmp.complete()
-      --   vim.wait(500, function()
-      --     return cmp.visible()
-      --   end)
-      -- end
-      -- cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
     end, { "i", "s", "c" }),
 
     ["<C-n>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item({ behavior = sb_insert })
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
       elseif has_words_before() then
         cmp.complete()
       else
-        fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
+        fallback()
       end
-      -- if not cmp.visible() then
-      --   cmp.complete()
-      --   vim.wait(500, function()
-      --     return cmp.visible()
-      --   end)
-      -- end
-      -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
     end, { "i", "s", "c" }),
 
     ["<Tab>"] = cmp.mapping(function(fallback)
