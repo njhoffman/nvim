@@ -2,6 +2,8 @@ local cmp = require("cmp")
 -- local cmp_mappings = require("plugins.config.nvim-cmp-mapping")
 local compare = require("cmp.config.compare")
 local sources = require("plugins.config.nvim-cmp-sources")
+local feedkeys = require("cmp.utils.feedkeys")
+local keymap = require("cmp.utils.keymap")
 
 local sort_under = function(entry1, entry2)
   local _, entry1_under = entry1.completion_item.label:find("^_+")
@@ -47,7 +49,7 @@ local setupConfig = {
   -- preselect = cmp.types.cmp.PreselectMode.Item, -- cmp.PreselectMode.None/Item,
   completion = {
     -- completeopt = "noinsert,noselect",
-    completeopt = "menu,menuone,noinsert", --noinsert,noselect
+    completeopt = "menu,menuone,noselect", --noinsert,noselect
     -- get_trigger_characters = function(trigger_characters)
     --   local new_trigger_characters = {}
     --   for _, char in ipairs(trigger_characters) do
@@ -65,14 +67,14 @@ local setupConfig = {
   mapping = cmp.mapping.preset.insert({
     ["<C-p>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
       else
         fallback()
       end
     end, { "i" }),
     ["<C-n>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
       else
         fallback()
       end
@@ -178,11 +180,54 @@ cmp.setup.cmdline("/", {
   }),
 })
 
+local has_words_before = function(cmdline)
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  if cmdline then
+    col = col + 1
+  end
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(":", {
-  -- mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
-
-  mapping = cmp.mapping.preset.cmdline(),
+  mapping = cmp.mapping.preset.cmdline({
+    ["<C-n>"] = {
+      c = function(fallback)
+        if cmp.visible() then
+          cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+        else
+          cmp.complete()
+        end
+      end,
+    },
+    ["<C-p>"] = {
+      c = function(fallback)
+        if cmp.visible() and cmp.get_selected_entry() then
+          cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+        else
+          feedkeys.call(keymap.t("<Up>"), "c")
+        end
+      end,
+    },
+    ["<C-f>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        for _ = 1, 5 do
+          cmp.mapping.select_next_item({
+            behavior = cmp.SelectBehavior.Select,
+          })(nil)
+        end
+      end
+    end, { "c" }),
+    ["<C-B>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        for _ = 1, 5 do
+          cmp.mapping.select_prev_item({
+            behavior = cmp.SelectBehavior.Select,
+          })(nil)
+        end
+      end
+    end, { "c" }),
+  }),
   -- mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
   sources = cmp.config.sources({
     { name = "cmdline", priority = 100 },

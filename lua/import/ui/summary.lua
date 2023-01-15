@@ -61,7 +61,7 @@ local build_success_parts = function(imported)
 
     local icon = " " .. opts.user_opts.import_success_icon .. " "
     local time = math.floor(detail.import_time / 1000000 * 100) / 100 .. " ms "
-    local message = detail.summary or detail.load_n
+    local message = detail.summary or "" -- or ("#" .. tostring(detail.load_n))
 
     local parts = {
       { icon, "ImportSuccessIcon" },
@@ -81,15 +81,15 @@ local summary_lines = function(imported, view_width)
   local title = title_line(imported, view_width)
   vim.api.nvim_buf_set_lines(ui_state.buf_handle, linenum, -1, false, { title })
   linenum = linenum + 1
-  --
+
   local failed_parts = build_failed_parts(imported)
-  local failed_lines, failed_highlights = lines.build_lines(failed_parts)
+  local failed_lines, failed_highlights = lines.build_lines(failed_parts, view_width)
   vim.api.nvim_buf_set_lines(ui_state.buf_handle, linenum, -1, false, failed_lines)
   lines.apply_highlights(failed_highlights, linenum, ui_state.buf_handle)
   linenum = linenum + #failed_lines
 
   local success_parts = build_success_parts(imported)
-  local success_lines, success_highlights = lines.build_lines(success_parts)
+  local success_lines, success_highlights = lines.build_lines(success_parts, view_width)
   vim.api.nvim_buf_set_lines(ui_state.buf_handle, linenum, -1, false, success_lines)
   lines.apply_highlights(success_highlights, linenum, ui_state.buf_handle)
   linenum = linenum + #success_lines

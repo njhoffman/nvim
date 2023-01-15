@@ -64,4 +64,14 @@ _G.update_lightbulb = function()
     virtual_text = { enabled = true },
   })
 end
+
+local cfg = {
+  bind = true,
+  zindex = 99, -- <100 so that it does not hide completion popup.
+  always_trigger = true, -- sometime show signature on new line or in middle of parameter can be confusing, set it to false for #58
+  toggle_key = "<M-x>", -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
+  extra_trigger_chars = { "(", "," }, -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
+}
+
+require("lsp_signature").setup(cfg)
 -- vim.cmd([[autocmd CursorHold,CursorHoldI * lua update_lightbulb()]])

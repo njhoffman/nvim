@@ -26,27 +26,38 @@ local get_widths = function(part_lines)
   end
   return widths
 end
+--   globals.variables                                                    1.73 ms
+--   user-options                                                    0.31 ms
 
-local format_lines = function(part_lines, widths)
+local format_lines = function(part_lines, widths, view_width)
   local spaced_lines = {}
   local highlights = {}
   for _, part_line in pairs(part_lines) do
     local spaced_line = ""
     local hls = {}
-
+    local space_left = view_width - 1
     for n, part in pairs(part_line) do
-      hls[n] = { part[2], #spaced_line, #spaced_line + #part[1] }
-      spaced_line = spaced_line .. part[1] .. string.rep(" ", widths[n] - #part[1] + 1)
+      local width = widths[n] - #part[1] + 1
+      if n == #part_line then
+        space_left = space_left - #part[1]
+        hls[n] = { part[2], #spaced_line + space_left, view_width + 1 }
+        spaced_line = spaced_line .. string.rep(" ", space_left) .. part[1]
+      else
+        hls[n] = { part[2], #spaced_line, #spaced_line + #part[1] }
+        spaced_line = spaced_line .. part[1] .. string.rep(" ", width)
+      end
+      space_left = space_left - widths[n]
     end
     table.insert(highlights, hls)
+    -- vim.dbglog(spaced_line)
     table.insert(spaced_lines, spaced_line)
   end
   return spaced_lines, highlights
 end
 
-local build_lines = function(part_lines)
+local build_lines = function(part_lines, view_width)
   local widths = get_widths(part_lines)
-  local lines, highlights = format_lines(part_lines, widths)
+  local lines, highlights = format_lines(part_lines, widths, view_width)
   return lines, highlights
 end
 

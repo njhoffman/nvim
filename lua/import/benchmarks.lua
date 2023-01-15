@@ -1,8 +1,8 @@
 local benchmarks = {
-  keymaps = require("import.benchmarks.keymaps"),
-  aucommands = require("import.benchmarks.aucommands"),
+     keymaps = require("import.benchmarks.keymaps"),
+     aucommands = require("import.benchmarks.aucommands"),
+     variables = require("import.benchmarks.variables"),
   -- augroups = require("import.benchmarks.augroups"),
-  -- variables = require("import.benchmarks.variables"),
   -- options = require("import.benchmarks.options"),
   -- functions = require("import.benchmarks.functions"),
   -- commands = require("import.benchmarks.commands"),

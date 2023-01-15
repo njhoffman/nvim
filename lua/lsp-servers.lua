@@ -124,7 +124,8 @@ require("mason-lspconfig").setup_handlers({
         enabled = true, -- when not enabled, lua-dev will not change any settings to the LSP server
         runtime = true, -- runtime path
         types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-        plugins = { "plenary.nvim", "telescope.nvim" },
+        plugins = true,
+        -- plugins = { "plenary.nvim", "telescope.nvim" },
       },
     }
     require("neodev").setup(neodev_config)

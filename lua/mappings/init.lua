@@ -75,6 +75,7 @@ vim.import("mapper", function(M)
   M.map("Window", "c", "<c-d>", "cmd_close")
   M.map("Window", "c", "<c-s>", "cmd_save")
   M.map("Window", "c", "<c-y>", "cmd_yank")
+  M.map("Window", "c", "", "cmd_beginning")
   M.map("Window", "c", "<C-n>", "cmd_next1") -- virtual
   M.map("Window", "c", "<C-p>", "cmd_prev1") -- virtual
   M.map("Window", "c", "<tab>", "cmd_next2") -- virtual
@@ -512,7 +513,7 @@ vim.import("mapper", function(M)
   cabbrev d lua vim.dbg(
   cabbrev D DebugLog
   cabbrev Plug execute "normal \<Plug>(
-]])
+]] )
 
   M.map("Zettel", "n", "<cr>", "enter2")
   M.map("Zettel", "n", "gzn", "new")

@@ -1,4 +1,4 @@
-local configs = require "nvim-treesitter.configs"
+local configs = require("nvim-treesitter.configs")
 
 local custom_modules = {
   incremental_custom = {
@@ -9,16 +9,17 @@ local custom_modules = {
         init_selection = "<CR>",
         scope_incremental = "<CR>",
         node_incremental = "<TAB>",
-        node_decremental = "<S-TAB>"
+        node_decremental = "<S-TAB>",
       },
       {
         init_selection = "vv",
         node_incremental = "v",
-        node_decremental = "V"
+        node_decremental = "V",
       },
       {
+        init_selection = "<TAB>",
         node_incremental = "+",
-        node_decremental = "-"
+        node_decremental = "-",
       },
       -- defaults --
       -- init_selection = "gnn",
@@ -29,7 +30,6 @@ local custom_modules = {
     attach = function(bufnr)
       local config = configs.get_module("incremental_custom")
       for _, keymaps in ipairs(config.keymaps) do
-
         for funcname, mapping in pairs(keymaps) do
           local mode
           if funcname == "init_selection" then
@@ -43,7 +43,7 @@ local custom_modules = {
       end
     end,
     detach = function(bufnr)
-      local config = configs.get_module "incremental_custom"
+      local config = configs.get_module("incremental_custom")
       for _, keymaps in ipairs(config.keymaps) do
         for f, mapping in pairs(keymaps) do
           if f == "init_selection" then
@@ -53,8 +53,8 @@ local custom_modules = {
           end
         end
       end
-    end
-  }
+    end,
+  },
 }
 
 return custom_modules

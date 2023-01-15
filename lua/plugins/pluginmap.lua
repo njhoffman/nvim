@@ -11,7 +11,7 @@ M.skipped_plugins = {
 }
 
 M.mapping_plugins = {
-  ["debugprint"] = { "andrewferrier/debugprint.nvim" },
+  ["debugprint.nvim"] = { "andrewferrier/debugprint.nvim" },
   ["vim-repeat"] = { "tpope/vim-repeat" },
   ["vim-alias"] = { "Konfekt/vim-alias" },
 }
@@ -325,7 +325,7 @@ M.ui_plugins = {
   ["nvim-notify"] = { "~/git/nvim-notify" },
   ["nvim-scrollbar"] = { "petertriho/nvim-scrollbar" },
   ["specs.nvim"] = { "edluffy/specs.nvim" },
-  ["stabilize.nvim"] = { "luukvbaal/stabilize.nvim" },
+  -- ["stabilize.nvim"] = { "luukvbaal/stabilize.nvim" },
   ["todo-comments.nvim"] = { "robertgzr/todo-comments.nvim" }, -- folke/todo-comments
   ["twilight.nvim"] = { "folke/twilight.nvim" },
   ["vim-HiLinkTrace"] = { "gerw/vim-HiLinkTrace" },
@@ -345,14 +345,6 @@ M.ui_plugins = {
     cond = os.getenv("KITTY_WINDOW_ID") ~= nil,
   },
   ["hologram.nvim"] = { "edluffy/hologram.nvim", cond = os.getenv("KITTY_WINDOW_ID") ~= nil },
-  ["tabout.nvim"] = {
-    "abecodes/tabout.nvim",
-    wants = { "nvim-treesitter" }, -- or require if not used so far
-    after = { "nvim-cmp" }, -- if a completion plugin is using tabs load it before
-    config = function()
-      require("plugins.configs.tabout")
-    end,
-  },
   -- ["nvim-highlight-colors"] = { "brenoprata10/nvim-highlight-color" },
   -- ["vim-hexokinase"]     = { "RRethy/vim-hexokinase", run = "make hexokinase" },
   -- ["startup.nvim"] = {

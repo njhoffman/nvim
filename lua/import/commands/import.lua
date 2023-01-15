@@ -7,14 +7,18 @@ local benchmarks = require("import.benchmarks")
 local defaults = {
   hide_output = false,
   hide_errors = false,
-  benchmarks = { "keymaps", "aucommands" },
+  -- benchmarks = { "keymaps", "aucommands", "variables" },
+  benchmarks = {},
 }
 
 local prepare_benchmarks = function(path, bmarks)
   state.status.benchmarks[path] = {}
   for _, name in pairs(bmarks) do
-    benchmarks[name].prev = benchmarks[name].get()
-    state.status.benchmarks[path][name] = benchmarks[name]
+    if type(benchmarks[name] == "table") then
+      benchmarks[name].prev = benchmarks[name].get()
+      state.status.benchmarks[path][name] = benchmarks[name]
+    end
+    -- print(path, #bmarks)
   end
 end
 

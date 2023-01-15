@@ -10,73 +10,79 @@ local buffer = { o, bo }
 local window = { o, wo }
 
 -- global scope
-opt("termguicolors", true)
+opt("autoread", true)
+opt("backspace", "eol,start,indent") -- Configure backspace so it acts as it should act
 opt("backup", false)
-opt("writebackup", true)
 opt("backupcopy", "auto")
 opt("backupdir", ".,~/.vim/backup,~/.local/share/nvim/backup")
-opt("confirm", true)
-opt("linebreak", true)
-opt("textwidth", 1000)
-opt("swapfile", false)
+opt("breakindent", true)
+opt("breakindentopt", "shift:2")
+opt("cedit", "<C-t>") -- ctrl-f interferes with popup completion
 opt("clipboard", "unnamedplus")
-
 opt("cmdheight", 1) -- 0
 opt("cmdwinheight", 10)
-opt("cedit", "<M-w>")
-
--- TODO: change cedit to <M-f>
-vim.cmd([[:exe "set cedit=\<C-T>"]])
+opt("completeopt", "menu,menuone,noinsert,noselect")
+opt("confirm", true)
 opt("cpoptions", "aABceFsx_") -- C causes certain vim programs to screw up
--- opt("display", "msgsep")
 opt("encoding", "UTF-8")
-
-opt("omnifunc", false)
-
+opt("fileencoding", "utf-8")
+opt("foldmethod", "manual")
 opt("hidden", true)
-opt("inccommand", "split")
-opt("incsearch", true)
-opt("magic", true)
 opt("hlsearch", true)
 opt("ignorecase", true)
-opt("smartcase", true)
+opt("inccommand", "split")
+opt("incsearch", true)
 opt("joinspaces", false)
+opt("jumpoptions", "stack")
 opt("laststatus", 3)
 opt("lazyredraw", false)
-opt("redrawtime", 5000)
+opt("lazyredraw", true) -- Don't redraw while executing macros (good performance config)
+opt("linebreak", true)
+opt("magic", true)
+opt("matchtime", 3) -- How many tenths of a second to blink when matching brackets
 opt("modelines", 5)
 opt("mouse", "nivh")
+opt("omnifunc", false)
 opt("previewheight", 7)
+opt("pumheight", 10)
+opt("redrawtime", 5000)
 opt("scrolloff", 7)
+opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- winsize messes up on load
 opt("shada", [[!,'2000,<1000,s500]])
--- Specify the behavior when switching between buffers Use the current tab for openning files from quickfix.
-opt("switchbuf", "useopen,usetab")
+opt("shortmess", "tToOcSIsa")
+opt("showbreak", "↳ ")
+opt("showcmd", true)
+opt("showmatch", true)
+opt("showmatch", true) -- Show matching brackets when text indicator is over them
+opt("showmode", false)
 opt("showtabline", 1)
+opt("sidescrolloff", 5)
+opt("smartcase", true)
+opt("splitbelow", true)
+opt("splitkeep", "screen") -- scroll behavior for horizontal splits
+opt("splitright", true)
+opt("swapfile", false)
+opt("switchbuf", "useopen,usetab") -- Use the current tab for openning files from quickfix.
+opt("termguicolors", true)
+opt("textwidth", 1000)
+opt("timeout", true)
+opt("timeoutlen", 500) -- 1000
+opt("ttimeoutlen", 40) -- 50
+opt("undolevels", 1000)
+opt("updatetime", 4000)
+opt("whichwrap", "b,s,<,>,[,],h,l")
+opt("wildignore", "*.o,*~,*.pyc") -- wildchar/charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
+opt("writebackup", true)
+-- opt("display", "msgsep")
 -- opt("shortmess", o.shortmess .. "cS") F silents filename
 -- opt("shortmess", "filnxtToOcSIs")
 -- opt("more", false) -- dont pause when message finished
-opt("shortmess", "tToOcSIsa")
-opt("showmatch", true)
-opt("showcmd", true)
-opt("showmode", false)
-opt("sidescrolloff", 5)
-opt("splitbelow", true)
-opt("splitright", true)
-opt("jumpoptions", "stack")
-opt("showbreak", "↳ ")
-opt("breakindent", true)
-opt("breakindentopt", "shift:2")
-opt("undolevels", 1000)
-opt("updatetime", 4000)
-opt("timeoutlen", 500) -- 1000
-opt("ttimeoutlen", 40) -- 50
-opt("pumheight", 10)
-opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- winsize messes up on load
-opt("fileencoding", "utf-8")
-opt("whichwrap", "b,s,<,>,[,],h,l")
-opt("autoread", true)
-opt("completeopt", "menu,menuone,noinsert,noselect")
-opt("foldmethod", "manual")
+-- opt("wildmenu", 1)
+-- opt("wildmode", "list:longest,full")
+-- opt("wildmode", "longest:full,full")
+-- opt("wildmode", "") -- full, longest, list, lastused, list:longest, list:full, longest:full
+-- opt("wc", 0x0e)
+-- opt("wcm", 0x0e)
 
 -- window scope
 opt("concealcursor", "nc", window)
@@ -89,36 +95,15 @@ opt("wrap", config.Opts.wrap, window)
 
 -- buffer scope
 opt("expandtab", true, buffer)
+opt("fileformat", "unix", buffer)
 opt("modeline", true, buffer)
 opt("shiftwidth", 2, buffer)
 opt("smartindent", false, buffer)
 opt("softtabstop", 0, buffer)
 opt("synmaxcol", 2000, buffer)
 opt("tabstop", 2, buffer)
--- opt("textwidth", 100, buffer) -- set per buffer
 opt("undofile", true, buffer)
-opt("fileformat", "unix", buffer)
-
--- Configure backspace so it acts as it should act
-opt("backspace", "eol,start,indent")
--- opt.whichwrap:append(",<,>,h,l")
--- Don't redraw while executing macros (good performance config)
-opt("lazyredraw", true)
--- Show matching brackets when text indicator is over them
-opt("showmatch", true)
--- How many tenths of a second to blink when matching brackets
-opt("matchtime", 3)
-
--- wildchar/charm for wildmenu
--- 0x1a ^Z, 0x1b ^[, 0x0e C-n
-opt("wildignore", "*.o,*~,*.pyc")
-
--- opt("wildmenu", 1)
--- opt("wildmode", "list:longest,full")
--- opt("wildmode", "longest:full,full")
--- opt("wildmode", "") -- full, longest, list, lastused, list:longest, list:full, longest:full
--- opt("wc", 0x0e)
--- opt("wcm", 0x0e)
+-- opt("textwidth", 100, buffer) -- set per buffer
 
 -- vim.cmd('set iskeyword+=-') -- treat dash separated words as a word text object"
 -- TERMINAL = vim.fn.expand('$TERMINAL')

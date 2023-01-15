@@ -122,6 +122,11 @@ local M = {
     short = "save",
     long = "save in commandwin",
   },
+  cmd_beginning = {
+    cmd = "",
+    short = "beginning of commandline",
+    long = "go to beginning of command line",
+  },
   cmd_next1 = {
     short = "next item",
     long = "next item in commandwin",

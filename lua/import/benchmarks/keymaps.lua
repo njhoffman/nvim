@@ -10,7 +10,6 @@ local provider = {
     return deltas
   end,
   get = function(data)
-    local util = require("import.util")
     local keymaps = data
       or {
         n = vim.api.nvim_get_keymap("n"),
@@ -20,15 +19,15 @@ local provider = {
         c = vim.api.nvim_get_keymap("c"),
         t = vim.api.nvim_get_keymap("t"),
       }
-    local keytable = {}
+    local key_table = {}
     for mode, keys in pairs(keymaps) do
-      keytable[mode] = {}
+      key_table[mode] = {}
       for _, key in ipairs(keys) do
         local hash = table.concat({ mode, key.desc or "", key.lhs, key.rhs or "" })
-        keytable[mode][tostring(util.get_crc(hash))] = key
+        key_table[mode][tostring(util.get_crc(hash))] = key
       end
     end
-    return keytable
+    return key_table
   end,
   summary = function(deltas)
     local out = ""
@@ -47,39 +46,16 @@ local provider = {
     for mode, delta in pairs(deltas) do
       local out = ""
       for _, added in ipairs(delta.added) do
-        out = table.concat({
-          out,
-          "\n",
-          mode,
-          "+ keymap add ",
-          path,
-          added.lhs,
-          added.desc,
-        }, " ")
+        out = table.concat({ out, "\n", mode, "+ keymap add ", path, added.lhs, added.desc }, " ")
       end
       for _, removed in ipairs(delta.removed) do
-        out = table.concat({
-          out,
-          "\n",
-          mode,
-          "+ keymap rem ",
-          path,
-          removed.lhs,
-          removed.desc,
-        }, " ")
+        out = table.concat({ out, "\n", mode, "+ keymap rem ", path, removed.lhs, removed.desc }, " ")
       end
-      local summary = table.concat({
-        "\n",
-        path,
-        " +",
-        tostring(#delta.added),
-        ":-",
-        tostring(#delta.removed),
-        mode,
-        " keymaps",
-      }, " ")
-
-      report = report .. out .. summary
+      local summary = table.concat(
+        { "\n", path, " +", tostring(#delta.added), ":-", tostring(#delta.removed), mode, " keymaps" },
+        " "
+      )
+      report = (report or "") .. (out or "") .. summary
     end
     return report
   end,
