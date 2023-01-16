@@ -1,0 +1,118 @@
+version: "3.7"
+
+services:
+
+  base-stable:
+    image: ${REGISTRY}${REPO}:base-stable
+    build:
+      context: ./base
+      dockerfile: Dockerfile
+      args:
+        VERSION: "release-0.7"
+
+  base-nightly:
+    image: ${REGISTRY}${REPO}:base-nightly
+    build:
+      context: ./base
+      dockerfile: Dockerfile
+      args:
+        VERSION: "master"
+
+  stable-c:
+    image: ${REGISTRY}${REPO}:stable-c
+    build:
+      context: ./c
+      dockerfile: Dockerfile
+      args:
+        TAG: "base-stable"
+
+  nightly-c:
+    image: ${REGISTRY}${REPO}:nightly-c
+    build:
+      context: ./c
+      dockerfile: Dockerfile
+
+  coc:
+    image: ${REGISTRY}${REPO}:coc
+    build:
+      context: ./coc
+      dockerfile: Dockerfile
+      args:
+        TAG: "base-stable"
+        REGISTRY: ${REGISTRY}
+        REPO: ${REPO}
+
+  stable-elixir:
+    image: ${REGISTRY}${REPO}:stable-elixir
+    build:
+      context: ./elixir
+      dockerfile: Dockerfile
+      args:
+        TAG: "base-stable"
+        REGISTRY: ${REGISTRY}
+        REPO: ${REPO}
+
+  nightly-elixir:
+    image: ${REGISTRY}${REPO}:nightly-elixir
+    build:
+      context: ./elixir
+      dockerfile: Dockerfile
+
+  stable-lua:
+    image: ${REGISTRY}${REPO}:stable-lua
+    build:
+      context: ./lua
+      dockerfile: Dockerfile
+      args:
+        TAG: "base-stable"
+
+  nightly-lua:
+    image: ${REGISTRY}${REPO}:nightly-lua
+    build:
+      context: ./lua
+      dockerfile: Dockerfile
+      args:
+        REGISTRY: ${REGISTRY}
+        REPO: ${REPO}
+
+  stable-python:
+    image: ${REGISTRY}${REPO}:stable-python
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+      args:
+        TAG: "base-stable"
+
+  nightly-python:
+    image: ${REGISTRY}${REPO}:nightly-python
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+
+  stable-rust:
+    image: ${REGISTRY}${REPO}:stable-rust
+    build:
+      context: ./rust
+      dockerfile: Dockerfile
+      args:
+        TAG: "base-stable"
+
+  nightly-rust:
+    image: ${REGISTRY}${REPO}:nightly-rust
+    build:
+      context: ./rust
+      dockerfile: Dockerfile
+
+  stable-typescript:
+    image: ${REGISTRY}${REPO}:stable-typescript
+    build:
+      context: ./typescript
+      dockerfile: Dockerfile
+      args:
+        TAG: "base-stable"
+
+  nightly-typescript:
+    image: ${REGISTRY}${REPO}:nightly-typescript
+    build:
+      context: ./typescript
+      dockerfile: Dockerfile

@@ -234,6 +234,21 @@ M.telescope_plugins = {
   ["telescope-ghq.nvim"] = { "nvim-telescope/telescope-ghq.nvim" },
   ["telescope-makefile"] = { "ptethng/telescope-makefile" },
   ["telescope-github.nvim"] = { "nvim-telescope/telescope-github.nvim" },
+  ["smart-open.nvim"] = {
+    "danielfalk/smart-open.nvim",
+    config = function()
+      -- extensions = {
+      --   smart_open = {
+      --     show_scores = false,
+      --     max_unindexed = 1000,
+      --     ignore_patterns = {"*.git/*", "*/tmp/*"},
+      --     disable_devicons = false,
+      --   },
+      -- },
+      require("telescope").load_extension("smart_open")
+    end,
+    requires = { "kkharji/sqlite.lua" },
+  },
   ["telescope-heading.nvim"] = { "crispgm/telescope-heading.nvim" },
   ["telescope-hop.nvim"] = { "nvim-telescope/telescope-hop.nvim" },
   ["telescope-kubectl.nvim"] = { "frenchtoasters/telescope-kubectl.nvim" },
