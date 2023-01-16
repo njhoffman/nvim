@@ -17,7 +17,7 @@ local custom_modules = {
         node_decremental = "V",
       },
       {
-        init_selection = "<TAB>",
+        -- init_selection = "<TAB>", -- interferes with Ctrl+O/Ctrl+I
         node_incremental = "+",
         node_decremental = "-",
       },

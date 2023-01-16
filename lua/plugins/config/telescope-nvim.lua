@@ -103,21 +103,19 @@ local telescopeConfig = {
     mappings = tele_mappings.main,
     file_sorter = sorters.native_fzf_sorter,
     generic_sorter = sorters.native_fzf_sorter, -- get_fuzzy_file, fuzzy_with_index_bias
-    -- file_previewer = previewers.vim_buffer_cat.new,
-    -- generic_sorter = require"telescope.sorters".generic_sorter,
     grep_previewer = previewers.vim_buffer_vimgrep.new,
     qflist_previewer = previewers.vim_buffer_qflist.new,
     include_extensions = true,
     path_display = function(_, path) -- tail, hidden, absolute, shorten
       path = string.gsub(path, "^./", "")
-      path = string.gsub(path, os.getenv("HOME"), "~")
+      path = string.gsub(path, os.getenv("HOME") or "", "~")
       return path
     end,
     file_ignore_patterns = {},
     preview = {
       check_mime_type = true,
       filesize_limit = 25,
-      timeout = 500, -- default 250
+      timeout = 1000, -- default 250
       treesitter = true,
       msg_bg_fillchar = "╱",
       hide_on_startup = hide_preview,

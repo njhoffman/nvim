@@ -65,6 +65,10 @@ local setupConfig = {
     -- },
   },
   mapping = cmp.mapping.preset.insert({
+    ["<C-x><C-o>"] = cmp.mapping.complete({}),
+    ["<C-x><C-s>"] = cmp.mapping.complete({
+      config = { sources = { { name = "luasnip" } } },
+    }),
     ["<C-p>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
@@ -97,6 +101,9 @@ local setupConfig = {
         end
       end
     end, { "i" }),
+    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i" }),
+    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i" }),
+    ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), { "i" }),
   }),
   view = {
     entries = {
@@ -191,6 +198,10 @@ end
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline({
+
+    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "c" }),
+    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "c" }),
+    ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), { "c" }),
     ["<C-n>"] = {
       c = function(fallback)
         if cmp.visible() then
@@ -205,6 +216,9 @@ cmp.setup.cmdline(":", {
         if cmp.visible() and cmp.get_selected_entry() then
           cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
         else
+          -- cmp.mapping.complete({
+          --   config = { sources = { { name = "cmdline_history" } } },
+          -- })
           feedkeys.call(keymap.t("<Up>"), "c")
         end
       end,

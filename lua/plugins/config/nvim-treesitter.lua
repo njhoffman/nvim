@@ -35,12 +35,13 @@ require("nvim-treesitter.configs").setup({
       "help",
       "latex",
       "bash",
-      "markdown",
+      -- "markdown",
     },
     custom_captures = {
       -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
       ["foo.bar"] = "Identifier",
     },
+    -- TODO: replace bash and lua highlights with treesitter
     additional_vim_regex_highlighting = true,
   },
   context_commentstring = { enable = true, enable_autocmd = false },
