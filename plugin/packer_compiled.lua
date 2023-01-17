@@ -1174,7 +1174,7 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-telescope/telescope-ui-select.nvim"
   },
   ["telescope-undo.nvim"] = {
-    config = { "\27LJ\2\nö\3\0\0\n\0\26\0*6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\23\0005\3\21\0005\4\3\0005\5\4\0=\5\5\0046\5\6\0009\5\a\0059\5\b\5=\5\t\0045\5\18\0005\6\f\0006\a\0\0'\t\n\0B\a\2\0029\a\v\a=\a\r\0066\a\0\0'\t\n\0B\a\2\0029\a\14\a=\a\15\0066\a\0\0'\t\n\0B\a\2\0029\a\16\a=\a\17\6=\6\19\5=\5\20\4=\4\22\3=\3\24\2B\0\2\0016\0\0\0'\2\1\0B\0\2\0029\0\25\0'\2\22\0B\0\2\1K\0\1\0\19load_extension\15extensions\1\0\0\tundo\1\0\0\rmappings\6i\1\0\0\v<C-cr>\frestore\v<S-cr>\19yank_deletions\t<cr>\1\0\0\19yank_additions\27telescope-undo.actions\23diff_context_lines\14scrolloff\6o\bvim\18layout_config\1\0\1\19preview_height\4š³æÌ\t™³¦ÿ\3\1\0\4\17entry_format\29state #$ID, $STAT, $TIME\14use_delta\2\17side_by_side\2\20layout_strategy\rvertical\nsetup\14telescope\frequire\0" },
+    config = { "\27LJ\2\nö\3\0\0\n\0\26\0*6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\23\0005\3\21\0005\4\3\0005\5\4\0=\5\5\0046\5\6\0009\5\a\0059\5\b\5=\5\t\0045\5\18\0005\6\f\0006\a\0\0'\t\n\0B\a\2\0029\a\v\a=\a\r\0066\a\0\0'\t\n\0B\a\2\0029\a\14\a=\a\15\0066\a\0\0'\t\n\0B\a\2\0029\a\16\a=\a\17\6=\6\19\5=\5\20\4=\4\22\3=\3\24\2B\0\2\0016\0\0\0'\2\1\0B\0\2\0029\0\25\0'\2\22\0B\0\2\1K\0\1\0\19load_extension\15extensions\1\0\0\tundo\1\0\0\rmappings\6i\1\0\0\v<C-cr>\frestore\v<S-cr>\19yank_deletions\t<cr>\1\0\0\19yank_additions\27telescope-undo.actions\23diff_context_lines\14scrolloff\6o\bvim\18layout_config\1\0\1\19preview_height\4š³æÌ\t™³¦ÿ\3\1\0\4\17entry_format\29state #$ID, $STAT, $TIME\20layout_strategy\rvertical\17side_by_side\2\14use_delta\2\nsetup\14telescope\frequire\0" },
     loaded = true,
     path = "/home/nicholas/.local/share/nvim/site/pack/packer/start/telescope-undo.nvim",
     url = "https://github.com/debugloop/telescope-undo.nvim"
@@ -1573,22 +1573,22 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: vimwiki
-time([[Config for vimwiki]], true)
-try_loadstring("\27LJ\2\nx\0\0\3\0\5\0\t6\0\0\0009\0\1\0)\1\0\0=\1\2\0006\0\0\0009\0\3\0'\2\4\0B\0\2\1K\0\1\0004let g:vimwiki_key_mappings = { 'all_maps': 0, }\bcmd\23vimwiki_global_ext\6g\bvim\0", "config", "vimwiki")
-time([[Config for vimwiki]], false)
+-- Config for: telescope-undo.nvim
+time([[Config for telescope-undo.nvim]], true)
+try_loadstring("\27LJ\2\nö\3\0\0\n\0\26\0*6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\23\0005\3\21\0005\4\3\0005\5\4\0=\5\5\0046\5\6\0009\5\a\0059\5\b\5=\5\t\0045\5\18\0005\6\f\0006\a\0\0'\t\n\0B\a\2\0029\a\v\a=\a\r\0066\a\0\0'\t\n\0B\a\2\0029\a\14\a=\a\15\0066\a\0\0'\t\n\0B\a\2\0029\a\16\a=\a\17\6=\6\19\5=\5\20\4=\4\22\3=\3\24\2B\0\2\0016\0\0\0'\2\1\0B\0\2\0029\0\25\0'\2\22\0B\0\2\1K\0\1\0\19load_extension\15extensions\1\0\0\tundo\1\0\0\rmappings\6i\1\0\0\v<C-cr>\frestore\v<S-cr>\19yank_deletions\t<cr>\1\0\0\19yank_additions\27telescope-undo.actions\23diff_context_lines\14scrolloff\6o\bvim\18layout_config\1\0\1\19preview_height\4š³æÌ\t™³¦ÿ\3\1\0\4\17entry_format\29state #$ID, $STAT, $TIME\20layout_strategy\rvertical\17side_by_side\2\14use_delta\2\nsetup\14telescope\frequire\0", "config", "telescope-undo.nvim")
+time([[Config for telescope-undo.nvim]], false)
 -- Config for: nvim-startup.lua
 time([[Config for nvim-startup.lua]], true)
 try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.nvim_startup\frequire\0", "config", "nvim-startup.lua")
 time([[Config for nvim-startup.lua]], false)
+-- Config for: vimwiki
+time([[Config for vimwiki]], true)
+try_loadstring("\27LJ\2\nx\0\0\3\0\5\0\t6\0\0\0009\0\1\0)\1\0\0=\1\2\0006\0\0\0009\0\3\0'\2\4\0B\0\2\1K\0\1\0004let g:vimwiki_key_mappings = { 'all_maps': 0, }\bcmd\23vimwiki_global_ext\6g\bvim\0", "config", "vimwiki")
+time([[Config for vimwiki]], false)
 -- Config for: smart-open.nvim
 time([[Config for smart-open.nvim]], true)
 try_loadstring("\27LJ\2\nO\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0B\0\2\1K\0\1\0\15smart_open\19load_extension\14telescope\frequire\0", "config", "smart-open.nvim")
 time([[Config for smart-open.nvim]], false)
--- Config for: telescope-undo.nvim
-time([[Config for telescope-undo.nvim]], true)
-try_loadstring("\27LJ\2\nö\3\0\0\n\0\26\0*6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\23\0005\3\21\0005\4\3\0005\5\4\0=\5\5\0046\5\6\0009\5\a\0059\5\b\5=\5\t\0045\5\18\0005\6\f\0006\a\0\0'\t\n\0B\a\2\0029\a\v\a=\a\r\0066\a\0\0'\t\n\0B\a\2\0029\a\14\a=\a\15\0066\a\0\0'\t\n\0B\a\2\0029\a\16\a=\a\17\6=\6\19\5=\5\20\4=\4\22\3=\3\24\2B\0\2\0016\0\0\0'\2\1\0B\0\2\0029\0\25\0'\2\22\0B\0\2\1K\0\1\0\19load_extension\15extensions\1\0\0\tundo\1\0\0\rmappings\6i\1\0\0\v<C-cr>\frestore\v<S-cr>\19yank_deletions\t<cr>\1\0\0\19yank_additions\27telescope-undo.actions\23diff_context_lines\14scrolloff\6o\bvim\18layout_config\1\0\1\19preview_height\4š³æÌ\t™³¦ÿ\3\1\0\4\17entry_format\29state #$ID, $STAT, $TIME\14use_delta\2\17side_by_side\2\20layout_strategy\rvertical\nsetup\14telescope\frequire\0", "config", "telescope-undo.nvim")
-time([[Config for telescope-undo.nvim]], false)
 -- Conditional loads
 time([[Conditional loading of hologram.nvim]], true)
   require("packer.load")({"hologram.nvim"}, {}, _G.packer_plugins)
@@ -1599,22 +1599,22 @@ time([[Conditional loading of nvim-nonicons]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
 vim.cmd [[ packadd nvim-cmp ]]
-vim.cmd [[ packadd cmp-emoji ]]
-vim.cmd [[ packadd cmp-git ]]
+vim.cmd [[ packadd cmp-nvim-lsp-document-symbol ]]
 vim.cmd [[ packadd cmp-nvim-lua ]]
+vim.cmd [[ packadd cmp-vimwiki-tags ]]
+vim.cmd [[ packadd cmp-emoji ]]
+vim.cmd [[ packadd cmp-tmux ]]
+vim.cmd [[ packadd cmp-git ]]
+vim.cmd [[ packadd cmp-pandoc-references ]]
+vim.cmd [[ packadd cmp-spell ]]
+vim.cmd [[ packadd cmp-npm ]]
 vim.cmd [[ packadd cmp-treesitter ]]
 vim.cmd [[ packadd cmp-nvim-lsp-signature-help ]]
-vim.cmd [[ packadd cmp-npm ]]
-vim.cmd [[ packadd cmp-vimwiki-tags ]]
-vim.cmd [[ packadd cmp-spell ]]
-vim.cmd [[ packadd cmp-tmux ]]
-vim.cmd [[ packadd cmp-nvim-lsp ]]
-vim.cmd [[ packadd cmp-cmdline-history ]]
-vim.cmd [[ packadd cmp-calc ]]
 vim.cmd [[ packadd cmp_luasnip ]]
 vim.cmd [[ packadd cmp-cmdline ]]
-vim.cmd [[ packadd cmp-pandoc-references ]]
-vim.cmd [[ packadd cmp-nvim-lsp-document-symbol ]]
+vim.cmd [[ packadd cmp-calc ]]
+vim.cmd [[ packadd cmp-cmdline-history ]]
+vim.cmd [[ packadd cmp-nvim-lsp ]]
 vim.cmd [[ packadd nvim-lspconfig ]]
 vim.cmd [[ packadd sqls.nvim ]]
 time([[Sequenced loading]], false)
@@ -1625,7 +1625,7 @@ pcall(vim.api.nvim_create_user_command, 'CodeActionMenu', function(cmdargs)
           require('packer.load')({'nvim-code-action-menu'}, { cmd = 'CodeActionMenu', l1 = cmdargs.line1, l2 = cmdargs.line2, bang = cmdargs.bang, args = cmdargs.args, mods = cmdargs.mods }, _G.packer_plugins)
         end,
         {nargs = '*', range = true, bang = true, complete = function()
-          require('packer.load')({'nvim-code-action-menu'}, {}, _G.packer_plugins)
+          require('packer.load')({'nvim-code-action-menu'}, { cmd = 'CodeActionMenu' }, _G.packer_plugins)
           return vim.fn.getcompletion('CodeActionMenu ', 'cmdline')
       end})
 time([[Defining lazy-load commands]], false)
