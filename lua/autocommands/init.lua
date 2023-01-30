@@ -1,6 +1,5 @@
 vim.import("autocommands.misc")
 vim.import("autocommands.startup")
-
 vim.import("config", function(config)
   local Formatting = config.Formatting
   local Opts = config.Opts
@@ -99,6 +98,13 @@ vim.import("config", function(config)
     Vimade = {
       { "FileType", "Trouble", "VimadeBufDisable" },
       { "FileType", "qf", "VimadeBufDisable" },
+      { "FileType", "dap-log", "VimadeBufDisable" },
+      { "FileType", "dap-repl", "VimadeBufDisable" },
+      { "FileType", "dapui_console", "VimadeBufDisable" },
+      { "FileType", "dapui_stacks", "VimadeBufDisable" },
+      { "FileType", "dapui_breakpoints", "VimadeBufDisable" },
+      { "FileType", "dapui_scopes", "VimadeBufDisable" },
+      { "FileType", "dapui_watches", "VimadeBufDisable" },
       { "FileType", "nerdtree", "VimadeBufDisable" },
       { "FileType", "Mundo", "VimadeBufDisable" },
       { "FileType", "NvimTree", "VimadeBufDisable" },
@@ -107,11 +113,6 @@ vim.import("config", function(config)
       -- { "FocusLost", "*", "VimadeFadeActive" },
       -- { "FocusGained", "*", "VimadeUnfadeActive" },
       -- { "BufLeave,FocusLost", "*", M.vimadeCheck() },
-      -- { "BufEnter", "dapui_scopes", "VimadeBufDisable" },
-      -- { "BufEnter", "dapui_breakpoints", "VimadeBufDisable" },
-      -- { "BufEnter", "dapui_watches", "VimadeBufDisable" },
-      -- { "BufEnter", "dapui_stacks", "VimadeBufDisable" },
-      -- { "BufEnter", "dap-repl", "VimadeBufDisable" },
     },
     -- FileTypes = {
     --   -- { "FileType", "lua.lush", "" },

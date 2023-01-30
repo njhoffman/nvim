@@ -110,4 +110,8 @@ opt("undofile", true, buffer)
 -- vim.o.titlestring="%<%F%=%l/%L - nvim"
 -- vim.o.pumheight = 10 -- Makes popup menu smaller
 -- vim.o.timeoutlen = O.timeoutlen -- By default timeoutlen is 1000 ms
--- vim.g.nvim_tree_disable_netrw = O.nvim_tree_disable_netrw
+-- let loaded_netrw = 0
+
+-- vim.g.nvim_tree_disable_netrw = true
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1

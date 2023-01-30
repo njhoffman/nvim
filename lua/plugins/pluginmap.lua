@@ -10,6 +10,7 @@ M.skipped_plugins = {
   },
 }
 
+-- https://github.com/stevearc/oil.nvim
 M.mapping_plugins = {
   ["debugprint.nvim"] = { "andrewferrier/debugprint.nvim" },
   ["vim-repeat"] = { "tpope/vim-repeat" },
@@ -416,7 +417,7 @@ M.integration_plugins = {
   ["colortils.nvim"] = { "nvim-colortils/colortils.nvim" },
   -- https://github.com/uga-rosa/ccc.nvim
   ["cheat.sh-vim"] = { "dbeniamine/cheat.sh-vim" },
-  ["go.nvim"] = { "ray-x/go.nvim", requires = "ray-x/guihua.lua" },
+  -- ["go.nvim"] = { "ray-x/go.nvim", requires = "ray-x/guihua.lua" },
   ["id3.vim"] = { "AndrewRadev/id3.vim" }, -- "AndrewRadev/id3.vim"
   ["nvim-magic"] = {
     "jameshiew/nvim-magic",

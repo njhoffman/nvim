@@ -21,7 +21,8 @@ local ts_utils = require("nvim-treesitter.ts_utils")
 local keymap_opts = { noremap = true, silent = true }
 
 local color_provider = function(_, bufnr)
-  require("lsp-documentcolors").buf_attach(bufnr, { single_column = true })
+  -- TODO: this sometimes tries to attach when it shouldnt
+  -- require("lsp-documentcolors").buf_attach(bufnr, { single_column = true })
 end
 
 --- @return fun() @function that calls the provided fn, but with no args
@@ -83,7 +84,8 @@ local function highlight_references()
   local node = ts_utils.get_node_at_cursor()
   while node ~= nil do
     local node_type = node:type()
-    if node_type == "string"
+    if
+      node_type == "string"
       or node_type == "string_fragment"
       or node_type == "template_string"
       or node_type == "document" -- for inline gql`` strings

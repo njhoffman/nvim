@@ -20,7 +20,7 @@ local opts = {
     -- "zsh",
   },
   ignore_treesitter = false, --Never use treesitter to find a variable under the cursor, always prompt for it - overrides the same setting on debugprint() if set to true
-  print_tag = "DEBUGPRINT", --	The string inserted into each print statement, which can be used to uniquely identify statements inserted by debugprint.
+  print_tag = "DBG", --	The string inserted into each print statement, which can be used to uniquely identify statements inserted by debugprint.
 }
 
 require("debugprint").setup(opts)

@@ -1,6 +1,6 @@
 " eunuch.vim - Helpers for UNIX
 " Maintainer:   Tim Pope <http://tpo.pe/>
-" Version:      1.2
+" Version:      1.3
 
 if exists('g:loaded_eunuch') || &cp || v:version < 704
   finish
@@ -10,7 +10,7 @@ let g:loaded_eunuch = 1
 let s:slash_pat = exists('+shellslash') ? '[\/]' : '/'
 
 function! s:separator() abort
-  return !exists('+shellslash') || &shellslash ? '/' : '\\'
+  return !exists('+shellslash') || &shellslash ? '/' : '\'
 endfunction
 
 function! s:ffn(fn, path) abort
@@ -19,6 +19,15 @@ endfunction
 
 function! s:fcall(fn, path, ...) abort
   return call(s:ffn(a:fn, a:path), [a:path] + a:000)
+endfunction
+
+function! s:AbortOnError(cmd) abort
+  try
+    exe a:cmd
+  catch '^Vim(\w\+):E\d'
+    return 'return ' . string('echoerr ' . string(matchstr(v:exception, ':\zsE\d.*')))
+  endtry
+  return ''
 endfunction
 
 function! s:MinusOne(...) abort
@@ -77,11 +86,19 @@ command! -bar -bang -nargs=? -complete=dir Mkdir
       \ endif |
       \ unlet s:dst
 
+function! s:DeleteError(file) abort
+  if empty(s:fcall('getftype', a:file))
+    return 'Could not find "' . a:file . '" on disk'
+  else
+    return 'Failed to delete "' . a:file . '"'
+  endif
+endfunction
+
 command! -bar -bang Unlink
-      \ if <bang>1 && &modified |
-      \   edit |
+      \ if <bang>1 && &undoreload >= 0 && line('$') >= &undoreload |
+      \   echoerr "Buffer too big for 'undoreload' (add ! to override)" |
       \ elseif s:Delete(@%) |
-      \   echoerr 'Failed to delete "'.expand('%').'"' |
+      \   echoerr s:DeleteError(@%) |
       \ else |
       \   edit! |
       \   silent exe 'doautocmd <nomodeline> User FileUnlinkPost' |
@@ -90,15 +107,19 @@ command! -bar -bang Unlink
 command! -bar -bang Remove Unlink<bang>
 
 command! -bar -bang Delete
-      \ let s:file = expand('%:p') |
-      \ execute 'bdelete<bang>' |
-      \ if !bufloaded(s:file) && s:Delete(s:file) |
-      \   echoerr 'Failed to delete "'.s:file.'"' |
-      \ endif |
-      \ unlet s:file
+      \ if <bang>1 && !(line('$') == 1 && empty(getline(1)) || s:fcall('getftype', @%) !=# 'file') |
+      \   echoerr "File not empty (add ! to override)" |
+      \ else |
+      \   let s:file = expand('%:p') |
+      \   execute 'bdelete<bang>' |
+      \   if !bufloaded(s:file) && s:Delete(s:file) |
+      \     echoerr s:DeleteError(s:sfile) |
+      \   endif |
+      \   unlet s:file |
+      \ endif
 
 function! s:FileDest(q_args) abort
-  let file = expand(a:q_args)
+  let file = a:q_args
   if file =~# s:slash_pat . '$'
     let file .=  expand('%:t')
   elseif s:fcall('isdirectory', file)
@@ -107,33 +128,40 @@ function! s:FileDest(q_args) abort
   return substitute(file, '^\.' . s:slash_pat, '', '')
 endfunction
 
-command! -bar -nargs=+ -bang -complete=file Copy
+command! -bar -nargs=1 -bang -complete=file Copy
       \ let s:dst = s:FileDest(<q-args>) |
       \ call call('call', s:MkdirCallable(fnamemodify(s:dst, ':h'))) |
       \ let s:dst = s:fcall('simplify', s:dst) |
       \ exe expand('<mods>') 'saveas<bang>' fnameescape(remove(s:, 'dst')) |
       \ filetype detect
 
-command! -bar -nargs=+ -bang -complete=file Move
-      \ let s:src = expand('%:p') |
-      \ let s:dst = s:FileDest(<q-args>) |
-      \ call call('call', s:MkdirCallable(fnamemodify(s:dst, ':h'))) |
-      \ let s:dst = s:fcall('simplify', s:dst) |
-      \ if <bang>1 && s:fcall('filereadable', s:dst) |
-      \   exe 'keepalt saveas' fnameescape(s:dst) |
-      \ elseif s:fcall('filereadable', s:src) && EunuchRename(s:src, s:dst) |
-      \   echoerr 'Failed to rename "'.s:src.'" to "'.s:dst.'"' |
-      \ else |
-      \   setlocal modified |
-      \   let s:last_bufnr = bufnr('$') |
-      \   exe 'silent keepalt file' fnameescape(s:dst) |
-      \   if remove(s:, 'last_bufnr') !=# bufnr('$') |
-      \     exe bufnr('$') . 'bwipe' |
-      \   endif |
-      \   write! |
-      \   filetype detect |
-      \ endif |
-      \ unlet s:src s:dst
+function! s:Move(bang, arg) abort
+  let dst = s:FileDest(a:arg)
+  exe s:AbortOnError('call call("call", s:MkdirCallable(' . string(fnamemodify(dst, ':h')) . '))')
+  let dst = s:fcall('simplify', dst)
+  if !a:bang && s:fcall('filereadable', dst)
+    let confirm = &confirm
+    try
+      if confirm | set noconfirm | endif
+      exe s:AbortOnError('keepalt saveas ' . fnameescape(dst))
+    finally
+      if confirm | set confirm | endif
+    endtry
+  endif
+  if s:fcall('filereadable', @%) && EunuchRename(@%, dst)
+    return 'echoerr ' . string('Failed to rename "'.@%.'" to "'.dst.'"')
+  else
+    let last_bufnr = bufnr('$')
+    exe s:AbortOnError('silent keepalt file ' . fnameescape(dst))
+    if bufnr('$') != last_bufnr
+      exe bufnr('$') . 'bwipe'
+    endif
+    setlocal modified
+    return 'write!|filetype detect'
+  endif
+endfunction
+
+command! -bar -nargs=1 -bang -complete=file Move exe s:Move(<bang>0, <q-args>)
 
 " ~/f, $VAR/f, /f, C:/f, url://f, ./f, ../f
 let s:absolute_pat = '^[~$]\|^' . s:slash_pat . '\|^\a\+:\|^\.\.\=\%(' . s:slash_pat . '\|$\)'
@@ -158,10 +186,10 @@ function! s:RenameArg(arg) abort
   endif
 endfunction
 
-command! -bar -nargs=+ -bang -complete=customlist,s:RenameComplete Duplicate
+command! -bar -nargs=1 -bang -complete=customlist,s:RenameComplete Duplicate
       \ exe 'Copy<bang>' escape(s:RenameArg(<q-args>), '"|')
 
-command! -bar -nargs=+ -bang -complete=customlist,s:RenameComplete Rename
+command! -bar -nargs=1 -bang -complete=customlist,s:RenameComplete Rename
       \ exe 'Move<bang>' escape(s:RenameArg(<q-args>), '"|')
 
 let s:permlookup = ['---','--x','-w-','-wx','r--','r-x','rw-','rwx']
@@ -217,6 +245,106 @@ function! s:Grep(bang, args, prg, type) abort
     let &shellpipe = shellpipe
   endtry
 endfunction
+
+function! s:SilentSudoCmd(editor) abort
+  let cmd = 'env SUDO_EDITOR=' . a:editor . ' VISUAL=' . a:editor . ' sudo -e'
+  let local_nvim = has('nvim') && len($DISPLAY . $SECURITYSESSIONID . $TERM_PROGRAM)
+  if !local_nvim && (!has('gui_running') || &guioptions =~# '!')
+    redraw
+    echo
+    return ['silent', cmd]
+  elseif !empty($SUDO_ASKPASS) ||
+        \ filereadable('/etc/sudo.conf') &&
+        \ len(filter(readfile('/etc/sudo.conf', '', 50), 'v:val =~# "^Path askpass "'))
+    return ['silent', cmd . ' -A']
+  else
+    return [local_nvim ? 'silent' : '', cmd]
+  endif
+endfunction
+
+augroup eunuch_sudo
+augroup END
+
+function! s:SudoSetup(file, resolve_symlink) abort
+  let file = a:file
+  if a:resolve_symlink && getftype(file) ==# 'link'
+    let file = resolve(file)
+    if file !=# a:file
+      silent keepalt exe 'file' fnameescape(file)
+    endif
+  endif
+  let file = substitute(file, s:slash_pat, '/', 'g')
+  if file !~# '^\a\+:\|^/'
+    let file = substitute(getcwd(), s:slash_pat, '/', 'g') . '/' . file
+  endif
+  if !filereadable(file) && !exists('#eunuch_sudo#BufReadCmd#'.fnameescape(file))
+    execute 'autocmd eunuch_sudo BufReadCmd ' fnameescape(file) 'exe s:SudoReadCmd()'
+  endif
+  if !filewritable(file) && !exists('#eunuch_sudo#BufWriteCmd#'.fnameescape(file))
+    execute 'autocmd eunuch_sudo BufReadPost' fnameescape(file) 'set noreadonly'
+    execute 'autocmd eunuch_sudo BufWriteCmd' fnameescape(file) 'exe s:SudoWriteCmd()'
+  endif
+endfunction
+
+let s:error_file = tempname()
+
+function! s:SudoError() abort
+  let error = join(readfile(s:error_file), " | ")
+  if error =~# '^sudo' || v:shell_error
+    return len(error) ? error : 'Error invoking sudo'
+  else
+    return error
+  endif
+endfunction
+
+function! s:SudoReadCmd() abort
+  if &shellpipe =~ '|&'
+    return 'echoerr ' . string('eunuch.vim: no sudo read support for csh')
+  endif
+  silent %delete_
+  silent doautocmd <nomodeline> BufReadPre
+  let [silent, cmd] = s:SilentSudoCmd('cat')
+  execute silent 'read !' . cmd . ' "%" 2> ' . s:error_file
+  let exit_status = v:shell_error
+  silent 1delete_
+  setlocal nomodified
+  if exit_status
+    return 'echoerr ' . string(s:SudoError())
+  else
+    return 'silent doautocmd BufReadPost'
+  endif
+endfunction
+
+function! s:SudoWriteCmd() abort
+  silent doautocmd <nomodeline> BufWritePre
+  let [silent, cmd] = s:SilentSudoCmd(shellescape('sh -c cat>"$0"'))
+  execute silent 'write !' . cmd . ' "%" 2> ' . s:error_file
+  let error = s:SudoError()
+  if !empty(error)
+    return 'echoerr ' . string(error)
+  else
+    setlocal nomodified
+    return 'silent doautocmd <nomodeline> BufWritePost'
+  endif
+endfunction
+
+command! -bar -bang -complete=file -nargs=? SudoEdit
+      \ let s:arg = resolve(<q-args>) |
+      \ call s:SudoSetup(fnamemodify(empty(s:arg) ? @% : s:arg, ':p'), empty(s:arg) && <bang>0) |
+      \ if !&modified || !empty(s:arg) || <bang>0 |
+      \   exe 'edit<bang>' fnameescape(s:arg) |
+      \ endif |
+      \ if empty(<q-args>) || expand('%:p') ==# fnamemodify(s:arg, ':p') |
+      \   set noreadonly |
+      \ endif |
+      \ unlet s:arg
+
+if exists(':SudoWrite') != 2
+command! -bar -bang SudoWrite
+      \ call s:SudoSetup(expand('%:p'), <bang>0) |
+      \ setlocal noreadonly |
+      \ write!
+endif
 
 command! -bar -nargs=? Wall
       \ if empty(<q-args>) |
@@ -306,17 +434,19 @@ function! s:FileTypeInterpreter() abort
   endtry
 endfunction
 
+let s:shebang_pat = '^#!\s*[/[:alnum:]_-]'
+
 function! EunuchNewLine(...) abort
   if a:0 && type(a:1) == type('')
-    return a:1 . (a:1 =~# "\r" ? "\<C-R>=EunuchNewLine()\r" : "")
+    return a:1 . (a:1 =~# "\r" && empty(&buftype) ? "\<C-R>=EunuchNewLine()\r" : "")
   endif
-  if !empty(&buftype) || getline(1) !~# '^#!' || line('.') != 2 || getline(2) !~# '^#\=$'
+  if !empty(&buftype) || getline(1) !~# '^#!$\|' . s:shebang_pat || line('.') != 2 || getline(2) !~# '^#\=$'
     return ""
   endif
   let b:eunuch_chmod_shebang = 1
   let inject = ''
   let detect = 0
-  let ret = empty(getline(2)) ? "" : "\<BS>"
+  let ret = empty(getline(2)) ? "" : "\<C-U>"
   if getline(1) ==# '#!'
     let inject = s:FileTypeInterpreter()
     let detect = !empty(inject) && empty(&filetype)
@@ -351,7 +481,7 @@ function! s:MapCR() abort
   elseif rhs =~? '^<cr>'
     exe 'imap <silent> <CR>' rhs . '<SID>EunuchNewLine'
   elseif empty(rhs)
-    imap <script><silent> <CR> <CR><SID>EunuchNewLine
+    imap <script><silent><expr> <CR> EunuchNewLine("<Bslash>r")
   endif
 endfunction
 call s:MapCR()
@@ -361,12 +491,12 @@ augroup eunuch
   autocmd BufNewFile  * let b:eunuch_chmod_shebang = 1
   autocmd BufReadPost * if getline(1) !~# '^#!\s*\S' | let b:eunuch_chmod_shebang = 1 | endif
   autocmd BufWritePost,FileWritePost * nested
-        \ if exists('b:eunuch_chmod_shebang') && getline(1) =~# '^#!\s*\S' |
+        \ if exists('b:eunuch_chmod_shebang') && getline(1) =~# s:shebang_pat |
         \   call s:Chmod(0, '+x', '<afile>') |
         \   edit |
         \ endif |
         \ unlet! b:eunuch_chmod_shebang
-  autocmd InsertLeave * nested if line('.') == 1 && getline(1) ==# @. && @. =~# '^#!\s*\S' |
+  autocmd InsertLeave * nested if line('.') == 1 && getline(1) ==# @. && @. =~# s:shebang_pat |
         \ filetype detect | endif
   autocmd User FileChmodPost,FileUnlinkPost "
   autocmd VimEnter * call s:MapCR() |
@@ -374,3 +504,5 @@ augroup eunuch
         \   exe 'autocmd eunuch InsertEnter * ++once call s:MapCR()' |
         \ endif
 augroup END
+
+" vim:set sw=2 sts=2:
