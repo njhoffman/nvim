@@ -16,13 +16,16 @@
 
 local keymap = vim.api.nvim_set_keymap
 local keymap_buf = vim.api.nvim_buf_set_keymap
-local ts_utils = require("nvim-treesitter.ts_utils")
 
 local keymap_opts = { noremap = true, silent = true }
 
-local color_provider = function(_, bufnr)
-  -- TODO: this sometimes tries to attach when it shouldnt
-  -- require("lsp-documentcolors").buf_attach(bufnr, { single_column = true })
+local color_provider = function(client, bufnr)
+  local cap = client.server_capabilities
+  if cap.colorProvider then
+    require("lsp-documentcolors").buf_attach(bufnr, { single_column = true })
+  else
+    vim.notify({ "Lost colorProvider", vim.inspect(cap) }, "warn")
+  end
 end
 
 --- @return fun() @function that calls the provided fn, but with no args
@@ -60,32 +63,34 @@ vim.cmd("highlight default link LspCodeLens NonText")
 vim.cmd("highlight default link LspCodeLensSeparator NonText")
 
 local code_lens_provider = function(_, bufnr)
-  local group = vim.api.nvim_create_augroup("lsp_document_codelens", {})
+  local group = vim.api.nvim_create_augroup("LspCodelens", {})
   vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost", "CursorHold" }, {
     buffer = bufnr,
     group = group,
     callback = w(vim.lsp.codelens.refresh),
   })
-  -- keymap_buf(bufnr, "n", "<Leader>L", find_and_run_codelens, keymap_opts)
+  local opts = vim.tbl_extend("keep", keymap_opts, { buffer = true })
+  vim.keymap.set("n", "gL", find_and_run_codelens, opts)
 end
 
-local document_formatting_provider = function(_, bufnr)
-  local augroup = vim.api.nvim_create_augroup("Formatting", { clear = false })
-  -- null-ls might run prettier and blade-formatter, which should have higher precedence than formatting by html and php language servers
-  vim.api.nvim_create_autocmd("BufWritePre", { group = "Formatting", buffer = bufnr, command = "Format" })
-  keymap_buf(bufnr, "n", "<Leader>ff", "<cmd>Format<CR>", keymap_opts)
+local document_formatting_provider = function(client, bufnr)
+  local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = false })
+  local name = type(client) == "table" and client.name or client or ""
+  local command = "Format " .. bufnr .. " " .. name
+  vim.api.nvim_create_autocmd("BufWritePre", { group = augroup, buffer = bufnr, command = command })
+  keymap_buf(bufnr, "n", "<Leader>ff", "<cmd>" .. command .. "<CR>", keymap_opts)
 end
 
 local document_formatting_range_provider = function(_, bufnr)
   keymap_buf(bufnr, "v", "<Leader>p", ":'<,'>lua vim.lsp.buf.range_formatting()<CR>", keymap_opts)
 end
 
+local ts_utils = require("nvim-treesitter.ts_utils")
 local function highlight_references()
   local node = ts_utils.get_node_at_cursor()
   while node ~= nil do
     local node_type = node:type()
-    if
-      node_type == "string"
+    if node_type == "string"
       or node_type == "string_fragment"
       or node_type == "template_string"
       or node_type == "document" -- for inline gql`` strings
@@ -98,24 +103,64 @@ local function highlight_references()
   vim.lsp.buf.document_highlight()
 end
 
-local document_highlight_provider = function(_, bufnr)
-  local group = vim.api.nvim_create_augroup("lsp_document_highlight", {})
-  vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-    buffer = bufnr,
-    group = group,
-    callback = highlight_references,
-  })
-  vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-    buffer = bufnr,
-    group = group,
-    callback = w(vim.lsp.buf.clear_references),
-  })
+local document_highlight_provider = function(client, bufnr)
+  local cap = client.server_capabilities
+  if cap.documentHighlightProvider then
+    local group = vim.api.nvim_create_augroup("LspHighlight", {})
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      buffer = bufnr,
+      group = group,
+      callback = highlight_references,
+    })
+    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+      buffer = bufnr,
+      group = group,
+      callback = w(vim.lsp.buf.clear_references),
+    })
+  else
+    vim.notify({ "Lost documentHighlightProvider", vim.inspect(cap) }, "warn")
+  end
 end
 
 local signature_help_provider = function(_, bufnr)
-  local lsp_sig = require("lsp.signature")
-  require("lsp_signature").on_attach(lsp_sig.cfg, bufnr)
+  local function escape_term_codes(str)
+    return vim.api.nvim_replace_termcodes(str, true, false, true)
+  end
+
+  local function is_lsp_float_open(window_id)
+    return window_id and window_id ~= 0 and vim.api.nvim_win_is_valid(window_id)
+  end
+
+  local function scroll_float(mapping)
+    -- Using the global config of the lsp_signature plugin
+    local window_id = _G._LSP_SIG_CFG.winnr
+    if is_lsp_float_open(window_id) then
+      vim.fn.win_execute(window_id, "normal! " .. mapping)
+    end
+  end
+
+  local cfg = {
+    bind = true,
+    zindex = 99, -- <100 so that it does not hide completion popup.
+    close_timeout = 2000,
+    doc_lines = 50,
+    toggle_key = "<M-x>", -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
+    select_signature_key = "<M-n>",
+    extra_trigger_chars = { "(", "," }, -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
+    move_cursor_key = "<M-'>",
+    transparency = 10,
+  }
+  require("lsp_signature").on_attach(cfg, bufnr)
   keymap_buf(bufnr, "n", "gK", "<cmd>lua vim.lsp.buf.signature_help()<CR>", keymap_opts)
+
+  local scroll_up_mapping = escape_term_codes("<PageUp>")
+  local scroll_down_mapping = escape_term_codes("<PageDown>")
+  vim.keymap.set({ "i", "n" }, "<C-Up>", function()
+    scroll_float(scroll_up_mapping)
+  end, keymap_opts)
+  vim.keymap.set({ "i", "n" }, "<C-Down>", function()
+    scroll_float(scroll_down_mapping)
+  end, keymap_opts)
 end
 
 local hover_provider = function(_, bufnr)
@@ -126,8 +171,8 @@ local hover_provider = function(_, bufnr)
 end
 
 local code_action_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "<Leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
-  keymap_buf(bufnr, "x", "<Leader>a", ":'<,'>lua vim.lsp.buf.range_code_action()<CR>", keymap_opts)
+  keymap_buf(bufnr, "n", "gC", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
+  keymap_buf(bufnr, "x", "gC", ":'<,'>lua vim.lsp.buf.range_code_action()<CR>", keymap_opts)
 
   -- -- keymap("n", "<leader>q", "<cmd>Telescope lsp_code_actions<CR>", opts)
   -- keymap("n", "<leader>la", "<cmd>Telescope lsp_code_actions<CR>", opts)
@@ -268,20 +313,4 @@ local handlers = {
   workspace = workspace,
 }
 
-local try_capability = function(client, bufnr, capability)
-  local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-  -- vim.notify("checking " .. capability, "trace")
-
-  local function log_lsp()
-    vim.notify("lsp: " .. client.name .. " - " .. bufnr .. " " .. capability .. " ft: " .. ft, 1)
-  end
-
-  if client.server_capabilities[capability] then
-    if handlers[capability] and client.server_capabilities[capability] == true then
-      log_lsp()
-      handlers[capability](client, bufnr)
-    end
-  end
-end
-
-return { try_capability = try_capability }
+return handlers

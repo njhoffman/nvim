@@ -33,11 +33,10 @@ M.treesitter_plugins = {
 }
 
 M.dap_plugins = {
-  ["dap-install"] = { "Pocco81/DAPInstall.nvim" },
-  ["nvim-dap"] = { "mfussenegger/nvim-dap" },
   ["nvim-dap-ui"] = {
     "rcarriga/nvim-dap-ui",
     requires = { "theHamsta/nvim-dap-virtual-text", "mfussenegger/nvim-dap" },
+    -- cmd = { "DapEnable", "DapShowLog", "DapContinue", "DapToggleRepl", "DapToggleBreakpoint" },
   },
   ["one-small-step-for-vimkind"] = { "jbyuki/one-small-step-for-vimkind", requires = "mfussenegger/nvim-dap" },
   ["nvim-dap-python"] = { "mfussenegger/nvim-dap-python", requires = "mfussenegger/nvim-dap" },
@@ -307,6 +306,7 @@ M.completion_plugins = {
     after = "nvim-cmp",
     requires = "L3MON4D3/LuaSnip",
   },
+  ["lsp_signature.nvim"] = { "ray-x/lsp_signature.nvim" },
   ["cmp-nvim-lsp-signature-help"] = { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" },
   ["cmp-treesitter"] = { "ray-x/cmp-treesitter", after = "nvim-cmp" },
   ["cmp-spell"] = { "f3fora/cmp-spell", after = "nvim-cmp" },
@@ -473,12 +473,14 @@ M.lsp_plugins = {
     "jose-elias-alvarez/null-ls.nvim",
     -- https://github.com/jose-elias-alvarez/null-ls.nvim/issues/1110
     commit = "76d0573fc159839a9c4e62a0ac4f1046845cdd50",
-    requires = "nvim-lua/plenary.nvim",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "ThePrimeagen/refactoring.nvim",
+    },
   },
-  ["neodev.nvim"] = { "folke/neodev.nvim" },
+  ["neodev.nvim"] = { "folke/neodev.nvim", requires = { "folke/neoconf.nvim" } },
   ["lsp-colors.nvim"] = { "folke/lsp-colors.nvim" },
   ["nvim-lightbulb"] = { "kosayoda/nvim-lightbulb" },
-  ["lsp_signature.nvim"] = { "ray-x/lsp_signature.nvim" },
   ["lspsaga.nvim"] = { "tami5/lspsaga.nvim" },
   ["nvim-code-action-menu"] = { "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu" },
   -- ["nvim-lsp-installer"]    = { "williamboman/nvim-lsp-installer", requires = "neovim/nvim-lspconfig" },

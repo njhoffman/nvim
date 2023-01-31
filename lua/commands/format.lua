@@ -1,9 +1,18 @@
 vim.api.nvim_create_user_command("Format", function(arg)
+  local bufnr = arg.fargs[1] and tonumber(arg.fargs[1]) or 0
+  local lsp_name = arg.fargs[2] or ""
   vim.lsp.buf.format({
     --   filter = function(client) return client.name ~= "tsserver" end
+    -- async = true,
+    bufnr = bufnr,
     timeout = 2000,
   })
-end, { desc = "Format buffer using lsp" })
+  local fname = vim.api.nvim_buf_get_name(bufnr):gsub(vim.fn.getenv("HOME"), "~")
+  vim.notify("Format (" .. lsp_name .. ")\n" .. fname, 2)
+end, {
+  nargs = "*",
+  desc = "Format buffer using lsp",
+})
 
 vim.api.nvim_create_user_command("PasteChar", function()
   local txt = vim.g
@@ -25,7 +34,7 @@ local truncate_log = function()
           vim.notify("truncated: " .. file)
           vim.api.nvim_command("edit")
         else
-          vim.notify("Code: " .. code .. " - problem truncating file: " .. file, "error")
+          vim.notify("Code: " .. code .. " - problem truncating file: " .. file, 4)
         end
       end,
     })
@@ -70,7 +79,7 @@ local function trim_space(opts, preview_ns, preview_buf)
   local line1 = opts.line1
   local line2 = opts.line2
   local buf = vim.api.nvim_get_current_buf()
-  local lines = vim.api.nvim_buf_get_lines(buf, line1 - 1, line2, 0)
+  local lines = vim.api.nvim_buf_get_lines(buf, line1 - 1, line2, false)
   local new_lines = {}
   local preview_buf_line = 0
 
@@ -147,10 +156,10 @@ local function delete_special_v()
 end
 
 local M = {}
-M.create_cmd_truncate = function(bufnr)
-  local bufnr = bufnr or vim.api.nvim_get_current_buf()
+M.create_cmd_truncate = function(_bufnr)
+  local bufnr = _bufnr or vim.api.nvim_get_current_buf()
   vim.api.nvim_buf_create_user_command(bufnr, "Truncate", truncate_log, {
-    desc = "Format buffer using lsp",
+    desc = "Truncate logfile",
   })
 end
 return M

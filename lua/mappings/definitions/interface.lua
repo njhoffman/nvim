@@ -12,7 +12,7 @@ local M = {
     short = "remove hls, refresh colors and lsp",
   },
   reset_lsp_clear_hl = {
-    cmd = "<cmd>noh<cr>|:RefreshLSP<cr>|:lua require'feline'.reset_highlights()<cr>",
+    cmd = "<cmd>noh<cr> | :RefreshLSP<cr> | :lua require'feline'.reset_highlights()<cr>",
     short = "remove hls, refresh colors and lsp",
   },
   registers = {

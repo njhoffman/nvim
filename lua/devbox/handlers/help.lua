@@ -88,7 +88,7 @@ local tags_map = init_help_tags()
 
 local help_handler = function(start_time)
   local word = vim.fn.expand("<cWORD>") or ""
-  local args_pattern = "%([^)]*"
+  local args_pattern = "%([^)]*%)?.*"
   local vim_pattern = "vim%.api%."
   word = string.gsub(word, args_pattern, "()")
   word = string.gsub(word, vim_pattern, "")

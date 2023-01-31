@@ -95,9 +95,7 @@ vim.import("config", function(config)
       --   au BufNewFile,BufRead bundles.*.txt setlocal ft=sh
       --   " au BufEnter * if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' | setf preview | endif
     },
-    Vimade = {
-      { "FileType", "Trouble", "VimadeBufDisable" },
-      { "FileType", "qf", "VimadeBufDisable" },
+    VimadeDap = {
       { "FileType", "dap-log", "VimadeBufDisable" },
       { "FileType", "dap-repl", "VimadeBufDisable" },
       { "FileType", "dapui_console", "VimadeBufDisable" },
@@ -105,6 +103,10 @@ vim.import("config", function(config)
       { "FileType", "dapui_breakpoints", "VimadeBufDisable" },
       { "FileType", "dapui_scopes", "VimadeBufDisable" },
       { "FileType", "dapui_watches", "VimadeBufDisable" },
+    },
+    Vimade = {
+      { "FileType", "Trouble", "VimadeBufDisable" },
+      { "FileType", "qf", "VimadeBufDisable" },
       { "FileType", "nerdtree", "VimadeBufDisable" },
       { "FileType", "Mundo", "VimadeBufDisable" },
       { "FileType", "NvimTree", "VimadeBufDisable" },

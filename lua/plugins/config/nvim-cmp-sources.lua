@@ -30,7 +30,7 @@ local lsp_symbols = {
   Method = "",
   Function = "",
   Constructor = "", --   Constructor = "⌘ ",
-  Field = "ﴲ", --   Field = "ﰠ ",
+  Field = "ﰠ", --   Field = "ﰠ ",
   Variable = "", --   Variable = " ",
   Class = "", --   Class = "ﴯ ",
   Interface = "ﰮ", --   Interface = " ",

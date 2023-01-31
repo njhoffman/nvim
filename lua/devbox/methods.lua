@@ -28,9 +28,9 @@ local lsp_methods = {
   { "definition", "textDocument/definition" },
   { "references", "textDocument/references" },
   { "completion", "textDocument/completion" },
+  { "codeaction", "textDocument/codeAction" },
   -- { "implements", "textDocument/implementation" },
   -- { "declaration", "textDocument/declaration" },
-  -- { "code-action", "textDocument/codeAction" },
   -- { "code-lens ", "textDocument/codeLens" },
 }
 

@@ -117,7 +117,7 @@ return function(injected_functions)
     DebugMsg({ fg = Comment.fg }),
     Question({ fg = clrs.nord4 }),
     -- +--- LSP ---+
-    LspFloatWinBorder({ bg = "none" }),
+    LspFloatWinBorder({ bg = "none", fg = "#333333" }),
     DiagnosticError({ fg = clrs.nord11.da(30) }),
     DiagnosticWarn({ fg = clrs.nord13.da(30) }),
     DiagnosticHint({ fg = clrs.nord8.da(50) }),

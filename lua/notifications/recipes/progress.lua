@@ -1,51 +1,44 @@
 -- Utility functions shared between progress reports for LSP and DAP
+local function configure_progress_notifs()
+  local notify = require("notifications.recipes.nvim-notify")
+  local spinners = {}
 
-local client_notifs = {}
+  vim.api.nvim_create_autocmd("User", {
+    group = vim.api.nvim_create_augroup("LspNotify", { clear = true }),
+    pattern = "LspProgressUpdate",
+    desc = "LSP progress notifications",
+    callback = function()
+      for _, c in pairs(vim.lsp.get_active_clients()) do
+        for token, ctx in pairs(c.messages.progress) do
+          if not spinners[c.id] then
+            spinners[c.id] = {}
+          end
+          local s = spinners[c.id][token]
+          if not ctx.done then
+            if not s then
+              local msg = notify.format_message(ctx.message, ctx.percentage)
+              local opts = { title = notify.format_title(ctx.title, c.name), hide_from_history = true }
 
-local function get_notif_data(client_id, token)
-  if not client_notifs[client_id] then
-    client_notifs[client_id] = {}
-  end
-
-  if not client_notifs[client_id][token] then
-    client_notifs[client_id][token] = {}
-  end
-
-  return client_notifs[client_id][token]
+              local lvl = vim.log.levels.TRACE
+              if ctx.title == "Loading workspace" then
+                lvl = vim.log.levels.DEBUG
+                opts.hide_from_history = false
+              end
+              spinners[c.id][token] = notify.Spinner(msg, lvl, opts)
+            else
+              s:update(notify.format_message(ctx.message, ctx.percentage))
+            end
+          else
+            c.messages.progress[token] = nil
+            if s then
+              s:done(ctx.message or "Complete", nil, { icon = "" })
+              spinners[c.id][token] = nil
+            end
+          end
+        end
+      end
+    end,
+  })
 end
 
-local spinner_frames = { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" }
-
-local function update_spinner(client_id, token)
-  local notif_data = get_notif_data(client_id, token)
-
-  if notif_data.spinner then
-    local new_spinner = (notif_data.spinner + 1) % #spinner_frames
-    notif_data.spinner = new_spinner
-
-    notif_data.notification = vim.notify(
-      nil,
-      nil,
-      {
-        hide_from_history = true,
-        icon = spinner_frames[new_spinner],
-        replace = notif_data.notification
-      }
-    )
-
-    vim.defer_fn(
-      function()
-        update_spinner(client_id, token)
-      end,
-      100
-    )
-  end
-end
-
-local function format_title(title, client_name)
-  return client_name .. (#title > 0 and ": " .. title or "")
-end
-
-local function format_message(message, percentage)
-  return (percentage and percentage .. "%\t" or "") .. (message or "")
-end
+return { config = configure_progress_notifs }

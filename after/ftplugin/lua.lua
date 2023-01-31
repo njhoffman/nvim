@@ -59,16 +59,24 @@ function find_required_path(module)
   local f
   ---- First search for lua modules
   f = include_paths(fname)
-  if f then return f end
+  if f then
+    return f
+  end
   -- This part is just for nvim modules
   f = include_rtpaths(fname, "lua")
-  if f then return f end
+  if f then
+    return f
+  end
   ---- Now search for Fennel modules
   f = include_paths(fname)
-  if f then return f end
+  if f then
+    return f
+  end
   -- This part is just for nvim modules
   f = include_rtpaths(fname, "fnl")
-  if f then return f end
+  if f then
+    return f
+  end
 end
 
 -- Set options to open require with gf

@@ -1,29 +1,3 @@
-local lspdefs = require("lsp-definitions")
-local handlers = require("lsp-handlers")
-local async = require("plenary.async")
-
-local on_attach = function(client, bufnr)
-  -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-  -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "")
-
-  -- Mappings.
-  -- Set autocommands conditional on server_capabilities
-  for _, providerKey in ipairs(lspdefs.display_keys) do
-    handlers.try_capability(client, bufnr, providerKey)
-  end
-
-  -- if lsp_name == "tsserver" then
-  --   map_buf(bufnr, "cxo", tsserver_organize_imports)
-  -- elseif lsp_name == "pyright" then
-  --   map_buf(bufnr, "cxo", function()
-  --     vim.cmd("silent PyrightOrganizeImports")
-  --   end)
-end
---- }}}
-
--- require("lsp-zk").setup_zk(get_config("zk"))
-
---- {{{ setup servers
 local mason_settings = {
   ui = {
     border = "rounded",
@@ -75,7 +49,6 @@ local servers = {
 local lspconfig = require("lspconfig")
 
 local lspconfig_settings = {
-  -- "null-ls",
   ensure_installed = servers,
   automatic_installation = false,
 }
@@ -87,27 +60,34 @@ require("mason").setup(mason_settings)
 require("mason-lspconfig").setup(lspconfig_settings)
 require("mason-tool-installer").setup(tool_settings)
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.foldingRange = {
-  dynamicRegistration = false,
-  lineFoldingOnly = true,
-}
-require("cmp_nvim_lsp").default_capabilities(capabilities)
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = { "documentation", "detail", "additionalTextEdits" },
-}
+local capabilities = require("lsp-capabilities")
+
+local on_attach = function(client, bufnr)
+  -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "")
+
+  if client.name == "sumneko_lua" then
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+  end
+  capabilities.resolve(client, bufnr)
+  -- if lsp_name == "tsserver" then
+  --   map_buf(bufnr, "cxo", tsserver_organize_imports)
+  -- elseif lsp_name == "pyright" then
+  --   map_buf(bufnr, "cxo", function()
+  --     vim.cmd("silent PyrightOrganizeImports")
+  --   end)
+end
 
 lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_config, {
   on_attach = on_attach,
-  capabilities = capabilities,
+  capabilities = capabilities.make(),
 })
 
 require("mason-lspconfig").setup_handlers({
   function(server_name) -- default handler (optional)
-    vim.notify("setting up lsp: " .. server_name, "trace")
+    vim.notify("setting up lsp: " .. server_name, 1)
     -- local opts = vim.tbl_deep_extend("force", opts, lspconfig[server_name] or {})
-
     -- local config = get_config(server_name)
     lspconfig[server_name].setup(lspconfig[server_name])
   end,
@@ -119,38 +99,114 @@ require("mason-lspconfig").setup_handlers({
   --     -- server = opts,
   --   })
   -- end,
+  ["bashls"] = function()
+    lspconfig.bashls.setup({
+      root_dir = require("null-ls.utils").root_pattern(".project", ".git"),
+    })
+  end,
+
   ["sumneko_lua"] = function()
     local neodev_config = {
+      debug = false,
       library = {
+        -- for your Neovim config directory, the config.library settings will be used as is
+        -- for plugin directories (root_dirs having a /lua directory), config.library.plugins will be disabled
+        -- for any other directory, config.library.enabled will be set to false
         enabled = true, -- when not enabled, lua-dev will not change any settings to the LSP server
         runtime = true, -- runtime path
         types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-        -- plugins = false,
+        -- plugins = true,
         plugins = {
+          "barbar.nvim",
+          "debugprint.nvim",
+          "feline.nvim",
+          "fidget.nvim",
+          "lspconfig",
+          "mason",
+          "mason-lspconfig",
+          "nvim-cmp",
+          "nvim-dap",
+          "nvim-dap-ui",
+          "nvim-notify",
+          "nvim-treesitter",
+          "octo.nvim",
           "plenary.nvim",
           "telescope.nvim",
+          "trouble.nvim",
+          "vimade",
+          "which-key.nvim",
         },
       },
+      -- override = function(root_dir, options)
+      --   -- options.plugins = { "plenary.nvim" }
+      --   vim.notify({ "Neodev with root dir " .. root_dir, options }, vim.log.levels.DEBUG)
+      -- end,
+      -- setup_jsonls = false,
+      pathStrict = true,
+      -- override = function(root_dir, library)
+      --   vim.dbglog({ "OR", root_dir, vim.fn.isdirectory(root_dir .. "/lua") })
+      --   if vim.fn.isdirectory(root_dir .. "/lua") then
+      --     library.enabled = true
+      --     library.types = true
+      --     library.runtime = true
+      --   end
+      -- end,
     }
     require("neodev").setup(neodev_config)
     lspconfig.sumneko_lua.setup({
-      Lua = {
-        format = {
-          enable = true,
-        },
-        hint = {
-          enable = true,
-          arrayIndex = "Disable", -- "Enable", "Auto", "Disable"
-          await = true,
-          paramName = "Disable", -- "All", "Literal", "Disable"
-          paramType = false,
-          semicolon = "Disable", -- "All", "SameLine", "Disable"
-          setType = true,
-        },
-        diagnostics = {
-          globals = { "vim" },
+      -- log_level = vim.lsp.protocol.MessageType.Warn,
+      -- single_file_support = true,
+      cmd = {
+        -- vim.fn.stdpath("data") .. "/mason/packages/lua-language-server/lua-language-server",
+        "lua-language-server",
+        "--logpath",
+        vim.fn.stdpath("data"),
+        "--loglevel",
+        "warn",
+      },
+      settings = {
+        Lua = {
+          format = {
+            enable = false,
+            defaultConfig = {
+              indent_style = "space",
+              indent_size = "2",
+            },
+          },
+          hint = {
+            enable = true,
+            arrayIndex = "Disable", -- "Enable", "Auto", "Disable"
+            await = true,
+            paramName = "Disable", -- "All", "Literal", "Disable"
+            paramType = false,
+            semicolon = "Disable", -- "All", "SameLine", "Disable"
+            setType = true,
+          },
+          diagnostics = {
+            globals = { "vim", "string", "table", "require", "ipairs", "pairs", "print" },
+          },
+          completion = {
+            callSnippet = "Replace",
+          },
+          workspace = {
+            checkThirdParty = false,
+            --   library = vim.api.nvim_get_runtime_file("", true),
+          },
+          telemetry = {
+            enable = false,
+          },
         },
       },
+      -- filetypes = { "lua" },
+      -- root_dir = require("null-ls.utils").root_pattern(
+      --   ".luarc.json",
+      --   ".luarc.jsonc",
+      --   ".luacheckrc",
+      --   "selene.toml",
+      --   "stylua.toml",
+      --   ".project",
+      --   ".git"
+      -- ),
     })
   end,
 })

@@ -1,7 +1,13 @@
 -- require("dapui").open()
 -- require("dapui").close()
 -- require("dapui").toggle()
-require("dapui").setup({
+
+require("plugins.config.nvim-dap")
+
+local dap = require("dap")
+local dapui = require("dapui")
+
+dapui.setup({
   icons = { expanded = "", collapsed = "", current_frame = "" },
   mappings = {
     -- Use a table to apply multiple mappings
@@ -20,9 +26,7 @@ require("dapui").setup({
     --   expand = "o",
     -- }
   },
-  -- Expand lines larger than the window
-  -- Requires >= 0.7
-  expand_lines = vim.fn.has("nvim-0.7") == 1,
+  expand_lines = true,
   -- Layouts define sections of the screen to place windows.
   -- The position can be "left", "right", "top" or "bottom".
   -- The size specifies the height/width depending on position. It can be an Int
@@ -33,26 +37,42 @@ require("dapui").setup({
   layouts = {
     {
       elements = {
-        -- Elements can be strings or table with id and size keys.
-        { id = "scopes", size = 0.25 },
-        "breakpoints",
-        "stacks",
-        "watches",
+        {
+          id = "scopes",
+          size = 0.25,
+        },
+        {
+          id = "breakpoints",
+          size = 0.25,
+        },
+        {
+          id = "stacks",
+          size = 0.25,
+        },
+        {
+          id = "watches",
+          size = 0.25,
+        },
       },
-      size = 40, -- 40 columns
       position = "left",
+      size = 40,
     },
     {
       elements = {
-        "repl",
-        "console",
+        {
+          id = "repl",
+          size = 0.5,
+        },
+        {
+          id = "console",
+          size = 0.5,
+        },
       },
-      size = 0.25, -- 25% of total lines
       position = "bottom",
+      size = 10,
     },
   },
   controls = {
-    -- Requires Neovim nightly (or 0.8 when released)
     enabled = true,
     -- Display controls in this element
     element = "repl",
@@ -75,20 +95,30 @@ require("dapui").setup({
       close = { "q", "<Esc>" },
     },
   },
-  windows = { indent = 1 },
   render = {
+    indent = 1,
     max_type_length = nil, -- Can be integer or nil.
     max_value_lines = 100, -- Can be integer or nil.
   },
 })
 
--- 21:03:10 [INFO] notify: Automatically opening the UI is deprecated.
--- You can replicate previous behaviour by adding the following to your config
+-- local dap = require("dap")
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
 
--- local dap, dapui = require('dap'), require('dapui')
--- dap.listeners.after.event_initialized['dapui_config] = function() dapui.open() end
--- dap.listeners.before.event_terminated['dapui_config] = function() dapui.close() end
--- dap.listeners.before.event_exited['dapui_config] = function() dapui.close() end
+vim.api.nvim_create_user_command("DapStop", function()
+  -- vim.cmd("VimadeDisable")
+  require("dap").terminate()
+  require("dapui").close()
+  -- vim.cmd("VimadeEnable")
+end, {})
 
 --     🛑   ■
 vim.fn.sign_define("DapBreakpoint", {
@@ -107,17 +137,6 @@ vim.fn.sign_define(
   "DapStopped",
   { text = "", texthl = "DAPStopSign", linehl = "DAPStopSignText", numhl = "DAPStopSign" }
 )
-
-local dap, dapui = require("dap"), require("dapui")
-dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open()
-end
-dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
-end
-dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
-end
 
 -- " Completion
 -- au FileType dap-repl lua require('dap.ext.autocompl').attach()

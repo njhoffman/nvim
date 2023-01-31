@@ -8,11 +8,14 @@ ts.define_modules(tsmodules)
 require("nvim-treesitter.configs").setup({
   -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = "all",
-  ignore_install = { "phpdoc", "latex" },
+  ignore_install = { "phpdoc", "latex", "wgsl", "wgsl_bevy" },
 
   playground = {
     enable = true,
-    disable = {},
+    disable = {
+      "wgsl",
+      "wgsl_bevy",
+    },
     updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
     persist_queries = false, -- Whether the query persists across vim sessions
     keybindings = {
@@ -32,6 +35,8 @@ require("nvim-treesitter.configs").setup({
     enable = true,
     use_languagetree = true,
     disable = {
+      "wgsl",
+      "wgsl_bevy",
       "help",
       "latex",
       "bash",

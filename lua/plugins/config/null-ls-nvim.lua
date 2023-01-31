@@ -8,17 +8,25 @@ local supports_method_for_filetype = function(filetype, method)
   return #available > 0
 end
 
+local map_buf = function(bufnr, lhs, rhs)
+  local opts = { buffer = bufnr, silent = true }
+  vim.keymap.set("n", lhs, rhs, opts)
+end
+
+local handlers = require("lsp-handlers")
 local on_attach = function(_, bufnr)
   local filetype = vim.bo.filetype
 
-  local attach = require("plugins.config.lsp-attach")
   if supports_method_for_filetype(filetype, "NULL_LS_FORMATTING") then
-    attach.keybindings_formatting(bufnr, "null-ls")
-    attach.format_on_save(bufnr, "null-ls")
+    handlers.documentFormattingProvider("null-ls", bufnr)
+    -- map_buf(bufnr, "gQ", lsp_document_format("null-ls"))
+    -- format_on_save(bufnr, "null-ls")
+    -- attach.keybindings_formatting(bufnr, "null-ls")
   end
 
   if supports_method_for_filetype(filetype, "NULL_LS_CODE_ACTION") then
-    attach.keybindings_codeaction(bufnr)
+    map_buf(bufnr, "cxa", vim.lsp.buf.code_action)
+    -- attach.keybindings_codeaction(bufnr)
   end
 end
 
@@ -27,7 +35,7 @@ null_ls.setup({
   sources = my_sources.sources,
   on_attach = on_attach,
   default_timeout = 5000,
-  root_dir = u.root_pattern(".null-ls-root", "Makefile", ".git", ".luacheckrc"),
+  root_dir = u.root_pattern(".null-ls-root", "Makefile", ".git", ".luacheckrc", ".project"),
   -- should_attach = function(bufnr)
   --   local large_file = require("large_file")
   --

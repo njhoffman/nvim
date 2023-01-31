@@ -45,8 +45,6 @@ dap.configurations.sh = {
 
 dap.adapters.node2 = {
   type = "executable",
-  command = "node",
-
   command = vim.fn.stdpath("data") .. "/mason/packages/node-debug2-adapter/node-debug2-adapter",
 }
 dap.configurations.javascript = {
@@ -101,6 +99,7 @@ dap.configurations.go = {
     program = "./${relativeFileDirname}",
   },
 }
+
 -- If you prefer to start delve manually, you can use the following adapter definition instead:
 --
 -- dap.adapters.delve = {

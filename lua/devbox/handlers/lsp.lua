@@ -23,22 +23,43 @@ local handlers = {
       return load_time .. " completion " .. #targets .. " items"
     end,
   },
-  ["textDocument/references"] = {
-    -- [0].range.start.[line|character], [0].range.end.[line|character]
+  ["textDocument/codeAction"] = {
+    -- { originSelectionRange, targetRange, targetSelectionRange, targetUri }
+    -- range { end = { character, line }, start = { character, line } }
     get_contents = function(result)
+      vim.dbglog({ "codeaction", result })
       return (result and #result > 0) and result or nil
     end,
     get_summary = function(targets, load_time)
-      return load_time .. " references " .. #targets .. " files"
+      return load_time .. " definition " .. #targets .. " locations"
+    end,
+  },
+  ["textDocument/references"] = {
+    get_contents = function(result, ctx)
+      local filepath = vim.api.nvim_buf_get_name(0)
+      local lnum = vim.api.nvim_win_get_cursor(0)[1]
+      if result then
+        local results = vim.lsp.util.locations_to_items(result, vim.lsp.get_client_by_id(ctx.client_id).offset_encoding)
+        local locations = vim.tbl_filter(function(v)
+          -- Remove current line from result
+          return not (v.filename == filepath and v.lnum == lnum)
+        end, vim.F.if_nil(results, {}))
+        return (locations and #locations > 0) and locations or nil
+      end
+    end,
+    get_summary = function(targets, load_time)
+      -- { filename, col, lnum, text }
+      return load_time .. " references " .. #targets .. " locations"
     end,
   },
   ["textDocument/definition"] = {
-    -- [0].target, [0].
+    -- { originSelectionRange, targetRange, targetSelectionRange, targetUri }
+    -- range { end = { character, line }, start = { character, line } }
     get_contents = function(result)
       return (result and #result > 0) and result or nil
     end,
     get_summary = function(targets, load_time)
-      return load_time .. " definition " .. #targets .. " files"
+      return load_time .. " definition " .. #targets .. " locations"
     end,
   },
   ["textDocument/signatureHelp"] = {
