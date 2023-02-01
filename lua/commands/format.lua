@@ -7,8 +7,6 @@ vim.api.nvim_create_user_command("Format", function(arg)
     bufnr = bufnr,
     timeout = 2000,
   })
-  local fname = vim.api.nvim_buf_get_name(bufnr):gsub(vim.fn.getenv("HOME"), "~")
-  vim.notify("Format (" .. lsp_name .. ")\n" .. fname, 2)
 end, {
   nargs = "*",
   desc = "Format buffer using lsp",
