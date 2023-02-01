@@ -100,11 +100,11 @@ local try_capability = function(client, bufnr, capability)
   -- vim.notify("checking " .. capability, "trace")
   local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
   if client.server_capabilities[capability] then
-    if capability == "documentFormattingProvider" then
-      vim.dbglog({ client.name, client.server_capabilities[capability] })
-    end
+    -- if capability == "documentFormattingProvider" then
+    --   vim.dbglog({ client.name, client.server_capabilities[capability] })
+    -- end
     if handlers[capability] then
-      vim.notify("lsp: " .. client.name .. " - " .. bufnr .. " " .. capability .. " ft: " .. ft, 1)
+      -- vim.notify("lsp: " .. client.name .. " - " .. bufnr .. " " .. capability .. " ft: " .. ft, 1)
       handlers[capability](client, bufnr)
     end
   end

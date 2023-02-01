@@ -100,6 +100,34 @@ dap.configurations.go = {
   },
 }
 
+dap.configurations.lua = {
+  {
+    type = "nlua",
+    request = "attach",
+    name = "Attach to running Neovim instance",
+    --   host = function()
+    --     local value = vim.fn.input('Host [127.0.0.1]: ')
+    --     if value ~= "" then
+    --       return value
+    --     end
+    --     return '127.0.0.1'
+    --   end,
+    --   port = function()
+    --     local val = tonumber(vim.fn.input('Port: '))
+    --     assert(val, "Please provide a port number")
+    --     return val
+    --   end,
+  },
+}
+
+dap.adapters.nlua = function(callback, lua_config)
+  callback({
+    type = "server",
+    host = lua_config.host or "127.0.0.1",
+    port = lua_config.port or 8090,
+  })
+end
+
 -- If you prefer to start delve manually, you can use the following adapter definition instead:
 --
 -- dap.adapters.delve = {
@@ -138,35 +166,6 @@ dap.configurations.go = {
 --     dlvToolPath = vim.fn.exepath("dlv"), -- Adjust to where delve is installed
 --   },
 -- }
---
--- dap.configurations.lua = {
---   {
---     type = "nlua",
---     request = "attach",
---     name = "Attach to running Neovim instance",
---     --   host = function()
---     --     local value = vim.fn.input('Host [127.0.0.1]: ')
---     --     if value ~= "" then
---     --       return value
---     --     end
---     --     return '127.0.0.1'
---     --   end,
---     --   port = function()
---     --     local val = tonumber(vim.fn.input('Port: '))
---     --     assert(val, "Please provide a port number")
---     --     return val
---     --   end,
---   },
--- }
---
--- dap.adapters.nlua = function(callback, lua_config)
---   callback({
---     type = "server",
---     host = lua_config.host or "127.0.0.1",
---     port = lua_config.port or 8090,
---   })
---   -- callback({ type = "server", host = lua_config.host, port = lua_config.port })
--- end
 --
 -- dap.configurations.javascript = {
 --   {

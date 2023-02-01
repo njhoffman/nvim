@@ -5,7 +5,7 @@ function M.format_title(title, client_name)
 end
 
 function M.format_message(message, percentage)
-  return (percentage and percentage .. "%\t" or "") .. (message or "")
+  return (" " .. percentage and percentage .. "%\t" or "") .. (message or "")
 end
 
 local Spinner = {}
@@ -25,8 +25,6 @@ function Spinner.new(msg, lvl, opts)
   self.lvl = lvl
   self.opts = opts or {}
   self.opts.timeout = false
-
-  vim.dbglog({ "**", opts })
   self:_spin()
 
   return self
@@ -36,6 +34,8 @@ function Spinner:_update(msg, lvl, opts)
   -- TODO: debounce
   opts = opts or {}
   opts.replace = self.id
+  msg = msg and #msg > 0 and (" " .. msg)
+
   self.id = require("notify").notify(msg, lvl, opts)
 end
 
@@ -62,7 +62,7 @@ function Spinner:_spin()
   local opts = self.opts or {}
   if opts.icon == nil then
     self.frame = (self.frame or 0) % #spinner_frames + 1
-    opts.icon = spinner_frames[self.frame]
+    opts.icon = spinner_frames[self.frame] .. " "
   end
 
   if type(opts) == "table" and type(opts.title) == "string" then
@@ -93,10 +93,6 @@ function Spinner:done(msg, lvl, opts)
   if opts.timeout == nil then
     opts.timeout = 3000
   end
-  if type(opts) == "table" and type(opts.title) == "table" and #opts.title > 1 then
-    opts.title = { opts.title[1], "" }
-  end
-
   self:_update(msg, lvl, opts)
 end
 
