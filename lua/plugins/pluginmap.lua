@@ -348,6 +348,7 @@ M.ui_plugins = {
   ["vim-HiLinkTrace"] = { "gerw/vim-HiLinkTrace" },
   ["vim-bling"] = { "ivyl/vim-bling" },
   ["vim-cool"] = { "romainl/vim-cool" },
+  ["vim-hexokinase"] = { "RRethy/vim-hexokinase" },
   ["nvim-colorizer"] = { "norcalli/nvim-colorizer.lua" },
   ["vim-plugin-AnsiEsc"] = { "joeysino/vim-plugin-AnsiEsc" },
   ["vimade"] = { "TaDaa/vimade" },
