@@ -13,7 +13,8 @@ function M.find_lsp_root()
   -- Get lsp client for current buffer
   -- Returns nil or string
   local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-  local clients = vim.lsp.buf_get_clients()
+  local clients = vim.lsp.get_active_clients()
+
   if next(clients) == nil then
     return nil
   end
@@ -22,6 +23,9 @@ function M.find_lsp_root()
     local filetypes = client.config.filetypes
     if filetypes and vim.tbl_contains(filetypes, buf_ft) then
       if not vim.tbl_contains(config.options.ignore_lsp, client.name) then
+        if client.name == "sumneko_lua" then
+          -- vim.dbglog({ "**", client.config.root_dir })
+        end
         return client.config.root_dir, client.name
       end
     end
@@ -170,8 +174,8 @@ function M.attach_to_lsp()
 end
 
 local set_user_option = function(dir, method)
-  local opt = vim.import('utils.options')
-  if type(opt) == 'table' then
+  local opt = vim.import("utils.options")
+  if type(opt) == "table" then
     local bufnr = vim.api.nvim_get_current_buf()
     local project_path = string.gsub(dir, os.getenv("HOME"), "~")
     local project_name = ""
@@ -179,19 +183,19 @@ local set_user_option = function(dir, method)
       project_path, project_name = string.match(project_path, "(.*)%/(.*)")
       last_buffer = vim.fn.bufnr()
     end
-    opt.set_local('projectmethod', method, bufnr)
-    opt.set_local('projectpath', project_path, bufnr)
-    opt.set_local('projectname', project_name, bufnr)
+    opt.set_local("projectmethod", method, bufnr)
+    opt.set_local("projectpath", project_path, bufnr)
+    opt.set_local("projectname", project_name, bufnr)
   end
 end
 
 local set_cwd = function(dir, method)
   vim.api.nvim_set_current_dir(dir)
   if config.options.silent_chdir == false then
-    if (type(config.options.chdir_func) == "function") then
+    if type(config.options.chdir_func) == "function" then
       config.options.chdir_func(dir, method)
     else
-      vim.notify('CWD:' .. dir .. " (" .. method .. ') ', 'debug')
+      vim.notify("CWD:" .. dir .. " (" .. method .. ") ", "debug")
     end
   end
 end
@@ -211,16 +215,18 @@ end
 
 function M.get_project_root()
   -- returns project root, as well as method
-  if type(config) ~= 'table'
-    or type(config.options) ~= 'table'
-    or type(config.options.detection_methods) ~= 'table'
+  if
+    type(config) ~= "table"
+    or type(config.options) ~= "table"
+    or type(config.options.detection_methods) ~= "table"
   then
-    vim.notify({ 'Bad configuration file ...', config }, 'error')
+    vim.notify({ "Bad configuration file ...", config }, "error")
     return
   end
   for _, detection_method in ipairs(config.options.detection_methods) do
     if detection_method == "lsp" then
       local root, lsp_name = M.find_lsp_root()
+
       if root ~= nil then
         return root, '"' .. lsp_name .. '"' .. " lsp"
       end
@@ -265,6 +271,10 @@ function M.on_buf_enter()
   end
 
   local root, method = M.get_project_root()
+  -- if root then
+  --   vim.dbglog("Seetting pwd: " .. root)
+  -- end
+
   M.set_pwd(root, method)
 end
 
@@ -281,7 +291,8 @@ function M.init()
     command! ProjectRoot lua require("project_nvim.project").on_buf_enter()
   ]])
 
-  autocmds[#autocmds + 1] = 'autocmd VimLeavePre * lua require("project_nvim.utils.history").write_projects_to_history()'
+  autocmds[#autocmds + 1] =
+    'autocmd VimLeavePre * lua require("project_nvim.utils.history").write_projects_to_history()'
 
   vim.cmd([[
     augroup project_nvim

@@ -156,7 +156,7 @@ M.sources = {
     disabled_filetypes = {
       "dirbuf",
       "gitcommit",
-      -- "lua",
+      "lua",
       "markdown",
       "mail",
     },

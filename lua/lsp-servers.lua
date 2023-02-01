@@ -79,14 +79,15 @@ local on_attach = function(client, bufnr)
   --   end)
 end
 
-lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_config, {
+local util = require("lspconfig.util")
+util.default_config = vim.tbl_extend("force", util.default_config, {
   on_attach = on_attach,
   capabilities = capabilities.make(),
 })
 
 require("mason-lspconfig").setup_handlers({
   function(server_name) -- default handler (optional)
-    vim.notify("setting up lsp: " .. server_name, 1)
+    -- vim.notify("setting up lsp: " .. server_name, 1)
     -- local opts = vim.tbl_deep_extend("force", opts, lspconfig[server_name] or {})
     -- local config = get_config(server_name)
     lspconfig[server_name].setup(lspconfig[server_name])
@@ -101,7 +102,7 @@ require("mason-lspconfig").setup_handlers({
   -- end,
   ["bashls"] = function()
     lspconfig.bashls.setup({
-      root_dir = require("null-ls.utils").root_pattern(".project", ".git"),
+      root_dir = util.root_pattern(".project", ".git"),
     })
   end,
 
@@ -197,6 +198,31 @@ require("mason-lspconfig").setup_handlers({
           },
         },
       },
+      root_dir = function(fname)
+        local git_root = util.find_git_ancestor(fname)
+        local root_files = {
+          ".luarc.json",
+          ".luarc.jsonc",
+          ".luacheckrc",
+          ".stylua.toml",
+          "stylua.toml",
+          "selene.toml",
+          "selene.yml",
+          ".project",
+        }
+        local pattern_root = util.root_pattern(unpack(root_files))(fname)
+        if pattern_root == vim.env.HOME then
+          pattern_root = nil
+        end
+
+        local lua_root = util.root_pattern("lua/")(fname)
+        if lua_root then
+          lua_root = lua_root .. "/lua/"
+        end
+
+        -- vim.dbglog({ fname, pattern_root })
+        return pattern_root
+      end,
       -- filetypes = { "lua" },
       -- root_dir = require("null-ls.utils").root_pattern(
       --   ".luarc.json",

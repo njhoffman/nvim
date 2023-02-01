@@ -60,7 +60,7 @@ local project_config = {
   patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
   -- Table of lsp clients to ignore by name
   -- eg: { "efm", ... }
-  ignore_lsp = {},
+  ignore_lsp = { "null-ls" },
   -- Don't calculate root dir on specific directories
   -- Ex: { "~/.cargo/*", ... }
   exclude_dirs = {},
