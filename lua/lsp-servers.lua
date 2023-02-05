@@ -105,7 +105,6 @@ require("mason-lspconfig").setup_handlers({
       root_dir = util.root_pattern(".project", ".git"),
     })
   end,
-
   ["sumneko_lua"] = function()
     local neodev_config = {
       debug = false,
@@ -125,6 +124,7 @@ require("mason-lspconfig").setup_handlers({
           "lspconfig",
           "mason",
           "mason-lspconfig",
+          "neo-tree.nvim",
           "nvim-cmp",
           "nvim-dap",
           "nvim-dap-ui",
@@ -138,32 +138,18 @@ require("mason-lspconfig").setup_handlers({
           "which-key.nvim",
         },
       },
-      -- override = function(root_dir, options)
-      --   -- options.plugins = { "plenary.nvim" }
-      --   vim.notify({ "Neodev with root dir " .. root_dir, options }, vim.log.levels.DEBUG)
-      -- end,
       -- setup_jsonls = false,
       pathStrict = true,
-      -- override = function(root_dir, library)
-      --   vim.dbglog({ "OR", root_dir, vim.fn.isdirectory(root_dir .. "/lua") })
-      --   if vim.fn.isdirectory(root_dir .. "/lua") then
-      --     library.enabled = true
-      --     library.types = true
-      --     library.runtime = true
-      --   end
-      -- end,
     }
     require("neodev").setup(neodev_config)
     lspconfig.sumneko_lua.setup({
       -- log_level = vim.lsp.protocol.MessageType.Warn,
-      -- single_file_support = true,
       cmd = {
-        -- vim.fn.stdpath("data") .. "/mason/packages/lua-language-server/lua-language-server",
         "lua-language-server",
-        "--logpath",
-        vim.fn.stdpath("data"),
-        "--loglevel",
-        "warn",
+        -- "--logpath",
+        -- vim.fn.stdpath("data"),
+        -- "--loglevel",
+        -- "warn",
       },
       settings = {
         Lua = {
@@ -198,8 +184,8 @@ require("mason-lspconfig").setup_handlers({
           },
         },
       },
+
       root_dir = function(fname)
-        local git_root = util.find_git_ancestor(fname)
         local root_files = {
           ".luarc.json",
           ".luarc.jsonc",
@@ -219,20 +205,21 @@ require("mason-lspconfig").setup_handlers({
         if lua_root then
           lua_root = lua_root .. "/lua/"
         end
-
-        -- vim.dbglog({ fname, pattern_root })
-        return pattern_root
+        local git_root = util.find_git_ancestor(fname)
+        local final = pattern_root or git_root or lua_root
+        return final
       end,
-      -- filetypes = { "lua" },
-      -- root_dir = require("null-ls.utils").root_pattern(
-      --   ".luarc.json",
-      --   ".luarc.jsonc",
-      --   ".luacheckrc",
-      --   "selene.toml",
-      --   "stylua.toml",
-      --   ".project",
-      --   ".git"
-      -- ),
+      -- root_dir = function(fname)
+      --   local root = util.root_pattern(unpack(root_files))(fname)
+      --   if root and root ~= vim.env.HOME then
+      --     return root
+      --   end
+      --   root = util.root_pattern 'lua/'(fname)
+      --   if root then
+      --     return root .. '/lua/'
+      --   end
+      --   return util.find_git_ancestor(fname)
+      -- end,
     })
   end,
 })

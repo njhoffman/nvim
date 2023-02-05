@@ -3,11 +3,6 @@ local M = {}
 M.skipped_plugins = {
   ["nvim-bufdel"] = { "ojroques/nvim-bufdel" },
   ["vista.vim"] = { "liuchengxu/vista.vim" },
-  ["neo-tree"] = {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v2.x",
-    requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
-  },
 }
 
 -- https://github.com/stevearc/oil.nvim
@@ -181,7 +176,6 @@ M.telescope_plugins = {
   ["nvim-neoclip.lua"] = { "AckslD/nvim-neoclip.lua", requires = { "tami5/sqlite.lua", module = "sqlite" } },
   ["cheatsheet.nvim"] = { "sudormrfbin/cheatsheet.nvim" },
   ["dir-telescope.nvim"] = { "princejoogie/dir-telescope.nvim" },
-  ["telescope-arecibo.nvim"] = { "nvim-telescope/telescope-arecibo.nvim" },
   ["telescope-asynctasks.nvim"] = {
     "GustavoKatel/telescope-asynctasks.nvim",
     requires = "skywind3000/asynctasks.vim",
@@ -396,7 +390,12 @@ M.interface_plugins = {
   ["diffview.nvim"] = { "sindrets/diffview.nvim" },
   ["live-command.nvim"] = { "smjonas/live-command.nvim" },
   ["nvim-bqf"] = { "kevinhwang91/nvim-bqf" },
-  ["nvim-tree.lua"] = { "kyazdani42/nvim-tree.lua" },
+  ["neo-tree"] = {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x",
+    requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
+  },
+  -- ["nvim-tree.lua"] = { "kyazdani42/nvim-tree.lua" },
   ["nvim-ufo"] = { "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" },
   ["perfanno.nvim"] = { "t-troebst/perfanno.nvim" },
   ["quickmath.nvim"] = { "jbyuki/quickmath.nvim" },

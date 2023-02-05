@@ -122,6 +122,25 @@ return function()
     -- DapVariableTreeString { String },
     -- DapVariableTreeNumber { Number },
 
+    -- -- WhichKey
+    --     WhichKey = { fg = clrs.accent, gui = "bold" },
+    --     WhichKeyGroup = { fg = clrs.text },
+    --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
+    --     WhichKeySeperator = { fg = clrs.fg },
+    --     WhichKeyFloating = { bg = clrs.float },
+    --     WhichKeyFloat = { bg = clrs.float },
+    WhichKey({ fg = "#f78077", gui = "bold" }), --Function
+    WhichKeyGroup({ fg = "#619cf4" }), -- Keyword
+    WhichKeyDesc({ fg = "#5d79a1", gui = "italic" }), -- Identifier
+    WhichKeySeperator({ fg = clrs.fg }), -- DiffAdded
+    WhichKeyFloat({ bg = NormalFloat.bg }), -- NormalFloat
+    -- WhichKeyValue { bg = clrs.float }, -- Comment
+    -- WhichKey = { fg = colors.purple, gui = "bold" },
+    -- WhichKeyGroup = { fg = colors.cyan },
+    -- WhichKeyDesc = { fg = colors.blue, gui = "italic" },
+    -- WhichKeySeperator = { fg = colors.green },
+    -- WhichKeyFloat = { bg = colors.active },
+
     -- +--- PackageInfo ---+
     PackageInfoOutdatedVersion({ fg = "#d19a66" }),
     PackageInfoUpToDateVersion({ fg = "#3C4048" }),
@@ -150,10 +169,39 @@ return function()
     TelescopePromptTitle({ bg = "none" }),
     TelescopePreviewTitle({ fg = "#47a0f0", bg = "none" }),
     TelescopeResultsTitle({ fg = "#64a9ec", bg = "none" }),
+    TelescopeResultsIdentifier({ fg = "#4466ee" }),
+    TelescopeResultsSpecialComment({ fg = "#4488cc" }),
+    -- { entry.value.event, "vimAutoEvent" },
+    -- { entry.value.group_name, "vimAugroup" },
+    -- { entry.value.pattern, "vimAutoCmdSfxList" },
+    -- "TelescopeResultsDiffAdd" },
+    -- "TelescopeResultsDiffAdd" },
+    -- "TelescopeResultsDiffChange" },
+    -- "TelescopeResultsDiffChange" },
+    -- "TelescopeResultsDiffChange" },
+    -- "TelescopeResultsDiffDelete" },
+    -- = "TelescopeResultsDiffUntracked" },
+    --
+    -- ["Class"] = "TelescopeResultsClass",
+    -- ["Constant"] = "TelescopeResultsConstant",
+    -- ["Field"] = "TelescopeResultsField",
+    -- ["Function"] = "TelescopeResultsFunction",
+    -- ["Method"] = "TelescopeResultsMethod",
+    -- ["Property"] = "TelescopeResultsOperator",
+    -- ["Struct"] = "TelescopeResultsStruct",
+    -- ["Variable"] = "TelescopeResultsVariable",
+    TelescopeWhichKeyName({ WhichKeyDesc }),
+    TelescopeWhichKeyBorder({ WhichKeyDesc }),
+    TelescopeWhichKeyKey({ WhichKey }),
+    TelescopeWhichKeyNormal({ WhichKeySeperator }),
+
+    --     WhichKeyGroup = { fg = clrs.text },
+    --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
+    --     WhichKeySeperator = { fg = clrs.fg },
+
     -- TelescopePromptCounter { NonText },
     -- TelescopePathSeparator { fg = '#667788' },
     -- TelescopeQueryFilter { fg = '#4466FF'},
-    -- TelescopeResultsIdentifier = {},
     -- TelescopeResultsComment = {},
     -- TelescopeMultiSelection guifg=#928374          " Multisections
 
@@ -251,6 +299,9 @@ return function()
     -- NotifyDEBUGTitle = { fg = colors.light_gray },
     -- NotifyTRACETitle = { fg = colors.hint },
 
+    -- -- NeoTree
+    NeoTreeIndentMarker({ fg = "#222222" }),
+
     -- -- LspSaga
     -- LspFloatWinNormal = { fg = colors.fg, bg = colors.bg },
     -- LspFloatWinBorder = { fg = colors.purple },
@@ -344,25 +395,6 @@ return function()
     -- NvimTreeNormal = { fg = colors.fg, bg = colors.active },
     -- NvimTreeCursorLine = { bg = colors.float },
     -- NvimTreeVertSplit = { fg = colors.active, bg = colors.active },
-
-    -- -- WhichKey
-    --     WhichKey = { fg = clrs.accent, gui = "bold" },
-    --     WhichKeyGroup = { fg = clrs.text },
-    --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
-    --     WhichKeySeperator = { fg = clrs.fg },
-    --     WhichKeyFloating = { bg = clrs.float },
-    --     WhichKeyFloat = { bg = clrs.float },
-    WhichKey({ fg = "#f78077", gui = "bold" }), --Function
-    WhichKeyGroup({ fg = "#619cf4" }), -- Keyword
-    -- WhichKeyDesc  { fg = clrs.nord7, gui = "italic" }, -- Identifier
-    -- WhichKeySeperator  { fg = clrs.fg }, -- DiffAdded
-    WhichKeyFloat({ bg = NormalFloat.bg }), -- NormalFloat
-    -- WhichKeyValue { bg = clrs.float }, -- Comment
-    -- WhichKey = { fg = colors.purple, gui = "bold" },
-    -- WhichKeyGroup = { fg = colors.cyan },
-    -- WhichKeyDesc = { fg = colors.blue, gui = "italic" },
-    -- WhichKeySeperator = { fg = colors.green },
-    -- WhichKeyFloat = { bg = colors.active },
 
     -- -- BufferLine
     -- BufferLineIndicatorSelected = { fg = colors.yellow },

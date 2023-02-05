@@ -144,8 +144,8 @@ local setupConfig = {
       compare.offset,
       compare.exact,
       compare.score,
-      require("cmp_fuzzy_path.compare"),
-      require("cmp_fuzzy_buffer.compare"),
+      -- require("cmp_fuzzy_path.compare"),
+      -- require("cmp_fuzzy_buffer.compare"),
       sort_under,
       function(...)
         return cmp_helper.prioritize_argument(...)

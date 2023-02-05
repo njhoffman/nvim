@@ -106,8 +106,10 @@ vim.import("config", function(config)
     },
     Vimade = {
       { "FileType", "Trouble", "VimadeBufDisable" },
+      { "FileType", "aerial", "VimadeBufDisable" },
       { "FileType", "qf", "VimadeBufDisable" },
       { "FileType", "nerdtree", "VimadeBufDisable" },
+      { "FileType", "neo-tree", "VimadeBufDisable" },
       { "FileType", "Mundo", "VimadeBufDisable" },
       { "FileType", "NvimTree", "VimadeBufDisable" },
       { "FileType", "MundoDiff", "VimadeBufDisable" },

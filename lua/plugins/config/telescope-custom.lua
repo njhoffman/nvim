@@ -1,8 +1,9 @@
 local previewers = require("telescope.previewers")
 local builtin = require("telescope.builtin")
 local actions = require("telescope.actions")
+local config = require("telescope.config")
 local actions_state = require("telescope.actions.state")
-local actions_set = require "telescope.actions.set"
+local actions_set = require("telescope.actions.set")
 local H = require("helpers")
 
 local M = {}
@@ -37,7 +38,7 @@ local _multiopen = function(prompt_bufnr, open_cmd)
   if not num_selections or num_selections <= 1 then
     -- actions.add_selection(prompt_bufnr)
     actions.select_default(prompt_bufnr)
-  elseif (open_method == "quickfix") then
+  elseif open_method == "quickfix" then
     _open_buffer(open_cmd, prompt_bufnr)
   else -- insert method
     local cwd = picker.cwd
@@ -70,27 +71,9 @@ M.actions.multi_open = function(prompt_bufnr)
   _multiopen(prompt_bufnr, "edit")
 end
 
--- TODO: add special highglight for project
--- if self.prompt_prefix ~= "" then
---   vim.api.nvim_buf_add_highlight(
---     self.prompt_bufnr,
---     ns_telescope_prompt_prefix,
---     self._current_prefix_hl_group or "TelescopePromptPrefix",
---     0,
---     0,
---     #self.prompt_prefix
---   )
--- end
--- end
-
-M.actions.switch_layout = function(prompt_bufnr)
-  local opts = {}
-  local _ = pcall(require "telescope".extensions.find_pickers.find_pickers, opts)
-end
-
 M.actions.find_pickers = function(prompt_bufnr)
   local opts = {}
-  local _ = pcall(require "telescope".extensions.find_pickers.find_pickers, opts)
+  local _ = pcall(require("telescope").extensions.find_pickers.find_pickers, opts)
 end
 
 M.actions.results_toggle_down = function(prompt_bufnr)
@@ -107,6 +90,7 @@ M.actions.results_page_up = function(prompt_bufnr)
   -- actions_set.scroll_results(prompt_bufnr, 1)
   actions_set.shift_selection(prompt_bufnr, -15)
 end
+
 M.actions.results_page_down = function(prompt_bufnr)
   -- actions_set.scroll_results(prompt_bufnr, 1)
   actions_set.shift_selection(prompt_bufnr, 15)
@@ -120,12 +104,18 @@ M.actions.toggle_whichkey = function(prompt_bufnr)
     -- column_padding = "  "
     -- max_height = 0.4,
     -- only_show_current_mode = true,
-    keybind_width = 6,
+    keybind_width = 9,
     -- keybind_width = 5,
-    name_width = 20,
+    name_width = 25,
+    winblend = 25,
     -- name_width = 30,
     -- line_padding = 1,
     -- close_with_action = true,
+    -- mode_hl = "",
+    name_hl = "TelescopeWhichKeyName",
+    keybind_hl = "TelescopeWhichKeyKey",
+    normal_hl = "TelescopeWhichKeyNormal",
+    border_hl = "TelescopeWhichKeyBorder",
     -- normal_hl = "TelescopePrompt",
     -- border_hl = "TelescopePromptBorder",
     -- winblend = 15, --  config.values.winblend,
@@ -133,21 +123,42 @@ M.actions.toggle_whichkey = function(prompt_bufnr)
   actions.which_key(prompt_bufnr, whichkey_opts)
 end
 
+M.actions.switch_layout = function(prompt_bufnr)
+  local opts = {}
+  local picker = actions_state.get_current_picker(prompt_bufnr)
+
+  if picker.layout_strategy == "bottom_pane" then
+    opts = require("telescope.themes").get_dropdown()
+  elseif picker.layout_strategy == "center" then
+    opts.layout_config = config.values.layout_config
+    opts.layout_strategy = "flex"
+  elseif picker.layout_strategy == "flex" then
+    opts = require("telescope.themes").get_cursor()
+  elseif picker.layout_strategy == "cursor" then
+    opts = require("telescope.themes").get_ivy()
+  end
+  opts.results_title = picker.results_title
+  actions.close(prompt_bufnr)
+  pcall(require("telescope.builtin").resume, opts)
+end
+
 M.actions.switch_picker = function(prompt_bufnr)
   local picker = actions_state.get_current_picker(prompt_bufnr)
   local prompt_text = picker:_get_prompt()
+
   actions.close(prompt_bufnr)
 
   local opts = {
     default_text = prompt_text,
-    -- results_title =
   }
+
   if picker.prompt_title == "Frecency" then
-    local _ = pcall(require "telescope.builtin".oldfiles, opts)
+    local _ = pcall(require("telescope.builtin").oldfiles, opts)
   elseif picker.prompt_title == "Find Files" then
-    local _ = pcall(require "telescope".extensions.frecency.frecency, opts)
+    local _ = pcall(require("telescope").extensions.frecency.frecency, opts)
   else
-    local _ = pcall(require "telescope.builtin".find_files, opts)
+    opts.results_title = (opts.cwd or vim.fn.getcwd()):gsub(vim.fn.getenv("HOME"), "~")
+    local _ = pcall(require("telescope.builtin").find_files, opts)
   end
 end
 
@@ -167,30 +178,18 @@ M.actions.directory_up = function(prompt_bufnr)
 
     dir = "/" .. table.concat(dir, "/")
     dir = dir:gsub(vim.fn.getenv("HOME"), "~")
-    actions.close(prompt_bufnr)
 
     local opts = {
       results_title = dir,
-      find_command = { "rg", "--ignore", "--hidden", "--sort", "path", "--files" },
       cwd = dir,
       follow = true,
-      prompt_prefix = prompt_prefix
+      prompt_prefix = prompt_prefix,
     }
-    local _ = pcall(require "telescope.builtin".find_files, opts)
+
+    actions.close(prompt_bufnr)
+    -- picker:refresh(finders.new_oneshot_job(cmd, opts), {})
+    local _ = pcall(require("telescope.builtin").find_files, opts)
   end
-end
-
-M.previewers.git_bcommits = function(opts)
-  opts = opts or {}
-  opts.previewer = previewers.new_termopen_previewer({
-    get_command = function(entry)
-      return {
-        "git", "-c", "core.pager=delta", "-c", "delta.pager=less -R", "show", entry.value,
-      }
-    end,
-  })
-
-  builtin.git_bcommits(opts)
 end
 
 M.actions.git_status = function(opts)
@@ -203,7 +202,13 @@ M.actions.git_status = function(opts)
         return { "bat", "--style=plain", entry.value }
       end
       return {
-        "git", "-c", "core.pager=delta", "-c", "delta.pager=less -R", "diff", entry.value,
+        "git",
+        "-c",
+        "core.pager=delta",
+        "-c",
+        "delta.pager=less -R",
+        "diff",
+        entry.value,
       }
     end,
   })
@@ -221,6 +226,30 @@ M.actions.git_status = function(opts)
 
   builtin.git_status(opts)
 end
+
+M.previewers.git_bcommits = previewers.new_termopen_previewer({
+  get_command = function(entry)
+    return {
+      "git",
+      "-c",
+      "core.pager=delta",
+      "-c",
+      "delta.pager=less -R",
+      "show",
+      entry.value,
+    }
+  end,
+})
+
+M.previewers.delta = previewers.new_termopen_previewer({
+  get_command = function(entry)
+    if entry.status == "??" or "A " then
+      return { "git", "diff", entry.value }
+    end
+
+    return { "git", "diff", entry.value .. "^!" }
+  end,
+})
 
 return M
 

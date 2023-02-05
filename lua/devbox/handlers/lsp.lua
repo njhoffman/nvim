@@ -26,12 +26,11 @@ local handlers = {
   ["textDocument/codeAction"] = {
     -- { originSelectionRange, targetRange, targetSelectionRange, targetUri }
     -- range { end = { character, line }, start = { character, line } }
-    get_contents = function(result)
-      vim.dbglog({ "codeaction", result })
-      return (result and #result > 0) and result or nil
+    get_contents = function(results)
+      return (results and #results > 0) and results or nil
     end,
     get_summary = function(targets, load_time)
-      return load_time .. " definition " .. #targets .. " locations"
+      return load_time .. " codeaction " .. #targets .. " commands"
     end,
   },
   ["textDocument/references"] = {

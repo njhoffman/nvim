@@ -39,6 +39,6 @@ for _, mod_name in ipairs({
   vim.import(mod_name)
 end
 
-require("notifications.recipes.progress").config()
+-- require("notifications.recipes.progress").config()
 
 -- require "plenary.profile".stop()

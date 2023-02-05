@@ -67,6 +67,11 @@ function find_required_path(module)
   if f then
     return f
   end
+  ---- Try lua prefix
+  f = include_paths("/lua/" .. fname)
+  if f then
+    return f
+  end
   ---- Now search for Fennel modules
   f = include_paths(fname)
   if f then

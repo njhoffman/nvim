@@ -6,9 +6,7 @@ local tele_custom = require("plugins.config.telescope-custom")
 local tele_mappings = require("plugins.config.telescope-mappings")
 local tele_plugins = require("plugins.config.telescope-plugins")
 
--- TODO: why can't replicate fuzzy matching behavior of fzf-lua
--- TODO: calculate page length for ctrl-f/ctrl-b
-local fzf_command = {
+local command_fd = {
   "fd",
   "--hidden",
   "--one-file-system",
@@ -61,7 +59,7 @@ local telescopeConfig = {
     layout_config = {
       bottom_pane = {
         height = 25,
-        preview_cutoff = 60,
+        preview_cutoff = 40,
         prompt_position = "top",
       },
       center = {
@@ -71,7 +69,11 @@ local telescopeConfig = {
         prompt_position = "top",
         width = 0.5,
       },
-      cursor = { height = 0.9, preview_cutoff = 40, width = 0.8 },
+      cursor = {
+        height = 0.9,
+        preview_cutoff = 40,
+        width = 0.8,
+      },
       horizontal = {
         height = 0.9,
         prompt_position = "top",
@@ -87,16 +89,17 @@ local telescopeConfig = {
         mirror = true,
         preview_height = 0.5,
       },
-      flex = { flip_columns = 130 },
+      flex = {
+        flip_columns = 130,
+      },
     },
-
+    layout_strategy = "flex", -- flex, horizontal, veritical, center
     vimgrep_arguments = command_vimgrep,
     find_command = command_rg,
     prompt_prefix = "   ", -- " 🔍 ",
     selection_caret = "▶ ",
     selection_strategy = "reset", -- follow, reset, row
     sorting_strategy = "ascending",
-    layout_strategy = "flex", -- flex, horizontal, veritical, center
     scroll_strategy = "cycle",
     color_devicons = true,
     -- winblend = 10,
@@ -118,7 +121,7 @@ local telescopeConfig = {
       timeout = 1000, -- default 250
       treesitter = true,
       msg_bg_fillchar = "╱",
-      hide_on_startup = hide_preview,
+      -- hide_on_startup = hide_preview,
     },
   },
   pickers = {
@@ -140,32 +143,19 @@ local telescopeConfig = {
       mappings = tele_mappings.file_picker,
       find_command = command_rg,
     },
+    git_status = {
+      previewer = tele_custom.previewers.delta,
+    },
     git_bcommits = {
       mappings = tele_mappings.file_picker,
       previewer = tele_custom.previewers.git_bcommits,
+      layout_strategy = "vertical",
       -- git_command = { "git", "log", "--date=format:%m-%d-%y", "--format=%h%d %ad %s <%an>" }
       -- git_command = { "git", "log", '--format=%h%d (%ar) %s <%an>' }
     },
   },
   extensions = tele_plugins.extensions,
 }
-
-local delta = previewers.new_termopen_previewer({
-  get_command = function(entry)
-    if entry.status == "??" or "A " then
-      return { "git", "diff", entry.value }
-    end
-
-    return { "git", "diff", entry.value .. "^!" }
-  end,
-})
-
-vim.keymap.set("n", "<Leader>Gs", function()
-  require("telescope.builtin").git_status({
-    previewer = delta,
-    layout_strategy = "vertical",
-  })
-end)
 
 telescope.setup(telescopeConfig)
 tele_plugins.load_extensions(telescope)

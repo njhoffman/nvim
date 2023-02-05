@@ -19,6 +19,28 @@ cmd("LuaGetPaths", function(cmd_props)
   end
 end, { desc = "Get LSP o.packpath runtime directories" })
 
+local function check_split(key)
+  local keymap = { h = "-L", l = "-R", k = "-U", j = "-D" }
+  local tmuxkey = keymap[key]
+  return function()
+    local curwin = vim.fn.winnr()
+    local testwin = vim.fn.winnr(key)
+    if curwin ~= testwin then
+      -- vim.api.nvim_open_win(...) then it returns a window handle,
+      -- which you can use as the argument to vim.api.nvim_set_current_win.
+      vim.cmd("wincmd " .. key)
+    else
+      vim.fn.system("tmux select-pane " .. tmuxkey)
+    end
+  end
+end
+-- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('...',true,true,true))
+-- TODO: c-s-d , c-s-f, c-s-h,l,j,k, c-s-|, c-s-+
+vim.keymap.set("n", "<C-S-Right>", check_split("l"), { noremap = true })
+vim.keymap.set("n", "<C-S-Left>", check_split("h"), { noremap = true })
+vim.keymap.set("n", "<C-S-Down>", check_split("j"), { noremap = true })
+vim.keymap.set("n", "<C-S-Up>", check_split("k"), { noremap = true })
+
 -- cmd("LogFiles", function(cmd_props)
 --   for match in (vim.o.packpath .. ","):gmatch("(.-)" .. ",") do
 --

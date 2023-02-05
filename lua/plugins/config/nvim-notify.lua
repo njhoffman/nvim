@@ -4,7 +4,7 @@
 local cols = math.floor(vim.opt.columns:get() / 3 * 2)
 
 local baseConfig = {
-  level = vim.log.levels.TRACE,
+  level = vim.log.levels.DEBUG,
   -- level = 0,
   fps = 30,
   render = "default",

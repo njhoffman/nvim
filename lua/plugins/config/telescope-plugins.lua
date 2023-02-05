@@ -4,6 +4,7 @@ local H = require("helpers")
 local actions = require("telescope.actions")
 
 local tele_plugs = {
+  ["arecibo"] = "telescope-arecibo.nvim",
   ["env"] = "telescope-env.nvim",
   ["devhints"] = "devhints.nvim",
   ["fences"] = "telescope-fences.nvim",
@@ -17,7 +18,6 @@ local tele_plugs = {
   ["which-key"] = "which-key.nvim",
   --
   ["aerial"] = "aerial.nvim",
-  ["arecibo"] = "telescope-arecibo.nvim",
   ["asynctasks"] = "telescope-asynctasks.nvim",
   ["bookmarks"] = "telescope-bookmarks.nvim",
   ["changes"] = "telescope-changes.nvim",
@@ -46,7 +46,7 @@ local tele_plugs = {
   ["openbrowser"] = "telescope-openbrowser.nvim",
   -- ["packer"] = "telescope-packer.nvim",
   ["ports"] = "telescope-ports.nvim",
-  ["project"] = "telescope-project.nvim",
+  ["projects"] = "project.nvim",
   ["repo"] = "telescope-repo.nvim",
   ["session-lens"] = "session-lens",
   ["tmux"] = "telescope-tmux.nvim",
@@ -327,26 +327,32 @@ M.extensions.arecibo = {
   ["show_domain_icons"] = true,
 }
 
-M.extensions.project = {
-  --[[ base_dirs = {
-    '~/dev/src',
-    {'~/dev/src2'},
-    {'~/dev/src3', max_depth = 4},
-    {path = '~/dev/src4'},
-    {path = '~/dev/src5', max_depth = 2},
-  }, ]]
-  base_dirs = {
+M.extensions.projects = {
+  workspaces = {
     {
-      path = "~/git",
-      max_depth = 4,
+      name = "ghq",
+      base_dirs = {
+        {
+          path = "~/ghq",
+          max_depth = 4,
+        },
+      },
     },
     {
-      path = "~/ghq",
-      max_depth = 4,
+      name = "nvim",
+      base_dirs = {
+        {
+          path = "~/.local/share/nvim/site/pack/packer/start",
+          max_depth = 2,
+        },
+        {
+          path = "~/.local/share/nvim/site/pack/packer/opt",
+          max_depth = 2,
+        },
+      },
     },
   },
-  hidden_files = true,
-  theme = "dropdown",
+  -- theme = "dropdown",
 }
 
 M.extensions.mapper = {

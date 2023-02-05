@@ -11,29 +11,26 @@ local mainMaps = {
     -- ["<C-l>"] = require("tmux").move_right(),
     ["<Esc>"] = actions.close,
     ["kj"] = actions.close,
-    ["<C-Space>"] = custom.actions.find_pickers,
     ["<C-f>"] = custom.actions.results_page_down,
     ["<C-b>"] = custom.actions.results_page_up,
-    ["<A-n>"] = custom.actions.results_toggle_down,
-    ["<A-p>"] = custom.actions.results_toggle_up,
+    ["<M-n>"] = custom.actions.results_toggle_down,
+    ["<M-p>"] = custom.actions.results_toggle_up,
     ["<CR>"] = actions.select_default + actions.center,
     ["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
     ["<C-q>"] = actions.send_to_qflist + actions.open_qflist + actions.center,
     ["<C-_>"] = actions_layout.toggle_preview,
-    ["<C-]>"] = custom.actions.switch_picker,
     ["<M-/>"] = custom.actions.toggle_whichkey,
     ["<C-Down>"] = actions.cycle_history_next,
     ["<C-Up>"] = actions.cycle_history_prev,
     ["<Down>"] = actions.preview_scrolling_down,
     ["<Up>"] = actions.preview_scrolling_up,
-    ["<A-a>"] = actions.toggle_all,
+    ["<M-a>"] = actions.toggle_all,
+    ["<C-Space>"] = custom.actions.find_pickers,
+    ["<M-}>"] = custom.actions.switch_picker,
+    ["<C-^>"] = custom.actions.switch_layout,
     -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
     -- [S-F1-9] = add/remove secondary sort #
     -- [??] = clear sort
-    -- ["<C-^>"] = custom.actions.switch_layout,
-    -- ["<M-.>"] = custom.actions.switch_preview_layout,
-    -- ["<C-]>"] = custom.actions.picker_prev,
-    -- ["<C-}>"] = custom.actions.switch_picker,
   },
   n = {
     ["<Esc>"] = actions.close,
@@ -43,7 +40,7 @@ local mainMaps = {
 local fileMaps = {
   i = {
     -- change directory functionality
-    ["<A-U>"] = custom.actions.directory_up,
+    ["<M-U>"] = custom.actions.directory_up,
     ["<CR>"] = custom.actions.multi_open,
   },
 }

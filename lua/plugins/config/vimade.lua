@@ -52,6 +52,7 @@ vim.g.vimade = {
     -- "v2hexokinase",
   },
 
+  detecttermcolors = 1,
   enablebasegroups = 1,
   rowbufsize = 10,
   colbufsize = 10,
@@ -63,9 +64,8 @@ vim.g.vimade = {
   enabletreesitter = 1,
   enablefocusfading = 1,
   checkinterval = 50,
-  groupdiff = 0,
+  groupdiff = 1,
   groupscrollbind = 1,
-  detecttermcolors = 1,
   usecursorhold = 0,
 }
 

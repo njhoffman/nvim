@@ -24,7 +24,7 @@ local color_provider = function(client, bufnr)
   if cap.colorProvider then
     require("lsp-documentcolors").buf_attach(bufnr, { single_column = true })
   else
-    vim.notify({ "Lost colorProvider", vim.inspect(cap) }, "warn")
+    vim.notify("Lost colorProvider: \n" .. vim.inspect(cap), 4)
   end
 end
 
@@ -47,7 +47,7 @@ local function find_and_run_codelens()
   end, lenses)
 
   if #lenses == 0 then
-    return vim.notify("Could not find codelens to run.")
+    return vim.notify("Could not find codelens to run.", 3)
   end
 
   table.sort(lenses, function(a, b)
@@ -90,7 +90,8 @@ local function highlight_references()
   local node = ts_utils.get_node_at_cursor()
   while node ~= nil do
     local node_type = node:type()
-    if node_type == "string"
+    if
+      node_type == "string"
       or node_type == "string_fragment"
       or node_type == "template_string"
       or node_type == "document" -- for inline gql`` strings
@@ -118,7 +119,7 @@ local document_highlight_provider = function(client, bufnr)
       callback = w(vim.lsp.buf.clear_references),
     })
   else
-    vim.notify({ "Lost documentHighlightProvider", vim.inspect(cap) }, "warn")
+    vim.notify("Lost documentHighlightProvider \n" .. vim.inspect(cap), 4)
   end
 end
 
@@ -171,7 +172,8 @@ local hover_provider = function(_, bufnr)
 end
 
 local code_action_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "gC", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
+  -- keymap_buf(bufnr, "n", "gC", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
+  keymap_buf(bufnr, "n", "gC", "<cmd>CodeActionMenu<CR>", keymap_opts)
   keymap_buf(bufnr, "x", "gC", ":'<,'>lua vim.lsp.buf.range_code_action()<CR>", keymap_opts)
 
   -- -- keymap("n", "<leader>q", "<cmd>Telescope lsp_code_actions<CR>", opts)
@@ -214,7 +216,7 @@ local references_provider = function(_, bufnr)
       bufnr,
       "n",
       "gr",
-      "<cmd>lua require('telescope.builtin').lsp_references(" .. theme .. ")<CR>",
+      "<cmd>lua require('telescope.builtin').lsp_references(" .. tostring(theme) .. ")<CR>",
       keymap_opts
     )
   end
@@ -289,9 +291,7 @@ end
 -- keymap("n", "<leader>ld", "<cmd>lua vim.diagnostic.show_line_diagnostics()<CR>", opts)
 -- keymap("n", "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 -- keymap("n", "<leader>k", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
--- keymap("n", "ca", "<cmd>CodeActionMenu<cr>", opts)
 -- -- actions
--- keymap("n", "<leader>lc", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 -- keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 
 local handlers = {
@@ -311,6 +311,7 @@ local handlers = {
   signatureHelpProvider = signature_help_provider,
   typeDefinitionProvider = type_definition_provider,
   workspace = workspace,
+  -- executeCommandProvider, semanticTokensProvider, inlayHintProvider, foldingRangeProvider, workspaceSymbolProvider
 }
 
 return handlers

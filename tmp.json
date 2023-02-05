@@ -1,0 +1,32 @@
+[
+  {
+    "id": 94442398647040,
+    "num": 1,
+    "name": "1",
+    "visible": false,
+    "focused": false,
+    "rect": {
+      "x": 1,
+      "y": 24,
+      "width": 1918,
+      "height": 1033
+    },
+    "output": "eDP-1",
+    "urgent": false
+  },
+  {
+    "id": 94442398659328,
+    "num": 2,
+    "name": "2",
+    "visible": true,
+    "focused": true,
+    "rect": {
+      "x": 0,
+      "y": 23,
+      "width": 1920,
+      "height": 1035
+    },
+    "output": "eDP-1",
+    "urgent": false
+  }
+]

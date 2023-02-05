@@ -28,10 +28,8 @@ local lsp_methods = {
   { "definition", "textDocument/definition" },
   { "references", "textDocument/references" },
   { "completion", "textDocument/completion" },
-  -- { "codeaction", "textDocument/codeAction" },
-  -- { "implements", "textDocument/implementation" },
-  -- { "declaration", "textDocument/declaration" },
-  -- { "code-lens ", "textDocument/codeLens" },
+  { "codeaction", "textDocument/codeAction" },
+  -- semanticTokens,executeCommand,typeDefinition,
 }
 
 return {

@@ -35,6 +35,16 @@ local M = {
     short = "toggle nvim-tree",
     long = "toggle nvim-tree",
   },
+  neo_tree = {
+    cmd = "<cmd>NeoTreeFocusToggle<cr>",
+    short = "toggle neo-tree",
+    long = "toggle neo-tree",
+  },
+  neo_tree_2 = {
+    cmd = "<cmd>NeoTreeShowToggle<cr>",
+    short = "toggle neo-tree",
+    long = "toggle neo-tree",
+  },
   mundo1 = {
     cmd = "<cmd>UndotreeToggle<cr>",
     short = "toggle mundo",
