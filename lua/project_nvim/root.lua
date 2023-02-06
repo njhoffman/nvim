@@ -47,7 +47,7 @@ function M.find_lsp_root()
     local filetypes = client.config.filetypes
     if filetypes and vim.tbl_contains(filetypes, buf_ft) then
       if not vim.tbl_contains(config.options.ignore_lsp, client.name) then
-        local root_dir = M.lsp_workspace_root(client, fname) or config.client.root_dir
+        local root_dir = M.lsp_workspace_root(client, fname) or client.config.root_dir
         return root_dir, client.name
       end
     end
@@ -172,7 +172,13 @@ function M.get_project_root()
     or type(config.options) ~= "table"
     or type(config.options.detection_methods) ~= "table"
   then
-    vim.notify({ "Bad configuration file ...", config }, "error")
+    vim.notify({
+      "Bad configuration file ...",
+      config,
+      type(config),
+      type(config.options),
+      type(config.options.detection_methods),
+    }, "error")
     return
   end
   for _, detection_method in ipairs(config.options.detection_methods) do

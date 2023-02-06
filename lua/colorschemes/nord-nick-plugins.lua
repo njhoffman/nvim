@@ -169,7 +169,7 @@ return function()
     TelescopePromptTitle({ bg = "none" }),
     TelescopePreviewTitle({ fg = "#47a0f0", bg = "none" }),
     TelescopeResultsTitle({ fg = "#64a9ec", bg = "none" }),
-    TelescopeResultsIdentifier({ fg = "#4466ee" }),
+    TelescopeResultsIdentifier({ fg = "#6476ce" }),
     TelescopeResultsSpecialComment({ fg = "#4488cc" }),
     -- { entry.value.event, "vimAutoEvent" },
     -- { entry.value.group_name, "vimAugroup" },
@@ -301,27 +301,6 @@ return function()
 
     -- -- NeoTree
     NeoTreeIndentMarker({ fg = "#222222" }),
-
-    -- -- LspSaga
-    -- LspFloatWinNormal = { fg = colors.fg, bg = colors.bg },
-    -- LspFloatWinBorder = { fg = colors.purple },
-    -- LspSagaDiagnosticBorder = { fg = colors.gray },
-    -- LspSagaDiagnosticHeader = { fg = colors.blue },
-    -- LspSagaDiagnosticTruncateLine = { fg = colors.highlight },
-    -- LspSagaShTruncateLine = { fg = colors.highlight },
-    -- LspSagaDocTruncateLine = { fg = colors.highlight },
-    -- LspSagaBorderTitle = { fg = colors.cyan },
-    -- LspSagaHoverBorder = { fg = colors.blue },
-    -- LspSagaRenameBorder = { fg = colors.green },
-    -- LspSagaDefPreviewBorder = { fg = colors.green },
-    -- LspSagaCodeActionTitle = { fg = colors.blue },
-    -- LspSagaCodeActionContent = { fg = colors.purple },
-    -- LspSagaCodeActionBorder = { fg = colors.blue },
-    -- LspSagaCodeActionTruncateLine = { fg = colors.highlight },
-    -- LspSagaSignatureHelpBorder = { fg = colors.light_red },
-    -- LspSagaFinderSelection = { fg = colors.green },
-    -- LspSagaAutoPreview = { fg = colors.red },
-
     -- -- Trouble
     -- TroubleCount = { fg = colors.purple },
     -- TroubleNormal = { fg = colors.fg },

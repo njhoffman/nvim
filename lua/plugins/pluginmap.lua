@@ -343,7 +343,7 @@ M.ui_plugins = {
   ["vim-bling"] = { "ivyl/vim-bling" },
   ["vim-cool"] = { "romainl/vim-cool" },
   ["vim-hexokinase"] = { "RRethy/vim-hexokinase" },
-  ["nvim-colorizer"] = { "norcalli/nvim-colorizer.lua" },
+  -- ["nvim-colorizer"] = { "norcalli/nvim-colorizer.lua" },
   ["vim-plugin-AnsiEsc"] = { "joeysino/vim-plugin-AnsiEsc" },
   ["vimade"] = { "TaDaa/vimade" },
   ["which-key.nvim"] = { "~/git/which-key.nvim", branch = "master" },
@@ -416,7 +416,6 @@ M.integration_plugins = {
   ["tasks.nvim"] = { "GustavoKatel/tasks.nvim" },
   ["pantran.nvim"] = { "potamides/pantran.nvim" },
   ["colortils.nvim"] = { "nvim-colortils/colortils.nvim" },
-  -- https://github.com/uga-rosa/ccc.nvim
   ["cheat.sh-vim"] = { "dbeniamine/cheat.sh-vim" },
   -- ["go.nvim"] = { "ray-x/go.nvim", requires = "ray-x/guihua.lua" },
   ["id3.vim"] = { "AndrewRadev/id3.vim" }, -- "AndrewRadev/id3.vim"
@@ -484,7 +483,6 @@ M.lsp_plugins = {
   ["nvim-lightbulb"] = { "kosayoda/nvim-lightbulb" },
   ["lspsaga.nvim"] = { "tami5/lspsaga.nvim" },
   ["nvim-code-action-menu"] = { "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu" },
-  -- ["nvim-lsp-installer"]    = { "williamboman/nvim-lsp-installer", requires = "neovim/nvim-lspconfig" },
   ["trouble.nvim"] = { "folke/trouble.nvim" },
   ["ntangle-lsp.nvim"] = {
     "jbyuki/ntangle-lsp.nvim",

@@ -40,6 +40,7 @@ require("nvim-treesitter.configs").setup({
       "help",
       "latex",
       "bash",
+      "typescript",
       -- "markdown",
     },
     custom_captures = {

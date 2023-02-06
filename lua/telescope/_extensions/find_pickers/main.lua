@@ -12,7 +12,7 @@ local default_conf_opts = {
   builtins = true,
   pickers = {
     planets = {
-      hidden = true
+      hidden = true,
     },
     neoclip_a = { hidden = true },
     neoclip_b = { hidden = true },
@@ -56,9 +56,9 @@ local default_conf_opts = {
   new_pickers = {
     ghn_notifications = {
       extension = "ghn",
-      command = "notifications"
-    }
-  }
+      command = "notifications",
+    },
+  },
 }
 
 M.setup = function(setup_config)
@@ -79,13 +79,15 @@ M.find_pickers = function(theme_opts, conf_opts)
   theme_opts = themes.get_dropdown(theme_opts)
   conf_opts = vim.tbl_deep_extend("force", default_conf_opts, conf_opts or {})
 
-  pickers.new(theme_opts, {
-    prompt_title    = "Find Pickers",
-    results_title   = "Picker",
-    finder          = finders.get_finder(conf_opts),
-    attach_mappings = actions.attach_mappings,
-    sorter          = telescope_config.file_sorter(theme_opts),
-  }):find()
+  pickers
+    .new(theme_opts, {
+      prompt_title = "Find Pickers",
+      results_title = "Picker",
+      finder = finders.get_finder(conf_opts),
+      attach_mappings = actions.attach_mappings,
+      sorter = telescope_config.file_sorter(theme_opts),
+    })
+    :find()
 end
 
 return M

@@ -150,7 +150,7 @@ local opts = {
   },
   marks = {
     Cursor = {
-      text = "•",
+      text = " ",
     },
     Search = { text = { "-", "=" }, priority = 0, color = "orange" },
     Error = { text = { "-", "=" }, priority = 1, color = "#770000" },
