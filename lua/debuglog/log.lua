@@ -1,5 +1,5 @@
 local output_log = require("debuglog.output")
-local logutils = require("logger.utils")
+local logutils = require("debuglog.utils")
 local config = require("debuglog.config")
 local unpack = unpack or table.unpack
 
@@ -11,19 +11,15 @@ log.new = function(standalone)
       return output_log(i, x, logutils.make_string, ...)
     end
     obj[("fmt_%s"):format(x.name)] = function()
-      return output_log(
-        i,
-        x,
-        function(...)
-          local passed = { ... }
-          local fmt = table.remove(passed, 1)
-          local inspected = {}
-          for _, v in ipairs(passed) do
-            table.insert(inspected, vim.inspect(v))
-          end
-          return string.format(fmt, unpack(inspected))
+      return output_log(i, x, function(...)
+        local passed = { ... }
+        local fmt = table.remove(passed, 1)
+        local inspected = {}
+        for _, v in ipairs(passed) do
+          table.insert(inspected, vim.inspect(v))
         end
-      )
+        return string.format(fmt, unpack(inspected))
+      end)
     end
   end
 end

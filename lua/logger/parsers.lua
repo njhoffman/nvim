@@ -1,5 +1,5 @@
 local M = {}
-local logutils = require("logger.utils")
+local logutils = require("debuglog.utils")
 
 M.parse_message = function(message, cols)
   local msg = ""

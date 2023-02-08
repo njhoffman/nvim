@@ -1,43 +1,66 @@
-local feline = require("feline")
-local defaults = require("feline.default_components").statusline.icons
--- local defaults = require('feline.default_components').winbar.icons
 local colors = require("plugins.config.feline-nvim-colors")
-local custom_comps = require("plugins.config.feline-nvim-components")
-local provider_project_nvim = require("plugins.config.feline-nvim-provider-project-nvim")
 local provider_project_uo = require("plugins.config.feline-nvim-provider-project-uo")
+local custom_status_comps = require("plugins.config.feline-nvim-components")
+local defaults = require("feline.default_components").statusline.icons
+local winbar_defaults = require("feline.default_components").winbar.icons
 
--- require("lsp_signature").status_line(max_width)
+local status_comps = vim.deepcopy(defaults)
+local winbar_comps = vim.deepcopy(winbar_defaults)
 
-table.insert(defaults.active[1], 3, custom_comps.ProjectUoComponent)
-defaults.active[1][4].left_sep = { hl = { bg = "oceanblue" }, str = " " }
-table.insert(defaults.active[1], 7, custom_comps.AsciiComponent)
-table.insert(defaults.active[1], 8, custom_comps.FiletypeComponent)
-defaults.active[2][1] = custom_comps.GitBranchComponent
-defaults.active[2][2] = custom_comps.GitDiffAddedComponent
-defaults.active[2][3] = custom_comps.GitDiffChangedComponent
-defaults.active[2][4] = custom_comps.GitDiffRemovedComponent
+table.insert(status_comps.active[1], 3, custom_status_comps.ProjectUoComponent)
+status_comps.active[1][4].left_sep = { hl = { bg = "oceanblue" }, str = " " }
+table.insert(status_comps.active[1], 7, custom_status_comps.AsciiComponent)
+table.insert(status_comps.active[1], 8, custom_status_comps.FiletypeComponent)
+status_comps.active[2][1] = custom_status_comps.GitBranchComponent
+status_comps.active[2][2] = custom_status_comps.GitDiffAddedComponent
+status_comps.active[2][3] = custom_status_comps.GitDiffChangedComponent
+status_comps.active[2][4] = custom_status_comps.GitDiffRemovedComponent
 
--- local components = { active = {}, inactive = {} }
--- table.insert(components.active[1], defaults.active.vi_mode.left)
--- table.insert(defaults.active[1], 3, custom_comps.ProjectNvimComponent)
--- table.insert(components.active[1], defaults.active[1])
--- table.insert(components.active[1], defaults.file.info)
--- table.insert(components.inactive[1], defaults.vi_mode.left)
--- table.insert(components.inactive[1], defaults.file.info)
--- table.insert(components.active[3], defaults.diagnos.err)
--- table.insert(components.active[3], defaults.diagnos.warn)
--- table.insert(components.active[3], defaults.diagnos.hint)
--- table.insert(components.active[3], defaults.diagnos.info)
--- table.insert(components.active[3], defaults.lsp.name)
--- table.insert(components.active[3], defaults.file.os)
--- table.insert(components.active[3], defaults.file.position)
--- table.insert(components.active[3], defaults.line_percentage)
--- table.insert(components.active[3], defaults.scroll_bar)
--- table.insert(components.active[3], defaults.vi_mode.right)
+local navic = require("lsp.nvim-navic")
 
-feline.setup({
+-- local treesitter_context = require("modules.lang.treesitter").context
+--
+-- function M.eval()
+--   local columns = vim.api.nvim_get_option("columns")
+--   if not pcall(require, "lsp_signature") then
+--     return treesitter_context(columns)
+--   end
+--   local sig = require("lsp_signature").status_line(columns)
+--
+--   if sig == nil or sig.label == nil or sig.range == nil then
+--     return treesitter_context(columns)
+--   end
+--   local label1 = sig.label
+--   local label2 = ""
+--   if sig.range then
+--     label1 = sig.label:sub(1, sig.range["start"] - 1)
+--     label2 = sig.label:sub(sig.range["end"] + 1, #sig.label)
+--   end
+--   local doc = sig.doc or ""
+--   if #doc + #sig.label >= columns then
+--     local trim = math.max(5, columns - #sig.label - #sig.hint - 10)
+--     doc = doc:sub(1, trim) .. "..."
+--     -- lprint(doc)
+--   end
+--
+--   return "%#WinBarSignature#"
+--       .. label1
+--       .. "%*"
+--       .. "%#WinBarSigActParm#"
+--       .. sig.hint
+--       .. "%*"
+--       .. "%#WinBarSignature#"
+--       .. label2
+--       .. "%*"
+--       .. "%#WinBarSigDoc#"
+--       .. " "
+--       .. doc
+--     or "" .. "%*"
+-- end
+
+local statusline_cfg = {
+  components = status_comps,
   colors = { bg = colors.main.bg, fg = colors.main.fg },
-  components = defaults,
   vi_mode_colors = colors.vi_mode,
   separators = {
     vertical_bar = "┃",
@@ -78,36 +101,18 @@ feline.setup({
     bufnames = {},
   },
   custom_providers = {
-    -- project_nvim = provider_project_nvim.provider,
     project_uo = provider_project_uo.provider,
   },
-  -- highlight_reset_triggers = { 'SessionLoadPost', 'ColorScheme' }
-  -- conditional_components = { {
-  --  -- Only use this components table for the 2nd window
-  --   condition = function()
-  --       return vim.api.nvim_win_get_number(0) == 2
-  --   end,
-  --   active = {
-  --       -- Components used for active window
-  --   },
-  --   inactive = {
-  --       -- Components used for inactive windows
-  --   }
-  --  } }
-})
+}
+-- vim.api.nvim_set_hl(0, "WinBarSignature", { fg = "#dedede", bg = "#363636" })
+-- vim.api.nvim_set_hl(0, "WinBarSigDoc", { fg = "#dedede", bg = "#363636" })
+-- vim.api.nvim_set_hl(0, "WinBarSigActParm", { fg = "#dedede", bg = "#9f3838" })
 
--- TreeSitter
--- local ts_utils = require("nvim-treesitter.ts_utils")
--- local ts_parsers = require("nvim-treesitter.parsers")
--- local ts_queries = require("nvim-treesitter.query")
---[[ table.insert(components.active[2], {
-  provider = function()
-    local node = require("nvim-treesitter.ts_utils").get_node_at_cursor()
-    return ("%d:%s [%d, %d] - [%d, %d]")
-      :format(node:symbol(), node:type(), node:range())
-  end,
-  enabled = function()
-    local ok, ts_parsers = pcall(require, "nvim-treesitter.parsers")
-    return ok and ts_parsers.has_parser()
-  end
-}) ]]
+require("feline").setup(statusline_cfg)
+
+local winbar_cfg = {
+  colors = { bg = colors.main.bg, fg = colors.main.fg },
+  vi_mode_colors = colors.vi_mode,
+  components = winbar_comps,
+}
+-- require("feline").winbar.setup(winbar_cfg)

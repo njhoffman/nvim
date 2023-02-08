@@ -1,16 +1,24 @@
 require("globals.impatient")
 require("globals.importer")
-vim.inspect = require("inspect")
 
 vim.import("globals.variables")
 vim.import("user-options")
 vim.import("vim-options")
 
+local _nil = function()
+  return nil
+end
+
+vim.inspect = require("inspect")
+
 local debuglog = vim.import("debuglog")
-vim.dbg = debuglog.dbg
-vim.dbglog = debuglog.log
-vim.dbgbuf = debuglog.buf
-vim.dbgtime = debuglog.timer
+if debuglog then
+  vim.dbg = debuglog.dbg or _nil()
+  vim.dbglog = debuglog.log or _nil()
+  vim.dbgbuf = debuglog.buf or _nil()
+  vim.dbgtime = debuglog.timer or _nil()
+  -- vim.inspect = debuglog.dump or vim.inspect
+end
 
 local logger = vim.import("logger")
 if logger ~= nil and logger.init ~= nil then

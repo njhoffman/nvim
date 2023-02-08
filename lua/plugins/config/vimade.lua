@@ -64,7 +64,7 @@ vim.g.vimade = {
   enabletreesitter = 1,
   enablefocusfading = 1,
   checkinterval = 50,
-  groupdiff = 1,
+  groupdiff = 0,
   groupscrollbind = 1,
   usecursorhold = 0,
 }

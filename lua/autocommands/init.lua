@@ -74,8 +74,8 @@ vim.import("config", function(config)
       { "BufNewFile,BufRead", "Dockerfile*", "setlocal ft=Dockerfile" },
       { "BufNewFile,BufRead", "Dockerfile.*", "setlocal ft=Dockerfile" },
       { "BufNewFile,BufRead", ".dockerignore", "setlocal ft=gitignore" },
-      { "BufNewFile,BufRead", "nord-nick-lush.lua", "setlocal ft=lush syn=lua" },
-      { "BufNewFile,BufRead", "nord-nvim.lua", "setlocal ft=lush syn=lua" },
+      { "BufNewFile,BufRead", "nord-nick-lush.lua", "setlocal ft=lush.lua syn=lua" },
+      { "BufNewFile,BufRead", "nord-nvim.lua", "setlocal ft=lush.lua syn=lua" },
       { "BufNewFile,BufRead", "*.t", "setlocal ft=tangle" },
       { "BufNewFile,BufRead", "git", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
       { "BufNewFile,BufRead", "*.conf", "setlocal ft=conf.dosini" },
@@ -136,7 +136,7 @@ vim.import("config", function(config)
     -- },
     Shape = {
       { "FocusLost", "*", "hi TermCursor cterm=NONE gui=NONE" },
-      { "FocusGained", "*", "hi TermCursor cterm=reverse gui=reverse" },
+      -- { "FocusGained", "*", "hi TermCursor cterm=reverse gui=reverse" },
       { "VimLeave,VimSuspend", "*", "set guicursor=a:block-blinkon90" },
     },
     terminal = {

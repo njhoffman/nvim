@@ -66,12 +66,13 @@ opt("switchbuf", "useopen,usetab") -- Use the current tab for openning files fro
 opt("termguicolors", true)
 opt("textwidth", 1000)
 opt("timeout", true)
-opt("timeoutlen", 500) -- 1000
+opt("timeoutlen", 700) -- 1000
 opt("ttimeoutlen", 40) -- 50
 opt("undolevels", 1000)
 opt("updatetime", 4000)
 opt("whichwrap", "b,s,<,>,[,],h,l")
 opt("wildignore", "*.o,*~,*.pyc") -- wildchar/charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
+opt("winbar", "")
 opt("writebackup", true)
 -- opt("display", "msgsep")
 -- opt("shortmess", o.shortmess .. "cS") F silents filename

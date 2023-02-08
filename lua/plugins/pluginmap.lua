@@ -31,11 +31,29 @@ M.dap_plugins = {
   ["nvim-dap-ui"] = {
     "rcarriga/nvim-dap-ui",
     requires = { "theHamsta/nvim-dap-virtual-text", "mfussenegger/nvim-dap" },
+    cmd = "Luadev",
+    opt = true,
+    after = "nvim-dap",
     -- cmd = { "DapEnable", "DapShowLog", "DapContinue", "DapToggleRepl", "DapToggleBreakpoint" },
   },
-  ["one-small-step-for-vimkind"] = { "jbyuki/one-small-step-for-vimkind", requires = "mfussenegger/nvim-dap" },
-  ["nvim-dap-python"] = { "mfussenegger/nvim-dap-python", requires = "mfussenegger/nvim-dap" },
-  ["dash.nvim"] = { "jbyuki/dash.nvim", requires = "jbyuki/ntangle.nvim" },
+  ["one-small-step-for-vimkind"] = {
+    "jbyuki/one-small-step-for-vimkind",
+    requires = "mfussenegger/nvim-dap",
+    cmd = "Luadev",
+    opt = true,
+  },
+  ["nvim-dap-python"] = {
+    "mfussenegger/nvim-dap-python",
+    requires = "mfussenegger/nvim-dap",
+    cmd = "Luadev",
+    opt = true,
+  },
+  ["dash.nvim"] = {
+    "jbyuki/dash.nvim",
+    requires = "jbyuki/ntangle.nvim",
+    cmd = "Luadev",
+    opt = true,
+  },
 }
 
 M.picker_plugins = {
@@ -133,6 +151,7 @@ M.syntax_plugins = {
   ["vim-hindent"] = { "alx741/vim-hindent" },
   ["vim-jinja2-syntax"] = { "glench/vim-jinja2-syntax" },
   ["vim-jq"] = { "bfrg/vim-jq" },
+  -- ["vim-jqplay"] = { "bfrg/vim-jqplay" },
   ["vim-js"] = { "yuezk/vim-js" },
   ["vim-jsbeautify"] = { "maksimr/vim-jsbeautify" },
   ["vim-json"] = { "elzr/vim-json" },
@@ -221,7 +240,7 @@ M.telescope_plugins = {
   ["telescope-terraform-doc.nvim"] = { "ANGkeith/telescope-terraform-doc.nvim", requires = { "nvim-lua/plenary.nvim" } },
   ["telescope-bookmarks.nvim"] = { "dhruvmanila/telescope-bookmarks.nvim" },
   ["telescope-command-palette.nvim"] = { "LinArcX/telescope-command-palette.nvim" },
-  ["telescope-dap.nvim"] = { "nvim-telescope/telescope-dap.nvim" },
+  ["telescope-dap.nvim"] = { "nvim-telescope/telescope-dap.nvim", opt = true, keyword = "Luadev" },
   ["telescope-file-browser.nvim"] = { "nvim-telescope/telescope-file-browser.nvim" },
   ["telescope-frecency.nvim"] = { "nvim-telescope/telescope-frecency.nvim", requires = { "tami5/sqlite.lua" } },
   ["telescope-fzf-native.nvim"] = { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
@@ -246,6 +265,7 @@ M.telescope_plugins = {
   ["telescope-heading.nvim"] = { "crispgm/telescope-heading.nvim" },
   ["telescope-hop.nvim"] = { "nvim-telescope/telescope-hop.nvim" },
   ["telescope-kubectl.nvim"] = { "frenchtoasters/telescope-kubectl.nvim" },
+  ["telescope-docker.nvim"] = { "lpoto/telescope-docker.nvim" },
   ["telescope-media-files.nvim"] = { "nvim-telescope/telescope-media-files.nvim" },
   ["telescope-node-modules.nvim"] = { "nvim-telescope/telescope-node-modules.nvim" },
   ["telescope-npm.nvim"] = { "elianiva/telescope-npm.nvim" },
@@ -413,6 +433,39 @@ M.interface_plugins = {
 
 M.integration_plugins = {
   ["asynctasks.vim"] = { "skywind3000/asynctasks.vim", requires = "skywind3000/asyncrun.vim" },
+  -- ["noice.nvim"] = { "folke/noice.nvim" },
+  ["barbecue.nvim"] = {
+    "utilyre/barbecue.nvim",
+    requires = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons", -- optional dependency
+      -- separator = "  "
+    },
+    after = "nvim-web-devicons", -- keep this if you're using NvChad
+  },
+  ["colorful-winsep.nvim"] = {
+    -- highlight for Window separator
+    configure = function()
+      require("colorful-winsep").setup({
+        highlight = {
+          bg = "#16161E",
+          fg = "#1F3442",
+        },
+        -- timer refresh rate
+        interval = 30,
+        -- This plugin will not be activated for filetype in the following table.
+        no_exec_files = { "packer", "TelescopePrompt", "mason", "CompetiTest", "NvimTree" },
+        -- Symbols for separator lines, the order: horizontal, vertical, top left, top right, bottom left, bottom right.
+        symbols = { "━", "┃", "┏", "┓", "┗", "┛" },
+        close_event = function()
+          -- Executed after closing the window separator
+        end,
+        create_event = function()
+          -- Executed after creating the window separator
+        end,
+      })
+    end,
+  },
   ["tasks.nvim"] = { "GustavoKatel/tasks.nvim" },
   ["pantran.nvim"] = { "potamides/pantran.nvim" },
   ["colortils.nvim"] = { "nvim-colortils/colortils.nvim" },
@@ -462,9 +515,27 @@ M.lsp_plugins = {
       "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
   },
-  -- use("rust-lang/rust.vim")
-  --  use("simrat39/rust-tools.nvim") -- additional rust goodies, mostly lsp related
   ["nvim-navic"] = { "SmiteshP/nvim-navic" },
+  -- ["dim.lua"] = {
+  --   "narutoxy/dim.lua",
+  --   requires = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig" },
+  --   -- config = function()
+  --   --   require("dim").setup({
+  --   --     disable_lsp_decorations = false, -- disable virt text and underline by lsp on unused vars and functions
+  --   --   })
+  --   -- end,
+  -- },
+  ["magic-bang.nvim"] = {
+    "susensio/magic-bang.nvim",
+    config = function()
+      require("magic-bang").setup({
+        automatic = true, -- insert shebang on new file when in $PATH
+        command = true, -- define Bang user command
+        executable = true, -- make file executable on exit
+        default = "/bin/bash", -- default shebang for `:Bang` without args
+      })
+    end,
+  },
   ["zk-nvim"] = { "mickael-menu/zk-nvim" },
   ["schemastore.nvim"] = { "b0o/schemastore.nvim" }, -- for jsonls
   ["fidget.nvim"] = { "~/git/fidget.nvim" }, -- "j-hui/fidget.nvim"

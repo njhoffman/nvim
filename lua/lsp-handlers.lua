@@ -1,19 +1,3 @@
--- local function tsserver_organize_imports()
--- if lsp_name == "tsserver" then
---     map_buf(bufnr, "cxo", tsserver_organize_imports)
--- elseif lsp_name == "pyright" then
---     map_buf(bufnr, "cxo", function()
---         vim.cmd("silent PyrightOrganizeImports")
---     end)
--- end
---   local params = {
---     command = "_typescript.organizeImports",
---     arguments = { vim.api.nvim_buf_get_name(0) },
---   }
---   vim.lsp.buf.execute_command(params)
---   vim.notify("Imports organized.")
--- end
-
 local keymap = vim.api.nvim_set_keymap
 local keymap_buf = vim.api.nvim_buf_set_keymap
 
@@ -245,8 +229,7 @@ local rename_provider = function(_, bufnr)
 end
 
 local document_symbol_provider = function(client, bufnr)
-  local navic = require("nvim-navic")
-  navic.setup({ highlight = true })
+  local navic = require("lsp.nvim-navic")
   navic.attach(client, bufnr)
 end
 
@@ -294,6 +277,11 @@ end
 -- -- actions
 -- keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 
+local execute_command = function(args)
+  vim.dbglog({ "executeCommand", args })
+  vim.lsp.buf.execute_command(args)
+end
+
 local handlers = {
   codeActionProvider = code_action_provider,
   codeLensProvider = code_lens_provider,
@@ -304,6 +292,7 @@ local handlers = {
   documentFormattingRangeProvider = document_formatting_range_provider,
   documentHighlightProvider = document_highlight_provider,
   documentSymbolProvider = document_symbol_provider,
+  executeCommand = execute_command,
   referencesProvider = references_provider,
   hoverProvider = hover_provider,
   implementationProvider = implementation_provider,

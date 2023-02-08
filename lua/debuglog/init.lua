@@ -1,15 +1,19 @@
 local coreutils = require("utils.core")
-local logutils = require("logger.utils")
+local logutils = require("debuglog.utils")
 local log = require("debuglog.log")
 local timer = require("debuglog.timer")
 
 local M = {}
-
 log:new()
 M.log = log.info
 
 M.timer = timer
 
+M.inspect = require("debuglog.parsers.inspect")
+M.traceback = require("debuglog.parsers.traceback")
+M.dump = require("debuglog.parsers.dump")
+
+-- shows only on screen notification
 M.buf = function(...)
   local msg = ... or {}
   local bufnr = vim.api.nvim_create_buf(true, true)
@@ -25,6 +29,7 @@ M.buf = function(...)
   vim.api.nvim_buf_set_lines(bufnr, 0, #lines, false, lines)
 end
 
+-- shows on-screen notification and debug log
 M.dbg = function(...)
   local msg = ... or {}
   -- local cols = math.floor(vim.opt.columns:get() / 3)
@@ -55,7 +60,7 @@ M.dbg = function(...)
   end
 
   args.on_close = function()
-    if type(orig_map) == "table" and type(orig_map.lhs) == 'string' then
+    if type(orig_map) == "table" and type(orig_map.lhs) == "string" then
       pcall(vim.api.nvim_del_keymap, { "n", "gF" })
       pcall(vim.api.nvim_set_keymap, {
         orig_map.mode,
@@ -65,21 +70,19 @@ M.dbg = function(...)
           nowait = orig_map.nowait,
           noremap = orig_map.noremap,
           silent = 1,
-          callback = function() end
-        }
+          callback = function() end,
+        },
       })
     end
   end
 
   local lines = vim.split(notify_msg, "\n")
-  if (#lines >= currheight) then
+  if #lines >= currheight then
     notify_msg = table.concat(vim.list_slice(lines, 0, currheight - 3), "\n")
     notify_msg = notify_msg .. "\n..." .. #lines .. " more lines not shown"
   end -- notify.dismiss()
   -- vim.notify(notify_msg, "inspect", args)
   require("notify").notify(notify_msg, "inspect", args)
 end
-
-
 
 return M

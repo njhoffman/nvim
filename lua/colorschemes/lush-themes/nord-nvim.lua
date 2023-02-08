@@ -28,8 +28,6 @@ local clrs = {
   nord11 = hsl(354, 42, 56), -- #BE6069
   nord12 = hsl(14, 51, 63), -- #D18771
   nord13 = hsl(20, 10, 55), -- #EBCA89
-  -- nord13 = hsl(40, 71, 73), -- #EBCA89
-  -- nord14 = hsl(92, 28, 65), -- #A4BF8D
   nord14 = "#22BB99",
   -- nord15 = hsl(311, 20, 63), -- #B48EAD
   nord15 = "#646EAD",
@@ -672,6 +670,12 @@ local theme = lush(function()
     -- ReferencesIcon({ fg = clrs.nord7 }),
     -- TargetWord({ fg = clrs.nord8 }),
     -- --
+    -- used for highlighting "text" references
+    LspReferenceText({ gui = "underline", fg = clrs.nord14 }),
+    -- used for highlighting "read" references
+    LspReferenceRead({ gui = "underline", fg = clrs.nord14 }),
+    -- used for highlighting "write" references
+    LspReferenceWrite({ gui = "underline", fg = clrs.nord14 }),
     -- +--- Languages ---+
     -- Haskell
     -- > neovimhaskell/haskell-vim
@@ -724,7 +728,7 @@ local theme = lush(function()
     typescriptFuncTypeArrow({ Structure }),
     typescriptMemberOptionality({ Structure }),
     typescriptNodeGlobal({ typescriptGlobal }),
-    typescriptTypeBrackets({ Structure }),
+    -- typescriptTypeBrackets({ Structure }),
     tsxEqual({ Operator }),
     tsxIntrinsicTagName({ htmlTag }),
     tsxTagName({ tsxIntrinsicTagName }),

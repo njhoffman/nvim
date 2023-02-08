@@ -1,28 +1,30 @@
 -- local options = require('utils.options')
 
 local get_icon = function(method, lsp)
+
+  -- stylua: ignore
   local icon_map = {
-    awk_ls = " ", --  
-    bashls = " ",
-    clangd = " ",
-    cssls = " ",
-    dockerls = " ",
-    efm = " ",
-    eslint = " ",
+    awk_ls           = " ", --  
+    bashls           = " ",
+    clangd           = " ",
+    cssls            = " ",
+    dockerls         = " ",
+    efm              = " ",
+    eslint           = " ",
     golangci_lint_ls = " ",
-    gopls = "ﳑ ", -- 
-    graphql = " ",
-    html = " ",
-    ["null-ls"] = " ",
-    jsonls = " ",
-    pylsp = " ",
-    sqls = " ",
-    sumneko_lua = " ", --  
-    stylelinst_lsp = " ",
-    tailwindcss = " ",
-    terraformls = " ",
-    tsserver = " ", -- 
-    vimls = " ",
+    gopls            = "ﳑ ", -- 
+    graphql          = " ",
+    html             = " ",
+    ["null-ls"]      = " ",
+    jsonls           = " ",
+    pylsp            = " ",
+    sqls             = " ",
+    sumneko_lua      = " ", --  
+    stylelint_lsp    = " ",
+    tailwindcss      = " ",
+    terraformls      = " ",
+    tsserver         = " ", -- 
+    vimls            = " ",
     -- "yamlls"
   }
 

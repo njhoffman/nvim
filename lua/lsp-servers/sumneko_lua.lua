@@ -109,3 +109,11 @@ local sumneko_lua = function()
 end
 
 return sumneko_lua
+
+-- Custom Commands:
+--   lua: -- LuaFormatter off, -- stylua: ignore
+--   js:  -- organize imports
+-- textDocument/codeAction: implement this on the server-side to compute a list of commands that represent the quickfixes.
+-- workspace/executeCommand: implement this in the server-side to execute the commands. It can make use of workspace/applyEdit to send a request to the client to perform changes to the documents in the workspace.
+-- client/registerCapability: The server can call this with a ExecuteCommandRegistrationOptions object. This registers your server-side command(s) with the client, so that it knows to execute them via the workspace/executeCommand handler implemented in the previous step.
+-- initialize: Alternatively to using client/registerCapability you can also register server-side commands by returning a WorkspaceCapabilities object with an appropriate setting for its executeCommandProvider attribute. This method is slightly less complex (but can only be used if you don't require registering/unregistering of commands dynamically).

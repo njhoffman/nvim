@@ -18,8 +18,7 @@ M.output_log = function(level, level_config, message_maker, ...)
 
   -- Output to console
   if config.use_console then
-    local console_string =
-    string.format("[%-6s%s] %s: %s", nameupper, os.date("%H:%M:%S"), lineinfo, msg)
+    local console_string = string.format("[%-6s%s] %s: %s", nameupper, os.date("%H:%M:%S"), lineinfo, msg)
 
     if config.highlights and level_config.hl then
       vim.cmd(string.format("echohl %s", level_config.hl))

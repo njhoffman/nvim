@@ -1,9 +1,8 @@
 -- $ nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 local pluginmap = vim.import("plugins.pluginmap")
 local packerinit = vim.import("plugins.packer")
-local packer = vim.import("packer")
 
-packer.startup({
+require("packer").startup({
   function(use)
     use("wbthomason/packer.nvim")
     use("lewis6991/impatient.nvim")

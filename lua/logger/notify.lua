@@ -1,6 +1,7 @@
-local logutils = require("logger.utils")
+local logutils = require("debuglog.utils")
 local logparsers = require("logger.parsers")
 local get_opt = require("utils.options").get_option_value
+local traceback = require('debuglog.parsers.traceback')
 
 -- Error running notification service: ...e/pack/packer/start/nvim-notify/lua/notify/util/init.lua:78:
 --  'relative' requires 'row'/'col' or 'bufpos'
@@ -12,7 +13,7 @@ M.notify = function(message, level, ...)
     return
   end
   local args = ... or {}
-  local tb = logutils.traceback()
+  local tb = traceback()
   vim.defer_fn(function()
     -- TODO: pull msg strings out, vim.inspect rest of keyed objects
 

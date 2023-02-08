@@ -2,6 +2,16 @@ local lspconfig = require("lspconfig")
 local util = lspconfig.util
 
 local tsserver = function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  vim.keymap.set({ c, x, o }, "gO", function()
+    local params = {
+      command = "_typescript.organizeImports",
+      arguments = { vim.api.nvim_buf_get_name(0) },
+    }
+    vim.lsp.buf.execute_command(params)
+    vim.notify("Imports organized.")
+  end, { buffer = bufnr })
+
   lspconfig.tsserver.setup({
     init_options = { hostInfo = "neovim" },
     filetypes = {

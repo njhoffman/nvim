@@ -1072,12 +1072,6 @@ end
 --     LspDiagnosticsVirtualTextHint = { fg = colors.hint },
 --     -- used to underline "Hint" diagnostics.
 --     LspDiagnosticsUnderlineHint = { gui = config.styles.diagnostics, sp = colors.hint },
---     -- used for highlighting "text" references
---     LspReferenceText = { gui = "underline", sp = colors.yellow },
---     -- used for highlighting "read" references
---     LspReferenceRead = { gui = "underline", sp = colors.yellow },
---     -- used for highlighting "write" references
---     LspReferenceWrite = { gui = "underline", sp = colors.yellow },
 
 --     LspSignatureActiveParameter = { fg = colors.none, bg = colors.highlight_dark, gui = "bold" },
 --     LspCodeLens = { fg = colors.light_gray },

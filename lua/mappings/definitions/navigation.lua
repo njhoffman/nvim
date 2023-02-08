@@ -55,10 +55,10 @@ return {
     long = "repeat last command",
   },
   -- TODO: consolidate, integrate "tabclose"
-  bufclose_nosave = {
-    cmd = "<cmd>silent! tabclose | BufferDelete<cr>",
-    short = "buffer close no save",
-    long = "close buffer with without saving",
+  close_multi = {
+    cmd = "<cmd>CloseMulti<cr>",
+    long = "Close tabpage, window, or buffer in that order",
+    short = "close buffer with without saving",
   },
   quit = {
     cmd = "<cmd>silent! tabclose | q<cr>",

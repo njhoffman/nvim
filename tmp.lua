@@ -1,3 +1,3 @@
-for i = 1, 10 do
-  print(i % 3)
-end
+local dump = require("globals.dump")
+local obj = vim.lsp.get_active_clients()
+vim.dbglog(dump(obj))

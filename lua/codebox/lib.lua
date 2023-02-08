@@ -56,7 +56,7 @@ local setup = function(_conf)
     mappings.apply_default_mappings()
   end
   if config.conf.resizing_mappings then
-    vim.dbglog("NO", config.conf)
+    -- vim.dbglog("NO", config.conf)
     mappings.apply_resizing_mappings()
   end
 

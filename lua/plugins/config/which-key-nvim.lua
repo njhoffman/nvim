@@ -44,7 +44,7 @@ require("which-key").setup({
     group = "+", -- symbol prepended to a group
   },
   window = {
-    winblend = 25,
+    winblend = 20,
     border = "rounded", -- none, single, double, shadow
     position = "bottom", -- bottom, top
     margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]

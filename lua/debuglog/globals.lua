@@ -1,5 +1,5 @@
 local log = require("debuglog")
-local logutils = require("logger.utils")
+local logutils = require("debuglog.utils")
 local config = require("debuglog.config")
 
 local M = {}

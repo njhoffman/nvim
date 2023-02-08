@@ -5,6 +5,10 @@ local sources = require("plugins.config.nvim-cmp-sources")
 local feedkeys = require("cmp.utils.feedkeys")
 local keymap = require("cmp.utils.keymap")
 
+local ELLIPSIS_CHAR = "…"
+local MAX_LABEL_WIDTH = 20
+local MIN_LABEL_WIDTH = 20
+
 local sort_under = function(entry1, entry2)
   local _, entry1_under = entry1.completion_item.label:find("^_+")
   local _, entry2_under = entry2.completion_item.label:find("^_+")
@@ -40,11 +44,20 @@ local cmp_helper = {
     end
   end,
 }
+local has_words_before = function(cmdline)
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  if cmdline then
+    col = col + 1
+  end
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
 
 local setupConfig = {
   experimental = {
     native_menu = false,
-    ghost_text = { hl_group = "CmpGhostText" },
+    ghost_text = {
+      hl_group = "CmpGhostText",
+    },
   },
   -- preselect = cmp.types.cmp.PreselectMode.Item, -- cmp.PreselectMode.None/Item,
   completion = {
@@ -67,22 +80,36 @@ local setupConfig = {
   mapping = cmp.mapping.preset.insert({
     ["<C-x><C-o>"] = cmp.mapping.complete({}),
     ["<C-x><C-s>"] = cmp.mapping.complete({
-      config = { sources = { { name = "luasnip" } } },
+      config = {
+        sources = {
+          {
+            name = "luasnip",
+          },
+        },
+      },
     }),
     ["<C-p>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+        cmp.select_prev_item({
+          behavior = cmp.SelectBehavior.Insert,
+        })
       else
         fallback()
       end
-    end, { "i" }),
+    end, {
+      "i",
+    }),
     ["<C-n>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+        cmp.select_next_item({
+          behavior = cmp.SelectBehavior.Insert,
+        })
       else
         fallback()
       end
-    end, { "i" }),
+    end, {
+      "i",
+    }),
     ["<C-f>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
@@ -91,7 +118,9 @@ local setupConfig = {
           })(nil)
         end
       end
-    end, { "i" }),
+    end, {
+      "i",
+    }),
     ["<C-B>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
@@ -100,10 +129,18 @@ local setupConfig = {
           })(nil)
         end
       end
-    end, { "i" }),
-    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i" }),
-    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i" }),
-    ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), { "i" }),
+    end, {
+      "i",
+    }),
+    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), {
+      "i",
+    }),
+    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), {
+      "i",
+    }),
+    ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), {
+      "i",
+    }),
   }),
   view = {
     entries = {
@@ -125,14 +162,25 @@ local setupConfig = {
     }),
   },
   formatting = {
-    fields = { "menu", "abbr", "kind" },
+    fields = {
+      "menu",
+      "abbr",
+      "kind",
+    },
     -- offset, exact, score, recently_used, locality, kind, sort_text, length, order
     format = function(entry, vim_item)
-      local max_len = 40
-      if string.len(vim_item.abbr) > max_len then
-        vim_item.abbr = string.sub(vim_item.abbr, 1, max_len - 2) .. "··"
+      local label = vim_item.abbr
+      local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
+      if truncated_label ~= label then
+        vim_item.abbr = truncated_label .. ELLIPSIS_CHAR
+      elseif string.len(label) < MIN_LABEL_WIDTH then
+        local padding = string.rep(" ", MIN_LABEL_WIDTH - string.len(label))
+        vim_item.abbr = label .. padding
       end
-      vim_item.dup = ({ nvim_lua = 0 })[entry.source.name] or 1
+
+      vim_item.dup = ({
+        nvim_lua = 0,
+      })[entry.source.name] or 1
       vim_item.menu = sources.names[entry.source.name] .. " "
       vim_item.kind = " " .. sources.symbols[vim_item.kind]
       return vim_item
@@ -165,47 +213,42 @@ local setupConfig = {
   sources = cmp.config.sources(sources.definitions),
 }
 
--- cmp.setup()
 cmp.setup(setupConfig)
 
--- -- Set configuration for specific filetype.
--- cmp.setup.filetype("gitcommit", {
---   sources = cmp.config.sources({
---     { name = "git" }, -- You can specify the `cmp_git` source if you were installed it.
---   }, {
---     { name = "fuzzy_buffer" },
---   }),
--- })
---
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline("/", {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
-    { name = "cmdline_history", group_index = 1 },
-    { name = "nvim_lsp_document_symbol", group_index = 1 },
-    { name = "fuzzy_buffer", group_index = 2 },
+    {
+      name = "fuzzy_path",
+      group_index = 2,
+    },
+    {
+      name = "fuzzy_buffer",
+      group_index = 2,
+    },
   }),
 })
-
-local has_words_before = function(cmdline)
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  if cmdline then
-    col = col + 1
-  end
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline({
 
-    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "c" }),
-    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "c" }),
-    ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), { "c" }),
+    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), {
+      "c",
+    }),
+    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), {
+      "c",
+    }),
+    ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), {
+      "c",
+    }),
     ["<C-n>"] = {
       c = function(fallback)
         if cmp.visible() then
-          cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+          cmp.select_next_item({
+            -- behavior = cmp.SelectBehavior.Insert,
+          })
         else
           cmp.complete()
         end
@@ -214,7 +257,9 @@ cmp.setup.cmdline(":", {
     ["<C-p>"] = {
       c = function(fallback)
         if cmp.visible() and cmp.get_selected_entry() then
-          cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+          cmp.select_prev_item({
+            -- behavior = cmp.SelectBehavior.Insert,
+          })
         else
           -- cmp.mapping.complete({
           --   config = { sources = { { name = "cmdline_history" } } },
@@ -231,7 +276,9 @@ cmp.setup.cmdline(":", {
           })(nil)
         end
       end
-    end, { "c" }),
+    end, {
+      "c",
+    }),
     ["<C-B>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
@@ -240,13 +287,31 @@ cmp.setup.cmdline(":", {
           })(nil)
         end
       end
-    end, { "c" }),
+    end, {
+      "c",
+    }),
   }),
-  -- mapping = cmp.mapping.preset.cmdline(cmp_mappings()),
   sources = cmp.config.sources({
-    { name = "cmdline", priority = 100 },
-    { name = "cmdline_history", priority = 50 },
-    { name = "fuzzy_path", priority = 30 },
+    {
+      name = "nvim_lsp_signature_help",
+      priority = 100,
+    },
+    {
+      name = "nvim_lsp_document_symbol",
+      group_index = 100,
+    },
+    {
+      name = "cmdline",
+      priority = 50,
+    },
+    {
+      name = "cmdline_history",
+      priority = 50,
+    },
+    {
+      name = "fuzzy_path",
+      priority = 30,
+    },
   }),
 })
 

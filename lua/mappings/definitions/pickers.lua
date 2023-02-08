@@ -24,7 +24,7 @@ local M = {
     long = "notifications list with telescope",
   },
   mru_files = {
-    cmd = "<cmd>lua _G.TelescopeLoad('builtin', 'old_files')<cr>",
+    cmd = "<cmd>lua _G.TelescopeLoad('builtin', 'oldfiles')<cr>",
     short = "mru telescope",
     long = "mru files telescope",
   },
