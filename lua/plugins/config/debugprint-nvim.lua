@@ -29,6 +29,9 @@ vim.keymap.set("n", "g?d", function()
   require("debugprint").deleteprints()
 end)
 
+vim.keymap.set("n", "<leader>d-", function()
+  require("debugprint").deleteprints()
+end)
 vim.keymap.set("n", "<Leader>dv", function()
   -- Note: setting `expr=true` and returning the value are essential
   return require("debugprint").debugprint({ variable = true })

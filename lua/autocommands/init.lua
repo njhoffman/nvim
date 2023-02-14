@@ -105,6 +105,7 @@ vim.import("config", function(config)
       { "FileType", "dapui_watches", "VimadeBufDisable" },
     },
     Vimade = {
+      { "FileType", "CompetiTest", "VimadeBufDisable" },
       { "FileType", "Trouble", "VimadeBufDisable" },
       { "FileType", "aerial", "VimadeBufDisable" },
       { "FileType", "qf", "VimadeBufDisable" },
@@ -136,7 +137,7 @@ vim.import("config", function(config)
     -- },
     Shape = {
       { "FocusLost", "*", "hi TermCursor cterm=NONE gui=NONE" },
-      -- { "FocusGained", "*", "hi TermCursor cterm=reverse gui=reverse" },
+      { "FocusGained", "*", "hi TermCursor cterm=reverse gui=reverse" },
       { "VimLeave,VimSuspend", "*", "set guicursor=a:block-blinkon90" },
     },
     terminal = {

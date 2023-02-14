@@ -128,6 +128,7 @@ local signature_help_provider = function(_, bufnr)
     bind = true,
     zindex = 99, -- <100 so that it does not hide completion popup.
     close_timeout = 2000,
+    max_width = 95,
     doc_lines = 50,
     toggle_key = "<M-x>", -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
     select_signature_key = "<M-n>",
@@ -157,8 +158,9 @@ end
 
 local code_action_provider = function(_, bufnr)
   -- keymap_buf(bufnr, "n", "gC", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
+  keymap_buf(bufnr, "n", "gG", "<cmd>CodeActionMenu<CR>", keymap_opts)
   keymap_buf(bufnr, "n", "gC", "<cmd>CodeActionMenu<CR>", keymap_opts)
-  keymap_buf(bufnr, "x", "gC", ":'<,'>lua vim.lsp.buf.range_code_action()<CR>", keymap_opts)
+  keymap_buf(bufnr, "x", "gG", ":'<,'>lua vim.lsp.buf.range_code_action()<CR>", keymap_opts)
 
   -- -- keymap("n", "<leader>q", "<cmd>Telescope lsp_code_actions<CR>", opts)
   -- keymap("n", "<leader>la", "<cmd>Telescope lsp_code_actions<CR>", opts)

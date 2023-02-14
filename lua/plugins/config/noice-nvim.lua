@@ -215,4 +215,4 @@ local cfg = {
   },
 }
 
-require("noice").setup(cfg)
+-- require("noice").setup(cfg)

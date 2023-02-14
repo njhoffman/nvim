@@ -2,6 +2,14 @@ vim.g.smoothie_break_on_reverse = 0
 vim.g.smoothie_enabled = 1
 vim.g.smoothie_no_default_mappings = 1
 vim.g.smoothie_experimental_mappings = 0
+vim.g.smoothie_update_interval = 20
+vim.g.smoothie_speed_constant_factor = 10
+vim.g.smoothie_speed_linear_factor = 10
+vim.g.smoothie_speed_exponentiation_factor = 0.9
+vim.g.redraw_at_finish = 1
+vim.g.smoothie_minimum_speed = 0.9
+
+-- `g:smoothie_experimental_mappings`: Set this to true to enable additional,
 
 -- if !exists('g:smoothie_minimum_speed')
 --   ""

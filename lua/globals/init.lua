@@ -9,8 +9,6 @@ local _nil = function()
   return nil
 end
 
-vim.inspect = require("inspect")
-
 local debuglog = vim.import("debuglog")
 if debuglog then
   vim.dbg = debuglog.dbg or _nil()
@@ -18,6 +16,7 @@ if debuglog then
   vim.dbgbuf = debuglog.buf or _nil()
   vim.dbgtime = debuglog.timer or _nil()
   -- vim.inspect = debuglog.dump or vim.inspect
+  vim.dump = debuglog.dump
 end
 
 local logger = vim.import("logger")

@@ -121,7 +121,7 @@ local get_paths = function(cmd_props)
   for key, val in pairs(all_paths) do
     vim.notify(key .. " " .. #val, 3)
   end
-  -- vim.dbglog(all_paths)
+  vim.dbglog(vim.dump(all_paths.rtpaths))
 
   -- vim.ui.select(opacks)
 end

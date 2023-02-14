@@ -19,7 +19,7 @@ local M = {
     long = "directory files with telescope",
   },
   notifications = {
-    cmd = "<cmd>lua _G.TelescopeLoad('notify', 'notify')<cr>",
+    cmd = "<cmd>lua _G.TelescopeLoad('notify', 'notify', { theme = 'ivy' })<cr>",
     short = "notifications telescope",
     long = "notifications list with telescope",
   },

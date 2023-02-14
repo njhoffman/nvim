@@ -27,6 +27,9 @@ local cfg = {
       end,
     },
   },
+  filesystem = {
+    follow_current_file = true,
+  },
 }
 
 require("neo-tree").setup(cfg)

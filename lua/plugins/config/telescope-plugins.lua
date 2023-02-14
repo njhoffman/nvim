@@ -25,6 +25,7 @@ local tele_plugs = {
   ["cder"] = "cder.nvim",
   ["command_palette"] = "telescope-command-palette.nvim",
   ["color_names"] = "telescope-color-names.nvim",
+  ["docker"] = "telescope-docker.nvim",
   -- ["dap"] = "telescope-dap.nvim",
   ["file_browser"] = "telescope-file-browser.nvim",
   ["frecency"] = "telescope-frecency.nvim",

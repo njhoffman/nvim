@@ -7,7 +7,7 @@ local virtual_text_config = {
 }
 
 local diagnostic_config = {
-  virtual_text = false,
+  virtual_text = true,
   float = {
     focusable = false,
     style = "minimal",
@@ -15,30 +15,25 @@ local diagnostic_config = {
     source = "always",
     header = "",
     prefix = "",
-    format = function(diagnostic)
+    format = function(diag)
       -- See null-ls.nvim#632, neovim#17222 for how to pick up `code`
       local user_data
-      user_data = diagnostic.user_data or {}
+      user_data = diag.user_data or {}
       user_data = user_data.lsp or user_data.null_ls or user_data
-      local code = (
-        -- TODO: symbol is specific to pylint (will be removed)
-        diagnostic.symbol
-          or diagnostic.code
-          or user_data.symbol
-          or user_data.code
-        )
+      -- TODO: symbol is specific to pylint (will be removed)
+      local code = (diag.symbol or diag.code or user_data.symbol or user_data.code)
       if code then
-        return string.format("%s (%s)", diagnostic.message, code)
+        return string.format("%s (%s)", diag.message, code)
       else
-        return diagnostic.message
+        return diag.message
       end
     end,
   },
   signs = true,
-  underline = false,
-  -- underline = {
-  --   severity = { min = vim.diagnostic.severity.ERROR },
-  -- },
+  -- underline = false,
+  underline = {
+    severity = { min = vim.diagnostic.severity.ERROR },
+  },
   update_in_insert = false,
   severity_sort = true,
 }
@@ -75,3 +70,10 @@ vim.api.nvim_set_keymap("n", "<Leader>e", "<cmd>lua vim.diagnostic.open_float()<
 vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", keymap_opts)
 vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", keymap_opts)
 vim.api.nvim_set_keymap("n", "<Leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", keymap_opts)
+
+vim.api.nvim_create_autocmd("DiagnosticChanged", {
+  callback = function(args)
+    local diagnostics = args.data.diagnostics
+    vim.notify(diagnostics, 0, { title = "LspConfig" })
+  end,
+})

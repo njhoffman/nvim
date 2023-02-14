@@ -107,6 +107,7 @@ if dap_ok then
   -- local dap = require("dap")
   dap.listeners.after.event_initialized["dapui_config"] = function()
     dapui.open()
+    vim.cmd('nnoremap gK <Cmd>lua require("dapui").eval()<CR>')
   end
   dap.listeners.before.event_terminated["dapui_config"] = function()
     dapui.close()

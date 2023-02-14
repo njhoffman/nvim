@@ -91,7 +91,8 @@ return function(injected_functions)
     FoldColumn({ fg = "#4D578A", bg = "#000000" }),
     FoldText({ fg = "#41b1ff", gui = "bold" }),
     Folded({ fg = "#6Db7ca", bg = "#111111", gui = "bold" }),
-    Function({ fg = "#988088" }),
+    -- Function({ fg = "#988088" }),
+    Function({ fg = "#908088" }),
     Identifier({ fg = "#6e99c6" }),
     Include({ fg = "#4784a6" }),
     IncSearch({ fg = "#eceff4", bg = "#5d61ec" }),
@@ -148,7 +149,9 @@ return function(injected_functions)
     LspDiagnosticsSignWarn({ fg = DiagnosticWarn.fg.da(20) }),
     LspDiagnosticsSignHint({ fg = DiagnosticHint.fg.da(20) }),
     LspDiagnosticsSignInfo({ fg = DiagnosticInfo.fg.da(20) }),
-
+    LspReferenceRead({ fg = Search.fg, gui = "none" }), -- #22bb99, 628bff
+    LspReferenceWrite({ fg = Search.fg, gui = "none" }), -- #22bb99
+    LspReferenceText({ fg = Search.fg, gui = "none" }), -- #22bb99
     DiffAdd({ bg = "#00361f" }), -- #00361f #001000 #22bb99
     DiffChange({ bg = "#003050" }), -- #003050 #001030 #646ead
     DiffDelete({ bg = "#3E0009" }), -- #3e0009 #300000 #be6069
@@ -171,6 +174,7 @@ return function(injected_functions)
     sym("@conditional")({ Conditional }),
     -- sym("@conditional")({ fg = "#80788a" }),
     sym("@exception")({ Special }),
+    sym("@error")({ Error }),
     sym("@function")({ Function }),
     sym("@function.call")({ Function }),
     sym("@keyword")({ Keyword }),

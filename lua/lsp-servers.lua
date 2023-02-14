@@ -33,7 +33,7 @@ local servers = {
   "solargraph",
   "sqls",
   "stylelint_lsp",
-  "sumneko_lua",
+  "lua_ls",
   "svelte",
   "tailwindcss",
   "terraformls",
@@ -64,20 +64,13 @@ local capabilities = require("lsp-capabilities")
 
 local on_attach = function(client, bufnr)
   -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
   -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "")
 
-  if client.name == "sumneko_lua" then
+  if client.name == "lua_ls" then
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
   end
   capabilities.resolve(client, bufnr)
-  -- if lsp_name == "tsserver" then
-  --   map_buf(bufnr, "cxo", tsserver_organize_imports)
-  -- elseif lsp_name == "pyright" then
-  --   map_buf(bufnr, "cxo", function()
-  --     vim.cmd("silent PyrightOrganizeImports")
-  --   end)
 end
 
 local util = require("lspconfig.util")
@@ -96,7 +89,7 @@ require("mason-lspconfig").setup_handlers({
   ["tsserver"] = require("lsp-servers.tsserver"),
   ["eslint"] = require("lsp-servers.eslint"),
   ["tailwindcss"] = require("lsp-servers.tailwindcss"),
-  ["sumneko_lua"] = require("lsp-servers.sumneko_lua"),
+  ["lua_ls"] = require("lsp-servers.sumneko_lua"),
   ["stylelint_lsp"] = require("lsp-servers.stylelint_lsp"),
   ["bashls"] = function()
     lspconfig.bashls.setup({

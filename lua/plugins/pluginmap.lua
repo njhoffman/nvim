@@ -31,28 +31,27 @@ M.dap_plugins = {
   ["nvim-dap-ui"] = {
     "rcarriga/nvim-dap-ui",
     requires = { "theHamsta/nvim-dap-virtual-text", "mfussenegger/nvim-dap" },
-    cmd = "Luadev",
     opt = true,
-    after = "nvim-dap",
+    -- cmd = "DapContinue",
+    -- after = "nvim-dap",
     -- cmd = { "DapEnable", "DapShowLog", "DapContinue", "DapToggleRepl", "DapToggleBreakpoint" },
   },
   ["one-small-step-for-vimkind"] = {
     "jbyuki/one-small-step-for-vimkind",
     requires = "mfussenegger/nvim-dap",
-    cmd = "Luadev",
     opt = true,
   },
   ["nvim-dap-python"] = {
     "mfussenegger/nvim-dap-python",
     requires = "mfussenegger/nvim-dap",
-    cmd = "Luadev",
     opt = true,
+    -- cmd = "DapContinue",
   },
   ["dash.nvim"] = {
     "jbyuki/dash.nvim",
     requires = "jbyuki/ntangle.nvim",
-    cmd = "Luadev",
     opt = true,
+    -- cmd = "DapContinue",
   },
 }
 
@@ -120,7 +119,7 @@ M.syntax_plugins = {
   ["ansible-vim"] = { "pearofducks/ansible-vim" },
   ["bat.vim"] = { "jamespwilliams/bat.vim" },
   ["bats.vim"] = { "aliou/bats.vim" },
-  ["conflict-marker.vim"] = { "rhysd/conflict-marker.vim" },
+  ["git-conflict-nvim"] = { "akinsho/git-conflict.nvim" },
   ["dash.vim"] = { "rizzatti/dash.vim" },
   ["editorconfig-vim"] = { "editorconfig/editorconfig-vim" },
   ["elm-vim"] = { "elmcast/elm-vim" },
@@ -240,7 +239,7 @@ M.telescope_plugins = {
   ["telescope-terraform-doc.nvim"] = { "ANGkeith/telescope-terraform-doc.nvim", requires = { "nvim-lua/plenary.nvim" } },
   ["telescope-bookmarks.nvim"] = { "dhruvmanila/telescope-bookmarks.nvim" },
   ["telescope-command-palette.nvim"] = { "LinArcX/telescope-command-palette.nvim" },
-  ["telescope-dap.nvim"] = { "nvim-telescope/telescope-dap.nvim", opt = true, keyword = "Luadev" },
+  ["telescope-dap.nvim"] = { "nvim-telescope/telescope-dap.nvim", opt = true, keyword = "Luadev", after = "nvim-dap" },
   ["telescope-file-browser.nvim"] = { "nvim-telescope/telescope-file-browser.nvim" },
   ["telescope-frecency.nvim"] = { "nvim-telescope/telescope-frecency.nvim", requires = { "tami5/sqlite.lua" } },
   ["telescope-fzf-native.nvim"] = { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
@@ -370,7 +369,6 @@ M.ui_plugins = {
   -- ["which-key.nvim"]     = { "folke/which-key.nvim" },
   ["zen-mode.nvim"] = { "folke/zen-mode.nvim" },
   ["hop.nvim"] = { "phaazon/hop.nvim" },
-
   ["nvim-nonicons"] = {
     "yamatsum/nvim-nonicons",
     requires = { "kyazdani42/nvim-web-devicons", "yamatsum/nonicons" },
@@ -393,8 +391,8 @@ M.ui_plugins = {
 
 M.project_plugins = {
   ["auto-session"] = { "rmagatti/auto-session" },
-  -- ["competitest.nvim"] = { "xeluxee/competitest.nvim", requires = "MunifTanjim/nui.nvim" },
-  ["cpbooster.vim"] = { "searleser97/cpbooster.vim" },
+  ["competitest.nvim"] = { "xeluxee/competitest.nvim", requires = "MunifTanjim/nui.nvim" },
+  -- ["cpbooster.vim"] = { "searleser97/cpbooster.vim" },
   ["gitsigns.nvim"] = { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } },
   ["octo.nvim"] = { "pwntester/octo.nvim", requires = "kyazdani42/nvim-web-devicons" },
   ["vim-flog"] = { "rbong/vim-flog" },
@@ -404,6 +402,7 @@ M.project_plugins = {
 }
 
 M.interface_plugins = {
+  ["hydra.nvim"] = { "anuvyklack/hydra.nvim" },
   ["numb.nvim"] = { "nacro90/numb.nvim" },
   ["goto-preview"] = { "rmagatti/goto-preview" },
   ["alpha-nvim"] = { "goolord/alpha-nvim", requires = "kyazdani42/nvim-web-devicons" },
@@ -433,7 +432,7 @@ M.interface_plugins = {
 
 M.integration_plugins = {
   ["asynctasks.vim"] = { "skywind3000/asynctasks.vim", requires = "skywind3000/asyncrun.vim" },
-  -- ["noice.nvim"] = { "folke/noice.nvim" },
+  ["noice.nvim"] = { "folke/noice.nvim" },
   ["barbecue.nvim"] = {
     "utilyre/barbecue.nvim",
     requires = {
@@ -470,7 +469,7 @@ M.integration_plugins = {
   ["pantran.nvim"] = { "potamides/pantran.nvim" },
   ["colortils.nvim"] = { "nvim-colortils/colortils.nvim" },
   ["cheat.sh-vim"] = { "dbeniamine/cheat.sh-vim" },
-  -- ["go.nvim"] = { "ray-x/go.nvim", requires = "ray-x/guihua.lua" },
+  ["go.nvim"] = { "ray-x/go.nvim", requires = "ray-x/guihua.lua" },
   ["id3.vim"] = { "AndrewRadev/id3.vim" }, -- "AndrewRadev/id3.vim"
   ["nvim-magic"] = {
     "jameshiew/nvim-magic",
@@ -543,7 +542,7 @@ M.lsp_plugins = {
   ["null-ls.nvim"] = {
     "jose-elias-alvarez/null-ls.nvim",
     -- https://github.com/jose-elias-alvarez/null-ls.nvim/issues/1110
-    commit = "76d0573fc159839a9c4e62a0ac4f1046845cdd50",
+    -- commit = "76d0573fc159839a9c4e62a0ac4f1046845cdd50",
     requires = {
       "nvim-lua/plenary.nvim",
       "ThePrimeagen/refactoring.nvim",

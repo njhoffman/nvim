@@ -6,7 +6,7 @@ local feedkeys = require("cmp.utils.feedkeys")
 local keymap = require("cmp.utils.keymap")
 
 local ELLIPSIS_CHAR = "…"
-local MAX_LABEL_WIDTH = 20
+local MAX_LABEL_WIDTH = 30
 local MIN_LABEL_WIDTH = 20
 
 local sort_under = function(entry1, entry2)
@@ -75,8 +75,19 @@ local setupConfig = {
     -- keyword_length = 1,
     -- autocomplete = {
     --   cmp.types.cmp.TriggerEvent.TextChanged,
-    -- },
+    --  },
   },
+  enabled = function()
+    local in_prompt = vim.api.nvim_buf_get_option(0, "buftype") == "prompt"
+    if in_prompt then -- this will disable cmp in the Telescope window (taken from the default config)
+      return false
+    end
+    local context = require("cmp.config.context")
+    local in_parameter = context.in_treesitter_capture("punctuation.bracket") == true
+      or context.in_syntax_group("luaParen")
+    local in_comment = context.in_treesitter_capture("comment") == true or context.in_syntax_group("Comment")
+    return not (in_comment or in_parameter)
+  end,
   mapping = cmp.mapping.preset.insert({
     ["<C-x><C-o>"] = cmp.mapping.complete({}),
     ["<C-x><C-s>"] = cmp.mapping.complete({
@@ -94,7 +105,8 @@ local setupConfig = {
           behavior = cmp.SelectBehavior.Insert,
         })
       else
-        fallback()
+        -- fallback()
+        cmp.complete()
       end
     end, {
       "i",
@@ -105,7 +117,8 @@ local setupConfig = {
           behavior = cmp.SelectBehavior.Insert,
         })
       else
-        fallback()
+        cmp.complete()
+        -- fallback()
       end
     end, {
       "i",
@@ -218,16 +231,16 @@ cmp.setup(setupConfig)
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline("/", {
   mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    {
-      name = "fuzzy_path",
-      group_index = 2,
-    },
-    {
-      name = "fuzzy_buffer",
-      group_index = 2,
-    },
-  }),
+  -- sources = cmp.config.sources({
+  --   {
+  --     name = "fuzzy_path",
+  --     group_index = 2,
+  --   },
+  --   {
+  --     name = "fuzzy_buffer",
+  --     group_index = 2,
+  --   },
+  -- }),
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
@@ -293,19 +306,7 @@ cmp.setup.cmdline(":", {
   }),
   sources = cmp.config.sources({
     {
-      name = "nvim_lsp_signature_help",
-      priority = 100,
-    },
-    {
-      name = "nvim_lsp_document_symbol",
-      group_index = 100,
-    },
-    {
       name = "cmdline",
-      priority = 50,
-    },
-    {
-      name = "cmdline_history",
       priority = 50,
     },
     {

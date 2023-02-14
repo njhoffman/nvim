@@ -7,6 +7,7 @@ local defaults = {
   gofmt = "gofumpt", --gofmt cmd,
   max_line_len = 128, -- max line length in golines format, Target maximum line length for golines
   tag_transform = false, -- can be transform option("snakecase", "camelcase", etc) check gomodifytags for details and more options
+  tag_options = "json=omitempty", -- sets options sent to gomodifytags, i.e., json=omitempty
   gotests_template = "", -- sets gotests -template parameter (check gotests for details)
   gotests_template_dir = "", -- sets gotests -template_dir parameter (check gotests for details)
   comment_placeholder = "", -- comment_placeholder your cool placeholder e.g. ﳑ       
@@ -27,6 +28,7 @@ local defaults = {
   -- end
   -- to setup a table of codelens
   lsp_diag_hdlr = true, -- hook lsp diag handler
+  lsp_diag_underline = true,
   -- virtual text setup
   lsp_diag_virtual_text = { space = 0, prefix = "" },
   lsp_diag_signs = true,
@@ -71,26 +73,35 @@ local defaults = {
   dap_debug_keymap = true, -- true: use keymap for debugger defined in go/dap.lua
   -- false: do not use keymap in go/dap.lua.  you must define your own.
   -- windows: use visual studio keymap
-  dap_debug_gui = true, -- set to true to enable dap gui, highly recommand
-  dap_debug_vt = true, -- set to true to enable dap virtual text
+  dap_debug_gui = {}, -- bool|table put your dap-ui setup here set to false to disable
+  dap_debug_vt = { enabled_commands = true, all_frames = true }, -- bool|table put your dap-virtual-text setup here set to false to disable
+
+  dap_port = 38697, -- can be set to a number, if set to -1 go.nvim will pickup a random port
+  dap_timeout = 15, --  see dap option initialize_timeout_sec = 15,
+  dap_retries = 20, -- see dap option max_retries
   build_tags = "tag1,tag2", -- set default build tags
   textobjects = true, -- enable default text jobects through treesittter-text-objects
-  test_runner = "go", -- one of {`go`, `richgo`, `dlv`, `ginkgo`}
-  verbose_tests = true, -- set to add verbose flag to tests
+  test_runner = "go", -- one of {`go`, `richgo`, `dlv`, `ginkgo`, `gotestsum`}
+  verbose_tests = true, -- set to add verbose flag to tests deprecated, see '-v' option
   run_in_floaterm = false, -- set to true to run in float window. :GoTermClose closes the floatterm
-  -- float term recommand if you use richgo/ginkgo with terminal color
+  -- float term recommend if you use richgo/ginkgo with terminal color
 
+  floaterm = { -- position
+    posititon = "auto", -- one of {`top`, `bottom`, `left`, `right`, `center`, `auto`}
+    width = 0.45, -- width of float window if not auto
+    height = 0.98, -- height of float window if not auto
+  },
   trouble = false, -- true: use trouble to open quickfix
   test_efm = false, -- errorfomat for quickfix, default mix mode, set to true will be efm only
   luasnip = false, -- enable included luasnip snippets. you can also disable while add lua/snips folder to luasnip load
   --  Do not enable this if you already added the path, that will duplicate the entries
 }
 
-local install_root_dir = table.concat({ vim.fn.stdpath("data"), "lsp_servers" }, "/")
+-- local install_root_dir = table.concat({ vim.fn.stdpath("data"), "lsp_servers" }, "/")
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local config = {
-  gopls_cmd = { install_root_dir .. "/go/gopls" },
+  -- gopls_cmd = { install_root_dir .. "/go/gopls" },
   fillstruct = "gopls",
   lsp_cfg = { capabilities = capabilities },
 }

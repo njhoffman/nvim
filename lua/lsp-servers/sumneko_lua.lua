@@ -38,7 +38,7 @@ local sumneko_lua = function()
     pathStrict = true,
   }
   require("neodev").setup(neodev_config)
-  lspconfig.sumneko_lua.setup({
+  lspconfig["lua_ls"].setup({
     -- log_level = vim.lsp.protocol.MessageType.Warn,
     cmd = {
       "lua-language-server",
@@ -64,6 +64,9 @@ local sumneko_lua = function()
           paramType = false,
           semicolon = "Disable", -- "All", "SameLine", "Disable"
           setType = true,
+        },
+        semantic = {
+          enable = false,
         },
         diagnostics = {
           globals = { "vim", "string", "table", "require", "ipairs", "pairs", "print" },

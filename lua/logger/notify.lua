@@ -1,7 +1,7 @@
 local logutils = require("debuglog.utils")
 local logparsers = require("logger.parsers")
 local get_opt = require("utils.options").get_option_value
-local traceback = require('debuglog.parsers.traceback')
+local traceback = require("debuglog.parsers.traceback")
 
 -- Error running notification service: ...e/pack/packer/start/nvim-notify/lua/notify/util/init.lua:78:
 --  'relative' requires 'row'/'col' or 'bufpos'
@@ -63,7 +63,11 @@ M.notify = function(message, level, ...)
     local defaultRender = "minimal"
     -- select renderType that displays title
     if type(args.title) ~= "nil" and type(args.renderType) ~= "" then
-      defaultRender = "default"
+      if level_n > 4 then
+        defaultRender = "default"
+      else
+        defaultRender = "compact"
+      end
     end
     if level_n <= 0 then
       timeout = 1000

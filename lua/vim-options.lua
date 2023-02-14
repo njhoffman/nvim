@@ -36,7 +36,6 @@ opt("joinspaces", false)
 opt("jumpoptions", "stack")
 opt("laststatus", 3)
 opt("lazyredraw", false)
-opt("lazyredraw", true) -- Don't redraw while executing macros (good performance config)
 opt("linebreak", true)
 opt("magic", true)
 opt("matchtime", 3) -- How many tenths of a second to blink when matching brackets

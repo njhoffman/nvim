@@ -19,7 +19,7 @@ local get_icon = function(method, lsp)
     jsonls           = " ",
     pylsp            = " ",
     sqls             = " ",
-    sumneko_lua      = " ", --  
+    lua_ls           = " ", --  
     stylelint_lsp    = " ",
     tailwindcss      = " ",
     terraformls      = " ",
@@ -41,14 +41,20 @@ local get_icon = function(method, lsp)
   return icon
 end
 
+local id = nil
 local change_project = function(dir, method)
   local lsp = string.match(method, '"([^%s]+)" lsp')
   dir = dir:gsub(vim.fn.getenv("HOME"), "~")
   local icon = get_icon(method, lsp)
-  local msg = icon .. " "
+  local msg = " " .. icon .. " "
   msg = msg .. dir
   -- msg = msg .. lsp .. " " .. dir
-  vim.notify(msg, "debug")
+  vim.notify(msg, "debug", {
+    -- replace = id,
+    on_close = function()
+      id = nil
+    end,
+  })
 end
 
 local project_config = {
