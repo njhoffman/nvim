@@ -11,13 +11,4 @@ let g:vim_jsx_pretty_colorful_config = 1
 let g:vim_jsx_pretty_highlight_close_tag = 1
 let g:javascript_sql_dialect = 'pgsql'
 
-lua require("lush")(require("colorschemes.nord-nick-lush"))
-
-" nord_cursor_line_number_background  0 Use the same background on number when cursorline enabled
-" nord_uniform_status_lines 0 Use the same background for all statuslines on split windows
-" nord_bold_vertical_split_line 0 Lighter background for vertical split
-" nord_uniform_diff_background  0 Use forground colours in diffs
-" nord_bold 1 Enable bold font
-" nord_italic 1 Enable italic font
-" nord_italic_comments  0 Use italic font for comments
-" nord_underline  0 Enable underlining
+lua require("lush")(require("colorschemes.nord-nick"))

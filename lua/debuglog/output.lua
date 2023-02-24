@@ -3,13 +3,6 @@ local config = require("debuglog.config")
 
 M.output_log = function(level, level_config, message_maker, ...)
   -- Return early if we're below the config.level
-  local levels = {}
-  for i, v in ipairs(config.modes) do
-    levels[v.name] = i
-  end
-  if level < levels[config.level] then
-    return
-  end
   local nameupper = level_config.name:upper()
 
   local msg = message_maker(...)
@@ -37,10 +30,12 @@ M.output_log = function(level, level_config, message_maker, ...)
   -- Output to log file
   if config.use_file then
     local fp = io.open(config.outfile, "a")
-    local time_diff = string.sub((os.clock() - config.start_time) * 1, 1, 6)
-    local str = string.format("%-6s [DEBUG] %s\n", time_diff, msg)
-    fp:write(str)
-    fp:close()
+    if fp then
+      local time_diff = string.sub(tostring((os.clock() - config.start_time) * 1), 1, 9)
+      local str = string.format("%-8s %s\n", time_diff, msg)
+      fp:write(str)
+      fp:close()
+    end
   end
 end
 

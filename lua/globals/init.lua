@@ -1,4 +1,3 @@
-require("globals.impatient")
 require("globals.importer")
 
 vim.import("globals.variables")

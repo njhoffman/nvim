@@ -22,6 +22,7 @@ vim.import("config", function(config)
       },
       { "FileType", "fugitive", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
       { "FileType", "notify", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
+      { "FileType", "lazy", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
       { "FileType", "qf", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
       { "FileType", "nerdtree", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
       { "FileType", "help", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },

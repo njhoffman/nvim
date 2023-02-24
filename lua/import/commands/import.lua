@@ -55,7 +55,7 @@ end
 ---     hide_errors = false,
 ---         -- When provided, this will hide anything that was printed to the errors, but still
 ---         -- be available on the ImportStatus page
---- @return nil
+--- @return table, boolean
 ---
 --- Examples
 --- import("lualine", function(lualine) lualine.setup{ "do your module setup here" } end)
@@ -65,7 +65,7 @@ local import = function(path, success_cb, import_opts)
     if type(success_cb) == "function" then
       return success_cb(package.loaded[path])
     else
-      return package.loaded[path]
+      return package.loaded[path], true
     end
   end
 
@@ -167,7 +167,7 @@ local import = function(path, success_cb, import_opts)
     vim.notify("There was an error with your imports", 1)
   end
 
-  return mod_ret
+  return mod_ret, mod_status
 end
 
 return import

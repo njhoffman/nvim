@@ -4,12 +4,12 @@ local M = {
     short = "repeat last telescope",
   },
   find_files = {
-    cmd = "<cmd>lua _G.TelescopeLoad('builtin', 'find_files')<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'find_files')<cr>",
     short = "files telescope",
     long = "project files telescope",
   },
   find_files_fd = {
-    cmd = "<cmd>lua _G.TelescopeLoad('builtin', 'fd')<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'fd')<cr>",
     short = "files telescope",
     long = "project files telescope",
   },
@@ -19,34 +19,34 @@ local M = {
     long = "directory files with telescope",
   },
   notifications = {
-    cmd = "<cmd>lua _G.TelescopeLoad('notify', 'notify', { theme = 'ivy' })<cr>",
+    cmd = "<cmd>lua require('telescope.run')('notify', 'notify', { theme = 'ivy' })<cr>",
     short = "notifications telescope",
     long = "notifications list with telescope",
   },
   mru_files = {
-    cmd = "<cmd>lua _G.TelescopeLoad('builtin', 'oldfiles')<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'oldfiles')<cr>",
     short = "mru telescope",
     long = "mru files telescope",
   },
   find_projects = {
-    cmd = "<cmd>lua _G.TelescopeLoad('projects', 'projects')<cr>",
+    cmd = "<cmd>lua require('telescope.run')('projects', 'projects')<cr>",
     short = "find projects in telescope picker",
   },
   frecency_files = {
-    cmd = "<cmd>lua _G.TelescopeLoad('frecency', 'frecency')<cr>",
+    cmd = "<cmd>lua require('telescope.run')('frecency', 'frecency')<cr>",
     short = "frecency files telescope",
     long = "frecency files telescope",
   },
   live_grep = {
-    cmd = "<cmd>lua _G.TelescopeLoad('builtin', 'live_grep', { prompt_title = 'Grep Project' })<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'live_grep', { prompt_title = 'Grep Project' })<cr>",
     short = "telescope grep files live",
   },
   grep_buffers = {
-    cmd = "<cmd>lua _G.TelescopeLoad('builtin', 'live_grep', {grep_open_files=true, prompt_title='Grep Buffers'})<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'live_grep', {grep_open_files=true, prompt_title='Grep Buffers'})<cr>",
     short = "Telescope grep within open bufers",
   },
   find_pickers = {
-    cmd = "<cmd>lua _G.TelescopeLoad('find_pickers', 'find_pickers')<cr>",
+    cmd = "<cmd>lua require('telescope.run')('find_pickers', 'find_pickers')<cr>",
     short = "find pickers",
     long = "find pickers",
   },
@@ -104,7 +104,7 @@ local M = {
     long = "find colorscheme",
   },
   find_file_tele = {
-    cmd = "<cmd>lua _G.TelescopeLoad('builtin', 'find_files')<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'find_files')<cr>",
     short = "find file",
     long = "find file",
   },

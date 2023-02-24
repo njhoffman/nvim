@@ -8,7 +8,7 @@ function! CreateCenteredFloatingWindow() abort
     let height = min([&lines - 4, max([20, &lines - 10])])
     let top = ((&lines - height) / 2) - 1
     let left = (&columns - width) / 2
-    let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
+    let opts = {'border': 'rounded', 'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
 
     let top = "╭" . repeat("─", width - 2) . "╮"
     let mid = "│" . repeat(" ", width - 2) . "│"

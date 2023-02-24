@@ -1,7 +1,7 @@
 local opt = require("utils.options")
 local cmd = vim.cmd
 
-print("THIS IS A TEST")
+-- print("THIS IS A TEST")
 opt.register_option({
   name = "indentsize",
   default = 4,
