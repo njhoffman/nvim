@@ -7,6 +7,12 @@ local file_exists = function(name)
     io.close(f)
     return true
   else
+    path = vim.fn.stdpath("config") .. "/lua/plugs/config/" .. name .. "/init.lua"
+    f = io.open(path, "r")
+    if f ~= nil then
+      io.close(f)
+      return true
+    end
     return false
   end
 end
@@ -29,7 +35,7 @@ local check_config_file = function(plugin)
     name = string.gsub(name, "[\\.]+", "-")
     local exists = file_exists(name)
     local fname = "plugs.config." .. string.lower(name)
-    if exists then
+    if exists and not stats.configs[fname] then
       -- vim.dbglog("EXISTS: " .. fname)
       stats.configs[fname] = true
       plugin.config = function(_, opts)

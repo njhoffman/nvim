@@ -1,6 +1,6 @@
 local Hydra = require("hydra")
 -- local popup = require("plugs.config.hydra.popup")
-local levels = require("plugs.config.hydra.levels")
+local levels = require("plugs.config.hydra-nvim.levels")
 
 local hints = [[
   ^ ^       Lsp Options
@@ -152,6 +152,7 @@ local toggles = {
   end,
   lvl = function(num)
     return "[" .. string.lower(tostring(vim.lsp.log_levels[num])) .. "]"
+    -- return string.format("%8s", "[" .. string.lower(tostring(vim.lsp.log_levels[num])) .. "]")
   end,
 }
 
@@ -256,6 +257,10 @@ local hydra = function()
       },
       on_enter = function()
         vim.bo.modifiable = false -- temporary set `nomodifiable` while Hydra is active
+        vim.cmd("VimadeFadeActive")
+      end,
+      on_exit = function()
+        vim.cmd("VimadeUnfadeActive")
       end,
     },
     mode = { "n", "x" },

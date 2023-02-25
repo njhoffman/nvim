@@ -103,6 +103,7 @@ local get_scriptnames = function()
   local scriptnames = vim.api.nvim_eval("w:scriptnames")
   return scriptnames
 end
+
 local get_runtime_files = function()
   local rtpaths = vim.api.nvim_list_runtime_paths()
   return vim.fn.sort(rtpaths)
@@ -129,10 +130,46 @@ end
 cmd("CloseMulti", close_multi, { desc = "Close tabpage, window, or buffer in that order" })
 cmd("GetPaths", get_paths, { desc = "Get path collections (rtpaths, o.packpath, etc)" })
 
-local get_runtime_files = function()
-  local rtpaths = vim.api.nvim_list_runtime_paths()
-  return vim.fn.sort(rtpaths)
+local load_colorschemes = function()
+  local schemes = {
+    ["material deep ocean"] = {
+      function()
+        require("material").setup()
+        vim.g.material_style = "deep ocean"
+        vim.cmd("colorscheme material")
+      end,
+    },
+    ["material palenight"] = {
+      function()
+        require("material").setup()
+        vim.g.material_style = "palenight"
+        vim.cmd("colorscheme material")
+      end,
+    },
+    ["material oceanic"] = {
+      function()
+        require("material").setup()
+        vim.g.material_style = "oceanic"
+        vim.cmd("colorscheme material")
+      end,
+    },
+    ["material lighter"] = {
+      function()
+        require("material").setup()
+        vim.g.material_style = "lighter"
+        vim.cmd("colorscheme material")
+      end,
+    },
+    ["material darker"] = {
+      function()
+        require("material").setup()
+        vim.g.material_style = "darker"
+        vim.cmd("colorscheme material")
+      end,
+    },
+  }
 end
+cmd("LoadColorschemes", load_colorschemes, { desc = "Load colorschemes" })
 -- cmd("LogFiles", function(cmd_props)
 --
 --     -- logfiles["auth"]="/var/log/auth.log"

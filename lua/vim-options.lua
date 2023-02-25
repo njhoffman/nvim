@@ -51,7 +51,6 @@ opt("shada", [[!,'2000,<1000,s500]])
 opt("shortmess", "tToOcSIsa")
 opt("showbreak", "↳ ")
 opt("showcmd", true)
-opt("showmatch", true)
 opt("showmatch", true) -- Show matching brackets when text indicator is over them
 opt("showmode", false)
 opt("showtabline", 1)
