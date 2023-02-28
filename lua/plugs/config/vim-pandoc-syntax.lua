@@ -1,15 +1,19 @@
 vim.cmd([[ let g:pandoc#syntax#style#underline_special = 0 ]])
 vim.cmd([[ let g:pandoc#syntax#conceal#use = 1 ]])
 vim.cmd([[ let g:pandoc#syntax#conceal#urls = 1 ]])
+vim.cmd([[
+  let g:pandoc#syntax#codeblocks#embeds#langs =
+    \ ["shell=sh", "rust", "ts=typescript", "javascript", "html", "cpp", "c",
+    \ "go", "sh", "bash=sh", "zsh", "yaml", "go", "ruby", "python", "json", "lua",
+    \ "sql", "lua", "css", "awk", "terraform", "yaml", "vim=vimwiki", "xml"]
+  ]])
 
--- vim.cmd([[
---   let g:pandoc#syntax#codeblocks#embeds#langs =
---     \ ["shell=sh", "rust", "ts=typescript", "javascript", "html", "cpp", "c",
---     \ "go", "sh", "bash=sh", "zsh", "yaml", "go", "ruby", "python", "json",
---     \ "sql", "lua", "css", "awk", "terraform", "yaml", "vim=vimwiki", "xml"]
---   ]])
+-- vim.cmd([[ let g:pandoc#syntax#style#emphases = 0 ]])
+-- pandocDelimitedCodeBlockLanguage Comment
 
--- E403: syntax sync: line continuations pattern specified twice
+-- vim.cmd([[ let g:pandoc#syntax#codeblocks#ignore = ['delimited', 'definition'] ]])
+-- vim.cmd([[ let g:pandoc#syntax#codeblocks#embeds#use = 0 ]])
+
 -- E403: syntax sync: line continuations pattern specified twice
 -- Error detected while processing function <SNR>294_MarkdownRefreshSyntax[2]..<SNR>294_MarkdownHighlightSources:
 

@@ -1,4 +1,6 @@
 -- local colors = require("plugins.config.feline-nvim-colors").main
+local lsp = require("feline.providers.lsp")
+local vi_mode_utils = require("feline.providers.vi_mode")
 
 local function file_osinfo()
   local os = vim.bo.fileformat:upper()
@@ -12,9 +14,6 @@ local function file_osinfo()
   end
   return icon .. os
 end
-
-local lsp = require("feline.providers.lsp")
-local vi_mode_utils = require("feline.providers.vi_mode")
 
 local lsp_get_diag = function(str)
   local count = vim.lsp.diagnostic.get_count(0, str)

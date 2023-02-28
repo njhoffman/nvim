@@ -1,63 +1,64 @@
 local sorters = require("telescope.sorters")
-local tele_mappings = require("plugs.config.telescope-mappings")
 local H = require("helpers")
 local actions = require("telescope.actions")
+local tele_mappings = require("plugs.config.telescope-nvim.mappings")
 
 local tele_plugs = {
-  ["arecibo"] = "telescope-arecibo.nvim",
-  ["devhints"] = "devhints.nvim",
-  ["env"] = "telescope-env.nvim",
-  ["fences"] = "telescope-fences.nvim",
-  ["filetypes"] = "telescope-filetypes.nvim",
-  ["find_pickers"] = "telescope-find-pickers.nvim",
-  ["gotofile"] = "telescope-gotofiles.nvim",
-  ["mapper"] = "telescope-mapper.nvim",
-  ["notify"] = "telescope-notify.nvim",
-  ["options"] = "telescope-options.nvim",
-  ["variables"] = "telescope-variables.nvim",
-  ["which-key"] = "which-key.nvim",
-  --
-  ["aerial"] = "aerial.nvim",
-  ["asynctasks"] = "telescope-asynctasks.nvim",
-  ["bookmarks"] = "telescope-bookmarks.nvim",
-  ["changes"] = "telescope-changes.nvim",
-  ["cheatsheet"] = "cheatsheet.nvim",
-  ["cder"] = "cder.nvim",
-  ["command_palette"] = "telescope-command-palette.nvim",
-  ["color_names"] = "telescope-color-names.nvim",
-  ["docker"] = "telescope-docker.nvim",
-  -- ["dap"] = "telescope-dap.nvim",
-  ["file_browser"] = "telescope-file-browser.nvim",
-  ["frecency"] = "telescope-frecency.nvim",
-  ["fzf"] = "telescope-fzf-native.nvim",
-  ["gh"] = "telescope-github.nvim",
-  ["ghn"] = "github-notifications",
-  ["ghq"] = "telescope-ghq.nvim",
-  ["heading"] = "telescope-heading.nvim",
-  ["hop"] = "telescope-hop.nvim",
-  ["howdoi"] = "howdoi.nvim",
-  ["lazy"] = "telescope-lazy.nvim",
-  ["lazygit"] = "lazygit.nvim",
-  ["live_grep_args"] = "telescope-rg.nvim",
-  ["luasnip"] = "telescope-luasnip.nvim",
-  -- ["make"]            = "telescope-makefile",
-  ["media_files"] = "telescope-media-files.nvim",
-  ["menufacture"] = "telescope-menufacture.nvim",
-  ["neoclip"] = "nvim-neoclip.lua",
-  ["node_modules"] = "telescope-node-modules.nvim",
-  ["npm"] = "telescope-npm.nvim",
-  ["openbrowser"] = "telescope-openbrowser.nvim",
-  ["ports"] = "telescope-ports.nvim",
-  ["projects"] = "project.nvim",
-  ["repo"] = "telescope-repo.nvim",
-  -- ["session-lens"] = "session-lens",
-  ["smart_open"] = "smart-open.nvim",
-  ["terraform"] = "telescope-terraform.nvim",
-  ["tmux"] = "telescope-tmux.nvim",
-  ["undo"] = "telescope-undo.nvim",
-  ["ui-select"] = "telescope-ui-select.nvim",
-  ["vimwiki"] = "telescope-vimwiki.nvim",
-  ["z"] = "telescope-z.nvim",
+  -- locally managed
+  ["arecibo"] = {},
+  ["devhints"] = {},
+  ["env"] = {},
+  ["fences"] = {},
+  ["filetypes"] = {},
+  ["find_pickers"] = {},
+  ["gotofile"] = {},
+  ["mapper"] = {},
+  ["notify"] = {},
+  ["options"] = {},
+  ["variables"] = {},
+  ["which-key"] = {},
+  -- 3rd party to sort through
+  ["aerial"] = {},
+  ["asynctasks"] = {},
+  ["bookmarks"] = {},
+  ["changes"] = {},
+  ["cheatsheet"] = {},
+  ["cder"] = {},
+  ["command_palette"] = {},
+  ["color_names"] = {},
+  ["docker"] = {},
+  -- ["dap"]= {},
+  ["file_browser"] = {},
+  ["frecency"] = {},
+  ["fzf"] = {},
+  ["gh"] = {},
+  ["ghn"] = {},
+  ["ghq"] = {},
+  ["heading"] = {},
+  ["hop"] = {},
+  ["howdoi"] = {},
+  ["lazy"] = {},
+  ["lazygit"] = {},
+  ["live_grep_args"] = {},
+  ["luasnip"] = {},
+  -- ["make"]           = {},
+  ["media_files"] = {},
+  ["menufacture"] = {},
+  ["neoclip"] = {},
+  ["node_modules"] = {},
+  ["npm"] = {},
+  ["openbrowser"] = {},
+  ["ports"] = {},
+  ["projects"] = {},
+  ["repo"] = {},
+  -- ["session-lens"]= {},
+  ["smart_open"] = {},
+  ["terraform"] = {},
+  ["tmux"] = {},
+  ["undo"] = {},
+  ["ui-select"] = {},
+  ["vimwiki"] = {},
+  ["z"] = {},
 }
 
 require("dir-telescope").setup({
@@ -104,6 +105,7 @@ end
 --     })
 --   )
 -- )
+
 M.extensions.menufacture = {
   mappings = {
     main_menu = { [{ "i", "n" }] = "<M-Bslash>" },
@@ -322,7 +324,6 @@ M.extensions.frecency = {
     ["config"] = baseDirs.home .. "/.config",
     ["nvim-config"] = baseDirs.config,
     ["nvim-data"] = baseDirs.data,
-    ["nvim-plugs"] = baseDirs.home .. "/.local/share/nvim/site/pack/packer/start",
     ["zettel"] = baseDirs.home .. "/zettelkasten",
     ["zinit"] = baseDirs.home .. "/.zinit",
     ["zsh"] = baseDirs.home .. "/.config/zsh",
@@ -398,11 +399,7 @@ M.extensions.projects = {
       name = "nvim",
       base_dirs = {
         {
-          path = "~/.local/share/nvim/site/pack/packer/start",
-          max_depth = 2,
-        },
-        {
-          path = "~/.local/share/nvim/site/pack/packer/opt",
+          path = "~/.local/share/nvim/lazy",
           max_depth = 2,
         },
       },
@@ -415,4 +412,38 @@ M.extensions.mapper = {
   sorter = sorters.fuzzy_with_index_bias,
   -- sorter = sorters.highlighter_only
 }
+
 return M
+
+--  Z telescope plugin:
+--  <CR> (edit)	builtin.find_files    <C-x> (split)	:chdir to the dir
+--  <C-v> (vsplit)	:lchdir to the dir  <C-t> (tabedit)	:tchdir to the dir
+--  cmd Set command list to execute z -l or compatibles. Default: {vim.o.shell, '-c', 'z -l'}
+--  cwd Transform result paths into relative ones with this value as base dir. Default: vim.fn.getcwd()
+--  tail_path Show only basename of the path. Default value: false
+--  shorten_path Call pathshorten() for each path. Default value: false
+
+--  FZF Syntax:
+--  Token	Match type	Description
+--  sbtrkt	fuzzy-match	Items that match sbtrkt
+--  'wild	exact-match (quoted)	Items that include wild
+--  ^music	prefix-exact-match	Items that start with music
+--  .mp3$	suffix-exact-match	Items that end with .mp3
+--  !fire	inverse-exact-match	Items that do not include fire
+--  !^music	inverse-prefix-exact-match	Items that do not start with music
+--  !.mp3$	inverse-suffix-exact-match	Items that do not end with .mp3
+--  A single bar character term acts as an OR ope
+
+--  File Browser
+--  Insert / Normal	Action
+--  <C-f>/f	Toggle between file and folder browser
+--  <C-y>/y	Copy (multi-selected) files or folders to cwd
+--  <C-d>/dd	Delete (multi-selected) files or folders
+--  <C-r>/r	Rename (multi-selected) files
+--  <C-e>/e	Add File/Folder at cwd; trailing / creates folder
+--       /m	Move multi-selected files to cwd
+--  <C-h>/h	Toggle hidden files
+--  <C-o>/o	Open file with default system application
+--  <C-g>/g	Go to parent directory
+--  <C-w>/w	Go to current working directory
+--  <A-e>/--	Toggle all entires ignoring ./ and ../

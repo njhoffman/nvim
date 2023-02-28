@@ -3,19 +3,10 @@
 local telescope = require("telescope")
 local previewers = require("telescope.previewers")
 local sorters = require("telescope.sorters")
-local tele_custom = require("plugs.config.telescope-custom")
-local tele_mappings = require("plugs.config.telescope-mappings")
-local tele_plugins = require("plugs.config.telescope-plugins")
 
-local command_fd = {
-  "fd",
-  "--hidden",
-  "--one-file-system",
-  "--follow",
-  "--no-ignore-vcs",
-  "--color=never",
-  "--full-path .",
-}
+local custom = require("plugs.config.telescope-nvim.custom")
+local mappings = require("plugs.config.telescope-nvim.mappings")
+local plugins = require("plugs.config.telescope-nvim.plugins")
 
 local command_rg = {
   "rg",
@@ -104,7 +95,7 @@ local telescopeConfig = {
     scroll_strategy = "cycle",
     color_devicons = true,
     -- winblend = 10,
-    mappings = tele_mappings.main,
+    mappings = mappings.main,
     file_sorter = sorters.native_fzf_sorter,
     generic_sorter = sorters.native_fzf_sorter, -- get_fuzzy_file, fuzzy_with_index_bias
     grep_previewer = previewers.vim_buffer_vimgrep.new,
@@ -128,11 +119,11 @@ local telescopeConfig = {
   pickers = {
     pickers = false,
     find_files = {
-      mappings = tele_mappings.file_picker,
+      mappings = mappings.file_picker,
       find_command = command_rg,
     },
     frecency = {
-      mappings = tele_mappings.file_picker,
+      mappings = mappings.file_picker,
     },
     buffers = {
       show_all_buffers = true,
@@ -141,24 +132,24 @@ local telescopeConfig = {
       only_cwd = false,
     },
     oldfiles = {
-      mappings = tele_mappings.file_picker,
+      mappings = mappings.file_picker,
       find_command = command_rg,
     },
     git_status = {
-      previewer = tele_custom.previewers.delta,
+      previewer = custom.previewers.delta,
     },
     git_bcommits = {
-      mappings = tele_mappings.file_picker,
-      previewer = tele_custom.previewers.git_bcommits,
+      mappings = mappings.file_picker,
+      previewer = custom.previewers.git_bcommits,
       layout_strategy = "vertical",
       -- git_command = { "git", "log", "--date=format:%m-%d-%y", "--format=%h%d %ad %s <%an>" }
       -- git_command = { "git", "log", '--format=%h%d (%ar) %s <%an>' }
     },
   },
-  extensions = tele_plugins.extensions,
+  extensions = plugins.extensions,
 }
 
 telescope.setup(telescopeConfig)
-tele_plugins.load_extensions(telescope)
+plugins.load_extensions(telescope)
 
-require("plugs.config.telescope-pickers")
+require("plugs.config.telescope-nvim.pickers")

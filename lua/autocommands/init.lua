@@ -67,7 +67,7 @@ vim.import("config", function(config)
       { "BufNewFile,BufRead", "*.env", "setlocal ft=config syn=config" },
       { "BufNewFile,BufRead", "conf.*", "setlocal ft=config syn=config" },
       -- { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 synmaxcol=500" },
-      { "BufRead,BufEnter", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 nospell" },
+      { "BufRead,BufEnter", "*.md", "setlocal ft=vimwiki.pandoc.markdown conceallevel=3 nospell synmaxcol=500" },
       { "BufNewFile,BufRead", ".tasks", "setlocal ft=asynctasks" },
       { "BufNewFile,BufRead", "*.visidatarc", "setlocal ft=python" },
       { "BufNewFile,BufRead", ".vimtasks", "setlocal ft=asynctasks" },

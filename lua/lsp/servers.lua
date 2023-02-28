@@ -50,7 +50,7 @@ local lspconfig = require("lspconfig")
 
 local lspconfig_settings = {
   ensure_installed = servers,
-  automatic_installation = false,
+  automatic_installation = true,
 }
 
 local tool_packages = require("plugs.config.mason-nvim-tools")
@@ -115,14 +115,31 @@ require("mason-lspconfig").setup_handlers({
     -- local config = get_config(server_name)
     lspconfig[server_name].setup(lspconfig[server_name])
   end,
+
   ["tsserver"] = require("lsp.servers.tsserver"),
   ["eslint"] = require("lsp.servers.eslint"),
   ["tailwindcss"] = require("lsp.servers.tailwindcss"),
   ["lua_ls"] = require("lsp.servers.sumneko_lua"),
   ["stylelint_lsp"] = require("lsp.servers.stylelint_lsp"),
-  ["bashls"] = function()
-    lspconfig.bashls.setup({
-      root_dir = util.root_pattern(".project", ".git"),
+  ["bashls"] = require("lsp.servers.bashls"),
+  ["ltex"] = function()
+    lspconfig.ltex.setup({
+      filetypes = {
+        "bib",
+        "gitcommit",
+        -- "markdown",
+        "org",
+        -- "pandoc",
+        "plaintex",
+        "rst",
+        "rnoweb",
+        "tex",
+      },
+      settings = {
+        ltex = {
+          language = "en-GB",
+        },
+      },
     })
   end,
   ["dockerls"] = function()

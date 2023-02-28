@@ -65,6 +65,16 @@ local apply_configs = function(plugins)
   return plugins
 end
 
+local is_loaded = function(name)
+  local plugins = require("lazy.core.config").spec.plugins
+  return plugins[name] and plugins[name]._.loaded
+end
+
+local is_installed = function(name)
+  local plugins = require("lazy.core.config").spec.plugins
+  return plugins[name] and plugins[name]._.installed
+end
+
 local print_stats = function(name, plugins)
   local line = "(" .. #vim.tbl_keys(stats.start) .. ":" .. #vim.tbl_keys(stats.lazy)
   line = line .. ":" .. #vim.tbl_keys(stats.configs) .. ") +" .. #plugins .. " " .. name
@@ -116,13 +126,24 @@ local init = function()
     rtp = {
       -- disable some rtp plugins
       disabled_plugins = {
-        "gzip",
+        -- "netrw",
+        -- "netrwPlugin",
+        -- "netrwSettings",
+        -- "netrwFileHandlers",
         -- "matchit",
         -- "matchparen",
-        -- "netrwPlugin",
+        "2html_plugin",
+        "getscript",
+        "getscriptPlugin",
+        "gzip",
+        "logipat",
+        "rrhelper",
+        "spellfile_plugin",
+        "tar",
         "tarPlugin",
-        "tohtml",
-        "tutor",
+        "vimball",
+        "vimballPlugin",
+        "zip",
         "zipPlugin",
       },
     },
@@ -131,6 +152,8 @@ end
 
 return {
   init = init,
+  is_installed = is_installed,
+  is_loaded = is_loaded,
   apply_configs = apply_configs,
   print_stats = print_stats,
 }

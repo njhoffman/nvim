@@ -65,7 +65,7 @@ local clrs = {
   highlight = "#1F2233",
   disabled = "#464B5D",
   accent = "#84FFFF",
-  error = "#BE6069",
+  error = "#aa3049",
 }
 
 local clr_over = {
@@ -86,7 +86,8 @@ return function(injected_functions)
   local sym = injected_functions.sym
   return {
     Visual({ fg = "none", bg = clr_over.selection }),
-    Error({ fg = "#bF211A", bg = "none" }),
+    Error({ fg = clrs.error, bg = "none" }),
+    -- Error({ fg = "none", bg = "none" }),
     Underline({ gui = "underline" }),
     Normal({ fg = clrs.nord4.darken(30), bg = "none" }),
     -- ui components
@@ -207,7 +208,7 @@ return function(injected_functions)
     sym("@conditional")({ Conditional }),
     -- sym("@conditional")({ fg = "#80788a" }),
     sym("@exception")({ Special }),
-    sym("@error")({ Error }),
+    sym("@error")({ Normal }),
     sym("@function")({ Function }),
     sym("@function.call")({ Function }),
     sym("@keyword")({ Keyword }),
@@ -224,6 +225,7 @@ return function(injected_functions)
     sym("@punct.special")({ fg = "#888698" }),
     sym("@tag")({ fg = clr_over.orange }),
     sym("@tag.delimiter")({ fg = clr_over.orange }),
+    sym("@text.literal")({ gui = "none" }),
     -- sym("@type")({ fg = "#6595f8" }),
     -- sym("@type.builtin")({ fg = "#89DDFF" }),
     sym("@uri")({ fg = "#8eb9f6", gui = "none" }),
@@ -367,6 +369,7 @@ return function(injected_functions)
     markdownH6({ fg = "#45a5a8" }),
     mkdHeading({ fg = "#557588" }),
     markdownLinkText({ fg = "#00ccff" }),
+    pandocDelimitedCodeBlock({ gui = "none" }),
     pandocStrikeout({ gui = "strikethrough" }),
     pandocEmphasis({ gui = "italic", fg = "#bbbbcc" }),
     pandocStrong({ gui = "bold", fg = "#ddddee" }),

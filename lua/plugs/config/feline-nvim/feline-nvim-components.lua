@@ -1,7 +1,7 @@
-local provider_project_nvim = require("plugs.config.feline-nvim-provider-project-nvim")
-local provider_project_uo = require("plugs.config.feline-nvim-provider-project-uo")
-local provider_git = require("plugs.config.feline-nvim-provider-git")
-local provider_cursor = require("plugs.config.feline-nvim-provider-cursor")
+local provider_project_uo = require("plugs.config.feline-nvim.provider-project-uo")
+local provider_project_nvim = require("plugs.config.feline-nvim.provider-project")
+local provider_git = require("plugs.config.feline-nvim.provider-git")
+local provider_cursor = require("plugs.config.feline-nvim.provider-cursor")
 
 local M = {}
 

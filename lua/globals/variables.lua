@@ -61,14 +61,12 @@ vim.g.sql_type_default = "pgsql"
 vim.g.indent_blankline_filetype_exclude = { "alpha", "NvimTree", "packer" }
 vim.g.indent_blankline_buftype_exclude = { "terminal" }
 vim.g.asyncrun_open = 6
-
 vim.g.markdown_fenced_languages = {
   "awk",
   "bash=sh",
   "c",
   "cpp",
   "css",
-  "go",
   "go",
   "html",
   "javascript",
@@ -98,20 +96,21 @@ local disabled_built_ins = {
   -- "netrwPlugin",
   -- "netrwSettings",
   -- "netrwFileHandlers",
-  "gzip",
-  "zip",
-  "zipPlugin",
-  "tar",
-  "tarPlugin",
+  -- "matchit",
+  -- "matchparen",
+  "2html_plugin",
   "getscript",
   "getscriptPlugin",
-  "vimball",
-  "vimballPlugin",
-  "2html_plugin",
+  "gzip",
   "logipat",
   "rrhelper",
   "spellfile_plugin",
-  "matchit",
+  "tar",
+  "tarPlugin",
+  "vimball",
+  "vimballPlugin",
+  "zip",
+  "zipPlugin",
 }
 
 vim.tbl_map(function(plugin)

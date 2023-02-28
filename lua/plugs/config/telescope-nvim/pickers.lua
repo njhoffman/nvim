@@ -36,7 +36,7 @@ local with_preview = {
 
 -- FindBuffer
 _G._FindBufferLeaderF = function()
-  local leaderf = require("plugs.config.telescope-leaderf")
+  local leaderf = require("plugs.config.telescope-nvim.leaderf")
   local opts = vim.deepcopy(dropdown_preview)
   -- local opts = {}
   opts.prompt_title = "Buffers"
@@ -45,7 +45,7 @@ _G._FindBufferLeaderF = function()
 end
 
 _G._FindBufferLeaderFNoPreview = function()
-  local leaderf = require("plugs.config.telescope-leaderf")
+  local leaderf = require("plugs.config.telescope-nvim.leaderf")
   -- local opts = {}
   local opts = vim.deepcopy(dropdown)
   opts.prompt_title = "Buffers"

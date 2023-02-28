@@ -21,6 +21,7 @@ local plugins = {
   { "kevinhwang91/nvim-bqf" },
   {
     "nvim-neo-tree/neo-tree.nvim",
+    cmd = { "NeoTreeFocusToggle", "NeoTreeShowToggle" },
     branch = "v2.x",
     dependencies = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
   },
@@ -28,7 +29,7 @@ local plugins = {
   { "t-troebst/perfanno.nvim" },
   { "jbyuki/quickmath.nvim" },
   { "tversteeg/registers.nvim" },
-  { "voldikss/vim-floaterm" },
+  { "nvim-colortils/colortils.nvim" },
   { "mbbill/undotree" },
   { "romainl/vim-qf" },
   { "svermeulen/vim-yoink" },
@@ -39,7 +40,6 @@ local plugins = {
   { "petertriho/nvim-scrollbar" },
   { "edluffy/specs.nvim" },
   { "luukvbaal/stabilize.nvim" },
-  { "robertgzr/todo-comments.nvim" }, -- folke/todo-comments
   { "folke/twilight.nvim" },
   { "gerw/vim-HiLinkTrace" },
   { "ivyl/vim-bling" },
@@ -50,6 +50,13 @@ local plugins = {
   { "TaDaa/vimade" },
   { "folke/zen-mode.nvim" },
   { "phaazon/hop.nvim" },
+  {
+    "RRethy/vim-illuminate",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = { "neovim/nvim-lspconfig" },
+    -- opts = { delay = 200 },
+    -- config = function(_, opts)
+  },
 }
 
 utils.apply_configs(plugins)

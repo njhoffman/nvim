@@ -1,7 +1,7 @@
 -- entry maker for leaderf buffer
 local my_make_entry = {}
 
-local devicons = require "nvim-web-devicons"
+local devicons = require("nvim-web-devicons")
 local entry_display = require("telescope.pickers.entry_display")
 
 local filter = vim.tbl_filter
@@ -18,15 +18,11 @@ function my_make_entry.gen_from_buffer_like_leaderf(opts)
   local max_bufnr = math.max(unpack(bufnrs))
   local bufnr_width = #tostring(max_bufnr)
 
-  local max_bufname = math.max(
-    unpack(
-      map(function(bufnr)
-        return vim.fn.strdisplaywidth(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":p:t"))
-      end, bufnrs)
-    )
-  )
+  local max_bufname = math.max(unpack(map(function(bufnr)
+    return vim.fn.strdisplaywidth(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":p:t"))
+  end, bufnrs)))
 
-  local displayer = entry_display.create {
+  local displayer = entry_display.create({
     separator = " ",
     items = {
       { width = bufnr_width },
@@ -35,16 +31,16 @@ function my_make_entry.gen_from_buffer_like_leaderf(opts)
       { width = max_bufname },
       { remaining = true },
     },
-  }
+  })
 
   local make_display = function(entry)
-    return displayer {
+    return displayer({
       { entry.bufnr, "TelescopeResultsNumber" },
       { entry.indicator, "TelescopeResultsComment" },
       { entry.devicons, entry.devicons_highlight },
       entry.file_name,
-      { entry.dir_name, "Comment" }
-    }
+      { entry.dir_name, "Comment" },
+    })
   end
 
   return function(entry)

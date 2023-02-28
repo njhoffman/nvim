@@ -105,7 +105,7 @@ local sumneko_lua = function()
         lua_root = lua_root .. "/lua/"
       end
       local git_root = util.find_git_ancestor(fname)
-      local final = pattern_root or git_root or lua_root
+      local final = pattern_root or git_root -- or lua_root
       return final
     end,
   })

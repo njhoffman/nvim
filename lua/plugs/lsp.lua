@@ -31,8 +31,13 @@ local plugins = {
   { "folke/lsp-colors.nvim" },
   { "kosayoda/nvim-lightbulb" },
   { "tami5/lspsaga.nvim" },
+  {
+    "folke/todo-comments.nvim",
+    cmd = { "TodoTrouble", "TodoTelescope" },
+    event = { "BufReadPost", "BufNewFile" },
+  },
   { "weilbith/nvim-code-action-menu" },
-  { "folke/trouble.nvim" },
+  { "folke/trouble.nvim", cmd = { "TroubleToggle", "Trouble" } },
   { "jbyuki/ntangle-lsp.nvim", dependencies = { "jbyuki/ntangle-ts.nvim", "neovim/nvim-lspconfig" } },
 }
 

@@ -15,7 +15,7 @@ M.make_string = function(...)
     if type(x) == "number" and config.float_precision then
       x = tostring(round(x, config.float_precision))
     elseif type(x) == "table" then
-      x = vim.inspect(x)
+      x = type(vim.dump) == "function" and vim.dump(x) or vim.inspect(x)
     else
       x = tostring(x)
     end

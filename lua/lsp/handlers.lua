@@ -13,11 +13,6 @@ local color_provider = function(client, bufnr)
 end
 
 --- @return fun() @function that calls the provided fn, but with no args
-local function w(fn)
-  return function()
-    return fn()
-  end
-end
 
 -- Finds and runs the closest codelens (searches upwards only)
 local function find_and_run_codelens()
@@ -51,7 +46,9 @@ local code_lens_provider = function(_, bufnr)
   vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost", "CursorHold" }, {
     buffer = bufnr,
     group = group,
-    callback = w(vim.lsp.codelens.refresh),
+    callback = function()
+      return vim.lsp.codelens.refresh()
+    end,
   })
   local opts = vim.tbl_extend("keep", keymap_opts, { buffer = true })
   vim.keymap.set("n", "gL", find_and_run_codelens, opts)
@@ -89,21 +86,24 @@ local function highlight_references()
 end
 
 local document_highlight_provider = function(client, bufnr)
-  local cap = client.server_capabilities
-  if cap.documentHighlightProvider then
-    local group = vim.api.nvim_create_augroup("LspHighlight", {})
-    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-      buffer = bufnr,
-      group = group,
-      callback = highlight_references,
-    })
-    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-      buffer = bufnr,
-      group = group,
-      callback = w(vim.lsp.buf.clear_references),
-    })
-  else
-    vim.notify("Lost documentHighlightProvider \n" .. vim.inspect(cap), 4)
+  if not require("lazy-utils").is_installed("vim-illuminate") then
+    if client.server_capabilities.documentHighlightProvider then
+      local group = vim.api.nvim_create_augroup("LspHighlight", {})
+      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+        buffer = bufnr,
+        group = group,
+        callback = highlight_references,
+      })
+      vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+        buffer = bufnr,
+        group = group,
+        callback = function()
+          return vim.lsp.buf.clear_references()
+        end,
+      })
+    else
+      vim.notify("Lost documentHighlightProvider \n" .. vim.inspect(client.server_abilities), 4)
+    end
   end
 end
 
@@ -130,9 +130,9 @@ local signature_help_provider = function(_, bufnr)
     close_timeout = 2000,
     max_width = 95,
     doc_lines = 50,
-    toggle_key = "<M-x>", -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
+    toggle_key = "<M-x>",
     select_signature_key = "<M-n>",
-    extra_trigger_chars = { "(", "," }, -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
+    extra_trigger_chars = { "(", "," },
     move_cursor_key = "<M-'>",
     transparency = 10,
   }
@@ -160,10 +160,6 @@ local code_action_provider = function(_, bufnr)
   -- keymap_buf(bufnr, "n", "gC", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
   keymap_buf(bufnr, "n", "gG", "<cmd>CodeActionMenu<CR>", keymap_opts)
   keymap_buf(bufnr, "n", "gC", "<cmd>CodeActionMenu<CR>", keymap_opts)
-  keymap_buf(bufnr, "x", "gG", ":'<,'>lua vim.lsp.buf.range_code_action()<CR>", keymap_opts)
-
-  -- -- keymap("n", "<leader>q", "<cmd>Telescope lsp_code_actions<CR>", opts)
-  -- keymap("n", "<leader>la", "<cmd>Telescope lsp_code_actions<CR>", opts)
 end
 
 local definition_provider = function(_, bufnr)

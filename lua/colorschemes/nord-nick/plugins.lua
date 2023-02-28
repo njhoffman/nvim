@@ -1,3 +1,5 @@
+local hsl = require("lush").hsl
+
 ---@diagnostic disable undefined-global
 --luacheck: ignore
 
@@ -61,6 +63,7 @@ return function()
     purple = "#B988B0",
     light_purple = "#B48EAD",
     none = "NONE",
+    highlight = hsl("#101c39"),
   }
 
   local clr_over = {
@@ -396,6 +399,12 @@ return function()
     BufferInactiveSign({ fg = colors.light_gray, bg = "#1C1F24" }),
     BufferInactiveTarget({ fg = colors.red, bg = "#1C1F24", gui = "bold" }),
     TabLineFill({ fg = "NONE", bg = colors.bg_dark }),
+    -- Illuminate
+    IlluminatedWordRead({ bg = colors.highlight, gui = "italic" }),
+    IlluminatedWordText({ bg = colors.highlight, gui = "none" }),
+    IlluminatedWordWrite({ bg = colors.highlight, gui = "none", fg = "none" }),
+    -- illuminatedCurWord = { bg = colors.highlight },
+
     -- TabLine({ fg = colors.bg, bg = colors.bg_dark }),
     -- TabLineSel({ fg = colors.bg, bg = colors.bg_dark }),
 
@@ -410,10 +419,6 @@ return function()
     -- -- Nvim dap
     -- DapBreakpoint = { fg = colors.red },
     -- DapStopped = { fg = colors.green },
-
-    -- -- Illuminate
-    -- illuminatedWord = { bg = colors.highlight },
-    -- illuminatedCurWord = { bg = colors.highlight },
 
     -- -- Hop
     -- HopNextKey = { fg = colors.fg_light, gui = "bold" },

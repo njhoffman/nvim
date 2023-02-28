@@ -41,20 +41,20 @@ require("nvim-treesitter.configs").setup({
       "latex",
       "bash",
       "typescript",
-      -- "markdown",
+      "markdown",
     },
+    -- TODO: replace bash and lua highlights with treesitter
+    additional_vim_regex_highlighting = true,
     custom_captures = {
       -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
       ["foo.bar"] = "Identifier",
     },
-    -- TODO: replace bash and lua highlights with treesitter
-    additional_vim_regex_highlighting = true,
   },
   context_commentstring = { enable = true, enable_autocmd = false },
   refactor = {
     smart_rename = { enable = true, keymaps = { smart_rename = "gR" } },
     highlight_definitions = { enable = true },
-    highlight_current_scope = { enable = config.highlight },
+    highlight_current_scope = { enable = false },
     navigation = {
       enable = true,
       keymaps = {

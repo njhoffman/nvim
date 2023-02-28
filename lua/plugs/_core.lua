@@ -9,7 +9,7 @@ local plugins = {
       vim.cmd("colorscheme nord-nick")
     end,
   },
-  { "feline-nvim/feline.nvim" },
+  { "freddiehaddad/feline.nvim" },
   { "romgrk/barbar.nvim", dependencies = "kyazdani42/nvim-web-devicons" },
 }
 

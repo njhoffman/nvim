@@ -1,8 +1,9 @@
-local colors = require("plugs.config.feline-nvim-colors")
-local provider_project_uo = require("plugs.config.feline-nvim-provider-project-uo")
-local custom_status_comps = require("plugs.config.feline-nvim-components")
 local defaults = require("feline.default_components").statusline.icons
 local winbar_defaults = require("feline.default_components").winbar.icons
+
+local provider_project_uo = require("plugs.config.feline-nvim.provider-project-uo")
+local custom_status_comps = require("plugs.config.feline-nvim.components")
+local colors = require("plugs.config.feline-nvim.colors")
 
 local status_comps = vim.deepcopy(defaults)
 local winbar_comps = vim.deepcopy(winbar_defaults)
