@@ -17,7 +17,17 @@ local plugins = {
     },
   },
   { "smjonas/live-command.nvim", cmd = { "Reg", "Norm" }, event = "VeryLazy" },
-  { "andymass/vim-matchup", event = "VeryLazy" },
+  {
+    "andymass/vim-matchup",
+    event = "BufRead",
+    init = function()
+      vim.g.matchup_override_vimtex = 1
+      vim.g.matchup_matchparen_deferred = 1
+      vim.g.matchup_matchparen_offscreen = {
+        method = "popup",
+      }
+    end,
+  },
   { "chaoren/vim-wordmotion", event = "VeryLazy" },
   { "psliwka/vim-smoothie", commit = "10fd0aa", event = "VeryLazy" }, -- f2aaab1
   { dir = "~/git/clever-f.vim" }, -- rhysd/clever-f.vim

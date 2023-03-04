@@ -13,22 +13,82 @@ require("nvim-autopairs").setup({
   enable_check_bracket_line = true, --- check bracket in same line
   ignored_next_char = "[%w%.]", -- will ignore alphanumeric and `.` symbol
   -- ignored_next_char = string.gsub([[ [%w%%%'%[%"%.] ]],"%s+", ""),
-  disable_filetype = { "TelescopePrompt", 'sh', 'zsh', 'bash' },
+  disable_filetype = { "TelescopePrompt", "sh", "zsh", "bash" },
+  enable_bracket_in_quote = true,
+  enable_abbr = false, -- trigger abbreviation
+  break_undo = true, -- switch for basic rule break undo sequence
+  map_cr = true,
+  map_bs = true, -- map the <BS> key
+  map_c_h = false, -- Map the <C-h> key to delete a pair
+  map_c_w = false, -- map <c-w> to delete a pair if possible
   disable_in_macro = true, -- disable when recording or executing a macro
   enable_moveright = true,
   enable_afterquote = false, -- add bracket pairs after quote
-  map_bs = false, -- map the <BS> key
-  map_c_w = false, -- map <c-w> to delete an pair if possible
   fast_wrap = {
     map = "<M-S>",
     -- map = '<M-e>',
-    chars = { "{", "[", "(", "\"", "'" },
+    chars = { "{", "[", "(", '"', "'", "`" },
     pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
     offset = 0, -- Offset from pattern match
     end_key = "$",
-    keys = "qwertyuiopzxcvbnmasdfghjkl",
+    keys = "asdfghjklqwertyuiop",
     check_comma = true,
     highlight = "Search",
     highlight_grey = "Comment",
   },
+})
+
+local handlers = require("nvim-autopairs.completion.handlers")
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+local cmp = require("cmp")
+
+-- If you want insert `(` after select function or method item
+-- cmp.event:on(
+--   'confirm_done',
+--   cmp_autopairs.on_confirm_done()
+
+cmp.event:on(
+  "confirm_done",
+  cmp_autopairs.on_confirm_done({
+    filetypes = {
+      -- "*" is a alias to all filetypes
+      ["*"] = {
+        ["("] = {
+          kind = {
+            cmp.lsp.CompletionItemKind.Function,
+            cmp.lsp.CompletionItemKind.Method,
+          },
+          handler = handlers["*"],
+        },
+      },
+      lua = {
+        ["("] = {
+          kind = {
+            cmp.lsp.CompletionItemKind.Function,
+            cmp.lsp.CompletionItemKind.Method,
+          },
+          ---@param char string
+          ---@param item table item completion
+          ---@param bufnr number buffer number
+          ---@param rules table
+          ---@param commit_character table<string>
+          handler = function(char, item, bufnr, rules, commit_character)
+            -- Your handler function. Inpect with
+            -- print(vim.inspect({ char, item, bufnr, rules, commit_character }))
+          end,
+        },
+      },
+      -- Disable for tex
+      tex = false,
+    },
+  })
+)
+
+local npairs = require("nvim-autopairs")
+local Rule = require("nvim-autopairs.rule")
+local ts_conds = require("nvim-autopairs.ts-conds")
+-- press % => %% only while inside a comment or string
+npairs.add_rules({
+  Rule("%", "%", "lua"):with_pair(ts_conds.is_ts_node({ "string", "comment" })),
+  Rule("$", "$", "lua"):with_pair(ts_conds.is_not_ts_node({ "function" })),
 })

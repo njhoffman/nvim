@@ -130,7 +130,7 @@ local init = function()
     },
     performance = {
       cache = {
-        enabled = false,
+        enabled = true,
       },
       reset_packpath = true,
     },

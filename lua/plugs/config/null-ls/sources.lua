@@ -58,6 +58,10 @@ M.sources = {
   null_ls.builtins.code_actions.proselint,
   null_ls.builtins.code_actions.refactoring,
 
+  null_ls.builtins.formatting.isort.with({
+    extra_args = { "--profile", "black" },
+  }),
+
   -- Formatters
   null_ls.builtins.formatting.prettier.with({
     filetypes = { "css", "html", "less", "scss", "toml", "yaml" },

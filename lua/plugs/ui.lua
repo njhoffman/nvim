@@ -2,8 +2,10 @@ local utils = require("lazy-utils")
 
 local plugins = {
   { dir = "~/git/which-key.nvim" },
+  { "lukas-reineke/indent-blankline.nvim" },
+  { "freddiehaddad/feline.nvim", event = "VeryLazy" },
+  { "romgrk/barbar.nvim", event = "VeryLazy", dependencies = "kyazdani42/nvim-web-devicons" },
   { "romainl/vim-qf", ft = "qf" },
-  { "jbyuki/quickmath.nvim", cmd = "Quickmath" },
   { "kevinhwang91/nvim-bqf", cmd = { "BqfEnable", "BqfToggle" }, ft = "qf" },
   {
     "sindrets/diffview.nvim",
@@ -43,24 +45,33 @@ local plugins = {
         icons = { DEBUG = "", ERROR = "", INFO = "", HINT = "", TRACE = "✎", WARN = "" },
         -- render = "simple",
       })
-      vim.notify = notify
 
-      local vim_notify = vim.notify
       vim.notify = function(msg, ...)
         if msg:match("warning: multiple different client offset_encodings") then
           return
         end
-        vim_notify(msg, ...)
+        notify(msg, ...)
       end
 
       vim.keymap.set("n", "<esc>", function()
+        ---@diagnostic disable-next-line: missing-parameter
         notify.dismiss()
         vim.cmd.noh()
       end)
       vim.lsp.handlers["window/showMessage"] = function(_, method, params, _)
-        vim.notify(method.message, params.type)
+        notify(method.message, params.type)
       end
     end,
+    opts = {
+      timeout = 3000,
+      background_colour = "#000000",
+      max_height = function()
+        return math.floor(vim.o.lines * 0.75)
+      end,
+      max_width = function()
+        return math.floor(vim.o.columns * 0.75)
+      end,
+    },
     init = function()
       -- when noice is not enabled, install notify on VeryLazy
       local Util = require("lazy-utils")
@@ -99,8 +110,20 @@ local plugins = {
   },
   {
     "stevearc/dressing.nvim",
-    event = "VeryLazy",
     dependencies = "MunifTanjim/nui.nvim",
+    lazy = true,
+    init = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.select = function(...)
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.select(...)
+      end
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.input = function(...)
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.input(...)
+      end
+    end,
     opts = {
       input = {
         win_options = {
@@ -113,12 +136,27 @@ local plugins = {
       },
     },
   },
-  { "phaazon/hop.nvim", branch = "v2", event = "VeryLazy" },
-  { "tpope/vim-rhubarb", event = "VeryLazy" },
+  {
+    "phaazon/hop.nvim",
+    branch = "v2",
+    event = "VeryLazy",
+  },
   { "kevinhwang91/nvim-hlslens", event = "VeryLazy" },
   { "RRethy/vim-hexokinase", event = "VeryLazy", build = "make hexokinase" },
   { "anuvyklack/hydra.nvim", event = "VeryLazy" },
   { "MunifTanjim/nui.nvim", event = "VeryLazy" },
+  {
+    "gelguy/wilder.nvim",
+    disable = true,
+    dependencies = { { "romgrk/fzy-lua-native" } },
+    -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
+    opt = true,
+    event = { "CmdwinEnter", "CmdlineEnter" },
+    run = function()
+      vim.cmd([[packadd wilder.nvim]])
+      vim.cmd([[silent UpdateRemotePlugins]])
+    end,
+  },
 }
 
 utils.apply_configs(plugins)

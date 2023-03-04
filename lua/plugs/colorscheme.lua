@@ -17,18 +17,14 @@ local plugins = {
         filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
       },
       styles = { -- Give comments style such as bold, italic, underline etc.
-        comments = { --[[ italic = true ]]
-        },
-        strings = { --[[ bold = true ]]
-        },
-        keywords = { --[[ underline = true ]]
-        },
-        functions = { --[[ bold = true, undercurl = true ]]
-        },
+        comments = { --[[ italic = true ]] },
+        strings = { --[[ bold = true ]] },
+        keywords = { --[[ underline = true ]] },
+        functions = { --[[ bold = true, undercurl = true ]] },
         variables = {},
         operators = {},
         types = {},
-      },
+    },
       plugins = { -- Uncomment the plugins that you use to highlight them
         "dap",
         "dashboard",

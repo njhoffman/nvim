@@ -21,22 +21,14 @@ local plugins = {
   },
   {
     "tpope/vim-fugitive",
-    cmd = {
-      "Git",
-      "Ggrep",
-      "GMove",
-      "GDelete",
-      "GBrowse",
-      "Gspilt",
-      "Gstatus",
-      "Gwrite",
-      "Gread",
-      "Gdiffsplit",
-      "Gedit",
+    cmd = { "Git", "Ggrep", "GMove", "GDelete", "Gspilt", "Gstatus", "Gwrite", "Gread", "Gdiffsplit", "Gedit" },
+    dependencies = {
+      { "tpope/vim-rhubarb", cmd = "GBrowse" },
     },
   },
   { "rbong/vim-flog", cmd = { "Flog", "Flogsplit" } },
   { "dbeniamine/cheat.sh-vim", cmd = "Cheat" },
+  { "jbyuki/quickmath.nvim", cmd = "Quickmath" },
   { "potamides/pantran.nvim", cmd = "Pantran" },
   { "AndrewRadev/id3.vim", ft = "mp3" },
   { "npxbr/glow.nvim", cmd = "Glow" },
@@ -54,7 +46,14 @@ local plugins = {
     cmd = { "RegexplainerShow", "RegexplainerToggle" },
     dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
   },
-  { "lewis6991/gitsigns.nvim", event = "BufReadPost", dependencies = "nvim-lua/plenary.nvim" },
+  {
+    "lewis6991/gitsigns.nvim",
+    event = "BufReadPost",
+    dependencies = "nvim-lua/plenary.nvim",
+    -- preview_config = {
+    --   border = require("lsp").borders,
+    -- },
+  },
   { "rmagatti/auto-session", event = "BufReadPre" },
   { "AckslD/nvim-neoclip.lua", event = "VimEnter", dependencies = "kkharji/sqlite.lua" },
   { "aymericbeaumet/vim-symlink", event = "VeryLazy", dependency = "moll/vim-bbye" },
@@ -98,6 +97,22 @@ local plugins = {
       "farseer90718/vim-taskwarrior",
       "preservim/tagbar",
     },
+  },
+  {
+    "jackMort/ChatGPT.nvim",
+    cmd = { "ChatGPT", "ChatGPTEditWithInstructions", "ChatGPTActAs" },
+    -- enabled = false,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+    },
+    config = function()
+      local f = io.open(vim.fn.expand("$XDG_CONFIG_HOME") .. "/openai")
+      if f then
+        vim.env.OPENAI_API_KEY = f:read()
+        f:close()
+        require("chatgpt").setup({})
+      end
+    end,
   },
   {
     "qpkorr/vim-renamer",

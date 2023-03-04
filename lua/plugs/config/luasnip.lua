@@ -42,8 +42,8 @@ ls.config.set_config({
 })
 
 -- require("luasnip-snippets").load_snippets()
-require("plugins.config.luasnip-snips")
-require("luasnip.loaders.from_vscode").lazy_load()
-ls.filetype_extend("all", { "_" })
-require("luasnip.loaders.from_snipmate").lazy_load()
-require("luasnip.loaders.from_lua").lazy_load()
+-- require("plugins.config.luasnip-snips")
+-- require("luasnip.loaders.from_vscode").lazy_load()
+-- ls.filetype_extend("all", { "_" })
+-- require("luasnip.loaders.from_snipmate").lazy_load()
+-- require("luasnip.loaders.from_lua").lazy_load()

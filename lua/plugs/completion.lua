@@ -10,6 +10,7 @@ local plugins = {
       "hrsh7th/cmp-nvim-lua",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-calc",
+      "zbirenbaum/copilot-cmp",
       "hrsh7th/cmp-nvim-lsp-signature-help",
       "hrsh7th/cmp-cmdline",
       "dmitmel/cmp-cmdline-history",
@@ -25,13 +26,36 @@ local plugins = {
       { "petertriho/cmp-git", dependencies = { "nvim-lua/plenary.nvim" } },
     },
   },
-  { "nanotee/luv-vimdocs" },
-  { "molleweide/LuaSnip-snippets.nvim" },
-  { "rafamadriz/friendly-snippets" },
-  { "honza/vim-snippets" },
-  { "kitagry/vs-snippets" },
-  { "milisims/nvim-luaref" },
-  { "dsznajder/vscode-es7-javascript-react-snippets", build = "yarn install --frozen-lockfile && yarn compile" },
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      "molleweide/LuaSnip-snippets.nvim",
+      { "dsznajder/vscode-es7-javascript-react-snippets", build = "yarn install --frozen-lockfile && yarn compile" },
+      "honza/vim-snippets",
+      "kitagry/vs-snippets",
+      "milisims/nvim-luaref",
+      -- config = function()
+      --   require("luasnip.loaders.from_vscode").lazy_load()
+      -- end,
+    },
+    opts = {
+      history = true,
+      delete_check_events = "TextChanged",
+    },
+    -- stylua: ignore
+    keys = {
+      {
+        "<tab>",
+        function()
+          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+        end,
+        expr = true, silent = true, mode = "i",
+      },
+      { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
+      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+    },
+  },
 }
 
 utils.apply_configs(plugins)

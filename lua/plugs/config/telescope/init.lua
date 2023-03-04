@@ -35,6 +35,46 @@ local command_vimgrep = {
   "path",
 }
 
+local symbol_highlights = {
+  -- builtin
+  Class = "TelescopeResultsClass",
+  Constant = "TelescopeResultsConstant",
+  Field = "TelescopeResultsField",
+  Function = "TelescopeResultsFunction",
+  Method = "TelescopeResultsMethod",
+  Property = "TelescopeResultsOperator",
+  Struct = "TelescopeResultsStruct",
+  Variable = "TelescopeResultsVariable",
+
+  -- lua
+  String = "String",
+  Boolean = "Constant",
+  Package = "Keyword",
+  Object = "Type",
+  Number = "Number",
+  Array = "@enum",
+
+  -- Other Kinds
+  Module = "PreProc",
+  Interface = "@interface",
+  Operator = "@operator",
+  Enum = "@enum",
+
+  -- Constructor = "",
+  -- Color = "",
+  -- EnumMember = "",
+  -- Event = "",
+  -- File = "",
+  -- Folder = "",
+  -- Keyword = "",
+  -- Reference = "",
+  -- Snippet = "",
+  -- Text = "",
+  -- TypeParameter = "",
+  -- Unit = "",
+  -- Value = "",
+}
+
 local hide_preview = false
 local currwidth = vim.api.nvim_win_get_width(vim.api.nvim_get_current_win())
 if currwidth < 120 then
@@ -144,6 +184,12 @@ local telescopeConfig = {
       layout_strategy = "vertical",
       -- git_command = { "git", "log", "--date=format:%m-%d-%y", "--format=%h%d %ad %s <%an>" }
       -- git_command = { "git", "log", '--format=%h%d (%ar) %s <%an>' }
+    },
+    lsp_workspace_symbols = {
+      symbol_highlights = symbol_highlights,
+    },
+    lsp_document_symbols = {
+      symbol_highlights = symbol_highlights,
     },
   },
   extensions = plugins.extensions,

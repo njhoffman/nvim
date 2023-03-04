@@ -1,6 +1,7 @@
 local utils = require("lazy-utils")
 
 local plugins = {
+  { dir = "~/git/fidget.nvim", event = "LspAttach" },
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
@@ -38,7 +39,6 @@ local plugins = {
       vim.import("lsp.config")
     end,
   },
-  { dir = "~/git/fidget.nvim" },
   { "williamboman/mason.nvim", cmd = "Mason" },
   { "ray-x/go.nvim", dependencies = { "ray-x/guihua.lua" }, ft = "go", event = { "BufReadPost", "BufNewFile" } },
   {
@@ -49,8 +49,38 @@ local plugins = {
   { "mfussenegger/nvim-lint", event = { "BufReadPre", "BufNewFile" } },
   {
     "stevearc/aerial.nvim",
-    lazy = true, -- needs treesitter or lsp
+    event = "BufReadPost",
     cmd = { "AerialToggle", "AerialNext", "AerialGo", "AerialOpen", "AerialPrev", "AerialOpenAll" },
+    config = function()
+      require("aerial").setup({
+        backends = {
+          ["_"] = { "lsp", "treesitter", "markdown", "man" },
+          markdown = { "treesitter" },
+        },
+        filter_kind = {
+          ["_"] = {
+            "Class",
+            "Constructor",
+            "Enum",
+            "EnumMember",
+            "Event",
+            "Field",
+            "Function",
+            "Interface",
+            "Key",
+            "Method",
+            "Module",
+            "Namespace",
+            "Operator",
+            -- "Package", -- this catches for/if ??
+            "Property",
+            "Struct",
+            "Variable",
+          },
+          -- markdown = { "String" },
+        },
+      })
+    end,
   },
   { "SmiteshP/nvim-navic", lazy = true, dependencies = { "utilyre/barbecue.nvim", "nvim-web-devicons" } },
   {

@@ -406,6 +406,20 @@ return function(injected_functions)
     helpHyperTextJump({ fg = "#6585b8" }),
     --
     -- fg = clrs.nord13,
+    -- Indent Blankline
+    IndentBlanklineChar({ fg = colors.selection, gui = "nocombine" }),
+    IndentBlanklineContextChar({ fg = colors.purple, gui = "nocombine" }),
+    IndentBlanklineIndent1({ bg = "#1f1f1f", gui = "nocombine" }),
+    IndentBlanklineIndent2({ bg = "#1a1a1a", gui = "nocombine" }),
+    -- highlight IndentBlanklineChar guifg=#303030
+    -- highlight IndentBlanklineContextChar guifg=#585858
+    -- #0D0E19
+    -- IndentBlanklineIndent1 guifg=#E06C75
+    -- IndentBlanklineIndent2 guifg=#E5C07B
+    -- IndentBlanklineIndent3 guifg=#98C379
+    -- IndentBlanklineIndent4 guifg=#56B6C2
+    -- IndentBlanklineIndent5 guifg=#61AFEF
+    -- IndentBlanklineIndent6 guifg=#C678DD
     InfoWindowFloat({ fg = "#2886bf", bg = "none" }),
     BqfPreviewFloat({ Normal }),
     BqfPreviewBorder({ Normal }),
@@ -424,6 +438,35 @@ return function(injected_functions)
     -- DashboardHeader ({ fg = colors.blue }),
     -- DashboardCenter ({ fg = colors.purple }),
     -- DashboardFooter ({ fg = colors.green, gui = "italic" }),
+    NotifyBackground({ bg = "#000000" }),
+    NotifyTASKBorder({ fg = "#6a3246", bg = "none" }),
+    NotifyTASKTitle({ fg = "#6a3246" }),
+    NotifyTASKIcon({ fg = "#7a7697" }),
+    NotifySTATUSBorder({ fg = "#3a3286", bg = "none" }),
+    NotifySTATUSTitle({ fg = "#3a3286" }),
+    NotifySTATUSIcon({ fg = "#2a76b7" }),
+    NotifyINSPECTBorder({ fg = "#2A70fF", bg = "none" }),
+    NotifyINSPECTIcon({ fg = "#67b0f7" }),
+    NotifyINSPECTTitle({ fg = "#2760f7" }),
+    NotifyINFOIcon({ fg = "#29cFa8" }),
+    NotifyINFOTitle({ fg = "#29cFa8" }),
+    NotifyINFOBorder({ fg = "#4Fa792", bg = "none" }),
+    NotifyDEBUGBorder({ fg = "#4B4BBB" }),
+    NotifyDEBUGIcon({ fg = "#6B6BFF" }),
+    NotifyDEBUGTitle({ fg = "#6B6BFF" }),
+    NotifyTRACEBorder({ fg = "#637699", bg = "none" }),
+    -- NotifyTRACEBorder { fg = "#7B7BCC" },
+    -- NotifyTRACEBorder { Normal },
+    NotifyTRACEIcon({ fg = "#637699" }),
+    NotifyTRACEBody({ fg = "#637699" }),
+    -- NotifyTRACEIcon { fg = "#7BABFF" },
+    NotifyTRACETitle({ fg = "#7BABFF" }),
+    NotifyERRORBorder({ fg = "#8A1F1F", bg = "none" }),
+    NotifyERRORIcon({ fg = "#F74047" }),
+    NotifyERRORTitle({ fg = "#F74047" }),
+    NotifyWARNBorder({ fg = "#79491D", bg = "none" }),
+    NotifyWARNIcon({ fg = "#F79000" }),
+    NotifyWARNTitle({ fg = "#F79000" }),
 
     -- NavicIconsFile({}),
     -- NavicIconsModule({}),
