@@ -57,8 +57,8 @@ local preview_topic = function(filetype)
   return function(self, entry, status)
     local bufnr = self.state.bufnr
     -- local title, subtitle, linecnt, lines = entry.value[1], entry.value[2], entry.value[3], entry.value[4]
+    vim.api.nvim_buf_set_lines(bufnr, 0, 1, false, entry.value[4])
     vim.schedule(function()
-      vim.api.nvim_buf_set_lines(bufnr, 0, 1, false, entry.value[4])
       telescope_utils.highlighter(bufnr, "markdown")
       vim.api.nvim_set_option("conceallevel", 3)
     end)

@@ -7,6 +7,7 @@ local finders = require("telescope.finders")
 local themes = require("telescope.themes")
 local telescope_config = require("telescope.config").values
 
+local hintsbox = require("telescope._extensions.devhints.hintsbox")
 local display = require("telescope._extensions.devhints.display")
 local generate = require("telescope._extensions.devhints.generate")
 local default_conf_opts = {}
@@ -15,9 +16,11 @@ local M = {}
 
 M.setup = function(setup_config) end
 
-local select_devhints_topic = function()
-  local selection = action_state.get_selected_entry()
-  vim.dbglog({ "selected:", selection.value })
+local select_devhints_topic = function(prompt_bufnr)
+  -- local selection = action_state.get_selected_entry()
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local multi_targets = picker:get_multi_selection()
+  hintsbox.init(multi_targets)
 end
 
 M.topic = function(category)

@@ -180,9 +180,9 @@ local theme = lush(function()
     IncSearch({ fg = clrs.nord6, bg = clrs.nord10, gui = spec.underline }),
     Search({ fg = clrs.nord1, bg = clrs.nord8, gui = "NONE" }),
     -- +--- Tabs ---+
-    TabLine({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
+    -- TabLine({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
-    TabLineSel({ fg = clrs.nord8, bg = clrs.nord3, gui = "NONE" }),
+    -- TabLineSel({ fg = clrs.nord8, bg = clrs.nord3, gui = "NONE" }),
     -- +--- Window ---+
     Title({ fg = clrs.nord4, gui = "NONE" }),
     VertSplit({

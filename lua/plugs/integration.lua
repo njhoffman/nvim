@@ -11,6 +11,7 @@ local plugins = {
   { "wakatime/vim-wakatime" },
   { "skywind3000/asynctasks.vim", dependencies = "skywind3000/asyncrun.vim" },
   { "folke/noice.nvim" }, -- highlight for Window separator
+  { "AckslD/nvim-neoclip.lua", dependencies = { "kkharji/sqlite.lua" } },
   { "GustavoKatel/tasks.nvim" },
   { "potamides/pantran.nvim" },
   { "dbeniamine/cheat.sh-vim" },
@@ -22,6 +23,14 @@ local plugins = {
   { "vim-test/vim-test" },
   { "NTBBloodbath/rest.nvim" },
   { "kdheepak/lazygit.nvim" },
+  {
+    "njhoffman/neuron.nvim",
+    {
+      "nvim-lua/popup.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+  },
   { "aserowy/tmux.nvim" },
   {
     "windwp/nvim-spectre",
@@ -57,7 +66,12 @@ local plugins = {
       "preservim/tagbar",
     },
   },
-  { "qpkorr/vim-renamer" },
+  {
+    "qpkorr/vim-renamer",
+    opt = {
+      RenamerShowHiddenEnabled = true,
+    },
+  },
   { "jamestthompson3/nvim-remote-containers" },
   { "lambdalisue/suda.vim" },
   { "aymericbeaumet/vim-symlink" },

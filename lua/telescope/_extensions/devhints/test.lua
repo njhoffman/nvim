@@ -1,0 +1,76 @@
+local hintsbox = require("telescope._extensions.devhints.hintsbox")
+
+vim.tbl_contains({ "lua" }, vim.bo.filetype)
+
+local multi_targets = {
+  [1] = {
+    display = "function: 0x7f1eb6306780",
+    index = 2,
+    ordinal = "Getting started Variables",
+    value = {
+      [1] = "Getting started",
+      [2] = "Variables",
+      [3] = "25",
+      [4] = {
+        [1] = "#### Variable declaration",
+        [2] = "```go",
+        [3] = "var msg string",
+        [4] = 'var msg = "Hello, world!"',
+        [5] = 'var msg string = "Hello, world!"',
+        [6] = "var x, y int",
+        [7] = "var x, y int = 1, 2",
+        [8] = 'var x, msg = 1, "Hello, world!"',
+        [9] = 'msg = "Hello"',
+        [10] = "```",
+        [11] = "#### Declaration list",
+        [12] = "``` go",
+        [13] = "var (",
+        [14] = "  x int",
+        [15] = "  y = 20",
+        [16] = "  z int = 30",
+        [17] = '  d, e = 40, "Hello"',
+        [18] = "  f, g string",
+        [19] = ")",
+        [20] = "```",
+        [21] = "#### Shortcut of above (Infers type)",
+        [22] = "```go",
+        [23] = 'msg := "Hello"',
+        [24] = 'x, msg := 1, "Hello"',
+        [25] = "```",
+      },
+    },
+  },
+  [2] = {
+    display = "function: 0x7f1eb63068f8",
+    index = 3,
+    ordinal = "Getting started Constants",
+    value = {
+      [1] = "Getting started",
+      [2] = "Constants",
+      [3] = "19",
+      [4] = {
+        [1] = "```go",
+        [2] = "const Phi = 1.618",
+        [3] = "const Size int64 = 1024",
+        [4] = "const x, y = 1, 2",
+        [5] = "const (",
+        [6] = "  Pi = 3.14",
+        [7] = "  E  = 2.718",
+        [8] = ")",
+        [9] = "const (",
+        [10] = "  Sunday = iota",
+        [11] = "  Monday",
+        [12] = "  Tuesday",
+        [13] = "  Wednesday",
+        [14] = "  Thursday",
+        [15] = "  Friday",
+        [16] = "  Saturday",
+        [17] = ")",
+        [18] = "```",
+        [19] = "Constants can be character, string, boolean, or numeric values.",
+      },
+    },
+  },
+}
+
+hintsbox.init(multi_targets)

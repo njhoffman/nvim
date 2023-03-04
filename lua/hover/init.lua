@@ -3,6 +3,9 @@ local M = {}
 local exports = {
   register = "hover.providers",
   hover = "hover.actions",
+  hover_cursor = "hover.actions",
+  hover_sticky = "hover.actions",
+  hover_once = "hover.actions",
   hover_select = "hover.actions",
 }
 

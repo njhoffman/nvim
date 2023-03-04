@@ -12,22 +12,13 @@ local plugins = {
   { "idbrii/vim-searchsavvy" },
   { dir = "~/git/clever-f.vim" }, -- rhysd/clever-f.vim
   { "AckslD/nvim-FeMaco.lua" },
-  { "iamcco/markdown-preview.nvim", build = "cd app && yarn install", },
-  {
-    "njhoffman/neuron.nvim",
-    {
-      "nvim-lua/popup.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-  },
+  { "iamcco/markdown-preview.nvim", build = "cd app && yarn install" },
   { "machakann/vim-sandwich" },
-  { "chentoast/marks.nvim" },
-  { "chiefnoah/neuron-v2.vim" },
+  -- { "chentoast/marks.nvim" },
 }
 --   { "inkarkat/vim-UnconditionalPaste",
 --   requires = "inkarkat/vim-ingo-library" },
 
 utils.apply_configs(plugins)
-utils.print_stats('Motion', plugins)
+utils.print_stats("Motion", plugins)
 return plugins

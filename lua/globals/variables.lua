@@ -80,7 +80,7 @@ vim.g.markdown_fenced_languages = {
   "sql",
   "terraform",
   "ts=typescript",
-  "vim=vimwiki",
+  "vim",
   "xml",
   "yaml",
   "yaml",

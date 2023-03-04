@@ -32,34 +32,35 @@ local check_config_file = function(plugin)
   end
 
   if type(name) == "string" and #name > 0 then
-    name = string.gsub(name, "[\\.]+", "-")
+    name = string.lower(string.gsub(name, "[\\.]+", "-"))
+    name = string.gsub(name, "-nvim$", "")
     local exists = file_exists(name)
     local fname = "plugs.config." .. string.lower(name)
-    if exists and not stats.configs[fname] then
-      -- vim.dbglog("EXISTS: " .. fname)
-      stats.configs[fname] = true
+    -- vim.dbglog('checking: ' .. fname)
+    if exists and not stats.configs[name] then
+      stats.configs[name] = true
       plugin.config = function(_, opts)
         local mod, mod_ok = vim.import(fname)
         if not mod_ok then
-          vim.dbglog("ERROR: " .. fname, mod_ok, mod)
+          vim.notify("ERROR: " .. fname .. vim.inspect(mod), 4)
           stats.errors[fname] = mod
         end
         return mod
       end
     end
-    return plugin
+    return plugin, name
   end
 end
 
 local apply_configs = function(plugins)
-  for _, plugin in ipairs(plugins) do
-    check_config_file(plugin)
-    if plugin.lazy then
+  for _, _plugin in ipairs(plugins) do
+    local plugin, name = check_config_file(_plugin)
+    if plugin.lazy and not stats.lazy[name] then
       -- vim.dbglog("LAZY: ", plugin.name, plugin)
-      table.insert(stats.lazy, plugin)
-    else
+      stats.lazy[name] = plugin
+    elseif not stats.start[name] then
       -- vim.dbglog("load: ", plugin.name, plugin)
-      table.insert(stats.start, plugin)
+      stats.start[name] = plugin
     end
   end
   return plugins
@@ -82,6 +83,25 @@ local print_stats = function(name, plugins)
     line = line .. ", errors: " .. #vim.tbl_keys(stats.errors)
   end
   vim.dbglog(line)
+end
+
+local get_stray_configs = function()
+  local scan = require("plenary.scandir")
+  local basepath = vim.fn.stdpath("config") .. "/lua/plugs/config"
+  local files = scan.scan_dir(basepath, {
+    depth = 1,
+    search_pattern = ".lua$",
+  })
+  local strays = {}
+  for i, file in ipairs(files) do
+    local name_parts = vim.split(file, "/")
+    local config_name = string.gsub(name_parts[#name_parts], ".lua$", "")
+    if not stats.configs[config_name] then
+      table.insert(strays, config_name)
+    end
+  end
+  vim.dbglog(strays, stats.configs)
+  return strays
 end
 
 local init = function()
@@ -156,4 +176,5 @@ return {
   is_loaded = is_loaded,
   apply_configs = apply_configs,
   print_stats = print_stats,
+  get_stray_configs = get_stray_configs,
 }

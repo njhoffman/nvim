@@ -1,11 +1,14 @@
 local M = {}
 
 local default_config = {
-  preview_opts = {
-    border = "single",
-    focusable = true,
-  },
+  behavior = "sticky", -- once, cursor
+  border = "single",
+  focusable = true,
   title = true,
+  max_height = "40%",
+  max_width = "70%",
+  min_width = 10,
+  min_height = 2,
 }
 
 local config

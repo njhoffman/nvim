@@ -3,7 +3,12 @@ local job = require("hover.async.job").job
 
 local function enabled(done)
   local word = vim.fn.expand("<cword>")
-  done(#vim.spell.check(word) == 0)
+  local is_ft = vim.tbl_contains({
+    "md",
+    "txt",
+    "doc",
+  }, vim.bo.filetype)
+  done(#vim.spell.check(word) == 0 and is_ft)
 end
 
 local function process(result)
@@ -15,7 +20,6 @@ local function process(result)
   end
 
   local json = res[1]
-
   local lines = {
     json.word,
   }
@@ -46,7 +50,9 @@ local execute = async.void(function(done)
 end)
 
 require("hover").register({
-  name = "Dict",
+  name = "dict",
+  menu = "Dict",
+  desc = "Dictionary",
   priority = 100,
   enabled = enabled,
   execute = execute,

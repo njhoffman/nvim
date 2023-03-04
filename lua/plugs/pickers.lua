@@ -2,6 +2,12 @@ local utils = require("lazy-utils")
 
 local plugins = {
   {
+    "nvim-neo-tree/neo-tree.nvim",
+    cmd = { "NeoTreeFocusToggle", "NeoTreeShowToggle" },
+    branch = "v2.x",
+    dependencies = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
+  },
+  {
     "romgrk/kirby.nvim",
     dependencies = {
       { "romgrk/fzy-lua-native", build = "make install" },

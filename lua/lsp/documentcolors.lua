@@ -81,6 +81,42 @@ end
 
 local M = {}
 
+--- Debounces a function on the trailing edge. Automatically
+--- `schedule_wrap()`s.
+---
+-- @param fn (function) Function to debounce
+-- @param timeout (number) Timeout in ms
+-- @param first (boolean, optional) Whether to use the arguments of the first
+---call to `fn` within the timeframe. Default: Use arguments of the last call.
+-- @returns (function, timer) Debounced function and timer. Remember to call
+---`timer:close()` at the end or you will leak memory!
+function M.debounce_trailing(fn, ms, first)
+  local timer = vim.loop.new_timer()
+  local wrapped_fn
+
+  if not first then
+    function wrapped_fn(...)
+      local argv = { ... }
+      local argc = select("#", ...)
+
+      timer:start(ms, 0, function()
+        pcall(vim.schedule_wrap(fn), unpack(argv, 1, argc))
+      end)
+    end
+  else
+    local argv, argc
+    function wrapped_fn(...)
+      argv = argv or { ... }
+      argc = argc or select("#", ...)
+
+      timer:start(ms, 0, function()
+        pcall(vim.schedule_wrap(fn), unpack(argv, 1, argc))
+      end)
+    end
+  end
+  return wrapped_fn, timer
+end
+
 local function expand_bufnr(bufnr)
   if bufnr == 0 or bufnr == nil then
     return vim.api.nvim_get_current_buf()
@@ -110,8 +146,7 @@ function M.buf_attach(bufnr, options)
   options = options or {}
 
   -- VSCode extension also does 200ms debouncing
-  local trigger_update_highlight, timer =
-    require("defer").debounce_trailing(M.update_highlight, options.debounce or 200, false)
+  local trigger_update_highlight, timer = M.debounce_trailing(M.update_highlight, options.debounce or 200, false)
 
   -- for the first request, the server needs some time before it's ready
   -- sometimes 200ms is not enough for this

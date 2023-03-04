@@ -5,7 +5,7 @@ vim.cmd([[
   let g:pandoc#syntax#codeblocks#embeds#langs =
     \ ["shell=sh", "rust", "ts=typescript", "javascript", "html", "cpp", "c",
     \ "go", "sh", "bash=sh", "zsh", "yaml", "go", "ruby", "python", "json", "lua",
-    \ "sql", "lua", "css", "awk", "terraform", "yaml", "vim=vimwiki", "xml"]
+    \ "sql", "lua", "css", "awk", "terraform", "yaml", "vim", "xml"]
   ]])
 
 -- vim.cmd([[ let g:pandoc#syntax#style#emphases = 0 ]])

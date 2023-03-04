@@ -53,7 +53,7 @@ local lspconfig_settings = {
   automatic_installation = true,
 }
 
-local tool_packages = require("plugs.config.mason-nvim-tools")
+local tool_packages = require("plugs.config.mason.tools")
 local tool_settings = { ensure_installed = tool_packages }
 
 require("mason").setup(mason_settings)

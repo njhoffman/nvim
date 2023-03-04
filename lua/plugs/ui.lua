@@ -19,12 +19,6 @@ local plugins = {
   { "sindrets/diffview.nvim" },
   { "smjonas/live-command.nvim" },
   { "kevinhwang91/nvim-bqf" },
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    cmd = { "NeoTreeFocusToggle", "NeoTreeShowToggle" },
-    branch = "v2.x",
-    dependencies = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
-  },
   { "kevinhwang91/nvim-ufo", dependencies = "kevinhwang91/promise-async" },
   { "t-troebst/perfanno.nvim" },
   { "jbyuki/quickmath.nvim" },

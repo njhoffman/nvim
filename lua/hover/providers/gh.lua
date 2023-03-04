@@ -3,8 +3,14 @@ local api, fn = vim.api, vim.fn
 local async = require("hover.async")
 local job = require("hover.async.job").job
 
-local function enabled()
-  return fn.expand("<cWORD>"):match("#%d+") ~= nil
+local function enabled(done)
+  local is_gh = fn.expand("<cWORD>"):match("#%d+") ~= nil
+  local is_ft = vim.tbl_contains({
+    "md",
+    "txt",
+    "doc",
+  }, vim.bo.filetype)
+  return done(is_gh and is_ft)
 end
 
 local function process(result)
@@ -14,7 +20,6 @@ local function process(result)
     vim.notify("Failed to parse gh result", vim.log.levels.ERROR)
     return
   end
-
   local lines = {
     string.format("#%d: %s", json.number, json.title),
     "",
@@ -44,6 +49,7 @@ local execute = async.void(function(done)
 
   local fields = "author,title,number,body,state,createdAt,updatedAt,url"
 
+  -- neovim/neovim/issues/11550
   local repo, num = word:match("(%w+/%w+)#(%d+)")
   if repo then
     output = job({
@@ -58,6 +64,7 @@ local execute = async.void(function(done)
       cwd = cwd,
     })
   else
+    -- for current repo 11550
     num = word:match("#(%d+)")
     if num then
       output = job({
@@ -70,8 +77,7 @@ local execute = async.void(function(done)
         cwd = cwd,
       })
     else
-      done(false)
-      return
+      return done(false)
     end
   end
 
@@ -80,7 +86,9 @@ local execute = async.void(function(done)
 end)
 
 require("hover").register({
-  name = "Github",
+  name = "github_issue",
+  menu = "Issue",
+  desc = "Github Issue",
   priority = 200,
   enabled = enabled,
   execute = execute,
