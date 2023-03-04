@@ -116,16 +116,16 @@ local resolve_capabilities = function(client, bufnr)
 end
 
 local make_capabilities = function()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
   capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
     lineFoldingOnly = true,
   }
-  require("cmp_nvim_lsp").default_capabilities(capabilities)
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = { "documentation", "detail", "additionalTextEdits" },
   }
+
   return capabilities
 end
 

@@ -45,7 +45,7 @@ local M = {
     long = "smooth scroll backwards",
   },
   scroll_forwardsx3 = {
-    cmd = "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)",
+    cmd = "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)",
     short = "scroll forwards",
     long = "smooth scroll forwards",
   },

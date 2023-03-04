@@ -129,6 +129,7 @@ return function(injected_functions)
     FoldText({ fg = "#41b1ff", gui = "bold" }),
     Folded({ fg = "#6Db7ca", bg = "#111111", gui = "bold" }),
     -- Function({ fg = "#988088" }),
+    Comment({ fg = "#56667b", gui = "italic" }),
     Function({ fg = "#908088" }),
     Identifier({ fg = "#6e99c6" }),
     Include({ fg = "#4784a6" }),
@@ -163,7 +164,6 @@ return function(injected_functions)
     -- +--- Prompt/Status ---+
     EndOfBuffer({ fg = clrs.nord1 }),
     ErrorMsg({ Error }),
-    WarningMsg({ fg = clrs.nord13 }),
     ModeMsg({ fg = clrs.nord10 }),
     MoreMsg({ fg = clrs.nord8, gui = "bold" }),
     DebugMsg({ fg = Comment.fg }),
@@ -203,7 +203,9 @@ return function(injected_functions)
     diffFile({ fg = clrs.nord7 }),
     diffLine({ fg = "#464B5D" }),
     diffIndexLine({ fg = clrs.nord9 }),
-    --
+    Todo({ fg = "#2593fB", gui = "bold, italic" }),
+    Warning({ bg = "none", fg = "#aB6F34", gui = "bold, italic" }),
+    WarningMsg({ bg = "none", fg = clrs.nord13 }),
     -- language groups
     --
     TreesitterContext({ bg = "#1a0606", gui = "italic" }),
@@ -211,6 +213,7 @@ return function(injected_functions)
     sym("@include")({ Include }),
     sym("@boolean")({ Boolean }),
     sym("@conditional")({ Conditional }),
+    sym("@comment")({ Comment }),
     -- sym("@conditional")({ fg = "#80788a" }),
     sym("@exception")({ Special }),
     sym("@error")({ Normal }),
@@ -228,8 +231,15 @@ return function(injected_functions)
     sym("@property")({ Identifier }),
     sym("@punct.bracket")({ fg = "#888698" }),
     sym("@punct.special")({ fg = "#888698" }),
+    sym("@spell")({ fg = "none", bg = "none", gui = "none" }),
+    sym("@nospell")({ fg = "none", bg = "none", gui = "none" }),
     sym("@tag")({ fg = clr_over.orange }),
     sym("@tag.delimiter")({ fg = clr_over.orange }),
+    sym("@text.reference")({ fg = "#1abc9c" }),
+    sym("@text.todo")({ Todo }),
+    sym("@text.todo.checked")({ fg = "#73daca" }),
+    sym("@text.todo.unchecked")({ fg = "#7aa2f7" }),
+    sym("@text.warning")({ Warning }),
     sym("@text.literal")({ gui = "none" }),
     -- sym("@type")({ fg = "#6595f8" }),
     -- sym("@type.builtin")({ fg = "#89DDFF" }),
@@ -395,6 +405,7 @@ return function(injected_functions)
     pandocAtxStart({ fg = "#4575f8" }),
     helpHyperTextJump({ fg = "#6585b8" }),
     --
+    -- fg = clrs.nord13,
     InfoWindowFloat({ fg = "#2886bf", bg = "none" }),
     BqfPreviewFloat({ Normal }),
     BqfPreviewBorder({ Normal }),
@@ -413,6 +424,7 @@ return function(injected_functions)
     -- DashboardHeader ({ fg = colors.blue }),
     -- DashboardCenter ({ fg = colors.purple }),
     -- DashboardFooter ({ fg = colors.green, gui = "italic" }),
+
     -- NavicIconsFile({}),
     -- NavicIconsModule({}),
     -- NavicIconsNamespace({}),

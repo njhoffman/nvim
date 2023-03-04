@@ -1,11 +1,11 @@
 local cmp = require("cmp")
 -- local cmp_mappings = require("plugs.config.nvim-cmp-mapping")
+local cmp_types = require("cmp.types.cmp")
 local compare = require("cmp.config.compare")
 local feedkeys = require("cmp.utils.feedkeys")
 local keymap = require("cmp.utils.keymap")
 
 local sources = require("plugs.config.nvim-cmp.sources")
-
 local ELLIPSIS_CHAR = "…"
 local MAX_LABEL_WIDTH = 30
 local MIN_LABEL_WIDTH = 20
@@ -21,8 +21,6 @@ local sort_under = function(entry1, entry2)
     return true
   end
 end
-
--- TODO: filetype specific spelling
 
 -- vim.opt.spell = true
 -- vim.opt.spelllang = { 'en_us' }
@@ -54,9 +52,9 @@ local has_words_before = function(cmdline)
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+local luasnip = require("luasnip")
 local setupConfig = {
   experimental = {
-    native_menu = false,
     ghost_text = {
       hl_group = "CmpGhostText",
     },
@@ -64,7 +62,7 @@ local setupConfig = {
   -- preselect = cmp.types.cmp.PreselectMode.Item, -- cmp.PreselectMode.None/Item,
   completion = {
     -- completeopt = "noinsert,noselect",
-    completeopt = "menu,menuone,noselect", --noinsert,noselect
+    completeopt = "menu,menuone,noinsert",
     -- get_trigger_characters = function(trigger_characters)
     --   local new_trigger_characters = {}
     --   for _, char in ipairs(trigger_characters) do
@@ -76,8 +74,8 @@ local setupConfig = {
     -- end,
     -- keyword_length = 1,
     -- autocomplete = {
-    --   cmp.types.cmp.TriggerEvent.TextChanged,
-    --  },
+    --   cmp.TriggerEvent.TextChanged,
+    -- },
   },
   enabled = function()
     local in_prompt = vim.api.nvim_buf_get_option(0, "buftype") == "prompt"
@@ -90,48 +88,18 @@ local setupConfig = {
     local in_comment = context.in_treesitter_capture("comment") == true or context.in_syntax_group("Comment")
     return not (in_comment or in_parameter)
   end,
-  mapping = cmp.mapping.preset.insert({
+  mapping = {
     ["<C-x><C-o>"] = cmp.mapping.complete({}),
-    ["<C-x><C-s>"] = cmp.mapping.complete({
-      config = {
-        sources = {
-          {
-            name = "luasnip",
-          },
-        },
-      },
-    }),
-    ["<C-p>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item({
-          behavior = cmp.SelectBehavior.Insert,
-        })
-      else
-        -- fallback()
-        cmp.complete()
-      end
-    end, {
-      "i",
-    }),
-    ["<C-n>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item({
-          behavior = cmp.SelectBehavior.Insert,
-        })
-      else
-        cmp.complete()
-        -- fallback()
-      end
-    end, {
-      "i",
-    }),
+    ["<C-x><C-s>"] = cmp.mapping.complete({ config = { sources = { { name = "luasnip" } } } }),
     ["<C-f>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_next_item({
-            behavior = cmp.SelectBehavior.Select,
+            behavior = cmp_types.SelectBehavior.Select,
           })(nil)
         end
+      else
+        fallback()
       end
     end, {
       "i",
@@ -140,23 +108,54 @@ local setupConfig = {
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_prev_item({
-            behavior = cmp.SelectBehavior.Select,
+            behavior = cmp_types.SelectBehavior.Select,
           })(nil)
         end
+      else
+        fallback()
       end
-    end, {
-      "i",
-    }),
-    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), {
-      "i",
-    }),
-    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), {
-      "i",
-    }),
-    ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), {
-      "i",
-    }),
-  }),
+    end, { "i" }),
+    ["<C-e>"] = cmp.mapping.abort(),
+    ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item({ behavior = cmp_types.SelectBehavior.Select })
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback()
+      end
+    end, { "i" }),
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        -- cmp.select_prev_item()
+        cmp.select_prev_item({ behavior = cmp_types.SelectBehavior.Select })
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i" }),
+    ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }), { "i" }),
+    ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp_types.SelectBehavior.Select }), { "i" }),
+    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i" }),
+    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i" }),
+    ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), { "i" }),
+    -- if cmp.core.view:visible() then
+    --   local release = cmp.core:suspend()
+    --   cmp.core.view:select_prev_item(option)
+    --   vim.schedule(release)
+    --   return true
+    -- elseif vim.fn.pumvisible() == 1 then
+    --   if option.behavior == cmp.SelectBehavior.Insert then
+    --     feedkeys.call(keymap.t(string.rep('<C-p>', option.count)), 'in')
+    --   else
+    --     feedkeys.call(keymap.t(string.rep('<Up>', option.count)), 'in')
+    --   end
+    --   return true
+  },
   view = {
     entries = {
       name = "custom", -- can be "custom", "wildmenu" or "native"
@@ -192,10 +191,7 @@ local setupConfig = {
         local padding = string.rep(" ", MIN_LABEL_WIDTH - string.len(label))
         vim_item.abbr = label .. padding
       end
-
-      vim_item.dup = ({
-        nvim_lua = 0,
-      })[entry.source.name] or 1
+      vim_item.dup = ({ nvim_lua = 0 })[entry.source.name] or 1
       vim_item.menu = sources.names[entry.source.name] .. " "
       vim_item.kind = " " .. sources.symbols[vim_item.kind]
       return vim_item
@@ -207,8 +203,8 @@ local setupConfig = {
       compare.offset,
       compare.exact,
       compare.score,
-      -- require("cmp_fuzzy_path.compare"),
-      -- require("cmp_fuzzy_buffer.compare"),
+      require("cmp_fuzzy_path.compare"),
+      require("cmp_fuzzy_buffer.compare"),
       sort_under,
       function(...)
         return cmp_helper.prioritize_argument(...)
@@ -287,7 +283,7 @@ cmp.setup.cmdline(":", {
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_next_item({
-            behavior = cmp.SelectBehavior.Select,
+            behavior = cmp_types.SelectBehavior.Select,
           })(nil)
         end
       end
@@ -298,7 +294,7 @@ cmp.setup.cmdline(":", {
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_prev_item({
-            behavior = cmp.SelectBehavior.Select,
+            behavior = cmp_types.SelectBehavior.Select,
           })(nil)
         end
       end

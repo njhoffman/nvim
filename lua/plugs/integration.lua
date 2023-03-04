@@ -1,54 +1,87 @@
 local utils = require("lazy-utils")
-
+-- /usr/bin/gnome-ssh-askpass
 local plugins = {
-  { "rmagatti/auto-session" },
-  { "xeluxee/competitest.nvim", dependencies = "MunifTanjim/nui.nvim" },
-  { "lewis6991/gitsigns.nvim", dependencies = "nvim-lua/plenary.nvim" },
-  { "pwntester/octo.nvim", dependencies = "kyazdani42/nvim-web-devicons" },
-  { "rbong/vim-flog" },
-  { "tpope/vim-fugitive" },
-  { "tpope/vim-rhubarb" },
-  { "wakatime/vim-wakatime" },
-  { "skywind3000/asynctasks.vim", dependencies = "skywind3000/asyncrun.vim" },
-  { "folke/noice.nvim" }, -- highlight for Window separator
-  { "AckslD/nvim-neoclip.lua", dependencies = { "kkharji/sqlite.lua" } },
-  { "GustavoKatel/tasks.nvim" },
-  { "potamides/pantran.nvim" },
-  { "dbeniamine/cheat.sh-vim" },
-  { "AndrewRadev/id3.vim" },
-  { "jameshiew/nvim-magic", dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" } },
-  { "michaelb/sniprun", build = "bash ./install.sh" },
-  { "vuki656/package-info.nvim", dependencies = "MunifTanjim/nui.nvim" },
-  { "urbainvaes/vim-ripple" },
-  { "vim-test/vim-test" },
-  { "NTBBloodbath/rest.nvim" },
-  { "kdheepak/lazygit.nvim" },
-  {
-    "njhoffman/neuron.nvim",
-    {
-      "nvim-lua/popup.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-  },
   { "aserowy/tmux.nvim" },
   {
-    "windwp/nvim-spectre",
-    -- keys = { { "<leader>sr", function() require("spectre").open() end, desc = "Replace in files (Spectre)" }, },
+    "nvim-neotest/neotest",
+    cmd = { "Neotest", "NeotestSummary", "NeotestNearest", "NeotestAttach" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-neotest/neotest-python",
+      "nvim-neotest/neotest-plenary",
+      "rouge8/neotest-rust",
+      "akinsho/neotest-go",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+      {
+        "nvim-neotest/neotest-vim-test",
+        dependencies = { "vim-test/vim-test", cmd = { "Test", "TestNearest", "TestFile" } },
+      },
+    },
   },
-  { "WaylonWalker/Telegraph.nvim" },
-  { "bennypowers/nvim-regexplainer", dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" } },
+  {
+    "tpope/vim-fugitive",
+    cmd = {
+      "Git",
+      "Ggrep",
+      "GMove",
+      "GDelete",
+      "GBrowse",
+      "Gspilt",
+      "Gstatus",
+      "Gwrite",
+      "Gread",
+      "Gdiffsplit",
+      "Gedit",
+    },
+  },
+  { "rbong/vim-flog", cmd = { "Flog", "Flogsplit" } },
+  { "dbeniamine/cheat.sh-vim", cmd = "Cheat" },
+  { "potamides/pantran.nvim", cmd = "Pantran" },
+  { "AndrewRadev/id3.vim", ft = "mp3" },
+  { "npxbr/glow.nvim", cmd = "Glow" },
+  { "jameshiew/nvim-magic", dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" } },
+  { "michaelb/sniprun", build = "bash install.sh", cmd = { "SnipRun", "SnipInfo" } },
+  { "vuki656/package-info.nvim", dependencies = "MunifTanjim/nui.nvim", ft = "json" },
+  { "pwntester/octo.nvim", cmd = "Octo", dependencies = "kyazdani42/nvim-web-devicons" },
+  { "NTBBloodbath/rest.nvim", cmd = { "RESTRunLast", "RESTRun", "RESTPreview" } },
+  { "kdheepak/lazygit.nvim", cmd = "LazyGit" },
+  { "windwp/nvim-spectre", cmd = "Spectre" },
+  { "WaylonWalker/Telegraph.nvim", cmd = "Telegraph" },
+  { "xeluxee/competitest.nvim", cmd = "CompetiTestRun", dependencies = "MunifTanjim/nui.nvim" },
+  {
+    "bennypowers/nvim-regexplainer",
+    cmd = { "RegexplainerShow", "RegexplainerToggle" },
+    dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
+  },
+  { "lewis6991/gitsigns.nvim", event = "BufReadPost", dependencies = "nvim-lua/plenary.nvim" },
+  { "rmagatti/auto-session", event = "BufReadPre" },
+  { "AckslD/nvim-neoclip.lua", event = "VimEnter", dependencies = "kkharji/sqlite.lua" },
+  { "aymericbeaumet/vim-symlink", event = "VeryLazy", dependency = "moll/vim-bbye" },
+  { "lambdalisue/suda.vim", event = "VeryLazy" },
+  { "nvim-lua/plenary.nvim", event = "VeryLazy" },
+  { "rizzatti/dash.vim", event = "VeryLazy" },
+  { "wakatime/vim-wakatime", event = "VeryLazy" },
+  { "skywind3000/asynctasks.vim", event = "VeryLazy", dependencies = "skywind3000/asyncrun.vim" },
   {
     "susensio/magic-bang.nvim",
-    opt = {
-      automatic = true, -- insert shebang on new file when in $PATH
-      command = true, -- define Bang user command
-      executable = true, -- make file executable on exit
-      default = "/bin/bash", -- default shebang for `:Bang` without args
+    ft = "sh",
+    opts = { automatic = true, command = true, executable = true, default = "/bin/bash" },
+  },
+  {
+    "jamestthompson3/nvim-remote-containers",
+    cmd = {
+      "BuildImage",
+      "AttachToContainer",
+      "StartImage",
+      "ComposeUp",
+      "ComposeDown",
+      "ComposeDestroy",
     },
   },
   {
     "tools-life/taskwiki",
+    cmd = { "TW", "TWSync" },
     build = "pip3 install --upgrade git+git://github.com/tbabej/tasklib@develop",
     dependencies = {
       {
@@ -68,16 +101,12 @@ local plugins = {
   },
   {
     "qpkorr/vim-renamer",
-    opt = {
-      RenamerShowHiddenEnabled = true,
-    },
+    config = function()
+      vim.g.RenamerShowHiddenEnabled = true
+    end,
   },
-  { "jamestthompson3/nvim-remote-containers" },
-  { "lambdalisue/suda.vim" },
-  { "aymericbeaumet/vim-symlink" },
-  { "bchretien/vim-profiler" },
-  { "nvim-lua/plenary.nvim" },
 }
+-- { "njhoffman/neuron.nvim", { "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" } },
 
 utils.apply_configs(plugins)
 utils.print_stats("Integration", plugins)

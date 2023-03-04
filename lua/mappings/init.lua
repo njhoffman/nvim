@@ -194,7 +194,7 @@ vim.import("mapper", function(M)
   M.map("Movement", "n", "<C-f>", "scroll_forwards", { noremap = false })
   M.map("Movement", "n", " ", "scroll_forwards2", { noremap = false })
   M.map("Movement", "n", "<C-b>", "scroll_backwards", { noremap = false })
-  -- M.map("Movement", "n", "<space>", "scroll_forwardsx3", {noremap = false})
+  M.map("Movement", "n", "<space>", "scroll_forwardsx3", {noremap = false})
   M.map("Movement", "n", "G", "scroll_bottom", { noremap = false })
   M.map("Movement", "n", "gg", "scroll_top", { noremap = false })
 

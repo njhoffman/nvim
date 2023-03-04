@@ -174,7 +174,6 @@ local theme = lush(function()
       bg = cfg.nord_uniform_status_lines == 0 and clrs.nord1 or crls.nord3,
       gui = "NONE",
     }),
-    WarningMsg({ fg = clrs.nord0, bg = clrs.nord13 }),
     WildMenu({ fg = clrs.nord8, bg = clrs.nord1 }),
     -- +--- Search ---+
     IncSearch({ fg = clrs.nord6, bg = clrs.nord10, gui = spec.underline }),
@@ -210,7 +209,6 @@ local theme = lush(function()
     Boolean({ fg = clrs.nord9 }),
     Character({ fg = clrs.nord14 }),
     -- Comment({ fg = clrs.nord3_bright, gui = spec.italicize_comments }),
-    Comment({ fg = "#56667b", gui = "italic" }),
     Conditional({ fg = clrs.nord9 }),
     Constant({ fg = clrs.nord13 }),
     Define({ fg = clrs.nord9 }),
@@ -237,74 +235,10 @@ local theme = lush(function()
     String({ fg = clrs.nord14 }),
     Structure({ fg = clrs.nord9 }),
     Tag({ fg = clrs.nord4 }),
-    Todo({ fg = clrs.nord13, bg = nil, gui = "bold, italic" }),
     Type({ fg = clrs.nord9, gui = "NONE" }),
     Typedef({ fg = clrs.nord9 }),
     PreCondit({ PreProc }),
     Conceal({ bg = Normal.bg, fg = Normal.fg.ro(10) }),
-    -- -- +----------------------+
-    -- -- + Treesitter
-    -- -- +----------------------+
-    TSAnnotation({ fg = clrs.nord12 }), -- For C++/Dart attributes, annotations thatcan be attached to the code to denote some kind of meta information.
-    TSCharacter({ fg = clrs.nord14 }), -- For characters.
-    TSConstructor({ fg = clrs.nord9 }), -- For constructor calls and definitions: `= { }` in Lua, and Java constructors.
-    TSFloat({ fg = clrs.nord15 }), -- For floats
-    TSNumber({ fg = clrs.nord15 }), -- For all number
-    -- TSString({ fg = clrs.nord14 }), -- For strings.
-    -- TSAnnotation =              { fg = clrs.nord11 },    -- For C++/Dart attributes, annotations that can be attached to the code to denote some kind of meta information.
-    TSAttribute({ fg = clrs.nord15 }), -- (unstable) TODO: docs
-    TSBoolean({ fg = clrs.nord9 }), -- For booleans.
-    -- TSCharacter=                { fg = clrs.nord12 },    -- For characters.
-    -- TSConstructor =             { fg = clrs.nord9 }, -- For constructor calls and definitions: `{ }` in Lua, and Java constructors.
-    -- TSConstant({ fg = clrs.nord13 }), -- For constants
-    TSConstant(Constant), -- For constants
-    -- TSConstBuiltin({ fg = clrs.nord7 }), -- For constant that are built in the language: `nil` in Lua.
-    TSConstMacro({ fg = clrs.nord7 }), -- For constants that are defined by macros: `NULL` in C.
-    TSError({ fg = clrs.error }), -- For syntax/parser errors.
-    TSException({ fg = clrs.nord15 }), -- For exception related keywords.
-    TSField({ fg = clrs.gray }), -- For fields.
-    -- TSFloat =                   { fg = clrs.nord11 },    -- For floats.
-    TSFuncMacro({ fg = clrs.nord7 }), -- For macro defined fuctions (calls and definitions): each `macro_rules` in Rust.
-    TSInclude({ fg = clrs.nord9 }), -- For includes: `#include` in C, `use` or `extern crate` in Rust, or `require` in Lua.
-    TSLabel({ fg = clrs.nord15 }), -- For labels: `label:` in C and `:label:` in Lua.
-    -- TSNamespace({ fg = clrs.nord4 }), -- For identifiers referring to modules and namespaces.
-    -- TSNone =                    { },    -- TODO: docs
-    -- TSNumber =                  { fg = clrs.nord12 },    -- For all numbers
-    TSOperator({ fg = clrs.nord9 }), -- For any operator: `+`, but also `->` and `*` in C.
-    TSParameter({ fg = clrs.nord10 }), -- For parameters of a function.
-    TSParameterReference({ fg = clrs.nord10 }), -- For references to parameters of a function.
-    TSProperty({ fg = clrs.nord10 }), -- Same as `TSField`.
-    TSPunctDelimiter({ fg = clrs.nord8 }), -- For delimiters ie: `.`
-    TSPunctBracket({ fg = clrs.nord8 }), -- For brackets and parens.
-    TSPunctSpecial({ fg = clrs.nord8 }), -- For special punctutation that does not fall in the catagories before.
-    -- TSString =                  { fg = clrs.nord14 },    -- For strings.
-    TSStringRegex({ fg = clrs.nord7 }), -- For regexes.
-    TSStringEscape({ fg = clrs.disabled }), -- For escape characters within a string.
-    TSSymbol({ fg = clrs.nord15 }), -- For identifiers referring to symbols or atoms.
-    TSType({ fg = clrs.nord9 }), -- For types.
-    -- TSTypeBuiltin({ fg = clrs.nord9 }), -- For builtin types.
-    TSTag({ fg = clrs.nord4 }), -- Tags like html tag names.
-    TSTagDelimiter({ fg = clrs.nord15 }), -- Tag delimiter like `<` `>` `/`
-    TSText({ fg = clrs.text }), -- For strings considenord11 text in a markup language.
-    TSTextReference({ fg = clrs.nord15 }), -- TODO: fixme
-    TSEmphasis({ fg = clrs.nord10 }), -- For text to be represented with emphasis.
-    TSUnderline({ bg = clrs.none }), -- For text to be represented with an underline.
-    TSStrike({}), -- For strikethrough text.
-    TSTitle({ fg = clrs.nord10, bg = clrs.none, gui = "bold" }), -- Text that is part of a title.
-    -- TSLiteral({ fg = clrs.fg }), -- Literal text.
-    TSURI({ fg = clrs.link }), -- Any URI like a link or email.
-    -- TSComment({ fg = clrs.nord3_bright }),
-    TSComment(Comment),
-    TSConditional({ fg = clrs.nord9 }), -- For keywords related to conditionnals.
-    TSKeyword({ fg = clrs.nord9 }), -- For keywords that don't fall in previous categories.
-    -- TSRepeat { fg = clrs.nord9 }, -- For keywords related to loops.
-    TSKeywordFunction({ fg = clrs.nord8 }),
-    TSFunction({ fg = clrs.nord8 }), -- For fuction (calls and definitions).
-    TSMethod({ fg = clrs.nord7 }), -- For method calls and definitions.
-    -- TSFuncBuiltin({ fg = clrs.nord8 }),
-    -- TSVariable({ fg = clrs.accent }),
-    -- Any variable name that does not have another highlight.
-    -- TSVariableBuiltin({ fg = clrs.accent }),
     -- +-----------+
     -- + Languages +
     -- +-----------+
@@ -442,7 +376,7 @@ local theme = lush(function()
     pandocReferenceURL({ gui = "none", gui = "none" }),
     pandocUListItem({ gui = "none", gui = "none" }),
     javaDocTags({ fg = clrs.nord7 }),
-    javaCommentTitle({ Comment }),
+    -- javaCommentTitle({ Comment }),
     javaScriptBraces({ Delimiter }),
     javaScriptIdentifier({ Keyword }),
     javaScriptNumber({ Number }),
@@ -487,7 +421,7 @@ local theme = lush(function()
     rustModPath({ fg = clrs.nord7 }),
     rustPanic({ fg = clrs.nord9, gui = spec.bold }),
     rustTrait({ fg = clrs.nord7, gui = spec.italic }),
-    rustCommentLineDoc({ Comment }),
+    -- rustCommentLineDoc({ Comment }),
     rustDerive({ rustAttribute }),
     rustEnumVariant({ rustEnum }),
     rustEscape({ SpecialChar }),
@@ -523,7 +457,7 @@ local theme = lush(function()
     xmlCdataStart({ fg = clrs.nord3_bright, gui = spec.bold }),
     xmlNamespace({ fg = clrs.nord7 }),
     xmlAttribPunct({ Delimiter }),
-    xmlCdata({ Comment }),
+    -- xmlCdata({ Comment }),
     xmlCdataCdata({ xmlCdataStart }),
     xmlCdataEnd({ xmlCdataStart }),
     xmlTagName({ Keyword }),
@@ -594,7 +528,7 @@ local theme = lush(function()
     StartifyPath({ fg = clrs.nord8 }),
     StartifyBracket({ Delimiter }),
     StartifySlash({ Normal }),
-    StartifySpecial({ Comment }),
+    -- StartifySpecial({ Comment }),
     -- LspTrouble
     LspTroubleText({ fg = clrs.text }),
     LspTroubleCount({ fg = clrs.nord9, bg = clrs.active }),
@@ -743,7 +677,7 @@ local theme = lush(function()
     mkdString({ Keyword }),
     mkdCodeStart({ mkdCode }),
     mkdCodeEnd({ mkdCode }),
-    mkdBlockquote({ Comment }),
+    -- mkdBlockquote({ Comment }),
     mkdListItem({ Keyword }),
     mkdListItemLine({ Normal }),
     mkdFootnotes({ mkdFootnote }),

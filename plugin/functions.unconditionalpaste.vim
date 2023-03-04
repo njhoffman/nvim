@@ -104,8 +104,8 @@ endfunction
 call s:CreateMappings()
 delfunction s:CreateMappings
 
-nmap gP <plug>(YoinkPaste_gP)<Plug>(UnconditionalPasteCharBefore)
-nmap gp <plug>(YoinkPaste_gP)<Plug>(UnconditionalPasteCharAfter)
+nmap <leader>pP <Plug>(UnconditionalPasteCharBefore)
+nmap <leader>pp <Plug>(UnconditionalPasteCharAfter)
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

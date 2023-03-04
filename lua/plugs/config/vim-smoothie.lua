@@ -9,6 +9,21 @@ vim.g.smoothie_speed_exponentiation_factor = 0.9
 vim.g.redraw_at_finish = 1
 vim.g.smoothie_minimum_speed = 0.9
 
+-- vim.cmd([[
+--   silent! map <unique> <C-f>      <Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)
+--   silent! map <unique> <C-b>      <Plug>(SmoothieUpwards)
+--   silent! map <unique> G          <Plug>(Smoothie_G)
+--   silent! map <unique> gg         <Plug>(Smoothie_gg)
+--   silent! map <unique> <Space>    <Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)
+-- ]])
+
+-- M.map("Movement", "n", "<C-f>", "scroll_forwards", { noremap = false })
+-- M.map("Movement", "n", " ", "scroll_forwards2", { noremap = false })
+-- M.map("Movement", "n", "<C-b>", "scroll_backwards", { noremap = false })
+-- -- M.map("Movement", "n", "<space>", "scroll_forwardsx3", {noremap = false})
+-- M.map("Movement", "n", "G", "scroll_bottom", { noremap = false })
+-- M.map("Movement", "n", "gg", "scroll_top", { noremap = false })
+
 -- `g:smoothie_experimental_mappings`: Set this to true to enable additional,
 
 -- if !exists('g:smoothie_minimum_speed')

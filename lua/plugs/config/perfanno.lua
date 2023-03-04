@@ -22,11 +22,13 @@
 -- :PerfHottestCallersSelection opens a telescope finder with the hottest lines that lead directly to the currently selected lines.
 -- :PerfHottestCallersFunction works just like :PerfHottestCallersSelection but selects the function that contains the cursor via treesitter.
 
-local default_options = {
+local util = require("perfanno.util")
+local bgcolor = vim.fn.synIDattr(vim.fn.hlID("Normal"), "bg", "gui")
+
+require("perfanno").setup({
   -- List of highlights that will be used to highlight hot lines (or nil to disable highlighting)
-  line_highlights = nil,
-  -- Highlight used for virtual text annotations (or nil to disable virtual text)
-  vt_highlight = nil,
+  -- line_highlights = util.make_bg_highlights(bgcolor, "#CC3300", 10),
+  -- vt_highlight = util.make_fg_highlight("#CC3300"),
 
   -- Annotation formats that can be cycled between via :PerfCycleFormat
   --   "percent" controls whether percentages or absolute counts should be displayed
@@ -34,8 +36,8 @@ local default_options = {
   --   "minimum" is the minimum value below which lines will not be annotated
   -- Note: this also controls what shows up in the telescope finders
   formats = {
-    {percent = true, format = "%.2f%%", minimum = 0.5},
-    {percent = false, format = "%d", minimum = 1}
+    { percent = true, format = "%.2f%%", minimum = 0.5 },
+    { percent = false, format = "%d", minimum = 1 },
   },
 
   -- Automatically annotate files after :PerfLoadFlat and :PerfLoadCallGraph
@@ -62,23 +64,34 @@ local default_options = {
     -- weirdlang = {
     --     "weirdfunc",
     -- }
-  }
-}
+  },
+})
 
-local perfanno = require("perfanno")
-local util = require("perfanno.util")
-local bgcolor = vim.fn.synIDattr(vim.fn.hlID("Normal"), "bg", "gui")
+local telescope = require("telescope")
+local actions = telescope.extensions.perfanno.actions
+telescope.setup({
+  extensions = {
+    perfanno = {
+      -- Special mappings in the telescope finders
+      mappings = {
+        ["i"] = {
+          -- Find hottest callers of selected entry
+          ["<C-h>"] = actions.hottest_callers,
+          -- Find hottest callees of selected entry
+          ["<C-l>"] = actions.hottest_callees,
+        },
 
--- The following config sets the highlights to a nice RGB color gradient between the background color and an orange red.
--- It also sets convenient keybindings for most of the standard commands.
-perfanno.setup {
-  -- Creates a 10-step RGB color gradient beween bgcolor and "#CC3300"
-  line_highlights = util.make_bg_highlights(bgcolor, "#CC3300", 10),
-  vt_highlight = util.make_fg_highlight("#CC3300"),
-}
+        ["n"] = {
+          ["gu"] = actions.hottest_callers,
+          ["gd"] = actions.hottest_callees,
+        },
+      },
+    },
+  },
+})
 
 local keymap = vim.api.nvim_set_keymap
-local opts = {noremap = true, silent = true}
+local opts = { noremap = true, silent = true }
 
 keymap("n", "<LEADER>plf", ":PerfLoadFlat<CR>", opts)
 keymap("n", "<LEADER>plg", ":PerfLoadCallGraph<CR>", opts)
@@ -93,5 +106,6 @@ keymap("v", "<LEADER>pa", ":PerfAnnotateSelection<CR>", opts)
 keymap("n", "<LEADER>pt", ":PerfToggleAnnotations<CR>", opts)
 
 keymap("n", "<LEADER>ph", ":PerfHottestLines<CR>", opts)
+keymap("n", "<LEADER>ps", ":PerfHottestSymbols<CR>", opts)
 keymap("n", "<LEADER>pc", ":PerfHottestCallersFunction<CR>", opts)
 keymap("v", "<LEADER>pc", ":PerfHottestCallersSelection<CR>", opts)

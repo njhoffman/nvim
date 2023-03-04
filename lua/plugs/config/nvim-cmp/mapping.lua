@@ -26,7 +26,7 @@ function cmp_mappings()
       else
         fallback()
       end
-    end, { "i", "s", "c" }),
+    end, { "i", "s" }),
 
     ["<C-n>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
@@ -38,7 +38,7 @@ function cmp_mappings()
       else
         fallback()
       end
-    end, { "i", "s", "c" }),
+    end, { "i", "s" }),
 
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then

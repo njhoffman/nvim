@@ -8,13 +8,6 @@ local plugins = {
     dependencies = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
   },
   {
-    "romgrk/kirby.nvim",
-    dependencies = {
-      { "romgrk/fzy-lua-native", build = "make install" },
-      { "romgrk/kui.nvim" },
-    },
-  },
-  {
     dir = "~/git/telescope.nvim", -- "nvim-telescope/telescope.nvim",
     lazy = true,
     cmd = "Telescope",

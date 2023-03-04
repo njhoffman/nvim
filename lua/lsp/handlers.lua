@@ -174,6 +174,18 @@ local definition_provider = function(_, bufnr)
       keymap_opts
     )
   end
+  if vim.fn.exists(":Telescope") then
+    local theme = 'require("telescope.themes").get_dropdown()'
+    keymap_buf(
+      bufnr,
+      "n",
+      "gd",
+      "<cmd>lua require('telescope.builtin').lsp_definitions(" .. theme .. ")<CR>",
+      keymap_opts
+    )
+  end
+
+  vim.keymap.set("n", "gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", { noremap = true })
 end
 
 local implementation_provider = function(_, bufnr)
@@ -188,6 +200,7 @@ local implementation_provider = function(_, bufnr)
       keymap_opts
     )
   end
+  vim.keymap.set("n", "gpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", { noremap = true })
 end
 
 local references_provider = function(_, bufnr)
@@ -202,6 +215,7 @@ local references_provider = function(_, bufnr)
       keymap_opts
     )
   end
+  vim.keymap.set("n", "gpr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", { noremap = true })
 end
 
 local type_definition_provider = function(_, bufnr)
@@ -216,6 +230,7 @@ local type_definition_provider = function(_, bufnr)
       keymap_opts
     )
   end
+  vim.keymap.set("n", "gpt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", { noremap = true })
 end
 
 local declaration_provider = function(_, bufnr)

@@ -41,7 +41,7 @@ opt("magic", true)
 opt("matchtime", 3) -- How many tenths of a second to blink when matching brackets
 opt("modelines", 5)
 opt("mouse", "nivh")
-opt("omnifunc", false)
+
 opt("previewheight", 7)
 opt("pumheight", 10)
 opt("redrawtime", 5000)
@@ -72,12 +72,12 @@ opt("whichwrap", "b,s,<,>,[,],h,l")
 opt("wildignore", "*.o,*~,*.pyc") -- wildchar/charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
 opt("winbar", "")
 opt("writebackup", true)
+opt("wildmode", "longest:full,full")
 -- opt("display", "msgsep")
 -- opt("shortmess", o.shortmess .. "cS") F silents filename
 -- opt("shortmess", "filnxtToOcSIs")
 -- opt("more", false) -- dont pause when message finished
 -- opt("wildmenu", 1)
--- opt("wildmode", "list:longest,full")
 -- opt("wildmode", "longest:full,full")
 -- opt("wildmode", "") -- full, longest, list, lastused, list:longest, list:full, longest:full
 -- opt("wc", 0x0e)
