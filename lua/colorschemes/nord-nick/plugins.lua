@@ -125,25 +125,6 @@ return function()
     -- DapVariableTreeString { String },
     -- DapVariableTreeNumber { Number },
 
-    -- -- WhichKey
-    --     WhichKey = { fg = clrs.accent, gui = "bold" },
-    --     WhichKeyGroup = { fg = clrs.text },
-    --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
-    --     WhichKeySeperator = { fg = clrs.fg },
-    --     WhichKeyFloating = { bg = clrs.float },
-    --     WhichKeyFloat = { bg = clrs.float },
-    WhichKey({ fg = "#f78077", gui = "bold" }), --Function
-    WhichKeyGroup({ fg = "#619cf4" }), -- Keyword
-    WhichKeyDesc({ fg = "#5d79a1", gui = "italic" }), -- Identifier
-    WhichKeySeperator({ fg = clrs.fg }), -- DiffAdded
-    WhichKeyFloat({ bg = NormalFloat.bg }), -- NormalFloat
-    -- WhichKeyValue { bg = clrs.float }, -- Comment
-    -- WhichKey = { fg = colors.purple, gui = "bold" },
-    -- WhichKeyGroup = { fg = colors.cyan },
-    -- WhichKeyDesc = { fg = colors.blue, gui = "italic" },
-    -- WhichKeySeperator = { fg = colors.green },
-    -- WhichKeyFloat = { bg = colors.active },
-
     -- +--- PackageInfo ---+
     PackageInfoOutdatedVersion({ fg = "#d19a66" }),
     PackageInfoUpToDateVersion({ fg = "#3C4048" }),
@@ -193,11 +174,6 @@ return function()
     -- ["Property"] = "TelescopeResultsOperator",
     -- ["Struct"] = "TelescopeResultsStruct",
     -- ["Variable"] = "TelescopeResultsVariable",
-    TelescopeWhichKeyName({ WhichKeyDesc }),
-    TelescopeWhichKeyBorder({ WhichKeyDesc }),
-    TelescopeWhichKeyKey({ WhichKey }),
-    TelescopeWhichKeyNormal({ WhichKeySeperator }),
-
     --     WhichKeyGroup = { fg = clrs.text },
     --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
     --     WhichKeySeperator = { fg = clrs.fg },
@@ -547,13 +523,6 @@ return function()
   -- NvimTreeEmptyFolderName = { fg = clrs.disabled },
   -- NvimTreeFolderIcon = { fg = clrs.accent },
   -- NvimTreeIndentMarker = { fg = clrs.disabled },
-  -- -- WhichKey
-  -- WhichKey = { fg = clrs.accent, gui = "bold" },
-  -- WhichKeyGroup = { fg = clrs.text },
-  -- WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
-  -- WhichKeySeperator = { fg = clrs.fg },
-  -- WhichKeyFloating = { bg = clrs.float },
-  -- WhichKeyFloat = { bg = clrs.float },
 end
 
 -- local function load_treesitter()

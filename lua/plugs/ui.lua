@@ -2,7 +2,99 @@ local utils = require("lazy-utils")
 
 local plugins = {
   { dir = "~/git/which-key.nvim" },
-  { "lukas-reineke/indent-blankline.nvim" },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    opts = {
+      char = "│",
+      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
+      show_trailing_blankline_indent = false,
+      show_current_context = false,
+    },
+  },
+  -- active indent guide and indent text objects
+  {
+    "echasnovski/mini.indentscope",
+    version = false, -- wait till new 0.7.0 release to put it back on semver
+    event = { "BufReadPre", "BufNewFile" },
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
+        callback = function()
+          vim.b.miniindentscope_disable = true
+        end,
+      })
+    end,
+    config = function(_, _opts)
+      local opts = _opts or {}
+      opts.symbol = "│" -- symbol = "▏"
+      -- opts.draw = { animation = require("mini.indentscope").gen_animation.none() }
+      opts.try_as_border = true
+      require("mini.indentscope").setup(opts)
+    end,
+  },
+  {
+    "echasnovski/mini.animate",
+    event = "VeryLazy",
+    opts = function()
+      -- don't use animate when scrolling with the mouse
+      local mouse_scrolled = false
+      for _, scroll in ipairs({ "Up", "Down" }) do
+        local key = "<ScrollWheel" .. scroll .. ">"
+        vim.keymap.set({ "", "i" }, key, function()
+          mouse_scrolled = true
+          return key
+        end, { expr = true })
+      end
+
+      local animate = require("mini.animate")
+      local orig_scroll = {
+        timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
+        subscroll = animate.gen_subscroll.equal({
+          predicate = function(total_scroll)
+            if mouse_scrolled then
+              mouse_scrolled = false
+              return false
+            end
+            return total_scroll > 1
+          end,
+        }),
+      }
+
+      local is_many_wins = function(sizes_from, sizes_to)
+        return vim.tbl_count(sizes_from) >= 3
+      end
+      return {
+        scroll = { enable = false },
+        cursor = { enable = false },
+        resize = {
+          -- Animate for 200 milliseconds with linear easing
+          timing = animate.gen_timing.linear({ duration = 200, unit = "total" }),
+          -- Animate only if there are at least 3 windows
+          subresize = animate.gen_subscroll.equal({ predicate = is_many_wins }),
+        },
+        open = {
+          enable = true,
+          -- Animate for 400 milliseconds with linear easing
+          timing = animate.gen_timing.linear({ duration = 400, unit = "total" }),
+          -- Animate with wiping from nearest edge instead of default static one
+          winconfig = animate.gen_winconfig.wipe({ direction = "from_edge" }),
+          -- Make bigger windows more transparent
+          winblend = animate.gen_winblend.linear({ from = 80, to = 100 }),
+        },
+        close = {
+          -- Animate for 400 milliseconds with linear easing
+          timing = animate.gen_timing.linear({ duration = 400, unit = "total" }),
+          -- Animate with wiping to nearest edge instead of default static one
+          winconfig = animate.gen_winconfig.wipe({ direction = "to_edge" }),
+          -- Make bigger windows more transparent
+          winblend = animate.gen_winblend.linear({ from = 100, to = 80 }),
+        },
+      }
+    end,
+    config = function(_, opts)
+      require("mini.animate").setup(opts)
+    end,
+  },
   { "romainl/vim-qf", ft = "qf" },
   { "kevinhwang91/nvim-bqf", cmd = { "BqfEnable", "BqfToggle" }, ft = "qf" },
   {
@@ -69,7 +161,7 @@ local plugins = {
   { "petertriho/nvim-scrollbar", event = { "BufReadPost", "BufNewFile" } },
   { "edluffy/specs.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "RRethy/vim-illuminate", event = { "BufReadPost", "BufNewFile" }, dependencies = { "neovim/nvim-lspconfig" } },
-  { "TaDaa/vimade", event = { "BufReadPost", "BufNewFile" } },
+  { "TaDaa/vimade", event = { "BufReadPost", "BufNewFile" }, cmd = { "VimadeBufDisable" } },
   { "goolord/alpha-nvim", event = "VimEnter", dependencies = "kyazdani42/nvim-web-devicons" },
 
   {

@@ -7,7 +7,6 @@ local plugins = {
   { "jkramer/vim-checkbox", event = "VeryLazy", ft = { "markdown", "pandoc", "vimwiki" } },
   { "b3nj5m1n/kommentary", event = { "BufReadPost" } },
   { "junegunn/vim-easy-align", cmd = "EasyAlign", event = { "BufReadPost", "BufNewFile" } }, -- tommcdo/vim-lion
-  { "kylechui/nvim-surround", event = { "BufReadPost", "BufNewFile" } },
   { "mizlan/iswap.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "monaqa/dial.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "editorconfig/editorconfig-vim", event = { "VeryLazy" } },

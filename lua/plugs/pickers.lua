@@ -52,6 +52,10 @@ local plugins = {
       "sudormrfbin/cheatsheet.nvim",
       "tamago324/telescope-openbrowser.nvim",
       "tsakirist/telescope-lazy.nvim",
+      {
+        "aaronhallaert/advanced-git-search.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim", "tpope/vim-fugitive" },
+      },
       { "chip/telescope-code-fence.nvim", build = "luarocks --local install lunamark" },
       { "danielfalk/smart-open.nvim", dependencies = { "kkharji/sqlite.lua" } },
       { "nvim-telescope/telescope-frecency.nvim", dependencies = { "kkharji/sqlite.lua" } },

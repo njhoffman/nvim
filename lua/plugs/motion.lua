@@ -28,6 +28,9 @@ local plugins = {
       }
     end,
   },
+  { "echasnovski/mini.bracketed", event = "VeryLazy", version = false },
+  { "echasnovski/mini.surround", event = "VeryLazy", version = false },
+  { "echasnovski/mini.fuzzy", event = "VeryLazy", version = false },
   { "chaoren/vim-wordmotion", event = "VeryLazy" },
   { "psliwka/vim-smoothie", commit = "10fd0aa", event = "VeryLazy" }, -- f2aaab1
   { dir = "~/git/clever-f.vim" }, -- rhysd/clever-f.vim

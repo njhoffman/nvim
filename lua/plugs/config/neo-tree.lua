@@ -7,10 +7,25 @@ local cfg = {
     width = 30,
     auto_expand_width = true,
     mappings = {
-      ["d"] = "show_debug_info",
-      ["h"] = "close_node",
       ["l"] = "toggle_node",
       ["D"] = "delete",
+      ["d"] = "show_debug_info",
+      ["h"] = "close_node",
+      ["gP"] = { "toggle_preview", config = { use_float = true } },
+      ["A"] = "add_directory", -- also accepts the config.show_path and config.insert_as options.
+      ["r"] = "rename",
+      ["w"] = "open_with_window_picker",
+      ["z"] = "close_all_nodes",
+      ["Z"] = "expand_all_nodes",
+      -- ["<cr>"] = "open_drop",
+      ["c"] = "copy", -- takes text input for destination, also accepts the config.show_path and config.insert_as options
+      ["m"] = "move", -- takes text input for destination, also accepts the config.show_path and config.insert_as options
+      ["e"] = "toggle_auto_expand_width",
+      ["q"] = "close_window",
+      [""] = "close_window",
+      ["?"] = "show_help",
+      ["<"] = "prev_source",
+      [">"] = "next_source",
     },
   },
   commands = {
@@ -26,9 +41,30 @@ local cfg = {
         require("neo-tree").close_all()
       end,
     },
+    {
+      event = "neo_tree_buffer_enter",
+      handler = function()
+        vim.cmd("highlight! Cursor blend=100")
+        -- setup keybindings for source switch
+      end,
+    },
+    {
+      event = "neo_tree_buffer_leave",
+      handler = function()
+        vim.cmd("highlight! Cursor guibg=#5f87af blend=0")
+        -- remove keybindings
+      end,
+    },
   },
   filesystem = {
     follow_current_file = true,
+  },
+  default_component_configs = {
+    container = {
+      enable_character_fade = true,
+      width = "100%",
+      right_padding = 0,
+    },
   },
 }
 

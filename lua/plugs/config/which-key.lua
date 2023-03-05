@@ -1,4 +1,4 @@
-require("which-key").setup({
+local default_config = {
   plugins = {
     marks = true, -- shows a list of your marks on ' and `
     registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
@@ -44,7 +44,7 @@ require("which-key").setup({
     group = "+", -- symbol prepended to a group
   },
   window = {
-    winblend = 20,
+    winblend = 30,
     border = "rounded", -- none, single, double, shadow
     position = "bottom", -- bottom, top
     margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
@@ -73,8 +73,38 @@ require("which-key").setup({
     v = { "j", "k" },
     -- prefix = { "<leader>" },
   },
-})
+}
 
+local config = {
+  ignore_missing = false,
+  -- autokey replacements
+  key_labels = {
+    ["<space>"] = "SPC",
+    ["<cr>"] = "RET",
+    ["<tab>"] = "TAB",
+    ["<M-g>"] = "<C-g>",
+    ["<M-G>"] = "<C-G>",
+  },
+  window = {
+    winblend = 20,
+    -- border = "rounded", -- none, single, double, shadow
+    border = { "╭", "─", "╮", "│", "│", "_", "│", "│" },
+    position = "bottom", -- bottom, top
+    margin = { 1, 10, 1, 10 }, -- extra window margin [top, right, bottom, left]
+    padding = { 0, 0, 0, 0 }, -- extra window padding [top, right, bottom, left]
+  },
+  layout = {
+    height = { min = 4, max = 10 }, -- min and max height of the columns
+    width = {
+      min = 25,
+      max = 40,
+    }, -- min and max width of the columns
+    spacing = 3, -- spacing between columns
+    align = "center", -- left, center, right
+  },
+}
+
+require("which-key").setup(config)
 require("which-key").register({
   g = {
     name = "go actions",

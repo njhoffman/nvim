@@ -18,6 +18,7 @@ local tele_plugs = {
   ["variables"] = {},
   ["which-key"] = {},
   -- 3rd party to sort through
+  ["advanced_git_search"] = {},
   ["aerial"] = {},
   ["asynctasks"] = {},
   ["bookmarks"] = {},

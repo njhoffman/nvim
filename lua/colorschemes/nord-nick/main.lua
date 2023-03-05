@@ -407,10 +407,17 @@ return function(injected_functions)
     --
     -- fg = clrs.nord13,
     -- Indent Blankline
-    IndentBlanklineChar({ fg = colors.selection, gui = "nocombine" }),
+    IndentBlanklineChar({ fg = "#101630", gui = "nocombine" }),
     IndentBlanklineContextChar({ fg = colors.purple, gui = "nocombine" }),
     IndentBlanklineIndent1({ bg = "#1f1f1f", gui = "nocombine" }),
     IndentBlanklineIndent2({ bg = "#1a1a1a", gui = "nocombine" }),
+    MiniIndentscopeSymbol({ fg = "#2f3f72" }),
+    MiniIndentscopeSymbolOff({ fg = "#1f2f52" }),
+    ---   indent is multiple of 'shiftwidth'.
+    --
+    -- [[hi default link MiniIndentscopeSymbol Delimiter
+    --   hi default link MiniIndentscopeSymbolOff MiniIndentscopeSymbol]],
+    -- false
     -- highlight IndentBlanklineChar guifg=#303030
     -- highlight IndentBlanklineContextChar guifg=#585858
     -- #0D0E19
@@ -467,6 +474,29 @@ return function(injected_functions)
     NotifyWARNBorder({ fg = "#79491D", bg = "none" }),
     NotifyWARNIcon({ fg = "#F79000" }),
     NotifyWARNTitle({ fg = "#F79000" }),
+
+    WhichKey({ fg = "#07c0f7", gui = "bold" }), --Function
+    WhichKeyGroup({ fg = "#619cf4" }), -- Keyword
+    -- WhichKeyDesc({ fg = "#5d79a1", gui = "italic" }), -- Identifier
+    WhichKeyDesc({ fg = "#5d79a1", gui = "italic" }), -- Identifier
+    WhichKeySeperator({ fg = "#334664", gui = "bold" }), -- DiffAdded
+    WhichKeyFloat({ bg = NormalFloat.bg }), -- NormalFloat
+
+    TelescopeWhichKeyName({ WhichKeyDesc }),
+    TelescopeWhichKeyBorder({ WhichKeyDesc }),
+    TelescopeWhichKeyKey({ WhichKey }),
+    TelescopeWhichKeyNormal({ WhichKeySeperator }),
+
+    --     WhichKeyGroup = { fg = clrs.text },
+    --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
+    --     WhichKeySeperator = { fg = clrs.fg },
+
+    -- WhichKeyValue { bg = clrs.float }, -- Comment
+    -- WhichKey = { fg = colors.purple, gui = "bold" },
+    -- WhichKeyGroup = { fg = colors.cyan },
+    -- WhichKeyDesc = { fg = colors.blue, gui = "italic" },
+    -- WhichKeySeperator = { fg = colors.green },
+    -- WhichKeyFloat = { bg = colors.active },
 
     -- NavicIconsFile({}),
     -- NavicIconsModule({}),
