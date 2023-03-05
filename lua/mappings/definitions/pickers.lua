@@ -13,8 +13,9 @@ local M = {
     short = "files telescope",
     long = "project files telescope",
   },
+
   find_files_currdir = {
-    cmd = "<cmd>lua _G._FindFilesDirectory()<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'fd.cwd')<cr>",
     short = "files directory telescope",
     long = "directory files with telescope",
   },

@@ -50,9 +50,6 @@ local plugins = {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPost",
     dependencies = "nvim-lua/plenary.nvim",
-    -- preview_config = {
-    --   border = require("lsp").borders,
-    -- },
   },
   { "rmagatti/auto-session", event = "BufReadPre" },
   { "AckslD/nvim-neoclip.lua", event = "VimEnter", dependencies = "kkharji/sqlite.lua" },

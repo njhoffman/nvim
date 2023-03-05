@@ -133,38 +133,47 @@ local function show_hover_new(provider_id, config, result, opts)
     lines = result.lines
   end
 
-  if state.winnr and vim.api.nvim_win_is_valid(state.winnr) then
-    vim.wo[state.winnr].winbar = "Loading..."
-    state.bufnr = vim.api.nvim_create_buf(false, true)
+  if lines and #lines > 0 then
+    if state.winnr and vim.api.nvim_win_is_valid(state.winnr) then
+      vim.wo[state.winnr].winbar = "Loading..."
+      state.bufnr = vim.api.nvim_create_buf(false, true)
 
-    local width, _ = get_dimensions(lines, max, config)
-    style_content(lines, result.filetype, width)
+      local width, _ = get_dimensions(lines, max, config)
+      style_content(lines, result.filetype, width)
 
-    local new_lines = vim.api.nvim_buf_get_lines(state.bufnr, 0, -1, false)
-    local _, new_height = get_dimensions(new_lines, max, config)
+      local new_lines = vim.api.nvim_buf_get_lines(state.bufnr, 0, -1, false)
+      local _, new_height = get_dimensions(new_lines, max, config)
 
-    vim.api.nvim_win_set_config(state.winnr, { width = width, height = new_height })
-    vim.api.nvim_win_set_buf(state.winnr, state.bufnr)
-    vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
-  else
-    local width, height = get_dimensions(lines, max, config)
-    state.bufnr = vim.api.nvim_create_buf(false, true)
+      vim.api.nvim_win_set_config(state.winnr, { width = width, height = new_height })
+      vim.api.nvim_win_set_buf(state.winnr, state.bufnr)
+      vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
+      vim.api.nvim_set_option_value("modifiable", false, { buf = state.bufnr })
+      vim.api.nvim_set_option_value("readonly", false, { buf = state.bufnr })
+      vim.api.nvim_set_option_value("swapfile", false, { buf = state.bufnr })
+    else
+      local width, height = get_dimensions(lines, max, config)
+      state.bufnr = vim.api.nvim_create_buf(false, true)
 
-    create_window(width, height)
+      create_window(width, height)
 
-    -- Setup keymaps
-    require("hover.aucommands").init(state.winnr, opts)
-    require("hover.keymaps").init(state.winnr, opts)
+      -- Setup keymaps
+      require("hover.aucommands").init(state.winnr, opts)
+      require("hover.keymaps").init(state.winnr, opts)
 
-    style_content(lines, result.filetype, width)
+      style_content(lines, result.filetype, width)
 
-    -- vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
-    vim.api.nvim_win_set_buf(state.winnr, state.bufnr)
-    vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
-    vim.api.nvim_set_keymap("n", "<M-NL>", "<cmd>lua print('HELLO')<cr>", {})
-  end
-  if config.title then
-    add_title(state.winnr, provider_id)
+      -- vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
+      vim.api.nvim_win_set_buf(state.winnr, state.bufnr)
+      vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
+      vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
+      vim.api.nvim_set_option_value("modifiable", false, { buf = state.bufnr })
+      vim.api.nvim_set_option_value("readonly", false, { buf = state.bufnr })
+      vim.api.nvim_set_option_value("swapfile", false, { buf = state.bufnr })
+      vim.api.nvim_set_keymap("n", "<M-NL>", "<cmd>lua print('HELLO')<cr>", {})
+    end
+    if config.title then
+      add_title(state.winnr, provider_id)
+    end
   end
 end
 

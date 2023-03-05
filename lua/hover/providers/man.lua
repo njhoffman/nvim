@@ -11,17 +11,42 @@ local function enabled(done)
   done(is_ft)
 end
 
-local execute = async.void(function(done)
-  local is_tcl = vim.bo.filetype == "tcl"
+-- local function get_page(path)
+-- end
+-- vim.bo.swapfile = false
+-- vim.bo.buftype = 'nofile'
+-- vim.bo.bufhidden = 'hide'
+-- vim.bo.modified = false
+-- vim.bo.readonly = true
+-- vim.bo.modifiable = false
+-- vim.b.pager = pager
+-- vim.bo.filetype = 'man'
 
-  local output = job({ "man", is_tcl and "n" or "1", vim.fn.expand("<cword>") })
-  if not output then
-    done()
-    return
+local execute = async.void(function(done)
+  -- if not fn.bufname('%'):match('man://') then -- Avoid duplicate buffers, E95.
+  --   vim.cmd.file({ 'man://' .. fn.fnameescape(ref):lower(), mods = { silent = true } })
+  -- end
+
+  local path = "man://fzf(1)"
+  local manwidth
+  if (vim.g.man_hardwrap or 1) ~= 1 then
+    manwidth = 999
+  elseif vim.env.MANWIDTH then
+    manwidth = vim.env.MANWIDTH
+  else
+    manwidth = vim.api.nvim_win_get_width(0)
   end
 
+  local cmd = { "man", "-l", path } or { "man", path }
+  -- Force MANPAGER=cat to ensure Vim is not recursively invoked (by man-db).
+  -- Set MAN_KEEP_FORMATTING so Debian man doesn't discard backspaces.
+  local output = system(cmd, {
+    "MANPAGER=cat",
+    "MANWIDTH=" .. manwidth,
+    "MAN_KEEP_FORMATTING=1",
+  })
   local lines = vim.split(output, "\n")
-  done({ lines = lines, filetype = "man" })
+  return done({ lines = lines, filetype = "man" })
 end)
 
 require("hover").register({

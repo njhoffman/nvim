@@ -203,13 +203,13 @@ return function(injected_functions)
     diffFile({ fg = clrs.nord7 }),
     diffLine({ fg = "#464B5D" }),
     diffIndexLine({ fg = clrs.nord9 }),
-    Todo({ fg = "#2593fB", gui = "bold, italic" }),
+    Todo({ fg = "none", bg = "none", gui = "none" }),
+    TodoMsg({ fg = "#2593fB", gui = "bold, italic" }),
     Warning({ bg = "none", fg = "#aB6F34", gui = "bold, italic" }),
     WarningMsg({ bg = "none", fg = clrs.nord13 }),
     -- language groups
     --
     TreesitterContext({ bg = "#1a0606", gui = "italic" }),
-
     sym("@include")({ Include }),
     sym("@boolean")({ Boolean }),
     sym("@conditional")({ Conditional }),
@@ -236,7 +236,7 @@ return function(injected_functions)
     sym("@tag")({ fg = clr_over.orange }),
     sym("@tag.delimiter")({ fg = clr_over.orange }),
     sym("@text.reference")({ fg = "#1abc9c" }),
-    sym("@text.todo")({ Todo }),
+    sym("@text.todo")({ TodoMsg }),
     sym("@text.todo.checked")({ fg = "#73daca" }),
     sym("@text.todo.unchecked")({ fg = "#7aa2f7" }),
     sym("@text.warning")({ Warning }),

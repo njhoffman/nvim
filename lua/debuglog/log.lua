@@ -14,9 +14,10 @@ log.new = function(standalone)
       return output_log(i, x, function(...)
         local passed = { ... }
         local fmt = table.remove(passed, 1)
+        local inspect = vim.dump or vim.inspect
         local inspected = {}
         for _, v in ipairs(passed) do
-          table.insert(inspected, vim.inspect(v))
+          table.insert(inspected, inspect(v))
         end
         return string.format(fmt, unpack(inspected))
       end)

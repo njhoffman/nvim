@@ -3,8 +3,6 @@ local utils = require("lazy-utils")
 local plugins = {
   { dir = "~/git/which-key.nvim" },
   { "lukas-reineke/indent-blankline.nvim" },
-  { "freddiehaddad/feline.nvim", event = "VeryLazy" },
-  { "romgrk/barbar.nvim", event = "VeryLazy", dependencies = "kyazdani42/nvim-web-devicons" },
   { "romainl/vim-qf", ft = "qf" },
   { "kevinhwang91/nvim-bqf", cmd = { "BqfEnable", "BqfToggle" }, ft = "qf" },
   {
@@ -39,29 +37,6 @@ local plugins = {
   {
     "rcarriga/nvim-notify",
     event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      local notify = require("notify")
-      notify.setup({
-        icons = { DEBUG = "", ERROR = "", INFO = "", HINT = "", TRACE = "✎", WARN = "" },
-        -- render = "simple",
-      })
-
-      vim.notify = function(msg, ...)
-        if msg:match("warning: multiple different client offset_encodings") then
-          return
-        end
-        notify(msg, ...)
-      end
-
-      vim.keymap.set("n", "<esc>", function()
-        ---@diagnostic disable-next-line: missing-parameter
-        notify.dismiss()
-        vim.cmd.noh()
-      end)
-      vim.lsp.handlers["window/showMessage"] = function(_, method, params, _)
-        notify(method.message, params.type)
-      end
-    end,
     opts = {
       timeout = 3000,
       background_colour = "#000000",
@@ -127,7 +102,7 @@ local plugins = {
     opts = {
       input = {
         win_options = {
-          winblend = 10,
+          winblend = 15,
         },
         select = {
           backend = { "nui", "telescope" },
@@ -147,7 +122,7 @@ local plugins = {
   { "MunifTanjim/nui.nvim", event = "VeryLazy" },
   {
     "gelguy/wilder.nvim",
-    disable = true,
+    enabled = false,
     dependencies = { { "romgrk/fzy-lua-native" } },
     -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
     opt = true,

@@ -59,17 +59,6 @@ _G._FindBufferDropdown = function()
   require("telescope.builtin").buffers(opts)
 end
 
--- FindFiles directory
-_G._FindFilesDirectory = function()
-  -- local opts = vim.deepcopy(with_preview)
-  local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
-  -- opts.prompt_title = "Find in directory '" .. directory .. "'"
-  -- opts.hidden = true
-  -- opts.cwd = directory
-  -- require("telescope.builtin").find_files(opts)
-  require("telescope.builtin").find_files({ cwd = directory })
-end
-
 -- -- FindDots
 -- _G._FindDots = function()
 --   local opts = vim.deepcopy(with_preview)

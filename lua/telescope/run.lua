@@ -59,6 +59,7 @@ local modify_options = function(path, cmd, opts)
     else
       opts.results_title = (opts.cwd or vim.fn.getcwd()):gsub(vim.fn.getenv("HOME"), "~")
     end
+    opts.default_text = "."
   elseif path == "builtin" and (cmd == "find_files" or cmd == "fd" or cmd == "live_grep") then
     opts.results_title = (opts.cwd or vim.fn.getcwd()):gsub(vim.fn.getenv("HOME"), "~")
   end
@@ -70,7 +71,12 @@ local function run(modulePath, command, opts)
   local builtin = require("telescope.builtin")
 
   opts = modify_options(modulePath, command, opts or {})
-  if modulePath == "builtin" and type(builtin[command]) == "function" then
+
+  if command == "fd.cwd" then
+    local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
+    opts.cwd = directory
+    builtin["fd"](opts)
+  elseif modulePath == "builtin" and type(builtin[command]) == "function" then
     builtin[command](opts)
   elseif type(extensions[modulePath]) == "table" then
     extensions[modulePath][command](opts)

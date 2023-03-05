@@ -16,12 +16,14 @@ local plugins = {
   { "AckslD/nvim-trevJ.lua", event = "VeryLazy" },
   { "christoomey/vim-sort-motion", event = "VeryLazy" },
   { "numToStr/Comment.nvim", event = "VeryLazy" },
-  -- jiangmiao/auto-pairs
-  -- { "echasnovski/mini.pairs", event = "VeryLazy",
-  --   config = function(_, opts)
-  --     require("mini.pairs").setup(opts)
-  --   end
-  -- },
+  {
+    "echasnovski/mini.pairs",
+    event = "VeryLazy",
+    enabled = false,
+    config = function(_, opts)
+      require("mini.pairs").setup(opts)
+    end,
+  },
 }
 
 utils.apply_configs(plugins)
