@@ -158,10 +158,40 @@ M.actions.switch_picker = function(prompt_bufnr)
   elseif picker.prompt_title == "Find Files" then
     run("frecency", "frecency", opts)
   elseif picker.prompt_title == "Oldfiles" then
-    opts.default_text = opts.default_text or "."
+    opts.prompt_text = opts.prompt_text or "."
     run("builtin", "live_grep", opts)
   else
     run("builtin", "find_files", opts)
+  end
+end
+
+M.actions.directory_up = function(prompt_bufnr)
+  local selection = action_state.get_selected_entry()
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local prompt_prefix = picker.prompt_prefix
+  local dir = picker.cwd or vim.fn.getcwd() or selection.cwd
+
+  if not string.match(dir, "^/") then
+    dir = vim.fn.getcwd() .. "/" .. picker.cwd
+  end
+
+  if dir ~= "/" then
+    dir = H.split_string(dir, "/")
+    table.remove(dir)
+
+    dir = "/" .. table.concat(dir, "/")
+    dir = dir:gsub(vim.fn.getenv("HOME"), "~")
+
+    local opts = {
+      results_title = dir,
+      cwd = dir,
+      follow = true,
+      prompt_prefix = prompt_prefix,
+    }
+
+    actions.close(prompt_bufnr)
+    -- picker:refresh(finders.new_oneshot_job(cmd, opts), {})
+    local _ = pcall(require("telescope.builtin").find_files, opts)
   end
 end
 
@@ -222,59 +252,6 @@ M.previewers.delta = previewers.new_termopen_previewer({
     return { "git", "diff", entry.value .. "^!" }
   end,
 })
-
-M.actions.directory_up = function(prompt_bufnr)
-  local selection = action_state.get_selected_entry()
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local prompt_prefix = picker.prompt_prefix
-  local dir = picker.cwd or vim.fn.getcwd() or selection.cwd
-
-  if not string.match(dir, "^/") then
-    dir = vim.fn.getcwd() .. "/" .. picker.cwd
-  end
-
-  if dir ~= "/" then
-    local dir_parts = H.split_string(dir, "/")
-    table.remove(dir_parts)
-
-    dir = "/" .. table.concat(dir_parts, "/")
-    dir = dir:gsub(vim.fn.getenv("HOME"), "~")
-
-    local opts = {
-      results_title = dir,
-      cwd = dir,
-      follow = true,
-      prompt_prefix = prompt_prefix,
-    }
-
-    actions.close(prompt_bufnr)
-    -- picker:refresh(finders.new_oneshot_job(cmd, opts), {})
-    pcall(require("telescope.builtin").find_files, opts)
-  end
-end
-
-M.launch_dirpicker = function(bufnr)
-  local current_picker = action_state.get_current_picker(bufnr) -- picker state
-  local picker_title = current_picker.prompt_title
-  local opts = {}
-  opts.result_title = "Choose Directory"
-  local run = require("telescope.run")
-
-  opts.mappings = {
-    default = function(directory)
-      opts.cwd = directory
-      opts.results_title = string.gsub(directory, os.getenv("HOME") or "", "~")
-      if picker_title == "Find Files" then
-        run("builtin", "find_files", opts)
-      elseif string.find(picker_title, "%^Grep") then
-        run("builtin", "live_grep", opts)
-      else
-        vim.notify("Error: don't know what picker to open: " .. picker_title)
-      end
-    end,
-  }
-  pcall(dirpicker.run, opts)
-end
 
 return M
 

@@ -135,6 +135,7 @@ local telescopeConfig = {
     scroll_strategy = "cycle",
     color_devicons = true,
     -- winblend = 10,
+    mappings = mappings.main,
     file_sorter = sorters.native_fzf_sorter,
     generic_sorter = sorters.native_fzf_sorter, -- get_fuzzy_file, fuzzy_with_index_bias
     grep_previewer = previewers.vim_buffer_vimgrep.new,
@@ -155,15 +156,14 @@ local telescopeConfig = {
       -- hide_on_startup = hide_preview,
     },
   },
-  mappings = mappings.main(),
   pickers = {
+    pickers = false,
     find_files = {
+      mappings = mappings.file_picker,
       find_command = command_rg,
-      mappings = mappings.file(),
     },
-    oldfiles = {
-      find_command = command_rg,
-      mappings = mappings.file(),
+    frecency = {
+      mappings = mappings.file_picker,
     },
     buffers = {
       show_all_buffers = true,
@@ -171,10 +171,15 @@ local telescopeConfig = {
       ignore_current_buffer = false,
       only_cwd = false,
     },
+    oldfiles = {
+      mappings = mappings.file_picker,
+      find_command = command_rg,
+    },
     git_status = {
       previewer = custom.previewers.delta,
     },
     git_bcommits = {
+      mappings = mappings.file_picker,
       previewer = custom.previewers.git_bcommits,
       layout_strategy = "vertical",
       -- git_command = { "git", "log", "--date=format:%m-%d-%y", "--format=%h%d %ad %s <%an>" }
