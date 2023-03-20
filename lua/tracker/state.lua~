@@ -1,0 +1,8 @@
+local state = {
+  timer = nil,
+  metrics = {},
+  history = {},
+  totals = { get = 0, diff = 0 },
+  timings = {},
+}
+return state

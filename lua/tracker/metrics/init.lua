@@ -43,7 +43,9 @@ local function check_diffs()
       end
       i = i + 1
     end
-    table.insert(state.timings, state.totals)
+    if state.totals.diff > 0 or state.totals.get > 0 then
+      table.insert(state.timings, state.totals)
+    end
     state.totals = { get = 0, diff = 0 }
   end
 end

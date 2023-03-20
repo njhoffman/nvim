@@ -44,6 +44,7 @@ local check_diff = function(provider, prov_state)
   local start = vim.fn.reltime()
   if type(prov_state.time_get) == "nil" then
     prov_state.time_get = 0
+    prov_state.time_diff = 0
     prov_state.prev_items = provider.parse_data(provider)
   else
     local curr_items = provider.parse_data(provider)

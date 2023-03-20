@@ -1,16 +1,13 @@
 local M = {}
 function M.unpack_indices(tbl, indices, curr_ix)
   if curr_ix == nil then
-    return unpack_indices(tbl, indices, 1)
+    return M.unpack_indices(tbl, indices, 1)
   end
-
   if curr_ix > #indices then
     return
   end
-
   --Recursive call
-  return tbl[indices[curr_ix]], unpack_indices(tbl, indices, curr_ix + 1)
+  return tbl[indices[curr_ix]], M.unpack_indices(tbl, indices, curr_ix + 1)
 end
 
--- print("t:", unpack_indices(t, {"b", "a"}))
 return M
