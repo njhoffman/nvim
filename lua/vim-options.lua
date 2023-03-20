@@ -12,9 +12,10 @@ local window = { o, wo }
 -- global scope
 opt("autoread", true)
 opt("backspace", "eol,start,indent") -- Configure backspace so it acts as it should act
-opt("backup", false)
+opt("backup", true)
 opt("backupcopy", "auto")
-opt("backupdir", ".,~/.vim/backup,~/.local/share/nvim/backup")
+-- opt("backupdir", ".,~/.vim/backup,~/.local/share/nvim/backup")
+opt("writebackup", true)
 opt("breakindent", true)
 opt("breakindentopt", "shift:2")
 opt("cedit", "<C-t>") -- ctrl-f interferes with popup completion
@@ -71,7 +72,6 @@ opt("updatetime", 4000)
 opt("whichwrap", "b,s,<,>,[,],h,l")
 opt("wildignore", "*.o,*~,*.pyc") -- wildchar/charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
 opt("winbar", "")
-opt("writebackup", true)
 opt("wildmode", "longest:full,full")
 -- opt("display", "msgsep")
 -- opt("shortmess", o.shortmess .. "cS") F silents filename
