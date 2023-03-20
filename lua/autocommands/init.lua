@@ -107,6 +107,7 @@ vim.import("config", function(config)
     },
     Vimade = {
       { "FileType", "CompetiTest", "VimadeBufDisable" },
+      { "FileType", "SidebarNvim", "VimadeBufDisable" },
       { "FileType", "Trouble", "VimadeBufDisable" },
       { "FileType", "aerial", "VimadeBufDisable" },
       { "FileType", "qf", "VimadeBufDisable" },
@@ -184,7 +185,7 @@ vim.import("config", function(config)
       {
         "TextYankPost",
         "*",
-        "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=400 }",
+        "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=300 }",
       },
     }
   end

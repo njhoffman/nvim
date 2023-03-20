@@ -6,7 +6,7 @@ local plugins = {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      "williamboman/mason.nvim",
+      { "williamboman/mason.nvim", cmd = "Mason" },
       "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
       "weilbith/nvim-code-action-menu",
@@ -25,6 +25,7 @@ local plugins = {
       },
       { "folke/neodev.nvim", dependencies = { "folke/neoconf.nvim" } },
       { "jbyuki/ntangle-lsp.nvim", dependencies = { "jbyuki/ntangle-ts.nvim" } },
+      { "SmiteshP/nvim-navic", lazy = true, dependencies = { "utilyre/barbecue.nvim", "nvim-web-devicons" } },
       {
         "hrsh7th/cmp-nvim-lsp",
         cond = function()
@@ -39,7 +40,6 @@ local plugins = {
       vim.import("lsp.config")
     end,
   },
-  { "williamboman/mason.nvim", cmd = "Mason" },
   { "ray-x/go.nvim", dependencies = { "ray-x/guihua.lua" }, ft = "go", event = { "BufReadPost", "BufNewFile" } },
   {
     "jose-elias-alvarez/null-ls.nvim",
@@ -82,7 +82,6 @@ local plugins = {
       })
     end,
   },
-  { "SmiteshP/nvim-navic", lazy = true, dependencies = { "utilyre/barbecue.nvim", "nvim-web-devicons" } },
   {
     "folke/todo-comments.nvim",
     event = { "BufReadPost", "BufNewFile" },
@@ -90,7 +89,7 @@ local plugins = {
     opts = {
       highlight = {
         -- keyword = "fg", -- "fg", "bg", "wide" or empty. (wide is the same as bg, but will also highlight surrounding characters)
-        multiline = true, -- enable multine todo comments
+        multiline = false, -- enable multine todo comments
         multiline_pattern = "^.", -- lua pattern to match the next multiline from the start of the matched keyword
         multiline_context = 10, -- extra lines that will be re-evaluated when changing a line
         before = "fg", -- "fg" or "bg" or empty

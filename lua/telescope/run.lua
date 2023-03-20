@@ -1,3 +1,5 @@
+local leaderf = require("plugs.config.telescope.leaderf")
+
 local get_theme = function(theme)
   local winwidth = vim.api.nvim_win_get_width(0)
 
@@ -66,6 +68,8 @@ local modify_options = function(path, cmd, opts)
   return opts
 end
 
+-- local opts = {}
+
 local function run(modulePath, command, opts)
   local extensions = require("telescope").extensions
   local builtin = require("telescope.builtin")
@@ -76,6 +80,12 @@ local function run(modulePath, command, opts)
     local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
     opts.cwd = directory
     builtin["fd"](opts)
+  elseif command == "leaderf" then
+    local theme_name = opts and opts.theme or "dropdown"
+    local theme = vim.deepcopy(get_theme(theme_name))
+    opts.prompt_title = "Buffers"
+    opts.entry_maker = leaderf.gen_from_buffer_like_leaderf()
+    require("telescope.builtin").buffers(opts)
   elseif modulePath == "builtin" and type(builtin[command]) == "function" then
     builtin[command](opts)
   elseif type(extensions[modulePath]) == "table" then

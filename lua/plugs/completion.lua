@@ -3,7 +3,7 @@ local utils = require("lazy-utils")
 local plugins = {
   {
     "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
+    event = { "InsertEnter", "CmdlineEnter", "CmdwinEnter" },
     dependencies = {
       "hrsh7th/cmp-nvim-lsp-document-symbol",
       "hrsh7th/cmp-emoji",

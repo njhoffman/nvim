@@ -1,4 +1,4 @@
--- ISwap, ISwapWith
+-- ISwap, ISwapWith, ISwapNodeWith
 
 require("iswap").setup({
   -- The keys that will be used as a selection, in order

@@ -1,4 +1,4 @@
-local keys = require("which-key.keys")
+local wk_utils = require("whichkey-utils")
 local sort_by_mode = true
 
 local sort_table = function(tbl)
@@ -20,7 +20,7 @@ end
 
 local get_ok_keys = function()
   local widths = { key = 0, mode = 0, def = 0 }
-  local todo, ok, conflicts, dupes = keys.dump()
+  local todo, ok, conflicts, dupes = wk_utils.dump()
 
   sort_table(ok)
   local lines = {}
@@ -38,7 +38,7 @@ end
 
 local get_todo_keys = function()
   local widths = { key = 0, mode = 0, def = 0 }
-  local todo, ok, conflicts, dupes = keys.dump()
+  local todo, ok, conflicts, dupes = wk_utils.dump()
   sort_table(todo)
 
   local lines = {}

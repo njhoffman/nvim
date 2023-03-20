@@ -6,8 +6,6 @@ local action_state = require("telescope.actions.state")
 local actions_set = require("telescope.actions.set")
 local H = require("helpers")
 
-local dirpicker = require("plugs.config.telescope.dirpicker")
-
 local M = {}
 M.previewers = {}
 M.actions = {}
@@ -158,7 +156,7 @@ M.actions.switch_picker = function(prompt_bufnr)
   elseif picker.prompt_title == "Find Files" then
     run("frecency", "frecency", opts)
   elseif picker.prompt_title == "Oldfiles" then
-    opts.prompt_text = opts.prompt_text or "."
+    opts.prompt_text = opts.prompt_text or ""
     run("builtin", "live_grep", opts)
   else
     run("builtin", "find_files", opts)

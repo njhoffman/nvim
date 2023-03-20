@@ -96,7 +96,7 @@ function cmp_mappings()
       }),
       { "c", "i", "s" }
     ),
-    ["<CR>"] = cmp.mapping.confirm({ select = false }),
+    -- ["<CR>"] = cmp.mapping.confirm({ select = true }),
     ["<C-e>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         return cmp.abort()

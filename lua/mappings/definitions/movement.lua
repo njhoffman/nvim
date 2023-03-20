@@ -240,7 +240,7 @@ local M = {
     plugin = "vim-qf",
   },
   iswap = {
-    cmd = ":ISwapWith<CR>",
+    cmd = ":ISwapNodeWith<CR>",
     short = "swap two elements",
   },
   iswap_with = {

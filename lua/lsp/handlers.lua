@@ -185,7 +185,7 @@ local definition_provider = function(_, bufnr)
     )
   end
 
-  vim.keymap.set("n", "gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", { noremap = true })
+  vim.keymap.set("n", "gPd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", { noremap = true })
 end
 
 local implementation_provider = function(_, bufnr)
@@ -200,7 +200,7 @@ local implementation_provider = function(_, bufnr)
       keymap_opts
     )
   end
-  vim.keymap.set("n", "gpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", { noremap = true })
+  vim.keymap.set("n", "gPi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", { noremap = true })
 end
 
 local references_provider = function(_, bufnr)
@@ -215,7 +215,7 @@ local references_provider = function(_, bufnr)
       keymap_opts
     )
   end
-  vim.keymap.set("n", "gpr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", { noremap = true })
+  vim.keymap.set("n", "gPr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", { noremap = true })
 end
 
 local type_definition_provider = function(_, bufnr)
@@ -230,7 +230,7 @@ local type_definition_provider = function(_, bufnr)
       keymap_opts
     )
   end
-  vim.keymap.set("n", "gpt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", { noremap = true })
+  vim.keymap.set("n", "gPt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", { noremap = true })
 end
 
 local declaration_provider = function(_, bufnr)
@@ -352,7 +352,7 @@ end
 local handlers = {
   codeActionProvider = code_action_provider,
   codeLensProvider = code_lens_provider,
-  colorProvider = color_provider,
+  -- colorProvider = color_provider,
   declarationProvider = declaration_provider,
 
   -- vim.lsp.handlers["textDocument/inlayHint"] = show_handler

@@ -1,7 +1,52 @@
 local utils = require("lazy-utils")
 
 local plugins = {
-  { dir = "~/git/which-key.nvim" },
+  {
+    "folke/which-key.nvim",
+    -- dir = "~/git/which-key.nvim",
+  },
+  {
+    "sidebar-nvim/sidebar.nvim",
+    event = "VimEnter",
+    config = function()
+      -- SidebarNvimToggle: Open/Close the view
+      -- SidebarNvimClose: Close if open, otherwise no-op
+      -- SidebarNvimOpen: Open if closed, otherwise no-op
+      -- SidebarNvimUpdate: Immediately update the view and the sections
+      -- SidebarNvimResize size: Resize the view width to size, size is a number
+      -- SidebarNvimFocus: Move the cursor to the sidebar window
+      local defaults = {
+        disable_default_keybindings = 0,
+        bindings = nil,
+        open = false,
+        side = "left",
+        initial_width = 35,
+        hide_statusline = false,
+        update_interval = 1000,
+        sections = { "datetime", "git", "diagnostics" },
+        section_separator = { "", "-----", "" },
+        section_title_separator = { "" },
+        containers = {
+          attach_shell = "/bin/sh",
+          show_all = true,
+          interval = 5000,
+        },
+        datetime = { format = "%a %b %d, %H:%M", clocks = { { name = "local" } } },
+        todos = { ignored_paths = { "~" } },
+      }
+
+      local config = {
+        side = "right",
+        sections = { "datetime", "git", "diagnostics", "todos", "containers", "buffers", "files", "symbols" },
+        bindings = {
+          ["q"] = function()
+            require("sidebar-nvim").close()
+          end,
+        },
+      }
+      require("sidebar-nvim").setup(config)
+    end,
+  },
   {
     "lukas-reineke/indent-blankline.nvim",
     opts = {
@@ -30,6 +75,120 @@ local plugins = {
       -- opts.draw = { animation = require("mini.indentscope").gen_animation.none() }
       opts.try_as_border = true
       require("mini.indentscope").setup(opts)
+    end,
+  },
+  {
+    "echasnovski/mini.move",
+    config = function()
+      local default_cfg = {
+        mappings = {
+          left = "<M-h>",
+          right = "<M-l>",
+          down = "<M-j>",
+          up = "<M-k>",
+          line_left = "<M-h>",
+          line_right = "<M-l>",
+          line_down = "<M-j>",
+          line_up = "<M-k>",
+        },
+        options = {
+          reindent_linewise = true,
+        },
+      }
+      vim.cmd([[
+        function! s:Map(...) abort
+          let [mode, head, rhs; rest] = a:000
+          let flags = get(rest, 0, '') . (rhs =~# '^<Plug>' ? '' : '<script>')
+          let tail = ''
+          let keys = get(g:, mode.'remap', {})
+          if type(keys) == type({}) && !empty(keys)
+            while !empty(head) && len(keys)
+              if has_key(keys, head)
+                let head = keys[head]
+                if empty(head)
+                  let head = '<skip>'
+                endif
+                break
+              endif
+              let tail = matchstr(head, '<[^<>]*>$\|.$') . tail
+              let head = substitute(head, '<[^<>]*>$\|.$', '', '')
+            endwhile
+          endif
+          if head !=# '<skip>' && empty(maparg(head.tail, mode))
+            return mode.'map ' . flags . ' ' . head.tail . ' ' . rhs
+          endif
+          return ''
+        endfunction
+        function! s:BlankUp() abort
+          let cmd = 'put!=repeat(nr2char(10), v:count1)|silent '']+'
+          if &modifiable
+          let cmd .= '|silent! call repeat#set("\<Plug>(unimpaired-blank-up)", v:count1)'
+          endif
+          return cmd
+        endfunction
+
+        function! s:BlankDown() abort
+          let cmd = 'put =repeat(nr2char(10), v:count1)|silent ''[-'
+          if &modifiable
+          let cmd .= '|silent! call repeat#set("\<Plug>(unimpaired-blank-down)", v:count1)'
+          endif
+          return cmd
+        endfunction
+
+        nnoremap <silent> <Plug>(unimpaired-blank-up)   :<C-U>exe <SID>BlankUp()<CR>
+        nnoremap <silent> <Plug>(unimpaired-blank-down) :<C-U>exe <SID>BlankDown()<CR>
+
+        nnoremap <silent> <Plug>unimpairedBlankUp   :<C-U>exe <SID>BlankUp()<CR>
+        nnoremap <silent> <Plug>unimpairedBlankDown :<C-U>exe <SID>BlankDown()<CR>
+
+        exe s:Map('n', '[<Space>', '<Plug>(unimpaired-blank-up)')
+        exe s:Map('n', ']<Space>', '<Plug>(unimpaired-blank-down)')
+
+
+        function! s:ExecMove(cmd) abort
+          let old_fdm = &foldmethod
+          if old_fdm !=# 'manual'
+            let &foldmethod = 'manual'
+          endif
+          normal! m`
+          silent! exe a:cmd
+          norm! ``
+          if old_fdm !=# 'manual'
+            let &foldmethod = old_fdm
+          endif
+        endfunction
+
+        function! s:Move(cmd, count, map) abort
+          call s:ExecMove('move'.a:cmd.a:count)
+          silent! call repeat#set("\<Plug>(unimpaired-move-".a:map.")", a:count)
+        endfunction
+
+        function! s:MoveSelectionUp(count) abort
+          call s:ExecMove("'<,'>move'<--".a:count)
+          silent! call repeat#set("\<Plug>(unimpaired-move-selection-up)", a:count)
+        endfunction
+
+        function! s:MoveSelectionDown(count) abort
+          call s:ExecMove("'<,'>move'>+".a:count)
+          silent! call repeat#set("\<Plug>(unimpaired-move-selection-down)", a:count)
+        endfunction
+
+        nnoremap <silent> <Plug>(unimpaired-move-up)            :<C-U>call <SID>Move('--',v:count1,'up')<CR>
+        nnoremap <silent> <Plug>(unimpaired-move-down)          :<C-U>call <SID>Move('+',v:count1,'down')<CR>
+        noremap  <silent> <Plug>(unimpaired-move-selection-up)   :<C-U>call <SID>MoveSelectionUp(v:count1)<CR>
+        noremap  <silent> <Plug>(unimpaired-move-selection-down) :<C-U>call <SID>MoveSelectionDown(v:count1)<CR>
+        nnoremap <silent> <Plug>unimpairedMoveUp            :<C-U>call <SID>Move('--',v:count1,'up')<CR>
+        nnoremap <silent> <Plug>unimpairedMoveDown          :<C-U>call <SID>Move('+',v:count1,'down')<CR>
+        noremap  <silent> <Plug>unimpairedMoveSelectionUp   :<C-U>call <SID>MoveSelectionUp(v:count1)<CR>
+        noremap  <silent> <Plug>unimpairedMoveSelectionDown :<C-U>call <SID>MoveSelectionDown(v:count1)<CR>
+
+        exe s:Map('n', '[e', '<Plug>(unimpaired-move-up)')
+        exe s:Map('n', ']e', '<Plug>(unimpaired-move-down)')
+        exe s:Map('x', '[e', '<Plug>(unimpaired-move-selection-up)')
+        exe s:Map('x', ']e', '<Plug>(unimpaired-move-selection-down)')
+    ]])
+
+      return require("mini.move").setup({})
     end,
   },
   {
@@ -105,63 +264,44 @@ local plugins = {
   { "joeysino/vim-plugin-AnsiEsc", cmd = "AnsiEsc" },
   { "folke/zen-mode.nvim", cmd = "ZenMode" },
   { "tversteeg/registers.nvim", cmd = "Registers" },
-  { "mbbill/undotree", cmd = { "UndotreeToggle", "UndotreeFocus", "UndotreeShow" } },
-  { "folke/twilight.nvim", cmd = { "Twilight", "TwilightEnable" } },
   {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    opts = {
-      lsp = {
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-        },
-      },
-      presets = {
-        bottom_search = false,
-        command_palette = false,
-        long_message_to_split = true,
-        inc_rename = true,
-        lsp_doc_border = true,
-      },
-    },
-  },
-  {
-    "rcarriga/nvim-notify",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      timeout = 3000,
-      background_colour = "#000000",
-      max_height = function()
-        return math.floor(vim.o.lines * 0.75)
-      end,
-      max_width = function()
-        return math.floor(vim.o.columns * 0.75)
-      end,
-    },
-    init = function()
-      -- when noice is not enabled, install notify on VeryLazy
-      local Util = require("lazy-utils")
-      if not Util.is_loaded("noice.nvim") and false then
-        Util.on_very_lazy(function()
-          vim.notify = require("notify")
-        end)
-      end
+    "simnalamburt/vim-mundo",
+    cmd = { "MundoToggle", "MundoShow", "MundoHide" },
+    build = function()
+      vim.cmd([[UpdateRemotePlugins]])
+    end,
+    config = function()
+      vim.g.mundo_prefer_python3 = 1
+      vim.g.mundo_width = 45
+      vim.g.mundo_preview_height = 15
+      vim.g.mundo_right = 1
+      vim.g.mundo_help = 0
+      vim.g.mundo_disable = 0
+      vim.g.mundo_preview_bottom = 1
+      vim.g.mundo_close_on_revert = 0
+      vim.g.mundo_auto_preview = 1
+      vim.g.mundo_playback_delay = 60
+      -- vim.g.mundo_preview_statusline = nil
+      -- vim.g.mundo_tree_statusline = nil
     end,
   },
+  { "folke/twilight.nvim", cmd = { "Twilight", "TwilightEnable" } },
   {
     "kevinhwang91/nvim-ufo",
     dependencies = "kevinhwang91/promise-async",
     cmd = { "UfoEnable", "UfoAttach", "UfoEnableFold" },
   },
-  { "t-troebst/perfanno.nvim", cmd = { "PerfLoadFlat", "PerfLoadCallGraph", "PerfLoadFlameGraph" } },
   { "nacro90/numb.nvim", event = { "BufReadPost", "BufNewFile" } },
+  { "t-troebst/perfanno.nvim", cmd = { "PerfLoadFlat", "PerfLoadCallGraph", "PerfLoadFlameGraph" } },
+
   { "ivyl/vim-bling", event = { "BufReadPost", "BufNewFile" } },
   { "romainl/vim-cool", event = { "BufReadPost", "BufNewFile" } },
-  { "petertriho/nvim-scrollbar", event = { "BufReadPost", "BufNewFile" } },
   { "edluffy/specs.nvim", event = { "BufReadPost", "BufNewFile" } },
+
+  { "petertriho/nvim-scrollbar", event = { "BufReadPost", "BufNewFile" } },
   { "RRethy/vim-illuminate", event = { "BufReadPost", "BufNewFile" }, dependencies = { "neovim/nvim-lspconfig" } },
   { "TaDaa/vimade", event = { "BufReadPost", "BufNewFile" }, cmd = { "VimadeBufDisable" } },
+  { "kevinhwang91/nvim-hlslens", event = { "BufReadPost", "BufNewFile" } },
   { "goolord/alpha-nvim", event = "VimEnter", dependencies = "kyazdani42/nvim-web-devicons" },
 
   {
@@ -205,10 +345,12 @@ local plugins = {
   },
   {
     "phaazon/hop.nvim",
+    config = function()
+      require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
+    end,
     branch = "v2",
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile" },
   },
-  { "kevinhwang91/nvim-hlslens", event = "VeryLazy" },
   { "RRethy/vim-hexokinase", event = "VeryLazy", build = "make hexokinase" },
   { "anuvyklack/hydra.nvim", event = "VeryLazy" },
   { "MunifTanjim/nui.nvim", event = "VeryLazy" },
@@ -244,9 +386,7 @@ return plugins
 --   rocks = { "luarocks-fetch-gitrec", "pcre2" },
 --   requires = { "romgrk/fzy-lua-native", "kyazdani42/nvim-web-devicons" }
 -- }
--- ["nvim-tree.lua"] = { "kyazdani42/nvim-tree.lua" },
 -- ["codewindow.nvim"] = { "gorbit99/codewindow.nvim" },
 -- https://github.com/anuvyklack/windows.nvim
 -- ["yank-history"] = {"yazgoo/yank-history"},
--- ["vim-mundo"] = { "simnalamburt/vim-mundo" },
 -- https://github.com/gbprod/yanky.nvim

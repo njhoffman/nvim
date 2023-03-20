@@ -128,6 +128,15 @@ local init = function()
     ui = {
       border = "rounded",
     },
+    install = {
+      colorscheme = { "nord-nick", "habamax" },
+    },
+    dev = {
+      path = "~/scratch",
+      ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
+      patterns = {},
+      fallback = false,
+    },
     performance = {
       cache = {
         enabled = false,

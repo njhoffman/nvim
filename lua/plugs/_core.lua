@@ -9,12 +9,11 @@ local plugins = {
       vim.cmd("colorscheme nord-nick")
     end,
   },
-  { "freddiehaddad/feline.nvim", priority = 1001 },
-  { "romgrk/barbar.nvim", priority = 1002, event = "VeryLazy", dependencies = "kyazdani42/nvim-web-devicons" },
+  { "freddiehaddad/feline.nvim", priority = 1001, lazy = false, event = "VeryLazy" },
+  { "romgrk/barbar.nvim", event = "VeryLazy", dependencies = "kyazdani42/nvim-web-devicons" },
   {
     "rcarriga/nvim-notify",
-    -- event = { "BufReadPost", "BufNewFile" },
-    priority = 1003, -- make sure to load this before all the other start plugins
+    event = "VeryLazy",
     init = function()
       -- when noice is not enabled, install notify on VeryLazy
       local Util = require("lazy-utils")

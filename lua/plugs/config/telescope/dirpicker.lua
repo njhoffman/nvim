@@ -11,7 +11,7 @@ local pickers = require("telescope.pickers")
 local previewers = require("telescope.previewers")
 local sorters = require("telescope.sorters")
 
-local opts = {
+local default_opts = {
   prompt_title = function()
     return "dirpicker"
   end,
@@ -31,11 +31,13 @@ local opts = {
       ordinal = line,
     }
   end,
-
   mappings = {
     default = function(directory)
       print(directory)
     end,
+    ["<M-.>"] = nil,
+    ["<M-,>"] = nil,
+    ["<M-}>"] = nil,
     ["<C-g>"] = function(directory)
       vim.cmd.cd(directory)
     end,
@@ -45,10 +47,7 @@ local opts = {
   },
 }
 
-local function setup(o)
-  o = o or {}
-  opts = vim.tbl_deep_extend("force", opts, o)
-end
+local opts
 
 local function mapping(prompt_bufnr, command)
   return function()
@@ -72,10 +71,11 @@ end
 local function run(o)
   o = o and vim.tbl_deep_extend("force", opts, o) or opts
   o.prompt_title = resolve_prompt_title(o.prompt_title)
+  vim.dbglog("opts", o, opts)
   pickers
     .new(o, {
       prompt_title = o.prompt_title,
-      finder = finders.new_oneshot_job(o.dir_command, o),
+      finder = finders.dir_command(o.dir_command, o),
       previewer = previewers.new_termopen_previewer({
         get_command = function(entry)
           return vim.tbl_flatten({
@@ -87,7 +87,6 @@ local function run(o)
       sorter = sorters.get_fuzzy_file(),
       attach_mappings = function(prompt_bufnr, map)
         actions.select_default:replace(mapping(prompt_bufnr, o.mappings.default))
-        -- Other mappings
         for key, command in pairs(o.mappings) do
           if key ~= "default" then
             map("i", key, mapping(prompt_bufnr, command))
@@ -100,4 +99,10 @@ local function run(o)
     :find()
 end
 
-return { run = run }
+return {
+  run = run,
+  setup = function(o)
+    o = o or {}
+    opts = vim.tbl_deep_extend("force", opts, o)
+  end,
+}

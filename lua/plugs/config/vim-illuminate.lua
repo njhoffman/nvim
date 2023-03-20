@@ -46,7 +46,7 @@ local default_config = {
   min_count_to_highlight = 1,
 }
 
-local config = { delay = 1000 }
+local config = { delay = 500, under_cursor = false }
 require("illuminate").configure(config)
 
 -- local function map(key, dir, buffer)

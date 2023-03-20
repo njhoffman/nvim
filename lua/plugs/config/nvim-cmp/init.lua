@@ -53,6 +53,7 @@ local has_words_before = function(cmdline)
 end
 
 local luasnip = require("luasnip")
+
 local setupConfig = {
   experimental = {
     ghost_text = {
@@ -116,7 +117,7 @@ local setupConfig = {
       end
     end, { "i" }),
     ["<C-e>"] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ["<CR>"] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item({ behavior = cmp_types.SelectBehavior.Select })
@@ -127,7 +128,7 @@ local setupConfig = {
       else
         fallback()
       end
-    end, { "i" }),
+    end, { "i", "c" }),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         -- cmp.select_prev_item()
@@ -137,7 +138,7 @@ local setupConfig = {
       else
         fallback()
       end
-    end, { "i" }),
+    end, { "i", "c" }),
     ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }), { "i" }),
     ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp_types.SelectBehavior.Select }), { "i" }),
     ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i" }),
@@ -242,43 +243,39 @@ cmp.setup.cmdline("/", {
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+local in_history = false
 cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline({
-
-    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), {
-      "c",
-    }),
-    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), {
-      "c",
-    }),
-    ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), {
-      "c",
-    }),
-    ["<C-n>"] = {
-      c = function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item({
-            -- behavior = cmp.SelectBehavior.Insert,
-          })
-        else
-          cmp.complete()
-        end
-      end,
-    },
-    ["<C-p>"] = {
-      c = function(fallback)
-        if cmp.visible() and cmp.get_selected_entry() then
-          cmp.select_prev_item({
-            -- behavior = cmp.SelectBehavior.Insert,
-          })
-        else
-          -- cmp.mapping.complete({
-          --   config = { sources = { { name = "cmdline_history" } } },
-          -- })
-          feedkeys.call(keymap.t("<Up>"), "c")
-        end
-      end,
-    },
+    ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "c" }),
+    ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "c" }),
+    ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), { "c" }),
+    ["<C-n>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item({
+          -- behavior = cmp.SelectBehavior.Insert,
+        })
+        in_history = false
+      elseif in_history == true then
+        feedkeys.call(keymap.t("<Down>"), "c")
+      else
+        cmp.complete()
+        -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
+      end
+    end, { "c" }),
+    ["<C-p>"] = cmp.mapping(function(fallback)
+      if cmp.visible() and cmp.get_selected_entry() then
+        cmp.select_prev_item({
+          -- behavior = cmp.SelectBehavior.Insert,
+        })
+        in_history = false
+      else
+        -- cmp.mapping.complete({
+        --   config = { sources = { { name = "cmdline_history" } } },
+        -- })
+        feedkeys.call(keymap.t("<Up>"), "c")
+        in_history = true
+      end
+    end, { "c" }),
     ["<C-f>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do

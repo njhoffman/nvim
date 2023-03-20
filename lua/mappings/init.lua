@@ -1,42 +1,6 @@
 -- stylua: ignore start
 
-vim.import("mapper", function(M)
-  -- M.plugin('treesitter', function()
-  --   return {
-  --     refactor = {
-  --       goto_definition = "gtd",
-  --       list_definitions = "gtD",
-  --       list_definitions_toc = "gt0",
-  --       goto_next_usage = "<a-*>",
-  --       goto_previous_usage = "<a-#>"
-  --     }
-  --   }
-  -- end)
-
-  -- virtual keymaps to document other/default keymaps
-  -- function M.treesitter_text_objects()
-  --   require("nvim-treesitter.configs").setup {
-  --     textobjects = {
-  --       select = {
-  --         enable = true,
-  --         lookahead = true,
-  --         -- The keymaps are defined in the configuration table, no way to get our Mapper in there !
-  --         keymaps = {
-  --           ["af"] = "@function.outer",
-  --           ["if"] = "@function.inner",
-  --           ["ac"] = "@class.outer",
-  --           ["ic"] = "@class.inner",
-  --         },
-  --       },
-  --     },
-  --   }
-  --   -- Hopefully we can still document them
-  --   Mapper.map_virtual("o", "af", "", {}, "Navigation", "treesitter_function_outer", "Function outer motion")
-  --   Mapper.map_virtual("o", "if", "", {}, "Navigation", "treesitter_function_inner", "Function inner motion")
-  --   Mapper.map_virtual("o", "ac", "", {}, "Navigation", "treesitter_class_outer", "Class outer motion")
-  --   Mapper.map_virtual("o", "ic", "", {}, "Navigation", "treesitter_class_inner", "Class inner motion")
-  -- end
-
+local M = vim.import("mapper")
   M.map("Navigation", "n", ";",           "quick_cmd", { nowait = true })
   M.map("Navigation", "n", "-+:",         "quick_cmdwin2", { nowait = true })
   M.map("Navigation", "v", ";",           "quick_cmd", { nowait = true })
@@ -152,9 +116,9 @@ vim.import("mapper", function(M)
   M.map("Movement", "n", "<space>", "scroll_forwardsx3", {noremap = false})
   M.map("Movement", "n", "G", "scroll_bottom", { noremap = false })
   M.map("Movement", "n", "gg", "scroll_top", { noremap = false })
-
+  -- TODO: Create visual plugin that tracks visual selection and pasting
   -- get last copied text
-  M.map("Movement", "n", "gv", "select_last_visual")
+  M.map("Movement", "n", "gp", "select_last_visual")
   -- vim.cmd([[nnoremap <expr> g<c-v> '`[' . strpart(getregtype(), 0, 1) . '`]']])
 
   M.map("Movement", "n", "g<M-g>", "ascii")
@@ -167,9 +131,9 @@ vim.import("mapper", function(M)
   -- x  <CR>        * <Cmd>lua require'nvim-treesitter.incremental_selection'.scope_incremental()<CR>
   -- virtual until treesitter integration figured out
   M.map("Movement", "n", "<CR>", "incremental_selection_init")
-  M.map("Movement", "x", "<TAB>", "incremental_selection_scope")
+  M.map("Movement", "x", "<Tab>", "incremental_selection_scope")
   M.map("Movement", "x", "<CR>", "incremental_selection_expand")
-  M.map("Movement", "x", "<S-TAB>", "incremental_selection_shrink")
+  M.map("Movement", "x", "<S-Tab>", "incremental_selection_shrink")
   -- M.map("Movement", "n", "<leader>si", "iswap")
   -- M.map("Movement", "n", "<leader>sw", "iswap_with")
   -- M.map("Movement", "n", "<M-}>", "iswap_with2")
@@ -222,7 +186,7 @@ vim.import("mapper", function(M)
   M.map("Interface", "n", '"', "registers")
   M.map("Interface", "n", "<F2>", "whichkey")
   M.map("Interface", "n", "<F3>", "nvim_tree")
-  M.map("Interface", "n", "<M-p>", "neo_tree")
+  -- M.map("Interface", "n", "<M-p>", "neo_tree")
   M.map("Interface", "n", "<M-}>", "switch_sidebar")
   M.map("Interface", "n", "<F4>", "mundo1")
   -- M.map("Interface", "n", "<F5>", "term1")
@@ -285,48 +249,10 @@ vim.import("mapper", function(M)
   M.map("Format", "v", "g<M-x>", "v_dial_decrement_additional", { noremap = true, nowait = true })
   M.map("Format", "n", "<leader>fd", "dial_decrement2")
 
-  M.map("Unimpaired", "n", "yob", "toggle_background")
-  M.map("Unimpaired", "n", "yoc", "toggle_cursorline")
-  M.map("Unimpaired", "n", "yod", "toggle_diff")
-  M.map("Unimpaired", "n", "yoh", "toggle_search_highlight")
-  M.map("Unimpaired", "n", "yoi", "toggle_search_case_ignore")
-  M.map("Unimpaired", "n", "yol", "toggle_list")
-  M.map("Unimpaired", "n", "yon", "toggle_number")
-  M.map("Unimpaired", "n", "yor", "toggle_relative_number")
-  M.map("Unimpaired", "n", "yos", "toggle_spell_check")
-  M.map("Unimpaired", "n", "you", "toggle_cursorcolumn")
-  M.map("Unimpaired", "n", "yov", "toggle_virtualedit_text")
-  M.map("Unimpaired", "n", "yow", "toggle_word_wrap")
-  M.map("Unimpaired", "n", "yox", "toggle_crosshairs")
   M.map("Unimpaired", "n", "]p", "paste_after_indent1")
   M.map("Unimpaired", "n", "[p", "paste_before_indent1")
   M.map("Unimpaired", "n", "]P", "paste_after_unindent1")
   M.map("Unimpaired", "n", "[P", "paste_before_unindent1")
-  M.map("Unimpaired", "n", ">p", "paste_after_indent2")
-  M.map("Unimpaired", "n", ">P", "paste_before_indent2")
-  M.map("Unimpaired", "n", "<p", "paste_after_unindent2")
-  M.map("Unimpaired", "n", "<P", "paste_before_unindent2")
-  M.map("Unimpaired", "n", "=p", "paste_after_reindent")
-  M.map("Unimpaired", "n", "=P", "paste_before_reindent")
-  M.map("Unimpaired", "n", "]op", "paste_after")
-  M.map("Unimpaired", "n", "[op", "paste_before")
-  M.map("Unimpaired", "n", "yop", "paste_within")
-  M.map("Unimpaired", "n", "[a", "pairs_edit_prev_files")
-  M.map("Unimpaired", "n", "]a", "pairs_edit_next_files")
-  M.map("Unimpaired", "n", "[b", "pairs_prev_buffer")
-  M.map("Unimpaired", "n", "]b", "pairs_next_buffer")
-  M.map("Unimpaired", "n", "[l", "pairs_prev_location")
-  M.map("Unimpaired", "n", "]l", "pairs_next_location")
-  M.map("Unimpaired", "n", "[<C-L>", "pairs_prev_location_file")
-  M.map("Unimpaired", "n", "]<C-L>", "pairs_next_location_file")
-  M.map("Unimpaired", "n", "[q", "pairs_prev_qf")
-  M.map("Unimpaired", "n", "]q", "pairs_next_qf")
-  M.map("Unimpaired", "n", "[<C-Q>", "pairs_prev_qf_file")
-  M.map("Unimpaired", "n", "]<C-Q>", "pairs_next_qf_file")
-  M.map("Unimpaired", "n", "[t", "pairs_prev_tag")
-  M.map("Unimpaired", "n", "]t", "pairs_next_tag")
-  M.map("Unimpaired", "n", "[<C-T>", "pairs_prev_tag_window")
-  M.map("Unimpaired", "n", "]<C-T>", "pairs_next_tag_window")
 
   local map = function(mode, lhs, rhs, opts)
     local options = {}
@@ -365,30 +291,6 @@ vim.import("mapper", function(M)
   -- Jump to next divider
   map("n", "]cm", ":call search('^=\\{4,\\}$', 'W')<CR>", { silent = true, noremap = true })
 
-  -- vim.cmd([[nnoremap / /\v]])
-  -- vim.cmd([[vnoremap / /\v]])
-  -- vim.cmd([[cnoremap %s/ %smagic/]])
-  -- vim.cmd([[cnoremap \>s/ \>smagic/]])
-
-  -- vim.cmd([[nnoremap :g/ :g/\v]])
-  -- vim.cmd([[nnoremap :g// :g//]])
-  -- vim.cmd([[vnoremap :g// :g//]])
-  -- let g:VeryMagic = 0
-  -- nnoremap / /\v
-  -- nnoremap ? ?\v
-  -- vnoremap / /\v
-  -- vnoremap ? ?\v
-  -- " If I type // or ??, I don't EVER want \v, since I'm repeating the previous
-  -- " search.
-  -- noremap // //
-  -- noremap ?? ??
-  -- " no-magic searching
-  -- noremap /v/ /\V
-  -- noremap ?V? ?\V
-  -- TODO: make this an option
-  -- M.map("Search", "n", "/", "search_magic_1")
-  -- M.map("Search", "v", "/", "search_magic_2")
-  -- M.map("Search", "c", "%s/", "sub_magic_1")
   M.map("Search", "n", "<M-S>", "sub_magic_3")
   M.map("Search", "v", "<M-S>", "sub_magic_4")
   -- ,/ : toggle whole word matching
@@ -454,10 +356,9 @@ vim.import("mapper", function(M)
   -- M.map("Pickers", "n", "<M-g>", "print_filename")
   M.map("Pickers", "n", "<C-g>", "find_buffers")
   M.map("Pickers", "n", "<A-g>", "find_projects")
+  M.map("Pickers", "n", "<M-,>", "telescope_repeat")
   M.map("Pickers", "n", "<leader><leader>", "find_pickers")
-  M.map("Pickers", "n", "<leader-,>", "telescope_repeat")
   M.map("Pickers", "n", "<C-Space>", "find_files")
-  -- M.map("Pickers", "v", "<C-f>", "live_grep_visual")
   M.map("Pickers", "n", "<M-e>", "live_grep")
   M.map("Pickers", "n", "<C-e>", "grep_buffers")
 
@@ -660,25 +561,17 @@ vim.import("mapper", function(M)
   map("n", "[b", ':execute ":" . v:count . "bprevious"<CR>', { silent = true, noremap = true })
 
   -- Switch to a terminal buffer using [count]gs.
-  map(
-    "n",
-    "<leader>gt",
-    '<cmd>execute "lua require\\"vimrc.terminal\\".switch_to_terminal(" . v:count . ")"<CR>',
+  map( "n", "<leader>gt", '<cmd>execute "lua require\\"vimrc.terminal\\".switch_to_terminal(" . v:count . ")"<CR>',
     { silent = true, noremap = true }
   )
 
   -- Taking from here: https://github.com/stoeffel/.dotfiles/blob/master/vim/visual-at.vim
   -- Allows running macros only on selected files.
-  map(
-    "x",
-    "@",
-    ':<C-u>echo "@".getcmdline() | execute ":\'<,\'>normal @" . nr2char(getchar())<CR>',
+  map( "x", "@", ':<C-u>echo "@".getcmdline() | execute ":\'<,\'>normal @" . nr2char(getchar())<CR>',
     { silent = true, noremap = true }
   )
 
   map("x", ".", ":normal .<CR>", { silent = true })
-
-  map("n", "Y", "y$", { silent = true })
 
   -- Pressing <leader>ss will toggle and untoggle spell checking
   map("n", "<leader>ss", ":setlocal spell!<CR>", { silent = true })
@@ -700,30 +593,16 @@ vim.import("mapper", function(M)
 
   -- dont overwrite default register when pasting
   -- vim.cmd([[ vnoremap p "_dP]])
-  vim.cmd([[vnoremap p :<C-U>let @p = @+<cr>gvp:let @+ = @p<cr>]])
+  -- vim.cmd([[vnoremap p :<C-U>let @p = @+<cr>gvp:let @+ = @p<cr>]])
 
   M.registerWhichkey()
-end)
-
 --
 --- Spectre
 -- vim.api.nvim_set_keymap('n', '<leader>S', ":lua require('spectre').open()<CR>", {noremap = true, silent = false})
 -- vim.api.nvim_set_keymap('v', '<leader>S', ":lua require('spectre').open_visual()<CR>", {noremap = true, silent = false})
 -- vim.api.nvim_set_keymap('n', '<leader>Sw', "viw:lua require('spectre').open_visual()<CR>", {noremap = true, silent = false})
 -- vim.api.nvim_set_keymap('n', '<leader>sp', "viw:lua require('spectre').open_file_search()<CR>", {noremap = true, silent = false})- vim.api.nvim_set_keymap('n', '<leader>to', ':TodoTelescope<CR>', {noremap = true, silent = false})
--- -- Fterm
--- vim.api.nvim_set_keymap('n', '<F5>', '<CMD>lua require("FTerm").toggle()<CR>', { noremap = true, silent = true })
--- vim.api.nvim_set_keymap('t', '<F5>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>', { noremap = true, silent = true })
 
--- vim.api.nvim_set_keymap('n', '<leader>gc', ':Octo issue create<CR>', {noremap = true, silent = false})
--- vim.api.nvim_set_keymap('n', '<leader>i', ':Octo issue list<CR>', {noremap = true, silent = false})
-
--- vim.api.nvim_set_keymap("n", "<C-p>", ":lua FindFile()<CR>", {silent = true, noremap = true})
--- vim.api.nvim_set_keymap("n", "<leader>ff", ":lua FindBuffer()<CR>", {silent = true, noremap = true})
--- vim.api.nvim_set_keymap("n", "<leader>fg", ":lua FindString()<CR>", {silent = true, noremap = true})
--- vim.api.nvim_set_keymap("n", "<leader>fl", ":lua FindLive()<CR>", {silent = true, noremap = true})
--- vim.api.nvim_set_keymap("n", "<leader>fd", ":lua FindDot()<CR>", {silent = true, noremap = true})
--- vim.api.nvim_set_keymap("n", "<leader>fb", ":lua FindGit()<CR>", {silent = true, noremap = true})
 -- map("n", "<leader>fn", ":lua require('utils.core').search_nvim()<CR>")
 -- map("n", "<leader>b", ":Telescope buffers show_all=true sort_lastued=true<CR>")
 -- ["p"] = {
@@ -785,38 +664,3 @@ end)
 --     }
 
 -- }, { prefix = "<leader>" })
-
--- nmap cs  <Plug>Csurround
--- nmap cS  <Plug>CSurround
--- nmap ys  <Plug>Ysurround
--- nmap yS  <Plug>YSurround
--- nmap yss <Plug>Yssurround
--- nmap ySs <Plug>YSsurround
--- nmap ySS <Plug>YSsurround
-
--- xmap S   <Plug>VSurround
--- xmap gS  <Plug>VgSurround
-
--- nmap sa  <Plug>Ysurround
--- nmap sA  <Plug>YSurround
--- nmap sas <Plug>Yssurround
--- nmap saS <Plug>YSsurround
--- nmap sAA <Plug>YSsurround
-
--- TODO: maybe gn/gp will be better
--- nmap <leader>qq	<Plug>(qf_qf_toggle)
--- nmap gn		<Plug>(qf_qf_next)
--- nmap gp		<Plug>(qf_qf_previous)
--- populate quickfix list with diagnostics local method =
-
--- "textDocument/publishDiagnostics" local default_callback = vim.lsp.callbacks[method]
---  vim.lsp.callbacks[method] = function(err, method, result, client_id) default_callback(err, method, result, client_id)
---  if result and result.diagnostics then local item_list = {} for _, v in ipairs(result.diagnostics)
---  do local fname = result.uri table.insert(item_list, { filename = fname, lnum = v.range.start.line + 1, col = v.range.start.character + 1; text = v.message; }) end
---  local old_items = vim.fn.getqflist()
---  for _, old_item in ipairs(old_items)
---  do local bufnr = vim.uri_to_bufnr(result.uri)
---  if vim.uri_from_bufnr(old_item.bufnr) ~= result.uri then
---    table.insert(item_list, old_item)
---    end end vim.fn.setqflist({}, ' ', { title = 'LSP'; items = item_list; })
---  end end

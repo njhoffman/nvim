@@ -44,13 +44,6 @@ local function get_projects(group)
         previewer = false,
         sorter = telescope_config.generic_sorter(opts),
         attach_mappings = function(prompt_bufnr, map)
-          map("n", "f", actions.find_project_files)
-          map("n", "b", actions.browse_project_files)
-          map("n", "d", actions.delete_project)
-          map("n", "s", actions.search_in_project_files)
-          map("n", "r", actions.recent_project_files)
-          map("n", "w", actions.change_working_directory)
-
           map("i", "<M-f>", actions.find_project_files)
           map("i", "<M-b>", actions.browse_project_files)
           map("i", "<M-d>", actions.delete_project)

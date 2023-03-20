@@ -52,7 +52,7 @@ local M = {
     long = "find pickers",
   },
   find_buffers = {
-    cmd = "<cmd>lua _G._FindBufferLeaderFNoPreview()<cr>",
+    cmd = "<cmd>lua require('telescope.run')('leaderf', 'leaderf', { theme = 'dropdown' })<cr>",
     short = "buffers leader f no preview ",
     long = "find buffers telescope leader f no preview theme",
   },

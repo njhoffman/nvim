@@ -4,6 +4,7 @@ local plugins = {
   {
     "nvim-neo-tree/neo-tree.nvim",
     cmd = { "NeoTreeFocusToggle", "NeoTreeShowToggle" },
+    event = "VimEnter",
     branch = "v2.x",
     dependencies = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
   },

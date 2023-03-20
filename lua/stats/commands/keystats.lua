@@ -7,7 +7,7 @@ local function length(T)
 end
 
 local M = {}
-local wk_keys = require('which-key.keys')
+local wk_keys = require("which-key.keys")
 
 M.get_whichkey_lists = function()
   local wk_lists = { conflicts = {}, duplicates = {}, ok = {}, todo = {} }
@@ -15,19 +15,17 @@ M.get_whichkey_lists = function()
   local conflicts = {}
   for _, tree in pairs(wk_keys.mappings) do
     wk_keys.update_keymaps(tree.mode, tree.buf)
-    tree.tree:walk(
-      function(node)
-        local count = 0
-        for _ in pairs(node.children) do
-          count = count + 1
-        end
-        local auto_prefix = not node.mapping or (node.mapping.group == true and not node.mapping.cmd)
-        if node.prefix ~= "" and count > 0 and not auto_prefix then
-          local cmd = node.mapping.cmd or " "
-          table.insert(conflicts, { mode = tree.mode, lhs = node.mapping.prefix, rhs = cmd })
-        end
+    tree.tree:walk(function(node)
+      local count = 0
+      for _ in pairs(node.children) do
+        count = count + 1
       end
-    )
+      local auto_prefix = not node.mapping or (node.mapping.group == true and not node.mapping.cmd)
+      if node.prefix ~= "" and count > 0 and not auto_prefix then
+        local cmd = node.mapping.cmd or " "
+        table.insert(conflicts, { mode = tree.mode, lhs = node.mapping.prefix, rhs = cmd })
+      end
+    end)
   end
 
   wk_lists.conflicts = conflicts
@@ -39,25 +37,23 @@ M.get_whichkey_lists = function()
     if bufnr == nil then
       bufnr = "root"
     end
-    tree.tree:walk(
-      function(node)
-        if node.mapping then
-          if node.mapping.label then
-            if type(ok[node.mapping.prefix]) == "nil" then
-              ok[node.mapping.prefix] = {}
-            end
-            table.insert(ok[node.mapping.prefix], bufnr)
-            todo[node.mapping.prefix] = nil
-          elseif not ok[node.mapping.prefix] then
-            if type(todo[node.mapping.prefix]) ~= "nil" then
-              table.insert(todo[node.mapping.prefix].buffers, bufnr)
-            else
-              todo[node.mapping.prefix] = { buffers = { bufnr }, cmd = node.mapping.cmd or "" }
-            end
+    tree.tree:walk(function(node)
+      if node.mapping then
+        if node.mapping.label then
+          if type(ok[node.mapping.prefix]) == "nil" then
+            ok[node.mapping.prefix] = {}
+          end
+          table.insert(ok[node.mapping.prefix], bufnr)
+          todo[node.mapping.prefix] = nil
+        elseif not ok[node.mapping.prefix] then
+          if type(todo[node.mapping.prefix]) ~= "nil" then
+            table.insert(todo[node.mapping.prefix].buffers, bufnr)
+          else
+            todo[node.mapping.prefix] = { buffers = { bufnr }, cmd = node.mapping.cmd or "" }
           end
         end
       end
-    )
+    end)
   end
 
   wk_lists.todo = todo
@@ -65,16 +61,13 @@ M.get_whichkey_lists = function()
 
   local duplicates = {}
   for _, dup in pairs(wk_keys.duplicates) do
-    table.insert(
-      duplicates,
-      {
-        old_rhs = dup.other.rhs,
-        rhs = dup.cmd or "",
-        mode = dup.mode,
-        lhs = dup.prefix,
-        other_buffer = (dup.buf ~= dup.other.buffer)
-      }
-    )
+    table.insert(duplicates, {
+      old_rhs = dup.other.rhs,
+      rhs = dup.cmd or "",
+      mode = dup.mode,
+      lhs = dup.prefix,
+      other_buffer = (dup.buf ~= dup.other.buffer),
+    })
   end
 
   wk_lists.duplicates = duplicates
@@ -93,7 +86,7 @@ M.get_counts = function()
       insert = length(vim.api.nvim_get_keymap("i")),
       command = length(vim.api.nvim_get_keymap("c")),
       operator = length(vim.api.nvim_get_keymap("o")),
-      visual = length(vim.api.nvim_get_keymap("v"))
+      visual = length(vim.api.nvim_get_keymap("v")),
     },
     mapper = mapper.stats,
     whichkey = {
@@ -102,7 +95,7 @@ M.get_counts = function()
       insert = 0,
       command = 0,
       operator = 0,
-      visual = 0
+      visual = 0,
     },
     whichkey_todo = {
       total = #wk_lists.todo,
@@ -110,7 +103,7 @@ M.get_counts = function()
       insert = 0,
       command = 0,
       operator = 0,
-      visual = 0
+      visual = 0,
     },
     duplicates = {
       total = #wk_lists.duplicates,
@@ -118,7 +111,7 @@ M.get_counts = function()
       insert = 0,
       command = 0,
       operator = 0,
-      visual = 0
+      visual = 0,
     },
     conflicts = {
       total = #wk_lists.conflicts,
@@ -126,23 +119,23 @@ M.get_counts = function()
       insert = 0,
       command = 0,
       operator = 0,
-      visual = 0
-    }
+      visual = 0,
+    },
     -- mapper_todo = {},
     -- whichkey_group = {},
     -- whichkey_nogroup = {}
   }
-  stats.mapper.total = stats.mapper.normal +
-    stats.mapper.visual +
-    stats.mapper.insert +
-    stats.mapper.operator +
-    stats.mapper.command
+  stats.mapper.total = stats.mapper.normal
+    + stats.mapper.visual
+    + stats.mapper.insert
+    + stats.mapper.operator
+    + stats.mapper.command
 
-  stats.neovim.total = stats.neovim.normal +
-    stats.neovim.visual +
-    stats.neovim.insert +
-    stats.neovim.operator +
-    stats.neovim.command
+  stats.neovim.total = stats.neovim.normal
+    + stats.neovim.visual
+    + stats.neovim.insert
+    + stats.neovim.operator
+    + stats.neovim.command
 
   return stats
 end

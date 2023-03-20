@@ -59,7 +59,7 @@ local sources = {
   { name = "nvim_lsp", priority = 100, group_index = 1 },
   { name = "fuzzy_path", priority = 10, group_index = 1, max_item_count = 5 },
   -- { name = "path", priority = 10, group_index = 1, max_item_count = 5 },
-  { name = "fuzzy_buffer", priority = 1, group_index = 2, max_item_count = 3 },
+  -- { name = "fuzzy_buffer", priority = 1, group_index = 2, max_item_count = 3 },
   { name = "calc", priority = 3 },
   { name = "spell", priority = 3 },
   { name = "git", priority = 3 },

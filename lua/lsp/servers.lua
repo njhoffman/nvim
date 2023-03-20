@@ -115,7 +115,10 @@ require("mason-lspconfig").setup_handlers({
     -- local config = get_config(server_name)
     lspconfig[server_name].setup(lspconfig[server_name])
   end,
-
+  -- { "clangd" }
+  -- capabilities :
+  -- default capabilities, with offsetEncoding utf-8
+  -- cmd : clangd --offset-encoding=utf-16
   ["tsserver"] = require("lsp.servers.tsserver"),
   ["eslint"] = require("lsp.servers.eslint"),
   ["tailwindcss"] = require("lsp.servers.tailwindcss"),

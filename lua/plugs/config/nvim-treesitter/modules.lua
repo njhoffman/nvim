@@ -5,16 +5,15 @@ local custom_modules = {
     enable = true,
     disable = { "markdown" },
     keymaps = {
-      -- {
-      --   init_selection = "<CR>",
-      --   scope_incremental = "<CR>",
-      --   node_incremental = "<TAB>",
-      --   node_decremental = "<S-TAB>",
-      -- },
       {
         init_selection = "<CR>",
         node_incremental = "<CR>",
-        scope_incremental = "<S-CR>",
+        scope_incremental = "<Tab>",
+        node_decremental = "<S-Tab>",
+      },
+      {
+        init_selection = "<CR>",
+        node_incremental = "<CR>",
         node_decremental = "<BS>",
       },
       {

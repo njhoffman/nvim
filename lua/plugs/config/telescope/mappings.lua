@@ -55,6 +55,7 @@ local mainMaps = {
 local launch_dirpicker = function(bufnr)
   local current_picker = action_state.get_current_picker(bufnr) -- picker state
   local picker_title = current_picker.prompt_title
+  vim.dbglog("dirpicker", picker_title)
 
   local opts = {}
   opts.result_title = "Choose Directory"

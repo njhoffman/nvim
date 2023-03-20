@@ -103,10 +103,14 @@ end
 local function get_project_items(config)
   -- Reverse results
   local parsed_results = {}
+  local paths = {}
   if config.group_filter == "" or config.group_filter == "recent" then
     local results, metadata = history.get_recent_projects()
     for i = 1, math.floor(#results / 2) do
-      results[i], results[#results - i + 1] = results[#results - i + 1], results[i]
+      if type(paths[results[i]]) == "nil" then
+        results[i], results[#results - i + 1] = results[#results - i + 1], results[i]
+        paths[results[i]] = true
+      end
     end
     parsed_results = parse_recent_items(results, metadata)
   end
@@ -117,7 +121,9 @@ local function get_project_items(config)
       local workspace_results = parse_git_repo_paths(workspace.name, repo_paths)
       local group_highlight = "TelescopeProjectGroup" .. (i % 3)
       for _, workspace_result in ipairs(workspace_results) do
+        vim.dbglog(workspace_result)
         workspace_result.group_highlight = group_highlight
+        -- paths[workplace_result.path] = true
         table.insert(parsed_results, workspace_result)
       end
     end

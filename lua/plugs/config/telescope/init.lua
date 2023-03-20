@@ -81,6 +81,7 @@ if currwidth < 120 then
   hide_preview = true
 end
 
+local mini_fuzzy = require("mini.fuzzy")
 local telescopeConfig = {
   defaults = {
     scrolling_limit = 20000,
@@ -137,7 +138,7 @@ local telescopeConfig = {
     -- winblend = 10,
     mappings = mappings.main,
     file_sorter = sorters.native_fzf_sorter,
-    generic_sorter = sorters.native_fzf_sorter, -- get_fuzzy_file, fuzzy_with_index_bias
+    generic_sorter = mini_fuzzy.get_telescope_sorter,
     grep_previewer = previewers.vim_buffer_vimgrep.new,
     qflist_previewer = previewers.vim_buffer_qflist.new,
     include_extensions = true,
