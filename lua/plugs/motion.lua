@@ -4,6 +4,7 @@ local plugins = {
   { "andrewferrier/debugprint.nvim", event = "VeryLazy" },
 
   { "tpope/vim-repeat", event = "VeryLazy" },
+  { "chaoren/vim-wordmotion", event = { "BufReadPost", "BufNewFile" } },
   {
     "abecodes/tabout.nvim",
     event = { "BufReadPost", "BufNewFile" },
@@ -182,8 +183,8 @@ local plugins = {
     event = "VeryLazy",
     dependencies = { "cbochs/grapple.nvim" },
     config = function()
-      vim.keymap.set("n", "<C-o>", "<cmd>Portal jumplist backward<cr>")
-      vim.keymap.set("n", "<C-i>", "<cmd>Portal jumplist forward<cr>")
+      vim.keymap.set("n", "<leader>O", "<cmd>Portal jumplist backward<cr>")
+      vim.keymap.set("n", "<leader>I", "<cmd>Portal jumplist forward<cr>")
     end,
   },
   { "echasnovski/mini.comment", version = false },

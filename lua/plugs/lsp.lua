@@ -53,6 +53,14 @@ local plugins = {
     cmd = { "AerialToggle", "AerialNext", "AerialGo", "AerialOpen", "AerialPrev", "AerialOpenAll" },
     config = function()
       require("aerial").setup({
+        layout = {
+          -- min_width and max_width can be a list of mixed types.
+          -- max_width = {40, 0.2} means "the lesser of 40 columns or 20% of total"
+          max_width = { 50, 0.3 },
+          width = nil,
+          min_width = 30,
+        },
+
         backends = {
           ["_"] = { "lsp", "treesitter", "markdown", "man" },
           markdown = { "treesitter" },

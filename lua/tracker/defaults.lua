@@ -5,7 +5,8 @@ local defaults = {}
 
 defaults.provider = {
   label = "items",
-  id_field = "key",
+  id_fields = { "key" },
+  desc_fields = {},
   output_diff = out.output_diff,
   parse_data = diff.parse_data,
 }
@@ -35,10 +36,12 @@ defaults.config = {
   },
   providers = {},
   metrics = {
-    interval = 5,
+    interval = 3,
     enabled = true,
     list = {
       augroups = { provider = "tracker.metrics.augroups" },
+      aucommands = { provider = "tracker.metrics.aucommands" },
+      keymaps_g = { provider = "tracker.metrics.keymaps_g" },
       -- aucommands,  changes,  commands, functions, highlights, history_commands,
       -- messages, scriptnames, options, syntax_items, variables_b, variables_g,
       -- variables_w, variables_p, options_g, options_w, options_b, keymaps_g, keymaps_b,

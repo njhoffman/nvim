@@ -37,7 +37,8 @@ local plugins = {
 
       local config = {
         side = "right",
-        sections = { "datetime", "git", "diagnostics", "todos", "containers", "buffers", "files", "symbols" },
+        -- sections = { "datetime", "git", "diagnostics", "todos", "containers", "buffers", "files", "symbols" },
+        sections = { "diagnostics", "todos", "buffers", "containers" },
         bindings = {
           ["q"] = function()
             require("sidebar-nvim").close()
@@ -194,35 +195,13 @@ local plugins = {
   {
     "echasnovski/mini.animate",
     event = "VeryLazy",
-    opts = function()
-      -- don't use animate when scrolling with the mouse
-      local mouse_scrolled = false
-      for _, scroll in ipairs({ "Up", "Down" }) do
-        local key = "<ScrollWheel" .. scroll .. ">"
-        vim.keymap.set({ "", "i" }, key, function()
-          mouse_scrolled = true
-          return key
-        end, { expr = true })
-      end
-
+    config = function()
       local animate = require("mini.animate")
-      local orig_scroll = {
-        timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
-        subscroll = animate.gen_subscroll.equal({
-          predicate = function(total_scroll)
-            if mouse_scrolled then
-              mouse_scrolled = false
-              return false
-            end
-            return total_scroll > 1
-          end,
-        }),
-      }
 
       local is_many_wins = function(sizes_from, sizes_to)
         return vim.tbl_count(sizes_from) >= 3
       end
-      return {
+      local opts = {
         scroll = { enable = false },
         cursor = { enable = false },
         resize = {
@@ -249,9 +228,26 @@ local plugins = {
           winblend = animate.gen_winblend.linear({ from = 100, to = 80 }),
         },
       }
-    end,
-    config = function(_, opts)
-      require("mini.animate").setup(opts)
+      local cfg = {
+        scroll = { enable = false },
+        cursor = { enable = false },
+        open = {
+          enable = true,
+          timing = animate.gen_timing.linear({ duration = 500, unit = "total" }),
+          -- winconfig = animate.gen_winconfig.wipe({ direction = "from_edge" }),
+          winblend = animate.gen_winblend.linear({ from = 70, to = 100 }),
+        },
+        close = {
+          enable = true,
+          -- Animate for 400 milliseconds with linear easing
+          timing = animate.gen_timing.linear({ duration = 300, unit = "total" }),
+          -- Animate with wiping to nearest edge instead of default static one
+          -- winconfig = animate.gen_winconfig.wipe({ direction = "to_edge" }),
+          -- Make bigger windows more transparent
+          winblend = animate.gen_winblend.linear({ from = 100, to = 70 }),
+        },
+      }
+      require("mini.animate").setup(cfg)
     end,
   },
   { "romainl/vim-qf", ft = "qf" },
@@ -272,8 +268,8 @@ local plugins = {
     end,
     config = function()
       vim.g.mundo_prefer_python3 = 1
-      vim.g.mundo_width = 45
-      vim.g.mundo_preview_height = 15
+      vim.g.mundo_width = 35
+      vim.g.mundo_preview_height = 5
       vim.g.mundo_right = 1
       vim.g.mundo_help = 0
       vim.g.mundo_disable = 0

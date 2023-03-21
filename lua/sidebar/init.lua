@@ -10,7 +10,6 @@ function exports.setup(_opts)
   utils.validate(sections)
 
   local opts = config.setup(_opts)
-  vim.dbglog("opts", opts)
 
   -- validate and initialize available sections
   state.update()

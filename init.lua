@@ -16,5 +16,8 @@ for _, mod_name in ipairs({
   vim.import(mod_name)
 end
 
+require("sidebar").setup()
+require("tracker").setup()
+
 -- require("notifications.recipes.progress").config()
 -- require "plenary.profile".stop()

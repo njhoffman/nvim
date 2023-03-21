@@ -4,50 +4,67 @@ local is_installed = function(name)
 end
 
 local sections = {
-  neotree = {
+  {
+    name = "neotree",
     text = "Neotree Explorer",
     enabled = function()
       return is_installed("neo-tree.nvim")
     end,
     open = function()
       vim.cmd("NeoTreeShow")
-      -- require("neo-tree").show()
     end,
     close = function()
       vim.cmd("NeoTreeClose")
-      -- require("neo-tree").close_all()
     end,
   },
-  aerial = {
+  {
+    name = "aerial ",
     text = "Aerial Symbols",
     enabled = function()
       return is_installed("aerial.nvim")
     end,
     open = function()
       vim.cmd("AerialOpen")
-      -- require("aerial").open()
+      vim.cmd("wincmd p")
     end,
     close = function()
       vim.cmd("AerialClose")
-      -- require("aerial").close()
     end,
   },
-  mundo = {
+  {
+    name = "mundo",
     text = "Mundo Tree",
+    cycle = false,
     enabled = function()
-      return is_installed("vim-mundo")
+      return false and is_installed("vim-mundo")
     end,
     open = function()
       vim.cmd("MundoShow")
+      vim.cmd("wincmd p")
     end,
     close = function()
       vim.cmd("MundoHide")
     end,
   },
-  tsplayground = {
-    text = "Treesitter Playground",
+  {
+    name = "nvimsidebar",
+    text = "Nvim Sidebar",
     enabled = function()
-      return is_installed("nvim-treesitter")
+      return is_installed("sidebar.nvim")
+    end,
+    open = function()
+      vim.cmd("SidebarNvimOpen")
+    end,
+    close = function()
+      vim.cmd("SidebarNvimClose")
+    end,
+  },
+  {
+    name = "tsplayground",
+    text = "Treesitter Playground",
+    cycle = false,
+    enabled = function()
+      return false and is_installed("nvim-treesitter")
     end,
     open = function()
       vim.cmd("TSPlaygroundToggle")
@@ -56,7 +73,8 @@ local sections = {
       vim.cmd("TSPlaygroundToggle")
     end,
   },
-  dapui = {
+  {
+    name = "dapui",
     text = "DAP Debug",
     enabled = false,
     open = function()

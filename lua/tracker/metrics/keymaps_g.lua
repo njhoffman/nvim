@@ -1,11 +1,11 @@
-local utils = require("metrics.utils")
-
-local provider = {
-  name = "keymaps",
-  diff = utils.diff,
-  get = function(data)
-    local keymaps = data
-      or {
+local provider = function(_)
+  return {
+    interval = 5,
+    name = "keymaps_g",
+    id_fields = { "mode", "lhs", "rhs" },
+    -- desc_fields = { "group_name", "pattern", "event" },
+    get_data = function()
+      local keymaps = {
         n = vim.api.nvim_get_keymap("n"),
         i = vim.api.nvim_get_keymap("i"),
         o = vim.api.nvim_get_keymap("o"),
@@ -13,24 +13,17 @@ local provider = {
         c = vim.api.nvim_get_keymap("c"),
         t = vim.api.nvim_get_keymap("t"),
       }
-    local key_table = {}
-    for mode, keys in pairs(keymaps) do
-      key_table[mode] = {}
-      for _, key in ipairs(keys) do
-        local hash = table.concat({ mode, key.desc or "", key.lhs, key.rhs or "" })
-        key_table[mode][tostring(utils.get_crc(hash))] = key
+      local key_table = {}
+      for mode, keys in pairs(keymaps) do
+        for _, key in ipairs(keys) do
+          key.mode = mode
+          table.insert(key_table, key)
+        end
       end
-    end
-    return key_table
-  end,
-  output = function(path, delta)
-    for _, added in ipairs(delta.added) do
-      vim.dbglog(" + keymaps_b " .. path .. " " .. added.event .. " " .. added.pattern)
-    end
-    for _, removed in ipairs(delta.removed) do
-      vim.dbglog(" - keymaps_b " .. path .. " " .. removed.event .. " " .. removed.pattern)
-    end
-  end,
-}
+      return key_table
+    end,
+    -- parse_data = function() end
+  }
+end
 
 return provider

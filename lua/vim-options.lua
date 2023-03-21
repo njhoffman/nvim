@@ -12,7 +12,7 @@ local window = { o, wo }
 -- global scope
 opt("autoread", true)
 opt("backspace", "eol,start,indent") -- Configure backspace so it acts as it should act
-opt("backup", true)
+opt("backup", false)
 opt("backupcopy", "auto")
 -- opt("backupdir", ".,~/.vim/backup,~/.local/share/nvim/backup")
 opt("writebackup", true)

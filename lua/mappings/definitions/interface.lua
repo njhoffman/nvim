@@ -45,11 +45,6 @@ local M = {
     short = "toggle neo-tree",
     long = "toggle neo-tree",
   },
-  switch_sidebar = {
-    cmd = "<cmd>SidebarSwitch<cr>",
-    short = "toggle neo-tree",
-    long = "toggle neo-tree",
-  },
   mundo1 = {
     cmd = "<cmd>UndotreeToggle<cr>",
     short = "toggle mundo",

@@ -70,27 +70,7 @@ require("dir-telescope").setup({
 vim.keymap.set("n", "<leader>gfd", "<cmd>GrepInDirectory<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>gpd", "<cmd>FileInDirectory<CR>", { noremap = true, silent = true })
 
-local M = {}
-M.extensions = {}
-M.load_extensions = function(telescope)
-  local installed = {}
-  for ext_name, plug_name in pairs(tele_plugs) do
-    -- TODO: if pcall(require, plug_name)
-    local ok, err = pcall(telescope.load_extension, ext_name)
-    if ok then
-      table.insert(installed, 0, ext_name)
-    else
-      local err_str = vim.split(err, "\n")
-      local err_msg = "Error loading telescope plugin: " .. ext_name .. " - " .. err_str[1]
-      vim.notify(err_msg, "warn")
-    end
-  end
-
-  local end_msg = "Loaded " .. H.table_len(installed) .. " out of " .. H.table_len(tele_plugs) .. " telescope plugins"
-  vim.notify(end_msg, "trace")
-  return telescope
-end
-
+local extensions = {}
 -- add menu to menufecture
 -- vim.keymap.set(
 --   'n',
@@ -107,13 +87,13 @@ end
 --   )
 -- )
 
-M.extensions.menufacture = {
+extensions.menufacture = {
   mappings = {
     main_menu = { [{ "i", "n" }] = "<M-Bslash>" },
   },
 }
 
-M.extensions.undo = {
+extensions.undo = {
   use_delta = true,
   side_by_side = true,
   layout_strategy = "vertical",
@@ -136,7 +116,7 @@ M.extensions.undo = {
   },
 }
 
-M.extensions.lazy = {
+extensions.lazy = {
   -- Optional theme (the extension doesn't set a default theme)
   theme = "ivy",
   -- Whether or not to show the icon in the first column
@@ -153,12 +133,12 @@ M.extensions.lazy = {
   },
   -- Other telescope configuration options
 }
-M.extensions.file_browser = {
+extensions.file_browser = {
   theme = "ivy",
   mappings = tele_mappings.file_picker,
 }
 
-M.extensions.openbrowser = {
+extensions.openbrowser = {
   -- Add bookmark urls
   bookmarks = {
     ["luv docs"] = "https://github.com/luvit/luv/blob/master/docs.md",
@@ -166,7 +146,7 @@ M.extensions.openbrowser = {
   bookmark_filepath = "~/.vim/telescope_openbrowser_bookmarks",
 }
 
-M.extensions.howdoi = vim.tbl_deep_extend("force", {
+extensions.howdoi = vim.tbl_deep_extend("force", {
   -- How many answers to return in the response.
   num_answers = 3,
   -- The binary to execute the howdoi command with.
@@ -183,7 +163,7 @@ M.extensions.howdoi = vim.tbl_deep_extend("force", {
   -- Ctrl + r	Removes the selected query from the list
 }, require("telescope.themes").get_dropdown())
 
-M.extensions.cder = {
+extensions.cder = {
   -- Ctrl + d	Scroll the preview down
   -- Ctrl + u	Scroll the preview up
   -- The title of the prompt.
@@ -239,7 +219,7 @@ M.extensions.cder = {
   end,
 }
 
-M.extensions["ui-select"] = {
+extensions["ui-select"] = {
   require("telescope.themes").get_dropdown({
     -- even more opts
   }),
@@ -256,7 +236,7 @@ M.extensions["ui-select"] = {
   -- }
 }
 
-M.extensions.command_palette = {
+extensions.command_palette = {
   {
     "File",
     { "entire selection (C-a)", ':call feedkeys("GVgg")' },
@@ -310,7 +290,7 @@ local baseDirs = {
   data = vim.fn.stdpath("data"),
 }
 
-M.extensions.frecency = {
+extensions.frecency = {
   -- default_workspace = "$HOME/.config",
   db_safe_mode = false,
   auto_validate = true,
@@ -331,21 +311,21 @@ M.extensions.frecency = {
   },
 }
 
-M.extensions.fzf = {
+extensions.fzf = {
   fuzzy = true, -- false will only do exact matching
   override_generic_sorter = true, -- override the generic sorter
   override_file_sorter = true, -- override the file sorter
   case_mode = "smart_case", -- or "ignore_case" or "respect_case"
 }
 
-M.extensions.bookmarks = {
+extensions.bookmarks = {
   selected_browser = "chrome",
   url_open_command = "xdg-open",
   url_open_plugin = nil, -- vim_external, open_browser
   firefox_profile_name = nil,
 }
 
-M.extensions.live_grep_args = {
+extensions.live_grep_args = {
   auto_quoting = true, -- enable/disable auto-quoting,
   mappings = {
     -- ... Your other configuration ...
@@ -366,26 +346,26 @@ M.extensions.live_grep_args = {
   },
 }
 
-M.extensions.media_files = {
+extensions.media_files = {
   filetypes = { "png", "webp", "jpg", "jpeg", "webm", "pdf", "mp4", "svg", "mpv", "mkv" },
   find_cmd = "fd", -- find command (defaults to `fd`)
   -- sudo apt install uberzug ffmpegthumbnailer poppler-utils epub-utils
   -- font-viewer (fontpreview)? fd, rg, etc
 }
 
-M.extensions.z = {
+extensions.z = {
   cmd = { "z", "-l" },
   -- cmd = { vim.o.shell, '-c', 'z -l' },
 }
 
-M.extensions.arecibo = {
+extensions.arecibo = {
   ["selected_engine"] = "google",
   ["url_open_command"] = "xdg-open",
   ["show_http_headers"] = false,
   ["show_domain_icons"] = true,
 }
 
-M.extensions.projects = {
+extensions.projects = {
   workspaces = {
     {
       name = "ghq",
@@ -409,12 +389,29 @@ M.extensions.projects = {
   -- theme = "dropdown",
 }
 
-M.extensions.mapper = {
+extensions.mapper = {
   sorter = sorters.fuzzy_with_index_bias,
   -- sorter = sorters.highlighter_only
 }
 
-return M
+local load = function(telescope)
+  local installed = {}
+  for ext_name, _ in pairs(tele_plugs) do
+    local ok, err = pcall(telescope.load_extension, ext_name)
+    if ok then
+      table.insert(installed, 0, ext_name)
+    else
+      local err_str = vim.split(err, "\n")
+      local err_msg = "Error loading telescope plugin: " .. ext_name .. " - " .. err_str[1]
+      vim.notify(err_msg, 4)
+    end
+  end
+  local end_msg = "Loaded " .. H.table_len(installed) .. " out of " .. H.table_len(tele_plugs) .. " telescope plugins"
+  vim.notify(end_msg, 1)
+  return telescope
+end
+
+return { extensions = extensions, load = load }
 
 --  Z telescope plugin:
 --  <CR> (edit)	builtin.find_files    <C-x> (split)	:chdir to the dir

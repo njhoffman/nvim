@@ -11,7 +11,7 @@ local pickers = require("telescope.pickers")
 local previewers = require("telescope.previewers")
 local sorters = require("telescope.sorters")
 
-local default_opts = {
+local opts = {
   prompt_title = function()
     return "dirpicker"
   end,
@@ -47,8 +47,6 @@ local default_opts = {
   },
 }
 
-local opts
-
 local function mapping(prompt_bufnr, command)
   return function()
     actions.close(prompt_bufnr)
@@ -69,13 +67,12 @@ local function resolve_prompt_title(prompt_title)
 end
 
 local function run(o)
-  o = o and vim.tbl_deep_extend("force", opts, o) or opts
+  o = vim.tbl_deep_extend("force", opts, o or {})
   o.prompt_title = resolve_prompt_title(o.prompt_title)
-  vim.dbglog("opts", o, opts)
   pickers
     .new(o, {
       prompt_title = o.prompt_title,
-      finder = finders.dir_command(o.dir_command, o),
+      finder = finders.new_oneshot_job(o.dir_command, o),
       previewer = previewers.new_termopen_previewer({
         get_command = function(entry)
           return vim.tbl_flatten({
@@ -99,10 +96,12 @@ local function run(o)
     :find()
 end
 
-return {
+local function setup(o)
+  o = o or {}
+  opts = vim.tbl_deep_extend("force", opts, o)
+end
+
+return telescope.register_extension({
   run = run,
-  setup = function(o)
-    o = o or {}
-    opts = vim.tbl_deep_extend("force", opts, o)
-  end,
-}
+  sestup = setup,
+})

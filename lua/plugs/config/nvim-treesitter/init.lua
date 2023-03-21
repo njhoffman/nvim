@@ -127,7 +127,7 @@ require("nvim-treesitter.configs").setup({
     lsp_interop = {
       enable = true,
       border = "none",
-      peek_definition_code = { ["yoPf"] = "@function.outer", ["yoPc"] = "@class.outer" },
+      peek_definition_code = { ["gPf"] = "@function.outer", ["gPc"] = "@class.outer" },
     },
   },
   rainbow = { enable = config.rainbow },

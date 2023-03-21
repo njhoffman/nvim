@@ -1,8 +1,7 @@
-local leaderf = require("plugs.config.telescope.leaderf")
+local telemap = require("telescope.telemap")
 
 local get_theme = function(theme)
   local winwidth = vim.api.nvim_win_get_width(0)
-
   local themes = {
     dropdown = require("telescope.themes").get_dropdown({
       winblend = 20,
@@ -23,75 +22,63 @@ local get_theme = function(theme)
       winblend = 20,
     }),
   }
-
   return themes[theme]
 end
 
-local get_definition = function(cmd)
-  local telescopes = {
-    fd = {
-      -- prompt_prefix = "Files>",
-      theme = "ivy",
-    },
-  }
-  return telescopes[cmd]
+local function get_options(mapkey, user_opts)
+  user_opts = user_opts or {}
+  local theme_opts = {}
+  local map_opts = vim.tbl_get(telemap, mapkey, "opts") or {}
+  local opts = {}
+  if type(map_opts) == "table" then
+    opts = map_opts
+  elseif type(map_opts) == "function" then
+    opts = map_opts(user_opts)
+  end
+
+  if type(user_opts.theme) == "string" then
+    theme_opts = get_theme(user_opts.theme)
+  elseif type(opts.theme) == "string" then
+    theme_opts = get_theme(user_opts.theme)
+  end
+  return vim.tbl_deep_extend("keep", user_opts or {}, opts, theme_opts)
 end
 
-local modify_options = function(path, cmd, opts)
-  local def = get_definition(cmd)
-  if def then
-    opts = vim.tbl_extend("force", def, opts)
-  end
-  if opts.theme then
-    opts = vim.tbl_extend("force", get_theme(opts.theme), opts)
-  end
-
-  if path == "builtin" and cmd == "live_grep" then
-    if opts.grep_open_files then
-      local bufnrs = vim.tbl_filter(function(b)
-        if 1 ~= vim.fn.buflisted(b) then
-          return false
-        end
-        if not vim.api.nvim_buf_is_loaded(b) then
-          return false
-        end
-        return true
-      end, vim.api.nvim_list_bufs())
-      opts.results_title = "(" .. #bufnrs .. " Buffers)"
-    else
-      opts.results_title = (opts.cwd or vim.fn.getcwd()):gsub(vim.fn.getenv("HOME"), "~")
-    end
-    opts.default_text = "."
-  elseif path == "builtin" and (cmd == "find_files" or cmd == "fd" or cmd == "live_grep") then
-    opts.results_title = (opts.cwd or vim.fn.getcwd()):gsub(vim.fn.getenv("HOME"), "~")
-  end
-  return opts
-end
-
--- local opts = {}
-
-local function run(modulePath, command, opts)
-  local extensions = require("telescope").extensions
+local function run(plugin, cmd, user_opts)
+  local extensions = require("telescope._extensions").manager
   local builtin = require("telescope.builtin")
 
-  opts = modify_options(modulePath, command, opts or {})
+  local mapkey = plugin
 
-  if command == "fd.cwd" then
-    local directory = vim.fn.expand("%:h") == "" and os.getenv("HOME") or vim.fn.expand("%:h")
-    opts.cwd = directory
-    builtin["fd"](opts)
-  elseif command == "leaderf" then
-    local theme_name = opts and opts.theme or "dropdown"
-    local theme = vim.deepcopy(get_theme(theme_name))
-    opts.prompt_title = "Buffers"
-    opts.entry_maker = leaderf.gen_from_buffer_like_leaderf()
-    require("telescope.builtin").buffers(opts)
-  elseif modulePath == "builtin" and type(builtin[command]) == "function" then
-    builtin[command](opts)
-  elseif type(extensions[modulePath]) == "table" then
-    extensions[modulePath][command](opts)
+  -- TODO: lookup and match single commands
+  -- single word command given, either run(cmd, opts) or run(cmd, _, opts)
+  if type(cmd) == "nil" or type(cmd) == "table" then
+    user_opts = (type(cmd) == "table" and cmd) or user_opts
+    cmd = vim.fn.empty(cmd) == 1 and plugin or cmd
+    plugin = ""
   else
-    vim.notify('Telescope module: "' .. modulePath .. '" not found', 4)
+    mapkey = mapkey .. "_" .. cmd
+  end
+
+  local opts = get_options(mapkey, user_opts)
+
+  local tele_cmd = vim.tbl_get(telemap, mapkey, "cmd")
+  if type(tele_cmd) == "table" then
+    plugin, cmd = table.unpack(tele_cmd)
+  elseif type(tele_cmd) == "function" then
+    return telemap[mapkey].cmd(opts)
+  end
+
+  if plugin == "builtin" and type(builtin[cmd]) == "function" then
+    builtin[cmd](opts)
+  elseif type(extensions[plugin]) == "table" then
+    extensions[plugin][cmd](opts)
+  else
+    local msg = "cmd: " .. cmd
+    if vim.fn.empty(plugin) == 0 then
+      msg = "plugin: " .. plugin .. " - " .. msg
+    end
+    vim.notify("No telescope extension found with " .. msg)
   end
 end
 

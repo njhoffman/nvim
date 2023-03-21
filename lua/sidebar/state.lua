@@ -21,8 +21,7 @@ end
 function state.update()
   state.available = {}
   local i = 1
-  for name, section in pairs(sections) do
-    section.name = name
+  for _, section in ipairs(sections) do
     local enabled = section.enabled ~= false
     if type(section.enabled) == "function" then
       enabled = section.enabled()

@@ -121,7 +121,6 @@ local function get_project_items(config)
       local workspace_results = parse_git_repo_paths(workspace.name, repo_paths)
       local group_highlight = "TelescopeProjectGroup" .. (i % 3)
       for _, workspace_result in ipairs(workspace_results) do
-        vim.dbglog(workspace_result)
         workspace_result.group_highlight = group_highlight
         -- paths[workplace_result.path] = true
         table.insert(parsed_results, workspace_result)

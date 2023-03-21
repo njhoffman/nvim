@@ -174,10 +174,9 @@ M.actions.directory_up = function(prompt_bufnr)
   end
 
   if dir ~= "/" then
-    dir = H.split_string(dir, "/")
-    table.remove(dir)
-
-    dir = "/" .. table.concat(dir, "/")
+    local dir_split = H.split_string(dir, "/")
+    table.remove(dir_split)
+    dir = "/" .. table.concat(dir_split, "/")
     dir = dir:gsub(vim.fn.getenv("HOME"), "~")
 
     local opts = {

@@ -92,6 +92,26 @@ local M = {
     short = "decrease width",
     long = "decrease width of focused window",
   },
+  increase_width2 = {
+    cmd = "<C-W>>",
+    short = "increase width",
+    long = "increase width of focused window",
+  },
+  decrease_width2 = {
+    cmd = "<C-W><",
+    short = "decrease width",
+    long = "decrease width of focused window",
+  },
+  increase_height2 = {
+    cmd = "<cmd>resize +1<CR>",
+    short = "increase height",
+    long = "increase height of focused window",
+  },
+  decrease_height2 = {
+    cmd = "<cmd>resize -1<CR>",
+    short = "decrease height",
+    long = "decrease height of focused window",
+  },
   open_cwin = {
     cmd = "q:",
     short = "open commandwin",
@@ -104,6 +124,11 @@ local M = {
   },
   cmd_open_cwin2 = {
     cmd = "<C-T><Esc>",
+    short = "open commandwin",
+    long = "open commandwin from command line alt",
+  },
+  cmd_open_cwin3 = {
+    cmd = "<C-T>",
     short = "open commandwin",
     long = "open commandwin from command line alt",
   },

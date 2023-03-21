@@ -85,6 +85,7 @@ local fileMaps = {
     ["<CR>"] = custom.actions.multi_open,
   },
 }
+
 local mappings = {
   main = mainMaps,
   file_picker = fileMaps,

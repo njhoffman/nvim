@@ -15,7 +15,7 @@ local M = {
   },
 
   find_files_currdir = {
-    cmd = "<cmd>lua require('telescope.run')('builtin', 'fd.cwd')<cr>",
+    cmd = "<cmd>lua require('telescope.run')('fd_cwd')<cr>",
     short = "files directory telescope",
     long = "directory files with telescope",
   },
@@ -52,7 +52,7 @@ local M = {
     long = "find pickers",
   },
   find_buffers = {
-    cmd = "<cmd>lua require('telescope.run')('leaderf', 'leaderf', { theme = 'dropdown' })<cr>",
+    cmd = "<cmd>lua require('telescope.run')('leaderf', { theme = 'dropdown' })<cr>",
     short = "buffers leader f no preview ",
     long = "find buffers telescope leader f no preview theme",
   },
@@ -65,16 +65,6 @@ local M = {
     cmd = "<cmd>Telescope git_bcommits<cr>",
     short = "git bcommit log telescope",
     long = "telescope git bcommit log",
-  },
-  buffers_teledropdown = {
-    cmd = "<cmd>lua _G._FindBufferDropdown()<cr>",
-    short = "buffers telescope dropdown",
-    long = "find buffers telescope dropdown theme",
-  },
-  buffers_teleleaderf = {
-    cmd = "<cmd>lua _G._FindBufferLeaderF()<cr>",
-    short = "buffers leader f ",
-    long = "find buffers telescope leader f theme",
   },
   sessions = { cmd = "<cmd>Sessions<cr>", short = "sessions", long = "sessions" },
   helptags_string_cursor = {

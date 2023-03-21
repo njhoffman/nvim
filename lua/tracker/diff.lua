@@ -3,13 +3,27 @@
 
 local crc = require("tracker.crc")
 
+local get_item_id = function(provider, fields, item)
+  fields = type(fields) == "string" and { fields } or fields
+  local item_id = nil
+
+  for _, field in ipairs(fields) do
+    if type(item[field]) ~= "nil" and item[field] ~= "" then
+      item_id = item_id == nil and "" or item_id
+      item_id = item_id .. " " .. item[field]
+    end
+  end
+  return item_id
+end
+
 local parse_data = function(provider)
   local data = provider.get_data()
   local items = {}
   for _, item in ipairs(data) do
-    local item_id = item[provider.id_field]
+    local item_id = get_item_id(provider, provider.id_fields, item)
     if type(item_id) ~= "nil" and item_id ~= "" then
       local crc_hash = crc.get_crc(item_id)
+      item.item_id = item_id
       items[tostring(crc_hash)] = item
     end
   end
@@ -17,7 +31,7 @@ local parse_data = function(provider)
 end
 
 local get_diff = function(prev, next)
-  local delta = { added = {}, removed = {} }
+  local delta = { added = {}, removed = {}, count = #vim.tbl_keys(next) }
   for hash_next, next_item in pairs(next) do
     for hash_prev, _ in pairs(prev) do
       if hash_prev == hash_next then

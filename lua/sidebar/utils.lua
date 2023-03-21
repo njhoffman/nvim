@@ -5,7 +5,7 @@ function M.get_key_cmd(mode, lhs)
   local old_val = nil
   for _, key in ipairs(keys) do
     if key.lhs == lhs then
-      old_val = key
+      old_val = key.callback or key.rhs
     end
   end
   return old_val

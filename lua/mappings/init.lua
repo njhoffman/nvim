@@ -2,7 +2,7 @@
 
 local M = vim.import("mapper")
   M.map("Navigation", "n", ";",           "quick_cmd", { nowait = true })
-  M.map("Navigation", "n", "-+:",         "quick_cmdwin2", { nowait = true })
+  M.map("Navigation", "n", ":",         "quick_cmdwin2", { nowait = true })
   M.map("Navigation", "v", ";",           "quick_cmd", { nowait = true })
   M.map("Navigation", "v", ":",           "quick_cmdwin", { nowait = true })
   M.map("Navigation", "n", "<BS>",        "buffer_last")
@@ -38,10 +38,11 @@ local M = vim.import("mapper")
   M.map("Window", "c", "<c-s>", "cmd_save")
   M.map("Window", "c", "<c-y>", "cmd_yank")
   M.map("Window", "c", "", "cmd_beginning")
-  M.map("Window", "c", "<C-n>", "cmd_next1") -- virtual
-  M.map("Window", "c", "<C-p>", "cmd_prev1") -- virtual
-  M.map("Window", "c", "<tab>", "cmd_next2") -- virtual
-  M.map("Window", "c", "<s-tab>", "cmd_prev2") -- virtual
+  -- M.map("Window", "c", "<C-n>", "cmd_next1") -- virtual
+  -- M.map("Window", "c", "<C-p>", "cmd_prev1") -- virtual
+  -- M.map("Window", "c", "<tab>", "cmd_next2") -- virtual
+  -- M.map("Window", "c", "<s-tab>", "cmd_prev2") -- virtual
+  M.map("Window", "c", ":", "cmd_open_cwin3")
   M.map("Window", "c", "<M-f>", "cmd_open_cwin1")
   M.map("Window", "c", "<M-b>", "cmd_open_cwin2") -- same keycode as Ctrl-Shift-[
   M.map("Window", "c", "<M-g>", "cmd_insert_filename")
@@ -58,6 +59,10 @@ local M = vim.import("mapper")
   M.map("Window", "n", "<C-w><", "increase_width") -- virtual
   M.map("Window", "n", "<C-w>>", "decrease_width") -- virtual
   M.map("Window", "n", "<C-w>=", "resize_even1") -- virtual
+  M.map("Window", "n", "<M-C-Left>", "increase_width2") -- virtual
+  M.map("Window", "n", "<M-C-Right>", "decrease_width2") -- virtual
+  M.map("Window", "n", "<M-C-Up>", "increase_height2") -- virtual
+  M.map("Window", "n", "<M-C-Down>", "decrease_height2") -- virtual
   M.map("Window", "n", "<leader>o", "exit_others_2")
   M.map("Window", "n", "<leader>=", "resize_even2")
   M.map("Window", "n", "<leader>:", "prev")
@@ -187,7 +192,6 @@ local M = vim.import("mapper")
   M.map("Interface", "n", "<F2>", "whichkey")
   M.map("Interface", "n", "<F3>", "nvim_tree")
   -- M.map("Interface", "n", "<M-p>", "neo_tree")
-  M.map("Interface", "n", "<M-}>", "switch_sidebar")
   M.map("Interface", "n", "<F4>", "mundo1")
   -- M.map("Interface", "n", "<F5>", "term1")
   M.map("Interface", "n", "<F6>", "treesitter")
@@ -356,7 +360,7 @@ local M = vim.import("mapper")
   -- M.map("Pickers", "n", "<M-g>", "print_filename")
   M.map("Pickers", "n", "<C-g>", "find_buffers")
   M.map("Pickers", "n", "<A-g>", "find_projects")
-  M.map("Pickers", "n", "<M-,>", "telescope_repeat")
+  M.map("Pickers", "n", "<M-1>", "telescope_repeat")
   M.map("Pickers", "n", "<leader><leader>", "find_pickers")
   M.map("Pickers", "n", "<C-Space>", "find_files")
   M.map("Pickers", "n", "<M-e>", "live_grep")

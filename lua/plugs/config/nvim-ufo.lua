@@ -39,17 +39,17 @@ local inspect_level = function()
   end
 end
 
-vim.keymap.set("n", "<M-,>", function()
-  if foldlevel > 0 then
-    foldlevel = foldlevel - 1
-  end
-  require("ufo").closeFoldsWith(foldlevel)
-end, { remap = true })
-
-vim.keymap.set("n", "<M-.>", function()
-  foldlevel = foldlevel + 1
-  require("ufo").closeFoldsWith(foldlevel)
-end, { remap = true })
+-- vim.keymap.set("n", "<M-,>", function()
+--   if foldlevel > 0 then
+--     foldlevel = foldlevel - 1
+--   end
+--   require("ufo").closeFoldsWith(foldlevel)
+-- end, { remap = true })
+--
+-- vim.keymap.set("n", "<M-.>", function()
+--   foldlevel = foldlevel + 1
+--   require("ufo").closeFoldsWith(foldlevel)
+-- end, { remap = true })
 
 local ftMap = {
   vim = "indent",

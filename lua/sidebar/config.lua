@@ -27,16 +27,18 @@ local config = defaults
 local function refresh(open, commands)
   local sidebar_commands = { "next", "prev" }
   for _, key in ipairs(sidebar_commands) do
-    local lhs = config.mapping.global[key]
-    if type(lhs) == "string" and #lhs > 0 then
+    local lhs = config.mapping.global[key] or ""
+    if vim.fn.empty(lhs) == 0 then
       if open == true then
         config.mapping.old[key] = utils.get_key_cmd("n", lhs)
-        vim.api.nvim_set_keymap("n", lhs, commands[key], { noremap = true })
+        vim.dbglog("setting map", lhs, commands[key])
+        vim.keymap.set("n", lhs, commands[key], { noremap = true })
       else
         local rhs = config.mapping.old[key]
-        if type(rhs) == "string" and #rhs > 0 then
-          -- config.mapping.old[key] = {}
-          vim.api.nvim_set_keymap("n", lhs, rhs, { noremap = true })
+        if vim.fn.empty(rhs) == 0 then
+          vim.keymap.set("n", lhs, rhs, { noremap = true })
+        else
+          vim.keymap.del("n", lhs)
         end
       end
     end
