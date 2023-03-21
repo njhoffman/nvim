@@ -34,7 +34,6 @@ local plugins = {
       },
     },
     config = function()
-      vim.dbglog("loading lsp")
       vim.import("lsp.capabilities")
       vim.import("lsp.servers")
       vim.import("lsp.config")

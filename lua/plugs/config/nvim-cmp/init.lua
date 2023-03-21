@@ -311,6 +311,10 @@ cmp.setup.cmdline(":", {
   }),
 })
 
+require("cmp").setup.filetype("DressingInput", {
+  sources = cmp.config.sources({ { name = "omni" } }),
+})
+
 -- local opt = require("utils.core").opt
 -- opt("omnifunc", false)
 

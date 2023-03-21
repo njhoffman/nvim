@@ -1,7 +1,7 @@
 local utils = require("lazy-utils")
 -- /usr/bin/gnome-ssh-askpass
 local plugins = {
-  { "aserowy/tmux.nvim" },
+  -- { "aserowy/tmux.nvim" },
   {
     "nvim-neotest/neotest",
     cmd = { "Neotest", "NeotestSummary", "NeotestNearest", "NeotestAttach" },
@@ -25,6 +25,25 @@ local plugins = {
     dependencies = {
       { "tpope/vim-rhubarb", cmd = "GBrowse" },
     },
+  },
+  {
+    "chrisgrieser/nvim-genghis",
+    dependencies = {
+      "stevearc/dressing.nvim",
+      "hrsh7th/nvim-cmp",
+      "hrsh7th/cmp-omni",
+    },
+    -- local keymap = vim.keymap.set
+    -- local genghis = require("genghis")
+    -- keymap("n", "<leader>yp", genghis.copyFilepath)
+    -- keymap("n", "<leader>yn", genghis.copyFilename)
+    -- keymap("n", "<leader>cx", genghis.chmodx)
+    -- keymap("n", "<leader>rf", genghis.renameFile)
+    -- keymap("n", "<leader>mf", genghis.moveAndRenameFile)
+    -- keymap("n", "<leader>nf", genghis.createNewFile)
+    -- keymap("n", "<leader>yf", genghis.duplicateFile)
+    -- keymap("n", "<leader>df", function () genghis.trashFile{trashLocation = "your/path"} end) -- default: "$HOME/.Trash".
+    -- keymap("x", "<leader>x", genghis.moveSelectionToNewFile)
   },
   { "rbong/vim-flog", cmd = { "Flog", "Flogsplit" } },
   { "dbeniamine/cheat.sh-vim", cmd = "Cheat" },

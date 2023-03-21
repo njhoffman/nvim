@@ -47,7 +47,6 @@ end
 
 local function setup(opts)
   config = vim.tbl_deep_extend("keep", opts or {}, defaults)
-  vim.dbglog("config", config)
   return config
 end
 

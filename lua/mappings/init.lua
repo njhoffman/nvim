@@ -59,10 +59,14 @@ local M = vim.import("mapper")
   M.map("Window", "n", "<C-w><", "increase_width") -- virtual
   M.map("Window", "n", "<C-w>>", "decrease_width") -- virtual
   M.map("Window", "n", "<C-w>=", "resize_even1") -- virtual
-  M.map("Window", "n", "<M-C-Left>", "increase_width2") -- virtual
-  M.map("Window", "n", "<M-C-Right>", "decrease_width2") -- virtual
-  M.map("Window", "n", "<M-C-Up>", "increase_height2") -- virtual
-  M.map("Window", "n", "<M-C-Down>", "decrease_height2") -- virtual
+  -- M.map("Window", "n", "<M-h>", "increase_width2") -- virtual
+  -- M.map("Window", "n", "<M-l>", "decrease_width2") -- virtual
+  -- M.map("Window", "n", "<M-k>", "increase_height2") -- virtual
+  -- M.map("Window", "n", "<M-j>", "decrease_height2") -- virtual
+  -- M.map("Window", "n", "<M-C-Left>", "increase_width2") -- virtual
+  -- M.map("Window", "n", "<M-C-Right>", "decrease_width2") -- virtual
+  -- M.map("Window", "n", "<M-C-Up>", "increase_height2") -- virtual
+  -- M.map("Window", "n", "<M-C-Down>", "decrease_height2") -- virtual
   M.map("Window", "n", "<leader>o", "exit_others_2")
   M.map("Window", "n", "<leader>=", "resize_even2")
   M.map("Window", "n", "<leader>:", "prev")

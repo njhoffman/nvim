@@ -82,7 +82,7 @@ local print_stats = function(name, plugins)
   if #stats.errors > 0 then
     line = line .. ", errors: " .. #vim.tbl_keys(stats.errors)
   end
-  vim.dbglog(line)
+  -- vim.dbglog(line)
 end
 
 local get_stray_configs = function()

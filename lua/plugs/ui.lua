@@ -189,7 +189,7 @@ local plugins = {
         exe s:Map('x', ']e', '<Plug>(unimpaired-move-selection-down)')
     ]])
 
-      return require("mini.move").setup({})
+      -- return require("mini.move").setup({ mappings = {} })
     end,
   },
   {
@@ -246,6 +246,7 @@ local plugins = {
           -- Make bigger windows more transparent
           winblend = animate.gen_winblend.linear({ from = 100, to = 70 }),
         },
+        resize = { enable = false },
       }
       require("mini.animate").setup(cfg)
     end,

@@ -1,5 +1,4 @@
 -- lua runtie plugin: Enabsles lua paths
-
 local fmt = string.format
 
 -- Iterator that splits a string o a given delimiter

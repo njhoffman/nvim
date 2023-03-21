@@ -197,5 +197,4 @@ local telescopeConfig = {
 }
 
 telescope.setup(telescopeConfig)
-
 plugins.load(telescope)

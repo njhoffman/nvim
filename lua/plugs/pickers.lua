@@ -73,7 +73,6 @@ utils.apply_configs(plugins)
 utils.print_stats("Pickers", plugins)
 return plugins
 
--- "keyvchan/telescope-find-pickers.nvim",
 -- "LinArcX/telescope-env.nvim",
 -- "moevis/smartjump.nvim",
 -- "nvim-telescope/telescope-vimspector",

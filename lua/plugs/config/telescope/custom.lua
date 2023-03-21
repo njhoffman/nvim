@@ -6,6 +6,8 @@ local action_state = require("telescope.actions.state")
 local actions_set = require("telescope.actions.set")
 local H = require("helpers")
 
+local dirpicker = require("plugs.config.telescope.dirpicker")
+
 local M = {}
 M.previewers = {}
 M.actions = {}
@@ -127,7 +129,7 @@ M.actions.switch_layout = function(prompt_bufnr)
   local picker = action_state.get_current_picker(prompt_bufnr)
 
   if picker.layout_strategy == "bottom_pane" then
-    opts = require("telescope.themes").get_dropdown()
+    opts = get_theme("dropdown")
   elseif picker.layout_strategy == "center" then
     opts.layout_config = config.values.layout_config
     opts.layout_strategy = "flex"
@@ -163,6 +165,36 @@ M.actions.switch_picker = function(prompt_bufnr)
   end
 end
 
+M.actions.launch_projects = function(prompt_bufnr)
+  actions.close(prompt_bufnr)
+  local run = require("telescope.run")
+  run("projects", "projects", {})
+end
+
+M.actions.launch_dirpicker = function(bufnr)
+  local current_picker = action_state.get_current_picker(bufnr) -- picker state
+  local picker_title = current_picker.prompt_title
+
+  local opts = {}
+  opts.result_title = "Choose Directory"
+  local dirpicker_mappings = {
+    default = function(directory)
+      opts.cwd = directory
+      opts.results_title = string.gsub(directory, os.getenv("HOME") or "", "~")
+      if picker_title == "Find Files" then
+        pcall(require("telescope.builtin").find_files, opts)
+      elseif string.find(picker_title, "%^Grep") then
+        pcall(require("telescope.builtin").live_grep, opts)
+      else
+        vim.notify("Error: don't know what picker to open: " .. picker_title)
+      end
+    end,
+  }
+
+  opts.mappings = dirpicker_mappings
+  pcall(dirpicker.run, opts)
+end
+
 M.actions.directory_up = function(prompt_bufnr)
   local selection = action_state.get_selected_entry()
   local picker = action_state.get_current_picker(prompt_bufnr)
@@ -190,6 +222,10 @@ M.actions.directory_up = function(prompt_bufnr)
     -- picker:refresh(finders.new_oneshot_job(cmd, opts), {})
     local _ = pcall(require("telescope.builtin").find_files, opts)
   end
+end
+
+M.actions.backspace_word = function()
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>", true, true, true), "i", true)
 end
 
 M.actions.git_status = function(opts)

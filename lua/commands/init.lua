@@ -13,42 +13,61 @@ cmd("ClosePopups", function()
   print("Closed " .. n .. " popup windows")
 end, { desc = "Format buffer using lsp" })
 
-local function check_split(orig_key, is_resize)
+local function check_resize_split(navigation_key)
   local keymap = {
-    h = { "-L", "2>" },
-    l = { "-R", "2<" },
-    k = { "-U", "1-" },
-    j = { "-D", "1+" },
+    h = { "-L 2", "2>", "l", "2<" },
+    l = { "-R 2", "2<", "h", "2>" },
+    k = { "-U 1", "1-", "j", "1+" },
+    j = { "-D 1", "1+", "k", "1-" },
   }
   return function()
-    local curwin = vim.fn.winnr()
-    local testwin = vim.fn.winnr(orig_key)
-    local tmuxkey = keymap[orig_key][1]
-    local vimkey = keymap[orig_key][2]
-    if curwin ~= testwin then
-      -- vim.api.nvim_open_win(...) then it returns a window handle,
-      -- which you can use as the argument to vim.api.nvim_set_current_win.
-      if is_resize then
-        vim.cmd("wincmd " .. vimkey)
-      else
-        vim.cmd("wincmd " .. orig_key)
-      end
-    elseif not is_resize then
-      vim.fn.system("tmux select-pane " .. tmuxkey)
+    local curr_win = vim.fn.winnr()
+    local mapkeys = keymap[navigation_key]
+    local keys = {
+      tmux_resize = mapkeys[1],
+      vim_resize = mapkeys[2],
+      alt_nav = mapkeys[3],
+      alt_resize = mapkeys[4],
+    }
+
+    local has_split = vim.fn.winnr(navigation_key) ~= curr_win
+    local alt_split = vim.fn.winnr(keys.alt_nav) ~= curr_win
+
+    if has_split then
+      vim.cmd("wincmd " .. keys.vim_resize)
+    elseif alt_split then
+      vim.cmd("wincmd " .. keys.alt_resize)
+    end
+    vim.fn.system("tmux resize-pane " .. keys.tmux_resize)
+  end
+end
+
+vim.keymap.set("n", "<M-l>", check_resize_split("l"), { noremap = true })
+vim.keymap.set("n", "<M-h>", check_resize_split("h"), { noremap = true })
+vim.keymap.set("n", "<M-j>", check_resize_split("j"), { noremap = true })
+vim.keymap.set("n", "<M-k>", check_resize_split("k"), { noremap = true })
+
+local function check_nav_split(movement_key)
+  local keymap = { h = { "-L" }, l = { "-R" }, k = { "-U" }, j = { "-D" } }
+  return function()
+    local curr_win = vim.fn.winnr()
+    local mapkeys = keymap[movement_key]
+    local keys = { tmux_view = mapkeys[1] }
+    -- only check one direction for split if navigating
+    if vim.fn.winnr(movement_key) ~= curr_win then
+      vim.cmd("wincmd " .. movement_key)
+    else
+      vim.fn.system("tmux select-pane " .. keys.tmux_view)
     end
   end
 end
 
 -- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('...',true,true,true))
 -- TODO: c-s-d , c-s-f, c-s-h,l,j,k, c-s-|, c-s-+
-vim.keymap.set("n", "<C-S-Right>", check_split("l"), { noremap = true })
-vim.keymap.set("n", "<C-S-Left>", check_split("h"), { noremap = true })
-vim.keymap.set("n", "<C-S-Down>", check_split("j"), { noremap = true })
-vim.keymap.set("n", "<C-S-Up>", check_split("k"), { noremap = true })
-vim.keymap.set("n", "<M-Left>", check_split("l", true), { noremap = true })
-vim.keymap.set("n", "<M-Right>", check_split("h", true), { noremap = true })
-vim.keymap.set("n", "<M-Down>", check_split("j", true), { noremap = true })
-vim.keymap.set("n", "<M-Up>", check_split("k", true), { noremap = true })
+vim.keymap.set("n", "<C-S-Right>", check_nav_split("l"), { noremap = true })
+vim.keymap.set("n", "<C-S-Left>", check_nav_split("h"), { noremap = true })
+vim.keymap.set("n", "<C-S-Down>", check_nav_split("j"), { noremap = true })
+vim.keymap.set("n", "<C-S-Up>", check_nav_split("k"), { noremap = true })
 
 local get_splits = function(dirs)
   -- let window_count = winnr('$')
