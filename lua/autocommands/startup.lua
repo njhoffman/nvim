@@ -1,8 +1,9 @@
 local get_load_time = function()
+  ---@diagnostic disable-next-line: missing-parameter
   local load_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
   load_time = string.sub(string.gsub(load_time, " ", ""), 1, 5)
   vim.g.load_time = load_time
-  vim.notify("Loaded in " .. load_time .. "s", "info", { anchor = "TC" })
+  vim.notify("Loaded in " .. load_time .. "s", 2, { anchor = "TC" })
 end
 
 vim.api.nvim_create_autocmd("VimEnter", {

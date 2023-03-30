@@ -18,9 +18,9 @@ local tsserver = function()
       "javascript",
       "javascriptreact",
       "javascript.jsx",
-      -- 'typescript',
-      -- 'typescriptreact',
-      -- 'typescript.tsx',
+      "typescript",
+      "typescriptreact",
+      "typescript.tsx",
     },
     root_dir = function(fname)
       return util.root_pattern("tsconfig.json")(fname)

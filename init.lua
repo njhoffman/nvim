@@ -1,10 +1,11 @@
 -- strace gvim -V9log.txt file.tex > stdout.txt 2> stderr.txt
 
 require("globals")
-require("lazy-utils").init()
+require("utils.lazy").setup()
 
 for _, mod_name in ipairs({
   "mappings",
+  "mapper2.setup",
   "devbox",
   "commands",
   "autocommands",

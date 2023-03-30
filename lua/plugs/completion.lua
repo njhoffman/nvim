@@ -1,4 +1,4 @@
-local utils = require("lazy-utils")
+local utils = require("utils.lazy")
 
 local plugins = {
   {
@@ -59,7 +59,6 @@ local plugins = {
 }
 
 utils.apply_configs(plugins)
-utils.print_stats("Completion", plugins)
 return plugins
 
 -- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },

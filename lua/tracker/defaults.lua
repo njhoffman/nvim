@@ -8,6 +8,7 @@ defaults.provider = {
   id_fields = { "key" },
   desc_fields = {},
   output_diff = out.output_diff,
+  output_group = out.output_group,
   parse_data = diff.parse_data,
 }
 
@@ -40,11 +41,15 @@ defaults.config = {
     enabled = true,
     list = {
       augroups = { provider = "tracker.metrics.augroups" },
-      aucommands = { provider = "tracker.metrics.aucommands" },
-      keymaps_g = { provider = "tracker.metrics.keymaps_g" },
-      -- aucommands,  changes,  commands, functions, highlights, history_commands,
-      -- messages, scriptnames, options, syntax_items, variables_b, variables_g,
-      -- variables_w, variables_p, options_g, options_w, options_b, keymaps_g, keymaps_b,
+      aucommands = { provider = "tracker.metrics.aucommands", group = true },
+      -- commands = { provider = "tracker.metrics.commands", group = true },
+      -- functions = { provider = "tracker.metrics.functions", group = true },
+      -- highlights = { provider = "tracker.metrics.highlights", group = true },
+      -- keymaps_g = { provider = "tracker.metrics.keymaps_g" },
+      -- variables_g = { provider = "tracker.metrics.variables_g" },
+      -- options_g = { provider = "tracker.metrics.options_g" },
+      -- changes, jumplist options, syntax_items, variables_b, variables_g,
+      -- variables_w, variables_p, options_g, options_w, options_b, keymaps_b,
     },
   },
 }

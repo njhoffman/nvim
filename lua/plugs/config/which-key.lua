@@ -104,22 +104,23 @@ local config = {
   },
 }
 
+local alt_config = {
+  layout = {
+    height = { min = 10, max = 40 }, -- min and max height of the columns
+    width = { min = 20, max = 40 }, -- min and max width of the columns
+    spacing = 1, -- spacing between columns
+    align = "right", -- left, center, right
+  },
+  window = {
+    winblend = 20,
+    margin = { 5, 70, 5, 5 }, -- extra window margin [top, right, bottom, left]
+    padding = { 0, 0, 0, 0 }, -- extra window padding [top, right, bottom, left]
+    border = "rounded", -- none, single, double, shadow
+    position = "top", -- bottom, top
+  },
+}
+
 require("which-key").setup(config)
-require("which-key").register({
-  g = {
-    name = "go actions",
-  },
-})
-
-require("which-key").register({
-  b = {
-    name = "+Buffer",
-  },
-  -- h = "Errors Dashboard",
-}, {
-  prefix = "<leader>",
-})
-
 -- :WhichKey " show all mappings
 -- :WhichKey <leader> " show all <leader> mappings
 -- :WhichKey <leader> v " show all <leader> mappings for VISUAL mode

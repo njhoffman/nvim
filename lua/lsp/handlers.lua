@@ -1,18 +1,11 @@
-local keymap = vim.api.nvim_set_keymap
-local keymap_buf = vim.api.nvim_buf_set_keymap
-
-local keymap_opts = { noremap = true, silent = true }
+local mapping = require("lsp.mapping")
 
 local color_provider = function(client, bufnr)
   local cap = client.server_capabilities
-  if cap.colorProvider then
+  if cap.colorProvider and false then
     require("lsp.documentcolors").buf_attach(bufnr, { single_column = true })
-  else
-    vim.notify("Lost colorProvider: \n" .. vim.inspect(cap), 4)
   end
 end
-
---- @return fun() @function that calls the provided fn, but with no args
 
 -- Finds and runs the closest codelens (searches upwards only)
 local function find_and_run_codelens()
@@ -35,13 +28,13 @@ local function find_and_run_codelens()
 
   vim.api.nvim_win_set_cursor(0, { lenses[1].range.start.line + 1, lenses[1].range.start.character })
   vim.lsp.codelens.run()
-  vim.api.nvim_win_set_cursor(0, { row, col }) -- restore cursor, TODO: also restore position
+  vim.api.nvim_win_set_cursor(0, { row, col }) -- restore cursor
 end
 
-vim.cmd("highlight default link LspCodeLens NonText")
-vim.cmd("highlight default link LspCodeLensSeparator NonText")
-
 local code_lens_provider = function(_, bufnr)
+  vim.cmd("highlight default link LspCodeLens NonText")
+  vim.cmd("highlight default link LspCodeLensSeparator NonText")
+
   local group = vim.api.nvim_create_augroup("LspCodelens", {})
   vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost", "CursorHold" }, {
     buffer = bufnr,
@@ -50,8 +43,7 @@ local code_lens_provider = function(_, bufnr)
       return vim.lsp.codelens.refresh()
     end,
   })
-  local opts = vim.tbl_extend("keep", keymap_opts, { buffer = true })
-  vim.keymap.set("n", "gL", find_and_run_codelens, opts)
+  mapping.codelens(find_and_run_codelens)
 end
 
 local document_formatting_provider = function(client, bufnr)
@@ -59,15 +51,16 @@ local document_formatting_provider = function(client, bufnr)
   local name = type(client) == "table" and client.name or client or ""
   local command = "Format " .. bufnr .. " " .. name
   vim.api.nvim_create_autocmd("BufWritePre", { group = augroup, buffer = bufnr, command = command })
-  keymap_buf(bufnr, "n", "<Leader>ff", "<cmd>" .. command .. "<CR>", keymap_opts)
+  command = "<cmd>" .. command .. "<cr>"
+  mapping.formatting(command)
 end
 
-local document_formatting_range_provider = function(_, bufnr)
-  keymap_buf(bufnr, "v", "<Leader>p", ":'<,'>lua vim.lsp.buf.range_formatting()<CR>", keymap_opts)
+local document_formatting_range_provider = function(_, _)
+  mapping.formatting_range()
 end
 
-local ts_utils = require("nvim-treesitter.ts_utils")
 local function highlight_references()
+  local ts_utils = require("nvim-treesitter.ts_utils")
   local node = ts_utils.get_node_at_cursor()
   while node ~= nil do
     local node_type = node:type()
@@ -86,7 +79,7 @@ local function highlight_references()
 end
 
 local document_highlight_provider = function(client, bufnr)
-  if not require("lazy-utils").is_installed("vim-illuminate") then
+  if not require("utils.lazy").is_installed("vim-illuminate") then
     if client.server_capabilities.documentHighlightProvider then
       local group = vim.api.nvim_create_augroup("LspHighlight", {})
       vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
@@ -116,11 +109,12 @@ local signature_help_provider = function(_, bufnr)
     return window_id and window_id ~= 0 and vim.api.nvim_win_is_valid(window_id)
   end
 
-  local function scroll_float(mapping)
+  local function scroll_float(sendkeys)
     -- Using the global config of the lsp_signature plugin
+    ---@diagnostic disable-next-line: undefined-field
     local window_id = _G._LSP_SIG_CFG.winnr
     if is_lsp_float_open(window_id) then
-      vim.fn.win_execute(window_id, "normal! " .. mapping)
+      vim.fn.win_execute(window_id, "normal! " .. sendkeys)
     end
   end
 
@@ -130,115 +124,63 @@ local signature_help_provider = function(_, bufnr)
     close_timeout = 2000,
     max_width = 95,
     doc_lines = 50,
-    toggle_key = "<M-x>",
-    select_signature_key = "<M-n>",
     extra_trigger_chars = { "(", "," },
-    move_cursor_key = "<M-'>",
     transparency = 10,
+    toggle_key = mapping.signature_toggle(),
+    select_signature_key = mapping.signature_select(),
+    move_cursor_key = mapping.signature_move_cursor(),
   }
   require("lsp_signature").on_attach(cfg, bufnr)
-  keymap_buf(bufnr, "n", "gK", "<cmd>lua vim.lsp.buf.signature_help()<CR>", keymap_opts)
+
+  mapping.signature_hover()
 
   local scroll_up_mapping = escape_term_codes("<PageUp>")
   local scroll_down_mapping = escape_term_codes("<PageDown>")
-  vim.keymap.set({ "i", "n" }, "<C-Up>", function()
+  mapping.signature_preview_up(function()
     scroll_float(scroll_up_mapping)
-  end, keymap_opts)
-  vim.keymap.set({ "i", "n" }, "<C-Down>", function()
+  end)
+  mapping.signature_preview_down(function()
     scroll_float(scroll_down_mapping)
-  end, keymap_opts)
+  end)
 end
 
-local hover_provider = function(_, bufnr)
+local hover_provider = function(_, _)
   -- vim already has builtin docs
   if vim.bo.ft ~= "vim" then
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", keymap_opts)
+    mapping.hover()
   end
 end
 
-local code_action_provider = function(_, bufnr)
-  -- keymap_buf(bufnr, "n", "gC", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
-  keymap_buf(bufnr, "n", "gG", "<cmd>CodeActionMenu<CR>", keymap_opts)
-  keymap_buf(bufnr, "n", "gC", "<cmd>CodeActionMenu<CR>", keymap_opts)
+local code_action_provider = function(_, _)
+  mapping.code_action()
 end
 
-local definition_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "gqd", "<Cmd>lua vim.lsp.buf.definition()<CR>", keymap_opts)
-  if vim.fn.exists(":Telescope") then
-    local theme = 'require("telescope.themes").get_dropdown()'
-    keymap_buf(
-      bufnr,
-      "n",
-      "gd",
-      "<cmd>lua require('telescope.builtin').lsp_definitions(" .. theme .. ")<CR>",
-      keymap_opts
-    )
-  end
-  if vim.fn.exists(":Telescope") then
-    local theme = 'require("telescope.themes").get_dropdown()'
-    keymap_buf(
-      bufnr,
-      "n",
-      "gd",
-      "<cmd>lua require('telescope.builtin').lsp_definitions(" .. theme .. ")<CR>",
-      keymap_opts
-    )
-  end
-
-  vim.keymap.set("n", "gPd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", { noremap = true })
+local definition_provider = function(_, _)
+  mapping.definition()
+  mapping.definition_preview()
 end
 
-local implementation_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "gqi", "<cmd>lua vim.lsp.buf.implementation()<CR>", keymap_opts)
-  if vim.fn.exists(":Telescope") then
-    local theme = 'require("telescope.themes").get_dropdown()'
-    keymap_buf(
-      bufnr,
-      "n",
-      "gI",
-      "<cmd>lua require('telescope.builtin').lsp_implementations(" .. theme .. ")<CR>",
-      keymap_opts
-    )
-  end
-  vim.keymap.set("n", "gPi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", { noremap = true })
+local implementation_provider = function(_, _)
+  mapping.implementation()
+  mapping.implementation_preview()
 end
 
-local references_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "gqr", "<cmd>lua vim.lsp.buf.references()<CR>", keymap_opts)
-  if vim.fn.exists(":Telescope") then
-    local theme = 'require("telescope.themes").get_dropdown()'
-    keymap_buf(
-      bufnr,
-      "n",
-      "gr",
-      "<cmd>lua require('telescope.builtin').lsp_references(" .. tostring(theme) .. ")<CR>",
-      keymap_opts
-    )
-  end
-  vim.keymap.set("n", "gPr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", { noremap = true })
+local references_provider = function(_, _)
+  mapping.references()
+  mapping.references_preview()
 end
 
-local type_definition_provider = function(_, bufnr)
-  keymap("n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<CR>", keymap_opts)
-  if vim.fn.exists(":Telescope") then
-    local theme = 'require("telescope.themes").get_dropdown()'
-    keymap_buf(
-      bufnr,
-      "n",
-      "gY",
-      "<cmd>lua require('telescope.builtin').lsp_type_definitions(" .. theme .. ")<CR>",
-      keymap_opts
-    )
-  end
-  vim.keymap.set("n", "gPt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", { noremap = true })
+local type_definition_provider = function(_, _)
+  mapping.type_definition()
+  mapping.type_definition_preview()
 end
 
-local declaration_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", keymap_opts)
+local declaration_provider = function(_, _)
+  mapping.declaration()
 end
 
-local rename_provider = function(_, bufnr)
-  keymap_buf(bufnr, "n", "gR", "<cmd>lua vim.lsp.buf.rename()<CR>", keymap_opts)
+local rename_provider = function(_, _)
+  mapping.rename()
 end
 
 local document_symbol_provider = function(client, bufnr)
@@ -246,22 +188,21 @@ local document_symbol_provider = function(client, bufnr)
   navic.attach(client, bufnr)
 end
 
-local workspace = function(_, bufnr)
-  keymap_buf(bufnr, "n", "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", keymap_opts)
-  keymap_buf(bufnr, "n", "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", keymap_opts)
-  keymap_buf(
-    bufnr,
-    "n",
-    "<Leader>wl",
-    "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
-    keymap_opts
-  )
+local workspace = function(_, _)
+  -- keymap_buf(bufnr, "n", "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", keymap_opts)
+  -- keymap_buf(bufnr, "n", "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", keymap_opts)
+  -- keymap_buf(
+  --   bufnr,
+  --   "n",
+  --   "<Leader>wl",
+  --   "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
+  --   keymap_opts
+  -- )
   -- keymap("n", "<leader>lwa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
   -- keymap("n", "<leader>lwr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
   -- keymap("n", "<leader>lwl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
 end
 
---
 -- local function keybindings_organizeimports(bufnr, lsp_name)
 --     if lsp_name == "tsserver" then
 --         map_buf(bufnr, "cxo", tsserver_organize_imports)
@@ -289,59 +230,6 @@ end
 -- keymap("n", "<leader>k", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 -- -- actions
 -- keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-
--- local function show_handler(err, result, ctx, config)
---     if err or not result then
---         return
---     end
---     vim.api.nvim_buf_clear_namespace(0, namespace, 0, -1)
---     local bufnr = ctx.bufnr
---     for _, value in pairs(result) do
---         local line = tonumber(value.position.line)
---         local label = value.label
---         if type(label) == "table" then
---             label = label.value or label[1].value
---         end
---         pcall(set_mark, bufnr, line, label, config and config.highlight or "NonText")
---     end
--- end
---
--- local function apply_edits_handler(err, result, ctx, config)
---     if err or not result then
---         return
---     end
---     local bufnr = ctx.bufnr
---     local text_edits = {}
---     for _, value in pairs(result) do
---         if value.textEdits then
---             for _, edit in pairs(value.textEdits) do
---                 table.insert(text_edits, edit)
---             end
---         end
---     end
---     if next(text_edits) ~= nil then
---         vim.lsp.util.apply_text_edits(text_edits, bufnr, "utf-16")
---     end
--- end
---
--- function M.show(start_pos, end_pos, config)
---     if not enabled then
---         return
---     end
---     start_pos = start_pos or { 1, 0 }
---     end_pos = end_pos or { vim.api.nvim_buf_line_count(0) - 1, 0 }
---     local params = vim.lsp.util.make_given_range_params(start_pos, end_pos)
---     vim.lsp.buf_request(0, "textDocument/inlayHint", params, function(err, result, ctx, _)
---         show_handler(err, result, ctx, config)
---     end)
--- end
---
--- function M.apply(start_pos, end_pos, config)
---     local params = vim.lsp.util.make_given_range_params(start_pos, end_pos)
---     vim.lsp.buf_request(0, "textDocument/inlayHint", params, function(err, result, ctx, _)
---         apply_edits_handler(err, result, ctx, config)
---     end)
--- end
 --
 -- vim.lsp.handlers["textDocument/inlayHint"] = show_handler
 local execute_command = function(args)
@@ -352,9 +240,8 @@ end
 local handlers = {
   codeActionProvider = code_action_provider,
   codeLensProvider = code_lens_provider,
-  -- colorProvider = color_provider,
+  colorProvider = color_provider,
   declarationProvider = declaration_provider,
-
   -- vim.lsp.handlers["textDocument/inlayHint"] = show_handler
   definitionProvider = definition_provider,
   documentFormattingProvider = document_formatting_provider,

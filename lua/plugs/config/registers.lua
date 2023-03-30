@@ -26,7 +26,6 @@ local default_options = registers.default_options()
 local bind_keys = default_options.bind_keys
 -- bind_keys["j"] = registers.move_cursor_down()
 -- bind_keys["k"] = registers.move_cursor_up()
-vim.dbglog(bind_keys)
 registers.setup({
   show = '*+"-/_=#%.0123456789abcdefghijklmnopqrstuvwxyz:',
   bind_keys = bind_keys,

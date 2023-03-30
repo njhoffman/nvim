@@ -290,6 +290,8 @@ local baseDirs = {
   data = vim.fn.stdpath("data"),
 }
 
+-- vim.dbglog("mappings", tele_mappings.file_picker)
+
 extensions.frecency = {
   -- default_workspace = "$HOME/.config",
   db_safe_mode = false,

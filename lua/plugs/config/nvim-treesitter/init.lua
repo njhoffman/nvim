@@ -97,9 +97,9 @@ require("nvim-treesitter.configs").setup({
       "menuitem",
     },
   },
-  indent = {
-    enable = config.indent,
-  },
+  -- indent = {
+  --   enable = config.indent,
+  -- },
   textobjects = {
     select = {
       lookahead = true,

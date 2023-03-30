@@ -2,20 +2,8 @@ local utils = require("tracker.utils")
 local state = require("tracker.state")
 local config = require("tracker.config")
 local diff = require("tracker.diff")
-local out = require("tracker.output")
 
 local providers = {}
-local function init_provider(provider_cfg)
-  local provider = require(provider_cfg.provider)(provider_cfg)
-  provider = config.assign_defaults(provider, "provider")
-  if type(provider.parse_data) ~= "function" then
-    provider.parse_data = diff.parse_data
-  end
-  if type(provider.output_diff) ~= "function" then
-    provider.output_diff = out.output_diff
-  end
-  return provider
-end
 
 local function add_history(provider, delta)
   local prov_state = state.metrics[provider.name]
@@ -37,7 +25,11 @@ local function check_diffs()
         state.totals.get = prov_state.time_get + state.totals.get
         state.totals.diff = prov_state.time_diff + state.totals.diff
         if #delta.added > 0 or #delta.removed > 0 then
-          provider.output_diff(provider, delta)
+          if provider.group == true then
+            provider.output_group(provider, delta)
+          else
+            provider.output_diff(provider, delta)
+          end
           add_history(provider, delta)
         end
       end
@@ -66,7 +58,10 @@ return {
   start = start_timer,
   providers = providers,
   init = function(name, provider_cfg)
-    providers[name] = init_provider(provider_cfg)
+    local provider = require(provider_cfg.provider)(provider_cfg)
+    provider = vim.tbl_deep_extend("force", provider, provider_cfg)
+    provider = config.assign_defaults(provider, "provider")
+    providers[name] = provider
     state.metrics[name] = config.assign_defaults({ name = name }, "provider_state")
   end,
 }

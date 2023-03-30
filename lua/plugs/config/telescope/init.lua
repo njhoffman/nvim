@@ -4,36 +4,10 @@ local telescope = require("telescope")
 local previewers = require("telescope.previewers")
 local sorters = require("telescope.sorters")
 
-local custom = require("plugs.config.telescope.custom")
+local commands = require("plugs.config.telescope.commands")
+local c_previewers = require("plugs.config.telescope.previewers")
 local mappings = require("plugs.config.telescope.mappings")
 local plugins = require("plugs.config.telescope.plugins")
-
-local command_rg = {
-  "rg",
-  "--color=never",
-  "--one-file-system",
-  "--ignore",
-  "--smart-case",
-  "--hidden",
-  "--files",
-  "--sort",
-  "path",
-}
-
--- local command_fd = { "fd", "--type", "f", "--strip-cwd-prefix" }
-local command_vimgrep = {
-  "rg",
-  "--color=never",
-  "--no-heading",
-  "--with-filename",
-  "--line-number",
-  "--hidden",
-  "--column",
-  "--smart-case",
-  "--vimgrep",
-  "--sort",
-  "path",
-}
 
 local symbol_highlights = {
   -- builtin
@@ -81,7 +55,6 @@ if currwidth < 120 then
   hide_preview = true
 end
 
-local mini_fuzzy = require("mini.fuzzy")
 local telescopeConfig = {
   defaults = {
     scrolling_limit = 20000,
@@ -127,18 +100,18 @@ local telescopeConfig = {
       },
     },
     layout_strategy = "flex", -- flex, horizontal, veritical, center
-    vimgrep_arguments = command_vimgrep,
-    find_command = command_rg,
+    vimgrep_arguments = commands.vimgrep,
+    find_command = commands.rg,
     prompt_prefix = "   ", -- " 🔍 ",
     selection_caret = "▶ ",
     selection_strategy = "reset", -- follow, reset, row
     sorting_strategy = "ascending",
     scroll_strategy = "cycle",
     color_devicons = true,
-    -- winblend = 10,
+    winblend = 10,
     mappings = mappings.main,
     file_sorter = sorters.native_fzf_sorter,
-    generic_sorter = mini_fuzzy.get_telescope_sorter,
+    generic_sorter = require("mini.fuzzy").get_telescope_sorter,
     grep_previewer = previewers.vim_buffer_vimgrep.new,
     qflist_previewer = previewers.vim_buffer_qflist.new,
     include_extensions = true,
@@ -161,27 +134,25 @@ local telescopeConfig = {
     pickers = false,
     find_files = {
       mappings = mappings.file_picker,
-      find_command = command_rg,
-    },
-    frecency = {
-      mappings = mappings.file_picker,
+      find_command = commands.rg,
     },
     buffers = {
       show_all_buffers = true,
       sort_mru = true,
+      mappings = mappings.buffer,
       ignore_current_buffer = false,
       only_cwd = false,
     },
     oldfiles = {
       mappings = mappings.file_picker,
-      find_command = command_rg,
+      find_command = commands.rg,
     },
     git_status = {
-      previewer = custom.previewers.delta,
+      previewer = c_previewers.delta,
     },
     git_bcommits = {
       mappings = mappings.file_picker,
-      previewer = custom.previewers.git_bcommits,
+      previewer = c_previewers.git_bcommits,
       layout_strategy = "vertical",
       -- git_command = { "git", "log", "--date=format:%m-%d-%y", "--format=%h%d %ad %s <%an>" }
       -- git_command = { "git", "log", '--format=%h%d (%ar) %s <%an>' }

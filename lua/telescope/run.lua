@@ -1,6 +1,24 @@
 local telemap = require("telescope.telemap")
 local telethemes = require("telescope.telethemes")
 
+-- -- telescope
+-- which would then be available for downstream use. Seems to work for me in simple test. If you run into issue, you might want to vim.schedule the name setting.
+-- If extensions need to be supported you should look at telescope/command.lua in the repo to see how you can get them.
+-- local ts_pickers = setmetatable({}, {
+--   __index = function(_, key)
+--     return function(topts)
+--       topts = topts or {}
+--       local builtin = require "telescope.builtin"
+--       builtin[key](topts)
+--       local bufnr = vim.api.nvim_get_current_buf()
+--       if vim.bo[bufnr].filetype == "TelescopePrompt" then
+--         local current_picker = require("telescope.actions.state").get_current_picker(bufnr)
+--         current_picker._name = key
+--       end
+--     end
+--   end,
+-- })
+
 local function get_options(mapkey, user_opts)
   user_opts = user_opts or {}
   local theme_opts = {}

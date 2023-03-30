@@ -21,6 +21,33 @@ local config = {
 }
 neuron.setup(config)
 --
+
+-- M.map("Zettel", "n", "<cr>", "enter2")
+-- M.map("Zettel", "n", "gzn", "new")
+-- M.map("Zettel", "n", "gzu", "edit_last")
+-- M.map("Zettel", "n", "gzb", "backlinks_search_telescope")
+-- M.map("Zettel", "n", "gzN", "edit_new_cword")
+-- M.map("Zettel", "n", "gzr", "refresh_virtual_titles")
+-- M.map("Zettel", "n", "gzR", "refresh_cache")
+-- M.map("Zettel", "n", "gzU", "prev_history")
+-- M.map("Zettel", "n", "gzP", "next_history")
+-- M.map("Zettel", "n", "gzz", "zettel_search_telescope")
+-- M.map("Zettel", "n", "gzZ", "tag_search_telescope")
+-- -- M.map("Zettel", "n", "gzz", "edit_select")
+-- -- M.map("Zettel", "n", "gzZ", "edit_backlink")
+-- M.map("Zettel", "n", "gzo", "edit_cursor")
+-- M.map("Zettel", "n", "gzl", "insert_last1")
+-- M.map("Zettel", "n", "gzi", "index")
+-- M.map("Zettel", "n", "gzL", "insert_last2")
+-- M.map("Zettel", "n", "gzI", "insert_next")
+-- M.map("Zettel", "n", "gzv", "toggle_backlinks")
+-- M.map("Zettel", "n", "gzt", "tag_new")
+-- M.map("Zettel", "n", "gzT", "tag_select")
+-- M.map("Zettel", "v", "gzN", "visual_new")
+-- -- NOTE: removed <expr>
+-- M.map("Zettel", "i", "<c-x><c-u>", "insert_last")
+-- M.map("Zettel", "i", "<c-x><c-y>", "insert_select")
+
 -- " click enter on [[my_link]] or [[[my_link]]] to enter it
 -- " insert the id of the note that is found
 -- nnoremap <buffer> gzZ <cmd>lua require'neuron/telescope'.find_zettels {insert = true}<CR>

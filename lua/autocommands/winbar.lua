@@ -22,7 +22,9 @@ local winbar_fmt = function()
   local result = get_filename()
   local ast_symbols = require("aerial").get_location()
 
-  if vim.tbl_isempty(ast_symbols) then return result end
+  if vim.tbl_isempty(ast_symbols) then
+    return result
+  end
   return result .. parse_ast_symbols(ast_symbols)
 end
 
@@ -35,7 +37,7 @@ local winbar_cmd = function()
     "alpha",
     "help",
     "NvimTree",
-    "packer"
+    "packer",
   }
 
   if vim.tbl_contains(excluded_fts, vim.bo.filetype) then
@@ -45,13 +47,8 @@ local winbar_cmd = function()
   vim.opt_local.winbar = winbar_fmt()
 end
 
-vim.api.nvim_create_user_command(
-  "WinbarInit",
-  winbar_cmd,
-  { desc = "Initialize the buffer winbar" }
-)
-
+vim.api.nvim_create_user_command("WinbarInit", winbar_cmd, { desc = "Initialize the buffer winbar" })
 
 return {
-  { "CursorMoved,BufWinEnter,BufFilePost", "*", WinbarInit }
+  init = winbar_cmd,
 }

@@ -1,4 +1,4 @@
-local utils = require("lazy-utils")
+local utils = require("utils.lazy")
 
 local plugins = {
   { dir = "~/git/fidget.nvim", event = "LspAttach" },
@@ -25,7 +25,17 @@ local plugins = {
       },
       { "folke/neodev.nvim", dependencies = { "folke/neoconf.nvim" } },
       { "jbyuki/ntangle-lsp.nvim", dependencies = { "jbyuki/ntangle-ts.nvim" } },
-      { "SmiteshP/nvim-navic", lazy = true, dependencies = { "utilyre/barbecue.nvim", "nvim-web-devicons" } },
+      {
+        "utilyre/barbecue.nvim",
+        name = "barbecue",
+        version = "*",
+        event = { "BufReadPost", "BufNewFile" },
+        cmd = "Barbecue",
+        dependencies = {
+          "SmiteshP/nvim-navic",
+          "nvim-tree/nvim-web-devicons",
+        },
+      },
       {
         "hrsh7th/cmp-nvim-lsp",
         cond = function()
@@ -50,44 +60,7 @@ local plugins = {
     "stevearc/aerial.nvim",
     event = "BufReadPost",
     cmd = { "AerialToggle", "AerialNext", "AerialGo", "AerialOpen", "AerialPrev", "AerialOpenAll" },
-    config = function()
-      require("aerial").setup({
-        layout = {
-          -- min_width and max_width can be a list of mixed types.
-          -- max_width = {40, 0.2} means "the lesser of 40 columns or 20% of total"
-          max_width = { 50, 0.3 },
-          width = nil,
-          min_width = 30,
-        },
-
-        backends = {
-          ["_"] = { "lsp", "treesitter", "markdown", "man" },
-          markdown = { "treesitter" },
-        },
-        filter_kind = {
-          ["_"] = {
-            "Class",
-            "Constructor",
-            "Enum",
-            "EnumMember",
-            "Event",
-            "Field",
-            "Function",
-            "Interface",
-            "Key",
-            "Method",
-            "Module",
-            "Namespace",
-            "Operator",
-            -- "Package", -- this catches for/if ??
-            "Property",
-            "Struct",
-            "Variable",
-          },
-          -- markdown = { "String" },
-        },
-      })
-    end,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   {
     "folke/todo-comments.nvim",
@@ -127,7 +100,6 @@ local plugins = {
 }
 
 utils.apply_configs(plugins)
-utils.print_stats("LSP", plugins)
 return plugins
 
 -- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },

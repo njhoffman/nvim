@@ -111,33 +111,66 @@ function M.on_buf_enter()
   M.set_pwd(root_path, method)
 end
 
-function M.init()
-  local autocmds = {}
+local function setup_user_commands()
+  local cmd = vim.api.nvim_create_user_command
+  -- cmd("ProjectAdd", add_project_manually, { desc = "Add project root manually" })
+  -- cmd("ProjectGetRoot", notify.show_root, { desc = "Get project root" })
+  cmd("ProjectWrite", history.write_projects_to_history, { desc = "Write session data to history file" })
+  cmd("ProjectDbg", function()
+    vim.dbg(require("project_nvim.state"))
+  end, { desc = "Dump debugging data" })
+end
+
+local function setup_au_commands()
+  vim.api.nvim_create_augroup("project_nvim", { clear = true })
   if not config.options.manual_mode then
-    autocmds[#autocmds + 1] = 'autocmd VimEnter,BufEnter * ++nested lua require("project_nvim.project").on_buf_enter()'
+    vim.api.nvim_create_autocmd({ "BufEnter" }, {
+      pattern = "*",
+      callback = M.on_buf_enter,
+      desc = "Check new buffer paths to identify project changes",
+      group = "project_nvim",
+      nested = true,
+    })
     if vim.tbl_contains(config.options.detection_methods, "lsp") then
       attach_to_lsp()
     end
   end
+  vim.api.nvim_create_autocmd("VimLeavePre", {
+    pattern = "*",
+    callback = history.write_projects_to_history,
+    desc = "Write the projects stored in the session to state file",
+    group = "project_nvim",
+  })
+end
 
-  vim.cmd([[
-    command! ProjectRoot lua require("project_nvim.project").on_buf_enter()
-    command! ProjectWrite lua require("project_nvim.utils.history").write_projects_to_history()
-    command! ProjectDbg lua vim.dbg({ recent = require('project_nvim.utils.history').recent_projects, session = require('project_nvim.utils.history').session_projects, meta = require('project_nvim.utils.history').projects_meta })
+function M.init()
+  -- local autocmds = {}
+  -- if not config.options.manual_mode then
+  --   autocmds[#autocmds + 1] = 'autocmd VimEnter,BufEnter * ++nested lua require("project_nvim.project").on_buf_enter()'
+  --   if vim.tbl_contains(config.options.detection_methods, "lsp") then
+  --     attach_to_lsp()
+  --   end
+  -- end
 
-  ]])
+  setup_au_commands()
+  setup_user_commands()
+  -- vim.cmd([[
+  --   command! ProjectRoot lua require("project_nvim.project").on_buf_enter()
+  --   command! ProjectWrite lua require("project_nvim.utils.history").write_projects_to_history()
+  --   command! ProjectDbg lua vim.dbg({ recent = require('project_nvim.utils.history').recent_projects, session = require('project_nvim.utils.history').session_projects, meta = require('project_nvim.utils.history').projects_meta })
+  -- ]])
 
-  autocmds[#autocmds + 1] =
-    'autocmd VimLeavePre * lua require("project_nvim.utils.history").write_projects_to_history()'
-
-  vim.cmd([[
-    augroup project_nvim
-    au!
-  ]])
-  for _, value in ipairs(autocmds) do
-    vim.cmd(value)
-  end
-  vim.cmd("augroup END")
+  -- autocmds[#autocmds + 1] =
+  --   'autocmd VimLeavePre * lua require("project_nvim.utils.history").write_projects_to_history()'
+  --
+  -- vim.cmd([[
+  --   augroup project_nvim
+  --   au!
+  -- ]])
+  -- for _, value in ipairs(autocmds) do
+  --   vim.cmd(value)
+  -- end
+  -- vim.cmd("augroup END")
 
   history.read_projects_from_history()
 end

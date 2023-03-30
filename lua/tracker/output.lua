@@ -31,6 +31,15 @@ local output_diff = function(props, delta)
   end
 end
 
+local output_group = function(props, delta)
+  if #delta.added > 0 then
+    vim.dbglog(" +" .. #delta.added .. "  " .. props.name .. " (" .. delta.count .. ")")
+  elseif #delta.removed > 0 then
+    vim.dbglog(" -" .. #delta.removed .. "  " .. props.name .. " (" .. delta.count .. ")")
+  end
+end
+
 return {
   output_diff = output_diff,
+  output_group = output_group,
 }

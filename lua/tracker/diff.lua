@@ -6,7 +6,6 @@ local crc = require("tracker.crc")
 local get_item_id = function(provider, fields, item)
   fields = type(fields) == "string" and { fields } or fields
   local item_id = nil
-
   for _, field in ipairs(fields) do
     if type(item[field]) ~= "nil" and item[field] ~= "" then
       item_id = item_id == nil and "" or item_id
@@ -17,14 +16,26 @@ local get_item_id = function(provider, fields, item)
 end
 
 local parse_data = function(provider)
-  local data = provider.get_data()
   local items = {}
-  for _, item in ipairs(data) do
+  local function parse_item(item)
     local item_id = get_item_id(provider, provider.id_fields, item)
     if type(item_id) ~= "nil" and item_id ~= "" then
       local crc_hash = crc.get_crc(item_id)
       item.item_id = item_id
       items[tostring(crc_hash)] = item
+    end
+  end
+
+  local data = provider.get_data()
+
+  if vim.tbl_islist(data) then
+    for _, item in ipairs(data) do
+      parse_item(item)
+    end
+  else
+    for key, item in pairs(data) do
+      item._key = key
+      parse_item(item)
     end
   end
   return items

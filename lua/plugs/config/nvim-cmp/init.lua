@@ -1,4 +1,4 @@
-local cmp = require("cmp")
+﻿local cmp = require("cmp")
 -- local cmp_mappings = require("plugs.config.nvim-cmp-mapping")
 local cmp_types = require("cmp.types.cmp")
 local compare = require("cmp.config.compare")
@@ -78,6 +78,7 @@ local setupConfig = {
     --   cmp.TriggerEvent.TextChanged,
     -- },
   },
+
   enabled = function()
     local in_prompt = vim.api.nvim_buf_get_option(0, "buftype") == "prompt"
     if in_prompt then -- this will disable cmp in the Telescope window (taken from the default config)
@@ -90,8 +91,8 @@ local setupConfig = {
     return not (in_comment or in_parameter)
   end,
   mapping = {
-    ["<C-x><C-o>"] = cmp.mapping.complete({}),
-    ["<C-x><C-s>"] = cmp.mapping.complete({ config = { sources = { { name = "luasnip" } } } }),
+    -- ["<C-x><C-o>"] = cmp.mapping.complete({}),
+    -- ["<C-x><C-s>"] = cmp.mapping.complete({ config = { sources = { { name = "luasnip" } } } }),
     ["<C-f>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
@@ -258,7 +259,7 @@ cmp.setup.cmdline(":", {
       elseif in_history == true then
         feedkeys.call(keymap.t("<Down>"), "c")
       else
-        cmp.complete()
+        cmp.mapping(cmp.complete())
         -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
       end
     end, { "c" }),

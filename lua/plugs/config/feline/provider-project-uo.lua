@@ -6,8 +6,9 @@ local function get_project_path()
     state.cwd = vim.fn.getcwd()
   end
 
+  local project_nvim = require("project_nvim")
   if state.path == nil then
-    state.path = require("project_nvim.project").get_project_root()
+    state.path = type(project_nvim.get_root) == "function" and project_nvim.get_root() or nil
     if state.path == nil then
       state.path = string.gsub(state.cwd, os.getenv("HOME"), "~")
     else

@@ -31,7 +31,6 @@ local function refresh(open, commands)
     if vim.fn.empty(lhs) == 0 then
       if open == true then
         config.mapping.old[key] = utils.get_key_cmd("n", lhs)
-        vim.dbglog("setting map", lhs, commands[key])
         vim.keymap.set("n", lhs, commands[key], { noremap = true })
       else
         local rhs = config.mapping.old[key]

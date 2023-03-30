@@ -67,6 +67,11 @@ local M = {
     long = "telescope git bcommit log",
   },
   sessions = { cmd = "<cmd>Sessions<cr>", short = "sessions", long = "sessions" },
+  helptags = {
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'help_tags', {theme = 'ivy' })<cr>",
+    short = "helptags ",
+    long = "helptags search under cursor",
+  },
   helptags_string_cursor = {
     cmd = "<cmd>lua require('telescope.builtin').help_tags({ theme = 'get_ivy', default_text = vim.fn.expand('<cWORD>') })<cr>",
     short = "helptags ",

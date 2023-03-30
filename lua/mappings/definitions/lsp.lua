@@ -56,30 +56,25 @@ return {
     short = "lsp range code action",
   },
   doc_diagnostics = {
-    cmd = "<cmd>lua _G._LspDiagDocument()<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = 0 })<cr>",
     short = "lsp document diagnostics",
     long = "lsp document diagnostics",
   },
   doc_diagnostics_2 = {
-    cmd = "<cmd>lua _G._LspDiagDocument()<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>",
     short = "lsp document diagnostics",
   },
   doc_diagnostics_ivy = {
-    cmd = "<cmd>lua _G._LspDiagDocumentIvy()<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { theme = 'ivy', bufnr = 0})<cr>",
     short = "lsp document diagnostics",
     long = "lsp document diagnostics ivy theme",
   },
-  doc_diagnostics_fzf = {
-    cmd = "<cmd>FzfLua lsp_document_diagnostics<cr>",
-    short = "lsp document diagnostics",
-    long = "lsp document diagnostics",
-  },
   workspace_diagnostics = {
-    cmd = "<cmd>lua _G._LspDiagWorkspace<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>",
     short = "lsp workspace diagnostics",
   },
   workspace_diagnostics_ivy = {
-    cmd = "<cmd>lua _G._LspDiagWorkspaceIvy()<cr>",
+    cmd = "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { theme = 'ivy'})<cr>",
     short = "lsp workspace diag ivy",
     long = "lsp workspace diagnostics ivy theme",
   },

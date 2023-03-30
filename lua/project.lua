@@ -1,5 +1,3 @@
--- local options = require('utils.options')
-
 local get_icon = function(method, lsp)
 
   -- stylua: ignore
@@ -41,20 +39,25 @@ local get_icon = function(method, lsp)
   return icon
 end
 
-local id = nil
+local notify_id = nil
 local change_project = function(dir, method)
-  local lsp = string.match(method, '"([^%s]+)" lsp')
+  local notify = require("notify")
+  local lsp = string.match(method or "", '"([^%s]+)" lsp')
   dir = dir:gsub(vim.fn.getenv("HOME"), "~")
   local icon = get_icon(method, lsp)
-  local msg = " " .. icon .. " "
-  msg = msg .. dir
-  -- msg = msg .. lsp .. " " .. dir
-  vim.notify(msg, "debug", {
-    -- replace = id,
+  -- local title = icon
+  local msg = " " .. icon .. " " .. dir
+  -- local msg = dir
+  notify.dismiss({})
+  notify_id = notify.notify(msg, 1, {
+    -- replace = notify_id,
+    -- title = title,
+    render = "minimal",
     on_close = function()
-      id = nil
+      notify_id = nil
     end,
   })
+  -- vim.dbglog(notify_id)
 end
 
 local project_config = {

@@ -52,7 +52,6 @@ local lsp_symbols = {
   Operator = "", --   Operator = " ",
   TypeParameter = "",
 }
-
 local sources = {
   -- nvim_lua, vim-dadbod-completion, cmp_tabnine
   { name = "nvim_lsp_signature_help", priority = 100 },

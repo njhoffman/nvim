@@ -23,8 +23,12 @@ local sections = {
     enabled = function()
       return is_installed("aerial.nvim")
     end,
+    float = function()
+      require("aerial").open({ direction = "float" })
+      vim.cmd("wincmd p")
+    end,
     open = function()
-      vim.cmd("AerialOpen")
+      require("aerial").open({ direction = "right" })
       vim.cmd("wincmd p")
     end,
     close = function()

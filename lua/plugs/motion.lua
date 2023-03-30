@@ -1,6 +1,7 @@
-local utils = require("lazy-utils")
+local utils = require("utils.lazy")
 
 local plugins = {
+
   { "andrewferrier/debugprint.nvim", event = "VeryLazy" },
 
   { "tpope/vim-repeat", event = "VeryLazy" },
@@ -178,15 +179,6 @@ local plugins = {
       require("various-textobjs").setup({ useDefaultKeymaps = true })
     end,
   },
-  {
-    "cbochs/portal.nvim",
-    event = "VeryLazy",
-    dependencies = { "cbochs/grapple.nvim" },
-    config = function()
-      vim.keymap.set("n", "<leader>O", "<cmd>Portal jumplist backward<cr>")
-      vim.keymap.set("n", "<leader>I", "<cmd>Portal jumplist forward<cr>")
-    end,
-  },
   { "echasnovski/mini.comment", version = false },
   { "echasnovski/mini.doc", version = false },
   { "echasnovski/mini.bracketed", event = "VeryLazy", version = false },
@@ -264,11 +256,10 @@ local plugins = {
       -- vim.g.mkdp_browser = 'safari'
     end,
   },
-  -- { "chentoast/marks.nvim" },
 }
---   { "inkarkat/vim-UnconditionalPaste",
---   requires = "inkarkat/vim-ingo-library" },
-
 utils.apply_configs(plugins)
-utils.print_stats("Motion", plugins)
 return plugins
+
+-- { "chentoast/marks.nvim" },
+-- { "inkarkat/vim-UnconditionalPaste",
+-- requires = "inkarkat/vim-ingo-library" },

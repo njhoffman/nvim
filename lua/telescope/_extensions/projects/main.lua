@@ -24,8 +24,8 @@ local function setup(setup_config)
   -- _git.update_git_repos(base_dirs)
 end
 
----@param opts table
 local function get_projects(group)
+  ---@param opts table
   return function(opts)
     opts = vim.tbl_deep_extend("force", theme_opts, opts or {})
     config.group_filter = group or ""

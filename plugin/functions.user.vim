@@ -274,15 +274,6 @@ endfunction
     endif
   endfunction
 
-""""""""""""
-" :Fasd
-" function! s:fasd_update() abort
-function! Fasd_update() abort
-  if empty(&buftype) || &filetype ==# 'dirvish'
-    call jobstart(['fasd', '-A', expand('%:p')])
-  endif
-endfunction
-
 " https://konfekt.github.io/blog/2016/10/03/get-the-leader-right
 
 " are consistent with f/F,t/T, (g)n/N and //?, more intuitive than ;/,.

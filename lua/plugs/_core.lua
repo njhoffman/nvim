@@ -1,29 +1,19 @@
-local utils = require("lazy-utils")
+local utils = require("utils.lazy")
 local plugins = {
   { "folke/lazy.nvim", version = "*" },
+  { "folke/which-key.nvim", priority = 1000 },
+  { "nvim-lua/plenary.nvim", priority = 1000 },
   {
     "rktjmp/lush.nvim",
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
+    lazy = false,
+    priority = 1000,
     config = function()
       vim.cmd("colorscheme nord-nick")
     end,
   },
   { "freddiehaddad/feline.nvim", priority = 1001, lazy = false, event = "VeryLazy" },
-  { "romgrk/barbar.nvim", event = "VeryLazy", dependencies = "kyazdani42/nvim-web-devicons" },
-  {
-    "rcarriga/nvim-notify",
-    event = "VeryLazy",
-    init = function()
-      -- when noice is not enabled, install notify on VeryLazy
-      local Util = require("lazy-utils")
-      if not Util.is_loaded("noice.nvim") and false then
-        Util.on_very_lazy(function()
-          vim.notify = require("notify")
-        end)
-      end
-    end,
-  },
+  { "romgrk/barbar.nvim", event = "VeryLazy", dependencies = "nvim-tree/nvim-web-devicons" },
+  { "rcarriga/nvim-notify", event = "VimEnter" },
   {
     "folke/noice.nvim",
     opts = {
@@ -46,19 +36,5 @@ local plugins = {
 }
 
 utils.apply_configs(plugins)
-utils.print_stats("Core", plugins)
 
 return plugins
-
--- require("lazy.core.util").try(function()
---   if type(M.colorscheme) == "function" then
---     M.colorscheme()
---   else
---     vim.cmd.colorscheme(M.colorscheme)
---   end
--- end, {
---   msg = "Could not load your colorscheme",
---   on_error = function(msg)
---     require("lazy.core.util").error(msg)
---     vim.cmd.colorscheme("habamax")
---   end,

@@ -7,79 +7,13 @@ local function length(T)
 end
 
 local M = {}
-local wk_keys = require("which-key.keys")
-
-M.get_whichkey_lists = function()
-  local wk_lists = { conflicts = {}, duplicates = {}, ok = {}, todo = {} }
-
-  local conflicts = {}
-  for _, tree in pairs(wk_keys.mappings) do
-    wk_keys.update_keymaps(tree.mode, tree.buf)
-    tree.tree:walk(function(node)
-      local count = 0
-      for _ in pairs(node.children) do
-        count = count + 1
-      end
-      local auto_prefix = not node.mapping or (node.mapping.group == true and not node.mapping.cmd)
-      if node.prefix ~= "" and count > 0 and not auto_prefix then
-        local cmd = node.mapping.cmd or " "
-        table.insert(conflicts, { mode = tree.mode, lhs = node.mapping.prefix, rhs = cmd })
-      end
-    end)
-  end
-
-  wk_lists.conflicts = conflicts
-
-  local ok = {}
-  local todo = {}
-  for _, tree in pairs(wk_keys.mappings) do
-    local bufnr = tree.buf
-    if bufnr == nil then
-      bufnr = "root"
-    end
-    tree.tree:walk(function(node)
-      if node.mapping then
-        if node.mapping.label then
-          if type(ok[node.mapping.prefix]) == "nil" then
-            ok[node.mapping.prefix] = {}
-          end
-          table.insert(ok[node.mapping.prefix], bufnr)
-          todo[node.mapping.prefix] = nil
-        elseif not ok[node.mapping.prefix] then
-          if type(todo[node.mapping.prefix]) ~= "nil" then
-            table.insert(todo[node.mapping.prefix].buffers, bufnr)
-          else
-            todo[node.mapping.prefix] = { buffers = { bufnr }, cmd = node.mapping.cmd or "" }
-          end
-        end
-      end
-    end)
-  end
-
-  wk_lists.todo = todo
-  wk_lists.ok = ok
-
-  local duplicates = {}
-  for _, dup in pairs(wk_keys.duplicates) do
-    table.insert(duplicates, {
-      old_rhs = dup.other.rhs,
-      rhs = dup.cmd or "",
-      mode = dup.mode,
-      lhs = dup.prefix,
-      other_buffer = (dup.buf ~= dup.other.buffer),
-    })
-  end
-
-  wk_lists.duplicates = duplicates
-  print(vim.inspect(M.wk_lists))
-  return wk_lists
-end
+local wkutils = require("whichkey-utils")
 
 -- M.whichkey_lists = { conflicts = {}, duplicates = {}, ok = {}, todo = {} }
 -- n v x s o m i l c t
 M.get_counts = function()
   local mapper = require("mapper")
-  local wk_lists = M.get_whichkey_lists()
+  local stats = wkutils.get_stats()
   local stats = {
     neovim = {
       normal = length(vim.api.nvim_get_keymap("n")),
@@ -90,7 +24,7 @@ M.get_counts = function()
     },
     mapper = mapper.stats,
     whichkey = {
-      total = #wk_lists.ok,
+      total = stats.whichkey.ok.total,
       normal = 0,
       insert = 0,
       command = 0,
@@ -98,7 +32,7 @@ M.get_counts = function()
       visual = 0,
     },
     whichkey_todo = {
-      total = #wk_lists.todo,
+      total = stats.whichkey.todo.total,
       normal = 0,
       insert = 0,
       command = 0,
@@ -106,7 +40,7 @@ M.get_counts = function()
       visual = 0,
     },
     duplicates = {
-      total = #wk_lists.duplicates,
+      total = stats.whichkey.duplicates.total,
       normal = 0,
       insert = 0,
       command = 0,
@@ -114,7 +48,7 @@ M.get_counts = function()
       visual = 0,
     },
     conflicts = {
-      total = #wk_lists.conflicts,
+      total = stats.whichkey.conflicts.total,
       normal = 0,
       insert = 0,
       command = 0,

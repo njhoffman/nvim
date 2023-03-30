@@ -1,4 +1,4 @@
-local utils = require("lazy-utils")
+local utils = require("utils.lazy")
 
 local plugins = {
   -- navarasu/onedark.nvim
@@ -11,7 +11,6 @@ local plugins = {
 }
 
 utils.apply_configs(plugins)
-utils.print_stats("Colorscheme", plugins)
 return plugins
 
 -- { "edluffy/hologram.nvim", cond = os.getenv("KITTY_WINDOW_ID") ~= nil
@@ -21,7 +20,7 @@ return plugins
 -- ["wilder.nvim"] = {
 --   "gelguy/wilder.nvim",
 --   rocks = { "luarocks-fetch-gitrec", "pcre2" },
---   requires = { "romgrk/fzy-lua-native", "kyazdani42/nvim-web-devicons" }
+--   requires = { "romgrk/fzy-lua-native", "nvim-tree/nvim-web-devicons" }
 -- }
 -- ["codewindow.nvim"] = { "gorbit99/codewindow.nvim" },
 -- https://github.com/anuvyklack/windows.nvim

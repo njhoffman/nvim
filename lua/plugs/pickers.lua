@@ -1,4 +1,4 @@
-local utils = require("lazy-utils")
+local utils = require("utils.lazy")
 
 local plugins = {
   {
@@ -6,7 +6,7 @@ local plugins = {
     cmd = { "NeoTreeFocusToggle", "NeoTreeShowToggle" },
     event = "VimEnter",
     branch = "v2.x",
-    dependencies = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
   },
   {
     dir = "~/git/telescope.nvim", -- "nvim-telescope/telescope.nvim",
@@ -26,7 +26,7 @@ local plugins = {
       "dhruvmanila/telescope-bookmarks.nvim",
       "elianiva/telescope-npm.nvim",
       "frenchtoasters/telescope-kubectl.nvim",
-      "kyazdani42/nvim-web-devicons",
+      "nvim-tree/nvim-web-devicons",
       "lpoto/telescope-docker.nvim",
       "molecule-man/telescope-menufacture",
       "nat-418/telescope-color-names.nvim",
@@ -70,7 +70,6 @@ local plugins = {
 }
 
 utils.apply_configs(plugins)
-utils.print_stats("Pickers", plugins)
 return plugins
 
 -- "LinArcX/telescope-env.nvim",

@@ -1,4 +1,4 @@
-local utils = require("lazy-utils")
+local utils = require("utils.lazy")
 
 local lz_syn = false
 
@@ -73,5 +73,4 @@ local plugins = {
 }
 
 utils.apply_configs(plugins)
-utils.print_stats("Syntax", plugins)
 return plugins

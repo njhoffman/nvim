@@ -6,6 +6,7 @@ local action_state = require("telescope.actions.state")
 local actions_set = require("telescope.actions.set")
 local H = require("helpers")
 
+local telethemes = require("telescope.telethemes")
 local dirpicker = require("plugs.config.telescope.dirpicker")
 
 local M = {}
@@ -129,7 +130,7 @@ M.actions.switch_layout = function(prompt_bufnr)
   local picker = action_state.get_current_picker(prompt_bufnr)
 
   if picker.layout_strategy == "bottom_pane" then
-    opts = get_theme("dropdown")
+    opts = telethemes.get_theme("dropdown")
   elseif picker.layout_strategy == "center" then
     opts.layout_config = config.values.layout_config
     opts.layout_strategy = "flex"
@@ -143,15 +144,16 @@ M.actions.switch_layout = function(prompt_bufnr)
   pcall(require("telescope.builtin").resume, opts)
 end
 
-M.actions.switch_picker = function(prompt_bufnr)
+M.actions.switch_file_pickers = function(prompt_bufnr)
   local picker = action_state.get_current_picker(prompt_bufnr)
   local prompt_text = picker:_get_prompt()
-
+  -- local state = require("telescope.actions.state")
   actions.close(prompt_bufnr)
 
   local opts = {
     default_text = prompt_text,
   }
+
   local run = require("telescope.run")
   if picker.prompt_title == "Frecency" then
     run("builtin", "oldfiles", opts)
@@ -163,6 +165,10 @@ M.actions.switch_picker = function(prompt_bufnr)
   else
     run("builtin", "find_files", opts)
   end
+end
+
+M.actions.switch_grep_pickers = function(prompt_bufnr)
+  vim.notify("switch_grep_pickers")
 end
 
 M.actions.launch_projects = function(prompt_bufnr)

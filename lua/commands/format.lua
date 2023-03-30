@@ -1,4 +1,4 @@
-vim.api.nvim_create_user_command("Format", function(arg)
+local function format(arg)
   local bufnr = arg.fargs[1] and tonumber(arg.fargs[1]) or 0
   local lsp_name = arg.fargs[2] or ""
   if vim.b.format_on_write == 0 then
@@ -11,15 +11,11 @@ vim.api.nvim_create_user_command("Format", function(arg)
     bufnr = bufnr,
     timeout = 2000,
   })
-end, {
-  nargs = "*",
-  desc = "Format buffer using lsp",
-})
+end
 
-vim.api.nvim_create_user_command("PasteChar", function()
-  local txt = vim.g
-end, { desc = "Paste primary buffer charwise (strip line endings)" })
-
+-- vim.api.nvim_create_user_command("PasteChar", function()
+--   local txt = vim.g
+-- end, { desc = "Paste primary buffer charwise (strip line endings)" })
 -- vim.api.nvim_create_user_command( "PasteLinewise"
 -- )
 
@@ -43,40 +39,7 @@ local truncate_log = function()
   end
 end
 
---  first argument to command cb
--- {
---   args = "",
---   bang = false,
---   count = -1,
---   fargs = {},
---   line1 = 1,
---   line2 = 1,
---   mods = "",
---   range = 0,
---   reg = "",
---   smods = {
---     browse = false,
---     confirm = false,
---     emsg_silent = false,
---     hide = false,
---     keepalt = false,
---     keepjumps = false,
---     keepmarks = false,
---     keeppatterns = false,
---     lockmarks = false,
---     noautocmd = false,
---     noswapfile = false,
---     sandbox = false,
---     silent = false,
---     split = "",
---     tab = 0,
---     unsilent = false,
---     verbose = -1,
---     vertical = false
---   }
-
--- Trims trailing whitespace in the current buffer.
--- Performs 'inccommand' preview if invoked as a preview cb (preview_ns is non-nil).
+-- -- Performs 'inccommand' preview if invoked as a preview cb (preview_ns is non-nil).
 local function trim_space(opts, preview_ns, preview_buf)
   local line1 = opts.line1
   local line2 = opts.line2
@@ -130,13 +93,6 @@ local function trim_space(opts, preview_ns, preview_buf)
   end
 end
 
--- Create the user command
-vim.api.nvim_create_user_command(
-  "TrimTrailingWhitespace",
-  trim_space,
-  { nargs = "?", range = "%", addr = "lines", preview = trim_space }
-)
-
 local function delete_special()
   if vim.api.nvim_get_current_line():match("^%s*$") then
     return '"_dd'
@@ -157,12 +113,12 @@ local function delete_special_v()
   return "d"
 end
 
-local M = {}
-M.create_cmd_truncate = function(_bufnr)
+local create_cmd_truncate = function(_bufnr)
   local bufnr = _bufnr or vim.api.nvim_get_current_buf()
   vim.api.nvim_buf_create_user_command(bufnr, "Truncate", truncate_log, {
     desc = "Truncate logfile",
   })
 end
-return M
 -- vim.keymap.set("v", "d", delete_special_v, { noremap = true, expr = true })
+--
+return { format = format, trim_space = trim_space, truncate_log = truncate_log }

@@ -1,6 +1,5 @@
 local provider = function(_)
   return {
-    interval = 5,
     name = "keymaps_g",
     id_fields = { "mode", "lhs", "rhs" },
     -- desc_fields = { "group_name", "pattern", "event" },

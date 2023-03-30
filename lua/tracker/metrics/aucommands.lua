@@ -3,7 +3,6 @@ local provider = function(_)
     name = "aucommands",
     id_fields = { "pattern", "event" },
     desc_fields = { "group_name", "pattern", "event" },
-    interval = 5,
     get_data = function()
       return vim.api.nvim_get_autocmds({})
     end,

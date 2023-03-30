@@ -5,7 +5,8 @@
 local dap_ok, dap = pcall(require, "dap")
 
 if dap_ok then
-  require("plugins.config.nvim-dap")
+  require("plugs.config.nvim-dap")
+  require("plugs.config.nvim-dap-mapping")
 
   local dapui = require("dapui")
 

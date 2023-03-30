@@ -1,194 +1,39 @@
-vim.import("commands.format")
+local format = require("commands.format")
+local ui = require("commands.ui")
+local debug = require("commands.debug")
+
 local cmd = vim.api.nvim_create_user_command
 
-cmd("ClosePopups", function()
-  local n = 0
-  for _, win in ipairs(vim.api.nvim_list_wins()) do
-    local config = vim.api.nvim_win_get_config(win)
-    if config.relative ~= "" then
-      n = n + 1
-      vim.api.nvim_win_close(win, false)
-    end
-  end
-  print("Closed " .. n .. " popup windows")
-end, { desc = "Format buffer using lsp" })
+-- Create the user command
+cmd("TrimTrailingWhitespace", format.trim_space, {
+  nargs = "?",
+  range = "%",
+  addr = "lines",
+  preview = format.trim_space,
+  desc = "Trims trailing whitespace in the current buffer.",
+})
+cmd("TruncateLog", format.truncate_log, { desc = "Truncate log " })
+cmd("Format", format.format, { nargs = "*", desc = "Format buffer using lsp" })
+cmd("CloseMulti", ui.close_multi, { desc = "Close tabpage, window, or buffer in that order" })
+cmd("ClosePopups", ui.close_popups, { desc = "Format buffer using lsp" })
+cmd("GetPaths", debug.get_paths, { desc = "Get path collections (rtpaths, o.packpath, etc)" })
 
-local function check_resize_split(navigation_key)
-  local keymap = {
-    h = { "-L 2", "2>", "l", "2<" },
-    l = { "-R 2", "2<", "h", "2>" },
-    k = { "-U 1", "1-", "j", "1+" },
-    j = { "-D 1", "1+", "k", "1-" },
-  }
-  return function()
-    local curr_win = vim.fn.winnr()
-    local mapkeys = keymap[navigation_key]
-    local keys = {
-      tmux_resize = mapkeys[1],
-      vim_resize = mapkeys[2],
-      alt_nav = mapkeys[3],
-      alt_resize = mapkeys[4],
-    }
-
-    local has_split = vim.fn.winnr(navigation_key) ~= curr_win
-    local alt_split = vim.fn.winnr(keys.alt_nav) ~= curr_win
-
-    if has_split then
-      vim.cmd("wincmd " .. keys.vim_resize)
-    elseif alt_split then
-      vim.cmd("wincmd " .. keys.alt_resize)
-    end
-    vim.fn.system("tmux resize-pane " .. keys.tmux_resize)
-  end
-end
-
-vim.keymap.set("n", "<M-l>", check_resize_split("l"), { noremap = true })
-vim.keymap.set("n", "<M-h>", check_resize_split("h"), { noremap = true })
-vim.keymap.set("n", "<M-j>", check_resize_split("j"), { noremap = true })
-vim.keymap.set("n", "<M-k>", check_resize_split("k"), { noremap = true })
-
-local function check_nav_split(movement_key)
-  local keymap = { h = { "-L" }, l = { "-R" }, k = { "-U" }, j = { "-D" } }
-  return function()
-    local curr_win = vim.fn.winnr()
-    local mapkeys = keymap[movement_key]
-    local keys = { tmux_view = mapkeys[1] }
-    -- only check one direction for split if navigating
-    if vim.fn.winnr(movement_key) ~= curr_win then
-      vim.cmd("wincmd " .. movement_key)
-    else
-      vim.fn.system("tmux select-pane " .. keys.tmux_view)
-    end
-  end
-end
+vim.keymap.set("n", "<M-l>", ui.check_resize_split("l"), { noremap = true })
+vim.keymap.set("n", "<M-h>", ui.check_resize_split("h"), { noremap = true })
+vim.keymap.set("n", "<M-j>", ui.check_resize_split("j"), { noremap = true })
+vim.keymap.set("n", "<M-k>", ui.check_resize_split("k"), { noremap = true })
 
 -- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('...',true,true,true))
 -- TODO: c-s-d , c-s-f, c-s-h,l,j,k, c-s-|, c-s-+
-vim.keymap.set("n", "<C-S-Right>", check_nav_split("l"), { noremap = true })
-vim.keymap.set("n", "<C-S-Left>", check_nav_split("h"), { noremap = true })
-vim.keymap.set("n", "<C-S-Down>", check_nav_split("j"), { noremap = true })
-vim.keymap.set("n", "<C-S-Up>", check_nav_split("k"), { noremap = true })
-
-local get_splits = function(dirs)
-  -- let window_count = winnr('$')
-  -- let prev_window = winnr('#')
-  local splits = {}
-  local curwin = vim.fn.winnr()
-  for _, dir in ipairs(dirs) do
-    local testwin = vim.fn.winnr(dir)
-    testwin = vim.fn.win_getid(testwin)
-    if curwin ~= testwin and not vim.tbl_contains(splits, testwin) then
-      table.insert(splits, testwin)
-    end
-  end
-  return splits
-end
-
-local close_multi = function()
-  local tabs = vim.api.nvim_list_tabpages() or {}
-  local splits = get_splits({ "l", "h", "j", "k" }) or {}
-  if #tabs > 1 then
-    vim.cmd("tabclose!")
-  elseif #splits > 1 then
-    vim.api.nvim_win_close(splits[1], false)
-  else
-    -- vim.cmd("BufferDelete")
-    vim.cmd("BufferDelete")
-  end
-end
+vim.keymap.set("n", "<C-S-Right>", ui.check_nav_split("l"), { noremap = true })
+vim.keymap.set("n", "<C-S-Left>", ui.check_nav_split("h"), { noremap = true })
+vim.keymap.set("n", "<C-S-Down>", ui.check_nav_split("j"), { noremap = true })
+vim.keymap.set("n", "<C-S-Up>", ui.check_nav_split("k"), { noremap = true })
 
 -- vim.g.scriptpath,vim.g.loaded_remote_plugins,script_path,scripts_dir
 -- vim.o.argv, vim.o.packpath, vim.o.runtimepath, undodir, viewdir, directory, backupdir, helpfile,
 -- -- nvim --cmd "set rtp+=." lua/NeovimConf.lua
 
-local get_scriptnames = function()
-  vim.cmd([[
-    let scriptnames_output = ''
-    redir => scriptnames_output
-      silent scriptnames
-    redir END
-
-    let scripts = {}
-    for line in split(scriptnames_output, "\n")
-      if line =~ '\S'
-      let nr = matchstr(line, '\d\+')
-      let name = substitute(line, '.\+:\s*', '', '')
-      let scripts[nr] = name
-      endif
-    endfor
-    let w:scriptnames = scriptnames_output
-    unlet scriptnames_output
-  ]])
-  local scriptnames = vim.api.nvim_eval("w:scriptnames")
-  return scriptnames
-end
-
-local get_runtime_files = function()
-  local rtpaths = vim.api.nvim_list_runtime_paths()
-  return vim.fn.sort(rtpaths)
-end
-
-local get_paths = function(cmd_props)
-  local all_paths = {}
-  all_paths.rtpaths = get_runtime_files()
-  local opacks = {}
-  for match in (vim.o.packpath .. ","):gmatch("(.-)" .. ",") do
-    table.insert(opacks, match)
-  end
-  all_paths.opacks = vim.fn.sort(opacks)
-  all_paths.scriptnames = get_scriptnames()
-
-  for key, val in pairs(all_paths) do
-    vim.notify(key .. " " .. #val, 3)
-  end
-  vim.dbglog(vim.dump(all_paths.rtpaths))
-
-  -- vim.ui.select(opacks)
-end
-
-cmd("CloseMulti", close_multi, { desc = "Close tabpage, window, or buffer in that order" })
-cmd("GetPaths", get_paths, { desc = "Get path collections (rtpaths, o.packpath, etc)" })
-
-local load_colorschemes = function()
-  local schemes = {
-    ["material deep ocean"] = {
-      function()
-        require("material").setup()
-        vim.g.material_style = "deep ocean"
-        vim.cmd("colorscheme material")
-      end,
-    },
-    ["material palenight"] = {
-      function()
-        require("material").setup()
-        vim.g.material_style = "palenight"
-        vim.cmd("colorscheme material")
-      end,
-    },
-    ["material oceanic"] = {
-      function()
-        require("material").setup()
-        vim.g.material_style = "oceanic"
-        vim.cmd("colorscheme material")
-      end,
-    },
-    ["material lighter"] = {
-      function()
-        require("material").setup()
-        vim.g.material_style = "lighter"
-        vim.cmd("colorscheme material")
-      end,
-    },
-    ["material darker"] = {
-      function()
-        require("material").setup()
-        vim.g.material_style = "darker"
-        vim.cmd("colorscheme material")
-      end,
-    },
-  }
-end
-cmd("LoadColorschemes", load_colorschemes, { desc = "Load colorschemes" })
 -- cmd("LogFiles", function(cmd_props)
 --
 --     -- logfiles["auth"]="/var/log/auth.log"
