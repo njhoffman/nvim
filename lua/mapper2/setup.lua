@@ -787,7 +787,7 @@ map("n", "<C-Space>", "<cmd>lua require('telescope.run')('builtin','find_files')
   desc = "find files in telescope",
 })
 
-map("n", "<C-e>", "<cmd>lua require('telescope.run')('builtin','live_grep')<cr>", {
+map("n", "<C-e>", "<cmd>lua require('telescope.run')('builtin','live_grep', { grep_open_files = true })<cr>", {
   category = "Pickers",
   plugin = "telescope.nvim",
   label = "grep buffers",

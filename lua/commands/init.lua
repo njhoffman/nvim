@@ -1,6 +1,7 @@
 local format = require("commands.format")
 local ui = require("commands.ui")
 local debug = require("commands.debug")
+local system = require("commands.system")
 
 local cmd = vim.api.nvim_create_user_command
 
@@ -17,6 +18,9 @@ cmd("Format", format.format, { nargs = "*", desc = "Format buffer using lsp" })
 cmd("CloseMulti", ui.close_multi, { desc = "Close tabpage, window, or buffer in that order" })
 cmd("ClosePopups", ui.close_popups, { desc = "Format buffer using lsp" })
 cmd("GetPaths", debug.get_paths, { desc = "Get path collections (rtpaths, o.packpath, etc)" })
+cmd("Trash", system.trash_file, { desc = "Send file to system trash" })
+cmd("Delete", system.trash_file, { desc = "Send file to system trash" })
+-- cmd("TrashRecover", system.trash_file, { desc = "Send file to system trash" })
 
 vim.keymap.set("n", "<M-l>", ui.check_resize_split("l"), { noremap = true })
 vim.keymap.set("n", "<M-h>", ui.check_resize_split("h"), { noremap = true })

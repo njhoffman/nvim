@@ -40,7 +40,7 @@ local execute = async.void(function(done)
   local cmd = { "man", "-l", path } or { "man", path }
   -- Force MANPAGER=cat to ensure Vim is not recursively invoked (by man-db).
   -- Set MAN_KEEP_FORMATTING so Debian man doesn't discard backspaces.
-  local output = system(cmd, {
+  local output = vim.fn.system(cmd, {
     "MANPAGER=cat",
     "MANWIDTH=" .. manwidth,
     "MAN_KEEP_FORMATTING=1",

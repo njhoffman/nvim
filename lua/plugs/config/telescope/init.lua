@@ -8,46 +8,7 @@ local commands = require("plugs.config.telescope.commands")
 local c_previewers = require("plugs.config.telescope.previewers")
 local mappings = require("plugs.config.telescope.mappings")
 local plugins = require("plugs.config.telescope.plugins")
-
-local symbol_highlights = {
-  -- builtin
-  Class = "TelescopeResultsClass",
-  Constant = "TelescopeResultsConstant",
-  Field = "TelescopeResultsField",
-  Function = "TelescopeResultsFunction",
-  Method = "TelescopeResultsMethod",
-  Property = "TelescopeResultsOperator",
-  Struct = "TelescopeResultsStruct",
-  Variable = "TelescopeResultsVariable",
-
-  -- lua
-  String = "String",
-  Boolean = "Constant",
-  Package = "Keyword",
-  Object = "Type",
-  Number = "Number",
-  Array = "@enum",
-
-  -- Other Kinds
-  Module = "PreProc",
-  Interface = "@interface",
-  Operator = "@operator",
-  Enum = "@enum",
-
-  -- Constructor = "",
-  -- Color = "",
-  -- EnumMember = "",
-  -- Event = "",
-  -- File = "",
-  -- Folder = "",
-  -- Keyword = "",
-  -- Reference = "",
-  -- Snippet = "",
-  -- Text = "",
-  -- TypeParameter = "",
-  -- Unit = "",
-  -- Value = "",
-}
+local symbol_highlights = require("plugs.config.telescope.symbol_highlights")
 
 local hide_preview = false
 local currwidth = vim.api.nvim_win_get_width(vim.api.nvim_get_current_win())
@@ -55,7 +16,7 @@ if currwidth < 120 then
   hide_preview = true
 end
 
-local telescopeConfig = {
+local telescope_config = {
   defaults = {
     scrolling_limit = 20000,
     dynamic_preview_title = true,
@@ -136,16 +97,24 @@ local telescopeConfig = {
       mappings = mappings.file_picker,
       find_command = commands.rg,
     },
+    fd = {
+      mappings = mappings.file_picker,
+      find_command = commands.rg,
+    },
+    oldfiles = {
+      mappings = mappings.file_picker,
+      find_command = commands.rg,
+    },
+    live_grep = {
+      mappings = mappings.grep,
+      find_command = commands.rg,
+    },
     buffers = {
       show_all_buffers = true,
       sort_mru = true,
       mappings = mappings.buffer,
       ignore_current_buffer = false,
       only_cwd = false,
-    },
-    oldfiles = {
-      mappings = mappings.file_picker,
-      find_command = commands.rg,
     },
     git_status = {
       previewer = c_previewers.delta,
@@ -164,8 +133,8 @@ local telescopeConfig = {
       symbol_highlights = symbol_highlights,
     },
   },
-  extensions = plugins.extensions,
 }
 
-telescope.setup(telescopeConfig)
-plugins.load(telescope)
+telescope_config.extensions = plugins.get_extensions()
+telescope.setup(telescope_config)
+plugins.load()

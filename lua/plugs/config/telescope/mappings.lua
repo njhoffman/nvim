@@ -14,34 +14,37 @@ local select_default = function(prompt_bufnr)
   actions.center(prompt_bufnr)
 end
 
-local mainMaps = {
+local ignore = function(prompt_bufnr)
+  vim.notify("ignoring keystroke for " .. prompt_bufnr, 0)
+end
+local main_maps = {
   -- stylua: ignore
   -- NOTE: have to assign all possible custom keys here and filter later from lazy loading
   i = {
-    ["<C-u>"]     = c_actions.backspace_word,
-    ["<C-d>"]     = actions.close,
-    ["<Esc>"]     = actions.close,
-
-    ["<M-}>"] = c_actions.switch_file_pickers,
-    ["<M-.>"] = c_actions.launch_dirpicker,
-    ["<M-,>"] = c_actions.directory_up,
-    ["<CR>"] = c_actions.multi_open,
-    -- ["<CR>"]      = select_default,
-    ["<C-Down>"]  = actions.cycle_history_next,
-    ["<C-Up>"]    = actions.cycle_history_prev,
-    ["<Down>"]    = actions.preview_scrolling_down,
-    ["<Up>"]      = actions.preview_scrolling_up,
-    ["<C-f>"]     = c_actions.results_page_down,
-    ["<C-b>"]     = c_actions.results_page_up,
-    ["<M-n>"]     = c_actions.results_toggle_down,
-    ["<M-p>"]     = c_actions.results_toggle_up,
-    ["<C-q>"]     = send_to_qflist,
-    ["<C-_>"]     = actions_layout.toggle_preview,
-    ["<M-g>"]     = c_actions.launch_projects,
-    ["<M-/>"]     = c_actions.toggle_whichkey,
-    ["<C-^>"]     = c_actions.switch_layout,
-    ["<M-a>"]     = actions.toggle_all,
-    ["<C-Space>"] = c_actions.find_pickers,
+    ["<C-u>"]       = c_actions.backspace_word,
+    ["<C-d>"]       = actions.close,
+    ["<Esc>"]       = actions.close,
+    ["<CR>"]        = select_default,
+    ["<C-q>"]       = send_to_qflist,
+    ["<C-Up>"]      = actions.cycle_history_prev,
+    ["<C-Down>"]    = actions.cycle_history_next,
+    ["<Up>"]        = actions.preview_scrolling_up,
+    ["<Down>"]      = actions.preview_scrolling_down,
+    ["<C-_>"]       = actions_layout.toggle_preview,
+    ["<C-b>"]       = c_actions.results_page_up,
+    ["<C-f>"]       = c_actions.results_page_down,
+    ["<M-p>"]       = c_actions.results_toggle_up,
+    ["<M-n>"]       = c_actions.results_toggle_down,
+    ["<M-g>"]       = c_actions.launch_projects,
+    ["<M-C-Space>"] = c_actions.launch_find_pickers,
+    ["<M-e>"]       = c_actions.launch_live_grep,
+    ["<M-u>"]       = c_actions.launch_find_files,
+    ["<M-/>"]       = c_actions.toggle_whichkey,
+    ["<C-^>"]       = c_actions.switch_layout,
+    ["<M-}>"]       = ignore,
+    ["<M-,>"]       = ignore,
+    ["<M-.>"]       = ignore,
+    ["<M-a>"]       = ignore,
     -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
     -- [S-F1-9] = add/remove secondary sort #
     -- [??] = clear sort
@@ -51,31 +54,40 @@ local mainMaps = {
   },
 }
 
-local grepMaps = {
+local grep_maps = {
   i = {
     -- change directory functionality
+    -- ["<C-Space>"] = false,
+    -- ["<M-C-Space>"] = false,
+    -- ["<M-}>"] = c_actions.switch_grep_pickers,
     ["<M-}>"] = c_actions.switch_grep_pickers,
-    ["<C-Space>"] = false,
-    ["<M-C-Space>"] = false,
+    ["<M-,>"] = c_actions.directory_up,
+    ["<M-.>"] = c_actions.launch_dirpicker,
+    ["<CR>"] = c_actions.multi_open,
+    ["<M-a>"] = actions.toggle_all,
   },
 }
 
-local bufferMaps = {
+local file_picker_maps = {
+  i = {
+    ["<M-}>"] = c_actions.switch_file_pickers,
+    ["<M-,>"] = c_actions.directory_up,
+    ["<M-.>"] = c_actions.launch_dirpicker,
+    ["<CR>"] = c_actions.multi_open,
+    ["<M-a>"] = actions.toggle_all,
+  },
+}
+
+local buffer_maps = {
   i = {
     ["<C-Del>"] = c_actions.buffer_delete,
   },
 }
 
-local fileMaps = {
-  i = {
-    -- change directory functionality
-  },
-}
-
 local mappings = {
-  grep = grepMaps,
-  main = mainMaps,
-  file_picker = fileMaps,
-  buffer = bufferMaps,
+  grep = grep_maps,
+  main = main_maps,
+  file_picker = file_picker_maps,
+  buffer = buffer_maps,
 }
 return mappings

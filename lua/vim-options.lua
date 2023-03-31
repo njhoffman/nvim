@@ -42,7 +42,7 @@ opt("magic", true)
 opt("matchtime", 3) -- How many tenths of a second to blink when matching brackets
 opt("modelines", 5)
 opt("mouse", "nivh")
-
+opt("omnifunc", "")
 opt("previewheight", 7)
 opt("pumheight", 10)
 opt("redrawtime", 5000)
