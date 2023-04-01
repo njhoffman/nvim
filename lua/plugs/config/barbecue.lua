@@ -1,9 +1,162 @@
+local tokyoColors = {
+  none = "NONE",
+  bg_dark = "#1c1f24",
+  bg = "#24283b",
+  bg_highlight = "#292e42",
+  terminal_black = "#414868",
+  fg = "#c0caf5",
+  fg_dark = "#a9b1d6",
+  fg_gutter = "#3b4261",
+  dark3 = "#545c7e",
+  comment = "#565f89",
+  dark5 = "#737aa2",
+  blue0 = "#5d79a1",
+  blue = "#7aa2f7",
+  cyan = "#7dcfff",
+  blue1 = "#2ac3de",
+  blue2 = "#0db9d7",
+  blue5 = "#89ddff",
+  blue6 = "#B4F9F8",
+  blue7 = "#394b70",
+  magenta = "#bb9af7",
+  magenta2 = "#ff007c",
+  purple = "#6d6cc8",
+  orange = "#ff9e64",
+  yellow = "#e0af68",
+  green = "#9ece6a",
+  green1 = "#73daca",
+  green2 = "#41a6b5",
+  teal = "#1abc9c",
+  red = "#f7768e",
+  red1 = "#db4b4b",
+  git = { change = "#6183bb", add = "#449dab", delete = "#914c54", conflict = "#bb7a61" },
+  gitSigns = { add = "#164846", change = "#394b70", delete = "#823c41" },
+}
+--
+local theme = {
+  fg_1 = "#337689",
+  fg_2 = "#637699",
+  fg_3 = "#7386a9",
+  fg_4 = "#b3c6ff",
+  -- bg_1 = "#06203a",
+  bg_1 = "#061626",
+  modified_fg = "#fb6b6b",
+}
+--                            
+-- TODO: gradient arrow sections
+-- TODO: right-hand orientation
+-- {"",""} {"" ""}
+
 local cfg = {
-  show_dirname = true,
-  show_basename = true,
-  show_modified = true,
-  show_navic = true,
-  theme = "auto",
+  -- kinds = {
+  --   File = "",
+  --   Module = "",
+  --   Namespace = "",
+  --   Package = "",
+  --   Class = "",
+  --   Method = "",
+  --   Property = "",
+  --   Field = "",
+  --   Constructor = "",
+  --   Enum = "",
+  --   Interface = "",
+  --   Function = "",
+  --   Variable = "",
+  --   Constant = "",
+  --   String = "",
+  --   Number = "",
+  --   Boolean = "",
+  --   Array = "",
+  --   Object = "",
+  --   Key = "",
+  --   Null = "",
+  --   EnumMember = "",
+  --   Struct = "",
+  --   Event = "",
+  --   Operator = "",
+  --   TypeParameter = "",
+  -- },
+  -- icons = {
+  --     File = ' ',
+  --     Module = ' ',
+  --     Namespace = ' ',
+  --     Package = ' ',
+  --     Class = ' ',
+  --     Method = ' ',
+  --     Property = ' ',
+  --     Field = ' ',
+  --     Constructor = ' ',
+  --     Enum = ' ',
+  --     Interface = ' ',
+  --     Function = ' ',
+  --     Variable = ' ',
+  --     Constant = ' ',
+  --     String = ' ',
+  --     Number = ' ',
+  --     Boolean = ' ',
+  --     Array = ' ',
+  --     Object = ' ',
+  --     Key = ' ',
+  --     Null = ' ',
+  --     EnumMember = ' ',
+  --     Struct = ' ',
+  --     Event = ' ',
+  --     Operator = ' ',
+  --     TypeParameter = ' '
+  --   }
+  theme = {
+    normal = { fg = theme.fg_3, bg = theme.bg_1, bold = false },
+    dirname = { fg = theme.fg_3, bold = false },
+    basename = { fg = theme.fg_4, bold = true },
+    separator = { fg = theme.fg_2 },
+    context = { fg = theme.fg_1, bold = false },
+    modified = { fg = theme.modified_fg },
+    context_file = { fg = tokyoColors.yellow },
+    context_module = { fg = tokyoColors.purple },
+    context_namespace = { fg = tokyoColors.yellow },
+    context_package = { fg = tokyoColors.purple },
+    context_class = { fg = tokyoColors.blue0 },
+    context_method = { fg = tokyoColors.teal },
+    context_property = { fg = tokyoColors.green1 },
+    context_field = { fg = tokyoColors.green1 },
+    context_constructor = { fg = tokyoColors.yellow },
+    context_enum = { fg = tokyoColors.orange },
+    context_interface = { fg = tokyoColors.orange },
+    context_function = { fg = tokyoColors.teal },
+    context_variable = { fg = tokyoColors.blue2 },
+    context_constant = { fg = tokyoColors.blue2 },
+    context_string = { fg = tokyoColors.green2 },
+    context_number = { fg = tokyoColors.blue2 },
+    context_boolean = { fg = tokyoColors.blue2 },
+    context_array = { fg = tokyoColors.blue0 },
+    context_object = { fg = tokyoColors.blue0 },
+    context_key = { fg = tokyoColors.blue2 },
+    context_null = { fg = tokyoColors.blue2 },
+    context_enum_member = { fg = tokyoColors.green2 },
+    context_struct = { fg = tokyoColors.green2 },
+    context_event = { fg = tokyoColors.orange },
+    context_operator = { fg = tokyoColors.green2 },
+    context_type_parameter = { fg = tokyoColors.green2 },
+  },
+  -- exclude_filetypes = {},
+
+  project = { show = false },
+  dirname = { show = true },
+  basename = { show = true, show_modified = true },
+  context = {
+    show = true,
+    align = "right",
+    follow_icon_color = true,
+  },
+  symbols = {
+    separators = { "", "" },
+  },
+  lead_custom_section = function()
+    return " "
+  end,
+  custom_section = function()
+    return "    "
+  end,
 }
 
 require("barbecue").setup(cfg)
@@ -24,153 +177,3 @@ require("barbecue").setup(cfg)
 --     require("barbecue.ui").update()
 --   end,
 -- })
-
--- local default_cfg = {
-
--- tokyonight.normal = { bg = c.none, fg = c.fg_dark }
--- tokyonight.modified = { fg = c.warning }
--- tokyonight.ellipsis = { fg = c.dark5 }
--- tokyonight.separator = { fg = c.dark5 }
--- tokyonight.dirname = { fg = c.dark5 }
--- tokyonight.basename = { fg = c.fg_dark, bold = true }
--- tokyonight.context = { fg = c.fg_dark }
---
--- tokyonight.context_file = { fg = c.fg_dark }
--- tokyonight.context_module = { fg = c.yellow }
--- tokyonight.context_namespace = { fg = c.yellow }
--- tokyonight.context_package = { fg = c.blue }
--- tokyonight.context_class = { fg = c.orange }
--- tokyonight.context_method = { fg = c.blue }
--- tokyonight.context_property = { fg = c.green1 }
--- tokyonight.context_field = { fg = c.green1 }
--- tokyonight.context_constructor = { fg = c.blue }
--- tokyonight.context_enum = { fg = c.orange }
--- tokyonight.context_interface = { fg = c.orange }
--- tokyonight.context_function = { fg = c.blue }
--- tokyonight.context_variable = { fg = c.magenta }
--- tokyonight.context_constant = { fg = c.magenta }
--- tokyonight.context_string = { fg = c.green }
--- tokyonight.context_number = { fg = c.orange }
--- tokyonight.context_boolean = { fg = c.orange }
--- tokyonight.context_array = { fg = c.orange }
--- tokyonight.context_object = { fg = c.orange }
--- tokyonight.context_key = { fg = c.purple }
--- tokyonight.context_null = { fg = c.orange }
--- tokyonight.context_enum_member = { fg = c.green1 }
--- tokyonight.context_struct = { fg = c.orange }
--- tokyonight.context_event = { fg = c.orange }
--- tokyonight.context_operator = { fg = c.green1 }
--- tokyonight.context_type_parameter = { fg = c.green1 }
----whether to attach navic to language servers automatically
-
---   ---@type boolean
---   attach_navic = true,
---
---   ---whether to create winbar updater autocmd
---   ---@type boolean
---   create_autocmd = true,
---
---   ---buftypes to enable winbar in
---   ---@type string[]
---   include_buftypes = { "" },
---
---   ---filetypes not to enable winbar in
---   ---@type string[]
---   exclude_filetypes = { "gitcommit", "toggleterm" },
---
---   modifiers = {
---     ---filename modifiers applied to dirname
---     ---@type string
---     dirname = ":~:.",
---     basename = "",
---   },
---   show_dirname = true,
---   ---@type boolean
---   show_modified = false,
---   show_navic = true,
---   custom_section = function()
---     return ""
---   end,
---   symbols = {
---     ---modification indicator
---     ---@type string
---     modified = "●",
---
---     ---truncation indicator
---     ---@type string
---     ellipsis = "…",
---
---     ---entry separator
---     ---@type string
---     separator = "",
---   },
---   kinds = {
---     File = "",
---     Module = "",
---     Namespace = "",
---     Package = "",
---     Class = "",
---     Method = "",
---     Property = "",
---     Field = "",
---     Constructor = "",
---     Enum = "",
---     Interface = "",
---     Function = "",
---     Variable = "",
---     Constant = "",
---     String = "",
---     Number = "",
---     Boolean = "",
---     Array = "",
---     Object = "",
---     Key = "",
---     Null = "",
---     EnumMember = "",
---     Struct = "",
---     Event = "",
---     Operator = "",
---     TypeParameter = "",
---   },
---   theme = {
---     normal = { fg = "#c0caf5" },
---     -- these highlights correspond to symbols table from config
---     ellipsis = { fg = "#737aa2" },
---     separator = { fg = "#737aa2" },
---     modified = { fg = "#737aa2" },
---
---     -- these highlights represent the _text_ of three main parts of barbecue
---     dirname = { fg = "#737aff" },
---     basename = { bold = false },
---     context = {},
---
---     -- these highlights are used for context/navic icons
---     context_file = { fg = "#ac8fe4" },
---     context_module = { fg = "#ac8fe4" },
---     context_namespace = { fg = "#ac8fe4" },
---     context_package = { fg = "#ac8fe4" },
---     context_class = { fg = "#ac8fe4" },
---     context_method = { fg = "#ac8fe4" },
---     context_property = { fg = "#ac8fe4" },
---     context_field = { fg = "#ac8fe4" },
---     context_constructor = { fg = "#ac8fe4" },
---     context_enum = { fg = "#ac8fe4" },
---     context_interface = { fg = "#ac8fe4" },
---     context_function = { fg = "#ac8fe4" },
---     context_variable = { fg = "#ac8fe4" },
---     context_constant = { fg = "#ac8fe4" },
---     context_string = { fg = "#ac8fe4" },
---     context_number = { fg = "#ac8fe4" },
---     context_boolean = { fg = "#ac8fe4" },
---     context_array = { fg = "#ac8fe4" },
---     context_object = { fg = "#ac8fe4" },
---     context_key = { fg = "#ac8fe4" },
---     context_null = { fg = "#ac8fe4" },
---     context_enum_member = { fg = "#ac8fe4" },
---     context_struct = { fg = "#ac8fe4" },
---     context_event = { fg = "#ac8fe4" },
---     context_operator = { fg = "#ac8fe4" },
---     context_type_parameter = { fg = "#ac8fe4" },
---   },
--- }
---

@@ -1,6 +1,6 @@
 local commands = require("plugs.config.telescope.commands")
 local leaderf = require("plugs.config.telescope.leaderf")
-local async = require("plenary.async")
+local make_entry = require("telescope.make_entry")
 
 local get_cwd = function(user_opts)
   return (user_opts.cwd or vim.fn.getcwd()):gsub(vim.fn.getenv("HOME"), "~")
@@ -23,7 +23,7 @@ local telemap = {
       return {
         prompt_title = "Buffers",
         theme = theme_name,
-        entry_maker = leaderf.gen_from_buffer_like_leaderf(),
+        entry_maker = leaderf.gen_from_buffer(),
       }
     end,
     cmd = function(opts)
@@ -40,6 +40,30 @@ local telemap = {
       }
     end,
     cmd = { "builtin", "fd" },
+  },
+  builtin_diagnostics = {
+    opts = function(user_opts)
+      user_opts = user_opts or {}
+      if user_opts.bufnr == true or type(user_opts.bufnr) == "number" then
+        user_opts.bufnr = 0
+      end
+      local gen_opts = {
+        line_width = 0.7,
+        no_sign = false,
+        cwd = user_opts.cwd,
+        path_display = user_opts.path_display or {
+          tail = true,
+          truncate = true,
+        },
+      }
+      if user_opts.bufnr == 0 then
+        gen_opts.path_display = "hidden"
+      end
+      return {
+        bufnr = user_opts.bufnr,
+        entry_maker = user_opts.entry_maker or make_entry.gen_from_diagnostics(gen_opts),
+      }
+    end,
   },
   builtin_find_files = {
     opts = function(user_opts)

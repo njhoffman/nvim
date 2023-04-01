@@ -1,4 +1,5 @@
 local state = {
+  initialized = false,
   winnr = nil,
   bufnr = nil,
   width = nil,

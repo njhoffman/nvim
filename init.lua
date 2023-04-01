@@ -4,8 +4,7 @@ require("globals")
 require("utils.lazy").setup()
 
 for _, mod_name in ipairs({
-  "mappings",
-  "mapper2.setup",
+  "mapper.setup",
   "devbox",
   "commands",
   "autocommands",

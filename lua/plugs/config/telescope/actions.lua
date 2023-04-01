@@ -1,4 +1,5 @@
 local actions = require("telescope.actions")
+local finders = require("telescope.finders")
 local config = require("telescope.config")
 local action_state = require("telescope.actions.state")
 local actions_set = require("telescope.actions.set")
@@ -45,8 +46,7 @@ local _multiopen = function(prompt_bufnr, open_cmd)
     else
       cwd = string.format("%s/", cwd)
     end
-
-    vim.cmd("bw!") -- wipe the prompt buffer
+    actions.close(prompt_bufnr)
     for _, entry in ipairs(multi_targets) do
       local edit_cmd = string.format("%s %s%s", open_cmd, cwd, entry.value)
       if entry.filename then
@@ -75,12 +75,12 @@ end
 
 M.results_toggle_down = function(prompt_bufnr)
   actions.toggle_selection(prompt_bufnr)
-  actions.move_selection_next(prompt_bufnr, 1)
+  actions.move_selection_next(prompt_bufnr)
 end
 
 M.results_toggle_up = function(prompt_bufnr)
   actions.toggle_selection(prompt_bufnr)
-  actions.move_selection_previous(prompt_bufnr, -1)
+  actions.move_selection_previous(prompt_bufnr)
 end
 
 M.results_page_up = function(prompt_bufnr)
@@ -263,7 +263,6 @@ M.directory_up = function(prompt_bufnr)
     }
 
     actions.close(prompt_bufnr)
-    -- picker:refresh(finders.new_oneshot_job(cmd, opts), {})
     require("telescope.run")("builtin", "find_files", opts)
   end
 end
@@ -283,10 +282,19 @@ M.buffer_delete = function(prompt_bufnr)
     -- only_cwd = false,
   }
   vim.cmd("BufferDelete " .. selection.value)
-  actions.close(prompt_bufnr)
-  require("telescope.run")("leaderf", opts)
-  -- local picker = action_state.get_current_picker(prompt_bufnr)
-  -- picker:refresh(finders.new_oneshot_job(cmd, opts), {})
+  -- actions.close(prompt_bufnr)
+  -- require("telescope.run")("leaderf", opts)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local leaderf = require("plugs.config.telescope.leaderf")
+  local results = vim.tbl_filter(function(result)
+    return result.value ~= selection.value
+  end, picker.finder.results)
+  -- opts.default_selection_idx = res.default_selection_idx
+  local new_finder = finders.new_table({
+    results = results,
+    entry_maker = leaderf.gen_from_buffer(opts),
+  })
+  picker:refresh(new_finder, { reset_prompt = true })
   vim.notify("Closed  " .. selection.file_name, 1)
 end
 

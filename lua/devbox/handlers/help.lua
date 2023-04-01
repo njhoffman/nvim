@@ -86,7 +86,7 @@ end
 
 local tags_map = init_help_tags()
 
-local help_handler = function(start_time)
+local help_handler = function(start_time, timing)
   local word = vim.fn.expand("<cWORD>") or ""
   local args_pattern = "%([^)]*%)?.*"
   local vim_pattern = "vim%.api%."
@@ -94,6 +94,8 @@ local help_handler = function(start_time)
   word = string.gsub(word, vim_pattern, "")
   if tags_map[word] then
     local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
+    timing.total = timing.total + (load_time * 100000)
+    timing.n = timing.n + 1
     return { summary = load_time .. " help  " .. word, hl = "MoreMsg" }
   else
     return { summary = "  -------- help  ", hl = "DebugMsg" }

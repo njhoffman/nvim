@@ -26,9 +26,8 @@ require("dial.config").augends:register_group({
     augend.constant.alias.Alpha,
   },
 })
-
 -- change augends in VISUAL mode
-vim.keymap.set("n", "<C-_>", require("dial.map").dec_normal(), { noremap = true })
+vim.keymap.set("n", "<M-->", require("dial.map").dec_normal(), { noremap = true })
 vim.keymap.set("n", "<M-=>", require("dial.map").inc_normal(), { noremap = true })
 -- vim.keymap.set("v", "<C-a>", require("dial.map").inc_visual(), { noremap = true })
 -- vim.keymap.set("v", "<C-x>", require("dial.map").dec_visual(), { noremap = true })

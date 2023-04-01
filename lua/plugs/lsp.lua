@@ -18,24 +18,35 @@ local plugins = {
       "rmagatti/goto-preview",
       "kosayoda/nvim-lightbulb",
       "mickael-menu/zk-nvim",
-      { "folke/trouble.nvim", cmd = { "TroubleToggle", "Trouble" } },
+      {
+        "folke/trouble.nvim",
+        cmd = { "TroubleToggle", "Trouble" },
+        -- vim.api.nvim_set_keymap( "n", "<leader>xx",
+        --   "<cmd>Trouble<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+        --   { silent = true, noremap = true })
+        -- vim.api.nvim_set_keymap( "n", "<leader>xw",
+        --   "<cmd>Trouble lsp_workspace_diagnostics<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+        --   { silent = true, noremap = true })
+        -- vim.api.nvim_set_keymap( "n", "<leader>xd",
+        --   "<cmd>Trouble lsp_document_diagnostics<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+        --   { silent = true, noremap = true })
+        -- vim.api.nvim_set_keymap( "n", "<leader>xl",
+        --   "<cmd>Trouble loclist<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+        --   { silent = true, noremap = true })
+        -- vim.api.nvim_set_keymap( "n", "<leader>xq",
+        --   "<cmd>Trouble quickfix<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+        --   { silent = true, noremap = true })
+        -- vim.api.nvim_set_keymap( "n", "<leader>xr",
+        --   "<cmd>Trouble lsp_references<cr><bar><cmd>VimadeBufDisable<cr><bar><cmd>wincmd p<cr>",
+        --   { silent = true, noremap = true })
+        --
+      },
       {
         "folke/lsp-colors.nvim",
         opts = { Error = "#db4b4b", Warn = "#e0af68", Info = "#0db9d7", Hint = "#10B981" },
       },
       { "folke/neodev.nvim", dependencies = { "folke/neoconf.nvim" } },
       { "jbyuki/ntangle-lsp.nvim", dependencies = { "jbyuki/ntangle-ts.nvim" } },
-      {
-        "utilyre/barbecue.nvim",
-        name = "barbecue",
-        version = "*",
-        event = { "BufReadPost", "BufNewFile" },
-        cmd = "Barbecue",
-        dependencies = {
-          "SmiteshP/nvim-navic",
-          "nvim-tree/nvim-web-devicons",
-        },
-      },
       {
         "hrsh7th/cmp-nvim-lsp",
         cond = function()
@@ -49,22 +60,75 @@ local plugins = {
       vim.import("lsp.config")
     end,
   },
-  { "ray-x/go.nvim", dependencies = { "ray-x/guihua.lua" }, ft = "go", event = { "BufReadPost", "BufNewFile" } },
+  {
+    "utilyre/barbecue.nvim",
+    name = "barbecue",
+    dir = "~/git/barbecue.nvim",
+    version = "*",
+    lazy = false,
+    event = "VeryLazy",
+    cmd = "Barbecue",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
+  {
+    "ray-x/go.nvim",
+    dependencies = { "ray-x/guihua.lua" },
+    ft = "go",
+    event = "LspAttach",
+    -- event = { "BufReadPost", "BufNewFile" },
+  },
+  {
+    "SmiteshP/nvim-navbuddy",
+    dir = "~/git/nvim-navbuddy",
+    lazy = false,
+    -- cmd = { "Navbuddy" },
+    dependencies = { "neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
+    opts = {
+      window = {
+        -- { "╔", "═" ,"╗", "║", "╝", "═", "╚", "║" }.
+        border = "rounded",
+        size = "60%", -- 60%
+        position = "100%", -- 50%
+        sections = {
+          left = { size = "30%", hide_empty = true },
+          mid = { size = "30%" },
+          right = {},
+        },
+      },
+      lsp = {
+        auto_attach = true,
+      },
+      source_buffer = {
+        reorient = "smart", -- "smart", "top", "mid" or "none"
+      },
+    },
+    config = function(plugin)
+      require("nvim-navbuddy").setup(plugin.opts)
+    end,
+  },
+
   {
     "jose-elias-alvarez/null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "LspAttach",
+    -- event = { "BufReadPre", "BufNewFile" },
     dependencies = { "nvim-lua/plenary.nvim", "ThePrimeagen/refactoring.nvim", "mason.nvim" },
   },
   { "mfussenegger/nvim-lint", event = { "BufReadPre", "BufNewFile" } },
   {
     "stevearc/aerial.nvim",
-    event = "BufReadPost",
+    -- event = "BufReadPost",
+    event = "LspAttach",
     cmd = { "AerialToggle", "AerialNext", "AerialGo", "AerialOpen", "AerialPrev", "AerialOpenAll" },
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   {
     "folke/todo-comments.nvim",
-    event = { "BufReadPost", "BufNewFile" },
+    event = "LspAttach",
+    -- event = { "BufReadPost", "BufNewFile" },
     cmd = { "TodoTrouble", "TodoTelescope" },
     opts = {
       highlight = {

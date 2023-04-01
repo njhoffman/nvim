@@ -1,7 +1,14 @@
-local mapper = require("mapper2")
+local mapper = require("mapper")
 local map = mapper.map
 local vmap = mapper.vmap
 local prefix = mapper.prefix
+
+vim.cmd([[
+  cabbrev T Telescope
+  cabbrev d lua vim.dbg(
+  cabbrev D DebugLog
+  cabbrev Plug execute "normal \<Plug>(
+]])
 
 prefix("n", "z", "+folds")
 prefix("n", "g", "+goto")
@@ -175,6 +182,37 @@ map("n", "<leader>cd", "<cmd>cd %:h<cr>", {
   desc = "change current working directory to buffer directory",
 })
 
+map("i", ",", ",<c-g>u", {
+  category = "Buffers",
+  desc = "add undo at ,",
+})
+map("i", ".", ".<c-g>u", {
+  category = "Buffers",
+  desc = "add undo at .",
+})
+
+map("i", ";", ";<c-g>u", {
+  category = "Buffers",
+  desc = "add undo at ;",
+})
+
+--------------------------------------------------------------------------------------------------
+-- MACROS ---------------------------------------------------------------------------------------
+
+-- Taking from here: https://github.com/stoeffel/.dotfiles/blob/master/vim/visual-at.vim
+-- function! ExecuteMacroOverVisualRange()
+--   echo "@".getcmdline()
+--   execute ":'<,'>normal @".nr2char(getchar())
+-- endfunction
+map("x", "@", ':<C-u>echo "@".getcmdline() | execute ":\'<,\'>normal @" . nr2char(getchar())<CR>', {
+  category = "Macros",
+  desc = "allows running macros only on selected files",
+})
+
+map("x", ".", ":normal .<CR>", {
+  category = "Macros",
+  desc = "dot repeat macro",
+})
 --------------------------------------------------------------------------------------------------
 -- EXITING ---------------------------------------------------------------------------------------
 
@@ -211,7 +249,7 @@ map("n", "<M-r>", "<cmd>Restart<cr>", {
   desc = "restart neovim instance",
 })
 
-map("n", "<M-T>", "<cmd>RestartTarget<cr>", {
+map("n", "<M-!>", "<cmd>RestartTarget<cr>", {
   category = "Execute",
   label = "restart target",
   desc = "restart target of remote neovim instannce",
@@ -482,7 +520,7 @@ map("n", "_", "<cmd>noh<cr> | :nohlsearch<cr>", {
   desc = "remove highlights",
 })
 
-map("n", "<M-->", "<cmd>noh<cr>|:ClosePopups<cr>", {
+map("n", "<C-_>", "<cmd>noh<cr>|:ClosePopups<cr>", {
   category = "UI",
   desc = "remove hls and close popups",
 })
@@ -495,6 +533,40 @@ map("n", "<M-b>", "<cmd>noh<cr> | :RefreshLSP<cr> | :lua require'feline'.reset_h
 map("n", "<M-C-_>", "<cmd>:only<cr>|:ClosePopups<cr>", {
   category = "UI",
   desc = "close popups",
+})
+
+vmap("n", "F1", {
+  category = "UI",
+  desc = "toggle help",
+})
+map("n", "F2", "<cmd>WhichKey<cr>", {
+  category = "UI",
+  desc = "toggle whichkey",
+})
+
+map("n", "F3", "<cmd>AerialToggle!float<cr>", {
+  category = "UI",
+  desc = "toggle aerial sidebar",
+})
+
+map("n", "F4", "<cmd>NeoTreeShowToggle<cr>", {
+  category = "UI",
+  desc = "toggle neotree",
+})
+
+map("n", "F5", "<cmd>MundoToggle<cr>", {
+  category = "UI",
+  desc = "toggle mundo",
+})
+
+map("n", "F6", "<cmd>TSPlaygroundToggle<cr>", {
+  category = "UI",
+  desc = "toggle treesitter playground",
+})
+
+map("n", '"', "<cmd>Registers<cr>", {
+  category = "UI",
+  desc = "view registers",
 })
 
 --------------------------------------------------------------------------------------------------
@@ -780,7 +852,7 @@ map("n", "<C-u>", "<cmd>lua require('telescope.run')('frecency','frecency')<cr>"
   desc = "frecency files in telescope",
 })
 
-map("n", "<C-Space>", "<cmd>lua require('telescope.run')('builtin','find_files')<cr>", {
+map("n", "<C-Space>", "<cmd>Navbuddy<cr>", {
   category = "Pickers",
   plugin = "telescope-frecency.nvim",
   label = "find files",
@@ -1012,6 +1084,241 @@ map({ "n", "v" }, "<leader>FC", "<cmd>CamelB<cr>", {
   desc = "format camel b case",
 })
 
+map({ "n", "v" }, "<leader>fi", "<Plug>(dial-increment)", {
+  category = "Format",
+  label = "dial increment",
+  desc = "increment item(s) selected in visual mode",
+  plugin = "dial.nvim",
+})
+map({ "n", "v" }, "<leader>fd", "<Plug>(dial-decrement)", {
+  category = "Format",
+  label = "dial decrement",
+  desc = "decrement item(s) selected in visual mode",
+  plugin = "dial.nvim",
+})
+
+vmap("v", "g<M-a>", {
+  category = "Format",
+  label = "dial increment additional",
+  desc = "increment item(s) selected in visual mode",
+  plugin = "dial.nvim",
+})
+
+vmap("v", "g<M-x>", {
+  category = "Format",
+  label = "dial decrement additional",
+  desc = "increment item(s) selected in visual mode",
+  plugin = "dial.nvim",
+})
+
+--------------------------------------------------------------------------------------------------
+-- PAIRS -----------------------------------------------------------------------------------------
+vim.cmd([[
+  " Section: Put
+  function! s:Map(...) abort
+    let [mode, head, rhs; rest] = a:000
+    let flags = get(rest, 0, '') . (rhs =~# '^<Plug>' ? '' : '<script>')
+    let tail = ''
+    let keys = get(g:, mode.'remap', {})
+    if type(keys) == type({}) && !empty(keys)
+      while !empty(head) && len(keys)
+        if has_key(keys, head)
+          let head = keys[head]
+          if empty(head)
+            let head = '<skip>'
+          endif
+          break
+        endif
+        let tail = matchstr(head, '<[^<>]*>$\|.$') . tail
+        let head = substitute(head, '<[^<>]*>$\|.$', '', '')
+      endwhile
+    endif
+    if head !=# '<skip>' && empty(maparg(head.tail, mode))
+      return mode.'map ' . flags . ' ' . head.tail . ' ' . rhs
+    endif
+    return ''
+  endfunction
+
+  function! s:putline(how, map) abort
+    let [body, type] = [getreg(v:register), getregtype(v:register)]
+    if type ==# 'V'
+      exe 'normal! "'.v:register.a:how
+    else
+      call setreg(v:register, body, 'l')
+      exe 'normal! "'.v:register.a:how
+      call setreg(v:register, body, type)
+    endif
+    silent! call repeat#set("\<Plug>(unimpaired-put-".a:map.")")
+  endfunction
+
+  nnoremap <silent> <Plug>(unimpaired-put-above) :call <SID>putline('[p', 'above')<CR>
+  nnoremap <silent> <Plug>(unimpaired-put-below) :call <SID>putline(']p', 'below')<CR>
+  nnoremap <silent> <Plug>(unimpaired-put-above-rightward) :<C-U>call <SID>putline(v:count1 . '[p', 'Above')<CR>>']
+  nnoremap <silent> <Plug>(unimpaired-put-below-rightward) :<C-U>call <SID>putline(v:count1 . ']p', 'Below')<CR>>']
+  nnoremap <silent> <Plug>(unimpaired-put-above-leftward)  :<C-U>call <SID>putline(v:count1 . '[p', 'Above')<CR><']
+  nnoremap <silent> <Plug>(unimpaired-put-below-leftward)  :<C-U>call <SID>putline(v:count1 . ']p', 'Below')<CR><']
+  nnoremap <silent> <Plug>(unimpaired-put-above-reformat)  :<C-U>call <SID>putline(v:count1 . '[p', 'Above')<CR>=']
+  nnoremap <silent> <Plug>(unimpaired-put-below-reformat)  :<C-U>call <SID>putline(v:count1 . ']p', 'Below')<CR>=']
+  nnoremap <silent> <Plug>unimpairedPutAbove :call <SID>putline('[p', 'above')<CR>
+  nnoremap <silent> <Plug>unimpairedPutBelow :call <SID>putline(']p', 'below')<CR>
+
+  exe s:Map('n', '[p', '<Plug>(unimpaired-put-above)')
+  exe s:Map('n', ']p', '<Plug>(unimpaired-put-below)')
+  exe s:Map('n', '[P', '<Plug>(unimpaired-put-above)')
+  exe s:Map('n', ']P', '<Plug>(unimpaired-put-below)')
+  exe s:Map('n', '=P', "<Plug>(unimpaired-put-above-reformat)")
+  exe s:Map('n', '=p', "<Plug>(unimpaired-put-below-reformat)")
+
+]])
+
+vmap("n", "]p", {
+  category = "Pairs",
+  label = "paste after indent",
+  desc = "paste after line increasing indent",
+})
+vmap("n", "[p", {
+  category = "Pairs",
+  label = "paste before indent",
+  desc = "paste before line increasing indent",
+})
+
+vmap("n", "]P", {
+  category = "Pairs",
+  label = "paste after unindent",
+  desc = "paste after line decreasing indent",
+})
+
+vmap("n", "[P", {
+  category = "Pairs",
+  label = "paste before unindent",
+  desc = "paste before line decreasing indent",
+})
+vmap("n", "=P", {
+  category = "Pairs",
+  label = "put above and reformat",
+  desc = "paste (put) above and reformat",
+})
+
+vmap("n", "=p", {
+  category = "Pairs",
+  label = "put below and reformat",
+  desc = "paste (put) below and reformat",
+})
+
+-- Jump to the previous git conflict start
+map("n", "[cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
+  category = "Pairs",
+  label = "git conflict start prev",
+  desc = "jump to the previous git conflict start",
+})
+
+map("n", "]cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'W')<CR>", {
+  category = "Pairs",
+  label = "git conflict start next",
+  desc = "jump to the next git conflict start",
+})
+
+map("n", "[ce", ":call search('^>\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
+  category = "Pairs",
+  label = "git conflict end prev",
+  desc = "jump to the prev git conflict end",
+})
+
+map("n", "]ce", ":call search('^>\\{4,\\} \\w\\+.*$', 'W')<CR>", {
+  category = "Pairs",
+  label = "git conflict end next ",
+  desc = "jump to the next git conflict end",
+})
+
+map("n", "[cm", ":call search('^=\\{4,\\}$', 'Wb')<CR>", {
+  category = "Pairs",
+  label = "git conflict divider prev",
+  desc = "jump to the prev git conflict divider",
+})
+
+map("n", "]cm", ":call search('^=\\{4,\\}$', 'W')<CR>", {
+  category = "Pairs",
+  label = "git conflict divider next ",
+  desc = "jump to the next git conflict divider",
+})
+
+map("n", "[x", "<cmd>lua require('trouble').previous({ skip_groups = true, jump = true, })<cr>", {
+  category = "Pairs",
+  label = "trouble prev jump",
+  desc = "jump to the previous diagnostic item skipping the groups",
+  plugin = "trouble",
+})
+
+map("n", "]x", "<cmd>lua require('trouble').next({ skip_groups = true, jump = true, })<cr>", {
+  category = "Pairs",
+  label = "trouble next jump",
+  desc = "jump to the next diagnostic item skipping the groups",
+  plugin = "trouble",
+})
+
+map("n", "]a", ':execute ":" . v:count . "next"<CR>', {
+  category = "Pairs",
+  desc = "execute next argument ",
+})
+map("n", "[a", ':execute ":" . v:count . "previous"<CR>', {
+  category = "Pairs",
+  desc = "execute prev argument ",
+})
+
+map("n", "]b", ':execute ":" . v:count . "bnext"<CR>', {
+  category = "Pairs",
+  desc = "next buffer",
+})
+
+map("n", "[b", ':execute ":" . v:count . "bprevious"<CR>', {
+  category = "Pairs",
+  desc = "prev buffer",
+})
+
+map("n", "]l", ':execute ":" . v:count . "lnext"<CR>', {
+  category = "Pairs",
+  desc = "next location item",
+})
+
+map("n", "[l", ':execute ":" . v:count . "lprevious"<CR>', {
+  category = "Pairs",
+  desc = "prev location item",
+})
+
+map("n", "]q", ':execute ":" . v:count . "cnext"<CR>', {
+  category = "Pairs",
+  desc = "next quickfix item",
+})
+
+map("n", "[q", ':execute ":" . v:count . "cprevious"<CR>', {
+  category = "Pairs",
+  desc = "prev quickfix item",
+})
+
+--------------------------------------------------------------------------------------------------
+-- TERMINAL --------------------------------------------------------------------------------------
+
+map("t", "<C-w><C-q>", "<C-\\><C-n>", {
+  category = "Terminal",
+  desc = "terminal exit",
+})
+map("t", "<C-w><C-h>", "<C-\\><C-n><C-w>h", {
+  category = "Terminal",
+  desc = "terminal navigate left",
+})
+map("t", "<C-w><C-j>", "<C-\\><C-n>C-w>j", {
+  category = "Terminal",
+  desc = "terminal navigate down",
+})
+map("t", "<C-w><C-k>", "<C-\\><C-n>C-w>k", {
+  category = "Terminal",
+  desc = "terminal navigate up",
+})
+map("t", "<C-w><C-l>", "<C-\\><C-n>C-w>l", {
+  category = "Terminal",
+  desc = "terminal navigate right",
+})
+
 --------------------------------------------------------------------------------------------------
 -- SYSTEM ----------------------------------------------------------------------------------------
 
@@ -1055,3 +1362,26 @@ map("n", "<leader>it", "<cmd>lua require('telescope.run')('lazy', 'lazy')<cr>", 
   label = "lazy.nvim telescope",
   desc = "show lazy.nvim plugins in telescope",
 })
+map("n", "<leader>iy", "!xsel -ib <<< %:p", {
+  category = "System",
+  label = "yank filename",
+  desc = "yank the current filename to clipboard",
+})
+map("n", "<leader>iY", ":%y+<CR>", {
+  category = "System",
+  label = "yank buffer",
+  desc = "yank the full buffer to clipboard",
+})
+
+map("n", "<leader>if", "lua print(expand('%:p'))", {
+  category = "System",
+  desc = "print filename in stdout",
+  label = "print filename",
+})
+
+-- stats, additional debugging info
+-- map("n", "<leader>iF", "", {
+--   category = "System",
+--   desc = "display filename in notification",
+--   label = "notify filename",
+-- })

@@ -1,4 +1,3 @@
--- entry maker for leaderf buffer
 local my_make_entry = {}
 
 local devicons = require("nvim-web-devicons")
@@ -7,7 +6,7 @@ local entry_display = require("telescope.pickers.entry_display")
 local filter = vim.tbl_filter
 local map = vim.tbl_map
 
-function my_make_entry.gen_from_buffer_like_leaderf(opts)
+local function gen_from_buffer(opts)
   opts = opts or {}
   local default_icons, _ = devicons.get_icon("file", "", { default = true })
 
@@ -76,7 +75,64 @@ function my_make_entry.gen_from_buffer_like_leaderf(opts)
   end
 end
 
-return my_make_entry
+local function get_buffers(opts)
+  opts = opts or {}
+  local bufnrs = filter(function(b)
+    if 1 ~= vim.fn.buflisted(b) then
+      return false
+    end
+    -- only hide unloaded buffers if opts.show_all_buffers is false, keep them listed if true or nil
+    if opts.show_all_buffers == false and not vim.api.nvim_buf_is_loaded(b) then
+      return false
+    end
+    if opts.ignore_current_buffer and b == vim.api.nvim_get_current_buf() then
+      return false
+    end
+    if opts.cwd_only and not string.find(vim.api.nvim_buf_get_name(b), vim.loop.cwd(), 1, true) then
+      return false
+    end
+    if not opts.cwd_only and opts.cwd and not string.find(vim.api.nvim_buf_get_name(b), opts.cwd, 1, true) then
+      return false
+    end
+    return true
+  end, vim.api.nvim_list_bufs())
+  if not next(bufnrs) then
+    return
+  end
+  if opts.sort_mru then
+    table.sort(bufnrs, function(a, b)
+      return vim.fn.getbufinfo(a)[1].lastused > vim.fn.getbufinfo(b)[1].lastused
+    end)
+  end
+
+  local buffers = {}
+  local default_selection_idx = 1
+  for _, bufnr in ipairs(bufnrs) do
+    local flag = bufnr == vim.fn.bufnr("") and "%" or (bufnr == vim.fn.bufnr("#") and "#" or " ")
+
+    if opts.sort_lastused and not opts.ignore_current_buffer and flag == "#" then
+      default_selection_idx = 2
+    end
+
+    local element = {
+      bufnr = bufnr,
+      flag = flag,
+      info = vim.fn.getbufinfo(bufnr)[1],
+    }
+
+    if opts.sort_lastused and (flag == "#" or flag == "%") then
+      local idx = ((buffers[1] ~= nil and buffers[1].flag == "%") and 2 or 1)
+      table.insert(buffers, idx, element)
+    else
+      table.insert(buffers, element)
+    end
+  end
+  return {
+    buffers = buffers,
+    default_selection_idx = default_selection_idx,
+  }
+end
+return { gen_from_buffer = gen_from_buffer, get_buffers = get_buffers }
 
 -- Use in telescope buffers
 -- require("telescope.builtin").buffers({

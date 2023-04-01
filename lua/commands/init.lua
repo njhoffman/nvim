@@ -1,6 +1,7 @@
 local format = require("commands.format")
 local ui = require("commands.ui")
 local debug = require("commands.debug")
+local paste = require("commands.paste")
 local system = require("commands.system")
 
 local cmd = vim.api.nvim_create_user_command
@@ -21,6 +22,8 @@ cmd("GetPaths", debug.get_paths, { desc = "Get path collections (rtpaths, o.pack
 cmd("Trash", system.trash_file, { desc = "Send file to system trash" })
 cmd("Delete", system.trash_file, { desc = "Send file to system trash" })
 -- cmd("TrashRecover", system.trash_file, { desc = "Send file to system trash" })
+
+vim.keymap.set("v", "p", paste.visual_paste_without_yank, { noremap = true, silent = true })
 
 vim.keymap.set("n", "<M-l>", ui.check_resize_split("l"), { noremap = true })
 vim.keymap.set("n", "<M-h>", ui.check_resize_split("h"), { noremap = true })

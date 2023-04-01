@@ -1,6 +1,7 @@
 local providers = require("hover.providers").providers
 local is_enabled = require("hover.providers").is_enabled
 local state = require("hover.state")
+local npcall = vim.F.npcall
 
 local function add_title(winnr, active_provider_id)
   local title = {}
@@ -135,7 +136,6 @@ local function show_hover_new(provider_id, config, result, opts)
 
   if lines and #lines > 0 then
     if state.winnr and vim.api.nvim_win_is_valid(state.winnr) then
-      vim.wo[state.winnr].winbar = "Loading..."
       state.bufnr = vim.api.nvim_create_buf(false, true)
 
       local width, _ = get_dimensions(lines, max, config)
@@ -146,6 +146,7 @@ local function show_hover_new(provider_id, config, result, opts)
 
       vim.api.nvim_win_set_config(state.winnr, { width = width, height = new_height })
       vim.api.nvim_win_set_buf(state.winnr, state.bufnr)
+      vim.api.nvim_win_set_option(state.winnr, "winbar", "Loading...")
       vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
       vim.api.nvim_set_option_value("modifiable", false, { buf = state.bufnr })
       vim.api.nvim_set_option_value("readonly", false, { buf = state.bufnr })
@@ -154,17 +155,21 @@ local function show_hover_new(provider_id, config, result, opts)
       local width, height = get_dimensions(lines, max, config)
       state.bufnr = vim.api.nvim_create_buf(false, true)
 
+      -- vim.wo[state.winnr].winbar = "Loading..."
+
       create_window(width, height)
 
       -- Setup keymaps
-      require("hover.aucommands").init(state.winnr, opts)
-      require("hover.keymaps").init(state.winnr, opts)
+      require("hover.aucommands").open(state.winnr, opts)
+      require("hover.keymaps").open(opts)
+
+      -- vim.wo[state.winnr].winbar = "Loading..."
 
       style_content(lines, result.filetype, width)
+      vim.api.nvim_win_set_option(state.winnr, "winbar", "Loading...")
 
       -- vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
       vim.api.nvim_win_set_buf(state.winnr, state.bufnr)
-      vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
       vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
       vim.api.nvim_set_option_value("modifiable", false, { buf = state.bufnr })
       vim.api.nvim_set_option_value("readonly", false, { buf = state.bufnr })
@@ -177,7 +182,37 @@ local function show_hover_new(provider_id, config, result, opts)
   end
 end
 
+local function find_window_by_var(name, value)
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    if npcall(vim.api.nvim_win_get_var, win, name) == value then
+      return win
+    end
+  end
+end
+
+local function focus_or_close_hover()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local winnr = vim.api.nvim_get_current_win()
+
+  -- Go back to previous window if we are in a focusable one
+  if npcall(vim.api.nvim_win_get_var, winnr, "hover") then
+    vim.api.nvim_command("wincmd p")
+    return true
+  end
+  local win = find_window_by_var("hover", bufnr)
+  if win and vim.api.nvim_win_is_valid(win) and vim.fn.pumvisible() == 0 then
+    -- focus and return the existing buf, win
+    vim.api.nvim_win_set_option(state.winnr, "winbar", "Loading...")
+    vim.api.nvim_set_current_win(win)
+    vim.api.nvim_command("stopinsert")
+    return true
+  end
+  return false
+end
+
 return {
+  focus_or_close_hover = focus_or_close_hover,
+  find_window_by_var = find_window_by_var,
   show_hover = show_hover,
   show_hover_new = show_hover_new,
 }

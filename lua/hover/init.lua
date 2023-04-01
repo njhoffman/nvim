@@ -1,16 +1,17 @@
-local M = {}
-
 local exports = {
   register = "hover.providers",
-  hover = "hover.actions",
-  hover_cursor = "hover.actions",
-  hover_sticky = "hover.actions",
-  hover_once = "hover.actions",
-  hover_select = "hover.actions",
+  hover = "hover.hover",
+  hover_cursor = "hover.hover",
+  hover_sticky = "hover.hover",
+  hover_once = "hover.hover",
+  hover_select = "hover.hover",
 }
+local M = {}
 
 function M.setup(user_config)
   require("hover.config").set(user_config)
+  require("hover.commands").init()
+  local cfg = require("hover.config").get()
 end
 
 return setmetatable(M, {

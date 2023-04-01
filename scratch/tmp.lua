@@ -1,3 +1,2 @@
-local commands = require("plugs.config.telescope.commands")
-
-vim.dbglog(file_count())
+local hover = require("hover").setup()
+vim.dbglog("hover", hover)

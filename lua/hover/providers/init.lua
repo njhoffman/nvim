@@ -1,15 +1,12 @@
 local async = require("hover.async")
--- local log = require("hover.utils").logger()
 local state = require("hover.state")
-
-local M = {}
+local log = require("hover.utils").logger()
 
 local providers = {}
-M.providers = providers
 
 local id_cnt = 0
 
-function M.is_enabled(provider)
+local function is_enabled(provider)
   local enabled = false
   if type(provider.enabled == "function") then
     enabled = provider.enabled()
@@ -24,7 +21,7 @@ function M.is_enabled(provider)
   return enabled
 end
 
-function M.register(provider)
+local function register(provider)
   if not provider.execute or type(provider.execute) ~= "function" then
     vim.notify(
       string.format("error: hover provider %s does not provide an execute function", provider.name or "NA"),
@@ -49,4 +46,78 @@ function M.register(provider)
   providers[#providers + 1] = provider
 end
 
-return M
+-- Must be called in async context
+local function run_provider(provider, _opts)
+  local opts = _opts or {}
+  local ui = require("hover.ui")
+
+  local config = require("hover.config").get()
+
+  if opts.focusable ~= false and opts.focus ~= false then
+    if ui.focus_or_close_hover() then
+      return true
+    end
+  end
+
+  local result = provider.execute()
+  if result then
+    async.scheduler()
+    -- show_hover(provider.id, config, result, opts)
+    ui.show_hover_new(provider.id, config, result, opts)
+    return true
+  end
+
+  return false
+end
+
+local function init(_opts)
+  local config = require("hover.config").get()
+  local opts = vim.tbl_deep_extend("force", config, _opts)
+  if state.initialised then
+    return opts
+  end
+  if opts and type(opts.init) == "function" then
+    opts.init()
+  end
+  state.initialised = true
+  return opts
+end
+
+local function load(_opts)
+  local opts = init(_opts)
+  ---@diagnostic disable-next-line: missing-parameter
+  local start_time = vim.fn.reltime()
+  local finished = function(provider)
+    ---@diagnostic disable-next-line: param-type-mismatch, missing-parameter
+    local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
+    state.provider = provider.name
+    state.time = load_time
+    return log.info(provider.name .. ": " .. load_time)
+  end
+
+  if type(opts.provider) == "string" and #opts.provider > 0 then
+    for _, provider in ipairs(providers) do
+      async.scheduler()
+      if provider.name == opts.provider and run_provider(provider, opts) then
+        return finished(provider)
+      end
+    end
+  else
+    for _, provider in ipairs(providers) do
+      async.scheduler()
+      if is_enabled(provider) and run_provider(provider, opts) then
+        return finished(provider)
+      end
+    end
+  end
+  if not opts.silent then
+    vim.api.nvim_echo({ { "hover.nvim: could not find any hover providers", "WarningMsg" } }, false, {})
+  end
+end
+
+return {
+  register = register,
+  providers = providers,
+  is_enabled = is_enabled,
+  load = load,
+}

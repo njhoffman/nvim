@@ -1,9 +1,9 @@
-local actions = require("hover.actions")
+local hover = require("hover.hover")
 local keymaps = require("hover.keymaps")
 
-local function init(winnr, _opts)
+local function open(winnr, _opts)
   local opts = _opts or {}
-  vim.api.nvim_create_augroup("Hover", { clear = true })
+  vim.api.nvim_create_augroup("Hover", { clear = false })
   if opts.behavior == "once" then
     vim.api.nvim_create_autocmd("CursorMoved", {
       callback = function()
@@ -18,12 +18,14 @@ local function init(winnr, _opts)
     local au_cursor = function(_bufnr)
       au_cursor_id = vim.api.nvim_create_autocmd("CursorMoved", {
         callback = function()
-          vim.schedule_wrap(actions.hover_cursor())
+          vim.dbglog("CALLBACK")
+          vim.schedule_wrap(hover.hover_cursor())
         end,
         group = "Hover",
         buffer = _bufnr,
       })
     end
+
     au_cursor(vim.api.nvim_win_get_buf(0))
 
     vim.api.nvim_create_autocmd("BufEnter", {
@@ -39,6 +41,7 @@ local function init(winnr, _opts)
     callback = function(ev)
       if ev.match == tostring(winnr) then
         vim.api.nvim_del_augroup_by_name("Hover")
+        vim.dbglog("CLEAR")
         keymaps.clear()
       end
     end,
@@ -47,5 +50,5 @@ local function init(winnr, _opts)
 end
 
 return {
-  init = init,
+  open = open,
 }

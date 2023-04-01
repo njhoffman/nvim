@@ -19,7 +19,7 @@ local telethemes = require("telescope.telethemes")
 --   end,
 -- })
 
-local function get_options(mapkey, user_opts)
+local function get_options(mapkey, user_opts, bufnr)
   user_opts = user_opts or {}
   local theme_opts = {}
   local map_opts = vim.tbl_get(telemap, mapkey, "opts") or {}
@@ -35,10 +35,12 @@ local function get_options(mapkey, user_opts)
   elseif type(opts.theme) == "string" then
     theme_opts = telethemes.get_theme(opts.theme)
   end
-  return vim.tbl_deep_extend("keep", user_opts or {}, opts, theme_opts)
+  local combined = vim.tbl_deep_extend("keep", user_opts or {}, opts, theme_opts)
+  return combined
 end
 
 local function run(plugin, cmd, user_opts)
+  local bufnr = vim.api.nvim_get_current_buf()
   local extensions = require("telescope._extensions").manager
   local builtin = require("telescope.builtin")
 
@@ -54,7 +56,8 @@ local function run(plugin, cmd, user_opts)
     mapkey = mapkey .. "_" .. cmd
   end
 
-  local opts = get_options(mapkey, user_opts)
+  vim.dbglog("user_opts", user_opts)
+  local opts = get_options(mapkey, user_opts, bufnr)
 
   local tele_cmd = vim.tbl_get(telemap, mapkey, "cmd")
   if type(tele_cmd) == "table" then

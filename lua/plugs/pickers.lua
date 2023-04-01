@@ -3,6 +3,7 @@ local utils = require("utils.lazy")
 local plugins = {
   {
     "nvim-neo-tree/neo-tree.nvim",
+    lazy = false,
     cmd = { "NeoTreeFocusToggle", "NeoTreeShowToggle" },
     event = "VimEnter",
     branch = "v2.x",

@@ -1,3 +1,5 @@
+local keymaps = require("hover.keymaps")
+
 local M = {}
 
 local default_config = {
@@ -9,12 +11,14 @@ local default_config = {
   max_width = "70%",
   min_width = 10,
   min_height = 2,
+  mapping = keymaps.default_mapping,
 }
-
+--
 local config
 
 function M.set(user_config)
   config = vim.tbl_deep_extend("force", default_config, user_config)
+  return config
 end
 
 function M.get()

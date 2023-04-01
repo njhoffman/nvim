@@ -65,6 +65,7 @@ local grep_maps = {
     ["<M-.>"] = c_actions.launch_dirpicker,
     ["<CR>"] = c_actions.multi_open,
     ["<M-a>"] = actions.toggle_all,
+    ["<M-c>"] = actions.drop_all,
   },
 }
 
@@ -75,6 +76,7 @@ local file_picker_maps = {
     ["<M-.>"] = c_actions.launch_dirpicker,
     ["<CR>"] = c_actions.multi_open,
     ["<M-a>"] = actions.toggle_all,
+    ["<M-c>"] = actions.drop_all,
   },
 }
 

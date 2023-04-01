@@ -1,5 +1,4 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
-
 local telescope = require("telescope")
 local previewers = require("telescope.previewers")
 local sorters = require("telescope.sorters")

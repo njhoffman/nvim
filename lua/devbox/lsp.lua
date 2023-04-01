@@ -8,15 +8,18 @@ local log_results = function(name, results)
   end
 end
 
-local lsp_method = function(method, start_time, line_idx, done)
+local lsp_method = function(method, start_time, line_idx, timing, done)
   local params = vim.lsp.util.make_position_params()
   local handler = lsp_handlers[method[2]] or lsp_handlers.default
-  local buf_request = function(err, result, ctx, _)
+  local buf_request = function(err, result, _, _)
+    ---@diagnostic disable-next-line: missing-parameter
     local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
+    timing.total = timing.total + (load_time * 100000)
+    timing.n = timing.n + 1
     if err then
       vim.dbglog({ Error = err, Result = result })
     end
-    local contents = handler.get_contents(result, ctx)
+    local contents = handler.get_contents(result)
     log_results(method[1], contents)
     if not contents then
       done({ summary = "  -------- " .. method[1], idx = line_idx, hl = "DebugMsg" })
@@ -28,7 +31,10 @@ local lsp_method = function(method, start_time, line_idx, done)
 
   local buf_request_all = function(client_returns)
     local clients = vim.lsp.get_active_clients()
+    ---@diagnostic disable-next-line: missing-parameter
     local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
+    timing.total = timing.total + (load_time * 100000)
+    timing.n = timing.n + 1
 
     local results = {}
     for i, client_return in ipairs(client_returns) do

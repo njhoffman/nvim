@@ -48,7 +48,7 @@ opt("pumheight", 10)
 opt("redrawtime", 5000)
 opt("scrolloff", 7)
 opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- winsize messes up on load
-opt("shada", [[!,'2000,<1000,s500]])
+opt("shada", "!,'2000,<1000,s200")
 opt("shortmess", "tToOcSIsa")
 opt("showbreak", "↳ ")
 opt("showcmd", true)
@@ -65,13 +65,13 @@ opt("switchbuf", "useopen,usetab") -- Use the current tab for openning files fro
 opt("termguicolors", true)
 opt("textwidth", 1000)
 opt("timeout", true)
-opt("timeoutlen", 700) -- 1000
-opt("ttimeoutlen", 40) -- 50
+opt("timeoutlen", 500) -- 1000
+opt("ttimeoutlen", 30) -- 50
 opt("undolevels", 1000)
-opt("updatetime", 4000)
+opt("updatetime", 800) -- 4000
 opt("whichwrap", "b,s,<,>,[,],h,l")
 opt("wildignore", "*.o,*~,*.pyc") -- wildchar/charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
-opt("winbar", "")
+opt("winbar", "...")
 opt("wildmode", "longest:full,full")
 -- opt("display", "msgsep")
 -- opt("shortmess", o.shortmess .. "cS") F silents filename
