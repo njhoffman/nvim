@@ -16,6 +16,8 @@ prefix("n", "gq", "+quickfix")
 prefix("n", "gP", "+preview")
 prefix("n", "g?", "+debug print")
 prefix("n", "<c-w>", "+window")
+prefix("n", "]c", "+git conflict")
+prefix("n", "[c", "+git conflict")
 prefix("n", "<leader>g", "+git")
 prefix("n", "<leader>f", "+file")
 prefix("n", "<leader>F", "+format")
@@ -535,31 +537,32 @@ map("n", "<M-C-_>", "<cmd>:only<cr>|:ClosePopups<cr>", {
   desc = "close popups",
 })
 
-vmap("n", "F1", {
+vmap("n", "<F1>", {
   category = "UI",
   desc = "toggle help",
 })
-map("n", "F2", "<cmd>WhichKey<cr>", {
+
+map("n", "<F2>", "<cmd>WhichKey<cr>", {
   category = "UI",
   desc = "toggle whichkey",
 })
 
-map("n", "F3", "<cmd>AerialToggle!float<cr>", {
+map("n", "<F3>", "<cmd>AerialToggle!float<cr>", {
   category = "UI",
   desc = "toggle aerial sidebar",
 })
 
-map("n", "F4", "<cmd>NeoTreeShowToggle<cr>", {
+map("n", "<F4>", "<cmd>NeoTreeShowToggle<cr>", {
   category = "UI",
   desc = "toggle neotree",
 })
 
-map("n", "F5", "<cmd>MundoToggle<cr>", {
+map("n", "<F5>", "<cmd>MundoToggle<cr>", {
   category = "UI",
   desc = "toggle mundo",
 })
 
-map("n", "F6", "<cmd>TSPlaygroundToggle<cr>", {
+map("n", "<F6>", "<cmd>TSPlaygroundToggle<cr>", {
   category = "UI",
   desc = "toggle treesitter playground",
 })

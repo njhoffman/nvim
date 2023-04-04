@@ -1,11 +1,9 @@
 local path = require("project_nvim.utils.path")
-local uv = vim.loop
-local M = {}
-local is_windows = vim.fn.has("win32") or vim.fn.has("wsl")
+local state = require("project_nvim.state")
 
-M.recent_projects = nil -- projects from previous neovim sessions
-M.session_projects = {} -- projects from current neovim session
-M.projects_meta = {}
+local M = {}
+local uv = vim.loop
+
 M.has_watch_setup = false
 
 local function open_history(mode, callback)
@@ -29,11 +27,6 @@ end
 
 local function normalise_path(path_to_normalise)
   local normalised_path = path_to_normalise:gsub("\\", "/"):gsub("//", "/")
-
-  if is_windows then
-    normalised_path = normalised_path:sub(1, 1):lower() .. normalised_path:sub(2)
-  end
-
   return normalised_path
 end
 
@@ -62,9 +55,9 @@ local function delete_duplicates(tbl)
 end
 
 function M.delete_project(project)
-  for k, v in ipairs(M.recent_projects) do
+  for k, v in ipairs(state.recent_projects) do
     if v == project.value then
-      M.recent_projects[k] = nil
+      state.recent_projects[k] = nil
     end
   end
 end
@@ -97,8 +90,8 @@ local function deserialize_history(history_data)
 
   projects = delete_duplicates(projects)
 
-  M.projects_meta = meta
-  M.recent_projects = projects
+  state.projects_meta = meta
+  state.recent_projects = projects
 end
 
 local function setup_watch()
@@ -114,7 +107,7 @@ local function setup_watch()
         return
       end
       if events["change"] then
-        M.recent_projects = nil
+        state.recent_projects = nil
         M.read_projects_from_history()
       end
     end)
@@ -139,11 +132,11 @@ end
 
 local sanitize_table = function()
   local tbl = {}
-  if M.recent_projects ~= nil then
-    vim.list_extend(tbl, M.recent_projects)
-    vim.list_extend(tbl, M.session_projects)
+  if state.recent_projects ~= nil then
+    vim.list_extend(tbl, state.recent_projects)
+    vim.list_extend(tbl, state.session_projects)
   else
-    tbl = M.session_projects
+    tbl = state.session_projects
   end
 
   tbl = delete_duplicates(tbl)
@@ -161,15 +154,15 @@ end
 
 function M.get_recent_projects()
   local tbl = sanitize_table()
-  return tbl, M.projects_meta
+  return tbl, state.projects_meta
 end
 
 local apply_metadata = function(projects)
   local tbl = {}
   for _, project in ipairs(projects) do
-    local meta = M.projects_meta[project] or {}
+    local meta = state.projects_meta[project] or {}
     local in_session = false
-    for _, session in ipairs(M.session_projects) do
+    for _, session in ipairs(state.session_projects) do
       if project == session then
         in_session = true
       end
@@ -197,14 +190,14 @@ local apply_metadata = function(projects)
 end
 
 function M.add_session(name)
-  table.insert(M.session_projects, name)
-  M.session_projects = delete_duplicates(M.session_projects)
+  table.insert(state.session_projects, name)
+  state.session_projects = delete_duplicates(state.session_projects)
 end
 
 function M.write_projects_to_history()
   -- Unlike read projects, write projects is synchronous because it runs when vim ends
   local mode = "w"
-  if M.recent_projects == nil then
+  if state.recent_projects == nil then
     mode = "a"
   end
   local file = open_history(mode)

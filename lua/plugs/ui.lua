@@ -97,9 +97,6 @@ local plugins = {
   },
   {
     "phaazon/hop.nvim",
-    config = function()
-      require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
-    end,
     branch = "v2",
     event = { "BufReadPost", "BufNewFile" },
   },

@@ -10,7 +10,8 @@ local plugins = {
     dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
   },
   {
-    dir = "~/git/telescope.nvim", -- "nvim-telescope/telescope.nvim",
+    "njhoffman/telescope.nvim", -- "nvim-telescope/telescope.nvim",
+    -- dir = "~/git/telescope.nvim", -- "nvim-telescope/telescope.nvim",
     lazy = true,
     cmd = "Telescope",
     dependencies = {
@@ -55,7 +56,7 @@ local plugins = {
       "tsakirist/telescope-lazy.nvim",
       {
         "aaronhallaert/advanced-git-search.nvim",
-        dependencies = { "nvim-telescope/telescope.nvim", "tpope/vim-fugitive" },
+        dependencies = { "njhoffman/telescope.nvim", "tpope/vim-fugitive" },
       },
       { "chip/telescope-code-fence.nvim", build = "luarocks --local install lunamark" },
       { "danielfalk/smart-open.nvim", dependencies = { "kkharji/sqlite.lua" } },

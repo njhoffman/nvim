@@ -76,6 +76,9 @@ local default_config = {
 }
 
 local config = {
+  plugins = {
+    registers = false,
+  },
   ignore_missing = false,
   -- autokey replacements
   key_labels = {

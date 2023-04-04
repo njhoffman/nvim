@@ -9,7 +9,7 @@ local default_config = {
   title = true,
   max_height = "40%",
   max_width = "70%",
-  min_width = 10,
+  min_width = 15,
   min_height = 2,
   mapping = keymaps.default_mapping,
 }

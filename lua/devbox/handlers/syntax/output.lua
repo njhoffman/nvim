@@ -3,7 +3,7 @@ local ts_utils = require("nvim-treesitter.ts_utils")
 
 local output_log = function(lines)
   for _, line in ipairs(lines) do
-    vim.dbglog(line)
+    -- vim.dbglog(line)
   end
 end
 

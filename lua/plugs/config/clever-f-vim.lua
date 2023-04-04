@@ -31,4 +31,31 @@ vim.cmd([[
     nmap F <Plug>(clever-f-F)
     xmap F <Plug>(clever-f-F)
     omap F <Plug>(clever-f-F)
-    ]])
+]])
+
+-- TODO: convert to direct map
+local vmap = require("mapper").vmap
+vmap("", "f", {
+  category = "Motion",
+  plugin = "clever-f.vim",
+  label = "find char forwards",
+  desc = "To the [count]th occurrence of {char} to the right ",
+})
+vmap("", "F", {
+  category = "Motion",
+  plugin = "clever-f.vim",
+  label = "find char backwards",
+  desc = "To the [count]th occurrence of {char} to the left",
+})
+vmap("", "t", {
+  category = "Motion",
+  plugin = "clever-f.vim",
+  label = "find char -1 forwards",
+  desc = "Till before [count]'th occurrence of {char} to the right",
+})
+vmap("", "T", {
+  category = "Motion",
+  plugin = "clever-f.vim",
+  label = "find char -1 backwards",
+  desc = "Till before [count]'th occurrence of {char} to the left",
+})

@@ -3,7 +3,7 @@ local is_enabled = require("hover.providers").is_enabled
 local state = require("hover.state")
 local npcall = vim.F.npcall
 
-local function add_title(winnr, active_provider_id)
+local function get_title(active_provider_id)
   local title = {}
   local width = 0
   for _, p in ipairs(providers) do
@@ -15,15 +15,20 @@ local function add_title(winnr, active_provider_id)
     end
   end
   local title_str = table.concat(title, "")
+  return title_str, width
+end
+
+local function add_title(winnr, active_provider_id)
+  local title_str, width = get_title(active_provider_id)
   if string.len(vim.trim(title_str)) > 0 then
     local win_height = vim.api.nvim_win_get_height(winnr)
-    vim.api.nvim_win_set_height(winnr, win_height + 1)
+    vim.api.nvim_win_set_height(winnr, win_height)
   end
-  vim.wo[winnr].winbar = title_str
   if width > state.width then
-    vim.api.nvim_win_set_width(state.winnr, width)
-    state.width = width
+    vim.api.nvim_win_set_width(state.winnr, width + 1)
+    state.width = width + 1
   end
+  vim.wo[winnr].winbar = title_str or "..."
 end
 
 local function get_max_height(num)
@@ -46,26 +51,31 @@ end
 
 local function show_hover(provider_id, config, result, opts)
   local _, winnr = vim.lsp.util.open_floating_preview(result.lines, result.filetype, opts)
-  if config.title then
-    add_title(winnr, provider_id)
-  end
+  add_title(winnr, provider_id)
 end
 
-local function style_content(lines, filetype, width)
+local function get_styled_content(_lines, width)
+  local lines = vim.lsp.util.stylize_markdown(state.bufnr, _lines, {
+    max_width = width,
+  })
+  return lines
+end
+
+local function style_content(_lines, filetype, width)
+  local lines = get_styled_content(_lines, width)
   if not filetype or filetype == "help-markdown" then
     vim.api.nvim_buf_set_option(state.bufnr, "filetype", "help")
-    vim.lsp.util.stylize_markdown(state.bufnr, lines, {
-      max_width = width,
-    })
   else
     vim.api.nvim_buf_set_option(state.bufnr, "filetype", filetype)
-    vim.api.nvim_buf_set_lines(state.bufnr, 0, #lines, false, lines)
   end
+  vim.api.nvim_buf_set_lines(state.bufnr, 0, #lines, false, lines)
 end
 
-local function get_dimensions(lines, max, config)
+local function get_dimensions(lines, max, config, provider_id)
   local height = #lines
   local width = 0
+
+  local _, title_width = get_title(provider_id)
 
   if height > max.h then
     height = max.h
@@ -83,9 +93,10 @@ local function get_dimensions(lines, max, config)
   elseif width < config.min_width then
     width = config.min_width
   end
-  state.width = width
+
+  state.width = title_width > width and title_width or width
   state.height = height
-  return width, height
+  return state.width, state.height
 end
 
 local function create_window(width, height)
@@ -129,57 +140,70 @@ local function show_hover_new(provider_id, config, result, opts)
   end
   vim.api.nvim_set_option_value("scrolloff", scrolloff, {})
 
-  local lines = {}
-  if result and type(result) == "table" and result.lines then
-    lines = result.lines
+  if vim.fn.empty(state.bufnr) == 1 then
+    state.bufnr = vim.api.nvim_create_buf(false, true)
   end
 
+  local lines = {}
+  if result and type(result) == "table" and result.lines then
+    -- lines = result.lines
+    get_dimensions(result.lines, max, config, provider_id)
+    vim.dbglog(state.width, state.height)
+    lines = get_styled_content(result.lines, state.width)
+  end
+
+  -- if result.filetype == "help-markdown" then
+  --   vim.api.nvim_buf_set_option(state.bufnr, "filetype", "help")
+  -- elseif vim.fn.empty(result.filetype) == 0 then
+  --   vim.api.nvim_buf_set_option(state.bufnr, "filetype", result.filetype)
+  -- end
+
+  -- vim.dbglog("STATE 1", state.bufnr, lines)
   if lines and #lines > 0 then
     if state.winnr and vim.api.nvim_win_is_valid(state.winnr) then
-      state.bufnr = vim.api.nvim_create_buf(false, true)
+      local new_lines = get_styled_content(lines, state.width)
+      -- get_dimensions(new_lines, max, config, provider_id)
 
-      local width, _ = get_dimensions(lines, max, config)
-      style_content(lines, result.filetype, width)
+      -- local new_lines = vim.api.nvim_buf_get_lines(state.bufnr, 0, -1, false)
 
-      local new_lines = vim.api.nvim_buf_get_lines(state.bufnr, 0, -1, false)
-      local _, new_height = get_dimensions(new_lines, max, config)
+      -- local _, new_height = get_dimensions(new_lines, max, config)
 
-      vim.api.nvim_win_set_config(state.winnr, { width = width, height = new_height })
+      vim.api.nvim_win_set_config(state.winnr, { width = state.width, height = state.height })
       vim.api.nvim_win_set_buf(state.winnr, state.bufnr)
-      vim.api.nvim_win_set_option(state.winnr, "winbar", "Loading...")
+      vim.api.nvim_win_set_option(state.winnr, "winbar", "...")
       vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
-      vim.api.nvim_set_option_value("modifiable", false, { buf = state.bufnr })
+      -- vim.api.nvim_set_option_value("modifiable", false, { buf = state.bufnr })
       vim.api.nvim_set_option_value("readonly", false, { buf = state.bufnr })
       vim.api.nvim_set_option_value("swapfile", false, { buf = state.bufnr })
     else
-      local width, height = get_dimensions(lines, max, config)
-      state.bufnr = vim.api.nvim_create_buf(false, true)
-
-      -- vim.wo[state.winnr].winbar = "Loading..."
-
-      create_window(width, height)
+      create_window(state.width, state.height)
 
       -- Setup keymaps
       require("hover.aucommands").open(state.winnr, opts)
       require("hover.keymaps").open(opts)
 
-      -- vim.wo[state.winnr].winbar = "Loading..."
+      -- local new_lines = style_content(lines, result.filetype, state.width)
+      -- local new_lines = get_styled_content(lines, state.width)
+      -- local _, new_height = get_dimensions(lines, max, config)
 
-      style_content(lines, result.filetype, width)
-      vim.api.nvim_win_set_option(state.winnr, "winbar", "Loading...")
+      vim.api.nvim_win_set_option(state.winnr, "winbar", "...")
 
-      -- vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
       vim.api.nvim_win_set_buf(state.winnr, state.bufnr)
       vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
-      vim.api.nvim_set_option_value("modifiable", false, { buf = state.bufnr })
+      -- vim.api.nvim_set_option_value("modifiable", false, { buf = state.bufnr })
       vim.api.nvim_set_option_value("readonly", false, { buf = state.bufnr })
       vim.api.nvim_set_option_value("swapfile", false, { buf = state.bufnr })
-      vim.api.nvim_set_keymap("n", "<M-NL>", "<cmd>lua print('HELLO')<cr>", {})
-    end
-    if config.title then
-      add_title(state.winnr, provider_id)
+
+      -- get_dimensions(lines, max, config, provider_id)
     end
   end
+
+  state.busy = false
+  if vim.fn.empty(state.next_job) == 0 then
+    state.next_job()
+  end
+
+  add_title(state.winnr, provider_id)
 end
 
 local function find_window_by_var(name, value)
@@ -191,18 +215,14 @@ local function find_window_by_var(name, value)
 end
 
 local function focus_or_close_hover()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local winnr = vim.api.nvim_get_current_win()
-
   -- Go back to previous window if we are in a focusable one
-  if npcall(vim.api.nvim_win_get_var, winnr, "hover") then
+  if npcall(vim.api.nvim_win_get_var, state.winnr, "hover") then
     vim.api.nvim_command("wincmd p")
     return true
   end
-  local win = find_window_by_var("hover", bufnr)
+  local win = find_window_by_var("hover", state.bufnr)
   if win and vim.api.nvim_win_is_valid(win) and vim.fn.pumvisible() == 0 then
     -- focus and return the existing buf, win
-    vim.api.nvim_win_set_option(state.winnr, "winbar", "Loading...")
     vim.api.nvim_set_current_win(win)
     vim.api.nvim_command("stopinsert")
     return true

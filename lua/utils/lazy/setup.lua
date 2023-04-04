@@ -1,5 +1,7 @@
 local stats = require("utils.lazy.stats")
-local setup = function()
+
+local setup = function(opts)
+  opts = opts or { cache = true }
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -35,7 +37,7 @@ local setup = function()
     },
     performance = {
       cache = {
-        enabled = false,
+        enabled = opts.cache,
       },
       reset_packpath = true,
     },

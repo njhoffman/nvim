@@ -64,7 +64,7 @@ local mapping = {
     opts.desc = "preview lsp definitions"
     map("n", "gPd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", opts)
   end,
-  declarations = function()
+  declaration = function()
     opts.desc = "lsp declarations in quickfix"
     map("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", opts)
   end,

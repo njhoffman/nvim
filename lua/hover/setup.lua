@@ -7,8 +7,8 @@ require("hover").setup({
     -- -- require("hover.providers.lsp-type-definition")
     require("hover.providers.help")
     -- require("hover.providers.man")
-    require("hover.providers.dictionary")
-    require("hover.providers.gh")
+    -- require("hover.providers.dictionary")
+    -- require("hover.providers.gh")
   end,
   border = "rounded",
   focusable = false,

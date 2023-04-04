@@ -18,7 +18,6 @@ local function open(winnr, _opts)
     local au_cursor = function(_bufnr)
       au_cursor_id = vim.api.nvim_create_autocmd("CursorMoved", {
         callback = function()
-          vim.dbglog("CALLBACK")
           vim.schedule_wrap(hover.hover_cursor())
         end,
         group = "Hover",
@@ -41,7 +40,6 @@ local function open(winnr, _opts)
     callback = function(ev)
       if ev.match == tostring(winnr) then
         vim.api.nvim_del_augroup_by_name("Hover")
-        vim.dbglog("CLEAR")
         keymaps.clear()
       end
     end,

@@ -325,8 +325,10 @@ local cfg = {
     preserve_equality = false,
   },
   backends = {
+    -- ["_"] = { "lsp", "treesitter", "markdown", "man" },
     ["_"] = { "lsp", "treesitter", "markdown", "man" },
-    markdown = { "treesitter" },
+    man = { "man" },
+    markdown = { "markdown" },
   },
   icons = {
     Text = "", --   Text = " ",

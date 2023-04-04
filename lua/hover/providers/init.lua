@@ -1,6 +1,7 @@
 local async = require("hover.async")
 local state = require("hover.state")
 local log = require("hover.utils").logger()
+local utils = require("hover.utils")
 
 local providers = {}
 
@@ -30,6 +31,7 @@ local function register(provider)
     return
   end
 
+  -- utils.debounce("hover", load, 500, utils.debounce_strategy.CALL_FIRST_AND_LAST),
   provider.execute = async.wrap(provider.execute, 1)
   provider.enabled = async.wrap(provider.enabled, 1)
   provider.id = id_cnt
@@ -83,6 +85,7 @@ local function init(_opts)
   return opts
 end
 
+local n = 0
 local function load(_opts)
   local opts = init(_opts)
   ---@diagnostic disable-next-line: missing-parameter
@@ -94,6 +97,16 @@ local function load(_opts)
     state.time = load_time
     return log.info(provider.name .. ": " .. load_time)
   end
+
+  -- if state.busy == true then
+  --   n = n + 1
+  --   state.next_job = function()
+  --     load(_opts)
+  --   end
+  --   return
+  -- end
+
+  state.busy = true
 
   if type(opts.provider) == "string" and #opts.provider > 0 then
     for _, provider in ipairs(providers) do
@@ -111,6 +124,7 @@ local function load(_opts)
     end
   end
   if not opts.silent then
+    state.busy = false
     vim.api.nvim_echo({ { "hover.nvim: could not find any hover providers", "WarningMsg" } }, false, {})
   end
 end

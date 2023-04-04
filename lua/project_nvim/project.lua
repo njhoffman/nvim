@@ -2,12 +2,9 @@ local history = require("project_nvim.utils.history")
 local path = require("project_nvim.utils.path")
 local config = require("project_nvim.config")
 local root = require("project_nvim.root")
+local state = require("project_nvim.state")
 
 local M = {}
-
--- Internal states
-M.attached_lsp = false
-M.last_project = nil
 
 ---@diagnostic disable-next-line: unused-local
 local on_attach_lsp = function(client, bufnr)
@@ -15,7 +12,7 @@ local on_attach_lsp = function(client, bufnr)
 end
 
 local attach_to_lsp = function()
-  if M.attached_lsp then
+  if state.attached_lsp then
     return
   end
 
@@ -33,7 +30,7 @@ local attach_to_lsp = function()
     return _start_client(lsp_config)
   end
 
-  M.attached_lsp = true
+  state.attached_lsp = true
 end
 
 local function is_file()
@@ -62,7 +59,7 @@ local set_user_option = function(dir, method)
     local project_name = ""
     if project_path ~= nil and project_path ~= "" then
       project_path, project_name = string.match(project_path, "(.*)%/(.*)")
-      last_buffer = vim.fn.bufnr()
+      -- last_buffer = vim.fn.bufnr()
     end
     opt.set_local("projectmethod", method, bufnr)
     opt.set_local("projectpath", project_path, bufnr)
@@ -83,7 +80,7 @@ end
 
 M.set_pwd = function(dir, method)
   if dir ~= nil then
-    M.last_project = dir
+    state.last_project = dir
     history.add_session(dir)
     set_user_option(dir, method)
     if vim.fn.getcwd() ~= dir then
@@ -144,34 +141,8 @@ local function setup_au_commands()
 end
 
 function M.init()
-  -- local autocmds = {}
-  -- if not config.options.manual_mode then
-  --   autocmds[#autocmds + 1] = 'autocmd VimEnter,BufEnter * ++nested lua require("project_nvim.project").on_buf_enter()'
-  --   if vim.tbl_contains(config.options.detection_methods, "lsp") then
-  --     attach_to_lsp()
-  --   end
-  -- end
-
   setup_au_commands()
   setup_user_commands()
-  -- vim.cmd([[
-  --   command! ProjectRoot lua require("project_nvim.project").on_buf_enter()
-  --   command! ProjectWrite lua require("project_nvim.utils.history").write_projects_to_history()
-  --   command! ProjectDbg lua vim.dbg({ recent = require('project_nvim.utils.history').recent_projects, session = require('project_nvim.utils.history').session_projects, meta = require('project_nvim.utils.history').projects_meta })
-  -- ]])
-
-  -- autocmds[#autocmds + 1] =
-  --   'autocmd VimLeavePre * lua require("project_nvim.utils.history").write_projects_to_history()'
-  --
-  -- vim.cmd([[
-  --   augroup project_nvim
-  --   au!
-  -- ]])
-  -- for _, value in ipairs(autocmds) do
-  --   vim.cmd(value)
-  -- end
-  -- vim.cmd("augroup END")
-
   history.read_projects_from_history()
 end
 

@@ -122,7 +122,16 @@ function M.dump_out(_opt)
 end
 
 M.map = function(mode, lhs, label)
-  wk.register({ [lhs] = { label }, { mode = mode } })
+  if mode == "" then
+    wk.register({ [lhs] = { label }, { mode = "n" } })
+    wk.register({ [lhs] = { label }, { mode = "o" } })
+    wk.register({ [lhs] = { label }, { mode = "v" } })
+  elseif mode == "x" then
+    wk.register({ [lhs] = { label }, { mode = "v" } })
+    wk.register({ [lhs] = { label }, { mode = "s" } })
+  else
+    wk.register({ [lhs] = { label }, { mode = mode } })
+  end
 end
 
 M.prefix = function(mode, prefix, name)

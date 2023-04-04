@@ -59,7 +59,6 @@ end
 
 local assign_open_maps = function(_opts)
   local config = require("hover.config").get()
-  vim.dbglog("config", config, _opts)
   local opts = vim.tbl_deep_extend("keep", _opts or {}, config)
   for mode, keys in pairs(opts.mapping.global) do
     opts.mapping.old[mode] = opts.mapping.old[mode] or {}

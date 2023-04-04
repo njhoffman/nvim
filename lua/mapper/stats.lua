@@ -23,7 +23,7 @@ local modes_map = {
   ["t"] = { "terminal" },
   ["x"] = { "visual_select", { "s", "v" } },
   ["!"] = { "map_bang", { "i", "c" } },
-  [""] = { "map", { "n", "v", "s", "o" } },
+  [""] = { "map", { "n", "v", "o" } },
 }
 
 local default_modes = { "n", "i", "c", "v", "s", "o", "t", "x" }

@@ -9,9 +9,6 @@ local plugins = {
       vim.cmd("colorscheme nord-nick")
     end,
   },
-  { "freddiehaddad/feline.nvim", lazy = false, event = "VeryLazy" },
-  { "romgrk/barbar.nvim", lazy = false, event = "VeryLazy", dependencies = "nvim-tree/nvim-web-devicons" },
-  { "rcarriga/nvim-notify", lazy = false, event = "VimEnter" },
   {
     "nvim-neo-tree/neo-tree.nvim",
     -- no lazy loading to enable netrw override
@@ -21,7 +18,10 @@ local plugins = {
     branch = "v2.x",
     dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
   },
-  { "folke/which-key.nvim", lazy = true, event = "VeryLazy" },
+  { "freddiehaddad/feline.nvim", event = "VimEnter" },
+  { "romgrk/barbar.nvim", event = "VimEnter", dependencies = "nvim-tree/nvim-web-devicons" },
+  { "rcarriga/nvim-notify", event = "VimEnter" },
+  { "folke/which-key.nvim", event = "VimEnter" },
   {
     "folke/noice.nvim",
     opts = {
