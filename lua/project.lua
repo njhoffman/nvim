@@ -1,50 +1,11 @@
-local get_icon = function(method, lsp)
-
-  -- stylua: ignore
-  local icon_map = {
-    awk_ls           = " ", --  
-    bashls           = " ",
-    clangd           = " ",
-    cssls            = " ",
-    dockerls         = " ",
-    efm              = " ",
-    eslint           = " ",
-    golangci_lint_ls = " ",
-    gopls            = "ﳑ ", -- 
-    graphql          = " ",
-    html             = " ",
-    ["null-ls"]      = " ",
-    jsonls           = " ",
-    pylsp            = " ",
-    sqls             = " ",
-    lua_ls           = " ", --  
-    stylelint_lsp    = " ",
-    tailwindcss      = " ",
-    terraformls      = " ",
-    tsserver         = " ", -- 
-    vimls            = " ",
-    -- "yamlls"
-  }
-
-  local icon = " "
-  if method == ".git" then
-    icon = " "
-  elseif type(lsp) == "string" and lsp ~= "" then
-    if type(icon_map[lsp]) == "string" then
-      icon = icon_map[lsp]
-    else
-      vim.notify("no matching icon found: " .. lsp, "warn")
-    end
-  end
-  return icon
-end
+local display = require("project_nvim.display")
 
 local notify_id = nil
 local change_project = function(dir, method)
   local notify = require("notify")
-  local lsp = string.match(method or "", '"([^%s]+)" lsp')
+  local lsp = string.match(method or "", 'lsp "([^%s]+)"')
   dir = dir:gsub(vim.fn.getenv("HOME"), "~")
-  local icon = get_icon(method, lsp)
+  local icon, highlight = display.get_icon(method, lsp)
   -- local title = icon
   local msg = " " .. icon .. " " .. dir
   -- local msg = dir
@@ -61,30 +22,21 @@ local change_project = function(dir, method)
 end
 
 local project_config = {
-  -- Manual mode doesn't automatically change your root directory, so you have
-  -- the option to manually do so using `:ProjectRoot` command.
+  -- Must use `:ProjectRoot` command to change directory
   manual_mode = false,
-  -- Methods of detecting the root directory. **"lsp"** uses the native neovim
-  -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
-  -- order matters: if one is not detected, the other is used as fallback. You
-  -- can also delete or rearangne the detection methods.
+  -- order of detection methods: "lsp", "pattern"
   detection_methods = { "lsp", "pattern" },
-  -- All the patterns used to detect root dir, when **"pattern"** is in
-  -- detection_methods
+  -- All the patterns used to detect root dir, when **"pattern"** is in detection_methods
   patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
-  -- Table of lsp clients to ignore by name
-  -- eg: { "efm", ... }
+  -- Table of lsp clients to ignore by name eg: { "efm", ... }
   ignore_lsp = { "null-ls" },
-  -- Don't calculate root dir on specific directories
-  -- Ex: { "~/.cargo/*", ... }
+  -- Don't calculate root dir on specific directories Ex: { "~/.cargo/*", ... }
   exclude_dirs = {},
   -- Show hidden files in telescope
   show_hidden = true,
-  -- When set to false, you will get a message when project.nvim changes your
-  -- directory.
+  -- When set to false, you will get a message when project.nvim changes your directory.
   silent_chdir = false,
-  -- Path where project.nvim will store the project history for use in
-  -- telescope
+  -- Path where project.nvim will store the project history for use in telescope
   datapath = vim.fn.stdpath("data"),
   chdir_func = change_project,
 }
@@ -92,13 +44,14 @@ local project_config = {
 require("project_nvim").setup(project_config)
 
 local cmd = vim.api.nvim_create_user_command
+
 local get_root = function()
   local path, method = require("project_nvim.project").get_project_root()
-  local line = path
+  local line = path or ""
   if method then
     line = path .. "  [" .. method .. "]"
   end
-  vim.notify(line, "info", { title = method, anchor = "TC" })
+  vim.notify(line, 3, { title = method, anchor = "TC" })
 end
 
 cmd("ProjectGetRoot", get_root, {
@@ -106,12 +59,6 @@ cmd("ProjectGetRoot", get_root, {
   desc = "Get project root path and method",
 })
 
-local get_recent = function()
-  local history = require("project_nvim.utils.history")
-  vim.notify(history.get_recent_projects(), "inspect")
-end
-
-cmd("ProjectGetRecent", get_recent, {
-  nargs = 0,
-  desc = "Get recent projects list",
-})
+cmd("ProjectDbg", function()
+  vim.dbg(require("project_nvim.state"))
+end, { desc = "Dump debugging data" })

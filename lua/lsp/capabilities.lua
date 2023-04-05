@@ -97,14 +97,14 @@ end
 
 local handlers = require("lsp.handlers")
 local try_capability = function(client, bufnr, capability)
-  -- vim.notify("checking " .. capability, "trace")
-  local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+  -- local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+  -- vim.dbglog(client.name .. ":  ? " .. capability .. " for '" .. ft .. "'")
   if client.server_capabilities[capability] then
     if handlers[capability] then
-      -- vim.notify("lsp : " .. client.name .. " + " .. capability, 0)
+      -- vim.dbglog(client.name .. ": " .. " + " .. capability)
       handlers[capability](client, bufnr)
     else
-      -- vim.notify("skip: " .. client.name .. " - " .. capability, 0)
+      -- vim.dbglog(client.name .. ": " .. " - " .. capability)
     end
   end
 end

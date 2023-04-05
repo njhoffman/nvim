@@ -69,26 +69,10 @@ local on_attach = function(client, bufnr)
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
   -- local icons = require("nvim-nonicons")
   -- ✘  i 
-  vim.fn.sign_define("DiagnosticSignError", {
-    text = "", -- icons.get("x-circle"),
-    texthl = "LspDiagnosticsSignError",
-  })
-
-  vim.fn.sign_define("DiagnosticSignWarn", {
-    text = "", -- icons.get("alert"),
-    texthl = "LspDiagnosticsSignWarn",
-  })
-
-  vim.fn.sign_define("DiagnosticSignInfo", {
-    text = "", -- icons.get("info"),
-    texthl = "LspDiagnosticsSignInfo",
-  })
-  -- 
-  vim.fn.sign_define("DiagnosticSignHint", {
-    text = "", -- icons.get("comment"),
-    texthl = "LspDiagnosticsSignHint",
-  })
-
+  vim.fn.sign_define("DiagnosticSignError", { text = "", texthl = "LspDiagnosticsSignError" })
+  vim.fn.sign_define("DiagnosticSignWarn", { text = "", texthl = "LspDiagnosticsSignWarn" })
+  vim.fn.sign_define("DiagnosticSignInfo", { text = "", texthl = "LspDiagnosticsSignInfo" }) -- 
+  vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "LspDiagnosticsSignHint" })
   local keymap_opts = { noremap = true, silent = true }
   vim.api.nvim_set_keymap(
     "n",

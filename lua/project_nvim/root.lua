@@ -178,15 +178,14 @@ function M.get_project_root()
       type(config),
       type(config.options),
       type(config.options.detection_methods),
-    }, "error")
+    }, 5)
     return
   end
   for _, detection_method in ipairs(config.options.detection_methods) do
     if detection_method == "lsp" then
       local root, lsp_name = M.find_lsp_root()
-
       if root ~= nil then
-        return root, '"' .. lsp_name .. '"' .. " lsp"
+        return root, 'lsp "' .. lsp_name .. '"'
       end
     elseif detection_method == "pattern" then
       local root, method = M.find_pattern_root()

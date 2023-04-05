@@ -12,6 +12,24 @@ function M.init()
   M.historyfile = M.projectpath .. "/project_history" -- file
 end
 
+function M.is_file()
+  local buf_type = vim.api.nvim_buf_get_option(0, "buftype")
+
+  local whitelisted_buf_type = { "", "acwrite" }
+  local is_in_whitelist = false
+  for _, wtype in ipairs(whitelisted_buf_type) do
+    if buf_type == wtype then
+      is_in_whitelist = true
+      break
+    end
+  end
+  if not is_in_whitelist then
+    return false
+  end
+
+  return true
+end
+
 function M.create_scaffolding(callback)
   if callback ~= nil then -- async
     uv.fs_mkdir(M.projectpath, 448, callback)

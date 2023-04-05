@@ -1,10 +1,7 @@
 local path = require("project_nvim.utils.path")
 local state = require("project_nvim.state")
 
-local M = {}
 local uv = vim.loop
-
-M.has_watch_setup = false
 
 local function open_history(mode, callback)
   if callback ~= nil then -- async
@@ -54,7 +51,7 @@ local function delete_duplicates(tbl)
   return res
 end
 
-function M.delete_project(project)
+local function delete_project(project)
   for k, v in ipairs(state.recent_projects) do
     if v == project.value then
       state.recent_projects[k] = nil
@@ -94,10 +91,22 @@ local function deserialize_history(history_data)
   state.recent_projects = projects
 end
 
+local read_projects = function(fd)
+  if fd ~= nil then
+    uv.fs_fstat(fd, function(_, stat)
+      if stat ~= nil then
+        uv.fs_read(fd, stat.size, -1, function(_, data)
+          uv.fs_close(fd, function(_, _) end)
+          deserialize_history(data)
+        end)
+      end
+    end)
+  end
+end
+
 local function setup_watch()
-  -- Only runs once
-  if M.has_watch_setup == false then
-    M.has_watch_setup = true
+  if state.has_watch_setup == false then
+    state.has_watch_setup = true
     local event = uv.new_fs_event()
     if event == nil then
       return
@@ -108,26 +117,12 @@ local function setup_watch()
       end
       if events["change"] then
         state.recent_projects = nil
-        M.read_projects_from_history()
+        open_history("r", function(_, fd)
+          read_projects(fd)
+        end)
       end
     end)
   end
-end
-
-function M.read_projects_from_history()
-  open_history("r", function(_, fd)
-    setup_watch()
-    if fd ~= nil then
-      uv.fs_fstat(fd, function(_, stat)
-        if stat ~= nil then
-          uv.fs_read(fd, stat.size, -1, function(_, data)
-            uv.fs_close(fd, function(_, _) end)
-            deserialize_history(data)
-          end)
-        end
-      end)
-    end
-  end)
 end
 
 local sanitize_table = function()
@@ -152,12 +147,7 @@ local sanitize_table = function()
   return real_tbl
 end
 
-function M.get_recent_projects()
-  local tbl = sanitize_table()
-  return tbl, state.projects_meta
-end
-
-local apply_metadata = function(projects)
+local apply_metadata = function(projects, skip_number)
   local tbl = {}
   for _, project in ipairs(projects) do
     local meta = state.projects_meta[project] or {}
@@ -167,14 +157,12 @@ local apply_metadata = function(projects)
         in_session = true
       end
     end
-    if in_session then
+    if in_session and skip_number ~= true then
       if type(meta.num) == "string" then
         meta.num = tonumber(meta.num) + 1
       else
         meta.num = 1
       end
-      meta.last = os.time()
-      -- os.time(os.date("!*t"))
     end
     if type(meta) == "table" then
       local arg_str = "|"
@@ -189,12 +177,31 @@ local apply_metadata = function(projects)
   return tbl
 end
 
-function M.add_session(name)
+local function add_session(name, method)
   table.insert(state.session_projects, name)
+  if type(method) == "string" then
+    local meta = state.projects_meta[name] or {}
+    local lsp = string.match(method or "", 'lsp "([^%s]+)"')
+    if type(lsp == "string") and lsp ~= "" then
+      meta.method = "lsp"
+      meta.method_type = meta.method_type or lsp
+    else
+      meta.method = method
+    end
+    meta.last = os.time()
+    state.projects_meta[name] = meta
+  end
   state.session_projects = delete_duplicates(state.session_projects)
 end
 
-function M.write_projects_to_history()
+local function read_projects_from_history()
+  open_history("r", function(_, fd)
+    setup_watch()
+    read_projects(fd)
+  end)
+end
+
+local function write_projects_to_history(skip_number)
   -- Unlike read projects, write projects is synchronous because it runs when vim ends
   local mode = "w"
   if state.recent_projects == nil then
@@ -204,7 +211,7 @@ function M.write_projects_to_history()
 
   if file ~= nil then
     local save_projects = sanitize_table()
-    local res = apply_metadata(save_projects)
+    local res = apply_metadata(save_projects, skip_number)
 
     -- Trim table to last 100 entries
     local len_res = #res
@@ -227,4 +234,15 @@ function M.write_projects_to_history()
   end
 end
 
-return M
+local function get_recent_projects()
+  local tbl = sanitize_table()
+  return tbl, state.projects_meta
+end
+
+return {
+  read_projects_from_history = read_projects_from_history,
+  write_projects_to_history = write_projects_to_history,
+  add_session = add_session,
+  get_recent_projects = get_recent_projects,
+  delete_project = delete_project,
+}

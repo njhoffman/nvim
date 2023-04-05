@@ -16,10 +16,10 @@ local map = function(modes, lhs, rhs, opts)
   modes = type(modes) == "string" and { modes } or modes
   local keymap_opts = {
     remap = opts.remap or (opts.noremap == false),
-    silent = vim.tbl_contains(opts, "silent") and opts.silent or true,
-    nowait = vim.tbl_contains(opts, "nowait") and opts.nowait,
-    expr = vim.tbl_contains(opts, "expr") and opts.expr,
-    unique = vim.tbl_contains(opts, "unique") and opts.unique,
+    silent = opts.silent,
+    nowait = opts.nowait,
+    expr = opts.expr,
+    unique = opts.unique,
     desc = opts.desc or opts.label,
   }
 
