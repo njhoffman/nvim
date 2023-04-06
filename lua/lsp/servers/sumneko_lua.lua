@@ -1,4 +1,5 @@
 local lspconfig = require("lspconfig")
+local lazy_utils = require("utils.lazy")
 local util = lspconfig.util
 
 local sumneko_lua = function()
@@ -37,7 +38,18 @@ local sumneko_lua = function()
     -- setup_jsonls = false,
     pathStrict = true,
   }
-  require("neodev").setup(neodev_config)
+
+  if lazy_utils.is_loaded("neodev.nvim") then
+    local ok, neodev = pcall(require, "neodev")
+    if not ok then
+      vim.notify("error loading neodev" .. vim.inspect(neodev), 0)
+    else
+      neodev.setup(neodev_config)
+    end
+  else
+    vim.notify("neodev not loaded for sumneko", 0)
+  end
+
   lspconfig["lua_ls"].setup({
     -- log_level = vim.lsp.protocol.MessageType.Warn,
     cmd = {

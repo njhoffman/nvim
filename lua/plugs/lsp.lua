@@ -18,6 +18,8 @@ local plugins = {
       "rmagatti/goto-preview",
       "kosayoda/nvim-lightbulb",
       "mickael-menu/zk-nvim",
+      { "folke/neodev.nvim",  dependencies = { "williamboman/mason-lspconfig.nvim", "williamboman/mason.nvim" } },
+
       {
         "folke/trouble.nvim",
         cmd = { "TroubleToggle", "Trouble" },
@@ -45,7 +47,6 @@ local plugins = {
         "folke/lsp-colors.nvim",
         opts = { Error = "#db4b4b", Warn = "#e0af68", Info = "#0db9d7", Hint = "#10B981" },
       },
-      { "folke/neodev.nvim", dependencies = { "folke/neoconf.nvim" } },
       { "jbyuki/ntangle-lsp.nvim", dependencies = { "jbyuki/ntangle-ts.nvim" } },
       {
         "hrsh7th/cmp-nvim-lsp",
