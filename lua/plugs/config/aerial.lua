@@ -444,7 +444,10 @@ local cfg = {
   -- },
 }
 
-require("aerial").setup(cfg)
+local config = require("aerial.config")
+local aerial = require("aerial")
+aerial.setup(cfg)
+-- vim.dbglog("first", config)
 
 local function link(group1, group2)
   vim.api.nvim_set_hl(0, group1, { link = group2, default = true })
@@ -492,3 +495,51 @@ for _, symbol_kind in ipairs(symbol_kinds) do
   vim.api.nvim_set_hl(0, string.format("Aerial%s", symbol_kind), { fg = "none" })
   -- link(string.format("Aerial%s", symbol_kind), "AerialDefault")
 end
+
+local start_with_backend = function(backend)
+  return function()
+    config.setup({ backends = { backend } })
+    local _config = require("aerial.config")
+    -- return M.get_backend_by_name(name), name
+    aerial.close()
+    aerial.toggle()
+  end
+end
+
+local setup_cmds = function()
+  -- local opts = vim.tbl_deep_extend("force", default, cfg, { backends = { backend } })
+  config.setup(cfg)
+  local bufnr = vim.api.nvim_get_current_buf()
+  local backends = require("aerial.backends")
+  local all_backends = { "lsp", "treesitter", "man", "help" }
+  local supported = {}
+  for _, be in ipairs(all_backends) do
+    supported[be] = backends.is_supported(bufnr, be)
+  end
+  for _, be in ipairs(all_backends) do
+    local cmd = "Aerial" .. string.sub(string.upper(be), 1, 1) .. string.sub(be, 2, -1)
+    if supported[be] then
+      vim.api.nvim_create_user_command(
+        cmd,
+        start_with_backend(be),
+        { desc = "Start Aerial with " .. be .. " backend", force = true }
+      )
+    else
+      local _, _ = pcall(vim.api.nvim_del_user_command, cmd)
+    end
+  end
+end
+
+local augroup_ok, _ = pcall(vim.api.nvim_get_autocmds, { group = "AerialBuffer" })
+if not augroup_ok then
+  vim.api.nvim_create_augroup("AerialBuffer", { clear = false })
+end
+
+setup_cmds()
+--
+-- vim.api.nvim_create_autocmd({ "BufEnter" }, {
+--   group = "AerialBuffer",
+--   desc = "Create commands depending on aerial backend capabilities",
+--   callback = setup_cmds,
+-- })
+-- --
