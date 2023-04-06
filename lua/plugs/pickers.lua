@@ -1,6 +1,7 @@
 local utils = require("utils.lazy")
 
 local plugins = {
+  { "echasnovski/mini.fuzzy", event = "VeryLazy", version = false },
   {
     "nvim-neo-tree/neo-tree.nvim",
     lazy = false,

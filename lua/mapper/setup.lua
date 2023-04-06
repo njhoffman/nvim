@@ -16,8 +16,6 @@ prefix("n", "gq", "+quickfix")
 prefix("n", "gP", "+preview")
 prefix("n", "g?", "+debug print")
 prefix("n", "<c-w>", "+window")
-prefix("n", "]c", "+git conflict")
-prefix("n", "[c", "+git conflict")
 prefix("n", "<leader>g", "+git")
 prefix("n", "<leader>f", "+file")
 prefix("n", "<leader>F", "+format")
@@ -533,39 +531,47 @@ map("n", "<M-C-_>", "<cmd>:only<cr>|:ClosePopups<cr>", {
   desc = "close popups",
 })
 
-vmap("n", "<F1>", {
+map("n", "<F1>", "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>", {
+  plugin = "telescope.nvim",
   category = "UI",
   desc = "toggle help",
 })
 
 map("n", "<F2>", "<cmd>WhichKey<cr>", {
+  plugin = "which-key.nvim",
   category = "UI",
   desc = "toggle whichkey",
 })
 
 map("n", "<F3>", "<cmd>AerialToggle!float<cr>", {
+  plugin = "aerial.nvim",
   category = "UI",
   desc = "toggle aerial sidebar",
 })
 
 map("n", "<F4>", "<cmd>NeoTreeShowToggle<cr>", {
+  plugin = "neo-tree",
   category = "UI",
   desc = "toggle neotree",
 })
 
-map("n", "<F5>", "<cmd>MundoToggle<cr>", {
+map("n", "<F5>", "<cmd>lua require('telescope.run')('undo', 'undo')<cr>", {
+  plugin = "telescope.nvim",
   category = "UI",
-  desc = "toggle mundo",
+  desc = "toggle telescope undo",
+})
+
+-- Shift-F5
+map("n", "<F17>", "<cmd>MundoToggle<cr>", {
+  plugin = "mundo",
+  category = "UI",
+  desc = "toggle mundo undo",
 })
 
 map("n", "<F6>", "<cmd>TSPlaygroundToggle<cr>", {
   category = "UI",
+  plugin = "treesitter.nvim",
   desc = "toggle treesitter playground",
-})
-
-map("n", '"', "<cmd>Registers<cr>", {
-  category = "UI",
-  desc = "view registers",
 })
 
 --------------------------------------------------------------------------------------------------
@@ -1204,57 +1210,6 @@ vmap("n", "=p", {
   desc = "paste (put) below and reformat",
 })
 
--- Jump to the previous git conflict start
-map("n", "[cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
-  category = "Pairs",
-  label = "git conflict start prev",
-  desc = "jump to the previous git conflict start",
-})
-
-map("n", "]cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'W')<CR>", {
-  category = "Pairs",
-  label = "git conflict start next",
-  desc = "jump to the next git conflict start",
-})
-
-map("n", "[ce", ":call search('^>\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
-  category = "Pairs",
-  label = "git conflict end prev",
-  desc = "jump to the prev git conflict end",
-})
-
-map("n", "]ce", ":call search('^>\\{4,\\} \\w\\+.*$', 'W')<CR>", {
-  category = "Pairs",
-  label = "git conflict end next ",
-  desc = "jump to the next git conflict end",
-})
-
-map("n", "[cm", ":call search('^=\\{4,\\}$', 'Wb')<CR>", {
-  category = "Pairs",
-  label = "git conflict divider prev",
-  desc = "jump to the prev git conflict divider",
-})
-
-map("n", "]cm", ":call search('^=\\{4,\\}$', 'W')<CR>", {
-  category = "Pairs",
-  label = "git conflict divider next ",
-  desc = "jump to the next git conflict divider",
-})
-
-map("n", "[x", "<cmd>lua require('trouble').previous({ skip_groups = true, jump = true, })<cr>", {
-  category = "Pairs",
-  label = "trouble prev jump",
-  desc = "jump to the previous diagnostic item skipping the groups",
-  plugin = "trouble",
-})
-
-map("n", "]x", "<cmd>lua require('trouble').next({ skip_groups = true, jump = true, })<cr>", {
-  category = "Pairs",
-  label = "trouble next jump",
-  desc = "jump to the next diagnostic item skipping the groups",
-  plugin = "trouble",
-})
-
 map("n", "]a", ':execute ":" . v:count . "next"<CR>', {
   category = "Pairs",
   desc = "execute next argument ",
@@ -1262,36 +1217,6 @@ map("n", "]a", ':execute ":" . v:count . "next"<CR>', {
 map("n", "[a", ':execute ":" . v:count . "previous"<CR>', {
   category = "Pairs",
   desc = "execute prev argument ",
-})
-
-map("n", "]b", ':execute ":" . v:count . "bnext"<CR>', {
-  category = "Pairs",
-  desc = "next buffer",
-})
-
-map("n", "[b", ':execute ":" . v:count . "bprevious"<CR>', {
-  category = "Pairs",
-  desc = "prev buffer",
-})
-
-map("n", "]l", ':execute ":" . v:count . "lnext"<CR>', {
-  category = "Pairs",
-  desc = "next location item",
-})
-
-map("n", "[l", ':execute ":" . v:count . "lprevious"<CR>', {
-  category = "Pairs",
-  desc = "prev location item",
-})
-
-map("n", "]q", ':execute ":" . v:count . "cnext"<CR>', {
-  category = "Pairs",
-  desc = "next quickfix item",
-})
-
-map("n", "[q", ':execute ":" . v:count . "cprevious"<CR>', {
-  category = "Pairs",
-  desc = "prev quickfix item",
 })
 
 --------------------------------------------------------------------------------------------------
@@ -1327,6 +1252,13 @@ map("n", "<leader>ii", "<cmd>ImportStatus<cr>", {
   desc = "show import status interface",
 })
 
+map("n", "<leader>iL", "<cmd>Lazy log<cr>", {
+  category = "System",
+  plugin = "lazy.nvim",
+  label = "show lazy.nvim log",
+  desc = "open the lazy.nvim log",
+})
+
 map("n", "<leader>il", "<cmd>Lazy<cr>", {
   category = "System",
   plugin = "lazy.nvim",
@@ -1348,6 +1280,12 @@ map("n", "<leader>is", "<cmd>Lazy sync<cr>", {
   desc = "show lazy.nvim plugins sync",
 })
 
+map("n", "<leader>io", "<cmd>option<cr>", {
+  category = "System",
+  label = "show options window",
+  desc = "show output of all configured options",
+})
+
 map("n", "<leader>ip", "<cmd>Lazy profile<cr>", {
   category = "System",
   plugin = "lazy.nvim",
@@ -1361,15 +1299,23 @@ map("n", "<leader>it", "<cmd>lua require('telescope.run')('lazy', 'lazy')<cr>", 
   label = "lazy.nvim telescope",
   desc = "show lazy.nvim plugins in telescope",
 })
+
 map("n", "<leader>iy", "!xsel -ib <<< %:p", {
   category = "System",
   label = "yank filename",
   desc = "yank the current filename to clipboard",
 })
+
 map("n", "<leader>iY", ":%y+<CR>", {
   category = "System",
   label = "yank buffer",
   desc = "yank the full buffer to clipboard",
+})
+
+map("n", '"', "<cmd>Registers<cr>", {
+  category = "System",
+  plugin = "registers.nvim",
+  desc = "view registers",
 })
 
 map("n", "<leader>if", "lua print(expand('%:p'))", {

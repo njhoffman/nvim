@@ -398,8 +398,19 @@ local cfg = {
     "Struct",
     "TypeParameter",
   },
-  -- Show box drawing characters for the tree hierarchy
-  show_guides = true,
+  {
+    open_automatic = function(bufnr)
+      -- Enforce a minimum line count
+      local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+      return ft == "help" or "man"
+      -- return vim.api.nvim_buf_line_count(bufnr) > 80
+      --   -- Enforce a minimum symbol count
+      --   and aerial.num_symbols(bufnr) > 4
+      --   -- A useful way to keep aerial closed when closed manually
+      --   and not aerial.was_closed()
+    end,
+  },
+
   -- Customize the characters used when show_guides = true
   guides = {
     -- When the child item has a sibling below it

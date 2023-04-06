@@ -11,6 +11,24 @@
 --   end
 -- })
 
+-- Make window title indicative of our cwd
+-- Loaded before normal autocmds (./autocmds) because we leverage the `VimEnter` here.
+local set_window_title = function()
+  local path = vim.split(vim.fn.getcwd(), "/", {})
+  vim.opt.titlestring = [[%{v:progname}: ]] .. vim.fn.join({ path[#path - 1], path[#path] }, "/")
+  vim.opt.title = true
+end
+
+vim.api.nvim_create_autocmd({ "DirChanged", "VimEnter" }, {
+  group = vim.api.nvim_create_augroup("UpdateWindowTitle", { clear = true }),
+  callback = function()
+    local scope = vim.v.event.scope
+    if scope == nil or scope == "global" then
+      set_window_title()
+    end
+  end,
+})
+
 vim.cmd([=[
 augroup qf-history
     autocmd!

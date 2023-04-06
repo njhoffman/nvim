@@ -3,6 +3,16 @@ local utils = require("utils.lazy")
 local lz_syn = true
 
 local plugins = {
+  {
+    "iamcco/markdown-preview.nvim",
+    build = "cd app && yarn install",
+    cmd = "MarkdownPreview",
+    ft = { "markdown", "pandoc" },
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+      -- vim.g.mkdp_browser = 'safari'
+    end,
+  },
   { "vuki656/package-info.nvim", dependencies = "MunifTanjim/nui.nvim", ft = "json" },
   { "romainl/vim-qf", ft = "qf" },
   { "kevinhwang91/nvim-bqf", cmd = { "BqfEnable", "BqfToggle" }, ft = "qf" },

@@ -71,6 +71,7 @@ local mapping = {
   code_action = function()
     opts.desc = "view code action menu"
     map("n", "gC", "<cmd>CodeActionMenu<CR>", opts)
+    map("n", "<leader>ca", "<cmd>CodeActionMenu<CR>", opts)
     -- "<cmd>lua vim.lsp.buf.code_action()<CR>"
   end,
   hover = function()

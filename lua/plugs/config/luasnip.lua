@@ -1,4 +1,4 @@
-local ls = require("luasnip")
+local luasnip = require("luasnip")
 -- some shorthands...
 local types = require("luasnip.util.types")
 
@@ -6,7 +6,7 @@ local types = require("luasnip.util.types")
 -- where the actual snippet-definitions start.
 
 -- Every unspecified option will be set to the default.
-ls.config.set_config({
+opts = {
   history = true,
   -- Update more often, :h events for more info.
   update_events = "TextChanged,TextChangedI",
@@ -38,6 +38,21 @@ ls.config.set_config({
   -- the current filetype in eg. a markdown-code block or `vim.cmd()`.
   ft_func = function()
     return vim.split(vim.bo.filetype, ".", true)
+  end,
+}
+luasnip.setup(opts)
+
+-- unlink active snippet on mode change to prevent accidental jumps and frustration
+vim.api.nvim_create_autocmd("ModeChanged", {
+  group = vim.api.nvim_create_augroup("UnlinkLuaSnipSnippetOnModeChange", {
+    clear = true,
+  }),
+  pattern = { "s:n", "i:*" },
+  desc = "Forget the current snippet when leaving the insert mode",
+  callback = function(evt)
+    if luasnip.session and luasnip.session.current_nodes[evt.buf] and not luasnip.session.jump_active then
+      luasnip.unlink_current()
+    end
   end,
 })
 

@@ -24,4 +24,15 @@ if logger ~= nil and logger.init ~= nil then
   vim.notify = logger.notify
 end
 
--- vim.notify(string.format("Initializing neovim at %s ... ", os.date("%H:%M:%S")), "debug")
+N = vim.dbg
+
+D = vim.dbglog
+
+RELOAD = function(...)
+  return require("plenary.reload").reload_module(...)
+end
+
+R = function(...)
+  RELOAD(...)
+  return require(...)
+end

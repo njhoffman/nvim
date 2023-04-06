@@ -18,7 +18,7 @@ local plugins = {
       "rmagatti/goto-preview",
       "kosayoda/nvim-lightbulb",
       "mickael-menu/zk-nvim",
-      { "folke/neodev.nvim",  dependencies = { "williamboman/mason-lspconfig.nvim", "williamboman/mason.nvim" } },
+      { "folke/neodev.nvim", dependencies = { "williamboman/mason-lspconfig.nvim", "williamboman/mason.nvim" } },
 
       {
         "folke/trouble.nvim",
@@ -61,7 +61,15 @@ local plugins = {
       vim.import("lsp.config")
     end,
   },
+  -- https://github.com/onsails/diaglist.nvim
   {
+    -- branch = "chore/pass-winnr-to-custom-sections",
+    -- FIXME: despite the fix from #35, `navic` still refuses to work with barbecue.
+    --  After further investigation, I found that the bug is reproducible in my older
+    --  _lualine_ winbar, which begs the question if it's a navic bug or a bug
+    --  with lazyvim's handling of navic (particularly, how it attaches to a
+    --  LSP/buf).
+    -- "ditsuke/barbecue.nvim", -- Wait for my PR to get merged
     "utilyre/barbecue.nvim",
     name = "barbecue",
     dir = "~/git/barbecue.nvim",

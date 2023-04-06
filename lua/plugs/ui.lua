@@ -23,8 +23,22 @@ local plugins = {
       })
     end,
   },
-  { "echasnovski/mini.move", event = "VeryLazy" },
+  { "echasnovski/mini.trailspace", event = "VeryLazy" },
   { "echasnovski/mini.animate", event = "VeryLazy" },
+  -- Only highlight cursorline of the active window
+  -- Makes it easier to tell what window is active in the
+  -- Absence of a prominent cursor (such as with lighter-colored themes)
+  {
+    "tummetott/reticle.nvim",
+    event = "VeryLazy",
+    opts = {
+      always = {
+        cursorline = {
+          "neo-tree", -- reticle messes up with Neo-tree cursorline in search mode
+        },
+      },
+    },
+  },
   {
     "sindrets/diffview.nvim",
     cmd = { "Diffview", "DiffviewLog", "DiffviewOpen", "DiffviewToggleFiles", "DiffviewFileHistory" },
@@ -37,6 +51,7 @@ local plugins = {
     "kevinhwang91/nvim-ufo",
     dependencies = "kevinhwang91/promise-async",
     cmd = { "UfoEnable", "UfoAttach", "UfoEnableFold" },
+    event = { "BufReadPost", "InsertEnter" },
   },
   { "nacro90/numb.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "ivyl/vim-bling", event = { "BufReadPost", "BufNewFile" } },
