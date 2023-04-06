@@ -1,13 +1,12 @@
-local utils = require('runner.utils')
+local utils = require("runner.utils")
 
 vim.cmd([[
   let s:server_name = escape(substitute(substitute(v:servername, '\$', '', ''), '/tmp', '', ''), '\')
-  let s:session_restart_path = expand("$HOME") . "/.vim/sessions/restart"
+  let s:session_restart_path = stdpath('data') . "/sessions/restart"
 
   function Restart()
     " save session file to <servername>_runonce to indicate a one time reload
     let l:session_path = s:session_restart_path . s:server_name . '_runonce.vim'
-    exe "PackerCompile"
     exe "mksession! " . l:session_path
     let l:cmds = []
     if exists("g:argv")
@@ -24,7 +23,6 @@ vim.cmd([[
 
   function RestartCmd()
     let l:session_path = s:session_restart_path . s:server_name . '_runonce.vim'
-    exe "PackerCompile"
     exe "mksession! " . l:session_path
     let l:cmds = []
     for arg in v:argv
@@ -50,7 +48,6 @@ vim.cmd([[
   function RestartOn()
     " save session file to <servername>_always to indicate an idefinite reload cycle
     let l:session_path = s:session_restart_path . s:server_name . '_always.vim'
-    exe "PackerCompile"
     exe "mksession! " . l:session_path
   endfunction
   command RestartOn call RestartOn()

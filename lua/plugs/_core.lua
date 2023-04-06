@@ -19,7 +19,12 @@ local plugins = {
     dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
   },
   { "freddiehaddad/feline.nvim", event = "VimEnter" },
-  { "romgrk/barbar.nvim", event = "VimEnter", dependencies = "nvim-tree/nvim-web-devicons" },
+  {
+    "romgrk/barbar.nvim",
+    event = "VimEnter",
+    cmd = { "BufferPrev", "BufferNext" },
+    dependencies = "nvim-tree/nvim-web-devicons",
+  },
   { "rcarriga/nvim-notify", event = "VimEnter" },
   { "folke/which-key.nvim", event = "VimEnter" },
   {
