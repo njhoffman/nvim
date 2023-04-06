@@ -1,5 +1,6 @@
 local utils = require("utils.lazy")
 local plugins = {
+  { "chrisgrieser/nvim-early-retirement", event = "VeryLazy" },
   {
     "qpkorr/vim-renamer",
     config = function()

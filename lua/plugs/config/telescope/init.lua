@@ -7,8 +7,6 @@ local commands = require("plugs.config.telescope.commands")
 local c_previewers = require("plugs.config.telescope.previewers")
 local mappings = require("plugs.config.telescope.mappings")
 local plugins = require("plugs.config.telescope.plugins")
-local symbol_highlights = require("plugs.config.telescope.symbol_highlights")
-
 local hide_preview = false
 local currwidth = vim.api.nvim_win_get_width(vim.api.nvim_get_current_win())
 if currwidth < 120 then
@@ -100,6 +98,7 @@ local telescope_config = {
       mappings = mappings.file_picker,
       find_command = commands.rg,
     },
+    colorscheme = { enable_preivew = true },
     oldfiles = {
       mappings = mappings.file_picker,
       find_command = commands.rg,
@@ -126,10 +125,37 @@ local telescope_config = {
       -- git_command = { "git", "log", '--format=%h%d (%ar) %s <%an>' }
     },
     lsp_workspace_symbols = {
-      symbol_highlights = symbol_highlights,
+      symbols_highlights = {
+        "Class",
+        "Function",
+        "Method",
+        "Constructor",
+        "Interface",
+        "Module",
+        "Struct",
+        "Trait",
+        "Field",
+      },
     },
     lsp_document_symbols = {
-      symbol_highlights = symbol_highlights,
+      sorter = require("telescope").extensions.fzf.native_fzf_sorter({
+        fuzzy = true, -- false will only do exact matching
+        override_generic_sorter = true, -- override the generic sorter
+        override_file_sorter = true, -- override the file sorter
+        case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+        -- the default case_mode is "smart_case"
+      }),
+      symbols_highlights = {
+        "Class",
+        "Function",
+        "Method",
+        "Constructor",
+        "Interface",
+        "Module",
+        "Struct",
+        "Trait",
+        "Field",
+      },
     },
   },
 }

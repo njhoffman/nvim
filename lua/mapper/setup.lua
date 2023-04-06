@@ -533,39 +533,47 @@ map("n", "<M-C-_>", "<cmd>:only<cr>|:ClosePopups<cr>", {
   desc = "close popups",
 })
 
-vmap("n", "<F1>", {
+map("n", "<F1>", "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>", {
+  plugin = "telescope.nvim",
   category = "UI",
   desc = "toggle help",
 })
 
 map("n", "<F2>", "<cmd>WhichKey<cr>", {
+  plugin = "which-key.nvim",
   category = "UI",
   desc = "toggle whichkey",
 })
 
 map("n", "<F3>", "<cmd>AerialToggle!float<cr>", {
+  plugin = "aerial.nvim",
   category = "UI",
   desc = "toggle aerial sidebar",
 })
 
 map("n", "<F4>", "<cmd>NeoTreeShowToggle<cr>", {
+  plugin = "neo-tree",
   category = "UI",
   desc = "toggle neotree",
 })
 
-map("n", "<F5>", "<cmd>MundoToggle<cr>", {
+map("n", "<F5>", "<cmd>lua require('telescope.run')('undo', 'undo')<cr>", {
+  plugin = "telescope.nvim",
   category = "UI",
-  desc = "toggle mundo",
+  desc = "toggle telescope undo",
+})
+
+-- Shift-F5
+map("n", "<F17>", "<cmd>MundoToggle<cr>", {
+  plugin = "mundo",
+  category = "UI",
+  desc = "toggle mundo undo",
 })
 
 map("n", "<F6>", "<cmd>TSPlaygroundToggle<cr>", {
   category = "UI",
+  plugin = "treesitter.nvim",
   desc = "toggle treesitter playground",
-})
-
-map("n", '"', "<cmd>Registers<cr>", {
-  category = "UI",
-  desc = "view registers",
 })
 
 --------------------------------------------------------------------------------------------------
@@ -1348,6 +1356,12 @@ map("n", "<leader>is", "<cmd>Lazy sync<cr>", {
   desc = "show lazy.nvim plugins sync",
 })
 
+map("n", "<leader>io", "<cmd>option<cr>", {
+  category = "System",
+  label = "show options window",
+  desc = "show output of all configured options",
+})
+
 map("n", "<leader>ip", "<cmd>Lazy profile<cr>", {
   category = "System",
   plugin = "lazy.nvim",
@@ -1361,15 +1375,23 @@ map("n", "<leader>it", "<cmd>lua require('telescope.run')('lazy', 'lazy')<cr>", 
   label = "lazy.nvim telescope",
   desc = "show lazy.nvim plugins in telescope",
 })
+
 map("n", "<leader>iy", "!xsel -ib <<< %:p", {
   category = "System",
   label = "yank filename",
   desc = "yank the current filename to clipboard",
 })
+
 map("n", "<leader>iY", ":%y+<CR>", {
   category = "System",
   label = "yank buffer",
   desc = "yank the full buffer to clipboard",
+})
+
+map("n", '"', "<cmd>Registers<cr>", {
+  category = "System",
+  plugin = "registers.nvim",
+  desc = "view registers",
 })
 
 map("n", "<leader>if", "lua print(expand('%:p'))", {

@@ -104,6 +104,13 @@ opt("tabstop", 2, buffer)
 opt("undofile", true, buffer)
 -- opt("textwidth", 100, buffer) -- set per buffer
 
+vim.cmd([[
+  if executable('rg')
+    set grepprg=rg\ --vimgrep
+    set grepformat=%f:%l:%c:%m
+  endif
+]])
+
 -- vim.cmd('set iskeyword+=-') -- treat dash separated words as a word text object"
 -- TERMINAL = vim.fn.expand('$TERMINAL')
 -- vim.o.titlestring="%<%F%=%l/%L - nvim"

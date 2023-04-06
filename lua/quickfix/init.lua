@@ -1,0 +1,53 @@
+-- :vim[grep] — search using Vim’s native functionality.
+-- :gr[ep] — search via an external program specified by the grepprg setting.
+-- :helpgr[ep] — search help text files.
+-- :mak[e] — call the program specified by the makeprg setting (which defaults to make).
+-- :cex[pr] {expression} — use {expression} to populate to list. This can be used to clear the quickfix list via :cex [].
+-- Quickfix list commands start :c — here’s some useful ones:
+--
+-- :cw[indow] — Open the quickfix window if it’s non-empty.
+-- :cn[ext], :cp[rev] — Jump to next/previous error.
+-- :cnf[ile], :cpf[ile] — Jump to first error in the next/previous file.
+-- :cab[ove] :cbel[ow] — Jump to the error above/below the current line.
+-- Vim remembers the last ten quickfix lists; you can navigate between them with:
+--
+-- :col[der], :cnew[er] — Go to the older/newer quickfix list.
+-- :chi[story] — Show the list of quickfix lists.
+--
+-- gqr, gqd, gqt : lsp references, definitions, type definitions in quickfix
+-- Tip: Operating on the error list
+-- A powerful editing technique is to apply an operation or macro to each location or file in the quickfix list. This is done with :cdo or :cfdo respectively. Here are some examples where we populate the quickfix list using :grep (using ripgrep options) then perform a batch edit using :cdo or :cfdo.
+--
+-- Replace “foo” with “bar” in all Python files containing the string “baz”:
+--
+-- :grep baz -t py
+-- :cfdo %s/foo/bar/g | update
+-- Delete lines containing “foo” from all files called urls.py:
+--
+-- :grep foo -g urls.py
+-- :cfdo g/foo/d | update
+-- Run macro q on all lines containing “foo”:
+--
+-- :grep foo
+-- :cdo normal @q
+-- function! Grep(...)
+--     let cmd = join([&grepprg] + [join(a:000, ' ')], ' ')
+--     return system(cmd)
+-- endfunction
+--
+-- command! -nargs=+ -complete=file_in_path Grep cexpr Grep(<f-args>)
+-- To complement this, you can use a command-line abbreviation to automatically switch :grep to :Grep:
+--
+-- cnoreabbrev <expr> grep (getcmdtype() ==# ':' && getcmdline() ==# 'grep') ? 'Grep' : 'grep'
+-- and an autocommand to open the quickfix window when there are results:
+--
+-- augroup quickfix
+--  autocmd!
+--  autocmd QuickFixCmdPost cexpr cwindow
+-- augroup END
+-- This is life changing.
+-- As ever, there are useful bindings from tpope/vim-unimpaired:
+--
+-- [t, ]t — :tprevious, :tnext
+-- [T, ]T — :tfirst, :tlast
+-- If you want to show the tag match list when there are multiple matches but jump straight to the tag if a single match, use :tj[ump] or g CTRL-].

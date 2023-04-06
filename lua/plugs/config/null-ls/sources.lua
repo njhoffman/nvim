@@ -50,6 +50,8 @@ end
 local REGEX_TODO = vim.regex("TODO")
 local REGEX_FIXME = vim.regex("FIXME")
 
+-- lua: .editorconfig, .stylua.toml,  .lua-format, .luacheckrc
+
 M.sources = {
   -- Code actions
   null_ls.builtins.completion.spell,

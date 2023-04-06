@@ -37,7 +37,7 @@ null_ls.setup({
     new_client.offset_encoding = "utf-16"
   end,
   on_attach = on_attach,
-  -- default_timeout = 5000,
+  default_timeout = 3000,
   root_dir = u.root_pattern(".null-ls-root", "Makefile", ".git"),
   -- should_attach = function(bufnr)
   --   local large_file = require("large_file")

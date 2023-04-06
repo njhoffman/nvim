@@ -1,51 +1,83 @@
 ﻿local cmp = require("cmp")
 local cmp_types = require("cmp.types.cmp")
-local sources = require("plugs.config.nvim-cmp.sources")
-local ELLIPSIS_CHAR = "…"
-local MAX_LABEL_WIDTH = 40
 local MIN_LABEL_WIDTH = 20
+local ELLIPSIS_CHAR = "…"
+local MAX_DOCUMENT_WIDTH = 30
+local MAX_LABEL_WIDTH = 40
+local SYMBOL_MAP = require("utils.lspkind").SYMBOL_MAP
+local WIN_HIGHLIGHT = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:Search"
+-- local WIN_HIGHLIGHT = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
 
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-    end,
-  },
-  window = {
-    completion = cmp.config.window.bordered({
-      winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
-      -- max_width = 40,
-    }),
-    documentation = cmp.config.window.bordered({
-      winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
-      -- max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
-      -- max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
-    }),
-  },
-  formatting = {
-    fields = {
-      "menu",
-      "abbr",
-      "kind",
+local function get_lsp_completion_context(completion, source)
+  local ok, source_name = pcall(function()
+    return source.source.client.config.name
+  end)
+  if not ok then
+    return nil
+  end
+  if source_name == "tsserver" then
+    return completion.detail
+  elseif source_name == "pyright" then
+    if completion.labelDetails ~= nil then
+      return completion.labelDetails.description
+    end
+  end
+end
+
+local function has_words_before()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
+local sources = {
+  main = {
+    {
+      { name = "nvim_lsp" },
+      { name = "nvim_lua" },
+      { name = "luasnip" },
+      { name = "emoji" },
     },
-    -- offset, exact, score, recently_used, locality, kind, sort_text, length, order
-    format = function(entry, vim_item)
-      local label = vim_item.abbr
-      local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
-      if truncated_label ~= label then
-        vim_item.abbr = truncated_label .. ELLIPSIS_CHAR
-      elseif string.len(label) < MIN_LABEL_WIDTH then
-        local padding = string.rep(" ", MIN_LABEL_WIDTH - string.len(label))
-        vim_item.abbr = label .. padding
-      end
-      vim_item.dup = ({ nvim_lua = 0 })[entry.source.name] or 1
-      vim_item.menu = sources.names[entry.source.name] .. " "
-      vim_item.kind = " " .. sources.symbols[vim_item.kind]
-      return vim_item
-    end,
+    {
+      { name = "treesitter" },
+      { name = "path" },
+      -- Distracting!
+      -- { name = "spell" },
+      -- { name = "dictionary" },
+    },
   },
+  gitcommit = {
+    { name = "cmp_git" },
+    { name = "nvim_lsp" },
+    { name = "nvim_lua" },
 
-  mapping = cmp.mapping.preset.insert({
+    { name = "nvim_lsp_document_symbol" },
+    { name = "buffer" },
+    { name = "dictionary" },
+    { name = "spell" },
+    { name = "path" },
+  },
+  cmdsearch = {
+    {
+      { name = "nvim_lsp" },
+      { name = "nvim_lsp_document_symbol" },
+      { name = "dictionary" },
+      { name = "buffer" },
+    },
+  },
+  cmdline = {
+    {
+      { name = "cmdline" },
+      {
+        name = "path",
+        options = { trailing_slash = true, label_trailing_slash = true },
+      },
+      { name = "dictionary" },
+      { name = "buffer" },
+    },
+  },
+}
+local mapping = {
+  main = {
     ["<Up>"] = cmp.mapping.scroll_docs(-1),
     ["<Down>"] = cmp.mapping.scroll_docs(1),
     ["<C-Up>"] = cmp.mapping.scroll_docs(-6),
@@ -57,27 +89,8 @@ cmp.setup({
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.abort(),
     ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-  }),
-  sources = cmp.config.sources({
-    { name = "nvim_lsp" },
-    { name = "luasnip" }, -- For luasnip users.
-    -- { name = 'ultisnips' }, -- For ultisnips users.
-    -- { name = 'snippy' }, -- For snippy users.
-  }, {
-    { name = "buffer" },
-  }),
-})
-
-cmp.setup.filetype("gitcommit", {
-  sources = cmp.config.sources({
-    { name = "cmp_git" }, -- You can specify the `cmp_git` source if you were installed it.
-  }, {
-    { name = "buffer" },
-  }),
-})
-
-cmp.setup.cmdline({ "/", "?" }, {
-  mapping = cmp.mapping.preset.cmdline({
+  },
+  cmdline = {
     ["<C-f>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
@@ -100,40 +113,98 @@ cmp.setup.cmdline({ "/", "?" }, {
         fallback()
       end
     end, { "c" }),
-  }),
-  sources = {
-    { name = "buffer" },
   },
+}
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
+    end,
+  },
+  -- experimental = {
+  --   ghost_text = {
+  --     hl_group = "LspCodeLens",
+  --   },
+  --   --   native_menu = true,
+  -- },
+  window = {
+    max_width = MAX_DOCUMENT_WIDTH,
+    col_offset = -3,
+    side_padding = 0,
+    completion = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT }),
+    documentation = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT }),
+    preview = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT }),
+  },
+  formatting = {
+    fields = { "kind", "abbr", "menu" },
+    --- @param entry cmp.Entry
+    --- @param vim_item vim.CompletedItem
+    format = function(entry, vim_item)
+      local item_with_kind = require("lspkind").cmp_format({
+        mode = "symbol_text",
+        maxwidth = MAX_LABEL_WIDTH,
+        symbol_map = SYMBOL_MAP,
+      })(entry, vim_item)
+
+      local kind_s_menu = vim.split(item_with_kind.kind, "%s", { trimempty = true })
+      item_with_kind.kind = " " .. (kind_s_menu[1] or "") .. " "
+      item_with_kind.menu = "    (" .. (kind_s_menu[2] or "") .. ")"
+      item_with_kind.menu = vim.trim(item_with_kind.menu)
+
+      local completion_context = get_lsp_completion_context(entry.completion_item, entry.source)
+      if completion_context ~= nil and completion_context ~= "" then
+        item_with_kind.menu = item_with_kind.menu .. [[ -> ]] .. completion_context
+      end
+      return item_with_kind
+    end,
+  },
+  mapping = cmp.mapping.preset.insert(mapping.main),
+  sources = cmp.config.sources(sources.main[1], sources.main[2]),
+})
+
+cmp.setup.filetype("gitcommit", { sources = cmp.config.sources(sources.gitcommit) })
+
+cmp.setup.cmdline({ "/", "?" }, {
+  mapping = cmp.mapping.preset.cmdline(mapping.cmdline),
+  sources = sources.cmdsearch,
 })
 
 cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline({
-    ["<C-f>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        for _ = 1, 5 do
-          cmp.mapping.select_next_item({
-            behavior = cmp_types.SelectBehavior.Select,
-          })(nil)
-        end
-      else
-        fallback()
-      end
-    end, { "c" }),
-    ["<C-b>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        for _ = 1, 5 do
-          cmp.mapping.select_prev_item({
-            behavior = cmp_types.SelectBehavior.Select,
-          })(nil)
-        end
-      else
-        fallback()
-      end
-    end, { "c" }),
-  }),
-  sources = cmp.config.sources({
-    { name = "path" },
-  }, {
-    { name = "cmdline" },
-  }),
+  completion = {
+    autocomplete = { "InsertEnter" },
+  },
+  mapping = cmp.mapping.preset.cmdline(mapping.cmdline),
+  sources = cmp.config.sources(sources.cmdline),
 })
+
+-- ===================
+-- QoL and consistency
+-- ===================
+
+-- Navigate tab completion w/ <C-j> and <C-k>
+
+--- Map `key` to `mapped_to` if the nvim-native popup
+--- menu is visible.
+---
+--- @param mode string  Mode shortstring
+--- @param lhs  string  LHS
+--- @param rhs  string  RHS
+--- @param fb   string|nil  Fallback key triggered on popup absence.
+---                         If `nil`, `lhs` is triggered instead.
+---
+--- @see https://vim.fandom.com/wiki/Improve_completion_popup_menu
+local function map_if_pumvisible_else(mode, lhs, rhs, fb)
+  vim.keymap.set(mode, lhs, function()
+    return vim.fn.pumvisible() == 1 and rhs or fb or lhs
+  end, { expr = true, noremap = true })
+end
+
+local function map_if_pumvisible(mode, lhs, rhs)
+  map_if_pumvisible_else(mode, lhs, rhs, nil)
+end
+
+-- Better command-completion mappings
+map_if_pumvisible_else("c", "<C-p>", "<Up>", "<C-b>")
+map_if_pumvisible_else("c", "<C-n>", "<Down>", "<C-f>")
+map_if_pumvisible("c", "<Esc>", "<C-e>")
+map_if_pumvisible("c", "<CR>", "<C-y>")
