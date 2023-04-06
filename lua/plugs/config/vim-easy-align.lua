@@ -1,14 +1,8 @@
 local map = require("utils.core").map
-map({"x", "n"}, "ga", "<Plug>(EasyAlign)", {noremap = false, silent = true})
+-- map({ "x", "n" }, "ga", "<Plug>(EasyAlign)", { noremap = false, silent = true })
 -- ignore  lines that don't have delimiter
 vim.g.easy_align_ignore_unmatched = 1
-vim.g.easy_align_ignore_groups = {"Comment", "String"}
-
-
-local test =            {
-apple = 1,              -- comment not aligned
-banana = 'Gros Michel,' -- comment 2
-}
+vim.g.easy_align_ignore_groups = { "Comment", "String" }
 
 -- LiveEasyAlign
 --  NOTE: <C-X> to finish alignment with regex (i.e. <C-X><tab>)

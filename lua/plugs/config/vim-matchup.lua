@@ -1,0 +1,189 @@
+vim.g.loaded_matchit = 1
+vim.g.matchup_matchparen_enabled = 1
+vim.g.matchup_motion_enabled = 1
+vim.g.matchup_text_obj_enabled = 1
+vim.g.matchup_matchparen_offscreen = { method = "popup" }
+-- vim.g.matchup_surround_enabled = 1
+-- :hi MatchParen ctermbg=blue guibg=lightblue cterm=italic gui=italic
+-- :hi MatchWord ctermfg=red guifg=blue cterm=underline gui=underline
+-- :hi MatchParenCur cterm=underline gui=underline
+-- :hi MatchWordCur cterm=underline gui=underline
+
+-- adds ds% and cs%
+vim.g.matchup_surroudn_enabled = 1
+
+-- Adds motions g%, [%, ]%, and z%.
+-- Combines these motions into convenient text objects i% and a%.
+-- Highlights symbols and words under the cursor which % can work on, and highlights matching symbols and words. Now you can easily tell where % will jump to.
+
+-- To disable the plugin entirely,
+--
+-- let g:matchup_enabled = 0
+-- default: 1
+--
+-- To disable a particular module,
+--
+-- let g:matchup_matchparen_enabled = 0
+-- let g:matchup_motion_enabled = 0
+-- let g:matchup_text_obj_enabled = 0
+-- defaults: 1
+--
+-- To enable the delete surrounding (ds%) and change surrounding (cs%) maps,
+--
+-- let g:matchup_surround_enabled = 1
+-- default: 0
+--
+-- To enable the experimental transmute module,
+--
+-- let g:matchup_transmute_enabled = 1
+-- default: 0
+--
+-- To configure the number of lines to search in either direction while using motions and text objects. Does not apply to match highlighting (see g:matchup_matchparen_stopline instead).
+--
+-- let g:matchup_delim_stopline = 1500
+-- default: 1500
+--
+-- To disable matching within strings and comments,
+--
+-- let g:matchup_delim_noskips = 1   " recognize symbols within comments
+-- let g:matchup_delim_noskips = 2   " don't recognize anything in comments
+-- default: 0 (matching is enabled within strings and comments)
+--
+-- Variables
+-- match-up understands the following variables from matchit.
+--
+-- b:match_words
+-- b:match_skip
+-- b:match_ignorecase
+-- These are set in the respective ftplugin files. They may not exist for every file type. To support a new file type, create a file after/ftplugin/{filetype}.vim which sets them appropriately.
+--
+-- Module matchparen
+-- To disable match highlighting at startup, use let g:matchup_matchparen_enabled = 0 in your vimrc. Note: vim's built-in plugin |pi_paren| plugin is also disabled. The variable g:loaded_matchparen has no effect on match-up.
+--
+-- Customizing the highlighting colors
+-- match-up uses the MatchParen highlighting group by default, which can be configured. For example,
+--
+-- :hi MatchParen ctermbg=blue guibg=lightblue cterm=italic gui=italic
+-- You may want to put this inside a ColorScheme autocmd so it is preserved after colorscheme changes:
+--
+-- augroup matchup_matchparen_highlight
+--   autocmd!
+--   autocmd ColorScheme * hi MatchParen guifg=red
+-- augroup END
+-- You can also highlight words differently than parentheses using the MatchWord highlighting group. You might do this if you find the MatchParen style distracting for large blocks.
+--
+-- :hi MatchWord ctermfg=red guifg=blue cterm=underline gui=underline
+-- There are also MatchParenCur and MatchWordCur which allow you to configure the highlight separately for the match under the cursor.
+--
+-- :hi MatchParenCur cterm=underline gui=underline
+-- :hi MatchWordCur cterm=underline gui=underline
+-- The matchparen module can be disabled on a per-buffer basis (there is no command for this). By default, when disabling highlighting for a particular buffer, the standard plugin matchparen will still be used for that buffer.
+--
+-- let b:matchup_matchparen_enabled = 0
+-- default: 1
+--
+-- If this module is disabled on a particular buffer, match-up will still fall-back to the vim standard plugin matchparen, which will highlight matchpairs such as (), [], & {}. To disable this,
+--
+-- let b:matchup_matchparen_fallback = 0
+-- default: 1
+--
+-- A common usage of these options is to automatically disable matchparen for particular file types;
+--
+-- augroup matchup_matchparen_disable_ft
+--   autocmd!
+--   autocmd FileType tex let [b:matchup_matchparen_fallback,
+--       \ b:matchup_matchparen_enabled] = [0, 0]
+-- augroup END
+-- Whether to highlight known words even if there is no match:
+--
+-- let g:matchup_matchparen_singleton = 1
+-- default: 0
+--
+-- Dictionary controlling the behavior with off-screen matches.
+--
+-- let g:matchup_matchparen_offscreen = { ... }
+-- default: {'method': 'status'}
+--
+-- If empty, this feature is disabled. Else, it should contain the following optional keys:
+--
+-- method: Sets the method to use to show off-screen matches. Possible values are:
+--
+-- 'status' (default): Replace the status-line for off-screen matches.
+--
+-- If a match is off of the screen, the line belonging to that match will be displayed syntax-highlighted in the status line along with the line number (if line numbers are enabled). If the match is above the screen border, an additional Δ symbol will be shown to indicate that the matching line is really above the cursor line.
+--
+-- 'popup': Show off-screen matches in a popup (vim) or floating (neovim) window.
+--
+-- 'status_manual': Compute the string which would be displayed in the status-line or popup, but do not display it. The function MatchupStatusOffscreen() can be used to get the text.
+--
+-- scrolloff: When enabled, off-screen matches will not be shown in the statusline while the cursor is at the screen edge (respects the value of 'scrolloff'). This is intended to prevent flickering while scrolling with j and k.
+--
+-- default: 0.
+--
+-- The number of lines to search in either direction while highlighting matches. Set this conservatively since high values may cause performance issues.
+--
+-- let g:matchup_matchparen_stopline = 400  " for match highlighting only
+-- default: 400
+--
+-- highlighting timeouts
+-- Adjust timeouts in milliseconds for matchparen highlighting:
+--
+-- let g:matchup_matchparen_timeout = 300
+-- let g:matchup_matchparen_insert_timeout = 60
+-- default: 300, 60
+--
+-- deferred highlighting
+-- Deferred highlighting improves cursor movement performance (for example, when using hjkl) by delaying highlighting for a short time and waiting to see if the cursor continues moving;
+--
+-- let g:matchup_matchparen_deferred = 1
+-- default: 0 (disabled)
+--
+-- Note: this feature is only available if your vim version has timers and the function timer_pause, version 7.4.2180 and after.
+--
+-- Adjust delays in milliseconds for deferred highlighting:
+--
+-- let g:matchup_matchparen_deferred_show_delay = 50
+-- let g:matchup_matchparen_deferred_hide_delay = 700
+-- default: 50, 700
+--
+-- Note: these delays cannot be changed dynamically and should be configured before the plugin loads (e.g., in your vimrc).
+--
+-- highlight surrounding
+-- To highlight the surrounding delimiters until the cursor moves, use a map such as the following
+--
+-- nmap <silent> <F7> <plug>(matchup-hi-surround)
+-- There is no default map for this feature.
+--
+-- You can also highlight surrounding delimiters always as the cursor moves.
+--
+-- let g:matchup_matchparen_deferred = 1
+-- let g:matchup_matchparen_hi_surround_always = 1
+-- default: 0 (off)
+--
+-- This can be set on a per-buffer basis:
+--
+-- autocmd FileType tex let b:matchup_matchparen_hi_surround_always = 1
+-- Note: this feature requires deferred highlighting to be supported and enabled.
+--
+-- Module motion
+-- In vim, {count}% goes to the {count} percentage in the file. match-up overrides this motion for small {count} (by default, anything less than 7). To allow {count}% for {count} less than 12,
+--
+-- g:matchup_motion_override_Npercent = 11
+-- To disable this feature, and restore vim's default {count}%,
+--
+-- g:matchup_motion_override_Npercent = 0
+-- To always enable this feature, use any value greater than 99,
+--
+-- g:matchup_motion_override_Npercent = 100
+-- default: 6
+--
+-- If enabled, cursor will land on the end of mid and close words while moving downwards (%/]%). While moving upwards (g%, [%) the cursor will land on the beginning. To disable,
+--
+-- let g:matchup_motion_cursor_end = 0
+-- default: 1
+--
+-- Module text_obj
+-- Modify the set of operators which may operate line-wise
+--
+-- let g:matchup_text_obj_linewise_operators = ['d', 'y']
+-- default: ['d', 'y']

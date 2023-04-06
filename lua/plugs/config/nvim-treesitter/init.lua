@@ -1,11 +1,12 @@
 local config = require("config").Treesitter
 local tsmodules = require("plugs.config.nvim-treesitter.modules")
+require("plugs.config.nvim-treesitter.context")
 
 local ts = require("nvim-treesitter")
 
 ts.define_modules(tsmodules)
 
-require("nvim-treesitter.configs").setup({
+local cfg = {
   -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = "all",
   ignore_install = { "phpdoc", "latex", "wgsl", "wgsl_bevy" },
@@ -17,7 +18,7 @@ require("nvim-treesitter.configs").setup({
       -- "wgsl_bevy",
     },
     updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-    persist_queries = false, -- Whether the query persists across vim sessions
+    persist_queries = true, -- Whether the query persists across vim sessions
     keybindings = {
       toggle_query_editor = "o",
       toggle_hl_groups = "i",
@@ -111,6 +112,15 @@ require("nvim-treesitter.configs").setup({
         ["if"] = "@function.inner",
         ["ac"] = "@class.outer",
         ["ic"] = "@class.inner",
+        -- ["af"] = "@function.outer",
+        -- ["if"] = "@function.inner",
+        -- ["am"] = "@call.outer",
+        -- ["im"] = "@call.inner",
+        -- ["ab"] = "@block.outer",
+        -- ["ib"] = "@block.inner",
+        -- ["aa"] = "@parameter.outer",
+        -- ["ia"] = "@parameter.inner",
+        -- ["as"] = "@statement.outer",
       },
     },
     swap = {
@@ -130,21 +140,58 @@ require("nvim-treesitter.configs").setup({
       peek_definition_code = { ["gPf"] = "@function.outer", ["gPc"] = "@class.outer" },
     },
   },
-  rainbow = { enable = config.rainbow },
+  rainbow = {
+
+    -- `html` - `rainbow-tags` Matches both opening and closing tags in their entirety
+    --`javascript`
+    --   - `rainbow-parens-react` Supports the angle brackets of React.js tags
+    --   - `rainbow-tags-react`   Alternative to the above, highlights entire tags
+    -- latex` - `rainbow-blocks` Matches `\begin` and `\end` instructions
+    --`tsx` - `rainbow-tags` Matches entire tags, like the same query in HTML
+    hlgroups = {
+      "TSRainbowRed",
+      "TSRainbowYellow",
+      "TSRainbowBlue",
+      "TSRainbowOrange",
+      "TSRainbowGreen",
+      "TSRainbowViolet",
+      "TSRainbowCyan",
+    },
+    enable = true,
+    -- disable = { "jsx", "cpp" },
+    query = { "rainbow-parens", html = "rainbow-tags", latex = "rainbow-blocks" },
+    strategy = require("ts-rainbow").strategy["local"],
+    -- strategy = require("ts-rainbow").strategy.global,
+    max_file_lines = 3000,
+  },
   matchup = {
+    -- integration with treesitter-pairs
     enable = true, -- mandatory, false will disable the whole extension
     -- disable = {"c", "ruby"} -- optional, list of language that will be disabled
+    --[[ do not use virtual text to highlight the virtual end of a block, for languages without explicit end markers (e.g., Python). ]]
+    -- disable_virtual_text = {},
+    --[[ additionally include traditional vim regex matches for symbols.
+    --For example, highlights /* */ comments in C++ which are not supported in tree-sitter matching. ]]
+    -- include_match_words = {},
   },
   pairs = {
     enable = true,
     disable = {},
-    -- e.g. {"CursorMoved"}, -- when to highlight the pairs, use {} to deactivate highlighting
-    highlight_pair_events = {},
+    highlight_pair_events = { "CursorMoved" }, -- e.g. {"CursorMoved"}, -- when to highlight the pairs, use {} to deactivate highlighting
     highlight_self = false, -- whether to highlight also the part of the pair under cursor (or only the partner)
     goto_right_end = false, -- whether to go to the end of the right partner or the beginning
-    -- What command to issue when we can't find a pair (e.g. "normal! %")
-    fallback_cmd_normal = "call matchit#Match_wrapper('',1,'n')",
-    keymaps = { goto_partner = "<leader>%" },
+    fallback_cmd_normal = "call matchit#Match_wrapper('',1,'n')", -- What command to issue when we can't find a pair (e.g. "normal! %")
+    keymaps = {
+      -- goto_partner = "<leader>%",
+      goto_partner = "%",
+      delete_balanced = "X",
+    },
+    delete_balanced = {
+      only_on_first_char = false, -- whether to trigger balanced delete when on first character of a pair
+      fallback_cmd_normal = nil, -- fallback command when no pair found, can be nil
+      longest_partner = false, -- whether to delete the longest or the shortest pair when multiple found.
+      -- E.g. whether to delete the angle bracket or whole tag in  <pair> </pair>
+    },
   },
   incremental_custom = tsmodules.incremental_custom,
   textsubjects = {
@@ -163,40 +210,9 @@ require("nvim-treesitter.configs").setup({
   endwise = {
     enable = true,
   },
-})
+}
 
-require("treesitter-context").setup({
-  enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-  max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-  patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
-    -- For all filetypes
-    -- Note that setting an entry here replaces all other patterns for this entry.
-    -- By setting the 'default' entry below, you can control which nodes you want to
-    -- appear in the context window.
-    default = {
-      "class",
-      "function",
-      "method",
-      -- 'for', -- These won't appear in the context
-      -- 'while',
-      -- 'if',
-      -- 'switch',
-      -- 'case',
-    },
-    -- Example for a specific filetype.
-    -- If a pattern is missing, *open a PR* so everyone can benefit.
-    --   rust = {
-    --       'impl_item',
-    --   },
-  },
-  exact_patterns = {
-    -- Example for a specific filetype with Lua patterns
-    -- Treat patterns.rust as a Lua pattern (i.e "^impl_item$" will
-    -- exactly match "impl_item" only)
-    -- rust = true,
-  },
-})
-
+require("nvim-treesitter.configs").setup(cfg)
 require("nvim-treesitter.install").prefer_git = true
 
 -- making dot repeatable

@@ -23,7 +23,7 @@ local plugins = {
       })
     end,
   },
-  { "echasnovski/mini.move", event = "VeryLazy" },
+  { "echasnovski/mini.trailspace", event = "VeryLazy" },
   { "echasnovski/mini.animate", event = "VeryLazy" },
   -- Only highlight cursorline of the active window
   -- Makes it easier to tell what window is active in the

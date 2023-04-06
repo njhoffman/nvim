@@ -57,23 +57,16 @@ local sources = {
     { name = "path" },
   },
   cmdsearch = {
-    {
-      { name = "nvim_lsp" },
-      { name = "nvim_lsp_document_symbol" },
-      { name = "dictionary" },
-      { name = "buffer" },
-    },
+    { name = "nvim_lsp" },
+    { name = "nvim_lsp_document_symbol" },
+    { name = "dictionary" },
+    { name = "buffer" },
   },
   cmdline = {
-    {
-      { name = "cmdline" },
-      {
-        name = "path",
-        options = { trailing_slash = true, label_trailing_slash = true },
-      },
-      { name = "dictionary" },
-      { name = "buffer" },
-    },
+    { name = "cmdline" },
+    { name = "path", options = { trailing_slash = true, label_trailing_slash = true } },
+    { name = "dictionary" },
+    { name = "buffer" },
   },
 }
 local mapping = {
@@ -88,7 +81,16 @@ local mapping = {
     ["<C-b>"] = cmp.mapping.select_prev_item({ count = 6 }),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ["<CR>"] = cmp.mapping.confirm({ select = false }),
+
+    -- special: trigger snippets without typing the full trigger
+    ["<A-;>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_next_item()
+        cmp.mapping.confirm({ select = false })()
+      end
+    end, { "i", "s" }),
+    -- ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
   },
   cmdline = {
     ["<C-f>"] = cmp.mapping(function(fallback)
@@ -115,6 +117,7 @@ local mapping = {
     end, { "c" }),
   },
 }
+
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -160,6 +163,10 @@ cmp.setup({
   },
   mapping = cmp.mapping.preset.insert(mapping.main),
   sources = cmp.config.sources(sources.main[1], sources.main[2]),
+  confirm_opts = {
+    behavior = cmp.ConfirmBehavior.Replace,
+    select = false,
+  },
 })
 
 cmp.setup.filetype("gitcommit", { sources = cmp.config.sources(sources.gitcommit) })
@@ -170,12 +177,69 @@ cmp.setup.cmdline({ "/", "?" }, {
 })
 
 cmp.setup.cmdline(":", {
-  completion = {
-    autocomplete = { "InsertEnter" },
-  },
+  -- completion = {
+  --   autocomplete = { "InsertEnter" },
+  -- },
   mapping = cmp.mapping.preset.cmdline(mapping.cmdline),
   sources = cmp.config.sources(sources.cmdline),
 })
+
+-- -- LuaSnip Settings
+-- require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets/" })
+--
+-- luasnip.config.set_config({
+--   history = true,
+--   updateevents = "TextChanged, TextChangedI",
+--   enable_autosnippets = true,
+-- })
+--
+-- -- Keymaps
+-- vim.keymap.set({ "i", "s" }, "<a-p>", function()
+--   if luasnip.expand_or_jumpable() then
+--     luasnip.expand()
+--   end
+-- end, { silent = true })
+--
+-- vim.keymap.set({ "i", "s" }, "<a-k>", function()
+--   if luasnip.jumpable(1) then
+--     luasnip.jump(1)
+--   end
+-- end, { silent = true })
+-- vim.keymap.set({ "i", "s" }, "<a-j>", function()
+--   if luasnip.jumpable(-1) then
+--     luasnip.jump(-1)
+--   end
+-- end, { silent = true })
+--
+-- -- special function
+-- vim.keymap.set({ "i", "s" }, "<a-l>", function()
+--   if luasnip.choice_active() then
+--     luasnip.change_choice(1)
+--   end
+-- end)
+--
+-- vim.keymap.set({ "i", "s" }, "<a-h>", function()
+--   if luasnip.choice_active() then
+--     luasnip.change_choice(-1)
+--   end
+-- end)
+--
+-- vim.keymap.set("i", "<A-CR>", function()
+--   if LAST_TRIGGERED_SNIPPET then
+--     vim.api.nvim_input("<A-o>")
+--     vim.schedule(function()
+--       luasnip.expand_repeat()
+--     end)
+--   end
+-- end, {})
+-- vim.keymap.set("i", "<A-S-CR>", function()
+--   if LAST_TRIGGERED_SNIPPET then
+--     vim.api.nvim_input("<A-S-O>")
+--     vim.schedule(function()
+--       luasnip.expand_repeat()
+--     end)
+--   end
+-- end, {})
 
 -- ===================
 -- QoL and consistency
@@ -183,8 +247,7 @@ cmp.setup.cmdline(":", {
 
 -- Navigate tab completion w/ <C-j> and <C-k>
 
---- Map `key` to `mapped_to` if the nvim-native popup
---- menu is visible.
+--- Map `key` to `mapped_to` if the nvim-native popup - menu is visible.
 ---
 --- @param mode string  Mode shortstring
 --- @param lhs  string  LHS

@@ -16,8 +16,6 @@ prefix("n", "gq", "+quickfix")
 prefix("n", "gP", "+preview")
 prefix("n", "g?", "+debug print")
 prefix("n", "<c-w>", "+window")
-prefix("n", "]c", "+git conflict")
-prefix("n", "[c", "+git conflict")
 prefix("n", "<leader>g", "+git")
 prefix("n", "<leader>f", "+file")
 prefix("n", "<leader>F", "+format")
@@ -1212,57 +1210,6 @@ vmap("n", "=p", {
   desc = "paste (put) below and reformat",
 })
 
--- Jump to the previous git conflict start
-map("n", "[cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
-  category = "Pairs",
-  label = "git conflict start prev",
-  desc = "jump to the previous git conflict start",
-})
-
-map("n", "]cc", ":call search('^<\\{4,\\} \\w\\+.*$', 'W')<CR>", {
-  category = "Pairs",
-  label = "git conflict start next",
-  desc = "jump to the next git conflict start",
-})
-
-map("n", "[ce", ":call search('^>\\{4,\\} \\w\\+.*$', 'Wb')<CR>", {
-  category = "Pairs",
-  label = "git conflict end prev",
-  desc = "jump to the prev git conflict end",
-})
-
-map("n", "]ce", ":call search('^>\\{4,\\} \\w\\+.*$', 'W')<CR>", {
-  category = "Pairs",
-  label = "git conflict end next ",
-  desc = "jump to the next git conflict end",
-})
-
-map("n", "[cm", ":call search('^=\\{4,\\}$', 'Wb')<CR>", {
-  category = "Pairs",
-  label = "git conflict divider prev",
-  desc = "jump to the prev git conflict divider",
-})
-
-map("n", "]cm", ":call search('^=\\{4,\\}$', 'W')<CR>", {
-  category = "Pairs",
-  label = "git conflict divider next ",
-  desc = "jump to the next git conflict divider",
-})
-
-map("n", "[x", "<cmd>lua require('trouble').previous({ skip_groups = true, jump = true, })<cr>", {
-  category = "Pairs",
-  label = "trouble prev jump",
-  desc = "jump to the previous diagnostic item skipping the groups",
-  plugin = "trouble",
-})
-
-map("n", "]x", "<cmd>lua require('trouble').next({ skip_groups = true, jump = true, })<cr>", {
-  category = "Pairs",
-  label = "trouble next jump",
-  desc = "jump to the next diagnostic item skipping the groups",
-  plugin = "trouble",
-})
-
 map("n", "]a", ':execute ":" . v:count . "next"<CR>', {
   category = "Pairs",
   desc = "execute next argument ",
@@ -1270,36 +1217,6 @@ map("n", "]a", ':execute ":" . v:count . "next"<CR>', {
 map("n", "[a", ':execute ":" . v:count . "previous"<CR>', {
   category = "Pairs",
   desc = "execute prev argument ",
-})
-
-map("n", "]b", ':execute ":" . v:count . "bnext"<CR>', {
-  category = "Pairs",
-  desc = "next buffer",
-})
-
-map("n", "[b", ':execute ":" . v:count . "bprevious"<CR>', {
-  category = "Pairs",
-  desc = "prev buffer",
-})
-
-map("n", "]l", ':execute ":" . v:count . "lnext"<CR>', {
-  category = "Pairs",
-  desc = "next location item",
-})
-
-map("n", "[l", ':execute ":" . v:count . "lprevious"<CR>', {
-  category = "Pairs",
-  desc = "prev location item",
-})
-
-map("n", "]q", ':execute ":" . v:count . "cnext"<CR>', {
-  category = "Pairs",
-  desc = "next quickfix item",
-})
-
-map("n", "[q", ':execute ":" . v:count . "cprevious"<CR>', {
-  category = "Pairs",
-  desc = "prev quickfix item",
 })
 
 --------------------------------------------------------------------------------------------------
@@ -1333,6 +1250,13 @@ map("n", "<leader>ii", "<cmd>ImportStatus<cr>", {
   category = "System",
   label = "import status",
   desc = "show import status interface",
+})
+
+map("n", "<leader>iL", "<cmd>Lazy log<cr>", {
+  category = "System",
+  plugin = "lazy.nvim",
+  label = "show lazy.nvim log",
+  desc = "open the lazy.nvim log",
 })
 
 map("n", "<leader>il", "<cmd>Lazy<cr>", {

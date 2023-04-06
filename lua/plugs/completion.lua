@@ -29,6 +29,13 @@ local plugins = {
     },
   },
   {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    enabled = false,
+    event = "VeryLazy",
+    config = true,
+  },
+  {
     "L3MON4D3/LuaSnip",
     dependencies = {
       "rafamadriz/friendly-snippets",
