@@ -60,6 +60,7 @@ local function show_capabilities()
   local function make_client_info(client)
     local filtered, skipped = {}, {}
     for key, val in pairs(client.server_capabilities) do
+      vim.dbglog(client.name, key)
       if vim.tbl_contains(lspdefs.display_keys, key) and client.server_capabilities[key] ~= false then
         table.insert(filtered, key)
       else

@@ -6,7 +6,7 @@ local function visual_paste_without_yank()
   end
 
   vim.fn.setreg("x", vim.fn.getreg(register))
-  vim.api.nvim_paste(vim.fn.getreg(register), {}, -1)
+  vim.api.nvim_paste(vim.fn.getreg(register), true, -1)
   vim.fn.setreg(register, vim.fn.getreg("x"))
 end
 

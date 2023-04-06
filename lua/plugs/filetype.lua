@@ -1,29 +1,13 @@
 local utils = require("utils.lazy")
 
-local lz_syn = false
+local lz_syn = true
 
 local plugins = {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    lazy = lz_syn,
-    dependencies = {
-      "JoosepAlviste/nvim-ts-context-commentstring",
-      "RRethy/nvim-treesitter-endwise",
-      "RRethy/nvim-treesitter-textsubjects",
-      "jbyuki/tree-sitter-ntangle",
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter-refactor",
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      "nvim-treesitter/playground",
-      "p00f/nvim-ts-rainbow",
-      "romgrk/nvim-treesitter-context",
-      "theHamsta/nvim-treesitter-pairs",
-      "windwp/nvim-ts-autotag",
-    },
-  },
+  { "vuki656/package-info.nvim", dependencies = "MunifTanjim/nui.nvim", ft = "json" },
+  { "romainl/vim-qf", ft = "qf" },
+  { "kevinhwang91/nvim-bqf", cmd = { "BqfEnable", "BqfToggle" }, ft = "qf" },
   { "herringtondarkholme/yats.vim", ft = "typescript", lazy = lz_syn },
+  { "AckslD/nvim-FeMaco.lua", ft = { "markdown", "pandoc" } },
   { "njhoffman/vim-liquid", ft = "liquid", lazy = lz_syn },
   { "SidOfc/mkdx", ft = { "markdown", "pandoc" }, lazy = lz_syn },
   { "moll/vim-node", ft = { "javascript" }, lazy = lz_syn },
@@ -59,12 +43,6 @@ local plugins = {
   { "vim-pandoc/vim-pandoc-syntax", ft = { "markdown", "pandoc" }, lazy = lz_syn },
   { "vim-utils/vim-man", ft = "man", lazy = lz_syn },
   { "vimwiki/vimwiki", ft = { "markdown", "vimwiki" }, lazy = lz_syn },
-  {
-    "akinsho/git-conflict.nvim",
-    lazy = lz_syn,
-    cmd = { "GitConflictListQf", "GitConflictNextConflict" },
-    event = { "BufReadPost", "BufNewFile" },
-  },
   { "mtdl9/vim-log-highlighting", ft = { "log", "LOG" }, event = { "BufReadPost", "BufNewFile" }, lazy = lz_syn },
   { "hashivim/vim-terraform", ft = "terraform", event = { "BufReadPost", "BufNewFile" }, lazy = lz_syn },
   { "raimon49/requirements.txt.vim", event = "VeryLazy", lazy = lz_syn },

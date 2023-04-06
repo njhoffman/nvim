@@ -31,7 +31,7 @@ local servers = {
   "ltex",
   "pyright",
   "solargraph",
-  "sqls",
+  "sqlls",
   "stylelint_lsp",
   "lua_ls",
   "svelte",
@@ -110,12 +110,12 @@ require("mason-lspconfig").setup_handlers({
   -- capabilities :
   -- default capabilities, with offsetEncoding utf-8
   -- cmd : clangd --offset-encoding=utf-16
-  ["tsserver"] = require("lsp.servers.tsserver"),
+  ["bashls"] = require("lsp.servers.bashls"),
   ["eslint"] = require("lsp.servers.eslint"),
-  ["tailwindcss"] = require("lsp.servers.tailwindcss"),
   ["lua_ls"] = require("lsp.servers.sumneko_lua"),
   ["stylelint_lsp"] = require("lsp.servers.stylelint_lsp"),
-  ["bashls"] = require("lsp.servers.bashls"),
+  ["tailwindcss"] = require("lsp.servers.tailwindcss"),
+  ["tsserver"] = require("lsp.servers.tsserver"),
   ["ltex"] = function()
     lspconfig.ltex.setup({
       filetypes = {

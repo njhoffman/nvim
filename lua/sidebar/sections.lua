@@ -53,8 +53,9 @@ local sections = {
   {
     name = "nvimsidebar",
     text = "Nvim Sidebar",
+    cycle = false,
     enabled = function()
-      return is_installed("sidebar.nvim")
+      return false and is_installed("sidebar.nvim")
     end,
     open = function()
       vim.cmd("SidebarNvimOpen")

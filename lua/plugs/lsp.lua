@@ -85,32 +85,9 @@ local plugins = {
     "SmiteshP/nvim-navbuddy",
     dir = "~/git/nvim-navbuddy",
     lazy = false,
-    -- cmd = { "Navbuddy" },
+    cmd = { "Navbuddy" },
     dependencies = { "neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
-    opts = {
-      window = {
-        -- { "╔", "═" ,"╗", "║", "╝", "═", "╚", "║" }.
-        border = "rounded",
-        size = "60%", -- 60%
-        position = "100%", -- 50%
-        sections = {
-          left = { size = "30%", hide_empty = true },
-          mid = { size = "30%" },
-          right = {},
-        },
-      },
-      lsp = {
-        auto_attach = true,
-      },
-      source_buffer = {
-        reorient = "smart", -- "smart", "top", "mid" or "none"
-      },
-    },
-    config = function(plugin)
-      require("nvim-navbuddy").setup(plugin.opts)
-    end,
   },
-
   {
     "jose-elias-alvarez/null-ls.nvim",
     event = "LspAttach",

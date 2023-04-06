@@ -1,7 +1,7 @@
 local stats = require("utils.lazy.stats")
 
 local setup = function(opts)
-  opts = opts or { cache = true }
+  opts = opts or { cache = true, reload = false }
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -34,6 +34,10 @@ local setup = function(opts)
       ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
       patterns = {},
       fallback = false,
+    },
+    change_detection = {
+      -- automatically check for config file changes and reload the ui
+      enabled = opts.reload,
     },
     performance = {
       cache = {

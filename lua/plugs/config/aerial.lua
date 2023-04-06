@@ -318,44 +318,60 @@ local cfg = {
   layout = {
     -- min_width and max_width can be a list of mixed types.
     -- max_width = {40, 0.2} means "the lesser of 40 columns or 20% of total"
-    max_width = { 50, 0.3 },
+    max_width = { 40, 0.3 },
     width = nil,
     min_width = 30,
     default_direction = "prefer_right",
     preserve_equality = false,
   },
+  highlight_mode = "full_width",
+  -- Highlight the closest symbol if the cursor is not exactly on one.
+  highlight_closest = true,
+  -- Highlight the symbol in the source buffer when cursor is in the aerial win
+  highlight_on_hover = true,
+  -- When jumping to a symbol, highlight the line for this many ms.
+  -- Set to false to disable
+  highlight_on_jump = 500,
   backends = {
     -- ["_"] = { "lsp", "treesitter", "markdown", "man" },
     ["_"] = { "lsp", "treesitter", "markdown", "man" },
     man = { "man" },
     markdown = { "markdown" },
   },
+  -- stylua: ignore
   icons = {
-    Text = "", --   Text = " ",
-    Method = "",
-    Function = "",
-    Constructor = "", --   Constructor = "⌘ ",
-    Field = "ﰠ", --   Field = "ﰠ ",
-    Variable = "", --   Variable = " ",
-    Class = "", --   Class = "ﴯ ",
-    Interface = "ﰮ", --   Interface = " ",
-    Module = "", --   Module = " ",
-    Property = "襁", --   Property = "ﰠ",
-    Unit = "", --   Unit = "塞 ",
-    Value = "",
-    Enum = "練", --   Enum = " ",
-    Keyword = "", --   Keyword = "廓 ",
-    Snippet = "", --   Snippet = " ",
-    Color = "",
-    File = "", --   File = " ",
-    Reference = "", --   Reference = " ",
-    Folder = "",
-    EnumMember = "",
-    Constant = "ﲀ", --   Constant = " ",
-    Struct = "ﳤ", --   Struct = "פּ ",
-    Event = "",
-    Operator = "", --   Operator = " ",
-    TypeParameter = "",
+    Array         = " ", --
+    Boolean       = " ", --
+    Class         = " ", --   Class = " ﴯ","  "
+    Color         = " ",
+    Constant      = " ﲀ", --   Constant = " ",
+    Constructor   = " ⌘", --   Constructor = "⌘ ","" ' ', " ",
+    Enum          = " 練", --   Enum = " " " " ,
+    EnumMember    = " ",  -- ' '
+    Event         = " ",  -- " "
+    Field         = " ", --   Field = "ﰠ ", " ", " ﰠ",
+    File          = " ", --   File = " ", " ", " " ,
+    Folder        = " ",
+    Function      = " ",
+    Interface     = " ", --   Interface = " ", ' ', " ﰮ",
+    Keyword       = " ", --   Keyword = "廓 ",
+    Key           = " " ,
+    Method        = " ",
+    Number        = " ",
+    Null          = " ", -- "", " "
+    Module        = " ", --   Module = " ",
+    Object        = " ", --
+    Operator      = " ", --   Operator = " ",  " ", " ",
+    Property      = " ", --   Property = "ﰠ", " ", " 襁"," "," ﰠ"
+    Reference     = " ", --   Reference = " ", " ",
+    Snippet       = " ", --   Snippet = " ",
+    String        = "  ",
+    Struct        = "  ", --   Struct = "פּ ", "  ", " ﳤ",
+    Text          = " ", --   Text = " ",
+    TypeParameter = " ", --   ' ', " "
+    Unit          = " ", --   Unit = "塞 ",
+    Value         = " ",
+    Variable      = " ", --   Variable = " ", ' ',
   },
   nerd_font = true,
   float = {
@@ -365,28 +381,114 @@ local cfg = {
     height = nil,
     min_height = { 8, 0.1 },
   },
+
   filter_kind = {
-    ["_"] = {
-      "Class",
-      "Constructor",
-      "Enum",
-      "EnumMember",
-      "Event",
-      "Field",
-      "Function",
-      "Interface",
-      "Key",
-      "Method",
-      "Module",
-      "Namespace",
-      "Operator",
-      -- "Package", -- this catches for/if ??
-      "Property",
-      "Struct",
-      "Variable",
-    },
-    -- markdown = { "String" },
+    -- "Array",
+    "Class",
+    "Constructor",
+    "Constant",
+    "Enum",
+    "Function",
+    "Interface",
+    "Module",
+    "Method",
+    "Namespace",
+    "Object",
+    -- "Package",
+    "Struct",
+    "TypeParameter",
   },
+  -- Show box drawing characters for the tree hierarchy
+  show_guides = true,
+  -- Customize the characters used when show_guides = true
+  guides = {
+    -- When the child item has a sibling below it
+    mid_item = "├─",
+    -- When the child item is the last in the list
+    last_item = "└─",
+    -- When there are nested child guides to the right
+    nested_top = "│ ",
+    -- Raw indentation
+    whitespace = "  ",
+  },
+  -- filter_kind = {
+  --   ["_"] = {
+  --     "Array",
+  --     "Boolean",
+  --     "Class",
+  --     "Constant",
+  --     "Constructor",
+  --     "Enum",
+  --     "EnumMember",
+  --     "Event",
+  --     "Field",
+  --     "File",
+  --     "Function",
+  --     "Interface",
+  --     "Key",
+  --     "Method",
+  --     "Module",
+  --     "Namespace",
+  --     "Null",
+  --     "Number",
+  --     "Object",
+  --     "Operator",
+  --     "Package",
+  --     "Property",
+  --     "String",
+  --     "Struct",
+  --     "TypeParameter",
+  --     "Variable",
+  --   },
+  --   -- markdown = { "String" },
+  -- },
 }
 
 require("aerial").setup(cfg)
+
+local function link(group1, group2)
+  vim.api.nvim_set_hl(0, group1, { link = group2, default = true })
+end
+
+---@diagnostic disable-next-line: undefined-field
+local ok, aerial_def = pcall(vim.api.nvim_get_hl_by_name, "AerialDefault", true)
+if not ok then
+  ---@diagnostic disable-next-line: undefined-field
+  local normal_def = vim.api.nvim_get_hl_by_name("Normal", true)
+  vim.api.nvim_set_hl(0, "AerialDefault", normal_def)
+end
+
+local symbol_kinds = {
+  "Array",
+  "Boolean",
+  "Class",
+  "Constant",
+  "Constructor",
+  "Enum",
+  "EnumMember",
+  "Event",
+  "Field",
+  "File",
+  "Function",
+  "Interface",
+  "Key",
+  "Method",
+  "Module",
+  "Namespace",
+  "Null",
+  "Number",
+  "Object",
+  "Operator",
+  "Package",
+  "Property",
+  "String",
+  "Struct",
+  "TypeParameter",
+  "Variable",
+}
+
+-- The name of the symbol
+for _, symbol_kind in ipairs(symbol_kinds) do
+  vim.api.nvim_set_hl(0, string.format("Aerial%s", symbol_kind), { fg = "none" })
+  -- link(string.format("Aerial%s", symbol_kind), "AerialDefault")
+end

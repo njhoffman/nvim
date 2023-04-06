@@ -103,6 +103,11 @@ local autocmds = {
     --   au BufNewFile,BufRead bundles.*.txt setlocal ft=sh
     --   " au BufEnter * if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' | setf preview | endif
   },
+  WinbarDisable = {
+    { "FileType", "neo-tree", "set winbar=" },
+    { "FileType", "aerial", "set winbar=" },
+    { "FileType", "SidebarNvim", "set winbar=" },
+  },
   VimadeDap = {
     { "FileType", "dap-log", "VimadeBufDisable" },
     { "FileType", "dap-repl", "VimadeBufDisable" },

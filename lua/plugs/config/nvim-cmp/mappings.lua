@@ -58,9 +58,9 @@ local main = {
     else
       fallback()
     end
-  end, { "i", "c" }),
-  ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }), { "i" }),
-  ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp_types.SelectBehavior.Select }), { "i" }),
+  end, { "i" }),
+  ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }), { "i", "c" }),
+  ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp_types.SelectBehavior.Select }), { "i", "c" }),
   ["<Up>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i" }),
   ["<Down>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i" }),
   ["<C-D>"] = cmp.mapping(cmp.mapping.abort(), { "i" }),
@@ -154,13 +154,10 @@ local main_alt = {
   -- else
   --   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-c>', true, true, true), 'n', true)
   -- end
-  ["<C-Space>"] = cmp.mapping(
-    cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
-    }),
-    { "c", "i", "s" }
-  ),
+  ["<C-Space>"] = cmp.mapping.confirm({
+    behavior = cmp.ConfirmBehavior.Insert,
+    select = true,
+  }),
   -- ["<CR>"] = cmp.mapping.confirm({ select = true }),
   ["<C-e>"] = cmp.mapping(function()
     if cmp.visible() then

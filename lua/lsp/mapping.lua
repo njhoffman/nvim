@@ -95,11 +95,19 @@ local mapping = {
   end,
   signature_preview_up = function(cmd)
     opts.desc = "lsp signature preview up"
-    map({ "i", "n" }, "<C-Up>", cmd, opts)
+    map({ "i", "n" }, "<Up>", cmd, opts)
   end,
   signature_preview_down = function(cmd)
     opts.desc = "lsp signature preview down"
-    map({ "i", "n" }, "<C-Down>", cmd, opts)
+    map({ "i", "n" }, "<Down>", cmd, opts)
+  end,
+  signature_preview_page_up = function(cmd)
+    opts.desc = "lsp signature preview up"
+    map({ "i", "n" }, "<M-b>", cmd, opts)
+  end,
+  signature_preview_page_down = function(cmd)
+    opts.desc = "lsp signature preview down"
+    map({ "i", "n" }, "<M-f>", cmd, opts)
   end,
   signature_toggle = function()
     -- vmap("i", "<M-x>", { desc = "", label = ""})

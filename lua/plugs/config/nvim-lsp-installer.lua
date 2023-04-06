@@ -96,9 +96,9 @@ local settings = {
     "terraformls",
     "tsserver",
     "vimls",
-    "yamlls"
+    "yamlls",
     -- "null-ls",
-  }
+  },
 }
 lspinstall.setup(settings)
 

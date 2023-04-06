@@ -124,7 +124,7 @@ local signature_help_provider = function(_, bufnr)
     close_timeout = 2000,
     max_width = 95,
     doc_lines = 50,
-    extra_trigger_chars = { "(", "," },
+    -- extra_trigger_chars = { "(", "," },
     transparency = 10,
     toggle_key = mapping.signature_toggle(),
     select_signature_key = mapping.signature_select(),
@@ -132,15 +132,28 @@ local signature_help_provider = function(_, bufnr)
   }
   require("lsp_signature").on_attach(cfg, bufnr)
 
+  -- TODO: calculate page down length and initialize scroll down with scrolloffset
+
   mapping.signature_hover()
 
-  local scroll_up_mapping = escape_term_codes("<PageUp>")
-  local scroll_down_mapping = escape_term_codes("<PageDown>")
+  local page_up_mapping = escape_term_codes("<PageUp>")
+  local page_down_mapping = escape_term_codes("<PageDown>")
+  local scroll_up_mapping = escape_term_codes("<Up>")
+  local scroll_down_mapping = escape_term_codes("<Down>")
+
   mapping.signature_preview_up(function()
     scroll_float(scroll_up_mapping)
   end)
   mapping.signature_preview_down(function()
     scroll_float(scroll_down_mapping)
+  end)
+
+  mapping.signature_preview_page_up(function()
+    scroll_float(page_up_mapping)
+  end)
+
+  mapping.signature_preview_page_down(function()
+    scroll_float(page_down_mapping)
   end)
 end
 

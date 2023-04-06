@@ -22,20 +22,6 @@ local symbol_highlights = {
   Interface = "@interface",
   Operator = "@operator",
   Enum = "@enum",
-
-  -- Constructor = "",
-  -- Color = "",
-  -- EnumMember = "",
-  -- Event = "",
-  -- File = "",
-  -- Folder = "",
-  -- Keyword = "",
-  -- Reference = "",
-  -- Snippet = "",
-  -- Text = "",
-  -- TypeParameter = "",
-  -- Unit = "",
-  -- Value = "",
 }
 
 return symbol_highlights

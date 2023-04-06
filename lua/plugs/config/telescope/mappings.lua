@@ -33,6 +33,8 @@ local main_maps = {
     ["<C-_>"]       = actions_layout.toggle_preview,
     ["<C-b>"]       = c_actions.results_page_up,
     ["<C-f>"]       = c_actions.results_page_down,
+    ["<C-y>"]       = c_actions.yank_selection,
+    ["<M-y>"]       = c_actions.selection_to_buffer,
     ["<M-p>"]       = c_actions.results_toggle_up,
     ["<M-n>"]       = c_actions.results_toggle_down,
     ["<M-g>"]       = c_actions.launch_projects,
@@ -44,7 +46,8 @@ local main_maps = {
     ["<M-}>"]       = ignore,
     ["<M-,>"]       = ignore,
     ["<M-.>"]       = ignore,
-    ["<M-a>"]       = ignore,
+    ["<M-a>"] = actions.toggle_all,
+    ["<M-c>"] = actions.drop_all,
     -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
     -- [S-F1-9] = add/remove secondary sort #
     -- [??] = clear sort
@@ -64,8 +67,6 @@ local grep_maps = {
     ["<M-,>"] = c_actions.directory_up,
     ["<M-.>"] = c_actions.launch_dirpicker,
     ["<CR>"] = c_actions.multi_open,
-    ["<M-a>"] = actions.toggle_all,
-    ["<M-c>"] = actions.drop_all,
   },
 }
 
@@ -75,8 +76,6 @@ local file_picker_maps = {
     ["<M-,>"] = c_actions.directory_up,
     ["<M-.>"] = c_actions.launch_dirpicker,
     ["<CR>"] = c_actions.multi_open,
-    ["<M-a>"] = actions.toggle_all,
-    ["<M-c>"] = actions.drop_all,
   },
 }
 

@@ -84,13 +84,15 @@ M.results_toggle_up = function(prompt_bufnr)
 end
 
 M.results_page_up = function(prompt_bufnr)
-  -- actions_set.scroll_results(prompt_bufnr, 1)
-  actions_set.shift_selection(prompt_bufnr, -15)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local results_height = vim.api.nvim_win_get_height(picker.results_win)
+  actions_set.shift_selection(prompt_bufnr, -results_height)
 end
 
 M.results_page_down = function(prompt_bufnr)
-  -- actions_set.scroll_results(prompt_bufnr, 1)
-  actions_set.shift_selection(prompt_bufnr, 15)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local results_height = vim.api.nvim_win_get_height(picker.results_win)
+  actions_set.shift_selection(prompt_bufnr, results_height)
 end
 
 M.toggle_whichkey = function(prompt_bufnr)
@@ -298,8 +300,56 @@ M.buffer_delete = function(prompt_bufnr)
   vim.notify("Closed  " .. selection.file_name, 1)
 end
 
+M.yank_selection = function(prompt_bufnr)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local multi_targets = picker:get_multi_selection()
+  local lines = {}
+  for _, target in ipairs(multi_targets) do
+    table.insert(lines, target[1])
+  end
+  local register = "+"
+  if vim.o.clipboard == "unnamed" then
+    register = "*"
+  end
+  vim.fn.setreg(register, vim.fn.join(lines, "\n"))
+  actions.close(prompt_bufnr)
+  vim.notify("Copied " .. #lines .. " lines to register " .. register, 2)
+end
+
+local function create_scratch_win(filetype, lines)
+  local buf, win
+  filetype = (filetype == nil and "result") or filetype
+  vim.api.nvim_command("enew")
+  win = vim.api.nvim_get_current_win()
+  -- buf = vim.api.nvim_create_buf(true, true)
+  buf = vim.api.nvim_win_get_buf(win)
+
+  vim.api.nvim_buf_set_name(0, "telecope-out #" .. buf)
+
+  vim.api.nvim_buf_set_option(0, "buftype", "nofile")
+  vim.api.nvim_buf_set_option(0, "swapfile", false)
+  vim.api.nvim_buf_set_option(0, "filetype", filetype)
+  vim.api.nvim_buf_set_option(0, "bufhidden", "wipe")
+
+  vim.api.nvim_command("setlocal wrap")
+  vim.api.nvim_command("setlocal cursorline")
+  -- vim.api.nvim_win_set_buf(win, buf)
+  vim.dbglog("lines", lines)
+  vim.api.nvim_buf_set_lines(buf, 0, #lines, false, lines)
+end
+
+M.selection_to_buffer = function(prompt_bufnr)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local multi_targets = picker:get_multi_selection()
+  local lines = {}
+  for _, target in ipairs(multi_targets) do
+    table.insert(lines, target.value or target[1])
+  end
+  actions.close(prompt_bufnr)
+  create_scratch_win("txt", lines)
+end
+
 M.refresh = function(prompt_bufnr)
-  local finders = require("telescope.finders")
   local make_entry = require("telescope.make_entry")
 
   local opts = {}

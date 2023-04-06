@@ -3,6 +3,7 @@ local utils = require("utils.lazy")
 local plugins = {
   {
     "lukas-reineke/indent-blankline.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       char = "│",
       filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
@@ -10,10 +11,8 @@ local plugins = {
       show_current_context = false,
     },
   },
-  -- active indent guide and indent text objects
   {
     "echasnovski/mini.indentscope",
-    version = false, -- wait till new 0.7.0 release to put it back on semver
     event = { "BufReadPre", "BufNewFile" },
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
@@ -23,18 +22,9 @@ local plugins = {
         end,
       })
     end,
-    config = function(_, _opts)
-      local opts = _opts or {}
-      opts.symbol = "│" -- symbol = "▏"
-      -- opts.draw = { animation = require("mini.indentscope").gen_animation.none() }
-      opts.try_as_border = true
-      require("mini.indentscope").setup(opts)
-    end,
   },
   { "echasnovski/mini.move", event = "VeryLazy" },
   { "echasnovski/mini.animate", event = "VeryLazy" },
-  { "romainl/vim-qf", ft = "qf" },
-  { "kevinhwang91/nvim-bqf", cmd = { "BqfEnable", "BqfToggle" }, ft = "qf" },
   {
     "sindrets/diffview.nvim",
     cmd = { "Diffview", "DiffviewLog", "DiffviewOpen", "DiffviewToggleFiles", "DiffviewFileHistory" },
@@ -54,19 +44,20 @@ local plugins = {
   { "edluffy/specs.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "petertriho/nvim-scrollbar", event = { "BufReadPost", "BufNewFile" } },
   { "RRethy/vim-illuminate", event = { "BufReadPost", "BufNewFile" }, dependencies = { "neovim/nvim-lspconfig" } },
-  { "TaDaa/vimade", event = { "BufReadPost", "BufNewFile" }, cmd = { "VimadeBufDisable" } },
-  { "kevinhwang91/nvim-hlslens", event = { "BufReadPost", "BufNewFile" } },
-  {
-    "m4xshen/smartcolumn.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {
-      colorcolumn = 120,
-      disabled_filetypes = { "help", "text", "markdown" },
-      custom_colorcolumn = {},
-      limit_to_window = false,
-      limit_to_line = false,
-    },
-  },
+  { "TaDaa/vimade", event = { "BufReadPost", "BufNewFile" } },
+  { "kevinhwang91/nvim-hlslens", event = { "VimEnter" } },
+  { "Bekaboo/deadcolumn.nvim", event = { "VimEnter" } },
+  -- {
+  --   "m4xshen/smartcolumn.nvim",
+  --   event = { "BufReadPre", "BufNewFile" },
+  --   opts = {
+  --     colorcolumn = 120,
+  --     disabled_filetypes = { "help", "text", "markdown" },
+  --     custom_colorcolumn = {},
+  --     limit_to_window = false,
+  --     limit_to_line = false,
+  --   },
+  -- },
   {
     "stevearc/dressing.nvim",
     dependencies = "MunifTanjim/nui.nvim",

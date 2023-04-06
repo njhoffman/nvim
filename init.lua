@@ -1,7 +1,7 @@
 -- strace gvim -V9log.txt file.tex > stdout.txt 2> stderr.txt
 
 require("globals")
-require("utils.lazy").setup({ cache = false })
+require("utils.lazy").setup({ cache = false, reload = false })
 
 for _, mod_name in ipairs({
   "mapper.setup",
