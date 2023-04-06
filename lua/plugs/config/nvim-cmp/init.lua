@@ -48,6 +48,8 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ["<Up>"] = cmp.mapping.scroll_docs(-1),
     ["<Down>"] = cmp.mapping.scroll_docs(1),
+    ["<C-Up>"] = cmp.mapping.scroll_docs(-6),
+    ["<C-Down>"] = cmp.mapping.scroll_docs(6),
     ["<M-b>"] = cmp.mapping.scroll_docs(-6),
     ["<M-f>"] = cmp.mapping.scroll_docs(6),
     ["<C-f>"] = cmp.mapping.select_next_item({ count = 6 }),

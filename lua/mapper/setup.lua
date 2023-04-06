@@ -322,18 +322,18 @@ map("n", "<leader>r", "*:%s//", {
   desc = "search and replace word under cursor",
 })
 
-map("i", "jk", "<esc>", {
-  category = "Motion",
-  label = "insert mode escape",
-  desc = "quickly escape insert mode",
-})
+-- map("i", "jk", "<esc>", {
+--   category = "Motion",
+--   label = "insert mode escape",
+--   desc = "quickly escape insert mode",
+-- })
 
-map("i", "kj", "<esc>", {
-  category = "Motion",
-  label = "insert mode escape",
-  desc = "quickly escape insert mode",
-})
-
+-- map("i", "kj", "<esc>", {
+--   category = "Motion",
+--   label = "insert mode escape",
+--   desc = "quickly escape insert mode",
+-- })
+--
 map("i", "<C-u>", "<C-g>u<C-u>", {
   category = "Motion",
   label = "ctrl+u friendly",

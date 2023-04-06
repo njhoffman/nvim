@@ -46,7 +46,10 @@ local plugins = {
   { "RRethy/vim-illuminate", event = { "BufReadPost", "BufNewFile" }, dependencies = { "neovim/nvim-lspconfig" } },
   { "TaDaa/vimade", event = { "BufReadPost", "BufNewFile" } },
   { "kevinhwang91/nvim-hlslens", event = { "VimEnter" } },
-  { "Bekaboo/deadcolumn.nvim", event = { "VimEnter" } },
+  {
+    "Bekaboo/deadcolumn.nvim",
+    event = { "VimEnter" },
+  },
   -- {
   --   "m4xshen/smartcolumn.nvim",
   --   event = { "BufReadPre", "BufNewFile" },

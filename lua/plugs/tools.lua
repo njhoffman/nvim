@@ -21,7 +21,7 @@ local plugins = {
   { "NTBBloodbath/rest.nvim", cmd = { "RESTRunLast", "RESTRun", "RESTPreview" } },
   { "dbeniamine/cheat.sh-vim", cmd = "Cheat" },
   { "potamides/pantran.nvim", cmd = "Pantran" },
-  { "sidebar-nvim/sidebar.nvim", event = "VimEnter" },
+  { "sidebar-nvim/sidebar.nvim", cmd = { "SidebarNvimOpen", "SidebarNvimToggle" } },
   { "anuvyklack/hydra.nvim", event = "VeryLazy" },
   { "goolord/alpha-nvim", event = "VimEnter", dependencies = "nvim-tree/nvim-web-devicons" },
   { "nvim-colortils/colortils.nvim", cmd = "Colortils" },
