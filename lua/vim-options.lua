@@ -24,7 +24,7 @@ opt("cmdheight", 1) -- 0
 opt("cmdwinheight", 10)
 opt("completeopt", "menu,menuone,noinsert,noselect")
 opt("confirm", true)
-opt("cpoptions", "aABceFsx_") -- C causes certain vim programs to screw up
+opt("cpoptions", "aABceFs_r") -- C causes certain vim programs to screw up, x makes command execute even if exiting
 opt("encoding", "UTF-8")
 opt("fileencoding", "utf-8")
 opt("foldmethod", "manual")
@@ -43,13 +43,14 @@ opt("matchtime", 3) -- How many tenths of a second to blink when matching bracke
 opt("modelines", 5)
 opt("mouse", "nivh")
 opt("omnifunc", "")
-opt("previewheight", 7)
+opt("previewheight", 15)
+opt("pumblend", 10)
 opt("pumheight", 10)
 opt("redrawtime", 5000)
 opt("scrolloff", 7)
 opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- winsize messes up on load
 opt("shada", "!,'2000,<1000,s200")
-opt("shortmess", "tToOcSIsa")
+opt("shortmess", "tTSIscCaF")
 opt("showbreak", "↳ ")
 opt("showcmd", true)
 opt("showmatch", true) -- Show matching brackets when text indicator is over them
@@ -71,7 +72,7 @@ opt("undolevels", 1000)
 opt("updatetime", 800) -- 4000
 opt("whichwrap", "b,s,<,>,[,],h,l")
 opt("wildignore", "*.o,*~,*.pyc") -- wildchar/charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
-opt("winbar", "...")
+-- opt("winbar", "...")
 opt("wildmode", "longest:full,full")
 -- opt("display", "msgsep")
 -- opt("shortmess", o.shortmess .. "cS") F silents filename

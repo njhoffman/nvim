@@ -1,7 +1,9 @@
+-- local filename = "/home/nicholas/.local/state/nvim/lazy/readme/doc/which-key.nvim.md"
 local path = "fzf"
 local results = require("man").read_page(path)
-vim.dbg(results)
 
+vim.dbg(results)
+--
 -- local page = get_page(path)
 
 -- -- Called when a man:// buffer is opened.
@@ -15,7 +17,6 @@ vim.dbg(results)
 -- end
 --
 
--- local filename = "/home/nicholas/.local/state/nvim/lazy/readme/doc/which-key.nvim.md"
 -- local cmd = "/## 🔥 Plugins"
 -- -- local cmd = "/### Presets"
 -- -- local cmd = "/### \\[vim-plug\\](https:\\/\\/github.com\\/junegunn\\/vim-plug)"

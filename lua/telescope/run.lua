@@ -56,7 +56,6 @@ local function run(plugin, cmd, user_opts)
     mapkey = mapkey .. "_" .. cmd
   end
 
-  vim.dbglog("user_opts", user_opts)
   local opts = get_options(mapkey, user_opts, bufnr)
 
   local tele_cmd = vim.tbl_get(telemap, mapkey, "cmd")

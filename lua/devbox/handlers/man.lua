@@ -1,17 +1,19 @@
-local man_handler = function(start_time, timing)
+local man_handler = function(done, provider)
   local word = vim.fn.expand("<cword>") or ""
+  local result = { summary = " man ", hl = "DebugMsg", name = provider.name, content = "" }
   if string.len(word) == 0 then
-    return { summary = "  -------- man   ", hl = "DebugMsg" }
+    done(provider, result)
   end
 
   local output = vim.fn.system("man " .. word)
   if string.match(output, "No manual entry for ") then
-    return { summary = "  -------- man   ", hl = "DebugMsg" }
+    done(provider, result)
   else
-    local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
-    timing.total = timing.total + (load_time * 100000)
-    timing.n = timing.n + 1
-    return { summary = load_time .. " man   " .. word .. " " .. #output .. " lines", hl = "MoreMsg" }
+    result.summary = " man  " .. word .. " " .. #output .. " lines"
+    result.hl = "MoreMsg"
+    done(provider, result)
   end
+  done(provider, result)
 end
+
 return { handler = man_handler }

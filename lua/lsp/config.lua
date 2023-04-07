@@ -12,7 +12,6 @@ local virtual_text_config = {
 }
 
 local diagnostic_config = {
-  virtual_text = virtual_text_config,
   float = {
     focusable = false,
     style = "minimal",
@@ -34,11 +33,12 @@ local diagnostic_config = {
     --   end
     -- end,
   },
+  virtual_text = false,
   signs = true,
-  -- underline = false,
-  underline = {
-    severity = { min = vim.diagnostic.severity.ERROR },
-  },
+  underline = false,
+  -- underline = {
+  --   severity = { min = vim.diagnostic.severity.ERROR },
+  -- },
   update_in_insert = false,
   severity_sort = true,
 }

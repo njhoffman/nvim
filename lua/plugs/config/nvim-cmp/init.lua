@@ -2,11 +2,11 @@
 local cmp_types = require("cmp.types.cmp")
 local MIN_LABEL_WIDTH = 20
 local ELLIPSIS_CHAR = "…"
-local MAX_DOCUMENT_WIDTH = 30
+local MAX_DOCUMENT_WIDTH = 50
 local MAX_LABEL_WIDTH = 40
 local SYMBOL_MAP = require("utils.lspkind").SYMBOL_MAP
-local WIN_HIGHLIGHT = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:Search"
--- local WIN_HIGHLIGHT = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
+-- local WIN_HIGHLIGHT = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:Search"
+local WIN_HIGHLIGHT = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None"
 
 local function get_lsp_completion_context(completion, source)
   local ok, source_name = pcall(function()
@@ -63,10 +63,11 @@ local sources = {
     { name = "buffer" },
   },
   cmdline = {
+    -- { name = "cmdline_history" },
     { name = "cmdline" },
-    { name = "path", options = { trailing_slash = true, label_trailing_slash = true } },
-    { name = "dictionary" },
-    { name = "buffer" },
+    { name = "path", options = { trailing_slash = false, label_trailing_slash = false } },
+    -- { name = "dictionary" },
+    -- { name = "buffer" },
   },
 }
 local mapping = {
@@ -177,9 +178,6 @@ cmp.setup.cmdline({ "/", "?" }, {
 })
 
 cmp.setup.cmdline(":", {
-  -- completion = {
-  --   autocomplete = { "InsertEnter" },
-  -- },
   mapping = cmp.mapping.preset.cmdline(mapping.cmdline),
   sources = cmp.config.sources(sources.cmdline),
 })
@@ -267,7 +265,9 @@ local function map_if_pumvisible(mode, lhs, rhs)
 end
 
 -- Better command-completion mappings
-map_if_pumvisible_else("c", "<C-p>", "<Up>", "<C-b>")
-map_if_pumvisible_else("c", "<C-n>", "<Down>", "<C-f>")
-map_if_pumvisible("c", "<Esc>", "<C-e>")
-map_if_pumvisible("c", "<CR>", "<C-y>")
+-- map_if_pumvisible_else("c", "<C-p>", "<Up>")
+-- map_if_pumvisible_else("c", "<C-n>", "<Down>")
+-- map_if_pumvisible_else("c", "<C-[>", "<C-u>")
+-- map_if_pumvisible("c", "<C-[>", "<C-u>")
+-- map_if_pumvisible("c", "<Esc>", "<C-e>")
+-- map_if_pumvisible("c", "<CR>", "<C-y>")

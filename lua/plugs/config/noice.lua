@@ -1,4 +1,5 @@
-local cfg = {
+-- vim.keymap.set()
+local default_cfg = {
   cmdline = {
     enabled = true, -- enables the Noice cmdline UI
     view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
@@ -14,7 +15,7 @@ local cfg = {
       search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
       search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
       filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
-      lua = { pattern = "^:%s*lua%s+", icon = "", lang = "lua" },
+      lua = { pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" }, icon = "", lang = "lua" },
       help = { pattern = "^:%s*he?l?p?%s+", icon = "" },
       input = {}, -- Used by input()
       -- lua = false, -- to disable a format, set to `false`
@@ -33,7 +34,7 @@ local cfg = {
   popupmenu = {
     enabled = true, -- enables the Noice popupmenu UI
     ---@type 'nui'|'cmp'
-    backend = "nui", -- backend to use to show regular cmdline completions
+    backend = "cmp", -- backend to use to show regular cmdline completions
     ---@type NoicePopupmenuItemKind|false
     -- Icons for completion item kinds (see defaults at noice.config.icons.kinds)
     kind_icons = {}, -- set to `false` to disable icons
@@ -122,16 +123,7 @@ local cfg = {
       opts = {}, -- merged with defaults from documentation
     },
     signature = {
-      enabled = true,
-      auto_open = {
-        enabled = true,
-        trigger = true, -- Automatically show signature help when typing a trigger character from the LSP
-        luasnip = true, -- Will open signature help when jumping to Luasnip insert nodes
-        throttle = 50, -- Debounce lsp signature help request by 50ms
-      },
-      view = nil, -- when nil, use defaults from documentation
-      ---@type NoiceViewOptions
-      opts = {}, -- merged with defaults from documentation
+      enabled = false,
     },
     message = {
       -- Messages shown by lsp servers
@@ -196,23 +188,214 @@ local cfg = {
   format = {}, --- @see section on formatting
 }
 
+-- Adding the following keymap, will redirect the active cmdline when pressing <S-Enter>. The cmdline stays open, so you can change the command and execute it again. When exiting the cmdline, the popup window will be focused.
+vim.keymap.set("c", "<S-Enter>", function()
+  require("noice").redirect(vim.fn.getcmdline())
+end, { desc = "Redirect Cmdline" })
+
 local cfg = {
-  lsp = {
-    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-    override = {
-      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-      ["vim.lsp.util.stylize_markdown"] = true,
-      ["cmp.entry.get_documentation"] = true,
-    },
-  },
-  -- you can enable a preset for easier configuration
   presets = {
-    bottom_search = true, -- use a classic bottom cmdline for search
+    bottom_search = false, -- use a classic bottom cmdline for search
     command_palette = true, -- position the cmdline and popupmenu together
     long_message_to_split = true, -- long messages will be sent to a split
-    inc_rename = false, -- enables an input dialog for inc-rename.nvim
-    lsp_doc_border = false, -- add a border to hover docs and signature help
+    inc_rename = true, -- enables an input dialog for inc-rename.nvim
+    lsp_doc_border = true, -- add a border to hover docs and signature help
+  },
+  override = {
+    -- override the default lsp markdown formatter with Noice
+    ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
+    -- override the lsp markdown formatter with Noice
+    ["vim.lsp.util.stylize_markdown"] = true,
+    -- override cmp documentation with Noice (needs the other options to work)
+    ["cmp.entry.get_documentation"] = false,
+  },
+  lsp = {
+    progress = {
+      enabled = true,
+      -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
+      -- See the section on formatting for more details on how to customize.
+      --- @type NoiceFormat|string
+      format = "lsp_progress",
+      --- @type NoiceFormat|string
+      format_done = "lsp_progress_done",
+      throttle = 1000 / 30, -- frequency to update lsp progress message
+      view = "mini",
+    },
+    override = {
+      -- override the default lsp markdown formatter with Noice
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
+      -- override the lsp markdown formatter with Noice
+      ["vim.lsp.util.stylize_markdown"] = false,
+      -- override cmp documentation with Noice (needs the other options to work)
+      ["cmp.entry.get_documentation"] = false,
+    },
+    hover = {
+      enabled = false,
+      view = nil, -- when nil, use defaults from documentation
+      ---@type NoiceViewOptions
+      opts = {}, -- merged with defaults from documentation
+    },
+    signature = {
+      enabled = false,
+    },
+    -- defaults for hover and signature help
+    documentation = {
+      view = "hover",
+      opts = {
+        lang = "markdown",
+        replace = false,
+        render = "plain",
+        format = { "{message}" },
+        win_options = { concealcursor = "n", conceallevel = 3 },
+      },
+    },
+  },
+  cmdline = {
+    view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
+    opts = {}, -- global options for the cmdline. See section on views
+    format = {
+      -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
+      -- conceal = false,
+    },
+  },
+  views = {
+    cmdline_popup = {
+      position = {
+        -- row = 5,
+        row = "70%",
+        col = "50%",
+      },
+      size = {
+        width = 60,
+        height = "auto",
+      },
+      in_options = {
+        winhighlight = {
+          Normal = "NoiceCmdlinePopup",
+          FloatBorder = "NoiceCmdlinePopupBorder",
+          IncSearch = "",
+          CurSearch = "",
+          Search = "",
+        },
+        cursorline = true,
+      },
+      -- border = {
+      -- style = "none",
+      -- padding = { 2, 3 },
+      -- },
+      -- filter_options = {},
+      -- win_options = {
+      -- winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+      -- },
+    },
+    cmdline_output = {
+      format = "details",
+      view = "popup",
+    },
+    popupmenu = {
+      relative = "editor",
+      position = {
+        -- row = 8,
+        row = "80%",
+        col = "50%",
+      },
+      size = {
+        width = "auto",
+        height = "auto",
+        max_height = 20,
+        -- min_width = 10,
+      },
+      cmdline_output = {
+        format = "details",
+        view = "popup",
+      },
+      border = {
+        style = "rounded",
+        padding = { 0, 1 },
+      },
+      win_options = {
+        winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+      },
+    },
+  },
+  notify = {
+    backend = "notify",
+    fallback = "mini",
+    format = "notify",
+    replace = false,
+    merge = false,
+  },
+
+  smart_move = {
+    -- noice tries to move out of the way of existing floating windows.
+    enabled = true, -- you can disable this behaviour here
+    -- add any filetypes here, that shouldn't trigger smart move.
+    excluded_filetypes = { "cmp_menu", "cmp_docs", "notify" },
+  },
+  popupmenu = {
+    enabled = true, -- enables the Noice popupmenu UI
+    ---@type 'nui'|'cmp'
+    backend = "nui", -- backend to use to show regular cmdline completions
+    ---@type NoicePopupmenuItemKind|false
+    -- Icons for completion item kinds (see defaults at noice.config.icons.kinds)
+    kind_icons = {}, -- set to `false` to disable icons
   },
 }
 
--- require("noice").setup(cfg)
+-- >lua
+--     vim.keymap.set("n", "<leader>nl", function()
+--       require("noice").cmd("last")
+--     end)
+--
+--     vim.keymap.set("n", "<leader>nh", function()
+--       require("noice").cmd("history")
+--     end)
+-- <
+-- -- -- redirect ":hi"
+-- require("noice").redirect("hi")
+--
+-- -- redirect some function
+-- require("noice").redirect(function()
+--   print("test")
+-- end)
+require("noice").setup(cfg)
+require("telescope").load_extension("noice")
+
+-- notify           notify     nvim-notify with level=nil, replace=false,
+--                             merge=false
+--
+-- split            split      horizontal split
+--
+-- vsplit           split      vertical split
+--
+-- popup            popup      simple popup
+--
+-- mini             mini       minimal view, by default bottom right, right-aligned
+--
+-- cmdline          popup      bottom line, similar to the classic cmdline
+--
+-- cmdline_popup    popup      fancy cmdline popup, with different styles according
+--                             to the cmdline mode
+--
+-- cmdline_output   split      split used by config.presets.cmdline_output_to_split
+--
+-- messages         split      split used for :messages
+--
+-- confirm          popup      popup used for confirm events
+--
+-- hover            popup      popup used for lsp signature help and hover
+--
+-- popupmenu        nui.menu   special view with the options used to render the
+--                             popupmenu when backend is nui
+
+-- vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
+--   if not require("noice.lsp").scroll(4) then
+--     return "<c-f>"
+--   end
+-- end, { silent = true, expr = true })
+--
+-- vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
+--   if not require("noice.lsp").scroll(-4) then
+--     return "<c-b>"
+--   end
+-- end, { silent = true, expr = true })

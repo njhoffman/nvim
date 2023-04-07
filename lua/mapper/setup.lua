@@ -64,15 +64,28 @@ map("c", "<c-d>", "<C-c>", {
   desc = "close the commandline",
 })
 
-map("c", "<c-[>", "<C-c>", {
-  category = "Command",
-  label = "close cmdline",
-  desc = "close the commandline",
-})
+-- -		The cursor position is unchanged, except when the cursor was
+-- 		at the end of the line, then it stays at the end.
+-- 		|setcmdpos()| can be used to set the cursor position.
+-- 		The |sandbox| is used for evaluating the expression to avoid
+-- 		nasty side effects.
+-- 	- :cmap <F7> <C-\>eAppendSome()<CR>
+-- :func AppendSome()
+--    :let cmd = getcmdline() .. " Some()"
+--    :" place the cursor on the )
+--    :call setcmdpos(strlen(cmd))
+--    :return cmd
+-- :endfunc
+-- map("c", "<c-[>", "<esc>", {
+--   category = "Command",
+--   label = "close cmdline",
+--   desc = "close the commandline",
+-- })
 
-map("c", "<c-s>", "<cmd>w<cr><esc>", {
+map("c", "<c-s>", "<cmd>silent! w<cr><esc>", {
   category = "Command",
   label = "save",
+  silent = true,
   desc = "save in command window",
 })
 
@@ -121,21 +134,26 @@ map("n", "<leader>!", "<cmd>BufferCloseAllButCurrent<cr>", {
   desc = "close all buffers except current",
 })
 
-map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>w<cr><esc>", {
+map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>silent! w<cr><esc>", {
   category = "Buffers",
   label = "write buffer",
+  silent = true,
+
   desc = "write to buffer",
 })
 
 map("n", "<leader>*", "<cmd>wall<cr>", {
   category = "Buffers",
   label = "write all",
+  silent = true,
+
   desc = "write all buffers",
 })
 
 map("n", "<leader>w", "<cmd>noa w<cr>", {
   category = "Buffers",
   label = "write noa",
+  silent = true,
   desc = "write without autocommands",
 })
 
@@ -527,6 +545,16 @@ map("n", "<M-b>", "<cmd>noh<cr> | :RefreshLSP<cr> | :lua require'feline'.reset_h
 })
 
 map("n", "<M-C-_>", "<cmd>:only<cr>|:ClosePopups<cr>", {
+  category = "UI",
+  desc = "close popups",
+})
+
+map("n", "<C-C>", "<cmd>:only<cr>|:ClosePopups<cr>", {
+  category = "UI",
+  desc = "close popups",
+})
+
+map("n", "<M-C-C>", "<cmd>:only<cr>|:ClosePopups<cr>", {
   category = "UI",
   desc = "close popups",
 })

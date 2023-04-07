@@ -72,7 +72,6 @@ M.scroll_up = function(winnr)
 end
 
 M.scroll_down = function(winnr)
-  vim.dbglog("scroll_down", winnr)
   scroll_float(scroll_down, winnr)
 end
 

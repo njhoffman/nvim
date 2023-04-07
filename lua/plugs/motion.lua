@@ -1,6 +1,7 @@
 local utils = require("utils.lazy")
 
 local plugins = {
+
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -72,7 +73,7 @@ local plugins = {
 
   { "echasnovski/mini.surround", event = { "BufRead" }, version = false },
   -- matching
-  { "andymass/vim-matchup", dependencies = { "theHamsta/nvim-treesitter-pairs" } },
+  -- { "andymass/vim-matchup", dependencies = { "theHamsta/nvim-treesitter-pairs" } },
   -- pairs
   { "echasnovski/mini.pairs", event = "VeryLazy", enabled = false },
   { "windwp/nvim-autopairs", event = "InsertEnter", dependencies = { "nvim-cmp" } },
@@ -88,7 +89,6 @@ local plugins = {
   { "chrisgrieser/nvim-spider", event = "VeryLazy" },
   { "echasnovski/mini.move", event = "VeryLazy" },
   { "gbprod/substitute.nvim", event = "VeryLazy" },
-  { "abecodes/tabout.nvim", event = { "BufReadPost", "BufNewFile" }, dependencies = { "nvim-treesitter", "nvim-cmp" } },
   { "andrewferrier/debugprint.nvim", event = "VeryLazy" },
   { "chrisgrieser/nvim-recorder", event = "VeryLazy" },
   { "tpope/vim-repeat", event = "VeryLazy" },

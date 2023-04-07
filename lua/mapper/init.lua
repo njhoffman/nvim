@@ -16,12 +16,16 @@ local map = function(modes, lhs, rhs, opts)
   modes = type(modes) == "string" and { modes } or modes
   local keymap_opts = {
     remap = opts.remap or (opts.noremap == false),
-    silent = opts.silent,
-    nowait = opts.nowait,
     expr = opts.expr,
     unique = opts.unique,
     desc = opts.desc or opts.label,
   }
+  if type(opts.nowait) ~= "nil" then
+    keymap_opts.nowait = opts.nowait
+  end
+  if type(opts.silent) ~= "nil" then
+    keymap_opts.silent = opts.nowait
+  end
 
   vim.keymap.set(modes, lhs, rhs, keymap_opts)
   for _, mode in ipairs(modes) do

@@ -39,6 +39,7 @@ local autocmds = {
     { "FileType", "fugitive", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
     { "FileType", "notify", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
     { "FileType", "lazy", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
+    { "FileType", "noice", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
     { "FileType", "qf", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
     { "FileType", "man", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
     { "FileType", "nerdtree", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },

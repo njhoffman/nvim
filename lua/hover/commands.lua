@@ -5,7 +5,7 @@ local init = function()
   vim.api.nvim_create_augroup("Hover", { clear = true })
 
   cmd("HoverClose", function()
-    vim.api.nvim_win_close(state.prev_winnr, true)
+    vim.api.nvim_win_close(state.preview.winnr, true)
   end, { desc = "Close hover window" })
 
   cmd("Hover", require("hover").hover_once, { desc = "Open hover window once" })

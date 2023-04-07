@@ -5,13 +5,10 @@ local function process(result)
     -- vim.notify("Failed to parse dictionary response", vim.log.levels.ERROR)
     return
   end
-
   local json = res[1]
-
   local lines = {
     json.word,
   }
-
   for _, def in ipairs(json.meanings[1].definitions) do
     lines[#lines + 1] = ""
     lines[#lines + 1] = def.definition
@@ -19,7 +16,6 @@ local function process(result)
       lines[#lines + 1] = "Example: " .. def.example
     end
   end
-
   return lines
 end
 

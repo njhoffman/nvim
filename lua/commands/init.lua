@@ -23,6 +23,11 @@ cmd("Trash", system.trash_file, { desc = "Send file to system trash" })
 cmd("Delete", system.trash_file, { desc = "Send file to system trash" })
 -- cmd("TrashRecover", system.trash_file, { desc = "Send file to system trash" })
 
+cmd(
+  "PasteNoYank",
+  paste.visual_paste_without_yank,
+  { desc = "Paste to visual selection buffer without overwriting register" }
+)
 vim.keymap.set("v", "p", paste.visual_paste_without_yank, { noremap = true, silent = true })
 
 vim.keymap.set("n", "<M-l>", ui.check_resize_split("l"), { noremap = true })

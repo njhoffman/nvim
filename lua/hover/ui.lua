@@ -138,43 +138,34 @@ local function show_hover_new(provider_id, config, result, opts)
   if scrolloff > 7 then
     scrolloff = 7
   end
+
   vim.api.nvim_set_option_value("scrolloff", scrolloff, {})
 
-  if vim.fn.empty(state.bufnr) == 1 then
-    state.bufnr = vim.api.nvim_create_buf(false, true)
+  local ft = result.filetype or "markdown"
+  if type(state.ft_bufnr[ft]) == "nil" or not vim.api.nvim_buf_is_valid(state.ft_bufnr[ft]) then
+    state.ft_bufnr[ft] = vim.api.nvim_create_buf(false, true)
   end
+
+  state.bufnr = state.ft_bufnr[ft]
 
   local lines = {}
   if result and type(result) == "table" and result.lines then
     -- lines = result.lines
     get_dimensions(result.lines, max, config, provider_id)
-    vim.dbglog(state.width, state.height)
     lines = get_styled_content(result.lines, state.width)
   end
+  vim.api.nvim_buf_set_option(state.bufnr, "filetype", result.filetype)
 
-  -- if result.filetype == "help-markdown" then
-  --   vim.api.nvim_buf_set_option(state.bufnr, "filetype", "help")
-  -- elseif vim.fn.empty(result.filetype) == 0 then
-  --   vim.api.nvim_buf_set_option(state.bufnr, "filetype", result.filetype)
-  -- end
-
-  -- vim.dbglog("STATE 1", state.bufnr, lines)
   if lines and #lines > 0 then
     if state.winnr and vim.api.nvim_win_is_valid(state.winnr) then
       local new_lines = get_styled_content(lines, state.width)
       -- get_dimensions(new_lines, max, config, provider_id)
-
       -- local new_lines = vim.api.nvim_buf_get_lines(state.bufnr, 0, -1, false)
-
       -- local _, new_height = get_dimensions(new_lines, max, config)
 
       vim.api.nvim_win_set_config(state.winnr, { width = state.width, height = state.height })
       vim.api.nvim_win_set_buf(state.winnr, state.bufnr)
       vim.api.nvim_win_set_option(state.winnr, "winbar", "...")
-      vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
-      -- vim.api.nvim_set_option_value("modifiable", false, { buf = state.bufnr })
-      vim.api.nvim_set_option_value("readonly", false, { buf = state.bufnr })
-      vim.api.nvim_set_option_value("swapfile", false, { buf = state.bufnr })
     else
       create_window(state.width, state.height)
 
@@ -198,7 +189,11 @@ local function show_hover_new(provider_id, config, result, opts)
     end
   end
 
-  state.busy = false
+  vim.api.nvim_set_option_value("wrap", true, { buf = state.bufnr })
+  -- vim.api.nvim_set_option_value("modifiable", false, { buf = state.bufnr })
+  vim.api.nvim_set_option_value("readonly", false, { buf = state.bufnr })
+  vim.api.nvim_set_option_value("swapfile", false, { buf = state.bufnr })
+
   if vim.fn.empty(state.next_job) == 0 then
     state.next_job()
   end

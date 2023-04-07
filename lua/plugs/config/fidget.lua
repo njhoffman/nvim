@@ -80,20 +80,20 @@ local default_options = {
 --   "meter",
 -- }
 
-require("fidget").setup({
-  fmt = {
-    stack_upwards = false, -- list of tasks grows upwards
-  },
-  text = {
-    spinner = "zip",
-  },
-  window = {
-    blend = 10,
-  },
-  align = {
-    bottom = true, -- align fidgets along bottom edge of buffer
-    right = true, -- align fidgets along right edge of buffer
-  },
-})
+-- require("fidget").setup({
+--   fmt = {
+--     stack_upwards = false, -- list of tasks grows upwards
+--   },
+--   text = {
+--     spinner = "zip",
+--   },
+--   window = {
+--     blend = 10,
+--   },
+--   align = {
+--     bottom = true, -- align fidgets along bottom edge of buffer
+--     right = true, -- align fidgets along right edge of buffer
+--   },
+-- })
 
-vim.api.nvim_create_autocmd("VimLeavePre", { command = [[silent! FidgetClose]] })
+-- vim.api.nvim_create_autocmd("VimLeavePre", { command = [[silent! FidgetClose]] })

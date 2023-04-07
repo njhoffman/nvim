@@ -122,8 +122,8 @@ M.toggle_whichkey = function(prompt_bufnr)
   actions.which_key(prompt_bufnr, whichkey_opts)
 end
 
-M.switch_layout = function(prompt_bufnr)
-  local opts = {}
+M.switch_layout = function(prompt_bufnr, _opts)
+  local opts = _opts or {}
   local picker = action_state.get_current_picker(prompt_bufnr)
 
   if picker.layout_strategy == "bottom_pane" then
@@ -132,12 +132,16 @@ M.switch_layout = function(prompt_bufnr)
     opts.layout_config = config.values.layout_config
     opts.layout_strategy = "flex"
   elseif picker.layout_strategy == "flex" then
-    opts = require("telescope.themes").get_cursor()
+    opts = telethemes.get_theme("cursor")
   elseif picker.layout_strategy == "cursor" then
-    opts = require("telescope.themes").get_ivy()
+    opts = telethemes.get_theme("ivy")
+  elseif picker.layout_strategy == "cursor" then
+    opts = telethemes.get_theme("minimal")
   end
   opts.results_title = picker.results_title
+
   actions.close(prompt_bufnr)
+
   require("telescope.run")("builtin", "resume", opts)
 end
 

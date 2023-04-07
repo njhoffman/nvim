@@ -4,15 +4,16 @@ local dict = require("devbox.handlers.dict")
 local syntax = require("devbox.handlers.syntax")
 -- local devboxgh = require("devhints.devbox-gh")
 
-local term_handler = function(name)
-  return function(start_time, timing)
-    local results = vim.fn.expand("<" .. name .. ">")
-    ---@diagnostic disable-next-line: missing-parameter
-    local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
-    timing.total = timing.total + (load_time * 100000)
-    timing.n = timing.n + 1
-    local line = load_time .. " " .. name .. " " .. results
-    return { summary = line, hl = "Function" }
+local term_handler = function(expr)
+  return function(done, provider)
+    local content = vim.fn.expand("<" .. expr .. ">")
+    local summary = expr .. " " .. content
+    done(provider, {
+      summary = summary,
+      content = content,
+      name = provider.name,
+      hl = "Function",
+    })
   end
 end
 
@@ -28,11 +29,11 @@ local ext_methods = {
 }
 
 local lsp_methods = {
-  { "hover", "textDocument/hover" },
-  { "signature", "textDocument/signatureHelp" },
-  { "definition", "textDocument/definition" },
-  { "references", "textDocument/references" },
-  { "completion", "textDocument/completion" },
+  -- { "hover", "textDocument/hover" },
+  -- { "signature", "textDocument/signatureHelp" },
+  -- { "definition", "textDocument/definition" },
+  -- { "references", "textDocument/references" },
+  -- { "completion", "textDocument/completion" },
   -- { "codeaction", "textDocument/codeAction" },
   -- semanticTokens,executeCommand,typeDefinition,
 }

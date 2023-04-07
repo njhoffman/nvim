@@ -34,11 +34,13 @@ local handlers = {
     end,
   },
   ["textDocument/references"] = {
-    get_contents = function(result, ctx)
+    get_contents = function(_result)
+      local result = _result and _result.result or _result
       local filepath = vim.api.nvim_buf_get_name(0)
       local lnum = vim.api.nvim_win_get_cursor(0)[1]
-      if result then
-        local results = vim.lsp.util.locations_to_items(result, vim.lsp.get_client_by_id(ctx.client_id).offset_encoding)
+      if result and _result.context then
+        local results =
+          vim.lsp.util.locations_to_items(result, vim.lsp.get_client_by_id(_result.context.client_id).offset_encoding)
         local locations = vim.tbl_filter(function(v)
           -- Remove current line from result
           return not (v.filename == filepath and v.lnum == lnum)

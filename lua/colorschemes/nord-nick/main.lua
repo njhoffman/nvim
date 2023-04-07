@@ -3,6 +3,7 @@
 
 local lush = require("lush")
 local hsl = lush.hsl
+local clrutil = require("utils.colors")
 
 local tokyoColors = {
   none = "NONE",
@@ -161,8 +162,8 @@ return function(injected_functions)
     IncSearch({ fg = "#eceff4", bg = "#5d61ec" }),
     Label({ fg = "#6688ba" }),
     Keyword({ fg = "#6177b2" }),
-    MatchParen({ fg = "#60a0a0", bg = "#000022" }),
-    MatchParenCursor({ fg = "#a0c0b0" }),
+    MatchParen({ fg = "#fb8b8b", gui = "bold," }),
+    MatchParenCursor({ fg = "#8f20f9" }),
     NonText({ bg = "none", fg = "#555555" }),
     Operator({ fg = "#4886bf" }),
     PreProc({ fg = "#4796bc" }),
@@ -511,6 +512,25 @@ return function(injected_functions)
     TelescopeWhichKeyBorder({ WhichKeyDesc }),
     TelescopeWhichKeyKey({ WhichKey }),
     TelescopeWhichKeyNormal({ WhichKeySeperator }),
+    -- NvimTreesitterPairsSelf({ MatchParen }),
+    -- NvimTreesitterPairsPartner({ MatchParen }),
+    NvimTreesitterPairsSelf({ fg = "#f35050" }),
+    NvimTreesitterPairsPartner({ fg = "#f79000" }),
+    -- gui
+    -- TSRainbowRed({ fg = "#cc241d" }),
+    -- TSRainbowYellow({ fg = "#d79921" }),
+    -- TSRainbowBlue({ fg = "#458588" }),
+    -- TSRainbowOrange({ fg = "#d65d0e" }),
+    -- TSRainbowGreen({ fg = "#689d6a" }),
+    -- TSRainbowViolet({ fg = "#b16286" }),
+    -- TSRainbowCyan({ fg = "#a89984" }),
+    TSRainbowRed({ fg = clrutil.shade_color("#cc241d", -30) }),
+    TSRainbowYellow({ fg = clrutil.shade_color("#d79921", -30) }),
+    TSRainbowBlue({ fg = clrutil.shade_color("#458588", -30) }),
+    TSRainbowOrange({ fg = clrutil.shade_color("#d65d0e", -30) }),
+    TSRainbowGreen({ fg = clrutil.shade_color("#689d6a", -30) }),
+    TSRainbowViolet({ fg = clrutil.shade_color("#b16286", -30) }),
+    TSRainbowCyan({ fg = clrutil.shade_color("#a89984", -30) }),
 
     --     WhichKeyGroup = { fg = clrs.text },
     --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
@@ -597,7 +617,7 @@ return function(injected_functions)
     NavicIconsVariable({ CmpItemKindVariable }),
     -- -- aerial
     -- AerialDefault({ fg = Normal.fg.darken(30) }),
-    AerialDefault({ bg = "none", fg = "none" }),
+    -- AerialDefault({ bg = "none", fg = "none" }),
     AerialGuide({ fg = "#182838" }),
     AerialLine({ fg = "#00aacc", bg = "#002233", gui = "bold" }),
     -- AerialLine({ QuickFixLine }),
@@ -655,6 +675,13 @@ return function(injected_functions)
     -- AerialTypeParameterIcon({ Identifier }),
     AerialVariableIcon({ CmpItemKindVariable }),
     -- AerialVariableIcon({ Identifier }),
+
+    -- dim.lua
+    sym("@variable")({ fg = "#62718b", gui = "italic" }),
+    sym("@functionDimmed")({ fg = "#6c6066", gui = "italic" }),
+    sym("@variableDimmed")({ fg = "#62718b", gui = "italic" }),
+    sym("@parameterDimmed")({ fg = "#537396", gui = "italic" }),
+    sym("@keyword.functionDimmed")({ fg = "#495986", gui = "italic" }),
 
     -- dashboardn.vim
     --DashboardHeader {Type},
