@@ -3,6 +3,8 @@ local previewers = require("telescope.previewers")
 
 local M = {}
 
+-- NOTE: go check if file is in specific git repo: dotbare ls-files --error-unmatch ~/.zlua
+
 M.git_status = function(opts)
   opts = opts or {}
   opts.previewer = previewers.new_termopen_previewer({
@@ -44,8 +46,8 @@ M.git_bcommits = previewers.new_termopen_previewer({
       "git",
       "-c",
       "core.pager=delta",
-      "-c",
-      "delta.pager=less -R",
+      -- "-c",
+      -- "delta.pager=less -R",
       "show",
       entry.value,
     }

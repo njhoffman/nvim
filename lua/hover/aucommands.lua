@@ -18,7 +18,8 @@ local function open(winnr, _opts)
     local au_cursor = function(_bufnr)
       au_cursor_id = vim.api.nvim_create_autocmd("CursorMoved", {
         callback = function()
-          vim.schedule_wrap(hover.hover_cursor())
+          -- vim.schedule_wrap(hover.hover_cursor())
+          vim.defer_fn(hover.hover_cursor, 300)
         end,
         group = "Hover",
         buffer = _bufnr,
@@ -27,24 +28,24 @@ local function open(winnr, _opts)
 
     au_cursor(vim.api.nvim_win_get_buf(0))
 
-    vim.api.nvim_create_autocmd("BufEnter", {
-      callback = function(ev)
-        vim.api.nvim_del_autocmd(au_cursor_id)
-        au_cursor(tonumber(ev.match))
-      end,
-      group = "Hover",
-    })
+    -- vim.api.nvim_create_autocmd("BufEnter", {
+    --   callback = function(ev)
+    --     vim.api.nvim_del_autocmd(au_cursor_id)
+    --     au_cursor(tonumber(ev.match))
+    --   end,
+    --   group = "Hover",
+    -- })
   end
 
-  vim.api.nvim_create_autocmd("WinClosed", {
-    callback = function(ev)
-      if ev.match == tostring(winnr) then
-        vim.api.nvim_del_augroup_by_name("Hover")
-        keymaps.clear()
-      end
-    end,
-    group = "Hover",
-  })
+  -- vim.api.nvim_create_autocmd("WinClosed", {
+  --   callback = function(ev)
+  --     if ev.match == tostring(winnr) then
+  --       vim.api.nvim_del_augroup_by_name("Hover")
+  --       keymaps.clear()
+  --     end
+  --   end,
+  --   group = "Hover",
+  -- })
 end
 
 return {

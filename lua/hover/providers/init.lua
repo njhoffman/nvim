@@ -64,9 +64,13 @@ local function run_provider(provider, _opts)
   local result = provider.execute()
   if result then
     async.scheduler()
-    -- show_hover(provider.id, config, result, opts)
-    ui.show_hover_new(provider.id, config, result, opts)
-    return true
+    local winok, winerror = pcall(vim.api.nvim_win_is_valid, state.winnr)
+    if ok then
+      ui.show_hover(provider.id, config, result, opts)
+      return true
+    else
+      ui.show_hover_new(provider.id, config, result, opts)
+    end
   end
 
   return false

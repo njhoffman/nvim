@@ -1,10 +1,12 @@
 local keymap = {
   select_left = {
-    "<M-C-Left>",
+    -- "<M-C-Left>",
+    "<M-C-H>",
     { desc = "select left node", plugin = "SelectEase", category = "Motion" },
   },
   select_right = {
-    "<M-C-Right>",
+    -- "<M-C-Right>",
+    "<M-C-L>",
     {
       desc = "select right node",
       plugin = "SelectEase",
@@ -12,7 +14,8 @@ local keymap = {
     },
   },
   select_up = {
-    "<M-C-Up>",
+    -- "<M-C-Up>",
+    "<M-C-K>",
     {
       desc = "select up node",
       plugin = "SelectEase",
@@ -20,7 +23,7 @@ local keymap = {
     },
   },
   select_down = {
-    "<M-C-Down>",
+    "<M-C-J>",
     { desc = "select down node", plugin = "SelectEase", category = "Motion" },
   },
   swap_left = {

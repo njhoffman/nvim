@@ -4,7 +4,7 @@ local signs_thin = {
   change = { hl = "GitSignsChangeFaded", text = bars.thin },
   delete = { hl = "GitSignsDeleteFaded", text = bars.thin },
   topdelete = { hl = "GitSignsDeleteFaded", text = bars.thin },
-  changedelete = { hl = "GitSignsChangeDeleteFaded", text = bars.thin }
+  changedelete = { hl = "GitSignsChangeDeleteFaded", text = bars.thin },
 }
 
 local signs_thick = {
@@ -12,7 +12,7 @@ local signs_thick = {
   change = { hl = "BlueSign", text = bars.thick, numhl = "GitSignsChangeNr" },
   delete = { hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr" },
   topdelete = { hl = "RedSign", text = bars.thick, numhl = "GitSignsDeleteNr" },
-  changedelete = { hl = "PurpleSign", text = bars.thick, numhl = "GitSignsChangeDeleteNr" }
+  changedelete = { hl = "PurpleSign", text = bars.thick, numhl = "GitSignsChangeDeleteNr" },
 }
 
 local defaultSettings = {
@@ -21,7 +21,7 @@ local defaultSettings = {
     change = { hl = "GitSignsChange", text = "│", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
     delete = { hl = "GitSignsDelete", text = "_", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
     topdelete = { hl = "GitSignsDelete", text = "‾", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-    changedelete = { hl = "GitSignsChange", text = "~", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" }
+    changedelete = { hl = "GitSignsChange", text = "~", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
   },
   signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
   numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
@@ -29,7 +29,7 @@ local defaultSettings = {
   word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
   watch_gitdir = {
     interval = 1000,
-    follow_files = true
+    follow_files = true,
   },
   attach_to_untracked = true,
   current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
@@ -37,10 +37,10 @@ local defaultSettings = {
     virt_text = true,
     virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
     delay = 1000,
-    ignore_whitespace = false
+    ignore_whitespace = false,
   },
   current_line_blame_formatter_opts = {
-    relative_time = false
+    relative_time = false,
   },
   sign_priority = 6,
   update_debounce = 100,
@@ -52,11 +52,11 @@ local defaultSettings = {
     style = "minimal",
     relative = "cursor",
     row = 0,
-    col = 1
+    col = 1,
   },
   yadm = {
-    enable = false
-  }
+    enable = false,
+  },
 }
 local on_attach = function(bufnr)
   if vim.api.nvim_buf_get_name(bufnr):match("quicknotes/daily") then
@@ -81,22 +81,14 @@ local on_attach = function(bufnr)
   map("n", "<leader>hu", gs.undo_stage_hunk)
   map("n", "<leader>hR", gs.reset_buffer)
   map("n", "<leader>hp", gs.preview_hunk)
-  map(
-    "n",
-    "<leader>hb",
-    function()
-      gs.blame_line { full = true }
-    end
-  )
+  map("n", "<leader>hb", function()
+    gs.blame_line({ full = true })
+  end)
   map("n", "<leader>tb", gs.toggle_current_line_blame)
   map("n", "<leader>hd", gs.diffthis)
-  map(
-    "n",
-    "<leader>hD",
-    function()
-      gs.diffthis("~")
-    end
-  )
+  map("n", "<leader>hD", function()
+    gs.diffthis("~")
+  end)
   map("n", "<leader>td", gs.toggle_deleted)
 
   -- Text object
@@ -104,11 +96,18 @@ local on_attach = function(bufnr)
 end
 
 local mySettings = {
+  worktrees = {
+    {
+      toplevel = vim.env.HOME,
+      gitdir = vim.env.HOME .. "/.cfg",
+    },
+  },
   on_attach = on_attach,
   signs = signs_thin,
   current_line_blame_opts = { delay = 1000, virt_text_pos = "eol" },
-  attach_to_untracked = false,
-  update_debounce = 200
+  attach_to_untracked = true,
+  update_debounce = 200,
+  -- watch_gitdir = { title = "gitsigns", interval = 1000 },
   -- keymaps = {
   --   -- Default keymap options
   --   noremap = true,
@@ -125,7 +124,6 @@ local mySettings = {
   --   ["x ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>'
   -- },
   -- diff_opts { internal = { title = "gitsigns" } },
-  -- watch_gitdir = { title = "gitsigns", interval = 1000 },
 }
 
 require("gitsigns").setup(mySettings)

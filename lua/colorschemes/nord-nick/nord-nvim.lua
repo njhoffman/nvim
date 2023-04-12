@@ -183,7 +183,6 @@ local theme = lush(function()
     TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     -- TabLineSel({ fg = clrs.nord8, bg = clrs.nord3, gui = "NONE" }),
     -- +--- Window ---+
-    Title({ fg = clrs.nord4, gui = "NONE" }),
     VertSplit({
       fg = clrs.nord2,
       bg = cfg.nord_bold_vertical_split_line == 0 and clrs.nord0 or clrs.nord1,

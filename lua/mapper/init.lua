@@ -15,6 +15,7 @@ local map = function(modes, lhs, rhs, opts)
   opts = opts or {}
   modes = type(modes) == "string" and { modes } or modes
   local keymap_opts = {
+    silent = true,
     remap = opts.remap or (opts.noremap == false),
     expr = opts.expr,
     unique = opts.unique,
@@ -24,7 +25,7 @@ local map = function(modes, lhs, rhs, opts)
     keymap_opts.nowait = opts.nowait
   end
   if type(opts.silent) ~= "nil" then
-    keymap_opts.silent = opts.nowait
+    keymap_opts.silent = opts.silent
   end
 
   vim.keymap.set(modes, lhs, rhs, keymap_opts)

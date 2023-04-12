@@ -90,6 +90,10 @@ local telescope_config = {
   },
   pickers = {
     pickers = false,
+    diagnostics = {
+      theme = "ivy",
+      layout_config = { height = 15 },
+    },
     find_files = {
       mappings = mappings.file_picker,
       find_command = commands.rg,
@@ -116,14 +120,23 @@ local telescope_config = {
     },
     git_status = {
       previewer = c_previewers.delta,
+      theme = "dropdown",
     },
-    git_bcommits = {
-      mappings = mappings.file_picker,
-      previewer = c_previewers.git_bcommits,
-      layout_strategy = "vertical",
-      -- git_command = { "git", "log", "--date=format:%m-%d-%y", "--format=%h%d %ad %s <%an>" }
-      -- git_command = { "git", "log", '--format=%h%d (%ar) %s <%an>' }
+    -- git_commits = {
+    --   previewer = c_previewers.delta,
+    --   layout_strategy = "vertical",
+    --   git_command = { "git", "log", "--format=%h%d (%ar) %s <%an>" },
+    -- },
+    git_branches = {
+      show_remote_tracking_branches = true,
     },
+    -- git_bcommits = {
+    --   mappings = mappings.file_picker,
+    --   previewer = c_previewers.delta,
+    --   layout_strategy = "vertical",
+    --   -- git_command = { "git", "log", "--date=format:%m-%d-%y", "--format=%h%d %ad %s <%an>" }
+    --   git_command = { "git", "log", "--format=%h%d (%ar) %s <%an>" },
+    -- },
     lsp_workspace_symbols = {
       symbols_highlights = {
         "Class",
@@ -136,6 +149,11 @@ local telescope_config = {
         "Trait",
         "Field",
       },
+    },
+    lsp_references = {
+      include_current_line = false,
+      theme = "dropdown",
+      path_display = { "tail" },
     },
     lsp_document_symbols = {
       sorter = require("telescope").extensions.fzf.native_fzf_sorter({

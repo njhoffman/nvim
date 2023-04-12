@@ -85,7 +85,12 @@ local plugins = {
   { "Wansmer/treesj", event = { "BufReadPost", "BufNewFile" }, dependencies = { "nvim-treesitter/nvim-treesitter" } },
   -- traversal/swapping
   { "mizlan/iswap.nvim", event = { "BufReadPost", "BufNewFile" } },
-  { "ziontee113/SelectEase", event = "VeryLazy" },
+  {
+    -- "ziontee113/SelectEase",
+    "njhoffman/SelectEase",
+    dir = "~/git/SelectEase",
+    event = "VeryLazy",
+  },
   { "chrisgrieser/nvim-spider", event = "VeryLazy" },
   { "echasnovski/mini.move", event = "VeryLazy" },
   { "gbprod/substitute.nvim", event = "VeryLazy" },

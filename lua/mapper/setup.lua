@@ -495,7 +495,7 @@ map({ "n", "v" }, "<M-'>", "<cmd>HopWord<cr>", {
   desc = "hop to word",
 })
 
-map({ "n", "v" }, "<M-;>", "<cmd>HopLine<cr>", {
+map({ "n", "v" }, "<M-:>", "<cmd>HopLine<cr>", {
   category = "Motion",
   plugin = "hop.nvim",
   label = "hop to line",
@@ -934,6 +934,13 @@ map("n", "<M-g>", "<cmd>lua require('telescope.run')('projects','projects')<cr>"
   desc = "find projects telescope",
 })
 
+map("n", "<leader>l", "<cmd>Telescope resume<cr>", {
+  category = "Pickers",
+  plugin = "telescope.nvim",
+  label = "repeat telescope",
+  desc = "repeast last telescope command",
+})
+
 map("n", "<M-1>", "<cmd>Telescope resume<cr>", {
   category = "Pickers",
   plugin = "telescope.nvim",
@@ -941,7 +948,7 @@ map("n", "<M-1>", "<cmd>Telescope resume<cr>", {
   desc = "repeast last telescope command",
 })
 
-map("n", "<leader><leader>", "<cmd>lua require('telescope.run')('find_pickers','find_pickers')<cr>", {
+map({ "n", "v" }, "<leader><leader>", "<cmd>lua require('telescope.run')('find_pickers','find_pickers')<cr>", {
   category = "Pickers",
   plugin = "telescope.nvim",
   label = "find pickers",
@@ -1079,6 +1086,22 @@ map("v", ">", ">gv", {
 map("n", "<leader>Fx", "<cmd>ISwapNodeWith<cr>", {
   category = "Format",
   label = "swap node with",
+  plugin = "iswap.nvim",
+  desc = "swap/exchange node objects with (iswap.nvim)",
+})
+
+-- TODO: allow range
+map({ "v" }, "<M-;>", "<esc><cmd>ISwapNodeWith<cr>", {
+  category = "Format",
+  label = "swap node with",
+  plugin = "iswap.nvim",
+  desc = "swap/exchange node objects with (iswap.nvim)",
+})
+
+map({ "n" }, "<M-;>", "<cmd>ISwapNodeWith<cr>", {
+  category = "Format",
+  label = "swap node with",
+  plugin = "iswap.nvim",
   desc = "swap/exchange node objects with (iswap.nvim)",
 })
 

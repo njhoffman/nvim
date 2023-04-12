@@ -63,11 +63,7 @@ end
 
 local function style_content(_lines, filetype, width)
   local lines = get_styled_content(_lines, width)
-  if not filetype or filetype == "help-markdown" then
-    vim.api.nvim_buf_set_option(state.bufnr, "filetype", "help")
-  else
-    vim.api.nvim_buf_set_option(state.bufnr, "filetype", filetype)
-  end
+  vim.api.nvim_buf_set_option(state.bufnr, "filetype", filetype)
   vim.api.nvim_buf_set_lines(state.bufnr, 0, #lines, false, lines)
 end
 
@@ -140,7 +136,6 @@ local function show_hover_new(provider_id, config, result, opts)
   end
 
   vim.api.nvim_set_option_value("scrolloff", scrolloff, {})
-
   local ft = result.filetype or "markdown"
   if type(state.ft_bufnr[ft]) == "nil" or not vim.api.nvim_buf_is_valid(state.ft_bufnr[ft]) then
     state.ft_bufnr[ft] = vim.api.nvim_create_buf(false, true)
@@ -154,11 +149,10 @@ local function show_hover_new(provider_id, config, result, opts)
     get_dimensions(result.lines, max, config, provider_id)
     lines = get_styled_content(result.lines, state.width)
   end
-  vim.api.nvim_buf_set_option(state.bufnr, "filetype", result.filetype)
 
   if lines and #lines > 0 then
     if state.winnr and vim.api.nvim_win_is_valid(state.winnr) then
-      local new_lines = get_styled_content(lines, state.width)
+      -- local new_lines = get_styled_content(lines, state.width)
       -- get_dimensions(new_lines, max, config, provider_id)
       -- local new_lines = vim.api.nvim_buf_get_lines(state.bufnr, 0, -1, false)
       -- local _, new_height = get_dimensions(new_lines, max, config)
@@ -171,7 +165,7 @@ local function show_hover_new(provider_id, config, result, opts)
 
       -- Setup keymaps
       require("hover.aucommands").open(state.winnr, opts)
-      require("hover.keymaps").open(opts)
+      -- require("hover.keymaps").open(opts)
 
       -- local new_lines = style_content(lines, result.filetype, state.width)
       -- local new_lines = get_styled_content(lines, state.width)
@@ -199,6 +193,9 @@ local function show_hover_new(provider_id, config, result, opts)
   end
 
   add_title(state.winnr, provider_id)
+  if vim.api.nvim_buf_get_option(state.bufnr, "filetype") ~= result.filetype then
+    vim.api.nvim_buf_set_option(state.bufnr, "filetype", result.filetype)
+  end
 end
 
 local function find_window_by_var(name, value)

@@ -47,6 +47,7 @@ local tele_plugs = {
     }
     return frecency_cfg
   end,
+  ["gitops"] = {},
   ["gotofile"] = {},
   ["mapper"] = {
     sorter = sorters.fuzzy_with_index_bias,
@@ -69,7 +70,6 @@ local tele_plugs = {
   ["variables"] = {},
   ["which-key"] = {},
   -- 3rd party to sort through
-  ["advanced_git_search"] = {},
   ["aerial"] = {},
   ["asynctasks"] = {},
   ["bookmarks"] = {

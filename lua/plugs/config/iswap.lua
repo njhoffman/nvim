@@ -3,7 +3,7 @@
 require("iswap").setup({
   -- The keys that will be used as a selection, in order
   -- ('asdfghjklqwertyuiopzxcvbnm' by default)
-  keys = "qwertyuiop",
+  -- keys = "qwertyuiop",
 
   -- Grey out the rest of the text when making a selection
   -- (enabled by default)
@@ -36,7 +36,7 @@ require("iswap").setup({
 
   -- Automatically swap with only two arguments
   -- default nil
-  autoswap = true,
+  autoswap = false,
 
   -- Other default options you probably should not change:
   debug = nil,

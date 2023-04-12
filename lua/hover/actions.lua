@@ -9,6 +9,7 @@ local change_tab = function(direction)
   local next_idx = nil
   local curr_idx = nil
   local i = 1
+  vim.dbglog(state)
   for _, provider in pairs(state.enabled) do
     if provider.name == state.provider then
       curr_idx = i

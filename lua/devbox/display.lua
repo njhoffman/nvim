@@ -108,7 +108,6 @@ local update_popup = function()
   state.current = vim.tbl_deep_extend("force", state.current, {
     start = update_timing(state.timing.batch),
     batch_idx = state.current.batch_idx + 1,
-    vim.dbglog(state),
   })
 
   for _, provider in pairs(state.providers) do
@@ -121,6 +120,7 @@ local update_popup = function()
     state.current.queued[provider.idx] = true
     provider.handler(update_line_cb, provider)
   end
+
   update_title()
 end
 

@@ -119,6 +119,7 @@ return function(injected_functions)
     -- ui components
     NormalWindow({ fg = Normal.fg, bg = "none" }),
     NormalFloat({ fg = "#8f93a2", bg = "none" }), -- normal text and background color for floating windows
+    Title({ fg = clrs.nord4.darken(30), gui = "NONE" }),
     FloatBorder({ fg = "#3f5382", bg = "none" }), --
     FloatTitle({ fg = "#5f73c2", bg = "none" }), --
     Pmenu({ fg = "#618cc4", bg = "none" }),
@@ -163,7 +164,7 @@ return function(injected_functions)
     Label({ fg = "#6688ba" }),
     Keyword({ fg = "#6177b2" }),
     MatchParen({ fg = "#fb8b8b", gui = "bold," }),
-    MatchParenCursor({ fg = "#8f20f9" }),
+    MatchParenCursor({ fg = "#fb8b8b" }),
     NonText({ bg = "none", fg = "#555555" }),
     Operator({ fg = "#4886bf" }),
     PreProc({ fg = "#4796bc" }),
@@ -262,6 +263,7 @@ return function(injected_functions)
     sym("@tag")({ fg = clr_over.orange }),
     sym("@tag.delimiter")({ fg = clr_over.orange }),
     sym("@text.reference")({ fg = "#1abc9c" }),
+    sym("@text.title")({ fg = Title.fg }),
     sym("@text.todo")({ TodoMsg }),
     sym("@text.todo.checked")({ fg = "#73daca" }),
     sym("@text.todo.unchecked")({ fg = "#7aa2f7" }),
@@ -675,6 +677,61 @@ return function(injected_functions)
     -- AerialTypeParameterIcon({ Identifier }),
     AerialVariableIcon({ CmpItemKindVariable }),
     -- AerialVariableIcon({ Identifier }),
+    -- +--- Telescope ---+
+    TelescopeNormal({ fg = "#6D779a", bg = "none" }),
+    TelescopeBorder({ bg = "none", fg = "#2299cc" }),
+    TelescopePrompt({ bg = "none" }),
+    TelescopePromptNormal({ fg = "#2299cc", bg = "none" }),
+    TelescopePromptBorder({ fg = "#416191", bg = "none" }),
+    TelescopePromptPrefix({ fg = "#2977FF", bg = "none" }),
+    -- fg_bg("TelescopePromptPrefix", red, black2)
+    -- fg_bg("TelescopePromptTitle", black, red)
+    TelescopeMultiIcon({ fg = "#0066ff" }),
+    TelescopePreviewBorder({ fg = "#416191", bg = "none" }),
+    TelescopeResults({ bg = "none" }),
+    TelescopeResultsBorder({ fg = "#416191", bg = "none" }),
+    TelescopeSelectionCaret({ fg = "#44c9fc" }),
+    TelescopeSelection({ fg = "#28ddff", gui = "bold", bg = "#0f1a20" }), -- bg = "#202324"
+    TelescopeMatching({ fg = "#7997FF", bg = "none" }),
+    TelescopeFrecencyScores({ fg = "#34799c" }),
+    TelescopeBufferLoaded({ fg = "#47a0f0" }),
+    TelescopeMultiSelection({ fg = "#4060ff", gui = "italic" }),
+    TelescopeTitle({ fg = "#2299ff", gui = "bold " }),
+    TelescopePromptTitle({ bg = "none" }),
+    TelescopePreviewTitle({ fg = "#47a0f0", bg = "none" }),
+    TelescopeResultsTitle({ fg = "#64a9ec", bg = "none" }),
+    TelescopeResultsIdentifier({ fg = "#6476ce" }),
+    TelescopeResultsSpecialComment({ fg = "#4488cc" }),
+    -- { entry.value.event, "vimAutoEvent" },
+    -- { entry.value.group_name, "vimAugroup" },
+    -- { entry.value.pattern, "vimAutoCmdSfxList" },
+    -- "TelescopeResultsDiffAdd" },
+    -- "TelescopeResultsDiffAdd" },
+    -- "TelescopeResultsDiffChange" },
+    -- "TelescopeResultsDiffChange" },
+    -- "TelescopeResultsDiffChange" },
+    -- "TelescopeResultsDiffDelete" },
+    -- = "TelescopeResultsDiffUntracked" },
+    --
+    -- ["Class"] = "TelescopeResultsClass",
+    -- ["Constant"] = "TelescopeResultsConstant",
+    -- ["Field"] = "TelescopeResultsField",
+    -- ["Function"] = "TelescopeResultsFunction",
+    -- ["Method"] = "TelescopeResultsMethod",
+    -- ["Property"] = "TelescopeResultsOperator",
+    -- ["Struct"] = "TelescopeResultsStruct",
+    -- ["Variable"] = "TelescopeResultsVariable",
+    --     WhichKeyGroup = { fg = clrs.text },
+    --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
+    --     WhichKeySeperator = { fg = clrs.fg },
+    NavbuddyTitleBorder({ fg = "#222222" }),
+    -- NavbuddyNormalTitle({ fg = "#222222" }),
+
+    -- TelescopePromptCounter { NonText },
+    -- TelescopePathSeparator { fg = '#667788' },
+    -- TelescopeQueryFilter { fg = '#4466FF'},
+    -- TelescopeResultsComment = {},
+    -- TelescopeMultiSelection guifg=#928374          " Multisections
 
     -- dim.lua
     sym("@variable")({ fg = "#62718b", gui = "italic" }),

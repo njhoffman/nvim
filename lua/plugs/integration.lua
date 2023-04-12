@@ -14,7 +14,7 @@ local plugins = {
   },
   { "rmagatti/auto-session", event = "BufReadPre" },
   { "wakatime/vim-wakatime", event = "VeryLazy" },
-  { "AndrewRadev/id3.vim", ft = "mp3" },
+  { "AndrewRadev/id3.vim" },
   {
     "susensio/magic-bang.nvim",
     ft = "sh",

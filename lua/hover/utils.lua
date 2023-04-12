@@ -122,7 +122,7 @@ M.debounce = function(id, fn, frequency_in_ms, strategy, action)
 end
 
 local log_msg = function(msg)
-  vim.dbglog(msg)
+  -- vim.dbglog(msg)
 end
 
 M.logger = function()

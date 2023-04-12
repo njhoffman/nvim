@@ -134,7 +134,6 @@ local default_cfg = {
     -- defaults for hover and signature help
     documentation = {
       view = "hover",
-      ---@type NoiceViewOptions
       opts = {
         lang = "markdown",
         replace = true,
@@ -266,7 +265,7 @@ local cfg = {
         col = "50%",
       },
       size = {
-        width = 60,
+        width = 50,
         height = "auto",
       },
       in_options = {

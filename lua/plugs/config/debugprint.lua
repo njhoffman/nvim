@@ -1,5 +1,5 @@
 local opts = {
-  create_keymaps = true, -- Creates default keymappings - see above
+  create_keymaps = false, -- Creates default keymappings - see above
   move_to_debugline = false, -- When adding a debug line, moves the cursor to that line
   display_counter = true, -- Whether to display/include the monotonically increasing counter in each debug message added
   display_snippet = true, -- Whether to include a snppet of the line above/below in plain debug lines
@@ -23,7 +23,18 @@ local opts = {
   print_tag = "DBG", --	The string inserted into each print statement, which can be used to uniquely identify statements inserted by debugprint.
 }
 
-require("debugprint").setup(opts)
+local myobject = {}
+local lua = {
+  left = 'vim.dbglog("',
+  right = '")',
+  mid_var = "${",
+  right_var = '}"',
+}
+
+-- require('debugprint').add_custom_filetypes({ my_fileformat, ... })
+require("debugprint").setup({ filetypes = { lua = lua } })
+-- require("debugprint").setup(opts)
+
 -- print('DEBUGPRINT[4]: debugprint-nvim.lua:28: opts=' .. vim.inspect(opts))
 vim.keymap.set("n", "g?d", function()
   require("debugprint").deleteprints()
@@ -47,14 +58,34 @@ end, { expr = true })
 --   M.deleteprints(opts)
 -- end, { range = true })
 
--- local my_fileformat = {
---   left = 'vim.dbglog(")',
---   right = '")',
---   mid_var = "${",
---   right_var = '}"',
--- }
+-- vim.keymap.set("n", "<M-C-_>", function()
+--   -- Note: setting `expr=true` and returning the value are essential
+--   return require("debugprint").debugprint({ variable = true })
+-- end, { expr = true })
+
 --
--- require("debugprint").setup({ filetypes = { my_fileformat, another_of_my_fileformats, ... } })
+
+-- require("debugprint").setup({ filetypes = { lua } })
+
+--     require('debugprint').setup({ filetypes = { my_fileformat, another_of_my_fileformats, ... }})
+-- <
+-- or `add_custom_filetypes()`:
+-- >lua
+--     require('debugprint').add_custom_filetypes({ my_fileformat, ... })
+
+-- local js = {
+--     left = 'console.log("',
+--     right = '")',
+--     mid_var = '", ',
+--     right_var = ")",
+-- }
+-- ["lua"] = {
+--     left = "print('",
+--     right = "')",
+--     mid_var = "' .. vim.inspect(",
+--     right_var = "))",
+-- },
+--
 
 -- Mode             	 Default Keymap      Purpose                                                                                                                           	 Equivalent Lua Function
 -- Normal           	 g?p                 Insert a 'plain' debug line appropriate to the filetype just below the current line                                               	 require('debugprint').debugprint()

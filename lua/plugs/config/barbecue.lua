@@ -143,11 +143,12 @@ local cfg = {
   project = { show = false },
   dirname = { show = true },
   basename = { show = true, show_modified = true },
-  context = {
-    show = true,
-    align = "right",
-    follow_icon_color = true,
-  },
+  context = { show = false },
+  -- context = {
+  --   show = true,
+  --   align = "right",
+  --   follow_icon_color = true,
+  -- },
   symbols = {
     separators = { "", "" },
   },

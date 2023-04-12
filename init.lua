@@ -19,5 +19,7 @@ end
 require("sidebar").setup()
 require("tracker").setup()
 
+vim.cmd([[ nnoremap ; : ]])
+
 -- require("notifications.recipes.progress").config()
 -- require "plenary.profile".stop()
