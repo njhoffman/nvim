@@ -27,10 +27,10 @@ local menu_entry_maker = function(widths)
   return function(menu_obj)
     local entry = {
       display = make_display,
-      name = menu_obj.name,
-      desc = menu_obj.desc,
-      summary = menu_obj.value(),
-      ordinal = string.format("%s", menu_obj.name),
+      summary = menu_obj[1],
+      name = menu_obj[2],
+      desc = menu_obj[3],
+      ordinal = string.format("%s", menu_obj[2]),
     }
     return entry
   end

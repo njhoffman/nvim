@@ -34,12 +34,13 @@ local tokyoColors = {
 }
 --
 local theme = {
-  fg_1 = "#337689",
-  fg_2 = "#637699",
-  fg_3 = "#7386a9",
-  fg_4 = "#b3c6ff",
+  fg_1 = "#335577",
+  fg_2 = "#336688",
+  fg_3 = "#2288aa",
+  fg_4 = "#44ccff",
   -- bg_1 = "#06203a",
-  bg_1 = "#061626",
+  bg_1 = "#10101a",
+  -- bg_1 = "#101026",
   modified_fg = "#fb6b6b",
 }
 --                            
@@ -108,7 +109,7 @@ local cfg = {
     normal = { fg = theme.fg_3, bg = theme.bg_1, bold = false },
     dirname = { fg = theme.fg_3, bold = false },
     basename = { fg = theme.fg_4, bold = true },
-    separator = { fg = theme.fg_2 },
+    separators = { fg = theme.fg_2 },
     context = { fg = theme.fg_1, bold = false },
     modified = { fg = theme.modified_fg },
     context_file = { fg = tokyoColors.yellow },

@@ -83,6 +83,7 @@ end
 -- end
 
 local file_exists_on_commit = function(commit_hash, git_relative_file_path)
+  vim.dbglog("FILE EXISTS ON CMIMMIT", commit_hash, git_relative_file_path)
   local command = "cd "
     .. file.git_dir()
     .. " && git ls-tree --name-only "
@@ -104,6 +105,7 @@ M.file_exists_on_commit = file_exists_on_commit
 --- @return string|nil file name on commit
 local file_name_on_commit = function(commit_hash, git_relative_file_path)
   if file_exists_on_commit(commit_hash, git_relative_file_path) then
+    vim.dbglog("FILE EXISTS ON CIMMIT")
     return git_relative_file_path
   end
 
@@ -198,7 +200,7 @@ end
 M.get_repo = function(bufnr)
   local ok, gitsigns = pcall(vim.api.nvim_buf_get_var, bufnr, "gitsigns_status_dict")
   if ok == true then
-    vim.dbglog("get_repo", gitsigns)
+    -- vim.dbglog("get_repo", gitsigns)
     return {
       worktree = gitsigns.root,
       gitdir = gitsigns.gitdir,
@@ -207,6 +209,16 @@ M.get_repo = function(bufnr)
     vim.dbglog("get_repo failed", gitsigns)
     return {}
   end
+end
+
+M.init_git_command = function(bufnr)
+  local command = { "git" }
+  local repo = M.get_repo(bufnr)
+  if repo.gitdir then
+    table.insert(command, "--git-dir=" .. repo.gitdir)
+    table.insert(command, "--work-tree=" .. repo.worktree)
+  end
+  return command
 end
 
 -- git files count

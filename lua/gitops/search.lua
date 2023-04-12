@@ -33,7 +33,7 @@ M.search_log_content = function(opts)
     :find()
 end
 
-M.search_log_content_summary = function()
+M.search_log_content_summary = function(bufnr)
   return "search_log_content_summary"
 end
 
@@ -70,7 +70,7 @@ M.search_log_content_file = function()
     :find()
 end
 
-M.search_log_content_file_summary = function()
+M.search_log_content_file_summary = function(bufnr)
   return "search_log_content_file_summary"
 end
 
@@ -88,7 +88,7 @@ M.checkout_reflog = function()
     :find()
 end
 
-M.checkout_reflog_summary = function()
+M.checkout_reflog_summary = function(bufnr)
   return "checkout reflog"
 end
 

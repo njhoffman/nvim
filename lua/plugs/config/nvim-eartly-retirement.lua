@@ -26,7 +26,7 @@ local default = {
 }
 
 local opts = {
-  retirementAgeMins = 20,
+  retirementAgeMins = 10,
   notificationOnAutoClose = true,
 }
 

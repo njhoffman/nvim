@@ -17,7 +17,7 @@ local attach_mappings = function()
   actions.select_default:replace(function()
     local selection = action_state.get_selected_entry()
     if selection == nil then
-      utils.__warn_no_selection "variables"
+      utils.__warn_no_selection("variables")
       return
     end
     -- local esc = ""
@@ -54,89 +54,99 @@ M.all = function(theme_opts, conf_opts)
   conf_opts = vim.tbl_deep_extend("force", default_conf_opts, conf_opts or {})
 
   local parsed_table = generate.get_variables()
-  pickers.new(theme_opts, {
-    prompt_title = "All Variables",
-    results_title = "Variables",
-    finder = finders.new_table({
-      results = parsed_table,
-      entry_maker = display.entry_maker
-    }),
-    previewer = _previewer.previewer.new(conf_opts),
-    sorter = telescope_config.file_sorter(theme_opts),
-    attach_mappings = attach_mappings
-  }):find()
+  pickers
+    .new(theme_opts, {
+      prompt_title = "All Variables",
+      results_title = "Variables",
+      finder = finders.new_table({
+        results = parsed_table,
+        entry_maker = display.entry_maker,
+      }),
+      previewer = _previewer.previewer.new(conf_opts),
+      sorter = telescope_config.file_sorter(theme_opts),
+      attach_mappings = attach_mappings,
+    })
+    :find()
 end
 
 M.buffer = function(theme_opts, conf_opts)
   theme_opts = themes.get_dropdown(theme_opts)
   conf_opts = vim.tbl_deep_extend("force", default_conf_opts, conf_opts or {})
 
-  local parsed_table = generate.get_variables('buffer')
-  pickers.new(theme_opts, {
-    prompt_title = "Buffer Variables",
-    results_title = "Variables",
-    finder = finders.new_table({
-      results = parsed_table,
-      entry_maker = display.entry_maker
-    }),
-    previewer = _previewer.previewer.new(conf_opts),
-    sorter = telescope_config.file_sorter(theme_opts),
-    attach_mappings = attach_mappings
-  }):find()
+  local parsed_table = generate.get_variables("buffer")
+  pickers
+    .new(theme_opts, {
+      prompt_title = "Buffer Variables",
+      results_title = "Variables",
+      finder = finders.new_table({
+        results = parsed_table,
+        entry_maker = display.entry_maker,
+      }),
+      previewer = _previewer.previewer.new(conf_opts),
+      sorter = telescope_config.file_sorter(theme_opts),
+      attach_mappings = attach_mappings,
+    })
+    :find()
 end
 
 M.predef = function(theme_opts, conf_opts)
   theme_opts = themes.get_dropdown(theme_opts)
   conf_opts = vim.tbl_deep_extend("force", default_conf_opts, conf_opts or {})
 
-  local parsed_table = generate.get_variables('predef')
-  pickers.new(theme_opts, {
-    prompt_title = "Predef Variables",
-    results_title = "Variables",
-    finder = finders.new_table({
-      results = parsed_table,
-      entry_maker = display.entry_maker
-    }),
-    previewer = _previewer.previewer.new(conf_opts),
-    sorter = telescope_config.file_sorter(theme_opts),
-    attach_mappings = attach_mappings
-  }):find()
+  local parsed_table = generate.get_variables("predef")
+  pickers
+    .new(theme_opts, {
+      prompt_title = "Predef Variables",
+      results_title = "Variables",
+      finder = finders.new_table({
+        results = parsed_table,
+        entry_maker = display.entry_maker,
+      }),
+      previewer = _previewer.previewer.new(conf_opts),
+      sorter = telescope_config.file_sorter(theme_opts),
+      attach_mappings = attach_mappings,
+    })
+    :find()
 end
 
 M.window = function(theme_opts, conf_opts)
   theme_opts = themes.get_dropdown(theme_opts)
   conf_opts = vim.tbl_deep_extend("force", default_conf_opts, conf_opts or {})
 
-  local parsed_table = generate.get_variables('window')
-  pickers.new(theme_opts, {
-    prompt_title = "Window Variables",
-    results_title = "Variables",
-    finder = finders.new_table({
-      results = parsed_table,
-      entry_maker = display.entry_maker
-    }),
-    previewer = _previewer.previewer.new(conf_opts),
-    sorter = telescope_config.file_sorter(theme_opts),
-    attach_mappings = attach_mappings
-  }):find()
+  local parsed_table = generate.get_variables("window")
+  pickers
+    .new(theme_opts, {
+      prompt_title = "Window Variables",
+      results_title = "Variables",
+      finder = finders.new_table({
+        results = parsed_table,
+        entry_maker = display.entry_maker,
+      }),
+      previewer = _previewer.previewer.new(conf_opts),
+      sorter = telescope_config.file_sorter(theme_opts),
+      attach_mappings = attach_mappings,
+    })
+    :find()
 end
 
 M.global = function(theme_opts, conf_opts)
   theme_opts = themes.get_dropdown(theme_opts)
   conf_opts = vim.tbl_deep_extend("force", default_conf_opts, conf_opts or {})
 
-  local parsed_table = generate.get_variables('global')
-  pickers.new(theme_opts, {
-    prompt_title = "Global Variables",
-    results_title = "Variables",
-    finder = finders.new_table({
-      results = parsed_table,
-      entry_maker = display.entry_maker
-    }),
-    previewer = _previewer.previewer.new(conf_opts),
-    sorter = telescope_config.file_sorter(theme_opts),
-    attach_mappings = attach_mappings
-  }):find()
+  local parsed_table = generate.get_variables("global")
+  pickers
+    .new(theme_opts, {
+      prompt_title = "Global Variables",
+      results_title = "Variables",
+      finder = finders.new_table({
+        results = parsed_table,
+        entry_maker = display.entry_maker,
+      }),
+      previewer = _previewer.previewer.new(conf_opts),
+      sorter = telescope_config.file_sorter(theme_opts),
+      attach_mappings = attach_mappings,
+    })
+    :find()
 end
 
 return M

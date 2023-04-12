@@ -28,7 +28,8 @@ M.diff_commit_file = function()
     :find()
 end
 
-M.diff_commit_file_summary = function()
+M.diff_commit_file_summary = function(bufnr)
+  vim.dbglog("DIFF COMMIT FILE")
   return "diff commit file"
 end
 
@@ -45,7 +46,7 @@ M.diff_branch = function()
     :find()
 end
 
-M.diff_branch_summary = function()
+M.diff_branch_summary = function(bufnr)
   return "diff branch"
 end
 
@@ -55,6 +56,11 @@ M.diff_branch_file = function()
   local current_branch = git_utils.current_branch()
   local bufnr = vim.fn.bufnr()
 
+  local count = 0
+  opts.entry_maker = function(arg1, arg2, arg3)
+    count = count + 1
+    vim.dbglog("ENTRY MAKER", count, arg1, arg2, arg3)
+  end
   pickers
     .new({
       results_title = "Local branches :: *" .. current_branch,
@@ -69,8 +75,15 @@ M.diff_branch_file = function()
     }, {})
     :find()
 end
-M.diff_branch_file_summary = function()
-  return "diff branch file summary"
+
+M.diff_branch_file_summary = function(bufnr)
+  local count = 0
+  vim.dbglog("GIT BRANCH SUMMARY", bufnr, count)
+  opts.entry_maker = function(arg1, arg2, arg3)
+    count = count + 1
+    vim.dbglog("ENTRY MAKER", count, arg1, arg2, arg3)
+  end
+  return ags_finders.git_branches_finder()
 end
 
 --- Opens a Telescope window with a list of previous commit logs with respect to selected lines
@@ -84,6 +97,11 @@ M.diff_commit_line = function()
 
   -- git log -L741,751:'app/models/patients/patient.rb'\
   -- --format='%C(auto)%h \t %as \t %C(green)%an _ %Creset %s'
+  local count = 0
+  opts.entry_maker = function(arg1, arg2, arg3)
+    count = count + 1
+    vim.dbglog("ENTRY MAKER", count, arg1, arg2, arg3)
+  end
 
   pickers
     .new({
@@ -103,8 +121,20 @@ M.diff_commit_line = function()
     :find()
 end
 
-M.diff_commit_line_summary = function()
-  return "diff commit line summary"
+M.diff_commit_line_summary = function(bufnr, _opts)
+  local opts = vim.tbl_deep_extend("force", {
+    bufnr = bufnr,
+    s_start = vim.fn.getpos("'<")[2],
+    s_end = vim.fn.getpos("'>")[2],
+  }, _opts or {})
+
+  local count = 0
+  opts.entry_maker = function(arg1, arg2, arg3)
+    count = count + 1
+    vim.dbglog("ENTRY MAKER", count, arg1, arg2, arg3)
+  end
+  vim.dbglog("commit line summary", count)
+  return ags_finders.git_log_location_finder(bufnr, opts)
 end
 
 return M
