@@ -3,13 +3,10 @@
 -- require("dapui").toggle()
 
 local dap_ok, dap = pcall(require, "dap")
-
 if dap_ok then
-  require("plugs.config.nvim-dap")
   require("plugs.config.nvim-dap-mapping")
 
   local dapui = require("dapui")
-
   dapui.setup({
     icons = { expanded = "", collapsed = "", current_frame = "" },
     mappings = {

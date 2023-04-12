@@ -128,6 +128,7 @@ dap.adapters.nlua = function(callback, lua_config)
   })
 end
 
+require("plugs.config.nvim-dap-ui")
 -- If you prefer to start delve manually, you can use the following adapter definition instead:
 --
 -- dap.adapters.delve = {

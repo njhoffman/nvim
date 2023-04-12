@@ -204,7 +204,7 @@ local cfg = {
     -- override the default lsp markdown formatter with Noice
     ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
     -- override the lsp markdown formatter with Noice
-    ["vim.lsp.util.stylize_markdown"] = true,
+    ["vim.lsp.util.stylize_markdown"] = false,
     -- override cmp documentation with Noice (needs the other options to work)
     ["cmp.entry.get_documentation"] = false,
   },
@@ -254,11 +254,19 @@ local cfg = {
       -- conceal = false,
     },
   },
+  messages = {
+    enabled = true, -- enables the Noice messages UI
+    view = "notify", -- default view for messages
+    view_error = "notify", -- view for errors
+    view_warn = "notify", -- view for warnings
+    view_history = "messages", -- view for :messages
+    view_search = "virtualtext", -- view for search count messages. Set to `false` to disable
+  },
   views = {
     cmdline_popup = {
       position = {
         -- row = 5,
-        row = "60%",
+        row = "30%",
         col = "50%",
       },
       size = {

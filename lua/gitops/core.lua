@@ -153,7 +153,6 @@ end
 M.commits = function(bufnr)
   opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_commits(opts))
 
-  local bufnr = vim.fn.bufnr()
   local command = git_utils.init_git_command(bufnr)
   table.insert(command, "log")
   table.insert(command, "--pretty=oneline")
@@ -249,10 +248,15 @@ M.commits_summary = function(bufnr, opts)
   table.insert(command, ".")
   -- local git_command = opts and opts.git_command or vim.fn.join(command, " ")
 
-  local async_oneshot_finder = require("telescope.finders.async_oneshot_finder")
+  -- local async_oneshot_finder = require("telescope.finders.async_oneshot_finder")
   local git_command = opts and opts.git_command or command
-  local results = async_oneshot_finder({ fn_command = git_command })
-  vim.dbglog("RESULTS",)
+  -- local data = finders.new_oneshot_job(git_command, opts)
+  -- local data = finders.new_oneshot_job({ "ls", "-1" }, opts)
+  local data = vim.fn.execute({ "!ls", "-1" })
+
+  vim.dbglog("DATA", data)
+  return data
+
   -- opts.cwd = vim.fn.getcwd()
   -- return async_oneshot_finder {
   --   entry_maker = opts.entry_maker or make_entry.gen_from_string(opts),
