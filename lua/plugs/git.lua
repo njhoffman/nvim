@@ -46,6 +46,7 @@ local plugins = {
   { "lewis6991/gitsigns.nvim", event = "BufReadPost", dependencies = "nvim-lua/plenary.nvim" },
   {
     "tpope/vim-fugitive",
+    event = { "BufReadPost", "BufNewFile" },
     cmd = { "Git", "Ggrep", "GMove", "GDelete", "Gspilt", "Gstatus", "Gwrite", "Gread", "Gdiffsplit", "Gedit" },
     dependencies = { { "tpope/vim-rhubarb", cmd = "GBrowse" } },
   },

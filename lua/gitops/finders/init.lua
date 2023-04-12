@@ -42,7 +42,6 @@ M.git_log_location_finder = function(bufnr, opts)
 
     finder_utils.set_last_prompt(prompt)
 
-    vim.dbglog("CMD 1", vim.fn.join(command, " "))
     return vim.tbl_flatten(command)
   end, finder_utils.git_log_entry_maker)
 end

@@ -63,6 +63,12 @@ local on_attach = function(bufnr)
     return false
   end
 
+  -- local ok, gitsigns = pcall(vim.api.nvim_buf_get_var, bufnr, "gitsigns_status_dict")
+  -- if ok == true then
+  --   -- vim.fn.setenv("GIT_WORK_TREE", gitsigns.root)
+  --   -- vim.fn.setenv("GIT_DIR", gitsigns.gitdir)
+  -- end
+
   local gs = package.loaded.gitsigns
   local function map(mode, l, r, opts)
     opts = opts or {}
@@ -93,6 +99,11 @@ local on_attach = function(bufnr)
 
   -- Text object
   map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+end
+
+local on_detach = function()
+  vim.fn.setenv("GIT_WORK_TREE", "")
+  vim.fn.setenv("GIT_DIR", "")
 end
 
 local mySettings = {

@@ -28,6 +28,26 @@ M.diff_commit_file = function()
     :find()
 end
 
+M.diff_commit_file_summary = function()
+  return "diff commit file"
+end
+
+--- Opens a Telescope window with all files changed on the current branch
+--- Only committed changes will be displayed
+M.diff_branch = function()
+  pickers
+    .new({
+      results_title = "Modified " .. git_utils.base_branch() .. " -> " .. git_utils.current_branch(),
+      sorter = sorters.get_fuzzy_file(),
+      finder = ags_finders.changed_files_on_current_branch_finder(),
+      previewer = ags_previewers.changed_files_on_current_branch_previewer(),
+    }, {})
+    :find()
+end
+M.diff_branch_summary = function()
+  return "diff branch"
+end
+
 --- Opens a Telescope window with a list of local branches
 M.diff_branch_file = function()
   -- local previewers = require('telescope.previewers')
@@ -47,6 +67,9 @@ M.diff_branch_file = function()
       end,
     }, {})
     :find()
+end
+M.diff_branch_file_summary = function()
+  return "diff branch file summary"
 end
 
 --- Opens a Telescope window with a list of previous commit logs with respect to selected lines
@@ -76,6 +99,10 @@ M.diff_commit_line = function()
       end,
     }, {})
     :find()
+end
+
+M.diff_commit_line_summary = function()
+  return "diff commit line summary"
 end
 
 return M

@@ -1,5 +1,3 @@
-local actions = require("telescope.actions")
-local action_state = require("telescope.actions.state")
 local pickers = require("telescope.pickers")
 local sorters = require("telescope.sorters")
 local finders = require("telescope.finders")
@@ -11,29 +9,17 @@ local ags_mappings = require("gitops.mappings")
 
 local M = {}
 
---- Opens a Telescope window with all files changed on the current branch
---- Only committed changes will be displayed
-M.changed_on_branch = function()
-  pickers
-    .new({
-      results_title = "Modified " .. git_utils.base_branch() .. " -> " .. git_utils.current_branch(),
-      sorter = sorters.get_fuzzy_file(),
-      finder = ags_finders.changed_files_on_current_branch_finder(),
-      previewer = ags_previewers.changed_files_on_current_branch_previewer(),
-    }, {})
-    :find()
-end
-
 --- Opens a Telescope window with a list of previous commits.
 --- Query is used to filter the results based on the content of the commit (added or removed text).
-M.search_log_content = function()
+M.search_log_content = function(opts)
   -- git log -L741,751:'app/models/patients/patient.rb' \
   -- --format='%C(auto)%h \t %as \t %C(green)%an _ %Creset %s'
   local bufnr = vim.fn.bufnr()
+  local count = git_utils.file_count(bufnr, opts.cwd or vim.fn.getcwd())
   pickers
     .new({
-      results_title = "Grep Commits",
-      prompt_title = "Git Search in All Files",
+      prompt_title = "Git Grep Commits",
+      results_title = "Git Grep All (" .. count .. " files)",
       finder = ags_finders.git_log_content_finder(bufnr, {}),
       previewer = ags_previewers.git_diff_content_previewer(),
       attach_mappings = function(_, map)
@@ -47,18 +33,26 @@ M.search_log_content = function()
     :find()
 end
 
+M.search_log_content_summary = function()
+  return "search_log_content_summary"
+end
+
+local get_path = function(path)
+  return (path or vim.fn.getcwd()):gsub(vim.fn.getenv("HOME"), "~")
+end
+
 --- Same as `search_log_content` but with respect to the current file
 M.search_log_content_file = function()
   -- local file_name = vim.fn.expand("%")
-  -- local relative_file_name = vim.fn.expand("%:~:.")
+  local relative_file_name = vim.fn.expand("%:~:.")
   local bufnr = vim.fn.bufnr()
 
   -- git log -L741,751:'app/models/patients/patient.rb' \
   -- --format='%C(auto)%h \t %as \t %C(green)%an _ %Creset %s'
   pickers
     .new({
-      results_title = "Grep BCommits",
-      prompt_title = "Git Search in File",
+      prompt_title = "Git Grep BCommits",
+      results_title = "Git Grep (" .. relative_file_name .. ")",
       finder = ags_finders.git_log_content_finder(bufnr, {
         bufnr = bufnr,
       }),
@@ -76,6 +70,10 @@ M.search_log_content_file = function()
     :find()
 end
 
+M.search_log_content_file_summary = function()
+  return "search_log_content_file_summary"
+end
+
 M.checkout_reflog = function()
   pickers
     .new({
@@ -90,56 +88,8 @@ M.checkout_reflog = function()
     :find()
 end
 
-local git_functions = {
-  { value = "Changed on current branch", func = M.changed_on_branch },
-  { value = "Find in repo log content", func = M.search_log_content },
-  { value = "Find in file log content", func = M.search_log_content_file },
-  { value = "Diff file with branch", func = M.diff_branch_file },
-  { value = "Diff file with previous commit", func = M.diff_commit_file },
-  {
-    value = "Diff file with selected line history",
-    func = M.diff_commit_line,
-  },
-  { value = "Checkout from reflog", func = M.checkout_reflog },
-}
-
-local function map_item(git_functions_table, f)
-  local t = {}
-  for k, v in pairs(git_functions_table) do
-    t[k] = f(v)
-  end
-  return t
-end
-
-local function execute_git_function(value)
-  for _, v in pairs(git_functions) do
-    if v["value"] == value then
-      v["func"]()
-      return
-    end
-  end
-end
-
---- Opens all a selector for all advanced git search functions
-M.show_custom_functions = function()
-  pickers
-    .new({
-      results_title = "Git action",
-      finder = finders.new_table(map_item(git_functions, function(item)
-        return item["value"]
-      end)),
-      sorter = sorters.get_fuzzy_file(),
-      attach_mappings = function(_, map)
-        ags_mappings.omnimap(map, "<CR>", function(prompt_bufnr)
-          actions.close(prompt_bufnr)
-          local selection = action_state.get_selected_entry()
-          execute_git_function(selection.value)
-        end)
-
-        return true
-      end,
-    }, {})
-    :find()
+M.checkout_reflog_summary = function()
+  return "checkout reflog"
 end
 
 return M

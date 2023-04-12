@@ -119,6 +119,7 @@ local telescope_config = {
       only_cwd = false,
     },
     git_status = {
+      enabled = false,
       previewer = c_previewers.delta,
       theme = "dropdown",
     },

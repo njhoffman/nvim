@@ -52,7 +52,6 @@ M.files = function(opts)
     show_untracked and "--others" or nil,
     recurse_submodules and "--recurse-submodules" or nil,
   })
-  vim.dbglog("***", git_utils.get_repo(bufnr), bufnr)
   pickers
     .new({
       prompt_title = "Git Files",
@@ -61,6 +60,10 @@ M.files = function(opts)
       sorter = conf.file_sorter(opts),
     }, {})
     :find()
+end
+
+M.files_summary = function()
+  return "files summary"
 end
 
 M.status = function(opts)
@@ -103,6 +106,9 @@ M.status = function(opts)
       entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_status(opts)),
     })
   end
+  M.status_summary = function()
+    return "status summary"
+  end
 
   local initial_finder = gen_new_finder()
   if not initial_finder then
@@ -138,6 +144,10 @@ M.status = function(opts)
       end,
     })
     :find()
+end
+
+M.status_summary = function()
+  return "status summary"
 end
 
 M.commits = function()
@@ -226,6 +236,10 @@ M.commits = function()
       end,
     })
     :find()
+end
+
+M.commits_summary = function()
+  return "commits summary"
 end
 
 M.bcommits = function(opts)
@@ -317,6 +331,10 @@ M.bcommits = function(opts)
     :find()
 end
 
+M.bcommits_summary = function()
+  return "bcommits summary"
+end
+
 M.stash = function(opts)
   opts.show_branch = vim.F.if_nil(opts.show_branch, true)
   opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_stash(opts))
@@ -349,6 +367,9 @@ M.stash = function(opts)
     :find()
 end
 
+M.stash_summary = function()
+  return "stash summary"
+end
 M.branches = function(opts)
   local command = { "git" }
   local repo = git_utils.get_repo(bufnr)
@@ -479,6 +500,10 @@ M.branches = function(opts)
       end,
     })
     :find()
+end
+
+M.branch_summary = function()
+  return "branch summary"
 end
 
 return M

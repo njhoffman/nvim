@@ -44,7 +44,7 @@ local displayer = entry_display.create({
   separator = " ",
   items = {
     { width = 9 },
-    { width = 15 },
+    { width = 12 },
     { remaining = true },
     { width = 20 },
   },
@@ -76,7 +76,11 @@ M.git_log_entry_maker = function(entry)
   -- local widths = build_widths(entry)
   local split = utils.split_string(entry, "|")
   local hash = split[1]
-  local date = split[2]
+  local date = string.gsub(split[2], " ago", "")
+  if string.match(date, "year") then
+    date = string.gsub(date, "years?, ", "yr ")
+    date = string.gsub(date, " months?%)", " mo%)")
+  end
   local message = split[3]
   local author = split[4]
   return {

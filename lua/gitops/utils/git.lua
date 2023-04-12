@@ -209,4 +209,22 @@ M.get_repo = function(bufnr)
   end
 end
 
+M.file_count = function(bufnr, cwd)
+  -- local commands = require("plugs.config.telescope.commands")
+  -- local cmd = vim.fn.copy(commands.rg) or { "rg" }
+  local cmd = { "git" }
+  local repo = M.get_repo(bufnr)
+  if repo.gitdir then
+    table.insert(cmd, "--git-dir=" .. repo.gitdir)
+    table.insert(cmd, "--work-tree=" .. repo.worktree)
+  end
+  table.insert(cmd, "ls-files")
+  table.insert(cmd, cwd or vim.fn.getcwd() or vim.fn.getenv("HOME"))
+  local output = vim.fn.system(cmd)
+  local lines = vim.tbl_filter(function(line)
+    return #line > 0
+  end, vim.split(output, "\n"))
+  return #lines
+end
+
 return M
