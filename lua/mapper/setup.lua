@@ -611,6 +611,16 @@ map("n", "<C-q>", "<cmd>QFix<cr>", {
   desc = "togggle quickfix window",
 })
 
+map("n", "<M-.>", "<cmd>cnext<cr>", {
+  category = "Quickfix next",
+  label = "quickfix next",
+})
+
+map("n", "<M-,>", "<cmd>cprev<cr>", {
+  category = "Quickfix next",
+  label = "quickfix next",
+})
+
 --------------------------------------------------------------------------------------------------
 -- WINDOWS ---------------------------------------------------------------------------------------
 

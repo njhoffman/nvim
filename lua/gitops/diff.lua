@@ -28,9 +28,11 @@ M.diff_commit_file = function()
     :find()
 end
 
-M.diff_commit_file_summary = function(bufnr)
-  vim.dbglog("DIFF COMMIT FILE")
-  return "diff commit file"
+M.diff_commit_file_summary = function(bufnr, opts)
+  opts = opts or {}
+  opts.bufnr = bufnr
+  local results = ags_finders.git_log_file_finder(bufnr, opts).results
+  return results
 end
 
 --- Opens a Telescope window with all files changed on the current branch
@@ -76,14 +78,15 @@ M.diff_branch_file = function()
     :find()
 end
 
-M.diff_branch_file_summary = function(bufnr)
+M.diff_branch_file_summary = function(bufnr, _opts)
   local count = 0
+  local opts = _opts or {}
   vim.dbglog("GIT BRANCH SUMMARY", bufnr, count)
   opts.entry_maker = function(arg1, arg2, arg3)
     count = count + 1
     vim.dbglog("ENTRY MAKER", count, arg1, arg2, arg3)
   end
-  return ags_finders.git_branches_finder()
+  return ags_finders.git_branches_finder(bufnr, opts)
 end
 
 --- Opens a Telescope window with a list of previous commit logs with respect to selected lines
@@ -97,12 +100,6 @@ M.diff_commit_line = function()
 
   -- git log -L741,751:'app/models/patients/patient.rb'\
   -- --format='%C(auto)%h \t %as \t %C(green)%an _ %Creset %s'
-  local count = 0
-  opts.entry_maker = function(arg1, arg2, arg3)
-    count = count + 1
-    vim.dbglog("ENTRY MAKER", count, arg1, arg2, arg3)
-  end
-
   pickers
     .new({
       results_title = "BCommits",
@@ -131,10 +128,10 @@ M.diff_commit_line_summary = function(bufnr, _opts)
   local count = 0
   opts.entry_maker = function(arg1, arg2, arg3)
     count = count + 1
-    vim.dbglog("ENTRY MAKER", count, arg1, arg2, arg3)
+    vim.dbglog("EM", arg1, arg2, arg3)
   end
-  vim.dbglog("commit line summary", count)
-  return ags_finders.git_log_location_finder(bufnr, opts)
+  local results = ags_finders.git_log_location_finder(bufnr, opts).results
+  return tostring(results)
 end
 
 return M

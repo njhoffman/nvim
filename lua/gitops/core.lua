@@ -44,7 +44,7 @@ M.files = function(opts)
   table.insert(command, "ls-files")
   table.insert(command, "--exclude-standard")
   table.insert(command, "--cached")
-  local git_command = vim.F.if_nil(opts.git_command, command)
+  local git_command = opts and opts.git_command or command
 
   local conf = require("telescope.config").values
   local cmd_str = vim.tbl_flatten({
@@ -93,7 +93,7 @@ M.status = function(opts)
       table.insert(command, #command - 1, "-u")
     end
 
-    local git_command = vim.F.if_nil(opts.git_command, command)
+    local git_command = opts and opts.git_command or command
     local output = utils.get_os_command_output(git_command, opts.cwd)
 
     if #output == 0 then
@@ -146,26 +146,22 @@ M.status = function(opts)
     :find()
 end
 
-M.status_summary = function()
+M.status_summary = function(bufnr)
   return "status summary"
 end
 
-M.commits = function()
+M.commits = function(bufnr)
   opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_commits(opts))
 
   local bufnr = vim.fn.bufnr()
-  local command = { "git" }
-  local repo = git_utils.get_repo(bufnr)
-  if repo.gitdir then
-    table.insert(command, "--git-dir=" .. repo.gitdir)
-    table.insert(command, "--work-tree=" .. repo.worktree)
-  end
+  local command = git_utils.init_git_command(bufnr)
   table.insert(command, "log")
   table.insert(command, "--pretty=oneline")
   table.insert(command, "--abbrev-commit")
   table.insert(command, "--")
   table.insert(command, ".")
-  local git_command = vim.F.if_nil(opts.git_command, command)
+
+  local git_command = opts and opts.git_command or command
   local conf = require("telescope.config").values
 
   pickers
@@ -187,7 +183,12 @@ M.commits = function()
 
         local get_buffer_of_orig = function(selection)
           local value = selection.value .. ":" .. transfrom_file()
-          local content = utils.get_os_command_output({ "git", "--no-pager", "show", value }, opts.cwd)
+
+          local _command = git_utils.init_git_command(bufnr)
+          table.insert(_command, "--no-pager")
+          table.insert(_command, "show")
+          table.insert(_command, "value")
+          local content = utils.get_os__command_output(_command, opts.cwd)
 
           local _bufnr = vim.api.nvim_create_buf(false, true)
           vim.api.nvim_buf_set_lines(_bufnr, 0, -1, false, content)
@@ -238,8 +239,34 @@ M.commits = function()
     :find()
 end
 
-M.commits_summary = function()
-  return "commits summary"
+M.commits_summary = function(bufnr, opts)
+  opts = opts or {}
+  local command = git_utils.init_git_command(bufnr)
+  table.insert(command, "log")
+  table.insert(command, "--pretty=oneline")
+  table.insert(command, "--abbrev-commit")
+  table.insert(command, "--")
+  table.insert(command, ".")
+  -- local git_command = opts and opts.git_command or vim.fn.join(command, " ")
+
+  local async_oneshot_finder = require("telescope.finders.async_oneshot_finder")
+  local git_command = opts and opts.git_command or command
+  local results = async_oneshot_finder({ fn_command = git_command })
+  vim.dbglog("RESULTS",)
+  -- opts.cwd = vim.fn.getcwd()
+  -- return async_oneshot_finder {
+  --   entry_maker = opts.entry_maker or make_entry.gen_from_string(opts),
+  --
+  --   cwd = opts.cwd,
+  --   maximum_results = opts.maximum_results,
+  --
+  --   fn_command = function()
+  --     return {
+  --       command = command,
+  --       args = command_list,
+  --     }
+  --   end,
+  -- return finders.new_oneshot_job(git_command, opts)
 end
 
 M.bcommits = function(opts)
@@ -258,7 +285,7 @@ M.bcommits = function(opts)
   table.insert(command, "--pretty=oneline")
   table.insert(command, "--abbrev-commit")
   table.insert(command, "--follow")
-  local git_command = vim.F.if_nil(opts.git_command, command)
+  local git_command = opts and opts.git_command or command
 
   local conf = require("telescope.config").values
   pickers
@@ -349,8 +376,8 @@ M.stash = function(opts)
   table.insert(command, "--no-pager")
   table.insert(command, "stash")
   table.insert(command, "list")
-  local git_command = vim.F.if_nil(opts.git_command, command)
 
+  local git_command = opts and opts.git_command or command
   local conf = require("telescope.config").values
 
   pickers
@@ -391,8 +418,7 @@ M.branches = function(opts)
   table.insert(command, "--sort")
   table.insert(command, "-authordate")
   table.insert(command, opts.pattern)
-  local git_command = vim.F.if_nil(opts.git_command, command)
-
+  local git_command = opts and opts.git_command or command
   local output = utils.get_os_command_output(git_command, opts.cwd)
   local show_remote_tracking_branches = vim.F.if_nil(opts.show_remote_tracking_branches, true)
 

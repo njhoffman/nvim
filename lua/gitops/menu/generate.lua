@@ -12,6 +12,13 @@ end
 
 local git_pickers = {
   {
+    desc = "Git commits",
+    enabled = is_git_repo,
+    name = "commits",
+    func = core_func.commits,
+    summary = core_func.commits_summary,
+  },
+  {
     desc = "Find in repo log content",
     enabled = is_git_repo,
     name = "search_log_content",
@@ -75,7 +82,6 @@ local get_git_pickers = function(bufnr)
       })
     end
   end
-  vim.dbglog("ENTRIES", entries)
   local widths = utils.get_widths(entries)
   return entries, widths
 end

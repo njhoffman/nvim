@@ -10,8 +10,6 @@ local dirpicker = require("plugs.config.telescope.dirpicker")
 
 local M = {}
 
-local open_method = "insert"
-
 local _open_buffer = function(open_cmd, prompt_bufnr)
   if open_cmd == "vsplit" then
     actions.file_vsplit(prompt_bufnr)
@@ -25,20 +23,27 @@ local _open_buffer = function(open_cmd, prompt_bufnr)
   end
 end
 
-local _multi_open_qf = function(open_cmd, prompt_bufnr)
-  actions.send_selected_to_qflist(prompt_bufnr)
-  vim.cmd("cfdo " .. open_cmd)
+local _multi_open_qf = function(targets, prompt_bufnr)
+  -- actions.smart_send_to_qflist(prompt_bufnr)
+  for _, target in ipairs(targets) do
+    vim.cmd("caddexpr '" .. target.ordinal .. "'")
+    -- vim.cmd("qfdo " .. target.ordinal)
+    -- actions.smart_add_to_qflist(prompt_bufnr)
+    -- -- actions.send_selected_to_qflist(prompt_bufnr)
+  end
 end
 
-local _multiopen = function(prompt_bufnr, open_cmd)
+local _multi_open = function(prompt_bufnr, open_cmd)
   local picker = action_state.get_current_picker(prompt_bufnr)
   local multi_targets = picker:get_multi_selection()
+  open_cmd = open_cmd or "insert"
   local num_selections = #multi_targets
+
   if not num_selections or num_selections <= 1 then
     -- actions.add_selection(prompt_bufnr)
     actions.select_default(prompt_bufnr)
-  elseif open_method == "quickfix" then
-    _open_buffer(open_cmd, prompt_bufnr)
+  elseif open_cmd == "quickfix" then
+    _multi_open_qf(multi_targets, prompt_bufnr)
   else -- insert method
     local cwd = picker.cwd
     if cwd == nil then
@@ -58,19 +63,23 @@ local _multiopen = function(prompt_bufnr, open_cmd)
 end
 
 M.multi_open_vsplit = function(prompt_bufnr)
-  _multiopen(prompt_bufnr, "vsplit")
+  _multi_open(prompt_bufnr, "vsplit")
 end
 
 M.multi_open_split = function(prompt_bufnr)
-  _multiopen(prompt_bufnr, "split")
+  _multi_open(prompt_bufnr, "split")
 end
 
 M.multi_open_tab = function(prompt_bufnr)
-  _multiopen(prompt_bufnr, "tabe")
+  _multi_open(prompt_bufnr, "tabe")
 end
 
 M.multi_open = function(prompt_bufnr)
-  _multiopen(prompt_bufnr, "edit")
+  _multi_open(prompt_bufnr, "edit")
+end
+
+M.multi_to_qflist = function(prompt_bufnr)
+  _multi_open(prompt_bufnr, "quickfix")
 end
 
 M.results_toggle_down = function(prompt_bufnr)

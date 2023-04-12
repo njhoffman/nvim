@@ -34,7 +34,8 @@ M.search_log_content = function(opts)
 end
 
 M.search_log_content_summary = function(bufnr)
-  return "search_log_content_summary"
+  local repo = git_utils.get_repo(bufnr)
+  return repo.gitdir
 end
 
 local get_path = function(path)

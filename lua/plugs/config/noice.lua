@@ -213,9 +213,7 @@ local cfg = {
       enabled = true,
       -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
       -- See the section on formatting for more details on how to customize.
-      --- @type NoiceFormat|string
       format = "lsp_progress",
-      --- @type NoiceFormat|string
       format_done = "lsp_progress_done",
       throttle = 1000 / 30, -- frequency to update lsp progress message
       view = "mini",
@@ -231,7 +229,6 @@ local cfg = {
     hover = {
       enabled = false,
       view = nil, -- when nil, use defaults from documentation
-      ---@type NoiceViewOptions
       opts = {}, -- merged with defaults from documentation
     },
     signature = {
@@ -261,7 +258,7 @@ local cfg = {
     cmdline_popup = {
       position = {
         -- row = 5,
-        row = "70%",
+        row = "60%",
         col = "50%",
       },
       size = {
@@ -295,13 +292,13 @@ local cfg = {
       relative = "editor",
       position = {
         -- row = 8,
-        row = "80%",
+        row = "50%",
         col = "50%",
       },
       size = {
         width = "auto",
         height = "auto",
-        max_height = 20,
+        -- max_height = 20,
         -- min_width = 10,
       },
       cmdline_output = {

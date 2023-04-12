@@ -51,7 +51,6 @@ M.show_menu = function()
         ags_mappings.omnimap(map, "<CR>", function(prompt_bufnr)
           actions.close(prompt_bufnr)
           local selection = action_state.get_selected_entry()
-          vim.dbglog("menu select", selection)
           -- execute_git_function(selection.value)
         end)
         return true

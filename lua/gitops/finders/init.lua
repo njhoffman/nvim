@@ -5,8 +5,11 @@ local git_utils = require("gitops.utils.git")
 
 local M = {}
 
-M.git_branches_finder = function()
-  return finders.new_oneshot_job({ "git", "branch", "--format=%(refname:short)" }, {})
+M.git_branches_finder = function(bufnr, opts)
+  local command = git_utils.init_git_command(bufnr)
+  table.insert(command, "branch")
+  table.insert(command, "--format=%(refname:short)")
+  return finders.new_oneshot_job(command, opts)
 end
 
 --- Returns all commits that changed the visual selection in the buffer

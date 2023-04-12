@@ -83,13 +83,12 @@ end
 -- end
 
 local file_exists_on_commit = function(commit_hash, git_relative_file_path)
-  vim.dbglog("FILE EXISTS ON CMIMMIT", commit_hash, git_relative_file_path)
   local command = "cd "
     .. file.git_dir()
     .. " && git ls-tree --name-only "
     .. commit_hash
     .. " -- "
-    .. git_relative_file_path
+    .. (git_relative_file_path or "")
 
   local output = command_util.execute(command)
 
@@ -105,13 +104,8 @@ M.file_exists_on_commit = file_exists_on_commit
 --- @return string|nil file name on commit
 local file_name_on_commit = function(commit_hash, git_relative_file_path)
   if file_exists_on_commit(commit_hash, git_relative_file_path) then
-    vim.dbglog("FILE EXISTS ON CIMMIT")
     return git_relative_file_path
   end
-
-  -- FIXME: this is a very naive implementation, but it always returns the
-  -- correct filename for each commit (even if the commit didn't touch the file)
-
   -- first find index in all_commit_hashes
   local all_hashes = all_commit_hashes()
   if all_hashes == nil then
@@ -154,16 +148,20 @@ local file_name_on_commit = function(commit_hash, git_relative_file_path)
     return nil
   end
 
-  local command = "cd "
-    .. file.git_dir()
-    .. " && "
-    .. "git --no-pager log -M --follow --pretty=format:'%H' --name-only "
-    .. last_touched_hash
-    .. "~.. -- "
-    .. git_relative_file_path
-    .. " | tail -1"
+  local command = { "cd", "file.git_dir()", "&&", "git" }
+  local repo = M.get_repo(bufnr)
+  if repo.gitdir then
+    table.insert(command, "--git-dir=" .. repo.gitdir)
+    table.insert(command, "--work-tree=" .. repo.worktree)
+  end
 
-  local output = command_util.execute(command)
+  table.insert(command, "--no-pager log -M --follow --pretty=format:'%H' --name-only")
+  table.insert(command, last_touched_hash)
+  table.insert(command, "~.. -- ")
+  table.insert(command, git_relative_file_path)
+  table.insert(command, " | tail -1")
+
+  local output = command_util.execute(vim.fn.join(command, " "))
   output = string.gsub(output, "\n", "")
 
   if file_exists_on_commit(commit_hash, output) then
