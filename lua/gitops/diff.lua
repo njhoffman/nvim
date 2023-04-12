@@ -44,6 +44,7 @@ M.diff_branch = function()
     }, {})
     :find()
 end
+
 M.diff_branch_summary = function()
   return "diff branch"
 end
@@ -83,6 +84,7 @@ M.diff_commit_line = function()
 
   -- git log -L741,751:'app/models/patients/patient.rb'\
   -- --format='%C(auto)%h \t %as \t %C(green)%an _ %Creset %s'
+
   pickers
     .new({
       results_title = "BCommits",

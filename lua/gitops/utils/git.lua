@@ -209,6 +209,7 @@ M.get_repo = function(bufnr)
   end
 end
 
+-- git files count
 M.file_count = function(bufnr, cwd)
   -- local commands = require("plugs.config.telescope.commands")
   -- local cmd = vim.fn.copy(commands.rg) or { "rg" }
