@@ -156,9 +156,6 @@ local cfg = {
   lead_custom_section = function()
     return " "
   end,
-  custom_section = function()
-    return "    "
-  end,
 }
 
 require("barbecue").setup(cfg)

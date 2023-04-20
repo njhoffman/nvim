@@ -126,7 +126,7 @@ local autocmds = {
   },
   Vimade = {
     { "FileType", "CompetiTest", "VimadeBufDisable" },
-    { "FileType", "noice", "VimadeUnfadeActive" },
+    -- { "FileType", "noice", "VimadeUnfadeActive" },
     { "FileType", "SidebarNvim", "VimadeBufDisable" },
     { "FileType", "Trouble", "VimadeBufDisable" },
     { "FileType", "aerial", "VimadeBufDisable" },

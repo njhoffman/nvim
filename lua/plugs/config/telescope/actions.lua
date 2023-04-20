@@ -318,6 +318,7 @@ M.yank_selection = function(prompt_bufnr)
   local multi_targets = picker:get_multi_selection()
   local lines = {}
   for _, target in ipairs(multi_targets) do
+    vim.dbglog("target", target)
     table.insert(lines, target[1])
   end
   local register = "+"

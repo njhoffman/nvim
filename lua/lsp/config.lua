@@ -42,6 +42,7 @@ local diagnostic_config = {
   update_in_insert = false,
   severity_sort = true,
 }
+vim.api.nvim_set_hl(0, "DiagnosticUnnecessary", { link = "Comment" })
 
 vim.diagnostic.config(diagnostic_config)
 

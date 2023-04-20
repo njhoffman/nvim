@@ -29,7 +29,7 @@ local ext_methods = {
 }
 
 local lsp_methods = {
-  -- { "hover", "textDocument/hover" },
+  { "hover", "textDocument/hover" },
   -- { "signature", "textDocument/signatureHelp" },
   -- { "definition", "textDocument/definition" },
   -- { "references", "textDocument/references" },

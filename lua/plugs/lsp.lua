@@ -3,13 +3,6 @@ local utils = require("utils.lazy")
 local undef = ""
 
 local plugins = {
-  {
-    "narutoxy/dim.lua",
-    event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("dim").setup({})
-    end,
-  },
   { dir = "~/git/fidget.nvim", event = "LspAttach" },
   {
     "neovim/nvim-lspconfig",

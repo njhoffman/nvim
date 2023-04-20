@@ -1,6 +1,7 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
 local telescope = require("telescope")
 local previewers = require("telescope.previewers")
+local strings = require("plenary.strings")
 local sorters = require("telescope.sorters")
 
 local commands = require("plugs.config.telescope.commands")
@@ -8,10 +9,11 @@ local c_previewers = require("plugs.config.telescope.previewers")
 local mappings = require("plugs.config.telescope.mappings")
 local plugins = require("plugs.config.telescope.plugins")
 local hide_preview = false
+
+local entry_display = require("telescope.pickers.entry_display")
+-- local telescope_utils = require("telescope.previewers.utils")
+
 local currwidth = vim.api.nvim_win_get_width(vim.api.nvim_get_current_win())
-if currwidth < 120 then
-  hide_preview = true
-end
 
 local telescope_config = {
   defaults = {
@@ -68,8 +70,9 @@ local telescope_config = {
     color_devicons = true,
     winblend = 10,
     mappings = mappings.main,
-    file_sorter = sorters.native_fzf_sorter,
+    -- file_sorter = sorters.native_fzf_sorter,
     generic_sorter = require("mini.fuzzy").get_telescope_sorter,
+    file_sorter = require("mini.fuzzy").get_telescope_sorter,
     grep_previewer = previewers.vim_buffer_vimgrep.new,
     qflist_previewer = previewers.vim_buffer_qflist.new,
     include_extensions = true,
