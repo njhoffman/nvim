@@ -43,7 +43,7 @@ local plugins = {
     "sindrets/diffview.nvim",
     cmd = { "Diffview", "DiffviewLog", "DiffviewOpen", "DiffviewToggleFiles", "DiffviewFileHistory" },
   },
-  { "joeysino/vim-plugin-AnsiEsc", cmd = "AnsiEsc" },
+  { "m00qek/baleia.nvim" },
   { "folke/zen-mode.nvim", cmd = "ZenMode" },
   { "tversteeg/registers.nvim", event = "VimEnter", cmd = "Registers" },
   { "folke/twilight.nvim", cmd = { "Twilight", "TwilightEnable" } },
@@ -61,10 +61,7 @@ local plugins = {
   { "RRethy/vim-illuminate", event = { "BufReadPost", "BufNewFile" }, dependencies = { "neovim/nvim-lspconfig" } },
   { "TaDaa/vimade", event = { "BufReadPost", "BufNewFile" } },
   { "kevinhwang91/nvim-hlslens", event = { "VimEnter" } },
-  {
-    "Bekaboo/deadcolumn.nvim",
-    event = { "VimEnter" },
-  },
+  { "Bekaboo/deadcolumn.nvim", event = { "VimEnter" }, lazy = false },
   -- {
   --   "m4xshen/smartcolumn.nvim",
   --   event = { "BufReadPre", "BufNewFile" },

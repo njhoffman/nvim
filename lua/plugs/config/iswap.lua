@@ -4,6 +4,7 @@ require("iswap").setup({
   -- The keys that will be used as a selection, in order
   -- ('asdfghjklqwertyuiopzxcvbnm' by default)
   -- keys = "qwertyuiop",
+  keys = "asdfghjklqwertyuiopzxcvbnmASDFGHJKLQWERTYUIOPZXCVBNM",
 
   -- Grey out the rest of the text when making a selection
   -- (enabled by default)

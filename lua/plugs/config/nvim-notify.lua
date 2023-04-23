@@ -1,31 +1,26 @@
 -- https://raw.githubusercontent.com/rcarriga/nvim-notify/master/README.md
 -- increase fade in frequency
 -- local render = require("plugs.config.nvim-notify-render")
-local cols = math.floor(vim.opt.columns:get() / 3 * 2)
 
--- opts = {
---   timeout = 3000,
---   background_colour = "#000000",
---   max_height = function()
---     return math.floor(vim.o.lines * 0.75)
---   end,
---   max_width = function()
---     return math.floor(vim.o.columns * 0.75)
---   end,
--- },
 local baseConfig = {
   level = vim.log.levels.DEBUG,
   -- level = 0,
   fps = 30,
   render = "default",
-  stages = "fade",
+  -- render = "compact",
+  stages = "fade_in_slide_out",
   -- background_colour = "FloatShadow",
   background_colour = "#000000",
   -- Default timeout for notifications
-  timeout = 5000,
+  timeout = 3000,
   -- maximium_width = 90,
-  minimum_width = 15,
-  maximum_width = cols,
+  minimum_width = 5,
+  max_height = function()
+    return math.floor(vim.opt.lines:get() / 5 * 4)
+  end,
+  max_width = function()
+    return math.floor(vim.opt.columns:get() / 3 * 2)
+  end,
   icons = {
     ERROR = "",
     WARN = "",

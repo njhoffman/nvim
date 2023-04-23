@@ -10,9 +10,9 @@ local function get_project_path()
   if state.path == nil then
     state.path = type(project_nvim.get_root) == "function" and project_nvim.get_root() or nil
     if state.path == nil then
-      state.path = string.gsub(state.cwd, os.getenv("HOME"), "~")
+      state.path = string.gsub(state.cwd, os.getenv("HOME") or "", "~")
     else
-      state.path = string.gsub(state.path, os.getenv("HOME"), "~")
+      state.path = string.gsub(state.path, os.getenv("HOME") or "", "~")
     end
     if state.path ~= nil then
       state.path, state.name = string.match(state.path, "(.*)%/(.*)")
@@ -24,7 +24,7 @@ local project_hl = function()
   if state.name == nil then
     return { fg = "white", bg = "#333333" }
   end
-  return { fg = "white", bg = "#440088" }
+  return { fg = "white", bg = "#5511aa" }
 end
 
 local project_left_sep = function()
@@ -46,7 +46,8 @@ end
 
 local project_uo = function()
   get_project_path()
-  return " " .. (state.name or "") .. " "
+  -- return " " .. (state.name or "") .. " "
+  return "" .. (state.name or "") .. " "
 end
 
 return {

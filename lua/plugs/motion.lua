@@ -85,12 +85,7 @@ local plugins = {
   { "Wansmer/treesj", event = { "BufReadPost", "BufNewFile" }, dependencies = { "nvim-treesitter/nvim-treesitter" } },
   -- traversal/swapping
   { "mizlan/iswap.nvim", event = { "BufReadPost", "BufNewFile" } },
-  {
-    -- "ziontee113/SelectEase",
-    "njhoffman/SelectEase",
-    dir = "~/git/SelectEase",
-    event = "VeryLazy",
-  },
+  { "ziontee113/SelectEase", event = "VeryLazy" },
   { "chrisgrieser/nvim-spider", event = "VeryLazy" },
   { "echasnovski/mini.move", event = "VeryLazy" },
   { "gbprod/substitute.nvim", event = "VeryLazy" },
@@ -102,7 +97,7 @@ local plugins = {
   { "echasnovski/mini.comment", version = false, event = "VeryLazy" },
   { "echasnovski/mini.doc", version = false, event = "VeryLazy" },
   { "echasnovski/mini.bracketed", event = "VeryLazy", version = false },
-  { "psliwka/vim-smoothie", commit = "10fd0aa", event = "VeryLazy" }, -- f2aaab1
+  { "psliwka/vim-smoothie", commit = "10fd0aa" }, -- f2aaab1
   { dir = "~/git/clever-f.vim" }, -- rhysd/clever-f.vim
 }
 utils.apply_configs(plugins)

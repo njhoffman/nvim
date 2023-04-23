@@ -36,7 +36,7 @@ M.ProjectUoComponent = {
 M.GitBranchComponent = {
   provider = provider_git.git_branch,
   hl = {
-    fg = "white",
+    fg = "#56b6c2",
     bg = "black",
     style = "bold",
   },

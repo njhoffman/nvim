@@ -1,11 +1,9 @@
 local keymap = {
   select_left = {
-    -- "<M-C-Left>",
     "<M-C-H>",
     { desc = "select left node", plugin = "SelectEase", category = "Motion" },
   },
   select_right = {
-    -- "<M-C-Right>",
     "<M-C-L>",
     {
       desc = "select right node",
@@ -14,7 +12,6 @@ local keymap = {
     },
   },
   select_up = {
-    -- "<M-C-Up>",
     "<M-C-K>",
     {
       desc = "select up node",

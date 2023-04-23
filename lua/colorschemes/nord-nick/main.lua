@@ -164,7 +164,7 @@ return function(injected_functions)
     Label({ fg = "#6688ba" }),
     Keyword({ fg = "#6177b2" }),
     MatchParen({ fg = "#fb8b8b", gui = "bold," }),
-    MatchParenCursor({ fg = "#fb8b8b" }),
+    -- MatchParenCursor({ fg = "#fb8b8b" }),
     NonText({ bg = "none", fg = "#555555" }),
     Operator({ fg = "#4886bf" }),
     PreProc({ fg = "#4796bc" }),
@@ -221,7 +221,7 @@ return function(injected_functions)
     DiffAdd({ bg = "#00361f" }), -- #00361f #001000 #22bb99
     DiffChange({ bg = "#003050" }), -- #003050 #001030 #646ead
     DiffDelete({ bg = "#3E0009" }), -- #3e0009 #300000 #be6069
-    DiffText({ gui = "italic", fg = "#464b5d" }), -- #464b5d #001030 #81a1c1
+    DiffText({ gui = "italic", bg = "#192b50" }), -- #464b5d #001030 #81a1c1
     diffAdded({ fg = clrs.nord14 }),
     diffRemoved({ fg = clrs.nord11 }),
     diffChanged({ fg = clrs.nord15 }),
@@ -474,9 +474,9 @@ return function(injected_functions)
     -- DashboardCenter ({ fg = colors.purple }),
     -- DashboardFooter ({ fg = colors.green, gui = "italic" }),
     NotifyBackground({ bg = "#000000" }),
-    NotifyTASKBorder({ fg = "#6a3246", bg = "none" }),
-    NotifyTASKTitle({ fg = "#6a3246" }),
-    NotifyTASKIcon({ fg = "#7a7697" }),
+    NotifyRUNBorder({ fg = "#6a3246", bg = "none" }),
+    NotifyRUNTitle({ fg = "#6a3246" }),
+    NotifyRUNIcon({ fg = "#7a7697" }),
     NotifySTATUSBorder({ fg = "#3a3286", bg = "none" }),
     NotifySTATUSTitle({ fg = "#3a3286" }),
     NotifySTATUSIcon({ fg = "#2a76b7" }),
@@ -502,6 +502,9 @@ return function(injected_functions)
     NotifyWARNBorder({ fg = "#79491D", bg = "none" }),
     NotifyWARNIcon({ fg = "#F79000" }),
     NotifyWARNTitle({ fg = "#F79000" }),
+
+    NotifyRunSuccessCommand({ fg = "#4fa7f2" }),
+    NotifyRunSuccessOutput({ fg = Comment.fg }),
 
     WhichKey({ fg = "#07c0f7", gui = "bold" }), --Function
     WhichKeyGroup({ fg = "#619cf4" }), -- Keyword
@@ -732,6 +735,16 @@ return function(injected_functions)
     -- TelescopeQueryFilter { fg = '#4466FF'},
     -- TelescopeResultsComment = {},
     -- TelescopeMultiSelection guifg=#928374          " Multisections
+
+    -- noice.nvim
+    NoiceCmdlinePopupBorderHelp({ fg = "#8888ff" }),
+    NoiceCmdlinePopupBorderLua({ fg = "#44aaff" }),
+    NoiceCmdlinePopupBorder({ fg = "#4466ff" }),
+    NoiceCmdline({ fg = "#88aaff" }),
+    -- git-conflict-nvim
+    GitConflictCurrent({ bg = "#203d5e" }),
+    GitConflictIncoming({ bg = "#003723" }),
+    GitConflictAncestor({ bg = "#28218A" }),
 
     -- dim.lua
     sym("@variable")({ fg = "#62718b", gui = "italic" }),

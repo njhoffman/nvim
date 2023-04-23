@@ -24,8 +24,8 @@ vim.keymap.set("n", "zK", function()
   end
 end)
 
-local toggle = 0
-vim.keymap.set("n", "ZZ", function()
+local toggle = 1
+vim.keymap.set("n", "Z", function()
   if toggle == 0 then
     require("ufo").openAllFolds()
     toggle = 1

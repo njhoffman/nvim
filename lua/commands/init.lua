@@ -17,6 +17,7 @@ cmd("TrimTrailingWhitespace", format.trim_space, {
 cmd("TruncateLog", format.truncate_log, { desc = "Truncate log " })
 cmd("Format", format.format, { nargs = "*", desc = "Format buffer using lsp" })
 cmd("CloseMulti", ui.close_multi, { desc = "Close tabpage, window, or buffer in that order" })
+cmd("CloseMultiNoPrompt", ui.close_multi_no_prompt, { desc = "Close tabpage, window, or buffer in that order" })
 cmd("ClosePopups", ui.close_popups, { desc = "Format buffer using lsp" })
 cmd("GetPaths", debug.get_paths, { desc = "Get path collections (rtpaths, o.packpath, etc)" })
 cmd("Trash", system.trash_file, { desc = "Send file to system trash" })

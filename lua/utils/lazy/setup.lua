@@ -25,6 +25,42 @@ local setup = function(opts)
   require("lazy").setup("plugs", {
     ui = {
       border = "rounded",
+      icons = {
+        --   cmd = "⌘",
+        -- config = "🛠",
+        -- event = "📅",
+        -- ft = "📂",
+        -- init = "⚙",
+        -- keys = "🗝",
+        -- plugin = "🔌",
+        -- runtime = "💻",
+        -- source = "📄",
+        -- start = "🚀",
+        -- task = "📌",
+        -- lazy = "💤 ",
+        lazy = "🛠 ",
+        cmd = " ",
+        config = " ",
+        event = " ",
+        ft = " ",
+        init = " ",
+        import = " ",
+        keys = " ",
+        -- lazy = "󰒲 ",
+        loaded = "●",
+        not_loaded = "○",
+        plugin = " ",
+        runtime = " ",
+        source = " ",
+        start = "",
+        task = "✔ ",
+        list = {
+          "●",
+          "➜",
+          "★",
+          "‒",
+        },
+      },
     },
     install = {
       colorscheme = { "nord-nick", "habamax" },
@@ -46,7 +82,7 @@ local setup = function(opts)
       reset_packpath = true,
     },
     custom_keys = {
-      ["<C-f"] = false,
+      -- ["<C-f"] = false,
       -- ["<localleader>f"] = profile_filter
       ["<localleader>l"] = function(plugin)
         require("lazy.util").float_term({ "lazygit", "log" }, {

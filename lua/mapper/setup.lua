@@ -26,6 +26,12 @@ prefix("n", "<leader>cl", "+conceal")
 --------------------------------------------------------------------------------------------------
 -- COMMAND ---------------------------------------------------------------------------------------
 
+map({ "v" }, "<space>", '<cmd>lua vim.notify("Executing visual command",0)<cr>"xy:@x<cr>', {
+  category = "Command",
+  label = "execute selected",
+  desc = "execute selected lines",
+})
+
 map({ "n", "v" }, ";", ":", {
   category = "Command",
   label = "open cmdline",
@@ -164,6 +170,12 @@ map("n", "<C-d>", "<cmd>CloseMulti<cr>", {
   desc = "close tabpage, window, or buffer in that order",
 })
 
+map("n", "<M-d>", "<cmd>CloseMultiNoPrompt<cr>", {
+  category = "Buffers",
+  label = "close multi noprompt",
+  desc = "close tabpage, window, or buffer without prompting for save",
+})
+
 map("n", "<leader>.", [[:call AltCommand(expand('%'), ':e')<cr>]], {
   category = "Buffers",
   label = "open alt file",
@@ -192,6 +204,12 @@ map("n", "gf", "0/\"\\|'<cr>hgF", {
   category = "Buffers",
   label = "goto file",
   desc = "open file under cursor",
+})
+
+vmap("n", "gF", {
+  category = "Buffers",
+  label = "goto file:num",
+  desc = "open file:num under cursor ",
 })
 
 map("n", "<leader>cd", "<cmd>cd %:h<cr>", {
@@ -231,12 +249,6 @@ map("x", ".", ":normal .<CR>", {
 -- EXITING ---------------------------------------------------------------------------------------
 
 map("n", "<C-X>", "<cmd>silent! tabclose | qa<cr>", {
-  category = "Exiting",
-  label = "exit save",
-  desc = "quick exit with prompt for save",
-})
-
-map("n", "<M-d>", "<cmd>silent! tabclose | qa<cr>", {
   category = "Exiting",
   label = "exit save",
   desc = "quick exit with prompt for save",
@@ -495,12 +507,12 @@ map({ "n", "v" }, "<M-'>", "<cmd>HopWord<cr>", {
   desc = "hop to word",
 })
 
-map({ "n", "v" }, "<M-:>", "<cmd>HopLine<cr>", {
-  category = "Motion",
-  plugin = "hop.nvim",
-  label = "hop to line",
-  desc = "hop to line",
-})
+-- map({ "n", "v" }, "<M-:>", "<cmd>HopLine<cr>", {
+--   category = "Motion",
+--   plugin = "hop.nvim",
+--   label = "hop to line",
+--   desc = "hop to line",
+-- })
 
 map("v", "<C-X>", "<Esc>`.``gvP``P", {
   category = "Motion",
@@ -600,6 +612,13 @@ map("n", "<F6>", "<cmd>TSPlaygroundToggle<cr>", {
   category = "UI",
   plugin = "treesitter.nvim",
   desc = "toggle treesitter playground",
+})
+
+-- Shift-F6
+map("n", "<F18>", "<cmd>InspectTree<cr>", {
+  category = "UI",
+  plugin = "treesitter.nvim",
+  desc = "toggle inspect treesitter",
 })
 
 --------------------------------------------------------------------------------------------------
@@ -944,14 +963,14 @@ map("n", "<M-g>", "<cmd>lua require('telescope.run')('projects','projects')<cr>"
   desc = "find projects telescope",
 })
 
-map("n", "<leader>l", "<cmd>Telescope resume<cr>", {
+map("n", "<leader>l", "<cmd>Telescope resume cache_index=1<cr>", {
   category = "Pickers",
   plugin = "telescope.nvim",
   label = "repeat telescope",
   desc = "repeast last telescope command",
 })
 
-map("n", "<M-1>", "<cmd>Telescope resume<cr>", {
+map("n", "!~", "<cmd>Telescope resume cache_direction=next<cr>", {
   category = "Pickers",
   plugin = "telescope.nvim",
   label = "repeat telescope",

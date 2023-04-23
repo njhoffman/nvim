@@ -1,10 +1,15 @@
----@diagnostic disable: undefined-global
 ---@diagnostic disable-next-line: unused-local
-local snippets, autosnippets = {}, {}
-local luasnip_utils = require("special.luasnip-utils")
+local ls = require("luasnip") --{{{
+local i = ls.insert_node
+local t = ls.text_node
+local c = ls.choice_node
+local sn = ls.snippet_node
+local fmt = require("luasnip.extras.fmt").fmt
+local luasnip_utils = require("utils.luasnip")
 local cs = luasnip_utils.create_snippet
 local tsn = luasnip_utils.tsn
 local pattern = "*.lua"
+local snippets, autosnippets = {}, {}
 
 ------------------------- Others
 

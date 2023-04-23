@@ -23,7 +23,7 @@ local cfg = {
   pairs = tsmodules.pairs,
   textobjects = tsmodules.textobjects,
   textsubjects = tsmodules.textsubjects,
-  incremental_custom = tsmodules.incremental_custom,
+  incremental_selection = tsmodules.incremental_custom,
   endwise = tsmodules.endwise,
 }
 

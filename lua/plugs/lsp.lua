@@ -74,7 +74,7 @@ local plugins = {
     -- "ditsuke/barbecue.nvim", -- Wait for my PR to get merged
     "utilyre/barbecue.nvim",
     name = "barbecue",
-    dir = "~/git/barbecue.nvim",
+    -- dir = "~/git/barbecue.nvim",
     version = "*",
     lazy = false,
     event = "VeryLazy",
@@ -115,8 +115,8 @@ local plugins = {
   },
   {
     "folke/todo-comments.nvim",
-    event = "LspAttach",
-    -- event = { "BufReadPost", "BufNewFile" },
+    -- event = "LspAttach",
+    event = { "BufReadPost", "BufNewFile" },
     cmd = { "TodoTrouble", "TodoTelescope" },
     opts = {
       highlight = {

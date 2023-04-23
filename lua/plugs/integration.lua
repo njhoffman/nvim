@@ -5,6 +5,7 @@ local plugins = {
   { "jbyuki/quickmath.nvim", cmd = "Quickmath" },
   { "jameshiew/nvim-magic", dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" } },
   { "michaelb/sniprun", build = "bash install.sh", cmd = { "SnipRun", "SnipInfo" } },
+  { "milisims/nvim-luaref" },
   { "windwp/nvim-spectre", cmd = "Spectre" },
   { "WaylonWalker/Telegraph.nvim", cmd = "Telegraph" },
   {

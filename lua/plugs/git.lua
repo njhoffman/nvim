@@ -36,8 +36,10 @@ local plugins = {
       }
     end,
   },
+  { "napisani/nvim-github-codesearch", build = "make" },
   {
     "akinsho/git-conflict.nvim",
+    version = "*",
     cmd = { "GitConflictListQf", "GitConflictNextConflict" },
     event = { "BufReadPost", "BufNewFile" },
   },

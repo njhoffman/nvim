@@ -17,6 +17,10 @@ local file_count = function(cwd)
 end
 
 local telemap = {
+  -- nvim_github_codesearch = {
+  --   gh api -X GET rate_limit | jq '.rate.remaining',
+  --   gh api -X GET rate_limit | jq '.rate.reset',
+  -- },
   leaderf = {
     opts = function(user_opts)
       local theme_name = user_opts and user_opts.theme or "dropdown"

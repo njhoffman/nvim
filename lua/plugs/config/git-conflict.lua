@@ -1,12 +1,15 @@
-local defaults = {
+local cfg = {
   default_mappings = true, -- disable buffer local mapping created by this plugin
   default_commands = true, -- disable commands created by this plugin
-  disable_diagnostics = false, -- This will disable the diagnostics in a buffer whilst it is conflicted
+  disable_diagnostics = true, -- This will disable the diagnostics in a buffer whilst it is conflicted
   highlights = { -- They must have background color, otherwise the default color will be used
-    incoming = "DiffText",
-    current = "DiffAdd",
+    incoming = "GitConflictIncoming",
+    current = "GitConflictCurrent",
+    ancestor = "GitConflictAncestor",
   },
 }
+
+require("git-conflict").setup(cfg)
 
 -- GitConflictChooseOurs — Select the current changes.
 -- GitConflictChooseTheirs — Select the incoming changes.
@@ -18,16 +21,11 @@ local defaults = {
 
 vim.api.nvim_create_autocmd("User", {
   pattern = "GitConflictDetected",
-  callback = function()
-    local bufnr = vim.fn.expand("<afile>")
-    vim.notify("Conflict detected in " .. bufnr)
-    vim.keymap.set("n", "<leader>co", "<Plug>(git-conflict-ours)", { buffer = bufnr })
-    vim.keymap.set("n", "<leader>ct", "<Plug>(git-conflict-theirs)", { buffer = bufnr })
-    vim.keymap.set("n", "<leader>cb", "<Plug>(git-conflict-both)", { buffer = bufnr })
-    vim.keymap.set("n", "<leader>c0", "<Plug>(git-conflict-none)", { buffer = bufnr })
-    vim.keymap.set("n", "[[", "<Plug>(git-conflict-prev-conflict)", { buffer = bufnr })
-    vim.keymap.set("n", "[c", "<Plug>(git-conflict-prev-conflict)", { buffer = bufnr })
-    vim.keymap.set("n", "]]", "<Plug>(git-conflict-next-conflict)", { buffer = bufnr })
-    vim.keymap.set("n", "]c", "<Plug>(git-conflict-next-conflict)", { buffer = bufnr })
+  callback = function(keys)
+    vim.notify("Conflict detected in " .. keys.file)
+    vim.keymap.set("n", "[[", "<Plug>(git-conflict-prev-conflict)", { buffer = keys.buf })
+    vim.keymap.set("n", "[c", "<Plug>(git-conflict-prev-conflict)", { buffer = keys.buf })
+    vim.keymap.set("n", "]]", "<Plug>(git-conflict-next-conflict)", { buffer = keys.buf })
+    vim.keymap.set("n", "]c", "<Plug>(git-conflict-next-conflict)", { buffer = keys.buf })
   end,
 })

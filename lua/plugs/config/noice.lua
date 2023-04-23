@@ -270,7 +270,7 @@ local cfg = {
         col = "50%",
       },
       size = {
-        width = 50,
+        width = "auto",
         height = "auto",
       },
       in_options = {
@@ -325,9 +325,9 @@ local cfg = {
   notify = {
     backend = "notify",
     fallback = "mini",
-    format = "notify",
-    replace = false,
-    merge = false,
+    -- format = "notify",
+    -- replace = false,
+    -- merge = false,
   },
 
   smart_move = {

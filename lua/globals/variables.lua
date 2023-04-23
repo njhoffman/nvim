@@ -88,7 +88,7 @@ vim.g.markdown_fenced_languages = {
 }
 
 vim.lsp.log_levels["INSPECT"] = 4
-vim.lsp.log_levels["TASK"] = 4
+vim.lsp.log_levels["RUN"] = 4
 vim.lsp.log_levels["STATUS"] = 4
 
 local disabled_built_ins = {

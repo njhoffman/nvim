@@ -18,7 +18,8 @@ local opts = {
     },
   },
   extra = {
-    follow_tw = nil,
+    -- follow_tw = nil,
+    follow_tw = "+1",
   },
 }
 

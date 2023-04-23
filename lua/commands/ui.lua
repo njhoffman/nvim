@@ -70,6 +70,19 @@ local close_multi = function()
   end
 end
 
+local close_multi_no_prompt = function()
+  local tabs = vim.api.nvim_list_tabpages() or {}
+  local splits = get_splits({ "l", "h", "j", "k" }) or {}
+  if #tabs > 1 then
+    vim.cmd("tabclose!")
+  elseif #splits > 1 then
+    vim.api.nvim_win_close(splits[1], false)
+  else
+    -- vim.cmd("BufferDelete")
+    vim.cmd("BufferDelete!")
+  end
+end
+
 local close_popups = function()
   local n = 0
   for _, win in ipairs(vim.api.nvim_list_wins()) do
@@ -85,6 +98,7 @@ end
 return {
   get_splits = get_splits,
   close_multi = close_multi,
+  close_multi_no_prompt = close_multi_no_prompt,
   close_popups = close_popups,
   check_resize_split = check_resize_split,
   check_nav_split = check_nav_split,

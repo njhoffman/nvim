@@ -22,6 +22,10 @@ local telescope_config = {
     hidden = true,
     no_ignore = false,
     multi_icon = "◆ ",
+    cache_picker = {
+      num_pickers = 10,
+      limit_entries = 2000,
+    },
     layout_config = {
       bottom_pane = {
         height = 25,

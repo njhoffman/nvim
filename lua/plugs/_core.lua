@@ -24,6 +24,9 @@ local plugins = {
     event = "VimEnter",
     cmd = { "BufferPrev", "BufferNext" },
     dependencies = "nvim-tree/nvim-web-devicons",
+    opts = {
+      auto_hide = true,
+    },
   },
   { "rcarriga/nvim-notify", event = "VimEnter" },
   { "folke/which-key.nvim", event = "VimEnter" },

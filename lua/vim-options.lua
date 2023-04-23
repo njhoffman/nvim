@@ -22,7 +22,6 @@ opt("cedit", "<C-t>") -- ctrl-f interferes with popup completion
 opt("clipboard", "unnamedplus")
 opt("cmdheight", 1) -- 0
 opt("cmdwinheight", 10)
-opt("completeopt", "menu,menuone,noinsert,noselect")
 opt("confirm", true)
 opt("cpoptions", "aABceFs_r") -- C causes certain vim programs to screw up, x makes command execute even if exiting
 opt("encoding", "UTF-8")
@@ -50,7 +49,7 @@ opt("redrawtime", 5000)
 opt("scrolloff", 7)
 opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- winsize messes up on load
 opt("shada", "!,'2000,<1000,s200")
-opt("shortmess", "tTSIscCaF")
+opt("shortmess", "tTIscCaF")
 opt("showbreak", "↳ ")
 opt("showcmd", true)
 opt("showmatch", true) -- Show matching brackets when text indicator is over them
