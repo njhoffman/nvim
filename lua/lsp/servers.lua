@@ -112,7 +112,7 @@ require("mason-lspconfig").setup_handlers({
   -- cmd : clangd --offset-encoding=utf-16
   ["bashls"] = require("lsp.servers.bashls"),
   ["eslint"] = require("lsp.servers.eslint"),
-  ["lua_ls"] = require("lsp.servers.sumneko_lua"),
+  ["lua_ls"] = require("lsp.servers.lua_ls"),
   ["stylelint_lsp"] = require("lsp.servers.stylelint_lsp"),
   ["tailwindcss"] = require("lsp.servers.tailwindcss"),
   ["tsserver"] = require("lsp.servers.tsserver"),

@@ -1,32 +1,31 @@
 local M = {}
 
 M.get_counts = function()
-  local counts = { }
+  local counts = {}
 
   return counts
 end
-
 
 -- local clients = vim.lsp..get_active_clients()
 local clients = vim.lsp.buf_get_clients()
 
 local capabilities_map = {
-  codeAction = 'code_action',
-  completion = 'completion',
-  declaration = 'declaration',
-  definition = 'definition',
-  documentHighlight = 'document_highlight',
-  documentSymbol = 'document_symbol',
-  formatting = 'formatting',
-  hover = 'hover',
-  implementation = 'implementation',
-  publishDiagnostics = 'publish_diagnostics',
-  rangeFormatting = 'range_formatting',
-  references = 'references',
-  rename = 'rename',
-  signatureHelp = 'signature_help',
-  typeDefinition = 'type_definition',
-  workspaceSymbol = 'workspace_symbol'
+  codeAction = "code_action",
+  completion = "completion",
+  declaration = "declaration",
+  definition = "definition",
+  documentHighlight = "document_highlight",
+  documentSymbol = "document_symbol",
+  formatting = "formatting",
+  hover = "hover",
+  implementation = "implementation",
+  publishDiagnostics = "publish_diagnostics",
+  rangeFormatting = "range_formatting",
+  references = "references",
+  rename = "rename",
+  signatureHelp = "signature_help",
+  typeDefinition = "type_definition",
+  workspaceSymbol = "workspace_symbol",
 }
 
 -- codeActionProvider
@@ -94,7 +93,9 @@ for _, client in pairs(clients) do
 
   local params = vim.lsp.util.make_position_params()
   for name, capability in pairs(capabilities) do
-    if type(capability.clients[client.name] ~= 'table') then capability.clients[client.name] = {} end
+    if type(capability.clients[client.name] ~= "table") then
+      capability.clients[client.name] = {}
+    end
     local resolved = client.resolved_capabilities[name]
     capability.clients[client.name] = resolved
     if resolved == true then
@@ -117,11 +118,9 @@ for _, client in pairs(clients) do
   -- for name in pairs(client.resolved_capabilities) do
 
   -- end
-
 end
 
 return M
-
 
 -- LspProgressUpdate                                          *LspProgressUpdate*
 --    Upon receipt of a progress notification from the server. See

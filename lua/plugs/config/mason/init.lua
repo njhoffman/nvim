@@ -99,7 +99,7 @@ local tool_settings = { ensure_installed = tool_packages }
 local lspconfig_settings = {
   ensure_installed = {
     "awk_ls",
-    -- "bashls",
+    "bashls",
     "clangd",
     "cssls",
     "dockerls",
@@ -111,7 +111,7 @@ local lspconfig_settings = {
     "jsonls",
     "pylsp",
     "sqls",
-    "sumneko_lua",
+    "lua_ls",
     "terraformls",
     "tsserver",
     "vimls",

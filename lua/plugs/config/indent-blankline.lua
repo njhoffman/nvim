@@ -83,8 +83,8 @@ local blankline2 = {
   },
 }
 
-vim.cmd([[
-    highlight IndentBlanklineChar guifg=#102030 gui=none
-    highlight IndentBlanklineContextChar guifg=#384858 gui=none
-    highlight IndentBlanklineContextStart gui=none
-    ]])
+-- vim.cmd([[
+--     highlight IndentBlanklineChar guifg=#102030 gui=none
+--     highlight IndentBlanklineContextChar guifg=#384858 gui=none
+--     highlight IndentBlanklineContextStart gui=none
+--     ]])

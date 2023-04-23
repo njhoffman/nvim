@@ -1380,7 +1380,7 @@ map("n", "<leader>it", "<cmd>lua require('telescope.run')('lazy', 'lazy')<cr>", 
   desc = "show lazy.nvim plugins in telescope",
 })
 
-map("n", "<leader>iy", "!xsel -ib <<< %:p", {
+map("n", "<leader>iy", "<cmd>let @+ = substitute(expand('%:p'), $HOME, '~', '')<cr>", {
   category = "System",
   label = "yank filename",
   desc = "yank the current filename to clipboard",

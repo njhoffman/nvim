@@ -1,8 +1,7 @@
 local lspconfig = require("lspconfig")
-local lazy_utils = require("utils.lazy")
 local util = lspconfig.util
 
-local sumneko_lua = function()
+local lua_ls = function()
   local neodev_config = {
     debug = false,
     library = {
@@ -14,44 +13,35 @@ local sumneko_lua = function()
       types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
       -- plugins = true,
       plugins = {
-        "barbar.nvim",
-        "debugprint.nvim",
-        "feline.nvim",
-        "fidget.nvim",
-        "lspconfig",
-        "mason",
-        "mason-lspconfig",
-        "neo-tree.nvim",
+        -- "barbar.nvim",
+        -- "debugprint.nvim",
+        -- "feline.nvim",
+        -- "fidget.nvim",
+        -- "lspconfig",
+        -- "mason",
+        -- "mason-lspconfig",
+        -- "neo-tree.nvim",
         "nvim-cmp",
-        "nvim-dap",
-        "nvim-dap-ui",
+        -- "nvim-dap",
+        -- "nvim-dap-ui",
         "nvim-notify",
         "nvim-treesitter",
-        "octo.nvim",
+        -- "octo.nvim",
         "plenary.nvim",
         "telescope.nvim",
-        "trouble.nvim",
-        "vimade",
+        -- "trouble.nvim",
+        -- "vimade",
         "which-key.nvim",
       },
     },
     -- setup_jsonls = false,
     pathStrict = true,
   }
-
-  if lazy_utils.is_loaded("neodev.nvim") then
-    local ok, neodev = pcall(require, "neodev")
-    if not ok then
-      vim.notify("error loading neodev" .. vim.inspect(neodev), 0)
-    else
-      neodev.setup(neodev_config)
-    end
-  else
-    vim.notify("neodev not loaded for sumneko", 0)
-  end
+  require("neodev").setup(neodev_config)
 
   lspconfig["lua_ls"].setup({
     -- log_level = vim.lsp.protocol.MessageType.Warn,
+    before_init = require("neodev.lsp").before_init,
     cmd = {
       "lua-language-server",
       -- "--logpath",
@@ -59,6 +49,41 @@ local sumneko_lua = function()
       -- "--loglevel",
       -- "warn",
     },
+    root_dir = function(fname)
+      local root_files = {
+        ".editorconfig",
+        ".stylua.toml",
+        "stylua.toml",
+        "selene.toml",
+        "selene.yml",
+        ".project",
+        ".luarc.json",
+        ".luarc.jsonc",
+        ".luacheckrc",
+        "vim.toml",
+      }
+
+      local pattern_root = nil
+      local lua_root = nil
+      for _, root_file in ipairs(root_files) do
+        pattern_root = pattern_root or util.root_pattern(root_file)(fname)
+        if pattern_root ~= nil then
+          pattern_root = pattern_root ~= vim.env.HOME and pattern_root or nil
+          if pattern_root ~= nil then
+            local pattern_parts = vim.fn.split(pattern_root, "/")
+            if pattern_parts[#pattern_parts] == "lua" then
+              lua_root = pattern_root
+              pattern_root = nil
+            end
+          end
+        end
+      end
+
+      local git_root = util.find_git_ancestor(fname)
+      local final = pattern_root or git_root or lua_root
+      return final
+    end,
+
     settings = {
       Lua = {
         format = {
@@ -66,6 +91,11 @@ local sumneko_lua = function()
           defaultConfig = {
             indent_style = "space",
             indent_size = "2",
+            align_call_args = true,
+            align_function_params = true,
+            continuation_indent = 4,
+            quote_style = "double",
+            trailing_table_separator = "smart",
           },
         },
         hint = {
@@ -95,35 +125,10 @@ local sumneko_lua = function()
         },
       },
     },
-
-    root_dir = function(fname)
-      local root_files = {
-        ".luarc.json",
-        ".luarc.jsonc",
-        ".luacheckrc",
-        ".stylua.toml",
-        "stylua.toml",
-        "selene.toml",
-        "selene.yml",
-        ".project",
-      }
-      local pattern_root = util.root_pattern(unpack(root_files))(fname)
-      if pattern_root == vim.env.HOME then
-        pattern_root = nil
-      end
-
-      local lua_root = util.root_pattern("lua/")(fname)
-      if lua_root then
-        lua_root = lua_root .. "/lua/"
-      end
-      local git_root = util.find_git_ancestor(fname)
-      local final = pattern_root or git_root -- or lua_root
-      return final
-    end,
   })
 end
 
-return sumneko_lua
+return lua_ls
 
 -- Custom Commands:
 --   lua: -- LuaFormatter off, -- stylua: ignore

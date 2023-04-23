@@ -36,7 +36,7 @@ local default = {
 
 local opts = {
   retirementAgeMins = 20,
-  minimumBufferNum = 5,
+  minimumBufferNum = 8,
   notificationOnAutoClose = true,
 }
 
