@@ -12,6 +12,8 @@ local function visual_paste_without_yank()
   vim.fn.setreg(register, vim.fn.getreg("x"))
 end
 
+-- vim.keymap.set("x", "p", '"_dP', { desc = "don't replace register when pasting" })
+
 -- " This one may be a little better (strip the ending new-line before pasting)
 vim.cmd([[:nmap <M-C-P> :call append(line('.'), substitute(@", '\n$', '', ''))<CR>]])
 

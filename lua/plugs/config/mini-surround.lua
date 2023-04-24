@@ -3,88 +3,101 @@ local default_cfg = {
   custom_surroundings = nil,
   highlight_duration = 500,
   mappings = {
-    add = "sa", -- Add surrounding in Normal and Visual modes
-    delete = "sd", -- Delete surrounding
-    find = "sf", -- Find surrounding (to the right)
-    find_left = "sF", -- Find surrounding (to the left)
-    highlight = "sh", -- Highlight surrounding
-    replace = "sr", -- Replace surrounding
-    update_n_lines = "sn", -- Update `n_lines`
+    add = 'sa', -- Add surrounding in Normal and Visual modes
+    delete = 'sd', -- Delete surrounding
+    find = 'sf', -- Find surrounding (to the right)
+    find_left = 'sF', -- Find surrounding (to the left)
+    highlight = 'sh', -- Highlight surrounding
+    replace = 'sr', -- Replace surrounding
+    update_n_lines = 'sn', -- Update `n_lines`
 
-    suffix_last = "l", -- Suffix to search with "prev" method
-    suffix_next = "n", -- Suffix to search with "next" method
+    suffix_last = 'l', -- Suffix to search with "prev" method
+    suffix_next = 'n', -- Suffix to search with "next" method
   },
   n_lines = 20,
   respect_selection_type = false,
-  search_method = "cover",
+  search_method = 'cover',
 }
 
 ---@diagnostic disable-next-line: unused-local
 local vim_surround = {
   mappings = {
-    add = "ys",
-    delete = "ds",
-    find = "",
-    find_left = "",
-    highlight = "",
-    replace = "cs",
-    update_n_lines = "",
+    add = 'ys',
+    delete = 'ds',
+    find = '',
+    find_left = '',
+    highlight = '',
+    replace = 'cs',
+    update_n_lines = '',
 
     -- Add this only if you don't want to use extended mappings
-    suffix_last = "",
-    suffix_next = "",
+    suffix_last = '',
+    suffix_next = '',
   },
-  search_method = "cover_or_next",
+  search_method = 'cover_or_next',
+}
+
+local custom_surroundings = {
+  -- Lua long brackets - ysiwS
+  S = {
+    -- Configuration for "input" (like for delete) is done with Lua patterns
+    input = { find = '%[%[.-%]%]', extract = '^(..).*(..)$' },
+    -- Configuration for "output" (like for add) is done with plain text
+    output = { left = '[[', right = ']]' },
+  },
+  -- Use `(` to insert with spaces, `)` will still add without them
+  ['('] = { output = { left = '( ', right = ' )' } },
 }
 
 local cfg = {
+  custom_surroundings = custom_surroundings,
   mappings = {
-    add = "s", -- Add surrounding in Normal and Visual modes
-    delete = "ds", -- Add surrounding in Normal and Visual modes
-    change = "cs", -- Add surrounding in Normal and Visual modes
+    add = 's', -- Add surrounding in Normal and Visual modes
+    delete = 'ds', -- Add surrounding in Normal and Visual modes
+    replace = 'cs', -- Replace surrounding
+    find = 'sf', -- Find surrounding (to the right)
+    find_left = 'sF', -- Find surrounding (to the left)
+    highlight = 'sh', -- Highlight surrounding
+    -- update_n_lines = 'sn', -- Update `n_lines`
+    suffix_last = 'l', -- Suffix to search with "prev" method
+    suffix_next = 'n', -- Suffix to search with "next" method
   },
-  search_method = "cover_or_next",
+  highlight_duration = 400,
+  n_lines = 30,
+  respect_selection_type = true,
+  search_method = 'cover_or_next',
 }
-require("mini.surround").setup(cfg)
 
--- keys = function(_, keys)
---   -- Populate the keys based on the user's options
---   local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
---   local opts = require("lazy.core.plugin").values(plugin, "opts", false)
---   local mappings = {
---     { opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
---     { opts.mappings.delete, desc = "Delete surrounding" },
---     { opts.mappings.find, desc = "Find right surrounding" },
---     { opts.mappings.find_left, desc = "Find left surrounding" },
---     { opts.mappings.highlight, desc = "Highlight surrounding" },
---     { opts.mappings.replace, desc = "Replace surrounding" },
---     { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
---   }
---   mappings = vim.tbl_filter(function(m)
---     return m[1] and #m[1] > 0
---   end, mappings)
---   return vim.list_extend(mappings, keys)
--- end,
--- opts = {
---   mappings = {
---     add = "gza", -- Add surrounding in Normal and Visual modes
---     delete = "gzd", -- Delete surrounding
---     find = "gzf", -- Find surrounding (to the right)
---     find_left = "gzF", -- Find surrounding (to the left)
---     highlight = "gzh", -- Highlight surrounding
---     replace = "gzr", -- Replace surrounding
---     update_n_lines = "gzn", -- Update `n_lines`
---   },
--- },
--- config = function(_, opts)
---   -- use gz mappings instead of s to prevent conflict with leap
---   require("mini.surround").setup(opts)
--- end,
+require('mini.surround').setup(cfg)
 
--- -- Remap adding surrounding to Visual mode selection
--- vim.keymap.del("x", "ys")
--- vim.keymap.set("x", "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
+vim.keymap.set('n', 'ys', [[v:lua.MiniSurround.operator('add')]], { silent = true, expr = true })
+vim.keymap.set('x', 'S', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
+vim.keymap.set('n', 'yss', '^ys$', { remap = true })
+
+--- Regular mappings:
+--- - `saiw)` - add (`sa`) for inner word (`iw`) parenthesis (`)`).
+--- - `saiw?[[<CR>]]<CR>` - add (`sa`) for inner word (`iw`) interactive surrounding (`?`): `[[` for left and `]]` for right.
+--- - `2sdf` - delete (`sd`) second (`2`) surrounding function call (`f`).
+--- - `sr)tdiv<CR>` - replace (`sr`) surrounding parenthesis (`)`) with tag (`t`) with identifier 'div' (`div<CR>` in command line prompt).
+--- - `sff` - find right (`sf`) part of surrounding function call (`f`).
+--- - `sh}` - highlight (`sh`) for a brief period of time surrounding curly brackets (`}`).
+---
+--- Extended mappings (temporary force "prev"/"next" search methods):
+--- - `sdnf` - delete (`sd`) next (`n`) function call (`f`).
+--- - `srlf(` - replace (`sd`) last (`l`) function call (`f`) with padded bracket (`(`).
+--- - `2sfnt` - find (`sf`) second (2) next (`n`) tag (`t`).
+--- - `shl}` - highlight (`sh`) last (`l`) second (`2`) curly bracket (`}`).
+---
+-- - Covering match. Left/right edge is before/after left/right edge of reference region.
+-- - Previous match. Left/right edge is before left/right edge of reference region.
+-- - Next match. Left/right edge is after left/right edge of reference region.
+-- - Nearest match. Whichever is closest among previous and next matches.
 --
--- -- Make special mapping for "add surrounding for line"
--- vim.keymap.set("n", "yss", "ys_", { remap = true })
---
+-- Possible values are:
+-- - `'cover'` - use only covering match. Don't use either previous or next; report that there is no surrounding found.
+-- - `'cover_or_next'` (default) - use covering match. If not found, use next.
+-- - `'cover_or_prev'` - use covering match. If not found, use previous.
+-- - `'cover_or_nearest'` - use covering match. If not found, use nearest.
+-- - `'next'` - use next match.
+-- - `'previous'` - use previous match.
+-- - `'nearest'` - use nearest match.

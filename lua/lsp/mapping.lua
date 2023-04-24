@@ -3,6 +3,8 @@ local vmap = require("mapper").vmap
 
 local opts = { noremap = true, silent = true, buffer = true, category = "LSP" }
 
+-- TODO: next/prev reference
+
 local mapping = {
   rename = function()
     opts.desc = "rename buffer"

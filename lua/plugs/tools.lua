@@ -17,6 +17,8 @@ local plugins = {
       },
     },
   },
+  { 'gennaro-tedesco/nvim-jqx', lazy = true, cmd = { 'JqxList', 'JqxQuery' } },
+  { 'bfrg/vim-jqplay', ft = 'jq', cmd = { 'Jqplay', 'JqplayScratch', 'JqplayScratchNoInput' } },
   { "npxbr/glow.nvim", cmd = "Glow" },
   { "NTBBloodbath/rest.nvim", cmd = { "RESTRunLast", "RESTRun", "RESTPreview" } },
   { "dbeniamine/cheat.sh-vim", cmd = "Cheat" },

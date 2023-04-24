@@ -238,7 +238,7 @@ return function(injected_functions)
     diffLine({ fg = "#464B5D" }),
     diffIndexLine({ fg = clrs.nord9 }),
     Todo({ fg = "none", bg = "none", gui = "none" }),
-    TodoMsg({ fg = "#2593fB", gui = "bold, italic" }),
+    TodoMsg({ fg = "#2583cB", gui = "bold, italic" }),
     Warning({ bg = "none", fg = "#aB6F34", gui = "bold, italic" }),
     WarningMsg({ bg = "none", fg = clrs.nord13 }),
     -- language groups

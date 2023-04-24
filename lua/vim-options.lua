@@ -1,7 +1,7 @@
 local g = vim.g
 local o, wo, bo = vim.o, vim.wo, vim.bo
-local opt = require("utils.core").opt
-local config = require("config")
+local opt = require('utils.core').opt
+local config = require('config')
 
 g.mapleader = [[,]]
 g.maplocalleader = [[,]]
@@ -10,69 +10,70 @@ local buffer = { o, bo }
 local window = { o, wo }
 
 -- global scope
-opt("autoread", true)
-opt("backspace", "eol,start,indent") -- Configure backspace so it acts as it should act
-opt("backup", false)
-opt("backupcopy", "auto")
+opt('autoread', true)
+opt('backspace', 'eol,start,indent') -- Configure backspace so it acts as it should act
+opt('backup', false)
+opt('backupcopy', 'auto')
 -- opt("backupdir", ".,~/.vim/backup,~/.local/share/nvim/backup")
-opt("writebackup", true)
-opt("breakindent", true)
-opt("breakindentopt", "shift:2")
-opt("cedit", "<C-t>") -- ctrl-f interferes with popup completion
-opt("clipboard", "unnamedplus")
-opt("cmdheight", 1) -- 0
-opt("cmdwinheight", 10)
-opt("confirm", true)
-opt("cpoptions", "aABceFs_r") -- C causes certain vim programs to screw up, x makes command execute even if exiting
-opt("encoding", "UTF-8")
-opt("fileencoding", "utf-8")
-opt("foldmethod", "manual")
-opt("hidden", true)
-opt("hlsearch", true)
-opt("ignorecase", true)
-opt("inccommand", "split")
-opt("incsearch", true)
-opt("joinspaces", false)
-opt("jumpoptions", "stack")
-opt("laststatus", 3)
-opt("lazyredraw", false)
-opt("linebreak", true)
-opt("magic", true)
-opt("matchtime", 3) -- How many tenths of a second to blink when matching brackets
-opt("modelines", 5)
-opt("mouse", "nivh")
-opt("omnifunc", "")
-opt("previewheight", 15)
-opt("pumblend", 10)
-opt("pumheight", 10)
-opt("redrawtime", 5000)
-opt("scrolloff", 7)
-opt("sessionoptions", "buffers,curdir,folds,help,resize,winpos,terminal") -- winsize messes up on load
-opt("shada", "!,'2000,<1000,s200")
-opt("shortmess", "tTIscCaF")
-opt("showbreak", "↳ ")
-opt("showcmd", true)
-opt("showmatch", true) -- Show matching brackets when text indicator is over them
-opt("showmode", false)
-opt("showtabline", 1)
-opt("sidescrolloff", 5)
-opt("smartcase", true)
-opt("splitbelow", true)
-opt("splitkeep", "screen") -- scroll behavior for horizontal splits
-opt("splitright", true)
-opt("swapfile", false)
-opt("switchbuf", "useopen,usetab") -- Use the current tab for openning files from quickfix.
-opt("termguicolors", true)
-opt("textwidth", 1000)
-opt("timeout", true)
-opt("timeoutlen", 500) -- 1000
-opt("ttimeoutlen", 30) -- 50
-opt("undolevels", 1000)
-opt("updatetime", 800) -- 4000
-opt("whichwrap", "b,s,<,>,[,],h,l")
-opt("wildignore", "*.o,*~,*.pyc") -- wildchar/charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
+opt('writebackup', true)
+opt('breakindent', true)
+opt('breakindentopt', 'shift:2')
+opt('cedit', '<C-t>') -- ctrl-f interferes with popup completion
+opt('clipboard', 'unnamedplus')
+opt('cmdheight', 1) -- 0
+opt('cmdwinheight', 10)
+opt('confirm', true)
+opt('cpoptions', 'aABceFs_r') -- C causes certain vim programs to screw up, x makes command execute even if exiting
+opt('encoding', 'UTF-8')
+opt('fileencoding', 'utf-8')
+opt('foldmethod', 'manual')
+opt('hidden', true)
+opt('hlsearch', true)
+opt('ignorecase', true)
+opt('inccommand', 'split')
+opt('incsearch', true)
+opt('joinspaces', false)
+opt('jumpoptions', 'stack')
+opt('laststatus', 3)
+opt('lazyredraw', false)
+opt('linebreak', true)
+opt('magic', true)
+opt('matchtime', 3) -- How many tenths of a second to blink when matching brackets
+opt('modelines', 5)
+opt('mouse', 'nivh')
+opt('omnifunc', '')
+opt('previewheight', 15)
+opt('pumblend', 10)
+opt('pumheight', 10)
+opt('redrawtime', 5000)
+opt('scrolloff', 7)
+opt('sessionoptions', 'buffers,curdir,folds,help,resize,winpos,terminal') -- winsize messes up on load
+opt('shada', "!,'2000,<1000,s200")
+opt('shortmess', 'tTIscCaF')
+opt('showbreak', '↳ ')
+opt('showcmd', true)
+opt('showmatch', true) -- Show matching brackets when text indicator is over them
+opt('showmode', false)
+opt('showtabline', 1)
+opt('sidescrolloff', 5)
+opt('smartcase', true)
+opt('splitbelow', true)
+opt('splitkeep', 'screen') -- scroll behavior for horizontal splits
+opt('splitright', true)
+opt('swapfile', false)
+opt('switchbuf', 'useopen,usetab') -- Use the current tab for openning files from quickfix.
+opt('termguicolors', true)
+opt('textwidth', 1000)
+opt('timeout', true)
+opt('timeoutlen', 500) -- 1000
+opt('ttimeoutlen', 30) -- 50
+opt('undolevels', 1000)
+opt('updatetime', 800) -- 4000
+opt('virtualedit', 'onemore') -- 4000
+opt('whichwrap', 'b,s,<,>,[,],h,l')
+opt('wildignore', '*.o,*~,*.pyc') -- wildchar/charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
 -- opt("winbar", "...")
-opt("wildmode", "longest:full,full")
+opt('wildmode', 'longest:full,full')
 -- opt("display", "msgsep")
 -- opt("shortmess", o.shortmess .. "cS") F silents filename
 -- opt("shortmess", "filnxtToOcSIs")
@@ -84,24 +85,24 @@ opt("wildmode", "longest:full,full")
 -- opt("wcm", 0x0e)
 
 -- window scope
-opt("concealcursor", "nc", window)
-opt("conceallevel", 2, window)
-opt("cursorline", true, window)
-opt("number", true, window)
-opt("relativenumber", true, window)
-opt("signcolumn", "yes:2", window)
-opt("wrap", config.Opts.wrap, window)
+opt('concealcursor', 'nc', window)
+opt('conceallevel', 2, window)
+opt('cursorline', true, window)
+opt('number', true, window)
+opt('relativenumber', true, window)
+opt('signcolumn', 'yes:2', window)
+opt('wrap', config.Opts.wrap, window)
 
 -- buffer scope
-opt("expandtab", true, buffer)
-opt("fileformat", "unix", buffer)
-opt("modeline", true, buffer)
-opt("shiftwidth", 2, buffer)
-opt("smartindent", false, buffer)
-opt("softtabstop", 0, buffer)
-opt("synmaxcol", 2000, buffer)
-opt("tabstop", 2, buffer)
-opt("undofile", true, buffer)
+opt('expandtab', true, buffer)
+opt('fileformat', 'unix', buffer)
+opt('modeline', true, buffer)
+opt('shiftwidth', 2, buffer)
+opt('smartindent', false, buffer)
+opt('softtabstop', 0, buffer)
+opt('synmaxcol', 2000, buffer)
+opt('tabstop', 2, buffer)
+opt('undofile', true, buffer)
 -- opt("textwidth", 100, buffer) -- set per buffer
 
 vim.cmd([[

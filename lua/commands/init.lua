@@ -1,47 +1,63 @@
-local format = require("commands.format")
-local ui = require("commands.ui")
-local debug = require("commands.debug")
-local paste = require("commands.paste")
-local system = require("commands.system")
+local format = require('commands.format')
+local ui = require('commands.ui')
+local debug = require('commands.debug')
+local paste = require('commands.paste')
+local system = require('commands.system')
 
 local cmd = vim.api.nvim_create_user_command
 
+-- -- Mapping for dd that doesn't yank an empty line into your default register:
+-- keymap.set("n", "dd", function()
+--   if vim.api.nvim_get_current_line():match("^%s*$") then
+--     return '"_dd'
+--   else
+--     return "dd"
+--   end
+-- end, { expr = true })
+
+--
+-- -- greatest remap ever
+-- keymap.set("x", "p", "P")
+--
+-- -- using delete without yank
+-- keymap.set({ "n", "v" }, "<leader>d", "\"_d", { desc = "Delete without yank" })
+
 -- Create the user command
-cmd("TrimTrailingWhitespace", format.trim_space, {
-  nargs = "?",
-  range = "%",
-  addr = "lines",
+cmd('TrimTrailingWhitespace', format.trim_space, {
+  nargs = '?',
+  range = '%',
+  addr = 'lines',
   preview = format.trim_space,
-  desc = "Trims trailing whitespace in the current buffer.",
+  desc = 'Trims trailing whitespace in the current buffer.',
 })
-cmd("TruncateLog", format.truncate_log, { desc = "Truncate log " })
-cmd("Format", format.format, { nargs = "*", desc = "Format buffer using lsp" })
-cmd("CloseMulti", ui.close_multi, { desc = "Close tabpage, window, or buffer in that order" })
-cmd("CloseMultiNoPrompt", ui.close_multi_no_prompt, { desc = "Close tabpage, window, or buffer in that order" })
-cmd("ClosePopups", ui.close_popups, { desc = "Format buffer using lsp" })
-cmd("GetPaths", debug.get_paths, { desc = "Get path collections (rtpaths, o.packpath, etc)" })
-cmd("Trash", system.trash_file, { desc = "Send file to system trash" })
-cmd("Delete", system.trash_file, { desc = "Send file to system trash" })
+cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })
+cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
+cmd('CloseMulti', ui.close_multi, { desc = 'Close tabpage, window, or buffer in that order' })
+cmd('CloseMultiNoPrompt', ui.close_multi_no_prompt, { desc = 'Close tabpage, window, or buffer in that order' })
+cmd('ClosePopups', ui.close_popups, { desc = 'Format buffer using lsp' })
+cmd('GetPaths', debug.get_paths, { desc = 'Get path collections (rtpaths, o.packpath, etc)' })
+cmd('Trash', system.trash_file, { desc = 'Send file to system trash' })
+cmd('Delete', system.trash_file, { desc = 'Send file to system trash' })
 -- cmd("TrashRecover", system.trash_file, { desc = "Send file to system trash" })
 
-cmd(
-  "PasteNoYank",
-  paste.visual_paste_without_yank,
-  { desc = "Paste to visual selection buffer without overwriting register" }
-)
-vim.keymap.set("v", "p", paste.visual_paste_without_yank, { noremap = true, silent = true })
+-- cmd(
+--   "PasteNoYank",
+--   paste.visual_paste_without_yank,
+--   { desc = "Paste to visual selection buffer without overwriting register" }
+-- )
+-- vim.keymap.set("v", "p", paste.visual_paste_without_yank, { noremap = true, silent = true })
 
-vim.keymap.set("n", "<M-l>", ui.check_resize_split("l"), { noremap = true })
-vim.keymap.set("n", "<M-h>", ui.check_resize_split("h"), { noremap = true })
-vim.keymap.set("n", "<M-j>", ui.check_resize_split("j"), { noremap = true })
-vim.keymap.set("n", "<M-k>", ui.check_resize_split("k"), { noremap = true })
+vim.keymap.set('n', '<M-l>', ui.check_resize_split('l'), { noremap = true })
+vim.keymap.set('n', '<M-h>', ui.check_resize_split('h'), { noremap = true })
+vim.keymap.set('n', '<M-j>', ui.check_resize_split('j'), { noremap = true })
+vim.keymap.set('n', '<M-k>', ui.check_resize_split('k'), { noremap = true })
 
 -- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('...',true,true,true))
 -- TODO: c-s-d , c-s-f, c-s-h,l,j,k, c-s-|, c-s-+
-vim.keymap.set("n", "<C-S-Right>", ui.check_nav_split("l"), { noremap = true })
-vim.keymap.set("n", "<C-S-Left>", ui.check_nav_split("h"), { noremap = true })
-vim.keymap.set("n", "<C-S-Down>", ui.check_nav_split("j"), { noremap = true })
-vim.keymap.set("n", "<C-S-Up>", ui.check_nav_split("k"), { noremap = true })
+vim.keymap.set('n', '<C-S-Right>', ui.check_nav_split('l'), { noremap = true })
+vim.keymap.set('n', '<C-S-Left>', ui.check_nav_split('h'), { noremap = true })
+vim.keymap.set('n', '<C-S-Down>', ui.check_nav_split('j'), { noremap = true })
+vim.keymap.set('n', '<C-S-Up>', ui.check_nav_split('k'), { noremap = true })
 
 -- vim.g.scriptpath,vim.g.loaded_remote_plugins,script_path,scripts_dir
 -- vim.o.argv, vim.o.packpath, vim.o.runtimepath, undodir, viewdir, directory, backupdir, helpfile,

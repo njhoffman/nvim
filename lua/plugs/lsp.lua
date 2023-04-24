@@ -103,7 +103,12 @@ local plugins = {
     "jose-elias-alvarez/null-ls.nvim",
     event = "LspAttach",
     -- event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "nvim-lua/plenary.nvim", "ThePrimeagen/refactoring.nvim", "mason.nvim" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "ThePrimeagen/refactoring.nvim",
+      "mason.nvim",
+      'ckolkey/ts-node-action',
+    },
   },
   { "mfussenegger/nvim-lint", event = { "BufReadPre", "BufNewFile" } },
   {

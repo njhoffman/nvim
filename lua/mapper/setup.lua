@@ -23,6 +23,30 @@ prefix("n", "<leader>p", "+paste")
 prefix("n", "<leader>i", "+internal tools")
 prefix("n", "<leader>cl", "+conceal")
 
+-- ["]"] = { name = "+next" },
+-- ["["] = { name = "+prev" },
+-- ["<leader><tab>"] = { name = "+tabs" },
+-- ["<leader>b"] = { name = "+buffer" },
+-- ["<leader>c"] = { name = "+code" },
+-- ["<leader>f"] = { name = "+file/find" },
+-- ["<leader>g"] = { name = "+git" },
+-- ["<leader>gh"] = { name = "+hunks" },
+-- ["<leader>q"] = { name = "+quit/session" },
+-- ["<leader>s"] = { name = "+search" },
+-- ["<leader>u"] = { name = "+ui" },
+-- ["<leader>w"] = { name = "+windows" },
+-- ["<leader>x"] = { name = "+diagnostics/quickfix" },
+
+-- vim.keymap.set("n", "<leader>hh", ":h <CR>")
+-- vim.keymap.set("x", "<leader>hh", 'y:h "<CR>')
+--
+-- vim.keymap.set("n", "cn", "*``cgn")
+-- vim.keymap.set("x", "C", function()
+--     vim.api.nvim_input('y/"<CR>Ncgn')
+-- end, { silent = true })
+--
+-- -- Make the last change as an initiation for cgn.
+-- vim.keymap.set("n", "g.", [[/\V<C-r>"<CR>cgn<C-a><Esc>]])
 --------------------------------------------------------------------------------------------------
 -- COMMAND ---------------------------------------------------------------------------------------
 
@@ -344,9 +368,9 @@ map("n", "gn", "g#<cmd>lua require('hlslens').start()<cr>", {
   desc = "next matching from previous search (hls lens)",
 })
 
-map("n", "<leader>r", "*:%s//", {
+map("n", "<leader>R", "*:%s//", {
   category = "Motion",
-  label = "replace cursor",
+  label = "replace cursor word",
   desc = "search and replace word under cursor",
 })
 

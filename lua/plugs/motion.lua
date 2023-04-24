@@ -13,52 +13,6 @@ local plugins = {
       "theHamsta/nvim-treesitter-pairs",
       "RRethy/nvim-treesitter-textsubjects",
       "HiPhish/nvim-ts-rainbow2",
-      {
-        "ThePrimeagen/refactoring.nvim",
-        dependencies = { "nvim-lua/plenary.nvim" },
-        -- keys = {
-        --   -- Remaps for the refactoring operations currently offered by the plugin
-        --   {
-        --     mode = "x",
-        --     "<leader>re",
-        --     [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]],
-        --   },
-        --   {
-        --     mode = "x",
-        --     "<leader>rf",
-        --     [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>]],
-        --   },
-        --   {
-        --     mode = "x",
-        --     "<leader>rv",
-        --     [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Variable')<CR>]],
-        --   },
-        --   {
-        --     mode = "x",
-        --     "<leader>ri",
-        --     [[ <Esc><Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
-        --   },
-        --
-        --   -- Extract block doesn't need visual mode
-        --   {
-        --     mode = "n",
-        --     "<leader>rb",
-        --     [[ <Cmd>lua require('refactoring').refactor('Extract Block')<CR>]],
-        --   },
-        --   {
-        --     mode = "n",
-        --     "<leader>rbf",
-        --     [[ <Cmd>lua require('refactoring').refactor('Extract Block To File')<CR>]],
-        --   },
-        --
-        --   -- Inline variable can also pick up the identifier currently under the cursor without visual mode
-        --   {
-        --     mode = "n",
-        --     "<leader>ri",
-        --     [[ <Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
-        --   },
-        -- },
-      },
       "jbyuki/tree-sitter-ntangle",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter-refactor",
