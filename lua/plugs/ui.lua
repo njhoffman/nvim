@@ -1,64 +1,64 @@
-local utils = require("utils.lazy")
+local utils = require('utils.lazy')
 
 local plugins = {
   {
-    "lukas-reineke/indent-blankline.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    'lukas-reineke/indent-blankline.nvim',
+    event = { 'BufReadPre', 'BufNewFile' },
     opts = {
-      char = "│",
-      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
+      char = '│',
+      filetype_exclude = { 'help', 'alpha', 'dashboard', 'neo-tree', 'Trouble', 'lazy' },
       show_trailing_blankline_indent = false,
       show_current_context = false,
     },
   },
   {
-    "echasnovski/mini.indentscope",
-    event = { "BufReadPre", "BufNewFile" },
+    'echasnovski/mini.indentscope',
+    event = { 'BufReadPre', 'BufNewFile' },
     init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = { 'help', 'alpha', 'dashboard', 'neo-tree', 'Trouble', 'lazy', 'mason' },
         callback = function()
           vim.b.miniindentscope_disable = true
         end,
       })
     end,
   },
-  { "echasnovski/mini.trailspace", event = "VeryLazy" },
-  { "echasnovski/mini.animate", event = "VeryLazy" },
+  { 'echasnovski/mini.trailspace', event = 'VeryLazy' },
+  { 'echasnovski/mini.animate', event = 'VeryLazy' },
   {
-    "tummetott/reticle.nvim",
-    event = "VeryLazy",
+    'tummetott/reticle.nvim',
+    event = 'VeryLazy',
     opts = {
       always = {
         cursorline = {
-          "neo-tree", -- reticle messes up with Neo-tree cursorline in search mode
+          'neo-tree', -- reticle messes up with Neo-tree cursorline in search mode
         },
       },
     },
   },
   {
-    "sindrets/diffview.nvim",
-    cmd = { "Diffview", "DiffviewLog", "DiffviewOpen", "DiffviewToggleFiles", "DiffviewFileHistory" },
+    'sindrets/diffview.nvim',
+    cmd = { 'Diffview', 'DiffviewLog', 'DiffviewOpen', 'DiffviewToggleFiles', 'DiffviewFileHistory' },
   },
-  { "m00qek/baleia.nvim" },
-  { "folke/zen-mode.nvim", cmd = "ZenMode" },
-  { "tversteeg/registers.nvim", event = "VimEnter", cmd = "Registers" },
-  { "folke/twilight.nvim", cmd = { "Twilight", "TwilightEnable" } },
+  { 'm00qek/baleia.nvim' },
+  { 'folke/zen-mode.nvim', cmd = 'ZenMode' },
+  { 'tversteeg/registers.nvim', event = 'VimEnter', cmd = 'Registers' },
+  { 'folke/twilight.nvim', cmd = { 'Twilight', 'TwilightEnable' } },
   {
-    "kevinhwang91/nvim-ufo",
-    dependencies = "kevinhwang91/promise-async",
-    cmd = { "UfoEnable", "UfoAttach", "UfoEnableFold" },
-    event = { "BufReadPost", "InsertEnter" },
+    'kevinhwang91/nvim-ufo',
+    dependencies = 'kevinhwang91/promise-async',
+    cmd = { 'UfoEnable', 'UfoAttach', 'UfoEnableFold' },
+    event = { 'BufReadPost', 'InsertEnter' },
   },
-  { "nacro90/numb.nvim", event = { "BufReadPost", "BufNewFile" } },
-  { "ivyl/vim-bling", event = { "BufReadPost", "BufNewFile" } },
-  { "romainl/vim-cool", event = { "BufReadPost", "BufNewFile" } },
-  { "edluffy/specs.nvim", event = { "BufReadPost", "BufNewFile" } },
-  { "petertriho/nvim-scrollbar", event = { "BufReadPost", "BufNewFile" } },
-  { "RRethy/vim-illuminate", event = { "BufReadPost", "BufNewFile" }, dependencies = { "neovim/nvim-lspconfig" } },
-  { "TaDaa/vimade", event = { "BufReadPost", "BufNewFile" } },
-  { "kevinhwang91/nvim-hlslens", event = { "VimEnter" } },
-  { "Bekaboo/deadcolumn.nvim", event = { "VimEnter" }, lazy = false },
+  { 'nacro90/numb.nvim', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'ivyl/vim-bling', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'RRethy/vim-illuminate', event = { 'BufReadPost', 'BufNewFile' }, dependencies = { 'neovim/nvim-lspconfig' } },
+  { 'TaDaa/vimade', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'kevinhwang91/nvim-hlslens', event = { 'VimEnter' } },
+  { 'Bekaboo/deadcolumn.nvim', event = { 'VimEnter' }, lazy = false },
   -- {
   --   "m4xshen/smartcolumn.nvim",
   --   event = { "BufReadPre", "BufNewFile" },
@@ -71,18 +71,18 @@ local plugins = {
   --   },
   -- },
   {
-    "stevearc/dressing.nvim",
-    dependencies = "MunifTanjim/nui.nvim",
+    'stevearc/dressing.nvim',
+    dependencies = 'MunifTanjim/nui.nvim',
     lazy = true,
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.select = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
+        require('lazy').load({ plugins = { 'dressing.nvim' } })
         return vim.ui.select(...)
       end
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.input = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
+        require('lazy').load({ plugins = { 'dressing.nvim' } })
         return vim.ui.input(...)
       end
     end,
@@ -92,19 +92,19 @@ local plugins = {
           winblend = 15,
         },
         select = {
-          backend = { "nui", "telescope" },
+          backend = { 'nui', 'telescope' },
           -- telescope = require('telescope.themes').get_ivy({...})
         },
       },
     },
   },
   {
-    "phaazon/hop.nvim",
-    branch = "v2",
-    event = { "BufReadPost", "BufNewFile" },
+    'phaazon/hop.nvim',
+    branch = 'v2',
+    event = { 'BufReadPost', 'BufNewFile' },
   },
-  { "RRethy/vim-hexokinase", event = "VeryLazy", build = "make hexokinase" },
-  { "MunifTanjim/nui.nvim", event = "VeryLazy" },
+  { 'RRethy/vim-hexokinase', event = 'VeryLazy', build = 'make hexokinase' },
+  { 'MunifTanjim/nui.nvim', event = 'VeryLazy' },
 }
 
 utils.apply_configs(plugins)

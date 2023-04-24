@@ -1,7 +1,7 @@
 ---@diagnostic disable: undefined-global
-local lush = require 'lush'
+local lush = require('lush')
 local v = vim.g -- this must be done, because lush is executed in a bare environment
-local palette = require 'nord-palette'
+local palette = require('nord-palette')
 
 local spec = palette.spec
 local gui_combine = palette.gui_combine
@@ -33,200 +33,200 @@ local theme = lush(function()
     -- + UI Components +
     -- +---------------+
     -- +-- Attributes --+
-    Bold {sp = spec.bold},
-    Italic {sp = spec.italic},
-    Underline {sp = spec.underline},
+    Bold({ sp = spec.bold }),
+    Italic({ sp = spec.italic }),
+    Underline({ gui = 'none' }),
 
     -- +-- Editor --+
-    ColorColumn {bg = clrs.nord1},
-    Cursor {fg = clrs.nord0, bg = clrs.nord4},
-    CursorLine {bg = clrs.nord1},
-    Error {fg = clrs.nord4, bg = clrs.nord11},
-    iCursor {fg = clrs.nord0, bg = clrs.nord4},
-    LineNr {fg = clrs.nord3},
-    MatchParen {fg = clrs.nord8, bg = clrs.nord3},
-    NonText {fg = clrs.nord2},
-    Normal {fg = clrs.nord4, bg = clrs.nord0},
-    Pmenu {fg = clrs.nord4, bg = clrs.nord2},
-    PmenuSbar {fg = clrs.nord4, bg = clrs.nord2},
-    PmenuSel {fg = clrs.nord8, bg = clrs.nord3},
-    PmenuThumb {fg = clrs.nord8, bg = clrs.nord3},
-    SpecialKey {fg = clrs.nord3},
-    SpellBad {
+    ColorColumn({ bg = clrs.nord1 }),
+    Cursor({ fg = clrs.nord0, bg = clrs.nord4 }),
+    CursorLine({ bg = clrs.nord1 }),
+    Error({ fg = clrs.nord4, bg = clrs.nord11 }),
+    iCursor({ fg = clrs.nord0, bg = clrs.nord4 }),
+    LineNr({ fg = clrs.nord3 }),
+    MatchParen({ fg = clrs.nord8, bg = clrs.nord3 }),
+    NonText({ fg = clrs.nord2 }),
+    Normal({ fg = clrs.nord4, bg = clrs.nord0 }),
+    Pmenu({ fg = clrs.nord4, bg = clrs.nord2 }),
+    PmenuSbar({ fg = clrs.nord4, bg = clrs.nord2 }),
+    PmenuSel({ fg = clrs.nord8, bg = clrs.nord3 }),
+    PmenuThumb({ fg = clrs.nord8, bg = clrs.nord3 }),
+    SpecialKey({ fg = clrs.nord3 }),
+    SpellBad({
       fg = clrs.nord11,
       bg = clrs.nord,
       gui = spec.undercurl,
       guisp = clrs.nord11,
-    },
-    SpellCap {
+    }),
+    SpellCap({
       fg = clrs.nord13,
       bg = clrs.nord0,
       gui = spec.undercurl,
       guisp = clrs.nord13,
-    },
-    SpellLocal {
+    }),
+    SpellLocal({
       fg = clrs.nord5,
       bg = clrs.nord0,
       gui = spec.undercurl,
       guisp = clrs.nord5,
-    },
-    SpellRare {
+    }),
+    SpellRare({
       fg = clrs.nord6,
       bg = clrs.nord0,
       gui = spec.undercurl,
       guisp = clrs.nord6,
-    },
-    Visual {bg = clrs.nord2},
-    VisualNOS {bg = clrs.nord2},
+    }),
+    Visual({ bg = clrs.nord2 }),
+    VisualNOS({ bg = clrs.nord2 }),
 
     -- +-- Gutter --+
-    CursorColumn {bg = clrs.nord1},
-    CursorLineNr {
+    CursorColumn({ bg = clrs.nord1 }),
+    CursorLineNr({
       fg = clrs.nord4,
       bg = cfg.nord_cursor_line_number_background == 1 and nil or clrs.nord1,
-    },
-    Folded {fg = clrs.nord3.li(7), bg = clrs.nord1, gui = spec.bold},
-    FoldColumn {fg = clrs.nord3, bg = clrs.nord0},
-    SignColumn {fg = clrs.nord1.li(2), bg = clrs.nord0},
+    }),
+    Folded({ fg = clrs.nord3.li(7), bg = clrs.nord1, gui = spec.bold }),
+    FoldColumn({ fg = clrs.nord3, bg = clrs.nord0 }),
+    SignColumn({ fg = clrs.nord1.li(2), bg = clrs.nord0 }),
 
     -- +-- Navigation --+
-    Directory {fg = clrs.nord8},
+    Directory({ fg = clrs.nord8 }),
 
     -- +--- Prompt/Status ---+
-    EndOfBuffer {fg = clrs.nord1},
-    ErrorMsg {fg = clrs.nord4, bg = clrs.nord11},
-    ModeMsg {fg = clrs.nord4},
-    MoreMsg {fg = clrs.nord8},
-    Question {fg = clrs.nord4},
-    StatusLine {fg = clrs.nord8, bg = clrs.nord3, gui = "NONE"},
-    StatusLineNC {
+    EndOfBuffer({ fg = clrs.nord1 }),
+    ErrorMsg({ fg = clrs.nord4, bg = clrs.nord11 }),
+    ModeMsg({ fg = clrs.nord4 }),
+    MoreMsg({ fg = clrs.nord8 }),
+    Question({ fg = clrs.nord4 }),
+    StatusLine({ fg = clrs.nord8, bg = clrs.nord3, gui = 'NONE' }),
+    StatusLineNC({
       fg = clrs.nord4,
       bg = cfg.nord_uniform_status_lines == 0 and clrs.nord1 or crls.nord3,
-      gui = "NONE",
-    },
-    StatusLineTerm {fg = clrs.nord8, bg = clrs.nord3, gui = "NONE"},
-    StatusLineTermNC {
+      gui = 'NONE',
+    }),
+    StatusLineTerm({ fg = clrs.nord8, bg = clrs.nord3, gui = 'NONE' }),
+    StatusLineTermNC({
       fg = clrs.nord4,
       bg = cfg.nord_uniform_status_lines == 0 and clrs.nord1 or crls.nord3,
-      gui = "NONE",
-    },
-    WarningMsg {fg = clrs.nord0, bg = clrs.nord13},
-    WildMenu {fg = clrs.nord8, bg = clrs.nord1},
+      gui = 'NONE',
+    }),
+    WarningMsg({ fg = clrs.nord0, bg = clrs.nord13 }),
+    WildMenu({ fg = clrs.nord8, bg = clrs.nord1 }),
 
     -- +--- Search ---+
-    IncSearch {fg = clrs.nord6, bg = clrs.nord10, gui = spec.underline},
-    Search {fg = clrs.nord1, bg = clrs.nord8, gui = "NONE"},
+    IncSearch({ fg = clrs.nord6, bg = clrs.nord10, gui = spec.underline }),
+    Search({ fg = clrs.nord1, bg = clrs.nord8, gui = 'NONE' }),
 
     -- +--- Tabs ---+
-    TabLine {fg = clrs.nord4, bg = clrs.nord1, gui = "NONE"},
-    TabLineFill {fg = clrs.nord4, bg = clrs.nord1, gui = "NONE"},
-    TabLineSel {fg = clrs.nord8, bg = clrs.nord3, gui = "NONE"},
+    TabLine({ fg = clrs.nord4, bg = clrs.nord1, gui = 'NONE' }),
+    TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = 'NONE' }),
+    TabLineSel({ fg = clrs.nord8, bg = clrs.nord3, gui = 'NONE' }),
 
     -- +--- Window ---+
-    Title {fg = clrs.nord4, gui = "NONE"},
+    Title({ fg = clrs.nord4, gui = 'NONE' }),
 
-    VertSplit {
+    VertSplit({
       fg = clrs.nord2,
       bg = cfg.nord_bold_vertical_split_line == 0 and clrs.nord0 or clrs.nord1,
-      gui = "NONE",
-    },
+      gui = 'NONE',
+    }),
 
     -- +----------------------+
     -- + Language Base Groups +
     -- +----------------------+
-    Boolean {fg = clrs.nord9},
-    Character {fg = clrs.nord14},
-    Comment {fg = clrs.nord3_bright, gui = spec.italicize_comments},
-    Conditional {fg = clrs.nord9},
-    Constant {fg = clrs.nord4},
-    Define {fg = clrs.nord9},
-    Delimiter {fg = clrs.nord6},
-    Exception {fg = clrs.nord9},
-    Float {fg = clrs.nord15},
-    Function {fg = clrs.nord8},
-    Identifier {fg = clrs.nord4, gui = "NONE"},
-    Include {fg = clrs.nord9},
-    Keyword {fg = clrs.nord9},
-    Label {fg = clrs.nord9},
-    Number {fg = clrs.nord15},
-    Operator {fg = clrs.nord9, gui = "NONE"},
-    PreProc {fg = clrs.nord9, gui = "NONE"},
-    Repeat {fg = clrs.nord9},
-    Special {fg = clrs.nord4},
-    SpecialChar {fg = clrs.nord13},
-    SpecialComment {fg = clrs.nord8, gui = spec.italicize_comments},
-    Statement {fg = clrs.nord9},
-    StorageClass {fg = clrs.nord9},
-    String {fg = clrs.nord14},
-    Structure {fg = clrs.nord9},
-    Tag {fg = clrs.nord4},
-    Todo {fg = clrs.nord13, bg = nil},
-    Type {fg = clrs.nord9, gui = "NONE"},
-    Typedef {fg = clrs.nord9},
-    Macro {Define},
-    PreCondit {PreProc},
-    Conceal {bg = Normal.bg, fg = Normal.fg.ro(10)},
+    Boolean({ fg = clrs.nord9 }),
+    Character({ fg = clrs.nord14 }),
+    Comment({ fg = clrs.nord3_bright, gui = spec.italicize_comments }),
+    Conditional({ fg = clrs.nord9 }),
+    Constant({ fg = clrs.nord4 }),
+    Define({ fg = clrs.nord9 }),
+    Delimiter({ fg = clrs.nord6 }),
+    Exception({ fg = clrs.nord9 }),
+    Float({ fg = clrs.nord15 }),
+    Function({ fg = clrs.nord8 }),
+    Identifier({ fg = clrs.nord4, gui = 'NONE' }),
+    Include({ fg = clrs.nord9 }),
+    Keyword({ fg = clrs.nord9 }),
+    Label({ fg = clrs.nord9 }),
+    Number({ fg = clrs.nord15 }),
+    Operator({ fg = clrs.nord9, gui = 'NONE' }),
+    PreProc({ fg = clrs.nord9, gui = 'NONE' }),
+    Repeat({ fg = clrs.nord9 }),
+    Special({ fg = clrs.nord4 }),
+    SpecialChar({ fg = clrs.nord13 }),
+    SpecialComment({ fg = clrs.nord8, gui = spec.italicize_comments }),
+    Statement({ fg = clrs.nord9 }),
+    StorageClass({ fg = clrs.nord9 }),
+    String({ fg = clrs.nord14 }),
+    Structure({ fg = clrs.nord9 }),
+    Tag({ fg = clrs.nord4 }),
+    Todo({ fg = clrs.nord13, bg = nil }),
+    Type({ fg = clrs.nord9, gui = 'NONE' }),
+    Typedef({ fg = clrs.nord9 }),
+    Macro({ Define }),
+    PreCondit({ PreProc }),
+    Conceal({ bg = Normal.bg, fg = Normal.fg.ro(10) }),
 
-    DiffAdd {
+    DiffAdd({
       fg = clrs.nord14,
       bg = cfg.nord_uniform_diff_background == 0 and clrs.nord0 or clrs.nord1,
       gui = spec.inverse,
-    },
-    DiffChange {
+    }),
+    DiffChange({
       fg = clrs.nord13,
       bg = cfg.nord_uniform_diff_background == 0 and clrs.nord0 or clrs.nord1,
       gui = spec.inverse,
-    },
-    DiffDelete {
+    }),
+    DiffDelete({
       fg = clrs.nord11,
       bg = cfg.nord_uniform_diff_background == 0 and clrs.nord0 or clrs.nord1,
       gui = spec.inverse,
-    },
-    DiffText {
+    }),
+    DiffText({
       fg = clrs.nord9,
       bg = cfg.nord_uniform_diff_background == 0 and clrs.nord0 or clrs.nord1,
       gui = spec.inverse,
-    },
+    }),
 
     -- Nvim LSP
     -- > neovim/nvim-lsp
-    DiagnosticWarn {fg = clrs.nord13},
-    DiagnosticError {fg = clrs.nord11},
-    DiagnosticInfo {fg = clrs.nord8},
-    DiagnosticHint {fg = clrs.nord10},
+    DiagnosticWarn({ fg = clrs.nord13 }),
+    DiagnosticError({ fg = clrs.nord11 }),
+    DiagnosticInfo({ fg = clrs.nord8 }),
+    DiagnosticHint({ fg = clrs.nord10 }),
 
-    DiagnosticUnderlineError {fg = "none", gui = "none"},
-    DiagnosticUnderlineWarn {fg = "none", gui = "none"},
-    DiagnosticUnderlineInfo {fg = "none", gui = "none"},
-    DiagnosticUnderlineHint {fg = "none", gui = "none"},
+    DiagnosticUnderlineError({ fg = 'none', gui = 'none' }),
+    DiagnosticUnderlineWarn({ fg = 'none', gui = 'none' }),
+    DiagnosticUnderlineInfo({ fg = 'none', gui = 'none' }),
+    DiagnosticUnderlineHint({ fg = 'none', gui = 'none' }),
 
-    DiagnosticFloatingError {fg = clrs.nord4},
-    DiagnosticFloatingWarn {fg = clrs.nord4},
-    DiagnosticFloatingInfo {fg = clrs.nord4},
-    DiagnosticFloatingHint {fg = clrs.nord4},
+    DiagnosticFloatingError({ fg = clrs.nord4 }),
+    DiagnosticFloatingWarn({ fg = clrs.nord4 }),
+    DiagnosticFloatingInfo({ fg = clrs.nord4 }),
+    DiagnosticFloatingHint({ fg = clrs.nord4 }),
 
     -- built in neovim lsp diagnostics
-    DiagnosticSignError {fg = clrs.nord11},
-    DiagnosticSignWarn {fg = clrs.nord13},
-    DiagnosticSignInfo {fg = clrs.nord9},
-    DiagnosticSignHint {fg = clrs.nord8},
+    DiagnosticSignError({ fg = clrs.nord11 }),
+    DiagnosticSignWarn({ fg = clrs.nord13 }),
+    DiagnosticSignInfo({ fg = clrs.nord9 }),
+    DiagnosticSignHint({ fg = clrs.nord8 }),
 
-    DiagnosticVirtualTextWarn {
+    DiagnosticVirtualTextWarn({
       fg = DiagnosticWarn.fg.de(20).li(10),
       gui = spec.italic,
-    },
-    DiagnosticVirtualTextError {
+    }),
+    DiagnosticVirtualTextError({
       fg = DiagnosticError.fg.de(20).li(10),
       gui = spec.italic,
-    },
-    DiagnosticVirtualTextInfo {
+    }),
+    DiagnosticVirtualTextInfo({
       fg = DiagnosticInfo.fg.de(20).da(10),
       gui = spec.italic,
-    },
-    LSPDiagnosticsVirtualTextHint {
+    }),
+    LSPDiagnosticsVirtualTextHint({
       fg = DiagnosticHint.fg.de(20).li(10),
       gui = spec.italic,
-    },
+    }),
   }
 end)
 -- }}}

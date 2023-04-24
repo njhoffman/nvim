@@ -2,8 +2,8 @@
 local default = {
   -- Module mappings. Use `''` (empty string) to disable one.
   mappings = {
-    start = "ga",
-    start_with_preview = "gA",
+    start = 'ga',
+    start_with_preview = 'gA',
   },
 
   -- Modifiers changing alignment steps and/or options
@@ -30,9 +30,9 @@ local default = {
 
   -- Default options controlling alignment process
   options = {
-    split_pattern = "",
-    justify_side = "left",
-    merge_delimiter = "",
+    split_pattern = '',
+    justify_side = 'left',
+    merge_delimiter = '',
   },
 
   -- Default steps performing alignment (if `nil`, default is used)
@@ -51,9 +51,57 @@ local default = {
 
 local opts = {
   mappings = {
-    start = "ga",
-    start_with_preview = "gA",
+    start = 'ga',
+    start_with_preview = 'gA',
   },
 }
 
-require("mini.align").setup(opts)
+require('mini.align').setup(opts)
+
+-- Press s to enter split Lua pattern.
+-- Press j to choose justification side from available ones ("left", "center", "right", "none").
+-- Press m to enter merge delimiter.
+-- Press f to enter filter Lua expression to configure which parts will be affected (like "align only first column").
+-- Press i to ignore some commonly unwanted split matches.
+-- Press p to pair neighboring parts so they be aligned together.
+-- Press t to trim whitespace from parts.
+-- Press <BS> (backspace) to delete some last pre-step.
+
+-- ## Modifiers ~
+--
+-- `MiniAlign.config.modifiers` is used to define interactive user experience
+-- of managing alignment process. It is a table with single character keys and
+-- modifier function values.
+--
+-- Each modifier function:
+-- - Is called when corresponding modifier key is pressed.
+-- - Has signature `(steps, opts)` and should modify any of its input in place.
+--
+-- Examples:
+-- - Modifier function used for default 'i' modifier:
+-- >
+--   function(steps, _)
+--     table.insert(steps.pre_split, MiniAlign.gen_step.ignore_split())
+--   end
+-- <
+-- - Tweak 't' modifier to use highest indentation instead of keeping it:
+-- >
+--   require('mini.align').setup({
+--     t = function(steps, _)
+--       table.insert(steps.pre_justify, MiniAlign.gen_step.trim('both', 'high'))
+--     end
+--   })
+-- <
+-- - Tweak `j` modifier to cycle through available "justify_side" option
+--   values (like in 'junegunn/vim-easy-align'):
+-- >
+--   require('mini.align').setup({
+--     modifiers = {
+--       j = function(_, opts)
+--         local next_option = ({
+--           left = 'center', center = 'right', right = 'none', none = 'left',
+--         })[opts.justify_side]
+--         opts.justify_side = next_option or 'left'
+--       end,
+--     },
+--   })

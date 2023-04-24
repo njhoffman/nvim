@@ -3,16 +3,17 @@
 -- local render = require("plugs.config.nvim-notify-render")
 
 local baseConfig = {
+
   level = vim.log.levels.DEBUG,
   -- level = 0,
   fps = 30,
-  render = "default",
+  render = 'default',
   -- render = "compact",
-  stages = "fade_in_slide_out",
+  stages = 'fade_in_slide_out',
   -- background_colour = "FloatShadow",
-  background_colour = "#000000",
+  background_colour = '#000000',
   -- Default timeout for notifications
-  timeout = 3000,
+  timeout = 4000,
   -- maximium_width = 90,
   minimum_width = 5,
   max_height = function()
@@ -22,18 +23,30 @@ local baseConfig = {
     return math.floor(vim.opt.columns:get() / 3 * 2)
   end,
   icons = {
-    ERROR = "",
-    WARN = "",
-    INFO = "",
-    DEBUG = "",
-    TRACE = "✎",
-    INSPECT = "",
-    TASK = "",
-    STATUS = "",
+    ERROR = '',
+    WARN = '',
+    INFO = '',
+    DEBUG = '',
+    TRACE = '✎',
+    INSPECT = '',
+    TASK = '',
+    STATUS = '',
   },
+  on_open = function(win)
+    vim.api.nvim_win_set_option(win, 'winblend', 20)
+    vim.api.nvim_win_set_config(win, { zindex = 100 })
+  end,
 }
 
-require("notify").setup(baseConfig)
+-- local sub_on_open = opts.on_open
+--  opts.on_open = function(win)
+--    vim.api.nvim_win_set_option(win, "winblend", 20)
+--    vim.api.nvim_win_set_config(win, { zindex = 100 })
+--    if sub_on_open then
+--      sub_on_open(win)
+--    end
+--  end
+require('notify').setup(baseConfig)
 
 -- You can also use plenary's async library to avoid using callbacks:
 -- local async = require("plenary.async")

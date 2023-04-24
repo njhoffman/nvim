@@ -3,7 +3,7 @@
 --- The File sink class.
 -- @type File
 local File = {}
-local KeyValue = require("structlog.formatters.key_value")
+local KeyValue = require('structlog.formatters.key_value')
 
 --- Create a new file writer.
 -- @function File
@@ -36,10 +36,10 @@ function File:new(level, path, opts)
 end
 
 function File:write(entry)
-  local fp = assert(self.iolib.open(self.path, "a"))
+  local fp = assert(self.iolib.open(self.path, 'a'))
 
   fp:write(entry.msg)
-  fp:write("\n")
+  fp:write('\n')
   fp:close()
 end
 

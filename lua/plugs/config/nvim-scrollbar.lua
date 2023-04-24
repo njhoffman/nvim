@@ -7,128 +7,128 @@ local default_opts = {
   hide_if_all_visible = false, -- Hides everything if all lines are visible
   throttle_ms = 100,
   handle = {
-    text = " ",
+    text = ' ',
     color = nil,
     color_nr = nil, -- cterm
-    highlight = "CursorColumn",
+    highlight = 'CursorColumn',
     hide_if_all_visible = true, -- Hides handle if all lines are visible
   },
   marks = {
     Cursor = {
-      text = "•",
+      text = '•',
       priority = 0,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = "Normal",
+      highlight = 'Normal',
     },
     Search = {
-      text = { "-", "=" },
+      text = { '-', '=' },
       priority = 1,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = "Search",
+      highlight = 'Search',
     },
     Error = {
-      text = { "-", "=" },
+      text = { '-', '=' },
       priority = 2,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = "DiagnosticVirtualTextError",
+      highlight = 'DiagnosticVirtualTextError',
     },
     Warn = {
-      text = { "-", "=" },
+      text = { '-', '=' },
       priority = 3,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = "DiagnosticVirtualTextWarn",
+      highlight = 'DiagnosticVirtualTextWarn',
     },
     Info = {
-      text = { "-", "=" },
+      text = { '-', '=' },
       priority = 4,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = "DiagnosticVirtualTextInfo",
+      highlight = 'DiagnosticVirtualTextInfo',
     },
     Hint = {
-      text = { "-", "=" },
+      text = { '-', '=' },
       priority = 5,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = "DiagnosticVirtualTextHint",
+      highlight = 'DiagnosticVirtualTextHint',
     },
     Misc = {
-      text = { "-", "=" },
+      text = { '-', '=' },
       priority = 6,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = "Normal",
+      highlight = 'Normal',
     },
     GitAdd = {
-      text = "┆",
+      text = '┆',
       priority = 7,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = "GitSignsAdd",
+      highlight = 'GitSignsAdd',
     },
     GitChange = {
-      text = "┆",
+      text = '┆',
       priority = 7,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = "GitSignsChange",
+      highlight = 'GitSignsChange',
     },
     GitDelete = {
-      text = "▁",
+      text = '▁',
       priority = 7,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = "GitSignsDelete",
+      highlight = 'GitSignsDelete',
     },
   },
   excluded_buftypes = {
-    "terminal",
+    'terminal',
   },
   excluded_filetypes = {
-    "prompt",
-    "TelescopePrompt",
-    "noice",
+    'prompt',
+    'TelescopePrompt',
+    'noice',
   },
   autocmd = {
     render = {
-      "BufWinEnter",
-      "TabEnter",
-      "TermEnter",
-      "WinEnter",
-      "CmdwinLeave",
-      "TextChanged",
-      "VimResized",
-      "WinScrolled",
+      'BufWinEnter',
+      'TabEnter',
+      'TermEnter',
+      'WinEnter',
+      'CmdwinLeave',
+      'TextChanged',
+      'VimResized',
+      'WinScrolled',
     },
     clear = {
-      "BufWinLeave",
-      "TabLeave",
-      "TermLeave",
-      "WinLeave",
+      'BufWinLeave',
+      'TabLeave',
+      'TermLeave',
+      'WinLeave',
     },
   },
   handlers = {
@@ -143,25 +143,51 @@ local default_opts = {
 
 local opts = {
   show = true,
+  show_in_active_only = false,
   handle = {
-    text = " ",
-    color = "#223355",
+    text = ' ',
+    color = '#223355',
     hide_if_all_visible = true, -- Hides handle if all lines are visible
+  },
+  autocmd = {
+    render = {
+      'BufWinEnter',
+      'TabEnter',
+      'TermEnter',
+      'WinEnter',
+      'CmdwinLeave',
+      'TextChanged',
+      'VimResized',
+      'WinScrolled',
+      'User',
+    },
+    clear = {
+      'BufWinLeave',
+      'TabLeave',
+      'TermLeave',
+      'WinLeave',
+    },
+  },
+  excluded_filetypes = {
+    -- 'prompt',
+    -- "TelescopePrompt",
+    'noice',
   },
   marks = {
     Cursor = {
-      text = " ",
+      text = ' ',
     },
-    Search = { text = { "-", "=" }, priority = 0, color = "orange" },
-    Error = { text = { "-", "=" }, priority = 1, color = "#770000" },
-    Warn = { text = { "-", "=" }, priority = 2, color = "#774400" },
-    Info = { text = { "-", "=" }, priority = 3, color = "#004499" },
-    Hint = { text = { "-", "=" }, priority = 4, color = "green" },
-    Misc = { text = { "-", "=" }, priority = 5, color = "purple" },
+    Search = { text = { '-', '=' }, priority = 0, color = 'orange' },
+    Error = { text = { '-', '=' }, priority = 1, color = '#770000' },
+    Warn = { text = { '-', '=' }, priority = 2, color = '#774400' },
+    Info = { text = { '-', '=' }, priority = 3, color = '#004499' },
+    Hint = { text = { '-', '=' }, priority = 4, color = 'green' },
+    Misc = { text = { '-', '=' }, priority = 5, color = 'purple' },
   },
   handlers = {
+    cursor = true,
     diagnostic = true,
     search = true, -- Requires hlslens to be loaded
   },
 }
-require("scrollbar").setup(opts)
+require('scrollbar').setup(opts)

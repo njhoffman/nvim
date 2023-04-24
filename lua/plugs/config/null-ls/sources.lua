@@ -72,62 +72,11 @@ M.sources = {
     command = 'proselint',
     args = { '--json' },
   }),
-  -- formatting
-  {
-    name = 'no-todo',
-    method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-    -- stylua: ignore start
-    filetypes = {
-      'go',
-      'py',
-      'lua',
-      'sh',
-      'java',
-      'js',
-      'ts',
-      'tsx',
-      'jsx',
-      'html',
-      'css',
-      'scss',
-      'json',
-      'yaml',
-      'toml',
-    },
-    generator = {
-      fn = function(params)
-        local diag = {}
-        -- sources have access to a params object
-        -- containing info about the current file and editor state
-        for i, line in ipairs(params.content) do
-          if line then
-            local f = vim.fn.matchstrpos(line, '\\v(todo)|(fixme)|(xxx)|(\\<fix\\>)|(hack)')
-            local col, end_col = f[2], f[3]
-            if col and end_col >= 0 and not line:find('context') then
-              -- lprint('found', col, end_col)
-              -- null-ls fills in undefined positions
-              -- and converts source diagnostics into the required format
-              table.insert(diag, {
-                row = i,
-                col = col,
-                end_col = end_col + 1,
-                source = 'no-todo',
-                message = 'just do it',
-                severity = vim.diagnostic.severity.INFO,
-              })
-            end
-          end
-        end
-        return diag
-      end,
-    },
-  },
-
   -- Diagnostics
   null_ls.builtins.diagnostics.actionlint,
   null_ls.builtins.diagnostics.ansiblelint,
   null_ls.builtins.diagnostics.checkmake,
-  null_ls.builtins.diagnostics.clang_check,
+  -- null_ls.builtins.diagnostics.clang_check,
   null_ls.builtins.diagnostics.dotenv_linter,
   null_ls.builtins.diagnostics.editorconfig_checker,
   null_ls.builtins.diagnostics.hadolint,
@@ -136,7 +85,7 @@ M.sources = {
   null_ls.builtins.diagnostics.golangci_lint,
   null_ls.builtins.diagnostics.gospel,
   null_ls.builtins.diagnostics.jsonlint,
-  null_ls.builtins.diagnostics.luacheck,
+  -- null_ls.builtins.diagnostics.luacheck,
   null_ls.builtins.diagnostics.markdownlint,
   -- null_ls.builtins.diagnostics.markuplint,
   -- null_ls.builtins.diagnostics.mdl,
@@ -146,7 +95,7 @@ M.sources = {
     extra_filetypes = { 'txt', 'text', 'org' },
     command = 'proselint',
   }),
-  null_ls.builtins.diagnostics.puppet_lint,
+  -- null_ls.builtins.diagnostics.puppet_lint,
   null_ls.builtins.diagnostics.revive,
   null_ls.builtins.diagnostics.rubocop,
   null_ls.builtins.diagnostics.shellcheck.with({
@@ -164,12 +113,12 @@ M.sources = {
   null_ls.builtins.diagnostics.sqlfluff,
   null_ls.builtins.diagnostics.standardrb,
   null_ls.builtins.diagnostics.staticcheck,
-  null_ls.builtins.diagnostics.tidy,
-  null_ls.builtins.diagnostics.selene,
+  -- null_ls.builtins.diagnostics.tidy,
+  -- null_ls.builtins.diagnostics.selene,
   null_ls.builtins.diagnostics.stylelint,
   null_ls.builtins.diagnostics.terraform_validate,
   null_ls.builtins.diagnostics.tfsec,
-  -- null_ls.builtins.diagnostics.todo_comments,
+  null_ls.builtins.diagnostics.todo_comments,
   null_ls.builtins.diagnostics.trail_space.with({
     -- for 'mail' it's just annoying
     disabled_filetypes = { 'dirbuf', 'gitcommit', 'lua', 'markdown', 'mail' },
@@ -202,14 +151,14 @@ M.sources = {
   null_ls.builtins.formatting.goimports,
   null_ls.builtins.formatting.golines,
   null_ls.builtins.formatting.jq,
-  null_ls.builtins.formatting.lua_format,
+  -- null_ls.builtins.formatting.lua_format,
   null_ls.builtins.formatting.isort.with({ extra_args = { '--profile', 'black' } }),
   null_ls.builtins.formatting.markdownlint,
   null_ls.builtins.formatting.markdown_toc,
   -- null_ls.builtins.formatting.mdformat,
   -- null_ls.builtins.formatting.nginx_beautifier,
   -- null_ls.builtins.formatting.pg_format,
-  null_ls.builtins.formatting.prettier_eslint,
+  -- null_ls.builtins.formatting.prettier_eslint,
   null_ls.builtins.formatting.prettier.with({
     filetypes = { 'css', 'html', 'less', 'scss', 'toml', 'yaml' },
     extra_args = function(params)
@@ -221,7 +170,7 @@ M.sources = {
       }
     end,
   }),
-  null_ls.builtins.formatting.puppet_lint,
+  -- null_ls.builtins.formatting.puppet_lint,
   null_ls.builtins.formatting.shellharden.with({ filetypes = { 'sh', 'bash' } }),
   null_ls.builtins.formatting.shfmt.with({
     filetypes = { 'sh', 'bash' },
@@ -238,7 +187,7 @@ M.sources = {
     end,
   }),
   null_ls.builtins.formatting.sqlfluff,
-  null_ls.builtins.formatting.sqlfmt,
+  -- null_ls.builtins.formatting.sqlfmt,
   null_ls.builtins.formatting.standardrb,
   -- null_ls.builtins.formatting.standardts,
   null_ls.builtins.formatting.stylelint,
@@ -261,7 +210,7 @@ M.sources = {
   -- null_ls.builtins.formatting.rubyfmt,
   -- null_ls.builtins.formatting.terrafmt,
   -- null_ls.builtins.formatting.terraform_fmt,
-  null_ls.builtins.formatting.tidy,
+  -- null_ls.builtins.formatting.tidy,
   null_ls.builtins.formatting.trim_newlines,
   null_ls.builtins.formatting.trim_whitespace, -- only works for ff=unix
   null_ls.builtins.formatting.xmlformat,

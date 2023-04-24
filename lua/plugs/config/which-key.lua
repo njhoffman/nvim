@@ -17,16 +17,16 @@ local default_config = {
   popup_mappings = {
     -- scroll_down = '<c-f>', -- binding to scroll down inside the popup
     -- scroll_up = '<c-b>', -- binding to scroll up inside the popup
-    scroll_down = "j", -- binding to scroll down inside the popup
-    scroll_up = "k", -- binding to scroll up inside the popup
+    scroll_down = 'j', -- binding to scroll down inside the popup
+    scroll_up = 'k', -- binding to scroll up inside the popup
   },
-  hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "^:", "^ ", "^call ", "^lua " }, -- hide mapping boilerplate
+  hidden = { '<silent>', '<cmd>', '<Cmd>', '<CR>', '^:', '^ ', '^call ', '^lua ' }, -- hide mapping boilerplate
   key_labels = {
     -- override the label used to display some keys. It doesn't effect WK in any other way.
     -- For example:
-    ["<space>"] = "SPC",
-    ["<cr>"] = "RET",
-    ["<tab>"] = "TAB",
+    ['<space>'] = 'SPC',
+    ['<cr>'] = 'RET',
+    ['<tab>'] = 'TAB',
   },
   motions = {
     count = true,
@@ -37,16 +37,16 @@ local default_config = {
 
   --   hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ "}, -- hide mapping boilerplate
   --   show_help = true, -- show help message on the command line when the popup is visible
-  operators = { gc = "Comments" },
+  operators = { gc = 'Comments' },
   icons = {
-    breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
-    separator = "➜", -- symbol used between a key and it's label
-    group = "+", -- symbol prepended to a group
+    breadcrumb = '»', -- symbol used in the command line area that shows your active key combo
+    separator = '➜', -- symbol used between a key and it's label
+    group = '+', -- symbol prepended to a group
   },
   window = {
     winblend = 30,
-    border = "rounded", -- none, single, double, shadow
-    position = "bottom", -- bottom, top
+    border = 'rounded', -- none, single, double, shadow
+    position = 'bottom', -- bottom, top
     margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
     padding = { 1, 0, 1, 0 }, -- extra window padding [top, right, bottom, left]
   },
@@ -54,10 +54,10 @@ local default_config = {
     height = { min = 4, max = 15 }, -- min and max height of the columns
     width = { min = 25, max = 40 }, -- min and max width of the columns
     spacing = 3, -- spacing between columns
-    align = "center", -- left, center, right
+    align = 'center', -- left, center, right
   },
   show_help = true, -- show help message on the command line when the popup is visible
-  triggers = "auto", -- automatically setup triggers
+  triggers = 'auto', -- automatically setup triggers
   -- triggers = {"<leader>"} -- or specifiy a list manually
   spelling = {
     enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
@@ -69,8 +69,8 @@ local default_config = {
     -- most people should not need to change this
     -- c = { ";", ":", "%" },
     -- n = { ">", "<", "@", "x" },
-    i = { "j", "k" },
-    v = { "j", "k" },
+    i = { 'j', 'k' },
+    v = { 'j', 'k' },
     -- prefix = { "<leader>" },
   },
 }
@@ -82,17 +82,22 @@ local config = {
   ignore_missing = false,
   -- autokey replacements
   key_labels = {
-    ["<space>"] = "SPC",
-    ["<cr>"] = "RET",
-    ["<tab>"] = "TAB",
-    ["<M-g>"] = "<C-g>",
-    ["<M-G>"] = "<C-G>",
+    ['<space>'] = 'SPC',
+    ['<cr>'] = 'RET',
+    ['<tab>'] = 'TAB',
+    ['<M-g>'] = '<C-g>',
+    ['<M-G>'] = '<C-G>',
+  },
+  hidden = { '<silent>', '<cmd>', '<Cmd>', '<CR>', '^:', '^ ', '^call ', '^lua ' }, -- hide mapping boilerplate
+  popup_mappings = {
+    scroll_down = '<c-f>', -- binding to scroll down inside the popup
+    scroll_up = '<c-b>', -- binding to scroll up inside the popup
   },
   window = {
     winblend = 20,
     -- border = "rounded", -- none, single, double, shadow
-    border = { "╭", "─", "╮", "│", "│", "_", "│", "│" },
-    position = "bottom", -- bottom, top
+    border = { '╭', '─', '╮', '│', '│', '_', '│', '│' },
+    position = 'bottom', -- bottom, top
     margin = { 1, 10, 1, 10 }, -- extra window margin [top, right, bottom, left]
     padding = { 0, 0, 0, 0 }, -- extra window padding [top, right, bottom, left]
   },
@@ -103,7 +108,7 @@ local config = {
       max = 40,
     }, -- min and max width of the columns
     spacing = 3, -- spacing between columns
-    align = "center", -- left, center, right
+    align = 'center', -- left, center, right
   },
 }
 
@@ -112,28 +117,28 @@ local alt_config = {
     height = { min = 10, max = 40 }, -- min and max height of the columns
     width = { min = 20, max = 40 }, -- min and max width of the columns
     spacing = 1, -- spacing between columns
-    align = "right", -- left, center, right
+    align = 'right', -- left, center, right
   },
   window = {
     winblend = 20,
     margin = { 5, 70, 5, 5 }, -- extra window margin [top, right, bottom, left]
     padding = { 0, 0, 0, 0 }, -- extra window padding [top, right, bottom, left]
-    border = "rounded", -- none, single, double, shadow
-    position = "top", -- bottom, top
+    border = 'rounded', -- none, single, double, shadow
+    position = 'top', -- bottom, top
   },
 }
 
-require("which-key").setup(config)
+require('which-key').setup(config)
 -- :WhichKey " show all mappings
 -- :WhichKey <leader> " show all <leader> mappings
 -- :WhichKey <leader> v " show all <leader> mappings for VISUAL mode
 -- :WhichKey '' v " show ALL mappings for VISUAL mode
 
 ---PATCH from https://github.com/folke/which-key.nvim/pull/305
-local wk_view = require("which-key.view")
+local wk_view = require('which-key.view')
 wk_view.hide = function()
-  vim.api.nvim_echo({ { "" } }, false, {})
-  vim.cmd("redraw")
+  vim.api.nvim_echo({ { '' } }, false, {})
+  vim.cmd('redraw')
   wk_view.hide_cursor()
   if wk_view.buf and vim.api.nvim_buf_is_valid(wk_view.buf) then
     vim.api.nvim_buf_delete(wk_view.buf, { force = true })

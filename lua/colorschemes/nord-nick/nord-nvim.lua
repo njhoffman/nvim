@@ -3,13 +3,13 @@
 
 -- https://github.com/kunzaatko/nord.nvim
 -- https://github.com/shaunsingh/nord.nvim
-local lush = require("lush")
+local lush = require('lush')
 local hsl = lush.hsl
 local v = vim.g -- this must be done, because lush is executed in a bare environment
 
 v.nord_uniform_diff_background = 0
 v.nord_underline = 0
-v.colors_name = "nord-nvim"
+v.colors_name = 'nord-nvim'
 
 local clrs = {
   nord0 = hsl(220, 16, 22), -- #2F3541
@@ -21,22 +21,22 @@ local clrs = {
   nord5 = hsl(218, 27, 92), -- #E5E9F0
   nord6 = hsl(218, 27, 94), -- #ECEFF4
   -- nord7 = hsl(179, 25, 65), -- #8FBCBB
-  nord7 = "#6f9cbb",
+  nord7 = '#6f9cbb',
   nord8 = hsl(193, 43, 67), -- #87BFCF
   nord9 = hsl(210, 34, 63), -- #81A1C1
   nord10 = hsl(213, 32, 52), -- #5D81AC
   nord11 = hsl(354, 42, 56), -- #BE6069
   nord12 = hsl(14, 51, 63), -- #D18771
   nord13 = hsl(20, 10, 55), -- #EBCA89
-  nord14 = "#22BB99",
+  nord14 = '#22BB99',
   -- nord15 = hsl(311, 20, 63), -- #B48EAD
-  nord15 = "#646EAD",
-  nord16 = "#56a9b3",
-  none = "NONE",
-  highlight = "#1F2233",
-  disabled = "#464B5D",
-  accent = "#84FFFF",
-  error = "#BE6069",
+  nord15 = '#646EAD',
+  nord16 = '#56a9b3',
+  none = 'NONE',
+  highlight = '#1F2233',
+  disabled = '#464B5D',
+  accent = '#84FFFF',
+  error = '#BE6069',
 }
 
 local nord3_brightened = {
@@ -75,22 +75,22 @@ local cfg = {
 }
 
 local spec = {
-  bold = cfg.nord_bold == 1 and "bold" or "",
-  italic = cfg.nord_italic == 1 and "italic" or "",
+  bold = cfg.nord_bold == 1 and 'bold' or '',
+  italic = cfg.nord_italic == 1 and 'italic' or '',
   -- underline = cfg.nord_underline == 1 and "underline" or "",
-  underline = cfg.nord_underline == 1 and "" or "",
-  inverse = "inverse",
-  undercurl = "undercurl",
+  underline = cfg.nord_underline == 1 and '' or '',
+  inverse = 'inverse',
+  undercurl = 'undercurl',
 }
-spec["italicize_comments"] = cfg.nord_italic_comments == 1 and spec.italic or ""
+spec['italicize_comments'] = cfg.nord_italic_comments == 1 and spec.italic or ''
 
 local gui_combine = function(gui)
   for i = 1, #gui do
-    if gui[i] == "" then
+    if gui[i] == '' then
       table.remove(gui, i)
     end
   end
-  return table.concat(gui, ",")
+  return table.concat(gui, ',')
 end
 
 local theme = lush(function()
@@ -101,7 +101,7 @@ local theme = lush(function()
     -- +-- Attributes --+
     Bold({ gui = spec.bold }),
     Italic({ gui = spec.italic }),
-    Underline({ gui = spec.underline }),
+    Underline({ gui = 'none' }),
     -- +-- Editor --+
     ColorColumn({ bg = clrs.nord1 }),
     Cursor({ fg = clrs.nord0, bg = clrs.nord4 }),
@@ -111,7 +111,7 @@ local theme = lush(function()
     LineNr({ fg = clrs.nord3 }),
     MatchParen({ fg = clrs.nord8, bg = clrs.nord3 }),
     NonText({ fg = clrs.nord2 }),
-    Normal({ fg = clrs.nord4.darken(30), bg = "none" }),
+    Normal({ fg = clrs.nord4.darken(30), bg = 'none' }),
     -- Normal({ fg = clrs.nord4, bg = clrs.nord0 }),
     -- Pmenu { fg = clrs.nord4, bg = clrs.nord0 },
     -- PmenuSel { fg = clrs.nord8, bg = clrs.nord3 },
@@ -146,7 +146,7 @@ local theme = lush(function()
     VisualNOS({ bg = clrs.nord2 }),
     -- +-- Gutter --+
     CursorColumn({ bg = clrs.nord1 }),
-    CursorIM({ fg = clrs.cursor, bg = "NONE", gui = "reverse" }), -- like Cursor, but used when in IME mode
+    CursorIM({ fg = clrs.cursor, bg = 'NONE', gui = 'reverse' }), -- like Cursor, but used when in IME mode
     CursorLineNr({
       fg = clrs.nord4,
       bg = cfg.nord_cursor_line_number_background == 1 and nil or clrs.nord1,
@@ -162,46 +162,46 @@ local theme = lush(function()
     ModeMsg({ fg = clrs.nord4 }),
     MoreMsg({ fg = clrs.nord8 }),
     Question({ fg = clrs.nord4 }),
-    StatusLine({ fg = clrs.nord8, bg = clrs.nord3, gui = "NONE" }),
+    StatusLine({ fg = clrs.nord8, bg = clrs.nord3, gui = 'NONE' }),
     StatusLineNC({
       fg = clrs.nord4,
       bg = cfg.nord_uniform_status_lines == 0 and clrs.nord1 or crls.nord3,
-      gui = "NONE",
+      gui = 'NONE',
     }),
-    StatusLineTerm({ fg = clrs.nord8, bg = clrs.nord3, gui = "NONE" }),
+    StatusLineTerm({ fg = clrs.nord8, bg = clrs.nord3, gui = 'NONE' }),
     StatusLineTermNC({
       fg = clrs.nord4,
       bg = cfg.nord_uniform_status_lines == 0 and clrs.nord1 or crls.nord3,
-      gui = "NONE",
+      gui = 'NONE',
     }),
     WildMenu({ fg = clrs.nord8, bg = clrs.nord1 }),
     -- +--- Search ---+
     IncSearch({ fg = clrs.nord6, bg = clrs.nord10, gui = spec.underline }),
-    Search({ fg = clrs.nord1, bg = clrs.nord8, gui = "NONE" }),
+    Search({ fg = clrs.nord1, bg = clrs.nord8, gui = 'NONE' }),
     -- +--- Tabs ---+
     -- TabLine({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
-    TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
+    TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = 'NONE' }),
     -- TabLineSel({ fg = clrs.nord8, bg = clrs.nord3, gui = "NONE" }),
     -- +--- Window ---+
     VertSplit({
       fg = clrs.nord2,
       bg = cfg.nord_bold_vertical_split_line == 0 and clrs.nord0 or clrs.nord1,
-      gui = "NONE",
+      gui = 'NONE',
     }),
     -- -- +--- Other ---+
-    CommandMode({ fg = clrs.gray, bg = "NONE", gui = "reverse" }),
-    InsertMode({ fg = clrs.nord14, bg = "NONE", gui = "reverse" }),
-    NormalMode({ fg = clrs.accent, bg = "NONE", gui = "reverse" }),
-    ReplacelMode({ fg = clrs.nord11, bg = "NONE", gui = "reverse" }),
-    VisualMode({ fg = clrs.nord9, bg = "NONE", gui = "reverse" }),
+    CommandMode({ fg = clrs.gray, bg = 'NONE', gui = 'reverse' }),
+    InsertMode({ fg = clrs.nord14, bg = 'NONE', gui = 'reverse' }),
+    NormalMode({ fg = clrs.accent, bg = 'NONE', gui = 'reverse' }),
+    ReplacelMode({ fg = clrs.nord11, bg = 'NONE', gui = 'reverse' }),
+    VisualMode({ fg = clrs.nord9, bg = 'NONE', gui = 'reverse' }),
     Debug({ fg = clrs.nord11 }), -- debugging statements
     Ignore({ fg = clrs.disabled }), -- left blank, hidden
-    QuickFixLine({ fg = clrs.highlight, bg = clrs.nord6, gui = "reverse" }),
-    ToolbarButton({ bg = "NONE", gui = "bold" }),
+    QuickFixLine({ fg = clrs.highlight, bg = clrs.nord6, gui = 'reverse' }),
+    ToolbarButton({ bg = 'NONE', gui = 'bold' }),
     healthError({ fg = clrs.error }),
     healthSuccess({ fg = clrs.nord14 }),
     healthWarning({ fg = clrs.nord15 }),
-    qfLineNr({ fg = clrs.highlight, bg = clrs.nord6, gui = "reverse" }),
+    qfLineNr({ fg = clrs.highlight, bg = clrs.nord6, gui = 'reverse' }),
     -- -- +----------------------+
     -- -- + Language Base Groups +
     -- -- +----------------------+
@@ -215,15 +215,15 @@ local theme = lush(function()
     Exception({ fg = clrs.nord9 }),
     Float({ fg = clrs.nord15 }),
     -- Function({ fg = clrs.nord8 }),
-    Function({ fg = "#988088" }),
+    Function({ fg = '#988088' }),
     -- Identifier({ fg = clrs.nord4, gui = "NONE" }),
-    Identifier({ fg = "#6e99c6" }),
+    Identifier({ fg = '#6e99c6' }),
     Include({ fg = clrs.nord9 }),
     Keyword({ fg = clrs.nord9 }),
     Label({ fg = clrs.nord9 }),
     Number({ fg = clrs.nord15 }),
-    Operator({ fg = clrs.nord9, gui = "NONE" }),
-    PreProc({ fg = "#4796bc" }),
+    Operator({ fg = clrs.nord9, gui = 'NONE' }),
+    PreProc({ fg = '#4796bc' }),
     -- PreProc({ fg = clrs.nord9, gui = "NONE" }),
     -- Repeat { fg = clrs.nord9 },
     Special({ fg = clrs.nord4 }),
@@ -234,7 +234,7 @@ local theme = lush(function()
     String({ fg = clrs.nord14 }),
     Structure({ fg = clrs.nord9 }),
     Tag({ fg = clrs.nord4 }),
-    Type({ fg = clrs.nord9, gui = "NONE" }),
+    Type({ fg = clrs.nord9, gui = 'NONE' }),
     Typedef({ fg = clrs.nord9 }),
     PreCondit({ PreProc }),
     Conceal({ bg = Normal.bg, fg = Normal.fg.ro(10) }),
@@ -286,7 +286,7 @@ local theme = lush(function()
     csType({ Type }),
     csXmlTag({ SpecialComment }),
     cssAttributeSelector({ fg = clrs.nord7 }),
-    cssDefinition({ fg = clrs.nord7, gui = "NONE" }),
+    cssDefinition({ fg = clrs.nord7, gui = 'NONE' }),
     cssIdentifier({ fg = clrs.nord7, gui = spec.underline }),
     cssStringQ({ fg = clrs.nord7 }),
     cssAttr({ Keyword }),
@@ -331,7 +331,7 @@ local theme = lush(function()
     goBuiltins({ fg = clrs.nord7 }),
     goConst({ Keyword }),
     helpBar({ fg = clrs.nord3 }),
-    helpHyperTextJump({ fg = clrs.nord8, gui = spec.underline }),
+    -- helpHyperTextJump({ fg = clrs.nord8, gui = spec.underline }),
     markdownBlockquote({ fg = clrs.nord7 }),
     markdownCode({ fg = clrs.nord7 }),
     markdownCodeBlock({ fg = clrs.nord7 }),
@@ -341,7 +341,7 @@ local theme = lush(function()
     markdownIdDeclaration({ fg = clrs.nord7 }),
     markdownH1({ fg = clrs.nord8 }),
     markdownLinkText({ fg = clrs.nord8 }),
-    markdownUrl({ fg = clrs.nord4, gui = "NONE" }),
+    markdownUrl({ fg = clrs.nord4, gui = 'NONE' }),
     markdownBold({ Bold }),
     markdownBoldDelimiter({ Keyword }),
     markdownFootnoteDefinition({ markdownFootnote }),
@@ -359,7 +359,7 @@ local theme = lush(function()
     markdownRule({ Keyword }),
     markdownHeadingDelimiter({ Keyword }),
     htmlArg({ fg = clrs.nord7 }),
-    htmlLink({ fg = clrs.nord4, gui = "NONE" }),
+    htmlLink({ fg = clrs.nord4, gui = 'NONE' }),
     htmlBold({ Bold }),
     htmlTag({ Keyword }),
     htmlEndTag({ htmlTag }),
@@ -372,8 +372,8 @@ local theme = lush(function()
     htmlH6({ markdownH1 }),
     htmlSpecialChar({ SpecialChar }),
     htmlTagN({ htmlTag }),
-    pandocReferenceURL({ gui = "none", gui = "none" }),
-    pandocUListItem({ gui = "none", gui = "none" }),
+    pandocReferenceURL({ gui = 'none', gui = 'none' }),
+    pandocUListItem({ gui = 'none', gui = 'none' }),
     javaDocTags({ fg = clrs.nord7 }),
     -- javaCommentTitle({ Comment }),
     javaScriptBraces({ Delimiter }),
@@ -474,17 +474,17 @@ local theme = lush(function()
     DashboardShortCut({ fg = clrs.nord7 }),
     DashboardHeader({ fg = clrs.nord9 }),
     DashboardCenter({ fg = clrs.nord8 }),
-    DashboardFooter({ fg = clrs.nord14, gui = "italic" }),
+    DashboardFooter({ fg = clrs.nord14, gui = 'italic' }),
     -- Nvim LSP
     -- > neovim/nvim-lsp
     DiagnosticWarn({ fg = clrs.nord13 }),
     DiagnosticError({ fg = clrs.nord11 }),
     DiagnosticInfo({ fg = clrs.nord8 }),
     DiagnosticHint({ fg = clrs.nord10 }),
-    DiagnosticUnderlineError({ fg = "none", gui = "none" }),
-    DiagnosticUnderlineWarn({ fg = "none", gui = "none" }),
-    DiagnosticUnderlineInfo({ fg = "none", gui = "none" }),
-    DiagnosticUnderlineHint({ fg = "none", gui = "none" }),
+    DiagnosticUnderlineError({ fg = 'none', gui = 'none' }),
+    DiagnosticUnderlineWarn({ fg = 'none', gui = 'none' }),
+    DiagnosticUnderlineInfo({ fg = 'none', gui = 'none' }),
+    DiagnosticUnderlineHint({ fg = 'none', gui = 'none' }),
     DiagnosticFloatingError({ fg = clrs.nord4 }),
     DiagnosticFloatingWarn({ fg = clrs.nord4 }),
     DiagnosticFloatingInfo({ fg = clrs.nord4 }),
@@ -571,7 +571,7 @@ local theme = lush(function()
     TelescopeSelection({ fg = clrs.nord9 }),
     TelescopeMatching({ fg = clrs.nord8 }),
     -- -- NvimTree
-    NvimTreeRootFolder({ fg = clrs.nord7, gui = "bold" }),
+    NvimTreeRootFolder({ fg = clrs.nord7, gui = 'bold' }),
     NvimTreeGitDirty({ fg = clrs.nord15 }),
     NvimTreeGitNew({ fg = clrs.nord14 }),
     NvimTreeImageFile({ fg = clrs.nord15 }),
@@ -604,11 +604,11 @@ local theme = lush(function()
     -- TargetWord({ fg = clrs.nord8 }),
     -- --
     -- used for highlighting "text" references
-    LspReferenceText({ gui = "underline", fg = clrs.nord14 }),
+    LspReferenceText({ gui = 'underline', fg = clrs.nord14 }),
     -- used for highlighting "read" references
-    LspReferenceRead({ gui = "underline", fg = clrs.nord14 }),
+    LspReferenceRead({ gui = 'underline', fg = clrs.nord14 }),
     -- used for highlighting "write" references
-    LspReferenceWrite({ gui = "underline", fg = clrs.nord14 }),
+    LspReferenceWrite({ gui = 'underline', fg = clrs.nord14 }),
     -- +--- Languages ---+
     -- Haskell
     -- > neovimhaskell/haskell-vim
