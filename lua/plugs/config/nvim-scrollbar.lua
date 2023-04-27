@@ -186,7 +186,7 @@ local opts = {
   },
   handlers = {
     cursor = true,
-    diagnostic = true,
+    diagnostic = false,
     search = true, -- Requires hlslens to be loaded
   },
 }

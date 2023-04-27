@@ -1,7 +1,7 @@
-local finders = require("telescope.finders")
-local display = require("project_nvim.display")
+local finders = require('telescope.finders')
+local display = require('project_nvim.display')
 
-local entry_display = require("telescope.pickers.entry_display")
+local entry_display = require('telescope.pickers.entry_display')
 
 local create = function(projects)
   local display_items = {
@@ -20,15 +20,15 @@ local create = function(projects)
     update_width(4, #result.display_path)
   end
   local displayer = entry_display.create({
-    separator = " ",
+    separator = ' ',
     items = display_items,
   })
   local function make_display(entry)
     return displayer({
       { entry.icon[1], entry.icon[2] },
-      { entry.name, "TelescopeProjectName" },
+      { entry.name, 'TelescopeProjectName' },
       { entry.group, entry.group_highlight },
-      { entry.path, "TelescopeProjectPath" },
+      { entry.path, 'TelescopeProjectPath' },
     })
   end
 
@@ -42,7 +42,7 @@ local create = function(projects)
         icon = entry.icon,
         group = entry.display_group,
         path = entry.display_path,
-        ordinal = entry.name .. " " .. entry.path,
+        ordinal = entry.name .. ' ' .. entry.path,
       }
     end,
   })

@@ -1,8 +1,8 @@
-local devicons = require("nvim-web-devicons")
+local devicons = require('nvim-web-devicons')
 local get_by_ft = devicons.get_icon_by_filetype
 
 local get_by_ext = function(ext)
-  return devicons.get_icon("", ext)
+  return devicons.get_icon('', ext)
 end
 
 local get_icon = function(method, lsp)
@@ -23,6 +23,7 @@ local get_icon = function(method, lsp)
     html =             { get_by_ft("html") },
     jsonls =           { get_by_ft("json") },
     lua_ls =           { get_by_ft("lua") },
+    pyright =          { get_by_ft("python") },
     pylsp =            { get_by_ft("python") },
     sqls =             { get_by_ft("sql") },
     stylelint_lsp =    { get_by_ft("scss") },
@@ -32,15 +33,15 @@ local get_icon = function(method, lsp)
     vimls =            { get_by_ft("vim") },
   }
 
-  local icon = { " ", "DevIconDart" }
-  if method == ".git" then
+  local icon = { ' ', 'DevIconDart' }
+  if method == '.git' then
     -- icon = get_by_ft('git')
-    icon = { " ", "GitLogo" }
-  elseif type(lsp) == "string" and lsp ~= "" then
-    if type(icon_map[lsp][1]) == "string" then
+    icon = { ' ', 'GitLogo' }
+  elseif type(lsp) == 'string' and lsp ~= '' then
+    if type(icon_map) == 'table' and type(icon_map[lsp]) == 'table' and type(icon_map[lsp][1]) == 'string' then
       icon = icon_map[lsp]
     else
-      vim.notify("no matching icon found: " .. lsp, 4)
+      vim.notify('no matching icon found: ' .. lsp, 4)
     end
   end
   return icon[1], icon[2]

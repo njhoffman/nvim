@@ -1,7 +1,7 @@
 local default = {
   -- Priority list of preferred backends for aerial.
   -- This can be a filetype map (see :help aerial-filetype-map)
-  backends = { "treesitter", "lsp", "markdown", "man" },
+  backends = { 'treesitter', 'lsp', 'markdown', 'man' },
 
   layout = {
     -- These control the width of the aerial window.
@@ -19,12 +19,12 @@ local default = {
     -- options will open the window in the other direction *if* there is a
     -- different buffer in the way of the preferred direction
     -- Enum: prefer_right, prefer_left, right, left, float
-    default_direction = "prefer_right",
+    default_direction = 'prefer_right',
 
     -- Determines where the aerial window will be opened
     --   edge   - open aerial at the far right/left of the editor
     --   window - open aerial to the right/left of the current window
-    placement = "window",
+    placement = 'window',
 
     -- Preserve window size equality with (:help CTRL-W_=)
     preserve_equality = false,
@@ -33,7 +33,7 @@ local default = {
   -- Determines how the aerial window decides which buffer to display symbols for
   --   window - aerial window will display symbols for the buffer in the window from which it was opened
   --   global - aerial window will display symbols for the current window
-  attach_mode = "window",
+  attach_mode = 'window',
 
   -- List of enum values that configure when to autd-close the aerial window
   --   unfocus       - close aerial when you leave the original source window
@@ -47,38 +47,38 @@ local default = {
   -- it will use the mapping at require("aerial.actions").<name>
   -- Set to `false` to remove a keymap
   keymaps = {
-    ["?"] = "actions.show_help",
-    ["g?"] = "actions.show_help",
-    ["<CR>"] = "actions.jump",
-    ["<2-LeftMouse>"] = "actions.jump",
-    ["<C-v>"] = "actions.jump_vsplit",
-    ["<C-s>"] = "actions.jump_split",
-    ["p"] = "actions.scroll",
-    ["<C-j>"] = "actions.down_and_scroll",
-    ["<C-k>"] = "actions.up_and_scroll",
-    ["{"] = "actions.prev",
-    ["}"] = "actions.next",
-    ["[["] = "actions.prev_up",
-    ["]]"] = "actions.next_up",
-    ["q"] = "actions.close",
-    ["o"] = "actions.tree_toggle",
-    ["za"] = "actions.tree_toggle",
-    ["O"] = "actions.tree_toggle_recursive",
-    ["zA"] = "actions.tree_toggle_recursive",
-    ["l"] = "actions.tree_open",
-    ["zo"] = "actions.tree_open",
-    ["L"] = "actions.tree_open_recursive",
-    ["zO"] = "actions.tree_open_recursive",
-    ["h"] = "actions.tree_close",
-    ["zc"] = "actions.tree_close",
-    ["H"] = "actions.tree_close_recursive",
-    ["zC"] = "actions.tree_close_recursive",
-    ["zr"] = "actions.tree_increase_fold_level",
-    ["zR"] = "actions.tree_open_all",
-    ["zm"] = "actions.tree_decrease_fold_level",
-    ["zM"] = "actions.tree_close_all",
-    ["zx"] = "actions.tree_sync_folds",
-    ["zX"] = "actions.tree_sync_folds",
+    ['?'] = 'actions.show_help',
+    ['g?'] = 'actions.show_help',
+    ['<CR>'] = 'actions.jump',
+    ['<2-LeftMouse>'] = 'actions.jump',
+    ['<C-v>'] = 'actions.jump_vsplit',
+    ['<C-s>'] = 'actions.jump_split',
+    ['p'] = 'actions.scroll',
+    ['<C-j>'] = 'actions.down_and_scroll',
+    ['<C-k>'] = 'actions.up_and_scroll',
+    ['{'] = 'actions.prev',
+    ['}'] = 'actions.next',
+    ['[['] = 'actions.prev_up',
+    [']]'] = 'actions.next_up',
+    ['q'] = 'actions.close',
+    ['o'] = 'actions.tree_toggle',
+    ['za'] = 'actions.tree_toggle',
+    ['O'] = 'actions.tree_toggle_recursive',
+    ['zA'] = 'actions.tree_toggle_recursive',
+    ['l'] = 'actions.tree_open',
+    ['zo'] = 'actions.tree_open',
+    ['L'] = 'actions.tree_open_recursive',
+    ['zO'] = 'actions.tree_open_recursive',
+    ['h'] = 'actions.tree_close',
+    ['zc'] = 'actions.tree_close',
+    ['H'] = 'actions.tree_close_recursive',
+    ['zC'] = 'actions.tree_close_recursive',
+    ['zr'] = 'actions.tree_increase_fold_level',
+    ['zR'] = 'actions.tree_open_all',
+    ['zm'] = 'actions.tree_decrease_fold_level',
+    ['zM'] = 'actions.tree_close_all',
+    ['zx'] = 'actions.tree_sync_folds',
+    ['zX'] = 'actions.tree_sync_folds',
   },
 
   -- When true, don't load aerial until a command or function is called
@@ -94,14 +94,14 @@ local default = {
   -- This can be a filetype map (see :help aerial-filetype-map)
   -- To see all available values, see :help SymbolKind
   filter_kind = {
-    "Class",
-    "Constructor",
-    "Enum",
-    "Function",
-    "Interface",
-    "Module",
-    "Method",
-    "Struct",
+    'Class',
+    'Constructor',
+    'Enum',
+    'Function',
+    'Interface',
+    'Module',
+    'Method',
+    'Struct',
   },
 
   -- Determines line highlighting mode when multiple splits are visible.
@@ -113,7 +113,7 @@ local default = {
   -- last          Only the most-recently focused window will have its location
   --               marked in the aerial buffer.
   -- none          Do not show the cursor locations in the aerial window.
-  highlight_mode = "split_width",
+  highlight_mode = 'split_width',
 
   -- Highlight the closest symbol if the cursor is not exactly on one.
   highlight_closest = true,
@@ -151,7 +151,7 @@ local default = {
     -- function     - A function that returns true if the buffer should be
     --                ignored or false if it should not be ignored.
     --                Takes two arguments, `bufnr` and `buftype`.
-    buftypes = "special",
+    buftypes = 'special',
 
     -- Ignored wintypes.
     -- Can be one of the following:
@@ -162,7 +162,7 @@ local default = {
     -- function     - A function that returns true if the window should be
     --                ignored or false if it should not be ignored.
     --                Takes two arguments, `winid` and `wintype`.
-    wintypes = "special",
+    wintypes = 'special',
   },
 
   -- Use symbol tree for folding. Set to true or false to enable/disable
@@ -180,7 +180,7 @@ local default = {
 
   -- Set default symbol icons to use patched font icons (see https://www.nerdfonts.com/)
   -- "auto" will set it to true if nvim-web-devicons or lspkind-nvim is installed.
-  nerd_font = "auto",
+  nerd_font = 'auto',
 
   -- Call this function when aerial attaches to a buffer.
   on_attach = function(bufnr) end,
@@ -193,7 +193,7 @@ local default = {
   open_automatic = false,
 
   -- Run this command after jumping to a symbol (false will disable)
-  post_jump_cmd = "normal! zz",
+  post_jump_cmd = 'normal! zz',
 
   -- Invoked after each symbol is parsed, can be used to modify the parsed item,
   -- or to filter it by returning false.
@@ -230,7 +230,7 @@ local default = {
   close_on_select = false,
 
   -- The autocmds that trigger symbols update (not used for LSP backend)
-  update_events = "TextChanged,InsertLeave",
+  update_events = 'TextChanged,InsertLeave',
 
   -- Show box drawing characters for the tree hierarchy
   show_guides = false,
@@ -238,13 +238,13 @@ local default = {
   -- Customize the characters used when show_guides = true
   guides = {
     -- When the child item has a sibling below it
-    mid_item = "├─",
+    mid_item = '├─',
     -- When the child item is the last in the list
-    last_item = "└─",
+    last_item = '└─',
     -- When there are nested child guides to the right
-    nested_top = "│ ",
+    nested_top = '│ ',
     -- Raw indentation
-    whitespace = "  ",
+    whitespace = '  ',
   },
 
   -- Set this function to override the highlight groups for certain symbols
@@ -255,13 +255,13 @@ local default = {
   -- Options for opening aerial in a floating win
   float = {
     -- Controls border appearance. Passed to nvim_open_win
-    border = "rounded",
+    border = 'rounded',
 
     -- Determines location of floating window
     --   cursor - Opens float on top of the cursor
     --   editor - Opens float centered in the editor
     --   win    - Opens float centered in the window
-    relative = "cursor",
+    relative = 'cursor',
 
     -- These control the height of the floating window.
     -- They can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
@@ -321,10 +321,10 @@ local cfg = {
     max_width = { 40, 0.3 },
     width = nil,
     min_width = 30,
-    default_direction = "prefer_right",
+    default_direction = 'prefer_right',
     preserve_equality = false,
   },
-  highlight_mode = "full_width",
+  highlight_mode = 'full_width',
   -- Highlight the closest symbol if the cursor is not exactly on one.
   highlight_closest = true,
   -- Highlight the symbol in the source buffer when cursor is in the aerial win
@@ -334,9 +334,9 @@ local cfg = {
   highlight_on_jump = 500,
   backends = {
     -- ["_"] = { "lsp", "treesitter", "markdown", "man" },
-    ["_"] = { "lsp", "treesitter", "markdown", "man" },
-    man = { "man" },
-    markdown = { "markdown" },
+    ['_'] = { 'lsp', 'treesitter', 'markdown', 'man' },
+    man = { 'man' },
+    markdown = { 'markdown' },
   },
   -- stylua: ignore
   icons = {
@@ -375,8 +375,8 @@ local cfg = {
   },
   nerd_font = true,
   float = {
-    border = "rounded",
-    relative = "win",
+    border = 'rounded',
+    relative = 'win',
     max_height = 0.9,
     height = nil,
     min_height = { 8, 0.1 },
@@ -384,25 +384,25 @@ local cfg = {
 
   filter_kind = {
     -- "Array",
-    "Class",
-    "Constructor",
-    "Constant",
-    "Enum",
-    "Function",
-    "Interface",
-    "Module",
-    "Method",
-    "Namespace",
-    "Object",
+    'Class',
+    'Constructor',
+    'Constant',
+    'Enum',
+    'Function',
+    'Interface',
+    'Module',
+    'Method',
+    'Namespace',
+    'Object',
     -- "Package",
-    "Struct",
-    "TypeParameter",
+    'Struct',
+    'TypeParameter',
   },
   {
     open_automatic = function(bufnr)
       -- Enforce a minimum line count
-      local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-      return ft == "help" or "man"
+      local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+      return ft == 'help' or 'man'
       -- return vim.api.nvim_buf_line_count(bufnr) > 80
       --   -- Enforce a minimum symbol count
       --   and aerial.num_symbols(bufnr) > 4
@@ -414,13 +414,13 @@ local cfg = {
   -- Customize the characters used when show_guides = true
   guides = {
     -- When the child item has a sibling below it
-    mid_item = "├─",
+    mid_item = '├─',
     -- When the child item is the last in the list
-    last_item = "└─",
+    last_item = '└─',
     -- When there are nested child guides to the right
-    nested_top = "│ ",
+    nested_top = '│ ',
     -- Raw indentation
-    whitespace = "  ",
+    whitespace = '  ',
   },
   -- filter_kind = {
   --   ["_"] = {
@@ -455,8 +455,8 @@ local cfg = {
   -- },
 }
 
-local config = require("aerial.config")
-local aerial = require("aerial")
+local config = require('aerial.config')
+local aerial = require('aerial')
 aerial.setup(cfg)
 -- vim.dbglog("first", config)
 
@@ -465,52 +465,55 @@ local function link(group1, group2)
 end
 
 ---@diagnostic disable-next-line: undefined-field
-local ok, aerial_def = pcall(vim.api.nvim_get_hl_by_name, "AerialDefault", true)
+local ok, aerial_def = pcall(vim.api.nvim_get_hl_by_name, 'AerialDefault', true)
 if not ok then
   ---@diagnostic disable-next-line: undefined-field
-  local normal_def = vim.api.nvim_get_hl_by_name("Normal", true)
-  vim.api.nvim_set_hl(0, "AerialDefault", normal_def)
+  local normal_def = vim.api.nvim_get_hl_by_name('Normal', true)
+  vim.dbglog('normal_def', normal_def)
+  if normal_def ~= '' then
+    vim.api.nvim_set_hl(0, 'AerialDefault', normal_def)
+  end
 end
 
 local symbol_kinds = {
-  "Array",
-  "Boolean",
-  "Class",
-  "Constant",
-  "Constructor",
-  "Enum",
-  "EnumMember",
-  "Event",
-  "Field",
-  "File",
-  "Function",
-  "Interface",
-  "Key",
-  "Method",
-  "Module",
-  "Namespace",
-  "Null",
-  "Number",
-  "Object",
-  "Operator",
-  "Package",
-  "Property",
-  "String",
-  "Struct",
-  "TypeParameter",
-  "Variable",
+  'Array',
+  'Boolean',
+  'Class',
+  'Constant',
+  'Constructor',
+  'Enum',
+  'EnumMember',
+  'Event',
+  'Field',
+  'File',
+  'Function',
+  'Interface',
+  'Key',
+  'Method',
+  'Module',
+  'Namespace',
+  'Null',
+  'Number',
+  'Object',
+  'Operator',
+  'Package',
+  'Property',
+  'String',
+  'Struct',
+  'TypeParameter',
+  'Variable',
 }
 
 -- The name of the symbol
 for _, symbol_kind in ipairs(symbol_kinds) do
-  vim.api.nvim_set_hl(0, string.format("Aerial%s", symbol_kind), { fg = "none" })
+  vim.api.nvim_set_hl(0, string.format('Aerial%s', symbol_kind), { fg = 'none' })
   -- link(string.format("Aerial%s", symbol_kind), "AerialDefault")
 end
 
 local start_with_backend = function(backend)
   return function()
     config.setup({ backends = { backend } })
-    local _config = require("aerial.config")
+    local _config = require('aerial.config')
     -- return M.get_backend_by_name(name), name
     aerial.close()
     aerial.toggle()
@@ -521,29 +524,25 @@ local setup_cmds = function()
   -- local opts = vim.tbl_deep_extend("force", default, cfg, { backends = { backend } })
   config.setup(cfg)
   local bufnr = vim.api.nvim_get_current_buf()
-  local backends = require("aerial.backends")
-  local all_backends = { "lsp", "treesitter", "man", "help" }
+  local backends = require('aerial.backends')
+  local all_backends = { 'lsp', 'treesitter', 'man', 'help' }
   local supported = {}
   for _, be in ipairs(all_backends) do
     supported[be] = backends.is_supported(bufnr, be)
   end
   for _, be in ipairs(all_backends) do
-    local cmd = "Aerial" .. string.sub(string.upper(be), 1, 1) .. string.sub(be, 2, -1)
+    local cmd = 'Aerial' .. string.sub(string.upper(be), 1, 1) .. string.sub(be, 2, -1)
     if supported[be] then
-      vim.api.nvim_create_user_command(
-        cmd,
-        start_with_backend(be),
-        { desc = "Start Aerial with " .. be .. " backend", force = true }
-      )
+      vim.api.nvim_create_user_command(cmd, start_with_backend(be), { desc = 'Start Aerial with ' .. be .. ' backend', force = true })
     else
       local _, _ = pcall(vim.api.nvim_del_user_command, cmd)
     end
   end
 end
 
-local augroup_ok, _ = pcall(vim.api.nvim_get_autocmds, { group = "AerialBuffer" })
+local augroup_ok, _ = pcall(vim.api.nvim_get_autocmds, { group = 'AerialBuffer' })
 if not augroup_ok then
-  vim.api.nvim_create_augroup("AerialBuffer", { clear = false })
+  vim.api.nvim_create_augroup('AerialBuffer', { clear = false })
 end
 
 setup_cmds()

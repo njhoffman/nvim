@@ -81,7 +81,9 @@ local modules = {
       'markdown',
     },
     -- TODO: replace bash and lua highlights with treesitter
-    additional_vim_regex_highlighting = true,
+    additional_vim_regex_highlighting = {
+      'zsh',
+    },
     custom_captures = {
       -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
       ['foo.bar'] = 'Identifier',
