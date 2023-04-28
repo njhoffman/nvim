@@ -1,50 +1,60 @@
-local provider_project = require("plugs.config.feline.provider-project")
-local provider_project_uo = require("plugs.config.feline.provider-project-uo")
-local provider_git = require("plugs.config.feline.provider-git")
-local provider_cursor = require("plugs.config.feline.provider-cursor")
+local provider_project = require('plugs.config.feline.provider-project')
+local provider_git = require('plugs.config.feline.provider-git')
+local provider_cursor = require('plugs.config.feline.provider-cursor')
 
 local M = {}
 
-M.ProjectNvimComponent = {
+M.NeoComposerComponent = {
   enabled = true,
   provider = {
-    name = "project_nvim",
+    name = 'neocomposer',
     opts = {},
-    -- update = { 'WinClosed', 'BufDelete' }
   },
-  { " " },
-  hl = provider_project.hl,
-  left_sep = provider_project.left_sep,
-  { " " },
-  right_sep = provider_project.right_sep,
+  hl = {
+    fg = '#333344',
+    bg = 'black',
+  },
+  left_sep = {
+    str = ' ',
+    hl = {
+      fg = 'NONE',
+    },
+  },
 }
 
-M.ProjectUoComponent = {
+M.ProjectComponent = {
   enabled = true,
   provider = {
-    name = "project_uo",
+    name = 'project',
     opts = {},
     -- update = { 'WinClosed', 'BufDelete' }
   },
-  { " " },
-  hl = provider_project_uo.hl,
-  left_sep = provider_project_uo.left_sep,
-  { " " },
-  right_sep = provider_project_uo.right_sep,
+  { ' ' },
+  hl = provider_project.hl,
+  left_sep = provider_project.left_sep,
+  { ' ' },
+  right_sep = provider_project.right_sep,
 }
 
 M.GitBranchComponent = {
   provider = provider_git.git_branch,
   hl = {
-    fg = "#56b6c2",
-    bg = "black",
-    style = "bold",
+    fg = '#56b6c2',
+    bg = 'black',
+    style = 'bold',
+  },
+  left_sep = {
+    str = ' ',
+    hl = {
+      fg = 'NONE',
+      bg = 'black',
+    },
   },
   right_sep = {
-    str = " ",
+    str = ' ',
     hl = {
-      fg = "NONE",
-      bg = "black",
+      fg = 'NONE',
+      bg = 'black',
     },
   },
 }
@@ -52,43 +62,55 @@ M.GitBranchComponent = {
 M.GitDiffAddedComponent = {
   provider = provider_git.git_diff_added,
   hl = {
-    fg = "green",
-    bg = "black",
+    fg = 'green',
+    bg = 'black',
   },
 }
 
 M.GitDiffChangedComponent = {
   provider = provider_git.git_diff_changed,
   hl = {
-    fg = "orange",
-    bg = "black",
+    fg = 'orange',
+    bg = 'black',
   },
 }
 
 M.GitDiffRemovedComponent = {
   provider = provider_git.git_diff_removed,
   hl = {
-    fg = "red",
-    bg = "black",
+    fg = 'red',
+    bg = 'black',
   },
-  right_sep = {
-    str = " ",
-    hl = {
-      fg = "NONE",
-      bg = "black",
-    },
-  },
+  -- right_sep = {
+  --   str = ' ',
+  --   hl = {
+  --     fg = 'NONE',
+  --     bg = 'black',
+  --   },
+  -- },
 }
 -- Display <e> 0x65
 M.AsciiComponent = {
-  -- Enable if current window width is higher than 100
-  enabled = function()
-    return vim.api.nvim_win_get_width(0) > 120
-  end,
-  hl = { fg = "#988088" },
+  hl = { fg = '#988088' },
   provider = provider_cursor.ascii,
-  left_sep = " ",
-  right_sep = " ",
+  enabled = provider_cursor.enabled,
+  left_sep = ' ',
+  right_sep = ' ',
+}
+
+M.ScrollBarComponent = {
+  provider = 'scroll_bar',
+  left_sep = {
+    str = ' ',
+    hl = {
+      fg = 'NONE',
+      bg = 'black',
+    },
+  },
+  hl = {
+    fg = 'skyblue',
+    style = 'bold',
+  },
 }
 
 M.FiletypeComponent = {
@@ -96,10 +118,10 @@ M.FiletypeComponent = {
   enabled = function()
     return vim.api.nvim_win_get_width(0) > 120
   end,
-  hl = { fg = "#988088" },
-  provider = { name = "file_type", opts = { case = "lowercase" } },
-  left_sep = " ",
-  right_sep = " ",
+  hl = { fg = '#988088' },
+  provider = { name = 'file_type', opts = { case = 'lowercase' } },
+  left_sep = ' ',
+  right_sep = ' ',
 }
 
 return M

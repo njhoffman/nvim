@@ -1,5 +1,4 @@
 local commands = require('autocommands.commands')
-local winbar = require('autocommands.winbar')
 require('autocommands.misc')
 require('autocommands.startup')
 
@@ -26,29 +25,27 @@ end
 
 local autocmds = {
   SecondaryWindows = {
-    -- quickix, locations, help, man, undo, and other windows I want to exit easily from
-    -- todo: think of an easy way to close theese windows without focus
     {
       'FileType',
       'dashboard',
-      'nnoremap <buffer> q :BufferDelete<cr> | nnoremap <buffer>  :BufferDelete<cr>',
+      'nnoremap <buffer><silent> q :BufferDelete<cr> | nnoremap <buffer><silent>  :BufferDelete<cr>',
     },
     {
       'BufNewFile,BufRead',
       '*nvim/option-window',
-      'nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>',
+      'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>',
     },
-    { 'FileType', 'query', 'nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>' },
-    { 'FileType', 'fugitive', 'nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>' },
-    { 'FileType', 'notify', 'nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>' },
-    { 'FileType', 'noice', 'nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>' },
-    { 'FileType', 'qf', 'setlocal nonumber norelativenumber | nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>' },
-    { 'FileType', 'man', 'nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>' },
-    { 'FileType', 'nerdtree', 'nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>' },
-    { 'FileType', 'help', 'nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>' },
-    { 'FileType', 'NvimTree', 'nnoremap <buffer>  :q<cr>' },
-    { 'FileType', 'Mundo', 'nnoremap <buffer>  :q<cr>' },
-    { 'FileType', 'MundoDiff', 'nnoremap <buffer>  :q<cr>' },
+    { 'FileType', 'query', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
+    { 'FileType', 'fugitive', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
+    { 'FileType', 'notify', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
+    { 'FileType', 'noice', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
+    { 'FileType', 'qf', 'setlocal nonumber norelativenumber | nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
+    { 'FileType', 'man', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
+    { 'FileType', 'nerdtree', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
+    { 'FileType', 'help', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
+    { 'FileType', 'NvimTree', 'nnoremap <buffer><silent>  :q<cr>' },
+    { 'FileType', 'Mundo', 'nnoremap <buffer><silent>  :q<cr>' },
+    { 'FileType', 'MundoDiff', 'nnoremap <buffer><silent>  :q<cr>' },
   },
   wins = {
     -- Highlight current line only on focused window
@@ -73,8 +70,8 @@ local autocmds = {
   CommandWin = {
     { 'CmdwinEnter', '*', 'let b:cpt_save = &cpt | set cpt=.' },
     { 'CmdwinLeave', '*', 'let &cpt = b:cpt_save | let g:lens#disabled = 1' },
-    { 'CmdwinEnter', '*', 'nnoremap <buffer><esc> <C-c><C-c>' },
-    { 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=yes:1 | startinsert' },
+    { 'CmdwinEnter', '*', 'nnoremap <silent><buffer> <esc> <C-c><C-c>' },
+    { 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=yes:1 syn=vim | startinsert' },
   },
 
   FiletypeDetect = {
@@ -100,7 +97,7 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, 'nord-nick-lush.lua', 'setlocal ft=lush.lua syn=lua' },
     { { 'BufNewFile', 'BufRead' }, 'nord-nvim.lua',      'setlocal ft=lush.lua syn=lua' },
     { { 'BufNewFile', 'BufRead' }, '*.t',                'setlocal ft=tangle' },
-    { { 'BufNewFile', 'BufRead' }, 'git',                'nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>' },
+    { { 'BufNewFile', 'BufRead' }, 'git',                'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer>  :q<cr>' },
     { { 'BufNewFile', 'BufRead' }, '*.conf',             'setlocal ft=conf.dosini' },
     { { 'BufNewFile', 'BufRead' }, '*.pa',               'setlocal ft=conf' },
     { { 'BufNewFile', 'BufRead' }, '*.service',          'setlocal ft=systemd' },

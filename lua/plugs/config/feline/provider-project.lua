@@ -1,60 +1,58 @@
-local last_buffer, project_path, project_name = nil, "", ""
-
+local state = { path = nil, name = nil, cwd = nil }
 local function get_project_path()
-  if vim.fn.bufnr() ~= last_buffer then
-    project_path = ""
-    project_name = ""
-    last_buffer = nil
+  if vim.fn.getcwd() ~= state.cwd then
+    state.path = nil
+    state.name = nil
+    state.cwd = vim.fn.getcwd()
   end
 
-  local project_nvim = require("project_nvim")
-  if project_path == "" then
-    project_path = type(project_nvim.get_root) == "function" and project_nvim.get_root() or nil
-    if project_path == nil or project_path == "" then
-      project_path = string.gsub(vim.fn.getcwd(), os.getenv("HOME"), "~")
+  local project_nvim = require('project_nvim')
+  if state.path == nil then
+    state.path = type(project_nvim.get_root) == 'function' and project_nvim.get_root() or nil
+    if state.path == nil then
+      state.path = string.gsub(state.cwd, os.getenv('HOME') or '', '~')
     else
-      project_path = string.gsub(project_path, os.getenv("HOME"), "~")
+      state.path = string.gsub(state.path, os.getenv('HOME') or '', '~')
     end
-    if project_path ~= nil and project_path ~= "" then
-      project_path, project_name = string.match(project_path, "(.*)%/(.*)")
-      last_buffer = vim.fn.bufnr()
+    if state.path ~= nil then
+      state.path, state.name = string.match(state.path, '(.*)%/(.*)')
     end
   end
 end
 
 local project_hl = function()
-  if project_name == nil or project_name == "" then
-    return { fg = "white", bg = "#333333" }
+  if state.name == nil then
+    return { fg = 'white', bg = '#333333' }
   end
-  return { fg = "white", bg = "#440088" }
+  return { fg = 'white', bg = '#5511aa' }
 end
 
 local project_left_sep = function()
   local val = {
-    str = "slant_left",
-    fg = "white",
-    bg = "#224488",
-    style = "bold",
+    str = 'slant_left',
+    fg = 'white',
+    bg = '#224488',
+    style = 'bold',
   }
-  if project_path == nil then
-    val.bg = "#333333"
+  if state.path == nil then
+    val.bg = '#333333'
   end
   return val
 end
 
 local project_right_sep = function()
-  return { "block", { hl = { bg = "NONE", fg = "dodgerblue3" } } }
+  return { 'block', { hl = { bg = 'NONE', fg = 'dodgerblue3' } } }
 end
 
-local project_nvim = function()
-  project_path = get_project_path()
-  project_name = project_name or ""
-  return " " .. project_name .. " "
+local project = function()
+  get_project_path()
+  -- return " " .. (state.name or "") .. " "
+  return '' .. (state.name or '') .. ' '
 end
 
 return {
-  provider = project_nvim,
-  -- project = project_user_options,
+  name = 'project',
+  provider = project,
   hl = project_hl,
   left_sep = project_left_sep,
   right_sep = project_right_sep,

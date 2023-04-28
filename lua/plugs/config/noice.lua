@@ -278,11 +278,15 @@ local cfg = {
       filter = { event = 'msg_show', find = '^E486:' },
     },
     { -- all 'no more items' to mini
-      view = 'mini',
       filter = { event = 'msg_show', find = '^E553:' },
+      view = 'mini',
     },
-    { -- all read messages to imini
-      filter = { event = 'msg_show', kind = '', find = '^".+"  ?%d+ lines? %-%-%d+%%%-%-$' },
+    { -- all put line messages to mini
+      filter = { event = 'msg_show', kind = '', find = '^%d+ more lines?$' },
+      view = 'mini',
+    },
+    { -- all delete line messages to imini
+      filter = { event = 'msg_show', kind = '', find = '^%d+ fewer lines?$' },
       view = 'mini',
     },
     { -- Hide diagnostics messages
@@ -290,15 +294,13 @@ local cfg = {
       opts = { skip = true },
     },
     -- {
-    --   filter = { event = 'msg_show', kind = '', find = '^".+"  ?%[.+%] %d+ lines? %-%-%d+%%%-%-$' },
-    --   opts = { skip = true },
-    -- },
-    -- {
     --   filter = { event = 'msg_show', kind = '', find = '^".+"  ?%d+L, %d+B$' },
     --   opts = { skip = true },
     -- },
     -- {
     --   filter = { event = 'msg_show', kind = '', find = '^".+"  ?%[.+%] %d+L, %d+B$' },
+    -- filter = { event = 'msg_show', kind = '', find = '^".+"  ?%d+ lines? %-%-%d+%%%-%-$' },
+    -- filter = { event = 'msg_show', kind = '', find = '^".+"  ?%[.+%] %d+ lines? %-%-%d+%%%-%-$' },
     --   opts = { skip = true },
     -- },
     -- { -- Hide Search
@@ -316,15 +318,6 @@ local cfg = {
   },
 }
 
--- >lua
---     vim.keymap.set("n", "<leader>nl", function()
---       require("noice").cmd("last")
---     end)
---
---     vim.keymap.set("n", "<leader>nh", function()
---       require("noice").cmd("history")
---     end)
--- <
 -- -- -- redirect ":hi"
 -- require("noice").redirect("hi")
 --

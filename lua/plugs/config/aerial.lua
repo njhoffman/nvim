@@ -470,7 +470,11 @@ if not ok then
   ---@diagnostic disable-next-line: undefined-field
   local normal_def = vim.api.nvim_get_hl_by_name('Normal', true)
   if normal_def ~= '' then
-    vim.api.nvim_set_hl(0, 'AerialDefault', normal_def)
+    if type(normal_def) == 'table' and (normal_def.foreground or normal_def.background) then
+      vim.api.nvim_set_hl(0, 'AerialDefault', normal_def)
+      -- else
+      --   vim.dbglog('aerial invalid normal_def', normal_def)
+    end
   end
 end
 

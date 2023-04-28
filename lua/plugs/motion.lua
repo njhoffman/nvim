@@ -44,7 +44,7 @@ local plugins = {
   { 'echasnovski/mini.move', event = 'VeryLazy' },
   { 'gbprod/substitute.nvim', event = 'VeryLazy' },
   { 'andrewferrier/debugprint.nvim', event = 'VeryLazy' },
-  { 'chrisgrieser/nvim-recorder', event = 'VeryLazy' },
+  { 'ecthelionvi/NeoComposer.nvim', dependencies = { 'kkharji/sqlite.lua', 'telescope.nvim' } },
   { 'tpope/vim-repeat', event = 'VeryLazy' },
   { 'smjonas/live-command.nvim', cmd = { 'Reg', 'Norm' }, event = 'VeryLazy' },
   { 'Konfekt/vim-alias', event = 'VeryLazy' },
