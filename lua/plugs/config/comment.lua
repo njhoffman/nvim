@@ -1,6 +1,7 @@
 -- https://github.com/numToStr/Comment.nvim
 require('Comment').setup()
 
+---@diagnostic disable-next-line: unused-local
 local defaults = {
   ---Add a space b/w comment and the line
   padding = true,

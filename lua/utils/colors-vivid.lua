@@ -13,7 +13,7 @@ local math_abs = math.abs
 
 -- Helper function to mimic the LOVE API, allows you to pass a table or four arguments
 local function getColorArgs(first, ...)
-  if type(first) == "table" then
+  if type(first) == 'table' then
     return unpack(first)
   end
   return first, ...

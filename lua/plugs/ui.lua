@@ -2,6 +2,17 @@ local utils = require('utils.lazy')
 
 local plugins = {
   {
+    'tummetott/reticle.nvim',
+    event = { 'BufReadPre', 'BufNewFile' },
+    opts = {
+      always = {
+        cursorline = {
+          'neo-tree', -- reticle messes up with Neo-tree cursorline in search mode
+        },
+      },
+    },
+  },
+  {
     'lukas-reineke/indent-blankline.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
@@ -26,21 +37,10 @@ local plugins = {
   { 'echasnovski/mini.trailspace', event = 'VeryLazy' },
   { 'echasnovski/mini.animate', event = 'VeryLazy' },
   {
-    'tummetott/reticle.nvim',
-    event = 'VeryLazy',
-    opts = {
-      always = {
-        cursorline = {
-          'neo-tree', -- reticle messes up with Neo-tree cursorline in search mode
-        },
-      },
-    },
-  },
-  {
     'sindrets/diffview.nvim',
     cmd = { 'Diffview', 'DiffviewLog', 'DiffviewOpen', 'DiffviewToggleFiles', 'DiffviewFileHistory' },
   },
-  { 'm00qek/baleia.nvim' },
+  { 'm00qek/baleia.nvim', event = 'VeryLazy' },
   { 'folke/zen-mode.nvim', cmd = 'ZenMode' },
   { 'tversteeg/registers.nvim', event = 'VimEnter', cmd = 'Registers' },
   { 'folke/twilight.nvim', cmd = { 'Twilight', 'TwilightEnable' } },
@@ -56,21 +56,9 @@ local plugins = {
   { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
   { 'RRethy/vim-illuminate', event = { 'BufReadPost', 'BufNewFile' }, dependencies = { 'neovim/nvim-lspconfig' } },
-  -- { 'TaDaa/vimade', event = { 'BufReadPost', 'BufNewFile' } },
   { 'TaDaa/vimade', event = 'VimEnter' },
-  { 'kevinhwang91/nvim-hlslens', event = { 'VimEnter' } },
+  { 'kevinhwang91/nvim-hlslens', event = { 'VimEnter' }, lazy = false },
   { 'Bekaboo/deadcolumn.nvim', event = { 'VimEnter' }, lazy = false },
-  -- {
-  --   "m4xshen/smartcolumn.nvim",
-  --   event = { "BufReadPre", "BufNewFile" },
-  --   opts = {
-  --     colorcolumn = 120,
-  --     disabled_filetypes = { "help", "text", "markdown" },
-  --     custom_colorcolumn = {},
-  --     limit_to_window = false,
-  --     limit_to_line = false,
-  --   },
-  -- },
   {
     'stevearc/dressing.nvim',
     dependencies = 'MunifTanjim/nui.nvim',

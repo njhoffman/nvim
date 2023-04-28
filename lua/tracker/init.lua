@@ -1,14 +1,14 @@
 local exports = {}
-local config = require("tracker.config")
-local metrics = require("tracker.metrics")
+local config = require('tracker.config')
+local metrics = require('tracker.metrics')
 
 local cmd = vim.api.nvim_create_user_command
-cmd("Tracker", function()
+cmd('Tracker', function()
   metrics.start()
-end, { desc = "Start changes tracker" })
+end, { desc = 'Start changes tracker' })
 
-cmd("TrackerStats", function()
-  local stats = vim.deepcopy(require("tracker.state"))
+cmd('TrackerStats', function()
+  local stats = vim.deepcopy(require('tracker.state'))
   for k, _ in pairs(stats.metrics) do
     stats.metrics[k].prev_items = #vim.tbl_keys(stats.metrics[k].prev_items)
   end
@@ -23,11 +23,11 @@ cmd("TrackerStats", function()
   stats.timings = avg
   stats.history = #stats.history
   vim.dbglog(stats)
-end, { desc = "Look at tracker state stats" })
+end, { desc = 'Look at tracker state stats' })
 
-cmd("TrackerStop", function()
+cmd('TrackerStop', function()
   metrics.stop()
-end, { desc = "Stop tracker timers" })
+end, { desc = 'Stop tracker timers' })
 
 function exports.setup(_opts)
   local opts = config.setup(_opts)

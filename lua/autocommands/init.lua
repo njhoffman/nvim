@@ -48,16 +48,7 @@ local autocmds = {
     { 'FileType', 'MundoDiff', 'nnoremap <buffer><silent>  :q<cr>' },
   },
   wins = {
-    -- Highlight current line only on focused window
-    -- { { "WinEnter", "BufEnter" , "InsertLeave" },
-    --   "*",
-    --   [[if ! &cursorline && &filetype !~# '^\(dashboard\|clap_\)' && ! &pvw | setlocal cursorline | endif]],
-    -- },
-    -- {"WinLeave,BufLeave,InsertEnter", "*", [[if &cursorline && &filetype !~# '^\(dashboard\|clap_\|NvimTree\)' && ! &pvw | setlocal nocursorline | endif]]};
-    -- {"WinLeave,BufLeave,InsertEnter", "*", [[if &cursorline && &filetype !~# '^\(dashboard\|clap_\|NvimTree\)' && ! &pvw | setlocal nocursorcolumn | endif]]};
-    -- { 'BufEnter', '*', [[setlocal cursorline]] },
     -- { 'BufEnter', 'NvimTree', [[setlocal cursorline]] },
-    { 'BufRead', '*', [[setlocal cursorline]] },
     -- Equalize window dimensions when resizing vim window
     { 'VimResized', '*', [[tabdo wincmd =]] },
     -- Force write shada on leaving nvim
@@ -71,11 +62,10 @@ local autocmds = {
     { 'CmdwinEnter', '*', 'let b:cpt_save = &cpt | set cpt=.' },
     { 'CmdwinLeave', '*', 'let &cpt = b:cpt_save | let g:lens#disabled = 1' },
     { 'CmdwinEnter', '*', 'nnoremap <silent><buffer> <esc> <C-c><C-c>' },
-    { 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=yes:1 syn=vim | startinsert' },
+    { 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=no syn=vim | startinsert' },
   },
 
   FiletypeDetect = {
-    { { 'BufNewFile', 'BufRead' }, '*',                  'setlocal signcolumn=yes:1' },
     { { 'BufNewFile', 'BufRead' }, '*startuptime.tsv',   'setlocal ft=crontab syn=crontab' },
     { { 'BufNewFile', 'BufRead' }, '*.log',              "lua require('commands.format').create_cmd_truncate()" },
     { { 'BufNewFile', 'BufRead' }, '*.ejs',              'set ft=html' },
@@ -86,7 +76,7 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, '.env.*',             'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, '*.env',              'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, 'conf.*',             'setlocal ft=config syn=config' },
-    { { 'BufNewFile', 'BufRead' }, '*.md',               'setlocal ft=vimwiki.pandoc.markdown conceallevel=3 nospell synmaxcol=500' },
+    { { 'BufNewFile', 'BufRead' }, '*.md',               'setlocal ft=vimwiki.pandoc.markdown conceallevel=3 synmaxcol=500' },
     { { 'BufNewFile', 'BufRead' }, '.tasks',             'setlocal ft=asynctasks' },
     { { 'BufNewFile', 'BufRead' }, '*.visidatarc',       'setlocal ft=python' },
     { { 'BufNewFile', 'BufRead' }, '.vimtasks',          'setlocal ft=asynctasks' },
@@ -94,8 +84,8 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, 'Dockerfile*',        'setlocal ft=Dockerfile' },
     { { 'BufNewFile', 'BufRead' }, 'Dockerfile.*',       'setlocal ft=Dockerfile' },
     { { 'BufNewFile', 'BufRead' }, '.dockerignore',      'setlocal ft=gitignore' },
-    { { 'BufNewFile', 'BufRead' }, 'nord-nick-lush.lua', 'setlocal ft=lush.lua syn=lua' },
-    { { 'BufNewFile', 'BufRead' }, 'nord-nvim.lua',      'setlocal ft=lush.lua syn=lua' },
+    { { 'BufNewFile', 'BufRead' }, '*/nord-nick/main.lua', 'setlocal ft=lua.lush' },
+    { { 'BufNewFile', 'BufRead' }, 'nord-nvim.lua',      'setlocal ft=lua.lush' },
     { { 'BufNewFile', 'BufRead' }, '*.t',                'setlocal ft=tangle' },
     { { 'BufNewFile', 'BufRead' }, 'git',                'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer>  :q<cr>' },
     { { 'BufNewFile', 'BufRead' }, '*.conf',             'setlocal ft=conf.dosini' },

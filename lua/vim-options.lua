@@ -90,7 +90,8 @@ opt('conceallevel', 2, window)
 opt('cursorline', true, window)
 opt('number', true, window)
 opt('relativenumber', true, window)
-opt('signcolumn', 'yes:2', window)
+opt('signcolumn', 'yes:1', window)
+opt('spell', false, window)
 opt('wrap', config.Opts.wrap, window)
 
 -- buffer scope

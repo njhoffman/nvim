@@ -1,11 +1,11 @@
-local state = require("telescope.actions.state")
-local builtin = require("telescope.builtin")
-local actions = require("telescope.actions")
+local state = require('telescope.actions.state')
+local builtin = require('telescope.builtin')
+local actions = require('telescope.actions')
 
-local finder = require("telescope._extensions.projects.finder")
-local history = require("project_nvim.utils.history")
-local project = require("project_nvim.project")
-local config = require("project_nvim.config")
+local finder = require('telescope._extensions.projects.finder')
+local history = require('project_nvim.utils.history')
+local project = require('project_nvim.project')
+local config = require('project_nvim.config')
 
 local function change_working_directory(prompt_bufnr, prompt)
   local selected_entry = state.get_selected_entry()
@@ -28,7 +28,7 @@ local function find_project_files(prompt_bufnr)
   local opt = {
     cwd = project_path,
     hidden = config.options.show_hidden,
-    mode = "insert",
+    mode = 'insert',
   }
   if cd_successful then
     builtin.find_files(opt)
@@ -51,7 +51,7 @@ local function search_in_project_files(prompt_bufnr)
   local opt = {
     cwd = project_path,
     hidden = config.options.show_hidden,
-    mode = "insert",
+    mode = 'insert',
   }
   if cd_successful then
     builtin.live_grep(opt)
@@ -75,7 +75,7 @@ local function delete_project(prompt_bufnr)
     actions.close(prompt_bufnr)
     return
   end
-  local choice = vim.fn.confirm("Delete '" .. selectedEntry.value .. "' from project list?", "&Yes\n&No", 2)
+  local choice = vim.fn.confirm("Delete '" .. selectedEntry.value .. "' from project list?", '&Yes\n&No', 2)
 
   if choice == 1 then
     history.delete_project(selectedEntry)

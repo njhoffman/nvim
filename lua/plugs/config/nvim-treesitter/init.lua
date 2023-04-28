@@ -1,15 +1,15 @@
-local config = require("config").Treesitter
-local tsmodules = require("plugs.config.nvim-treesitter.modules")
+local config = require('config').Treesitter
+local tsmodules = require('plugs.config.nvim-treesitter.modules')
 
-require("plugs.config.nvim-treesitter.context")
-local ts = require("nvim-treesitter")
+require('plugs.config.nvim-treesitter.context')
+local ts = require('nvim-treesitter')
 
 ts.define_modules(tsmodules)
 
 local cfg = {
   -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = "all",
-  ignore_install = { "phpdoc", "latex", "wgsl", "wgsl_bevy" },
+  ensure_installed = 'all',
+  -- ignore_install = { 'comment' },
   -- indent = {
   --   enable = config.indent,
   -- },
@@ -28,9 +28,9 @@ local cfg = {
 }
 
 -- for matcher module
-vim.cmd("packadd matchit")
-require("nvim-treesitter.configs").setup(cfg)
-require("nvim-treesitter.install").prefer_git = true
+vim.cmd('packadd matchit')
+require('nvim-treesitter.configs').setup(cfg)
+require('nvim-treesitter.install').prefer_git = true
 
 -- making dot repeatable
 -- --local CR = vim.api.nvim_replace_termcodes("<cr>", true, true, true)

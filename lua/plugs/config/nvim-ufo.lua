@@ -1,36 +1,36 @@
 ---@diagnostic disable: unused-local, unused-function, undefined-field
 
-local handler = require("plugs.config.nvim-ufo-handler")
+local handler = require('plugs.config.nvim-ufo-handler')
 
 vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 -- vim.o.foldnestmax = "1"
-vim.o.foldcolumn = "0"
+vim.o.foldcolumn = '0'
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 -- vim.o.foldlevelstart = 0 -- all folds closed
 vim.o.foldlevelstart = 99 -- no folds closed
 vim.o.foldenable = true
-vim.o.foldmethod = "manual"
+vim.o.foldmethod = 'manual'
 
-vim.keymap.set("n", "zR", require("ufo").openAllFolds, {})
-vim.keymap.set("n", "zM", require("ufo").closeAllFolds, {})
-vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds, {})
-vim.keymap.set("n", "zm", require("ufo").closeFoldsWith, {}) -- closeAllFolds == closeFoldsWith(0)
-vim.keymap.set("n", "zK", function()
-  local winid = require("ufo").peekFoldedLinesUnderCursor()
+vim.keymap.set('n', 'zR', require('ufo').openAllFolds, {})
+vim.keymap.set('n', 'zM', require('ufo').closeAllFolds, {})
+vim.keymap.set('n', 'zr', require('ufo').openFoldsExceptKinds, {})
+vim.keymap.set('n', 'zm', require('ufo').closeFoldsWith, {}) -- closeAllFolds == closeFoldsWith(0)
+vim.keymap.set('n', 'zK', function()
+  local winid = require('ufo').peekFoldedLinesUnderCursor()
   if not winid then
     -- choose one of coc.nvim and nvim lsp
-    vim.fn.CocActionAsync("definitionHover") -- coc.nvim
+    vim.fn.CocActionAsync('definitionHover') -- coc.nvim
     vim.lsp.buf.hover()
   end
 end)
 
 local toggle = 1
-vim.keymap.set("n", "Z", function()
+vim.keymap.set('n', 'Z', function()
   if toggle == 0 then
-    require("ufo").openAllFolds()
+    require('ufo').openAllFolds()
     toggle = 1
   else
-    require("ufo").closeAllFolds()
+    require('ufo').closeAllFolds()
     toggle = 0
   end
 end, {})
@@ -39,12 +39,12 @@ local foldlevel = 1
 -- TODO: calculate maximum fold level
 local inspect_level = function()
   local bufnr = vim.api.nvim_get_current_buf()
-  local msg = require("ufo.main").inspectBuf(bufnr)
+  local msg = require('ufo.main').inspectBuf(bufnr)
   if not msg then
-    vim.notify(("Buffer %d has not been attached."):format(bufnr), vim.log.levels.ERROR)
+    vim.notify(('Buffer %d has not been attached.'):format(bufnr), vim.log.levels.ERROR)
   else
-    table.insert(msg, "FoldLevel: " .. foldlevel)
-    vim.notify(table.concat(msg, "\n"), vim.log.levels.INFO)
+    table.insert(msg, 'FoldLevel: ' .. foldlevel)
+    vim.notify(table.concat(msg, '\n'), vim.log.levels.INFO)
   end
 end
 
@@ -61,11 +61,11 @@ end
 -- end, { remap = true })
 
 local ftMap = {
-  vim = "indent",
-  python = { "indent" },
-  lua = "indent",
-  javascript = "indent",
-  git = "",
+  -- vim = 'indent',
+  -- python = { 'indent' },
+  -- lua = 'indent',
+  -- javascript = 'indent',
+  git = '',
 }
 
 local config = {
@@ -81,23 +81,24 @@ local config = {
     -- return a function: it will be involved and expected return `UfoFoldingRange[]|Promise`
 
     -- if you prefer treesitter provider rather than lsp,
-    return ftMap[filetype] -- or {'treesitter', 'indent'}
+    return { 'treesitter', 'indent' }
+    -- return ftMap[filetype] -- or
   end,
-  close_fold_kinds = { "comment", "imports" and "region" },
+  close_fold_kinds = { 'comment', 'imports' and 'region' },
   preview = {
     win_config = {
-      border = "rounded",
-      winhighlight = "Normal:Folded",
+      border = 'rounded',
+      winhighlight = 'Normal:Folded',
       winblend = 20,
     },
     mappings = {
-      scrollU = "<C-u>",
-      scrollD = "<C-d>",
+      scrollU = '<C-u>',
+      scrollD = '<C-d>',
     },
   },
 }
 
-require("ufo").setup(config)
+require('ufo').setup(config)
 
 -- local default_config = {
 --   open_fold_hl_timeout = 400,

@@ -7,13 +7,13 @@ local get_theme = function(theme)
       bottom_pane = {
         height = 25,
         preview_cutoff = 40,
-        prompt_position = "top",
+        prompt_position = 'top',
       },
       center = {
         preview_height = 0.5,
         height = 0.4,
         preview_cutoff = 40,
-        prompt_position = "top",
+        prompt_position = 'top',
         width = 0.5,
       },
       cursor = {
@@ -23,7 +23,7 @@ local get_theme = function(theme)
       },
       horizontal = {
         height = 0.9,
-        prompt_position = "top",
+        prompt_position = 'top',
         width = 0.8,
         preview_cutoff = 60,
         preview_width = 0.5,
@@ -32,7 +32,7 @@ local get_theme = function(theme)
         height = 0.9,
         preview_cutoff = 40,
         width = 0.8,
-        prompt_position = "top",
+        prompt_position = 'top',
         mirror = true,
         preview_height = 0.5,
       },
@@ -40,36 +40,36 @@ local get_theme = function(theme)
         flip_columns = 130,
       },
     },
-    layout_strategy = "flex", -- flex, horizontal, veritical, center
+    layout_strategy = 'flex', -- flex, horizontal, veritical, center
   }
 
   local themes = {
     default = flex,
-    dropdown = require("telescope.themes").get_dropdown({
+    dropdown = require('telescope.themes').get_dropdown({
       winblend = 20,
       -- layout_config = { width = 0.5 },
       -- results_height = 15,
       previewer = false,
     }),
-    ivy = require("telescope.themes").get_ivy({
+    ivy = require('telescope.themes').get_ivy({
       winblend = 20,
       layout_config = { height = 15 },
       preview = { hide_on_startup = winwidth < 120 },
     }),
-    cursor = require("telescope.themes").get_cursor({
+    cursor = require('telescope.themes').get_cursor({
       winblend = 20,
       layout_config = { height = 15 },
     }),
-    minimal = require("telescope.themes").get_minimal({
+    minimal = require('telescope.themes').get_minimal({
       winblend = 20,
     }),
   }
 
-  if theme == "" or theme == "flex" then
+  if theme == '' or theme == 'flex' then
     return themes.default
   else
-    if type(themes[theme]) ~= "table" then
-      vim.notify("Cannot find telescope theme: " .. theme, 3)
+    if type(themes[theme]) ~= 'table' then
+      vim.notify('Cannot find telescope theme: ' .. theme, 3)
       return themes.default
     else
       return themes[theme]

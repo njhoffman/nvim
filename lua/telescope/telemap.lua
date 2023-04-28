@@ -1,18 +1,18 @@
-local commands = require("plugs.config.telescope.commands")
-local leaderf = require("plugs.config.telescope.leaderf")
-local make_entry = require("telescope.make_entry")
+local commands = require('plugs.config.telescope.commands')
+local leaderf = require('plugs.config.telescope.leaderf')
+local make_entry = require('telescope.make_entry')
 
 local get_cwd = function(user_opts)
-  return (user_opts.cwd or vim.fn.getcwd()):gsub(vim.fn.getenv("HOME"), "~")
+  return (user_opts.cwd or vim.fn.getcwd()):gsub(vim.fn.getenv('HOME'), '~')
 end
 
 local file_count = function(cwd)
-  local cmd = vim.fn.copy(commands.rg) or { "rg" }
-  table.insert(cmd, cwd or vim.fn.getcwd() or vim.fn.getenv("HOME"))
+  local cmd = vim.fn.copy(commands.rg) or { 'rg' }
+  table.insert(cmd, cwd or vim.fn.getcwd() or vim.fn.getenv('HOME'))
   local output = vim.fn.system(cmd)
   local lines = vim.tbl_filter(function(line)
     return #line > 0
-  end, vim.split(output, "\n"))
+  end, vim.split(output, '\n'))
   return #lines
 end
 
@@ -23,32 +23,32 @@ local telemap = {
   -- },
   leaderf = {
     opts = function(user_opts)
-      local theme_name = user_opts and user_opts.theme or "dropdown"
+      local theme_name = user_opts and user_opts.theme or 'dropdown'
       return {
-        prompt_title = "Buffers",
+        prompt_title = 'Buffers',
         theme = theme_name,
         entry_maker = leaderf.gen_from_buffer(),
       }
     end,
     cmd = function(opts)
-      require("telescope.builtin").buffers(opts)
+      require('telescope.builtin').buffers(opts)
     end,
   },
   fd_cwd = {
     opts = function(user_opts)
-      local directory = vim.api.nvim_buf_get_name(0):match("(.*" .. "/" .. ")")
+      local directory = vim.api.nvim_buf_get_name(0):match('(.*' .. '/' .. ')')
       user_opts.cwd = directory
       return {
         results_title = get_cwd(user_opts),
         cwd = directory,
       }
     end,
-    cmd = { "builtin", "fd" },
+    cmd = { 'builtin', 'fd' },
   },
   builtin_diagnostics = {
     opts = function(user_opts)
       user_opts = user_opts or {}
-      if user_opts.bufnr == true or type(user_opts.bufnr) == "number" then
+      if user_opts.bufnr == true or type(user_opts.bufnr) == 'number' then
         user_opts.bufnr = 0
       end
       local gen_opts = {
@@ -61,7 +61,7 @@ local telemap = {
         },
       }
       if user_opts.bufnr == 0 then
-        gen_opts.path_display = "hidden"
+        gen_opts.path_display = 'hidden'
       end
       return {
         bufnr = user_opts.bufnr,
@@ -95,15 +95,20 @@ local telemap = {
           end
           return true
         end, vim.api.nvim_list_bufs())
-        user_opts.results_title = "Buffers (" .. #bufnrs .. ")"
-        user_opts.prompt_title = "Live Grep Buffers"
+        user_opts.results_title = 'Buffers (' .. #bufnrs .. ')'
+        user_opts.prompt_title = 'Live Grep Buffers'
       else
         local count = file_count(user_opts.cwd or vim.fn.getcwd())
-        user_opts.results_title = get_cwd(user_opts) .. " (" .. count .. ")"
-        user_opts.prompt_title = user_opts.cwd and "Live Grep CWD" or "Live Grep Project"
+        user_opts.results_title = get_cwd(user_opts) .. ' (' .. count .. ')'
+        user_opts.prompt_title = user_opts.cwd and 'Live Grep CWD' or 'Live Grep Project'
       end
       return user_opts
     end,
+  },
+  notify_notify = {
+    opts = {
+      theme = 'ivy',
+    },
   },
 }
 

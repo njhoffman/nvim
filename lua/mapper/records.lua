@@ -1,7 +1,7 @@
 ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
 local start_time = vim.fn.reltime()
 
-local crc = require("mapper.crc")
+local crc = require('mapper.crc')
 
 local records = { list = {}, tree = {} }
 
@@ -12,7 +12,7 @@ local function add_record(virtual, mode, lhs, rhs, options)
     buffer_only = true
   end
 
-  local unique_id = crc.get_crc(lhs .. "_" .. mode)
+  local unique_id = crc.get_crc(lhs .. '_' .. mode)
   idx = idx + 1
 
   ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
