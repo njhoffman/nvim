@@ -1,34 +1,34 @@
 -- vim.keymap.set()
 
 -- Adding the following keymap, will redirect the active cmdline when pressing <S-Enter>. The cmdline stays open, so you can change the command and execute it again. When exiting the cmdline, the popup window will be focused.
-vim.keymap.set("c", "<S-Enter>", function()
-  require("noice").redirect(vim.fn.getcmdline())
-end, { desc = "Redirect Cmdline" })
+vim.keymap.set('c', '<S-Enter>', function()
+  require('noice').redirect(vim.fn.getcmdline())
+end, { desc = 'Redirect Cmdline' })
 
 local viewFormat = {
-  "{date} ",
-  "{event}",
-  { "{kind}", before = { ".", hl_group = "NoiceFormatKind" } },
-  " ",
+  '{date} ',
+  '{event}',
+  { '{kind}', before = { '.', hl_group = 'NoiceFormatKind' } },
+  ' ',
   -- '{level} ',
   -- '{cmdline} ',
-  "{title} ",
-  "| {message}",
+  '{title} ',
+  '| {message}',
 }
 
 local historyViewOpts = {
   -- options for the message history that you get with `:Noice`
   -- view = 'split',
-  view = "popup",
+  view = 'popup',
   opts = { enter = true, format = viewFormat },
   filter = {
     any = {
-      { event = "" },
-      { event = "notify" },
+      { event = '' },
+      { event = 'notify' },
       { error = true },
       { warning = true },
-      { event = "msg_show" },
-      { event = "lsp", kind = "message" },
+      { event = 'msg_show' },
+      { event = 'lsp', kind = 'message' },
     },
   },
 }
@@ -46,18 +46,18 @@ local cfg = {
       enabled = true,
       -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
       -- See the section on formatting for more details on how to customize.
-      format = "lsp_progress",
-      format_done = "lsp_progress_done",
+      format = 'lsp_progress',
+      format_done = 'lsp_progress_done',
       throttle = 1000 / 30, -- frequency to update lsp progress message
-      view = "mini",
+      view = 'mini',
     },
     override = {
       -- override the default lsp markdown formatter with Noice
-      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
       -- override the lsp markdown formatter with Noice
-      ["vim.lsp.util.stylize_markdown"] = true,
+      ['vim.lsp.util.stylize_markdown'] = true,
       -- override cmp documentation with Noice (needs the other options to work)
-      ["cmp.entry.get_documentation"] = true,
+      ['cmp.entry.get_documentation'] = true,
     },
     hover = {
       enabled = false,
@@ -70,32 +70,32 @@ local cfg = {
 
     -- defaults for hover and signature help
     documentation = {
-      view = "hover",
+      view = 'hover',
       opts = {
-        lang = "markdown",
+        lang = 'markdown',
         replace = false,
-        render = "plain",
-        format = { "{message}" },
-        win_options = { concealcursor = "n", conceallevel = 3 },
+        render = 'plain',
+        format = { '{message}' },
+        win_options = { concealcursor = 'n', conceallevel = 3 },
       },
     },
   },
   markdown = {
     hover = {
-      ["|(%S-)|"] = vim.cmd.help, -- vim help links
-      ["%[.-%]%((%S-)%)"] = require("noice.util").open, -- markdown links
+      ['|(%S-)|'] = vim.cmd.help, -- vim help links
+      ['%[.-%]%((%S-)%)'] = require('noice.util').open, -- markdown links
     },
     highlights = {
-      ["|%S-|"] = "@text.reference",
-      ["@%S+"] = "@parameter",
-      ["^%s(Parameters:)"] = "@text.title",
-      ["^%s(Return:)"] = "@text.title",
-      ["^%s(See also:)"] = "@text.title",
-      ["{%S-}"] = "@parameter",
+      ['|%S-|'] = '@text.reference',
+      ['@%S+'] = '@parameter',
+      ['^%s(Parameters:)'] = '@text.title',
+      ['^%s(Return:)'] = '@text.title',
+      ['^%s(See also:)'] = '@text.title',
+      ['{%S-}'] = '@parameter',
     },
   },
   cmdline = {
-    view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
+    view = 'cmdline_popup', -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
     opts = {}, -- global options for the cmdline. See section on views
     format = {
       -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
@@ -104,44 +104,47 @@ local cfg = {
   },
   messages = {
     enabled = true, -- enables the Noice messages UI
-    view = "notify", -- default view for messages
-    view_error = "notify", -- view for errors
-    view_warn = "notify", -- view for warnings
-    view_history = "messages", -- view for :messages
-    view_search = "virtualtext", -- view for search count messages. Set to `false` to disable
+    view = 'notify', -- default view for messages
+    view_error = 'notify', -- view for errors
+    view_warn = 'notify', -- view for warnings
+    view_history = 'messages', -- view for :messages
+    view_search = 'virtualtext', -- view for search count messages. Set to `false` to disable
   },
   views = {
+    ['notify'] = {
+      render = 'minimal',
+    },
     -- ['mini'] = {
-    --           reverse = false,
-    --           align = 'message-left',
-    --           timeout = 5000,
-    --           position = { row = -2, col = -2 },
+    --   reverse = false,
+    --   align = 'message-left',
+    --   timeout = 5000,
+    --   position = { row = -2, col = -2 },
     --
-    --           size = {
-    --             max_height = math.ceil(0.8 * vim.o.lines),
-    --             max_width = math.ceil(0.5 * vim.o.columns),
-    --             min_width = 30,
-    --             width = 'auto',
-    --             height = 'auto',
-    --           },
+    --   size = {
+    --     max_height = math.ceil(0.8 * vim.o.lines),
+    --     max_width = math.ceil(0.5 * vim.o.columns),
+    --     min_width = 30,
+    --     width = 'auto',
+    --     height = 'auto',
+    --   },
     --
-    --           border = {
-    --             text = { top = '', top_align = 'left', bottom = '' },
-    --             style = {
-    --               { '▐', 'NoiceMiniBorder' },
-    --               { ' ', 'NoiceMini' },
-    --               { ' ', 'NoiceMini' },
-    --               { ' ', 'NoiceMini' },
-    --               { ' ', 'NoiceMini' },
-    --               { ' ', 'NoiceMini' },
-    --               { '▐', 'NoiceMiniBorder' },
-    --               { '▐', 'NoiceMiniBorder' },
-    --             },
-    --             padding = { top = 0, bottom = 0, left = 1, right = 0 },
-    --           },
+    --   border = {
+    --     text = { top = '', top_align = 'left', bottom = '' },
+    --     style = {
+    --       { '▐', 'NoiceMiniBorder' },
+    --       { ' ', 'NoiceMini' },
+    --       { ' ', 'NoiceMini' },
+    --       { ' ', 'NoiceMini' },
+    --       { ' ', 'NoiceMini' },
+    --       { ' ', 'NoiceMini' },
+    --       { '▐', 'NoiceMiniBorder' },
+    --       { '▐', 'NoiceMiniBorder' },
+    --     },
+    --     padding = { top = 0, bottom = 0, left = 1, right = 0 },
+    --   },
     --
-    --           win_options = { winblend = 0 },
-    --         },
+    --   win_options = { winblend = 0 },
+    -- },
     --
     --         ['cmdline'] = {
     --           backend = 'mini',
@@ -175,20 +178,20 @@ local cfg = {
     cmdline_popup = {
       position = {
         -- row = 5,
-        row = "30%",
-        col = "50%",
+        row = '30%',
+        col = '50%',
       },
       size = {
-        width = "auto",
-        height = "auto",
+        width = 'auto',
+        height = 'auto',
       },
       in_options = {
         winhighlight = {
-          Normal = "NoiceCmdlinePopup",
-          FloatBorder = "NoiceCmdlinePopupBorder",
-          IncSearch = "",
-          CurSearch = "",
-          Search = "",
+          Normal = 'NoiceCmdlinePopup',
+          FloatBorder = 'NoiceCmdlinePopupBorder',
+          IncSearch = '',
+          CurSearch = '',
+          Search = '',
         },
         cursorline = true,
       },
@@ -202,110 +205,110 @@ local cfg = {
       -- },
     },
     cmdline_output = {
-      format = "details",
-      view = "popup",
+      format = 'details',
+      view = 'popup',
     },
-    popupmenu = {
-      relative = "editor",
-      position = {
-        -- row = 8,
-        row = "50%",
-        col = "50%",
-      },
-      size = {
-        width = "auto",
-        height = "auto",
-        -- max_height = 20,
-        -- min_width = 10,
-      },
-      cmdline_output = {
-        format = "details",
-        view = "popup",
-      },
-      border = {
-        style = "rounded",
-        padding = { 0, 1 },
-      },
-      win_options = {
-        winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
-      },
+  },
+  popupmenu = {
+    -- backend = 'nui', -- backend to use to show regular cmdline completions
+    relative = 'editor',
+    position = {
+      -- row = 8,
+      row = '50%',
+      col = '50%',
+    },
+    size = {
+      width = 'auto',
+      height = 'auto',
+      -- max_height = 20,
+      -- min_width = 10,
+    },
+    cmdline_output = {
+      format = 'details',
+      view = 'popup',
+    },
+    border = {
+      style = 'rounded',
+      padding = { 0, 1 },
+    },
+    win_options = {
+      winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
     },
   },
   notify = {
-    backend = "notify",
-    fallback = "mini",
+    -- Noice can be used as `vim.notify` so you can route any notification like other messages
+    -- Notification messages have their level and other properties set.
+    -- event is always "notify" and kind can be any log level as a string
+    -- The default routes will forward notifications to nvim-notify
+    -- Benefit of using Noice for this is the routing and consistent history view
+    backend = 'notify',
+    fallback = 'mini',
     -- format = "notify",
     -- replace = false,
     -- merge = false,
   },
-
   smart_move = {
     -- noice tries to move out of the way of existing floating windows.
     enabled = true, -- you can disable this behaviour here
     -- add any filetypes here, that shouldn't trigger smart move.
-    excluded_filetypes = { "cmp_menu", "cmp_docs", "notify" },
-  },
-  popupmenu = {
-    enabled = true, -- enables the Noice popupmenu UI
-    ---@type 'nui'|'cmp'
-    backend = "nui", -- backend to use to show regular cmdline completions
-    -- Icons for completion item kinds (see defaults at noice.config.icons.kinds)
-    kind_icons = {}, -- set to `false` to disable icons
+    excluded_filetypes = { 'cmp_menu', 'cmp_docs', 'notify' },
   },
   commands = {
     history = historyViewOpts,
 
     -- :Noice last
-    last = vim.tbl_extend("force", historyViewOpts, { filter_opts = { count = 10 } }),
+    last = vim.tbl_extend('force', historyViewOpts, { filter_opts = { count = 10 } }),
 
     -- :Noice errors
     errors = {
       -- options for the message history that you get with `:Noice`
-      view = "popup",
+      view = 'popup',
       opts = { enter = true, format = viewFormat },
       filter = { error = true },
       filter_opts = { reverse = true },
     },
   },
   routes = {
-
-    { -- Hide diagnostics messages
-      filter = { event = "lsp", find = " diagnostics_on_open " },
-      opts = { skip = true },
-    },
-
-    -- Hide read messages
-    {
-      filter = { event = "msg_show", kind = "", find = '^".+"  ?%d+ lines? %-%-%d+%%%-%-$' },
-      opts = { skip = true },
-    },
-    {
-      filter = { event = "msg_show", kind = "", find = '^".+"  ?%[.+%] %d+ lines? %-%-%d+%%%-%-$' },
-      opts = { skip = true },
-    },
-    {
-      filter = { event = "msg_show", kind = "", find = '^".+"  ?%d+L, %d+B$' },
-      opts = { skip = true },
-    },
-    {
-      filter = { event = "msg_show", kind = "", find = '^".+"  ?%[.+%] %d+L, %d+B$' },
-      opts = { skip = true },
-    },
-
-    { -- Hide Search
-      filter = { event = "msg_show", kind = "search_count" },
-      opts = { skip = true },
-    },
-
-    -- { -- Hide Search
-    -- 	filter = { event = 'msg_show', kind = '', find = '^[/?].+ +%[%d+/%d+%]' },
-    -- 	opts = { skip = true },
+    -- { -- all messages over 20 to split
+    --   view = 'split',
+    --   filter = { event = 'msg_show', min_height = 20 },
     -- },
-
-    { -- Hide Search
-      filter = { event = "msg_show", kind = "", find = "^[/?].+" },
-      opts = { skip = true },
+    { -- all search not found messages to mini
+      view = 'mini',
+      filter = { event = 'msg_show', find = '^E486:' },
     },
+    { -- all read messages to imini
+      filter = { event = 'msg_show', kind = '', find = '^".+"  ?%d+ lines? %-%-%d+%%%-%-$' },
+      view = 'mini',
+    },
+    -- { -- Hide diagnostics messages
+    --   filter = { event = 'lsp', find = ' diagnostics_on_open ' },
+    --   opts = { skip = true },
+    -- },
+    -- {
+    --   filter = { event = 'msg_show', kind = '', find = '^".+"  ?%[.+%] %d+ lines? %-%-%d+%%%-%-$' },
+    --   opts = { skip = true },
+    -- },
+    -- {
+    --   filter = { event = 'msg_show', kind = '', find = '^".+"  ?%d+L, %d+B$' },
+    --   opts = { skip = true },
+    -- },
+    -- {
+    --   filter = { event = 'msg_show', kind = '', find = '^".+"  ?%[.+%] %d+L, %d+B$' },
+    --   opts = { skip = true },
+    -- },
+    -- { -- Hide Search
+    --   filter = { event = 'msg_show', kind = 'search_count' },
+    --   opts = { skip = true },
+    -- },
+    -- { -- Hide Search
+    --   filter = { event = 'msg_show', kind = '', find = '^[/?].+ +%[%d+/%d+%]' },
+    --   opts = { skip = true },
+    -- },
+    -- { -- Hide Search
+    --   filter = { event = 'msg_show', kind = '', find = '^[/?].+' },
+    --   opts = { skip = true },
+    -- },
   },
 }
 
@@ -325,35 +328,22 @@ local cfg = {
 -- require("noice").redirect(function()
 --   print("test")
 -- end)
-require("noice").setup(cfg)
-require("telescope").load_extension("noice")
+require('noice').setup(cfg)
+require('telescope').load_extension('noice')
 
 -- notify           notify     nvim-notify with level=nil, replace=false,
 --                             merge=false
---
 -- split            split      horizontal split
---
 -- vsplit           split      vertical split
---
 -- popup            popup      simple popup
---
 -- mini             mini       minimal view, by default bottom right, right-aligned
---
 -- cmdline          popup      bottom line, similar to the classic cmdline
---
 -- cmdline_popup    popup      fancy cmdline popup, with different styles according
---                             to the cmdline mode
---
 -- cmdline_output   split      split used by config.presets.cmdline_output_to_split
---
 -- messages         split      split used for :messages
---
 -- confirm          popup      popup used for confirm events
---
 -- hover            popup      popup used for lsp signature help and hover
---
 -- popupmenu        nui.menu   special view with the options used to render the
---                             popupmenu when backend is nui
 
 -- vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
 --   if not require("noice.lsp").scroll(4) then

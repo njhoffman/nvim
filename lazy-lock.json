@@ -197,7 +197,6 @@
   "reticle.nvim": { "branch": "main", "commit": "7290f2649684415a9d3da98957ea44f5421f4f2a" },
   "schemastore.nvim": { "branch": "main", "commit": "0b396f538f195c249f021a48c3d8988f0d3f86f7" },
   "scss-syntax.vim": { "branch": "master", "commit": "bda22a93d1dcfcb8ee13be1988560d9bb5bd0fef" },
-  "session-lens": { "branch": "main", "commit": "b15e36782d01abacf6cd44e12f3292632064ab91" },
   "sidebar.nvim": { "branch": "main", "commit": "990ce5f562c9125283ccac5473235b1a56fea6dc" },
   "smart-open.nvim": { "branch": "main", "commit": "f9d51ad69b0ab3a01b61d3d5176367e540407f6e" },
   "sniprun": { "branch": "master", "commit": "7afcd7797e2d265732c718264f95e093bae9acfe" },

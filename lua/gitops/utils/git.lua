@@ -1,7 +1,7 @@
-local utils = require("gitops.utils")
-local file = require("gitops.utils.file")
-local config = require("gitops.utils.config")
-local command_util = require("gitops.utils.command")
+local utils = require('gitops.utils')
+local file_util = require('gitops.utils.file')
+local config = require('gitops.utils.config')
+local command_util = require('gitops.utils.command')
 
 local M = {}
 
@@ -9,26 +9,22 @@ local M = {}
 -- TODO: git grep --all-match -l -e "f[^\s]*\s" -e bar $(git rev-list --all)
 
 local all_commit_hashes = function()
-  local command = "git rev-list --all"
+  local command = 'git rev-list --all'
   local output = command_util.execute(command)
 
-  return utils.split_string(output, "\n")
+  return utils.split_string(output, '\n')
 end
 
-local all_commit_hashes_touching_file = function(git_relative_file_path)
-  local command = "cd "
-    .. file.git_dir()
-    .. " && git log --all --follow --pretty=format:'%H' -- "
-    .. git_relative_file_path
+local all_commit_hashes_touching_file = function(git_relative_file_path, source_bufnr)
+  local gs_repo = utils.get_repo(source_bufnr) or {}
+  -- local repo = file_util.git_dir() or (gs_repo and gs_repo.root) or ''
+  local repo = file_util.git_dir()
+  local command = 'cd ' .. repo .. " && git log --all --follow --pretty=format:'%H' -- " .. git_relative_file_path
 
   local output = command_util.execute(command)
-  return utils.split_string(output, "\n")
+  return utils.split_string(output, '\n')
 end
 
---- @param command table
---- @param git_flags_ix number|nil
---- @param git_diff_flags_ix number|nil
---- @return table Command with configured git diff flags
 local git_diff_command = function(command, git_flags_ix, git_diff_flags_ix)
   git_flags_ix = git_flags_ix or 2
   git_diff_flags_ix = git_diff_flags_ix or 3
@@ -37,7 +33,7 @@ local git_diff_command = function(command, git_flags_ix, git_diff_flags_ix)
   local git_flags = config.git_flags()
 
   if git_flags_ix > git_diff_flags_ix then
-    vim.notify("git_flags must be inserted before git_diff_flags", vim.log.levels.ERROR)
+    vim.notify('git_flags must be inserted before git_diff_flags', vim.log.levels.ERROR)
   end
 
   if git_diff_flags ~= nil and #git_diff_flags > 0 then
@@ -57,18 +53,24 @@ end
 
 M.git_diff_command = git_diff_command
 
-M.previous_commit_hash = function(commit_hash)
-  local command = "git rev-parse " .. commit_hash .. "~"
-
-  local output = command_util.execute(command)
-  return string.gsub(output, "\n", "")
+M.previous_commit_hash = function(commit_hash, source_bufnr)
+  local command = { 'git', 'rev-parse' }
+  local repo = utils.get_repo(source_bufnr) or {}
+  if repo.gitdir then
+    table.insert(command, '--git-dir=' .. repo.gitdir)
+    table.insert(command, '--work-tree=' .. repo.worktree)
+  end
+  table.insert(command, commit_hash)
+  table.insert(command, '~')
+  local output = command_util.execute(vim.fn.join(command, ' '))
+  return string.gsub(output, '\n', '')
 end
 
 M.branch_hash = function(branch)
-  local command = "git rev-parse " .. branch
+  local command = 'git rev-parse ' .. branch
 
   local output = command_util.execute(command)
-  return string.gsub(output, "\n", "")
+  return string.gsub(output, '\n', '')
 end
 
 -- local is_file_renamed = function(git_relative_file_path)
@@ -82,28 +84,24 @@ end
 --     return #output > 0
 -- end
 
-local file_exists_on_commit = function(commit_hash, git_relative_file_path)
-  local command = "cd "
-    .. file.git_dir()
-    .. " && git ls-tree --name-only "
-    .. commit_hash
-    .. " -- "
-    .. (git_relative_file_path or "")
+local file_exists_on_commit = function(commit_hash, git_relative_file_path, source_bufnr)
+  local gs_repo = utils.get_repo(source_bufnr) or {}
+  -- local repo = file_util.git_dir() or (gs_repo and gs_repo.gitdir) or ''
+  local repo = file_util.git_dir()
+  local command = 'cd ' .. repo .. ' && git ls-tree --name-only ' .. commit_hash .. ' -- ' .. (git_relative_file_path or '')
 
   local output = command_util.execute(command)
 
-  output = string.gsub(output, "\n", "")
-  return output ~= ""
+  output = string.gsub(output, '\n', '')
+  vim.dbglog('FILE EXISTS ON COMMIT', output, command)
+  return output ~= ''
 end
 
 M.file_exists_on_commit = file_exists_on_commit
 
 --- Returns the file name of a file on a specific commit
---- @param commit_hash string
---- @param git_relative_file_path string
---- @return string|nil file name on commit
-local file_name_on_commit = function(commit_hash, git_relative_file_path)
-  if file_exists_on_commit(commit_hash, git_relative_file_path) then
+local file_name_on_commit = function(commit_hash, git_relative_file_path, source_bufnr)
+  if file_exists_on_commit(commit_hash, git_relative_file_path, source_bufnr) then
     return git_relative_file_path
   end
   -- first find index in all_commit_hashes
@@ -122,7 +120,7 @@ local file_name_on_commit = function(commit_hash, git_relative_file_path)
   end
 
   -- then find the first commit that has a different file name
-  local touched_hashes = all_commit_hashes_touching_file(git_relative_file_path)
+  local touched_hashes = all_commit_hashes_touching_file(git_relative_file_path, source_bufnr)
   if touched_hashes == nil then
     return nil
   end
@@ -148,23 +146,23 @@ local file_name_on_commit = function(commit_hash, git_relative_file_path)
     return nil
   end
 
-  local command = { "cd", "file.git_dir()", "&&", "git" }
-  local repo = M.get_repo(bufnr)
-  if repo.gitdir then
-    table.insert(command, "--git-dir=" .. repo.gitdir)
-    table.insert(command, "--work-tree=" .. repo.worktree)
-  end
-
+  local command = { 'cd', 'file.git_dir()', '&&', 'git' }
+  -- local repo = utils.get_repo(source_bufnr)
+  -- if repo.gitdir then
+  --   table.insert(command, '--git-dir=' .. repo.gitdir)
+  --   table.insert(command, '--work-tree=' .. repo.worktree)
+  -- end
+  --
   table.insert(command, "--no-pager log -M --follow --pretty=format:'%H' --name-only")
   table.insert(command, last_touched_hash)
-  table.insert(command, "~.. -- ")
+  table.insert(command, '~.. -- ')
   table.insert(command, git_relative_file_path)
-  table.insert(command, " | tail -1")
+  table.insert(command, ' | tail -1')
 
-  local output = command_util.execute(vim.fn.join(command, " "))
-  output = string.gsub(output, "\n", "")
+  local output = command_util.execute(vim.fn.join(command, ' '))
+  output = string.gsub(output, '\n', '')
 
-  if file_exists_on_commit(commit_hash, output) then
+  if file_exists_on_commit(commit_hash, output, source_bufnr) then
     return output
   else
     return nil
@@ -184,37 +182,23 @@ M.base_branch = function()
 
   local output = command_util.execute(command)
 
-  return string.gsub(output, "\n", "")
+  return string.gsub(output, '\n', '')
 end
 
 M.current_branch = function()
-  local command = "git branch --show-current"
+  local command = 'git branch --show-current'
 
   local output = command_util.execute(command)
 
-  return string.gsub(output, "\n", "")
-end
-
-M.get_repo = function(bufnr)
-  local ok, gitsigns = pcall(vim.api.nvim_buf_get_var, bufnr, "gitsigns_status_dict")
-  if ok == true then
-    -- vim.dbglog("get_repo", gitsigns)
-    return {
-      worktree = gitsigns.root,
-      gitdir = gitsigns.gitdir,
-    }
-  else
-    vim.dbglog("get_repo failed", gitsigns)
-    return {}
-  end
+  return string.gsub(output, '\n', '')
 end
 
 M.init_git_command = function(bufnr)
-  local command = { "git" }
-  local repo = M.get_repo(bufnr)
+  local command = { 'git' }
+  local repo = utils.get_repo(bufnr)
   if repo.gitdir then
-    table.insert(command, "--git-dir=" .. repo.gitdir)
-    table.insert(command, "--work-tree=" .. repo.worktree)
+    table.insert(command, '--git-dir=' .. repo.gitdir)
+    table.insert(command, '--work-tree=' .. repo.worktree)
   end
   return command
 end
@@ -223,18 +207,18 @@ end
 M.file_count = function(bufnr, cwd)
   -- local commands = require("plugs.config.telescope.commands")
   -- local cmd = vim.fn.copy(commands.rg) or { "rg" }
-  local cmd = { "git" }
-  local repo = M.get_repo(bufnr)
-  if repo.gitdir then
-    table.insert(cmd, "--git-dir=" .. repo.gitdir)
-    table.insert(cmd, "--work-tree=" .. repo.worktree)
-  end
-  table.insert(cmd, "ls-files")
-  table.insert(cmd, cwd or vim.fn.getcwd() or vim.fn.getenv("HOME"))
+  local cmd = { 'git' }
+  -- local repo = utils.get_repo(bufnr)
+  -- if repo.gitdir then
+  --   table.insert(cmd, '--git-dir=' .. repo.gitdir)
+  --   table.insert(cmd, '--work-tree=' .. repo.worktree)
+  -- end
+  table.insert(cmd, 'ls-files')
+  table.insert(cmd, cwd or vim.fn.getcwd() or vim.fn.getenv('HOME'))
   local output = vim.fn.system(cmd)
   local lines = vim.tbl_filter(function(line)
     return #line > 0
-  end, vim.split(output, "\n"))
+  end, vim.split(output, '\n'))
   return #lines
 end
 

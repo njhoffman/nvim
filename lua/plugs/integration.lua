@@ -13,7 +13,7 @@ local plugins = {
     cmd = { 'RegexplainerShow', 'RegexplainerToggle' },
     dependencies = { 'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim' },
   },
-  { 'rmagatti/auto-session', event = 'VimEnter' },
+  -- { 'rmagatti/auto-session', event = 'VimEnter' },
   { 'wakatime/vim-wakatime', event = 'VeryLazy' },
   { 'AndrewRadev/id3.vim' },
   {

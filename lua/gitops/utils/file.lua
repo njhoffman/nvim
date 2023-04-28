@@ -1,35 +1,35 @@
 local uv = vim.loop
 local validate = vim.validate
-local utils = require("gitops.utils")
+local utils = require('gitops.utils')
 
 local M = {}
 
 M.relative_path = function(bufnr)
-  return vim.fn.expand("#" .. bufnr .. ":~:.")
+  return vim.fn.expand('#' .. bufnr .. ':~:.')
 end
 
 M.git_dir = function()
-  return M.find_first_ancestor_dir_or_file(vim.fn.getcwd(), ".git")
+  return M.find_first_ancestor_dir_or_file(vim.fn.getcwd(), '.git')
 end
 
 M.file_name = function(bufnr)
-  return vim.fn.expand("#" .. bufnr .. ":t")
+  return vim.fn.expand('#' .. bufnr .. ':t')
 end
 
 M.absolute_path = function(bufnr)
-  return vim.fn.expand("#" .. bufnr .. ":p")
+  return vim.fn.expand('#' .. bufnr .. ':p')
 end
 
 M.extension = function(bufnr)
-  return vim.fn.expand("#" .. bufnr .. ":e")
+  return vim.fn.expand('#' .. bufnr .. ':e')
 end
 
 M.get_json_table = function(path)
-  local file = io.open(path, "r")
+  local file = io.open(path, 'r')
 
   if file then
     -- read all contents of file into a string
-    local contents = file:read("*a")
+    local contents = file:read('*a')
     local myTable = vim.json.decode(contents)
     io.close(file)
     return myTable
@@ -38,35 +38,40 @@ M.get_json_table = function(path)
 end
 
 M.git_relative_path = function(bufnr)
+  local gs_repo = utils.get_repo(bufnr)
   local abs_filename = M.absolute_path(bufnr)
-  local git_dir = M.find_first_ancestor_dir_or_file(abs_filename, ".git")
+  -- local git_dir = M.find_first_ancestor_dir_or_file(abs_filename, '.git') or gs_repo.gitdir
+  local git_dir = M.find_first_ancestor_dir_or_file(abs_filename, '.git')
 
-  if git_dir and git_dir ~= "" then
-    git_dir = utils.escape_chars(git_dir .. "/")
-    return string.gsub(abs_filename, git_dir, "")
+  if git_dir and git_dir ~= '' then
+    git_dir = utils.escape_chars(git_dir .. '/')
+    return string.gsub(abs_filename, git_dir, '')
   else
     -- try with current cwd (normally a git repo)
-    git_dir = utils.escape_chars(vim.fn.getcwd() .. "/")
-    return string.gsub(abs_filename, git_dir, "")
+    git_dir = utils.escape_chars(vim.fn.getcwd() .. '/')
+    return string.gsub(abs_filename, git_dir, '')
   end
 end
 
-M.git_relative_path_to_relative_path = function(git_relative_path)
-  local git_dir = M.find_first_ancestor_dir_or_file(vim.fn.getcwd(), ".git")
+M.git_relative_path_to_relative_path = function(git_relative_path, source_bufnr)
+  local gs_repo = utils.get_repo(source_bufnr)
+  -- local git_dir = M.find_first_ancestor_dir_or_file(vim.fn.getcwd(), '.git') or gs_repo.gitdir
+  local git_dir = M.find_first_ancestor_dir_or_file(vim.fn.getcwd(), '.git')
   local project_dir = vim.fn.getcwd()
 
-  local absolute_path = git_dir .. "/" .. git_relative_path
-  project_dir = utils.escape_chars(project_dir .. "/")
-  return string.gsub(absolute_path, project_dir, "")
+  vim.dbglog('git_relatie_path', git_relative_path, source_bufnr, git_dir)
+  local absolute_path = git_dir .. '/' .. git_relative_path
+  project_dir = utils.escape_chars(project_dir .. '/')
+  return string.gsub(absolute_path, project_dir, '')
 end
 
 M.path = (function()
-  local is_windows = uv.os_uname().version:match("Windows")
+  local is_windows = uv.os_uname().version:match('Windows')
 
   local function sanitize(path)
     if is_windows then
       path = path:sub(1, 1):upper() .. path:sub(2)
-      path = path:gsub("\\", "/")
+      path = path:gsub('\\', '/')
     end
     return path
   end
@@ -77,48 +82,48 @@ M.path = (function()
   end
 
   local function is_dir(filename)
-    return exists(filename) == "directory"
+    return exists(filename) == 'directory'
   end
 
   local function is_file(filename)
-    return exists(filename) == "file"
+    return exists(filename) == 'file'
   end
 
   local function is_fs_root(path)
     if is_windows then
-      return path:match("^%a:$")
+      return path:match('^%a:$')
     else
-      return path == "/"
+      return path == '/'
     end
   end
 
   local function is_absolute(filename)
     if is_windows then
-      return filename:match("^%a:") or filename:match("^\\\\")
+      return filename:match('^%a:') or filename:match('^\\\\')
     else
-      return filename:match("^/")
+      return filename:match('^/')
     end
   end
 
   local function dirname(path)
-    local strip_dir_pat = "/([^/]+)$"
-    local strip_sep_pat = "/$"
+    local strip_dir_pat = '/([^/]+)$'
+    local strip_sep_pat = '/$'
     if not path or #path == 0 then
       return
     end
-    local result = path:gsub(strip_sep_pat, ""):gsub(strip_dir_pat, "")
+    local result = path:gsub(strip_sep_pat, ''):gsub(strip_dir_pat, '')
     if #result == 0 then
       if is_windows then
         return path:sub(1, 2):upper()
       else
-        return "/"
+        return '/'
       end
     end
     return result
   end
 
   local function path_join(...)
-    return table.concat(vim.tbl_flatten({ ... }), "/")
+    return table.concat(vim.tbl_flatten({ ... }), '/')
   end
 
   -- Traverse the path calling cb along the way.
@@ -173,7 +178,7 @@ M.path = (function()
     return dir == root
   end
 
-  local path_separator = is_windows and ";" or ":"
+  local path_separator = is_windows and ';' or ':'
 
   return {
     is_dir = is_dir,
@@ -191,7 +196,7 @@ M.path = (function()
 end)()
 
 function M.search_ancestors(startpath, func)
-  validate({ func = { func, "f" } })
+  validate({ func = { func, 'f' } })
   if func(startpath) then
     return startpath
   end
@@ -228,7 +233,7 @@ end
 
 function M.find_node_modules_ancestor(startpath)
   return M.search_ancestors(startpath, function(path)
-    if M.path.is_dir(M.path.join(path, "node_modules")) then
+    if M.path.is_dir(M.path.join(path, 'node_modules')) then
       return path
     end
   end)
@@ -236,7 +241,7 @@ end
 
 function M.find_package_json_ancestor(startpath)
   return M.search_ancestors(startpath, function(path)
-    if M.path.is_file(M.path.join(path, "package.json")) then
+    if M.path.is_file(M.path.join(path, 'package.json')) then
       return path
     end
   end)

@@ -469,7 +469,6 @@ local ok, aerial_def = pcall(vim.api.nvim_get_hl_by_name, 'AerialDefault', true)
 if not ok then
   ---@diagnostic disable-next-line: undefined-field
   local normal_def = vim.api.nvim_get_hl_by_name('Normal', true)
-  vim.dbglog('normal_def', normal_def)
   if normal_def ~= '' then
     vim.api.nvim_set_hl(0, 'AerialDefault', normal_def)
   end
