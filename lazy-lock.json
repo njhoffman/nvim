@@ -19,7 +19,7 @@
   "betterlua.vim": { "branch": "master", "commit": "d2d6c115575d09258a794a6f20ac60233eee59d5" },
   "boo-colorscheme-nvim": { "branch": "main", "commit": "a54e1734eed11b0a5b4ab1bf7a8148edb9f1ef5f" },
   "catppuccin": { "branch": "main", "commit": "dd176757cc745f71bd54c472a9f58d5f8a54661d" },
-  "cder.nvim": { "branch": "main", "commit": "a6e925d7342116de46e75b463bc12b908e260a73" },
+  "cder.nvim": { "branch": "main", "commit": "07c9e3e8324ee7c3ffde493c1612aca0be5255d0" },
   "cheat.sh-vim": { "branch": "master", "commit": "e0fe468d872025477462ac5d96432f5c1aee3a0d" },
   "cheatsheet.nvim": { "branch": "master", "commit": "9716f9aaa94dd1fd6ce59b5aae0e5f25e2a463ef" },
   "cmp-calc": { "branch": "main", "commit": "50792f34a628ea6eb31d2c90e8df174671e4e7a0" },

@@ -119,8 +119,8 @@ return function(injected_functions)
     Normal({ fg = clrs.nord4.darken(30), bg = 'none' }),
     -- ui components
     NormalWindow({ fg = Normal.fg, bg = 'none' }),
-    NormalFloat({ fg = '#8f93a2', bg = 'none' }), -- normal text and background color for floating windows
-    Title({ fg = clrs.nord4.darken(30), gui = 'NONE' }),
+    NormalFloat({ fg = Normal.fg, bg = 'none' }), -- normal text and background color for floating windows
+    Title({ fg = '#88aee9', gui = 'NONE' }),
     FloatBorder({ fg = '#3f5382', bg = 'none' }), --
     FloatTitle({ fg = '#5f73c2', bg = 'none' }), --
     Pmenu({ fg = '#618cc4', bg = 'none' }),
@@ -191,7 +191,8 @@ return function(injected_functions)
     healthSuccess({ fg = '#22BB99', bg = 'none' }),
     healthWarning({ fg = '#EBCA89', bg = 'none' }),
     qfFilename({ Directory }),
-    -- qfLineNr { LineNr },
+    qfLineNr({ LineNr }),
+    -- qfLineNr({ fg = clrs.highlight, bg = clrs.nord6, gui = 'reverse' }),
     -- qfError { Error },
     -- qfSeparator { },
     -- +--- Prompt/Status ---+
@@ -272,7 +273,8 @@ return function(injected_functions)
     sym('@operator')({ Operator }),
     sym('@parameter')({ Identifier }),
     sym('@property')({ Identifier }),
-    sym('@punct.bracket')({ fg = '#888698' }),
+    sym('@punct.bracket')({ fg = '#7886a8' }),
+    sym('@punctuation.bracket')({ fg = '#7886a8' }),
     sym('@punct.special')({ fg = '#888698' }),
     sym('@spell')({ fg = 'none', bg = 'none', gui = 'none' }),
     sym('@string')({ String }),
@@ -299,7 +301,6 @@ return function(injected_functions)
     -- sym("@operator")({fg = "#89ddff"}),
     -- sym("@parameter")({ fg = "#e0af68" }),
     -- sym("@property")({fg = "#73daca"}),
-    sym('@punctuation.bracket')({ fg = '#a9b1d6' }),
     -- sym("@punctuation.delimiter")({ fg = "#89ddff" }),
     sym('@punctuation.special')({ fg = '#89ddff' }),
     -- sym("@punctuation.special.markdown")({ bold = true, fg = "#ff9e64" }),
@@ -547,9 +548,6 @@ return function(injected_functions)
     -- DashboardCenter ({ fg = colors.purple }),
     -- DashboardFooter ({ fg = colors.green, gui = "italic" }),
     NotifyBackground({ bg = '#000000' }),
-    NotifyRUNBorder({ fg = '#6a3246', bg = 'none' }),
-    NotifyRUNTitle({ fg = '#6a3246' }),
-    NotifyRUNIcon({ fg = '#7a7697' }),
     NotifySTATUSBorder({ fg = '#3a3286', bg = 'none' }),
     NotifySTATUSTitle({ fg = '#3a3286' }),
     NotifySTATUSIcon({ fg = '#2a76b7' }),
@@ -576,6 +574,9 @@ return function(injected_functions)
     NotifyWARNIcon({ fg = '#F79000' }),
     NotifyWARNTitle({ fg = '#F79000' }),
 
+    NotifyRUNBorder({ fg = '#1f87c2', bg = 'none' }),
+    NotifyRUNTitle({ fg = '#4fa7f2' }),
+    NotifyRUNIcon({ fg = '#4fa7f2' }),
     NotifyRunSuccessCommand({ fg = '#4fa7f2' }),
     NotifyRunSuccessOutput({ fg = Comment.fg }),
 
@@ -757,6 +758,7 @@ return function(injected_functions)
     TelescopeNormal({ fg = '#6D779a', bg = 'none' }),
     TelescopeBorder({ bg = 'none', fg = '#2299cc' }),
     TelescopePrompt({ bg = 'none' }),
+    TelescopePromptCounter({ fg = '#4d577a', bg = 'none' }),
     TelescopePromptNormal({ fg = '#2299cc', bg = 'none' }),
     TelescopePromptBorder({ fg = '#416191', bg = 'none' }),
     TelescopePromptPrefix({ fg = '#2977FF', bg = 'none' }),

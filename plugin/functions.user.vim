@@ -202,6 +202,7 @@ function! QFixToggle(forced)
   else
     copen 10
     let g:qfix_win = bufnr("$")
+    wincmd p
   endif
 endfunction
 command -bang -nargs=? QFix call QFixToggle(<bang>0)

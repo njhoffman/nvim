@@ -13,7 +13,7 @@ local baseConfig = {
   -- background_colour = "FloatShadow",
   background_colour = '#000000',
   -- Default timeout for notifications
-  timeout = 4000,
+  timeout = 5000,
   -- maximium_width = 90,
   minimum_width = 5,
   max_height = function()
@@ -22,30 +22,13 @@ local baseConfig = {
   max_width = function()
     return math.floor(vim.opt.columns:get() / 3 * 2)
   end,
-  icons = {
-    ERROR = '',
-    WARN = '',
-    INFO = '',
-    DEBUG = '',
-    TRACE = '✎',
-    INSPECT = '',
-    TASK = '',
-    STATUS = '',
-  },
+  icons = { ERROR = '', WARN = '', INFO = '', DEBUG = '', TRACE = '✎', INSPECT = '', TASK = '', STATUS = '' },
   on_open = function(win)
     vim.api.nvim_win_set_option(win, 'winblend', 20)
     vim.api.nvim_win_set_config(win, { zindex = 100 })
   end,
 }
 
--- local sub_on_open = opts.on_open
---  opts.on_open = function(win)
---    vim.api.nvim_win_set_option(win, "winblend", 20)
---    vim.api.nvim_win_set_config(win, { zindex = 100 })
---    if sub_on_open then
---      sub_on_open(win)
---    end
---  end
 require('notify').setup(baseConfig)
 
 -- You can also use plenary's async library to avoid using callbacks:

@@ -277,6 +277,10 @@ local cfg = {
       view = 'mini',
       filter = { event = 'msg_show', find = '^E486:' },
     },
+    { -- all 'no more items' to mini
+      view = 'mini',
+      filter = { event = 'msg_show', find = '^E553:' },
+    },
     { -- all read messages to imini
       filter = { event = 'msg_show', kind = '', find = '^".+"  ?%d+ lines? %-%-%d+%%%-%-$' },
       view = 'mini',

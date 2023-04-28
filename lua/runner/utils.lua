@@ -14,10 +14,9 @@ local path_nvim = function(file)
   return file
 end
 
-
 local remote_commands = function(cmds, ignore_error)
   local output_error = function(err)
-    vim.notify(err, 'error')
+    vim.notify(err, 4)
   end
 
   local next_server = string.gsub(vim.v.servername, 'nvim', 'nvim_linked')
@@ -25,16 +24,17 @@ local remote_commands = function(cmds, ignore_error)
   local nvr_cmd = 'nvr --servername "' .. addr .. '"'
 
   for _, cmd in pairs(cmds) do
-    nvr_cmd = nvr_cmd .. "\t" .. ' -c "' .. cmd .. '"'
+    nvr_cmd = nvr_cmd .. '\t' .. ' -c "' .. cmd .. '"'
   end
 
   local cmd_txt = table.concat(string.split(nvr_cmd, '\t'), '\n')
-  vim.notify('nvr send: ' .. addr .. '\n' .. cmd_txt, 'info')
+  vim.notify('nvr send: ' .. addr .. '\n' .. cmd_txt, 2)
   local res = vim.fn.system(nvr_cmd)
   -- TODO: ignore_error only if expected EOF error returned
-  if string.len(res) > 0 and not ignore_error then output_error(res) end
+  if string.len(res) > 0 and not ignore_error then
+    output_error(res)
+  end
 end
-
 
 return {
   remote_commands = remote_commands,

@@ -1,24 +1,24 @@
 local function check_nav_split(movement_key)
-  local keymap = { h = { "-L" }, l = { "-R" }, k = { "-U" }, j = { "-D" } }
+  local keymap = { h = { '-L' }, l = { '-R' }, k = { '-U' }, j = { '-D' } }
   return function()
     local curr_win = vim.fn.winnr()
     local mapkeys = keymap[movement_key]
     local keys = { tmux_view = mapkeys[1] }
     -- only check one direction for split if navigating
     if vim.fn.winnr(movement_key) ~= curr_win then
-      vim.cmd("wincmd " .. movement_key)
+      vim.cmd('wincmd ' .. movement_key)
     else
-      vim.fn.system("tmux select-pane " .. keys.tmux_view)
+      vim.fn.system('tmux select-pane ' .. keys.tmux_view)
     end
   end
 end
 
 local function check_resize_split(navigation_key)
   local keymap = {
-    h = { "-L 2", "2>", "l", "2<" },
-    l = { "-R 2", "2<", "h", "2>" },
-    k = { "-U 1", "1-", "j", "1+" },
-    j = { "-D 1", "1+", "k", "1-" },
+    h = { '-L 2', '2>', 'l', '2<' },
+    l = { '-R 2', '2<', 'h', '2>' },
+    k = { '-U 1', '1-', 'j', '1+' },
+    j = { '-D 1', '1+', 'k', '1-' },
   }
   return function()
     local curr_win = vim.fn.winnr()
@@ -34,24 +34,28 @@ local function check_resize_split(navigation_key)
     local alt_split = vim.fn.winnr(keys.alt_nav) ~= curr_win
 
     if has_split then
-      vim.cmd("wincmd " .. keys.vim_resize)
+      vim.cmd('wincmd ' .. keys.vim_resize)
     elseif alt_split then
-      vim.cmd("wincmd " .. keys.alt_resize)
+      vim.cmd('wincmd ' .. keys.alt_resize)
     end
-    vim.fn.system("tmux resize-pane " .. keys.tmux_resize)
+    vim.fn.system('tmux resize-pane ' .. keys.tmux_resize)
   end
 end
 
-local get_splits = function(dirs)
+local get_splits = function(directions, ignore_quickfix)
   -- let window_count = winnr('$')
   -- let prev_window = winnr('#')
   local splits = {}
   local curwin = vim.fn.winnr()
-  for _, dir in ipairs(dirs) do
+  for _, dir in ipairs(directions) do
     local testwin = vim.fn.winnr(dir)
-    testwin = vim.fn.win_getid(testwin)
-    if curwin ~= testwin and not vim.tbl_contains(splits, testwin) then
-      table.insert(splits, testwin)
+    local testwinid = vim.fn.win_getid(testwin)
+    if curwin ~= testwinid and not vim.tbl_contains(splits, testwinid) then
+      local bufid = vim.api.nvim_win_get_buf(testwinid)
+      local ft = vim.api.nvim_buf_get_option(bufid, 'filetype')
+      if not ignore_quickfix or ft ~= 'qf' then
+        table.insert(splits, testwinid)
+      end
     end
   end
   return splits
@@ -59,27 +63,27 @@ end
 
 local close_multi = function()
   local tabs = vim.api.nvim_list_tabpages() or {}
-  local splits = get_splits({ "l", "h", "j", "k" }) or {}
+  local splits = get_splits({ 'l', 'h', 'j', 'k' }, true) or {}
   if #tabs > 1 then
-    vim.cmd("tabclose!")
+    vim.cmd('tabclose!')
   elseif #splits > 1 then
     vim.api.nvim_win_close(splits[1], false)
   else
     -- vim.cmd("BufferDelete")
-    vim.cmd("BufferDelete")
+    vim.cmd('BufferDelete')
   end
 end
 
 local close_multi_no_prompt = function()
   local tabs = vim.api.nvim_list_tabpages() or {}
-  local splits = get_splits({ "l", "h", "j", "k" }) or {}
+  local splits = get_splits({ 'l', 'h', 'j', 'k' }) or {}
   if #tabs > 1 then
-    vim.cmd("tabclose!")
+    vim.cmd('tabclose!')
   elseif #splits > 1 then
     vim.api.nvim_win_close(splits[1], false)
   else
     -- vim.cmd("BufferDelete")
-    vim.cmd("BufferDelete!")
+    vim.cmd('BufferDelete!')
   end
 end
 
@@ -87,12 +91,12 @@ local close_popups = function()
   local n = 0
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local config = vim.api.nvim_win_get_config(win)
-    if config.relative ~= "" then
+    if config.relative ~= '' then
       n = n + 1
       vim.api.nvim_win_close(win, false)
     end
   end
-  print("Closed " .. n .. " popup windows")
+  print('Closed ' .. n .. ' popup windows')
 end
 
 return {

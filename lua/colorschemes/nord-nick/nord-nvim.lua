@@ -104,11 +104,11 @@ local theme = lush(function()
     Underline({ gui = 'none' }),
     -- +-- Editor --+
     ColorColumn({ bg = clrs.nord1 }),
-    Cursor({ fg = clrs.nord0, bg = clrs.nord4 }),
-    CursorLine({ bg = clrs.nord1 }),
+    -- Cursor({ fg = clrs.nord0, bg = clrs.nord4 }),
+    -- CursorLine({ bg = clrs.nord1 }),
     Error({ fg = clrs.nord4, bg = clrs.nord11 }),
     iCursor({ fg = clrs.nord0, bg = clrs.nord4 }),
-    LineNr({ fg = clrs.nord3 }),
+    -- LineNr({ fg = clrs.nord3 }),
     MatchParen({ fg = clrs.nord8, bg = clrs.nord3 }),
     NonText({ fg = clrs.nord2 }),
     Normal({ fg = clrs.nord4.darken(30), bg = 'none' }),
@@ -145,12 +145,12 @@ local theme = lush(function()
     Visual({ bg = clrs.nord2 }),
     VisualNOS({ bg = clrs.nord2 }),
     -- +-- Gutter --+
-    CursorColumn({ bg = clrs.nord1 }),
+    -- CursorColumn({ bg = clrs.nord1 }),
     CursorIM({ fg = clrs.cursor, bg = 'NONE', gui = 'reverse' }), -- like Cursor, but used when in IME mode
-    CursorLineNr({
-      fg = clrs.nord4,
-      bg = cfg.nord_cursor_line_number_background == 1 and nil or clrs.nord1,
-    }),
+    -- CursorLineNr({
+    --   fg = clrs.nord4,
+    --   bg = cfg.nord_cursor_line_number_background == 1 and nil or clrs.nord1,
+    -- }),
     Folded({ fg = clrs.nord3.li(7), bg = clrs.nord1, gui = spec.bold }),
     FoldColumn({ fg = clrs.nord3, bg = clrs.nord0 }),
     SignColumn({ fg = clrs.nord1.li(2), bg = clrs.nord0 }),
@@ -201,7 +201,6 @@ local theme = lush(function()
     healthError({ fg = clrs.error }),
     healthSuccess({ fg = clrs.nord14 }),
     healthWarning({ fg = clrs.nord15 }),
-    qfLineNr({ fg = clrs.highlight, bg = clrs.nord6, gui = 'reverse' }),
     -- -- +----------------------+
     -- -- + Language Base Groups +
     -- -- +----------------------+

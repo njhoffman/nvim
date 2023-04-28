@@ -5,20 +5,17 @@ vim.cmd([[
   highlight default link NotifyRunSuccessCommand healthSuccess
 ]])
 
-local get_opts = function(parts)
+local get_opts = function(output, cmd, time)
   -- local orig_map = coreutils.find(vim.api.nvim_get_keymap("n"), "lhs", "gF")
   local render_success = function(bufnr, _, highlights)
     local hl = {
       command = 'NotifyRunSuccessCommand',
       output = 'NotifyRunSuccessOutput',
     }
-    local width = utils.lines_width(vim.fn.flatten({
-      parts.cmd,
-      parts.output,
-    }))
-    utils.render_box(bufnr, highlights, { 'OK', parts.time .. ' ms' }, width)
-    utils.build_line(bufnr, 2, { { parts.cmd, hl.command } })
-    for i, line in ipairs(parts.output) do
+    local width = utils.lines_width(vim.fn.flatten({ cmd, output }))
+    utils.render_box(bufnr, highlights, { 'OK', time .. ' ms' }, width)
+    utils.build_line(bufnr, 2, { { cmd, hl.command } })
+    for i, line in ipairs(output) do
       utils.build_line(bufnr, 2 + i, { { line, hl.output } })
     end
   end
@@ -32,8 +29,7 @@ local get_opts = function(parts)
 end
 
 local notify_success = function(output, cmd, time)
-  local parts = { cmd = cmd, time = time, output = output }
-  local opts = get_opts(parts)
+  local opts = get_opts(output, cmd, time)
   require('notify')
     .instance({
       level = 4,
