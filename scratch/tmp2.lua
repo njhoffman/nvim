@@ -1,7 +1,5 @@
--- local res = vim.fn.luaeval('require("scratch/tmp")')
--- local res = vim.api.nvim_exec2('lua require("scratch/tmp")', { output = true })
--- local res = vim.api.nvim_exec2('lua require("scratch/tmp")', { output = true })
--- local res = vim.api.nvim_eval('require("scratch/tmp")')
-local keys = vim.api.nvim_replace_termcodes("<PageDown>", true, false, false)
-vim.api.nvim_feedkeys(keys, "n", false)
--- vim.dbglog(res)
+local test_func = function()
+  print('TEST')
+end
+
+test_func()

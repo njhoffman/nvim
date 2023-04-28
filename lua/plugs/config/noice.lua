@@ -281,10 +281,10 @@ local cfg = {
       filter = { event = 'msg_show', kind = '', find = '^".+"  ?%d+ lines? %-%-%d+%%%-%-$' },
       view = 'mini',
     },
-    -- { -- Hide diagnostics messages
-    --   filter = { event = 'lsp', find = ' diagnostics_on_open ' },
-    --   opts = { skip = true },
-    -- },
+    { -- Hide diagnostics messages
+      filter = { event = 'lsp', find = ' diagnostics_on_open ' },
+      opts = { skip = true },
+    },
     -- {
     --   filter = { event = 'msg_show', kind = '', find = '^".+"  ?%[.+%] %d+ lines? %-%-%d+%%%-%-$' },
     --   opts = { skip = true },
