@@ -2,8 +2,7 @@
 -- increase fade in frequency
 -- local render = require("plugs.config.nvim-notify-render")
 
-local baseConfig = {
-
+local cfg = {
   level = vim.log.levels.DEBUG,
   -- level = 0,
   fps = 30,
@@ -22,14 +21,31 @@ local baseConfig = {
   max_width = function()
     return math.floor(vim.opt.columns:get() / 3 * 2)
   end,
-  icons = { ERROR = '', WARN = '', INFO = '', DEBUG = '', TRACE = '✎', INSPECT = '', TASK = '', STATUS = '' },
+  icons = {
+    ERROR = '',
+    WARN = '',
+    INFO = '',
+    DEBUG = '',
+    TRACE = '✎',
+    INSPECT = '',
+    RUN = '',
+    STATUS = '',
+  },
   on_open = function(win)
     vim.api.nvim_win_set_option(win, 'winblend', 20)
+    vim.api.nvim_win_set_option(win, 'wrap', true)
     vim.api.nvim_win_set_config(win, { zindex = 100 })
   end,
 }
 
-require('notify').setup(baseConfig)
+local notify_test = function()
+  local notify = require('notify').notify
+  notify('Test', 'info', { render = 'default' })
+end
+
+vim.api.nvim_create_user_command('NotifyTest', notify_test, { desc = 'Notifications renderings' })
+
+require('notify').setup(cfg)
 
 -- You can also use plenary's async library to avoid using callbacks:
 -- local async = require("plenary.async")
