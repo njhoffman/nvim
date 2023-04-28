@@ -130,6 +130,7 @@ local telescope_config = {
       previewer = c_previewers.delta,
       theme = 'dropdown',
     },
+    git_commits = false,
     -- git_commits = {
     --   previewer = c_previewers.delta,
     --   layout_strategy = "vertical",

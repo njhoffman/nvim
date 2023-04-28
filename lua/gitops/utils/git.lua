@@ -193,12 +193,15 @@ M.current_branch = function()
   return string.gsub(output, '\n', '')
 end
 
-M.init_git_command = function(bufnr)
+M.init_git_command = function(bufnr, sub_cmds)
   local command = { 'git' }
   local repo = utils.get_repo(bufnr)
   if repo.gitdir then
     table.insert(command, '--git-dir=' .. repo.gitdir)
     table.insert(command, '--work-tree=' .. repo.worktree)
+  end
+  for _, sub_cmd in ipairs(sub_cmds) do
+    table.insert(command, sub_cmd)
   end
   return command
 end

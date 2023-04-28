@@ -183,7 +183,7 @@ return function(injected_functions)
     Search({ fg = '#74efff', bg = '#0d314c', gui = 'NONE' }),
     Special({ fg = '#487ac8' }),
     SpecialChar({ fg = '#b88698' }), -- For special punctutation that does not fall in the catagories before.
-    Statement({ fg = '#5191C1' }),
+    Statement({ fg = '#5191D1' }),
     String({ fg = '#1094aa' }),
     Structure({ fg = '#3D71AC' }),
     Type({ fg = '#418cc4' }),
@@ -269,6 +269,7 @@ return function(injected_functions)
     sym('@method.call')({ FunctionCall }),
     sym('@nameSpace')({ Statement }),
     sym('@namespace')({ Statement }),
+    sym('@namespace.builtin')({ Keyword }),
     sym('@nospell')({ fg = 'none', bg = 'none', gui = 'none' }),
     sym('@number')({ Number }),
     sym('@operator')({ Operator }),

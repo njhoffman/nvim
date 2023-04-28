@@ -1,12 +1,12 @@
 local Path = require('plenary.path')
-local make_entry = require('telescope.make_entry')
 local pickers = require('telescope.pickers')
-local git_utils = require('gitops.utils.git')
 local finders = require('telescope.finders')
 local actions = require('telescope.actions')
 local utils = require('telescope.utils')
 local previewers = require('telescope.previewers')
 local action_state = require('telescope.actions.state')
+local git_utils = require('gitops.utils.git')
+local make_entry = require('gitops.make_entry')
 
 local M = {}
 
@@ -15,14 +15,14 @@ M.commits = function(opts)
   opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_commits(opts))
 
   local source_bufnr = vim.fn.bufnr()
-  local command = git_utils.init_git_command(source_bufnr)
-  table.insert(command, 'log')
-  table.insert(command, '--pretty=oneline')
-  table.insert(command, '--abbrev-commit')
-  table.insert(command, '--')
-  table.insert(command, '.')
+  local git_command = git_utils.init_git_command(source_bufnr, {
+    'log',
+    '--pretty=oneline',
+    '--abbrev-commit',
+    '--',
+    '.',
+  })
 
-  local git_command = command
   local conf = require('telescope.config').values
 
   pickers
@@ -44,11 +44,11 @@ M.commits = function(opts)
 
         local get_buffer_of_orig = function(selection)
           local value = selection.value .. ':' .. transfrom_file()
-
-          local _command = git_utils.init_git_command(source_bufnr)
-          table.insert(_command, '--no-pager')
-          table.insert(_command, 'show')
-          table.insert(_command, 'value')
+          local _command = git_utils.init_git_command(source_bufnr, {
+            '--no-pager',
+            'show',
+            'value',
+          })
           local content = utils.get_os__command_output(_command, opts.cwd)
 
           local _bufnr = vim.api.nvim_create_buf(false, true)
