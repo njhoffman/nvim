@@ -1,5 +1,19 @@
 local entry_display = require('telescope.pickers.entry_display')
 
+-- stylua: ignore
+local setup_highlights = function()
+  vim.api.nvim_set_hl(0, 'TelescopeGitSha',             { default = true, link = 'Keyword' })
+  vim.api.nvim_set_hl(0, 'TelescopeGitDate',            { default = true, link = 'Comment' })
+  vim.api.nvim_set_hl(0, 'TelescopeGitMessage',         { default = true, link = 'TelescopeNormal' })
+  vim.api.nvim_set_hl(0, 'TelescopeGitAuthor',          { default = true, link = 'Comment' })
+  vim.api.nvim_set_hl(0, 'TelescopeGitStatsFiles',      { default = true, link = 'GitSignsChange' })
+  vim.api.nvim_set_hl(0, 'TelescopeGitStatsInsert',     { default = true, link = 'GitSignsAdd' })
+  vim.api.nvim_set_hl(0, 'TelescopeGitStatsDelete',     { default = true, link = 'GitSignsDelete' })
+  vim.api.nvim_set_hl(0, 'TelescopeGitStatsFilesIcon',  { default = true, link = 'GitSignsChange' })
+  vim.api.nvim_set_hl(0, 'TelescopeGitStatsInsertIcon', { default = true, link = 'GitSignsAdd' })
+  vim.api.nvim_set_hl(0, 'TelescopeGitStatsDeleteIcon', { default = true, link = 'GitSignsDelete' })
+end
+
 -- local handle_entry_index = function(opts, t, k)
 --   local override = ((opts or {}).entry_index or {})[k]
 --   if not override then
@@ -32,43 +46,49 @@ local entry_display = require('telescope.pickers.entry_display')
 --   })
 -- end
 --
+
 local function gen_from_git_commits(opts)
-  opts = opts or {}
-
-  local displayer = entry_display.create({
-    separator = ' ',
-    items = {
-      { width = 8 },
-      { remaining = true },
-    },
-  })
-
-  local make_display = function(entry)
-    return displayer({
-      { entry.value, 'TelescopeResultsIdentifier' },
-      entry.msg,
+  return function(w)
+    opts = opts or {}
+    -- 4 files   5   20 
+    -- 4   20   5 
+    local displayer = entry_display.create({
+      separator = ' ',
+      items = {
+        { width = w.sha },
+        { width = w.date, right_justify = true },
+        { width = w.message },
+        { width = w.author, right_justify = true },
+        { width = w.stat_files + 3, right_justify = true },
+        { width = w.stat_insert + 3, right_justify = true },
+        { width = w.stat_delete + 3, right_justify = true },
+      },
     })
-  end
 
-  return function(entry)
-    if entry == '' then
-      return nil
+    local make_display = function(entry)
+      -- strings.align_str(entry.hash, widths.name, true),
+      return displayer({
+        { entry.value.sha, 'TelescopeGitSha' },
+        { entry.value.date, 'TelescopeGitDate' },
+        { entry.value.message, 'TelescopeGitMessage' },
+        { entry.value.author, 'TelescopeGitAuthor' },
+        { entry.value.stat_files .. '  ', 'TelescopeGitStatsFiles' },
+        { entry.value.stat_insert .. '  ', 'TelescopeGitStatsInsert' },
+        { entry.value.stat_delete .. '  ', 'TelescopeGitStatsDelete' },
+        -- { entry., 'TelescopeResultsIdentifier' },
+      })
     end
 
-    local sha, msg = string.match(entry, '([^ ]+) (.+)')
+    setup_highlights()
 
-    if not msg then
-      sha = entry
-      msg = '<empty commit message>'
+    return function(entry)
+      return {
+        value = entry,
+        ordinal = entry.sha .. ' ' .. entry.message,
+        display = make_display,
+        current_file = opts.current_file,
+      }
     end
-    vim.dbglog('ENTRY', entry)
-    return {
-      value = sha,
-      ordinal = sha .. ' ' .. msg,
-      msg = msg,
-      display = make_display,
-      current_file = opts.current_file,
-    }
   end
 end
 

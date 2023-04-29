@@ -1,12 +1,12 @@
-﻿local cmp = require("cmp")
-local cmp_types = require("cmp.types.cmp")
+local cmp = require('cmp')
+local cmp_types = require('cmp.types.cmp')
 local MIN_LABEL_WIDTH = 20
-local ELLIPSIS_CHAR = "…"
+local ELLIPSIS_CHAR = '…'
 local MAX_DOCUMENT_WIDTH = 50
 local MAX_LABEL_WIDTH = 40
-local SYMBOL_MAP = require("utils.lspkind").SYMBOL_MAP
+local SYMBOL_MAP = require('utils.lspkind').SYMBOL_MAP
 -- local WIN_HIGHLIGHT = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:Search"
-local WIN_HIGHLIGHT = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None"
+local WIN_HIGHLIGHT = 'Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None'
 
 local function get_lsp_completion_context(completion, source)
   local ok, source_name = pcall(function()
@@ -15,9 +15,9 @@ local function get_lsp_completion_context(completion, source)
   if not ok then
     return nil
   end
-  if source_name == "tsserver" then
+  if source_name == 'tsserver' then
     return completion.detail
-  elseif source_name == "pyright" then
+  elseif source_name == 'pyright' then
     if completion.labelDetails ~= nil then
       return completion.labelDetails.description
     end
@@ -26,75 +26,75 @@ end
 
 local function has_words_before()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
 
 local sources = {
   main = {
     {
-      { name = "nvim_lsp" },
-      { name = "nvim_lua" },
-      { name = "luasnip" },
-      { name = "emoji" },
+      { name = 'nvim_lsp' },
+      { name = 'nvim_lua' },
+      { name = 'luasnip' },
+      { name = 'emoji' },
     },
     {
-      { name = "treesitter" },
-      { name = "path" },
+      { name = 'treesitter' },
+      { name = 'path' },
       -- Distracting!
       -- { name = "spell" },
       -- { name = "dictionary" },
     },
   },
   gitcommit = {
-    { name = "cmp_git" },
-    { name = "nvim_lsp" },
-    { name = "nvim_lua" },
+    { name = 'cmp_git' },
+    { name = 'nvim_lsp' },
+    { name = 'nvim_lua' },
 
-    { name = "nvim_lsp_document_symbol" },
-    { name = "buffer" },
-    { name = "dictionary" },
-    { name = "spell" },
-    { name = "path" },
+    { name = 'nvim_lsp_document_symbol' },
+    { name = 'buffer' },
+    { name = 'dictionary' },
+    { name = 'spell' },
+    { name = 'path' },
   },
   cmdsearch = {
-    { name = "nvim_lsp" },
-    { name = "nvim_lsp_document_symbol" },
-    { name = "dictionary" },
-    { name = "buffer" },
+    { name = 'nvim_lsp' },
+    { name = 'nvim_lsp_document_symbol' },
+    { name = 'dictionary' },
+    { name = 'buffer' },
   },
   cmdline = {
     -- { name = "cmdline_history" },
-    { name = "cmdline" },
-    { name = "path", options = { trailing_slash = false, label_trailing_slash = false } },
+    { name = 'cmdline' },
+    { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
     -- { name = "dictionary" },
     -- { name = "buffer" },
   },
 }
 local mapping = {
   main = {
-    ["<Up>"] = cmp.mapping.scroll_docs(-1),
-    ["<Down>"] = cmp.mapping.scroll_docs(1),
-    ["<C-Up>"] = cmp.mapping.scroll_docs(-6),
-    ["<C-Down>"] = cmp.mapping.scroll_docs(6),
-    ["<M-b>"] = cmp.mapping.scroll_docs(-6),
-    ["<M-f>"] = cmp.mapping.scroll_docs(6),
-    ["<C-f>"] = cmp.mapping.select_next_item({ count = 6 }),
-    ["<C-b>"] = cmp.mapping.select_prev_item({ count = 6 }),
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping.confirm({ select = false }),
+    ['<Up>'] = cmp.mapping.scroll_docs(-1),
+    ['<Down>'] = cmp.mapping.scroll_docs(1),
+    ['<C-Up>'] = cmp.mapping.scroll_docs(-6),
+    ['<C-Down>'] = cmp.mapping.scroll_docs(6),
+    ['<M-b>'] = cmp.mapping.scroll_docs(-6),
+    ['<M-f>'] = cmp.mapping.scroll_docs(6),
+    ['<C-f>'] = cmp.mapping.select_next_item({ count = 6 }),
+    ['<C-b>'] = cmp.mapping.select_prev_item({ count = 6 }),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
 
     -- special: trigger snippets without typing the full trigger
-    ["<A-;>"] = cmp.mapping(function()
+    ['<A-;>'] = cmp.mapping(function()
       if cmp.visible() then
         cmp.select_next_item()
         cmp.mapping.confirm({ select = false })()
       end
-    end, { "i", "s" }),
+    end, { 'i', 's' }),
     -- ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
   },
   cmdline = {
-    ["<C-f>"] = cmp.mapping(function(fallback)
+    ['<C-f>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_next_item({
@@ -104,8 +104,8 @@ local mapping = {
       else
         fallback()
       end
-    end, { "c" }),
-    ["<C-b>"] = cmp.mapping(function(fallback)
+    end, { 'c' }),
+    ['<C-b>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_prev_item({
@@ -115,22 +115,44 @@ local mapping = {
       else
         fallback()
       end
-    end, { "c" }),
+    end, { 'c' }),
   },
 }
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
+      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
     end,
   },
-  -- experimental = {
-  --   ghost_text = {
-  --     hl_group = "LspCodeLens",
-  --   },
-  --   --   native_menu = true,
-  -- },
+  experimental = {
+    ghost_text = {
+      hl_group = 'CmpGhostText',
+    },
+    --   native_menu = true,
+  },
+  formatting = {
+    -- format = require('tailwindcss-colorizer-cmp').formatter,
+    fields = { 'kind', 'abbr', 'menu' },
+    format = function(entry, vim_item)
+      local item_with_kind = require('lspkind').cmp_format({
+        mode = 'symbol_text',
+        maxwidth = MAX_LABEL_WIDTH,
+        symbol_map = SYMBOL_MAP,
+      })(entry, vim_item)
+
+      local kind_s_menu = vim.split(item_with_kind.kind, '%s', { trimempty = true })
+      item_with_kind.kind = ' ' .. (kind_s_menu[1] or '') .. ' '
+      item_with_kind.menu = '    (' .. (kind_s_menu[2] or '') .. ')'
+      item_with_kind.menu = vim.trim(item_with_kind.menu)
+
+      local completion_context = get_lsp_completion_context(entry.completion_item, entry.source)
+      if completion_context ~= nil and completion_context ~= '' then
+        item_with_kind.menu = item_with_kind.menu .. [[ -> ]] .. completion_context
+      end
+      return item_with_kind
+    end,
+  },
   window = {
     max_width = MAX_DOCUMENT_WIDTH,
     col_offset = -3,
@@ -138,29 +160,6 @@ cmp.setup({
     completion = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT }),
     documentation = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT }),
     preview = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT }),
-  },
-  formatting = {
-    fields = { "kind", "abbr", "menu" },
-    --- @param entry cmp.Entry
-    --- @param vim_item vim.CompletedItem
-    format = function(entry, vim_item)
-      local item_with_kind = require("lspkind").cmp_format({
-        mode = "symbol_text",
-        maxwidth = MAX_LABEL_WIDTH,
-        symbol_map = SYMBOL_MAP,
-      })(entry, vim_item)
-
-      local kind_s_menu = vim.split(item_with_kind.kind, "%s", { trimempty = true })
-      item_with_kind.kind = " " .. (kind_s_menu[1] or "") .. " "
-      item_with_kind.menu = "    (" .. (kind_s_menu[2] or "") .. ")"
-      item_with_kind.menu = vim.trim(item_with_kind.menu)
-
-      local completion_context = get_lsp_completion_context(entry.completion_item, entry.source)
-      if completion_context ~= nil and completion_context ~= "" then
-        item_with_kind.menu = item_with_kind.menu .. [[ -> ]] .. completion_context
-      end
-      return item_with_kind
-    end,
   },
   mapping = cmp.mapping.preset.insert(mapping.main),
   sources = cmp.config.sources(sources.main[1], sources.main[2]),
@@ -170,14 +169,14 @@ cmp.setup({
   },
 })
 
-cmp.setup.filetype("gitcommit", { sources = cmp.config.sources(sources.gitcommit) })
+cmp.setup.filetype('gitcommit', { sources = cmp.config.sources(sources.gitcommit) })
 
-cmp.setup.cmdline({ "/", "?" }, {
+cmp.setup.cmdline({ '/', '?' }, {
   mapping = cmp.mapping.preset.cmdline(mapping.cmdline),
   sources = sources.cmdsearch,
 })
 
-cmp.setup.cmdline(":", {
+cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(mapping.cmdline),
   sources = cmp.config.sources(sources.cmdline),
 })

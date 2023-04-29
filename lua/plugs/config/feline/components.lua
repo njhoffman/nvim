@@ -62,7 +62,7 @@ M.GitBranchComponent = {
 M.GitDiffAddedComponent = {
   provider = provider_git.git_diff_added,
   hl = {
-    fg = 'green',
+    fg = '#129A77',
     bg = 'black',
   },
 }
@@ -70,7 +70,7 @@ M.GitDiffAddedComponent = {
 M.GitDiffChangedComponent = {
   provider = provider_git.git_diff_changed,
   hl = {
-    fg = 'orange',
+    fg = '#6191f1',
     bg = 'black',
   },
 }
@@ -78,16 +78,9 @@ M.GitDiffChangedComponent = {
 M.GitDiffRemovedComponent = {
   provider = provider_git.git_diff_removed,
   hl = {
-    fg = 'red',
+    fg = '#8F313A',
     bg = 'black',
   },
-  -- right_sep = {
-  --   str = ' ',
-  --   hl = {
-  --     fg = 'NONE',
-  --     bg = 'black',
-  --   },
-  -- },
 }
 -- Display <e> 0x65
 M.AsciiComponent = {

@@ -22,39 +22,13 @@ local function define_augroups(definitions) -- {{{1
 end
 
 -- stylua: ignore
-
 local autocmds = {
-  SecondaryWindows = {
-    {
-      'FileType',
-      'dashboard',
-      'nnoremap <buffer><silent> q :BufferDelete<cr> | nnoremap <buffer><silent>  :BufferDelete<cr>',
-    },
-    {
-      'BufNewFile,BufRead',
-      '*nvim/option-window',
-      'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>',
-    },
-    { 'FileType', 'query', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
-    { 'FileType', 'fugitive', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
-    { 'FileType', 'notify', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
-    { 'FileType', 'noice', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
-    { 'FileType', 'qf', 'setlocal nonumber norelativenumber | nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
-    { 'FileType', 'man', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
-    { 'FileType', 'nerdtree', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
-    { 'FileType', 'help', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>' },
-    { 'FileType', 'NvimTree', 'nnoremap <buffer><silent>  :q<cr>' },
-    { 'FileType', 'Mundo', 'nnoremap <buffer><silent>  :q<cr>' },
-    { 'FileType', 'MundoDiff', 'nnoremap <buffer><silent>  :q<cr>' },
-  },
   wins = {
     -- { 'BufEnter', 'NvimTree', [[setlocal cursorline]] },
     -- Equalize window dimensions when resizing vim window
-    { 'VimResized', '*', [[tabdo wincmd =]] },
     -- Force write shada on leaving nvim
     { 'VimLeave', '*', [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
     -- Check if file changed when its window is focus, more eager than 'autoread'
-    { 'FocusGained', '*', 'checktime' },
     -- -- {"CmdwinEnter,CmdwinLeave", "*", "lua require'wlfloatline'.toggle()"};
   },
   fasd = { { 'BufRead', '*', commands.fasd_update } },
@@ -66,8 +40,11 @@ local autocmds = {
   },
 
   FiletypeDetect = {
+    { 'FileType', 'qf', 'setlocal nonumber norelativenumber' },
+    { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
+    { {'BufNewFile', 'BufRead'}, '*nvim/option-window', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>', },
     { { 'BufNewFile', 'BufRead' }, '*startuptime.tsv',   'setlocal ft=crontab syn=crontab' },
-    { { 'BufNewFile', 'BufRead' }, '*.log',              "lua require('commands.format').create_cmd_truncate()" },
+    -- { { 'BufNewFile', 'BufRead' }, '*.log',              "lua require('commands.format').create_cmd_truncate()" },
     { { 'BufNewFile', 'BufRead' }, '*.ejs',              'set ft=html' },
     { { 'BufNewFile', 'BufRead' }, '*.rasi',             'set syn=css.rasi' },
     { { 'BufNewFile', 'BufRead' }, '*.bash*',            'let b:is_bash = 1 | setfiletype bash' },
@@ -98,6 +75,12 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, '*/templates/*.yaml', 'set ft=helm' },
     { { 'BufNewFile', 'BufRead' }, '*/templates/*.tpl',  'set ft=helm' },
     { { 'BufNewFile', 'BufRead' }, '*/templates/*.txt',  'set ft=helm' },
+  --   {"FileType", "markdown.pandoc", "hi! markdownH1 guifg=#45a5f8"},
+  --   {"FileType", "markdown.pandoc", "hi! markdownH2 guifg=#45a5e8"},
+  --   {"FileType", "markdown.pandoc", "hi! markdownH3 guifg=#45a5d8"},
+  --   {"FileType", "markdown.pandoc", "hi! markdownH4 guifg=#45a5c8"},
+  --   {"FileType", "markdown.pandoc", "hi! markdownH5 guifg=#45a5b8"},
+  --   {"FileType", "markdown.pandoc", "hi! markdownH6 guifg=#45a5a8"},
     -- { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 synmaxcol=500" },
     --   au BufNewFile,BufRead .pa set ft=config
     --   au BufNewFile,BufRead */ansible/*.yml  set ft=yaml.ansible
@@ -105,11 +88,6 @@ local autocmds = {
     --   au BufNewFile,BufRead bundles.txt setlocal ft=sh
     --   au BufNewFile,BufRead bundles.*.txt setlocal ft=sh
     --   " au BufEnter * if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' | setf preview | endif
-  },
-  WinbarDisable = {
-    { 'FileType', 'neo-tree', 'set winbar=' },
-    { 'FileType', 'aerial', 'set winbar=' },
-    { 'FileType', 'SidebarNvim', 'set winbar=' },
   },
   VimadeDap = {
     { 'FileType', 'dap-log', 'VimadeBufDisable' },
@@ -137,26 +115,10 @@ local autocmds = {
     -- { "FocusGained", "*", "VimadeUnfadeActive" },
     -- { "BufLeave,FocusLost", "*", M.vimadeCheck() },
   },
-  -- FileTypes = {
-  --   -- { "FileType", "lua.lush", "" },
-  --   {"FileType", "markdown.pandoc", "set conceallevel=2 nospell"},
-  --   {"FileType", "markdown.pandoc", "hi! markdownH1 guifg=#45a5f8"},
-  --   {"FileType", "markdown.pandoc", "hi! markdownH2 guifg=#45a5e8"},
-  --   {"FileType", "markdown.pandoc", "hi! markdownH3 guifg=#45a5d8"},
-  --   {"FileType", "markdown.pandoc", "hi! markdownH4 guifg=#45a5c8"},
-  --   {"FileType", "markdown.pandoc", "hi! markdownH5 guifg=#45a5b8"},
-  --   {"FileType", "markdown.pandoc", "hi! markdownH6 guifg=#45a5a8"},
-  --   -- { "FileType", "*", "setlocal formatoptions-=c formatoptions-=r formatoptions-=o" },
-  --   {"FileType", "toggleterm", "setlocal nonumber norelativenumber"}
-  -- },
-  -- shutdown = {
-  --   -- save session on exit (:h v:this_session)
-  --   { "VimLeavePre", "*", "execute 'mksession! " .. vim.fn.stdpath("data") .. "/sessions/previous.vim'" },
-  -- },
   Shape = {
-    { 'FocusLost', '*', 'hi TermCursor cterm=NONE gui=NONE' },
-    { 'FocusGained', '*', 'hi TermCursor cterm=reverse gui=reverse' },
-    { 'VimLeave,VimSuspend', '*', 'set guicursor=a:block-blinkon90' },
+    { 'FocusLost',               '*', 'hi TermCursor cterm=NONE gui=NONE'    },
+    { 'FocusGained',             '*', 'hi TermCursor cterm=reverse gui=reverse' },
+    { {'VimLeave','VimSuspend'}, '*', 'set guicursor=a:block-blinkon90' },
   },
   terminal = {
     { 'TermOpen', '*', [[tnoremap <buffer> <Esc> <c-\><c-n>]] },
@@ -165,18 +127,13 @@ local autocmds = {
   },
   WriteEvents = {
     { 'BufWritePost', '*tmux.conf', [[execute ':!tmux source-file %']] },
-    --   { "BufWritePost", "load.lua", "PackerCompile" },
   },
 }
-
--- autocmds.Winbar = {
---   { "CursorMoved,BufWinEnter,BufFilePost", "*", winbar.init },
--- }
-
 autocmds.NumberToggle = {
-  { 'BufEnter,FocusGained,InsertLeave', '*', commands.number_toggle },
-  { 'BufLeave,FocusLost,InsertEnter', '*', 'set norelativenumber' },
+  { { 'BufEnter', 'FocusGained', 'InsertLeave' }, '*', "if &readonly != 1 && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif" },
+  { { 'BufLeave', 'FocusLost', 'InsertEnter' }, '*', 'set norelativenumber' },
 }
+
 autocmds.HighlightYank = {
   { 'TextYankPost', '*', "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=300 }" },
 }

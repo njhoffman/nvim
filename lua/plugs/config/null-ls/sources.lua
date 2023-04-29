@@ -217,7 +217,7 @@ M.sources = {
   null_ls.builtins.formatting.xmllint,
   null_ls.builtins.formatting.yamlfix,
   null_ls.builtins.formatting.yamlfmt,
-  null_ls.builtins.formatting.yq,
+  -- null_ls.builtins.formatting.yq,
   null_ls.builtins.formatting.golines.with({ extra_args = { '--max-len=120', '--base-formatter=gofumpt' } }),
   diagnostics_by_line({
     name = 'todo-fixme',

@@ -109,7 +109,7 @@ local telescope_config = {
       mappings = mappings.file_picker,
       find_command = commands.rg,
     },
-    colorscheme = { enable_preivew = true },
+    colorscheme = { enable_preview = true },
     oldfiles = {
       mappings = mappings.file_picker,
       find_command = commands.rg,

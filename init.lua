@@ -5,10 +5,10 @@ require('utils.lazy').setup({ cache = false, reload = false })
 
 for _, mod_name in ipairs({
   'mapper.setup',
+  'project',
   'devbox',
   'commands',
   'autocommands',
-  'project',
   'runner',
   'stats',
   'hover.setup',

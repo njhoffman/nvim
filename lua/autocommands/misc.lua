@@ -13,20 +13,73 @@
 
 -- Make window title indicative of our cwd
 -- Loaded before normal autocmds (./autocmds) because we leverage the `VimEnter` here.
+
 local set_window_title = function()
-  local path = vim.split(vim.fn.getcwd(), "/", {})
-  vim.opt.titlestring = [[%{v:progname}: ]] .. vim.fn.join({ path[#path - 1], path[#path] }, "/")
+  local path = vim.split(vim.fn.getcwd(), '/', {})
+  vim.opt.titlestring = [[%{v:progname}: ]] .. vim.fn.join({ path[#path - 1], path[#path] }, '/')
   vim.opt.title = true
 end
 
-vim.api.nvim_create_autocmd({ "DirChanged", "VimEnter" }, {
-  group = vim.api.nvim_create_augroup("UpdateWindowTitle", { clear = true }),
+vim.api.nvim_create_autocmd({ 'DirChanged', 'VimEnter' }, {
+  group = vim.api.nvim_create_augroup('UpdateWindowTitle', { clear = true }),
   callback = function()
     local scope = vim.v.event.scope
-    if scope == nil or scope == "global" then
+    if scope == nil or scope == 'global' then
       set_window_title()
     end
   end,
+})
+
+-- close some filetypes with <q>
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('winclose_q', { clear = true }),
+  pattern = {
+    'Mundo',
+    'MundoDiff',
+    'NvimTree',
+    'PlenaryTestPopup',
+    'dashboard',
+    'fugitive',
+    'help',
+    'lspinfo',
+    'man',
+    'nerdtree',
+    'noice',
+    'notify',
+    'qf',
+    'query',
+    'spectre_panel',
+    'startuptime',
+    'tsplayground',
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.keymap.set('n', 'q', '<cmd>close<cr>', { buffer = event.buf, silent = true })
+    vim.keymap.set('n', '<esc>', '<cmd>close<cr>', { buffer = event.buf, silent = true })
+  end,
+})
+
+-- -- Auto create dir when saving a file, in case some intermediate directory does not exist
+-- vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+--   group = augroup("auto_create_dir"),
+--   callback = function(event)
+--     local file = vim.loop.fs_realpath(event.match) or event.match
+--     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
+--   end,
+-- })
+
+-- resize splits if window got resized
+vim.api.nvim_create_autocmd({ 'VimResized' }, {
+  group = vim.api.nvim_create_augroup('resize_splits', { clear = true }),
+  callback = function()
+    vim.cmd('tabdo wincmd =')
+  end,
+})
+
+-- Check if we need to reload the file when it changed
+vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+  group = vim.api.nvim_create_augroup('checktime', { clear = true }),
+  command = 'checktime',
 })
 
 vim.cmd([=[
@@ -51,32 +104,15 @@ vim.cmd([[
     autocmd InsertLeave * call chansend(v:stderr, "\e[?737769l")
   augroup end
 ]])
+-- if config.autocommands.relnum_in_visual_mode and vim.fn.exists('##ModeChanged') == 1 then
+--    -- Show relative line numbers only when they matter (linewise and blockwise
+--    -- selection) and 'number' is set (avoids horizontal flickering)
+--    vim.cmd([[autocmd ModeChanged *:[V\x16]* let &l:relativenumber = &l:number == 1]])
+--    -- - Using `mode () =~#...` handles switching between linewise and blockwise mode.
+--    vim.cmd([[autocmd ModeChanged [V\x16]*:* let &l:relativenumber = mode() =~# '^[V\x16]']])
+--  end
 
 -- #{?pane_in_mode,#[fg=white#,bg=red],#[fg=red#,bg=white]}#W .
 vim.cmd([[
   command! SqlVis silent !tmux display-popup -b rounded -S 'fg=\#2255AA' -T '' -E -h 70\% -w90\% "psql --csv postgres://spadash:spadash@localhost/spadash --file=%:p | /bin/zsh -c 'vd -f csv --color-default=\"8 on black\" '"
 ]])
-
--- { "FileType", "nofile", "nnoremap <buffer> q :q<cr> | nnoremap <buffer>  :q<cr>" },
---  getcmdwintype()
--- :	normal Ex command
--- >	debug mode command |debug-mode|
--- /	forward search string
--- ?	backward search string
--- =	expression for "= |expr-register|
--- @	string for |input()|
--- -	text for |:insert| or |:append|
-
--- exit terminal when shell exits
--- au TermClose * call feedkeys("i")
-
--- vim.cmd [[autocmd BufReadPost * lua goto_last_pos()]]
-
--- local M = {}
-
--- M.vimadeCheck = function()
---   if vim.bo.filetype == "dapui_scopes" then vim.cmd([[VimadeBufDisable]]) end
---   -- print(vim.bo.filetype)
--- end
-
--- Print a short info of the selected list in the command-line after switching lists:

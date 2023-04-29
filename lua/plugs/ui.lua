@@ -3,6 +3,7 @@ local utils = require('utils.lazy')
 local plugins = {
   {
     'tummetott/reticle.nvim',
+    lazy = false,
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       always = {

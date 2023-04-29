@@ -1,0 +1,21 @@
+# Toplevel heading
+
+import {getCurrentYear} from './date.js'
+export const currentYear = getCurrentYear()
+
+# The current year is {currentYear}
+
+We can write JSX anywhere, similar to how you can write HTML in Markdown.
+
+import {Box} from 'design-system'
+
+<Box>
+  Here's some text
+</Box>
+MDX
+
+And even inline, inside of a heading:
+
+export const Thing = () => <>World\</>
+
+# Hello <Thing />

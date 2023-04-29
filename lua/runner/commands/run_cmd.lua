@@ -25,6 +25,7 @@ end
 --  }):start()
 
 local exec_shell_cmd = function(run_cmd)
+  -- check vim.fn.system
   ---@diagnostic disable-next-line: missing-parameter
   local start_time = vim.fn.reltime()
   vim.cmd([[ let temp_reg = @" | redir @" ]])

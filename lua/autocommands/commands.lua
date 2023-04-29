@@ -18,10 +18,7 @@ local function fasd_update()
   end
 end
 
-local number_toggle = "if &filetype != 'dashboard' && &readonly != 1 && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif"
-
 return {
-  number_toggle = number_toggle,
   fasd_update = fasd_update,
   goto_last_pos = goto_last_pos,
 }

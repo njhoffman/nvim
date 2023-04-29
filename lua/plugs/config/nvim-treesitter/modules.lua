@@ -1,6 +1,11 @@
 local configs = require('nvim-treesitter.configs')
 
 local modules = {
+  query_linter = {
+    enable = true,
+    use_virtual_text = true,
+    lint_events = { 'BufWrite', 'CursorHold' },
+  },
   playground = {
     enable = true,
     disable = {
@@ -72,16 +77,17 @@ local modules = {
     enable = true,
     use_languagetree = true,
     disable = {
-      'wgsl',
-      'wgsl_bevy',
-      'help',
-      'latex',
-      'bash',
-      'typescript',
-      'markdown',
+
+      -- 'wgsl',
+      -- 'wgsl_bevy',
+      -- 'help',
+      -- 'latex',
+      -- 'bash',
+      -- 'typescript',
+      -- 'markdown',
     },
-    -- TODO: replace bash and lua highlights with treesitter
     additional_vim_regex_highlighting = {
+      'mdx',
       'zsh',
     },
     custom_captures = {
@@ -168,13 +174,28 @@ local modules = {
         ['if'] = '@function.inner',
         ['ac'] = '@class.outer',
         ['ic'] = '@class.inner',
-        -- ["am"] = "@call.outer",
-        -- ["im"] = "@call.inner",
-        -- ["ab"] = "@block.outer",
-        -- ["ib"] = "@block.inner",
+        -- ["af"] = "@function.outer",
+        -- ["if"] = "@function.inner",
+        -- ["at"] = "@class.outer",
+        -- ["it"] = "@class.inner",
+        -- ["ac"] = "@call.outer",
+        -- ["ic"] = "@call.inner",
         -- ["aa"] = "@parameter.outer",
         -- ["ia"] = "@parameter.inner",
+        -- ["al"] = "@loop.outer",
+        -- ["il"] = "@loop.inner",
+        -- ["ai"] = "@conditional.outer",
+        -- ["ii"] = "@conditional.inner",
+        -- ["a/"] = "@comment.outer",
+        -- ["i/"] = "@comment.inner",
+        -- ["ab"] = "@block.outer",
+        -- ["ib"] = "@block.inner",
         -- ["as"] = "@statement.outer",
+        -- ["is"] = "@scopename.inner",
+        -- ["aA"] = "@attribute.outer",
+        -- ["iA"] = "@attribute.inner",
+        -- ["aF"] = "@frame.outer",
+        -- ["iF"] = "@frame.inner",
       },
     },
     swap = {

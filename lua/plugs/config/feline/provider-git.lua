@@ -1,26 +1,34 @@
 local M = {}
 
+local get_buf_var = function(name)
+  local ok, val = pcall(vim.api.nvim_buf_get_var, 0, name)
+  if ok then
+    return val
+  end
+  return nil
+end
+
 function M.git_branch()
-  return vim.b.gitsigns_head or '', ' '
+  return get_buf_var('gitsigns_head') or '', ' '
 end
 
 -- Common function used by the git providers
 local function git_diff(type)
-  local gsd = vim.b.gitsigns_status_dict
+  local gsd = get_buf_var('gitsigns_status_dict')
   if gsd and gsd[type] and gsd[type] > 0 then
     return tostring(gsd[type])
   end
   return ''
 end
 
---     烙
+--     烙 
 function M.git_diff_added()
-  return git_diff('added'), '  '
+  return git_diff('added'), '  '
 end
 
--- ﯰ   
+-- ﯰ    
 function M.git_diff_removed()
-  return git_diff('removed'), '  '
+  return git_diff('removed'), '  '
 end
 
 -- 柳   
@@ -30,7 +38,7 @@ end
 
 -- Utility function to check if git provider information is available
 function M.git_info_exists()
-  return vim.b.gitsigns_head or vim.b.gitsigns_status_dict
+  return get_buf_var('gitsigns_head') or get_buf_var('gitsigns_status_dict')
 end
 
 return M

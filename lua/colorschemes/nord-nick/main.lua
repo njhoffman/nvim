@@ -95,9 +95,7 @@ local clrs = {
 }
 
 local clr_over = {
-  -- selection = "#2F3243",
-  -- -selection = "#0f2a56",
-  selection = '#1c1f40',
+  selection = '#001a36',
   orange_faded = '#80788a',
   orange = '#cc8877',
   yellow = '#bdb994',
@@ -145,7 +143,7 @@ return function(injected_functions)
     LineNr({ fg = clrs.nord3 }),
     Boolean({ fg = '#5370af' }),
     Number({ fg = '#4078c0' }),
-    CursorLine({ bg = '#0c1a28', gui = 'none' }),
+    CursorLine({ bg = '#0a142f', gui = 'bold' }),
     CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
     -- CursorColumn({ bg = '#7722ff' }),
     CursorColumn({ bg = CursorLine.bg }),
@@ -211,10 +209,22 @@ return function(injected_functions)
     DiagnosticWarn({ fg = clrs.nord13.da(30) }),
     DiagnosticHint({ fg = clrs.nord8.da(50) }),
     DiagnosticInfo({ fg = clrs.nord10 }),
-    DiagnosticVirtualTextError({ fg = DiagnosticError.fg.da(20), gui = 'italic' }),
-    DiagnosticVirtualTextWarn({ fg = DiagnosticWarn.fg, gui = 'italic' }),
-    DiagnosticVirtualTextHint({ fg = DiagnosticHint.fg, gui = 'italic' }),
-    DiagnosticVirtualTextInfo({ fg = DiagnosticInfo.fg, gui = 'italic' }),
+    DiagnosticFloatingError({ fg = clrs.nord4 }),
+    DiagnosticFloatingWarn({ fg = clrs.nord4 }),
+    DiagnosticFloatingHint({ fg = clrs.nord4 }),
+    DiagnosticFloatingInfo({ fg = clrs.nord4 }),
+    DiagnosticSignError({ fg = clrs.nord11 }),
+    DiagnosticSignWarn({ fg = clrs.nord13 }),
+    DiagnosticSignHint({ fg = clrs.nord10 }),
+    DiagnosticSignInfo({ fg = clrs.nord8 }),
+    DiagnosticUnderlineError({ fg = 'none', gui = 'none' }),
+    DiagnosticUnderlineWarn({ fg = 'none', gui = 'none' }),
+    DiagnosticUnderlineHint({ fg = 'none', gui = 'none' }),
+    DiagnosticUnderlineInfo({ fg = 'none', gui = 'none' }),
+    DiagnosticVirtualTextWarn({ fg = DiagnosticWarn.fg.de(20).li(10), gui = 'italic' }),
+    DiagnosticVirtualTextError({ fg = DiagnosticError.fg.de(20).li(10), gui = 'italic' }),
+    DiagnosticVirtualTextHint({ fg = DiagnosticHint.fg.de(20).li(10), gui = 'italic' }),
+    DiagnosticVirtualTextInfo({ fg = DiagnosticInfo.fg.de(20).da(10), gui = 'italic' }),
     LspDiagnosticsDefaultError({ DiagnosticError }),
     LspDiagnosticsDefaultWarn({ DiagnosticWarn }),
     LspDiagnosticsDefaultHint({ DiagnosticHint }),
@@ -252,7 +262,7 @@ return function(injected_functions)
     sym('@comment.documentation')({ Comment }),
     sym('@constant')({ Constant }),
     sym('@constant.builtin')({ ConstantBuiltin }),
-    sym('@error')({ Normal }),
+    sym('@error')({ Error }),
     sym('@exception')({ Special }),
     sym('@field')({ Field }),
     sym('@function')({ Function }),
@@ -282,7 +292,8 @@ return function(injected_functions)
     sym('@string')({ String }),
     sym('@tag')({ fg = clr_over.orange }),
     sym('@tag.delimiter')({ fg = clr_over.orange }),
-    sym('@text.literal')({ gui = 'none' }),
+    sym('@text.literal')({ gui = 'none', fg = '#4789aa' }),
+    sym('@text.literal.markdown_inline')({ fg = '#4789aa' }),
     sym('@text.reference')({ fg = '#1abc9c' }),
     sym('@text.title')({ fg = Title.fg }),
     sym('@text.todo')({ TodoMsg }),
@@ -294,6 +305,55 @@ return function(injected_functions)
     sym('@uri')({ fg = '#8eb9f6', gui = 'none' }),
     sym('@variable')({ Variable }),
     sym('@variable.builtin')({ Identifier }),
+
+    -- ["@punctuation.bracket"] = {
+    --   fg = "#a9b1d6"
+    -- },
+    -- ["@punctuation.delimiter"] = {
+    --   fg = "#89ddff"
+    -- },
+    -- ["@punctuation.special"] = {
+    --   fg = "#89ddff"
+    -- },
+    -- ["@punctuation.special.markdown"] = {
+    --   bold = true,
+    --   fg = "#ff9e64"
+    -- },
+    -- ["@string.documentation"] = {
+    --   fg = "#e0af68"
+    -- },
+    -- ["@string.escape"] = {
+    --   fg = "#bb9af7"
+    -- },
+    -- ["@string.regex"] = {
+    --   fg = "#b4f9f8"
+    -- },
+    -- ["@text.danger"] = {
+    --   bg = "#db4b4b",
+    --   fg = "#24283b"
+    -- },
+    -- ["@text.diff.add"] = {
+    --   link = "DiffAdd"
+    -- },
+    -- ["@text.diff.delete"] = {
+    --   link = "DiffDelete"
+    -- },
+    -- ["@text.reference"] = {
+    --   fg = "#1abc9c"
+    -- },
+    -- ["@text.todo.checked"] = {
+    --   fg = "#73daca"
+    -- },
+    -- ["@text.todo.unchecked"] = {
+    --   fg = "#7aa2f7"
+    -- },
+    -- ["@text.warning"] = {
+    --   bg = "#e0af68",
+    --   fg = "#24283b"
+    -- },
+    -- ["@type.builtin"] = {
+    --   fg = "#29a4bd"
+    -- },
     -- luaTSFunction({ TSMethod }),
     -- sym("@constructor")({ fg = "#bb9af7" }),
     -- sym("@keyword")({fg = "#9d7cd8", style = {italic = true, }}),
@@ -312,7 +372,6 @@ return function(injected_functions)
     sym('@text.danger')({ bg = '#db4b4b', fg = '#24283b' }),
     sym('@text.diff.add')({ DiffAdd }),
     sym('@text.diff.delete')({ DiffDelete }),
-    sym('@text.literal.markdown_inline')({ bg = '#414868', fg = '#7aa2f7' }),
     -- sym("@text.todo.checked")({fg = "#73daca"}),
     -- sym("@text.todo.unchecked")({ fg = "#7aa2f7", }),
     -- sym("@text.warning")({ bg = "#e0af68", fg = "#24283b", }),
@@ -771,7 +830,7 @@ return function(injected_functions)
     TelescopeResults({ bg = 'none' }),
     TelescopeResultsBorder({ fg = '#416191', bg = 'none' }),
     TelescopeSelectionCaret({ fg = '#04c9fc' }),
-    TelescopeSelection({ fg = '#18bbdd', gui = 'bold', bg = '#16202f' }), -- bg = "#202324"
+    TelescopeSelection({ fg = '#38aaee', gui = 'bold', bg = CursorLine.bg }), -- bg = "#202324"
     TelescopeMatching({ fg = '#7997FF', bg = 'none' }),
     TelescopeFrecencyScores({ fg = '#34799c' }),
     TelescopeBufferLoaded({ fg = '#47a0f0' }),
@@ -841,6 +900,17 @@ return function(injected_functions)
     GitSignsDeleteFaded({ fg = clr_over.red_faded }),
     GitSignsDeleteNrFaded({ fg = clr_over.red_faded }),
     GitSignsDeleteLnFaded({ fg = clr_over.red_faded }),
+
+    -- GitSigns
+    GitSignsAdd({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
+    GitSignsAddNr({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
+    GitSignsAddLn({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
+    GitSignsChange({ fg = clrs.nord15 }), -- diff mode: Changed line |diff.txt|
+    GitSignsChangeNr({ fg = clrs.nord15 }), -- diff mode: Changed line |diff.txt|
+    GitSignsChangeLn({ fg = clrs.nord15 }), -- diff mode: Changed line |diff.txt|
+    GitSignsDelete({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
+    GitSignsDeleteNr({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
+    GitSignsDeleteLn({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
 
     -- dashboardn.vim
     --DashboardHeader {Type},

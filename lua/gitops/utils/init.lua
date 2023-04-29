@@ -42,15 +42,60 @@ M.split_string = function(inputstr, sep)
   return t
 end
 
+---@param text string
+---@param max_length number
+---@return string
+M.truncate_text = function(text, max_length)
+  if vim.api.nvim_strwidth(text) > max_length then
+    return string.sub(text, 1, max_length - 1) .. '…'
+  end
+
+  return text
+end
+
+---@param text string
+---@param align "'left'" | "'center'" | "'right'"
+---@param line_length number
+---@param gap_char string
+---@return string
+M.align_text = function(text, align, line_length, gap_char)
+  local gap_length = line_length - vim.api.nvim_strwidth(text)
+
+  local gap_left = ''
+  local gap_right = ''
+
+  if align == 'left' then
+    gap_right = string.rep(gap_char, gap_length)
+  elseif align == 'center' then
+    gap_left = string.rep(gap_char, math.ceil(gap_length / 2))
+    gap_right = string.rep(gap_char, math.floor(gap_length / 2))
+  elseif align == 'right' then
+    gap_left = string.rep(gap_char, gap_length)
+  end
+
+  return gap_left .. text .. gap_right
+end
+
 M.get_widths = function(part_lines)
   local widths = {}
   for _, line in ipairs(part_lines) do
-    for n, part in ipairs(line) do
-      if type(widths[n]) == 'nil' then
-        widths[n] = 0
+    if vim.tbl_islist(line) then
+      for n, part in ipairs(line) do
+        if type(widths[n]) == 'nil' then
+          widths[n] = 0
+        end
+        if type(part) == 'string' and #part > widths[n] then
+          widths[n] = #part
+        end
       end
-      if type(part) == 'string' and #part > widths[n] then
-        widths[n] = #part
+    else
+      for key, part in pairs(line) do
+        if type(widths[key]) == 'nil' then
+          widths[key] = 0
+        end
+        if type(part) == 'string' and #part > widths[key] then
+          widths[key] = #part
+        end
       end
     end
   end

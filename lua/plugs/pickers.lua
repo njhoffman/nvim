@@ -13,7 +13,6 @@ local plugins = {
   {
     'njhoffman/telescope.nvim', -- "nvim-telescope/telescope.nvim",
     -- dir = "~/git/telescope.nvim", -- "nvim-telescope/telescope.nvim",
-    lazy = true,
     cmd = 'Telescope',
     dependencies = {
       'ElPiloto/telescope-vimwiki.nvim',

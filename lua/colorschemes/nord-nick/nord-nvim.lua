@@ -106,7 +106,7 @@ local theme = lush(function()
     ColorColumn({ bg = clrs.nord1 }),
     -- Cursor({ fg = clrs.nord0, bg = clrs.nord4 }),
     -- CursorLine({ bg = clrs.nord1 }),
-    Error({ fg = clrs.nord4, bg = clrs.nord11 }),
+    -- Error({ fg = clrs.nord4, bg = clrs.nord11 }),
     iCursor({ fg = clrs.nord0, bg = clrs.nord4 }),
     -- LineNr({ fg = clrs.nord3 }),
     MatchParen({ fg = clrs.nord8, bg = clrs.nord3 }),
@@ -474,40 +474,6 @@ local theme = lush(function()
     DashboardHeader({ fg = clrs.nord9 }),
     DashboardCenter({ fg = clrs.nord8 }),
     DashboardFooter({ fg = clrs.nord14, gui = 'italic' }),
-    -- Nvim LSP
-    -- > neovim/nvim-lsp
-    DiagnosticWarn({ fg = clrs.nord13 }),
-    DiagnosticError({ fg = clrs.nord11 }),
-    DiagnosticInfo({ fg = clrs.nord8 }),
-    DiagnosticHint({ fg = clrs.nord10 }),
-    DiagnosticUnderlineError({ fg = 'none', gui = 'none' }),
-    DiagnosticUnderlineWarn({ fg = 'none', gui = 'none' }),
-    DiagnosticUnderlineInfo({ fg = 'none', gui = 'none' }),
-    DiagnosticUnderlineHint({ fg = 'none', gui = 'none' }),
-    DiagnosticFloatingError({ fg = clrs.nord4 }),
-    DiagnosticFloatingWarn({ fg = clrs.nord4 }),
-    DiagnosticFloatingInfo({ fg = clrs.nord4 }),
-    DiagnosticFloatingHint({ fg = clrs.nord4 }),
-    DiagnosticSignWarn({ fg = clrs.nord13 }),
-    DiagnosticSignError({ fg = clrs.nord11 }),
-    DiagnosticSignInfo({ fg = clrs.nord8 }),
-    DiagnosticSignHint({ fg = clrs.nord10 }),
-    DiagnosticVirtualTextWarn({
-      fg = DiagnosticWarn.fg.de(20).li(10),
-      gui = spec.italic,
-    }),
-    DiagnosticVirtualTextError({
-      fg = DiagnosticError.fg.de(20).li(10),
-      gui = spec.italic,
-    }),
-    DiagnosticVirtualTextInfo({
-      fg = DiagnosticInfo.fg.de(20).da(10),
-      gui = spec.italic,
-    }),
-    DiagnosticVirtualTextHint({
-      fg = DiagnosticHint.fg.de(20).li(10),
-      gui = spec.italic,
-    }),
     -- fugitive.vim
     -- > tpope/vim-fugitive
     gitcommitDiscardedFile({ fg = clrs.nord11 }),
@@ -552,16 +518,6 @@ local theme = lush(function()
     GitGutterAdd({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
     GitGutterChange({ fg = clrs.nord15 }), -- diff mode: Changed line |diff.txt|
     GitGutterDelete({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
-    -- GitSigns
-    GitSignsAdd({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
-    GitSignsAddNr({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
-    GitSignsAddLn({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
-    GitSignsChange({ fg = clrs.nord15 }), -- diff mode: Changed line |diff.txt|
-    GitSignsChangeNr({ fg = clrs.nord15 }), -- diff mode: Changed line |diff.txt|
-    GitSignsChangeLn({ fg = clrs.nord15 }), -- diff mode: Changed line |diff.txt|
-    GitSignsDelete({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
-    GitSignsDeleteNr({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
-    GitSignsDeleteLn({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
     -- Telescope
     TelescopePromptBorder({ fg = clrs.nord8 }),
     TelescopeResultsBorder({ fg = clrs.nord9 }),

@@ -14,9 +14,13 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
-setlocal comments=:# commentstring=#\ %s formatoptions-=t formatoptions+=croql
+" Use Z shell itself as a syntax checker
+compiler zsh
+let b:undo_ftplugin .= '|unlet b:current_compiler'
+      \ . '|setlocal errorformat< makeprg<'
 
-let b:undo_ftplugin = "setl com< cms< fo< "
+setlocal comments=:# commentstring=#\ %s formatoptions-=t formatoptions+=croql
+" let b:undo_ftplugin = "setl com< cms< fo< "
 
 if executable('zsh')
   if !has('gui_running') && executable('less')

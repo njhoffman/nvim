@@ -32,6 +32,8 @@ vim.cmd('packadd matchit')
 require('nvim-treesitter.configs').setup(cfg)
 require('nvim-treesitter.install').prefer_git = true
 
+-- local ft_to_parser = vim.treesitter.language.register('mdx', 'markdown')
+
 -- making dot repeatable
 -- --local CR = vim.api.nvim_replace_termcodes("<cr>", true, true, true)
 

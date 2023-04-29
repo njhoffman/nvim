@@ -37,7 +37,7 @@ local cfg = {
   presets = {
     bottom_search = false, -- use a classic bottom cmdline for search
     command_palette = true, -- position the cmdline and popupmenu together
-    long_message_to_split = true, -- long messages will be sent to a split
+    long_message_to_split = false, -- long messages will be sent to a split
     inc_rename = true, -- enables an input dialog for inc-rename.nvim
     lsp_doc_border = true, -- add a border to hover docs and signature help
   },
@@ -220,8 +220,6 @@ local cfg = {
     size = {
       width = 'auto',
       height = 'auto',
-      -- max_height = 20,
-      -- min_width = 10,
     },
     cmdline_output = {
       format = 'details',
@@ -269,10 +267,6 @@ local cfg = {
     },
   },
   routes = {
-    -- { -- all messages over 20 to split
-    --   view = 'split',
-    --   filter = { event = 'msg_show', min_height = 20 },
-    -- },
     { -- all search not found messages to mini
       view = 'mini',
       filter = { event = 'msg_show', find = '^E486:' },
