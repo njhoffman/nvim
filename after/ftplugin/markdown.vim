@@ -1,8 +1,6 @@
 set concealcursor=c
-
 set wrap
-
-let g:markdown_minlines = 1000
+let g:markdown_minlines=1000
 
 " Fix minor issue with footnote, see https://github.com/vim-pandoc/vim-markdownfootnotes/issues/22
 if exists(':FootnoteNumber')

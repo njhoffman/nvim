@@ -23,6 +23,7 @@ local get_icon = function(method, lsp)
     html =             { get_by_ft("html") },
     jsonls =           { get_by_ft("json") },
     lua_ls =           { get_by_ft("lua") },
+    marksman  =        { get_by_ft("markdown") },
     pyright =          { get_by_ft("python") },
     pylsp =            { get_by_ft("python") },
     sqls =             { get_by_ft("sql") },

@@ -24,12 +24,12 @@ end
 -- stylua: ignore
 local autocmds = {
   wins = {
-    -- { 'BufEnter', 'NvimTree', [[setlocal cursorline]] },
+    { 'BufEnter',              'NvimTree',   'setlocal cursorline' },
+    { {'BufEnter', 'WinEnter' }, '*', 'stopinsert' },
     -- Equalize window dimensions when resizing vim window
     -- Force write shada on leaving nvim
-    { 'VimLeave', '*', [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
+    -- { 'VimLeave', '*', [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
     -- Check if file changed when its window is focus, more eager than 'autoread'
-    -- -- {"CmdwinEnter,CmdwinLeave", "*", "lua require'wlfloatline'.toggle()"};
   },
   fasd = { { 'BufRead', '*', commands.fasd_update } },
   CommandWin = {
@@ -61,8 +61,8 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, 'Dockerfile*',        'setlocal ft=Dockerfile' },
     { { 'BufNewFile', 'BufRead' }, 'Dockerfile.*',       'setlocal ft=Dockerfile' },
     { { 'BufNewFile', 'BufRead' }, '.dockerignore',      'setlocal ft=gitignore' },
-    { { 'BufNewFile', 'BufRead' }, '*/nord-nick/main.lua', 'setlocal ft=lua.lush' },
-    { { 'BufNewFile', 'BufRead' }, 'nord-nvim.lua',      'setlocal ft=lua.lush' },
+    { { 'BufNewFile', 'BufRead' }, '*/nord-nick/main.lua', 'setlocal ft=lush syn=lua' },
+    { { 'BufNewFile', 'BufRead' }, 'nord-nvim.lua',      'setlocal ft=lush syn=lua' },
     { { 'BufNewFile', 'BufRead' }, '*.t',                'setlocal ft=tangle' },
     { { 'BufNewFile', 'BufRead' }, 'git',                'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer>  :q<cr>' },
     { { 'BufNewFile', 'BufRead' }, '*.conf',             'setlocal ft=conf.dosini' },
@@ -116,14 +116,14 @@ local autocmds = {
     -- { "BufLeave,FocusLost", "*", M.vimadeCheck() },
   },
   Shape = {
-    { 'FocusLost',               '*', 'hi TermCursor cterm=NONE gui=NONE'    },
-    { 'FocusGained',             '*', 'hi TermCursor cterm=reverse gui=reverse' },
+    -- { 'FocusLost',               '*', 'hi TermCursor cterm=NONE gui=NONE'    },
+    -- { 'FocusGained',             '*', 'hi TermCursor cterm=reverse gui=reverse' },
     { {'VimLeave','VimSuspend'}, '*', 'set guicursor=a:block-blinkon90' },
   },
   terminal = {
     { 'TermOpen', '*', [[tnoremap <buffer> <Esc> <c-\><c-n>]] },
-    -- {"TermOpen", "*", "set nonumber norelativenumber"},
-    -- {"TermLeave", "*", "set number relativenumber"}
+    {"TermOpen", "*", "set nonumber norelativenumber"},
+    {"TermLeave", "*", "set number relativenumber"}
   },
   WriteEvents = {
     { 'BufWritePost', '*tmux.conf', [[execute ':!tmux source-file %']] },

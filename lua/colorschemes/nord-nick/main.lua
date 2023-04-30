@@ -911,33 +911,5 @@ return function(injected_functions)
     GitSignsDelete({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
     GitSignsDeleteNr({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
     GitSignsDeleteLn({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
-
-    -- dashboardn.vim
-    --DashboardHeader {Type},
-    -- DashboardCenter({ fg = "#4499ff" }),
-    --DashboardShortcut {Boolean},
-    --DashboardFooter {Keyword},
-
-    -- -- Disable nvim-tree background
-    -- if config.disable.background then
-    --   remove_background(plugins.NvimTreeNormal)
-    -- end
-
-    -- call s:X("VNormalimWikiLink","00ccff","","","Green","")
-    -- hi htmlH1 ctermfg=109  guifg=#45a5f8 ctermbg=None gui=bold term=bold cterm=bold
-    -- hi htmlH2 ctermfg=109  guifg=#45a5e8 ctermbg=None gui=bold
-    -- hi htmlH3 ctermfg=109  guifg=#45a5d8 ctermbg=None gui=bold
-    -- hi htmlH4 ctermfg=109  guifg=#45a5c8 ctermbg=None gui=bold
-    -- hi htmlH5 ctermfg=109  guifg=#45a5b8 ctermbg=None gui=bold
-    -- hi htmlH6 ctermfg=109  guifg=#45a5a8 ctermbg=None gui=bold
-    -- hi mkdHeading ctermfg=109  guifg=#557588 ctermbg=None
-    -- " hi htmlH1 ctermfg=88   guifg=#9d0006 ctermbg=None gui=bold  term=bold cterm=bold
-    -- " hi htmlH2 ctermfg=106  guifg=#fb4934 ctermbg=None gui=bold
-    -- " hi htmlH3 ctermfg=166  guifg=#98971a ctermbg=None gui=bold
-    -- " hi htmlH4 ctermfg=109  guifg=#458588 ctermbg=None gui=bold
-    -- " hi htmlH5 ctermfg=124  guifg=#b16286 ctermbg=None gui=bold
-    -- " hi mkdCodeStart ctermfg=239 guifg=#9E9E9E ctermbg=None gui=bold
-    -- " hi mkdCodeEnd ctermfg=239 guifg=#9E9E9E ctermbg=None gui=bold
-    -- " hi mkdCode ctermfg=88  guifg=#427b58 ctermbg=None cterm=bold
   }
 end

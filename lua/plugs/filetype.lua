@@ -115,7 +115,6 @@ local plugins = {
   { 'mtdl9/vim-log-highlighting', ft = { 'log', 'LOG' }, event = { 'BufReadPost', 'BufNewFile' }, lazy = lz_syn },
   { 'hashivim/vim-terraform', ft = 'terraform', event = { 'BufReadPost', 'BufNewFile' }, lazy = lz_syn },
   { 'raimon49/requirements.txt.vim', event = 'VeryLazy', lazy = lz_syn },
-
   { 'godlygeek/tabular', event = 'VeryLazy', lazy = lz_syn },
   { 'preservim/vim-markdown', commit = 'df4be8626e2c5b2a42eb60e1f100fce469b81f7d', require = { 'godlygeek/tabular' } },
 

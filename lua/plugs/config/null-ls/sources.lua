@@ -86,7 +86,7 @@ M.sources = {
   null_ls.builtins.diagnostics.gospel,
   null_ls.builtins.diagnostics.jsonlint,
   -- null_ls.builtins.diagnostics.luacheck,
-  null_ls.builtins.diagnostics.markdownlint,
+  -- null_ls.builtins.diagnostics.markdownlint,
   -- null_ls.builtins.diagnostics.markuplint,
   -- null_ls.builtins.diagnostics.mdl,
   null_ls.builtins.diagnostics.misspell.with({ filetypes = { 'tex' }, args = { '$FILENAME' } }),

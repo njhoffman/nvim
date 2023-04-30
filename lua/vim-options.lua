@@ -74,12 +74,12 @@ opt('timeout', true)
 opt('timeoutlen', 500) -- 1000
 opt('ttimeoutlen', 30) -- 50
 opt('undolevels', 1000)
-opt('updatetime', 800) -- 4000
+opt('updatetime', 1500) -- 4000
 opt('virtualedit', 'onemore') -- 4000
 opt('whichwrap', 'b,s,<,>,[,],h,l')
 opt('wildignore', '*.o,*~,*.pyc') -- wildchar/charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
 opt('wildmode', 'longest:full,full')
-opt('winminwidth', 1) -- vimade errors when this is larger
+-- opt('winminwidth', 1) -- vimade errors when this is larger
 opt('writebackup', true)
 -- opt("display", "msgsep")
 -- opt("shortmess", o.shortmess .. "cS")
@@ -140,8 +140,8 @@ vim.cmd([[
     autocmd! ColorScheme,VimEnter * highlight! link luaParenError Normal | highlight! link luaError Normal | highlight! link @error Normal
   augroup END
 
-  autocmd BufEnter * syntax sync minlines=4000'
-  syn sync fromstart
+  " autocmd BufEnter * syntax sync minlines=4000
+  " syn sync fromstart
 ]])
 
 -- -- Add empty lines before and after cursor line supporting dot-repeat
