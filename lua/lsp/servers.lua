@@ -137,6 +137,26 @@ require('mason-lspconfig').setup_handlers({
       },
     })
   end,
+  ['yamlls'] = function()
+    lspconfig.yamlls.setup({
+      settings = {
+        yaml = {
+          schemas = require('schemastore').yaml.schemas(),
+          validate = { enable = true },
+        },
+      },
+    })
+  end,
+  ['jsonls'] = function()
+    lspconfig.jsonls.setup({
+      settings = {
+        json = {
+          schemas = require('schemastore').json.schemas(), -- ignore = { '.eslintrc', 'package.json', },
+          validate = { enable = true },
+        },
+      },
+    })
+  end,
   ['dockerls'] = function()
     lspconfig.dockerls.setup({
       diagnostics = {

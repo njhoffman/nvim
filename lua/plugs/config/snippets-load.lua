@@ -1,64 +1,64 @@
-local cmp = require("cmp")
-local luasnip = require("luasnip")
+local cmp = require('cmp')
+local luasnip = require('luasnip')
 
 local border = {
-  { "╭", "FoldColumn" },
-  { "─", "FoldColumn" },
-  { "╮", "FoldColumn" },
-  { "│", "FoldColumn" },
-  { "╯", "FoldColumn" },
-  { "─", "FoldColumn" },
-  { "╰", "FoldColumn" },
-  { "│", "FoldColumn" },
+  { '╭', 'FoldColumn' },
+  { '─', 'FoldColumn' },
+  { '╮', 'FoldColumn' },
+  { '│', 'FoldColumn' },
+  { '╯', 'FoldColumn' },
+  { '─', 'FoldColumn' },
+  { '╰', 'FoldColumn' },
+  { '│', 'FoldColumn' },
 }
 local kind_icons = {
-  Text = "",
-  Method = "m",
-  Function = "",
-  Constructor = "",
-  Field = "",
-  Variable = "",
-  Class = "",
-  Interface = "",
-  Module = "",
-  Property = "",
-  Unit = "",
-  Value = "",
-  Enum = "",
-  Keyword = "",
-  Snippet = "",
-  Color = "",
-  File = "",
-  Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "",
-  Struct = "",
-  Event = "",
-  Operator = "",
-  TypeParameter = "",
+  Class = '',
+  Color = '',
+  Constant = '',
+  Constructor = '',
+  Enum = '',
+  EnumMember = '',
+  Event = '',
+  Field = '',
+  File = '',
+  Folder = '',
+  Function = '',
+  Interface = '',
+  Keyword = '',
+  Method = 'm',
+  Module = '',
+  Operator = '',
+  Property = '',
+  Reference = '',
+  Snippet = '',
+  Struct = '',
+  Text = '',
+  TypeParameter = '',
+  Unit = '',
+  Value = '',
+  Variable = '',
 }
 
 cmp.setup({
   window = {
     completion = {
       border = border,
-      scrollbar = "║",
+      scrollbar = '║',
     },
     documentation = {
       border = border,
-      scrollbar = "║",
+      scrollbar = '║',
     },
   },
   formatting = {
-    fields = { "kind", "abbr", "menu" },
+    fields = { 'kind', 'abbr', 'menu' },
     format = function(entry, vim_item)
-      vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
+      vim_item.kind = string.format('%s', kind_icons[vim_item.kind])
       -- kind menu
       vim_item.menu = ({
-        luasnip = "[LuaSnip]",
-        nvim_lsp = "[LSP]",
-        path = "/",
+        luasnip = '[LuaSnip]',
+        nvim_lsp = '[LSP]',
+        path = '/',
       })[entry.source.name]
       return vim_item
     end,
@@ -66,24 +66,24 @@ cmp.setup({
 
   snippet = {
     expand = function(args)
-      require("luasnip").lsp_expand(args.body)
+      require('luasnip').lsp_expand(args.body)
     end,
   },
   sources = {
-    { name = "luasnip" },
-    { name = "path" },
-    { name = "nvim_lsp" },
+    { name = 'luasnip' },
+    { name = 'path' },
+    { name = 'nvim_lsp' },
   },
 
   mapping = {
-    ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
-    ["<C-u>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
-    ["<C-e>"] = cmp.mapping({
+    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(1), { 'i', 'c' }),
+    ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(-1), { 'i', 'c' }),
+    ['<C-e>'] = cmp.mapping({
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     }),
-    ["<CR>"] = cmp.mapping.confirm({ select = false }),
-    ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
     -- [""] = cmp.mapping.complete({
     --     config = {
     --         sources = {
@@ -93,14 +93,14 @@ cmp.setup({
     -- }),
 
     -- special: trigger snippets without typing the full trigger
-    ["<A-;>"] = cmp.mapping(function()
+    ['<A-;>'] = cmp.mapping(function()
       if cmp.visible() then
         cmp.select_next_item()
         cmp.mapping.confirm({ select = false })()
       end
-    end, { "i", "s" }),
+    end, { 'i', 's' }),
 
-    ["<Tab>"] = cmp.mapping(function(fallback)
+    ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
         -- elseif luasnip.jumpable(1) then
@@ -108,8 +108,8 @@ cmp.setup({
       else
         fallback()
       end
-    end, { "i", "s" }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
         -- elseif luasnip.jumpable(-1) then
@@ -117,7 +117,7 @@ cmp.setup({
       else
         fallback()
       end
-    end, { "i", "s" }),
+    end, { 'i', 's' }),
   },
 
   confirm_opts = {
@@ -127,56 +127,56 @@ cmp.setup({
 })
 
 -- LuaSnip Settings
-require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets/" })
+require('luasnip.loaders.from_lua').load({ paths = '~/.config/nvim/snippets/' })
 
 luasnip.config.set_config({
   history = true,
-  updateevents = "TextChanged, TextChangedI",
+  updateevents = 'TextChanged, TextChangedI',
   enable_autosnippets = true,
 })
 
 -- Keymaps
-vim.keymap.set({ "i", "s" }, "<a-p>", function()
+vim.keymap.set({ 'i', 's' }, '<a-p>', function()
   if luasnip.expand_or_jumpable() then
     luasnip.expand()
   end
 end, { silent = true })
 
-vim.keymap.set({ "i", "s" }, "<a-k>", function()
+vim.keymap.set({ 'i', 's' }, '<a-k>', function()
   if luasnip.jumpable(1) then
     luasnip.jump(1)
   end
 end, { silent = true })
-vim.keymap.set({ "i", "s" }, "<a-j>", function()
+vim.keymap.set({ 'i', 's' }, '<a-j>', function()
   if luasnip.jumpable(-1) then
     luasnip.jump(-1)
   end
 end, { silent = true })
 
 -- special function
-vim.keymap.set({ "i", "s" }, "<a-l>", function()
+vim.keymap.set({ 'i', 's' }, '<a-l>', function()
   if luasnip.choice_active() then
     luasnip.change_choice(1)
   end
 end)
 
-vim.keymap.set({ "i", "s" }, "<a-h>", function()
+vim.keymap.set({ 'i', 's' }, '<a-h>', function()
   if luasnip.choice_active() then
     luasnip.change_choice(-1)
   end
 end)
 
-vim.keymap.set("i", "<A-CR>", function()
+vim.keymap.set('i', '<A-CR>', function()
   if LAST_TRIGGERED_SNIPPET then
-    vim.api.nvim_input("<A-o>")
+    vim.api.nvim_input('<A-o>')
     vim.schedule(function()
       luasnip.expand_repeat()
     end)
   end
 end, {})
-vim.keymap.set("i", "<A-S-CR>", function()
+vim.keymap.set('i', '<A-S-CR>', function()
   if LAST_TRIGGERED_SNIPPET then
-    vim.api.nvim_input("<A-S-O>")
+    vim.api.nvim_input('<A-S-O>')
     vim.schedule(function()
       luasnip.expand_repeat()
     end)
