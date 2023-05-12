@@ -16,5 +16,5 @@ endif
 
 " Set mappings
 nmap <buffer> <LocalLeader>m <Plug>(MakeTarget)
-let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>m'
+" let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>m'
 ]])

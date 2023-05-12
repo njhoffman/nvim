@@ -30,27 +30,19 @@ vim.api.nvim_create_autocmd({ 'DirChanged', 'VimEnter' }, {
   end,
 })
 
--- close some filetypes with <q>
+local winclose_group = vim.api.nvim_create_augroup('winclose_q', { clear = true })
+-- close some filetypes with q or <esc>
 vim.api.nvim_create_autocmd('FileType', {
-  group = vim.api.nvim_create_augroup('winclose_q', { clear = true }),
+  group = winclose_group,
   pattern = {
-    'Mundo',
-    'MundoDiff',
     'NvimTree',
     'PlenaryTestPopup',
-    'dashboard',
-    'fugitive',
-    'help',
     'lspinfo',
     'man',
     'nerdtree',
-    'noice',
     'notify',
-    'qf',
-    'query',
-    'spectre_panel',
+    'noice',
     'startuptime',
-    'tsplayground',
   },
   callback = function(event)
     -- vim.bo[event.buf].buflisted = false
@@ -59,7 +51,28 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- -- Auto create dir when saving a file, in case some intermediate directory does not exist
+-- close some filetypes with q or  shift-esc
+vim.api.nvim_create_autocmd('FileType', {
+  group = winclose_group,
+  pattern = {
+    'Mundo',
+    'MundoDiff',
+    'dashboard',
+    'fugitive',
+    'help',
+    'qf',
+    'query',
+    'spectre_panel',
+    'tsplayground',
+  },
+  callback = function(event)
+    -- vim.bo[event.buf].buflisted = false
+    vim.keymap.set('n', 'q', '<cmd>q<cr>', { buffer = event.buf, silent = true })
+    vim.keymap.set('n', '<M-{>', '<cmd>q<cr>', { buffer = event.buf, silent = true })
+  end,
+})
+
+-- Auto create dir when saving a file, in case some intermediate directory does not exist
 -- vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 --   group = augroup("auto_create_dir"),
 --   callback = function(event)

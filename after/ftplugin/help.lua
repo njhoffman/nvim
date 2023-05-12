@@ -21,7 +21,7 @@ vim.cmd([[
 
   " Make K jump to the help topic; NeoVim does this, and it's a damned good idea
   nnoremap <buffer> K <C-]>
-  let b:undo_ftplugin .= '|nunmap <buffer> K'
+  " let b:undo_ftplugin .= '|nunmap <buffer> K'
 ]])
 
 if vim.startswith(vim.fn.expand('%'), vim.env.VIMRUNTIME) or vim.bo.readonly then

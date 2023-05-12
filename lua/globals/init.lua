@@ -1,14 +1,14 @@
-require("globals.importer")
+require('globals.importer')
 
-vim.import("globals.variables")
-vim.import("user-options")
-vim.import("vim-options")
+vim.import('globals.variables')
+vim.import('user-options')
+vim.import('vim-options')
 
 local _nil = function()
   return nil
 end
 
-local debuglog = vim.import("debuglog")
+local debuglog = vim.import('debuglog')
 if debuglog then
   vim.dbg = debuglog.dbg or _nil()
   vim.dbglog = debuglog.log or _nil()
@@ -18,9 +18,9 @@ if debuglog then
   vim.dump = debuglog.dump
 end
 
-local logger = vim.import("logger")
+local logger = vim.import('logger')
 if logger ~= nil and logger.init ~= nil then
-  vim.logger = logger.init("root")
+  vim.logger = logger.init('root')
   vim.notify = logger.notify
 end
 
@@ -29,7 +29,7 @@ N = vim.dbg
 D = vim.dbglog
 
 RELOAD = function(...)
-  return require("plenary.reload").reload_module(...)
+  return require('plenary.reload').reload_module(...)
 end
 
 R = function(...)

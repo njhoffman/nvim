@@ -13,12 +13,12 @@ let g:sh_minlines = 1000
 " Set comment formats
 setlocal comments=:#
 setlocal formatoptions+=or
-let b:undo_ftplugin .= '|setlocal comments< formatoptions<'
+" let b:undo_ftplugin .= '|setlocal comments< formatoptions<'
 
 " If subtype is Bash, set 'keywordprg' to han(1df)
 if exists('b:is_bash')
   setlocal keywordprg=han
-  let b:undo_ftplugin .= '|setlocal keywordprg<'
+  " let b:undo_ftplugin .= '|setlocal keywordprg<'
 endif
 
 " Choose check compiler based on file subtype
@@ -30,8 +30,8 @@ else
   let b:sh_check_compiler = 'sh'
 endif
 execute 'compiler '.b:sh_check_compiler
-let b:undo_ftplugin .= '|unlet b:current_compiler b:sh_check_compiler'
-      \ . '|setlocal errorformat< makeprg<'
+" let b:undo_ftplugin .= '|unlet b:current_compiler b:sh_check_compiler'
+"       \ . '|setlocal errorformat< makeprg<'
 
 " Resort to g:is_posix for correct syntax on older runtime files
 " 8.1.257 updated the runtime files to include a fix for this
@@ -50,5 +50,5 @@ nnoremap <buffer> <expr> <LocalLeader>c
       \ ':<C-U>compiler '.b:sh_check_compiler.'<CR>'
 nnoremap <buffer> <LocalLeader>l
       \ :<C-U>compiler shellcheck<CR>
-let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>c'
-      \ . '|nunmap <buffer> <LocalLeader>l'
+" let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>c'
+"       \ . '|nunmap <buffer> <LocalLeader>l'

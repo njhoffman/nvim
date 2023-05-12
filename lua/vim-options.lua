@@ -91,8 +91,8 @@ opt('writebackup', true)
 -- opt("wc", 0x0e)
 -- opt("wcm", 0x0e)
 
-opt('list', true) -- Define which helper symbols to show
-opt('listchars', 'extends:…,precedes:…,nbsp:␣') -- Define which helper symbols to show
+-- opt('list', true) -- Define which helper symbols to show
+-- opt('listchars', 'extends:…,precedes:…,nbsp:␣') -- Define which helper symbols to show
 
 -- window scope
 opt('concealcursor', 'nc', window)
@@ -176,7 +176,7 @@ vim.cmd([[
 --  map(  'x',        'gp', '"+P', { desc = 'Paste from system clipboard' })
 --
 --  -- Reselect latest changed, put, or yanked text
---  map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', { expr = true, desc = 'Visually select changed text' })
+vim.api.nvim_set_keymap('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', { expr = true, desc = 'Visually select changed text' })
 --
 --  -- Search inside visually highlighted text. Use `silent = false` for it to
 --  -- make effect immediately.

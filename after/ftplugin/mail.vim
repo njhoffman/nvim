@@ -27,13 +27,13 @@ endif
 
 " Add a space to the end of wrapped lines for format-flowed mail
 setlocal formatoptions+=w
-let b:undo_ftplugin .= '|setlocal formatoptions<'
+" let b:undo_ftplugin .= '|setlocal formatoptions<'
 
 " Define what constitutes a 'blank line' for the squeeze_repeat_blanks.vim
 " plugin, if loaded, to include leading quotes and spaces
 if exists('g:loaded_squeeze_repeat_blanks')
   let b:squeeze_repeat_blanks_blank = '^[ >]*$'
-  let b:undo_ftplugin .= '|unlet b:squeeze_repeat_blanks_blank'
+  " let b:undo_ftplugin .= '|unlet b:squeeze_repeat_blanks_blank'
 endif
 
 " Stop here if the user doesn't want ftplugin mappings
@@ -44,10 +44,10 @@ endif
 " Flag messages as important/unimportant
 nnoremap <buffer> <LocalLeader>h
       \ <C-U>:call mail#FlagImportant()<CR>
-let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>h'
+" let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>h'
 nnoremap <buffer> <LocalLeader>l
       \ <C-U>:call mail#FlagUnimportant()<CR>
-let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>l'
+" let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>l'
 
 " Quote operator
 nnoremap <buffer> <expr> <LocalLeader>q
@@ -56,9 +56,9 @@ nnoremap <buffer> <expr> <LocalLeader>qq
       \ quote#Quote().'_'
 xnoremap <buffer> <expr> <LocalLeader>q
       \ quote#Quote()
-let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>q'
-      \ . '|nunmap <buffer> <LocalLeader>qq'
-      \ . '|xunmap <buffer> <LocalLeader>q'
+" let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>q'
+"       \ . '|nunmap <buffer> <LocalLeader>qq'
+"       \ . '|xunmap <buffer> <LocalLeader>q'
 
 " Quote operator with reformatting
 nnoremap <buffer> <expr> <LocalLeader>Q
@@ -67,9 +67,9 @@ nnoremap <buffer> <expr> <LocalLeader>QQ
       \ quote#QuoteReformat().'_'
 xnoremap <buffer> <expr> <LocalLeader>Q
       \ quote#QuoteReformat()
-let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>Q'
-      \ . '|nunmap <buffer> <LocalLeader>QQ'
-      \ . '|xunmap <buffer> <LocalLeader>Q'
+" let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>Q'
+"       \ . '|nunmap <buffer> <LocalLeader>QQ'
+"       \ . '|xunmap <buffer> <LocalLeader>Q'
 
 " Maps using autoloaded function for quoted paragraph movement
 nnoremap <buffer> <silent> <LocalLeader>[
@@ -84,9 +84,9 @@ xnoremap <buffer> <silent> <LocalLeader>[
       \ :<C-U>call mail#NewBlank(v:count1, 1, 1)<CR>
 xnoremap <buffer> <silent> <LocalLeader>]
       \ :<C-U>call mail#NewBlank(v:count1, 0, 1)<CR>
-let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>['
-      \ . '|nunmap <buffer> <LocalLeader>]'
-      \ . '|ounmap <buffer> <LocalLeader>['
-      \ . '|ounmap <buffer> <LocalLeader>]'
-      \ . '|xunmap <buffer> <LocalLeader>['
-      \ . '|xunmap <buffer> <LocalLeader>]'
+" let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>['
+"       \ . '|nunmap <buffer> <LocalLeader>]'
+"       \ . '|ounmap <buffer> <LocalLeader>['
+"       \ . '|ounmap <buffer> <LocalLeader>]'
+"       \ . '|xunmap <buffer> <LocalLeader>['
+"       \ . '|xunmap <buffer> <LocalLeader>]'

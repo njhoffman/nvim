@@ -32,6 +32,7 @@ local get_icon = function(method, lsp)
     terraformls =      { get_by_ext("tf") },
     tsserver =         { get_by_ft("javascript") },
     vimls =            { get_by_ft("vim") },
+    yamlls =            { get_by_ft("yaml") },
   }
 
   local icon = { ' ', 'DevIconDart' }

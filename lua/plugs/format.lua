@@ -10,6 +10,7 @@ local plugins = {
   { 'monaqa/dial.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'nicwest/vim-camelsnek', event = 'VeryLazy' },
   { 'johmsalas/text-case.nvim', event = 'VeryLazy' },
+  { 'terrortylor/nvim-comment', event = 'VeryLazy' },
   { 'numToStr/Comment.nvim', event = 'VeryLazy' },
 }
 

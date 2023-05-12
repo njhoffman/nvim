@@ -51,3 +51,6 @@
 -- [t, ]t — :tprevious, :tnext
 -- [T, ]T — :tfirst, :tlast
 -- If you want to show the tag match list when there are multiple matches but jump straight to the tag if a single match, use :tj[ump] or g CTRL-].
+
+-- :g/mypattern/caddexpr expand("%") .. ":" .. line(".") ..  ":" .. getline(".")
+-- ERROR: plugs.config.registers"/home/nicholas/.config/nvim/lua/plugs/config/registers.lua:93: Expected Lua number"

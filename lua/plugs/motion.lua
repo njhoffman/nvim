@@ -36,13 +36,12 @@ local plugins = {
   { 'chrisgrieser/nvim-various-textobjs', event = { 'BufReadPost', 'BufNewFile' } },
   -- split/join
   { 'echasnovski/mini.splitjoin', event = { 'BufReadPost', 'BufNewFile' }, version = false },
-  { 'Wansmer/treesj', event = { 'BufReadPost', 'BufNewFile' }, dependencies = { 'nvim-treesitter/nvim-treesitter' } },
+  { 'Wansmer/treesj', event = { 'BufReadPost', 'BufNewFile' }, lazy = false, dependencies = { 'nvim-treesitter' } },
   -- traversal/swapping
   { 'mizlan/iswap.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'ziontee113/SelectEase', event = 'VeryLazy' },
   { 'chrisgrieser/nvim-spider', event = 'VeryLazy' },
   { 'echasnovski/mini.move', event = 'VeryLazy' },
-  { 'gbprod/substitute.nvim', event = 'VeryLazy' },
   { 'andrewferrier/debugprint.nvim', event = 'VeryLazy' },
   { 'ecthelionvi/NeoComposer.nvim', dependencies = { 'kkharji/sqlite.lua', 'telescope.nvim' } },
   { 'tpope/vim-repeat', event = 'VeryLazy' },

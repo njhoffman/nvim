@@ -124,7 +124,7 @@ return function(injected_functions)
     Pmenu({ fg = '#618cc4', bg = 'none' }),
     PmenuSel({ fg = '#44bfcf', bg = '#1a1f2f' }),
     PmenuSbar({ fg = '#313c84', bg = '#202331' }),
-    PmenuThumb({ fg = '#4f5362', bg = '#446faf' }),
+    PmenuThumb({ fg = '#3f5372', bg = '#446faf' }),
     -- TabLine({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     -- TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     TabLine({ fg = clrs.nord3, bg = clrs.nord1, gui = 'NONE' }),
@@ -143,9 +143,9 @@ return function(injected_functions)
     LineNr({ fg = clrs.nord3 }),
     Boolean({ fg = '#5370af' }),
     Number({ fg = '#4078c0' }),
-    CursorLine({ bg = '#0a142f', gui = 'bold' }),
+    CursorLine({ bg = '#0a142f' }),
     CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
-    -- CursorColumn({ bg = '#7722ff' }),
+    Cursor({ bg = "#4B5Bff" }),
     CursorColumn({ bg = CursorLine.bg }),
     ColorColumn({ bg = CursorLine.bg }),
     -- base groups
@@ -172,7 +172,7 @@ return function(injected_functions)
     KeywordReturn({ fg = '#2D81BC' }),
     Label({ fg = '#6688ba' }),
     MatchParen({ fg = '#fb8b8b', gui = 'bold,' }),
-    NonText({ bg = 'none', fg = '#555555' }),
+    NonText({ bg = 'none', fg = '#556677' }),
     Operator({ fg = '#4886bf' }),
     PreProc({ fg = '#4796bc' }),
     QuickFixLine({ bg = '#172238' }),
@@ -872,6 +872,8 @@ return function(injected_functions)
     -- TelescopeMultiSelection guifg=#928374          " Multisections
 
     -- noice.nvim
+
+    NoiceCursor({ bg = "#4B6BfB" }),
     NoiceCmdlinePopupBorderHelp({ fg = '#8888ff' }),
     NoiceCmdlinePopupBorderLua({ fg = '#44aaff' }),
     NoiceCmdlinePopupBorder({ fg = '#4466ff' }),

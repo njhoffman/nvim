@@ -9,6 +9,7 @@ for _, mod_name in ipairs({
   'devbox',
   'commands',
   'autocommands',
+  'lsp.illuminate',
   'runner',
   'stats',
   'hover.setup',

@@ -20,18 +20,21 @@ local neocomposer = function(_, opts)
   set_highlight('RecordingSymbol', config.red)
 
   local status = ''
-  local delay_enabled = state.get_delay()
+  local queued = state.get_queued_macro()
 
-  if state.get_recording() then
+  if state.get_recording() ~= false then
     status = '%#RecordingSymbol#  %#StatusLabel#REC '
-  elseif state.get_playing() then
+  elseif state.get_playing() ~= false then
     status = '%#PlayingSymbol#  %#StatusLabel#PLAY '
   end
-  if state.get_queued_macro() ~= '' then
-    status = '亮' .. #state.get_queued_macro() .. ' ' .. status
+  if queued ~= false then
+    if queued then
+      status = '亮' .. queued .. ' ' .. status
+    end
   end
   -- status = '亮' .. #state.get_macros() .. ' ' .. status
 
+  -- local delay_enabled = state.get_delay()
   -- if delay_enabled then
   --   status = (status == '' and '' or (status .. ' ')) .. '%#DelaySymbol# 祥%#StatusLabel#DELAY '
   -- end

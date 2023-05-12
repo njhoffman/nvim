@@ -1,7 +1,7 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
-local actions_layout = require("telescope.actions.layout")
-local actions = require("telescope.actions")
-local c_actions = require("plugs.config.telescope.actions")
+local actions_layout = require('telescope.actions.layout')
+local actions = require('telescope.actions')
+local c_actions = require('plugs.config.telescope.actions')
 
 local send_to_qflist = function(prompt_bufnr)
   actions.send_to_qflist(prompt_bufnr)
@@ -15,7 +15,7 @@ local select_default = function(prompt_bufnr)
 end
 
 local ignore = function(prompt_bufnr)
-  vim.notify("ignoring keystroke for " .. prompt_bufnr, 0)
+  vim.notify('ignoring keystroke for ' .. prompt_bufnr, 0)
 end
 local main_maps = {
   -- stylua: ignore
@@ -32,10 +32,12 @@ local main_maps = {
     ["<Down>"]      = actions.preview_scrolling_down,
     ["<C-b>"]       = c_actions.results_page_up,
     ["<C-f>"]       = c_actions.results_page_down,
+    ["<M-p>"]       = c_actions.results_toggle_up,
+    ["<F47>"]       = c_actions.results_toggle_up, -- C-S-F11
+    ["<M-n>"]       = c_actions.results_toggle_down,
+    ["<F48>"]       = c_actions.results_toggle_down, -- C-S-F12
     ["<C-y>"]       = c_actions.yank_selection,
     ["<M-y>"]       = c_actions.selection_to_buffer,
-    ["<M-p>"]       = c_actions.results_toggle_up,
-    ["<M-n>"]       = c_actions.results_toggle_down,
     ["<M-g>"]       = c_actions.launch_projects,
     ["<M-C-Space>"] = c_actions.launch_find_pickers,
     ["<M-e>"]       = c_actions.launch_live_grep,
@@ -46,14 +48,14 @@ local main_maps = {
     ["<M-}>"]       = ignore,
     ["<M-,>"]       = ignore,
     ["<M-.>"]       = ignore,
-    ["<M-a>"] = actions.toggle_all,
-    ["<M-c>"] = actions.drop_all,
+    ["<M-a>"]       = actions.toggle_all,
+    ["<M-c>"]       = actions.drop_all,
     -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
     -- [S-F1-9] = add/remove secondary sort #
     -- [??] = clear sort
   },
   n = {
-    ["<Esc>"] = actions.close,
+    ['<Esc>'] = actions.close,
   },
 }
 
@@ -63,25 +65,25 @@ local grep_maps = {
     -- ["<C-Space>"] = false,
     -- ["<M-C-Space>"] = false,
     -- ["<M-}>"] = c_actions.switch_grep_pickers,
-    ["<M-}>"] = c_actions.switch_grep_pickers,
-    ["<M-,>"] = c_actions.directory_up,
-    ["<M-.>"] = c_actions.launch_dirpicker,
-    ["<CR>"] = c_actions.multi_open,
+    ['<M-}>'] = c_actions.switch_grep_pickers,
+    ['<M-,>'] = c_actions.directory_up,
+    ['<M-.>'] = c_actions.launch_dirpicker,
+    ['<CR>'] = c_actions.multi_open,
   },
 }
 
 local file_picker_maps = {
   i = {
-    ["<M-}>"] = c_actions.switch_file_pickers,
-    ["<M-,>"] = c_actions.directory_up,
-    ["<M-.>"] = c_actions.launch_dirpicker,
-    ["<CR>"] = c_actions.multi_open,
+    ['<M-}>'] = c_actions.switch_file_pickers,
+    ['<M-,>'] = c_actions.directory_up,
+    ['<M-.>'] = c_actions.launch_dirpicker,
+    ['<CR>'] = c_actions.multi_open,
   },
 }
 
 local buffer_maps = {
   i = {
-    ["<C-Del>"] = c_actions.buffer_delete,
+    ['<C-Del>'] = c_actions.buffer_delete,
   },
 }
 

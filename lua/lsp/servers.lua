@@ -83,7 +83,9 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
   vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
 
-  client.server_capabilities.semanticTokensProvider = nil
+  if client.server_capabilities.semanticTokensProvider then
+    client.server_capabilities.semanticTokensProvider = nil
+  end
 
   if client.name == 'lua_ls' then
     client.server_capabilities.documentFormattingProvider = false

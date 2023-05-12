@@ -3,6 +3,7 @@ local ui = require('commands.ui')
 local debug = require('commands.debug')
 local paste = require('commands.paste')
 local system = require('commands.system')
+require('commands.inspect')
 
 local cmd = vim.api.nvim_create_user_command
 

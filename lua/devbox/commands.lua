@@ -34,11 +34,11 @@ local start = function()
     })
     table.insert(state.providers, provider)
   end
-  -- for i, method in pairs(devbox_methods.lsp) do
-  --   local provider = vim.fn.deepcopy(provider_state)
-  --   provider = vim.tbl_deep_extend("force", provider, { name = method[1], handler = method[2], idx = i })
-  --   table.insert(state.providers, provider)
-  -- end
+  for i, method in pairs(devbox_methods.lsp) do
+    local provider = vim.fn.deepcopy(provider_state)
+    provider = vim.tbl_deep_extend('force', provider, { name = method[1], handler = method[2], idx = i })
+    table.insert(state.providers, provider)
+  end
   local linecnt = #state.providers
   state.popup.size.height = linecnt + 1
   display.create_popup(state.popup.size)

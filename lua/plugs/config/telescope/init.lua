@@ -22,10 +22,7 @@ local telescope_config = {
     hidden = true,
     no_ignore = false,
     multi_icon = '◆ ',
-    cache_picker = {
-      num_pickers = 10,
-      limit_entries = 2000,
-    },
+
     layout_config = {
       bottom_pane = {
         height = 25,
@@ -63,6 +60,20 @@ local telescope_config = {
         flip_columns = 130,
       },
     },
+    cache_picker = {
+      num_pickers = 10,
+      limit_entries = 2000,
+    },
+    wrap_results = false,
+    file_previewer = require('telescope.previewers').vim_buffer_cat.new,
+    grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
+    qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
+    history = {
+      -- handler = require('telescope.actions.history').get_simple_history(),
+      handler = require('telescope._extensions.pickers_history.handler').get_history(),
+      path = vim.fn.stdpath('data') .. '/databases/telescope_history.sqlite3',
+      limit = 2000,
+    },
     layout_strategy = 'flex', -- flex, horizontal, veritical, center
     vimgrep_arguments = commands.vimgrep,
     find_command = commands.rg,
@@ -77,8 +88,6 @@ local telescope_config = {
     -- file_sorter = sorters.native_fzf_sorter,
     generic_sorter = require('mini.fuzzy').get_telescope_sorter,
     file_sorter = require('mini.fuzzy').get_telescope_sorter,
-    grep_previewer = previewers.vim_buffer_vimgrep.new,
-    qflist_previewer = previewers.vim_buffer_qflist.new,
     include_extensions = true,
     path_display = function(_, path) -- tail, hidden, absolute, shorten
       path = string.gsub(path, '^./', '')

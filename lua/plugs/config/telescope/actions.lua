@@ -3,7 +3,9 @@ local finders = require('telescope.finders')
 local config = require('telescope.config')
 local action_state = require('telescope.actions.state')
 local actions_set = require('telescope.actions.set')
+local state = require('telescope.state')
 local H = require('helpers')
+local run = require('telescope.run')
 
 local telethemes = require('telescope.telethemes')
 local dirpicker = require('plugs.config.telescope.dirpicker')
@@ -82,7 +84,23 @@ M.multi_to_qflist = function(prompt_bufnr)
   _multi_open(prompt_bufnr, 'quickfix')
 end
 
-M.results_toggle_down = function(prompt_bufnr)
+vim.g.telescope_cache_index = 0
+M.resume_picker_prev = function(prompt_bufnr)
+  -- actions.toggle_selection(prompt_bufnr)
+  -- actions.move_selection_previous(prompt_bufnr)
+  local cached_pickers_num = #state.get_global_key('cached_pickers')
+  local idx = vim.g.telescope_cache_index
+  if cached_pickers_num > 0 then
+    idx = idx + 1
+    if idx > cached_pickers_num then
+      idx = 1
+    end
+  end
+  local opts = { cache_index = idx }
+  run('builtin', 'resume', opts)
+end
+
+M.resume_picker_next = function(prompt_bufnr)
   actions.toggle_selection(prompt_bufnr)
   actions.move_selection_next(prompt_bufnr)
 end
@@ -90,6 +108,11 @@ end
 M.results_toggle_up = function(prompt_bufnr)
   actions.toggle_selection(prompt_bufnr)
   actions.move_selection_previous(prompt_bufnr)
+end
+
+M.results_toggle_down = function(prompt_bufnr)
+  actions.toggle_selection(prompt_bufnr)
+  actions.move_selection_next(prompt_bufnr)
 end
 
 M.results_page_up = function(prompt_bufnr)
@@ -155,75 +178,76 @@ M.switch_layout = function(prompt_bufnr, _opts)
 end
 
 M.switch_file_pickers = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local prompt_text = picker:_get_prompt()
-  -- local state = require("telescope.actions.state")
-  actions.close(prompt_bufnr)
+  vim.defer_fn(function()
+    local picker = action_state.get_current_picker(prompt_bufnr)
+    local prompt_text = picker:_get_prompt()
+    -- local state = require("telescope.actions.state")
+    if vim.api.nvim_buf_is_valid(prompt_bufnr) then
+      actions.close(prompt_bufnr)
+    end
 
-  local opts = {
-    default_text = prompt_text,
-  }
+    local opts = {
+      default_text = prompt_text,
+    }
 
-  local run = require('telescope.run')
-  if picker.prompt_title == 'Frecency' then
-    run('builtin', 'oldfiles', opts)
-  elseif picker.prompt_title == 'Find Files' then
-    run('frecency', 'frecency', opts)
-  else
-    run('builtin', 'find_files', opts)
-  end
+    if picker.prompt_title == 'Frecency' then
+      run('builtin', 'oldfiles', opts)
+    elseif picker.prompt_title == 'Find Files' then
+      run('frecency', 'frecency', opts)
+    else
+      run('builtin', 'find_files', opts)
+    end
+  end, 100)
 end
 
 M.switch_grep_pickers = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local prompt_text = picker:_get_prompt()
-  -- local state = require("telescope.actions.state")
-  actions.close(prompt_bufnr)
+  vim.defer_fn(function()
+    local picker = action_state.get_current_picker(prompt_bufnr)
+    local prompt_text = picker:_get_prompt()
+    -- local state = require("telescope.actions.state")
+    if vim.api.nvim_buf_is_valid(prompt_bufnr) then
+      actions.close(prompt_bufnr)
+    end
 
-  local bufnr = vim.api.nvim_win_get_buf(picker.original_win_id)
-  local bufparts = vim.split(vim.api.nvim_buf_get_name(bufnr), '/')
-  table.remove(bufparts)
-  local bufdir = vim.fn.join(bufparts, '/')
+    local bufnr = vim.api.nvim_win_get_buf(picker.original_win_id)
+    local bufparts = vim.split(vim.api.nvim_buf_get_name(bufnr), '/')
+    table.remove(bufparts)
+    local bufdir = vim.fn.join(bufparts, '/')
 
-  local is_grep_buffer = string.match(picker.results_title, 'Buffers %([0-9]+%)')
-  local is_dir_buffer = bufdir == picker.cwd and true or false
+    local is_grep_buffer = string.match(picker.results_title, 'Buffers %([0-9]+%)')
+    local is_dir_buffer = bufdir == picker.cwd and true or false
 
-  local opts = {
-    default_text = prompt_text,
-  }
-  if is_grep_buffer == nil and is_dir_buffer == false then
-    opts.grep_open_files = true
-  elseif is_grep_buffer ~= nil and is_dir_buffer == false then
-    opts.cwd = bufdir
-  elseif is_grep_buffer == nil and is_dir_buffer == true then
-    opts.grep_open_files = false
-  end
-
-  local run = require('telescope.run')
-  run('builtin', 'live_grep', opts)
+    local opts = {
+      default_text = prompt_text,
+    }
+    if is_grep_buffer == nil and is_dir_buffer == false then
+      opts.grep_open_files = true
+    elseif is_grep_buffer ~= nil and is_dir_buffer == false then
+      opts.cwd = bufdir
+    elseif is_grep_buffer == nil and is_dir_buffer == true then
+      opts.grep_open_files = false
+    end
+    run('builtin', 'live_grep', opts)
+  end, 100)
 end
 
 M.launch_find_pickers = function(prompt_bufnr)
   actions.close(prompt_bufnr)
-  local run = require('telescope.run')
   run('find_pickers', 'find_pickers', {})
 end
 
 M.launch_projects = function(prompt_bufnr)
   actions.close(prompt_bufnr)
-  local run = require('telescope.run')
   run('projects', 'projects', {})
 end
 
 M.launch_find_files = function(prompt_bufnr)
   actions.close(prompt_bufnr)
-  local run = require('telescope.run')
   run('builtin', 'find_files')
 end
 
 M.launch_live_grep = function(prompt_bufnr)
   actions.close(prompt_bufnr)
-  local run = require('telescope.run')
   run('builtin', 'live_grep')
 end
 

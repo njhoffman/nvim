@@ -18,21 +18,4 @@ endif
 " ,K runs :helpgrep on the word under the cursor
 nnoremap <buffer> <LocalLeader>K
       \ :<C-U>helpgrep <cword><CR>
-let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>K'
-
-" Get rid of the core ftplugin's square-bracket maps on unload
-" 8.1.273 updated the runtime files to include a fix for this
-if v:version < 801 || v:version == 801 && !has('patch273')
-  let b:undo_ftplugin .= '|nunmap <buffer> [['
-      \ . '|vunmap <buffer> [['
-      \ . '|nunmap <buffer> ]]'
-      \ . '|vunmap <buffer> ]]'
-      \ . '|nunmap <buffer> []'
-      \ . '|vunmap <buffer> []'
-      \ . '|nunmap <buffer> ]['
-      \ . '|vunmap <buffer> ]['
-      \ . '|nunmap <buffer> ]"'
-      \ . '|vunmap <buffer> ]"'
-      \ . '|nunmap <buffer> ["'
-      \ . '|vunmap <buffer> ["'
-endif
+" let b:undo_ftplugin .= '|nunmap <buffer> <LocalLeader>K'

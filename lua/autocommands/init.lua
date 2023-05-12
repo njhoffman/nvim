@@ -24,12 +24,26 @@ end
 -- stylua: ignore
 local autocmds = {
   wins = {
-    { 'BufEnter',              'NvimTree',   'setlocal cursorline' },
-    { {'BufEnter', 'WinEnter' }, '*', 'stopinsert' },
-    -- Equalize window dimensions when resizing vim window
-    -- Force write shada on leaving nvim
-    -- { 'VimLeave', '*', [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
-    -- Check if file changed when its window is focus, more eager than 'autoread'
+    -- { {'WinEnter' }, '*', 'stopinsert' },
+    { 'BufEnter', 'NvimTree', 'setlocal cursorline' },
+    -- { "InsertLeave", '*',
+
+    -- function(event)
+    --   if vim.bo.ft == 'TelescopePrompt' and vim.fn.mode() == 'n' then
+    --     vim.cmd('startinsert!')
+    --     vim.dbglog("STARTNSERT")
+    --     -- vim.schedule_wrap(function()
+    --     --   vim.cmd('startinsert')
+    --     -- end)
+    --   -- elseif vim.bo.ft == "lua" and vim.fn.mode() == 'i' then
+    --   --   vim.dbglog("STOPINSERT")
+    --   --   vim.cmd('stopinsert')
+    --   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
+    --   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
+    --   end
+    --   vim.dbglog(vim.bo.ft, vim.fn.mode(), vim.fn.getftype(vim.fn.bufname(0)))
+    -- end
+  --   },
   },
   fasd = { { 'BufRead', '*', commands.fasd_update } },
   CommandWin = {
@@ -116,8 +130,9 @@ local autocmds = {
     -- { "BufLeave,FocusLost", "*", M.vimadeCheck() },
   },
   Shape = {
-    -- { 'FocusLost',               '*', 'hi TermCursor cterm=NONE gui=NONE'    },
-    -- { 'FocusGained',             '*', 'hi TermCursor cterm=reverse gui=reverse' },
+    { 'FocusLost',               '*', 'hi TermCursor cterm=NONE gui=NONE'    },
+    { 'FocusGained',             '*', 'hi TermCursor cterm=reverse gui=reverse' },
+    { {'InsertEnter' }, '         *', 'set guicursor=n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20' },
     { {'VimLeave','VimSuspend'}, '*', 'set guicursor=a:block-blinkon90' },
   },
   terminal = {

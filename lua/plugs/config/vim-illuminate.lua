@@ -2,9 +2,9 @@
 local default_config = {
   -- providers: provider used to get references in the buffer, ordered by priority
   providers = {
-    "lsp",
-    "treesitter",
-    "regex",
+    'lsp',
+    'treesitter',
+    'regex',
   },
   -- delay: delay in milliseconds
   delay = 100,
@@ -14,8 +14,8 @@ local default_config = {
   filetype_overrides = {},
   -- filetypes_denylist: filetypes to not illuminate, this overrides filetypes_allowlist
   filetypes_denylist = {
-    "dirvish",
-    "fugitive",
+    'dirvish',
+    'fugitive',
   },
   -- filetypes_allowlist: filetypes to illuminate, this is overriden by filetypes_denylist
   filetypes_allowlist = {},
@@ -46,8 +46,8 @@ local default_config = {
   min_count_to_highlight = 1,
 }
 
-local config = { delay = 500, under_cursor = false }
-require("illuminate").configure(config)
+-- local config = { delay = 500, under_cursor = false }
+-- require('illuminate').configure(config)
 
 -- local function map(key, dir, buffer)
 --   vim.keymap.set("n", key, function()

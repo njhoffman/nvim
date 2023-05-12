@@ -18,12 +18,12 @@ endif
 
 " Flag as loaded
 let b:did_ftplugin_make_target = 1
-let b:undo_ftplugin = b:undo_ftplugin
-      \ . '|unlet b:did_ftplugin_make_target'
+" let b:undo_ftplugin = b:undo_ftplugin
+"       \ . '|unlet b:did_ftplugin_make_target'
 
 " Define normal mode mapping target
 nnoremap <buffer> <silent> <unique>
       \ <Plug>(MakeTarget)
       \ :<C-U>call make#target#Make()<CR>
-let b:undo_ftplugin = b:undo_ftplugin
-      \ . '|nunmap <buffer> <Plug>(MakeTarget)'
+" let b:undo_ftplugin = b:undo_ftplugin
+"       \ . '|nunmap <buffer> <Plug>(MakeTarget)'

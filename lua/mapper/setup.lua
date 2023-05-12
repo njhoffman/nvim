@@ -5,9 +5,7 @@ local prefix = mapper.prefix
 
 vim.cmd([[
   cabbrev T Telescope
-  cabbrev d lua vim.dbg(
-  cabbrev D DebugLog
-  cabbrev Plug execute "normal \<Plug>(
+  cabbrev D lua vim.dbg(
 ]])
 
 prefix('n', 'z', '+folds')
@@ -289,10 +287,22 @@ map('n', '<M-C-X>', '<cmd>silent! tabclose | xa<cr>', {
 --------------------------------------------------------------------------------------------------
 -- EXECUTE ---------------------------------------------------------------------------------------
 
-map('n', '!!', '<cmd>Run<cr>',--[[  '@:', ]] {
+map('n', '&&', '<cmd>@:<cr>', {
   category = 'Execute',
   label = 'repeat command',
   desc = 'repeat the last command',
+})
+
+map('n', '!@', '<cmd>RunSelect<cr>', {
+  category = 'Execute',
+  label = 'select runner task',
+  desc = 'assign task to runner',
+})
+
+map('n', '!!', '<cmd>Run<cr>', {
+  category = 'Execute',
+  label = 'repeat command',
+  desc = 'execute configured runner task',
 })
 
 map('n', '<M-r>', '<cmd>Restart<cr>', {
@@ -388,17 +398,6 @@ map('n', '<leader>R', '*:%s//', {
 --   desc = "quickly escape insert mode",
 -- })
 --
-map('i', '<C-u>', '<C-g>u<C-u>', {
-  category = 'Motion',
-  label = 'ctrl+u friendly',
-  desc = 'make ctrl+u undo friendly',
-})
-
-map('n', '<C-w>', '<C-g>u<C-w>', {
-  category = 'Motion',
-  label = 'ctrl+w friendly',
-  desc = 'make ctrl+w undo friendly',
-})
 
 map('n', 'D', 'd$', {
   category = 'Motion',
@@ -460,6 +459,12 @@ map('n', 'gg', '<Plug>(Smoothie_gg)', {
   noremap = false,
 })
 
+map('i', '<C-D>', "<cmd>execute('normal! d$\\<esc>')", {
+  category = 'Motion',
+  label = 'delete to eol',
+  desc = 'delete until the end of line',
+})
+
 map('n', 'gp', '`[v`]', {
   category = 'Motion',
   label = 'select last visual',
@@ -484,22 +489,36 @@ vmap('n', 'gv', {
   desc = 'select last visual block afrom bracket marks',
 })
 
--- map("x", "il", "0o$y", {
---   category = "Motion",
---   label = "yank in line",
---   desc = "yank in line without ending new line character",
--- })
---
--- map("o", "il", "<cmd>:normal vil<CR>", {
---   category = "Motion",
---   label = "yank in line",
---   desc = "yank in line without ending new line character",
+map('n', 'yil', 'v0o$y', {
+  category = 'Motion',
+  label = 'yank in line',
+  desc = 'yank in line',
+  silent = true,
+})
+
+-- map('o', 'yil', '<cmd>normal yy<cr>', {
+--   category = 'Motion',
+--   label = 'yank in line',
+--   desc = 'yank in line',
+--   silent = true,
 -- })
 
 map('n', 'yy', 'mQ0y$`Q', {
   category = 'Motion',
-  label = 'yank line no eol',
-  desc = 'yank line without ending new line character',
+  label = 'yank in line no eol',
+  desc = 'yank in line no eol',
+})
+
+map('n', 'yY', '<cmd>normal vil<CR>', {
+  category = 'Motion',
+  label = 'yank in line',
+  desc = 'yank in line',
+})
+
+map('n', '<M-">', '<cmd>Telescope neoclip<cr>', {
+  category = 'Motion',
+  label = 'neoclip telescope',
+  desc = 'show neoclip registers in telescope',
 })
 
 map('n', '<leader>py', '<cmd>Telescope neoclip<cr>', {
@@ -989,7 +1008,7 @@ map('n', '<M-g>', "<cmd>lua require('telescope.run')('projects','projects')<cr>"
   desc = 'find projects telescope',
 })
 
-map('n', '<leader>l', '<cmd>Telescope resume cache_index=1<cr>', {
+map('n', '<leader>l', "<cmd>lua require('telescope.run')('projects','projects')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'repeat telescope',

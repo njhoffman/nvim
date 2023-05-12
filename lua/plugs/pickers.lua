@@ -13,6 +13,7 @@ local plugins = {
   {
     'njhoffman/telescope.nvim', -- "nvim-telescope/telescope.nvim",
     -- dir = "~/git/telescope.nvim", -- "nvim-telescope/telescope.nvim",
+    event = 'VeryLazy',
     cmd = 'Telescope',
     dependencies = {
       'ElPiloto/telescope-vimwiki.nvim',
@@ -55,7 +56,15 @@ local plugins = {
       'tamago324/telescope-openbrowser.nvim',
       'tsakirist/telescope-lazy.nvim',
       { 'chip/telescope-code-fence.nvim', build = 'luarocks --local install lunamark' },
-      { 'danielfalk/smart-open.nvim', dependencies = { 'kkharji/sqlite.lua' } },
+      {
+        'danielfalk/smart-open.nvim',
+        dependencies = { 'kkharji/sqlite.lua' },
+      },
+      {
+        'nvim-telescope/telescope-smart-history.nvim',
+        dependencies = { 'kkharji/sqlite.lua' },
+      },
+      { 'kkharji/sqlite.lua', run = 'luarocks install sqlite luv' },
       -- { "nvim-telescope/telescope-frecency.nvim", dependencies = { "kkharji/sqlite.lua" } },
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       { 'AckslD/nvim-neoclip.lua', dependencies = { 'kkharji/sqlite.lua' } },
