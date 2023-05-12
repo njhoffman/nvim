@@ -46,13 +46,13 @@ dashboard.section.header.val = big_header
 -- Set menu,
 dashboard.section.buttons.val = {
   dashboard.button("e", "  > New file", ":ene <BAR> startinsert <CR>"),
-  dashboard.button("f", "  > Find file", ":cd $HOME/Workspace | Telescope find_files<CR>"),
+  dashboard.button("f", "󰈞  > Find file", ":cd $HOME/Workspace | Telescope find_files<CR>"),
   dashboard.button("r", "  > Recent", ":Telescope oldfiles<CR>"),
   dashboard.button("s", "  > Settings", ":e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>"),
-  dashboard.button("q", "  > Quit NVIM", ":qa<CR>"),
+  dashboard.button("q", "󰅚  > Quit NVIM", ":qa<CR>"),
 }
 
-                -- :center [{:icon "  "
+                -- :center [{:icon "󰁯  "
                 --           :desc :Sessions
                 --           :key :s
                 --           :action #((. (require :telescope) :extensions :sesh :sesh))}
@@ -60,15 +60,15 @@ dashboard.section.buttons.val = {
                 --           :desc "Recent files"
                 --           :key :r
                 --           :action "Telescope oldfiles"}
-                --          {:icon "  "
+                --          {:icon "󰈙  "
                 --           :desc "Find File"
                 --           :key :f
                 --           :action "Telescope find_files"}
-                --          {:icon "  "
+                --          {:icon "󰍉  "
                 --           :desc "Find Text"
                 --           :key :t
                 --           :action "Telescope live_grep"}
-                --          {:icon "  "
+                --          {:icon "󰂺  "
                 --           :desc "(WIP) mappings"
                 --           :key "?"
                 --           :action #(vim.notify "Guide is still WIP" :error)}

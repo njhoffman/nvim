@@ -29,14 +29,14 @@ local neocomposer = function(_, opts)
   end
   if queued ~= false then
     if queued then
-      status = '亮' .. queued .. ' ' .. status
+      status = '󰯁' .. queued .. ' ' .. status
     end
   end
-  -- status = '亮' .. #state.get_macros() .. ' ' .. status
+  -- status = '󰯁' .. #state.get_macros() .. ' ' .. status
 
   -- local delay_enabled = state.get_delay()
   -- if delay_enabled then
-  --   status = (status == '' and '' or (status .. ' ')) .. '%#DelaySymbol# 祥%#StatusLabel#DELAY '
+  --   status = (status == '' and '' or (status .. ' ')) .. '%#DelaySymbol# 󱎫%#StatusLabel#DELAY '
   -- end
 
   return status

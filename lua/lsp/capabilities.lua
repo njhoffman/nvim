@@ -75,7 +75,7 @@ local function show_capabilities()
       table.insert(lines, "      " .. key)
     end
     for _, key in ipairs(vim.fn.sort(skipped)) do
-      table.insert(lines, "      " .. key)
+      table.insert(lines, "    󰍴  " .. key)
     end
     return lines
   end

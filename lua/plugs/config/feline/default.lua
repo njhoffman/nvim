@@ -58,15 +58,15 @@ local comps = {
         name = "file_info",
         opts = {
           type = "relative-short",
-          file_readonly_icon = "  ",
-          -- file_readonly_icon = '  ',
-          -- file_readonly_icon = '  ',
-          -- file_readonly_icon = '  ',
+          file_readonly_icon = " 󰍁 ",
+          -- file_readonly_icon = ' 󰌾 ',
+          -- file_readonly_icon = ' 󰏮 ',
+          -- file_readonly_icon = ' 󰈡 ',
           -- file_modified_icon = '',
-          file_modified_icon = "",
-          -- file_modified_icon = 'ﱐ',
-          -- file_modified_icon = '',
-          -- file_modified_icon = '',
+          file_modified_icon = "󰆓",
+          -- file_modified_icon = '󰝒',
+          -- file_modified_icon = '󰎜',
+          -- file_modified_icon = '󰎝',
           -- file_modified_icon = '',
         },
       },
@@ -170,7 +170,7 @@ local comps = {
     hint = {
       -- provider = 'diagnostic_hints',
       provider = function()
-        return "" .. lsp_get_diag("Hint")
+        return "󰌵" .. lsp_get_diag("Hint")
       end,
       -- left_sep = ' ',
       enabled = function()
@@ -187,7 +187,7 @@ local comps = {
       -- left_sep = ' ',
       right_sep = " ",
       -- icon = '  ',
-      icon = "慎",
+      icon = "󰖈",
       hl = {
         fg = colors.yellow,
       },

@@ -13,11 +13,11 @@ local displayer = entry_display.create {
 }
 
 local type_icons = {
-  ["function"] = " ",
+  ["function"] = "󰊕 ",
   string       = " ",
-  number       = " ",
+  number       = "󰎠 ",
   table        = " ",
-  boolean      = " ",
+  boolean      = "󰆕 ",
   userdata     = " "
 }
 

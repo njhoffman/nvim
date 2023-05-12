@@ -4,9 +4,9 @@ local hlslens_config = {
     local indicator, text, chunks
     local abs_r_idx = math.abs(r_idx)
     if abs_r_idx > 1 then
-      indicator = string.format("%d%s", abs_r_idx, sfw ~= (r_idx > 1) and "" or "")
+      indicator = string.format("%d%s", abs_r_idx, sfw ~= (r_idx > 1) and "󰁞" or "󰁆")
     elseif abs_r_idx == 1 then
-      indicator = sfw ~= (r_idx == 1) and "" or ""
+      indicator = sfw ~= (r_idx == 1) and "󰁞" or "󰁆"
     else
       indicator = ""
     end

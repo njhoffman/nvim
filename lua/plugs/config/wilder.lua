@@ -132,7 +132,7 @@ wilder.popupmenu_renderer(
       -- wilder.popupmenu_buffer_flags(
       --   {
       --     flags = " a + ",
-      --     icons = {["+"] = "", a = "", h = ""}
+      --     icons = {["+"] = "󰏫", a = "󰈔", h = "󰈤"}
       --   }
       -- )
     },

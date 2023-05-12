@@ -72,7 +72,7 @@ return require"nvim-lightbulb".update_lightbulb {
 --       virtual_text = {
 --         enabled = true,
 --         text = ""
---         -- text = "  💡"
+--         -- text = "  󰌵💡"
 --       }
 --     }
 --     -- vim.api.nvim_command("highlight LightBulbVirtualText ctermfg= ctermbg= guifg=#007777 guibg=")
@@ -83,5 +83,5 @@ return require"nvim-lightbulb".update_lightbulb {
 -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb(lightbulb_config)]]
 -- vim.fn.sign_define("LightBulbSign", {text = "", texthl = "", linehl = "", numhl = ""})
 
---      ﮻  ﱥ    ● ★ ◉ ◎ ◯ ? ✖ Ⓘ ⓧ ⓞ  Ⓘ ◆ ◇ ⬢ ✔ ♥       
+--      󰚽  󰝧  󰌵  ● ★ ◉ ◎ ◯ ? ✖ Ⓘ ⓧ ⓞ  Ⓘ ◆ ◇ ⬢ ✔ ♥       
 --                             

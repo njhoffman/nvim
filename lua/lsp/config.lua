@@ -17,7 +17,7 @@ local diagnostic_config = {
     style = 'minimal',
     border = 'rounded',
     source = 'if_many',
-    prefix = ' ',
+    prefix = '󰀴 ',
     header = '',
     -- format = function(diag)
     --   -- See null-ls.nvim#632, neovim#17222 for how to pick up `code`

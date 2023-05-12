@@ -34,7 +34,7 @@ local function hydra_git()
   local hint = [[
  _d_iffView   _s_tage hunk     diff_M_aster    file_H_istory _S_tageBufr
  hunkq_f_     _u_nstage hunk   _p_ view hunk   _B_lameFull   _l_og
- buff_D_iff   _g_ diff staged  _m_erge        _x_ show del﯊ _c_onflict
+ buff_D_iff   _g_ diff staged  _m_erge        _x_ show del󰛌 _c_onflict
  _/_ show base resetHun_k_     _r_eset buffer   _<Enter>_ Neo  _q_uit
 ]]
   --  _b_uf gutter _F_iff buf       _U_stage        _G_staged
@@ -125,7 +125,7 @@ local function hydra_git()
 end
 
 local hint_telescope = [[
- _g_itfiles   _r_eg       _j_umps      _b_uffers       _y_ neo
+ _g_itfiles   _r_eg       _j_umps      _b_uffers       _y_ neo󰏢
  _z_ Z        _p_roject    _w_ grep     _/_ searchhist  _d_umbjump
  _C_lap 👏    co_m_mands   buf_l_ines   _s_ colo🌈      _c_mdhist
  _o_ldfiles   _k_eys 🔑    _f_ 📁       _h_arpoon       _M_marks

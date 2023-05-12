@@ -21,17 +21,17 @@ local function git_diff(type)
   return ''
 end
 
---     烙 
+--     󰐗 
 function M.git_diff_added()
   return git_diff('added'), '  '
 end
 
--- ﯰ    
+-- 󰛲  󰍵  󰍵
 function M.git_diff_removed()
   return git_diff('removed'), '  '
 end
 
--- 柳   
+-- 󰝤󰏬 󰎃 󰏭 
 function M.git_diff_changed()
   return git_diff('changed'), '  '
 end

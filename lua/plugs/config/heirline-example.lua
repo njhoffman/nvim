@@ -466,8 +466,8 @@ local Snippets = {
     return vim.tbl_contains({ "s", "i" }, vim.fn.mode())
   end,
   provider = function()
-    local forward = (vim.fn["UltiSnips#CanJumpForwards"]() == 1) and " " or ""
-    local backward = (vim.fn["UltiSnips#CanJumpBackwards"]() == 1) and " " or ""
+    local forward = (vim.fn["UltiSnips#CanJumpForwards"]() == 1) and "󰁔 " or ""
+    local backward = (vim.fn["UltiSnips#CanJumpBackwards"]() == 1) and "󰁍 " or ""
     return backward .. forward
   end,
   hl = { fg = "red", bold = true },
@@ -535,7 +535,7 @@ local DAPMessages = {
     },
   },
   { provider = " " },
-  --       ﰇ  
+  -- 󰆹 󰆸 󰆷    󰜉 󰃤 
 }
 
 local WorkDir = {
@@ -786,7 +786,7 @@ local CloseButton = {
   update = { "WinNew", "WinClosed", "BufEnter" },
   { provider = " " },
   {
-    provider = " ",
+    provider = "󰅙 ",
     hl = { fg = "gray" },
     on_click = {
       callback = function(_, minwid)
@@ -881,7 +881,7 @@ local TablineFileFlags = {
   --         return not vim.api.nvim_buf_is_loaded(self.bufnr)
   --     end,
   --     -- a downright arrow
-  --     provider = "", -- 
+  --     provider = "󰇚", -- 󰍛
   --     hl = { fg = "gray" },
   -- },
 }
@@ -920,8 +920,8 @@ local TablineCloseButton = {
     return not vim.api.nvim_buf_get_option(self.bufnr, "modified")
   end,
   { provider = " " },
-  { -- ✗    
-    provider = " ",
+  { -- ✗ 󰅚 󰅙 󰅘 󰅗
+    provider = "󰅙 ",
     hl = { fg = "gray" },
     on_click = {
       callback = function(_, minwid)
@@ -1006,7 +1006,7 @@ local Tabpage = {
 }
 
 local TabpageClose = {
-  provider = " %999X %X",
+  provider = " %999X󰅙 %X",
   hl = "TabLine",
 }
 

@@ -342,36 +342,36 @@ local cfg = {
   icons = {
     Array         = " ", --
     Boolean       = " ", --
-    Class         = " ", --   Class = " ﴯ","  "
-    Color         = " ",
-    Constant      = " ﲀ", --   Constant = " ",
+    Class         = " 󰌗", --   Class = " 󰠱","  "
+    Color         = " 󰏘",
+    Constant      = " 󰞂", --   Constant = " 󰐀",
     Constructor   = " ⌘", --   Constructor = "⌘ ","" ' ', " ",
-    Enum          = " 練", --   Enum = " " " " ,
+    Enum          = " 󰕘", --   Enum = " " " " ,
     EnumMember    = " ",  -- ' '
     Event         = " ",  -- " "
-    Field         = " ", --   Field = "ﰠ ", " ", " ﰠ",
-    File          = " ", --   File = " ", " ", " " ,
-    Folder        = " ",
-    Function      = " ",
-    Interface     = " ", --   Interface = " ", ' ', " ﰮ",
-    Keyword       = " ", --   Keyword = "廓 ",
+    Field         = " ", --   Field = "󰜢 ", " ", " 󰜢",
+    File          = " ", --   File = "󰈙 ", " ", " 󰈔" ,
+    Folder        = " 󰉋",
+    Function      = " 󰊕",
+    Interface     = " ", --   Interface = " ", ' ', " 󰜰",
+    Keyword       = " 󰌋", --   Keyword = "󰔌 ",
     Key           = " " ,
-    Method        = " ",
+    Method        = " 󰆧",
     Number        = " ",
     Null          = " ", -- "", " "
-    Module        = " ", --   Module = " ",
+    Module        = " 󰅩", --   Module = "󰏓 ",
     Object        = " ", --
-    Operator      = " ", --   Operator = " ",  " ", " ",
-    Property      = " ", --   Property = "ﰠ", " ", " 襁"," "," ﰠ"
-    Reference     = " ", --   Reference = " ", " ",
-    Snippet       = " ", --   Snippet = " ",
+    Operator      = " ", --   Operator = "󰆕 ",  " ", " 󰃬",
+    Property      = " ", --   Property = "󰜢", " ", " 󰖷"," "," 󰜢"
+    Reference     = " 󰈇", --   Reference = "󰈇 ", " 󰈝",
+    Snippet       = " ", --   Snippet = "󰅱 ",
     String        = "  ",
-    Struct        = "  ", --   Struct = "פּ ", "  ", " ﳤ",
+    Struct        = "  ", --   Struct = "󰙅 ", "  ", " 󰟦",
     Text          = " ", --   Text = " ",
-    TypeParameter = " ", --   ' ', " "
-    Unit          = " ", --   Unit = "塞 ",
-    Value         = " ",
-    Variable      = " ", --   Variable = " ", ' ',
+    TypeParameter = " ", --   ' ', " 󰊄"
+    Unit          = " ", --   Unit = "󰑭 ",
+    Value         = " 󰎠",
+    Variable      = " ", --   Variable = "󰈜 ", ' ',
   },
   nerd_font = true,
   float = {

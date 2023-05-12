@@ -143,7 +143,7 @@ local heads = {
   { "<Esc>", nil, { exit = true } },
 }
 
---            ﱣ     ﭦ 
+--    󰄬  󰄭          󰅚 󰙧 
 local toggles = {
   yes = "      ",
   no = "      ",
