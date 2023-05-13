@@ -66,12 +66,8 @@ M.sources = {
   null_ls.builtins.code_actions.gitrebase,
   null_ls.builtins.code_actions.gomodifytags,
   null_ls.builtins.code_actions.impl,
-  null_ls.builtins.code_actions.proselint,
-  null_ls.builtins.code_actions.proselint.with({
-    filetypes = { 'markdown', 'tex' },
-    command = 'proselint',
-    args = { '--json' },
-  }),
+  null_ls.builtins.code_actions.proselint.with({ filetypes = { 'markdown', 'tex' }, command = 'proselint', args = { '--json' } }),
+  require('typescript.extensions.null-ls.code-actions'),
   -- Diagnostics
   null_ls.builtins.diagnostics.actionlint,
   null_ls.builtins.diagnostics.ansiblelint,

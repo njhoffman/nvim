@@ -18,19 +18,19 @@ local default_opts = {
   -- Module mappings. Use `''` (empty string) to disable one.
   mappings = {
     -- Textobjects
-    object_scope = "ii",
-    object_scope_with_border = "ai",
+    object_scope = 'ii',
+    object_scope_with_border = 'ai',
 
     -- Motions (jump to respective border line; if not present - body line)
-    goto_top = "[i",
-    goto_bottom = "]i",
+    goto_top = '[i',
+    goto_bottom = ']i',
   },
 
   -- Options which control scope computation
   options = {
     -- Type of scope's border: which line(s) with smaller indent to
     -- categorize as border. Can be one of: 'both', 'top', 'bottom', 'none'.
-    border = "both",
+    border = 'both',
 
     -- Whether to use cursor column when computing reference indent.
     -- Useful to see incremental scopes with horizontal cursor movements.
@@ -42,7 +42,7 @@ local default_opts = {
   },
 
   -- Which character to use for drawing scope indicator
-  symbol = "╎",
+  symbol = '╎',
 }
 
 local opts = {
@@ -50,10 +50,10 @@ local opts = {
     -- animation = function(s, n)
     --   return 20
     -- end, -- cubic, quartic, quadratic, linear, exponential, none
-    animation = require("mini.indentscope").gen_animation.quadratic({
-      easing = "in-out", -- in, out, in-out
+    animation = require('mini.indentscope').gen_animation.quadratic({
+      easing = 'in-out', -- in, out, in-out
       duration = 20,
-      unit = "step", -- step, total
+      unit = 'step', -- step, total
     }),
 
     -- Delay (in ms) between event and start of drawing scope indicator
@@ -63,7 +63,7 @@ local opts = {
   options = {
     try_as_border = true,
   },
-  symbol = "│",
+  symbol = '│',
 }
 
-require("mini.indentscope").setup(opts)
+require('mini.indentscope').setup(opts)

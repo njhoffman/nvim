@@ -194,7 +194,23 @@ M.current_branch = function()
 end
 
 M.init_git_command = function(bufnr, sub_cmds)
+  sub_cmds = sub_cmds or {}
   local command = { 'git' }
+  local repo = utils.get_repo(bufnr)
+  if repo.gitdir then
+    table.insert(command, '--git-dir=' .. repo.gitdir)
+    table.insert(command, '--work-tree=' .. repo.worktree)
+  end
+  for _, sub_cmd in ipairs(sub_cmds) do
+    table.insert(command, sub_cmd)
+  end
+  return command
+end
+
+M.init_script_command = function(bufnr, sub_cmds)
+  sub_cmds = sub_cmds or {}
+  local script = vim.fn.stdpath('config') .. '/lua/gitops/scripts/commits.sh'
+  local command = { script }
   local repo = utils.get_repo(bufnr)
   if repo.gitdir then
     table.insert(command, '--git-dir=' .. repo.gitdir)

@@ -14,42 +14,60 @@ local select_default = function(prompt_bufnr)
   actions.center(prompt_bufnr)
 end
 
-local ignore = function(prompt_bufnr)
-  vim.notify('ignoring keystroke for ' .. prompt_bufnr, 0)
-end
+-- local ignore = function(prompt_bufnr)
+--   vim.notify('ignoring keystroke for ' .. prompt_bufnr, 0)
+-- end
+
+local ignore = false
+
 local main_maps = {
   -- stylua: ignore
   -- NOTE: have to assign all possible custom keys here and filter later from lazy loading
   i = {
-    ["<C-u>"]       = c_actions.backspace_word,
-    ["<C-d>"]       = actions.close,
+    ["<C-d>"]       = c_actions.search_reset,
+    ["<C-u>"]       = c_actions.search_backspace_word,
     ["<Esc>"]       = actions.close,
+    -- ["<M-d>"]       = actions.close,
     ["<CR>"]        = select_default,
-    ["<C-q>"]       = c_actions.multi_to_qflist,
     ["<C-Up>"]      = actions.cycle_history_prev,
     ["<C-Down>"]    = actions.cycle_history_next,
     ["<Up>"]        = actions.preview_scrolling_up,
     ["<Down>"]      = actions.preview_scrolling_down,
+    ["<M-b>"]       = actions.preview_scrolling_up,
+    ["<M-f>"]       = actions.preview_scrolling_down,
+    ["<C-_>"]       = actions_layout.toggle_preview,
+    ["<M-C-Left>"]  = actions.cycle_previewers_next,
+    ["<C-G>"]       = actions.move_to_top,
     ["<C-b>"]       = c_actions.results_page_up,
     ["<C-f>"]       = c_actions.results_page_down,
     ["<M-p>"]       = c_actions.results_toggle_up,
-    ["<F47>"]       = c_actions.results_toggle_up, -- C-S-F11
     ["<M-n>"]       = c_actions.results_toggle_down,
-    ["<F48>"]       = c_actions.results_toggle_down, -- C-S-F12
+    ["<M-a>"]       = c_actions.results_toggle_all,
+    ["<M-c>"]       = c_actions.results_drop_all,
     ["<C-y>"]       = c_actions.yank_selection,
-    ["<M-y>"]       = c_actions.selection_to_buffer,
+    ["<M-y>"]       = c_actions.yank_selection_to_buffer,
     ["<M-g>"]       = c_actions.launch_projects,
     ["<M-C-Space>"] = c_actions.launch_find_pickers,
     ["<M-e>"]       = c_actions.launch_live_grep,
     ["<M-u>"]       = c_actions.launch_find_files,
-    ["<C-_>"]       = actions_layout.toggle_preview,
     ["<M-/>"]       = c_actions.toggle_whichkey,
     ["<C-^>"]       = c_actions.switch_layout,
+    ["<S-Tab>"]     = ignore, -- c_actions.results_toggle_up,
+    ["<Tab>"]       = ignore, -- c_actions.results_toggle_down,
+    ["<PageUp>"]    = ignore, -- actions.results_scrolling_up,
+    ["<PageDown>"]  = ignore, -- actions.results_scrolling_down,
+    ["<M-q>"]       = ignore,
+    ["<C-C>"]       = ignore,
+    ["<C-L>"]       = ignore,
     ["<M-}>"]       = ignore,
     ["<M-,>"]       = ignore,
     ["<M-.>"]       = ignore,
-    ["<M-a>"]       = actions.toggle_all,
-    ["<M-c>"]       = actions.drop_all,
+    ["<C-X>"]       = ignore,
+    ["<C-T>"]       = ignore,
+    ["<C-V>"]       = ignore,
+    -- ["<F47>"]       = c_actions.results_toggle_up, -- C-S-F11
+    -- ["<F48>"]       = c_actions.results_toggle_down, -- C-S-F12
+
     -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
     -- [S-F1-9] = add/remove secondary sort #
     -- [??] = clear sort
@@ -78,6 +96,7 @@ local file_picker_maps = {
     ['<M-,>'] = c_actions.directory_up,
     ['<M-.>'] = c_actions.launch_dirpicker,
     ['<CR>'] = c_actions.multi_open,
+    ['<C-q>'] = c_actions.multi_to_qflist,
   },
 }
 

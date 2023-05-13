@@ -17,6 +17,8 @@ for _, mod_name in ipairs({
   vim.import(mod_name)
 end
 
+-- vim.fn.input()
+
 require('sidebar').setup()
 require('tracker').setup()
 

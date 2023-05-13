@@ -127,6 +127,14 @@ M.results_page_down = function(prompt_bufnr)
   actions_set.shift_selection(prompt_bufnr, results_height)
 end
 
+M.results_select_all = function(prompt_bufnr)
+  actions.select_all(prompt_bufnr)
+end
+
+M.results_drop_all = function(prompt_bufnr)
+  actions.drop_all(prompt_bufnr)
+end
+
 M.toggle_whichkey = function(prompt_bufnr)
   local whichkey_opts = {
     separator = ' ➜ ',
@@ -185,11 +193,7 @@ M.switch_file_pickers = function(prompt_bufnr)
     if vim.api.nvim_buf_is_valid(prompt_bufnr) then
       actions.close(prompt_bufnr)
     end
-
-    local opts = {
-      default_text = prompt_text,
-    }
-
+    local opts = { default_text = prompt_text }
     if picker.prompt_title == 'Frecency' then
       run('builtin', 'oldfiles', opts)
     elseif picker.prompt_title == 'Find Files' then
@@ -197,14 +201,14 @@ M.switch_file_pickers = function(prompt_bufnr)
     else
       run('builtin', 'find_files', opts)
     end
-  end, 100)
+  end, 50)
 end
 
 M.switch_grep_pickers = function(prompt_bufnr)
   vim.defer_fn(function()
     local picker = action_state.get_current_picker(prompt_bufnr)
     local prompt_text = picker:_get_prompt()
-    -- local state = require("telescope.actions.state")
+    local opts = { default_text = prompt_text }
     if vim.api.nvim_buf_is_valid(prompt_bufnr) then
       actions.close(prompt_bufnr)
     end
@@ -212,23 +216,19 @@ M.switch_grep_pickers = function(prompt_bufnr)
     local bufnr = vim.api.nvim_win_get_buf(picker.original_win_id)
     local bufparts = vim.split(vim.api.nvim_buf_get_name(bufnr), '/')
     table.remove(bufparts)
-    local bufdir = vim.fn.join(bufparts, '/')
 
-    local is_grep_buffer = string.match(picker.results_title, 'Buffers %([0-9]+%)')
-    local is_dir_buffer = bufdir == picker.cwd and true or false
-
-    local opts = {
-      default_text = prompt_text,
-    }
-    if is_grep_buffer == nil and is_dir_buffer == false then
+    local is_grep_project = string.match(picker.prompt_title, 'Live Grep Project')
+    local is_grep_buffer = string.match(picker.prompt_title, 'Live Grep Buffers')
+    local is_grep_cwd = string.match(picker.prompt_title, 'Live Grep CWD')
+    if is_grep_project then
       opts.grep_open_files = true
-    elseif is_grep_buffer ~= nil and is_dir_buffer == false then
-      opts.cwd = bufdir
-    elseif is_grep_buffer == nil and is_dir_buffer == true then
+    elseif is_grep_buffer then
+      opts.cwd = vim.fn.join(bufparts, '/')
+    elseif is_grep_cwd then
       opts.grep_open_files = false
     end
     run('builtin', 'live_grep', opts)
-  end, 100)
+  end, 50)
 end
 
 M.launch_find_pickers = function(prompt_bufnr)
@@ -303,8 +303,28 @@ M.directory_up = function(prompt_bufnr)
   end
 end
 
-M.backspace_word = function()
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-w>', true, true, true), 'i', true)
+M.search_reset = function(prompt_bufnr, opts)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  picker:reset_prompt()
+  -- TODO: detect if search is refined "Fuzzy match over" and reset
+  -- local new_title = vim.tbl_get(picker, 'prompt_border', '_border_win_options', 'title')
+  -- vim.dbglog('RESET', new_title, picker.prompt_title, picker.results_title, opts)
+  -- local new_finder = finders.new_table { results = results, entry_maker = function(x) return x end }
+  -- if not opts.reset_multi_selection and current_line ~= "" then
+  --   opts.multi = current_picker._multi
+  -- end
+  -- if opts.prompt_to_prefix then
+  --   local current_prefix = current_picker.prompt_prefix
+  --   local suffix = current_prefix ~= opts.prompt_prefix and current_prefix or ""
+  --   opts.new_prefix = suffix .. current_line .. " " .. opts.prompt_prefix
+  -- end
+  -- current_picker:refresh(new_finder, opts)
+  -- current_picker:set_prompt(entry)
+end
+
+M.search_backspace_word = function(_)
+  local backspace_key = vim.api.nvim_replace_termcodes('<C-w>', true, true, true)
+  vim.api.nvim_feedkeys(backspace_key, 'i', true)
 end
 
 M.buffer_delete = function(prompt_bufnr)
@@ -355,7 +375,7 @@ local function create_scratch_win(filetype, lines)
   vim.api.nvim_buf_set_lines(buf, 0, #lines, false, lines)
 end
 
-M.selection_to_buffer = function(prompt_bufnr)
+M.yank_selection_to_buffer = function(prompt_bufnr)
   local picker = action_state.get_current_picker(prompt_bufnr)
   local multi_targets = picker:get_multi_selection()
   local lines = {}

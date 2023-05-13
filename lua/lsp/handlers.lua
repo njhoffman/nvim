@@ -1,9 +1,9 @@
-local mapping = require("lsp.mapping")
+local mapping = require('lsp.mapping')
 
 local color_provider = function(client, bufnr)
   local cap = client.server_capabilities
   if cap.colorProvider and false then
-    require("lsp.documentcolors").buf_attach(bufnr, { single_column = true })
+    require('lsp.documentcolors').buf_attach(bufnr, { single_column = true })
   end
 end
 
@@ -19,7 +19,7 @@ local function find_and_run_codelens()
   end, lenses)
 
   if #lenses == 0 then
-    return vim.notify("Could not find codelens to run.", 3)
+    return vim.notify('Could not find codelens to run.', 3)
   end
 
   table.sort(lenses, function(a, b)
@@ -32,11 +32,11 @@ local function find_and_run_codelens()
 end
 
 local code_lens_provider = function(_, bufnr)
-  vim.cmd("highlight default link LspCodeLens NonText")
-  vim.cmd("highlight default link LspCodeLensSeparator NonText")
+  vim.cmd('highlight default link LspCodeLens NonText')
+  vim.cmd('highlight default link LspCodeLensSeparator NonText')
 
-  local group = vim.api.nvim_create_augroup("LspCodelens", {})
-  vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost", "CursorHold" }, {
+  local group = vim.api.nvim_create_augroup('LspCodelens', {})
+  vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'BufWritePost', 'CursorHold' }, {
     buffer = bufnr,
     group = group,
     callback = function()
@@ -47,11 +47,11 @@ local code_lens_provider = function(_, bufnr)
 end
 
 local document_formatting_provider = function(client, bufnr)
-  local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = false })
-  local name = type(client) == "table" and client.name or client or ""
-  local command = "Format " .. bufnr .. " " .. name
-  vim.api.nvim_create_autocmd("BufWritePre", { group = augroup, buffer = bufnr, command = command })
-  command = "<cmd>" .. command .. "<cr>"
+  local augroup = vim.api.nvim_create_augroup('LspFormatting', { clear = false })
+  local name = type(client) == 'table' and client.name or client or ''
+  local command = 'Format ' .. bufnr .. ' ' .. name
+  vim.api.nvim_create_autocmd('BufWritePre', { group = augroup, buffer = bufnr, command = command })
+  command = '<cmd>' .. command .. '<cr>'
   mapping.formatting(command)
 end
 
@@ -60,15 +60,15 @@ local document_formatting_range_provider = function(_, _)
 end
 
 local function highlight_references()
-  local ts_utils = require("nvim-treesitter.ts_utils")
+  local ts_utils = require('nvim-treesitter.ts_utils')
   local node = ts_utils.get_node_at_cursor()
   while node ~= nil do
     local node_type = node:type()
     if
-      node_type == "string"
-      or node_type == "string_fragment"
-      or node_type == "template_string"
-      or node_type == "document" -- for inline gql`` strings
+      node_type == 'string'
+      or node_type == 'string_fragment'
+      or node_type == 'template_string'
+      or node_type == 'document' -- for inline gql`` strings
     then
       -- who wants to highlight a string? i don't. yuck
       return
@@ -79,15 +79,15 @@ local function highlight_references()
 end
 
 local document_highlight_provider = function(client, bufnr)
-  if not require("utils.lazy").is_installed("vim-illuminate") then
+  if not require('utils.lazy').is_installed('vim-illuminate') then
     if client.server_capabilities.documentHighlightProvider then
-      local group = vim.api.nvim_create_augroup("LspHighlight", {})
-      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      local group = vim.api.nvim_create_augroup('LspHighlight', {})
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
         buffer = bufnr,
         group = group,
         callback = highlight_references,
       })
-      vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
         buffer = bufnr,
         group = group,
         callback = function()
@@ -95,7 +95,7 @@ local document_highlight_provider = function(client, bufnr)
         end,
       })
     else
-      vim.notify("Lost documentHighlightProvider \n" .. vim.inspect(client.server_abilities), 4)
+      vim.notify('Lost documentHighlightProvider \n' .. vim.inspect(client.server_abilities), 4)
     end
   end
 end
@@ -114,7 +114,7 @@ local signature_help_provider = function(_, bufnr)
     ---@diagnostic disable-next-line: undefined-field
     local window_id = _G._LSP_SIG_CFG.winnr
     if is_lsp_float_open(window_id) then
-      vim.fn.win_execute(window_id, "normal! " .. sendkeys)
+      vim.fn.win_execute(window_id, 'normal! ' .. sendkeys)
     end
   end
 
@@ -130,36 +130,36 @@ local signature_help_provider = function(_, bufnr)
     select_signature_key = mapping.signature_select(),
     move_cursor_key = mapping.signature_move_cursor(),
   }
-  require("lsp_signature").on_attach(cfg, bufnr)
+  -- require('lsp_signature').on_attach(cfg, bufnr)
 
   -- TODO: calculate page down length and initialize scroll down with scrolloffset
 
-  mapping.signature_hover()
+  -- mapping.signature_hover()
 
-  local page_up_mapping = escape_term_codes("<PageUp>")
-  local page_down_mapping = escape_term_codes("<PageDown>")
-  local scroll_up_mapping = escape_term_codes("<Up>")
-  local scroll_down_mapping = escape_term_codes("<Down>")
+  local page_up_mapping = escape_term_codes('<PageUp>')
+  local page_down_mapping = escape_term_codes('<PageDown>')
+  local scroll_up_mapping = escape_term_codes('<Up>')
+  local scroll_down_mapping = escape_term_codes('<Down>')
 
-  mapping.signature_preview_up(function()
-    scroll_float(scroll_up_mapping)
-  end)
-  mapping.signature_preview_down(function()
-    scroll_float(scroll_down_mapping)
-  end)
-
-  mapping.signature_preview_page_up(function()
-    scroll_float(page_up_mapping)
-  end)
-
-  mapping.signature_preview_page_down(function()
-    scroll_float(page_down_mapping)
-  end)
+  -- mapping.signature_preview_up(function()
+  --   scroll_float(scroll_up_mapping)
+  -- end)
+  -- mapping.signature_preview_down(function()
+  --   scroll_float(scroll_down_mapping)
+  -- end)
+  --
+  -- mapping.signature_preview_page_up(function()
+  --   scroll_float(page_up_mapping)
+  -- end)
+  --
+  -- mapping.signature_preview_page_down(function()
+  --   scroll_float(page_down_mapping)
+  -- end)
 end
 
 local hover_provider = function(_, _)
   -- vim already has builtin docs
-  if vim.bo.ft ~= "vim" then
+  if vim.bo.ft ~= 'vim' then
     mapping.hover()
   end
 end
@@ -197,7 +197,7 @@ local rename_provider = function(_, _)
 end
 
 local document_symbol_provider = function(client, bufnr)
-  local navic = require("lsp.nvim-navic")
+  local navic = require('lsp.nvim-navic')
   navic.attach(client, bufnr)
 end
 
@@ -246,7 +246,7 @@ end
 --
 -- vim.lsp.handlers["textDocument/inlayHint"] = show_handler
 local execute_command = function(args)
-  vim.dbglog({ "executeCommand", args })
+  vim.dbglog({ 'executeCommand', args })
   vim.lsp.buf.execute_command(args)
 end
 

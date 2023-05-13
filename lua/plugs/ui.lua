@@ -30,7 +30,7 @@ local plugins = {
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       char = '│',
-      filetype_exclude = { 'help', 'alpha', 'dashboard', 'neo-tree', 'Trouble', 'lazy' },
+      filetype_exclude = { 'lspinfo', 'null-ls-info', 'help', 'alpha', 'dashboard', 'neo-tree', 'Trouble', 'lazy' },
       show_trailing_blankline_indent = false,
       show_current_context = false,
     },
@@ -40,7 +40,7 @@ local plugins = {
     event = { 'BufReadPre', 'BufNewFile' },
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = { 'help', 'alpha', 'dashboard', 'neo-tree', 'Trouble', 'lazy', 'mason' },
+        pattern = { 'lspinfo', 'null-ls-info', 'help', 'alpha', 'dashboard', 'neo-tree', 'Trouble', 'lazy', 'mason' },
         callback = function()
           vim.b.miniindentscope_disable = true
         end,

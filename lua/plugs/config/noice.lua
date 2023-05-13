@@ -16,6 +16,65 @@ local viewFormat = {
   '| {message}',
 }
 
+local cmdlineView = {
+  reverse = false,
+  align = 'message-left',
+  timeout = 5000,
+  position = { row = -2, col = -2 },
+
+  size = {
+    max_height = math.ceil(0.8 * vim.o.lines),
+    max_width = math.ceil(0.5 * vim.o.columns),
+    min_width = 30,
+    width = 'auto',
+    height = 'auto',
+  },
+  border = {
+    text = { top = '', top_align = 'left', bottom = '' },
+    style = {
+      { '▐', 'NoiceMiniBorder' },
+      { ' ', 'NoiceMini' },
+      { ' ', 'NoiceMini' },
+      { ' ', 'NoiceMini' },
+      { ' ', 'NoiceMini' },
+      { ' ', 'NoiceMini' },
+      { '▐', 'NoiceMiniBorder' },
+      { '▐', 'NoiceMiniBorder' },
+    },
+    padding = { top = 0, bottom = 0, left = 1, right = 0 },
+  },
+  win_options = { winblend = 0 },
+}
+
+local miniView = {
+  backend = 'mini',
+  relative = 'editor',
+  align = 'message-left',
+  timeout = 100,
+  reverse = true,
+  position = { row = -2, col = 0 },
+  size = 'auto',
+  zindex = 60,
+  border = {
+    style = {
+      { '╭', 'NoiceCmdlineBorder' },
+      { '─', 'NoiceCmdlineBorder' },
+      { '╮', 'NoiceCmdlineBorder' },
+      { '│', 'NoiceCmdlineBorder' },
+      { '╯', 'NoiceCmdlineBorder' },
+      { '─', 'NoiceCmdlineBorder' },
+      { '╰', 'NoiceCmdlineBorder' },
+      { '│', 'NoiceCmdlineBorder' },
+    },
+    padding = { left = 1, right = 1 },
+  },
+
+  win_options = {
+    winblend = 0,
+    winhighlight = { Normal = 'NoiceCmdlineNormal', IncSearch = '', Search = '' },
+  },
+}
+
 local historyViewOpts = {
   -- options for the message history that you get with `:Noice`
   -- view = 'split',
@@ -60,39 +119,45 @@ local cfg = {
   lsp = {
     progress = {
       enabled = true,
-      -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
-      -- See the section on formatting for more details on how to customize.
       format = 'lsp_progress',
       format_done = 'lsp_progress_done',
       throttle = 1000 / 30, -- frequency to update lsp progress message
       view = 'mini',
     },
     override = {
-      -- override the default lsp markdown formatter with Noice
       ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-      -- override the lsp markdown formatter with Noice
       ['vim.lsp.util.stylize_markdown'] = true,
-      -- override cmp documentation with Noice (needs the other options to work)
       ['cmp.entry.get_documentation'] = true,
     },
     hover = {
-      enabled = false,
-      view = nil, -- when nil, use defaults from documentation
-      opts = {}, -- merged with defaults from documentation
+      enabled = true,
+      -- view = nil, -- when nil, use defaults from documentation
+      opts = { win_options = {} }, -- merged with defaults from documentation
     },
     signature = {
-      enabled = false,
+      enabled = true,
+      auto_open = {
+        enabled = true,
+        trigger = true, -- Automatically show signature help when typing a trigger character from the LSP
+        luasnip = true, -- Will open signature help when jumping to Luasnip insert nodes
+        throttle = 50, -- Debounce lsp signature help request by 50ms
+      },
     },
-
+    message = {
+      -- Messages shown by lsp servers
+      enabled = true,
+      view = 'notify',
+      opts = {},
+    },
     -- defaults for hover and signature help
     documentation = {
       view = 'hover',
       opts = {
         lang = 'markdown',
-        replace = false,
+        replace = true,
         render = 'plain',
         format = { '{message}' },
-        win_options = { concealcursor = 'n', conceallevel = 3 },
+        win_options = { concealcursor = 'n', conceallevel = 3, cursorline = false },
       },
     },
   },
@@ -127,70 +192,11 @@ local cfg = {
     view_search = 'virtualtext', -- view for search count messages. Set to `false` to disable
   },
   views = {
+    -- ['mini'] = miniView,
+    -- ['cmdline'] = cmdlineView,
     ['notify'] = {
       render = 'minimal',
     },
-    -- ['mini'] = {
-    --   reverse = false,
-    --   align = 'message-left',
-    --   timeout = 5000,
-    --   position = { row = -2, col = -2 },
-    --
-    --   size = {
-    --     max_height = math.ceil(0.8 * vim.o.lines),
-    --     max_width = math.ceil(0.5 * vim.o.columns),
-    --     min_width = 30,
-    --     width = 'auto',
-    --     height = 'auto',
-    --   },
-    --
-    --   border = {
-    --     text = { top = '', top_align = 'left', bottom = '' },
-    --     style = {
-    --       { '▐', 'NoiceMiniBorder' },
-    --       { ' ', 'NoiceMini' },
-    --       { ' ', 'NoiceMini' },
-    --       { ' ', 'NoiceMini' },
-    --       { ' ', 'NoiceMini' },
-    --       { ' ', 'NoiceMini' },
-    --       { '▐', 'NoiceMiniBorder' },
-    --       { '▐', 'NoiceMiniBorder' },
-    --     },
-    --     padding = { top = 0, bottom = 0, left = 1, right = 0 },
-    --   },
-    --
-    --   win_options = { winblend = 0 },
-    -- },
-    --
-    --         ['cmdline'] = {
-    --           backend = 'mini',
-    --           relative = 'editor',
-    --           align = 'message-left',
-    --           timeout = 100,
-    --           reverse = true,
-    --           position = { row = -2, col = 0 },
-    --           size = 'auto',
-    --           zindex = 60,
-    --
-    --           border = {
-    --             style = {
-    --               { '╭', 'NoiceCmdlineBorder' },
-    --               { '─', 'NoiceCmdlineBorder' },
-    --               { '╮', 'NoiceCmdlineBorder' },
-    --               { '│', 'NoiceCmdlineBorder' },
-    --               { '╯', 'NoiceCmdlineBorder' },
-    --               { '─', 'NoiceCmdlineBorder' },
-    --               { '╰', 'NoiceCmdlineBorder' },
-    --               { '│', 'NoiceCmdlineBorder' },
-    --             },
-    --             padding = { left = 1, right = 1 },
-    --           },
-    --
-    --           win_options = {
-    --             winblend = 0,
-    --             winhighlight = { Normal = 'NoiceCmdlineNormal', IncSearch = '', Search = '' },
-    --           },
-    --         },
     cmdline_popup = {
       position = {
         -- row = 5,
@@ -283,9 +289,6 @@ local cfg = {
     },
   },
   routes = {
-
-    --
-
     -- FILTERS                       *noice.nvim-noice-(nice,-noise,-notice)-filters*
     -- **Noice** uses filters to route messages to specific views.
     --   ------------------------------------------------------------------------------
@@ -325,10 +328,11 @@ local cfg = {
     { filter = { event = 'msg_show', kind = '', find = '^%d+ more lines?$' }, view = 'mini' },
     -- all delete line messages to imini
     { filter = { event = 'msg_show', kind = '', find = '^%d+ fewer lines?$' }, view = 'mini' },
-    -- tags not found message
-    { filter = { event = 'msg_show', find = '^ERROR: ' }, view = 'notify' },
+    -- hide hover no information available
+    { filter = { event = 'msg_show', find = 'No information available' }, opts = { skip = true } },
     -- hide diagnostics messages
     { filter = { event = 'lsp', find = ' diagnostics_on_open ' }, opts = { skip = true } },
+    -- { filter = { event = 'msg_show', find = '^ERROR: ' }, view = 'notify' },
 
     -- {
     --   filter = { event = 'msg_show', kind = '', find = '^".+"  ?%d+L, %d+B$' },
@@ -354,6 +358,18 @@ local cfg = {
     -- },
   },
 }
+
+vim.keymap.set({ 'n', 'i', 's' }, '<M-f>', function()
+  if not require('noice.lsp').scroll(4) then
+    return '<c-f>'
+  end
+end, { silent = true, expr = true })
+
+vim.keymap.set({ 'n', 'i', 's' }, '<M-b>', function()
+  if not require('noice.lsp').scroll(-4) then
+    return '<c-b>'
+  end
+end, { silent = true, expr = true })
 
 -- {
 --   -- default format
@@ -403,15 +419,3 @@ require('telescope').load_extension('noice')
 -- confirm          popup      popup used for confirm events
 -- hover            popup      popup used for lsp signature help and hover
 -- popupmenu        nui.menu   special view with the options used to render the
-
--- vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
---   if not require("noice.lsp").scroll(4) then
---     return "<c-f>"
---   end
--- end, { silent = true, expr = true })
---
--- vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
---   if not require("noice.lsp").scroll(-4) then
---     return "<c-b>"
---   end
--- end, { silent = true, expr = true })

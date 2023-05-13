@@ -1,5 +1,8 @@
-local lspdefs = require("lsp.definitions")
-local windows = require("lspconfig/ui/windows")
+local lspdefs = require('lsp.definitions')
+local windows = require('lspconfig.ui.windows')
+local handlers = require('lsp.handlers')
+
+windows.default_options = { border = 'rounded' }
 
 local function close_preview_window(winnr, bufnrs)
   vim.schedule(function()
@@ -8,20 +11,20 @@ local function close_preview_window(winnr, bufnrs)
       return
     end
 
-    local augroup = "preview_window_" .. winnr
+    local augroup = 'preview_window_' .. winnr
     pcall(vim.api.nvim_del_augroup_by_name, augroup)
     pcall(vim.api.nvim_win_close, winnr, true)
   end)
 end
 
 local function close_preview_autocmd(events, winnr, bufnrs)
-  local augroup = vim.api.nvim_create_augroup("preview_window_" .. winnr, {
+  local augroup = vim.api.nvim_create_augroup('preview_window_' .. winnr, {
     clear = true,
   })
 
   -- close the preview window when entered a buffer that is not
   -- the floating window buffer or the buffer that spawned it
-  vim.api.nvim_create_autocmd("BufEnter", {
+  vim.api.nvim_create_autocmd('BufEnter', {
     group = augroup,
     callback = function()
       close_preview_window(winnr, bufnrs)
@@ -39,15 +42,12 @@ local function close_preview_autocmd(events, winnr, bufnrs)
   end
 end
 
--- UI just like `:LspInfo` to show which capabilities each attached server has
 vim.cmd("command! LspCapabilities lua require'lsp.capabilities'.show()")
 
 local function show_capabilities()
   local buf_clients = vim.lsp.get_active_clients()
 
-  local win_info = windows.percentage_range_window(0.8, 0.7, {
-    border = "rounded",
-  })
+  local win_info = windows.percentage_range_window(0.8, 0.7)
   local bufnr, win_id = win_info.bufnr, win_info.win_id
 
   local buf_lines = {}
@@ -69,34 +69,33 @@ local function show_capabilities()
     end
 
     local lines = {
-      "Client: " .. client.name .. " (id " .. tostring(client.id) .. ")",
+      'Client: ' .. client.name .. ' (id ' .. tostring(client.id) .. ')',
     }
     for _, key in ipairs(vim.fn.sort(filtered)) do
-      table.insert(lines, "      " .. key)
+      table.insert(lines, '      ' .. key)
     end
     for _, key in ipairs(vim.fn.sort(skipped)) do
-      table.insert(lines, "    󰍴  " .. key)
+      table.insert(lines, '    󰍴  ' .. key)
     end
     return lines
   end
 
   for _, client in ipairs(buf_clients) do
     vim.list_extend(buf_lines, make_client_info(client))
-    vim.list_extend(buf_lines, { "" })
+    vim.list_extend(buf_lines, { '' })
   end
 
-  vim.api.nvim_win_set_option(win_id, "wrap", true)
+  vim.api.nvim_win_set_option(win_id, 'wrap', true)
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, buf_lines)
-  vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
-  vim.api.nvim_buf_set_option(bufnr, "filetype", "lspcapabilities")
-  vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "LspFloatWinBorder" })
+  vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
+  vim.api.nvim_buf_set_option(bufnr, 'filetype', 'lspinfo')
+  -- vim.api.nvim_set_hl(0, 'LspInfoBorder', { link = 'LspFloatWinBorder' })
   local configs_pattern = [[\%(]] .. table.concat(buf_client_names, [[\|]]) .. [[\)]]
-  vim.cmd([[syntax match Title /\%(Client\):.*\zs]] .. configs_pattern .. "/")
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<esc>", "<cmd>bd<CR>", { noremap = true })
+  vim.cmd([[syntax match Title /\%(Client\):.*\zs]] .. configs_pattern .. '/')
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<esc>', '<cmd>bd<CR>', { noremap = true })
   -- close_preview_autocmd({ "BufHidden", "BufLeave" }, win_id, { bufnr })
 end
 
-local handlers = require("lsp.handlers")
 local try_capability = function(client, bufnr, capability)
   -- local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
   -- vim.dbglog(client.name .. ":  ? " .. capability .. " for '" .. ft .. "'")
@@ -117,14 +116,14 @@ local resolve_capabilities = function(client, bufnr)
 end
 
 local make_capabilities = function()
-  local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+  local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
     lineFoldingOnly = true,
   }
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = { "documentation", "detail", "additionalTextEdits" },
+    properties = { 'documentation', 'detail', 'additionalTextEdits' },
   }
 
   return capabilities

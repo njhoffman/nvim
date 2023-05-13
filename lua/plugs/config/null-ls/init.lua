@@ -3,6 +3,7 @@ local null_ls = require('null-ls')
 local my_sources = require('plugs.config.null-ls.sources')
 
 -- autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
+-- vim.fn.input()
 
 local supports_method_for_filetype = function(filetype, method)
   local sources = require('null-ls.sources')
@@ -33,6 +34,7 @@ local on_attach = function(_, bufnr)
 end
 
 null_ls.setup({
+  border = 'rounded',
   cmd = { 'nvim' },
   log_level = 'info',
   update_in_insert = false,

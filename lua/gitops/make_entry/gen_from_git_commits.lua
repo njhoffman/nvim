@@ -1,4 +1,5 @@
 local entry_display = require('telescope.pickers.entry_display')
+local state = require('telescope.state')
 
 -- stylua: ignore
 local setup_highlights = function()
@@ -47,11 +48,28 @@ end
 -- end
 --
 
+local resolve_widths = function(opts, widths)
+  local winwidth = vim.api.nvim_win_get_width(0) * (opts.theme ~= 'ivy' and 0.8 or 1)
+  local defaults = { sha = 10, date = 8, message = -1, author = 20, stat_files = 5, stat_insert = 8, stat_delete = 8 }
+  local maximums = { author = 20 }
+  local res = {}
+  for key, default_width in pairs(defaults) do
+    res[key] = type(widths[key]) == 'number' and widths[key] or default_width
+    if type(maximums[key]) == 'number' and maximums[key] < res[key] then
+      res[key] = maximums[key]
+    end
+  end
+  local total = res.sha + res.date + res.author + res.stat_files + res.stat_insert + res.stat_delete + 19
+  res.message = math.floor(winwidth - total)
+  return res
+end
+
 local function gen_from_git_commits(opts)
-  return function(w)
-    opts = opts or {}
+  return function(widths, timing)
     -- 4 files   5   20 
     -- 4   20   5 
+    opts = opts or {}
+    local w = resolve_widths(opts, widths)
     local displayer = entry_display.create({
       separator = ' ',
       items = {
@@ -65,8 +83,14 @@ local function gen_from_git_commits(opts)
       },
     })
 
+    if not timing.first_entry then
+      ---@diagnostic disable-next-line: missing-parameter
+      timing.first_entry = vim.fn.reltimestr(vim.fn.reltime(timing.total))
+    end
+
     local make_display = function(entry)
       -- strings.align_str(entry.hash, widths.name, true),
+
       return displayer({
         { entry.value.sha, 'TelescopeGitSha' },
         { entry.value.date, 'TelescopeGitDate' },
@@ -84,7 +108,7 @@ local function gen_from_git_commits(opts)
     return function(entry)
       return {
         value = entry,
-        ordinal = entry.sha .. ' ' .. entry.message,
+        ordinal = (entry.sha or '') .. ' ' .. (entry.message or ''),
         display = make_display,
         current_file = opts.current_file,
       }

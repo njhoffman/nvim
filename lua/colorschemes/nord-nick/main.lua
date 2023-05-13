@@ -202,7 +202,8 @@ return function(injected_functions)
     DebugMsg({ fg = Comment.fg }),
     Question({ fg = clrs.nord4 }),
     -- +--- LSP ---+
-    LspFloatWinBorder({ bg = 'none', fg = '#333333' }),
+    LspInfoBorder({ FloatBorder }),
+    NullLsInfoBorder({ FloatBorder }),
     LspCodeLens({ fg = '#6272A4' }),
     LspCodeLensSeparator({ fg = '#7F8CB5' }),
     DiagnosticError({ fg = clrs.nord11.da(30) }),
