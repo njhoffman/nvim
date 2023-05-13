@@ -69,7 +69,7 @@ opt('splitright', true)
 opt('swapfile', false)
 opt('switchbuf', 'useopen,usetab') -- Use the current tab for openning files from quickfix.
 opt('termguicolors', true)
-opt('textwidth', 1000)
+opt('textwidth', 120)
 opt('timeout', true)
 opt('timeoutlen', 500) -- 1000
 opt('ttimeoutlen', 30) -- 50
@@ -115,15 +115,6 @@ opt('synmaxcol', 2000, buffer)
 opt('tabstop', 2, buffer)
 opt('undofile', true, buffer)
 -- opt("textwidth", 100, buffer) -- set per buffer
-
--- --stylua: ignore
--- H.win_borders_fillchars = {
---   bold   = 'vert:┃,horiz:━,horizdown:┳,horizup:┻,verthoriz:╋,vertleft:┫,vertright:┣',
---   dot    = 'vert:·,horiz:·,horizdown:·,horizup:·,verthoriz:·,vertleft:·,vertright:·',
---   double = 'vert:║,horiz:═,horizdown:╦,horizup:╩,verthoriz:╬,vertleft:╣,vertright:╠',
---   single = 'vert:│,horiz:─,horizdown:┬,horizup:┴,verthoriz:┼,vertleft:┤,vertright:├',
---   solid  = 'vert: ,horiz: ,horizdown: ,horizup: ,verthoriz: ,vertleft: ,vertright: ',
--- }
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0

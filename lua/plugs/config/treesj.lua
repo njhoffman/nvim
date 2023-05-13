@@ -36,13 +36,13 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
   callback = function()
     local opts = { buffer = true }
     if langs[vim.bo.filetype] then
-      vim.keymap.set('n', 'gs', '<Cmd>TSJSplit<CR>', opts)
+      vim.keymap.set('n', 'gs', '<Cmd>TSJToggle<CR>', opts)
       vim.keymap.set('n', 'gJ', '<Cmd>TSJJoin<CR>', opts)
-      vim.keymap.set('n', 'gjj', '<Cmd>TSJToggle<CR>', opts)
+      vim.keymap.set('n', 'gS', '<Cmd>TSJSplit<CR>', opts)
     else
-      vim.keymap.set('n', 'gs', "require('mini.splitjoin').split_at", opts)
+      vim.keymap.set('n', 'gs', "require('mini.splitjoin').toggle", opts)
       vim.keymap.set('n', 'gJ', "require('mini.splitjoin').join_at", opts)
-      vim.keymap.set('n', 'gjj', "require('mini.splitjoin').toggle", opts)
+      vim.keymap.set('n', 'gS', "require('mini.splitjoin').split_at", opts)
     end
   end,
 })

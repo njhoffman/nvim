@@ -1,26 +1,27 @@
 local opts = {
-  scope = "line",
-  modes = { "i", "ic", "ix", "R", "Rc", "Rx", "Rv", "Rvc", "Rvx" },
+  scope = 'line',
+  modes = { 'i', 'ic', 'ix', 'R', 'Rc', 'Rx', 'Rv', 'Rvc', 'Rvx' },
   blending = {
     threshold = 0.75,
-    colorcode = "#000000",
+    colorcode = '#000000',
     hlgroup = {
-      "Normal",
-      "background",
+      'Normal',
+      'background',
     },
   },
   warning = {
     alpha = 0.4,
-    colorcode = "#FF0000",
+    offset = 0,
+    colorcode = '#FF0000',
     hlgroup = {
-      "Error",
-      "background",
+      'Error',
+      'background',
     },
   },
   extra = {
     -- follow_tw = nil,
-    follow_tw = "+1",
+    follow_tw = '+1',
   },
 }
 
-require("deadcolumn").setup(opts)
+require('deadcolumn').setup(opts)

@@ -12,6 +12,9 @@ local function get_key_cmd(mode, lhs)
   return rhs, opt
 end
 
+local indent_ft_exclude =
+  { 'alpha', 'dashboard', 'help', 'lazy', 'lspinfo', 'mason', 'neo-tree', 'null-ls-info', 'Trouble' }
+
 local plugins = {
   {
     'tummetott/reticle.nvim',
@@ -30,7 +33,7 @@ local plugins = {
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       char = '│',
-      filetype_exclude = { 'lspinfo', 'null-ls-info', 'help', 'alpha', 'dashboard', 'neo-tree', 'Trouble', 'lazy' },
+      filetype_exclude = indent_ft_exclude,
       show_trailing_blankline_indent = false,
       show_current_context = false,
     },
@@ -40,7 +43,7 @@ local plugins = {
     event = { 'BufReadPre', 'BufNewFile' },
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = { 'lspinfo', 'null-ls-info', 'help', 'alpha', 'dashboard', 'neo-tree', 'Trouble', 'lazy', 'mason' },
+        pattern = indent_ft_exclude,
         callback = function()
           vim.b.miniindentscope_disable = true
         end,

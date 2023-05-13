@@ -1,12 +1,7 @@
 -- No need to copy this inside `setup()`. Will be used automatically.
 local default_opt = {
-  -- Module mappings. Use `''` (empty string) to disable one.
-  -- Created for both Normal and Visual modes.
-  mappings = {
-    toggle = "gS",
-    split = "",
-    join = "",
-  },
+  -- Module mappings, normal and visual modes
+  mappings = { toggle = 'gS', split = '', join = '' },
   -- Detection options: where split/join should be done
   detect = {
     -- Array of Lua patterns to detect region with arguments.
@@ -14,7 +9,7 @@ local default_opt = {
     brackets = nil,
 
     -- String Lua pattern defining argument separator
-    separator = ",",
+    separator = ',',
 
     -- Array of Lua patterns for sub-regions to exclude separators from.
     -- Enables correct detection in presence of nested brackets and quotes.
@@ -37,10 +32,7 @@ local default_opt = {
 
 -- map with treesj and use splitjoin as fallback
 local opts = {
-  mappings = {
-    toggle = "",
-    split = "",
-    join = "",
-  },
+  mappings = { toggle = '', split = '', join = '' },
 }
-require("mini.splitjoin").setup(opts)
+
+require('mini.splitjoin').setup(opts)
