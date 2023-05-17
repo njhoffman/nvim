@@ -1,13 +1,28 @@
 local u = require('null-ls.utils')
 local null_ls = require('null-ls')
-local my_sources = require('plugs.config.null-ls.sources')
 
 -- autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
 -- vim.fn.input()
+local custom_sources = require('plugs.config.null-ls.custom')
+local source_categories = {
+  require('plugs.config.null-ls.codeactions'),
+  require('plugs.config.null-ls.diagnostics'),
+  require('plugs.config.null-ls.formatting'),
+  custom_sources.formatting,
+  custom_sources.diagnostics,
+  custom_sources.codeactions,
+}
+
+local sources = {}
+for _, src in ipairs(source_categories) do
+  for _, v in ipairs(src) do
+    table.insert(sources, v)
+  end
+end
 
 local supports_method_for_filetype = function(filetype, method)
-  local sources = require('null-ls.sources')
-  local available = sources.get_available(filetype, method)
+  local null_sources = require('null-ls.sources')
+  local available = null_sources.get_available(filetype, method)
   return #available > 0
 end
 
@@ -38,7 +53,7 @@ null_ls.setup({
   cmd = { 'nvim' },
   log_level = 'info',
   update_in_insert = false,
-  sources = my_sources.sources,
+  sources = sources,
   fallback_severity = vim.diagnostic.severity.INFO,
   on_init = function(new_client, _)
     if vim.tbl_contains({ 'h', 'cpp', 'c' }, vim.o.ft) then
@@ -49,7 +64,15 @@ null_ls.setup({
   on_attach = on_attach,
   debounce = 500,
   default_timeout = 5000,
-  root_dir = u.root_pattern('.null-ls-root', 'Makefile', '.git', 'go.mod', 'package.json', 'requirements.txt', 'tsconfig.json'),
+  root_dir = u.root_pattern(
+    '.null-ls-root',
+    'Makefile',
+    '.git',
+    'go.mod',
+    'package.json',
+    'requirements.txt',
+    'tsconfig.json'
+  ),
   -- should_attach = function(bufnr)
   --   local large_file = require("large_file")
   --

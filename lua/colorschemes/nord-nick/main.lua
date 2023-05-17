@@ -4,6 +4,73 @@
 local lush = require('lush')
 local hsl = lush.hsl
 local clrutil = require('utils.colors')
+local spacemacs = {
+  act1 = { '#222226', 235, 'act1' },
+  bg0 = { '#292b2e', 16, 'bg0' },
+  bg1 = { '#212026', 235, 'bg1' },
+  bg2 = { '#100a14', 233, 'bg2' },
+  bg3 = { '#0a0814', 16, 'bg3' },
+  bg4 = { '#34323e', 59, 'bg4' },
+  fg0 = { '#cdcdcd', 252, 'fg0' },
+  fg1 = { '#b2b2b2', 249, 'fg1' },
+  fg2 = { '#8e8e8e', 245, 'fg2' },
+  fg3 = { '#727272', 243, 'fg3' },
+  fg4 = { '#9a9aba', 247, 'fg4' },
+  fg5 = { '#5e5079', 241, 'fg5' },
+  --fg6      = {'#666666', 241, 'fg7'},
+  grey = { '#44505c', 239, 'grey' },
+  grey1 = { '#768294', 102, 'grey1' },
+  red1 = { '#ce537a', 168, 'red1' },
+  blue1 = { '#7590db', 68, 'blue1' },
+  purple0 = { '#bc6ec5', 104, 'purple0' },
+  purple1 = { '#d698fe', 177, 'purple1' },
+  purple2 = { '#a45bad', 245, 'purple2' },
+  purple3 = { '#5d4d7a', 241, 'purple3' },
+  purple4 = { '#34323e', 59, 'purple4' },
+  aqua0 = { '#2d9574', 30, 'aqua0' },
+  orange0 = { '#e18254', 246, 'orange0' },
+  cyan = { '#28def0', 45, 'cyan' },
+  mat = { '#86dc2f', 245, 'mat' },
+  meta = { '#9f8766', 137, 'meta' },
+  spacelight = { '#444155', 238, 'spacelight' }, -- highlight seems to be an illegal keyword here,
+  comp = { '#c56ec3', 248, 'comp' },
+  cblk = { '#cbc1d5', 252, 'cblk' },
+  -- ui_fg   = {},
+  ui_activ = { '#5d4d7a', 241, 'ui_activ' },
+  -- Terminal Colors,
+  tc8 = { '#5b5b5b', 240, 'tc8' },
+  tc9 = { '#44505c', 239, 'tc9' },
+  tc13 = { '#4f97d7', 68, 'tc13' },
+  tc14 = { '#bc6ec5', 104, 'tc14' },
+  tc15 = { '#2d9574', 30, 'tc15' },
+  tc16 = { '#bc6ec5', 104, 'tc16' },
+  -- local foreg = {"#5b5b5b", 240, "fg"}
+  -- local red = {"#f2241f", 196, "red"}
+  -- local red0 = {"#f54e3c", 244, "red0"}
+  -- local blue = {"#58b0d9", 247, "blue"}
+  -- local blue0 = {"#4f97d7", 68, "blue0"}
+  -- local purple = {"#544a65", 59, "purple"}
+  -- local green = {"#67b11d", 242, "green"}
+  -- local green0 = {"#2aa1ae", 244, "green0"}
+  -- local aqua = {"#4495b4", 244, "aqua"}
+  -- local orange = {"#d79650", 246, "orange"}
+  -- local yellow = {"#b1951d", 136, "yellow"}
+  -- local yellow1 = {"#e5d11c", 247, "yellow1"}
+  -- local war = {"#dc752f", 244, "war"}
+  -- local number = {"#e697e6", 252, "number"}
+  -- local debug = {"#ffc8c8", 224, "debug"}
+  -- local float = {"#b7b7ff", 147, "float"}
+  -- local delim = {"#74baac", 247, "delim"}
+  --
+  -- local tc2 = {"#d26487", 168, "tc2"}
+  -- local tc3 = {"#35a8a5", 73, "tc3"}
+  -- local tc4 = {"#b89f33", 244, "tc4"}
+  -- local tc5 = {"#6981c5", 246, "tc5"}
+  -- local tc6 = {"#a15ea7", 133, "tc6"}
+  -- local tc7 = {"#288668", 240, "tc7"}
+  -- local tc10 = {"#f2241f", 196, "tc10"}
+  -- local tc12 = {"#a15ea7", 133, "tc12"}
+}
 
 local tokyoColors = {
   none = 'NONE',
@@ -95,7 +162,7 @@ local clrs = {
 }
 
 local clr_over = {
-  selection = '#001a36',
+  selection = '#0a1848',
   orange_faded = '#80788a',
   orange = '#cc8877',
   yellow = '#bdb994',
@@ -124,7 +191,7 @@ return function(injected_functions)
     Pmenu({ fg = '#618cc4', bg = 'none' }),
     PmenuSel({ fg = '#44bfcf', bg = '#1a1f2f' }),
     PmenuSbar({ fg = '#313c84', bg = '#202331' }),
-    PmenuThumb({ fg = '#3f5372', bg = '#446faf' }),
+    PmenuThumb({ fg = '#1f3352', bg = '#446faf' }),
     -- TabLine({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     -- TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     TabLine({ fg = clrs.nord3, bg = clrs.nord1, gui = 'NONE' }),
@@ -143,9 +210,9 @@ return function(injected_functions)
     LineNr({ fg = clrs.nord3 }),
     Boolean({ fg = '#5370af' }),
     Number({ fg = '#4078c0' }),
-    CursorLine({ bg = '#0a142f' }),
+    CursorLine({ bg = '#0a1422' }),
     CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
-    Cursor({ bg = "#4B5Bff" }),
+    Cursor({ bg = '#4B5Bff' }),
     CursorColumn({ bg = CursorLine.bg }),
     ColorColumn({ bg = CursorLine.bg }),
     -- base groups
@@ -286,11 +353,17 @@ return function(injected_functions)
     sym('@operator')({ Operator }),
     sym('@parameter')({ Identifier }),
     sym('@property')({ Identifier }),
-    sym('@punct.bracket')({ fg = '#7886a8' }),
-    sym('@punctuation.bracket')({ fg = '#7886a8' }),
-    sym('@punct.special')({ fg = '#888698' }),
+    sym('@punctuation.bracket')({ fg = '#7886a8' }), -- fg = "#a9b1d6"
+    sym('@punct.bracket')({ sym('@punctuation.bracket') }),
+    sym('@punctuation.delimiter')({ fg = '#7886a8' }),
+    sym('@punctuation.special')({ fg = '#888698' }), -- #89ddff
+    sym('@punct.special')({ sym('@punctuation.special') }),
+    sym('@punctuation.special.markdown')({ fg = '#645060' }), --  fg = '#89ddff'
     sym('@spell')({ fg = 'none', bg = 'none', gui = 'none' }),
     sym('@string')({ String }),
+    sym('@string.documentation')({ fg = '#e0af68' }),
+    sym('@string.escape')({ fg = '#bb9af7' }),
+    sym('@string.regex')({ fg = '#b4f9f8' }),
     sym('@tag')({ fg = clr_over.orange }),
     sym('@tag.delimiter')({ fg = clr_over.orange }),
     sym('@text.literal')({ gui = 'none', fg = '#4789aa' }),
@@ -301,84 +374,15 @@ return function(injected_functions)
     sym('@text.todo.checked')({ fg = '#73daca' }),
     sym('@text.todo.unchecked')({ fg = '#7aa2f7' }),
     sym('@text.warning')({ Warning }),
+    sym('@text.danger')({ bg = '#db4b4b', fg = '#24283b' }),
+    sym('@text.diff.add')({ DiffAdd }),
+    sym('@text.diff.delete')({ DiffDelete }),
     sym('@type')({ fg = '#6595f8' }),
     sym('@type.builtin')({ fg = '#89DDFF' }),
     sym('@uri')({ fg = '#8eb9f6', gui = 'none' }),
     sym('@variable')({ Variable }),
     sym('@variable.builtin')({ Identifier }),
 
-    -- ["@punctuation.bracket"] = {
-    --   fg = "#a9b1d6"
-    -- },
-    -- ["@punctuation.delimiter"] = {
-    --   fg = "#89ddff"
-    -- },
-    -- ["@punctuation.special"] = {
-    --   fg = "#89ddff"
-    -- },
-    -- ["@punctuation.special.markdown"] = {
-    --   bold = true,
-    --   fg = "#ff9e64"
-    -- },
-    -- ["@string.documentation"] = {
-    --   fg = "#e0af68"
-    -- },
-    -- ["@string.escape"] = {
-    --   fg = "#bb9af7"
-    -- },
-    -- ["@string.regex"] = {
-    --   fg = "#b4f9f8"
-    -- },
-    -- ["@text.danger"] = {
-    --   bg = "#db4b4b",
-    --   fg = "#24283b"
-    -- },
-    -- ["@text.diff.add"] = {
-    --   link = "DiffAdd"
-    -- },
-    -- ["@text.diff.delete"] = {
-    --   link = "DiffDelete"
-    -- },
-    -- ["@text.reference"] = {
-    --   fg = "#1abc9c"
-    -- },
-    -- ["@text.todo.checked"] = {
-    --   fg = "#73daca"
-    -- },
-    -- ["@text.todo.unchecked"] = {
-    --   fg = "#7aa2f7"
-    -- },
-    -- ["@text.warning"] = {
-    --   bg = "#e0af68",
-    --   fg = "#24283b"
-    -- },
-    -- ["@type.builtin"] = {
-    --   fg = "#29a4bd"
-    -- },
-    -- luaTSFunction({ TSMethod }),
-    -- sym("@constructor")({ fg = "#bb9af7" }),
-    -- sym("@keyword")({fg = "#9d7cd8", style = {italic = true, }}),
-    -- sym("@keyword.function")({fg = "#bb9af7", style = {}}),
-    -- sym("@label")({fg = "#7aa2f7"}),
-    -- sym("@namespace")({link = "Include"}),
-    -- sym("@operator")({fg = "#89ddff"}),
-    -- sym("@parameter")({ fg = "#e0af68" }),
-    -- sym("@property")({fg = "#73daca"}),
-    -- sym("@punctuation.delimiter")({ fg = "#89ddff" }),
-    sym('@punctuation.special')({ fg = '#89ddff' }),
-    -- sym("@punctuation.special.markdown")({ bold = true, fg = "#ff9e64" }),
-    sym('@string.documentation')({ fg = '#e0af68' }),
-    sym('@string.escape')({ fg = '#bb9af7' }),
-    sym('@string.regex')({ fg = '#b4f9f8' }),
-    sym('@text.danger')({ bg = '#db4b4b', fg = '#24283b' }),
-    sym('@text.diff.add')({ DiffAdd }),
-    sym('@text.diff.delete')({ DiffDelete }),
-    -- sym("@text.todo.checked")({fg = "#73daca"}),
-    -- sym("@text.todo.unchecked")({ fg = "#7aa2f7", }),
-    -- sym("@text.warning")({ bg = "#e0af68", fg = "#24283b", }),
-    -- sym("@variable")({ fg = "#c0caf5", style = {}, }),
-    -- sym("@variable.builtin")({ fg = "#f7768e", }),
-    -- sym("@type.builtin")({ fg = "#29a4bd" }),
     sym('@lsp.type.comment')({ sym('@comment') }),
     sym('@lsp.type.enum')({ sym('@type') }),
     sym('@lsp.type.enumMember')({ sym('@constant') }),
@@ -397,6 +401,26 @@ return function(injected_functions)
     sym('@lsp.typemod.variable.defaultLibrary')({ sym('@variable.builtin') }),
     sym('@lsp.typemod.variable.injected')({ sym('@variable') }),
 
+    -- ["@text.reference"] = { fg = "#1abc9c" },
+    -- ["@text.todo.checked"] = {fg = "#73daca" },
+    -- ["@text.todo.unchecked"] = { fg = "#7aa2f7" },
+    -- ["@text.warning"] = { bg = "#e0af68",fg = "#24283b" },
+    -- ["@type.builtin"] = { fg = "#29a4bd" },
+    -- luaTSFunction({ TSMethod }),
+    -- sym("@constructor")({ fg = "#bb9af7" }),
+    -- sym("@keyword")({fg = "#9d7cd8", style = {italic = true, }}),
+    -- sym("@keyword.function")({fg = "#bb9af7", style = {}}),
+    -- sym("@label")({fg = "#7aa2f7"}),
+    -- sym("@namespace")({link = "Include"}),
+    -- sym("@operator")({fg = "#89ddff"}),
+    -- sym("@parameter")({ fg = "#e0af68" }),
+    -- sym("@property")({fg = "#73daca"}),
+    -- sym("@text.todo.checked")({fg = "#73daca"}),
+    -- sym("@text.todo.unchecked")({ fg = "#7aa2f7", }),
+    -- sym("@text.warning")({ bg = "#e0af68", fg = "#24283b", }),
+    -- sym("@variable")({ fg = "#c0caf5", style = {}, }),
+    -- sym("@variable.builtin")({ fg = "#f7768e", }),
+    -- sym("@type.builtin")({ fg = "#29a4bd" }),
     -- ['@lsp.type.namespace'] = '@namespace',
     -- ['@lsp.type.type'] = '@type',
     -- ['@lsp.type.class'] = '@type',
@@ -411,7 +435,6 @@ return function(injected_functions)
     -- ['@lsp.type.method'] = '@method',
     -- ['@lsp.type.macro'] = '@macro',
     -- ['@lsp.type.decorator'] = '@function',
-
     typescriptImport({ Include }),
     typescriptVariable({ Identifier }),
     -- typescriptAsyncFuncKeyword({ Keyword }),
@@ -439,6 +462,48 @@ return function(injected_functions)
     --
     liquidExpression({ Type }),
     liquidDelimiter({ fg = clr_over.orange }),
+
+    -- WFComment({ fg = "#2aa1ae"}),
+    -- WFWhichRem({ fg = "#2aa1ae"}),
+    -- WFFreeze({ fg = "#2aa1ae"}),
+    -- WFSeparator({ fg = "#2aa1ae"}),
+    -- WFTitleOutput({ fg = "#67b11d"}),
+    -- WFTitleWhich({ fg = "#67b11d"}),
+    -- WFTitleFuzzy({ fg = "#67b11d"}),
+    -- WFNormal({ fg = "#4583a0"}),
+    -- WFWhichDesc({fg = "#4583a0" }),
+    -- WFFocus({fg = "#4583a0"}),
+    -- WFWhichUnique({fg = "#ce537a"}),
+    -- WFExpandable({fg = "#ce537a"}),
+    -- WFFloatBorder({fg = "#2d9574"}),
+    -- WFFloatBorderFocus({fg = "#2d9574"}),
+    -- WFTitleFreeze({fg = "#2aa1ae"}),
+    -- WFWhichOn({fg = "#4f97d7"}),
+    -- WFFuzzy({fg = "#bc6ec5"}),
+    -- WFGroup({fg = "#bc6ec5"}),
+    -- WFWhichObjCounter({fg = "#44505c"}),
+    -- WFFuzzyPrompt({fg = "#f2241f"}),
+
+    --  WFNormal({Normal}),
+    --  WFFloatBorder({FloatBorder}),
+    --  WFFloatBorderFocus({FloatBorder}),
+    --  WFComment({Comment}),
+    --  WFWhichRem({Comment}),
+    --  WFWhichOn({Keyword}),
+    --  WFFuzzy({String}),
+    --  WFFuzzyPrompt({Error}),
+    --  WFFocus({WFNormal}),
+    --  WFFreeze({Comment}),
+    --  WFWhichObjCounter({NonText}),
+    --  WFWhichDesc({Normal}),
+    --  WFSeparator({Comment}),
+    --  WFGroup({Function}),
+    --  WFWhichUnique({Type}),
+    --  WFExpandable({Type}),
+    --  WFTitleOutput({Title}),
+    --  WFTitleWhich({Title}),
+    --  WFTitleFuzzy({Title}),
+    --  WFTitleFreeze({WFFreeze}),
 
     -- betterlua
     -- set g:lua_subversion to change the highlighting of the standard library
@@ -874,7 +939,7 @@ return function(injected_functions)
 
     -- noice.nvim
 
-    NoiceCursor({ bg = "#4B6BfB" }),
+    NoiceCursor({ bg = '#4B6BfB' }),
     NoiceCmdlinePopupBorderHelp({ fg = '#8888ff' }),
     NoiceCmdlinePopupBorderLua({ fg = '#44aaff' }),
     NoiceCmdlinePopupBorder({ fg = '#4466ff' }),

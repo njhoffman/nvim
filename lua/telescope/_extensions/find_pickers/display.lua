@@ -1,5 +1,5 @@
-local strings = require("plenary.strings")
-local entry_display = require("telescope.pickers.entry_display")
+local strings = require('plenary.strings')
+local entry_display = require('telescope.pickers.entry_display')
 
 local build_widths = function(results)
   local widths = { title = 0, name = 0 }
@@ -12,29 +12,34 @@ local build_widths = function(results)
   return widths
 end
 
-local entry_maker = function(results)
+local create_make_display = function(results)
   local widths = build_widths(results)
+  -- TODO: allow title to be a string or { string, highlight } table
+  local displayer = entry_display.create({
+    separator = ' ▏',
+    items = {
+      { width = widths.name },
+      { width = widths.title },
+    },
+  })
   return function(entry)
-    -- TODO: allow title to be a string or { string, highlight } table
-    local displayer = entry_display.create({
-      separator = " ▏",
-      items = {
-        { width = widths.name },
-        { width = widths.title },
+    return displayer({
+      {
+        strings.align_str(entry.value.name, widths.name, true),
+        'TelescopeResultsClass',
+      },
+      {
+        entry.value.title,
+        'TelescopeResultsComment',
       },
     })
+  end
+end
 
-    local function make_display()
-      return displayer({ {
-        strings.align_str(entry.name, widths.name, true),
-        "TelescopeResultsClass",
-      }, {
-        entry.title,
-        "TelescopeResultsComment"
-      },
-      })
-    end
+local entry_maker = function(results)
+  local make_display = create_make_display(results)
 
+  return function(entry)
     return {
       value = entry,
       display = make_display,
@@ -44,5 +49,5 @@ local entry_maker = function(results)
 end
 
 return {
-  entry_maker = entry_maker
+  entry_maker = entry_maker,
 }

@@ -1,111 +1,111 @@
-local utils = require("utils.lazy")
+local utils = require('utils.lazy')
 
 local plugins = {
   -- navarasu/onedark.nvim
   -- projekt0n/github-nvim-theme
-  { "rebelot/kanagawa.nvim", lazy = true },
-  { "marko-cerovac/material.nvim", lazy = true },
-  { "EdenEast/nightfox.nvim", lazy = true },
-  { "folke/tokyonight.nvim", lazy = true, opts = { style = "moon" } },
-  { "catppuccin/nvim", lazy = true, name = "catppuccin" },
+  { 'rebelot/kanagawa.nvim', event = 'User ColorSchemeLoad' },
+  { 'marko-cerovac/material.nvim', event = 'User ColorSchemeLoad' },
+  { 'EdenEast/nightfox.nvim', event = 'User ColorSchemeLoad' },
+  { 'folke/tokyonight.nvim', event = 'User ColorSchemeLoad', opts = { style = 'moon' } },
+  { 'catppuccin/nvim', event = 'User ColorSchemeLoad', name = 'catppuccin' },
   {
-    "jesseleite/nvim-noirbuddy",
-    lazy = true,
+    'jesseleite/nvim-noirbuddy',
+    event = 'User ColorSchemeLoad',
     dependencies = {
-      "tjdevries/colorbuddy.nvim",
-      branch = "dev",
+      'tjdevries/colorbuddy.nvim',
+      branch = 'dev',
     },
   },
   {
-    "nyoom-engineering/oxocarbon.nvim",
-    lazy = true,
+    'nyoom-engineering/oxocarbon.nvim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "bluz71/vim-moonfly-colors",
-    lazy = true,
+    'bluz71/vim-moonfly-colors',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "bluz71/vim-nightfly-colors",
-    lazy = true,
+    'bluz71/vim-nightfly-colors',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "Everblush/nvim",
-    lazy = true,
+    'Everblush/nvim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "rockerBOO/boo-colorscheme-nvim",
-    lazy = true,
+    'rockerBOO/boo-colorscheme-nvim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "phha/zenburn.nvim",
-    lazy = true,
+    'phha/zenburn.nvim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "JoosepAlviste/palenightfall.nvim",
-    lazy = true,
+    'JoosepAlviste/palenightfall.nvim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "yonlu/omni.vim",
-    lazy = true,
+    'yonlu/omni.vim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "lighthaus-theme/vim-lighthaus",
-    lazy = true,
+    'lighthaus-theme/vim-lighthaus',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "Abstract-IDE/Abstract-cs",
-    lazy = true,
+    'Abstract-IDE/Abstract-cs',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "Mofiqul/dracula.nvim",
-    lazy = true,
+    'Mofiqul/dracula.nvim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "mcchrish/zenbones.nvim",
-    lazy = true,
+    'mcchrish/zenbones.nvim',
+    event = 'User ColorSchemeLoad',
     dependencies = {
-      "rktjmp/lush.nvim",
+      'rktjmp/lush.nvim',
     },
   },
   {
-    "LunarVim/horizon.nvim",
-    lazy = true,
+    'LunarVim/horizon.nvim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "LunarVim/synthwave84.nvim",
-    lazy = true,
+    'LunarVim/synthwave84.nvim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "katawful/kat.nvim",
-    lazy = true,
+    'katawful/kat.nvim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "rose-pine/neovim",
-    lazy = true,
+    'rose-pine/neovim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "hachy/eva01.vim",
-    lazy = true,
+    'hachy/eva01.vim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "igorgue/danger",
-    lazy = true,
+    'igorgue/danger',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "arturgoms/moonbow.nvim",
-    lazy = true,
+    'arturgoms/moonbow.nvim',
+    event = 'User ColorSchemeLoad',
   },
   {
-    "ellisonleao/gruvbox.nvim",
-    lazy = true,
+    'ellisonleao/gruvbox.nvim',
+    event = 'User ColorSchemeLoad',
     opts = {
       palette_overrides = {},
     },
   },
   {
     -- Tons of awesome color schemes in base16. Really nice!
-    "RRethy/nvim-base16",
-    lazy = true,
+    'RRethy/nvim-base16',
+    event = 'User ColorSchemeLoad',
   },
 }
 

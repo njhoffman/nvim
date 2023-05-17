@@ -7,25 +7,60 @@
 -- :h mode_modifier-key               " help for 'modifier'-'key' in 'mode'
 -- :h mode_modifier-key_modifier-key  " help for 'modifier'-'key' 'modifier'-'key' in 'mode'
 
+--    :help z?	jump to help for any "z" command
+--    :help z.	jump to the help for "z."
+--    :help :?	jump to help for ":?"
+-- :help index
+-- :tselect /.*mode
+
+-- :helpgrep backspace
+-- :cnext, :cwindow
+-- Use CTRL-T or CTRL-O to jump back.
+-- :tag /min && :tnext
+
+-- With this in after/ftplugin/vim.vim:
+-- setlocal keywordprg=:vert\ help
+-- ... looking up the keyword under the cursor in vim files with K shows help in a split. (you can also use :vert\ Man otherwise)
+-- Use this in ftplugin/help.vim (and ftplugin/man.vim) to auto-resize:
+-- au BufWinEnter <buffer> ++once :silent vertical resize 80<CR>
+-- augroup vertical_help
+-- autocmd!
+-- autocmd FileType help wincmd L
+-- augroup END
+-- you can also use autocmd BufEnter *.txt if &buftype == 'help' | wincmd L | endif to get the same effect, the added advantage being that it will readjust the size of the window if you resize nvim and reenter the buffer.
+
 vim.cmd([[
 
   let g:help_minlines = 0
 
+    " 'iskeyword'		nearly all ASCII chars except ' ', '*', '"' and '|'
+    " 'foldmethod'	"manual"
+    " 'tabstop'		8
+    " 'arabic'		off
+    " 'binary'		off
+    " 'buflisted'		off
+    " 'cursorbind'	off
+    " 'diff'		off
+    " 'foldenable'	off
+    " 'modifiable'	off
+    " 'rightleft'		off
+    " 'scrollbind'	off
+
   setlocal signcolumn=no
-  setlocal norelativenumber
-  setlocal nonumber
-  setlocal textwidth=78
-  setlocal nolist
+  " setlocal textwidth=78
   setlocal nowrap
   setlocal formatoptions+=c  " Enable formatting everywhere, not just comments
 
+  " ,K runs :helpgrep on the word under the cursor
+  nnoremap <buffer> <LocalLeader>K  :<C-U>helpgrep <cword><CR>
+
   " Make K jump to the help topic; NeoVim does this, and it's a damned good idea
-  nnoremap <buffer> K <C-]>
+  " nnoremap <buffer> K <C-]>
+
   " let b:undo_ftplugin .= '|nunmap <buffer> K'
 ]])
 
 if vim.startswith(vim.fn.expand('%'), vim.env.VIMRUNTIME) or vim.bo.readonly then
-  vim.wo.spell = false
   vim.api.nvim_create_autocmd('BufWinEnter', { buffer = 0, command = 'wincmd L | vertical resize 80' })
   -- https://vim.fandom.com/wiki/Learn_to_use_help
   vim.api.nvim_buf_set_keymap(0, 'n', '<CR>', '<C-]>', {})

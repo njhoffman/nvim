@@ -46,6 +46,10 @@ vim.api.nvim_set_hl(0, 'DiagnosticUnnecessary', { link = 'Comment' })
 
 vim.diagnostic.config(diagnostic_config)
 
+if require('utils.lazy').is_installed('toggle_lsp_diagnostics') then
+  require('toggle_lsp_diagnostics').init(vim.diagnostic.config())
+end
+
 -- vim.api.nvim_create_autocmd("DiagnosticChanged", {
 --   callback = function(args)
 --     local diagnostics = args.data.diagnostics

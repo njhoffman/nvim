@@ -16,6 +16,15 @@ local file_count = function(cwd)
   return #lines
 end
 
+local get_help_word = function()
+  local word = vim.fn.expand('<cWORD>') or ''
+  local args_pattern = '%([^)]*%)?.*'
+  local vim_pattern = 'vim%.api%.'
+  word = string.gsub(word, args_pattern, '()')
+  word = string.gsub(word, vim_pattern, '')
+  return word
+end
+
 local telemap = {
   -- nvim_github_codesearch = {
   --   gh api -X GET rate_limit | jq '.rate.remaining',
@@ -100,6 +109,19 @@ local telemap = {
         bufnr = user_opts.bufnr,
         entry_maker = user_opts.entry_maker or make_entry.gen_from_diagnostics(gen_opts),
       }
+    end,
+  },
+  builtin_help_tags = {
+    opts = function(user_opts)
+      local opts = user_opts or {}
+      opts.theme = opts.theme or 'dropdown_preview'
+      if opts.cursor then
+        local match, word = require('utils.helptags').search_cursor_word()
+        if match then
+          opts.default_text = word
+        end
+      end
+      return opts
     end,
   },
   builtin_find_files = {

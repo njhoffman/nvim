@@ -6,7 +6,7 @@
 
 method="1"
 base_cmd=("git")
-sub_cmd=("log")
+sub_cmd=("log" "--max-count=10")
 print_cmd=0
 
 commits_count() {

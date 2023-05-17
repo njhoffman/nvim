@@ -1,110 +1,132 @@
-local dap = require("dap")
-local config = require("config")
-local DAP = config.DAP
+local dap = require('dap')
 
--- git clone https://github.com/microsoft/vscode-node-debug2.git vim.fn.stdpath("data") .. "adapters/vscode-node-debug2"
--- /usr/local/bin/nvim --embed --headless
--- =============================
---              DAP
--- =============================
+dap.set_log_level(1)
+-- nvim-dap/lua/dap/log.lua:29
 -- mfussenegger/nvim-dap
--- C/C++/Rust Go Java Mockdebug Python Ruby Dart Haskell Javascript/Node PHP Scala Neovim Lua .NET
-if DAP.log_level ~= nil or DAP.log_level ~= false or DAP.log_level ~= 0 then
-  dap.set_log_level(DAP.log_level)
-  -- nvim-dap/lua/dap/log.lua:29
-end
+
+local basepath = vim.fn.stdpath('data') .. '/mason/packages'
 
 dap.adapters.bashdb = {
-  type = "executable",
-  command = vim.fn.stdpath("data") .. "/mason/packages/bash-debug-adapter/bash-debug-adapter",
-  name = "bashdb",
+  type = 'executable',
+  command = basepath .. '/bash-debug-adapter/bash-debug-adapter',
+  name = 'bashdb',
 }
--- Add the configuration :
-
 dap.configurations.sh = {
   {
-    type = "bashdb",
-    request = "launch",
-    name = "Launch file",
+    type = 'bashdb',
+    request = 'launch',
+    name = 'Launch file',
     showDebugOutput = true,
-    pathBashdb = vim.fn.stdpath("data") .. "/mason/packages/bash-debug-adapter/extension/bashdb_dir/bashdb",
-    pathBashdbLib = vim.fn.stdpath("data") .. "/mason/packages/bash-debug-adapter/extension/bashdb_dir",
+    pathBashdb = basepath .. '/bash-debug-adapter/extension/bashdb_dir/bashdb',
+    pathBashdbLib = basepath .. '/bash-debug-adapter/extension/bashdb_dir',
     trace = true,
-    file = "${file}",
-    program = "${file}",
-    cwd = "${workspaceFolder}",
-    pathCat = "cat",
-    pathBash = "/bin/bash",
-    pathMkfifo = "mkfifo",
-    pathPkill = "pkill",
+    file = '${file}',
+    program = '${file}',
+    cwd = '${workspaceFolder}',
+    pathCat = 'cat',
+    pathBash = '/bin/bash',
+    pathMkfifo = 'mkfifo',
+    pathPkill = 'pkill',
     args = {},
     env = {},
-    terminalKind = "integrated",
+    terminalKind = 'integrated',
   },
 }
 
 dap.adapters.node2 = {
-  type = "executable",
-  command = vim.fn.stdpath("data") .. "/mason/packages/node-debug2-adapter/node-debug2-adapter",
+  type = 'executable',
+  command = basepath .. '/node-debug2-adapter/node-debug2-adapter',
 }
 dap.configurations.javascript = {
   {
-    name = "Launch",
-    type = "node2",
-    request = "launch",
-    program = "${file}",
+    name = 'Launch',
+    type = 'node2',
+    request = 'launch',
+    program = '${file}',
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
-    protocol = "inspector",
-    console = "integratedTerminal",
+    protocol = 'inspector',
+    console = 'integratedTerminal',
   },
   {
     -- For this to work you need to make sure the node process is started with the `--inspect` flag.
-    name = "Attach to process",
-    type = "node2",
-    request = "attach",
-    processId = require("dap.utils").pick_process,
+    name = 'Attach to process',
+    type = 'node2',
+    request = 'attach',
+    processId = require('dap.utils').pick_process,
   },
 }
-dap.adapters.delve = {
-  type = "server",
-  port = "${port}",
-  executable = {
-    command = "dlv",
-    args = { "dap", "-l", "127.0.0.1:${port}" },
+dap.configurations.javascriptreact = {
+  {
+    type = 'node2',
+    request = 'launch',
+    program = '${workspaceFolder}/${file}',
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    console = 'integratedTerminal',
+  },
+}
+dap.configurations.typescript = {
+  {
+    type = 'node2',
+    request = 'launch',
+    program = '${workspaceFolder}/${file}',
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    console = 'integratedTerminal',
   },
 }
 
+-- If you prefer to start delve manually, you can use the following adapter definition instead:
+-- dap.adapters.delve = { type = "server", host = "127.0.0.1", port = 38697 }
+dap.adapters.delve = {
+  type = 'server',
+  port = '${port}',
+  executable = {
+    command = 'dlv',
+    args = { 'dap', '-l', '127.0.0.1:${port}' },
+  },
+}
 -- https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
 dap.configurations.go = {
   {
-    type = "delve",
-    name = "Debug",
-    request = "launch",
-    program = "${file}",
+    type = 'delve',
+    name = 'Debug',
+    request = 'launch',
+    program = '${file}',
   },
   {
-    type = "delve",
-    name = "Debug test", -- configuration for debugging test files
-    request = "launch",
-    mode = "test",
-    program = "${file}",
+    type = 'delve',
+    name = 'Debug test', -- configuration for debugging test files
+    request = 'launch',
+    mode = 'test',
+    program = '${file}',
   },
   -- works with go.mod packages and sub packages
   {
-    type = "delve",
-    name = "Debug test (go.mod)",
-    request = "launch",
-    mode = "test",
-    program = "./${relativeFileDirname}",
+    type = 'delve',
+    name = 'Debug test (go.mod)',
+    request = 'launch',
+    mode = 'test',
+    program = './${relativeFileDirname}',
   },
 }
 
+dap.adapters.nlua = function(callback, lua_config)
+  callback({
+    type = 'server',
+    host = lua_config.host or '127.0.0.1',
+    port = lua_config.port or 8090,
+  })
+end
+
 dap.configurations.lua = {
   {
-    type = "nlua",
-    request = "attach",
-    name = "Attach to running Neovim instance",
+    type = 'nlua',
+    request = 'attach',
+    name = 'Attach to running Neovim instance',
     --   host = function()
     --     local value = vim.fn.input('Host [127.0.0.1]: ')
     --     if value ~= "" then
@@ -120,33 +142,7 @@ dap.configurations.lua = {
   },
 }
 
-dap.adapters.nlua = function(callback, lua_config)
-  callback({
-    type = "server",
-    host = lua_config.host or "127.0.0.1",
-    port = lua_config.port or 8090,
-  })
-end
-
-require("plugs.config.nvim-dap-ui")
--- If you prefer to start delve manually, you can use the following adapter definition instead:
---
--- dap.adapters.delve = {
---   type = "server",
---   host = "127.0.0.1",
---   port = 38697,
--- }
--- dap.configurations.lua = {
---   {
---     type = 'nlua',
---     request = 'attach',
---     name = "Attach to running Neovim instance",
---   }
--- }
---
--- dap.adapters.nlua = function(callback, config)
---   callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
--- end
+require('plugs.config.nvim-dap-ui')
 
 -- dap.adapters.go = {
 --   type = "executable",
@@ -154,7 +150,6 @@ require("plugs.config.nvim-dap-ui")
 --   command = os.getenv("HOME") .. "/.nvm/versions/node/v12.18.2/bin/node",
 --   args = { vim.fn.stdpath("data") .. "/adapters/vscode-go/dist/debugAdapter.js" },
 -- }
---
 -- dap.configurations.go = {
 --   {
 --     type = "go",
@@ -168,52 +163,7 @@ require("plugs.config.nvim-dap-ui")
 --   },
 -- }
 --
--- dap.configurations.javascript = {
---   {
---     type = "node2",
---     request = "launch",
---     program = "${workspaceFolder}/${file}",
---     cwd = vim.fn.getcwd(),
---     sourceMaps = true,
---     protocol = "inspector",
---     console = "integratedTerminal",
---   },
--- }
---
--- dap.configurations.javascriptreact = {
---   {
---     type = "node2",
---     request = "launch",
---     program = "${workspaceFolder}/${file}",
---     cwd = vim.fn.getcwd(),
---     sourceMaps = true,
---     protocol = "inspector",
---     console = "integratedTerminal",
---   },
--- }
---
--- dap.configurations.typescript = {
---   {
---     type = "node2",
---     request = "launch",
---     program = "${workspaceFolder}/${file}",
---     cwd = vim.fn.getcwd(),
---     sourceMaps = true,
---     protocol = "inspector",
---     console = "integratedTerminal",
---   },
--- }
--- -- NODE / TYPESCRIPT
--- dap.adapters.node2 = {
---   type = "executable",
---   -- command = os.getenv("HOME") .. "/.nvm/versions/node/v12.18.2/bin/node",
---   command = "node",
---   args = {
---     vim.fn.stdpath("data") .. "/adapters/vscode-node-debug2/out/src/nodeDebug.js",
---   },
--- }
 -- require("dap-python").setup("/home/linuxbrew/.linuxbrew/opt/python@3.8/bin/python3.8")
---
 -- -- dap.adapters.go = function(cb, config)
 -- --   local cb_input = {
 -- --     type = "executable",

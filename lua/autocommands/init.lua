@@ -2,6 +2,8 @@ local commands = require('autocommands.commands')
 require('autocommands.misc')
 require('autocommands.startup')
 
+-- TODO: automatically build helptags in doc directory
+
 local function define_augroups(definitions) -- {{{1
   for group_name, definition in pairs(definitions) do
     vim.api.nvim_create_augroup(group_name, { clear = true })
@@ -75,8 +77,8 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, 'Dockerfile*',        'setlocal ft=Dockerfile' },
     { { 'BufNewFile', 'BufRead' }, 'Dockerfile.*',       'setlocal ft=Dockerfile' },
     { { 'BufNewFile', 'BufRead' }, '.dockerignore',      'setlocal ft=gitignore' },
-    { { 'BufNewFile', 'BufRead' }, '*/nord-nick/main.lua', 'setlocal ft=lush syn=lua' },
-    { { 'BufNewFile', 'BufRead' }, 'nord-nvim.lua',      'setlocal ft=lush syn=lua' },
+    { { 'BufNewFile', 'BufRead' }, '*/nord-nick/main.lua', 'setlocal syn=lua | let b:disable_lsp=1' },
+    { { 'BufNewFile', 'BufRead' }, 'nord-nvim.lua',      'setlocal syn=lua | let b:disable_lsp=1' },
     { { 'BufNewFile', 'BufRead' }, '*.t',                'setlocal ft=tangle' },
     { { 'BufNewFile', 'BufRead' }, 'git',                'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer>  :q<cr>' },
     { { 'BufNewFile', 'BufRead' }, '*.conf',             'setlocal ft=conf.dosini' },
@@ -145,7 +147,11 @@ local autocmds = {
   },
 }
 autocmds.NumberToggle = {
-  { { 'BufEnter', 'FocusGained', 'InsertLeave' }, '*', "if &readonly != 1 && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif" },
+  {
+    { 'BufEnter', 'FocusGained', 'InsertLeave' },
+    '*',
+    "if &readonly != 1 && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif",
+  },
   { { 'BufLeave', 'FocusLost', 'InsertEnter' }, '*', 'set norelativenumber' },
 }
 

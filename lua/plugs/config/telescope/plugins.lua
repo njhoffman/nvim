@@ -50,8 +50,18 @@ local tele_plugs = {
     }
     return frecency_cfg
   end,
+  ['file_history'] = function()
+    local cfg = {
+      -- This is the location where it will create your file history repository
+      backup_dir = '~/.file-history-git',
+      -- command line to execute git
+      git_cmd = 'git',
+    }
+    require('file_history').setup(cfg)
+  end,
   ['gitops'] = {},
   ['gotofile'] = {},
+  ['locate'] = {},
   ['mapper'] = {
     sorter = sorters.fuzzy_with_index_bias,
     -- sorter = sorters.highlighter_only
@@ -88,16 +98,29 @@ local tele_plugs = {
     --   dir_command = { 'fd', '--hidden', '--type=d', '.', os.getenv('HOME') },
     dir_command = { 'fd', '--type=d', '.', os.getenv('HOME') },
     command_executer = { 'bash', '-c' },
-    previewer_command = 'exa ' .. '-a ' .. '--color=always ' .. '-T ' .. '--level=3 ' .. '--icons ' .. '--git-ignore ' .. '--long ' .. '--no-permissions ' .. '--no-user ' .. '--no-filesize ' .. '--git ' .. '--ignore-glob=.git',
+    previewer_command = 'exa '
+      .. '-a '
+      .. '--color=always '
+      .. '-T '
+      .. '--level=3 '
+      .. '--icons '
+      .. '--git-ignore '
+      .. '--long '
+      .. '--no-permissions '
+      .. '--no-user '
+      .. '--no-filesize '
+      .. '--git '
+      .. '--ignore-glob=.git',
 
     pager_command = 'bat --plain --paging=always --pager="less -RS"',
     entry_maker = function(line)
       return {
         value = line,
         display = function(entry)
-          return '󰉋 ' .. line:gsub(os.getenv('HOME') .. '/', ''), {
-            { { 1, 3 }, 'Directory' },
-          }
+          return '󰉋 ' .. line:gsub(os.getenv('HOME') .. '/', ''),
+            {
+              { { 1, 3 }, 'Directory' },
+            }
         end,
         ordinal = line,
       }

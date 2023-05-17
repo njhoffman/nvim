@@ -32,6 +32,7 @@ opt('foldmethod', 'manual')
 -- opt('formatoptions', 'jcroqlnt') -- (qjl1) Don't autoformat comments
 opt('grepformat', '%f:%l:%c:%m')
 opt('grepprg', 'rg --vimgrep')
+opt('helpheight', 25)
 opt('hidden', true)
 opt('hlsearch', true)
 opt('ignorecase', true)
@@ -69,7 +70,6 @@ opt('splitright', true)
 opt('swapfile', false)
 opt('switchbuf', 'useopen,usetab') -- Use the current tab for openning files from quickfix.
 opt('termguicolors', true)
-opt('textwidth', 120)
 opt('timeout', true)
 opt('timeoutlen', 500) -- 1000
 opt('ttimeoutlen', 30) -- 50
@@ -114,7 +114,6 @@ opt('softtabstop', 0, buffer)
 opt('synmaxcol', 2000, buffer)
 opt('tabstop', 2, buffer)
 opt('undofile', true, buffer)
--- opt("textwidth", 100, buffer) -- set per buffer
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
@@ -130,7 +129,6 @@ vim.cmd([[
     autocmd!
     autocmd! ColorScheme,VimEnter * highlight! link luaParenError Normal | highlight! link luaError Normal | highlight! link @error Normal
   augroup END
-
   " autocmd BufEnter * syntax sync minlines=4000
   " syn sync fromstart
 ]])
@@ -167,7 +165,12 @@ vim.cmd([[
 --  map(  'x',        'gp', '"+P', { desc = 'Paste from system clipboard' })
 --
 --  -- Reselect latest changed, put, or yanked text
-vim.api.nvim_set_keymap('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', { expr = true, desc = 'Visually select changed text' })
+vim.api.nvim_set_keymap(
+  'n',
+  'gV',
+  '"`[" . strpart(getregtype(), 0, 1) . "`]"',
+  { expr = true, desc = 'Visually select changed text' }
+)
 --
 --  -- Search inside visually highlighted text. Use `silent = false` for it to
 --  -- make effect immediately.
@@ -176,14 +179,3 @@ vim.api.nvim_set_keymap('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', 
 --  -- Search visually selected text (slightly better than builtins in Neovim>=0.8)
 --  map('x', '*', [[y/\V<C-R>=escape(@", '/\')<CR><CR>]])
 --  map('x', '#', [[y?\V<C-R>=escape(@", '?\')<CR><CR>]])
-
--- vim.cmd('set iskeyword+=-') -- treat dash separated words as a word text object"
--- TERMINAL = vim.fn.expand('$TERMINAL')
--- vim.o.titlestring="%<%F%=%l/%L - nvim"
--- vim.o.pumheight = 10 -- Makes popup menu smaller
--- vim.o.timeoutlen = O.timeoutlen -- By default timeoutlen is 1000 ms
--- let loaded_netrw = 0
-
--- vim.g.nvim_tree_disable_netrw = true
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1

@@ -2,42 +2,6 @@
 " https://github.com/shivamashtikar/tmuxjump.vim
 let g:tmuxjump_telescope = v:true
 
-" This function originates from https://www.reddit.com/r/neovim/comments/eq1xpt/how_open_help_in_floating_windows/; it isn't mine
-function! CreateCenteredFloatingWindow() abort
-    let width = min([&columns - 4, max([80, &columns - 20])])
-    let height = min([&lines - 4, max([20, &lines - 10])])
-    let top = ((&lines - height) / 2) - 1
-    let left = (&columns - width) / 2
-    let opts = {'border': 'rounded', 'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
-
-    let top = "╭" . repeat("─", width - 2) . "╮"
-    let mid = "│" . repeat(" ", width - 2) . "│"
-    let bot = "╰" . repeat("─", width - 2) . "╯"
-    let lines = [top] + repeat([mid], height - 2) + [bot]
-    let s:buf = nvim_create_buf(v:false, v:true)
-    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
-    call nvim_open_win(s:buf, v:true, opts)
-    set winhl=Normal:Floating
-    let opts.row += 1
-    let opts.height -= 2
-    let opts.col += 2
-    let opts.width -= 4
-    let l:textbuf = nvim_create_buf(v:false, v:true)
-    call nvim_open_win(l:textbuf, v:true, opts)
-    au BufWipeout <buffer> exe 'bw '.s:buf
-    return l:textbuf
-endfunction
-
-function! FloatingWindowHelp(query) abort
-    let l:buf = CreateCenteredFloatingWindow()
-    call nvim_set_current_buf(l:buf)
-    setlocal filetype=help
-    setlocal buftype=help
-    execute 'help ' . a:query
-endfunction
-
-command! -complete=help -nargs=? Help call FloatingWindowHelp(<q-args>)
-
 function! FixFormatting()
   %s/\r\(\n\)/\1/eg
   retab
@@ -126,12 +90,6 @@ function Refresh_lsp()
 endfunction
 command RefreshLSP call Refresh_lsp()
 
-function Refresh_keys()
-  let l:keyfile = stdpath('config') .. '/lua/mappings/init.lua'
-  exe "silent! luafile " . l:keyfile
-endfunction
-command RefreshKeys call Refresh_keys()
-
 function! ExecuteMacroOverVisualRange()
   echo "@".getcmdline()
   execute ":'<,'>normal @".nr2char(getchar())
@@ -151,28 +109,6 @@ command! -nargs=* -complete=shellcmd R new | setlocal buftype=nofile bufhidden=h
 
 " paste date into buffer
 nnoremap <leader>pd m'A<C-R>="\t".strftime('%Y-%m-%d %H:%M')<CR><Esc>``
-
-let s:shada_script = stdpath('config') .. '/bin/wshada.sh'
-
-function! ShadaWrite()
-  " TODO: convert to lua, whitelist filetypes
-  if(getftype(@%) == "file" && &bufhidden == '')
-    let l:buftype = &buftype || "<empty>"
-    let l:summary = 'ShadaWrite: ' . buffer_name()  . ' : ' . &ft
-    let l:summary2 = 'type: ' . l:buftype . ', listed: ' . &buflisted
-    " lua vim.notify( vim.api.nvim_eval('l:summary'), 'debug', { title = 'shada' })
-    " lua vim.notify({ vim.api.nvim_eval('l:summary'), vim.api.nvim_eval('l:summary2') }, 'debug', { title = 'shada' })
-    exec 'silent! wshada'
-    exec 'silent! !' . s:shada_script . ' ' . buffer_name()
-  endif
-endfunction
-command ShadaWrite call ShadaWrite()
-
-function! ShadaRead()
-  " lua vim.notify('Received USR1 signal for ShadaRead', 'debug', { title = 'shada' })
-  exec "silent! rshada!"
-endfunction
-command ShadaRead call ShadaRead()
 
 " prevent "write partial file" nonsense
 cabbrev <expr> w getcmdtype()==':' && getcmdline() == "'<,'>w" ? '<c-u>w' : 'w'
@@ -194,6 +130,16 @@ function! s:create_context(snippet, before_text_len, prefix_len) abort
   \   'snippet': a:snippet
   \ }
 endfunction
+
+function! MarkdownHeaders()
+    let l:filename = expand("%")
+    let l:lines = getbufline('%', 0, '$')
+    let l:lines = map(l:lines, {index, value -> {"lnum": index + 1, "text": value, "filename": l:filename}})
+    call filter(l:lines, {_, value -> value.text =~# '^#\+ .*$'})
+    call setqflist(l:lines)
+    copen
+endfunction
+command -bang MarkdownHeaders call MarkdownHeaders()
 
 function! QFixToggle(forced)
   if exists("g:qfix_win") && a:forced == 0
@@ -276,5 +222,4 @@ endfunction
   endfunction
 
 " https://konfekt.github.io/blog/2016/10/03/get-the-leader-right
-
 " are consistent with f/F,t/T, (g)n/N and //?, more intuitive than ;/,.

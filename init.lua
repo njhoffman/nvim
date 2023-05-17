@@ -6,6 +6,8 @@ require('utils.lazy').setup({ cache = false, reload = false })
 for _, mod_name in ipairs({
   'mapper.setup',
   'project',
+  'dial',
+  'wf-setup',
   'devbox',
   'commands',
   'autocommands',

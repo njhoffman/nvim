@@ -2,21 +2,20 @@
 -- require("dapui").close()
 -- require("dapui").toggle()
 
-local dap_ok, dap = pcall(require, "dap")
-if dap_ok then
-  require("plugs.config.nvim-dap-mapping")
+local dap_ok, dap = pcall(require, 'dap')
 
-  local dapui = require("dapui")
+if dap_ok then
+  local dapui = require('dapui')
   dapui.setup({
-    icons = { expanded = "", collapsed = "", current_frame = "" },
+    icons = { expanded = '', collapsed = '', current_frame = '' },
     mappings = {
       -- Use a table to apply multiple mappings
-      expand = { "<CR>", "<2-LeftMouse>" },
-      open = "o",
-      remove = "d",
-      edit = "e",
-      repl = "r",
-      toggle = "t",
+      expand = { '<CR>', '<2-LeftMouse>' },
+      open = 'o',
+      remove = 'd',
+      edit = 'e',
+      repl = 'r',
+      toggle = 't',
     },
     -- Use this to override mappings for specific elements
     element_mappings = {
@@ -38,61 +37,61 @@ if dap_ok then
       {
         elements = {
           {
-            id = "scopes",
+            id = 'scopes',
             size = 0.25,
           },
           {
-            id = "breakpoints",
+            id = 'breakpoints',
             size = 0.25,
           },
           {
-            id = "stacks",
+            id = 'stacks',
             size = 0.25,
           },
           {
-            id = "watches",
+            id = 'watches',
             size = 0.25,
           },
         },
-        position = "left",
+        position = 'left',
         size = 40,
       },
       {
         elements = {
           {
-            id = "repl",
+            id = 'repl',
             size = 0.5,
           },
           {
-            id = "console",
+            id = 'console',
             size = 0.5,
           },
         },
-        position = "bottom",
+        position = 'bottom',
         size = 10,
       },
     },
     controls = {
       enabled = true,
       -- Display controls in this element
-      element = "repl",
+      element = 'repl',
       icons = {
-        pause = "",
-        play = "",
-        step_into = "",
-        step_over = "",
-        step_out = "",
-        step_back = "",
-        run_last = "",
-        terminate = "",
+        pause = '',
+        play = '',
+        step_into = '',
+        step_over = '',
+        step_out = '',
+        step_back = '',
+        run_last = '',
+        terminate = '',
       },
     },
     floating = {
       max_height = nil, -- These can be integers or a float between 0 and 1.
       max_width = nil, -- Floats will be treated as percentage of your screen.
-      border = "single", -- Border style. Can be "single", "double" or "rounded"
+      border = 'single', -- Border style. Can be "single", "double" or "rounded"
       mappings = {
-        close = { "q", "<Esc>" },
+        close = { 'q', '<Esc>' },
       },
     },
     render = {
@@ -103,41 +102,44 @@ if dap_ok then
   })
 
   -- local dap = require("dap")
-  dap.listeners.after.event_initialized["dapui_config"] = function()
+  dap.listeners.after.event_initialized['dapui_config'] = function()
     dapui.open()
     vim.cmd('nnoremap gK <Cmd>lua require("dapui").eval()<CR>')
   end
-  dap.listeners.before.event_terminated["dapui_config"] = function()
+  dap.listeners.before.event_terminated['dapui_config'] = function()
     dapui.close()
   end
-  dap.listeners.before.event_exited["dapui_config"] = function()
+  dap.listeners.before.event_exited['dapui_config'] = function()
     dapui.close()
   end
 
-  vim.api.nvim_create_user_command("DapStop", function()
+  vim.api.nvim_create_user_command('DapStop', function()
     -- vim.cmd("VimadeDisable")
-    require("dap").terminate()
-    require("dapui").close()
+    require('dap').terminate()
+    require('dapui').close()
     -- vim.cmd("VimadeEnable")
   end, {})
 
   --     🛑   ■
-  vim.fn.sign_define("DapBreakpoint", {
-    text = "■",
-    texthl = "DAPBreakpointSign",
-    linehl = "",
+  vim.fn.sign_define('DapBreakpoint', {
+    text = '■',
+    texthl = 'DAPBreakpointSign',
+    linehl = '',
     -- numhl = "DAPBreakpointSign",
   })
-  vim.fn.sign_define("DapLogPoint", {
-    text = "◆",
-    texthl = "DAPLogPointSign",
-    linehl = "",
+  vim.fn.sign_define('DapLogPoint', {
+    text = '◆',
+    texthl = 'DAPLogPointSign',
+    linehl = '',
     -- numhl = "DAPLogPointSign",
   })
   vim.fn.sign_define(
-    "DapStopped",
-    { text = "", texthl = "DAPStopSign", linehl = "DAPStopSignText", numhl = "DAPStopSign" }
+    'DapStopped',
+    { text = '', texthl = 'DAPStopSign', linehl = 'DAPStopSignText', numhl = 'DAPStopSign' }
   )
+
+  require('plugs.config.nvim-dap-mapping')
+  require('nvim-dap-repl-highlights').setup()
 end
 
 -- " Completion

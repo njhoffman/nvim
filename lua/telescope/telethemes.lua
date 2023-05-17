@@ -51,6 +51,10 @@ local get_theme = function(theme)
       -- results_height = 15,
       previewer = false,
     }),
+    dropdown_preview = require('telescope.themes').get_dropdown({
+      winblend = 20,
+      previewer = true,
+    }),
     ivy = require('telescope.themes').get_ivy({
       winblend = 20,
       layout_config = { height = 15 },

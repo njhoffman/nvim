@@ -1,6 +1,10 @@
 local capabilities = require('lsp.capabilities')
 
 local on_attach = function(client, bufnr)
+  local ok, disable_lsp = pcall(vim.api.nvim_buf_get_var, 0, 'disable_lsp')
+  if disable_lsp == 1 then
+    return vim.notify('Skipping buffer lsp', 1)
+  end
   -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
   -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "")
 
@@ -35,7 +39,12 @@ local on_attach = function(client, bufnr)
   vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'LspDiagnosticsSignHint' })
 
   local keymap_opts = { noremap = true, silent = true }
-  vim.api.nvim_set_keymap('n', '<C-T>', "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = true })<cr>", keymap_opts)
+  vim.api.nvim_set_keymap(
+    'n',
+    '<C-T>',
+    "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = true })<cr>",
+    keymap_opts
+  )
   vim.api.nvim_set_keymap('n', '<M-T>', "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>", keymap_opts)
   vim.api.nvim_set_keymap('n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', keymap_opts)
   vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', keymap_opts)
@@ -50,7 +59,6 @@ local on_attach = function(client, bufnr)
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
   end
-
   capabilities.resolve(client, bufnr)
 end
 

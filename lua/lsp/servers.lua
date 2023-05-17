@@ -44,6 +44,8 @@ local servers = {
   'vimls',
   'volar',
   'yamlls',
+  -- 'nginx-language-server',
+  -- 'docker-compose-language-service',
   -- "zk",
 }
 

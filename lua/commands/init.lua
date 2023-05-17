@@ -1,11 +1,13 @@
 local format = require('commands.format')
 local ui = require('commands.ui')
+local help = require('commands.help')
 local debug = require('commands.debug')
 local paste = require('commands.paste')
 local system = require('commands.system')
 require('commands.inspect')
 
 local cmd = vim.api.nvim_create_user_command
+local bufcmd = vim.api.nvim_buf_create_user_command
 
 -- -- Mapping for dd that doesn't yank an empty line into your default register:
 -- keymap.set("n", "dd", function()
@@ -40,6 +42,18 @@ cmd('GetPaths', debug.get_paths, { desc = 'Get path collections (rtpaths, o.pack
 cmd('Trash', system.trash_file, { desc = 'Send file to system trash' })
 cmd('Delete', system.trash_file, { desc = 'Send file to system trash' })
 -- cmd("TrashRecover", system.trash_file, { desc = "Send file to system trash" })
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'lua',
+  callback = function()
+    bufcmd(0, 'Help', help.get_help_cursor, { desc = 'Jump to helpfile under cursor' })
+    vim.keymap.set('n', 'gH', '<cmd>Help<cr>', {
+      desc = 'open help item under cursor',
+      buffer = 0,
+    })
+  end,
+  desc = 'Create lua help utility functions',
+})
 
 -- cmd(
 --   "PasteNoYank",

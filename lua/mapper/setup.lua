@@ -8,18 +8,18 @@ vim.cmd([[
   cabbrev D lua vim.dbg(
 ]])
 
-prefix('n', 'z', '+folds')
-prefix('n', 'g', '+goto')
-prefix('n', 'gq', '+quickfix')
-prefix('n', 'gP', '+preview')
-prefix('n', 'g?', '+debug print')
-prefix('n', '<c-w>', '+window')
-prefix('n', '<leader>g', '+git')
-prefix('n', '<leader>f', '+file')
-prefix('n', '<leader>F', '+format')
-prefix('n', '<leader>p', '+paste')
-prefix('n', '<leader>i', '+internal tools')
-prefix('n', '<leader>cl', '+conceal')
+prefix('n', 'z', 'folds')
+prefix('n', 'g', 'goto')
+prefix('n', 'gq', 'quickfix')
+prefix('n', 'gP', 'preview')
+prefix('n', 'g?', 'debug print')
+prefix('n', '<c-w>', 'window')
+prefix('n', '<leader>g', 'git')
+prefix('n', '<leader>f', 'file')
+prefix('n', '<leader>F', 'format')
+prefix('n', '<leader>p', 'paste')
+prefix('n', '<leader>i', 'internal tools')
+prefix('n', '<leader>cl', 'conceal')
 
 vim.cmd([[nnoremap <C-l> :syntax sync fromstart<CR>:redraw<CR>]])
 
@@ -622,7 +622,13 @@ map('n', '<F1>', "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>"
   desc = 'toggle help',
 })
 
-map('n', '<F2>', '<cmd>WhichKey<cr>', {
+-- map('n', '<F2>', '<Leader>wfk', {
+--   plugin = 'wf.nvim',
+--   category = 'UI',
+--   desc = 'toggle wf.nvim',
+-- })
+-- shift F2
+map('n', '<F38>', '<cmd>WhichKey<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = 'toggle whichkey',
@@ -669,7 +675,7 @@ map('n', '<F18>', '<cmd>InspectTree<cr>', {
 --------------------------------------------------------------------------------------------------
 -- QUICKFIX --------------------------------------------------------------------------------------
 
-map('n', '<C-q>', '<cmd>QFix<cr>', {
+map('n', '<C-c>', '<cmd>QFix<cr>', {
   category = 'Quickfix',
   label = 'togggle quickfix',
   desc = 'togggle quickfix window',
@@ -893,7 +899,7 @@ vmap('n', 'gnd', {
   desc = 'goto treesitter definition',
 })
 
-map('n', 'gH', '<cmd>TSHighlightCapturesUnderCursor<cr>', {
+map('n', 'gh', '<cmd>TSHighlightCapturesUnderCursor<cr>', {
   category = 'Treesitter',
   plugin = 'treesitter.nvim',
   label = 'show ts highlights',
@@ -994,7 +1000,7 @@ map('n', '<M-space>', "<cmd>lua require('telescope.run')('builtin','grep_string'
   desc = 'grep string under cursor in telescope',
 })
 
-map('n', '<M-/>', "<cmd>lua require('telescope.run')('builtin','help_tags')<cr>", {
+map('n', '<M-/>', "<cmd>lua require('telescope.run')('builtin','help_tags', { cursor = true })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'helptags',
@@ -1377,18 +1383,24 @@ map('n', '<leader>ii', '<cmd>ImportStatus<cr>', {
   desc = 'show import status interface',
 })
 
-map('n', '<leader>iL', '<cmd>Lazy log<cr>', {
+map('n', '<leader>iv', '<cmd>Lazy<cr>', {
+  category = 'System',
+  plugin = 'lazy.nvim',
+  label = 'view plugins',
+  desc = 'view lazy.nvim plugins',
+})
+
+map('n', '<leader>il', '<cmd>Lazy log<cr>', {
   category = 'System',
   plugin = 'lazy.nvim',
   label = 'show lazy.nvim log',
   desc = 'open the lazy.nvim log',
 })
 
-map('n', '<leader>il', '<cmd>Lazy<cr>', {
+map('n', '<leader>ix', '<cmd>Lazy clean<cr>', {
   category = 'System',
   plugin = 'lazy.nvim',
-  label = 'show plugins',
-  desc = 'show lazy.nvim plugins',
+  desc = 'uniinstall removed plugins',
 })
 
 map('n', '<leader>ic', '<cmd>Lazy check<cr>', {

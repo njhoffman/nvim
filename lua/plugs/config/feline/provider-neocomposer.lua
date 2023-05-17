@@ -27,13 +27,10 @@ local neocomposer = function(_, opts)
   elseif state.get_playing() ~= false then
     status = '%#PlayingSymbol#  %#StatusLabel#PLAY '
   end
-  if queued ~= false then
-    if queued then
-      status = '󰯁' .. queued .. ' ' .. status
-    end
+  if queued ~= nil then
+    status = '󰯁' .. ' ' .. status
   end
   -- status = '󰯁' .. #state.get_macros() .. ' ' .. status
-
   -- local delay_enabled = state.get_delay()
   -- if delay_enabled then
   --   status = (status == '' and '' or (status .. ' ')) .. '%#DelaySymbol# 󱎫%#StatusLabel#DELAY '

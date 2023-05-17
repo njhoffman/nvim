@@ -6,6 +6,16 @@ local plugins = {
     'rktjmp/lush.nvim',
     priority = 1000,
     lazy = false,
+    keys = {
+      {
+        '<Leader>cs',
+        function()
+          vim.api.nvim_exec_autocmds('User', { pattern = 'ColorSchemeLoad' })
+          require('telescope.builtin').colorscheme()
+        end,
+        noremap = true,
+      },
+    },
     config = function()
       vim.cmd('colorscheme nord-nick')
     end,
@@ -19,7 +29,12 @@ local plugins = {
     branch = 'v2.x',
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
   },
-  { 'freddiehaddad/feline.nvim', event = 'VimEnter' },
+  {
+    'freddiehaddad/feline.nvim',
+    branch = 'main',
+    event = 'VimEnter',
+    lazy = false,
+  },
   {
     'romgrk/barbar.nvim',
     event = 'VimEnter',

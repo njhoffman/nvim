@@ -1,0 +1,3 @@
+:Ack	ack-test.txt	/*:Ack*
+ack-test.txt	ack-test.txt	/*ack-test.txt*
+ack-usage	ack-test.txt	/*ack-usage*

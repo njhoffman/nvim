@@ -361,15 +361,27 @@ local cfg = {
 
 vim.keymap.set({ 'n', 'i', 's' }, '<M-f>', function()
   if not require('noice.lsp').scroll(4) then
-    return '<c-f>'
+    return '<M-f>'
   end
 end, { silent = true, expr = true })
 
+-- vim.keymap.set({ 'n', 'i', 's' }, '<C-f>', function()
+--   if not require('noice.lsp').scroll(2) then
+--     return '<C-f>'
+--   end
+-- end, { silent = true, expr = true })
+
 vim.keymap.set({ 'n', 'i', 's' }, '<M-b>', function()
   if not require('noice.lsp').scroll(-4) then
-    return '<c-b>'
+    return '<M-b>'
   end
 end, { silent = true, expr = true })
+
+-- vim.keymap.set({ 'n', 'i', 's' }, '<C-b>', function()
+--   if not require('noice.lsp').scroll(-2) then
+--     return '<C-b>'
+--   end
+-- end, { silent = true, expr = true })
 
 -- {
 --   -- default format

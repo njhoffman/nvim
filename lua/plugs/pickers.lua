@@ -27,6 +27,7 @@ local plugins = {
       'cljoly/telescope-repo.nvim',
       'crispgm/telescope-heading.nvim',
       'dhruvmanila/telescope-bookmarks.nvim',
+      'dawsers/telescope-file-history.nvim',
       'elianiva/telescope-npm.nvim',
       'frenchtoasters/telescope-kubectl.nvim',
       'nvim-tree/nvim-web-devicons',

@@ -12,8 +12,24 @@ local function get_key_cmd(mode, lhs)
   return rhs, opt
 end
 
-local indent_ft_exclude =
-  { 'alpha', 'dashboard', 'help', 'lazy', 'lspinfo', 'mason', 'neo-tree', 'null-ls-info', 'Trouble' }
+local ft_exclude = {
+  'alpha',
+  'dap.*',
+  'dashboard',
+  'guihua',
+  'help',
+  'lazy',
+  'lspinfo',
+  'mason',
+  'neo-tree',
+  'noice',
+  'null-ls-info',
+  'sidekick',
+  'NeoTree',
+  'NvimTree',
+  'Trouble',
+}
+local bt_exclude = { 'terminal', 'prompt', 'nofile' }
 
 local plugins = {
   {
@@ -33,7 +49,7 @@ local plugins = {
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       char = '│',
-      filetype_exclude = indent_ft_exclude,
+      filetype_exclude = ft_exclude,
       show_trailing_blankline_indent = false,
       show_current_context = false,
     },
@@ -43,9 +59,13 @@ local plugins = {
     event = { 'BufReadPre', 'BufNewFile' },
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = indent_ft_exclude,
+        pattern = '*',
         callback = function()
-          vim.b.miniindentscope_disable = true
+          local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+          local bt = vim.api.nvim_buf_get_option(0, 'buftype')
+          if vim.tbl_contains(ft_exclude, ft) or vim.tbl_contains(bt_exclude, bt) then
+            vim.b.miniindentscope_disable = true
+          end
         end,
       })
     end,

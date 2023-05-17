@@ -7,36 +7,36 @@ local mason_default = {
     check_outdated_packages_on_open = true,
 
     -- The border to use for the UI window. Accepts same border values as |nvim_open_win()|.
-    border = "none",
+    border = 'none',
 
     icons = {
       -- The list icon to use for installed packages.
-      package_installed = "◍",
+      package_installed = '◍',
       -- The list icon to use for packages that are installing, or queued for installation.
-      package_pending = "◍",
+      package_pending = '◍',
       -- The list icon to use for packages that are not installed.
-      package_uninstalled = "◍",
+      package_uninstalled = '◍',
     },
 
     keymaps = {
       -- Keymap to expand a package
-      toggle_package_expand = "<CR>",
+      toggle_package_expand = '<CR>',
       -- Keymap to install the package under the current cursor position
-      install_package = "i",
+      install_package = 'i',
       -- Keymap to reinstall/update the package under the current cursor position
-      update_package = "u",
+      update_package = 'u',
       -- Keymap to check for new version for the package under the current cursor position
-      check_package_version = "c",
+      check_package_version = 'c',
       -- Keymap to update all installed packages
-      update_all_packages = "U",
+      update_all_packages = 'U',
       -- Keymap to check which installed packages are outdated
-      check_outdated_packages = "C",
+      check_outdated_packages = 'C',
       -- Keymap to uninstall a package
-      uninstall_package = "X",
+      uninstall_package = 'X',
       -- Keymap to cancel a package installation
-      cancel_installation = "<C-c>",
+      cancel_installation = '<C-c>',
       -- Keymap to apply language filter
-      apply_language_filter = "<C-f>",
+      apply_language_filter = '<C-f>',
     },
   },
 
@@ -65,7 +65,7 @@ local mason_default = {
     -- 1. The repository (e.g. "rust-lang/rust-analyzer")
     -- 2. The release version (e.g. "v0.3.0")
     -- 3. The asset name (e.g. "rust-analyzer-v0.3.0-x86_64-unknown-linux-gnu.tar.gz")
-    download_url_template = "https://github.com/%s/releases/download/%s/%s",
+    download_url_template = 'https://github.com/%s/releases/download/%s/%s',
   },
 }
 
@@ -93,29 +93,30 @@ local tool_defaults = {
   start_delay = 0,
 }
 
-local tool_packages = require("plugs.config.mason.tools")
+local tool_packages = require('plugs.config.mason.tools')
 local tool_settings = { ensure_installed = tool_packages }
 
 local lspconfig_settings = {
   ensure_installed = {
-    "awk_ls",
-    "bashls",
-    "clangd",
-    "cssls",
-    "dockerls",
+    'awk_ls',
+    'bashls',
+    'clangd',
+    'cssls',
+    'dockerls',
     -- "efm",
-    "golangci_lint_ls",
-    "gopls",
-    "graphql",
-    "html",
-    "jsonls",
-    "pylsp",
-    "sqls",
-    "lua_ls",
-    "terraformls",
-    "tsserver",
-    "vimls",
-    "yamlls",
+    'golangci_lint_ls',
+    'gopls',
+    'graphql',
+    'html',
+    'jq-lsp',
+    'jsonls',
+    'pylsp',
+    'sqls',
+    'lua_ls',
+    'terraformls',
+    'tsserver',
+    'vimls',
+    'yamlls',
     -- "null-ls",
   },
   automatic_installation = false,
@@ -123,15 +124,15 @@ local lspconfig_settings = {
 
 local mason_settings = {
   ui = {
-    border = "rounded",
+    border = 'rounded',
     icons = {
-      package_installed = "✓",
-      package_pending = "➜",
-      package_uninstalled = "✗",
+      package_installed = '✓',
+      package_pending = '➜',
+      package_uninstalled = '✗',
     },
     keymaps = {
       -- Keymap to apply language filter
-      apply_language_filter = "<leader>ff",
+      apply_language_filter = '<leader>ff',
     },
   },
 }

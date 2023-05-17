@@ -19,7 +19,6 @@ end
 -- end
 
 local ignore = false
-
 local main_maps = {
   -- stylua: ignore
   -- NOTE: have to assign all possible custom keys here and filter later from lazy loading
@@ -35,7 +34,7 @@ local main_maps = {
     ["<Down>"]      = actions.preview_scrolling_down,
     ["<M-b>"]       = actions.preview_scrolling_up,
     ["<M-f>"]       = actions.preview_scrolling_down,
-    ["<C-_>"]       = actions_layout.toggle_preview,
+    ["<M-/>"]       = actions_layout.toggle_preview,
     ["<M-C-Left>"]  = actions.cycle_previewers_next,
     ["<C-G>"]       = actions.move_to_top,
     ["<C-b>"]       = c_actions.results_page_up,
@@ -50,7 +49,7 @@ local main_maps = {
     ["<M-C-Space>"] = c_actions.launch_find_pickers,
     ["<M-e>"]       = c_actions.launch_live_grep,
     ["<M-u>"]       = c_actions.launch_find_files,
-    ["<M-/>"]       = c_actions.toggle_whichkey,
+    ['<F46>']       = c_actions.toggle_whichkey,
     ["<C-^>"]       = c_actions.switch_layout,
     ["<S-Tab>"]     = ignore, -- c_actions.results_toggle_up,
     ["<Tab>"]       = ignore, -- c_actions.results_toggle_down,

@@ -102,6 +102,7 @@ augroup qf-history
     autocmd QuickFixCmdPost lhistory echo printf('Location-list %d of %d (%d items): %s',  getloclist(0, {'nr': 0}).nr,  getloclist(0, {'nr': '$'}).nr, getloclist(0, {'size': 0}).size, getloclist(0, {'title': 0}).title )
 augroup END
 ]=])
+
 -- Automatically open the quickfix or location-list window after selecting a list in the popup menu:
 vim.cmd([[
 augroup qf-history
@@ -117,6 +118,7 @@ vim.cmd([[
     autocmd InsertLeave * call chansend(v:stderr, "\e[?737769l")
   augroup end
 ]])
+
 -- if config.autocommands.relnum_in_visual_mode and vim.fn.exists('##ModeChanged') == 1 then
 --    -- Show relative line numbers only when they matter (linewise and blockwise
 --    -- selection) and 'number' is set (avoids horizontal flickering)

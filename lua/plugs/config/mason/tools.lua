@@ -38,6 +38,10 @@ local formatters = {
   'yamlfmt',
 }
 
+local misc = {
+  'glow',
+}
+
 local linters = {
   'actionlint',
   'ansible-lint',
@@ -73,6 +77,31 @@ local linters = {
   'yamllint',
 }
 
-local packages = { unpack(formatters) }
-table.move(linters, 1, #linters, #packages + 1, packages)
+local dap = {
+  'bash-debug-adapter',
+  -- 'bzl',
+  'chrome-debug-adapter',
+  -- 'codelldb',
+  -- 'cpptools',
+  -- 'dart-debug-adapter',
+  'debugpy',
+  'delve',
+  -- 'elixir-ls elixirls',
+  -- 'erlang-ls erlangls',
+  -- 'firefox-debug-adapter',
+  'go-debug-adapter',
+  -- 'haskell-debug-adapter',
+  -- 'java-debug-adapter',
+  -- 'java-language-server java_language_server',
+  -- 'java-test',
+  'js-debug-adapter',
+  -- 'kotlin-debug-adapter',
+  -- 'mockdebug',
+  -- 'netcoredbg',
+  'node-debug2-adapter',
+  -- 'php-debug-adapter',
+  -- 'puppet-editor-services puppet',
+}
+
+local packages = { unpack(formatters), unpack(linters), unpack(misc), unpack(dap) }
 return packages

@@ -1,18 +1,19 @@
 local provider_project = require('plugs.config.feline.provider-project')
 local provider_git = require('plugs.config.feline.provider-git')
-local provider_cursor = require('plugs.config.feline.provider-cursor')
 
 local M = {}
 
-M.NeoComposerComponent = {
-  enabled = true,
+M.HelpTagsComponent = {
   provider = {
-    name = 'neocomposer',
+    name = 'helptags',
+    update = { 'CursorMoved' },
+    enbled = function()
+      return vim.bo.filetype == 'lua'
+    end,
     opts = {},
   },
   hl = {
-    fg = '#333344',
-    bg = 'black',
+    fg = '#84FFFF',
   },
   left_sep = {
     str = ' ',
@@ -20,6 +21,61 @@ M.NeoComposerComponent = {
       fg = 'NONE',
     },
   },
+  right_sep = {
+    str = ' ',
+    hl = {
+      fg = 'NONE',
+    },
+  },
+}
+
+M.LspExtrasComponent = {
+  provider = {
+    name = 'lspextras',
+    update = { 'CursorMoved' },
+    enbled = function()
+      return #vim.lsp.get_active_clients() > 0
+    end,
+    opts = {},
+  },
+  hl = {
+    fg = '#333344',
+  },
+  left_sep = {
+    str = ' ',
+    hl = {
+      fg = 'NONE',
+    },
+  },
+}
+
+M.NeoComposerComponent = {
+  enabled = true,
+  provider = {
+    name = 'neocomposer',
+    update = { 'RecordingEnter', 'RecordingLeave' },
+    opts = {},
+  },
+  hl = {
+    fg = '#333344',
+  },
+  left_sep = {
+    str = ' ',
+    hl = {
+      fg = 'NONE',
+    },
+  },
+}
+
+-- Display <e> 0x65
+M.AsciiComponent = {
+  hl = { fg = '#988088' },
+  provider = {
+    name = 'ascii',
+    update = { 'CursorMoved' },
+  },
+  left_sep = ' ',
+  right_sep = ' ',
 }
 
 M.ProjectComponent = {
@@ -82,14 +138,6 @@ M.GitDiffRemovedComponent = {
     bg = 'black',
   },
 }
--- Display <e> 0x65
-M.AsciiComponent = {
-  hl = { fg = '#988088' },
-  provider = provider_cursor.ascii,
-  enabled = provider_cursor.enabled,
-  left_sep = ' ',
-  right_sep = ' ',
-}
 
 M.ScrollBarComponent = {
   provider = 'scroll_bar',
@@ -112,7 +160,10 @@ M.FiletypeComponent = {
     return vim.api.nvim_win_get_width(0) > 120
   end,
   hl = { fg = '#988088' },
-  provider = { name = 'file_type', opts = { case = 'lowercase' } },
+  provider = {
+    name = 'file_type',
+    opts = { case = 'lowercase' },
+  },
   left_sep = ' ',
   right_sep = ' ',
 }

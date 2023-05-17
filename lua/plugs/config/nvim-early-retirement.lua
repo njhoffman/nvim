@@ -40,4 +40,4 @@ local opts = {
   notificationOnAutoClose = true,
 }
 
--- require("early-retirement").setup(opts)
+require('early-retirement').setup(opts)

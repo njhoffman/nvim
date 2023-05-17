@@ -1,5 +1,25 @@
 local utils = require('utils.lazy')
 local plugins = {
+  {
+    'LunarVim/bigfile.nvim',
+    config = function()
+      -- default config
+      require('bigfile').config({
+        filesize = 2, -- size of the file in MiB, the plugin round file sizes to the closest MiB
+        pattern = { '*' }, -- autocmd pattern
+        features = { -- features to disable
+          'indent_blankline',
+          'illuminate',
+          'lsp',
+          'treesitter',
+          'syntax',
+          'matchparen',
+          'vimopts',
+          'filetype',
+        },
+      })
+    end,
+  },
   -- https://github.com/RaafatTurki/hex.nvim
   {
     'nvim-neotest/neotest',
@@ -24,6 +44,34 @@ local plugins = {
     config = function()
       vim.g.RenamerShowHiddenEnabled = true
     end,
+  },
+  {
+    'chrisbra/unicode.vim',
+    cmd = {
+      'Digraphs',
+      'UnicodeSearch',
+      'UnicodeName',
+      'UnicodeTable',
+      'DownloadUnicode',
+      'UnicodeCache',
+    },
+  },
+  {
+    'simonefranza/nvim-conv',
+    cmd = {
+      'ConvBin',
+      'ConvDec',
+      'ConvHex',
+      'ConvOct',
+      'ConvFarenheit',
+      'ConvCelsius',
+      'ConvStr',
+      'ConvBytes',
+      'ConvMetricImperial',
+      'ConvDataTransRate',
+      'ConvColor',
+      'ConvSetPrecision',
+    },
   },
   {
     'jamestthompson3/nvim-remote-containers',
