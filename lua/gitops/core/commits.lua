@@ -163,27 +163,24 @@ local function make_entry_dynamic(opts)
   end
 end
 
-local create_dynamic_picker = function(opts)
-  opts.entry_maker = gen_static(opts)
-  local source_bufnr = vim.fn.bufnr()
-  local script_command = git_utils.init_script_command(source_bufnr)
-  opts.entry_maker = require('telescope.make_entry').gen_from_string(opts)
-  local picker_opts = {
-    prompt_title = opts.prompt_title,
-    finder = finders.new_oneshot_job(script_command, opts),
-  }
-  pickers.new(opts, picker_opts):find()
-end
-
 M.commits = function(opts)
   ---@diagnostic disable-next-line: missing-parameter
   -- local timing = { total = vim.fn.reltime() }
   opts = opts or {}
-  opts.prompt_title = opts.prompt_title or 'Git Commits'
   -- local relative_file_name = vim.fn.expand('%:~:.')
+  local source_bufnr = vim.fn.bufnr()
+  local script_command = git_utils.init_script_command(source_bufnr)
+  -- opts.entry_maker = require('telescope.make_entry').gen_from_string(opts)
+  opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_commits(opts))
 
-  -- create_static_picker(opts)
-  create_dynamic_picker(opts)
+  return pickers
+    .new(opts, {
+      prompt_title = 'Git Commits',
+      finder = finders.new_oneshot_job(script_command, opts),
+      previewer = conf.file_previewer(opts),
+      sorter = conf.file_sorter(opts),
+    })
+    :find()
 end
 
 -- attach_mappings = function()

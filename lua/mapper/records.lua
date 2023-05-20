@@ -6,54 +6,75 @@ local crc = require('mapper.crc')
 local records = { list = {}, tree = {} }
 
 local idx = 0
-local function add_record(virtual, mode, lhs, rhs, options)
-  local buffer_only = false
-  if options.buffer ~= nil then
-    buffer_only = true
-  end
-
+local function add(virtual, mode, lhs, rhs, opts, meta)
   local unique_id = crc.get_crc(lhs .. '_' .. mode)
   idx = idx + 1
-
+  opts = opts or {}
+  meta = meta or {}
   ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
-  local time = vim.fn.reltimestr(vim.fn.reltime(start_time))
-
-  local keymap_opts = {
-    remap = options.remap or (options.noremap == false),
-    silent = options.silent,
-  }
+  meta.time = vim.fn.reltimestr(vim.fn.reltime(start_time))
+  meta.virtual = virtual
+  local debuginfo = debug.getinfo(3, 'S')
+  meta.source = debuginfo.source:sub(2) .. ':' .. debuginfo.linedefined
 
   local record = {
     mode = mode,
     lhs = lhs,
     rhs = rhs,
-    options = keymap_opts,
-    category = options.category,
-    plugin = options.plugin,
-    unique_identifier = unique_id,
-    description = options.description,
-    label = options.label,
-    virtual = virtual,
-    time = time,
+    meta = meta,
+    opts = opts,
+    unique_id = unique_id,
     idx = idx,
-    buffer_only = buffer_only,
   }
+
   if vim.tbl_contains(records.list, unique_id) then
     local existing = records.list[unique_id]
-    record.n = existing.n + 1
-    record.history = vim.fn.deepcopy(existing.history)
+    record.history = vim.fn.deepcopy(existing.history or {})
     table.insert(record.history, vim.fn.deepcopy(existing))
-  else
-    record.n = 0
-    record.history = {}
   end
+
   records.list[unique_id] = record
   records.tree[mode] = records.tree[mode] or {}
   records.tree[mode][lhs] = unique_id
 end
 
+-- buffer_only = false,
+-- category = "Buffers",
+-- description = "write to buffer",
+-- history = {},
+-- idx = 25,
+-- keymap_opts = {
+--     desc = "write to buffer",
+--     remap = false,
+--     silent = true
+-- },
+-- label = "write buffer",
+-- lhs = "<C-s>",
+-- mode = "v",
+-- n = 0,
+-- options = {
+--     category = "Buffers",
+--     desc = "write to buffer",
+--     label = "write buffer",
+--     silent = true
+-- },
+-- rhs = "<cmd>silent! w<cr><esc>",
+-- time = "  0.263733",
+-- unique_identifier = -1861693099,
+-- virtual = false
+
+-- idx = 25,
+-- lhs = "<C-s>",
+-- rhs = "<cmd>silent!<esc>",
+-- mode = 'n'
+-- options = { desc = '', remap = false, silent = true, callback = {}}
+-- meta = { label = '', category = '', plugin = '', time = '', uid = -1235235321, virtual = true/false }
+-- history = { n, previous = {}}
+-- "<buffer>", "<nowait>", "<silent>", "<script>", "<expr>" and
+-- "<unique>" can be used in any order.  They must appear right after the
+
 return {
   tree = records.tree,
   list = records.list,
-  add = add_record,
+  add = add,
 }

@@ -162,7 +162,7 @@ local clrs = {
 }
 
 local clr_over = {
-  selection = '#0a1848',
+  selection = '#1a1856',
   orange_faded = '#80788a',
   orange = '#cc8877',
   yellow = '#bdb994',
@@ -684,9 +684,9 @@ return function(injected_functions)
     NotifyINFOBorder({ fg = '#008Fa8', bg = 'none' }),
     NotifyINFOIcon({ fg = '#19aFc8' }),
     NotifyINFOTitle({ fg = '#19aFc8' }),
-    NotifyDEBUGBorder({ fg = '#4B4BBB' }),
-    NotifyDEBUGIcon({ fg = '#6B6BFF' }),
-    NotifyDEBUGTitle({ fg = '#6B6BFF' }),
+    NotifyDEBUGBorder({ fg = '#4B6BBB' }),
+    NotifyDEBUGIcon({ fg = '#6B8BFF' }),
+    NotifyDEBUGTitle({ fg = '#6B8BFF' }),
     NotifyTRACEBorder({ fg = '#637699', bg = 'none' }),
     -- NotifyTRACEBorder { fg = "#7B7BCC" },
     -- NotifyTRACEBorder { Normal },
@@ -906,9 +906,36 @@ return function(injected_functions)
     TelescopeResultsTitle({ fg = '#64a9ec', bg = 'none' }),
     TelescopeResultsIdentifier({ fg = '#6476ce' }),
     TelescopeResultsSpecialComment({ fg = '#4488cc' }),
+    TelescopeResultsField({ fg = '#4090ff' }),
     -- { entry.value.event, "vimAutoEvent" },
     -- { entry.value.group_name, "vimAugroup" },
     -- { entry.value.pattern, "vimAutoCmdSfxList" },
+
+    -- -- Telescope
+    -- Telescope
+    -- TelescopePromptBorder({ fg = clrs.nord8 }),
+    -- TelescopeResultsBorder({ fg = clrs.nord9 }),
+    -- TelescopePreviewBorder({ fg = clrs.nord14 }),
+    -- TelescopeSelectionCaret({ fg = clrs.nord9 }),
+    -- TelescopeSelection({ fg = clrs.nord9 }),
+    -- TelescopeMatching({ fg = clrs.nord8 }),
+    -- -- Telescope
+    -- TelescopePromptBorder = { fg = clrs.nord8 },
+    -- TelescopeResultsBorder = { fg = clrs.nord9 },
+    -- TelescopePreviewBorder = { fg = clrs.nord14 },
+    -- TelescopeSelectionCaret = { fg = clrs.nord9 },
+    -- TelescopeSelection = { fg = clrs.nord9 },
+    -- TelescopeMatching = { fg = clrs.nord8 },
+    -- TelescopeNormal = { fg = clrs.fg, bg = clrs.float },
+    -- TelescopeNormal = { fg = colors.fg, bg = colors.bg },
+    -- TelescopePromptPrefix = { fg = colors.purple },
+    -- TelescopePromptBorder = { fg = colors.blue },
+    -- TelescopeResultsBorder = { fg = colors.blue },
+    -- TelescopePreviewBorder = { fg = colors.blue },
+    -- TelescopeSelectionCaret = { fg = colors.cyan },
+    -- TelescopeSelection = { fg = colors.cyan },
+    -- TelescopeMatching = { fg = colors.yellow, gui = "bold" },
+
     -- "TelescopeResultsDiffAdd" },
     -- "TelescopeResultsDiffAdd" },
     -- "TelescopeResultsDiffChange" },

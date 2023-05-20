@@ -15,16 +15,27 @@ status_comps.active[1][4].left_sep = {
   str = ' ',
 }
 
-table.insert(status_comps.active[1], 7, custom_status_comps.AsciiComponent)
-table.insert(status_comps.active[1], 8, custom_status_comps.FiletypeComponent)
-table.insert(status_comps.active[1], 9, custom_status_comps.LspExtrasComponent)
+table.insert(status_comps.active[1], 7, custom_status_comps.FiletypeComponent)
+-- { provider = 'diagnostic_errors', hl = { fg = 'red' } },
+-- { provider = 'diagnostic_warnings', hl = { fg = 'yellow' } },
+-- { provider = 'diagnostic_hints', hl = { fg = 'cyan' } }
+-- { provider = 'diagnostic_info', hl = { fg = 'skyblue' } },
+table.insert(status_comps.active[1], 12, custom_status_comps.AsciiComponent)
+-- status_comps.active[2][1] = custom_status_comps.LspCodeActionsComponent
+-- status_comps.active[2][2] = custom_status_comps.LspReferencesComponent
+-- status_comps.active[2][3] = custom_status_comps.HelpTagsComponent
+-- -- status_comps.active[2][2] = custom_status_comps.NeoComposerComponent
+-- status_comps.active[2][4] = custom_status_comps.GitBranchComponent
+-- status_comps.active[2][5] = custom_status_comps.GitDiffAddedComponent
+-- status_comps.active[2][6] = custom_status_comps.GitDiffChangedComponent
+-- status_comps.active[2][7] = custom_status_comps.GitDiffRemovedComponent
+-- status_comps.active[2][8] = custom_status_comps.ScrollBarComponent
 status_comps.active[2][1] = custom_status_comps.HelpTagsComponent
-status_comps.active[2][2] = custom_status_comps.NeoComposerComponent
-status_comps.active[2][3] = custom_status_comps.GitBranchComponent
-status_comps.active[2][4] = custom_status_comps.GitDiffAddedComponent
-status_comps.active[2][5] = custom_status_comps.GitDiffChangedComponent
-status_comps.active[2][6] = custom_status_comps.GitDiffRemovedComponent
-status_comps.active[2][7] = custom_status_comps.ScrollBarComponent
+status_comps.active[2][2] = custom_status_comps.GitBranchComponent
+status_comps.active[2][3] = custom_status_comps.GitDiffAddedComponent
+status_comps.active[2][4] = custom_status_comps.GitDiffChangedComponent
+status_comps.active[2][5] = custom_status_comps.GitDiffRemovedComponent
+status_comps.active[2][6] = custom_status_comps.ScrollBarComponent
 
 local statusline_cfg = {
   components = status_comps,
@@ -69,7 +80,8 @@ local statusline_cfg = {
     bufnames = {},
   },
   custom_providers = {
-    lspextras = require('plugs.config.feline.provider-lspextras').provider,
+    lsp_code_actions = require('plugs.config.feline.provider-lspextras').lsp_code_actions,
+    lsp_references = require('plugs.config.feline.provider-lspextras').lsp_references,
     project = require('plugs.config.feline.provider-project').provider,
     neocomposer = require('plugs.config.feline.provider-neocomposer').provider,
     ascii = require('plugs.config.feline.provider-ascii').provider,

@@ -51,6 +51,7 @@ local main_maps = {
     ["<M-u>"]       = c_actions.launch_find_files,
     ['<F46>']       = c_actions.toggle_whichkey,
     ["<C-^>"]       = c_actions.switch_layout,
+    ["<M-BS>"]      = c_actions.resume_picker_prev,
     ["<S-Tab>"]     = ignore, -- c_actions.results_toggle_up,
     ["<Tab>"]       = ignore, -- c_actions.results_toggle_down,
     ["<PageUp>"]    = ignore, -- actions.results_scrolling_up,

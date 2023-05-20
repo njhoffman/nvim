@@ -84,11 +84,19 @@ M.multi_to_qflist = function(prompt_bufnr)
   _multi_open(prompt_bufnr, 'quickfix')
 end
 
-vim.g.telescope_cache_index = 0
+vim.g.telescope_cache_index = 1
 M.resume_picker_prev = function(prompt_bufnr)
-  -- actions.toggle_selection(prompt_bufnr)
-  -- actions.move_selection_previous(prompt_bufnr)
+  -- local cached_pickers = #state.get_global_key('cached_pickers')
+  -- local picker = action_state.get_current_picker(prompt_bufnr) -- picker state
+  -- local opts = {}
+  -- if idx then
+  --   opts.cache_index = idx + 1 > cached_pickers and 1 or idx + 1
+  -- end
+
+  local picker = action_state.get_current_picker(prompt_bufnr)
   local cached_pickers_num = #state.get_global_key('cached_pickers')
+
+  -- local idx = picker.cache_picker and picker.cache_picker.index
   local idx = vim.g.telescope_cache_index
   if cached_pickers_num > 0 then
     idx = idx + 1
@@ -96,8 +104,12 @@ M.resume_picker_prev = function(prompt_bufnr)
       idx = 1
     end
   end
-  local opts = { cache_index = idx }
+  local opts = { cache_index = idx, initial_mode = picker.initial_mode }
+
+  -- opts._cache_picker = opts.cache_picker
+  opts.cache_picker = false
   run('builtin', 'resume', opts)
+  vim.g.telescope_cache_index = idx
 end
 
 M.resume_picker_next = function(prompt_bufnr)
@@ -182,18 +194,20 @@ M.switch_layout = function(prompt_bufnr, _opts)
 
   actions.close(prompt_bufnr)
 
-  require('telescope.run')('builtin', 'resume', opts)
+  run('builtin', 'resume', opts)
 end
 
 M.switch_file_pickers = function(prompt_bufnr)
   vim.defer_fn(function()
     local picker = action_state.get_current_picker(prompt_bufnr)
     local prompt_text = picker:_get_prompt()
+
     -- local state = require("telescope.actions.state")
     if vim.api.nvim_buf_is_valid(prompt_bufnr) then
       actions.close(prompt_bufnr)
     end
     local opts = { default_text = prompt_text }
+
     if picker.prompt_title == 'Frecency' then
       run('builtin', 'oldfiles', opts)
     elseif picker.prompt_title == 'Find Files' then
@@ -232,7 +246,6 @@ M.switch_grep_pickers = function(prompt_bufnr)
 end
 
 M.launch_find_pickers = function(prompt_bufnr)
-  actions.close(prompt_bufnr)
   run('find_pickers', 'find_pickers', {})
 end
 
@@ -242,13 +255,13 @@ M.launch_projects = function(prompt_bufnr)
 end
 
 M.launch_find_files = function(prompt_bufnr)
-  actions.close(prompt_bufnr)
-  run('builtin', 'find_files')
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  run('builtin', 'find_files', { cwd = picker.cwd })
 end
 
 M.launch_live_grep = function(prompt_bufnr)
-  actions.close(prompt_bufnr)
-  run('builtin', 'live_grep')
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  run('builtin', 'live_grep', { cwd = picker.cwd })
 end
 
 M.launch_dirpicker = function(bufnr)

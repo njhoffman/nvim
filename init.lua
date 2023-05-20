@@ -1,9 +1,11 @@
 -- strace gvim -V9log.txt file.tex > stdout.txt 2> stderr.txt
 
 require('globals')
+
 require('utils.lazy').setup({ cache = false, reload = false })
 
 for _, mod_name in ipairs({
+  'plugs.config.feline',
   'mapper.setup',
   'project',
   'dial',
@@ -25,6 +27,7 @@ require('sidebar').setup()
 require('tracker').setup()
 
 vim.cmd([[ nnoremap ; : ]])
+vim.cmd([[ vnoremap ; : ]])
 
 -- require("notifications.recipes.progress").config()
 -- require "plenary.profile".stop()

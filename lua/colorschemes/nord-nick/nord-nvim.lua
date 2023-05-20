@@ -518,13 +518,6 @@ local theme = lush(function()
     GitGutterAdd({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
     GitGutterChange({ fg = clrs.nord15 }), -- diff mode: Changed line |diff.txt|
     GitGutterDelete({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
-    -- Telescope
-    TelescopePromptBorder({ fg = clrs.nord8 }),
-    TelescopeResultsBorder({ fg = clrs.nord9 }),
-    TelescopePreviewBorder({ fg = clrs.nord14 }),
-    TelescopeSelectionCaret({ fg = clrs.nord9 }),
-    TelescopeSelection({ fg = clrs.nord9 }),
-    TelescopeMatching({ fg = clrs.nord8 }),
     -- -- NvimTree
     NvimTreeRootFolder({ fg = clrs.nord7, gui = 'bold' }),
     NvimTreeGitDirty({ fg = clrs.nord15 }),

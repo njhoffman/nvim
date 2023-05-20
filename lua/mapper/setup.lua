@@ -21,7 +21,7 @@ prefix('n', '<leader>p', 'paste')
 prefix('n', '<leader>i', 'internal tools')
 prefix('n', '<leader>cl', 'conceal')
 
-vim.cmd([[nnoremap <C-l> :syntax sync fromstart<CR>:redraw<CR>]])
+-- vim.cmd([[nnoremap <C-l> :syntax sync fromstart<CR>:redraw<CR>]])
 
 -- ["]"] = { name = "+next" },
 -- ["["] = { name = "+prev" },
@@ -49,8 +49,8 @@ vim.cmd([[nnoremap <C-l> :syntax sync fromstart<CR>:redraw<CR>]])
 -- vim.keymap.set("n", "g.", [[/\V<C-r>"<CR>cgn<C-a><Esc>]])
 --------------------------------------------------------------------------------------------------
 -- COMMAND ---------------------------------------------------------------------------------------
-
-map({ 'v' }, '<space>', '<cmd>lua vim.notify("Executing visual command",0)<cr>"xy:@x<cr>', {
+-- TODO: differentiate between vim/lua, auto remove comments
+map({ 'v' }, '<space>', '"xy:@x<cr>', {
   category = 'Command',
   label = 'execute selected',
   desc = 'execute selected lines',
@@ -70,7 +70,7 @@ map({ 'n', 'v' }, ':', 'q:', {
   nowait = true,
 })
 
-map({ 'n' }, '<M-f>', 'q:', {
+map({ 'n', 'v' }, '<M-f>', 'q:', {
   category = 'Command',
   label = 'open cmdwin',
   desc = 'open the command window',
@@ -423,7 +423,15 @@ map('n', '<c-b>', '<Plug>(SmoothieBackwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
   label = 'scroll backwards',
-  desc = 'smooth scroll backwards',
+  desc = 'smoothie scroll backwards',
+  noremap = false,
+})
+
+map('n', '<PageUp>', '<Plug>(SmoothieBackwards)', {
+  category = 'Motion',
+  plugin = 'vim-smoothie',
+  label = 'scroll backwards',
+  desc = 'smoothie page-up scroll backwards',
   noremap = false,
 })
 
@@ -431,7 +439,15 @@ map('n', '<c-f>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
   label = 'scroll forwards',
-  desc = 'smooth scroll forwards',
+  desc = 'smoothie scroll forwards',
+  noremap = false,
+})
+
+map('n', '<PageDown>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
+  category = 'Motion',
+  plugin = 'vim-smoothie',
+  label = 'scroll forwards',
+  desc = 'smoothie page-down scroll forwards',
   noremap = false,
 })
 
@@ -439,7 +455,7 @@ map('n', '<space>', '<c-f><c-f>', {
   category = 'Motion',
   plugin = 'vim-smoothie',
   label = 'scroll forwards x2',
-  desc = 'smooth scroll forwards x2',
+  desc = 'smoothie scroll forwards x2',
   noremap = false,
 })
 
@@ -447,7 +463,7 @@ map('n', 'G', '<Plug>(Smoothie_G)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
   label = 'scroll bottom',
-  desc = 'smooth scroll to bottom',
+  desc = 'smoothie scroll to bottom',
   noremap = false,
 })
 
@@ -455,7 +471,7 @@ map('n', 'gg', '<Plug>(Smoothie_gg)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
   label = 'scroll top',
-  desc = 'smooth scroll to top',
+  desc = 'smoothie scroll to top',
   noremap = false,
 })
 
@@ -986,7 +1002,7 @@ map('n', '<M-u>', "<cmd>lua require('telescope.run')('builtin', 'oldfiles')<cr>"
   desc = 'mru files in telescope',
 })
 
-map('n', '<M-i>', "<cmd>lua require('telescope.run')('notify', 'notify')<cr>", {
+map('n', '<M-i>', "<cmd>lua require('telescope.run')('messages', 'messages')<cr>", {
   category = 'Pickers',
   plugin = 'notify.nvim',
   label = 'notifications',
@@ -1021,7 +1037,7 @@ map('n', '<leader>l', "<cmd>lua require('telescope.run')('projects','projects')<
   desc = 'repeast last telescope command',
 })
 
-map('n', '<M-C-Space>', '<cmd>Telescope resume cache_direction=next<cr>', {
+map('n', '<M-BS>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'repeat telescope',

@@ -7,65 +7,65 @@ local history = require('project_nvim.utils.history')
 local project = require('project_nvim.project')
 local config = require('project_nvim.config')
 
-local function change_working_directory(prompt_bufnr, prompt)
+local run = require('telescope.run')
+
+-- TODO: 'lock project directory' until original bufnr triggers project change
+local function change_working_directory(prompt_bufnr)
   local selected_entry = state.get_selected_entry()
   if selected_entry == nil then
     return actions.close(prompt_bufnr)
   end
   local project_path = selected_entry.path
-  if prompt == true then
-    actions._close(prompt_bufnr)
-  else
-    actions.close(prompt_bufnr)
-  end
+  actions.close(prompt_bufnr)
   local cd_successful = project.set_pwd(project_path)
   return project_path, cd_successful
 end
 
 local function find_project_files(prompt_bufnr)
   vim.dbglog({ bufnr = prompt_bufnr })
-  local project_path, cd_successful = change_working_directory(prompt_bufnr, true)
+  local project_path, cd_successful = change_working_directory(prompt_bufnr)
   local opt = {
     cwd = project_path,
+    project_path = project_path,
     hidden = config.options.show_hidden,
     mode = 'insert',
   }
   if cd_successful then
-    builtin.find_files(opt)
+    run('builtin', 'find_files', opt)
   end
 end
 
 local function browse_project_files(prompt_bufnr)
-  local project_path, cd_successful = change_working_directory(prompt_bufnr, true)
+  local project_path, cd_successful = change_working_directory(prompt_bufnr)
   local opt = {
     cwd = project_path,
     hidden = config.options.show_hidden,
   }
   if cd_successful then
-    builtin.file_browser(opt)
+    run('builtin', 'file_browser', opt)
   end
 end
 
 local function search_in_project_files(prompt_bufnr)
-  local project_path, cd_successful = change_working_directory(prompt_bufnr, true)
+  local project_path, cd_successful = change_working_directory(prompt_bufnr)
   local opt = {
     cwd = project_path,
     hidden = config.options.show_hidden,
     mode = 'insert',
   }
   if cd_successful then
-    builtin.live_grep(opt)
+    run('builtin', 'live_grep', opt)
   end
 end
 
 local function recent_project_files(prompt_bufnr)
-  local _, cd_successful = change_working_directory(prompt_bufnr, true)
+  local _, cd_successful = change_working_directory(prompt_bufnr)
   local opt = {
     cwd_only = true,
     hidden = config.options.show_hidden,
   }
   if cd_successful then
-    builtin.oldfiles(opt)
+    run('builtin', 'oldfiles', opt)
   end
 end
 

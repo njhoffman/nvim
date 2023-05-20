@@ -54,6 +54,13 @@ local telemap = {
     end,
     cmd = { 'builtin', 'fd' },
   },
+  projects_projects = {
+    opts = {
+      cache_picker = {
+        disabled = true,
+      },
+    },
+  },
   builtin_diagnostics = {
     opts = function(user_opts)
       user_opts = user_opts or {}
@@ -80,37 +87,35 @@ local telemap = {
   },
   find_pickers_find_pickers = {
     opts = {
-      picker = {
-        cache_picker = {
-          disabled = true,
-        },
+      cache_picker = {
+        disabled = true,
       },
     },
   },
-  builtin_resume = {
-    opts = function(user_opts)
-      user_opts = user_opts or {}
-      if user_opts.bufnr == true or type(user_opts.bufnr) == 'number' then
-        user_opts.bufnr = 0
-      end
-      local gen_opts = {
-        line_width = 0.7,
-        no_sign = false,
-        cwd = user_opts.cwd,
-        path_display = user_opts.path_display or {
-          tail = true,
-          truncate = true,
-        },
-      }
-      if user_opts.bufnr == 0 then
-        gen_opts.path_display = 'hidden'
-      end
-      return {
-        bufnr = user_opts.bufnr,
-        entry_maker = user_opts.entry_maker or make_entry.gen_from_diagnostics(gen_opts),
-      }
-    end,
-  },
+  -- builtin_resume = {
+  --   opts = function(user_opts)
+  --     user_opts = user_opts or {}
+  --     if user_opts.bufnr == true or type(user_opts.bufnr) == 'number' then
+  --       user_opts.bufnr = 0
+  --     end
+  --     local gen_opts = {
+  --       line_width = 0.7,
+  --       no_sign = false,
+  --       cwd = user_opts.cwd,
+  --       path_display = user_opts.path_display or {
+  --         tail = true,
+  --         truncate = true,
+  --       },
+  --     }
+  --     if user_opts.bufnr == 0 then
+  --       gen_opts.path_display = 'hidden'
+  --     end
+  --     return {
+  --       bufnr = user_opts.bufnr,
+  --       entry_maker = user_opts.entry_maker or make_entry.gen_from_diagnostics(gen_opts),
+  --     }
+  --   end,
+  -- },
   builtin_help_tags = {
     opts = function(user_opts)
       local opts = user_opts or {}
@@ -159,6 +164,11 @@ local telemap = {
       end
       return user_opts
     end,
+  },
+  messages_messages = {
+    opts = {
+      theme = 'ivy',
+    },
   },
   notify_notify = {
     opts = {

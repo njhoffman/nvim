@@ -1,29 +1,32 @@
 local default_cfg = {
   mappings = {
-    left = "<M-h>",
-    right = "<M-l>",
-    down = "<M-j>",
-    up = "<M-k>",
-    line_left = "<M-h>",
-    line_right = "<M-l>",
-    line_down = "<M-j>",
-    line_up = "<M-k>",
+    -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
+    left = '<M-h>',
+    right = '<M-l>',
+    down = '<M-j>',
+    up = '<M-k>',
+    -- Move current line in Normal mode
+    line_left = '<M-h>',
+    line_right = '<M-l>',
+    line_down = '<M-j>',
+    line_up = '<M-k>',
   },
   options = {
     reindent_linewise = true,
   },
 }
 
-require("mini.move").setup({
+-- stylua: ignore
+require('mini.move').setup({
   mappings = {
-    left = "<M-h>",
-    right = "<M-l>",
-    down = "<M-j>",
-    up = "<M-k>",
-    line_left = "<M-h>",
-    line_right = "<M-l>",
-    line_down = "<M-j>",
-    line_up = "<M-k>",
+    left       = '<C-S-Left>',
+    right      = '<C-S-Right>',
+    down       = '<C-S-Down>',
+    up         = '<C-S-Up>',
+    line_left  = '',
+    line_right = '',
+    line_down  = '',
+    line_up    = '',
   },
 })
 

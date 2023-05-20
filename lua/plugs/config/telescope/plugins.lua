@@ -13,6 +13,7 @@ local tele_plugs = {
     ['show_domain_icons'] = true,
   },
   ['devhints'] = {},
+  ['messages'] = {},
   ['env'] = {},
   ['fences'] = {},
   ['filetypes'] = {},
@@ -62,6 +63,7 @@ local tele_plugs = {
   ['gitops'] = {},
   ['gotofile'] = {},
   ['locate'] = {},
+  ['tester'] = { example_option = 'example_value' },
   ['mapper'] = {
     sorter = sorters.fuzzy_with_index_bias,
     -- sorter = sorters.highlighter_only
@@ -257,7 +259,6 @@ local tele_plugs = {
   },
   ['neoclip'] = {},
   ['node_modules'] = {},
-  ['notify'] = {},
   ['npm'] = {},
   ['openbrowser'] = {
     -- Add bookmark urls
@@ -341,6 +342,12 @@ local load = function()
   local end_msg = 'Loaded ' .. H.table_len(installed) .. ' out of ' .. H.table_len(tele_plugs) .. ' telescope plugins'
   vim.notify(end_msg, 0)
 end
+
+-- vim.keymap.set("n", "<leader>fS", function()
+--         vim.ui.input({ prompt = "Workspace symbols: " }, function(query)
+--                 ts.lsp_workspace_symbols({ query = query })
+--         end)
+-- end, { desc = "LSP workspace symbols" })
 
 return { load = load, get_extensions = get_extensions }
 

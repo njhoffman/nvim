@@ -52,7 +52,7 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
 
   if client.server_capabilities.semanticTokensProvider then
-    client.server_capabilities.semanticTokensProvider = nil
+    client.server_capabilities.semanticTokensProvider = false
   end
 
   if client.name == 'lua_ls' then

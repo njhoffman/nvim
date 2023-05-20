@@ -43,10 +43,20 @@ local block1 = {
     spacing = 0,
   },
 }
+local v = vim.version()
+local version = 'v' .. vim.fn.join({ v.major, v.minor, v.patch }, '.') .. ' :' .. v.api_level
+local load_time
+if not vim.g.load_time then
+  ---@diagnostic disable-next-line: missing-parameter
+  load_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
+  load_time = 'VimEnter in ' .. string.sub(string.gsub(load_time, ' ', ''), 1, 5) .. 's'
+else
+  load_time = 'Loaded in ' .. vim.g.load_time .. 's'
+end
 
 local footer = {
   type = 'text',
-  val = 'This is my footer text',
+  val = { version, load_time },
   opts = {
     position = 'center',
     hl = 'Number',

@@ -266,10 +266,11 @@ local handlers = {
   hoverProvider = hover_provider,
   implementationProvider = implementation_provider,
   renameProvider = rename_provider,
+  semanticTokensProvider = function() end,
   signatureHelpProvider = signature_help_provider,
   typeDefinitionProvider = type_definition_provider,
   workspace = workspace,
-  -- executeCommandProvider, semanticTokensProvider, inlayHintProvider, foldingRangeProvider, workspaceSymbolProvider
+  -- executeCommandProvider, , inlayHintProvider, foldingRangeProvider, workspaceSymbolProvider
 }
 
 return handlers

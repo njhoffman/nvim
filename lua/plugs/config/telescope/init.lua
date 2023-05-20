@@ -61,7 +61,7 @@ local telescope_config = {
       },
     },
     cache_picker = {
-      num_pickers = 10,
+      num_pickers = 20,
       limit_entries = 2000,
     },
     wrap_results = false,
@@ -105,7 +105,6 @@ local telescope_config = {
     },
   },
   pickers = {
-    pickers = false,
     diagnostics = {
       theme = 'ivy',
       layout_config = { height = 15 },
@@ -113,28 +112,37 @@ local telescope_config = {
     find_files = {
       mappings = mappings.file_picker,
       find_command = commands.rg,
+      debounce = 100,
     },
     fd = {
       mappings = mappings.file_picker,
       find_command = commands.rg,
+      debounce = 100,
     },
     colorscheme = { enable_preview = true },
     oldfiles = {
       mappings = mappings.file_picker,
       find_command = commands.rg,
+      debounce = 100,
     },
     live_grep = {
       mappings = mappings.grep,
       find_command = commands.rg,
+      debounce = 100,
     },
     buffers = {
+      debounce = 100,
       show_all_buffers = true,
       sort_mru = true,
       mappings = mappings.buffer,
       ignore_current_buffer = false,
       only_cwd = false,
     },
+    keymaps = {
+      entry_maker = require('plugs.config.telescope.entry_makers').gen_from_keymaps({}),
+    },
     git_status = {
+      debounce = 100,
       enabled = false,
       previewer = c_previewers.delta,
       theme = 'dropdown',
@@ -146,6 +154,7 @@ local telescope_config = {
     --   git_command = { "git", "log", "--format=%h%d (%ar) %s <%an>" },
     -- },
     git_branches = {
+      debounce = 100,
       show_remote_tracking_branches = true,
     },
     -- git_bcommits = {
@@ -156,6 +165,7 @@ local telescope_config = {
     --   git_command = { "git", "log", "--format=%h%d (%ar) %s <%an>" },
     -- },
     lsp_workspace_symbols = {
+      debounce = 100,
       symbols_highlights = {
         'Class',
         'Function',
@@ -169,11 +179,13 @@ local telescope_config = {
       },
     },
     lsp_references = {
+      debounce = 100,
       include_current_line = false,
       theme = 'dropdown',
       path_display = { 'tail' },
     },
     lsp_document_symbols = {
+      debounce = 100,
       sorter = require('telescope').extensions.fzf.native_fzf_sorter({
         fuzzy = true, -- false will only do exact matching
         override_generic_sorter = true, -- override the generic sorter

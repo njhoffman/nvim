@@ -13,11 +13,11 @@ vim.cmd([[
 local get_error_parts = function(lines)
   local msg = lines[1]
   local parts = {
-    code = string.match(msg, '[E%d]+'),
-    title = string.match(msg, ': ([^:]+)'),
-    file = string.match(msg, '[^:]+:[^:]+:[^:]+:([^:]*):'),
-    line = string.match(msg, '[^:]+:[^:]+:[^:]+:[^:]+:([^:]*):'),
-    message = string.match(msg, '[^:]+:[^:]+:[^:]+:[^:]+: ([^:]*)'),
+    code = string.match(msg, '[E%d]+') or '',
+    title = string.match(msg, ': ([^:]+)') or '',
+    file = string.match(msg, '[^:]+:[^:]+:[^:]+:([^:]*):') or '',
+    line = string.match(msg, '[^:]+:[^:]+:[^:]+:[^:]+:([^:]*):') or '',
+    message = string.match(msg, '[^:]+:[^:]+:[^:]+:[^:]+: ([^:]*)') or '',
     stack = {},
   }
 

@@ -56,7 +56,7 @@ local get_theme = function(theme)
       previewer = true,
     }),
     ivy = require('telescope.themes').get_ivy({
-      winblend = 20,
+      winblend = 0,
       layout_config = { height = 15 },
       preview = { hide_on_startup = winwidth < 120 },
     }),

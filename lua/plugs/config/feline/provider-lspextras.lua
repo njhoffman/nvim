@@ -1,45 +1,58 @@
-local function set_highlight(group, fg)
-  vim.cmd(string.format('highlight %s guifg=%s guibg=%s gui=bold', group, fg, '#000000'))
-end
+-- local lsp_counts_default = { references = 0, code_actions = 0 }
+local hls = {
+  code_actions = { fg = '#a4a68a', name = 'ca' },
+  code_actions_empty = { fg = '#334455', name = 'ca_empty' },
+  references = { fg = '#4466aa', name = 'ref' },
+  references_empty = { fg = '#334455', name = 'ref_empty' },
+}
 
-local get_code_actions = function()
-  local bufnr = tonumber(vim.g.actual_curbuf) or 0
-  local params = vim.lsp.util.make_range_params()
-  params.context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics() }
-  local res = vim.lsp.buf_request_sync(bufnr, 'textDocument/codeAction', params) or {}
-  local n = 0
-  for _, client in ipairs(res) do
-    if client.result then
-      n = n + #client.result
-    end
+local state = {
+  code_actions = 0,
+  code_actions_hl = hls.code_actions_empty,
+  references = 0,
+  references_hl = hls.references_empty,
+}
+
+local references_count = function()
+  -- 󰈇    󰈝                   秊 
+  local count = 0
+  local ok, ref_count = pcall(vim.api.nvim_buf_get_var, 0, 'lsp_count_references')
+  if ok then
+    count = ref_count
   end
-  return n
-end
-
-local get_references = function()
-  local params = vim.lsp.util.make_position_params()
-  params.context = { includeDeclaration = vim.F.if_nil(nil, true) }
-  local res = vim.lsp.buf_request_sync(0, 'textDocument/references', params) or {}
-  local n = 0
-  for _, client in ipairs(res) do
-    if client.result then
-      n = n + #client.result
-    end
+  state.references = tonumber(count)
+  if count == 0 then
+    state.references_hl = hls.references_empty
+    return ' '
   end
-  return n
+  state.references_hl = hls.references
+  return ' '
 end
 
-local lspextras = function(_, _)
-  -- set_highlight('StatusLabel', colors.main.fg)
-  -- local refs = get_references()
-  -- local actions = get_code_actions()
-  -- return actions
-  -- return refs .. ' ' .. actions
-  -- vim.dbglog('lspextras')
-  return 'test'
+local code_actions_count = function()
+  --   ﯦ  ﯧ 
+  local count = 0
+  local ok, ca_count = pcall(vim.api.nvim_buf_get_var, 0, 'lsp_count_code_actions')
+  if ok then
+    count = ca_count
+  end
+  state.code_actions = tonumber(count)
+  if count == 0 then
+    state.code_actions_hl = hls.code_actions_empty
+    return ''
+  end
+  state.code_actions_hl = hls.code_actions
+  return ''
 end
 
 return {
-  name = 'lspextras',
-  provider = lspextras,
+  lsp_code_actions = code_actions_count,
+  lsp_code_actions_hl = function()
+    vim.dbglog('ca 2', state.code_actions)
+    return state.code_actions_hl
+  end,
+  lsp_references = references_count,
+  lsp_references_hl = function()
+    return state.references_hl
+  end,
 }

@@ -26,7 +26,7 @@ local create = function(projects)
   local function make_display(entry)
     return displayer({
       { entry.icon[1], entry.icon[2] },
-      { entry.name, 'TelescopeProjectName' },
+      { entry.name },
       { entry.group, entry.group_highlight },
       { entry.path, 'TelescopeProjectPath' },
     })

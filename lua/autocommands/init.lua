@@ -1,6 +1,7 @@
 local commands = require('autocommands.commands')
 require('autocommands.misc')
 require('autocommands.startup')
+require('autocommands.lsp')
 
 -- TODO: automatically build helptags in doc directory
 

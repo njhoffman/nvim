@@ -1,27 +1,46 @@
 local provider_project = require('plugs.config.feline.provider-project')
 local provider_git = require('plugs.config.feline.provider-git')
+local provider_lspextras = require('plugs.config.feline.provider-lspextras')
+local provider_helptags = require('plugs.config.feline.provider-helptags')
 
 local M = {}
 
 M.HelpTagsComponent = {
+  enabled = function()
+    return vim.bo.filetype == 'lua'
+  end,
   provider = {
     name = 'helptags',
-    update = { 'CursorMoved' },
-    enbled = function()
-      return vim.bo.filetype == 'lua'
-    end,
-    opts = {},
+    update = { 'User' },
+    opts = { pattern = 'StatusCountHelp' },
   },
-  hl = {
-    fg = '#84FFFF',
-  },
+  hl = provider_helptags.provider_hl,
   left_sep = {
-    str = ' ',
+    str = '',
     hl = {
       fg = 'NONE',
     },
   },
   right_sep = {
+    str = '',
+    hl = {
+      fg = 'NONE',
+    },
+  },
+}
+
+M.LspCodeActionsComponent = {
+  enabled = function()
+    local ft_enabled = { 'lua', 'sh', 'typescript', 'javascript', 'go', 'python' }
+    return vim.tbl_contains(ft_enabled, vim.bo.filetype) and #vim.lsp.get_active_clients() > 0
+  end,
+  provider = {
+    name = 'lsp_code_actions',
+    update = { 'User' },
+    opts = {},
+  },
+  hl = provider_lspextras.lsp_code_actions_hl,
+  left_sep = {
     str = ' ',
     hl = {
       fg = 'NONE',
@@ -29,20 +48,25 @@ M.HelpTagsComponent = {
   },
 }
 
-M.LspExtrasComponent = {
+M.LspReferencesComponent = {
+  enabled = function()
+    local ft_enabled = { 'lua', 'sh', 'typescript', 'javascript', 'go', 'python' }
+    return vim.tbl_contains(ft_enabled, vim.bo.filetype) and #vim.lsp.get_active_clients() > 0
+  end,
   provider = {
-    name = 'lspextras',
-    update = { 'CursorMoved' },
-    enbled = function()
-      return #vim.lsp.get_active_clients() > 0
-    end,
+    name = 'lsp_references',
+    update = { 'User' },
     opts = {},
   },
-  hl = {
-    fg = '#333344',
-  },
+  hl = provider_lspextras.lsp_references_hl,
   left_sep = {
     str = ' ',
+    hl = {
+      fg = 'NONE',
+    },
+  },
+  right_sep = {
+    str = '',
     hl = {
       fg = 'NONE',
     },
@@ -69,7 +93,10 @@ M.NeoComposerComponent = {
 
 -- Display <e> 0x65
 M.AsciiComponent = {
-  hl = { fg = '#988088' },
+  hl = { fg = '#486088' },
+  -- enabled = function()
+  --   return vim.api.nvim_win_get_width(0) > 120
+  -- end,
   provider = {
     name = 'ascii',
     update = { 'CursorMoved' },
@@ -165,7 +192,7 @@ M.FiletypeComponent = {
     opts = { case = 'lowercase' },
   },
   left_sep = ' ',
-  right_sep = ' ',
+  right_sep = '',
 }
 
 return M

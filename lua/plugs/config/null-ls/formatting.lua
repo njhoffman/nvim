@@ -4,11 +4,11 @@ return {
   -- Formatters
   -- null_ls.builtins.formatting.asmfmt,
   null_ls.builtins.formatting.beautysh,
-  null_ls.builtins.formatting.black.with({
-    extra_args = function(params)
-      return { '--line-length=' .. vim.api.nvim_buf_get_option(params.bufnr, 'textwidth') }
-    end,
-  }),
+  -- null_ls.builtins.formatting.black.with({
+  --   extra_args = function(params)
+  --     return { '--line-length=' .. vim.api.nvim_buf_get_option(params.bufnr, 'textwidth') }
+  --   end,
+  -- }),
   null_ls.builtins.formatting.clang_format,
   null_ls.builtins.formatting.eslint_d,
   null_ls.builtins.formatting.fixjson,
@@ -17,7 +17,7 @@ return {
   null_ls.builtins.formatting.golines,
   null_ls.builtins.formatting.jq,
   -- null_ls.builtins.formatting.lua_format,
-  null_ls.builtins.formatting.isort.with({ extra_args = { '--profile', 'black' } }),
+  -- null_ls.builtins.formatting.isort.with({ extra_args = { '--profile', 'black' } }),
   null_ls.builtins.formatting.markdownlint,
   null_ls.builtins.formatting.markdown_toc,
   -- null_ls.builtins.formatting.mdformat,

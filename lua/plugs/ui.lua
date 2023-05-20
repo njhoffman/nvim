@@ -47,12 +47,6 @@ local plugins = {
   {
     'lukas-reineke/indent-blankline.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
-    opts = {
-      char = '│',
-      filetype_exclude = ft_exclude,
-      show_trailing_blankline_indent = false,
-      show_current_context = false,
-    },
   },
   {
     'echasnovski/mini.indentscope',

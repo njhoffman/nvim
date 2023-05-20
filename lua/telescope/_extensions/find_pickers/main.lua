@@ -1,10 +1,10 @@
 -- telescope modules
-local pickers = require("telescope.pickers")
-local themes = require("telescope.themes")
-local telescope_config = require("telescope.config").values
+local pickers = require('telescope.pickers')
+local themes = require('telescope.themes')
+local telescope_config = require('telescope.config').values
 
-local actions = require("telescope._extensions.find_pickers.actions")
-local finders = require("telescope._extensions.find_pickers.finders")
+local actions = require('telescope._extensions.find_pickers.actions')
+local finders = require('telescope._extensions.find_pickers.finders')
 local M = {}
 
 local default_conf_opts = {
@@ -55,8 +55,8 @@ local default_conf_opts = {
   },
   new_pickers = {
     ghn_notifications = {
-      extension = "ghn",
-      command = "notifications",
+      extension = 'ghn',
+      command = 'notifications',
     },
   },
 }
@@ -77,12 +77,15 @@ end
 
 M.find_pickers = function(theme_opts, conf_opts)
   theme_opts = themes.get_dropdown(theme_opts)
-  conf_opts = vim.tbl_deep_extend("force", default_conf_opts, conf_opts or {})
+  conf_opts = vim.tbl_deep_extend('force', default_conf_opts, conf_opts or {})
 
   pickers
     .new(theme_opts, {
-      prompt_title = "Find Pickers",
-      results_title = "Picker",
+      prompt_title = 'Find Pickers',
+      results_title = 'Picker',
+      cache_picker = {
+        disabled = true,
+      },
       finder = finders.get_finder(conf_opts),
       attach_mappings = actions.attach_mappings,
       sorter = telescope_config.file_sorter(theme_opts),

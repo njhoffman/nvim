@@ -1,7 +1,5 @@
-local actions_state = require("telescope.actions.state")
-local actions = require("telescope.actions")
-local builtin_pickers = require("telescope.builtin")
-local extensions_pickers = require("telescope._extensions")
+local actions_state = require('telescope.actions.state')
+local actions = require('telescope.actions')
 
 local select_picker = function(bufnr)
   local picker_opts = {
@@ -11,19 +9,17 @@ local select_picker = function(bufnr)
   local selection = actions_state.get_selected_entry()
   local value = selection.value
   actions.close(bufnr)
+  vim.dbglog('picker', value)
   if value.extension == false then
-    vim.schedule(function()
-      builtin_pickers[value.command](picker_opts)
-    end)
+    require('telescope.run')('builtin', value.command, picker_opts)
+    -- require('telescope.builtin')[value.command](picker_opts)
   else
-    vim.schedule(function()
-      extensions_pickers.manager[value.extension][value.command](picker_opts)
-    end)
+    require('telescope.run')(value.extension, value.command, picker_opts)
+    -- require('telescope._extensions').manager[value.extension][value.command](picker_opts)
   end
 end
 
-local view_blacklist = function()
-end
+local view_blacklist = function() end
 
 local attach_mappings = function(prompt_bufnr, map)
   map('n', 'b', view_blacklist)
@@ -35,5 +31,5 @@ local attach_mappings = function(prompt_bufnr, map)
 end
 
 return {
-  attach_mappings = attach_mappings
+  attach_mappings = attach_mappings,
 }

@@ -1,6 +1,6 @@
 local dap = require('dap')
 
-dap.set_log_level(1)
+dap.set_log_level('info')
 -- nvim-dap/lua/dap/log.lua:29
 -- mfussenegger/nvim-dap
 

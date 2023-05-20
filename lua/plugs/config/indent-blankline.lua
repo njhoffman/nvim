@@ -31,69 +31,79 @@ local ft_exclude = {
 }
 local bt_exclude = { 'terminal', 'prompt', 'nofile' }
 
-local common = {
-  bufname_exclude = { 'README.md' },
+require('indent_blankline').setup({
+  -- for example, context is off by default, use this to turn it on
+  char = '│',
   buftype_exclude = bt_exclude,
   filetype_exclude = ft_exclude,
-  context_patterns = {
-    'class',
-    'return',
-    'function',
-    'method',
-    '^if',
-    'if',
-    '^while',
-    'jsx_element',
-    '^for',
-    'for',
-    '^object',
-    '^table',
-    'block',
-    'arguments',
-    'if_statement',
-    'else_clause',
-    'jsx_element',
-    'jsx_self_closing_element',
-    'try_statement',
-    'catch_clause',
-    'import_statement',
-    'operation_type',
-  },
-  show_current_context = true,
-  show_current_context_start = true,
-  show_first_indent_level = false,
-  max_indent_increase = 1,
   show_trailing_blankline_indent = false,
-  use_treesitter = true,
-  strict_tabs = true,
-}
+  show_current_context = false,
+  use_treesitter = false,
+})
 
-local blankline1 = {
-  char = '',
-
-  context_char = '│',
-}
-
-local blankline2 = {
-  -- indent_blankline_char = { fg = "#0D0E19" },
-  -- char = "▏",
-  space_char = ' ',
-  space_char_blank_line = ' ',
-  char = ' ',
-  indent_soft_pattern = '\\s',
-  char_list = { '', '┊', '┆', '¦', '|', '¦', '┆', '┊', '' },
-  char_highlight_list = {
-    'IndentBlanklineIndent1',
-    'IndentBlanklineIndent2',
-  },
-  space_char_highlight_list = {
-    'IndentBlanklineIndent1',
-    'IndentBlanklineIndent2',
-  },
-}
-
--- vim.cmd([[
---     highlight IndentBlanklineChar guifg=#102030 gui=none
---     highlight IndentBlanklineContextChar guifg=#384858 gui=none
---     highlight IndentBlanklineContextStart gui=none
---     ]])
+-- local common = {
+--   bufname_exclude = { 'README.md' },
+--   buftype_exclude = bt_exclude,
+--   filetype_exclude = ft_exclude,
+--   context_patterns = {
+--     'class',
+--     'return',
+--     'function',
+--     'method',
+--     '^if',
+--     'if',
+--     '^while',
+--     'jsx_element',
+--     '^for',
+--     'for',
+--     '^object',
+--     '^table',
+--     'block',
+--     'arguments',
+--     'if_statement',
+--     'else_clause',
+--     'jsx_element',
+--     'jsx_self_closing_element',
+--     'try_statement',
+--     'catch_clause',
+--     'import_statement',
+--     'operation_type',
+--   },
+--   show_current_context = true,
+--   show_current_context_start = true,
+--   show_first_indent_level = false,
+--   max_indent_increase = 1,
+--   show_trailing_blankline_indent = false,
+--   use_treesitter = true,
+--   strict_tabs = true,
+-- }
+--
+-- local blankline1 = {
+--   char = '',
+--
+--   context_char = '│',
+-- }
+--
+-- local blankline2 = {
+--   -- indent_blankline_char = { fg = "#0D0E19" },
+--   -- char = "▏",
+--   space_char = ' ',
+--   space_char_blank_line = ' ',
+--   char = ' ',
+--   indent_soft_pattern = '\\s',
+--   char_list = { '', '┊', '┆', '¦', '|', '¦', '┆', '┊', '' },
+--   char_highlight_list = {
+--     'IndentBlanklineIndent1',
+--     'IndentBlanklineIndent2',
+--   },
+--   space_char_highlight_list = {
+--     'IndentBlanklineIndent1',
+--     'IndentBlanklineIndent2',
+--   },
+-- }
+--
+-- -- vim.cmd([[
+-- --     highlight IndentBlanklineChar guifg=#102030 gui=none
+-- --     highlight IndentBlanklineContextChar guifg=#384858 gui=none
+-- --     highlight IndentBlanklineContextStart gui=none
+-- --     ]])

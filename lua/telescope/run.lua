@@ -1,5 +1,6 @@
 local telemap = require('telescope.telemap')
 local telethemes = require('telescope.telethemes')
+local action_state = require('telescope.actions.state')
 
 -- -- telescope
 -- which would then be available for downstream use. Seems to work for me in simple test. If you run into issue, you might want to vim.schedule the name setting.
@@ -19,6 +20,13 @@ local telethemes = require('telescope.telethemes')
 --   end,
 -- })
 
+local log_picker = function(picker)
+  local p = vim.deepcopy(picker)
+  p.finder.results = #p.finder.results
+  p.manager.linked_states = nil
+  vim.dbglog(p)
+end
+
 local function get_options(mapkey, user_opts, bufnr)
   user_opts = user_opts or {}
   local theme_opts = {}
@@ -35,7 +43,27 @@ local function get_options(mapkey, user_opts, bufnr)
   elseif type(opts.theme) == 'string' then
     theme_opts = telethemes.get_theme(opts.theme)
   end
+
+  local cached_pickers = require('telescope.state').get_global_key('cached_pickers') or {}
+  for i, picker in ipairs(cached_pickers) do
+    -- picker:get_multi_selection(),
+    -- local selection = action_state.get_selected_entry() or nil
+
+    local cache_idx = picker.cache_picker and picker.cache_picker.index
+    local cached = {
+      num_results = picker.manager:num_results(),
+      query = action_state.get_current_line(),
+      -- selection_row = picker:get_selection_row(),
+      -- selection = selection,
+      -- prefix = picker.prompt_prefix,
+      cache_idx = cache_idx,
+      title = picker.prompt_title,
+      cwd = picker.cwd,
+    }
+    -- vim.dbglog('cache', i, cached.cache_idx, cached.title, cached.cwd, cached.num_results)
+  end
   local combined = vim.tbl_deep_extend('keep', user_opts or {}, opts, theme_opts)
+  -- vim.dbglog('combined', combined)
   return combined
 end
 
