@@ -25,6 +25,172 @@ local plugins = {
       'windwp/nvim-ts-autotag',
     },
   },
+  {
+    'ziontee113/neo-minimap',
+    dependencies = { 'nvim-treesitter' },
+    event = 'VeryLazy',
+    config = function()
+      local nm = require('neo-minimap')
+
+      nm.setup_defaults({
+        -- height_toggle = { 12, 25 },
+        height_toggle = { 20, 25 },
+        hl_group = 'DiagnosticWarn',
+      })
+
+      -- Rust
+
+      nm.set({ 'zi', 'zo' }, '*.rs', {
+        events = { 'BufEnter' },
+        query = {
+          [[
+                        ;; query
+                        (((attribute_item) @attr (function_item) @cap (#vim-match? @attr "test")))
+                    ]],
+          [[
+                        ;; query
+                        (enum_item (type_identifier) @cap)
+                        (trait_item (type_identifier) @cap)
+                        (struct_item (type_identifier) @cap)
+                        ;; (impl_item (type_identifier) @cap)
+                        ((impl_item) @cap)
+                        (function_item (identifier) @cap)
+                        (mod_item (identifier) @cap)
+                        (macro_definition (identifier) @cap)
+                        ]],
+          2,
+        },
+        regex = {},
+        search_patterns = {
+          { 'impl', '<C-j>', true },
+          { 'impl', '<C-k>', false },
+          { 'mod', '<C-l>', false },
+        },
+        height_toggle = { 20, 25 },
+      })
+
+      -- Latex
+
+      nm.set({ 'zo', 'zu' }, '*.tex', {
+        events = { 'BufEnter' },
+        query = {},
+        regex = {
+          { [[\\section]], [[\\subsection]], [[\\subsubsection]] },
+          { [[\\begin{.*}]] },
+        },
+      })
+
+      -- Lua
+      nm.set({ 'zi', 'zo', 'zu' }, '*.lua', {
+        events = { 'BufEnter', 'BufReadPost' },
+
+        query = {
+          [[
+                        ;; query
+                        ;; ((function_declaration name: ((identifier) @name (#eq? @name "{cursorword}"))) @cap)
+                        ;; ((function_call name: ((identifier) @name (#eq? @name "{cursorword}"))) @cap)
+                        ;; ((dot_index_expression field: ((identifier) @name (#eq? @name "{cursorword}"))) @cap)
+                        ((function_declaration) @cap)
+                        ((assignment_statement(expression_list((function_definition) @cap))))
+                        ((identifier) @cap (#any-of? @cap "describe" "it"))
+                    ]],
+          1,
+          [[
+                        ;; query
+                        ((function_declaration) @cap)
+                        ((assignment_statement(expression_list((function_definition) @cap))))
+                        ((field (identifier) @cap) (#eq? @cap "keymaps"))
+                    ]],
+          [[
+                        ;; query
+                        ((for_statement) @cap)
+                        ((function_declaration) @cap)
+                        ((assignment_statement(expression_list((function_definition) @cap))))
+                        ((function_call (identifier)) @cap (#vim-match? @cap "^__*" ))
+                        ((function_call (dot_index_expression) @field (#eq? @field "vim.keymap.set")) @cap)
+                    ]],
+          [[
+                        ;; query
+                        ((for_statement) @cap)
+                        ((function_declaration) @cap)
+                        ((assignment_statement(expression_list((function_definition) @cap))))
+                    ]],
+        },
+
+        regex = {
+          {},
+          { [[^\s*---*\s\+\w\+]], [[--\s*=]] },
+          { [[^\s*---*\s\+\w\+]], [[--\s*=]] },
+          {},
+        },
+
+        search_patterns = {
+          { 'function', '<C-j>', true },
+          { 'function', '<C-k>', false },
+          { 'keymap', '<A-j>', true },
+          { 'keymap', '<A-k>', false },
+        },
+
+        -- auto_jump = false,
+        -- open_win_opts = { border = "double" },
+        win_opts = { scrolloff = 1 },
+
+        disable_indentaion = true,
+      })
+
+      -- Typescript React
+      nm.set('zi', { 'typescriptreact', 'javascriptreact' }, {
+        query = [[
+                    ;; query
+                    ((function_declaration) @cap)
+                    ((arrow_function) @cap)
+                    ((identifier) @cap (#vim-match? @cap "^use.*"))
+                ]],
+      })
+    end,
+  },
+  {
+    'ziontee113/query-secretary',
+    dependencies = { 'nvim-treesitter' },
+    keys = { '<leader><BS>' },
+    config = function()
+      require('query-secretary').setup({
+        open_win_opts = {
+          row = 0,
+          col = 9999,
+          width = 50,
+          height = 15,
+        },
+
+        -- other options you can customize
+        buf_set_opts = {
+          tabstop = 2,
+          softtabstop = 2,
+          shiftwidth = 2,
+        },
+
+        capture_group_names = { 'cap', 'second', 'third' }, -- when press "c"
+        predicates = { 'eq', 'any-of', 'contains', 'match', 'lua-match' }, -- when press "p"
+        visual_hl_group = 'Visual', -- when moving cursor around
+
+        -- here are the default keymaps
+        keymaps = {
+          close = { 'q', 'Esc' },
+          next_predicate = { 'p' },
+          previous_predicate = { 'P' },
+          remove_predicate = { 'd' },
+          toggle_field_name = { 'f' },
+          yank_query = { 'y' },
+          next_capture_group = { 'c' },
+          previous_capture_group = { 'C' },
+        },
+      })
+
+      vim.keymap.set('n', '<leader><BS>', function()
+        require('query-secretary').query_window_initiate()
+      end, {})
+    end,
+  },
   { 'echasnovski/mini.surround', event = { 'BufRead' }, version = false },
   -- matching
   -- { "andymass/vim-matchup", dependencies = { "theHamsta/nvim-treesitter-pairs" } },
@@ -39,7 +205,7 @@ local plugins = {
   { 'Wansmer/treesj', event = { 'BufReadPost', 'BufNewFile' }, lazy = false, dependencies = { 'nvim-treesitter' } },
   -- traversal/swapping
   { 'mizlan/iswap.nvim', event = { 'BufReadPost', 'BufNewFile' } },
-  { 'ziontee113/SelectEase', event = 'VeryLazy' },
+  { 'ziontee113/SelectEase', lazy = false },
   { 'chrisgrieser/nvim-spider', event = 'VeryLazy' },
   { 'echasnovski/mini.move', event = 'VeryLazy' },
   -- alignment

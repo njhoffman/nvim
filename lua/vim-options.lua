@@ -96,7 +96,7 @@ opt('writebackup', true)
 
 -- window scope
 opt('concealcursor', 'nc', window)
-opt('conceallevel', 2, window)
+opt('conceallevel', 0, window)
 opt('cursorline', true, window)
 opt('number', true, window)
 opt('relativenumber', true, window)

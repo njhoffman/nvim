@@ -1,5 +1,0 @@
-sed	doc/test.txt	/*sed*
-sfphone	doc/test.txt	/*sfphone*
-sfsed	doc/test.txt	/*sfsed*
-sfvim	doc/test.txt	/*sfvim*
-vim	doc/test.txt	/*vim*

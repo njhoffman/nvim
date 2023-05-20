@@ -24,7 +24,7 @@ local keymap = {
     },
   },
   select_down = {
-    '<M-C-J>',
+    '<M-NL>',
     { desc = 'select down node', plugin = 'SelectEase', category = 'Motion' },
   },
   swap_left = {
