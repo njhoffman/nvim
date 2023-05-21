@@ -84,7 +84,7 @@ local cfg = {
       line = 'NotifyERRORLine',
       message = 'NotifyERRORMessage',
     }
-    vim.api.nvim_win_set_option(win, 'winblend', 30)
+    vim.api.nvim_win_set_option(win, 'winblend', 10)
     vim.api.nvim_win_set_option(win, 'wrap', true)
     vim.api.nvim_win_set_config(win, { zindex = 100 })
     local buf = vim.api.nvim_win_get_buf(win)

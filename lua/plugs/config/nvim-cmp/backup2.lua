@@ -1,17 +1,16 @@
-
-local cmp = require("cmp")
+local cmp = require('cmp')
 
 -- local cmp_mappings = require("plugs.config.nvim-cmp-mapping")
-local compare = require("cmp.config.compare")
-local sources = require("plugs.config.nvim-cmp.sources")
-local mappings = require("plugs.config.nvim-cmp.mappings")
-local ELLIPSIS_CHAR = "…"
+local compare = require('cmp.config.compare')
+local sources = require('plugs.config.nvim-cmp.sources')
+local mappings = require('plugs.config.nvim-cmp.mappings')
+local ELLIPSIS_CHAR = '…'
 local MAX_LABEL_WIDTH = 40
 local MIN_LABEL_WIDTH = 20
 
 local sort_under = function(entry1, entry2)
-  local _, entry1_under = entry1.completion_item.label:find("^_+")
-  local _, entry2_under = entry2.completion_item.label:find("^_+")
+  local _, entry1_under = entry1.completion_item.label:find('^_+')
+  local _, entry2_under = entry2.completion_item.label:find('^_+')
   entry1_under = entry1_under or 0
   entry2_under = entry2_under or 0
   if entry1_under > entry2_under then
@@ -23,21 +22,21 @@ end
 
 -- vim.opt.spell = true
 -- vim.opt.spelllang = { 'en_us' }
-vim.opt.dictionary:append("/usr/share/dict/words")
+vim.opt.dictionary:append('/usr/share/dict/words')
 
 local cmp_helper = {
   -- Deprioritize items starting with underscores (private or protected)
   deprioritize_underscore = function(lhs, rhs)
-    local l = (lhs.completion_item.label:find("^_+")) and 1 or 0
-    local r = (rhs.completion_item.label:find("^_+")) and 1 or 0
+    local l = (lhs.completion_item.label:find('^_+')) and 1 or 0
+    local r = (rhs.completion_item.label:find('^_+')) and 1 or 0
     if l ~= r then
       return l < r
     end
   end,
   -- Prioritize items that ends with "= ..." (usually for argument completion).
   prioritize_argument = function(lhs, rhs)
-    local l = (lhs.completion_item.label:find("=$")) and 1 or 0
-    local r = (rhs.completion_item.label:find("=$")) and 1 or 0
+    local l = (lhs.completion_item.label:find('=$')) and 1 or 0
+    local r = (rhs.completion_item.label:find('=$')) and 1 or 0
     if l ~= r then
       return l > r
     end
@@ -47,13 +46,13 @@ local cmp_helper = {
 local setupConfig = {
   experimental = {
     ghost_text = {
-      hl_group = "CmpGhostText",
+      hl_group = 'CmpGhostText',
     },
   },
   -- preselect = cmp.types.cmp.PreselectMode.Item, -- cmp.PreselectMode.None/Item,
   completion = {
     -- completeopt = "noinsert,noselect",
-    completeopt = "menu,menuone,noinsert",
+    completeopt = 'menu,menuone,noinsert',
     -- get_trigger_characters = function(trigger_characters)
     --   local new_trigger_characters = {}
     --   for _, char in ipairs(trigger_characters) do
@@ -70,41 +69,41 @@ local setupConfig = {
   },
 
   enabled = function()
-    local in_prompt = vim.api.nvim_buf_get_option(0, "buftype") == "prompt"
+    local in_prompt = vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt'
     if in_prompt then -- this will disable cmp in the Telescope window (taken from the default config)
       return false
     end
-    local context = require("cmp.config.context")
-    local in_parameter = context.in_treesitter_capture("punctuation.bracket") == true
-      or context.in_syntax_group("luaParen")
-    local in_comment = context.in_treesitter_capture("comment") == true or context.in_syntax_group("Comment")
+    local context = require('cmp.config.context')
+    local in_parameter = context.in_treesitter_capture('punctuation.bracket') == true
+      or context.in_syntax_group('luaParen')
+    local in_comment = context.in_treesitter_capture('comment') == true or context.in_syntax_group('Comment')
     return not (in_comment or in_parameter)
   end,
   mapping = mappings.main,
   view = {
     entries = {
-      name = "custom", -- can be "custom", "wildmenu" or "native"
-      selection_order = "top_down", -- near_cursor, top_down
+      name = 'custom', -- can be "custom", "wildmenu" or "native"
+      selection_order = 'top_down', -- near_cursor, top_down
     },
   },
   window = {
     completion = cmp.config.window.bordered({
       --   border = { '┌', '─', '┐', '│', '┘', '─', '└', '│' },
       --   winhighlight = 'Normal:CmpPmenu,FloatBorder:CmpPmenuBorder,CursorLine:PmenuSel,Search:None',
-      winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
+      winhighlight = 'Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None',
       -- max_width = 40,
     }),
     documentation = cmp.config.window.bordered({
-      winhighlight = "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
+      winhighlight = 'Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None',
       -- max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
       -- max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
     }),
   },
   formatting = {
     fields = {
-      "menu",
-      "abbr",
-      "kind",
+      'menu',
+      'abbr',
+      'kind',
     },
     -- offset, exact, score, recently_used, locality, kind, sort_text, length, order
     format = function(entry, vim_item)
@@ -113,12 +112,12 @@ local setupConfig = {
       if truncated_label ~= label then
         vim_item.abbr = truncated_label .. ELLIPSIS_CHAR
       elseif string.len(label) < MIN_LABEL_WIDTH then
-        local padding = string.rep(" ", MIN_LABEL_WIDTH - string.len(label))
+        local padding = string.rep(' ', MIN_LABEL_WIDTH - string.len(label))
         vim_item.abbr = label .. padding
       end
       vim_item.dup = ({ nvim_lua = 0 })[entry.source.name] or 1
-      vim_item.menu = sources.names[entry.source.name] .. " "
-      vim_item.kind = " " .. sources.symbols[vim_item.kind]
+      vim_item.menu = sources.names[entry.source.name] .. ' '
+      vim_item.kind = ' ' .. sources.symbols[vim_item.kind]
       return vim_item
     end,
   },
@@ -128,8 +127,8 @@ local setupConfig = {
       compare.offset,
       compare.exact,
       compare.score,
-      require("cmp_fuzzy_path.compare"),
-      require("cmp_fuzzy_buffer.compare"),
+      require('cmp_fuzzy_path.compare'),
+      require('cmp_fuzzy_buffer.compare'),
       sort_under,
       function(...)
         return cmp_helper.prioritize_argument(...)
@@ -143,7 +142,7 @@ local setupConfig = {
   },
   snippet = {
     expand = function(args)
-      require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
+      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
     end,
   },
   sources = cmp.config.sources(sources.definitions),
@@ -152,7 +151,7 @@ local setupConfig = {
 cmp.setup(setupConfig)
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline("/", {
+cmp.setup.cmdline('/', {
   mapping = cmp.mapping.preset.cmdline(),
   -- sources = cmp.config.sources({
   --   {
@@ -167,22 +166,22 @@ cmp.setup.cmdline("/", {
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(":", {
+cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     {
-      name = "cmdline",
+      name = 'cmdline',
       priority = 50,
     },
     {
-      name = "fuzzy_path",
+      name = 'fuzzy_path',
       priority = 30,
     },
   }),
 })
 
-require("cmp").setup.filetype("DressingInput", {
-  sources = cmp.config.sources({ { name = "omni" } }),
+require('cmp').setup.filetype('DressingInput', {
+  sources = cmp.config.sources({ { name = 'omni' } }),
 })
 
 -- cmp.setup.filetype({ "markdown", "help" }, {

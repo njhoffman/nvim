@@ -106,6 +106,7 @@ local default_opts = {
     },
   },
   excluded_buftypes = {
+    'nofile',
     'terminal',
   },
   excluded_filetypes = {
@@ -167,6 +168,10 @@ local opts = {
       'TermLeave',
       'WinLeave',
     },
+  },
+  excluded_buftypes = {
+    'nofile',
+    'terminal',
   },
   excluded_filetypes = {
     -- 'prompt',

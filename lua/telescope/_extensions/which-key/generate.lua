@@ -1,4 +1,4 @@
-local wk_utils = require("whichkey-utils")
+local wk_utils = require('mapper.whichkey')
 local sort_by_mode = true
 
 local sort_table = function(tbl)
@@ -29,7 +29,7 @@ local get_ok_keys = function()
       local line = { key = ok_key, mode = ok_mode, def = ok_def }
       table.insert(lines, line)
       for key, value in pairs(widths) do
-        widths[key] = math.max(value, vim.fn.strdisplaywidth(line[key] or ""))
+        widths[key] = math.max(value, vim.fn.strdisplaywidth(line[key] or ''))
       end
     end
   end
@@ -60,7 +60,7 @@ local get_todo_keys = function()
       local line = { key = todo_key, mode = todo_mode, def = todo_def }
       table.insert(lines, line)
       for key, value in pairs(widths) do
-        widths[key] = math.max(value, vim.fn.strdisplaywidth(line[key] or ""))
+        widths[key] = math.max(value, vim.fn.strdisplaywidth(line[key] or ''))
       end
     end
   end

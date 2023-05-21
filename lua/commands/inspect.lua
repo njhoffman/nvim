@@ -1,5 +1,4 @@
 ---@diagnostic disable: param-type-mismatch
-local auid = nil
 
 local output_lines = function(lines)
   local out = '\n\n'
@@ -16,7 +15,8 @@ end
 local log_pos = function(obj, _)
   local name = vim.fn.bufname(obj.buffer)
   local lines = {}
-  local main_line = { { vim.fn.getftype(name), '[' .. obj.row .. ':' .. obj.col .. ']', 'buf: ' .. obj.buffer, '-- ' .. name } }
+  local main_line =
+    { { vim.fn.getftype(name), '[' .. obj.row .. ':' .. obj.col .. ']', 'buf: ' .. obj.buffer, '-- ' .. name } }
   if not vim.tbl_isempty(obj.treesitter) then
     for _, ts in ipairs(obj.treesitter) do
       table.insert(main_line, { ts.lang, ts.capture, ts.hl_group, ts.hl_group_link })
@@ -67,6 +67,7 @@ local log_pos = function(obj, _)
   output_lines(lines)
 end
 
+local auid = nil
 local create_aucmd = function(show_popup)
   local inspect_pos = function(event)
     local opts = { extmarks = 'all', syntax = true, semantic_tokens = true, treesitter = true }
@@ -80,15 +81,21 @@ local create_aucmd = function(show_popup)
   return function()
     if auid == nil then
       auid = vim.api.nvim_create_autocmd('CursorMoved', {
-        buffer = vim.fn.bufnr(),
+        -- buffer = vim.fn.bufnr(),
         desc = 'Inspecting nodes and syntax under cursor',
         callback = inspect_pos,
       })
+      vim.notify('InspectSticky on')
     else
+      vim.notify('InspectSticky off')
       auid = vim.api.nvim_del_autocmd(auid)
     end
   end
 end
 
-vim.api.nvim_create_user_command('InspectSticky', create_aucmd(true), { desc = 'Toggle sticky inspector (:Inspect) popup and logger' })
+vim.api.nvim_create_user_command(
+  'InspectSticky',
+  create_aucmd(true),
+  { desc = 'Toggle sticky inspector (:Inspect) popup and logger' }
+)
 vim.api.nvim_create_user_command('InspectLogSticky', create_aucmd(false), { desc = 'Toggle sticky inspector logger' })

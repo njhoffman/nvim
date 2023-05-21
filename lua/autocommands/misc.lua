@@ -81,6 +81,22 @@ vim.api.nvim_create_autocmd('FileType', {
 --   end,
 -- })
 
+--
+-- function M.enable_reload_config_on_save()
+--   -- autocmds require forward slashes (even on windows)
+--   local pattern = get_config_dir():gsub("\\", "/") .. "/*.lua"
+--
+--   vim.api.nvim_create_augroup("lvim_reload_config_on_save", {})
+--   vim.api.nvim_create_autocmd("BufWritePost", {
+--     group = "lvim_reload_config_on_save",
+--     pattern = pattern,
+--     desc = "Trigger LvimReload on saving config.lua",
+--     callback = function()
+--       require("lvim.config"):reload()
+--     end,
+--   })
+-- end
+
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ 'VimResized' }, {
   group = vim.api.nvim_create_augroup('resize_splits', { clear = true }),

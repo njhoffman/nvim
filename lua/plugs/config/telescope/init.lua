@@ -11,7 +11,7 @@ local plugins = require('plugs.config.telescope.plugins')
 local hide_preview = false
 
 local entry_display = require('telescope.pickers.entry_display')
--- local telescope_utils = require("telescope.previewers.utils")
+local telescope_utils = require('telescope.previewers.utils')
 
 local currwidth = vim.api.nvim_win_get_width(vim.api.nvim_get_current_win())
 
@@ -108,6 +108,42 @@ local telescope_config = {
     diagnostics = {
       theme = 'ivy',
       layout_config = { height = 15 },
+      entry_maker = function(entry)
+        local displayer = entry_display.create({
+          separator = ' ',
+          items = {
+            { width = 4 },
+            { width = nil },
+            { width = nil },
+            { width = nil },
+          },
+        })
+        return {
+          value = entry.filename,
+          display = function(item)
+            local colors = {
+              ['ERROR'] = 'Red',
+              ['WARN'] = 'Purple',
+              ['INFO'] = 'Yellow',
+              ['HINT'] = 'Blue',
+            }
+            return displayer({
+              { string.format('%4d', item.lnum), 'Aqua' },
+              { telescope_utils.transform_path({}, item.filename), '' },
+              {
+                string.format('%s> %s', string.lower(string.sub(item.type, 1, 1)), item.text),
+                colors[entry.type],
+              },
+            })
+          end,
+          filename = entry.filename,
+          ordinal = utils.transform_path({}, entry.filename) .. entry.type,
+          lnum = entry.lnum,
+          col = entry.col,
+          type = entry.type,
+          text = entry.text,
+        }
+      end,
     },
     find_files = {
       mappings = mappings.file_picker,
@@ -157,13 +193,26 @@ local telescope_config = {
       debounce = 100,
       show_remote_tracking_branches = true,
     },
-    -- git_bcommits = {
-    --   mappings = mappings.file_picker,
-    --   previewer = c_previewers.delta,
-    --   layout_strategy = "vertical",
-    --   -- git_command = { "git", "log", "--date=format:%m-%d-%y", "--format=%h%d %ad %s <%an>" }
-    --   git_command = { "git", "log", "--format=%h%d (%ar) %s <%an>" },
-    -- },
+    git_bcommits = {
+      mappings = mappings.file_picker,
+      git_command = {
+        'git',
+        'log',
+        '--date=format:%y/%m/%d %H:%M',
+        '--pretty=format:%C(auto) %h %ad %s',
+      },
+      previewer = {
+        previewers.git_commit_diff_as_was.new({ current_file = vim.fn.expand('%') }),
+        previewers.git_commit_diff_to_parent.new({ current_file = vim.fn.expand('%') }),
+        previewers.git_commit_diff_to_head.new({ current_file = vim.fn.expand('%') }),
+        previewers.git_commit_message.new({ current_file = vim.fn.expand('%') }),
+        -- c_previewers.delta
+      },
+      -- previewer = c_previewers.delta,
+      layout_strategy = 'vertical',
+      -- git_command = { "git", "log", "--date=format:%m-%d-%y", "--format=%h%d %ad %s <%an>" }
+      -- git_command = { "git", "log", "--format=%h%d (%ar) %s <%an>" },
+    },
     lsp_workspace_symbols = {
       debounce = 100,
       symbols_highlights = {

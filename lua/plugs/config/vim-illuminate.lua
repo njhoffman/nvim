@@ -46,8 +46,8 @@ local default_config = {
   min_count_to_highlight = 1,
 }
 
--- local config = { delay = 500, under_cursor = false }
--- require('illuminate').configure(config)
+local config = { delay = 500, under_cursor = true, modes_allowlist = { 'n' }, modes_denylist = { 's', 'v', 'x' } }
+require('illuminate').configure(config)
 
 -- local function map(key, dir, buffer)
 --   vim.keymap.set("n", key, function()

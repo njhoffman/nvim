@@ -27,6 +27,10 @@ local function add(virtual, mode, lhs, rhs, opts, meta)
     idx = idx,
   }
 
+  if virtual == true and rhs ~= nil then
+    vim.notify('Virtual mapping has rhs: ' .. record.mode .. ' ' .. record.lhs .. '\n' .. vim.inspect(record), 3)
+  end
+
   if vim.tbl_contains(records.list, unique_id) then
     local existing = records.list[unique_id]
     record.history = vim.fn.deepcopy(existing.history or {})
@@ -35,7 +39,7 @@ local function add(virtual, mode, lhs, rhs, opts, meta)
 
   records.list[unique_id] = record
   records.tree[mode] = records.tree[mode] or {}
-  records.tree[mode][lhs] = unique_id
+  records.tree[mode][lhs] = rhs
 end
 
 -- buffer_only = false,

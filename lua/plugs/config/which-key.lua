@@ -101,6 +101,16 @@ local config = {
     margin = { 1, 10, 1, 10 }, -- extra window margin [top, right, bottom, left]
     padding = { 0, 0, 0, 0 }, -- extra window padding [top, right, bottom, left]
   },
+  triggers_blacklist = {
+    -- list of mode / prefixes that should never be hooked by WhichKey
+    -- this is mostly relevant for key maps that start with a native binding
+    -- most people should not need to change this
+    c = { ';', ':', '%' },
+    -- n = { ">", "<", "@", "x" },
+    n = { 'i', 'a' },
+    -- v = { 'j', 'k' },
+    -- prefix = { "<leader>" },
+  },
   layout = {
     height = { min = 4, max = 10 }, -- min and max height of the columns
     width = {

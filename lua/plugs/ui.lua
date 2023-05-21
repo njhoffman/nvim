@@ -85,11 +85,6 @@ local plugins = {
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
   { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
-  -- {
-  --   'RRethy/vim-illuminate',
-  --   event = { 'BufReadPost', 'BufNewFile' },
-  --   dependencies = { 'neovim/nvim-lspconfig' },
-  -- },
   { 'TaDaa/vimade', event = 'VimEnter' },
   { 'kevinhwang91/nvim-hlslens', event = { 'VimEnter' }, lazy = false },
   { 'Bekaboo/deadcolumn.nvim', event = { 'VimEnter' }, lazy = false },

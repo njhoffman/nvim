@@ -62,10 +62,10 @@ vim.api.nvim_create_autocmd('FileType', {
 -- )
 -- vim.keymap.set("v", "p", paste.visual_paste_without_yank, { noremap = true, silent = true })
 
-vim.keymap.set('n', '<M-l>', ui.check_resize_split('l'), { noremap = true })
-vim.keymap.set('n', '<M-h>', ui.check_resize_split('h'), { noremap = true })
-vim.keymap.set('n', '<M-j>', ui.check_resize_split('j'), { noremap = true })
-vim.keymap.set('n', '<M-k>', ui.check_resize_split('k'), { noremap = true })
+-- vim.keymap.set('n', '<M-l>', ui.check_resize_split('l'), { noremap = true })
+-- vim.keymap.set('n', '<M-h>', ui.check_resize_split('h'), { noremap = true })
+-- vim.keymap.set('n', '<M-j>', ui.check_resize_split('j'), { noremap = true })
+-- vim.keymap.set('n', '<M-k>', ui.check_resize_split('k'), { noremap = true })
 
 -- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('...',true,true,true))
 -- TODO: c-s-d , c-s-f, c-s-h,l,j,k, c-s-|, c-s-+
@@ -73,6 +73,19 @@ vim.keymap.set('n', '<C-S-Right>', ui.check_nav_split('l'), { noremap = true })
 vim.keymap.set('n', '<C-S-Left>', ui.check_nav_split('h'), { noremap = true })
 vim.keymap.set('n', '<C-S-Down>', ui.check_nav_split('j'), { noremap = true })
 vim.keymap.set('n', '<C-S-Up>', ui.check_nav_split('k'), { noremap = true })
+
+-- {
+--     name = "LvimCacheReset",
+--     fn = function()
+--       require("lvim.utils.hooks").reset_cache()
+--     end,
+--   },
+--   {
+--     name = "LvimReload",
+--     fn = function()
+--       require("lvim.config"):reload()
+--     end,
+--   },
 
 -- vim.g.scriptpath,vim.g.loaded_remote_plugins,script_path,scripts_dir
 -- vim.o.argv, vim.o.packpath, vim.o.runtimepath, undodir, viewdir, directory, backupdir, helpfile,

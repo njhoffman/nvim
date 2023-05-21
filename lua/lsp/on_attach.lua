@@ -33,6 +33,7 @@ local on_attach = function(client, bufnr)
 
   -- local icons = require("nvim-nonicons")
   -- ✘  i 󰌶
+
   vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'LspDiagnosticsSignError' })
   vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'LspDiagnosticsSignWarn' })
   vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'LspDiagnosticsSignInfo' }) -- 󰌵

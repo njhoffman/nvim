@@ -1,6 +1,17 @@
 local headers = require('plugs.config.alpha.headers')
 local utils = require('plugs.config.alpha.utils')
 
+-- vim.api.nvim_create_autocmd("User", {
+--        pattern = "LazyVimStarted",
+--        callback = function()
+--          local stats = require("lazy").stats()
+--          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+--          local pad_footer = string.rep(" ", 8)
+--          starter.config.footer = pad_footer .. "⚡ Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms"
+--          pcall(starter.refresh)
+--        end,
+--      })
+
 local header = {
   type = 'text',
   val = headers.big_header,

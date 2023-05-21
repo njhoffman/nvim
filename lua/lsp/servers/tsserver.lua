@@ -12,6 +12,8 @@ local tsserver = function()
   --   vim.notify("Imports organized.")
   -- end, { buffer = bufnr })
 
+  -- dependencies = { "jose-elias-alvarez/typescript.nvim" },
+
   lspconfig.tsserver.setup({
     init_options = { hostInfo = 'neovim' },
     filetypes = {
@@ -23,31 +25,65 @@ local tsserver = function()
       'typescript.tsx',
     },
     root_dir = function(fname)
-      return util.root_pattern('tsconfig.json')(fname) or util.root_pattern('package.json', 'jsconfig.json', '.git')(fname)
+      return util.root_pattern('tsconfig.json')(fname)
+        or util.root_pattern('package.json', 'jsconfig.json', '.git')(fname)
     end,
     single_file_support = true,
     settings = {
-      -- tsserver = { logDirectory, logVerbosity?: 'off' | 'terse' | 'normal' | 'requestTime' | 'verbose';)   trace?: 'off' | 'messages' | 'verbose';
-      -- prefrences = {
-      --   allowIncompleteCompletions =  true,
-      --   allowRenameOfImportPath =  true,
-      --   allowTextChangesInNewFiles =  true,
-      --   displayPartsForJSDoc =  true,
-      --   generateReturnInDocTemplate =  true,
-      --   includeAutomaticOptionalChainCompletions =  true,
-      --   includeCompletionsForImportStatements =  true,
-      --   includeCompletionsForModuleExports =  true,
-      --   includeCompletionsWithClassMemberSnippets =  true,
-      --   includeCompletionsWithObjectLiteralMethodSnippets =  true,
-      --   includeCompletionsWithInsertText =  true,
-      --   includeCompletionsWithSnippetText =  true,
-      --   jsxAttributeCompletionStyle =  "auto",
-      --   providePrefixAndSuffixTextForRename =  true,
-      --   provideRefactorNotApplicableReason =  true,
-      -- }
+      typescript = {
+        format = {
+          indentSize = vim.o.shiftwidth,
+          convertTabsToSpaces = vim.o.expandtab,
+          tabSize = vim.o.tabstop,
+        },
+      },
+      javascript = {
+        format = {
+          indentSize = vim.o.shiftwidth,
+          convertTabsToSpaces = vim.o.expandtab,
+          tabSize = vim.o.tabstop,
+        },
+      },
+      completions = {
+        completeFunctionCalls = true,
+      },
+    },
+    setup = {
+      tsserver = function(_, opts)
+        require('lazyvim.util').on_attach(function(client, buffer)
+          if client.name == 'tsserver' then
+              -- stylua: ignore
+              vim.keymap.set("n", "<leader>co", "<cmd>TypescriptOrganizeImports<CR>", { buffer = buffer, desc = "Organize Imports" })
+              -- stylua: ignore
+              vim.keymap.set("n", "<leader>cR", "<cmd>TypescriptRenameFile<CR>", { desc = "Rename File", buffer = buffer })
+          end
+        end)
+        require('typescript').setup({ server = opts })
+        return true
+      end,
     },
   })
 end
+-- tsserver = { logDirectory, logVerbosity?: 'off' | 'terse' | 'normal' | 'requestTime' | 'verbose';)   trace?: 'off' | 'messages' | 'verbose';
+-- prefrences = {
+--   allowIncompleteCompletions =  true,
+--   allowRenameOfImportPath =  true,
+--   allowTextChangesInNewFiles =  true,
+--   displayPartsForJSDoc =  true,
+--   generateReturnInDocTemplate =  true,
+--   includeAutomaticOptionalChainCompletions =  true,
+--   includeCompletionsForImportStatements =  true,
+--   includeCompletionsForModuleExports =  true,
+--   includeCompletionsWithClassMemberSnippets =  true,
+--   includeCompletionsWithObjectLiteralMethodSnippets =  true,
+--   includeCompletionsWithInsertText =  true,
+--   includeCompletionsWithSnippetText =  true,
+--   jsxAttributeCompletionStyle =  "auto",
+--   providePrefixAndSuffixTextForRename =  true,
+--   provideRefactorNotApplicableReason =  true,
+-- }
+--   },
+-- })
 return tsserver
 -- tsconfig.json
 -- {

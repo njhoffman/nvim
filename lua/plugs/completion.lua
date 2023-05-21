@@ -23,14 +23,44 @@ local plugins = {
       'rafamadriz/friendly-snippets',
       'ray-x/cmp-treesitter',
       'uga-rosa/cmp-dictionary',
-      'zbirenbaum/copilot-cmp',
+      {
+        'zbirenbaum/copilot-cmp',
+        dependencies = 'copilot.lua',
+        opts = {},
+        config = function(_, opts)
+          local copilot_cmp = require('copilot_cmp')
+          copilot_cmp.setup(opts)
+          -- attach cmp source whenever copilot attaches
+          -- fixes lazy-loading issues with the copilot cmp source
+          -- require('lazyvim.util').on_attach(function(client)
+          --   if client.name == 'copilot' then
+          --     copilot_cmp._on_insert_enter({})
+          --   end
+          -- end)
+        end,
+      },
       {
         'roobert/tailwindcss-colorizer-cmp.nvim',
+        -- opts = function(_, opts)
+        --   local format_kinds = opts.formatting.format
+        --   opts.formatting.format = function(entry, item)
+        --     format_kinds(entry, item) -- add icons
+        --     return require('tailwindcss-colorizer-cmp').formatter(entry, item)
+        --   end
+        -- end,
         config = function()
           require('tailwindcss-colorizer-cmp').setup({
             color_square_width = 2,
           })
         end,
+      },
+      {
+        'NvChad/nvim-colorizer.lua',
+        opts = {
+          user_default_options = {
+            tailwind = true,
+          },
+        },
       },
       { 'tzachar/cmp-fuzzy-path', dependencies = { 'tzachar/fuzzy.nvim' } },
       { 'tzachar/cmp-fuzzy-buffer', dependencies = { 'tzachar/fuzzy.nvim' } },
@@ -41,9 +71,11 @@ local plugins = {
   {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
-    enabled = false,
-    event = 'VeryLazy',
-    config = true,
+    build = ':Copilot auth',
+    opts = {
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+    },
   },
   {
     'L3MON4D3/LuaSnip',

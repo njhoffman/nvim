@@ -6,14 +6,13 @@ require('utils.lazy').setup({ cache = false, reload = false })
 
 for _, mod_name in ipairs({
   'plugs.config.feline',
-  'mapper.setup',
+  'keymaps',
   'project',
   'dial',
   'wf-setup',
   'devbox',
   'commands',
   'autocommands',
-  'lsp.illuminate',
   'runner',
   'stats',
   'hover.setup',

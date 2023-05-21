@@ -137,6 +137,12 @@ local plugins = {
   { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-tree/nvim-web-devicons' },
   { 'nvim-colortils/colortils.nvim', cmd = 'Colortils' },
   { 'xeluxee/competitest.nvim', cmd = 'CompetiTestRun', dependencies = 'MunifTanjim/nui.nvim' },
+  { -- A lua profiler for neovim that is discovered thanks to https://www.reddit.com/r/neovim/comments/xicxox/comment/ip2hprd
+    'stevearc/profile.nvim',
+    cond = function()
+      return vim.env.NVIM_PROFILE ~= nil
+    end,
+  },
   { 'AckslD/nvim-neoclip.lua', event = 'VimEnter', dependencies = 'kkharji/sqlite.lua' },
   {
     'simnalamburt/vim-mundo',
@@ -147,7 +153,7 @@ local plugins = {
     config = function()
       vim.g.mundo_prefer_python3 = 1
       vim.g.mundo_width = 35
-      vim.g.mundo_preview_height = 5
+      vim.g.mundo_preview_height = 10
       vim.g.mundo_right = 1
       vim.g.mundo_help = 0
       vim.g.mundo_disable = 0

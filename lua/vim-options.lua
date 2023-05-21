@@ -164,6 +164,14 @@ vim.cmd([[
 --  -- - Paste in Visual with `P` to not copy selected text (`:h v_P`)
 --  map(  'x',        'gp', '"+P', { desc = 'Paste from system clipboard' })
 --
+
+-- M.load_headless_options = function()
+--   vim.opt.shortmess = "" -- try to prevent echom from cutting messages off or prompting
+--   vim.opt.more = false -- don't pause listing when screen is filled
+--   vim.opt.cmdheight = 9999 -- helps avoiding |hit-enter| prompts.
+--   vim.opt.columns = 9999 -- set the widest screen possible
+--   vim.opt.swapfile = false -- don't use a swap file
+-- end
 --  -- Reselect latest changed, put, or yanked text
 vim.api.nvim_set_keymap(
   'n',

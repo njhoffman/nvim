@@ -15,7 +15,7 @@ local bookmark_dirs = {
 }
 
 local opts = {
-  theme = 'space',
+  theme = 'default',
   bookmark_dirs = bookmark_dirs,
   behavior = {
     skip_front_duplication = true,

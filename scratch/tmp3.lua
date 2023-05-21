@@ -1,12 +1,36 @@
--- :let newItems = [{'filename' : 'a.txt', 'lnum' : 10, 'text' : "Apple"},
---   \ {'filename' : 'b.txt', 'lnum' : 20, 'text' : "Orange"}]
--- :call setqflist([], 'a', {'id' : qfid, 'items' : newItems})
--- local histories = require('telescope.actions.history')
--- vim.dbglog(entries:get())
+local get_splits = function(directions, ignore_quickfix)
+  -- let window_count = winnr('$')
+  -- let prev_window = winnr('#')
+  local splits = {}
+  local curwin = vim.fn.winnr()
+  for _, dir in ipairs(directions) do
+    local testwin = vim.fn.winnr(dir)
+    local testwinid = vim.fn.win_getid(testwin)
+    if curwin ~= testwinid and not vim.tbl_contains(splits, testwinid) then
+      local bufid = vim.api.nvim_win_get_buf(testwinid)
+      local ft = vim.api.nvim_buf_get_option(bufid, 'filetype')
+      if not ignore_quickfix or ft ~= 'qf' then
+        table.insert(splits, testwinid)
+      end
+    end
+  end
+  return splits
+end
 
--- 27
+local close_multi = function()
+  local tabs = vim.api.nvim_list_tabpages() or {}
+  local splits = get_splits({ 'l', 'h', 'j', 'k' }, true) or {}
+  local curr_win = vim.api.nvim_get_current_win()
+  local is_popup = vim.tbl_get(vim.api.nvim_win_get_config(curr_win), 'relative') ~= ''
+  if #tabs > 1 then
+    vim.cmd('tabclose!')
+  elseif is_popup then
+    vim.api.nvim_win_close(curr_win, false)
+  elseif #splits > 1 then
+    vim.api.nvim_win_close(curr_win, false)
+  else
+    vim.cmd('BufferDelete')
+  end
+end
 
--- pcall(require('telescope').load_extension, 'smart_history')
--- local opts = { cache_index = 2 }
-local opts = {}
-require('telescope.run')('builtin', 'pickers', opts)
+close_multi()

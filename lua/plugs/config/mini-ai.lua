@@ -44,8 +44,8 @@ local opts = {
     -- Next/last variants
     around_next = 'an',
     inside_next = 'in',
-    around_last = 'ap',
-    inside_last = 'ip',
+    around_last = 'al',
+    inside_last = 'il',
 
     -- Move cursor to corresponding edge of `a` textobject
     goto_left = 'g[',
@@ -54,13 +54,110 @@ local opts = {
   n_lines = 500,
   custom_textobjects = {
     a = ai.gen_spec.treesitter({ a = '@parameter.outer', i = '@parameter.inner' }, { desc = 'around parameter' }),
-    b = ai.gen_spec.treesitter({ a = { '@block.outer', '@conditional.outer', '@loop.outer' }, i = { '@block.inner', '@conditional.inner', '@loop.inner' } }, { desc = 'around block' }),
+    b = ai.gen_spec.treesitter({
+      a = { '@block.outer', '@conditional.outer', '@loop.outer' },
+      i = { '@block.inner', '@conditional.inner', '@loop.inner' },
+    }, { desc = 'around block' }),
     f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }, { desc = 'around function' }),
     c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, { desc = 'around class' }),
   },
 }
+
 ai.setup(opts)
--- local vmap = require('mapper').vmap
+
+local vmap = require('mapper').vmap
+local prefix = require('mapper').prefix
+
+-- stylua: ignore
+local text_obj = {
+  [' ']    = '*inside whitespace',
+  ['"']    = '*inside quote "',
+  ["'"]    = "*inside s-quote '",
+  ['`']    = '*inside apostrophe `',
+  ['(']    = '*inside (',
+  [')']    = '*inside ) including white-space',
+  ['>']    = '*inside > including white-space',
+  ['<lt>'] = '*inside <',
+  [']']    = '*inside ] including white-space',
+  ['[']    = '*inside [',
+  ['}']    = '*inside } including white-space',
+  ['{']    = '*inside {',
+  ['?']    = '*inside user prompt',
+  _        = '*inside underscore',
+  a        = '*inside argument',
+  b        = '*inside balanced: ), ], }',
+  c        = '*inside class',
+  f        = '*inside function',
+  o        = '*inside block, conditional, loop',
+  q        = '*inside quote: `, ", \'',
+  t        = '*inside tag',
+}
+
+local prefixes = {
+  ['i'] = { name = 'inside' },
+  ['in'] = { name = 'next' },
+  ['il'] = { name = 'last' },
+  ['a'] = { name = 'around' },
+  ['an'] = { name = 'next' },
+  ['al'] = { name = 'last' },
+  ['g['] = { name = 'goto left' },
+  ['g]'] = { name = 'goto right' },
+}
+
+for k, v in ipairs(prefixes) do
+  prefix({ 'o', 'x' }, k, v.name)
+end
+
+local virtual_map = function(lhs, desc, modes)
+  modes = modes or { 'o', 'x' }
+  vmap(modes, lhs, { desc = desc, plugin = 'mini.ai', category = 'Motion' })
+end
+
+-- for k, v in pairs(vim.deepcopy(text_obj)) do
+--   virtual_map('i' .. k, v)
+-- end
+--
+for k, v in pairs(vim.deepcopy(text_obj)) do
+  local desc = string.gsub(tostring(v), 'including.*', '')
+  desc = string.gsub(desc, 'inside', 'around')
+  virtual_map('a' .. k, desc)
+end
+
+-- for k, v in pairs(vim.deepcopy(text_obj)) do
+--   local desc = string.gsub(tostring(v), 'including.*', '')
+--   desc = string.gsub(desc, 'inside', 'inside last')
+--   virtual_map('il' .. k, desc)
+-- end
+--
+-- for k, v in pairs(vim.deepcopy(text_obj)) do
+--   local desc = string.gsub(tostring(v), 'including.*', '')
+--   desc = string.gsub(desc, 'inside', 'inside next')
+--   virtual_map('in' .. k, desc)
+-- end
+--
+-- for k, v in pairs(vim.deepcopy(text_obj)) do
+--   local desc = string.gsub(tostring(v), 'including.*', '')
+--   desc = string.gsub(desc, 'inside', 'around last')
+--   virtual_map('al' .. k, desc)
+-- end
+--
+-- for k, v in pairs(vim.deepcopy(text_obj)) do
+--   local desc = string.gsub(tostring(v), 'including.*', '')
+--   desc = string.gsub(desc, 'inside', 'around next')
+--   virtual_map('an' .. k, desc)
+-- end
+
+for k, v in pairs(vim.deepcopy(text_obj)) do
+  local desc = string.gsub(tostring(v), 'including.*', '')
+  desc = string.gsub(desc, 'inside', 'goto left')
+  virtual_map('g[' .. k, desc, { 'x', 'o', 'n' })
+end
+
+for k, v in pairs(vim.deepcopy(text_obj)) do
+  local desc = string.gsub(tostring(v), 'including.*', '')
+  desc = string.gsub(tostring(desc), 'inside', 'goto right')
+  virtual_map('g]' .. k, desc, { 'x', 'o', 'n' })
+end
 
 -- w word
 -- gn the next search pattern match
@@ -80,126 +177,4 @@ ai.setup(opts)
 --   @.return
 -- s @.statement
 -- c @.class ?
-
 -- register all text objects with mapper
--- local textobjects = {
---   [' '] = 'Whitespace',
---   ['"'] = 'Balanced "',
---   ["'"] = "Balanced '",
---   ['`'] = 'Balanced `',
---   ['('] = 'Balanced (',
---   [')'] = 'Balanced ) including white-space',
---   ['>'] = 'Balanced > including white-space',
---   ['<lt>'] = 'Balanced <',
---   [']'] = 'Balanced ] including white-space',
---   ['['] = 'Balanced [',
---   ['}'] = 'Balanced } including white-space',
---   ['{'] = 'Balanced {',
---   ['?'] = 'User Prompt',
---   _ = 'Underscore',
---   a = 'Argument',
---   b = 'Balanced ), ], }',
---   c = 'Class',
---   f = 'Function',
---   o = 'Block, conditional, loop',
---   q = 'Quote `, ", \'',
---   t = 'Tag',
--- }
--- m('n', maps.goto_left,  [[v:lua.MiniAi.expr_motion('left')]],   { desc = 'Move to left "around"' })
--- m('n', maps.goto_right, [[v:lua.MiniAi.expr_motion('right')]],  { desc = 'Move to right "around"' })
--- m('x', maps.goto_left,  [[v:lua.MiniAi.expr_motion('left')]],   { desc = 'Move to left "around"' })
--- m('x', maps.goto_right, [[v:lua.MiniAi.expr_motion('right')]],  { desc = 'Move to right "around"' })
--- m('o', maps.goto_left,  [[v:lua.MiniAi.expr_motion('left')]],   { desc = 'Move to left "around"' })
--- m('o', maps.goto_right, [[v:lua.MiniAi.expr_motion('right')]],  { desc = 'Move to right "around"' })
---
--- m('x', maps.around, [[v:lua.MiniAi.expr_textobject('x', 'a')]], { desc = 'Around textobject' })
--- m('x', maps.inside, [[v:lua.MiniAi.expr_textobject('x', 'i')]], { desc = 'Inside textobject' })
--- m('o', maps.around, [[v:lua.MiniAi.expr_textobject('o', 'a')]], { desc = 'Around textobject' })
--- m('o', maps.inside, [[v:lua.MiniAi.expr_textobject('o', 'i')]], { desc = 'Inside textobject' })
---
--- m('x', maps.around_next, [[v:lua.MiniAi.expr_textobject('x', 'a', {'search_method': 'next'})]], { desc = 'Around next textobject' })
--- m('x', maps.around_last, [[v:lua.MiniAi.expr_textobject('x', 'a', {'search_method': 'prev'})]], { desc = 'Around last textobject' })
--- m('x', maps.inside_next, [[v:lua.MiniAi.expr_textobject('x', 'i', {'search_method': 'next'})]], { desc = 'Inside next textobject' })
--- m('x', maps.inside_last, [[v:lua.MiniAi.expr_textobject('x', 'i', {'search_method': 'prev'})]], { desc = 'Inside last textobject' })
--- m('o', maps.around_next, [[v:lua.MiniAi.expr_textobject('o', 'a', {'search_method': 'next'})]], { desc = 'Around next textobject' })
--- m('o', maps.around_last, [[v:lua.MiniAi.expr_textobject('o', 'a', {'search_method': 'prev'})]], { desc = 'Around last textobject' })
--- m('o', maps.inside_next, [[v:lua.MiniAi.expr_textobject('o', 'i', {'search_method': 'next'})]], { desc = 'Inside next textobject' })
--- m('o', maps.inside_last, [[v:lua.MiniAi.expr_textobject('o', 'i', {'search_method': 'prev'})]], { desc = 'Inside last textobject' })
---
-
--- for to_key, to_name in pairs(textobjects) do
---   vim.dbglog({"x", "o"}, 'an',  )
--- end
-
--- for dir_key, dir_name in pairs({ n = 'Next', l = 'Last' }) do
---   for lhs, name in pairs(inside) do
---     vmap({ 'o', 'x' }, lhs, {
---       label = 'inside ' .. name .. ' (' .. dir_key .. ')',
---       desc = 'inside ' .. dir_name .. ' ' .. name .. ' textobject ',
---       plugin = 'mini.ai',
---       category = 'Motion',
---     })
---   end
---   for lhs, name in pairs(around) do
---     vmap({ 'o', 'x' }, lhs, {
---       label = 'around ' .. name .. ' (' .. dir_key .. ')',
---       desc = 'around ' .. dir_name .. ' ' .. name .. ' textobject ',
---       plugin = 'mini.ai',
---       category = 'Motion',
---     })
---   end
--- end
---
--- mappings = {
---   -- Main textobject prefixes
---   around = 'a',
---   inside = 'i',
---
---   -- Next/last variants
---   around_next = 'an',
---   inside_next = 'in',
---   around_last = 'al',
---   inside_last = 'il',
---
---   -- Move cursor to corresponding edge of `a` textobject
---   goto_left = 'g[',
---   goto_right = 'g]',
--- },
-
--- local to_include = {
---   [' '] = 'Whitespace',
---   ['"'] = 'Balanced "',
---   ["'"] = "Balanced '",
---   ['`'] = 'Balanced `',
---   ['('] = 'Balanced (',
---   [')'] = 'Balanced ) including white-space',
---   ['>'] = 'Balanced > including white-space',
---   ['<lt>'] = 'Balanced <',
---   [']'] = 'Balanced ] including white-space',
---   ['['] = 'Balanced [',
---   ['}'] = 'Balanced } including white-space',
---   ['{'] = 'Balanced {',
---   ['?'] = 'User Prompt',
---   _ = 'Underscore',
---   a = 'Argument',
---   b = 'Balanced ), ], }',
---   c = 'Class',
---   f = 'Function',
---   o = 'Block, conditional, loop',
---   q = 'Quote `, ", \'',
---   t = 'Tag',
--- }
---
--- for dirkey, dirname in pairs({ n = 'Next', l = 'Last' }) do
---   inside[] = vim.tbl_extend('force', { name = 'Inside ' .. name .. ' textobject' }, insidec)
---   around[key] = vim.tbl_extend('force', { name = 'Around ' .. name .. ' textobject' }, aroundc)
--- end
---
--- vim.dbglog('INSIDE', { i = inside, a = around })
--- require('which-key').register({
---   mode = { 'o', 'x' },
---   i = i,
---   a = a,
--- })
-
---

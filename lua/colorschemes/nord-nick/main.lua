@@ -162,7 +162,7 @@ local clrs = {
 }
 
 local clr_over = {
-  selection = '#1a1856',
+  selection = '#101840',
   orange_faded = '#80788a',
   orange = '#cc8877',
   yellow = '#bdb994',
@@ -176,7 +176,7 @@ local clr_over = {
 return function(injected_functions)
   local sym = injected_functions.sym
   return {
-    Visual({ fg = 'none', bg = clr_over.selection }),
+    Visual({ fg = 'none', bg = clr_over.selection, gui = 'bold,italic' }),
     Error({ fg = clrs.error, bg = 'none' }),
     -- Error({ fg = "none", bg = "none" }),
     Underline({ gui = 'none' }),
@@ -964,6 +964,9 @@ return function(injected_functions)
     -- TelescopeResultsComment = {},
     -- TelescopeMultiSelection guifg=#928374          " Multisections
 
+    IlluminatedWordRead({ bg = '#101c39', gui = '' }),
+    IlluminatedWordText({ bg = '#101c39', gui = '' }),
+    IlluminatedWordWrite({ bg = '#101c39', gui = '' }),
     -- noice.nvim
 
     NoiceCursor({ bg = '#4B6BfB' }),

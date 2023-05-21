@@ -1,17 +1,17 @@
 local function open_win(buf, height, row_offset, opts, cursor, title)
   local conf_ = {
     width = opts.style.width,
-    relative = "editor",
-    anchor = "NW",
-    style = "minimal",
+    relative = 'editor',
+    anchor = 'NW',
+    style = 'minimal',
     border = opts.style.border,
     title = title,
-    title_pos = "center",
+    title_pos = 'center',
     noautocmd = true,
   }
-  if vim.fn.has("nvim-0.9.0") == 0 then
-    conf_["title"] = nil
-    conf_["title_pos"] = nil
+  if vim.fn.has('nvim-0.9.0') == 0 then
+    conf_['title'] = nil
+    conf_['title_pos'] = nil
   end
   local conf = vim.fn.extend(conf_, {
     height = height,
@@ -25,12 +25,12 @@ local function gen_obj(row_offset, opts, cursor, buftype, title)
   local buf = vim.api.nvim_create_buf(false, true)
   local height = vim.api.nvim_buf_line_count(buf)
   local win = open_win(buf, height, row_offset, opts, cursor, title)
-  vim.api.nvim_win_set_option(win, "winhl", "Normal:WFNormal,FloatBorder:WFFloatBorder")
-  vim.api.nvim_win_set_option(win, "wrap", false)
-  vim.api.nvim_buf_set_option(buf, "buftype", buftype)
-  vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
-  vim.api.nvim_buf_set_option(buf, "swapfile", false)
-  vim.api.nvim_buf_set_option(buf, "buflisted", false)
+  vim.api.nvim_win_set_option(win, 'winhl', 'Normal:WFNormal,FloatBorder:WFFloatBorder')
+  vim.api.nvim_win_set_option(win, 'wrap', false)
+  vim.api.nvim_buf_set_option(buf, 'buftype', buftype)
+  vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
+  vim.api.nvim_buf_set_option(buf, 'swapfile', false)
+  vim.api.nvim_buf_set_option(buf, 'buflisted', false)
   return buf, win
 end
 

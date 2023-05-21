@@ -58,10 +58,10 @@ local lspconfig_settings = {
 
 local tool_packages = require('plugs.config.mason.tools')
 local tool_settings = { ensure_installed = tool_packages }
+require('mason-tool-installer').setup(tool_settings)
 
 require('mason').setup(mason_settings)
 require('mason-lspconfig').setup(lspconfig_settings)
-require('mason-tool-installer').setup(tool_settings)
 
 local util = require('lspconfig.util')
 
@@ -115,8 +115,14 @@ require('mason-lspconfig').setup_handlers({
     lspconfig.yamlls.setup({
       settings = {
         yaml = {
+          hover = true,
+          completion = true,
+          validate = true,
+          schemaStore = {
+            enable = true,
+            url = 'https://www.schemastore.org/api/json/catalog.json',
+          },
           schemas = require('schemastore').yaml.schemas(),
-          validate = { enable = true },
         },
       },
     })
@@ -125,8 +131,20 @@ require('mason-lspconfig').setup_handlers({
     lspconfig.jsonls.setup({
       settings = {
         json = {
+          format = {
+            enable = true,
+          },
           schemas = require('schemastore').json.schemas(), -- ignore = { '.eslintrc', 'package.json', },
           validate = { enable = true },
+        },
+      },
+      setup = {
+        commands = {
+          Format = {
+            function()
+              vim.lsp.buf.range_formatting({}, { 0, 0 }, { vim.fn.line('$'), 0 })
+            end,
+          },
         },
       },
     })

@@ -20,7 +20,6 @@ local plugins = {
       'kosayoda/nvim-lightbulb',
       'mickael-menu/zk-nvim',
       { 'folke/neodev.nvim', dependencies = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason.nvim' } },
-
       {
         'folke/trouble.nvim',
         cmd = { 'TroubleToggle', 'Trouble' },
@@ -64,9 +63,14 @@ local plugins = {
   },
   -- https://github.com/onsails/diaglist.nvim
   {
-    'utilyre/barbecue.nvim',
+    'RRethy/vim-illuminate',
+    event = { 'BufReadPost', 'BufNewFile' },
+    dependencies = { 'neovim/nvim-lspconfig' },
+  },
+  {
+    -- 'utilyre/barbecue.nvim',
+    dir = '~/git/barbecue.nvim',
     name = 'barbecue',
-    -- dir = "~/git/barbecue.nvim",
     version = '*',
     lazy = false,
     event = 'VeryLazy',

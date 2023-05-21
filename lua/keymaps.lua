@@ -225,12 +225,14 @@ map('n', '<leader>fp', "<cmd>pfn :echo expand('%:p')<CR>", {
 })
 
 map('n', 'gf', '0/"\\|\'<cr>hgF', {
+  silent = true,
   category = 'Buffers',
   label = 'goto file',
   desc = 'open file under cursor',
 })
 
 vmap('n', 'gF', {
+  silent = true,
   category = 'Buffers',
   label = 'goto file:num',
   desc = 'open file:num under cursor ',
@@ -451,7 +453,7 @@ map('n', '<PageDown>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
   noremap = false,
 })
 
-map('n', '<space>', '<c-f><c-f>', {
+map('n', '<space>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
   label = 'scroll forwards x2',

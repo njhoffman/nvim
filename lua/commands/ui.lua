@@ -61,30 +61,24 @@ local get_splits = function(directions, ignore_quickfix)
   return splits
 end
 
-local close_multi = function()
+local close_multi = function(skip_prompt)
   local tabs = vim.api.nvim_list_tabpages() or {}
   local splits = get_splits({ 'l', 'h', 'j', 'k' }, true) or {}
+  local curr_win = vim.api.nvim_get_current_win()
+  local is_popup = vim.tbl_get(vim.api.nvim_win_get_config(curr_win), 'relative') ~= ''
   if #tabs > 1 then
     vim.cmd('tabclose!')
+  elseif is_popup then
+    vim.api.nvim_win_close(curr_win, skip_prompt)
   elseif #splits > 1 then
-    vim.api.nvim_win_close(splits[1], false)
+    vim.api.nvim_win_close(curr_win, skip_prompt)
   else
-    -- vim.cmd("BufferDelete")
-    vim.cmd('BufferDelete')
+    vim.cmd(skip_prompt and 'BufferDelete!' or 'BufferDelete')
   end
 end
 
 local close_multi_no_prompt = function()
-  local tabs = vim.api.nvim_list_tabpages() or {}
-  local splits = get_splits({ 'l', 'h', 'j', 'k' }) or {}
-  if #tabs > 1 then
-    vim.cmd('tabclose!')
-  elseif #splits > 1 then
-    vim.api.nvim_win_close(splits[1], false)
-  else
-    -- vim.cmd("BufferDelete")
-    vim.cmd('BufferDelete!')
-  end
+  close_multi(true)
 end
 
 local close_popups = function()

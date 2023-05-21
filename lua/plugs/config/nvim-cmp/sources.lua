@@ -1,57 +1,85 @@
-local source_names = {
+-- stylua: ignore
+local source_names          = {
   ['vim-dadbod-completion'] = 'sql',
-  ['vimwiki-tags'] = 'vimwiki',
-  calc = '󰃬',
-  cmdline = '',
-  cmdline_history = '',
-  cmp_git = '',
-  cmp_rg = '󰉸',
-  cmp_tabnine = '󰘳',
-  dictionary = '',
-  emoji = '',
-  fuzzy_buffer = '',
-  fuzzy_path = '',
-  look = '',
-  luasnip = '',
-  npm = '',
-  nvim_lsp = '',
-  nvim_lsp_document_symbol = '',
-  nvim_lsp_signature_help = '󰊕',
-  nvim_lua = '',
-  omni = '',
-  spell = '',
-  tmux = '',
-  treesitter = '',
+  ['vimwiki-tags']          = 'vimwiki',
+  calc                      = '󰃬 ',
+  cmdline                   = ' ',
+  cmdline_history           = ' ',
+  cmp_git                   = ' ',
+  cmp_rg                    = '󰉸 ',
+  cmp_tabnine               = '󰘳 ',
+  copilot                   = ' ',
+  dictionary                = ' ',
+  emoji                     = ' ',
+  fuzzy_buffer              = ' ',
+  fuzzy_path                = ' ',
+  look                      = ' ',
+  luasnip                   = ' ',
+  npm                       = ' ',
+  nvim_lsp                  = ' ',
+  nvim_lsp_document_symbol  = ' ',
+  nvim_lsp_signature_help   = '󰊕 ',
+  nvim_lua                  = ' ',
+  omni                      = ' ',
+  spell                     = ' ',
+  tmux                      = ' ',
+  treesitter                = ' ',
 }
+
+  -- local statusline_hl = vim.api.nvim_get_hl_by_name("StatusLine", true)
+  --         local cursorline_hl = vim.api.nvim_get_hl_by_name("CursorLine", true)
+  --         local normal_hl = vim.api.nvim_get_hl_by_name("Normal", true)
+  --         vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
+  --         vim.api.nvim_set_hl(0, "CmpItemKindTabnine", { fg = "#CA42F0" })
+  --         vim.api.nvim_set_hl(0, "CmpItemKindCrate", { fg = "#F64D00" })
+  --         vim.api.nvim_set_hl(0, "CmpItemKindEmoji", { fg = "#FDE030" })
+  --         vim.api.nvim_set_hl(0, "SLCopilot", { fg = "#6CC644", bg = statusline_hl.background })
+  --         vim.api.nvim_set_hl(0, "SLGitIcon", { fg = "#E8AB53", bg = cursorline_hl.background })
+  --         vim.api.nvim_set_hl(0, "SLBranchName", { fg = normal_hl.foreground, bg = cursorline_hl.background })
+  --         vim.api.nvim_set_hl(0, "SLSeparator", { fg = cursorline_hl.background, bg = statusline_hl.background })
+
 --  local after_line = string.sub(line, cursor + 1, -1)
 -- stylua: ignore
 local lsp_symbols = {
-  Class         = '󰌗', --   Class       = "󰠱 ",
-  Color         = '󰏘',
-  Constant      = '󰞂', --   Constant    = "󰐀 ",
-  Constructor   = '', --   Constructor = "⌘ ",
-  Enum          = '󰕘', --   Enum       = " ",
-  EnumMember    = '',
-  Event         = '',
-  Field         = '󰜢', --   Field       = "󰜢 ",
-  File          = '󰈔', --   File        = "󰈙 ",
-  Folder        = '󰉋',
-  Function      = '󰊕',
-  Interface     = '󰜰', --   Interface   = " ",
-  Keyword       = '󰌋', --   Keyword     = "󰔌 ",
-  Method        = '󰆧',
-  Module        = '󰅩', --   Module      = "󰏓 ",
-  Operator      = '󰃬', --   Operator    = "󰆕 ",
-  Property      = '󰖷', --   Property   = "󰜢",
-  Reference     = '󰈝', --   Reference   = "󰈇 ",
-  Snippet       = '', --   Snippet     = "󰅱 ",
-  Struct        = '󰟦', --   Struct      = "󰙅 ",
-  Text          = '', --   Text        = " ",
-  TypeParameter = '󰊄',
-  Unit          = '', --   Unit        = "󰑭 ",
-  Value         = '󰎠',
-  Variable      = '', --   Variable    = "󰈜 ",
+  Boolean         = "◩ ",
+  Class           = '󰌗 ', --   Class       = "󰠱 ",
+  Color           = '󰏘 ',
+  Comment         = " ",
+  ConstantBuiltin = "󰏿 ",
+  Conditional     = 'נּ ',
+  Constant        = '󰞂 ', --   Constant    = "󰐀 ",
+  Constructor     = ' ', --   Constructor = "⌘ ",
+  Copilot         = ' ',
+  Enum            = '󰕘 ', --   Enum        = " ",
+  EnumMember      = ' ',
+  Error           = ' ',
+  Event           = ' ',
+  Field           = '󰜢 ', --   Field       = "󰜢 ",
+  File            = '󰈔 ', --   File        = "󰈙 ",
+  Folder          = '󰉋 ',
+  Function        = '󰊕 ',
+  Interface       = '󰜰 ', --   Interface   = " ",
+  Keyword         = '󰌋 ', --   Keyword     = "󰔌 ",
+  KeywordOperator = ' ',
+  KeywordFunction = ' ' , --   Keyword    = "󰔌 ",
+  KeywordReturn   = ' ', --   Keyword     = "󰔌 ",
+  Method          = '󰆧 ',
+  Module          = '󰅩 ', --   Module      = "󰏓 ",
+  Number          = "󰎠 ",
+  Operator        = '󰃬 ', --   Operator    = "󰆕 ",
+  Property        = '󰖷 ', --   Property    = "󰜢",
+  Reference       = '󰈝 ', --   Reference   = "󰈇 ",
+  Repeat          = ' ',
+  Snippet         = ' ', --   Snippet     = "󰅱 ",
+  String          = " ",
+  Struct          = '󰟦 ', --   Struct      = "󰙅 ",
+  Text            = ' ', --   Text        = " ",
+  TypeParameter   = '󰊄 ',
+  Unit            = ' ', --   Unit        = "󰑭 ",
+  Value           = '󰎠 ',
+  Variable        = ' ', --   Variable    = "󰈜 ",
 }
+
 local sources = {
   -- nvim_lua, vim-dadbod-completion, cmp_tabnine
   { name = 'nvim_lsp_signature_help', priority = 100 },
@@ -68,6 +96,7 @@ local sources = {
   { name = 'omni', priority = 1 },
   { name = 'luasnip', priority = 1, group_index = 1 },
   { name = 'npm', keyword_length = 1 },
+  { name = 'copilot', group_index = 2 },
   -- {
   --   name = "tmux",
   --   max_item_count = 5,
@@ -82,4 +111,8 @@ local sources = {
   -- },
 }
 
-return { definitions = sources, names = source_names, symbols = lsp_symbols }
+return {
+  definitions = sources,
+  names = source_names,
+  symbols = lsp_symbols,
+}

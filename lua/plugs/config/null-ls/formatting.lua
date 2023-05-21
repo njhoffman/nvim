@@ -59,6 +59,8 @@ return {
   null_ls.builtins.formatting.stylua.with({
     extra_args = function(params)
       return {
+        '--collapse-simple-statement',
+        'Never',
         '--quote-style',
         'AutoPreferSingle',
         '--column-width',

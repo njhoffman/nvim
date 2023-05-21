@@ -1,4 +1,4 @@
-local full_name = require("wf.static").full_name
+local full_name = require('wf.static').full_name
 
 -- usage
 -- async_print = run(print)
@@ -7,13 +7,13 @@ local function async(callback)
   local handle
   handle = vim.loop.new_async(vim.schedule_wrap(function()
     local ret = callback()
-    print(vim.g[full_name .. "#text_insert_in_advance"])
-    local text_insert_in_advance = vim.g[full_name .. "#text_insert_in_advance"]
-    local which_obj_buf = vim.g[full_name .. "#which_obj_buf"]
+    print(vim.g[full_name .. '#text_insert_in_advance'])
+    local text_insert_in_advance = vim.g[full_name .. '#text_insert_in_advance']
+    local which_obj_buf = vim.g[full_name .. '#which_obj_buf']
     if text_insert_in_advance ~= nil and which_obj_buf ~= nil then
       vim.api.nvim_buf_set_lines(which_obj_buf, 0, -1, true, { text_insert_in_advance .. ret })
     else
-      vim.g[full_name .. "#char_insert_in_advance"] = ret
+      vim.g[full_name .. '#char_insert_in_advance'] = ret
     end
     if not handle:is_closing() then
       handle:close()
@@ -25,11 +25,13 @@ end
 
 local function settimeout(timeout, callback)
   local timer = vim.loop.new_timer()
-  timer:start(timeout, 0, function()
-    timer:stop()
-    timer:close()
-    callback()
-  end)
+  if timer then
+    timer:start(timeout, 0, function()
+      timer:stop()
+      timer:close()
+      callback()
+    end)
+  end
   return timer
 end
 
@@ -45,7 +47,7 @@ local function init()
     if not handler:is_closing() then
       handler:close()
       vim.schedule(function()
-        vim.cmd("startinsert!")
+        vim.cmd('startinsert!')
       end)
     end
   end)

@@ -143,6 +143,7 @@ local cfg = {
   },
   -- exclude_filetypes = {},
 
+  exclude_buftypes = {'nofile'},
   project  = { show = false },
   dirname  = { show = true },
   basename = { show = true, show_modified = true },

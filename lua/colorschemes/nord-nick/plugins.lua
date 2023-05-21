@@ -242,9 +242,6 @@ return function()
     BufferInactiveTarget({ fg = colors.red, bg = '#1C1F24', gui = 'bold' }),
     TabLineFill({ fg = 'NONE', bg = colors.bg_dark }),
     -- Illuminate
-    IlluminatedWordRead({ bg = colors.highlight, gui = 'italic' }),
-    IlluminatedWordText({ bg = colors.highlight, gui = 'none' }),
-    IlluminatedWordWrite({ bg = colors.highlight, gui = 'none', fg = 'none' }),
     -- illuminatedCurWord = { bg = colors.highlight },
 
     -- TabLine({ fg = colors.bg, bg = colors.bg_dark }),

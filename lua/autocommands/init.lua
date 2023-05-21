@@ -50,10 +50,10 @@ local autocmds = {
   },
   fasd = { { 'BufRead', '*', commands.fasd_update } },
   CommandWin = {
+    { 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=no | startinsert ' },
     { 'CmdwinEnter', '*', 'let b:cpt_save = &cpt | set cpt=.' },
-    { 'CmdwinLeave', '*', 'let &cpt = b:cpt_save | let g:lens#disabled = 1' },
     { 'CmdwinEnter', '*', 'nnoremap <silent><buffer> <esc> <C-c><C-c>' },
-    { 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=no syn=vim | startinsert' },
+    { 'CmdwinLeave', '*', 'let &cpt = b:cpt_save | let g:lens#disabled = 1' },
   },
 
   FiletypeDetect = {
@@ -66,7 +66,7 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, '*.rasi',             'set syn=css.rasi' },
     { { 'BufNewFile', 'BufRead' }, '*.bash*',            'let b:is_bash = 1 | setfiletype bash' },
     { { 'BufNewFile', 'BufRead' }, '*.theme',            'setlocal ft=config syn=config' },
-    { { 'BufNewFile', 'BufRead' }, '.*rc',               'setlocal ft=config syn=config' },
+    { { 'BufNewFile', 'BufRead' }, '.*rc',               'setlocal ft=rc syn=rc' },
     { { 'BufNewFile', 'BufRead' }, '.env.*',             'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, '*.env',              'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, 'conf.*',             'setlocal ft=config syn=config' },
