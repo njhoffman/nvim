@@ -197,6 +197,7 @@ local rename_provider = function(_, _)
 end
 
 local document_symbol_provider = function(client, bufnr)
+  -- local cap = client.server_capabilities
   local navic = require('lsp.nvim-navic')
   navic.attach(client, bufnr)
 end

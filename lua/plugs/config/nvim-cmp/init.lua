@@ -241,7 +241,7 @@ local mapping = {
     ['<C-b>'] = cmp.mapping.select_prev_item({ count = 6 }),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ['<S-CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
@@ -294,8 +294,6 @@ local mapping = {
     --      fallback()
     --    end
     --  end, { "i", "s" }),
-    --  ["<C-Space>"] = cmp_mapping.complete(),
-    --  ["<C-e>"] = cmp_mapping.abort(),
     -- ["<CR>"] = cmp_mapping(function(fallback)
     --         if cmp.visible() then
     --           local confirm_opts = vim.deepcopy(lvim.builtin.cmp.confirm_opts) -- avoid mutating the original opts below
@@ -319,6 +317,13 @@ local mapping = {
     --       end),
   },
   cmdline = {
+    -- ['<CR>'] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.mapping.confirm({ select = false })(nil)
+    --   else
+    --     fallback()
+    --   end
+    -- end, { 'c' }),
     ['<C-f>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
@@ -348,7 +353,7 @@ local types = require('cmp.types')
 
 cmp.setup({
   completion = {
-    completeopt = 'menu,menuone,noinsert',
+    completeopt = 'menuone,noselect,noinsert',
   },
   snippet = {
     expand = function(args)
@@ -469,10 +474,10 @@ cmp.setup({
   },
   mapping = cmp.mapping.preset.insert(mapping.main),
   sources = cmp.config.sources(sources.main[1], sources.main[2]),
-  confirm_opts = {
-    behavior = cmp.ConfirmBehavior.Replace,
-    select = false,
-  },
+  -- confirm_opts = {
+  --   behavior = cmp.ConfirmBehavior.Replace,
+  --   select = false,
+  -- },
 })
 
 cmp.setup.filetype('gitcommit', { sources = cmp.config.sources(sources.gitcommit) })

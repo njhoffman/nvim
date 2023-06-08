@@ -63,7 +63,8 @@ vim.cmd([[
 if vim.startswith(vim.fn.expand('%'), vim.env.VIMRUNTIME) or vim.bo.readonly then
   vim.api.nvim_create_autocmd('BufWinEnter', { buffer = 0, command = 'wincmd L | vertical resize 80' })
   -- https://vim.fandom.com/wiki/Learn_to_use_help
-  vim.api.nvim_buf_set_keymap(0, 'n', '<CR>', '<C-]>', {})
+  -- TODO: reconcile with zoom
+  vim.api.nvim_buf_set_keymap(0, 'n', '<C-Space>', '<C-]>', {})
   vim.api.nvim_buf_set_keymap(0, 'n', '<BS>', '<C-O>', {})
 else
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>ml', 'maGovim:tw=78:ts=8:noet:ft=help:norl:<esc>`a', {})

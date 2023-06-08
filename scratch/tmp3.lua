@@ -33,4 +33,5 @@ local close_multi = function()
   end
 end
 
-close_multi()
+print('hello')
+-- close_multi()

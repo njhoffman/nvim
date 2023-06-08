@@ -702,9 +702,9 @@ return function(injected_functions)
     NotifyWARNTitle({ fg = '#C77000' }),
 
     NotifyRUNBorder({ fg = '#1f87c2', bg = 'none' }),
-    NotifyRUNTitle({ fg = '#4fa7f2' }),
-    NotifyRUNIcon({ fg = '#4fa7f2' }),
-    NotifyRunSuccessCommand({ fg = '#4fa7f2' }),
+    NotifyRUNTitle({ fg = '#06c0f6' }),
+    NotifyRUNIcon({ fg = '#c6b087' }),
+    -- NotifyRunSuccessCommand({ fg = '#4fa7f2' }),
     NotifyRunSuccessOutput({ fg = Comment.fg }),
 
     WhichKey({ fg = '#07c0f7', gui = 'bold' }), --Function

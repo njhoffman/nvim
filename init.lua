@@ -1,11 +1,8 @@
 -- strace gvim -V9log.txt file.tex > stdout.txt 2> stderr.txt
 
 require('globals')
-
 require('utils.lazy').setup({ cache = false, reload = false })
-
 for _, mod_name in ipairs({
-  'plugs.config.feline',
   'keymaps',
   'project',
   'dial',
@@ -16,6 +13,7 @@ for _, mod_name in ipairs({
   'runner',
   'stats',
   'hover.setup',
+  'plugs.config.feline',
 }) do
   vim.import(mod_name)
 end
@@ -23,7 +21,7 @@ end
 -- vim.fn.input()
 
 require('sidebar').setup()
-require('tracker').setup()
+require('tracker').setup({ event_tracker = false, only_events = { 'User' } })
 
 vim.cmd([[ nnoremap ; : ]])
 vim.cmd([[ vnoremap ; : ]])

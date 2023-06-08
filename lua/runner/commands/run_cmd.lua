@@ -1,6 +1,7 @@
 local task_error = require('notifications.task-error')
 local task_success = require('notifications.task-success')
 local utils = require('runner.utils')
+-- require('scratch.tmp2')
 
 local handle_shell_output = function(output, cmd, time)
   if false and task_error.is_match(output) then
@@ -50,14 +51,16 @@ end
 local exec_vim_cmd = function(run_cmd)
   ---@diagnostic disable-next-line: missing-parameter
   local start_time = vim.fn.reltime()
-  local ok, output = pcall(vim.fn.execute, run_cmd, 'silent')
+  local ok, output = pcall(vim.fn.execute, run_cmd)
   ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
   local diff_time = vim.fn.reltimestr(vim.fn.reltime(start_time)) * 10000
-  vim.dbglog('ORIG OUTPUT', output)
+  local output_list = type(output) ~= 'table' and vim.fn.split(output, '\n') or output
   if not ok then
-    return task_error.notify(vim.fn.split(output, '\n'), run_cmd, diff_time)
+    vim.dbglog('ERROR', output, output_list)
+    return task_error.notify(output_list, run_cmd, diff_time)
   else
-    return task_success.notify(vim.fn.split(output, '\n'), run_cmd, diff_time)
+    vim.dbglog('SUCCESS', output_list, run_cmd)
+    return task_success.notify(output_list, run_cmd, diff_time)
   end
 end
 

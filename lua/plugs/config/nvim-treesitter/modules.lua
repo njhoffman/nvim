@@ -101,7 +101,7 @@ local modules = {
     keymaps = {
       init_selection = 'vv',
       node_incremental = 'v',
-      scope_incremental = '<CR>',
+      -- scope_incremental = '<CR>',
       node_decremental = 'V',
     },
   },

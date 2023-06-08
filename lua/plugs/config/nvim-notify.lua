@@ -20,6 +20,11 @@ local function file_exists(name)
   end
 end
 
+local function open_error_file(path, line)
+  local cmd = 'e +' .. line .. ' ' .. path
+  vim.cmd(cmd)
+end
+
 local function open_lua_error(line)
   -- local str = "E5112: Error while creating lua chunk: scratch/tmp_error.lua:4: unexpected symbol near '{'"
   -- E5108: Error executing lua ...scope.nvim/lua/telescope/finders/async_static_finder.lua:20: attempt to index local 'entry' (a function value)
@@ -35,14 +40,20 @@ local function open_lua_error(line)
   -- 	...las/.config/nvim/lua/plugs/config/telescope/mappings.lua:13: in function 'key_func'
   -- 	...hare/nvim/lazy/telescope.nvim/lua/telescope/mappings.lua:350: in function 'execute_keymap'
   -- [string ":lua"]:1: in main chunk
-  local line_parts = vim.fn.split(line, ':')
+  local line_parts = vim.fn.split(line, ': \\?')
   if #line_parts > 4 then
     local file = vim.fn.trim(line_parts[3])
     local num = vim.fn.trim(line_parts[4])
     local full_path = vim.fn.stdpath('config') .. '/' .. file
     if file_exists(full_path) then
-      local cmd = 'e +' .. num .. ' ' .. full_path
-      vim.cmd(cmd)
+      if vim.v.did_enter == 1 then
+        open_error_file(full_path, num)
+      else
+        -- TODO: loop timer until vim.v.did_enter == 1
+        vim.defer_fn(function()
+          open_error_file(full_path, num)
+        end, 500)
+      end
     end
   end
 end
@@ -88,9 +99,19 @@ local cfg = {
     vim.api.nvim_win_set_option(win, 'wrap', true)
     vim.api.nvim_win_set_config(win, { zindex = 100 })
     local buf = vim.api.nvim_win_get_buf(win)
-    local content = vim.api.nvim_buf_get_lines(buf, 0, -1, true)
-    if string.match(content[1], '^E5112: Error while creating lua chunk: ') then
-      open_lua_error(content[1])
+    local content = {}
+    local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, true)
+    for i = 1, #lines do
+      if string.gsub(lines[i], '%s+$', '') ~= '' then
+        table.insert(content, lines[i])
+      end
+    end
+
+    -- ^E5112: Error while creating lua chunk:
+    -- ^E5113: Error while calling lua chunk:
+    -- ^E5108: Error executing lua ...scope.nvim/lua/telescope/finders/async_static_finder.lua:20: attempt to index local 'entry' (a function value)
+
+    if string.match(content[1], '^E51') then
       local parts = vim.fn.split(content[1], ':')
 
       local new_content = {
@@ -112,6 +133,8 @@ local cfg = {
       vim.api.nvim_buf_set_extmark(buf, ns_id, 1, #parts[3] + 5, { hl_group = hl.line, end_col = #parts[3] + 6 })
       vim.api.nvim_buf_set_extmark(buf, ns_id, 1, #parts[3] + 7, { hl_group = hl.message, end_col = #new_content[2] })
       vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+
+      open_lua_error(content[1])
     end
   end,
 }

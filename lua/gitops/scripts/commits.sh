@@ -1,53 +1,78 @@
 #!/bin/bash
 
-# ./commits.sh --work-tree="$HOME"/ghq/github.com/njhoffman/algorithmia  --git-dir="$HOME"/ghq/github.com/njhoffman/algorithmia/.git
-# ./commits.sh --work-tree="$HOME"/ghq/github.com/neovim/neovim --git-dir="$HOME"/ghq/github.com/neovim/neovim/.git
-
-method="stats"
+method="shortstats"
 base_cmd=("git")
-sub_cmd=("log") # sub_cmd=("log" "--max-count=10")
+sub_cmd=("--no-pager" "log" "--no-merges") # sub_cmd=("log" "--max-count=10")
 print_cmd=0
 
 commits_count() {
   sub_cmd+=('--oneline')
-  cmd="${base_cmd[*]} ${sub_cmd[*]}"
-  eval "$cmd" | wc -l
+  sub_cmd+=("HEAD")
+  post_cmd="sed '/^$/d' | head -n-1 | wc -l"
+  cmd="${base_cmd[*]} ${sub_cmd[*]} | $post_cmd"
+  if [[ $print_cmd -eq 1 ]]; then
+    printf "%s" "$cmd"
+  else
+    eval "$cmd"
+  fi
+}
+
+commits_authorlength() {
+  sub_cmd+=("--format='%an'")
+  sub_cmd+=("HEAD")
+  post_cmd="sort -u | awk '{ print length(), \$0 | \"sort -nr\" }' | head -n1 | cut -f1 -d' '"
+  cmd="${base_cmd[*]} ${sub_cmd[*]} | $post_cmd"
+  if [[ $print_cmd -eq 1 ]]; then
+    printf "%s" "$cmd"
+  else
+    eval "$cmd"
+  fi
+}
+
+commits_hashlength() {
+  sub_cmd+=("--format='%h'")
+  sub_cmd+=("--max-parents=0")
+  sub_cmd+=("HEAD")
+  post_cmd="tail -n1 | tr -d '\n' | wc --chars"
+  cmd="${base_cmd[*]} ${sub_cmd[*]} | $post_cmd"
+  if [[ $print_cmd -eq 1 ]]; then
+    printf "%s" "$cmd"
+  else
+    eval "$cmd"
+  fi
 }
 
 commits_range() {
-  sub_cmd=("rev-list")
   sub_cmd+=("--format='%ar'")
   sub_cmd+=("--max-parents=0")
   sub_cmd+=("HEAD")
-  eval "${base_cmd[*]} ${sub_cmd[*]}" | tail -n1
+  post_cmd="tail -n1"
+  cmd="${base_cmd[*]} ${sub_cmd[*]} | $post_cmd"
+  if [[ $print_cmd -eq 1 ]]; then
+    printf "%s" "$cmd"
+  else
+    eval "$cmd"
+  fi
 }
 
-# # awk '{printf "%s+",$0} END {print ""}' sed --unbuffered ':a;N;$!ba;s/\n/ /g' | tr '\n' ' ' |
-# eval "$cmd" |
-#   sed --unbuffered '/^$/d' |
-#   sed --unbuffered 's_\.\. _ _g' |
-#   awk '{printf "%s ",$0} END {print ""}' |
-#   sed --unbuffered 's_ @@_\n_g' |
-#   sed --unbuffered 's_^@@__g' |
-#   sed --unbuffered '/^$/d'
-
-commits_stats() {
-  sub_cmd+=("--format=' @@%<(12,trunc)%H (%ar) %s %an '")
+commits_shortstats() {
+  # sub_cmd+=("--format=' @@%<(12,trunc)%H (%ar) %s %an '")
+  sub_cmd+=("--format=' @@%h (%ar) %s %an '")
   sub_cmd+=("--shortstat")
+  # sub_cmd+=("HEAD")
   sub_cmd+=("-- .")
-
   cmd="${base_cmd[*]} ${sub_cmd[*]}"
   if [[ $print_cmd -eq 1 ]]; then
-    printf "%s | sed '/^$/d' | sed 's_\.\. _ _g' | tr '\\\n' ' ' | sed 's_ @@_\\\n_g' | sed 's_^@@__g'" "$cmd"
+    printf "%s" "$cmd"
+    # printf "%s | sed '/^$/d' | sed 's_\.\. _ _g' | tr '\\\n' ' ' | sed 's_ @@_\\\n_g' | sed 's_^@@__g'" "$cmd"
   else
     lineout=""
-    local sep=" "
     while read -r line; do
       if [[ $line =~ ^.\@\@* ]]; then
-        echo "$lineout"
+        [[ $lineout != "" ]] && echo "$lineout"
         lineout="${line/ @@/}"
       elif [[ $line != "" ]]; then
-        lineout="$lineout${sep}$line"
+        lineout="${lineout}${line}"
       fi
     done < <(eval "$cmd")
   fi
@@ -68,3 +93,16 @@ done
 if [[ $1 == '--' ]]; then shift; fi
 
 eval "commits_$method"
+
+# ./commits.sh --work-tree="$HOME"  --git-dir="$HOME"/.cfg
+# ./commits.sh --work-tree="$HOME"/ghq/github.com/njhoffman/algorithmia  --git-dir="$HOME"/ghq/github.com/njhoffman/algorithmia/.git
+# ./commits.sh --work-tree="$HOME"/ghq/github.com/neovim/neovim --git-dir="$HOME"/ghq/github.com/neovim/neovim/.git
+
+# # awk '{printf "%s+",$0} END {print ""}' sed --unbuffered ':a;N;$!ba;s/\n/ /g' | tr '\n' ' ' |
+# eval "$cmd" |
+#   sed --unbuffered '/^$/d' |
+#   sed --unbuffered 's_\.\. _ _g' |
+#   awk '{printf "%s ",$0} END {print ""}' |
+#   sed --unbuffered 's_ @@_\n_g' |
+#   sed --unbuffered 's_^@@__g' |
+#   sed --unbuffered '/^$/d'

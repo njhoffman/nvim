@@ -394,12 +394,11 @@ map('n', '<leader>R', '*:%s//', {
 --   desc = "quickly escape insert mode",
 -- })
 
--- map("i", "kj", "<esc>", {
---   category = "Motion",
---   label = "insert mode escape",
---   desc = "quickly escape insert mode",
--- })
---
+map('i', 'kj', '<esc>', {
+  category = 'Motion',
+  label = 'insert mode escape',
+  desc = 'quickly escape insert mode',
+})
 
 map('n', 'D', 'd$', {
   category = 'Motion',
@@ -551,7 +550,18 @@ map('n', '<leader>pp', '"*p', {
   desc = 'paste primary register',
 })
 
-map('n', '<leader>pc', '"+p<esc>gvgc^', {
+map('n', '<leader>pc', 'pgpgc', {
+  category = 'Motion',
+  label = 'paste comment',
+  desc = 'paste as a comment',
+})
+
+map('n', 'gcp', 'pgpgc', {
+  category = 'Motion',
+  label = 'paste comment',
+  desc = 'paste as a comment',
+})
+map('n', 'gcp', 'pgpgc', {
   category = 'Motion',
   label = 'paste comment',
   desc = 'paste as a comment',
@@ -577,11 +587,99 @@ map({ 'n', 'v' }, "<M-'>", '<cmd>HopWord<cr>', {
 --   desc = "hop to line",
 -- })
 
+-- local cr_keys = {
+--   new_line = '',
+--   new_line_below = { 'o<Esc>k', 'add new line below' },
+--   save_file = '',
+--   pickers = '',
+--   -- set('n', '<Plug>(zoom_toggle)', function()
+--   --   require('user/zoom').toggle()
+--   -- end)
+-- }
+--
+-- local cr_func = function()
+--   if vim.bo.filetype == 'qf' then
+--     return '<CR>'
+--   else
+--     return cr_keys.new_line_below[0]
+--     -- return '<Plug>(zoom_toggle)'
+--   end
+-- end
+--
+-- map('n', '<CR>', cr_func, {
+--   category = 'Motion',
+--   label = cr_keys.new_line_below[1],
+--   expr = true,
+-- })
+
+vim.cmd([[
+  " nnoremap <expr> <silent> <CR> &buftype ==# "quickfix" ? "\<CR>" : "o\<Esc>k"
+]])
+
 map('v', '<C-X>', '<Esc>`.``gvP``P', {
   category = 'Motion',
   label = 'swap visual block',
   desc = 'swap visual selected block with register',
 })
+
+map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
+  category = 'Motion',
+  label = 'select changed text',
+  desc = 're-select latest changed, put, or yanked text',
+  expr = true,
+})
+
+--  -- Search inside visually highlighted text. Use `silent = false` for it to
+--  -- make effect immediately.
+--  map('x', 'g/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
+--  -- Search visually selected text (slightly better than builtins in Neovim>=0.8)
+--  map('x', '*', [[y/\V<C-R>=escape(@", '/\')<CR><CR>]])
+--  map('x', '#', [[y?\V<C-R>=escape(@", '?\')<CR><CR>]])
+
+map('n', 'U', '', {
+  category = 'Motion',
+  label = 'disable line undo',
+  desc = 'disable line undo so it can prefix other commands',
+})
+
+-- TODO: create function to save last visual selection before undoing
+-- map('n', 'Uv', 'u"`[" . strpart(getregtype(), 0, 1) . "`]"gA', {
+--   category = 'Motion',
+--   label = 'undo align, re-select interactive',
+--   desc = 'undo align, re-select visual range and align interactive',
+-- })
+
+-- map('n', 'Ua', 'u"`[" . strpart(getregtype(), 0, 1) . "`]"gA', {
+--   category = 'Motion',
+--   label = 'undo align, re-select interactive',
+--   desc = 'undo align, re-select visual range and align interactive',
+-- })
+
+-- nnoremap U <nop>
+-- nnoremap US :Gstatus<cr>
+-- nnoremap UY :Gpull<cr>
+-- nnoremap UP :Gpush<cr>
+-- nnoremap UD :Gdiff<cr>
+-- nnoremap UB :Gblame -w<cr>
+-- nnoremap UE :Gedit<cr>
+
+-- Shift-CR, Ctrl-CR in alacritty
+-- - { key: Return,   mods: Shift,   chars: "\x1b[13;2u" }
+-- - { key: Return,   mods: Control, chars: "\x1b[13;5u" }
+-- # using: https://stackoverflow.com/questions/16359878/how-to-map-shift-enter
+-- map shift+enter              send_text all \x1b[13;2u      # <s-cr>
+-- map ctrl+enter               send_text all \x1b[13;5u      # <c-cr>
+-- map ctrl+shift+enter         send_text all \x1b[13;6u      # <c-s-cr>
+-- map shift+tab                send_text all \x1b[9;2u       # <s-tab>
+-- map ctrl+tab                 send_text all \x1b[9;5u       # <c-tab>
+-- map ctrl+shift+tab           send_text all \x1b[9;6u       # <c-s-tab>
+
+-- TODO: google searching
+-- vim.api.nvim_set_keymap("n", "<C-q>", "", { silent = true, noremap = true })
+-- local searching_google_in_normal = [[:lua fn.system({'open', 'https://google.com/search?q=' .. vim.fn.expand("<cword>")})<CR>]]
+-- local searching_google_in_visual = [[<ESC>gv"gy<ESC>:lua fn.system({'open', 'https://google.com/search?q=' .. vim.fn.getreg('g')})<CR>]]
+-- vim.api.nvim_set_keymap("n", "<C-q><C-g>", searching_google_in_normal, { silent = true, noremap = true })
+-- vim.api.nvim_set_keymap("v", "<C-q><C-g>", searching_google_in_visual, { silent = true, noremap = true })
 
 --------------------------------------------------------------------------------------------------
 -- UI --------------------------------------------------------------------------------------------
@@ -826,6 +924,7 @@ vmap('n', '<c-w>_', {
   label = 'max vertical split',
   desc = 'maximize height of vertical split',
 })
+
 map('n', '<leader>_', '<c-w>_', {
   category = 'Window',
   label = 'max vertical split',
@@ -1236,33 +1335,6 @@ map({ 'n', 'v' }, '<leader>FC', '<cmd>CamelB<cr>', {
   category = 'Format',
   label = 'format camel b',
   desc = 'format camel b case',
-})
-
-map({ 'n', 'v' }, '<leader>fi', '<Plug>(dial-increment)', {
-  category = 'Format',
-  label = 'dial increment',
-  desc = 'increment item(s) selected in visual mode',
-  plugin = 'dial.nvim',
-})
-map({ 'n', 'v' }, '<leader>fd', '<Plug>(dial-decrement)', {
-  category = 'Format',
-  label = 'dial decrement',
-  desc = 'decrement item(s) selected in visual mode',
-  plugin = 'dial.nvim',
-})
-
-vmap('v', 'g<M-a>', {
-  category = 'Format',
-  label = 'dial increment additional',
-  desc = 'increment item(s) selected in visual mode',
-  plugin = 'dial.nvim',
-})
-
-vmap('v', 'g<M-x>', {
-  category = 'Format',
-  label = 'dial decrement additional',
-  desc = 'increment item(s) selected in visual mode',
-  plugin = 'dial.nvim',
 })
 
 --------------------------------------------------------------------------------------------------

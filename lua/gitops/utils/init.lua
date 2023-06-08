@@ -22,7 +22,7 @@ M.get_repo = function(bufnr)
   if ok == true then
     -- vim.dbglog("get_repo", gitsigns)
     return {
-      worktree = gitsigns.root,
+      worktree = gitsigns.is_bare == true and gitsigns.gitdir or gitsigns.root,
       gitdir = gitsigns.gitdir,
     }
   else
@@ -103,7 +103,20 @@ M.get_widths = function(part_lines)
 end
 
 M.escape_chars = function(x)
-  return (x:gsub('%%', '%%%%'):gsub('^%^', '%%^'):gsub('%$$', '%%$'):gsub('%(', '%%('):gsub('%)', '%%)'):gsub('%.', '%%.'):gsub('%[', '%%['):gsub('%]', '%%]'):gsub('%*', '%%*'):gsub('%+', '%%+'):gsub('%-', '%%-'):gsub('%?', '%%?'))
+  return (
+    x:gsub('%%', '%%%%')
+      :gsub('^%^', '%%^')
+      :gsub('%$$', '%%$')
+      :gsub('%(', '%%(')
+      :gsub('%)', '%%)')
+      :gsub('%.', '%%.')
+      :gsub('%[', '%%[')
+      :gsub('%]', '%%]')
+      :gsub('%*', '%%*')
+      :gsub('%+', '%%+')
+      :gsub('%-', '%%-')
+      :gsub('%?', '%%?')
+  )
 end
 
 return M

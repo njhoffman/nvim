@@ -70,7 +70,7 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, '.env.*',             'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, '*.env',              'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, 'conf.*',             'setlocal ft=config syn=config' },
-    { { 'BufNewFile', 'BufRead' }, '*.md',               'setlocal ft=vimwiki.pandoc.markdown conceallevel=3 synmaxcol=500' },
+    { { 'BufNewFile', 'BufRead' }, '*.md',               'setlocal conceallevel=3 synmaxcol=500 | setlocal ft=vimwiki.markdown.pandoc' },
     { { 'BufNewFile', 'BufRead' }, '.tasks',             'setlocal ft=asynctasks' },
     { { 'BufNewFile', 'BufRead' }, '*.visidatarc',       'setlocal ft=python' },
     { { 'BufNewFile', 'BufRead' }, '.vimtasks',          'setlocal ft=asynctasks' },
@@ -92,12 +92,15 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, '*/templates/*.yaml', 'set ft=helm' },
     { { 'BufNewFile', 'BufRead' }, '*/templates/*.tpl',  'set ft=helm' },
     { { 'BufNewFile', 'BufRead' }, '*/templates/*.txt',  'set ft=helm' },
+    { { 'BufNewFile', 'BufRead' }, '*/ansible/*.yml',    'set ft=yaml.ansible' },
+    { { 'BufNewFile', 'BufRead' }, '*/ansible/*.yaml',   'set ft=yaml.ansible' },
   --   {"FileType", "markdown.pandoc", "hi! markdownH1 guifg=#45a5f8"},
   --   {"FileType", "markdown.pandoc", "hi! markdownH2 guifg=#45a5e8"},
   --   {"FileType", "markdown.pandoc", "hi! markdownH3 guifg=#45a5d8"},
   --   {"FileType", "markdown.pandoc", "hi! markdownH4 guifg=#45a5c8"},
   --   {"FileType", "markdown.pandoc", "hi! markdownH5 guifg=#45a5b8"},
   --   {"FileType", "markdown.pandoc", "hi! markdownH6 guifg=#45a5a8"},
+-- u BufRead *.yaml,*.yml if search('hosts:\|tasks:', 'nw') | set ft=yaml.ansible | endif
     -- { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 synmaxcol=500" },
     --   au BufNewFile,BufRead .pa set ft=config
     --   au BufNewFile,BufRead */ansible/*.yml  set ft=yaml.ansible

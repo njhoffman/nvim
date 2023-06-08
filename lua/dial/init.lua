@@ -1,63 +1,150 @@
 local augend = require('dial.augend')
 
+local new_augends = {
+  -- date with format `yyyy/mm/dd`
+  ['%Y/%m/%d'] = augend.date.new({
+    pattern = '%Y/%m/%d',
+    default_kind = 'day',
+    -- if true, it does not match dates which does not exist, such as 2022/05/32
+    only_valid = true,
+    -- if true, it only matches dates with word boundary
+    word = false,
+  }),
+  hexcolor = augend.hexcolor.new({ case = 'lower' }),
+  -- uppercase hex number (0x1A1A, 0xEEFE, etc.)
+  hexinteger = augend.integer.new({
+    radix = 16,
+    prefix = '0x',
+    natural = true,
+    case = 'upper',
+  }),
+  hexinteger2 = augend.user.new({
+    find = require('dial.augend.common').find_pattern('%d+'),
+    add = function(text, addend, cursor)
+      local n = tonumber(text)
+      n = math.floor(n * (2 ^ addend))
+      text = tostring(n)
+      cursor = #text
+      return { text = text, cursor = cursor }
+    end,
+  }),
+  booland = augend.constant.new({
+    elements = { 'and', 'or' },
+    word = true, -- if false, "sand" is incremented into "sor", "doctor" into "doctand", etc.
+    cyclic = true, -- "or" is incremented into "and".
+  }),
+  boolenable = augend.constant.new({
+    elements = { 'enable', 'disable' },
+    word = true,
+    cyclic = true,
+  }),
+  boolsymbol = augend.constant.new({
+    elements = { '&&', '||' },
+    word = false,
+    cyclic = true,
+  }),
+}
+local common = {
+  augend.semver.alias.semver,
+  new_augends.hexcolor,
+
+  augend.date.alias['%Y-%m-%d'],
+  augend.date.alias['%m/%d'],
+  augend.date.alias['%H:%M'],
+  new_augends['%Y/%m/%d'],
+
+  augend.integer.alias.decimal,
+  augend.integer.alias.hex,
+  new_augends.hexinteger,
+
+  augend.constant.alias.bool,
+  augend.constant.alias.alpha,
+  augend.constant.alias.Alpha,
+  new_augends.booland,
+  new_augends.boolenable,
+  new_augends.boolsymbol,
+}
+
+local common_examples = {
+  augend.semver.alias.semver,
+  new_augends.hexcolor,
+
+  augend.date.alias['%Y-%m-%d'],
+  augend.date.alias['%m/%d'],
+  augend.date.alias['%H:%M'],
+  new_augends['%Y/%m/%d'],
+
+  augend.integer.alias.decimal,
+  augend.integer.alias.hex,
+  new_augends.hexinteger,
+
+  augend.constant.alias.bool,
+  augend.constant.alias.alpha,
+  augend.constant.alias.Alpha,
+  new_augends.booland,
+  new_augends.boolenable,
+  new_augends.boolsymbol,
+}
+
 require('dial.config').augends:register_group({
-  default = {
-    augend.hexcolor.new({
-      case = 'lower',
-    }),
-    augend.integer.alias.decimal,
-    augend.date.alias['%Y/%m/%d'],
-  },
-  typescript = {
-    augend.hexcolor.new({
-      case = 'lower',
-    }),
-    augend.integer.alias.decimal,
-    augend.date.alias['%Y/%m/%d'],
+  default = vim.tbl_deep_extend('force', common, {}),
+  visual = vim.tbl_deep_extend('force', common, {}),
+  typescript = vim.tbl_deep_extend('force', common, {
     augend.constant.new({ elements = { 'let', 'const' } }),
-  },
-  visual = {
-    augend.hexcolor.new({
-      case = 'lower',
-    }),
-    augend.integer.alias.decimal,
-    augend.date.alias['%Y/%m/%d'],
-    augend.constant.alias.alpha,
-    augend.constant.alias.Alpha,
-  },
+  }),
+  markdown = vim.tbl_deep_extend('force', common, {
+    augend.misc.alias.markdown_header,
+  }),
 })
 
-vim.keymap.set('n', '<M-a>', function()
-  require('dial.map').manipulate('increment', 'normal')
-end)
-vim.keymap.set('n', '<M-x>', function()
-  require('dial.map').manipulate('decrement', 'normal')
-end)
-vim.keymap.set('n', 'g<M-a>', function()
-  require('dial.map').manipulate('increment', 'gnormal')
-end)
-vim.keymap.set('n', 'g<M-x>', function()
-  require('dial.map').manipulate('decrement', 'gnormal')
-end)
+local map = vim.keymap.set
+map('n', '<M-a>', require('dial.map').inc_normal(), { noremap = true, desc = 'dial increment normal' })
+map('n', '<M-x>', require('dial.map').dec_normal(), { noremap = true, desc = 'dial decrement normal' })
+map('n', 'g<M-a>', require('dial.map').inc_gnormal(), { noremap = true, desc = 'dial increment gnormal' })
+map('n', 'g<M-x>', require('dial.map').dec_gnormal(), { noremap = true, desc = 'dial decrement gnormal' })
 
-vim.keymap.set('v', '<M-a>', function()
-  require('dial.map').manipulate('increment', 'visual')
-end)
-vim.keymap.set('v', '<M-x>', function()
-  require('dial.map').manipulate('decrement', 'visual')
-end)
-vim.keymap.set('v', 'g<M-a>', function()
-  require('dial.map').manipulate('increment', 'gvisual')
-end)
-vim.keymap.set('v', 'g<M-x>', function()
-  require('dial.map').manipulate('decrement', 'gvisual')
-end)
+map('v', '<M-a>', require('dial.map').inc_visual('visual'), { noremap = true, desc = 'dial increment visual' })
+map('v', '<M-x>', require('dial.map').dec_visual('visual'), { noremap = true, desc = 'dial decrement visual' })
+map('v', 'g<M-a>', require('dial.map').inc_gvisual('visual'), { noremap = true, desc = 'dial increment gvisual' })
+map('v', 'g<M-x>', require('dial.map').dec_gvisual('visual'), { noremap = true, desc = 'dial decrement gvisual' })
 
 vim.cmd([[
+  " autocmd FileType typescript lua vim.api.nvim_buf_set_keymap(0, "n", "<C-a>", require("dial.map").inc_normal("typescript"), {noremap = true})
+  " autocmd FileType typescript lua vim.api.nvim_buf_set_keymap(0, "n", "<C-x>", require("dial.map").dec_normal("typescript"), {noremap = true})
+  " autocmd FileType markdown lua vim.api.nvim_buf_set_keymap(0, "n", "<C-a>", require("dial.map").inc_normal("markdown"), {noremap = true})
+  " autocmd FileType markdown lua vim.api.nvim_buf_set_keymap(0, "n", "<C-x>", require("dial.map").dec_normal("markdown"), {noremap = true})
+
   command! -range -nargs=? DialIncrement lua require"dial.command".command("increment", {from = <line1>, to = <line2>}, {<f-args>})
   command! -range -nargs=? DialDecrement lua require"dial.command".command("decrement", {from = <line1>, to = <line2>}, {<f-args>})
 ]])
 
+-- map({ 'n', 'v' }, '<leader>fi', '<Plug>(dial-increment)', {
+--   category = 'Format',
+--   label = 'dial increment',
+--   desc = 'increment item(s) selected in visual mode',
+--   plugin = 'dial.nvim',
+-- })
+-- map({ 'n', 'v' }, '<leader>fd', '<Plug>(dial-decrement)', {
+--   category = 'Format',
+--   label = 'dial decrement',
+--   desc = 'decrement item(s) selected in visual mode',
+--   plugin = 'dial.nvim',
+-- })
+--
+-- vmap('v', 'g<M-a>', {
+--   category = 'Format',
+--   label = 'dial increment additional',
+--   desc = 'increment item(s) selected in visual mode',
+--   plugin = 'dial.nvim',
+-- })
+--
+-- vmap('v', 'g<M-x>', {
+--   category = 'Format',
+--   label = 'dial decrement additional',
+--   desc = 'increment item(s) selected in visual mode',
+--   plugin = 'dial.nvim',
+-- })
+--
 -- 168
 -- change augends in VISUAL mode
 -- ,fi <C-up>

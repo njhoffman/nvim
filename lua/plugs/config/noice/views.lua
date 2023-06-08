@@ -86,9 +86,7 @@ local historyView = {
 }
 
 local errorView = {
-  -- options for the message history that you get with `:Noice`
-  -- view = 'split',
-  view = 'notify',
+  backend = 'notify',
   opts = { enter = true, format = errorViewFormat },
   filter = {
     any = {

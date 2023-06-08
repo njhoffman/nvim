@@ -90,9 +90,12 @@ local cfg = {
   views = {
     -- ['mini'] = miniView,
     -- ['cmdline'] = cmdlineView,
-    ['notify'] = {
-      render = 'minimal',
+    ['notify_error'] = {
+      render = noice_views.errorView,
     },
+    -- ['notify'] = {
+    --   render = 'minimal',
+    -- },
     cmdline_popup = {
       position = {
         -- row = 5,
@@ -177,11 +180,12 @@ local cfg = {
 
     -- :Noice errors
     errors = {
-      -- options for the message history that you get with `:Noice`
-      view = 'popup',
-      opts = { enter = true, format = noice_views.errorViewFormat },
-      filter = { error = true },
-      filter_opts = { reverse = true },
+      -- options for the message history that you get with `:Noice errors`
+      view = noice_views.errorView,
+      -- view = 'popup',
+      -- opts = { enter = true, format = noice_views.errorViewFormat },
+      -- filter = { error = true },
+      -- filter_opts = { reverse = true },
     },
   },
   routes = noice_routes,

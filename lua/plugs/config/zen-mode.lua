@@ -1,43 +1,54 @@
-local default_settings = {
+local full_opts = {
+  on_open = function()
+    vim.api.nvim_buf_set_var(0, 'miniindentscope_disable', true)
+    vim.api.nvim_buf_set_var(0, 'indent_blankline_enabled', false)
+  end,
+  on_close = function()
+    vim.api.nvim_buf_set_var(0, 'miniindentscope_disable', false)
+    vim.api.nvim_buf_set_var(0, 'indent_blankline_enabled', true)
+    vim.api.nvim_win_set_option(0, 'cursorline', true)
+  end,
   window = {
-    backdrop = 0.95, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
-    -- height and width can be:
-    -- * an absolute number of cells when > 1
-    -- * a percentage of the width / height of the editor when <= 1
-    -- * a function that returns the width or the height
+    backdrop = 0.85, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
     width = 120, -- width of the Zen window
     height = 1, -- height of the Zen window
-    -- by default, no options are changed for the Zen window
-    -- uncomment any of the options below, or add other vim.wo options you want to apply
-    options = {},
+    options = {
+      signcolumn = 'no', -- disable signcolumn
+      number = false, -- disable number column
+      relativenumber = false, -- disable relative numbers
+      cursorline = false, -- disable cursorline
+      cursorcolumn = false, -- disable cursor column
+      foldcolumn = '0', -- disable fold column
+      list = false, -- disable whitespace characters
+    },
   },
   plugins = {
-    -- disable some global vim options (vim.o...)
-    -- comment the lines to not apply the options
     options = {
       enabled = true,
       ruler = false, -- disables the ruler text in the cmd line area
       showcmd = false, -- disables the command in the last line of the screen
     },
-    twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
-    gitsigns = { enabled = false }, -- disables git signs
-    tmux = { enabled = false }, -- disables the tmux statusline
-    -- this will change the font size on kitty when in zen mode
-    -- to make this work, you need to set the following kitty options:
-    -- - allow_remote_control socket-only
-    -- - listen_on unix:/tmp/kitty
-    kitty = {
+    gitsigns = { enabled = true },
+    tmux = { enabled = true },
+    alacritty = {
       enabled = false,
-      font = "+4", -- font size increment
+      font = '9', -- font size
     },
+    twilight = { enabled = false }, -- enable to start Twilight when zen mode opens
   },
-  -- callback where you can add custom code when the Zen window opens
-  on_open = function(win) end,
-  -- callback where you can add custom code when the Zen window closes
-  on_close = function() end,
 }
 
--- vim.cmd("nnoremap <C-w>z :ZenMode<CR>")
+local min_opts = vim.tbl_deep_extend('force', full_opts, { plugins = { tmux = { enabled = false } } })
+
+vim.keymap.set('n', '<CR>', function()
+  require('zen-mode').toggle(min_opts)
+end, { nowait = true })
+
+vim.keymap.set('n', '<S-CR>', function()
+  require('zen-mode').toggle(full_opts)
+end, { nowait = true })
+
+-- vim.cmd("nnoremap <CR> :ZenMode<CR>")
 -- require("zen-mode").toggle(
 --   {
 --     window = {
@@ -45,3 +56,43 @@ local default_settings = {
 --     }
 --   }
 -- )
+
+-- function M.tmux(state, disable, opts)
+--   if not vim.env.TMUX then
+--     return
+--   end
+--   if disable then
+--     local function get_tmux_opt(option)
+--       local option_scope = "-w"
+--       local option_raw = vim.fn.system([[tmux show -w ]] .. option)
+--       if option_raw == "" then
+--         option_scope = "-g"
+--         option_raw = vim.fn.system([[tmux show -g ]] .. option)
+--       end
+--       local opt = vim.split(vim.trim(option_raw), " ")[2]
+--       return opt, option_scope
+--     end
+--     state.status, state.scope = get_tmux_opt("status")
+--     state.pane = get_tmux_opt("pane-border-status")
+--
+--     vim.fn.system([[tmux set -w pane-border-status off]])
+--     if state.scope == "-w" then
+--       vim.fn.system([[tmux set -w status off]])
+--     else
+--       vim.fn.system([[tmux set -g status off]])
+--     end
+--     vim.fn.system([[tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z]])
+--   else
+--     if type(state.pane) == "string" then
+--       vim.fn.system(string.format([[tmux set -w pane-border-status %s]], state.pane))
+--     else
+--       vim.fn.system([[tmux set -uw pane-border-status]])
+--     end
+--     if state.scope == "-w" then
+--       vim.fn.system(string.format([[tmux set -w status %s]], state.status))
+--     else
+--       vim.fn.system(string.format([[tmux set -g status %s]], state.status))
+--     end
+--     vim.fn.system([[tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z]])
+--   end
+-- end

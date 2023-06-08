@@ -16,6 +16,9 @@ local get_opts = function(output, cmd, time)
 end
 
 local notify_success = function(output, cmd, time)
+  if type(output) ~= 'table' or #output == 0 then
+    output = { '[OK]' }
+  end
   local opts = get_opts(output, cmd, time)
   require('notify').notify(output, 'run', opts)
 end

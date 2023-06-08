@@ -34,6 +34,18 @@ function exports.setup(_opts)
   for name, cfg in pairs(opts.metrics) do
     metrics.init(name, cfg)
   end
+  if opts.event_tracker == true then
+    local ignored = opts.ignored_events or { 'FocusLost', 'FocusGained', 'WinResized', 'WinScrolled' }
+    local only = opts.only_events or { 'User' }
+    local show_data = opts.show_data or true
+
+    local events = require('autocommands.events')
+    local timer = vim.fn.timer_start(1000, events.output_events, { ['repeat'] = -1 })
+    vim.api.nvim_create_autocmd(
+      #only > 0 and only or events.get_events(ignored),
+      { pattern = '*', callback = events.record_event(show_data), desc = 'EventTracker' }
+    )
+  end
   -- vim.keymap.set("n", lhs, commands[key], { noremap = true })
 end
 

@@ -95,10 +95,12 @@ local parse_log_line = function(line)
     parsed[key] = '--'
   end
 
+  -- vim.dbglog('line: ' .. line)
   local parts = vim.fn.split(line, ' ')
-  if type(parts) ~= 'table' or vim.tbl_count(parts) > 5 then
+  if type(parts) ~= 'table' or vim.tbl_count(parts) < 5 then
     vim.notify('Bad response: ' .. vim.inspect(parts), 4)
   else
+    -- vim.dbglog('parts: ' .. vim.inspect(parts))
     parsed = vim.tbl_deep_extend('force', parsed, {
       sha = parts[1],
       date = parse_date(parts[2], 2),
