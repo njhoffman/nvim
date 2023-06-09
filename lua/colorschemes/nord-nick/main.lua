@@ -793,6 +793,12 @@ return function(injected_functions)
     CmpItemKindUnit({ fg = colors.orange }),
     CmpItemKindValue({ fg = colors.orange }),
     CmpItemKindVariable({ fg = tokyoColors.blue2 }),
+    CmpSourceNvimLsp({ fg = '#8fa080' }),
+    CmpSourceLuasnip({ fg = '#0ca6ff' }),
+    CmpSourceTreesitter({ fg = '#4C66a4' }),
+    CmpSourceCopilot({ CmpItemKindCopilot }),
+    CmpSourceCmdline({ fg = '#8F65c0' }),
+    CmpSourceCmdlineHistory({ fg = '#4482fc' }),
     -- -- nvim-navic
     NavicSeparator({ fg = tokyoColors.fg }),
     NavicText({ fg = tokyoColors.fg }),

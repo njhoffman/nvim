@@ -87,7 +87,7 @@ local modules = {
       -- 'markdown',
     },
     additional_vim_regex_highlighting = {
-      'mdx',
+      'md',
       'zsh',
     },
     custom_captures = {

@@ -67,3 +67,24 @@ vim.api.nvim_create_user_command('DeleteDebugs', function(opts)
   -- Note: you must set `range=true` and pass through opts for ranges to work
   require('debugprint').deleteprints(opts)
 end, { range = true, desc = 'delete all debug statements' })
+
+local contextprint = require('debugprint.contextprint')
+
+contextprint.setup({ log = {
+  typescript = 'console.log',
+} })
+
+vim.keymap.set('n', 'goc', function()
+  local tmp = 3
+  contextprint.add_statement()
+end, { expr = true, desc = 'contextprint' })
+
+-- require('contextprint').setup({
+--     separator_char = "#",  // Global
+--     <filetype> = {
+--         separator = "#", // filetype specific
+--         query = [[ <language specific queries> ]],
+--         log = function(contents) to return print statement to insert
+--         type_defaults = vim.tbl_extend to change name defaults
+--     }
+-- })

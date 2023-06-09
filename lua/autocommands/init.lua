@@ -50,7 +50,7 @@ local autocmds = {
   },
   fasd = { { 'BufRead', '*', commands.fasd_update } },
   CommandWin = {
-    { 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=no | startinsert ' },
+    { 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=no syn=vim.lua | startinsert ' },
     { 'CmdwinEnter', '*', 'let b:cpt_save = &cpt | set cpt=.' },
     { 'CmdwinEnter', '*', 'nnoremap <silent><buffer> <esc> <C-c><C-c>' },
     { 'CmdwinLeave', '*', 'let &cpt = b:cpt_save | let g:lens#disabled = 1' },

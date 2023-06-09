@@ -2,11 +2,16 @@ local cmp = require('cmp')
 local cmp_types = require('cmp.types.cmp')
 local MIN_LABEL_WIDTH = 20
 local ELLIPSIS_CHAR = '…'
-local MAX_DOCUMENT_WIDTH = 50
-local MAX_LABEL_WIDTH = 40
+local MAX_DOCUMENT_WIDTH = 40
+local MAX_LABEL_WIDTH = 35
 local SYMBOL_MAP = require('utils.lspkind').SYMBOL_MAP
 -- local WIN_HIGHLIGHT = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:Search"
 local WIN_HIGHLIGHT = 'Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None'
+
+local send_enter = function()
+  local enter_key = vim.api.nvim_replace_termcodes('<CR>', true, true, true)
+  vim.api.nvim_feedkeys(enter_key, 'n', false)
+end
 
 local function get_lsp_completion_context(completion, source)
   local ok, source_name = pcall(function()
@@ -23,6 +28,11 @@ local function get_lsp_completion_context(completion, source)
     end
   end
 end
+
+-- merge: https://github.com/hrsh7th/cmp-cmdline/pull/25
+-- https://github.com/hrsh7th/cmp-cmdline/pull/99
+-- https://github.com/hrsh7th/cmp-cmdline/pull/76
+-- https://github.com/hrsh7th/cmp-cmdline/pull/83
 
 -- local has_words_before = function()
 --   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -141,6 +151,7 @@ end
 -- M.methods.jumpable = jumpable
 
 local source = require('plugs.config.nvim-cmp.sources')
+
 local sources = {
   main = {
     {
@@ -155,6 +166,7 @@ local sources = {
         end,
       },
       { name = 'path' },
+      { name = 'nvim_lsp_document_symbol' },
       {
         name = 'buffer',
         option = {
@@ -215,22 +227,77 @@ local sources = {
     { name = 'path' },
   },
   cmdsearch = {
-    { name = 'nvim_lsp' },
-    { name = 'nvim_lsp_document_symbol' },
-    { name = 'dictionary' },
+    -- { name = 'nvim_lsp' },
     { name = 'buffer' },
+    { name = 'nvim_lsp_document_symbol' },
+    -- { name = 'dictionary' },
+    {
+      name = 'fuzzy_buffer',
+      option = { max_matches = 5, max_buffer_lines = 4000, min_match_length = 4 },
+    },
   },
   cmdline = {
-    -- { name = "cmdline_history" },
-    { name = 'cmdline' },
     { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
-    -- { name = "dictionary" },
-    -- { name = "buffer" },
+    {
+      name = 'cmdline',
+      option = { ignore_cmds = { 'Man', '!' } },
+    },
+
+    { name = 'cmdline_history', max_item_count = 5, keyword_length = 3 },
   },
+  -- cmdline = {
+  --   { name = 'cmdline' },
+  --   { name = 'cmdline_history' },
+  --   { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
+  --   -- { name = "dictionary" },
+  --   -- { name = "buffer" },
+  -- },
 }
+
+-- if vim.o.ft == 'sql' then
+--   table.insert(sources, { name = 'vim-dadbod-completion' })
+-- end
+--
+-- if vim.o.ft == 'norg' then
+--   table.insert(sources, { name = 'neorg' })
+--   table.insert(sources, { name = 'spell' })
+--   table.insert(sources, { name = 'look' })
+-- end
+--
+-- if vim.o.ft == 'org' then
+--   table.insert(sources, { name = 'org' })
+--   table.insert(sources, { name = 'spell' })
+--   table.insert(sources, { name = 'look' })
+-- end
+-- if
+--   vim.o.ft == 'markdown'
+--   or vim.o.ft == 'txt'
+--   or vim.o.ft == 'html'
+--   or vim.o.ft == 'gitcommit'
+-- then
+--   table.insert(sources, { name = 'spell' })
+--   table.insert(sources, { name = 'look' })
+-- end
+-- if vim.o.ft == 'lua' then
+--   table.insert(sources, { name = 'nvim_lua' })
+-- end
+--
+-- if vim.o.ft == 'zsh' or vim.o.ft == 'sh' or vim.o.ft == 'fish' or vim.o.ft == 'proto' then
+--   table.insert(sources, { name = 'buffer', keyword_length = 3 })
+--   table.insert(sources, { name = 'calc' })
+-- end
+
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
+end
+
+local luasnip = require('luasnip')
 
 local mapping = {
   main = {
+    ['<C-x><C-o>'] = cmp.mapping.complete({}),
+    ['<C-x><C-s>'] = cmp.mapping.complete({ config = { sources = { { name = 'luasnip' } } } }),
     ['<Up>'] = cmp.mapping.scroll_docs(-1),
     ['<Down>'] = cmp.mapping.scroll_docs(1),
     ['<C-Up>'] = cmp.mapping.scroll_docs(-6),
@@ -241,36 +308,42 @@ local mapping = {
     ['<C-b>'] = cmp.mapping.select_prev_item({ count = 6 }),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
+    ['<C-d>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    ['<S-CR>'] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    }), -- Accept curr
-    -- ['<tab>'] = function()
-    --     return require('luasnip').jumpable(1) and '<Plug>luasnip-jump-next' or '<tab>'
-    --   end,
-    --   expr = true,
-    --   silent = true,
-    --   mode = 'i',
-    -- },
-    -- ['<tab>'] = function()
-    --     require('luasnip').jump(1)
-    --   end,
-    --   mode = 's',
-    -- },
-    -- ['<s-tab>'] =  function()
-    --     require('luasnip').jump(-1)
-    --   end,
-    --   mode = { 'i', 's' },
-    -- },
-    -- special: trigger snippets without typing the full trigger
-    ['<A-;>'] = cmp.mapping(function()
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      --     return require('luasnip').jumpable(1) and '<Plug>luasnip-jump-next' or '<tab>'
       if cmp.visible() then
-        cmp.select_next_item()
-        cmp.mapping.confirm({ select = false })()
+        cmp.select_next_item({ behavior = cmp.ConfirmBehavior.Select })
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif has_words_before() then
+        cmp.complete()
+      elseif type(fallback) == 'function' then
+        fallback()
       end
     end, { 'i', 's' }),
-    -- ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        -- cmp.select_prev_item()
+        cmp.select_prev_item({ behavior = cmp.ConfirmBehavior.Select })
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      elseif type(fallback) == 'function' then
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ["<M-'>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.complete_common_string()
+        -- cmp.select_next_item({ behavior = cmp.ConfirmBehavior.Select })
+        cmp.confirm({ select = true })
+      end
+    end, { 'i', 's' }),
+    -- ['<S-CR>'] = cmp.mapping.confirm({
+    --   behavior = cmp.ConfirmBehavior.Replace,
+    --   select = true,
+    -- }), -- Accept curr
+    -- special: trigger snippets without typing the full trigger
     -- ["<Tab>"] = cmp_mapping(function(fallback)
     --    if cmp.visible() then
     --      cmp.select_next_item()
@@ -316,14 +389,27 @@ local mapping = {
     --         fallback() -- if not exited early, always fallback
     --       end),
   },
+  -- TODO: if no words after, C-P = S-Up, C-N = completion open
   cmdline = {
-    -- ['<CR>'] = cmp.mapping(function(fallback)
-    --   if cmp.visible() then
-    --     cmp.mapping.confirm({ select = false })(nil)
-    --   else
-    --     fallback()
-    --   end
-    -- end, { 'c' }),
+    -- ['<CR>'] = cmp.mapping(cmp.mapping.confirm({ select = true }), { 'i', 'c' }),
+    ["<M-'>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.confirm({
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = true,
+        })
+      elseif type(fallback) == 'function' then
+        fallback()
+      end
+    end, { 'c' }),
+    ['<CR>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace })
+        send_enter()
+      elseif type(fallback) == 'function' then
+        fallback()
+      end
+    end, { 'c' }),
     ['<C-f>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
@@ -331,7 +417,7 @@ local mapping = {
             behavior = cmp_types.SelectBehavior.Select,
           })(nil)
         end
-      else
+      elseif type(fallback) == 'function' then
         fallback()
       end
     end, { 'c' }),
@@ -342,7 +428,7 @@ local mapping = {
             behavior = cmp_types.SelectBehavior.Select,
           })(nil)
         end
-      else
+      elseif type(fallback) == 'function' then
         fallback()
       end
     end, { 'c' }),
@@ -353,7 +439,8 @@ local types = require('cmp.types')
 
 cmp.setup({
   completion = {
-    completeopt = 'menuone,noselect,noinsert',
+    completeopt = 'menu,menuone,noselect',
+    -- completeopt = 'menuone,noselect,noinsert',
   },
   snippet = {
     expand = function(args)
@@ -363,7 +450,11 @@ cmp.setup({
   sorting = {
     priority_weight = 2,
     comparators = {
+
       require('copilot_cmp.comparators').prioritize,
+      -- cmp.config.compare.locality,
+      -- cmp.config.compare.recently_used,
+      cmp.config.compare.score,
       cmp.config.compare.offset,
       cmp.config.compare.exact,
       cmp.config.compare.score,
@@ -406,7 +497,15 @@ cmp.setup({
   -- },
   -- -- offset, exact, score, recently_used, locality, kind, sort_text, length, order
 
-  -- format = function(entry, vim_item)
+  --   local vim_item = {
+  --     word = word,
+  --     abbr = abbr,
+  --     kind = cmp_opts.kind_text or types.lsp.CompletionItemKind[self:get_kind()] or types.lsp.CompletionItemKind[1],
+  --     kind_hl_group = cmp_opts.kind_hl_group,
+  --     menu = menu,
+  --     dup = self:get_completion_item().dup or 1,
+  --   }
+  -- -- format = function(entry, vim_item)
   --   local label = vim_item.abbr
   --   local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
   --   if truncated_label ~= label then
@@ -435,14 +534,14 @@ cmp.setup({
       end
       -- vim_item.menu = ({ nvim_lsp = '', buffer   = '', })[entry.source.name]
       -- vim_item.kind = ({ Text          = '', TypeParameter = '', })[vim_item.kind]
-      -- vim_item.dup = ({ nvim_lua = 0 })[entry.source.name] or 1
       vim_item.dup = ({
         buffer = 1,
         path = 1,
         nvim_lsp = 0,
-      })[entry.source.name] or 0
-      vim_item.menu = source.names[entry.source.name]
-      vim_item.kind = source.symbols[vim_item.kind]
+      })[entry.source.name] or 1
+      vim_item.menu = source.names[entry.source.name][1] .. ' '
+      vim_item.menu_hl_group = source.names[entry.source.name][2]
+      vim_item.kind = ' ' .. source.symbols[vim_item.kind]
       return vim_item
     end,
     -- format = function(entry, vim_item)
@@ -484,7 +583,10 @@ cmp.setup.filetype('gitcommit', { sources = cmp.config.sources(sources.gitcommit
 
 cmp.setup.cmdline({ '/', '?' }, {
   mapping = cmp.mapping.preset.cmdline(mapping.cmdline),
-  sources = sources.cmdsearch,
+  sources = cmp.config.sources(sources.cmdsearch),
+  -- sorting = {
+  --    comparators = {}
+  --  },
 })
 
 cmp.setup.cmdline(':', {

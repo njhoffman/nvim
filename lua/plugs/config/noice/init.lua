@@ -1,5 +1,16 @@
 -- vim.keymap.set()
 
+-- Cursor fix
+-- The existing function no longer exists, but you now have require("noice").api.get_cmdline_position() instead.
+-- ---@class CmdlinePosition
+-- ---@field win number Window containing the cmdline
+-- ---@field buf number Buffer containing the cmdline
+-- ---@field bufpos {row:number, col:number} (1-0)-indexed position of the cmdline in the buffer
+-- ---@field screenpos {row:number, col:number} (1-0)-indexed screen position of the cmdline
+-- This no longer returns the cursor position, but the position where the cmdline starts.
+--
+-- You can then use vim.fn.getcmdpos to get the cursor if needed.
+
 local noice_views = require('plugs.config.noice.views')
 local noice_routes = require('plugs.config.noice.routes')
 local noice_mapping = require('plugs.config.noice.mapping')
@@ -98,12 +109,11 @@ local cfg = {
     -- },
     cmdline_popup = {
       position = {
-        -- row = 5,
-        row = '30%',
+        row = 10,
         col = '50%',
       },
       size = {
-        width = 'auto',
+        width = 60,
         height = 'auto',
       },
       in_options = {
@@ -114,7 +124,7 @@ local cfg = {
           CurSearch = '',
           Search = '',
         },
-        cursorline = true,
+        cursorline = false,
       },
       -- border = {
       -- style = "none",
@@ -129,29 +139,23 @@ local cfg = {
       format = 'details',
       view = 'popup',
     },
-  },
-  popupmenu = {
-    backend = 'nui', -- backend to use to show regular cmdline completions
-    relative = 'window',
-    position = {
-      -- row = 8,
-      row = '50%',
-      col = '50%',
-    },
-    size = {
-      width = 'auto',
-      height = 'auto',
-    },
-    cmdline_output = {
-      format = 'details',
-      view = 'popup',
-    },
-    border = {
-      style = 'rounded',
-      padding = { 0, 1 },
-    },
-    win_options = {
-      winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
+    popupmenu = {
+      relative = 'editor',
+      position = {
+        row = 11,
+        col = '50%',
+      },
+      size = {
+        width = 60,
+        height = 10,
+      },
+      border = {
+        style = 'rounded',
+        padding = { 0, 1 },
+      },
+      win_options = {
+        winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
+      },
     },
   },
   notify = {
@@ -225,6 +229,10 @@ end
 require('noice').setup(cfg)
 require('telescope').load_extension('noice')
 noice_mapping.setup()
+
+vim.keymap.set('c', '<S-Enter>', function()
+  require('noice').redirect(vim.fn.getcmdline())
+end, { desc = 'Redirect Cmdline' })
 
 --
 -- vim.api.nvim_create_autocmd('BufEnter', {})

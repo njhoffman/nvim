@@ -1,6 +1,7 @@
 local provider_project = require('plugs.config.feline.provider-project')
 local provider_git = require('plugs.config.feline.provider-git')
-local provider_lspextras = require('plugs.config.feline.provider-lspextras')
+local provider_lsp_references = require('plugs.config.feline.provider-lsp-references')
+-- local provider_lsp_code_actions = require('plugs.config.feline.provider-lsp-code-actions')
 local provider_helptags = require('plugs.config.feline.provider-helptags')
 
 local M = {}
@@ -29,24 +30,24 @@ M.HelpTagsComponent = {
   },
 }
 
-M.LspCodeActionsComponent = {
-  enabled = function()
-    local ft_enabled = { 'lua', 'sh', 'typescript', 'javascript', 'go', 'python' }
-    return vim.tbl_contains(ft_enabled, vim.bo.filetype) and #vim.lsp.get_active_clients() > 0
-  end,
-  provider = {
-    name = 'lsp_code_actions',
-    update = { 'User' },
-    opts = {},
-  },
-  hl = provider_lspextras.lsp_code_actions_hl,
-  left_sep = {
-    str = ' ',
-    hl = {
-      fg = 'NONE',
-    },
-  },
-}
+-- M.LspCodeActionsComponent = {
+--   enabled = function()
+--     local ft_enabled = { 'lua', 'sh', 'typescript', 'javascript', 'go', 'python' }
+--     return vim.tbl_contains(ft_enabled, vim.bo.filetype) and #vim.lsp.get_active_clients() > 0
+--   end,
+--   provider = {
+--     name = 'lsp_code_actions',
+--     update = { 'User' },
+--     opts = {},
+--   },
+--   hl = provider_lsp_code_actions.hl,
+--   left_sep = {
+--     str = ' ',
+--     hl = {
+--       fg = 'NONE',
+--     },
+--   },
+-- }
 
 M.LspReferencesComponent = {
   enabled = function()
@@ -58,7 +59,7 @@ M.LspReferencesComponent = {
     update = { 'User' },
     opts = {},
   },
-  hl = provider_lspextras.lsp_references_hl,
+  hl = provider_lsp_references.hl,
   left_sep = {
     str = ' ',
     hl = {

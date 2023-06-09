@@ -72,13 +72,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
     local bufnr = args.buf
     local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if not vim.tbl_contains({
-      'copilot',
-      'null-ls',
-      'ltex',
-      'tailwindcss',
-      'eslint',
-    }, client.name) then
+    if
+      not vim.tbl_contains({
+        -- 'copilot',
+        'ltex',
+        -- 'tailwindcss',
+        -- 'eslint',
+      }, client.name) and client.server_capabilities.documentSymbolProvider
+    then
       require('nvim-navic').attach(client, bufnr)
     end
   end,

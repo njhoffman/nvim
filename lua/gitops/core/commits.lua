@@ -10,7 +10,7 @@ local finders = require('telescope.finders')
 local conf = require('telescope.config').values
 local git_utils = require('gitops.utils.git')
 local make_entry = require('gitops.make_entry')
-local previewers = require('gitops.previewers.commit')
+local previewers = require('gitops.previewers')
 
 local M = {}
 
@@ -131,23 +131,14 @@ end
 --   return true
 -- end,
 
-M.commits_summary = function(bufnr, opts)
-  return 'commits summary'
-
-  -- opts.cwd = vim.fn.getcwd()
-  -- return async_oneshot_finder {
-  --   entry_maker = opts.entry_maker or make_entry.gen_from_string(opts),
-  --
-  --   cwd = opts.cwd,
-  --   maximum_results = opts.maximum_results,
-  --
-  --   fn_command = function()
-  --     return {
-  --       command = command,
-  --       args = command_list,
-  --     }
-  --   end,
-  -- return finders.new_oneshot_job(git_command, opts)
+M.commits_stats = function(bufnr)
+  bufnr = bufnr or vim.fn.bufnr()
+  local range_cmd = git_utils.init_script_command(bufnr, '--method=range')
+  local count_cmd = git_utils.init_script_command(bufnr, '--method=count')
+  return {
+    range = string.gsub(vim.fn.system(vim.fn.join(range_cmd, ' ')), '\n', ''),
+    count = string.gsub(vim.fn.system(vim.fn.join(count_cmd, ' ')), '\n', ''),
+  }
 end
 
 return M

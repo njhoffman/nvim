@@ -1,6 +1,13 @@
 local utils = require('utils.lazy')
 local plugins = {
   {
+    'ThePrimeagen/refactoring.nvim',
+    requires = {
+      { 'nvim-lua/plenary.nvim' },
+      { 'nvim-treesitter/nvim-treesitter' },
+    },
+  },
+  {
     'LunarVim/bigfile.nvim',
     config = function()
       -- default config

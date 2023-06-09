@@ -149,6 +149,7 @@ local plugins = {
       })
     end,
   },
+  { 'echasnovski/mini.nvim', version = false },
   {
     'ziontee113/query-secretary',
     dependencies = { 'nvim-treesitter' },

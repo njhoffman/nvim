@@ -271,7 +271,8 @@ local handlers = {
   signatureHelpProvider = signature_help_provider,
   typeDefinitionProvider = type_definition_provider,
   workspace = workspace,
-  -- executeCommandProvider, , inlayHintProvider, foldingRangeProvider, workspaceSymbolProvider
+  workspaceSymbolProvider = document_symbol_provider,
+  -- executeCommandProvider, , inlayHintProvider, foldingRangeProvider,
 }
 
 return handlers

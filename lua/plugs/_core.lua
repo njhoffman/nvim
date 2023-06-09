@@ -1,4 +1,7 @@
 local utils = require('utils.lazy')
+
+vim.g.barbar_auto_setup = false
+
 local plugins = {
   { 'folke/lazy.nvim', lazy = false, version = '*' },
   -- colorscheme components should load first
@@ -30,15 +33,20 @@ local plugins = {
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
   },
   -- { 'freddiehaddad/feline.nvim', branch = 'main', event = 'VimEnter', lazy = false, },
-  {
-    'romgrk/barbar.nvim',
-    event = 'VimEnter',
-    cmd = { 'BufferPrev', 'BufferNext' },
-    dependencies = 'nvim-tree/nvim-web-devicons',
-    opts = {
-      auto_hide = true,
-    },
-  },
+  { 'famiu/bufdelete.nvim' },
+  -- {
+  --   'romgrk/barbar.nvim',
+  --   event = 'VimEnter',
+  --   cmd = { 'BufferPrev', 'BufferNext', 'BufferDelete' },
+  --   dependencies = 'nvim-tree/nvim-web-devicons',
+  --   config = function()
+  --     local opts = {
+  --       insert_at_start = true,
+  --       auto_hide = true,
+  --     }
+  --     -- require('barbar').setup(opts)
+  --   end,
+  -- },
   { 'rcarriga/nvim-notify', event = 'VimEnter' },
   { 'folke/which-key.nvim', event = 'VimEnter' },
   {

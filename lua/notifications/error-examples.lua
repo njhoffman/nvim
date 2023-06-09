@@ -49,6 +49,17 @@ stack traceback:
 	/home/nicholas/.config/nvim/lua/stats/commands/init.lua:113: in function </home/nicholas/.config/nvim/lua/stats/commands/init.lua:112>
 ]]
 
+local error7 = [[
+E5108: Error executing lua ...nvim/lua/telescope/_extensions/find_pickers/generate.lua:57: attempt to get length of field
+'only_include' (a nil value)
+stack traceback:
+        ...nvim/lua/telescope/_extensions/find_pickers/generate.lua:57: in function 'metadata'
+        .../nvim/lua/telescope/_extensions/find_pickers/finders.lua:14: in function 'get_finder'
+        ...fig/nvim/lua/telescope/_extensions/find_pickers/main.lua:84: in function <...fig/nvim/lua/telescope/_extensions/find_pickers/main.lua:73>
+        /home/nicholas/.config/nvim/lua/telescope/run.lua:99: in function </home/nicholas/.config/nvim/lua/telescope/run.lua:70>
+        [string ":lua"]:1: in main chunk
+]]
+
 local vimerror = [[
 Vim:Error executing Lua callback: ./scratch/tmp2.lua:2: attempt to perform arithmetic on global '_sd' (a nil value)
 stack traceback:

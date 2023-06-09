@@ -1,3 +1,19 @@
+local function get_loaded_buffers()
+  local buffers = {}
+  local len = 0
+  local vim_fn = vim.fn
+  local buflisted = vim_fn.buflisted
+
+  for buffer = 1, vim_fn.bufnr('$') do
+    if buflisted(buffer) == 1 then
+      len = len + 1
+      buffers[len] = buffer
+    end
+  end
+
+  return buffers
+end
+
 local function check_nav_split(movement_key)
   local keymap = { h = { '-L' }, l = { '-R' }, k = { '-U' }, j = { '-D' } }
   return function()
@@ -68,12 +84,24 @@ local close_multi = function(skip_prompt)
   local is_popup = vim.tbl_get(vim.api.nvim_win_get_config(curr_win), 'relative') ~= ''
   if #tabs > 1 then
     vim.cmd('tabclose!')
-  elseif is_popup then
+  end
+
+  if is_popup then
     vim.api.nvim_win_close(curr_win, skip_prompt)
   elseif #splits > 1 then
     vim.api.nvim_win_close(curr_win, skip_prompt)
   else
-    vim.cmd(skip_prompt and 'BufferDelete!' or 'BufferDelete')
+    if skip_prompt == true then
+      vim.cmd('Bdelete!')
+      if #get_loaded_buffers() == 0 then
+        vim.cmd('exit')
+      end
+    else
+      vim.cmd('Bdelete')
+      if #get_loaded_buffers() == 0 then
+        vim.cmd('Alpha')
+      end
+    end
   end
 end
 

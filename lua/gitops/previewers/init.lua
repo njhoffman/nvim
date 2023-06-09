@@ -57,17 +57,15 @@
 -- })
 --
 return {
-  git_branch_log = require('gitops.previewers.git_branch_log'),
-  git_stash_diff = require('gitops.previewers.git_stash_diff'),
-  git_commit_diff_to_parent = require('gitops.previewers.git_commit_diff_to_parent'),
-  git_commit_diff_to_head = require('gitops.previewers.git_commit_diff_to_head'),
-  git_commit_diff_as_was = require('gitops.previewers.git_commit_diff_as_was'),
-  git_commit_message = require('gitops.previewers.git_commit_message'),
+  branch_log = require('gitops.previewers.branch_log'),
+  diff_stash = require('gitops.previewers.diff_stash'),
+  diff_commit_to_parent = require('gitops.previewers.diff_commit_to_parent'),
+  diff_commit_to_head = require('gitops.previewers.diff_commit_to_head'),
+  diff_commit_as_was = require('gitops.previewers.diff_commit_as_was'),
+  commit_message = require('gitops.previewers.commit_message'),
 
   changed_files_on_current_branch = require('gitops.previewers.changed_files_on_current_branch'),
   diff_branch_file_previewer = require('gitops.previewers.diff_branch_file_previewer'),
   diff_content_previewer = require('gitops.previewers.diff_content_previewer'),
   diff_commit_file_previewer = require('gitops.previewers.diff_commit_file_previewer'),
-  diff_commit_to_head = require('gitops.previewers.diff_commit_to_head'),
-  diff_commit_as_was = require('gitops.previewers.diff_commit_as_was'),
 }

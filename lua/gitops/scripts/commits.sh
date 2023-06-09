@@ -1,6 +1,6 @@
 #!/bin/bash
 
-method="shortstats"
+method="log"
 base_cmd=("git")
 sub_cmd=("--no-pager" "log" "--no-merges") # sub_cmd=("log" "--max-count=10")
 print_cmd=0
@@ -46,7 +46,7 @@ commits_range() {
   sub_cmd+=("--format='%ar'")
   sub_cmd+=("--max-parents=0")
   sub_cmd+=("HEAD")
-  post_cmd="tail -n1"
+  post_cmd="tail -n1 | sed 's/ ago//'"
   cmd="${base_cmd[*]} ${sub_cmd[*]} | $post_cmd"
   if [[ $print_cmd -eq 1 ]]; then
     printf "%s" "$cmd"
@@ -55,7 +55,7 @@ commits_range() {
   fi
 }
 
-commits_shortstats() {
+commits_log() {
   # sub_cmd+=("--format=' @@%<(12,trunc)%H (%ar) %s %an '")
   sub_cmd+=("--format=' @@%h (%ar) %s %an '")
   sub_cmd+=("--shortstat")

@@ -1,15 +1,10 @@
-local get_references = function()
-  local params = vim.lsp.util.make_position_params()
-  params.context = { includeDeclaration = vim.F.if_nil(nil, true) }
-  local res = vim.lsp.buf_request_sync(0, 'textDocument/references', params) or {}
-  local n = 0
-  for _, client in ipairs(res) do
-    if client.result then
-      n = n + #client.result
-    end
-  end
-  return n
-end
+local helputils = require('utils.helptags')
+
+local busy = {
+  helptags = false,
+  references = false,
+  code_actions = false,
+}
 
 local get_code_actions = function()
   local bufnr = tonumber(vim.g.actual_curbuf) or 0
@@ -25,35 +20,59 @@ local get_code_actions = function()
   return n
 end
 
-local update_lsp_code_actions = function(bufnr)
-  vim.api.nvim_buf_set_var(bufnr, 'status_count_code_actions', get_code_actions())
-end
-
-local helputils = require('utils.helptags')
-local get_help_tag = function()
-  local match = helputils.search_cursor_word()
-  return match
-end
-
 local update_help_tags = function(bufnr)
-
-  local ok, match = pcall(vim.api.nvim_buf_get_var, bufnr, 'status_help_tag')
-  -- local ok, match = vim.api.nvim_buf_get_var(bufnr, 'status_help_tag')
-  local new_match = get_help_tag()
-  if new_match ~= match then
-    vim.api.nvim_buf_set_var(bufnr, 'status_help_tag', new_match)
-    vim.api.nvim_exec_autocmds('User', { pattern = 'StatusCountHelp' })
+  busy.helptags = true
+  return function()
+    local ok, match = pcall(vim.api.nvim_buf_get_var, bufnr, 'status_help_tag')
+    local new_match = helputils.search_cursor_word()
+    if new_match ~= match then
+      vim.api.nvim_buf_set_var(bufnr, 'status_help_tag', new_match)
+      vim.api.nvim_exec_autocmds('User', { pattern = 'StatusCountHelp' })
+    end
+    busy.helptags = false
   end
 end
 
-local update_lsp_references = function(bufnr)
-  vim.api.nvim_buf_set_var(bufnr, 'status_count_references', get_references())
-end
-
-local timerutils = require('utils.timer')
+-- local timerutils = require('utils.timer')
 -- local update_lsp = timerutils.debounce_trailing(update_lsp_counts, 500)
 
-local au_group = vim.api.nvim_create_augroup('StatusCount', { clear = true })
+local get_references = function(bufnr)
+  busy.references = true
+  return function()
+    -- vim.lsp.client.requests
+    local params = vim.lsp.util.make_position_params()
+    params.context = { includeDeclaration = vim.F.if_nil(nil, true) }
+    local res = vim.lsp.buf_request_sync(0, 'textDocument/references', params) or {}
+    local n = 0
+    for _, client in ipairs(res) do
+      if client.result then
+        n = n + #client.result
+      end
+    end
+    local ok, old_n = pcall(vim.api.nvim_buf_get_var, bufnr, 'lsp_cursor_references')
+    if n ~= old_n then
+      vim.api.nvim_buf_set_var(bufnr, 'lsp_cursor_references', n)
+      vim.api.nvim_exec_autocmds('User', { pattern = 'StatusCountReferences' })
+    end
+    busy.references = false
+  end
+end
+
+local get_cursor_counts = function(ev)
+  return function()
+    if busy.helptags == false and vim.bo.filetype == 'lua' then
+      vim.defer_fn(update_help_tags(ev.buf), 200)
+    end
+    -- if busy.references == false and vim.bo.buftype == '' then
+    --   if #vim.lsp.get_active_clients() > 0 then
+    --     vim.defer_fn(get_references(ev.buf), 1000)
+    --   end
+    -- end
+    -- vim.api.nvim_buf_set_var(ev.buf, 'lsp_cursor_code_actions', get_code_actions())
+  end
+end
+
+local au_group = vim.api.nvim_create_augroup('StatusbarCounts', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'lua', 'javascript', 'typescript', 'python', 'go', 'sh' },
   group = au_group,
@@ -62,18 +81,7 @@ vim.api.nvim_create_autocmd('FileType', {
       group = au_group,
       buffer = ev.buf,
       callback = function()
-        if vim.bo.filetype == 'lua' then
-          update_help_tags(ev.buf)
-        end
-        -- if #vim.lsp.get_active_clients() > 0 then
-        --   vim.dbglog('autocmd', ev.buf)
-        --   -- if vim.bo.buftype == '' then
-        --   --   -- vim.api.nvim_buf_set_var(ev.buf, 'lsp_count_code_actions', 0)
-        --   --   -- vim.api.nvim_buf_set_var(ev.buf, 'lsp_count_references', 0)
-        --   --   update_lsp_code_actions(ev.buf)
-        --   --   update_lsp_references(ev.buf)
-        --   -- end
-        -- end
+        vim.defer_fn(get_cursor_counts(ev), 200)
       end,
     })
   end,

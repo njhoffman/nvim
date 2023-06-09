@@ -50,6 +50,7 @@ prefix('n', '<leader>cl', 'conceal')
 --------------------------------------------------------------------------------------------------
 -- COMMAND ---------------------------------------------------------------------------------------
 -- TODO: differentiate between vim/lua, auto remove comments
+
 map({ 'v' }, '<space>', '"xy:@x<cr>', {
   category = 'Command',
   label = 'execute selected',
@@ -125,10 +126,28 @@ map('c', '<c-y>', '<c-r>*', {
   desc = 'yank from command window',
 })
 
-map('c', '^^', '', {
+map('c', '<C-^>', '<Home>', {
   category = 'Command',
   label = 'goto start',
   desc = 'go to beginning of command line',
+})
+
+--  c-$
+map('c', '<C-\\>', '<End>', {
+  category = 'Command',
+  label = 'goto start',
+  desc = 'go to end of command line',
+})
+
+map('c', '<M-p>', '<S-Up>', {
+  category = 'Command',
+  label = 'navigate history up',
+})
+
+--  c-$
+map('c', '<M-n>', '<S-Down>', {
+  category = 'Command',
+  label = 'navigate history down',
 })
 
 map('c', '<M-g>', '<C-r>%', {
@@ -145,14 +164,15 @@ map('n', '<BS>', ':e #<cr>', {
   label = 'last buffer',
   desc = 'open the last buffer',
 })
+local bufvar = { { '<Plug>(CybuPrev)', '<Plug>(CybuNext)' }, { '<cmd>BufferPrev<cr>', '<cmd>BufferNext<cr>' } }
 
-map('n', 'H', '<cmd>BufferPrev<cr>', {
+map('n', 'H', bufvar[1][1], {
   category = 'Buffers',
   label = 'left buffer',
   desc = 'open the left (prev) buffer',
 })
 
-map('n', 'L', '<cmd>BufferNext<cr>', { -- "<Plug>(CybuPrev)",
+map('n', 'L', bufvar[1][2], {
   category = 'Buffers',
   label = 'right buffer',
   desc = 'open the right (next) buffer',
@@ -543,6 +563,12 @@ map('n', '<leader>py', '<cmd>Telescope neoclip<cr>', {
   label = 'neoclip telescope',
   desc = 'show neoclip registers in telescope',
 })
+
+-- map('n', 'P', '"*p', {
+--   category = 'Motion',
+--   label = 'paste clipboard',
+--   desc = 'paste system clipboard register',
+-- })
 
 map('n', '<leader>pp', '"*p', {
   category = 'Motion',
@@ -1138,7 +1164,7 @@ map('n', '<leader>l', "<cmd>lua require('telescope.run')('projects','projects')<
   desc = 'repeast last telescope command',
 })
 
-map('n', '<M-BS>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
+map('n', '<M-C-Space>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'repeat telescope',

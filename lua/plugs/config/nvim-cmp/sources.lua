@@ -1,29 +1,75 @@
 -- stylua: ignore
-local source_names          = {
-  ['vim-dadbod-completion'] = 'sql',
-  ['vimwiki-tags']          = 'vimwiki',
-  calc                      = '󰃬 ',
-  cmdline                   = ' ',
-  cmdline_history           = ' ',
-  cmp_git                   = ' ',
-  cmp_rg                    = '󰉸 ',
-  cmp_tabnine               = '󰘳 ',
-  copilot                   = ' ',
-  dictionary                = ' ',
-  emoji                     = ' ',
-  fuzzy_buffer              = ' ',
-  fuzzy_path                = ' ',
-  look                      = ' ',
-  luasnip                   = ' ',
-  npm                       = ' ',
-  nvim_lsp                  = ' ',
-  nvim_lsp_document_symbol  = ' ',
-  nvim_lsp_signature_help   = '󰊕 ',
-  nvim_lua                  = ' ',
-  omni                      = ' ',
-  spell                     = ' ',
-  tmux                      = ' ',
-  treesitter                = ' ',
+local setup_highlights = function()
+  vim.api.nvim_set_hl(0, 'CmpSource',                      { default = true, link = 'Keyword' })
+  vim.api.nvim_set_hl(0, 'CmpSourceCalc',                  { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceDadbod',                { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceVimWiki',               { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceCmdline',               { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceCmdlineHistory',        { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceCmpGit',                { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceCmpRg',                 { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceCmpTabnine',            { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceCopilot',               { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceDictionary',            { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceEmoji',                 { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourcePath',                  { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceFuzzyBuffer',           { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceFuzzyPath',             { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceLook',                  { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceLuasnip',               { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceNpm',                   { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceNvimLsp',               { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceNvimLspDocumentSymbol', { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceNvimLspSignatureHelp',  { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceNvimLua',               { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceOmni',                  { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceSpell',                 { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceTmux',                  { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceTreesitter',            { default = true, link = 'CmpSource' })
+end
+
+setup_highlights()
+
+-- vim.api.nvim_set_hl(0, "CmpSourceCopilot", {fg ="#6CC644"})
+
+
+-- buffer = ' ﬘',
+-- nvim_lsp = ' ',
+-- luasnip = ' 🐍',
+-- treesitter = ' ',
+-- nvim_lua = ' ',
+-- spell = ' 暈',
+-- emoji = 'ﲃ',
+-- -- copilot = "🤖",
+-- cmp_tabnine = '🤖',
+-- look = '﬜',
+-- stylua: ignore
+local source_names = {
+  calc =                      { '󰃬', 'CmpSourceCalc' },
+  cmdline =                   { '', 'CmpSourceCmdline' },
+  cmdline_history =           { '', 'CmpSourceCmdlineHistory' },
+  cmp_git =                   { '', 'CmpSourceCmpGit' },
+  cmp_rg =                    { '󰉸', 'CmpSourceCmpRg' },
+  cmp_tabnine =               { '󰘳', 'CmpSourceCmpTabnine' },
+  copilot =                   { '', 'CmpSourceCopilot' }, -- 
+  dictionary =                { '', 'CmpSourceDictionary' },
+  emoji =                     { '', 'CmpSourceEmoji' },
+  fuzzy_buffer =              { '', 'CmpSourceFuzzyBuffer' },
+  fuzzy_path =                { '', 'CmpSourceFuzzyPath' },
+  look =                      { '', 'CmpSourceLook' },
+  luasnip =                   { '', 'CmpSourceLuasnip' },
+  npm =                       { '', 'CmpSourceNpm' },
+  nvim_lsp =                  { '', 'CmpSourceNvimLsp' },
+  nvim_lsp_document_symbol =  { '', 'CmpSourceNvimLspDocumentSymbol' },
+  nvim_lsp_signature_help =   { '󰊕', 'CmpSourceNvimLspSignatureHelp' },
+  nvim_lua =                  { '', 'CmpSourceNvimLua' },
+  omni =                      { '', 'CmpSourceOmni' },
+  path =                      { '', 'CmpSourcePath' },
+  spell =                     { '', 'CmpSourceSpell' },
+  tmux =                      { '', 'CmpSourceTmux' },
+  treesitter =                { '', 'CmpSourceTreesitter' },
+  ['vim-dadbod-completion'] = { '', 'CmpSourceDadbod' },
+  ['vimwiki-tags'] =          { '', 'CmpSourceVimWiki' },
 }
 
   -- local statusline_hl = vim.api.nvim_get_hl_by_name("StatusLine", true)
@@ -41,43 +87,43 @@ local source_names          = {
 --  local after_line = string.sub(line, cursor + 1, -1)
 -- stylua: ignore
 local lsp_symbols = {
-  Boolean         = "◩ ",
-  Class           = '󰌗 ', --   Class       = "󰠱 ",
-  Color           = '󰏘 ',
-  Comment         = " ",
-  ConstantBuiltin = "󰏿 ",
-  Conditional     = 'נּ ',
-  Constant        = '󰞂 ', --   Constant    = "󰐀 ",
-  Constructor     = ' ', --   Constructor = "⌘ ",
-  Copilot         = ' ',
-  Enum            = '󰕘 ', --   Enum        = " ",
-  EnumMember      = ' ',
-  Error           = ' ',
-  Event           = ' ',
-  Field           = '󰜢 ', --   Field       = "󰜢 ",
-  File            = '󰈔 ', --   File        = "󰈙 ",
-  Folder          = '󰉋 ',
-  Function        = '󰊕 ',
-  Interface       = '󰜰 ', --   Interface   = " ",
-  Keyword         = '󰌋 ', --   Keyword     = "󰔌 ",
-  KeywordOperator = ' ',
-  KeywordFunction = ' ' , --   Keyword    = "󰔌 ",
-  KeywordReturn   = ' ', --   Keyword     = "󰔌 ",
-  Method          = '󰆧 ',
-  Module          = '󰅩 ', --   Module      = "󰏓 ",
-  Number          = "󰎠 ",
-  Operator        = '󰃬 ', --   Operator    = "󰆕 ",
-  Property        = '󰖷 ', --   Property    = "󰜢",
-  Reference       = '󰈝 ', --   Reference   = "󰈇 ",
-  Repeat          = ' ',
-  Snippet         = ' ', --   Snippet     = "󰅱 ",
-  String          = " ",
-  Struct          = '󰟦 ', --   Struct      = "󰙅 ",
-  Text            = ' ', --   Text        = " ",
-  TypeParameter   = '󰊄 ',
-  Unit            = ' ', --   Unit        = "󰑭 ",
-  Value           = '󰎠 ',
-  Variable        = ' ', --   Variable    = "󰈜 ",
+  Boolean         = "◩",
+  Class           = '󰌗', --   Class       = "󰠱 ",
+  Color           = '󰏘',
+  Comment         = "",
+  ConstantBuiltin = "󰏿",
+  Conditional     = 'נּ',
+  Constant        = '󰞂', --   Constant    = "󰐀 ",
+  Constructor     = '', --   Constructor = "⌘ ",
+  Copilot         = '',
+  Enum            = '󰕘', --   Enum        = " ",
+  EnumMember      = '',
+  Error           = '',
+  Event           = '',
+  Field           = '󰜢', --   Field       = "󰜢 ",
+  File            = '󰈔', --   File        = "󰈙 ",
+  Folder          = '󰉋',
+  Function        = '󰊕',
+  Interface       = '󰜰', --   Interface   = " ",
+  Keyword         = '󰌋', --   Keyword     = "󰔌 ",
+  KeywordOperator = '',
+  KeywordFunction = '' , --   Keyword    = "󰔌 ",
+  KeywordReturn   = '', --   Keyword     = "󰔌 ",
+  Method          = '󰆧',
+  Module          = '󰅩', --   Module      = "󰏓 ",
+  Number          = "󰎠",
+  Operator        = '󰃬', --   Operator    = "󰆕 ",
+  Property        = '󰖷', --   Property    = "󰜢",
+  Reference       = '󰈝', --   Reference   = "󰈇 ",
+  Repeat          = '',
+  Snippet         = '', --   Snippet     = "󰅱 ",
+  String          = "",
+  Struct          = '󰟦', --   Struct      = "󰙅 ",
+  Text            = '', --   Text        = " ",
+  TypeParameter   = '󰊄',
+  Unit            = '', --   Unit        = "󰑭 ",
+  Value           = '󰎠',
+  Variable        = '', --   Variable    = "󰈜 ",
 }
 
 local sources = {

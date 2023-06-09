@@ -350,7 +350,7 @@ M.buffer_delete = function(prompt_bufnr)
     -- ignore_current_buffer = false,
     -- only_cwd = false,
   }
-  vim.cmd('BufferDelete ' .. selection.value)
+  vim.cmd('Bdelete ' .. selection.value)
   -- actions.close(prompt_bufnr)
   -- require("telescope.run")("leaderf", opts)
   local picker = action_state.get_current_picker(prompt_bufnr)

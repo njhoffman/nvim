@@ -1,11 +1,12 @@
 local pfiletype = require('plenary.filetype')
 local conf = require('telescope.config').values
 local Previewer = require('telescope.previewers.previewer')
-local utils = require('telescope.utils')
-local buf_delete = utils.buf_delete
+local tele_utils = require('telescope.utils')
+local buf_delete = tele_utils.buf_delete
 local file_util = require('gitops.utils.file')
 local config = require('gitops.utils.config')
 local command_util = require('gitops.utils.command')
+local utils = require('gitops.utils')
 
 local M = {}
 
@@ -16,7 +17,7 @@ local all_commit_hashes = function()
   local command = 'git rev-list --all'
   local output = command_util.execute(command)
 
-  return utils.split_string(output, '\n')
+  return tele_utils.split_string(output, '\n')
 end
 
 local all_commit_hashes_touching_file = function(git_relative_file_path, source_bufnr)
@@ -26,7 +27,7 @@ local all_commit_hashes_touching_file = function(git_relative_file_path, source_
   local command = 'cd ' .. repo .. " && git log --all --follow --pretty=format:'%H' -- " .. git_relative_file_path
 
   local output = command_util.execute(command)
-  return utils.split_string(output, '\n')
+  return tele_utils.split_string(output, '\n')
 end
 
 local git_diff_command = function(command, git_flags_ix, git_diff_flags_ix)
@@ -202,27 +203,29 @@ M.current_branch = function()
   return string.gsub(output, '\n', '')
 end
 
-M.init_command = function(command, bufnr, sub_cmds)
+M.init_command = function(command, bufnr, args)
+  args = type(args) ~= 'table' and { args } or args
+  vim.dbglog('***', command, bufnr, args)
   local repo = utils.get_repo(bufnr)
   if repo.gitdir then
     table.insert(command, '--git-dir=' .. repo.gitdir)
     table.insert(command, '--work-tree=' .. repo.worktree)
   end
-  for _, sub_cmd in ipairs(sub_cmds) do
-    table.insert(command, sub_cmd)
+  for _, arg in ipairs(args) do
+    table.insert(command, arg)
   end
   return command
 end
 
-M.init_git_command = function(bufnr, sub_cmds)
-  sub_cmds = sub_cmds or {}
-  return M.init_command({ 'git', '--no-pager' }, bufnr, sub_cmds)
+M.init_git_command = function(bufnr, args)
+  args = args or {}
+  return M.init_command({ 'git', '--no-pager' }, bufnr, args)
 end
 
-M.init_script_command = function(bufnr, sub_cmds)
-  sub_cmds = sub_cmds or {}
+M.init_script_command = function(bufnr, args)
+  args = args or {}
   local script = vim.fn.stdpath('config') .. '/lua/gitops/scripts/commits.sh'
-  return M.init_command({ script }, bufnr, sub_cmds)
+  return M.init_command({ script }, bufnr, args)
 end
 
 -- git files count
@@ -366,7 +369,7 @@ M.new_buffer_previewer = function(opts)
       -- Push in another buffer so the last one will not be cleaned up
       if preview_window_id then
         local bufnr = vim.api.nvim_create_buf(false, true)
-        utils.win_set_buf_noautocmd(preview_window_id, bufnr)
+        tele_utils.win_set_buf_noautocmd(preview_window_id, bufnr)
       end
     end
 
@@ -391,14 +394,14 @@ M.new_buffer_previewer = function(opts)
     if opts.get_buffer_by_name and get_bufnr_by_bufname(self, opts.get_buffer_by_name(self, entry)) then
       self.state.bufname = opts.get_buffer_by_name(self, entry)
       self.state.bufnr = get_bufnr_by_bufname(self, self.state.bufname)
-      utils.win_set_buf_noautocmd(status.preview_win, self.state.bufnr)
+      tele_utils.win_set_buf_noautocmd(status.preview_win, self.state.bufnr)
     else
       local bufnr = vim.api.nvim_create_buf(false, true)
       set_bufnr(self, bufnr)
 
       vim.schedule(function()
         if vim.api.nvim_buf_is_valid(bufnr) then
-          utils.win_set_buf_noautocmd(status.preview_win, bufnr)
+          tele_utils.win_set_buf_noautocmd(status.preview_win, bufnr)
         end
       end)
 
