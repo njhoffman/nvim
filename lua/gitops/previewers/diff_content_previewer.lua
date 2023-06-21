@@ -25,4 +25,4 @@ local diff_content_previewer = function()
   })
 end
 
-return { diff_content_previewer = diff_content_previewer }
+return diff_content_previewer

@@ -1,7 +1,7 @@
 require('cybu').setup({
   position = {
     relative_to = 'editor', -- win, editor, cursor
-    anchor = 'topcenter', -- topleft, topcenter, topright,
+    anchor = 'bottomleft', -- topleft, topcenter, topright,
     -- centerleft, center, centerright,
     -- bottomleft, bottomcenter, bottomright
     vertical_offset = 1, -- vertical offset from anchor in lines
@@ -24,11 +24,17 @@ require('cybu').setup({
       truncate = true, -- truncate wide icons to one char width
     },
     highlights = { -- see highlights via :highlight
-      -- current_buffer = "CybuFocus", -- current / selected buffer
-      current_buffer = 'Operator', -- current / selected buffer
+      current_buffer = 'CybuOperator', -- current / selected buffer
       adjacent_buffers = 'CybuAdjacent', -- buffers not in focus
       background = 'CybuBackground', -- window background
       border = 'CybuBorder', -- border of the window
+
+      -- current_buffer = "CybuFocus", -- current / selected buffer
+      -- CybuFocusxxx guifg=#8396b9 guibg=#101840
+      -- CybuAdjacentxxx guifg=#4a647b
+      -- CybuBackgroundxxx links to Normal
+      -- CybuBorderxxx links to FloatBorder
+      -- CybuInfobarxxx links to StatusLine
     },
   },
   behavior = { -- set behavior for different modes
@@ -45,7 +51,7 @@ require('cybu').setup({
         view = 'rolling', -- paging, rolling
       },
     },
-    -- show_on_autocmd = 'BufEnter', -- event to trigger cybu (eg. "BufEnter")
+    show_on_autocmd = 'VimEnter', -- event to trigger cybu (eg. "BufEnter")
   },
   display_time = 1500, -- time the cybu window is displayed
   exclude = { -- filetypes, cybu will not be active

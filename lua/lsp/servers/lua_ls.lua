@@ -162,6 +162,10 @@ local lua_ls = function()
       return final
     end,
 
+    on_attach = function(client, bufnr)
+      client.server_capabilities.semanticTokensProvider = nil
+    end,
+
     settings = {
       Lua = {
         format = {

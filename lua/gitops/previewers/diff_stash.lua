@@ -30,4 +30,4 @@ local diff_stash = git_utils.defaulter(function(opts)
   })
 end, {})
 
-return { diff_stash }
+return diff_stash

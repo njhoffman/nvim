@@ -170,7 +170,7 @@ local opts = {
     },
   },
   excluded_buftypes = {
-    'nofile',
+    -- 'nofile',
     'terminal',
   },
   excluded_filetypes = {

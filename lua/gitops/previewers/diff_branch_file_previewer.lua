@@ -35,4 +35,4 @@ local git_diff_branch_file_previewer = function(bufnr)
   })
 end
 
-return { diff_branch_file_previewer = git_diff_branch_file_previewer }
+return git_diff_branch_file_previewer

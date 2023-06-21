@@ -2,6 +2,7 @@
 
 require('globals')
 require('utils.lazy').setup({ cache = false, reload = false })
+
 for _, mod_name in ipairs({
   'keymaps',
   'project',
@@ -22,9 +23,6 @@ end
 
 require('sidebar').setup()
 require('tracker').setup({ event_tracker = false, only_events = { 'User' } })
-
-vim.cmd([[ nnoremap ; : ]])
-vim.cmd([[ vnoremap ; : ]])
 
 -- require("notifications.recipes.progress").config()
 -- require "plenary.profile".stop()

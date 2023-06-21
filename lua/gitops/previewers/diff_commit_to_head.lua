@@ -12,7 +12,7 @@ local diff_commit_to_head = git_utils.defaulter(function(opts)
 
     define_preview = function(self, entry, status)
       -- local cmd = { 'git', '--no-pager', 'diff', '--cached', entry.value }
-      local cmd = git_utils.init_git_command(opts.source_bufnr, {
+      local cmd = git_utils.init_git_command(opts.bufnr, {
         'diff',
         '--cached',
         entry.value.sha,
@@ -37,4 +37,4 @@ local diff_commit_to_head = git_utils.defaulter(function(opts)
   })
 end, {})
 
-return { diff_commit_to_head = diff_commit_to_head }
+return diff_commit_to_head

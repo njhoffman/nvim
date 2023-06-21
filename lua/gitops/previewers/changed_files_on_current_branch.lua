@@ -19,4 +19,5 @@ local changed_files_on_current_branch_previewer = function()
     end,
   })
 end
-return { changed_files_on_current_branch_previewer = changed_files_on_current_branch_previewer }
+
+return changed_files_on_current_branch_previewer

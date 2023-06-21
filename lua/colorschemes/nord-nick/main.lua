@@ -1005,6 +1005,12 @@ return function(injected_functions)
     GitSignsDeleteNrFaded({ fg = clr_over.red_faded }),
     GitSignsDeleteLnFaded({ fg = clr_over.red_faded }),
 
+    -- CybuFocus guifg=#8396b9 guibg=#101840 Operator
+    -- CybuAdjacent guifg=#4a647b
+    -- CybuBackgrou links to Normal
+    -- CybuBorder links to FloatBorder
+    -- CybuInfobar links to StatusLine
+
     -- GitSigns
     GitSignsAdd({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
     GitSignsAddNr({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|

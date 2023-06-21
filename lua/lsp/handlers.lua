@@ -251,6 +251,12 @@ local execute_command = function(args)
   vim.lsp.buf.execute_command(args)
 end
 
+local semantic_tokens_provider = function(args)
+  vim.dbglog({ 'semanticTokensProvider', args })
+  vim.lsp.buf.semantic_tokens_provider(args)
+  -- vim.lsp.buf.execute_command(args)
+end
+
 local handlers = {
   codeActionProvider = code_action_provider,
   codeLensProvider = code_lens_provider,
@@ -267,7 +273,7 @@ local handlers = {
   hoverProvider = hover_provider,
   implementationProvider = implementation_provider,
   renameProvider = rename_provider,
-  -- semanticTokensProvider = function() end,
+  semanticTokensProvider = semantic_tokens_provider,
   signatureHelpProvider = signature_help_provider,
   typeDefinitionProvider = type_definition_provider,
   workspace = workspace,

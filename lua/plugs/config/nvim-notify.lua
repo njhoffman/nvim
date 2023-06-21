@@ -110,13 +110,24 @@ local cfg = {
     -- ^E5112: Error while creating lua chunk:
     -- ^E5113: Error while calling lua chunk:
     -- ^E5108: Error executing lua ...scope.nvim/lua/telescope/finders/async_static_finder.lua:20: attempt to index local 'entry' (a function value)
+    -- E5108: Error executing lua /home/nicholas/.config/nvim/lua/gitops/core/commits.lua:57: attempt to call field 'new' (a nil value) stack traceback:
+    -- E5108: Error executing lua /home/nicholas/.config/nvim/lua/gitops/core/commits.lua:57: attempt to call field 'new' (a nil value)
+    -- stack traceback:
+    -- 	/home/nicholas/.config/nvim/lua/gitops/core/commits.lua:57: in function </home/nicholas/.config/nvim/lua/gitops/core/commits.lua:41>
+    -- 	/home/nicholas/.config/nvim/lua/telescope/run.lua:99: in function </home/nicholas/.config/nvim/lua/telescope/run.lua:70>
+    -- 	.../nvim/lua/telescope/_extensions/find_pickers/actions.lua:17: in function 'select_picker'
+    -- 	.../nvim/lua/telescope/_extensions/find_pickers/actions.lua:27: in function 'run_replace_or_original'
+    -- 	...re/nvim/lazy/telescope.nvim/lua/telescope/actions/mt.lua:65: in function 'select_default'
+    -- 	...las/.config/nvim/lua/plugs/config/telescope/mappings.lua:13: in function 'key_func'
+    -- 	...hare/nvim/lazy/telescope.nvim/lua/telescope/mappings.lua:350: in function 'execute_keymap'
+    -- 	[string ":lua"]:1: in main chunk
 
     if string.match(content[1], '^E51') then
       local parts = vim.fn.split(content[1], ':')
 
       local new_content = {
         parts[1] .. ':' .. parts[2],
-        '    ' .. parts[3] .. ':' .. parts[4] .. ':' .. parts[5],
+        '    ' .. parts[3] .. ':' .. (parts[4] or '') .. ':' .. (parts[5] or ''),
       }
       local max_width = 0
       for _, line in ipairs(new_content) do

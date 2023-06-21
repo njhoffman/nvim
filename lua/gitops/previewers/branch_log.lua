@@ -82,4 +82,4 @@ local branch_log = git_utils.defaulter(function(opts)
   })
 end, {})
 
-return { branch_log = branch_log }
+return branch_log

@@ -8,6 +8,8 @@ local config = require('gitops.utils.config')
 local command_util = require('gitops.utils.command')
 local utils = require('gitops.utils')
 
+local logger = require('gitops.utils.logger')
+
 local M = {}
 
 -- TODO: git grep foo $(git rev-list --all)
@@ -205,7 +207,6 @@ end
 
 M.init_command = function(command, bufnr, args)
   args = type(args) ~= 'table' and { args } or args
-  vim.dbglog('***', command, bufnr, args)
   local repo = utils.get_repo(bufnr)
   if repo.gitdir then
     table.insert(command, '--git-dir=' .. repo.gitdir)
@@ -214,12 +215,13 @@ M.init_command = function(command, bufnr, args)
   for _, arg in ipairs(args) do
     table.insert(command, arg)
   end
+  logger.trace('cmd: ' .. vim.fn.join(command, ' '))
   return command
 end
 
 M.init_git_command = function(bufnr, args)
   args = args or {}
-  return M.init_command({ 'git', '--no-pager' }, bufnr, args)
+  return M.init_command({ 'git' }, bufnr, args)
 end
 
 M.init_script_command = function(bufnr, args)
@@ -446,7 +448,7 @@ M.new_buffer_previewer = function(opts)
   end
 
   if not opts.scroll_fn then
-    opts.scroll_fn = scroll_fn
+    opts.scroll_fn = M.scroll_fn
   end
 
   return Previewer:new(opts)

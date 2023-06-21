@@ -59,7 +59,6 @@ M.git_relative_path_to_relative_path = function(git_relative_path, source_bufnr)
   local git_dir = M.find_first_ancestor_dir_or_file(vim.fn.getcwd(), '.git')
   local project_dir = vim.fn.getcwd()
 
-  vim.dbglog('git_relatie_path', git_relative_path, source_bufnr, git_dir)
   local absolute_path = git_dir .. '/' .. git_relative_path
   project_dir = utils.escape_chars(project_dir .. '/')
   return string.gsub(absolute_path, project_dir, '')

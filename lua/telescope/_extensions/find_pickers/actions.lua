@@ -9,7 +9,7 @@ local select_picker = function(bufnr)
   local selection = actions_state.get_selected_entry()
   local value = selection.value
   actions.close(bufnr)
-  vim.dbglog('picker', value)
+  -- vim.dbglog('picker', value)
   if value.extension == false then
     require('telescope.run')('builtin', value.command, picker_opts)
     -- require('telescope.builtin')[value.command](picker_opts)

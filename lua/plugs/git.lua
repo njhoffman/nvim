@@ -41,12 +41,13 @@ local plugins = {
     --     },
     --   }
     -- end,
-    },
+  },
   { 'napisani/nvim-github-codesearch', build = 'make' },
   { 'akinsho/git-conflict.nvim', version = '*', lazy = false },
   { 'pwntester/octo.nvim', cmd = 'Octo', dependencies = 'nvim-tree/nvim-web-devicons' },
   { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' },
   { 'lewis6991/gitsigns.nvim', event = 'BufReadPost', dependencies = 'nvim-lua/plenary.nvim' },
+  { 'rhysd/git-messenger.vim' },
   {
     'tpope/vim-fugitive',
     event = { 'BufReadPost', 'BufNewFile' },

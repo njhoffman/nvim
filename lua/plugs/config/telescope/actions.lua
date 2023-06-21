@@ -108,7 +108,8 @@ M.resume_picker_prev = function(prompt_bufnr)
 
   -- opts._cache_picker = opts.cache_picker
   opts.cache_picker = false
-  run('builtin', 'resume', opts)
+  -- run('builtin', 'resume', opts)
+  run('builtin', 'resume')
   vim.g.telescope_cache_index = idx
 end
 

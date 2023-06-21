@@ -88,6 +88,7 @@ M.status = function(opts)
     })
     :find()
 end
+
 M.status_summary = function(bufnr)
   return 'status summary'
 end

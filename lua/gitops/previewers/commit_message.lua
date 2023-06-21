@@ -20,6 +20,7 @@ local commit_message = git_utils.defaulter(function(opts)
       local cmd = git_utils.init_git_command(opts.source_bufnr, {
         'log',
         '-n 1',
+        '--stat', -- '--name-status',
         entry.value.sha,
       })
 
@@ -43,4 +44,4 @@ local commit_message = git_utils.defaulter(function(opts)
   })
 end, {})
 
-return { commit_message = commit_message }
+return commit_message

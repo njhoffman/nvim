@@ -18,12 +18,10 @@ end
 
 M.get_repo = function(bufnr)
   bufnr = bufnr or vim.fn.bufnr()
-  vim.dbglog('get_repo', bufnr)
   local ok, gitsigns = pcall(vim.api.nvim_buf_get_var, bufnr, 'gitsigns_status_dict')
   if ok == true then
-    -- vim.dbglog("get_repo", gitsigns)
     return {
-      worktree = gitsigns.is_bare == true and gitsigns.gitdir or gitsigns.root,
+      worktree = gitsigns.root,
       gitdir = gitsigns.gitdir,
     }
   else

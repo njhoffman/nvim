@@ -14,6 +14,7 @@ local display_keys = {
   'implementationProvider',
   'referencesProvider',
   'renameProvider',
+  -- 'semanticTokensProvider',
   'signatureHelpProvider',
   'typeDefinitionProvider',
   'workspace',

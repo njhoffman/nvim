@@ -6,15 +6,12 @@ local commit_diff_to_parent = git_utils.defaulter(function(opts)
     title = 'Git Diff to Parent Preview',
     teardown = git_utils.search_teardown,
     get_buffer_by_name = function(_, entry)
-      return entry.value
+      return entry.value.sha
     end,
 
     define_preview = function(self, entry, status)
-      local cmd = git_utils.init_git_command(opts.source_bufnr, {
-        'diff',
-        entry.value.sha .. '^!',
-      })
       -- local cmd = { 'git', '--no-pager', 'diff', entry.value .. '^!' }
+      local cmd = git_utils.init_git_command(opts.bufnr, { 'diff', entry.value.sha .. '^!' })
       if opts.current_file then
         table.insert(cmd, '--')
         table.insert(cmd, opts.current_file)
@@ -35,4 +32,4 @@ local commit_diff_to_parent = git_utils.defaulter(function(opts)
   })
 end, {})
 
-return { commit_diff_to_parent = commit_diff_to_parent }
+return commit_diff_to_parent

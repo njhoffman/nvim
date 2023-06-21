@@ -37,4 +37,4 @@ local diff_commit_file_previewer = function(bufnr)
   })
 end
 
-return { diff_commit_file_previewer = diff_commit_file_previewer }
+return diff_commit_file_previewer

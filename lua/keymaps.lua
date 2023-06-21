@@ -13,7 +13,7 @@ prefix('n', 'g', 'goto')
 prefix('n', 'gq', 'quickfix')
 prefix('n', 'gP', 'preview')
 prefix('n', 'g?', 'debug print')
-prefix('n', '<c-w>', 'window')
+-- prefix('n', '<c-w>', 'window')
 prefix('n', '<leader>g', 'git')
 prefix('n', '<leader>f', 'file')
 prefix('n', '<leader>F', 'format')
@@ -841,16 +841,19 @@ vmap('n', '<c-j>', {
   label = 'window down',
   desc = 'move to window below',
 })
+
 vmap('n', '<c-k>', {
   category = 'Window',
   label = 'window up',
   desc = 'move to window up',
 })
+
 vmap('n', '<c-h>', {
   category = 'Window',
   label = 'window left',
   desc = 'move to window left',
 })
+
 vmap('n', '<c-l>', {
   category = 'Window',
   label = 'window right',

@@ -33,16 +33,16 @@ setup_highlights()
 -- vim.api.nvim_set_hl(0, "CmpSourceCopilot", {fg ="#6CC644"})
 
 
--- buffer = ' ﬘',
--- nvim_lsp = ' ',
--- luasnip = ' 🐍',
--- treesitter = ' ',
--- nvim_lua = ' ',
--- spell = ' 暈',
--- emoji = 'ﲃ',
--- -- copilot = "🤖",
--- cmp_tabnine = '🤖',
--- look = '﬜',
+          -- buffer = ' ﬘',
+          -- nvim_lsp = ' ',
+          -- luasnip = ' 🐍',
+          -- treesitter = ' ',
+          -- nvim_lua = ' ',
+          -- spell = ' 暈',
+          -- emoji = 'ﲃ',
+          -- -- copilot = "🤖",
+          -- cmp_tabnine = '🤖',
+          -- look = '﬜',
 -- stylua: ignore
 local source_names = {
   calc =                      { '󰃬', 'CmpSourceCalc' },
@@ -111,6 +111,7 @@ local lsp_symbols = {
   KeywordReturn   = '', --   Keyword     = "󰔌 ",
   Method          = '󰆧',
   Module          = '󰅩', --   Module      = "󰏓 ",
+  None            = 'ﳠ',
   Number          = "󰎠",
   Operator        = '󰃬', --   Operator    = "󰆕 ",
   Property        = '󰖷', --   Property    = "󰜢",

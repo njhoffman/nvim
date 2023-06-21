@@ -31,18 +31,20 @@ local tsserver = function()
     single_file_support = true,
     settings = {
       typescript = {
-        format = {
-          indentSize = vim.o.shiftwidth,
-          convertTabsToSpaces = vim.o.expandtab,
-          tabSize = vim.o.tabstop,
-        },
+        format = false,
+        -- format = {
+        --   indentSize = vim.o.shiftwidth,
+        --   convertTabsToSpaces = vim.o.expandtab,
+        --   tabSize = vim.o.tabstop,
+        -- },
       },
       javascript = {
-        format = {
-          indentSize = vim.o.shiftwidth,
-          convertTabsToSpaces = vim.o.expandtab,
-          tabSize = vim.o.tabstop,
-        },
+        format = false,
+        -- format = {
+        --   indentSize = vim.o.shiftwidth,
+        --   convertTabsToSpaces = vim.o.expandtab,
+        --   tabSize = vim.o.tabstop,
+        -- },
       },
       completions = {
         completeFunctionCalls = true,
@@ -52,6 +54,7 @@ local tsserver = function()
       tsserver = function(_, opts)
         require('lazyvim.util').on_attach(function(client, buffer)
           if client.name == 'tsserver' then
+            -- client.server_capabilities.documentFormatting = false
               -- stylua: ignore
               vim.keymap.set("n", "<leader>co", "<cmd>TypescriptOrganizeImports<CR>", { buffer = buffer, desc = "Organize Imports" })
               -- stylua: ignore

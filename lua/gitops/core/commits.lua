@@ -11,59 +11,68 @@ local conf = require('telescope.config').values
 local git_utils = require('gitops.utils.git')
 local make_entry = require('gitops.make_entry')
 local previewers = require('gitops.previewers')
+local logger = require('gitops.utils.logger')
+
+local default_git_args = {
+  '-c',
+  'core.pager=delta',
+  '-c',
+  'delta.diff-so-fancy=false',
+  '-c',
+  'delta.navigate=false',
+  -- '-c',
+  -- 'delta.side-by-side=true',
+}
 
 local M = {}
 
-local log_timing = function(opts, timing, num)
-  -- command finishes here if async job
-  if type(timing.command ~= 'string') then
-    ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
-    timing.command = vim.fn.reltimestr(vim.fn.reltime(timing.total))
-  end
-
-  if type(timing.total) ~= 'string' then
-    ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
-    timing.total = vim.fn.reltimestr(vim.fn.reltime(timing.total))
-    timing.average = timing.total * 10000 / num
-    vim.dbglog(
-      opts.prompt_title .. ':',
-      timing.average,
-      '(' .. num .. ') ',
-      -- opts.finder_type,
-      -- '\n',
-      -- timing.command,
-      -- timing.first_entry,
-      timing.total
-    )
-  end
-end
-
 M.commits = function(opts)
-  ---@diagnostic disable-next-line: missing-parameter
-  local timing = { total = vim.fn.reltime() }
+  local timing = { total = vim.fn.reltime(_, _) }
   opts = opts or {}
   -- local relative_file_name = vim.fn.expand('%:~:.')
-  opts.source_bufnr = vim.fn.bufnr()
-  local script_command = git_utils.init_script_command(opts.source_bufnr)
-  -- opts.entry_maker = require('telescope.make_entry').gen_from_string(opts)
+  opts.bufnr = vim.fn.bufnr()
+
+  local script_command = git_utils.init_script_command(opts.bufnr)
+
   opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_commits(opts))
+
+  local opts_parent = vim.tbl_deep_extend('force', opts, {
+    git_cmd = 'diff',
+    git_args = opts.git_args or default_git_args,
+    git_parent = true,
+    preview_title = 'Diff to Parent',
+  })
+
+  local opts_head = vim.tbl_deep_extend('force', opts, {
+    git_cmd = { 'diff', '--cached' },
+    git_args = opts.git_args or default_git_args,
+    preview_title = 'Diff to HEAD',
+  })
+
+  local opts_as_was = vim.tbl_deep_extend('force', opts, {
+    git_cmd = 'show',
+    git_args = opts.git_args or default_git_args,
+    preview_title = 'Show to Parent',
+  })
 
   return pickers
     .new(opts, {
       prompt_title = 'Git Commits',
       finder = finders.new_oneshot_job(script_command, opts),
-      -- previewer = conf.file_previewer(opts),
       previewer = {
+        -- previewers.commit_message.new(opts),
         previewers.diff_commit_to_parent.new(opts),
+        previewers.diff_commit_to_delta(opts_parent),
         previewers.diff_commit_to_head.new(opts),
+        previewers.diff_commit_to_delta(opts_head),
         previewers.diff_commit_as_was.new(opts),
-        previewers.commit_message.new(opts),
+        previewers.diff_commit_to_delta(opts_as_was),
       },
       sorter = conf.file_sorter(opts),
       on_complete = {
         function(picker)
           -- processed, displayed, looped, previewed
-          log_timing(picker, timing, picker.stats.processed)
+          logger.timing(picker, timing, picker.stats.processed)
         end,
       },
     })

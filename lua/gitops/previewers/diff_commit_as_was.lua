@@ -14,14 +14,13 @@ local commit_diff_as_was = git_utils.defaulter(function(opts)
 
     define_preview = function(self, entry, status)
       -- local cmd = { 'git', '--no-pager', 'show' }
-
-      local cmd = git_utils.init_git_command(opts.source_bufnr, {
-        'show',
-      })
       local cf = opts.current_file and Path:new(opts.current_file):make_relative(opts.cwd)
       local value = cf and (entry.value.sha .. ':' .. cf) or entry.value.sha
       local ft = cf and pfiletype.detect(value) or 'diff'
-      table.insert(cmd, value)
+      local cmd = git_utils.init_git_command(opts.bufnr, {
+        'show',
+        value,
+      })
 
       putils.job_maker(cmd, self.state.bufnr, {
         value = entry.value,
@@ -38,4 +37,4 @@ local commit_diff_as_was = git_utils.defaulter(function(opts)
   })
 end, {})
 
-return { commit_diff_as_was = commit_diff_as_was }
+return commit_diff_as_was
