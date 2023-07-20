@@ -48,12 +48,7 @@ local plugins = {
         opts = { Error = '#db4b4b', Warn = '#e0af68', Info = '#0db9d7', Hint = '#10B981' },
       },
       { 'jbyuki/ntangle-lsp.nvim', dependencies = { 'jbyuki/ntangle-ts.nvim' } },
-      {
-        'hrsh7th/cmp-nvim-lsp',
-        cond = function()
-          return require('lazy.core.config').plugins['nvim-cmp'] ~= nil
-        end,
-      },
+      { 'hrsh7th/cmp-nvim-lsp' },
     },
     config = function()
       vim.import('lsp.capabilities')

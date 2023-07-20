@@ -541,7 +541,12 @@ cmp.setup({
       })[entry.source.name] or 1
       vim_item.menu = source.names[entry.source.name][1] .. ' '
       vim_item.menu_hl_group = source.names[entry.source.name][2]
-      vim_item.kind = ' ' .. source.symbols[vim_item.kind]
+      if type(source.symbols[vim_item.kind]) == nil then
+        vim.notify('No sourcce symbol: ' .. vim_item.kind, 2)
+        vim_item.kind = ' '
+      else
+        vim_item.kind = ' ' .. source.symbols[vim_item.kind]
+      end
       return vim_item
     end,
     -- format = function(entry, vim_item)

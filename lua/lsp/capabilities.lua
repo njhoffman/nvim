@@ -120,6 +120,7 @@ local resolve_capabilities = function(client, bufnr)
 end
 
 local make_capabilities = function()
+  -- TODO: do I need this?
   local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
