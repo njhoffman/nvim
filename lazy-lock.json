@@ -154,7 +154,7 @@
   "nvim-dap-repl-highlights": { "branch": "master", "commit": "97a2b322c05cf945c5aabaad5e599a20b25e77d9" },
   "nvim-dap-ui": { "branch": "master", "commit": "85b16ac2309d85c88577cd8ee1733ce52be8227e" },
   "nvim-dap-virtual-text": { "branch": "master", "commit": "57f1dbd0458dd84a286b27768c142e1567f3ce3b" },
-  "nvim-devdocs": { "branch": "master", "commit": "d3f6a2eb10e9d1df622b2dbc7e6fd449073582bd" },
+  "nvim-devdocs": { "branch": "master", "commit": "cff7c202c732aa5d8925989c39dd512815d19194" },
   "nvim-early-retirement": { "branch": "main", "commit": "a35c7488972da70acca376de133f25035c0aa9f0" },
   "nvim-genghis": { "branch": "main", "commit": "13b773cb3935b25962b0e00ff0795cce6be2eb1e" },
   "nvim-github-codesearch": { "branch": "main", "commit": "f3404faffd152f6852fcb005e40fe36889fc02b1" },
