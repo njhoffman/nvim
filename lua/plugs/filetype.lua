@@ -67,6 +67,20 @@ local plugins = {
     -- event = { "BufReadPost", "BufNewFile" },
     -- ft = "json",
   },
+  {
+    -- quickfix file renamer
+    dir = 'gabrielpoca/replacer.nvim',
+    opts = { rename_files = false },
+    keys = {
+      {
+        '<leader>h',
+        function()
+          require('replacer').run()
+        end,
+        desc = 'run replacer.nvim',
+      },
+    },
+  },
   { 'kevinhwang91/nvim-bqf', cmd = { 'BqfEnable', 'BqfToggle' }, ft = 'qf' },
   { 'herringtondarkholme/yats.vim', ft = 'typescript', lazy = lz_syn },
   { 'AckslD/nvim-FeMaco.lua', ft = { 'markdown', 'pandoc' } },

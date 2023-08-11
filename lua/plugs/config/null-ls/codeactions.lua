@@ -20,5 +20,5 @@ return {
     command = 'proselint',
     args = { '--json' },
   }),
-  require('typescript.extensions.null-ls.code-actions'),
+  -- require('typescript.extensions.null-ls.code-actions'),
 }

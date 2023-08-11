@@ -11,7 +11,7 @@ local plugins = require('plugs.config.telescope.plugins')
 local hide_preview = false
 
 local entry_display = require('telescope.pickers.entry_display')
-local telescope_utils = require('telescope.previewers.utils')
+local telescope_utils = require('telescope.utils')
 
 local currwidth = vim.api.nvim_win_get_width(vim.api.nvim_get_current_win())
 
@@ -137,7 +137,7 @@ local telescope_config = {
             })
           end,
           filename = entry.filename,
-          ordinal = utils.transform_path({}, entry.filename) .. entry.type,
+          ordinal = telescope_utils.transform_path({}, entry.filename) .. entry.type,
           lnum = entry.lnum,
           col = entry.col,
           type = entry.type,

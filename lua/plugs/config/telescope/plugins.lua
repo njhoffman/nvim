@@ -21,6 +21,7 @@ local tele_plugs = {
     ['show_http_headers'] = false,
     ['show_domain_icons'] = true,
   },
+
   ['devhints'] = {},
   ['messages'] = {},
   ['env'] = {},
@@ -93,9 +94,20 @@ local tele_plugs = {
   },
   ['variables'] = {},
   ['which-key'] = {},
+
   -- 3rd party to sort through
+
   ['aerial'] = {},
   ['asynctasks'] = {},
+  ['ast_grep'] = {
+    command = {
+      'sg',
+      '--json=stream',
+      '-p',
+    }, -- must have --json and -p
+    grep_open_files = false, -- search in opened files
+    lang = nil, -- string value, sepcify language for ast-grep `nil` for default
+  },
   ['bookmarks'] = {
     selected_browser = 'chrome',
     url_open_command = 'xdg-open',

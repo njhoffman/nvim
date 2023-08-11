@@ -58,6 +58,68 @@ local plugins = {
     event = { 'BufReadPre', 'BufNewFile' },
   },
   {
+    'echasnovski/mini.clue',
+    version = false,
+    config = function()
+      local miniclue = require('mini.clue')
+      miniclue.setup({
+        triggers = {
+          -- Leader triggers
+          { mode = 'n', keys = '<Leader>' },
+          { mode = 'x', keys = '<Leader>' },
+
+          -- Built-in completion
+          { mode = 'i', keys = '<C-x>' },
+
+          -- `g` key
+          { mode = 'n', keys = 'g' },
+          { mode = 'x', keys = 'g' },
+
+          -- Marks
+          { mode = 'n', keys = "'" },
+          { mode = 'n', keys = '`' },
+          { mode = 'x', keys = "'" },
+          { mode = 'x', keys = '`' },
+
+          -- Registers
+          { mode = 'n', keys = '"' },
+          { mode = 'x', keys = '"' },
+          { mode = 'i', keys = '<C-r>' },
+          { mode = 'c', keys = '<C-r>' },
+
+          -- Window commands
+          { mode = 'n', keys = '<C-w>' },
+
+          -- `z` key
+          { mode = 'n', keys = 'z' },
+          { mode = 'x', keys = 'z' },
+        },
+
+        clues = {
+          -- Enhance this by adding descriptions for <Leader> mapping groups
+          miniclue.gen_clues.builtin_completion(),
+          miniclue.gen_clues.g(),
+          miniclue.gen_clues.marks(),
+          miniclue.gen_clues.registers(),
+          miniclue.gen_clues.windows(),
+          miniclue.gen_clues.z(),
+        },
+        -- Clue window settings
+        window = {
+          -- Floating window config
+          config = {},
+
+          -- Delay before showing clue window
+          delay = 300,
+
+          -- Keys to scroll inside the clue window
+          scroll_down = '<C-f>',
+          scroll_up = '<C-b>',
+        },
+      })
+    end,
+  },
+  {
     'echasnovski/mini.indentscope',
     event = { 'BufReadPre', 'BufNewFile' },
     init = function()
@@ -88,6 +150,17 @@ local plugins = {
     dependencies = 'kevinhwang91/promise-async',
     cmd = { 'UfoEnable', 'UfoAttach', 'UfoEnableFold' },
     event = { 'BufReadPost', 'InsertEnter' },
+  },
+  {
+    'MaximilianLloyd/tw-values.nvim',
+    -- ft = 'typescriptreact, typescript, astro, vue, svelte, html'
+    keys = {
+      { '<leader>sv', '<cmd>TWValues<cr>', desc = 'Show tailwind CSS values' },
+    },
+    opts = {
+      border = 'rounded', -- Valid window border style,
+      show_unknown_classes = true, -- Shows the unknown classes popup
+    },
   },
   {
     'matbme/JABS.nvim',

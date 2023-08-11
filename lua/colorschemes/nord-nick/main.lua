@@ -4,73 +4,6 @@
 local lush = require('lush')
 local hsl = lush.hsl
 local clrutil = require('utils.colors')
-local spacemacs = {
-  act1 = { '#222226', 235, 'act1' },
-  bg0 = { '#292b2e', 16, 'bg0' },
-  bg1 = { '#212026', 235, 'bg1' },
-  bg2 = { '#100a14', 233, 'bg2' },
-  bg3 = { '#0a0814', 16, 'bg3' },
-  bg4 = { '#34323e', 59, 'bg4' },
-  fg0 = { '#cdcdcd', 252, 'fg0' },
-  fg1 = { '#b2b2b2', 249, 'fg1' },
-  fg2 = { '#8e8e8e', 245, 'fg2' },
-  fg3 = { '#727272', 243, 'fg3' },
-  fg4 = { '#9a9aba', 247, 'fg4' },
-  fg5 = { '#5e5079', 241, 'fg5' },
-  --fg6      = {'#666666', 241, 'fg7'},
-  grey = { '#44505c', 239, 'grey' },
-  grey1 = { '#768294', 102, 'grey1' },
-  red1 = { '#ce537a', 168, 'red1' },
-  blue1 = { '#7590db', 68, 'blue1' },
-  purple0 = { '#bc6ec5', 104, 'purple0' },
-  purple1 = { '#d698fe', 177, 'purple1' },
-  purple2 = { '#a45bad', 245, 'purple2' },
-  purple3 = { '#5d4d7a', 241, 'purple3' },
-  purple4 = { '#34323e', 59, 'purple4' },
-  aqua0 = { '#2d9574', 30, 'aqua0' },
-  orange0 = { '#e18254', 246, 'orange0' },
-  cyan = { '#28def0', 45, 'cyan' },
-  mat = { '#86dc2f', 245, 'mat' },
-  meta = { '#9f8766', 137, 'meta' },
-  spacelight = { '#444155', 238, 'spacelight' }, -- highlight seems to be an illegal keyword here,
-  comp = { '#c56ec3', 248, 'comp' },
-  cblk = { '#cbc1d5', 252, 'cblk' },
-  -- ui_fg   = {},
-  ui_activ = { '#5d4d7a', 241, 'ui_activ' },
-  -- Terminal Colors,
-  tc8 = { '#5b5b5b', 240, 'tc8' },
-  tc9 = { '#44505c', 239, 'tc9' },
-  tc13 = { '#4f97d7', 68, 'tc13' },
-  tc14 = { '#bc6ec5', 104, 'tc14' },
-  tc15 = { '#2d9574', 30, 'tc15' },
-  tc16 = { '#bc6ec5', 104, 'tc16' },
-  -- local foreg = {"#5b5b5b", 240, "fg"}
-  -- local red = {"#f2241f", 196, "red"}
-  -- local red0 = {"#f54e3c", 244, "red0"}
-  -- local blue = {"#58b0d9", 247, "blue"}
-  -- local blue0 = {"#4f97d7", 68, "blue0"}
-  -- local purple = {"#544a65", 59, "purple"}
-  -- local green = {"#67b11d", 242, "green"}
-  -- local green0 = {"#2aa1ae", 244, "green0"}
-  -- local aqua = {"#4495b4", 244, "aqua"}
-  -- local orange = {"#d79650", 246, "orange"}
-  -- local yellow = {"#b1951d", 136, "yellow"}
-  -- local yellow1 = {"#e5d11c", 247, "yellow1"}
-  -- local war = {"#dc752f", 244, "war"}
-  -- local number = {"#e697e6", 252, "number"}
-  -- local debug = {"#ffc8c8", 224, "debug"}
-  -- local float = {"#b7b7ff", 147, "float"}
-  -- local delim = {"#74baac", 247, "delim"}
-  --
-  -- local tc2 = {"#d26487", 168, "tc2"}
-  -- local tc3 = {"#35a8a5", 73, "tc3"}
-  -- local tc4 = {"#b89f33", 244, "tc4"}
-  -- local tc5 = {"#6981c5", 246, "tc5"}
-  -- local tc6 = {"#a15ea7", 133, "tc6"}
-  -- local tc7 = {"#288668", 240, "tc7"}
-  -- local tc10 = {"#f2241f", 196, "tc10"}
-  -- local tc12 = {"#a15ea7", 133, "tc12"}
-}
 
 local tokyoColors = {
   none = 'NONE',
@@ -1004,14 +937,6 @@ return function(injected_functions)
     GitSignsDeleteFaded({ fg = clr_over.red_faded }),
     GitSignsDeleteNrFaded({ fg = clr_over.red_faded }),
     GitSignsDeleteLnFaded({ fg = clr_over.red_faded }),
-
-    -- CybuFocus guifg=#8396b9 guibg=#101840 Operator
-    -- CybuAdjacent guifg=#4a647b
-    -- CybuBackgrou links to Normal
-    -- CybuBorder links to FloatBorder
-    -- CybuInfobar links to StatusLine
-
-    -- GitSigns
     GitSignsAdd({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
     GitSignsAddNr({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
     GitSignsAddLn({ fg = clrs.nord14 }), -- diff mode: Added line |diff.txt|
@@ -1021,5 +946,20 @@ return function(injected_functions)
     GitSignsDelete({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
     GitSignsDeleteNr({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
     GitSignsDeleteLn({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
+
+    -- CybuFocus guifg=#8396b9 guibg=#101840 Operator
+    -- CybuAdjacent guifg=#4a647b
+    -- CybuBackgrou links to Normal
+    -- CybuBorder links to FloatBorder
+    -- CybuInfobar links to StatusLine
+
+    -- MiniClue
+    -- MiniClueBorder({ FloatBorder }),
+    MiniClueNextKey({ fg = '#07c0f7' }), -- MiniClueNextKey({DiagnosticFloatingHint})
+    MiniClueDescSingle({ gui = 'italic' }), -- MiniClueDescSingle({NormalFloat}),
+    -- MiniClueDescGroup({DiagnosticFloatingWarn}),
+    -- MiniClueNextKeyWithPostkeys({DiagnosticFloatingError}),
+    MiniClueSeparator({ fg = '#333344' }), -- MiniClueSeparator({DiagnosticFloatingInfo})
+    MiniClueTitle({ fg = '#f38080' }), -- MiniClueTitle({Title})
   }
 end

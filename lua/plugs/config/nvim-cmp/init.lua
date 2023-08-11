@@ -237,13 +237,12 @@ local sources = {
     },
   },
   cmdline = {
+    { name = 'cmdline_history', max_item_count = 3, keyword_length = 4 },
     { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
     {
       name = 'cmdline',
       option = { ignore_cmds = { 'Man', '!' } },
     },
-
-    { name = 'cmdline_history', max_item_count = 5, keyword_length = 3 },
   },
   -- cmdline = {
   --   { name = 'cmdline' },
@@ -300,6 +299,8 @@ local mapping = {
     ['<C-x><C-s>'] = cmp.mapping.complete({ config = { sources = { { name = 'luasnip' } } } }),
     ['<Up>'] = cmp.mapping.scroll_docs(-1),
     ['<Down>'] = cmp.mapping.scroll_docs(1),
+    ['<C-p>'] = cmp.mapping.select_prev_item({ count = 1 }),
+    ['<C-n>'] = cmp.mapping.select_next_item({ count = 1 }),
     ['<C-Up>'] = cmp.mapping.scroll_docs(-6),
     ['<C-Down>'] = cmp.mapping.scroll_docs(6),
     ['<M-b>'] = cmp.mapping.scroll_docs(-6),
@@ -309,7 +310,7 @@ local mapping = {
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<C-d>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
     ['<Tab>'] = cmp.mapping(function(fallback)
       --     return require('luasnip').jumpable(1) and '<Plug>luasnip-jump-next' or '<tab>'
       if cmp.visible() then
@@ -438,6 +439,11 @@ local mapping = {
 local types = require('cmp.types')
 
 cmp.setup({
+  -- enabled = function ()
+  --     buftype = vim.api.nvim_buf_get_option(0, "buftype")
+  --     if buftype == "prompt" then return false end
+  --     return true
+  -- end,
   completion = {
     completeopt = 'menu,menuone,noselect',
     -- completeopt = 'menuone,noselect,noinsert',
@@ -489,40 +495,9 @@ cmp.setup({
     },
     --   native_menu = true,
   },
-
-  -- fields = {
-  --   "menu",
-  --   "abbr",
-  --   "kind",
-  -- },
-  -- -- offset, exact, score, recently_used, locality, kind, sort_text, length, order
-
-  --   local vim_item = {
-  --     word = word,
-  --     abbr = abbr,
-  --     kind = cmp_opts.kind_text or types.lsp.CompletionItemKind[self:get_kind()] or types.lsp.CompletionItemKind[1],
-  --     kind_hl_group = cmp_opts.kind_hl_group,
-  --     menu = menu,
-  --     dup = self:get_completion_item().dup or 1,
-  --   }
-  -- -- format = function(entry, vim_item)
-  --   local label = vim_item.abbr
-  --   local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
-  --   if truncated_label ~= label then
-  --     vim_item.abbr = truncated_label .. ELLIPSIS_CHAR
-  --   elseif string.len(label) < MIN_LABEL_WIDTH then
-  --     local padding = string.rep(" ", MIN_LABEL_WIDTH - string.len(label))
-  --     vim_item.abbr = label .. padding
-  --   end
-  --   vim_item.dup = ({ nvim_lua = 0 })[entry.source.name] or 1
-  --   vim_item.menu = sources.names[entry.source.name] .. " "
-  --   vim_item.kind = " " .. sources.symbols[vim_item.kind]
-  --   return vim_item
-  -- end,
-
   formatting = {
-    -- format = require('tailwindcss-colorizer-cmp').formatter,
     fields = { 'menu', 'abbr', 'kind' },
+    -- format = require('tailwindcss-colorizer-cmp').formatter,
     format = function(entry, vim_item)
       local label = vim_item.abbr or ''
       local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
@@ -541,7 +516,7 @@ cmp.setup({
       })[entry.source.name] or 1
       vim_item.menu = source.names[entry.source.name][1] .. ' '
       vim_item.menu_hl_group = source.names[entry.source.name][2]
-      if type(source.symbols[vim_item.kind]) == nil then
+      if type(source.symbols[vim_item.kind]) == 'nil' then
         vim.notify('No sourcce symbol: ' .. vim_item.kind, 2)
         vim_item.kind = ' '
       else

@@ -3,6 +3,35 @@ local utils = require('utils.lazy')
 local plugins = {
   { 'echasnovski/mini.fuzzy', event = 'VeryLazy', version = false },
   {
+    'luckasRanarison/nvim-devdocs',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'telescope.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    -- run = 'DevdocsFetch',
+    opts = {
+      dir_path = vim.fn.stdpath('data') .. '/devdocs', -- installation directory
+      telescope = {}, -- passed to the telescope picker
+      telescope_alt = {}, -- when searching globally without preview
+      float_win = { -- passed to nvim_open_win(), see :h api-floatwin
+        relative = 'editor',
+        height = 25,
+        width = 100,
+        border = 'rounded',
+      },
+      wrap = false, -- text wrap
+      ensure_installed = {}, -- get automatically installed
+      -- DevdocsFetch: Fetch DevDocs metadata.
+      -- DevdocsInstall: Install documentation, 0-n args.
+      -- DevdocsUninstall: Uninstall documentation, 0-n args.
+      -- DevdocsOpen: Open documentation in a normal buffer, 0 or 1 arg.
+      -- DevdocsOpenFloat: Open documentation in a floating window, 0 or 1 arg.
+      -- DevdocsUpdate: Update documentation, 1-n args.
+      -- DevdocsUpdateAll: Update all documentations.
+    },
+  },
+  {
     'prochri/telescope-all-recent.nvim',
     dependencies = { 'telescope.nvim', 'kkharji/sqlite.lua', 'telescope-ui-select.nvim', 'dressing.nvim' },
     config = function()
@@ -127,7 +156,7 @@ local plugins = {
       }
       return default_config
     end,
-    -- elescope does not provide the relevant hooks/callback functions to build this nicely. So, this plugin first stores some of the original functions and then overrides them:
+    -- Telescope does not provide the relevant hooks/callback functions to build this nicely. So, this plugin first stores some of the original functions and then overrides them:
     -- calls to telescope.builtin and telescope.extensions[extension_name] are overriden. This allows us to get the name of the called picker.
     -- the Picker:new is replaced. We want to get all information we can about what picker we are dealing with.
     -- the Sorter:new function is replaced to allow us to insert a custom sorting function, which boosts the scores of (f)recent items by a small amount.
@@ -143,8 +172,9 @@ local plugins = {
   },
   {
     'njhoffman/telescope.nvim', -- "nvim-telescope/telescope.nvim",
+    -- commit = '4f9aabc',
     -- dir = "~/git/telescope.nvim", -- "nvim-telescope/telescope.nvim",
-    event = 'VeryLazy',
+    -- event = 'VeryLazy',
     cmd = 'Telescope',
     dependencies = {
       'ElPiloto/telescope-vimwiki.nvim',
@@ -164,6 +194,7 @@ local plugins = {
       'nvim-tree/nvim-web-devicons',
       'lpoto/telescope-docker.nvim',
       'molecule-man/telescope-menufacture',
+      'Marskey/telescope-sg',
       'nat-418/telescope-color-names.nvim',
       'nvim-lua/plenary.nvim',
       'nvim-lua/popup.nvim',
@@ -195,6 +226,10 @@ local plugins = {
       {
         'nvim-telescope/telescope-smart-history.nvim',
         dependencies = { 'kkharji/sqlite.lua' },
+      },
+      {
+        'mvaldes14/terraform.nvim',
+        dependencies = { 'plenary.nvim', 'nui.nvim' },
       },
       { 'kkharji/sqlite.lua', run = 'luarocks install sqlite luv' },
       -- { "nvim-telescope/telescope-frecency.nvim", dependencies = { "kkharji/sqlite.lua" } },

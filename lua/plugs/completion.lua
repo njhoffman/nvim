@@ -26,6 +26,7 @@ local plugins = {
       {
         'zbirenbaum/copilot-cmp',
         dependencies = 'copilot.lua',
+        commit = 'c2cdb3c',
         opts = {},
         config = function(_, opts)
           local copilot_cmp = require('copilot_cmp')

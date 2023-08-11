@@ -103,6 +103,12 @@ local plugins = {
     },
   },
   {
+    'projekt0n/github-nvim-theme',
+    config = function()
+      require('github-theme').setup({})
+    end,
+  },
+  {
     -- Tons of awesome color schemes in base16. Really nice!
     'RRethy/nvim-base16',
     event = 'User ColorSchemeLoad',
