@@ -59,14 +59,28 @@ local plugins = {
   },
   {
     'echasnovski/mini.clue',
+    event = { 'VeryLazy' },
     version = false,
     config = function()
       local miniclue = require('mini.clue')
+      local mapper_clues = require('mapper').clues or {}
+      local clues = vim.tbl_flatten({
+        miniclue.gen_clues.builtin_completion(),
+        miniclue.gen_clues.g(),
+        miniclue.gen_clues.marks(),
+        -- miniclue.gen_clues.registers(),
+        miniclue.gen_clues.windows(),
+        miniclue.gen_clues.z(),
+      })
+      for _, clue_item in ipairs(mapper_clues) do
+        table.insert(clues, clue_item)
+      end
+
       miniclue.setup({
         triggers = {
           -- Leader triggers
-          { mode = 'n', keys = '<Leader>' },
-          { mode = 'x', keys = '<Leader>' },
+          { mode = 'n', keys = '<leader>' },
+          { mode = 'x', keys = '<leader>' },
 
           -- Built-in completion
           { mode = 'i', keys = '<C-x>' },
@@ -82,8 +96,8 @@ local plugins = {
           { mode = 'x', keys = '`' },
 
           -- Registers
-          { mode = 'n', keys = '"' },
-          { mode = 'x', keys = '"' },
+          -- { mode = 'n', keys = '"' },
+          -- { mode = 'x', keys = '"' },
           { mode = 'i', keys = '<C-r>' },
           { mode = 'c', keys = '<C-r>' },
 
@@ -94,17 +108,7 @@ local plugins = {
           { mode = 'n', keys = 'z' },
           { mode = 'x', keys = 'z' },
         },
-
-        clues = {
-          -- Enhance this by adding descriptions for <Leader> mapping groups
-          miniclue.gen_clues.builtin_completion(),
-          miniclue.gen_clues.g(),
-          miniclue.gen_clues.marks(),
-          miniclue.gen_clues.registers(),
-          miniclue.gen_clues.windows(),
-          miniclue.gen_clues.z(),
-        },
-        -- Clue window settings
+        clues = clues,
         window = {
           -- Floating window config
           config = {},
@@ -113,8 +117,8 @@ local plugins = {
           delay = 300,
 
           -- Keys to scroll inside the clue window
-          scroll_down = '<C-f>',
-          scroll_up = '<C-b>',
+          scroll_down = '<M-f>',
+          scroll_up = '<M-b>',
         },
       })
     end,
@@ -143,7 +147,13 @@ local plugins = {
   },
   { 'm00qek/baleia.nvim', event = 'VeryLazy' },
   { 'folke/zen-mode.nvim', cmd = 'ZenMode', keys = { '<CR>' } },
-  { 'tversteeg/registers.nvim', event = 'VimEnter', cmd = 'Registers' },
+  { 'tversteeg/registers.nvim',
+    cmd = 'Registers',
+    keys = {
+      { '"', mode = { 'n', 'v' } },
+      { '<C-R>', mode = 'i' },
+    },
+  },
   { 'folke/twilight.nvim', cmd = { 'Twilight', 'TwilightEnable' } },
   {
     'kevinhwang91/nvim-ufo',
@@ -161,6 +171,63 @@ local plugins = {
       border = 'rounded', -- Valid window border style,
       show_unknown_classes = true, -- Shows the unknown classes popup
     },
+  },
+  {
+    '3rd/image.nvim',
+    event = 'VeryLazy',
+    dependencies = { { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' } },
+    opts = {
+      backend = 'ueberzug',
+      integrations = {
+        markdown = {
+          enabled = true,
+          sizing_strategy = 'auto',
+          download_remote_images = true,
+          clear_in_insert_mode = false,
+        },
+        neorg = {
+          enabled = true,
+          download_remote_images = true,
+          clear_in_insert_mode = false,
+        },
+      },
+      max_width = nil,
+      max_height = nil,
+      max_width_window_percentage = nil,
+      max_height_window_percentage = 50,
+      window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
+      -- window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
+      -- kitty_method = "normal",
+      -- kitty_tmux_write_delay = 10, -- makes rendering more reliable with Kitty+Tmux
+    },
+    -- local api = require("image")
+    --
+    -- -- from a file (absolute path)
+    -- local image = api.from_file("/path/to/image.png", {
+    --   id = "my_image_id", -- optional, defaults to a random string
+    --   window = 1000, -- optional, binds image to a window and its bounds
+    --   buffer = 1000, -- optional, binds image to a buffer (paired with window binding)
+    --   with_virtual_padding = true, -- optional, pads vertically with extmarks
+    --   ...geometry, -- optional, { x, y, width, height }
+    -- })
+    --
+    -- -- from a URL
+    -- local image = api.from_file("https://gist.ro/s/remote.png", {
+    --   id = "my_image_id", -- optional, defaults to a random string
+    --   window = 1000, -- optional, binds image to a window and its bounds
+    --   buffer = 1000, -- optional, binds image to a buffer (paired with window binding)
+    --   with_virtual_padding = true, -- optional, pads vertically with extmarks
+    --   ...geometry, -- optional, { x, y, width, height }
+    -- })
+    --
+    -- image:render() -- render image
+    -- image:render(geometry) -- update image geometry and render it
+    -- image:clear()
+    --
+    -- image:move(x, y) -- move image
+    -- image:brightness(value) -- change brightness
+    -- image:saturation(value) -- change saturation
+    -- image:hue(value) -- change hue
   },
   {
     'matbme/JABS.nvim',

@@ -64,9 +64,9 @@ local get_theme = function(theme)
       winblend = 20,
       layout_config = { height = 15 },
     }),
-    minimal = require('telescope.themes').get_minimal({
-      winblend = 20,
-    }),
+    -- minimal = require('telescope.themes').get_minimal({
+    --   winblend = 20,
+    -- }),
   }
 
   if theme == '' or theme == 'flex' then

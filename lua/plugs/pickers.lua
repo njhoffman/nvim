@@ -171,11 +171,11 @@ local plugins = {
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
   },
   {
-    'njhoffman/telescope.nvim', -- "nvim-telescope/telescope.nvim",
-    -- commit = '4f9aabc',
-    -- dir = "~/git/telescope.nvim", -- "nvim-telescope/telescope.nvim",
-    -- event = 'VeryLazy',
+    -- 'njhoffman/telescope.nvim',
+    -- 'nvim-telescope/telescope.nvim',
+    dir = '~/git/telescope.nvim',
     cmd = 'Telescope',
+    event = 'VeryLazy',
     dependencies = {
       'ElPiloto/telescope-vimwiki.nvim',
       'LinArcX/telescope-changes.nvim',

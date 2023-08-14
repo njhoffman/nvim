@@ -29,6 +29,7 @@ local formatters = {
   'sqlfmt',
   'standardrb',
   -- 'standardts',
+  'stylelint',
   'stylua',
   -- 'terrafmt',
   -- terraform_fmt,

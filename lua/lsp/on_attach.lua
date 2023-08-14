@@ -59,6 +59,9 @@ local on_attach = function(client, bufnr)
   if client.name == 'lua_ls' then
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
+  elseif client.name == 'cssls' then
+    vim.dbglog(client.server_capabilities)
+    client.server_capabilities.textDocument.completion.completionItem.snippetSupport = true
   end
   capabilities.resolve(client, bufnr)
 end

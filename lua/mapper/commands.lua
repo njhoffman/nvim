@@ -46,7 +46,9 @@ end
 local prefix = function(modes, prefix, name)
   modes = type(modes) ~= 'table' and { modes } or modes
   for _, mode in ipairs(modes) do
-    wk.register({ [prefix] = { name = '+' .. name }, { mode = mode } })
+    local desc = '+' .. name
+    records.add(true, mode, prefix, nil, { desc = desc })
+    wk.register({ [prefix] = { name = desc }, { mode = mode } })
   end
 end
 

@@ -894,6 +894,8 @@ return function(injected_functions)
     --     WhichKeyGroup = { fg = clrs.text },
     --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
     --     WhichKeySeperator = { fg = clrs.fg },
+    -- NavbuddyName({ fg = '#eceff4', bg = '#5d61ec' }),
+    NavbuddyName({ bg = '#40112c' }),
     NavbuddyTitleBorder({ fg = '#222222' }),
     -- NavbuddyNormalTitle({ fg = "#222222" }),
 

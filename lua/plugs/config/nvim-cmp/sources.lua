@@ -121,6 +121,7 @@ local lsp_symbols = {
   Repeat          = '',
   Snippet         = '', --   Snippet     = "󰅱 ",
   String          = "",
+  StringRegex     = "縷",
   Struct          = '󰟦', --   Struct      = "󰙅 ",
   Text            = '', --   Text        = " ",
   TypeParameter   = '󰊄',

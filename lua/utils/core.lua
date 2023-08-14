@@ -3,18 +3,18 @@ local utils = {}
 
 function utils.error(modl, message)
   vim.cmd([[echohl ErrorMsg]])
-  vim.cmd('echo "[' .. modl .. "]: " .. message .. '"')
+  vim.cmd('echo "[' .. modl .. ']: ' .. message .. '"')
   vim.cmd([[echohl Normal]])
 end
 
 function utils.warning(modl, message)
   vim.cmd([[echohl WarningMsg]])
-  vim.cmd('echo "[' .. modl .. "]: " .. message .. '"')
+  vim.cmd('echo "[' .. modl .. ']: ' .. message .. '"')
   vim.cmd([[echohl Normal]])
 end
 
 function utils.info(modl, message)
-  vim.cmd('echo "[' .. modl .. "]: " .. message .. '"')
+  vim.cmd('echo "[' .. modl .. ']: ' .. message .. '"')
 end
 
 -- Creating an autocommand in 0.7
@@ -51,14 +51,14 @@ function utils.define_augroups(definitions) -- {{{1
     --   )
     -- end
 
-    vim.cmd("augroup " .. group_name)
-    vim.cmd("autocmd!")
+    vim.cmd('augroup ' .. group_name)
+    vim.cmd('autocmd!')
     for _, def in pairs(definition) do
-      local command = table.concat(vim.tbl_flatten { "autocmd", def }, " ")
+      local command = table.concat(vim.tbl_flatten({ 'autocmd', def }), ' ')
       vim.cmd(command)
     end
 
-    vim.cmd("augroup END")
+    vim.cmd('augroup END')
   end
 end
 
@@ -75,9 +75,9 @@ end
 function utils.map(modes, key, result, opts)
   local options = { noremap = true, silent = true }
   if opts then
-    options = vim.tbl_extend("force", options, opts)
+    options = vim.tbl_extend('force', options, opts)
   end
-  if type(modes) == "string" then
+  if type(modes) == 'string' then
     modes = { modes }
   end
   for _, mode in ipairs(modes) do
@@ -86,17 +86,14 @@ function utils.map(modes, key, result, opts)
 end
 
 -- Terminal
-local has_toggleterm, toggleterm = pcall(require, "toggleterm")
+local has_toggleterm, toggleterm = pcall(require, 'toggleterm.terminal')
 if has_toggleterm then
-  local Terminal = require("toggleterm.terminal").Terminal
-  local lazygit =
-  Terminal:new(
-    {
-      cmd = "lazygit",
-      direction = "float",
-      hidden = true
-    }
-  )
+  local Terminal = toggleterm.Terminal
+  local lazygit = Terminal:new({
+    cmd = 'lazygit',
+    direction = 'float',
+    hidden = true,
+  })
 
   function utils._lazygit_toggle()
     lazygit:toggle()
@@ -138,12 +135,10 @@ end
 
 -- Telescope
 function utils.search_nvim()
-  require("telescope.builtin").find_files(
-    {
-      prompt_title = "Neovim Config",
-      cwd = "$HOME/.config/nvim/profiles/default/lua"
-    }
-  )
+  require('telescope.builtin').find_files({
+    prompt_title = 'Neovim Config',
+    cwd = '$HOME/.config/nvim/profiles/default/lua',
+  })
 end
 
 -- @param map {{mode, lhs, rhs, opts}, ..}
@@ -165,13 +160,13 @@ end
 
 utils.log_to_file = function(logfile)
   return function(log_value)
-    local file = io.open(logfile, "a")
+    local file = io.open(logfile, 'a')
     if not file then
       file:close()
       return
     end
 
-    file:write(log_value .. "\n")
+    file:write(log_value .. '\n')
     file:close()
   end
 end

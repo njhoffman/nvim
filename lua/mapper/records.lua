@@ -3,7 +3,7 @@ local start_time = vim.fn.reltime()
 
 local crc = require('mapper.crc')
 
-local records = { list = {}, tree = {} }
+local records = { list = {}, tree = {}, clues = {} }
 
 local idx = 0
 local function add(virtual, mode, lhs, rhs, opts, meta)
@@ -11,7 +11,6 @@ local function add(virtual, mode, lhs, rhs, opts, meta)
   idx = idx + 1
   opts = opts or {}
   meta = meta or {}
-  ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
   meta.time = vim.fn.reltimestr(vim.fn.reltime(start_time))
   meta.virtual = virtual
   local debuginfo = debug.getinfo(3, 'S')
@@ -27,8 +26,11 @@ local function add(virtual, mode, lhs, rhs, opts, meta)
     idx = idx,
   }
 
-  if virtual == true and rhs ~= nil then
-    vim.notify('Virtual mapping has rhs: ' .. record.mode .. ' ' .. record.lhs .. '\n' .. vim.inspect(record), 3)
+  if virtual == true then
+    if rhs ~= nil then
+      vim.notify('Virtual mapping has rhs: ' .. record.mode .. ' ' .. record.lhs .. '\n' .. vim.inspect(record), 3)
+    end
+    table.insert(records.clues, { mode = record.mode, keys = record.lhs, desc = opts.desc })
   end
 
   if vim.tbl_contains(records.list, unique_id) then
@@ -80,5 +82,6 @@ end
 return {
   tree = records.tree,
   list = records.list,
+  clues = records.clues,
   add = add,
 }

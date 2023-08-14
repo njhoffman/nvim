@@ -174,8 +174,8 @@ local opts = {
     'terminal',
   },
   excluded_filetypes = {
-    -- 'prompt',
-    -- "TelescopePrompt",
+    'prompt',
+    'TelescopePrompt',
     'noice',
   },
   marks = {

@@ -1,15 +1,15 @@
 local utils = require('utils.lazy')
 
 local plugins = {
-  { dir = '~/git/fidget.nvim', event = 'LspAttach' },
   {
     'neovim/nvim-lspconfig',
-    event = { 'BufReadPre', 'BufNewFile' },
+    -- event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       { 'williamboman/mason.nvim', cmd = 'Mason' },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'weilbith/nvim-code-action-menu',
+      'RRethy/vim-illuminate',
       'b0o/schemastore.nvim', -- for jsonls
       'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim',
       'KostkaBrukowa/definition-or-references.nvim',
@@ -56,44 +56,24 @@ local plugins = {
       vim.import('lsp.config')
     end,
   },
+  {
+    'SmiteshP/nvim-navbuddy',
+    dir = '~/git/nvim-navbuddy',
+    event = { 'BufReadPost', 'BufNewFile', 'LspAttach' },
+    cmd = { 'Navbuddy' },
+    dependencies = { 'neovim/nvim-lspconfig', 'SmiteshP/nvim-navic', 'MunifTanjim/nui.nvim' },
+  },
   -- https://github.com/onsails/diaglist.nvim
-  {
-    'RRethy/vim-illuminate',
-    event = { 'BufReadPost', 'BufNewFile' },
-    dependencies = { 'neovim/nvim-lspconfig' },
-  },
-  {
-    -- 'utilyre/barbecue.nvim',
-    dir = '~/git/barbecue.nvim',
-    name = 'barbecue',
-    version = '*',
-    lazy = false,
-    event = 'VeryLazy',
-    cmd = 'Barbecue',
-    dependencies = {
-      'neovim/nvim-lspconfig',
-      'SmiteshP/nvim-navic',
-      'nvim-tree/nvim-web-devicons',
-    },
-  },
   {
     'ray-x/go.nvim',
     dependencies = { 'ray-x/guihua.lua' },
     ft = 'go',
-    event = 'LspAttach',
-    -- event = { "BufReadPost", "BufNewFile" },
-  },
-  {
-    'SmiteshP/nvim-navbuddy',
-    dir = '~/git/nvim-navbuddy',
-    lazy = false,
-    cmd = { 'Navbuddy' },
-    dependencies = { 'neovim/nvim-lspconfig', 'SmiteshP/nvim-navic', 'MunifTanjim/nui.nvim' },
+    -- event = 'LspAttach',
+    -- event = { 'BufReadPost', 'BufNewFile' },
   },
   {
     'jose-elias-alvarez/null-ls.nvim',
-    event = 'LspAttach',
-    -- event = { "BufReadPre", "BufNewFile" },
+    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       'nvim-lua/plenary.nvim',
       'ThePrimeagen/refactoring.nvim',
@@ -104,8 +84,9 @@ local plugins = {
   { 'mfussenegger/nvim-lint', event = { 'BufReadPre', 'BufNewFile' } },
   {
     'stevearc/aerial.nvim',
+    event = { 'BufReadPre', 'BufNewFile' },
     -- event = "BufReadPost",
-    event = 'LspAttach',
+    -- event = 'LspAttach',
     cmd = { 'AerialToggle', 'AerialNext', 'AerialGo', 'AerialOpen', 'AerialPrev', 'AerialOpenAll' },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },

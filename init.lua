@@ -1,7 +1,8 @@
 -- strace gvim -V9log.txt file.tex > stdout.txt 2> stderr.txt
 
+-- require('preload')
 require('globals')
-require('utils.lazy').setup({ cache = false, reload = false })
+require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
 
 for _, mod_name in ipairs({
   'keymaps',

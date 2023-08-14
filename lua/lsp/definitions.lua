@@ -6,6 +6,7 @@ local display_keys = {
   'completionProvider',
   'declarationProvider',
   'definitionProvider',
+  'diagnosticsProvider',
   'documentFormattingProvider',
   'documentHighlightProvider',
   'documentRangeFormattingProvider',
@@ -14,13 +15,45 @@ local display_keys = {
   'implementationProvider',
   'referencesProvider',
   'renameProvider',
-  -- 'semanticTokensProvider',
   'signatureHelpProvider',
   'typeDefinitionProvider',
   'workspace',
   'workspaceSymbolProvider',
   -- "executeCommandProvider",
+  -- 'semanticTokensProvider',
 }
+
+-- - callHierarchy/incomingCalls
+-- - callHierarchy/outgoingCalls
+-- - textDocument/codeAction
+-- - textDocument/completion
+-- - textDocument/declaration*
+-- - textDocument/definition
+-- - textDocument/diagnostic
+-- - textDocument/documentHighlight
+-- - textDocument/documentSymbol
+-- - textDocument/formatting
+-- - textDocument/hover
+-- - textDocument/implementation*
+-- - textDocument/inlayHint
+-- - textDocument/publishDiagnostics
+-- - textDocument/rangeFormatting
+-- - textDocument/references
+-- - textDocument/rename
+-- - textDocument/semanticTokens/full
+-- - textDocument/semanticTokens/full/delta
+-- - textDocument/signatureHelp
+-- - textDocument/typeDefinition*
+-- - window/logMessage
+-- - window/showMessage
+-- - window/showDocument
+-- - window/showMessageRequest
+-- - workspace/applyEdit
+-- - workspace/configuration
+-- - workspace/executeCommand
+-- - workspace/inlayHint/refresh
+-- - workspace/symbol
+-- - workspace/workspaceFolders
 
 return { display_keys = display_keys }
 

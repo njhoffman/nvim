@@ -24,6 +24,7 @@ local tele_plugs = {
 
   ['devhints'] = {},
   ['messages'] = {},
+  ['enhanced_find_files'] = {},
   ['env'] = {},
   -- ['fences'] = {},
   ['filetypes'] = {},

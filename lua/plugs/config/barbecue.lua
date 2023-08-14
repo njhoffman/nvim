@@ -44,69 +44,13 @@ local theme = {
   bg_1 = '#10101a',
   -- bg_1 = "#101026",
   modified_fg = '#fb6b6b',
-}
 --     󰅁                       
 -- TODO: gradient arrow sections
 -- TODO: right-hand orientation
 -- {"",""} {"󰅁" "󰅂"}
+}
 
 local cfg = {
-  -- kinds = {
-  --   File = "",
-  --   Module = "",
-  --   Namespace = "",
-  --   Package = "",
-  --   Class = "",
-  --   Method = "",
-  --   Property = "",
-  --   Field = "",
-  --   Constructor = "",
-  --   Enum = "",
-  --   Interface = "",
-  --   Function = "",
-  --   Variable = "",
-  --   Constant = "",
-  --   String = "",
-  --   Number = "",
-  --   Boolean = "",
-  --   Array = "",
-  --   Object = "",
-  --   Key = "",
-  --   Null = "",
-  --   EnumMember = "",
-  --   Struct = "",
-  --   Event = "",
-  --   Operator = "",
-  --   TypeParameter = "",
-  -- },
-  -- icons = {
-  --     File = ' ',
-  --     Module = ' ',
-  --     Namespace = ' ',
-  --     Package = ' ',
-  --     Class = ' ',
-  --     Method = ' ',
-  --     Property = ' ',
-  --     Field = ' ',
-  --     Constructor = ' ',
-  --     Enum = ' ',
-  --     Interface = ' ',
-  --     Function = ' ',
-  --     Variable = ' ',
-  --     Constant = ' ',
-  --     String = ' ',
-  --     Number = ' ',
-  --     Boolean = ' ',
-  --     Array = ' ',
-  --     Object = ' ',
-  --     Key = ' ',
-  --     Null = ' ',
-  --     EnumMember = ' ',
-  --     Struct = ' ',
-  --     Event = ' ',
-  --     Operator = ' ',
-  --     TypeParameter = ' '
-  --   }
   theme = {
     normal                 = { fg = theme.fg_3, bg   = theme.bg_1, bold = false },
     dirname                = { fg = theme.fg_3, bold = false },
@@ -141,9 +85,9 @@ local cfg = {
     context_operator       = { fg = tokyoColors.green2 },
     context_type_parameter = { fg = tokyoColors.green2 },
   },
-  -- exclude_filetypes = {},
-
+  exclude_filetypes = { "netrw", "toggleterm" },
   exclude_buftypes = {'nofile'},
+  modified = function(bufnr) return vim.bo[bufnr].modified end,
   project  = { show = false },
   dirname  = { show = true },
   basename = { show = true, show_modified = true },
@@ -154,12 +98,14 @@ local cfg = {
   --   follow_icon_color = true,
   -- },
   symbols = {
-    separators = { '󰅁', '󰅂' },
+    -- separators = { '󰅁', '󰅂' },
+    separators = '󰅂',
   },
   lead_custom_section = function()
     return ' '
   end,
 }
+
 
 require('barbecue').setup(cfg)
 

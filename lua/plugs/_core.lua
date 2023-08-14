@@ -3,7 +3,7 @@ local utils = require('utils.lazy')
 vim.g.barbar_auto_setup = false
 
 local plugins = {
-  { 'folke/lazy.nvim', lazy = false, version = '*' },
+  { 'folke/lazy.nvim', lazy = false },
   -- colorscheme components should load first
   {
     'rktjmp/lush.nvim',
@@ -23,6 +23,7 @@ local plugins = {
       vim.cmd('colorscheme nord-nick')
     end,
   },
+  { 'rcarriga/nvim-notify', lazy = false },
   {
     'nvim-neo-tree/neo-tree.nvim',
     -- no lazy loading to enable netrw override
@@ -34,21 +35,32 @@ local plugins = {
   },
   -- { 'freddiehaddad/feline.nvim', branch = 'main', event = 'VimEnter', lazy = false, },
   { 'famiu/bufdelete.nvim' },
-  -- {
-  --   'romgrk/barbar.nvim',
-  --   event = 'VimEnter',
-  --   cmd = { 'BufferPrev', 'BufferNext', 'BufferDelete' },
-  --   dependencies = 'nvim-tree/nvim-web-devicons',
-  --   config = function()
-  --     local opts = {
-  --       insert_at_start = true,
-  --       auto_hide = true,
-  --     }
-  --     -- require('barbar').setup(opts)
-  --   end,
-  -- },
-  { 'rcarriga/nvim-notify', event = 'VimEnter' },
-  { 'folke/which-key.nvim', event = 'VimEnter' },
+  {
+    'utilyre/barbecue.nvim',
+    -- dir = '~/git/barbecue.nvim',
+    name = 'barbecue',
+    event = { 'BufNewFile', 'BufReadPost' },
+    cmd = 'Barbecue',
+    dependencies = {
+      'SmiteshP/nvim-navic',
+      'nvim-tree/nvim-web-devicons',
+    },
+  },
+  {
+    'romgrk/barbar.nvim',
+    enabled = false,
+    event = 'VimEnter',
+    cmd = { 'BufferPrev', 'BufferNext', 'BufferDelete' },
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    config = function()
+      local opts = {
+        insert_at_start = true,
+        auto_hide = true,
+      }
+      -- require('barbar').setup(opts)
+    end,
+  },
+  { 'folke/which-key.nvim', event = 'VeryLazy' },
   {
     'folke/noice.nvim',
     opts = {

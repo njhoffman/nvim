@@ -2,6 +2,7 @@ local utils = require('utils.lazy')
 local plugins = {
   {
     'ThePrimeagen/refactoring.nvim',
+    lazy = true,
     dependencies = {
       { 'nvim-lua/plenary.nvim' },
       { 'nvim-treesitter/nvim-treesitter' },
@@ -142,7 +143,7 @@ local plugins = {
   { 'sidebar-nvim/sidebar.nvim', cmd = { 'SidebarNvimOpen', 'SidebarNvimToggle' } },
   { 'anuvyklack/hydra.nvim', event = 'VeryLazy' },
   { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-tree/nvim-web-devicons' },
-  { 'nvim-colortils/colortils.nvim', cmd = 'Colortils' },
+  { 'nvim-colortils/colortils.nvim', cmd = 'Colortils', event = { 'BufReadPost', 'BufNewFile' } },
   { 'xeluxee/competitest.nvim', cmd = 'CompetiTestRun', dependencies = 'MunifTanjim/nui.nvim' },
   { -- A lua profiler for neovim that is discovered thanks to https://www.reddit.com/r/neovim/comments/xicxox/comment/ip2hprd
     'stevearc/profile.nvim',
@@ -302,7 +303,7 @@ local plugins = {
     dependencies = {
       'MunifTanjim/nui.nvim',
       'nvim-lua/plenary.nvim',
-      'njhoffman/telescope.nvim',
+      'telescope.nvim',
     },
   },
 }

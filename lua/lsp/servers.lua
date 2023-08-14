@@ -32,7 +32,7 @@ local servers = {
   'html',
   'intelephense',
   'jsonls',
-  'jq-lsp',
+  -- 'jqls',
   'kotlin_language_server',
   'ltex',
   'lua_ls',
@@ -81,7 +81,12 @@ require('mason-lspconfig').setup_handlers({
     -- vim.notify("setting up lsp: " .. server_name, 1)
     -- local opts = vim.tbl_deep_extend("force", opts, lspconfig[server_name] or {})
     -- local config = get_config(server_name)
+    local capabilities = lspconfig[server_name].capabilities or util.default_config.capabilities
+    if server_name == 'cssls' then
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
+    end
 
+    lspconfig[server_name].capabilities = capabilities
     lspconfig[server_name].on_attach = lspconfig[server_name].on_attach or util.default_config.on_attach
 
     -- separate tsserver setup using jose-elias-alvarez/typescript.nvim
@@ -93,6 +98,7 @@ require('mason-lspconfig').setup_handlers({
   -- capabilities :
   -- default capabilities, with offsetEncoding utf-8
   -- cmd : clangd --offset-encoding=utf-16
+  ['cssls'] = function() end,
   ['bashls'] = require('lsp.servers.bashls'),
   ['eslint'] = require('lsp.servers.eslint'),
   ['lua_ls'] = require('lsp.servers.lua_ls'),

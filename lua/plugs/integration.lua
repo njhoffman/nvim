@@ -1,7 +1,7 @@
 -- /usr/bin/gnome-ssh-askpass
 local utils = require('utils.lazy')
 local plugins = {
-  -- { "aserowy/tmux.nvim" },
+  { 'aserowy/tmux.nvim' },
   { 'jbyuki/quickmath.nvim', cmd = 'Quickmath' },
   { 'jameshiew/nvim-magic', dependencies = { 'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim' } },
   { 'michaelb/sniprun', build = 'bash install.sh', cmd = { 'SnipRun', 'SnipInfo' } },

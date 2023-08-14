@@ -68,8 +68,8 @@ local plugins = {
               '*',
               '!vim',
               '!noice',
-              css = { mode = 'foreground', names = true, RGB = true },
-              html = { mode = 'foreground', names = true, RGB = true },
+              css = { mode = 'virtualtext', names = true, RGB = true },
+              html = { mode = 'virtualtext', names = true, RGB = true },
               cmp_docs = { always_update = true },
               cmp_menu = { always_update = true },
             },
@@ -90,7 +90,7 @@ local plugins = {
               sass = { enable = true, parsers = { 'css' } }, -- Enable sass colors
               virtualtext = '■',
               -- update color values even if buffer is not focused example use: cmp_menu, cmp_docs
-              always_update = false,
+              always_update = true,
             },
           })
         end,

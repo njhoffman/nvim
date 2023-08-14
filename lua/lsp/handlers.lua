@@ -257,21 +257,47 @@ local semantic_tokens_provider = function(args)
   -- vim.lsp.buf.execute_command(args)
 end
 
+local diagnostic_provider = function(args)
+  vim.dbglog({ 'diagnosticProvider', args })
+  vim.lsp.buf.diagnostic(args)
+  -- vim.lsp.buf.execute_command(args)
+
+  -- vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'LspDiagnosticsSignError' })
+  -- vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'LspDiagnosticsSignWarn' })
+  -- vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'LspDiagnosticsSignInfo' }) -- 󰌵
+  -- vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'LspDiagnosticsSignHint' })
+  --
+  -- local keymap_opts = { noremap = true, silent = true }
+  -- vim.api.nvim_set_keymap(
+  --   'n',
+  --   '<C-T>',
+  --   "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = true })<cr>",
+  --   keymap_opts
+  -- )
+  -- vim.api.nvim_set_keymap('n', '<M-T>', "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>", keymap_opts)
+  -- vim.api.nvim_set_keymap('n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', keymap_opts)
+  -- vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', keymap_opts)
+  -- vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
+  -- vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
+  --
+end
+
 local handlers = {
+  -- vim.lsp.handlers["textDocument/inlayHint"] = show_handler
   codeActionProvider = code_action_provider,
   codeLensProvider = code_lens_provider,
   colorProvider = color_provider,
   declarationProvider = declaration_provider,
-  -- vim.lsp.handlers["textDocument/inlayHint"] = show_handler
   definitionProvider = definition_provider,
+  diagnosticProvider = diagnostic_provider,
   documentFormattingProvider = document_formatting_provider,
   documentFormattingRangeProvider = document_formatting_range_provider,
   documentHighlightProvider = document_highlight_provider,
   documentSymbolProvider = document_symbol_provider,
   executeCommand = execute_command,
-  referencesProvider = references_provider,
   hoverProvider = hover_provider,
   implementationProvider = implementation_provider,
+  referencesProvider = references_provider,
   renameProvider = rename_provider,
   semanticTokensProvider = semantic_tokens_provider,
   signatureHelpProvider = signature_help_provider,

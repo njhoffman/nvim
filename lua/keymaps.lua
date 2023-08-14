@@ -219,6 +219,11 @@ map('n', '<M-d>', '<cmd>CloseMultiNoPrompt<cr>', {
   label = 'close multi noprompt',
   desc = 'close tabpage, window, or buffer without prompting for save',
 })
+map('n', '<M-w>', '<cmd>set wrap!<cr>', {
+  category = 'Buffers',
+  label = 'toggle wrap',
+  desc = 'toggle word wrap',
+})
 
 map('n', '<leader>.', [[:call AltCommand(expand('%'), ':e')<cr>]], {
   category = 'Buffers',
@@ -1563,11 +1568,16 @@ map('n', '<leader>it', "<cmd>lua require('telescope.run')('lazy', 'lazy')<cr>", 
   desc = 'show lazy.nvim plugins in telescope',
 })
 
-map('n', '<leader>iy', "<cmd>let @+ = substitute(expand('%:p'), $HOME, '~', '')<cr>", {
-  category = 'System',
-  label = 'yank filename',
-  desc = 'yank the current filename to clipboard',
-})
+map(
+  'n',
+  '<leader>iy',
+  "<cmd>let @+ = substitute(expand('%:p'), $HOME, '~', '') | lua print('Yanked: ' .. vim.fn.substitute(vim.fn.expand('%:p'), '$HOME', '~', ''))<cr>",
+  {
+    category = 'System',
+    label = 'yank filename',
+    desc = 'yank the current filename to clipboard',
+  }
+)
 
 map('n', '<leader>iY', ':%y+<CR>', {
   category = 'System',
@@ -1575,13 +1585,7 @@ map('n', '<leader>iY', ':%y+<CR>', {
   desc = 'yank the full buffer to clipboard',
 })
 
-map('n', '"', '<cmd>Registers<cr>', {
-  category = 'System',
-  plugin = 'registers.nvim',
-  desc = 'view registers',
-})
-
-map('n', '<leader>if', "lua print(expand('%:p'))", {
+map('n', '<leader>if', "<cmd>lua print(vim.fn.expand('%:p'))<cr>", {
   category = 'System',
   desc = 'print filename in stdout',
   label = 'print filename',

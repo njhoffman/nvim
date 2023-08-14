@@ -17,6 +17,7 @@ return {
   prefix = commands.prefix,
   list = records.list,
   tree = records.tree,
+  clues = records.clues,
 }
 
 -- -- Unsets all keybindings defined in keymaps

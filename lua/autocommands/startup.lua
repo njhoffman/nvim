@@ -9,6 +9,7 @@ end
 vim.api.nvim_create_autocmd('VimEnter', {
   pattern = '*',
   callback = function()
+    vim.api.nvim_exec_autocmds({ 'BufNewFile', 'BufReadPre', 'BufReadPost' }, {})
     get_load_time()
     -- run_startup_commands
   end,

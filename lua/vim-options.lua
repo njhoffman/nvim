@@ -56,19 +56,19 @@ opt('redrawtime', 10000)
 opt('scrolloff', 7)
 opt('sessionoptions', 'buffers,curdir,folds,help,resize,winpos,terminal') -- winsize messes up on load
 opt('shada', "!,'200,<100,s500")
-opt('shortmess', 'tTIscCaF') -- F silents filename, C?
+opt('shortmess', 'tTIscCaF') -- F silents filename (but needed for bufread on vimenter), C? default: filnxtToOCF
 opt('showbreak', '↳ ')
 opt('showcmd', true)
-opt('showmatch', true) -- Show matching brackets when text indicator is over them
+opt('showmatch', true)
 opt('showmode', false)
 opt('showtabline', 1)
 opt('sidescrolloff', 5)
 opt('smartcase', true)
 opt('splitbelow', true)
-opt('splitkeep', 'screen') -- scroll behavior for horizontal splits
+opt('splitkeep', 'screen')
 opt('splitright', true)
 opt('swapfile', false)
-opt('switchbuf', 'useopen,usetab') -- Use the current tab for openning files from quickfix.
+opt('switchbuf', 'useopen,usetab')
 opt('termguicolors', true)
 opt('timeout', true)
 opt('timeoutlen', 500) -- 1000
@@ -103,6 +103,7 @@ opt('relativenumber', true, window)
 opt('signcolumn', 'yes:1', window)
 opt('spell', false, window)
 opt('wrap', false, window)
+opt('winbar', ' ', window)
 
 -- buffer scope
 opt('expandtab', true, buffer)

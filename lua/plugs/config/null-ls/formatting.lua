@@ -3,7 +3,14 @@ local null_ls = require('null-ls')
 return {
   -- Formatters
   -- null_ls.builtins.formatting.asmfmt,
-  null_ls.builtins.formatting.beautysh,
+  null_ls.builtins.formatting.beautysh.with({
+    extra_args = function(params)
+      return {
+        '--indent-size',
+        vim.api.nvim_buf_get_option(params.bufnr, 'shiftwidth'),
+      }
+    end,
+  }),
   -- null_ls.builtins.formatting.black.with({
   --   extra_args = function(params)
   --     return { '--line-length=' .. vim.api.nvim_buf_get_option(params.bufnr, 'textwidth') }
