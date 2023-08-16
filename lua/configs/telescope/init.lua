@@ -260,7 +260,7 @@ local telescope_config = {
 
 telescope_config.extensions = plugins.get_extensions()
 telescope.setup(telescope_config)
--- plugins.load()
+plugins.load()
 
 -- vim.api.nvim_create_autocmd('User', {
 --   pattern = 'TelescopePreviewerLoaded',

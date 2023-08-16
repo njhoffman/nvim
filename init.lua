@@ -16,7 +16,7 @@ for _, mod_name in ipairs({
   'stats',
   'hover.setup',
   'lsp.illuminate',
-  'plugs.config.feline',
+  'configs.feline',
 }) do
   vim.import(mod_name)
 end

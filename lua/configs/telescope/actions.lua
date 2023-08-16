@@ -6,7 +6,6 @@ local actions_set = require('telescope.actions.set')
 local state = require('telescope.state')
 local H = require('helpers')
 local run = require('telescope.run')
-
 local telethemes = require('telescope.telethemes')
 local dirpicker = require('configs.telescope.dirpicker')
 

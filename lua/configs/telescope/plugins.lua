@@ -362,7 +362,9 @@ local load = function()
     end
   end
   local end_msg = 'Loaded ' .. H.table_len(installed) .. ' out of ' .. H.table_len(tele_plugs) .. ' telescope plugins'
-  vim.notify(end_msg, 0)
+  -- FIXME: this is not working
+  -- vim.notify(end_msg, 1)
+  print(end_msg, 1)
 end
 
 -- vim.keymap.set("n", "<leader>fS", function()
