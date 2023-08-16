@@ -68,6 +68,7 @@ local plugins = {
               '*',
               '!vim',
               '!noice',
+              '!TelescopeResults',
               css = { mode = 'virtualtext', names = true, RGB = true },
               html = { mode = 'virtualtext', names = true, RGB = true },
               cmp_docs = { always_update = true },

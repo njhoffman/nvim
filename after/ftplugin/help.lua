@@ -46,6 +46,7 @@ vim.cmd([[
     " 'rightleft'		off
     " 'scrollbind'	off
 
+  setlocal conceallevel=3
   setlocal signcolumn=no
   " setlocal textwidth=78
   setlocal nowrap

@@ -85,6 +85,18 @@ local plugins = {
     'jamestthompson3/nvim-remote-containers',
     cmd = { 'BuildImage', 'AttachToContainer', 'StartImage', 'ComposeUp', 'ComposeDown', 'ComposeDestroy' },
   },
+  {
+    'kelly-lin/ranger.nvim',
+    config = function()
+      require('ranger-nvim').setup({ replace_netrw = true })
+      vim.api.nvim_set_keymap('n', '<leader>ef', '', {
+        noremap = true,
+        callback = function()
+          require('ranger-nvim').open(true)
+        end,
+      })
+    end,
+  },
   { 'lambdalisue/suda.vim', event = 'VeryLazy' },
   { 'skywind3000/asynctasks.vim', event = 'VeryLazy', dependencies = 'skywind3000/asyncrun.vim' },
   { 'aymericbeaumet/vim-symlink', event = 'VeryLazy', dependencies = 'moll/vim-bbye' },

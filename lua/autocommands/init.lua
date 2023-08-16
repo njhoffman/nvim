@@ -70,7 +70,7 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, '.env.*',             'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, '*.env',              'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, 'conf.*',             'setlocal ft=config syn=config' },
-    { { 'BufNewFile', 'BufRead' }, '*.md',               'setlocal conceallevel=3 synmaxcol=500 | setlocal ft=vimwiki.markdown.pandoc' },
+    { { 'BufNewFile', 'BufRead' }, '*.md',               'setlocal syntax=pandoc | setlocal conceallevel=3 synmaxcol=500' },
     { { 'BufNewFile', 'BufRead' }, '.tasks',             'setlocal ft=asynctasks' },
     { { 'BufNewFile', 'BufRead' }, '*.visidatarc',       'setlocal ft=python' },
     { { 'BufNewFile', 'BufRead' }, '.vimtasks',          'setlocal ft=asynctasks' },

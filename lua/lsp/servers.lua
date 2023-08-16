@@ -25,7 +25,7 @@ local servers = {
   'golangci_lint_ls',
   'gopls',
   'gradle_ls',
-  'grammarly',
+  -- 'grammarly',
   'graphql',
   'groovyls',
   'helm_ls',
@@ -62,7 +62,7 @@ local lspconfig_settings = {
   automatic_installation = true,
 }
 
-local tool_packages = require('plugs.config.mason.tools')
+local tool_packages = require('configs.mason.tools')
 local tool_settings = { ensure_installed = tool_packages }
 require('mason-tool-installer').setup(tool_settings)
 
@@ -110,7 +110,7 @@ require('mason-lspconfig').setup_handlers({
       filetypes = {
         'bib',
         'gitcommit',
-        -- "markdown",
+        'markdown',
         'org',
         -- "pandoc",
         'plaintex',

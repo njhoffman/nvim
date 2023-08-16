@@ -45,7 +45,7 @@ end
 
 local get_stray_configs = function()
   local scan = require('plenary.scandir')
-  local basepath = vim.fn.stdpath('config') .. '/lua/plugs/config'
+  local basepath = vim.fn.stdpath('config') .. '/lua/configs'
   local files = scan.scan_dir(basepath, {
     depth = 1,
     search_pattern = '.lua$',

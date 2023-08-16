@@ -25,5 +25,5 @@ M.map(
 )
 
 require('spider').setup({
-  skipInsignificantPunctuation = true,
+  skipInsignificantPunctuation = false,
 })

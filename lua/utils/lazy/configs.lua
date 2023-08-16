@@ -1,14 +1,16 @@
-local stats = require("utils.lazy.stats")
+local stats = require('utils.lazy.stats')
 
 local file_exists = function(name)
-  local path = vim.fn.stdpath("config") .. "/lua/plugs/config/" .. name .. ".lua"
-  local f = io.open(path, "r")
+  -- local nvim_dir = vim.fn.stdpath('config') .. '/lua/plugs/config/'
+  local nvim_dir = vim.fn.stdpath('config') .. '/lua/configs/'
+  local path = nvim_dir .. name .. '.lua'
+  local f = io.open(path, 'r')
   if f ~= nil then
     io.close(f)
     return true
   else
-    path = vim.fn.stdpath("config") .. "/lua/plugs/config/" .. name .. "/init.lua"
-    f = io.open(path, "r")
+    path = nvim_dir .. name .. '/init.lua'
+    f = io.open(path, 'r')
     if f ~= nil then
       io.close(f)
       return true
@@ -18,35 +20,41 @@ local file_exists = function(name)
 end
 
 local check_config_file = function(plugin)
-  local name = ""
-  if type(plugin) == "table" and type(plugin.name) == "string" then
+  local name = ''
+  -- parse config file name from plugin name
+  if type(plugin) == 'table' and type(plugin.name) == 'string' then
     name = plugin.name
-  elseif type(plugin) == "table" and (plugin.url or plugin.dir) then
+  elseif type(plugin) == 'table' and (plugin.url or plugin.dir) then
     name = plugin.url or plugin.dir
-    local name_parts = vim.split(name, "/")
+    local name_parts = vim.split(name, '/')
     name = name_parts[#name_parts]
-  elseif type(plugin) == "table" and type(plugin[1]) ~= "nil" then
-    name = vim.split(plugin[1], "/")[2]
+  elseif type(plugin) == 'table' and type(plugin[1]) ~= 'nil' then
+    name = vim.split(plugin[1], '/')[2]
   else
-    vim.notify("Error processing plugin: " .. vim.inspect(plugin), 1)
+    vim.notify('Error processing plugin: ' .. vim.inspect(plugin), 1)
   end
 
-  if type(name) == "string" and #name > 0 then
-    name = string.lower(string.gsub(name, "[\\.]+", "-"))
-    name = string.gsub(name, "-nvim$", "")
+  if type(name) == 'string' and #name > 0 then
+    name = string.lower(string.gsub(name, '[\\.]+', '-'))
+    name = string.gsub(name, '-nvim$', '')
     local exists = file_exists(name)
-    local fname = "plugs.config." .. string.lower(name)
+    local fname = 'configs.' .. string.lower(name)
+    -- local fname = 'plugs.config.' .. string.lower(name)
     stats.state.configs_checked[name] = true
-    -- vim.dbglog("checking: " .. fname)
-    if exists and not stats.state.configs_loaded[name] then
-      stats.state.configs_loaded[name] = true
+    if true and exists then -- and not stats.state.configs_loaded[name] then
+      vim.dbglog('config exists: ' .. fname)
       plugin.config = function(_, _)
+        -- local mod_ok, mod = pcall(require, fname)
+        vim.dbglog('load: ' .. fname)
         local mod, mod_ok = vim.import(fname)
         if not mod_ok then
-          vim.notify("ERROR: " .. fname .. vim.inspect(mod), 4)
+          -- vim.notify('ERROR: ' .. fname .. vim.inspect(mod), 4)
+          print('ERROR: ' .. fname .. vim.inspect(mod))
           stats.state.errors[fname] = mod
+        else
+          stats.state.configs_loaded[name] = true
+          return mod
         end
-        return mod
       end
     end
     return plugin, name

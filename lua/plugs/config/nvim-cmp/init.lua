@@ -311,6 +311,13 @@ local mapping = {
     ['<C-e>'] = cmp.mapping.abort(),
     ['<C-d>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    ['<M-/>'] = function()
+      if cmp.visible_docs() then
+        cmp.close_docs()
+      else
+        cmp.open_docs()
+      end
+    end,
     ['<Tab>'] = cmp.mapping(function(fallback)
       --     return require('luasnip').jumpable(1) and '<Plug>luasnip-jump-next' or '<tab>'
       if cmp.visible() then

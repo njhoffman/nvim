@@ -19,7 +19,7 @@ local setup = function(opts)
   stats.state = vim.tbl_deep_extend('force', stats.state, _stats)
 
   -- stylua: ignore
-  require("lazy").setup("plugs", {
+  require("lazy").setup("plugins", {
       defaults = {
         lazy = opts.lazy, -- should plugins be lazy-loaded?
         version = nil,

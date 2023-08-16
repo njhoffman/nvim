@@ -1,9 +1,8 @@
 local utils = require('utils.lazy')
-
 local plugins = {
   {
     'neovim/nvim-lspconfig',
-    -- event = { 'BufReadPre', 'BufNewFile' },
+    event = { 'VimEnter' },
     dependencies = {
       { 'williamboman/mason.nvim', cmd = 'Mason' },
       'williamboman/mason-lspconfig.nvim',

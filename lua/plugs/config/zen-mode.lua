@@ -41,11 +41,15 @@ local full_opts = {
 local min_opts = vim.tbl_deep_extend('force', full_opts, { plugins = { tmux = { enabled = false } } })
 
 vim.keymap.set('n', '<CR>', function()
-  require('zen-mode').toggle(min_opts)
+  if vim.bo.filetype ~= 'noice' then
+    require('zen-mode').toggle(min_opts)
+  end
 end, { nowait = true })
 
 vim.keymap.set('n', '<S-CR>', function()
-  require('zen-mode').toggle(full_opts)
+  if vim.bo.filetype ~= 'noice' then
+    require('zen-mode').toggle(full_opts)
+  end
 end, { nowait = true })
 
 -- vim.cmd("nnoremap <CR> :ZenMode<CR>")

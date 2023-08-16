@@ -1,0 +1,20 @@
+local utils = require('utils.lazy')
+
+local plugins = {
+  {
+    'mfussenegger/nvim-dap',
+    lazy = true,
+    dependencies = {
+      'rcarriga/nvim-dap-ui',
+      'theHamsta/nvim-dap-virtual-text',
+      'jbyuki/one-small-step-for-vimkind',
+      'mfussenegger/nvim-dap-python',
+      { 'jbyuki/dash.nvim', dependencies = 'jbyuki/ntangle.nvim' },
+      { 'LiadOz/nvim-dap-repl-highlights' },
+    },
+  },
+}
+
+utils.apply_configs(plugins)
+
+return plugins

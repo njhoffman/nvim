@@ -143,7 +143,7 @@ return function(injected_functions)
     LineNr({ fg = clrs.nord3 }),
     Boolean({ fg = '#5370af' }),
     Number({ fg = '#4078c0' }),
-    CursorLine({ bg = '#0a1422' }),
+    CursorLine({ bg = '#0a1020' }),
     CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
     Cursor({ bg = '#4B5Bff' }),
     CursorColumn({ bg = CursorLine.bg }),
@@ -292,7 +292,7 @@ return function(injected_functions)
     sym('@punctuation.special')({ fg = '#888698' }), -- #89ddff
     sym('@punct.special')({ sym('@punctuation.special') }),
     sym('@punctuation.special.markdown')({ fg = '#645060' }), --  fg = '#89ddff'
-    sym('@spell')({ fg = 'none', bg = 'none', gui = 'none' }),
+    sym('@spell')({}),
     sym('@string')({ String }),
     sym('@string.documentation')({ fg = '#e0af68' }),
     sym('@string.escape')({ fg = '#bb9af7' }),
@@ -566,6 +566,14 @@ return function(injected_functions)
     pandocAtxHeaderMark({ fg = '#4575f8' }),
     pandocAtxStart({ fg = '#4575f8' }),
     helpHyperTextJump({ fg = '#6585b8', gui = 'none' }),
+    Headline1({ bg = '#1e2718' }),
+    Headline2({ bg = '#21262d' }),
+    Headline3({ bg = '#1d2229' }),
+    Headline4({ bg = '#13181f' }),
+    Headline5({ bg = '#0c1118' }),
+    Headline6({ bg = '#060b12' }),
+    CodeBlock({ bg = '#1c1c1c' }),
+    Dash({ bg = '#b47d49' }),
     --
     -- fg = clrs.nord13,
     -- Indent Blankline

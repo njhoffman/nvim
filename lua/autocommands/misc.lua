@@ -30,8 +30,26 @@ vim.api.nvim_create_autocmd({ 'DirChanged', 'VimEnter' }, {
   end,
 })
 
-local winclose_group = vim.api.nvim_create_augroup('winclose_q', { clear = true })
+-- Backup files
+local backupdir = vim.fn.expand('$HOME') .. '/.local/share/nvim/backup'
+vim.fn.mkdir(backupdir, 'p')
+vim.opt.backupdir = backupdir .. '//'
+vim.opt.backup = true
+vim.api.nvim_create_autocmd('BufWritePre', {
+  group = vim.api.nvim_create_augroup('timestamp_backupext', { clear = true }),
+  desc = 'Add timestamp to backup extension',
+  pattern = '*',
+  callback = function()
+    vim.opt.backupext = '-' .. vim.fn.strftime('%Y%m%d%H%M')
+  end,
+})
+-- /etc/tmpfiles.d/nvim-backup.conf
+-- # systemd-tmpfiles configuration for /tmp/nvim-backup/ directory
+-- # Create directory at boot and clean files with Age parameter
+-- d /tmp/nvim-backup 755 <user> <user> 3d
+
 -- close some filetypes with q or <esc>
+local winclose_group = vim.api.nvim_create_augroup('winclose_q', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
   group = winclose_group,
   pattern = {

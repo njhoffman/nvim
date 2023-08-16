@@ -1,0 +1,123 @@
+-- TODO: escape characters, highlight labels, investigate per_page problem
+
+local gh_search = require("nvim-github-codesearch")
+
+gh_search.setup({
+  -- -- an optional table entry to explicitly configure the API key to use for Github API requests.
+  -- -- alternatively, you can configure this parameter by export an environment variable named "GITHUB_AUTH_TOKEN"
+  -- github_auth_token = "<YOUR GITHUB API KEY>",
+  --
+  -- -- this table entry is optional, if not provided "https://api.github.com" will be used by default
+  -- -- otherwise this parameter can be used to configure a different Github API URL.
+  -- github_api_url = "https://api.github.com",
+  -- whether to use telescope to display the github search results or not
+  use_telescope = true,
+})
+
+vim.api.nvim_create_user_command("GithubSearch", gh_search.prompt, {})
+
+-- Usage -- this will display a prompt to enter search terms
+-- gh_search.prompt()
+--
+-- -- this will submit a search for the designated query without displaying a prompt
+-- gh_search.search("some query")
+--
+-- -- removes any temp files created by nvim-github-codesearch
+-- gh_search.cleanup()
+
+-- System.out.println user:napisani in:readme extension:md
+-- ParameterToSearch filename:noice.lua per_page:100
+-- -
+-- Query for values greater or less than another value
+-- You can use >, >=, <, and <= to search for values that are greater than, greater than or equal to, less than, and less than or equal to another value.
+--
+-- Query	Example
+-- >n	cats stars:>1000 matches repositories with the word "cats" that have more than 1000 stars.
+-- >=n	cats topics:>=5 matches repositories with the word "cats" that have 5 or more topics.
+-- <n	cats size:<10000 matches code with the word "cats" in files that are smaller than 10 KB.
+-- <=n	cats stars:<=50 matches repositories with the word "cats" that have 50 or fewer stars.
+-- You can also use range queries to search for values that are greater than or equal to, or less than or equal to, another value.
+--
+-- Query	Example
+-- n..*	cats stars:10..* is equivalent to stars:>=10 and matches repositories with the word "cats" that have 10 or more stars.
+-- *..n	cats stars:*..10 is equivalent to stars:<=10 and matches repositories with the word "cats" that have 10 or fewer stars.
+-- Query for values between a range
+-- You can use the range syntax n..n to search for values within a range, where the first number N is the lowest value and the second is the highest value.
+--
+-- Query	Example
+-- n..n	cats stars:10..50 matches repositories with the word "cats" that have between 10 and 50 stars.
+-- Query for dates
+-- You can search for dates that are earlier or later than another date, or that fall within a range of dates, by using >, >=, <, <=, and range queries. Date formatting must follow the ISO8601 standard, which is YYYY-MM-DD (year-month-day).
+--
+-- Query	Example
+-- >YYYY-MM-DD	cats created:>2016-04-29 matches issues with the word "cats" that were created after April 29, 2016.
+-- >=YYYY-MM-DD	cats created:>=2017-04-01 matches issues with the word "cats" that were created on or after April 1, 2017.
+-- <YYYY-MM-DD	cats pushed:<2012-07-05 matches repositories with the word "cats" that were pushed to before July 5, 2012.
+-- <=YYYY-MM-DD	cats created:<=2012-07-04 matches issues with the word "cats" that were created on or before July 4, 2012.
+-- YYYY-MM-DD..YYYY-MM-DD	cats pushed:2016-04-30..2016-07-04 matches repositories with the word "cats" that were pushed to between the end of April and July of 2016.
+-- YYYY-MM-DD..*	cats created:2012-04-30..* matches issues created after April 30th, 2012 containing the word "cats."
+-- *..YYYY-MM-DD	cats created:*..2012-07-04 matches issues created before July 4th, 2012 containing the word "cats."
+-- You can also add optional time information THH:MM:SS+00:00 after the date, to search by the hour, minute, and second. That's T, followed by HH:MM:SS (hour-minutes-seconds), and a UTC offset (+00:00).
+--
+-- Query	Example
+-- YYYY-MM-DDTHH:MM:SS+00:00	cats created:2017-01-01T01:00:00+07:00..2017-03-01T15:30:15+07:00 matches issues created between January 1, 2017 at 1 a.m. with a UTC offset of 07:00 and March 1, 2017 at 3 p.m. with a UTC offset of 07:00.
+-- YYYY-MM-DDTHH:MM:SSZ	cats created:2016-03-21T14:11:00Z..2016-04-07T20:45:00Z matches issues created between March 21, 2016 at 2:11pm and April 7, 2016 at 8:45pm.
+-- Exclude results that match a qualifier
+-- You can narrow down search results by excluding one or more subsets. To exclude all results that are matched by a qualifier, prefix the search qualifier with a hyphen (-).
+--
+-- Query	Example
+-- -QUALIFIER	cats stars:>10 -language:javascript matches repositories with the word "cats" that have more than 10 stars but are not written in JavaScript.
+-- -QUALIFIER	mentions:defunkt -org:github matches issues mentioning @defunkt that are not in repositories in the GitHub organization.
+-- Exclude results with specific keywords
+-- You can exclude results containing a certain word, using the NOT syntax. The NOT operator can only be used for string keywords. It does not work for numerals or dates.
+--
+-- Query	Example
+-- NOT	hello NOT world matches repositories that have the word "hello" but not the word "world."
+-- Use quotation marks for queries with whitespace
+-- If your search query contains whitespace, you will need to surround it with quotation marks. For example:
+--
+-- cats NOT "hello world" matches repositories with the word "cats" but not the words "hello world."
+-- build label:"bug fix" matches issues with the word "build" that have the label "bug fix."
+-- Some non-alphanumeric symbols, such as spaces, are dropped from code search queries within quotation marks, so results can be unexpected.
+--
+-- Queries with usernames
+-- If your search query contains a qualifier that requires a username, such as user, actor, or assignee, you can use any GitHub username, to specify a specific person, or @me, to specify the current user.
+--
+-- Query	Example
+-- QUALIFIER:USERNAME	author:nat matches commits authored by @nat
+-- QUALIFIER:@me	is:issue assignee:@me matches issues assigned to the person viewing the results-
+-- Sort by interactions
+-- The sort:interactions qualifier sorts by the highest combined number of reactions and comments.
+--
+-- Qualifier	Example
+-- sort:interactions or sort:interactions-desc	org:github sort:interactions matches issues in repositories owned by GitHub, sorted by the highest combined number of reactions and comments.
+-- sort:interactions-asc	org:github sort:interactions-asc matches issues in repositories owned by GitHub, sorted by the lowest combined number of reactions and comments.
+-- Sort by reactions
+-- The sort:reactions qualifier sorts by the number or type of reactions.
+--
+-- Qualifier	Example
+-- sort:reactions or sort:reactions-desc	org:github sort:reactions matches issues in repositories owned by GitHub, sorted by the highest number of reactions.
+-- sort:reactions-asc	org:github sort:reactions-asc matches issues in repositories owned by GitHub, sorted by ascending number of reactions (the fewest to the most).
+-- sort:reactions-reaction	org:github sort:reactions-+1 matches issues in repositories owned by GitHub, sorted by most thumbs up (👍) reactions.
+-- sort:reactions-reaction	org:github sort:reactions--1 matches issues in repositories owned by GitHub, sorted by most thumbs down (👎) reactions.
+-- sort:reactions-reaction	org:github sort:reactions-smile matches issues in repositories owned by GitHub, sorted by most laugh (😄) reactions.
+-- sort:reactions-reaction	org:github sort:reactions-tada matches issues in repositories owned by GitHub, sorted by most hurray (🎉) reactions.
+-- sort:reactions-reaction	org:github sort:reactions-heart matches issues in repositories owned by GitHub, sorted by most heart (❤️) reactions.
+-- Sort by author date
+-- The sort:author-date qualifier sorts by descending or ascending author date.
+--
+-- Qualifier	Example
+-- sort:author-date or sort:author-date-desc	feature org:github sort:author-date matches commits containing the word "feature" in repositories owned by GitHub, sorted by descending author date.
+-- sort:author-date-asc	feature org:github sort:author-date-asc matches commits containing the word "feature" in repositories owned by GitHub, sorted by ascending author date.
+-- Sort by committer date
+-- The sort:committer-date qualifier sorts by descending or ascending committer date.
+--
+-- Qualifier	Example
+-- sort:committer-date or sort:committer-date-desc	feature org:github sort:committer-date matches commits containing the word "feature" in repositories owned by GitHub, sorted by descending committer date.
+-- sort:committer-date-asc	feature org:github sort:committer-date-asc matches commits containing the word "feature" in repositories owned by GitHub, sorted by ascending committer date.
+-- Sort by updated date
+-- The sort:updated qualifier sorts by how recently the items were updated.
+--
+-- Qualifier	Example
+-- sort:updated or sort:updated-desc	feature sort:updated matches repositories containing the word "feature," sorted by most recently updated date.
+-- sort:updated-asc	feature sort:updated-asc matches repositories containing the word "feature," sorted by least recently updated date.

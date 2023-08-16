@@ -8,21 +8,6 @@ local traceback = require('debuglog.parsers.traceback')
 
 local pending = {}
 
-vim.api.nvim_create_autocmd('VimEnter', {
-  callback = function()
-    local notify = require('notify')
-    for _, notify_obj in ipairs(pending) do
-      local args = notify_obj[3]
-      args.title = args.title and args.title or '::prestart::'
-      if type(args.title) == 'table' then
-        args.title[2] = '::prestart::'
-      end
-      args.render = 'default'
-      notify.notify(notify_obj[1], notify_obj[2], args)
-    end
-  end,
-})
-
 local M = {}
 
 M.notify = function(message, level, ...)
@@ -106,5 +91,19 @@ M.notify = function(message, level, ...)
     table.insert(pending, { notify_msg, level, args })
   end
 end
+
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    for _, notify_obj in ipairs(pending) do
+      local args = notify_obj[3]
+      args.title = args.title and args.title or '::prestart::'
+      if type(args.title) == 'table' then
+        args.title[2] = '::prestart::'
+      end
+      args.render = 'default'
+      M.notify(notify_obj[1], notify_obj[2], args)
+    end
+  end,
+})
 
 return M

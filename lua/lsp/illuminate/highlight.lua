@@ -7,7 +7,10 @@ local M = {}
 local HL_NAMESPACE = vim.api.nvim_create_namespace('illuminate.highlight')
 
 local function kind_to_hl_group(kind)
-  return kind == vim.lsp.protocol.DocumentHighlightKind.Text and 'IlluminatedWordText' or kind == vim.lsp.protocol.DocumentHighlightKind.Read and 'IlluminatedWordRead' or kind == vim.lsp.protocol.DocumentHighlightKind.Write and 'IlluminatedWordWrite' or 'IlluminatedWordText'
+  return kind == vim.lsp.protocol.DocumentHighlightKind.Text and 'IlluminatedWordText'
+    or kind == vim.lsp.protocol.DocumentHighlightKind.Read and 'IlluminatedWordRead'
+    or kind == vim.lsp.protocol.DocumentHighlightKind.Write and 'IlluminatedWordWrite'
+    or 'IlluminatedWordText'
 end
 
 function M.buf_highlight_references(bufnr, references)
@@ -26,6 +29,9 @@ end
 function M.range(bufnr, start, finish, kind)
   local region = vim.region(bufnr, start, finish, 'v', false)
   for linenr, cols in pairs(region) do
+    if linenr == -1 then
+      linenr = 0
+    end
     local end_row
     if cols[2] == -1 then
       end_row = linenr + 1

@@ -1,0 +1,127 @@
+-- stylua: ignore start
+
+local tokyoColors = {
+  none            = "NONE",
+  bg_dark         = "#1c1f24",
+  bg              = "#24283b",
+  bg_highlight    = "#292e42",
+  terminal_black  = "#414868",
+  fg              = "#c0caf5",
+  fg_dark         = "#a9b1d6",
+  fg_gutter       = "#3b4261",
+  dark3           = "#545c7e",
+  comment         = "#565f89",
+  dark5           = "#737aa2",
+  blue0           = "#5d79a1",
+  blue            = "#7aa2f7",
+  cyan            = "#7dcfff",
+  blue1           = "#2ac3de",
+  blue2           = "#0db9d7",
+  blue5           = "#89ddff",
+  blue6           = "#B4F9F8",
+  blue7           = "#394b70",
+  magenta         = "#bb9af7",
+  magenta2        = "#ff007c",
+  purple          = "#6d6cc8",
+  orange          = "#ff9e64",
+  yellow          = "#e0af68",
+  green           = "#9ece6a",
+  green1          = "#73daca",
+  green2          = "#41a6b5",
+  teal            = "#1abc9c",
+  red             = "#f7768e",
+  red1            = "#db4b4b",
+  git             = { change = "#6183bb", add    = "#449dab", delete = "#914c54", conflict = "#bb7a61" },
+  gitSigns        = { add    = "#164846", change = "#394b70", delete = "#823c41" },
+}
+--
+local theme = {
+  fg_1 = '#335577',
+  fg_2 = '#336688',
+  fg_3 = '#2288aa',
+  fg_4 = '#44ccff',
+  -- bg_1 = "#06203a",
+  bg_1 = '#10101a',
+  -- bg_1 = "#101026",
+  modified_fg = '#fb6b6b',
+--     󰅁                       
+-- TODO: gradient arrow sections
+-- TODO: right-hand orientation
+-- {"",""} {"󰅁" "󰅂"}
+}
+
+local cfg = {
+  theme = {
+    normal                 = { fg = theme.fg_3, bg   = theme.bg_1, bold = false },
+    dirname                = { fg = theme.fg_3, bold = false },
+    basename               = { fg = theme.fg_4, bold = true },
+    separators             = { fg = theme.fg_2 },
+    context                = { fg = theme.fg_1, bold = false },
+    modified               = { fg = theme.modified_fg },
+    context_file           = { fg = tokyoColors.yellow },
+    context_module         = { fg = tokyoColors.purple },
+    context_namespace      = { fg = tokyoColors.yellow },
+    context_package        = { fg = tokyoColors.purple },
+    context_class          = { fg = tokyoColors.blue0 },
+    context_method         = { fg = tokyoColors.teal },
+    context_property       = { fg = tokyoColors.green1 },
+    context_field          = { fg = tokyoColors.green1 },
+    context_constructor    = { fg = tokyoColors.yellow },
+    context_enum           = { fg = tokyoColors.orange },
+    context_interface      = { fg = tokyoColors.orange },
+    context_function       = { fg = tokyoColors.teal },
+    context_variable       = { fg = tokyoColors.blue2 },
+    context_constant       = { fg = tokyoColors.blue2 },
+    context_string         = { fg = tokyoColors.green2 },
+    context_number         = { fg = tokyoColors.blue2 },
+    context_boolean        = { fg = tokyoColors.blue2 },
+    context_array          = { fg = tokyoColors.blue0 },
+    context_object         = { fg = tokyoColors.blue0 },
+    context_key            = { fg = tokyoColors.blue2 },
+    context_null           = { fg = tokyoColors.blue2 },
+    context_enum_member    = { fg = tokyoColors.green2 },
+    context_struct         = { fg = tokyoColors.green2 },
+    context_event          = { fg = tokyoColors.orange },
+    context_operator       = { fg = tokyoColors.green2 },
+    context_type_parameter = { fg = tokyoColors.green2 },
+  },
+  exclude_filetypes = { "netrw", "toggleterm" },
+  exclude_buftypes = {'nofile'},
+  modified = function(bufnr) return vim.bo[bufnr].modified end,
+  project  = { show = false },
+  dirname  = { show = true },
+  basename = { show = true, show_modified = true },
+  context  = { show = false },
+  -- context = {
+  --   show = true,
+  --   align = "right",
+  --   follow_icon_color = true,
+  -- },
+  symbols = {
+    -- separators = { '󰅁', '󰅂' },
+    separators = '󰅂',
+  },
+  lead_custom_section = function()
+    return ' '
+  end,
+}
+
+
+require('barbecue').setup(cfg)
+
+-- vim.api.nvim_create_autocmd({
+--   "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
+--   "BufWinEnter",
+--   "CursorHold",
+--   "InsertLeave",
+--
+--   -- include these if you have set `show_modified` to `true`
+--   "BufWritePost",
+--   "TextChanged",
+--   "TextChangedI",
+-- }, {
+--   group = vim.api.nvim_create_augroup("barbecue.updater", {}),
+--   callback = function()
+--     require("barbecue.ui").update()
+--   end,
+-- })

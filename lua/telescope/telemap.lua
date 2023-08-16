@@ -1,5 +1,5 @@
-local commands = require('plugs.config.telescope.commands')
-local leaderf = require('plugs.config.telescope.leaderf')
+local commands = require('configs.telescope.commands')
+local leaderf = require('configs.telescope.leaderf')
 local make_entry = require('telescope.make_entry')
 
 local get_cwd = function(user_opts)

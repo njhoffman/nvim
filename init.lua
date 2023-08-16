@@ -2,7 +2,7 @@
 
 -- require('preload')
 require('globals')
-require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
+require('utils.lazy').setup({ cache = false, reload = false, lazy = false })
 
 for _, mod_name in ipairs({
   'keymaps',
@@ -15,6 +15,7 @@ for _, mod_name in ipairs({
   'runner',
   'stats',
   'hover.setup',
+  'lsp.illuminate',
   'plugs.config.feline',
 }) do
   vim.import(mod_name)
