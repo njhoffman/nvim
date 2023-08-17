@@ -1,7 +1,7 @@
 local stats = require('utils.lazy.stats')
+local logger = require('logger').init('lazy')
 
 local file_exists = function(name)
-  -- local nvim_dir = vim.fn.stdpath('config') .. '/lua/plugs/config/'
   local nvim_dir = vim.fn.stdpath('config') .. '/lua/configs/'
   local path = nvim_dir .. name .. '.lua'
   local f = io.open(path, 'r')
@@ -31,7 +31,7 @@ local check_config_file = function(plugin)
   elseif type(plugin) == 'table' and type(plugin[1]) ~= 'nil' then
     name = vim.split(plugin[1], '/')[2]
   else
-    vim.notify('Error processing plugin: ' .. vim.inspect(plugin), 1)
+    logger:error('Error processing plugin: ' .. vim.inspect(plugin))
   end
 
   if type(name) == 'string' and #name > 0 then
@@ -39,18 +39,16 @@ local check_config_file = function(plugin)
     name = string.gsub(name, '-nvim$', '')
     local exists = file_exists(name)
     local fname = 'configs.' .. string.lower(name)
-    -- local fname = 'plugs.config.' .. string.lower(name)
     stats.state.configs_checked[name] = true
-    if true and exists then -- and not stats.state.configs_loaded[name] then
-      vim.dbglog('config exists: ' .. fname)
-      plugin.config = function(_, _)
-        -- local mod_ok, mod = pcall(require, fname)
-        vim.dbglog('load: ' .. fname)
+    if exists and not stats.state.configs_loaded[name] then
+      logger:trace('config exists: ' .. fname)
+      plugin.config = function(loaded_plug)
+        local event = loaded_plug._.loaded
+        logger:debug(fname .. ' loading', event)
         local mod, mod_ok = vim.import(fname)
         if not mod_ok then
-          -- vim.notify('ERROR: ' .. fname .. vim.inspect(mod), 4)
-          print('ERROR: ' .. fname .. vim.inspect(mod))
           stats.state.errors[fname] = mod
+          logger:error('ERROR: ' .. fname .. vim.inspect(mod))
         else
           stats.state.configs_loaded[name] = true
           return mod
@@ -65,10 +63,8 @@ local apply_configs = function(plugins)
   for _, _plugin in ipairs(plugins) do
     local plugin, name = check_config_file(_plugin)
     if plugin.lazy and not stats.state.lazy[name] then
-      -- vim.dbglog("LAZY: ", plugin.name, plugin)
       stats.state.lazy[name] = plugin
     elseif not stats.state.start[name] then
-      -- vim.dbglog("load: ", plugin.name, plugin)
       stats.state.start[name] = plugin
     end
   end

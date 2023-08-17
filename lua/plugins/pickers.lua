@@ -3,35 +3,6 @@ local utils = require('utils.lazy')
 local plugins = {
   { 'echasnovski/mini.fuzzy', event = 'VeryLazy', version = false },
   {
-    'luckasRanarison/nvim-devdocs',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'telescope.nvim',
-      'nvim-treesitter/nvim-treesitter',
-    },
-    -- run = 'DevdocsFetch',
-    opts = {
-      dir_path = vim.fn.stdpath('data') .. '/devdocs', -- installation directory
-      telescope = {}, -- passed to the telescope picker
-      telescope_alt = {}, -- when searching globally without preview
-      float_win = { -- passed to nvim_open_win(), see :h api-floatwin
-        relative = 'editor',
-        height = 25,
-        width = 100,
-        border = 'rounded',
-      },
-      wrap = false, -- text wrap
-      ensure_installed = {}, -- get automatically installed
-      -- DevdocsFetch: Fetch DevDocs metadata.
-      -- DevdocsInstall: Install documentation, 0-n args.
-      -- DevdocsUninstall: Uninstall documentation, 0-n args.
-      -- DevdocsOpen: Open documentation in a normal buffer, 0 or 1 arg.
-      -- DevdocsOpenFloat: Open documentation in a floating window, 0 or 1 arg.
-      -- DevdocsUpdate: Update documentation, 1-n args.
-      -- DevdocsUpdateAll: Update all documentations.
-    },
-  },
-  {
     'prochri/telescope-all-recent.nvim',
     dependencies = { 'telescope.nvim', 'kkharji/sqlite.lua', 'telescope-ui-select.nvim', 'dressing.nvim' },
     config = function()
@@ -238,6 +209,34 @@ local plugins = {
       { 'GustavoKatel/telescope-asynctasks.nvim', dependencies = { 'skywind3000/asynctasks.vim' } },
       { 'debugloop/telescope-undo.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
       -- { "rmagatti/session-lens", dependencies = "rmagatti/auto-session" },
+      {
+        'luckasRanarison/nvim-devdocs',
+        dependencies = {
+          'nvim-lua/plenary.nvim',
+          'nvim-treesitter/nvim-treesitter',
+        },
+        -- run = 'DevdocsFetch',
+        opts = {
+          dir_path = vim.fn.stdpath('data') .. '/devdocs', -- installation directory
+          telescope = {}, -- passed to the telescope picker
+          telescope_alt = {}, -- when searching globally without preview
+          float_win = { -- passed to nvim_open_win(), see :h api-floatwin
+            relative = 'editor',
+            height = 25,
+            width = 100,
+            border = 'rounded',
+          },
+          wrap = false, -- text wrap
+          ensure_installed = {}, -- get automatically installed
+          -- DevdocsFetch: Fetch DevDocs metadata.
+          -- DevdocsInstall: Install documentation, 0-n args.
+          -- DevdocsUninstall: Uninstall documentation, 0-n args.
+          -- DevdocsOpen: Open documentation in a normal buffer, 0 or 1 arg.
+          -- DevdocsOpenFloat: Open documentation in a floating window, 0 or 1 arg.
+          -- DevdocsUpdate: Update documentation, 1-n args.
+          -- DevdocsUpdateAll: Update all documentations.
+        },
+      },
     },
   },
 }

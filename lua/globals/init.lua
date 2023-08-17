@@ -18,11 +18,11 @@ if debuglog then
   vim.dump = debuglog.dump
 end
 
-local logger = vim.import('logger')
-if logger ~= nil and logger.init ~= nil then
-  vim.logger = logger.init('root')
-  vim.notify = logger.notify
-end
+-- local logger = vim.import('logger')
+-- if logger ~= nil and logger.init ~= nil then
+--   vim.logger = logger.init('root')
+--   vim.notify = logger.notify
+-- end
 
 N = vim.dbg
 

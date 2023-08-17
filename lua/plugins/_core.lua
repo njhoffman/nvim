@@ -24,11 +24,12 @@ local plugins = {
     end,
   },
   { 'rcarriga/nvim-notify', lazy = false },
+  { 'folke/noice.nvim', lazy = false },
   {
     'nvim-neo-tree/neo-tree.nvim',
     -- no lazy loading to enable netrw override
-    cmd = { 'NeoTreeFocusToggle', 'NeoTreeShowToggle' },
     lazy = false,
+    cmd = { 'NeoTreeFocusToggle', 'NeoTreeShowToggle' },
     branch = 'v2.x',
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
   },
@@ -51,34 +52,12 @@ local plugins = {
     event = 'VimEnter',
     cmd = { 'BufferPrev', 'BufferNext', 'BufferDelete' },
     dependencies = 'nvim-tree/nvim-web-devicons',
-    config = function()
-      local opts = {
-        insert_at_start = true,
-        auto_hide = true,
-      }
-      -- require('barbar').setup(opts)
-    end,
+    opts = {
+      insert_at_start = true,
+      auto_hide = true,
+    },
   },
   { 'folke/which-key.nvim', event = 'VeryLazy' },
-  {
-    'folke/noice.nvim',
-    -- event = 'VeryLazy',
-    -- opts = {
-    --   lsp = {
-    --     override = {
-    --       ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-    --       ['vim.lsp.util.stylize_markdown'] = true,
-    --     },
-    --   },
-    -- presets = {
-    --   bottom_search = false,
-    --   command_palette = true,
-    --   long_message_to_split = true,
-    --   inc_rename = true,
-    --   lsp_doc_border = true,
-    -- },
-    -- },
-  },
 }
 
 utils.apply_configs(plugins)

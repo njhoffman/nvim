@@ -226,3 +226,6 @@ local record_event = function(au)
   log.debug(out)
 end
 vim.api.nvim_create_autocmd(all_events, { pattern = '*', callback = record_event, desc = 'EventTracker' })
+
+-- :echo nvim_get_runtime_file('*/<lang>.so', v:true)
+-- :echo nvim_get_runtime_file('queries/<lang>/*.scm', v:true)

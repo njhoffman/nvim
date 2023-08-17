@@ -5,6 +5,7 @@ local plugins = {
   -- treesitter
   {
     'nvim-treesitter/nvim-treesitter',
+    commit = '11d79aa0',
     build = ':TSUpdate',
     event = { 'BufReadPost', 'BufNewFile' },
     dependencies = {
@@ -24,6 +25,27 @@ local plugins = {
       -- https://github.com/David-Kunz/markid
       'windwp/nvim-ts-autotag',
     },
+  },
+  {
+    'sustech-data/wildfire.nvim',
+    event = 'VeryLazy',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    config = function()
+      local default_cfg = {
+        surrounds = {
+          { '(', ')' },
+          { '{', '}' },
+          { '<', '>' },
+          { '[', ']' },
+        },
+        keymaps = {
+          init_selection = 'v',
+          node_incremental = 'v',
+          node_decremental = 'V',
+        },
+      }
+      require('wildfire').setup()
+    end,
   },
   { 'echasnovski/mini.nvim', version = false },
   {

@@ -34,10 +34,21 @@ local bt_exclude = { 'terminal', 'prompt', 'nofile' }
 local plugins = {
   {
     'nvim-tree/nvim-web-devicons',
-    dependencies = { 'DaikyXendo/nvim-material-icon' },
+    dependencies = {
+      'DaikyXendo/nvim-material-icon', -- 'DaikyXendo/nvim-web-devicons'
+    },
     config = function()
+      -- override = require('nvim-material-icon').get_icons(),
       require('nvim-web-devicons').setup({
-        override = require('nvim-material-icon').get_icons(),
+        override = require('nvim-web-devicons').get_icons(),
+        -- override = {
+        --   zsh = {
+        --     icon = '',
+        --     color = '#428850',
+        --     cterm_color = '65',
+        --     name = 'Zsh',
+        --   },
+        -- },
       })
     end,
   },
@@ -334,10 +345,7 @@ local plugins = {
       require('jabs').setup({ border = 'rounded', use_devicos = true })
     end,
   },
-
-  {
-    'ghillb/cybu.nvim',
-  },
+  { 'ghillb/cybu.nvim' },
   { 'nacro90/numb.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'ivyl/vim-bling', event = { 'BufReadPost', 'BufNewFile' } },
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },

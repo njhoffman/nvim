@@ -14,7 +14,7 @@ setmetatable(Logger, {
   end,
 })
 
-local Level = require("structlog.level")
+local Level = require('structlog.level')
 
 function Logger:new(name, sinks)
   local logger = {}
@@ -55,6 +55,7 @@ local function log(logger, level, msg, events)
       end
 
       sink_kwargs = sink.formatter(sink_kwargs)
+
       sink:write(sink_kwargs)
     end
   end

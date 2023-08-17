@@ -8,13 +8,11 @@ local function goto_last_pos()
 end
 
 local function fasd_update()
-  local ignored_ft = {
-    'dirvish',
-  }
+  local ignored_ft = { 'dirvish' }
   local fname = vim.api.nvim_buf_get_name(0)
   if vim.bo.buftype == '' and not vim.tbl_contains(ignored_ft, vim.bo.filetype) and fname ~= '' then
     vim.fn.jobstart({ 'fasd', '-A', fname })
-    vim.notify('Adding file to fasd: ' .. fname, 0)
+    vim.notify('Add to fasd: ' .. fname, 0)
   end
 end
 

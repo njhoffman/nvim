@@ -9,12 +9,12 @@
 -- @field processors The log processors, attachable to sinks.
 -- @field sinks The log sinks.
 local M = {
-  Logger = require("structlog.logger"),
-  level = require("structlog.level"),
+  Logger = require('structlog.logger'),
+  level = require('structlog.level'),
 
-  formatters = require("structlog.formatters"),
-  processors = require("structlog.processors"),
-  sinks = require("structlog.sinks"),
+  formatters = require('structlog.formatters'),
+  processors = require('structlog.processors'),
+  sinks = require('structlog.sinks'),
 }
 
 local loggers = {}

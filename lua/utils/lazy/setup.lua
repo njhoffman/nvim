@@ -40,11 +40,7 @@ local setup = function(opts)
         -- plugin  = "🔌",
         -- runtime = "💻",
         -- source  = "📄",
-        -- start   = "🚀",
-        -- task    = "📌",
-        -- lazy    = "💤 ",
-        -- lazy    = "󰒲 ",
-        lazy       = "🛠 ",
+        lazy       = "🛠 ",-- 💤 󰒲
         cmd        = " ",
         config     = " ",
         event      = " ",
@@ -57,8 +53,8 @@ local setup = function(opts)
         plugin     = " ",
         runtime    = " ",
         source     = " ",
-        start      = "",
-        task       = "✔ ",
+        start      = "", --  "🚀",
+        task       = "✔ ", -- "📌",
         list = { "●", "➜", "★", "‒", },
       },
     },
@@ -92,12 +88,7 @@ local setup = function(opts)
     rtp = {
       -- disable some rtp plugins
       disabled_plugins = {
-        -- "netrw",
-        -- "netrwPlugin",
-        -- "netrwSettings",
-        -- "netrwFileHandlers",
-        -- "matchit",
-        -- "matchparen",
+        -- "netrw", "netrwPlugin", "netrwSettings", "netrwFileHandlers", "matchit", "matchparen",
         "2html_plugin",
         "getscript",
         "getscriptPlugin",

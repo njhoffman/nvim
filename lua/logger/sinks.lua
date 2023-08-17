@@ -1,5 +1,4 @@
-local structlog = require("structlog")
-local logfile = vim.fn.stdpath("data") .. "/nvim.log"
+local structlog = require('structlog')
 
 local M = {}
 M.console = function()
@@ -9,11 +8,11 @@ M.console = function()
       -- structlog.processors.Timestamper("%H:%M:%S"),
     },
     formatter = structlog.formatters.FormatColorizer(
-      "[%s] %s: %-30s",
-      { "level", "logger_name", "msg" },
+      '[%s] %s: %-30s',
+      { 'level', 'logger_name', 'msg' },
       { level = structlog.formatters.FormatColorizer.color_level() }
-    -- "%s [%s] %s: %-30s",
-    -- { "timestamp", "level", "logger_name", "msg" },
+      -- "%s [%s] %s: %-30s",
+      -- { "timestamp", "level", "logger_name", "msg" },
     ),
   })
 end
@@ -23,30 +22,34 @@ M.notify = function()
     processors = {
       structlog.processors.Namer(),
     },
-    formatter = structlog.formatters.Format("%s", { "msg" }, { blacklist = { "level", "logger_name" } }), --
-    params_map = { title = "logger_name" },
+    formatter = structlog.formatters.Format('%s', { 'msg' }, { blacklist = { 'level', 'logger_name' } }), --
+    params_map = { title = 'logger_name' },
   })
 end
 
-M.file = function()
-  return structlog.sinks.File(structlog.level.TRACE, logfile, {
+M.file = function(level, logfile)
+  logfile = logfile or vim.fn.stdpath('data') .. '/nvim.log'
+  level = level or structlog.level.TRACE
+  return structlog.sinks.File(level, logfile, {
     processors = {
       structlog.processors.Namer(),
       -- structlog.processors.StackWriter({ "line", "file" }, {
       --   max_parents = 12,
       --   stack_level = 0,
       -- }),
-      structlog.processors.Timestamper("%H:%M:%S"),
+      structlog.processors.Timestamper('%H:%M:%S'),
       function(_, kwargs)
-        if type(kwargs["msg"]) == "table" then
-          kwargs["msg"] = vim.inspect(kwargs["msg"])
+        if type(kwargs['msg']) == 'table' then
+          kwargs['msg'] = vim.inspect(kwargs['msg'])
         end
         return kwargs
       end,
     },
-    formatter = structlog.formatters.Format("%s [%s] %s: %-30s", { "timestamp", "level", "logger_name", "msg" }, {
-      level = structlog.formatters.FormatColorizer.color_level(),
-    }),
+    formatter = structlog.formatters.Format(
+      '%s [%s] %s: %-30s',
+      { 'timestamp', 'level', 'logger_name', 'msg' },
+      { level = structlog.formatters.FormatColorizer.color_level() }
+    ),
   })
 end
 

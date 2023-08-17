@@ -139,14 +139,6 @@ M.results_page_down = function(prompt_bufnr)
   actions_set.shift_selection(prompt_bufnr, results_height)
 end
 
-M.results_select_all = function(prompt_bufnr)
-  actions.select_all(prompt_bufnr)
-end
-
-M.results_drop_all = function(prompt_bufnr)
-  actions.drop_all(prompt_bufnr)
-end
-
 M.toggle_whichkey = function(prompt_bufnr)
   local whichkey_opts = {
     separator = ' ➜ ',

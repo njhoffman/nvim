@@ -1,3 +1,5 @@
+local wkutils = require('mapper.whichkey')
+
 -- local function total(counts)
 --   return counts.normal + counts.visual + counts.insert + counts.operator + counts.command
 -- end
@@ -81,6 +83,7 @@ local get_stats = function()
     end
     return count
   end
+
   local function total(counts)
     return counts.normal
       + counts.visual
@@ -105,7 +108,6 @@ local get_stats = function()
   }
   mapper.total = total(mapper)
 
-  local todo, ok, conflicts, dupes = dump()
   local neovim = {
     normal = length(vim.api.nvim_get_keymap('n')),
     insert = length(vim.api.nvim_get_keymap('i')),
@@ -118,6 +120,7 @@ local get_stats = function()
   }
   neovim.total = total(neovim)
 
+  local todo, ok, conflicts, dupes = wkutils.dump()
   local whichkey = {}
   whichkey.ok = {
     normal = length(ok.n),
@@ -189,9 +192,9 @@ local get_stats = function()
   return { neovim = neovim, whichkey = whichkey, mapper = mapper }
 end
 
-local function dump_out(_opt)
+local function dump_out(opt)
   local todo, ok, conflicts = dump()
-  local opt = _opt
+  opt = opt
     or {
       -- key_types = { "todo", "ok", "duplicates", "conflicts" },
       key_types = { 'conflicts' },
