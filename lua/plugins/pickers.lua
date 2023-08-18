@@ -1,5 +1,11 @@
 local utils = require('utils.lazy')
 
+-- https://github.com/axkirillov/easypick.nvim
+-- https://github.com/adoyle-h/telescope-extension-maker.nvim
+-- https://github.com/adoyle-h/ad-telescope-extensions.nvim
+-- https://github.com/otavioschwanck/telescope-alternate.nvim
+-- https://github.com/lpoto/telescope-tasks.nvim
+
 local plugins = {
   { 'echasnovski/mini.fuzzy', event = 'VeryLazy', version = false },
   {
@@ -165,7 +171,10 @@ local plugins = {
       'nvim-tree/nvim-web-devicons',
       'lpoto/telescope-docker.nvim',
       'molecule-man/telescope-menufacture',
+      'smartpde/telescope-recent-files',
+      'ghassan0/telescope-glyph.nvim',
       'Marskey/telescope-sg',
+      'danielvolchek/tailiscope.nvim',
       'nat-418/telescope-color-names.nvim',
       'nvim-lua/plenary.nvim',
       'nvim-lua/popup.nvim',
@@ -186,7 +195,7 @@ local plugins = {
       'rlch/github-notifications.nvim',
       'sbulav/telescope-terraform.nvim',
       'stevearc/aerial.nvim',
-      'sudormrfbin/cheatsheet.nvim',
+      'doctorfree/cheatsheet.nvim',
       'tamago324/telescope-openbrowser.nvim',
       'tsakirist/telescope-lazy.nvim',
       { 'chip/telescope-code-fence.nvim', build = 'luarocks --local install lunamark' },
@@ -209,6 +218,15 @@ local plugins = {
       { 'GustavoKatel/telescope-asynctasks.nvim', dependencies = { 'skywind3000/asynctasks.vim' } },
       { 'debugloop/telescope-undo.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
       -- { "rmagatti/session-lens", dependencies = "rmagatti/auto-session" },
+      { 'PhilippFeO/telescope-filelinks.nvim' },
+      { 'octarect/telescope-menu.nvim' },
+      {
+        'paopaol/telescope-git-diffs.nvim',
+        dependencies = {
+          'nvim-lua/plenary.nvim',
+          'sindrets/diffview.nvim',
+        },
+      },
       {
         'luckasRanarison/nvim-devdocs',
         dependencies = {

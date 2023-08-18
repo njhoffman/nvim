@@ -237,12 +237,12 @@ local sources = {
     },
   },
   cmdline = {
-    { name = 'cmdline_history', max_item_count = 3, keyword_length = 4 },
-    { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
     {
       name = 'cmdline',
       option = { ignore_cmds = { 'Man', '!' } },
     },
+    { name = 'cmdline_history', max_item_count = 3, keyword_length = 4 },
+    { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
   },
   -- cmdline = {
   --   { name = 'cmdline' },

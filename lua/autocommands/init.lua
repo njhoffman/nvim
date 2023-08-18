@@ -58,6 +58,7 @@ local autocmds = {
 
   FiletypeDetect = {
     { 'FileType', 'qf', 'setlocal nonumber norelativenumber' },
+    { 'FileType', 'query', 'setlocal nonumber norelativenumber' },
     { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
     { {'BufNewFile', 'BufRead'}, '*nvim/option-window', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>', },
     { { 'BufNewFile', 'BufRead' }, '*startuptime.tsv',   'setlocal ft=crontab syn=crontab' },
@@ -84,6 +85,7 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, 'git',                'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer>  :q<cr>' },
     { { 'BufNewFile', 'BufRead' }, '*.conf',             'setlocal ft=conf.dosini' },
     { { 'BufNewFile', 'BufRead' }, '*.pa',               'setlocal ft=conf' },
+    { { 'BufNewFile', 'BufRead' }, '*.scm',              'setlocal ft=query.treesitter' },
     { { 'BufNewFile', 'BufRead' }, '*.service',          'setlocal ft=systemd' },
     { { 'BufNewFile', 'BufRead' }, '*.sock',             'setlocal ft=systemd' },
     { { 'BufNewFile', 'BufRead' }, '*.sock',             'setlocal ft=systemd' },
@@ -124,6 +126,7 @@ local autocmds = {
     { 'FileType', 'SidebarNvim', 'VimadeBufDisable' },
     { 'FileType', 'Trouble', 'VimadeBufDisable' },
     { 'FileType', 'aerial', 'VimadeBufDisable' },
+    { 'FileType', 'query', 'VimadeBufDisable' },
     { 'FileType', 'qf', 'VimadeBufDisable' },
     { 'FileType', 'nerdtree', 'VimadeBufDisable' },
     { 'FileType', 'neo-tree', 'VimadeBufDisable' },
@@ -150,6 +153,7 @@ local autocmds = {
     { 'BufWritePost', '*tmux.conf', [[execute ':!tmux source-file %']] },
   },
 }
+
 autocmds.NumberToggle = {
   {
     { 'BufEnter', 'FocusGained', 'InsertLeave' },

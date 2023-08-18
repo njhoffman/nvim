@@ -71,13 +71,19 @@ map({ 'n', 'v' }, ':', 'q:', {
   nowait = true,
 })
 
-map({ 'n', 'v' }, '<M-f>', 'q:', {
+map({ 'n', 'v' }, '<M-;>', 'q:', {
   category = 'Command',
   label = 'open cmdwin',
   desc = 'open the command window',
 })
 
-map({ 'c' }, '<M-f>', '<C-T>', {
+-- map({ 'c' }, '<M-f>', '<C-T>', {
+--   category = 'Command',
+--   label = 'open cmdwin',
+--   desc = 'open the command window',
+-- })
+
+vmap({ 'c' }, '<C-T>', {
   category = 'Command',
   label = 'open cmdwin',
   desc = 'open the command window',
@@ -557,12 +563,6 @@ map('n', 'yY', '<cmd>normal vil<CR>', {
   desc = 'yank in line',
 })
 
-map('n', '<M-">', '<cmd>Telescope neoclip<cr>', {
-  category = 'Motion',
-  label = 'neoclip telescope',
-  desc = 'show neoclip registers in telescope',
-})
-
 map('n', '<leader>py', '<cmd>Telescope neoclip<cr>', {
   category = 'Motion',
   label = 'neoclip telescope',
@@ -716,12 +716,6 @@ map('n', 'U', '', {
 -- UI --------------------------------------------------------------------------------------------
 
 vmap('n', 'g<C-G>', {
-  category = 'UI',
-  label = 'ascii cursor',
-  desc = 'show ascii under cursor',
-})
-
-map('n', 'gA', '<cmd>ascii<cr>', {
   category = 'UI',
   label = 'ascii cursor',
   desc = 'show ascii under cursor',
@@ -1050,7 +1044,7 @@ vmap('n', 'gnd', {
   desc = 'goto treesitter definition',
 })
 
-map('n', 'gh', '<cmd>TSHighlightCapturesUnderCursor<cr>', {
+map('n', 'ght', '<cmd>TSHighlightCapturesUnderCursor<cr>', {
   category = 'Treesitter',
   plugin = 'treesitter.nvim',
   label = 'show ts highlights',
@@ -1329,14 +1323,7 @@ map('n', '<leader>Fx', '<cmd>ISwapNodeWith<cr>', {
 })
 
 -- TODO: allow range
-map({ 'v' }, '<M-;>', '<esc><cmd>ISwapNodeWith<cr>', {
-  category = 'Format',
-  label = 'swap node with',
-  plugin = 'iswap.nvim',
-  desc = 'swap/exchange node objects with (iswap.nvim)',
-})
-
-map({ 'n' }, '<M-;>', '<cmd>ISwapNodeWith<cr>', {
+map({ 'v', 'n' }, '<M-">', '<esc><cmd>ISwapNodeWith<cr>', {
   category = 'Format',
   label = 'swap node with',
   plugin = 'iswap.nvim',
@@ -1506,7 +1493,36 @@ map('t', '<C-w><C-l>', '<C-\\><C-n>C-w>l', {
 })
 
 --------------------------------------------------------------------------------------------------
+-- HOVER -----------------------------------------------------------------------------------------
+prefix('n', 'gh', 'hover')
+map('n', 'gha', '<cmd>ascii<cr>', {
+  category = 'Hover',
+  label = 'ascii cursor',
+  desc = 'show ascii under cursor',
+})
+
+map('n', 'ghh', '<cmd>Inspect<cr>', {
+  category = 'Hover',
+  label = 'highlights cursor',
+  desc = 'show highlights under cursor',
+})
+
+map('n', 'ghH', '<cmd>InspectSticky<cr>', {
+  category = 'Hover',
+  label = 'highlights sticky',
+  desc = 'sticky highlights under cursor',
+})
+
+map('n', 'ghw', 'g<C-g>', {
+  category = 'Hover',
+  label = 'wordcount cursor',
+  desc = 'show wordcount under cursor',
+})
+
+--------------------------------------------------------------------------------------------------
 -- SYSTEM ----------------------------------------------------------------------------------------
+
+prefix('n', 'i', 'system')
 
 map('n', '<leader>ii', '<cmd>ImportStatus<cr>', {
   category = 'System',
@@ -1514,24 +1530,18 @@ map('n', '<leader>ii', '<cmd>ImportStatus<cr>', {
   desc = 'show import status interface',
 })
 
-map('n', '<leader>iv', '<cmd>Lazy<cr>', {
+map('n', '<leader>il', '<cmd>Lazy<cr>', {
   category = 'System',
   plugin = 'lazy.nvim',
-  label = 'view plugins',
-  desc = 'view lazy.nvim plugins',
-})
-
-map('n', '<leader>il', '<cmd>Lazy log<cr>', {
-  category = 'System',
-  plugin = 'lazy.nvim',
-  label = 'show lazy.nvim log',
-  desc = 'open the lazy.nvim log',
+  label = 'lazy.nvim home view',
+  desc = 'show lazy.nvim home view',
 })
 
 map('n', '<leader>ix', '<cmd>Lazy clean<cr>', {
   category = 'System',
   plugin = 'lazy.nvim',
-  desc = 'uniinstall removed plugins',
+  label = 'lazy.nvim clean plugins',
+  desc = 'show lazy.nvim plugin remover',
 })
 
 map('n', '<leader>ic', '<cmd>Lazy check<cr>', {
@@ -1585,10 +1595,16 @@ map('n', '<leader>iY', ':%y+<CR>', {
   desc = 'yank the full buffer to clipboard',
 })
 
-map('n', '<leader>if', "<cmd>lua print(vim.fn.expand('%:p'))<cr>", {
+map('n', '<leader>if', '<cmd>file<cr>', {
   category = 'System',
   desc = 'print filename in stdout',
   label = 'print filename',
+})
+
+map('n', '<leader>iF', "<cmd>lua print(vim.fn.expand('%:p'))<cr>", {
+  category = 'System',
+  desc = 'print full filename in stdout',
+  label = 'print full filename',
 })
 
 -- stats, additional debugging info

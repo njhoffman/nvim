@@ -195,6 +195,32 @@ local tele_plugs = {
   ['color_names'] = {},
   ['docker'] = {},
   -- ["dap"]= {},
+  ['filelinks'] = {},
+  -- -- The working directory to search for files.
+  -- -- Set to your wiki directory to create links (further examples below)
+  -- working_dir = vim.fn.getcwd(),
+  -- -- specify your own find_command according to telescope's find_command syntax, f. i. { "rg", "--files", "--color", "never" }. Default is nil because telescope's find_files function has it's own default/fall back find_command logic.
+  -- find_command = nil,
+  -- -- First letter in display name upper or lower case, i.e. `[Plugins](…)`
+  -- -- or `[plugins](…)`
+  -- first_upper = true,
+  -- -- Format string for inserting file links. Default is Markdown syntax.
+  -- -- When you are using some wiki syntax, change it to its syntax.
+  -- -- Lua regex is used. Formatting only works when there are exactly two
+  -- -- `%s`. Currently, no checks for a proper Lua regex are performed, so
+  -- -- keep an eye on having exactly two `%s` and nothing else/more.
+  -- format_string = '[%s](%s)',
+  -- -- Append space to format_string for better typography and continuous typing
+  -- format_string_append = " ",
+  -- -- Title for the telescope prompt
+  -- prompt_title = 'File Finder',
+  -- -- Display file links with or without extension, f. i. `[Plugins](…)`
+  -- -- or `[Plugins.lua](…)`
+  -- remove_extension = true,
+  -- -- Some link schemes like Wiki, Orgmode or AsciiDoc expect the URL first
+  -- -- and the displayed text second. Markdown's order is vice versa. By
+  -- -- setting to true URL first schemes are possible.
+  -- url_first = false
   ['file_browser'] = {
     theme = 'ivy',
     mappings = tele_mappings.file_picker,
@@ -208,6 +234,17 @@ local tele_plugs = {
   ['gh'] = {},
   ['ghn'] = {},
   ['ghq'] = {},
+  ['git_diffs'] = {},
+  ['glyph'] = {
+    action = function(glyph)
+      -- argument glyph is a table.
+      -- {name="", value="", category="", description=""}
+      vim.fn.setreg('*', glyph.value)
+      print([[Press p or "*p to paste this glyph]] .. glyph.value)
+      -- insert glyph when picked
+      -- vim.api.nvim_put({ glyph.value }, 'c', false, true)
+    end,
+  },
   ['heading'] = {},
   ['hop'] = {},
   ['howdoi'] = vim.tbl_deep_extend('force', {
@@ -261,6 +298,22 @@ local tele_plugs = {
     -- sudo apt install uberzug ffmpegthumbnailer poppler-utils epub-utils
     -- font-viewer (fontpreview)? fd, rg, etc
   },
+  ['menu'] = {
+    default = {
+      items = {
+        -- Jump to another menu
+        { 'Editor', 'Telescope menu editor' },
+      },
+    },
+    -- `editor` is an example, and you can name it as you like.
+    editor = {
+      items = {
+        { 'Split window vertically', 'vsplit' },
+        { 'Split window horizontally', 'split' },
+        { 'Write', 'w' },
+      },
+    },
+  },
   ['menufacture'] = {
     -- add menu to menufecture
     -- vim.keymap.set( 'n', '<leader>sf',
@@ -290,6 +343,7 @@ local tele_plugs = {
     bookmark_filepath = '~/.vim/telescope_openbrowser_bookmarks',
   },
   ['ports'] = {},
+  ['recent_files'] = {},
   ['repo'] = {},
   -- ["session-lens"]= {},
   ['smart_open'] = {
@@ -299,6 +353,31 @@ local tele_plugs = {
     ignore_patterns = { '*.git/*', '*/tmp/*' },
     match_algorithm = 'fzy',
     disable_devicons = false,
+  },
+  ['tailiscope'] = {
+    -- register to copy classes to on selection
+    register = 'a',
+    -- indicates what picker opens when running Telescope tailiscope
+    -- can be any file inside of docs dir but most useful opts are
+    -- all, base, categories, classes
+    -- These are also accesible by running Telescope tailiscope <picker>
+    default = 'base',
+    -- icon indicates an item which can be opened in tailwind docs
+    -- can be icon or false
+    doc_icon = ' ',
+    -- if you would prefer to copy with/without class selector
+    -- dot is maintained in display to differentiate class from other pickers
+    no_dot = true,
+    maps = {
+      i = {
+        back = '<C-h>',
+        open_doc = '<C-o>',
+      },
+      n = {
+        back = 'b',
+        open_doc = 'od',
+      },
+    },
   },
   ['terraform'] = {},
   ['tmux'] = {},

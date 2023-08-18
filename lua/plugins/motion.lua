@@ -39,12 +39,18 @@ local plugins = {
           { '[', ']' },
         },
         keymaps = {
+          init_selection = '<CR>',
+          node_incremental = '<CR>',
+          node_decremental = '<BS>',
+        },
+      }
+      require('wildfire').setup({
+        keymaps = {
           init_selection = 'v',
           node_incremental = 'v',
           node_decremental = 'V',
         },
-      }
-      require('wildfire').setup()
+      })
     end,
   },
   { 'echasnovski/mini.nvim', version = false },

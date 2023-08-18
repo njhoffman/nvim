@@ -42,7 +42,7 @@ local servers = {
   'sqlls',
   'stylelint_lsp',
   'svelte',
-  'tailwindcss',
+  -- 'tailwindcss',
   'terraformls',
   'texlab',
   'tflint',
@@ -103,7 +103,7 @@ require('mason-lspconfig').setup_handlers({
   ['eslint'] = require('lsp.servers.eslint'),
   ['lua_ls'] = require('lsp.servers.lua_ls'),
   ['stylelint_lsp'] = require('lsp.servers.stylelint_lsp'),
-  ['tailwindcss'] = require('lsp.servers.tailwindcss'),
+  -- ['tailwindcss'] = require('lsp.servers.tailwindcss'),
   -- ['tsserver'] = require('lsp.servers.tsserver'),
   ['ltex'] = function()
     lspconfig.ltex.setup({

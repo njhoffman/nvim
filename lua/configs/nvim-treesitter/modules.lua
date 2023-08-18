@@ -96,7 +96,7 @@ local modules = {
     },
   },
   incremental_custom = {
-    enable = true,
+    enable = false,
     disable = { 'markdown' },
     keymaps = {
       init_selection = 'vv',

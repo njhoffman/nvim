@@ -1,4 +1,4 @@
-local stats = require('utils.lazy.stats')
+local state = require('utils.lazy.state')
 local logger = require('logger').init('lazy')
 
 local file_exists = function(name)
@@ -6,12 +6,14 @@ local file_exists = function(name)
   local path = nvim_dir .. name .. '.lua'
   local f = io.open(path, 'r')
   if f ~= nil then
+    state.configs_paths[name] = path
     io.close(f)
     return true
   else
     path = nvim_dir .. name .. '/init.lua'
     f = io.open(path, 'r')
     if f ~= nil then
+      state.configs_paths[name] = path
       io.close(f)
       return true
     end
@@ -39,21 +41,23 @@ local check_config_file = function(plugin)
     name = string.gsub(name, '-nvim$', '')
     local exists = file_exists(name)
     local fname = 'configs.' .. string.lower(name)
-    stats.state.configs_checked[name] = true
-    if exists and not stats.state.configs_loaded[name] then
+    if exists and not state.configs_loaded[name] then
       logger:trace('config exists: ' .. fname)
+      state.configs_checked[name] = true
       plugin.config = function(loaded_plug)
         local event = loaded_plug._.loaded
         logger:debug(fname .. ' loading', event)
         local mod, mod_ok = vim.import(fname)
         if not mod_ok then
-          stats.state.errors[fname] = mod
+          state.errors[fname] = mod
           logger:error('ERROR: ' .. fname .. vim.inspect(mod))
         else
-          stats.state.configs_loaded[name] = true
+          state.configs_loaded[name] = true
           return mod
         end
       end
+    else
+      state.configs_checked[name] = false
     end
     return plugin, name
   end
@@ -62,10 +66,10 @@ end
 local apply_configs = function(plugins)
   for _, _plugin in ipairs(plugins) do
     local plugin, name = check_config_file(_plugin)
-    if plugin.lazy and not stats.state.lazy[name] then
-      stats.state.lazy[name] = plugin
-    elseif not stats.state.start[name] then
-      stats.state.start[name] = plugin
+    if plugin.lazy and not state.lazy[name] then
+      state.lazy[name] = plugin
+    elseif not state.start[name] then
+      state.start[name] = plugin
     end
   end
   return plugins
