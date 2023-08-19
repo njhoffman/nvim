@@ -253,7 +253,9 @@ end
 
 local semantic_tokens_provider = function(args)
   -- vim.dbglog({ 'semanticTokensProvider', args })
-  vim.lsp.buf.semantic_tokens_provider(args)
+  if type(vim.lsp.buf.semantic_tokens_provider) ~= 'nil' then
+    vim.lsp.buf.semantic_tokens_provider(args)
+  end
   -- vim.lsp.buf.execute_command(args)
 end
 

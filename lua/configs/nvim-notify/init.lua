@@ -15,13 +15,12 @@ local cfg = {
   background_colour = '#000000',
   -- Default timeout for notifications
   timeout = 5000,
-  -- maximium_width = 90,
   minimum_width = 5,
   max_height = function()
     return math.floor(vim.opt.lines:get() / 5 * 4)
   end,
   max_width = function()
-    return math.floor(vim.opt.columns:get() / 3 * 2)
+    return math.floor(vim.opt.columns:get() / 3 * 1)
   end,
   icons = {
     ERROR = '',

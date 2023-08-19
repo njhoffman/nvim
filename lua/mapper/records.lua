@@ -44,6 +44,18 @@ local function add(virtual, mode, lhs, rhs, opts, meta)
   records.tree[mode][lhs] = rhs
 end
 
+-- local function get_key_cmd(mode, lhs)
+--   local keys = vim.api.nvim_get_keymap(mode)
+--   local rhs, opt = '', {}
+--   for _, key in ipairs(keys) do
+--     if key.lhs == lhs then
+--       rhs = key.callback or key.rhs
+--       opt = key
+--     end
+--   end
+--   return rhs, opt
+-- end
+
 -- buffer_only = false,
 -- category = "Buffers",
 -- description = "write to buffer",

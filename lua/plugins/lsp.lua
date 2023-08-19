@@ -42,7 +42,6 @@ local plugins = {
     cmd = { 'Navbuddy' },
     dependencies = { 'neovim/nvim-lspconfig', 'SmiteshP/nvim-navic', 'MunifTanjim/nui.nvim' },
   },
-  { 'ray-x/go.nvim', dependencies = { 'ray-x/guihua.lua' }, ft = 'go' },
   {
     'jose-elias-alvarez/null-ls.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
@@ -70,7 +69,3 @@ local plugins = {
 utils.apply_configs(plugins)
 
 return plugins
-
--- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },
---   { "inkarkat/vim-UnconditionalPaste",
---   requires = "inkarkat/vim-ingo-library" },

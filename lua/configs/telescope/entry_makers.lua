@@ -1,5 +1,4 @@
 local utils = require('telescope.utils')
-local make_entry = require('telescope.make_entry')
 local Path = require('plenary.path')
 
 local function gen_from_keymaps(opts)
@@ -16,9 +15,9 @@ local function gen_from_keymaps(opts)
   end
 
   local function get_desc(entry)
-    if entry.callback and not entry.desc then
-      return require('telescope.actions.utils')._get_anon_function_name(entry.callback)
-    end
+    -- if type(entry.callback) == 'function' and not entry.desc then
+    --   return require('telescope.actions.utils')._get_anon_function_name(entry.callback)
+    -- end
     return vim.F.if_nil(entry.desc, entry.rhs)
   end
 

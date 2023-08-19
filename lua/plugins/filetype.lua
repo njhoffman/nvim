@@ -4,6 +4,7 @@ local lz_syn = false
 
 local plugins = {
   { 'bfrg/vim-jqplay', ft = 'jq', cmd = { 'Jqplay', 'JqplayScratch', 'JqplayScratchNoInput' } },
+  { 'ray-x/go.nvim', dependencies = { 'ray-x/guihua.lua' }, ft = 'go' },
   {
     'jose-elias-alvarez/typescript.nvim',
     config = function()
@@ -41,14 +42,7 @@ local plugins = {
       })
     end,
   },
-  {
-    'b0o/SchemaStore.nvim',
-    ft = {
-      'json',
-      'jsonc',
-      'yaml',
-    },
-  },
+  { 'b0o/SchemaStore.nvim', ft = { 'json', 'jsonc', 'yaml' } },
   {
     'iamcco/markdown-preview.nvim',
     build = 'cd app && yarn install',
@@ -59,13 +53,10 @@ local plugins = {
       -- vim.g.mkdp_browser = 'safari'
     end,
   },
-  {
-    'vuki656/package-info.nvim',
-    dependencies = 'MunifTanjim/nui.nvim',
-    ft = 'json',
-  },
+  { 'vuki656/package-info.nvim', dependencies = 'MunifTanjim/nui.nvim', ft = 'json' },
   { 'serenevoid/kiwi.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
   { 'kevinhwang91/nvim-bqf', cmd = { 'BqfEnable', 'BqfToggle' }, ft = 'qf' },
+
   { 'herringtondarkholme/yats.vim', ft = 'typescript', lazy = lz_syn },
   { 'AckslD/nvim-FeMaco.lua', ft = { 'markdown', 'pandoc' } },
   { 'njhoffman/vim-liquid', ft = 'liquid', lazy = lz_syn },
@@ -105,16 +96,12 @@ local plugins = {
   { 'mtdl9/vim-log-highlighting', ft = { 'log', 'LOG' }, event = { 'BufReadPost', 'BufNewFile' }, lazy = lz_syn },
   { 'hashivim/vim-terraform', ft = 'terraform', event = { 'BufReadPost', 'BufNewFile' }, lazy = lz_syn },
   { 'raimon49/requirements.txt.vim', event = 'VeryLazy', lazy = lz_syn },
-
   { 'godlygeek/tabular', event = 'VeryLazy', lazy = lz_syn },
   {
     'preservim/vim-markdown',
     commit = 'df4be8626e2c5b2a42eb60e1f100fce469b81f7d',
     dependencies = { 'godlygeek/tabular' },
   },
-  -- { 'SidOfc/mkdx', ft = { 'markdown', 'pandoc' }, lazy = false },
-  -- { "jakewvincent/mkdnflow.nvim", enabled = false },
-  -- { 'plasticboy/vim-markdown', branch = 'master', require = {'godlygeek/tabular'}, },
 }
 
 utils.apply_configs(plugins)

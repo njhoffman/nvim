@@ -1,17 +1,18 @@
-local finders = require("telescope.finders")
-local Path = require("plenary.path")
-local pickers = require("telescope.pickers")
+local finders = require('telescope.finders')
+local Path = require('plenary.path')
+local pickers = require('telescope.pickers')
+local sorters = require('telescope.sorters')
 
 local frecency = function(user_opts)
-  local config = require("telescope._extensions.frecency.config")
-  local state = require("telescope._extensions.frecency.state")
-  local futil = require("telescope._extensions.frecency.util")
-  local db_client = require("telescope._extensions.frecency.db_client")
+  local config = require('telescope._extensions.frecency.config')
+  local state = require('telescope._extensions.frecency.state')
+  local futil = require('telescope._extensions.frecency.util')
+  local db_client = require('telescope._extensions.frecency.db_client')
 
   local os_home = vim.loop.os_homedir()
   local opts = config.setup(user_opts)
 
-  local display = require("telescope._extensions.frecency.display").init(opts)
+  local display = require('telescope._extensions.frecency.display').init(opts)
 
   -- start the database client
   db_client.init(
@@ -21,7 +22,7 @@ local frecency = function(user_opts)
     vim.F.if_nil(opts.auto_validate, true)
   )
 
-  state.previous_buffer = vim.fn.bufnr("%")
+  state.previous_buffer = vim.fn.bufnr('%')
   state.cwd = vim.fn.expand(opts.cwd or vim.fn.getcwd())
 
   futil.fetch_lsp_workspaces(state.previous_buffer)
@@ -33,9 +34,9 @@ local frecency = function(user_opts)
       filename = Path:new(filename):make_relative(path_opts.cwd)
       if not state.active_filter then
         if vim.startswith(filename, os_home) then
-          filename = "~/" .. Path:new(filename):make_relative(os_home)
+          filename = '~/' .. Path:new(filename):make_relative(os_home)
         elseif filename ~= original_filename then
-          filename = "./" .. filename
+          filename = './' .. filename
         end
       end
 
@@ -48,11 +49,11 @@ local frecency = function(user_opts)
 
     -- validate tag
     local ws_dir = filter and state.user_workspaces[filter]
-    if filter == "LSP" and not vim.tbl_isempty(state.lsp_workspaces) then
+    if filter == 'LSP' and not vim.tbl_isempty(state.lsp_workspaces) then
       ws_dir = state.lsp_workspaces[1]
     end
 
-    if filter == "CWD" then
+    if filter == 'CWD' then
       ws_dir = state.cwd
     end
 
@@ -81,11 +82,11 @@ local frecency = function(user_opts)
     }
   end
 
-  local delim = opts.filter_delimiter or ":"
-  local filter_re = "^%s*(" .. delim .. "(%S+)" .. delim .. ")"
+  local delim = opts.filter_delimiter or ':'
+  local filter_re = '^%s*(' .. delim .. '(%S+)' .. delim .. ')'
 
   state.picker = pickers.new(opts, {
-    prompt_title = "Frecency",
+    prompt_title = 'Frecency',
     on_input_filter_cb = function(query_text)
       -- check for :filter: in query text
       local matched, new_filter = query_text:match(filter_re)
@@ -108,14 +109,14 @@ local frecency = function(user_opts)
       return { prompt = query_text, updated_finder = new_finder }
     end,
     attach_mappings = function(prompt_bufnr, map)
-      require("telescope.actions").select_default:replace_if(function()
+      require('telescope.actions').select_default:replace_if(function()
         local compinfo = vim.fn.complete_info()
         return compinfo.pum_visible == 1
       end, function()
         local compinfo = vim.fn.complete_info()
-        local keys = compinfo.selected == -1 and "<C-e><Bs><Right>" or "<C-y><Right>:"
+        local keys = compinfo.selected == -1 and '<C-e><Bs><Right>' or '<C-y><Right>:'
         local accept_completion = vim.api.nvim_replace_termcodes(keys, true, false, true)
-        vim.api.nvim_feedkeys(accept_completion, "n", true)
+        vim.api.nvim_feedkeys(accept_completion, 'n', true)
       end)
 
       for mode, tbl in pairs(opts.mappings) do
@@ -129,24 +130,26 @@ local frecency = function(user_opts)
       results = state.results,
       entry_maker = entry_maker,
     }),
-    previewer = require("telescope.config").values.file_previewer(opts),
-    sorter = require("telescope.sorters").fuzzy_with_index_bias(opts),
+    previewer = require('telescope.config').values.file_previewer(opts),
+    sorter = sorters.get_generic_fuzzy_sorter(opts),
+    -- sorter = sorters.get_substr_matcher(opts),
+    -- sorter = sorters.fuzzy_with_index_bias(opts),
   })
   state.picker:find()
 
-  vim.api.nvim_buf_set_option(state.picker.prompt_bufnr, "filetype", "TelescopePrompt")
-  vim.api.nvim_buf_set_option(state.picker.prompt_bufnr, "completefunc", "frecency#FrecencyComplete")
+  vim.api.nvim_buf_set_option(state.picker.prompt_bufnr, 'filetype', 'TelescopePrompt')
+  -- vim.api.nvim_buf_set_option(state.picker.prompt_bufnr, 'completefunc', 'frecency#FrecencyComplete')
   vim.api.nvim_buf_set_keymap(
     state.picker.prompt_bufnr,
-    "i",
-    "<Tab>",
+    'i',
+    '<Tab>',
     "pumvisible() ? '<C-n>'  : '<C-x><C-u>'",
     { expr = true, noremap = true }
   )
   vim.api.nvim_buf_set_keymap(
     state.picker.prompt_bufnr,
-    "i",
-    "<S-Tab>",
+    'i',
+    '<S-Tab>',
     "pumvisible() ? '<C-p>'  : ''",
     { expr = true, noremap = true }
   )

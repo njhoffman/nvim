@@ -1,3 +1,6 @@
+-- { 'SidOfc/mkdx', ft = { 'markdown', 'pandoc' }, lazy = false },
+-- { "jakewvincent/mkdnflow.nvim", enabled = false },
+-- { 'plasticboy/vim-markdown', branch = 'master', require = {'godlygeek/tabular'}, },
 -- { "chentoast/marks.nvim" },
 -- { "inkarkat/vim-UnconditionalPaste", requires = "inkarkat/vim-ingo-library" },
 -- { 'RRethy/vim-hexokinase', event = 'VeryLazy', build = 'make hexokinase' },

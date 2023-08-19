@@ -44,18 +44,7 @@ local plugins = {
       'nvim-tree/nvim-web-devicons',
     },
   },
-  {
-    'romgrk/barbar.nvim',
-    enabled = false,
-    event = 'VimEnter',
-    cmd = { 'BufferPrev', 'BufferNext', 'BufferDelete' },
-    dependencies = 'nvim-tree/nvim-web-devicons',
-    opts = {
-      insert_at_start = true,
-      auto_hide = true,
-    },
-  },
-  { 'rcarriga/nvim-notify', lazy = true },
+  { 'rcarriga/nvim-notify', lazy = false },
   { 'folke/noice.nvim', event = 'VeryLazy' },
   { 'folke/which-key.nvim', event = 'VeryLazy' },
 }

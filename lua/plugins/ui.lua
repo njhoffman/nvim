@@ -1,19 +1,18 @@
 local utils = require('utils.lazy')
 
-local function get_key_cmd(mode, lhs)
-  local keys = vim.api.nvim_get_keymap(mode)
-  local rhs, opt = '', {}
-  for _, key in ipairs(keys) do
-    if key.lhs == lhs then
-      rhs = key.callback or key.rhs
-      opt = key
-    end
-  end
-  return rhs, opt
-end
-
 local plugins = {
   { 'nvim-tree/nvim-web-devicons', dependencies = { 'DaikyXendo/nvim-material-icon' }, lazy = true },
+  {
+    'romgrk/barbar.nvim',
+    enabled = false,
+    event = 'VimEnter',
+    cmd = { 'BufferPrev', 'BufferNext', 'BufferDelete' },
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    opts = {
+      insert_at_start = true,
+      auto_hide = true,
+    },
+  },
   {
     'tummetott/reticle.nvim',
     lazy = false,

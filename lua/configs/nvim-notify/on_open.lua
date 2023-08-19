@@ -6,6 +6,14 @@ vim.cmd([[
   highlight default link NotifyERRORMessage Title
 ]])
 
+local find = function(array, key, val)
+  for _, v in ipairs(array) do
+    if v[key] == val then
+      return v
+    end
+  end
+end
+
 local function file_exists(name)
   local f = io.open(name, 'r')
   if f ~= nil then
@@ -16,31 +24,50 @@ local function file_exists(name)
   end
 end
 
-local function open_error_file(path, line)
-  local cmd = 'e +' .. line .. ' ' .. path
-  vim.cmd(cmd)
+local function open_error_file(path, line, orig_map)
+  -- vim.api.nvim_set_current_win(currwin)
+  -- vim.api.nvim_win_close(notify_win, true)
+  if type(orig_map) == 'table' and type(orig_map.lhs) == 'string' then
+    pcall(vim.api.nvim_del_keymap, { 'n', 'gF' })
+    pcall(vim.api.nvim_set_keymap, {
+      orig_map.mode,
+      orig_map.lhs,
+      orig_map.rhs,
+      {
+        nowait = orig_map.nowait,
+        noremap = orig_map.noremap,
+        silent = 1,
+      },
+    })
+  end
+
+  vim.cmd('e +' .. line .. ' ' .. path)
 end
 
-local function open_lua_error(line)
+local function open_lua_error(line, orig_map)
   local line_parts = vim.fn.split(line, ': \\?')
   if #line_parts > 4 then
-    local file = vim.fn.trim(line_parts[3])
+    local file = vim.fn.trim(line_parts[3]) or ''
     local num = vim.fn.trim(line_parts[4])
-    local full_path = vim.fn.stdpath('config') .. '/' .. file
-    if file_exists(full_path) then
+    if vim.fn.split(file, '/')[1] ~= 'home' then
+      file = vim.fn.stdpath('config') .. '/' .. file
+    end
+
+    if file_exists(file) then
       if vim.v.did_enter == 1 then
-        open_error_file(full_path, num)
+        open_error_file(file, num, orig_map)
       else
         -- TODO: loop timer until vim.v.did_enter == 1
         vim.defer_fn(function()
-          open_error_file(full_path, num)
+          open_error_file(file, num, orig_map)
         end, 500)
       end
     end
   end
 end
 
-local on_open = function(win)
+local on_open_error = function(win, buf, content)
+  local orig_map = find(vim.api.nvim_get_keymap('n'), 'lhs', 'gF')
   local hl = {
     code = 'NotifyERRORCode',
     main = 'NotifyERRORMain',
@@ -48,6 +75,47 @@ local on_open = function(win)
     line = 'NotifyERRORLine',
     message = 'NotifyERRORMessage',
   }
+
+  local parts = vim.fn.split(content[1], ':')
+
+  vim.dbglog({ error = content })
+
+  local new_content = {
+    parts[1] .. ':' .. parts[2],
+    '    ' .. parts[3] .. ':' .. (parts[4] or '') .. ':' .. (parts[5] or ''),
+  }
+  local line_width = 0
+  for _, line in ipairs(new_content) do
+    line_width = line_width < #line and #line or line_width
+  end
+  local max_width = math.floor(vim.opt.columns:get() / 3 * 2)
+  local win_width = max_width < line_width and max_width or line_width
+  vim.api.nvim_win_set_height(win, #new_content)
+  vim.api.nvim_win_set_width(win, win_width)
+  vim.api.nvim_buf_set_option(buf, 'modifiable', true)
+  vim.api.nvim_buf_set_lines(buf, 0, -1, true, new_content)
+
+  local ns_id = vim.api.nvim_create_namespace('notify')
+  local col = #parts[1] + 1
+  -- line one:
+  vim.api.nvim_buf_set_extmark(buf, ns_id, 0, 0, { hl_group = hl.code, end_col = col })
+  vim.api.nvim_buf_set_extmark(buf, ns_id, 0, col + 1, { hl_group = hl.main, end_col = #new_content[1] })
+  -- line two:
+  col = #parts[3] + 4
+  vim.api.nvim_buf_set_extmark(buf, ns_id, 1, 0, { hl_group = hl.file, end_col = col })
+  vim.api.nvim_buf_set_extmark(buf, ns_id, 1, col + 1, { hl_group = hl.line, end_col = col + 1 + #parts[4] })
+  col = col + 2 + #parts[4]
+  vim.api.nvim_buf_set_extmark(buf, ns_id, 1, col, { hl_group = hl.message, end_col = #new_content[2] })
+  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+
+  vim.api.nvim_set_keymap('n', 'gF', '', {
+    callback = function()
+      open_lua_error(content[1], orig_map)
+    end,
+  })
+end
+
+local on_open = function(win)
   vim.api.nvim_win_set_option(win, 'winblend', 10)
   vim.api.nvim_win_set_option(win, 'wrap', false)
   vim.api.nvim_win_set_config(win, { zindex = 100 })
@@ -61,30 +129,7 @@ local on_open = function(win)
   end
 
   if string.match(content[1], '^E51') then
-    local parts = vim.fn.split(content[1], ':')
-
-    local new_content = {
-      parts[1] .. ':' .. parts[2],
-      '    ' .. parts[3] .. ':' .. (parts[4] or '') .. ':' .. (parts[5] or ''),
-    }
-    local max_width = 0
-    for _, line in ipairs(new_content) do
-      max_width = max_width < #line and #line or max_width
-    end
-    vim.api.nvim_win_set_height(win, #new_content)
-    vim.api.nvim_win_set_width(win, max_width)
-    vim.api.nvim_buf_set_option(buf, 'modifiable', true)
-    vim.api.nvim_buf_set_lines(buf, 0, -1, true, new_content)
-
-    local ns_id = vim.api.nvim_create_namespace('notify')
-    vim.api.nvim_buf_set_extmark(buf, ns_id, 0, 0, { hl_group = hl.code, end_col = #parts[1] + 1 })
-    vim.api.nvim_buf_set_extmark(buf, ns_id, 0, #parts[1] + 2, { hl_group = hl.main, end_col = #new_content[1] })
-    vim.api.nvim_buf_set_extmark(buf, ns_id, 1, 0, { hl_group = hl.file, end_col = #parts[3] + 4 })
-    vim.api.nvim_buf_set_extmark(buf, ns_id, 1, #parts[3] + 5, { hl_group = hl.line, end_col = #parts[3] + 6 })
-    vim.api.nvim_buf_set_extmark(buf, ns_id, 1, #parts[3] + 7, { hl_group = hl.message, end_col = #new_content[2] })
-    vim.api.nvim_buf_set_option(buf, 'modifiable', false)
-
-    open_lua_error(content[1])
+    on_open_error(win, buf, content)
   end
 end
 

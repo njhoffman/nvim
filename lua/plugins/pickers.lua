@@ -72,23 +72,11 @@ local plugins = {
         dependencies = { 'kkharji/sqlite.lua', 'telescope-ui-select.nvim', 'dressing.nvim' },
       },
       { 'chip/telescope-code-fence.nvim', build = 'luarocks --local install lunamark' },
-      {
-        'danielfalk/smart-open.nvim',
-        dependencies = { 'kkharji/sqlite.lua' },
-      },
-      {
-        'nvim-telescope/telescope-smart-history.nvim',
-        dependencies = { 'kkharji/sqlite.lua' },
-      },
-      {
-        'mvaldes14/terraform.nvim',
-        dependencies = { 'plenary.nvim', 'nui.nvim' },
-      },
+      { 'danielfalk/smart-open.nvim', dependencies = { 'kkharji/sqlite.lua' } },
+      { 'nvim-telescope/telescope-smart-history.nvim', dependencies = { 'kkharji/sqlite.lua' } },
+      { 'mvaldes14/terraform.nvim', dependencies = { 'plenary.nvim', 'nui.nvim' } },
       { 'kkharji/sqlite.lua', run = 'luarocks install sqlite luv' },
-      {
-        'nvim-telescope/telescope-frecency.nvim',
-        dependencies = { 'kkharji/sqlite.lua' },
-      },
+      { 'nvim-telescope/telescope-frecency.nvim', dependencies = { 'kkharji/sqlite.lua' } },
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       { 'AckslD/nvim-neoclip.lua', dependencies = { 'kkharji/sqlite.lua' } },
       { 'GustavoKatel/telescope-asynctasks.nvim', dependencies = { 'skywind3000/asynctasks.vim' } },
