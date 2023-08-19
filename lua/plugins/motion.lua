@@ -5,7 +5,6 @@ local plugins = {
   -- treesitter
   {
     'nvim-treesitter/nvim-treesitter',
-    commit = '11d79aa0',
     build = ':TSUpdate',
     event = { 'BufReadPost', 'BufNewFile' },
     dependencies = {
@@ -13,6 +12,7 @@ local plugins = {
       -- https://github.com/David-Kunz/markid
       'RRethy/nvim-treesitter-endwise',
       'theHamsta/nvim-treesitter-pairs',
+      'lukas-reineke/headlines.nvim',
       'RRethy/nvim-treesitter-textsubjects',
       'HiPhish/nvim-ts-rainbow2',
       'jbyuki/tree-sitter-ntangle',
@@ -30,168 +30,41 @@ local plugins = {
     'sustech-data/wildfire.nvim',
     event = 'VeryLazy',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    config = function()
-      local default_cfg = {
-        surrounds = {
-          { '(', ')' },
-          { '{', '}' },
-          { '<', '>' },
-          { '[', ']' },
-        },
-        keymaps = {
-          init_selection = '<CR>',
-          node_incremental = '<CR>',
-          node_decremental = '<BS>',
-        },
-      }
-      require('wildfire').setup({
-        keymaps = {
-          init_selection = 'v',
-          node_incremental = 'v',
-          node_decremental = 'V',
-        },
-      })
-    end,
   },
-  { 'echasnovski/mini.nvim', version = false },
   {
     'ziontee113/query-secretary',
     dependencies = { 'nvim-treesitter' },
     keys = { '<leader><BS>' },
-    config = function()
-      require('query-secretary').setup({
-        open_win_opts = {
-          row = 0,
-          col = 9999,
-          width = 50,
-          height = 15,
-        },
-
-        -- other options you can customize
-        buf_set_opts = {
-          tabstop = 2,
-          softtabstop = 2,
-          shiftwidth = 2,
-        },
-
-        capture_group_names = { 'cap', 'second', 'third' }, -- when press "c"
-        predicates = { 'eq', 'any-of', 'contains', 'match', 'lua-match' }, -- when press "p"
-        visual_hl_group = 'Visual', -- when moving cursor around
-
-        -- here are the default keymaps
-        keymaps = {
-          close = { 'q', 'Esc' },
-          next_predicate = { 'p' },
-          previous_predicate = { 'P' },
-          remove_predicate = { 'd' },
-          toggle_field_name = { 'f' },
-          yank_query = { 'y' },
-          next_capture_group = { 'c' },
-          previous_capture_group = { 'C' },
-        },
-      })
-
-      vim.keymap.set('n', '<leader><BS>', function()
-        require('query-secretary').query_window_initiate()
-      end, {})
-    end,
   },
-  {
-    'gbprod/substitute.nvim',
-    config = function()
-      local defaults = {
-        on_substitute = nil,
-        yank_substituted_text = false,
-        highlight_substituted_text = {
-          enabled = true,
-          timer = 500,
-        },
-        range = {
-          prefix = 's',
-          prompt_current_text = false,
-          confirm = false,
-          complete_word = false,
-          motion1 = false,
-          motion2 = false,
-          suffix = '',
-        },
-        exchange = {
-          motion = false,
-          use_esc_to_cancel = true,
-        },
-      }
-
-      -- replace:  Siw replaces the current word with "+" register
-      -- exchange: Sxiw (move to next work) Sxiw (or .)
-      require('substitute').setup({ range = { prefix = 'S' } })
-
-      vim.keymap.set('n', 'S', require('substitute').operator, { noremap = true })
-      vim.keymap.set('n', 'SS', require('substitute').line, { noremap = true })
-      -- vim.keymap.set("n", "S", require('substitute').eol, { noremap = true })
-      vim.keymap.set('x', 'S', require('substitute').visual, { noremap = true })
-
-      vim.keymap.set('n', '<leader>S', function()
-        require('substitute.range').operator({ prefix = 'S' })
-      end, { noremap = true })
-
-      vim.keymap.set('n', 'Sx', require('substitute.exchange').operator, { noremap = true })
-      vim.keymap.set('n', 'Sxx', require('substitute.exchange').line, { noremap = true })
-      vim.keymap.set('x', 'X', require('substitute.exchange').visual, { noremap = true })
-      vim.keymap.set('n', 'Sxc', require('substitute.exchange').cancel, { noremap = true })
-
-      -- vim.keymap.set("n", "s", require('substitute').operator, { noremap = true })
-      -- vim.keymap.set("n", "ss", require('substitute').line, { noremap = true })
-      -- vim.keymap.set("n", "S", require('substitute').eol, { noremap = true })
-      -- vim.keymap.set("x", "s", require('substitute').visual, { noremap = true })
-
-      -- vim.keymap.set("n", "<leader>s", require('substitute.range').operator, { noremap = true })
-      -- vim.keymap.set("x", "<leader>s", require('substitute.range').visual, { noremap = true })
-      -- vim.keymap.set("n", "<leader>ss", require('substitute.range').word, { noremap = true })
-
-      -- exchange operator
-      -- vim.keymap.set("n", "sx", require('substitute.exchange').operator, { noremap = true })
-      -- vim.keymap.set("n", "sxx", require('substitute.exchange').line, { noremap = true })
-      -- vim.keymap.set("x", "X", require('substitute.exchange').visual, { noremap = true })
-      -- vim.keymap.set("n", "sxc", require('substitute.exchange').cancel, { noremap = true })
-    end,
-  },
+  { 'gbprod/substitute.nvim', event = { 'VeryLazy' } },
   {
     'ckolkey/ts-node-action',
-    event = 'BufReadPost',
-    dependencies = {
-      'nvim-treesitter',
-      'null-ls.nvim',
-      -- name = 'more_actions',
-      -- method = { require('null-ls').methods.CODE_ACTION },
-      -- filetypes = { '_all' },
-      -- generator = {
-      --   fn = require('ts-node-action').available_actions,
-      -- },
-    },
+    event = 'VeryLazy',
+    dependencies = { 'nvim-treesitter', 'null-ls.nvim' },
   },
-  { 'echasnovski/mini.surround', event = { 'BufRead' }, version = false },
+  { 'echasnovski/mini.surround', event = { 'VeryLazy' } },
   -- matching
   -- { "andymass/vim-matchup", dependencies = { "theHamsta/nvim-treesitter-pairs" } },
   -- pairs
   { 'echasnovski/mini.pairs', event = 'InsertEnter' },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
   -- textobjects
-  { 'echasnovski/mini.ai', event = { 'BufReadPost', 'BufNewFile' }, version = false },
-  { 'chrisgrieser/nvim-various-textobjs', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'echasnovski/mini.ai', event = { 'VeryLazy' } },
+  { 'chrisgrieser/nvim-various-textobjs', event = { 'VeryLazy' } },
   -- split/join
-  { 'echasnovski/mini.splitjoin', event = { 'BufReadPost', 'BufNewFile' }, version = false },
-  { 'Wansmer/treesj', event = { 'BufReadPost', 'BufNewFile' }, lazy = false, dependencies = { 'nvim-treesitter' } },
+  { 'echasnovski/mini.splitjoin', event = { 'VeryLazy' } },
+  { 'Wansmer/treesj', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
   -- traversal/swapping
   { 'mizlan/iswap.nvim', event = { 'BufReadPost', 'BufNewFile' } },
-  { 'ziontee113/SelectEase', lazy = false },
+  { 'ziontee113/SelectEase', event = 'VeryLazy' },
   { 'chrisgrieser/nvim-spider', event = 'VeryLazy' },
   { 'echasnovski/mini.move', event = 'VeryLazy' },
   -- alignment
-  { 'echasnovski/mini.align', version = false, event = 'VeryLazy' },
+  { 'echasnovski/mini.align', event = 'VeryLazy' },
   -- { 'hrsh7th/nvim-pasta' },
   { 'dhruvasagar/vim-table-mode', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
   { 'echasnovski/mini.doc', version = false, event = 'VeryLazy' },
-  { 'echasnovski/mini.bracketed', event = 'VeryLazy', version = false },
+  { 'echasnovski/mini.bracketed', event = 'VeryLazy' },
   { 'jkramer/vim-checkbox', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
   { 'nicwest/vim-camelsnek', event = 'VeryLazy' },
   -- formatting
@@ -203,6 +76,7 @@ local plugins = {
   { 'tpope/vim-repeat', event = 'VeryLazy' },
   { 'smjonas/live-command.nvim', cmd = { 'Reg', 'Norm' }, event = 'VeryLazy' },
   { 'Konfekt/vim-alias', event = 'VeryLazy' },
+  { 'rainbowhxch/accelerated-jk.nvim', enabled = false },
   {
     'psliwka/vim-smoothie',
     commit = '10fd0aa',
@@ -220,6 +94,27 @@ local plugins = {
     end,
   }, -- f2aaab1
   { dir = '~/git/clever-f.vim' }, -- rhysd/clever-f.vim
+  -- integrations
+  { 'aserowy/tmux.nvim', event = 'VeryLazy' },
+  { 'jbyuki/quickmath.nvim', cmd = 'Quickmath', event = 'VeryLazy' },
+  { 'jameshiew/nvim-magic', dependencies = { 'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim', event = 'VeryLazy' } },
+  { 'michaelb/sniprun', build = 'bash install.sh', cmd = { 'SnipRun', 'SnipInfo' } },
+  { 'milisims/nvim-luaref', event = 'VeryLazy' },
+  { 'windwp/nvim-spectre', cmd = 'Spectre' },
+  { 'WaylonWalker/Telegraph.nvim', cmd = 'Telegraph' },
+  {
+    'bennypowers/nvim-regexplainer',
+    cmd = { 'RegexplainerShow', 'RegexplainerToggle' },
+    dependencies = { 'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim' },
+  },
+  -- { 'rmagatti/auto-session', event = 'VimEnter' },
+  { 'wakatime/vim-wakatime', event = 'VeryLazy' },
+  { 'AndrewRadev/id3.vim' },
+  {
+    'susensio/magic-bang.nvim',
+    ft = 'sh',
+    opts = { automatic = true, command = true, executable = true, default = '/bin/bash' },
+  },
 }
 utils.apply_configs(plugins)
 return plugins

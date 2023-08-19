@@ -14,17 +14,17 @@ function scandir(directory, recursive, extensions)
 
   local fileList = {}
   local dirList = { current_directory }
-  local stats = { size = 0, lines = 0 }
+  local lines = 0
 
   local add_file = function(file_name)
     local path = current_directory .. file_name
+    local lines_cmd = table.remove(vim.fn.systemlist('wc -l ' .. path .. '| cut -f1 -d" "'), 1)
+    if type(tonumber(lines_cmd)) == 'nil' then
+      vim.dbglog('NIL', path)
+    else
+      lines = lines + tonumber(lines_cmd)
+    end
     table.insert(fileList, path)
-    local file = io.open(path, 'r+b')
-    vim.dbglog(path, file)
-    -- local content = file:read('*a')
-    -- _, lines = content:gsub('\n', '')
-    -- stats.size = stats.size + file:seek('end')
-    -- stats.lines = stats.lines + lines
   end
 
   for fileName in io.popen(command):lines() do
@@ -42,7 +42,7 @@ function scandir(directory, recursive, extensions)
       if type(extensions) == 'table' then
         for _, extension in ipairs(extensions) do
           if string.find(fileName, '%.' .. extension .. '$') then
-            add_file(fileName)
+            vim.fn.add_file(fileName)
           end
         end
       else
@@ -50,24 +50,41 @@ function scandir(directory, recursive, extensions)
       end
     end
   end
-  return { fileList, dirList, stats }
+  return fileList, dirList, lines
 end
 
--- for key, value in ipairs(scandir(vim.fn.stdpath('config'), true)) do
---   vim.dbglog(value)
--- end
--- local stats_files = function(args, state) end
--- local stats = function(args)
---   stats_files(args)
---   -- local cmd_map = {
---   --   configs = stats_configs,
---   -- }
---   -- if cmd_map[args[2]] then
---   --   cmd_map[args[2]](args)
---   -- else
---   --   stats_overview(args)
---   -- end
--- end
+local get_dir_size = function(path)
+  return table.remove(vim.fn.systemlist('du -shc * ' .. path .. '| tail -n1 | cut -f1'), 1)
+end
+
+local stats_files = function(args, state)
+  local plugins_size = get_dir_size(vim.fn.stdpath('data') .. '/lazy')
+  local nvim_size = get_dir_size(vim.fn.stdpath('config'))
+  local nvim_files, nvim_dirs, nvim_lines = scandir(vim.fn.stdpath('config'), true)
+  local plugin_files, plugin_dirs, plugin_lines = scandir(vim.fn.stdpath('data') .. '/lazy', true)
+  vim.dbglog({
+    plugins_size = plugins_size,
+    plugin_dirs = #plugin_dirs,
+    plugin_files = #plugin_files,
+    plugin_lines = plugin_lines,
+    nvim_size = nvim_size,
+    nvim_files = #nvim_files,
+    nvim_dirs = #nvim_dirs,
+    nvim_lines = nvim_lines,
+  })
+end
+
+local stats = function(args)
+  stats_files()
+  -- local cmd_map = {
+  --   configs = stats_configs,
+  -- }
+  -- if cmd_map[args[2]] then
+  --   cmd_map[args[2]](args)
+  -- else
+  --   stats_overview(args)
+  -- end
+end
 return {
   stats = stats,
   stats_track = stats_track,

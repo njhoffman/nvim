@@ -16,8 +16,6 @@
 (("then"     @keyword) (#set! conceal "↙"))
 (("do"       @keyword) (#set! conceal ""))
 
-(("comment_start"    @comment) (#set! conceal ""))
-
 ;; Function names
 ((function_call name: (identifier) @TSFuncMacro (#eq? @TSFuncMacro "require")) (#set! conceal ""))
 ((function_call name: (identifier) @TSFuncMacro (#eq? @TSFuncMacro "print"  )) (#set! conceal " "))
@@ -31,7 +29,7 @@
 (((break_statement) @keyword) (#set! conceal "ﰈ"))
 
 ;; vim.*
-(((dot_index_expression) @field (#eq? @field "vim.cmd"     )) (#set! conceal  "" ))
+(((dot_index_expression) @field (#eq? @field "vim.cmd"     )) (#set! conceal ""))
 (((dot_index_expression) @field (#eq? @field "vim.api"     )) (#set! conceal ""))
 (((dot_index_expression) @field (#eq? @field "vim.fn"      )) (#set! conceal ""))
 (((dot_index_expression) @field (#eq? @field "vim.g"       )) (#set! conceal ""))

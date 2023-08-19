@@ -23,8 +23,6 @@ local plugins = {
       vim.cmd('colorscheme nord-nick')
     end,
   },
-  { 'rcarriga/nvim-notify', lazy = false },
-  { 'folke/noice.nvim', lazy = false },
   {
     'nvim-neo-tree/neo-tree.nvim',
     -- no lazy loading to enable netrw override
@@ -39,7 +37,7 @@ local plugins = {
     'utilyre/barbecue.nvim',
     -- dir = '~/git/barbecue.nvim',
     name = 'barbecue',
-    event = { 'BufNewFile', 'BufReadPost' },
+    event = { 'VeryLazy' },
     cmd = 'Barbecue',
     dependencies = {
       'SmiteshP/nvim-navic',
@@ -57,6 +55,8 @@ local plugins = {
       auto_hide = true,
     },
   },
+  { 'rcarriga/nvim-notify', lazy = true },
+  { 'folke/noice.nvim', event = 'VeryLazy' },
   { 'folke/which-key.nvim', event = 'VeryLazy' },
 }
 

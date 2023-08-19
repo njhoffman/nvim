@@ -9,137 +9,6 @@ local utils = require('utils.lazy')
 local plugins = {
   { 'echasnovski/mini.fuzzy', event = 'VeryLazy', version = false },
   {
-    'prochri/telescope-all-recent.nvim',
-    dependencies = { 'telescope.nvim', 'kkharji/sqlite.lua', 'telescope-ui-select.nvim', 'dressing.nvim' },
-    config = function()
-      local default_config = {
-        database = {
-          folder = vim.fn.stdpath('data'),
-          file = 'telescope-all-recent.sqlite3',
-          max_timestamps = 10,
-        },
-        scoring = {
-          recency_modifier = {
-            [1] = { age = 240, value = 100 }, -- past 4 hours
-            [2] = { age = 1440, value = 80 }, -- past day
-            [3] = { age = 4320, value = 60 }, -- past 3 days
-            [4] = { age = 10080, value = 40 }, -- past week
-            [5] = { age = 43200, value = 20 }, -- past month
-            [6] = { age = 129600, value = 10 }, -- past 90 days
-          },
-          boost_factor = 0.0001,
-        },
-        default = {
-          disable = true,
-          use_cwd = true,
-          sorting = 'recent',
-        },
-        debug = false,
-        -- does not make sense for:
-        -- grep string
-        -- live grep (too many results)
-        -- TODO: buffers: might be useful for project/session, but: we must allow preprocesseing the string
-        --
-        -- oldfiles: are per definition already recent. If you need frecency files: use telescope-frecency
-        -- command history: already recent
-        -- search history: already recent
-        --
-        pickers = {
-          -- pickers explicitly enabled
-          -- not using cwd
-          man_pages = {
-            disable = false,
-            use_cwd = false,
-          },
-          vim_options = {
-            disable = false,
-            use_cwd = false,
-          },
-          pickers = {
-            disable = false,
-            use_cwd = false,
-          },
-          builtin = {
-            disable = false,
-            use_cwd = false,
-          },
-          planets = {
-            disable = false,
-            use_cwd = false,
-          },
-          commands = {
-            disable = false,
-            use_cwd = false,
-          },
-          help_tags = {
-            disable = false,
-            use_cwd = false,
-          },
-          -- using cwd
-          find_files = {
-            disable = false,
-            sorting = 'frecency',
-          },
-          git_files = {
-            disable = false,
-            sorting = 'frecency',
-          },
-          tags = {
-            disable = false,
-          },
-          git_commits = {
-            disable = false,
-          },
-          git_branches = {
-            disable = false,
-          },
-          -- some explicitly disabled pickers: I consider them not useful.
-          oldfiles = { disable = true },
-          live_grep = { disable = true },
-          grep_string = { disable = true },
-          command_history = { disable = true },
-          search_history = { disable = true },
-          current_buffer_fuzzy_find = { disable = true },
-        },
-        -- support for telescope invoked through vim.ui.select, e.g. using dressing.nvim
-        -- Specify the kind.
-        -- Potentially fix to a specific prompt only.
-        -- Other than that, all options are the same as for normal pickers
-        -- vim_ui_select = {
-        --   kinds = {},
-        --   prompts = {},
-        -- },
-        vim_ui_select = {
-          kinds = {
-            overseer_template = {
-              use_cwd = true,
-              prompt = 'Task template',
-              name_include_prompt = true,
-            },
-            overseer_task_options = {
-              use_cwd = true,
-              -- differentiate pickers, if they use distinct prompts
-              name_include_prompt = true,
-            },
-          },
-          -- some plugins don't set a kind. The prompt contents can be used as fallback!
-          prompts = {
-            ['My Prompt'] = {
-              use_cwd = false,
-            },
-          },
-        },
-        -- lua require'telescope-all-recent'.toggle_debug()
-      }
-      return default_config
-    end,
-    -- Telescope does not provide the relevant hooks/callback functions to build this nicely. So, this plugin first stores some of the original functions and then overrides them:
-    -- calls to telescope.builtin and telescope.extensions[extension_name] are overriden. This allows us to get the name of the called picker.
-    -- the Picker:new is replaced. We want to get all information we can about what picker we are dealing with.
-    -- the Sorter:new function is replaced to allow us to insert a custom sorting function, which boosts the scores of (f)recent items by a small amount.
-    -- the action.select_default.__call allows us to see, which result is finally selected and add it to the database.
-  },
-  {
     'nvim-neo-tree/neo-tree.nvim',
     lazy = false,
     cmd = { 'NeoTreeFocusToggle', 'NeoTreeShowToggle' },
@@ -198,6 +67,10 @@ local plugins = {
       'doctorfree/cheatsheet.nvim',
       'tamago324/telescope-openbrowser.nvim',
       'tsakirist/telescope-lazy.nvim',
+      {
+        'prochri/telescope-all-recent.nvim',
+        dependencies = { 'kkharji/sqlite.lua', 'telescope-ui-select.nvim', 'dressing.nvim' },
+      },
       { 'chip/telescope-code-fence.nvim', build = 'luarocks --local install lunamark' },
       {
         'danielfalk/smart-open.nvim',

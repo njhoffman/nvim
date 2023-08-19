@@ -1,5 +1,16 @@
 local commands = require('stats.commands')
 
+--   68 loaded : 216 checked
+--   88 exist  : 128 not exist
+--   nvim_dirs = 163
+--   nvim_files = 1,007
+--   nvim_lines = 97,393
+--   nvim_size  = "6.1M"
+--   plugin_dirs  = 6,031,
+--   plugin_files = 29,271
+--   plugin_lines = 15,629,291
+--   plugins_size = "2.3G"
+
 local stats_complete = function(query, cmd)
   local cmds = {
     'aucommands',

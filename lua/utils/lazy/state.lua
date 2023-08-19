@@ -1,20 +1,32 @@
 local state = {
   start = {},
   lazy = {},
+  dependency = {},
   configs_paths = {},
   configs_checked = {},
   configs_loaded = {},
+  configs_dependency = {},
   errors = {},
 }
 
 state.get_numbers = function()
-  local plugins = { keys = 0, events = 0, dependencies = 0 }
+  local plugins = {
+    start = #state.start,
+    lazy = #state.lazy,
+    keys = 0,
+    events = 0,
+    dependencies = #state.dependency,
+  }
   local configs = {
     exist = 0,
     noexist = 0,
     checked = 0,
     loaded = 0,
+    dependency = 0,
   }
+  for _, _ in pairs(state.configs_dependency) do
+    configs.dependency = configs.dependency + 1
+  end
   for _, _ in pairs(state.configs_loaded) do
     configs.loaded = configs.loaded + 1
   end

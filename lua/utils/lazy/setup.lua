@@ -1,4 +1,4 @@
-local stats = require('utils.lazy.stats')
+local state = require('utils.lazy.state')
 
 local setup = function(opts)
   opts = opts or { cache = true, reload = true, lazy = false, dev_patterns = {} }
@@ -16,7 +16,7 @@ local setup = function(opts)
 
   vim.opt.rtp:prepend(lazypath)
   local _stats = require('lazy.stats')._stats
-  stats.state = vim.tbl_deep_extend('force', stats.state, _stats)
+  state = vim.tbl_deep_extend('force', state, _stats)
 
   -- stylua: ignore
   require("lazy").setup("plugins", {
@@ -31,7 +31,7 @@ local setup = function(opts)
     ui = {
       border = "rounded",
       icons = {
-        --   cmd   = "⌘",
+        -- cmd     = "⌘",
         -- config  = "🛠",
         -- event   = "📅",
         -- ft      = "📂",

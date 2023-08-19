@@ -21,6 +21,28 @@ local file_exists = function(name)
   end
 end
 
+local apply_config_file = function(name, plugin)
+  local fname = 'configs.' .. string.lower(name)
+  logger:trace('config exists: ' .. fname)
+  if plugin._dependency then
+    state.configs_dependency[name] = true
+  else
+    state.configs_checked[name] = true
+  end
+  plugin.config = function(loaded_plug)
+    local event = loaded_plug._.loaded
+    logger:debug(fname .. ' loading', event)
+    local mod, mod_ok = vim.import(fname)
+    if not mod_ok then
+      state.errors[fname] = mod
+      logger:error('ERROR: ' .. fname .. vim.inspect(mod))
+    else
+      state.configs_loaded[name] = true
+      return mod
+    end
+  end
+end
+
 local check_config_file = function(plugin)
   local name = ''
   -- parse config file name from plugin name
@@ -39,28 +61,15 @@ local check_config_file = function(plugin)
   if type(name) == 'string' and #name > 0 then
     name = string.lower(string.gsub(name, '[\\.]+', '-'))
     name = string.gsub(name, '-nvim$', '')
-    local exists = file_exists(name)
-    local fname = 'configs.' .. string.lower(name)
-    if exists and not state.configs_loaded[name] then
-      logger:trace('config exists: ' .. fname)
-      state.configs_checked[name] = true
-      plugin.config = function(loaded_plug)
-        local event = loaded_plug._.loaded
-        logger:debug(fname .. ' loading', event)
-        local mod, mod_ok = vim.import(fname)
-        if not mod_ok then
-          state.errors[fname] = mod
-          logger:error('ERROR: ' .. fname .. vim.inspect(mod))
-        else
-          state.configs_loaded[name] = true
-          return mod
-        end
+    if type(state.configs_checked[name]) == 'nil' then
+      if file_exists(name) then
+        apply_config_file(name, plugin)
+      else
+        state.configs_checked[name] = false
       end
-    else
-      state.configs_checked[name] = false
     end
-    return plugin, name
   end
+  return plugin, name
 end
 
 local apply_configs = function(plugins)
@@ -70,6 +79,20 @@ local apply_configs = function(plugins)
       state.lazy[name] = plugin
     elseif not state.start[name] then
       state.start[name] = plugin
+    end
+
+    -- loop through dependencies and apply any necessary configs
+    local dependencies = {}
+    if type(plugin.dependencies) == 'table' then
+      dependencies = plugin.dependencies
+    elseif type(plugin.dependencies) == 'string' then
+      dependencies = { plugin.dependencies }
+    end
+    for _, _dep_plugin in ipairs(dependencies) do
+      _dep_plugin = type(_dep_plugin) == 'string' and { _dep_plugin } or _dep_plugin
+      _dep_plugin._dependency = true
+      local dep_plugin, dep_name = check_config_file(_dep_plugin)
+      state.dependency[name] = dep_plugin
     end
   end
   return plugins

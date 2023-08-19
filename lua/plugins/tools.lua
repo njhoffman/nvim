@@ -1,4 +1,6 @@
 local utils = require('utils.lazy')
+-- https://github.com/RaafatTurki/hex.nvim
+
 local plugins = {
   {
     'ThePrimeagen/refactoring.nvim',
@@ -8,27 +10,7 @@ local plugins = {
       { 'nvim-treesitter/nvim-treesitter' },
     },
   },
-  {
-    'LunarVim/bigfile.nvim',
-    config = function()
-      -- default config
-      require('bigfile').config({
-        filesize = 2, -- size of the file in MiB, the plugin round file sizes to the closest MiB
-        pattern = { '*' }, -- autocmd pattern
-        features = { -- features to disable
-          'indent_blankline',
-          'illuminate',
-          'lsp',
-          'treesitter',
-          'syntax',
-          'matchparen',
-          'vimopts',
-          'filetype',
-        },
-      })
-    end,
-  },
-  -- https://github.com/RaafatTurki/hex.nvim
+  { 'LunarVim/bigfile.nvim' },
   {
     'nvim-neotest/neotest',
     cmd = { 'Neotest', 'NeotestSummary', 'NeotestNearest', 'NeotestAttach' },
@@ -46,10 +28,24 @@ local plugins = {
       },
     },
   },
+  -- quickfix file renamer
+  {
+    'gabrielpoca/replacer.nvim',
+    opts = { rename_files = false },
+    keys = {
+      {
+        '<leader>h',
+        function()
+          require('replacer').run()
+        end,
+        desc = 'run replacer.nvim',
+      },
+    },
+  },
   { 'chrisgrieser/nvim-early-retirement', event = 'VeryLazy' },
   {
     'qpkorr/vim-renamer',
-    config = function()
+    init = function()
       vim.g.RenamerShowHiddenEnabled = true
     end,
   },
@@ -85,18 +81,7 @@ local plugins = {
     'jamestthompson3/nvim-remote-containers',
     cmd = { 'BuildImage', 'AttachToContainer', 'StartImage', 'ComposeUp', 'ComposeDown', 'ComposeDestroy' },
   },
-  {
-    'kelly-lin/ranger.nvim',
-    config = function()
-      require('ranger-nvim').setup({ replace_netrw = true })
-      vim.api.nvim_set_keymap('n', '<leader>ef', '', {
-        noremap = true,
-        callback = function()
-          require('ranger-nvim').open(true)
-        end,
-      })
-    end,
-  },
+  { 'kelly-lin/ranger.nvim', lazy = true },
   { 'lambdalisue/suda.vim', event = 'VeryLazy' },
   { 'skywind3000/asynctasks.vim', event = 'VeryLazy', dependencies = 'skywind3000/asyncrun.vim' },
   { 'aymericbeaumet/vim-symlink', event = 'VeryLazy', dependencies = 'moll/vim-bbye' },
@@ -106,48 +91,8 @@ local plugins = {
     event = 'VeryLazy',
     dependencies = { 'stevearc/dressing.nvim', 'hrsh7th/nvim-cmp', 'hrsh7th/cmp-omni' },
   },
-  {
-    'echasnovski/mini.test',
-    version = false,
-    -- No need to copy this inside `setup()`. Will be used automatically.
-    -- opts = {
-    --   -- Options for collection of test cases. See `:h MiniTest.collect()`.
-    --   collect = {
-    --     -- Temporarily emulate functions from 'busted' testing framework
-    --     -- (`describe`, `it`, `before_each`, `after_each`, and more)
-    --     emulate_busted = true,
-    --
-    --     -- Function returning array of file paths to be collected.
-    --     -- Default: all Lua files in 'tests' directory starting with 'test_'.
-    --     find_files = function()
-    --       return vim.fn.globpath('tests', '**/test_*.lua', true, true)
-    --     end,
-    --
-    --     -- Predicate function indicating if test case should be executed
-    --     filter_cases = function(case)
-    --       return true
-    --     end,
-    --   },
-    --
-    --   -- Options for execution of test cases. See `:h MiniTest.execute()`.
-    --   execute = {
-    --     -- Table with callable fields `start()`, `update()`, and `finish()`
-    --     reporter = nil,
-    --
-    --     -- Whether to stop execution after first error
-    --     stop_on_error = false,
-    --   },
-    --
-    --   -- Path (relative to current directory) to script which handles project
-    --   -- specific test running
-    --   script_path = 'scripts/minitest.lua',
-    --
-    --   -- Whether to disable showing non-error feedback
-    --   silent = false,
-    -- },
-  },
+  { 'echasnovski/mini.test', lazy = true },
   { 'gennaro-tedesco/nvim-jqx', lazy = true, cmd = { 'JqxList', 'JqxQuery' } },
-  { 'bfrg/vim-jqplay', ft = 'jq', cmd = { 'Jqplay', 'JqplayScratch', 'JqplayScratchNoInput' } },
   { 'npxbr/glow.nvim', cmd = 'Glow' },
   { 'NTBBloodbath/rest.nvim', cmd = { 'RESTRunLast', 'RESTRun', 'RESTPreview' } },
   { 'dbeniamine/cheat.sh-vim', cmd = 'Cheat' },
@@ -170,7 +115,7 @@ local plugins = {
     build = function()
       vim.cmd([[UpdateRemotePlugins]])
     end,
-    config = function()
+    init = function()
       vim.g.mundo_prefer_python3 = 1
       vim.g.mundo_width = 35
       vim.g.mundo_preview_height = 10
@@ -236,77 +181,6 @@ local plugins = {
       { '<leader>as', desc = 'summarize text' },
       { '<leader>ag', desc = 'generate git message' },
     },
-    config = function()
-      require('neoai').setup({
-        -- Below are the default options, feel free to override what you would like changed
-        ui = {
-          output_popup_text = 'NeoAI',
-          input_popup_text = 'Prompt',
-          width = 30, -- As percentage eg. 30%
-          output_popup_height = 80, -- As percentage eg. 80%
-          submit = '<Enter>', -- Key binding to submit the prompt
-        },
-        models = {
-          {
-            name = 'openai',
-            model = 'gpt-3.5-turbo',
-            params = nil,
-          },
-        },
-        register_output = {
-          ['g'] = function(output)
-            return output
-          end,
-          ['c'] = require('neoai.utils').extract_code_snippets,
-        },
-        inject = {
-          cutoff_width = 75,
-        },
-        prompts = {
-          context_prompt = function(context)
-            return "Hey, I'd like to provide some context for future "
-              .. 'messages. Here is the code/text that I want to refer '
-              .. 'to in our upcoming conversations:\n\n'
-              .. context
-          end,
-        },
-        mappings = {
-          ['select_up'] = '<C-k>',
-          ['select_down'] = '<C-j>',
-        },
-        open_api_key_env = 'OPENAI_API_KEY',
-        shortcuts = {
-          {
-            name = 'textify',
-            key = '<leader>as',
-            desc = 'fix text with AI',
-            use_context = true,
-            prompt = [[
-                Please rewrite the text to make it more readable, clear,
-                concise, and fix any grammatical, punctuation, or spelling
-                errors
-            ]],
-            modes = { 'v' },
-            strip_function = nil,
-          },
-          {
-            name = 'gitcommit',
-            key = '<leader>ag',
-            desc = 'generate git commit message',
-            use_context = false,
-            prompt = function()
-              return [[
-                    Using the following git diff generate a consise and
-                    clear git commit message, with a short title summary
-                    that is 75 characters or less:
-                ]] .. vim.fn.system('git diff --cached')
-            end,
-            modes = { 'n' },
-            strip_function = nil,
-          },
-        },
-      })
-    end,
   },
   {
     'jackMort/ChatGPT.nvim',
