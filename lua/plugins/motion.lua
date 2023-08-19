@@ -118,7 +118,3 @@ local plugins = {
 }
 utils.apply_configs(plugins)
 return plugins
-
--- { "chentoast/marks.nvim" },
--- { "inkarkat/vim-UnconditionalPaste",
--- requires = "inkarkat/vim-ingo-library" },

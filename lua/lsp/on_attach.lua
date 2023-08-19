@@ -52,15 +52,14 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
   vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
 
-  if client.server_capabilities.semanticTokensProvider then
-    client.server_capabilities.semanticTokensProvider = false
-  end
+  -- if client.server_capabilities.semanticTokensProvider then
+  --   client.server_capabilities.semanticTokensProvider = false
+  -- end
 
   if client.name == 'lua_ls' then
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
   elseif client.name == 'cssls' then
-    vim.dbglog(client.server_capabilities)
     client.server_capabilities.textDocument.completion.completionItem.snippetSupport = true
   end
   capabilities.resolve(client, bufnr)

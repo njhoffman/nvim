@@ -7,7 +7,7 @@ local utils = require('utils.lazy')
 -- https://github.com/lpoto/telescope-tasks.nvim
 
 local plugins = {
-  { 'echasnovski/mini.fuzzy', event = 'VeryLazy', version = false },
+  { 'echasnovski/mini.fuzzy', event = 'VeryLazy' },
   {
     'nvim-neo-tree/neo-tree.nvim',
     lazy = false,
@@ -85,7 +85,10 @@ local plugins = {
         dependencies = { 'plenary.nvim', 'nui.nvim' },
       },
       { 'kkharji/sqlite.lua', run = 'luarocks install sqlite luv' },
-      -- { "nvim-telescope/telescope-frecency.nvim", dependencies = { "kkharji/sqlite.lua" } },
+      {
+        'nvim-telescope/telescope-frecency.nvim',
+        dependencies = { 'kkharji/sqlite.lua' },
+      },
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       { 'AckslD/nvim-neoclip.lua', dependencies = { 'kkharji/sqlite.lua' } },
       { 'GustavoKatel/telescope-asynctasks.nvim', dependencies = { 'skywind3000/asynctasks.vim' } },

@@ -164,7 +164,7 @@ local lua_ls = function()
 
     on_attach = function(client, bufnr)
       require('lsp.on_attach')(client, bufnr)
-      client.server_capabilities.semanticTokensProvider = nil
+      -- client.server_capabilities.semanticTokensProvider = nil
     end,
 
     settings = {

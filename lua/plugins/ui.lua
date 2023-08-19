@@ -12,162 +12,18 @@ local function get_key_cmd(mode, lhs)
   return rhs, opt
 end
 
-local ft_exclude = {
-  'alpha',
-  'dap.*',
-  'dashboard',
-  'guihua',
-  'help',
-  'lazy',
-  'lspinfo',
-  'mason',
-  'neo-tree',
-  'noice',
-  'null-ls-info',
-  'sidekick',
-  'NeoTree',
-  'NvimTree',
-  'Trouble',
-}
-local bt_exclude = { 'terminal', 'prompt', 'nofile' }
-
 local plugins = {
-  {
-    'nvim-tree/nvim-web-devicons',
-    dependencies = {
-      'DaikyXendo/nvim-material-icon', -- 'DaikyXendo/nvim-web-devicons'
-    },
-    config = function()
-      -- override = require('nvim-material-icon').get_icons(),
-      require('nvim-web-devicons').setup({
-        override = require('nvim-web-devicons').get_icons(),
-        -- override = {
-        --   zsh = {
-        --     icon = '',
-        --     color = '#428850',
-        --     cterm_color = '65',
-        --     name = 'Zsh',
-        --   },
-        -- },
-      })
-    end,
-  },
+  { 'nvim-tree/nvim-web-devicons', dependencies = { 'DaikyXendo/nvim-material-icon' }, lazy = true },
   {
     'tummetott/reticle.nvim',
     lazy = false,
     event = { 'BufReadPre', 'BufNewFile' },
-    opts = {
-      always = {
-        cursorline = {
-          'neo-tree', -- reticle messes up with Neo-tree cursorline in search mode
-        },
-      },
-    },
+    -- reticle messes up with Neo-tree cursorline in search mode
+    opts = { always = { cursorline = { 'neo-tree' } } },
   },
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    event = { 'BufReadPre', 'BufNewFile' },
-  },
-  {
-    'Tyler-Barham/floating-help.nvim',
-    event = { 'VeryLazy' },
-    config = function()
-      local fh = require('floating-help')
-      fh.setup({
-        -- Defaults
-        width = 80, -- Whole numbers are columns/rows
-        height = 0.9, -- Decimals are a percentage of the editor
-        position = 'E', -- NW,N,NW,W,C,E,SW,S,SE (C==center)
-      })
-
-      -- Create a keymap for toggling the help window
-      vim.keymap.set('n', '<F1>', fh.toggle)
-
-      -- Only replace cmds, not search; only replace the first instance
-      local function cmd_abbrev(abbrev, expansion)
-        local cmd = 'cabbr '
-          .. abbrev
-          .. ' <c-r>=(getcmdpos() == 1 && getcmdtype() == ":" ? "'
-          .. expansion
-          .. '" : "'
-          .. abbrev
-          .. '")<CR>'
-        vim.cmd(cmd)
-      end
-
-      -- Redirect `:h` to `:FloatingHelp`
-      cmd_abbrev('h', 'FloatingHelp')
-      -- cmd_abbrev('help', 'FloatingHelp')
-      cmd_abbrev('helpc', 'FloatingHelpClose')
-      cmd_abbrev('helpclose', 'FloatingHelpClose')
-    end,
-  },
-  {
-    'echasnovski/mini.clue',
-    event = { 'VeryLazy' },
-    version = false,
-    config = function()
-      local miniclue = require('mini.clue')
-      local mapper_clues = require('mapper').clues or {}
-      local clues = vim.tbl_flatten({
-        miniclue.gen_clues.builtin_completion(),
-        miniclue.gen_clues.g(),
-        miniclue.gen_clues.marks(),
-        -- miniclue.gen_clues.registers(),
-        miniclue.gen_clues.windows(),
-        miniclue.gen_clues.z(),
-      })
-      for _, clue_item in ipairs(mapper_clues) do
-        table.insert(clues, clue_item)
-      end
-
-      miniclue.setup({
-        triggers = {
-          -- Leader triggers
-          { mode = 'n', keys = '<leader>' },
-          { mode = 'x', keys = '<leader>' },
-
-          -- Built-in completion
-          { mode = 'i', keys = '<C-x>' },
-
-          -- `g` key
-          { mode = 'n', keys = 'g' },
-          { mode = 'x', keys = 'g' },
-
-          -- Marks
-          { mode = 'n', keys = "'" },
-          { mode = 'n', keys = '`' },
-          { mode = 'x', keys = "'" },
-          { mode = 'x', keys = '`' },
-
-          -- Registers
-          -- { mode = 'n', keys = '"' },
-          -- { mode = 'x', keys = '"' },
-          { mode = 'i', keys = '<C-r>' },
-          { mode = 'c', keys = '<C-r>' },
-
-          -- Window commands
-          { mode = 'n', keys = '<C-w>' },
-
-          -- `z` key
-          { mode = 'n', keys = 'z' },
-          { mode = 'x', keys = 'z' },
-        },
-        clues = clues,
-        window = {
-          -- Floating window config
-          config = {},
-
-          -- Delay before showing clue window
-          delay = 300,
-
-          -- Keys to scroll inside the clue window
-          scroll_down = '<M-f>',
-          scroll_up = '<M-b>',
-        },
-      })
-    end,
-  },
+  { 'lukas-reineke/indent-blankline.nvim', event = { 'BufReadPre', 'BufNewFile' } },
+  { 'Tyler-Barham/floating-help.nvim', cmd = 'FloatHelp' },
+  { 'echasnovski/mini.clue', event = { 'VeryLazy' } },
   {
     'echasnovski/mini.indentscope',
     event = { 'BufReadPre', 'BufNewFile' },
@@ -177,6 +33,24 @@ local plugins = {
         callback = function()
           local ft = vim.api.nvim_buf_get_option(0, 'filetype')
           local bt = vim.api.nvim_buf_get_option(0, 'buftype')
+          local ft_exclude = {
+            'alpha',
+            'dap.*',
+            'dashboard',
+            'guihua',
+            'help',
+            'lazy',
+            'lspinfo',
+            'mason',
+            'neo-tree',
+            'noice',
+            'null-ls-info',
+            'sidekick',
+            'NeoTree',
+            'NvimTree',
+            'Trouble',
+          }
+          local bt_exclude = { 'terminal', 'prompt', 'nofile' }
           if vim.tbl_contains(ft_exclude, ft) or vim.tbl_contains(bt_exclude, bt) then
             vim.b.miniindentscope_disable = true
           end
@@ -218,278 +92,27 @@ local plugins = {
       show_unknown_classes = true, -- Shows the unknown classes popup
     },
   },
+  { 'nyngwang/NeoZoom.lua', enabled = false, event = 'VeryLazy' },
   {
     '3rd/image.nvim',
     enabled = false,
     event = 'VeryLazy',
     dependencies = { { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' } },
-    opts = {
-      backend = 'ueberzug',
-      integrations = {
-        markdown = {
-          enabled = true,
-          sizing_strategy = 'auto',
-          download_remote_images = true,
-          clear_in_insert_mode = false,
-        },
-        neorg = {
-          enabled = true,
-          download_remote_images = true,
-          clear_in_insert_mode = false,
-        },
-      },
-      max_width = nil,
-      max_height = nil,
-      max_width_window_percentage = nil,
-      max_height_window_percentage = 50,
-      window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
-      -- window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
-      -- kitty_method = "normal",
-      -- kitty_tmux_write_delay = 10, -- makes rendering more reliable with Kitty+Tmux
-    },
-    -- local api = require("image")
-    --
-    -- -- from a file (absolute path)
-    -- local image = api.from_file("/path/to/image.png", {
-    --   id = "my_image_id", -- optional, defaults to a random string
-    --   window = 1000, -- optional, binds image to a window and its bounds
-    --   buffer = 1000, -- optional, binds image to a buffer (paired with window binding)
-    --   with_virtual_padding = true, -- optional, pads vertically with extmarks
-    --   ...geometry, -- optional, { x, y, width, height }
-    -- })
-    --
-    -- -- from a URL
-    -- local image = api.from_file("https://gist.ro/s/remote.png", {
-    --   id = "my_image_id", -- optional, defaults to a random string
-    --   window = 1000, -- optional, binds image to a window and its bounds
-    --   buffer = 1000, -- optional, binds image to a buffer (paired with window binding)
-    --   with_virtual_padding = true, -- optional, pads vertically with extmarks
-    --   ...geometry, -- optional, { x, y, width, height }
-    -- })
-    --
-    -- image:render() -- render image
-    -- image:render(geometry) -- update image geometry and render it
-    -- image:clear()
-    --
-    -- image:move(x, y) -- move image
-    -- image:brightness(value) -- change brightness
-    -- image:saturation(value) -- change saturation
-    -- image:hue(value) -- change hue
   },
-  {
-    'matbme/JABS.nvim',
-    config = function()
-      local default_cfg = {
-        -- Options for the main window
-        position = { 'center', 'top' }, -- position = {'<position_x>', '<position_y>'} | <position_x> left, center, right,
-        --                                             <position_y> top, center, bottom
-        -- Default {'right', 'bottom'}
-
-        relative = 'editor', -- win, editor, cursor. Default win
-        clip_popup_size = false, -- clips the popup size to the win (or editor) size. Default true
-
-        width = 80, -- default 50
-        height = 20, -- default 10
-        border = 'single', -- none, single, double, rounded, solid, shadow, (or an array or chars). Default shadow
-
-        offset = { -- window position offset
-          top = 2, -- default 0
-          bottom = 2, -- default 0
-          left = 2, -- default 0
-          right = 2, -- default 0
-        },
-        sort_mru = true, -- Sort buffers by most recently used (true or false). Default false
-        split_filename = true, -- Split filename into separate components for name and path. Default false
-        split_filename_path_width = 20, -- If split_filename is true, how wide the column for the path is supposed to be, Default 0 (don't show path)
-
-        -- Options for preview window
-        preview_position = 'left', -- top, bottom, left, right. Default top
-        preview = {
-          width = 40, -- default 70
-          height = 60, -- default 30
-          border = 'single', -- none, single, double, rounded, solid, shadow, (or an array or chars). Default double
-        },
-        -- Default highlights (must be a valid :highlight)
-        highlight = {
-          current = 'Title', -- default StatusLine
-          hidden = 'StatusLineNC', -- default ModeMsg
-          split = 'WarningMsg', -- default StatusLine
-          alternate = 'StatusLine', -- default WarningMsg
-        },
-        -- Default symbols
-        symbols = {
-          current = 'C', -- default 
-          split = 'S', -- default 
-          alternate = 'A', -- default 
-          hidden = 'H', -- default ﬘
-          locked = 'L', -- default 
-          ro = 'R', -- default 
-          edited = 'E', -- default 
-          terminal = 'T', -- default 
-          default_file = 'D', -- Filetype icon if not present in nvim-web-devicons. Default 
-          terminal_symbol = '>_', -- Filetype icon for a terminal split. Default 
-        },
-
-        -- Keymaps
-        keymap = {
-          close = '<c-d>', -- Close buffer. Default D
-          jump = '<space>', -- Jump to buffer. Default <cr>
-          h_split = 'h', -- Horizontally split buffer. Default s
-          v_split = 'v', -- Vertically split buffer. Default v
-          preview = 'p', -- Open buffer preview. Default P
-        },
-
-        -- Whether to use nvim-web-devicons next to filenames
-        use_devicons = false, -- true or false. Default true
-      }
-      require('jabs').setup({ border = 'rounded', use_devicos = true })
-    end,
-  },
-  { 'ghillb/cybu.nvim' },
+  { 'matbme/JABS.nvim', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'ghillb/cybu.nvim', event = { 'BufRead', 'BufNewFile' } },
   { 'nacro90/numb.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'ivyl/vim-bling', event = { 'BufReadPost', 'BufNewFile' } },
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
   { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
-  -- {
-  --   'nyngwang/NeoZoom.lua',
-  --   config = function()
-  -- require('neo-zoom').setup({
-  --   callback = function()
-  --     vim.dbglog('MY CALLBACK')
-  --   end,
-  --   popup = {
-  --     enabled = true,
-  --     exclude_filetypes = {},
-  --     exclude_buftypes = {},
-  --   },
-  --   exclude_buftypes = { 'terminal' },
-  --   exclude_filetypes = { 'lspinfo', 'mason', 'lazy', 'fzf', 'qf', 'noice' },
-  --   winopts = {
-  --     offset = {
-  --       -- top = 0,
-  --       -- left = 0.17,
-  --       width = 0.90,
-  --       height = 0.90,
-  --     },
-  --     border = 'rounded',
-  --   },
-  --   presets = {
-  --     -- {
-  --     --   filetypes = { '*' },
-  --     --   callback = function()
-  --     --     vim.dbglog('DOING PRESETS')
-  --     --     vim.api.nvim_win_set_option(0, 'number', false)
-  --     --     vim.api.nvim_win_set_option(0, 'relativenumber', false)
-  --     --     vim.api.nvim_win_set_option(0, 'signcolumn', 'no')
-  --     --   end,
-  --     -- },
-  --     {
-  --       filetypes = { 'dapui_.*', 'dap-repl' },
-  --       winopts = {
-  --         offset = { top = 0.02, left = 0.26, width = 0.74, height = 0.25 },
-  --       },
-  --     },
-  --     {
-  --       filetypes = { 'markdown' },
-  --       callbacks = {
-  --         function()
-  --           vim.wo.wrap = true
-  --         end,
-  --       },
-  --     },
-  --   },
-  -- })
-
-  -- vim.keymap.set('n', '<CR>', function()
-  --   vim.cmd('NeoZoomToggle')
-  -- end, { silent = true, nowait = true })
-
-  -- vim.api.nvim_create_autocmd({ 'WinEnter' }, {
-  --   callback = function(ev)
-  --     local zoom_book = require('neo-zoom').zoom_book
-  --     -- local winid = vim.api.nvim_get_current_win()
-  --     -- vim.api.nvim_buf_set_option(ev.buf, 'buftype', 'neozoom')
-  --     -- local bufnr = vim.api.nvim_win_get_buf(winid)
-  --     -- vim.api.nvim_buf_set_option(bufnr, 'buftype', 'neozoom')
-  --     -- vim.api.nvim_win_set_option(winid, 'indentline', false)
-  --     -- vim.api.nvim_win_set_option(0, 'winhighlight', 'Normal:PmenuSel,NormalNC:PmenuSbar')
-  --     -- vim.api.nvim_buf_set_option(bufnr, 'filetype', 'neozoom')
-  --
-  --     if require('neo-zoom').is_neo_zoom_float() then
-  --       for z, _ in pairs(zoom_book) do
-  --         vim.wo[z].winbl = 0
-  --       end
-  --     else
-  --       -- local win_ns = vim.api.nvim_create_namespace('neozoom')
-  --       for z, _ in pairs(zoom_book) do
-  --         -- vim.api.nvim_win_set_hl_ns(z, win_ns)
-  --         -- vim.api.nvim_set_hl(win_ns, 'Normal', { bg = '#101826' })
-  --         -- vim.api.nvim_win_set_option(z, 'winhl', 'Normal:Float')
-  --         vim.wo[z].winbl = 20
-  --       end
-  --     end
-  -- end,
-  -- })
-  --   end,
-  -- },
   { 'TaDaa/vimade', event = 'VimEnter' },
-  { 'kevinhwang91/nvim-hlslens', event = { 'VimEnter' }, lazy = false },
-  { 'Bekaboo/deadcolumn.nvim', event = { 'VimEnter' }, lazy = false },
-  {
-    'stevearc/dressing.nvim',
-    dependencies = 'MunifTanjim/nui.nvim',
-    lazy = true,
-    init = function()
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.select = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
-        return vim.ui.select(...)
-      end
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.input = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
-        return vim.ui.input(...)
-      end
-    end,
-    opts = {
-      input = {
-        win_options = {
-          winblend = 15,
-        },
-        select = {
-          backend = { 'nui', 'telescope' },
-          -- telescope = require('telescope.themes').get_ivy({...})
-        },
-      },
-    },
-  },
-  {
-    'phaazon/hop.nvim',
-    branch = 'v2',
-    event = { 'BufReadPost', 'BufNewFile' },
-  },
-  -- { 'RRethy/vim-hexokinase', event = 'VeryLazy', build = 'make hexokinase' },
+  { 'kevinhwang91/nvim-hlslens', event = { 'VimEnter' } },
+  { 'Bekaboo/deadcolumn.nvim', event = { 'VimEnter' } },
+  { 'stevearc/dressing.nvim', dependencies = 'MunifTanjim/nui.nvim', lazy = true },
+  { 'phaazon/hop.nvim', branch = 'v2', event = { 'BufReadPost', 'BufNewFile' } },
   { 'MunifTanjim/nui.nvim', event = 'VeryLazy' },
 }
 
 utils.apply_configs(plugins)
 return plugins
-
---
--- { "edluffy/hologram.nvim", cond = os.getenv("KITTY_WINDOW_ID") ~= nil
--- ["nvim-highlight-colors"] = { "brenoprata10/nvim-highlight-color" },
--- ["startup.nvim"] = {
---   use = {"startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}}
--- },
--- ["icon-picker.nvim"] = { "ziontee113/icon-picker.nvim"}
--- ["vim-visual-multi"] = { "mg979/vim-visual-multi" },
--- ["wilder.nvim"] = {
---   "gelguy/wilder.nvim",
---   rocks = { "luarocks-fetch-gitrec", "pcre2" },
---   requires = { "romgrk/fzy-lua-native", "nvim-tree/nvim-web-devicons" }
--- }
--- ["codewindow.nvim"] = { "gorbit99/codewindow.nvim" },
--- https://github.com/anuvyklack/windows.nvim
--- ["yank-history"] = {"yazgoo/yank-history"},
--- https://github.com/gbprod/yanky.nvim

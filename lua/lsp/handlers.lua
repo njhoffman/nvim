@@ -247,18 +247,18 @@ end
 --
 -- vim.lsp.handlers["textDocument/inlayHint"] = show_handler
 local execute_command = function(args)
-  vim.dbglog({ 'executeCommand', args })
+  -- vim.dbglog({ 'executeCommand', args })
   vim.lsp.buf.execute_command(args)
 end
 
 local semantic_tokens_provider = function(args)
-  vim.dbglog({ 'semanticTokensProvider', args })
+  -- vim.dbglog({ 'semanticTokensProvider', args })
   vim.lsp.buf.semantic_tokens_provider(args)
   -- vim.lsp.buf.execute_command(args)
 end
 
 local diagnostic_provider = function(args)
-  vim.dbglog({ 'diagnosticProvider', args })
+  -- vim.dbglog({ 'diagnosticProvider', args })
   vim.lsp.buf.diagnostic(args)
   -- vim.lsp.buf.execute_command(args)
 
