@@ -204,8 +204,6 @@ return function(injected_functions)
     -- +--- LSP ---+
     LspInfoBorder({ FloatBorder }),
     NullLsInfoBorder({ FloatBorder }),
-    LspCodeLens({ fg = '#6272A4' }),
-    LspCodeLensSeparator({ fg = '#7F8CB5' }),
     DiagnosticError({ fg = clrs.nord11.da(30) }),
     DiagnosticWarn({ fg = clrs.nord13.da(30) }),
     DiagnosticHint({ fg = clrs.nord8.da(50) }),
@@ -222,21 +220,23 @@ return function(injected_functions)
     DiagnosticUnderlineWarn({ fg = 'none', gui = 'none' }),
     DiagnosticUnderlineHint({ fg = 'none', gui = 'none' }),
     DiagnosticUnderlineInfo({ fg = 'none', gui = 'none' }),
-    DiagnosticVirtualTextWarn({ fg = DiagnosticWarn.fg.de(20).li(10), gui = 'italic' }),
-    DiagnosticVirtualTextError({ fg = DiagnosticError.fg.de(20).li(10), gui = 'italic' }),
-    DiagnosticVirtualTextHint({ fg = DiagnosticHint.fg.de(20).li(10), gui = 'italic' }),
-    DiagnosticVirtualTextInfo({ fg = DiagnosticInfo.fg.de(20).da(10), gui = 'italic' }),
-    LspDiagnosticsDefaultError({ DiagnosticError }),
-    LspDiagnosticsDefaultWarn({ DiagnosticWarn }),
-    LspDiagnosticsDefaultHint({ DiagnosticHint }),
-    LspDiagnosticsDefaultInfo({ DiagnosticInfo }),
+    DiagnosticVirtualTextWarn({ fg = DiagnosticWarn.fg.de(20).li(10), gui = 'italic' }), -- #ffc777
+    DiagnosticVirtualTextError({ fg = DiagnosticError.fg.de(20).li(10), gui = 'italic' }), -- #c53b53
+    DiagnosticVirtualTextHint({ fg = DiagnosticHint.fg.de(20).li(10), gui = 'italic' }), -- "#4fd6be"
+    DiagnosticVirtualTextInfo({ fg = DiagnosticInfo.fg.de(20).da(10), gui = 'italic' }), -- "#0db9d7"
+    -- DiagnosticVirtualLinesError({ fg = '#c53b53', gui = 'italic' }),
+    -- DiagnosticVirtualLinesWarn({ fg = '#ffc777', gui = 'italic' }),
+    DiagnosticVirtualLinesHint({ fg = '#4fd6be', gui = 'italic' }),
+    DiagnosticVirtualLinesInfo({ fg = '#0db9d7', gui = 'italic' }),
+    LspCodeLens({ fg = '#6272A4' }),
+    LspCodeLensSeparator({ fg = '#7F8CB5' }),
+    LspReferenceRead({ fg = Search.fg, gui = 'none' }), -- #22bb99, 628bff
+    LspReferenceWrite({ fg = Search.fg, gui = 'none' }), -- #22bb99
+    LspReferenceText({ fg = Search.fg, gui = 'none' }), -- #22bb99
     LspDiagnosticsSignError({ fg = DiagnosticError.fg.da(20) }),
     LspDiagnosticsSignWarn({ fg = DiagnosticWarn.fg.da(20) }),
     LspDiagnosticsSignHint({ fg = DiagnosticHint.fg.da(20) }),
     LspDiagnosticsSignInfo({ fg = DiagnosticInfo.fg.da(20) }),
-    LspReferenceRead({ fg = Search.fg, gui = 'none' }), -- #22bb99, 628bff
-    LspReferenceWrite({ fg = Search.fg, gui = 'none' }), -- #22bb99
-    LspReferenceText({ fg = Search.fg, gui = 'none' }), -- #22bb99
     DiffAdd({ bg = '#00361f' }), -- #00361f #001000 #22bb99
     DiffChange({ bg = '#003050' }), -- #003050 #001030 #646ead
     DiffDelete({ bg = '#3E0009' }), -- #3e0009 #300000 #be6069

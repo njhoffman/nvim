@@ -5,15 +5,23 @@ local utils = require('utils.lazy')
 local plugins = {
   {
     'neovim/nvim-lspconfig',
-    event = { 'VimEnter' },
+    event = { 'BufReadPost', 'BufNewFile' },
     dependencies = {
       { 'williamboman/mason.nvim', cmd = 'Mason' },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'weilbith/nvim-code-action-menu',
+      {
+        'adoyle-h/lsp-toggle.nvim',
+        config = function()
+          require('lsp-toggle').setup({
+            create_cmds = true, -- Whether to create user commands
+            telescope = true, -- Whether to load telescope extensions
+          })
+        end,
+      },
       'RRethy/vim-illuminate',
       'b0o/schemastore.nvim', -- for jsonls
-      'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim',
       'KostkaBrukowa/definition-or-references.nvim',
       'smjonas/inc-rename.nvim',
       'nanotee/sqls.nvim',
@@ -33,6 +41,8 @@ local plugins = {
       vim.import('lsp.capabilities')
       vim.import('lsp.servers')
       vim.import('lsp.config')
+      vim.import('lsp.lines')
+      vim.import('configs.definition-or-references')
     end,
   },
   {
@@ -59,6 +69,7 @@ local plugins = {
     cmd = { 'AerialToggle', 'AerialNext', 'AerialGo', 'AerialOpen', 'AerialPrev', 'AerialOpenAll' },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
+  -- https://github.com/mfussenegger/nvim-jdtls
   {
     'folke/todo-comments.nvim',
     event = { 'BufReadPost', 'BufNewFile' },

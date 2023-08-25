@@ -5,12 +5,16 @@ local fuzzy_sorter = sorters.get_generic_fuzzy_sorter()
 local sorter = sorters.Sorter:new({
   scoring_function = function(_, prompt, line, entry, cb_add, cb_filter)
     local base_score = fuzzy_sorter:scoring_function(prompt, line, cb_add, cb_filter)
+    if entry == nil then
+      vim.notify('reference nil', entry, line)
+    end
+    entry = entry.value or entry
 
-    if entry.value.is_test_file then
+    if entry.is_test_file then
       base_score = base_score + 100
     end
 
-    if entry.value.is_inside_import then
+    if entry.is_inside_import then
       base_score = base_score + 200
     end
 

@@ -24,8 +24,9 @@ local default_cfg = {
 --     })
 --     :find()
 -- end
+
 local telescope_handler = require('configs.definition-or-references.telescope')
-require('definition-or-references').setup({ on_references_result = telescope_handler })
+require('definition-or-references').setup({ on_references_result = telescope_handler, debug = true })
 
 vim.keymap.set(
   'n',

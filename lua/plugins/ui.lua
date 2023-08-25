@@ -108,9 +108,8 @@ local plugins = {
   { 'TaDaa/vimade', event = 'VimEnter' },
   { 'kevinhwang91/nvim-hlslens', event = { 'VimEnter' } },
   { 'Bekaboo/deadcolumn.nvim', event = { 'VimEnter' } },
-  { 'stevearc/dressing.nvim', dependencies = 'MunifTanjim/nui.nvim', lazy = true },
   { 'phaazon/hop.nvim', branch = 'v2', event = { 'BufReadPost', 'BufNewFile' } },
-  { 'MunifTanjim/nui.nvim', event = 'VeryLazy' },
+  { 'stevearc/dressing.nvim', dependencies = 'MunifTanjim/nui.nvim' },
 }
 
 utils.apply_configs(plugins)

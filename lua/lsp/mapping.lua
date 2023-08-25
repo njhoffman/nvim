@@ -8,7 +8,6 @@ local opts = {
   category = 'LSP',
 }
 
-require('configs.definition-or-references')
 local use_defref_plugin = true
 
 -- TODO: next/prev reference

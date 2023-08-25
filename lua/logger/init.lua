@@ -5,10 +5,11 @@ local structlog = require('structlog')
 
 local logdefs = {
   root = { main = 3 },
-  lazy = { main = 1 },
-  lsp = { main = 3, module = 1 },
+  lazy = { main = 2 },
+  project = { main = 3 },
+  lsp = { main = 2 },
   mapper = { main = 3, module = 1 },
-  notify = { main = 3 },
+  notify = { main = 1 },
 }
 
 local init = function(name, sink_levels)

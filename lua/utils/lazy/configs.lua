@@ -24,10 +24,9 @@ end
 local apply_config_file = function(name, plugin)
   local fname = 'configs.' .. string.lower(name)
   logger:trace('config exists: ' .. fname)
+  state.configs_checked[name] = true
   if plugin._dependency then
     state.configs_dependency[name] = true
-  else
-    state.configs_checked[name] = true
   end
   plugin.config = function(loaded_plug)
     local event = loaded_plug._.loaded
@@ -92,7 +91,9 @@ local apply_configs = function(plugins)
       _dep_plugin = type(_dep_plugin) == 'string' and { _dep_plugin } or _dep_plugin
       _dep_plugin._dependency = true
       local dep_plugin, dep_name = check_config_file(_dep_plugin)
-      state.dependency[name] = dep_plugin
+      if dep_name then
+        state.dependency[dep_name] = dep_plugin
+      end
     end
   end
   return plugins

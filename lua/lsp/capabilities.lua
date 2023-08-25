@@ -1,6 +1,7 @@
 local lspdefs = require('lsp.definitions')
 local windows = require('lspconfig.ui.windows')
 local handlers = require('lsp.handlers')
+local logger = require('logger').init('lsp')
 
 windows.default_options = { border = 'rounded' }
 
@@ -60,7 +61,6 @@ local function show_capabilities()
   local function make_client_info(client)
     local filtered, skipped = {}, {}
     for key, val in pairs(client.server_capabilities) do
-      vim.dbglog(client.name, key)
       if vim.tbl_contains(lspdefs.display_keys, key) and client.server_capabilities[key] ~= false then
         table.insert(filtered, key)
       else
@@ -97,21 +97,17 @@ local function show_capabilities()
 end
 
 local try_capability = function(client, bufnr, capability)
-  -- local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-  -- vim.dbglog(client.name .. ":  ? " .. capability .. " for '" .. ft .. "'")
   if client.server_capabilities[capability] then
+    logger:debug('(' .. client.name .. ') ' .. bufnr .. ' ' .. capability)
     if handlers[capability] then
-      -- vim.dbglog(client.name .. ": " .. " + " .. capability)
       handlers[capability](client, bufnr)
-    else
-      -- vim.dbglog(client.name .. ": " .. " - " .. capability)
     end
   end
 end
 
 local resolve_capabilities = function(client, bufnr)
   if client.name == 'tsserver' then
-    vim.dbglog('SKIP tsserver')
+    logger:warn('SKIP tsserver')
     return false
   end
   for key, _ in pairs(client.server_capabilities) do

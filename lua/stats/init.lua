@@ -1,57 +1,41 @@
 local commands = require('stats.commands')
 
---   68 loaded : 216 checked
---   88 exist  : 128 not exist
---   nvim_dirs = 163
---   nvim_files = 1,007
---   nvim_lines = 97,393
---   nvim_size  = "6.1M"
---   plugin_dirs  = 6,031,
---   plugin_files = 29,271
---   plugin_lines = 15,629,291
---   plugins_size = "2.3G"
+-- local cmds = { 'aucommands', 'environment', 'highlights', 'files', 'keys',  'vars' }
+-- local files_cmds = { 'runtime', 'scriptnames' }
+-- local view_cmds = { 'float', 'notify', 'logfile', 'print', 'new_buffer', 'split_buffer' }
 
 local stats_complete = function(query, cmd)
-  local cmds = {
-    'aucommands',
-    'environment',
-    'highlights',
-    'files',
-    'keys',
-    'lazy',
-    'vars',
+  local stats_map = {
+    keys = {
+      list = { 'logfile', 'notify' },
+      tree = { 'logfile', 'notify' },
+      table = { 'logfile', 'notify' },
+    },
+    lazy = {
+      configs = {
+        all = { 'logfile', 'buffer', 'split' },
+        dependency = { 'logfile', 'buffer', 'split' },
+        checked = { 'logfile', 'buffer', 'split' },
+        stray = { 'logfile', 'buffer', 'split' },
+        exists = { 'logfile', 'buffer', 'split' },
+        missing = { 'logfile', 'buffer', 'split' },
+      },
+    },
   }
-  local key_cmds = {
-    'list',
-    'tree',
-    'table',
-  }
-  local lazy_cmds = {
-    'configs',
-    'plugins',
-  }
-  local files_cmds = {
-    'runtime',
-    'scriptnames',
-  }
-  local view_cmds = {
-    'float',
-    'notify',
-    'logfile',
-    'print',
-    'new_buffer',
-    'split_buffer',
-  }
-
   if query == '' then
-    if cmd == 'Stats keys ' then
-      return key_cmds
-    elseif cmd == 'Stats lazy ' then
-      return lazy_cmds
-    elseif cmd == 'Stats files ' then
-      return files_cmds
-    elseif cmd ~= 'Stats ' then
-      return view_cmds
+    cmd = string.gsub(string.gsub(cmd, 'Stats ', ''), ' $', '')
+    local cmds = {}
+    if #cmd > 0 then
+      local stats_cmd = vim.tbl_get(stats_map, unpack(vim.split(cmd, ' ')))
+      if stats_cmd ~= nil then
+        if vim.tbl_isarray(stats_cmd) then
+          cmds = vim.tbl_values(stats_cmd)
+        else
+          cmds = vim.tbl_keys(stats_cmd)
+        end
+      end
+    else
+      cmds = vim.tbl_keys(stats_map)
     end
     return cmds
   end
@@ -67,8 +51,8 @@ local stats_command = function(cmd)
   end
 end
 
-vim.api.nvim_create_user_command(
-  'Stats',
-  stats_command,
-  { desc = 'Internal stats output and monitoring', complete = stats_complete, nargs = '*' }
-)
+vim.api.nvim_create_user_command('Stats', stats_command, {
+  desc = 'Internal stats output and monitoring',
+  complete = stats_complete,
+  nargs = '*',
+})

@@ -139,6 +139,34 @@ M.results_page_down = function(prompt_bufnr)
   actions_set.shift_selection(prompt_bufnr, results_height)
 end
 
+M.preview_scrolling_up = function(prompt_bufnr)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local previewer = picker.previewer
+  -- local results_height = vim.api.nvim_win_get_height(picker.results_win)
+  local status = state.get_status(prompt_bufnr)
+  -- Check if we actually have a previewer and a preview window
+  if type(previewer) ~= 'table' or previewer.scroll_fn == nil or status.preview_win == nil then
+    return
+  end
+
+  local direction = 1
+  local input = direction > 0 and [[]] or [[]]
+  -- local count = math.abs(direction)
+
+  vim.dbglog('status', status.preview_win)
+  vim.api.nvim_win_call(status.preview_win, function()
+    -- :execute "normal \<Plug>(SmoothieDownwards)"
+    vim.fn.execute('normal! \\<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)')
+  end)
+end
+
+M.preview_scrolling_down = function(prompt_bufnr)
+  M.preview_scrolling_up(prompt_bufnr)
+  -- local picker = action_state.get_current_picker(prompt_bufnr)
+  -- local results_height = vim.api.nvim_win_get_height(picker.results_win)
+  -- actions_set.shift_selection(prompt_bufnr, results_height)
+end
+
 M.toggle_whichkey = function(prompt_bufnr)
   local whichkey_opts = {
     separator = ' ➜ ',
@@ -186,73 +214,75 @@ M.switch_layout = function(prompt_bufnr, _opts)
 
   actions.close(prompt_bufnr)
 
+  vim.api.nvim_set_var('project_buf_skip', 1)
   run('builtin', 'resume', opts)
 end
 
 M.switch_file_pickers = function(prompt_bufnr)
-  vim.defer_fn(function()
-    local picker = action_state.get_current_picker(prompt_bufnr)
-    local prompt_text = picker:_get_prompt()
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local prompt_text = picker:_get_prompt()
 
-    -- local state = require("telescope.actions.state")
-    if vim.api.nvim_buf_is_valid(prompt_bufnr) then
-      actions.close(prompt_bufnr)
-    end
-    local opts = { default_text = prompt_text }
+  -- local state = require("telescope.actions.state")
+  -- if vim.api.nvim_buf_is_valid(prompt_bufnr) then
+  --   actions.close(prompt_bufnr)
+  -- end
+  local opts = { default_text = prompt_text }
 
-    if picker.prompt_title == 'Frecency' then
-      run('builtin', 'oldfiles', opts)
-    elseif picker.prompt_title == 'Find Files' then
-      run('frecency', 'frecency', opts)
-    else
-      run('builtin', 'find_files', opts)
-    end
-  end, 50)
+  vim.api.nvim_set_var('project_buf_skip', 1)
+  if picker.prompt_title == 'Frecency' then
+    run('builtin', 'oldfiles', opts)
+  elseif picker.prompt_title == 'Find Files' then
+    run('frecency', 'frecency', opts)
+  else
+    run('builtin', 'find_files', opts)
+  end
 end
 
 M.switch_grep_pickers = function(prompt_bufnr)
-  vim.defer_fn(function()
-    local picker = action_state.get_current_picker(prompt_bufnr)
-    local prompt_text = picker:_get_prompt()
-    local opts = { default_text = prompt_text }
-    if vim.api.nvim_buf_is_valid(prompt_bufnr) then
-      actions.close(prompt_bufnr)
-    end
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local prompt_text = picker:_get_prompt()
+  local opts = { default_text = prompt_text }
+  -- if vim.api.nvim_buf_is_valid(prompt_bufnr) then
+  --   actions.close(prompt_bufnr)
+  -- end
 
-    local bufnr = vim.api.nvim_win_get_buf(picker.original_win_id)
-    local bufparts = vim.split(vim.api.nvim_buf_get_name(bufnr), '/')
-    table.remove(bufparts)
+  local bufnr = vim.api.nvim_win_get_buf(picker.original_win_id)
+  local bufparts = vim.split(vim.api.nvim_buf_get_name(bufnr), '/')
+  table.remove(bufparts)
 
-    local is_grep_project = string.match(picker.prompt_title, 'Live Grep Project')
-    local is_grep_buffer = string.match(picker.prompt_title, 'Live Grep Buffers')
-    local is_grep_cwd = string.match(picker.prompt_title, 'Live Grep CWD')
-    if is_grep_project then
-      opts.grep_open_files = true
-    elseif is_grep_buffer then
-      opts.cwd = vim.fn.join(bufparts, '/')
-    elseif is_grep_cwd then
-      opts.grep_open_files = false
-    end
-    run('builtin', 'live_grep', opts)
-  end, 50)
+  local is_grep_project = string.match(picker.prompt_title, 'Live Grep Project')
+  local is_grep_buffer = string.match(picker.prompt_title, 'Live Grep Buffers')
+  local is_grep_cwd = string.match(picker.prompt_title, 'Live Grep CWD')
+  if is_grep_project then
+    opts.grep_open_files = true
+  elseif is_grep_buffer then
+    opts.cwd = vim.fn.join(bufparts, '/')
+  elseif is_grep_cwd then
+    opts.grep_open_files = false
+  end
+  vim.api.nvim_set_var('project_buf_skip', 1)
+  run('builtin', 'live_grep', opts)
 end
 
 M.launch_find_pickers = function(prompt_bufnr)
+  vim.api.nvim_set_var('project_buf_skip', 1)
   run('find_pickers', 'find_pickers', {})
 end
 
 M.launch_projects = function(prompt_bufnr)
-  actions.close(prompt_bufnr)
+  vim.api.nvim_set_var('project_buf_skip', 1)
   run('projects', 'projects', {})
 end
 
 M.launch_find_files = function(prompt_bufnr)
   local picker = action_state.get_current_picker(prompt_bufnr)
+  vim.api.nvim_set_var('project_buf_skip', 1)
   run('builtin', 'find_files', { cwd = picker.cwd })
 end
 
 M.launch_live_grep = function(prompt_bufnr)
   local picker = action_state.get_current_picker(prompt_bufnr)
+  vim.api.nvim_set_var('project_buf_skip', 1)
   run('builtin', 'live_grep', { cwd = picker.cwd })
 end
 

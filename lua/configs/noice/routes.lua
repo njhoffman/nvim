@@ -40,10 +40,14 @@ local routes = {
   { filter = { event = 'msg_show', find = '^E30:' }, view = 'mini' },
   -- all 'no more items' to mini
   { filter = { event = 'msg_show', find = '^E553:' }, view = 'mini' },
-  -- all put line messages to mini
-  { filter = { event = 'msg_show', kind = '', find = '^%d+ more lines?$' }, view = 'mini' },
+  -- all '%d change; after #%d  %d seconds ago'
+  { filter = { event = 'msg_show', find = '^%d+ change' }, view = 'mini' },
+  -- all '%d line less/more; before #%d  %d seconds ago'
+  { filter = { event = 'msg_show', find = '^%d+ line less' }, view = 'mini' },
+  { filter = { event = 'msg_show', find = '^%d+ line more' }, view = 'mini' },
+  { filter = { event = 'msg_show', find = '^%d+ more lines?' }, view = 'mini' },
   -- all delete line messages to imini
-  { filter = { event = 'msg_show', kind = '', find = '^%d+ fewer lines?$' }, view = 'mini' },
+  { filter = { event = 'msg_show', kind = '', find = '^%d+ fewer lines?' }, view = 'mini' },
   -- hide hover no information available
   { filter = { event = 'msg_show', find = 'No information available' }, opts = { skip = true } },
   -- hide diagnostics messages

@@ -42,11 +42,16 @@ local function search_for_git_repos(base_dirs)
     :tolist()
 end
 
-local function parse_recent_items(results, metadata)
+local function parse_recent_items(results, metadata, aliases)
+  local paths = {}
   local parsed_results = {}
   for _, result in ipairs(results) do
     local meta = metadata[result] or {}
-    local display_path = string.gsub(result, os.getenv('HOME') or '', '~')
+    local display_path = result
+    for _path, alias in pairs(aliases) do
+      display_path = string.gsub(display_path, _path, alias)
+    end
+    display_path = string.gsub(display_path, os.getenv('HOME') or '', '~')
     local parsed = {
       path = result,
       display_path = display_path,
@@ -63,41 +68,54 @@ local function parse_recent_items(results, metadata)
       parsed.display_group = 'now'
     end
     table.insert(parsed_results, parsed)
+    paths[display_path] = true
   end
-  return parsed_results
+  return parsed_results, paths
 end
 
 local function get_project_items(config)
-  -- Reverse results
   local projects = {}
   local paths = {}
+
+  -- figure out possible symbolic links to prevent duplicates with recent projects
+  local aliases = {}
+  for _, workspace in ipairs(config.workspaces) do
+    for _, base_dir in ipairs(workspace.base_dirs) do
+      local path_lookup = table.remove(vim.fn.systemlist('file ' .. base_dir.path), 1)
+      local symlink = string.match(path_lookup, ': symbolic link to (.*)')
+      if symlink then
+        aliases[symlink] = base_dir.path
+      end
+    end
+  end
+
+  -- add recent projects to project list
   if config.group_filter == '' or config.group_filter == 'recent' then
     local results, metadata = history.get_recent_projects()
     for i = 1, math.floor(#results / 2) do
-      if type(paths[results[i]]) == 'nil' then
-        results[i], results[#results - i + 1] = results[#results - i + 1], results[i]
-        paths[results[i]] = true
-      end
+      -- reverse results
+      results[i], results[#results - i + 1] = results[#results - i + 1], results[i]
     end
-    projects = parse_recent_items(results, metadata)
+    projects, paths = parse_recent_items(results, metadata, aliases)
   end
 
+  -- add other workspaces not contained in project list
   for i, workspace in ipairs(config.workspaces) do
     if config.group_filter == '' or config.group_filter == workspace.name then
       local repo_paths = search_for_git_repos(workspace.base_dirs)
       local results = parse_git_repo_paths(workspace.name, repo_paths)
       local group_highlight = 'TelescopeProjectGroup' .. (i % 3)
       for _, result in ipairs(results) do
-        if type(paths[result.path]) == 'nil' then
+        if paths[result.display_path] == nil then
           result.group_highlight = group_highlight
           result.icon = { ' ', group_highlight }
-          paths[result.path] = true
           table.insert(projects, result)
         end
       end
     end
   end
 
+  -- add workspace folders not already added
   return projects
 end
 

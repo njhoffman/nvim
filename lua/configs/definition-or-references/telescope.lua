@@ -79,18 +79,23 @@ end
 
 local function handle_references_response(result)
   local locations = telescope_data.get_data(result)
+  local opts = {
+    include_current_line = false,
+    path_display = { 'tail' },
+  }
+
   pickers
     .new({}, {
       prompt_title = 'LSP References',
       finder = finders.new_table({
         results = locations,
-        entry_maker = gen_from_quickfix(),
+        entry_maker = gen_from_quickfix(opts),
         -- entry_maker = require('telescope.make_entry').gen_from_quickfix(),
       }),
       previewer = require('telescope.config').values.qflist_previewer({}),
+      path_display = { 'tail' },
       sorter = telescope_sorter,
       theme = 'dropdown',
-      path_display = { 'tail' },
     })
     :find()
 end

@@ -207,6 +207,351 @@ Hydra({
 })
 
 -- stylua: ignore end
+
+local spell_hint = [[_f_: fix word     _s_: suggestions       _ra_: repeat for all instances
+_<Esc>_/_q_    _ag_: add as good word   _ab_: add as bad word     _u_ _[_/_]_/_b_]]
+
+Hydra({
+  name = 'Spellcheck',
+  hint = spell_hint,
+  config = {
+    foreign_keys = 'run',
+    invoke_on_body = true,
+    hint = {
+      border = 'rounded',
+    },
+  },
+  mode = 'n',
+  body = '<localleader>s',
+  heads = {
+    { ']', ']s' },
+    { '[', '[s', { desc = 'Navigate' } },
+    { 'b', '[s', { desc = 'Back' } },
+    { 's', 'z=', { exit = true, desc = 'Suggestions' } },
+    { 'f', '1z=', { desc = 'Fix word Automatically' } },
+    { 'ra', cmd('spellrepall'), { desc = 'Repeat fix for all instances' } },
+    { 'ag', 'zg', { desc = 'Add as good' } },
+    { 'ab', 'zg', { desc = 'Add as bad' } },
+    { 'u', 'u' },
+    { '<Esc>', nil, { exit = true, nowait = true } },
+    { 'q', nil, { exit = true, nowait = true, desc = 'exit' } },
+  },
+})
+
+-- LSP
+
+local hint_lsp = [[
+^^ LSP
+^
+_d_: Definition _D_: Declaration _i_: Implementation _r_: References _s_: Signature help
+_I_: Info _R_: Rename _a_: Code action
+_[_: Prev diagnostic _]_: Next diagnostic _l_: Diagnostics loclist _f_: Diagnostics float _t_: Diagnostics telescope
+_<Esc>_: Exit
+]]
+
+local lsp_hydra = Hydra({
+  name = 'LSP',
+  hint = hint_lsp,
+  config = {
+    color = 'pink',
+    hint = {
+      border = 'rounded',
+      offset = 2,
+    },
+  },
+  heads = {
+    { 'd', '<cmd>lua vim.lsp.buf.definition()<CR>', { exit = true, nowait = true, desc = 'definition' } },
+    { 'D', '<cmd>lua vim.lsp.buf.declaration()<CR>', { exit = true, nowait = true, desc = 'declaration' } },
+    { 'i', '<cmd>lua vim.lsp.buf.implementation()<CR>', { exit = true, nowait = true, desc = 'implementation' } },
+    { 'r', '<cmd>lua vim.lsp.buf.references()<CR>', { exit = true, nowait = true, desc = 'references' } },
+    { 's', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { exit = true, nowait = true, desc = 'signature_help' } },
+
+    { 'I', '<cmd>lua vim.lsp.buf.hover()<CR>', { exit = true, nowait = true, desc = 'hover' } },
+    { 'R', '<cmd>lua vim.lsp.buf.rename()<CR>', { exit = true, nowait = true, desc = 'rename' } },
+    { 'a', '<cmd>lua vim.lsp.buf.code_action()<CR>', { nowait = true, desc = 'code_actions' } },
+
+    {
+      '[',
+      '<cmd>lua vim.diagnostic.goto_prev({ border = "rounded" })<CR>',
+      { nowait = true, desc = 'diagnostic prev' },
+    },
+    {
+      ']',
+      '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>',
+      { nowait = true, desc = 'diagnostic next' },
+    },
+    { 'f', '<cmd>lua vim.diagnostic.open_float()<CR>', { nowait = true, desc = 'diagnostics float' } },
+    { 'l', '<cmd>lua vim.diagnostic.setloclist()<CR>', { nowait = true, desc = 'diagnostics loclist' } },
+    {
+      't',
+      '<cmd>Telescope diagnostics<CR>',
+      { nowait = true, exit = true, desc = 'diagnostics telescope' },
+    },
+
+    { '<Esc>', nil, { exit = true, nowait = true, desc = 'exit' } },
+  },
+})
+
+-- Misc
+
+local hint_misc = [[
+^^ Miscellaneous
+^
+_r_: Reload buffers
+_s_: Source buffer vimscript/lua
+_[_: Auto-fix prev spelling issue
+_]_: Auto-fix next spelling issue
+_m_: Marks in telescope
+_j_: Jumplist in telescope
+_<Esc>_: Exit
+]]
+
+local misc_hydra = hydra({
+  name = 'Miscellaneous',
+  hint = hint_misc,
+  config = {
+    color = 'pink',
+    hint = {
+      border = 'rounded',
+      offset = 2,
+    },
+  },
+  heads = {
+    { 'r', require('user.utils.misc').reload_session, { exit = true, nowait = true, desc = 'reload' } },
+    { 's', '<cmd>so %<CR>', { exit = true, nowait = true, desc = 'source file' } },
+
+    -- can we improve with this https://stackoverflow.com/questions/5312235/how-do-i-correct-vim-spelling-mistakes-quicker
+    { '[', '[s1z=<c-o>', { nowait = true, desc = 'prev spelling error' } },
+    { ']', ']s1z=<c-o>', { nowait = true, desc = 'next spelling error' } },
+
+    { 'm', '<cmd>Telescope marks<CR>', { nowait = true, exit = true, desc = 'marks in telescope' } },
+    {
+      'j',
+      '<cmd>Telescope jumplist<CR>',
+      { nowait = true, exit = true, desc = 'jumplist in telescope' },
+    },
+
+    { '<Esc>', nil, { exit = true, nowait = true, desc = 'exit' } },
+  },
+})
+
+local ts_move = require('nvim-treesitter.textobjects.move')
+local leader = '\\<leader>'
+local hydra = require('hydra')
+local border = require('custom.border').styles.type_1
+
+local mx = function(feedkeys, type)
+  local type = type or 'm'
+  return function()
+    if type == 'v' then
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('v', true, true, true), 'n', true)
+    end
+
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(feedkeys, true, false, true), type, false)
+  end
+end
+local motion_type = {
+  D = 'Del',
+  C = 'Cut',
+  Y = 'Yank',
+}
+local bracket = { 'h', 'j', 'k', 'l' }
+
+local function make_core_table(core_table, second_table)
+  for _, v in pairs(second_table) do
+    table.insert(core_table, v)
+  end
+  table.insert(core_table, '\n')
+end
+
+local function starts(String, Start)
+  return string.sub(String, 1, string.len(Start)) == Start
+end
+
+local function create_table_normal(var, sorted, string_len, start_val)
+  start_val = start_val or nil
+  var = {}
+  for _, v in pairs(sorted) do
+    if string.len(v) == string_len and not vim.tbl_contains(bracket, v) then
+      if start_val ~= nil then
+        if starts(v, start_val) then
+          table.insert(var, v)
+        end
+      else
+        table.insert(var, v)
+      end
+    end
+  end
+  table.sort(var, function(a, b)
+    return a:lower() < b:lower()
+  end)
+
+  return var
+end
+
+local config = {}
+
+local exit = { nil, { exit = true, desc = 'EXIT' } }
+-- TODO: make a toggler for cursorhold events, so we can show peek
+local function toggle(lhs, on_enter, on_exit)
+  return {
+    color = 'pink',
+    body = lhs,
+    [lhs] = exit,
+    on_exit = on_exit,
+    on_enter = on_enter,
+  }
+end
+
+config.parenth_mode = {
+  color = 'pink',
+  body = leader,
+  mode = { 'n', 'v', 'x', 'o' },
+  [leader] = { nil, { exit = true } },
+  ['<ESC>'] = { nil, { exit = true } },
+  j = {
+    function()
+      ts_move.goto_next_start({ '@function.outer', '@class.outer' })
+    end,
+    { nowait = true, desc = 'Move [N] ←' },
+  },
+  h = {
+    function()
+      ts_move.goto_next_end({ '@function.outer', '@class.outer' })
+    end,
+    { nowait = true, desc = 'Move [N] →' },
+  },
+  k = {
+    function()
+      ts_move.goto_previous_start({ '@function.outer', '@class.outer' })
+    end,
+    { nowait = true, desc = 'Move [P] ←' },
+  },
+  l = {
+    function()
+      ts_move.goto_previous_start({ '@function.outer', '@class.outer' })
+    end,
+    { nowait = true, desc = 'Move [P] →' },
+  },
+  ['c'] = { mx('ac', 'v'), { nowait = true, desc = 'Cls  [ac]' } }, -- ts: all class
+  ['C'] = { mx('ic', 'v'), { nowait = true, desc = 'Cls  [ic]' } }, -- ts: inner class
+
+  ['a'] = { mx('af', 'v'), { nowait = true, desc = 'Func [af]' } }, -- ts: all function
+  ['A'] = { mx('if', 'v'), { nowait = true, desc = 'Func [if]' } }, -- ts: inner function
+
+  ['i'] = { mx('aC', 'v'), { nowait = true, desc = 'Cond [aC]' } }, -- ts: all conditional
+  ['I'] = { mx('iC', 'v'), { nowait = true, desc = 'Cond [iC]' } }, -- ts: inner conditional
+}
+
+for surround, motion in pairs({ c = 'ac', C = 'ic', a = 'af', A = 'if', i = 'aC', I = 'iC' }) do
+  for doc, key in pairs({ D = 'd', C = 'c', Y = 'y' }) do
+    local motiondoc = surround
+    local exit = false
+    local mapping = table.concat({ doc, surround })
+    config.parenth_mode[mapping] = {
+      mx(table.concat({ key, motion })),
+      { desc = motion_type[doc] .. ' [' .. key .. motion .. ']', exit = exit },
+    }
+  end
+end
+
+local mapping = {
+  color = function(t, rhs)
+    t.config.color = rhs
+  end,
+  body = function(t, rhs)
+    t.body = rhs
+  end,
+  on_enter = function(t, rhs)
+    t.config.on_enter = rhs
+  end,
+  on_exit = function(t, rhs)
+    t.config.on_exit = rhs
+  end,
+  mode = function(t, rhs)
+    t.config.mode = rhs
+  end,
+}
+-- Create a Auto Hinting Table same as above but with auto generated
+
+local new_hydra = {
+  name = 'TS',
+  config = {
+    hint = {
+      position = 'middle-right',
+      border = border,
+    },
+    timeout = false,
+    invoke_on_body = true,
+  },
+  heads = {},
+}
+
+for name, spec in pairs(config) do
+  for lhs, rhs in pairs(spec) do
+    local action = mapping[lhs]
+    if action == nil then
+      new_hydra.heads[#new_hydra.heads + 1] = { lhs, table.unpack(rhs) }
+    else
+      action(new_hydra, rhs)
+    end
+  end
+end
+
+--
+local function auto_hint_generate()
+  container = {}
+  for x, y in pairs(config.parenth_mode) do
+    local mapping = x
+    if type(y[1]) == 'function' then
+      for x, y in pairs(y[2]) do
+        if x == 'desc' then
+          container[mapping] = y
+        end
+      end
+    end
+  end
+  sorted = {}
+  for k, v in pairs(container) do
+    table.insert(sorted, k)
+  end
+  table.sort(sorted)
+
+  single = create_table_normal({}, sorted, 1)
+  yank = create_table_normal({}, sorted, 2, 'Y')
+  delete = create_table_normal({}, sorted, 2, 'D')
+  change = create_table_normal({}, sorted, 2, 'C')
+
+  core_table = {}
+
+  make_core_table(core_table, bracket)
+  make_core_table(core_table, single)
+  make_core_table(core_table, yank)
+  make_core_table(core_table, delete)
+  make_core_table(core_table, change)
+
+  hint_table = {}
+  string_val = '^ ^  Tree Sitter    ^ ^\n\n'
+  string_val = string_val .. '^ ^▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔^ ^\n'
+
+  for _, v in pairs(core_table) do
+    if v == '\n' then
+      hint = '\n'
+      hint = hint .. '^ ^▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔^ ^\n'
+    else
+      hint = '^ ^ _' .. v .. '_: ' .. container[v] .. ' ^ ^\n'
+    end
+    table.insert(hint_table, hint)
+    string_val = string_val .. hint
+    -- end
+  end
+  return string_val
+end
+
+val = auto_hint_generate()
+new_hydra.hint = val
+hydra(new_hydra)
+
 return {
   hydra_git = hydra_git,
 }

@@ -2,6 +2,7 @@ local utils = require('utils.lazy')
 -- https://github.com/RaafatTurki/hex.nvim
 
 local plugins = {
+  { 'LunarVim/bigfile.nvim' },
   {
     'ThePrimeagen/refactoring.nvim',
     lazy = true,
@@ -10,7 +11,7 @@ local plugins = {
       { 'nvim-treesitter/nvim-treesitter' },
     },
   },
-  { 'LunarVim/bigfile.nvim' },
+  { 'carlosrocha/chrome-remote.nvim', event = 'VeryLazy' },
   {
     'nvim-neotest/neotest',
     cmd = { 'Neotest', 'NeotestSummary', 'NeotestNearest', 'NeotestAttach' },
@@ -181,6 +182,10 @@ local plugins = {
       { '<leader>as', desc = 'summarize text' },
       { '<leader>ag', desc = 'generate git message' },
     },
+  },
+  {
+    'm4xshen/hardtime.nvim',
+    dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
   },
   {
     'jackMort/ChatGPT.nvim',

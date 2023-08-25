@@ -2,7 +2,7 @@ local mapping = require('lsp.mapping')
 
 local color_provider = function(client, bufnr)
   local cap = client.server_capabilities
-  if cap.colorProvider and false then
+  if cap.colorProvider then
     require('lsp.documentcolors').buf_attach(bufnr, { single_column = true })
   end
 end
@@ -79,7 +79,7 @@ local function highlight_references()
 end
 
 local document_highlight_provider = function(client, bufnr)
-  if not require('utils.lazy').is_installed('vim-illuminate') then
+  if false and not require('utils.lazy').is_installed('vim-illuminate') then
     if client.server_capabilities.documentHighlightProvider then
       local group = vim.api.nvim_create_augroup('LspHighlight', {})
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
@@ -136,8 +136,8 @@ local signature_help_provider = function(_, bufnr)
 
   -- mapping.signature_hover()
 
-  local page_up_mapping = escape_term_codes('<PageUp>')
-  local page_down_mapping = escape_term_codes('<PageDown>')
+  local page_up_mapping = escape_term_codes('<C-b>')
+  local page_down_mapping = escape_term_codes('<C-f>')
   local scroll_up_mapping = escape_term_codes('<Up>')
   local scroll_down_mapping = escape_term_codes('<Down>')
 
@@ -200,6 +200,7 @@ local document_symbol_provider = function(client, bufnr)
   -- local cap = client.server_capabilities
   local navic = require('lsp.nvim-navic')
   navic.attach(client, bufnr)
+  -- vim.lsp.buf.document_symbol()
 end
 
 local workspace = function(_, _)
@@ -260,7 +261,7 @@ local semantic_tokens_provider = function(args)
 end
 
 local diagnostic_provider = function(args)
-  -- vim.dbglog({ 'diagnosticProvider', args })
+  vim.dbglog({ 'diagnosticProvider', args })
   vim.lsp.buf.diagnostic(args)
   -- vim.lsp.buf.execute_command(args)
 

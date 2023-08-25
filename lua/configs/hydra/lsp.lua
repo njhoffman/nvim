@@ -1,270 +1,136 @@
-local Hydra = require("hydra")
+local Hydra = require('hydra')
 -- local popup = require("configs.hydra.popup")
-local levels = require("configs.hydra.levels")
-
+local levels = require('configs.hydra.levels')
+local utils = require('configs.hydra.utils')
 local hints = [[
-  ^ ^       Lsp Options
-  ^
-  _d_ %{enabled_buffer} diagnostics buffer
-  _D_ %{enabled_global} diagnostics global
-  _i_ %{insert} diagnostics on insert
-  _f_ %{format} format on write
-  _s_ %{signs_toggle} signs enabled
-  _S_ %{signs_level} signs level
-  _v_ %{virtual_toggle} virtual text enabled
-  _V_ %{virtual_level} virtual text level
-  _u_ %{underline_toggle} underline enabled
-  _U_ %{underline_level} underline level
-  ^
-       ^^^^                    _<Esc>_
+                     LSP OPTIONS
+    ────────────────────────────────────────────    ^
+  _d_ %{buffer} diag buffer       _D_ %{global} diag global
+  _f_ %{format} format on write   _i_ %{insert} diag on insert
+  _s_ %{s_toggle} signs             _S_ %{s_level} signs level
+  _u_ %{ul_toggle} underline         _U_ %{ul_level} underline level
+  _v_ %{vt_toggle} virtual text      _V_ %{vt_level} virtual text level
+  _z_ %{vl_toggle} virtual lines     _Z_ %{vl_level} virtual lines level
+  _l_ %{vl_current} vlines current
+  ^                                     _<Esc>_
 ]]
 
--- float diag on hover
--- virtual text only current line
+local hydra_level = function(type)
+  return function()
+    local ret = levels.hydra(type)
+    vim.schedule(function()
+      ret:activate()
+    end)
+  end
+end
+
 local heads = {
-  {
-    "d",
-    function()
-      if vim.diagnostic.is_disabled(0) then
-        vim.diagnostic.enable(0)
-      else
-        vim.diagnostic.disable(0)
-      end
-      print("enabled")
-    end,
-    { desc = "enabled buffer" },
-  },
-  {
-    "D",
-    function()
-      if vim.diagnostic.is_disabled() then
-        vim.diagnostic.enable()
-      else
-        vim.diagnostic.disable()
-      end
-    end,
-    { desc = "enabled global" },
-  },
-  {
-    "i",
-    function()
-      if vim.diagnostic.config().update_in_insert then
-        vim.diagnostic.config({ update_in_insert = false })
-      else
-        vim.diagnostic.config({ update_in_insert = true })
-      end
-    end,
-    { desc = "update in insert" },
-  },
-  {
-    "f",
-    function()
-      if vim.b.format_on_write == 0 then
-        vim.b.format_on_write = 1
-      else
-        vim.b.format_on_write = 0
-      end
-    end,
-    { desc = "format on write" },
-  },
-  {
-    "s",
-    function()
-      if vim.diagnostic.config().signs then
-        vim.diagnostic.config({ signs = false })
-      else
-        vim.diagnostic.config({ signs = true })
-      end
-    end,
-    { desc = "signs toggle" },
-  },
-  {
-    "S",
-    function()
-      if vim.diagnostic.config().signs then
-        vim.diagnostic.config({ signs = false })
-      else
-        vim.diagnostic.config({ signs = true })
-      end
-    end,
-    { desc = "signs level", exit = true },
-  },
-  {
-    "v",
-    function()
-      if vim.diagnostic.config().virtual_text then
-        vim.diagnostic.config({ virtual_text = false })
-      else
-        vim.diagnostic.config({ virtual_text = { severity = { min = 1 } } })
-      end
-    end,
-    { desc = "virtual text toggle" },
-  },
-  {
-    "V",
-    function()
-      if vim.diagnostic.config().virtual_text then
-        vim.diagnostic.config({ virtual_text = false })
-      else
-        vim.diagnostic.config({ virtual_text = true })
-      end
-    end,
-    { desc = "virtual text level", exit = true },
-  },
-  {
-    "u",
-    function()
-      if vim.diagnostic.config().underline then
-        vim.diagnostic.config({ underline = false })
-      else
-        vim.diagnostic.config({ underline = { severity = { min = 1 } } })
-      end
-    end,
-    { desc = "underline toggle" },
-  },
-  {
-    "U",
-    function()
-      vim.schedule(function()
-        local ret = levels.hydra()
-        ret:activate()
-      end)
-      -- popup.open({ " 0 trace", " 1 debug", " 2 info", " 3 warn", " 4 error", " 5 off" }, function(res)
-      --   vim.dbglog("res", res)
-      -- end)
-      -- if vim.diagnostic.config().underline then
-      --   vim.diagnostic.config({ underline = false })
-      -- else
-      --   vim.diagnostic.config({ undeline = true })
-      -- end
-    end,
-    { desc = "underline level", exit = true },
-  },
-  { "<Esc>", nil, { exit = true } },
+  { 'd', utils.toggle_diagnostic('buffer'), { desc = 'enabled buffer' } },
+  { 'D', utils.toggle_diagnostic('global'), { desc = 'enabled global' } },
+  { 'i', utils.toggle_diagnostic('update_in_insert'), { desc = 'update in insert' } },
+  { 'f', utils.toggle_diagnostic('format'), { desc = 'format on write' } },
+  { 's', utils.toggle_diagnostic('signs'), { desc = 'signs toggle' } },
+  { 'S', hydra_level('signs'), { desc = 'signs level', exit = true } },
+  { 'v', utils.toggle_diagnostic('virtual_text'), { desc = 'virtual text toggle' } },
+  { 'V', hydra_level('virtual_text'), { desc = 'virtual text level', exit = true } },
+  { 'u', utils.toggle_diagnostic('underline'), { desc = 'underline toggle' } },
+  { 'U', hydra_level('underline'), { desc = 'underline level', exit = true } },
+  { 'l', utils.toggle_diagnostic('vl_current'), { desc = 'virtual lines only current' } },
+  { 'z', utils.toggle_diagnostic('virtual_lines'), { desc = 'virtual lines toggle' } },
+  { 'Z', hydra_level('virtual_lines'), { desc = 'virtual lines level', exit = true } },
+  { '<Esc>', nil, { exit = true } },
 }
 
---    󰄬  󰄭          󰅚 󰙧 
 local toggles = {
-  yes = "      ",
-  no = "      ",
+  --    󰄬  󰄭       󰅚 󰙧 
+  --            
+  yes = '  ',
+  no = '  ',
   num = function(num)
-    return " " .. num .. " "
+    return ' ' .. num .. ' '
   end,
   lvl = function(num)
-    return "[" .. string.lower(tostring(vim.lsp.log_levels[num])) .. "]"
+    return ' ' .. num .. ' '
+    -- return '[' .. string.lower(tostring(vim.lsp.log_levels[num])) .. ']'
     -- return string.format("%8s", "[" .. string.lower(tostring(vim.lsp.log_levels[num])) .. "]")
   end,
 }
 
 local funcs = {
-  enabled_buffer = function()
-    if vim.diagnostic.is_disabled(0) then
-      return toggles.no
-    else
-      return toggles.yes
-    end
+  buffer = function()
+    return vim.diagnostic.is_disabled(0) and toggles.no or toggles.yes
   end,
-  enabled_global = function()
-    if vim.diagnostic.is_disabled() then
-      return toggles.no
-    else
-      return toggles.yes
-    end
+  global = function()
+    return vim.diagnostic.is_disabled() and toggles.no or toggles.yes
   end,
   insert = function()
-    if vim.diagnostic.config().update_in_insert then
-      return toggles.yes
-    else
-      return toggles.no
-    end
+    return vim.diagnostic.config().update_in_insert and toggles.yes or toggles.no
   end,
   format = function()
-    if vim.b.format_on_write == 0 then
-      return toggles.no
-    else
-      return toggles.yes
-    end
+    return vim.b.format_on_write == 0 and toggles.no or toggles.yes
   end,
-  signs_toggle = function()
-    if vim.diagnostic.config().signs then
-      return toggles.yes
-    else
-      return toggles.no
-    end
+  s_toggle = function()
+    local severity = utils.get_severity('signs')
+    return severity > 0 and toggles.yes or toggles.no
   end,
-  signs_level = function()
-    local severity = vim.tbl_get(vim.diagnostic.config(), "signs", "severity", "min") or vim.diagnostic.config().signs
-    if severity == false then
-      severity = 5
-    elseif severity == true then
-      severity = 0
-    end
+  s_level = function()
+    local severity = utils.get_severity('signs')
     return toggles.lvl(severity)
-    -- return toggles.num(severity)
   end,
-  virtual_toggle = function()
-    -- vim.dbg(vim.diagnostic.config().virtual_text)
-    if vim.diagnostic.config().virtual_text then
-      return toggles.yes
-    else
-      return toggles.no
-    end
+  vt_toggle = function()
+    local severity = utils.get_severity('virtual_text')
+    return severity > 0 and toggles.yes or toggles.no
   end,
-  virtual_level = function()
-    local severity = vim.tbl_get(vim.diagnostic.config(), "virtual_text", "severity", "min")
-      or vim.diagnostic.config().virtual_text
-    if severity == false then
-      severity = 5
-    elseif severity == true then
-      severity = 0
-    end
+  vt_level = function()
+    local severity = utils.get_severity('virtual_text')
     return toggles.lvl(severity)
-    -- return toggles.num(severity)
   end,
-  underline_toggle = function()
-    if vim.diagnostic.config().underline then
-      return toggles.yes
-    else
-      return toggles.no
-    end
+  vl_current = function()
+    local only_current = vim.tbl_get(vim.diagnostic.config(), 'virtual_lines', 'only_current_line')
+    return only_current == true and toggles.yes or toggles.no
   end,
-  underline_level = function()
-    local severity = vim.tbl_get(vim.diagnostic.config(), "underline", "severity", "min")
-      or vim.diagnostic.config().underline
-    if severity == false then
-      severity = 5
-    elseif severity == true then
-      severity = 0
-    end
+  vl_toggle = function()
+    local severity = utils.get_severity('virtual_lines')
+    return severity > 0 and toggles.yes or toggles.no
+  end,
+  vl_level = function()
+    local severity = utils.get_severity('virtual_lines')
     return toggles.lvl(severity)
-    -- return toggles.num(severity)
+  end,
+  ul_toggle = function()
+    local severity = utils.get_severity('underline')
+    return severity > 0 and toggles.yes or toggles.no
+  end,
+  ul_level = function()
+    local severity = utils.get_severity('underline')
+    return toggles.lvl(severity)
   end,
 }
 
 local hydra = function()
   return Hydra({
-    name = "Lsp",
+    name = 'LSP',
     hint = hints,
     heads = heads,
     config = {
-      color = "amaranth", -- amaranth, teal, pink, red, blue
+      color = 'amaranth', -- amaranth, teal, pink, red, blue
       invoke_on_body = true,
       hint = {
         funcs = funcs,
-        type = "window",
-        border = "rounded",
-        position = "middle",
+        type = 'window',
+        border = 'rounded',
+        position = 'middle',
       },
-      on_enter = function()
-        vim.bo.modifiable = false -- temporary set `nomodifiable` while Hydra is active
-        vim.cmd("VimadeFadeActive")
-      end,
-      on_exit = function()
-        vim.cmd("VimadeUnfadeActive")
-      end,
+      -- on_enter = function()
+      --   vim.bo.modifiable = false -- temporary set `nomodifiable` while Hydra is active
+      --   vim.cmd('VimadeFadeActive')
+      -- end,
+      -- on_exit = function()
+      --   vim.cmd('VimadeUnfadeActive')
+      -- end,
     },
-    mode = { "n", "x" },
-    body = "gl",
+    mode = { 'n', 'x' },
+    body = 'gl',
   })
 end
 

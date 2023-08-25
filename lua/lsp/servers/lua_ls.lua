@@ -214,8 +214,11 @@ end
 return lua_ls
 
 -- Custom Commands:
---   lua: -- LuaFormatter off, -- stylua: ignore
+-- ---@diagnostic disable-next-line: rulename
+--   lua: -- LuaFormatter off,
+--   stylua: ignore
 --   js:  -- organize imports
+
 -- textDocument/codeAction: implement this on the server-side to compute a list of commands that represent the quickfixes.
 -- workspace/executeCommand: implement this in the server-side to execute the commands. It can make use of workspace/applyEdit to send a request to the client to perform changes to the documents in the workspace.
 -- client/registerCapability: The server can call this with a ExecuteCommandRegistrationOptions object. This registers your server-side command(s) with the client, so that it knows to execute them via the workspace/executeCommand handler implemented in the previous step.

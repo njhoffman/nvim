@@ -1,489 +1,494 @@
 local vi_mode_utils = require('feline.providers.vi_mode')
 
 local M = {
-    statusline = {
-        icons = {
-            active = {},
-            inactive = {},
-        },
-        noicons = {
-            active = {},
-            inactive = {},
-        },
+  statusline = {
+    icons = {
+      active = {},
+      inactive = {},
     },
-    winbar = {
-        icons = {
-            active = {},
-            inactive = {},
-        },
-        noicons = {
-            active = {},
-            inactive = {},
-        },
+    noicons = {
+      active = {},
+      inactive = {},
     },
-    statuscolumn = {
-        icons = {
-            active = {},
-            inactive = {},
-        },
-        noicons = {
-            active = {},
-            inactive = {},
-        },
+  },
+  winbar = {
+    icons = {
+      active = {},
+      inactive = {},
     },
+    noicons = {
+      active = {},
+      inactive = {},
+    },
+  },
+  statuscolumn = {
+    icons = {
+      active = {},
+      inactive = {},
+    },
+    noicons = {
+      active = {},
+      inactive = {},
+    },
+  },
 }
 
 M.statusline.icons.active[1] = {
-    {
-        provider = '▊ ',
+  {
+    provider = '▊ ',
+    hl = function()
+      return {
+        name = vi_mode_utils.get_mode_highlight_name(),
+        -- fg = 'skyblue',
+        fg = vi_mode_utils.get_mode_color(),
+        style = 'bold',
+      }
+    end,
+  },
+  {
+    provider = 'vi_mode',
+    hl = function()
+      return {
+        name = vi_mode_utils.get_mode_highlight_name(),
+        fg = vi_mode_utils.get_mode_color(),
+        style = 'bold',
+      }
+    end,
+  },
+  {
+    provider = 'file_info',
+    hl = {
+      fg = 'white',
+      bg = 'oceanblue',
+      style = 'bold',
+    },
+    left_sep = {
+      ' ',
+      { str = 'slant_right_2 ', hl = { bg = 'oceanblue', fg = 'NONE' } },
+    },
+    right_sep = {
+      { str = ' ', hl = { bg = 'oceanblue', fg = 'NONE' } },
+      'right_filled',
+    },
+  },
+  {
+    provider = 'file_size',
+    left_sep = ' ',
+    right_sep = {
+      ' ',
+      {
+        str = 'slant_left_2_thin',
         hl = {
-            fg = 'skyblue',
+          fg = 'fg',
+          bg = 'bg',
         },
+      },
     },
-    {
-        provider = 'vi_mode',
-        hl = function()
-            return {
-                name = vi_mode_utils.get_mode_highlight_name(),
-                fg = vi_mode_utils.get_mode_color(),
-                style = 'bold',
-            }
-        end,
-    },
-    {
-        provider = 'file_info',
+  },
+  {
+    provider = 'position',
+    left_sep = ' ',
+    right_sep = {
+      ' ',
+      {
+        str = 'slant_right_2_thin',
         hl = {
-            fg = 'white',
-            bg = 'oceanblue',
-            style = 'bold',
+          fg = 'fg',
+          bg = 'bg',
         },
-        left_sep = {
-            'slant_left_2',
-            { str = ' ', hl = { bg = 'oceanblue', fg = 'NONE' } },
-        },
-        right_sep = {
-            { str = ' ', hl = { bg = 'oceanblue', fg = 'NONE' } },
-            'slant_right_2',
-            ' ',
-        },
+      },
     },
-    {
-        provider = 'file_size',
-        right_sep = {
-            ' ',
-            {
-                str = 'slant_left_2_thin',
-                hl = {
-                    fg = 'fg',
-                    bg = 'bg',
-                },
-            },
-        },
-    },
-    {
-        provider = 'position',
-        left_sep = ' ',
-        right_sep = {
-            ' ',
-            {
-                str = 'slant_right_2_thin',
-                hl = {
-                    fg = 'fg',
-                    bg = 'bg',
-                },
-            },
-        },
-    },
-    {
-        provider = 'diagnostic_errors',
-        hl = { fg = 'red' },
-    },
-    {
-        provider = 'diagnostic_warnings',
-        hl = { fg = 'yellow' },
-    },
-    {
-        provider = 'diagnostic_hints',
-        hl = { fg = 'cyan' },
-    },
-    {
-        provider = 'diagnostic_info',
-        hl = { fg = 'skyblue' },
-    },
+  },
+  {
+    provider = 'diagnostic_errors',
+    hl = { fg = 'red' },
+  },
+  {
+    provider = 'diagnostic_warnings',
+    hl = { fg = 'yellow' },
+  },
+  {
+    provider = 'diagnostic_hints',
+    hl = { fg = 'cyan' },
+  },
+  {
+    provider = 'diagnostic_info',
+    hl = { fg = 'skyblue' },
+  },
 }
 
 M.statusline.icons.active[2] = {
-    {
-        provider = 'git_branch',
-        hl = {
-            fg = 'white',
-            bg = 'black',
-            style = 'bold',
-        },
-        right_sep = {
-            str = ' ',
-            hl = {
-                fg = 'NONE',
-                bg = 'black',
-            },
-        },
+  {
+    provider = 'git_branch',
+    hl = {
+      fg = 'white',
+      bg = 'black',
+      style = 'bold',
     },
-    {
-        provider = 'git_diff_added',
-        hl = {
-            fg = 'green',
-            bg = 'black',
-        },
+    right_sep = {
+      str = ' ',
+      hl = {
+        fg = 'NONE',
+        bg = 'black',
+      },
     },
-    {
-        provider = 'git_diff_changed',
-        hl = {
-            fg = 'orange',
-            bg = 'black',
-        },
+  },
+  {
+    provider = 'git_diff_added',
+    hl = {
+      fg = 'green',
+      bg = 'black',
     },
-    {
-        provider = 'git_diff_removed',
-        hl = {
-            fg = 'red',
-            bg = 'black',
-        },
-        right_sep = {
-            str = ' ',
-            hl = {
-                fg = 'NONE',
-                bg = 'black',
-            },
-        },
+  },
+  {
+    provider = 'git_diff_changed',
+    hl = {
+      fg = 'orange',
+      bg = 'black',
     },
-    {
-        provider = 'line_percentage',
-        hl = {
-            style = 'bold',
-        },
-        left_sep = '  ',
-        right_sep = ' ',
+  },
+  {
+    provider = 'git_diff_removed',
+    hl = {
+      fg = 'red',
+      bg = 'black',
     },
-    {
-        provider = 'scroll_bar',
-        hl = {
-            fg = 'skyblue',
-            style = 'bold',
-        },
+    right_sep = {
+      str = ' ',
+      hl = {
+        fg = 'NONE',
+        bg = 'black',
+      },
     },
+  },
+  {
+    provider = 'line_percentage',
+    hl = {
+      style = 'bold',
+    },
+    left_sep = '  ',
+    right_sep = ' ',
+  },
+  {
+    provider = 'scroll_bar',
+    hl = {
+      fg = 'skyblue',
+      style = 'bold',
+    },
+  },
 }
 
 M.statusline.icons.inactive[1] = {
-    {
-        provider = 'file_type',
-        hl = {
-            fg = 'white',
-            bg = 'oceanblue',
-            style = 'bold',
-        },
-        left_sep = {
-            str = ' ',
-            hl = {
-                fg = 'NONE',
-                bg = 'oceanblue',
-            },
-        },
-        right_sep = {
-            {
-                str = ' ',
-                hl = {
-                    fg = 'NONE',
-                    bg = 'oceanblue',
-                },
-            },
-            'slant_right',
-        },
+  {
+    provider = 'file_type',
+    hl = {
+      fg = 'white',
+      bg = 'oceanblue',
+      style = 'bold',
     },
-    -- Empty component to fix the highlight till the end of the statusline
-    {},
+    left_sep = {
+      str = ' ',
+      hl = {
+        fg = 'NONE',
+        bg = 'oceanblue',
+      },
+    },
+    right_sep = {
+      {
+        str = ' ',
+        hl = {
+          fg = 'NONE',
+          bg = 'oceanblue',
+        },
+      },
+      'slant_right',
+    },
+  },
+  -- Empty component to fix the highlight till the end of the statusline
+  {},
 }
 
 M.statusline.noicons.active[1] = {
-    {
-        provider = '▊ ',
+  {
+    provider = '▊ ',
+    hl = {
+      fg = 'skyblue',
+    },
+  },
+  {
+    provider = 'vi_mode',
+    hl = function()
+      return {
+        name = vi_mode_utils.get_mode_highlight_name(),
+        fg = vi_mode_utils.get_mode_color(),
+        style = 'bold',
+      }
+    end,
+    right_sep = ' ',
+    icon = '',
+  },
+  {
+    provider = 'file_info',
+    hl = {
+      fg = 'white',
+      bg = 'oceanblue',
+      style = 'bold',
+    },
+    left_sep = '',
+    right_sep = {
+      {
+        str = ' ',
         hl = {
-            fg = 'skyblue',
+          fg = 'NONE',
+          bg = 'oceanblue',
         },
+      },
+      ' ',
     },
-    {
-        provider = 'vi_mode',
-        hl = function()
-            return {
-                name = vi_mode_utils.get_mode_highlight_name(),
-                fg = vi_mode_utils.get_mode_color(),
-                style = 'bold',
-            }
-        end,
-        right_sep = ' ',
-        icon = '',
-    },
-    {
-        provider = 'file_info',
+    icon = '',
+  },
+  {
+    provider = 'file_size',
+    right_sep = {
+      ' ',
+      {
+        str = 'vertical_bar_thin',
         hl = {
-            fg = 'white',
-            bg = 'oceanblue',
-            style = 'bold',
+          fg = 'fg',
+          bg = 'bg',
         },
-        left_sep = '',
-        right_sep = {
-            {
-                str = ' ',
-                hl = {
-                    fg = 'NONE',
-                    bg = 'oceanblue',
-                },
-            },
-            ' ',
+      },
+    },
+  },
+  {
+    provider = 'position',
+    left_sep = ' ',
+    right_sep = {
+      ' ',
+      {
+        str = 'vertical_bar_thin',
+        hl = {
+          fg = 'fg',
+          bg = 'bg',
         },
-        icon = '',
+      },
     },
-    {
-        provider = 'file_size',
-        right_sep = {
-            ' ',
-            {
-                str = 'vertical_bar_thin',
-                hl = {
-                    fg = 'fg',
-                    bg = 'bg',
-                },
-            },
-        },
-    },
-    {
-        provider = 'position',
-        left_sep = ' ',
-        right_sep = {
-            ' ',
-            {
-                str = 'vertical_bar_thin',
-                hl = {
-                    fg = 'fg',
-                    bg = 'bg',
-                },
-            },
-        },
-    },
-    {
-        provider = 'diagnostic_errors',
-        hl = { fg = 'red' },
-        icon = ' E-',
-    },
-    {
-        provider = 'diagnostic_warnings',
-        hl = { fg = 'yellow' },
-        icon = ' W-',
-    },
-    {
-        provider = 'diagnostic_hints',
-        hl = { fg = 'cyan' },
-        icon = ' H-',
-    },
-    {
-        provider = 'diagnostic_info',
-        hl = { fg = 'skyblue' },
-        icon = ' I-',
-    },
+  },
+  {
+    provider = 'diagnostic_errors',
+    hl = { fg = 'red' },
+    icon = ' E-',
+  },
+  {
+    provider = 'diagnostic_warnings',
+    hl = { fg = 'yellow' },
+    icon = ' W-',
+  },
+  {
+    provider = 'diagnostic_hints',
+    hl = { fg = 'cyan' },
+    icon = ' H-',
+  },
+  {
+    provider = 'diagnostic_info',
+    hl = { fg = 'skyblue' },
+    icon = ' I-',
+  },
 }
 
 M.statusline.noicons.active[2] = {
-    {
-        provider = 'git_branch',
-        hl = {
-            fg = 'white',
-            bg = 'black',
-            style = 'bold',
-        },
-        right_sep = {
-            str = ' ',
-            hl = {
-                fg = 'NONE',
-                bg = 'black',
-            },
-        },
-        icon = ' ',
+  {
+    provider = 'git_branch',
+    hl = {
+      fg = 'white',
+      bg = 'black',
+      style = 'bold',
     },
-    {
-        provider = 'git_diff_added',
-        hl = {
-            fg = 'green',
-            bg = 'black',
-        },
-        icon = ' +',
+    right_sep = {
+      str = ' ',
+      hl = {
+        fg = 'NONE',
+        bg = 'black',
+      },
     },
-    {
-        provider = 'git_diff_changed',
-        hl = {
-            fg = 'orange',
-            bg = 'black',
-        },
-        icon = ' ~',
+    icon = ' ',
+  },
+  {
+    provider = 'git_diff_added',
+    hl = {
+      fg = 'green',
+      bg = 'black',
     },
-    {
-        provider = 'git_diff_removed',
-        hl = {
-            fg = 'red',
-            bg = 'black',
-        },
-        right_sep = {
-            str = ' ',
-            hl = {
-                fg = 'NONE',
-                bg = 'black',
-            },
-        },
-        icon = ' -',
+    icon = ' +',
+  },
+  {
+    provider = 'git_diff_changed',
+    hl = {
+      fg = 'orange',
+      bg = 'black',
     },
-    {
-        provider = 'line_percentage',
-        hl = {
-            style = 'bold',
-        },
-        left_sep = '  ',
-        right_sep = ' ',
+    icon = ' ~',
+  },
+  {
+    provider = 'git_diff_removed',
+    hl = {
+      fg = 'red',
+      bg = 'black',
     },
-    {
-        provider = 'scroll_bar',
-        hl = {
-            fg = 'skyblue',
-            style = 'bold',
-        },
+    right_sep = {
+      str = ' ',
+      hl = {
+        fg = 'NONE',
+        bg = 'black',
+      },
     },
+    icon = ' -',
+  },
+  {
+    provider = 'line_percentage',
+    hl = {
+      style = 'bold',
+    },
+    left_sep = '  ',
+    right_sep = ' ',
+  },
+  {
+    provider = 'scroll_bar',
+    hl = {
+      fg = 'skyblue',
+      style = 'bold',
+    },
+  },
 }
 
 M.statusline.noicons.inactive[1] = {
-    {
-        provider = 'file_type',
-        hl = {
-            fg = 'white',
-            bg = 'oceanblue',
-            style = 'bold',
-        },
-        left_sep = {
-            str = ' ',
-            hl = {
-                fg = 'NONE',
-                bg = 'oceanblue',
-            },
-        },
-        right_sep = {
-            {
-                str = ' ',
-                hl = {
-                    fg = 'NONE',
-                    bg = 'oceanblue',
-                },
-            },
-            ' ',
-        },
+  {
+    provider = 'file_type',
+    hl = {
+      fg = 'white',
+      bg = 'oceanblue',
+      style = 'bold',
     },
-    -- Empty component to fix the highlight till the end of the statusline
-    {},
+    left_sep = {
+      str = ' ',
+      hl = {
+        fg = 'NONE',
+        bg = 'oceanblue',
+      },
+    },
+    right_sep = {
+      {
+        str = ' ',
+        hl = {
+          fg = 'NONE',
+          bg = 'oceanblue',
+        },
+      },
+      ' ',
+    },
+  },
+  -- Empty component to fix the highlight till the end of the statusline
+  {},
 }
 
 M.winbar.icons.active[1] = {
-    {
-        provider = 'file_info',
-        hl = {
-            fg = 'skyblue',
-            bg = 'NONE',
-            style = 'bold',
-        },
+  {
+    provider = 'file_info',
+    hl = {
+      fg = 'skyblue',
+      bg = 'NONE',
+      style = 'bold',
     },
+  },
 }
 
 M.winbar.icons.inactive[1] = {
-    {
-        provider = 'file_info',
-        hl = {
-            fg = 'white',
-            bg = 'NONE',
-            style = 'bold',
-        },
+  {
+    provider = 'file_info',
+    hl = {
+      fg = 'white',
+      bg = 'NONE',
+      style = 'bold',
     },
+  },
 }
 
 M.winbar.noicons.active[1] = {
-    {
-        provider = 'file_info',
-        hl = {
-            fg = 'skyblue',
-            bg = 'NONE',
-            style = 'bold',
-        },
-        icon = '',
+  {
+    provider = 'file_info',
+    hl = {
+      fg = 'skyblue',
+      bg = 'NONE',
+      style = 'bold',
     },
+    icon = '',
+  },
 }
 
 M.winbar.noicons.inactive[1] = {
-    {
-        provider = 'file_info',
-        hl = {
-            fg = 'white',
-            bg = 'NONE',
-            style = 'bold',
-        },
-        icon = '',
+  {
+    provider = 'file_info',
+    hl = {
+      fg = 'white',
+      bg = 'NONE',
+      style = 'bold',
     },
+    icon = '',
+  },
 }
 
 M.statuscolumn.icons.active[1] = {
-    {
-        provider = 'line_number',
-        hl = {
-            fg = 'white',
-            bg = 'NONE',
-        },
-        icon = '',
+  {
+    provider = 'line_number',
+    hl = {
+      fg = 'white',
+      bg = 'NONE',
     },
-    {
-        provider = 'sign_column',
-        hl = {
-            fg = 'blue',
-            bg = 'NONE',
-        },
-        icon = '',
+    icon = '',
+  },
+  {
+    provider = 'sign_column',
+    hl = {
+      fg = 'blue',
+      bg = 'NONE',
     },
-    {
-        provider = 'fold_column',
-        hl = {
-            fg = 'red',
-            bg = 'NONE',
-        },
-        icon = '',
+    icon = '',
+  },
+  {
+    provider = 'fold_column',
+    hl = {
+      fg = 'red',
+      bg = 'NONE',
     },
+    icon = '',
+  },
 }
 
 M.statuscolumn.noicons.active[1] = {
-    {
-        provider = 'line_number',
-        hl = {
-            fg = 'white',
-            bg = 'NONE',
-        },
-        icon = '',
+  {
+    provider = 'line_number',
+    hl = {
+      fg = 'white',
+      bg = 'NONE',
     },
-    {
-        provider = 'sign_column',
-        hl = {
-            fg = 'blue',
-            bg = 'NONE',
-        },
-        icon = '',
+    icon = '',
+  },
+  {
+    provider = 'sign_column',
+    hl = {
+      fg = 'blue',
+      bg = 'NONE',
     },
-    {
-        provider = 'fold_column',
-        hl = {
-            fg = 'red',
-            bg = 'NONE',
-        },
-        icon = '',
+    icon = '',
+  },
+  {
+    provider = 'fold_column',
+    hl = {
+      fg = 'red',
+      bg = 'NONE',
     },
+    icon = '',
+  },
 }
 
 return M

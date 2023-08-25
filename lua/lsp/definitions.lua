@@ -6,7 +6,7 @@ local display_keys = {
   'completionProvider',
   'declarationProvider',
   'definitionProvider',
-  'diagnosticsProvider',
+  'diagnosticProvider',
   'documentFormattingProvider',
   'documentHighlightProvider',
   'documentRangeFormattingProvider',

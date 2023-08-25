@@ -31,6 +31,7 @@ local servers = {
   'helm_ls',
   'html',
   'intelephense',
+  'jdtls',
   'jsonls',
   -- 'jqls',
   'kotlin_language_server',
@@ -98,7 +99,16 @@ require('mason-lspconfig').setup_handlers({
   -- capabilities :
   -- default capabilities, with offsetEncoding utf-8
   -- cmd : clangd --offset-encoding=utf-16
+
+  ['kotlin_language_server'] = function()
+    lspconfig.kotlin_language_server.setup({
+      cmd = { 'kotlin-language-server' },
+      filetypes = { 'kotlin' },
+      -- root_dir = root_pattern('settings.gradle'),
+    })
+  end,
   ['cssls'] = function() end,
+  -- ['jdtls'] = noop,  root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1]),
   ['bashls'] = require('lsp.servers.bashls'),
   ['eslint'] = require('lsp.servers.eslint'),
   ['lua_ls'] = require('lsp.servers.lua_ls'),
@@ -168,6 +178,27 @@ require('mason-lspconfig').setup_handlers({
           schemas = require('schemastore').yaml.schemas(),
         },
       },
+    })
+  end,
+  ['vimls'] = function()
+    lspconfig.vimls.setup({
+      diagnostic = {
+        enable = true,
+      },
+      indexes = {
+        count = 3,
+        gap = 100,
+        projectRootPatterns = { 'runtime', 'nvim', '.git', 'autoload', 'plugin' },
+        runtimepath = true,
+      },
+      isNeovim = true,
+      iskeyword = '@,48-57,_,192-255,-#',
+      runtimepath = '',
+      suggest = {
+        fromRuntimepath = true,
+        fromVimruntime = true,
+      },
+      vimruntime = '',
     })
   end,
   ['jsonls'] = function()

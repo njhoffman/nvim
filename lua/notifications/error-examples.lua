@@ -3,12 +3,10 @@ E5113: Error while calling lua chunk: /home/nicholas/.config/nvim/lua/watcher/ut
 stack traceback:
         /home/nicholas/.config/nvim/lua/watcher/utils.lua:37: in function 'clear_timers'
         lua/watcher/init.lua:7: in function 'setup'
-        lua/watcher/init.lua:19: in main chunk
-  ]]
+        lua/watcher/init.lua:19: in main chunk ]]
 
 local error2 = [[
-E5112: Error while creating lua chunk: lua/scripts/notify-test.lua:10: 'end' expected (to close 'function' at line 50) near '<eof>'
-  ]]
+E5112: Error while creating lua chunk: lua/scripts/notify-test.lua:10: 'end' expected (to close 'function' at line 50) near '<eof>' ]]
 
 local error3 = [[
 E5113: Error while calling lua chunk: lua/scripts/notify-test.lua:5: hey
@@ -16,13 +14,11 @@ stack traceback:
         [C]: in function 'error'
         lua/scripts/notify-test.lua:63: in function 'notify_error'
         lua/scripts/notify-test.lua:79: in function 'notify_test'
-        lua/scripts/notify-test.lua:86: in main chunk
-        ]]
+        lua/scripts/notify-test.lua:86: in main chunk ]]
 
 local error4 = [[
 E5113: Error while calling lua chunk
-     ...local/share/nvim/runtime/lua/vim/treesitter/language.lua:88: 'lua.neozoom' is not a valid language name
-     ]]
+     ...local/share/nvim/runtime/lua/vim/treesitter/language.lua:88: 'lua.neozoom' is not a valid language name ]]
 
 local error5 = [[
 E5108: Error executing lua ...e/nicholas/.config/nvim/lua/gitops/previewers/commit.lua:226: attempt to concatenate field 'value' (a table value)
@@ -37,8 +33,7 @@ stack traceback:
 	.../nvim/lazy/telescope.nvim/lua/telescope/actions/init.lua:87: in function 'run_replace_or_original'
 	...re/nvim/lazy/telescope.nvim/lua/telescope/actions/mt.lua:65: in function 'key_func'
 	...hare/nvim/lazy/telescope.nvim/lua/telescope/mappings.lua:350: in function 'execute_keymap'
-	[string ":lua"]:1: in main chunk
-  ]]
+	[string ":lua"]:1: in main chunk ]]
 
 local error6 = [[
 Error executing Lua callback: /home/nicholas/.local/share/nvim/lazy/vimade/lua/vimade.lua:15: table index is nil
@@ -46,9 +41,7 @@ stack traceback:
 	/home/nicholas/.local/share/nvim/lazy/vimade/lua/vimade.lua:15: in function 'dump'
 	/home/nicholas/.config/nvim/lua/mapper/stats.lua:108: in function 'get_stats'
 	/home/nicholas/.config/nvim/lua/stats/commands/init.lua:12: in function 'get_items'
-	/home/nicholas/.config/nvim/lua/stats/commands/init.lua:113: in function </home/nicholas/.config/nvim/lua/stats/commands/init.lua:112>
-]]
-
+	/home/nicholas/.config/nvim/lua/stats/commands/init.lua:113: in function </home/nicholas/.config/nvim/lua/stats/commands/init.lua:112> ]]
 local error7 = [[
 E5108: Error executing lua ...nvim/lua/telescope/_extensions/find_pickers/generate.lua:57: attempt to get length of field
 'only_include' (a nil value)
@@ -57,8 +50,7 @@ stack traceback:
         .../nvim/lua/telescope/_extensions/find_pickers/finders.lua:14: in function 'get_finder'
         ...fig/nvim/lua/telescope/_extensions/find_pickers/main.lua:84: in function <...fig/nvim/lua/telescope/_extensions/find_pickers/main.lua:73>
         /home/nicholas/.config/nvim/lua/telescope/run.lua:99: in function </home/nicholas/.config/nvim/lua/telescope/run.lua:70>
-        [string ":lua"]:1: in main chunk
-]]
+        [string ":lua"]:1: in main chunk ]]
 
 local vimerror = [[
 Vim:Error executing Lua callback: ./scratch/tmp2.lua:2: attempt to perform arithmetic on global '_sd' (a nil value)
@@ -71,8 +63,7 @@ stack traceback:
   /home/nicholas/.config/nvim/lua/runner/commands/run_cmd.lua:110: in function 'on_confirm'
   ...cal/share/nvim/lazy/dressing.nvim/lua/dressing/input.lua:119: in function ''
   vim/_editor.lua: in function ''
-  vim/_editor.lua: in function <vim/_editor.lua:0>
-    ]]
+  vim/_editor.lua: in function <vim/_editor.lua:0> ]]
 
 return {
   error1 = error1,

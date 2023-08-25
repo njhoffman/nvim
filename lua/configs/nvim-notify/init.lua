@@ -8,8 +8,7 @@ local cfg = {
   level = vim.log.levels.DEBUG,
   -- level = 0,
   fps = 30,
-  render = 'default',
-  -- render = "compact",
+  render = require('configs.nvim-notify.render'),
   stages = 'fade_in_slide_out',
   -- background_colour = "FloatShadow",
   background_colour = '#000000',
@@ -20,7 +19,7 @@ local cfg = {
     return math.floor(vim.opt.lines:get() / 5 * 4)
   end,
   max_width = function()
-    return math.floor(vim.opt.columns:get() / 3 * 1)
+    return math.floor(vim.opt.columns:get() / 5 * 3)
   end,
   icons = {
     ERROR = '',

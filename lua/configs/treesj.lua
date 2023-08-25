@@ -25,24 +25,23 @@ local defaults = {
 
 require('treesj').setup({
   use_default_keymaps = false,
-  max_join_length = 500,
+  max_join_length = 1000,
   check_syntax_error = false,
 })
 
 local langs = require('treesj.langs')['presets']
 
-vim.api.nvim_create_autocmd({ 'FileType' }, {
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
   pattern = '*',
   callback = function()
-    local opts = { buffer = true }
     if langs[vim.bo.filetype] then
-      vim.keymap.set('n', 'gs', '<Cmd>TSJToggle<CR>', opts)
-      vim.keymap.set('n', 'gJ', '<Cmd>TSJJoin<CR>', opts)
-      vim.keymap.set('n', 'gS', '<Cmd>TSJSplit<CR>', opts)
+      vim.keymap.set('n', 'gs', '<Cmd>TSJToggle<CR>', { buffer = true, desc = 'treesj toggle cursor' })
+      vim.keymap.set('n', 'gJ', '<Cmd>TSJJoin<CR>', { buffer = true, desc = 'treesj join cursor' })
+      vim.keymap.set('n', 'gS', '<Cmd>TSJSplit<CR>', { buffer = true, desc = 'treesj split cursor' })
     else
-      vim.keymap.set('n', 'gs', "require('mini.splitjoin').toggle", opts)
-      vim.keymap.set('n', 'gJ', "require('mini.splitjoin').join_at", opts)
-      vim.keymap.set('n', 'gS', "require('mini.splitjoin').split_at", opts)
+      vim.keymap.set('n', 'gs', "require('mini.splitjoin').toggle", { buffer = true, desc = 'mini.sj toggle cursor' })
+      vim.keymap.set('n', 'gJ', "require('mini.splitjoin').join_at", { buffer = true, desc = 'mini.sj join cursor' })
+      vim.keymap.set('n', 'gS', "require('mini.splitjoin').split_at", { buffer = true, desc = 'mini.sj split cursor' })
     end
   end,
 })

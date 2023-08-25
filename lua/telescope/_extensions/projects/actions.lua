@@ -15,14 +15,14 @@ local function change_working_directory(prompt_bufnr)
   if selected_entry == nil then
     return actions.close(prompt_bufnr)
   end
+  -- actions.close(prompt_bufnr)
   local project_path = selected_entry.path
-  actions.close(prompt_bufnr)
-  local cd_successful = project.set_pwd(project_path)
+  vim.api.nvim_set_var('project_buf_skip', 1)
+  local cd_successful = project.set_pwd(project_path, 'telescope')
   return project_path, cd_successful
 end
 
 local function find_project_files(prompt_bufnr)
-  vim.dbglog({ bufnr = prompt_bufnr })
   local project_path, cd_successful = change_working_directory(prompt_bufnr)
   local opt = {
     cwd = project_path,

@@ -88,7 +88,7 @@ local tele_plugs = {
       },
       {
         name = 'nvim',
-        base_dirs = { { path = '~/.local/share/nvim/lazy', max_depth = 2 } },
+        base_dirs = { { path = '~/lazy', max_depth = 2 } },
       },
       -- theme = "dropdown",
     },

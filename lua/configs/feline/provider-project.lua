@@ -22,9 +22,9 @@ end
 
 local project_hl = function()
   if state.name == nil then
-    return { fg = 'white', bg = '#333333' }
+    return { fg = '#8899bb', bg = '#223355' }
   end
-  return { fg = 'white', bg = '#5511aa' }
+  return { fg = 'white', bg = '#3311bb' }
 end
 
 local project_left_sep = function()
@@ -41,7 +41,13 @@ local project_left_sep = function()
 end
 
 local project_right_sep = function()
-  return { 'block', { hl = { bg = 'NONE', fg = 'dodgerblue3' } } }
+  return {
+    str = '',
+    -- str = 'slant_right',
+    -- str = 'slant_right_2',
+    -- str = 'right_filled',
+    hl = { bg = 'oceanblue', fg = '#3311bb' },
+  }
 end
 
 local project = function()

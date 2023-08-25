@@ -19,8 +19,8 @@ local function scroll(sendkeys)
     local win = message:win()
     if is_lsp_float_open(win) then
       -- vim.api.nvim_feedkeys(sendkeys, 'n', true)
-      -- vim.dbglog('WIN', win, sendkeys)
-      vim.fn.win_execute(win, 'normal! ' .. sendkeys)
+      -- sendkeys = '\\<Plug>(SmoothieDownwards)'
+      -- vim.fn.win_execute(win, 'normal! ' .. sendkeys)
       return true
     end
   end
@@ -45,33 +45,45 @@ local function escape_term_codes(str)
 end
 
 local scroll_keys = {
-  page_up = escape_term_codes('<PageUp>'),
-  page_down = escape_term_codes('<PageDown>'),
+  page_up = escape_term_codes('kkk'),
+  page_down = escape_term_codes('jjj'),
   scroll_up = escape_term_codes('<Up>'),
   scroll_down = escape_term_codes('<Down>'),
 }
 
 local setup = function()
-  for _, mode in ipairs({ 'n', 'i', 's' }) do
-    for _, direction in ipairs({ 'prev', 'next' }) do
-      local lhs = direction == 'prev' and '<M-b>' or '<M-f>'
-      local scroll_key = direction == 'prev' and scroll_keys.page_up or scroll_keys.page_down
-
-      vim.keymap.set(mode, lhs, function()
-        local res = scroll(scroll_key)
-        if not res then
-          -- old_keys[direction][mode]()
-          vim.dbglog('no scroll, do the old key', old_keys[direction][mode])
-        end
-      end)
+  vim.keymap.set({ 'n', 'i', 's' }, '<M-f>', function()
+    if not require('noice.lsp').scroll(2) then
+      return '<M-f>'
     end
-  end
+  end, { silent = true, expr = true })
+
+  vim.keymap.set({ 'n', 'i', 's' }, '<M-b>', function()
+    if not require('noice.lsp').scroll(-2) then
+      return '<M-b>'
+    end
+  end, { silent = true, expr = true })
+
+  -- for _, mode in ipairs({ 'n', 'i', 's' }) do
+  --   for _, direction in ipairs({ 'prev', 'next' }) do
+  --     local lhs = direction == 'prev' and '<M-b>' or '<M-f>'
+  --     local scroll_key = direction == 'prev' and scroll_keys.page_up or scroll_keys.page_down
+  --
+  --     vim.keymap.set(mode, lhs, function()
+  --       local res = scroll(scroll_key)
+  --
+  --       if not res then
+  --         -- old_keys[direction][mode]()
+  --         vim.dbglog('no scroll, do the old key', old_keys[direction][mode])
+  --       end
+  --     end)
+  --   end
+  -- end
 end
 
 -- :execute "normal \<Plug>(SmoothieDownwards)"
 -- feedkeys(":call g:Func()\<CR>")
 -- :call win_execute(1000, 'echo')
-vim.cmd([[]])
 return { setup = setup }
 
 -- vim.keymap.set({ 'n', 'i', 's' }, '<M-f>', function()
