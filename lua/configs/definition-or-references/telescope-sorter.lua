@@ -8,7 +8,7 @@ local sorter = sorters.Sorter:new({
     if entry == nil then
       vim.notify('reference nil', entry, line)
     end
-    entry = entry.value or entry
+    entry = type(entry.value) ~= 'nil' and entry.value or entry
 
     if entry.is_test_file then
       base_score = base_score + 100

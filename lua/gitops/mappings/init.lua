@@ -82,7 +82,11 @@ end
 local copy_commit_hash = function(_)
   local selection = action_state.get_selected_entry()
   local commit_hash = selection.opts.commit_hash
-  vim.notify('Copied commit hash ' .. commit_hash .. ' to clipboard', vim.log.levels.INFO, { title = 'Advanced Git Search' })
+  vim.notify(
+    'Copied commit hash ' .. commit_hash .. ' to clipboard',
+    vim.log.levels.INFO,
+    { title = 'Advanced Git Search' }
+  )
 
   vim.fn.setreg('+', commit_hash)
   vim.fn.setreg('*', commit_hash)

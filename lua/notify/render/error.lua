@@ -1,6 +1,6 @@
 local api = vim.api
 local base = require('notify.render.base')
-local utils = require('configs.nvim-notify.utils')
+local utils = require('notify.util.render')
 
 vim.cmd([[
   highlight default link NotifyERRORCode Error
@@ -96,7 +96,7 @@ local function error_highlighting(bufnr, notif, highlights, config)
   vim.api.nvim_buf_set_lines(bufnr, 2, -1, true, lines)
   for _, hl in ipairs(hls) do
     local opt = { hl_group = hl[1], end_col = hl[4] }
-    vim.dbglog(lines, hl[4])
+    -- vim.dbglog(lines, hl[4])
     vim.api.nvim_buf_set_extmark(bufnr, namespace, hl[2] + line_start, hl[3], opt)
   end
 end

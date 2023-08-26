@@ -1,6 +1,5 @@
--- 'DaikyXendo/nvim-web-devicons' } },
--- override = require('nvim-material-icon').get_icons(),
 require('nvim-web-devicons').setup({
+  -- override = require('nvim-material-icon').get_icons()
   override = require('nvim-web-devicons').get_icons(),
   -- override = {
   --   zsh = {

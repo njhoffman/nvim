@@ -5,9 +5,12 @@ local sinks_config = { main = { banner = true }, module = { banner = false } }
 
 local logdefs = {
   root = { main = 3 },
-  lazy = { main = 2 },
+  lazy = { main = 3 },
+  mru = { main = 2 },
+  git = { main = 1 },
+  fasd = { main = 3 },
   project = { main = 3 },
-  lsp = { main = 2 },
+  lsp = { main = 3 },
   mapper = { main = 3, module = 1 },
   notify = { main = 1 },
 }

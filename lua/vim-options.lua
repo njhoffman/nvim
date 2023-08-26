@@ -55,7 +55,7 @@ opt('regexpengine', 0)
 opt('redrawtime', 10000)
 opt('scrolloff', 7)
 opt('sessionoptions', 'buffers,curdir,folds,help,resize,winpos,terminal') -- winsize messes up on load
-opt('shada', "!,'200,<100,s500")
+opt('shada', "!,'1000,<100,s500")
 opt('shortmess', 'tTIscCaF') -- F silents filename (but needed for bufread on vimenter), C? default: filnxtToOCF
 opt('showbreak', '↳ ')
 opt('showcmd', true)

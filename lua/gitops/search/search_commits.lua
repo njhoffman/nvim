@@ -17,7 +17,7 @@ M.search_commits = function(opts)
     .new({
       prompt_title = 'Git Grep Commits',
       results_title = 'Git Grep All (' .. count .. ' files)',
-      finder = ags_finders.git_log_content_finder(bufnr, {}),
+      finder = ags_finders.git_log_content(bufnr, {}),
       -- previewer = ags_previewers.git_diff_content_previewer(),
       attach_mappings = function(_, map)
         ags_mappings.open_diff_view_current_file_selected_commit(map)

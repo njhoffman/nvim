@@ -65,7 +65,7 @@ local command_map = {
       dependency = { 'logfile', 'buffer', 'split' },
       checked = { 'logfile', 'buffer', 'split' },
       stray = { 'logfile', 'buffer', 'split' },
-      exists = { 'logfile', 'buffer', 'split' },
+      exist = { 'logfile', 'buffer', 'split' },
       missing = { 'logfile', 'buffer', 'split' },
     },
   },

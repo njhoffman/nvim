@@ -2,10 +2,9 @@ local utils = require('utils.lazy')
 local lz_syn = false
 
 local plugins = {
-  { 'nvim-tree/nvim-web-devicons', dependencies = { 'DaikyXendo/nvim-material-icon' }, lazy = true },
   { 'stevearc/dressing.nvim', dependencies = 'MunifTanjim/nui.nvim', event = 'VeryLazy' },
   { '3rd/image.nvim', enabled = false, event = 'VeryLazy', dependencies = 'nvim-treesitter' },
-  { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-tree/nvim-web-devicons' },
+  { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-web-devicons' },
   {
     'romgrk/barbar.nvim',
     enabled = false,
@@ -201,7 +200,7 @@ local plugins = {
     cmd = { 'NeoTreeFocusToggle', 'NeoTreeShowToggle' },
     event = 'VimEnter',
     branch = 'v2.x',
-    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
+    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-web-devicons', 'MunifTanjim/nui.nvim' },
   },
   {
     -- 'njhoffman/telescope.nvim',
@@ -225,7 +224,7 @@ local plugins = {
       'dawsers/telescope-file-history.nvim',
       'elianiva/telescope-npm.nvim',
       'frenchtoasters/telescope-kubectl.nvim',
-      'nvim-tree/nvim-web-devicons',
+      'nvim-web-devicons',
       'lpoto/telescope-docker.nvim',
       'molecule-man/telescope-menufacture',
       'smartpde/telescope-recent-files',
@@ -316,7 +315,7 @@ local plugins = {
   { 'ThePrimeagen/git-worktree.nvim', event = 'VeryLazy' },
   { 'napisani/nvim-github-codesearch', cmd = 'GithubSearch', build = 'make' },
   { 'akinsho/git-conflict.nvim', version = '*', lazy = false },
-  { 'pwntester/octo.nvim', cmd = 'Octo', dependencies = 'nvim-tree/nvim-web-devicons' },
+  { 'pwntester/octo.nvim', cmd = 'Octo', dependencies = 'nvim-web-devicons' },
   { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' },
   { 'lewis6991/gitsigns.nvim', event = 'BufReadPost', dependencies = 'nvim-lua/plenary.nvim' },
   { 'rhysd/git-messenger.vim', cmd = 'GitMessenger' },

@@ -1131,7 +1131,7 @@ map('n', '<C-e>', "<cmd>lua require('telescope.run')('builtin','live_grep', { gr
   desc = 'live grep open buffers in telescope',
 })
 
-map('n', '<M-u>', "<cmd>lua require('telescope.run')('builtin', 'oldfiles')<cr>", {
+map('n', '<M-u>', "<cmd>lua require('telescope.run')('oldfiles', 'oldfiles')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'mru files',

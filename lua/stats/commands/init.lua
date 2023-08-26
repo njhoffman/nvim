@@ -1,3 +1,6 @@
+local output = require('stats.output')
+local utils = require('stats.utils')
+
 local completion = function(stats_map)
   return function(query, cmd)
     if query == '' then
@@ -20,6 +23,13 @@ local completion = function(stats_map)
   end
 end
 
+local stats_overview = function(view)
+  view = view or 'logfile'
+  local counts = utils.get_counts()
+  local lines = utils.align_list(counts)
+  output[view](lines, 'Stats Overview')
+end
+
 local command = function(cmd)
   local cmd_map = {
     keys = require('stats.commands.keys'),
@@ -27,7 +37,9 @@ local command = function(cmd)
   }
   if cmd_map[cmd.fargs[1]] then
     cmd_map[cmd.fargs[1]].stats(cmd.fargs)
+  else
+    stats_overview(cmd.fargs)
   end
 end
 
-return { command, completion }
+return { command = command, completion = completion }

@@ -1,19 +1,14 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
 local telescope = require('telescope')
 local previewers = require('telescope.previewers')
-local strings = require('plenary.strings')
-local sorters = require('telescope.sorters')
 
 local commands = require('configs.telescope.commands')
 local c_previewers = require('configs.telescope.previewers')
 local mappings = require('configs.telescope.mappings')
 local plugins = require('configs.telescope.plugins')
-local hide_preview = false
 
 local entry_display = require('telescope.pickers.entry_display')
 local telescope_utils = require('telescope.utils')
-
-local currwidth = vim.api.nvim_win_get_width(vim.api.nvim_get_current_win())
 
 local telescope_config = {
   defaults = {

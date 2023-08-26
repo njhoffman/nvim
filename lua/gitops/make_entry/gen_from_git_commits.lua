@@ -16,39 +16,6 @@ local setup_highlights = function()
   vim.api.nvim_set_hl(0, 'TelescopeGitStatsDeleteIcon', { default = true, link = 'GitSignsDelete' })
 end
 
--- local handle_entry_index = function(opts, t, k)
---   local override = ((opts or {}).entry_index or {})[k]
---   if not override then
---     return
---   end
---
---   local val, save = override(t, opts)
---   if save then
---     rawset(t, k, val)
---   end
---   return val
--- end
---
--- local set_default_entry_mt = function(tbl, opts)
---   return setmetatable({}, {
---     __index = function(t, k)
---       local override = handle_entry_index(opts, t, k)
---       if override then
---         return override
---       end
---
---       -- Only hit tbl once
---       local val = tbl[k]
---       if val then
---         rawset(t, k, val)
---       end
---
---       return val
---     end,
---   })
--- end
---
-
 local parse_author = function(author)
   return author
 end
@@ -114,14 +81,37 @@ local parse_log_line = function(line)
   return parsed
 end
 
-local resolve_widths = function(opts, widths)
-  local winwidth = vim.api.nvim_win_get_width(0) * (opts.theme ~= 'ivy' and 0.8 or 1)
-  local defaults = { sha = 10, date = 8, message = -1, author = 20, stat_files = 5, stat_insert = 8, stat_delete = 8 }
-  local maximums = { author = 20 }
+local config = require('telescope.config')
+
+local resolve_widths = function(opts, widths, stats)
+  stats = stats or {}
+  local pct = opts.theme == 'ivy' and 1 or 0.8
+  pct = opts.theme == 'horizontal' and 0.5 or pct
+  local winwidth = math.floor(vim.api.nvim_win_get_width(0) * pct)
+
+  local defaults = {
+    sha = 10,
+    date = 8,
+    message = -1,
+    author = 20,
+    stat_files = 5,
+    stat_insert = 8,
+    stat_delete = 8,
+  }
+
+  -- stats.author_length=16, .count=476, .hash_length=9, .range="2 years, 5 months", .subject_length=12
+
+  local maximums = {
+    author = math.min(tonumber(stats.author_length), math.floor(0.2 * winwidth)),
+    message = tonumber(stats.subject_length),
+    sha = tonumber(stats.hash_length),
+  }
+
   local res = {}
+
   for key, default_width in pairs(defaults) do
     res[key] = type(widths[key]) == 'number' and widths[key] or default_width
-    if type(maximums[key]) == 'number' and maximums[key] < res[key] then
+    if type(maximums[key]) == 'number' and (maximums[key] < res[key] or res[key] == -1) then
       res[key] = maximums[key]
     end
   end
@@ -130,17 +120,22 @@ local resolve_widths = function(opts, widths)
   return res
 end
 
-local function gen_from_git_commits(opts)
+-- resolver.resolve_width()                   *telescope.resolve.resolve_width()*
+
+local function gen_from_git_commits(opts, stats)
   -- 4 files   5   20 
   -- 4   20   5 
+  -- local picker = action_state.get_current_picker(prompt_bufnr)
+  -- local results_height = vim.api.nvim_win_get_height(picker.results_win)
+
   opts = opts or {}
-  local w = resolve_widths(opts, {})
+  local w = resolve_widths(opts, {}, stats)
   local displayer = entry_display.create({
     separator = ' ',
     items = {
       { width = w.sha },
       { width = w.date, right_justify = true },
-      { width = w.message },
+      { width = w.message, remaining = true },
       { width = w.author, right_justify = true },
       { width = w.stat_files + 3, right_justify = true },
       { width = w.stat_insert + 3, right_justify = true },
@@ -170,6 +165,7 @@ local function gen_from_git_commits(opts)
 
   setup_highlights()
 
+  local conf = require('telescope.config').values
   return function(line)
     local entry = parse_log_line(line)
     return {

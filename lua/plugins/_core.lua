@@ -5,6 +5,7 @@ vim.g.barbar_auto_setup = false
 local plugins = {
   { 'folke/lazy.nvim', lazy = false },
   -- colorscheme components should load first
+
   {
     'rktjmp/lush.nvim',
     priority = 1000,
@@ -29,10 +30,15 @@ local plugins = {
     lazy = false,
     cmd = { 'NeoTreeFocusToggle', 'NeoTreeShowToggle' },
     branch = 'v2.x',
-    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
+    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-web-devicons', 'MunifTanjim/nui.nvim' },
   },
   -- { 'freddiehaddad/feline.nvim', branch = 'main', event = 'VimEnter', lazy = false, },
   { 'famiu/bufdelete.nvim' },
+  {
+    'DaikyXendo/nvim-web-devicons',
+    -- nvim-tree/nvim-web-devicons
+    dependencies = { 'DaikyXendo/nvim-material-icon' },
+  },
   {
     'utilyre/barbecue.nvim',
     -- dir = '~/git/barbecue.nvim',
@@ -40,7 +46,7 @@ local plugins = {
     event = 'VeryLazy',
     dependencies = {
       'SmiteshP/nvim-navic',
-      'nvim-tree/nvim-web-devicons',
+      'nvim-web-devicons',
     },
   },
   { 'rcarriga/nvim-notify', lazy = false },

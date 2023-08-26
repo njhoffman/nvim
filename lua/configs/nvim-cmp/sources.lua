@@ -118,6 +118,7 @@ local lsp_symbols = {
   Number          = "󰎠",
   Operator        = '󰃬', --   Operator    = "󰆕 ",
   Parameter       = ' ',
+  Preproc         = '', --   Property    = "󰜢",
   Property        = '󰖷', --   Property    = "󰜢",
   Reference       = '󰈝', --   Reference   = "󰈇 ",
   Repeat          = '',

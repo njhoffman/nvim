@@ -1,21 +1,15 @@
+local sinks = require('stats.sinks')
+
 local buffer = function(lines, title)
   lines = type(lines) == 'string' and vim.fn.split(lines, '\n') or lines
   vim.dbglog(title .. vim.fn.join(lines, '\n  '))
 
-  local bufnr = vim.api.nvim_create_buf(true, true)
-  vim.api.nvim_set_current_buf(bufnr)
-  vim.api.nvim_buf_set_name(bufnr, title or ('stats-' .. bufnr))
-  vim.bo.filetype = 'lua'
-  vim.api.nvim_buf_set_lines(bufnr, 0, 0, lines, {})
+  sinks.buffer(lines, title)
 end
 
 local split = function(lines, title)
   lines = type(lines) == 'string' and vim.fn.split(lines, '\n') or lines
-  vim.cmd('new')
-  local bufnr = vim.api.nvim_get_current_buf()
-  vim.bo.filetype = 'lua'
-  vim.api.nvim_buf_set_name(bufnr, title or ('stats-' .. bufnr))
-  vim.api.nvim_buf_set_lines(0, 0, 0, lines, {})
+  sinks.split(lines, title)
 end
 
 local logfile = function(lines, title)
@@ -25,17 +19,12 @@ local logfile = function(lines, title)
   else
     title = title .. ' '
   end
-  vim.dbglog(title .. vim.fn.join(lines, '\n  '))
+  sinks.logfile(lines, title)
 end
 
-local notify = function(lines, title)
+local notify = function(lines, title, render)
   -- local notify = require('notify')
-  local notify = vim.notify
-  if type(title) ~= 'nil' and #title > 0 then
-    notify(lines, 2, { timeout = 10000, title = title })
-  else
-    notify(lines, 2, { timeout = 10000, render = 'compact' })
-  end
+  sinks.notify(lines, title, render)
 end
 
 local popup = function(lines, title)

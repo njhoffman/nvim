@@ -20,7 +20,7 @@ commits_count() {
   fi
 }
 
-commits_authorlength() {
+commits_author_length() {
   sub_cmd+=("--format='%an'")
   sub_cmd+=("HEAD")
   if [[ $# -gt 0 ]]; then
@@ -35,7 +35,23 @@ commits_authorlength() {
   fi
 }
 
-commits_hashlength() {
+commits_subject_length() {
+  sub_cmd+=("--format='%s'")
+  sub_cmd+=("--max-parents=0")
+  sub_cmd+=("HEAD")
+  if [[ $# -gt 0 ]]; then
+    sub_cmd+=("-- $*")
+  fi
+  post_cmd="tail -n1 | tr -d '\n' | wc --chars"
+  cmd="${base_cmd[*]} ${sub_cmd[*]} | $post_cmd"
+  if [[ $print_cmd -eq 1 ]]; then
+    printf "%s" "$cmd"
+  else
+    eval "$cmd"
+  fi
+}
+
+commits_hash_length() {
   sub_cmd+=("--format='%h'")
   sub_cmd+=("--max-parents=0")
   sub_cmd+=("HEAD")

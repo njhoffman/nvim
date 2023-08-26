@@ -3,11 +3,11 @@ local conf = require('telescope.config').values
 local Previewer = require('telescope.previewers.previewer')
 local tele_utils = require('telescope.utils')
 local buf_delete = tele_utils.buf_delete
+
 local file_util = require('gitops.utils.file')
 local config = require('gitops.utils.config')
 local command_util = require('gitops.utils.command')
 local utils = require('gitops.utils')
-
 local logger = require('gitops.utils.logger')
 
 local M = {}
@@ -105,7 +105,6 @@ local file_exists_on_commit = function(commit_hash, git_relative_file_path, sour
   local output = command_util.execute(command)
 
   output = string.gsub(output, '\n', '')
-  vim.dbglog('FILE EXISTS ON COMMIT', output, command)
   return output ~= ''
 end
 
@@ -215,7 +214,7 @@ M.init_command = function(command, bufnr, args)
   for _, arg in ipairs(args) do
     table.insert(command, arg)
   end
-  logger.trace('cmd: ' .. vim.fn.join(command, ' '))
+  logger.trace('init command\n  ' .. vim.fn.join(command, '\n  '))
   return command
 end
 

@@ -68,7 +68,7 @@ local plugins = {
     'stevearc/aerial.nvim',
     event = { 'BufReadPre', 'BufNewFile', 'LspAttach' },
     cmd = { 'AerialToggle', 'AerialNext', 'AerialGo', 'AerialOpen', 'AerialPrev', 'AerialOpenAll' },
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'nvim-web-devicons' },
   },
   -- https://github.com/mfussenegger/nvim-jdtls
   {

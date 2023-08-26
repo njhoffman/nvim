@@ -11,12 +11,14 @@ local render = function(bufnr, notif, highlights, config)
     '^Error executing Lua callback',
     '^Vim:Error executing Lua callback',
   }
+
   local is_error = false
   for _, pattern in ipairs(error_patterns) do
     is_error = is_error or string.match(first_line, pattern)
   end
+
   if is_error then
-    return require('configs.nvim-notify.render.error')(bufnr, notif, highlights, config)
+    return require('notify.render.error')(bufnr, notif, highlights, config)
   elseif #title > 0 then
     return require('notify.render.default')(bufnr, notif, highlights, config)
   else

@@ -1,3 +1,4 @@
+local logger = require('gitops.utils.logger')
 local M = {}
 
 M.lsp_format_async = function()
@@ -25,7 +26,7 @@ M.get_repo = function(bufnr)
       gitdir = gitsigns.gitdir,
     }
   else
-    vim.dbglog('get_repo failed', bufnr, gitsigns)
+    logger.warn('get_repo failed: ' .. bufnr, gitsigns)
     return {}
   end
 end

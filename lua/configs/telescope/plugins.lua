@@ -23,6 +23,11 @@ local tele_plugs = {
   },
 
   ['devhints'] = {},
+  ['oldfiles'] = {
+    include_current_session = true,
+    show_time = true,
+    show_size = false,
+  },
   ['messages'] = {},
   ['enhanced_find_files'] = {},
   ['env'] = {},
