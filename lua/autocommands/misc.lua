@@ -1,27 +1,17 @@
--- -- change background color when in insert mode
--- vim.api.nvim_create_autocmd({ "InsertEnter" }, {
---   callback = function()
---     vim.api.nvim_set_hl(0, "Normal", { bg = "#030508" })
---   end
--- })
-
--- vim.api.nvim_create_autocmd({ "InsertLeave" }, {
---   callback = function()
---     vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
---   end
--- })
-
 -- Make window title indicative of our cwd
 -- Loaded before normal autocmds (./autocmds) because we leverage the `VimEnter` here.
 
 local set_window_title = function()
+  if #os.getenv('TMUX') > 0 then
+    os.execute('tmux setenv custom_path ' .. vim.fn.getcwd())
+  end
   local path = vim.split(vim.fn.getcwd(), '/', {})
   vim.opt.titlestring = [[%{v:progname}: ]] .. vim.fn.join({ path[#path - 1], path[#path] }, '/')
   vim.opt.title = true
 end
 
 vim.api.nvim_create_autocmd({ 'DirChanged', 'VimEnter' }, {
-  group = vim.api.nvim_create_augroup('UpdateWindowTitle', { clear = true }),
+  group = vim.api.nvim_create_augroup('UpdateDirectory', { clear = true }),
   callback = function()
     local scope = vim.v.event.scope
     if scope == nil or scope == 'global' then
@@ -36,7 +26,7 @@ vim.fn.mkdir(backupdir, 'p')
 vim.opt.backupdir = backupdir .. '//'
 vim.opt.backup = true
 vim.api.nvim_create_autocmd('BufWritePre', {
-  group = vim.api.nvim_create_augroup('timestamp_backupext', { clear = true }),
+  group = vim.api.nvim_create_augroup('VimBackup', { clear = true }),
   desc = 'Add timestamp to backup extension',
   pattern = '*',
   callback = function()
@@ -49,7 +39,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 -- d /tmp/nvim-backup 755 <user> <user> 3d
 
 -- close some filetypes with q or <esc>
-local winclose_group = vim.api.nvim_create_augroup('winclose_q', { clear = true })
+local winclose_group = vim.api.nvim_create_augroup('WinClose_q', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
   group = winclose_group,
   pattern = {

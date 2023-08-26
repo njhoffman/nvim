@@ -62,26 +62,32 @@ local cfg_defaults = {
   depth_limit = 0,
   depth_limit_indicator = "..",
   safe_output = true,
+  lsp = {
+    auto_attach = false,
+    preference = nil,
+  },
 }
 
+-- silence lsp already attached warning
+
+vim.api.nvim_set_var('navic_silence', true)
 local navic = require('nvim-navic')
-local cfg = cfg_defaults
+local cfg = { lsp = { auto_attach = false, preference = { 'pylsp', 'pyright' } } }
 navic.setup(cfg)
 
+-- local ignore_clients = { 'copilot', 'ltex', 'tailwindcss', 'eslint' }
 -- vim.api.nvim_create_autocmd('LspAttach', {
 --   callback = function(args)
 --     local bufnr = args.buf
 --     local client = vim.lsp.get_client_by_id(args.data.client_id)
+--     vim.dbglog('trying', client.name, bufnr)
 --     if
---       not vim.tbl_contains({
---         -- 'copilot',
---         'ltex',
---         -- 'tailwindcss',
---         -- 'eslint',
---       }, client.name) and client.server_capabilities.documentSymbolProvider
+--       not vim.tbl_contains(ignore_clients, client.name)
+--       and client.server_capabilities.documentSymbolProvider
+--       and navic.is_available(bufnr)
 --     then
+--       vim.dbglog('attaching', client.name, bufnr)
 --       require('nvim-navic').attach(client, bufnr)
 --     end
 --   end,
 -- })
-return navic

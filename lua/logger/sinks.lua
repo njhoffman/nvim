@@ -27,9 +27,28 @@ M.notify = function()
   })
 end
 
-M.file = function(level, logfile)
-  logfile = logfile or vim.fn.stdpath('data') .. '/nvim.log'
+-- TODO: get tmux pane width
+-- TODO: make clear function that wipes history outputs new lines
+local banner_files = {}
+local log_banner = function(file)
+  local bar = string.rep('_', 70, '') --
+  local banner = { bar, '', '--        Enter at ' .. os.date(), bar, '' }
+  local fd = io.open(file, 'a')
+  if fd ~= nil then
+    fd:write(vim.fn.join(banner, '\n') .. '\n')
+  end
+  table.insert(banner_files, file)
+end
+
+M.file = function(level, logfile, config)
+  config = config or {}
+  if type(logfile) ~= 'string' or #logfile == 0 then
+    logfile = vim.fn.stdpath('data') .. '/nvim.log'
+  end
   level = level or structlog.level.TRACE
+  if config.banner and not vim.tbl_contains(banner_files, logfile) then
+    log_banner(logfile)
+  end
   return structlog.sinks.File(level, logfile, {
     processors = {
       structlog.processors.Namer(),

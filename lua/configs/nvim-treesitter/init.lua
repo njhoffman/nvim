@@ -8,6 +8,7 @@ ts.define_modules(tsmodules)
 
 local cfg = {
   -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  auto_install = true,
   ensure_installed = 'all',
   -- ignore_install = { 'comment' },
   -- indent = {

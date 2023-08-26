@@ -1,9 +1,9 @@
 -- local ns_id = 0
-local ns_id = vim.api.nvim_create_namespace("nvim-notify")
+local ns_id = vim.api.nvim_create_namespace('nvim-notify')
 
-local baleia = require("baleia").setup()
 local build_line = function(bufnr, linenum, parts)
-  local line = ""
+  local baleia = require('baleia').setup()
+  local line = ''
   local hls = {}
 
   for _, part in pairs(parts) do
@@ -23,42 +23,42 @@ local build_line = function(bufnr, linenum, parts)
 end
 
 local path_home = function(file)
-  local home = os.getenv("HOME") or ""
+  local home = os.getenv('HOME') or ''
   if string.len(home) > 0 then
-    return string.gsub(file, home, "~")
+    return string.gsub(file, home, '~')
   end
   return file
 end
 
 local path_nvim = function(file)
-  local nvim = vim.fn.stdpath("config") .. "/"
+  local nvim = vim.fn.stdpath('config') .. '/'
   if string.len(nvim) > 0 then
-    return string.gsub(file, nvim, "")
+    return string.gsub(file, nvim, '')
   end
   return file
 end
 
 local lines_width = function(lines)
-  local ansi_pattern = "\x1b[[0-9][:;0-9]*m"
+  local ansi_pattern = '\x1b[[0-9][:;0-9]*m'
 
   return math.max(math.max(unpack(vim.tbl_map(function(line)
-    line = line:gsub(ansi_pattern, "")
-    return vim.fn.strchars(string.gsub(line, "^%s+", ""))
+    line = line:gsub(ansi_pattern, '')
+    return vim.fn.strchars(string.gsub(line, '^%s+', ''))
   end, lines))))
 end
 
 local render_box = function(bufnr, highlights, title, width)
   local minimum_width = 20
-  local left_icon = " "
+  local left_icon = ' '
   local right_title = title[2]
   local left_title = title[1]
   local title_accum = vim.str_utfindex(left_icon) + vim.str_utfindex(right_title) + vim.str_utfindex(left_title)
 
-  local left_buffer = string.rep(" ", math.max(0, width - title_accum))
-  vim.api.nvim_buf_set_lines(bufnr, 0, 1, false, { "", "" })
+  local left_buffer = string.rep(' ', math.max(0, width - title_accum))
+  vim.api.nvim_buf_set_lines(bufnr, 0, 1, false, { '', '' })
   vim.api.nvim_buf_set_extmark(bufnr, ns_id, 0, 0, {
     virt_text = {
-      { " " },
+      { ' ' },
       { left_icon, highlights.icon },
       { left_title .. left_buffer, highlights.title },
     },
@@ -66,14 +66,14 @@ local render_box = function(bufnr, highlights, title, width)
     priority = 10,
   })
   vim.api.nvim_buf_set_extmark(bufnr, ns_id, 0, 0, {
-    virt_text = { { " " }, { right_title, highlights.title }, { " " } },
-    virt_text_pos = "right_align",
+    virt_text = { { ' ' }, { right_title, highlights.title }, { ' ' } },
+    virt_text_pos = 'right_align',
     priority = 10,
   })
   vim.api.nvim_buf_set_extmark(bufnr, ns_id, 1, 0, {
     virt_text = {
       {
-        string.rep("━", math.max(vim.str_utfindex(left_buffer) + title_accum + 2, minimum_width)),
+        string.rep('━', math.max(vim.str_utfindex(left_buffer) + title_accum + 2, minimum_width)),
         highlights.border,
       },
     },

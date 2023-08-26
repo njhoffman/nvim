@@ -157,51 +157,11 @@ local signature_help_provider = function(_, bufnr)
   -- end)
 end
 
-local hover_provider = function(_, _)
-  -- vim already has builtin docs
-  if vim.bo.ft ~= 'vim' then
-    mapping.hover()
-  end
-end
-
-local code_action_provider = function(_, _)
-  mapping.code_action()
-end
-
-local definition_provider = function(_, _)
-  mapping.definition()
-  mapping.definition_preview()
-end
-
-local implementation_provider = function(_, _)
-  mapping.implementation()
-  mapping.implementation_preview()
-end
-
-local references_provider = function(_, _)
-  mapping.references()
-  mapping.references_preview()
-end
-
-local type_definition_provider = function(_, _)
-  mapping.type_definition()
-  mapping.type_definition_preview()
-end
-
-local declaration_provider = function(_, _)
-  mapping.declaration()
-end
-
-local rename_provider = function(_, _)
-  mapping.rename()
-end
-
-local document_symbol_provider = function(client, bufnr)
-  -- local cap = client.server_capabilities
-  local navic = require('lsp.nvim-navic')
-  navic.attach(client, bufnr)
-  -- vim.lsp.buf.document_symbol()
-end
+-- local document_symbol_provider = function(client, bufnr)
+--   -- local cap = client.server_capabilities
+--   -- populates quickfix with symbols
+--   vim.lsp.buf.document_symbol()
+-- end
 
 local workspace = function(_, _)
   -- keymap_buf(bufnr, "n", "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", keymap_opts)
@@ -247,67 +207,107 @@ end
 -- keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 --
 -- vim.lsp.handlers["textDocument/inlayHint"] = show_handler
-local execute_command = function(args)
-  -- vim.dbglog({ 'executeCommand', args })
-  vim.lsp.buf.execute_command(args)
-end
+-- local execute_command = function(args)
+--   -- vim.dbglog({ 'executeCommand', args })
+--   vim.lsp.buf.execute_command(args)
+-- end
 
-local semantic_tokens_provider = function(args)
-  -- vim.dbglog({ 'semanticTokensProvider', args })
-  if type(vim.lsp.buf.semantic_tokens_provider) ~= 'nil' then
-    vim.lsp.buf.semantic_tokens_provider(args)
+-- local semantic_tokens_provider = function(args)
+--   -- vim.dbglog({ 'semanticTokensProvider', args })
+--   if type(vim.lsp.buf.semantic_tokens_provider) ~= 'nil' then
+--     vim.lsp.buf.semantic_tokens_provider(args)
+--   end
+--   -- vim.lsp.buf.execute_command(args)
+-- end
+
+-- local diagnostic_provider = function(args)
+--   vim.lsp.buf.diagnostic(args)
+--   -- vim.lsp.buf.execute_command(args)
+--
+--   -- vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'LspDiagnosticsSignError' })
+--   -- vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'LspDiagnosticsSignWarn' })
+--   -- vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'LspDiagnosticsSignInfo' }) -- 󰌵
+--   -- vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'LspDiagnosticsSignHint' })
+--   --
+--   -- local keymap_opts = { noremap = true, silent = true }
+--   -- vim.api.nvim_set_keymap(
+--   --   'n',
+--   --   '<C-T>',
+--   --   "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = true })<cr>",
+--   --   keymap_opts
+--   -- )
+--   -- vim.api.nvim_set_keymap('n', '<M-T>', "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>", keymap_opts)
+--   -- vim.api.nvim_set_keymap('n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', keymap_opts)
+--   -- vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', keymap_opts)
+--   -- vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
+--   -- vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
+--   --
+-- end
+
+local hover_provider = function(_, _)
+  -- vim already has builtin docs
+  if vim.bo.ft ~= 'vim' then
+    mapping.hover()
   end
-  -- vim.lsp.buf.execute_command(args)
 end
 
-local diagnostic_provider = function(args)
-  vim.dbglog({ 'diagnosticProvider', args })
-  vim.lsp.buf.diagnostic(args)
-  -- vim.lsp.buf.execute_command(args)
-
-  -- vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'LspDiagnosticsSignError' })
-  -- vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'LspDiagnosticsSignWarn' })
-  -- vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'LspDiagnosticsSignInfo' }) -- 󰌵
-  -- vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'LspDiagnosticsSignHint' })
-  --
-  -- local keymap_opts = { noremap = true, silent = true }
-  -- vim.api.nvim_set_keymap(
-  --   'n',
-  --   '<C-T>',
-  --   "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = true })<cr>",
-  --   keymap_opts
-  -- )
-  -- vim.api.nvim_set_keymap('n', '<M-T>', "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>", keymap_opts)
-  -- vim.api.nvim_set_keymap('n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', keymap_opts)
-  -- vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', keymap_opts)
-  -- vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
-  -- vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
-  --
+local code_action_provider = function(_, _)
+  mapping.code_action()
 end
 
+local definition_provider = function(_, _)
+  mapping.definition()
+  mapping.definition_preview()
+end
+
+local implementation_provider = function(_, _)
+  mapping.implementation()
+  mapping.implementation_preview()
+end
+
+local references_provider = function(_, _)
+  mapping.references()
+  mapping.references_preview()
+end
+
+local type_definition_provider = function(_, _)
+  mapping.type_definition()
+  mapping.type_definition_preview()
+end
+
+local declaration_provider = function(_, _)
+  mapping.declaration()
+end
+
+local rename_provider = function(_, _)
+  mapping.rename()
+end
+
+-- stylua: ignore
 local handlers = {
-  -- vim.lsp.handlers["textDocument/inlayHint"] = show_handler
-  codeActionProvider = code_action_provider,
-  codeLensProvider = code_lens_provider,
-  colorProvider = color_provider,
-  declarationProvider = declaration_provider,
-  definitionProvider = definition_provider,
-  diagnosticProvider = diagnostic_provider,
-  documentFormattingProvider = document_formatting_provider,
+  codeActionProvider              = code_action_provider,
+  codeLensProvider                = code_lens_provider,
+  colorProvider                   = color_provider,
+  declarationProvider             = declaration_provider,
+  definitionProvider              = definition_provider,
+  -- diagnosticProvider              = diagnostic_provider,
+  documentFormattingProvider      = document_formatting_provider,
   documentFormattingRangeProvider = document_formatting_range_provider,
-  documentHighlightProvider = document_highlight_provider,
-  documentSymbolProvider = document_symbol_provider,
-  executeCommand = execute_command,
-  hoverProvider = hover_provider,
-  implementationProvider = implementation_provider,
-  referencesProvider = references_provider,
-  renameProvider = rename_provider,
-  semanticTokensProvider = semantic_tokens_provider,
-  signatureHelpProvider = signature_help_provider,
-  typeDefinitionProvider = type_definition_provider,
-  workspace = workspace,
-  workspaceSymbolProvider = document_symbol_provider,
-  -- executeCommandProvider, , inlayHintProvider, foldingRangeProvider,
+  documentHighlightProvider       = document_highlight_provider,
+  -- documentSymbolProvider          = document_symbol_provider,
+  -- executeCommandProvider
+  -- executeCommand                  = execute_command,
+  hoverProvider                   = hover_provider,
+  implementationProvider          = implementation_provider,
+  referencesProvider              = references_provider,
+  renameProvider                  = rename_provider,
+  -- semanticTokensProvider          = semantic_tokens_provider,
+  signatureHelpProvider           = signature_help_provider,
+  typeDefinitionProvider          = type_definition_provider,
+  -- workspace                    = workspace,
+  -- workspaceSymbolProvider      = document_symbol_provider,
+  -- inlayHintProvider
+  -- foldingRangeProvider
 }
 
 return handlers

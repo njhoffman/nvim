@@ -37,8 +37,7 @@ local plugins = {
     'utilyre/barbecue.nvim',
     -- dir = '~/git/barbecue.nvim',
     name = 'barbecue',
-    event = { 'VeryLazy' },
-    cmd = 'Barbecue',
+    event = 'VeryLazy',
     dependencies = {
       'SmiteshP/nvim-navic',
       'nvim-tree/nvim-web-devicons',

@@ -1,4 +1,3 @@
-local state = require('NeoComposer.state')
 local colors = require('configs.feline.colors')
 
 local config = {
@@ -10,6 +9,7 @@ local config = {
 }
 
 local neocomposer = function(_, opts)
+  local state = require('NeoComposer.state')
   local function set_highlight(group, fg)
     vim.cmd(string.format('highlight %s guifg=%s guibg=%s gui=bold', group, fg, '#000000'))
   end

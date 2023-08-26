@@ -1,5 +1,3 @@
-local configs = require('nvim-treesitter.configs')
-
 local modules = {
   query_linter = {
     enable = true,
@@ -87,7 +85,7 @@ local modules = {
       -- 'markdown',
     },
     additional_vim_regex_highlighting = {
-      'md',
+      -- 'md',
       'zsh',
     },
     custom_captures = {

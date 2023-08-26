@@ -5,7 +5,7 @@ local utils = require('utils.lazy')
 local plugins = {
   {
     'neovim/nvim-lspconfig',
-    event = { 'BufReadPost', 'BufNewFile' },
+    event = { 'BufReadPost', 'BufNewFile', 'LspAttach' },
     dependencies = {
       { 'williamboman/mason.nvim', cmd = 'Mason' },
       'williamboman/mason-lspconfig.nvim',
@@ -20,6 +20,7 @@ local plugins = {
           })
         end,
       },
+      'SmiteshP/nvim-navic',
       'RRethy/vim-illuminate',
       'b0o/schemastore.nvim', -- for jsonls
       'KostkaBrukowa/definition-or-references.nvim',

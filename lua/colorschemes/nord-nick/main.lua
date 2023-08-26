@@ -316,6 +316,15 @@ return function(injected_functions)
     sym('@variable')({ Variable }),
     sym('@variable.builtin')({ Identifier }),
 
+    sym('@text.todo.checked.markdown')({ fg = '#53fafa', gui = 'bold' }),
+    sym('@text.title.1.markdown')({ fg = '#3dbcff' }), -- @text.title #88aee9
+    sym('@text.title.2.markdown')({ fg = '#3ab4e8' }), -- @text.title
+    sym('@text.title.3.markdown')({ fg = '#37b0d8' }), -- @text.title
+    sym('@text.title.4.markdown')({ fg = '#34a4c8' }), -- @text.title
+    sym('@text.title.5.markdown')({ fg = '#3098b2' }), -- @text.title
+    sym('@text.title.6.markdown')({ fg = '#3092ae' }), -- @text.title
+    sym('@lsp.type.class.markdown')({ fg = 'none', bg = 'none' }), -- sym('@type') Structure
+
     sym('@lsp.type.comment')({ sym('@comment') }),
     sym('@lsp.type.enum')({ sym('@type') }),
     sym('@lsp.type.enumMember')({ sym('@constant') }),
@@ -528,23 +537,10 @@ return function(injected_functions)
     -- html
     -- markdownH {},
     -- markdownTSTitle {},
-    htmlH1({ fg = '#45a5f8' }),
-    htmlH2({ fg = '#45a5e8' }),
-    htmlH3({ fg = '#45a5d8' }),
-    htmlH4({ fg = '#45a5c8' }),
-    htmlH5({ fg = '#45a5b8' }),
-    htmlH6({ fg = '#45a5a8' }),
     htmlEndTag({ fg = '#7f90aa' }),
     htmlTagN({ fg = clr_over.orange }),
     CSVColumnHeaderOdd({ String }),
     CSVColumnHeaderEven({ fg = Statement.fg, bg = 'none' }),
-    markdownH1({ fg = '#45a5f8' }),
-    markdownH2({ fg = '#45a5e8' }),
-    markdownH3({ fg = '#45a5d8' }),
-    markdownH4({ fg = '#45a5c8' }),
-    markdownH5({ fg = '#45a5b8' }),
-    markdownH6({ fg = '#45a5a8' }),
-    mkdHeading({ fg = '#557588' }),
     markdownLinkText({ fg = '#00ccff' }),
     pandocDelimitedCodeBlock({ gui = 'none' }),
     pandocStrikeout({ gui = 'strikethrough' }),
@@ -566,14 +562,14 @@ return function(injected_functions)
     pandocAtxHeaderMark({ fg = '#4575f8' }),
     pandocAtxStart({ fg = '#4575f8' }),
     helpHyperTextJump({ fg = '#6585b8', gui = 'none' }),
-    Headline1({ bg = '#1e2718' }),
-    Headline2({ bg = '#21262d' }),
-    Headline3({ bg = '#1d2229' }),
-    Headline4({ bg = '#13181f' }),
-    Headline5({ bg = '#0c1118' }),
-    Headline6({ bg = '#060b12' }),
-    CodeBlock({ bg = '#1c1c1c' }),
-    Dash({ bg = '#b47d49' }),
+    Headline1({ bg = '#0c1c34' }), -- #1e2718
+    Headline2({ bg = '#031324' }), -- #21262d
+    Headline3({ bg = '#001018' }), -- #1d2229
+    Headline4({ bg = '#000814' }), -- #13181f
+    Headline5({ bg = '#000814' }), -- #0c1118
+    Headline6({ bg = '#000814' }), -- #0c0b12
+    CodeBlock({ bg = '#121212' }),
+    Dash({ bg = '#341710', fg = '#341710' }),
     --
     -- fg = clrs.nord13,
     -- Indent Blankline

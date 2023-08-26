@@ -30,6 +30,7 @@ local plugins = {
   },
   {
     'Everblush/nvim',
+    name = 'Everblush.nvim',
     event = 'User ColorSchemeLoad',
   },
   {

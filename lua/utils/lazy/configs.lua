@@ -30,7 +30,8 @@ local apply_config_file = function(name, plugin)
   end
   plugin.config = function(loaded_plug)
     local event = loaded_plug._.loaded
-    logger:debug(fname .. ' loading', event)
+    local dep = loaded_plug._dependency and ' [' .. loaded_plug._dependency .. ']' or ''
+    logger:debug(fname .. dep, event)
     local mod, mod_ok = vim.import(fname)
     if not mod_ok then
       state.errors[fname] = mod
@@ -40,6 +41,7 @@ local apply_config_file = function(name, plugin)
       return mod
     end
   end
+  return plugin
 end
 
 local check_config_file = function(plugin)
@@ -52,7 +54,7 @@ local check_config_file = function(plugin)
     local name_parts = vim.split(name, '/')
     name = name_parts[#name_parts]
   elseif type(plugin) == 'table' and type(plugin[1]) ~= 'nil' then
-    name = vim.split(plugin[1], '/')[2]
+    name = string.match(plugin[1], '/') and vim.split(plugin[1], '/')[2] or plugin[1]
   else
     logger:error('Error processing plugin: ' .. vim.inspect(plugin))
   end
@@ -60,14 +62,17 @@ local check_config_file = function(plugin)
   if type(name) == 'string' and #name > 0 then
     name = string.lower(string.gsub(name, '[\\.]+', '-'))
     name = string.gsub(name, '-nvim$', '')
-    if type(state.configs_checked[name]) == 'nil' then
+
+    -- skip if we already checked the file and didn't find it
+    if state.configs_checked[name] ~= false then
       if file_exists(name) then
-        apply_config_file(name, plugin)
+        plugin = apply_config_file(name, plugin)
       else
         state.configs_checked[name] = false
       end
     end
   end
+
   return plugin, name
 end
 
@@ -82,19 +87,15 @@ local apply_configs = function(plugins)
 
     -- loop through dependencies and apply any necessary configs
     local dependencies = {}
-    if type(plugin.dependencies) == 'table' then
-      dependencies = plugin.dependencies
-    elseif type(plugin.dependencies) == 'string' then
-      dependencies = { plugin.dependencies }
-    end
-    for _, _dep_plugin in ipairs(dependencies) do
+    plugin.dependencies = type(plugin.dependencies) == 'string' and { plugin.dependencies } or plugin.dependencies
+    for _, _dep_plugin in ipairs(plugin.dependencies or {}) do
       _dep_plugin = type(_dep_plugin) == 'string' and { _dep_plugin } or _dep_plugin
-      _dep_plugin._dependency = true
+      _dep_plugin._dependency = name
       local dep_plugin, dep_name = check_config_file(_dep_plugin)
-      if dep_name then
-        state.dependency[dep_name] = dep_plugin
-      end
+      state.dependency[dep_name] = dep_plugin
+      table.insert(dependencies, dep_plugin)
     end
+    plugin.dependencies = #dependencies > 0 and dependencies
   end
   return plugins
 end

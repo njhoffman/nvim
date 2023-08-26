@@ -134,6 +134,7 @@ local default_cfg = {
     fat_headline_lower_string = '🬂',
   },
 }
+-- TODO: make gradient headlines
 local config = {
   markdown = {
     headline_highlights = { 'Headline1', 'Headline2', 'Headline3', 'Headline4', 'Headline5', 'Headline6' },
@@ -141,7 +142,6 @@ local config = {
   pandoc = {
     headline_highlights = { 'Headline1', 'Headline2', 'Headline3', 'Headline4', 'Headline5', 'Headline6' },
   },
-
   org = {
     headline_highlights = { 'Headline1', 'Headline2' },
   },
@@ -158,4 +158,5 @@ local config = {
     dash_highlight = 'Dash',
   },
 }
+
 require('headlines').setup(config)

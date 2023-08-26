@@ -1,7 +1,7 @@
 local sinks = require('logger.sinks')
 local structlog = require('structlog')
 
--- TODO: add startup banner option
+local sinks_config = { main = { banner = true }, module = { banner = false } }
 
 local logdefs = {
   root = { main = 3 },
@@ -22,12 +22,12 @@ local init = function(name, sink_levels)
   local struct_sinks = {}
 
   if has_level(sink_levels.main) then
-    table.insert(struct_sinks, sinks.file(sink_levels.main))
+    table.insert(struct_sinks, sinks.file(sink_levels.main, _, sinks_config.main))
   end
 
   if has_level(sink_levels.module) then
     local modfile = vim.fn.stdpath('data') .. '/nvim-' .. name .. '.log'
-    table.insert(struct_sinks, sinks.file(sink_levels.module, modfile))
+    table.insert(struct_sinks, sinks.file(sink_levels.module, modfile, sinks_config.module))
   end
 
   if has_level(sink_levels.notify) then

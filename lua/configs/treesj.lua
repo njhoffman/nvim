@@ -30,18 +30,18 @@ require('treesj').setup({
 })
 
 local langs = require('treesj.langs')['presets']
+local split_mapping = function()
+  if langs[vim.bo.filetype] then
+    -- TODO: if not toggleable node (node identifier is not configured) go to first parenthesis
+    vim.keymap.set('n', 'gs', '<Cmd>TSJToggle<CR>', { buffer = true, desc = 'treesj toggle cursor' })
+    vim.keymap.set('n', 'gJ', '<Cmd>TSJJoin<CR>', { buffer = true, desc = 'treesj join cursor' })
+    vim.keymap.set('n', 'gS', '<Cmd>TSJSplit<CR>', { buffer = true, desc = 'treesj split cursor' })
+  else
+    vim.keymap.set('n', 'gs', "require('mini.splitjoin').toggle", { buffer = true, desc = 'mini.sj toggle cursor' })
+    vim.keymap.set('n', 'gJ', "require('mini.splitjoin').join_at", { buffer = true, desc = 'mini.sj join cursor' })
+    vim.keymap.set('n', 'gS', "require('mini.splitjoin').split_at", { buffer = true, desc = 'mini.sj split cursor' })
+  end
+end
 
-vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
-  pattern = '*',
-  callback = function()
-    if langs[vim.bo.filetype] then
-      vim.keymap.set('n', 'gs', '<Cmd>TSJToggle<CR>', { buffer = true, desc = 'treesj toggle cursor' })
-      vim.keymap.set('n', 'gJ', '<Cmd>TSJJoin<CR>', { buffer = true, desc = 'treesj join cursor' })
-      vim.keymap.set('n', 'gS', '<Cmd>TSJSplit<CR>', { buffer = true, desc = 'treesj split cursor' })
-    else
-      vim.keymap.set('n', 'gs', "require('mini.splitjoin').toggle", { buffer = true, desc = 'mini.sj toggle cursor' })
-      vim.keymap.set('n', 'gJ', "require('mini.splitjoin').join_at", { buffer = true, desc = 'mini.sj join cursor' })
-      vim.keymap.set('n', 'gS', "require('mini.splitjoin').split_at", { buffer = true, desc = 'mini.sj split cursor' })
-    end
-  end,
-})
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, { pattern = '*', callback = split_mapping })
+split_mapping()

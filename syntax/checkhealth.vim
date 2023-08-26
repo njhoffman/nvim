@@ -26,9 +26,8 @@ syn match healthBar  "|" contained conceal
 " ModeMsg MoreMsg DebugMsg ErrorMsg
 hi def link healthError Error
 hi def link healthWarning WarningMsg
-hi def link healthInfo ModeMsg 
+hi def link healthInfo ModeMsg
 hi def healthSuccess guibg=#5fff00 guifg=#080808 ctermbg=82 ctermfg=232
 hi def link healthHelp Identifier
 
 let b:current_syntax = "checkhealth"
-

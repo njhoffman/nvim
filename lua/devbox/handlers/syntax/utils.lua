@@ -1,8 +1,7 @@
-local highlighter = require("vim.treesitter.highlighter")
-local parsers = require("nvim-treesitter.parsers")
-local ts_utils = require("nvim-treesitter.ts_utils")
-
 local function get_ts_node(opts)
+  local parsers = require('nvim-treesitter.parsers')
+  local ts_utils = require('nvim-treesitter.ts_utils')
+
   local function get_full_path(node, array)
     local parent = node:parent()
     if parent == nil then
@@ -12,17 +11,17 @@ local function get_ts_node(opts)
       local reverse = vim.tbl_map(function(index)
         return array[#array + 1 - index]:type()
       end, vim.tbl_keys(array))
-      return table.concat(reverse, " -> ")
+      return table.concat(reverse, ' -> ')
     end
     return get_full_path(parent, vim.list_extend(array or {}, { node }))
   end
 
-  opts = vim.tbl_deep_extend("keep", opts or {}, {
+  opts = vim.tbl_deep_extend('keep', opts or {}, {
     full_path = false,
     show_range = true,
     include_anonymous = false,
     highlight_node = true,
-    hl_group = "TSPlaygroundFocus",
+    hl_group = 'TSPlaygroundFocus',
   })
 
   if not parsers.has_parser() then
@@ -62,6 +61,7 @@ local function get_ts_node(opts)
 end
 
 local function get_hl_groups_at_position(bufnr, row, col)
+  local highlighter = require('vim.treesitter.highlighter')
   local buf_highlighter = highlighter.active[bufnr]
   if not buf_highlighter then
     return {}
@@ -112,9 +112,9 @@ local function get_treesitter_hl(opts)
   local results = get_hl_groups_at_position(bufnr, row, col)
   local highlights = {}
   for _, hl in pairs(results) do
-    local line = "* **@" .. hl.capture .. "**"
+    local line = '* **@' .. hl.capture .. '**'
     if hl.priority then
-      line = line .. "(" .. hl.priority .. ")"
+      line = line .. '(' .. hl.priority .. ')'
     end
     table.insert(highlights, line)
   end
@@ -122,15 +122,15 @@ local function get_treesitter_hl(opts)
 end
 
 local function get_syntax_hl()
-  local line = vim.fn.line(".")
-  local col = vim.fn.col(".")
+  local line = vim.fn.line('.')
+  local col = vim.fn.col('.')
   local matches = {}
 
   for _, i1 in ipairs(vim.fn.synstack(line, col)) do
     local i2 = vim.fn.synIDtrans(i1)
-    local n1 = vim.fn.synIDattr(i1, "name")
-    local n2 = vim.fn.synIDattr(i2, "name")
-    table.insert(matches, "* " .. n1 .. " -> **" .. n2 .. "**")
+    local n1 = vim.fn.synIDattr(i1, 'name')
+    local n2 = vim.fn.synIDattr(i2, 'name')
+    table.insert(matches, '* ' .. n1 .. ' -> **' .. n2 .. '**')
   end
 
   return matches
@@ -149,13 +149,13 @@ local function get_hl_captures(opts)
 
   if highlighter.active[bufnr] then
     local matches = get_treesitter_hl(opts)
-    add_to_result(matches, "treesitter")
+    add_to_result(matches, 'treesitter')
   end
 
-  local current_syntax = vim.tbl_get(vim.b, "current_syntax")
+  local current_syntax = vim.tbl_get(vim.b, 'current_syntax')
   if current_syntax ~= nil then
     local matches = get_syntax_hl()
-    add_to_result(matches, "syntax")
+    add_to_result(matches, 'syntax')
   end
   return captures
 end

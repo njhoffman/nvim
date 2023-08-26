@@ -68,6 +68,16 @@ E5108:Error executing lua
   ...nicholas/.config/nvim/lua/configs/telescope/mappings.lua:13: in function 'key_func'
   ...e/nicholas/git/telescope.nvim/lua/telescope/mappings.lua:257: in function <...e/nicholas/git/telescope.nvim/lua/telescope/mappings.lua:256>  ]]
 
+error8 = [[
+E730:Vim
+E730:E730:Using a List as a String
+  [C]: in function 'split'
+  lua/stats/output.lua:2: in function <lua/stats/output.lua:1>
+  ...icholas/.config/nvim/lua/stats/commands/lazy/configs.lua:76: in function <...icholas/.config/nvim/lua/stats/commands/lazy/configs.lua:73>
+  ...icholas/.config/nvim/lua/stats/commands/lazy/configs.lua:121: in function <...icholas/.config/nvim/lua/stats/commands/lazy/configs.lua:111>
+  ...e/nicholas/.config/nvim/lua/stats/commands/lazy/init.lua:45: in function 'stats'
+  lua/stats/init.lua:50: in function <lua/stats/init.lua:44> ]]
+
 return {
   error1 = error1,
   error2 = error2,
@@ -76,4 +86,5 @@ return {
   error5 = error5,
   error6 = error6,
   error7 = error7,
+  error8 = error8,
 }

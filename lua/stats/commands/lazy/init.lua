@@ -16,6 +16,8 @@ local stats_overview = function(view, state)
     done = utils.roundString(state.times.LazyDone, 2),
     enter = utils.roundString(state.times.UIEnter, 2),
   }
+  times.done = #times.done == 5 and ' ' .. times.done or times.done
+
   lines = lines
     .. 'Loaded    '
     .. tostring(state.loaded)
@@ -24,7 +26,6 @@ local stats_overview = function(view, state)
     .. '\n LazyStart   '
     .. times.start
     .. '\n LazyDone   '
-    .. (#times.done == 5 and ' ')
     .. times.done
     .. '\n UIEnter    '
     .. times.enter
