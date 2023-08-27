@@ -1,11 +1,9 @@
-local devicons = require('nvim-web-devicons')
-local get_by_ft = devicons.get_icon_by_filetype
-
-local get_by_ext = function(ext)
-  return devicons.get_icon('', ext)
-end
-
 local get_icon = function(method, lsp)
+  local devicons = require('nvim-web-devicons')
+  local get_by_ft = devicons.get_icon_by_filetype
+  local get_by_ext = function(ext)
+    return devicons.get_icon('', ext)
+  end
 
   -- stylua: ignore
   local icon_map =     {
@@ -47,6 +45,7 @@ local get_icon = function(method, lsp)
     if type(icon_map) == 'table' and type(icon_map[lsp]) == 'table' and type(icon_map[lsp][1]) == 'string' then
       icon = icon_map[lsp]
     else
+      vim.dbglog(icon_map, lsp)
       vim.notify('no matching icon found: ' .. lsp, 4)
     end
   end

@@ -35,9 +35,10 @@ local plugins = {
   -- { 'freddiehaddad/feline.nvim', branch = 'main', event = 'VimEnter', lazy = false, },
   { 'famiu/bufdelete.nvim' },
   {
-    'DaikyXendo/nvim-web-devicons',
-    -- nvim-tree/nvim-web-devicons
-    dependencies = { 'DaikyXendo/nvim-material-icon' },
+    'nvim-tree/nvim-web-devicons',
+    dependencies = {
+      'DaikyXendo/nvim-material-icon',
+    },
   },
   {
     'utilyre/barbecue.nvim',
