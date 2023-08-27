@@ -1,5 +1,5 @@
-local utils = require("gitops.utils")
-local strings = require("plenary.strings")
+local utils = require('gitops.utils')
+local strings = require('plenary.strings')
 
 local M = {}
 local last_prompt = nil
@@ -7,18 +7,18 @@ local last_prompt = nil
 M.split_query_from_author = function(query)
   local author = nil
   local prompt = nil
-  if query ~= nil and query ~= "" then
+  if query ~= nil and query ~= '' then
     -- starts with @
-    if query:sub(1, 1) == "@" then
+    if query:sub(1, 1) == '@' then
       author = query:sub(2)
       return prompt, author
     end
 
-    local split = utils.split_string(query, "@")
+    local split = utils.split_string(query, '@')
     prompt = split[1]
 
     -- remove last space from prompt
-    if prompt:sub(-1) == " " then
+    if prompt:sub(-1) == ' ' then
       prompt = prompt:sub(1, -2)
     end
 
@@ -33,15 +33,15 @@ local build_widths = function(results)
   for _, entry in pairs(results) do
     for key, value in pairs(widths) do
       -- TODO: allow title to be a string or { string, highlight } table
-      widths[key] = math.max(value, strings.strdisplaywidth(entry[key] or ""))
+      widths[key] = math.max(value, strings.strdisplaywidth(entry[key] or ''))
     end
   end
   return widths
 end
 
-local entry_display = require("telescope.pickers.entry_display")
+local entry_display = require('telescope.pickers.entry_display')
 local displayer = entry_display.create({
-  separator = " ",
+  separator = ' ',
   items = {
     { width = 9 },
     { width = 12 },
@@ -55,31 +55,31 @@ local function make_display(entry)
     {
       -- strings.align_str(entry.hash, widths.name, true),
       entry.value.hash,
-      "TelescopeResultsClass",
+      'TelescopeResultsClass',
     },
     {
       entry.value.date,
-      "TelescopeResultsComment",
+      'TelescopeResultsComment',
     },
     {
       entry.value.message,
-      "@text.title",
+      '@text.title',
     },
     {
       entry.value.author,
-      "Comment",
+      'Comment',
     },
   })
 end
 
 M.git_log_entry_maker = function(entry)
   -- local widths = build_widths(entry)
-  local split = utils.split_string(entry, "|")
+  local split = utils.split_string(entry, '|')
   local hash = split[1]
-  local date = string.gsub(split[2], " ago", "")
-  if string.match(date, "year") then
-    date = string.gsub(date, "years?, ", "yr ")
-    date = string.gsub(date, " months?%)", " mo%)")
+  local date = string.gsub(split[2], ' ago', '')
+  if string.match(date, 'year') then
+    date = string.gsub(date, 'years?, ', 'yr ')
+    date = string.gsub(date, ' months?%)', ' mo%)')
   end
   local message = split[3]
   local author = split[4]
@@ -93,8 +93,8 @@ M.git_log_entry_maker = function(entry)
     display = make_display,
     -- display = hash .. " " .. date .. " " .. message .. " - " .. author,
     -- display = hash .. " @ " .. date .. " by " .. author .. " --" .. message,
-    ordinal = author .. " " .. message,
-    preview_title = hash .. " -- " .. message,
+    ordinal = author .. ' ' .. message,
+    preview_title = hash .. ' -- ' .. message,
     opts = {
       commit_hash = hash,
       date = date,

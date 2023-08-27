@@ -147,10 +147,10 @@ local build_mappings = function(opts)
   end
 end
 
-local get_current_buf_line = function(winnr)
-  local lnum = vim.api.nvim_win_get_cursor(winnr)[1]
-  return vim.trim(vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(winnr), lnum - 1, lnum, false)[1])
-end
+-- local get_current_buf_line = function(winnr)
+--   local lnum = vim.api.nvim_win_get_cursor(winnr)[1]
+--   return vim.trim(vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(winnr), lnum - 1, lnum, false)[1])
+-- end
 
 local commits = function(opts)
   local timing = { total = vim.fn.reltime(_, _) }
@@ -159,8 +159,8 @@ local commits = function(opts)
   -- local relative_file_name = vim.fn.expand('%:~:.')
   opts.bufnr = vim.fn.bufnr()
   opts.winnr = vim.fn.bufwinid(opts.bufnr)
-  opts.current_line = (opts.current_file == nil) and get_current_buf_line(opts.winnr) or nil
-  opts.current_file = vim.F.if_nil(opts.current_file, vim.api.nvim_buf_get_name(opts.bufnr))
+  -- opts.current_line = (opts.current_file == nil) and get_current_buf_line(opts.winnr) or nil
+  -- opts.current_file = vim.F.if_nil(opts.current_file, vim.api.nvim_buf_get_name(opts.bufnr))
 
   local stats = commits_stats(opts.bufnr)
 

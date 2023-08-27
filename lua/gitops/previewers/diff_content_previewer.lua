@@ -9,7 +9,6 @@ local diff_content_previewer = function()
       local commit_hash = entry.opts.commit_hash
       local prompt = entry.opts.prompt
       local command = git_utils.git_diff_command({
-        'git',
         'diff',
         string.format('%s~', commit_hash),
         commit_hash,

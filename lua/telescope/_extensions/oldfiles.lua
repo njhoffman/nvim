@@ -10,7 +10,6 @@ local setup_highlights = function()
   vim.api.nvim_set_hl(0, 'TelescopeMRUDate', { default = true, link = 'SpecialChar' })
   vim.api.nvim_set_hl(0, 'TelescopeMRUSize', { default = true, link = 'Keyword' })
 end
-setup_highlights()
 
 local conf = require('telescope.config').values
 local lookup_keys = {
@@ -151,6 +150,7 @@ local config = {
 
 local setup = function(opts)
   config = opts or config
+  setup_highlights()
 end
 
 local oldfiles = function()
@@ -214,6 +214,14 @@ local oldfiles = function()
       }),
       sorter = conf.file_sorter(opts),
       previewer = conf.file_previewer(opts),
+      attach_mappings = function(_, map)
+        for mode, mode_maps in pairs(opts.mappings or {}) do
+          for lhs, rhs in pairs(mode_maps or {}) do
+            map(mode, lhs, rhs)
+          end
+          return true
+        end
+      end,
     })
     :find()
 end

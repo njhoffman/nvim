@@ -4,13 +4,6 @@ local H = require('helpers')
 local actions = require('telescope.actions')
 local tele_mappings = require('configs.telescope.mappings')
 
--- With fzf-lua you can use live_grep_glob (instead of live_grep) - what it does is add the ability to dynamically add --iglob (or --glob) to the underying command after entering a special separator (by default --), for exmaple:
--- search term foo searches for foo
--- search term foo -- *bar* searches for foo an all filenames that contain bar
--- search term foo -- *bar* !*baz* searches for foo an all filenames that contain bar but do not contain baz
--- You can read more about this functionality in issue #167 or just see the animated gif instead
--- https://github.com/ibhagwan/fzf-lua/issues/167
--- https://github.com/ibhagwan/fzf-lua/issues/381
 -- require'telescope.builtin'.grep_string{ shorten_path = true, word_match = "-w", only_sort_text = true, search = '' }
 
 local tele_plugs = {
@@ -24,6 +17,7 @@ local tele_plugs = {
 
   ['devhints'] = {},
   ['oldfiles'] = {
+    mappings = require('configs.telescope.mappings').file_picker,
     include_current_session = true,
     show_time = true,
     show_size = false,

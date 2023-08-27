@@ -1,5 +1,6 @@
 local pickers = require('telescope.pickers')
 local ags_finders = require('gitops.finders')
+local ags_previewers = require('gitops.previewers')
 local git_utils = require('gitops.utils.git')
 
 local ags_mappings = require('gitops.mappings')
@@ -18,7 +19,7 @@ M.search_commits = function(opts)
       prompt_title = 'Git Grep Commits',
       results_title = 'Git Grep All (' .. count .. ' files)',
       finder = ags_finders.git_log_content(bufnr, {}),
-      -- previewer = ags_previewers.git_diff_content_previewer(),
+      previewer = ags_previewers.diff_content_previewer(),
       attach_mappings = function(_, map)
         ags_mappings.open_diff_view_current_file_selected_commit(map)
         ags_mappings.open_selected_commit_in_browser(map)

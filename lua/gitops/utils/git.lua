@@ -33,6 +33,8 @@ local all_commit_hashes_touching_file = function(git_relative_file_path, source_
 end
 
 local git_diff_command = function(command, git_flags_ix, git_diff_flags_ix)
+  local bufnr = vim.fn.bufnr(0)
+  command = M.init_git_command(bufnr, command)
   git_flags_ix = git_flags_ix or 2
   git_diff_flags_ix = git_diff_flags_ix or 3
 
@@ -214,7 +216,7 @@ M.init_command = function(command, bufnr, args)
   for _, arg in ipairs(args) do
     table.insert(command, arg)
   end
-  logger.trace('init command\n  ' .. vim.fn.join(command, '\n  '))
+  logger.trace(repo.gitdir .. '\n  ' .. vim.fn.join(command, ' '))
   return command
 end
 
@@ -231,15 +233,7 @@ end
 
 -- git files count
 M.file_count = function(bufnr, cwd)
-  -- local commands = require("configs.telescope.commands")
-  -- local cmd = vim.fn.copy(commands.rg) or { "rg" }
-  local cmd = { 'git' }
-  -- local repo = utils.get_repo(bufnr)
-  -- if repo.gitdir then
-  --   table.insert(cmd, '--git-dir=' .. repo.gitdir)
-  --   table.insert(cmd, '--work-tree=' .. repo.worktree)
-  -- end
-  table.insert(cmd, 'ls-files')
+  local cmd = M.init_git_command(bufnr, { 'ls-files' })
   table.insert(cmd, cwd or vim.fn.getcwd() or vim.fn.getenv('HOME'))
   local output = vim.fn.system(cmd)
   local lines = vim.tbl_filter(function(line)
