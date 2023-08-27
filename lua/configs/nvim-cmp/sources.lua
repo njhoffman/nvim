@@ -139,6 +139,7 @@ local lsp_symbols = {
   TextTitle4      = '', --   Text        = " ",
   TextTitle5      = '', --   Text        = " ",
   TextTitle6      = '', --   Text        = " ",
+  Type            = '󰊄',
   TypeParameter   = '󰊄',
   Unit            = '', --   Unit        = "󰑭 ",
   Value           = '󰎠',
