@@ -967,5 +967,26 @@ return function(injected_functions)
     -- MiniClueNextKeyWithPostkeys({DiagnosticFloatingError}),
     MiniClueSeparator({ fg = '#333344' }), -- MiniClueSeparator({DiagnosticFloatingInfo})
     MiniClueTitle({ fg = '#f38080' }), -- MiniClueTitle({Title})
+    -- GlancePreviewNormal
+    -- GlancePreviewMatch
+    -- GlancePreviewCursorLine
+    -- GlancePreviewSignColumn
+    -- GlancePreviewEndOfBuffer
+    -- GlancePreviewLineNr
+    -- GlancePreviewBorderBottom
+    -- GlanceWinBarFilename
+    -- GlanceWinBarFilepath
+    -- GlanceWinBarTitle
+    -- GlanceListNormal
+    -- GlanceListFilename
+    -- GlanceListFilepath
+    -- GlanceListCount
+    -- GlanceListMatch
+    -- GlanceListCursorLine
+    -- GlanceListEndOfBuffer
+    -- GlanceListBorderBottom
+    -- GlanceFoldIcon
+    -- GlanceIndent
+    -- GlanceBorderTop
   }
 end

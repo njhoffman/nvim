@@ -2,11 +2,7 @@
 
 -- require('preload')
 require('globals')
-require('utils.lazy').setup({
-  cache = true,
-  reload = false,
-  lazy = false,
-})
+require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
 
 for _, mod_name in ipairs({
   'keymaps',
@@ -29,12 +25,7 @@ end
 -- vim.fn.input()
 
 require('sidebar').setup()
-require('tracker').setup({
-  event_tracker = false,
-  only_events = {
-    'User',
-  },
-})
+require('tracker').setup({ event_tracker = false, only_events = { 'User' } })
 
 -- require("notifications.recipes.progress").config()
 -- require "plenary.profile".stop()

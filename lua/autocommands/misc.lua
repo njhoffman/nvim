@@ -1,8 +1,5 @@
--- Make window title indicative of our cwd
--- Loaded before normal autocmds (./autocmds) because we leverage the `VimEnter` here.
-
 local set_window_title = function()
-  if #os.getenv('TMUX') > 0 then
+  if not os.getenv('TMUX') then
     os.execute('tmux setenv custom_path ' .. vim.fn.getcwd())
   end
   local path = vim.split(vim.fn.getcwd(), '/', {})
@@ -33,11 +30,46 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     vim.opt.backupext = '-' .. vim.fn.strftime('%Y%m%d%H%M')
   end,
 })
--- /etc/tmpfiles.d/nvim-backup.conf
--- # systemd-tmpfiles configuration for /tmp/nvim-backup/ directory
--- # Create directory at boot and clean files with Age parameter
--- d /tmp/nvim-backup 755 <user> <user> 3d
+--
+-- M.reload_lua = function()
+--   -- /etc/tmpfiles.d/nvim-backup.conf
+--   -- # systemd-tmpfiles configuration for /tmp/nvim-backup/ directory
+--   -- # Create directory at boot and clean files with Age parameter
+--   -- d /tmp/nvim-backup 755 <user> <user> 3d
+--   for _, file in ipairs(M.get_config_modules()) do
+--     R('config.' .. file)
+--   end
+--   cmd.nohlsearch()
+-- end
 
+-- M.diag_error = function()
+--   return #diag.get(0, { severity = diag.severity.ERROR }) ~= 0
+-- end
+
+-- Lua reload
+-- local write_source = vim.api.nvim_create_augroup('WritePostReload', {})
+-- vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+--   group = write_source,
+--   pattern = {
+--     '*/nvim/lua/config/*.lua',
+--     '*/nvim/lua/util/*.lua',
+--   },
+--   callback = function()
+--     if not u.diag_error() then
+--       u.reload_lua()
+--     end
+--   end,
+-- })
+-- vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+--   group = write_source,
+--   pattern = '*/nvim/lua/snippets/*.lua',
+--   callback = function()
+--     if not u.diag_error() then
+--       require('luasnip.loaders.from_lua').load({ paths = fn.stdpath('config') .. '/lua/snippets' })
+--     end
+--   end,
+-- })
+--
 -- close some filetypes with q or <esc>
 local winclose_group = vim.api.nvim_create_augroup('WinClose_q', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
@@ -113,11 +145,95 @@ vim.api.nvim_create_autocmd({ 'VimResized' }, {
   end,
 })
 
+-- Buffer
+local file_pattern = {
+  '*.css',
+  '*.fish',
+  '*.html',
+  '*.json',
+  '*.lua',
+  '*.md',
+  '*.rb',
+  '*.sass',
+  '*.scss',
+  '*.sh',
+  '*.ts',
+  'Dockerfile',
+  'docker-compose.yaml',
+  '*.cpp',
+}
+
+-- local cursor_line = vim.api.nvim_create_augroup('BufferDetectChanges', {})
+-- autocmd({ 'FocusGained', 'BufEnter' }, {
+--   group = buffer,
+--   pattern = file_pattern,
+--   callback = function()
+--     cmd.checktime()
+--   end,
+-- })
+--
+-- local cursor_line = vim.api.nvim_create_augroup('LocalCursorLine', {})
+-- autocmd({ 'WinEnter', 'BufWinEnter' }, {
+--   group = cursor_line,
+--   pattern = file_pattern,
+--   callback = function()
+--     opt_local.cursorline = true
+--   end,
+-- })
+-- autocmd({ 'WinLeave' }, {
+--   group = cursor_line,
+--   pattern = file_pattern,
+--   callback = function()
+--     opt_local.cursorline = false
+--   end,
+-- })
+--
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
   group = vim.api.nvim_create_augroup('checktime', { clear = true }),
   command = 'checktime',
 })
+
+-- local all_filetypes = augroup('AllFileTypesLocalOptions')
+-- autocmd({ 'FileType' }, {
+--   group = all_filetypes,
+--   pattern = { '*' },
+--   callback = function()
+--     opt_local.formatoptions = opt_local.formatoptions - 't' + 'c' - 'r' - 'o' - 'q' - 'a' + 'n' - '2' + 'l' + 'j'
+--   end,
+-- })
+--
+-- autocmd({ 'FileType' }, {
+--   group = all_filetypes,
+--   pattern = { '*' },
+--   callback = function()
+--     u.restore_cmdheight()
+--   end,
+-- })
+--
+-- local terminal = augroup('TerminalLocalOptions')
+-- autocmd({ 'TermOpen' }, {
+--   group = terminal,
+--   pattern = { '*' },
+--   callback = function(event)
+--     opt_local.number = false
+--     opt_local.relativenumber = false
+--     opt_local.cursorline = false
+--     opt_local.signcolumn = 'no'
+--     opt_local.statuscolumn = ''
+--     for _, key in ipairs({ 'h', 'j', 'k', 'l' }) do
+--       vim.keymap.set('t', '<C-' .. key .. '>', function()
+--         local code_term_esc = api.nvim_replace_termcodes('<C-\\><C-n>', true, true, true)
+--         local code_dir = api.nvim_replace_termcodes('<C-' .. key .. '>', true, true, true)
+--         api.nvim_feedkeys(code_term_esc .. code_dir, 't', true)
+--       end, { noremap = true })
+--     end
+--     if bo.filetype == '' then
+--       api.nvim_buf_set_option(event.buf, 'filetype', 'terminal')
+--       cmd.startinsert()
+--     end
+--   end,
+-- })
 
 vim.cmd([=[
 augroup qf-history

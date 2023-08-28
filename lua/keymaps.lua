@@ -231,7 +231,7 @@ map('n', '<M-w>', '<cmd>set wrap!<cr>', {
   desc = 'toggle word wrap',
 })
 
-map('n', '<leader>.', [[:call AltCommand(expand('%'), ':e')<cr>]], {
+map('n', '<leader>m', [[:call AltCommand(expand('%'), ':e')<cr>]], {
   category = 'Buffers',
   label = 'open alt file',
   desc = 'open alternative file associated with buffer',
@@ -1164,13 +1164,6 @@ map('n', '<M-g>', "<cmd>lua require('telescope.run')('projects','projects')<cr>"
   plugin = 'projects_nvim',
   label = 'find projects',
   desc = 'find projects telescope',
-})
-
-map('n', '<leader>l', "<cmd>lua require('telescope.run')('projects','projects')<cr>", {
-  category = 'Pickers',
-  plugin = 'telescope.nvim',
-  label = 'repeat telescope',
-  desc = 'repeast last telescope command',
 })
 
 map('n', '<M-C-Space>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {

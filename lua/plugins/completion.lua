@@ -8,6 +8,7 @@ local plugins = {
       'David-Kunz/cmp-npm',
       'andersevenrud/cmp-tmux',
       'dmitmel/cmp-cmdline-history',
+      'tzachar/cmp-ai',
       'f3fora/cmp-spell',
       'hrsh7th/cmp-calc',
       'hrsh7th/cmp-cmdline',

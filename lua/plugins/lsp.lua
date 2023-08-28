@@ -21,6 +21,7 @@ local plugins = {
         end,
       },
       'SmiteshP/nvim-navic',
+      'aznhe21/actions-preview.nvim',
       'RRethy/vim-illuminate',
       'b0o/schemastore.nvim', -- for jsonls
       'KostkaBrukowa/definition-or-references.nvim',
@@ -30,6 +31,7 @@ local plugins = {
       'rmagatti/goto-preview',
       'kosayoda/nvim-lightbulb',
       'mickael-menu/zk-nvim',
+      'dnlhc/glance.nvim',
       { 'folke/neodev.nvim', dependencies = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason.nvim' } },
       { 'folke/trouble.nvim', cmd = { 'TroubleToggle', 'Trouble' } },
       {

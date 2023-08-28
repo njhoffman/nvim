@@ -33,7 +33,7 @@ local servers = {
   'intelephense',
   'jdtls',
   'jsonls',
-  -- 'jqls',
+  'jqls',
   'kotlin_language_server',
   'ltex',
   'lua_ls',

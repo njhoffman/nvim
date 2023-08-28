@@ -529,7 +529,6 @@ local plugins = {
     ft = 'sh',
     opts = { automatic = true, command = true, executable = true, default = '/bin/bash' },
   },
-  { 'bfrg/vim-jqplay', ft = 'jq', cmd = { 'Jqplay', 'JqplayScratch', 'JqplayScratchNoInput' } },
   { 'ray-x/go.nvim', dependencies = { 'ray-x/guihua.lua' }, ft = 'go' },
   {
     'jose-elias-alvarez/typescript.nvim',

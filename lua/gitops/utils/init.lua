@@ -26,8 +26,7 @@ M.get_repo = function(bufnr)
       gitdir = gitsigns.gitdir,
     }
   else
-    vim.dbglog('GIT', gitsigns, bufnr)
-    logger.warn('get_repo failed: ' .. bufnr, { gitsigns })
+    logger.warn('get_repo failed: ' .. vim.inspect({ bufnr, gitsigns }))
     return {}
   end
 end

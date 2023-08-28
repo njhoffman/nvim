@@ -160,7 +160,16 @@ local sources = {
   { name = 'emoji', priority = 2 },
   { name = 'vimwiki-tags', priority = 1 },
   { name = 'omni', priority = 1 },
-  { name = 'luasnip', priority = 1, group_index = 1 },
+  {
+    name = 'luasnip',
+    priority = 1,
+    group_index = 1,
+    option = { use_show_condition = true },
+    entry_filter = function()
+      local context = require('cmp.config.context')
+      return not context.in_treesitter_capture('string') and not context.in_syntax_group('String')
+    end,
+  },
   { name = 'npm', keyword_length = 1 },
   { name = 'copilot', group_index = 2 },
   -- {

@@ -67,7 +67,7 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, '*.rasi',             'set syn=css.rasi' },
     { { 'BufNewFile', 'BufRead' }, '*.bash*',            'let b:is_bash = 1 | setfiletype bash' },
     { { 'BufNewFile', 'BufRead' }, '*.theme',            'setlocal ft=config syn=config' },
-    { { 'BufNewFile', 'BufRead' }, '.*rc',               'setlocal ft=rc syn=rc' },
+    { { 'BufNewFile', 'BufRead' }, '*.rc',               'setlocal ft=rc syn=rc' },
     { { 'BufNewFile', 'BufRead' }, '.env.*',             'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, '*.env',              'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, 'conf.*',             'setlocal ft=config syn=config' },

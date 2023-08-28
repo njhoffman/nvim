@@ -397,17 +397,7 @@ local tele_plugs = {
       },
     },
   },
-  ['ui-select'] = require('telescope.telethemes').get_theme('dropdown'),
-  -- pseudo code / specification for writing custom displays, like the one for "codeactions"
-  -- specific_opts = {
-  --   [kind] = {
-  --     make_indexed = function(items) -> indexed_items, width,
-  --     make_displayer = function(widths) -> displayer
-  --     make_display = function(displayer) -> function(e)
-  --     make_ordinal = function(e) -> string
-  --   },
-  --   codeactions = false,
-  -- }
+  -- ['ui-select'] = require('telescope.telethemes').get_theme('dropdown'),
   ['vimwiki'] = {},
   ['z'] = {
     cmd = { 'z', '-l' },

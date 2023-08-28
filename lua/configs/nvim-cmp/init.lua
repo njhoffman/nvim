@@ -149,6 +149,40 @@ end
 -- end
 --
 -- M.methods.jumpable = jumpable
+local is_not_comment = function()
+  local context = require('cmp.config.context')
+  return not context.in_treesitter_capture('comment') and not context.in_syntax_group('Comment')
+end
+local is_not_buftype = function()
+  local prompt = vim.bo.buftype == 'prompt'
+  return not prompt
+end
+local is_not_filetype = function()
+  local ft = vim.bo.filetype
+  local exclude_ft = {
+    'neorepl',
+    'neoai-input',
+  }
+  for _, v in pairs(exclude_ft) do
+    if ft == v then
+      return false
+    end
+  end
+  return true
+end
+local is_not_luasnip = function()
+  ---@diagnostic disable-next-line: param-type-mismatch
+  return not fn.expand('%:p'):find('.*/nvim/lua/snippets/.*%.lua')
+end
+
+M.is_enabled = function()
+  return is_not_comment() and is_not_buftype() and is_not_filetype() and is_not_luasnip()
+end
+
+-- local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+-- 	local is_enabled = require("util.cmp").is_enabled
+-- 	local cmp_tailwind = require("tailwindcss-colorizer-cmp")
+-- 	local cmp_ai = require("cmp_ai.config")
 
 local source = require('configs.nvim-cmp.sources')
 
@@ -178,6 +212,24 @@ local sources = {
             return vim.tbl_keys(bufs)
           end,
         },
+      },
+
+      {
+        name = 'luasnip',
+        group_index = 1,
+        option = { use_show_condition = true },
+        entry_filter = function()
+          local context = require('cmp.config.context')
+          return not context.in_treesitter_capture('string') and not context.in_syntax_group('String')
+        end,
+        -- source.entry_filter = function()
+        --           local context = require("cmp.config.context")
+        --           local string_ctx = context.in_treesitter_capture("string") or context.in_syntax_group("String")
+        --           local comment_ctx = context.in_treesitter_capture("comment") or context.in_syntax_group("Comment")
+        --
+        --           --   Returning `true` will keep the entry, while returning `false` will remove it.
+        --           return not string_ctx and not comment_ctx
+        --         end
       },
     },
     {
@@ -214,8 +266,51 @@ local sources = {
       -- Distracting!
       -- { name = "spell" },
       -- { name = "dictionary" },
+      -- {
+      --   name = 'nvim_lua',
+      --   group_index = 2,
+      -- },
+      -- {
+      --   name = 'crates',
+      --   group_index = 2,
+      -- },
+      -- {
+      --   name = 'treesitter',
+      --   keyword_length = 3,
+      --   group_index = 3,
+      -- },
+      -- {
+      --   name = 'path',
+      --   keyword_length = 3,
+      --   group_index = 3,
+      -- },
+      -- {
+      --   name = 'buffer',
+      --   keyword_length = 3,
+      --   group_index = 4,
+      --   option = {
+      --     get_bufnrs = function()
+      --       local bufs = {}
+      --       for _, win in ipairs(vim.api.nvim_list_wins()) do
+      --         bufs[vim.api.nvim_win_get_buf(win)] = true
+      --       end
+      --       return vim.tbl_keys(bufs)
+      --     end,
+      --   },
+      -- },
+      -- {
+      --   name = 'emoji',
+      --   keyword_length = 2,
+      --   group_index = 5,
+      -- },
+      -- {
+      --   name = 'nerdfont',
+      --   keyword_length = 2,
+      --   group_index = 5,
+      -- },
     },
   },
+
   gitcommit = {
     { name = 'cmp_git' },
     { name = 'nvim_lsp' },
@@ -460,6 +555,22 @@ cmp.setup({
       require('luasnip').lsp_expand(args.body)
     end,
   },
+  -- sorting = {
+  -- 			priority_weight = 2,
+  -- 			comparators = {
+  -- 				require("cmp_ai.compare"),
+  -- 				cmp.config.compare.offset,
+  -- 				cmp.config.compare.exact,
+  -- 				cmp.config.compare.score,
+  -- 				cmp.config.compare.recently_used,
+  -- 				require("clangd_extensions.cmp_scores"),
+  -- 				cmp.config.compare.locality,
+  -- 				cmp.config.compare.kind,
+  -- 				cmp.config.compare.sort_text,
+  -- 				cmp.config.compare.length,
+  -- 				cmp.config.compare.order,
+  -- 			},
+  -- 		},
   sorting = {
     priority_weight = 2,
     comparators = {
@@ -580,6 +691,29 @@ cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(mapping.cmdline),
   sources = cmp.config.sources(sources.cmdline),
 })
+
+-- cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+--
+-- 	-- require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+-- 	-- 	sources = {
+-- 	-- 		{ name = "dap" },
+-- 	-- 	},
+-- 	-- })
+--
+-- 	cmp_ai:setup({
+-- 		max_lines = 1000,
+-- 		provider = "OpenAI",
+-- 		model = "gpt-3.5-turbo",
+-- 		notify = true,
+-- 		notify_callback = function(msg)
+-- 			require("notify").notify(msg, vim.log.levels.INFO, {
+-- 				title = "OpenAI",
+-- 			})
+-- 		end,
+-- 		run_on_every_keystroke = true,
+-- 		ignored_file_types = {},
+-- 	})
+-- end
 
 -- -- LuaSnip Settings
 -- require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets/" })
