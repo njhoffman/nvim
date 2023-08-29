@@ -38,7 +38,7 @@ local command = function(cmd)
   if cmd_map[cmd.fargs[1]] then
     cmd_map[cmd.fargs[1]].stats(cmd.fargs)
   else
-    stats_overview(cmd.fargs)
+    stats_overview(cmd.fargs[1])
   end
 end
 

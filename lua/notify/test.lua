@@ -1,8 +1,8 @@
-local examples = require('configs.nvim-notify.examples')
+local examples = require('notify.examples.errors')
 local notify = require('notify').notify
 -- error2 gives eol problem
 local notify_errors = function()
-  notify(examples.error5, 4, { timeout = 4000 })
+  notify(examples.error2, 4, { timeout = 4000 })
   -- local delay = 1000
   -- for i, example in pairs(examples) do
   --   vim.defer_fn(function()
