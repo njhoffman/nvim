@@ -50,10 +50,8 @@ local get_error_parts = function(lines)
   return parts
 end
 
-local function error_highlighting(bufnr, notif, highlights, config)
+local function error_highlighting(bufnr, notif, highlights, config, parts, line_start)
   local namespace = base.namespace()
-  local msg = notif.message
-  local parts = get_error_parts(msg)
 
   local hl_map = {
     code = 'NotifyERRORCode',
@@ -63,13 +61,6 @@ local function error_highlighting(bufnr, notif, highlights, config)
     message = 'NotifyERRORMessage',
     stack = 'NotifyERRORStack',
   }
-
-  local line_start = 1
-  if utils.file_exists(parts.path) then
-    vim.api.nvim_buf_set_var(bufnr, 'notify_file', parts.path)
-    vim.api.nvim_buf_set_var(bufnr, 'notify_line', parts.line)
-    line_start = 2
-  end
 
   local lines = { '' }
   local hls = {}
@@ -93,15 +84,14 @@ local function error_highlighting(bufnr, notif, highlights, config)
     table.insert(hls, { hl_map.stack, 1 + i, 0, #lines[2 + i] })
   end
 
-  vim.api.nvim_buf_set_lines(bufnr, 2, -1, true, lines)
+  vim.api.nvim_buf_set_lines(bufnr, line_start, -1, true, lines)
   for _, hl in ipairs(hls) do
     local opt = { hl_group = hl[1], end_col = hl[4] }
-    -- vim.dbglog(lines, hl[4])
     vim.api.nvim_buf_set_extmark(bufnr, namespace, hl[2] + line_start, hl[3], opt)
   end
 end
 
-local default_render = function(bufnr, notif, highlights, config)
+local box_render = function(bufnr, notif, highlights, config)
   local left_icon = notif.icon .. ' '
   local max_message_width = math.max(math.max(unpack(vim.tbl_map(function(line)
     return vim.fn.strchars(line)
@@ -140,7 +130,39 @@ local default_render = function(bufnr, notif, highlights, config)
   })
 end
 
+local minimal_render = function(bufnr, notif, highlights, config)
+  local max_message_width = math.max(math.max(unpack(vim.tbl_map(function(line)
+    return vim.fn.strchars(line)
+  end, notif.message))))
+  local title = notif.title[1]
+  local title_accum = vim.str_utfindex(title)
+
+  local title_buffer =
+    string.rep(' ', (math.max(max_message_width, title_accum, config.minimum_width()) - title_accum) / 2)
+
+  local namespace = base.namespace()
+
+  api.nvim_buf_set_lines(bufnr, 0, 1, false, { '', '' })
+  api.nvim_buf_set_extmark(bufnr, namespace, 0, 0, {
+    virt_text = {
+      { title_buffer .. title .. title_buffer, highlights.title },
+    },
+    virt_text_win_col = 0,
+    priority = 10,
+  })
+end
+
 return function(bufnr, notif, highlights, config)
-  default_render(bufnr, notif, highlights, config)
-  error_highlighting(bufnr, notif, highlights, config)
+  local msg = notif.message
+  local parts = get_error_parts(msg)
+  local line_start = 0
+  if parts.path and utils.file_exists(parts.path) then
+    vim.api.nvim_buf_set_var(bufnr, 'notify_file', parts.path)
+    vim.api.nvim_buf_set_var(bufnr, 'notify_line', parts.line)
+    notif.title[1] = '*' .. parts.code
+    box_render(bufnr, notif, highlights, config)
+    line_start = 2
+  end
+
+  error_highlighting(bufnr, notif, highlights, config, parts, line_start)
 end

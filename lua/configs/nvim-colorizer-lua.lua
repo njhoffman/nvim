@@ -1,4 +1,4 @@
-require('colorizer').setup({
+local cfg = {
   buftypes = {
     '*',
     '!prompt',
@@ -6,13 +6,13 @@ require('colorizer').setup({
   },
   filetypes = {
     '*',
-    '!vim',
-    '!noice',
-    '!TelescopeResults',
     css = { mode = 'virtualtext', names = true, RGB = true },
     html = { mode = 'virtualtext', names = true, RGB = true },
     cmp_docs = { always_update = true },
     cmp_menu = { always_update = true },
+    '!vim',
+    '!noice',
+    '!TelescopeResults',
   },
   user_default_options = {
     RGB = false, -- #RGB hex codes
@@ -33,4 +33,7 @@ require('colorizer').setup({
     -- update color values even if buffer is not focused example use: cmp_menu, cmp_docs
     always_update = true,
   },
-})
+}
+-- TODO: make highlights work without re-entering buffer
+
+require('colorizer').setup(cfg)

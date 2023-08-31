@@ -104,6 +104,7 @@ local lsp_symbols = {
   File            = '󰈔', --   File        = "󰈙 ",
   Folder          = '󰉋',
   Function        = '󰊕',
+  FunctionMacro   = '󰊕',
   FunctionCall    = '󰊕',
   Interface       = '󰜰', --   Interface   = " ",
   Keyword         = '󰌋', --   Keyword     = "󰔌 ",
@@ -126,6 +127,7 @@ local lsp_symbols = {
   Spell           = "",
   String          = "",
   StringRegex     = "縷",
+  StringSpecial   = "",
   Struct          = '󰟦', --   Struct      = "󰙅 ",
   Text            = '', --   Text        = " ",
   TextReference   = '󰈇', --   Text        = " ",
@@ -144,6 +146,7 @@ local lsp_symbols = {
   Unit            = '', --   Unit        = "󰑭 ",
   Value           = '󰎠',
   Variable        = '', --   Variable    = "󰈜 ",
+  VariableBuiltin = '', --   Variable    = "󰈜 ",
 }
 
 return {

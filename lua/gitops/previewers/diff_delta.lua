@@ -1,23 +1,34 @@
 local git_utils = require('gitops.utils.git')
 local previewers = require('telescope.previewers')
 
--- [delta]
---   navigate = true    # use n and N to move between diff sections
---   light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
---   diff-so-fancy = false
---   diff-highlight = false
---   features = chamelon #  decorations
---   file-decoration-style = none
---   line-numbers = true
 --blame-format <FMT>  Format string for git blame commit metadata [default: "{timestamp:<15} {author:<15.14} {commit:<8}"]
 --blame-separator-format <FMT> Separator between the blame format and the code section of a git blame line [default: │{n:^4}│]
 --blame-timestamp-format <FMT> Format of `git blame` timestamp in raw git output received by delta [default: "%Y-%m-%d %H:%M:%S %z"]
+-- -wrap-max-lines, --wrap-left-symbol, --wrap-right-symbol, --wrap-right-percent, --wrap-right-prefix-symbol, --inline-hint-style
 
-local diff_commit_to_delta = function(opts)
+local default_git_args = {
+  '-c',
+  'core.pager=delta',
+  '-c',
+  'delta.diff-so-fancy=false',
+  '-c',
+  'delta.navigate=false',
+  '-c',
+  'delta.pager=less -R',
+}
+
+local diff_delta = function(opts)
+  opts = opts or {}
   return previewers.new_termopen_previewer({
-    title = opts.preview_title or 'Diff to Delta',
+    title = opts.preview_title or 'Diff Delta',
     get_command = function(entry)
-      local git_args = vim.fn.deepcopy(opts.git_args) or {}
+      local winwidth = vim.api.nvim_win_get_width(0)
+      local git_args = vim.fn.deepcopy(opts.git_args or default_git_args)
+      if opts.preview_side_width > 0 and opts.preview_side_width < winwidth then
+        table.insert(git_args, '-c')
+        table.insert(git_args, 'delta.side-by-side=true')
+      end
+
       local git_cmd = vim.fn.deepcopy(opts.git_cmd) or {}
       git_cmd = type(git_cmd) == 'string' and { git_cmd } or git_cmd
 
@@ -46,4 +57,4 @@ local diff_commit_to_delta = function(opts)
   })
 end
 
-return diff_commit_to_delta
+return diff_delta

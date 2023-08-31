@@ -57,7 +57,7 @@
 -- })
 --
 return {
-  diff_commit_to_delta = require('gitops.previewers.diff_commit_to_delta'),
+  diff_delta = require('gitops.previewers.diff_delta'),
   diff_commit_to_parent = require('gitops.previewers.diff_commit_to_parent'),
   diff_commit_to_head = require('gitops.previewers.diff_commit_to_head'),
   diff_commit_as_was = require('gitops.previewers.diff_commit_as_was'),

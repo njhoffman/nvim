@@ -21,11 +21,11 @@ local file_exists = function(name)
   end
 end
 
-local apply_config_file = function(name, plugin)
+local apply_config_file = function(name, plugin, dependency)
   local fname = 'configs.' .. string.lower(name)
   logger:trace('config exists: ' .. fname)
   state.configs_checked[name] = true
-  if plugin._dependency then
+  if dependency then
     state.configs_dependency[name] = true
   end
   plugin.config = function(loaded_plug)
@@ -44,7 +44,7 @@ local apply_config_file = function(name, plugin)
   return plugin
 end
 
-local check_config_file = function(plugin)
+local check_config_file = function(plugin, dependency)
   local name = ''
   -- parse config file name from plugin name
   if type(plugin) == 'table' and type(plugin.name) == 'string' then
@@ -66,7 +66,7 @@ local check_config_file = function(plugin)
     -- skip if we already checked the file and didn't find it
     if state.configs_checked[name] ~= false then
       if file_exists(name) then
-        plugin = apply_config_file(name, plugin)
+        plugin = apply_config_file(name, plugin, dependency)
       else
         state.configs_checked[name] = false
       end
@@ -90,8 +90,7 @@ local apply_configs = function(plugins)
     plugin.dependencies = type(plugin.dependencies) == 'string' and { plugin.dependencies } or plugin.dependencies
     for _, _dep_plugin in ipairs(plugin.dependencies or {}) do
       _dep_plugin = type(_dep_plugin) == 'string' and { _dep_plugin } or _dep_plugin
-      _dep_plugin._dependency = name
-      local dep_plugin, dep_name = check_config_file(_dep_plugin)
+      local dep_plugin, dep_name = check_config_file(_dep_plugin, name)
       state.dependency[dep_name] = dep_plugin
       table.insert(dependencies, dep_plugin)
     end

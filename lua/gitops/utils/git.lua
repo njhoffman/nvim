@@ -209,14 +209,15 @@ end
 M.init_command = function(command, bufnr, args)
   args = type(args) ~= 'table' and { args } or args
   local repo = utils.get_repo(bufnr)
-  if repo.gitdir then
+  if repo and repo.gitdir then
     table.insert(command, '--git-dir=' .. repo.gitdir)
     table.insert(command, '--work-tree=' .. repo.worktree)
   end
   for _, arg in ipairs(args) do
     table.insert(command, arg)
   end
-  logger.trace(repo.gitdir .. '\n  ' .. vim.fn.join(command, ' '))
+  local gitdir = repo and type(repo.gitdir) == 'string' and (repo.gitdir .. '\n') or ''
+  logger.trace(gitdir .. vim.fn.join(command, ' '))
   return command
 end
 

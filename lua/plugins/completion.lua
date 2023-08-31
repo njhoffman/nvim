@@ -20,7 +20,6 @@ local plugins = {
       'hrsh7th/cmp-path',
       'jc-doyle/cmp-pandoc-references',
       'roobert/tailwindcss-colorizer-cmp.nvim',
-      'NvChad/nvim-colorizer.lua',
       'onsails/lspkind.nvim',
       'pontusk/cmp-vimwiki-tags',
       'rafamadriz/friendly-snippets',

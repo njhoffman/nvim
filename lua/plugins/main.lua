@@ -97,6 +97,11 @@ local plugins = {
   { 'ivyl/vim-bling', event = { 'BufReadPost', 'BufNewFile' } },
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
   { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
+  {
+    'winston0410/range-highlight.nvim',
+    event = { 'BufReadPost', 'BufNewFile' },
+    dependencies = 'winston0410/cmd-parser.nvim',
+  },
   { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
   { 'phaazon/hop.nvim', branch = 'v2', event = { 'BufReadPost', 'BufNewFile' } },
   { 'TaDaa/vimade', event = 'VimEnter' },
@@ -450,9 +455,11 @@ local plugins = {
   { 'potamides/pantran.nvim', cmd = 'Pantran' },
   { 'sidebar-nvim/sidebar.nvim', cmd = { 'SidebarNvimOpen', 'SidebarNvimToggle' } },
   { 'anuvyklack/hydra.nvim', event = 'VeryLazy' },
+  { 'NvChad/nvim-colorizer.lua', event = { 'BufReadPost', 'BufNewFile' } },
   { 'nvim-colortils/colortils.nvim', cmd = 'Colortils', event = { 'BufReadPost', 'BufNewFile' } },
   { 'xeluxee/competitest.nvim', cmd = 'CompetiTestRun', dependencies = 'MunifTanjim/nui.nvim' },
-  { -- A lua profiler for neovim that is discovered thanks to https://www.reddit.com/r/neovim/comments/xicxox/comment/ip2hprd
+  {
+    -- A lua profiler for neovim that is discovered thanks to https://www.reddit.com/r/neovim/comments/xicxox/comment/ip2hprd
     'stevearc/profile.nvim',
     cond = function()
       return vim.env.NVIM_PROFILE ~= nil

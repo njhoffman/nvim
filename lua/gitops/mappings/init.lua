@@ -1,122 +1,98 @@
+local utils = require('telescope.utils')
 local actions = require('telescope.actions')
 local action_state = require('telescope.actions.state')
-local ags_actions = require('gitops.actions')
-local file = require('gitops.utils.file')
 local git_utils = require('gitops.utils.git')
-local config = require('gitops.utils.config')
+local logger = require('gitops.utils.logger')
+local Path = require('plenary.path')
 
--- Map a key to both insert and normal modes
-local function omnimap(map_func, key, handler)
-  map_func('i', key, handler)
-  map_func('n', key, handler)
+local transfrom_file = function(opts)
+  return opts.current_file and Path:new(opts.current_file):make_relative(opts.cwd) or ''
 end
 
-local M = {}
+local get_buffer_of_orig = function(selection, opts)
+  local value = selection.value .. ':' .. transfrom_file()
+  local command = git_utils.init_git_command(opts.bufnr, {
+    '--no-pager',
+    'show',
+    value,
+  })
 
-M.omnimap = omnimap
+  local content = utils.get_os_command_output(command, opts.cwd)
 
--- create a local function and assign it to a map to get which_key description
--------------------------------------------------------------------------------
-local open_commit_in_browser = function(prompt_bufnr)
-  actions.close(prompt_bufnr)
-  local selection = action_state.get_selected_entry()
-
-  vim.api.nvim_command(':GBrowse ' .. selection.opts.commit_hash)
+  local _bufnr = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(_bufnr, 0, -1, false, content)
+  vim.api.nvim_buf_set_name(_bufnr, 'Original')
+  return _bufnr
 end
 
---- Open browser at commmit (from entry) with <C-o>
-M.open_selected_commit_in_browser = function(map)
-  omnimap(map, '<C-o>', open_commit_in_browser)
+local vimdiff = function(selection, cmd, opts)
+  local ft = vim.bo.filetype
+  vim.cmd('diffthis')
+
+  local _bufnr = get_buffer_of_orig(selection)
+  vim.cmd(string.format('%s %s', cmd, _bufnr))
+  vim.bo.filetype = ft
+  vim.cmd('diffthis')
+
+  vim.api.nvim_create_autocmd('WinClosed', {
+    buffer = opts.bufnr,
+    nested = true,
+    once = true,
+    callback = function()
+      vim.api.nvim_buf_delete(_bufnr, { force = true })
+    end,
+  })
 end
 
--------------------------------------------------------------------------------
-local diff_current_buffer_with_commit = function(prompt_bufnr)
-  actions.close(prompt_bufnr)
-  local selection = action_state.get_selected_entry()
-  local commit_hash = selection.opts.commit_hash
+local build_mappings = function(opts)
+  return function(_, _) -- prompt_bufnr, map
+    --   actions.select_default:replace(actions.git_checkout)
+    --   map({ "i", "n" }, "<c-r>m", actions.git_reset_mixed)
+    --   map({ "i", "n" }, "<c-r>s", actions.git_reset_soft)
+    --   map({ "i", "n" }, "<c-r>h", actions.git_reset_hard)
+    --- Checkout a specific file for a given sha
+    ---@param prompt_bufnr number: The prompt bufnr
+    local git_checkout_current_buffer = function(prompt_bufnr)
+      local cwd = action_state.get_current_picker(prompt_bufnr).cwd
+      local selection = action_state.get_selected_entry()
+      if selection == nil then
+        utils.__warn_no_selection('actions.git_checkout_current_buffer')
+        return
+      end
+      actions.close(prompt_bufnr)
+      local command = git_utils.init_git_command(opts.bufnr, {
+        'checkout',
+        selection.value.sha,
+        '--',
+        selection.current_file,
+      })
+      utils.get_os_command_output(command, cwd)
+      logger.info('checkout (cwd ' .. cwd .. ')\n  ' .. vim.fn.join(command, '\n  '))
+      vim.cmd('checktime')
+    end
 
-  ags_actions.open_diff_view(commit_hash)
-end
+    actions.select_default:replace(git_checkout_current_buffer)
 
---- Open diff view of commmit (from entry) with <CR>
-M.open_diff_view_current_file_selected_commit = function(map)
-  omnimap(map, '<CR>', diff_current_buffer_with_commit)
-end
+    actions.select_vertical:replace(function(prompt_bufnr)
+      actions.close(prompt_bufnr)
+      local selection = action_state.get_selected_entry()
+      vimdiff(selection, 'leftabove vert sbuffer', opts)
+    end)
 
--------------------------------------------------------------------------------
-local diff_current_buffer_with_branch = function(prompt_bufnr)
-  local source_bufnr = vim.fn.bufnr()
-  local filename = file.git_relative_path(source_bufnr)
-  actions.close(prompt_bufnr)
-  local selection = action_state.get_selected_entry()
-  local branch = selection.value
+    actions.select_horizontal:replace(function(prompt_bufnr)
+      actions.close(prompt_bufnr)
+      local selection = action_state.get_selected_entry()
+      vimdiff(selection, 'belowright sbuffer', opts)
+    end)
 
-  ags_actions.open_diff_view(branch, git_utils.file_name_on_commit(branch, filename, source_bufnr))
-end
-
---- Open diff view of branch (from entry) with <CR>
-M.open_diff_view_current_file_selected_branch = function(map)
-  omnimap(map, '<CR>', diff_current_buffer_with_branch)
-end
-
--------------------------------------------------------------------------------
-local open_entire_commit = function(prompt_bufnr)
-  actions.close(prompt_bufnr)
-  local selection = action_state.get_selected_entry()
-  local commit_hash = selection.opts.commit_hash
-
-  local diff_plugin = config.diff_plugin()
-  if diff_plugin == 'diffview' then
-    vim.api.nvim_command(':DiffviewOpen -uno ' .. commit_hash .. '~..' .. commit_hash)
-  elseif diff_plugin == 'fugitive' then
-    vim.api.nvim_command(':Gedit ' .. commit_hash)
+    actions.select_tab:replace(function(prompt_bufnr)
+      actions.close(prompt_bufnr)
+      local selection = action_state.get_selected_entry()
+      vim.cmd('tabedit ' .. transfrom_file(opts))
+      vimdiff(selection, 'leftabove vert sbuffer', opts)
+    end)
+    return true
   end
 end
 
---- open entire commit diff with <C-e>
-M.show_entire_commit = function(map)
-  omnimap(map, '<C-e>', open_entire_commit)
-end
-
--------------------------------------------------------------------------------
-local copy_commit_hash = function(_)
-  local selection = action_state.get_selected_entry()
-  local commit_hash = selection.opts.commit_hash
-  vim.notify(
-    'Copied commit hash ' .. commit_hash .. ' to clipboard',
-    vim.log.levels.INFO,
-    { title = 'Advanced Git Search' }
-  )
-
-  vim.fn.setreg('+', commit_hash)
-  vim.fn.setreg('*', commit_hash)
-end
-
---- copy commit hash to clipboard with <C-y>
-M.copy_commit_hash_to_clipboard = function(map)
-  omnimap(map, '<C-y>', copy_commit_hash)
-end
-
--------------------------------------------------------------------------------
-local checkout = function(prompt_bufnr)
-  actions.close(prompt_bufnr)
-  local selection = action_state.get_selected_entry()
-  local reflog_entry = selection.value
-
-  local splitted_reflog_entry = {}
-  local count = 1
-  for i in string.gmatch(reflog_entry, '%S+') do
-    splitted_reflog_entry[count] = i
-    count = count + 1
-  end
-  vim.api.nvim_command(':!git checkout ' .. splitted_reflog_entry[1])
-end
-
---- Checkout the selected reflog entry with <CR>
-M.checkout_reflog_entry = function(map)
-  omnimap(map, '<CR>', checkout)
-end
-
--------------------------------------------------------------------------------
-
-return M
+return { build_mappings = build_mappings }

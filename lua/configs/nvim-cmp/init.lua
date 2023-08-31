@@ -13,6 +13,8 @@ local mapping = require('configs.nvim-cmp.keymaps')
 local formatting = require('configs.nvim-cmp.formatting')
 local sorting = require('configs.nvim-cmp.sorting')
 
+require('configs.nvim-cmp.icons').setup_highlights()
+
 local is_not_comment = function()
   local context = require('cmp.config.context')
   return not context.in_treesitter_capture('comment') and not context.in_syntax_group('Comment')
