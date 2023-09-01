@@ -107,9 +107,19 @@ local align = function(text, length, align, gap_char)
   return gap_left .. text .. gap_right
 end
 
+local file_exists = function(path)
+  local f = io.open(path, 'r')
+  if f ~= nil then
+    io.close(f)
+    return true
+  end
+  return false
+end
+
 return {
   align = align,
   truncate = truncate,
   file_size = file_size,
   time_ago = time_ago,
+  file_exists = file_exists,
 }
