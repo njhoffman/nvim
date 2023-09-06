@@ -16,7 +16,7 @@ M.search_commits = function(opts)
   local count = git_utils.file_count(bufnr, opts.cwd or vim.fn.getcwd())
   pickers
     .new({
-      prompt_title = 'Git Grep Commits',
+      prompt_title = 'Git Grep Contents',
       results_title = 'Git Grep All (' .. count .. ' files)',
       finder = ags_finders.git_log_content(bufnr, {}),
       previewer = ags_previewers.diff_content_previewer(),

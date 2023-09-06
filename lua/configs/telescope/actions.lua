@@ -183,15 +183,15 @@ M.toggle_whichkey = function(prompt_bufnr)
     -- line_padding = 1,
     -- close_with_action = true,
     -- mode_hl = "",
-    name_hl = 'TelescopeWhichKeyName',
-    keybind_hl = 'TelescopeWhichKeyKey',
-    normal_hl = 'TelescopeWhichKeyNormal',
-    border_hl = 'TelescopeWhichKeyBorder',
+    -- name_hl = 'TelescopeWhichKeyName',
+    -- keybind_hl = 'TelescopeWhichKeyKey',
+    -- normal_hl = 'TelescopeWhichKeyNormal',
+    -- border_hl = 'TelescopeWhichKeyBorder',
     -- normal_hl = "TelescopePrompt",
     -- border_hl = "TelescopePromptBorder",
     -- winblend = 15, --  config.values.winblend,
   }
-  actions.which_key(prompt_bufnr, whichkey_opts)
+  require('configs.telescope.which_key')(prompt_bufnr, whichkey_opts)
 end
 
 M.switch_layout = function(prompt_bufnr, _opts)
@@ -332,7 +332,7 @@ M.launch_live_grep = function(prompt_bufnr)
   run('builtin', 'live_grep', { cwd = picker.cwd })
 end
 
-M.launch_dirpicker = function(bufnr)
+M.directory_picker = function(bufnr)
   local current_picker = action_state.get_current_picker(bufnr) -- picker state
   local picker_title = current_picker.prompt_title
 

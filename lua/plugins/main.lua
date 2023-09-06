@@ -94,7 +94,14 @@ local plugins = {
   { 'matbme/JABS.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'ghillb/cybu.nvim', event = { 'BufRead', 'BufNewFile' } },
   { 'nacro90/numb.nvim', event = { 'BufReadPost', 'BufNewFile' } },
-  { 'ivyl/vim-bling', event = { 'BufReadPost', 'BufNewFile' } },
+  {
+    'ivyl/vim-bling',
+    event = { 'BufReadPost', 'BufNewFile' },
+    init = function()
+      vim.g.bling_no_map = 0
+      vim.g.bling_no_expr = 1
+    end,
+  },
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
   { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   {
@@ -139,8 +146,9 @@ local plugins = {
   -- matching
   -- { "andymass/vim-matchup", dependencies = { "theHamsta/nvim-treesitter-pairs" } },
   -- pairs
-  { 'echasnovski/mini.pairs', event = 'InsertEnter' },
+  -- { 'echasnovski/mini.pairs', event = 'InsertEnter' },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
+  { 'altermo/ultimate-autopair.nvim', event = { 'InsertEnter', 'CmdlineEnter' }, branch = 'v0.6' },
   -- textobjects
   { 'echasnovski/mini.ai', event = { 'VeryLazy' } },
   { 'chrisgrieser/nvim-various-textobjs', event = { 'VeryLazy' } },

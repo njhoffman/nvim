@@ -12,19 +12,23 @@ local get_current_buf_line = function(winnr)
   return vim.trim(vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(winnr), lnum - 1, lnum, false)[1])
 end
 
-local build_stats_command = function(method, bufnr)
-  local cmd = git_utils.init_script_command(bufnr, '--method=' .. method)
+local build_stats_command = function(method, bufnr, file)
+  local cmd = git_utils.init_script_command(bufnr, '--method=' .. method .. ' ' .. file)
   return string.gsub(vim.fn.system(vim.fn.join(cmd, ' ')), '\n', '')
 end
 
-local bcommits_stats = function(bufnr, methods)
+local bcommits_stats = function(opts, methods)
+  opts = opts or {}
   methods = methods or { 'range', 'count', 'hash_length', 'author_length', 'subject_length' }
-  bufnr = bufnr or vim.fn.bufnr()
+
+  local bufnr = opts.bufnr or vim.fn.bufnr()
+  local current_file = vim.F.if_nil(opts.current_file, vim.api.nvim_buf_get_name(bufnr or 0))
 
   local results = {}
   for _, method in ipairs(methods) do
-    results[method] = build_stats_command(method, bufnr)
+    results[method] = build_stats_command(method, bufnr, current_file)
   end
+  results.file = current_file
   return results
 end
 
@@ -38,7 +42,7 @@ local bcommits = function(opts)
   opts.current_line = (opts.current_file == nil) and get_current_buf_line(opts.winnr) or nil
   opts.current_file = vim.F.if_nil(opts.current_file, vim.api.nvim_buf_get_name(opts.bufnr))
 
-  local stats = bcommits_stats(opts.bufnr)
+  local stats = bcommits_stats(opts)
 
   opts.preview_side_width = opts.preview_side_width or 100
   opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_commits(opts, stats))

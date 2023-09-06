@@ -13,9 +13,10 @@ local build_stats_command = function(method, bufnr)
   return string.gsub(vim.fn.system(vim.fn.join(cmd, ' ')), '\n', '')
 end
 
-local commits_stats = function(bufnr, methods)
+local commits_stats = function(opts, methods)
+  opts = opts or {}
   methods = methods or { 'range', 'count', 'hash_length', 'author_length', 'subject_length' }
-  bufnr = bufnr or vim.fn.bufnr()
+  local bufnr = opts.bufnr or vim.fn.bufnr()
 
   local results = {}
   for _, method in ipairs(methods) do
@@ -39,7 +40,7 @@ local commits = function(opts)
   -- opts.current_line = (opts.current_file == nil) and get_current_buf_line(opts.winnr) or nil
   -- opts.current_file = vim.F.if_nil(opts.current_file, vim.api.nvim_buf_get_name(opts.bufnr))
 
-  local stats = commits_stats(opts.bufnr)
+  local stats = commits_stats(opts)
 
   opts.preview_side_width = opts.preview_side_width or 100
   opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_commits(opts, stats))

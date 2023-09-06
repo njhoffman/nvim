@@ -69,10 +69,13 @@ commits_hash_length() {
 
 commits_range() {
   sub_cmd+=("--format='%ar'")
-  sub_cmd+=("--max-parents=0")
-  sub_cmd+=("HEAD")
   if [[ $# -gt 0 ]]; then
+    sub_cmd+=("--max-parents=1")
+    sub_cmd+=("HEAD")
     sub_cmd+=("-- $*")
+  else
+    sub_cmd+=("--max-parents=0")
+    sub_cmd+=("HEAD")
   fi
   post_cmd="tail -n1 | sed 's/ ago//'"
   cmd="${base_cmd[*]} ${sub_cmd[*]} | $post_cmd"

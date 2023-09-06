@@ -1,21 +1,9 @@
-local newdev = require('devicons')
-local olddev = require('nvim-web-devicons')
-newdev.setup()
-olddev.setup()
+local conf = require('telescope.config').values
+local action_utils = require('telescope.actions.utils')
 
-local newicons = newdev.get_icons()
-local oldicons = olddev.get_icons()
-
-vim.dbglog(#vim.tbl_keys(oldicons), #vim.tbl_keys(newicons))
-vim.dbglog(olddev.get_icon('', 'tf'), newdev.get_icon('', 'tf'))
-
--- local missing = {}
--- for key, val in pairs(newicons) do
---   if type(oldicons[key]) == 'nil' then
---     missing[key] = val
---   end
--- end
---
--- --
--- vim.dbglog(missing)
--- vim.dbglog(#vim.tbl_keys(missing))
+-- local buf_mappings = action_utils.get_registered_mappings(prompt_bufnr)
+local default_mappings = conf.mappings
+for key, name in pairs(default_mappings.i) do
+  vim.dbglog(key, name)
+end
+-- for _, v in pairs(buf_mappings) do end

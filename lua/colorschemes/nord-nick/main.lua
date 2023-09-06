@@ -650,11 +650,16 @@ return function(injected_functions)
     WhichKeyDesc({ fg = '#5d79a1', gui = 'italic' }), -- Identifier
     WhichKeySeperator({ fg = '#334664', gui = 'bold' }), -- DiffAdded
     WhichKeyFloat({ bg = NormalFloat.bg }), -- NormalFloat
+    --     WhichKeyGroup = { fg = clrs.text },
+    --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
+    --     WhichKeySeperator = { fg = clrs.fg },
+    -- WhichKeyValue { bg = clrs.float }, -- Comment
+    -- WhichKey = { fg = colors.purple, gui = "bold" },
+    -- WhichKeyGroup = { fg = colors.cyan },
+    -- WhichKeyDesc = { fg = colors.blue, gui = "italic" },
+    -- WhichKeySeperator = { fg = colors.green },
+    -- WhichKeyFloat = { bg = colors.active },
 
-    TelescopeWhichKeyName({ WhichKeyDesc }),
-    TelescopeWhichKeyBorder({ WhichKeyDesc }),
-    TelescopeWhichKeyKey({ WhichKey }),
-    TelescopeWhichKeyNormal({ WhichKeySeperator }),
     -- NvimTreesitterPairsSelf({ MatchParen }),
     -- NvimTreesitterPairsPartner({ MatchParen }),
     NvimTreesitterPairsSelf({ fg = '#f35050' }),
@@ -674,17 +679,6 @@ return function(injected_functions)
     TSRainbowGreen({ fg = clrutil.shade_color('#689d6a', -30) }),
     TSRainbowViolet({ fg = clrutil.shade_color('#b16286', -30) }),
     TSRainbowCyan({ fg = clrutil.shade_color('#a89984', -30) }),
-
-    --     WhichKeyGroup = { fg = clrs.text },
-    --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
-    --     WhichKeySeperator = { fg = clrs.fg },
-
-    -- WhichKeyValue { bg = clrs.float }, -- Comment
-    -- WhichKey = { fg = colors.purple, gui = "bold" },
-    -- WhichKeyGroup = { fg = colors.cyan },
-    -- WhichKeyDesc = { fg = colors.blue, gui = "italic" },
-    -- WhichKeySeperator = { fg = colors.green },
-    -- WhichKeyFloat = { bg = colors.active },
     CmpGhostText({ fg = '#16365b' }),
     -- CmpPmenu({ bg = '#142a30' }),
     CmpPmenu({ bg = '#001020' }),
@@ -850,6 +844,12 @@ return function(injected_functions)
     TelescopeResultsIdentifier({ fg = '#6476ce' }),
     TelescopeResultsSpecialComment({ fg = '#4488cc' }),
     TelescopeResultsField({ fg = '#4090ff' }),
+    -- TelescopeWhichKeyMode({ TelescopeResultsConstant }),
+    TelescopeWhichKeyBind({ fg = WhichKey.fg }),
+    TelescopeWhichKeyBindCustom({ fg = WhichKey.fg, gui = 'bold' }),
+    TelescopeWhichKeyName({ WhichKeyDesc }),
+    TelescopeWhichKeyNameCustom({ fg = '#88aee9', gui = 'bold' }),
+    TelescopeWhichKeyBorder({ WhichKeyDesc }),
     -- { entry.value.event, "vimAutoEvent" },
     -- { entry.value.group_name, "vimAugroup" },
     -- { entry.value.pattern, "vimAutoCmdSfxList" },

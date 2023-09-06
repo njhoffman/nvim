@@ -5,6 +5,12 @@ local git_utils = require('gitops.utils.git')
 local logger = require('gitops.utils.logger')
 local Path = require('plenary.path')
 
+-- Map a key to both insert and normal modes
+local function omnimap(map_func, key, handler)
+  map_func('i', key, handler)
+  map_func('n', key, handler)
+end
+
 local transfrom_file = function(opts)
   return opts.current_file and Path:new(opts.current_file):make_relative(opts.cwd) or ''
 end
@@ -95,4 +101,4 @@ local build_mappings = function(opts)
   end
 end
 
-return { build_mappings = build_mappings }
+return { build_mappings = build_mappings, omnimap = omnimap }
