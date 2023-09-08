@@ -134,7 +134,7 @@ local mySettings = {
   on_attach = on_attach,
   signs = signs_thin,
   current_line_blame_opts = { delay = 1000, virt_text_pos = 'eol' },
-  attach_to_untracked = true,
+  attach_to_untracked = false,
   update_debounce = 200,
   -- watch_gitdir = { title = "gitsigns", interval = 1000 },
   -- keymaps = {
