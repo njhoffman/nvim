@@ -106,10 +106,6 @@ local try_capability = function(client, bufnr, capability)
 end
 
 local resolve_capabilities = function(client, bufnr)
-  if client.name == 'tsserver' then
-    logger:warn('SKIP tsserver')
-    return false
-  end
   for key, _ in pairs(client.server_capabilities) do
     try_capability(client, bufnr, key)
   end

@@ -1,19 +1,19 @@
-local lspconfig = require("lspconfig")
+local lspconfig = require('lspconfig')
 local util = lspconfig.util
 
 local eslint = function()
   lspconfig.eslint.setup({
-    root_dir = util.root_pattern(".project", ".git"),
+    root_dir = util.root_pattern('.project', '.git', '.eslintrc'),
     filetypes = {
-      "javascript",
-      "javascriptreact",
-      "javascript.jsx",
-      "typescript",
-      "typescriptreact",
-      "typescript.tsx",
-      "vue",
-      "svelte",
-      "astro",
+      'javascript',
+      'javascriptreact',
+      'javascript.jsx',
+      'typescript',
+      'typescriptreact',
+      'typescript.tsx',
+      'vue',
+      'svelte',
+      'astro',
     },
     -- handlers = {
     --   {
@@ -26,13 +26,13 @@ local eslint = function()
     settings = {
       enable = true,
       probe = {
-        "javascript",
-        "javascriptreact",
+        'javascript',
+        'javascriptreact',
         -- "typescript",
         -- "typescriptreact",
-        "html",
-        "vue",
-        "markdown",
+        'html',
+        'vue',
+        'markdown',
       },
       tslint = {
         enable = true,
@@ -40,7 +40,7 @@ local eslint = function()
       codeAction = {
         disableRuleComment = {
           enable = true,
-          location = "separateLine",
+          location = 'separateLine',
         },
         showDocumentation = {
           enable = true,
@@ -48,25 +48,25 @@ local eslint = function()
       },
       codeActionOnSave = {
         enable = false,
-        mode = "all",
+        mode = 'all',
       },
       experimental = {
         useFlatConfig = false,
       },
       format = true,
-      nodePath = "",
-      onIgnoredFiles = "off",
-      packageManager = "npm",
+      nodePath = '',
+      onIgnoredFiles = 'off',
+      packageManager = 'npm',
       problems = {
         shortenToSingleLine = false,
       },
       quiet = false,
       rulesCustomizations = {},
-      run = "onType",
+      run = 'onType',
       useESLintClass = false,
-      validate = "on",
+      validate = 'on',
       workingDirectory = {
-        mode = "location",
+        mode = 'location',
       },
       -- workingDirectories = { "./client", "./server" }
     },
