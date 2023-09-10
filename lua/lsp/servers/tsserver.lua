@@ -15,7 +15,7 @@ local tsserver = function()
   -- dependencies = { "jose-elias-alvarez/typescript.nvim" },
 
   lspconfig.tsserver.setup({
-    init_options = { hostInfo = 'neovim' },
+    init_options = { hostInfo = 'neovim', preferences = { disableSuggestions = true } },
     filetypes = {
       'javascript',
       'javascriptreact',

@@ -57,6 +57,8 @@ local on_attach = function(client, bufnr)
     client.server_capabilities.documentRangeFormattingProvider = false
   elseif client.name == 'pyright' then
     client.server_capabilities.hoverProvider = false
+  -- elseif client.name == 'jsonls' then
+  --   client.server_capabilities.diagnosticProvider = false
   elseif client.name == 'pylsp' then
     client.server_capabilities.documentSymbolProvider = false
     client.server_capabilities.renameProvider = false

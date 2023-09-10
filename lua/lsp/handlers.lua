@@ -252,6 +252,7 @@ local hover_provider = function(_, _)
 end
 
 local code_action_provider = function(_, _)
+  vim.dbglog('CODE ACTION PROVIDER')
   mapping.code_action()
 end
 
