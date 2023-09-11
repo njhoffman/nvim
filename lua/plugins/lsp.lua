@@ -32,6 +32,9 @@ local plugins = {
       'kosayoda/nvim-lightbulb',
       'mickael-menu/zk-nvim',
       'dnlhc/glance.nvim',
+      -- ft = {'javascript','javascriptreact','javascript.jsx','typescript','typescriptreact','typescript.tsx'}
+      { 'jose-elias-alvarez/typescript.nvim' },
+      { 'pmizio/typescript-tools.nvim', enabled = false, dependencies = { 'nvim-lua/plenary.nvim' } },
       { 'folke/neodev.nvim', dependencies = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason.nvim' } },
       { 'folke/trouble.nvim', cmd = { 'TroubleToggle', 'Trouble' } },
       {

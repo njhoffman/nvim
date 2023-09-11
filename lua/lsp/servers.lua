@@ -90,11 +90,6 @@ require('mason-lspconfig').setup_handlers({
 
     lspconfig[server_name].capabilities = capabilities
     lspconfig[server_name].on_attach = lspconfig[server_name].on_attach or util.default_config.on_attach
-
-    -- separate tsserver setup using jose-elias-alvarez/typescript.nvim
-    if server_name ~= 'tsserver' then
-      lspconfig[server_name].setup(lspconfig[server_name])
-    end
   end,
   -- { "clangd" }
   -- capabilities :
@@ -115,7 +110,7 @@ require('mason-lspconfig').setup_handlers({
   ['lua_ls'] = require('lsp.servers.lua_ls'),
   ['stylelint_lsp'] = require('lsp.servers.stylelint_lsp'),
   -- ['tailwindcss'] = require('lsp.servers.tailwindcss'),
-  -- ['tsserver'] = require('lsp.servers.tsserver'),
+  ['tsserver'] = require('lsp.servers.tsserver'),
   ['ltex'] = function()
     lspconfig.ltex.setup({
       filetypes = {
