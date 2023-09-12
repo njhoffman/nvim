@@ -79,7 +79,7 @@ return {
       }
     end,
   }),
-  null_ls.builtins.formatting.remark,
+  -- null_ls.builtins.formatting.remark,
   null_ls.builtins.formatting.rubocop,
   -- null_ls.builtins.formatting.rubyfmt,
   -- null_ls.builtins.formatting.terrafmt,
