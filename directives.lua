@@ -1,41 +1,45 @@
 -- reference for comment formatting/diagnostic directives
 
 local d = {
-  lua_language_server = {
-    -- .luarc.json
+  tsserver = {
+    line = [[// @ts-ignore: ignore next line]],
+    file = [[// @ts-nocheck: ignore this file]],
+  },
+  eslint = { -- .eslintrc, .eslintrc.json, .eslintrc.js
+    line = [[// eslint-disable-next-line max-len ]],
+    file = [[// eslint-disable-file ]],
+  },
+  lua_language_server = { -- .luarc.json
     workspace = [[{ "diagnostics.disable": [ "unused-local" ] } ]],
     file = [[---@diagnostic disable: unused-function, unused-local ]],
     line = [[---@diagnostic disable-next-line: unused-local ]],
   },
-  luacheck = {
-    -- .luacheckrc
+  luacheck = { -- .luacheckrc
     workspace = [[ globals = { "vim" }, ignore = { "631" } ]],
     file = [[-- luacheck: ignore ]],
   },
-  editorconfig_checker = {
-    -- .editorconfig
+  editorconfig_checker = { -- .editorconfig
+    file = [[ -- editorconfig-checker-disable-file ]],
+    line = [[ ... -- editorconfig-checker-disable-line ]],
     workspace = [[
       [{*.lua,*.tl,}]
       indent_size              = 2 ]],
-    file = [[ -- editorconfig-checker-disable-file ]],
     block = [[
     -- editorconfig-checker-disable
     -- ...
     -- editorconfig-checker-enable ]],
-    line = [[ ... -- editorconfig-checker-disable-line ]],
   },
 }
 
 local f = {
   -- .lua-format
   -- .shellcheckrc
-  -- .stylua
-  stylua = {
+  stylua = { -- .stylua
+    file = [[ -- stylua: ignore ]],
     block = [[
     -- stylua: ignore start
     -- ...
-    -- stylua: ignore end
-    file = [[ -- stylua: ignore ]],
+    -- stylua: ignore end ]],
   },
 }
 

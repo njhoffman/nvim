@@ -1,20 +1,20 @@
-local lspconfig = require("lspconfig")
+local lspconfig = require('lspconfig')
 local util = lspconfig.util
 
 local stylelint_lsp = function()
   lspconfig.stylelint_lsp.setup({
-    root_pattern = util.root_pattern(".stylelintrc", "package.json"),
+    root_pattern = util.root_pattern('.stylelintrc', 'package.json'),
     filetypes = {
-      "css",
-      "less",
-      "scss",
-      "javascript",
-      "javascriptreact",
-      "typescript",
-      "typescriptreact",
-      "sugarss",
-      "vue",
-      "wxss",
+      'css',
+      'less',
+      'scss',
+      'javascript',
+      'javascriptreact',
+      'typescript',
+      'typescriptreact',
+      'sugarss',
+      'vue',
+      'wxss',
     },
     settings = {
       stylelintplus = {
@@ -29,6 +29,9 @@ local stylelint_lsp = function()
         -- validateOnType (default true) - lint after changes.
       },
     },
+    on_attach = function(client, bufnr)
+      require('lsp.on_attach')(client, bufnr)
+    end,
   })
 end
 

@@ -546,20 +546,6 @@ local plugins = {
   },
   { 'ray-x/go.nvim', dependencies = { 'ray-x/guihua.lua' }, ft = 'go' },
   {
-    'jose-elias-alvarez/typescript.nvim',
-    config = function()
-      require('language.typescript')
-    end,
-    ft = {
-      'javascript',
-      'javascriptreact',
-      'javascript.jsx',
-      'typescript',
-      'typescriptreact',
-      'typescript.tsx',
-    },
-  },
-  {
     'llllvvuu/nvim-js-actions',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     ft = {

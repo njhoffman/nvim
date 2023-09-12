@@ -8,6 +8,9 @@ local bashls = function()
     cmd_env = {
       INCLUDE_ALL_WORKSPACE_SYMBOLS = true,
     },
+    on_attach = function(client, bufnr)
+      require('lsp.on_attach')(client, bufnr)
+    end,
     bashIde = {
       logLevel = 'debug', -- debug, info, warn, error
       includeAllWorkspaceSymbols = true,

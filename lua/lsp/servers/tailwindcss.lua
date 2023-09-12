@@ -32,6 +32,9 @@ local tailwindcss = function()
         recommendedVariantOrder = 'warning',
       },
     },
+    on_attach = function(client, bufnr)
+      require('lsp.on_attach')(client, bufnr)
+    end,
   })
 end
 
