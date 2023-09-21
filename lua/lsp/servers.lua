@@ -249,55 +249,59 @@ require('mason-lspconfig').setup_handlers({
       vimruntime = '',
     })
   end,
-  ['jsonls'] = function() end,
-  -- ['jsonls'] = function()
-  --   lspconfig.jsonls.setup({
-  --     filetypes = { 'json', 'jsonc' },
-  --     settings = {
-  --       json = {
-  --         format = {
-  --           enable = true,
-  --         },
-  --         schemas = {
-  --           {
-  --             fileMatch = { 'package.json' },
-  --             url = 'https://json.schemastore.org/package.json',
-  --           },
-  --           {
-  --             fileMatch = { 'tsconfig.json', 'tsconfig.*.json' },
-  --             url = 'http://json.schemastore.org/tsconfig',
-  --           },
-  --           {
-  --             fileMatch = { '*.json' },
-  --             schemas = require('schemastore').json.schemas(), -- ignore = { '.eslintrc', 'package.json', },
-  --           },
-  --         },
-  --         -- diagnostics
-  --         validate = { enable = false },
-  --       },
-  --     },
-  --     setup = {
-  --       commands = {
-  --         Format = {
-  --           function(arg)
-  --             local bufnr = arg.fargs[1] and tonumber(arg.fargs[1]) or 0
-  --             local lsp_name = arg.fargs[2] or ''
-  --             if vim.b.format_on_write == 0 then
-  --               vim.notify('Skipping format on write: ' .. lsp_name, 1)
-  --               return
-  --             end
-  --             vim.lsp.buf.format({
-  --               --   filter = function(client) return client.name ~= "tsserver" end
-  --               -- async = true,
-  --               bufnr = bufnr,
-  --               timeout = 2000,
-  --             })
-  --           end,
-  --         },
-  --       },
-  --     },
-  --   })
-  -- end,
+  ['jsonls'] = function()
+    lspconfig.jsonls.setup({
+      filetypes = { 'json', 'jsonc' },
+      init_options = {
+        provideFormatter = true,
+        -- customCapabilities = { rangeFormatting = { editLimit = 50 } }
+        -- handleSchemaProtocols = true,
+      },
+      settings = {
+        json = {
+          format = {
+            enable = true,
+          },
+          schemas = {
+            {
+              fileMatch = { 'package.json' },
+              url = 'https://json.schemastore.org/package.json',
+            },
+            {
+              fileMatch = { 'tsconfig.json', 'tsconfig.*.json' },
+              url = 'http://json.schemastore.org/tsconfig',
+            },
+            {
+              fileMatch = { '*.json' },
+              schemas = require('schemastore').json.schemas(), -- ignore = { '.eslintrc', 'package.json', },
+            },
+          },
+          -- diagnostics
+          validate = { enable = false },
+        },
+      },
+      setup = {
+        commands = {
+          Format = {
+            function(arg)
+              local bufnr = arg.fargs[1] and tonumber(arg.fargs[1]) or 0
+              local lsp_name = arg.fargs[2] or ''
+              if vim.b.format_on_write == 0 then
+                vim.notify('Skipping format on write: ' .. lsp_name, 1)
+                return
+              end
+              vim.lsp.buf.format({
+                --   filter = function(client) return client.name ~= "tsserver" end
+                -- async = true,
+                bufnr = bufnr,
+                timeout = 2000,
+              })
+            end,
+          },
+        },
+      },
+    })
+  end,
   ['dockerls'] = function()
     lspconfig.dockerls.setup({
       diagnostics = {

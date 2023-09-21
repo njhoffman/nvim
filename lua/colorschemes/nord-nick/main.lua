@@ -967,6 +967,10 @@ return function(injected_functions)
     -- MiniClueNextKeyWithPostkeys({DiagnosticFloatingError}),
     MiniClueSeparator({ fg = '#333344' }), -- MiniClueSeparator({DiagnosticFloatingInfo})
     MiniClueTitle({ fg = '#f38080' }), -- MiniClueTitle({Title})
+
+    -- symbol-usage
+    SymbolInlay({ fg = '#332233', gui = 'italic' }),
+
     -- GlancePreviewNormal
     -- GlancePreviewMatch
     -- GlancePreviewCursorLine
