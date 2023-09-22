@@ -31,6 +31,8 @@ local routes = {
 
   -- all jsonls Unhandled method textDocument/diagnostic errors hidden
   { filter = { event = 'notify', find = '^jsonls: ' }, opts = { skip = true } },
+  -- all "Cannot make changes, 'modifiable' is off" to mini
+  { filter = { event = 'msg_show', find = '^E21:' }, view = 'mini' },
   -- all search not found messages to mini
   { filter = { event = 'msg_show', find = '^E486:' }, view = 'mini' },
   { filter = { event = 'msg_show', find = '^E433:' }, view = 'mini' },

@@ -294,7 +294,7 @@ return function(injected_functions)
     sym('@punctuation.special.markdown')({ fg = '#645060' }), --  fg = '#89ddff'
     sym('@spell')({}),
     sym('@string')({ String }),
-    sym('@string.documentation')({ fg = '#e0af68' }),
+    sym('@string.documentation')({ fg = '#406f88', gui = 'italic' }),
     sym('@string.escape')({ fg = '#bb9af7' }),
     sym('@string.regex')({ fg = '#b4f9f8' }),
     sym('@tag')({ fg = clr_over.orange }),
