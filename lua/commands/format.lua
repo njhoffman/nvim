@@ -1,15 +1,15 @@
 local function format(arg)
   local bufnr = arg.fargs[1] and tonumber(arg.fargs[1]) or 0
-  local lsp_name = arg.fargs[2] or ""
+  local lsp_name = arg.fargs[2] or ''
   if vim.b.format_on_write == 0 then
-    vim.notify("Skipping format on write: " .. lsp_name, 1)
+    vim.notify('Skipping format on write: ' .. lsp_name, 1)
     return
   end
   vim.lsp.buf.format({
     --   filter = function(client) return client.name ~= "tsserver" end
     -- async = true,
     bufnr = bufnr,
-    timeout = 2000,
+    timeout = 4000,
   })
 end
 
@@ -20,19 +20,19 @@ end
 -- )
 
 local truncate_log = function()
-  local ext = vim.fn.expand("%:e")
-  if ext ~= "log" then
-    vim.notify("Not truncating log, wrong extension: " .. ext)
+  local ext = vim.fn.expand('%:e')
+  if ext ~= 'log' then
+    vim.notify('Not truncating log, wrong extension: ' .. ext)
   else
-    local file = vim.fn.expand("%:p")
-    local cmd = { "truncate", "--size", "0", file }
+    local file = vim.fn.expand('%:p')
+    local cmd = { 'truncate', '--size', '0', file }
     vim.fn.jobstart(cmd, {
       on_exit = function(_, code)
         if code == 0 then
-          vim.notify("truncated: " .. file)
-          vim.api.nvim_command("edit")
+          vim.notify('truncated: ' .. file)
+          vim.api.nvim_command('edit')
         else
-          vim.notify("Code: " .. code .. " - problem truncating file: " .. file, 4)
+          vim.notify('Code: ' .. code .. ' - problem truncating file: ' .. file, 4)
         end
       end,
     })
@@ -49,23 +49,23 @@ local function trim_space(opts, preview_ns, preview_buf)
   local preview_buf_line = 0
 
   for i, line in ipairs(lines) do
-    local startidx, endidx = string.find(line, "%s+$")
+    local startidx, endidx = string.find(line, '%s+$')
 
     if startidx ~= nil then
       -- Highlight the match if in command preview mode
       if preview_ns ~= nil then
-        vim.api.nvim_buf_add_highlight(buf, preview_ns, "Substitute", line1 + i - 2, startidx - 1, endidx)
+        vim.api.nvim_buf_add_highlight(buf, preview_ns, 'Substitute', line1 + i - 2, startidx - 1, endidx)
 
         -- Add lines and highlight to the preview buffer
         -- if inccommand=split
         if preview_buf ~= nil then
-          local prefix = string.format("|%d| ", line1 + i - 1)
+          local prefix = string.format('|%d| ', line1 + i - 1)
 
           vim.api.nvim_buf_set_lines(preview_buf, preview_buf_line, preview_buf_line, 0, { prefix .. line })
           vim.api.nvim_buf_add_highlight(
             preview_buf,
             preview_ns,
-            "Substitute",
+            'Substitute',
             preview_buf_line,
             #prefix + startidx - 1,
             #prefix + endidx
@@ -77,7 +77,7 @@ local function trim_space(opts, preview_ns, preview_buf)
     end
 
     if not preview_ns then
-      new_lines[#new_lines + 1] = string.gsub(line, "%s+$", "")
+      new_lines[#new_lines + 1] = string.gsub(line, '%s+$', '')
     end
   end
 
@@ -94,10 +94,10 @@ local function trim_space(opts, preview_ns, preview_buf)
 end
 
 local function delete_special()
-  if vim.api.nvim_get_current_line():match("^%s*$") then
+  if vim.api.nvim_get_current_line():match('^%s*$') then
     return '"_dd'
   else
-    return "dd"
+    return 'dd'
   end
 end
 
@@ -106,17 +106,17 @@ end
 local function delete_special_v()
   local l, _ = unpack(vim.api.nvim_win_get_cursor(0))
   for _, line in ipairs(vim.api.nvim_buf_get_lines(0, l - 1, l, true)) do
-    if line:match("^%s*$") then
+    if line:match('^%s*$') then
       return '"_d'
     end
   end
-  return "d"
+  return 'd'
 end
 
 local create_cmd_truncate = function(_bufnr)
   local bufnr = _bufnr or vim.api.nvim_get_current_buf()
-  vim.api.nvim_buf_create_user_command(bufnr, "Truncate", truncate_log, {
-    desc = "Truncate logfile",
+  vim.api.nvim_buf_create_user_command(bufnr, 'Truncate', truncate_log, {
+    desc = 'Truncate logfile',
   })
 end
 -- vim.keymap.set("v", "d", delete_special_v, { noremap = true, expr = true })

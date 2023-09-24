@@ -176,34 +176,47 @@ require('mason-lspconfig').setup_handlers({
       },
     })
   end,
+  -- ['pylsp'] = function() end,
   ['pylsp'] = function()
     lspconfig.pylsp.setup({
-      pylsp = {
-        builtin = {
-          installExtraArgs = { 'flake8', 'pycodestyle', 'pydocstyle', 'pyflakes', 'pylint', 'yapf' },
-        },
-        plugins = {
-          jedi_completion = { enabled = false },
-          rope_completion = { enabled = false },
-          flake8 = { enabled = false },
-          pyflakes = { enabled = false },
-          pycodestyle = {
-            ignore = {
-              'E226',
-              'E266',
-              'E302',
-              'E303',
-              'E304',
-              'E305',
-              'E402',
-              'C0103',
-              'W0104',
-              'W0621',
-              'W391',
-              'W503',
-              'W504',
+      settings = {
+        pylsp = {
+          builtin = {
+            installExtraArgs = { 'flake8', 'pycodestyle', 'pydocstyle', 'pyflakes', 'pylint', 'yapf' },
+          },
+          plugins = {
+            black = {
+              cache_config = true,
+              enabled = true,
+              line_length = 119,
             },
-            maxLineLength = 99,
+            flake8 = {
+              enabled = false,
+              maxLineLength = 119,
+            },
+            mypy = { enabled = false },
+            jedi_completion = { enabled = false },
+            rope_completion = { enabled = false },
+            pyflakes = { enabled = false },
+            pycodestyle = {
+              enabled = true,
+              ignore = {
+                'E226',
+                'E266',
+                'E302',
+                'E303',
+                'E304',
+                'E305',
+                'E402',
+                'C0103',
+                'W0104',
+                'W0621',
+                'W391',
+                'W503',
+                'W504',
+              },
+              maxLineLength = 119,
+            },
           },
         },
       },
@@ -211,8 +224,9 @@ require('mason-lspconfig').setup_handlers({
   end,
   ['pyright'] = function()
     lspconfig.pyright.setup({
-      pyright = {
+      settings = {
         python = {
+          linting = { pylintEnabled = false },
           analysis = {
             useLibraryCodeForTypes = true,
             diagnosticSeverityOverrides = {
@@ -222,8 +236,8 @@ require('mason-lspconfig').setup_handlers({
               reportPrivateImportUsage = 'none',
             },
             autoImportCompletions = false,
+            -- typeCheckingMode = 'off',
           },
-          linting = { pylintEnabled = false },
         },
       },
     })
@@ -294,7 +308,7 @@ require('mason-lspconfig').setup_handlers({
                 --   filter = function(client) return client.name ~= "tsserver" end
                 -- async = true,
                 bufnr = bufnr,
-                timeout = 2000,
+                timeout = 3000,
               })
             end,
           },

@@ -11,6 +11,7 @@ return {
       }
     end,
   }),
+  -- python formatting: autoflake | autopep8 | black | blackd | blue | isort | pyflyby | pyink | reorder_python_imports | ruff | usort | yapf
   -- null_ls.builtins.formatting.black.with({
   --   extra_args = function(params)
   --     return { '--line-length=' .. vim.api.nvim_buf_get_option(params.bufnr, 'textwidth') }

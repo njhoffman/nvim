@@ -29,17 +29,37 @@ require('treesj').setup({
   check_syntax_error = false,
 })
 
+-- bash c cpp css dart go html java javascript json json5 jsonc kotlin lua nix perl
+-- php pug python r ruby rust scss sql starlark svelte toml tsx typescript vue yaml
+
 local langs = require('treesj.langs')['presets']
+langs['sh'] = vim.deepcopy(langs['bash'])
+
 local split_mapping = function()
   if langs[vim.bo.filetype] then
     -- TODO: if not toggleable node (node identifier is not configured) go to first parenthesis
-    vim.keymap.set('n', 'gs', '<Cmd>TSJToggle<CR>', { buffer = true, desc = 'treesj toggle cursor' })
-    vim.keymap.set('n', 'gJ', '<Cmd>TSJJoin<CR>', { buffer = true, desc = 'treesj join cursor' })
-    vim.keymap.set('n', 'gS', '<Cmd>TSJSplit<CR>', { buffer = true, desc = 'treesj split cursor' })
+    vim.keymap.set('n', 'gs', '<cmd>TSJToggle<cr>', { buffer = true, desc = 'treesj toggle cursor' })
+    vim.keymap.set('n', 'gJ', '<cmd>TSJJoin<cr>', { buffer = true, desc = 'treesj join cursor' })
+    vim.keymap.set('n', 'gS', '<cmd>TSJSplit<cr>', { buffer = true, desc = 'treesj split cursor' })
   else
-    vim.keymap.set('n', 'gs', "require('mini.splitjoin').toggle", { buffer = true, desc = 'mini.sj toggle cursor' })
-    vim.keymap.set('n', 'gJ', "require('mini.splitjoin').join_at", { buffer = true, desc = 'mini.sj join cursor' })
-    vim.keymap.set('n', 'gS', "require('mini.splitjoin').split_at", { buffer = true, desc = 'mini.sj split cursor' })
+    vim.keymap.set(
+      'n',
+      'gs',
+      "<cmd>lua require('mini.splitjoin').toggle()<cr>",
+      { buffer = true, desc = 'mini.sj toggle cursor' }
+    )
+    vim.keymap.set(
+      'n',
+      'gJ',
+      "<cmd>lua require('mini.splitjoin').join_at()<cr>",
+      { buffer = true, desc = 'mini.sj join cursor' }
+    )
+    vim.keymap.set(
+      'n',
+      'gS',
+      "<cmd>lua require('mini.splitjoin').split_at()<cr>",
+      { buffer = true, desc = 'mini.sj split cursor' }
+    )
   end
 end
 

@@ -50,7 +50,7 @@ local custom_surroundings = {
 }
 
 local cfg = {
-  custom_surroundings = custom_surroundings,
+  -- custom_surroundings = custom_surroundings,
   mappings = {
     add = 's', -- Add surrounding in Normal and Visual modes
     delete = 'ds', -- Add surrounding in Normal and Visual modes
@@ -70,9 +70,38 @@ local cfg = {
 
 require('mini.surround').setup(cfg)
 
-vim.keymap.set('n', 'ys', [[v:lua.MiniSurround.operator('add')]], { silent = true, expr = true })
-vim.keymap.set('x', 'S', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
-vim.keymap.set('n', 'yss', '^ys$', { remap = true })
+vim.keymap.set(
+  'n',
+  'ys',
+  [[v:lua.MiniSurround.operator('add')]],
+  { silent = true, expr = true, desc = 'mini surround add operator' }
+)
+vim.keymap.set(
+  'x',
+  's',
+  [[:<C-u>lua MiniSurround.add('visual')<CR>]],
+  { silent = true, desc = 'mini surround add visual' }
+)
+vim.keymap.set('n', 'yss', '^ys$', { remap = true, desc = 'mini surround add line' })
+
+-- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"ds"**
+-- - rhs: ` `
+-- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"s"**
+-- - rhs: ` `
+-- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"sF"**
+-- - rhs: ` `
+-- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"sf"**
+-- - rhs: ` `
+-- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"sh"**
+-- - rhs: ` `
+-- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"cx"**
+-- - rhs: ` `
+-- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"cs"**
+-- - rhs: ` `
+-- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"ys"**
+-- - rhs: `v:lua.MiniSurround.operator('add')`
+-- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"S"**
+-- - rhs: ` `
 
 --- Regular mappings:
 --- - `saiw)` - add (`sa`) for inner word (`iw`) parenthesis (`)`).
