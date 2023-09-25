@@ -58,9 +58,23 @@ local function check_resize_split(navigation_key)
   end
 end
 
-local get_splits = function(directions, ignore_quickfix)
+local get_splits = function(directions)
   -- let window_count = winnr('$')
   -- let prev_window = winnr('#')
+  local ignored_ft = {
+    'CompetiTest',
+    'Mundo',
+    'MundoDiff',
+    'MvimTree',
+    'SidebarNvim',
+    'Trouble',
+    'aerial',
+    'neo-tree',
+    'nerdtree',
+    'qf',
+    'query',
+  }
+
   local splits = {}
   local curwin = vim.fn.winnr()
   for _, dir in ipairs(directions) do
@@ -69,7 +83,7 @@ local get_splits = function(directions, ignore_quickfix)
     if curwin ~= testwinid and not vim.tbl_contains(splits, testwinid) then
       local bufid = vim.api.nvim_win_get_buf(testwinid)
       local ft = vim.api.nvim_buf_get_option(bufid, 'filetype')
-      if not ignore_quickfix or ft ~= 'qf' then
+      if not vim.tbl_contains(ignored_ft, ft) then
         table.insert(splits, testwinid)
       end
     end
@@ -122,7 +136,6 @@ local close_popups = function()
 end
 
 return {
-  get_splits = get_splits,
   close_multi = close_multi,
   close_multi_no_prompt = close_multi_no_prompt,
   close_popups = close_popups,

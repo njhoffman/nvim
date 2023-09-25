@@ -51,7 +51,8 @@ require('cybu').setup({
         view = 'rolling', -- paging, rolling
       },
     },
-    show_on_autocmd = 'VimEnter', -- event to trigger cybu (eg. "BufEnter")
+    -- show_on_autocmd = 'VimEnter', -- event to trigger cybu (eg. "BufEnter")
+    show_on_autocmd = 'BufEnter',
   },
   display_time = 1500, -- time the cybu window is displayed
   exclude = { -- filetypes, cybu will not be active

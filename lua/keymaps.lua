@@ -172,13 +172,13 @@ map('n', '<BS>', ':e #<cr>', {
 })
 local bufvar = { { '<Plug>(CybuPrev)', '<Plug>(CybuNext)' }, { '<cmd>BufferPrev<cr>', '<cmd>BufferNext<cr>' } }
 
-map('n', 'H', bufvar[1][1], {
+map('n', 'H', bufvar[2][1], {
   category = 'Buffers',
   label = 'left buffer',
   desc = 'open the left (prev) buffer',
 })
 
-map('n', 'L', bufvar[1][2], {
+map('n', 'L', bufvar[2][2], {
   category = 'Buffers',
   label = 'right buffer',
   desc = 'open the right (next) buffer',

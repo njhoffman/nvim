@@ -99,7 +99,10 @@ local cfg = {
     view_search = 'virtualtext', -- view for search count messages. Set to `false` to disable
   },
   views = {
-    -- ['mini'] = miniView,
+    -- TODO: add mini message grouping
+    ['mini'] = {
+      zindex = 10,
+    },
     -- ['cmdline'] = cmdlineView,
     ['notify_error'] = {
       render = noice_views.errorView,
