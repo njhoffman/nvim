@@ -7,10 +7,12 @@ local plugins = {
   { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-web-devicons' },
   {
     'romgrk/barbar.nvim',
-    enabled = false,
+    enabled = true,
+    init = function()
+      vim.g.barbar_auto_setup = false
+    end,
     event = 'VimEnter',
     dependencies = 'nvim-web-devicons',
-    opts = { insert_at_start = true, auto_hide = true },
   },
   {
     'tummetott/reticle.nvim',

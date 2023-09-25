@@ -1,7 +1,5 @@
 local utils = require('utils.lazy')
 
-vim.g.barbar_auto_setup = false
-
 local plugins = {
   { 'folke/lazy.nvim', lazy = false },
   -- colorscheme components should load first

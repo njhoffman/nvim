@@ -57,6 +57,36 @@ local miniView = {
   },
 }
 
+local miniViewDefault = {
+  backend = 'mini',
+  relative = 'editor',
+  align = 'message-right',
+  timeout = 2000,
+  reverse = true,
+  focusable = false,
+  position = {
+    row = -1,
+    col = '100%',
+    -- col = 0,
+  },
+  size = 'auto',
+  border = {
+    style = 'none',
+  },
+  zindex = 60,
+  win_options = {
+    winbar = '',
+    foldenable = false,
+    winblend = 30,
+    winhighlight = {
+      Normal = 'NoiceMini',
+      IncSearch = '',
+      CurSearch = '',
+      Search = '',
+    },
+  },
+}
+
 local errorViewFormat = {
   '{date} ',
   '{event}',

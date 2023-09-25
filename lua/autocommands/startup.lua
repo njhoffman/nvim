@@ -2,15 +2,24 @@ local get_load_time = function()
   local load_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
   load_time = string.sub(string.gsub(load_time, ' ', ''), 1, 5)
   vim.g.load_time = load_time
+
   -- TODO: e for load .sh direct, aucmd for markdown to pandoc
   local bufname = vim.api.nvim_buf_get_name(0)
   if #bufname > 0 and not string.match(bufname, '^term://') and not string.match(bufname, '^man://') then
     vim.cmd('e')
   end
+
   vim.defer_fn(function()
-    vim.api.nvim_exec_autocmds({ 'BufNewFile', 'BufReadPre', 'BufReadPost' }, {})
     -- vim.api.nvim_exec_autocmds({ 'BufNewFile' }, {})
+    vim.api.nvim_exec_autocmds({ 'BufNewFile', 'BufReadPre', 'BufReadPost' }, {})
+    if vim.api.nvim_win_get_width(0) < 120 then
+      require('barbar.events').disable()
+    end
+    if vim.api.nvim_win_get_width(0) > 160 then
+      require('sidebar').open()
+    end
   end, 100)
+
   vim.defer_fn(function()
     vim.notify('Loaded in ' .. load_time .. 's', 1, { anchor = 'TC' })
   end, 2000)
