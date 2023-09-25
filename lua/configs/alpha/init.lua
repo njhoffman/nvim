@@ -55,19 +55,26 @@ local block1 = {
   },
 }
 local v = vim.version()
-local version = 'v' .. vim.fn.join({ v.major, v.minor, v.patch }, '.') .. ' :' .. v.api_level
+-- { api_compatible = 0, api_level = 12, api_prerelease = true, build = "gac1c23442", major = 0, minor = 10, patch = 0, prerelease = "dev" }
+-- local version = 'v' .. vim.fn.join({ v.major, v.minor, v.patch }, '.') .. ' :' .. v.api_level
+local v_full = vim.fn.matchstr(vim.api.nvim_command_output('version'), 'NVIM v\\zs[^\\n]*')
+-- NVIM v0.10.0-dev-927+g21152f790
+-- TODO: 174 commits over 3 weeks from nightly
+local version = 'v' .. v_full .. ' :' .. v.api_level
 local load_time
 if not vim.g.load_time then
-  ---@diagnostic disable-next-line: missing-parameter
   load_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
-  load_time = 'VimEnter in ' .. string.sub(string.gsub(load_time, ' ', ''), 1, 5) .. 's'
+  load_time = '      VimEnter in ' .. string.sub(string.gsub(load_time, ' ', ''), 1, 5) .. 's'
 else
   load_time = 'Loaded in ' .. vim.g.load_time .. 's'
 end
 
+local stats = require('lazy').stats()
+local plugins = ' Loaded ' .. stats.loaded .. ' out of ' .. stats.count .. ' plugins'
+-- val = utils.col({ { version }, { plugins }, { load_time } })[1],
 local footer = {
   type = 'text',
-  val = { version, load_time },
+  val = { load_time, plugins, version },
   opts = {
     position = 'center',
     hl = 'Number',
