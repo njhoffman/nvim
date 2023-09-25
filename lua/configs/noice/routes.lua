@@ -29,6 +29,12 @@ local routes = {
   -- { filter = { event = 'notify.error_error' }, view = 'mini' },
   -- { filter = { event = 'msg_show.lua_error' }, view = 'mini' },
 
+  -- hide treesitter error from joining lines
+
+  {
+    filter = { event = 'msg_show', find = '^Error in decoration provider treesitter/highlighter.line:' },
+    view = 'mini',
+  },
   -- all jsonls Unhandled method textDocument/diagnostic errors hidden
   { filter = { event = 'notify', find = '^jsonls: ' }, opts = { skip = true } },
   -- all "Cannot make changes, 'modifiable' is off" to mini

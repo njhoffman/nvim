@@ -969,7 +969,7 @@ return function(injected_functions)
     MiniClueTitle({ fg = '#f38080' }), -- MiniClueTitle({Title})
 
     -- symbol-usage
-    SymbolInlay({ fg = '#332233', gui = 'italic' }),
+    SymbolInlay({ fg = '#004466', gui = 'italic' }),
 
     -- GlancePreviewNormal
     -- GlancePreviewMatch
