@@ -105,6 +105,7 @@ local lsp_symbols = {
   File            = '󰈔', --   File        = "󰈙 ",
   Folder          = '󰉋',
   Function        = '󰊕',
+  FunctionBuiltin = '󰊕',
   FunctionMacro   = '󰊕',
   FunctionCall    = '󰊕',
   Include         = '󰜰', --   Interface   = " ",
