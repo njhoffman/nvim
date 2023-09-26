@@ -111,6 +111,7 @@ local lsp_symbols = {
   Include         = '󰜰', --   Interface   = " ",
   Interface       = '', --   Interface   = " ",
   Keyword         = '󰌋', --   Keyword     = "󰔌 ",
+  KeywordCoroutine = '󰌋', --   Keyword     = "󰔌 ",
   KeywordOperator = '',
   KeywordFunction = '' , --   Keyword    = "󰔌 ",
   KeywordReturn   = '', --   Keyword     = "󰔌 ",

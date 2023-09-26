@@ -86,6 +86,7 @@ local modules = {
     },
     additional_vim_regex_highlighting = {
       -- 'md',
+      'make',
       'zsh',
     },
     custom_captures = {

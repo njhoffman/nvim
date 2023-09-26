@@ -54,11 +54,13 @@ end
 -- 	local cmp_ai = require("cmp_ai.config")
 
 cmp.setup({
-  -- enabled = function ()
-  --     buftype = vim.api.nvim_buf_get_option(0, "buftype")
-  --     if buftype == "prompt" then return false end
-  --     return true
-  -- end,
+  enabled = function()
+    buftype = vim.api.nvim_buf_get_option(0, 'buftype')
+    if buftype == 'prompt' then
+      return false
+    end
+    return true
+  end,
   completion = {
     completeopt = 'menu,menuone,noselect',
     -- completeopt = 'menuone,noselect,noinsert',
