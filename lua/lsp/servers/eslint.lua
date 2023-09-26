@@ -3,7 +3,8 @@ local util = lspconfig.util
 
 local eslint = function()
   lspconfig.eslint.setup({
-    root_dir = util.root_pattern('.project', '.git', '.eslintrc'),
+    -- root_dir = util.root_pattern('.project', '.git', '.eslintrc'),
+    root_dir = util.root_pattern('.project', '.git'),
     filetypes = {
       'javascript',
       'javascriptreact',
