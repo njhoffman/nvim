@@ -34,6 +34,7 @@ local routes = {
   {
     filter = { event = 'msg_show', find = '^Error in decoration provider treesitter/highlighter.line:' },
     view = 'mini',
+    opts = { skip = true },
   },
   -- all jsonls Unhandled method textDocument/diagnostic errors hidden
   { filter = { event = 'notify', find = '^jsonls: ' }, opts = { skip = true } },

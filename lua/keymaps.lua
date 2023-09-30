@@ -768,6 +768,7 @@ map('n', '<F1>', "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>"
 --   category = 'UI',
 --   desc = 'toggle wf.nvim',
 -- })
+
 -- shift F2
 map('n', '<F38>', '<cmd>WhichKey<cr>', {
   plugin = 'which-key.nvim',
@@ -1117,11 +1118,11 @@ map('n', '<C-u>', "<cmd>lua require('telescope.run')('frecency','frecency')<cr>"
   desc = 'frecency files in telescope',
 })
 
-map('n', '<C-Space>', '<cmd>Navbuddy<cr>', {
-  category = 'Pickers',
-  plugin = 'telescope-frecency.nvim',
-  label = 'find files',
-  desc = 'find files in telescope',
+map('n', '<M-C-Space>', '<cmd>Navbuddy<cr>', {
+  category = 'LSP',
+  plugin = 'nvim-navbuddy',
+  label = 'navbuddy',
+  desc = 'explore symbols with navbuddy',
 })
 
 map('n', '<C-e>', "<cmd>lua require('telescope.run')('builtin','live_grep', { grep_open_files = true })<cr>", {
@@ -1166,7 +1167,14 @@ map('n', '<M-g>', "<cmd>lua require('telescope.run')('projects','projects')<cr>"
   desc = 'find projects telescope',
 })
 
-map('n', '<M-C-Space>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
+map('n', '<C-Space>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
+  category = 'Pickers',
+  plugin = 'telescope.nvim',
+  label = 'repeat telescope',
+  desc = 'repeast last telescope command',
+})
+
+map('n', '<leader><space>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'repeat telescope',
