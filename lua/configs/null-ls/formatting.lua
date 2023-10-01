@@ -44,7 +44,8 @@ return {
     end,
   }),
   -- null_ls.builtins.formatting.puppet_lint,
-  null_ls.builtins.formatting.shellharden.with({ filetypes = { 'sh', 'bash' } }),
+  -- https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md
+  -- null_ls.builtins.formatting.shellharden.with({ filetypes = { 'sh', 'bash' } }),
   null_ls.builtins.formatting.shfmt.with({
     filetypes = { 'sh', 'bash' },
     extra_args = function(params)
