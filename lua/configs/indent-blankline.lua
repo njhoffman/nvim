@@ -41,12 +41,15 @@ local bt_exclude = { 'terminal', 'prompt', 'nofile' }
 --   use_treesitter = false,
 -- })
 
-vim.g.indent_blankline_buftype_exclude = bt_exclude
-vim.g.indent_blankline_filetype_exclude = ft_exclude
-vim.g.indent_blankline_char = '│'
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 vim.g.indent_blankline_use_treesitter = false
-require('ibl').setup()
+require('ibl').setup({
+  debounce = 100,
+  indent = { char = '│' },
+  -- whitespace = { highlight = { 'Whitespace', 'NonText' } },
+  scope = { enabled = false, exclude = { 'lua' } },
+  exclude = { filetype = ft_exclude, buftype = bt_exclude },
+})
 
 -- rainbow-delimiters.nvim integration
 -- local highlight = {
