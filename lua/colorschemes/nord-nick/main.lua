@@ -162,8 +162,10 @@ return function(injected_functions)
     FoldColumn({ fg = '#4D578A', bg = '#000000' }),
     FoldText({ fg = '#41b1ff', gui = 'bold' }),
     Folded({ fg = '#6Db7ca', bg = '#111111', gui = 'bold' }),
-    Function({ fg = '#8c788c' }),
-    FunctionCall({ fg = '#7f788f' }),
+    Function({ fg = '#2d79a7' }),
+    FunctionCall({ fg = '#3d89b7' }),
+    -- Function({ fg = '#8c788c' }),
+    -- FunctionCall({ fg = '#7f788f' }),
     Identifier({ fg = '#5e88b6' }),
     IncSearch({ fg = '#eceff4', bg = '#5d61ec' }),
     Include({ fg = '#4784a6' }),
@@ -323,8 +325,15 @@ return function(injected_functions)
     sym('@text.title.4.markdown')({ fg = '#34a4c8' }), -- @text.title
     sym('@text.title.5.markdown')({ fg = '#3098b2' }), -- @text.title
     sym('@text.title.6.markdown')({ fg = '#3092ae' }), -- @text.title
+    -- - @lsp.type.variable.javascript links to Variable priority: 125
+    -- - @lsp.mod.defaultLibrary.javascript links to @lsp priority: 126
+    -- - @lsp.typemod.variable.defaultLibrary.javascript links to Identifier priority: 127
+    -- sym('@lsp')({ Keyword }),
+    -- sym('@lsp.typemod.variable.readonly.javascript')({ Variable }),
+    -- sym('@lsp.typemod.variable.declaration.javascript')({ Variable }),
     sym('@lsp.type.class.markdown')({ fg = 'none', bg = 'none' }), -- sym('@type') Structure
-
+    -- sym('@lsp.type.class.javascript')({ sym('@variable') }),
+    sym('@lsp.type.class.javascript')({ Special }),
     sym('@lsp.type.comment')({ sym('@comment') }),
     sym('@lsp.type.enum')({ sym('@type') }),
     sym('@lsp.type.enumMember')({ sym('@constant') }),
