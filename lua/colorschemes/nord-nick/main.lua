@@ -571,10 +571,12 @@ return function(injected_functions)
     CodeBlock({ bg = '#121212' }),
     Dash({ bg = '#341710', fg = '#341710' }),
     --
-    -- fg = clrs.nord13,
     -- Indent Blankline
-    IndentBlanklineChar({ fg = '#102030', gui = 'nocombine' }),
-    IndentBlanklineContextChar({ fg = colors.purple, gui = 'nocombine' }),
+    -- IblScope, IblIndent, IblWhitespace
+    -- IndentBlanklineChar({ fg = '#102030', gui = 'nocombine' }),
+    -- IndentBlanklineContextChar({ fg = colors.purple, gui = 'nocombine' }),
+    IblIndent({ fg = '#102030', gui = 'nocombine' }),
+    -- IblScope({ fg = colors.purple, gui = 'nocombine' }),
     -- IndentBlanklineIndent1({ bg = '#262626', gui = 'nocombine' }),
     -- IndentBlanklineIndent2({ bg = '#1f1f1f', gui = 'nocombine' }),
     MiniIndentscopeSymbol({ fg = '#003460', bg = '#000f18' }),
