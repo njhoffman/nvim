@@ -47,8 +47,8 @@ require('ibl').setup({
   debounce = 100,
   indent = { char = '│' },
   -- whitespace = { highlight = { 'Whitespace', 'NonText' } },
-  scope = { enabled = false, exclude = { 'lua' } },
-  exclude = { filetype = ft_exclude, buftype = bt_exclude },
+  scope = { enabled = false },
+  exclude = { filetypes = ft_exclude, buftypes = bt_exclude },
 })
 
 -- rainbow-delimiters.nvim integration
