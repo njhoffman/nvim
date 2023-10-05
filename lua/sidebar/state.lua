@@ -1,8 +1,9 @@
-local sections = require("sidebar.sections")
+local sections = require('sidebar.sections')
 
 local state = {
   open = false,
-  current = "",
+  current = '',
+  width = 0,
   available = {},
 }
 
@@ -13,7 +14,7 @@ function state.get_section(_name)
     match = section.name == name and section or match
   end
   if match == false then
-    vim.notify("No available sidebar match: " .. name .. "\n" .. vim.inspect(state.available), 4)
+    vim.notify('No available sidebar match: ' .. name .. '\n' .. vim.inspect(state.available), 4)
   end
   return match
 end
@@ -23,7 +24,7 @@ function state.update()
   local i = 1
   for _, section in ipairs(sections) do
     local enabled = section.enabled ~= false
-    if type(section.enabled) == "function" then
+    if type(section.enabled) == 'function' then
       enabled = section.enabled()
     end
     if enabled then
@@ -32,7 +33,7 @@ function state.update()
       i = i + 1
     end
   end
-  if state.current == "" and #state.available > 0 then
+  if state.current == '' and #state.available > 0 then
     state.current = state.available[1].name
   end
 end

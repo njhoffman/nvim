@@ -579,7 +579,7 @@ local plugins = {
   { 'herringtondarkholme/yats.vim', ft = 'typescript', lazy = lz_syn },
   { 'AckslD/nvim-FeMaco.lua', ft = { 'markdown', 'pandoc' } },
   { 'njhoffman/vim-liquid', ft = 'liquid', lazy = lz_syn },
-  { 'moll/vim-node', ft = { 'javascript' }, lazy = lz_syn },
+  -- { 'moll/vim-node', ft = { 'javascript' }, lazy = lz_syn },
   { 'bfrg/vim-jq', ft = 'jq', lazy = lz_syn },
   { 'maxmellon/vim-jsx-pretty', ft = { 'javascript', 'jsx', 'javascriptreact' }, lazy = lz_syn },
   { 'yuezk/vim-js', ft = { 'javascript', 'jsx', 'javascriptreact' }, lazy = lz_syn },
