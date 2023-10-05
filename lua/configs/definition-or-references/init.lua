@@ -26,7 +26,10 @@ local default_cfg = {
 -- end
 
 local telescope_handler = require('configs.definition-or-references.telescope')
-require('definition-or-references').setup({ on_references_result = telescope_handler, debug = true })
+
+local cfg = { on_references_result = telescope_handler, debug = false }
+
+require('definition-or-references').setup(cfg)
 
 vim.keymap.set(
   'n',

@@ -571,13 +571,13 @@ return function(injected_functions)
     pandocAtxHeaderMark({ fg = '#4575f8' }),
     pandocAtxStart({ fg = '#4575f8' }),
     helpHyperTextJump({ fg = '#6585b8', gui = 'none' }),
-    Headline1({ bg = '#0c1c34' }), -- #1e2718
-    Headline2({ bg = '#031324' }), -- #21262d
-    Headline3({ bg = '#001018' }), -- #1d2229
-    Headline4({ bg = '#000814' }), -- #13181f
-    Headline5({ bg = '#000814' }), -- #0c1118
-    Headline6({ bg = '#000814' }), -- #0c0b12
-    CodeBlock({ bg = '#121212' }),
+    Headline1({ bg = '#081228' }), -- #1e2718
+    Headline2({ bg = '#020814' }), -- #21262d
+    Headline3({ bg = '#000408' }), -- #1d2229
+    Headline4({ bg = '#040608' }), -- #13181f
+    Headline5({ bg = '#020408' }), -- #0c1118
+    Headline6({ bg = '#000204' }), -- #0c0b12
+    CodeBlock({ bg = '#090909' }),
     Dash({ bg = '#341710', fg = '#341710' }),
     --
     -- Indent Blankline

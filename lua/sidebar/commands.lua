@@ -1,5 +1,5 @@
-local state = require("sidebar.state")
-local config = require("sidebar.config")
+local state = require('sidebar.state')
+local config = require('sidebar.config')
 
 local sidebar_cmds = {}
 function sidebar_cmds.prev()
@@ -27,16 +27,23 @@ end
 local commands = {}
 function commands.open(name)
   state.update()
-  local section = state.get_section(name)
-  section.open()
-  state.open = true
+  if not state.open then
+    local section = state.get_section(name)
+    section.open()
+    state.open = true
+    -- TODO: calculate width
+    -- state.width = config.get_width()
+  end
   config.refresh(state.open, sidebar_cmds)
 end
 
 function commands.close()
-  local section = state.get_section()
-  section.close()
-  state.open = false
+  state.update()
+  if state.open then
+    local section = state.get_section()
+    section.close()
+    state.open = false
+  end
   config.refresh(state.open, sidebar_cmds)
 end
 

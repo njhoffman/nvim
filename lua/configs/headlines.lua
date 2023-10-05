@@ -138,6 +138,16 @@ local default_cfg = {
 local config = {
   markdown = {
     headline_highlights = { 'Headline1', 'Headline2', 'Headline3', 'Headline4', 'Headline5', 'Headline6' },
+    -- codeblock_highlight = 'CodeBlock',
+    -- dash_highlight = 'Dash',
+    -- dash_string = '-',
+    -- quote_highlight = 'Quote',
+    -- quote_string = '┃',
+    -- fat_headlines = true,
+    -- fat_headline_upper_string = '▃',
+    -- fat_headline_lower_string = '🬂',
+    fat_headline_lower_string = '▔',
+    -- (lower blocks) ▃ ▁▂▃▄▅▆▇█  (upper blocks)▔🬂▀
   },
   pandoc = {
     headline_highlights = { 'Headline1', 'Headline2', 'Headline3', 'Headline4', 'Headline5', 'Headline6' },
