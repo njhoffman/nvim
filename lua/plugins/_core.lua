@@ -22,14 +22,6 @@ local plugins = {
       vim.cmd('colorscheme nord-nick')
     end,
   },
-  {
-    'nvim-neo-tree/neo-tree.nvim',
-    -- no lazy loading to enable netrw override
-    lazy = false,
-    cmd = { 'NeoTreeFocusToggle', 'NeoTreeShowToggle' },
-    branch = 'v2.x',
-    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-web-devicons', 'MunifTanjim/nui.nvim' },
-  },
   -- { 'freddiehaddad/feline.nvim', branch = 'main', event = 'VimEnter', lazy = false, },
   { 'famiu/bufdelete.nvim' },
   {

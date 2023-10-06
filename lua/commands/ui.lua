@@ -61,18 +61,20 @@ end
 local get_splits = function(directions)
   -- let window_count = winnr('$')
   -- let prev_window = winnr('#')
+
+  -- these ft will not window close on delete
   local ignored_ft = {
-    'CompetiTest',
-    'Mundo',
-    'MundoDiff',
-    'MvimTree',
-    'SidebarNvim',
-    'Trouble',
-    'aerial',
-    'neo-tree',
-    'nerdtree',
-    'qf',
-    'query',
+    -- 'CompetiTest',
+    -- 'Mundo',
+    -- 'MundoDiff',
+    -- 'NvimTree',
+    -- 'SidebarNvim',
+    -- 'Trouble',
+    -- 'aerial',
+    -- 'neo-tree',
+    -- 'nerdtree',
+    -- 'qf',
+    -- 'query',
   }
 
   local splits = {}

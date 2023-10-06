@@ -213,6 +213,12 @@ map('n', '<leader>w', '<cmd>noa w<cr>', {
   desc = 'write without autocommands',
 })
 
+map('n', '<leader>D', '<cmd>BufferDelete<cr>', {
+  category = 'Buffers',
+  label = 'delete buffer',
+  desc = 'delete buffer without closing window',
+})
+
 -- TODO: multiple category Buffers, Windows
 map('n', '<C-d>', '<cmd>CloseMulti<cr>', {
   category = 'Buffers',
@@ -782,7 +788,7 @@ map('n', '<F3>', '<cmd>AerialToggle!float<cr>', {
   desc = 'toggle aerial sidebar',
 })
 
-map('n', '<F4>', '<cmd>NeoTreeShowToggle<cr>', {
+map('n', '<F4>', '<cmd>Neotree show toggle<cr>', {
   plugin = 'neo-tree',
   category = 'UI',
   desc = 'toggle neotree',

@@ -27,6 +27,12 @@ vim.g.netrw_banner = false
 vim.g.netrw_silent = 1
 -- vim.g.netrw_http_cmd = 'curl'
 -- vim.g.netrw_http_xcmd = '-o'
+-- fixes unlisted buffer error
+-- https://github.com/romgrk/barbar.nvim/issues/82#issuecomment-748498951
+vim.g.netrw_bufsettings = 'noma nomod nonu nowrap ro buflisted'
+-- disable netrw
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrw = 1
 
 vim.g.tex_flavor = 'latex'
 vim.g.vimtex_view_method = 'skim'
@@ -48,10 +54,6 @@ vim.g.indent_blankline_filetype = { 'rust', 'go', 'lua', 'json', 'ruby' }
 vim.g.indent_blankline_use_treesitter = true
 vim.g.loaded_ruby_provider = true
 
--- fixes unlisted buffer error
--- https://github.com/romgrk/barbar.nvim/issues/82#issuecomment-748498951
-vim.g.netrw_bufsettings = 'noma nomod nonu nowrap ro buflisted'
-
 -- Allows users to specify the type of embedded script highlighting they want:  (perl/python/ruby/tcl support)
 vim.g.vimsyn_embed = '--lmpPr'
 
@@ -62,35 +64,7 @@ vim.g.bats_vim_consider_dollar_as_part_of_word = 1
 -- pgsql default for sql files
 vim.g.sql_type_default = 'pgsql'
 
-vim.g.indent_blankline_filetype_exclude = { 'alpha', 'NvimTree', 'packer' }
-vim.g.indent_blankline_buftype_exclude = { 'terminal' }
 vim.g.asyncrun_open = 6
-vim.g.markdown_fenced_languages = {
-  'awk',
-  'bash=sh',
-  'c',
-  'cpp',
-  'css',
-  'go',
-  'html',
-  'javascript',
-  'json',
-  'lua',
-  'python',
-  'ruby',
-  'rust',
-  'sh',
-  'shell=sh',
-  'sql',
-  'terraform',
-  'ts=typescript',
-  'vim',
-  'xml',
-  'yaml',
-  'yaml',
-  'zsh',
-}
-
 vim.lsp.log_levels['INSPECT'] = 4
 vim.lsp.log_levels['RUN'] = 4
 vim.lsp.log_levels['STATUS'] = 4

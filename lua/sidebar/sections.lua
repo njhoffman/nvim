@@ -1,89 +1,89 @@
 local is_installed = function(name)
-  local plugins = require("lazy.core.config").spec.plugins
+  local plugins = require('lazy.core.config').spec.plugins
   return plugins[name] and plugins[name]._.installed
 end
 
 local sections = {
   {
-    name = "neotree",
-    text = "Neotree Explorer",
+    name = 'neotree',
+    text = 'Neotree Explorer',
     enabled = function()
-      return is_installed("neo-tree.nvim")
+      return is_installed('neo-tree.nvim')
     end,
     open = function()
-      vim.cmd("NeoTreeShow")
+      vim.cmd('Neotree show')
     end,
     close = function()
-      vim.cmd("NeoTreeClose")
+      vim.cmd('Neotree close')
     end,
   },
   {
-    name = "aerial ",
-    text = "Aerial Symbols",
+    name = 'aerial ',
+    text = 'Aerial Symbols',
     enabled = function()
-      return is_installed("aerial.nvim")
+      return is_installed('aerial.nvim')
     end,
     float = function()
-      require("aerial").open({ direction = "float" })
-      vim.cmd("wincmd p")
+      require('aerial').open({ direction = 'float' })
+      vim.cmd('wincmd p')
     end,
     open = function()
-      require("aerial").open({ direction = "right" })
-      vim.cmd("wincmd p")
+      require('aerial').open({ direction = 'right' })
+      vim.cmd('wincmd p')
     end,
     close = function()
-      vim.cmd("AerialClose")
+      vim.cmd('AerialClose')
     end,
   },
   {
-    name = "mundo",
-    text = "Mundo Tree",
+    name = 'mundo',
+    text = 'Mundo Tree',
     cycle = false,
     enabled = function()
-      return false and is_installed("vim-mundo")
+      return false and is_installed('vim-mundo')
     end,
     open = function()
-      vim.cmd("MundoShow")
-      vim.cmd("wincmd p")
+      vim.cmd('MundoShow')
+      vim.cmd('wincmd p')
     end,
     close = function()
-      vim.cmd("MundoHide")
+      vim.cmd('MundoHide')
     end,
   },
   {
-    name = "nvimsidebar",
-    text = "Nvim Sidebar",
+    name = 'nvimsidebar',
+    text = 'Nvim Sidebar',
     cycle = false,
     enabled = function()
-      return false and is_installed("sidebar.nvim")
+      return false and is_installed('sidebar.nvim')
     end,
     open = function()
-      vim.cmd("SidebarNvimOpen")
+      vim.cmd('SidebarNvimOpen')
     end,
     close = function()
-      vim.cmd("SidebarNvimClose")
+      vim.cmd('SidebarNvimClose')
     end,
   },
   {
-    name = "tsplayground",
-    text = "Treesitter Playground",
+    name = 'tsplayground',
+    text = 'Treesitter Playground',
     cycle = false,
     enabled = function()
-      return false and is_installed("nvim-treesitter")
+      return false and is_installed('nvim-treesitter')
     end,
     open = function()
-      vim.cmd("TSPlaygroundToggle")
+      vim.cmd('TSPlaygroundToggle')
     end,
     close = function()
-      vim.cmd("TSPlaygroundToggle")
+      vim.cmd('TSPlaygroundToggle')
     end,
   },
   {
-    name = "dapui",
-    text = "DAP Debug",
+    name = 'dapui',
+    text = 'DAP Debug',
     enabled = false,
     open = function()
-      require("dapui").toggle("sidebar")
+      require('dapui').toggle('sidebar')
     end,
   },
   -- todo comments, git actions, buffers, diagnostics, asynctasks, user-options, man, docker, tags, jumplist, changes

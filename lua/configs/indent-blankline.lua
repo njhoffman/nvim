@@ -25,7 +25,7 @@ local ft_exclude = {
   'noice',
   'null-ls-info',
   'sidekick',
-  'NeoTree',
+  'neo-tree',
   'NvimTree',
   'Trouble',
 }

@@ -59,6 +59,7 @@ local statusline_cfg = {
   },
   force_inactive = {
     filetypes = {
+      '^neo-tree',
       '^NvimTree$',
       '^packer$',
       '^startify$',

@@ -46,7 +46,7 @@ local plugins = {
             'noice',
             'null-ls-info',
             'sidekick',
-            'NeoTree',
+            'neo-tree',
             'NvimTree',
             'Trouble',
           }
@@ -212,9 +212,9 @@ local plugins = {
   {
     'nvim-neo-tree/neo-tree.nvim',
     lazy = false,
-    cmd = { 'NeoTreeFocusToggle', 'NeoTreeShowToggle' },
+    cmd = { 'Neotree' },
     event = 'VimEnter',
-    branch = 'v2.x',
+    branch = 'v3.x',
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-web-devicons', 'MunifTanjim/nui.nvim' },
   },
   {
@@ -340,7 +340,9 @@ local plugins = {
     cmd = { 'Git', 'Ggrep', 'GMove', 'GDelete', 'Gspilt', 'Gstatus', 'Gwrite', 'Gread', 'Gdiffsplit', 'Gedit' },
     dependencies = 'tpope/vim-rhubarb',
   },
-  --
+  -- https://github.com/sam4llis/nvim-lua-gf
+  -- https://github.com/notomo/curstr.nvim/blob/master/doc/curstr.nvim.txt
+  -- { 'tpope/vim-apathy' }
   -- tools and integrations
   --
   { 'aserowy/tmux.nvim', event = 'VeryLazy' },
