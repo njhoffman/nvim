@@ -1,5 +1,9 @@
-require('globals.importer')
+-- debugging init scripts
+-- require('globals.record-events')
+-- require('globals.overrides')
 
+-- global require handler
+require('globals.importer')
 vim.import('globals.variables')
 vim.import('user-options')
 vim.import('vim-options')

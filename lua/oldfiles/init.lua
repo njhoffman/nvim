@@ -5,7 +5,10 @@ local utils = require('oldfiles.utils')
 -- local shadaEventsViml = { { "BufWrite", "*", [[call ShadaWrite()]] }, { "Signal", "SIGUSR1", [[call ShadaRead()]] } }
 
 local config = {
-  shada_events = { 'BufRead' },
+  shada_events = {
+    'BufWritePost',
+    -- 'BufRead',
+  },
 }
 
 vim.api.nvim_create_autocmd(config.shada_events, {

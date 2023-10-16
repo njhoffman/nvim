@@ -72,7 +72,7 @@ local cfg = {
       -- auto close
       event = 'file_opened',
       handler = function(file_path)
-        require('neo-tree').close_all()
+        -- require('neo-tree').close_all()
       end,
     },
     {

@@ -3,6 +3,13 @@ local is_installed = function(name)
   return plugins[name] and plugins[name]._.installed
 end
 
+local barbarEnabled = function()
+  local id = vim.api.nvim_create_augroup('barbar_render', {
+    clear = false,
+  })
+  return id ~= nil
+end
+
 local sections = {
   {
     name = 'neotree',

@@ -35,8 +35,8 @@ local main_maps = {
     ["<M-b>"]       = actions.preview_scrolling_up,
     ["<M-f>"]       = actions.preview_scrolling_down,
     ["<M-/>"]       = actions_layout.toggle_preview,
-    ["<F47>"]       = actions.cycle_previewers_prev, -- Ctrl-Alt-<
-    ["<F48>"]       = actions.cycle_previewers_next, -- Ctrl-ALt->
+    ["<M-->"]       = actions.cycle_previewers_prev, -- Ctrl-Alt -
+    ["<M-=>"]       = actions.cycle_previewers_next, -- Ctrl-Alt =
     ["<C-G>"]       = actions.move_to_top,
     ["<C-B>"]       = c_actions.results_page_up,
     ["<C-F>"]       = c_actions.results_page_down,

@@ -1,23 +1,12 @@
 local sinks = require('logger.sinks')
 local structlog = require('structlog')
+local logLevels = require('logger.levels')
 
 local sinks_config = { main = { banner = true }, module = { banner = false } }
 
-local logdefs = {
-  root = { main = 3 },
-  lazy = { main = 3 },
-  mru = { main = 2 },
-  git = { main = 1 },
-  fasd = { main = 3 },
-  project = { main = 3 },
-  lsp = { main = 3 },
-  mapper = { main = 3, module = 1 },
-  notify = { main = 1 },
-}
-
 local init = function(name, sink_levels)
   name = name or 'root'
-  sink_levels = sink_levels or logdefs[name] or { main = 3, module = 2, notify = 2 }
+  sink_levels = sink_levels or logLevels[name] or { main = 3, module = 2, notify = 2 }
 
   local has_level = function(lvl)
     return type(lvl) == 'number' and lvl > 0
@@ -41,7 +30,7 @@ local init = function(name, sink_levels)
   return structlog.get_logger(name)
 end
 
-for name, config in pairs(logdefs) do
+for name, config in pairs(logLevels) do
   init(name, config)
 end
 

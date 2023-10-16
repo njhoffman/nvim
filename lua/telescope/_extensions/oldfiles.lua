@@ -45,7 +45,8 @@ local parse_file_meta = function(path)
 end
 
 local file_display = function(opts)
-  local winwidth = math.floor(vim.api.nvim_win_get_width(0) * (opts.theme ~= 'ivy' and 0.8 or 1))
+  local winwidth = vim.api.nvim_get_option_value('columns', {})
+  winwidth = math.floor(winwidth * (opts.theme ~= 'ivy' and 0.8 or 1))
   local disable_devicons = opts.disable_devicons
   return function(entry)
     local hl_group, icon
@@ -67,7 +68,7 @@ local file_display = function(opts)
     if opts.show_size then
       display_right = display_right .. (#display_right > 0 and ' ' or '') .. meta.size
     end
-    display = mru_utils.truncate(display, winwidth - #display_right - 4)
+    display = mru_utils.truncate(display, winwidth - #display_right - 5)
     display = display .. mru_utils.align(display_right, winwidth - vim.fn.strdisplaywidth(display) - 5, 'right')
 
     local start_pos = winwidth - #display_right - 2

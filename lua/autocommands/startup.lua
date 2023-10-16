@@ -24,30 +24,50 @@ vim.api.nvim_create_autocmd('VimEnter', {
   desc = 'Create startup time notification when vim is finished loading',
 })
 
-local window_resized = function()
-  -- TODO: use different values for startup and resizing
-  local is_open = require('sidebar.state').open
-  local win_width = vim.api.nvim_win_get_width(0)
-  vim.defer_fn(function()
-    -- vim.cmd('echom "Width: ' .. win_width .. '"')
-    if win_width < 80 and not is_open then
-      require('barbar.events').disable()
-    else
-      require('barbar.events').enable()
-    end
-    if win_width > 140 then
-      require('sidebar').open()
-      -- TODO: calculate width if sidebar open
-      -- elseif is_open then
-      --   require('sidebar').close()
-    end
-  end, 1)
+local barbar_enabled = function()
+  local aucmds = vim.api.nvim_get_autocmds({ group = 'barbar_render' })
+  return #aucmds > 0
 end
 
-vim.api.nvim_create_autocmd({ 'VimEnter', 'VimResized' }, {
+local window_adjust = function(w)
+  return function()
+    -- vim.defer_fn(function()
+    --   local sidebar_open = require('sidebar.state').open
+    --   local width = vim.api.nvim_get_option_value('columns', {})
+    --   if width < w.barbar.off and barbar_enabled() and w.barbar.off ~= -1 then
+    --     require('barbar.events').disable()
+    --   elseif width > w.barbar.on and not barbar_enabled() and w.barbar.on ~= -1 then
+    --     require('barbar.events').enable()
+    --   end
+    --   if width > w.sidebar.on and not sidebar_open and w.sidebar.on ~= -1 then
+    --     require('sidebar').open()
+    --   elseif width < w.sidebar.off and sidebar_open and w.sidebar.off ~= -1 then
+    --     require('sidebar').close()
+    --   end
+    -- end, 10)
+  end
+end
+
+local w_start = {
+  barbar = { off = 60, on = 100 },
+  sidebar = { off = 80, on = -1 },
+}
+
+local w_resize = {
+  barbar = { off = 60, on = 100 },
+  sidebar = { off = 100, on = 120 },
+}
+
+vim.api.nvim_create_autocmd({ 'VimEnter' }, {
   pattern = '*',
-  callback = window_resized,
-  desc = 'Create startup time notification when vim is finished loading',
+  callback = window_adjust(w_start),
+  desc = 'Show or hide barbar and sidebar when vim is finished loading',
+})
+
+vim.api.nvim_create_autocmd({ 'VimResized' }, {
+  pattern = '*',
+  callback = window_adjust(w_resize),
+  desc = 'Show or hide barbar and sidebar when the window is resized',
 })
 
 local get_command_val = function(name)

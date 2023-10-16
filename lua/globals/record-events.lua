@@ -1,7 +1,3 @@
--- 'BufReadCmd',
--- 'BufWriteCmd',
--- 'SourceCmd',
-
 local all_events = {
   'BufAdd',
   'BufDelete',

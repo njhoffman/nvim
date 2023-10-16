@@ -15,7 +15,7 @@ local cfg = {
     '!TelescopeResults',
   },
   user_default_options = {
-    RGB = false, -- #RGB hex codes
+    RGB = true, -- #RGB hex codes
     RRGGBB = true, -- #RRGGBB hex codes
     names = false, -- "Name" codes like Blue or blue
     RRGGBBAA = true, -- #RRGGBBAA hex codes

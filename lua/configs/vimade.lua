@@ -33,6 +33,8 @@
 --    enablefocusfading = 1
 -- --  }
 
+-- TODO: have separate fade level for focus events
+
 vim.g.vimade = {
   -- running = 0,
   basebg = '#001144',
@@ -57,13 +59,13 @@ vim.g.vimade = {
   enablebasegroups = 1,
   rowbufsize = 10,
   colbufsize = 10,
-  fadelevel = 0.65,
+  fadelevel = 0.40,
   signsretentionperiod = 2000,
   fadepriority = 100,
   enablesigns = 1,
   signspriority = 31,
   enabletreesitter = 1,
-  enablefocusfading = 1,
+  enablefocusfading = 0,
   checkinterval = 50,
   groupdiff = 0,
   groupscrollbind = 1,
