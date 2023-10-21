@@ -20,7 +20,7 @@ opt('breakindent', true)
 opt('breakindentopt', 'shift:2')
 opt('cedit', '<C-t>') -- ctrl-f interferes with popup completion
 opt('clipboard', 'unnamedplus')
-opt('cmdheight', 0) -- 0
+opt('cmdheight', 2) -- 0
 opt('cmdwinheight', 10)
 opt('completeopt', 'menu,menuone,noselect')
 opt('confirm', true)
@@ -36,7 +36,7 @@ opt('helpheight', 25)
 opt('hidden', true)
 opt('hlsearch', true)
 opt('ignorecase', true)
-opt('inccommand', 'split')
+opt('inccommand', 'nosplit')
 opt('incsearch', true)
 opt('joinspaces', false)
 opt('jumpoptions', 'stack')
@@ -56,7 +56,8 @@ opt('redrawtime', 10000)
 opt('scrolloff', 7)
 opt('sessionoptions', 'buffers,curdir,folds,help,resize,winpos,terminal') -- winsize messes up on load
 opt('shada', "!,'1000,<100,s500")
-opt('shortmess', 'tTIscCaF') -- F silents filename (but needed for bufread on vimenter), C? default: filnxtToOCF
+-- F silents filename (but needed for bufread on vimenter), C? default: filnxtToOCF
+opt('shortmess', 'ltToOCFa') -- ltToOCF
 opt('showbreak', '↳ ')
 opt('showcmd', true)
 opt('showmatch', true)
@@ -120,9 +121,9 @@ opt('undofile', true, buffer)
 vim.g.markdown_recommended_style = 0
 
 -- Enable syntax highlighing if it wasn't already (as it is time consuming)
-if vim.fn.exists('syntax_on') ~= 1 then
-  vim.cmd([[syntax enable]])
-end
+-- if vim.fn.exists('syntax_on') ~= 1 then
+--   vim.cmd([[syntax enable]])
+-- end
 
 vim.cmd([[
   " curl -sS https://raw.githubusercontent.com/neovim/neovim/v0.7.2/runtime/syntax/lua.vim > $VIMRUNTIME/syntax/lua.vim

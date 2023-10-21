@@ -1,5 +1,11 @@
--- lua runtie plugin: Enabsles lua paths
+-- vim: fdm=marker:fdc=1
 
+vim.api.nvim_set_keymap('n', '<localleader>1', ':luafile%<cr>', { silent = true })
+
+-- Enable `gf` for `require()`d files.
+-- Modified (slight cleanup) from
+-- https://gist.github.com/iagoleal/92bd781dae1926525cd5e049eb32d64b
+-- {{{
 local fmt = string.format
 
 -- Iterator that splits a string o a given delimiter
@@ -14,6 +20,8 @@ local function dir_separator()
   -- Look at package.config for directory separator string (it's the first line)
   if package.config then
     return string.match(package.config, '^[^\n]')
+  elseif vim.fn.has('win32') == 1 then
+    return '\\'
   else
     return '/'
   end
@@ -21,7 +29,8 @@ end
 
 -- Search for lua traditional include paths.
 -- This mimics how require internally works.
-local function include_paths(fname)
+local function include_paths(fname, ext)
+  ext = ext or 'lua'
   local paths = string.gsub(package.path, '%?', fname)
   for path in split(paths, '%;') do
     if vim.fn.filereadable(path) == 1 then
@@ -51,14 +60,14 @@ local function include_rtpaths(fname, ext)
 end
 
 -- Global function that searches the path for the required file
-function find_required_path(module)
+function Find_required_path(module)
   -- Look at package.config for directory separator string (it's the first line)
   local sep = string.match(package.config, '^[^\n]')
   -- Properly change '.' to separator (probably '/' on *nix and '\' on Windows)
   local fname = vim.fn.substitute(module, '\\.', sep, 'g')
   local f
   ---- First search for lua modules
-  f = include_paths(fname)
+  f = include_paths(fname, 'lua')
   if f then
     return f
   end
@@ -67,13 +76,8 @@ function find_required_path(module)
   if f then
     return f
   end
-  ---- Try lua prefix
-  f = include_paths('/lua/' .. fname)
-  if f then
-    return f
-  end
   ---- Now search for Fennel modules
-  f = include_paths(fname)
+  f = include_paths(fname, 'fnl')
   if f then
     return f
   end
@@ -86,18 +90,5 @@ end
 
 -- Set options to open require with gf
 vim.opt_local.include = [=[\v<((do|load)file|require)\s*\(?['"]\zs[^'"]+\ze['"]]=]
-vim.opt_local.includeexpr = 'v:lua.find_required_path(v:fname)'
-
-vim.cmd([[
-  " Disable inserting comment leader after hitting o or O or <Enter>
-  set formatoptions-=o
-  set formatoptions-=r
-]])
--- lua.vim
--- vim.cmd([[
---   setlocal suffixesadd^=.lua
---   setlocal suffixesadd^=init.lua
---   let &l:path .= ','.stdpath('config').'/lua'
--- ]])
---
-vim.treesitter.start()
+vim.opt_local.includeexpr = 'v:lua.Find_required_path(v:fname)'
+-- }}}
