@@ -25,7 +25,12 @@ local plugins = {
       'RRethy/vim-illuminate',
       'b0o/schemastore.nvim', -- for jsonls
       'KostkaBrukowa/definition-or-references.nvim',
-      'smjonas/inc-rename.nvim',
+      {
+        'smjonas/inc-rename.nvim',
+        config = function()
+          require('inc_rename').setup()
+        end,
+      },
       'nanotee/sqls.nvim',
       'tami5/lspsaga.nvim',
 

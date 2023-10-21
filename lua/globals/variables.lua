@@ -57,6 +57,8 @@ vim.g.loaded_ruby_provider = true
 -- Allows users to specify the type of embedded script highlighting they want:  (perl/python/ruby/tcl support)
 vim.g.vimsyn_embed = '--lmpPr'
 
+vim.cmd([[syntax on]])
+
 -- bats
 -- Whether or not to add dollar sign to iskeyword.
 vim.g.bats_vim_consider_dollar_as_part_of_word = 1

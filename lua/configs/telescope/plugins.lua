@@ -388,12 +388,12 @@ local tele_plugs = {
       preview_height = 0.8,
     },
     diff_context_lines = vim.o.scrolloff,
-    entry_format = 'state #$ID, $STAT, $TIME',
+    entry_format = 'state #$ID ($STAT): $TIME',
     mappings = {
       i = {
         ['<cr>'] = require('telescope-undo.actions').yank_additions,
-        ['<S-cr>'] = require('telescope-undo.actions').yank_deletions,
-        ['<C-cr>'] = require('telescope-undo.actions').restore,
+        ['<s-cr>'] = require('telescope-undo.actions').yank_deletions,
+        ['<c-cr>'] = require('telescope-undo.actions').restore,
       },
     },
   },

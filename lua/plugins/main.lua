@@ -14,6 +14,7 @@ local plugins = {
     event = 'VimEnter',
     dependencies = 'nvim-web-devicons',
   },
+  { 'stevearc/stickybuf.nvim', event = 'VeryLazy' },
   {
     'tummetott/reticle.nvim',
     lazy = false,
@@ -138,6 +139,12 @@ local plugins = {
       'jbyuki/tree-sitter-ntangle',
       'sustech-data/wildfire.nvim',
       'nvim-lua/plenary.nvim',
+      {
+        'ThePrimeagen/refactoring.nvim',
+        dependencies = {
+          { 'nvim-lua/plenary.nvim' },
+        },
+      },
       'nvim-treesitter/nvim-treesitter-refactor',
       'nvim-treesitter/nvim-treesitter-textobjects',
       'nvim-treesitter/playground',
@@ -147,6 +154,8 @@ local plugins = {
       { 'ckolkey/ts-node-action', dependencies = { 'null-ls.nvim' } },
     },
   },
+
+  { 'stevearc/aerial.nvim', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
   { 'gbprod/substitute.nvim', event = { 'VeryLazy' } },
   { 'echasnovski/mini.surround', event = { 'VeryLazy' } },
   -- matching
@@ -181,7 +190,7 @@ local plugins = {
   { 'andrewferrier/debugprint.nvim', event = 'VeryLazy' },
   { 'ecthelionvi/NeoComposer.nvim', event = 'VeryLazy', dependencies = { 'kkharji/sqlite.lua', 'telescope.nvim' } },
   { 'tpope/vim-repeat', event = 'VeryLazy' },
-  { 'smjonas/live-command.nvim', cmd = { 'Reg', 'Norm' }, event = 'VeryLazy' },
+  { 'smjonas/live-command.nvim', dependencies = { 'tpope/vim-abolish', 'rickhowe/diffchar.vim' }, event = 'VeryLazy' },
   { 'Konfekt/vim-alias', event = 'VeryLazy' },
   { 'rainbowhxch/accelerated-jk.nvim', enabled = false, event = 'VeryLazy' },
   {
@@ -269,7 +278,6 @@ local plugins = {
       'ptethng/telescope-makefile',
       'rlch/github-notifications.nvim',
       'sbulav/telescope-terraform.nvim',
-      'stevearc/aerial.nvim',
       'doctorfree/cheatsheet.nvim',
       'tamago324/telescope-openbrowser.nvim',
       'tsakirist/telescope-lazy.nvim',
@@ -364,14 +372,6 @@ local plugins = {
   -- { 'rmagatti/auto-session', event = 'VimEnter' },
   { 'wakatime/vim-wakatime', event = 'VeryLazy' },
   { 'LunarVim/bigfile.nvim' },
-  {
-    'ThePrimeagen/refactoring.nvim',
-    lazy = true,
-    dependencies = {
-      { 'nvim-lua/plenary.nvim' },
-      { 'nvim-treesitter/nvim-treesitter' },
-    },
-  },
   { 'carlosrocha/chrome-remote.nvim', event = 'VeryLazy' },
   {
     'nvim-neotest/neotest',
