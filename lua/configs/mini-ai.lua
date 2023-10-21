@@ -65,8 +65,9 @@ local opts = {
 
 ai.setup(opts)
 
-local vmap = require('mapper').vmap
-local prefix = require('mapper').prefix
+local setup_keymaps = function()
+  local vmap = require('mapper').vmap
+  local prefix = require('mapper').prefix
 
 -- stylua: ignore
 local text_obj = {
@@ -93,70 +94,71 @@ local text_obj = {
   t        = '*inside tag',
 }
 
-local prefixes = {
-  ['i'] = { name = 'inside' },
-  ['in'] = { name = 'next' },
-  ['il'] = { name = 'last' },
-  ['a'] = { name = 'around' },
-  ['an'] = { name = 'next' },
-  ['al'] = { name = 'last' },
-  ['g['] = { name = 'goto left' },
-  ['g]'] = { name = 'goto right' },
-}
+  local prefixes = {
+    ['i'] = { name = 'inside' },
+    ['in'] = { name = 'next' },
+    ['il'] = { name = 'last' },
+    ['a'] = { name = 'around' },
+    ['an'] = { name = 'next' },
+    ['al'] = { name = 'last' },
+    ['g['] = { name = 'goto left' },
+    ['g]'] = { name = 'goto right' },
+  }
 
-for k, v in ipairs(prefixes) do
-  prefix({ 'o', 'x' }, k, v.name)
-end
+  for k, v in ipairs(prefixes) do
+    prefix({ 'o', 'x' }, k, v.name)
+  end
 
-local virtual_map = function(lhs, desc, modes)
-  modes = modes or { 'o', 'x' }
-  vmap(modes, lhs, { desc = desc, plugin = 'mini.ai', category = 'Motion' })
-end
+  local virtual_map = function(lhs, desc, modes)
+    modes = modes or { 'o', 'x' }
+    vmap(modes, lhs, { desc = desc, plugin = 'mini.ai', category = 'Motion' })
+  end
 
--- for k, v in pairs(vim.deepcopy(text_obj)) do
---   virtual_map('i' .. k, v)
--- end
---
-for k, v in pairs(vim.deepcopy(text_obj)) do
-  local desc = string.gsub(tostring(v), 'including.*', '')
-  desc = string.gsub(desc, 'inside', 'around')
-  virtual_map('a' .. k, desc)
-end
+  -- for k, v in pairs(vim.deepcopy(text_obj)) do
+  --   virtual_map('i' .. k, v)
+  -- end
+  --
+  for k, v in pairs(vim.deepcopy(text_obj)) do
+    local desc = string.gsub(tostring(v), 'including.*', '')
+    desc = string.gsub(desc, 'inside', 'around')
+    virtual_map('a' .. k, desc)
+  end
 
--- for k, v in pairs(vim.deepcopy(text_obj)) do
---   local desc = string.gsub(tostring(v), 'including.*', '')
---   desc = string.gsub(desc, 'inside', 'inside last')
---   virtual_map('il' .. k, desc)
--- end
---
--- for k, v in pairs(vim.deepcopy(text_obj)) do
---   local desc = string.gsub(tostring(v), 'including.*', '')
---   desc = string.gsub(desc, 'inside', 'inside next')
---   virtual_map('in' .. k, desc)
--- end
---
--- for k, v in pairs(vim.deepcopy(text_obj)) do
---   local desc = string.gsub(tostring(v), 'including.*', '')
---   desc = string.gsub(desc, 'inside', 'around last')
---   virtual_map('al' .. k, desc)
--- end
---
--- for k, v in pairs(vim.deepcopy(text_obj)) do
---   local desc = string.gsub(tostring(v), 'including.*', '')
---   desc = string.gsub(desc, 'inside', 'around next')
---   virtual_map('an' .. k, desc)
--- end
+  -- for k, v in pairs(vim.deepcopy(text_obj)) do
+  --   local desc = string.gsub(tostring(v), 'including.*', '')
+  --   desc = string.gsub(desc, 'inside', 'inside last')
+  --   virtual_map('il' .. k, desc)
+  -- end
+  --
+  -- for k, v in pairs(vim.deepcopy(text_obj)) do
+  --   local desc = string.gsub(tostring(v), 'including.*', '')
+  --   desc = string.gsub(desc, 'inside', 'inside next')
+  --   virtual_map('in' .. k, desc)
+  -- end
+  --
+  -- for k, v in pairs(vim.deepcopy(text_obj)) do
+  --   local desc = string.gsub(tostring(v), 'including.*', '')
+  --   desc = string.gsub(desc, 'inside', 'around last')
+  --   virtual_map('al' .. k, desc)
+  -- end
+  --
+  -- for k, v in pairs(vim.deepcopy(text_obj)) do
+  --   local desc = string.gsub(tostring(v), 'including.*', '')
+  --   desc = string.gsub(desc, 'inside', 'around next')
+  --   virtual_map('an' .. k, desc)
+  -- end
 
-for k, v in pairs(vim.deepcopy(text_obj)) do
-  local desc = string.gsub(tostring(v), 'including.*', '')
-  desc = string.gsub(desc, 'inside', 'goto left')
-  virtual_map('g[' .. k, desc, { 'x', 'o', 'n' })
-end
+  for k, v in pairs(vim.deepcopy(text_obj)) do
+    local desc = string.gsub(tostring(v), 'including.*', '')
+    desc = string.gsub(desc, 'inside', 'goto left')
+    virtual_map('g[' .. k, desc, { 'x', 'o', 'n' })
+  end
 
-for k, v in pairs(vim.deepcopy(text_obj)) do
-  local desc = string.gsub(tostring(v), 'including.*', '')
-  desc = string.gsub(tostring(desc), 'inside', 'goto right')
-  virtual_map('g]' .. k, desc, { 'x', 'o', 'n' })
+  for k, v in pairs(vim.deepcopy(text_obj)) do
+    local desc = string.gsub(tostring(v), 'including.*', '')
+    desc = string.gsub(tostring(desc), 'inside', 'goto right')
+    virtual_map('g]' .. k, desc, { 'x', 'o', 'n' })
+  end
 end
 
 -- w word

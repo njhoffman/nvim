@@ -19,7 +19,11 @@ local plugins = {
     lazy = false,
     event = { 'BufReadPre', 'BufNewFile' },
     -- reticle messes up with Neo-tree cursorline in search mode
-    opts = { always = { cursorline = { 'neo-tree' } } },
+    opts = {
+      always = { cursorline = { 'neo-tree' } },
+      on_startup = { cursorline = true, cursorcolumn = false },
+      never = { cursorline = { 'qf', 'noice' }, cursorcolumn = { 'qf', 'noice' } },
+    },
   },
   { 'lukas-reineke/indent-blankline.nvim', event = { 'BufReadPre', 'BufNewFile' } },
   { 'Tyler-Barham/floating-help.nvim', cmd = 'FloatHelp' },
@@ -96,14 +100,14 @@ local plugins = {
   { 'matbme/JABS.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'ghillb/cybu.nvim', event = { 'BufRead', 'BufNewFile' } },
   { 'nacro90/numb.nvim', event = { 'BufReadPost', 'BufNewFile' } },
-  {
-    'ivyl/vim-bling',
-    event = { 'BufReadPost', 'BufNewFile' },
-    init = function()
-      vim.g.bling_no_map = 0
-      vim.g.bling_no_expr = 1
-    end,
-  },
+  -- {
+  --   'ivyl/vim-bling',
+  --   event = { 'BufReadPost', 'BufNewFile' },
+  --   init = function()
+  --     vim.g.bling_no_map = 0
+  --     vim.g.bling_no_expr = 1
+  --   end,
+  -- },
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
   { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   {
@@ -321,12 +325,12 @@ local plugins = {
   -- git tools
   --
   { 'rbong/vim-flog', cmd = { 'Flog', 'Flogsplit' } },
-  {
-    'f-person/git-blame.nvim',
-    init = function()
-      vim.g.gitblame_enabled = 0
-    end,
-  },
+  -- {
+  --   'f-person/git-blame.nvim',
+  --   init = function()
+  --     vim.g.gitblame_enabled = 0
+  --   end,
+  -- },
   { 'ThePrimeagen/git-worktree.nvim', event = 'VeryLazy' },
   { 'napisani/nvim-github-codesearch', cmd = 'GithubSearch', build = 'make' },
   { 'akinsho/git-conflict.nvim', version = '*', lazy = false },
@@ -525,25 +529,6 @@ local plugins = {
     build = function()
       -- pip install -r langchain==0.0.177 llama-cpp-python==0.1.48 Pygments==2.15.1 pynvim==0.4.3
       vim.cmd([[silent UpdateRemotePlugins]])
-    end,
-  },
-  {
-    'Exafunction/codeium.vim',
-    event = 'BufEnter',
-    config = function()
-      -- Change '<C-g>' here to any keycode you like.
-      vim.keymap.set('i', '<C-Space>', function()
-        return vim.fn['codeium#Accept']()
-      end, { expr = true })
-      -- vim.keymap.set('i', '<c-;>', function()
-      --   return vim.fn['codeium#CycleCompletions'](1)
-      -- end, { expr = true })
-      -- vim.keymap.set('i', '<c-,>', function()
-      --   return vim.fn['codeium#CycleCompletions'](-1)
-      -- end, { expr = true })
-      -- vim.keymap.set('i', '<c-x>', function()
-      --   return vim.fn['codeium#Clear']()
-      -- end, { expr = true })
     end,
   },
   {

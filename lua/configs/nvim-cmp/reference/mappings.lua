@@ -37,7 +37,19 @@ local main = {
     end
   end, { 'i' }),
   ['<C-e>'] = cmp.mapping.abort(),
-  ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  -- ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  -- if nothing is selected add a newline
+  ['<CR>'] = cmp.mapping({
+    i = function(fallback)
+      if cmp.visible() and cmp.get_active_entry() then
+        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+      else
+        fallback()
+      end
+    end,
+    s = cmp.mapping.confirm({ select = true }),
+    c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+  }),
   ['<Tab>'] = cmp.mapping(function(fallback)
     if cmp.visible() then
       cmp.select_next_item({ behavior = cmp_types.SelectBehavior.Select })
@@ -48,7 +60,7 @@ local main = {
     elseif type(fallback) == 'function' then
       fallback()
     end
-  end, { 'i', 'c' }),
+  end, { 'i' }),
   ['<S-Tab>'] = cmp.mapping(function(fallback)
     if cmp.visible() then
       -- cmp.select_prev_item()
@@ -59,8 +71,8 @@ local main = {
       fallback()
     end
   end, { 'i' }),
-  ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }), { 'i', 'c' }),
-  ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp_types.SelectBehavior.Select }), { 'i', 'c' }),
+  ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }), { 'i' }),
+  ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp_types.SelectBehavior.Select }), { 'i' }),
   ['<Up>'] = cmp.mapping(cmp.mapping.scroll_docs(-1), { 'i' }),
   ['<Down>'] = cmp.mapping(cmp.mapping.scroll_docs(1), { 'i' }),
   ['<C-D>'] = cmp.mapping(cmp.mapping.abort(), { 'i' }),
@@ -174,18 +186,65 @@ local main_alt = {
 
 local in_history = false
 local cmdline = {
-  mapping = {
-    ['<C-z>'] = cmp.mapping(function()
+  ['<C-z>'] = {
+    c = function()
+      local cmp = require('cmp')
       if cmp.visible() then
         cmp.select_next_item()
       else
         cmp.complete()
       end
-    end, { 'c' }),
-    ['<Down>'] = cmp.mapping(cmp.mapping.scroll_docs(1), { 'c' }),
-    ['<Up>'] = cmp.mapping(cmp.mapping.scroll_docs(-1), { 'c' }),
-    ['<C-D>'] = cmp.mapping(cmp.mapping.abort(), { 'c' }),
-    ['<C-n>'] = cmp.mapping(function(fallback)
+    end,
+  },
+  ['<Tab>'] = {
+    c = function()
+      local cmp = require('cmp')
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        cmp.complete()
+      end
+    end,
+  },
+  ['<S-Tab>'] = {
+    c = function()
+      local cmp = require('cmp')
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        cmp.complete()
+      end
+    end,
+  },
+  -- ['<C-n>'] = {
+  --   c = function(fallback)
+  --     local cmp = require('cmp')
+  --     if cmp.visible() then
+  --       cmp.select_next_item()
+  --     else
+  --       fallback()
+  --     end
+  --   end,
+  -- },
+  -- ['<C-p>'] = {
+  --   c = function(fallback)
+  --     local cmp = require('cmp')
+  --     if cmp.visible() then
+  --       cmp.select_prev_item()
+  --     else
+  --       fallback()
+  --     end
+  --   end,
+  -- },
+  ['<C-e>'] = {
+    c = mapping.abort(),
+  },
+  ['<C-y>'] = {
+    c = mapping.confirm({ select = false }),
+  },
+  ['<C-D>'] = { c = cmp.mapping.abort() },
+  ['<C-n>'] = cmp.mapping({
+    c = function(fallback)
       if cmp.visible() then
         cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
         in_history = false
@@ -196,20 +255,26 @@ local cmdline = {
         -- cmp.mapping(cmp.complete())
         -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
       end
-    end, { 'c' }),
-    ['<C-p>'] = cmp.mapping(function()
+    end,
+  }),
+  ['<C-p>'] = cmp.mapping({
+    c = function(fallback)
       if cmp.visible() and cmp.get_selected_entry() then
         cmp.select_prev_item({
-          -- behavior = cmp.SelectBehavior.Insert,
+          behavior = cmp.SelectBehavior.Insert,
         })
         in_history = false
+        vim.dbglog('NO HISTORY', cmp.get_selected_entry())
       else
         -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
+        vim.dbglog('HJISTORY')
         feedkeys.call(keymap.t('<Up>'), 'c')
         in_history = true
       end
-    end, { 'c' }),
-    ['<C-f>'] = cmp.mapping(function(fallback)
+    end,
+  }),
+  ['<C-f>'] = cmp.mapping({
+    c = function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_next_item({
@@ -219,8 +284,10 @@ local cmdline = {
       elseif type(fallback) == 'function' then
         fallback()
       end
-    end, { 'c' }),
-    ['<C-b>'] = cmp.mapping(function(fallback)
+    end,
+  }),
+  ['<C-b>'] = cmp.mapping({
+    c = function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do
           cmp.mapping.select_prev_item({
@@ -230,42 +297,8 @@ local cmdline = {
       elseif type(fallback) == 'function' then
         fallback()
       end
-    end, { 'c' }),
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif type(fallback) == 'function' then
-        fallback()
-      end
-    end, { 'c' }),
-    ['<S-Tab>'] = cmp.mapping(function()
-      if cmp.visible() then
-        cmp.select_prev_item()
-      else
-        cmp.complete()
-      end
-    end, { 'c' }),
-    -- ['<C-n>'] = {
-    --   c = function(fallback)
-    --     local cmp = require('cmp')
-    --     if cmp.visible() then
-    --       cmp.select_next_item()
-    --     else
-    --       fallback()
-    --     end
-    --   end,
-    -- },
-    -- ['<C-p>'] = {
-    --   c = function(fallback)
-    --     local cmp = require('cmp')
-    --     if cmp.visible() then
-    --       cmp.select_prev_item()
-    --     else
-    --       fallback()
-    --     end
-    --   end,
-    -- },
-  },
+    end,
+  }),
 }
 
 return {

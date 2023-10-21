@@ -49,9 +49,9 @@ vim.g.vimade = {
     'Search',
     'SignColumn',
     'Whitespace',
+    -- 'CursorLine',
+    -- 'CursorLineNr',
     -- "Normal",
-    -- "CursorLine",
-    -- "CursorLineNr",
     -- "v2hexokinase",
   },
 
