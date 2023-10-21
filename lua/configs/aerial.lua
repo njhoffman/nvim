@@ -332,6 +332,14 @@ local cfg = {
   -- When jumping to a symbol, highlight the line for this many ms.
   -- Set to false to disable
   highlight_on_jump = 500,
+  ignore = {
+    -- Ignore unlisted buffers. See :help buflisted
+    unlisted_buffers = true,
+    -- List of filetypes to ignore.
+    filetypes = { 'gitcommit' },
+    buftypes = 'special',
+    wintypes = 'special',
+  },
   backends = {
     -- ["_"] = { "lsp", "treesitter", "markdown", "man" },
     ['_'] = { 'lsp', 'treesitter', 'markdown', 'man' },
