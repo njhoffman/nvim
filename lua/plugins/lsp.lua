@@ -28,6 +28,14 @@ local plugins = {
       'smjonas/inc-rename.nvim',
       'nanotee/sqls.nvim',
       'tami5/lspsaga.nvim',
+
+      {
+        'Exafunction/codeium.nvim',
+        config = function()
+          local cfg = {}
+          require('codeium').setup(cfg)
+        end,
+      },
       { 'Wansmer/symbol-usage.nvim', event = 'LspAttach' },
       'rmagatti/goto-preview',
       'kosayoda/nvim-lightbulb',

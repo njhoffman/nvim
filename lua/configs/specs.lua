@@ -1,6 +1,6 @@
 -- :lua require('specs').toggle()
 -- Toggle Specs on/off
-local H = require "helpers"
+local H = require('helpers')
 
 local function exp_fader(blend, cnt)
   if blend + math.floor(math.exp(cnt / 10)) <= 100 then
@@ -29,7 +29,7 @@ end
 
 local function shrink_resizer(width, ccol, cnt)
   if width - cnt > 0 then
-    print(width - cnt .. " " .. ccol - (width - cnt) / 2 + 1)
+    print(width - cnt .. ' ' .. ccol - (width - cnt) / 2 + 1)
     return { width - cnt, ccol - (width - cnt) / 2 + 1 }
   else
     return nil
@@ -49,9 +49,9 @@ end
 local custom_config = {
   show_jumps = true,
   min_jump = 10,
-  popup = { winhl = "SpecsCursor", fader = exp_fader, resizer = shrink_resizer },
+  popup = { winhl = 'SpecsCursor', fader = exp_fader, resizer = shrink_resizer },
   ignore_filetypes = {},
-  ignore_buftypes = { nofile = true, nowrite, quickfix, terminal, prompt }
+  ignore_buftypes = { nofile = true, nowrite, quickfix, terminal, prompt },
 }
 
 local wide_config = {
@@ -62,9 +62,9 @@ local wide_config = {
     inc_ms = 50, -- time increments used for fade/resize effects
     blend = 0, -- starting blend, between 0-100 (fully transparent), see :h winblend
     width = 40,
-    winhl = "SpecsCursor",
+    winhl = 'SpecsCursor',
     fader = constant_blend,
-    resizer = shrink_resizer
+    resizer = shrink_resizer,
   },
   ignore_filetypes = {},
   ignore_buftypes = {
@@ -72,8 +72,8 @@ local wide_config = {
     nowrite = true,
     quickfix = true,
     terminal = true,
-    prompt = true
-  }
+    prompt = true,
+  },
 }
 
 local quick_config = {
@@ -83,7 +83,7 @@ local quick_config = {
   inc_ms = 3, -- time increments used for fade/resize effects
   blend = 0, -- starting blend, between 0-100 (fully transparent), see :h winblend
   width = 50,
-  winhl = "Cursor",
+  winhl = 'Cursor',
   fader = function(start_blend, cnt)
     local blend = start_blend + math.floor(math.exp(cnt / 10))
     if blend <= 100 then
@@ -103,26 +103,74 @@ local quick_config = {
     else
       return nil
     end
-  end
+  end,
+}
+
+local custom_config2 = {
+  popup = {
+    -- Simple constant blend effect
+    fader = function(blend, cnt)
+      if cnt > 100 then
+        return 80
+      else
+        return nil
+      end
+    end,
+    -- Growing effect from left to right
+    resizer = function(width, ccol, cnt)
+      if width - cnt > 0 then
+        return { width + cnt, ccol }
+      else
+        return nil
+      end
+    end,
+  },
+}
+
+local custom_config3 = {
+  show_jumps = true,
+  min_jump = 10,
+  popup = {
+    delay_ms = 0, -- delay before popup displays
+    inc_ms = 10, -- time increments used for fade/resize effects
+    blend = 60, -- starting blend, between 0-100 (fully transparent), see :h winblend
+    width = 20,
+    winhl = 'SpecsCursor',
+    fader = require('specs').exp_fader,
+    resizer = require('specs').shrink_resizer,
+  },
+  ignore_filetypes = { '' },
+  ignore_buftypes = { nofile = true, nowrite, quickfix, terminal, prompt },
 }
 
 local default_config = {
   show_jumps = true,
   min_jump = 10,
   popup = {
-    delay_ms = 5, -- delay before popup displays
+    delay_ms = 0, -- delay before popup displays
     inc_ms = 10, -- time increments used for fade/resize effects
-    blend = 60, -- starting blend, between 0-100 (fully transparent), see :h winblend
-    width = 15,
-    winhl = "SpecsCursor",
-    fader = require("specs").exp_fader,
-    resizer = require("specs").shrink_resizer
+    blend = 10, -- starting blend, between 0-100 (fully transparent), see :h winblend
+    width = 10,
+    winhl = 'SpecsCursor',
+    fader = require('specs').exp_fader,
+    resizer = require('specs').shrink_resizer,
   },
-  ignore_filetypes = { "" },
-  ignore_buftypes = { nofile = true, nowrite, quickfix, terminal, prompt }
+  ignore_filetypes = { '' },
+  ignore_buftypes = { nofile = true, nowrite, quickfix, terminal, prompt },
 }
-
-require("specs").setup(default_config)
+require('specs').setup(custom_config3)
+vim.api.nvim_set_keymap(
+  'n',
+  'n',
+  'n:lua require("specs").show_specs({ width = 5, inc_ms = 5 })<CR>',
+  { noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+  'n',
+  'N',
+  'N:lua require("specs").show_specs({ width = 5, inc_ms = 5 })<CR>',
+  { noremap = true, silent = true }
+)
 
 -- Faders:
 --   linear_fader ▁▂▂▃▃▄▄▅▅▆▆▇▇██

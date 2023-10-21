@@ -1,6 +1,8 @@
 local cmp = require('cmp')
 local cmp_types = require('cmp.types.cmp')
+local keymap = require('cmp.utils.keymap')
 local luasnip = require('luasnip')
+local feedkeys = require('cmp.utils.feedkeys')
 
 local send_enter = function()
   local enter_key = vim.api.nvim_replace_termcodes('<CR>', true, true, true)
@@ -12,10 +14,22 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
 
+local in_history = false
 local mapping = {
   main = {
     ['<C-x><C-o>'] = cmp.mapping.complete({}),
     ['<C-x><C-s>'] = cmp.mapping.complete({ config = { sources = { { name = 'luasnip' } } } }),
+    ['<C-g>'] = cmp.mapping.complete({
+      config = {
+        sources = {
+          {
+            name = 'codeium',
+            max_item_count = 10,
+          },
+          { name = 'copilot', max_item_count = 10 },
+        },
+      },
+    }),
     ['<Up>'] = cmp.mapping.scroll_docs(-1),
     ['<Down>'] = cmp.mapping.scroll_docs(1),
     ['<C-p>'] = cmp.mapping.select_prev_item({ count = 1 }),
@@ -29,7 +43,19 @@ local mapping = {
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<C-d>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    -- ['<CR>'] = cmp.mapping.confirm({ select = false }),
+
+    ['<CR>'] = cmp.mapping({
+      i = function(fallback)
+        if cmp.visible() and cmp.get_active_entry() then
+          cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+        else
+          fallback()
+        end
+      end,
+      s = cmp.mapping.confirm({ select = true }),
+      -- c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+    }),
     ['<M-/>'] = function()
       if cmp.visible_docs() then
         cmp.close_docs()
@@ -129,25 +155,48 @@ local mapping = {
         fallback()
       end
     end, { 'c' }),
-    ['<CR>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace })
-        send_enter()
-      elseif type(fallback) == 'function' then
-        fallback()
-      end
-    end, { 'c' }),
-    ['<C-f>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        for _ = 1, 5 do
-          cmp.mapping.select_next_item({
-            behavior = cmp_types.SelectBehavior.Select,
-          })(nil)
+    ['<C-n>'] = cmp.mapping({
+      c = function(fallback)
+        if cmp.visible() then
+          cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+          in_history = false
+        elseif in_history == true then
+          feedkeys.call(keymap.t('<Down>'), 'c')
+        elseif type(fallback) == 'function' then
+          fallback()
+          -- cmp.mapping(cmp.complete())
+          -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
         end
-      elseif type(fallback) == 'function' then
-        fallback()
-      end
-    end, { 'c' }),
+      end,
+    }),
+    ['<C-p>'] = cmp.mapping({
+      c = function(fallback)
+        if cmp.visible() and cmp.get_selected_entry() then
+          cmp.select_prev_item({
+            behavior = cmp.SelectBehavior.Insert,
+          })
+          in_history = false
+        else
+          -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
+          feedkeys.call(keymap.t('<Up>'), 'c')
+          in_history = true
+        end
+      end,
+    }),
+    ['<C-f>'] = cmp.mapping({
+      c = function(fallback)
+        if cmp.visible() then
+          for _ = 1, 5 do
+            cmp.mapping.select_next_item({
+              behavior = cmp_types.SelectBehavior.Select,
+            })(nil)
+          end
+        elseif type(fallback) == 'function' then
+          fallback()
+        end
+      end,
+    }),
+
     ['<C-b>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         for _ = 1, 5 do

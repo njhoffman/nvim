@@ -51,6 +51,7 @@ local source_names = {
   cmp_git =                   { '', 'CmpSourceCmpGit' },
   cmp_rg =                    { '󰉸', 'CmpSourceCmpRg' },
   cmp_tabnine =               { '󰘳', 'CmpSourceCmpTabnine' },
+  codeium =                   { '', 'CmpSourceCodeium' },
   copilot =                   { '', 'CmpSourceCopilot' }, -- 
   dictionary =                { '', 'CmpSourceDictionary' },
   emoji =                     { '', 'CmpSourceEmoji' },
@@ -95,6 +96,7 @@ local lsp_symbols = {
   Conditional     = 'נּ',
   Constant        = '󰞂', --   Constant    = "󰐀 ",
   Constructor     = '', --   Constructor = "⌘ ",
+  Codeium         = '',
   Copilot         = '',
   Enum            = '󰕘', --   Enum        = " ",
   EnumMember      = '',

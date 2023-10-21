@@ -144,7 +144,7 @@ return function(injected_functions)
     Boolean({ fg = '#5370af' }),
     Number({ fg = '#4078c0' }),
     -- CursorLine({ bg = '#0a1020' }),
-    CursorLine({ bg = '#0f1828' }),
+    CursorLine({ bg = '#061028' }),
     CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
     Cursor({ bg = '#4B5Bff' }),
     CursorColumn({ bg = CursorLine.bg }),
@@ -707,6 +707,7 @@ return function(injected_functions)
     CmpItemKindClass({ fg = colors.yellow }),
     CmpItemKindConstant({ fg = colors.orange }),
     CmpItemKindConstructor({ fg = colors.yellow }),
+    CmpItemKindCodeium({ fg = '#6460ff' }),
     CmpItemKindCopilot({ fg = tokyoColors.green2 }),
     CmpItemKindDefault({ fg = tokyoColors.fg }),
     CmpItemKindEnum({ fg = colors.yellow }),
@@ -739,6 +740,7 @@ return function(injected_functions)
     CmpSourceNvimLsp({ fg = '#8fa080' }),
     CmpSourceLuasnip({ fg = '#0ca6ff' }),
     CmpSourceTreesitter({ fg = '#4C66a4' }),
+    CmpSourceCodeium({ CmpItemKindCodeium }),
     CmpSourceCopilot({ CmpItemKindCopilot }),
     CmpSourceCmdline({ fg = '#8F65c0' }),
     CmpSourceCmdlineHistory({ fg = '#4482fc' }),
@@ -982,6 +984,12 @@ return function(injected_functions)
 
     -- symbol-usage
     SymbolInlay({ fg = '#004466', gui = 'italic' }),
+    --- nvim-hlslens
+    -- HlSearchNear({ fg = '#00ffdd', bg = 'none' }), -- IncSearch
+    -- HlSearchLens({ fg = '#ff2266', bg = '#003333' }), -- WildMenu
+    -- HlSearchLensNear({ fg = '#00ddff', bg = 'none' }), -- IncSearch
+
+    SpecsCursor({ bg = '#1f6385' }),
 
     -- GlancePreviewNormal
     -- GlancePreviewMatch

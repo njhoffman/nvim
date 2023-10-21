@@ -114,16 +114,11 @@ return function()
     -- +--- PackageInfo ---+
     PackageInfoOutdatedVersion({ fg = '#d19a66' }),
     PackageInfoUpToDateVersion({ fg = '#3C4048' }),
-    SpecsCursor({ bg = '#274087' }),
 
     -- Folding Highlights
     -- UfoPreviewSbar({ PmenuSbar }),
     -- UfoPreviewThumb({ PmenuThumb }),
     -- UfoFoldedEllipsis({ Comment }),
-    --- nvim-hlslens
-    HlSearchLensCur({ fg = '#ff2266', bg = '#003333' }),
-    HlSearchLens({ fg = '#00ddff', bg = 'none' }),
-    HlSearchCur({ fg = '#00ffdd', bg = 'none' }),
 
     -- +--- CMP ---+
 

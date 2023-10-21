@@ -3,6 +3,7 @@ local sources = {
     {
       {
         name = 'nvim_lsp',
+        max_item_count = 5,
         entry_filter = function(entry, ctx)
           local kind = require('cmp.types.lsp').CompletionItemKind[entry:get_kind()]
           if kind == 'Snippet' and ctx.prev_context.filetype == 'java' then
@@ -11,6 +12,7 @@ local sources = {
           return true
         end,
       },
+      { name = 'codeium', max_item_count = 3 },
       { name = 'path' },
       { name = 'nvim_lsp_document_symbol' },
       {
@@ -47,7 +49,7 @@ local sources = {
     {
       {
         name = 'copilot',
-        max_item_count = 3,
+        max_item_count = 5,
         trigger_characters = {
           {
             '.',
@@ -151,7 +153,7 @@ local sources = {
       },
     },
     {
-      { name = 'cmdline_history', max_item_count = 3, keyword_length = 4 },
+      { name = 'cmdline_history', max_item_count = 5 },
       { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
     },
   },
