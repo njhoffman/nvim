@@ -28,7 +28,7 @@ local default = {
   yank       = { suffix = 'y', options = {} },
 }
 
-require("mini.bracketed").setup()
+require('mini.bracketed').setup({ undo = { suffix = '' } })
 
 -- Target                                            	 Mappings	Lua function
 -- Buffer                                            	 [B [b ]b ]B	MiniBracketed.buffer()

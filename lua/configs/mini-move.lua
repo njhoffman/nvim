@@ -15,18 +15,17 @@ local default_cfg = {
     reindent_linewise = true,
   },
 }
-
 -- stylua: ignore
 require('mini.move').setup({
   mappings = {
-    left       = '<C-S-Left>',
-    right      = '<C-S-Right>',
-    down       = '<C-S-Down>',
-    up         = '<C-S-Up>',
-    line_left  = '',
-    line_right = '',
-    line_down  = '',
-    line_up    = '',
+    left       = 'H',
+    right      = 'L',
+    down       = 'J',
+    up         = 'K',
+    line_right  = '<M-C-H>',
+    line_left = '<M-C-L>',
+    line_down  = '<M-NL>',
+    line_up    = '<M-C-K>',
   },
 })
 

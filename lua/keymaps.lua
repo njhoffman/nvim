@@ -370,6 +370,20 @@ vmap('n', '', {
   label = 'xdg-open file',
   desc = 'open file with xdg-open under cursor',
 })
+vim.cmd([[
+" function! s:SurroundWord()
+"   let chr = nr2char(getchar())
+"   " return "viws" . chr . chr . "\<esc>P"
+"   return "wst\<space>"  . chr . "\<esc>"
+" endfunction
+" nnoremap <expr> s<space> <SID>SurroundWord()
+" nnoremap <leader>s<esc> <nop>
+" nnoremap <expr> <leader>s <SID>Surround()
+  noremap <silent> s<space> :execute "normal wst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
+" getline(".")[col(".")-1] == "\t"
+  " let isOnKeyword = matchstr(getline('.'), '\%'.col('.').'c.') =~# '\k'
+  " noremap s<space> :normal wst " . nr2char(getchar()) . <cr>
+]])
 
 map('n', 'n', "<cmd>execute('normal! ' . v:count1 . 'n')<cr><cmd>lua require('hlslens').start()<cr>", {
   category = 'Motion',
@@ -677,6 +691,12 @@ map('n', 'U', '', {
   category = 'Motion',
   label = 'disable line undo',
   desc = 'disable line undo so it can prefix other commands',
+})
+
+map('n', 'U', '<c-r>', {
+  category = 'Motion',
+  label = 'asssign line undo',
+  desc = 'assign line undo',
 })
 
 -- TODO: create function to save last visual selection before undoing
@@ -1201,6 +1221,12 @@ map('n', '<M-e>', "<cmd>lua require('telescope.run')('builtin','live_grep')<cr>"
   desc = 'live grep project in telescope',
 })
 
+map('n', '<C-Y>', '<cmd>NeoAIToggle<cr>', {
+  category = 'Pickers',
+  plugin = 'neo-ai',
+  label = 'toggle the side panel of neo ai',
+  desc = 'toggle the side panel of neo ai',
+})
 --------------------------------------------------------------------------------------------------
 -- GIT -------------------------------------------------------------------------------------------
 -- TODO: add precheck function to ensure in git dir

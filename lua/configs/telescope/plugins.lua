@@ -96,6 +96,21 @@ local tele_plugs = {
   ['which-key'] = {},
 
   -- 3rd party to sort through
+  ['undo'] = {
+    use_delta = true,
+    side_by_side = true,
+    layout_strategy = 'bottom_pane',
+    layout_config = {
+      height = 0.4,
+      preview_cutoff = 60,
+      preview_width = 0.7,
+      prompt_position = 'top',
+      width = 0.8,
+    },
+    diff_context_lines = vim.o.scrolloff,
+    entry_format = '$NODE ($STAT) [$ID] $TIME',
+    -- entry_format = 'state #$ID ($STAT): $TIME',
+  },
 
   ['aerial'] = {},
   ['asynctasks'] = {},
@@ -380,23 +395,6 @@ local tele_plugs = {
   },
   ['terraform'] = {},
   ['tmux'] = {},
-  ['undo'] = {
-    use_delta = true,
-    side_by_side = true,
-    layout_strategy = 'vertical',
-    layout_config = {
-      preview_height = 0.8,
-    },
-    diff_context_lines = vim.o.scrolloff,
-    entry_format = 'state #$ID ($STAT): $TIME',
-    mappings = {
-      i = {
-        ['<cr>'] = require('telescope-undo.actions').yank_additions,
-        ['<s-cr>'] = require('telescope-undo.actions').yank_deletions,
-        ['<c-cr>'] = require('telescope-undo.actions').restore,
-      },
-    },
-  },
   -- ['ui-select'] = require('telescope.telethemes').get_theme('dropdown'),
   ['vimwiki'] = {},
   ['z'] = {

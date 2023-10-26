@@ -32,10 +32,13 @@ require('neoai').setup({
     end,
   },
   mappings = {
-    ['select_up'] = '<C-k>',
-    ['select_down'] = '<C-j>',
+    ['select_up'] = '<C-t>',
+    ['select_down'] = '<M-T>',
   },
-  open_api_key_env = 'OPENAI_API_KEY',
+  api_key = {
+    env = 'OPENAI_API_KEY',
+    value = nil,
+  },
   shortcuts = {
     {
       name = 'textify',

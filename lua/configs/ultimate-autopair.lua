@@ -169,5 +169,20 @@ local default_conf = {
     --{'{','}',suround=true},
   },
 }
+-- filetype = 'noice'
+-- config_internal_pairs = {
+--   { '(', ')', nft = { filetype } },
+--   { '{', '}', nft = { filetype } },
+--   { '[', ']', nft = { filetype } },
+-- }
+require('ultimate-autopair').setup({
+  default_pairs = {
+    ft = {
+      TelescopePrompt = { disable = true },
+      Noice = { disable = true },
+      noice = { disable = true },
+    },
+  },
+})
 
-require('ultimate-autopair').setup(default_conf)
+-- require('ultimate-autopair').setup(default_conf)

@@ -59,8 +59,8 @@ local cfg = {
     find_left = 'sF', -- Find surrounding (to the left)
     highlight = 'sh', -- Highlight surrounding
     -- update_n_lines = 'sn', -- Update `n_lines`
-    suffix_last = 'l', -- Suffix to search with "prev" method
-    suffix_next = 'n', -- Suffix to search with "next" method
+    -- suffix_last = 'l', -- Suffix to search with "prev" method
+    -- suffix_next = 'n', -- Suffix to search with "next" method
   },
   highlight_duration = 400,
   n_lines = 30,
@@ -69,6 +69,13 @@ local cfg = {
 }
 
 require('mini.surround').setup(cfg)
+
+-- vim.keymap.set(
+--   'n',
+--   's<space>',
+--   ':silent! normal wst<space>',
+--   { silent = true, expr = true, desc = 'quickly add surrounding ( to word' }
+-- )
 
 vim.keymap.set(
   'n',
@@ -82,7 +89,7 @@ vim.keymap.set(
   [[:<C-u>lua MiniSurround.add('visual')<CR>]],
   { silent = true, desc = 'mini surround add visual' }
 )
-vim.keymap.set('n', 'yss', '^ys$', { remap = true, desc = 'mini surround add line' })
+-- vim.keymap.set('n', 'yss', '^ys$', { remap = true, desc = 'mini surround add line' })
 
 -- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"ds"**
 -- - rhs: ` `

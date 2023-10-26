@@ -1,7 +1,14 @@
--- local version = vim.cmd([[
---   echo matchstr(execute('version'), 'NVIM v\zs[^\n]*')
--- ]])
+local state = {
+  buffers = { [3] = 2000 },
+}
 
-local version = vim.fn.matchstr(vim.api.nvim_command_output('version'), 'NVIM v\\zs[^\\n]*')
--- NVIM v0.10.0-dev-927+g21152f790
-vim.dbg(version)
+--
+-- vim.tbl_map(function(bufId)
+--   newBuffers[bufId] = 2000
+-- end, newBufferIds)
+-- --
+-- -- return { bufId, 2000 }
+-- vim.dbglog(newBuffers)
+-- -- for a, b in pairs(newBufferIds) do
+-- --   newBuffers[buffer_id] = config.retirementAgeMins * 60
+-- -- end

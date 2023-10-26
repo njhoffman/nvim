@@ -41,7 +41,7 @@ local plugins = {
           require('codeium').setup(cfg)
         end,
       },
-      { 'Wansmer/symbol-usage.nvim', event = 'LspAttach' },
+      -- { 'Wansmer/symbol-usage.nvim', event = 'LspAttach' },
       'rmagatti/goto-preview',
       'kosayoda/nvim-lightbulb',
       'mickael-menu/zk-nvim',

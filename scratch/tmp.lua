@@ -1,6 +1,56 @@
--- local res = require('configs.vimade')
-local exec_file = os.getenv('HOME') .. '/ghq/github.com/quilrbusiness/quilr-server/request.sh'
-os.execute(exec_file)
+local tmp = {
+  {
+    seq = 74,
+    time = 1695441823,
+  },
+  {
+    seq = 73,
+    time = 1695441685,
+  },
+  {
+    save = 30,
+    seq = 72,
+    time = 1694384144,
+    alt = {
+      [1] = {
+        alt = {
+          [1] = {
+            seq = 70,
+            time = 1694384137,
+          },
+        },
+        seq = 71,
+        time = 1694384142,
+      },
+    },
+  },
+  {
+    alt = {
+      [1] = {
+        seq = 70,
+        time = 1694384137,
+      },
+    },
+  },
+  {
+    seq = 71,
+    time = 1694384142,
+  },
+  {
+    seq = 70,
+    time = 1694384137,
+  },
+  {
+    seq = 69,
+    time = 1694384132,
+  },
+}
+-- 73
+-- 73
+-- 72
+-- 71  71
+-- 70  70  70
+-- 69
+--
 
-local res_ok, res = pcall(require, 'configs.nvim-treesitter')
-vim.dbglog(res_ok, res)
+vim.dbglog(tmp)

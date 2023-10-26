@@ -163,7 +163,11 @@ local plugins = {
   -- pairs
   -- { 'echasnovski/mini.pairs', event = 'InsertEnter' },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
-  { 'altermo/ultimate-autopair.nvim', event = { 'InsertEnter', 'CmdlineEnter' }, branch = 'v0.6' },
+  {
+    'altermo/ultimate-autopair.nvim',
+    event = { 'InsertEnter' },
+    branch = 'v0.6',
+  },
   -- textobjects
   { 'echasnovski/mini.ai', event = { 'VeryLazy' } },
   { 'chrisgrieser/nvim-various-textobjs', event = { 'VeryLazy' } },
@@ -294,7 +298,6 @@ local plugins = {
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       { 'AckslD/nvim-neoclip.lua', dependencies = { 'kkharji/sqlite.lua' } },
       { 'GustavoKatel/telescope-asynctasks.nvim', dependencies = { 'skywind3000/asynctasks.vim' } },
-      { 'debugloop/telescope-undo.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
       -- { "rmagatti/session-lens", dependencies = "rmagatti/auto-session" },
       { 'PhilippFeO/telescope-filelinks.nvim' },
       { 'octarect/telescope-menu.nvim' },
@@ -404,7 +407,6 @@ local plugins = {
       },
     },
   },
-  { 'chrisgrieser/nvim-early-retirement', event = 'VeryLazy' },
   {
     'qpkorr/vim-renamer',
     init = function()
@@ -481,7 +483,69 @@ local plugins = {
       return vim.env.NVIM_PROFILE ~= nil
     end,
   },
+  {
+    'sQVe/sort.nvim',
+    -- Optional setup for overriding defaults.
+    config = function()
+      require('sort').setup({
+        {
+          -- List of delimiters, in descending order of priority, to automatically
+          -- sort on.
+          delimiters = {
+            ',',
+            '|',
+            ';',
+            ':',
+            's', -- Space
+            't', -- Tab
+          },
+        },
+        -- Input configuration here.
+        -- Refer to the configuration section below for options.
+      })
+      -- vim.cmd([[
+      --   nnoremap <silent> go <Cmd>Sort<CR>
+      --   vnoremap <silent> go <Esc><Cmd>Sort<CR>
+      --   ]])
+    end,
+  },
   { 'AckslD/nvim-neoclip.lua', event = 'VimEnter', dependencies = 'kkharji/sqlite.lua' },
+  {
+    'roobert/action-hints.nvim',
+    config = function()
+      require('action-hints').setup({
+        template = {
+          definition = { text = ' ⊛', color = '#517c8a' },
+          references = { text = ' ↱%s', color = '#8b0000' },
+        },
+        use_virtual_text = true,
+      })
+    end,
+  },
+  {
+    'tzachar/highlight-undo.nvim',
+    event = 'BufEnter',
+    config = function()
+      require('highlight-undo').setup({
+        duration = 300,
+        undo = {
+          hlgroup = 'HighlightUndo',
+          mode = 'n',
+          lhs = 'u',
+          map = 'undo',
+          opts = {},
+        },
+        redo = {
+          hlgroup = 'HighlightUndo',
+          mode = 'n',
+          lhs = '<C-r>',
+          map = 'redo',
+          opts = {},
+        },
+        highlight_for_count = true,
+      })
+    end,
+  },
   {
     'simnalamburt/vim-mundo',
     cmd = { 'MundoToggle', 'MundoShow', 'MundoHide' },
@@ -501,6 +565,25 @@ local plugins = {
       vim.g.mundo_playback_delay = 60
       -- vim.g.mundo_preview_statusline = nil
       -- vim.g.mundo_tree_statusline = nil
+    end,
+  },
+  {
+
+    'kevinhwang91/nvim-fundo',
+    dependencies = 'kevinhwang91/promise-async',
+    config = function()
+      local default_cfg = {
+        -- archives_dir = {
+        --   description = [[The directory to store the archives]],
+        --   default = vim.fn.stdpath('cache') .. path.separator .. 'fundo',
+        -- },
+        -- limit_archives_size = {
+        --   description = [[Limit the archives directory size, unit is MB(megabyte), elder files will be
+        -- removed based on their modified time]],
+        --   default = 512,
+        -- },
+      }
+      require('fundo').install()
     end,
   },
   {

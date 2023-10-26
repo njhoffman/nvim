@@ -990,7 +990,7 @@ return function(injected_functions)
     -- HlSearchLensNear({ fg = '#00ddff', bg = 'none' }), -- IncSearch
 
     SpecsCursor({ bg = '#1f6385' }),
-
+    HighlightUndo({ fg = '#b7001e', bg = '#0f2139' }),
     -- GlancePreviewNormal
     -- GlancePreviewMatch
     -- GlancePreviewCursorLine

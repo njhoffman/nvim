@@ -26,6 +26,11 @@ end
 
 require('sidebar').setup()
 require('tracker').setup({ event_tracker = false, only_events = { 'User' } })
+require('early-retirement').setup({
+  retirementAgeMins = 20,
+  minimumBufferNum = 10,
+  notificationOnAutoClose = true,
+})
 
 -- require("notifications.recipes.progress").config()
 -- require "plenary.profile".stop()

@@ -57,9 +57,11 @@ local autocmds = {
   },
 
   FiletypeDetect = {
-    { 'FileType', 'qf', 'setlocal nonumber norelativenumber' },
-    { 'FileType', 'query', 'setlocal nonumber norelativenumber' },
+    { 'FileType', 'qf',                    'setlocal nonumber norelativenumber' },
+    { 'FileType', 'query',                 'setlocal nonumber norelativenumber' },
     { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
+    {'FileType',  "neoai-output",          "setlocal syn=pandoc conceallevel=3 synmaxcol=1000" },
+    { 'FileType', "neoai-input",           "setlocal syn=pandoc conceallevel=3 synmaxcol=1000" },
     { {'BufNewFile', 'BufRead'}, '*nvim/option-window', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>', },
     { { 'BufNewFile', 'BufRead' }, '*startuptime.tsv',   'setlocal ft=crontab syn=crontab' },
     -- { { 'BufNewFile', 'BufRead' }, '*.log',              "lua require('commands.format').create_cmd_truncate()" },
@@ -72,6 +74,7 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, '*.env',              'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, 'conf.*',             'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, '*.md',               'setlocal syn=pandoc | setlocal conceallevel=3 synmaxcol=500' },
+    -- { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 synmaxcol=500" },
     { { 'BufNewFile', 'BufRead' }, '.tasks',             'setlocal ft=asynctasks' },
     { { 'BufNewFile', 'BufRead' }, '*.visidatarc',       'setlocal ft=python' },
     { { 'BufNewFile', 'BufRead' }, '.vimtasks',          'setlocal ft=asynctasks' },
