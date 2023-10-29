@@ -173,7 +173,7 @@ return function(injected_functions)
     Keyword({ fg = '#4177b2' }),
     KeywordFunction({ fg = '#2D88BF' }),
     KeywordReturn({ fg = '#2D81BC' }),
-    Label({ fg = '#6688ba' }),
+    Label({ fg = '#3377ba' }),
     MatchParen({ fg = '#fb8b8b', gui = 'bold,' }),
     NonText({ bg = 'none', fg = '#556677' }),
     -- Operator({ fg = '#4866bf' }),
