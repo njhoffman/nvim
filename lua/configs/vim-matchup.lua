@@ -2,7 +2,7 @@ vim.g.loaded_matchit = 1
 vim.g.matchup_matchparen_enabled = 1
 vim.g.matchup_motion_enabled = 1
 vim.g.matchup_text_obj_enabled = 1
-vim.g.matchup_matchparen_offscreen = { method = "popup" }
+vim.g.matchup_matchparen_offscreen = { method = 'popup' }
 -- vim.g.matchup_surround_enabled = 1
 -- :hi MatchParen ctermbg=blue guibg=lightblue cterm=italic gui=italic
 -- :hi MatchWord ctermfg=red guifg=blue cterm=underline gui=underline
@@ -10,7 +10,7 @@ vim.g.matchup_matchparen_offscreen = { method = "popup" }
 -- :hi MatchWordCur cterm=underline gui=underline
 
 -- adds ds% and cs%
-vim.g.matchup_surroudn_enabled = 1
+vim.g.matchup_surround_enabled = 1
 
 -- Adds motions g%, [%, ]%, and z%.
 -- Combines these motions into convenient text objects i% and a%.

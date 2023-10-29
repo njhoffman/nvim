@@ -14,7 +14,20 @@ local cfg = {
   -- indent = {
   --   enable = config.indent,
   -- },
-  context_commentstring = { enable = true, enable_autocmd = false },
+  context_commentstring = {
+    enable = true,
+    -- enable_autocmd = false,
+    config = {
+      javascript = {
+        __default = '// %s',
+        jsx_element = '{/* %s */}',
+        jsx_fragment = '{/* %s */}',
+        jsx_attribute = '// %s',
+        comment = '// %s',
+      },
+      typescript = { __default = '// %s', __multiline = '/* %s */' },
+    },
+  },
   playground = tsmodules.playground,
   highlight = tsmodules.highlight,
   refactor = tsmodules.refactor,
