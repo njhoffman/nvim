@@ -169,7 +169,7 @@ local plugins = {
   -- { 'otavioschwanck/cool-substitute.nvim' },
 
   -- matching
-  -- { "andymass/vim-matchup", dependencies = { "theHamsta/nvim-treesitter-pairs" } },
+  { 'andymass/vim-matchup', event = { 'VeryLazy' }, dependencies = { 'theHamsta/nvim-treesitter-pairs' } },
   -- pairs
   -- { 'echasnovski/mini.pairs', event = 'InsertEnter' },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
@@ -668,7 +668,7 @@ local plugins = {
   { 'njhoffman/vim-liquid', ft = 'liquid', lazy = lz_syn },
   -- { 'moll/vim-node', ft = { 'javascript' }, lazy = lz_syn },
   { 'bfrg/vim-jq', ft = 'jq', lazy = lz_syn },
-  { 'maxmellon/vim-jsx-pretty', ft = { 'javascript', 'jsx', 'javascriptreact' }, lazy = lz_syn },
+  -- { 'maxmellon/vim-jsx-pretty', ft = { 'javascript', 'jsx', 'javascriptreact' }, lazy = lz_syn },
   { 'yuezk/vim-js', ft = { 'javascript', 'jsx', 'javascriptreact' }, lazy = lz_syn },
   { 'zdharma-continuum/zinit-vim-syntax', ft = 'zsh', lazy = lz_syn },
   { 'wgwoods/vim-systemd-syntax', ft = 'systemd', lazy = lz_syn },

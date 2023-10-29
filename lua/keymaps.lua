@@ -601,18 +601,12 @@ map('n', '<leader>pp', '"*p', {
   desc = 'paste primary register',
 })
 
-map('n', '<leader>pc', 'pgpgc', {
+map('n', '<leader>pc', '<cmd>normal p`[v`]gc<cr>', {
   category = 'Motion',
   label = 'paste comment',
   desc = 'paste as a comment',
 })
-
-map('n', 'gcp', 'pgpgc', {
-  category = 'Motion',
-  label = 'paste comment',
-  desc = 'paste as a comment',
-})
-map('n', 'gcp', 'pgpgc', {
+map('n', 'gcp', '<cmd>normal p`[v`]gc<cr>', {
   category = 'Motion',
   label = 'paste comment',
   desc = 'paste as a comment',

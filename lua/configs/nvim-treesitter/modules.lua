@@ -32,6 +32,7 @@ local modules = {
       'javascript',
       'javascriptreact',
       'typescriptreact',
+      'typescript',
       'svelte',
       'vue',
     },
@@ -75,7 +76,6 @@ local modules = {
     enable = true,
     use_languagetree = true,
     disable = {
-
       -- 'wgsl',
       -- 'wgsl_bevy',
       -- 'help',

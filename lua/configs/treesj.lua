@@ -34,6 +34,7 @@ require('treesj').setup({
 
 local langs = require('treesj.langs')['presets']
 langs['sh'] = vim.deepcopy(langs['bash'])
+langs['typescriptreact'] = vim.deepcopy(langs['tsx'])
 
 local split_mapping = function()
   if langs[vim.bo.filetype] then

@@ -1,5 +1,12 @@
 -- https://github.com/numToStr/Comment.nvim
-require('Comment').setup()
+
+require('Comment').setup({
+  toggler = {
+    block = 'gcb',
+  },
+  -- recognize treesitter pattern of react components and use jsx style comment
+  pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+})
 
 ---@diagnostic disable-next-line: unused-local
 local defaults = {
