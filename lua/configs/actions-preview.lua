@@ -59,23 +59,38 @@ local default_cfg = {
 
 local cfg = {
   diff = {
-    algorithm = 'patience',
+    algorithm = 'minimal',
+    ignore_blank_lines = true,
     ignore_whitespace = true,
+    -- "myers" the default algorithm
+    -- "minimal" spend extra time to generate the smallest possible diff
+    -- "patience" patience diff algorithm
+    -- "histogram" histogram diff algorithm
   },
-  telescope = {
-    sorting_strategy = 'ascending',
-    layout_strategy = 'vertical',
-    layout_config = {
-      width = 0.8,
-      height = 0.9,
-      prompt_position = 'top',
-      preview_cutoff = 20,
-      preview_height = function(_, _, max_lines)
-        return max_lines - 15
-      end,
-    },
-  },
-  -- telescope = require('telescope.themes').get_dropdown({ winblend = 10 }),
+  -- telescope = {
+  --   sorting_strategy = 'ascending',
+  --   layout_strategy = 'vertical',
+  --   layout_config = {
+  --     width = 0.8,
+  --     height = 0.9,
+  --     prompt_position = 'top',
+  --     preview_cutoff = 20,
+  --     preview_height = function(_, _, max_lines)
+  --       return max_lines - 15
+  --     end,
+  --   },
+  -- },
+  telescope = require('telescope.themes').get_ivy({ winblend = 10, layout_config = { height = 10 } }),
+  -- telescope = vim.tbl_extend('force', require('telescope.themes').get_cursor({ winblend = 10 }), {
+  -- telescope = vim.tbl_extend('force', require('telescope.themes').get_dropdown({ winblend = 10 }), {
+  -- a function to make a table containing the values to be displayed.
+  -- fun(action: Action): { title: string, client_name: string|nil }
+  -- make_value = nil,
+  -- a function to make a function to be used in `display` of a entry.
+  -- see also `:h telescope.make_entry` and `:h telescope.pickers.entry_display`.
+  -- fun(values: { index: integer, action: Action, title: string, client_name: string }[]): function
+  -- make_make_display = nil,
 }
 
 require('actions-preview').setup(cfg)
+-- require("actions-preview").code_actions({ context = { only = { "source" } } })

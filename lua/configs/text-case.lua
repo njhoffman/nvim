@@ -1,17 +1,20 @@
 -- https://raw.githubusercontent.com/johmsalas/text-case.nvim/main/README.md
 
--- SMART REPLACE: Select block of text, then use "Subs"
--- '<,'>Subs/find text/replace text
-
 require('textcase').setup({
-  prefix = "gt" -- ga
+  prefix = 'gt', -- ga
 })
 
-vim.api.nvim_set_keymap('n', 'gt.', '<cmd>TextCaseOpenTelescope<CR>', { desc = "Telescope" })
-vim.api.nvim_set_keymap('v', 'gt.', "<cmd>TextCaseOpenTelescope<CR>", { desc = "Telescope" })
-vim.api.nvim_set_keymap('n', 'gta', "<cmd>TextCaseOpenTelescopeQuickChange<CR>", { desc = "Telescope Quick Change" })
-vim.api.nvim_set_keymap('n', 'gti', "<cmd>TextCaseOpenTelescopeLSPChange<CR>", { desc = "Telescope LSP Change" })
+vim.api.nvim_set_keymap('n', 'gt.', '<cmd>TextCaseOpenTelescope<CR>', { desc = 'Telescope' })
+vim.api.nvim_set_keymap('n', 'gtt', '<cmd>TextCaseOpenTelescope<CR>', { desc = 'Telescope' })
+vim.api.nvim_set_keymap('v', 'gt.', '<cmd>TextCaseOpenTelescope<CR>', { desc = 'Telescope' })
+vim.api.nvim_set_keymap('n', 'gta', '<cmd>TextCaseOpenTelescopeQuickChange<CR>', { desc = 'Telescope Quick Change' })
+vim.api.nvim_set_keymap('n', 'gti', '<cmd>TextCaseOpenTelescopeLSPChange<CR>', { desc = 'Telescope LSP Change' })
 
+-- SMART REPLACE: Select block of text, then use "Subs"
+-- '<,'>Subs/find text/replace text
+-- StepOne              step-one
+-- STEP_ONE   StepOne
+-- step-one   step_one  step_one
 
 -- Upper case    	 LOREM IPSUM 	 textcase.api.to_constant_case
 -- Lower case    	 lorem ipsum 	 textcase.api.to_lower_case
@@ -24,7 +27,6 @@ vim.api.nvim_set_keymap('n', 'gti', "<cmd>TextCaseOpenTelescopeLSPChange<CR>", {
 -- Title case    	 Lorem Ipsum 	 textcase.api.to_title_case
 -- Path case     	 lorem/ipsum 	 textcase.api.to_path_case
 -- Phrase case   	 Lorem ipsum 	 textcase.api.to_phrase_case
-
 
 -- nnoremap gau :lua require('textcase').current_word('to_upper_case')<CR>
 -- nnoremap gal :lua require('textcase').current_word('to_lower_case')<CR>

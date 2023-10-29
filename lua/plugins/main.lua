@@ -101,14 +101,6 @@ local plugins = {
   { 'matbme/JABS.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'ghillb/cybu.nvim', event = { 'BufRead', 'BufNewFile' } },
   { 'nacro90/numb.nvim', event = { 'BufReadPost', 'BufNewFile' } },
-  -- {
-  --   'ivyl/vim-bling',
-  --   event = { 'BufReadPost', 'BufNewFile' },
-  --   init = function()
-  --     vim.g.bling_no_map = 0
-  --     vim.g.bling_no_expr = 1
-  --   end,
-  -- },
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
   { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   {
@@ -158,6 +150,24 @@ local plugins = {
   { 'stevearc/aerial.nvim', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
   { 'gbprod/substitute.nvim', event = { 'VeryLazy' } },
   { 'echasnovski/mini.surround', event = { 'VeryLazy' } },
+  {
+    'smoka7/multicursors.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'smoka7/hydra.nvim',
+    },
+    cmd = { 'MCstart', 'MCvisual', 'MCclear', 'MCpattern', 'MCvisualPattern', 'MCunderCursor' },
+    keys = {
+      {
+        mode = { 'v', 'n' },
+        '<Leader>M',
+        '<cmd>MCstart<cr>',
+        desc = 'Create a selection for selected text or word under the cursor',
+      },
+    },
+  },
+  -- { 'otavioschwanck/cool-substitute.nvim' },
+
   -- matching
   -- { "andymass/vim-matchup", dependencies = { "theHamsta/nvim-treesitter-pairs" } },
   -- pairs
@@ -213,7 +223,30 @@ local plugins = {
       vim.g.smoothie_minimum_speed = 0.9
     end,
   }, -- f2aaab1
-  { dir = '~/git/clever-f.vim', event = 'VeryLazy' }, -- rhysd/clever-f.vim
+  {
+    'ggandor/flit.nvim',
+    dependencies = { 'ggandor/leap.nvim', 'tpope/vim-repeat' },
+    event = 'VeryLazy',
+    -- keys = function()
+    --   local ret = {}
+    --   for _, key in ipairs({ "f", "F", "t", "T" }) do
+    --     ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
+    --   end
+    --   return ret
+    -- end,
+    config = function()
+      require('flit').setup({
+        keys = { f = 'f', F = 'F', t = 't', T = 'T' },
+        -- A string like "nv", "nvo", "o", etc.
+        labeled_modes = 'v',
+        -- labeled_modes = 'cx',
+        multiline = true,
+        -- Like `leap`s similar argument (call-specific overrides).
+        -- E.g.: opts = { equivalence_classes = {} }
+        opts = {},
+      })
+    end,
+  },
   --
   -- pickers
   --
@@ -511,42 +544,6 @@ local plugins = {
   },
   { 'AckslD/nvim-neoclip.lua', event = 'VimEnter', dependencies = 'kkharji/sqlite.lua' },
   {
-    'roobert/action-hints.nvim',
-    config = function()
-      require('action-hints').setup({
-        template = {
-          definition = { text = ' ⊛', color = '#517c8a' },
-          references = { text = ' ↱%s', color = '#8b0000' },
-        },
-        use_virtual_text = true,
-      })
-    end,
-  },
-  {
-    'tzachar/highlight-undo.nvim',
-    event = 'BufEnter',
-    config = function()
-      require('highlight-undo').setup({
-        duration = 300,
-        undo = {
-          hlgroup = 'HighlightUndo',
-          mode = 'n',
-          lhs = 'u',
-          map = 'undo',
-          opts = {},
-        },
-        redo = {
-          hlgroup = 'HighlightUndo',
-          mode = 'n',
-          lhs = '<C-r>',
-          map = 'redo',
-          opts = {},
-        },
-        highlight_for_count = true,
-      })
-    end,
-  },
-  {
     'simnalamburt/vim-mundo',
     cmd = { 'MundoToggle', 'MundoShow', 'MundoHide' },
     build = function()
@@ -626,6 +623,7 @@ local plugins = {
     cmd = { 'ChatGPT', 'ChatGPTEditWithInstructions', 'ChatGPTActAs' },
     dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim', 'telescope.nvim' },
   },
+  { 'tzachar/highlight-undo.nvim', event = { 'BufEnter', 'BufReadPost', 'BufNewFile' } },
   --
   -- filetypes
   --

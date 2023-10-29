@@ -387,6 +387,7 @@ return function(injected_functions)
     -- ['@lsp.type.method'] = '@method',
     -- ['@lsp.type.macro'] = '@macro',
     -- ['@lsp.type.decorator'] = '@function',
+    sym('@constructor.tsx')({ fg = 'none', bg = 'none' }),
     typescriptImport({ Include }),
     typescriptVariable({ Identifier }),
     -- typescriptAsyncFuncKeyword({ Keyword }),

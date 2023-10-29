@@ -154,8 +154,9 @@ local setup = function(opts)
   setup_highlights()
 end
 
-local oldfiles = function()
+local oldfiles = function(user_opts)
   local opts = apply_cwd_only_aliases(config)
+  opts = vim.tbl_extend('force', opts, user_opts or {})
   opts.include_current_session = vim.F.if_nil(opts.include_current_session, true)
 
   vim.cmd('silent! rshada!')

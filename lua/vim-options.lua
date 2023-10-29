@@ -20,7 +20,7 @@ opt('breakindent', true)
 opt('breakindentopt', 'shift:2')
 opt('cedit', '<C-t>') -- ctrl-f interferes with popup completion
 opt('clipboard', 'unnamedplus')
-opt('cmdheight', 2) -- 0
+opt('cmdheight', 0) -- 0
 opt('cmdwinheight', 10)
 opt('completeopt', 'menu,menuone,noselect')
 opt('confirm', true)

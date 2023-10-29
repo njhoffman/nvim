@@ -33,7 +33,13 @@ local opts = {
       suggestionActions = { enabled = false },
       format = false,
     },
-    diagnostics = { ignoredCodes = { 80001 } }, -- File is a CommonJS module; it may be converted to an ES6 module.
+    diagnostics = {
+      ignoredCodes = {
+        80001,
+        7006, -- parameter implicitly has any type
+        2571, -- object is of type 'unknown'
+      },
+    }, -- File is a CommonJS module; it may be converted to an ES6 module.
     completions = { completeFunctionCalls = true },
   },
   on_attach = function(client, bufnr)

@@ -322,14 +322,18 @@ end
 
 M.launch_find_files = function(prompt_bufnr)
   local picker = action_state.get_current_picker(prompt_bufnr)
+  local prompt_text = picker:_get_prompt()
+  local opts = { default_text = prompt_text, cwd = picker.cwd }
   vim.api.nvim_set_var('project_buf_skip', 1)
-  run('builtin', 'find_files', { cwd = picker.cwd })
+  run('builtin', 'find_files', opts)
 end
 
 M.launch_live_grep = function(prompt_bufnr)
   local picker = action_state.get_current_picker(prompt_bufnr)
+  local prompt_text = picker:_get_prompt()
+  local opts = { default_text = prompt_text, cwd = picker.cwd }
   vim.api.nvim_set_var('project_buf_skip', 1)
-  run('builtin', 'live_grep', { cwd = picker.cwd })
+  run('builtin', 'live_grep', opts)
 end
 
 M.directory_picker = function(bufnr)

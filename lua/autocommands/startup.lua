@@ -3,7 +3,6 @@ local get_load_time = function()
   load_time = string.sub(string.gsub(load_time, ' ', ''), 1, 5)
   vim.g.load_time = load_time
 
-  vim.o.cmdheight = 0
   -- TODO: e for load .sh direct, aucmd for markdown to pandoc
   local bufname = vim.api.nvim_buf_get_name(0)
   if #bufname > 0 and not string.match(bufname, '^term://') and not string.match(bufname, '^man://') then

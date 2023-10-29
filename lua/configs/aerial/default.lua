@@ -1,4 +1,4 @@
-local default = {
+require('aerial').setup({
   -- Priority list of preferred backends for aerial.
   -- This can be a filetype map (see :help aerial-filetype-map)
   backends = { 'treesitter', 'lsp', 'markdown', 'man' },
@@ -26,6 +26,9 @@ local default = {
     --   window - open aerial to the right/left of the current window
     placement = 'window',
 
+    -- When the symbols change, resize the aerial window (within min/max constraints) to fit
+    resize_to_content = true,
+
     -- Preserve window size equality with (:help CTRL-W_=)
     preserve_equality = false,
   },
@@ -35,7 +38,7 @@ local default = {
   --   global - aerial window will display symbols for the current window
   attach_mode = 'window',
 
-  -- List of enum values that configure when to autd-close the aerial window
+  -- List of enum values that configure when to auto-close the aerial window
   --   unfocus       - close aerial when you leave the original source window
   --   switch_buffer - close aerial when you change buffers in the source window
   --   unsupported   - close aerial when attaching to a buffer that has no symbol source
@@ -84,6 +87,7 @@ local default = {
   -- When true, don't load aerial until a command or function is called
   -- Defaults to true, unless `on_attach` is provided, then it defaults to false
   lazy_load = true,
+
   -- Disable aerial on files with this many lines
   disable_max_lines = 10000,
 
@@ -124,6 +128,9 @@ local default = {
   -- When jumping to a symbol, highlight the line for this many ms.
   -- Set to false to disable
   highlight_on_jump = 300,
+
+  -- Jump to symbol in source window when the cursor moves
+  autojump = false,
 
   -- Define symbol icons. You can also specify "<Symbol>Collapsed" to change the
   -- icon when the tree is collapsed at that symbol, or "Collapsed" to specify a
@@ -248,7 +255,7 @@ local default = {
   },
 
   -- Set this function to override the highlight groups for certain symbols
-  get_highlight = function(symbol, is_icon)
+  get_highlight = function(symbol, is_icon, is_collapsed)
     -- return "MyHighlight" .. symbol.kind
   end,
 
@@ -278,6 +285,33 @@ local default = {
     end,
   },
 
+  -- Options for the floating nav windows
+  nav = {
+    border = 'rounded',
+    max_height = 0.9,
+    min_height = { 10, 0.1 },
+    max_width = 0.5,
+    min_width = { 0.2, 20 },
+    win_opts = {
+      cursorline = true,
+      winblend = 10,
+    },
+    -- Jump to symbol in source window when the cursor moves
+    autojump = false,
+    -- Show a preview of the code in the right column, when there are no child symbols
+    preview = false,
+    -- Keymaps in the nav window
+    keymaps = {
+      ['<CR>'] = 'actions.jump',
+      ['<2-LeftMouse>'] = 'actions.jump',
+      ['<C-v>'] = 'actions.jump_vsplit',
+      ['<C-s>'] = 'actions.jump_split',
+      ['h'] = 'actions.left',
+      ['l'] = 'actions.right',
+      ['<C-c>'] = 'actions.close',
+    },
+  },
+
   lsp = {
     -- Fetch document symbols when LSP diagnostics update.
     -- If false, will update on buffer changes.
@@ -301,6 +335,10 @@ local default = {
   treesitter = {
     -- How long to wait (in ms) after a buffer change before updating
     update_delay = 300,
+    -- Experimental feature to navigate to symbol names instead of the declaration
+    -- See https://github.com/stevearc/aerial.nvim/issues/279
+    -- If no bugs are reported for a time this will become the default
+    experimental_selection_range = false,
   },
 
   markdown = {
@@ -312,261 +350,4 @@ local default = {
     -- How long to wait (in ms) after a buffer change before updating
     update_delay = 300,
   },
-}
-
-local cfg = {
-  layout = {
-    -- min_width and max_width can be a list of mixed types.
-    -- max_width = {40, 0.2} means "the lesser of 40 columns or 20% of total"
-    max_width = { 40, 0.3 },
-    width = nil,
-    min_width = 30,
-    default_direction = 'prefer_right',
-    preserve_equality = false,
-  },
-  highlight_mode = 'full_width',
-  -- Highlight the closest symbol if the cursor is not exactly on one.
-  highlight_closest = true,
-  -- Highlight the symbol in the source buffer when cursor is in the aerial win
-  highlight_on_hover = true,
-  -- When jumping to a symbol, highlight the line for this many ms.
-  -- Set to false to disable
-  highlight_on_jump = 500,
-  ignore = {
-    -- Ignore unlisted buffers. See :help buflisted
-    unlisted_buffers = true,
-    -- List of filetypes to ignore.
-    filetypes = { 'gitcommit' },
-    buftypes = 'special',
-    wintypes = 'special',
-  },
-  backends = {
-    -- ["_"] = { "lsp", "treesitter", "markdown", "man" },
-    ['_'] = { 'lsp', 'treesitter', 'markdown', 'man' },
-    man = { 'man' },
-    markdown = { 'markdown' },
-  },
-  -- stylua: ignore
-  icons = {
-    Array         = " ", --
-    Boolean       = " ", --
-    Class         = " 󰌗", --   Class = " 󰠱","  "
-    Color         = " 󰏘",
-    Constant      = " 󰞂", --   Constant = " 󰐀",
-    Constructor   = " ⌘", --   Constructor = "⌘ ","" ' ', " ",
-    Enum          = " 󰕘", --   Enum = " " " " ,
-    EnumMember    = " ",  -- ' '
-    Event         = " ",  -- " "
-    Field         = " ", --   Field = "󰜢 ", " ", " 󰜢",
-    File          = " ", --   File = "󰈙 ", " ", " 󰈔" ,
-    Folder        = " 󰉋",
-    Function      = " 󰊕",
-    Interface     = " ", --   Interface = " ", ' ', " 󰜰",
-    Keyword       = " 󰌋", --   Keyword = "󰔌 ",
-    Key           = " " ,
-    Method        = " 󰆧",
-    Number        = " ",
-    Null          = " ", -- "", " "
-    Module        = " 󰅩", --   Module = "󰏓 ",
-    Object        = " ", --
-    Operator      = " ", --   Operator = "󰆕 ",  " ", " 󰃬",
-    Property      = " ", --   Property = "󰜢", " ", " 󰖷"," "," 󰜢"
-    Reference     = " 󰈇", --   Reference = "󰈇 ", " 󰈝",
-    Snippet       = " ", --   Snippet = "󰅱 ",
-    String        = "  ",
-    Struct        = "  ", --   Struct = "󰙅 ", "  ", " 󰟦",
-    Text          = " ", --   Text = " ",
-    TypeParameter = " ", --   ' ', " 󰊄"
-    Unit          = " ", --   Unit = "󰑭 ",
-    Value         = " 󰎠",
-    Variable      = " ", --   Variable = "󰈜 ", ' ',
-  },
-  nerd_font = true,
-  float = {
-    border = 'rounded',
-    relative = 'win',
-    max_height = 0.9,
-    height = nil,
-    min_height = { 8, 0.1 },
-  },
-
-  filter_kind = {
-    -- "Array",
-    'Class',
-    'Constructor',
-    'Constant',
-    'Enum',
-    'Function',
-    'Interface',
-    'Module',
-    'Method',
-    'Namespace',
-    'Object',
-    -- "Package",
-    'Struct',
-    'TypeParameter',
-  },
-  {
-    open_automatic = function(bufnr)
-      -- Enforce a minimum line count
-      local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
-      return ft == 'help' or 'man'
-      -- return vim.api.nvim_buf_line_count(bufnr) > 80
-      --   -- Enforce a minimum symbol count
-      --   and aerial.num_symbols(bufnr) > 4
-      --   -- A useful way to keep aerial closed when closed manually
-      --   and not aerial.was_closed()
-    end,
-  },
-
-  -- Customize the characters used when show_guides = true
-  guides = {
-    -- When the child item has a sibling below it
-    mid_item = '├─',
-    -- When the child item is the last in the list
-    last_item = '└─',
-    -- When there are nested child guides to the right
-    nested_top = '│ ',
-    -- Raw indentation
-    whitespace = '  ',
-  },
-  -- filter_kind = {
-  --   ["_"] = {
-  --     "Array",
-  --     "Boolean",
-  --     "Class",
-  --     "Constant",
-  --     "Constructor",
-  --     "Enum",
-  --     "EnumMember",
-  --     "Event",
-  --     "Field",
-  --     "File",
-  --     "Function",
-  --     "Interface",
-  --     "Key",
-  --     "Method",
-  --     "Module",
-  --     "Namespace",
-  --     "Null",
-  --     "Number",
-  --     "Object",
-  --     "Operator",
-  --     "Package",
-  --     "Property",
-  --     "String",
-  --     "Struct",
-  --     "TypeParameter",
-  --     "Variable",
-  --   },
-  --   -- markdown = { "String" },
-  -- },
-}
-
-local config = require('aerial.config')
-local aerial = require('aerial')
-aerial.setup(cfg)
--- vim.dbglog("first", config)
-
-local function link(group1, group2)
-  vim.api.nvim_set_hl(0, group1, { link = group2, default = true })
-end
-
----@diagnostic disable-next-line: undefined-field
-local ok, aerial_def = pcall(vim.api.nvim_get_hl_by_name, 'AerialDefault', true)
-if not ok then
-  ---@diagnostic disable-next-line: undefined-field
-  local normal_def = vim.api.nvim_get_hl_by_name('Normal', true)
-  if normal_def ~= '' then
-    if type(normal_def) == 'table' and (normal_def.foreground or normal_def.background) then
-      vim.api.nvim_set_hl(0, 'AerialDefault', normal_def)
-      -- else
-      --   vim.dbglog('aerial invalid normal_def', normal_def)
-    end
-  end
-end
-
-local symbol_kinds = {
-  'Array',
-  'Boolean',
-  'Class',
-  'Constant',
-  'Constructor',
-  'Enum',
-  'EnumMember',
-  'Event',
-  'Field',
-  'File',
-  'Function',
-  'Interface',
-  'Key',
-  'Method',
-  'Module',
-  'Namespace',
-  'Null',
-  'Number',
-  'Object',
-  'Operator',
-  'Package',
-  'Property',
-  'String',
-  'Struct',
-  'TypeParameter',
-  'Variable',
-}
-
--- The name of the symbol
-for _, symbol_kind in ipairs(symbol_kinds) do
-  vim.api.nvim_set_hl(0, string.format('Aerial%s', symbol_kind), { fg = 'none' })
-  -- link(string.format("Aerial%s", symbol_kind), "AerialDefault")
-end
-
-local start_with_backend = function(backend)
-  return function()
-    config.setup({ backends = { backend } })
-    local _config = require('aerial.config')
-    -- return M.get_backend_by_name(name), name
-    aerial.close()
-    aerial.toggle()
-  end
-end
-
-local setup_cmds = function()
-  -- local opts = vim.tbl_deep_extend("force", default, cfg, { backends = { backend } })
-  if vim.bo.filetype ~= '' then
-    config.setup(cfg)
-    local bufnr = vim.api.nvim_get_current_buf()
-    local backends = require('aerial.backends')
-    local all_backends = { 'lsp', 'treesitter', 'man', 'help' }
-    local supported = {}
-    for _, be in ipairs(all_backends) do
-      supported[be] = backends.is_supported(bufnr, be)
-    end
-    for _, be in ipairs(all_backends) do
-      local cmd = 'Aerial' .. string.sub(string.upper(be), 1, 1) .. string.sub(be, 2, -1)
-      if supported[be] then
-        vim.api.nvim_create_user_command(
-          cmd,
-          start_with_backend(be),
-          { desc = 'Start Aerial with ' .. be .. ' backend', force = true }
-        )
-      else
-        local _, _ = pcall(vim.api.nvim_del_user_command, cmd)
-      end
-    end
-  end
-end
-
-local augroup_ok, _ = pcall(vim.api.nvim_get_autocmds, { group = 'AerialBuffer' })
-if not augroup_ok then
-  vim.api.nvim_create_augroup('AerialBuffer', { clear = false })
-end
-
-setup_cmds()
---
--- vim.api.nvim_create_autocmd({ "BufEnter" }, {
---   group = "AerialBuffer",
---   desc = "Create commands depending on aerial backend capabilities",
---   callback = setup_cmds,
--- })
--- --
+})

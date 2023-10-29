@@ -28,7 +28,7 @@ local sections = {
     name = 'aerial ',
     text = 'Aerial Symbols',
     enabled = function()
-      return is_installed('aerial.nvim')
+      return true
     end,
     float = function()
       require('aerial').open({ direction = 'float' })

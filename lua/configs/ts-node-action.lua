@@ -45,7 +45,7 @@ javascript_actions['update_expression'] = function(node)
   end
   return table.concat(replacement, '')
 end
-javascript_actions["augmented_assignment_expression"] = function(node)
+javascript_actions['augmented_assignment_expression'] = function(node)
   local default_increment_operators = {
     ['+='] = '++',
     ['-='] = '--',

@@ -962,6 +962,18 @@ map('n', '<leader>;', '<c-w>w', {
   desc = 'focus the next window',
 })
 
+map('n', '<Tab>', '<c-w>w', {
+  category = 'Window',
+  label = 'window next',
+  desc = 'focus the next window',
+})
+
+map('n', '<S-Tab>', '<c-w>W', {
+  category = 'Window',
+  label = 'window prev ',
+  desc = 'focus the prev window',
+})
+
 map('n', '<leader>H', '<cmd>vnew<cr>', {
   category = 'Window',
   label = 'window split-h',
@@ -1221,7 +1233,14 @@ map('n', '<M-e>', "<cmd>lua require('telescope.run')('builtin','live_grep')<cr>"
   desc = 'live grep project in telescope',
 })
 
-map('n', '<C-Y>', '<cmd>NeoAIToggle<cr>', {
+map('n', '<C-Y>', '<cmd>ChatGPT<cr>', {
+  category = 'Pickers',
+  plugin = 'neo-ai',
+  label = 'toggle chatgpt',
+  desc = 'toggle chatgpt',
+})
+
+map('n', '<M-y>', '<cmd>NeoAIToggle<cr>', {
   category = 'Pickers',
   plugin = 'neo-ai',
   label = 'toggle the side panel of neo ai',
