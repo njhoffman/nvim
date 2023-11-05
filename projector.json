@@ -1,0 +1,54 @@
+[
+  {
+    "name": "My Project",
+    "command": "go run ${workspaceFolder}/main.go",
+    "dependencies": [
+      "generate-stuff-id"
+    ],
+    "type": "delve",
+    "request": "launch",
+    "program": "${workspaceFolder}/main.go",
+    "cwd": "${workspaceFolder}",
+    "console": "integratedTerminal",
+    "args": [
+      "--argument",
+      "1234"
+    ],
+    "env": {
+      "SOME_BOOL": "true"
+    },
+    "dlvToolPath": "/usr/bin/dlv",
+    "showLog": false
+  },
+  {
+    "id": "generate-stuff-id",
+    "name": "Generate Stuff",
+    "command": "go generate",
+    "args": [
+      "${workspaceFolder}/tools.go"
+    ]
+  },
+  {
+    "name": "Ls",
+    "command": "ls",
+    "args": [
+      "-a",
+      "-l",
+      "${workspaceFolder}/"
+    ]
+  },
+  {
+    "name": "Postgres DB",
+    "databases": [
+      {
+        "name": "my-db",
+        "url": "postgres://postgres:mypassword@localhost:5432/my-db"
+      }
+    ],
+    "queries": {
+      "postgresql": {
+        "List": "select * from {table} order by id asc"
+      }
+    }
+  }
+]

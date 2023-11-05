@@ -1,7 +1,7 @@
 local M = {}
-local ls = require("luasnip")
-local ts_utils = require("nvim-treesitter.ts_utils")
-local augroup = vim.api.nvim_create_augroup("Custom Luasnip", { clear = true })
+local ls = require('luasnip')
+local ts_utils = require('nvim-treesitter.ts_utils')
+local augroup = vim.api.nvim_create_augroup('Custom Luasnip', { clear = true })
 
 local t = ls.text_node
 local i = ls.insert_node
@@ -12,25 +12,24 @@ local sn = ls.snippet_node
 function M.create_snippet(opts)
   local snippet = ls.s(opts.trigger, opts.nodes, opts.opts)
 
-  if opts.keymaps then
+  if opts.keymaps and false then
     for _, keymap in ipairs(opts.keymaps) do
       if not opts.pattern or not opts.keymaps then
         return
       end
 
-      if type(keymap) == "string" then
-        keymap = { { "i", "s" }, keymap }
+      if type(keymap) == 'string' then
+        keymap = { { 'i', 's' }, keymap }
       end
 
-      vim.api.nvim_create_autocmd({ "InsertEnter" }, {
+      vim.api.nvim_create_autocmd({ 'InsertEnter' }, {
         pattern = opts.pattern,
         group = augroup,
         callback = function()
-          local _, error = pcall(vim.api.nvim_buf_get_var, 0, "luasnipI")
+          local _, error = pcall(vim.api.nvim_buf_get_var, 0, 'luasnipI')
 
           if error then
-            vim.api.nvim_buf_set_var(0, "luasnip1", true)
-
+            vim.api.nvim_buf_set_var(0, 'luasnip1', true)
             vim.keymap.set(keymap[1], keymap[2], function()
               ls.snip_expand(snippet)
               LAST_TRIGGERED_SNIPPET = snippet
@@ -113,7 +112,7 @@ end
 -------------------------------------------- Query From File -------------
 
 local function sized_table(value)
-  return type(value) == "table" and next(value) ~= nil
+  return type(value) == 'table' and next(value) ~= nil
 end
 
 local function get_query_from_file(lang, query_name)
@@ -124,7 +123,7 @@ local function get_query_from_file(lang, query_name)
 end
 
 M.shell = function(command)
-  local file = io.popen(command, "r")
+  local file = io.popen(command, 'r')
   local res = {}
   if file ~= nil then
     for line in file:lines() do
@@ -157,7 +156,7 @@ M.tsn = function(jump_index, opts)
       })
     else
       return sn(nil, {
-        t(""),
+        t(''),
       })
     end
   end, {})

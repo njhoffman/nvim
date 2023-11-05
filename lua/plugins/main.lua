@@ -2,6 +2,14 @@ local utils = require('utils.lazy')
 local lz_syn = false
 
 local plugins = {
+  {
+    'kndndrj/nvim-projector',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'kndndrj/projector-neotest',
+      'nvim-neotest/neotest',
+    },
+  },
   { 'stevearc/dressing.nvim', dependencies = 'MunifTanjim/nui.nvim', event = 'VeryLazy' },
   { '3rd/image.nvim', enabled = false, event = 'VeryLazy', dependencies = 'nvim-treesitter' },
   { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-web-devicons' },
@@ -143,7 +151,7 @@ local plugins = {
       'romgrk/nvim-treesitter-context',
       'windwp/nvim-ts-autotag',
       { 'ziontee113/query-secretary', keys = { '<leader><BS>' } },
-      { 'ckolkey/ts-node-action', dependencies = { 'null-ls.nvim' } },
+      { 'ckolkey/ts-node-action', dependencies = { 'none-ls.nvim' } },
     },
   },
 
@@ -329,7 +337,7 @@ local plugins = {
       { 'kkharji/sqlite.lua', run = 'luarocks install sqlite luv' },
       { 'nvim-telescope/telescope-frecency.nvim', dependencies = { 'kkharji/sqlite.lua' } },
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-      { 'AckslD/nvim-neoclip.lua', dependencies = { 'kkharji/sqlite.lua' } },
+      { 'gbprod/yanky.nvim' },
       { 'GustavoKatel/telescope-asynctasks.nvim', dependencies = { 'skywind3000/asynctasks.vim' } },
       -- { "rmagatti/session-lens", dependencies = "rmagatti/auto-session" },
       { 'PhilippFeO/telescope-filelinks.nvim' },
@@ -485,7 +493,7 @@ local plugins = {
   { 't-troebst/perfanno.nvim', cmd = { 'PerfLoadFlat', 'PerfLoadCallGraph', 'PerfLoadFlameGraph' } },
   {
     'chrisgrieser/nvim-genghis',
-    dependencies = { 'stevearc/dressing.nvim', 'hrsh7th/nvim-cmp', 'hrsh7th/cmp-omni' },
+    dependencies = { 'stevearc/dressing.nvim', 'nvim-cmp', 'hrsh7th/cmp-omni' },
     cmd = {
       'NewFromSelection',
       'Duplicate',
@@ -542,7 +550,6 @@ local plugins = {
       --   ]])
     end,
   },
-  { 'AckslD/nvim-neoclip.lua', event = 'VimEnter', dependencies = 'kkharji/sqlite.lua' },
   {
     'simnalamburt/vim-mundo',
     cmd = { 'MundoToggle', 'MundoShow', 'MundoHide' },
@@ -609,6 +616,16 @@ local plugins = {
     build = function()
       -- pip install -r langchain==0.0.177 llama-cpp-python==0.1.48 Pygments==2.15.1 pynvim==0.4.3
       vim.cmd([[silent UpdateRemotePlugins]])
+    end,
+  },
+  {
+    'kndndrj/nvim-dbee',
+    dependencies = { 'MunifTanjim/nui.nvim' },
+    build = function()
+      -- Install tries to automatically detect the install method.
+      -- if it fails, try calling it with one of these parameters:
+      --    "curl", "wget", "bitsadmin", "go"
+      require('dbee').install()
     end,
   },
   {
@@ -696,7 +713,7 @@ local plugins = {
   { 'stanangeloff/php.vim', ft = 'php', lazy = lz_syn },
   { 'tbastos/vim-lua', ft = 'lua', lazy = lz_syn },
   { 'tikhomirov/vim-glsl', ft = 'glsl', lazy = lz_syn },
-  { 'vim-pandoc/vim-pandoc-syntax', ft = { 'markdown', 'pandoc' }, lazy = lz_syn },
+  -- { 'vim-pandoc/vim-pandoc-syntax', ft = { 'markdown', 'pandoc' }, lazy = lz_syn },
   { 'vim-utils/vim-man', ft = 'man', lazy = lz_syn },
   { 'vimwiki/vimwiki', ft = { 'markdown', 'vimwiki' }, lazy = lz_syn },
   { 'mtdl9/vim-log-highlighting', ft = { 'log', 'LOG' }, event = { 'BufReadPost', 'BufNewFile' }, lazy = lz_syn },

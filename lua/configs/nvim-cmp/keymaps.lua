@@ -30,16 +30,30 @@ local mapping = {
         },
       },
     }),
+    ['<C-p>'] = cmp.mapping.select_prev_item({
+      count = 1,
+      behavior = cmp.SelectBehavior.Select,
+      preserve_mapping_verticality = true,
+    }),
+    ['<C-n>'] = cmp.mapping.select_next_item({
+      count = 1,
+      behavior = cmp.SelectBehavior.Select,
+      preserve_mapping_verticality = true,
+    }),
     ['<Up>'] = cmp.mapping.scroll_docs(-1),
     ['<Down>'] = cmp.mapping.scroll_docs(1),
-    ['<C-p>'] = cmp.mapping.select_prev_item({ count = 1 }),
-    ['<C-n>'] = cmp.mapping.select_next_item({ count = 1 }),
-    ['<C-Up>'] = cmp.mapping.scroll_docs(-6),
-    ['<C-Down>'] = cmp.mapping.scroll_docs(6),
     ['<M-b>'] = cmp.mapping.scroll_docs(-6),
     ['<M-f>'] = cmp.mapping.scroll_docs(6),
-    ['<C-f>'] = cmp.mapping.select_next_item({ count = 6 }),
-    ['<C-b>'] = cmp.mapping.select_prev_item({ count = 6 }),
+    ['<C-f>'] = cmp.mapping.select_next_item({
+      count = 6,
+      behavior = cmp.SelectBehavior.Select,
+      preserve_mapping_verticality = true,
+    }),
+    ['<C-b>'] = cmp.mapping.select_prev_item({
+      count = 6,
+      behavior = cmp.SelectBehavior.Select,
+      preserve_mapping_verticality = true,
+    }),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<C-d>'] = cmp.mapping.abort(),
@@ -77,7 +91,6 @@ local mapping = {
     end, { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        -- cmp.select_prev_item()
         cmp.select_prev_item({ behavior = cmp.ConfirmBehavior.Select })
       elseif luasnip.jumpable(-1) then
         luasnip.jump(-1)

@@ -2,17 +2,19 @@ local utils = require('utils.lazy')
 
 local plugins = {
   {
-    'hrsh7th/nvim-cmp',
+    'njhoffman/nvim-cmp',
     event = { 'InsertEnter', 'CmdlineEnter', 'CmdwinEnter' },
     dependencies = {
       'David-Kunz/cmp-npm',
       'andersevenrud/cmp-tmux',
+      'JMarkin/cmp-diag-codes',
       'dmitmel/cmp-cmdline-history',
       'tzachar/cmp-ai',
       'f3fora/cmp-spell',
       'hrsh7th/cmp-calc',
       'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-emoji',
+      { 'chrisgrieser/cmp_yanky', dependencies = 'yanky.nvim' },
       { 'hrsh7th/cmp-nvim-lsp', dependencies = 'nvim-lspconfig' },
       'hrsh7th/cmp-nvim-lsp-document-symbol',
       'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -30,8 +32,18 @@ local plugins = {
       { 'tzachar/cmp-fuzzy-buffer', dependencies = { 'tzachar/fuzzy.nvim' } },
       { 'saadparwaiz1/cmp_luasnip', dependencies = { 'L3MON4D3/LuaSnip' } },
       { 'petertriho/cmp-git', dependencies = { 'nvim-lua/plenary.nvim' } },
+      {
+        'KadoBOT/cmp-plugins',
+        config = function()
+          require('cmp-plugins').setup({
+            -- files = { ".*\\.lua" }  -- default
+            files = { 'plugins/', 'configs/' }, -- Recommended: use static filenames or partial paths
+          })
+        end,
+      },
     },
   },
+  { 'gsuuon/llm.nvim' },
   {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',

@@ -3,7 +3,7 @@ local sources = {
     {
       {
         name = 'nvim_lsp',
-        max_item_count = 5,
+        -- max_item_count = 5,
         entry_filter = function(entry, ctx)
           local kind = require('cmp.types.lsp').CompletionItemKind[entry:get_kind()]
           if kind == 'Snippet' and ctx.prev_context.filetype == 'java' then
@@ -27,7 +27,17 @@ local sources = {
           end,
         },
       },
-
+      {
+        name = 'cmp_yanky',
+        option = {
+          onlyCurrentFiletype = true, -- default: false
+        },
+      }, -- {
+      --    name = "omni",
+      --    option = {
+      --      disable_omnifuncs = { "v:lua.vim.lsp.omnifunc" },
+      --    },
+      --  },
       {
         name = 'luasnip',
         group_index = 1,
@@ -45,11 +55,18 @@ local sources = {
         --           return not string_ctx and not comment_ctx
         --         end
       },
+      {
+        name = 'diag-codes',
+        -- default completion available only in comment context
+        option = { in_comment = true },
+      },
+      { name = 'plugins' },
     },
     {
       {
         name = 'copilot',
         max_item_count = 5,
+        -- vim.opt.scrollbuf = 999
         trigger_characters = {
           {
             '.',

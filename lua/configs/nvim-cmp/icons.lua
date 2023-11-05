@@ -24,25 +24,23 @@ local setup_highlights = function()
   vim.api.nvim_set_hl(0, 'CmpSourceNvimLspSignatureHelp',  { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceNvimLua',               { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceOmni',                  { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourcePlugin',                { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceSpell',                 { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceTmux',                  { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceTreesitter',            { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceYanky',                 { default = true, link = 'CmpSource' })
 end
-
-
 -- vim.api.nvim_set_hl(0, "CmpSourceCopilot", {fg ="#6CC644"})
-
-
-          -- buffer = ' ﬘',
-          -- nvim_lsp = ' ',
-          -- luasnip = ' 🐍',
-          -- treesitter = ' ',
-          -- nvim_lua = ' ',
-          -- spell = ' 暈',
-          -- emoji = 'ﲃ',
-          -- -- copilot = "🤖",
-          -- cmp_tabnine = '🤖',
-          -- look = '﬜',
+-- buffer = ' ﬘',
+-- nvim_lsp = ' ',
+-- luasnip = ' 🐍',
+-- treesitter = ' ',
+-- nvim_lua = ' ',
+-- spell = ' 暈',
+-- emoji = 'ﲃ',
+-- -- copilot = "🤖",
+-- cmp_tabnine = '🤖',
+-- look = '﬜',
 -- stylua: ignore
 local source_names = {
   calc =                      { '󰃬', 'CmpSourceCalc' },
@@ -51,8 +49,9 @@ local source_names = {
   cmp_git =                   { '', 'CmpSourceCmpGit' },
   cmp_rg =                    { '󰉸', 'CmpSourceCmpRg' },
   cmp_tabnine =               { '󰘳', 'CmpSourceCmpTabnine' },
+  cmp_yanky =                 { ' ', 'CmpSourceYanky' },
   codeium =                   { '', 'CmpSourceCodeium' },
-  copilot =                   { '', 'CmpSourceCopilot' }, -- 
+  copilot =                   { '', 'CmpSourceCopilot' }, -- " 
   dictionary =                { '', 'CmpSourceDictionary' },
   emoji =                     { '', 'CmpSourceEmoji' },
   fuzzy_buffer =              { '', 'CmpSourceFuzzyBuffer' },
@@ -66,6 +65,7 @@ local source_names = {
   nvim_lua =                  { '', 'CmpSourceNvimLua' },
   omni =                      { '', 'CmpSourceOmni' },
   path =                      { '', 'CmpSourcePath' },
+  plugins =                   { '鈴','CmpSourcePlugin' },
   spell =                     { '', 'CmpSourceSpell' },
   tmux =                      { '', 'CmpSourceTmux' },
   treesitter =                { '', 'CmpSourceTreesitter' },

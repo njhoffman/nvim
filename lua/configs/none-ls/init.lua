@@ -3,11 +3,11 @@ local null_ls = require('null-ls')
 
 -- autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
 -- vim.fn.input()
-local custom_sources = require('configs.null-ls.custom')
+local custom_sources = require('configs.none-ls.custom')
 local source_categories = {
-  require('configs.null-ls.codeactions'),
-  require('configs.null-ls.diagnostics'),
-  require('configs.null-ls.formatting'),
+  require('configs.none-ls.codeactions'),
+  require('configs.none-ls.diagnostics'),
+  require('configs.none-ls.formatting'),
   custom_sources.formatting,
   custom_sources.diagnostics,
   custom_sources.codeactions,

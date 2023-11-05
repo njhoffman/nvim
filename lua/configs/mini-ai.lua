@@ -53,47 +53,131 @@ local opts = {
   },
   n_lines = 500,
   custom_textobjects = {
-    a = ai.gen_spec.treesitter({ a = '@parameter.outer', i = '@parameter.inner' }, { desc = 'around parameter' }),
-    b = ai.gen_spec.treesitter({
+    -- Make `|` select both edges in non-balanced way
+    ['|'] = ai.gen_spec.pair('|', '|', { type = 'non-balanced' }),
+    ['b'] = {
+      { '%b()', '%b[]', '%b{}' },
+      '^.%s*().-()%s*.$',
+    },
+    o = ai.gen_spec.treesitter({
       a = { '@block.outer', '@conditional.outer', '@loop.outer' },
       i = { '@block.inner', '@conditional.inner', '@loop.inner' },
-    }, { desc = 'around block' }),
-    f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }, { desc = 'around function' }),
-    c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, { desc = 'around class' }),
+    }, { desc = 'block/conditional/loop' }),
+    A = ai.gen_spec.treesitter({ a = '@attribute.outer', i = '@attribute.inner' }, { desc = 'attribute' }),
+    f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }, { desc = 'function' }),
+    c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, { desc = 'class' }),
+    C = ai.gen_spec.treesitter({ a = '@conditional.outer', i = '@conditional.inner' }, { desc = 'conditional' }),
+    t = { '<([%p%w]-)%f[^<%w][^<>]->.-</%1>', '^<.->().*()</[^/]->$' },
+    -- a/ i/
+    x = ai.gen_spec.treesitter({ a = '@comment.outer', i = '@comment.inner' }, { desc = 'comment' }),
+    L = ai.gen_spec.treesitter({ a = '@loop.outer', i = '@loop.inner' }, { desc = 'loop' }),
+    ['l'] = function(type)
+      if vim.api.nvim_get_current_line() == '' then
+        return
+      end
+      vim.cmd.normal({ type == 'i' and '^' or '0', bang = true })
+      local from_line, from_col = unpack(vim.api.nvim_win_get_cursor(0))
+      local from = { line = from_line, col = from_col + 1 }
+      vim.cmd.normal({ type == 'i' and 'g_' or '$', bang = true })
+      local to_line, to_col = unpack(vim.api.nvim_win_get_cursor(0))
+      local to = { line = to_line, col = to_col + 1 }
+      return { from = from, to = to }
+    end,
+    e = function(ai_type)
+      -- entire buffer
+      if ai_type == 'i' then
+        local first_non_blank = vim.fn.nextnonblank(1)
+        local final_non_blank = vim.fn.prevnonblank(vim.fn.line('$'))
+        local from = { line = first_non_blank, col = 1 }
+        local to = { line = final_non_blank, col = math.max(vim.fn.getline(final_non_blank):len(), 1) }
+        return { from = from, to = to }
+      elseif ai_type == 'a' then
+        local from = { line = 1, col = 1 }
+        local to = { line = vim.fn.line('$'), col = math.max(vim.fn.getline('$'):len(), 1) }
+        return { from = from, to = to }
+      end
+    end,
   },
 }
 
 ai.setup(opts)
+
+-- Move cursor to corresponding edge of `a` textobject
+local gen_action = function(seq)
+  local edge = ({ ['['] = 'left', [']'] = 'right' })[seq:sub(1, 1)]
+  local ai_type = seq:sub(2, 2)
+  local prev_next = ({ l = 'prev', n = 'next' })[seq:sub(3, 3)]
+  vim.keymap.set({ 'n', 'v' }, seq, function()
+    jump_textobject(prev_next, edge, ai_type)
+  end, {
+    expr = true,
+    desc = string.format('Jump to %s edge of %s `%s` text object', edge, ai_type, prev_next),
+  })
+end
+-- gen_action('[al')
+-- gen_action(']al')
+-- gen_action('[an')
+-- gen_action(']an')
+-- gen_action('[in')
+-- gen_action(']in')
+-- gen_action('[il')
+-- gen_action(']il')
 
 local setup_keymaps = function()
   local vmap = require('mapper').vmap
   local prefix = require('mapper').prefix
 
 -- stylua: ignore
-local text_obj = {
-  [' ']    = '*inside whitespace',
-  ['"']    = '*inside quote "',
-  ["'"]    = "*inside s-quote '",
-  ['`']    = '*inside apostrophe `',
-  ['(']    = '*inside (',
-  [')']    = '*inside ) including white-space',
-  ['>']    = '*inside > including white-space',
-  ['<lt>'] = '*inside <',
-  [']']    = '*inside ] including white-space',
-  ['[']    = '*inside [',
-  ['}']    = '*inside } including white-space',
-  ['{']    = '*inside {',
-  ['?']    = '*inside user prompt',
-  _        = '*inside underscore',
-  a        = '*inside argument',
-  b        = '*inside balanced: ), ], }',
-  c        = '*inside class',
-  f        = '*inside function',
-  o        = '*inside block, conditional, loop',
-  q        = '*inside quote: `, ", \'',
-  t        = '*inside tag',
+local i = {
+  [' ']    = 'inside whitespace',
+  ['"']    = 'inside quote "',
+  ["'"]    = "inside s-quote '",
+  ['`']    = 'inside apostrophe `',
+  ['(']    = 'inside (',
+  [')']    = 'inside ) including white-space',
+  ['>']    = 'inside > including white-space',
+  ['<lt>'] = 'inside <',
+  [']']    = 'inside ] including white-space',
+  ['[']    = 'inside [',
+  ['}']    = 'inside } including white-space',
+  ['{']    = 'inside {',
+  ['?']    = 'inside user prompt',
+  _        = 'inside underscore',
+  a        = 'inside argument',
+  A        = 'inside attribute',
+  b        = 'inside balanced: ), ], }',
+  c        = 'inside class',
+  C        = 'inside conditional',
+  f        = 'inside function',
+  l        = 'inside line',
+  L        = 'inside loop',
+  o        = 'inside block, conditional, loop',
+  q        = 'inside quote: `, ", \'',
+  t        = 'inside tag',
+  x        = 'inside comment',
 }
 
+  local a = vim.deepcopy(i)
+  for k, v in pairs(a) do
+    a[k] = v:gsub(' including.*', '')
+  end
+
+  local ic = vim.deepcopy(i)
+  local ac = vim.deepcopy(a)
+  for key, name in pairs({ n = 'Next', l = 'Last' }) do
+    i[key] = vim.tbl_extend('force', { name = 'Inside ' .. name .. ' textobject' }, ic)
+    a[key] = vim.tbl_extend('force', { name = 'Around ' .. name .. ' textobject' }, ac)
+  end
+  require('which-key').register({
+    mode = { 'o', 'x' },
+    i = i,
+    a = a,
+  })
+end
+
+setup_keymaps()
+
+local setup_all_keymaps = function()
   local prefixes = {
     ['i'] = { name = 'inside' },
     ['in'] = { name = 'next' },

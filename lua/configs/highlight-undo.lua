@@ -1,5 +1,5 @@
 local cfg = {
-  duration = 300,
+  duration = 150,
   redo = {
     hlgroup = 'HighlightUndo',
     mode = 'n',

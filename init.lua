@@ -40,5 +40,20 @@ require('action-hints').setup({
   },
   use_virtual_text = true,
 })
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'lua',
+  callback = function()
+    local parser = vim.treesitter.get_parser(0)
+    if parser ~= nil then
+      parser:register_cbs({
+        on_bytes = function()
+          parser:parse()
+        end,
+      })
+    end
+  end,
+})
+
 -- require("notifications.recipes.progress").config()
 -- require "plenary.profile".stop()

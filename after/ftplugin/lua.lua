@@ -88,6 +88,38 @@ function Find_required_path(module)
   end
 end
 
+local regex = {
+  constDeclaration = '^%s*%f[%w_]const%f[^%w_]',
+}
+
+local check_wrong_language = function()
+  local start = vim.fn.getpos("'[")
+  local ending = vim.fn.getpos("']")
+  if start ~= nil and ending ~= nil then
+    local content = vim.fn.join(
+      vim.api.nvim_buf_get_text(0, start[2] - 1, start[3] - 1, ending[2], ending[3] - 1, {}) or { '' },
+      '\n'
+    )
+    vim.dbglog(start, ending, content)
+    if string.match(content, regex.constDeclaration) then
+      vim.notify('You are in lua not javascript!', 3)
+      local new_content = vim.fn.split(string.gsub(content, regex.constDeclaration, 'local '), '\n')
+      vim.api.nvim_buf_set_text(0, start[2] - 1, start[3] - 1, ending[2] - 1, ending[3] - 1, new_content)
+    end
+  end
+end
+
+-- vim.api.nvim_create_autocmd('InsertLeave', {
+--   callback = function()
+--     check_wrong_language()
+--     -- if string.match(line_content or '', 'const ') then
+--     --   vim.notify('You are in lua not javascript!')
+--     --   local new_line_content = string.gsub(line_content, 'pattern', 'replacement')
+--     --   vim.api.nvim_buf_set_text(0, line_number - 1, line_number, 0, 1, { new_line_content })
+--     -- end
+--   end,
+-- })
+
 -- Set options to open require with gf
 vim.opt_local.include = [=[\v<((do|load)file|require)\s*\(?['"]\zs[^'"]+\ze['"]]=]
 vim.opt_local.includeexpr = 'v:lua.Find_required_path(v:fname)'

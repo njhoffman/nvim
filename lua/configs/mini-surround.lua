@@ -39,7 +39,7 @@ local vim_surround = {
 
 local custom_surroundings = {
   -- Lua long brackets - ysiwS
-  S = {
+  B = {
     -- Configuration for "input" (like for delete) is done with Lua patterns
     input = { find = '%[%[.-%]%]', extract = '^(..).*(..)$' },
     -- Configuration for "output" (like for add) is done with plain text
@@ -59,6 +59,8 @@ local cfg = {
     find_left = 'sF', -- Find surrounding (to the left)
     highlight = 'sh', -- Highlight surrounding
     -- update_n_lines = 'sn', -- Update `n_lines`
+    suffix_last = '', -- Suffix to search with "prev" method
+    suffix_next = '', -- Suffix to search with "next" method
     -- suffix_last = 'l', -- Suffix to search with "prev" method
     -- suffix_next = 'n', -- Suffix to search with "next" method
   },
@@ -67,28 +69,34 @@ local cfg = {
   respect_selection_type = true,
   search_method = 'cover_or_next',
 }
+--
+-- ["x]s			Delete [count] characters [into register x] and start insert (s stands for Substitute).  Synonym for "cl" (not |linewise|).
+-- vim.api.nvim_del_keymap('x', 'S')
 
 require('mini.surround').setup(cfg)
-
 -- vim.keymap.set(
 --   'n',
 --   's<space>',
+-- noremap <silent> s<space> :execute "normal wst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
 --   ':silent! normal wst<space>',
 --   { silent = true, expr = true, desc = 'quickly add surrounding ( to word' }
 -- )
+vim.cmd([[
+  noremap <silent> s<space> :execute "normal wst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
+" getline(".")[col(".")-1] == "\t"
+  " let isOnKeyword = matchstr(getline('.'), '\%'.col('.').'c.') =~# '\k'
+  " noremap s<space> :normal wst " . nr2char(getchar()) . <cr>
+]])
 
-vim.keymap.set(
-  'n',
-  'ys',
-  [[v:lua.MiniSurround.operator('add')]],
-  { silent = true, expr = true, desc = 'mini surround add operator' }
-)
-vim.keymap.set(
-  'x',
-  's',
-  [[:<C-u>lua MiniSurround.add('visual')<CR>]],
-  { silent = true, desc = 'mini surround add visual' }
-)
+local function setup_keymaps()
+  vim.keymap.set(
+    'n',
+    'ys',
+    [[v:lua.MiniSurround.operator('add')]],
+    { silent = true, expr = true, desc = 'mini surround add operator' }
+  )
+end
+
 -- vim.keymap.set('n', 'yss', '^ys$', { remap = true, desc = 'mini surround add line' })
 
 -- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"ds"**

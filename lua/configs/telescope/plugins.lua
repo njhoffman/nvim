@@ -346,7 +346,6 @@ local tele_plugs = {
       main_menu = { [{ 'i', 'n' }] = '<M-Bslash>' },
     },
   },
-  ['neoclip'] = {},
   ['node_modules'] = {},
   ['npm'] = {},
   ['openbrowser'] = {
@@ -396,6 +395,7 @@ local tele_plugs = {
   ['terraform'] = {},
   ['tmux'] = {},
   -- ['ui-select'] = require('telescope.telethemes').get_theme('dropdown'),
+  ['yank_history'] = {},
   ['vimwiki'] = {},
   ['z'] = {
     cmd = { 'z', '-l' },

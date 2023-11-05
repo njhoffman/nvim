@@ -34,10 +34,14 @@ local format = function(entry, vim_item)
   -- vim_item.menu = ({ nvim_lsp = '', buffer   = '', })[entry.source.name]
   -- vim_item.kind = ({ Text          = '', TypeParameter = '', })[vim_item.kind]
   vim_item.dup = ({ buffer = 1, path = 1, nvim_lsp = 0 })[entry.source.name] or 1
-  vim_item.menu = icons.names[entry.source.name][1] .. ' '
-  vim_item.menu_hl_group = icons.names[entry.source.name][2]
+  if type(icons.names[entry.source.name]) == 'nil' then
+    vim.notify('No source icon: ' .. entry.source.name, 2)
+  else
+    vim_item.menu = icons.names[entry.source.name][1] .. ' '
+    vim_item.menu_hl_group = icons.names[entry.source.name][2]
+  end
   if type(icons.symbols[vim_item.kind]) == 'nil' then
-    vim.notify('No sourcce symbol: ' .. vim_item.kind, 2)
+    vim.notify('No symbol icon: ' .. vim_item.kind, 2)
     vim_item.kind = ' '
   else
     vim_item.kind = ' ' .. icons.symbols[vim_item.kind]

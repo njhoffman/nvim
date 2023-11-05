@@ -87,8 +87,21 @@ return {
   -- null_ls.builtins.formatting.terrafmt,
   -- null_ls.builtins.formatting.terraform_fmt,
   -- null_ls.builtins.formatting.tidy,
-  null_ls.builtins.formatting.trim_newlines,
-  null_ls.builtins.formatting.trim_whitespace, -- only works for ff=unix
+
+  null_ls.builtins.formatting.trim_newlines.with({
+    filetypes = { 'tex', 'markdown', 'text', 'txt', 'org' },
+    extra_args = function(params)
+      return {
+        '--no-trim-blank-lines',
+        '--no-trim-empty-lines',
+        '--no-trim-final-newlines',
+      }
+    end,
+  }),
+  null_ls.builtins.formatting.trim_whitespace.with({
+    filetypes = { 'tex', 'markdown', 'text', 'txt', 'org' },
+  }), -- only works for ff=unix
+
   null_ls.builtins.formatting.xmlformat,
   null_ls.builtins.formatting.xmllint,
   null_ls.builtins.formatting.yamlfix,

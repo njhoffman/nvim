@@ -172,6 +172,11 @@ map('n', '<BS>', ':e #<cr>', {
 })
 local bufvar = { { '<Plug>(CybuPrev)', '<Plug>(CybuNext)' }, { '<cmd>BufferPrev<cr>', '<cmd>BufferNext<cr>' } }
 
+map({ 'n' }, 'E', '<cmd>lua vim.treesitter.get_parser(0):parse()<cr>', {
+  category = 'Buffers',
+  label = 'reset buffer highlighting',
+})
+
 map('n', 'H', bufvar[2][1], {
   category = 'Buffers',
   label = 'left buffer',
@@ -219,6 +224,11 @@ map('n', '<leader>D', '<cmd>BufferDelete<cr>', {
   desc = 'delete buffer without closing window',
 })
 
+map('i', '<C-BS>', '<Esc>cvb', {
+  category = 'Buffers',
+  desc = 'delete previous word',
+})
+
 -- TODO: multiple category Buffers, Windows
 map('n', '<C-d>', '<cmd>CloseMulti<cr>', {
   category = 'Buffers',
@@ -241,6 +251,11 @@ map('n', '<leader>m', [[:call AltCommand(expand('%'), ':e')<cr>]], {
   category = 'Buffers',
   label = 'open alt file',
   desc = 'open alternative file associated with buffer',
+})
+
+map('n', '<leader><space>', '<C-^>', {
+  category = 'Buffers',
+  desc = 'switch to last buffer',
 })
 
 map('n', '<leader>fn', [[:e <C-R>=expand("%:p:h") . "/" <CR>]], {
@@ -280,6 +295,8 @@ map('n', '<leader>cd', '<cmd>cd %:h<cr>', {
   label = 'cd buffer',
   desc = 'change current working directory to buffer directory',
 })
+
+-- undo 0, earlier 5m, earlier 1h, later 5h, later 1f (file writes later)
 
 map('i', ',', ',<c-g>u', {
   category = 'Buffers',
@@ -326,7 +343,7 @@ map('n', '<M-C-X>', '<cmd>silent! tabclose | xa<cr>', {
 --------------------------------------------------------------------------------------------------
 -- EXECUTE ---------------------------------------------------------------------------------------
 
-map('n', '&&', '<cmd>@:<cr>', {
+map('n', '!~', '<cmd>@:<cr>', {
   category = 'Execute',
   label = 'repeat command',
   desc = 'repeat the last command',
@@ -370,20 +387,6 @@ vmap('n', '', {
   label = 'xdg-open file',
   desc = 'open file with xdg-open under cursor',
 })
-vim.cmd([[
-" function! s:SurroundWord()
-"   let chr = nr2char(getchar())
-"   " return "viws" . chr . chr . "\<esc>P"
-"   return "wst\<space>"  . chr . "\<esc>"
-" endfunction
-" nnoremap <expr> s<space> <SID>SurroundWord()
-" nnoremap <leader>s<esc> <nop>
-" nnoremap <expr> <leader>s <SID>Surround()
-  noremap <silent> s<space> :execute "normal wst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
-" getline(".")[col(".")-1] == "\t"
-  " let isOnKeyword = matchstr(getline('.'), '\%'.col('.').'c.') =~# '\k'
-  " noremap s<space> :normal wst " . nr2char(getchar()) . <cr>
-]])
 
 map('n', 'n', "<cmd>execute('normal! ' . v:count1 . 'n')<cr><cmd>lua require('hlslens').start()<cr>", {
   category = 'Motion',
@@ -404,6 +407,11 @@ map('n', '*', "*<cmd>lua require('hlslens').start()<cr>", {
   plugin = 'hlslens',
   label = 'next word match',
   desc = 'next matching word (hls lens)',
+})
+
+map('n', '<cr>', 'ciw', {
+  category = 'Motion',
+  desc = 'enter insert mode and change word',
 })
 
 map('n', '#', "#<cmd>lua require('hlslens').start()<cr>", {
@@ -527,7 +535,7 @@ map('n', 'gg', '<Plug>(Smoothie_gg)', {
   noremap = false,
 })
 
-map('i', '<C-D>', "<cmd>execute('normal! d$\\<esc>')", {
+map('i', '<C-D>', '<cmd>norm d$<cr>', {
   category = 'Motion',
   label = 'delete to eol',
   desc = 'delete until the end of line',
@@ -557,6 +565,18 @@ vmap('n', 'gv', {
   desc = 'select last visual block afrom bracket marks',
 })
 
+map('i', '<esc>', '<Esc>`^', {
+  category = 'Motion',
+  desc = 'convenience cursor placement after insert',
+  silent = true,
+})
+
+map('x', 'y', 'ygv<esc>', {
+  category = 'Motion',
+  desc = 'yank maintaining cursor',
+  silent = true,
+})
+
 map('n', 'yil', 'v0o$y', {
   category = 'Motion',
   label = 'yank in line',
@@ -581,12 +601,6 @@ map('n', 'yY', '<cmd>normal vil<CR>', {
   category = 'Motion',
   label = 'yank in line',
   desc = 'yank in line',
-})
-
-map('n', '<leader>py', '<cmd>Telescope neoclip<cr>', {
-  category = 'Motion',
-  label = 'neoclip telescope',
-  desc = 'show neoclip registers in telescope',
 })
 
 -- map('n', 'P', '"*p', {
@@ -1041,14 +1055,6 @@ map('n', '<leader>cl3', '<cmd>set conceallevel=3<cr>', {
 
 --------------------------------------------------------------------------------------------------
 -- TREESITTER ------------------------------------------------------------------------------------
-
-vmap('n', '<cr>', {
-  category = 'Treesitter',
-  plugin = 'treesitter.nvim',
-  label = 'init incsel',
-  desc = 'initialize incremental selection',
-})
-
 vmap('x', '<tab>', {
   category = 'Treesitter',
   plugin = 'treesitter.nvim',
@@ -1206,13 +1212,6 @@ map('n', '<C-Space>', "<cmd>lua require('telescope.run')('builtin','resume', { c
   desc = 'repeast last telescope command',
 })
 
-map('n', '<leader><space>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
-  category = 'Pickers',
-  plugin = 'telescope.nvim',
-  label = 'repeat telescope',
-  desc = 'repeast last telescope command',
-})
-
 map({ 'n', 'v' }, '<leader><leader>', "<cmd>lua require('telescope.run')('find_pickers','find_pickers')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
@@ -1234,12 +1233,12 @@ map('n', '<C-Y>', '<cmd>ChatGPT<cr>', {
   desc = 'toggle chatgpt',
 })
 
-map('n', '<M-y>', '<cmd>NeoAIToggle<cr>', {
-  category = 'Pickers',
-  plugin = 'neo-ai',
-  label = 'toggle the side panel of neo ai',
-  desc = 'toggle the side panel of neo ai',
-})
+-- map('n', '<M-y>', '<cmd>NeoAIToggle<cr>', {
+--   category = 'Pickers',
+--   plugin = 'neo-ai',
+--   label = 'toggle the side panel of neo ai',
+--   desc = 'toggle the side panel of neo ai',
+-- })
 --------------------------------------------------------------------------------------------------
 -- GIT -------------------------------------------------------------------------------------------
 -- TODO: add precheck function to ensure in git dir

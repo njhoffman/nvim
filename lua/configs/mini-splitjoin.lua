@@ -34,5 +34,4 @@ local default_opt = {
 local opts = {
   mappings = { toggle = '', split = '', join = '' },
 }
-
 require('mini.splitjoin').setup(opts)

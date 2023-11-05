@@ -37,26 +37,26 @@ local setup_global = function(opts)
 
   -- Register
   keyopts.desc = '[wf.nvim] reg'
-  vim.keymap.set('n', '<Leader>wfr', register(wk_opts), keyopts)
+  vim.keymap.set('n', '<Leader>Wr', register(wk_opts), keyopts)
 
   -- Bookmark
   keyopts.desc = '[wf.nvim] book'
-  vim.keymap.set('n', '<Leader>wfb', bookmark(opts.bookmark_dirs, wk_opts), keyopts)
+  vim.keymap.set('n', '<Leader>Wb', bookmark(opts.bookmark_dirs, wk_opts), keyopts)
 
   -- Buffer
   keyopts.desc = '[wf.nvim] buf'
-  vim.keymap.set('n', '<Leader>wfB', buffer(wk_opts), keyopts)
+  vim.keymap.set('n', '<Leader>WB', buffer(wk_opts), keyopts)
 
   -- Mark
   keyopts.desc = '[wf.nvim] mark'
   -- keyopts.nowait = true
-  vim.keymap.set('n', '<Leader>wfm', mark(wk_opts), keyopts)
+  vim.keymap.set('n', '<Leader>Wm', mark(wk_opts), keyopts)
 
   -- Which Key
   keyopts.desc = '[wf.nvim] whichkey'
   wk_opts.text_insert_in_advance = ''
   -- wk_opts.text_insert_in_advance = ''
-  vim.keymap.set('n', '<Leader>wfk', which_key(wk_opts), keyopts)
+  vim.keymap.set('n', '<Leader>Wk', which_key(wk_opts), keyopts)
   vim.keymap.set('n', '<F2>', which_key(wk_opts), keyopts)
   -- timeout(100, function()
   --   vim.keymap.set( 'n', "'",

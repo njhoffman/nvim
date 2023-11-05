@@ -11,7 +11,7 @@ local default_cfg = {
     },
     layout = {
       position = 'bottom', -- | top | left | right
-      ratio = 0.4,
+      ratio = 0.3,
     },
   },
   suggestion = {
@@ -42,59 +42,6 @@ local default_cfg = {
   server_opts_overrides = {},
 }
 
--- local opts = {
--- 	panel = {
--- 		enabled = false,
--- 		auto_refresh = true,
--- 		keymap = {
--- 			jump_prev = false,
--- 			jump_next = false,
--- 			accept = false,
--- 			refresh = false,
--- 			open = false,
--- 		},
--- 		layout = {
--- 			position = "bottom",
--- 			ratio = 0.4,
--- 		},
--- 	},
--- 	suggestion = {
--- 		enabled = true,
--- 		-- auto_trigger = false,
--- 		auto_trigger = true,
--- 		debounce = 75,
--- 		keymap = {
--- 			-- accept = "<S-Tab>",
--- 			accept = "<Tab>",
--- 			-- accept_line = "<M-o>",
--- 			accept_line = "<S-Tab>",
--- 			next = "<M-]>",
--- 			prev = "<M-[>",
--- 			-- dismiss = "<C-]>",
--- 			dismiss = "<M-o>",
--- 		},
--- 	},
--- 	filetypes = {
--- 		help = false,
--- 		gitcommit = false,
--- 		prompt = false,
--- 		TelescopePrompt = false,
--- 		DressingInput = false,
--- 		DressingSelect = false,
--- 		harpoon = false,
--- 		neorepl = false,
--- 		["dap-repl"] = false,
--- 		sh = function()
--- 			if string.match(vim.fs.basename(vim.api.nvim_buf_get_name(0)), "^%.env.*") then
--- 				return false
--- 			end
--- 			return true
--- 		end,
--- 		["."] = false,
--- 	},
--- 	copilot_node_command = "node",
--- 	server_opts_overrides = {},
--- }
 require('copilot').setup({
   server_opts_overrides = {
     -- trace = 'verbose',
@@ -105,6 +52,63 @@ require('copilot').setup({
       },
     },
   },
-  suggestion = { enabled = false },
-  panel = { enabled = false },
+  suggestion = {
+    enabled = true,
+    auto_trigger = false,
+    keymap = {
+      accept = '<C-CR>',
+      accept_word = false,
+      accept_line = false,
+      next = '<M-}>',
+      prev = '<M-{>',
+      dismiss = '<C-d>',
+    },
+  },
+  panel = {
+    enabled = true,
+    auto_refresh = true,
+    keymap = {
+      jump_prev = '[[',
+      jump_next = ']]',
+      accept = '<CR>',
+      -- refresh = 'gr',
+      refresh = false,
+      -- open = '<M-y>',
+      open = false,
+    },
+  },
 })
+
+-- vim.keymap.set({ 'i', 'n' }, '<M-y>', function()
+--   local panel = require('copilot.panel')
+--   if panel.winid and vim.api.nvim_win_is_valid(panel.winid) then
+--     panel.close()
+--   else
+--     panel.open()
+--   end
+-- end, { silent = true, desc = '[copilot] toggle panel' })
+
+-- require("copilot.command").enable()
+-- require("copilot.panel").accept()
+-- require("copilot.panel").jump_next()
+-- require("copilot.panel").jump_prev()
+-- require("copilot.panel").open({postion, ratio})
+-- require("copilot.panel").refresh()
+-- local map = vim.keymap.set
+-- local suggestions = require('copilot.suggestion')
+-- stylua: ignore start
+-- map("i", "å", suggestions.accept, { desc = "[copilot] accept suggestion", silent = true })
+-- map("i", "<M-å>", suggestions.accept, { desc = "[copilot] accept suggestion", silent = true })
+--
+-- map("i", "∑", suggestions.accept_word, { desc = "[copilot] accept word", silent = true })
+-- map("i", "<M-∑>", suggestions.accept_word, { desc = "[copilot] accept word", silent = true })
+--
+-- map("i", "¬", suggestions.accept_line, { desc = "[copilot] accept line", silent = true })
+-- map("i", "<M-¬>", suggestions.accept_line, { desc = "[copilot] accept line", silent = true })
+--
+-- map("i", "‘", suggestions.next, { desc = "[copilot] accept next", silent = true })
+-- map("i", "<M-‘>", suggestions.next, { desc = "[copilot] accept next", silent = true })
+--
+-- map("i", "“", suggestions.prev, { desc = "[copilot] accept prev", silent = true })
+-- map("i", "<M-“>", suggestions.prev, { desc = "[copilot] accept prev", silent = true })
+-- stylua: ignore end

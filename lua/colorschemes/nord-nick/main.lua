@@ -708,7 +708,9 @@ return function(injected_functions)
     TSRainbowGreen({ fg = clrutil.shade_color('#689d6a', -30) }),
     TSRainbowViolet({ fg = clrutil.shade_color('#b16286', -30) }),
     TSRainbowCyan({ fg = clrutil.shade_color('#a89984', -30) }),
-    CmpGhostText({ fg = '#16365b' }),
+    CmpGhostLight({ fg = '#1f4f94' }),
+    CmpGhostDark({ fg = '#27476c' }),
+    CmpGhostText({ CmpGhostLight }),
     -- CmpPmenu({ bg = '#142a30' }),
     CmpPmenu({ bg = '#001020' }),
     CmpPmenuBorder({ bg = '#242a30' }),
@@ -1008,6 +1010,8 @@ return function(injected_functions)
 
     SpecsCursor({ bg = '#1f6385' }),
     HighlightUndo({ fg = '#b7001e', bg = '#0f2139' }),
+    BackseatText({ DiagnosticFloatingHint, gui = 'italic' }),
+
     -- GlancePreviewNormal
     -- GlancePreviewMatch
     -- GlancePreviewCursorLine
