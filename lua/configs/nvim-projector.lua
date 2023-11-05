@@ -1,19 +1,20 @@
 local task_list = { task_cfg }
 local task_cfg_example = {
   -- These have special "global" meaning:
-  id = "specific.task.id" -- ID is optional, but can be useful for specifying dependencies
-  name = "Task", -- task's name
-  dependencies = {  -- list of task ids to run before this one
-    "setup.some.stuff",
-    "setup.some.more.stuff"
+  id = 'specific.task.id', -- ID is optional, but can be useful for specifying dependencies
+  name = 'Task', -- task's name
+  dependencies = { -- list of task ids to run before this one
+    'setup.some.stuff',
+    'setup.some.more.stuff',
   },
-  after = "cleanup.task.id", -- task id to run after this one is finished
-  evaluate = "task", -- run this config in "task" mode immedialtely after loading
+  after = 'cleanup.task.id', -- task id to run after this one is finished
+  evaluate = 'task', -- run this config in "task" mode immedialtely after loading
   children = { -- nesting is also supported
-    { name = "...",
+    {
+      name = '...',
       -- ... other config fields
     },
-  }
+  },
 }
 
 local default = {

@@ -43,7 +43,6 @@ local plugins = {
       },
     },
   },
-  { 'gsuuon/llm.nvim' },
   {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',

@@ -1,4 +1,3 @@
-local config = require('action-hints.config').values
 local state = require('action-hints.state')
 
 local references_namespace = vim.api.nvim_create_namespace('action_hints_references')
@@ -33,16 +32,16 @@ local function set_virtual_text(bufnr, line, chunks)
   last_virtual_text_line = line
 end
 
-local function update_virtual_text()
+local function update_virtual_text(config)
   if config.use_virtual_text then
     local bufnr = vim.api.nvim_get_current_buf()
     local cursor = vim.api.nvim_win_get_cursor(0)
-    local definition_status = state.definition_available and config.template.definition.text or ''
-    local reference_status = state.reference_count > 0
-        and string.format(config.template.references.text, tostring(state.reference_count))
+    local definition_status = state.available.definitions and config.template.definition.text or ''
+    local reference_status = state.current.references > 0
+        and string.format(config.template.references.text, tostring(state.current.references))
       or ''
-    local codeaction_status = state.codeaction_count > 0
-        and string.format(config.template.codeactions.text, tostring(state.codeaction_count))
+    local codeaction_status = state.current.codeactions > 0
+        and string.format(config.template.codeactions.text, tostring(state.current.codeactions))
       or ''
     local chunks = {
       { definition_status, 'ActionHintsDefinition' },
@@ -62,7 +61,7 @@ local clear_virtual_text = function()
   end
 end
 
-local statusline = function()
+local statusline = function(config)
   local definition_status = state.definition_available and config.template.definition.text or ''
   local reference_status = state.reference_count > 0
       and string.format(config.template.references.text, tostring(state.reference_count))
@@ -84,7 +83,7 @@ local statusline = function()
   return text
 end
 
-local set_highlights = function()
+local set_highlights = function(config)
   if vim.o.termguicolors then
     vim.api.nvim_command('highlight ActionHintsDefinition ctermfg=NONE guifg=' .. config.template.definition.color)
     vim.api.nvim_command('highlight ActionHintsReferences ctermfg=NONE guifg=' .. config.template.references.color)

@@ -32,6 +32,9 @@ require('early-retirement').setup({
   notificationOnAutoClose = true,
 })
 
+local llm_config = require('llm-config')
+require('llm').setup(llm_config)
+
 require('action-hints').setup({
   template = {
     definition = { text = ' ⊛', color = '#517c8a' },

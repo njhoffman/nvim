@@ -1,25 +1,25 @@
-local default_definition_color
+local default_definitions_color
 local default_references_color
 local default_codeactions_color
 
 if vim.o.termguicolors then
-  default_definition_color = '#6dd8e6'
+  default_definitions_color = '#6dd8e6'
   default_references_color = '#ff6666'
   default_codeactions_color = '#3388ff'
 else
-  default_definition_color = 'green'
+  default_definitions_color = 'green'
   default_references_color = 'red'
   default_codeactions_color = 'blue'
 end
 
 local default_config = {
   debounce_delays = {
-    references = 100,
-    definition = 100,
-    codeactions = 500,
+    references = 300,
+    definitions = 300,
+    codeactions = 300,
   },
   template = {
-    definition = { text = ' ⊛', color = default_definition_color },
+    definitions = { text = ' ⊛', color = default_definitions_color },
     references = { text = ' ↱%s', color = default_references_color },
     codeactions = { text = ' %s', color = default_codeactions_color },
   },

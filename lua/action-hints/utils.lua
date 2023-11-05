@@ -1,5 +1,7 @@
+local state = require('action-hints.state')
+
+local timer_id = nil
 local function debounce(func, delay)
-  local timer_id = nil
   return function(...)
     if timer_id then
       vim.fn.timer_stop(timer_id)
@@ -9,6 +11,20 @@ local function debounce(func, delay)
       func(unpack(args))
     end)
   end
+end
+
+local function throttle(func, delay, config, name)
+  if state.timers[name] then
+    return
+  end
+  state.timers[name] = vim.fn.timer_start(delay, function()
+    -- local args = { ... }
+    pcall(vim.schedule_wrap(function()
+      func(config)
+    end))
+    vim.fn.timer_stop(state.timers[name])
+    state.timers[name] = nil
+  end)
 end
 
 local supports_method = function(method)
@@ -31,6 +47,7 @@ end
 
 return {
   debounce = debounce,
+  throttle = throttle,
   supports_method = supports_method,
   is_cursor_on_whitespace = is_cursor_on_whitespace,
 }
