@@ -42,10 +42,10 @@ local on_open = function(win)
   local _, notify_line = pcall(vim.api.nvim_buf_get_var, bufnr, 'notify_line')
   if file_ok and #notify_file > 0 then
     local orig_map = find(vim.api.nvim_get_keymap('n'), 'lhs', 'gF')
-    logger:trace('file assigned (' .. notify_file .. ':' .. notify_line .. ')')
+    logger:debug('file assigned (' .. notify_file .. ':' .. notify_line .. ')')
     vim.api.nvim_set_keymap('n', 'gF', '', {
       callback = function()
-        logger:debug('going to error (' .. notify_file .. ':' .. notify_line .. ')')
+        logger:info('going to error (' .. notify_file .. ':' .. notify_line .. ')')
         open_lua_error(bufnr, notify_file, notify_line, orig_map)
       end,
     })

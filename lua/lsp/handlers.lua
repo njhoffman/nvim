@@ -1,4 +1,5 @@
 local mapping = require('lsp.mapping')
+local format = require('commands.format')
 
 local color_provider = function(client, bufnr)
   local cap = client.server_capabilities
@@ -50,9 +51,15 @@ local document_formatting_provider = function(client, bufnr)
   local augroup = vim.api.nvim_create_augroup('LspFormatting', { clear = false })
   local name = type(client) == 'table' and client.name or client or ''
   local command = 'Format ' .. bufnr .. ' ' .. name
-  vim.api.nvim_create_autocmd('BufWritePre', { group = augroup, buffer = bufnr, command = command })
   command = '<cmd>' .. command .. '<cr>'
+  vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.format({ async = false })]])
   mapping.formatting(command)
+  -- vim.api.nvim_create_autocmd('BufWritePre', {
+  --   group = augroup,
+  --   buffer = bufnr,
+  --     callback = require('commands.format').format,
+  --   -- command = command,
+  -- })
 end
 
 local document_formatting_range_provider = function(_, _)

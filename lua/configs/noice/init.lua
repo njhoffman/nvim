@@ -107,9 +107,9 @@ local cfg = {
     ['notify_error'] = {
       render = noice_views.errorView,
     },
-    -- ['notify'] = {
-    --   render = 'minimal',
-    -- },
+    ['notify'] = {
+      render = 'minimal',
+    },
     cmdline_popup = {
       position = {
         row = 10,
@@ -171,7 +171,7 @@ local cfg = {
     fallback = 'mini',
     -- format = "notify",
     -- replace = false,
-    -- merge = false,
+    merge = true,
   },
   smart_move = {
     -- noice tries to move out of the way of existing floating windows.
@@ -181,10 +181,8 @@ local cfg = {
   },
   commands = {
     history = noice_views.historyView,
-
     -- :Noice last
     last = vim.tbl_extend('force', noice_views.historyView, { filter_opts = { count = 10 } }),
-
     -- :Noice errors
     errors = {
       -- options for the message history that you get with `:Noice errors`

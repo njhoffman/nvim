@@ -52,7 +52,7 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
   vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
 
-  client.config.flags.debounce_text_changes = 150
+  client.config.flags.debounce_text_changes = 300
   -- client.config.flags.allow_incremental_sync = true
 
   if client.name == 'lua_ls' then

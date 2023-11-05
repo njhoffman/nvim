@@ -68,7 +68,7 @@ local modules = {
   },
   refactor = {
     smart_rename = { enable = true, keymaps = { smart_rename = 'gR' } },
-    highlight_definitions = { enable = true },
+    -- highlight_definitions = { enable = true },
     highlight_current_scope = { enable = false },
     navigation = {
       enable = true,

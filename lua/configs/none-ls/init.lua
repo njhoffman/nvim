@@ -62,7 +62,7 @@ null_ls.setup({
   end,
   diagnostic_config = { underline = false },
   on_attach = on_attach,
-  debounce = 500,
+  debounce = 1000,
   default_timeout = 5000,
   root_dir = u.root_pattern(
     '.null-ls-root',

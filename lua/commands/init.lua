@@ -26,13 +26,13 @@ local bufcmd = vim.api.nvim_buf_create_user_command
 -- keymap.set({ "n", "v" }, "<leader>d", "\"_d", { desc = "Delete without yank" })
 
 -- Create the user command
-cmd('TrimTrailingWhitespace', format.trim_space, {
-  nargs = '?',
-  range = '%',
-  addr = 'lines',
-  preview = format.trim_space,
-  desc = 'Trims trailing whitespace in the current buffer.',
-})
+-- cmd('TrimTrailingWhitespace', format.trim_space, {
+--   nargs = '?',
+--   range = '%',
+--   addr = 'lines',
+--   preview = format.trim_space,
+--   desc = 'Trims trailing whitespace in the current buffer.',
+-- })
 cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })
 cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
 cmd('CloseMulti', ui.close_multi, { desc = 'Close tabpage, window, or buffer in that order' })

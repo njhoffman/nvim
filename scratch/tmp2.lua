@@ -1,2 +1,8 @@
 local lazy = require('lazy')
-vim.dbglog(lazy.stats())
+
+local n = require('notify')
+
+-- return require("noice.source.notify").notify(msg, level, opts)
+n.notify('HELLO')
+n.notify('HELLO')
+n.notify('HELLO')

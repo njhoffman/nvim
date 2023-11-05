@@ -10,9 +10,7 @@ local cfg = {
   fps = 30,
   render = render,
   stages = 'fade_in_slide_out',
-  -- background_colour = "FloatShadow",
   background_colour = '#000000',
-  -- Default timeout for notifications
   timeout = 5000,
   minimum_width = 5,
   max_height = function()
