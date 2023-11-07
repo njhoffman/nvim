@@ -13,7 +13,6 @@ local sources = {
         end,
       },
       { name = 'codeium', max_item_count = 3 },
-      { name = 'path' },
       { name = 'nvim_lsp_document_symbol' },
       {
         name = 'buffer',
@@ -170,23 +169,18 @@ local sources = {
       },
     },
     {
+      { name = 'async_path' },
       { name = 'cmdline_history', max_item_count = 5 },
-      { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
+      -- { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
+      -- { name = "dictionary" },
+      -- { name = "buffer" },
     },
   },
-  -- cmdline = {
-  --   { name = 'cmdline' },
-  --   { name = 'cmdline_history' },
-  --   { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
-  --   -- { name = "dictionary" },
-  --   -- { name = "buffer" },
-  -- },
 }
-
+return sources
 -- if vim.o.ft == 'sql' then
 --   table.insert(sources, { name = 'vim-dadbod-completion' })
 -- end
---
 -- if vim.o.ft == 'norg' then
 --   table.insert(sources, { name = 'neorg' })
 --   table.insert(sources, { name = 'spell' })
@@ -215,5 +209,3 @@ local sources = {
 --   table.insert(sources, { name = 'buffer', keyword_length = 3 })
 --   table.insert(sources, { name = 'calc' })
 -- end
-
-return sources

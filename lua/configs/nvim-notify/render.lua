@@ -1,5 +1,4 @@
 local render = function(bufnr, notif, highlights, config)
-  vim.dbglog('NOTIF', notif)
   local title = (notif.title and type(notif.title) == 'table' and notif.title[1]) and notif.title[1] or ''
   if notif.level == 'ERROR' and #title == 0 then
     title = 'ERROR'

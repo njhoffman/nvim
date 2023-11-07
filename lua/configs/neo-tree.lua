@@ -81,8 +81,8 @@ local cfg = {
       handler = function()
         vim.schedule(function()
           vim.cmd('highlight! Cursor blend=100')
-          local position = vim.api.nvim_buf_get_var(0, 'neo_tree_position')
-          if position == 'current' then
+          local ok, position = pcall(vim.api.nvim_buf_get_var, 0, 'neo_tree_position')
+          if ok and position == 'current' then
             vim.cmd('setlocal buflisted')
           end
         end)

@@ -39,7 +39,6 @@ local function codeactions(config)
     return
   end
 
-  -- if utils.is_cursor_on_whitespace() then
   if state.is_cleared == false then
     display.clear_virtual_text()
     state.is_cleared = true

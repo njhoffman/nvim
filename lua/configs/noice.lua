@@ -11,9 +11,9 @@
 --
 -- You can then use vim.fn.getcmdpos to get the cursor if needed.
 
-local noice_views = require('configs.noice.views')
-local noice_routes = require('configs.noice.routes')
-local noice_mapping = require('configs.noice.mapping')
+local noice_views = require('noice.user.views')
+local noice_routes = require('noice.user.routes')
+local noice_mapping = require('noice.user.mapping')
 
 local cfg = {
   presets = {
@@ -99,17 +99,10 @@ local cfg = {
     view_search = 'virtualtext', -- view for search count messages. Set to `false` to disable
   },
   views = {
-    -- TODO: add mini message grouping
-    ['mini'] = {
-      zindex = 10,
-    },
+    ['mini'] = { zindex = 10 },
     -- ['cmdline'] = cmdlineView,
-    ['notify_error'] = {
-      render = noice_views.errorView,
-    },
-    ['notify'] = {
-      render = 'minimal',
-    },
+    ['notify_error'] = { render = noice_views.errorView },
+    ['notify'] = { render = 'minimal' },
     cmdline_popup = {
       position = {
         row = 10,
@@ -129,14 +122,6 @@ local cfg = {
         },
         cursorline = false,
       },
-      -- border = {
-      -- style = "none",
-      -- padding = { 2, 3 },
-      -- },
-      -- filter_options = {},
-      -- win_options = {
-      -- winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
-      -- },
     },
     cmdline_output = {
       format = 'details',
@@ -167,11 +152,11 @@ local cfg = {
     -- event is always "notify" and kind can be any log level as a string
     -- The default routes will forward notifications to nvim-notify
     -- Benefit of using Noice for this is the routing and consistent history view
-    backend = 'notify',
+    view = 'notify',
     fallback = 'mini',
+    enabled = true,
     -- format = "notify",
     -- replace = false,
-    merge = true,
   },
   smart_move = {
     -- noice tries to move out of the way of existing floating windows.
@@ -186,15 +171,30 @@ local cfg = {
     -- :Noice errors
     errors = {
       -- options for the message history that you get with `:Noice errors`
-      view = noice_views.errorView,
       -- view = 'popup',
-      -- opts = { enter = true, format = noice_views.errorViewFormat },
-      -- filter = { error = true },
-      -- filter_opts = { reverse = true },
+      view = noice_views.errorView,
+      opts = { enter = true, format = noice_views.errorViewFormat },
+      filter = { error = true },
+      filter_opts = { reverse = true },
     },
   },
   routes = noice_routes,
 }
+
+local error_message = function(message, opts)
+  if opts.text and opts.text ~= '' then
+    message:append(opts.text, opts.hl_group)
+  end
+end
+
+-- vim.cmd([[]])
+require('noice').setup(cfg)
+require('telescope').load_extension('noice')
+noice_mapping.setup()
+
+vim.keymap.set('c', '<S-Enter>', function()
+  require('noice').redirect(vim.fn.getcmdline())
+end, { desc = 'Redirect Cmdline' })
 
 -- {
 --   -- default format
@@ -219,22 +219,6 @@ local cfg = {
 -- require("noice").redirect(function()
 --   print("test")
 -- end)
-
-local error_message = function(message, opts)
-  if opts.text and opts.text ~= '' then
-    message:append(opts.text, opts.hl_group)
-  end
-end
-
--- vim.cmd([[]])
-require('noice').setup(cfg)
-require('telescope').load_extension('noice')
-noice_mapping.setup()
-
-vim.keymap.set('c', '<S-Enter>', function()
-  require('noice').redirect(vim.fn.getcmdline())
-end, { desc = 'Redirect Cmdline' })
-
 --
 -- vim.api.nvim_create_autocmd('BufEnter', {})
 

@@ -104,11 +104,11 @@ local cfg = {
     end,
   },
   sorting = sorting,
-  experimental = {
-    ghost_text = {
-      hl_group = 'CmpGhostText',
-    },
-  },
+  -- experimental = {
+  --   ghost_text = {
+  --     hl_group = 'CmpGhostText',
+  --   },
+  -- },
   formatting = formatting,
   window = {
     max_width = MAX_DOCUMENT_WIDTH,

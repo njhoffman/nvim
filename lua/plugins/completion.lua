@@ -19,6 +19,7 @@ local plugins = {
       'hrsh7th/cmp-nvim-lsp-document-symbol',
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'hrsh7th/cmp-nvim-lua',
+      'FelipeLema/cmp-async-path',
       'hrsh7th/cmp-path',
       'jc-doyle/cmp-pandoc-references',
       'roobert/tailwindcss-colorizer-cmp.nvim',

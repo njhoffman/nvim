@@ -29,10 +29,10 @@ local cfg = {
     RUN = '',
     STATUS = '',
   },
-  on_open = on_open,
+  -- on_open = on_open,
 }
-
 require('notify').setup(cfg)
+-- vim.notify = require('notify').notify
 
 -- You can also use plenary's async library to avoid using callbacks:
 -- local async = require("plenary.async")

@@ -1,5 +1,6 @@
 -- Messages vINFO=[telescope],[WARN =05:11:28]
 -- [telescope] [WARN  05:11:28] ...share/nvim/lazy/telescope.nvim/lua/telescope/pickers.lua:481: Finder failed with msg:  ...y/telescope.nvim/lua/telescope/pickers/entry_display.lua:110: attempt to index local 'str' (a nil value)
+local Config = require('noice.config')
 
 local routes = {
   -- FILTERS                       *noice.nvim-noice-(nice,-noise,-notice)-filters*
@@ -30,7 +31,6 @@ local routes = {
   -- { filter = { event = 'msg_show.lua_error' }, view = 'mini' },
 
   -- hide treesitter error from joining lines
-
   {
     filter = { event = 'msg_show', find = '^Error in decoration provider treesitter/highlighter.line:' },
     view = 'mini',

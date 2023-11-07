@@ -10,9 +10,11 @@ local update = function(config)
   if utils.supports_method('definitionProvider') then
     display.clear_virtual_text()
     state.is_cleared = true
-    utils.throttle(references, delays.references, config, 'references')
-    utils.throttle(definitions, delays.definitions, config, 'definitions')
-    utils.throttle(codeactions, delays.codeactions, config, 'codeactions')
+    if not utils.is_cursor_on_whitespace() then
+      utils.throttle(references, delays.references, config, 'references')
+      utils.throttle(definitions, delays.definitions, config, 'definitions')
+      utils.throttle(codeactions, delays.codeactions, config, 'codeactions')
+    end
   end
 end
 

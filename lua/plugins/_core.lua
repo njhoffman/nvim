@@ -3,7 +3,6 @@ local utils = require('utils.lazy')
 local plugins = {
   { 'folke/lazy.nvim', lazy = false },
   -- colorscheme components should load first
-
   {
     'rktjmp/lush.nvim',
     priority = 1000,
@@ -41,7 +40,7 @@ local plugins = {
     },
   },
   { 'rcarriga/nvim-notify', lazy = false },
-  { 'folke/noice.nvim', event = 'VeryLazy' },
+  { 'folke/noice.nvim', lazy = false },
   { 'folke/which-key.nvim', event = 'VeryLazy' },
 }
 

@@ -253,7 +253,6 @@ return function(injected_functions)
     diffFile({ fg = clrs.nord7 }),
     diffLine({ fg = '#464B5D' }),
     diffIndexLine({ fg = clrs.nord9 }),
-    luaDocTag({ gui = 'none' }),
     Todo({ fg = 'none', bg = 'none', gui = 'none' }),
     TodoMsg({ fg = '#2583cB', gui = 'bold, italic' }),
     Warning({ bg = 'none', fg = '#aB6F34', gui = 'bold, italic' }),
@@ -280,6 +279,7 @@ return function(injected_functions)
     sym('@keywordFunction')({ Keyword }),
     sym('@keyword.function')({ KeywordFunction }),
     sym('@label')({ Label }), -- For labels: `label:` in C and `:label:` in Lua.
+    sym('@keyword.luadoc')({ gui = 'none' }),
     sym('@method')({ Function }),
     sym('@method.call')({ FunctionCall }),
     sym('@nameSpace')({ Statement }),

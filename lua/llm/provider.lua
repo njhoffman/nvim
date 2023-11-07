@@ -21,11 +21,11 @@ local M = {}
 
 ---@enum SegmentMode
 M.mode = {
-  APPEND = "append",
-  REPLACE = "replace",
-  BUFFER = "buffer",
-  INSERT = "insert",
-  INSERT_OR_REPLACE = "insert_or_replace"
+  APPEND = 'append',
+  REPLACE = 'replace',
+  BUFFER = 'buffer',
+  INSERT = 'insert',
+  INSERT_OR_REPLACE = 'insert_or_replace',
 }
 
 ---@class StreamHandlers
@@ -38,12 +38,7 @@ local function get_segment(input, segment_mode, hl_group)
     if input.selection ~= nil then
       -- clear selection
       util.buf.set_text(input.selection, {})
-      local seg = segment.create_segment_at(
-        input.selection.start.row,
-        input.selection.start.col,
-        hl_group,
-        0
-      )
+      local seg = segment.create_segment_at(input.selection.start.row, input.selection.start.col, hl_group, 0)
 
       seg.data.original = input.lines
 
@@ -60,12 +55,7 @@ local function get_segment(input, segment_mode, hl_group)
     end
   elseif segment_mode == M.mode.APPEND then
     if input.selection ~= nil then
-      return segment.create_segment_at(
-        input.selection.stop.row,
-        input.selection.stop.col,
-        hl_group,
-        0
-      )
+      return segment.create_segment_at(input.selection.stop.row, input.selection.stop.col, hl_group, 0)
     else
       return segment.create_segment_at(#input.lines, 0, hl_group, 0)
     end
@@ -83,7 +73,7 @@ local function get_segment(input, segment_mode, hl_group)
     vim.api.nvim_buf_set_option(llm_bfnr, 'buftype', 'nowrite')
 
     vim.api.nvim_buf_set_lines(llm_bfnr, -2, -1, false, input.lines)
-    vim.api.nvim_buf_set_lines(llm_bfnr, -1, -1, false, {'',''})
+    vim.api.nvim_buf_set_lines(llm_bfnr, -1, -1, false, { '', '' })
 
     -- Open the existing buffer or create a new one
     vim.api.nvim_set_current_buf(llm_bfnr)
@@ -108,12 +98,12 @@ local function get_input(want_visual_selection)
     return {
       selection = selection,
       position = util.cursor.position(),
-      lines = lines
+      lines = lines,
     }
   else
     return {
       position = util.cursor.position(),
-      lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+      lines = vim.api.nvim_buf_get_lines(0, 0, -1, false),
     }
   end
 end
@@ -123,17 +113,17 @@ local function get_before_after(input)
     before = util.buf.text({
       start = {
         row = 0,
-        col = 0
+        col = 0,
       },
-      stop = input.selection ~= nil and input.selection.start or input.position
+      stop = input.selection ~= nil and input.selection.start or input.position,
     }),
     after = util.buf.text({
       start = input.selection ~= nil and input.selection.stop or input.position,
       stop = {
         row = -1,
-        col = -1
+        col = -1,
       },
-    })
+    }),
   }
 end
 
@@ -181,7 +171,7 @@ local function build_request_handle_params(segment_mode, want_visual_selection, 
       before = before_after.before,
       after = before_after.after,
       args = args,
-    }
+    },
   }
 end
 
@@ -204,11 +194,7 @@ local function start_prompt(input, prompt, handlers, context)
   local prompt_built = assert(prompt.builder(as_string(input), context), 'prompt builder produced nil')
 
   local function do_request(built_params)
-    local params = vim.tbl_extend(
-      'force',
-      (prompt.params or {}),
-      built_params
-    )
+    local params = vim.tbl_extend('force', (prompt.params or {}), built_params)
 
     return prompt.provider.request_completion(handlers, params, prompt.options)
   end
@@ -232,7 +218,7 @@ end
 local function request_completion_input_segment(handle_params, prompt)
   local seg = handle_params.context.segment
 
-  local completion = ""
+  local completion = ''
 
   local cancel = start_prompt(handle_params.input, prompt, {
     on_partial = function(partial)
@@ -268,7 +254,7 @@ local function request_completion_input_segment(handle_params, prompt)
 
     on_error = function(data, label)
       util.eshow(data, 'stream error ' .. (label or ''))
-    end
+    end,
   }, handle_params.context)
 
   seg.data.cancel = cancel
@@ -285,7 +271,7 @@ function M.complete(prompt, input, context, callback)
 
     on_error = function(data, label)
       util.eshow(data, 'stream error ' .. (label or ''))
-    end
+    end,
   }, context)
 
   return cancel
@@ -308,23 +294,14 @@ function M.request_completion(prompt, args, want_visual_selection, default_hl_gr
       args
     )
 
-    start_prompt(
-      handle_params.input,
-      prompt,
-      stream_handlers,
-      handle_params.context
-    )
+    start_prompt(handle_params.input, prompt, stream_handlers, handle_params.context)
 
     return
   end
 
   ---@cast prompt_mode SegmentMode
-  local handle_params = build_request_handle_params(
-    prompt_mode,
-    want_visual_selection,
-    prompt.hl_group or default_hl_group,
-    args
-  )
+  local handle_params =
+    build_request_handle_params(prompt_mode, want_visual_selection, prompt.hl_group or default_hl_group, args)
 
   request_completion_input_segment(handle_params, prompt)
 end
