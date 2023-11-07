@@ -4,6 +4,7 @@ local Util = require('noice.util')
 local View = require('noice.view')
 local Manager = require('noice.message.manager')
 local NuiText = require('nui.text')
+local extensions = require('noice.view.backend.notify_ext')
 
 ---@class NoiceNotifyOptions
 ---@field title string
@@ -31,7 +32,6 @@ local defaults = {
 ---@field super NoiceView
 ---@diagnostic disable-next-line: undefined-field
 local NotifyView = View:extend('NotifyView')
-
 function NotifyView.dismiss()
   require('notify').dismiss({ pending = true, silent = true })
 end
@@ -143,11 +143,7 @@ function NotifyView:_notify(msg)
       end
     end,
     on_close = function()
-      self.notif = nil
-      for _, m in ipairs(msg.messages) do
-        m.opts.notify_id = nil
-      end
-      self.win = nil
+      self:_on_close_override(msg)
     end,
     render = Util.protect(self:notify_render(msg.messages, self._opts.render, msg.content)),
   }
@@ -172,7 +168,14 @@ function NotifyView:_notify(msg)
 
   local id = require('notify')(content, level, opts)
   self.notif = id
+  -- self.notif.messages = msg.messages
   for _, m in ipairs(msg.messages) do
+    m.opts._test_value = true
+    -- for _, line in ipairs(m._lines) do
+    --   for _, text in ipairs(line._texts) do
+    --     table.insert(self.notif.messages, text._content)
+    --   end
+    -- end
     m.opts.notify_id = id
   end
 end
@@ -200,7 +203,7 @@ function NotifyView:show()
   self:clear()
 
   for _, msg in ipairs(todo) do
-    self:_notify(msg)
+    self:_notify_override(msg)
   end
 end
 
@@ -210,5 +213,8 @@ function NotifyView:hide()
     self.win = nil
   end
 end
+
+NotifyView._on_close_override = extensions._on_close_override
+NotifyView._notify_override = extensions._notify_override
 
 return NotifyView

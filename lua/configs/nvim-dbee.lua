@@ -7,10 +7,12 @@ local config = {
 }
 config.url = vim.loop.fs_realpath(config.path .. '/' .. config.filename)
 
-require('dbee').setup({
-  sources = {
-    require('dbee.sources').MemorySource:new({ config }),
-    require('dbee.sources').EnvSource:new('DBEE_CONNECTIONS'),
-    require('dbee.sources').FileSource:new(vim.fn.stdpath('cache') .. '/dbee/persistence.json'),
-  },
-})
+if vim.fn.filereadable(config.url) == 1 then
+  require('dbee').setup({
+    sources = {
+      require('dbee.sources').MemorySource:new({ config }),
+      require('dbee.sources').EnvSource:new('DBEE_CONNECTIONS'),
+      require('dbee.sources').FileSource:new(vim.fn.stdpath('cache') .. '/dbee/persistence.json'),
+    },
+  })
+end
