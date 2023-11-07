@@ -224,10 +224,10 @@ map('n', '<leader>D', '<cmd>BufferDelete<cr>', {
   desc = 'delete buffer without closing window',
 })
 
-map('i', '<C-BS>', '<Esc>cvb', {
+map('i', '<M-BS>', '<Esc>cvb', {
   category = 'Buffers',
   desc = 'delete previous word',
-})
+}, { silent = true })
 
 -- TODO: multiple category Buffers, Windows
 map('n', '<C-d>', '<cmd>CloseMulti<cr>', {
@@ -409,10 +409,10 @@ map('n', '*', "*<cmd>lua require('hlslens').start()<cr>", {
   desc = 'next matching word (hls lens)',
 })
 
-map('n', '<cr>', 'ciw', {
-  category = 'Motion',
-  desc = 'enter insert mode and change word',
-})
+-- map('n', '<cr>', 'ciw', {
+--   category = 'Motion',
+--   desc = 'enter insert mode and change word',
+-- })
 
 map('n', '#', "#<cmd>lua require('hlslens').start()<cr>", {
   category = 'Motion',
