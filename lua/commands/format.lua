@@ -1,36 +1,36 @@
 local state = { timer = nil }
 
-local function throttle(func, delay)
-  if state.timer then
-    return
-  end
-  state.timer = vim.fn.timer_start(delay, function()
-    -- local args = { ... }
-    pcall(vim.schedule_wrap(function()
-      func(config)
-    end))
-    vim.fn.timer_stop(state.timer)
-    state.timer = nil
-  end)
-end
+-- local function throttle(func, delay)
+--   if state.timer then
+--     return
+--   end
+--   state.timer = vim.fn.timer_start(delay, function()
+--     -- local args = { ... }
+--     pcall(vim.schedule_wrap(function()
+--       func(config)
+--     end))
+--     vim.fn.timer_stop(state.timer)
+--     state.timer = nil
+--   end)
+-- end
 
-local function format(arg)
-  -- throttle(function()
-  local bufnr = arg.fargs[1] and tonumber(arg.fargs[1]) or 0
-  local lsp_name = arg.fargs[2] or ''
-  if vim.b.format_on_write == 0 then
-    vim.notify('Skipping format on write: ' .. lsp_name, 1)
-    return
-  end
-  vim.notify('Formatting: ' .. lsp_name)
-  vim.lsp.buf.format({
-    --   filter = function(client) return client.name ~= "tsserver" end
-    async = false,
-    bufnr = bufnr,
-    timeout = 3000,
-  })
-  -- end, 200)
-end
+-- local function format(arg)
+--   -- throttle(function()
+--   local bufnr = arg.fargs[1] and tonumber(arg.fargs[1]) or 0
+--   local lsp_name = arg.fargs[2] or ''
+--   if vim.b.format_on_write == 0 then
+--     vim.notify('Skipping format on write: ' .. lsp_name, 1)
+--     return
+--   end
+--   vim.notify('Formatting: ' .. lsp_name)
+--   vim.lsp.buf.format({
+--     --   filter = function(client) return client.name ~= "tsserver" end
+--     async = false,
+--     bufnr = bufnr,
+--     timeout = 3000,
+--   })
+--   -- end, 200)
+-- end
 
 -- vim.api.nvim_create_user_command("PasteChar", function()
 --   local txt = vim.g
@@ -38,7 +38,7 @@ end
 -- vim.api.nvim_create_user_command( "PasteLinewise"
 -- )
 
-local truncate_log = function()
+  local truncate_log = function()
   local ext = vim.fn.expand('%:e')
   if ext ~= 'log' then
     vim.notify('Not truncating log, wrong extension: ' .. ext)

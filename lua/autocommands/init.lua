@@ -60,7 +60,7 @@ local autocmds = {
     { 'FileType', 'qf',                    'setlocal nonumber norelativenumber' },
     { 'FileType', 'query',                 'setlocal nonumber norelativenumber' },
     { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
-    { 'FileType', "neoai-output",          "setlocal syn=pandoc conceallevel=3 synmaxcol=1000" },
+    { 'FileType', "neoai-output",          "setlocal ft=pandoc.markdown conceallevel=3 synmaxcol=1000" },
     { 'FileType', "help",                  "setlocal syn=pandoc.help conceallevel=3 synmaxcol=1000" },
 
     { {'BufNewFile', 'BufRead'}, '*nvim/option-window', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>', },

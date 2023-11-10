@@ -174,10 +174,9 @@ return function(injected_functions)
     KeywordFunction({ fg = '#2D88BF' }),
     KeywordReturn({ fg = '#2D81BC' }),
     Label({ fg = '#3377ba' }),
-    MatchParen({ fg = '#fb8b8b', gui = 'bold,' }),
     NonText({ bg = 'none', fg = '#556677' }),
-    -- Operator({ fg = '#4866bf' }),
-    Operator({ fg = '#28567f' }),
+    Operator({ fg = '#4866bf' }),
+    -- Operator({ fg = '#28567f' }),
     PreProc({ fg = '#4796bc' }),
     QuickFixLine({ bg = '#172238' }),
     Repeat({ fg = '#806a7f' }),
@@ -316,7 +315,7 @@ return function(injected_functions)
     sym('@text.diff.add')({ DiffAdd }),
     sym('@text.diff.delete')({ DiffDelete }),
     sym('@type')({ Type }),
-    sym('@type.builtin')({ fg = '#89DDFF' }),
+    sym('@type.builtin')({ fg = '#487795' }),
     sym('@uri')({ fg = '#8eb9f6', gui = 'none' }),
     sym('@variable')({ Variable }),
     sym('@variable.builtin')({ Identifier }),
@@ -572,7 +571,7 @@ return function(injected_functions)
     pandocDelimitedCodeBlock({ gui = 'none' }),
     pandocStrikeout({ gui = 'strikethrough' }),
     pandocEmphasis({ gui = 'italic', fg = '#bbbbcc' }),
-    pandocStrong({ gui = 'bold', fg = '#ddddee' }),
+    pandocStrong({ fg = '#b3b3c4' }),
     -- pandocReferenceLabel { gui = "none", fg = clr_over.orange },
     pandocListItemBullet({ fg = '#66a8dc' }),
     pandocListItemBulletId({ fg = '#66a8dc' }),
@@ -1012,6 +1011,12 @@ return function(injected_functions)
     HighlightUndo({ fg = '#b7001e', bg = '#0f2139' }),
     BackseatText({ DiagnosticFloatingHint, gui = 'italic' }),
 
+    MatchParen({ fg = '#fb8b8b', gui = 'bold,' }),
+    MatchWord({ gui = 'bold' }),
+
+    LeapMatch({ fg = '#00ffdd', bg = 'none' }), -- IncSearch
+    -- LeapLabelPrimary
+    -- LeapLabelSelected
     -- GlancePreviewNormal
     -- GlancePreviewMatch
     -- GlancePreviewCursorLine

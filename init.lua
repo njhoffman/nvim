@@ -35,6 +35,9 @@ require('early-retirement').setup({
 local llm_config = require('llm-config')
 require('llm').setup(llm_config)
 
+local neoai_cfg = require('neoai.options')
+require('neoai').setup(neoai_cfg)
+
 require('action-hints').setup({
   template = {
     definition = { text = ' ⊛', color = '#517c8a' },
@@ -43,20 +46,6 @@ require('action-hints').setup({
   },
   use_virtual_text = true,
 })
-
--- vim.api.nvim_create_autocmd('FileType', {
---   pattern = 'lua',
---   callback = function()
---     local parser = vim.treesitter.get_parser(0)
---     if parser ~= nil then
---       parser:register_cbs({
---         on_bytes = function()
---           parser:parse()
---         end,
---       })
---     end
---   end,
--- })
 
 -- require("notifications.recipes.progress").config()
 -- require "plenary.profile".stop()

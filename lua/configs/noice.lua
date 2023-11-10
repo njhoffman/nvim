@@ -14,6 +14,7 @@
 local noice_views = require('noice.user.views')
 local noice_routes = require('noice.user.routes')
 local noice_mapping = require('noice.user.mapping')
+local render = require('configs.nvim-notify.render')
 
 local cfg = {
   presets = {
@@ -102,7 +103,10 @@ local cfg = {
     ['mini'] = { zindex = 10 },
     -- ['cmdline'] = cmdlineView,
     ['notify_error'] = { render = noice_views.errorView },
-    ['notify'] = { render = 'minimal' },
+    ['notify'] = {
+      -- render = 'minimal',
+      render = render,
+    },
     cmdline_popup = {
       position = {
         row = 10,

@@ -1,10 +1,19 @@
 local capabilities = require('lsp.capabilities')
+local format = require('lsp.format')
+
+format.setup()
+-- exclude is a table of LSP servers that should not format the buffer.
+-- Alternatively, you can also just not call on_attach for the clients you don't want to use for formatting.
+-- order is a table that determines the order formatting is requested from the LSP server.
+-- sync turns on synchronous formatting. The editor will block until the formatting is done.
+-- force will write the format result to the buffer, even if the buffer changed after the format request started.
 
 local on_attach = function(client, bufnr)
   local ok, disable_lsp = pcall(vim.api.nvim_buf_get_var, 0, 'disable_lsp')
   if disable_lsp == 1 then
     return vim.notify('Skipping buffer lsp', 1)
   end
+  format.on_attach(client, bufnr)
   -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
   -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "")
 

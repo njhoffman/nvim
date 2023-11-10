@@ -1,6 +1,7 @@
 -- https://raw.githubusercontent.com/roobert/action-hints.nvim/main/lua/action-hints/init.lua
 
 local config = require('action-hints.config')
+local utils = require('action-hints.utils')
 
 local setup = function(options)
   config.setup(options)
@@ -23,7 +24,7 @@ local setup = function(options)
     group = augroup,
     desc = 'ActionHints providers update',
     callback = function()
-      providers.update(config.values)
+      utils.debounce(providers.update, 300)(config.values)
     end,
   })
 end

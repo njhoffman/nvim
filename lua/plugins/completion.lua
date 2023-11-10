@@ -33,6 +33,7 @@ local plugins = {
       { 'tzachar/cmp-fuzzy-buffer', dependencies = { 'tzachar/fuzzy.nvim' } },
       { 'saadparwaiz1/cmp_luasnip', dependencies = { 'L3MON4D3/LuaSnip' } },
       { 'petertriho/cmp-git', dependencies = { 'nvim-lua/plenary.nvim' } },
+      { 'abecodes/tabout.nvim' },
       {
         'KadoBOT/cmp-plugins',
         config = function()

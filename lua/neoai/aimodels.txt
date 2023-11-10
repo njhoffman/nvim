@@ -1,0 +1,84 @@
+gpt-3.5-turbo                 90,000    TPM     3,500  RPM
+gpt-3.5-turbo-0301            90,000    TPM     3,500  RPM
+gpt-3.5-turbo-0613            90,000    TPM     3,500  RPM
+gpt-3.5-turbo-1106            90,000    TPM     3,500  RPM
+gpt-3.5-turbo-16k             180,000   TPM     3,500  RPM
+gpt-3.5-turbo-16k-0613        180,000   TPM     3,500  RPM
+gpt-3.5-turbo-instruct        250,000   TPM     3,000  RPM
+gpt-3.5-turbo-instruct-0914   250,000   TPM     3,000  RPM
+gpt-4                         10,000    TPM     500    RPM
+gpt-4-0314                    10,000    TPM     500    RPM
+gpt-4-0613                    10,000    TPM     500    RPM
+gpt-4-1106-preview            10,000    TPM     40     RPM,   200  RPD
+gpt-4-vision-preview          10,000    TPM     20     RPM,   100  RPD
+
+TEXT
+ada                           250,000   TPM     3,000  RPM
+ada-code-search-code          250,000   TPM     3,000  RPM
+ada-code-search-text          250,000   TPM     3,000  RPM
+ada-search-document           250,000   TPM     3,000  RPM
+ada-search-query              250,000   TPM     3,000  RPM
+ada-similarity                250,000   TPM     3,000  RPM
+babbage                       250,000   TPM     3,000  RPM
+babbage-002                   250,000   TPM     3,000  RPM
+babbage-code-search-code      250,000   TPM     3,000  RPM
+babbage-code-search-text      250,000   TPM     3,000  RPM
+babbage-search-document       250,000   TPM     3,000  RPM
+babbage-search-query          250,000   TPM     3,000  RPM
+babbage-similarity            250,000   TPM     3,000  RPM
+code-davinci-edit-001         150,000   TPM     20     RPM
+code-search-ada-code-001      250,000   TPM     3,000  RPM
+code-search-ada-text-001      250,000   TPM     3,000  RPM
+code-search-babbage-code-001  250,000   TPM     3,000  RPM
+code-search-babbage-text-001  250,000   TPM     3,000  RPM
+curie                         250,000   TPM     3,000  RPM
+curie-instruct-beta           250,000   TPM     3,000  RPM
+curie-search-document         250,000   TPM     3,000  RPM
+curie-search-query            250,000   TPM     3,000  RPM
+curie-similarity              250,000   TPM     3,000  RPM
+davinci                       250,000   TPM     3,000  RPM
+davinci-002                   250,000   TPM     3,000  RPM
+davinci-instruct-beta         250,000   TPM     3,000  RPM
+davinci-search-document       250,000   TPM     3,000  RPM
+davinci-search-query          250,000   TPM     3,000  RPM
+davinci-similarity            250,000   TPM     3,000  RPM
+text-ada-001                  250,000   TPM     3,000  RPM
+text-babbage-001              250,000   TPM     3,000  RPM
+text-curie-001                250,000   TPM     3,000  RPM
+text-davinci-001              250,000   TPM     3,000  RPM
+text-davinci-002              250,000   TPM     3,000  RPM
+text-davinci-003              250,000   TPM     3,000  RPM
+text-davinci-edit-001         150,000   TPM     20     RPM
+text-embedding-ada-002        1,000,000 TPM     3,000  RPM
+text-search-ada-doc-001       250,000   TPM     3,000  RPM
+text-search-ada-query-001     250,000   TPM     3,000  RPM
+text-search-babbage-doc-001   250,000   TPM     3,000  RPM
+text-search-babbage-query-001 250,000   TPM     3,000  RPM
+text-search-curie-doc-001     250,000   TPM     3,000  RPM
+text-search-curie-query-001   250,000   TPM     3,000  RPM
+text-search-davinci-doc-001   250,000   TPM     3,000  RPM
+text-search-davinci-query-001 250,000   TPM     3,000  RPM
+text-similarity-ada-001       250,000   TPM     3,000  RPM
+text-similarity-babbage-001   250,000   TPM     3,000  RPM
+text-similarity-curie-001     250,000   TPM     3,000  RPM
+text-similarity-davinci-001   250,000   TPM     3,000  RPM
+tts-1                         –         50      RPM
+tts-1-1106                    250,000   TPM     3,000  RPM
+tts-1-hd                      –         50      RPM
+tts-1-hd-1106                 250,000   TPM     3,000  RPM
+MODERATION
+text-moderation-latest        150,000   TPM     1,000  RPM
+text-moderation-stable        150,000   TPM     1,000  RPM
+FINE-TUNING                   INFERENCE (SHARES LIMITS WITH   BASE MODEL)
+babbage-002                   250,000   3,000
+davinci-002                   250,000   3,000
+gpt-3.5-turbo-0613            90,000    3,500
+FINE-TUNING                   TRAINING  ACTIVE  /      QUEUED JOBS JOBS PER DAY
+babbage-002                   3         48
+davinci-002                   3         48
+gpt-3.5-turbo-0613            3         48
+IMAGE
+dall-e-2                      –         5       images per    minute
+dall-e-3                      –         5       images per    minute
+AUDIO
+whisper-1                     –         50      RPM

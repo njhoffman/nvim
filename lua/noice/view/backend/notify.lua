@@ -133,6 +133,7 @@ function NotifyView:_notify(msg)
     animate = not Util.is_blocking(),
     timeout = self._opts.timeout,
     replace = self._opts.replace and self.notif,
+    count = self._opts.count,
     keep = function()
       return Util.is_blocking()
     end,
@@ -168,14 +169,7 @@ function NotifyView:_notify(msg)
 
   local id = require('notify')(content, level, opts)
   self.notif = id
-  -- self.notif.messages = msg.messages
   for _, m in ipairs(msg.messages) do
-    m.opts._test_value = true
-    -- for _, line in ipairs(m._lines) do
-    --   for _, text in ipairs(line._texts) do
-    --     table.insert(self.notif.messages, text._content)
-    --   end
-    -- end
     m.opts.notify_id = id
   end
 end
@@ -215,6 +209,7 @@ function NotifyView:hide()
 end
 
 NotifyView._on_close_override = extensions._on_close_override
+NotifyView._on_open_override = extensions._on_open_override
 NotifyView._notify_override = extensions._notify_override
 
 return NotifyView

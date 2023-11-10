@@ -32,11 +32,11 @@ local map_buf = function(bufnr, lhs, rhs)
 end
 
 local handlers = require('lsp.handlers')
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   local filetype = vim.bo.filetype
-
   if supports_method_for_filetype(filetype, 'NULL_LS_FORMATTING') then
-    handlers.documentFormattingProvider('null-ls', bufnr)
+    require('lsp.format').on_attach(client)
+    -- handlers.documentFormattingProvider('null-ls', bufnr)
     -- map_buf(bufnr, "gQ", lsp_document_format("null-ls"))
     -- format_on_save(bufnr, "null-ls")
     -- attach.keybindings_formatting(bufnr, "null-ls")

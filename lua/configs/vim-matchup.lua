@@ -2,8 +2,7 @@ vim.g.loaded_matchit = 1
 vim.g.matchup_matchparen_enabled = 1
 vim.g.matchup_motion_enabled = 1
 vim.g.matchup_text_obj_enabled = 1
-vim.g.matchup_matchparen_offscreen = { method = 'popup' }
--- vim.g.matchup_surround_enabled = 1
+vim.g.matchup_matchparen_offscreen = {} -- method = popup, status, status_minimal
 -- :hi MatchParen ctermbg=blue guibg=lightblue cterm=italic gui=italic
 -- :hi MatchWord ctermfg=red guifg=blue cterm=underline gui=underline
 -- :hi MatchParenCur cterm=underline gui=underline
@@ -11,6 +10,13 @@ vim.g.matchup_matchparen_offscreen = { method = 'popup' }
 
 -- adds ds% and cs%
 vim.g.matchup_surround_enabled = 1
+vim.g.matchup_matchparen_timeout = 150
+vim.g.matchup_matchparen_insert_timeout = 60
+vim.g.matchup_matchparen_deferred = 1
+-- let g:matchup_matchparen_deferred_show_delay = 50
+-- let g:matchup_matchparen_deferred_hide_delay = 700
+vim.g.matchup_matchparen_hi_surround_always = 1
+vim.g.matchup_matchparen_stopline = 800 -- for match highlighting only
 
 -- Adds motions g%, [%, ]%, and z%.
 -- Combines these motions into convenient text objects i% and a%.
@@ -135,7 +141,6 @@ vim.g.matchup_surround_enabled = 1
 -- deferred highlighting
 -- Deferred highlighting improves cursor movement performance (for example, when using hjkl) by delaying highlighting for a short time and waiting to see if the cursor continues moving;
 --
--- let g:matchup_matchparen_deferred = 1
 -- default: 0 (disabled)
 --
 -- Note: this feature is only available if your vim version has timers and the function timer_pause, version 7.4.2180 and after.

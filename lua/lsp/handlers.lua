@@ -48,12 +48,12 @@ local code_lens_provider = function(_, bufnr)
 end
 
 local document_formatting_provider = function(client, bufnr)
-  local augroup = vim.api.nvim_create_augroup('LspFormatting', { clear = false })
-  local name = type(client) == 'table' and client.name or client or ''
-  local command = 'Format ' .. bufnr .. ' ' .. name
-  command = '<cmd>' .. command .. '<cr>'
-  vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.format({ async = false })]])
-  mapping.formatting(command)
+  -- local augroup = vim.api.nvim_create_augroup('LspFormatting', { clear = false })
+  -- local name = type(client) == 'table' and client.name or client or ''
+  -- local command = 'Format ' .. bufnr .. ' ' .. name
+  -- command = '<cmd>' .. command .. '<cr>'
+  -- vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.format({ async = false })]])
+  -- mapping.formatting(command)
   -- vim.api.nvim_create_autocmd('BufWritePre', {
   --   group = augroup,
   --   buffer = bufnr,

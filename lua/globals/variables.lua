@@ -2,9 +2,6 @@ local home = vim.fn.expand('$HOME')
 package.path = package.path .. ';' .. home .. '/.luarocks/share/lua/5.4/?.lua'
 package.path = package.path .. ';' .. home .. '/.luarocks/share/lua/5.4/?/init.lua'
 package.cpath = package.cpath .. ';' .. home .. '/.luarocks/lib/lua/5.4/?.so'
-package.path = package.path .. ';' .. home .. '/.luarocks/share/lua/5.1/?.lua'
-package.path = package.path .. ';' .. home .. '/.luarocks/share/lua/5.1/?/init.lua'
-package.cpath = package.cpath .. ';' .. home .. '/.luarocks/lib/lua/5.1/?.so'
 
 vim.g.start_time = vim.fn.reltime()
 

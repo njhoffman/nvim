@@ -177,7 +177,7 @@ local plugins = {
   -- { 'otavioschwanck/cool-substitute.nvim' },
 
   -- matching
-  { 'andymass/vim-matchup', event = { 'VeryLazy' }, dependencies = { 'theHamsta/nvim-treesitter-pairs' } },
+  { 'andymass/vim-matchup', dependencies = { 'theHamsta/nvim-treesitter-pairs' } },
   -- pairs
   -- { 'echasnovski/mini.pairs', event = 'InsertEnter' },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
@@ -242,18 +242,6 @@ local plugins = {
     --   end
     --   return ret
     -- end,
-    config = function()
-      require('flit').setup({
-        keys = { f = 'f', F = 'F', t = 't', T = 'T' },
-        -- A string like "nv", "nvo", "o", etc.
-        labeled_modes = 'v',
-        -- labeled_modes = 'cx',
-        multiline = true,
-        -- Like `leap`s similar argument (call-specific overrides).
-        -- E.g.: opts = { equivalence_classes = {} }
-        opts = {},
-      })
-    end,
   },
   --
   -- pickers
@@ -627,12 +615,6 @@ local plugins = {
       --    "curl", "wget", "bitsadmin", "go"
       require('dbee').install()
     end,
-  },
-  {
-    'Bryley/neoai.nvim',
-    dependencies = { 'MunifTanjim/nui.nvim' },
-    cmd = { 'NeoAI', 'NeoAIToggle', 'NeoAIContext', 'NeoAIInject' },
-    keys = { { '<leader>as', desc = 'summarize text' }, { '<leader>ag', desc = 'generate git message' } },
   },
   { 'm4xshen/hardtime.nvim', dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' } },
   {

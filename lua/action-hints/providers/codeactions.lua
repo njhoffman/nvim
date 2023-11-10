@@ -81,7 +81,7 @@ local function codeactions(config)
 
     if vim.tbl_count(results) > 0 then
       state.available.codeactions = true
-      state.current.codeactions = vim.tbl_count(results) - 1
+      state.current.codeactions = vim.tbl_count(results)
       display.update_virtual_text(config)
       return
     end

@@ -23,7 +23,7 @@ local plugins = {
       'SmiteshP/nvim-navic',
       'aznhe21/actions-preview.nvim',
       'RRethy/vim-illuminate',
-      'zeioth/garbage-day.nvim',
+      -- 'zeioth/garbage-day.nvim',
       'b0o/schemastore.nvim', -- for jsonls
       {
         'piersolenski/wtf.nvim',
@@ -71,7 +71,11 @@ local plugins = {
       'dnlhc/glance.nvim',
       -- ft = {'javascript','javascriptreact','javascript.jsx','typescript','typescriptreact','typescript.tsx'}
       { 'jose-elias-alvarez/typescript.nvim' },
-      { 'pmizio/typescript-tools.nvim', enabled = false, dependencies = { 'nvim-lua/plenary.nvim' } },
+      {
+        'pmizio/typescript-tools.nvim',
+        enabled = false,
+        dependencies = { 'nvim-lua/plenary.nvim' },
+      },
       { 'folke/neodev.nvim', dependencies = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason.nvim' } },
       { 'folke/trouble.nvim', cmd = { 'TroubleToggle', 'Trouble' } },
       {

@@ -34,7 +34,7 @@ local bufcmd = vim.api.nvim_buf_create_user_command
 --   desc = 'Trims trailing whitespace in the current buffer.',
 -- })
 cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })
-cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
+-- cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
 cmd('CloseMulti', ui.close_multi, { desc = 'Close tabpage, window, or buffer in that order' })
 cmd('CloseMultiNoPrompt', ui.close_multi_no_prompt, { desc = 'Close tabpage, window, or buffer in that order' })
 cmd('ClosePopups', ui.close_popups, { desc = 'Format buffer using lsp' })

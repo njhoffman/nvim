@@ -1055,27 +1055,28 @@ map('n', '<leader>cl3', '<cmd>set conceallevel=3<cr>', {
 
 --------------------------------------------------------------------------------------------------
 -- TREESITTER ------------------------------------------------------------------------------------
-vmap('x', '<tab>', {
-  category = 'Treesitter',
-  plugin = 'treesitter.nvim',
-  label = 'incsel scope expand',
-  desc = 'scope incremental selection',
-})
 
-vmap('x', '<cr>', {
-  category = 'Treesitter',
-  plugin = 'treesitter.nvim',
-  label = 'incsel expand',
-  desc = 'incremental selection expand',
-})
-
-vmap('x', '<s-tab>', {
-  category = 'Treesitter',
-  plugin = 'treesitter.nvim',
-  label = 'incsel shrink',
-  desc = 'incremental selection shrink',
-})
-
+-- vmap('x', '<tab>', {
+--   category = 'Treesitter',
+--   plugin = 'treesitter.nvim',
+--   label = 'incsel scope expand',
+--   desc = 'scope incremental selection',
+-- })
+--
+-- vmap('x', '<cr>', {
+--   category = 'Treesitter',
+--   plugin = 'treesitter.nvim',
+--   label = 'incsel expand',
+--   desc = 'incremental selection expand',
+-- })
+--
+-- vmap('x', '<s-tab>', {
+--   category = 'Treesitter',
+--   plugin = 'treesitter.nvim',
+--   label = 'incsel shrink',
+--   desc = 'incremental selection shrink',
+-- })
+--
 vmap('n', 'gnd', {
   category = 'Treesitter',
   plugin = 'treesitter.nvim',
@@ -1226,19 +1227,19 @@ map('n', '<M-e>', "<cmd>lua require('telescope.run')('builtin','live_grep')<cr>"
   desc = 'live grep project in telescope',
 })
 
-map('n', '<C-Y>', '<cmd>ChatGPT<cr>', {
-  category = 'Pickers',
-  plugin = 'neo-ai',
-  label = 'toggle chatgpt',
-  desc = 'toggle chatgpt',
-})
-
--- map('n', '<M-y>', '<cmd>NeoAIToggle<cr>', {
+-- map('n', '<C-Y>', '<cmd>ChatGPT<cr>', {
 --   category = 'Pickers',
 --   plugin = 'neo-ai',
---   label = 'toggle the side panel of neo ai',
---   desc = 'toggle the side panel of neo ai',
+--   label = 'toggle chatgpt',
+--   desc = 'toggle chatgpt',
 -- })
+--
+map('n', '<C-y>', '<cmd>NeoAI<cr>', {
+  category = 'Pickers',
+  plugin = 'neo-ai',
+  label = 'toggle the side panel of neo ai',
+  desc = 'toggle the side panel of neo ai',
+})
 --------------------------------------------------------------------------------------------------
 -- GIT -------------------------------------------------------------------------------------------
 -- TODO: add precheck function to ensure in git dir

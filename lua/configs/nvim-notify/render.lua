@@ -20,7 +20,8 @@ local render = function(bufnr, notif, highlights, config)
   if is_error then
     return require('notify.render.error')(bufnr, notif, highlights, config)
   elseif #title > 0 then
-    return require('notify.render.default')(bufnr, notif, highlights, config)
+    -- return require('notify.render.default')(bufnr, notif, highlights, config)
+    return require('notify.render.minimal')(bufnr, notif, highlights)
   else
     return require('notify.render.minimal')(bufnr, notif, highlights)
   end
