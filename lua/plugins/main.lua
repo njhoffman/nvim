@@ -695,7 +695,7 @@ local plugins = {
   { 'stanangeloff/php.vim', ft = 'php', lazy = lz_syn },
   { 'tbastos/vim-lua', ft = 'lua', lazy = lz_syn },
   { 'tikhomirov/vim-glsl', ft = 'glsl', lazy = lz_syn },
-  -- { 'vim-pandoc/vim-pandoc-syntax', ft = { 'markdown', 'pandoc' }, lazy = lz_syn },
+  { 'vim-pandoc/vim-pandoc-syntax', ft = { 'markdown', 'pandoc' }, lazy = lz_syn },
   { 'vim-utils/vim-man', ft = 'man', lazy = lz_syn },
   { 'vimwiki/vimwiki', ft = { 'markdown', 'vimwiki' }, lazy = lz_syn },
   { 'mtdl9/vim-log-highlighting', ft = { 'log', 'LOG' }, event = { 'BufReadPost', 'BufNewFile' }, lazy = lz_syn },

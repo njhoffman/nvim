@@ -1,4 +1,5 @@
 -- Only do this when not yet done for this buffer
+
 if vim.b.did_ftplugin then
   return
 end
@@ -37,3 +38,5 @@ vim.g.markdown_fenced_languages = {
   'yaml',
   'zsh',
 }
+
+-- source <sfile>:h/javascript_apathy.vim

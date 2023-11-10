@@ -15,7 +15,16 @@ scriptencoding utf-8
 "
 " use conceal? {{{2
 if !exists('g:pandoc#syntax#conceal#use')
-  let g:pandoc#syntax#conceal#use = 1
+    if v:version < 703
+        let g:pandoc#syntax#conceal#use = 0
+    else
+        let g:pandoc#syntax#conceal#use = 1
+    endif
+else
+    " exists, but we cannot use it, disable anyway
+    if v:version < 703
+        let g:pandoc#syntax#conceal#use = 0
+    endif
 endif
 "}}}2
 
