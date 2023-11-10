@@ -353,7 +353,8 @@ return function(injected_functions)
     sym('@lsp.typemod.type.defaultLibrary')({ fg = '#29a4bd' }),
     sym('@lsp.typemod.variable.defaultLibrary')({ sym('@variable.builtin') }),
     sym('@lsp.typemod.variable.injected')({ sym('@variable') }),
-
+    sym('@lsp.typemod.variable.typescriptreact')({ Type }),
+    sym('@lsp.typemod.variable.readonly.typescriptreact')({ Type }),
     -- ["@text.reference"] = { fg = "#1abc9c" },
     -- ["@text.todo.checked"] = {fg = "#73daca" },
     -- ["@text.todo.unchecked"] = { fg = "#7aa2f7" },
