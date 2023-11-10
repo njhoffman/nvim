@@ -28,7 +28,7 @@ local tele_plugs = {
   -- ['fences'] = {},
   ['filetypes'] = {},
   -- ['pickers_history'] = {},
-  ['smart_history'] = {},
+  -- ['smart_history'] = {},
 
   ['find_pickers'] = {},
   ['frecency'] = function()

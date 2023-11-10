@@ -19,15 +19,15 @@ local extension = {
     config = config or {}
     if config.history ~= false then
       config.history.handler = function()
-        return handler.get_history()
+        handler.get_smart_history()
       end
     end
   end,
   exports = {
     history = function()
-      return handler.get_history()
+      return handler.get_smart_history()
     end,
   },
 }
 return telescope.register_extension(extension)
--- extension.setup()
+-- extension.setup(_, { history = {} })

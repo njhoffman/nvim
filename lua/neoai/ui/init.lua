@@ -155,7 +155,12 @@ M.create_ui = function()
     M.destroy_ui()
   end)
 
-  chat.new_chat_history()
+  local mock_data = require('neoai.sql.mock_data')
+  vim.dbglog('history', state.chat_history)
+  chat.load_chat_history(mock_data, M.append_to_output)
+  -- if state.chat_history then
+  --   chat.chat_history = state.chat_history
+  -- end
 
   local input_buffer = state.input_popup.bufnr
   local output_buffer = state.output_popup.bufnr
@@ -185,6 +190,7 @@ M.send_prompt = function(prompt)
 end
 
 M.destroy_ui = function()
+  state.chat_history = chat.chat_history
   vim.api.nvim_clear_autocmds({ group = 'neoai-ui' })
   if state.layout ~= nil then
     state.layout:unmount()
