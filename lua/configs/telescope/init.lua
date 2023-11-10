@@ -56,17 +56,17 @@ local telescope_config = {
         flip_columns = 130,
       },
     },
-    cache_picker = {
-      num_pickers = 20,
-      limit_entries = 2000,
-    },
     wrap_results = false,
     file_previewer = require('telescope.previewers').vim_buffer_cat.new,
     grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
     qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
+    cache_picker = {
+      num_pickers = 20,
+      limit_entries = 2000,
+    },
     history = {
       -- handler = require('telescope.actions.history').get_simple_history(),
-      handler = require('telescope._extensions.pickers_history.handler').get_history(),
+      handler = require('telescope._extensions.pickers_history.handler').get_smart_history,
       path = vim.fn.stdpath('data') .. '/databases/telescope_history.sqlite3',
       limit = 2000,
     },
