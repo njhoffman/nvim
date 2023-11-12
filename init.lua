@@ -38,6 +38,9 @@ require('llm').setup(llm_config)
 local neoai_cfg = require('neoai.options')
 require('neoai').setup(neoai_cfg)
 
+local chatgpt_cfg = require('configs.chatgpt')
+require('chatgpt').setup(chatgpt_cfg)
+
 require('action-hints').setup({
   template = {
     definition = { text = ' ⊛', color = '#517c8a' },

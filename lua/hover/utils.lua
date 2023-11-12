@@ -1,9 +1,9 @@
 local vim = vim
-local log = require("neo-tree.log")
+local log = require('neo-tree.log')
 
 -- Backwards compatibility
 table.pack = table.pack or function(...)
-  return { n = select("#", ...), ... }
+  return { n = select('#', ...), ... }
 end
 table.unpack = table.unpack or unpack
 
@@ -91,14 +91,14 @@ M.debounce = function(id, fn, frequency_in_ms, strategy, action)
   -- this call throws an error.
   local success, result = true, nil
   fn_data.in_debounce_period = true
-  if type(fn) == "function" then
+  if type(fn) == 'function' then
     success, result = pcall(fn)
   end
   fn_data.fn = nil
   fn = nil
 
   if not success then
-    vim.notify(vim.inspect({ "debounce ", id = id, " error: ", result = result }), 3)
+    vim.notify(vim.inspect({ 'debounce ', id = id, ' error: ', result = result }), 3)
   elseif result and action == M.debounce_action.START_ASYNC_JOB then
     -- This can't fire again until the COMPLETE_ASYNC_JOB signal is sent.
     fn_data.async_in_progress = true
@@ -121,17 +121,48 @@ M.debounce = function(id, fn, frequency_in_ms, strategy, action)
   end
 end
 
-local log_msg = function(msg)
-  -- vim.dbglog(msg)
+local logger = require('logger').init('hover')
+local log_msg = function(level)
+  return function(msg, extra)
+    if not logger then
+      return
+    end
+    if level == 'trace' then
+      logger:trace(msg .. (extra and ' ' .. vim.inspect(extra) or ''))
+    elseif level == 'debug' then
+      logger:debug(msg .. (extra and ' ' .. vim.inspect(extra) or ''))
+    elseif level == 'warn' then
+      logger:warn(msg .. (extra and ' ' .. vim.inspect(extra) or ''))
+    elseif level == 'error' then
+      logger:error(msg .. (extra and ' ' .. vim.inspect(extra) or ''))
+    else
+      logger:info(msg .. (extra and ' ' .. vim.inspect(extra) or ''))
+    end
+  end
 end
 
 M.logger = function()
   return {
-    trace = log_msg,
-    debug = log_msg,
-    info = log_msg,
-    warn = log_msg,
-    error = log_msg,
+    trace = log_msg('trace'),
+    debug = log_msg('debug'),
+    info = log_msg('info'),
+    warn = log_msg('warn'),
+    error = log_msg('error'),
   }
 end
+
+M.clear_local_state = function(state)
+  for _, provider in ipairs(state.providers) do
+    for _, key in ipairs(vim.tbl_keys(provider)) do
+      if string.match(key, '^_.*') then
+        provider[key] = nil
+      end
+    end
+  end
+  state.enabled = {}
+  state.curr_idx = 1
+  state.bufnr = nil
+  state.winnr = nil
+end
+
 return M

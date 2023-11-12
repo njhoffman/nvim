@@ -30,11 +30,40 @@ local routes = {
   -- { filter = { event = 'notify.error_error' }, view = 'mini' },
   -- { filter = { event = 'msg_show.lua_error' }, view = 'mini' },
 
+  -- skip all lines
+  -- {
+  -- 				filter = {
+  -- 					event = "msg_show",
+  -- 					["not"] = {
+  -- 						kind = { "confirm", "confirm_sub" },
+  -- 					},
+  -- 				},
+  -- 				opts = { skip = true },
+  -- 			},
   -- hide treesitter error from joining lines
+
+  {
+    filter = {
+      any = {
+        { event = 'msg_show', find = '^RPC%[Error%]' },
+      },
+    },
+    view = 'notify',
+    opts = {
+      title = 'Error',
+      level = vim.log.levels.ERROR,
+    },
+  },
   {
     filter = { event = 'msg_show', find = '^Error in decoration provider treesitter/highlighter.line:' },
     view = 'mini',
     opts = { skip = true },
+  },
+
+  -- always route any messages with more than 20 lines to the split view
+  {
+    view = 'split',
+    filter = { event = 'msg_show', min_height = 20 },
   },
   -- all jsonls Unhandled method textDocument/diagnostic errors hidden
   { filter = { event = 'notify', find = '^jsonls: ' }, opts = { skip = true } },

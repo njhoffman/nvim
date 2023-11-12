@@ -63,9 +63,8 @@ local tele_plugs = {
   end,
   ['file_history'] = function()
     local cfg = {
-      -- This is the location where it will create your file history repository
       backup_dir = '~/.file-history-git',
-      -- command line to execute git
+      exclude_ft = { 'oil' },
       git_cmd = 'git',
     }
     require('file_history').setup(cfg)

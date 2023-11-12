@@ -14,9 +14,9 @@ end
 
 local default_config = {
   debounce_delays = {
-    references = 800,
-    definitions = 800,
-    codeactions = 800,
+    references = 1000,
+    definitions = 1000,
+    codeactions = 1000,
   },
   template = {
     definitions = { text = ' ⊛', color = default_definitions_color },

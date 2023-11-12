@@ -65,8 +65,7 @@ local telescope_config = {
       limit_entries = 2000,
     },
     history = {
-      -- handler = require('telescope.actions.history').get_simple_history(),
-      handler = require('telescope._extensions.pickers_history.handler').get_smart_history,
+      handler = require('telescope._extensions.pickers_history.handler').get_history,
       path = vim.fn.stdpath('data') .. '/databases/telescope_history.sqlite3',
       limit = 2000,
     },

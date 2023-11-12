@@ -102,10 +102,33 @@ local cfg = {
   views = {
     ['mini'] = { zindex = 10 },
     -- ['cmdline'] = cmdlineView,
-    ['notify_error'] = { render = noice_views.errorView },
+    ['notify_error'] = noice_views.errorView,
     ['notify'] = {
       -- render = 'minimal',
       render = render,
+      -- level = vim.log.levels.DEBUG,
+      fps = 30,
+      -- render = render,
+      stages = 'fade_in_slide_out',
+      background_colour = '#000000',
+      -- timeout = 5000,
+      minimum_width = 5,
+      max_height = function()
+        return math.floor(vim.opt.lines:get() / 5 * 4)
+      end,
+      max_width = function()
+        return math.floor(vim.opt.columns:get() / 5 * 3)
+      end,
+      icons = {
+        ERROR = '',
+        WARN = '',
+        INFO = '',
+        DEBUG = '',
+        TRACE = '✎',
+        INSPECT = '',
+        RUN = '',
+        STATUS = '',
+      },
     },
     cmdline_popup = {
       position = {
@@ -177,7 +200,7 @@ local cfg = {
       -- options for the message history that you get with `:Noice errors`
       -- view = 'popup',
       view = noice_views.errorView,
-      opts = { enter = true, format = noice_views.errorViewFormat },
+      -- opts = { enter = true, format = noice_views.errorViewFormat },
       filter = { error = true },
       filter_opts = { reverse = true },
     },
@@ -192,6 +215,7 @@ local error_message = function(message, opts)
 end
 
 -- vim.cmd([[]])
+-- require('noice').setup(cfg)
 require('noice').setup(cfg)
 require('telescope').load_extension('noice')
 noice_mapping.setup()

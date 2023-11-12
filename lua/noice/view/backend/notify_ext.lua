@@ -35,7 +35,7 @@ function _notify_override(self, msg)
   for _, m in ipairs(msg.messages) do
     local id = m.opts.notify_id and m.opts.notify_id.id
     if replace_id ~= nil then
-      local count = state.active[replace_id].count + 1
+      local count = state.active[replace_id].count and state.active[replace_id].count + 1 or 1
       state.active[id] = {
         count = count,
         crc = curr_crc,
@@ -64,8 +64,12 @@ end
 function _on_close_override(self, msg)
   self.notif = nil
   for _, m in ipairs(msg.messages) do
-    state.active[m.opts.notify_id.id] = nil
-    m.opts.notify_id = nil
+    if not m.opts.notify_id then
+      vim.dbglog('no notify_id', m.opts)
+    else
+      state.active[m.opts.notify_id.id] = nil
+      m.opts.notify_id = nil
+    end
   end
   self.win = nil
 end

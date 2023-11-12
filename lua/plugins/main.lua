@@ -256,6 +256,13 @@ local plugins = {
   -- "benfowler/telescope-luasnip.nvim",
   { 'echasnovski/mini.fuzzy', event = 'VeryLazy' },
   {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+  { 'echasnovski/mini.files', version = false },
+  {
     'nvim-neo-tree/neo-tree.nvim',
     lazy = false,
     cmd = { 'Neotree' },
@@ -282,7 +289,6 @@ local plugins = {
       'cljoly/telescope-repo.nvim',
       'crispgm/telescope-heading.nvim',
       'dhruvmanila/telescope-bookmarks.nvim',
-      'dawsers/telescope-file-history.nvim',
       'elianiva/telescope-npm.nvim',
       'frenchtoasters/telescope-kubectl.nvim',
       'nvim-web-devicons',
@@ -617,11 +623,11 @@ local plugins = {
     end,
   },
   { 'm4xshen/hardtime.nvim', dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' } },
-  {
-    'jackMort/ChatGPT.nvim',
-    cmd = { 'ChatGPT', 'ChatGPTEditWithInstructions', 'ChatGPTActAs' },
-    dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim', 'telescope.nvim' },
-  },
+  -- {
+  --   'jackMort/ChatGPT.nvim',
+  --   cmd = { 'ChatGPT', 'ChatGPTEditWithInstructions', 'ChatGPTActAs' },
+  --   dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim', 'telescope.nvim' },
+  -- },
   { 'tzachar/highlight-undo.nvim', event = { 'BufEnter', 'BufReadPost', 'BufNewFile' } },
   --
   -- filetypes

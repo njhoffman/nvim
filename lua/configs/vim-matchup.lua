@@ -10,7 +10,7 @@ vim.g.matchup_matchparen_offscreen = {} -- method = popup, status, status_minima
 
 -- adds ds% and cs%
 vim.g.matchup_surround_enabled = 1
-vim.g.matchup_matchparen_timeout = 150
+vim.g.matchup_matchparen_timeout = 50
 vim.g.matchup_matchparen_insert_timeout = 60
 vim.g.matchup_matchparen_deferred = 1
 -- let g:matchup_matchparen_deferred_show_delay = 50

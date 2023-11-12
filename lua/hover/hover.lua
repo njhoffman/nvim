@@ -1,20 +1,7 @@
-local keymaps = require("hover.keymaps")
-local commands = require("hover.commands")
-local providers = require("hover.providers")
-local async = require("hover.async")
-
-local handle_win_closed = function(winnr, _)
-  vim.api.nvim_create_autocmd("WinClosed", {
-    callback = function(ev)
-      if ev.match == tostring(winnr) then
-        vim.api.nvim_del_augroup_by_name("Hover")
-        keymaps.clear()
-        commands.clear()
-      end
-    end,
-    group = "Hover",
-  })
-end
+local keymaps = require('hover.keymaps')
+local commands = require('hover.commands')
+local providers = require('hover.providers')
+local async = require('hover.async')
 
 -- local function init(_opts)
 --   local config = get_config()
@@ -36,27 +23,27 @@ end)
 
 local hover_sticky = async.void(function(_opts)
   local opts = _opts or {}
-  opts.behavior = "sticky"
+  opts.behavior = 'sticky'
   providers.load(opts)
 end)
 
 local hover_cursor = async.void(function(_opts)
   local opts = _opts or {}
-  opts.behavior = "cursor"
+  opts.behavior = 'cursor'
   opts.silent = true
   providers.load(opts)
 end)
 
 local hover_once = async.void(function(_opts)
   local opts = _opts or {}
-  opts.behavior = "once"
+  opts.behavior = 'once'
   providers.load(opts)
 end)
 
 -- open up a select box with all available providers
 local hover_select = async.void(function(_opts)
   local enabled_providers = {}
-  for _, provider in ipairs(providers.providers) do
+  for _, provider in ipairs(state.providers) do
     if provider.is_enabled(provider) then
       table.insert(enabled_providers, provider)
     end

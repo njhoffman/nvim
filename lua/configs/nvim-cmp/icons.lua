@@ -2,6 +2,7 @@
 -- stylua: ignore
 local setup_highlights = function()
   vim.api.nvim_set_hl(0, 'CmpSource',                      { default = true, link = 'Keyword' })
+  vim.api.nvim_set_hl(0, 'CmpSourceAsyncPath',             { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceCalc',                  { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceDadbod',                { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceVimWiki',               { default = true, link = 'CmpSource' })
@@ -43,6 +44,7 @@ end
 -- look = '﬜',
 -- stylua: ignore
 local source_names = {
+  async_path =                { '', 'CmpSourceAsyncPath' },
   calc =                      { '󰃬', 'CmpSourceCalc' },
   cmdline =                   { '', 'CmpSourceCmdline' },
   cmdline_history =           { '', 'CmpSourceCmdlineHistory' },

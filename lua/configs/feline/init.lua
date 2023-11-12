@@ -14,6 +14,12 @@ status_comps.active[1][4].left_sep = {
   },
   str = ' ',
 }
+-- https://github.com/folke/noice.nvim/issues/359
+-- {
+--     function() return require("noice").api.status.command.get() end,
+--     cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+--     color = fg("Statement")
+-- },
 
 table.insert(status_comps.active[1], 7, custom_status_comps.FiletypeComponent)
 -- { provider = 'diagnostic_errors', hl = { fg = 'red' } },

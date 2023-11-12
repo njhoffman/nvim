@@ -141,7 +141,7 @@ local signature_help_provider = function(_, bufnr)
 
   -- TODO: calculate page down length and initialize scroll down with scrolloffset
 
-  -- mapping.signature_hover()
+  mapping.signature_hover()
 
   local page_up_mapping = escape_term_codes('<C-b>')
   local page_down_mapping = escape_term_codes('<C-f>')

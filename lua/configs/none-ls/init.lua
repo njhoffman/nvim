@@ -48,6 +48,11 @@ local on_attach = function(client, bufnr)
   end
 end
 
+local exclude_ft = {
+  'oil',
+  'neo-tree',
+}
+
 null_ls.setup({
   border = 'rounded',
   cmd = { 'nvim' },
@@ -73,9 +78,12 @@ null_ls.setup({
     'requirements.txt',
     'tsconfig.json'
   ),
-  -- should_attach = function(bufnr)
-  --   local large_file = require("large_file")
-  --
-  --   return not large_file.is_large_file(bufnr)
-  -- end,
+  should_attach = function(bufnr)
+    local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+    if not vim.tbl_contains(exclude_ft, ft) and ft ~= '' then
+      return true
+    end
+    -- local large_file = require('large_file')
+    -- return not large_file.is_large_file(bufnr)
+  end,
 })

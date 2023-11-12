@@ -12,9 +12,10 @@ local append_to_output = nil
 
 ---@type {name: ModelModule, model: string, params: table<string, string> | nil}[] A list of models
 M.models = {}
-M.selected_model = 0
+M.selected_model = nil
 
 M.setup_models = function()
+  M.selected_model = config.options.selected_model_index or 0
   for _, model_obj in ipairs(config.options.models) do
     local raw_model = model_obj.model
     local models
@@ -67,12 +68,16 @@ end
 M.load_chat_history = function(messages, append_to_output_func)
   M.reset()
   M.new_chat_history()
-  for _, msg in ipairs(messages) do
-    M.chat_history:add_message(true, msg.prompt_content)
-    M.chat_history:add_message(false, msg.response_content)
+  for i, msg in ipairs(messages) do
+    if i > 1 then
+      append_to_output_func('\n\n--------\n', 1)
+      append_to_output_func('--------\n\n', 1)
+    end
     append_to_output_func(msg.prompt_content, 1)
+    M.chat_history:add_message(true, msg.prompt_content)
     append_to_output_func('\n\n--------\n\n', 1)
     append_to_output_func(msg.response_content, 0)
+    M.chat_history:add_message(false, msg.response_content)
   end
 end
 
@@ -108,6 +113,7 @@ M.send_prompt = function(prompt, append_to_output_func, separators, on_complete)
       append_to_output('\n\n--------\n\n', 1)
     end
     M.chat_history:add_message(false, output)
+    vim.dbglog(prompt, output)
     on_complete(output)
   end
 

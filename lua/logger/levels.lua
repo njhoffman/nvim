@@ -2,6 +2,7 @@ local log_levels = {
   ['*'] = {
     main = 1,
   },
+  hover = { main = 0 },
   ['early-retirement'] = { main = -1 },
   -- fasd = { main = -1 },
   -- git = { main = -1 },

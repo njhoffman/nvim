@@ -152,7 +152,6 @@ local setup_cmp = function()
         end
         table.insert(data, v)
       end
-      vim.dbglog(table.concat(data, '\t'))
     end
   end
   vim.tbl_deep_extend('force', debug, { log = log })

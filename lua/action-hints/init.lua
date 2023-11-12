@@ -2,6 +2,7 @@
 
 local config = require('action-hints.config')
 local utils = require('action-hints.utils')
+local state = require('action-hints.state')
 
 local setup = function(options)
   config.setup(options)
@@ -24,7 +25,9 @@ local setup = function(options)
     group = augroup,
     desc = 'ActionHints providers update',
     callback = function()
-      utils.debounce(providers.update, 300)(config.values)
+      display.clear_virtual_text()
+      state.is_cleared = true
+      utils.debounce(providers.update, 500)(config.values)
     end,
   })
 end

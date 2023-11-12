@@ -10,6 +10,22 @@ local set_create_keymaps = function(config)
     buf_keymap(input_buffer, 'i', '<C-Enter>', '<Enter>', opts)
   end
   buf_keymap(input_buffer, 'i', config.options.ui.submit, "<cmd>lua require('neoai.ui').submit_prompt()<cr>", opts)
+
+  buf_keymap(
+    input_buffer,
+    'n',
+    '<C-d>',
+    "<cmd>lua vim.print(require('neoai.chat').get_current_model().name.cancel_stream())<cr>",
+    opts
+  )
+
+  buf_keymap(
+    output_buffer,
+    'n',
+    '<C-y>',
+    '<cmd>lua vim.api.nvim_set_current_win(' .. state.root_win .. ')<cr><esc>',
+    opts
+  )
   buf_keymap(
     input_buffer,
     'i',
@@ -17,11 +33,32 @@ local set_create_keymaps = function(config)
     '<cmd>lua vim.api.nvim_set_current_win(' .. state.root_win .. ')<cr><esc>',
     opts
   )
+
   buf_keymap(
-    output_buffer,
+    input_buffer,
     'i',
-    '<C-y>',
+    '<C-c>',
     '<cmd>lua vim.api.nvim_set_current_win(' .. state.root_win .. ')<cr><esc>',
+    opts
+  )
+
+  buf_keymap(
+    input_buffer,
+    'i',
+    '<M-f>',
+    '<cmd>lua vim.api.nvim_win_call('
+      .. state.output_popup.winid
+      .. ', function() vim.cmd(\'exec "norm! <C-f>"\') end)<cr>',
+    opts
+  )
+
+  buf_keymap(
+    input_buffer,
+    'i',
+    '<M-b>',
+    '<cmd>lua vim.api.nvim_win_call('
+      .. state.output_popup.winid
+      .. ', function() vim.cmd(\'exec "norm! <C-b>"\') end)<cr>',
     opts
   )
 
@@ -38,14 +75,14 @@ local set_create_keymaps = function(config)
         input_buffer,
         'n',
         k,
-        "<cmd>lua vim.api.nvim_set_current_win(require('neoai.ui.state').output_popup.winid)<cr>",
+        '<cmd>lua vim.api.nvim_set_current_win(' .. state.output_popup.winid .. ')<cr>',
         opts
       )
       buf_keymap(
         input_buffer,
         'i',
         k,
-        "<cmd>lua vim.api.nvim_set_current_win(require('neoai.ui.state').output_popup.winid)<cr>",
+        '<cmd>lua vim.api.nvim_set_current_win(' .. state.output_popup.winid .. ')<cr><esc>',
         opts
       )
     end
@@ -63,14 +100,14 @@ local set_create_keymaps = function(config)
         output_buffer,
         'i',
         k,
-        "<cmd>lua vim.api.nvim_set_current_win(require('neoai.ui.state').input_popup.winid)<cr>",
+        '<cmd>lua vim.api.nvim_set_current_win(' .. state.input_popup.winid .. ')<cr><esc>',
         opts
       )
       buf_keymap(
         output_buffer,
         'n',
         k,
-        "<cmd>lua vim.api.nvim_set_current_win(require('neoai.ui.state').input_popup.winid)<cr>",
+        '<cmd>lua vim.api.nvim_set_current_win(' .. state.input_popup.winid .. ')<cr><cmd>startinsert<cr>',
         opts
       )
     end

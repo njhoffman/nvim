@@ -8,8 +8,6 @@ local display = require('action-hints.display')
 local update = function(config)
   local delays = config.debounce_delays
   if utils.supports_method('definitionProvider') then
-    display.clear_virtual_text()
-    state.is_cleared = true
     if not utils.is_cursor_on_whitespace() then
       utils.throttle(references, delays.references, config, 'references')
       utils.throttle(definitions, delays.definitions, config, 'definitions')

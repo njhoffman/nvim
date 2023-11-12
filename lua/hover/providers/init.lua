@@ -1,31 +1,37 @@
-local async = require("hover.async")
-local state = require("hover.state")
-local log = require("hover.utils").logger()
-local utils = require("hover.utils")
-
-local providers = {}
+local async = require('hover.async')
+local state = require('hover.state')
+local log = require('hover.utils').logger()
 
 local id_cnt = 0
 
 local function is_enabled(provider)
   local enabled = false
-  if type(provider.enabled == "function") then
+  if type(provider._enabled) ~= 'nil' then
+    return provider._enabled
+  end
+
+  if type(provider.enabled == 'function') then
     enabled = provider.enabled()
   else
     enabled = provider.enabled
   end
   if enabled then
-    state.enabled[provider.id] = provider
-  else
-    table.remove(state.enabled, provider.id)
+    table.insert(state.enabled, provider.id)
+    -- else
+    --   table.remove(state.enabled, provider.id)
+  end
+  for _, p in ipairs(state.providers) do
+    if p.id == provider.id then
+      p._enabled = enabled
+    end
   end
   return enabled
 end
 
 local function register(provider)
-  if not provider.execute or type(provider.execute) ~= "function" then
+  if not provider.execute or type(provider.execute) ~= 'function' then
     vim.notify(
-      string.format("error: hover provider %s does not provide an execute function", provider.name or "NA"),
+      string.format('error: hover provider %s does not provide an execute function', provider.name or 'NA'),
       vim.log.levels.ERROR
     )
     return
@@ -38,22 +44,26 @@ local function register(provider)
   id_cnt = id_cnt + 1
 
   if provider.priority then
-    for i, p in ipairs(providers) do
+    for i, p in ipairs(state.providers) do
       if not p.priority or p.priority < provider.priority then
-        table.insert(providers, i, provider)
+        table.insert(state.providers, i, provider)
         return
       end
     end
+    table.insert(state.providers, provider)
   end
-  providers[#providers + 1] = provider
+end
+
+local function load_provider(provider)
+  local ui = require('hover.ui')
+  ui.load_hover(provider.id, provider._result)
+  ui.add_title()
 end
 
 -- Must be called in async context
 local function run_provider(provider, _opts)
   local opts = _opts or {}
-  local ui = require("hover.ui")
-
-  local config = require("hover.config").get()
+  local ui = require('hover.ui')
 
   if opts.focusable ~= false and opts.focus ~= false then
     if ui.focus_or_close_hover() then
@@ -63,79 +73,89 @@ local function run_provider(provider, _opts)
 
   local result = provider.execute()
   if result then
-    async.scheduler()
-    local winok, winerror = pcall(vim.api.nvim_win_is_valid, state.winnr)
-    if ok then
-      ui.show_hover(provider.id, config, result, opts)
-      return true
-    else
-      ui.show_hover_new(provider.id, config, result, opts)
+    for _, p in ipairs(state.providers) do
+      if p.id == provider.id then
+        p._result = result
+      end
     end
-  end
 
+    local active_pid = state.enabled[state.curr_idx]
+    if provider.id == active_pid then
+      async.scheduler()
+      vim.dbglog('show new ' .. provider.id .. ': ' .. provider.name)
+      ui.show_hover_new(provider.id, result, opts)
+    end
+    ui.add_title()
+    state.busy = false
+    if vim.fn.empty(state.next_job) == 0 then
+      state.next_job()
+    end
+    return true
+  end
   return false
 end
 
 local function init(_opts)
-  local config = require("hover.config").get()
-  local opts = vim.tbl_deep_extend("force", config, _opts)
-  if state.initialised then
+  local config = require('hover.config').get()
+  local opts = vim.tbl_deep_extend('force', config, _opts)
+  if state.initialized then
     return opts
   end
-  if opts and type(opts.init) == "function" then
+  if opts and type(opts.init) == 'function' then
     opts.init()
   end
-  state.initialised = true
+  state.initialized = true
   return opts
 end
 
 local n = 0
 local function load(_opts)
   local opts = init(_opts)
-  ---@diagnostic disable-next-line: missing-parameter
   local start_time = vim.fn.reltime()
   local finished = function(provider)
-    ---@diagnostic disable-next-line: param-type-mismatch, missing-parameter
     local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
-    state.provider = provider.name
-    state.time = load_time
-    return log.info(provider.name .. ": " .. load_time)
+    -- state.provider = provider.name
+    provider._timing = load_time
+    return log.info(provider.name .. ' ' .. provider.id .. ': ' .. load_time)
   end
 
-  -- if state.busy == true then
-  --   n = n + 1
-  --   state.next_job = function()
-  --     load(_opts)
-  --   end
-  --   return
-  -- end
+  if state.busy == true then
+    n = n + 1
+    state.next_job = function()
+      vim.dbglog('NEXT JOB', n)
+      load(_opts)
+    end
+    return
+  end
 
   state.busy = true
 
-  if type(opts.provider) == "string" and #opts.provider > 0 then
-    for _, provider in ipairs(providers) do
+  if type(opts.provider) == 'string' and #opts.provider > 0 then
+    for _, provider in ipairs(state.providers) do
       async.scheduler()
+      vim.dbglog('yes provider (' .. opts.provider .. ') ' .. provider.id .. ': ' .. provider.name)
       if provider.name == opts.provider and run_provider(provider, opts) then
-        return finished(provider)
+        finished(provider)
       end
     end
   else
-    for _, provider in ipairs(providers) do
+    for _, provider in ipairs(state.providers) do
       async.scheduler()
+      vim.dbglog('no_provider ' .. provider.id .. ': ' .. provider.name)
       if is_enabled(provider) and run_provider(provider, opts) then
-        return finished(provider)
+        finished(provider)
       end
     end
   end
-  if not opts.silent then
+  if not opts.silent and vim.tbl_isempty(state.enabled) then
     state.busy = false
-    vim.api.nvim_echo({ { "hover.nvim: could not find any hover providers", "WarningMsg" } }, false, {})
+    vim.api.nvim_echo({ { 'hover.nvim: could not find any hover providers', 'WarningMsg' } }, false, {})
   end
 end
 
 return {
   register = register,
-  providers = providers,
   is_enabled = is_enabled,
   load = load,
+  load_provider = load_provider,
 }

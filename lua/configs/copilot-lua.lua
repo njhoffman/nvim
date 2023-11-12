@@ -47,8 +47,8 @@ require('copilot').setup({
     -- trace = 'verbose',
     settings = {
       advanced = {
-        listCount = 10, -- #completions for panel
-        inlineSuggestCount = 3, -- #completions for getCompletions
+        listCount = 5, -- #completions for panel
+        inlineSuggestCount = 5, -- #completions for getCompletions
       },
     },
   },
@@ -75,6 +75,10 @@ require('copilot').setup({
       refresh = false,
       -- open = '<M-y>',
       open = false,
+    },
+    layout = {
+      position = 'bottom', -- | top | left | right
+      ratio = 0.3,
     },
   },
 })

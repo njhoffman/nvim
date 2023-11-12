@@ -177,6 +177,8 @@ local opts = {
     'prompt',
     'TelescopePrompt',
     'noice',
+    'neoai-input',
+    'chatgpt-input',
   },
   marks = {
     Cursor = {

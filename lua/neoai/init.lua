@@ -15,12 +15,9 @@ local M = {}
 ---@return integer, integer line1 and line2
 local set_context = function(line1, line2)
   local buffer = vim.api.nvim_get_current_buf()
-
   line1 = line1 or vim.fn.line("'<")
   line2 = line2 or vim.fn.line("'>")
-
   chat.set_context(buffer, line1, line2)
-
   return line1, line2
 end
 
@@ -102,8 +99,7 @@ M.context_smart_toggle = function(prompt, line1, line2)
   M.smart_toggle(prompt)
 end
 
----Sends prompt and injects the response straight back into the buffer without
----opening the GUI
+---Sends prompt and injects the response straight back into the buffer without opening the GUI
 ---@param prompt string The prompt to send to the AI
 ---@param strip_function (fun(output: string): string) | nil A function that strips the output
 ---@param start_line integer | nil The line to start injecting onto (After inserting 2 newlines), nil = current selected line
@@ -140,6 +136,28 @@ end
 M.context_inject = function(prompt, strip_function, line1, line2)
   line1, line2 = set_context(line1, line2)
   M.inject(prompt, strip_function, line2)
+end
+
+local make_prompt = function()
+  local ret = ''
+  for i, model_obj in ipairs(config.options.models) do
+    ret = ret .. i - 1 .. '.' .. model_obj.name .. '\n'
+  end
+  ret = ret .. 'Choose:'
+  return ret
+end
+
+M.set_source = function()
+  vim.ui.input({ prompt = make_prompt() }, function(text)
+    if text == nil or string.len(text) == 0 then
+      return
+    end
+    local n = tonumber(text)
+    if n ~= nil and n >= 0 and n < #config.options.models then
+      config.options.selected_model_index = n
+      chat.setup_models()
+    end
+  end)
 end
 
 return M

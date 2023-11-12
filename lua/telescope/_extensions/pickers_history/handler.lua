@@ -8,6 +8,7 @@ local unescape = function(content)
   return content:gsub("^__ESCAPED__'(.*)'$", '%1')
 end
 
+local project_nvim = require('project_nvim')
 local get_history = function()
   local has_sqlite, sqlite = pcall(require, 'sqlite')
   if not has_sqlite then
@@ -44,9 +45,9 @@ local get_history = function()
         content = 'text',
         picker = 'text',
         cwd = 'text',
-        -- query = 'text',
-        -- project = 'text',
-        -- date = 'text',
+        project = 'text',
+        selection_index = 'integer',
+        time = 'integer',
       })
 
       obj._current_tbl = nil
@@ -54,15 +55,14 @@ local get_history = function()
     reset = function(self)
       self._current_tbl = nil
       self.content = {}
-      -- self.query = ''
       self.index = 1
     end,
     append = function(self, line, picker, no_reset)
       local title = picker.prompt_title
-
-      local project_nvim = require('project_nvim.root')
+      local selection_index = picker:get_index(picker:get_selection_row())
       local cwd = picker.cwd or vim.loop.cwd()
-      local project_name = project_nvim.get_project_root() or ''
+      local project_name = project_nvim.get_project_root() or vim.loop.cwd()
+
       if project_name ~= '' then
         project_name = vim.fn.split(project_name, ' ')[1]
         local fileparts = vim.fn.split(project_name, '/')
@@ -92,9 +92,9 @@ local get_history = function()
             content = escape(line),
             picker = title,
             cwd = cwd,
-            -- query = picker:_get_prompt(),
-            -- project = project_name,
-            -- time = vim.fn.reltimestr(time),
+            project = project_name,
+            selection_index = selection_index,
+            time = os.time(),
           }
           self.data:insert(db_entry)
         end
@@ -158,7 +158,6 @@ local get_smart_history = function()
     append = function(self, line, picker, no_reset)
       local title = picker.prompt_title
       local cwd = picker.cwd or vim.loop.cwd()
-
       if line ~= '' then
         ensure_content(self, title, cwd)
         if self.content[#self.content] ~= line then

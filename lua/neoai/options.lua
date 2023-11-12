@@ -2,16 +2,26 @@ local options = {
   -- Below are the default options, feel free to override what you would like changed
   ui = {
     output_popup_text = 'NeoAI',
-    input_popup_text = 'Prompt',
-    width = 30, -- As percentage eg. 30%
-    output_popup_height = 80, -- As percentage eg. 80%
+    input_popup_text = '',
+    width = 35, -- As percentage eg. 30%
+    output_popup_height = 85, -- As percentage eg. 80%
     submit = '<Enter>', -- Key binding to submit the prompt
   },
   models = {
     {
       name = 'openai',
+      model = 'gpt-4',
+      params = {
+        max_tokens = 2048,
+      },
+    },
+    {
+      name = 'openai',
       model = 'gpt-3.5-turbo',
-      params = nil,
+      -- top_p, top_k, temperature, frequency_penalty, presence_penalty
+      params = {
+        max_tokens = 2048,
+      },
     },
   },
   register_output = {
@@ -71,4 +81,21 @@ local options = {
   },
 }
 
+-- content = 'Review this code change: ```\n' .. git_diff .. '\n```'
+-- content = 'Write a terse commit message according to the Conventional Commits specification. Try to stay below 80 characters total. Staged git diff: ```\n' .. git_diff .. '\n```'
+-- TODO
+-- shortcuts = {
+--     {
+--       name = "a_user_custom_shortcut",
+--       system_message = "you are an expert {language} developer",
+--       prompt = "the prompt here",
+--       model_params = {
+--         temperature = 0.5,
+--         other_model_parameters = 0.2,
+--       },
+--       inject_mode = 'append' -- or 'replace',
+--       only_code_snippet = true -- select the first code snippet only in the answer
+--     }
+--   }
+--
 return options

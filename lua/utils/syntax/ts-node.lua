@@ -1,5 +1,5 @@
-local parsers = require("nvim-treesitter.parsers")
-local ts_utils = require("nvim-treesitter.ts_utils")
+local parsers = require('nvim-treesitter.parsers')
+local ts_utils = require('nvim-treesitter.ts_utils')
 
 local function get_node(opts)
   opts = opts or {}
@@ -12,17 +12,17 @@ local function get_node(opts)
       local reverse = vim.tbl_map(function(index)
         return array[#array + 1 - index]:type()
       end, vim.tbl_keys(array))
-      return table.concat(reverse, " -> ")
+      return table.concat(reverse, ' -> ')
     end
     return get_full_path(parent, vim.list_extend(array or {}, { node }))
   end
 
-  opts = vim.tbl_deep_extend("keep", opts or {}, {
+  opts = vim.tbl_deep_extend('keep', opts or {}, {
     full_path = false,
     show_range = true,
     include_anonymous = false,
     highlight_node = true,
-    hl_group = "TSPlaygroundFocus",
+    hl_group = 'TSPlaygroundFocus',
   })
 
   if not parsers.has_parser() then
@@ -38,11 +38,14 @@ local function get_node(opts)
 
   local bufnr = opts.bufnr or vim.api.nvim_get_current_buf()
   local root_lang_tree = parsers.get_parser(bufnr)
+  if not root_lang_tree then
+    return { results = results }
+  end
   local lang_tree = root_lang_tree:language_for_range({ line, col, line, col })
   for _, tree in ipairs(lang_tree:trees()) do
     local root = tree:root()
     if root and vim.treesitter.is_in_node_range(root, line, col) then
-      vim.dbglog("line", line, col, line, col)
+      vim.dbglog('line', line, col, line, col)
       local node = root:named_descendant_for_range(line, col, line, col)
       local anonymous_node = root:descendant_for_range(line, col, line, col)
       node_under_cursor = node

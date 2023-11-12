@@ -1,5 +1,5 @@
-local async = require("hover.async")
-local synutils = require("utils.syntax")
+local async = require('hover.async')
+local synutils = require('utils.syntax')
 
 local state = {
   bufnr = nil,
@@ -9,10 +9,11 @@ local state = {
 local function enabled(done)
   state.bufnr = vim.api.nvim_get_current_buf()
   state.winid = vim.api.nvim_get_current_win()
-  local has_parser = vim.treesitter._has_parser(state.bufnr)
+  -- local has_parser = vim.treesitter.has_parser(state.bufnr)
+  local has_parser = true
   local cursor = vim.api.nvim_win_get_cursor(state.winid)
   local synitems = vim.fn.synstack(cursor[1], cursor[2])
-  done(has_parser or (type(synitems) == "table" and #synitems > 0))
+  done(has_parser or (type(synitems) == 'table' and #synitems > 0))
 end
 
 local execute = async.void(function(done)
@@ -22,9 +23,11 @@ local execute = async.void(function(done)
   }
 
   local lines = { hl = {}, node = {} }
-  if #captures.node > 0 or #captures.hl > 0 then
-    lines.hl = synutils.get_hl_lines(captures.hl)
+  if #captures.node > 0 then
     lines.node = synutils.get_node_lines(captures.node)
+  end
+  if #captures.hl > 0 then
+    lines.hl = synutils.get_hl_lines(captures.hl)
   end
 
   local function concat_array(a, b)
@@ -35,14 +38,14 @@ local execute = async.void(function(done)
 
   done({
     lines = concat_array(lines.node, lines.hl),
-    filetype = "markdown",
+    filetype = 'markdown',
   })
 end)
 
-require("hover").register({
-  name = "syn",
-  menu = "Syn",
-  desc = "Syntax Items",
+require('hover').register({
+  name = 'syn',
+  menu = 'Syn',
+  desc = 'Syntax Items',
   priority = 150,
   enabled = enabled,
   execute = execute,

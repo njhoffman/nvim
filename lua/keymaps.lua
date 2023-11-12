@@ -803,7 +803,7 @@ map('n', '<F1>', "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>"
 --   desc = 'toggle wf.nvim',
 -- })
 
--- shift F2
+-- ctrl+shift F2
 map('n', '<F38>', '<cmd>WhichKey<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
@@ -820,6 +820,13 @@ map('n', '<F4>', '<cmd>Neotree show toggle<cr>', {
   plugin = 'neo-tree',
   category = 'UI',
   desc = 'toggle neotree',
+})
+
+-- ctrl+shift+f4
+map('n', '<F40>', '<cmd>lua require("oil").open_float<cr>', {
+  plugin = 'oil.nvim',
+  category = 'UI',
+  desc = 'toggle oil file manager',
 })
 
 map('n', '<F5>', "<cmd>lua require('telescope.run')('undo', 'undo')<cr>", {
@@ -1136,6 +1143,17 @@ map('n', '<C-\\>', "<cmd>lua require('telescope.run')('fd_cwd')<cr>", {
   desc = 'find files in current directory telescope',
 })
 
+-- map('n', '<M-Bslash>', '<cmd>lua require("oil").toggle_float()<cr>', {
+--   plugin = 'oil.nvim',
+--   category = 'UI',
+--   desc = 'toggle oil file manager',
+-- })
+map('n', '<M-Bslash>', '<cmd>MiniFiles<cr>', {
+  plugin = 'minifiles',
+  category = 'UI',
+  desc = 'toggle minifiles file manager',
+})
+
 map('n', '<C-g>', "<cmd>lua require('telescope.run')('leaderf', { theme = 'dropdown' })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
@@ -1227,12 +1245,12 @@ map('n', '<M-e>', "<cmd>lua require('telescope.run')('builtin','live_grep')<cr>"
   desc = 'live grep project in telescope',
 })
 
--- map('n', '<C-Y>', '<cmd>ChatGPT<cr>', {
---   category = 'Pickers',
---   plugin = 'neo-ai',
---   label = 'toggle chatgpt',
---   desc = 'toggle chatgpt',
--- })
+map('n', '<M-y>', '<cmd>ChatGPT<cr>', {
+  category = 'Pickers',
+  plugin = 'neo-ai',
+  label = 'toggle chatgpt',
+  desc = 'toggle chatgpt',
+})
 --
 map('n', '<C-y>', '<cmd>NeoAI<cr>', {
   category = 'Pickers',

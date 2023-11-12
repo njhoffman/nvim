@@ -128,6 +128,7 @@ end
 function NotifyView:_notify(msg)
   local level = self._opts.level or msg.level
 
+  -- vim.dbglog(msg.content)
   local opts = {
     title = msg.title or self._opts.title,
     animate = not Util.is_blocking(),
@@ -139,7 +140,7 @@ function NotifyView:_notify(msg)
     end,
     on_open = function(win)
       self:set_win_options(win)
-      if self._opts.merge then
+      if true or self._opts.merge then
         self.win = win
       end
     end,
@@ -178,7 +179,8 @@ function NotifyView:show()
   ---@type NotifyMsg[]
   local todo = {}
 
-  if self._opts.merge then
+  -- if false and self._opts.merge then
+  if true or self._opts.merge then
     table.insert(todo, {
       content = self:content(),
       messages = self._messages,

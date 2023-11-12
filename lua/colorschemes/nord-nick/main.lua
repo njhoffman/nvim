@@ -572,7 +572,7 @@ return function(injected_functions)
     pandocDelimitedCodeBlock({ gui = 'none' }),
     pandocStrikeout({ gui = 'strikethrough' }),
     pandocEmphasis({ gui = 'italic', fg = '#bbbbcc' }),
-    pandocStrong({ fg = '#b3b3c4' }),
+    pandocStrong({ fg = '#b3b3c4', gui = 'none' }),
     -- pandocReferenceLabel { gui = "none", fg = clr_over.orange },
     pandocListItemBullet({ fg = '#66a8dc' }),
     pandocListItemBulletId({ fg = '#66a8dc' }),

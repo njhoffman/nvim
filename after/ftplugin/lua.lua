@@ -1,5 +1,12 @@
 -- vim: fdm=marker:fdc=1
 
+
+vim.cmd([[
+if &filetype !=# 'lua'
+  finish
+endif
+]])
+
 vim.api.nvim_set_keymap('n', '<localleader>1', ':luafile%<cr>', { silent = true })
 
 -- Enable `gf` for `require()`d files.
@@ -60,7 +67,7 @@ local function include_rtpaths(fname, ext)
 end
 
 -- Global function that searches the path for the required file
-function Find_required_path(module)
+function find_required_path(module)
   -- Look at package.config for directory separator string (it's the first line)
   local sep = string.match(package.config, '^[^\n]')
   -- Properly change '.' to separator (probably '/' on *nix and '\' on Windows)
@@ -122,5 +129,5 @@ end
 
 -- Set options to open require with gf
 vim.opt_local.include = [=[\v<((do|load)file|require)\s*\(?['"]\zs[^'"]+\ze['"]]=]
-vim.opt_local.includeexpr = 'v:lua.Find_required_path(v:fname)'
+vim.opt_local.includeexpr = 'v:lua.find_required_path(v:fname)'
 -- }}}

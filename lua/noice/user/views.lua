@@ -132,22 +132,7 @@ local errorView = {
   },
 }
 
-local extView = {
-  backend = 'notify-backend',
-  opts = { enter = true, format = errorViewFormat },
-  filter = {
-    any = {
-      { event = '' },
-      { event = 'notify' },
-      { error = true },
-      { warning = true },
-      { event = 'msg_show' },
-    },
-  },
-}
-
 return {
-  extView = extView,
   historyView = historyView,
   errorView = errorView,
   miniView = miniView,
