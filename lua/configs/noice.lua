@@ -111,6 +111,7 @@ local cfg = {
     ['notify_error'] = noice_views.errorView,
     ['notify'] = {
       -- render = 'minimal',
+      merge = true,
       render = render,
       -- level = vim.log.levels.DEBUG,
       fps = 30,

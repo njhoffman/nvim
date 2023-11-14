@@ -32,6 +32,7 @@ local plugins = {
   {
     'utilyre/barbecue.nvim',
     -- dir = '~/git/barbecue.nvim',
+    version = '*',
     name = 'barbecue',
     event = 'VeryLazy',
     dependencies = {

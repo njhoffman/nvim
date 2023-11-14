@@ -112,8 +112,9 @@ local function load(_opts)
   local finished = function(provider)
     local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
     -- state.provider = provider.name
+    provider._n = provider._n and provider._n + 1 or 1
     provider._timing = load_time
-    return log.info(provider.name .. ' ' .. provider.id .. ': ' .. load_time)
+    return log.info(load_time .. ' ' .. provider.name)
   end
 
   if state.busy == true then

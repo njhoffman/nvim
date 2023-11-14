@@ -45,7 +45,6 @@ local function get_node(opts)
   for _, tree in ipairs(lang_tree:trees()) do
     local root = tree:root()
     if root and vim.treesitter.is_in_node_range(root, line, col) then
-      vim.dbglog('line', line, col, line, col)
       local node = root:named_descendant_for_range(line, col, line, col)
       local anonymous_node = root:descendant_for_range(line, col, line, col)
       node_under_cursor = node

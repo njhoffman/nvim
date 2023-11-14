@@ -2,6 +2,7 @@ local default_state = {
   initialized = false,
   busy = false,
   curr_idx = 1,
+  loading = {},
   enabled = {},
   providers = {},
   ft_bufnr = {},
