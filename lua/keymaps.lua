@@ -766,27 +766,31 @@ map('n', '_', '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>normal! <C-L><cr>', {
   desc = 'remove highlights and refresh',
 })
 
-map('n', '<C-_>', '<cmd>noh<cr>| <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> | <cmd>normal! <C-L><cr>', {
-  category = 'UI',
-  desc = 'remove hls, close popups and refresh',
-})
+map(
+  'n',
+  '<C-_>',
+  '<cmd>noh<cr>| <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> | <cmd>normal! <C-L><cr>',
+  {
+    category = 'UI',
+    desc = 'remove hls, close popups and refresh',
+  }
+)
 
--- map('n', '<M-b>', "<cmd>noh<cr> | :RefreshLSP<cr> | :lua require'feline'.reset_highlights()<cr>", {
+-- map('n', '<M-b>', "<cmd>noh<cr> | <cmd>only<cr> | :RefreshLSP<cr> | :lua require'feline'.reset_highlights()<cr>", {
 --   category = 'UI',
 --   desc = 'remove hls, refresh colors and lsp',
 -- })
 
-map('n', '<M-C-_>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> |  <cmd>normal! <C-L><cr>', {
-  category = 'UI',
-  desc = 'close all other windows',
-})
+-- map('n', '<M-C-_>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> |  <cmd>normal! <C-L><cr>', {
+--   category = 'UI',
+--   desc = 'close all other windows',
+-- })
+-- map('n', '<C-c>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> | <cmd>normal! <C-L><cr>', {
+--   category = 'UI',
+--   desc = 'close all other windows',
+-- })
 
-map('n', '<C-C>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> | <cmd>normal! <C-L><cr>', {
-  category = 'UI',
-  desc = 'close all other windows',
-})
-
-map('n', '<M-C-C>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> | <cmd>normal! <C-L><cr>', {
+map('n', '<M-c>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> | <cmd>normal! <C-L><cr>', {
   category = 'UI',
   desc = 'close popups',
 })

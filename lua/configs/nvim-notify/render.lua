@@ -1,3 +1,15 @@
+local error_patterns = {
+  '^E[%d]+: Error',
+  '^Error executing Lua callback',
+  '^Vim:Error executing Lua callback',
+}
+
+local title_ignore = {
+  'Notify',
+  'Notification',
+  'Messages',
+}
+
 local render = function(bufnr, notif, highlights, config)
   local state = require('noice.view.backend.notify_ext').state
   local title = (notif.title and type(notif.title) == 'table' and notif.title[1]) and notif.title[1] or ''
@@ -6,17 +18,11 @@ local render = function(bufnr, notif, highlights, config)
     notif.title[1] = title
   end
 
-  -- vim.dbglog('state', state.active, notif.id)
   if state.active[notif.id] and state.active[notif.id].count then
     notif.title[2] = state.active[notif.id].count
   end
 
   local first_line = type(notif.message) == 'table' and notif.message[1] or vim.fn.split(notif.message, '\n')[1]
-  local error_patterns = {
-    '^E[%d]+: Error',
-    '^Error executing Lua callback',
-    '^Vim:Error executing Lua callback',
-  }
 
   local is_error = false
   for _, pattern in ipairs(error_patterns) do
@@ -25,9 +31,8 @@ local render = function(bufnr, notif, highlights, config)
 
   if is_error then
     return require('notify.render.error')(bufnr, notif, highlights, config)
-  elseif #title > 0 and title ~= 'Notify' then
+  elseif #title > 0 and not vim.tbl_contains(title_ignore, title) then
     return require('notify.render.default')(bufnr, notif, highlights, config)
-    -- return require('notify.render.minimal')(bufnr, notif, highlights)
   else
     return require('notify.render.minimal')(bufnr, notif, highlights)
   end

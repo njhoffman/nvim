@@ -22,13 +22,12 @@ require('mini.move').setup({
     right      = 'L',
     down       = 'J',
     up         = 'K',
-    line_right  = '<M-C-H>',
-    line_left = '<M-C-L>',
-    line_down  = '<M-NL>',
-    line_up    = '<M-C-K>',
+    line_left  = '<M-H>',
+    line_right = '<M-L>',
+    line_down  = '<M-J>',
+    line_up    = '<M-K>',
   },
 })
-
 vim.cmd([[
   function! s:Map(...) abort
     let [mode, head, rhs; rest] = a:000

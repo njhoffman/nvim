@@ -184,7 +184,7 @@ function NotifyView:show()
       local messages = {}
       local content = {}
       for _, m in ipairs(self._messages) do
-        local lvl_num = m.level
+        local lvl_num = m.level or self._opts.level or 1
         if type(lvl_num) == 'string' then
           lvl_num = vim.lsp.log_levels[string.upper(lvl_num)]
         end

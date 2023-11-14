@@ -6,13 +6,12 @@ local render = require('configs.nvim-notify.render')
 
 local cfg = {
   level = vim.log.levels.DEBUG,
-  -- level = 0,
   fps = 30,
   render = render,
   stages = 'fade_in_slide_out',
   background_colour = '#000000',
   timeout = 5000,
-  minimum_width = 5,
+  minimum_width = 3,
   max_height = function()
     return math.floor(vim.opt.lines:get() / 5 * 4)
   end,

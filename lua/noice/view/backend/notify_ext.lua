@@ -6,17 +6,24 @@ local logger = require('logger').init('notify')
 -- TODO: have separate notify, noice, and log levels
 function _log_file(lvl, content)
   if logger ~= nil then
-    content = string.match(content, '\n') and '\n' .. content or content
+    local new_content = content
+    if string.match(content, '\n') then
+      -- new_content = '\n' .. content
+      new_content = ''
+      for _, line in ipairs(vim.fn.split(content, '\n')) do
+        new_content = new_content .. '\n    ' .. line
+      end
+    end
     if lvl == 0 then
-      logger:trace(content)
+      logger:trace(new_content)
     elseif lvl == 1 then
-      logger:debug(content)
+      logger:debug(new_content)
     elseif lvl == 2 then
-      logger:info(content)
+      logger:info(new_content)
     elseif lvl == 3 then
-      logger:warn(content)
+      logger:warn(new_content)
     else
-      logger:error(content)
+      logger:error(new_content)
     end
   end
 end
