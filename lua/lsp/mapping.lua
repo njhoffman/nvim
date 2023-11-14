@@ -91,8 +91,9 @@ local mapping = {
     map('n', '<leader>ca', '<cmd>CodeActionMenu<CR>', opts)
   end,
   hover = function()
-    opts.desc = 'lsp hover under cursor'
-    map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    opts.desc = 'hover provider under cursor'
+    map('n', 'K', '<Cmd>Hover<CR>', opts)
+    -- map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   end,
   codelens = function(cmd)
     opts.desc = 'lsp code lens'

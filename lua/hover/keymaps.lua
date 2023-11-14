@@ -17,6 +17,9 @@ local default_mapping = {
       ['<S-Right>'] = actions.change_tab_right,
       ['<S-Left>'] = actions.change_tab_left,
       ['<M-}>'] = actions.change_tab_right,
+      ['<M-.>'] = actions.change_tab_right,
+      ['<M-,>'] = actions.change_tab_left,
+
       -- [""] = actions.change_tab_left,
     },
     n = {
@@ -27,6 +30,9 @@ local default_mapping = {
       ['<S-Right>'] = actions.change_tab_right,
       ['<S-Left>'] = actions.change_tab_left,
       ['<M-}>'] = actions.change_tab_right,
+      ['<M-.>'] = actions.change_tab_right,
+      ['<M-,>'] = actions.change_tab_left,
+
       -- [""] = actions.change_tab_left,
     },
   },
@@ -45,13 +51,12 @@ local function get_key_cmd(mode, lhs)
   return val
 end
 
-local clear_maps = function()
+local clear = function()
   local config = require('hover.config').get()
   for mode, keys in pairs(config.mapping.global) do
     for lhs, _ in pairs(keys) do
-      vim.dbglog('del', mode, lhs)
-      vim.keymap.del(mode, lhs)
-      if vim.tbl_contains(config.mapping.old[lhs]) then
+      local ok, _ = pcall(vim.keymap.del, mode, lhs)
+      if vim.tbl_contains(config.mapping.old, lhs) then
         map(mode, lhs, config.mapping.old[lhs])
       end
     end
@@ -89,7 +94,7 @@ end
 
 return {
   init = init,
-  clear = clear_maps,
+  clear = clear,
   assign_open_keymaps = assign_open_keymaps,
   default_mapping = default_mapping,
 }

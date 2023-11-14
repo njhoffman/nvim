@@ -43,8 +43,8 @@ local execute = async.void(function(done)
 end)
 
 require('hover').register({
-  name = 'syn',
-  menu = 'Syn',
+  name = 'syntax',
+  menu = 'Syntax',
   desc = 'Syntax Items',
   priority = 150,
   enabled = enabled,

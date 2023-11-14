@@ -13,7 +13,7 @@ local function open(winnr, _opts)
         vim.api.nvim_win_close(winnr, true)
         utils.clear_local_state(state)
         vim.api.nvim_del_augroup_by_name('Hover')
-        -- keymaps.clear()
+        keymaps.clear()
       end,
       group = 'Hover',
     })
@@ -46,7 +46,7 @@ local function open(winnr, _opts)
           vim.api.nvim_del_augroup_by_name('Hover')
           utils.clear_local_state(state)
           vim.dbglog('clear local 2', state)
-          -- keymaps.clear()
+          keymaps.clear()
         end
       end,
       group = 'Hover',

@@ -19,8 +19,8 @@ local function get_title(active_provider_id)
 end
 
 local function add_title()
-  local winok, _ = pcall(vim.api.nvim_win_is_valid, state.winnr)
-  if winok then
+  local win_ok, _ = pcall(vim.api.nvim_win_is_valid, state.winnr)
+  if win_ok then
     local active_provider_id = state.enabled[state.curr_idx]
     local title_str, width = get_title(active_provider_id)
     -- if string.len(vim.trim(title_str)) > 0 then
@@ -59,11 +59,11 @@ local function show_hover(provider_id, result, opts)
 end
 
 local function get_styled_content(_lines, width)
-  -- vim.api.nvim_buf_set_option(state.bufnr, 'modifiable', true)
+  vim.api.nvim_buf_set_option(state.bufnr, 'modifiable', true)
   local lines = vim.lsp.util.stylize_markdown(state.bufnr, _lines, {
     max_width = width,
   })
-  -- vim.api.nvim_buf_set_option(state.bufnr, 'modifiable', false)
+  vim.api.nvim_buf_set_option(state.bufnr, 'modifiable', false)
   return lines
 end
 
@@ -74,7 +74,7 @@ end
 -- end
 
 local function get_dimensions(lines, max, provider_id)
-  local height = #lines
+  local height = #lines + 1
   local width = 0
 
   local _, title_width = get_title(provider_id)
@@ -114,7 +114,7 @@ local function create_window(width, height)
     width = width,
     focusable = true,
     bufpos = { 0, 0 },
-    row = vim.api.nvim_win_get_height(0) - 2,
+    row = vim.api.nvim_win_get_height(0) - 1,
     col = vim.api.nvim_win_get_width(0),
     anchor = 'SE',
     zindex = 2,

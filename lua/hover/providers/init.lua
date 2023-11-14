@@ -17,8 +17,6 @@ local function is_enabled(provider)
   end
   if enabled then
     table.insert(state.enabled, provider.id)
-    -- else
-    --   table.remove(state.enabled, provider.id)
   end
   for _, p in ipairs(state.providers) do
     if p.id == provider.id then
@@ -82,7 +80,6 @@ local function run_provider(provider, _opts)
     local active_pid = state.enabled[state.curr_idx]
     if provider.id == active_pid then
       async.scheduler()
-      vim.dbglog('show new ' .. provider.id .. ': ' .. provider.name)
       ui.show_hover_new(provider.id, result, opts)
     end
     ui.add_title()
@@ -122,7 +119,6 @@ local function load(_opts)
   if state.busy == true then
     n = n + 1
     state.next_job = function()
-      vim.dbglog('NEXT JOB', n)
       load(_opts)
     end
     return
@@ -133,7 +129,6 @@ local function load(_opts)
   if type(opts.provider) == 'string' and #opts.provider > 0 then
     for _, provider in ipairs(state.providers) do
       async.scheduler()
-      vim.dbglog('yes provider (' .. opts.provider .. ') ' .. provider.id .. ': ' .. provider.name)
       if provider.name == opts.provider and run_provider(provider, opts) then
         finished(provider)
       end
@@ -141,7 +136,6 @@ local function load(_opts)
   else
     for _, provider in ipairs(state.providers) do
       async.scheduler()
-      vim.dbglog('no_provider ' .. provider.id .. ': ' .. provider.name)
       if is_enabled(provider) and run_provider(provider, opts) then
         finished(provider)
       end

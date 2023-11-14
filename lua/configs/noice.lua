@@ -100,7 +100,13 @@ local cfg = {
     view_search = 'virtualtext', -- view for search count messages. Set to `false` to disable
   },
   views = {
-    ['mini'] = { zindex = 10 },
+    ['mini'] = {
+      zindex = 10,
+      win_options = {
+        winblend = 70,
+        -- winhighlight = { Normal = 'NoiceCmdlineNormal', IncSearch = '', Search = '' },
+      },
+    },
     -- ['cmdline'] = cmdlineView,
     ['notify_error'] = noice_views.errorView,
     ['notify'] = {
