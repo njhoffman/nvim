@@ -2,6 +2,11 @@ local lspconfig = require('lspconfig')
 local util = lspconfig.util
 
 local eslint = function()
+  vim.api.nvim_create_autocmd('BufWritePost', {
+    pattern = { '*.tsx', '*.ts', '*.jsx', '*.js' },
+    command = 'silent! EslintFixAll',
+    group = vim.api.nvim_create_augroup('MyAutocmdsJavaScripFormatting', {}),
+  })
   lspconfig.eslint.setup({
     -- root_dir = util.root_pattern('.project', '.git', '.eslintrc'),
     root_dir = util.root_pattern('.project', '.git', 'package.json'),
@@ -49,7 +54,7 @@ local eslint = function()
         },
       },
       codeActionOnSave = {
-        enable = false,
+        enable = true,
         mode = 'all',
       },
       experimental = {
