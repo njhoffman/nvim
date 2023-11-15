@@ -115,11 +115,13 @@ local close_multi = function(skip_prompt)
         vim.cmd('exit')
       end
     else
-      vim.cmd('Bdelete')
-      if #get_loaded_buffers() == 0 then
-        vim.cmd('Alpha')
+      if #get_loaded_buffers() > 0 then
+        vim.cmd('Bdelete')
       end
     end
+  end
+  if #get_loaded_buffers() == 0 then
+    vim.cmd('Alpha')
   end
 end
 

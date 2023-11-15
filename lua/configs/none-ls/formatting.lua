@@ -2,28 +2,28 @@ local null_ls = require('null-ls')
 local iter = require('plenary.iterators')
 local path = require('plenary.path')
 local scan = require('plenary.scandir')
+local root_files = {
+  eslint = { '.eslintrc', '.eslintrc.js', '.eslintrc.json' },
+  prettier = { '.prettierrc', '.prettierrc.js', '.prettierrc.json' },
+  stylua = { 'stylua.toml', '.stylua.toml' },
+  elm = { 'elm.json' },
+}
 
-local eslint_root_files = { '.eslintrc', '.eslintrc.js', '.eslintrc.json' }
-local prettier_root_files = { '.prettierrc', '.prettierrc.js', '.prettierrc.json' }
-local stylua_root_files = { 'stylua.toml', '.stylua.toml' }
-local elm_root_files = { 'elm.json' }
-
-local function search_for_git_repos(base_dirs)
-  return iter
-    .iter(base_dirs)
-    :map(function(base_dir)
-      local git_dirs = scan.scan_dir(vim.fn.expand(base_dir.path), {
-        depth = base_dir.max_depth,
-        add_dirs = true,
-        hidden = true,
-        search_pattern = '%.git$',
-      })
-      return iter.iter(git_dirs):map(function(git_dir)
-        return path:new(git_dir):parent()
-      end)
-    end)
-    :flatten()
-    :tolist()
+local function search_for_parent_file(base_path)
+  if base_path.filename == os.getenv('HOME') then
+    return false
+  end
+  local matched_files = scan.scan_dir(base_path.filename, {
+    depth = 1,
+    add_dirs = false,
+    hidden = true,
+    search_pattern = '/%.prettierrc',
+  })
+  if not matched_files or #matched_files == 0 then
+    return search_for_parent_file(path:new(base_path.filename):parent())
+  else
+    return iter.iter(matched_files):flatten():tolist()
+  end
 end
 
 return {
@@ -78,17 +78,29 @@ return {
       'handlebars',
     },
     condition = function(utils)
-      vim.dbglog(utils.has_file({ '.prettierrc', '.prettierrc.js' }))
-      return utils.has_file({ '.prettierrc.js', '.prettierrc', '.prettierrc.json' })
+      local prettier_found = search_for_parent_file(path:new(vim.fn.getcwd()))
+      if prettier_found and #prettier_found > 0 then
+        vim.notify('prettierd: ' .. prettier_found[1], 0)
+        return true
+      end
+      return false
     end,
-    extra_args = function(params)
-      return {
-        '--indent-size',
-        vim.api.nvim_buf_get_option(params.bufnr, 'shiftwidth'),
-        '--html-whitespace-sensitivity',
-        'ignore',
-      }
-    end,
+    -- cwd = h.cache.by_bufnr(function(params)
+    --   return u.root_pattern(
+    --     -- https://prettier.io/docs/en/configuration.html
+    --     '.prettierrc',
+    --     '.prettierrc.json',
+    --     '.prettierrc.yml',
+    --     '.prettierrc.yaml',
+    --     '.prettierrc.json5',
+    --     '.prettierrc.js',
+    --     '.prettierrc.cjs',
+    --     '.prettierrc.toml',
+    --     'prettier.config.js',
+    --     'prettier.config.cjs',
+    --     'package.json'
+    --   )(params.bufname)
+    -- end),
   }),
   -- null_ls.builtins.formatting.prettier.with({
   --   filetypes = { 'css', 'html', 'less', 'scss', 'toml', 'yaml' },
