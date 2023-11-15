@@ -55,9 +55,9 @@ local cfg = {
 
 require('yanky').setup(cfg)
 
-vim.keymap.set({ 'o', 'x' }, 'lp', function()
+vim.keymap.set({ 'o', 'x' }, '<leader>pl', function()
   require('yanky.textobj').last_put()
-end, {})
+end, { desc = 'put last yanked text object' })
 -- telescope actions
 -- require("yanky.picker").actions.put("p") -- put after cursor
 -- require("yanky.picker").actions.put("P") -- put before cursor
