@@ -1,4 +1,30 @@
 local null_ls = require('null-ls')
+local iter = require('plenary.iterators')
+local path = require('plenary.path')
+local scan = require('plenary.scandir')
+
+local eslint_root_files = { '.eslintrc', '.eslintrc.js', '.eslintrc.json' }
+local prettier_root_files = { '.prettierrc', '.prettierrc.js', '.prettierrc.json' }
+local stylua_root_files = { 'stylua.toml', '.stylua.toml' }
+local elm_root_files = { 'elm.json' }
+
+local function search_for_git_repos(base_dirs)
+  return iter
+    .iter(base_dirs)
+    :map(function(base_dir)
+      local git_dirs = scan.scan_dir(vim.fn.expand(base_dir.path), {
+        depth = base_dir.max_depth,
+        add_dirs = true,
+        hidden = true,
+        search_pattern = '%.git$',
+      })
+      return iter.iter(git_dirs):map(function(git_dir)
+        return path:new(git_dir):parent()
+      end)
+    end)
+    :flatten()
+    :tolist()
+end
 
 return {
   -- Formatters
@@ -32,17 +58,49 @@ return {
   -- null_ls.builtins.formatting.nginx_beautifier,
   -- null_ls.builtins.formatting.pg_format,
   -- null_ls.builtins.formatting.prettier_eslint,
-  null_ls.builtins.formatting.prettier.with({
-    filetypes = { 'css', 'html', 'less', 'scss', 'toml', 'yaml' },
+  null_ls.builtins.formatting.prettierd.with({
+    filetypes = {
+      'javascript',
+      'javascriptreact',
+      'typescript',
+      'typescriptreact',
+      'vue',
+      'css',
+      'scss',
+      'less',
+      'html',
+      'json',
+      'jsonc',
+      'yaml',
+      'markdown',
+      'markdown.mdx',
+      'graphql',
+      'handlebars',
+    },
+    condition = function(utils)
+      vim.dbglog(utils.has_file({ '.prettierrc', '.prettierrc.js' }))
+      return utils.has_file({ '.prettierrc.js', '.prettierrc', '.prettierrc.json' })
+    end,
     extra_args = function(params)
       return {
-        '--print-width',
-        vim.api.nvim_buf_get_option(params.bufnr, 'textwidth'),
-        '--tab-width',
+        '--indent-size',
         vim.api.nvim_buf_get_option(params.bufnr, 'shiftwidth'),
+        '--html-whitespace-sensitivity',
+        'ignore',
       }
     end,
   }),
+  -- null_ls.builtins.formatting.prettier.with({
+  --   filetypes = { 'css', 'html', 'less', 'scss', 'toml', 'yaml' },
+  --   extra_args = function(params)
+  --     return {
+  --       '--print-width',
+  --       vim.api.nvim_buf_get_option(params.bufnr, 'textwidth'),
+  --       '--tab-width',
+  --       vim.api.nvim_buf_get_option(params.bufnr, 'shiftwidth'),
+  --     }
+  --   end,
+  -- }),
   -- null_ls.builtins.formatting.puppet_lint,
   -- https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md
   -- null_ls.builtins.formatting.shellharden.with({ filetypes = { 'sh', 'bash' } }),

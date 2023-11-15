@@ -26,11 +26,12 @@ local eslint = function()
     -- },
     settings = {
       enable = true,
+      packageManager = 'yarn',
       probe = {
         'javascript',
         'javascriptreact',
-        -- "typescript",
-        -- "typescriptreact",
+        'typescript',
+        'typescriptreact',
         'html',
         'vue',
         'markdown',
