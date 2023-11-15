@@ -10,7 +10,7 @@ local root_files = {
 }
 
 local function search_for_parent_file(base_path)
-  if base_path.filename == os.getenv('HOME') then
+  if base_path.filename == '/' then
     return false
   end
   local matched_files = scan.scan_dir(base_path.filename, {
