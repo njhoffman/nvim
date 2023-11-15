@@ -1,6 +1,5 @@
 -- vim: fdm=marker:fdc=1
 
-
 vim.cmd([[
 if &filetype !=# 'lua'
   finish
@@ -107,7 +106,6 @@ local check_wrong_language = function()
       vim.api.nvim_buf_get_text(0, start[2] - 1, start[3] - 1, ending[2], ending[3] - 1, {}) or { '' },
       '\n'
     )
-    vim.dbglog(start, ending, content)
     if string.match(content, regex.constDeclaration) then
       vim.notify('You are in lua not javascript!', 3)
       local new_content = vim.fn.split(string.gsub(content, regex.constDeclaration, 'local '), '\n')

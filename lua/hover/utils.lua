@@ -1,5 +1,4 @@
 local vim = vim
-local log = require('neo-tree.log')
 
 -- Backwards compatibility
 table.pack = table.pack or function(...)
@@ -154,7 +153,7 @@ end
 M.clear_local_state = function(state)
   for _, provider in ipairs(state.providers) do
     for _, key in ipairs(vim.tbl_keys(provider)) do
-      if string.match(key, '^_.*') then
+      if string.match(key, '^_.*') and key ~= '_n' and key ~= '_avg' then
         provider[key] = nil
       end
     end

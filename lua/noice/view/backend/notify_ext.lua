@@ -6,16 +6,24 @@ local logger = require('logger').init('notify')
 -- TODO: have separate notify, noice, and log levels
 function _log_file(lvl, content)
   if logger ~= nil then
+    local new_content = content
+    if string.match(content, '\n') then
+      -- new_content = '\n' .. content
+      new_content = ''
+      for _, line in ipairs(vim.fn.split(content, '\n')) do
+        new_content = new_content .. '\n    ' .. line
+      end
+    end
     if lvl == 0 then
-      logger:trace(content)
+      logger:trace(new_content)
     elseif lvl == 1 then
-      logger:debug(content)
+      logger:debug(new_content)
     elseif lvl == 2 then
-      logger:info(content)
+      logger:info(new_content)
     elseif lvl == 3 then
-      logger:warn(content)
+      logger:warn(new_content)
     else
-      logger:error(content)
+      logger:error(new_content)
     end
   end
 end
@@ -35,13 +43,15 @@ function _notify_override(self, msg)
   for _, m in ipairs(msg.messages) do
     local id = m.opts.notify_id and m.opts.notify_id.id
     if replace_id ~= nil then
-      local count = state.active[replace_id].count and state.active[replace_id].count + 1 or 1
-      state.active[id] = {
+      local count = state.active[replace_id] and state.active[replace_id].count and state.active[replace_id].count + 1
+        or 1
+      state.active[replace_id] = {
         count = count,
         crc = curr_crc,
       }
+      m.opts.replace_id = replace_id
       self._opts.count = count
-      state.active[replace_id] = nil
+      -- state.active[replace_id] = nil
     else
       local notify_lvl = notif._config().level()
       local msg_lvl = msg.level
@@ -77,4 +87,5 @@ end
 return {
   _notify_override = _notify_override,
   _on_close_override = _on_close_override,
+  state = state,
 }

@@ -82,7 +82,7 @@ require('mini.surround').setup(cfg)
 --   { silent = true, expr = true, desc = 'quickly add surrounding ( to word' }
 -- )
 vim.cmd([[
-  noremap <silent> s<space> :execute "normal wst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
+  noremap <silent> s<space> :execute "normal hwst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
 " getline(".")[col(".")-1] == "\t"
   " let isOnKeyword = matchstr(getline('.'), '\%'.col('.').'c.') =~# '\k'
   " noremap s<space> :normal wst " . nr2char(getchar()) . <cr>

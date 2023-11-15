@@ -1,104 +1,23 @@
-local is_enabled = require('hover.providers').is_enabled
 local config = require('hover.config').get()
 local state = require('hover.state')
+local ui_title = require('hover.ui.title')
+local ui_dimensions = require('hover.ui.dimensions')
 local npcall = vim.F.npcall
-
-local function get_title(active_provider_id)
-  local title = {}
-  local width = 0
-  for _, p in ipairs(state.providers) do
-    if p._enabled then
-      local hl = p.id == active_provider_id and 'TabLineSel' or 'TabLineFill'
-      title[#title + 1] = string.format('%%#%s# %s ', hl, p.name)
-      title[#title + 1] = '%#Normal# '
-      width = width + #p.name + 3
-    end
-  end
-  local title_str = table.concat(title, '')
-  return title_str, width
-end
-
-local function add_title()
-  local win_ok, _ = pcall(vim.api.nvim_win_is_valid, state.winnr)
-  if win_ok then
-    local active_provider_id = state.enabled[state.curr_idx]
-    local title_str, width = get_title(active_provider_id)
-    -- if string.len(vim.trim(title_str)) > 0 then
-    --   local win_height = vim.api.nvim_win_get_height(state.winnr)
-    --   vim.api.nvim_win_set_height(state.winnr, win_height)
-    -- end
-    if width > state.width then
-      vim.api.nvim_win_set_width(state.winnr, width + 1)
-      state.width = width + 1
-    end
-    vim.wo[state.winnr].winbar = type(title_str) == 'string' and title_str or '...'
-  end
-end
-
-local function get_max_height(num)
-  if string.find(tostring(num), '%%') then
-    local pct = string.match(tostring(num), '([0-9]+)%%')
-    local currheight = vim.api.nvim_win_get_height(0)
-    return math.floor(currheight * pct / 100)
-  end
-  return num
-end
-
-local function get_max_width(num)
-  if string.find(tostring(num), '%%') then
-    local pct = string.match(tostring(num), '([0-9]+)%%')
-    local currwidth = vim.api.nvim_win_get_width(0)
-    return math.floor(currwidth * pct / 100)
-  end
-  return num
-end
 
 local function show_hover(provider_id, result, opts)
   local _, winnr = vim.lsp.util.open_floating_preview(result.lines, result.filetype, opts)
-  add_title()
+  ui_title.add_title()
 end
 
 local function get_styled_content(_lines, width)
   vim.api.nvim_buf_set_option(state.bufnr, 'modifiable', true)
+  vim.api.nvim_buf_set_lines(state.bufnr, 0, -1, true, {})
+
   local lines = vim.lsp.util.stylize_markdown(state.bufnr, _lines, {
     max_width = width,
   })
   vim.api.nvim_buf_set_option(state.bufnr, 'modifiable', false)
   return lines
-end
-
--- local function style_content(_lines, filetype, width)
---   local lines = get_styled_content(_lines, width)
---   vim.api.nvim_buf_set_option(state.bufnr, 'filetype', filetype)
---   vim.api.nvim_buf_set_lines(state.bufnr, 0, #lines, false, lines)
--- end
-
-local function get_dimensions(lines, max, provider_id)
-  local height = #lines + 1
-  local width = 0
-
-  local _, title_width = get_title(provider_id)
-
-  if height > max.h then
-    height = max.h
-  elseif height < 1 then
-    height = config.min_height
-  end
-
-  for _, line in ipairs(lines) do
-    if #line > width then
-      width = #line
-    end
-  end
-  if width > max.w then
-    width = max.w
-  elseif width < config.min_width then
-    width = config.min_width
-  end
-
-  state.width = title_width > width and title_width or width
-  state.height = height
-  return state.width, state.height
 end
 
 local function create_window(width, height)
@@ -136,14 +55,20 @@ local function load_hover(provider_id, result)
   state.bufnr = state.ft_bufnr[ft]
 
   local max = {
-    w = get_max_width(config.max_width),
-    h = get_max_height(config.max_height),
+    w = ui_dimensions.get_max_width(config.max_width),
+    h = ui_dimensions.get_max_height(config.max_height),
   }
+
+  local scrolloff = ui_dimensions.get_max_height('50%')
+  if scrolloff > 7 then
+    scrolloff = 7
+  end
+  vim.api.nvim_set_option_value('scrolloff', scrolloff, {})
 
   vim.api.nvim_win_set_option(state.winnr, 'winbar', '...')
   if result and type(result) == 'table' and result.lines then
     -- lines = result.lines
-    get_dimensions(result.lines, max, provider_id)
+    ui_dimensions.get_dimensions(result.lines, max, provider_id)
     get_styled_content(result.lines, state.width)
     vim.api.nvim_win_set_config(state.winnr, { width = state.width, height = state.height })
     vim.api.nvim_win_set_buf(state.winnr, state.bufnr)
@@ -158,6 +83,13 @@ local function show_hover_new(provider_id, result, opts)
     return
   end
 
+  local curr_provider = nil
+  for _, p in ipairs(state.providers) do
+    if p.id == provider_id then
+      curr_provider = p
+    end
+  end
+
   local ft = result.filetype or 'markdown'
   if type(state.ft_bufnr[ft]) == 'nil' or not vim.api.nvim_buf_is_valid(state.ft_bufnr[ft]) then
     state.ft_bufnr[ft] = vim.api.nvim_create_buf(false, true)
@@ -168,19 +100,22 @@ local function show_hover_new(provider_id, result, opts)
   state.bufnr = state.ft_bufnr[ft]
 
   local max = {
-    w = get_max_width(config.max_width),
-    h = get_max_height(config.max_height),
+    w = ui_dimensions.get_max_width(config.max_width),
+    h = ui_dimensions.get_max_height(config.max_height),
   }
 
   -- lines get reduced when stylized to markdown
-  local scrolloff = get_max_height('50%')
+  local scrolloff = ui_dimensions.get_max_height('50%')
   if scrolloff > 7 then
     scrolloff = 7
   end
   vim.api.nvim_set_option_value('scrolloff', scrolloff, {})
 
   -- lines = result.lines
-  get_dimensions(result.lines, max, provider_id)
+  local width, height = ui_dimensions.get_dimensions(result.lines, max, provider_id)
+  if curr_provider then
+    curr_provider._dimensions = { width = width, height = height }
+  end
   get_styled_content(result.lines, state.width)
 
   create_window(state.width, state.height)
@@ -235,8 +170,8 @@ end
 return {
   focus_or_close_hover = focus_or_close_hover,
   find_window_by_var = find_window_by_var,
-  add_title = add_title,
   load_hover = load_hover,
   show_hover = show_hover,
   show_hover_new = show_hover_new,
+  add_title = ui_title.add_title,
 }

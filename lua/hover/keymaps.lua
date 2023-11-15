@@ -1,6 +1,7 @@
 local map = require('mapper').map
 local actions = require('hover.actions')
 
+-- stylua: ignore
 local default_mapping = {
   inactive = {
     n = {
@@ -12,26 +13,30 @@ local default_mapping = {
   },
   global = {
     i = {
-      ['<Up>'] = actions.scroll_up,
-      ['<Down>'] = actions.scroll_down,
-      ['<S-Right>'] = actions.change_tab_right,
-      ['<S-Left>'] = actions.change_tab_left,
-      ['<M-}>'] = actions.change_tab_right,
-      ['<M-.>'] = actions.change_tab_right,
-      ['<M-,>'] = actions.change_tab_left,
+      -- ['<Up>'] = actions.scroll_up,
+      -- ['<Down>'] = actions.scroll_down,
+      -- ['<S-Right>'] = actions.change_tab_right,
+      -- ['<S-Left>'] = actions.change_tab_left,
+      -- ['<M-}>'] = actions.change_tab_right,
+      -- ['<M-.>'] = actions.change_tab_right,
+      -- ['<M-,>'] = actions.change_tab_left,
 
       -- [""] = actions.change_tab_left,
     },
     n = {
-      ['<esc>'] = actions.close,
-      ['q'] = actions.close,
-      ['<Up>'] = actions.scroll_up,
-      ['<Down>'] = actions.scroll_down,
-      ['<S-Right>'] = actions.change_tab_right,
-      ['<S-Left>'] = actions.change_tab_left,
-      ['<M-}>'] = actions.change_tab_right,
-      ['<M-.>'] = actions.change_tab_right,
-      ['<M-,>'] = actions.change_tab_left,
+      ['<esc>']      = actions.close,
+      ['q']          = actions.close,
+      ['<Up>']       = actions.scroll_up,
+      ['<Down>']     = actions.scroll_down,
+      ['<C-S-Up>']   = actions.scroll_up,
+      ['<C-S-Down>'] = actions.scroll_down,
+      ['<M-b>']      = actions.scroll_page_up,
+      ['<M-f>']      = actions.scroll_page_down,
+      ['<S-Right>']  = actions.change_tab_right,
+      ['<S-Left>']   = actions.change_tab_left,
+      ['<M-}>']      = actions.change_tab_right,
+      ['<M-.>']      = actions.change_tab_right,
+      ['<M-,>']      = actions.change_tab_left,
 
       -- [""] = actions.change_tab_left,
     },

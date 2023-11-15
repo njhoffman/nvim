@@ -128,13 +128,11 @@ end
 function NotifyView:_notify(msg)
   local level = self._opts.level or msg.level
 
-  -- vim.dbglog(msg.content)
   local opts = {
     title = msg.title or self._opts.title,
     animate = not Util.is_blocking(),
     timeout = self._opts.timeout,
     replace = self._opts.replace and self.notif,
-    count = self._opts.count,
     keep = function()
       return Util.is_blocking()
     end,
@@ -179,12 +177,40 @@ function NotifyView:show()
   ---@type NotifyMsg[]
   local todo = {}
 
-  -- if false and self._opts.merge then
-  if true or self._opts.merge then
-    table.insert(todo, {
-      content = self:content(),
-      messages = self._messages,
-    })
+  if self._opts.merge then
+    local groups = {}
+    -- loop from 0 to 5
+    for i = 0, 5 do
+      local messages = {}
+      local content = {}
+      for _, m in ipairs(self._messages) do
+        local lvl_num = m.level or self._opts.level or 1
+        if type(lvl_num) == 'string' then
+          lvl_num = vim.lsp.log_levels[string.upper(lvl_num)]
+        end
+        if lvl_num == i then
+          table.insert(messages, m)
+          table.insert(content, m:content())
+        end
+      end
+      if #messages > 0 or #content > 0 then
+        groups[i] = groups[i] or { content = {}, messages = {} }
+      end
+      for _, msg in ipairs(messages) do
+        table.insert(groups[i].messages, msg)
+      end
+      for _, line in ipairs(content) do
+        table.insert(groups[i].content, line)
+      end
+    end
+
+    for lvl, group in pairs(groups) do
+      table.insert(todo, {
+        content = vim.fn.join(group.content, '\n'),
+        messages = group.messages,
+        level = lvl,
+      })
+    end
   else
     for _, m in ipairs(self._messages) do
       table.insert(todo, {

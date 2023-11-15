@@ -45,32 +45,44 @@ M.change_tab_right = function()
   change_tab('right')
 end
 
-local scroll_down = vim.api.nvim_replace_termcodes('<Down>', true, false, true)
 local scroll_up = vim.api.nvim_replace_termcodes('<Up>', true, false, true)
+local scroll_down = vim.api.nvim_replace_termcodes('<Down>', true, false, true)
+local scroll_page_up = vim.api.nvim_replace_termcodes('<C-b>', true, false, true)
+local scroll_page_down = vim.api.nvim_replace_termcodes('<C-f>', true, false, true)
 
-local scroll_float = function(mapping, winnr)
+local scroll_float = function(scroll_key)
   local winok, _ = pcall(vim.api.nvim_win_is_valid, state.winnr)
+  -- TODO: stop cursor scroll when reaches scroll offset
   if winok then
-    local scroll_key = vim.api.nvim_replace_termcodes(mapping, true, false, true)
-    if mapping == scroll_up then
-      local linenr = vim.api.nvim_win_get_cursor(winnr)[1]
-      local scrolloff = vim.api.nvim_get_option('scrolloff')
-      local winheight = vim.api.nvim_win_get_height(winnr)
-      if linenr > (winheight - scrolloff - 2) then
-        vim.fn.win_execute(winnr, 'normal! ' .. scroll_key)
+    local linenr = vim.api.nvim_win_get_cursor(state.winnr)[1]
+    local scrolloff = vim.api.nvim_get_option('scrolloff')
+    local winheight = vim.api.nvim_win_get_height(state.winnr)
+    if scroll_key == scroll_up then
+      if linenr > scrolloff then
+        vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
       end
     else
-      vim.fn.win_execute(winnr, 'normal! ' .. scroll_key)
+      if linenr < winheight - scrolloff then
+        vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
+      end
     end
+    vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
   end
 end
 
-M.scroll_up = function(winnr)
-  scroll_float(scroll_up, winnr)
+M.scroll_up = function()
+  scroll_float(scroll_up)
 end
 
-M.scroll_down = function(winnr)
-  scroll_float(scroll_down, winnr)
+M.scroll_down = function()
+  scroll_float(scroll_down)
 end
 
+M.scroll_page_up = function()
+  scroll_float(scroll_page_up)
+end
+
+M.scroll_page_down = function()
+  scroll_float(scroll_page_down)
+end
 return M
