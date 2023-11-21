@@ -1,6 +1,5 @@
 local glob = require('project_nvim.utils.globtopattern')
 local uv = vim.loop
-local config = require('project_nvim.config')
 
 local M = {}
 
@@ -36,28 +35,48 @@ end
 function M.find_lsp_root()
   -- Get lsp client for current buffer
   -- Returns nil or string
-  local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
-  local clients = vim.lsp.get_active_clients()
-  local fname = vim.api.nvim_buf_get_name(0)
+  local options = require('project_nvim.config').get()
+
+  local original_bufnr = vim.api.nvim_get_current_buf()
+  local buf_ft = vim.api.nvim_buf_get_option(original_bufnr, 'filetype')
+  local clients = vim.lsp.get_active_clients({ bufnr = original_bufnr })
+  -- local clients = vim.lsp.get_active_clients()
+  local fname = vim.api.nvim_buf_get_name(original_bufnr)
+  -- local fname = vim.api.nvim_buf_get_name(0)
+  local root_dir = nil
 
   if next(clients) == nil then
     return nil
   end
 
   for _, client in pairs(clients) do
-    local filetypes = client.config.filetypes
-    if filetypes and vim.tbl_contains(filetypes, buf_ft) then
-      if not vim.tbl_contains(config.options.ignore_lsp, client.name) then
-        local root_dir = M.lsp_workspace_root(client, fname) or client.config.root_dir
-        return root_dir, client.name
+    if not vim.tbl_contains(options.ignore_lsp, client.name) then
+      local filetypes = client.filetypes
+      local workspace_folders = client.workspace_folders
+      fname = uv.fs_realpath(fname) or vim.fn.fnamemodify(vim.fn.resolve(fname), ':p')
+      if workspace_folders then
+        for _, schema in ipairs(workspace_folders) do
+          local ws_dir = uv.fs_realpath(schema.name)
+          if ws_dir and fname:sub(1, ws_dir:len()) == ws_dir then
+            root_dir = schema.name
+            return root_dir, client.name
+          end
+        end
+      end
+      if filetypes and vim.tbl_contains(filetypes, buf_ft) then
+        if not vim.tbl_contains(options.ignore_lsp, client.name) then
+          root_dir = M.lsp_workspace_root(client, fname) or client.root_dir
+          return root_dir, client.name
+        end
       end
     end
   end
-
   return nil
 end
 
 function M.find_pattern_root()
+  local options = require('project_nvim.config').get()
+
   local search_dir = vim.fn.expand('%:p:h', true)
 
   local last_dir_cache = ''
@@ -142,7 +161,7 @@ function M.find_pattern_root()
 
   -- breadth-first search
   while true do
-    for _, pattern in ipairs(config.options.patterns) do
+    for _, pattern in ipairs(options.patterns) do
       local exclude = false
       if pattern:sub(1, 1) == '!' then
         exclude = true
@@ -168,21 +187,12 @@ end
 
 function M.get_project_root()
   -- returns project root, as well as method
-  if
-    type(config) ~= 'table'
-    or type(config.options) ~= 'table'
-    or type(config.options.detection_methods) ~= 'table'
-  then
-    vim.notify({
-      'Bad configuration file ...',
-      config,
-      type(config),
-      type(config.options),
-      type(config.options.detection_methods),
-    }, 5)
-    return
+
+  local options = require('project_nvim.config').get()
+  if type(options) ~= 'table' or type(options.detection_methods) ~= 'table' then
+    return vim.notify('Bad config file ...' .. vim.inspect(options), 5)
   end
-  for _, detection_method in ipairs(config.options.detection_methods) do
+  for _, detection_method in ipairs(options.detection_methods) do
     if detection_method == 'lsp' then
       local root, lsp_name = M.find_lsp_root()
       if root ~= nil then

@@ -1,3 +1,4 @@
+local logger = require('logger').init('fasd')
 local function goto_last_pos()
   -- " Return to last edit position when opening files (You want this!)
   -- au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -13,8 +14,7 @@ local function fasd_update()
   local fname = vim.api.nvim_buf_get_name(0)
   if vim.bo.buftype == '' and not vim.tbl_contains(ignored_ft, vim.bo.filetype) and fname ~= '' then
     vim.fn.jobstart({ 'fasd', '-A', fname })
-    vim.notify('Add to fasd: ' .. fname, 0)
-    logger:trace(fname)
+    logger:trace('add ' .. vim.fn.fnamemodify(fname, ':t'), 0)
   end
 end
 

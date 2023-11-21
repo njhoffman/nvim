@@ -11,6 +11,7 @@ local get_icon = function(method, lsp)
     awk_ls =                 { get_by_ft("awk") },
     bashls =                 { get_by_ft("sh") },
     clangd =                 { get_by_ft("c") },
+    copilot =                 {''},
     cssls =                  { get_by_ft("css") },
     dockerls =               { get_by_ft("dockerfile") },
     efm =                    { get_by_ft("conf") },

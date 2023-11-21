@@ -4,12 +4,17 @@ local references_namespace = vim.api.nvim_create_namespace('action_hints_referen
 
 local last_virtual_text_line = nil
 
+local clear_virtual_text = function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  -- if last_virtual_text_line then
+  vim.api.nvim_buf_clear_namespace(bufnr, references_namespace, 0, -1)
+  last_virtual_text_line = nil
+  -- end
+end
+
 local function set_virtual_text(bufnr, line, chunks)
   -- Clear the virtual text from the previous line
-  if last_virtual_text_line then
-    vim.api.nvim_buf_clear_namespace(bufnr, references_namespace, last_virtual_text_line, last_virtual_text_line + 1)
-  end
-
+  clear_virtual_text()
   -- Check for conditions where you might want to exit early
   if
     vim.api.nvim_buf_get_option(bufnr, 'buftype') ~= ''
@@ -50,14 +55,6 @@ local function update_virtual_text(config)
     }
 
     set_virtual_text(bufnr, cursor[1] - 1, chunks)
-  end
-end
-
-local clear_virtual_text = function()
-  local bufnr = vim.api.nvim_get_current_buf()
-  if last_virtual_text_line then
-    vim.api.nvim_buf_clear_namespace(bufnr, references_namespace, last_virtual_text_line, last_virtual_text_line + 1)
-    last_virtual_text_line = nil
   end
 end
 

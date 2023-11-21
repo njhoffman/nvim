@@ -52,7 +52,7 @@ opt('previewheight', 15)
 opt('pumblend', 10)
 opt('pumheight', 10)
 opt('regexpengine', 0)
-opt('redrawtime', 10000)
+opt('redrawtime', 3000)
 opt('scrolloff', 7)
 opt('sessionoptions', 'buffers,curdir,folds,help,resize,winpos,terminal') -- winsize messes up on load
 opt('shada', "!,'1000,<100,s500")
@@ -73,9 +73,10 @@ opt('switchbuf', 'useopen,usetab')
 opt('termguicolors', true)
 opt('timeout', true)
 opt('timeoutlen', 500) -- 1000
+opt('ttimeout', true) -- 50
 opt('ttimeoutlen', 30) -- 50
 opt('undolevels', 1000)
-opt('updatetime', 1500) -- 4000
+opt('updatetime', 2000) -- 4000
 opt('virtualedit', 'onemore') -- 4000
 opt('whichwrap', 'b,s,<,>,[,],h,l')
 opt('wildignore', '*.o,*~,*.pyc') -- wildchar/charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n

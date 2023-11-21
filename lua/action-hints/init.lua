@@ -25,7 +25,7 @@ local setup = function(options)
     group = augroup,
     desc = 'ActionHints providers update',
     callback = function()
-      display.clear_virtual_text()
+      utils.throttle(display.clear_virtual_text, 100, {}, 'clear')
       state.is_cleared = true
       utils.debounce(providers.update, 500)(config.values)
     end,

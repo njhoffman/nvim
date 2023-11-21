@@ -165,8 +165,9 @@ map('c', '<M-g>', '<C-r>%', {
 --------------------------------------------------------------------------------------------------
 -- BUFFERS ---------------------------------------------------------------------------------------
 
-map('n', '<BS>', ':e #<cr>', {
+map('n', '<BS>', '<cmd>e #<cr>', {
   category = 'Buffers',
+  silent = true,
   label = 'last buffer',
   desc = 'open the last buffer',
 })
@@ -247,11 +248,11 @@ map('n', '<M-w>', '<cmd>set wrap!<cr>', {
   desc = 'toggle word wrap',
 })
 
-map('n', '<leader>m', [[:call AltCommand(expand('%'), ':e')<cr>]], {
-  category = 'Buffers',
-  label = 'open alt file',
-  desc = 'open alternative file associated with buffer',
-})
+-- map('n', '<leader>m', [[:call AltCommand(expand('%'), ':e')<cr>]], {
+--   category = 'Buffers',
+--   label = 'open alt file',
+--   desc = 'open alternative file associated with buffer',
+-- })
 
 map('n', '<leader><space>', '<C-^>', {
   category = 'Buffers',
@@ -276,7 +277,7 @@ map('n', '<leader>fp', "<cmd>pfn :echo expand('%:p')<CR>", {
   desc = 'print path of current buffer',
 })
 
-map('n', 'gf', '0/"\\|\'<cr>hgF', {
+map('n', 'gf', '/"\\|\'<cr>hgF', {
   silent = true,
   category = 'Buffers',
   label = 'goto file',
@@ -388,51 +389,10 @@ vmap('n', '', {
   desc = 'open file with xdg-open under cursor',
 })
 
-map('n', 'n', "<cmd>execute('normal! ' . v:count1 . 'n')<cr><cmd>lua require('hlslens').start()<cr>", {
-  category = 'Motion',
-  plugin = 'hlslens',
-  label = 'next match from search',
-  desc = 'next matching from search (hls lens)',
-})
-
-map('n', 'N', "<cmd>execute('normal! ' . v:count1 . 'N')<cr><cmd>lua require('hlslens').start()<cr>", {
-  category = 'Motion',
-  plugin = 'hlslens',
-  label = 'prev match from search',
-  desc = 'previous matching from search (hls lens)',
-})
-
-map('n', '*', "*<cmd>lua require('hlslens').start()<cr>", {
-  category = 'Motion',
-  plugin = 'hlslens',
-  label = 'next word match',
-  desc = 'next matching word (hls lens)',
-})
-
 -- map('n', '<cr>', 'ciw', {
 --   category = 'Motion',
 --   desc = 'enter insert mode and change word',
 -- })
-
-map('n', '#', "#<cmd>lua require('hlslens').start()<cr>", {
-  category = 'Motion',
-  plugin = 'hlslens',
-  label = 'prev word match',
-  desc = 'previous matching (hls lens)',
-})
-
-map('n', 'g*', "g*<cmd>lua require('hlslens').start()<cr>", {
-  category = 'Motion',
-  plugin = 'hlslens',
-  label = 'next search match',
-  desc = 'next matching search (hls lens)',
-})
-map('n', 'g#', "g#<cmd>lua require('hlslens').start()<cr>", {
-  category = 'Motion',
-  plugin = 'hlslens',
-  label = 'prev search match',
-  desc = 'prev matching search (hls lens)',
-})
 
 map('n', 'gn', "g#<cmd>lua require('hlslens').start()<cr>", {
   category = 'Motion',

@@ -1,10 +1,11 @@
-local lspconfig = require('lspconfig')
-local util = lspconfig.util
+local utils = require('lsp.utils')
 
 local opts = {
   init_options = {
     hostInfo = 'neovim',
-    preferences = { disableSuggestions = true },
+    preferences = {
+      disableSuggestions = true,
+    },
   },
   filetypes = {
     'javascript',
@@ -14,14 +15,22 @@ local opts = {
     'typescriptreact',
     'typescript.tsx',
   },
-  root_dir = function(fname)
-    return util.root_pattern('tsconfig.json')(fname)
-      or util.root_pattern('package.json', 'jsconfig.json', '.git')(fname)
-  end,
+  root_dir = utils.initRoot('tsserver', {
+    {
+      'tsconfig.json',
+      'jsconfig.json',
+    },
+    {
+      'package.json',
+    },
+    'git_ancestor',
+  }),
   single_file_support = true,
   settings = {
     typescript = {
-      suggestionActions = { enabled = false },
+      suggestionActions = {
+        enabled = false,
+      },
       format = false,
       -- format = {
       --   indentSize = vim.o.shiftwidth,
@@ -30,7 +39,9 @@ local opts = {
       -- },
     },
     javascript = {
-      suggestionActions = { enabled = false },
+      suggestionActions = {
+        enabled = false,
+      },
       format = false,
     },
     diagnostics = {
@@ -40,7 +51,9 @@ local opts = {
         2571, -- object is of type 'unknown'
       },
     }, -- File is a CommonJS module; it may be converted to an ES6 module.
-    completions = { completeFunctionCalls = true },
+    completions = {
+      completeFunctionCalls = true,
+    },
   },
   on_attach = function(client, bufnr)
     -- require('nvim-lsp-ts-utils').setup({ filter_out_diagnostics_by_code = { 80001 } })
@@ -67,7 +80,9 @@ local typescript_wrapper = function()
   require('typescript').setup({
     disable_commands = false,
     debug = false,
-    go_to_source_definition = { fallback = true },
+    go_to_source_definition = {
+      fallback = true,
+    },
     server = opts,
   })
 end
@@ -114,7 +129,9 @@ local typescript_tools_wrapper = function()
 
   -- Ignore 'This may be converted to an async function' diagnostics.
   opts.handlers = opts.handlers or {}
-  opts.handlers['textDocument/publishDiagnostics'] = require('typescript-tools.api').filter_diagnostics({ 80006 })
+  opts.handlers['textDocument/publishDiagnostics'] = require('typescript-tools.api').filter_diagnostics({
+    80006,
+  })
 
   require('typescript-tools').setup(opts)
 end

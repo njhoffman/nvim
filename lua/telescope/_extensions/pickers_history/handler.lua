@@ -8,7 +8,6 @@ local unescape = function(content)
   return content:gsub("^__ESCAPED__'(.*)'$", '%1')
 end
 
-local project_nvim = require('project_nvim')
 local get_history = function()
   local has_sqlite, sqlite = pcall(require, 'sqlite')
   if not has_sqlite then
@@ -61,8 +60,8 @@ local get_history = function()
       local title = picker.prompt_title
       local selection_index = picker:get_index(picker:get_selection_row())
       local cwd = picker.cwd or vim.loop.cwd()
-      local project_name = project_nvim.get_project_root() or vim.loop.cwd()
 
+      local project_name = require('project_nvim').get_project_root() or vim.loop.cwd()
       if project_name ~= '' then
         project_name = vim.fn.split(project_name, ' ')[1]
         local fileparts = vim.fn.split(project_name, '/')

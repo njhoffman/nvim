@@ -13,25 +13,26 @@ local virtual_text_config = {
 
 local diagnostic_config = {
   float = {
-    focusable = false,
+    focusable = true,
     style = 'minimal',
     border = 'rounded',
-    source = 'if_many',
+    -- source = 'if_many',
+    source = false,
     prefix = '󰀴 ',
     header = '',
-    -- format = function(diag)
-    --   -- See null-ls.nvim#632, neovim#17222 for how to pick up `code`
-    --   local user_data
-    --   user_data = diag.user_data or {}
-    --   user_data = user_data.lsp or user_data.null_ls or user_data
-    --   -- TODO: symbol is specific to pylint (will be removed)
-    --   local code = (diag.symbol or diag.code or user_data.symbol or user_data.code)
-    --   if code then
-    --     return string.format("%s (%s)", diag.message, code)
-    --   else
-    --     return diag.message
-    --   end
-    -- end,
+    format = function(diag)
+      -- bufnr = 10, col = 35, end_col = 0, end_lnum = 4, lnum = 3, message = "INFO, HINT", namespace = 93, row = 4, severity = 4, source = "todo_comments"
+      -- See null-ls.nvim#632, neovim#17222 for how to pick up `code`
+      local user_data
+      user_data = diag.user_data or {}
+      user_data = user_data.lsp or user_data.null_ls or user_data
+      local code = (diag.symbol or diag.code or user_data.symbol or user_data.code)
+      if code then
+        return string.format('%s (%s)', diag.message, code)
+      else
+        return diag.message
+      end
+    end,
   },
   virtual_text = false,
   signs = true,
@@ -51,15 +52,15 @@ if require('utils.lazy').is_installed('toggle_lsp_diagnostics') then
   require('toggle_lsp_diagnostics').init(vim.diagnostic.config())
 end
 
-vim.api.nvim_create_autocmd('LspAttach', {
-  callback = function(args)
-    local bufnr = args.buf
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if client.server_capabilities.completionProvider then
-      vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
-    end
-    if client.server_capabilities.definitionProvider then
-      vim.bo[bufnr].tagfunc = 'v:lua.vim.lsp.tagfunc'
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd('LspAttach', {
+--   callback = function(args)
+--     local bufnr = args.buf
+--     local client = vim.lsp.get_client_by_id(args.data.client_id)
+--     if client.server_capabilities.completionProvider then
+--       vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+--     end
+--     if client.server_capabilities.definitionProvider then
+--       vim.bo[bufnr].tagfunc = 'v:lua.vim.lsp.tagfunc'
+--     end
+--   end,
+-- })

@@ -14,6 +14,23 @@ local on_attach = function(client, bufnr)
     return vim.notify('Skipping buffer lsp', 1)
   end
   format.on_attach(client, bufnr)
+  -- diag on hover
+  -- vim.api.nvim_create_autocmd('CursorHold', {
+  --   buffer = bufnr,
+  --   callback = function()
+  --     virtual_text = {}
+  --     -- local opts = {
+  --     --   focusable = false,
+  --     --   close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
+  --     --   border = 'rounded',
+  --     --   source = 'always',
+  --     --   prefix = '■', -- Could be '●', '▎', 'x'
+  --     --   scope = 'cursor',
+  --     -- }
+  --     vim.diagnostic.open_float(nil, {})
+  --   end,
+  -- })
+
   -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
   -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "")
 

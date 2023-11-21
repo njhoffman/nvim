@@ -1,7 +1,5 @@
-local M = {}
-
 ---@class ProjectOptions
-M.defaults = {
+local defaults = {
   -- Manual mode doesn't automatically change your root directory, so you have
   -- the option to manually do so using `:ProjectRoot` command.
   manual_mode = false,
@@ -29,27 +27,57 @@ M.defaults = {
   -- Path where project.nvim will store the project history for use in
   -- telescope
   datapath = vim.fn.stdpath('data'),
+  -- Allows the user to declare a custom callback to execute before project selection
+  -- occurs, such as when moving from one project to another
+  before_project_selection_callback = function() end,
+  -- Allows the user to declare a custom callback to execute after project selection
+  after_project_selection_callback = function() end,
+  -- Load the most recent session on startup if not in the project directory
+  last_session_on_startup = true,
+
+  -- Overwrite some of Session Manager options
+  session_manager_opts = {
+    autosave_ignore_dirs = {
+      vim.fn.expand('~'), -- don't create a session for $HOME/
+      '/tmp',
+    },
+    autosave_ignore_filetypes = {
+      -- All buffers of these file types will be closed before the session is saved
+      'ccc-ui',
+      'gitcommit',
+      'gitrebase',
+      'qf',
+      'toggleterm',
+    },
+  },
+  -- Project directories
+  projects = {
+    '~/lazy/*',
+    '~/git/*',
+    '~/.config/*',
+  },
 }
 
 ---@type ProjectOptions
-M.options = {}
+local options = {}
 
-M.setup = function(options)
-  M.options = vim.tbl_deep_extend('force', M.defaults, options or {})
+local init = function(_options)
+  options = vim.tbl_deep_extend('force', defaults, _options or {})
 
   local glob = require('project_nvim.utils.globtopattern')
   local home = vim.fn.expand('~')
-  M.options.exclude_dirs = vim.tbl_map(function(pattern)
+  options.exclude_dirs = vim.tbl_map(function(pattern)
     if vim.startswith(pattern, '~/') then
       pattern = home .. '/' .. pattern:sub(3, #pattern)
     end
     return glob.globtopattern(pattern)
-  end, M.options.exclude_dirs)
+  end, options.exclude_dirs)
 
   vim.opt.autochdir = false -- implicitly unset autochdir
-
-  require('project_nvim.utils.path').init()
-  require('project_nvim.project').init()
 end
 
-return M
+local get = function(key)
+  return key == nil and options or options[key]
+end
+
+return { init = init, get = get }

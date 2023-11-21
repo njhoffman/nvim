@@ -5,7 +5,6 @@ local actions = require('telescope.actions')
 local finder = require('telescope._extensions.projects.finder')
 local history = require('project_nvim.utils.history')
 local project = require('project_nvim.project')
-local config = require('project_nvim.config')
 
 local run = require('telescope.run')
 
@@ -23,11 +22,12 @@ local function change_working_directory(prompt_bufnr)
 end
 
 local function find_project_files(prompt_bufnr)
+  local options = require('project_nvim.config').get()
   local project_path, cd_successful = change_working_directory(prompt_bufnr)
   local opt = {
     cwd = project_path,
     project_path = project_path,
-    hidden = config.options.show_hidden,
+    hidden = options.show_hidden,
     mode = 'insert',
   }
   if cd_successful then
@@ -36,10 +36,11 @@ local function find_project_files(prompt_bufnr)
 end
 
 local function browse_project_files(prompt_bufnr)
+  local options = require('project_nvim.config').get()
   local project_path, cd_successful = change_working_directory(prompt_bufnr)
   local opt = {
     cwd = project_path,
-    hidden = config.options.show_hidden,
+    hidden = options.show_hidden,
   }
   if cd_successful then
     run('builtin', 'file_browser', opt)
@@ -47,10 +48,11 @@ local function browse_project_files(prompt_bufnr)
 end
 
 local function search_in_project_files(prompt_bufnr)
+  local options = require('project_nvim.config').get()
   local project_path, cd_successful = change_working_directory(prompt_bufnr)
   local opt = {
     cwd = project_path,
-    hidden = config.options.show_hidden,
+    hidden = options.show_hidden,
     mode = 'insert',
   }
   if cd_successful then
@@ -59,10 +61,11 @@ local function search_in_project_files(prompt_bufnr)
 end
 
 local function recent_project_files(prompt_bufnr)
+  local options = require('project_nvim.config').get()
   local _, cd_successful = change_working_directory(prompt_bufnr)
   local opt = {
     cwd_only = true,
-    hidden = config.options.show_hidden,
+    hidden = options.show_hidden,
   }
   if cd_successful then
     run('builtin', 'oldfiles', opt)
@@ -87,8 +90,11 @@ local function delete_project(prompt_bufnr)
 end
 
 local function replace_default(prompt_bufnr)
+  local options = require('project_nvim.config').get()
   local on_project_selected = function()
+    options.before_project_selection_callback()
     find_project_files(prompt_bufnr)
+    options.after_project_selection_callback()
   end
   actions.select_default:replace(on_project_selected)
 end

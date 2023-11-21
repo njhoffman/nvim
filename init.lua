@@ -6,12 +6,12 @@ require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
 
 for _, mod_name in ipairs({
   'keymaps',
-  'project',
   'dial',
   'wf-setup',
   'devbox',
   'commands',
   'autocommands',
+  'project',
   'runner',
   'stats',
   'oldfiles',

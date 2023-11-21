@@ -1,25 +1,24 @@
 local display = require('project_nvim.display')
 
-local notify_id = nil
-local change_project = function(dir, method)
-  local notify = require('notify')
-  local lsp = string.match(method or '', 'lsp "([^%s]+)"')
-  dir = dir:gsub(vim.fn.getenv('HOME'), '~')
-  local icon, highlight = display.get_icon(method, lsp)
-  -- local title = icon
-  local msg = ' ' .. icon .. ' ' .. dir
-  -- local msg = dir
-  notify.dismiss({})
-  notify_id = notify.notify(msg, 1, {
-    -- replace = notify_id,
-    -- title = title,
-    render = 'minimal',
-    on_close = function()
-      notify_id = nil
-    end,
-  })
-  -- vim.dbglog(notify_id)
-end
+-- local notify_id = nil
+-- local change_project = function(dir, method)
+--   local notify = require('notify')
+--   local lsp = string.match(method or '', 'lsp "([^%s]+)"')
+--   dir = dir:gsub(vim.fn.getenv('HOME'), '~')
+--   local icon, highlight = display.get_icon(method, lsp)
+--   -- local title = icon
+--   local msg = ' ' .. icon .. ' ' .. dir
+--   -- local msg = dir
+--   notify.dismiss({})
+--   notify_id = notify.notify(msg, 1, {
+--     -- replace = notify_id,
+--     -- title = title,
+--     render = 'minimal',
+--     on_close = function()
+--       notify_id = nil
+--     end,
+--   })
+-- end
 
 local project_config = {
   -- Must use `:ProjectRoot` command to change directory
@@ -39,12 +38,12 @@ local project_config = {
   -- Path where project.nvim will store the project history for use in telescope
   datapath = vim.fn.stdpath('data'),
   chdir_func = change_project,
+  last_session_on_startup = false,
 }
 
 require('project_nvim').setup(project_config)
 
 local cmd = vim.api.nvim_create_user_command
-
 local get_root = function()
   local path, method = require('project_nvim.project').get_project_root()
   local line = path or ''

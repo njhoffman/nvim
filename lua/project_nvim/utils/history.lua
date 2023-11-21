@@ -1,5 +1,5 @@
-local path = require("project_nvim.utils.path")
-local state = require("project_nvim.state")
+local path = require('project_nvim.utils.path')
+local state = require('project_nvim.state')
 
 local uv = vim.loop
 
@@ -16,14 +16,14 @@ end
 
 local function dir_exists(dir)
   local stat = uv.fs_stat(dir)
-  if stat ~= nil and stat.type == "directory" then
+  if stat ~= nil and stat.type == 'directory' then
     return true
   end
   return false
 end
 
 local function normalise_path(path_to_normalise)
-  local normalised_path = path_to_normalise:gsub("\\", "/"):gsub("//", "/")
+  local normalised_path = path_to_normalise:gsub('\\', '/'):gsub('//', '/')
   return normalised_path
 end
 
@@ -40,7 +40,7 @@ local function delete_duplicates(tbl)
 
   local res = {}
   for _, v in ipairs(tbl) do
-    local v_path = v:match("[^|]+")
+    local v_path = v:match('[^|]+')
     local normalised_path = normalise_path(v_path)
     if cache_dict[normalised_path] == 1 then
       table.insert(res, v)
@@ -62,9 +62,9 @@ end
 local parse_args = function(args)
   local args_obj = {}
   if args ~= nil then
-    for arg in args:gmatch("[^,]+") do
-      local key = vim.split(arg, "=")[1]
-      local val = vim.split(arg, "=")[2]
+    for arg in args:gmatch('[^,]+') do
+      local key = vim.split(arg, '=')[1]
+      local val = vim.split(arg, '=')[2]
       args_obj[key] = val
     end
   end
@@ -75,8 +75,8 @@ local function deserialize_history(history_data)
   -- split data to table
   local projects = {}
   local meta = {}
-  for s in history_data:gmatch("[^\r\n]+") do
-    local parts = vim.split(s, "|")
+  for s in history_data:gmatch('[^\r\n]+') do
+    local parts = vim.split(s, '|')
     local dir = parts[1]
     local args = parse_args(parts[2])
     if not path.is_excluded(dir) and dir_exists(dir) then
@@ -115,9 +115,9 @@ local function setup_watch()
       if err ~= nil then
         return
       end
-      if events["change"] then
+      if events['change'] then
         state.recent_projects = nil
-        open_history("r", function(_, fd)
+        open_history('r', function(_, fd)
           read_projects(fd)
         end)
       end
@@ -138,7 +138,7 @@ local sanitize_table = function()
 
   local real_tbl = {}
   for _, line in ipairs(tbl) do
-    local dir = line:match("[^|]+")
+    local dir = line:match('[^|]+')
     if dir_exists(dir) then
       table.insert(real_tbl, line)
     end
@@ -158,16 +158,16 @@ local apply_metadata = function(projects, skip_number)
       end
     end
     if in_session and skip_number ~= true then
-      if type(meta.num) == "string" then
+      if type(meta.num) == 'string' then
         meta.num = tonumber(meta.num) + 1
       else
         meta.num = 1
       end
     end
-    if type(meta) == "table" then
-      local arg_str = "|"
+    if type(meta) == 'table' then
+      local arg_str = '|'
       for key, val in pairs(meta) do
-        arg_str = arg_str .. key .. "=" .. val .. ","
+        arg_str = arg_str .. key .. '=' .. val .. ','
       end
       table.insert(tbl, project .. arg_str)
     else
@@ -177,13 +177,13 @@ local apply_metadata = function(projects, skip_number)
   return tbl
 end
 
-local function add_session(name, method)
+local add_session_project = function(name, method)
   table.insert(state.session_projects, name)
-  if type(method) == "string" then
+  if type(method) == 'string' then
     local meta = state.projects_meta[name] or {}
-    local lsp = string.match(method or "", 'lsp "([^%s]+)"')
-    if type(lsp == "string") and lsp ~= "" then
-      meta.method = "lsp"
+    local lsp = string.match(method or '', 'lsp "([^%s]+)"')
+    if type(lsp == 'string') and lsp ~= '' then
+      meta.method = 'lsp'
       meta.method_type = meta.method_type or lsp
     else
       meta.method = method
@@ -195,7 +195,7 @@ local function add_session(name, method)
 end
 
 local function read_projects_from_history()
-  open_history("r", function(_, fd)
+  open_history('r', function(_, fd)
     setup_watch()
     read_projects(fd)
   end)
@@ -203,9 +203,9 @@ end
 
 local function write_projects_to_history(skip_number)
   -- Unlike read projects, write projects is synchronous because it runs when vim ends
-  local mode = "w"
+  local mode = 'w'
   if state.recent_projects == nil then
-    mode = "a"
+    mode = 'a'
   end
   local file = open_history(mode)
 
@@ -223,9 +223,9 @@ local function write_projects_to_history(skip_number)
     end
 
     -- Transform table to string
-    local out = ""
+    local out = ''
     for _, v in ipairs(tbl_out) do
-      out = out .. v .. "\n"
+      out = out .. v .. '\n'
     end
 
     -- Write string out to file and close
@@ -242,7 +242,7 @@ end
 return {
   read_projects_from_history = read_projects_from_history,
   write_projects_to_history = write_projects_to_history,
-  add_session = add_session,
+  add_session_project = add_session_project,
   get_recent_projects = get_recent_projects,
   delete_project = delete_project,
 }

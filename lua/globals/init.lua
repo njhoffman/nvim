@@ -7,6 +7,7 @@ require('globals.importer')
 vim.import('globals.variables')
 vim.import('user-options')
 vim.import('vim-options')
+vim.import('neovide')
 
 local _nil = function()
   return nil

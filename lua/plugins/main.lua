@@ -2,14 +2,6 @@ local utils = require('utils.lazy')
 local lz_syn = false
 
 local plugins = {
-  {
-    'kndndrj/nvim-projector',
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'kndndrj/projector-neotest',
-      'nvim-neotest/neotest',
-    },
-  },
   { 'stevearc/dressing.nvim', dependencies = 'MunifTanjim/nui.nvim', event = 'VeryLazy' },
   { '3rd/image.nvim', enabled = false, event = 'VeryLazy', dependencies = 'nvim-treesitter' },
   { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-web-devicons' },
@@ -663,7 +655,18 @@ local plugins = {
       })
     end,
   },
-  { 'b0o/SchemaStore.nvim', ft = { 'json', 'jsonc', 'yaml' } },
+  {
+    'kndndrj/nvim-projector',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'kndndrj/projector-neotest',
+      'nvim-neotest/neotest',
+    },
+  },
+  {
+    'Shatur/neovim-session-manager',
+    dependencies = 'nvim-lua/plenary.nvim',
+  },
   { 'iamcco/markdown-preview.nvim', build = 'cd app && yarn install', cmd = 'MarkdownPreview' },
   { 'vuki656/package-info.nvim', dependencies = 'MunifTanjim/nui.nvim', ft = 'json' },
   { 'serenevoid/kiwi.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },

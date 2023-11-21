@@ -77,7 +77,7 @@ local cfg = {
     return true
   end,
   performance = {
-    debounce = 100,
+    debounce = 60,
     throttle = 30,
     -- debounce = 60,
     -- throttle = 30,

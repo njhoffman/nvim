@@ -1,6 +1,5 @@
 local root = require('project_nvim.root')
 local state = require('project_nvim.state')
-local config = require('project_nvim.config')
 local history = require('project_nvim.utils.history')
 local path = require('project_nvim.utils.path')
 local logger = require('logger').init('project')
@@ -22,13 +21,14 @@ local set_user_option = function(dir, method)
 end
 
 local set_cwd = function(dir, method)
+  local options = require('project_nvim.config').get()
   vim.api.nvim_set_current_dir(dir)
   logger:info('cwd ' .. dir .. ' (' .. tostring(method) .. ')')
-  if config.options.silent_chdir == false then
-    if type(config.options.chdir_func) == 'function' then
-      config.options.chdir_func(dir, method)
+  if options.silent_chdir == false then
+    if type(options.chdir_func) == 'function' then
+      options.chdir_func(dir, method)
     else
-      vim.notify('CWD:' .. dir .. ' (' .. method .. ') ', 2)
+      vim.notify('CWD:' .. dir .. ' (' .. method .. ') ', 1)
     end
   end
 end
@@ -36,7 +36,7 @@ end
 local set_pwd = function(dir, method)
   if dir ~= nil then
     state.last_project = dir
-    history.add_session(dir, method)
+    history.add_session_project(dir, method)
     set_user_option(dir, method)
     logger:trace('pwd ' .. dir .. ' (' .. tostring(method) .. ')')
     if vim.fn.getcwd() ~= dir then
@@ -108,8 +108,8 @@ end
 
 local function setup_au()
   vim.api.nvim_create_augroup('project_nvim', { clear = true })
-
-  if not config.options.manual_mode then
+  local options = require('project_nvim.config').get()
+  if not options.manual_mode then
     vim.api.nvim_create_autocmd({ 'BufEnter' }, {
       pattern = '*',
       callback = on_buf_enter,
@@ -117,7 +117,7 @@ local function setup_au()
       group = 'project_nvim',
       nested = true,
     })
-    if vim.tbl_contains(config.options.detection_methods, 'lsp') then
+    if vim.tbl_contains(options.detection_methods, 'lsp') then
       attach_to_lsp()
     end
   end

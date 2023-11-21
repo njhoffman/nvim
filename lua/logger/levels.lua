@@ -8,6 +8,7 @@ local log_levels = {
   -- git = { main = -1 },
   lazy = { main = 2 },
   lsp = { main = 2 },
+  ['lsp-root'] = { main = 0 },
   -- mapper = { main = -1, module = -1 },
   -- mru = { main = -1 },
   notify = { main = 0 },

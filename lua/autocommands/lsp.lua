@@ -72,17 +72,17 @@ local get_cursor_counts = function(ev)
   end
 end
 
-local au_group = vim.api.nvim_create_augroup('StatusbarCounts', { clear = true })
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'lua', 'javascript', 'typescript', 'python', 'go', 'sh' },
-  group = au_group,
-  callback = function(ev)
-    vim.api.nvim_create_autocmd({ 'CursorMoved' }, {
-      group = au_group,
-      buffer = ev.buf,
-      callback = function()
-        vim.defer_fn(get_cursor_counts(ev), 200)
-      end,
-    })
-  end,
-})
+-- local au_group = vim.api.nvim_create_augroup('StatusbarCounts', { clear = true })
+-- vim.api.nvim_create_autocmd('FileType', {
+--   pattern = { 'lua', 'javascript', 'typescript', 'python', 'go', 'sh' },
+--   group = au_group,
+--   callback = function(ev)
+--     vim.api.nvim_create_autocmd({ 'CursorMoved' }, {
+--       group = au_group,
+--       buffer = ev.buf,
+--       callback = function()
+--         vim.defer_fn(get_cursor_counts(ev), 200)
+--       end,
+--     })
+-- })
+--   end,
