@@ -24,7 +24,7 @@ local completion = function(stats_map)
 end
 
 local stats_overview = function(view)
-  view = view or 'logfile'
+  view = view or 'notify'
   local counts = utils.get_counts()
   local lines = utils.align_list(counts)
   output[view](lines, 'Stats Overview')

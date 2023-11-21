@@ -34,7 +34,6 @@ local function open_lua_error(bufnr, path, line, orig_map)
 end
 
 local on_open = function(win)
-
   vim.api.nvim_win_set_option(win, 'winblend', 10)
   vim.api.nvim_win_set_option(win, 'wrap', false)
   vim.api.nvim_win_set_config(win, { zindex = 100 })

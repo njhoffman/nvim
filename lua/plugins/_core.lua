@@ -41,7 +41,7 @@ local plugins = {
     },
   },
   { 'rcarriga/nvim-notify', lazy = false },
-  { 'folke/noice.nvim', lazy = false },
+  { 'folke/noice.nvim', event = 'VeryLazy' },
   { 'folke/which-key.nvim', event = 'VeryLazy' },
 }
 

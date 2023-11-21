@@ -125,18 +125,12 @@ local plugins = {
       -- /mfussenegger/nvim-treehopper
       'RRethy/nvim-treesitter-endwise',
       'theHamsta/nvim-treesitter-pairs',
-      'lukas-reineke/headlines.nvim',
       'RRethy/nvim-treesitter-textsubjects',
       'HiPhish/nvim-ts-rainbow2',
       'jbyuki/tree-sitter-ntangle',
       'sustech-data/wildfire.nvim',
       'nvim-lua/plenary.nvim',
-      {
-        'ThePrimeagen/refactoring.nvim',
-        dependencies = {
-          { 'nvim-lua/plenary.nvim' },
-        },
-      },
+      { 'ThePrimeagen/refactoring.nvim', dependencies = { { 'nvim-lua/plenary.nvim' } } },
       'nvim-treesitter/nvim-treesitter-refactor',
       'nvim-treesitter/nvim-treesitter-textobjects',
       'nvim-treesitter/playground',
@@ -146,10 +140,7 @@ local plugins = {
       { 'ckolkey/ts-node-action', dependencies = { 'none-ls.nvim' } },
     },
   },
-
   { 'stevearc/aerial.nvim', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
-  { 'gbprod/substitute.nvim', event = { 'VeryLazy' } },
-  { 'echasnovski/mini.surround', event = { 'VeryLazy' } },
   {
     'smoka7/multicursors.nvim',
     event = 'VeryLazy',
@@ -167,17 +158,14 @@ local plugins = {
     },
   },
   -- { 'otavioschwanck/cool-substitute.nvim' },
-
   -- matching
-  { 'andymass/vim-matchup', dependencies = { 'theHamsta/nvim-treesitter-pairs' } },
+  { 'andymass/vim-matchup', lazy = false },
   -- pairs
   -- { 'echasnovski/mini.pairs', event = 'InsertEnter' },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
-  {
-    'altermo/ultimate-autopair.nvim',
-    event = { 'InsertEnter' },
-    branch = 'v0.6',
-  },
+  { 'altermo/ultimate-autopair.nvim', event = { 'InsertEnter' }, branch = 'v0.6' },
+  { 'gbprod/substitute.nvim', event = { 'VeryLazy' } },
+  { 'echasnovski/mini.surround', event = { 'VeryLazy' } },
   -- textobjects
   { 'echasnovski/mini.ai', event = { 'VeryLazy' } },
   { 'chrisgrieser/nvim-various-textobjs', event = { 'VeryLazy' } },
@@ -363,12 +351,6 @@ local plugins = {
   -- git tools
   --
   { 'rbong/vim-flog', cmd = { 'Flog', 'Flogsplit' } },
-  -- {
-  --   'f-person/git-blame.nvim',
-  --   init = function()
-  --     vim.g.gitblame_enabled = 0
-  --   end,
-  -- },
   { 'ThePrimeagen/git-worktree.nvim', event = 'VeryLazy' },
   { 'napisani/nvim-github-codesearch', cmd = 'GithubSearch', build = 'make' },
   { 'akinsho/git-conflict.nvim', version = '*', lazy = false },
@@ -609,18 +591,18 @@ local plugins = {
     dependencies = { 'MunifTanjim/nui.nvim' },
     build = function()
       -- Install tries to automatically detect the install method.
-      -- if it fails, try calling it with one of these parameters:
-      --    "curl", "wget", "bitsadmin", "go"
+      -- if it fails, try calling it with one of these parameters: "curl", "wget", "bitsadmin", "go"
       require('dbee').install()
     end,
   },
   { 'm4xshen/hardtime.nvim', dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' } },
-  -- {
-  --   'jackMort/ChatGPT.nvim',
-  --   cmd = { 'ChatGPT', 'ChatGPTEditWithInstructions', 'ChatGPTActAs' },
-  --   dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim', 'telescope.nvim' },
-  -- },
   { 'tzachar/highlight-undo.nvim', event = { 'BufEnter', 'BufReadPost', 'BufNewFile' } },
+  {
+    'kndndrj/nvim-projector',
+    event = { 'VeryLazy' },
+    dependencies = { 'MunifTanjim/nui.nvim', 'kndndrj/projector-neotest', 'nvim-neotest/neotest' },
+  },
+  { 'Shatur/neovim-session-manager', dependencies = 'nvim-lua/plenary.nvim' },
   --
   -- filetypes
   --
@@ -656,16 +638,9 @@ local plugins = {
     end,
   },
   {
-    'kndndrj/nvim-projector',
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'kndndrj/projector-neotest',
-      'nvim-neotest/neotest',
-    },
-  },
-  {
-    'Shatur/neovim-session-manager',
-    dependencies = 'nvim-lua/plenary.nvim',
+    'lukas-reineke/headlines.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    ft = { 'markdown', 'pandoc', 'pandoc.markdown', 'markdown.pandoc' },
   },
   { 'iamcco/markdown-preview.nvim', build = 'cd app && yarn install', cmd = 'MarkdownPreview' },
   { 'vuki656/package-info.nvim', dependencies = 'MunifTanjim/nui.nvim', ft = 'json' },
@@ -704,7 +679,7 @@ local plugins = {
   { 'stanangeloff/php.vim', ft = 'php', lazy = lz_syn },
   { 'tbastos/vim-lua', ft = 'lua', lazy = lz_syn },
   { 'tikhomirov/vim-glsl', ft = 'glsl', lazy = lz_syn },
-  { 'vim-pandoc/vim-pandoc-syntax', ft = { 'markdown', 'pandoc' }, lazy = lz_syn },
+  -- { 'vim-pandoc/vim-pandoc-syntax', ft = { 'markdown', 'pandoc' }, lazy = lz_syn },
   { 'vim-utils/vim-man', ft = 'man', lazy = lz_syn },
   { 'vimwiki/vimwiki', ft = { 'markdown', 'vimwiki' }, lazy = lz_syn },
   { 'mtdl9/vim-log-highlighting', ft = { 'log', 'LOG' }, event = { 'BufReadPost', 'BufNewFile' }, lazy = lz_syn },

@@ -8,6 +8,7 @@ local title_ignore = {
   'Notify',
   'Notification',
   'Messages',
+  'Warning',
 }
 
 local render = function(bufnr, notif, highlights, config)
@@ -18,6 +19,7 @@ local render = function(bufnr, notif, highlights, config)
     notif.title[1] = title
   end
 
+  -- vim.dbglog('highlights', notif, highlights)
   if state.active[notif.id] and state.active[notif.id].count then
     notif.title[2] = state.active[notif.id].count
   end

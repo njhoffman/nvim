@@ -21,7 +21,7 @@
 -- you can also use autocmd BufEnter *.txt if &buftype == 'help' | wincmd L | endif to get the same effect, the added advantage being that it will readjust the size of the window if you resize nvim and reenter the buffer.
 
 vim.cmd([[
-autocmd BufEnter *.txt if &buftype == 'help' | setlocal syn=pandoc.help conceallevel=3 signcolumn=no | endif
+" autocmd BufEnter *.txt if &buftype == 'help' | setlocal syn=pandoc.help conceallevel=3 signcolumn=no | endif
 let g:help_minlines = 0
 " 'iskeyword'		nearly all ASCII chars except ' ', '*', '"' and '|'
 " 'foldmethod'	"manual"

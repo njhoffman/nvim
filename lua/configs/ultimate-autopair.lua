@@ -176,12 +176,21 @@ local default_conf = {
 --   { '[', ']', nft = { filetype } },
 -- }
 require('ultimate-autopair').setup({
+  profile = 'default',
+  map = true,
+  cmap = true,
+  pair_map = true,
+  pair_cmap = false,
+  multiline = true,
   default_pairs = {
     ft = {
       TelescopePrompt = { disable = true },
       Noice = { disable = true },
       noice = { disable = true },
     },
+  },
+  extensions = {
+    filetype = { p = 90, nft = { 'TelescopePrompt', 'Noice', 'noice' }, tree = true },
   },
 })
 

@@ -126,19 +126,25 @@ end
 
 ---@param msg NotifyMsg
 function NotifyView:_notify(msg)
-  local level = self._opts.level or msg.level
+  local level = msg.level or self._opts.level
 
   local opts = {
-    title = msg.title or self._opts.title,
+    title = msg.title or msg.opts.title or self._opts.title,
     animate = not Util.is_blocking(),
-    timeout = self._opts.timeout,
+    timeout = msg.opts.timeout or self._opts.timeout,
+    body_highlights = msg.opts.body_highlights or self._opts.body_highlights,
+    body_level_highlights = msg.opts.body_level_highlights or self._opts.body_level_highlights,
     replace = self._opts.replace and self.notif,
     keep = function()
       return Util.is_blocking()
     end,
     on_open = function(win)
       self:set_win_options(win)
-      if true or self._opts.merge then
+      if msg.opts.filetype then
+        local buf = vim.api.nvim_win_get_buf(win)
+        vim.api.nvim_buf_set_option(buf, 'filetype', msg.opts.filetype)
+      end
+      if self._opts.merge then
         self.win = win
       end
     end,
@@ -194,9 +200,27 @@ function NotifyView:show()
         end
       end
       if #messages > 0 or #content > 0 then
-        groups[i] = groups[i] or { content = {}, messages = {} }
+        groups[i] = groups[i]
+          or {
+            content = {},
+            messages = {},
+            title = nil,
+            timeout = nil,
+          }
       end
       for _, msg in ipairs(messages) do
+        if msg.opts then
+          if groups[i].opts ~= nil and msg.opts ~= groups[i].opts then
+            vim.dbglog('**NOTIFY VIEW**', 'opts mismatch', groups[i].opts, msg.opts)
+          end
+          groups[i].opts = msg.opts
+        end
+        if msg.opts.title then
+          if groups[i].title ~= nil and msg.opts.title ~= groups[i].title then
+            vim.dbglog('**NOTIFY VIEW**', 'title mismatch', groups[i].title, msg.opts.title)
+          end
+          groups[i].title = msg.opts.title
+        end
         table.insert(groups[i].messages, msg)
       end
       for _, line in ipairs(content) do
@@ -209,6 +233,8 @@ function NotifyView:show()
         content = vim.fn.join(group.content, '\n'),
         messages = group.messages,
         level = lvl,
+        title = group.title,
+        opts = group.opts,
       })
     end
   else
