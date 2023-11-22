@@ -96,7 +96,7 @@ local messages = function(opts)
         title = 'Message',
         define_preview = function(self, entry, status)
           local notification = entry.value
-          local max_width = vim.api.nvim_win_get_config(status.preview_win).width
+          local max_width = vim.api.nvim_win_get_config(status.picker.preview_win).width
           notify.open(notification, { buffer = self.state.bufnr, max_width = max_width })
         end,
       }),

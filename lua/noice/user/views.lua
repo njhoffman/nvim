@@ -119,7 +119,7 @@ local historyView = {
 }
 
 local errorView = {
-  backend = 'notify',
+  -- backend = 'notify',
   opts = { enter = true, format = errorViewFormat },
   filter = {
     any = {

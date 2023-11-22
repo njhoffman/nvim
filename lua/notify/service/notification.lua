@@ -15,26 +15,26 @@
 ---@field render fun(buf: integer, notification: notify.Notification, highlights: table<string, string>)
 local Notification = {}
 
-local level_maps = vim.tbl_extend("keep", {}, vim.log.levels)
+local level_maps = vim.tbl_extend('keep', {}, vim.log.levels)
 vim.tbl_add_reverse_lookup(level_maps)
 
 function Notification:new(id, message, level, opts, config)
-  if type(level) == "number" then
+  if type(level) == 'number' then
     level = level_maps[level]
   end
-  if type(message) == "string" then
-    message = vim.split(message, "\n")
+  if type(message) == 'string' then
+    message = vim.split(message, '\n')
   end
-  level = vim.fn.toupper(level or "info")
+  level = vim.fn.toupper(level or 'info')
   local time = vim.fn.localtime()
-  local title = opts.title or ""
-  if type(title) == "string" then
+  local title = opts.title or ''
+  if type(title) == 'string' then
     title = { title, vim.fn.strftime(config.time_formats().notification, time) }
   end
   vim.validate({
-    message = { message, "table" },
-    level = { level, "string" },
-    title = { title, "table" },
+    message = { message, 'table' },
+    level = { level, 'string' },
+    title = { title, 'table' },
   })
   local notif = {
     id = id,
@@ -48,10 +48,12 @@ function Notification:new(id, message, level, opts, config)
     on_open = opts.on_open,
     on_close = opts.on_close,
     animate = opts.animate ~= false,
+    hide_from_history = opts.hide_from_history,
     render = opts.render,
+    render_title = opts.render_title,
+    repeat_count = opts.repeat_count,
     body_highlights = opts.body_highlights,
     body_level_highlights = opts.body_level_highlights,
-    hide_from_history = opts.hide_from_history,
   }
   self.__index = self
   setmetatable(notif, self)

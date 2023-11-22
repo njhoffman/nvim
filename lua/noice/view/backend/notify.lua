@@ -126,15 +126,16 @@ end
 
 ---@param msg NotifyMsg
 function NotifyView:_notify(msg)
-  local level = msg.level or self._opts.level
+  local level = msg.level
 
   local opts = {
     title = msg.title or msg.opts.title or self._opts.title,
     animate = not Util.is_blocking(),
     timeout = msg.opts.timeout or self._opts.timeout,
-    body_highlights = msg.opts.body_highlights or self._opts.body_highlights,
-    body_level_highlights = msg.opts.body_level_highlights or self._opts.body_level_highlights,
+    body_highlights = msg.opts.body_highlights,
+    body_level_highlights = msg.opts.body_level_highlights,
     replace = self._opts.replace and self.notif,
+    repeat_count = self._opts.repeat_count,
     keep = function()
       return Util.is_blocking()
     end,
@@ -152,6 +153,7 @@ function NotifyView:_notify(msg)
       self:_on_close_override(msg)
     end,
     render = Util.protect(self:notify_render(msg.messages, self._opts.render, msg.content)),
+    render_title = msg.opts.render_title or self._opts.render_title or 'default',
   }
 
   if msg.opts then
@@ -167,15 +169,18 @@ function NotifyView:_notify(msg)
 
   ---@type string?
   local content = msg.content
+  if opts.repeat_count then
+    content = content .. ' #' .. opts.repeat_count
+  end
 
   if msg.opts and msg.opts.is_nil then
     content = nil
   end
 
-  local id = require('notify')(content, level, opts)
-  self.notif = id
+  local notif = require('notify')(content, level, opts)
+  self.notif = notif
   for _, m in ipairs(msg.messages) do
-    m.opts.notify_id = id
+    m.opts.notify_id = notif.id
   end
 end
 
@@ -190,7 +195,7 @@ function NotifyView:show()
       local messages = {}
       local content = {}
       for _, m in ipairs(self._messages) do
-        local lvl_num = m.level or self._opts.level or 1
+        local lvl_num = m.level or 1
         if type(lvl_num) == 'string' then
           lvl_num = vim.lsp.log_levels[string.upper(lvl_num)]
         end

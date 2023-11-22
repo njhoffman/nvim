@@ -251,9 +251,8 @@ local plugins = {
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-web-devicons', 'MunifTanjim/nui.nvim' },
   },
   {
-    -- 'njhoffman/telescope.nvim',
+    'njhoffman/telescope.nvim',
     -- 'nvim-telescope/telescope.nvim',
-
     dir = '~/git/telescope.nvim',
     cmd = 'Telescope',
     -- event = 'VeryLazy',
@@ -481,7 +480,7 @@ local plugins = {
   { 'dbeniamine/cheat.sh-vim', cmd = 'Cheat' },
   { 'potamides/pantran.nvim', cmd = 'Pantran' },
   { 'sidebar-nvim/sidebar.nvim', cmd = { 'SidebarNvimOpen', 'SidebarNvimToggle' } },
-  { 'anuvyklack/hydra.nvim', event = 'VeryLazy' },
+  { 'smoka7/hydra.nvim', event = 'VeryLazy' }, -- anuvyklack
   { 'NvChad/nvim-colorizer.lua', event = { 'BufReadPost', 'BufNewFile' } },
   { 'nvim-colortils/colortils.nvim', cmd = 'Colortils', event = { 'BufReadPost', 'BufNewFile' } },
   { 'xeluxee/competitest.nvim', cmd = 'CompetiTestRun', dependencies = 'MunifTanjim/nui.nvim' },

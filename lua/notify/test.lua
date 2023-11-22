@@ -27,6 +27,35 @@ local notify_basic = function()
   end
 end
 
+local notify_basic_merge = function()
+  local level = 'info'
+  for i = 1, 5 do
+    notify('Rendering merge ' .. i, level, { timeout = timeout })
+  end
+  level = 'debug'
+  for _ = 1, 5 do
+    notify('Rendering merge', level, { timeout = timeout })
+  end
+end
+
+local notify_basic_repeat = function()
+  local level = 'info'
+  local _delay = 0
+  for _ = 1, 8 do
+    vim.defer_fn(function()
+      notify('Rendering repeat', level, { timeout = timeout })
+    end, _delay)
+    _delay = _delay + 200
+  end
+  local level = 'debug'
+  for _ = 1, 10 do
+    vim.defer_fn(function()
+      notify('Rendering repeat', level, { timeout = timeout })
+    end, _delay)
+    _delay = _delay + 200
+  end
+end
+
 local notify_titles = function()
   local _delay = 0
   for _, level in ipairs({ 'trace', 'debug', 'info', 'warn', 'error' }) do
@@ -77,9 +106,10 @@ local notify_custom_hl = function()
     end, _delay)
     _delay = _delay + delay
   end
+  _delay = _delay + delay
   for _, msg in ipairs(custom_messages) do
     vim.defer_fn(function()
-      notify(msg, 2, {
+      notify(msg, 1, {
         timeout = timeout,
         title = 'custom hl title',
       })
@@ -88,27 +118,15 @@ local notify_custom_hl = function()
   end
 end
 
-local notify_custom_hl_raw = function()
-  local notify = require('notify').notify
-  local _delay = 0
-  for _, msg in ipairs(custom_messages) do
-    vim.defer_fn(function()
-      notify(msg, 2, {
-        timeout = timeout,
-        title = 'custom hl title',
-      })
-    end, _delay)
-    _delay = _delay + delay
-  end
-end
-
+-- stylua: ignore
 local funcs = {
-  errors = notify_errors,
-  basic = notify_basic,
-  titles = notify_titles,
-  titles_2 = notify_titles_2,
-  custom_hl = notify_custom_hl,
-  custom_hl_raw = notify_custom_hl_raw,
+  errors        = notify_errors,
+  basic         = notify_basic,
+  basic_merge   = notify_basic_merge,
+  basic_repeat  = notify_basic_repeat,
+  titles        = notify_titles,
+  titles_2      = notify_titles_2,
+  custom_hl     = notify_custom_hl,
 }
 
 local notify_test = function(category)
@@ -125,20 +143,26 @@ local notify_test = function(category)
     end
   else
     notify_basic()
+    notify_basic_merge()
+    notify_basic_repeat()
     notify_titles()
     notify_titles_2()
     notify_custom_hl()
-    notify_custom_hl_raw()
     notify_errors()
   end
 end
 
 -- require('noice').setup({ views = { notify = { level = vim.lsp.log_levels['TRACE'] } } })
-require('notify').setup({ level = vim.lsp.log_levels['TRACE'] })
+-- require('notify').setup({ level = vim.lsp.log_levels['INFO'] })
+-- vim.dbglog('level', require('notify')._config().level())
+-- require('notify.config').setup({ level = vim.lsp.log_levels['INFO'] })
+-- require('notify').instance({ level = vim.lsp.log_levels['INFO'] })
 notify_test({
   -- 'errors',
   -- 'basic',
-  -- 'titles',
+  -- 'basic_merge',
+  -- 'basic_repeat',
+  'titles',
   -- 'titles_2',
   'custom_hl',
   -- 'custom_hl_raw',

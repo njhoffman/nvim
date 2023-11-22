@@ -159,7 +159,7 @@ return function(bufnr, notif, highlights, config)
   if parts.path and utils.file_exists(parts.path) then
     vim.api.nvim_buf_set_var(bufnr, 'notify_file', parts.path)
     vim.api.nvim_buf_set_var(bufnr, 'notify_line', parts.line)
-    notif.title[1] = '*' .. parts.code
+    notif.title[1] = '*' .. parts.code .. ': ' .. parts.title
     box_render(bufnr, notif, highlights, config)
     line_start = 2
   end

@@ -29,29 +29,30 @@ function _log_file(lvl, content)
 end
 
 function _notify_override(self, msg)
-  local curr_crc = utils.get_crc(msg.content)
+  local curr_crc = utils.get_crc(msg.level .. ' ' .. msg.content)
   local replace_id = nil
   for key, active in pairs(state.active) do
     if active.crc == curr_crc and type(state.active[key]) == 'table' then
       replace_id = key
       self._opts.replace = replace_id
+      self._opts.repeat_count = active.count + 1
     end
   end
 
   self:_notify(msg)
 
   for _, m in ipairs(msg.messages) do
-    local id = m.opts.notify_id and m.opts.notify_id.id
+    local id = m.opts.notify_id and m.opts.notify_id
     if replace_id ~= nil then
       local count = state.active[replace_id] and state.active[replace_id].count and state.active[replace_id].count + 1
         or 1
-      state.active[replace_id] = {
+      state.active[id] = {
         count = count,
         crc = curr_crc,
       }
-      m.opts.replace_id = replace_id
-      self._opts.count = count
-      -- state.active[replace_id] = nil
+      m.opts.replace = replace_id
+      m.opts.repeat_count = count
+      state.active[replace_id] = nil
     else
       local notify_lvl = notif._config().level()
       local msg_lvl = msg.level
@@ -64,7 +65,7 @@ function _notify_override(self, msg)
       if msg_lvl >= notify_lvl then
         state.active[id] = {
           crc = curr_crc,
-          count = 0,
+          count = 1,
         }
       end
     end
@@ -77,7 +78,7 @@ function _on_close_override(self, msg)
     if not m.opts.notify_id then
       vim.dbglog('no notify_id', m.opts)
     else
-      state.active[m.opts.notify_id.id] = nil
+      state.active[m.opts.notify_id] = nil
       m.opts.notify_id = nil
     end
   end

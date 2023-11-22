@@ -21,28 +21,20 @@ local plugins = {
       vim.cmd('colorscheme nord-nick')
     end,
   },
-  -- { 'freddiehaddad/feline.nvim', branch = 'main', event = 'VimEnter', lazy = false, },
   { 'famiu/bufdelete.nvim' },
-  {
-    'nvim-tree/nvim-web-devicons',
-    dependencies = {
-      'DaikyXendo/nvim-material-icon',
-    },
-  },
+  { 'nvim-tree/nvim-web-devicons', dependencies = { 'DaikyXendo/nvim-material-icon' } },
   {
     'utilyre/barbecue.nvim',
     -- dir = '~/git/barbecue.nvim',
     version = '*',
     name = 'barbecue',
     event = 'VeryLazy',
-    dependencies = {
-      'SmiteshP/nvim-navic',
-      'nvim-web-devicons',
-    },
+    dependencies = { 'SmiteshP/nvim-navic', 'nvim-web-devicons' },
   },
   { 'rcarriga/nvim-notify', lazy = false },
-  { 'folke/noice.nvim', event = 'VeryLazy' },
+  { 'folke/noice.nvim', lazy = false, event = 'VeryLazy' },
   { 'folke/which-key.nvim', event = 'VeryLazy' },
+  -- { 'freddiehaddad/feline.nvim', branch = 'main', event = 'VimEnter', lazy = false, },
 }
 
 utils.apply_configs(plugins)

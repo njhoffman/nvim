@@ -1,27 +1,56 @@
--- vim: fdm=marker:fdc=1
-
 vim.cmd([[
 if &filetype !=# 'lua'
   finish
 endif
 ]])
 
+local cmd = vim.cmd
+local expand = vim.fn.expand
+local fmt = string.format
+local u = require('utils.core')
+
+-- habits from writing too much in other languages
+u.ftAbbr('//', '--')
+u.ftAbbr('const', 'local')
+u.ftAbbr('fi', 'end')
+u.ftAbbr('!=', '~=')
+u.ftAbbr('!==', '~=')
+
+-- shorthands
+u.ftAbbr('tre', 'then return end') -- codespell-ignore
+
+-- if in nvim dir, reload file/plugin, otherwise run `make`
+vim.keymap.set('n', '<leader>r', function()
+  cmd('silent update')
+  local isNvimConfig = vim.loop.cwd() == vim.fn.stdpath('config')
+  local filepath = vim.fn.expand('%:p')
+
+  --- GUARD
+  if filepath:find('nvim/after/ftplugin/') then
+    vim.notify('', 'ftplugins cannot be reloaded.', 'warn')
+    return
+  elseif filepath:find('nvim/lua/.*keymap') or filepath:find('nvim/lua/.*keybinding') then
+    vim.notify('', 'keymaps cannot be reloaded due to `map-unique`', 'warn')
+    return
+  -- unload from lua cache (assuming that the pwd is ~/.config/nvim)
+  elseif isNvimConfig then
+    local packageName = expand('%:r'):gsub('lua/', ''):gsub('/', '.')
+    package.loaded[packageName] = nil
+    cmd.source()
+    vim.notify('Re-sourced', packageName)
+
+  -- run `make`
+  else
+    vim.cmd.lmake()
+  end
+end, { buffer = true, desc = ' Reload /  Make' })
 vim.api.nvim_set_keymap('n', '<localleader>1', ':luafile%<cr>', { silent = true })
 
 -- Enable `gf` for `require()`d files.
 -- Modified (slight cleanup) from
 -- https://gist.github.com/iagoleal/92bd781dae1926525cd5e049eb32d64b
--- {{{
-local fmt = string.format
 
--- Iterator that splits a string o a given delimiter
-local function split(str, delim)
-  delim = delim or '%s'
-  return string.gmatch(str, fmt('[^%s]+', delim))
-end
-
--- Find the proper directory separator depending
--- on lua installation or OS.
+-- Find the proper directory separator depending on lua installation or OS.
 local function dir_separator()
   -- Look at package.config for directory separator string (it's the first line)
   if package.config then
@@ -33,12 +62,11 @@ local function dir_separator()
   end
 end
 
--- Search for lua traditional include paths.
--- This mimics how require internally works.
+-- Search for lua traditional include paths (this mimics how require internally works)
 local function include_paths(fname, ext)
   ext = ext or 'lua'
   local paths = string.gsub(package.path, '%?', fname)
-  for path in split(paths, '%;') do
+  for path in u.split(paths, '%;') do
     if vim.fn.filereadable(path) == 1 then
       return path
     end
@@ -93,37 +121,6 @@ function find_required_path(module)
     return f
   end
 end
-
-local regex = {
-  constDeclaration = '^%s*%f[%w_]const%f[^%w_]',
-}
-
-local check_wrong_language = function()
-  local start = vim.fn.getpos("'[")
-  local ending = vim.fn.getpos("']")
-  if start ~= nil and ending ~= nil then
-    local content = vim.fn.join(
-      vim.api.nvim_buf_get_text(0, start[2] - 1, start[3] - 1, ending[2], ending[3] - 1, {}) or { '' },
-      '\n'
-    )
-    if string.match(content, regex.constDeclaration) then
-      vim.notify('You are in lua not javascript!', 3)
-      local new_content = vim.fn.split(string.gsub(content, regex.constDeclaration, 'local '), '\n')
-      vim.api.nvim_buf_set_text(0, start[2] - 1, start[3] - 1, ending[2] - 1, ending[3] - 1, new_content)
-    end
-  end
-end
-
--- vim.api.nvim_create_autocmd('InsertLeave', {
---   callback = function()
---     check_wrong_language()
---     -- if string.match(line_content or '', 'const ') then
---     --   vim.notify('You are in lua not javascript!')
---     --   local new_line_content = string.gsub(line_content, 'pattern', 'replacement')
---     --   vim.api.nvim_buf_set_text(0, line_number - 1, line_number, 0, 1, { new_line_content })
---     -- end
---   end,
--- })
 
 -- Set options to open require with gf
 vim.opt_local.include = [=[\v<((do|load)file|require)\s*\(?['"]\zs[^'"]+\ze['"]]=]

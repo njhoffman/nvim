@@ -642,6 +642,7 @@ return function(injected_functions)
     -- DashboardCenter ({ fg = colors.purple }),
     -- DashboardFooter ({ fg = colors.green, gui = "italic" }),
     NotifyBackground({ bg = '#000000' }),
+    NotifyRepeatCount({ Comment }),
     NotifySTATUSBorder({ fg = '#3a3286', bg = 'none' }),
     NotifySTATUSTitle({ fg = '#3a3286' }),
     NotifySTATUSIcon({ fg = '#2a76b7' }),

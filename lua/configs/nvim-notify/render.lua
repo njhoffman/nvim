@@ -12,18 +12,13 @@ local title_ignore = {
 }
 
 local render = function(bufnr, notif, highlights, config)
-  local state = require('noice.view.backend.notify_ext').state
   local title = (notif.title and type(notif.title) == 'table' and notif.title[1]) and notif.title[1] or ''
   if notif.level == 'ERROR' and #title == 0 then
     title = 'ERROR'
     notif.title[1] = title
   end
 
-  -- vim.dbglog('highlights', notif, highlights)
-  if state.active[notif.id] and state.active[notif.id].count then
-    notif.title[2] = state.active[notif.id].count
-  end
-
+  local render_title = notif.render_title or 'default'
   local first_line = type(notif.message) == 'table' and notif.message[1] or vim.fn.split(notif.message, '\n')[1]
 
   local is_error = false
@@ -34,7 +29,7 @@ local render = function(bufnr, notif, highlights, config)
   if is_error then
     return require('notify.render.error')(bufnr, notif, highlights, config)
   elseif #title > 0 and not vim.tbl_contains(title_ignore, title) then
-    return require('notify.render.default')(bufnr, notif, highlights, config)
+    return require('notify.render.' .. render_title)(bufnr, notif, highlights, config)
   else
     return require('notify.render.minimal')(bufnr, notif, highlights)
   end

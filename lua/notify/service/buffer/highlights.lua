@@ -1,4 +1,4 @@
-local util = require("notify.util")
+local util = require('notify.util')
 
 ---@class NotifyBufHighlights
 ---@field groups table
@@ -14,8 +14,8 @@ local NotifyBufHighlights = {}
 local function manual_get_hl(name)
   local synID = vim.fn.synIDtrans(vim.fn.hlID(name))
   local result = {
-    foreground = tonumber(vim.fn.synIDattr(synID, "fg"):gsub("#", ""), 16),
-    background = tonumber(vim.fn.synIDattr(synID, "bg"):gsub("#", ""), 16),
+    foreground = tonumber(vim.fn.synIDattr(synID, 'fg'):gsub('#', ''), 16),
+    background = tonumber(vim.fn.synIDattr(synID, 'bg'):gsub('#', ''), 16),
   }
   return result
 end
@@ -30,12 +30,9 @@ local function get_hl(name)
 end
 
 function NotifyBufHighlights:new(notif, buffer, config)
-  local level = notif.level
+  local level = notif.level or 'INFO'
   local function linked_group(section, skip_prefix, skip_level)
-    local orig = (skip_prefix and "" or "Notify") .. (skip_level and "" or level) .. section
-    if vim.fn.hlID(orig) == 0 then
-      orig = (skip_prefix and "" or "Notify") .. (skip_level and "" or "INFO") .. section
-    end
+    local orig = (skip_prefix and '' or 'Notify') .. (skip_level and '' or level) .. section
     local new = orig .. buffer
 
     vim.api.nvim_set_hl(0, new, { link = orig })
@@ -43,10 +40,10 @@ function NotifyBufHighlights:new(notif, buffer, config)
     return new, get_hl(new)
   end
 
-  local title, title_def = linked_group("Title")
-  local border, border_def = linked_group("Border")
-  local body, body_def = linked_group("Body")
-  local icon, icon_def = linked_group("Icon")
+  local title, title_def = linked_group('Title')
+  local border, border_def = linked_group('Border')
+  local body, body_def = linked_group('Body')
+  local icon, icon_def = linked_group('Icon')
 
   local groups = {
     [title] = title_def,
@@ -54,7 +51,12 @@ function NotifyBufHighlights:new(notif, buffer, config)
     [body] = body_def,
     [icon] = icon_def,
   }
+  local repeat_count, repeat_count_def = nil, nil
   local content = body
+  if notif.repeat_count then
+    repeat_count, repeat_count_def = linked_group('RepeatCount', false, true)
+    groups.repeat_count = repeat_count_def
+  end
   if notif.body_highlights then
     content = {}
     for i, hl_group in ipairs(notif.body_highlights) do
@@ -76,24 +78,26 @@ function NotifyBufHighlights:new(notif, buffer, config)
     opacity = 100,
     border = border,
     body = body,
+    repeat_count = repeat_count,
     content = content,
     title = title,
     icon = icon,
     buffer = buffer,
     _config = config,
   }
+
   self.__index = self
   setmetatable(buf_highlights, self)
   return buf_highlights
 end
 
 function NotifyBufHighlights:_redefine_treesitter()
-  local buf_highlighter = require("vim.treesitter.highlighter").active[self.buffer]
+  local buf_highlighter = require('vim.treesitter.highlighter').active[self.buffer]
 
   if not buf_highlighter then
     return
   end
-  local render_namespace = vim.api.nvim_create_namespace("notify-treesitter-override")
+  local render_namespace = vim.api.nvim_create_namespace('notify-treesitter-override')
   vim.api.nvim_buf_clear_namespace(self.buffer, render_namespace, 0, -1)
 
   local function link(orig)
@@ -142,8 +146,8 @@ function NotifyBufHighlights:_redefine_treesitter()
             capture_hl = is_vim_hl and general_hl or (tree:lang() .. general_hl)
           else
             capture_hl = query._query.captures[capture]
-            if not vim.startswith(capture_hl, "_") then
-              capture_hl = "@" .. capture_hl .. "." .. tree:lang()
+            if not vim.startswith(capture_hl, '_') then
+              capture_hl = '@' .. capture_hl .. '.' .. tree:lang()
             end
           end
 
@@ -167,10 +171,7 @@ function NotifyBufHighlights:_redefine_treesitter()
 end
 
 function NotifyBufHighlights:set_opacity(alpha)
-  if
-    not self._treesitter_redefined
-    and vim.api.nvim_buf_get_option(self.buffer, "filetype") ~= "notify"
-  then
+  if not self._treesitter_redefined and vim.api.nvim_buf_get_option(self.buffer, 'filetype') ~= 'notify' then
     self:_redefine_treesitter()
   end
   self.opacity = alpha
@@ -178,20 +179,19 @@ function NotifyBufHighlights:set_opacity(alpha)
   for group, fields in pairs(self.groups) do
     local updated_fields = {}
     vim.api.nvim_set_hl(0, group, updated_fields)
-    local hl_string = ""
+    local hl_string = ''
     if fields.foreground then
-      hl_string = "guifg=#"
-        .. string.format("%06x", util.blend(fields.foreground, background, alpha / 100))
+      hl_string = 'guifg=#' .. string.format('%06x', util.blend(fields.foreground, background, alpha / 100))
     end
     if fields.background then
       hl_string = hl_string
-        .. " guibg=#"
-        .. string.format("%06x", util.blend(fields.background, background, alpha / 100))
+        .. ' guibg=#'
+        .. string.format('%06x', util.blend(fields.background, background, alpha / 100))
     end
 
-    if hl_string ~= "" then
+    if hl_string ~= '' then
       -- Can't use nvim_set_hl https://github.com/neovim/neovim/issues/18160
-      vim.cmd("hi " .. group .. " " .. hl_string)
+      vim.cmd('hi ' .. group .. ' ' .. hl_string)
     end
   end
 end

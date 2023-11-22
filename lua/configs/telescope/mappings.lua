@@ -49,6 +49,7 @@ local main_maps = {
     ["<M-g>"]       = c_actions.launch_projects,
     ["<M-e>"]       = c_actions.launch_live_grep,
     ["<M-u>"]       = c_actions.launch_find_files,
+    ["<M-T>"]       = c_actions.launch_find_pickers,
     ['<M-C-_>']     = c_actions.toggle_whichkey,
     ["<C-^>"]       = c_actions.switch_layout,
     ["<M-C-Space>"] = c_actions.resume_picker_prev,

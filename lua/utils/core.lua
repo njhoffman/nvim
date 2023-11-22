@@ -179,4 +179,54 @@ utils.find = function(array, key, val)
   end
 end
 
+-- Iterator that splits a string o a given delimiter
+utils.split = function(str, delim)
+  delim = delim or '%s'
+  return string.gmatch(str, string.format('[^%s]+', delim))
+end
+
+utils.ftAbbr = function(lhs, rhs)
+  -- TODO update on nvim 0.10
+  -- vim.keymap.set("ia", lhs, rhs, { buffer = true })
+  vim.cmd.inoreabbrev(('<buffer> %s %s'):format(lhs, rhs))
+end
+
+---@param str string
+---@param filePath string line(s) to add
+---@param mode "w"|"a" -- write or append
+---@return string|nil error
+---@nodiscard
+utils.writeToFile = function(filePath, str, mode)
+  local file, error = io.open(filePath, mode)
+  if not file then
+    return error
+  end
+  file:write(str .. '\n')
+  file:close()
+end
+
+---Adds a component to the lualine after lualine was already set up. Useful for
+---lazyloading.
+---@param component function|table the component forming the lualine
+---@param location "tabline"|"sections" tabline = top, sections = bottom
+---@param section "lualine_a"|"lualine_b"|"lualine_c"|"lualine_x"|"lualine_y"|"lualine_z"
+utils.addToLuaLine = function(location, section, component)
+  local topSeparators = { left = '', right = '' }
+
+  local ok, lualine = pcall(require, 'lualine')
+  if not ok then
+    return
+  end
+  local sectionConfig = lualine.get_config()[location][section] or {}
+
+  local componentObj = type(component) == 'table' and component or { component }
+  if location == 'tabline' then
+    componentObj.section_separators = topSeparators
+  end
+  table.insert(sectionConfig, componentObj)
+  lualine.setup({ [location] = { [section] = sectionConfig } })
+
+  -- Theming needs to be re-applied, since the lualine-styling can change
+  require('config.theme-customization').reloadTheming()
+end
 return utils

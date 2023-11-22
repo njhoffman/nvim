@@ -113,7 +113,7 @@ local cfg = {
       -- render = 'minimal',
       merge = true,
       render = render,
-      -- level = vim.log.levels.DEBUG,
+      level = vim.log.levels.TRACE,
       -- fps = 30,
       -- stages = 'fade_in_slide_out',
       -- background_colour = '#000000',
@@ -196,6 +196,27 @@ local cfg = {
     enabled = true, -- you can disable this behaviour here
     -- add any filetypes here, that shouldn't trigger smart move.
     excluded_filetypes = { 'cmp_menu', 'cmp_docs', 'notify' },
+  },
+  format = {
+    telescope = {
+      '{date} ',
+      '{level} ',
+      '{event}',
+      { '{kind}', before = { '.', hl_group = 'NoiceFormatKind' } },
+      ' ',
+      '{title} ',
+      '{cmdline} ',
+      '{message}',
+    },
+    level = {
+      icons = {
+        error = '',
+        warn = '',
+        info = '',
+        debug = '',
+        trace = '',
+      },
+    },
   },
   commands = {
     history = noice_views.historyView,

@@ -1,13 +1,14 @@
 local miniclue = require('mini.clue')
 local mapper_clues = require('mapper').clues or {}
-local clues = vim.tbl_flatten({
+local clues = {
   miniclue.gen_clues.builtin_completion(),
   miniclue.gen_clues.g(),
   miniclue.gen_clues.marks(),
   -- miniclue.gen_clues.registers(),
   miniclue.gen_clues.windows(),
   miniclue.gen_clues.z(),
-})
+}
+
 for _, clue_item in ipairs(mapper_clues) do
   table.insert(clues, clue_item)
 end

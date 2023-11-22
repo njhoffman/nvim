@@ -57,7 +57,6 @@ local setup_global = function(opts)
   wk_opts.text_insert_in_advance = ''
   -- wk_opts.text_insert_in_advance = ''
   vim.keymap.set('n', '<Leader>Wk', which_key(wk_opts), keyopts)
-  vim.keymap.set('n', '<F2>', which_key(wk_opts), keyopts)
   -- timeout(100, function()
   --   vim.keymap.set( 'n', "'",
   --     mark({ text_insert_in_advance = "'" }),

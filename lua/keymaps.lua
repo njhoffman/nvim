@@ -760,18 +760,16 @@ map('n', '<F1>', "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>"
   category = 'UI',
   desc = 'toggle help',
 })
-
--- map('n', '<F2>', '<Leader>wfk', {
---   plugin = 'wf.nvim',
---   category = 'UI',
---   desc = 'toggle wf.nvim',
--- })
-
--- ctrl+shift F2
-map('n', '<F38>', '<cmd>WhichKey<cr>', {
+map('n', '<F2>', '<cmd>WhichKey<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = 'toggle whichkey',
+})
+-- ctrl+shift F2
+map('n', '<F38>', '<Leader>Wk', {
+  plugin = 'wf.nvim',
+  category = 'UI',
+  desc = 'toggle wf.nvim',
 })
 
 map('n', '<F3>', '<cmd>AerialToggle!float<cr>', {

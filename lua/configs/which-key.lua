@@ -90,8 +90,10 @@ local config = {
   },
   hidden = { '<silent>', '<cmd>', '<Cmd>', '<CR>', '^:', '^ ', '^call ', '^lua ' }, -- hide mapping boilerplate
   popup_mappings = {
-    scroll_down = '<c-f>', -- binding to scroll down inside the popup
-    scroll_up = '<c-b>', -- binding to scroll up inside the popup
+    -- scroll_down = '<c-f>', -- binding to scroll down inside the popup
+    -- scroll_up = '<c-b>', -- binding to scroll up inside the popup
+    scroll_down = '<M-f>', -- binding to scroll down inside the popup
+    scroll_up = '<M-b>', -- binding to scroll up inside the popup
   },
   window = {
     winblend = 20,

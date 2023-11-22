@@ -80,8 +80,8 @@ return function(bufnr, notif, highlights, config)
   })
 
   if notif.body_highlights then
-    base.content_hl(bufnr, 0, prefix_length + 1, highlights, notif)
+    base.content_hl(bufnr, highlights, notif, 0, prefix_length + 1)
   else
-    base.body_hl(bufnr, 0, prefix_length + 1, highlights.body, #notif.message)
+    base.body_hl(bufnr, highlights, notif, 0, prefix_length + 1, #notif.message)
   end
 end

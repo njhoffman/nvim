@@ -37,6 +37,7 @@ function M.get_level(level)
   end
   return 'info'
 end
+
 function M.parse_message(msg, opts)
   local _opts = opts or {}
   local _msg = msg
@@ -77,7 +78,6 @@ end
 ---@param opts? table<string, any>
 function M.notify(msg, level, opts)
   local _msg, _opts = M.parse_message(msg, opts)
-  vim.dbglog('parse', _msg, _opts)
 
   if vim.in_fast_event() then
     vim.schedule(function()

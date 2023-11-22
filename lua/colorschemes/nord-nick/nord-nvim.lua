@@ -9,7 +9,7 @@ local v = vim.g -- this must be done, because lush is executed in a bare environ
 
 v.nord_uniform_diff_background = 0
 v.nord_underline = 0
-v.colors_name = 'nord-nvim'
+-- v.colors_name = 'nord-nvim'
 
 local clrs = {
   nord0 = hsl(220, 16, 22), -- #2F3541

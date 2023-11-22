@@ -5,9 +5,10 @@ return function(bufnr, notif, highlights)
   local namespace = base.namespace()
   api.nvim_buf_set_lines(bufnr, 0, -1, false, notif.message)
 
+  notif.body_hl_group = 'icon'
   if notif.body_highlights then
-    base.content_hl(bufnr, 0, 0, highlights, notif)
+    base.content_hl(bufnr, highlights, notif, 0, 0)
   else
-    base.body_hl(bufnr, 0, 0, highlights.icon, #notif.message - 1, #notif.message[#notif.message])
+    base.body_hl(bufnr, highlights, notif, 0, 0, #notif.message - 1, #notif.message[#notif.message])
   end
 end
