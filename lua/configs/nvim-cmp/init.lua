@@ -159,6 +159,18 @@ local setup_cmp = function()
   cmp.setup(cfg)
   cmp.setup.filetype('gitcommit', { sources = cmp.config.sources(sources.gitcommit) })
 
+  local defaultPlusZsh = vim.deepcopy(sources.main)
+  table.insert(defaultPlusZsh, { name = 'zsh' })
+  cmp.setup.filetype({ 'sh', 'make' }, {
+    sources = cmp.config.sources(defaultPlusZsh),
+    -- disable useless `\[` suggestions at end of line
+    enabled = function()
+      local col = vim.fn.col('.') - 1
+      local charBefore = vim.api.nvim_get_current_line():sub(col, col)
+      return charBefore ~= '\\'
+    end,
+  })
+
   cmp.setup.cmdline({ '/', '?' }, {
     mapping = cmp.mapping.preset.cmdline(mapping.cmdline),
     sources = cmp.config.sources(sources.cmdsearch),

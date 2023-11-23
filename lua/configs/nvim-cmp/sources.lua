@@ -30,6 +30,7 @@ local sources = {
         name = 'cmp_yanky',
         option = {
           onlyCurrentFiletype = true, -- default: false
+          minLength = 3,
         },
       }, -- {
       --    name = "omni",

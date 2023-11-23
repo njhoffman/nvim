@@ -67,17 +67,21 @@ local modules = {
     },
   },
   refactor = {
-    smart_rename = { enable = true, keymaps = { smart_rename = 'gR' } },
+    smart_rename = { enable = true, keymaps = { smart_rename = 'gR' } }, -- grr default
     -- highlight_definitions = { enable = true },
     highlight_current_scope = { enable = false },
     navigation = {
       enable = true,
       keymaps = {
-        goto_definition = 'gtd',
-        list_definitions = 'gtD',
-        list_definitions_toc = 'gt0',
-        goto_next_usage = '<a-*>',
-        goto_previous_usage = '<a-#>',
+        list_definitions_toc = 'gt0', -- gn0
+        goto_definition = false,
+        list_definitions = false,
+        goto_next_usage = false,
+        goto_previous_usage = false,
+        -- goto_definition = 'gtd',  -- gnd
+        -- list_definitions = 'gtD', -- gnD
+        -- goto_next_usage = '<a-*>',
+        -- goto_previous_usage = '<a-#>',
       },
     },
   },
@@ -85,13 +89,7 @@ local modules = {
     enable = true,
     use_languagetree = true,
     disable = {
-      -- 'wgsl',
-      -- 'wgsl_bevy',
-      -- 'help',
-      -- 'latex',
-      -- 'bash',
-      -- 'typescript',
-      -- 'markdown',
+      'css', -- PENDING https://github.com/tree-sitter/tree-sitter-css/issues/34
     },
     additional_vim_regex_highlighting = {
       -- 'md',
@@ -173,6 +171,7 @@ local modules = {
   textobjects = {
     -- mini-ai takes care of this
     select = {
+      disable = { 'markdown' }, -- so `al` can be remapped to link text object
       lookahead = true,
       enable = false,
       keymaps = {
@@ -200,6 +199,29 @@ local modules = {
         -- ["iA"] = "@attribute.inner",
         -- ["aF"] = "@frame.outer",
         -- ["iF"] = "@frame.inner",
+        -- INFO: outer key textobj defined via various textobjs
+        -- ["ik"] = { query = "@assignment.lhs", desc = "󱡔 inner key textobj" },
+        -- ["a<CR>"] = { query = "@return.outer", desc = "󱡔 outer return textobj" },
+        -- ["i<CR>"] = { query = "@return.inner", desc = "󱡔 inner return textobj" },
+        -- ["a/"] = { query = "@regex.outer", desc = "󱡔 outer regex textobj" },
+        -- ["i/"] = { query = "@regex.inner", desc = "󱡔 inner regex textobj" },
+        -- ["aa"] = { query = "@parameter.outer", desc = "󱡔 outer parameter textobj" },
+        -- ["ia"] = { query = "@parameter.inner", desc = "󱡔 inner parameter textobj" },
+        --
+        -- -- stylua: ignore start
+        -- ["iu"] = { query = "@loop.inner", desc = "󱡔 inner loop textobj" }, -- mnemonic: luup
+        -- ["au"] = { query = "@loop.outer", desc = "󱡔 outer loop textobj" },
+        -- ["a" .. textobjMaps.func] = { query = "@function.outer", desc = "󱡔 outer function textobj" },
+        -- ["i" .. textobjMaps.func] = { query = "@function.inner", desc = "󱡔 inner function textobj" },
+        -- ["a" .. textobjMaps.cond] = { query = "@conditional.outer", desc = "󱡔 outer cond. textobj" },
+        -- ["i" .. textobjMaps.cond] = { query = "@conditional.inner", desc = "󱡔 inner cond. textobj" },
+        -- ["a" .. textobjMaps.call] = { query = "@call.outer", desc = "󱡔 outer call textobj" },
+        -- ["i" .. textobjMaps.call] = { query = "@call.inner", desc = "󱡔 inner call textobj" },
+        -- -- stylua: ignore end
+        --
+        -- -- INFO later remapped to q only in operator pending mode to avoid conflict
+        -- -- @comment.inner not supported yet for most languages
+        -- ["&&&"] = { query = "@comment.outer", desc = "which_key_ignore" },
       },
     },
     swap = {

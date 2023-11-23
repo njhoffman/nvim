@@ -10,16 +10,35 @@ vim.cmd([[
 
 prefix('n', 'z', 'folds')
 prefix('n', 'g', 'goto')
+prefix('n', 'gt', 'go transform')
 prefix('n', 'gq', 'quickfix')
 prefix('n', 'gP', 'preview')
-prefix('n', 'g?', 'debug print')
+prefix('n', 'go', 'debug print')
+
 -- prefix('n', '<c-w>', 'window')
 prefix('n', '<leader>g', 'git')
 prefix('n', '<leader>f', 'file')
-prefix('n', '<leader>F', 'format')
 prefix('n', '<leader>p', 'paste')
 prefix('n', '<leader>i', 'internal tools')
 prefix('n', '<leader>cl', 'conceal')
+-- -- leader prefixes normal mode
+-- require("which-key").register({
+-- 	u = { name = " 󰕌 Undo" },
+-- 	o = { name = "  Options" },
+-- 	p = { name = " 󰏗 Package" },
+-- }, { prefix = "<leader>" })
+--
+-- -- leader prefixes normal+visual mode
+-- require("which-key").register({
+-- 	f = { name = " 󱗘 Refactor" },
+-- 	l = { name = "  Log / Cmdline" },
+-- 	g = { name = " 󰊢 Git" },
+-- }, { prefix = "<leader>", mode = { "x", "n" } })
+--
+-- -- needed so localleader prefixes work with whichkey
+-- require("which-key").register {
+-- 	["<localleader>"] = { name = "filetype-specific", mode = { "n", "x" } },
+-- }
 
 -- vim.cmd([[nnoremap <C-l> :syntax sync fromstart<CR>:redraw<CR>]])
 
@@ -531,67 +550,6 @@ map('i', '<esc>', '<Esc>`^', {
   silent = true,
 })
 
-map('x', 'y', 'ygv<esc>', {
-  category = 'Motion',
-  desc = 'yank maintaining cursor',
-  silent = true,
-})
-
-map('n', 'yil', 'v0o$y', {
-  category = 'Motion',
-  label = 'yank in line',
-  desc = 'yank in line',
-  silent = true,
-})
-
--- map('o', 'yil', '<cmd>normal yy<cr>', {
---   category = 'Motion',
---   label = 'yank in line',
---   desc = 'yank in line',
---   silent = true,
--- })
-
-map('n', 'yy', 'mQ0y$`Q', {
-  category = 'Motion',
-  label = 'yank in line no eol',
-  desc = 'yank in line no eol',
-})
-
-map('n', 'yY', '<cmd>normal vil<CR>', {
-  category = 'Motion',
-  label = 'yank in line',
-  desc = 'yank in line',
-})
-
--- map('n', 'P', '"*p', {
---   category = 'Motion',
---   label = 'paste clipboard',
---   desc = 'paste system clipboard register',
--- })
-
-map('n', '<leader>pp', '"*p', {
-  category = 'Motion',
-  label = 'paste primary',
-  desc = 'paste primary register',
-})
-
-map('n', '<leader>pc', '<cmd>normal p`[v`]gc<cr>', {
-  category = 'Motion',
-  label = 'paste comment',
-  desc = 'paste as a comment',
-})
-map('n', 'gcp', '<cmd>normal p`[v`]gc<cr>', {
-  category = 'Motion',
-  label = 'paste comment',
-  desc = 'paste as a comment',
-})
-
-map('n', '<leader>pm', '<cmd>set invpaste<cr>', {
-  category = 'Motion',
-  label = 'toggle paste mode',
-  desc = 'toggle paste mode',
-})
-
 map({ 'n', 'v' }, "<M-'>", '<cmd>HopWord<cr>', {
   category = 'Motion',
   plugin = 'hop.nvim',
@@ -730,10 +688,7 @@ map(
   'n',
   '<C-_>',
   '<cmd>noh<cr>| <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> | <cmd>normal! <C-L><cr>',
-  {
-    category = 'UI',
-    desc = 'remove hls, close popups and refresh',
-  }
+  { category = 'UI', desc = 'remove hls, close popups and refresh' }
 )
 
 -- map('n', '<M-b>', "<cmd>noh<cr> | <cmd>only<cr> | :RefreshLSP<cr> | :lua require'feline'.reset_highlights()<cr>", {
@@ -760,6 +715,7 @@ map('n', '<F1>', "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>"
   category = 'UI',
   desc = 'toggle help',
 })
+
 map('n', '<F2>', '<cmd>WhichKey<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
@@ -1045,47 +1001,12 @@ map('n', '<leader>cl3', '<cmd>set conceallevel=3<cr>', {
 --   label = 'incsel shrink',
 --   desc = 'incremental selection shrink',
 -- })
---
-vmap('n', 'gnd', {
-  category = 'Treesitter',
-  plugin = 'treesitter.nvim',
-  label = 'goto ts def',
-  desc = 'goto treesitter definition',
-})
-
-map('n', 'ght', '<cmd>TSHighlightCapturesUnderCursor<cr>', {
-  category = 'Treesitter',
-  plugin = 'treesitter.nvim',
-  label = 'show ts highlights',
-  desc = 'show treesitter highlights under cursor',
-})
-
-vmap('n', 'gtd', {
-  category = 'Treesitter',
-  plugin = 'treesitter.nvim',
-  label = 'list ts defs',
-  desc = 'list treesitter definitions under cursor',
-})
 
 vmap('n', 'g0', {
   category = 'Treesitter',
   plugin = 'treesitter.nvim',
   label = 'list ts toc',
   desc = 'list treesitter table of contents definitions',
-})
-
-vmap('n', '<a-*>', {
-  category = 'Treesitter',
-  plugin = 'treesitter.nvim',
-  label = 'ts next',
-  desc = 'treesitter next usage',
-})
-
-vmap('n', '<a-#>', {
-  category = 'Treesitter',
-  plugin = 'treesitter.nvim',
-  label = 'ts prev',
-  desc = 'treesitter previous usage',
 })
 
 --------------------------------------------------------------------------------------------------
@@ -1341,7 +1262,7 @@ map('v', '>', '>gv', {
   desc = 'indent repeatedly',
 })
 
-map('n', '<leader>Fx', '<cmd>ISwapNodeWith<cr>', {
+map('n', 'gtx', '<cmd>ISwapNodeWith<cr>', {
   category = 'Format',
   label = 'swap node with',
   plugin = 'iswap.nvim',
@@ -1356,134 +1277,8 @@ map({ 'v', 'n' }, '<M-">', '<esc><cmd>ISwapNodeWith<cr>', {
   desc = 'swap/exchange node objects with (iswap.nvim)',
 })
 
-map('n', '<leader>FU', 'gUw', {
-  category = 'Format',
-  label = 'uppercase word',
-  desc = 'uppercase word',
-})
-map('n', '<leader>Fu', 'gUw', {
-  category = 'Format',
-  label = 'lowercase word',
-  desc = 'format lowercase word',
-})
-
-map({ 'n', 'v' }, '<leader>Fs', '<cmd>Snek<cr>', {
-  category = 'Format',
-  label = 'format snake',
-  desc = 'format snake case',
-})
-
-map({ 'n', 'v' }, '<leader>Fk', '<cmd>Kebab<cr>', {
-  category = 'Format',
-  label = 'format kebab',
-  desc = 'format kebab case',
-})
-
-map({ 'n', 'v' }, '<leader>Fc', '<cmd>Camel<cr>', {
-  category = 'Format',
-  label = 'format camel',
-  desc = 'format camel case',
-})
-
-map({ 'n', 'v' }, '<leader>FC', '<cmd>CamelB<cr>', {
-  category = 'Format',
-  label = 'format camel b',
-  desc = 'format camel b case',
-})
-
 --------------------------------------------------------------------------------------------------
 -- PAIRS -----------------------------------------------------------------------------------------
-vim.cmd([[
-  " Section: Put
-  function! s:Map(...) abort
-    let [mode, head, rhs; rest] = a:000
-    let flags = get(rest, 0, '') . (rhs =~# '^<Plug>' ? '' : '<script>')
-    let tail = ''
-    let keys = get(g:, mode.'remap', {})
-    if type(keys) == type({}) && !empty(keys)
-      while !empty(head) && len(keys)
-        if has_key(keys, head)
-          let head = keys[head]
-          if empty(head)
-            let head = '<skip>'
-          endif
-          break
-        endif
-        let tail = matchstr(head, '<[^<>]*>$\|.$') . tail
-        let head = substitute(head, '<[^<>]*>$\|.$', '', '')
-      endwhile
-    endif
-    if head !=# '<skip>' && empty(maparg(head.tail, mode))
-      return mode.'map ' . flags . ' ' . head.tail . ' ' . rhs
-    endif
-    return ''
-  endfunction
-
-  function! s:putline(how, map) abort
-    let [body, type] = [getreg(v:register), getregtype(v:register)]
-    if type ==# 'V'
-      exe 'normal! "'.v:register.a:how
-    else
-      call setreg(v:register, body, 'l')
-      exe 'normal! "'.v:register.a:how
-      call setreg(v:register, body, type)
-    endif
-    silent! call repeat#set("\<Plug>(unimpaired-put-".a:map.")")
-  endfunction
-
-  nnoremap <silent> <Plug>(unimpaired-put-above) :call <SID>putline('[p', 'above')<CR>
-  nnoremap <silent> <Plug>(unimpaired-put-below) :call <SID>putline(']p', 'below')<CR>
-  nnoremap <silent> <Plug>(unimpaired-put-above-rightward) :<C-U>call <SID>putline(v:count1 . '[p', 'Above')<CR>>']
-  nnoremap <silent> <Plug>(unimpaired-put-below-rightward) :<C-U>call <SID>putline(v:count1 . ']p', 'Below')<CR>>']
-  nnoremap <silent> <Plug>(unimpaired-put-above-leftward)  :<C-U>call <SID>putline(v:count1 . '[p', 'Above')<CR><']
-  nnoremap <silent> <Plug>(unimpaired-put-below-leftward)  :<C-U>call <SID>putline(v:count1 . ']p', 'Below')<CR><']
-  nnoremap <silent> <Plug>(unimpaired-put-above-reformat)  :<C-U>call <SID>putline(v:count1 . '[p', 'Above')<CR>=']
-  nnoremap <silent> <Plug>(unimpaired-put-below-reformat)  :<C-U>call <SID>putline(v:count1 . ']p', 'Below')<CR>=']
-  nnoremap <silent> <Plug>unimpairedPutAbove :call <SID>putline('[p', 'above')<CR>
-  nnoremap <silent> <Plug>unimpairedPutBelow :call <SID>putline(']p', 'below')<CR>
-
-  exe s:Map('n', '[p', '<Plug>(unimpaired-put-above)')
-  exe s:Map('n', ']p', '<Plug>(unimpaired-put-below)')
-  exe s:Map('n', '[P', '<Plug>(unimpaired-put-above)')
-  exe s:Map('n', ']P', '<Plug>(unimpaired-put-below)')
-  exe s:Map('n', '=P', "<Plug>(unimpaired-put-above-reformat)")
-  exe s:Map('n', '=p', "<Plug>(unimpaired-put-below-reformat)")
-
-]])
-
-vmap('n', ']p', {
-  category = 'Pairs',
-  label = 'paste after indent',
-  desc = 'paste after line increasing indent',
-})
-vmap('n', '[p', {
-  category = 'Pairs',
-  label = 'paste before indent',
-  desc = 'paste before line increasing indent',
-})
-
-vmap('n', ']P', {
-  category = 'Pairs',
-  label = 'paste after unindent',
-  desc = 'paste after line decreasing indent',
-})
-
-vmap('n', '[P', {
-  category = 'Pairs',
-  label = 'paste before unindent',
-  desc = 'paste before line decreasing indent',
-})
-vmap('n', '=P', {
-  category = 'Pairs',
-  label = 'put above and reformat',
-  desc = 'paste (put) above and reformat',
-})
-
-vmap('n', '=p', {
-  category = 'Pairs',
-  label = 'put below and reformat',
-  desc = 'paste (put) below and reformat',
-})
 
 map('n', ']a', ':execute ":" . v:count . "next"<CR>', {
   category = 'Pairs',
@@ -1545,6 +1340,12 @@ map('n', 'ghw', 'g<C-g>', {
   desc = 'show wordcount under cursor',
 })
 
+map('n', 'ght', '<cmd>TSHighlightCapturesUnderCursor<cr>', {
+  category = 'Hover',
+  plugin = 'treesitter.nvim',
+  label = 'show ts highlights',
+  desc = 'show treesitter highlights under cursor',
+})
 --------------------------------------------------------------------------------------------------
 -- SYSTEM ----------------------------------------------------------------------------------------
 

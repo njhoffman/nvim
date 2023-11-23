@@ -28,7 +28,6 @@ local set_cwd = function(dir, method)
     if type(options.chdir_func) == 'function' then
       options.chdir_func(dir, method)
     else
-      vim.notify('CWD:' .. dir .. ' (' .. method .. ') ', 1)
     end
   end
 end
@@ -38,7 +37,7 @@ local set_pwd = function(dir, method)
     state.last_project = dir
     history.add_session_project(dir, method)
     set_user_option(dir, method)
-    logger:trace('pwd ' .. dir .. ' (' .. tostring(method) .. ')')
+    logger:debug('pwd ' .. dir .. ' (' .. tostring(method) .. ')')
     if vim.fn.getcwd() ~= dir then
       history.write_projects_to_history(true)
       set_cwd(dir, method)
@@ -68,7 +67,7 @@ local on_buf_enter = function()
     return
   end
 
-  logger:debug('buf' .. tostring(root_path) .. ' (' .. tostring(method) .. ')')
+  logger:trace('buf: ' .. tostring(root_path) .. ' (' .. tostring(method) .. ')')
   set_pwd(root_path, method)
 end
 

@@ -34,18 +34,18 @@ local kind_comparator = function(entry1, entry2)
   end
 end
 
+-- 				require("cmp_ai.compare"),
 local sorting = {
   priority_weight = 2,
   comparators = {
     require('copilot_cmp.comparators').prioritize,
-    -- 				require("cmp_ai.compare"),
-    -- cmp.config.compare.locality,
-    -- cmp.config.compare.recently_used,
-    cmp.config.compare.score,
     cmp.config.compare.offset,
-    cmp.config.compare.exact,
     under_comparator,
+    cmp.config.compare.recently_used,
+    cmp.config.compare.score,
+    cmp.config.compare.exact,
     kind_comparator,
+    cmp.config.compare.locality,
     cmp.config.compare.sort_text,
     cmp.config.compare.length,
     cmp.config.compare.order,

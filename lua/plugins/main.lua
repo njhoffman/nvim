@@ -30,6 +30,26 @@ local plugins = {
   { 'Tyler-Barham/floating-help.nvim', cmd = 'FloatHelp' },
   { 'echasnovski/mini.clue', event = { 'VeryLazy' } },
   {
+    'nmac427/guess-indent.nvim',
+    event = 'BufReadPre',
+    opts = {
+      -- due to code blocks and bullets often having spaces or tabs
+      filetype_exclude = { 'markdown' },
+      --   auto_cmd = true, -- Set to false to disable automatic execution
+      --   override_editorconfig = false, -- Set to true to override settings set by .editorconfig
+      --   filetype_exclude = { -- A list of filetypes for which the auto command gets disabled
+      --     'netrw',
+      --     'tutor',
+      --   },
+      --   buftype_exclude = { -- A list of buffer types for which the auto command gets disabled
+      --     'help',
+      --     'nofile',
+      --     'terminal',
+      --     'prompt',
+      --   },
+    },
+  },
+  {
     'echasnovski/mini.indentscope',
     event = { 'BufReadPre', 'BufNewFile' },
     init = function()
@@ -196,6 +216,23 @@ local plugins = {
   { 'Konfekt/vim-alias', event = 'VeryLazy' },
   { 'rainbowhxch/accelerated-jk.nvim', enabled = false, event = 'VeryLazy' },
   {
+    'Aasim-A/scrollEOF.nvim',
+    config = function()
+      -- Default settings
+      require('scrollEOF').setup({
+        -- The pattern used for the internal autocmd to determine
+        -- where to run scrollEOF. See https://neovim.io/doc/user/autocmd.html#autocmd-pattern
+        pattern = '*',
+        -- Whether or not scrollEOF should be enabled in insert mode
+        insert_mode = false,
+        -- List of filetypes to disable scrollEOF for.
+        disabled_filetypes = {},
+        -- List of modes to disable scrollEOF for. see https://neovim.io/doc/user/builtin.html#mode() for available modes.
+        disabled_modes = {},
+      })
+    end,
+  },
+  {
     'psliwka/vim-smoothie',
     commit = '10fd0aa',
     init = function()
@@ -310,7 +347,28 @@ local plugins = {
       { 'kkharji/sqlite.lua', run = 'luarocks install sqlite luv' },
       { 'nvim-telescope/telescope-frecency.nvim', dependencies = { 'kkharji/sqlite.lua' } },
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-      { 'gbprod/yanky.nvim' },
+      {
+        'gbprod/yanky.nvim',
+        keys = {
+          -- https://github.com/gbprod/yanky.nvim#%EF%B8%8F-special-put
+          -- { 'p', '<Plug>(YankyPutAfter)', desc = '  paste (yanky)' },
+          -- { 'P', '<Plug>(YankyPutIndentAfterShiftRight)', desc = '  paste & indent' },
+          -- { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' }, desc = '  sticky yank' },
+          -- { '<M-C-P>', '<Plug>(YankyCycleForward)', desc = '  cycle killring' },
+          -- {
+          --   'p',
+          --   function()
+          --     require('yanky.textobj').last_put()
+          --   end,
+          --   mode = 'o',
+          --   desc = '󱡔 last paste textobj',
+          -- },
+          -- so it loads the killring in time
+          { 'Y', 'y$' },
+          'd',
+          'D',
+        },
+      },
       { 'GustavoKatel/telescope-asynctasks.nvim', dependencies = { 'skywind3000/asynctasks.vim' } },
       -- { "rmagatti/session-lens", dependencies = "rmagatti/auto-session" },
       { 'PhilippFeO/telescope-filelinks.nvim' },
@@ -359,6 +417,9 @@ local plugins = {
   { 'rhysd/git-messenger.vim', cmd = 'GitMessenger' },
   {
     'tpope/vim-fugitive',
+    init = function()
+      vim.g.fugitive_no_maps = 1
+    end,
     event = { 'BufReadPost', 'BufNewFile' },
     cmd = { 'Git', 'Ggrep', 'GMove', 'GDelete', 'Gspilt', 'Gstatus', 'Gwrite', 'Gread', 'Gdiffsplit', 'Gedit' },
     dependencies = 'tpope/vim-rhubarb',
@@ -461,6 +522,18 @@ local plugins = {
   {
     'chrisgrieser/nvim-genghis',
     dependencies = { 'stevearc/dressing.nvim', 'nvim-cmp', 'hrsh7th/cmp-omni' },
+    keys = {
+			-- stylua: ignore start
+			-- {"<C-p>", function() require("genghis").copyFilepath() end, desc = " Copy filepath" },
+			-- {"<C-n>", function() require("genghis").copyFilename() end, desc = " Copy filename" },
+			-- {"<C-r>", function() require("genghis").renameFile() end, desc = " Rename file" },
+			{"<leader>x", function() require("genghis").chmodx() end, desc = " chmod +x" },
+      -- {"<C-d>", function() require("genghis").duplicateFile() end, desc = " Duplicate file" },
+      -- {"<D-BS>", function() require("genghis").trashFile() end, desc = " Move file to trash" },
+      -- {"<D-n>", function() require("genghis").createNewFile() end, desc = " Create new file" },
+      -- {"X", function() require("genghis").moveSelectionToNewFile() end, mode = "x", desc = " Selection to new file" },
+      -- stylua: ignore end
+    },
     cmd = {
       'NewFromSelection',
       'Duplicate',
@@ -612,6 +685,25 @@ local plugins = {
     opts = { automatic = true, command = true, executable = true, default = '/bin/bash' },
   },
   { 'ray-x/go.nvim', dependencies = { 'ray-x/guihua.lua' }, ft = 'go' },
+  { -- auto-convert string and f/template string
+    'chrisgrieser/nvim-puppeteer',
+    ft = { 'python', 'javascript', 'typescript', 'lua' },
+    init = function()
+      vim.g.puppeteer_lua_format_string = true
+    end,
+    keys = {
+      { -- Toggle string formatting in lua
+        'gtp',
+        function()
+          vim.g.puppeteer_lua_format_string = not vim.g.puppeteer_lua_format_string
+          local status = vim.g.puppeteer_lua_format_string and 'enabled' or 'disabled'
+          vim.notify('Puppeteer', 'Lua string formatting ' .. status)
+        end,
+        ft = 'lua',
+        desc = '󰅳 Lua string formatting',
+      },
+    },
+  },
   {
     'llllvvuu/nvim-js-actions',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
@@ -631,7 +723,7 @@ local plugins = {
           'typescript',
           'typescriptreact',
         },
-        command = 'nnoremap <buffer> <leader>ta ' .. ":lua require('nvim-js-actions').js_arrow_fn.toggle()<CR>",
+        command = 'nnoremap <buffer> gta ' .. ":lua require('nvim-js-actions').js_arrow_fn.toggle()<CR>",
         -- can also do `require('nvim-js-actions/js-arrow-fn').toggle()`
       })
     end,

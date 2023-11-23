@@ -36,6 +36,11 @@ local vim_surround = {
   },
   search_method = 'cover_or_next',
 }
+-- { "ys", desc = "󰅪 Add Surround Operator" },
+-- { "s", mode = "x", desc = "󰅪 Add Surround Operator" },
+-- { "yS", "ys$", desc = "󰅪 Surround to EoL", remap = true },
+-- { "ds", desc = "󰅪 Delete Surround Operator" },
+-- { "cs", desc = "󰅪 Change Surround Operator" },
 
 local custom_surroundings = {
   -- Lua long brackets - ysiwS
@@ -88,35 +93,41 @@ vim.cmd([[
   " noremap s<space> :normal wst " . nr2char(getchar()) . <cr>
 ]])
 
-local function setup_keymaps()
-  vim.keymap.set(
-    'n',
-    'ys',
-    [[v:lua.MiniSurround.operator('add')]],
-    { silent = true, expr = true, desc = 'mini surround add operator' }
-  )
-end
+-- vim.keymap.set({ 'x', 'n' }, 'ys', 's', { expr = true, desc = '󰅪 mini surround add operator/visual selection' })
+-- vim.keymap.set(
+--   { 'x' },
+--   'ys',
+--   "<cmd>lua MiniSurround.add('visual')<CR>",
+--   { desc = '󰅪 mini surround add visual selection', expr = true }
+-- )
+--
+-- vim.keymap.set(
+--   { 'n' },
+--   'ys',
+--   "<cmd>lua MiniSurround.operator('add')<CR>",
+--   { expr = true, desc = '󰅪 mini surround add operator selection' }
+-- )
 
--- vim.keymap.set('n', 'yss', '^ys$', { remap = true, desc = 'mini surround add line' })
+-- vim.keymap.set('n', 'yss', 'ys$', { remap = true, desc = '󰅪 mini surround add line' })
 
--- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"ds"**
--- - rhs: ` `
--- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"s"**
--- - rhs: ` `
--- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"sF"**
--- - rhs: ` `
--- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"sf"**
--- - rhs: ` `
--- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"sh"**
--- - rhs: ` `
--- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"cx"**
--- - rhs: ` `
--- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"cs"**
--- - rhs: ` `
--- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"ys"**
--- - rhs: `v:lua.MiniSurround.operator('add')`
--- - WARNING conflicting keymap exists for mode **"n"**, lhs: **"S"**
--- - rhs: ` `
+-- expr_map(m.add,       H.make_operator('add', nil, nil, true), 'Add surrounding')
+--  expr_map(m.delete,    H.make_operator('delete'),              'Delete surrounding')
+--  expr_map(m.replace,   H.make_operator('replace'),             'Replace surrounding')
+--  expr_map(m.find,      H.make_operator('find', 'right'),       'Find right surrounding')
+--  expr_map(m.find_left, H.make_operator('find', 'left'),        'Find left surrounding')
+--  expr_map(m.highlight, H.make_operator('highlight'),           'Highlight surrounding')
+--
+--  H.map('n', m.update_n_lines, MiniSurround.update_n_lines, { desc = 'Update `MiniSurround.config.n_lines`' })
+--  H.map('x', m.add, [[:<C-u>lua MiniSurround.add('visual')<CR>]], { desc = 'Add surrounding to selection' })
+
+---   vim.keymap.set('n', 'yss', 'ys_', { remap = true })
+-- vim.keymap.set('n', 'yss', '^ys$', { remap = true, desc = '󰅪 mini surround add line' })
+-- vim.keymap.set(
+--   { 'n' },
+--   'ys',
+--   [[:<C-u>lua MiniSurround.add('visual')<CR>]],
+--   { silent = true, expr = true, desc = '󰅪 mini surround add visual selection' }
+-- )
 
 --- Regular mappings:
 --- - `saiw)` - add (`sa`) for inner word (`iw`) parenthesis (`)`).

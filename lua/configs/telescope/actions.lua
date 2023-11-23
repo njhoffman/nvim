@@ -339,8 +339,10 @@ end
 M.directory_picker = function(bufnr)
   local current_picker = action_state.get_current_picker(bufnr) -- picker state
   local picker_title = current_picker.prompt_title
+  local prompt_text = current_picker:_get_prompt()
 
   local opts = {}
+  opts.default_text = prompt_text or ''
   opts.result_title = 'Choose Directory'
   local dirpicker_mappings = {
     default = function(directory)
@@ -364,6 +366,7 @@ M.directory_up = function(prompt_bufnr)
   local selection = action_state.get_selected_entry()
   local picker = action_state.get_current_picker(prompt_bufnr)
   local prompt_prefix = picker.prompt_prefix
+  local prompt_text = picker:_get_prompt()
   local dir = picker.cwd or vim.fn.getcwd() or selection.cwd
 
   if not string.match(dir, '^/') then
@@ -380,6 +383,7 @@ M.directory_up = function(prompt_bufnr)
       results_title = dir,
       cwd = dir,
       follow = true,
+      default_text = prompt_text or '',
       prompt_prefix = prompt_prefix,
     }
 
@@ -462,10 +466,15 @@ end
 
 M.yank_selection_to_buffer = function(prompt_bufnr)
   local picker = action_state.get_current_picker(prompt_bufnr)
-  local multi_targets = picker:get_multi_selection()
   local lines = {}
-  for _, target in ipairs(multi_targets) do
-    table.insert(lines, target.value or target[1])
+  local multi_targets = picker:get_multi_selection()
+  if #multi_targets > 0 then
+    for _, target in ipairs(multi_targets) do
+      table.insert(lines, target.value or target[1])
+    end
+  else
+    local single_target = action_state.get_selected_entry().value or action_state.get_selected_entry()[1]
+    table.insert(lines, single_target)
   end
   actions.close(prompt_bufnr)
   create_scratch_win('txt', lines)
@@ -473,10 +482,15 @@ end
 
 M.yank_selection = function(prompt_bufnr)
   local picker = action_state.get_current_picker(prompt_bufnr)
-  local multi_targets = picker:get_multi_selection()
   local lines = {}
-  for _, target in ipairs(multi_targets) do
-    table.insert(lines, target.value or target[1])
+  local multi_targets = picker:get_multi_selection()
+  if #multi_targets > 0 then
+    for _, target in ipairs(multi_targets) do
+      table.insert(lines, target.value or target[1])
+    end
+  else
+    local single_target = action_state.get_selected_entry().value or action_state.get_selected_entry()[1]
+    table.insert(lines, single_target)
   end
   local register = '+'
   if vim.o.clipboard == 'unnamed' then

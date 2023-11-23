@@ -26,7 +26,11 @@ local defaults = {
 -- exchange: Sxiw (move) Sxiw (or .)
 --           cxw (move) cxw (or .)
 --           (visual) X (move) (visual) X
-require('substitute').setup({ range = { prefix = 'S' } })
+
+require('substitute').setup({
+  on_substitute = require('yanky.integration').substitute(),
+  range = { prefix = 'S' },
+})
 
 local function setup_keymaps()
   vim.keymap.set('n', 'S', require('substitute').operator, { noremap = true, desc = 'substitute operator' })

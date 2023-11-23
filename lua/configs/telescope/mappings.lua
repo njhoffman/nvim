@@ -4,9 +4,11 @@ local actions = require('telescope.actions')
 local c_actions = require('configs.telescope.actions')
 
 local send_to_qflist = function(prompt_bufnr)
-  actions.send_to_qflist(prompt_bufnr)
-  actions.open_qflist(prompt_bufnr)
-  actions.center(prompt_bufnr)
+  -- actions.send_to_qflist(prompt_bufnr)
+  -- actions.open_qflist(prompt_bufnr)
+  -- actions.center(prompt_bufnr)
+  actions.smart_send_to_qflist(prompt_bufnr) -- sends selected, or if none selected, sends all
+  vim.cmd.cfirst()
 end
 
 local select_default = function(prompt_bufnr)
@@ -14,19 +16,24 @@ local select_default = function(prompt_bufnr)
   actions.center(prompt_bufnr)
 end
 
--- local ignore = function(prompt_bufnr)
---   vim.notify('ignoring keystroke for ' .. prompt_bufnr, 0)
--- end
+local logger = require('logger').init('telescope')
+local ignore_keys = function(keys)
+  local ignore_map = {}
+  for _, key in ipairs(keys) do
+    ignore_map[key] = function(prompt_bufnr)
+      logger:trace('ignoring ' .. key .. ' for ' .. prompt_bufnr)
+    end
+  end
+  return ignore_map
+end
 
-local ignore = false
 local main_maps = {
   -- stylua: ignore
   -- NOTE: have to assign all possible custom keys here and filter later from lazy loading
-  i = {
+  i = vim.tbl_extend('force', {
     ["<C-D>"]       = c_actions.search_reset,
     ["<C-U>"]       = c_actions.search_backspace_word,
     ["<Esc>"]       = actions.close,
-    -- ["<M-d>"]       = actions.close,
     ["<CR>"]        = select_default,
     ["<C-Up>"]      = actions.cycle_history_prev,
     ["<C-Down>"]    = actions.cycle_history_next,
@@ -59,64 +66,70 @@ local main_maps = {
     ["<Tab>"]       = actions.move_selection_next,
     -- ["<S-Tab>"]     = ignore, -- c_actions.results_toggle_up,
     -- ["<Tab>"]       = ignore, -- c_actions.results_toggle_down,
-    ["<PageUp>"]    = ignore, -- actions.results_scrolling_up,
-    ["<PageDown>"]  = ignore, -- actions.results_scrolling_down,
-    ["<M-q>"]       = ignore,
-    ["<M-{>"]       = ignore,
-    ["<M-}>"]       = ignore,
-    ["<M-,>"]       = ignore,
-    ["<M-.>"]       = ignore,
-    ["<M-k>"]       = ignore,
-    ["<C-C>"]       = ignore,
-    ["<C-L>"]       = ignore,
-    ["<C-K>"]       = ignore,
-    ["<C-X>"]       = ignore,
-    ["<C-T>"]       = ignore,
-    ["<C-V>"]       = ignore,
-    -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
-    -- [S-F1-9] = add/remove secondary sort #
-    -- [??] = clear sort
-  },
+  }, ignore_keys({
+      "<PageUp>",
+      "<PageDown>",
+      '<C-Space>',
+      '<M-q>',
+      "<M-{>",
+      "<M-}>",
+      "<M-,>",
+      "<M-.>",
+      "<M-d>",
+      "<M-k>",
+      "<C-C>",
+      "<C-L>",
+      "<C-K>",
+      "<C-X>",
+      "<C-T>",
+      "<C-V>",
+    })
+  ),
   n = {
     ['<Esc>'] = actions.close,
   },
+  -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
+  -- [S-F1-9] = add/remove secondary sort #
+  -- [??] = clear sort
 }
 
 local grep_maps = {
   i = {
     -- change directory functionality
-    -- ["<C-Space>"] = false,
-    -- ["<M-C-Space>"] = false,
     ['<M-{>'] = c_actions.switch_grep_pickers_prev,
     ['<M-}>'] = c_actions.switch_grep_pickers_next,
     ['<M-,>'] = c_actions.directory_up,
     ['<M-.>'] = c_actions.directory_picker,
     ['<CR>'] = c_actions.multi_open,
-    ['<C-Q>'] = c_actions.multi_to_qflist,
+    -- ['<C-Q>'] = c_actions.multi_to_qflist,
+    ['<C-Q>'] = send_to_qflist,
   },
 }
 
-local file_picker_maps = {
+local file_maps = {
   i = {
     ['<M-{>'] = c_actions.switch_file_pickers_prev,
     ['<M-}>'] = c_actions.switch_file_pickers_next,
     ['<M-,>'] = c_actions.directory_up,
     ['<M-.>'] = c_actions.directory_picker,
     ['<CR>'] = c_actions.multi_open,
-    ['<C-Q>'] = c_actions.multi_to_qflist,
+    -- ['<C-Q>'] = c_actions.multi_to_qflist,
+    ['<C-Q>'] = send_to_qflist,
   },
 }
 
 local buffer_maps = {
   i = {
-    ['<C-Del>'] = c_actions.buffer_delete,
+    -- ['<C-Del>'] = c_actions.buffer_delete,
+    ['<C-Del>'] = 'delete_buffer',
+    ['<M-d>'] = 'delete_buffer',
   },
 }
 
 local mappings = {
   grep = grep_maps,
   main = main_maps,
-  file_picker = file_picker_maps,
+  file = file_maps,
   buffer = buffer_maps,
 }
 return mappings

@@ -156,10 +156,11 @@ return function(bufnr, notif, highlights, config)
   local msg = notif.message
   local parts = get_error_parts(msg)
   local line_start = 0
+  local code = parts.code and (' ' .. parts.code) or ''
   if parts.path and utils.file_exists(parts.path) then
     vim.api.nvim_buf_set_var(bufnr, 'notify_file', parts.path)
     vim.api.nvim_buf_set_var(bufnr, 'notify_line', parts.line)
-    notif.title[1] = '*' .. parts.code .. ': ' .. parts.title
+    notif.title[1] = 'error' .. code .. ' <file>'
     box_render(bufnr, notif, highlights, config)
     line_start = 2
   end

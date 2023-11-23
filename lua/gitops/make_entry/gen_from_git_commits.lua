@@ -21,14 +21,14 @@ local parse_author = function(author)
 end
 
 local parse_date = function(time_ago, short_level)
-  --    a:6         b:10                c:24
-  --    13h      13 hours       1 year, 11 months ago
-  --   6d.3h      6 days
-  --   2w.4d      2 weeks
-  --    12m      12 months
-  --    1y        1 year
-  --  1y.11m     1 yr 11 mo
-  --    2y        2 years
+  --    a:6         b:10                c:24                  d:4
+  --    13h      13 hours       1 year, 11 months ago         13h
+  --   6d.3h      6 days                                     6.3d
+  --   2w.4d      2 weeks                                    2.4w
+  --    12m      12 months                                    12m
+  --    1y        1 year                                       1y
+  --  1y.11m     1 yr 11 mo                                  1.9y
+  --    2y        2 years                                      2y
 
   local date = string.gsub(time_ago, '[)(]+', '')
   if short_level == 1 then
@@ -37,19 +37,29 @@ local parse_date = function(time_ago, short_level)
       date = string.gsub(date, ' years?,? ?', 'yr ')
       date = string.gsub(date, ' months? ?', 'mo')
     end
-  elseif short_level == 2 then
+  elseif short_level >= 2 then
     date = string.gsub(date, ' ago', '')
+    local mins = string.match(date, '(%d+) minutes?')
+    if mins then
+      local hrs = math.floor(tonumber(mins) / 60 * 10) / 10
+      date = string.gsub(date, mins .. ' minutes?', hrs .. 'h')
+    end
     date = string.gsub(date, ' ?hours?', 'h')
     date = string.gsub(date, ' ?weeks?', 'w')
     date = string.gsub(date, ' ?days?', 'd')
     if string.match(date, 'years?, ') then
-      date = string.gsub(date, ' years?,? ?', 'y.')
-      date = string.gsub(date, ' ?months? ?', 'm')
+      if short_level == 3 then
+        date = string.gsub(date, ' years?,? ?', 'y')
+        date = string.gsub(date, ' ?months? ?', '')
+      else
+        date = string.gsub(date, ' years?,? ?', 'y.')
+        date = string.gsub(date, ' ?months? ?', 'm')
+      end
     end
     date = string.gsub(date, ' years?', 'y')
     date = string.gsub(date, ' months?', 'm')
   end
-  local width = short_level == 2 and 8 or short_level == 1 and 12 or 24
+  local width = short_level == 3 and 4 or short_level == 2 and 6 or short_level == 1 and 12 or 24
   return ops_utils.align_text(date, 'center', width, ' ')
   -- return date
 end
@@ -91,8 +101,8 @@ local resolve_widths = function(opts, widths, stats)
 
   local defaults = {
     sha = 10,
-    date = 8,
-    message = -1,
+    date = 6,
+    subject = -1,
     author = 20,
     stat_files = 5,
     stat_insert = 8,
@@ -103,7 +113,7 @@ local resolve_widths = function(opts, widths, stats)
 
   local maximums = {
     author = math.min(tonumber(stats.author_length), math.floor(0.2 * winwidth)),
-    message = tonumber(stats.subject_length),
+    subject = math.min(tonumber(stats.subject_length), math.floor(0.2 * winwidth)),
     sha = tonumber(stats.hash_length),
   }
 
@@ -115,8 +125,8 @@ local resolve_widths = function(opts, widths, stats)
       res[key] = maximums[key]
     end
   end
-  local total = res.sha + res.date + res.author + res.stat_files + res.stat_insert + res.stat_delete + 19
-  res.message = math.floor(winwidth - total)
+  -- local total = res.sha + res.date + res.author + res.stat_files + res.stat_insert + res.stat_delete + 19
+  -- res.message = math.floor(winwidth - total)
   return res
 end
 
@@ -135,7 +145,7 @@ local function gen_from_git_commits(opts, stats)
     items = {
       { width = w.sha },
       { width = w.date, right_justify = true },
-      { width = w.message, remaining = true },
+      { width = w.subject, remaining = false },
       { width = w.author, right_justify = true },
       { width = w.stat_files + 3, right_justify = true },
       { width = w.stat_insert + 3, right_justify = true },

@@ -30,6 +30,7 @@ local setup_highlights = function()
   vim.api.nvim_set_hl(0, 'CmpSourceTmux',                  { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceTreesitter',            { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceYanky',                 { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceZsh',                   { default = true, link = 'CmpSource' })
 end
 -- vim.api.nvim_set_hl(0, "CmpSourceCopilot", {fg ="#6CC644"})
 -- buffer = ' ﬘',
@@ -51,7 +52,7 @@ local source_names = {
   cmp_git =                   { '', 'CmpSourceCmpGit' },
   cmp_rg =                    { '󰉸', 'CmpSourceCmpRg' },
   cmp_tabnine =               { '󰘳', 'CmpSourceCmpTabnine' },
-  cmp_yanky =                 { ' ', 'CmpSourceYanky' },
+  cmp_yanky =                 { ' ','CmpSourceYanky' }, --   
   codeium =                   { '', 'CmpSourceCodeium' },
   copilot =                   { '', 'CmpSourceCopilot' }, -- " 
   dictionary =                { '', 'CmpSourceDictionary' },
@@ -73,6 +74,7 @@ local source_names = {
   treesitter =                { '', 'CmpSourceTreesitter' },
   ['vim-dadbod-completion'] = { '', 'CmpSourceDadbod' },
   ['vimwiki-tags'] =          { '', 'CmpSourceVimWiki' },
+  zsh =                       { '', 'CmpSourceTmux' },
 }
 
   -- local statusline_hl = vim.api.nvim_get_hl_by_name("StatusLine", true)

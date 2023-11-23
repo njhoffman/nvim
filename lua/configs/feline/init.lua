@@ -21,6 +21,7 @@ status_comps.active[1][4].left_sep = {
 --     color = fg("Statement")
 -- },
 
+-- { "selectioncount", fmt = function(str) return str ~= "" and "礪" .. str or "" end },
 table.insert(status_comps.active[1], 7, custom_status_comps.FiletypeComponent)
 -- { provider = 'diagnostic_errors', hl = { fg = 'red' } },
 -- { provider = 'diagnostic_warnings', hl = { fg = 'yellow' } },
@@ -86,6 +87,7 @@ local statusline_cfg = {
     neocomposer = require('configs.feline.provider-neocomposer').provider,
     ascii = require('configs.feline.provider-ascii').provider,
     helptags = require('configs.feline.provider-helptags').provider,
+    selection_count = require('configs.feline.provider-selection_count').provider,
   },
 }
 

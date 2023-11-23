@@ -11,9 +11,14 @@ local cfg = {
   auto_install = true,
   ensure_installed = 'all',
   -- ignore_install = { 'comment' },
-  -- indent = {
-  --   enable = config.indent,
-  -- },
+  indent = {
+    enable = true,
+    disable = {
+      'markdown', -- indentation at bullet points worse
+      'lua', -- `o` sometimes get weird behavior
+      'javascript', -- `o` sometimes get weird behavior
+    },
+  },
   playground = tsmodules.playground,
   highlight = tsmodules.highlight,
   refactor = tsmodules.refactor,

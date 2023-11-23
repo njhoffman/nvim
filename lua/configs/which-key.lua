@@ -81,14 +81,17 @@ local config = {
   },
   ignore_missing = false,
   -- autokey replacements
+  --   ['<M-g>'] = '<C-g>',
+  --   ['<M-G>'] = '<C-G>',
   key_labels = {
-    ['<space>'] = 'SPC',
-    ['<cr>'] = 'RET',
-    ['<tab>'] = 'TAB',
-    ['<M-g>'] = '<C-g>',
-    ['<M-G>'] = '<C-G>',
+    ['<CR>'] = '↵',
+    ['<BS>'] = '⌫',
+    ['<space>'] = '󱁐',
+    ['<Tab>'] = '󰌒',
+    ['<Esc>'] = '⎋',
   },
-  hidden = { '<silent>', '<cmd>', '<Cmd>', '<CR>', '^:', '^ ', '^call ', '^lua ' }, -- hide mapping boilerplate
+  -- hidden = { '<silent>', '<cmd>', '<Cmd>', '<CR>', '^:', '^ ', '^call ', '^lua ' }, -- hide mapping boilerplate
+  hidden = { '<Plug>', '^:lua ', '<cmd>' },
   popup_mappings = {
     -- scroll_down = '<c-f>', -- binding to scroll down inside the popup
     -- scroll_up = '<c-b>', -- binding to scroll up inside the popup
@@ -104,6 +107,11 @@ local config = {
     padding = { 0, 0, 0, 0 }, -- extra window padding [top, right, bottom, left]
   },
   triggers_blacklist = {
+    -- FIX very weird bug where insert mode undo points (<C-g>u),
+    -- as well as vim-matchup's `<C-G>%` binding insert extra `1`s
+    -- after wrapping to the next line in insert mode. The `G` needs
+    -- to be uppercased to affect the right mapping.
+    i = { '<C-G>' },
     -- list of mode / prefixes that should never be hooked by WhichKey
     -- this is mostly relevant for key maps that start with a native binding
     -- most people should not need to change this

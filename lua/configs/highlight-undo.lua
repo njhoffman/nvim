@@ -5,14 +5,14 @@ local cfg = {
     mode = 'n',
     lhs = '<C-r>',
     map = 'redo',
-    opts = {},
+    opts = { desc = '󰑎 Redo' },
   },
   undo = {
     hlgroup = 'HighlightUndo',
     mode = 'n',
     lhs = 'u',
     map = 'undo',
-    opts = {},
+    opts = { desc = '󰕌 Undo' },
   },
   highlight_for_count = true,
 }

@@ -1,15 +1,15 @@
 local function visual_paste_without_yank()
-  local register = "+"
+  local register = '+'
 
-  if vim.o.clipboard == "unnamed" then
-    register = "*"
+  if vim.o.clipboard == 'unnamed' then
+    register = '*'
   end
   local content = vim.fn.getreg(register)
-  local lines = vim.fn.split(content, "\n")
+  local lines = vim.fn.split(content, '\n')
 
-  vim.fn.setreg("x", vim.fn.getreg(register))
+  vim.fn.setreg('x', vim.fn.getreg(register))
   vim.api.nvim_paste(content, true, -1)
-  vim.fn.setreg(register, vim.fn.getreg("x"))
+  vim.fn.setreg(register, vim.fn.getreg('x'))
 end
 
 -- vim.keymap.set("x", "p", '"_dP', { desc = "don't replace register when pasting" })

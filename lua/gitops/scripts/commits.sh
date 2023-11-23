@@ -37,12 +37,12 @@ commits_author_length() {
 
 commits_subject_length() {
   sub_cmd+=("--format='%s'")
-  sub_cmd+=("--max-parents=0")
+  # sub_cmd+=("--max-parents=1")
   sub_cmd+=("HEAD")
   if [[ $# -gt 0 ]]; then
     sub_cmd+=("-- $*")
   fi
-  post_cmd="tail -n1 | tr -d '\n' | wc --chars"
+  post_cmd="awk '{ print length, \$0 }' | sort -nr | head -n1 | cut -d' ' -f1"
   cmd="${base_cmd[*]} ${sub_cmd[*]} | $post_cmd"
   if [[ $print_cmd -eq 1 ]]; then
     printf "%s" "$cmd"
@@ -53,7 +53,7 @@ commits_subject_length() {
 
 commits_hash_length() {
   sub_cmd+=("--format='%h'")
-  sub_cmd+=("--max-parents=0")
+  # sub_cmd+=("--max-parents=1")
   sub_cmd+=("HEAD")
   if [[ $# -gt 0 ]]; then
     sub_cmd+=("-- $*")

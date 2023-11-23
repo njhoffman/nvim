@@ -8,13 +8,34 @@ local function goto_last_pos()
   end
 end
 
+local function file_exists(name)
+  local f = io.open(name, 'r')
+  if f ~= nil then
+    io.close(f)
+    return true
+  else
+    return false
+  end
+end
+
+local last_file = nil
 local function fasd_update()
   local logger = require('logger').init('fasd')
   local ignored_ft = { 'dirvish' }
   local fname = vim.api.nvim_buf_get_name(0)
-  if vim.bo.buftype == '' and not vim.tbl_contains(ignored_ft, vim.bo.filetype) and fname ~= '' then
+  if
+    vim.bo.buftype == ''
+    and not vim.tbl_contains(ignored_ft, vim.bo.filetype)
+    and fname ~= ''
+    and fname ~= last_file
+    and file_exists(fname)
+  then
     vim.fn.jobstart({ 'fasd', '-A', fname })
-    logger:trace('add ' .. vim.fn.fnamemodify(fname, ':t'), 0)
+    logger:trace(
+      'add ' .. vim.fn.fnamemodify(fname, ':t')
+      -- 'add ' .. fname
+    )
+    last_file = fname
   end
 end
 

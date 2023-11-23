@@ -2,11 +2,11 @@ local telescope = require('telescope')
 local sorters = require('telescope.sorters')
 local H = require('helpers')
 local actions = require('telescope.actions')
-local tele_mappings = require('configs.telescope.mappings')
+local mappings = require('configs.telescope.mappings')
 
 -- require'telescope.builtin'.grep_string{ shorten_path = true, word_match = "-w", only_sort_text = true, search = '' }
 
-local tele_plugs = {
+local extension_configs = {
   -- locally managed
   ['arecibo'] = {
     ['selected_engine'] = 'google',
@@ -17,7 +17,7 @@ local tele_plugs = {
 
   ['devhints'] = {},
   ['oldfiles'] = {
-    mappings = require('configs.telescope.mappings').file_picker,
+    mappings = mappings.file,
     include_current_session = true,
     show_time = true,
     show_size = false,
@@ -46,7 +46,7 @@ local tele_plugs = {
       show_scores = true,
       show_unindexed = true,
       ignore_patterns = { '*.git/*', '/mnt/*', '*/tmp/*' },
-      mappings = tele_mappings.file_picker,
+      mappings = mappings.file,
       workspaces = {
         ['etc'] = '/etc',
         ['bin'] = baseDirs.home .. '/bin',
@@ -236,7 +236,7 @@ local tele_plugs = {
   -- url_first = false
   ['file_browser'] = {
     theme = 'ivy',
-    mappings = tele_mappings.file_picker,
+    mappings = mappings.file,
   },
   ['fzf'] = {
     fuzzy = true, -- false will only do exact matching
@@ -404,7 +404,7 @@ local tele_plugs = {
 
 local get_extensions = function()
   local extensions = {}
-  for ext_name, ext_cfg in pairs(tele_plugs) do
+  for ext_name, ext_cfg in pairs(extension_configs) do
     if type(ext_cfg) == 'function' then
       extensions[ext_name] = ext_cfg()
     elseif type(ext_cfg) == 'table' and not vim.tbl_isempty(ext_cfg) then
@@ -414,9 +414,9 @@ local get_extensions = function()
   return extensions
 end
 
-local load = function()
+local load_extensions = function()
   local installed = {}
-  for ext_name, _ in pairs(tele_plugs) do
+  for ext_name, _ in pairs(extension_configs) do
     local ok, err = pcall(telescope.load_extension, ext_name)
     if ok then
       table.insert(installed, 0, ext_name)
@@ -426,7 +426,11 @@ local load = function()
       vim.notify(err_msg, 4)
     end
   end
-  local end_msg = 'Loaded ' .. H.table_len(installed) .. ' out of ' .. H.table_len(tele_plugs) .. ' telescope plugins'
+  local end_msg = 'Loaded '
+    .. H.table_len(installed)
+    .. ' out of '
+    .. H.table_len(extension_configs)
+    .. ' telescope plugins'
   -- FIXME: this is not working
   -- vim.notify(end_msg, 1)
 end
@@ -437,7 +441,10 @@ end
 --         end)
 -- end, { desc = "LSP workspace symbols" })
 
-return { load = load, get_extensions = get_extensions }
+return {
+  load = load_extensions,
+  get = get_extensions,
+}
 
 --  Z telescope plugin:
 --  <CR> (edit)	builtin.find_files    <C-x> (split)	:chdir to the dir

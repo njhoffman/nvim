@@ -25,12 +25,15 @@ local function gen_from_keymaps(opts)
     return utils.display_termcodes(entry.lhs)
   end
 
+  -- @(buffer) !silent *noremap +expr  nowait
+
+  -- stylua: ignore
   local attr_map = {
-    { 'buffer', '@' },
-    { 'silent', '!' },
+    { 'buffer',  '@' },
+    { 'silent',  '!' },
     { 'noremap', '*' },
-    { 'expr', '+' },
-    { 'nowait', '' },
+    { 'expr',    '+' },
+    { 'nowait',  '' },
     -- unique
   }
 

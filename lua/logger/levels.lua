@@ -1,19 +1,18 @@
+-- stylua: ignore
 local log_levels = {
-  ['*'] = {
-    main = 1,
-  },
-  hover = { main = 0 },
+  ['*']                = { main = 1 },
+  hover                = { main = 0 },
   ['early-retirement'] = { main = -1 },
-  -- fasd = { main = -1 },
-  -- git = { main = -1 },
-  lazy = { main = 2 },
-  lsp = { main = 2 },
-  ['lsp-root'] = { main = 0 },
-  -- mapper = { main = -1, module = -1 },
-  -- mru = { main = -1 },
-  notify = { main = 0 },
-  project = { main = 2 },
-  root = { main = -1 },
+  fasd                 = { main = 0 },
+  -- git               = { main = 0 },
+  lazy                 = { main = 2 },
+  lsp                  = { main = 2 },
+  ['lsp-root']         = { main = 0 },
+  -- mapper            = { main = -1, module = -1 },
+  -- mru               = { main = -1 },
+  notify               = { main = 0 },
+  project              = { main = 1 },
+  root                 = { main = -1 },
 }
 
 return log_levels

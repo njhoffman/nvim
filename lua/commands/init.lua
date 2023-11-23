@@ -2,7 +2,7 @@ local format = require('commands.format')
 local ui = require('commands.ui')
 local help = require('commands.help')
 local debug = require('commands.debug')
-local paste = require('commands.paste')
+-- local paste = require('commands.paste')
 local system = require('commands.system')
 require('commands.inspect')
 

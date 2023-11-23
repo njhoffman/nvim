@@ -21,6 +21,7 @@ local plugins = {
       'hrsh7th/cmp-nvim-lua',
       'FelipeLema/cmp-async-path',
       'hrsh7th/cmp-path',
+      'tamago324/cmp-zsh',
       'jc-doyle/cmp-pandoc-references',
       'roobert/tailwindcss-colorizer-cmp.nvim',
       'onsails/lspkind.nvim',

@@ -32,6 +32,9 @@ local default = {
     enabled = true,
   },
 }
+-- textobj = {
+--   enabled = true,
+-- },
 
 local cfg = {
   ring = {
@@ -53,30 +56,135 @@ local cfg = {
   },
 }
 
-require('yanky').setup(cfg)
+local yanky = require('yanky')
+yanky.register_plugs()
+yanky.setup(cfg)
 
-vim.keymap.set({ 'o', 'x' }, '<leader>pl', function()
-  require('yanky.textobj').last_put()
-end, { desc = 'put last yanked text object' })
--- telescope actions
--- require("yanky.picker").actions.put("p") -- put after cursor
--- require("yanky.picker").actions.put("P") -- put before cursor
--- require("yanky.picker").actions.put("gp") -- put after cursor and leave the cursor after
--- require("yanky.picker").actions.put("gP") -- put before cursor and leave the cursor after
--- require("yanky.picker").actions.delete() -- delete entry from yank history
--- require("yanky.picker").actions.set_register(regname) -- fill register with selected value
--- require("yanky.picker").actions.put_and_set_register("p", regname) -- put and fill register with selected value
+-- local map = vim.keymap.set
+local map = require('mapper').map
+
+-- gp = "GPutAfter",
+-- gP = "GPutBefore",
+
+local yanky_cycle = function(direction)
+  local history = require('yanky.history')
+  local count = history.storage.length()
+  if direction == 'forward' then
+    vim.cmd([[ execute "normal! \<Plug>(YankyCycleForward)" ]])
+  else
+    vim.cmd([[ execute "normal! \<Plug>(YankyCycleBackward)" ]])
+  end
+  if history.position > 1 and history.position < count then
+    vim.notify(history.position .. '/' .. count .. ' yank ring', vim.log.levels.INFO)
+  end
+end
+
 
 -- stylua: ignore start
--- vim.keymap.set({"n","x"}, "p",     "<Plug>(YankyPutAfter)")
--- vim.keymap.set({"n","x"}, "P",     "<Plug>(YankyPutBefore)")
--- vim.keymap.set({"n","x"}, "gp",    "<Plug>(YankyGPutAfter)")
--- vim.keymap.set({"n","x"}, "gP",    "<Plug>(YankyGPutBefore)")
--- vim.keymap.set("n",       "<c-n>", "<Plug>(YankyCycleForward)")
--- vim.keymap.set("n",       "<c-p>", "<Plug>(YankyCycleBackward)")
--- vim.keymap.set({"n","x"}, "p",     "<Plug>(YankyPutAfter)")
--- vim.keymap.set({"n","x"}, "P",     "<Plug>(YankyPutBefore)")
--- vim.keymap.set({"n","x"}, "gp",    "<Plug>(YankyGPutAfter)")
--- vim.keymap.set({"n","x"}, "gP",    "<Plug>(YankyGPutBefore)")
--- vim.keymap.set("n",       "<c-n>", "<Plug>(YankyCycleForward)")
--- vim.keymap.set("n",       "<c-p>", "<Plug>(YankyCycleBackward)")
+-- base mappings
+map('n',         'p',         '<Plug>(YankyPutAfter)',                { desc = '  paste (yanky)', noremap = false, silent = true })
+map('n',         'P',         '<Plug>(YankyPutBefore)',               { desc = '  paste & indent', noremap = false, silent = true })
+map({'n', 'x'},  'y',         '<Plug>(YankyYank)',                    { desc = '  sticky yank', noremap = false, silent = true })
+-- map({'n', 'x'},  'y',         'ygv<esc>',                             { category = 'Motion', label = 'yank keep cursor begin', desc = '  yank maintaining cursor start position', silent = true })
+map('n',         '<M-C-P>',  '<cmd>lua require("configs.yanky").yanky_cycle("backward")<cr>', { desc = '  cycle killring backward', silent = true })
+map('n',         '<M-C-N>',  '<cmd>lua require("configs.yanky").yanky_cycle("forward")<cr>',  { desc = '  cycle killring forward', silent = true })
+map({'o', 'x'}, '<leader>pl','<cmd>lua require("yanky.textobj").last_put()<cr>',              { desc = '  put last yanked text object', silent = true })
+
+-- unimpaired-like mappings
+map("n", "]p", "<Plug>(YankyPutIndentAfterLinewise)",   { desc = '  paste & indent after (linewise)' })
+map("n", "[p", "<Plug>(YankyPutIndentBeforeLinewise)",  { desc = '  paste & indent before (linewise)' })
+map("n", "]P", "<Plug>(YankyPutIndentAfterLinewise)",   { desc = '  paste & indent after (blockwise)' })
+map("n", "[P", "<Plug>(YankyPutIndentBeforeLinewise)",  { desc = '  paste & indent before (blockwise)' })
+map("n", "<p", "<Plug>(YankyPutBeforeCharwiseJoined)",  { desc = '  paste before (charwise)' })
+map("n", ">p", "<Plug>(YankyPutAfterCharwiseJoined)",   { desc = '  paste after (charwise)' })
+map("n", "<P", "<Plug>(YankyPutBeforeCharwise)",        { desc = '  paste before (charwise joined)' })
+map("n", ">P", "<Plug>(YankyPutAfterCharwise)",         { desc = '  paste after (charwise joined)' })
+map("n", "=p", "<Plug>(YankyPutAfterFilter)",           { desc = '  paste & reindent after line' })
+map("n", "=P", "<Plug>(YankyPutBeforeFilter)",          { desc = '  paste & reindent before line' })
+-- '<cmd>norm vil<CR>'
+map('n', 'yil', 'v0o$y',                 { category = 'Motion', label = 'yank in line',           desc = '  yank in line', silent = true }) -- <cmd>normal yy<cr>
+map('n', 'yy', 'mQ0y$`Q',                { category = 'Motion', label = 'yank in line no eol',    desc = '  yank in line no eol' })
+map('n', 'yY', '<cmd>norm vil<CR>',      { category = 'Motion', label = 'yank in line',           desc = '  yank in line' })
+map('n', 'gcp', '<cmd>norm p`[V`]gc`[<cr>', { category = 'Motion', label = 'paste comment line',     desc = '  paste as a comment' })
+map('n', 'gcP', '<cmd>norm p`[v`]gc`[<cr>', { category = 'Motion', label = 'paste comment block',    desc = '  paste as a comment' })
+
+map('n', '<leader>pp', '"*p',                      { category = 'Motion', label = 'paste primary',     desc = '  paste primary (*) clipboard register' })
+map('n', '<leader>pm', '<cmd>set invpaste<cr>',    { category = 'Motion', label = 'toggle paste mode', desc = '  toggle paste mode' })
+map('n', '<leader>pc', '<cmd>normal p`[v`]gc<cr>', { category = 'Motion', label = 'paste comment',     desc = '  paste as a comment' })
+
+return { yanky_cycle = yanky_cycle }
+
+-- Linewise put        : this will force put above or below the current line ;
+-- Shift right/left put: will put above or below the current line and increasing or decreasing indent ;
+-- Filter put          : will put above or below the current line and reindenting.
+--
+--   Yanky(put-type)(modifier)(rewriter)
+-- put-type can be:
+--   PutAfter       : put after your cursor (as p key) ;
+--   PutBefore      : put before your cursor (as P key) ;
+--   GPutAfter      : like PutAfter but leave the cursor after the new text (as gp key) ;
+--   GPutBefore     : like PutBefore but leave the cursor after the new text (as gP key) ;
+--   PutIndentAfter : like PutAfter but adjust the indent to the current line (as ]p key) ;
+--   PutIndentBefore: like PutBefore but adjust the indent to the current line (as [p key) ;
+-- modifier (optional) can be:
+--   Linewise  : put in linewise mode ;
+--   Charwise  : put in charwise mode ;
+--   Blockwise : put in blockwise mode ;
+--   ShiftRight: increase indent ;
+--   ShiftLeft : decrease indent.
+-- rewriter (optional) can be:
+--   Joined: put lines trimed and joined.
+-- telescope actions:
+--   require("yanky.picker").actions.put("p") -- put after cursor
+--   require("yanky.picker").actions.put("P") -- put before cursor
+--   require("yanky.picker").actions.put("gp") -- put after cursor and leave the cursor after
+--   require("yanky.picker").actions.put("gP") -- put before cursor and leave the cursor after
+--   require("yanky.picker").actions.delete() -- delete entry from yank history
+--   require("yanky.picker").actions.set_register(regname) -- fill register with selected value
+--   require("yanky.picker").actions.put_and_set_register("p", regname) -- put and fill register with selected value
+
+-- YankyPutAfter                         YankyPutBefore
+-- YankyPutAfterBlockwise                YankyPutBeforeBlockwise
+-- YankyPutAfterBlockwiseJoined          YankyPutBeforeBlockwiseJoined
+-- YankyPutAfterCharwise                 YankyPutBeforeCharwise
+-- YankyPutAfterCharwiseJoined           YankyPutBeforeCharwiseJoined
+-- YankyPutAfterFilter                   YankyPutBeforeFilter
+-- YankyPutAfterFilterJoined             YankyPutBeforeFilterJoined
+-- YankyPutAfterJoined                   YankyPutBeforeJoined
+-- YankyPutAfterLinewise                 YankyPutBeforeLinewise
+-- YankyPutAfterLinewiseJoined           YankyPutBeforeLinewiseJoined
+--
+-- YankyGPutAfter                        YankyGPutBefore
+-- YankyGPutAfterBlockwise               YankyGPutBeforeBlockwise
+-- YankyGPutAfterBlockwiseJoined         YankyGPutBeforeBlockwiseJoined
+-- YankyGPutAfterCharwise                YankyGPutBeforeCharwise
+-- YankyGPutAfterCharwiseJoined          YankyGPutBeforeCharwiseJoined
+-- YankyGPutAfterFilter                  YankyGPutBeforeFilter
+-- YankyGPutAfterFilterJoined            YankyGPutBeforeFilterJoined
+-- YankyGPutAfterJoined                  YankyGPutBeforeJoined
+-- YankyGPutAfterLinewise                YankyGPutBeforeLinewise
+-- YankyGPutAfterLinewiseJoined          YankyGPutBeforeLinewiseJoined
+--
+-- YankyPutIndentAfter                    YankyPutIndentBefore
+-- YankyPutIndentAfterBlockwise           YankyPutIndentBeforeBlockwise
+-- YankyPutIndentAfterBlockwiseJoined     YankyPutIndentBeforeBlockwiseJoined
+-- YankyPutIndentAfterCharwise            YankyPutIndentBeforeCharwise
+-- YankyPutIndentAfterCharwiseJoined      YankyPutIndentBeforeCharwiseJoined
+-- YankyPutIndentAfterFilter              YankyPutIndentBeforeFilter
+-- YankyPutIndentAfterFilterJoined        YankyPutIndentBeforeFilterJoined
+-- YankyPutIndentAfterJoined              YankyPutIndentBeforeJoined
+-- YankyPutIndentAfterLinewise            YankyPutIndentBeforeLinewise
+-- YankyPutIndentAfterLinewiseJoined      YankyPutIndentBeforeLinewiseJoined
+
+-- YankyPutAfterShiftLeft                YankyPutBeforeShiftLeft
+-- YankyPutAfterShiftLeftJoined          YankyPutBeforeShiftLeftJoined
+-- YankyPutAfterShiftRight               YankyPutBeforeShiftRight
+-- YankyPutAfterShiftRightJoined         YankyPutBeforeShiftRightJoined
+-- YankyGPutAfterShiftLeft               YankyGPutBeforeShiftLeft
+-- YankyGPutAfterShiftLeftJoined         YankyGPutBeforeShiftLeftJoined
+-- YankyGPutAfterShiftRight              YankyGPutBeforeShiftRight
+-- YankyGPutAfterShiftRightJoined        YankyGPutBeforeShiftRightJoined
+-- YankyPutIndentAfterShiftLeft          YankyPutIndentBeforeShiftLeft
+-- YankyPutIndentAfterShiftLeftJoined    YankyPutIndentBeforeShiftLeftJoined
+-- YankyPutIndentAfterShiftRight         YankyPutIndentBeforeShiftRight
+-- YankyPutIndentAfterShiftRightJoined   YankyPutIndentBeforeShiftRightJoined
