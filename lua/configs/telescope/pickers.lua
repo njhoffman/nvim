@@ -116,6 +116,11 @@ local pickers = {
     prompt_prefix = icons.keymap,
     entry_maker = require('configs.telescope.entry_makers').gen_from_keymaps({}),
     results_title = '@buffer !silent *noremap +expr  nowait',
+    show_plug = false,
+    modes = { 'n', 'i', 'c', 'x', 'v', 'o', 't' },
+    -- modes = vim.F.if_nil(opts.modes, { "n", "i", "c", "x" })
+    -- show_plug = true,
+    -- only_buf = false
   },
   highlights = {
     prompt_prefix = icons.palette,

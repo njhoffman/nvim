@@ -131,7 +131,19 @@ local plugins = {
   { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
   { 'phaazon/hop.nvim', branch = 'v2', event = { 'BufReadPost', 'BufNewFile' } },
   { 'TaDaa/vimade', event = 'VimEnter' },
-  { 'kevinhwang91/nvim-hlslens', event = { 'VimEnter' } },
+  {
+    'kevinhwang91/nvim-hlslens',
+    event = { 'VimEnter' },
+    init = function()
+      -- cannot use my utility, as the value of IncSearch needs to be retrieved dynamically
+      vim.api.nvim_create_autocmd('ColorScheme', {
+        callback = function()
+          local reversed = require('utils.core').getHighlightValue('IncSearch', 'bg')
+          vim.api.nvim_set_hl(0, 'HLSearchReversed', { fg = reversed })
+        end,
+      })
+    end,
+  },
   { 'Bekaboo/deadcolumn.nvim', event = { 'VimEnter' } },
   -- treesitter
   {

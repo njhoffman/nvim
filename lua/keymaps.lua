@@ -114,11 +114,33 @@ map('c', '<M-b>', '<C-T><Esc>', {
   desc = 'open command window from the command line in normal mode',
 })
 
-map('c', '<c-d>', '<C-c>', {
-  category = 'Command',
-  label = 'close cmdline',
-  desc = 'close the commandline',
-})
+-- map('c', '<c-d>', '<C-c>', {
+--   category = 'Command',
+--   label = 'close cmdline',
+--   desc = 'close the commandline',
+-- })
+
+map({ 'n', 'x', 'i' }, '<C-d>', function()
+  require('funcs.alt-alt').betterClose()
+end, { desc = '󰽙 close buffer/window' })
+
+-- -- COMMENTS
+map('n', 'gch', function()
+  require('funcs.quality-of-life').commentHr()
+end, { desc = ' Horizontal Divider' })
+
+map('n', 'gcC', function()
+  require('funcs.quality-of-life').duplicateAsComment()
+end, { desc = ' Duplicate Line as Comment' })
+
+map('n', 'gc<space>', function()
+  require('funcs.quality-of-life').duplicateAsComment()
+end, { desc = ' Duplicate Line as Comment' })
+
+-- Jump history
+-- non-unique, since it overwrites nvim default: https://neovim.io/doc/user/vim_diff.html#default-mappings
+-- keymap("n", "<C-l>", "<C-i>", { desc = "󱋿 Jump forward", unique = false })
+-- keymap("n", "<C-h>", "<C-o>", { desc = "󱋿 Jump back" })
 
 -- -		The cursor position is unchanged, except when the cursor was
 -- 		at the end of the line, then it stays at the end.
@@ -212,15 +234,14 @@ map('n', 'L', bufvar[2][2], {
 map('n', '<leader>!', '<cmd>BufferCloseAllButCurrent<cr>', {
   category = 'Buffers',
   label = 'close other bufs',
-  desc = 'close all buffers except current',
+  desc = '󰽙 close all buffers except current',
 })
 
 map({ 'n', 's', 'v', 'i' }, '<C-s>', '<cmd>silent! w<cr><esc>', {
   category = 'Buffers',
   label = 'write buffer',
   silent = true,
-
-  desc = 'write to buffer',
+  desc = '󰽙 write to buffer',
 })
 
 map('n', '<leader>*', '<cmd>wall<cr>', {
@@ -228,21 +249,24 @@ map('n', '<leader>*', '<cmd>wall<cr>', {
   label = 'write all',
   silent = true,
 
-  desc = 'write all buffers',
+  desc = '󰽙 write all buffers',
 })
 
 map('n', '<leader>w', '<cmd>noa w<cr>', {
   category = 'Buffers',
   label = 'write noa',
   silent = true,
-  desc = 'write without autocommands',
+  desc = '󰽙 write without autocommands',
 })
 
 map('n', '<leader>D', '<cmd>BufferDelete<cr>', {
   category = 'Buffers',
   label = 'delete buffer',
-  desc = 'delete buffer without closing window',
+  desc = '󰽙 delete buffer without closing window',
 })
+
+-- map('n', '<S-Space>', '"_caw', { desc = '󱡔 change word' })
+-- map('n', '<S-Space>', '"_daw', { desc = '󱡔 delete word' })
 
 map('i', '<M-BS>', '<Esc>cvb', {
   category = 'Buffers',
@@ -290,7 +314,7 @@ map('n', '<leader>fn', [[:vsp <C-R>=expand("%:p:h") . "/" <CR>]], {
   desc = 'create new file in a horizontal split',
 })
 
-map('n', '<leader>fp', "<cmd>pfn :echo expand('%:p')<CR>", {
+map('n', '<leader>fp', "<cmd>echo expand('%:p')<CR>", {
   category = 'Buffers',
   label = 'print path',
   desc = 'print path of current buffer',
@@ -318,14 +342,8 @@ map('n', '<leader>cd', '<cmd>cd %:h<cr>', {
 
 -- undo 0, earlier 5m, earlier 1h, later 5h, later 1f (file writes later)
 
-map('i', ',', ',<c-g>u', {
-  category = 'Buffers',
-  desc = 'add undo at ,',
-})
-map('i', '.', '.<c-g>u', {
-  category = 'Buffers',
-  desc = 'add undo at .',
-})
+map('i', ',', ',<c-g>u', { category = 'Buffers', desc = 'add undo at ,' })
+map('i', '.', '.<c-g>u', { category = 'Buffers', desc = 'add undo at .' })
 
 --
 --------------------------------------------------------------------------------------------------
@@ -402,16 +420,15 @@ vmap('n', 'gx', {
 --------------------------------------------------------------------------------------------------
 -- MOTION ----------------------------------------------------------------------------------------
 
-vmap('n', '', {
-  category = 'Motion',
-  label = 'xdg-open file',
-  desc = 'open file with xdg-open under cursor',
-})
-
--- map('n', '<cr>', 'ciw', {
---   category = 'Motion',
---   desc = 'enter insert mode and change word',
--- })
+map('n', '<CR>', function()
+  if vim.bo.buftype == 'terminal' then
+    u.normal('a') -- enter terminal mode
+  elseif vim.bo.buftype == '' then
+    require('funcs.alt-alt').gotoAltBuffer()
+  else
+    return -- disable in other buffertypes
+  end
+end, { desc = '󰽙 Alt Buffer' })
 
 map('n', 'gn', "g#<cmd>lua require('hlslens').start()<cr>", {
   category = 'Motion',
@@ -592,12 +609,6 @@ map({ 'n', 'v' }, "<M-'>", '<cmd>HopWord<cr>', {
 vim.cmd([[
   " nnoremap <expr> <silent> <CR> &buftype ==# "quickfix" ? "\<CR>" : "o\<Esc>k"
 ]])
-
-map('v', '<C-X>', '<Esc>`.``gvP``P', {
-  category = 'Motion',
-  label = 'swap visual block',
-  desc = 'swap visual selected block with register',
-})
 
 map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
   category = 'Motion',
@@ -798,154 +809,154 @@ map('n', '<M-,>', '<cmd>cprev<cr>', {
 vmap('n', '<c-j>', {
   category = 'Window',
   label = 'window down',
-  desc = 'move to window below',
+  desc = ' move to window below 󰁆',
 })
 
 vmap('n', '<c-k>', {
   category = 'Window',
   label = 'window up',
-  desc = 'move to window up',
+  desc = ' move to window 󰁞',
 })
 
 vmap('n', '<c-h>', {
   category = 'Window',
   label = 'window left',
-  desc = 'move to window left',
+  desc = ' move to window left',
 })
 
 vmap('n', '<c-l>', {
   category = 'Window',
   label = 'window right',
-  desc = 'move to window right',
+  desc = ' move to window right',
 })
 
 vmap('n', '<c-w>o', {
   category = 'Window',
   label = 'close other windows',
-  desc = 'close other windows except current',
+  desc = ' close other windows except current',
 })
 
 map('n', '<leader>o', '<c-w>o', {
   category = 'Window',
   label = 'close other windows',
-  desc = 'close other windows except current',
+  desc = ' close other windows except current',
 })
 
 vmap('n', '<C-w>x', {
   category = 'Window',
   label = 'swap windows',
-  desc = 'swap windows',
+  desc = ' swap windows',
 })
 
 vmap('n', '<c-w>+', {
   category = 'Window',
   label = 'window +height',
-  desc = 'increase height of focused window',
+  desc = ' increase height of focused window',
 })
 
 vmap('n', '<c-w>-', {
   category = 'Window',
   label = 'window -height',
-  desc = 'decrease height of focused window',
+  desc = ' decrease height of focused window',
 })
 
 vmap('n', '<c-w><', {
   category = 'Window',
   label = 'window +width',
-  desc = 'increase width of focused window',
+  desc = ' increase width of focused window',
 })
 
 vmap('n', '<c-w>>', {
   category = 'Window',
   label = 'window -width',
-  desc = 'decrease width of focused window',
+  desc = ' decrease width of focused window',
 })
 
 vmap('n', '<c-w>=', {
   category = 'Window',
   label = 'windows even',
-  desc = 'resize windows evenly',
+  desc = ' resize windows evenly',
 })
 
 map('n', '<leader>=', '<c-w>=', {
   category = 'Window',
   label = 'windows even',
-  desc = 'resize windows evenly',
+  desc = ' resize windows evenly',
 })
 
 vmap('n', '<c-w>W', {
   category = 'Window',
   label = 'window prev',
-  desc = 'focus the previous window',
+  desc = ' focus the previous window',
 })
 map('n', '<leader>:', '<c-w>W', {
   category = 'Window',
   label = 'window prev',
-  desc = 'focus the previous window',
+  desc = ' focus the previous window',
 })
 
 vmap('n', '<c-w>w', {
   category = 'Window',
   label = 'window next',
-  desc = 'focus the next window',
+  desc = ' focus the next window',
 })
 map('n', '<leader>;', '<c-w>w', {
   category = 'Window',
   label = 'window next',
-  desc = 'focus the next window',
+  desc = ' focus the next window',
 })
 
 map('n', '<Tab>', '<c-w>w', {
   category = 'Window',
   label = 'window next',
-  desc = 'focus the next window',
+  desc = ' focus the next window',
 })
 
 map('n', '<S-Tab>', '<c-w>W', {
   category = 'Window',
   label = 'window prev ',
-  desc = 'focus the prev window',
+  desc = ' focus the prev window',
 })
 
 map('n', '<leader>H', '<cmd>vnew<cr>', {
   category = 'Window',
   label = 'window split-h',
-  desc = 'window split horizontally',
+  desc = ' window split horizontally',
 })
 
 map('n', '<leader>V', '<cmd>new<cr>', {
   category = 'Window',
   label = 'window split-v',
-  desc = 'window split vertically',
+  desc = ' window split vertically',
 })
 
 vmap('n', '<c-w>_', {
   category = 'Window',
   label = 'max vertical split',
-  desc = 'maximize height of vertical split',
+  desc = ' maximize height of vertical split',
 })
 
 map('n', '<leader>_', '<c-w>_', {
   category = 'Window',
   label = 'max vertical split',
-  desc = 'maximize height of vertical split',
+  desc = ' maximize height of vertical split',
 })
 
 vmap('n', '<c-w>|', {
   category = 'Window',
   label = 'max horizontal split',
-  desc = 'maximize width of horizontal split',
+  desc = ' maximize width of horizontal split',
 })
 map('n', '<leader>|', '<c-w>|', {
   category = 'Window',
   label = 'max horizontal split',
-  desc = 'maximize width of horizontal split',
+  desc = ' maximize width of horizontal split',
 })
 
 map('n', '<leader>q', '<cmd>silent! tabclose | Sayonara<cr>', {
   category = 'Window',
   label = 'close window',
-  desc = 'close window smartly wih sayonara',
+  desc = ' close window smartly wih sayonara',
 })
 
 map('n', '<leader>clc', '<cmd>set conceallevel=0<cr>', {
@@ -1215,6 +1226,10 @@ map('n', '<leader>gR', '<cmd>Gitsigns reset_buffer<cr>', {
 --------------------------------------------------------------------------------------------------
 -- FORMAT ----------------------------------------------------------------------------------------
 
+-- Delete trailing stuff
+-- (wrapping in normal avoids temporarily scrolling to the side)
+map('n', 'X', '<cmd>normal!mz$x`z<CR>', { desc = '󱎘 Delete char at EoL' })
+
 vmap('v', 'U', {
   category = 'Format',
   label = 'uppercase word',
@@ -1434,9 +1449,59 @@ map('n', '<leader>iF', "<cmd>lua print(vim.fn.expand('%:p'))<cr>", {
   label = 'print full filename',
 })
 
+local pathOfThisFile = debug.getinfo(1).source:sub(2)
+map('n', '<leader>ie', function()
+  vim.cmd.edit(pathOfThisFile)
+end, { desc = '⌨️ Edit ' .. vim.fs.basename(pathOfThisFile) })
+
+-- open new scope / brace
+map({ 'n', 'i' }, 'g{', function()
+  require('funcs.quality-of-life').openNewScope()
+end, { desc = ' Open new scope' })
+
+--------------------------------------------------------------------------------
+-- LINE & CHARACTER MOVEMENT
+-- keymap("n", "<Down>", [[<cmd>. move +1<CR>==]], { desc = "󰜮 Move Line Down" })
+-- keymap("n", "<Up>", [[<cmd>. move -2<CR>==]], { desc = "󰜷 Move Line Up" })
+-- keymap("n", "<Right>", [["zx"zp]], { desc = "➡️ Move Char Right" })
+-- keymap("n", "<Left>", [["zdh"zph]], { desc = "⬅ Move Char Left" })
+-- keymap("x", "<Down>", [[:move '>+1<CR>gv=gv]], { desc = "󰜮 Move Selection down", silent = true })
+-- keymap("x", "<Up>", [[:move '<-2<CR>gv=gv]], { desc = "󰜷 Move Selection up", silent = true })
+-- keymap("x", "<Right>", [["zx"zpgvlolo]], { desc = "➡️ Move Selection right" })
+-- keymap("x", "<Left>", [["zdh"zPgvhoho]], { desc = "⬅ Move Selection left" })
+
 -- stats, additional debugging info
 -- map("n", "<leader>iF", "", {
 --   category = "System",
 --   desc = "display filename in notification",
 --   label = "notify filename",
 -- })
+
+local map_textobjects = function()
+  local textobjRemaps = {
+    c = '}', -- [c]urly brace
+    r = ']', -- [r]ectangular bracket
+    m = 'W', -- [m]assive word
+    q = '"', -- [q]uote
+    z = "'", -- [z]ingle quote
+    e = '`', -- t[e]mplate string / inline cod[e]
+  }
+
+  local textobjMaps = {
+    func = 'f', -- [f]unction
+    cond = 'o', -- c[o]nditional
+    call = 'l', -- cal[l]
+    wikilink = 'R', -- two [R]ectangular brackets
+    codeblock = 'E', -- Markdown codeblock (uppercase of e for `)
+  }
+
+  -- remapping of builtin text objects
+  for remap, original in pairs(u.textobjRemaps) do
+    keymap({ 'o', 'x' }, 'i' .. remap, 'i' .. original, { desc = '󱡔 inner ' .. original })
+    keymap({ 'o', 'x' }, 'a' .. remap, 'a' .. original, { desc = '󱡔 outer ' .. original })
+  end
+
+  -- special remaps
+  keymap('o', 'k', 'i"', { desc = '󱡔 inner quote' })
+  keymap('o', 'J', '2j') -- dj = delete 2 lines, dJ = delete 3 lines
+end

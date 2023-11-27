@@ -19,7 +19,7 @@
 local registers = require('registers')
 registers.setup({
   -- show = '*+"-/_=#%.0123456789abcdefghilmnopqrstuvwxyz:',
-  show = '*+"%01234abcpwy:',
+  show = '*+"%0123456789abcpwy:',
   bind_keys = {
     -- registers._bind_global_key('normal', '"', 'n'),
     -- registers._bind_global_key('visual', '"', 'x'),

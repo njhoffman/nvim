@@ -1,13 +1,18 @@
 local utils = require('telescope.utils')
 local Path = require('plenary.path')
 
+-- opts.modes = vim.F.if_nil(opts.modes, { "n", "i", "c", "x" })
+-- opts.show_plug = vim.F.if_nil(opts.show_plug, true)
+-- opts.only_buf = vim.F.if_nil(opts.only_buf, false)
 local function gen_from_keymaps(opts)
   local function mode_highlight(mode)
     if mode == 'i' then
       return 'Special'
+    elseif mode == 'c' or mode == 't' then
+      return 'Operator'
     elseif mode == 'n' then
       return 'SpecialChar'
-    elseif mode == 'v' then
+    elseif mode == 'v' or mode == 'x' then
       return 'Visual'
     else
       return 'Normal'
@@ -15,9 +20,9 @@ local function gen_from_keymaps(opts)
   end
 
   local function get_desc(entry)
-    -- if type(entry.callback) == 'function' and not entry.desc then
-    --   return require('telescope.actions.utils')._get_anon_function_name(entry.callback)
-    -- end
+    if type(entry.callback) == 'function' and not entry.desc then
+      return require('telescope.actions.utils')._get_anon_function_name(debug.getinfo(entry.callback))
+    end
     return vim.F.if_nil(entry.desc, entry.rhs)
   end
 
@@ -54,7 +59,7 @@ local function gen_from_keymaps(opts)
     separator = ' ',
     items = {
       { width = 1 },
-      { width = 8 },
+      { width = 7 },
       { width = 20 },
       { remaining = true },
     },
@@ -164,4 +169,7 @@ local function gen_from_file(opts)
     end
   end
 end
-return { gen_from_keymaps = gen_from_keymaps, gen_from_file = gen_from_file }
+return {
+  gen_from_keymaps = gen_from_keymaps,
+  gen_from_file = gen_from_file,
+}

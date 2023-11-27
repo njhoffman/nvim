@@ -20,8 +20,6 @@ local defaults = {
   },
 }
 -- ["x]S			Delete [count] lines [into register x] and start insert.  Synonym for "cc" |linewise|.
--- vim.api.nvim_del_keymap('x', 'S')
-
 -- replace:  Siw replaces the current word with "+" register
 -- exchange: Sxiw (move) Sxiw (or .)
 --           cxw (move) cxw (or .)

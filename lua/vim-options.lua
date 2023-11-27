@@ -39,7 +39,7 @@ opt('ignorecase', true)
 opt('inccommand', 'nosplit')
 opt('incsearch', true)
 opt('joinspaces', false)
-opt('jumpoptions', 'stack')
+opt('jumpoptions', 'stack') -- https://www.reddit.com/r/neovim/comments/16nead7/comment/k1e1nj5/?context=3
 opt('laststatus', 3)
 opt('lazyredraw', false)
 opt('linebreak', true)
@@ -56,6 +56,7 @@ opt('redrawtime', 3000)
 opt('scrolloff', 7)
 opt('sessionoptions', 'buffers,curdir,folds,help,resize,winpos,terminal') -- winsize messes up on load
 opt('shada', "!,'1000,<100,s500")
+
 -- F silents filename (but needed for bufread on vimenter), C? default: filnxtToOCF
 opt('shortmess', 'ltToOCFa') -- ltToOCF
 opt('showbreak', '↳ ')
@@ -69,6 +70,7 @@ opt('splitbelow', true)
 opt('splitkeep', 'screen')
 opt('splitright', true)
 opt('swapfile', false)
+opt('startofline', true) -- motions like "G" also move to the first char
 opt('switchbuf', 'useopen,usetab')
 opt('termguicolors', true)
 opt('timeout', true)
@@ -77,9 +79,9 @@ opt('ttimeout', true) -- 50
 opt('ttimeoutlen', 30) -- 50
 opt('undolevels', 1000)
 opt('updatetime', 2000) -- 4000
-opt('virtualedit', 'onemore') -- 4000
+opt('virtualedit', 'block') -- onemore, block, insert, all
 opt('whichwrap', 'b,s,<,>,[,],h,l')
-opt('wildignore', '*.o,*~,*.pyc') -- wildchar/charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
+opt('wildignore', '*.o,*~,*.pyc') -- wildchar	   /charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
 opt('wildmode', 'longest:full,full')
 -- opt('winminwidth', 1) -- vimade errors when this is larger
 opt('writebackup', true)

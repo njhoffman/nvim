@@ -5,6 +5,7 @@ require('globals')
 require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
 
 for _, mod_name in ipairs({
+  'abbreviations',
   'keymaps',
   'dial',
   'wf-setup',

@@ -16,7 +16,7 @@ function picker.select_in_history()
   end
 
   local config = require('yanky.config').options.picker.select
-  local action = config.action or require('telescope._extensions.yanky.picker').actions.put('p', false)
+  local action = config.action or require('telescope._extensions.yank_history.picker').actions.put('p', false)
 
   vim.ui.select(history, {
     prompt = 'Ring history',

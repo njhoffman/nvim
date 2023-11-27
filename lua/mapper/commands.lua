@@ -2,6 +2,8 @@ local records = require('mapper.records')
 local wkutils = require('mapper.whichkey')
 local wk = require('which-key')
 
+local force_unique = false
+
 -- opts: remap, category, plugin
 local keymods = { 'buffer', 'nowait', 'silent', 'script', 'expr', 'unique' }
 
@@ -30,6 +32,9 @@ local map = function(modes, lhs, rhs, opts)
   local key_opts = {
     desc = opts.desc or opts.label,
   }
+  if force_unique and type(opts.unique) == nil then
+    opts.unique = true
+  end
   for _, mod in ipairs(keymods) do
     key_opts[mod] = opts[mod]
     meta[mod] = nil

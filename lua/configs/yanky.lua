@@ -40,6 +40,8 @@ local cfg = {
   ring = {
     history_length = 100,
     storage = 'shada',
+    -- storage = 'shada',
+    -- storage_path = vim.fn.stdpath('data') .. '/databases/yanky.db', -- Only for sqlite storage
     sync_with_numbered_registers = true,
     cancel_event = 'update',
     ignore_registers = { '_' },
@@ -69,7 +71,7 @@ local map = require('mapper').map
 local yanky_cycle = function(direction)
   local history = require('yanky.history')
   local count = history.storage.length()
-  if direction == 'forward' then
+  if direction == 'next' then
     vim.cmd([[ execute "normal! \<Plug>(YankyCycleForward)" ]])
   else
     vim.cmd([[ execute "normal! \<Plug>(YankyCycleBackward)" ]])
@@ -79,15 +81,44 @@ local yanky_cycle = function(direction)
   end
 end
 
+---ensures unique keymaps https://www.reddit.com/r/neovim/comments/16h2lla/can_you_make_neovim_warn_you_if_your_config_maps/
+---@alias vimMode "n"|"v"|"x"|"i"|"o"|"c"|"t"|"ia"|"ca"|"!a"
+---@param modes vimMode|vimMode[]
+---@param lhs string
+---@param rhs string|function
+---@param opts? { unique: boolean, desc: string, buffer: boolean, nowait: boolean, remap: boolean }
+function uniqueKeymap(modes, lhs, rhs, opts)
+  if not opts then
+    opts = {}
+  end
+  if opts.unique == nil then
+    opts.unique = true
+  end
+  vim.keymap.set(modes, lhs, rhs, opts)
+end
+
+local keymap = uniqueKeymap
+keymap({ 'n', 'x' }, 'x', '"_x')
+keymap({ 'n', 'x' }, 'c', '"_c')
+keymap('n', 'C', '"_C')
+
+-- do not clutter the register if blank line is deleted
+keymap('n', 'dd', function()
+  if vim.api.nvim_get_current_line():find('^%s*$') then
+    return '"_dd'
+  end
+  return 'dd'
+end, { expr = true })
+
 
 -- stylua: ignore start
 -- base mappings
-map('n',         'p',         '<Plug>(YankyPutAfter)',                { desc = '  paste (yanky)', noremap = false, silent = true })
-map('n',         'P',         '<Plug>(YankyPutBefore)',               { desc = '  paste & indent', noremap = false, silent = true })
-map({'n', 'x'},  'y',         '<Plug>(YankyYank)',                    { desc = '  sticky yank', noremap = false, silent = true })
--- map({'n', 'x'},  'y',         'ygv<esc>',                             { category = 'Motion', label = 'yank keep cursor begin', desc = '  yank maintaining cursor start position', silent = true })
-map('n',         '<M-C-P>',  '<cmd>lua require("configs.yanky").yanky_cycle("backward")<cr>', { desc = '  cycle killring backward', silent = true })
-map('n',         '<M-C-N>',  '<cmd>lua require("configs.yanky").yanky_cycle("forward")<cr>',  { desc = '  cycle killring forward', silent = true })
+map('n',        'p',         '<Plug>(YankyPutAfter)',                { desc = '  paste (yanky)', noremap = false, silent = true })
+map('n',        'P',         '<Plug>(YankyPutBefore)',               { desc = '  paste & indent', noremap = false, silent = true })
+map({'n', 'x'}, 'y',         '<Plug>(YankyYank)',                    { desc = '  sticky yank', noremap = false, silent = true })
+map({'n', 'x'}, 'y',         'ygv<esc>',                             { category = 'Motion', label = 'yank keep cursor begin', desc = '  yank maintaining cursor start position', silent = true })
+map('n',         '<M-C-P>',  '<cmd>lua require("configs.yanky").yanky_cycle("prev")<cr>', { desc = '  cycle killring backward', silent = true })
+map('n',         '<M-C-N>',  '<cmd>lua require("configs.yanky").yanky_cycle("next")<cr>',  { desc = '  cycle killring forward', silent = true })
 map({'o', 'x'}, '<leader>pl','<cmd>lua require("yanky.textobj").last_put()<cr>',              { desc = '  put last yanked text object', silent = true })
 
 -- unimpaired-like mappings
@@ -102,15 +133,21 @@ map("n", ">P", "<Plug>(YankyPutAfterCharwise)",         { desc = '  paste aft
 map("n", "=p", "<Plug>(YankyPutAfterFilter)",           { desc = '  paste & reindent after line' })
 map("n", "=P", "<Plug>(YankyPutBeforeFilter)",          { desc = '  paste & reindent before line' })
 -- '<cmd>norm vil<CR>'
+-- map('n', 'yy', 'mQ0y$`Q',                { category = 'Motion', label = 'yank in line no eol',    desc = '  yank in line no eol' })
 map('n', 'yil', 'v0o$y',                 { category = 'Motion', label = 'yank in line',           desc = '  yank in line', silent = true }) -- <cmd>normal yy<cr>
-map('n', 'yy', 'mQ0y$`Q',                { category = 'Motion', label = 'yank in line no eol',    desc = '  yank in line no eol' })
-map('n', 'yY', '<cmd>norm vil<CR>',      { category = 'Motion', label = 'yank in line',           desc = '  yank in line' })
+map('n', 'yy', '<cmd>norm vil<CR>',      { category = 'Motion', label = 'yank in line',           desc = '  yank in line' })
 map('n', 'gcp', '<cmd>norm p`[V`]gc`[<cr>', { category = 'Motion', label = 'paste comment line',     desc = '  paste as a comment' })
 map('n', 'gcP', '<cmd>norm p`[v`]gc`[<cr>', { category = 'Motion', label = 'paste comment block',    desc = '  paste as a comment' })
 
 map('n', '<leader>pp', '"*p',                      { category = 'Motion', label = 'paste primary',     desc = '  paste primary (*) clipboard register' })
 map('n', '<leader>pm', '<cmd>set invpaste<cr>',    { category = 'Motion', label = 'toggle paste mode', desc = '  toggle paste mode' })
 map('n', '<leader>pc', '<cmd>normal p`[v`]gc<cr>', { category = 'Motion', label = 'paste comment',     desc = '  paste as a comment' })
+
+map("i", "<M-p>", function()
+	local regContent = vim.trim(vim.fn.getreg("+"))
+	vim.fn.setreg("+", regContent, "v") ---@diagnostic disable-line: param-type-mismatch
+	return "<C-g>u<C-r><C-o>+" -- "<C-g>u" adds undopoint before the paste
+end, { desc = " paste charwise", expr = true })
 
 return { yanky_cycle = yanky_cycle }
 

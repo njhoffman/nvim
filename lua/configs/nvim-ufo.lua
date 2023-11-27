@@ -11,18 +11,22 @@ vim.o.foldlevelstart = 99 -- no folds closed
 vim.o.foldenable = true
 vim.o.foldmethod = 'manual'
 
-vim.keymap.set('n', 'zR', require('ufo').openAllFolds, {})
-vim.keymap.set('n', 'zM', require('ufo').closeAllFolds, {})
-vim.keymap.set('n', 'zr', require('ufo').openFoldsExceptKinds, {})
-vim.keymap.set('n', 'zm', require('ufo').closeFoldsWith, {}) -- closeAllFolds == closeFoldsWith(0)
+-- Close all top-level folds
+vim.keymap.set('n', 'zz', function()
+  vim.cmd('%foldclose')
+end, { desc = '󰘖 Close toplevel folds' })
+
+vim.keymap.set('n', 'zR', require('ufo').openAllFolds, { desc = '󰘖 open all folds' })
+vim.keymap.set('n', 'zM', require('ufo').closeAllFolds, { desc = '󰘖 close all folds' })
+vim.keymap.set('n', 'zr', require('ufo').openFoldsExceptKinds, { desc = '󰘖 open folds except kinds' })
+vim.keymap.set('n', 'zm', require('ufo').closeFoldsWith, { desc = '󰘖 close folds with' }) -- closeAllFolds == closeFoldsWith(0)
 vim.keymap.set('n', 'zK', function()
   local winid = require('ufo').peekFoldedLinesUnderCursor()
   if not winid then
     -- choose one of coc.nvim and nvim lsp
-    vim.fn.CocActionAsync('definitionHover') -- coc.nvim
     vim.lsp.buf.hover()
   end
-end)
+end, { desc = '󰘖 peek folded lines under cursor' })
 
 local toggle = 1
 vim.keymap.set('n', 'Z', function()
@@ -33,7 +37,7 @@ vim.keymap.set('n', 'Z', function()
     require('ufo').closeAllFolds()
     toggle = 0
   end
-end, {})
+end, { desc = '󰘖 toggle open/close folds' })
 
 local foldlevel = 1
 -- TODO: calculate maximum fold level

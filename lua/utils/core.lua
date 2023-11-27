@@ -205,6 +205,23 @@ utils.writeToFile = function(filePath, str, mode)
   file:close()
 end
 
+---https://www.reddit.com/r/neovim/comments/oxddk9/comment/h7maerh/
+---@param name string name of highlight group
+---@param key "fg"|"bg"
+---@nodiscard
+---@return string|nil the value, or nil if hlgroup or key is not available
+function utils.getHighlightValue(name, key)
+  local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = name })
+  if not ok then
+    return
+  end
+  local value = hl[key]
+  if not value then
+    return
+  end
+  return string.format('#%06x', value)
+end
+
 ---Adds a component to the lualine after lualine was already set up. Useful for
 ---lazyloading.
 ---@param component function|table the component forming the lualine

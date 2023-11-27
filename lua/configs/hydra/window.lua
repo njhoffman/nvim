@@ -27,6 +27,7 @@ local function move_split_size()
       { 'k', '<C-w>k' },
       { 'l', '<C-w>l' },
       -- Move window
+      -- https://github.com/sindrets/winshift.nvim
       { 'H', '<Cmd>WinShift left<CR>' },
       { 'J', '<Cmd>WinShift down<CR>' },
       { 'K', '<Cmd>WinShift up<CR>' },

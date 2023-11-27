@@ -50,7 +50,7 @@ local get_root = function()
   if method then
     line = path .. '  [' .. method .. ']'
   end
-  vim.notify(line, 3, { title = method, anchor = 'TC' })
+  vim.notify(line, 2, { title = method, anchor = 'TC' })
 end
 
 cmd('ProjectGetRoot', get_root, {

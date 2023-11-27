@@ -46,7 +46,7 @@ local format = function(entry, vim_item)
     vim_item.kind = icons.symbols[vim_item.kind]
   end
   -- switch source and symbol icons
-  local tmp = vim_item.menu
+  local tmp = vim_item.menu or ''
   vim_item.menu = vim_item.kind .. ' '
   vim_item.kind = ' ' .. tmp
   return vim_item
