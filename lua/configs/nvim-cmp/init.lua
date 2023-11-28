@@ -46,7 +46,7 @@ local is_not_luasnip = function()
   return not vim.fn.expand('%:p'):find('.*/nvim/lua/snippets/.*%.lua')
 end
 
-M.is_enabled = function()
+local is_enabled = function()
   local disabled = {
     IncRename = true,
   }
@@ -69,13 +69,7 @@ local cfg = {
     cmp.TriggerEvent.InsertEnter,
     cmp.TriggerEvent.TextChanged,
   },
-  enabled = function()
-    local buftype = vim.api.nvim_buf_get_option(0, 'buftype')
-    if buftype == 'prompt' then
-      return false
-    end
-    return true
-  end,
+  enabled = is_enabled,
   performance = {
     debounce = 60,
     throttle = 30,
@@ -176,7 +170,7 @@ local setup_cmp = function()
   cmp.setup.filetype('lua', {
     enabled = function()
       local line = vim.api.nvim_get_current_line()
-      return not (line:find('%s%-%-?$') or line:find('^%-%-?$'))
+      return is_enabled() and not (line:find('%s%-%-?$') or line:find('^%-%-?$'))
     end,
   })
   cmp.setup.cmdline({ '/', '?' }, {

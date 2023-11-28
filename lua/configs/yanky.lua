@@ -98,7 +98,9 @@ function uniqueKeymap(modes, lhs, rhs, opts)
 end
 
 local keymap = uniqueKeymap
-keymap({ 'n', 'x' }, 'x', '"_x')
+-- do not clutter register with x
+-- keymap({ 'n', 'x' }, 'x', '"_x')
+-- do not clutter register with c/C (like substitute command)
 keymap({ 'n', 'x' }, 'c', '"_c')
 keymap('n', 'C', '"_C')
 
@@ -109,7 +111,6 @@ keymap('n', 'dd', function()
   end
   return 'dd'
 end, { expr = true })
-
 
 -- stylua: ignore start
 -- base mappings

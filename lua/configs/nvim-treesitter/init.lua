@@ -53,6 +53,16 @@ require('ts_context_commentstring').setup({
   },
 })
 
+-- Steps for custom language injections
+-- Install nvim-treesitter/nvim-treesitter
+-- Install nvim-treesitter/playground
+-- Read the docs of the treesitter query language
+-- Read the :treesitter-language-injections
+-- Get some inspiration for queries from the standard injections in ~/.local/share/nvim/lazy/nvim-treesitter/queries/{language}/injections.scm
+-- Start treesitter playground with :TSPlaygroundToggle, and try out queries
+-- Open the file injections files by :TSEditQueryUser injections markdown, for example
+-- Put your queries there and do not forget the ;extends comment on top, when you want to keep the standard queries provided by nvim-treesitter
+
 -- Make sure TS syntax tree is updated when needed by plugin (with some throttling)
 -- even if the `highlight` module is not enabled.
 -- See https://github.com/nvim-treesitter/nvim-treesitter/issues/2492

@@ -14,5 +14,6 @@ local log_levels = {
   project              = { main = 1 },
   root                 = { main = -1 },
 }
+-- `DEBUG_CODEIUM` environment variable: `trace`, `debug`, `info`, `warn`, `error`
 
 return log_levels

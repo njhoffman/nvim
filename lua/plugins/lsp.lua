@@ -56,14 +56,7 @@ local plugins = {
       },
       'nanotee/sqls.nvim',
       'tami5/lspsaga.nvim',
-
-      {
-        'Exafunction/codeium.nvim',
-        config = function()
-          local cfg = {}
-          require('codeium').setup(cfg)
-        end,
-      },
+      -- { 'Exafunction/codeium.nvim', event = 'BufEnter' },
       -- { 'Wansmer/symbol-usage.nvim', event = 'LspAttach' },
       'rmagatti/goto-preview',
       'kosayoda/nvim-lightbulb',

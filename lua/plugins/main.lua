@@ -173,6 +173,8 @@ local plugins = {
     },
   },
   { 'stevearc/aerial.nvim', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
+  -- motion
+  { 'rainbowhxch/accelerated-jk.nvim', enabled = false, event = 'VeryLazy' },
   {
     'smoka7/multicursors.nvim',
     event = 'VeryLazy',
@@ -216,7 +218,6 @@ local plugins = {
   { 'echasnovski/mini.doc', version = false, event = 'VeryLazy' },
   { 'echasnovski/mini.bracketed', event = 'VeryLazy' },
   { 'jkramer/vim-checkbox', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
-  { 'nicwest/vim-camelsnek', event = 'VeryLazy' },
   -- formatting
   { 'johmsalas/text-case.nvim', event = 'VeryLazy' },
   { 'echasnovski/mini.comment', version = false, event = 'VeryLazy' },
@@ -226,24 +227,6 @@ local plugins = {
   { 'tpope/vim-repeat', event = 'VeryLazy' },
   { 'smjonas/live-command.nvim', dependencies = { 'tpope/vim-abolish', 'rickhowe/diffchar.vim' }, event = 'VeryLazy' },
   { 'Konfekt/vim-alias', event = 'VeryLazy' },
-  { 'rainbowhxch/accelerated-jk.nvim', enabled = false, event = 'VeryLazy' },
-  {
-    'Aasim-A/scrollEOF.nvim',
-    config = function()
-      -- Default settings
-      require('scrollEOF').setup({
-        -- The pattern used for the internal autocmd to determine
-        -- where to run scrollEOF. See https://neovim.io/doc/user/autocmd.html#autocmd-pattern
-        pattern = '*',
-        -- Whether or not scrollEOF should be enabled in insert mode
-        insert_mode = false,
-        -- List of filetypes to disable scrollEOF for.
-        disabled_filetypes = {},
-        -- List of modes to disable scrollEOF for. see https://neovim.io/doc/user/builtin.html#mode() for available modes.
-        disabled_modes = {},
-      })
-    end,
-  },
   {
     'psliwka/vim-smoothie',
     commit = '10fd0aa',
@@ -496,14 +479,7 @@ local plugins = {
   },
   {
     'chrisbra/unicode.vim',
-    cmd = {
-      'Digraphs',
-      'UnicodeSearch',
-      'UnicodeName',
-      'UnicodeTable',
-      'DownloadUnicode',
-      'UnicodeCache',
-    },
+    cmd = { 'Digraphs', 'UnicodeSearch', 'UnicodeName', 'UnicodeTable', 'DownloadUnicode', 'UnicodeCache' },
   },
   {
     'simonefranza/nvim-conv',
