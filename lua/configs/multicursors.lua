@@ -58,7 +58,7 @@ local cfg = {
     },
   },
   normal_keys = {
-    -- TODO: switch j/J and k/K except right after ctrl-n
+    -- TODO: switch j/J and k/K except right after ctrl-n or if line already has selection
     ['j'] = { method = N.create_down, opts = { desc = 'Create down' } },
     ['J'] = { method = N.skip_create_down, opts = { desc = 'Skip create down' } },
     ['k'] = { method = N.create_up, opts = { desc = 'Create up' } },

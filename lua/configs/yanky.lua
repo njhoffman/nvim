@@ -47,6 +47,11 @@ local cfg = {
     ignore_registers = { '_' },
     update_register_on_cycle = false,
   },
+  highlight = {
+    on_put = true,
+    on_yank = true,
+    timer = 200,
+  },
   system_clipboard = {
     sync_with_ring = true,
   },
