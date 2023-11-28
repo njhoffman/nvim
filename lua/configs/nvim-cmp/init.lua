@@ -118,6 +118,7 @@ local cfg = {
       -- name = 'custom',
       selection_order = 'near_cursor',
       vertical_positioning = 'above', -- above, below, auto
+      follow_cursor = true,
     },
     docs = {
       auto_open = true,

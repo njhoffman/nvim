@@ -27,15 +27,49 @@ local default = {
     insert = true,
     extend = true,
     config = {
-      -- determines how many columns are used to display the hints. If you leave this option nil, the number of columns will depend on the size of your window.
+      -- determines how many columns are used to display the hints.
+      -- If you leave this option nil, the number of columns will depend on the size of your window.
       column_count = nil,
       -- maximum width of a column.
       max_hint_length = 25,
     },
   },
+  -- normal_keys = {
+  -- to change default lhs of key mapping change the key
+  -- assigning nil to method exits from multi cursor mode
+  -- assigning false to method removes the binding
+  -- [','] = { method = N.clear_others, opts = { desc = 'Clear others' } }
+  -- }
 }
 
-require('multicursors').setup({})
+local N = require('multicursors.normal_mode')
+
+local cfg = {
+  hint_config = {
+    border = 'rounded',
+    position = 'bottom-right',
+  },
+  generate_hints = {
+    normal = true,
+    insert = true,
+    extend = true,
+    config = {
+      column_count = 1,
+    },
+  },
+  normal_keys = {
+    -- TODO: switch j/J and k/K except right after ctrl-n
+    ['j'] = { method = N.create_down, opts = { desc = 'Create down' } },
+    ['J'] = { method = N.skip_create_down, opts = { desc = 'Skip create down' } },
+    ['k'] = { method = N.create_up, opts = { desc = 'Create up' } },
+    ['K'] = { method = N.skip_create_up, opts = { desc = 'Skip create up' } },
+  },
+}
+
+vim.keymap.set('n', '<M-n>', '<cmd>MCstart<cr>', { noremap = false, desc = 'multicursor start' })
+vim.keymap.set('x', '<M-n>', '<cmd>MCvisual<cr>', { noremap = false, desc = 'multicursor visual start' })
+
+require('multicursors').setup(cfg)
 
 -- Create custom mapping for editing selections.
 -- require('multicursors').setup({
