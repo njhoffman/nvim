@@ -103,7 +103,7 @@ local cfg = {
     ['mini'] = {
       zindex = 10,
       win_options = {
-        winblend = 70,
+        winblend = 30,
         -- winhighlight = { Normal = 'NoiceCmdlineNormal', IncSearch = '', Search = '' },
       },
     },
