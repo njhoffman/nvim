@@ -16,16 +16,23 @@ function M.body_hl(bufnr, highlights, notif, start_line, start_col, end_line, en
   if type(end_col) ~= 'nil' then
     opts.end_col = end_col
   end
+  local ok = nil
   if not highlights.repeat_count then
-    vim.api.nvim_buf_set_extmark(bufnr, namespace, start_line, start_col, opts)
+    -- vim.api.nvim_buf_set_extmark(bufnr, namespace, start_line, start_col, opts)
+    ok, _ = pcall(vim.api.nvim_buf_set_extmark, bufnr, namespace, start_line, start_col, opts)
   else
     local repeat_label = '#' .. tostring(notif.repeat_count)
     opts.end_col = opts.end_col - #repeat_label - 1
-    vim.api.nvim_buf_set_extmark(bufnr, namespace, start_line, start_col, opts)
+    ok, _ = pcall(vim.api.nvim_buf_set_extmark, bufnr, namespace, start_line, start_col, opts)
+    -- vim.api.nvim_buf_set_extmark(bufnr, namespace, start_line, start_col, opts)
     opts.hl_group = highlights.repeat_count
     start_col = opts.end_col + 1
     opts.end_col = opts.end_col + #repeat_label + 1
-    vim.api.nvim_buf_set_extmark(bufnr, namespace, start_line, start_col, opts)
+    ok, _ = pcall(vim.api.nvim_buf_set_extmark, bufnr, namespace, start_line, start_col, opts)
+    -- vim.api.nvim_buf_set_extmark(bufnr, namespace, start_line, start_col, opts)
+  end
+  if not ok then
+    vim.notify('failed to set extmark: ' .. vim.inspect(ok), vim.log.levels.WARN)
   end
 end
 

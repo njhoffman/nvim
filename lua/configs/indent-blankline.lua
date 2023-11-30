@@ -25,8 +25,8 @@ local ft_exclude = {
   'noice',
   'null-ls-info',
   'sidekick',
-  'neo-tree',
   'NvimTree',
+  'tablegen',
   'Trouble',
 }
 local bt_exclude = { 'terminal', 'prompt', 'nofile' }

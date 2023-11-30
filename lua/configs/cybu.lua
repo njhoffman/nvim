@@ -56,6 +56,7 @@ require('cybu').setup({
   },
   display_time = 1500, -- time the cybu window is displayed
   exclude = { -- filetypes, cybu will not be active
+    'tablegen',
     'neo-tree',
     'fugitive',
     'qf',

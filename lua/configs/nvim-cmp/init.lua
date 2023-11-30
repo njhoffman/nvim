@@ -89,7 +89,7 @@ local cfg = {
   },
   completion = {
     -- completeopt = 'menu,preview,menuone,noselect',
-    completeopt = 'menu,menuone,noselect',
+    completeopt = 'menu,menuone,noinsert',
     -- completeopt = 'menuone,noselect,noinsert',
   },
   snippet = {
@@ -108,8 +108,8 @@ local cfg = {
     max_width = MAX_DOCUMENT_WIDTH,
     col_offset = -3,
     side_padding = 0,
-    completion = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true }),
-    documentation = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true }),
+    completion = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 20 }),
+    documentation = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 20 }),
   },
   mapping = cmp.mapping.preset.insert(mapping.main),
   sources = cmp.config.sources(sources.main[1], sources.main[2]),

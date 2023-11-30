@@ -31,6 +31,7 @@ local plugins = {
     event = 'VeryLazy',
     dependencies = { 'SmiteshP/nvim-navic', 'nvim-web-devicons' },
   },
+  { 'b0o/incline.nvim', event = 'VeryLazy' },
   { 'rcarriga/nvim-notify', lazy = false },
   { 'folke/noice.nvim', lazy = false, event = 'VeryLazy' },
   { 'folke/which-key.nvim', event = 'VeryLazy' },

@@ -12,9 +12,9 @@ vim.o.foldenable = true
 vim.o.foldmethod = 'manual'
 
 -- Close all top-level folds
-vim.keymap.set('n', 'zz', function()
-  vim.cmd('%foldclose')
-end, { desc = '󰘖 Close toplevel folds' })
+-- vim.keymap.set('n', 'zz', function()
+--   vim.cmd('%foldclose')
+-- end, { desc = '󰘖 Close toplevel folds' })
 
 vim.keymap.set('n', 'zR', require('ufo').openAllFolds, { desc = '󰘖 open all folds' })
 vim.keymap.set('n', 'zM', require('ufo').closeAllFolds, { desc = '󰘖 close all folds' })

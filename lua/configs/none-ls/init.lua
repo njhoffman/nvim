@@ -49,8 +49,22 @@ local on_attach = function(client, bufnr)
 end
 
 local exclude_ft = {
-  'oil',
+  'TelescopePrompt',
+  'alpha',
+  'dap.*',
+  'dashboard',
+  'help',
+  'mason',
   'neo-tree',
+  'noice',
+  'notify',
+  'oil',
+  'packer',
+  'qf',
+  'spectre_panel',
+  'startify',
+  'tablegen',
+  'tsplayground',
 }
 
 null_ls.setup({

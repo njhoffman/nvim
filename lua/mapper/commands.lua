@@ -32,7 +32,7 @@ local map = function(modes, lhs, rhs, opts)
   local key_opts = {
     desc = opts.desc or opts.label,
   }
-  if force_unique and type(opts.unique) == nil then
+  if force_unique then
     opts.unique = true
   end
   for _, mod in ipairs(keymods) do

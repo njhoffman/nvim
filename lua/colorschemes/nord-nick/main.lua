@@ -207,15 +207,19 @@ return function(injected_functions)
     -- +--- LSP ---+
     LspInfoBorder({ FloatBorder }),
     NullLsInfoBorder({ FloatBorder }),
-    DiagnosticError({ fg = clrs.nord11.da(30) }),
-    DiagnosticWarn({ fg = clrs.nord13.da(30) }),
-    DiagnosticHint({ fg = clrs.nord8.da(50) }),
-    DiagnosticInfo({ fg = clrs.nord10 }),
-    DiagnosticInformation({ fg = clrs.nord10 }),
+    DiagnosticOk({ fg = '#1abc9c' }),
+    DiagnosticError({ fg = '#8d3a42' }),
+    DiagnosticWarn({ fg = '#6d605a' }),
+    DiagnosticHint({ fg = '#316c7c' }),
+    DiagnosticInfo({ fg = '#0d81bc' }),
     DiagnosticFloatingError({ DiagnosticError }),
     DiagnosticFloatingWarn({ DiagnosticWarn }),
     DiagnosticFloatingHint({ DiagnosticHint }),
     DiagnosticFloatingInfo({ DiagnosticInfo }),
+    DiagnosticFloatingErrorBorder({ fg = '#5a070f' }),
+    DiagnosticFloatingWarnBorder({ fg = '#584b45' }),
+    DiagnosticFloatingHintBorder({ fg = '#195464' }),
+    DiagnosticFloatingInfoBorder({ fg = '#0067a2' }),
     DiagnosticSignError({ fg = clrs.nord11 }),
     DiagnosticSignWarn({ fg = clrs.nord13 }),
     DiagnosticSignHint({ fg = clrs.nord10 }),
@@ -224,10 +228,10 @@ return function(injected_functions)
     DiagnosticUnderlineWarn({ fg = 'none', gui = 'none' }),
     DiagnosticUnderlineHint({ fg = 'none', gui = 'none' }),
     DiagnosticUnderlineInfo({ fg = 'none', gui = 'none' }),
-    DiagnosticVirtualTextWarn({ fg = DiagnosticWarn.fg.de(20).li(10), gui = 'italic' }), -- #ffc777
-    DiagnosticVirtualTextError({ fg = DiagnosticError.fg.de(20).li(10), gui = 'italic' }), -- #c53b53
-    DiagnosticVirtualTextHint({ fg = DiagnosticHint.fg.de(20).li(10), gui = 'italic' }), -- "#4fd6be"
-    DiagnosticVirtualTextInfo({ fg = DiagnosticInfo.fg.de(20).da(10), gui = 'italic' }), -- "#0db9d7"
+    DiagnosticVirtualTextError({ fg = '#9a4c54', gui = 'italic' }), -- #ffc777
+    DiagnosticVirtualTextWarn({ fg = '#7c706a', gui = 'italic' }), -- #c53b53
+    DiagnosticVirtualTextHint({ fg = '#457d8c', gui = 'italic' }), -- "#4fd6be"
+    DiagnosticVirtualTextInfo({ fg = '#597597', gui = 'italic' }), -- "#0db9d7"
     -- DiagnosticVirtualLinesError({ fg = '#c53b53', gui = 'italic' }),
     -- DiagnosticVirtualLinesWarn({ fg = '#ffc777', gui = 'italic' }),
     DiagnosticVirtualLinesHint({ fg = '#4fd6be', gui = 'italic' }),
@@ -237,10 +241,10 @@ return function(injected_functions)
     LspReferenceRead({ fg = Search.fg, gui = 'none' }), -- #22bb99, 628bff
     LspReferenceWrite({ fg = Search.fg, gui = 'none' }), -- #22bb99
     LspReferenceText({ fg = Search.fg, gui = 'none' }), -- #22bb99
-    LspDiagnosticsSignError({ fg = DiagnosticError.fg.da(20) }),
-    LspDiagnosticsSignWarn({ fg = DiagnosticWarn.fg.da(20) }),
-    LspDiagnosticsSignHint({ fg = DiagnosticHint.fg.da(20) }),
-    LspDiagnosticsSignInfo({ fg = DiagnosticInfo.fg.da(20) }),
+    LspDiagnosticsSignError({ fg = '#702e34' }),
+    LspDiagnosticsSignWarn({ fg = '#574c47' }),
+    LspDiagnosticsSignHint({ fg = '#275662' }),
+    LspDiagnosticsSignInfo({ fg = '#49688d' }),
     DiffAdd({ bg = '#00361f' }), -- #00361f #001000 #22bb99
     DiffChange({ bg = '#003050' }), -- #003050 #001030 #646ead
     DiffDelete({ bg = '#3E0009' }), -- #3e0009 #300000 #be6069
@@ -1017,6 +1021,7 @@ return function(injected_functions)
     MatchParen({ fg = '#fb8b8b', gui = 'bold,' }),
     MatchWord({ gui = 'bold' }),
 
+    SmoothCursor({ fg = '#0081ca', gui = 'bold' }),
     LeapMatch({ fg = '#00ffdd', bg = 'none' }), -- IncSearch
     -- LeapLabelPrimary
     -- LeapLabelSelected

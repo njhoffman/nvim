@@ -11,7 +11,6 @@ local opts = {
 local use_defref_plugin = true
 
 -- TODO: next/prev reference
-
 local mapping = {
   rename = function()
     opts.desc = 'rename buffer'
@@ -92,6 +91,7 @@ local mapping = {
   end,
   hover = function()
     opts.desc = 'hover provider under cursor'
+    pcall(vim.keymap.del, 'n', 'K')
     map('n', 'K', '<Cmd>Hover<CR>', opts)
     -- map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   end,

@@ -5,6 +5,9 @@ local utils = require('utils.lazy')
 local plugins = {
   {
     'neovim/nvim-lspconfig',
+    opts = {
+      inlay_hints = { enabled = true },
+    },
     event = { 'BufReadPost', 'BufNewFile', 'LspAttach' },
     dependencies = {
       { 'williamboman/mason.nvim', cmd = 'Mason' },

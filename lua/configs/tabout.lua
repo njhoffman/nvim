@@ -19,4 +19,16 @@ local default_cfg = {
   exclude = {}, -- tabout will ignore these filetypes
 }
 
-require('tabout').setup({ act_as_tab = false })
+require('tabout').setup({
+  tabkey = '', -- key to trigger tabout, set to an empty string to disable
+  backwards_tabkey = '', -- key to trigger backwards tabout, set to an empty string to disable
+  -- tabkey = '<Tab>', -- key to trigger tabout, set to an empty string to disable
+  -- backwards_tabkey = '<S-Tab>', -- key to trigger backwards tabout, set to an empty string to disable
+  act_as_tab = false,
+  act_as_shift_tab = false,
+  ignore_beginning = true,
+})
+
+-- A multiline tabout setup could look like this
+vim.api.nvim_set_keymap('i', '<Tab>', '<Plug>(TaboutMulti)', { silent = true })
+vim.api.nvim_set_keymap('i', '<S-Tab>', '<Plug>(TaboutBackMulti)', { silent = true })

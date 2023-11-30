@@ -34,7 +34,6 @@ local plugins = {
       { 'tzachar/cmp-fuzzy-buffer', dependencies = { 'tzachar/fuzzy.nvim' } },
       { 'saadparwaiz1/cmp_luasnip', dependencies = { 'L3MON4D3/LuaSnip' } },
       { 'petertriho/cmp-git', dependencies = { 'nvim-lua/plenary.nvim' } },
-      { 'abecodes/tabout.nvim' },
       {
         'KadoBOT/cmp-plugins',
         config = function()
@@ -66,17 +65,17 @@ local plugins = {
       delete_check_events = 'TextChanged',
     },
     -- stylua: ignore
-    keys = {
-      {
-        "<tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-        end,
-        expr = true, silent = true, mode = "i",
-      },
-      { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-    },
+    -- keys = {
+    --   {
+    --     "<tab>",
+    --     function()
+    --       return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+    --     end,
+    --     expr = true, silent = true, mode = "i",
+    --   },
+    --   { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
+    --   { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+    -- },
   },
 }
 

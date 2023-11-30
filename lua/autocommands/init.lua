@@ -57,8 +57,8 @@ local autocmds = {
   },
 
   FiletypeDetect = {
-    { 'FileType', 'qf',                    'setlocal nonumber norelativenumber' },
-    { 'FileType', 'query',                 'setlocal nonumber norelativenumber' },
+    -- { 'FileType', 'qf',                    'setlocal nonumber norelativenumber' },
+    -- { 'FileType', 'query',                 'setlocal nonumber norelativenumber' },
     { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
     { 'FileType', "neoai-output",          "setlocal ft=pandoc.markdown conceallevel=3 synmaxcol=1000" },
     { 'FileType', "help",                  "setlocal syn=pandoc.help conceallevel=3 synmaxcol=1000" },
@@ -125,6 +125,7 @@ local autocmds = {
     { 'FileType', 'aerial', 'VimadeBufDisable' },
     { 'FileType', 'query', 'VimadeBufDisable' },
     { 'FileType', 'qf', 'VimadeBufDisable' },
+    { 'FileType', 'tablegen', 'VimadeBufDisable' },
     { 'FileType', 'nerdtree', 'VimadeBufDisable' },
     { 'FileType', 'neo-tree', 'VimadeBufDisable' },
     { 'FileType', 'Mundo', 'VimadeBufDisable' },
@@ -150,16 +151,57 @@ local autocmds = {
     { 'BufWritePost', '*tmux.conf', [[execute ':!tmux source-file %']] },
   },
 }
+-- autocmds.NumberToggle = {
+--   {
+--     { 'BufEnter', 'FocusGained', 'InsertLeave' },
+--     '*',
+--     "if &readonly != 1 && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' && &buftype != 'quickfix' | set relativenumber | endif",
+--   },
+--   { { 'BufLeave', 'FocusLost', 'InsertEnter' }, '*', 'set norelativenumber' },
+-- }
 
-autocmds.NumberToggle = {
-  {
-    { 'BufEnter', 'FocusGained', 'InsertLeave' },
-    '*',
-    "if &readonly != 1 && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' | set relativenumber | endif",
-  },
-  { { 'BufLeave', 'FocusLost', 'InsertEnter' }, '*', 'set norelativenumber' },
-}
+-- Don't want relative no on inactive Windows
+local relativeNo = vim.api.nvim_create_augroup('RelativeNo', { clear = true })
+vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave' }, {
+  pattern = '*',
+  group = relativeNo,
+  callback = function()
+    if
+      not vim.g.zen_mode_active
+      and not vim.bo.readonly
+      and vim.bo.buftype ~= 'prompt'
+      and vim.bo.buftype ~= 'nofile'
+      and vim.bo.buftype ~= 'quickfix'
+      and vim.bo.filetype ~= 'nofile'
+    then
+      vim.cmd([[set relativenumber nonumber]])
+    end
+  end,
+})
 
+vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter' }, {
+  pattern = '*',
+  group = relativeNo,
+  callback = function()
+    if
+      not vim.g.zen_mode_active
+      and not vim.bo.readonly
+      and vim.bo.buftype ~= 'prompt'
+      and vim.bo.buftype ~= 'nofile'
+      and vim.bo.buftype ~= 'quickfix'
+      and vim.bo.filetype ~= 'nofile'
+    then
+      vim.cmd([[set norelativenumber number]])
+    end
+  end,
+})
+-- -- show cursor line only in active window
+-- local cursorGrp = api.nvim_create_augroup("CursorLine", { clear = true })
+-- api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, { pattern = "*", command = "set cursorline", group = cursorGrp })
+-- api.nvim_create_autocmd(
+--   { "InsertEnter", "WinLeave" },
+--   { pattern = "*", command = "set nocursorline", group = cursorGrp }
+-- )
 autocmds.HighlightYank = {
   { 'TextYankPost', '*', "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=300 }" },
 }

@@ -11,9 +11,15 @@
 --
 vim.diagnostic.config({
   virtual_text = false,
+  -- virtual_lines = {
+  --   only_current_line = true,
+  --   highlight_whole_line = false,
+  -- },
 })
 
--- https://github.com/folke/lazy.nvim/issues/620
--- vim.diagnostic.config({ virtual_lines = false }, require("lazy.core.config").ns)
---
-require('lsp.lsp_lines').setup()
+require('lsp.lsp_lines').setup({
+  virtual_lines = {
+    only_current_line = true,
+    highlight_whole_line = false,
+  },
+})

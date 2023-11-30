@@ -73,6 +73,7 @@ local plugins = {
             'sidekick',
             'neo-tree',
             'NvimTree',
+            'tablegen',
             'Trouble',
           }
           local bt_exclude = { 'terminal', 'prompt', 'nofile' }
@@ -175,6 +176,9 @@ local plugins = {
   { 'stevearc/aerial.nvim', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
   -- motion
   { 'rainbowhxch/accelerated-jk.nvim', enabled = false, event = 'VeryLazy' },
+  { 'abecodes/tabout.nvim', event = { 'InsertEnter' } },
+  { 'roobert/tabtree.nvim', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'Weissle/easy-action' },
   {
     'smoka7/multicursors.nvim',
     event = 'VeryLazy',
@@ -191,6 +195,7 @@ local plugins = {
       },
     },
   },
+  { 'gen740/SmoothCursor.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   -- { 'otavioschwanck/cool-substitute.nvim' },
   -- matching
   { 'andymass/vim-matchup', lazy = false },
@@ -236,11 +241,12 @@ local plugins = {
       vim.g.smoothie_no_default_mappings = 1
       vim.g.smoothie_experimental_mappings = 0
       vim.g.smoothie_update_interval = 20
-      vim.g.smoothie_speed_constant_factor = 10
-      vim.g.smoothie_speed_linear_factor = 10
+      vim.g.smoothie_speed_constant_factor = 6
+      vim.g.smoothie_speed_linear_factor = 8
       vim.g.smoothie_speed_exponentiation_factor = 0.9
       vim.g.redraw_at_finish = 1
-      vim.g.smoothie_minimum_speed = 0.9
+      -- vim.g.smoothie_minimum_speed = 0.6
+      vim.g.smoothie_break_on_reverse = 0
     end,
   }, -- f2aaab1
   {
@@ -544,6 +550,22 @@ local plugins = {
   { 'smoka7/hydra.nvim', event = 'VeryLazy' }, -- anuvyklack
   { 'NvChad/nvim-colorizer.lua', event = { 'BufReadPost', 'BufNewFile' } },
   { 'nvim-colortils/colortils.nvim', cmd = 'Colortils', event = { 'BufReadPost', 'BufNewFile' } },
+  {
+    'kawre/leetcode.nvim',
+    build = ':TSUpdate html',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+      'nvim-lua/plenary.nvim', -- required by telescope
+      'MunifTanjim/nui.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'rcarriga/nvim-notify',
+      'nvim-tree/nvim-web-devicons',
+    },
+    lazy = 'leetcode.nvim' ~= vim.fn.argv()[1],
+    opts = {
+      arg = 'leetcode.nvim',
+    },
+  },
   { 'xeluxee/competitest.nvim', cmd = 'CompetiTestRun', dependencies = 'MunifTanjim/nui.nvim' },
   {
     -- A lua profiler for neovim that is discovered thanks to https://www.reddit.com/r/neovim/comments/xicxox/comment/ip2hprd
@@ -716,15 +738,16 @@ local plugins = {
       })
     end,
   },
+  { 'kevinhwang91/nvim-bqf', cmd = { 'BqfEnable', 'BqfToggle' }, ft = 'qf' },
   {
     'lukas-reineke/headlines.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     ft = { 'markdown', 'pandoc', 'pandoc.markdown', 'markdown.pandoc' },
   },
+  { 'elkasztano/nushell-syntax-vim', ft = 'nu', lazy = lz_syn },
   { 'iamcco/markdown-preview.nvim', build = 'cd app && yarn install', cmd = 'MarkdownPreview' },
   { 'vuki656/package-info.nvim', dependencies = 'MunifTanjim/nui.nvim', ft = 'json' },
   { 'serenevoid/kiwi.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
-  { 'kevinhwang91/nvim-bqf', cmd = { 'BqfEnable', 'BqfToggle' }, ft = 'qf' },
   { 'herringtondarkholme/yats.vim', ft = 'typescript', lazy = lz_syn },
   { 'AckslD/nvim-FeMaco.lua', ft = { 'markdown', 'pandoc' } },
   { 'njhoffman/vim-liquid', ft = 'liquid', lazy = lz_syn },

@@ -1,7 +1,16 @@
 -- stylua: ignore start
 
+    -- -- return diagnostics
+    --   { '', guifg = bg },
+    -- --            █                 █  
 
 local icons = {
+  diagnostics = {
+    error = { '', ''}, -- '✎    󰒡    𥉉﮻  ﱥ           
+    warn  = { '', ''}, --     
+    info  = { '', ''}, --     󰌵 󰌶       ﯧ ﯦ  ﯧ  כֿ 
+    hint  = { '', ''}, --  󰋼  𥉉   ﴕ       
+  },
   lsp = {
     Array         = {"󰅪 ", " "},
     Boolean       = {"◩ ", " "},
@@ -97,10 +106,11 @@ icons.lsp_numbers = {
   [255] = icons.lsp.Macro,
 }
 
-local get_icons = function(set)
+local get_icons = function(set, idx)
+  idx = idx or 1
   local icon_set = set and icons[set] or icons.lsp
   return vim.tbl_map(function(icon)
-    return type(icon) == 'table' and icon[1] or icon
+    return type(icon) == 'table' and icon[idx] or icon
   end, icon_set)
 end
 
@@ -108,6 +118,29 @@ return {
   icons = icons,
   get_icons = get_icons
 }
+-- M.icons       = {
+--   Class       = " ",
+--   Color       = " ",
+--   Constant    = " ",
+--   Constructor = " ",
+--   Enum        = "了 ",
+--   EnumMember  = " ",
+--   Field       = " ",
+--   File        = " ",
+--   Folder      = " ",
+--   Function    = " ",
+--   Interface   = "ﰮ ",
+--   Keyword     = " ",
+--   Method      = "ƒ ",
+--   Module      = " ",
+--   Property    = " ",
+--   Snippet     = "﬌ ",
+--   Struct      = " ",
+--   Text        = " ",
+--   Unit        = " ",
+--   Value       = " ",
+--   Variable    = " ",
+-- }
 
 --   lsp_ts = {
 --     active_lsp = "",
@@ -325,18 +358,18 @@ return {
 --     TriangleShortArrowUp = "",
 --   },
 --   diagnostics = {
---     BoldError = "",
---     Error = "",
---     BoldWarning = "",
---     Warning = "",
+--     BoldError       = "",
+--     Error           = "",
+--     BoldWarning     = "",
+--     Warning         = "",
 --     BoldInformation = "",
---     Information = "",
---     BoldQuestion = "",
---     Question = "",
---     BoldHint = "",
---     Hint = "󰌶",
---     Debug = "",
---     Trace = "✎",
+--     Information     = "",
+--     BoldQuestion    = "",
+--     Question        = "",
+--     BoldHint        = "",
+--     Hint            = "󰌶",
+--     Debug           = "",
+--     Trace           = "✎",
 --   },
 --   misc = {
 --     Robot = "󰚩",

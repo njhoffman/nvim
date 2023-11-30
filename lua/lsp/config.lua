@@ -1,7 +1,9 @@
+require('lsp.float-diag')
+
 local virtual_text_config = {
   source = 'if_many',
   spacing = 2,
-  -- severity = 0. -- ERROR, WARN, INFO, HINT
+  -- severity = 0. -- ERROR, NFO, HINT
   severity = { min = vim.diagnostic.severity.WARN },
   -- format = function(diagnostic)
   --   if diagnostic.severity == vim.diagnostic.severity.ERROR then
@@ -12,28 +14,14 @@ local virtual_text_config = {
 }
 
 local diagnostic_config = {
-  float = {
-    focusable = true,
-    style = 'minimal',
-    border = 'rounded',
-    -- source = 'if_many',
-    source = false,
-    prefix = '󰀴 ',
-    header = '',
-    format = function(diag)
-      -- bufnr = 10, col = 35, end_col = 0, end_lnum = 4, lnum = 3, message = "INFO, HINT", namespace = 93, row = 4, severity = 4, source = "todo_comments"
-      -- See null-ls.nvim#632, neovim#17222 for how to pick up `code`
-      local user_data
-      user_data = diag.user_data or {}
-      user_data = user_data.lsp or user_data.null_ls or user_data
-      local code = (diag.symbol or diag.code or user_data.symbol or user_data.code)
-      if code then
-        return string.format('%s (%s)', diag.message, code)
-      else
-        return diag.message
-      end
-    end,
-  },
+  float = function(_, bufnr)
+    local opts = {
+      -- prefix = '󰀴 ',
+      prefix = '',
+      bufnr = bufnr,
+    }
+    return vim.diagnostic.open_float(opts)
+  end,
   virtual_text = false,
   signs = true,
   underline = false,
@@ -42,15 +30,15 @@ local diagnostic_config = {
   -- },
   update_in_insert = false,
   severity_sort = true,
-  virtual_lines = false, -- { only_current_line = true },
+  virtual_lines = false, -- { only_current_line = true, highlight_whole_line = false },
 }
+
 vim.api.nvim_set_hl(0, 'DiagnosticUnnecessary', { link = 'Comment' })
 
 vim.diagnostic.config(diagnostic_config)
 
-if require('utils.lazy').is_installed('toggle_lsp_diagnostics') then
-  require('toggle_lsp_diagnostics').init(vim.diagnostic.config())
-end
+-- Show line diagnostics in floating popup on hover, except insert mode (CursorHoldI)
+-- vim.cmd([[autocmd CursorHold * lua vim.diagnostic.open_float()]])):format()
 
 -- vim.api.nvim_create_autocmd('LspAttach', {
 --   callback = function(args)
@@ -64,3 +52,11 @@ end
 --     end
 --   end,
 -- })
+
+-- automatically load list with diagnostics change
+-- augroup locallist
+--     autocmd!
+--     " Populate locallist with lsp diagnostics automatically
+--     autocmd User LspDiagnosticsChanged :lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
+-- augroup END
+--

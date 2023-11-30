@@ -31,50 +31,37 @@ require('substitute').setup({
 })
 
 local function setup_keymaps()
-  vim.keymap.set('n', 'S', require('substitute').operator, { noremap = true, desc = 'substitute operator' })
-  vim.keymap.set('n', 'S^', require('substitute').line, { noremap = true, desc = 'substitute line' })
-  vim.keymap.set('n', 'S$', require('substitute').eol, { noremap = true, desc = 'substitute eol' })
-  vim.keymap.set('x', 'S', require('substitute').visual, { noremap = true, desc = 'substitute visual' })
+  local sub = require('substitute')
+  local subrange = require('substitute.range')
+  local subex = require('substitute.exchange')
+  local map = vim.keymap.set
 
-  vim.keymap.set('n', '<leader>s', function()
-    require('substitute.range').operator({ prefix = 'S' })
+  -- stylua: ignore
+  map('n', 'S',  sub.operator, { noremap = true, desc = 'substitute operator' })
+  map('n', 'S^', sub.line, { noremap = true, desc = 'substitute line' })
+  map('n', 'S$', sub.eol, { noremap = true, desc = 'substitute eol' })
+  map('x', 'S', sub.visual, { noremap = true, desc = 'substitute visual' })
+  map('x', 'p', sub.visual, { noremap = true })
+  map('x', 'P', sub.visual, { noremap = true })
+  map('n', '<leader>sy', sub.line, { noremap = true, desc = 'substitute line' })
+
+  map('n', 'cx', subex.operator, { noremap = true, desc = 'substitute exchange operator' })
+  map('n', 'cxx', subex.line, { noremap = true, desc = 'substitute exchange line' })
+  map('n', 'X', subex.operator, { noremap = true, desc = 'substitute exchange operator' })
+  map('x', 'X', subex.visual, { noremap = true, desc = 'substitute exchange visual' })
+  map('n', 'cxc', subex.cancel, { noremap = true, desc = 'substitute exchange cancel' })
+
+  map('n', '<leader>s', function()
+    subrange.operator({ prefix = 'S' })
   end, { noremap = true, desc = 'substitute range operator' })
 
-  vim.keymap.set('x', '<leader>s', function()
-    require('substitute.range').visual({ prefix = 'S' })
+  map('x', '<leader>s', function()
+    subrange.visual({ prefix = 'S' })
   end, { noremap = true, desc = 'substitute range visual' })
 
-  vim.keymap.set('n', '<leader>ss', function()
-    require('substitute.range').word({ prefix = 'S' })
+  map('n', '<leader>ss', function()
+    subrange.word({ prefix = 'S' })
   end, { noremap = true, desc = 'substitute range word' })
-
-  vim.keymap.set('n', '<leader>sy', require('substitute').line, { noremap = true, desc = 'substitute line' })
-
-  vim.keymap.set(
-    'n',
-    'cx',
-    require('substitute.exchange').operator,
-    { noremap = true, desc = 'substitute exchange operator' }
-  )
-  vim.keymap.set('n', 'cxx', require('substitute.exchange').line, { noremap = true, desc = 'substitute exchange line' })
-  vim.keymap.set(
-    'n',
-    'X',
-    require('substitute.exchange').operator,
-    { noremap = true, desc = 'substitute exchange operator' }
-  )
-  vim.keymap.set(
-    'x',
-    'X',
-    require('substitute.exchange').visual,
-    { noremap = true, desc = 'substitute exchange visual' }
-  )
-  vim.keymap.set(
-    'n',
-    'cxc',
-    require('substitute.exchange').cancel,
-    { noremap = true, desc = 'substitute exchange cancel' }
-  )
 end
 
 setup_keymaps()

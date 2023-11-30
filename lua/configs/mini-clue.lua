@@ -18,7 +18,6 @@ for _, clue_item in ipairs(mapper_clues) do
 end
 
 -- require('mini.bracketed').setup()
---
 -- require('mini.clue').setup({
 --   triggers = {
 --     { mode = 'n', keys = ']' },
@@ -39,19 +38,12 @@ end
 -- local xmap_leader = function(suffix, rhs, desc)
 --   vim.keymap.set('x', '<Leader>' .. suffix, rhs, { desc = desc })
 -- end
---
 -- nmap_leader('bd', '<Cmd>lua MiniBufremove.delete()<CR>',  'Delete')
 -- nmap_leader('bw', '<Cmd>lua MiniBufremove.wipeout()<CR>', 'Wipeout')
---
 -- nmap_leader('lf', '<Cmd>lua vim.lsp.buf.format()<CR>',     'Format')
 -- xmap_leader('lf', '<Cmd>lua vim.lsp.buf.format()<CR>',     'Format')
 -- nmap_leader('lr', '<Cmd>lua vim.lsp.buf.rename()<CR>',     'Rename')
 -- nmap_leader('lR', '<Cmd>lua vim.lsp.buf.references()<CR>', 'References')
--- { mode = 'i', keys = '<C-x><C-f>', desc = 'File names' },
--- { mode = 'i', keys = '<C-x><C-l>', desc = 'Whole lines' },
--- { mode = 'i', keys = '<C-x><C-o>', desc = 'Omni completion' },
--- { mode = 'i', keys = '<C-x><C-s>', desc = 'Spelling suggestions' },
--- { mode = 'i', keys = '<C-x><C-u>', desc = "With 'completefunc'" },
 
 miniclue.setup({
   triggers = {
@@ -90,6 +82,8 @@ miniclue.setup({
     -- Floating window config
     config = {
       width = math.min(40, tonumber(vim.o.columns * 0.4)),
+      row = 'auto',
+      col = 'auto',
     },
     -- Delay before showing clue window
     delay = 1000,
@@ -103,10 +97,8 @@ miniclue.setup({
 -- # Leader clues ~
 --
 -- Assume there are these |<Leader>| mappings set up: >
---
 --   -- Set `<Leader>` before making any mappings and configuring 'mini.clue'
 --   vim.g.mapleader = ' '
---
 --   local nmap_leader = function(suffix, rhs, desc)
 --     vim.keymap.set('n', '<Leader>' .. suffix, rhs, { desc = desc })
 --   end
@@ -125,7 +117,6 @@ miniclue.setup({
 --
 -- The following setup will enable |<Leader>| as trigger in Normal and Visual
 -- modes and add descriptions to mapping groups: >
---
 --   require('mini.clue').setup({
 --     -- Register `<Leader>` as trigger
 --     triggers = {
@@ -141,26 +132,12 @@ miniclue.setup({
 --   })
 --
 -- # Clues without mappings ~
---
 -- Clues can be shown not only for actually present mappings. This is helpful for
 -- showing clues for built-in key combinations. Here is an example of clues for
 -- a subset of built-in completion (see |MiniClue.gen_clues.builtin_completion()|
 -- to generate clues for all available completion sources): >
 --
 --   require('mini.clue').setup({
---     -- Make `<C-x>` a trigger. Otherwise, key query process won't start.
---     triggers = {
---       { mode = 'i', keys = '<C-x>' },
---     },
---
---     -- Register custom clues
---     clues = {
---       { mode = 'i', keys = '<C-x><C-f>', desc = 'File names' },
---       { mode = 'i', keys = '<C-x><C-l>', desc = 'Whole lines' },
---       { mode = 'i', keys = '<C-x><C-o>', desc = 'Omni completion' },
---       { mode = 'i', keys = '<C-x><C-s>', desc = 'Spelling suggestions' },
---       { mode = 'i', keys = '<C-x><C-u>', desc = "With 'completefunc'" },
---     }
 --   })
 -- <
 --                                                     *MiniClue-examples-submodes*

@@ -26,6 +26,7 @@ local plugins = {
   -- { 'mcchrish/zenbones.nvim', event = 'User ColorSchemeLoad', dependencies = { 'rktjmp/lush.nvim' } },
   { 'LunarVim/horizon.nvim', event = 'User ColorSchemeLoad' },
   { 'LunarVim/synthwave84.nvim', event = 'User ColorSchemeLoad' },
+  { 'AlexvZyl/nordic.nvim', event = 'User ColorSchemeLoad' },
   { 'katawful/kat.nvim', event = 'User ColorSchemeLoad' },
   { 'rose-pine/neovim', name = 'rose-pine', event = 'User ColorSchemeLoad' },
   { 'hachy/eva01.vim', event = 'User ColorSchemeLoad' },

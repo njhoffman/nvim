@@ -1,5 +1,4 @@
 local animate = require('mini.animate')
-
 local is_many_wins = function(sizes_from, sizes_to)
   return vim.tbl_count(sizes_from) >= 3
 end
@@ -111,7 +110,7 @@ local cfg = {
   cursor = {
     enable = true,
     -- gen_path.line(), gen_path.angle(), gen_path.walls(), gen_path.spiral()
-    timing = animate.gen_timing.linear({ duration = 200, unit = 'total' }),
+    timing = animate.gen_timing.linear({ duration = 100, unit = 'total' }),
     path = animate.gen_path.angle(),
   },
   scroll = { enable = false },
@@ -121,13 +120,13 @@ local cfg = {
   },
   open = {
     enable = true,
-    timing = animate.gen_timing.linear({ duration = 300, unit = 'total' }),
+    timing = animate.gen_timing.linear({ duration = 100, unit = 'total' }),
     winconfig = animate.gen_winconfig.wipe({ direction = 'from_edge' }),
     winblend = animate.gen_winblend.linear({ from = 70, to = 100 }),
   },
   close = {
     enable = true,
-    timing = animate.gen_timing.linear({ duration = 300, unit = 'total' }),
+    timing = animate.gen_timing.linear({ duration = 100, unit = 'total' }),
     winconfig = animate.gen_winconfig.wipe({ direction = 'to_edge' }),
     winblend = animate.gen_winblend.linear({ from = 100, to = 70 }),
   },

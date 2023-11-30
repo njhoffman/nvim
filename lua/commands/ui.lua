@@ -99,7 +99,7 @@ local close_multi = function(skip_prompt)
   local curr_win = vim.api.nvim_get_current_win()
   local is_popup = vim.tbl_get(vim.api.nvim_win_get_config(curr_win), 'relative') ~= ''
   if #tabs > 1 then
-    vim.cmd('Bdelete!')
+    vim.cmd('Bdelete')
     vim.cmd('tabclose!')
     return
   end

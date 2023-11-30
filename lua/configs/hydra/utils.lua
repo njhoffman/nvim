@@ -5,6 +5,7 @@ local get_severity = function(type)
   elseif severity == false then
     severity = 0
   end
+  vim.dbglog('SEVERE', severity)
   return severity
 end
 
@@ -67,6 +68,7 @@ local toggle_diagnostic = function(type)
     elseif type == 'vl_toggle' then
       local severity = get_severity('virtual_lines')
       local only_current = vim.tbl_get(old_config, 'virtual_lines', 'only_current_line')
+      -- local whole_line = vim.tbl_get(old_config, 'virtual_lines', 'only_current_line')
       if severity > 0 then
         vim.diagnostic.config({ virtual_lines = { only_current_line = only_current, severity = { min = 0 } } })
       else

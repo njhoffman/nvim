@@ -54,6 +54,7 @@ opt('pumheight', 10)
 opt('regexpengine', 0)
 opt('redrawtime', 3000)
 opt('scrolloff', 7)
+opt('selection', 'old') -- old, exclusive, inclusive
 opt('sessionoptions', 'buffers,curdir,folds,help,resize,winpos,terminal') -- winsize messes up on load
 opt('shada', "!,'1000,<100,s500")
 
@@ -119,7 +120,13 @@ opt('softtabstop', 0, buffer)
 opt('synmaxcol', 2000, buffer)
 opt('tabstop', 2, buffer)
 opt('undofile', true, buffer)
+opt('equalalways', true) -- make windows the samue width when closing one
+opt('cursorlineopt', 'both') -- should get cursorline in number too
 
+-- opt.cpoptions:append(">") -- when you yank multiple times into a register, this puts each on a new line
+-- opt.nrformats:append("alpha") -- this means you can increment lists that have letters with `g ctrl-a`
+-- vim.g.markdown_fenced_languages = { "html", "javascript", "typescript", "css", "scss", "lua", "vim" }
+-- vim.o.whichwrap = vim.o.whichwrap .. "<,>" -- Wrap movement between lines in edit mode with arrows
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
 
@@ -127,16 +134,6 @@ vim.g.markdown_recommended_style = 0
 -- if vim.fn.exists('syntax_on') ~= 1 then
 --   vim.cmd([[syntax enable]])
 -- end
-
-vim.cmd([[
-  " curl -sS https://raw.githubusercontent.com/neovim/neovim/v0.7.2/runtime/syntax/lua.vim > $VIMRUNTIME/syntax/lua.vim
-  augroup MyLuaHLBugFix
-    autocmd!
-    autocmd! ColorScheme,VimEnter * highlight! link luaParenError Normal | highlight! link luaError Normal | highlight! link @error Normal
-  augroup END
-  " autocmd BufEnter * syntax sync minlines=4000
-  " syn sync fromstart
-]])
 
 -- -- Add empty lines before and after cursor line supporting dot-repeat
 --  MiniBasics.put_empty_line = function(put_above)
@@ -162,13 +159,6 @@ vim.cmd([[
 --  map('n', 'gO', 'v:lua.MiniBasics.put_empty_line(v:true)',  { desc = 'Put empty line above', expr = true })
 --  map('n', 'go', 'v:lua.MiniBasics.put_empty_line(v:false)', { desc = 'Put empty line below', expr = true })
 --
---  -- Copy/paste with system clipboard
---  map({ 'n', 'x' }, 'gy', '"+y', { desc = 'Copy to system clipboard' })
---  map(  'n',        'gp', '"+p', { desc = 'Paste from system clipboard' })
---  -- - Paste in Visual with `P` to not copy selected text (`:h v_P`)
---  map(  'x',        'gp', '"+P', { desc = 'Paste from system clipboard' })
---
-
 -- M.load_headless_options = function()
 --   vim.opt.shortmess = "" -- try to prevent echom from cutting messages off or prompting
 --   vim.opt.more = false -- don't pause listing when screen is filled

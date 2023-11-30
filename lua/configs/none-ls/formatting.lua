@@ -130,7 +130,20 @@ return {
       }
     end,
   }),
-  null_ls.builtins.formatting.sqlfluff,
+  null_ls.builtins.formatting.sqlfluff.with({
+    extra_args = function(params)
+      local file_extension = vim.fn.fnamemodify(params.bufname, ':e')
+      -- ANSI,Athena,BigQuery,ClickHouse,DataBricks,dbt,Exasol,Firebird,Greenplum,
+      -- Hive,Impala,Materialize,MySQL,Oracle,PostgreSQL,Redshift,Spark,SQLServer,Snowflake,
+      -- SQLite,T-SQL,Teradata,Trino
+      return {
+        '--dialect',
+        'postgres',
+        '--indentation',
+        vim.api.nvim_buf_get_option(params.bufnr, 'shiftwidth'),
+      }
+    end,
+  }),
   -- null_ls.builtins.formatting.sqlfmt,
   null_ls.builtins.formatting.standardrb,
   -- null_ls.builtins.formatting.standardts,

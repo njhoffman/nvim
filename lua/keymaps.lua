@@ -906,17 +906,17 @@ map('n', '<leader>;', '<c-w>w', {
   desc = ' focus the next window',
 })
 
-map('n', '<Tab>', '<c-w>w', {
-  category = 'Window',
-  label = 'window next',
-  desc = ' focus the next window',
-})
-
-map('n', '<S-Tab>', '<c-w>W', {
-  category = 'Window',
-  label = 'window prev ',
-  desc = ' focus the prev window',
-})
+-- map('n', '<Tab>', '<c-w>w', {
+--   category = 'Window',
+--   label = 'window next',
+--   desc = ' focus the next window',
+-- })
+--
+-- map('n', '<S-Tab>', '<c-w>W', {
+--   category = 'Window',
+--   label = 'window prev ',
+--   desc = ' focus the prev window',
+-- })
 
 map('n', '<leader>H', '<cmd>vnew<cr>', {
   category = 'Window',
