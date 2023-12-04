@@ -1,23 +1,23 @@
 -- local colors = require("plugins.config.feline.colors").main
-local lsp = require("feline.providers.lsp")
-local vi_mode_utils = require("feline.providers.vi_mode")
+local lsp = require('feline.providers.lsp')
+local vi_mode_utils = require('feline.providers.vi_mode')
 
 local function file_osinfo()
   local os = vim.bo.fileformat:upper()
   local icon
-  if os == "UNIX" then
-    icon = " "
-  elseif os == "MAC" then
-    icon = " "
+  if os == 'UNIX' then
+    icon = ' '
+  elseif os == 'MAC' then
+    icon = ' '
   else
-    icon = " "
+    icon = ' '
   end
   return icon .. os
 end
 
 local lsp_get_diag = function(str)
   local count = vim.lsp.diagnostic.get_count(0, str)
-  return (count > 0) and " " .. count .. " " or ""
+  return (count > 0) and ' ' .. count .. ' ' or ''
 end
 
 -- LuaFormatter off
@@ -26,7 +26,7 @@ local comps = {
   vi_mode = {
     left = {
       provider = function()
-        return "  " .. vi_mode_utils.get_vim_mode()
+        return '  ' .. vi_mode_utils.get_vim_mode()
       end,
       hl = function()
         local val = {
@@ -36,11 +36,11 @@ local comps = {
         }
         return val
       end,
-      right_sep = " ",
+      right_sep = ' ',
     },
     right = {
       -- provider = '▊',
-      provider = "",
+      provider = '',
       hl = function()
         local val = {
           name = vi_mode_utils.get_mode_highlight_name(),
@@ -48,22 +48,22 @@ local comps = {
         }
         return val
       end,
-      left_sep = " ",
-      right_sep = " ",
+      left_sep = ' ',
+      right_sep = ' ',
     },
   },
   file = {
     info = {
       provider = {
-        name = "file_info",
+        name = 'file_info',
         opts = {
-          type = "relative-short",
-          file_readonly_icon = " 󰍁 ",
+          type = 'relative-short',
+          file_readonly_icon = ' 󰍁 ',
           -- file_readonly_icon = ' 󰌾 ',
           -- file_readonly_icon = ' 󰏮 ',
           -- file_readonly_icon = ' 󰈡 ',
           -- file_modified_icon = '',
-          file_modified_icon = "󰆓",
+          file_modified_icon = '󰆓',
           -- file_modified_icon = '󰝒',
           -- file_modified_icon = '󰎜',
           -- file_modified_icon = '󰎝',
@@ -72,31 +72,31 @@ local comps = {
       },
       hl = {
         fg = colors.blue,
-        style = "bold",
+        style = 'bold',
       },
     },
     encoding = {
-      provider = "file_encoding",
-      left_sep = " ",
+      provider = 'file_encoding',
+      left_sep = ' ',
       hl = {
         fg = colors.violet,
-        style = "bold",
+        style = 'bold',
       },
     },
     type = {
-      provider = "file_type",
+      provider = 'file_type',
     },
     os = {
       provider = file_osinfo,
-      left_sep = " ",
+      left_sep = ' ',
       hl = {
         fg = colors.violet,
-        style = "bold",
+        style = 'bold',
       },
     },
     position = {
-      provider = "position",
-      left_sep = " ",
+      provider = 'position',
+      left_sep = ' ',
       hl = {
         fg = colors.cyan,
         -- style = 'bold'
@@ -105,7 +105,7 @@ local comps = {
   },
   left_end = {
     provider = function()
-      return ""
+      return ''
     end,
     hl = {
       fg = colors.bg,
@@ -113,29 +113,29 @@ local comps = {
     },
   },
   line_percentage = {
-    provider = "line_percentage",
-    left_sep = " ",
+    provider = 'line_percentage',
+    left_sep = ' ',
     hl = {
-      style = "bold",
+      style = 'bold',
     },
   },
   scroll_bar = {
-    provider = "scroll_bar",
-    left_sep = " ",
+    provider = 'scroll_bar',
+    left_sep = ' ',
     hl = {
       fg = colors.blue,
-      style = "bold",
+      style = 'bold',
     },
   },
   diagnos = {
     err = {
       -- provider = 'diagnostic_errors',
       provider = function()
-        return "" .. lsp_get_diag("Error")
+        return '' .. lsp_get_diag('Error')
       end,
       -- left_sep = ' ',
       enabled = function()
-        return lsp.diagnostics_exist("Error")
+        return lsp.diagnostics_exist('Error')
       end,
       hl = {
         fg = colors.red,
@@ -144,11 +144,11 @@ local comps = {
     warn = {
       -- provider = 'diagnostic_warnings',
       provider = function()
-        return "" .. lsp_get_diag("Warning")
+        return '' .. lsp_get_diag('Warning')
       end,
       -- left_sep = ' ',
       enabled = function()
-        return lsp.diagnostics_exist("Warn")
+        return lsp.diagnostics_exist('Warn')
       end,
       hl = {
         fg = colors.yellow,
@@ -157,11 +157,11 @@ local comps = {
     info = {
       -- provider = 'diagnostic_info',
       provider = function()
-        return "" .. lsp_get_diag("Information")
+        return '' .. lsp_get_diag('Information')
       end,
       -- left_sep = ' ',
       enabled = function()
-        return lsp.diagnostics_exist("Info")
+        return lsp.diagnostics_exist('Info')
       end,
       hl = {
         fg = colors.blue,
@@ -170,11 +170,11 @@ local comps = {
     hint = {
       -- provider = 'diagnostic_hints',
       provider = function()
-        return "󰌵" .. lsp_get_diag("Hint")
+        return '󰌵' .. lsp_get_diag('Hint')
       end,
       -- left_sep = ' ',
       enabled = function()
-        return lsp.diagnostics_exist("Hint")
+        return lsp.diagnostics_exist('Hint')
       end,
       hl = {
         fg = colors.cyan,
@@ -183,11 +183,11 @@ local comps = {
   },
   lsp = {
     name = {
-      provider = "lsp_client_names",
+      provider = 'lsp_client_names',
       -- left_sep = ' ',
-      right_sep = " ",
+      right_sep = ' ',
       -- icon = '  ',
-      icon = "󰖈",
+      icon = '󰖈',
       hl = {
         fg = colors.yellow,
       },
@@ -195,29 +195,29 @@ local comps = {
   },
   git = {
     branch = {
-      provider = "git_branch",
-      icon = " ",
+      provider = 'git_branch',
+      icon = ' ',
       -- icon = ' ',
-      left_sep = " ",
+      left_sep = ' ',
       hl = {
         fg = colors.violet,
-        style = "bold",
+        style = 'bold',
       },
     },
     add = {
-      provider = "git_diff_added",
+      provider = 'git_diff_added',
       hl = {
         fg = colors.green,
       },
     },
     change = {
-      provider = "git_diff_changed",
+      provider = 'git_diff_changed',
       hl = {
         fg = colors.orange,
       },
     },
     remove = {
-      provider = "git_diff_removed",
+      provider = 'git_diff_removed',
       hl = {
         fg = colors.red,
       },

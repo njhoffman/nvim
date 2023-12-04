@@ -2,6 +2,44 @@ local lsp_icons = require('lsp.icons')
 local capabilities = require('lsp.capabilities')
 local format = require('lsp.format')
 
+local setup_mappings = function()
+  local keymap_opts = { noremap = true, silent = true }
+  vim.api.nvim_set_keymap(
+    'n',
+    '<C-T>',
+    "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = true })<cr>",
+    keymap_opts
+  )
+
+  vim.api.nvim_set_keymap('n', '<M-T>', "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>", keymap_opts)
+  vim.api.nvim_set_keymap('n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', keymap_opts)
+  vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', keymap_opts)
+  vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
+  vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
+
+  vim.keymap.set('n', '<leader>,', function()
+    vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+  end)
+  vim.keymap.set('n', '<leader>.', function()
+    vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+  end)
+  vim.keymap.set('n', '<leader><leader>,', function()
+    vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN })
+  end)
+  vim.keymap.set('n', '<leader><leader>.', function()
+    vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARN })
+  end)
+  -- if the file is .sql
+  if vim.bo.filetype == 'sql' then
+    vim.keymap.set('n', '<leader>q', ':!sqlfluff fix -fq --dialect=postgres %<cr>')
+  end
+end
+
+local icons = lsp_icons.get_icons('diagnostics')
+vim.fn.sign_define('DiagnosticSignError', { text = icons.error, texthl = 'LspDiagnosticsSignError' })
+vim.fn.sign_define('DiagnosticSignWarn', { text = icons.warn, texthl = 'LspDiagnosticsSignWarn' })
+vim.fn.sign_define('DiagnosticSignInfo', { text = icons.info, texthl = 'LspDiagnosticsSignInfo' }) -- 󰌵
+vim.fn.sign_define('DiagnosticSignHint', { text = icons.hint, texthl = 'LspDiagnosticsSignHint' })
 format.setup()
 -- exclude is a table of LSP servers that should not format the buffer.
 -- Alternatively, you can also just not call on_attach for the clients you don't want to use for formatting.
@@ -18,27 +56,6 @@ local on_attach = function(client, bufnr)
   end
 
   format.on_attach(client, bufnr)
-
-  local icons = lsp_icons.get_icons('diagnostics')
-
-  vim.fn.sign_define('DiagnosticSignError', { text = icons.error, texthl = 'LspDiagnosticsSignError' })
-  vim.fn.sign_define('DiagnosticSignWarn', { text = icons.warn, texthl = 'LspDiagnosticsSignWarn' })
-  vim.fn.sign_define('DiagnosticSignInfo', { text = icons.info, texthl = 'LspDiagnosticsSignInfo' }) -- 󰌵
-  vim.fn.sign_define('DiagnosticSignHint', { text = icons.hint, texthl = 'LspDiagnosticsSignHint' })
-
-  local keymap_opts = { noremap = true, silent = true }
-  vim.api.nvim_set_keymap(
-    'n',
-    '<C-T>',
-    "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = true })<cr>",
-    keymap_opts
-  )
-
-  vim.api.nvim_set_keymap('n', '<M-T>', "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>", keymap_opts)
-  vim.api.nvim_set_keymap('n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', keymap_opts)
-  vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', keymap_opts)
-  vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
-  vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
 
   client.config.flags.debounce_text_changes = 300
   -- client.config.flags.allow_incremental_sync = true
@@ -57,8 +74,11 @@ local on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.inlayHintProvider then
+    vim.dbglog('INLAY HINTS AVAILABLE')
     vim.lsp.inlay_hint.enable(bufnr, true)
   end
+
+  setup_mappings()
 
   capabilities.resolve(client, bufnr)
 end

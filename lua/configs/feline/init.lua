@@ -1,11 +1,49 @@
 local defaults = require('feline.default_components').statusline.icons
-
 -- local provider_neocomposer = require('configs.feline.provider-neocomposer')
 local custom_status_comps = require('configs.feline.components')
 local colors = require('configs.feline.colors')
 
-local status_comps = vim.deepcopy(defaults)
+local custom_providers = {
+  -- lsp_code_actions = require('configs.feline.provider-lsp-code-actions').provider,
+  -- lsp_references = require('configs.feline.provider-lsp-references').provider,
+  project = require('configs.feline.provider-project').provider,
+  neocomposer = require('configs.feline.provider-neocomposer').provider,
+  ascii = require('configs.feline.provider-ascii').provider,
+  -- helptags = require('configs.feline.provider-helptags').provider,
+  selection_count = require('configs.feline.provider-selection_count').provider,
+}
+-- -- Current vi mode ------>
+-- local vi_mode_hl = function()
+-- 	return {
+-- 		fg = sett.text,
+-- 		bg = mode_colors[vim.fn.mode()][2],
+-- 		style = "bold",
+-- 	}
+-- end
+--
+-- components.active[1][1] = {
+-- 	provider = " " .. assets.mode_icon .. " ",
+-- 	hl = function()
+-- 		return {
+-- 			fg = sett.text,
+-- 			bg = mode_colors[vim.fn.mode()][2],
+-- 		}
+-- 	end,
+-- }
+--
+-- components.active[1][2] = {
+-- 	provider = function() return mode_colors[vim.fn.mode()][1] .. " " end,
+-- 	hl = vi_mode_hl,
+-- }
+-- https://github.com/folke/noice.nvim/issues/359
+-- {
+--     function() return require("noice").api.status.command.get() end,
+--     cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+--     color = fg("Statement")
+-- },
+-- { "selectioncount", fmt = function(str) return str ~= "" and "礪" .. str or "" end },
 
+local status_comps = vim.deepcopy(defaults)
 table.insert(status_comps.active[1], 3, custom_status_comps.ProjectComponent)
 status_comps.active[1][4].left_sep = {
   hl = {
@@ -14,14 +52,7 @@ status_comps.active[1][4].left_sep = {
   },
   str = ' ',
 }
--- https://github.com/folke/noice.nvim/issues/359
--- {
---     function() return require("noice").api.status.command.get() end,
---     cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
---     color = fg("Statement")
--- },
 
--- { "selectioncount", fmt = function(str) return str ~= "" and "礪" .. str or "" end },
 table.insert(status_comps.active[1], 7, custom_status_comps.FiletypeComponent)
 -- { provider = 'diagnostic_errors', hl = { fg = 'red' } },
 -- { provider = 'diagnostic_warnings', hl = { fg = 'yellow' } },
@@ -29,14 +60,19 @@ table.insert(status_comps.active[1], 7, custom_status_comps.FiletypeComponent)
 -- { provider = 'diagnostic_info', hl = { fg = 'skyblue' } },
 table.insert(status_comps.active[1], 12, custom_status_comps.AsciiComponent)
 -- -- status_comps.active[2][2] = custom_status_comps.NeoComposerComponent
-status_comps.active[2][1] = custom_status_comps.HelpTagsComponent
+-- status_comps.active[2][1] = custom_status_comps.HelpTagsComponent
 -- status_comps.active[2][2] = custom_status_comps.LspReferencesComponent
 -- status_comps.active[2][2] = custom_status_comps.LspCodeActionsComponent
-status_comps.active[2][2] = custom_status_comps.GitBranchComponent
-status_comps.active[2][3] = custom_status_comps.GitDiffAddedComponent
-status_comps.active[2][4] = custom_status_comps.GitDiffChangedComponent
-status_comps.active[2][5] = custom_status_comps.GitDiffRemovedComponent
-status_comps.active[2][6] = custom_status_comps.ScrollBarComponent
+status_comps.active[2][1] = custom_status_comps.MacroComponent
+status_comps.active[2][2] = custom_status_comps.FelineCmdComponent
+status_comps.active[2][3] = custom_status_comps.NoiceComponent
+status_comps.active[2][4] = custom_status_comps.GitBranchComponent
+status_comps.active[2][5] = custom_status_comps.GitDiffAddedComponent
+status_comps.active[2][6] = custom_status_comps.GitDiffChangedComponent
+status_comps.active[2][7] = custom_status_comps.GitDiffRemovedComponent
+status_comps.active[2][8] = custom_status_comps.SearchCountComponent
+status_comps.active[2][9] = custom_status_comps.LinePercentageComponent
+status_comps.active[2][10] = custom_status_comps.ScrollBarComponent
 
 local statusline_cfg = {
   components = status_comps,
@@ -85,17 +121,8 @@ local statusline_cfg = {
     },
     bufnames = {},
   },
-  custom_providers = {
-    -- lsp_code_actions = require('configs.feline.provider-lsp-code-actions').provider,
-    -- lsp_references = require('configs.feline.provider-lsp-references').provider,
-    project = require('configs.feline.provider-project').provider,
-    neocomposer = require('configs.feline.provider-neocomposer').provider,
-    ascii = require('configs.feline.provider-ascii').provider,
-    helptags = require('configs.feline.provider-helptags').provider,
-    selection_count = require('configs.feline.provider-selection_count').provider,
-  },
+  custom_providers = custom_providers,
 }
-
 require('feline').setup(statusline_cfg)
 
 -- lsp = {

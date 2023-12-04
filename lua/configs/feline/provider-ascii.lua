@@ -5,6 +5,7 @@ local ascii = function(_, opts)
   if code == nil then
     return '    '
   end
+  -- return char .. ' 0x' .. string.format('%x', code)
   return '0x' .. string.format('%x', code)
 end
 

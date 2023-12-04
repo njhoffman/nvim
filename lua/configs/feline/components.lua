@@ -99,6 +99,7 @@ M.AsciiComponent = {
   --   return vim.api.nvim_win_get_width(0) > 120
   -- end,
   provider = {
+    -- %b\ 0x%B
     name = 'ascii',
     update = { 'CursorMoved' },
   },
@@ -196,152 +197,161 @@ M.FiletypeComponent = {
   right_sep = '',
 }
 
+-- global components
+local invi_sep = { str = ' ', hl = { fg = 'black', bg = 'black' } }
+
+M.NoiceComponent = {
+  enabled = function()
+    return package.loaded['noice'] and require('noice').api.status.mode.has()
+  end,
+  update = function()
+    return require('noice').api.status.mode.has()
+  end,
+  provider = function()
+    return tostring(require('noice').api.status.mode.get())
+  end,
+  left_sep = { str = ' ', hl = { bg = 'base' } },
+  hl = function()
+    return {
+      name = require('feline.providers.vi_mode').get_mode_highlight_name(),
+      fg = require('feline.providers.vi_mode').get_mode_color(),
+      bg = 'base',
+    }
+  end,
+  priority = 1,
+}
+
+M.LinePercentageComponent = {
+  provider = 'line_percentage',
+  hl = { fg = '#4477aa', bg = 'bg', style = 'none' },
+  left_sep = ' ',
+}
+
+vim.opt.showcmdloc = 'statusline'
+
+M.FelineCmdComponent = {
+  enabled = function()
+    return vim.api.nvim_get_option_value('showcmd', {}) == true
+      and vim.api.nvim_get_option_value('showcmdloc', {}) == 'statusline'
+  end,
+  provider = '%S',
+  -- provider = ':%3.5(%S%)',
+  left_sep = ' ',
+  right_sep = ' ',
+  hl = { name = 'FelineCMD', fg = 'gray' },
+  -- priority = -9,
+  -- truncate_hide = true,
+}
+
+-- macro
+M.MacroComponent = {
+  provider = 'macro',
+  enabled = function()
+    return vim.api.nvim_get_option('cmdheight') == 0
+  end,
+  hl = { fg = 'orange', bg = 'base' },
+  left_sep = invi_sep,
+}
+
+-- search count
+M.SearchCountComponent = {
+  provider = 'search_count',
+  enabled = function()
+    return vim.api.nvim_get_option('cmdheight') == 0
+  end,
+  hl = {
+    fg = 'cyan',
+    bg = 'black',
+  },
+  left_sep = invi_sep,
+}
+
+M.ViMode = {
+  -- get vim current mode, this information will be required by the provider
+  -- and the highlight functions, so we compute it only once per component
+  -- evaluation and store it as a component attribute
+  init = function(self)
+    self.mode = vim.fn.mode(1) -- :h mode()
+  end,
+  -- Now we define some dictionaries to map the output of mode() to the
+  -- corresponding string and color. We can put these into `static` to compute
+  -- them at initialisation time.
+  static = {
+    mode_names = { -- change the strings if you like it vvvvverbose!
+      n = 'N',
+      no = 'N?',
+      nov = 'N?',
+      noV = 'N?',
+      ['no\22'] = 'N?',
+      niI = 'Ni',
+      niR = 'Nr',
+      niV = 'Nv',
+      nt = 'Nt',
+      v = 'V',
+      vs = 'Vs',
+      V = 'V_',
+      Vs = 'Vs',
+      ['\22'] = '^V',
+      ['\22s'] = '^V',
+      s = 'S',
+      S = 'S_',
+      ['\19'] = '^S',
+      i = 'I',
+      ic = 'Ic',
+      ix = 'Ix',
+      R = 'R',
+      Rc = 'Rc',
+      Rx = 'Rx',
+      Rv = 'Rv',
+      Rvc = 'Rv',
+      Rvx = 'Rv',
+      c = 'C',
+      cv = 'Ex',
+      r = '...',
+      rm = 'M',
+      ['r?'] = '?',
+      ['!'] = '!',
+      t = 'T',
+    },
+    mode_colors = {
+      n = 'red',
+      i = 'green',
+      v = 'cyan',
+      V = 'cyan',
+      ['\22'] = 'cyan',
+      c = 'orange',
+      s = 'purple',
+      S = 'purple',
+      ['\19'] = 'purple',
+      R = 'orange',
+      r = 'orange',
+      ['!'] = 'red',
+      t = 'red',
+    },
+  },
+  -- We can now access the value of mode() that, by now, would have been
+  -- computed by `init()` and use it to index our strings dictionary.
+  -- note how `static` fields become just regular attributes once the
+  -- component is instantiated.
+  -- To be extra meticulous, we can also add some vim statusline syntax to
+  -- control the padding and make sure our string is always at least 2
+  -- characters long. Plus a nice Icon.
+  provider = function(self)
+    return ' %2(' .. self.mode_names[self.mode] .. '%)'
+  end,
+  -- Same goes for the highlight. Now the foreground will change according to the current mode.
+  hl = function(self)
+    local mode = self.mode:sub(1, 1) -- get only the first mode character
+    return { fg = self.mode_colors[mode], bold = true }
+  end,
+  -- Re-evaluate the component only on ModeChanged event!
+  -- Also allows the statusline to be re-evaluated when entering operator-pending mode
+  update = {
+    'ModeChanged',
+    pattern = '*:*',
+    callback = vim.schedule_wrap(function()
+      vim.cmd('redrawstatus')
+    end),
+  },
+}
 return M
-
--- -- table.insert(components.right.active, 1, {
--- --   provider = LspLightbulb, -- hl = { fg = "cyan", bg = "bg", style = "bold" },
--- -- })
-
--- table.insert(properties.force_inactive.filetypes, "dapui_scopes")
--- table.insert(properties.force_inactive.filetypes, "dapui_watches")
--- table.insert(properties.force_inactive.filetypes, "dapui_breakpoints")
--- table.insert(properties.force_inactive.filetypes, "dapui_stacks")
--- table.insert(properties.force_inactive.filetypes, "dap-repl")
--- -- properties = {
--- --   force_inactive = {
--- --     bufnames = {},
--- --     buftypes = { "terminal" },
--- --     filetypes = {
--- --       "NvimTree",
--- --       "dbui",
--- --       "packer",
--- --       "startify",
--- --       "fugitive",
--- --       "fugitiveblame",
--- --       "dashboard",
--- --     },
--- --   },
--- -- }
-
--- local separators = {
---   vertical_bar = "┃",
---   vertical_bar_thin = "│",
---   left = "",
---   right = "",
---   block = "█",
---   left_filled = "  ",
---   right_filled = "  ",
---   slant_left = " ",
---   slant_left_thin = " ",
---   slant_right = " ",
---   slant_right_thin = " ",
---   slant_left_2 = " ",
---   slant_left_2_thin = "  ",
---   slant_right_2 = " ",
---   slant_right_2_thin = " ",
---   left_rounded = "  ",
---   left_rounded_thin = "  ",
---   right_rounded = "   ",
---   right_rounded_thin = "  ",
---   circle = "●",
--- }
-
--- -- components.left.active[3] = {
--- --   provider = "file_info",
--- --   hl = { fg = "white", bg = "dodgerblue3", style = "bold" },
--- --   left_sep = { "slant_left", { hl = { bg = "NONE", fg = "dodgerblue3" }, " " } },
--- --   right_sep = { "slant_right_2", " " },
--- -- }
-
--- local bgcolor = "oceanblue"
--- if vim.api.nvim_buf_get_name(0) == "[Command Line]" then bgcolor = "#330000" end
-
--- components.left.active[3] = {
---   provider = "file_info",
---   hl = { fg = "white", bg = "oceanblue", style = "bold" },
---   left_sep = { " ", "slant_left", { str = "", hl = { bg = bgcolor, fg = "NONE" } } },
---   right_sep = { "slant_right_2", " " },
--- }
-
--- -- components.left.active[3] = {
--- --   provider = function()
--- --     get_project_path()
--- --     return project_name or ""
--- --   end,
--- --   hl = function()
--- --     if project_path == nil or project_path == "" then
--- --       return { fg = "white", bg = "#333333" }
--- --     end
--- --     return { fg = "white", bg = "#440088" }
--- --   end,
--- --   -- left_sep = {str = "slant_left", hl = {fg = "#224488", bg = "NONE"}},
--- --   left_sep = function()
-
--- --     local val = {
--- --       str = "slant_left",
--- --       fg = "white",
--- --       bg = "#224488",
--- --       style = "bold",
--- --     }
--- --     if project_path == nil then val.bg = "#333333" end
--- --     return val
--- --   end,
--- --   right_sep = { "slant_right_2" },
--- -- }
--- -- local active_clients = nil
--- -- local last_active_client_buffer = vim.fn.bufnr()
-
--- -- local function lsp_active_status()
--- --   -- lsp_status:                ⏻ ⏼ ⭘      
--- --   if vim.fn.bufnr() ~= last_active_client_buffer then
--- --     active_clients = vim.lsp.buf_get_clients()
--- --     last_active_client_buffer = vim.fn.bufnr()
--- --   end
-
--- --   -- if active_clients == nil or #active_clients == 0 then
--- --   --   active_clients = vim.lsp.buf_get_clients()
--- --   -- end
-
--- --   -- if #active_clients == 0 then return " " end
--- --   -- if #active_clients > 1 then return #active_clients end
--- --   -- if active_clients[1].name == "efm" then return "" end
--- --   return ""
--- -- end
-
--- -- components.right.active[5] = {
--- --   provider = function() return vim.bo.filetype:lower() end,
--- --   hl = function()
--- --     if active_clients == nil or #active_clients == 0 then
--- --       return { fg = "fg" }
--- --     else
--- --       if active_clients[1].name == "efm" then
--- --         return { fg = "#6688cc", style = "italic" }
--- --       end
--- --       return { fg = "#00aacc", style = "italic" }
--- --     end
--- --   end,
--- -- }
-
--- -- components.right.active[6] = {
--- --   provider = lsp_active_status,
--- --   hl = function()
--- --     if active_clients == nil or #active_clients == 0 then
--- --       return { fg = "none" }
--- --     end
--- --     if #active_clients > 1 then return { fg = "#ff0000", style = "bold" } end
--- --     if active_clients[1].name == "efm" then
--- --       return { fg = "#6688ff", style = "none" }
--- --     end
--- --     return { fg = "#00ccff", style = "none" }
--- --   end,
-
--- --   left_sep = " ",
--- --   right_sep = " ",
--- -- }
-
--- require("feline").setup({
---   default_fg = "#909090",
---   default_bg = "#0F1216",
---   components = components,
---   separators = separators,
--- })
