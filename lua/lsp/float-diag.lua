@@ -9,16 +9,9 @@ local sources = {
 
 -- wrap open_float to inspect diagnostics and use the severity color for border
 -- bufnr = 10, col = 35, end_col = 0, end_lnum = 4, lnum = 3, message = "INFO, HINT", namespace = 93, row = 4, severity = 4, source = "todo_comments"
---     bufnr = 8,
---     code = "missing-fields",
---     col = 15,
---     end_col = 61,
---     end_lnum = 186,
---     lnum = 186,
+--     bufnr = 8, code = "missing-fields", col = 15, end_col = 61, end_lnum = 186, lnum = 186,
 --     message = "Missing required fields in type `cmp.MatchingConfig`: `disallow_fuzzy_matching`, `disallow_fullfuzzy_matching`, `disallow_partial_fuzzy_matching`, `disallow_partial_matching`, `disallow_prefix_unmatching`",
---     namespace = 90,
---     severity = 2,
---     source = "Lua Diagnostics.",
+--     namespace = 90, severity = 2, source = "Lua Diagnostics.",
 --     user_data = { lsp = { code = "missing-fields" } }
 -- }
 
@@ -84,7 +77,7 @@ local float_options = function()
     focusable = false,
     style = 'minimal',
     scope = 'cursor',
-    source = 'if_many',
+    source = 'always',
     format = function(diag)
       -- See null-ls.nvim#632, neovim#17222 for how to pick up `code`
       local user_data
@@ -93,13 +86,24 @@ local float_options = function()
       -- local code = (diag.symbol or diag.code or user_data.symbol or user_data.code)
       return string.format('%s', diag.message)
     end,
+    prefix = function(diag, i, total)
+      local icons = lsp_icons.get_icons('diagnostics')
+      -- local num_prefix = string.format('%d. ', i)
+      local icon_prefix = string.format('%s ', icons[severity_name(diag.severity)])
+      local hl_group = ({
+        [vim.diagnostic.severity.HINT] = 'DiagnosticFloatingHint',
+        [vim.diagnostic.severity.INFO] = 'DiagnosticFloatingInfo',
+        [vim.diagnostic.severity.WARN] = 'DiagnosticFloatingWarn',
+        [vim.diagnostic.severity.ERROR] = 'DiagnosticFloatingError',
+      })[diag.severity]
+      return icon_prefix, hl_group
+    end,
   }
   return opts
 end
 
 vim.diagnostic.open_float = (function(orig)
   return function(_opts)
-    local icons = lsp_icons.get_icons('diagnostics')
     local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
     local opts = vim.tbl_deep_extend('force', _opts or {}, float_options())
     -- A more robust solution would check the "scope" value in `opts` to
@@ -118,7 +122,7 @@ vim.diagnostic.open_float = (function(orig)
         'winhighlight',
         'Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None'
       )
-      vim.api.nvim_win_set_option(winnr, 'winblend', 30)
+      -- vim.api.nvim_win_set_option(winnr, 'winblend', 10)
     end
   end
 end)(vim.diagnostic.open_float)

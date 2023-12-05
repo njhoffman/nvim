@@ -88,9 +88,8 @@ local cfg = {
     -- disallow_prefix_unmatching = false,
   },
   completion = {
-    -- completeopt = 'menu,preview,menuone,noselect',
-    completeopt = 'menu,menuone,noinsert',
-    -- completeopt = 'menuone,noselect,noinsert',
+    completeopt = 'menu,menuone,noselect',
+    -- completeopt = 'menuone,preview,noselect,noinsert',
   },
   snippet = {
     expand = function(args)

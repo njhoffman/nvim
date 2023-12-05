@@ -1,5 +1,6 @@
 require('spider').setup({
-  skipInsignificantPunctuation = true,
+  -- if setting this to false, have to do cw/dw fix
+  skipInsignificantPunctuation = false,
   jumpSubWords = true,
 })
 
@@ -24,14 +25,17 @@ end
 spider_map({ 'n', 'o', 'x' }, 'e', 'e')
 spider_map({ 'n', 'o', 'x' }, 'b', 'b')
 spider_map({ 'n', 'o', 'x' }, 'ge', 'ge')
-spider_map({ 'n', 'x' }, 'w', 'w')
 
+-- stylua: ignore
 if map_w_type == 1 then
   -- map operator w to spider-e
-  spider_map('o', 'w', 'e', { desc = '󱇫 spider-w(e) motion' })
+  spider_map({ 'o'},       'w', 'e', { desc = '󱇫 spider-w(e) motion' })
+  spider_map({ 'n', 'x' }, 'w', 'w')
 elseif map_w_type == 2 then
   -- map operator w stays default, operator W to spider-w
-  spider_map('o', 'W', 'w', { desc = '󱇫 spider-w(e) motion' })
+  -- spider_map({ 'o' },      'w', 'e', { desc = '󱇫 spider-w(e) motion' })
+  -- spider_map({ 'o' },      'W', 'w', { desc = '󱇫 spider-w(e) motion' })
+  spider_map({ 'n', 'x', 'o' }, 'w', 'w')
 elseif map_w_type == 3 then
   -- directly map cw/dw to ce/de
   mapper.map(
@@ -48,5 +52,5 @@ elseif map_w_type == 3 then
   )
 else
   -- default spider-w behavior (cw/dw deletes eol)
-  spider_map('o', 'w', 'w')
+  spider_map({ 'n', 'x', 'o' }, 'w', 'w')
 end

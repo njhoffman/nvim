@@ -17,18 +17,12 @@ local setup_mappings = function()
   vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
   vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
 
-  vim.keymap.set('n', '<leader>,', function()
-    vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
-  end)
-  vim.keymap.set('n', '<leader>.', function()
-    vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
-  end)
-  vim.keymap.set('n', '<leader><leader>,', function()
-    vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN })
-  end)
-  vim.keymap.set('n', '<leader><leader>.', function()
-    vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARN })
-  end)
+  -- vim.keymap.set('n', '[e', function()
+  --   vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+  -- end)
+  -- vim.keymap.set('n', ']e', function()
+  --   vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+  -- end)
   -- if the file is .sql
   if vim.bo.filetype == 'sql' then
     vim.keymap.set('n', '<leader>q', ':!sqlfluff fix -fq --dialect=postgres %<cr>')
@@ -40,7 +34,9 @@ vim.fn.sign_define('DiagnosticSignError', { text = icons.error, texthl = 'LspDia
 vim.fn.sign_define('DiagnosticSignWarn', { text = icons.warn, texthl = 'LspDiagnosticsSignWarn' })
 vim.fn.sign_define('DiagnosticSignInfo', { text = icons.info, texthl = 'LspDiagnosticsSignInfo' }) -- 󰌵
 vim.fn.sign_define('DiagnosticSignHint', { text = icons.hint, texthl = 'LspDiagnosticsSignHint' })
+
 format.setup()
+
 -- exclude is a table of LSP servers that should not format the buffer.
 -- Alternatively, you can also just not call on_attach for the clients you don't want to use for formatting.
 -- order is a table that determines the order formatting is requested from the LSP server.
@@ -56,6 +52,7 @@ local on_attach = function(client, bufnr)
   end
 
   format.on_attach(client, bufnr)
+  setup_mappings()
 
   client.config.flags.debounce_text_changes = 300
   -- client.config.flags.allow_incremental_sync = true
@@ -75,10 +72,8 @@ local on_attach = function(client, bufnr)
 
   if client.server_capabilities.inlayHintProvider then
     vim.dbglog('INLAY HINTS AVAILABLE')
-    vim.lsp.inlay_hint.enable(bufnr, true)
+    -- vim.lsp.inlay_hint.enable(bufnr, true)
   end
-
-  setup_mappings()
 
   capabilities.resolve(client, bufnr)
 end

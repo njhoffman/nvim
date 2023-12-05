@@ -3,7 +3,6 @@ local sinks = require('stats.sinks')
 local buffer = function(lines, title)
   lines = type(lines) == 'string' and vim.fn.split(lines, '\n') or lines
   vim.dbglog(title .. vim.fn.join(lines, '\n  '))
-
   sinks.buffer(lines, title)
 end
 

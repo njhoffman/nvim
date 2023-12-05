@@ -80,7 +80,7 @@ local fancy_default = {
 local fancy_1 = {
   enable = true,
   head = {
-    cursor = '◆', -- ▷
+    cursor = '▷', -- ▷ ◆
     texthl = 'SmoothCursor',
     linehl = nil,
   }, -- false to disable fancy head
@@ -112,10 +112,11 @@ local cfg = {
 }
 require('smoothcursor').setup(cfg)
 
-  --         ﲵ       嶺 淪 ▷   輪 ﯖ   濾      礪 閭 驪 麗 ﱵ 隷   •   ● ●  
+  --         ﲵ       嶺 淪 ▷   輪 ﯖ  
+  -- 濾      礪 閭 驪 麗 ﱵ 隷   •   ● ●  
 -- stylua: ignore
 local icons = {
-  ['n'] = '◆', --    ◆ﮜ
+  ['n'] = '▷', --    ◆ ﮜ ▷
   ['v'] = '',
   ['V'] = '',
   [''] ='礪',
@@ -127,6 +128,7 @@ local icons = {
   ['C'] = '',
   ['*'] = '',
 }
+
 local colors = {
   -- ['n'] = { fg = '#fa4842', bold = true },
   ['n'] = { fg = '#0081ca', bold = true },

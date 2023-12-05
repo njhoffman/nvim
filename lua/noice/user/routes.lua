@@ -7,6 +7,8 @@ local routes = {
     view = 'mini',
     filter = {
       any = {
+        -- all "Closed # popup windows" to mini
+        { event = 'msg_show', find = '^Closed %d+ popup windows' },
         -- all "Cannot make changes, 'modifiable' is off" to mini
         { event = 'msg_show', find = '^E21:' },
         -- all search not found messages to mini

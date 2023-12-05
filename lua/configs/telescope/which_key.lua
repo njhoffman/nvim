@@ -327,11 +327,15 @@ local which_key = function(prompt_bufnr, opts)
   local win_central_row = function(win_nr)
     return a.nvim_win_get_position(win_nr)[1] + 0.5 * a.nvim_win_get_height(win_nr)
   end
+
   -- TODO(fdschmidt93|l-kershaw): better generalization of where to put which key float
   local picker = action_state.get_current_picker(prompt_bufnr)
   local prompt_row = win_central_row(picker.prompt_win)
   local results_row = win_central_row(picker.results_win)
-  local preview_row = picker.preview_win and win_central_row(picker.preview_win) or results_row
+  local preview_row = picker.preview_win
+      and vim.api.nvim_win_is_valid(picker.preview_win)
+      and win_central_row(picker.preview_win)
+    or results_row
   local prompt_pos = prompt_row < 0.4 * vim.o.lines
     or prompt_row < 0.6 * vim.o.lines and results_row + preview_row < vim.o.lines
 

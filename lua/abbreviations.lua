@@ -44,3 +44,8 @@ for wrong, correct in pairs(spellfixes) do
   -- vim.keymap.set("ia", wrong, correct)
   vim.cmd.inoreabbrev(wrong .. ' ' .. correct)
 end
+
+vim.cmd([[
+  cabbrev T Telescope
+  cabbrev D lua vim.dbglog(
+]])

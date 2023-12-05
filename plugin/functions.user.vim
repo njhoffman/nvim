@@ -141,19 +141,6 @@ function! MarkdownHeaders()
 endfunction
 command -bang MarkdownHeaders call MarkdownHeaders()
 
-function! QFixToggle(forced)
-  if exists("g:qfix_win") && a:forced == 0
-    cclose
-    unlet g:qfix_win
-  else
-    copen 10
-    let g:qfix_win = bufnr("$")
-    wincmd p
-  endif
-endfunction
-command -bang -nargs=? QFix call QFixToggle(<bang>0)
-
-
 function! InspectMsgPack()
   exe ":new | put=v:lua.vim.inspect(msgpackparse(readfile('runtime/doc/api.mpack')))"
 endfunction

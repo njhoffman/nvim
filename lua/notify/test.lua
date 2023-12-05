@@ -17,6 +17,56 @@ local notify_errors = function()
   -- end
 end
 
+local notify_simple = function()
+  local _delay = 0
+  for _, level in ipairs({ 'trace', 'debug', 'info', 'warn', 'error' }) do
+    vim.defer_fn(function()
+      notify('Rendering simple level: ' .. level, level, { timeout = timeout, render = 'simple' })
+    end, _delay)
+    _delay = _delay + delay
+  end
+end
+
+local notify_simple_notitle = function()
+  local _delay = 0
+  for _, level in ipairs({ 'trace', 'debug', 'info', 'warn', 'error' }) do
+    vim.defer_fn(function()
+      notify('Rendering simple level: ' .. level, level, { timeout = timeout, render = 'simple-notitle' })
+    end, _delay)
+    _delay = _delay + delay
+  end
+end
+
+local notify_minimal = function()
+  local _delay = 0
+  for _, level in ipairs({ 'trace', 'debug', 'info', 'warn', 'error' }) do
+    vim.defer_fn(function()
+      notify('Rendering simple level: ' .. level, level, { timeout = timeout, render = 'minimal' })
+    end, _delay)
+    _delay = _delay + delay
+  end
+end
+
+local notify_compact = function()
+  local _delay = 0
+  for _, level in ipairs({ 'trace', 'debug', 'info', 'warn', 'error' }) do
+    vim.defer_fn(function()
+      notify('Rendering simple level: ' .. level, level, { timeout = timeout, render = 'compact' })
+    end, _delay)
+    _delay = _delay + delay
+  end
+end
+
+local notify_wrapped_compact = function()
+  local _delay = 0
+  for _, level in ipairs({ 'trace', 'debug', 'info', 'warn', 'error' }) do
+    vim.defer_fn(function()
+      notify('Rendering simple level: ' .. level, level, { timeout = timeout, render = 'wrapped-compact' })
+    end, _delay)
+    _delay = _delay + delay
+  end
+end
+
 local notify_basic = function()
   local _delay = 0
   for _, level in ipairs({ 'trace', 'debug', 'info', 'warn', 'error' }) do
@@ -96,6 +146,7 @@ local custom_messages = {
     },
   },
 }
+
 local notify_custom_hl = function()
   local _delay = 0
   for _, msg in ipairs(custom_messages) do
@@ -118,15 +169,25 @@ local notify_custom_hl = function()
   end
 end
 
+local notify_long = function()
+  local msg =
+    'Use parentheses to group and prioritize calculations. For example, <Ctrl>+<R>=3*(4+2) will calculate the result of the expression 3*(4+2).'
+end
+
 -- stylua: ignore
 local funcs = {
-  errors        = notify_errors,
-  basic         = notify_basic,
-  basic_merge   = notify_basic_merge,
-  basic_repeat  = notify_basic_repeat,
-  titles        = notify_titles,
-  titles_2      = notify_titles_2,
-  custom_hl     = notify_custom_hl,
+  errors           = notify_errors,
+  minimal          = notify_minimal,
+  simple           = notify_simple,
+  simple_notitle   = notify_simple_notitle,
+  compact          = notify_compact,
+  wrappped_compact = notify_wrapped_compact,
+  basic            = notify_basic,
+  basic_merge      = notify_basic_merge,
+  basic_repeat     = notify_basic_repeat,
+  titles           = notify_titles,
+  titles_2         = notify_titles_2,
+  custom_hl        = notify_custom_hl,
 }
 
 local notify_test = function(category)
@@ -142,6 +203,11 @@ local notify_test = function(category)
       end
     end
   else
+    notify_minimal()
+    notify_simple()
+    notify_simple_notitle()
+    notify_compact()
+    notify_wrapped_compact()
     notify_basic()
     notify_basic_merge()
     notify_basic_repeat()
@@ -159,12 +225,17 @@ end
 -- require('notify').instance({ level = vim.lsp.log_levels['INFO'] })
 notify_test({
   -- 'errors',
+  -- 'minimal',
+  -- 'simple',
+  'simple_notitle',
+  -- 'compact',
+  -- 'wrapped_compact',
   -- 'basic',
   -- 'basic_merge',
   -- 'basic_repeat',
-  'titles',
+  -- 'titles',
   -- 'titles_2',
-  'custom_hl',
+  -- 'custom_hl',
   -- 'custom_hl_raw',
 })
 

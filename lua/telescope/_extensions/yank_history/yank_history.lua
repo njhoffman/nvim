@@ -2,11 +2,11 @@ local pickers = require('telescope.pickers')
 local finders = require('telescope.finders')
 local previewers = require('telescope.previewers')
 local actions = require('telescope.actions')
-local entry_display = require('telescope.pickers.entry_display')
 local conf = require('telescope.config').values
 
 local config = require('yanky.config')
 local mapping = require('telescope._extensions.yank_history.mapping')
+local display = require('telescope._extensions.yank_history.display')
 
 local yank_history = {}
 
@@ -19,12 +19,9 @@ end
 local regtype_to_text = function(regtype)
   if 'v' == regtype then
     return 'charwise'
-  end
-
-  if 'V' == regtype then
+  elseif 'V' == regtype then
     return 'linewise'
   end
-
   return 'blockwise'
 end
 
@@ -66,48 +63,8 @@ function yank_history.attach_mappings(_, map)
   return true
 end
 
-function yank_history.gen_from_history(opts)
-  local displayer = entry_display.create({
-    separator = ' ',
-    items = {
-      { width = #tostring(opts.history_length) },
-      { remaining = true },
-    },
-  })
-
-  local make_display = function(entry)
-    local content = entry.content
-    -- 14L     3 min
-    --  3L    18 hrs
-    --  5L 麗  2 days
-    --
-    --  麗 濾ﮜ       縷 ﮜ          ﲵ
-    --  cwd = "/home/nicholas/.config/nvim",
-    --  date = "Wed 22 Nov 2023 03:15:04 PM CST",
-    --  filename = "/home/nicholas/.config/nvim/lua/telescope/_extensions/yank_history/yank_history.lua",
-    --  filetype = "lua",
-    --  history_index = 1,
-    --  project_root = "/home/nicholas/.config/nvim",
-    --  regcontents = "  vim.dbglog('INIT')\
-    --  regtype = "V"
-    return displayer({
-      { entry.value.history_index, 'TelescopeResultsNumber' },
-      content:gsub('\n', '\\n'),
-    })
-  end
-
-  return function(entry)
-    return {
-      valid = true,
-      value = entry,
-      ordinal = entry.regcontents,
-      content = entry.regcontents,
-      display = make_display,
-    }
-  end
-end
-
 function yank_history.yank_history(opts)
+  -- TODO: get working wiht sqlite
   local is_visual = vim.fn.mode() == 'v' or vim.fn.mode() == 'V'
   if is_visual then
     vim.cmd([[execute "normal! \<esc>"]])
@@ -129,7 +86,7 @@ function yank_history.yank_history(opts)
       prompt_title = 'Yank history',
       finder = finders.new_table({
         results = history,
-        entry_maker = yank_history.gen_from_history(opts),
+        entry_maker = display.gen_from_history(opts),
       }),
       attach_mappings = yank_history.attach_mappings,
       previewer = yank_history.previewer(),

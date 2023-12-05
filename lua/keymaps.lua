@@ -3,24 +3,25 @@ local map = mapper.map
 local vmap = mapper.vmap
 local prefix = mapper.prefix
 
-vim.cmd([[
-  cabbrev T Telescope
-  cabbrev D lua vim.dbg(
-]])
+--       况  ﱔ    ﮝ  ﬠ ﬡ ײַ יִ       בּ 易
 
-prefix('n', 'z', 'folds')
-prefix('n', 'g', 'goto')
-prefix('n', 'gt', 'go transform')
-prefix('n', 'gq', 'quickfix')
-prefix('n', 'gP', 'preview')
-prefix('n', 'go', 'debug print')
+-- stylua: ignore start
+prefix('n', 'z',  'folds 󰘖')
+prefix('n', 'g',  'go ײַ')
+prefix('n', 'gt', 'text-case ')
+prefix('n', 'gq', 'quickfix ')
+prefix('n', 'gP', 'preview ')
+prefix('n', 'go', 'debug out ')
+prefix('n', ']',  'next 怜')
+prefix('n', '[',  'previous 玲')
 
 -- prefix('n', '<c-w>', 'window')
-prefix('n', '<leader>g', 'git')
-prefix('n', '<leader>f', 'file')
-prefix('n', '<leader>p', 'paste')
-prefix('n', '<leader>i', 'internal tools')
-prefix('n', '<leader>cl', 'conceal')
+prefix('n', '<leader>g',  'git 󰊢')
+prefix('n', '<leader>f',  'file ') --         
+prefix('n', '<leader>p',  'paste ')
+prefix('n', '<leader>i',  'internal tools  ')
+prefix('n', '<leader>cl', 'conceal 󰈉')
+
 -- -- leader prefixes normal mode
 -- require("which-key").register({
 -- 	u = { name = " 󰕌 Undo" },
@@ -42,8 +43,6 @@ prefix('n', '<leader>cl', 'conceal')
 
 -- vim.cmd([[nnoremap <C-l> :syntax sync fromstart<CR>:redraw<CR>]])
 
--- ["]"] = { name = "+next" },
--- ["["] = { name = "+prev" },
 -- ["<leader><tab>"] = { name = "+tabs" },
 -- ["<leader>b"] = { name = "+buffer" },
 -- ["<leader>c"] = { name = "+code" },
@@ -68,79 +67,51 @@ prefix('n', '<leader>cl', 'conceal')
 -- vim.keymap.set("n", "g.", [[/\V<C-r>"<CR>cgn<C-a><Esc>]])
 --------------------------------------------------------------------------------------------------
 -- COMMAND ---------------------------------------------------------------------------------------
--- TODO: differentiate between vim/lua, auto remove comments
 
+-- TODO: differentiate between vim/lua, auto remove comments
 map({ 'v' }, '<space>', '"xy:@x<cr>', {
   category = 'Command',
-  label = 'execute selected',
-  desc = 'execute selected lines',
+  label = ' execute selected',
+  desc = ' execute selected lines',
 })
 
 map({ 'n', 'v' }, ';', ':', {
   category = 'Command',
-  label = 'open cmdline',
-  desc = 'open the command line',
+  label = ' open cmdline',
+  desc = ' open the command line',
   nowait = true,
 })
 
 map({ 'n', 'v' }, ':', 'q:', {
   category = 'Command',
-  label = 'open cmdwin',
-  desc = 'open the command window',
+  label = ' open cmdwin',
+  desc = ' open the command window',
   nowait = true,
 })
 
 map({ 'n', 'v' }, '<M-;>', 'q:', {
   category = 'Command',
-  label = 'open cmdwin',
-  desc = 'open the command window',
+  label = ' open cmdwin',
+  desc = ' open the command window',
 })
-
--- map({ 'c' }, '<M-f>', '<C-T>', {
---   category = 'Command',
---   label = 'open cmdwin',
---   desc = 'open the command window',
--- })
 
 vmap({ 'c' }, '<C-T>', {
   category = 'Command',
-  label = 'open cmdwin',
-  desc = 'open the command window',
+  label = ' open cmdwin',
+  desc = ' open the command window',
 })
 
 map('c', '<M-b>', '<C-T><Esc>', {
   category = 'Command',
-  label = 'open cmdwin normal',
-  desc = 'open command window from the command line in normal mode',
+  label = ' open cmdwin normal',
+  desc = ' open command window from the command line in normal mode',
 })
 
--- map('c', '<c-d>', '<C-c>', {
---   category = 'Command',
---   label = 'close cmdline',
---   desc = 'close the commandline',
--- })
-
-map({ 'n', 'x', 'i' }, '<C-d>', function()
-  require('funcs.alt-alt').betterClose()
-end, { desc = '󰽙 close buffer/window' })
-
--- -- COMMENTS
-map('n', 'gch', function()
-  require('funcs.quality-of-life').commentHr()
-end, { desc = ' Horizontal Divider' })
-
-map('n', 'gcC', function()
-  require('funcs.quality-of-life').duplicateAsComment()
-end, { desc = ' Duplicate Line as Comment' })
-
-map('n', 'gc<space>', function()
-  require('funcs.quality-of-life').duplicateAsComment()
-end, { desc = ' Duplicate Line as Comment' })
-
--- Jump history
--- non-unique, since it overwrites nvim default: https://neovim.io/doc/user/vim_diff.html#default-mappings
--- keymap("n", "<C-l>", "<C-i>", { desc = "󱋿 Jump forward", unique = false })
--- keymap("n", "<C-h>", "<C-o>", { desc = "󱋿 Jump back" })
+map('c', '<c-d>', '<C-c>', {
+  category = 'Command',
+  label = ' close cmdline',
+  desc = ' close the command line',
+})
 
 -- -		The cursor position is unchanged, except when the cursor was
 -- 		at the end of the line, then it stays at the end.
@@ -162,91 +133,116 @@ end, { desc = ' Duplicate Line as Comment' })
 
 map('c', '<c-s>', '<cmd>silent! w<cr><esc>', {
   category = 'Command',
-  label = 'save',
+  label = ' save cmdline',
+  desc = ' save in command line',
   silent = true,
-  desc = 'save in command window',
 })
 
 map('c', '<c-y>', '<c-r>*', {
   category = 'Command',
-  label = 'yank',
-  desc = 'yank from command window',
+  label = ' yank cmdline',
+  desc = ' yank from command line',
 })
 
 map('c', '<C-^>', '<Home>', {
   category = 'Command',
-  label = 'goto start',
-  desc = 'go to beginning of command line',
+  label = ' goto start cmdline',
+  desc = ' go to beginning of command line',
 })
 
 --  c-$
 map('c', '<C-\\>', '<End>', {
   category = 'Command',
-  label = 'goto start',
-  desc = 'go to end of command line',
+  label = ' goto end cmdline ',
+  desc = ' go to end of command line',
 })
 
 map('c', '<M-p>', '<S-Up>', {
   category = 'Command',
-  label = 'navigate history up',
+  label = ' history up cmdline',
+  desc = ' navigate history up command line',
 })
 
 --  c-$
 map('c', '<M-n>', '<S-Down>', {
   category = 'Command',
-  label = 'navigate history down',
+  label = ' history down cmdline',
+  desc = ' navigate history down command line',
 })
 
-map('c', '<M-g>', '<C-r>%', {
+map('c', '<C-g>', '<C-r>%', {
   category = 'Command',
-  label = 'insert filename',
-  desc = 'insert filename into the command line',
+  label = ' insert filename cmdline',
+  desc = ' insert filename into the command line',
 })
 
 --------------------------------------------------------------------------------------------------
 -- BUFFERS ---------------------------------------------------------------------------------------
 
+map({ 'n', 'x', 'i' }, '<C-d>', function()
+  -- require('funcs.alt-alt').betterClose()
+  require('commands.ui').close_multi()
+end, { desc = '󰽙 close buffer/window' })
+
+-- -- COMMENTS
+map('n', 'gch', function()
+  require('funcs.quality-of-life').commentHr()
+end, { desc = ' Horizontal Divider' })
+
+map('n', 'gcC', function()
+  require('funcs.quality-of-life').duplicateAsComment()
+end, { desc = ' Duplicate Line as Comment' })
+
+map('n', 'gc<space>', function()
+  require('funcs.quality-of-life').duplicateAsComment()
+end, { desc = ' Duplicate Line as Comment' })
+
+-- Jump history
+-- non-unique, since it overwrites nvim default: https://neovim.io/doc/user/vim_diff.html#default-mappings
+-- keymap("n", "<C-l>", "<C-i>", { desc = "󱋿 Jump forward", unique = false })
+-- keymap("n", "<C-h>", "<C-o>", { desc = "󱋿 Jump back" })
+
 map('n', '<BS>', '<cmd>e #<cr>', {
   category = 'Buffers',
+  label = '󰽙 last buffer',
+  desc = '󰽙 open the last buffer',
   silent = true,
-  label = 'last buffer',
-  desc = 'open the last buffer',
 })
 local bufvar = { { '<Plug>(CybuPrev)', '<Plug>(CybuNext)' }, { '<cmd>BufferPrev<cr>', '<cmd>BufferNext<cr>' } }
 
 map({ 'n' }, 'E', '<cmd>lua vim.treesitter.get_parser(0):parse()<cr>', {
   category = 'Buffers',
-  label = 'reset buffer highlighting',
+  label = '󰽙 reset buffer highlighting',
 })
 
 map('n', 'H', bufvar[2][1], {
   category = 'Buffers',
-  label = 'left buffer',
-  desc = 'open the left (prev) buffer',
+  label = '󰽙 left buffer',
+  desc = '󰽙 open the left (prev) buffer',
 })
 
 map('n', 'L', bufvar[2][2], {
   category = 'Buffers',
-  label = 'right buffer',
-  desc = 'open the right (next) buffer',
+  label = '󰽙 right buffer',
+  desc = '󰽙 open the right (next) buffer',
 })
 
 map('n', '<leader>!', '<cmd>BufferCloseAllButCurrent<cr>', {
   category = 'Buffers',
-  label = 'close other bufs',
+  label = '󰽙 close other bufs',
   desc = '󰽙 close all buffers except current',
 })
 
 map({ 'n', 's', 'v', 'i' }, '<C-s>', '<cmd>silent! w<cr><esc>', {
   category = 'Buffers',
-  label = 'write buffer',
-  silent = true,
+  label = '󰽙 write buffer',
   desc = '󰽙 write to buffer',
+  silent = true,
 })
 
 map('n', '<leader>*', '<cmd>wall<cr>', {
   category = 'Buffers',
-  label = 'write all',
+  label = '󰽙 write all',
   silent = true,
 
   desc = '󰽙 write all buffers',
@@ -254,90 +250,84 @@ map('n', '<leader>*', '<cmd>wall<cr>', {
 
 map('n', '<leader>w', '<cmd>noa w<cr>', {
   category = 'Buffers',
-  label = 'write noa',
-  silent = true,
+  label = '󰽙 write noa',
   desc = '󰽙 write without autocommands',
+  silent = true,
 })
 
 map('n', '<leader>D', '<cmd>BufferDelete<cr>', {
   category = 'Buffers',
-  label = 'delete buffer',
+  label = '󰽙 delete buffer',
   desc = '󰽙 delete buffer without closing window',
 })
 
 -- map('n', '<S-Space>', '"_caw', { desc = '󱡔 change word' })
 -- map('n', '<S-Space>', '"_daw', { desc = '󱡔 delete word' })
-
 map('i', '<M-BS>', '<Esc>cvb', {
   category = 'Buffers',
-  desc = 'delete previous word',
-}, { silent = true })
+  desc = '󰽙 delete previous word',
+  silent = true,
+})
 
 -- TODO: multiple category Buffers, Windows
 map('n', '<C-d>', '<cmd>CloseMulti<cr>', {
   category = 'Buffers',
-  label = 'close multi',
-  desc = 'close tabpage, window, or buffer in that order',
+  label = '󰽙 close multi',
+  desc = '󰽙 close tabpage, window, or buffer in that order',
 })
 
 map('n', '<M-d>', '<cmd>CloseMultiNoPrompt<cr>', {
   category = 'Buffers',
-  label = 'close multi noprompt',
-  desc = 'close tabpage, window, or buffer without prompting for save',
+  label = '󰽙 close multi noprompt',
+  desc = '󰽙 close tabpage, window, or buffer without prompting for save',
 })
 map('n', '<M-w>', '<cmd>set wrap!<cr>', {
   category = 'Buffers',
-  label = 'toggle wrap',
-  desc = 'toggle word wrap',
+  label = '󰽙 toggle wrap',
+  desc = '󰽙 toggle word wrap',
 })
-
--- map('n', '<leader>m', [[:call AltCommand(expand('%'), ':e')<cr>]], {
---   category = 'Buffers',
---   label = 'open alt file',
---   desc = 'open alternative file associated with buffer',
--- })
 
 map('n', '<leader><space>', '<C-^>', {
   category = 'Buffers',
-  desc = 'switch to last buffer',
+  desc = '󰽙 switch to last buffer',
 })
 
 map('n', '<leader>fn', [[:e <C-R>=expand("%:p:h") . "/" <CR>]], {
   category = 'Buffers',
-  label = 'new in cwd',
-  desc = 'create new file in current directory',
+  label = '󰽙 new file in cwd',
+  desc = '󰽙 create new file in current directory',
 })
 
 map('n', '<leader>fn', [[:vsp <C-R>=expand("%:p:h") . "/" <CR>]], {
   category = 'Buffers',
-  label = 'new file h-split',
-  desc = 'create new file in a horizontal split',
+  label = '󰽙 new file h-split',
+  desc = '󰽙 create new file in a horizontal split',
 })
 
 map('n', '<leader>fp', "<cmd>echo expand('%:p')<CR>", {
   category = 'Buffers',
-  label = 'print path',
-  desc = 'print path of current buffer',
+  label = '󰽙 print path',
+  desc = '󰽙 print path of current buffer',
 })
 
 map('n', 'gf', '/"\\|\'<cr>hgF', {
   silent = true,
   category = 'Buffers',
-  label = 'goto file',
-  desc = 'open file under cursor',
+  label = '󰽙 goto file',
+  desc = '󰽙 open file under cursor',
 })
 
 vmap('n', 'gF', {
   silent = true,
   category = 'Buffers',
-  label = 'goto file:num',
-  desc = 'open file:num under cursor ',
+  label = '󰽙 goto file:num',
+  desc = '󰽙 open file:num under cursor ',
 })
 
 map('n', '<leader>cd', '<cmd>cd %:h<cr>', {
   category = 'Buffers',
-  label = 'cd buffer',
-  desc = 'change current working directory to buffer directory',
+  label = '󰽙 cd buffer',
+  desc = '󰽙 change current working directory to buffer directory',
 })
 
 -- undo 0, earlier 5m, earlier 1h, later 5h, later 1f (file writes later)
@@ -428,7 +418,10 @@ map('n', '<CR>', function()
   else
     return -- disable in other buffertypes
   end
-end, { desc = '󰽙 Alt Buffer' })
+end, {
+  label = '󰽙 goto alt-buffer',
+  desc = '󰽙 goto alternative/last buffer',
+})
 
 map('n', 'gn', "g#<cmd>lua require('hlslens').start()<cr>", {
   category = 'Motion',
@@ -787,12 +780,14 @@ map('n', '<F18>', '<cmd>InspectTree<cr>', {
 --------------------------------------------------------------------------------------------------
 -- QUICKFIX --------------------------------------------------------------------------------------
 
-map('n', '<C-c>', '<cmd>QFix<cr>', {
+map('n', '<C-c>', '<cmd>lua require"qf".toggle("c", true)<CR>', {
   category = 'Quickfix',
   label = 'togggle quickfix',
   desc = 'togggle quickfix window',
 })
-
+-- nnoremap <leader>j <cmd>lua require'qf'.below('l')<CR> " Go to next location list entry from cursor
+-- nnoremap <leader>J <cmd>lua require'qf'.below('c')<CR> " Go to next quickfix entry from cursor
+-- nnoremap ]q <cmd>lua require'qf'.below('visible')<CR>
 map('n', '<M-.>', '<cmd>cnext<cr>', {
   category = 'Quickfix next',
   label = 'quickfix next',
@@ -808,101 +803,95 @@ map('n', '<M-,>', '<cmd>cprev<cr>', {
 
 vmap('n', '<c-j>', {
   category = 'Window',
-  label = 'window down',
+  label = ' window down 󰁆',
   desc = ' move to window below 󰁆',
 })
 
 vmap('n', '<c-k>', {
   category = 'Window',
-  label = 'window up',
+  label = ' window up',
   desc = ' move to window 󰁞',
 })
 
 vmap('n', '<c-h>', {
   category = 'Window',
-  label = 'window left',
+  label = ' window left',
   desc = ' move to window left',
 })
 
 vmap('n', '<c-l>', {
   category = 'Window',
-  label = 'window right',
+  label = ' window right',
   desc = ' move to window right',
 })
 
 vmap('n', '<c-w>o', {
   category = 'Window',
-  label = 'close other windows',
-  desc = ' close other windows except current',
-})
-
-map('n', '<leader>o', '<c-w>o', {
-  category = 'Window',
-  label = 'close other windows',
+  label = ' close other windows',
   desc = ' close other windows except current',
 })
 
 vmap('n', '<C-w>x', {
   category = 'Window',
-  label = 'swap windows',
+  label = ' swap windows',
   desc = ' swap windows',
 })
 
 vmap('n', '<c-w>+', {
   category = 'Window',
-  label = 'window +height',
+  label = ' window +height',
   desc = ' increase height of focused window',
 })
 
 vmap('n', '<c-w>-', {
   category = 'Window',
-  label = 'window -height',
+  label = ' window -height',
   desc = ' decrease height of focused window',
 })
 
 vmap('n', '<c-w><', {
   category = 'Window',
-  label = 'window +width',
+  label = ' window +width',
   desc = ' increase width of focused window',
 })
 
 vmap('n', '<c-w>>', {
   category = 'Window',
-  label = 'window -width',
+  label = ' window -width',
   desc = ' decrease width of focused window',
 })
 
 vmap('n', '<c-w>=', {
   category = 'Window',
-  label = 'windows even',
+  label = ' windows even',
   desc = ' resize windows evenly',
 })
 
 map('n', '<leader>=', '<c-w>=', {
   category = 'Window',
-  label = 'windows even',
+  label = ' windows even',
   desc = ' resize windows evenly',
 })
 
 vmap('n', '<c-w>W', {
   category = 'Window',
-  label = 'window prev',
+  label = ' window prev',
   desc = ' focus the previous window',
 })
 map('n', '<leader>:', '<c-w>W', {
   category = 'Window',
-  label = 'window prev',
+  label = ' window prev',
   desc = ' focus the previous window',
 })
 
 vmap('n', '<c-w>w', {
   category = 'Window',
-  label = 'window next',
+  label = ' window next',
   desc = ' focus the next window',
 })
 map('n', '<leader>;', '<c-w>w', {
   category = 'Window',
-  label = 'window next',
+  label = ' window next',
   desc = ' focus the next window',
 })
 
@@ -920,73 +909,73 @@ map('n', '<leader>;', '<c-w>w', {
 
 map('n', '<leader>H', '<cmd>vnew<cr>', {
   category = 'Window',
-  label = 'window split-h',
+  label = ' window split-h',
   desc = ' window split horizontally',
 })
 
 map('n', '<leader>V', '<cmd>new<cr>', {
   category = 'Window',
-  label = 'window split-v',
+  label = ' window split-v',
   desc = ' window split vertically',
 })
 
 vmap('n', '<c-w>_', {
   category = 'Window',
-  label = 'max vertical split',
+  label = ' max v-split height',
   desc = ' maximize height of vertical split',
 })
 
 map('n', '<leader>_', '<c-w>_', {
   category = 'Window',
-  label = 'max vertical split',
+  label = ' max v-split height',
   desc = ' maximize height of vertical split',
 })
 
 vmap('n', '<c-w>|', {
   category = 'Window',
-  label = 'max horizontal split',
+  label = ' max h-split width',
   desc = ' maximize width of horizontal split',
 })
 map('n', '<leader>|', '<c-w>|', {
   category = 'Window',
-  label = 'max horizontal split',
+  label = ' max h-split width',
   desc = ' maximize width of horizontal split',
 })
 
 map('n', '<leader>q', '<cmd>silent! tabclose | Sayonara<cr>', {
   category = 'Window',
-  label = 'close window',
+  label = ' close window',
   desc = ' close window smartly wih sayonara',
 })
 
 map('n', '<leader>clc', '<cmd>set conceallevel=0<cr>', {
   category = 'Window',
-  label = 'conceal clear',
-  desc = 'clear all concealing from window',
+  label = '󰈉 conceal clear',
+  desc = '󰈉 clear all concealing from window',
 })
 
 map('n', '<leader>cl0', '<cmd>set conceallevel=0<cr>', {
   category = 'Window',
-  label = 'set conceal 0',
-  desc = 'set conceal level of window to 0',
+  label = '󰈉 set conceal 0',
+  desc = '󰈉 set conceal level of window to 0',
 })
 
 map('n', '<leader>cl1', '<cmd>set conceallevel=1<cr>', {
   category = 'Window',
-  label = 'set conceal 1',
-  desc = 'set conceal level of window to 1',
+  label = '󰈉 set conceal 1',
+  desc = '󰈉 set conceal level of window to 1',
 })
 
 map('n', '<leader>cl2', '<cmd>set conceallevel=2<cr>', {
   category = 'Window',
-  label = 'set conceal 2',
-  desc = 'set conceal level of window to 2',
+  label = '󰈉 set conceal 2',
+  desc = '󰈉 set conceal level of window to 2',
 })
 
 map('n', '<leader>cl3', '<cmd>set conceallevel=3<cr>', {
   category = 'Window',
-  label = 'set conceal 3',
-  desc = 'set conceal level of window to 3',
+  label = '󰈉 set conceal 3',
+  desc = '󰈉 set conceal level of window to 3',
 })
 
 --------------------------------------------------------------------------------------------------
@@ -1159,68 +1148,68 @@ map('n', '<C-y>', '<cmd>NeoAI<cr>', {
 map('n', '<leader>gf', "<cmd>require('telescope.run')('builtin', 'git_files')<cr>", {
   category = 'Git',
   plugin = 'telescope.nvim',
-  label = 'git files',
-  desc = 'show git files in telescope',
+  label = '󰊢 git files',
+  desc = '󰊢 show git files in telescope',
 })
 
 map('n', '<leader>gb', "<cmd>require('telescope.run')('builtin', 'git_files')<cr>", {
   category = 'Git',
   plugin = 'telescope.nvim',
-  label = 'git branches',
-  desc = 'show git branches in telescope',
+  label = '󰊢 git branches',
+  desc = '󰊢 show git branches in telescope',
 })
 
 map('n', '<leader>gs', "<cmd>require('telescope.run')('builtin', 'git_files')<cr>", {
   category = 'Git',
   plugin = 'telescope.nvim',
-  label = 'git status',
-  desc = 'show git status in telescope',
+  label = '󰊢 git status',
+  desc = '󰊢 show git status in telescope',
 })
 
 map('n', '<leader>gc', '', {
   category = 'Git',
   plugin = 'telescope.nvim',
-  label = 'git commits',
-  desc = 'show git commits in telescope',
+  label = '󰊢 git commits',
+  desc = '󰊢 show git commits in telescope',
 })
 
 map('n', '<leader>gC', '', {
   category = 'Git',
   plugin = 'telescope.nvim',
-  label = 'git bcommits',
-  desc = 'show git bcommits in telescope',
+  label = '󰊢 git bcommits',
+  desc = '󰊢 show git bcommits in telescope',
 })
 
 map('n', '<leader>gn', '<cmd>Gitsigns next_hunk<cr>', {
   category = 'Git',
   plugin = 'gitsigns.nvim',
-  label = 'go next hunk',
-  desc = 'go to next git hunk (gitsigns.nvim)',
+  label = '󰊢 go next hunk',
+  desc = '󰊢 go to next git hunk (gitsigns.nvim)',
 })
 
 map('n', '<leader>gp', '<cmd>Gitsigns prev_hunk<cr>', {
   category = 'Git',
   plugin = 'gitsigns.nvim',
-  label = 'go prev hunk',
-  desc = 'go to previous git hunk (gitsigns.nvim)',
+  label = '󰊢 go prev hunk',
+  desc = '󰊢 go to previous git hunk (gitsigns.nvim)',
 })
 
 map('n', '<leader>gv', '<cmd>Gitsigns preview_hunk<cr>', {
   category = 'Git',
-  label = 'git preview hunk',
-  desc = 'preview git hunk (gitsigns.nvim)',
+  label = '󰊢 git preview hunk',
+  desc = '󰊢 preview git hunk (gitsigns.nvim)',
 })
 
 map('n', '<leader>gr', '<cmd>Gitsigns reset_hunk<cr>', {
   category = 'Git',
-  label = 'git reset hunk',
-  desc = 'reset git hunk (gitsigns.nvim)',
+  label = '󰊢 git reset hunk',
+  desc = '󰊢 reset git hunk (gitsigns.nvim)',
 })
 
 map('n', '<leader>gR', '<cmd>Gitsigns reset_buffer<cr>', {
   category = 'Git',
-  label = 'git reset buffer',
-  desc = 'reset git buffer (gitsigns.nvim)',
+  label = '󰊢 git reset buffer',
+  desc = '󰊢 reset git buffer (gitsigns.nvim)',
 })
 
 --------------------------------------------------------------------------------------------------
@@ -1235,61 +1224,62 @@ vmap('v', 'U', {
   label = 'uppercase word',
   desc = 'format uppercase word',
 })
+
 vmap('v', 'u', {
   category = 'Format',
   label = 'lowercase word',
   desc = 'format lowercase word',
 })
 
-vmap('n', 'gu', {
-  category = 'Format',
-  label = 'format lowercase',
-  desc = 'format lowercase word',
-})
-
-vmap('n', 'gU', {
-  category = 'Format',
-  label = 'format uppsercase',
-  desc = 'format uppercase word',
-})
+-- vmap('n', 'gu', {
+--   category = 'Format',
+--   label = 'format lowercase',
+--   desc = 'format lowercase word',
+-- })
+--
+-- vmap('n', 'gU', {
+--   category = 'Format',
+--   label = 'format uppsercase',
+--   desc = 'format uppercase word',
+-- })
 
 map('n', '<leader>[', '`[V`]<', {
   category = 'Format',
-  label = 'indent all lines',
-  desc = 'indent all lines',
+  label = '󰉶 indent all lines',
+  desc = '󰉶 indent all lines',
 })
 
 map('n', '<leader>]', '', {
   category = 'Format',
-  label = 'unindent all lines',
-  desc = 'unindent all lines',
+  label = '󰉶 unindent all lines',
+  desc = '󰉶 unindent all lines',
 })
 
 map('v', '<', '<gv', {
   category = 'Format',
-  label = 'unindent',
-  desc = 'unindent repeatedly',
+  label = '󰉶 unindent',
+  desc = '󰉶 unindent repeatedly',
 })
 
 map('v', '>', '>gv', {
   category = 'Format',
-  label = 'indent',
-  desc = 'indent repeatedly',
+  label = '󰉶 indent',
+  desc = '󰉶 indent repeatedly',
 })
 
-map('n', 'gtx', '<cmd>ISwapNodeWith<cr>', {
+map('n', 'g>', '<cmd>ISwapNodeWith<cr>', {
   category = 'Format',
-  label = 'swap node with',
+  label = '易swap node with',
+  desc = '易swap/exchange node objects with',
   plugin = 'iswap.nvim',
-  desc = 'swap/exchange node objects with (iswap.nvim)',
 })
 
 -- TODO: allow range
 map({ 'v', 'n' }, '<M-">', '<esc><cmd>ISwapNodeWith<cr>', {
   category = 'Format',
-  label = 'swap node with',
+  label = '易swap node with',
+  desc = '易swap/exchange node objects with',
   plugin = 'iswap.nvim',
-  desc = 'swap/exchange node objects with (iswap.nvim)',
 })
 
 --------------------------------------------------------------------------------------------------
@@ -1468,7 +1458,7 @@ end, { desc = ' Open new scope' })
 -- keymap("x", "<Down>", [[:move '>+1<CR>gv=gv]], { desc = "󰜮 Move Selection down", silent = true })
 -- keymap("x", "<Up>", [[:move '<-2<CR>gv=gv]], { desc = "󰜷 Move Selection up", silent = true })
 -- keymap("x", "<Right>", [["zx"zpgvlolo]], { desc = "➡️ Move Selection right" })
--- keymap("x", "<Left>", [["zdh"zPgvhoho]], { desc = "⬅ Move Selection left" })
+-- keymap("x", "<Left>", [["zdh"zPgvhoho]],):format()):format() { desc = "⬅ Move Selection left" })
 
 -- stats, additional debugging info
 -- map("n", "<leader>iF", "", {

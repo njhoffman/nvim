@@ -3,9 +3,9 @@ local format = require('commands.format')
 
 local color_provider = function(client, bufnr)
   local cap = client.server_capabilities
-  if cap.colorProvider then
-    require('lsp.documentcolors').buf_attach(bufnr, { single_column = true })
-  end
+  -- if cap.colorProvider then
+  --   require('lsp.documentcolors').buf_attach(bufnr, { single_column = true })
+  -- end
 end
 
 -- Finds and runs the closest codelens (searches upwards only)

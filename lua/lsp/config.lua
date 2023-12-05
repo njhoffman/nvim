@@ -14,14 +14,6 @@ local virtual_text_config = {
 }
 
 local diagnostic_config = {
-  float = function(_, bufnr)
-    local opts = {
-      -- prefix = '󰀴 ',
-      prefix = '',
-      bufnr = bufnr,
-    }
-    return vim.diagnostic.open_float(opts)
-  end,
   virtual_text = false,
   signs = true,
   underline = false,

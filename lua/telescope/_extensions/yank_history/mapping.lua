@@ -6,7 +6,6 @@ local utils = require('yanky.utils')
 local mapping = {
   state = { is_visual = false },
 }
-
 function mapping.put(type)
   return function(prompt_bufnr)
     if vim.api.nvim_buf_is_valid(prompt_bufnr) then

@@ -23,7 +23,7 @@ end
 local set_cwd = function(dir, method)
   local options = require('project_nvim.config').get()
   vim.api.nvim_set_current_dir(dir)
-  logger:info('cwd ' .. dir .. ' (' .. tostring(method) .. ')')
+  logger:info('cwd ' .. path.home_path(dir) .. ' (' .. tostring(method) .. ')')
   if options.silent_chdir == false then
     if type(options.chdir_func) == 'function' then
       options.chdir_func(dir, method)
@@ -37,7 +37,7 @@ local set_pwd = function(dir, method)
     state.last_project = dir
     history.add_session_project(dir, method)
     set_user_option(dir, method)
-    logger:debug('pwd ' .. dir .. ' (' .. tostring(method) .. ')')
+    logger:debug('pwd ' .. path.home_path(dir) .. ' (' .. tostring(method) .. ')')
     if vim.fn.getcwd() ~= dir then
       history.write_projects_to_history(true)
       set_cwd(dir, method)
@@ -61,13 +61,13 @@ local on_buf_enter = function()
 
   local _, buf_skip = pcall(vim.api.nvim_get_var, 'project_buf_skip')
   if buf_skip == 1 then
-    logger:trace('skip buf ' .. tostring(root_path) .. ' (' .. tostring(method) .. ')')
+    logger:trace('skip buf ' .. path.home_path(tostring(root_path)) .. ' (' .. tostring(method) .. ')')
     vim.api.nvim_set_var('project_buf_skip', 0)
     vim.g.project_buf_skip = 0
     return
   end
 
-  logger:trace('buf: ' .. tostring(root_path) .. ' (' .. tostring(method) .. ')')
+  logger:trace('buf: ' .. path.home_path(tostring(root_path)) .. ' (' .. tostring(method) .. ')')
   set_pwd(root_path, method)
 end
 

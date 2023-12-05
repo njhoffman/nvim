@@ -32,20 +32,20 @@ require('early-retirement').setup({
   notificationOnAutoClose = true,
 })
 
-require('qfview').setup()
+-- require('qfview').setup()
 
-require('scroll-eof').setup({
-  scrolloff = 3,
-  -- The pattern used for the internal autocmd to determine
-  -- where to run scrollEOF. See https://neovim.io/doc/user/autocmd.html#autocmd-pattern
-  pattern = '*',
-  -- Whether or not scrollEOF should be enabled in insert mode
-  insert_mode = false,
-  -- List of filetypes to disable scrollEOF for.
-  disabled_filetypes = {},
-  -- List of modes to disable scrollEOF for. see https://neovim.io/doc/user/builtin.html#mode() for available modes.
-  disabled_modes = {},
-})
+-- require('scroll-eof').setup({
+--   scrolloff = 3,
+--   -- The pattern used for the internal autocmd to determine
+--   -- where to run scrollEOF. See https://neovim.io/doc/user/autocmd.html#autocmd-pattern
+--   pattern = '*',
+--   -- Whether or not scrollEOF should be enabled in insert mode
+--   insert_mode = false,
+--   -- List of filetypes to disable scrollEOF for.
+--   disabled_filetypes = {},
+--   -- List of modes to disable scrollEOF for. see https://neovim.io/doc/user/builtin.html#mode() for available modes.
+--   disabled_modes = {},
+-- })
 
 local llm_config = require('llm-config')
 require('llm').setup(llm_config)

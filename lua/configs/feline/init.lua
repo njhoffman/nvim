@@ -3,6 +3,8 @@ local defaults = require('feline.default_components').statusline.icons
 local custom_status_comps = require('configs.feline.components')
 local colors = require('configs.feline.colors')
 
+-- o[a]  N?: dap
+
 local custom_providers = {
   -- lsp_code_actions = require('configs.feline.provider-lsp-code-actions').provider,
   -- lsp_references = require('configs.feline.provider-lsp-references').provider,
@@ -14,11 +16,11 @@ local custom_providers = {
 }
 -- -- Current vi mode ------>
 -- local vi_mode_hl = function()
--- 	return {
--- 		fg = sett.text,
--- 		bg = mode_colors[vim.fn.mode()][2],
--- 		style = "bold",
--- 	}
+--   return {
+--     fg = sett.text,
+--     bg = mode_colors[vim.fn.mode()][2],
+--     style = "bold",
+--   }
 -- end
 --
 -- components.active[1][1] = {

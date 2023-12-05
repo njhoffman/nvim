@@ -48,7 +48,7 @@ local custom_tips = {
     'To execute macro @a on every quickfix item: \n  `:cdo! norm @a`',
     'To perform search and replace on quickfix items: \n `:cdo! s/re/repl/`',
     'To search recursively with grep for quickfix list: \n `:gr zsh . -R`',
-    'Use the quickfix command `cope` to naviate multiple quickfix lists',
+    'Use the quickfix command `cope` to navigate multiple quickfix lists',
     'Search the files in the argument list with ##\n `:vimgrep // ##`',
     'Other vimgrep examples:\n  `:vimgrep /git/ install.sh`\n  `:vimgrep /apt/ **/*.sh`\n  `:vimgrep /"[^"]i\\+"/ ~/.*`',
   },
@@ -81,6 +81,7 @@ local get_tip = function()
     local rand_tip = custom_tips[rand_cat][math.random(1, #custom_tips[rand_cat])]
     vim.notify(rand_tip, 2, {
       title = rand_cat,
+      render = 'simple-notitle',
       on_open = function(win)
         local buf = vim.api.nvim_win_get_buf(win)
         vim.api.nvim_buf_set_option(buf, 'filetype', 'markdown')
@@ -97,7 +98,7 @@ local get_tip = function()
           if exit_code ~= 0 then
             res = 'Error fetching tip: ' .. res
           end
-          vim.notify(res, 1)
+          vim.notify(res, 1, { render = 'simple-notitle' })
         end,
       })
       :start()
@@ -107,6 +108,33 @@ end
 vim.api.nvim_create_user_command('Tip', get_tip, {
   desc = 'Get a random neovim tip',
 })
+
+-- auto-nohl (replace vim-cool) -> https://www.reddit.com/r/neovim/comments/zc720y/comment/iyvcdf0/?context=3
+-- vim.on_key(function(char)
+--   local key = vim.fn.keytrans(char)
+--   local isCmdlineSearch = vim.fn.getcmdtype():find("[/?]") ~= nil
+--   local searchMvKeys = { "n", "N", "*", "#" } -- works for RHS, therefore no need to consider remaps
+--   local isNormalMode = vim.api.nvim_get_mode().mode == "n"
+--
+--   local searchStarted = (key == "/" or key == "?") and isNormalMode
+--   local searchConfirmed = (key == "<CR>" and isCmdlineSearch)
+--   local searchCancelled = (key == "<Esc>" and isCmdlineSearch)
+--   if not (searchStarted or searchConfirmed or searchCancelled or isNormalMode) then return end
+--   local searchMovement = vim.tbl_contains(searchMvKeys, key)
+--   local hlSearchOn = vim.o.hlsearch
+--
+--   if (searchMovement or searchConfirmed or searchStarted) and not hlSearchOn then
+--     vim.opt.hlsearch = true
+--   elseif (searchCancelled or not searchMovement) and hlSearchOn and not searchConfirmed then
+--     vim.opt.hlsearch = false
+--   end
+--
+--   -- nvim-hlslens plugin
+--   if searchConfirmed or searchMovement then
+--     local installed, hlslens = pcall(require, "hlslens")
+--     if installed then hlslens.start() end
+--   end
+-- end, vim.api.nvim_create_namespace("auto_nohl"))
 
 return {
   fasd_update = fasd_update,

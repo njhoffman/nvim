@@ -210,7 +210,7 @@ return function(injected_functions)
     DiagnosticOk({ fg = '#1abc9c' }),
     DiagnosticError({ fg = '#8d3a42' }),
     DiagnosticWarn({ fg = '#6d605a' }),
-    DiagnosticHint({ fg = '#316c7c' }),
+    DiagnosticHint({ fg = '#206b8b' }),
     DiagnosticInfo({ fg = '#0d81bc' }),
     DiagnosticFloatingError({ DiagnosticError }),
     DiagnosticFloatingWarn({ DiagnosticWarn }),
@@ -218,12 +218,16 @@ return function(injected_functions)
     DiagnosticFloatingInfo({ DiagnosticInfo }),
     DiagnosticFloatingErrorBorder({ fg = '#5a070f' }),
     DiagnosticFloatingWarnBorder({ fg = '#584b45' }),
-    DiagnosticFloatingHintBorder({ fg = '#195464' }),
+    DiagnosticFloatingHintBorder({ fg = '#195474' }),
     DiagnosticFloatingInfoBorder({ fg = '#0067a2' }),
-    DiagnosticSignError({ fg = clrs.nord11 }),
-    DiagnosticSignWarn({ fg = clrs.nord13 }),
-    DiagnosticSignHint({ fg = clrs.nord10 }),
-    DiagnosticSignInfo({ fg = clrs.nord8 }),
+    DiagnosticSignError({ DiagnosticError }),
+    DiagnosticSignWarn({ DiagnosticWarn }),
+    DiagnosticSignHint({ DiagnosticHint }),
+    DiagnosticSignInfo({ DiagnosticInfo }),
+    LspDiagnosticsSignError({ fg = '#702e34' }),
+    LspDiagnosticsSignWarn({ fg = '#574c47' }),
+    LspDiagnosticsSignHint({ fg = '#206b8b' }),
+    LspDiagnosticsSignInfo({ fg = '#0d81bc' }),
     DiagnosticUnderlineError({ fg = 'none', gui = 'none' }),
     DiagnosticUnderlineWarn({ fg = 'none', gui = 'none' }),
     DiagnosticUnderlineHint({ fg = 'none', gui = 'none' }),
@@ -241,10 +245,6 @@ return function(injected_functions)
     LspReferenceRead({ fg = Search.fg, gui = 'none' }), -- #22bb99, 628bff
     LspReferenceWrite({ fg = Search.fg, gui = 'none' }), -- #22bb99
     LspReferenceText({ fg = Search.fg, gui = 'none' }), -- #22bb99
-    LspDiagnosticsSignError({ fg = '#702e34' }),
-    LspDiagnosticsSignWarn({ fg = '#574c47' }),
-    LspDiagnosticsSignHint({ fg = '#275662' }),
-    LspDiagnosticsSignInfo({ fg = '#49688d' }),
     DiffAdd({ bg = '#00361f' }), -- #00361f #001000 #22bb99
     DiffChange({ bg = '#003050' }), -- #003050 #001030 #646ead
     DiffDelete({ bg = '#3E0009' }), -- #3e0009 #300000 #be6069
@@ -997,6 +997,10 @@ return function(injected_functions)
     -- CybuBackgrou links to Normal
     -- CybuBorder links to FloatBorder
     -- CybuInfobar links to StatusLine
+
+    -- Dressing
+    TaskFloat({ fg = '#2a8ccb' }),
+    TaskFloatBorder({ fg = '#2151a1' }),
 
     -- MiniClue
     -- MiniClueBorder({ FloatBorder }),

@@ -9,6 +9,18 @@ local opts = {
 }
 
 local use_defref_plugin = true
+-- keymap('n', 'ge', vim.diagnostic.goto_next, { desc = '󰒕 Next Diagnostic' })
+-- keymap('n', 'gE', vim.diagnostic.goto_prev, { desc = '󰒕 Previous Diagnostic' })
+-- keymap({ 'n', 'v', 'i' }, '<D-g>', vim.lsp.buf.signature_help, { desc = '󰏪 Signature' })
+--
+-- -- needs remapping since `gf` is used for LSP-references
+-- keymap('n', 'gp', 'gf', { desc = ' Goto Path under cursor' })
+--
+-- -- quickfix
+-- keymap('n', 'gq', '<cmd>cnext<CR>zv', { desc = ' Next Quickfix' })
+-- keymap('n', 'gQ', '<cmd>cprevious<CR>zv', { desc = ' Prev Quickfix' })
+-- keymap('n', 'dQ', '<cmd>cexpr []<CR>', { desc = ' Delete Qf List' })
+--
 
 -- TODO: next/prev reference
 local mapping = {

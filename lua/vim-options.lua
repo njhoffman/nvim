@@ -22,12 +22,19 @@ opt('cedit', '<C-t>') -- ctrl-f interferes with popup completion
 opt('clipboard', 'unnamedplus')
 opt('cmdheight', 0) -- 0
 opt('cmdwinheight', 10)
-opt('completeopt', 'menu,menuone,noselect')
+opt('completeopt', 'menu,menuone,noinsert') -- noselect, noinsert
 opt('confirm', true)
 opt('cpoptions', 'aABceFs_r') -- C causes certain vim programs to screw up, x makes command execute even if exiting
 opt('encoding', 'UTF-8')
 opt('fileencoding', 'utf-8')
-opt('fillchars', 'eob: ') -- Don't show `~` outside of buffer
+-- opt('fillchars', 'eob: ') -- Don't show `~` outside of buffer
+vim.opt.fillchars:append({
+  eob = ' ',
+  fold = ' ',
+  vert = '║',
+  horiz = '═',
+})
+
 opt('foldmethod', 'manual')
 -- opt('formatoptions', 'jcroqlnt') -- (qjl1) Don't autoformat comments
 opt('grepformat', '%f:%l:%c:%m')
@@ -44,6 +51,7 @@ opt('laststatus', 3)
 opt('lazyredraw', false)
 opt('linebreak', true)
 opt('magic', true)
+opt('makeprg', 'make --silent --warn-undefined-variables')
 opt('matchtime', 3) -- How many tenths of a second to blink when matching brackets
 opt('modelines', 5)
 opt('mouse', 'nivh')
@@ -98,7 +106,17 @@ opt('writebackup', true)
 
 -- opt('list', true) -- Define which helper symbols to show
 -- opt('listchars', 'extends:…,precedes:…,nbsp:␣') -- Define which helper symbols to show
-
+vim.opt.listchars:append({
+  nbsp = '󰚌',
+  precedes = '…',
+  extends = '…',
+  multispace = '·',
+  -- overridden by indent-blankline
+  -- tab = '│ ',
+  conceal = '?',
+  lead = ' ',
+  trail = ' ',
+})
 -- window scope
 opt('concealcursor', 'nc', window)
 opt('conceallevel', 0, window)
@@ -122,6 +140,24 @@ opt('tabstop', 2, buffer)
 opt('undofile', true, buffer)
 opt('equalalways', true) -- make windows the samue width when closing one
 opt('cursorlineopt', 'both') -- should get cursorline in number too
+
+-- vim.opt.guicursor = {
+--   "i-ci-c:ver25", -- INFO with noice.nvim, the guicursor cannot be styled in the cmdline https://github.com/folke/noice.nvim/issues/552
+--   "n-sm:block",
+--   "r-cr-o-v:hor10",
+--   "a:blinkwait200-blinkoff350-blinkon550",
+-- }
+
+-- extra undo-points (= more fine-grained undos)
+-- WARN requires `remap = true`, since it otherwise prevents vim abbreviations
+-- with those chars from working
+-- for _, char in pairs { ".", ",", ";", '"', ":", "'", "<Space>" } do
+--   vim.keymap.set("i", char, function()
+--     if vim.bo.buftype ~= "" then return char end
+--     return char .. "<C-g>u"
+--   end, { desc = "󰕌 Extra undopoint for " .. char, remap = true, expr = true })
+-- end
+--
 
 -- opt.cpoptions:append(">") -- when you yank multiple times into a register, this puts each on a new line
 -- opt.nrformats:append("alpha") -- this means you can increment lists that have letters with `g ctrl-a`

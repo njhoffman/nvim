@@ -11,6 +11,7 @@ local telescope_utils = require('telescope.utils')
 local icons = {
   buffer    = ' 󰽙  ',
   file      = ' 󰝰  ',
+  history   = ' 󰋚  ',
   git       = ' 󰊢  ',
   keymap    = '   ',
   misc_1    = '   ',
@@ -89,7 +90,7 @@ local pickers = {
   },
   oldfiles = {
     debounce = 100,
-    prompt_prefix = ' 󰋚  ',
+    prompt_prefix = icons.history,
     mappings = mappings.file,
     find_command = commands.rg,
   },

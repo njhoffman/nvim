@@ -1,7 +1,6 @@
 local task_error = require('notifications.task-error')
 local task_success = require('notifications.task-success')
 local utils = require('runner.utils')
--- require('scratch.tmp2')
 
 local handle_shell_output = function(output, cmd, time)
   -- if false and task_error.is_match(output) then
@@ -24,6 +23,11 @@ end
 --          print(type, res)
 --      end,
 --  }):start()
+
+local config = {
+  save_path = vim.fn.stdpath('data') .. '/runner',
+  save_file = 'last_cmd',
+}
 
 local exec_shell_cmd = function(run_cmd, no_notify)
   -- check vim.fn.system
@@ -73,70 +77,97 @@ local exec_run_cmd = function(run_cmd, no_notify)
     exec_vim_cmd(run_cmd)
   end
 end
+-- local default_cmd = "luafile " .. utils.path_nvim(vim.api.nvim_buf_get_name(0))
+-- local default_cmd = 'luafile scratch/tmp.lua'
+-- local default_cmd = 'luafile %'
+-- local default_cmd = "!grc -es --colour=on netstat -t"
+-- local default_cmd = "!ls --color=always -alh"
+-- local default_cmd = "!rg --color=always --line-number ."
+-- local default_cmd = '!tmux display-popup -E /bin/zsh -c $HOME/git/quilr-server/bin/request.sh &'
+-- local default_cmd = '!tmux display-popup -e FZF_TMUX=1 -E /bin/zsh -c $HOME/git/quilr-server/bin/request.sh &'
+-- local default_cmd = '!tmux FZF_TMUX=1 -E /bin/zsh -c $HOME/git/quilr-server/bin/request.sh &'
 
-local get_run_cmd = function(callback)
-  -- local default_cmd = "luafile " .. utils.path_nvim(vim.api.nvim_buf_get_name(0))
-  -- local default_cmd = 'luafile scratch/tmp.lua'
-  -- local default_cmd = 'luafile %'
-  -- local default_cmd = "!grc -es --colour=on netstat -t"
-  -- local default_cmd = "!ls --color=always -alh"
-  -- local default_cmd = "!rg --color=always --line-number ."
-  -- local default_cmd = '!tmux display-popup -E /bin/zsh -c $HOME/git/quilr-server/bin/request.sh &'
-  -- local default_cmd = '!tmux display-popup -e FZF_TMUX=1 -E /bin/zsh -c $HOME/git/quilr-server/bin/request.sh &'
-  -- local default_cmd = '!tmux FZF_TMUX=1 -E /bin/zsh -c $HOME/git/quilr-server/bin/request.sh &'
-  local default_cmd = '!FZF_TMUX=1 $HOME/git/quilr-server/bin/request.sh &'
-
+local get_run_cmd = function(default_cmd, callback)
   local width = #default_cmd + 6
-  local winhl = 'NormalFloat:TaskFloat,FloatBorder:TaskFloatBorder'
-  vim.api.nvim_set_hl(0, 'FloatTitle', { fg = '#22aaff' })
-  require('dressing').setup({
-    input = {
-      win_options = {
-        winhighlight = winhl,
-      },
-      buf_options = {
-        syntax = 'vim',
-        swapfile = false,
-      },
+  local winhl = 'FloatBorder:TaskFloatBorder'
+  -- local winhl = 'NormalFloat:TaskFloat,FloatBorder:TaskFloatBorder'
+  -- vim.api.nvim_set_hl(0, 'FloatTitle', { fg = '#22aaff' })
+  vim.ui.input({
+    prompt = ' runner',
+    input_options = {
       relative = 'win',
       prompt_align = 'left',
       width = width,
       max_width = { 480, 0.9 },
+      buf_options = {
+        swapfile = false,
+      },
+      win_options = {
+        winhighlight = winhl,
+      },
     },
-  })
-  vim.ui.input({ prompt = 'runner', default = default_cmd }, callback)
+    default = default_cmd or '',
+  }, callback)
 end
 
-local do_run_cmd = function(params, no_notify)
+local save_run_cmd = function(run_cmd)
+  vim.fn.mkdir(config.save_path, 'p')
+  local f = io.open(config.save_path .. '/' .. config.save_file, 'w')
+  if f then
+    f:write(run_cmd)
+    f:close()
+  end
+  vim.api.nvim_set_var('run_cmd', run_cmd)
+end
+
+local get_last_cmd = function()
+  local f = io.open(config.save_path .. '/' .. config.save_file, 'r')
+  if f then
+    local run_cmd = f:read('*a')
+    f:close()
+    return run_cmd
+  end
+  return nil
+end
+
+local run_cmd = function(params, no_notify)
   local cmd = params.args or ''
-  local ok, run_cmd = pcall(vim.api.nvim_get_var, 'run_cmd')
-  if cmd == '' and ok and type(run_cmd) == 'string' and #run_cmd > 0 then
-    cmd = run_cmd
+  if cmd == '' then
+    local run_ok, run_cmd = pcall(vim.api.nvim_get_var, 'run_cmd')
+    if run_ok and type(run_cmd) == 'string' and #run_cmd > 0 then
+      cmd = run_cmd
+      -- elseif last_cmd ~= nil then
+      --   cmd = last_cmd
+    end
   end
   no_notify = no_notify or params.no_notify
+
   -- if cmd not set show popup to assign it, otherwise run the command
   if string.len(cmd) == 0 then
-    get_run_cmd(function(run_cmd)
+    local default_cmd = params.default_cmd or get_last_cmd() or ''
+    get_run_cmd(default_cmd, function(run_cmd)
       if run_cmd ~= nil then
-        vim.api.nvim_set_var('run_cmd', run_cmd)
+        save_run_cmd(run_cmd)
         exec_run_cmd(run_cmd, no_notify)
+      elseif default_cmd ~= nil then
+        save_run_cmd(default_cmd)
       end
     end)
   else
-    vim.dbglog('CMD FOUND', cmd)
     exec_run_cmd(cmd, no_notify)
   end
 end
 
 local select_cmd = function(params)
-  local ok, run_cmd = pcall(vim.api.nvim_get_var, 'run_cmd')
-  if ok then
+  local run_ok, saved_run_cmd = pcall(vim.api.nvim_get_var, 'run_cmd')
+  if run_ok then
     vim.api.nvim_del_var('run_cmd')
   end
-  do_run_cmd(params)
+  params.default_cmd = saved_run_cmd or ('luafile ' .. utils.path_nvim(vim.api.nvim_buf_get_name(0)))
+  run_cmd(params)
 end
 
 return {
-  run = do_run_cmd,
+  run = run_cmd,
   select = select_cmd,
 }

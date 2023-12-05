@@ -20,9 +20,11 @@ local logger = require('logger').init('telescope')
 local ignore_keys = function(keys)
   local ignore_map = {}
   for _, key in ipairs(keys) do
-    ignore_map[key] = function(prompt_bufnr)
-      logger:trace('ignoring ' .. key .. ' for ' .. prompt_bufnr)
-    end
+    -- ignore_map[key] = function(prompt_bufnr)
+    --   logger:trace('ignoring ' .. key .. ' for ' .. prompt_bufnr)
+    --   return false
+    -- end
+    ignore_map[key] = 'nop'
   end
   return ignore_map
 end
@@ -64,6 +66,7 @@ local main_maps = {
     ['<C-p>']       = actions.move_selection_previous,
     ["<S-Tab>"]     = actions.move_selection_previous,
     ["<Tab>"]       = actions.move_selection_next,
+    -- C-W toggle word wrap
     -- ["<S-Tab>"]     = ignore, -- c_actions.results_toggle_up,
     -- ["<Tab>"]       = ignore, -- c_actions.results_toggle_down,
   }, ignore_keys({

@@ -1,11 +1,11 @@
 local commands = require('autocommands.commands')
 require('autocommands.misc')
+require('autocommands.skeletons')
 require('autocommands.startup')
-require('autocommands.lsp')
 
 -- TODO: automatically build helptags in doc directory
 
-local function define_augroups(definitions) -- {{{1
+local function define_augroups(definitions)
   for group_name, definition in pairs(definitions) do
     vim.api.nvim_create_augroup(group_name, { clear = true })
     for _, def in pairs(definition) do
@@ -30,7 +30,6 @@ local autocmds = {
     -- { {'WinEnter' }, '*', 'stopinsert' },
     { 'BufEnter', 'NvimTree', 'setlocal cursorline' },
     -- { "InsertLeave", '*',
-
     -- function(event)
     --   if vim.bo.ft == 'TelescopePrompt' and vim.fn.mode() == 'n' then
     --     vim.cmd('startinsert!')
@@ -136,6 +135,7 @@ local autocmds = {
     -- { "FocusGained", "*", "VimadeUnfadeActive" },
     -- { "BufLeave,FocusLost", "*", M.vimadeCheck() },
   },
+
   Shape = {
     -- { 'FocusLost',               '*', 'hi TermCursor cterm=NONE gui=NONE'    },
     -- { 'FocusGained',             '*', 'hi TermCursor cterm=reverse gui=reverse' },
@@ -162,7 +162,7 @@ local autocmds = {
 
 -- Don't want relative no on inactive Windows
 local relativeNo = vim.api.nvim_create_augroup('RelativeNo', { clear = true })
-vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave' }, {
+vim.api.nvim_create_autocmd({ 'BufNew', 'BufEnter', 'FocusGained', 'InsertLeave' }, {
   pattern = '*',
   group = relativeNo,
   callback = function()
@@ -174,8 +174,21 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave' }, {
       and vim.bo.buftype ~= 'quickfix'
       and vim.bo.filetype ~= 'nofile'
     then
-      vim.cmd([[set relativenumber nonumber]])
+      vim.cmd([[set relativenumber number]])
+    else
+      vim.cmd([[set norelativenumber nonumber]])
     end
+  end,
+})
+
+-- no list chars in special buffers
+vim.api.nvim_create_autocmd({ 'BufNew', 'BufReadPost' }, {
+  callback = function()
+    vim.defer_fn(function()
+      if vim.bo.buftype ~= '' and vim.bo.ft ~= 'query' then
+        vim.opt_local.list = false
+      end
+    end, 1)
   end,
 })
 
@@ -192,6 +205,8 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter' }, {
       and vim.bo.filetype ~= 'nofile'
     then
       vim.cmd([[set norelativenumber number]])
+    else
+      vim.cmd([[set norelativenumber nonumber]])
     end
   end,
 })

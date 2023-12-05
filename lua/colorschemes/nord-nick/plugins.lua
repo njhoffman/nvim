@@ -80,9 +80,6 @@ return function()
   }
   return {
 
-    TaskFloat({ fg = '#9abcfb', gui = 'bold' }),
-    TaskFloatBorder({ fg = '#2151a1' }),
-
     -- +--- DAP ---+
     DAPLogPointSign({ fg = '#00f1f5' }),
     DAPBreakpointSign({ fg = '#4790ff' }),

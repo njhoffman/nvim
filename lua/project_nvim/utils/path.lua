@@ -136,4 +136,8 @@ function M.is_excluded(dir)
   return false
 end
 
+function M.home_path(dir)
+  return dir.gsub(dir, os.getenv('HOME') or '', '~')
+end
+
 return M

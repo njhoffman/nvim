@@ -89,7 +89,7 @@ local function do_put(state, _)
 end
 
 function yanky.attach_metadata(entry)
-  entry.filetype = vim.bo.filetype
+  entry.filetype = vim.bo.filetype or vim.api.nvim_get_option_value('filetype', {})
   entry.date = os.date()
   entry.project_root = require('project_nvim.root').get_project_root()
   entry.cwd = vim.fn.getcwd()

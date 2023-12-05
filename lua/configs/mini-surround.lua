@@ -63,6 +63,7 @@ local cfg = {
     find = 'sf', -- Find surrounding (to the right)
     find_left = 'sF', -- Find surrounding (to the left)
     highlight = 'sh', -- Highlight surrounding
+    update_n_lines = '',
     -- update_n_lines = 'sn', -- Update `n_lines`
     suffix_last = '', -- Suffix to search with "prev" method
     suffix_next = '', -- Suffix to search with "next" method
@@ -86,21 +87,7 @@ require('mini.surround').setup(cfg)
 --   ':silent! normal wst<space>',
 --   { silent = true, expr = true, desc = 'quickly add surrounding ( to word' }
 -- )
-vim.cmd([[
-  noremap <silent> s<space> :execute "normal hwst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
-" getline(".")[col(".")-1] == "\t"
-  " let isOnKeyword = matchstr(getline('.'), '\%'.col('.').'c.') =~# '\k'
-  " noremap s<space> :normal wst " . nr2char(getchar()) . <cr>
-]])
 
--- vim.keymap.set({ 'x', 'n' }, 'ys', 's', { expr = true, desc = '󰅪 mini surround add operator/visual selection' })
--- vim.keymap.set(
---   { 'x' },
---   'ys',
---   "<cmd>lua MiniSurround.add('visual')<CR>",
---   { desc = '󰅪 mini surround add visual selection', expr = true }
--- )
---
 -- vim.keymap.set(
 --   { 'n' },
 --   'ys',
@@ -108,6 +95,21 @@ vim.cmd([[
 --   { expr = true, desc = '󰅪 mini surround add operator selection' }
 -- )
 
+vim.cmd([[
+  noremap <silent> s<space> :execute "normal hwst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
+  noremap <silent> ss :execute "normal hwst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
+" getline(".")[col(".")-1] == "\t"
+  " let isOnKeyword = matchstr(getline('.'), '\%'.col('.').'c.') =~# '\k'
+  " noremap s<space> :normal wst " . nr2char(getchar()) . <cr>
+]])
+
+-- vim.keymap.set(
+--   { 'x' },
+--   'ys',
+--   "<cmd>lua MiniSurround.add('visual')<CR>",
+--   { desc = '󰅪 mini surround add visual selection' }
+-- )
+--
 -- vim.keymap.set('n', 'yss', 'ys$', { remap = true, desc = '󰅪 mini surround add line' })
 
 -- expr_map(m.add,       H.make_operator('add', nil, nil, true), 'Add surrounding')
@@ -130,8 +132,8 @@ vim.cmd([[
 -- )
 
 --- Regular mappings:
---- - `saiw)` - add (`sa`) for inner word (`iw`) parenthesis (`)`).
---- - `saiw?[[<CR>]]<CR>` - add (`sa`) for inner word (`iw`) interactive surrounding (`?`): `[[` for left and `]]` for right.
+--- - `siw)` - add (`s`) for inner word (`iw`) parenthesis (`)`).
+--- - `siw?[[<CR>]]<CR>` - add (`s`) for inner word (`iw`) interactive surrounding (`?`): `[[` for left and `]]` for right.
 --- - `2sdf` - delete (`sd`) second (`2`) surrounding function call (`f`).
 --- - `sr)tdiv<CR>` - replace (`sr`) surrounding parenthesis (`)`) with tag (`t`) with identifier 'div' (`div<CR>` in command line prompt).
 --- - `sff` - find right (`sf`) part of surrounding function call (`f`).

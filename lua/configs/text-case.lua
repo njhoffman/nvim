@@ -1,23 +1,23 @@
 -- https://raw.githubusercontent.com/johmsalas/text-case.nvim/main/README.md
 
 require('textcase').setup({
-  prefix = 'gtc', -- ga
+  prefix = 'gt', -- ga
 })
 
-vim.api.nvim_set_keymap('n', 'gtc.', '<cmd>TextCaseOpenTelescope<CR>', { desc = 'text-case open telescope' })
-vim.api.nvim_set_keymap('n', 'gtct', '<cmd>TextCaseOpenTelescope<CR>', { desc = 'text-case open telescope' })
-vim.api.nvim_set_keymap('v', 'gtc.', '<cmd>TextCaseOpenTelescope<CR>', { desc = 'text-case open telescope' })
+vim.api.nvim_set_keymap('n', 'gt.', '<cmd>TextCaseOpenTelescope<CR>', { desc = ' text-case open telescope' })
+vim.api.nvim_set_keymap('n', 'gtt', '<cmd>TextCaseOpenTelescope<CR>', { desc = ' text-case open telescope' })
+vim.api.nvim_set_keymap('v', 'gt.', '<cmd>TextCaseOpenTelescope<CR>', { desc = ' text-case open telescope' })
 vim.api.nvim_set_keymap(
   'n',
-  'gtca',
+  'gta',
   '<cmd>TextCaseOpenTelescopeQuickChange<CR>',
-  { desc = 'text-case telescope quick change' }
+  { desc = ' text-case telescope quick change' }
 )
 vim.api.nvim_set_keymap(
   'n',
-  'gtci',
+  'gti',
   '<cmd>TextCaseOpenTelescopeLSPChange<CR>',
-  { desc = 'text-case telescope lsp change' }
+  { desc = ' text-case telescope lsp change' }
 )
 
 -- SMART REPLACE: Select block of text, then use "Subs"
