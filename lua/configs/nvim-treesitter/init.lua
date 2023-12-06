@@ -138,3 +138,13 @@ require('ts_context_commentstring').setup({
 -- @parameter.inner/outer
 -- @scopename.inner
 -- @statement.outer
+
+-- temporary fix: /home/nicholas/.local/share/nvim/runtime/lua/vim/treesitter.lua:221
+-- local ok, lines = pcall(api.nvim_buf_get_text, buf, start_row, start_col, end_row, end_col, {})
+-- if not ok then
+--   vim.dbglog('Treesitter not get text: ', lines)
+--   return ''
+-- end
+-- -- local lines = api.nvim_buf_get_text(buf, start_row, start_col, end_row, end_col, {})
+-- return table.concat(lines or '', '\n')
+--

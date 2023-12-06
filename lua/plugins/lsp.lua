@@ -73,7 +73,10 @@ local plugins = {
         dependencies = { 'nvim-lua/plenary.nvim' },
       },
       { 'folke/neodev.nvim', dependencies = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason.nvim' } },
-      { 'folke/trouble.nvim', cmd = { 'TroubleToggle', 'Trouble' } },
+      {
+        'folke/trouble.nvim',
+        cmd = { 'TroubleToggle', 'Trouble' },
+      },
       {
         'folke/lsp-colors.nvim',
         opts = { Error = '#db4b4b', Warn = '#e0af68', Info = '#0db9d7', Hint = '#10B981' },

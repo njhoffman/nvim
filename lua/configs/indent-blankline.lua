@@ -24,12 +24,13 @@ local ft_exclude = {
   'neo-tree',
   'noice',
   'null-ls-info',
+  'qf',
   'sidekick',
   'NvimTree',
   'tablegen',
   'Trouble',
 }
-local bt_exclude = { 'terminal', 'prompt', 'nofile' }
+local bt_exclude = { 'terminal', 'prompt', 'nofile', 'quickfix' }
 
 -- require('indent_blankline').setup({
 --   -- for example, context is off by default, use this to turn it on

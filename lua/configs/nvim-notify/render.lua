@@ -9,6 +9,7 @@ local title_ignore = {
   'Notification',
   'Messages',
   'Warning',
+  'hardtime',
 }
 
 local render = function(bufnr, notif, highlights, config)
@@ -31,7 +32,8 @@ local render = function(bufnr, notif, highlights, config)
   elseif #title > 0 and not vim.tbl_contains(title_ignore, title) then
     return require('notify.render.' .. render_title)(bufnr, notif, highlights, config)
   else
-    return require('notify.render.minimal')(bufnr, notif, highlights)
+    -- return require('notify.')(bufnr, notif, highlights)
+    return require('notify.render.simple-notitle')(bufnr, notif, highlights)
   end
 end
 

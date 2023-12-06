@@ -15,6 +15,7 @@ local plugins = {
     dependencies = 'nvim-web-devicons',
   },
   { 'stevearc/stickybuf.nvim', event = 'VeryLazy' },
+  { 'rgroli/other.nvim', event = 'VeryLazy' },
   {
     'tummetott/reticle.nvim',
     lazy = false,
@@ -70,13 +71,14 @@ local plugins = {
             'neo-tree',
             'noice',
             'null-ls-info',
+            'qf',
             'sidekick',
             'neo-tree',
             'NvimTree',
             'tablegen',
             'Trouble',
           }
-          local bt_exclude = { 'terminal', 'prompt', 'nofile' }
+          local bt_exclude = { 'terminal', 'prompt', 'nofile', 'quickfix' }
           if vim.tbl_contains(ft_exclude, ft) or vim.tbl_contains(bt_exclude, bt) then
             vim.b.miniindentscope_disable = true
           end
@@ -106,6 +108,12 @@ local plugins = {
     dependencies = 'kevinhwang91/promise-async',
     cmd = { 'UfoEnable', 'UfoAttach', 'UfoEnableFold' },
     event = { 'BufReadPost', 'InsertEnter' },
+  },
+  {
+    'laytan/tailwind-sorter.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-lua/plenary.nvim' },
+    build = 'cd formatter && npm i && npm run build',
+    config = true,
   },
   {
     'MaximilianLloyd/tw-values.nvim',
@@ -161,7 +169,7 @@ local plugins = {
       'RRethy/nvim-treesitter-textsubjects',
       'HiPhish/nvim-ts-rainbow2',
       'jbyuki/tree-sitter-ntangle',
-      'sustech-data/wildfire.nvim',
+      { 'sustech-data/wildfire.nvim', enabled = false },
       'nvim-lua/plenary.nvim',
       { 'ThePrimeagen/refactoring.nvim', dependencies = { { 'nvim-lua/plenary.nvim' } } },
       'nvim-treesitter/nvim-treesitter-refactor',
@@ -508,6 +516,49 @@ local plugins = {
     'jamestthompson3/nvim-remote-containers',
     cmd = { 'BuildImage', 'AttachToContainer', 'StartImage', 'ComposeUp', 'ComposeDown', 'ComposeDestroy' },
   },
+  {
+    'cbochs/grapple.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      -- local default_cfg = {
+      --   ---@type "debug" | "info" | "warn" | "error"
+      --   log_level = 'warn',
+      --
+      --   ---Can be either the name of a builtin scope resolver,
+      --   ---or a custom scope resolver
+      --   ---@type string | Grapple.ScopeResolver
+      --   scope = 'git',
+      --
+      --   ---The save location for tags
+      --   ---@type string
+      --   save_path = tostring(Path:new(vim.fn.stdpath('data')) / 'grapple'),
+      --
+      --   ---Window options used for the popup menu
+      --   popup_options = {
+      --     relative = 'editor',
+      --     width = 60,
+      --     height = 12,
+      --     style = 'minimal',
+      --     focusable = false,
+      --     border = 'single',
+      --   },
+      --
+      --   integrations = {
+      --     ---Support for saving tag state using resession.nvim
+      --     resession = false,
+      --   },
+      -- }
+      require('grapple').setup({ popup_options = { border = 'rounded' } })
+      vim.keymap.set('n', '<leader>m', require('grapple').toggle)
+      -- vim.keymap.set('n', '<leader>j', function()
+      --   require('grapple').select({ key = '{name}' })
+      -- end)
+      --
+      -- vim.keymap.set('n', '<leader>J', function()
+      --   require('grapple').toggle({ key = '{name}' })
+      -- end)
+    end,
+  },
   { 'kelly-lin/ranger.nvim', lazy = true },
   { 'lambdalisue/suda.vim', event = 'VeryLazy' },
   { 'skywind3000/asynctasks.vim', event = 'VeryLazy', dependencies = 'skywind3000/asyncrun.vim' },
@@ -521,7 +572,7 @@ local plugins = {
 			-- {"<C-p>", function() require("genghis").copyFilepath() end, desc = " Copy filepath" },
 			-- {"<C-n>", function() require("genghis").copyFilename() end, desc = " Copy filename" },
 			-- {"<C-r>", function() require("genghis").renameFile() end, desc = " Rename file" },
-			{"<leader>x", function() require("genghis").chmodx() end, desc = " chmod +x" },
+			{"<leader>fx", function() require("genghis").chmodx() end, desc = " chmod +x" },
       -- {"<C-d>", function() require("genghis").duplicateFile() end, desc = " Duplicate file" },
       -- {"<D-BS>", function() require("genghis").trashFile() end, desc = " Move file to trash" },
       -- {"<D-n>", function() require("genghis").createNewFile() end, desc = " Create new file" },
@@ -554,7 +605,7 @@ local plugins = {
     'kawre/leetcode.nvim',
     build = ':TSUpdate html',
     dependencies = {
-      'nvim-telescope/telescope.nvim',
+      'njhoffman/telescope.nvim',
       'nvim-lua/plenary.nvim', -- required by telescope
       'MunifTanjim/nui.nvim',
       'nvim-treesitter/nvim-treesitter',
@@ -738,51 +789,22 @@ local plugins = {
       })
     end,
   },
-  { 'kevinhwang91/nvim-bqf', cmd = { 'BqfEnable', 'BqfToggle' }, ft = 'qf' },
+  {
+    'kevinhwang91/nvim-bqf',
+    enabled = false,
+    version = false,
+  },
+  {
+    'ashfinal/qfview.nvim',
+    enabled = false,
+    config = function()
+      require('qfview').setup({})
+    end,
+  },
   {
     'ten3roberts/qf.nvim',
     -- Unlike :cnext and :cprev, :Qnext and :Qprev will not navigate to valid entries which contain file names, as well as wrapping.
     -- :Qsave, :Qload:Qbelow, :Qabove, :Lbelow, Labove, etc will navigate to the next or previous entry relative to the cursor. However, unlike :cabove it will cross buffer boundaries.
-    config = function()
-      require('qf').setup({
-        -- Location list configuration
-        l = {
-          auto_close = true, -- Automatically close location/quickfix list if empty
-          auto_follow = 'prev', -- Follow current entry, possible values: prev,next,nearest, or false to disable
-          auto_follow_limit = 8, -- Do not follow if entry is further away than x lines
-          follow_slow = true, -- Only follow on CursorHold
-          auto_open = true, -- Automatically open list on QuickFixCmdPost
-          auto_resize = true, -- Auto resize and shrink location list if less than `max_height`
-          max_height = 8, -- Maximum height of location/quickfix list
-          min_height = 5, -- Minimum height of location/quickfix list
-          wide = false, -- Open list at the very bottom of the screen, stretching the whole width.
-          number = false, -- Show line numbers in list
-          relativenumber = false, -- Show relative line numbers in list
-          unfocus_close = false, -- Close list when window loses focus
-          focus_open = false, -- Auto open list on window focus if it contains items
-        },
-        -- Quickfix list configuration
-        c = {
-          auto_close = true, -- Automatically close location/quickfix list if empty
-          auto_follow = 'prev', -- Follow current entry, possible values: prev,next,nearest, or false to disable
-          auto_follow_limit = 8, -- Do not follow if entry is further away than x lines
-          follow_slow = true, -- Only follow on CursorHold
-          auto_open = true, -- Automatically open list on QuickFixCmdPost
-          auto_resize = true, -- Auto resize and shrink location list if less than `max_height`
-          max_height = 8, -- Maximum height of location/quickfix list
-          min_height = 5, -- Minimum height of location/quickfix list
-          wide = false, -- Open list at the very bottom of the screen, stretching the whole width.
-          number = false, -- Show line numbers in list
-          relativenumber = false, -- Show relative line numbers in list
-          unfocus_close = false, -- Close list when window loses focus
-          focus_open = false, -- Auto open list on window focus if it contains items
-        },
-        -- close_other = false, -- Close location list when quickfix list opens
-        close_other = true,
-        pretty = true, -- Pretty print quickfix lists
-        silent = false, -- Suppress messages like "(1 of 3): *line content*" on jump
-      })
-    end,
   },
   {
     'lukas-reineke/headlines.nvim',

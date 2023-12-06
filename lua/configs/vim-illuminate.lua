@@ -51,6 +51,13 @@ local config = {
   under_cursor = false,
   modes_allowlist = { 'n' },
   modes_denylist = { 's', 'v', 'x' },
+  filetypes_denylist = {
+    'dirvish',
+    'fugitive',
+    'navbuddy',
+    'neo-tree',
+    'qf',
+  },
 }
 require('illuminate').configure(config)
 

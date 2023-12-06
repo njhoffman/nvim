@@ -42,7 +42,7 @@ require('neoai').setup({
   shortcuts = {
     {
       name = 'textify',
-      key = '<leader>as',
+      key = '<leader>Is',
       desc = 'fix text with AI',
       use_context = true,
       prompt = [[
@@ -55,7 +55,7 @@ require('neoai').setup({
     },
     {
       name = 'gitcommit',
-      key = '<leader>ag',
+      key = '<leader>Ig',
       desc = 'generate git commit message',
       use_context = false,
       prompt = function()

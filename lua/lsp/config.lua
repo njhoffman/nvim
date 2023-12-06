@@ -52,3 +52,10 @@ vim.diagnostic.config(diagnostic_config)
 --     autocmd User LspDiagnosticsChanged :lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
 -- augroup END
 --
+-- vim.keymap.set("n", "<leader>qd", function()
+--     vim.diagnostic.setqflist({
+--         open = true,
+--         title = "Diagnostics",
+--         severity = {min = vim.diagnostic.severity.HINT}
+--     })
+-- end, {desc = "populate quickfix with diagnostics"})

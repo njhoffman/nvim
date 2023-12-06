@@ -109,6 +109,7 @@ local cfg = {
   intervals         = 35,    -- Update intervals in milliseconds
   cursor            = '▷',   -- Cursor shape (requires Nerd Font). Disabled in fancy mode.
   --  ▷
+ disabled_filetypes = { "TelescopePrompt", "NvimTree", 'qf' }
 }
 require('smoothcursor').setup(cfg)
 

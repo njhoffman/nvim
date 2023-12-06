@@ -102,7 +102,7 @@ local modules = {
     },
   },
   incremental_custom = {
-    enable = false,
+    enable = true,
     disable = { 'markdown' },
     keymaps = {
       init_selection = 'vv',

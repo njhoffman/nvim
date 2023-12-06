@@ -3,7 +3,7 @@
 local commands = {
   Norm = { cmd = 'norm' },
   G = { cmd = 'g' },
-  D = { cmd = 'd' },
+  -- D = { cmd = 'd' },
   Reg = {
     cmd = 'norm',
     args = function(opts)
@@ -11,7 +11,7 @@ local commands = {
     end,
     range = '',
   },
-  LSubvert = { cmd = 'Subvert' },
+  S = { cmd = 'Subvert' },
 }
 
 require('live-command').setup({

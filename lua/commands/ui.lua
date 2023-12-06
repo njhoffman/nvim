@@ -64,17 +64,17 @@ local get_splits = function(directions)
 
   -- these ft will not window close on delete
   local ignored_ft = {
-    'CompetiTest',
-    'Mundo',
-    'MundoDiff',
-    'NvimTree',
-    'SidebarNvim',
-    'Trouble',
-    'aerial',
-    'NeoTree',
-    'nerdtree',
-    'qf',
-    'query',
+    -- 'CompetiTest',
+    -- 'Mundo',
+    -- 'MundoDiff',
+    -- 'NvimTree',
+    -- 'SidebarNvim',
+    -- 'Trouble',
+    -- 'aerial',
+    -- 'NeoTree',
+    -- 'nerdtree',
+    -- 'qf',
+    -- 'query',
   }
 
   local splits = {}

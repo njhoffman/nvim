@@ -54,24 +54,25 @@ local custom_surroundings = {
   ['('] = { output = { left = '( ', right = ' )' } },
 }
 
+-- stylua: ignore
 local cfg = {
   -- custom_surroundings = custom_surroundings,
   mappings = {
-    add = 's', -- Add surrounding in Normal and Visual modes
-    delete = 'ds', -- Add surrounding in Normal and Visual modes
-    replace = 'cs', -- Replace surrounding
-    find = 'sf', -- Find surrounding (to the right)
-    find_left = 'sF', -- Find surrounding (to the left)
-    highlight = 'sh', -- Highlight surrounding
-    update_n_lines = '',
+    add               = 's', -- Add surrounding in Normal and Visual modes
+    delete            = 'ds', -- Add surrounding in Normal and Visual modes
+    replace           = 'cs', -- Replace surrounding
+    find              = 'sf', -- Find surrounding (to the right)
+    find_left         = 'sF', -- Find surrounding (to the left)
+    highlight         = 'sh', -- Highlight surrounding
+    update_n_lines    = '',
     -- update_n_lines = 'sn', -- Update `n_lines`
-    suffix_last = '', -- Suffix to search with "prev" method
-    suffix_next = '', -- Suffix to search with "next" method
+    suffix_last       = '', -- Suffix to search with "prev" method
+    suffix_next       = '', -- Suffix to search with "next" method
     -- suffix_last = 'l', -- Suffix to search with "prev" method
     -- suffix_next = 'n', -- Suffix to search with "next" method
   },
   highlight_duration = 400,
-  n_lines = 30,
+  n_lines = 50,
   respect_selection_type = true,
   search_method = 'cover_or_next',
 }

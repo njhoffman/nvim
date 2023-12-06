@@ -38,7 +38,7 @@ local state = { timer = nil }
 -- vim.api.nvim_create_user_command( "PasteLinewise"
 -- )
 
-  local truncate_log = function()
+local truncate_log = function()
   local ext = vim.fn.expand('%:e')
   if ext ~= 'log' then
     vim.notify('Not truncating log, wrong extension: ' .. ext)

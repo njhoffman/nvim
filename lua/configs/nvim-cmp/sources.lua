@@ -3,7 +3,9 @@ local sources = {
     {
       {
         name = 'nvim_lsp',
-        -- max_item_count = 5,
+        -- max_item_count = 30,
+        keyword_length = 2,
+        trigger_characters = { '-' },
         entry_filter = function(entry, ctx)
           local kind = require('cmp.types.lsp').CompletionItemKind[entry:get_kind()]
           if kind == 'Snippet' and ctx.prev_context.filetype == 'java' then

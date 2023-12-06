@@ -215,7 +215,7 @@ function NotifyView:show()
       end
       for _, msg in ipairs(messages) do
         if msg.opts then
-          if groups[i].opts ~= nil and msg.opts ~= groups[i].opts then
+          if groups[i].opts ~= nil and table.concat(msg.opts) ~= table.concat(groups[i].opts) then
             vim.dbglog('**NOTIFY VIEW**', 'opts mismatch', groups[i].opts, msg.opts)
           end
           groups[i].opts = msg.opts

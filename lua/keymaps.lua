@@ -5,22 +5,22 @@ local prefix = mapper.prefix
 
 --       况  ﱔ    ﮝ  ﬠ ﬡ ײַ יִ       בּ 易
 
--- stylua: ignore start
-prefix('n', 'z',  'folds 󰘖')
-prefix('n', 'g',  'go ײַ')
-prefix('n', 'gt', 'text-case ')
-prefix('n', 'gq', 'quickfix ')
-prefix('n', 'gP', 'preview ')
+prefix('n', 'z', 'folds 󰘖')
+prefix('n', 'g', 'go ײַ')
+prefix('n', 'gt', 'text-case  ')
+prefix('n', 'gq', 'quickfix  ')
+prefix('n', 'gP', 'preview  ')
 prefix('n', 'go', 'debug out ')
-prefix('n', ']',  'next 怜')
-prefix('n', '[',  'previous 玲')
+prefix('n', ']', 'next 怜')
+prefix('n', '[', 'previous 玲')
 
+--         
 -- prefix('n', '<c-w>', 'window')
-prefix('n', '<leader>g',  'git 󰊢')
-prefix('n', '<leader>f',  'file ') --         
-prefix('n', '<leader>p',  'paste ')
-prefix('n', '<leader>i',  'internal tools  ')
-prefix('n', '<leader>cl', 'conceal 󰈉')
+prefix('n', '<leader>g', 'git 󰊢')
+prefix('n', '<leader>f', 'file ')
+prefix('n', '<leader>p', 'paste ')
+prefix('n', '<leader>i', 'internal tools  ')
+prefix('n', '<leader>cl', 'conceal 󰈉 ')
 
 -- -- leader prefixes normal mode
 -- require("which-key").register({
@@ -66,9 +66,33 @@ prefix('n', '<leader>cl', 'conceal 󰈉')
 -- -- Make the last change as an initiation for cgn.
 -- vim.keymap.set("n", "g.", [[/\V<C-r>"<CR>cgn<C-a><Esc>]])
 --------------------------------------------------------------------------------------------------
+
 -- COMMAND ---------------------------------------------------------------------------------------
 
+-- -- Copy Last Command
+-- keymap("n", "<leader>lc", function()
+-- 	local lastCommand = fn.getreg(":"):gsub("^lua[ =]*", "")
+-- 	fn.setreg("+", lastCommand)
+-- 	u.notify("Copied", lastCommand)
+-- end, { desc = "󰘳 Copy last command" })
+--
+-- -- [l]ast command a[g]ain
+-- keymap("n", "<leader>lg", ":<Up><CR>", { desc = "󰘳 Last command again", silent = true })
+--
+-- -- show current filetype & buftype
+-- keymap("n", "<leader>lf", function()
+-- 	local out = {
+-- 		"filetype: " .. bo.filetype,
+-- 		"buftype: " .. bo.buftype,
+-- 		("indent: %s (%s)"):format(bo.expandtab and "spaces" or "tabs", bo.tabstop),
+-- 	}
+-- 	local ok, node = pcall(vim.treesitter.get_node)
+-- 	if ok and node then table.insert(out, "node: " .. node:type()) end
+-- 	u.notify("Buffer Information", table.concat(out, "\n"), "trace")
+-- end, { desc = " Buffer Info" })
+
 -- TODO: differentiate between vim/lua, auto remove comments
+
 map({ 'v' }, '<space>', '"xy:@x<cr>', {
   category = 'Command',
   label = ' execute selected',
@@ -112,24 +136,6 @@ map('c', '<c-d>', '<C-c>', {
   label = ' close cmdline',
   desc = ' close the command line',
 })
-
--- -		The cursor position is unchanged, except when the cursor was
--- 		at the end of the line, then it stays at the end.
--- 		|setcmdpos()| can be used to set the cursor position.
--- 		The |sandbox| is used for evaluating the expression to avoid
--- 		nasty side effects.
--- 	- :cmap <F7> <C-\>eAppendSome()<CR>
--- :func AppendSome()
---    :let cmd = getcmdline() .. " Some()"
---    :" place the cursor on the )
---    :call setcmdpos(strlen(cmd))
---    :return cmd
--- :endfunc
--- map("c", "<c-[>", "<esc>", {
---   category = "Command",
---   label = "close cmdline",
---   desc = "close the commandline",
--- })
 
 map('c', '<c-s>', '<cmd>silent! w<cr><esc>', {
   category = 'Command',
@@ -187,15 +193,16 @@ end, { desc = '󰽙 close buffer/window' })
 -- -- COMMENTS
 map('n', 'gch', function()
   require('funcs.quality-of-life').commentHr()
-end, { desc = ' Horizontal Divider' })
+end, { desc = '  horizontal Divider' })
 
-map('n', 'gcC', function()
+-- TODO: enable visual selection
+map({ 'n', 'x' }, 'gcC', function()
   require('funcs.quality-of-life').duplicateAsComment()
-end, { desc = ' Duplicate Line as Comment' })
+end, { desc = '  duplicate Line as Comment' })
 
-map('n', 'gc<space>', function()
+map({ 'n', 'x' }, 'gc<space>', function()
   require('funcs.quality-of-life').duplicateAsComment()
-end, { desc = ' Duplicate Line as Comment' })
+end, { desc = '  duplicate Line as Comment' })
 
 -- Jump history
 -- non-unique, since it overwrites nvim default: https://neovim.io/doc/user/vim_diff.html#default-mappings
@@ -330,11 +337,111 @@ map('n', '<leader>cd', '<cmd>cd %:h<cr>', {
   desc = '󰽙 change current working directory to buffer directory',
 })
 
--- undo 0, earlier 5m, earlier 1h, later 5h, later 1f (file writes later)
+--------------------------------------------------------------------------------
+-- REFACTORING
+-- keymap("n", "<leader>ff", ":% s/<C-r><C-w>//g<Left><Left>", { desc = " :s (cursor word)" })
+-- keymap("x", "<leader>ff", [["zy:% s/<C-r>z//g<Left><Left>]], { desc = " :s (selection)" })
+-- keymap("x", "<leader>fv", ": s///g<Left><Left><Left>", { desc = " :s (inside visual)" })
+-- keymap("n", "<leader>fd", ":g//d<Left><Left>", { desc = " delete matching" })
+--
+-- ---@param useSpaces boolean
+-- local function retabber(useSpaces)
+-- 	local char = useSpaces and "󱁐" or "󰌒"
+-- 	bo.expandtab = useSpaces
+-- 	bo.tabstop = 2
+-- 	cmd.retab { bang = true }
+-- 	if not useSpaces then bo.tabstop = 3 end
+-- 	u.notify("Indent", ("Now using %s"):format(char))
+-- end
+-- keymap("n", "<leader>f<Tab>", function() retabber(false) end, { desc = "󰌒 Use Tabs" })
+-- keymap("n", "<leader>f<Space>", function() retabber(true) end, { desc = "󱁐 Use Spaces" })
+-- keymap(
+-- 	"n",
+-- 	"<leader>f<CR>",
+-- 	function() vim.opt_local.fileformat = "unix" end,
+-- 	{ desc = "󰌑 Use Unix File Endings" }
+-- )
+-- --------------------------------------------------------------------------------
+--
+-- -- Append to / delete from EoL
+-- local trailChars = { ",", ";", ")", "'", '"', "|", "\\", "{", ".", "}" }
+-- for _, key in pairs(trailChars) do
+--   keymap("n", "<leader>" .. key, "mzA" .. key .. "<Esc>`z", { desc = "which_key_ignore" })
+-- end
+--
+-- -- MAKE
+-- keymap("n", "<leader>r", function()
+--   vim.cmd("silent! update")
+--   vim.cmd.lmake()
+-- end, { desc = " Make" })
+-- keymap(
+--   "n",
+--   "<leader>R",
+--   function() require("funcs.quality-of-life").selectMake() end,
+--   { desc = " Select Make" }
+-- )
+--
+-- -- TERMINAL
+-- keymap(
+--   { "n", "x" },
+--   "<leader>t",
+--   function() require("funcs.quality-of-life").sendToWezTerm() end,
+--   { desc = " Send to WezTerm" }
+-- )
+--
+-- --------------------------------------------------------------------------------
+-- -- OPTION TOGGLING
+--
+-- keymap("n", "<leader>on", "<cmd>set number!<CR>", { desc = " Line Numbers" })
+-- keymap("n", "<leader>ow", "<cmd>set wrap!<CR>", { desc = "󰖶 Wrap" })
+-- keymap("n", "<leader>ol", vim.cmd.LspRestart, { desc = "󰒕 LspRestart" })
+--
+-- keymap("n", "<leader>od", function() -- codespell-ignore
+--   local change = vim.diagnostic.is_disabled(0) and "enable" or "disable"
+--   vim.diagnostic[change](0)
+-- end, { desc = " Diagnostics" })
+-- keymap("n", "<leader>oh", function()
+--   local enabled = vim.lsp.inlay_hint.is_enabled(0)
+--   vim.lsp.inlay_hint.enabled(0, not enabled)
+-- end, { desc = "󰒕 LSP Inlay Hints" })
+--
+-- keymap(
+--   "n",
+--   "<leader>oc",
+--   function() vim.opt_local.conceallevel = vim.opt_local.conceallevel:get() == 0 and 1 or 0 end,
+--   { desc = "󰈉 Conceal" }
+-- )
+--
 
-map('i', ',', ',<c-g>u', { category = 'Buffers', desc = 'add undo at ,' })
-map('i', '.', '.<c-g>u', { category = 'Buffers', desc = 'add undo at .' })
+--------------------------------------------------------------------------------
+-- UNDO
 
+map('n', '<leader>ur', function()
+  vim.cmd('silent later ' .. tostring(vim.opt.undolevels:get()))
+end, { desc = '󰛒 Redo All' })
+
+map({ 'n', 'x' }, '<leader>uc', function()
+  require('funcs.alt-alt').reopenBuffer()
+end, { desc = '󰽙 Undo buffer closing' })
+
+-- save open time for each buffer
+vim.api.nvim_create_autocmd('BufReadPost', {
+  callback = function()
+    vim.b.timeOpened = os.time()
+  end,
+})
+
+-- -- undo 0, earlier 5m, earlier 1h, later 5h, later 1f (file writes later)
+-- map('i', ',', ',<c-g>u', { category = 'Buffers', desc = 'add undo at ,' })
+-- map('i', '.', '.<c-g>u', { category = 'Buffers', desc = 'add undo at .' })
+
+map('n', '<leader>uo', function()
+  local now = os.time()
+  local secsPassed = now - vim.b.timeOpened
+  vim.cmd.earlier(tostring(secsPassed) .. 's')
+end, { desc = '󰜊 Undo since last open' })
+
+-- stylua: ignore start
 --
 --------------------------------------------------------------------------------------------------
 -- MACROS ---------------------------------------------------------------------------------------
@@ -412,7 +519,7 @@ vmap('n', 'gx', {
 
 map('n', '<CR>', function()
   if vim.bo.buftype == 'terminal' then
-    u.normal('a') -- enter terminal mode
+    vim.fn.feedkeys('a', 'n') -- enter terminal mode
   elseif vim.bo.buftype == '' then
     require('funcs.alt-alt').gotoAltBuffer()
   else
@@ -567,42 +674,6 @@ map({ 'n', 'v' }, "<M-'>", '<cmd>HopWord<cr>', {
   desc = 'hop to word',
 })
 
--- map({ "n", "v" }, "<M-:>", "<cmd>HopLine<cr>", {
---   category = "Motion",
---   plugin = "hop.nvim",
---   label = "hop to line",
---   desc = "hop to line",
--- })
-
--- local cr_keys = {
---   new_line = '',
---   new_line_below = { 'o<Esc>k', 'add new line below' },
---   save_file = '',
---   pickers = '',
---   -- set('n', '<Plug>(zoom_toggle)', function()
---   --   require('user/zoom').toggle()
---   -- end)
--- }
---
--- local cr_func = function()
---   if vim.bo.filetype == 'qf' then
---     return '<CR>'
---   else
---     return cr_keys.new_line_below[0]
---     -- return '<Plug>(zoom_toggle)'
---   end
--- end
---
--- map('n', '<CR>', cr_func, {
---   category = 'Motion',
---   label = cr_keys.new_line_below[1],
---   expr = true,
--- })
-
-vim.cmd([[
-  " nnoremap <expr> <silent> <CR> &buftype ==# "quickfix" ? "\<CR>" : "o\<Esc>k"
-]])
-
 map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
   category = 'Motion',
   label = 'select changed text',
@@ -623,7 +694,7 @@ map('n', 'U', '', {
   desc = 'disable line undo so it can prefix other commands',
 })
 
-map('n', 'U', '<c-r>', {
+  map('n', 'U', '<c-r>', {
   category = 'Motion',
   label = 'asssign line undo',
   desc = 'assign line undo',

@@ -194,9 +194,11 @@ return function(injected_functions)
     healthWarning({ fg = '#EBCA89', bg = 'none' }),
     qfFilename({ Directory }),
     qfLineNr({ LineNr }),
+    qfSeparator({ fg = '#322c2f' }), -- Delimiter
+    qfSeparatorLeft({ qfSeparator }),
+    qfSeparatorRight({ qfSeparator }),
     -- qfLineNr({ fg = clrs.highlight, bg = clrs.nord6, gui = 'reverse' }),
     -- qfError { Error },
-    -- qfSeparator { },
     -- +--- Prompt/Status ---+
     EndOfBuffer({ fg = clrs.nord1 }),
     ErrorMsg({ Error }),

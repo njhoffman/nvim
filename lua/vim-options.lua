@@ -126,7 +126,7 @@ opt('relativenumber', true, window)
 opt('signcolumn', 'yes:1', window)
 opt('spell', false, window)
 opt('wrap', false, window)
-opt('winbar', ' ', window)
+-- opt('winbar', ' ', window)
 
 -- buffer scope
 opt('expandtab', true, buffer)

@@ -2,8 +2,10 @@
 
 -- require('preload')
 require('globals')
+-- require('qfview').setup()
 require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
 
+-- qfSeparator, qfLineNr, qfFilename
 for _, mod_name in ipairs({
   'abbreviations',
   'keymaps',
@@ -31,8 +33,6 @@ require('early-retirement').setup({
   minimumBufferNum = 10,
   notificationOnAutoClose = true,
 })
-
--- require('qfview').setup()
 
 -- require('scroll-eof').setup({
 --   scrolloff = 3,

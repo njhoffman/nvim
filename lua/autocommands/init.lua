@@ -1,9 +1,13 @@
 local commands = require('autocommands.commands')
+local help_commands = require('commands.help')
 require('autocommands.misc')
 require('autocommands.skeletons')
 require('autocommands.startup')
-
 -- TODO: automatically build helptags in doc directory
+
+vim.api.nvim_create_user_command('Tip', help_commands.get_tip, {
+  desc = ' get a random neovim tip', --   
+})
 
 local function define_augroups(definitions)
   for group_name, definition in pairs(definitions) do
@@ -56,7 +60,6 @@ local autocmds = {
   },
 
   FiletypeDetect = {
-    -- { 'FileType', 'qf',                    'setlocal nonumber norelativenumber' },
     -- { 'FileType', 'query',                 'setlocal nonumber norelativenumber' },
     { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
     { 'FileType', "neoai-output",          "setlocal ft=pandoc.markdown conceallevel=3 synmaxcol=1000" },

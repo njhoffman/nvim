@@ -2,6 +2,48 @@
 -- @diagnostic disable: unused-function, unused-local, ProhibitUnnecessaryDoubleQuote
 local errors = {}
 local unused = {}
+table.insert(
+  errors,
+  [[
+    Error detected while processing QuickFixCmdPost Autocommands for "vimgrep":
+    Error executing lua callback: vim/_editor.lua:0: QuickFixCmdPost Autocommands for "vimgrep"..script nvim_exec2() called at QuickFixCmdPost Autocommands for "vimgrep":0..function <lambda>39, line 1: Vim(copen):E5108: Error executing lua scratch/tmp3.lua:17: attempt to compare number with nil
+    stack traceback:
+      scratch/tmp3.lua:17: in function 'format_filename'
+      scratch/tmp3.lua:34: in function 'get_max_filename_width'
+      scratch/tmp3.lua:63: in function <scratch/tmp3.lua:46>
+      [C]: in function 'nvim_exec2'
+      vim/_editor.lua: in function 'cmd'
+      /home/nicholas/.local/share/nvim/lazy/qf.nvim/lua/qf.lua:301: in function 'open'
+      /home/nicholas/.local/share/nvim/lazy/qf.nvim/lua/qf.lua:934: in function </home/nicholas/.local/share/nvim/lazy/qf.nvim/lua/qf.lua:933>
+    stack traceback:
+      [C]: in function 'nvim_exec2'
+      vim/_editor.lua: in function 'cmd'
+      /home/nicholas/.local/share/nvim/lazy/qf.nvim/lua/qf.lua:301: in function 'open'
+      /home/nicholas/.local/share/nvim/lazy/qf.nvim/lua/qf.lua:934: in function </home/nicholas/.local/share/nvim/lazy/qf.nvim/lua/qf.lua:933>
+        ]]
+)
+
+table.insert(
+  errors,
+  [[
+E5108: Error executing lua vim/_editor.lua:0: nvim_exec2()..function <lambda>6715, line 1: Vim(copen):E5108: Error executing lua scratch/tmp3.lua:17: attempt to compare number with nil
+stack traceback:
+  scratch/tmp3.lua:17: in function 'format_filename'
+  scratch/tmp3.lua:34: in function 'get_max_filename_width'
+  scratch/tmp3.lua:63: in function <scratch/tmp3.lua:46>
+  [C]: in function 'nvim_exec2'
+  vim/_editor.lua: in function 'cmd'
+  /home/nicholas/.local/share/nvim/lazy/qf.nvim/lua/qf.lua:301: in function 'open'
+  /home/nicholas/.local/share/nvim/lazy/qf.nvim/lua/qf.lua:328: in function 'toggle'
+  [string ":lua"]:1: in main chunk
+stack traceback:
+  [C]: in function 'nvim_exec2'
+  vim/_editor.lua: in function 'cmd'
+  /home/nicholas/.local/share/nvim/lazy/qf.nvim/lua/qf.lua:301: in function 'open'
+  /home/nicholas/.local/share/nvim/lazy/qf.nvim/lua/qf.lua:328: in function 'toggle'
+  [string ":lua"]:1: in main chunk
+      ]]
+)
 
 table.insert(
   errors,

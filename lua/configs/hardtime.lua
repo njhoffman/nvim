@@ -27,6 +27,7 @@ local default_cfg = {
     ['P'] = { 'n' },
   },
   restriction_mode = 'block', -- block or hint
+
   restricted_keys = {
     ['h'] = { 'n', 'x' },
     ['j'] = { 'n', 'x' },
@@ -244,4 +245,111 @@ local default_cfg = {
   },
 }
 
-require('hardtime').setup({ enabled = false })
+local cfg = {
+  enabled = true,
+  restriction_mode = 'hint',
+  max_count = 10,
+  disabled_filetypes = {
+    'NvimTree',
+    'TelescopePrompt',
+    'aerial',
+    'alpha',
+    'checkhealth',
+    'dapui-repl',
+    'dapui_breakpoints',
+    'dapui_console',
+    'dapui_scopes',
+    'dapui_stacks',
+    'dapui_watches',
+    'DressingInput',
+    'DressingSelect',
+    'help',
+    'lazy',
+    'mason',
+    'neo-tree',
+    'neo-tree-popup',
+    'netrw',
+    'noice',
+    'notify',
+    'prompt',
+    'qf',
+  },
+  disabled_keys = {
+    ['<Up>'] = { '', 'i' },
+    ['<Down>'] = { '', 'i' },
+    ['<Left>'] = { '', 'i' },
+    ['<Right>'] = { '', 'i' },
+  },
+  resetting_keys = {
+    ['1'] = { 'n', 'v' },
+    ['2'] = { 'n', 'v' },
+    ['3'] = { 'n', 'v' },
+    ['4'] = { 'n', 'v' },
+    ['5'] = { 'n', 'v' },
+    ['6'] = { 'n', 'v' },
+    ['7'] = { 'n', 'v' },
+    ['8'] = { 'n', 'v' },
+    ['9'] = { 'n', 'v' },
+    ['c'] = { 'n' },
+    ['C'] = { 'n' },
+    ['d'] = { 'n' },
+    -- ["x"] = { "n" },
+    ['X'] = { 'n' },
+    ['y'] = { 'n' },
+    ['Y'] = { 'n' },
+    ['p'] = { 'n' },
+    ['P'] = { 'n' },
+  },
+  restricted_keys = {
+    ['h'] = { 't' },
+    ['j'] = { 't' },
+    ['k'] = { 't' },
+    ['l'] = { 't' },
+    ['-'] = { 't' },
+    ['+'] = { 't' },
+    ['gj'] = { 't' },
+    ['gk'] = { 't' },
+    ['<CR>'] = { 'n', 'x' },
+    ['<C-M>'] = { 'n', 'x' },
+    ['<C-N>'] = { 'n', 'x' },
+    ['<C-P>'] = { 'n', 'x' },
+  },
+  hints = {
+    -- ["k%^"] = {
+    --    message = function()
+    --       return "Use - instead of k^" -- return the hint message you want to display
+    --    end,
+    --    length = 2, -- the length of actual key strokes that matches this pattern
+    -- },
+    ['d[tTfF].[ai]'] = { -- this matches d + {t/T/f/F} + {any character} + i
+      message = function(keys) -- keys is a string of key strokes that matches the pattern
+        return 'Use ' .. 'c' .. keys:sub(2, 3) .. ' instead of ' .. keys
+        -- example: Use ct( instead of dt(i
+      end,
+      length = 4,
+    },
+    ['ds.[ia]'] = {
+      message = function(keys)
+        return 'Use ' .. 'c' .. keys:sub(2, 3) .. ' instead of ' .. keys
+        -- example: Use cs( instead of ds(i
+      end,
+      length = 4,
+    },
+    ['d[ia].[ia]'] = {
+      message = function(keys)
+        return 'Use ' .. 'c' .. keys:sub(2, 3) .. ' instead of ' .. keys
+        -- example: Use cip instead of dipi
+      end,
+      length = 4,
+    },
+    ['[dcyvV][ia][%(%)]'] = {
+      message = function(keys)
+        return 'Use ' .. keys:sub(1, 2) .. 'b instead of ' .. keys
+        -- example: Use dib instead of di(
+      end,
+      length = 3,
+    },
+  },
+}
+
+require('hardtime').setup(cfg)

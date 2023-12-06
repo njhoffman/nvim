@@ -44,7 +44,7 @@ local servers = {
   'sqlls',
   'stylelint_lsp',
   'svelte',
-  -- 'tailwindcss',
+  'tailwindcss',
   'terraformls',
   'texlab',
   'tflint',
@@ -129,6 +129,24 @@ require('mason-lspconfig').setup_handlers({
         ltex = {
           language = 'en-GB',
         },
+      },
+    })
+  end,
+  -- https://github.com/xna00/unocss-language-server
+  ['tailwindcss'] = function()
+    lspconfig.tailwindcss.setup({
+      tailwindCSS = {
+        classAttributes = { 'class', 'className', 'class:list', 'classList', 'ngClass' },
+        lint = {
+          cssConflict = 'warning',
+          invalidApply = 'error',
+          invalidConfigPath = 'error',
+          invalidScreen = 'error',
+          invalidTailwindDirective = 'error',
+          invalidVariant = 'error',
+          recommendedVariantOrder = 'warning',
+        },
+        validate = true,
       },
     })
   end,

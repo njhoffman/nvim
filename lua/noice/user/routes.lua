@@ -7,12 +7,18 @@ local routes = {
     view = 'mini',
     filter = {
       any = {
+        -- write/deletion messages
+        { event = 'msg_show', find = '%d+B written$' },
+        { event = 'msg_show', find = '%d+L, %d+B$' },
+        { event = 'msg_show', find = '%-%-No lines in buffer%-%-' },
         -- all "Closed # popup windows" to mini
         { event = 'msg_show', find = '^Closed %d+ popup windows' },
         -- all "Cannot make changes, 'modifiable' is off" to mini
         { event = 'msg_show', find = '^E21:' },
+        -- Could not apply exmtark to....
+        { event = 'msg_show', find = '^Could not apply exmtark to ' },
         -- all search not found messages to mini
-        { event = 'msg_show', find = '^E486:' },
+        { event = 'msg_show', find = '^E486: Pattern not found' },
         -- no tags file message
         { event = 'msg_show', find = '^E433:' },
         -- tags not found message
@@ -29,7 +35,28 @@ local routes = {
         { event = 'msg_show', find = '^%d+ more lines?' },
         -- all delete line messages to imini
         { event = 'msg_show', find = '^%d+ fewer lines?' },
+        -- Diagnostics
+        { event = 'msg_show', find = 'No more valid diagnostics to move to' },
+        -- :make
+        { event = 'msg_show', find = '^:!make' },
+        { event = 'msg_show', find = '^%(%d+ of %d+%):' },
       },
+      -- -- nvim-treesitter
+      -- { filter = { event = "msg_show", find = "^%[nvim%-treesitter%]" }, view = "mini" },
+      -- { filter = { event = "notify", find = "All parsers are up%-to%-date" }, view = "mini" },
+      -- -- Mason
+      -- { filter = { event = "notify", find = "%[mason%-tool%-installer%]" }, view = "mini" },
+      -- {
+      --   filter = {
+      --     event = "notify",
+      --     cond = function(msg)
+      --       return msg.opts and msg.opts.title and msg.opts.title:find("mason.*.nvim")
+      --     end,
+      --   },
+      --   view = "mini",
+      -- },
+      -- -- DAP
+      -- { filter = { event = "notify", find = "^Session terminated$" }, view = "mini" },
     },
   },
   {
