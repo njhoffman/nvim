@@ -1,13 +1,8 @@
 local commands = require('autocommands.commands')
-local help_commands = require('commands.help')
 require('autocommands.misc')
 require('autocommands.skeletons')
 require('autocommands.startup')
 -- TODO: automatically build helptags in doc directory
-
-vim.api.nvim_create_user_command('Tip', help_commands.get_tip, {
-  desc = ' get a random neovim tip', --   
-})
 
 local function define_augroups(definitions)
   for group_name, definition in pairs(definitions) do
@@ -37,12 +32,10 @@ local autocmds = {
     -- function(event)
     --   if vim.bo.ft == 'TelescopePrompt' and vim.fn.mode() == 'n' then
     --     vim.cmd('startinsert!')
-    --     vim.dbglog("STARTNSERT")
     --     -- vim.schedule_wrap(function()
     --     --   vim.cmd('startinsert')
     --     -- end)
     --   -- elseif vim.bo.ft == "lua" and vim.fn.mode() == 'i' then
-    --   --   vim.dbglog("STOPINSERT")
     --   --   vim.cmd('stopinsert')
     --   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
     --   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)

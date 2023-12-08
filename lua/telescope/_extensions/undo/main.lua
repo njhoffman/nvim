@@ -2,35 +2,25 @@ local finders = require('telescope.finders')
 local pickers = require('telescope.pickers')
 local conf = require('telescope.config').values
 
+local mock_data = require('telescope._extensions.undo.mock_data')
+local highlights = require('telescope._extensions.undo.highlights')
 local get_previewer = require('telescope._extensions.undo.previewer')
 local entry_maker = require('telescope._extensions.undo.entry_maker')
-local build_undolist = require('telescope._extensions.undo.generate')
+local build_undolist = require('undo.generate')
 
-local setup_highlights = function()
-  local pfx = 'TelescopeUndo'
-  vim.api.nvim_set_hl(0, pfx .. 'ID', { default = true, link = 'Comment' })
-  vim.api.nvim_set_hl(0, pfx .. 'Node', { default = true, link = 'TelescopeNormal' })
-  vim.api.nvim_set_hl(0, pfx .. 'NodeSaved', { default = true, link = 'TelescopeNormal' })
-  vim.api.nvim_set_hl(0, pfx .. 'NodeCurrent', { default = true, link = 'TelescopeNormal' })
-  vim.api.nvim_set_hl(0, pfx .. 'Stat', { fg = '#007799', italic = true })
-  vim.api.nvim_set_hl(0, pfx .. 'StatAdd', { fg = '#007799', italic = true })
-  vim.api.nvim_set_hl(0, pfx .. 'StatDel', { fg = '#007799', italic = true })
-  vim.api.nvim_set_hl(0, pfx .. 'Time', { fg = '#007799', italic = true })
-  vim.api.nvim_set_hl(0, pfx .. 'Prefix', { fg = '#007799', italic = true })
-  -- vim.api.nvim_set_hl(0, 'TelescopeProjectGroupRecent', { link = 'Constant', italic = true })
-end
-
+mock_data = false
 local undo = function(opts)
   if not vim.api.nvim_buf_get_option(0, 'modifiable') then
     print('telescope-undo.nvim: Current buffer is not modifiable.')
     return
   end
   opts = opts or {}
+  local results = mock_data or build_undolist(opts)
   pickers
     .new(opts, {
       prompt_title = 'Undo History',
       finder = finders.new_table({
-        results = build_undolist(opts),
+        results = results,
         entry_maker = entry_maker(opts),
       }),
       previewer = get_previewer(opts),
@@ -48,4 +38,4 @@ local undo = function(opts)
     :find()
 end
 
-return { undo = undo, setup_highlights = setup_highlights }
+return { undo = undo, setup_highlights = highlights.setup_highlights }

@@ -37,7 +37,11 @@ local function get_previewer(opts)
           return {
             'bash',
             '-c',
-            "echo '" .. entry.value.diff:gsub("'", [['"'"']]) .. "' | delta" .. append,
+            "echo '"
+              .. entry.value.diff:gsub("'", [['"'"']])
+              .. "' | delta"
+              .. append
+              .. ' --pager "less -R" --paging auto --file-style omit',
             -- HACK: check out this escape method -----^
           }
         end

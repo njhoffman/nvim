@@ -9,11 +9,11 @@ require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
 for _, mod_name in ipairs({
   'abbreviations',
   'keymaps',
+  'commands',
+  'autocommands',
   'dial',
   'wf-setup',
   'devbox',
-  'commands',
-  'autocommands',
   'project',
   'runner',
   'stats',

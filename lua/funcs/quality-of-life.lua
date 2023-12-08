@@ -66,11 +66,25 @@ end
 
 function M.duplicateAsComment()
   local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
-  local curLine = vim.api.nvim_get_current_line()
-  local indent, content = curLine:match('^(%s*)(.*)')
-  local commentedLine = indent .. vim.bo.commentstring:format(content)
-  vim.api.nvim_buf_set_lines(0, ln - 1, ln, false, { commentedLine, curLine })
-  vim.api.nvim_win_set_cursor(0, { ln + 1, col })
+  local ln_beg = vim.fn.line('v') or ln
+  local ln_end = vim.fn.line('.') or ln
+  local lines = ln_beg <= ln_end and ln_end - ln_beg + 1 or ln_beg - ln_end + 1
+  if ln_beg > ln_end then
+    local tmp = ln_end
+    ln_end = ln_beg
+    ln_beg = tmp
+  end
+  local currLines = vim.api.nvim_buf_get_lines(0, ln_beg - 1, ln_end, false)
+  local commentedLines = {}
+  for _, line in ipairs(currLines) do
+    local indent, content = line:match('^(%s*)(.*)')
+    table.insert(commentedLines, indent .. vim.bo.commentstring:format(content))
+  end
+  vim.api.nvim_buf_set_lines(0, ln_beg - 1, ln_beg - 1, false, commentedLines)
+  vim.api.nvim_win_set_cursor(0, { ln_beg + lines, col })
+  -- escape visual mode
+  local esc = vim.api.nvim_replace_termcodes('<esc>', true, false, true)
+  vim.api.nvim_feedkeys(esc, 'x', false)
 end
 
 --------------------------------------------------------------------------------

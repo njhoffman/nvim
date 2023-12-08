@@ -5,12 +5,13 @@ local prefix = mapper.prefix
 
 --       况  ﱔ    ﮝ  ﬠ ﬡ ײַ יִ       בּ 易
 
-prefix('n', 'z', 'folds 󰘖')
-prefix('n', 'g', 'go ײַ')
+prefix('n', 'z', 'folds 󰘖 ')
+prefix('n', 'g', 'go ײַ ')
+prefix('n', 'gh', 'hover  ')
 prefix('n', 'gt', 'text-case  ')
 prefix('n', 'gq', 'quickfix  ')
 prefix('n', 'gP', 'preview  ')
-prefix('n', 'go', 'debug out ')
+prefix('n', 'go', 'debug out  ')
 prefix('n', ']', 'next 怜')
 prefix('n', '[', 'previous 玲')
 
@@ -19,12 +20,13 @@ prefix('n', '[', 'previous 玲')
 prefix('n', '<leader>g', 'git 󰊢')
 prefix('n', '<leader>f', 'file ')
 prefix('n', '<leader>p', 'paste ')
-prefix('n', '<leader>i', 'internal tools  ')
+prefix('n', '<leader>i', 'internal  ')
+prefix('n', '<leader>u', 'undo 󰕌')
 prefix('n', '<leader>cl', 'conceal 󰈉 ')
 
+-- 	u = { name = "" },
 -- -- leader prefixes normal mode
 -- require("which-key").register({
--- 	u = { name = " 󰕌 Undo" },
 -- 	o = { name = "  Options" },
 -- 	p = { name = " 󰏗 Package" },
 -- }, { prefix = "<leader>" })
@@ -113,8 +115,9 @@ map({ 'n', 'v' }, ':', 'q:', {
   nowait = true,
 })
 
-map({ 'n', 'v' }, '<M-;>', 'q:', {
+map({ 'n', 'v' }, '<M-:>', 'q:', {
   category = 'Command',
+  realkeys = '<C-S-;>',
   label = ' open cmdwin',
   desc = ' open the command window',
 })
@@ -193,21 +196,30 @@ end, { desc = '󰽙 close buffer/window' })
 -- -- COMMENTS
 map('n', 'gch', function()
   require('funcs.quality-of-life').commentHr()
-end, { desc = '  horizontal Divider' })
+end, { desc = '  horizontal divider' })
 
 -- TODO: enable visual selection
-map({ 'n', 'x' }, 'gcC', function()
+map({ 'x' }, 'gC', function()
   require('funcs.quality-of-life').duplicateAsComment()
-end, { desc = '  duplicate Line as Comment' })
+end, { desc = '  duplicate line as comment' })
 
-map({ 'n', 'x' }, 'gc<space>', function()
+map({ 'n' }, 'gcC', function()
   require('funcs.quality-of-life').duplicateAsComment()
-end, { desc = '  duplicate Line as Comment' })
+end, { desc = '  duplicate line as comment' })
 
+map({ 'n' }, 'gc<space>', function()
+  require('funcs.quality-of-life').duplicateAsComment()
+end, { desc = '  duplicate line as comment' })
+--
 -- Jump history
 -- non-unique, since it overwrites nvim default: https://neovim.io/doc/user/vim_diff.html#default-mappings
 -- keymap("n", "<C-l>", "<C-i>", { desc = "󱋿 Jump forward", unique = false })
 -- keymap("n", "<C-h>", "<C-o>", { desc = "󱋿 Jump back" })
+
+map('n', '<CR>', '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
+  label = '󰽙 goto alt-buffer',
+  desc = '󰽙 goto alternative/last buffer',
+})
 
 map('n', '<BS>', '<cmd>e #<cr>', {
   category = 'Buffers',
@@ -418,11 +430,7 @@ map('n', '<leader>cd', '<cmd>cd %:h<cr>', {
 
 map('n', '<leader>ur', function()
   vim.cmd('silent later ' .. tostring(vim.opt.undolevels:get()))
-end, { desc = '󰛒 Redo All' })
-
-map({ 'n', 'x' }, '<leader>uc', function()
-  require('funcs.alt-alt').reopenBuffer()
-end, { desc = '󰽙 Undo buffer closing' })
+end, { desc = '󰛒 redo All' })
 
 -- save open time for each buffer
 vim.api.nvim_create_autocmd('BufReadPost', {
@@ -430,6 +438,11 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     vim.b.timeOpened = os.time()
   end,
 })
+map({ 'n', 'x' }, '<leader>uc', function()
+  require('funcs.alt-alt').reopenBuffer()
+end, { desc = '󰽙 undo buffer closing' })
+
+map({ 'n', 'x' }, '<leader>ul', '<cmd>undolist<cr>', { desc = '󰽙 undo show list' })
 
 -- -- undo 0, earlier 5m, earlier 1h, later 5h, later 1f (file writes later)
 -- map('i', ',', ',<c-g>u', { category = 'Buffers', desc = 'add undo at ,' })
@@ -516,19 +529,6 @@ vmap('n', 'gx', {
 
 --------------------------------------------------------------------------------------------------
 -- MOTION ----------------------------------------------------------------------------------------
-
-map('n', '<CR>', function()
-  if vim.bo.buftype == 'terminal' then
-    vim.fn.feedkeys('a', 'n') -- enter terminal mode
-  elseif vim.bo.buftype == '' then
-    require('funcs.alt-alt').gotoAltBuffer()
-  else
-    return -- disable in other buffertypes
-  end
-end, {
-  label = '󰽙 goto alt-buffer',
-  desc = '󰽙 goto alternative/last buffer',
-})
 
 map('n', 'gn', "g#<cmd>lua require('hlslens').start()<cr>", {
   category = 'Motion',
@@ -665,6 +665,13 @@ map('i', '<esc>', '<Esc>`^', {
   category = 'Motion',
   desc = 'convenience cursor placement after insert',
   silent = true,
+})
+
+map({ 'n', 'v' }, "<M-;>", '<cmd>HopLineStart<cr>', {
+  category = 'Motion',
+  plugin = 'hop.nvim',
+  label = 'hop to line',
+  desc = 'hop to line',
 })
 
 map({ 'n', 'v' }, "<M-'>", '<cmd>HopWord<cr>', {
@@ -1108,6 +1115,14 @@ map('n', '<M-Bslash>', '<cmd>MiniFiles<cr>', {
   desc = 'toggle minifiles file manager',
 })
 
+-- TODO: why does this not work? <cmd>lua require('oil').open_float<cr>
+map('n', '-', require("oil").toggle_float, {
+  plugin = 'oil.nvim',
+  category = 'UI',
+  desc = 'toggle oil file manager',
+})
+-- vim.keymap.set('n', '-', require('oil').open_float, { desc = 'Open parent directory' })
+
 map('n', '<C-g>', "<cmd>lua require('telescope.run')('leaderf', { theme = 'dropdown' })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
@@ -1391,41 +1406,46 @@ map('t', '<C-w><C-l>', '<C-\\><C-n>C-w>l', {
 
 --------------------------------------------------------------------------------------------------
 -- HOVER -----------------------------------------------------------------------------------------
-prefix('n', 'gh', 'hover')
+
 map('n', 'gha', '<cmd>ascii<cr>', {
   category = 'Hover',
-  label = 'ascii cursor',
-  desc = 'show ascii under cursor',
+  label = ' ascii cursor',
+  desc = ' show ascii under cursor',
 })
 
 map('n', 'ghh', '<cmd>Inspect<cr>', {
   category = 'Hover',
-  label = 'highlights cursor',
-  desc = 'show highlights under cursor',
+  label = ' highlights cursor',
+  desc = ' show highlights under cursor',
 })
 
 map('n', 'ghH', '<cmd>InspectSticky<cr>', {
   category = 'Hover',
-  label = 'highlights sticky',
-  desc = 'sticky highlights under cursor',
+  label = ' highlights sticky',
+  desc = ' sticky highlights under cursor',
 })
 
 map('n', 'ghw', 'g<C-g>', {
   category = 'Hover',
-  label = 'wordcount cursor',
-  desc = 'show wordcount under cursor',
+  label = ' wordcount cursor',
+  desc = ' show wordcount under cursor',
 })
 
 map('n', 'ght', '<cmd>TSHighlightCapturesUnderCursor<cr>', {
   category = 'Hover',
   plugin = 'treesitter.nvim',
-  label = 'show ts highlights',
-  desc = 'show treesitter highlights under cursor',
+  label = ' show ts highlights',
+  desc = ' show treesitter highlights under cursor',
+})
+
+map('n', 'ghn', '<cmd>TSNodeUnderCursor<cr>', {
+  category = 'Hover',
+  plugin = 'treesitter.nvim',
+  label = ' show ts node',
+  desc = ' show treesitter node under cursor',
 })
 --------------------------------------------------------------------------------------------------
 -- SYSTEM ----------------------------------------------------------------------------------------
-
-prefix('n', 'i', 'system')
 
 map('n', '<leader>ii', '<cmd>ImportStatus<cr>', {
   category = 'System',
@@ -1529,7 +1549,7 @@ end, { desc = ' Open new scope' })
 -- keymap("x", "<Down>", [[:move '>+1<CR>gv=gv]], { desc = "󰜮 Move Selection down", silent = true })
 -- keymap("x", "<Up>", [[:move '<-2<CR>gv=gv]], { desc = "󰜷 Move Selection up", silent = true })
 -- keymap("x", "<Right>", [["zx"zpgvlolo]], { desc = "➡️ Move Selection right" })
--- keymap("x", "<Left>", [["zdh"zPgvhoho]],):format()):format() { desc = "⬅ Move Selection left" })
+-- keymap("x", "<Left>", [["zdh"zPgvhoho]],):format()):format()):format()):format()):format() { desc = "⬅ Move Selection left" })
 
 -- stats, additional debugging info
 -- map("n", "<leader>iF", "", {

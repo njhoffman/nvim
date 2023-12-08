@@ -13,7 +13,8 @@ local config = {
   logStatements = {
     variableLog = {
       lua = 'print("%s %s: ", %s)',
-      nvim_lua = 'vim.notify("%s %s: " .. tostring(%s))', -- FIX for noice.nvim
+      -- nvim_lua = 'vim.notify("%s %s: " .. tostring(%s))', -- FIX for noice.nvim
+      nvim_lua = 'vim.dbglog("%s %s: ", %s)',
       python = 'print(f"%s {%s = }")',
       javascript = 'console.log("%s %s:", %s);',
       typescript = 'console.log("%s %s:", %s);',
@@ -23,7 +24,8 @@ local config = {
       scss = 'outline: 2px solid red !important; /* %s */',
     },
     objectLog = {
-      nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))',
+      -- nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))',
+      nvim_lua = 'vim.dbglog("%s %s:", %s)',
       typescript = 'console.log("%s %s:", %s)',
       javascript = 'console.log("%s %s:", JSON.stringify(%s))',
     },
@@ -40,7 +42,8 @@ local config = {
     },
     messageLog = {
       lua = 'print("%s ")',
-      nvim_lua = 'vim.notify("%s ")', -- FIX for noice.nvim print-bug: https://github.com/folke/noice.nvim/issues/556
+      -- nvim_lua = 'vim.notify("%s ")', -- FIX for noice.nvim print-bug: https://github.com/folke/noice.nvim/issues/556
+      nvim_lua = 'vim.dbglog("%s ")',
       python = 'print("%s ")',
       javascript = 'console.log("%s ");',
       typescript = 'console.log("%s ");',
@@ -125,13 +128,16 @@ end
 ---append string below current line
 ---@param logLines string|string[]
 ---@param varsToInsert string[]
-local function appendLines(logLines, varsToInsert)
+local function appendLines(logLines, varsToInsert, afterTextObject)
+  if afterTextObject then
+    vim.cmd.normal('%')
+  end
   local ln = vim.api.nvim_win_get_cursor(0)[1]
 
   local indentBasedFts = { 'python', 'yaml', 'elm' }
   local isIndentBased = vim.tbl_contains(indentBasedFts, vim.bo.ft)
   local indent = isIndentBased and vim.api.nvim_get_current_line():match('^%s*') or ''
-  local action = isIndentBased and 'j' or 'j=='
+  local action = (isIndentBased and 'j' or 'j==')
 
   if type(logLines) == 'string' then
     logLines = { logLines }
@@ -161,6 +167,18 @@ local function getTemplateStr(logType)
   return templateStr
 end
 
+---check if operation allowed
+---@param logType string
+---@return boolean
+---@nodiscard
+local function hasTemplate(logType)
+  local ft = vim.bo.filetype
+  if ft == 'lua' and vim.fn.expand('%:p'):find('nvim') then
+    ft = 'nvim_lua'
+  end
+  return type(config.logStatements[logType][ft]) == 'table'
+end
+
 --------------------------------------------------------------------------------
 
 function M.messageLog()
@@ -179,7 +197,7 @@ function M.variableLog()
   if not logLines then
     return
   end
-  appendLines(logLines, { config.marker, varname, varname })
+  appendLines(logLines, { config.marker, varname, varname }, true)
 end
 
 function M.objectLog()
@@ -188,7 +206,7 @@ function M.objectLog()
   if not logLines then
     return
   end
-  appendLines(logLines, { config.marker, varname, varname })
+  appendLines(logLines, { config.marker, varname, varname }, true)
 end
 
 function M.assertLog()
@@ -197,7 +215,7 @@ function M.assertLog()
   if not logLines then
     return
   end
-  appendLines(logLines, { varname, config.marker, varname })
+  appendLines(logLines, { varname, config.marker, varname }, true)
   normal('f,') -- goto the comma to edit the condition
 end
 
@@ -232,7 +250,7 @@ function M.debugLog()
   if not logLines then
     return
   end
-  appendLines(logLines, { config.marker })
+  appendLines(logLines, { config.marker }, true)
 end
 
 ---Remove all log statements in the current buffer

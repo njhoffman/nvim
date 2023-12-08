@@ -27,14 +27,6 @@ local routes = {
         { event = 'msg_show', find = '^E433:' },
         -- all 'no more items' to mini
         { event = 'msg_show', find = '^E553:' },
-        -- all '%d change; after #%d  %d seconds ago'
-        { event = 'msg_show', find = '^%d+ change' },
-        -- all '%d line less/more; before #%d  %d seconds ago'
-        { event = 'msg_show', find = '^%d+ line less' },
-        { event = 'msg_show', find = '^%d+ line more' },
-        { event = 'msg_show', find = '^%d+ more lines?' },
-        -- all delete line messages to imini
-        { event = 'msg_show', find = '^%d+ fewer lines?' },
         -- Diagnostics
         { event = 'msg_show', find = 'No more valid diagnostics to move to' },
         -- :make
@@ -75,6 +67,25 @@ local routes = {
     },
     opts = { skip = true },
   },
+  -- undo/redo related messages
+  {
+    filter = {
+      any = {
+        -- all '%d change; after #%d  %d seconds ago'
+        { event = 'msg_show', find = '^%d+ change' },
+        -- all '%d line less/more; before #%d  %d seconds ago'
+        { event = 'msg_show', find = '^%d+ line less' },
+        { event = 'msg_show', find = '^%d+ line more' },
+        { event = 'msg_show', find = '^%d+ more lines?' },
+        -- all delete line messages to imini
+        { event = 'msg_show', find = '^%d+ fewer lines?' },
+      },
+    },
+    view = 'notify',
+    opts = {
+      replace = true,
+    },
+  },
   {
     filter = {
       any = {
@@ -90,9 +101,9 @@ local routes = {
   -- route messages to notify view
   {
     view = 'notify',
-    opts = {
-      level = vim.log.levels.DEBUG,
-    },
+    -- opts = {
+    --   level = vim.log.levels.DEBUG,
+    -- },
     filter = {
       any = {
         { event = 'msg_show', kind = '' },

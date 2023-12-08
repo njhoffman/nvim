@@ -2,6 +2,18 @@
 -- @diagnostic disable: unused-function, unused-local, ProhibitUnnecessaryDoubleQuote
 local errors = {}
 local unused = {}
+
+table.insert(
+  errors,
+  [[
+    E5108: Error executing lua: /home/nicholas/.config/nvim/lua/funcs/alt-alt.lua:116: Vim:E565: Not allowed to change text or change window
+    stack traceback:
+      [C]: in function 'edit'
+      /home/nicholas/.config/nvim/lua/funcs/alt-alt.lua:116: in function 'gotoAltBuffer'
+      /home/nicholas/.config/nvim/lua/keymaps.lua:524: in function </home/nicholas/.config/nvim/lua/keymaps.lua:520>
+        ]]
+)
+
 table.insert(
   errors,
   [[

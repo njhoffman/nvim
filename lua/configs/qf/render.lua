@@ -1,60 +1,9 @@
-local default_cfg = {
-  -- Location list configuration
-  l = {
-    auto_close = true, -- Automatically close location/quickfix list if empty
-    auto_follow = 'prev', -- Follow current entry, possible values: prev,next,nearest, or false to disable
-    auto_follow_limit = 8, -- Do not follow if entry is further away than x lines
-    follow_slow = true, -- Only follow on CursorHold
-    auto_open = true, -- Automatically open list on QuickFixCmdPost
-    auto_resize = true, -- Auto resize and shrink location list if less than `max_height`
-    max_height = 8, -- Maximum height of location/quickfix list
-    min_height = 5, -- Minimum height of location/quickfix list
-    wide = false, -- Open list at the very bottom of the screen, stretching the whole width.
-    number = false, -- Show line numbers in list
-    relativenumber = false, -- Show relative line numbers in list
-    unfocus_close = false, -- Close list when window loses focus
-    focus_open = false, -- Auto open list on window focus if it contains items
-  },
-  -- Quickfix list configuration
-  c = {
-    auto_close = true, -- Automatically close location/quickfix list if empty
-    auto_follow = 'prev', -- Follow current entry, possible values: prev,next,nearest, or false to disable
-    auto_follow_limit = 8, -- Do not follow if entry is further away than x lines
-    follow_slow = true, -- Only follow on CursorHold
-    auto_open = true, -- Automatically open list on QuickFixCmdPost
-    auto_resize = true, -- Auto resize and shrink location list if less than `max_height`
-    max_height = 8, -- Maximum height of location/quickfix list
-    min_height = 5, -- Minimum height of location/quickfix list
-    wide = false, -- Open list at the very bottom of the screen, stretching the whole width.
-    number = false, -- Show line numbers in list
-    relativenumber = false, -- Show relative line numbers in list
-    unfocus_close = false, -- Close list when window loses focus
-    focus_open = false, -- Auto open list on window focus if it contains items
-  },
-  close_other = false, -- Close location list when quickfix list opens
-  pretty = false, -- Pretty print quickfix lists
-  silent = false, -- Suppress messages like "(1 of 3): *line content*" on jump
-}
-
-local cfg = {
-  close_other = true,
-  pretty = false,
-  c = {
-    follow_slow = false, -- Only follow on CursorHold
-    auto_follow = 'nearest', -- Follow current entry, possible values: prev,next,nearest, or false to disable
-    auto_follow_limit = false, -- Do not follow if entry is further away than x lines
-    wide = true, -- Open list at the very bottom of the screen, stretching the whole width.
-  },
-}
-
-require('qf').setup(cfg)
-
 local fn = vim.fn
 
 -- :vimgrep /\w\+/j % | copen
 local format_filename = function(filename, limit, right_align)
   local fnameFmt1 = (right_align and '%' or '%-') .. (limit == nil and '' or limit) .. 's'
-  local fnameFmt2 = '…%.' .. (limit == nil and '' or limit - 1) .. 's'
+  local fnameFmt2 = '…%.' .. (type(limit) ~= 'number' and '' or limit - 1) .. 's'
   local cwd = fn.getcwd()
   if filename:sub(1, #cwd) == cwd then
     filename = filename:sub(#cwd + 2)

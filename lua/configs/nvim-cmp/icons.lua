@@ -52,7 +52,7 @@ local source_names = {
   cmp_git =                   { '', 'CmpSourceCmpGit' },
   cmp_rg =                    { '󰉸', 'CmpSourceCmpRg' },
   cmp_tabnine =               { '󰘳', 'CmpSourceCmpTabnine' },
-  cmp_yanky =                 { ' ','CmpSourceYanky' }, --   
+  cmp_yanky =                 { ' ','CmpSourceYanky' }, --  
   codeium =                   { '', 'CmpSourceCodeium' },
   copilot =                   { '', 'CmpSourceCopilot' }, -- " 
   dictionary =                { '', 'CmpSourceDictionary' },
@@ -158,6 +158,7 @@ local lsp_symbols = {
   Value           = '󰎠',
   Variable        = '', --   Variable    = "󰈜 ",
   VariableBuiltin = '', --   Variable    = "󰈜 ",
+  XX              = ' ', --   Variable    = "󰈜 ",
 }
 
 return {

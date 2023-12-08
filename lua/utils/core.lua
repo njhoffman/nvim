@@ -185,9 +185,21 @@ utils.split = function(str, delim)
   return string.gmatch(str, string.format('[^%s]+', delim))
 end
 
+-- vim.keymap.set('ca', 'neovimisfun', 'Neovim is Fun!')
+-- vim.keymap.set("ia", lhs, rhs, { buffer = true })
+-- Examples of strings that cannot be abbreviations: "a.b", "#def", "a b", "_$r"
+-- move cursor left after abbrev
+-- :iab if if ()<Left>
+-- ab esc ^V^V^V^V^V^[
+-- You can even do more complicated things.  For example, to consume the space
+-- typed after an abbreviation: >
+--    func Eatchar(pat)
+--       let c = nr2char(getchar(0))
+--       return (c =~ a:pat) ? '' : c
+--    endfunc
+--    iabbr <silent> if if ()<Left><C-R>=Eatchar('\s')<CR>
 utils.ftAbbr = function(lhs, rhs)
   -- TODO update on nvim 0.10
-  -- vim.keymap.set("ia", lhs, rhs, { buffer = true })
   vim.cmd.inoreabbrev(('<buffer> %s %s'):format(lhs, rhs))
 end
 
@@ -222,8 +234,7 @@ function utils.getHighlightValue(name, key)
   return string.format('#%06x', value)
 end
 
----Adds a component to the lualine after lualine was already set up. Useful for
----lazyloading.
+---Adds a component to the lualine after lualine was already set up. Useful for lazyloading.
 ---@param component function|table the component forming the lualine
 ---@param location "tabline"|"sections" tabline = top, sections = bottom
 ---@param section "lualine_a"|"lualine_b"|"lualine_c"|"lualine_x"|"lualine_y"|"lualine_z"

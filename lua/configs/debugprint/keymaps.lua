@@ -1,66 +1,100 @@
-local setup_debugprint = function()
-  vim.keymap.set('n', 'god', function()
-    require('debugprint').deleteprints()
-  end, { desc = 'delete all debug statements in buffer' })
+local keymap = require('mapper').map
+local filetypes = require('configs.debugprint.filetypes')
 
-  vim.keymap.set('n', 'goD', function()
+-- vim.dbglog("🪚 [2]: init.lua:7: lua=", lua)
+-- vim.dbglog("🪚 lua: ", lua)
+
+local setup_debugprint = function()
+  -- stylua: ignore
+  local keys = {
+    remove         = 'god',
+    remove_all     = 'goD',
+    variable_below = 'goi',
+    variable_above = 'goI',
+    operator_below = 'goo',
+    operator_above = 'goO',
+    message_below  = 'gop',
+    message_above  = 'goP',
+  }
+
+  keymap('n', keys.remove, function()
     require('debugprint').deleteprints()
-  end, { desc = 'delete all debug statements in project' })
+  end, {
+    label = '󰹝 delete debug',
+    desc = '󰹝 delete debug statements in buffer',
+  })
+
+  keymap('n', keys.remove_all, function()
+    require('debugprint').deleteprints()
+  end, {
+    label = '󰹝 delete all debug',
+    desc = '󰹝 delete all debug statements in project',
+  })
 
   -- Note: setting `expr=true` and returning the value are essential
-  vim.keymap.set({ 'n', 'v' }, 'goi', function()
+  keymap({ 'n', 'x' }, keys.variable_below, function()
     return require('debugprint').debugprint({ variable = true })
-  end, { expr = true, desc = ' debug inspect variable below' })
+  end, {
+    expr = true,
+    label = ' inspect var below',
+    desc = ' inspect variable below cursor or await typed expression',
+  })
 
-  vim.keymap.set({ 'n', 'v' }, 'goI', function()
+  keymap({ 'n', 'x' }, keys.variable_above, function()
     return require('debugprint').debugprint({ variable = true, above = true })
-  end, { expr = true, desc = ' debug inspect variable above' })
+  end, {
+    expr = true,
+    label = ' inspect var above',
+    desc = ' inspect variable above cursor or await typed expression',
+  })
 
-  vim.keymap.set('n', 'goo', function()
+  keymap('n', keys.operator_below, function()
     return require('debugprint').debugprint({ motion = true })
-  end, { expr = true, desc = ' debug inspect variable below with operator' })
+  end, {
+    expr = true,
+    label = ' inspect operator above',
+    desc = ' inspect variable below with operator',
+  })
 
-  vim.keymap.set('n', 'goO', function()
+  keymap('n', keys.operator_above, function()
     return require('debugprint').debugprint({ motion = true, above = true })
-  end, { expr = true, desc = ' debug inspect variable above with operator' })
+  end, {
+    expr = true,
+    label = ' inspect operator above',
+    desc = ' inspect variable above with operator',
+  })
 
-  vim.keymap.set('n', 'gop', function()
+  keymap('n', keys.message_below, function()
     return require('debugprint').debugprint()
-  end, { expr = true, desc = ' debug print plain line below' })
+  end, {
+    expr = true,
+    label = ' print message below',
+    desc = ' print custom message below',
+  })
 
-  vim.keymap.set('n', 'goP', function()
+  keymap('n', keys.message_above, function()
     return require('debugprint').debugprint({ above = true })
-  end, { expr = true, desc = ' debug print plain line above' })
+  end, {
+    expr = true,
+    label = ' print message above',
+    desc = ' print custom message above',
+  })
 
-  vim.keymap.set('n', 'got', function()
-    return require('debugprint').debugprint()
-  end, { expr = true, desc = ' print numbered timer below' })
-
-  vim.keymap.set('n', 'goT', function()
-    return require('debugprint').debugprint({ above = true })
-  end, { expr = true, desc = ' print named timer below' })
-
-  vim.api.nvim_create_user_command('DeleteDebugs', function(opts)
-    -- Note: you must set `range=true` and pass through opts for ranges to work
-    require('debugprint').deleteprints(opts)
-  end, { range = true, desc = ' delete all debug statements' })
-
-  local contextprint = require('debugprint.contextprint')
-
-  contextprint.setup({ log = {
-    typescript = 'console.log',
-  } })
-
-  vim.keymap.set('n', 'goc', function()
-    local tmp = 3
-    contextprint.add_statement()
-  end, { expr = true, desc = 'contextprint' })
+  -- local contextprint = require('debugprint.contextprint')
+  -- contextprint.setup({ log = {
+  --   typescript = 'console.log',
+  -- } })
+  --
+  -- vim.keymap.set('n', 'goc', function()
+  --   local tmp = 3
+  --   contextprint.add_statement()
+  -- end, { expr = true, desc = 'contextprint' })
 
   -- require('contextprint').setup({
   --     separator_char = "#",  // Global
   --     <filetype> = {
   --         separator = "#", // filetype specific
-  --         query = [[ <language specific queries> ]],
+  --         query = [[ <language specific queries> ]]):format(),
   --         log = function(contents) to return print statement to insert
   --         type_defaults = vim.tbl_extend to change name defaults
   --     }
@@ -70,7 +104,6 @@ end
 
 local setup_printing_press = function()
   -- local keymap = vim.keymap.set
-  local keymap = require('mapper').map
 
   -- stylua: ignore start
   local orig = {
@@ -87,30 +120,43 @@ local setup_printing_press = function()
   }
 
 local keys = {
-    message      = '<leader>fm', -- goi
-    variable     = '<leader>fl', -- goi
+    -- message      = '<leader>fm', -- goi
+    message      = 'gom', -- goi
+    -- variable     = '<leader>fl', -- goi
+    variable     = 'gov', -- goi
     object       = '<leader>fo', -- goi
-    beep         = '<leader>fb', -- gob
-    time         = '<leader>f1', -- got
+    -- beep         = '<leader>fb', -- gob
+    beep         = 'gob', -- gob
+    -- time         = '<leader>f1', -- got
+    time         = 'got', -- got
     remove       = '<leader>fr', -- goD
     debug        = '<leader>fd', --
-    assert       = '<leader>fA', -- goa
-    inspect      = '<leader>fi', -- goi
-    inspect_tree = '<leader>fI', -- goI
+    -- assert       = '<leader>fA', -- goa
+    assert       = 'goa', --
   }
 
-  keymap({ "n", "x" }, keys.message, function() require("configs.debugprint.printing-press").messageLog() end, { desc = " message log" })
-  keymap({ "n", "x" }, keys.variable, function() require("configs.debugprint.printing-press").variableLog() end, { desc = " variable log" })
-  keymap({ "n", "x" }, keys.object, function() require("configs.debugprint.printing-press").objectLog() end, { desc = " object log" })
-  keymap("n", keys.beep, function() require("configs.debugprint.printing-press").beepLog() end, { desc = " beep log" })
-  keymap("n", keys.time, function() require("configs.debugprint.printing-press").timeLog() end, { desc = " time log" })
-  keymap("n", keys.remove, function() require("configs.debugprint.printing-press").removeLogs() end, { desc = "󰹝 remove log" })
-  keymap("n", keys.debug, function() require("configs.debugprint.printing-press").debugLog() end, { desc = " debugger log" })
-  keymap("n", keys.assert, function() require("configs.debugprint.printing-press").assertLog() end, { desc = " assert log" })
-  -- stylua: ignore end
+  local pp_path = "configs.debugprint.printing-press"
 
-  keymap('n', keys.inspect, vim.cmd.Inspect, { desc = ' :Inspect' })
-  keymap('n', keys.inspect_tree, vim.cmd.InspectTree, { desc = ' :InspectTree' })
+  keymap({ "n", "x" }, keys.message,
+    function() require(pp_path).messageLog() end, { desc = " message log" })
+  keymap({ "n", "x" }, keys.variable,
+    function() require(pp_path).variableLog() end, { desc = " variable log" })
+  keymap({ "n", "x" }, keys.object,
+    function() require(pp_path).objectLog() end, { desc = " object log" })
+  keymap("n", keys.beep,
+    function() require(pp_path).beepLog() end, { desc = " beep log" })
+  keymap("n", keys.time,
+    function() require(pp_path).timeLog() end, { desc = " time log" })
+  keymap("n", keys.remove,
+    function() require(pp_path).removeLogs() end, { desc = "󰹝 remove log" })
+  keymap("n", keys.debug,
+    function() require(pp_path).debugLog() end, { desc = " debugger log" })
+  keymap("n", keys.assert,
+    function() require(pp_path).assertLog() end, { desc = " assert log" })
+  -- stylua: ignore end
 end
 
-return { setup_debugprint = setup_debugprint, setup_printing_press = setup_printing_press }
+return {
+  setup_debugprint = setup_debugprint,
+  setup_printing_press = setup_printing_press,
+}

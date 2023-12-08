@@ -97,7 +97,7 @@ local extension_configs = {
   -- 3rd party to sort through
   ['undo'] = {
     use_delta = true,
-    side_by_side = true,
+    -- side_by_side = true,
     layout_strategy = 'bottom_pane',
     layout_config = {
       height = 0.4,
@@ -107,7 +107,7 @@ local extension_configs = {
       width = 0.8,
     },
     diff_context_lines = vim.o.scrolloff,
-    entry_format = '$NODE ($STAT) [$ID] $TIME',
+    -- entry_format = '$NODE ($STAT) [$ID] $TIME',
     -- entry_format = 'state #$ID ($STAT): $TIME',
   },
 

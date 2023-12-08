@@ -38,7 +38,8 @@ local project_config = {
   -- Path where project.nvim will store the project history for use in telescope
   datapath = vim.fn.stdpath('data'),
   chdir_func = change_project,
-  last_session_on_startup = false,
+  last_session_project_on_startup = false,
+  last_session_other_on_startup = false,
 }
 
 require('project_nvim').setup(project_config)

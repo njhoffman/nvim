@@ -91,10 +91,16 @@ local setup = function()
   if vim.fn.argc() == 0 then
     if path.dir_matches_project() then
       -- nvim started in the project dir, open current dir session
-      _start_session_here = true
+      if options.last_session_project_on_startup then
+        _start_session_here = true
+      else
+        vim.defer_fn(function()
+          vim.notify('Project.nvim: Session autoload is disabled', vim.log.levels.WARN)
+        end, 2000)
+      end
     else
-      -- Open the recent session if not disabled from config
-      if options.last_session_on_startup then
+      -- open the last session if not disabled in config
+      if options.last_session_other_on_startup then
         options.session_manager_opts.autoload_mode = AutoLoadMode.LastSession
       end
     end

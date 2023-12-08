@@ -5,9 +5,12 @@ local plugins = {
   { 'stevearc/dressing.nvim', dependencies = 'MunifTanjim/nui.nvim', event = 'VeryLazy' },
   { '3rd/image.nvim', enabled = false, event = 'VeryLazy', dependencies = 'nvim-treesitter' },
   { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-web-devicons' },
+  { 'tamton-aquib/zone.nvim', enabled = false },
   {
-    'romgrk/barbar.nvim',
-    enabled = true,
+    -- 'romgrk/barbar.nvim',
+    -- https://github.com/romgrk/barbar.nvim/pull/540
+    'gbprod/barbar.nvim',
+    branch = 'fix-telescope-insert',
     init = function()
       vim.g.barbar_auto_setup = false
     end,
@@ -24,7 +27,7 @@ local plugins = {
     opts = {
       always = { cursorline = { 'neo-tree' } },
       on_startup = { cursorline = true, cursorcolumn = false },
-      never = { cursorline = { 'qf', 'noice' }, cursorcolumn = { 'qf', 'noice' } },
+      never = { cursorline = { 'qf', 'noice', 'navbuddy' }, cursorcolumn = { 'qf', 'noice', 'navbuddy' } },
     },
   },
   { 'lukas-reineke/indent-blankline.nvim', event = { 'BufReadPre', 'BufNewFile' } },
@@ -87,7 +90,6 @@ local plugins = {
     end,
   },
   { 'echasnovski/mini.trailspace', event = 'VeryLazy' },
-  { 'echasnovski/mini.animate', event = 'VeryLazy' },
   {
     'sindrets/diffview.nvim',
     cmd = { 'Diffview', 'DiffviewLog', 'DiffviewOpen', 'DiffviewToggleFiles', 'DiffviewFileHistory' },
@@ -113,7 +115,6 @@ local plugins = {
     'laytan/tailwind-sorter.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-lua/plenary.nvim' },
     build = 'cd formatter && npm i && npm run build',
-    config = true,
   },
   {
     'MaximilianLloyd/tw-values.nvim',
@@ -130,15 +131,12 @@ local plugins = {
   { 'matbme/JABS.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'ghillb/cybu.nvim', event = { 'BufRead', 'BufNewFile' } },
   { 'nacro90/numb.nvim', event = { 'BufReadPost', 'BufNewFile' } },
-  { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
-  { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   {
     'winston0410/range-highlight.nvim',
     event = { 'BufReadPost', 'BufNewFile' },
     dependencies = 'winston0410/cmd-parser.nvim',
   },
   { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
-  { 'phaazon/hop.nvim', branch = 'v2', event = { 'BufReadPost', 'BufNewFile' } },
   { 'TaDaa/vimade', event = 'VimEnter' },
   {
     'kevinhwang91/nvim-hlslens',
@@ -203,43 +201,6 @@ local plugins = {
       },
     },
   },
-  { 'gen740/SmoothCursor.nvim', event = { 'BufReadPost', 'BufNewFile' } },
-  -- { 'otavioschwanck/cool-substitute.nvim' },
-  -- matching
-  { 'andymass/vim-matchup', lazy = false },
-  -- pairs
-  -- { 'echasnovski/mini.pairs', event = 'InsertEnter' },
-  -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
-  { 'altermo/ultimate-autopair.nvim', event = { 'InsertEnter' }, branch = 'v0.6' },
-  { 'gbprod/substitute.nvim', event = { 'VeryLazy' } },
-  { 'echasnovski/mini.surround', event = { 'VeryLazy' } },
-  -- textobjects
-  { 'echasnovski/mini.ai', event = { 'VeryLazy' } },
-  { 'chrisgrieser/nvim-various-textobjs', event = { 'VeryLazy' } },
-  -- split/join
-  { 'echasnovski/mini.splitjoin', event = { 'VeryLazy' } },
-  { 'Wansmer/treesj', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
-  -- traversal/swapping
-  { 'mizlan/iswap.nvim', event = { 'BufReadPost', 'BufNewFile' } },
-  { 'ziontee113/SelectEase', event = 'VeryLazy' },
-  { 'chrisgrieser/nvim-spider', event = 'VeryLazy' },
-  { 'echasnovski/mini.move', event = 'VeryLazy' },
-  -- alignment
-  { 'echasnovski/mini.align', event = 'VeryLazy' },
-  -- { 'hrsh7th/nvim-pasta' },
-  { 'dhruvasagar/vim-table-mode', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
-  { 'echasnovski/mini.doc', version = false, event = 'VeryLazy' },
-  { 'echasnovski/mini.bracketed', event = 'VeryLazy' },
-  { 'jkramer/vim-checkbox', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
-  -- formatting
-  { 'johmsalas/text-case.nvim', event = 'VeryLazy' },
-  { 'echasnovski/mini.comment', version = false, event = 'VeryLazy' },
-  { 'numToStr/Comment.nvim', event = 'VeryLazy' },
-  { 'andrewferrier/debugprint.nvim', event = 'VeryLazy' },
-  { 'ecthelionvi/NeoComposer.nvim', event = 'VeryLazy', dependencies = { 'kkharji/sqlite.lua', 'telescope.nvim' } },
-  { 'tpope/vim-repeat', event = 'VeryLazy' },
-  { 'smjonas/live-command.nvim', dependencies = { 'tpope/vim-abolish', 'rickhowe/diffchar.vim' }, event = 'VeryLazy' },
-  { 'Konfekt/vim-alias', event = 'VeryLazy' },
   {
     'psliwka/vim-smoothie',
     commit = '10fd0aa',
@@ -257,6 +218,9 @@ local plugins = {
       vim.g.smoothie_break_on_reverse = 0
     end,
   }, -- f2aaab1
+  -- movement highlighters
+  -- https://github.com/folke/flash.nvim
+  { 'phaazon/hop.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   {
     'ggandor/flit.nvim',
     dependencies = { 'ggandor/leap.nvim', 'tpope/vim-repeat' },
@@ -269,6 +233,47 @@ local plugins = {
     --   return ret
     -- end,
   },
+  -- cursor
+  { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'gen740/SmoothCursor.nvim', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'echasnovski/mini.animate', event = 'VeryLazy' },
+  -- { 'otavioschwanck/cool-substitute.nvim' },
+  -- matching
+  { 'andymass/vim-matchup', lazy = false },
+  -- pairs
+  -- { 'echasnovski/mini.pairs', event = 'InsertEnter' },
+  -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
+  { 'altermo/ultimate-autopair.nvim', event = { 'InsertEnter' }, branch = 'v0.6' },
+  { 'gbprod/substitute.nvim', event = { 'VeryLazy' } },
+  -- textobjects
+  { 'echasnovski/mini.ai', event = { 'VeryLazy' } },
+  { 'chrisgrieser/nvim-various-textobjs', event = { 'VeryLazy' } },
+  -- split/join
+  { 'echasnovski/mini.splitjoin', event = { 'VeryLazy' } },
+  { 'Wansmer/treesj', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
+  -- surround
+  { 'echasnovski/mini.surround', event = { 'VeryLazy' } },
+  -- traversal/swapping
+  { 'mizlan/iswap.nvim', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'ziontee113/SelectEase', event = 'VeryLazy' },
+  { 'chrisgrieser/nvim-spider', event = 'VeryLazy' },
+  { 'echasnovski/mini.move', event = 'VeryLazy' },
+  -- alignment
+  { 'echasnovski/mini.align', event = 'VeryLazy' },
+  { 'dhruvasagar/vim-table-mode', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
+  { 'echasnovski/mini.doc', version = false, event = 'VeryLazy' },
+  { 'echasnovski/mini.bracketed', event = 'VeryLazy' },
+  { 'jkramer/vim-checkbox', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
+  -- formatting
+  { 'johmsalas/text-case.nvim', event = 'VeryLazy' },
+  { 'echasnovski/mini.comment', version = false, event = 'VeryLazy' },
+  { 'numToStr/Comment.nvim', event = 'VeryLazy' },
+  { 'andrewferrier/debugprint.nvim', event = 'VeryLazy' },
+  { 'ecthelionvi/NeoComposer.nvim', event = 'VeryLazy', dependencies = { 'kkharji/sqlite.lua', 'telescope.nvim' } },
+  { 'tpope/vim-repeat', event = 'VeryLazy' },
+  { 'smjonas/live-command.nvim', dependencies = { 'tpope/vim-abolish', 'rickhowe/diffchar.vim' }, event = 'VeryLazy' },
+  { 'Konfekt/vim-alias', event = 'VeryLazy' },
   --
   -- pickers
   --
@@ -516,49 +521,7 @@ local plugins = {
     'jamestthompson3/nvim-remote-containers',
     cmd = { 'BuildImage', 'AttachToContainer', 'StartImage', 'ComposeUp', 'ComposeDown', 'ComposeDestroy' },
   },
-  {
-    'cbochs/grapple.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      -- local default_cfg = {
-      --   ---@type "debug" | "info" | "warn" | "error"
-      --   log_level = 'warn',
-      --
-      --   ---Can be either the name of a builtin scope resolver,
-      --   ---or a custom scope resolver
-      --   ---@type string | Grapple.ScopeResolver
-      --   scope = 'git',
-      --
-      --   ---The save location for tags
-      --   ---@type string
-      --   save_path = tostring(Path:new(vim.fn.stdpath('data')) / 'grapple'),
-      --
-      --   ---Window options used for the popup menu
-      --   popup_options = {
-      --     relative = 'editor',
-      --     width = 60,
-      --     height = 12,
-      --     style = 'minimal',
-      --     focusable = false,
-      --     border = 'single',
-      --   },
-      --
-      --   integrations = {
-      --     ---Support for saving tag state using resession.nvim
-      --     resession = false,
-      --   },
-      -- }
-      require('grapple').setup({ popup_options = { border = 'rounded' } })
-      vim.keymap.set('n', '<leader>m', require('grapple').toggle)
-      -- vim.keymap.set('n', '<leader>j', function()
-      --   require('grapple').select({ key = '{name}' })
-      -- end)
-      --
-      -- vim.keymap.set('n', '<leader>J', function()
-      --   require('grapple').toggle({ key = '{name}' })
-      -- end)
-    end,
-  },
+  { 'cbochs/grapple.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
   { 'kelly-lin/ranger.nvim', lazy = true },
   { 'lambdalisue/suda.vim', event = 'VeryLazy' },
   { 'skywind3000/asynctasks.vim', event = 'VeryLazy', dependencies = 'skywind3000/asyncrun.vim' },
@@ -728,7 +691,6 @@ local plugins = {
       require('dbee').install()
     end,
   },
-  { 'm4xshen/hardtime.nvim', dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' } },
   { 'tzachar/highlight-undo.nvim', event = { 'BufEnter', 'BufReadPost', 'BufNewFile' } },
   {
     'kndndrj/nvim-projector',
@@ -761,7 +723,7 @@ local plugins = {
           vim.notify('Puppeteer', 'Lua string formatting ' .. status)
         end,
         ft = 'lua',
-        desc = '󰅳 Lua string formatting',
+        desc = '󰅳 lua string formatting',
       },
     },
   },
@@ -806,6 +768,7 @@ local plugins = {
     -- Unlike :cnext and :cprev, :Qnext and :Qprev will not navigate to valid entries which contain file names, as well as wrapping.
     -- :Qsave, :Qload:Qbelow, :Qabove, :Lbelow, Labove, etc will navigate to the next or previous entry relative to the cursor. However, unlike :cabove it will cross buffer boundaries.
   },
+  -- https://github.com/Zeioth/markmap.nvim
   {
     'lukas-reineke/headlines.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },

@@ -102,6 +102,13 @@ end
 
 ---switch to alternate buffer/oldfile (in that priority)
 function M.gotoAltBuffer()
+  if vim.bo.buftype == 'terminal' then
+    vim.fn.feedkeys('a', 'n') -- enter terminal mode
+    return
+  elseif vim.bo.buftype ~= '' then
+    return -- disable in other buffertypes
+  end
+
   local altFile = fn.expand('#:t')
   local altPath = fn.expand('#:p')
   local curPath = fn.expand('%:p')
@@ -111,9 +118,11 @@ function M.gotoAltBuffer()
   local hasAltFile = altFile ~= '' and altPath ~= curPath and (fileExists or specialFile)
 
   if hasAltFile and (altPath ~= curPath) then
-    cmd.buffer('#')
+    cmd('buffer #')
+    -- cmd.buffer('#')
   elseif altOldfile() then
-    cmd.edit(altOldfile())
+    cmd('edit ' .. altOldfile())
+    -- cmd.edit(altOldfile())
   else
     notify('Nothing to switch to.', 'warn')
   end

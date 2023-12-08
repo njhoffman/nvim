@@ -1,5 +1,6 @@
 local format = require('commands.format')
 local ui = require('commands.ui')
+local tip = require('commands.tip')
 local help = require('commands.help')
 local debug = require('commands.debug')
 -- local paste = require('commands.paste')
@@ -8,6 +9,30 @@ require('commands.inspect')
 
 local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
+
+--   
+cmd('Tip', tip.get_tip, { desc = ' get a random neovim tip' })
+cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })
+-- cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
+cmd('CloseMulti', ui.close_multi, { desc = 'Close tabpage, window, or buffer in that order' })
+cmd('CloseMultiNoPrompt', ui.close_multi_no_prompt, { desc = 'Close tabpage, window, or buffer in that order' })
+cmd('ClosePopups', ui.close_popups, { desc = 'Format buffer using lsp' })
+cmd('GetPaths', debug.get_paths, { desc = 'Get path collections (rtpaths, o.packpath, etc)' })
+cmd('Trash', system.trash_file, { desc = 'Send file to system trash' })
+cmd('Delete', system.trash_file, { desc = 'Send file to system trash' })
+-- cmd("TrashRecover", system.trash_file, { desc = "Send file to system trash" })
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'lua',
+  callback = function()
+    bufcmd(0, 'Help', help.get_help_cursor, { desc = 'Jump to helpfile under cursor' })
+    vim.keymap.set('n', 'gH', '<cmd>Help<cr>', {
+      desc = 'open help item under cursor',
+      buffer = 0,
+    })
+  end,
+  desc = 'Create lua help utility functions',
+})
 
 -- -- Mapping for dd that doesn't yank an empty line into your default register:
 -- keymap.set("n", "dd", function()
@@ -33,28 +58,6 @@ local bufcmd = vim.api.nvim_buf_create_user_command
 --   preview = format.trim_space,
 --   desc = 'Trims trailing whitespace in the current buffer.',
 -- })
-cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })
--- cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
-cmd('CloseMulti', ui.close_multi, { desc = 'Close tabpage, window, or buffer in that order' })
-cmd('CloseMultiNoPrompt', ui.close_multi_no_prompt, { desc = 'Close tabpage, window, or buffer in that order' })
-cmd('ClosePopups', ui.close_popups, { desc = 'Format buffer using lsp' })
-cmd('GetPaths', debug.get_paths, { desc = 'Get path collections (rtpaths, o.packpath, etc)' })
-cmd('Trash', system.trash_file, { desc = 'Send file to system trash' })
-cmd('Delete', system.trash_file, { desc = 'Send file to system trash' })
--- cmd("TrashRecover", system.trash_file, { desc = "Send file to system trash" })
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'lua',
-  callback = function()
-    bufcmd(0, 'Help', help.get_help_cursor, { desc = 'Jump to helpfile under cursor' })
-    vim.keymap.set('n', 'gH', '<cmd>Help<cr>', {
-      desc = 'open help item under cursor',
-      buffer = 0,
-    })
-  end,
-  desc = 'Create lua help utility functions',
-})
-
 -- cmd(
 --   "PasteNoYank",
 --   paste.visual_paste_without_yank,

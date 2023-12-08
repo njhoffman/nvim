@@ -264,10 +264,8 @@ local cmdline = {
           behavior = cmp.SelectBehavior.Insert,
         })
         in_history = false
-        vim.dbglog('NO HISTORY', cmp.get_selected_entry())
       else
         -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
-        vim.dbglog('HJISTORY')
         feedkeys.call(keymap.t('<Up>'), 'c')
         in_history = true
       end

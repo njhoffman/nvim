@@ -47,14 +47,11 @@ local format_tailwind = function(vim_item)
     else
       color = '000000'
     end
-
     local hl_group = 'lsp_documentColor_mf_' .. color
     vim.api.nvim_set_hl(0, hl_group, { fg = '#' .. color, bg = '#' .. color })
     vim_item.kind_hl_group = hl_group
-
     -- make the color square 2 chars wide
     vim_item.kind = string.rep('X', config.color_square_width)
-
     return vim_item
   elseif #words < 3 or #words > 4 then
     -- doesn't look like this is a tailwind css color
@@ -66,29 +63,28 @@ local format_tailwind = function(vim_item)
   end
 
   local color_index = tonumber(color_number)
-  local tailwindcss_colors = require('tailwindcss-colorizer-cmp.colors').TailwindcssColors
+  local tailwind_colors = require('configs.nvim-cmp.tailwind-colors')
 
-  if not tailwindcss_colors[color_name] then
+  if not tailwind_colors[color_name] then
     return vim_item
   end
 
-  if not tailwindcss_colors[color_name][color_index] then
+  if not tailwind_colors[color_name][color_index] then
     return vim_item
   end
 
-  local color = tailwindcss_colors[color_name][color_index]
-
+  local color = tailwind_colors[color_name][color_index]
   local hl_group = 'lsp_documentColor_mf_' .. color
   vim.api.nvim_set_hl(0, hl_group, { fg = '#' .. color, bg = '#' .. color })
-
   vim_item.kind_hl_group = hl_group
 
   -- make the color square 2 chars wide
   vim_item.kind = string.rep('X', config.color_square_width)
-
   return vim_item
 end
 
+-- vim_item.menu = ({ nvim_lsp = '', buffer   = '', })[entry.source.name]
+-- vim_item.kind = ({ Text          = '', TypeParameter = '', })[vim_item.kind]
 -- format = require('tailwindcss-colorizer-cmp').formatter,
 local format = function(entry, vim_item)
   local label = vim_item.abbr or ''
@@ -99,27 +95,28 @@ local format = function(entry, vim_item)
     local padding = string.rep(' ', MIN_LABEL_WIDTH - string.len(label))
     vim_item.abbr = label .. padding
   end
-  -- vim_item.menu = ({ nvim_lsp = '', buffer   = '', })[entry.source.name]
-  -- vim_item.kind = ({ Text          = '', TypeParameter = '', })[vim_item.kind]
+
   vim_item.dup = ({ buffer = 1, path = 1, nvim_lsp = 0 })[entry.source.name] or 1
-  if vim.tbl_contains({ 'nvim_lsp' }, entry.source.name) then
-    vim_item = format_tailwind(vim_item)
-  elseif type(icons.names[entry.source.name]) == 'nil' then
+  if type(icons.names[entry.source.name]) == 'nil' then
     vim.notify('No source icon: ' .. entry.source.name, 2)
   else
     vim_item.menu = icons.names[entry.source.name][1]
     vim_item.menu_hl_group = icons.names[entry.source.name][2]
   end
+
   if type(icons.symbols[vim_item.kind]) == 'nil' then
     vim.notify('No symbol icon: ' .. vim_item.kind, 2)
   else
     vim_item.kind = icons.symbols[vim_item.kind]
   end
+
   -- switch source and symbol icons
   local tmp = vim_item.menu or ''
   vim_item.menu = vim_item.kind .. ' '
   vim_item.kind = ' ' .. tmp
-
+  if vim.tbl_contains({ 'nvim_lsp' }, entry.source.name) then
+    vim_item = format_tailwind(vim_item)
+  end
   return vim_item
 end
 
@@ -137,7 +134,7 @@ end
 --
 --   local completion_context = get_lsp_completion_context(entry.completion_item, entry.source)
 --   if completion_context ~= nil and completion_context ~= '' then
---     item_with_kind.menu = item_with_kind.menu .. [[ -> ]] .. completion_context
+--     item_with_kind.menu = item_with_kind.menu .. [[ -> ]]):):):format()format()format()):format() .. completion_context):):format()format()
 --   end
 --   return item_with_kind
 -- end,

@@ -153,7 +153,6 @@ M.preview_scrolling_up = function(prompt_bufnr)
   local input = direction > 0 and [[]] or [[]]
   -- local count = math.abs(direction)
 
-  vim.dbglog('status', status.preview_win)
   vim.api.nvim_win_call(status.preview_win, function()
     -- :execute "normal \<Plug>(SmoothieDownwards)"
     vim.fn.execute('normal! \\<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)')

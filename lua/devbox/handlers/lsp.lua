@@ -80,7 +80,6 @@ local handlers = {
   --   },
   ['textDocument/hover'] = {
     get_contents = function(result)
-      vim.dbglog('hover', result)
       if result and result.contents and result.contents.value then
         return result.contents.value
       end
@@ -92,7 +91,6 @@ local handlers = {
   },
   default = {
     get_contents = function(result)
-      vim.dbglog(result)
       return nil
     end,
   },

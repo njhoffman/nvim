@@ -32,8 +32,12 @@ local defaults = {
   before_project_selection_callback = function() end,
   -- Allows the user to declare a custom callback to execute after project selection
   after_project_selection_callback = function() end,
+
+  -- Load the most recent project session if in project directory
+  last_session_project_on_startup = true,
+
   -- Load the most recent session on startup if not in the project directory
-  last_session_on_startup = true,
+  last_session_other_on_startup = true,
 
   -- Overwrite some of Session Manager options
   session_manager_opts = {

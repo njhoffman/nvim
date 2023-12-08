@@ -22,7 +22,7 @@ local fg = string.format('#%06x', hl.fg)
 --             █                 █  
 local cfg = {
   hide = {
-    cursorline = true,
+    cursorline = false,
     focused_win = false,
     only_win = false,
   },

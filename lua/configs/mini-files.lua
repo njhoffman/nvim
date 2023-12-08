@@ -80,6 +80,25 @@ end
 
 vim.api.nvim_create_user_command('MiniFiles', minifiles_toggle, { desc = 'toggle minifiles file manager' })
 
+-- local buf_map = function(mode, lhs, rhs, desc)
+--   -- Use `nowait` to account for non-buffer mappings starting with `lhs`
+--   H.map(mode, lhs, rhs, { buffer = buf_id, desc = desc, nowait = true })
+-- end
+--
+-- --stylua: ignore start
+-- buf_map('n', mappings.close,       MiniFiles.close,       'Close')
+-- buf_map('n', mappings.go_in,       go_in_with_count,      'Go in entry')
+-- buf_map('n', mappings.go_in_plus,  go_in_plus,            'Go in entry plus')
+-- buf_map('n', mappings.go_out,      go_out_with_count,     'Go out of directory')
+-- buf_map('n', mappings.go_out_plus, go_out_plus,           'Go out of directory plus')
+-- buf_map('n', mappings.reset,       MiniFiles.reset,       'Reset')
+-- buf_map('n', mappings.reveal_cwd,  MiniFiles.reveal_cwd,  'Reveal cwd')
+-- buf_map('n', mappings.show_help,   MiniFiles.show_help,   'Show Help')
+-- buf_map('n', mappings.synchronize, MiniFiles.synchronize, 'Synchronize')
+-- buf_map('n', mappings.trim_left,   MiniFiles.trim_left,   'Trim branch left')
+-- buf_map('n', mappings.trim_right,  MiniFiles.trim_right,  'Trim branch right')
+--
+
 -- vim.api.nvim_create_autocmd('User', {
 --   pattern = 'MiniFilesWindowOpen',
 --   callback = function(args)

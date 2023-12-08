@@ -2,7 +2,9 @@ local miniclue = require('mini.clue')
 local mapper_clues = require('mapper').clues or {}
 local clues = {
   miniclue.gen_clues.builtin_completion(),
-  miniclue.gen_clues.g(),
+  vim.tbl_filter(function(item)
+    return not (item.keys == 'gq')
+  end, miniclue.gen_clues.g()),
   miniclue.gen_clues.marks(),
   -- miniclue.gen_clues.registers(),
   miniclue.gen_clues.windows({
@@ -11,12 +13,10 @@ local clues = {
     submode_resize = true,
   }),
   miniclue.gen_clues.z(),
+  mapper_clues,
 }
 
-for _, clue_item in ipairs(mapper_clues) do
-  table.insert(clues, clue_item)
-end
-
+vim.dbglog('DEBUGPRINT[1]: mini-clue.lua:16: clues=', clues)
 -- require('mini.bracketed').setup()
 -- require('mini.clue').setup({
 --   triggers = {

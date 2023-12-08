@@ -1,81 +1,47 @@
-local timeago = require('telescope._extensions.undo.timeago')
+local strings = require('plenary.strings')
+local entry_display = require('telescope.pickers.entry_display')
+-- local parse_line = require('telescope._extensions.undo.parser_graph')
+local parse_line = require('telescope._extensions.undo.parser_plain')
 
-local format_line = function(undo, fields, opts)
-  local line_parts = {
-    ['$ID'] = undo.seq,
-    ['$NODE'] = fields.node,
-    ['$STAT'] = fields.diffstat,
-    ['$TIME'] = fields.formatted_time,
-  }
-  local line = fields.prefix .. opts.entry_format
-  for key, value in pairs(line_parts) do
-    line = line:gsub(key, value)
-  end
-  return line
-end
-
--- ├ ─ ┤         ┘ ─ ─ └ ┘┌ ─  ┤ ╴─╶ ╰ ╯ ┘-- │┌ ┴ ┐┬ ┌ ┬ ├ ─ ├ ┐  ╴─╶ ╰ ╯ ┘
---      (+7)  [3]  4 hours ago
--- ├─   (-3)  [4]  4 hours ago
--- └─   (+2)  [5]  4 hours ago
-local parse_line = function(undo, order, opts)
-  local symbolsAscending = {
-    first = '└', --            [6]
-    middle = '┌', -- ├─         [7] 4 hours ago
-    dash = '╴', -- ┆ ├─       [8] 3 hours ago
-    vertical = '│', -- ┆ └─       [9]
-    dash_wide = '─', -- └─        [10]
-    add = '+',
-    del = '-',
-  }
-
-  local symbolsDescending = {
-    first = '┘', --     
-    middle = '┤', --    │     (-1) [20]
-    dash = '╶', -- │        (-1) [19]
-    vertical = ' │', -- │ ╶┘     (-1) [18]
-    dash_wide = '─', -- │        (-1) [16]
-    add = '+', -- ╶┘
-    del = '-', -- 
-  }
-
-  local fields = {}
-  -- when order value equals 'descending' it is actually ascending and vice versa
-  local symbols = order == 'ascending' and symbolsDescending or symbolsAscending
-  fields.prefix = ''
-  if undo.alt > 0 then
-    fields.prefix = string.rep(symbols.vertical, undo.alt - 1)
-    if undo.first then
-      local corner = symbols.first
-      fields.prefix = fields.prefix .. symbols.dash .. corner
-    else
-      fields.prefix = fields.prefix .. symbols.middle
+local display_line = function(undo, fields, opts)
+  return function(_, state)
+    local displayer = entry_display.create({
+      separator = '  ',
+      items = {
+        { width = 6 },
+        { remaining = true },
+      },
+    })
+    -- local width = vim.api.nvim_win_get_width(state.results_win)
+    local node_part = (fields.prefix and fields.prefix or '') .. fields.node .. (fields.suffix and fields.suffix or '')
+    local line_parts = {
+      ['$ID'] = undo.seq,
+      ['$NODE'] = node_part,
+      ['$STAT_ADDED'] = fields.diff_added or '  ',
+      ['$STAT_DELETED'] = fields.diff_deleted or '  ',
+      ['$TIME'] = fields.formatted_time,
+    }
+    local line_center = opts.entry_format_center
+    local line_right = opts.entry_format_right
+    for key, value in pairs(line_parts) do
+      line_center = line_center:gsub(key, value)
+      line_right = line_right:gsub(key, value)
     end
+    -- return displayer({
+    --   { strings.align_str(entry[1], widths[1], true), 'Keyword' },
+    --   { entry[2] },
+    --   { strings.align_str(entry[3], width - widths[1] - widths[2] - 7, true), 'Comment' },
+    -- })
+    return displayer({
+      { line_center, 'TelescopeNormal' },
+      { line_right, 'Comment' },
+    })
   end
-
-  fields.node = '  ' --
-  if undo.first then
-    fields.node = '  '
-  elseif type(undo.save) == 'number' then
-    fields.node = '  '
-  end
-
-  fields.diffstat = ''
-  if #undo.additions > 0 then
-    fields.diffstat = symbols.add .. #undo.additions
-  end
-  if #undo.deletions > 0 then
-    if fields.diffstat ~= '' then
-      fields.diffstat = fields.diffstat .. ' '
-    end
-    fields.diffstat = symbols.del .. #undo.deletions
-  end
-  fields.formatted_time = opts.time_format == '' and timeago(undo.time) or os.date(opts.time_format, undo.time)
-  return fields
 end
 
 local order = require('telescope.config').values.sorting_strategy
 local entry_maker = function(opts)
+  -- TODO: if no curhead add now node to show current state
   return function(undo)
     -- TODO: show a table instead of a list
     if #undo.additions + #undo.deletions == 0 then
@@ -85,7 +51,7 @@ local entry_maker = function(opts)
     local fields = parse_line(undo, order, opts)
     return {
       value = undo,
-      display = format_line(undo, fields, opts),
+      display = display_line(undo, fields, opts),
       ordinal = undo.ordinal,
     }
   end

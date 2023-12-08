@@ -12,10 +12,13 @@ local u = require('utils.core')
 -- habits from writing too much in other languages
 u.ftAbbr('//', '--')
 u.ftAbbr('const', 'local')
+u.ftAbbr('let', 'local')
+u.ftAbbr('var', 'local')
 u.ftAbbr('fi', 'end')
 u.ftAbbr('!=', '~=')
 u.ftAbbr('!==', '~=')
-
+-- vim.cmd('setlocal iskeyword+=:')
+u.ftAbbr(':', '=')
 -- shorthands
 u.ftAbbr('tre', 'then return end') -- codespell-ignore
 

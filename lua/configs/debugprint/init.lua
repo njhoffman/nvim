@@ -1,5 +1,8 @@
 local keymaps = require('configs.debugprint.keymaps')
-local myobject = {}
+
+-- TODO: add capability to do premotions before output of debug line '%'
+-- TODO: custom output with function
+-- TODO: insert on print message action
 
 local lua = {
   left = 'vim.dbglog("',
@@ -12,7 +15,6 @@ local lua = {
   -- right_var = "))",
 }
 -- require('debugprint').add_custom_filetypes({ my_fileformat, ... })
--- require('debugprint').setup({ filetypes = { my_fileformat, another_of_my_fileformats, ... }})
 
 require('debugprint').setup({
   move_to_debugline = true,
@@ -22,6 +24,11 @@ require('debugprint').setup({
   display_snippet = false,
   filetypes = { lua = lua },
 })
+
+vim.api.nvim_create_user_command('DeleteDebugs', function(opts)
+  -- Note: you must set `range=true` and pass through opts for ranges to work
+  require('debugprint').deleteprints(opts)
+end, { range = true, desc = ' delete all debug statements' })
 
 keymaps.setup_debugprint()
 keymaps.setup_printing_press()

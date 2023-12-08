@@ -21,6 +21,10 @@ local plugins = {
       vim.cmd('colorscheme nord-nick')
     end,
   },
+  {
+    'm4xshen/hardtime.nvim',
+    dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
+  },
   { 'famiu/bufdelete.nvim' },
   { 'nvim-tree/nvim-web-devicons', dependencies = { 'DaikyXendo/nvim-material-icon' } },
   {

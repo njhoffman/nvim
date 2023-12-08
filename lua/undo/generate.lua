@@ -2,7 +2,6 @@ local function _traverse_undotree(opts, entries, level)
   local undolist = {}
   -- create diffs for each entry in our undotree
   for i = #entries, 1, -1 do
-    vim.dbglog('ENTRY', entries[i])
     if opts.save ~= nil and opts.save and entries[i].save == nil then
       goto continue
     end
@@ -75,18 +74,24 @@ local function _traverse_undotree(opts, entries, level)
       algorithm = 'patience',
     })
 
+    -- stylua: ignore
     -- use the data we just created to feed into our finder later
-    table.insert(undolist, {
-      seq = entries[i].seq, -- save state number, used in display and to restore
-      alt = level, -- current level, i.e. how deep into alt branches are we, used to graph
-      first = i == #entries, -- whether this is the first node in this branch, used to graph
-      time = entries[i].time, -- save state time, used in display
-      ordinal = ordinal, -- a long string of all additions and deletions, used for search
-      diff = diff, -- the proper diff, used for preview
-      additions = additions, -- all additions, used to yank a result
-      deletions = deletions, -- all deletions, used to yank a result
+    local undo_entry = {
+      newhead = entries[i].newhead,
+      curhead = entries[i].curhead,           -- if this is the current file state
+      save = entries[i].save,                 -- if save action, seq number of save
+      seq = entries[i].seq,                   -- save state number, used in display and to restore
+      time = entries[i].time,                 -- save state time, used in display
+      alt = level,                            -- current level, i.e. how deep into alt branches are we, used to graph
+      first = i == #entries,                  -- whether this is the first node in this branch, used to graph
+      ordinal = ordinal,                      -- a long string of all additions and deletions, used for search
+      diff = diff,                            -- the proper diff, used for preview
+      additions = additions,                  -- all additions, used to yank a result
+      deletions = deletions,                  -- all deletions, used to yank a result
       bufnr = vim.api.nvim_get_current_buf(), -- for which buffer this telescope was invoked, used to restore
-    })
+    }
+
+    table.insert(undolist, undo_entry)
 
     -- descend recursively into alternate histories of undo states
     if entries[i].alt ~= nil then

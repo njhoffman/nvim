@@ -1,0 +1,42 @@
+local pp_ft = {
+  'applescript',
+  'css',
+  'javascript',
+  'lua',
+  'nvim_lua',
+  'python',
+  'scss',
+  'sh',
+  'typescript',
+}
+
+local dp_ft = {
+  'bash',
+  'c',
+  'cmake',
+  'cpp',
+  'cs',
+  'dart',
+  'dockerfile',
+  'dosbatch',
+  'fish',
+  'go',
+  'java',
+  'javascript',
+  'lua',
+  'make',
+  'perl',
+  'php',
+  'ps1',
+  'python',
+  'r',
+  'ruby',
+  'rust',
+  'sh',
+  'swift',
+  'typescript',
+  'vim',
+  'zsh',
+}
+
+return { printing_press = pp_ft, debugprint = dp_ft }

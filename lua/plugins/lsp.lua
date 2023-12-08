@@ -102,6 +102,8 @@ local plugins = {
     cmd = { 'Navbuddy' },
     dependencies = { 'neovim/nvim-lspconfig', 'SmiteshP/nvim-navic', 'MunifTanjim/nui.nvim' },
   },
+  -- https://github.com/jmbuhr/otter.nvim
+  -- https://github.com/stevearc/conform.nvim
   {
     'nvimtools/none-ls.nvim',
     event = { 'BufReadPre', 'BufNewFile' },

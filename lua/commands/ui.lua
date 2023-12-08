@@ -63,18 +63,19 @@ local get_splits = function(directions)
   -- let prev_window = winnr('#')
 
   -- these ft will not window close on delete
-  local ignored_ft = {
-    -- 'CompetiTest',
-    -- 'Mundo',
-    -- 'MundoDiff',
-    -- 'NvimTree',
-    -- 'SidebarNvim',
-    -- 'Trouble',
-    -- 'aerial',
-    -- 'NeoTree',
-    -- 'nerdtree',
-    -- 'qf',
-    -- 'query',
+  local ignored_window_ft = {}
+  local ignored_splits_ft = {
+    'CompetiTest',
+    'Mundo',
+    'MundoDiff',
+    'NvimTree',
+    'SidebarNvim',
+    'Trouble',
+    'aerial',
+    'NeoTree',
+    'nerdtree',
+    'qf',
+    'query',
   }
 
   local splits = {}
@@ -85,7 +86,7 @@ local get_splits = function(directions)
     if curwin ~= testwinid and not vim.tbl_contains(splits, testwinid) then
       local bufid = vim.api.nvim_win_get_buf(testwinid)
       local ft = vim.api.nvim_buf_get_option(bufid, 'filetype')
-      if not vim.tbl_contains(ignored_ft, ft) then
+      if not vim.tbl_contains(ignored_splits_ft, ft) then
         table.insert(splits, testwinid)
       end
     end

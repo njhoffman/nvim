@@ -1,14 +1,14 @@
 local map = require('mapper').map
-local actions = require('hover.actions')
+local a = require('hover.actions')
 
 -- stylua: ignore
 local default_mapping = {
   inactive = {
     n = {
-      ['M'] = actions.hover_once,
-      ['gM'] = actions.hover_sticky,
-      ['<leader>m'] = actions.hover_cursor,
-      ['<leader>M'] = actions.hover_select,
+      ['M']         = { a.hover_once,   { desc = ' ' }},
+      ['gM']        = { a.hover_sticky, { desc = ' ' }},
+      ['<leader>m'] = { a.hover_cursor, { desc = ' ' }},
+      ['<leader>M'] = { a.hover_select, { desc = ' ' }},
     },
   },
   global = {
@@ -24,19 +24,19 @@ local default_mapping = {
       -- [""] = actions.change_tab_left,
     },
     n = {
-      ['<esc>']      = actions.close,
-      ['q']          = actions.close,
-      ['<Up>']       = actions.scroll_up,
-      ['<Down>']     = actions.scroll_down,
-      ['<C-S-Up>']   = actions.scroll_up,
-      ['<C-S-Down>'] = actions.scroll_down,
-      ['<M-b>']      = actions.scroll_page_up,
-      ['<M-f>']      = actions.scroll_page_down,
-      ['<S-Right>']  = actions.change_tab_right,
-      ['<S-Left>']   = actions.change_tab_left,
-      ['<M-}>']      = actions.change_tab_right,
-      ['<M-.>']      = actions.change_tab_right,
-      ['<M-,>']      = actions.change_tab_left,
+      ['<esc>']      = { a.close,            { desc = ' ', category = 'Hover' } },
+      ['q']          = { a.close,            { desc = ' ' }},
+      ['<Up>']       = { a.scroll_up,        { desc = ' ' }},
+      ['<Down>']     = { a.scroll_down,      { desc = ' ' }},
+      ['<C-S-Up>']   = { a.scroll_up,        { desc = ' ' }},
+      ['<C-S-Down>'] = { a.scroll_down,      { desc = ' ' }},
+      ['<M-b>']      = { a.scroll_page_up,   { desc = ' ' }},
+      ['<M-f>']      = { a.scroll_page_down, { desc = ' ' }},
+      ['<S-Right>']  = { a.change_tab_right, { desc = ' ' }},
+      ['<S-Left>']   = { a.change_tab_left,  { desc = ' ' }},
+      ['<M-}>']      = { a.change_tab_right, { desc = ' ' }},
+      ['<M-.>']      = { a.change_tab_right, { desc = ' ' }},
+      ['<M-,>']      = { a.change_tab_left,  { desc = ' ' }},
 
       -- [""] = actions.change_tab_left,
     },
@@ -73,9 +73,10 @@ local assign_open_keymaps = function(_opts)
   local opts = vim.tbl_deep_extend('keep', _opts or {}, config)
   for mode, keys in pairs(opts.mapping.global) do
     opts.mapping.old[mode] = opts.mapping.old[mode] or {}
-    for lhs, action in pairs(keys) do
+    for lhs, key_item in pairs(keys) do
+      local action, key_opts = key_item[1], key_item[2]
       opts.mapping.old[lhs] = get_key_cmd(mode, lhs)
-      map(mode, lhs, action, { category = 'Hover' })
+      map(mode, lhs, action, key_opts)
     end
   end
 
@@ -91,8 +92,9 @@ local init = function()
   config.mapping.old = config.mapping.old or {}
   for mode, keys in pairs(config.mapping.inactive) do
     config.mapping.old[mode] = config.mapping.old[mode] or {}
-    for lhs, action in pairs(keys) do
-      map(mode, lhs, action, { category = 'Hover' })
+    for lhs, key_item in pairs(keys) do
+      local action, key_opts = key_item[1], key_item[2]
+      map(mode, lhs, action, key_opts)
     end
   end
 end

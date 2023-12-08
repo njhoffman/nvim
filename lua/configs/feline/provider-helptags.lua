@@ -10,7 +10,6 @@ local helptags = function()
   -- nums.tags = nums.tags + 1
   local ok, help_tags = pcall(vim.api.nvim_buf_get_var, 0, 'status_help_tag')
   state.match = ok and help_tags or false
-  -- vim.dbglog('help: ' .. nums.tags .. '\t' .. nums.hl)
   if state.match then
     state.hl = hls.hl
     return ' '

@@ -161,6 +161,8 @@ local cfg = {
     -- ["<C-h>"] = "actions.select_split",
     -- ["<C-t>"] = "actions.select_tab",
     -- ["<C-p>"] = "actions.preview",
+    ['q'] = 'actions.close',
+    ['<esc>'] = 'actions.close',
     ['<M-{>'] = 'actions.close',
     -- ["<C-c>"] = "actions.close",
     -- ["<C-l>"] = "actions.refresh",
@@ -175,5 +177,4 @@ local cfg = {
     -- ["g\\"] = "actions.toggle_trash",
   },
 }
-
 require('oil').setup(cfg)
