@@ -10,6 +10,7 @@ local custom_tips = {
     'Tmux to paste buffer: <Ctrl>+A+p , to select buffer to paste: <Ctrl>+A+P ',
   },
   misc = {
+    'To quickly output a lua function/variable\n ➜ `:lua =vim.diagnostic.config()`',
     'To insert sequential numbers\n  ➜ `:put=map(range(1,5)`'
       .. "\n  ➜ `:put=map(range(1,5), 'v:val/2.0')` (increment by 0.5))"
       .. "\n  ➜ `:put=join(range(1,5), ' & ')` (increment by 0.5))",

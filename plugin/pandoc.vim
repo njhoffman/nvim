@@ -1,4 +1,5 @@
-let g:pandoc#syntax#style#emphases = 0
+let g:pandoc#syntax#style#emphases = 1
+
 
 " vim-pandoc-syntax*
 " *pandoc-syntax*

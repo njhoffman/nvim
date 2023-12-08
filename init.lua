@@ -7,10 +7,6 @@ require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
 
 -- qfSeparator, qfLineNr, qfFilename
 for _, mod_name in ipairs({
-  'abbreviations',
-  'keymaps',
-  'commands',
-  'autocommands',
   'dial',
   'wf-setup',
   'devbox',
@@ -20,6 +16,10 @@ for _, mod_name in ipairs({
   'oldfiles',
   'hover.setup',
   'configs.feline',
+  'abbreviations',
+  'keymaps',
+  'commands',
+  'autocommands',
 }) do
   vim.import(mod_name)
 end

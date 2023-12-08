@@ -1,6 +1,6 @@
 scriptencoding utf-8
-" vim: set fdm=marker foldlevel=0:
-"
+" vim: set fdm=marker
+" (set fdm=marker foldlevel=0)
 " Vim syntax file
 "
 " Language: Pandoc (superset of Markdown)

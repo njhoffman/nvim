@@ -118,7 +118,7 @@ local autocmds = {
     { 'FileType', 'SidebarNvim', 'VimadeBufDisable' },
     { 'FileType', 'Trouble', 'VimadeBufDisable' },
     { 'FileType', 'aerial', 'VimadeBufDisable' },
-    { 'FileType', 'query', 'VimadeBufDisable' },
+    -- { 'FileType', 'query.treesitter', 'VimadeBufDisable' },
     { 'FileType', 'qf', 'VimadeBufDisable' },
     { 'FileType', 'tablegen', 'VimadeBufDisable' },
     { 'FileType', 'nerdtree', 'VimadeBufDisable' },

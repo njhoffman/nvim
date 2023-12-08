@@ -70,7 +70,24 @@ prefix('n', '<leader>cl', 'conceal 󰈉 ')
 --------------------------------------------------------------------------------------------------
 
 -- COMMAND ---------------------------------------------------------------------------------------
-
+-- -- change local working directory
+-- keymap('n', '<leader>cd', ':lcd %:h<CR>', opts)
+--
+-- -- source current lua file
+-- keymap('n', '<leader>so', ':source % <bar> lua vim.notify("NeoVim config reloaded")<CR>', opts)
+--
+-- -- yank filepath
+-- keymap('n', '<leader>yy', ':let @+ = expand("%")<CR>', opts)
+--
+-- -- reload theme
+-- keymap('n', '<leader>cc',
+--   function()
+--     -- remove cached colors module
+--     package.loaded["config/colors"] = nil
+--     vim.cmd("source " .. os.getenv("XDG_CONFIG_HOME") .. "/nvim/lua/config/theme.lua")
+--     vim.notify("Reloaded theme")
+--   end,
+--   opts)
 -- -- Copy Last Command
 -- keymap("n", "<leader>lc", function()
 -- 	local lastCommand = fn.getreg(":"):gsub("^lua[ =]*", "")

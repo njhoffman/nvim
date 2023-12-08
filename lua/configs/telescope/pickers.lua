@@ -92,12 +92,19 @@ local pickers = {
     debounce = 100,
     prompt_prefix = icons.history,
     mappings = mappings.file,
+    previewer = false,
     find_command = commands.rg,
+  },
+  grep_string = {
+    prompt_prefix = ' ',
+    disable_coordinates = true,
+    additional_args = { '--trim', '--hidden', '--glob=!.git' },
   },
   live_grep = {
     debounce = 100,
     mappings = mappings.grep,
     find_command = commands.rg,
+    additional_args = { '--trim', '--hidden', '--glob=!.git' },
   },
   buffers = {
     debounce = 100,
@@ -118,8 +125,10 @@ local pickers = {
     entry_maker = require('configs.telescope.entry_makers').gen_from_keymaps({}),
     results_title = '@buffer !silent *noremap +expr  nowait',
     show_plug = false,
-    modes = { 'n', 'i', 'c', 'x', 'v', 'o', 't' },
-    -- modes = vim.F.if_nil(opts.modes, { "n", "i", "c", "x" })
+    modes = { 'n', 'i', 'c', 'x', 'o', 't' },
+    lhs_filter = function(lhs)
+      return not lhs:find('Þ')
+    end, -- remove which-key mappings
     -- show_plug = true,
     -- only_buf = false
   },
@@ -200,17 +209,24 @@ local pickers = {
     debounce = 100,
     prompt_prefix = icons.symbol,
     -- ignore_symbols = { "boolean", "number", "string", "variable", "array", "object", "constant", "package" },
-    symbols_highlights = {
-      'Class',
-      'Function',
-      'Method',
-      'Constructor',
-      'Interface',
-      'Module',
-      'Struct',
-      'Trait',
-      'Field',
-    },
+    -- symbols_highlights = {
+    --   'Class',
+    --   'Function',
+    --   'Method',
+    --   'Constructor',
+    --   'Interface',
+    --   'Module',
+    --   'Struct',
+    --   'Trait',
+    --   'Field',
+    -- },
+  },
+  spell_suggest = {
+    initial_mode = 'normal',
+    prompt_prefix = '󰓆',
+    previewer = false,
+    theme = 'cursor',
+    layout_config = { cursor = { width = 0.3 } },
   },
   lsp_references = {
     debounce = 100,

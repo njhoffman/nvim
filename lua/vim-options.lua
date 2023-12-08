@@ -117,6 +117,7 @@ vim.opt.listchars:append({
   lead = ' ',
   trail = ' ',
 })
+
 -- window scope
 opt('concealcursor', 'nc', window)
 opt('conceallevel', 0, window)
@@ -161,10 +162,7 @@ opt('cursorlineopt', 'both') -- should get cursorline in number too
 
 -- opt.cpoptions:append(">") -- when you yank multiple times into a register, this puts each on a new line
 -- opt.nrformats:append("alpha") -- this means you can increment lists that have letters with `g ctrl-a`
--- vim.g.markdown_fenced_languages = { "html", "javascript", "typescript", "css", "scss", "lua", "vim" }
 -- vim.o.whichwrap = vim.o.whichwrap .. "<,>" -- Wrap movement between lines in edit mode with arrows
--- Fix markdown indentation settings
-vim.g.markdown_recommended_style = 0
 
 -- Enable syntax highlighing if it wasn't already (as it is time consuming)
 -- if vim.fn.exists('syntax_on') ~= 1 then

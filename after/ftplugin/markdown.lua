@@ -4,13 +4,19 @@ if vim.b.did_ftplugin then
   return
 end
 
-vim.opt.complete:append({ 'kspell' })
-vim.g.vim_markdown_conceal = 0
+-- vim.opt.complete:append({ 'kspell' })
+vim.g.vim_markdown_conceal = 1
 vim.g.vim_markdown_math = 1
 vim.g.vim_markdown_frontmatter = 1
 vim.g.vim_markdown_toml_frontmatter = 1
 vim.g.vim_markdown_json_frontmatter = 1
 vim.g.vim_markdown_new_list_item_indent = 2
+vim.g.vim_markdown_folding_level = 1
+vim.g.vim_markdown_toc_autofit = 1
+
+-- Fix markdown indentation settings
+vim.g.markdown_recommended_style = 0
+
 vim.g.markdown_fenced_languages = {
   'awk',
   'bash=sh',
@@ -38,7 +44,51 @@ vim.g.markdown_fenced_languages = {
   'yaml',
   'zsh',
 }
-
+--
+-- local toggle_todo = function()
+--   local linenr = vim.api.nvim_win_get_cursor(0)[1]
+--   local curline = vim.api.nvim_buf_get_lines(0, linenr - 1, linenr, false)[1]
+--
+--   if string.find(curline, "%- %[ ]") then
+--     vim.cmd('s/\\v-\\s\\[\\s\\]/- [x]')
+--     vim.cmd('nohlsearch')
+--   elseif string.find(curline, "%- %[x]") then
+--     vim.cmd('s/\\v-\\s\\[x\\]/- [ ]')
+--     vim.cmd('nohlsearch')
+--   end
+-- end
+--
+-- vim.keymap.set('n', '<C-SPACE>', toggle_todo, { buffer = true })
+-- vim.keymap.set('i', '<C-t>t', '**<C-R>=strftime("%H:%M")<CR>** ', { buffer = true })
+-- vim.keymap.set('i', '<C-t>d', '**<C-R>=strftime("%Y-%m-%d")<CR>** ', { buffer = true })
+-- -- follow markdown links
+-- keymap('n', '<CR>', ':lua FollowMarkdownLink()<CR>', opts)
+-- -- go backwards
+-- keymap('n', '<BS>', '<C-o>', opts)
+-- -- align tables using Tabular
+-- keymap('n', '<leader>a', ':Tabularize /|<CR>', opts)
+--
+-- -- functions
+-- function FollowMarkdownLink()
+--   -- get text of current line
+--   local txt = vim.api.nvim_get_current_line()
+--   -- get markdown link
+--   local link = txt:match("%[.*%]%((.*)%)")
+--
+--   if link ~= nil then
+--     -- if the link exists, get current buffer filepath and append markdown link
+--     local buf = vim.api.nvim_exec("echo expand('%:p:h').\"/" .. link .. "\"", true)
+--     -- check if link has markdown extension
+--     local hasExt = string.sub(buf, -2) == 'md'
+--     if not hasExt then
+--       buf = buf .. '.md'
+--     end
+--     -- go to that buffer
+--     vim.api.nvim_command("edit " .. buf)
+--   else
+--     print('link doesn\'t exist')
+--   end
+-- end
 -- source <sfile>:h/javascript_apathy.vim
 -- local keymap = vim.keymap.set
 -- local optl = vim.opt_local

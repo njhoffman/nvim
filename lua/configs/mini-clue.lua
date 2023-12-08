@@ -2,9 +2,7 @@ local miniclue = require('mini.clue')
 local mapper_clues = require('mapper').clues or {}
 local clues = {
   miniclue.gen_clues.builtin_completion(),
-  vim.tbl_filter(function(item)
-    return not (item.keys == 'gq')
-  end, miniclue.gen_clues.g()),
+  miniclue.gen_clues.g(),
   miniclue.gen_clues.marks(),
   -- miniclue.gen_clues.registers(),
   miniclue.gen_clues.windows({
@@ -16,34 +14,40 @@ local clues = {
   mapper_clues,
 }
 
-vim.dbglog('DEBUGPRINT[1]: mini-clue.lua:16: clues=', clues)
--- require('mini.bracketed').setup()
--- require('mini.clue').setup({
---   triggers = {
---     { mode = 'n', keys = ']' },
---     { mode = 'n', keys = '[' },
---   },
---   clues = {
---     { mode = 'n', keys = ']b', postkeys = ']' },
---     { mode = 'n', keys = ']w', postkeys = ']' },
---
---     { mode = 'n', keys = '[b', postkeys = '[' },
---     { mode = 'n', keys = '[w', postkeys = '[' },
---   },
--- })
+local logger = require('logger').init('miniclue')
 
--- local nmap_leader = function(suffix, rhs, desc)
---   vim.keymap.set('n', '<Leader>' .. suffix, rhs, { desc = desc })
--- end
--- local xmap_leader = function(suffix, rhs, desc)
---   vim.keymap.set('x', '<Leader>' .. suffix, rhs, { desc = desc })
--- end
--- nmap_leader('bd', '<Cmd>lua MiniBufremove.delete()<CR>',  'Delete')
--- nmap_leader('bw', '<Cmd>lua MiniBufremove.wipeout()<CR>', 'Wipeout')
--- nmap_leader('lf', '<Cmd>lua vim.lsp.buf.format()<CR>',     'Format')
--- xmap_leader('lf', '<Cmd>lua vim.lsp.buf.format()<CR>',     'Format')
--- nmap_leader('lr', '<Cmd>lua vim.lsp.buf.rename()<CR>',     'Rename')
--- nmap_leader('lR', '<Cmd>lua vim.lsp.buf.references()<CR>', 'References')
+local get_count = function(_clues)
+  local count = { total = 0 }
+  for _, clue in ipairs(_clues) do
+    for _, trigger in ipairs(clue) do
+      if vim.tbl_islist(trigger) then
+        for _, subtrigger in ipairs(trigger) do
+          count.total = count.total + 1
+          if type(subtrigger.mode) == 'nil' then
+            logger:debug('no mode assigned: ' .. vim.inspect(subtrigger))
+          elseif type(count[subtrigger.mode]) ~= 'number' then
+            count[subtrigger.mode] = 1
+          else
+            count[subtrigger.mode] = count[subtrigger.mode] + 1
+          end
+        end
+      else
+        count.total = count.total + 1
+        if type(trigger.mode) == 'nil' then
+          logger:debug('no mode assigned: ' .. vim.inspect(trigger))
+        elseif type(count[trigger.mode]) ~= 'number' then
+          count[trigger.mode] = 1
+        else
+          count[trigger.mode] = count[trigger.mode] + 1
+        end
+      end
+    end
+  end
+  return count
+end
+
+local count = get_count(clues)
+logger:debug('loading mini-clue with #' .. count.total .. ' keys ' .. vim.inspect(count))
 
 miniclue.setup({
   triggers = {
@@ -81,7 +85,7 @@ miniclue.setup({
   window = {
     -- Floating window config
     config = {
-      width = math.min(40, tonumber(vim.o.columns * 0.4)),
+      width = math.min(40, math.floor(tonumber(vim.o.columns * 0.4))),
       row = 'auto',
       col = 'auto',
     },
@@ -93,6 +97,33 @@ miniclue.setup({
   },
 })
 
+-- require('mini.bracketed').setup()
+-- require('mini.clue').setup({
+--   triggers = {
+--     { mode = 'n', keys = ']' },
+--     { mode = 'n', keys = '[' },
+--   },
+--   clues = {
+--     { mode = 'n', keys = ']b', postkeys = ']' },
+--     { mode = 'n', keys = ']w', postkeys = ']' },
+--
+--     { mode = 'n', keys = '[b', postkeys = '[' },
+--     { mode = 'n', keys = '[w', postkeys = '[' },
+--   },
+-- })
+
+-- local nmap_leader = function(suffix, rhs, desc)
+--   vim.keymap.set('n', '<Leader>' .. suffix, rhs, { desc = desc })
+-- end
+-- local xmap_leader = function(suffix, rhs, desc)
+--   vim.keymap.set('x', '<Leader>' .. suffix, rhs, { desc = desc })
+-- end
+-- nmap_leader('bd', '<Cmd>lua MiniBufremove.delete()<CR>',  'Delete')
+-- nmap_leader('bw', '<Cmd>lua MiniBufremove.wipeout()<CR>', 'Wipeout')
+-- nmap_leader('lf', '<Cmd>lua vim.lsp.buf.format()<CR>',     'Format')
+-- xmap_leader('lf', '<Cmd>lua vim.lsp.buf.format()<CR>',     'Format')
+-- nmap_leader('lr', '<Cmd>lua vim.lsp.buf.rename()<CR>',     'Rename')
+-- nmap_leader('lR', '<Cmd>lua vim.lsp.buf.references()<CR>', 'References')
 -- miniclue.enable_all_triggers()
 -- # Leader clues ~
 --
