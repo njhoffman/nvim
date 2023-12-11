@@ -20,22 +20,16 @@ local split = function(lines, title)
   vim.api.nvim_buf_set_lines(0, 0, 0, lines, {})
 end
 
-local notify = function(lines, title, render)
+local notify = function(lines, title, highlights)
   local notify = vim.notify
-  if type(title) ~= 'nil' and #title > 0 then
-    notify(lines, 2, {
-      timeout = 10000,
-      render = render or 'default',
-      title = title,
-      hide_from_history = true,
-    })
-  else
-    notify(lines, 2, {
-      timeout = 10000,
-      render = render or 'compact',
-      hide_from_history = true,
-    })
-  end
+  notify(lines, 2, {
+    timeout = 10000,
+    title = { title, '' },
+    -- render = 'default',
+    render = 'simple-notitle',
+    body_highlights = highlights,
+    hide_from_history = true,
+  })
 end
 
 return {
@@ -45,3 +39,27 @@ return {
   buffer = buffer,
   popup = popup,
 }
+-- [1] = {
+--     [1] = "Keyword",
+--     [2] = 0,
+--     [3] = 0,
+--     [4] = 6
+-- },
+-- [2] = {
+--     [1] = "Comment",
+--     [2] = 0,
+--     [3] = 7,
+--     [4] = 24
+-- },
+-- [3] = {
+--     [1] = "Operator",
+--     [2] = 1,
+--     [3] = 0,
+--     [4] = 15
+-- },
+-- [4] = {
+--     [1] = "Comment",
+--     [2] = 1,
+--     [3] = 23,
+--     [4] = 32
+-- }

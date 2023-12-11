@@ -29,7 +29,9 @@ local render = function(bufnr, notif, highlights, config)
   end
 
   if is_error then
-    return require('notify.render.error')(bufnr, notif, highlights, config)
+    -- return require('notify.render.error')(bufnr, notif, highlights, config)
+    vim.dbglog('SKIPPING ERROR')
+    return require('notify.render.compact')(bufnr, notif, highlights, config)
   elseif #title > 0 and not vim.tbl_contains(title_ignore, title) then
     return require('notify.render.compact')(bufnr, notif, highlights, config)
     -- return require('notify.render.' .. render_title)(bufnr, notif, highlights, config)

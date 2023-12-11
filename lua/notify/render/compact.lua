@@ -2,20 +2,21 @@ local base = require('notify.render.base')
 
 return function(bufnr, notif, highlights)
   local namespace = base.namespace()
-  local icon = notif.icon
-  local title = notif.title[1]
+  local icon = vim.fn.trim(notif.icon or '')
+  local title = vim.fn.trim(notif.title[1] or '')
 
-  local prefix
+  local prefix = ''
+  local display_message = vim.fn.deepcopy(notif.message)
   if type(title) == 'string' and #title > 0 then
     prefix = string.format('%s | %s:', icon, title)
   else
     prefix = string.format('%s |', icon)
   end
-  notif.message[1] = string.format('%s %s', prefix, notif.message[1])
+  display_message[1] = string.format('%s %s', prefix, display_message[1])
 
-  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, notif.message)
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, display_message)
 
-  local icon_length = vim.str_utfindex(icon)
+  local icon_length = icon and vim.str_utfindex(icon) or 0
   local prefix_length = vim.str_utfindex(prefix)
 
   vim.api.nvim_buf_set_extmark(bufnr, namespace, 0, 0, {
@@ -32,6 +33,6 @@ return function(bufnr, notif, highlights)
   if notif.body_highlights then
     base.content_hl(bufnr, highlights, notif, 0, prefix_length + 1)
   else
-    base.body_hl(bufnr, highlights, notif, 0, prefix_length + 1, #notif.message)
+    base.body_hl(bufnr, highlights, notif, 0, prefix_length + 1, #display_message)
   end
 end

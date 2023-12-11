@@ -62,11 +62,11 @@ function M.parse_message(msg, opts)
           _msg = _msg .. line_msg
         end
       else
-        _opts.filetype = 'lua'
+        _opts.filetype = opts.filetype or 'lua'
         _msg = vim.inspect(msg)
       end
     else
-      _opts.filetype = 'lua'
+      _opts.filetype = opts.filetype or 'lua'
       _msg = vim.inspect(msg)
     end
   end

@@ -99,7 +99,6 @@ vim.api.nvim_create_autocmd('FileType', {
     'lspinfo',
     'man',
     'nerdtree',
-    'notify',
     'noice',
     'startuptime',
   },
@@ -110,7 +109,7 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- close some filetypes with q or  shift-esc
+-- close some filetypes with q or shift-esc
 vim.api.nvim_create_autocmd('FileType', {
   group = winclose_group,
   pattern = {
@@ -130,6 +129,20 @@ vim.api.nvim_create_autocmd('FileType', {
     -- vim.bo[event.buf].buflisted = false
     vim.keymap.set('n', 'q', '<cmd>q<cr>', { buffer = event.buf, silent = true })
     vim.keymap.set('n', '<M-{>', '<cmd>q<cr>', { buffer = event.buf, silent = true })
+  end,
+})
+
+-- close some buftypes with q or esc
+vim.api.nvim_create_autocmd({ 'BufRead' }, {
+  group = winclose_group,
+  callback = function(event)
+    -- vim.bo[event.buf].buflisted = false
+    local buftype = vim.api.nvim_buf_get_option(event.buf, 'buftype')
+    vim.dbglog('BUFTYPE', buftype)
+    if buftype == 'nofile' then
+      vim.keymap.set('n', 'q', '<cmd>q<cr>', { buffer = event.buf, silent = true })
+      vim.keymap.set('n', '<M-{>', '<cmd>q<cr>', { buffer = event.buf, silent = true })
+    end
   end,
 })
 

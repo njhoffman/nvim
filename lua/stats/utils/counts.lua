@@ -35,30 +35,57 @@ local exe_output = function(cmd)
   return vim.api.nvim_eval('w:output_len')
 end
 
-for key, cmd in pairs({
-  changes = ':changes',
-  commands = ':command',
-  functions = ':function',
-  highlights = ':highlight',
-  history = ':history',
-  menu = ':menu',
-  messages = ':message',
-  oldfiles = ':oldfiles',
-  options = ':set',
-  scriptnames = ':scriptnames',
-  syntax = ':syntax',
-  variables = ':let',
-}) do
+local count_commands = {
+  { 'changes', ':changes' },
+  { 'commands', ':command' },
+  { 'functions', ':function' },
+  { 'highlights', ':highlight' },
+  { 'history', ':history' },
+  -- {  menu, ':menu'},
+  { 'messages', ':message' },
+  { 'oldfiles', ':oldfiles' },
+  { 'options', ':set' },
+  { 'scriptnames', ':scriptnames' },
+  -- {  syntax, ':syntax'},
+  { 'variables', ':let' },
+}
+
+local function format_int(number)
+  local i, j, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
+  int = int:reverse():gsub('(%d%d%d)', '%1,')
+  return minus .. int:reverse():gsub('^,', '') .. fraction
+end
+
+for i, cmd_item in ipairs(count_commands) do
+  local key, cmd = cmd_item[1], cmd_item[2]
   counts[key] = function()
     return exe_output(cmd)
   end
 end
 
 local get_counts = function(keys)
-  keys = keys or vim.tbl_keys(counts)
+  local default_keys = {
+    'virtual',
+    'memory',
+    'augroups',
+    'aucommands',
+    'highlights',
+    'commands',
+    'variables',
+    'options',
+    'functions',
+    'oldfiles',
+    'changes',
+    'history',
+    'scriptnames',
+    -- syntax
+    -- messages
+    -- menu
+  }
+  keys = keys or default_keys
   local results = {}
   for _, key in ipairs(keys) do
-    results[key] = counts[key]()
+    table.insert(results, { key, format_int(counts[key]()) })
   end
   return results
 end

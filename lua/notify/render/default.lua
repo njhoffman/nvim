@@ -31,6 +31,7 @@ return function(bufnr, notif, highlights, config)
   api.nvim_buf_set_extmark(bufnr, namespace, 1, 0, {
     virt_text = {
       {
+        -- string.rep('━', math.max(vim.str_utfindex(left_buffer) + title_accum, config.minimum_width())),
         string.rep('━', math.max(vim.str_utfindex(left_buffer) + title_accum + 2, config.minimum_width())),
         highlights.border,
       },

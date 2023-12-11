@@ -152,6 +152,7 @@ local notify_custom_hl = function()
   for _, msg in ipairs(custom_messages) do
     vim.defer_fn(function()
       notify(msg, 2, {
+        render = 'simple-notitle',
         timeout = timeout,
       })
     end, _delay)
@@ -161,6 +162,7 @@ local notify_custom_hl = function()
   for _, msg in ipairs(custom_messages) do
     vim.defer_fn(function()
       notify(msg, 1, {
+        render = 'simple-notitle',
         timeout = timeout,
         title = 'custom hl title',
       })
@@ -227,7 +229,7 @@ notify_test({
   -- 'errors',
   -- 'minimal',
   -- 'simple',
-  'simple_notitle',
+  -- 'simple_notitle',
   -- 'compact',
   -- 'wrapped_compact',
   -- 'basic',
@@ -235,7 +237,7 @@ notify_test({
   -- 'basic_repeat',
   -- 'titles',
   -- 'titles_2',
-  -- 'custom_hl',
+  'custom_hl',
   -- 'custom_hl_raw',
 })
 
