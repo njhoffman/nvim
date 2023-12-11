@@ -7,10 +7,10 @@ local plugins = {
   { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-web-devicons' },
   { 'tamton-aquib/zone.nvim', enabled = false },
   {
-    -- 'romgrk/barbar.nvim',
+    'romgrk/barbar.nvim',
     -- https://github.com/romgrk/barbar.nvim/pull/540
-    'gbprod/barbar.nvim',
-    branch = 'fix-telescope-insert',
+    -- 'gbprod/barbar.nvim',
+    -- branch = 'fix-telescope-insert',
     init = function()
       vim.g.barbar_auto_setup = false
     end,
