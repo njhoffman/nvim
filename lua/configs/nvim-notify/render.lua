@@ -34,7 +34,8 @@ local render = function(bufnr, notif, highlights, config)
     -- return require('notify.render.' .. render_title)(bufnr, notif, highlights, config)
   else
     -- return require('notify.')(bufnr, notif, highlights)
-    return require('notify.render.simple-notitle')(bufnr, notif, highlights)
+    return require('notify.render.compact')(bufnr, notif, highlights, config)
+    -- return require('notify.render.simple-notitle')(bufnr, notif, highlights)
   end
 end
 
