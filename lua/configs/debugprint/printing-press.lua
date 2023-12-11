@@ -13,7 +13,7 @@ local config = {
   logStatements = {
     variableLog = {
       lua = 'print("%s %s: ", %s)',
-      -- nvim_lua = 'vim.notify("%s %s: " .. tostring(%s))', -- FIX for noice.nvim
+      -- nvim_lua = 'vim.notify("%s %s: " .. tostring(%s))', -- fix for noice.nvim
       nvim_lua = 'vim.dbglog("%s %s: ", %s)',
       python = 'print(f"%s {%s = }")',
       javascript = 'console.log("%s %s:", %s);',
@@ -42,7 +42,6 @@ local config = {
     },
     messageLog = {
       lua = 'print("%s ")',
-      -- nvim_lua = 'vim.notify("%s ")', -- FIX for noice.nvim print-bug: https://github.com/folke/noice.nvim/issues/556
       nvim_lua = 'vim.dbglog("%s ")',
       python = 'print("%s ")',
       javascript = 'console.log("%s ");',
@@ -150,6 +149,29 @@ local function appendLines(logLines, varsToInsert, afterTextObject)
   end
 end
 
+---prepend string above current line
+---@param logLines string|string[]
+---@param varsToInsert string[]
+local function prependLines(logLines, varsToInsert)
+  local ln = vim.api.nvim_win_get_cursor(0)[1]
+
+  local indentBasedFts = { 'python', 'yaml', 'elm' }
+  local isIndentBased = vim.tbl_contains(indentBasedFts, vim.bo.ft)
+  local indent = isIndentBased and vim.api.nvim_get_current_line():match('^%s*') or ''
+  local action = (isIndentBased and 'k' or 'k==')
+
+  if type(logLines) == 'string' then
+    logLines = { logLines }
+  end
+
+  ln = ln - #logLines
+  for _, line in pairs(logLines) do
+    local toInsert = indent .. line:format(unpack(varsToInsert))
+    vim.api.nvim_buf_set_lines(0, ln, ln, true, { toInsert })
+    normal(action)
+    ln = ln + 1
+  end
+end
 ---get template string, if it does not exist, return nil
 ---@param logType string
 ---@return string|string[]|nil
@@ -181,7 +203,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function M.messageLog()
+function M.messageLog(prepend)
   local logLines = getTemplateStr('messageLog') ---@cast logLines string
   if not logLines then
     return
@@ -191,45 +213,61 @@ function M.messageLog()
   vim.cmd.startinsert()
 end
 
-function M.variableLog()
+function M.variableLog(prepend)
   local varname = getVar()
   local logLines = getTemplateStr('variableLog') ---@cast logLines string
   if not logLines then
     return
   end
-  appendLines(logLines, { config.marker, varname, varname }, true)
+  if prepend then
+    prependLines(logLines, { config.marker, varname, varname }, true)
+  else
+    appendLines(logLines, { config.marker, varname, varname }, true)
+  end
 end
 
-function M.objectLog()
+function M.objectLog(prepend)
   local varname = getVar()
   local logLines = getTemplateStr('objectLog') ---@cast logLines string
   if not logLines then
     return
   end
-  appendLines(logLines, { config.marker, varname, varname }, true)
+  if prepend then
+    prependLines(logLines, { config.marker, varname, varname }, true)
+  else
+    appendLines(logLines, { config.marker, varname, varname }, true)
+  end
 end
 
-function M.assertLog()
+function M.assertLog(prepend)
   local varname = getVar()
   local logLines = getTemplateStr('assertLog') ---@cast logLines string
   if not logLines then
     return
   end
-  appendLines(logLines, { varname, config.marker, varname }, true)
+  if prepend then
+    prependLines(logLines, { varname, config.marker, varname }, true)
+  else
+    appendLines(logLines, { varname, config.marker, varname }, true)
+  end
   normal('f,') -- goto the comma to edit the condition
 end
 
 ---adds simple "beep" log statement to check whether conditionals have been triggered
-function M.beepLog()
+function M.beepLog(prepend)
   local logLines = getTemplateStr('beepLog') ---@cast logLines string
   if not logLines then
     return
   end
   local randomEmoji = config.beepEmojis[math.random(1, #config.beepEmojis)]
-  appendLines(logLines, { config.marker, randomEmoji })
+  if prepend then
+    prependLines(logLines, { config.marker, randomEmoji })
+  else
+    appendLines(logLines, { config.marker, randomEmoji })
+  end
 end
 
-function M.timeLog()
+function M.timeLog(prepend)
   if vim.b.timeLogStart == nil then
     vim.b.timeLogStart = true
   end ---@diagnostic disable-line: inject-field
@@ -239,18 +277,25 @@ function M.timeLog()
   if not logLines then
     return
   end
-  appendLines(logLines, { config.marker })
-
+  if prepend then
+    prependLines(logLines, { config.marker })
+  else
+    appendLines(logLines, { config.marker })
+  end
   vim.b.timeLogStart = not vim.b.timeLogStart ---@diagnostic disable-line: inject-field
 end
 
 -- simple debugger statement
-function M.debugLog()
+function M.debugLog(prepend)
   local logLines = getTemplateStr('debugLog')
   if not logLines then
     return
   end
-  appendLines(logLines, { config.marker }, true)
+  if prepend then
+    prependLines(logLines, { config.marker })
+  else
+    appendLines(logLines, { config.marker })
+  end
 end
 
 ---Remove all log statements in the current buffer

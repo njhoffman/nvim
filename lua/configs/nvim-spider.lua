@@ -33,7 +33,7 @@ if map_w_type == 1 then
   spider_map({ 'n', 'x' }, 'w', 'w')
 elseif map_w_type == 2 then
   -- map operator w stays default, operator W to spider-w
-  -- spider_map({ 'o' },      'w', 'e', { desc = '󱇫 spider-w(e) motion' })
+  spider_map({ 'o' },      'w', 'e', { desc = '󱇫 spider-w(e) motion' })
   -- spider_map({ 'o' },      'W', 'w', { desc = '󱇫 spider-w(e) motion' })
   spider_map('n', 'w', 'w')
   -- spider_map('x', 'w', 'w')

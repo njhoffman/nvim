@@ -65,7 +65,8 @@ M.file = function(level, logfile, config)
       end,
     },
     formatter = structlog.formatters.Format(
-      '%s [%s] %s: %-30s',
+      -- '%s [%s] %s: %-30s',
+      '%s %s %s: %-30s',
       { 'timestamp', 'level', 'logger_name', 'msg' },
       { level = structlog.formatters.FormatColorizer.color_level() }
     ),

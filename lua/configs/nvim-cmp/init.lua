@@ -88,6 +88,8 @@ local cfg = {
     -- disallow_prefix_unmatching = false,
   },
   completion = {
+    keyword_length = 1,
+    -- keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
     completeopt = 'menu,menuone,noselect',
     -- completeopt = 'menuone,preview,noselect,noinsert',
   },
@@ -107,8 +109,8 @@ local cfg = {
     max_width = MAX_DOCUMENT_WIDTH,
     col_offset = -3,
     side_padding = 0,
-    completion = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 20 }),
-    documentation = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 20 }),
+    completion = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
+    documentation = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
   },
   mapping = cmp.mapping.preset.insert(mapping.main),
   sources = cmp.config.sources(sources.main[1], sources.main[2]),
@@ -116,7 +118,7 @@ local cfg = {
     entries = {
       -- name = 'custom',
       selection_order = 'near_cursor',
-      vertical_positioning = 'above', -- above, below, auto
+      vertical_positioning = 'auto', -- above, below, auto
       follow_cursor = true,
     },
     docs = {

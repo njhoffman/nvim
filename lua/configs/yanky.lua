@@ -39,6 +39,7 @@ local default = {
 local cfg = {
   ring = {
     history_length = 100,
+    storage = 'shada',
     storage = 'sqlite', -- shada, sqlite, memory
     storage_path = vim.fn.stdpath('data') .. '/databases/yanky.sqlite3', -- Only for sqlite storage
     sync_with_numbered_registers = true,

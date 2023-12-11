@@ -47,7 +47,7 @@ local get_count = function(_clues)
 end
 
 local count = get_count(clues)
-logger:debug('loading mini-clue with #' .. count.total .. ' keys ' .. vim.inspect(count))
+logger:debug('loading with ' .. count.total .. ' keys: ' .. vim.inspect(count):gsub('\n', ' '):gsub(' ', ''))
 
 miniclue.setup({
   triggers = {

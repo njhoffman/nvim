@@ -15,6 +15,7 @@ local setup_highlights = function()
   vim.api.nvim_set_hl(0, 'CmpSourceDictionary',            { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceEmoji',                 { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourcePath',                  { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceQuickData',             { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceFuzzyBuffer',           { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceFuzzyPath',             { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceLook',                  { default = true, link = 'CmpSource' })
@@ -45,36 +46,37 @@ end
 -- look = '﬜',
 -- stylua: ignore
 local source_names = {
-  async_path =                { '', 'CmpSourceAsyncPath' },
-  calc =                      { '󰃬', 'CmpSourceCalc' },
-  cmdline =                   { '', 'CmpSourceCmdline' },
-  cmdline_history =           { '', 'CmpSourceCmdlineHistory' },
-  cmp_git =                   { '', 'CmpSourceCmpGit' },
-  cmp_rg =                    { '󰉸', 'CmpSourceCmpRg' },
-  cmp_tabnine =               { '󰘳', 'CmpSourceCmpTabnine' },
-  cmp_yanky =                 { ' ','CmpSourceYanky' }, --  
+  async_path =                { ' ', 'CmpSourceAsyncPath' },
+  calc =                      { '󰃬 ', 'CmpSourceCalc' },
+  cmdline =                   { ' ', 'CmpSourceCmdline' },
+  cmdline_history =           { ' ', 'CmpSourceCmdlineHistory' },
+  cmp_git =                   { ' ', 'CmpSourceCmpGit' },
+  cmp_rg =                    { '󰉸 ', 'CmpSourceCmpRg' },
+  cmp_tabnine =               { '󰘳 ', 'CmpSourceCmpTabnine' },
+  cmp_yanky =                 { ' ','CmpSourceYanky' }, --    ﲇ  
   codeium =                   { '', 'CmpSourceCodeium' },
-  copilot =                   { '', 'CmpSourceCopilot' }, -- " 
-  dictionary =                { '', 'CmpSourceDictionary' },
-  emoji =                     { '', 'CmpSourceEmoji' },
-  fuzzy_buffer =              { '', 'CmpSourceFuzzyBuffer' },
-  fuzzy_path =                { '', 'CmpSourceFuzzyPath' },
-  look =                      { '', 'CmpSourceLook' },
-  luasnip =                   { '', 'CmpSourceLuasnip' },
-  npm =                       { '', 'CmpSourceNpm' },
-  nvim_lsp =                  { '', 'CmpSourceNvimLsp' },
-  nvim_lsp_document_symbol =  { '', 'CmpSourceNvimLspDocumentSymbol' },
-  nvim_lsp_signature_help =   { '󰊕', 'CmpSourceNvimLspSignatureHelp' },
-  nvim_lua =                  { '', 'CmpSourceNvimLua' },
-  omni =                      { '', 'CmpSourceOmni' },
-  path =                      { '', 'CmpSourcePath' },
+  copilot =                   { ' ', 'CmpSourceCopilot' }, -- " 
+  dictionary =                { ' ', 'CmpSourceDictionary' },
+  emoji =                     { ' ', 'CmpSourceEmoji' },
+  ['faker.quick_data']      = { ' ', 'CmpSourceQuickData' }, --       
+  fuzzy_buffer =              { ' ', 'CmpSourceFuzzyBuffer' },
+  fuzzy_path =                { ' ', 'CmpSourceFuzzyPath' },
+  look =                      { ' ', 'CmpSourceLook' },
+  luasnip =                   { ' ', 'CmpSourceLuasnip' },
+  npm =                       { ' ', 'CmpSourceNpm' },
+  nvim_lsp =                  { ' ', 'CmpSourceNvimLsp' },
+  nvim_lsp_document_symbol =  { '󰒕 ', 'CmpSourceNvimLspDocumentSymbol' },
+  nvim_lsp_signature_help =   { '󰊕 ', 'CmpSourceNvimLspSignatureHelp' },
+  nvim_lua =                  { ' ', 'CmpSourceNvimLua' },
+  omni =                      { ' ', 'CmpSourceOmni' },
+  path =                      { ' ', 'CmpSourcePath' },
   plugins =                   { '鈴','CmpSourcePlugin' },
-  spell =                     { '', 'CmpSourceSpell' },
-  tmux =                      { '', 'CmpSourceTmux' },
-  treesitter =                { '', 'CmpSourceTreesitter' },
-  ['vim-dadbod-completion'] = { '', 'CmpSourceDadbod' },
-  ['vimwiki-tags'] =          { '', 'CmpSourceVimWiki' },
-  zsh =                       { '', 'CmpSourceTmux' },
+  spell =                     { ' ', 'CmpSourceSpell' },
+  tmux =                      { ' ', 'CmpSourceTmux' },
+  treesitter =                { '滑', 'CmpSourceTreesitter' }, --   滑
+  ['vim-dadbod-completion'] = { ' ', 'CmpSourceDadbod' },
+  ['vimwiki-tags'] =          { ' ', 'CmpSourceVimWiki' },
+  zsh =                       { ' ', 'CmpSourceTmux' },
 }
 
   -- local statusline_hl = vim.api.nvim_get_hl_by_name("StatusLine", true)
@@ -133,7 +135,7 @@ local lsp_symbols = {
   Property        = '󰖷', --   Property    = "󰜢",
   Reference       = '󰈝', --   Reference   = "󰈇 ",
   Repeat          = '',
-  Snippet         = '', --   Snippet     = "󰅱 ",
+  Snippet         = '', --   Snippet     = 󰅱 ,
   Spell           = "",
   String          = "",
   StringEscape    = '',

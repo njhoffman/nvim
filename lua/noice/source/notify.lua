@@ -81,6 +81,7 @@ function M.notify(msg, level, opts)
 
   if vim.in_fast_event() then
     vim.schedule(function()
+      level = M.get_level(level)
       M.notify(_msg, level, _opts)
     end)
     return

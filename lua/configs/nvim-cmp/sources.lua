@@ -3,9 +3,9 @@ local sources = {
     {
       {
         name = 'nvim_lsp',
-        -- max_item_count = 30,
-        keyword_length = 2,
-        trigger_characters = { '-' },
+        -- max_item_count = 10,
+        -- keyword_length = 2,
+        -- trigger_characters = { '-' },
         entry_filter = function(entry, ctx)
           local kind = require('cmp.types.lsp').CompletionItemKind[entry:get_kind()]
           if kind == 'Snippet' and ctx.prev_context.filetype == 'java' then
@@ -15,7 +15,6 @@ local sources = {
         end,
       },
       { name = 'codeium', max_item_count = 3 },
-      { name = 'nvim_lsp_document_symbol' },
       {
         name = 'buffer',
         option = {
@@ -27,6 +26,12 @@ local sources = {
             return vim.tbl_keys(bufs)
           end,
         },
+      },
+      {
+        -- TODO: make sure duplicates prioritize this over nvim_lsp
+        name = 'faker.quick_data',
+        keyword_pattern = '@.*',
+        -- keyword_pattern = [[@\k*.\?\k*.\?\k*.\?\k*]],
       },
       {
         name = 'cmp_yanky',
@@ -42,7 +47,6 @@ local sources = {
       --  },
       {
         name = 'luasnip',
-        group_index = 1,
         option = { use_show_condition = true },
         entry_filter = function()
           local context = require('cmp.config.context')
@@ -63,6 +67,8 @@ local sources = {
         option = { in_comment = true },
       },
       { name = 'plugins' },
+      { name = 'nvim_lsp_document_symbol' },
+      -- { name = 'nvim_lsp_signature_help' },
     },
     {
       {
@@ -143,7 +149,6 @@ local sources = {
       -- },
     },
   },
-
   gitcommit = {
     { name = 'cmp_git' },
     { name = 'nvim_lsp' },
@@ -181,6 +186,7 @@ local sources = {
   },
 }
 return sources
+
 -- if vim.o.ft == 'sql' then
 --   table.insert(sources, { name = 'vim-dadbod-completion' })
 -- end

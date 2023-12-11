@@ -579,7 +579,7 @@ return function(injected_functions)
     pandocDelimitedCodeBlock({ gui = 'none' }),
     pandocStrikeout({ gui = 'strikethrough' }),
     -- pandocEmphasis({ gui = 'italic', fg = '#bbbbcc' }),
-    -- pandocStrong({ fg = '#b3b3c4', gui = 'none' }),
+    -- pandocStrong({ gui = 'none' }),
     -- pandocReferenceLabel { gui = "none", fg = clr_over.orange },
     pandocListItemBullet({ fg = '#66a8dc' }),
     pandocListItemBulletId({ fg = '#66a8dc' }),
@@ -720,15 +720,16 @@ return function(injected_functions)
     CmpGhostDark({ fg = '#27476c' }),
     CmpGhostText({ CmpGhostLight }),
     -- CmpPmenu({ bg = '#142a30' }),
+
     CmpPmenu({ bg = '#001020' }),
     CmpPmenuBorder({ bg = '#242a30' }),
     -- CmpDocumentation({ fg = tokyoColors.fg, bg = tokyoColors.bg_float }),
     -- CmpDocumentationBorder({ fg = tokyoColors.border_highlight, bg = tokyoColors.bg_float }),
     CmpItemMenu({ fg = colors.light_gray }),
-    CmpItemAbbr({ fg = '#7890c0' }),
+    CmpItemAbbr({ fg = '#4c74a4' }),
     CmpItemAbbrDeprecated({ fg = colors.fg, gui = 'strikethrough' }),
-    CmpItemAbbrMatch({ fg = '#099Fc8' }),
-    CmpItemAbbrMatchFuzzy({ fg = '#099Fc8' }),
+    CmpItemAbbrMatch({ fg = '#208Ff8', gui = 'italic' }),
+    CmpItemAbbrMatchFuzzy({ fg = '#008Fb8', gui = 'italic' }),
     CmpItemKindArray({ fg = tokyoColors.blue }),
     CmpItemKindBoolean({ fg = tokyoColors.orange }),
     CmpItemKindClass({ fg = colors.yellow }),
@@ -759,18 +760,25 @@ return function(injected_functions)
     CmpItemKindSnippet({ fg = colors.green2 }),
     CmpItemKindString({ fg = tokyoColors.green2 }),
     CmpItemKindStruct({ fg = colors.yellow }),
-    CmpItemKindText({ fg = colors.orange }),
+    CmpItemKindText({ fg = '#489aac' }),
     CmpItemKindTypeParameter({ fg = colors.yellow }),
     CmpItemKindUnit({ fg = colors.orange }),
     CmpItemKindValue({ fg = colors.orange }),
     CmpItemKindVariable({ fg = tokyoColors.blue2 }),
-    CmpSourceNvimLsp({ fg = '#8fa080' }),
-    CmpSourceLuasnip({ fg = '#0ca6ff' }),
-    CmpSourceTreesitter({ fg = '#4C66a4' }),
+
+    CmpSourceNvimLsp({ fg = '#0ca6ff' }), -- '#8fa080'
+    CmpSourceLuasnip({ fg = '#8fa080' }), --
+    CmpSourceTreesitter({ fg = '#4C86a4' }),
     CmpSourceCodeium({ CmpItemKindCodeium }),
     CmpSourceCopilot({ CmpItemKindCopilot }),
-    CmpSourceCmdline({ fg = '#8F65c0' }),
+    CmpSourceAsyncPath({ fg = '#6F65f0' }),
+    CmpSourcePath({ fg = '#6F65f0' }),
+    CmpSourceFuzzyPath({ fg = '#6F65f0' }),
+    CmpSourceCmdline({ fg = '#8F65a0' }),
     CmpSourceCmdlineHistory({ fg = '#4482fc' }),
+    CmpSourceQuickData({ fg = '#6462cc' }),
+    CmpSourceYanky({ fg = '#24a2ac' }),
+
     -- -- nvim-navic
     NavicSeparator({ fg = tokyoColors.fg }),
     NavicText({ fg = tokyoColors.fg }),
@@ -1026,6 +1034,8 @@ return function(injected_functions)
 
     MatchParen({ fg = '#fb8b8b', gui = 'bold,' }),
     MatchWord({ gui = 'bold' }),
+
+    RegistersPreview({ fg = '#009ac8', bg = 'none', gui = 'none' }), -- IncSearch
 
     SmoothCursor({ fg = '#0081ca', gui = 'bold' }),
     LeapMatch({ fg = '#00ffdd', bg = 'none' }), -- IncSearch

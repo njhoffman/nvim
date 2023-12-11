@@ -1,13 +1,13 @@
 local custom_tips = {
   -- http://eriklievaart.com/cheat/applications/vim/vimquickfix.html
   tmux = {
-    'Tmux swap pane shortcut: <Super>+<Shift>+< / <Super>+<Shift>+> / <Ctrl>+A+[HJKL]',
-    'Tmux rotate active pane with other window panes: <Super>+<Shift>+n',
-    'Tmux rotate alternate pane with other window panes: <Super>+n',
+    'Tmux swap pane shortcut\n  ➜  <super>+<shift>+,\n  ➜ <super>+<shift>+.\n  ➜  <ctrl>+a+[hjkl]',
+    'Tmux rotate active pane with other window panes\n  ➜ <super>+<shift>+n',
+    'Tmux rotate alternate pane with other window panes\n ➜ <super>+n',
     'Tmux in copy-mode Y yanks selection and inserts it into commandline',
-    'Tmux fingers: <Ctrl>+A+<Ctrl>+A, tmux fingers jump: <Ctrl>+A+F, tmux fingers open: (fingers)<Ctrl>+<mark>',
-    'Tmux to paste system clipboard: <Ctrl>+A+<Ctrl>+p',
-    'Tmux to paste buffer: <Ctrl>+A+p , to select buffer to paste: <Ctrl>+A+P ',
+    'Tmux fingers: <ctrl>+a+<ctrl>+a\n ➜  tmux fingers jump: <ctrl>+A+F' .. '\n  ➜  (fingers) <ctrl>+[mark]',
+    'Tmux to paste system clipboard\n ➜  `<ctrl>+a+<ctrl>+p`',
+    'Tmux to paste buffer: <ctrl>+a+p\n ➜   to select buffer to paste: <ctrl>+A+P ',
   },
   misc = {
     'To quickly output a lua function/variable\n ➜ `:lua =vim.diagnostic.config()`',
@@ -30,22 +30,22 @@ local custom_tips = {
   },
   format = {
     'Quick surround word near cursor with quote\n  ➜ `s-SPC-"` / `s-s-"`',
-    'Live commands\n  ➜ `Norm <keys>`, `5Reg a`, `G/^$/d`, `%S/pattern/replace`',
-    'Subvert `(:Subvert/pat/repl)` command substitutes with case pattern matches',
+    'Live commands\n  ➜ `Norm <keys>`,\n  ➜ `5Reg a`,\n  ➜ `G/^$/d`,\n  ➜  `%S/pattern/replace`',
+    'Subvert `(:Subvert/pat/repl)` substitutes with case pattern matches',
     'To increment visually selected numbers sequentially \n  ➜ `g<C-S-A>`',
   },
   movement = {
-    'Quick block navigation\n  ➜ `<C-S-]> / <C-S-[>`',
-    'Normal jump to node\n  ➜ `<C-M-J> / <C-M-K> / <C-M-H> / <C-M-L>`',
-    'Visual move selection\n  ➜ (v)`<S-L> / <S-H> / <S-J> / <S-K>`',
-    'Normal move (swap) line up/down\n  ➜ `<M-S-J> / <M-S-K>`',
-    'Normal move (swap) node\n  ➜ `<C-M-S-J> / <C-M-S-K> / <C-M-S-H> / <C-M-S-L>`',
+    'Quick block navigation\n  ➜ `<C-S-]>  <C-S-[>`',
+    'Normal jump to node\n  ➜ `<C-M-J>  <C-M-K>  <C-M-H>  <C-M-L>`',
+    'Visual move selection\n  ➜ (v)`<S-L>  <S-H>  <S-J>  <S-K>`',
+    'Normal move (swap) line up/down\n  ➜ `<M-S-J>  <M-S-K>`',
+    'Normal move (swap) node\n  ➜ `<C-M-S-J>  <C-M-S-K>  <C-M-S-H> / <C-M-S-L>`',
     'Exchange (swap) content inside argument and parenthesis with cx \n ➜ `cxia` ➜ `cxi(`',
     'Visual exchange (swap) inside function and block with X \n  ➜ `vifX` ➜ `vibX`',
     'Text objects\n  ➜ `c = class, C = conditional, f = function, ? = prompt, i = object`'
-      .. '\n  ➜ `b = balanced, B = block, h = git-hunk, o = block/cond/loop, L = loop`'
-      .. '\n  ➜ `t = tag, w = word, W = WORD, x = comment, l = last textobj, n = next textobj`'
-      .. '\n  ➜ `% = matching, a = argument, A = attribute, s = sentence, p = paragraph, q = quote`',
+      .. '\n  ➜ `b = balanced, B = block,    h = git-hunk,   o = block/cond/loop, L = loop`'
+      .. '\n  ➜ `t = tag,      w = word,     W = WORD,       x = comment,         l = last textobj, n = next textobj`'
+      .. '\n  ➜ `% = matching, a = argument, A = attribute,  s = sentence,        p = paragraph,    q = quote`',
   },
   global = {
     'To delete all lines that have only whitespace \n  ➜ `:g/^s*$/d`',

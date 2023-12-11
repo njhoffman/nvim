@@ -17,6 +17,8 @@ local icons = {
   misc_1    = '   ',
   palette   = '   ',
   reference = ' 󰒐  ',
+  spelling  = ' 󰓆  ',
+  search    = '   ',
   symbol    = ' 󰒕  ',
 }
 
@@ -96,12 +98,13 @@ local pickers = {
     find_command = commands.rg,
   },
   grep_string = {
-    prompt_prefix = ' ',
+    prompt_prefix = icons.search,
     disable_coordinates = true,
     additional_args = { '--trim', '--hidden', '--glob=!.git' },
   },
   live_grep = {
     debounce = 100,
+    prompt_prefix = icons.search,
     mappings = mappings.grep,
     find_command = commands.rg,
     additional_args = { '--trim', '--hidden', '--glob=!.git' },
@@ -208,7 +211,7 @@ local pickers = {
   lsp_workspace_symbols = {
     debounce = 100,
     prompt_prefix = icons.symbol,
-    -- ignore_symbols = { "boolean", "number", "string", "variable", "array", "object", "constant", "package" },
+    ignore_symbols = { 'boolean', 'number', 'string', 'variable', 'array', 'object', 'constant', 'package' },
     -- symbols_highlights = {
     --   'Class',
     --   'Function',
@@ -223,7 +226,7 @@ local pickers = {
   },
   spell_suggest = {
     initial_mode = 'normal',
-    prompt_prefix = '󰓆',
+    prompt_prefix = icons.spelling,
     previewer = false,
     theme = 'cursor',
     layout_config = { cursor = { width = 0.3 } },
@@ -245,17 +248,18 @@ local pickers = {
       case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
       -- the default case_mode is "smart_case"
     }),
-    symbols_highlights = {
-      'Class',
-      'Function',
-      'Method',
-      'Constructor',
-      'Interface',
-      'Module',
-      'Struct',
-      'Trait',
-      'Field',
-    },
+    ignore_symbols = { 'boolean', 'number', 'string', 'variable', 'array', 'object', 'constant', 'package' },
+    -- symbols_highlights = {
+    --   'Class',
+    --   'Function',
+    --   'Method',
+    --   'Constructor',
+    --   'Interface',
+    --   'Module',
+    --   'Struct',
+    --   'Trait',
+    --   'Field',
+    -- },
   },
 }
 

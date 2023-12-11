@@ -27,7 +27,8 @@ local setup = function(options)
     callback = function()
       utils.throttle(display.clear_virtual_text, 100, {}, 'clear')
       state.is_cleared = true
-      utils.debounce(providers.update, 500)(config.values)
+
+      utils.debounce(providers.update, 1000)(config.values)
     end,
   })
 end

@@ -76,9 +76,6 @@ prefix('n', '<leader>cl', 'conceal 󰈉 ')
 -- -- source current lua file
 -- keymap('n', '<leader>so', ':source % <bar> lua vim.notify("NeoVim config reloaded")<CR>', opts)
 --
--- -- yank filepath
--- keymap('n', '<leader>yy', ':let @+ = expand("%")<CR>', opts)
---
 -- -- reload theme
 -- keymap('n', '<leader>cc',
 --   function()
@@ -88,7 +85,8 @@ prefix('n', '<leader>cl', 'conceal 󰈉 ')
 --     vim.notify("Reloaded theme")
 --   end,
 --   opts)
--- -- Copy Last Command
+
+-- Copy Last Command
 -- keymap("n", "<leader>lc", function()
 -- 	local lastCommand = fn.getreg(":"):gsub("^lua[ =]*", "")
 -- 	fn.setreg("+", lastCommand)
@@ -508,13 +506,13 @@ map('n', '<M-C-X>', '<cmd>silent! tabclose | xa<cr>', {
 --------------------------------------------------------------------------------------------------
 -- EXECUTE ---------------------------------------------------------------------------------------
 
-map('n', '!~', '<cmd>@:<cr>', {
+map('n', '!@', '<cmd>@:<cr>', {
   category = 'Execute',
-  label = 'repeat command',
+  label = 'repeat ex-command',
   desc = 'repeat the last command',
 })
 
-map('n', '!@', '<cmd>RunSelect<cr>', {
+map('n', '!~', '<cmd>RunSelect<cr>', {
   category = 'Execute',
   label = 'select runner task',
   desc = 'assign task to runner',
@@ -522,7 +520,7 @@ map('n', '!@', '<cmd>RunSelect<cr>', {
 
 map('n', '!!', '<cmd>Run<cr>', {
   category = 'Execute',
-  label = 'repeat command',
+  label = 'repeat runner command',
   desc = 'execute configured runner task',
 })
 
@@ -1521,7 +1519,7 @@ map('n', '<leader>it', "<cmd>lua require('telescope.run')('lazy', 'lazy')<cr>", 
 map(
   'n',
   '<leader>iy',
-  "<cmd>let @+ = substitute(expand('%:p'), $HOME, '~', '') | lua print('Yanked: ' .. vim.fn.substitute(vim.fn.expand('%:p'), '$HOME', '~', ''))<cr>",
+  "<cmd>let @+ = substitute(expand('%:p'), $HOME, '~', '') | lua print('Yanked: ' .. vim.fn.substitute(vim.fn.expand('%:p'), $HOME, '~', ''))<cr>",
   {
     category = 'System',
     label = 'yank filename',
@@ -1557,6 +1555,14 @@ map({ 'n', 'i' }, 'g{', function()
   require('funcs.quality-of-life').openNewScope()
 end, { desc = ' Open new scope' })
 
+-- Append to / delete from EoL
+local trailChars = { ",", ";", ")", "'", '"', "|", "\\", "{", ".", "}" }
+for _, key in pairs(trailChars) do
+  -- map("n", "<leader>a" .. key, "mzA" .. key .. "<Esc>`z", { desc = "which_key_ignore" })
+map("n", "<leader>a" .. key, "mzA" .. key .. "<Esc>`z", {
+  desc = 'append or delete ' .. key .. ' from end of line',
+})
+end
 --------------------------------------------------------------------------------
 -- LINE & CHARACTER MOVEMENT
 -- keymap("n", "<Down>", [[<cmd>. move +1<CR>==]], { desc = "󰜮 Move Line Down" })

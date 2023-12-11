@@ -10,7 +10,7 @@ local formatters = {
   'gomodifytags',
   'gotests',
   'iferr',
-  'isort',
+  -- 'isort',
   'jq',
   'luaformatter',
   'markdown-toc',

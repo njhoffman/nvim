@@ -20,6 +20,7 @@ local mapping = {
   main = {
     ['<C-x><C-o>'] = cmp.mapping.complete({}),
     ['<C-x><C-s>'] = cmp.mapping.complete({ config = { sources = { { name = 'luasnip' } } } }),
+    ['<C-x><C-d>'] = cmp.mapping.complete({ config = { sources = { { name = 'faker.quick_data ' } } } }),
     ['<C-g>'] = cmp.mapping.complete({
       config = {
         sources = {

@@ -15,8 +15,9 @@ local lua = {
   -- right_var = "))",
 }
 -- require('debugprint').add_custom_filetypes({ my_fileformat, ... })
-
+-- marker is 0x1fa9a 🪚
 require('debugprint').setup({
+  print_tag = '🪚' .. ' ',
   move_to_debugline = true,
   create_keymaps = false,
   create_commands = false,

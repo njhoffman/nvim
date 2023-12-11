@@ -415,6 +415,11 @@ M.search_backspace_word = function(_)
   vim.api.nvim_feedkeys(backspace_key, 'i', true)
 end
 
+M.search_jump_start = function(_)
+  local home_key = vim.api.nvim_replace_termcodes('<Home>', true, true, true)
+  vim.api.nvim_feedkeys(home_key, 'i', true)
+end
+
 M.buffer_delete = function(prompt_bufnr)
   -- picker.cache_picker.limit_entries, picker.__scrolling_limit, picker.max_results,
   local selection = action_state.get_selected_entry()

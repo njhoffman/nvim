@@ -1,13 +1,3 @@
--- vim.cmd(
---   [[
---   let g:vimade = {
---   \ "normalid": '',
---   \ "normalncid": '',
---   \ "basefg": '',
---   \ "basebg": '',
---   \ "fadelevel": 0.4,
---   }]]
--- )
 --  vim.g.vimade = {
 --    enabletreesitter = 1,
 --    basegroups = {
@@ -48,8 +38,6 @@ vim.g.vimade = {
     'Folded',
     'Search',
     'SignColumn',
-    -- 'NotifyINFO',
-    -- 'NotifyDEBUG',
     -- 'Whitespace',
     -- 'CursorLine',
     'CursorLineNr',

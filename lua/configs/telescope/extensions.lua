@@ -110,7 +110,22 @@ local extension_configs = {
     -- entry_format = '$NODE ($STAT) [$ID] $TIME',
     -- entry_format = 'state #$ID ($STAT): $TIME',
   },
-
+  gpt = {
+    title = 'Gpt Actions',
+    commands = {
+      'add_tests',
+      'chat',
+      'docstring',
+      'explain_code',
+      'fix_bugs',
+      'grammar_correction',
+      'interactive',
+      'optimize_code',
+      'summarize',
+      'translate',
+    },
+    theme = require('telescope.themes').get_dropdown({}),
+  },
   ['aerial'] = {},
   ['asynctasks'] = {},
   ['ast_grep'] = {

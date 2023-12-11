@@ -16,7 +16,6 @@ local setup_mappings = function()
   vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', keymap_opts)
   vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
   vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
-
   -- vim.keymap.set('n', '[e', function()
   --   vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
   -- end)
@@ -70,10 +69,10 @@ local on_attach = function(client, bufnr)
     client.server_capabilities.textDocument.completion.completionItem.snippetSupport = true
   end
 
-  if client.server_capabilities.inlayHintProvider then
-    vim.dbglog('INLAY HINTS AVAILABLE')
-    -- vim.lsp.inlay_hint.enable(bufnr, true)
-  end
+  -- if client.server_capabilities.inlayHintProvider then
+  --   -- vim.dbglog('INLAY HINTS AVAILABLE')
+  --   vim.lsp.inlay_hint.enable(bufnr, true)
+  -- end
 
   capabilities.resolve(client, bufnr)
 end

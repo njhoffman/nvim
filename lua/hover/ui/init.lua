@@ -46,6 +46,7 @@ end
 
 local function load_hover(provider_id, result)
   local ft = result.filetype or 'markdown'
+  vim.dbglog('🪚 load_hover= ' .. provider_id)
   if type(state.ft_bufnr[ft]) == 'nil' or not vim.api.nvim_buf_is_valid(state.ft_bufnr[ft]) then
     state.ft_bufnr[ft] = vim.api.nvim_create_buf(false, true)
     -- if vim.api.nvim_buf_get_name(state.ft_bufnr[ft]) ~= ':hover' then
@@ -79,6 +80,7 @@ local function load_hover(provider_id, result)
 end
 
 local function show_hover_new(provider_id, result, opts)
+  vim.dbglog('🪚 hover_new')
   if not result or not result.lines then
     return
   end

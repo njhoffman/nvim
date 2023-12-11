@@ -24,8 +24,8 @@ local default_mapping = {
       -- [""] = actions.change_tab_left,
     },
     n = {
-      ['<esc>']      = { a.close,            { desc = ' ', category = 'Hover' } },
-      ['q']          = { a.close,            { desc = ' ' }},
+      -- ['<esc>']      = { a.close,            { desc = ' ', category = 'Hover' } },
+      -- ['q']          = { a.close,            { desc = ' ' }},
       ['<Up>']       = { a.scroll_up,        { desc = ' ' }},
       ['<Down>']     = { a.scroll_down,      { desc = ' ' }},
       ['<C-S-Up>']   = { a.scroll_up,        { desc = ' ' }},

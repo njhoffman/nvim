@@ -9,12 +9,13 @@ local setup_debugprint = function()
   local keys = {
     remove         = 'god',
     remove_all     = 'goD',
-    variable_below = 'goi',
-    variable_above = 'goI',
+    variable_below = 'goi', -- gov
+    variable_above = 'goI', -- goV
     operator_below = 'goo',
     operator_above = 'goO',
-    message_below  = 'gop',
-    message_above  = 'goP',
+    message_below  = 'gop', -- gom
+    message_above  = 'goP', -- goM
+    -- got, goa
   }
 
   keymap('n', keys.remove, function()
@@ -122,16 +123,20 @@ local setup_printing_press = function()
 local keys = {
     -- message      = '<leader>fm', -- goi
     message      = 'gom', -- goi
+    message_above = 'goM', -- goi
     -- variable     = '<leader>fl', -- goi
     variable     = 'gov', -- goi
+    variable_above = 'goV', -- goi
     object       = '<leader>fo', -- goi
     -- beep         = '<leader>fb', -- gob
+    beep_above   = 'goB', -- gob
     beep         = 'gob', -- gob
     -- time         = '<leader>f1', -- got
     time         = 'got', -- got
     remove       = '<leader>fr', -- goD
     debug        = '<leader>fd', --
     -- assert       = '<leader>fA', -- goa
+    assert_above = 'goA', --
     assert       = 'goa', --
   }
 
@@ -139,16 +144,30 @@ local keys = {
 
   keymap({ "n", "x" }, keys.message,
     function() require(pp_path).messageLog() end, { desc = " message log" })
+  keymap({ "n", "x" }, keys.message_above,
+    function() require(pp_path).messageLog(true) end, { desc = " message log" })
+
   keymap({ "n", "x" }, keys.variable,
     function() require(pp_path).variableLog() end, { desc = " variable log" })
+  keymap({ "n", "x" }, keys.variable_above,
+    function() require(pp_path).variableLog(true) end, { desc = " variable log" })
+
   keymap({ "n", "x" }, keys.object,
     function() require(pp_path).objectLog() end, { desc = " object log" })
+  -- keymap({ "n", "x" }, keys.object_above,
+  --   function() require(pp_path).objectLog(prepend) end, { desc = " object log" })
+
   keymap("n", keys.beep,
     function() require(pp_path).beepLog() end, { desc = " beep log" })
+  -- keymap("n", keys.beep_above,
+  --   function() require(pp_path).beepLog(true) end, { desc = " beep log" })
+
   keymap("n", keys.time,
     function() require(pp_path).timeLog() end, { desc = " time log" })
+
   keymap("n", keys.remove,
     function() require(pp_path).removeLogs() end, { desc = "󰹝 remove log" })
+
   keymap("n", keys.debug,
     function() require(pp_path).debugLog() end, { desc = " debugger log" })
   keymap("n", keys.assert,

@@ -16,10 +16,58 @@
 -- bind_keys["k"] = registers.move_cursor_up()
 -- TODO: fix j/k mappings, add live preview for paste/insert, add line count
 
+local init_window = function(default_options)
+  -- -- ⌜⌟⌜⌝ ┘｢｣  ┒┑┓┏┌┍┎ 🭼 🭿 └ ┕ ┖ ┗   ⎡ ⎣ ⎤ ⎦ ˨   ◝ ◟ ◞ ╰ 「」ꜚ﹁ ⇱ ﹂｢｣ ╮ ╯╰ ╭ 𛲖─ ━ ━ ─ ＿ ⎽⎯🭻▁
+  -- -- border = { "↖", "─", "╮", "│", "╯", "─", "╰", "│" },
+  -- -- border = { "↖", "─", "╮", "│", "│", "_", "│", "│" },
+  -- border = { '╭', '─', '╮', '│', '│', '_', '│', '│' },
+  -- zindex = 2,
+  -- style = 'minimal',
+  -- -- title = "Hover",
+  -- -- titlepos = 'Center'
+end
+
 local registers = require('registers')
+local preview = require('registers.preview')
+local ui = require('registers.ui')
+
+-- '*+"-/_=#%.0123456789abcdefghilmnopqrstuvwxyz:',
+local layout_1 = function(win_opts)
+  local new_reg = '*+"%0123456789abcgpwy:'
+  local new_opts = vim.tbl_deep_extend('force', win_opts, {
+    relative = 'win', -- editor, win, cursor, mouse
+    anchor = 'SE',
+    row = vim.api.nvim_win_get_height(0) - 1,
+    col = vim.api.nvim_win_get_width(0),
+  })
+  return new_opts, new_reg
+end
+
+local layout_2 = function(win_opts)
+  local new_reg = '*+"-/_=#%.0123456789abcdefghilmnopqrstuvwxyz:'
+  local new_opts = vim.tbl_deep_extend('force', win_opts, {
+    relative = 'win', -- editor, win, cursor, mouse
+    anchor = 'SE',
+    row = vim.api.nvim_win_get_height(0) - 1,
+    col = vim.api.nvim_win_get_width(0),
+  })
+  return new_opts, new_reg
+end
+
+local layout_3 = function(win_opts)
+  local new_reg = '*+"%01234abcpwy:'
+  local new_opts = vim.tbl_deep_extend('force', win_opts, {
+    relative = 'win', -- editor, win, cursor, mouse
+    anchor = 'SE',
+    row = vim.api.nvim_win_get_height(0) - 1,
+    col = vim.api.nvim_win_get_width(0),
+  })
+  return new_opts, new_reg
+end
+
 registers.setup({
-  -- show = '*+"-/_=#%.0123456789abcdefghilmnopqrstuvwxyz:',
-  show = '*+"%0123456789abcpwy:',
+  show = '*+"%0123456789abcgpwy:',
+  layouts = { layout_1, layout_2, layout_3 },
   bind_keys = {
     -- registers._bind_global_key('normal', '"', 'n'),
     -- registers._bind_global_key('visual', '"', 'x'),
@@ -29,31 +77,30 @@ registers.setup({
     -- Always paste the register when selecting with Enter
     -- ['<CR>'] = require('registers').apply_register({ mode = 'paste' }),
     -- Show the window when pressing " in normal mode, applying the selected register as part of a motion, which is the default behavior of Neovim
-    normal = registers.show_window({ mode = 'paste' }),
+    normal = ui.show_window({ mode = 'paste' }),
     -- Show the window when pressing " in visual mode, applying the selected register as part of a motion, which is the default behavior of Neovim
-    visual = registers.show_window({ mode = 'motion' }),
+    visual = ui.show_window({ mode = 'motion' }),
     -- Show the window when pressing <C-R> in insert mode, inserting the selected register, which is the default behavior of Neovim
-    insert = registers.show_window({ mode = 'insert' }),
+    insert = ui.show_window({ mode = 'insert' }),
     -- Move the cursor in the registers window down when pressing <C-n>
-    ['<C-n>'] = registers.move_cursor_down(),
+    ['<C-n>'] = ui.move_cursor_down(),
     -- Move the cursor in the registers window up when pressing <C-p>
-    ['<C-p>'] = registers.move_cursor_up(),
-    -- Move the cursor in the registers window down when pressing <C-j>
-    ['j'] = registers.move_cursor_down(),
-    -- Move the cursor in the registers window up when pressing <C-k>
-    ['k'] = registers.move_cursor_up(),
+    ['<C-p>'] = ui.move_cursor_up(),
+    ['<C-j>'] = ui.move_cursor_down(),
+    ['<C-k>'] = ui.move_cursor_up(),
   },
   events = {
     -- When a register line is highlighted, show a preview in the main buffer with how the register will be applied, but only if the register will be inserted or pasted
-    on_register_highlighted = registers.preview_highlighted_register({ { if_mode = { 'insert', 'paste' } } }),
+    on_register_highlighted = preview.preview_register({ { if_mode = { 'insert', 'paste' } } }),
   },
   window_border = 'rounded',
   window = {
     border = 'rounded',
-    transparency = 30,
-    max_width = 100,
+    transparency = 10,
+    max_width = 60,
   },
   symbol_options = {
+    newline = ' ⏎',
     -- {newline?}                  (string)  Symbol to show for a line break character, can not be the `"\\n"` symbol, use `"\\\\n"` (two backslashes) instead. Default is `"⏎"`.
     -- {space?}                    (string)  Symbol to show for a space character. Default is `" "`.
     -- {tab?}                      (string)  Symbol to show for a tab character. Default is `"·"`.
@@ -61,22 +108,37 @@ registers.setup({
     -- {register_type_linewise?}   (string)  Symbol to show next to the sign to signify that the register will be applied in a line by line way. Default is `"ˡ"`.
     -- {register_type_blockwise?}  (string)  Symbol to show next to the sign to signify that the register will be applied as a horizontal block, ignoring line endings. Default is `"ᵇ"`.
   },
+  --stylua: ignore
   sign_highlights = {
-    -- `require("registers").setup({ sign_highlights = {...} })`
-    -- Fields:
-    --     {cursorline?}        (string)  Highlight group for when the cursor is over the line. Default is `"Visual"`.
-    --     {selection?}         (string)  Highlight group for the selection registers, `*+`. Default is `"Constant"`.
-    --     {default?}           (string)  Highlight group for the default register, `"`. Default is `"Function"`.
-    --     {unnamed?}           (string)  Highlight group for the unnamed register, `\\`. Default is `"Statement"`.
-    --     {read_only?}         (string)  Highlight group for the read only registers, `:.%`. Default is `"Type"`.
-    --     {alternate_buffer?}  (string)  Highlight group for the alternate buffer register, `#`. Default is `"Type"`.
-    --     {expression?}        (string)  Highlight group for the expression register, `=`. Default is `"Exception"`.
-    --     {black_hole?}        (string)  Highlight group for the black hole register, `_`. Default is `"Error"`.
-    --     {last_search?}       (string)  Highlight group for the last search register, `/`. Default is `"Operator"`.
-    --     {delete?}            (string)  Highlight group for the delete register, `-`. Default is `"Special"`.
-    --     {yank?}              (string)  Highlight group for the yank register, `0`. Default is `"Delimiter"`.
-    --     {history?}           (string)  Highlight group for the history registers, `1-9`. Default is `"Number"`.
-    --     {named?}             (string)  Highlight group for the named registers, `a-z`. Default is `"Todo"`.
+    cursorlinesign   = 'CursorLine',
+    signcolumn       = 'SignColumn',
+    cursorline       = 'Visual',
+    selection        = 'Constant',
+    default          = 'Function',
+    unnamed          = 'Statement',
+    read_only        = 'Type',
+    expression       = 'Exception',
+    black_hole       = 'Error',
+    alternate_buffer = 'Operator',
+    last_search      = 'Tag',
+    delete           = 'Special',
+    yank             = 'Delimiter',
+    history          = 'Number',
+    named            = 'Todo',
+    register_preview = 'RegistersPreview',
+    -- {cursorline?}        (string)  Default is `"Visual"`.
+    -- {selection?}        *+.  "Constant".
+    -- {default?}          ".   "Function".
+    -- {unnamed?}          \\.  "Statement".
+    -- {read_only?}        :.%. "Type".
+    -- {alternate_buffer?} #.   "Type".
+    -- {expression?}       =.   "Exception".
+    -- {black_hole?}       _.   "Error".
+    -- {last_search?}      /.   "Operator".
+    -- {delete?}           -.   "Special".
+    -- {yank?}             0.   "Delimiter".
+    -- {history?}          1-9. "Number".
+    -- {named?}            a-z. "Todo".
   },
 })
 

@@ -98,14 +98,6 @@ local plugins = {
   { 'folke/zen-mode.nvim', cmd = 'ZenMode', keys = { '<S-CR>' } },
   { 'folke/twilight.nvim', cmd = { 'Twilight', 'TwilightEnable' } },
   {
-    'tversteeg/registers.nvim',
-    cmd = 'Registers',
-    keys = {
-      { '"', mode = { 'n', 'v' } },
-      { '<C-R>', mode = 'i' },
-    },
-  },
-  {
     'kevinhwang91/nvim-ufo',
     dependencies = 'kevinhwang91/promise-async',
     cmd = { 'UfoEnable', 'UfoAttach', 'UfoEnableFold' },
@@ -129,7 +121,7 @@ local plugins = {
   },
   { 'nyngwang/NeoZoom.lua', enabled = false, event = 'VeryLazy' },
   { 'matbme/JABS.nvim', event = { 'BufReadPost', 'BufNewFile' } },
-  { 'ghillb/cybu.nvim', event = { 'BufRead', 'BufNewFile' } },
+  -- { 'ghillb/cybu.nvim', event = { 'BufRead', 'BufNewFile' } },
   { 'nacro90/numb.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   {
     'winston0410/range-highlight.nvim',
@@ -306,8 +298,10 @@ local plugins = {
     -- 'nvim-telescope/telescope.nvim',
     dir = '~/git/telescope.nvim',
     cmd = 'Telescope',
+    -- opts = { extensions = { gpt = { title = "Gpt Actions", } } },
     -- event = 'VeryLazy',
     dependencies = {
+      'HPRIOR/telescope-gpt',
       'ElPiloto/telescope-vimwiki.nvim',
       'LinArcX/telescope-changes.nvim',
       'LinArcX/telescope-command-palette.nvim',

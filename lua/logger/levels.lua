@@ -13,6 +13,7 @@ local log_levels = {
   -- mru               = { main = -1 },
   notify               = { main = 0 },
   project              = { main = 1 },
+  lab                 = { main = -2 },
   root                 = { main = -1 },
   -- telescope            = { main = -1 },
 }

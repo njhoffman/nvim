@@ -59,7 +59,7 @@ local plugins = {
       },
       'nanotee/sqls.nvim',
       'tami5/lspsaga.nvim',
-      -- { 'Exafunction/codeium.nvim', event = 'BufEnter' },
+      { 'Exafunction/codeium.nvim', event = 'BufEnter' },
       -- { 'Wansmer/symbol-usage.nvim', event = 'LspAttach' },
       'rmagatti/goto-preview',
       'kosayoda/nvim-lightbulb',
