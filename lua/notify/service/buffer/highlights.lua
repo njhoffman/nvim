@@ -31,19 +31,18 @@ end
 
 function NotifyBufHighlights:new(notif, buffer, config)
   local level = notif.level or 'INFO'
-  local function linked_group(section, skip_prefix, skip_level)
+
+  local function set_linked_group(section, skip_prefix, skip_level)
     local orig = (skip_prefix and '' or 'Notify') .. (skip_level and '' or level) .. section
     local new = orig .. buffer
-
     vim.api.nvim_set_hl(0, new, { link = orig })
-
     return new, get_hl(new)
   end
 
-  local title, title_def = linked_group('Title')
-  local border, border_def = linked_group('Border')
-  local body, body_def = linked_group('Body')
-  local icon, icon_def = linked_group('Icon')
+  local title, title_def = set_linked_group('Title')
+  local border, border_def = set_linked_group('Border')
+  local body, body_def = set_linked_group('Body')
+  local icon, icon_def = set_linked_group('Icon')
 
   local groups = {
     [title] = title_def,
@@ -51,23 +50,25 @@ function NotifyBufHighlights:new(notif, buffer, config)
     [body] = body_def,
     [icon] = icon_def,
   }
-  local repeat_count, repeat_count_def = nil, nil
-  local content = body
+
+  local content = {}
+  -- special field for repeating messages
   if notif.repeat_count then
-    repeat_count, repeat_count_def = linked_group('RepeatCount', false, true)
+    local repeat_count, repeat_count_def = set_linked_group('RepeatCount', false, true)
     groups.repeat_count = repeat_count_def
   end
+
+  -- special field for general custom highlights
   if notif.body_highlights then
-    content = {}
     for i, hl_group in ipairs(notif.body_highlights) do
-      local _content, _content_def = linked_group(hl_group[1], true, true)
+      local _content, _content_def = set_linked_group(hl_group[1], true, true)
       groups[_content] = _content_def
       content[hl_group[1]] = _content
     end
+    -- special field for custom highlights for each level
   elseif notif.body_level_highlights then
-    content = {}
     for i, hl_group in ipairs(notif.body_level_highlights) do
-      local _content, _content_def = linked_group(hl_group[1], true, false)
+      local _content, _content_def = set_linked_group(hl_group[1], true, false)
       groups[_content] = _content_def
       content[hl_group[1]] = _content
     end
@@ -78,7 +79,6 @@ function NotifyBufHighlights:new(notif, buffer, config)
     opacity = 100,
     border = border,
     body = body,
-    repeat_count = repeat_count,
     content = content,
     title = title,
     icon = icon,

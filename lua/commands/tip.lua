@@ -1,78 +1,118 @@
+local nl = '\n   ➜ '
+
 local custom_tips = {
   -- http://eriklievaart.com/cheat/applications/vim/vimquickfix.html
   tmux = {
-    'Tmux swap pane shortcut\n  ➜  <super>+<shift>+,\n  ➜ <super>+<shift>+.\n  ➜  <ctrl>+a+[hjkl]',
-    'Tmux rotate active pane with other window panes\n  ➜ <super>+<shift>+n',
-    'Tmux rotate alternate pane with other window panes\n ➜ <super>+n',
+    { 'Tmux fingers', '(start): <ctrl>+<a>+<ctrl>+<a>', '(jump):  <ctrl>+<a>+[F]', '(yank):  <ctrl>+[mark]' },
+    { 'Tmux swap pane shortcut', '<super>+<shift>+[,]', '<super>+<shift>+[.]', '<ctrl>+<a>+[hjkl]' },
+    'Tmux rotate active pane with other window panes' .. nl .. '<super>+<shift>+n',
+    'Tmux rotate alternate pane with other window panes' .. nl .. '<super>+n',
     'Tmux in copy-mode Y yanks selection and inserts it into commandline',
-    'Tmux fingers: <ctrl>+a+<ctrl>+a\n ➜  tmux fingers jump: <ctrl>+A+F' .. '\n  ➜  (fingers) <ctrl>+[mark]',
-    'Tmux to paste system clipboard\n ➜  `<ctrl>+a+<ctrl>+p`',
-    'Tmux to paste buffer: <ctrl>+a+p\n ➜   to select buffer to paste: <ctrl>+A+P ',
+    'Tmux to paste system clipboard' .. nl .. '`<ctrl>+a+<ctrl>+p`',
+    'Tmux to paste buffer: <ctrl>+a+p' .. nl .. ' to select buffer to paste: <ctrl>+A+P ',
   },
   misc = {
-    'To quickly output a lua function/variable\n ➜ `:lua =vim.diagnostic.config()`',
-    'To insert sequential numbers\n  ➜ `:put=map(range(1,5)`'
-      .. "\n  ➜ `:put=map(range(1,5), 'v:val/2.0')` (increment by 0.5))"
-      .. "\n  ➜ `:put=join(range(1,5), ' & ')` (increment by 0.5))",
+    'To quickly output a lua function/variable' .. nl .. '`:lua =vim.diagnostic.config()`',
+    'To insert sequential numbers'
+      .. nl
+      .. '`:put=map(range(1,5)`'
+      .. nl
+      .. "`:put=map(range(1,5), 'v:val/2.0')` (increment by 0.5)"
+      .. nl
+      .. "`:put=join(range(1,5), ' & ')     ` (increment by 0.5)",
   },
   quickfix = {
     'Populate the quickfix list with the results of a command, use `:cexpr`',
-    'Search current file and populate quickfix \n  ➜ `:vimgrep /re/ %:p`',
-    'Execute macro @a on every quickfix item \n  ➜ `:cdo! norm @a`',
-    'To perform search and replace on quickfix items \n  ➜ `:cdo! s/re/repl/`',
-    'Search recursively with grep for quickfix list \n  ➜ `:gr zsh . -R`',
+    'Search current file and populate quickfix ' .. nl .. '`:vimgrep /re/ %:p`',
+    'Execute macro @a on every quickfix item ' .. nl .. '`:cdo! norm @a`',
+    'To perform search and replace on quickfix items ' .. nl .. '`:cdo! s/re/repl/`',
+    'Search recursively with grep for quickfix list ' .. nl .. '`:gr zsh . -R`',
     'Use the quickfix command `cope` to navigate multiple quickfix lists',
-    'Search the files in the argument list with ##\n  ➜ `:vimgrep // ##`',
-    'Other vimgrep examples\n  ➜ `:vimgrep /git/ install.sh`'
-      .. '\n  ➜ `:vimgrep /apt/ **/*.sh`'
-      .. '\n  ➜ `:vimgrep vim.dbglog **/*.lua`'
-      .. '\n  ➜ `:vimgrep /"[^"]i\\+"/ ~/.*`',
+    'Search the files in the argument list with ##' .. nl .. '`:vimgrep // ##`',
+    'Other vimgrep examples'
+      .. nl
+      .. '`:vimgrep /git/ install.sh`'
+      .. nl
+      .. '`:vimgrep /apt/ **/*.sh`'
+      .. nl
+      .. '`:vimgrep vim.dbglog **/*.lua`'
+      .. nl
+      .. '`:vimgrep /"[^"]i\\+"/ ~/.*`',
   },
   format = {
-    'Quick surround word near cursor with quote\n  ➜ `s-SPC-"` / `s-s-"`',
-    'Live commands\n  ➜ `Norm <keys>`,\n  ➜ `5Reg a`,\n  ➜ `G/^$/d`,\n  ➜  `%S/pattern/replace`',
+    'Quick surround word near cursor with quote' .. nl .. '`s-SPC-"` / `s-s-"`',
+    'Live commands' .. nl .. '`Norm <keys>`,' .. nl .. '`5Reg a`,' .. nl .. '`G/^$/d`,' .. nl .. '`%S/pattern/replace`',
     'Subvert `(:Subvert/pat/repl)` substitutes with case pattern matches',
-    'To increment visually selected numbers sequentially \n  ➜ `g<C-S-A>`',
+    'To increment visually selected numbers sequentially ' .. nl .. '`g<C-S-A>`',
   },
   movement = {
-    'Quick block navigation\n  ➜ `<C-S-]>  <C-S-[>`',
-    'Normal jump to node\n  ➜ `<C-M-J>  <C-M-K>  <C-M-H>  <C-M-L>`',
-    'Visual move selection\n  ➜ (v)`<S-L>  <S-H>  <S-J>  <S-K>`',
-    'Normal move (swap) line up/down\n  ➜ `<M-S-J>  <M-S-K>`',
-    'Normal move (swap) node\n  ➜ `<C-M-S-J>  <C-M-S-K>  <C-M-S-H> / <C-M-S-L>`',
-    'Exchange (swap) content inside argument and parenthesis with cx \n ➜ `cxia` ➜ `cxi(`',
-    'Visual exchange (swap) inside function and block with X \n  ➜ `vifX` ➜ `vibX`',
-    'Text objects\n  ➜ `c = class, C = conditional, f = function, ? = prompt, i = object`'
-      .. '\n  ➜ `b = balanced, B = block,    h = git-hunk,   o = block/cond/loop, L = loop`'
-      .. '\n  ➜ `t = tag,      w = word,     W = WORD,       x = comment,         l = last textobj, n = next textobj`'
-      .. '\n  ➜ `% = matching, a = argument, A = attribute,  s = sentence,        p = paragraph,    q = quote`',
+    'Quick block navigation' .. nl .. '`<C-S-]>  <C-S-[>`',
+    'Normal jump to node' .. nl .. '`<C-M-J>  <C-M-K>  <C-M-H>  <C-M-L>`',
+    'Visual move selection' .. nl .. '(v)`<S-L>  <S-H>  <S-J>  <S-K>`',
+    'Normal move (swap) line up/down' .. nl .. '`<M-S-J>  <M-S-K>`',
+    'Normal move (swap) node' .. nl .. '`<C-M-S-J>  <C-M-S-K>  <C-M-S-H> / <C-M-S-L>`',
+    'Exchange (swap) content inside argument and parenthesis with cx ' .. nl .. '`cxia` ➜ `cxi(`',
+    'Visual exchange (swap) inside function and block with X ' .. nl .. '`vifX` ➜ `vibX`',
+    'Text objects'
+      .. nl
+      .. '`c = class, C = conditional, f = function, ? = prompt, i = object`'
+      .. nl
+      .. '`b = balanced, B = block,    h = git-hunk,   o = block/cond/loop, L = loop`'
+      .. nl
+      .. '`t = tag,      w = word,     W = WORD,       x = comment,         l = last textobj, n = next textobj`'
+      .. nl
+      .. '`% = matching, a = argument, A = attribute,  s = sentence,        p = paragraph,    q = quote`',
   },
   global = {
-    'To delete all lines that have only whitespace \n  ➜ `:g/^s*$/d`',
-    'To delete all non-matching lines \n  ➜ `:vg/pattern/d`',
-    'Display 5 lines of context for matches \n  ➜ `g/pattern/z#.5|echo "=========="`',
-    'Copy all matches to end of file \n  ➜ `:g/pattern/t$`',
-    'Move all matches to end of file \n  ➜ `:g/pattern/m$`',
-    'Yank all matches to register A \n  ➜ `qaq:g/pattern/y A`',
-    'Put all matches from register A into buffer \n  ➜ `:g/pattern/pu A`',
-    'Increment each number at start of line by one \n  ➜ `:.,$g/^d/exe "normal! <C-A>"`',
-    'Reverse lookup of first field separated by space \n  ➜ `:g/pattern/?^w?p`',
-    'Reverse lookup of spaced fields with whole record \n  ➜ `:g/pattern/?^w?|+,/^[^ ]/-1p`',
-    'Add text to end of line that begins with pattern \n  ➜ `:g/^pattern/s/$/mytext`',
-    'Run macro in register q on matching lines \n   ➜ `:g/pattern/normal @q`',
-    'Delete duplicates lines \n  ➜ `:g/^(.*)(\\r?\\n\\1)+$/d`',
-    'Substitute all "bads" into "nice" only for lines that contain "good" \n  ➜ `:g/good/s/bad/nice/g`',
-    'Comment out all lines with "console" \n  ➜ `:g/console/normal I//`',
+    'To delete all lines that have only whitespace' .. nl .. '`:g/^s*$/d`',
+    'To delete all non-matching lines' .. nl .. '`:vg/pattern/d`',
+    'Display 5 lines of context for matches' .. nl .. '`g/pattern/z#.5|echo "=========="`',
+    'Copy all matches to end of file' .. nl .. '`:g/pattern/t$`',
+    'Move all matches to end of file' .. nl .. '`:g/pattern/m$`',
+    'Yank all matches to register A' .. nl .. '`qaq:g/pattern/y A`',
+    'Put all matches from register A into buffer' .. nl .. '`:g/pattern/pu A`',
+    'Increment each number at start of line by one' .. nl .. '`:.,$g/^d/exe "normal! <C-A>"`',
+    'Reverse lookup of first field separated by space' .. nl .. '`:g/pattern/?^w?p`',
+    'Reverse lookup of spaced fields with whole record' .. nl .. '`:g/pattern/?^w?|+,/^[^ ]/-1p`',
+    'Add text to end of line that begins with pattern' .. nl .. '`:g/^pattern/s/$/mytext`',
+    'Delete duplicates lines' .. nl .. '`:g/^(.*)(\\r?\\n\\1)+$/d`',
+    'Run macro in register q on matching lines' .. nl .. '`:g/pattern/normal @q`',
+    'Substitute all "bads" into "nice" only for lines that contain "good" ' .. nl .. '`:g/good/s/bad/nice/g`',
+    'Comment out all lines with "console"' .. nl .. '`:g/console/normal I//`',
   },
 }
-local get_tip = function()
+
+local parse_tip_args = function(args)
+  local custom_keys = vim.tbl_keys(custom_tips)
+  local rand_cat = custom_keys[math.random(1, #custom_keys)]
+  if args and #args > 0 then
+    if custom_tips[args[1]] then
+      rand_cat = args[1]
+    else
+      vim.notify('Invalid category: ' .. args[1], 3)
+    end
+  end
+  local rand_tip = custom_tips[rand_cat][math.random(1, #custom_tips[rand_cat])]
+  if args and #args > 1 then
+    if custom_tips[rand_cat][tonumber(args[2])] then
+      rand_tip = custom_tips[rand_cat][tonumber(args[2])]
+    else
+      vim.dbglog('TRYING')
+      vim.notify('Invalid tip index: ' .. args[2] .. ' (' .. rand_cat .. ')', 3)
+    end
+  end
+  return rand_cat, rand_tip
+end
+
+local get_tip = function(cmd)
   local url = 'https://vtip.43z.one'
   local job = require('plenary.job')
   --2/3 times show custom tips
-  if math.random(1, 3) >= 2 then
-    local custom_keys = vim.tbl_keys(custom_tips)
-    local rand_cat = custom_keys[math.random(1, #custom_keys)]
-    local rand_tip = custom_tips[rand_cat][math.random(1, #custom_tips[rand_cat])]
+  if #cmd.args > 1 or math.random(1, 3) >= 2 then
+    local rand_cat, rand_tip = parse_tip_args(cmd.fargs)
+    if type(rand_tip) == 'table' then
+      rand_tip = vim.fn.join(rand_tip, nl)
+    end
     vim.notify(rand_tip, 2, {
       title = rand_cat,
       render = 'simple-notitle',
@@ -80,6 +120,8 @@ local get_tip = function()
       on_open = function(win)
         local buf = vim.api.nvim_win_get_buf(win)
         vim.api.nvim_set_option_value('conceallevel', 3, { win = win })
+        vim.api.nvim_set_option_value('concealcursor', '', { win = win })
+        vim.api.nvim_set_option_value('spell', false, { win = win })
         vim.api.nvim_set_option_value('filetype', 'pandoc.markdown', { buf = buf })
       end,
       timeout = 8000,

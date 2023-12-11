@@ -11,7 +11,7 @@ local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
 
 --   
-cmd('Tip', tip.get_tip, { desc = ' get a random neovim tip' })
+cmd('Tip', tip.get_tip, { nargs = '*', desc = ' get a random neovim tip' })
 cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })
 -- cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
 cmd('CloseMulti', ui.close_multi, { desc = 'Close tabpage, window, or buffer in that order' })

@@ -255,7 +255,7 @@ local plugins = {
   -- traversal/swapping
   { 'mizlan/iswap.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'ziontee113/SelectEase', event = 'VeryLazy' },
-  { 'chrisgrieser/nvim-spider', event = 'VeryLazy' },
+  { 'chrisgrieser/nvim-spider', event = 'VeryLazy', commit = 'e0eeac5480704cc3fdd5bdadd4901ca5409d7838' },
   { 'echasnovski/mini.move', event = 'VeryLazy' },
   -- alignment
   { 'echasnovski/mini.align', event = 'VeryLazy' },

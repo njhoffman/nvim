@@ -1,6 +1,6 @@
 local stats_map = require('stats.commands-stats')
-local watch_map = require('stats.commands-watch')
-local track_map = require('stats.commands-track')
+-- local watch_map = require('stats.commands-watch')
+-- local track_map = require('stats.commands-track')
 
 local stats = require('stats.commands')
 vim.api.nvim_create_user_command('Stats', stats.command, {

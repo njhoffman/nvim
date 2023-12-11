@@ -27,13 +27,16 @@ local stats_overview = function(view)
   view = view or 'notify'
   local counts = utils.get_counts()
   local lines, hls = utils.align_list(counts)
-  output[view](lines, 'Overview', hls)
+  output[view](lines, 'Stats Overview', hls)
 end
 
 local command = function(cmd)
+  --stylua: ignore
   local cmd_map = {
-    keys = require('stats.commands.keys'),
-    lazy = require('stats.commands.lazy'),
+    keys    = require('stats.commands.keys'),
+    lazy    = require('stats.commands.lazy'),
+    profile = require('stats.commands.profile'),
+    files  = require('stats.commands.files'),
   }
   if cmd_map[cmd.fargs[1]] then
     cmd_map[cmd.fargs[1]].stats(cmd.fargs)

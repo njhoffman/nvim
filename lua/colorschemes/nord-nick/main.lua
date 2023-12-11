@@ -184,6 +184,7 @@ return function(injected_functions)
     Search({ fg = '#74efff', bg = '#0d314c', gui = 'NONE' }),
     Special({ fg = '#487ac8' }),
     SpecialChar({ fg = '#b88698' }), -- For special punctutation that does not fall in the catagories before.
+    SpecialComment({ fg = '#3698b3' }),
     Statement({ fg = '#5191D1' }),
     String({ fg = '#1094aa' }),
     Structure({ fg = '#3D71AC' }),

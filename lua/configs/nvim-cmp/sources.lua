@@ -14,7 +14,7 @@ local sources = {
           return true
         end,
       },
-      { name = 'codeium', max_item_count = 3 },
+      -- { name = 'codeium', max_item_count = 3 },
       {
         name = 'buffer',
         option = {

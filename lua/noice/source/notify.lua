@@ -1,4 +1,5 @@
 local require = require('noice.util.lazy')
+local parse_message = require('notify.parse')
 
 local Message = require('noice.message')
 local Manager = require('noice.message.manager')
@@ -38,46 +39,11 @@ function M.get_level(level)
   return 'info'
 end
 
-function M.parse_message(msg, opts)
-  local _opts = opts or {}
-  local _msg = msg
-  if type(msg) == 'table' then
-    if vim.tbl_islist(msg) then
-      if type(msg[1]) == 'string' then
-        _msg = vim.fn.join(msg, '\n')
-      elseif type(msg[1]) == 'table' and type(msg[1][1]) == 'table' and type(msg[1][1][1]) == 'string' then
-        _msg = ''
-        _opts.body_highlights = {}
-        for n, line in ipairs(msg) do
-          if n > 1 then
-            _msg = _msg .. '\n'
-          end
-          local line_msg = ''
-          for _, v in ipairs(line) do
-            line_msg = line_msg .. v[1]
-            if v[2] then
-              table.insert(_opts.body_highlights, { v[2], n - 1, #line_msg - #v[1], #line_msg })
-            end
-          end
-          _msg = _msg .. line_msg
-        end
-      else
-        _opts.filetype = opts.filetype or 'lua'
-        _msg = vim.inspect(msg)
-      end
-    else
-      _opts.filetype = opts.filetype or 'lua'
-      _msg = vim.inspect(msg)
-    end
-  end
-  return _msg, _opts
-end
-
 ---@param msg string
 ---@param level number|string
 ---@param opts? table<string, any>
 function M.notify(msg, level, opts)
-  local _msg, _opts = M.parse_message(msg, opts)
+  local _msg, _opts = parse_message(msg, opts)
 
   if vim.in_fast_event() then
     vim.schedule(function()

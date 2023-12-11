@@ -18,30 +18,63 @@ u.ftAbbr('fi', 'end')
 u.ftAbbr('!=', '~=')
 u.ftAbbr('!==', '~=')
 -- vim.cmd('setlocal iskeyword+=:')
-u.ftAbbr(':', '=')
+-- u.ftAbbr(':', '=')
 -- shorthands
 u.ftAbbr('tre', 'then return end') -- codespell-ignore
 
+local reload_methods = {
+  source = false,
+  dofile = false,
+  require = true,
+}
+
+local reload_package_chain = function()
+  local packages, package_path = {}, ''
+  local src_path = vim.fn.expand('%:r'):gsub('lua/', ''):gsub('/', '.')
+  for package_name in string.gmatch(src_path, '[^.]+') do
+    package_path = package_path .. (#package_path > 0 and '.' or '') .. package_name
+    if package.loaded[package_path] then
+      table.insert(packages, package_path)
+      package.loaded[package_path] = nil
+    end
+  end
+
+  for _, pkg in ipairs(packages) do
+    local ppath = vim.fn.stdpath('config') .. '/lua/' .. pkg:gsub('%.', '/')
+    if vim.fn.filereadable(ppath .. '.lua') == 0 then
+      ppath = ppath .. '/init'
+    end
+    if reload_methods.source == true and vim.fn.filereadable(ppath .. '.lua') then
+      vim.cmd.source(ppath .. '.lua')
+      vim.notify('sourced: ' .. ppath .. '.lua')
+    end
+    if reload_methods.dofile == true and vim.fn.filereadable(ppath .. '.lua') then
+      dofile(ppath .. '.lua')
+      vim.notify('dofile: ' .. ppath .. '.lua')
+    end
+    if reload_methods.require == true then
+      require(pkg)
+      vim.notify('reloaded: ' .. pkg)
+    end
+  end
+end
+
 -- if in nvim dir, reload file/plugin, otherwise run `make`
-vim.keymap.set('n', '<leader>r', function()
+vim.keymap.set('n', '<leader>iR', function()
   cmd('silent update')
-  local isNvimConfig = vim.loop.cwd() == vim.fn.stdpath('config')
+  local is_nvim_config = vim.loop.cwd() == vim.fn.stdpath('config')
   local filepath = vim.fn.expand('%:p')
 
   --- GUARD
   if filepath:find('nvim/after/ftplugin/') then
-    vim.notify('', 'ftplugins cannot be reloaded.', 'warn')
+    vim.notify('ftplugins cannot be reloaded.', 'warn')
     return
   elseif filepath:find('nvim/lua/.*keymap') or filepath:find('nvim/lua/.*keybinding') then
-    vim.notify('', 'keymaps cannot be reloaded due to `map-unique`', 'warn')
+    vim.notify('keymaps cannot be reloaded due to `map-unique`', 'warn')
     return
   -- unload from lua cache (assuming that the pwd is ~/.config/nvim)
-  elseif isNvimConfig then
-    local packageName = expand('%:r'):gsub('lua/', ''):gsub('/', '.')
-    package.loaded[packageName] = nil
-    cmd.source()
-    vim.notify('Re-sourced', packageName)
-
+  elseif is_nvim_config then
+    reload_package_chain()
   -- run `make`
   else
     vim.cmd.lmake()
@@ -128,4 +161,3 @@ end
 -- Set options to open require with gf
 vim.opt_local.include = [=[\v<((do|load)file|require)\s*\(?['"]\zs[^'"]+\ze['"]]=]
 vim.opt_local.includeexpr = 'v:lua.find_required_path(v:fname)'
--- }}}

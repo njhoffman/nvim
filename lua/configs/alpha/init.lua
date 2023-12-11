@@ -13,15 +13,7 @@ local utils = require('configs.alpha.utils')
 --      })
 
 vim.keymap.set('n', '<C-CR>', '<cmd>Alpha<cr>', { nowait = true, desc = 'load alpha start screen' })
-
-local header = {
-  type = 'text',
-  val = headers.big_header,
-  opts = {
-    position = 'center',
-    hl = 'Type',
-  },
-}
+local header = { type = 'text', val = headers.big_header, opts = { position = 'center', hl = 'Type' } }
 
 local my_unimpaired = {
   '[s ]s    prev/next spelling error',
@@ -103,18 +95,18 @@ local opts = {
 }
 
 local dashboard = require('alpha.themes.dashboard')
+--stylua: ignore
 local buttons = {
   type = 'group',
   val = {
-
     { type = 'text', val = 'Quick links', opts = { hl = 'SpecialComment', position = 'center' } },
     { type = 'padding', val = 1 },
-    dashboard.button('e', '  New file', '<cmd>ene<CR>'),
-    dashboard.button('SPC f f', '󰈞  Find file'),
-    dashboard.button('SPC f g', '󰊄  Live grep'),
-    dashboard.button('c', '  Configuration', '<cmd>cd ~/.config/nvim/ <CR>'),
+    dashboard.button('E', '  New file',       '<cmd>ene<CR>'),
+    dashboard.button('f', '󰈞  Find file',      '<cmd>Telescope find_files<CR>'),
+    dashboard.button('e', '󰊄  Live grep',      '<cmd>Telescope live_grep<CR>'),
+    dashboard.button('c', '  Configuration',  '<cmd>Lazy<CR>'),
     dashboard.button('u', '  Update plugins', '<cmd>Lazy sync<CR>'),
-    dashboard.button('q', '󰅚  Quit', '<cmd>qa<CR>'),
+    dashboard.button('q', '󰅚  Quit',           '<cmd>qa<CR>'),
   },
   position = 'center',
 }

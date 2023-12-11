@@ -16,6 +16,11 @@ counts.augroups = function()
   return aucounts.groups
 end
 
+counts.namespaces = function()
+  local ns = vim.api.nvim_get_namespaces()
+  return #ns
+end
+
 counts.memory = function()
   local pid = vim.fn.getpid()
   return table.remove(vim.fn.systemlist('ps h -p ' .. pid .. ' -o rss'), 1)
@@ -24,6 +29,50 @@ end
 counts.virtual = function()
   local pid = vim.fn.getpid()
   return table.remove(vim.fn.systemlist('ps h -p ' .. pid .. ' -o vsz'), 1)
+end
+
+counts.timers = function()
+  local timers = vim.fn.timer_info()
+  return #timers
+end
+
+local get_options = function(scope, conf_opts)
+  local res = {}
+  scope = scope or 'all'
+  for _, v in pairs(vim.api.nvim_get_all_options_info()) do
+    if scope == 'all' or scope == v.scope then
+      table.insert(res, v)
+    end
+  end
+  table.sort(res, function(left, right)
+    return left.scope .. left.name < right.scope .. right.name
+  end)
+  return res
+end
+
+counts.options_buffer = function()
+  return #get_options('buf')
+end
+
+counts.options_window = function()
+  return #get_options('win')
+end
+
+counts.options_global = function()
+  return #get_options('global')
+end
+
+counts.options = function()
+  return #get_options()
+end
+
+counts.packages = function()
+  -- return #package.loaders   7
+  -- return #package.path      345
+  -- return #package.cpath     163
+  -- return #package.config    10
+  -- return #vim.tbl_keys(package.preload)
+  return #vim.tbl_keys(package.loaded)
 end
 
 local exe_output = function(cmd)
@@ -35,19 +84,23 @@ local exe_output = function(cmd)
   return vim.api.nvim_eval('w:output_len')
 end
 
+--stylua: ignore
 local count_commands = {
-  { 'changes', ':changes' },
-  { 'commands', ':command' },
-  { 'functions', ':function' },
-  { 'highlights', ':highlight' },
-  { 'history', ':history' },
+  { 'changes',          ':changes' },
+  { 'commands',         ':command' },
+  { 'functions',        ':function' },
+  { 'highlights',       ':highlight' },
+  { 'history',          ':history' },
+  { 'messages',         ':message' },
+  { 'oldfiles',         ':oldfiles' },
+  { 'scriptnames',      ':scriptnames' },
+  { 'variables',        ':let' },
+  { 'variables_predef', ':let v:' },
+  { 'variables_buffer', ':let b:' },
+  { 'variables_window', ':let w:' },
+  { 'variables_global', ':let g:' },
   -- {  menu, ':menu'},
-  { 'messages', ':message' },
-  { 'oldfiles', ':oldfiles' },
-  { 'options', ':set' },
-  { 'scriptnames', ':scriptnames' },
   -- {  syntax, ':syntax'},
-  { 'variables', ':let' },
 }
 
 local function format_int(number)
@@ -69,15 +122,25 @@ local get_counts = function(keys)
     'memory',
     'augroups',
     'aucommands',
+    'namespaces',
     'highlights',
-    'commands',
     'variables',
+    -- 'variables_predef',
+    -- 'variables_buffer',
+    -- 'variables_window',
+    -- 'variables_global',
     'options',
+    -- 'options_buffer',
+    -- 'options_window',
+    -- 'options_global',
     'functions',
+    'timers',
+    'commands',
+    'packages',
+    'scriptnames',
     'oldfiles',
     'changes',
     'history',
-    'scriptnames',
     -- syntax
     -- messages
     -- menu

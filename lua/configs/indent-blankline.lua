@@ -21,6 +21,7 @@ local ft_exclude = {
   'lazy',
   'lspinfo',
   'mason',
+  'navbuddy',
   'neo-tree',
   'noice',
   'null-ls-info',
