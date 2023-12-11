@@ -1,5 +1,6 @@
 local error_patterns = {
-  '^E[%d]+: Error',
+  -- '^E[%d]+: Error',
+  '^E[%d]+:',
   '^Error executing Lua callback',
   '^Vim:Error executing Lua callback',
 }
