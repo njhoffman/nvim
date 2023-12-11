@@ -6,6 +6,9 @@
 ---@param line string
 ---@param width number
 ---@return string[]
+
+local base = require('notify.render.base')
+
 local function split_length(line, width)
   local text = {}
   local next_line
@@ -48,7 +51,7 @@ return function(bufnr, notif, highlights, config)
   if max_width == nil then
     max_width = 80
   end
-  notif.message = custom_wrap(notif.message, max_width)
+  local display_message = custom_wrap(vim.fn.deepcopy(notif.message), max_width)
 
   local default_titles = { 'Error', 'Warning', 'Notify' }
   local has_valid_manual_title = type(title) == 'string' and #title > 0 and not vim.tbl_contains(default_titles, title)
@@ -56,14 +59,14 @@ return function(bufnr, notif, highlights, config)
   if has_valid_manual_title then
     -- has title = icon + title as header row
     prefix = string.format(' %s %s', icon, title)
-    table.insert(notif.message, 1, prefix)
+    table.insert(display_message, 1, prefix)
   else
     -- no title = prefix the icon
     prefix = string.format(' %s', icon)
-    notif.message[1] = string.format('%s %s', prefix, notif.message[1])
+    display_message[1] = string.format('%s %s', prefix, display_message[1])
   end
 
-  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, notif.message)
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, display_message)
 
   local icon_length = vim.str_utfindex(icon)
   local prefix_length = vim.str_utfindex(prefix) + 1
@@ -82,6 +85,6 @@ return function(bufnr, notif, highlights, config)
   if notif.body_highlights then
     base.content_hl(bufnr, highlights, notif, 0, prefix_length + 1)
   else
-    base.body_hl(bufnr, highlights, notif, 0, prefix_length + 1, #notif.message)
+    base.body_hl(bufnr, highlights, notif, 0, prefix_length + 1, #display_message)
   end
 end

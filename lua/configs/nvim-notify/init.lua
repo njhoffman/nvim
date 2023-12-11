@@ -18,6 +18,7 @@ local cfg = {
   max_width = function()
     return math.floor(vim.opt.columns:get() / 5 * 3)
   end,
+  on_open = on_open,
   icons = {
     ERROR = '',
     WARN = '',

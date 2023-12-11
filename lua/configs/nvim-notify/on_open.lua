@@ -33,10 +33,10 @@ local function open_lua_error(bufnr, path, line, orig_map)
   vim.cmd(run_cmd .. ' +' .. line .. ' ' .. path)
 end
 
-local on_open = function(win)
-  vim.api.nvim_win_set_option(win, 'winblend', 10)
-  vim.api.nvim_win_set_option(win, 'wrap', false)
-  vim.api.nvim_win_set_config(win, { zindex = 100 })
+local on_open_old = function(win)
+  -- vim.api.nvim_win_set_option(win, 'winblend', 10)
+  -- vim.api.nvim_win_set_option(win, 'wrap', false)
+  -- vim.api.nvim_win_set_config(win, { zindex = 100 })
   local bufnr = vim.api.nvim_win_get_buf(win)
   local file_ok, notify_file = pcall(vim.api.nvim_buf_get_var, bufnr, 'notify_file')
   local _, notify_line = pcall(vim.api.nvim_buf_get_var, bufnr, 'notify_line')
@@ -50,6 +50,13 @@ local on_open = function(win)
       end,
     })
   end
+end
+
+local on_open = function(win, record)
+  local buf = vim.api.nvim_win_get_buf(win)
+  vim.api.nvim_win_set_option(win, 'sidescrolloff', 0)
+  -- local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
+  -- vim.api.nvim_buf_set_option(buf, 'filetype', filetype)
 end
 
 return on_open

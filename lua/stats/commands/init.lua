@@ -26,8 +26,8 @@ end
 local stats_overview = function(view)
   view = view or 'notify'
   local counts = utils.get_counts()
-  local lines = utils.align_list(counts)
-  output[view](lines, 'Stats Overview')
+  local lines, hls = utils.align_list(counts)
+  output[view](lines, 'Overview', hls)
 end
 
 local command = function(cmd)

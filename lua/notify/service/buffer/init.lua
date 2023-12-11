@@ -100,12 +100,15 @@ function NotificationBuf:render()
   local buf = self._buffer
 
   local render_namespace = require('notify.render.base').namespace()
-  api.nvim_buf_set_option(buf, 'filetype', 'notify')
+
   api.nvim_buf_set_option(buf, 'modifiable', true)
   api.nvim_buf_clear_namespace(buf, render_namespace, 0, -1)
 
-  notif.render(buf, notif, self.highlights, self._config)
+  api.nvim_buf_set_option(buf, 'filetype', notif.filetype or 'notify')
+  vim.keymap.set('n', 'q', '<cmd>q<cr>', { buffer = buf, silent = true })
+  vim.keymap.set('n', '<esc>', '<cmd>q<cr>', { buffer = buf, silent = true })
 
+  notif.render(buf, notif, self.highlights, self._config)
   api.nvim_buf_set_option(buf, 'modifiable', false)
 
   local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)

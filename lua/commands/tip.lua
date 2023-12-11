@@ -76,6 +76,7 @@ local get_tip = function()
     vim.notify(rand_tip, 2, {
       title = rand_cat,
       render = 'simple-notitle',
+      filetype = 'pandoc.markdown',
       on_open = function(win)
         local buf = vim.api.nvim_win_get_buf(win)
         vim.api.nvim_set_option_value('conceallevel', 3, { win = win })

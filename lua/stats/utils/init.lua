@@ -57,26 +57,21 @@ end
 local align_list = function(list, opts)
   opts = opts or {}
   local divider = opts.divider or ' '
-  local highlights = opts.highlights or { 'NotifyListCol1', 'NotifyListDiv', 'NotifyListCol2' }
+  -- local highlights = opts.highlights or { 'NotifyListCol1', 'NotifyListDiv', 'NotifyListCol2' }
+  local highlights = opts.highlights or { 'Keyword', 'NotifyListDiv', 'Comment' }
 
-  local rows = {}
-  for key, val in pairs(list) do
-    table.insert(rows, { key, val })
-  end
-  local widths = max_width(rows)
+  local widths = max_width(list)
 
   local lines, hls = {}, {}
-  for i, row in ipairs(rows) do
+  for i, row in ipairs(list) do
     local cols = {
       align_text(row[1], widths[1]),
       divider,
       align_text(row[2], widths[2], 'right'),
     }
-    table.insert(hls, {
-      { highlights[1], i - 1, 0, #row[1] },
-      { highlights[2], i - 1, #cols[1], #cols[1] + #cols[2] },
-      { highlights[3], i - 1, #cols[1] + #cols[2], #cols[1] + #cols[2] + #cols[3] },
-    })
+    table.insert(hls, { highlights[1], i - 1, 0, #row[1] })
+    table.insert(hls, { highlights[2], i - 1, #cols[1], #cols[1] + #cols[2] })
+    table.insert(hls, { highlights[3], i - 1, #cols[1] + #cols[2], #cols[1] + #cols[2] + #cols[3] })
 
     local line = vim.fn.join(cols, '')
     table.insert(lines, line)

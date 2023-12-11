@@ -141,12 +141,11 @@ function NotifyView:_notify(msg)
     end,
     on_open = function(win)
       self:set_win_options(win)
-      if msg.opts.filetype then
-        local buf = vim.api.nvim_win_get_buf(win)
-        vim.api.nvim_buf_set_option(buf, 'filetype', msg.opts.filetype)
-      end
       if self._opts.merge then
         self.win = win
+      end
+      if type(msg.opts.on_open) == 'function' then
+        msg.opts.on_open(win)
       end
     end,
     on_close = function()

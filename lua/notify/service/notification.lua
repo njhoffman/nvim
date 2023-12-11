@@ -54,6 +54,7 @@ function Notification:new(id, message, level, opts, config)
     repeat_count = opts.repeat_count,
     body_highlights = opts.body_highlights,
     body_level_highlights = opts.body_level_highlights,
+    filetype = opts.filetype or 'notify',
   }
   self.__index = self
   setmetatable(notif, self)
@@ -64,6 +65,7 @@ function Notification:record()
   return {
     id = self.id,
     message = self.message,
+    filetype = self.filetype,
     level = self.level,
     time = self.time,
     title = self.title,
