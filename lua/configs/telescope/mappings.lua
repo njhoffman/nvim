@@ -124,9 +124,10 @@ local file_maps = {
 
 local buffer_maps = {
   i = {
-    -- ['<C-Del>'] = c_actions.buffer_delete,
-    ['<C-Del>'] = 'delete_buffer',
-    ['<M-d>'] = 'delete_buffer',
+    ['<C-Del>'] = c_actions.delete_buffer,
+    ['<M-d>'] = c_actions.delete_buffer,
+    -- ['<C-Del>'] = 'delete_buffer',
+    -- ['<M-d>'] = 'delete_buffer',
   },
 }
 

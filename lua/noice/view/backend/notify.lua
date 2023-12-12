@@ -231,7 +231,6 @@ function NotifyView:show()
         table.insert(groups[i].content, line)
       end
     end
-
     for lvl, group in pairs(groups) do
       table.insert(todo, {
         content = vim.fn.join(group.content, '\n'),

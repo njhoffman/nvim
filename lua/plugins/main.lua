@@ -220,17 +220,30 @@ local plugins = {
   -- https://github.com/folke/flash.nvim
   { 'phaazon/hop.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   {
-    'ggandor/flit.nvim',
-    dependencies = { 'ggandor/leap.nvim', 'tpope/vim-repeat' },
-    event = 'VeryLazy',
-    -- keys = function()
-    --   local ret = {}
-    --   for _, key in ipairs({ "f", "F", "t", "T" }) do
-    --     ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
-    --   end
-    --   return ret
-    -- end,
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    },
   },
+  -- {
+  --   'ggandor/flit.nvim',
+  --   dependencies = { 'ggandor/leap.nvim', 'tpope/vim-repeat' },
+  --   event = 'VeryLazy',
+  --   -- keys = function()
+  --   --   local ret = {}
+  --   --   for _, key in ipairs({ "f", "F", "t", "T" }) do
+  --   --     ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
+  --   --   end
+  --   --   return ret
+  --   -- end,
+  -- },
   -- cursor
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
   { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },

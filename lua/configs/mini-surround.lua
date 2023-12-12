@@ -36,11 +36,6 @@ local vim_surround = {
   },
   search_method = 'cover_or_next',
 }
--- { "ys", desc = "󰅪 Add Surround Operator" },
--- { "s", mode = "x", desc = "󰅪 Add Surround Operator" },
--- { "yS", "ys$", desc = "󰅪 Surround to EoL", remap = true },
--- { "ds", desc = "󰅪 Delete Surround Operator" },
--- { "cs", desc = "󰅪 Change Surround Operator" },
 
 local custom_surroundings = {
   -- Lua long brackets - ysiwS
@@ -76,62 +71,29 @@ local cfg = {
   respect_selection_type = true,
   search_method = 'cover_or_next',
 }
---
--- ["x]s			Delete [count] characters [into register x] and start insert (s stands for Substitute).  Synonym for "cl" (not |linewise|).
--- vim.api.nvim_del_keymap('x', 'S')
 
+--stylua: ignore
 require('mini.surround').setup(cfg)
--- vim.keymap.set(
---   'n',
---   's<space>',
--- noremap <silent> s<space> :execute "normal wst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
---   ':silent! normal wst<space>',
---   { silent = true, expr = true, desc = 'quickly add surrounding ( to word' }
--- )
+vim.keymap.set('x', 'ys', 's', { silent = true, remap = true, desc = '󰅪 mini surround add visual selection' })
+vim.keymap.set('n', 'ys', 's', { silent = true, remap = true, desc = '󰅪 mini surround add operator' })
+vim.keymap.set('n', 'yS', 'ys$', { silent = true, remap = true, desc = '󰅪 mini surround to end of line' })
+vim.keymap.set('n', 'sS', 's0', { silent = true, remap = true, desc = '󰅪 mini surround to begin of line' })
+vim.keymap.set('n', 'yss', '^ys$', { silent = true, remap = true, desc = '󰅪 mini surround add line' })
+-- vim.keymap.set('n', 'yss', 'ys_', { remap = true })
+vim.keymap.set(
+  'n',
+  's<space>',
+  '<cmd>execute "normal hwst\\<space>" . nr2char(getchar()) . "\\<lt>esc>"<cr>',
+  { silent = true, remap = true, desc = '󰅪 mini surround quick add word' }
+)
 
--- vim.keymap.set(
---   { 'n' },
---   'ys',
---   "<cmd>lua MiniSurround.operator('add')<CR>",
---   { expr = true, desc = '󰅪 mini surround add operator selection' }
--- )
-
-vim.cmd([[
-  noremap <silent> s<space> :execute "normal hwst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
-  noremap <silent> ss :execute "normal hwst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr>
-" getline(".")[col(".")-1] == "\t"
-  " let isOnKeyword = matchstr(getline('.'), '\%'.col('.').'c.') =~# '\k'
-  " noremap s<space> :normal wst " . nr2char(getchar()) . <cr>
-]])
-
--- vim.keymap.set(
---   { 'x' },
---   'ys',
---   "<cmd>lua MiniSurround.add('visual')<CR>",
---   { desc = '󰅪 mini surround add visual selection' }
--- )
---
--- vim.keymap.set('n', 'yss', 'ys$', { remap = true, desc = '󰅪 mini surround add line' })
-
--- expr_map(m.add,       H.make_operator('add', nil, nil, true), 'Add surrounding')
---  expr_map(m.delete,    H.make_operator('delete'),              'Delete surrounding')
---  expr_map(m.replace,   H.make_operator('replace'),             'Replace surrounding')
---  expr_map(m.find,      H.make_operator('find', 'right'),       'Find right surrounding')
---  expr_map(m.find_left, H.make_operator('find', 'left'),        'Find left surrounding')
---  expr_map(m.highlight, H.make_operator('highlight'),           'Highlight surrounding')
---
---  H.map('n', m.update_n_lines, MiniSurround.update_n_lines, { desc = 'Update `MiniSurround.config.n_lines`' })
---  H.map('x', m.add, [[:<C-u>lua MiniSurround.add('visual')<CR>]], { desc = 'Add surrounding to selection' })
-
----   vim.keymap.set('n', 'yss', 'ys_', { remap = true })
--- vim.keymap.set('n', 'yss', '^ys$', { remap = true, desc = '󰅪 mini surround add line' })
--- vim.keymap.set(
---   { 'n' },
---   'ys',
---   [[:<C-u>lua MiniSurround.add('visual')<CR>]],
---   { silent = true, expr = true, desc = '󰅪 mini surround add visual selection' }
--- )
-
+vim.keymap.set(
+  'n',
+  'ss',
+  '<cmd>execute "normal hwst\\<space>" . nr2char(getchar()) . "\\<lt>esc>"<cr>',
+  { silent = true, remap = true, desc = '󰅪 mini surround quick add word' }
+)
+-- vim.cmd([[ noremap <silent> ss :execute "normal hwst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr> ]])
 --- Regular mappings:
 --- - `siw)` - add (`s`) for inner word (`iw`) parenthesis (`)`).
 --- - `siw?[[<CR>]]<CR>` - add (`s`) for inner word (`iw`) interactive surrounding (`?`): `[[` for left and `]]` for right.

@@ -2,7 +2,7 @@ local cfg = {
   keys = { f = 'f', F = 'F', t = 't', T = 'T' },
   -- A string like "nv", "nvo", "o", etc.
   -- labeled_modes = 'v',
-  labeled_modes = '',
+  labeled_modes = 'v',
   -- labeled_modes = 'cx',
   multiline = true,
   -- Like `leap`s similar argument (call-specific overrides).

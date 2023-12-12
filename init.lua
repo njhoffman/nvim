@@ -2,11 +2,13 @@
 
 -- require('preload')
 require('globals')
+
 -- require('qfview').setup()
 require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
 
 -- qfSeparator, qfLineNr, qfFilename
 for _, mod_name in ipairs({
+  'keymaps',
   'dial',
   'wf-setup',
   'devbox',
@@ -17,7 +19,6 @@ for _, mod_name in ipairs({
   'hover.setup',
   'configs.feline',
   'abbreviations',
-  'keymaps',
   'commands',
   'autocommands',
 }) do

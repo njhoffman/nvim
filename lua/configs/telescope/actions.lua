@@ -272,6 +272,7 @@ M.switch_grep_pickers_prev = function(prompt_bufnr)
   local is_grep_project = string.match(picker.prompt_title, 'Live Grep Project')
   local is_grep_buffer = string.match(picker.prompt_title, 'Live Grep Buffers')
   local is_grep_cwd = string.match(picker.prompt_title, 'Live Grep CWD')
+
   if is_grep_project then
     opts.cwd = vim.fn.join(bufparts, '/')
   elseif is_grep_buffer then
@@ -394,6 +395,7 @@ end
 M.search_reset = function(prompt_bufnr, opts)
   local picker = action_state.get_current_picker(prompt_bufnr)
   picker:reset_prompt()
+  -- picker.cache_picker.limit_entries, picker.__scrolling_limit, picker.max_results,
   -- TODO: detect if search is refined "Fuzzy match over" and reset
   -- local new_title = vim.tbl_get(picker, 'prompt_border', '_border_win_options', 'title')
   -- vim.dbglog('RESET', new_title, picker.prompt_title, picker.results_title, opts)
@@ -420,32 +422,21 @@ M.search_jump_start = function(_)
   vim.api.nvim_feedkeys(home_key, 'i', true)
 end
 
-M.buffer_delete = function(prompt_bufnr)
-  -- picker.cache_picker.limit_entries, picker.__scrolling_limit, picker.max_results,
-  local selection = action_state.get_selected_entry()
-  local opts = {
-    -- show_all_buffers = true,
-    -- sort_mru = true,
-    -- mappings = mappings.buffer,
-    -- ignore_current_buffer = false,
-    -- only_cwd = false,
-  }
-  vim.cmd('Bdelete ' .. selection.value)
-  -- actions.close(prompt_bufnr)
-  -- require("telescope.run")("leaderf", opts)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local leaderf = require('configs.telescope.leaderf')
-  local results = vim.tbl_filter(function(result)
-    return result.value ~= selection.value
-  end, picker.finder.results)
-  -- opts.default_selection_idx = res.default_selection_idx
-  local new_finder = finders.new_table({
-    results = results,
-    entry_maker = leaderf.gen_from_buffer(opts),
-  })
-  picker:refresh(new_finder, { reset_prompt = true })
-  vim.notify('Closed  ' .. selection.file_name, 1)
+--- Delete the selected buffer or all the buffers selected using multi selection.
+---@param prompt_bufnr number: The prompt bufnr
+M.delete_buffer = function(prompt_bufnr)
+  local current_picker = action_state.get_current_picker(prompt_bufnr)
+  local removed = {}
+  current_picker:delete_selection(function(selection)
+    local force = vim.api.nvim_buf_get_option(selection.bufnr, 'buftype') == 'terminal'
+    local ok = pcall(vim.api.nvim_buf_delete, selection.bufnr, { force = force })
+    table.insert(removed, selection.value)
+    return ok
+  end)
+  vim.notify('removed ' .. #removed .. ' buffers', 2)
 end
+
+vim.dbglog('🪚 [1]: actions.lua:438')
 
 local function create_scratch_win(filetype, lines)
   local buf, win

@@ -20,4 +20,5 @@ local log_levels = {
 
 -- `DEBUG_CODEIUM` environment variable: `trace`, `debug`, `info`, `warn`, `error`
 
+-- require('cmp.utils.debug').enable()/disable()
 return log_levels

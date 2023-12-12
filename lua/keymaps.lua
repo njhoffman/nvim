@@ -1558,7 +1558,7 @@ end, { desc = ' Open new scope' })
 -- Append to / delete from EoL
 local trailChars = { ",", ";", ")", "'", '"', "|", "\\", "{", ".", "}" }
 for _, key in pairs(trailChars) do
-  -- map("n", "<leader>a" .. key, "mzA" .. key .. "<Esc>`z", { desc = "which_key_ignore" })
+-- map("n", "<leader>a" .. key, "mzA" .. key .. "<Esc>`z", { desc = "which_key_ignore" })
 map("n", "<leader>a" .. key, "mzA" .. key .. "<Esc>`z", {
   desc = 'append or delete ' .. key .. ' from end of line',
 })

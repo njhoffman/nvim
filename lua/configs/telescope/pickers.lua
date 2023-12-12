@@ -32,9 +32,6 @@ local pickers = {
         separator = ' ',
         items = {
           { width = 4 },
-          { width = nil },
-          { width = nil },
-          { width = nil },
         },
       })
       return {

@@ -41,6 +41,14 @@ function _notify_override(self, msg)
 
   self:_notify(msg)
 
+  -- if #msg.messages > 1 then
+  --   if msg.content and #msg.content == #msg.messages then
+  --     msg.messages = vim.fn.slice(msg.messages, 0, 1)
+  --   else
+  --     vim.notify('#msg.content ' .. #msg.content .. ' ~= #msg.messages ' .. #msg.messages, 3)
+  --   end
+  -- end
+  _log_file(msg.messages[1], msg.content)
   for _, m in ipairs(msg.messages) do
     local id = m.opts.notify_id and m.opts.notify_id
     if replace_id ~= nil then
@@ -61,7 +69,6 @@ function _notify_override(self, msg)
       elseif msg.level == nil then
         msg_lvl = 2
       end
-      _log_file(msg_lvl, msg.content)
       if msg_lvl >= notify_lvl then
         state.active[id] = {
           crc = curr_crc,

@@ -4,6 +4,13 @@ if &filetype !=# 'lua'
 endif
 ]])
 
+local reload_config = {
+  branched = true,
+  source = false,
+  dofile = false,
+  require = true,
+}
+
 local cmd = vim.cmd
 local expand = vim.fn.expand
 local fmt = string.format
@@ -22,12 +29,6 @@ u.ftAbbr('!==', '~=')
 -- shorthands
 u.ftAbbr('tre', 'then return end') -- codespell-ignore
 
-local reload_methods = {
-  source = false,
-  dofile = false,
-  require = true,
-}
-
 local reload_package_chain = function()
   local packages, package_path = {}, ''
   local src_path = vim.fn.expand('%:r'):gsub('lua/', ''):gsub('/', '.')
@@ -39,20 +40,31 @@ local reload_package_chain = function()
     end
   end
 
+  if reload_config.branched then
+    for _, pkg in ipairs(packages) do
+      for name, _ in pairs(package.loaded) do
+        if name:find(pkg) == 1 then
+          package.loaded[name] = nil
+          table.insert(packages, name)
+        end
+      end
+    end
+  end
+
   for _, pkg in ipairs(packages) do
     local ppath = vim.fn.stdpath('config') .. '/lua/' .. pkg:gsub('%.', '/')
     if vim.fn.filereadable(ppath .. '.lua') == 0 then
       ppath = ppath .. '/init'
     end
-    if reload_methods.source == true and vim.fn.filereadable(ppath .. '.lua') then
+    if reload_config.source == true and vim.fn.filereadable(ppath .. '.lua') then
       vim.cmd.source(ppath .. '.lua')
       vim.notify('sourced: ' .. ppath .. '.lua')
     end
-    if reload_methods.dofile == true and vim.fn.filereadable(ppath .. '.lua') then
+    if reload_config.dofile == true and vim.fn.filereadable(ppath .. '.lua') then
       dofile(ppath .. '.lua')
       vim.notify('dofile: ' .. ppath .. '.lua')
     end
-    if reload_methods.require == true then
+    if reload_config.require == true then
       require(pkg)
       vim.notify('reloaded: ' .. pkg)
     end

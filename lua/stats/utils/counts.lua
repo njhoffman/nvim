@@ -17,8 +17,7 @@ counts.augroups = function()
 end
 
 counts.namespaces = function()
-  local ns = vim.api.nvim_get_namespaces()
-  return #ns
+  return #vim.tbl_keys(vim.api.nvim_get_namespaces())
 end
 
 counts.memory = function()
@@ -34,6 +33,30 @@ end
 counts.timers = function()
   local timers = vim.fn.timer_info()
   return #timers
+end
+
+counts.ext_leaked = function()
+  local nsn = vim.api.nvim_get_namespaces()
+  local count = 0
+  for name, ns in pairs(nsn) do
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      count = count + #vim.api.nvim_buf_get_extmarks(buf, ns, 0, -1, {})
+    end
+  end
+  return count
+  -- local nsn = vim.api.nvim_get_namespaces()
+  -- local count = 0
+  -- for name, ns in pairs(nsn) do
+  --   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+  --     local extmarks = vim.api.nvim_buf_get_extmarks(buf, ns, 0, -1, {
+  --       -- type = 'highlight', -- highlight, sign, virt_text, virt_lines
+  --       details = true,
+  --       hl_name = true,
+  --     })
+  --     -- extmarks[1][4] = { end_col = 68, end_right_gravity = false, end_row = 4, hl_eol = false, hl_group = "MatchParen", ns_id = 15, priority = 4096, right_gravity = true }
+  --     -- extmarks[1][4].virtual_text = { [1] = { [1] = "", [2] = "ActionHintsDefinition" }, [2] = { [1] = "", [2] = "ActionHintsReferences" }, [3] = { [1] = " 9", [2] = "ActionHintsCodeActions" } }, virt_text_hide = false, virt_text_pos = "eol"virt_text = { [1] = { [1] = " ", [2] = "ScrollbarHandle" } }, virt_text_hide = false, virt_text_pos = "right_align" }
+  --   end
+  -- end
 end
 
 local get_options = function(scope, conf_opts)
@@ -134,13 +157,14 @@ local get_counts = function(keys)
     -- 'options_window',
     -- 'options_global',
     'functions',
-    'timers',
     'commands',
     'packages',
     'scriptnames',
     'oldfiles',
     'changes',
     'history',
+    'timers',
+    'ext_leaked',
     -- syntax
     -- messages
     -- menu

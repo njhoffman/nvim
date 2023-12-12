@@ -138,7 +138,7 @@ vim.api.nvim_create_autocmd({ 'BufRead' }, {
   callback = function(event)
     -- vim.bo[event.buf].buflisted = false
     local buftype = vim.api.nvim_buf_get_option(event.buf, 'buftype')
-    vim.dbglog('BUFTYPE', buftype)
+    vim.dbglog('🪚 [2]: render.lua:23')
     if buftype == 'nofile' then
       vim.keymap.set('n', 'q', '<cmd>q<cr>', { buffer = event.buf, silent = true })
       vim.keymap.set('n', '<M-{>', '<cmd>q<cr>', { buffer = event.buf, silent = true })

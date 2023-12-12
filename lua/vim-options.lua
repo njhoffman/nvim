@@ -62,7 +62,8 @@ opt('pumheight', 10)
 opt('regexpengine', 0)
 opt('redrawtime', 3000)
 opt('scrolloff', 7)
-opt('selection', 'old') -- old, exclusive, inclusive
+opt('selection', 'old') -- old, exclusive, inclusive (default)
+opt('virtualedit', 'onemore') -- onemore, block, insert, all, none
 opt('sessionoptions', 'buffers,curdir,folds,help,resize,winpos,terminal') -- winsize messes up on load
 opt('shada', "!,'1000,<100,s500")
 
@@ -88,7 +89,6 @@ opt('ttimeout', true) -- 50
 opt('ttimeoutlen', 30) -- 50
 opt('undolevels', 1000)
 opt('updatetime', 2000) -- 4000
-opt('virtualedit', 'block') -- onemore, block, insert, all
 opt('whichwrap', 'b,s,<,>,[,],h,l')
 opt('wildignore', '*.o,*~,*.pyc') -- wildchar	   /charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
 opt('wildmode', 'longest:full,full')

@@ -247,9 +247,25 @@ require('noice').setup(cfg)
 require('telescope').load_extension('noice')
 noice_mapping.setup()
 
+vim.api.nvim_create_user_command('Silence', function()
+  require('notify').setup({ level = 5 })
+  require('noice').setup({
+    routes = {
+      {
+        filter = { event = 'msg_show', kind = '' }, -- find more_line, find written
+        opts = { skip = true },
+      },
+      {
+        filter = { event = 'notify.*', kind = '' }, -- find more_line, find written
+        opts = { skip = true },
+      },
+    },
+  })
+end, { desc = 'silence messaging by redirect and skip output of all routes in noice' })
+
 vim.keymap.set('c', '<S-Enter>', function()
   require('noice').redirect(vim.fn.getcmdline())
-end, { desc = 'Redirect Cmdline' })
+end, { desc = 'redirect cmdline output to view' })
 
 -- {
 --   -- default format

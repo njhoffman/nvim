@@ -138,19 +138,19 @@ local cfg = {
 }
 
 local setup_cmp = function()
-  local debug = require('cmp.utils.debug')
-  local log = function(...)
-    if debug_flag then
-      local data = {}
-      for _, v in ipairs({ ... }) do
-        if not vim.tbl_contains({ 'string', 'number', 'boolean' }, type(v)) then
-          v = vim.inspect(v)
-        end
-        table.insert(data, v)
-      end
-    end
-  end
-  vim.tbl_deep_extend('force', debug, { log = log })
+  -- local debug = require('cmp.utils.debug')
+  -- local log = function(...)
+  --   if debug_flag then
+  --     local data = {}
+  --     for _, v in ipairs({ ... }) do
+  --       if not vim.tbl_contains({ 'string', 'number', 'boolean' }, type(v)) then
+  --         v = vim.inspect(v)
+  --       end
+  --       table.insert(data, v)
+  --     end
+  --   end
+  -- end
+  -- vim.tbl_deep_extend('force', debug, { log = log })
 
   cmp.setup(cfg)
   cmp.setup.filetype('gitcommit', { sources = cmp.config.sources(sources.gitcommit) })

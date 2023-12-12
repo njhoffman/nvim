@@ -1,5 +1,3 @@
-local my_make_entry = {}
-
 local devicons = require('nvim-web-devicons')
 local entry_display = require('telescope.pickers.entry_display')
 
@@ -37,7 +35,7 @@ local function gen_from_buffer(opts)
       { entry.bufnr, 'TelescopeResultsNumber' },
       { entry.indicator, 'TelescopeResultsComment' },
       { entry.devicons, entry.devicons_highlight },
-      entry.file_name,
+      { entry.file_name, entry.file_name_highlight },
       { entry.dir_name, 'Comment' },
     })
   end
@@ -46,14 +44,15 @@ local function gen_from_buffer(opts)
     local bufname = entry.info.name ~= '' and entry.info.name or '[No Name]'
     local hidden = entry.info.hidden == 1 and 'h' or 'a'
     local readonly = vim.api.nvim_buf_get_option(entry.bufnr, 'readonly') and '=' or ' '
-    local changed = entry.info.changed == 1 and '+' or ' '
-    local indicator = entry.flag .. hidden .. readonly .. changed
+    local modified = entry.info.changed == 1 and '+' or ' '
+    local indicator = entry.flag .. hidden .. readonly .. modified
 
     local dir_name = vim.fn.fnamemodify(bufname, ':p:h')
     dir_name = string.gsub(dir_name, os.getenv('HOME'), '~')
     local file_name = vim.fn.fnamemodify(bufname, ':p:t')
 
     local icons, highlight = devicons.get_icon(bufname, string.match(bufname, '%a+$'), { default = true })
+    local file_name_highlight = modified and 'BufferCurrentMod' or 'TelescopeNormal'
 
     return {
       valid = true,
@@ -70,6 +69,7 @@ local function gen_from_buffer(opts)
       devicons_highlight = highlight,
 
       file_name = file_name,
+      file_name_highlight = file_name_highlight,
       dir_name = dir_name,
     }
   end

@@ -1,5 +1,63 @@
 local nl = '\n   ➜ '
+-- cc C            " change (replace) entire line, to end of line
+-- c0              " change (replace) to the start of the line
+-- c$              " change (replace) to the end of the line
+-- d0              " delete (cut) to the beginning of the line
+-- d/pattern       " delete (cut) to first occurrence of 'pattern'
+-- "_dd            " delete line into the 'blackhole' register (no clipboard)
+-- nnoremap Y y$
+-- xnoremap Y <Esc>y$gv
+-- <ctrl-v>{n}     " insert char by decimal value
+-- <ctrl-v>u{n}    " insert unicode char by decimal value
+-- <ctrl-w>        " delete a word backwards
+-- <ctrl-o>{cmd}   " execute one NORMAL mode command (see below note)
+-- "   A neat trick to cycle through the delete registers is to use `"1p` and then run `u.`, the undo+repeat advances the 'pasted register' so it will perform `"2p`, `"3p` and so forth# .
+    -- nnoremap <leader>b "_
+    -- nnoremap <leader>d "_d
+    -- nnoremap <leader>D "_D
+    -- nnoremap <leader>dd "_dd
+    -- xnoremap <leader>b "_
+    -- xnoremap <leader>D "_D
+    -- xnoremap <leader>D "_D
+    -- xnoremap <leader>x "_x
+-- o               " move to other end of marked area
+-- O               " move to other corner of block
+-- :g/regex/{ex}               " run :{ex} for every line matching regex
+-- :g!/regex/{ex}              " run :{ex} for every line NOT matching regex
+-- :v/regex/{ex}               " same as above, shortcut to `:g!`
+-- :g/regex/y {reg}            " copy all matching lines to register {reg}
+--                             " capitalize {reg} to append to {reg}
+-- :g/regex/m $                " move all matching lines to end of file
+-- :g/regex/-1j                " for every matching line, go up one line and join
+-- :%s/\s\+$//e                " remove all trailing whitespaces throughout buffer
+-- :g/^/m0                     " reverse order of all lines in current buffer
 
+-- ### Search examples
+-- ```
+-- /^fred.*joe.*bill           line beginning with fred, followed by joe then bill
+-- /^[A-J]                     line beginning A-J
+-- /^[A-J][a-z]\+\s            line beginning A-J then one or more lowercase characters then space or tab
+-- /fred\_.\{-}joe             fred then anything then joe (over multiple lines)
+-- /fred\_s\{-}joe             fred then any whitespace (including newlines) then joe
+-- /fred\|joe                  fred OR joe
+-- ```vim
+-- set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case\ --hidden
+-- set grepformat=%f:%l:%c:%m
+-- ```
+--
+-- And then run the same search:
+--
+-- ```vim
+-- " search the current file
+-- :grep 'foo' %
+-- " search the entire project
+-- :grep 'foo'
+-- :cfdo %s/foo/bar/g
+-- " save all changes
+-- :wall
+-- - Macros are essentially just a saved series of keystrokes, if you’re recording a macro and make a mistake, don’t start over, instead, undo it and keep going normally, using macro `q` as an example (recorded with `qq`), once you’re finished with the macro, press `"qp` to paste it to an empty line, remove the mistaken keystrokes and the undo and copy it back into the `q` register with `"qy$`.
+
+--stylua: ignore
 local custom_tips = {
   -- http://eriklievaart.com/cheat/applications/vim/vimquickfix.html
   tmux = {
@@ -23,12 +81,12 @@ local custom_tips = {
   },
   quickfix = {
     'Populate the quickfix list with the results of a command, use `:cexpr`',
-    'Search current file and populate quickfix ' .. nl .. '`:vimgrep /re/ %:p`',
-    'Execute macro @a on every quickfix item ' .. nl .. '`:cdo! norm @a`',
-    'To perform search and replace on quickfix items ' .. nl .. '`:cdo! s/re/repl/`',
-    'Search recursively with grep for quickfix list ' .. nl .. '`:gr zsh . -R`',
     'Use the quickfix command `cope` to navigate multiple quickfix lists',
-    'Search the files in the argument list with ##' .. nl .. '`:vimgrep // ##`',
+    'Search current file and populate quickfix '       .. nl .. '`:vimgrep /re/ %:p`',
+    'Execute macro @a on every quickfix item '         .. nl .. '`:cdo! norm @a`',
+    'To perform search and replace on quickfix items ' .. nl .. '`:cdo! s/re/repl/`',
+    'Search recursively with grep for quickfix list '  .. nl .. '`:gr zsh . -R`',
+    'Search the files in the argument list with ##'    .. nl .. '`:vimgrep // ##`',
     'Other vimgrep examples'
       .. nl
       .. '`:vimgrep /git/ install.sh`'

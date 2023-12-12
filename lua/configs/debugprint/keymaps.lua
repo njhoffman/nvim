@@ -8,7 +8,7 @@ local setup_debugprint = function()
   -- stylua: ignore
   local keys = {
     remove         = 'god',
-    remove_all     = 'goD',
+    -- remove_all     = 'goD',
     variable_below = 'goi', -- gov
     variable_above = 'goI', -- goV
     operator_below = 'goo',
@@ -18,18 +18,12 @@ local setup_debugprint = function()
     -- got, goa
   }
 
-  keymap('n', keys.remove, function()
-    require('debugprint').deleteprints()
+  keymap('n', keys.remove, function(opts)
+    require('debugprint').deleteprints(opts)
   end, {
     label = '󰹝 delete debug',
     desc = '󰹝 delete debug statements in buffer',
-  })
-
-  keymap('n', keys.remove_all, function()
-    require('debugprint').deleteprints()
-  end, {
-    label = '󰹝 delete all debug',
-    desc = '󰹝 delete all debug statements in project',
+    range = true,
   })
 
   -- Note: setting `expr=true` and returning the value are essential
@@ -121,6 +115,7 @@ local setup_printing_press = function()
   }
 
 local keys = {
+    remove_all     = 'goD',
     -- message      = '<leader>fm', -- goi
     message      = 'gom', -- goi
     message_above = 'goM', -- goi

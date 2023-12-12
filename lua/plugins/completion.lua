@@ -3,6 +3,7 @@ local utils = require('utils.lazy')
 local plugins = {
   {
     'njhoffman/nvim-cmp',
+    dir = '~/git/nvim-cmp',
     event = { 'InsertEnter', 'CmdlineEnter', 'CmdwinEnter' },
     dependencies = {
       'David-Kunz/cmp-npm',
