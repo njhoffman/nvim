@@ -186,63 +186,44 @@ local main_alt = {
 
 local in_history = false
 local cmdline = {
-  ['<C-z>'] = {
-    c = function()
+  ['<Tab>'] = cmp.mapping({
+    c = function(fallback)
       local cmp = require('cmp')
       if cmp.visible() then
         cmp.select_next_item()
-      else
-        cmp.complete()
+      elseif type(fallback) == 'function' then
+        fallback()
       end
     end,
-  },
-  ['<Tab>'] = {
-    c = function()
-      local cmp = require('cmp')
-      if cmp.visible() then
-        cmp.select_next_item()
-      else
-        cmp.complete()
-      end
-    end,
-  },
-  ['<S-Tab>'] = {
-    c = function()
+  }),
+  ['<S-Tab>'] = cmp.mapping({
+    c = function(fallback)
       local cmp = require('cmp')
       if cmp.visible() then
         cmp.select_prev_item()
-      else
-        cmp.complete()
+      elseif type(fallback) == 'function' then
+        fallback()
       end
     end,
-  },
-  -- ['<C-n>'] = {
-  --   c = function(fallback)
-  --     local cmp = require('cmp')
-  --     if cmp.visible() then
-  --       cmp.select_next_item()
-  --     else
-  --       fallback()
-  --     end
-  --   end,
-  -- },
-  -- ['<C-p>'] = {
-  --   c = function(fallback)
-  --     local cmp = require('cmp')
-  --     if cmp.visible() then
-  --       cmp.select_prev_item()
-  --     else
-  --       fallback()
-  --     end
-  --   end,
-  -- },
-  ['<C-e>'] = {
-    c = mapping.abort(),
-  },
-  ['<C-y>'] = {
-    c = mapping.confirm({ select = false }),
-  },
-  ['<C-D>'] = { c = cmp.mapping.abort() },
+  }),
+  ['<C-e>'] = cmp.mapping({
+    c = function(fallback)
+      if cmp.visible() then
+        cmp.abort()
+      elseif type(fallback) == 'function' then
+        fallback()
+      end
+    end,
+  }),
+  ['<C-y>'] = cmp.mapping({
+    c = function(fallback)
+      if cmp.visible() then
+        cmp.confirm({ select = false })
+      elseif type(fallback) == 'function' then
+        fallback()
+      end
+    end,
+  }),
   ['<C-n>'] = cmp.mapping({
     c = function(fallback)
       if cmp.visible() then

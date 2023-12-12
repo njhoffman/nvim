@@ -62,8 +62,10 @@ opt('pumheight', 10)
 opt('regexpengine', 0)
 opt('redrawtime', 3000)
 opt('scrolloff', 7)
-opt('selection', 'old') -- old, exclusive, inclusive (default)
-opt('virtualedit', 'onemore') -- onemore, block, insert, all, none
+
+opt('selection', 'inclusive') -- old, exclusive, inclusive (default)
+opt('virtualedit', 'none') -- onemore, block, insert, all, none
+
 opt('sessionoptions', 'buffers,curdir,folds,help,resize,winpos,terminal') -- winsize messes up on load
 opt('shada', "!,'1000,<100,s500")
 

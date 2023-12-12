@@ -1,7 +1,11 @@
 -- TODO: escape characters, highlight labels, investigate per_page problem
 
-local gh_search = require("nvim-github-codesearch")
+local gh_search = require('nvim-github-codesearch')
 
+local examples = {
+  'System.out.println user:napisani in:readme extension:md',
+  'ParameterToSearch filename:noice.lua per_page:100',
+}
 gh_search.setup({
   -- -- an optional table entry to explicitly configure the API key to use for Github API requests.
   -- -- alternatively, you can configure this parameter by export an environment variable named "GITHUB_AUTH_TOKEN"
@@ -14,7 +18,7 @@ gh_search.setup({
   use_telescope = true,
 })
 
-vim.api.nvim_create_user_command("GithubSearch", gh_search.prompt, {})
+vim.api.nvim_create_user_command('GithubSearch', gh_search.prompt, {})
 
 -- Usage -- this will display a prompt to enter search terms
 -- gh_search.prompt()

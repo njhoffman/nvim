@@ -37,7 +37,7 @@ local set_pwd = function(dir, method)
     state.last_project = dir
     history.add_session_project(dir, method)
     set_user_option(dir, method)
-    logger:debug('pwd ' .. path.home_path(dir) .. ' (' .. tostring(method) .. ')')
+    logger:trace('pwd ' .. path.home_path(dir) .. ' (' .. tostring(method) .. ')')
     if vim.fn.getcwd() ~= dir then
       history.write_projects_to_history(true)
       set_cwd(dir, method)

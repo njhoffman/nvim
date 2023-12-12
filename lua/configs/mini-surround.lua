@@ -74,7 +74,8 @@ local cfg = {
 
 --stylua: ignore
 require('mini.surround').setup(cfg)
-vim.keymap.set('x', 'ys', 's', { silent = true, remap = true, desc = '󰅪 mini surround add visual selection' })
+-- vim.keymap.set('x', 'ys', 's', { silent = true, remap = true, desc = '󰅪 mini surround add visual selection' })
+-- vim.keymap.set('x', 'ys', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
 vim.keymap.set('n', 'ys', 's', { silent = true, remap = true, desc = '󰅪 mini surround add operator' })
 vim.keymap.set('n', 'yS', 'ys$', { silent = true, remap = true, desc = '󰅪 mini surround to end of line' })
 vim.keymap.set('n', 'sS', 's0', { silent = true, remap = true, desc = '󰅪 mini surround to begin of line' })

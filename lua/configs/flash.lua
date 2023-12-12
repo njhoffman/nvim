@@ -251,7 +251,7 @@ local default_cfg = {
 
 local cfg = {
   modes = {
-    search = { enabled = true },
+    search = { enabled = false },
     char = {
       autohide = function(motion)
         -- autohide flash when the operator is `y` or `d`
@@ -319,3 +319,33 @@ require('flash').setup(cfg)
 --   end
 -- end)
 -- end
+
+-- require("flash").jump({
+--   action = function(match, state)
+--     vim.api.nvim_win_call(match.win, function()
+--       vim.api.nvim_win_set_cursor(match.win, match.pos)
+--       vim.diagnostic.open_float()
+--     end)
+--     state:restore()
+--   end,
+-- })
+--
+-- -- More advanced example that also highlights diagnostics:
+-- require("flash").jump({
+--   matcher = function(win)
+--     ---@param diag Diagnostic
+--     return vim.tbl_map(function(diag)
+--       return {
+--         pos = { diag.lnum + 1, diag.col },
+--         end_pos = { diag.end_lnum + 1, diag.end_col - 1 },
+--       }
+--     end, vim.diagnostic.get(vim.api.nvim_win_get_buf(win)))
+--   end,
+--   action = function(match, state)
+--     vim.api.nvim_win_call(match.win, function()
+--       vim.api.nvim_win_set_cursor(match.win, match.pos)
+--       vim.diagnostic.open_float()
+--     end)
+--     state:restore()
+--   end,
+-- })

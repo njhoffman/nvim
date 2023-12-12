@@ -11,10 +11,23 @@ local setup_mappings = function()
     keymap_opts
   )
 
+  vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
   vim.api.nvim_set_keymap('n', '<M-T>', "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>", keymap_opts)
   vim.api.nvim_set_keymap('n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', keymap_opts)
   vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', keymap_opts)
   vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
+  vim.api.nvim_set_keymap(
+    'n',
+    '[e',
+    '<cmd>lua vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })<CR>',
+    keymap_opts
+  )
+  vim.api.nvim_set_keymap(
+    'n',
+    ']e',
+    '<cmd>lua vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })<CR>',
+    keymap_opts
+  )
   vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
   -- vim.keymap.set('n', '[e', function()
   --   vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })

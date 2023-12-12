@@ -1,24 +1,10 @@
-local clear_local = function(state)
-  for _, provider in ipairs(state.providers) do
-    for _, key in ipairs(vim.tbl_keys(provider)) do
-      if string.match(key, '^_.*') then
-        provider[key] = nil
-      end
-    end
-  end
-  state.enabled = {}
-end
+-- {|M.foo}('bar') > {\<M-0>M.foo('bar')|
+-- vim.keymap.set('n', '<M-0>', '<cmd>execute "normal i<M-0>"', { remap = true })
+--  map('x', '*', [[y/\V<C-R>=escape(@", '/\')<CR><CR>]])
+-- vim.cmd([[ execute "normal i\<M-0>" ]])
+-- vim.cmd([[ execute "normal! \<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)" ]])
+-- vim.cmd([[ execute "normal! \<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)" ]])
 
-local state = {
-  providers = {
-    {
-      one = 'val one',
-      two = 'val two',
-      _local_one = 'local one',
-      _local_two = 'local two',
-    },
-  },
-}
-
-clear_local(state)
-vim.dbglog('state', state)
+-- map('n', ']a', ':execute ":" . v:count . "next"<CR>', {
+-- vim.fn.execute('normal i\\<M-0>')
+-- vim.fn.execute('normal! \\<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)')

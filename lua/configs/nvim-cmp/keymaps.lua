@@ -13,15 +13,23 @@ local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
-
+--       節 缾      了ﴰ   ﮕ ﳎ        陋 גּ גּ      ﴯ   
+local pfx = ' '
 local preserve_mapping_verticality = false
 local in_history = false
 local mapping = {
   main = {
-    ['<C-x><C-o>'] = cmp.mapping.complete({}),
-    ['<C-x><C-s>'] = cmp.mapping.complete({ config = { sources = { { name = 'luasnip' } } } }),
-    ['<C-x><C-d>'] = cmp.mapping.complete({ config = { sources = { { name = 'faker.quick_data ' } } } }),
+    ['<C-x><C-o>'] = cmp.mapping.complete({ desc = pfx .. 'start completion source' }),
+    ['<C-x><C-s>'] = cmp.mapping.complete({
+      desc = pfx .. 'start snippets completion',
+      config = { sources = { { name = 'luasnip' } } },
+    }),
+    ['<C-x><C-d>'] = cmp.mapping.complete({
+      desc = pfx .. 'start ai completions',
+      config = { sources = { { name = 'faker.quick_data ' } } },
+    }),
     ['<C-g>'] = cmp.mapping.complete({
+      desc = pfx .. 'start github copilot completion',
       config = {
         sources = {
           {
@@ -41,11 +49,11 @@ local mapping = {
         })
       elseif luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
-      -- elseif has_words_before() then
-      --   cmp.complete()
+        -- elseif has_words_before() then
+        --   cmp.complete()
       elseif type(fallback) == 'function' then
-        -- fallback()
         cmp.complete({})
+        -- fallback()
       end
     end, { 'i', 's' }),
     ['<C-p>'] = cmp.mapping(function(fallback)
@@ -57,8 +65,8 @@ local mapping = {
         })
       elseif luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
-      -- elseif has_words_before() then
-      --   cmp.complete()
+        -- elseif has_words_before() then
+        --   cmp.complete()
       elseif type(fallback) == 'function' then
         cmp.complete({})
         -- fallback()
@@ -82,7 +90,6 @@ local mapping = {
     ['<C-e>'] = cmp.mapping.abort(),
     ['<C-d>'] = cmp.mapping.abort(),
     -- ['<CR>'] = cmp.mapping.confirm({ select = false }),
-
     ['<CR>'] = cmp.mapping({
       i = function(fallback)
         if cmp.visible() and cmp.get_active_entry() then
@@ -107,8 +114,8 @@ local mapping = {
         cmp.select_next_item({ behavior = cmp.ConfirmBehavior.Select })
       elseif luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
-      -- elseif has_words_before() then
-      --   cmp.complete()
+        -- elseif has_words_before() then
+        --   cmp.complete()
       elseif type(fallback) == 'function' then
         fallback()
       end
@@ -198,10 +205,10 @@ local mapping = {
           cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
           in_history = false
         elseif in_history == true then
+          cmp.mapping(cmp.complete())
           feedkeys.call(keymap.t('<Down>'), 'c')
-        elseif type(fallback) == 'function' then
-          fallback()
-          -- cmp.mapping(cmp.complete())
+          -- elseif type(fallback) == 'function' then
+          --   fallback()
           -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
         end
       end,
@@ -214,7 +221,7 @@ local mapping = {
           })
           in_history = false
         else
-          -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
+          cmp.mapping.complete({ config = { sources = { { name = 'cmdline_history' } } } })
           feedkeys.call(keymap.t('<Up>'), 'c')
           in_history = true
         end

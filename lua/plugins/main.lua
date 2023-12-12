@@ -220,17 +220,17 @@ local plugins = {
   -- https://github.com/folke/flash.nvim
   { 'phaazon/hop.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   {
-    "folke/flash.nvim",
-    event = "VeryLazy",
+    'folke/flash.nvim',
+    event = 'VeryLazy',
     opts = {},
     -- stylua: ignore
-    keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-    },
+    -- keys = {
+    --   { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+    --   { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+    --   { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+    --   { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    --   { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    -- },
   },
   -- {
   --   'ggandor/flit.nvim',
@@ -255,7 +255,11 @@ local plugins = {
   -- pairs
   -- { 'echasnovski/mini.pairs', event = 'InsertEnter' },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
-  { 'altermo/ultimate-autopair.nvim', event = { 'InsertEnter' }, branch = 'v0.6' },
+  {
+    'altermo/ultimate-autopair.nvim',
+    event = { 'InsertEnter' },
+    branch = 'v0.6',
+  },
   { 'gbprod/substitute.nvim', event = { 'VeryLazy' } },
   -- textobjects
   { 'echasnovski/mini.ai', event = { 'VeryLazy' } },
@@ -721,25 +725,25 @@ local plugins = {
     opts = { automatic = true, command = true, executable = true, default = '/bin/bash' },
   },
   { 'ray-x/go.nvim', dependencies = { 'ray-x/guihua.lua' }, ft = 'go' },
-  { -- auto-convert string and f/template string
-    'chrisgrieser/nvim-puppeteer',
-    ft = { 'python', 'javascript', 'typescript', 'lua' },
-    init = function()
-      vim.g.puppeteer_lua_format_string = true
-    end,
-    keys = {
-      { -- Toggle string formatting in lua
-        'gtp',
-        function()
-          vim.g.puppeteer_lua_format_string = not vim.g.puppeteer_lua_format_string
-          local status = vim.g.puppeteer_lua_format_string and 'enabled' or 'disabled'
-          vim.notify('Puppeteer', 'Lua string formatting ' .. status)
-        end,
-        ft = 'lua',
-        desc = '󰅳 lua string formatting',
-      },
-    },
-  },
+  -- { -- auto-convert string and f/template string
+  --   'chrisgrieser/nvim-puppeteer',
+  --   ft = { 'python', 'javascript', 'typescript', 'lua' },
+  --   init = function()
+  --     vim.g.puppeteer_lua_format_string = true
+  --   end,
+  --   keys = {
+  --     { -- Toggle string formatting in lua
+  --       'gtp',
+  --       function()
+  --         vim.g.puppeteer_lua_format_string = not vim.g.puppeteer_lua_format_string
+  --         local status = vim.g.puppeteer_lua_format_string and 'enabled' or 'disabled'
+  --         vim.notify('Puppeteer', 'Lua string formatting ' .. status)
+  --       end,
+  --       ft = 'lua',
+  --       desc = '󰅳 lua string formatting',
+  --     },
+  --   },
+  -- },
   {
     'llllvvuu/nvim-js-actions',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },

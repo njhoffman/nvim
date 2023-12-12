@@ -52,7 +52,8 @@ local function gen_from_buffer(opts)
     local file_name = vim.fn.fnamemodify(bufname, ':p:t')
 
     local icons, highlight = devicons.get_icon(bufname, string.match(bufname, '%a+$'), { default = true })
-    local file_name_highlight = modified and 'BufferCurrentMod' or 'TelescopeNormal'
+
+    local file_name_highlight = entry.info.changed == 1 and 'BufferInactiveMod' or 'TelescopeNormal'
 
     return {
       valid = true,

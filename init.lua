@@ -54,6 +54,14 @@ vim.defer_fn(function()
     },
     use_virtual_text = true,
   })
+  require('mapper').map('i', '<C-D>', '<cmd>norm d$<cr>', {
+    category = 'Motion',
+    label = 'delete to eol',
+    desc = 'delete until the end of line',
+  })
+
+  vim.keymap.set('n', '<M-0>', 'i<M-0><esc>', { remap = true, desc = 'warp pair symbol forwads' })
+  vim.keymap.set('n', '<M-9>', 'i<M-9><esc>', { remap = true, desc = 'warp pair symbol backwards' })
 end, 100)
 
 -- require("notifications.recipes.progress").config()

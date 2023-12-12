@@ -34,7 +34,7 @@ M.output_log = function(level, level_config, message_maker, ...)
       local fp = io.open(file, 'a')
       if fp then
         local time_diff = string.sub(tostring((os.clock() - config.start_time) * 1), 1, 9)
-        local str = string.format('%-9s %s\n', time_diff, msg)
+        local str = string.format('%-8s %s\n', time_diff, msg)
         fp:write(str)
         fp:close()
       end

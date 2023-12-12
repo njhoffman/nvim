@@ -646,6 +646,7 @@ map('n', 'gg', '<Plug>(Smoothie_gg)', {
   noremap = false,
 })
 
+-- todo: why do i ahve to rebind this
 map('i', '<C-D>', '<cmd>norm d$<cr>', {
   category = 'Motion',
   label = 'delete to eol',
@@ -709,6 +710,12 @@ map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
 --  -- Search visually selected text (slightly better than builtins in Neovim>=0.8)
 --  map('x', '*', [[y/\V<C-R>=escape(@", '/\')<CR><CR>]])
 --  map('x', '#', [[y?\V<C-R>=escape(@", '?\')<CR><CR>]])
+
+map('i', '<c-f>', '<Esc>ea', {
+  category = 'Motion',
+  label = 'jump over word',
+  desc = 'jump over word while staying in insert mode',
+})
 
 map('n', 'U', '', {
   category = 'Motion',
@@ -1564,6 +1571,32 @@ map("n", "<leader>a" .. key, "mzA" .. key .. "<Esc>`z", {
 })
 end
 --------------------------------------------------------------------------------
+--
+-- " These mappings extend the spirit of * and # for visual searching.
+-- " Use visual select to select an area, then search for matches by
+-- " typing * or #. This is very useful for searching for other instances of
+-- " long, complex strings that may contain regex methacharacters and multiple
+-- " lines. You don't have to worry about quoting.
+-- vmap <silent> * y:let @/=substitute(escape(@",'.$*[^\/~'),'\n','\\n','g')<CR>n
+-- vmap <silent> # y:let @/=substitute(escape(@",'.$*[^\/~'),'\n','\\n','g')<CR>N
+-- vnoremap <silent> * :<C-U>
+--               \let old_reg=getreg('"')<bar>
+--               \let old_regmode=getregtype('"')<cr>
+--               \gvy/<C-R><C-R>=substitute(substitute(
+--               \escape(@", '\\/.*$^~[]' ), "\n$", "", ""),
+--               \"\n", '\\_[[:return:]]', "g")<cr><cr>
+--               \:call setreg('"', old_reg, old_regmode)<cr>
+-- vnoremap <silent> # :<C-U>
+--               \let old_reg=getreg('"')<bar>
+--               \let old_regmode=getregtype('"')<cr>
+--               \gvy?<C-R><C-R>=substitute(substitute(
+--               \escape(@", '\\/.*$^~[]' ), "\n$", "", ""),
+--               \"\n", '\\_[[:return:]]', "g")<cr><cr>
+--               \:call setreg('"', old_reg, old_regmode)<cr>
+-- " This maps \y so that it will yank the visual selection and quote the regex
+-- " metacharacters. For example, use v to select some text; type \y; then type
+-- " CTRL-R" to insert the yanked selection with metacharacters escaped.
+-- vmap <silent> <leader>y y:let @"=substitute(escape(@",'.$*[^\/~'),'\n','\\n','g')<CR>
 -- LINE & CHARACTER MOVEMENT
 -- keymap("n", "<Down>", [[<cmd>. move +1<CR>==]], { desc = "󰜮 Move Line Down" })
 -- keymap("n", "<Up>", [[<cmd>. move -2<CR>==]], { desc = "󰜷 Move Line Up" })

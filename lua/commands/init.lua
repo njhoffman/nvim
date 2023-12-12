@@ -10,6 +10,14 @@ require('commands.inspect')
 local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
 
+-- TODO: resume visual selection after switching
+vim.api.nvim_create_user_command('Vblock', function()
+  vim.o.virtualedit = vim.o.virtualedit == 'block' and 'none' or 'block'
+  vim.notify('virtualedit: ' .. vim.o.virtualedit)
+end, { desc = 'Toggle block virtualedit', range = true })
+vim.api.nvim_set_keymap('n', '<M-C-V>', ':Vblock<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('x', '<M-C-V>', ':Vblock<CR>', { noremap = true, silent = true })
+
 --   
 cmd('Tip', tip.get_tip, { nargs = '*', desc = ' get a random neovim tip' })
 cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })

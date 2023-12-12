@@ -56,6 +56,20 @@ local nl = '\n   ➜ '
 -- " save all changes
 -- :wall
 -- - Macros are essentially just a saved series of keystrokes, if you’re recording a macro and make a mistake, don’t start over, instead, undo it and keep going normally, using macro `q` as an example (recorded with `qq`), once you’re finished with the macro, press `"qp` to paste it to an empty line, remove the mistaken keystrokes and the undo and copy it back into the `q` register with `"qy$`.
+  -- surroudn with multiple characters
+-- (from visual mode)
+-- c ``` <C-r>" ``` <Esc>
+-- :%s/myUniqueQuery/prefix&suffix
+-- ca'(<C-R>-) -- surroudn something in quotes in parenthesis
+-- visually selected surround
+--   :norm yss'
+-- :.,+2norm yss<li><CR>
+-- <c-v>2j$S<li>
+-- cc -- alternative to dd
+-- s? -- interactive
+
+-- fly (insert) (type existing outer parenthesis to jump) ({[] })
+-- tabout (map,cmap)
 
 --stylua: ignore
 local custom_tips = {
@@ -68,6 +82,11 @@ local custom_tips = {
     'Tmux in copy-mode Y yanks selection and inserts it into commandline',
     'Tmux to paste system clipboard' .. nl .. '`<ctrl>+a+<ctrl>+p`',
     'Tmux to paste buffer: <ctrl>+a+p' .. nl .. ' to select buffer to paste: <ctrl>+A+P ',
+  },
+  insert = {
+    {'To do a one-off normal command while in insert mode: ', '`<ctrl+o>(motion) i.e. <ctrl+o>w`'},
+    {'To jump to begining of line in insert mode:', '`<ctrl+[o][$]`'},
+    {'Jump over word while staying in insert mode:', '<ctrl>+f'},
   },
   misc = {
     'To quickly output a lua function/variable' .. nl .. '`:lua =vim.diagnostic.config()`',

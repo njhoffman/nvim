@@ -12,7 +12,7 @@ local Level = {
 -- { '', ''} { '', ''} { '', ''} { '󰌵', ''}
 --     ✎  
 
-local names = { '✎', '', '', '', '' }
+local names = { '', '󰌵', '', '', '' }
 
 --- Convert log level to string representation.
 -- @function name
