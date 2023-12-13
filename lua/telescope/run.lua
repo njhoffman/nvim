@@ -93,16 +93,20 @@ local function run(plugin, cmd, user_opts)
     return telemap[mapkey].cmd(opts)
   end
 
+  local ok, err1, err2
   if plugin == 'builtin' and type(builtin[cmd]) == 'function' then
-    builtin[cmd](opts)
+    ok, err1 = pcall(builtin[cmd], opts)
   elseif type(extensions[plugin]) == 'table' then
-    extensions[plugin][cmd](opts)
+    ok, err2 = pcall(plugin[cmd], opts)
   else
     local msg = 'cmd: ' .. cmd
     if vim.fn.empty(plugin) == 0 then
       msg = 'plugin: ' .. plugin .. ' - ' .. msg
     end
     vim.notify('No telescope extension found with ' .. msg)
+  end
+  if not ok then
+    vim.notify('Error running ' .. cmd .. ' for ' .. plugin .. '\n' .. vim.inspect(err1, err2), 4)
   end
 end
 

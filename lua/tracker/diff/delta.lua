@@ -1,15 +1,15 @@
 ---@diagnostic disable: missing-parameter
 ---@diagnostic disable: param-type-mismatch
 
-local crc = require("tracker.crc")
+local crc = require('tracker.diff.crc')
 
 local get_item_id = function(provider, fields, item)
-  fields = type(fields) == "string" and { fields } or fields
+  fields = type(fields) == 'string' and { fields } or fields
   local item_id = nil
   for _, field in ipairs(fields) do
-    if type(item[field]) ~= "nil" and item[field] ~= "" then
-      item_id = item_id == nil and "" or item_id
-      item_id = item_id .. " " .. item[field]
+    if type(item[field]) ~= 'nil' and item[field] ~= '' then
+      item_id = item_id == nil and '' or item_id
+      item_id = item_id .. ' ' .. item[field]
     end
   end
   return item_id
@@ -19,7 +19,7 @@ local parse_data = function(provider)
   local items = {}
   local function parse_item(item)
     local item_id = get_item_id(provider, provider.id_fields, item)
-    if type(item_id) ~= "nil" and item_id ~= "" then
+    if type(item_id) ~= 'nil' and item_id ~= '' then
       local crc_hash = crc.get_crc(item_id)
       item.item_id = item_id
       items[tostring(crc_hash)] = item
@@ -67,7 +67,7 @@ end
 
 local check_diff = function(provider, prov_state)
   local start = vim.fn.reltime()
-  if type(prov_state.time_get) == "nil" then
+  if type(prov_state.time_get) == 'nil' then
     prov_state.time_get = 0
     prov_state.time_diff = 0
     prov_state.prev_items = provider.parse_data(provider)

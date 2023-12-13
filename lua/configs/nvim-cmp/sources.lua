@@ -39,12 +39,16 @@ local sources = {
           onlyCurrentFiletype = true, -- default: false
           minLength = 3,
         },
-      }, -- {
-      --    name = "omni",
-      --    option = {
-      --      disable_omnifuncs = { "v:lua.vim.lsp.omnifunc" },
-      --    },
-      --  },
+      },
+      -- {
+      --   name = 'omni',
+      --   option = {
+      --     disable_omnifuncs = { 'v:lua.vim.lsp.omnifunc' },
+      --   },
+      --   entry_filter = function(entry)
+      --     return entry.word:match('^[%w_]+$')
+      --   end,
+      -- },
       {
         name = 'luasnip',
         option = { use_show_condition = true },

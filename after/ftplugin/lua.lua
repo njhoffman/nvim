@@ -24,6 +24,7 @@ u.ftAbbr('var', 'local')
 u.ftAbbr('fi', 'end')
 u.ftAbbr('!=', '~=')
 u.ftAbbr('!==', '~=')
+u.ftAbbr('===', '==')
 -- vim.cmd('setlocal iskeyword+=:')
 -- u.ftAbbr(':', '=')
 -- shorthands

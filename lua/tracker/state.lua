@@ -1,5 +1,6 @@
 local state = {
-  timer = nil,
+  initialized = {},
+  timers = {},
   metrics = {},
   history = {},
   totals = {

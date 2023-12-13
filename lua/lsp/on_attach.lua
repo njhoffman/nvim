@@ -63,6 +63,11 @@ local on_attach = function(client, bufnr)
     return vim.notify('Skipping buffer lsp', 1)
   end
 
+  --       vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+  -- vim.lsp.omnifunc = nil
+  -- vim.api.nvim_set_option_value('omnifunc', nil, {})
+  -- vim.api.nvim_set_option_value('omnifunc', nil, { buf = bufnr })
+
   format.on_attach(client, bufnr)
   setup_mappings()
 

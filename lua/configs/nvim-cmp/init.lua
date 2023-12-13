@@ -11,7 +11,8 @@ local MAX_DOCUMENT_WIDTH = 40
 local WIN_HIGHLIGHT = 'Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None'
 
 local sources = require('configs.nvim-cmp.sources')
-local mapping = require('configs.nvim-cmp.keymaps')
+local mapping_cmdline = require('configs.nvim-cmp.keys-cmd')
+local mapping_main = require('configs.nvim-cmp.keys-main')
 local formatting = require('configs.nvim-cmp.formatting')
 local sorting = require('configs.nvim-cmp.sorting')
 
@@ -90,7 +91,7 @@ local cfg = {
   completion = {
     keyword_length = 1,
     -- keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
-    completeopt = 'menu,menuone,noselect',
+    completeopt = 'menuone,noselect,preview',
     -- completeopt = 'menuone,preview,noselect,noinsert',
   },
   snippet = {
@@ -112,7 +113,7 @@ local cfg = {
     completion = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
     documentation = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
   },
-  mapping = cmp.mapping.preset.insert(mapping.main),
+  mapping = cmp.mapping.preset.insert(mapping_main),
   sources = cmp.config.sources(sources.main[1], sources.main[2]),
   view = {
     entries = {
@@ -176,14 +177,14 @@ local setup_cmp = function()
     end,
   })
   cmp.setup.cmdline({ '/', '?' }, {
-    mapping = cmp.mapping.preset.cmdline(mapping.cmdline),
+    mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
     sources = cmp.config.sources(sources.cmdsearch),
     matching = { disallow_symbol_nonprefix_matching = false },
     -- sorting = { comparators = {} },
   })
   --
   cmp.setup.cmdline(':', {
-    mapping = cmp.mapping.preset.cmdline(mapping.cmdline),
+    mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
     sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
     matching = { disallow_symbol_nonprefix_matching = false },
   })

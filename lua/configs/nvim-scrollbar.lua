@@ -148,7 +148,7 @@ local opts = {
   hide_if_all_visible = true, -- Hides everything if all lines are visible
   handle = {
     text = ' ',
-    color = '#223355',
+    color = '#224385',
     hide_if_all_visible = true, -- Hides handle if all lines are visible
   },
   autocmd = {
@@ -194,7 +194,7 @@ local opts = {
   },
   handlers = {
     cursor = true,
-    diagnostic = false,
+    diagnostic = true,
     search = true, -- Requires hlslens to be loaded
   },
 }

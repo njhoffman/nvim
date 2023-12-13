@@ -22,7 +22,8 @@ opt('cedit', '<C-t>') -- ctrl-f interferes with popup completion
 opt('clipboard', 'unnamedplus')
 opt('cmdheight', 0) -- 0
 opt('cmdwinheight', 10)
-opt('completeopt', 'menu,menuone,noinsert') -- noselect, noinsert
+-- opt('complete', nil) -- no omnifunc, completefunc, tagfunc, etc
+opt('completeopt', 'menuone,noselect,preview') -- noselect, noinsert
 opt('confirm', true)
 opt('cpoptions', 'aABceFs_r') -- C causes certain vim programs to screw up, x makes command execute even if exiting
 opt('encoding', 'UTF-8')
@@ -55,7 +56,6 @@ opt('makeprg', 'make --silent --warn-undefined-variables')
 opt('matchtime', 3) -- How many tenths of a second to blink when matching brackets
 opt('modelines', 5)
 opt('mouse', 'nivh')
-opt('omnifunc', '')
 opt('previewheight', 15)
 opt('pumblend', 10)
 opt('pumheight', 10)
@@ -70,7 +70,7 @@ opt('sessionoptions', 'buffers,curdir,folds,help,resize,winpos,terminal') -- win
 opt('shada', "!,'1000,<100,s500")
 
 -- F silents filename (but needed for bufread on vimenter), C? default: filnxtToOCF
-opt('shortmess', 'ltToOCFa') -- ltToOCF
+opt('shortmess', 'ltToOcCFa') -- ltToOCF
 opt('showbreak', '↳ ')
 opt('showcmd', true)
 opt('showmatch', true)

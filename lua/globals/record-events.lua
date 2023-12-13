@@ -142,7 +142,7 @@ local queue = {}
 local output_events = function()
   local event_n = 0
   local last_event = ''
-  local combined = {}
+  local combined = { '   ' }
   for _, ev in ipairs(queue) do
     if ev == last_event or last_event == '' then
       event_n = event_n + 1
@@ -154,7 +154,6 @@ local output_events = function()
       last_event = ev
     end
   end
-
   if event_n > 0 then
     last_event = event_n > 1 and last_event .. ' x' .. event_n or last_event
     table.insert(combined, last_event)
@@ -197,6 +196,7 @@ local record_event = function(show_data)
 end
 
 return {
+  icon = '',
   get_events = get_events,
   record_event = record_event,
   output_events = output_events,

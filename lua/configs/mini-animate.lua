@@ -111,7 +111,8 @@ local cfg = {
     enable = true,
     -- gen_path.line(), gen_path.angle(), gen_path.walls(), gen_path.spiral()
     timing = animate.gen_timing.linear({ duration = 100, unit = 'total' }),
-    path = animate.gen_path.angle(),
+    path = animate.gen_path.line(),
+    -- path = animate.gen_path.angle(),
   },
   scroll = { enable = false },
   resize = {

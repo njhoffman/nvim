@@ -15,12 +15,17 @@ local update_title = function()
   local parts = { left = '', mid = '', right = '' }
   ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
   if get_queued_count() > 0 or not state.current.last_elapsed then
-    parts.left = #state.current.queued .. '/' .. #state.providers .. 'Load' .. ' ..'
+    parts.left = 'Loading ' .. #state.current.queued .. '/' .. #state.providers
     ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
-    parts.right = vim.fn.reltimestr(vim.fn.reltime(state.current.start))
+    parts.right = vim.fn.reltimestr(vim.fn.reltime(state.start))
   else
-    parts.left = #state.providers .. '/' .. #state.providers .. 'Done'
-    parts.right = state.current.last_elapsed
+    parts.left = #state.providers
+      .. '/'
+      .. #state.providers
+      .. ' finished (#'
+      .. tostring(state.current.batch_idx)
+      .. ')'
+    parts.right = string.format('%.6fs', state.current.last_elapsed)
   end
   parts.right = tostring(parts.right)
   parts.mid = string.rep('', state.popup.size.width - #parts.left - #parts.right, ' ')
@@ -45,7 +50,7 @@ local create_popup = function(winsize)
     focusable = false,
     border = 'rounded',
     bufpos = { 0, 0 },
-    row = parent.h / 1.5,
+    row = parent.h - 5,
     col = parent.w,
     anchor = 'SE',
     zindex = 2,
@@ -66,18 +71,68 @@ end
 --   return matched
 -- end
 --
+
+local provider_time = function(name)
+  return
+end
+
+local update_provider_time = function(provider)
+  local last_elapsed = tonumber(vim.fn.reltimestr(vim.fn.reltime(provider.start)))
+  provider.start = nil
+  if type(state.timing.providers[provider.name]) ~= 'table' then
+    state.timing.providers[provider.name] = {
+      n = 0,
+      min = 0,
+      max = 0,
+      avg = 0,
+      total = 0,
+      last_elapsed = 0,
+    }
+  end
+  local target = state.timing.providers[provider.name]
+  target.n = target.n + 1
+  target.total = target.total + last_elapsed
+  target.avg = target.total / target.n
+  target.max = math.max(target.max, last_elapsed)
+  target.min = target.min == 0 and last_elapsed or math.min(target.min, last_elapsed)
+  target.last_elapsed = last_elapsed
+  provider.last_elapsed = last_elapsed
+end
+
+local update_batch_time = function()
+  state.timing.batch.n = state.timing.batch.n + 1
+  local total_elapsed = 0
+  for _, provider in ipairs(state.providers) do
+    local p_timing = state.timing.providers[provider.name] or {}
+    local p_elapsed = p_timing.last_elapsed or 0
+    total_elapsed = total_elapsed + p_elapsed
+  end
+  state.current.last_elapsed = total_elapsed
+  state.timing.batch.total = total_elapsed + state.timing.batch.total
+  state.timing.batch.avg = state.timing.batch.total / state.timing.batch.n
+  state.timing.batch.max = math.max(state.timing.batch.max, total_elapsed)
+  state.timing.batch.min = state.timing.batch.min == 0 and state.current.last_elapsed
+    or math.min(state.timing.batch.min, total_elapsed)
+end
+
+local last_batch_id = 0
 local update_line_cb = function(provider, result)
   ---@diagnostic disable-next-line: missing-parameter
+  update_provider_time(provider)
+
   state.current.completed[provider.idx] = provider.last_elapsed
   state.current.queued[provider.idx] = false
-  if get_queued_count() == 0 then
-    ---@diagnostic disable-next-line: missing-parameter
+  if get_queued_count() == 0 and state.current.batch_idx ~= last_batch_id then
+    update_batch_time()
+    last_batch_id = state.current.batch_idx
   end
-  local summary = (provider.last_elapsed or '--------') .. ' ' .. result.summary
+
+  local hl = vim.api.nvim_buf_add_highlight
+  local summary = (string.format('%.8f', provider.last_elapsed) or '--------') .. ' ' .. result.summary
   vim.api.nvim_buf_set_lines(state.popup.bufnr, provider.idx - 1, provider.idx, false, { summary })
-  vim.api.nvim_buf_add_highlight(state.popup.bufnr, 0, 'Comment', provider.idx - 1, 1, 10)
-  vim.api.nvim_buf_add_highlight(state.popup.bufnr, 0, result.hl, provider.idx - 1, 10, 11)
-  vim.api.nvim_buf_add_highlight(state.popup.bufnr, 0, result.hl, provider.idx - 1, 11, 12 + string.len(result.name))
+  hl(state.popup.bufnr, 0, 'Comment', provider.idx - 1, 0, 10)
+  hl(state.popup.bufnr, 0, result.hl, provider.idx - 1, 11, 16)
+  hl(state.popup.bufnr, 0, 'Keyword', provider.idx - 1, 17, -1)
   update_title()
 end
 
@@ -91,6 +146,7 @@ local update_popup = function()
   for _, provider in pairs(state.providers) do
     local p_timing = state.timing.providers[provider.name] or {}
     provider = vim.tbl_deep_extend('force', provider, {
+      start = vim.fn.reltime(),
       content = nil,
       summary = nil,
     })

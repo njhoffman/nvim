@@ -1,11 +1,12 @@
-local out = require("tracker.output")
-local diff = require("tracker.diff")
+local out = require('tracker.output')
+local diff = require('tracker.diff')
 
 local defaults = {}
 
 defaults.provider = {
-  label = "items",
-  id_fields = { "key" },
+  label = 'items',
+  icon = '',
+  id_fields = { 'key' },
   desc_fields = {},
   output_diff = out.output_diff,
   output_group = out.output_group,
@@ -23,10 +24,10 @@ defaults.config = {
     enabled = true,
     group = false,
     notify = {
-      level = "debug",
+      level = 'debug',
     },
     logfile = {
-      file = "filename",
+      file = 'filename',
     },
     panel = {
       float = true,
@@ -40,11 +41,11 @@ defaults.config = {
     interval = 3,
     enabled = true,
     list = {
-      augroups = { provider = "tracker.metrics.augroups" },
-      aucommands = { provider = "tracker.metrics.aucommands", group = true },
+      -- augroups = { provider = 'tracker.metrics.augroups' },
+      -- aucommands = { provider = 'tracker.metrics.aucommands', group = true },
       -- commands = { provider = "tracker.metrics.commands", group = true },
       -- functions = { provider = "tracker.metrics.functions", group = true },
-      -- highlights = { provider = "tracker.metrics.highlights", group = true },
+      highlights = { provider = 'tracker.metrics.highlights' },
       -- keymaps_g = { provider = "tracker.metrics.keymaps_g" },
       -- variables_g = { provider = "tracker.metrics.variables_g" },
       -- options_g = { provider = "tracker.metrics.options_g" },
@@ -60,18 +61,18 @@ local assign_globals = function(user_cfg, def_cfg, keys)
     cfg.global[key] = def_cfg[key]
     cfg.user[key] = user_cfg[key]
   end
-  return vim.tbl_deep_extend("keep", cfg.user, cfg.global)
+  return vim.tbl_deep_extend('keep', cfg.user, cfg.global)
 end
 
 defaults.assign_config_metrics = function(user_cfg)
-  local cfg_met = user_cfg.metrics or {}
+  local cfg_met = user_cfg or {}
   local user_list = cfg_met.list or {}
   local def_met = defaults.config.metrics
-  local global = assign_globals(cfg_met, def_met, { "interval", "enabled" })
-  local list = vim.tbl_deep_extend("keep", user_list, def_met.list)
+  local global = assign_globals(cfg_met, def_met, { 'interval', 'enabled' })
+  local list = vim.tbl_deep_extend('keep', user_list, def_met.list)
   local metrics = {}
   for key, metric_cfg in pairs(list) do
-    metrics[key] = vim.tbl_deep_extend("keep", user_list[key] or {}, metric_cfg, global)
+    metrics[key] = vim.tbl_deep_extend('keep', user_list[key] or {}, metric_cfg, global)
   end
   return metrics
 end
@@ -79,11 +80,11 @@ end
 defaults.assign_config_outputs = function(user_cfg)
   local cfg_outs = user_cfg.outputs or {}
   local def_outs = defaults.config.outputs
-  local global = assign_globals(cfg_outs, def_outs, { "group", "enabled" })
+  local global = assign_globals(cfg_outs, def_outs, { 'group', 'enabled' })
   local outputs = {
-    notify = vim.tbl_deep_extend("keep", cfg_outs.notify or {}, def_outs.notify, global),
-    logfile = vim.tbl_deep_extend("keep", cfg_outs.logfile or {}, def_outs.logfile, global),
-    panel = vim.tbl_deep_extend("keep", cfg_outs.panel or {}, def_outs.panel, global),
+    notify = vim.tbl_deep_extend('keep', cfg_outs.notify or {}, def_outs.notify, global),
+    logfile = vim.tbl_deep_extend('keep', cfg_outs.logfile or {}, def_outs.logfile, global),
+    panel = vim.tbl_deep_extend('keep', cfg_outs.panel or {}, def_outs.panel, global),
   }
   return outputs
 end

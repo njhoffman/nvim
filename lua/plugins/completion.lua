@@ -13,6 +13,14 @@ local plugins = {
       'tzachar/cmp-ai',
       'f3fora/cmp-spell',
       'hrsh7th/cmp-calc',
+      -- {
+      --   'hrsh7th/cmp-omni',
+      --   config = function()
+      --     require('cmp').setup({
+      --       sources = {{ name = 'omni', option = { disable_omnifuncs = { 'v:lua.vim.lsp.omnifunc' } } } },
+      --      })
+      --   end,
+      -- },
       'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-emoji',
       { 'chrisgrieser/cmp_yanky', dependencies = 'yanky.nvim' },

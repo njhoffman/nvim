@@ -15,6 +15,7 @@ local state = {
       avg = 0,
       min = 0,
       max = 0,
+      total = 0,
     },
   },
   source = {

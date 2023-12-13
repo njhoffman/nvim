@@ -94,13 +94,14 @@ local get_splits = function(directions)
   return splits
 end
 
+local cmd = 'BufferDelete'
 local close_multi = function(skip_prompt)
   local tabs = vim.api.nvim_list_tabpages() or {}
   local splits = get_splits({ 'l', 'h', 'j', 'k' }, true) or {}
   local curr_win = vim.api.nvim_get_current_win()
   local is_popup = vim.tbl_get(vim.api.nvim_win_get_config(curr_win), 'relative') ~= ''
   if #tabs > 1 then
-    vim.cmd('silent Bdelete')
+    vim.cmd('silent ' .. cmd .. '')
     vim.cmd('tabclose!')
     return
   end
@@ -111,13 +112,13 @@ local close_multi = function(skip_prompt)
     pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
   else
     if skip_prompt == true then
-      vim.cmd('silent Bdelete!')
+      vim.cmd('silent ' .. cmd .. '!')
       if #get_loaded_buffers() == 0 then
         vim.cmd('exit')
       end
     else
       if #get_loaded_buffers() > 0 then
-        vim.cmd('silent Bdelete')
+        vim.cmd('silent ' .. cmd .. '')
       end
     end
   end
@@ -133,13 +134,15 @@ end
 local close_popups = function()
   local n = 0
   for _, win in ipairs(vim.api.nvim_list_wins()) do
-    local config = vim.api.nvim_win_get_config(win)
-    if config.relative ~= '' then
-      n = n + 1
-      vim.api.nvim_win_close(win, false)
+    if vim.api.nvim_win_is_valid(win) then
+      local config = vim.api.nvim_win_get_config(win)
+      if config.relative ~= '' then
+        n = n + 1
+        vim.api.nvim_win_close(win, false)
+      end
     end
+    print('Closed ' .. n .. ' popup windows')
   end
-  print('Closed ' .. n .. ' popup windows')
 end
 
 return {

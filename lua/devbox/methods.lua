@@ -22,14 +22,14 @@ local ext_methods = {
   { 'cexpr', term_handler('cexpr') },
   { 'cfile', term_handler('cfile') },
   { 'cWORD', term_handler('cWORD') },
-  { 'syn', syntax.handler },
-  { 'man', man.handler },
-  { 'help', help.handler },
+  -- { 'syn', syntax.handler },
+  -- { 'man', man.handler },
+  -- { 'help', help.handler },
   -- { "help", dict.handler },
 }
 
 local lsp_methods = {
-  { 'hover', 'textDocument/hover' },
+  -- { 'hover', 'textDocument/hover' },
   -- { "signature", "textDocument/signatureHelp" },
   -- { "definition", "textDocument/definition" },
   -- { "references", "textDocument/references" },
