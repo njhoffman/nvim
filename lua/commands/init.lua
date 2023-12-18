@@ -4,6 +4,7 @@ local tip = require('commands.tip')
 local help = require('commands.help')
 local debug = require('commands.debug')
 -- local paste = require('commands.paste')
+local reload = require('commands.reload')
 local system = require('commands.system')
 require('commands.inspect')
 
@@ -20,6 +21,7 @@ vim.api.nvim_set_keymap('x', '<M-C-V>', ':Vblock<CR>', { noremap = true, silent 
 
 --   
 cmd('Tip', tip.get_tip, { nargs = '*', desc = ' get a random neovim tip' })
+cmd('Reload', reload.reload(), { nargs = '*', desc = ' Reload /  Make' })
 cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })
 -- cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
 cmd('CloseMulti', ui.close_multi, { desc = 'Close tabpage, window, or buffer in that order' })
@@ -29,6 +31,7 @@ cmd('GetPaths', debug.get_paths, { desc = 'Get path collections (rtpaths, o.pack
 cmd('Trash', system.trash_file, { desc = 'Send file to system trash' })
 cmd('Delete', system.trash_file, { desc = 'Send file to system trash' })
 -- cmd("TrashRecover", system.trash_file, { desc = "Send file to system trash" })
+vim.api.nvim_set_keymap('n', '<leader>iR', ':Reload<cr>', { noremap = true, silent = true })
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'lua',

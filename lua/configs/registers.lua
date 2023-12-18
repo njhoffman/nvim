@@ -33,11 +33,14 @@ local ui = require('registers.ui')
 
 -- '*+"-/_=#%.0123456789abcdefghilmnopqrstuvwxyz:',
 local layout_1 = function(win_opts)
+  -- local cursor_row = vim.api.nvim_win_get_cursor(0)[1]
   local new_reg = '*+"%0123456789abcgpwy:'
   local new_opts = vim.tbl_deep_extend('force', win_opts, {
     relative = 'win', -- editor, win, cursor, mouse
-    anchor = 'SE',
-    row = vim.api.nvim_win_get_height(0) - 1,
+    anchor = 'NE', -- NW (default), SW, SE, NE
+    row = 7,
+    -- row = vim.api.nvim_win_get_height(0) - 1,
+    -- row = cursor_row,
     col = vim.api.nvim_win_get_width(0),
   })
   return new_opts, new_reg

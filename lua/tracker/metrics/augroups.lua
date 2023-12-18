@@ -11,16 +11,16 @@ local init_augroups = function(opts)
   })
 end
 
-local provider = function(_)
-  return {
-    name = 'augroups',
-    id_fields = 'group_name',
-    icon = '祐',
-    get_data = function()
-      return vim.api.nvim_get_autocmds({})
-    end,
-    -- parse_data = function() end
-  }
-end
+local provider = {
+  name = 'augroups',
+  id_fields = 'group_name',
+  icon = '祐',
+  get = function()
+    return vim.api.nvim_get_autocmds({})
+  end,
+  init = init_augroups,
+  output = output_augroups,
+  -- parse_data = function() end
+}
 
 return provider

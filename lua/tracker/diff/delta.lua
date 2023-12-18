@@ -3,7 +3,7 @@
 
 local crc = require('tracker.diff.crc')
 
-local get_item_id = function(provider, fields, item)
+local get_item_id = function(fields, item)
   fields = type(fields) == 'string' and { fields } or fields
   local item_id = nil
   for _, field in ipairs(fields) do
@@ -15,10 +15,10 @@ local get_item_id = function(provider, fields, item)
   return item_id
 end
 
-local parse_data = function(provider)
+local serialize_data = function(data, id_fields)
   local items = {}
-  local function parse_item(item)
-    local item_id = get_item_id(provider, provider.id_fields, item)
+  local function serialize_item(item)
+    local item_id = get_item_id(id_fields, item)
     if type(item_id) ~= 'nil' and item_id ~= '' then
       local crc_hash = crc.get_crc(item_id)
       item.item_id = item_id
@@ -26,16 +26,14 @@ local parse_data = function(provider)
     end
   end
 
-  local data = provider.get_data()
-
   if vim.tbl_islist(data) then
     for _, item in ipairs(data) do
-      parse_item(item)
+      serialize_item(item)
     end
   else
     for key, item in pairs(data) do
       item._key = key
-      parse_item(item)
+      serialize_item(item)
     end
   end
   return items
@@ -65,25 +63,7 @@ local get_diff = function(prev, next)
   return delta
 end
 
-local check_diff = function(provider, prov_state)
-  local start = vim.fn.reltime()
-  if type(prov_state.time_get) == 'nil' then
-    prov_state.time_get = 0
-    prov_state.time_diff = 0
-    prov_state.prev_items = provider.parse_data(provider)
-  else
-    local curr_items = provider.parse_data(provider)
-    prov_state.time_get = vim.fn.reltimestr(vim.fn.reltime(start)) * 100000
-    start = vim.fn.reltime()
-    local diff = get_diff(prov_state.prev_items, curr_items)
-    prov_state.time_diff = vim.fn.reltimestr(vim.fn.reltime(start)) * 100000
-    prov_state.prev_items = curr_items
-    return diff
-  end
-end
-
 return {
-  parse_data = parse_data,
-  check_diff = check_diff,
+  serialize_data = serialize_data,
   get_diff = get_diff,
 }

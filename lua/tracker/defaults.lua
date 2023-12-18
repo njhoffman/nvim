@@ -1,92 +1,68 @@
-local out = require('tracker.output')
-local diff = require('tracker.diff')
+local debuglog = require('debuglog').log
+local output = require('tracker.output')
 
 local defaults = {}
-
-defaults.provider = {
-  label = 'items',
-  icon = '',
-  id_fields = { 'key' },
-  desc_fields = {},
-  output_diff = out.output_diff,
-  output_group = out.output_group,
-  parse_data = diff.parse_data,
-}
-
-defaults.provider_state = {
-  time_get = nil,
-  time_diff = nil,
-  prev_items = {},
-}
-
-defaults.config = {
-  outputs = {
-    enabled = true,
-    group = false,
-    notify = {
-      level = 'debug',
-    },
-    logfile = {
-      file = 'filename',
-    },
-    panel = {
-      float = true,
-      max = { x = 0, y = 0, w = 0, h = 0 },
-      pos = { x = 0, y = 0, w = 0, h = 0 },
-    },
-    -- func = function() end
-  },
-  providers = {},
-  metrics = {
-    interval = 3,
-    enabled = true,
-    list = {
-      -- augroups = { provider = 'tracker.metrics.augroups' },
-      -- aucommands = { provider = 'tracker.metrics.aucommands', group = true },
-      -- commands = { provider = "tracker.metrics.commands", group = true },
-      -- functions = { provider = "tracker.metrics.functions", group = true },
-      highlights = { provider = 'tracker.metrics.highlights' },
-      -- keymaps_g = { provider = "tracker.metrics.keymaps_g" },
-      -- variables_g = { provider = "tracker.metrics.variables_g" },
-      -- options_g = { provider = "tracker.metrics.options_g" },
-      -- changes, jumplist options, syntax_items, variables_b, variables_g,
-      -- variables_w, variables_p, options_g, options_w, options_b, keymaps_b,
-    },
-  },
-}
-
-local assign_globals = function(user_cfg, def_cfg, keys)
-  local cfg = { global = {}, user = {} }
-  for _, key in ipairs(keys) do
-    cfg.global[key] = def_cfg[key]
-    cfg.user[key] = user_cfg[key]
+defaults.output = function(source, opts, delta)
+  if #delta.added > 0 or #delta.removed > 0 then
+    local props = {
+      name = source.name,
+      icon = source.icon,
+      label = source.label,
+      desc_fields = source.desc_fields,
+    }
+    if opts.only_metrics then
+      output.output_metric(props, delta)
+    else
+      output.output_diff(props, delta)
+    end
   end
-  return vim.tbl_deep_extend('keep', cfg.user, cfg.global)
 end
 
-defaults.assign_config_metrics = function(user_cfg)
-  local cfg_met = user_cfg or {}
-  local user_list = cfg_met.list or {}
-  local def_met = defaults.config.metrics
-  local global = assign_globals(cfg_met, def_met, { 'interval', 'enabled' })
-  local list = vim.tbl_deep_extend('keep', user_list, def_met.list)
-  local metrics = {}
-  for key, metric_cfg in pairs(list) do
-    metrics[key] = vim.tbl_deep_extend('keep', user_list[key] or {}, metric_cfg, global)
+defaults.diff = function(source, opts)
+  return function()
+    local diff = require('tracker.diff.delta')
+    local state = require('tracker.state')
+    local p_state = state.history[source.name] or {}
+    local start = vim.fn.reltime()
+    local delta = { added = {}, removed = {} }
+    if type(p_state.time_get) == 'nil' then
+      p_state.time_get = 0
+      p_state.time_diff = 0
+      p_state.prev_items = diff.serialize_data(source.get(), source.id_fields)
+    else
+      p_state.time_get = vim.fn.reltimestr(vim.fn.reltime(start)) * 100000
+      start = vim.fn.reltime()
+      local curr_items = diff.serialize_data(source.get(), source.id_fields)
+      delta = diff.get_diff(p_state.prev_items, curr_items)
+      p_state.time_diff = vim.fn.reltimestr(vim.fn.reltime(start)) * 100000
+      p_state.prev_items = curr_items
+    end
+    if type(source.output) == 'function' then
+      source.output(opts, delta)
+    else
+      defaults.output(source, opts, delta)
+    end
+    state.history[source.name] = p_state
   end
-  return metrics
 end
 
-defaults.assign_config_outputs = function(user_cfg)
-  local cfg_outs = user_cfg.outputs or {}
-  local def_outs = defaults.config.outputs
-  local global = assign_globals(cfg_outs, def_outs, { 'group', 'enabled' })
-  local outputs = {
-    notify = vim.tbl_deep_extend('keep', cfg_outs.notify or {}, def_outs.notify, global),
-    logfile = vim.tbl_deep_extend('keep', cfg_outs.logfile or {}, def_outs.logfile, global),
-    panel = vim.tbl_deep_extend('keep', cfg_outs.panel or {}, def_outs.panel, global),
-  }
-  return outputs
+defaults.init = function(source, opts)
+  local state = require('tracker.state')
+  if state.initialized[source.name] == true then
+    vim.notify('source ' .. source.name .. ' already initialized')
+    return
+  end
+  local timer = vim.fn.timer_start(
+    opts.interval or 1000,
+    type(source.diff) == 'function' and source.diff(opts) or defaults.diff(source, opts),
+    { ['repeat'] = -1 }
+  )
+  if type(state.timers[source.name]) == 'nil' then
+    state.timers[source.name] = {}
+  end
+  table.insert(state.timers[source.name], timer)
+  state.initialized[source.name] = true
+  debuglog('monitoring ' .. source.name)
 end
 
 return defaults

@@ -1,7 +1,5 @@
-local state = require('devbox.state')
-local commands = require('devbox.state')
-
 local get_queued_count = function()
+  local state = require('devbox.state')
   local count = 0
   for _, task in ipairs(state.current.queued) do
     if task == true then
@@ -12,6 +10,7 @@ local get_queued_count = function()
 end
 
 local update_title = function()
+  local state = require('devbox.state')
   local parts = { left = '', mid = '', right = '' }
   ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
   if get_queued_count() > 0 or not state.current.last_elapsed then
@@ -35,6 +34,7 @@ local update_title = function()
 end
 
 local create_popup = function(winsize)
+  local state = require('devbox.state')
   local parent = {
     w = vim.api.nvim_win_get_width(0),
     h = vim.api.nvim_win_get_height(0),
@@ -77,6 +77,7 @@ local provider_time = function(name)
 end
 
 local update_provider_time = function(provider)
+  local state = require('devbox.state')
   local last_elapsed = tonumber(vim.fn.reltimestr(vim.fn.reltime(provider.start)))
   provider.start = nil
   if type(state.timing.providers[provider.name]) ~= 'table' then
@@ -100,6 +101,7 @@ local update_provider_time = function(provider)
 end
 
 local update_batch_time = function()
+  local state = require('devbox.state')
   state.timing.batch.n = state.timing.batch.n + 1
   local total_elapsed = 0
   for _, provider in ipairs(state.providers) do
@@ -117,7 +119,7 @@ end
 
 local last_batch_id = 0
 local update_line_cb = function(provider, result)
-  ---@diagnostic disable-next-line: missing-parameter
+  local state = require('devbox.state')
   update_provider_time(provider)
 
   state.current.completed[provider.idx] = provider.last_elapsed
@@ -138,7 +140,7 @@ end
 
 -- new_average = (old_average * (n-1) + new_value) / n
 local update_popup = function()
-  ---@diagnostic disable-next-line: missing-parameter
+  local state = require('devbox.state')
   state.current = vim.tbl_deep_extend('force', state.current, {
     batch_idx = state.current.batch_idx + 1,
   })
