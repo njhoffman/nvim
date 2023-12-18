@@ -1,7 +1,7 @@
 local formatters = {
   -- 'asmfmt',
   'beautysh',
-  'black',
+  -- 'black',
   'clang-format',
   'fixjson',
   'gofumpt',
@@ -62,7 +62,7 @@ local linters = {
   'misspell',
   'proselint',
   -- 'puppet-lint',
-  'pylint',
+  -- 'pylint',
   'revive',
   'rubocop',
   'selene',
