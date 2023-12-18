@@ -1,5 +1,15 @@
-local tracker = require("tracker")
-tracker.setup()
+require('tracker').setup({
+  metrics = {
+    -- aucommands = {},
+    -- augroups = {},
+    -- highlights = {},
+  },
+  list = {
+    highlights = {},
+    -- events = {event_list = events},
+  },
+})
+-- tracker.setup()
 
 -- local clock = os.clock
 -- function sleep(n) -- seconds

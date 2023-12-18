@@ -1,4 +1,4 @@
-local state = {
+local default_state = {
   current = {
     batch_idx = 0,
     start = nil,
@@ -30,4 +30,4 @@ local state = {
   providers = {},
 }
 
-return state
+return default_state

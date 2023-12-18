@@ -147,6 +147,7 @@ local function get_hl_captures(opts)
     captures[source] = matches
   end
 
+  local highlighter = require('vim.treesitter.highlighter')
   if highlighter.active[bufnr] then
     local matches = get_treesitter_hl(opts)
     add_to_result(matches, 'treesitter')

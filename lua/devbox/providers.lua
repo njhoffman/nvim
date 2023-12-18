@@ -2,6 +2,7 @@ local help = require('devbox.handlers.help')
 local man = require('devbox.handlers.man')
 local dict = require('devbox.handlers.dict')
 local syntax = require('devbox.handlers.syntax')
+-- local lsp = require('devbox.handlers.lsp')
 -- local devboxgh = require("devhints.devbox-gh")
 
 local term_handler = function(expr)
@@ -17,28 +18,21 @@ local term_handler = function(expr)
   end
 end
 
-local ext_methods = {
+local providers = {
   { 'cword', term_handler('cword') },
   { 'cexpr', term_handler('cexpr') },
   { 'cfile', term_handler('cfile') },
   { 'cWORD', term_handler('cWORD') },
-  -- { 'syn', syntax.handler },
+  { 'syn', syntax.handler },
+  -- { 'hover', lsp.method('textDocument/hover') },
   -- { 'man', man.handler },
   -- { 'help', help.handler },
   -- { "help", dict.handler },
+  --   -- { "signature", "textDocument/signatureHelp" },
+  --   -- { "definition", "textDocument/definition" },
+  --   -- { "references", "textDocument/references" },
+  --   -- { "completion", "textDocument/completion" },
+  --   -- { "codeaction", "textDocument/codeAction" },
+  --   -- semanticTokens,executeCommand,typeDefinition,
 }
-
-local lsp_methods = {
-  -- { 'hover', 'textDocument/hover' },
-  -- { "signature", "textDocument/signatureHelp" },
-  -- { "definition", "textDocument/definition" },
-  -- { "references", "textDocument/references" },
-  -- { "completion", "textDocument/completion" },
-  -- { "codeaction", "textDocument/codeAction" },
-  -- semanticTokens,executeCommand,typeDefinition,
-}
-
-return {
-  lsp = lsp_methods,
-  ext = ext_methods,
-}
+return providers

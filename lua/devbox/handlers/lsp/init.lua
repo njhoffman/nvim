@@ -1,4 +1,4 @@
-local lsp_handlers = require('devbox.handlers.lsp')
+local lsp_handlers = require('devbox.handlers.lsp.methods')
 local state = require('devbox.state')
 
 local log_items = false
@@ -37,12 +37,6 @@ local buf_request_all = function(client_returns)
   end
 end
 
-local lsp_map = {
-  references = function() end,
-  codeaction = function() end,
-  default = function() end,
-}
-
 local buffer_request_cb = function(err, result, _, _)
   ---@diagnostic disable-next-line: missing-parameter
   if err then
@@ -58,13 +52,12 @@ local buffer_request_cb = function(err, result, _, _)
   end
 end
 
-local defaults = {
-  request = function(lsp_name)
-    vim.lsp.buf_request(0, lsp_name, params, buffer_request_cb)
-  end,
-}
-
 local provider_map = {
+  default = {
+    request = function(lsp_name, params)
+      vim.lsp.buf_request(0, lsp_name, params, buffer_request_cb)
+    end,
+  },
   references = {
     request = function(lsp_name, params)
       params.context = { includeDeclaration = vim.F.if_nil(nil, true) }
@@ -72,7 +65,7 @@ local provider_map = {
     end,
   },
   codeaction = {
-    request = function()
+    request = function(lsp_name, params)
       params = vim.lsp.util.make_range_params()
       params.context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics() }
       vim.lsp.buf_request_all(0, method[2], params, buf_request_all)
@@ -82,14 +75,17 @@ local provider_map = {
 
 local lsp_method = function(method, done)
   local name, lsp_name = method[1], method[2]
-  local request = provider_map[name] and provider_map[name].request or defaults.request
+  local request = provider_map[name] and provider_map[name].request or provider_map.default.request
   -- local req_state = { name = name, idx = state.current }
   -- local curr = state.current
 
+  -- provider.handler(update_line_cb, provider)
+  local params = {}
+
   if type(request) == 'function' then
-    request(lsp_name)
+    request(lsp_name, params)
   else
-    defaults.request(lsp_name)
+    defaults.request(lsp_name, params)
   end
 end
 
