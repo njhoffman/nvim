@@ -2,7 +2,7 @@
 -- increase fade in frequency
 
 local on_open = require('configs.nvim-notify.on_open')
-local render = require('configs.nvim-notify.render')
+local render = require('notify.render._entry')
 
 local cfg = {
   level = vim.log.levels.DEBUG,
@@ -18,7 +18,6 @@ local cfg = {
   max_width = function()
     return math.floor(vim.opt.columns:get() / 5 * 3)
   end,
-  on_open = on_open,
   icons = {
     ERROR = '',
     WARN = '',
@@ -29,7 +28,7 @@ local cfg = {
     RUN = '',
     STATUS = '',
   },
-  -- on_open = on_open,
+  on_open = on_open,
 }
 require('notify').setup(cfg)
 -- vim.notify = require('notify').notify

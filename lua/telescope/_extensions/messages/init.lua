@@ -67,6 +67,12 @@ local messages = function(opts)
           local notification = selection.value
           local opened_buffer = notify.open(notification)
 
+          if notification.filetype then
+            vim.api.nvim_set_option_value('filetype', notification.filetype, {
+              buf = opened_buffer.buffer,
+            })
+          end
+
           local lines = vim.opt.lines:get()
           local cols = vim.opt.columns:get()
 
@@ -96,6 +102,11 @@ local messages = function(opts)
         title = 'Message',
         define_preview = function(self, entry, status)
           local notification = entry.value
+          if notification.filetype then
+            vim.api.nvim_set_option_value('filetype', notification.filetype, {
+              buf = self.state.bufnr,
+            })
+          end
           local max_width = vim.api.nvim_win_get_config(status.picker.preview_win).width
           notify.open(notification, { buffer = self.state.bufnr, max_width = max_width })
         end,

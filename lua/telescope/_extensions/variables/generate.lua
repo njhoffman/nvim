@@ -41,17 +41,19 @@ local parse_result = function(res, lines, scope)
     if key == nil then
       key = vim.fn.split(line, ' ')[1]
     end
-    if scope == 'buffer' then
-      value = vim.b[key]
-    elseif scope == 'window' then
-      value = vim.w[key]
-    elseif scope == 'predef' then
-      value = vim.v[key]
-    elseif scope == 'global' then
-      value = vim.g[key]
-    end
-    if value ~= nil then
-      table.insert(res, { scope = scope, key = key, value = value })
+    if key ~= 'output' then
+      if scope == 'buffer' then
+        value = vim.b[key]
+      elseif scope == 'window' then
+        value = vim.w[key]
+      elseif scope == 'predef' then
+        value = vim.v[key]
+      elseif scope == 'global' then
+        value = vim.g[key]
+      end
+      if value ~= nil then
+        table.insert(res, { scope = scope, key = key, value = value })
+      end
     end
   end
 end

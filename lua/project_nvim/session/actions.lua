@@ -95,8 +95,8 @@ local setup = function()
         _start_session_here = true
       else
         vim.defer_fn(function()
-          vim.notify('Project.nvim: Session autoload is disabled', vim.log.levels.WARN)
-        end, 2000)
+          vim.notify('project.nvim: session autoload is disabled', vim.log.levels.TRACE)
+        end, 200)
       end
     else
       -- open the last session if not disabled in config

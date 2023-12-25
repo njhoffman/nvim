@@ -1,10 +1,11 @@
 local require = require('noice.util.lazy')
-local parse_message = require('notify.parse')
 
 local Message = require('noice.message')
 local Manager = require('noice.message.manager')
 local Router = require('noice.message.router')
 local Util = require('noice.util')
+
+local parse_message = require('noice.view.backend.notify.parse')
 
 local M = {}
 
@@ -29,7 +30,7 @@ end
 
 function M.get_level(level)
   if type(level) == 'string' then
-    return level
+    return level:lower()
   end
   for k, v in pairs(vim.log.levels) do
     if v == level then
@@ -47,16 +48,14 @@ function M.notify(msg, level, opts)
 
   if vim.in_fast_event() then
     vim.schedule(function()
-      level = M.get_level(level)
-      M.notify(_msg, level, _opts)
+      M.notify(msg, level, opts)
     end)
     return
   end
 
-  level = M.get_level(level)
   local message = Message('notify', level, _msg)
   message.opts = _opts or {}
-  message.level = level
+  message.level = M.get_level(level)
 
   if msg == nil then
     -- special case for some destinations like nvim-notify

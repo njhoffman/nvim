@@ -31,6 +31,21 @@ function Notification:new(id, message, level, opts, config)
   if type(title) == 'string' then
     title = { title, vim.fn.strftime(config.time_formats().notification, time) }
   end
+
+  local filetype = 'notify'
+  if type(opts.filetype) == 'function' then
+    filetype = opts.filetype()
+  elseif type(opts.filetype) == 'string' then
+    filetype = opts.filetype
+  elseif
+    not opts.body_highlights
+    and not (opts.highlights and type(opts.highlights.body) ~= 'nil')
+    and vim.fn.toupper(level) ~= 'ERROR'
+    and #message > 1
+  then
+    filetype = 'lua'
+  end
+
   vim.validate({
     message = { message, 'table' },
     level = { level, 'string' },
@@ -43,6 +58,7 @@ function Notification:new(id, message, level, opts, config)
     icon = opts.icon or config.icons()[level] or config.icons().INFO,
     time = time,
     timeout = opts.timeout,
+    filetype = filetype,
     level = level,
     keep = opts.keep,
     on_open = opts.on_open,
@@ -50,11 +66,10 @@ function Notification:new(id, message, level, opts, config)
     animate = opts.animate ~= false,
     hide_from_history = opts.hide_from_history,
     render = opts.render,
-    render_title = opts.render_title,
     repeat_count = opts.repeat_count,
     body_highlights = opts.body_highlights,
     body_level_highlights = opts.body_level_highlights,
-    filetype = opts.filetype or 'notify',
+    highlights = opts.highlights,
   }
   self.__index = self
   setmetatable(notif, self)
@@ -65,12 +80,12 @@ function Notification:record()
   return {
     id = self.id,
     message = self.message,
-    filetype = self.filetype,
     level = self.level,
     time = self.time,
     title = self.title,
     icon = self.icon,
     render = self.render,
+    filetype = self.filetype,
   }
 end
 

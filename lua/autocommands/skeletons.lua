@@ -6,8 +6,8 @@ local skeletons = {
   applescript = 'applescript',
   javascript  = 'jxa',
   make        = 'make',
-  bash        = 'zsh',
-  sh          = 'zsh',
+  bash        = 'sh',
+  sh          = 'sh',
   zsh         = 'zsh',
 }
 local write_file = function(filename)

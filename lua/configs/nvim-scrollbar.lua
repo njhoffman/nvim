@@ -171,10 +171,12 @@ local opts = {
     },
   },
   excluded_buftypes = {
-    -- 'nofile',
+    'nofile',
     'terminal',
   },
   excluded_filetypes = {
+    -- 'cmp_docs',
+    'lazy',
     'prompt',
     'TelescopePrompt',
     'noice',

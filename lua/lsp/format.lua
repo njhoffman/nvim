@@ -1,6 +1,7 @@
 local log = require('vim.lsp.log')
 
 local M = {
+  trim_whitespace = true,
   format_options = {},
   disabled = false,
   disabled_filetypes = {},
@@ -258,6 +259,9 @@ M._next = function()
   end
   local next_client = table.remove(next.clients, 1)
   format(next.bufnr, next_client, next.format_options)
+  if M.trim_whitespace then
+    vim.cmd('TrimTrailingWhitespace')
+  end
   if #next.clients == 0 then
     table.remove(M.queue, 1)
   end

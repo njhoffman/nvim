@@ -114,7 +114,13 @@ local setup_printing_press = function()
     inspect_tree = '<leader>lt',
   }
 
-local keys = {
+  local keys = {
+    quickfix_cwd_all       = 'goqC',
+    quickfix_cwd           = 'goqc',
+    quickfix_open_bufs_all = 'goqO',
+    quickfix_open_bufs     = 'goqo',
+    quickfix_all           = 'goqD',
+    quickfix               = 'goqd',
     remove_all     = 'goD',
     -- message      = '<leader>fm', -- goi
     message      = 'gom', -- goi
@@ -160,13 +166,26 @@ local keys = {
   keymap("n", keys.time,
     function() require(pp_path).timeLog() end, { desc = " time log" })
 
-  keymap("n", keys.remove,
-    function() require(pp_path).removeLogs() end, { desc = "󰹝 remove log" })
-
   keymap("n", keys.debug,
     function() require(pp_path).debugLog() end, { desc = " debugger log" })
   keymap("n", keys.assert,
     function() require(pp_path).assertLog() end, { desc = " assert log" })
+
+  keymap("n", keys.remove,
+    function() require(pp_path).removeLogs() end, { desc = "󰹝 remove log" })
+  keymap("n", keys.quickfix,
+    function() require(pp_path).quickfix(false, 'project') end, { desc = "󰹝 quickfix log markers in project" })
+  keymap("n", keys.quickfix_all,
+    function() require(pp_path).quickfix(true, 'project') end, { desc = "󰹝 quickfix log all in project" })
+  keymap("n", keys.quickfix_cwd,
+    function() require(pp_path).quickfix(false, 'cwd') end, { desc = "󰹝 quickfix log markers in cwd" })
+  keymap("n", keys.quickfix_cwd_all,
+    function() require(pp_path).quickfix(true, 'cwd') end, { desc = "󰹝 quickfix log all in cwd" })
+  keymap("n", keys.quickfix_open_bufs,
+    function() require(pp_path).quickfix(false, 'open_bufs') end, { desc = "󰹝 quickfix log markers in open buffers" })
+  keymap("n", keys.quickfix_open_bufs_all,
+    function() require(pp_path).quickfix(true, 'open_bufs') end, { desc = "󰹝 quickfix log all in open buffers" })
+
   -- stylua: ignore end
 end
 

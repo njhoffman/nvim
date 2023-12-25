@@ -1,12 +1,10 @@
 local state = {
   initialized = {},
-  timers = {},
-  metrics = {},
   history = {},
-  totals = {
+  timers = {},
+  timing = {
     get = 0,
     diff = 0,
   },
-  timings = {},
 }
 return state

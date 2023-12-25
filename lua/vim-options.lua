@@ -39,7 +39,7 @@ vim.opt.fillchars:append({
 opt('foldmethod', 'manual')
 -- opt('formatoptions', 'jcroqlnt') -- (qjl1) Don't autoformat comments
 opt('grepformat', '%f:%l:%c:%m')
-opt('grepprg', 'rg --vimgrep')
+opt('grepprg', 'set grepprg=rg --vimgrep --no-heading --smart-case')
 opt('helpheight', 25)
 opt('hidden', true)
 opt('hlsearch', true)

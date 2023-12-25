@@ -81,10 +81,11 @@ local pickers = {
     layout_config = {
       horizontal = {
         height = 0.4,
-        width = 0.3,
+        width = { 0.3, min = 15 },
         anchor = 'SE',
-        preview_width = 1, -- needs preview for live preview of the theme
+        preview_width = 1,
       },
+      -- preview_width = 1, -- needs preview for live preview of the theme
     },
   },
   oldfiles = {

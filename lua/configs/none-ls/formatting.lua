@@ -3,10 +3,23 @@ local iter = require('plenary.iterators')
 local path = require('plenary.path')
 local scan = require('plenary.scandir')
 local root_files = {
-  eslint = { '.eslintrc', '.eslintrc.js', '.eslintrc.json' },
-  prettier = { '.prettierrc', '.prettierrc.js', '.prettierrc.json' },
-  stylua = { 'stylua.toml', '.stylua.toml' },
-  elm = { 'elm.json' },
+  eslint = {
+    '.eslintrc',
+    '.eslintrc.js',
+    '.eslintrc.json',
+  },
+  prettier = {
+    '.prettierrc',
+    '.prettierrc.js',
+    '.prettierrc.json',
+  },
+  stylua = {
+    'stylua.toml',
+    '.stylua.toml',
+  },
+  elm = {
+    'elm.json',
+  },
 }
 
 local function search_for_parent_file(base_path)
@@ -117,7 +130,10 @@ return {
   -- https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md
   -- null_ls.builtins.formatting.shellharden.with({ filetypes = { 'sh', 'bash' } }),
   null_ls.builtins.formatting.shfmt.with({
-    filetypes = { 'sh', 'bash' },
+    filetypes = {
+      'sh',
+      'bash',
+    },
     extra_args = function(params)
       return {
         '--case-indent',
@@ -172,7 +188,13 @@ return {
   -- null_ls.builtins.formatting.tidy,
 
   null_ls.builtins.formatting.trim_newlines.with({
-    filetypes = { 'tex', 'markdown', 'text', 'txt', 'org' },
+    filetypes = {
+      'tex',
+      'markdown',
+      'text',
+      'txt',
+      'org',
+    },
     extra_args = function(params)
       return {
         '--no-trim-blank-lines',
@@ -181,14 +203,19 @@ return {
       }
     end,
   }),
-  null_ls.builtins.formatting.trim_whitespace.with({
-    filetypes = { 'tex', 'markdown', 'text', 'txt', 'org' },
-  }), -- only works for ff=unix
+  -- null_ls.builtins.formatting.trim_whitespace.with({
+  --   filetypes = { 'tex', 'markdown', 'text', 'txt', 'org', },
+  -- }), -- only works for ff=unix
 
   null_ls.builtins.formatting.xmlformat,
   null_ls.builtins.formatting.xmllint,
   null_ls.builtins.formatting.yamlfix,
   null_ls.builtins.formatting.yamlfmt,
   -- null_ls.builtins.formatting.yq,
-  null_ls.builtins.formatting.golines.with({ extra_args = { '--max-len=120', '--base-formatter=gofumpt' } }),
+  null_ls.builtins.formatting.golines.with({
+    extra_args = {
+      '--max-len=120',
+      '--base-formatter=gofumpt',
+    },
+  }),
 }

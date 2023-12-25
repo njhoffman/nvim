@@ -30,9 +30,5 @@ return function(bufnr, notif, highlights)
     priority = 50,
   })
 
-  if notif.body_highlights then
-    base.content_hl(bufnr, highlights, notif, 0, prefix_length + 1)
-  else
-    base.body_hl(bufnr, highlights, notif, 0, prefix_length + 1, #display_message)
-  end
+  base.content_hl(bufnr, highlights, notif, 0, prefix_length + 1, #notif.message - 1)
 end

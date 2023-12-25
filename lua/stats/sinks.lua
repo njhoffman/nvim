@@ -24,11 +24,11 @@ local notify = function(lines, title, highlights)
   local notify = vim.notify
   notify(lines, 2, {
     timeout = 10000,
-    title = { title, '' },
+    -- title = { title, '' },
     -- render = 'default',
     render = 'simple-notitle',
     body_highlights = highlights,
-    hide_from_history = true,
+    -- hide_from_history = true,
   })
 end
 

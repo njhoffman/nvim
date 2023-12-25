@@ -40,12 +40,9 @@ local function open(winnr, _opts)
 
     vim.api.nvim_create_autocmd('WinClosed', {
       callback = function(ev)
-        vim.dbglog('winclosed', ev)
         if ev.match == tostring(winnr) then
-          vim.dbglog('closing window...')
           vim.api.nvim_del_augroup_by_name('Hover')
           utils.clear_local_state(state)
-          vim.dbglog('clear local 2', state)
           keymaps.clear()
         end
       end,

@@ -1,68 +1,54 @@
-local debuglog = require('debuglog').log
 local output = require('tracker.output')
+local diff_delta = require('tracker.diff.delta')
+
+-- local get_col_lengths = function(source, data)
+--   local col_lengths = {}
+--   local fields = source.desc_fields or source.id_fields or vim.tbl_keys(data[1])
+--   -- local cols = vim.tbl_deep_extend('force', fields, source._opts and source._opts.align_cols)
+--   source._col_lengths = {}
+--   for _, field in ipairs(fields) do
+--     col_lengths[field] = 0
+--   end
+--   for _, item in ipairs(data) do
+--     for _, col in ipairs(fields) do
+--       -- vim.dbglog(item)
+--       -- local field = item.value[col]
+--       -- if type(field) == 'string' and #field > col_lengths[col] then
+--       --   col_lengths[col] = #field
+--       -- end
+--     end
+--   end
+--   return col_lengths
+-- end
 
 local defaults = {}
-defaults.output = function(source, opts, delta)
+defaults.output = function(source, delta)
   if #delta.added > 0 or #delta.removed > 0 then
-    local props = {
-      name = source.name,
-      icon = source.icon,
-      label = source.label,
+    -- stylua: ignore
+    local props   = {
+      name        = source.name,
+      icon        = source.icon or ' ',
+      label       = source.label or source.name,
       desc_fields = source.desc_fields,
     }
-    if opts.only_metrics then
-      output.output_metric(props, delta)
-    else
-      output.output_diff(props, delta)
-    end
+    output.output_diff(props, delta)
+    -- if opts.only_metrics then
+    --   output.output_metric(props, delta)
+    -- else
+    -- end
   end
 end
 
-defaults.diff = function(source, opts)
-  return function()
-    local diff = require('tracker.diff.delta')
-    local state = require('tracker.state')
-    local p_state = state.history[source.name] or {}
-    local start = vim.fn.reltime()
-    local delta = { added = {}, removed = {} }
-    if type(p_state.time_get) == 'nil' then
-      p_state.time_get = 0
-      p_state.time_diff = 0
-      p_state.prev_items = diff.serialize_data(source.get(), source.id_fields)
-    else
-      p_state.time_get = vim.fn.reltimestr(vim.fn.reltime(start)) * 100000
-      start = vim.fn.reltime()
-      local curr_items = diff.serialize_data(source.get(), source.id_fields)
-      delta = diff.get_diff(p_state.prev_items, curr_items)
-      p_state.time_diff = vim.fn.reltimestr(vim.fn.reltime(start)) * 100000
-      p_state.prev_items = curr_items
-    end
-    if type(source.output) == 'function' then
-      source.output(opts, delta)
-    else
-      defaults.output(source, opts, delta)
-    end
-    state.history[source.name] = p_state
-  end
+defaults.serialize = function(items, id_fields)
+  return diff_delta.serialize_data(items, id_fields)
 end
 
-defaults.init = function(source, opts)
-  local state = require('tracker.state')
-  if state.initialized[source.name] == true then
-    vim.notify('source ' .. source.name .. ' already initialized')
-    return
-  end
-  local timer = vim.fn.timer_start(
-    opts.interval or 1000,
-    type(source.diff) == 'function' and source.diff(opts) or defaults.diff(source, opts),
-    { ['repeat'] = -1 }
-  )
-  if type(state.timers[source.name]) == 'nil' then
-    state.timers[source.name] = {}
-  end
-  table.insert(state.timers[source.name], timer)
-  state.initialized[source.name] = true
-  debuglog('monitoring ' .. source.name)
+defaults.diff = function(prev_items, curr_items)
+  return diff_delta.get_diff(prev_items, curr_items)
+end
+
+defaults.init = function(opts)
+  return opts.interval or 1000
 end
 
 return defaults

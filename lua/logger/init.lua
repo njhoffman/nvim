@@ -34,7 +34,7 @@ local init = function(scope, sink_levels)
 
   local struct_config = { [scope] = { sinks = struct_sinks } }
   structlog.configure(struct_config)
-  return structlog.get_logger(scope)
+  return structlog.get_logger(scope) or {}
 end
 
 for name, config in pairs(log_levels) do

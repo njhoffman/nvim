@@ -33,9 +33,7 @@ return function(bufnr, notif, highlights, config)
   })
   api.nvim_buf_set_lines(bufnr, 2, -1, false, notif.message)
 
-  if notif.body_highlights then
-    base.content_hl(bufnr, highlights, notif, 2, 0)
-  else
-    base.body_hl(bufnr, highlights, notif, 2, 0, #notif.message + 1, #notif.message[#notif.message])
-  end
+  base.content_hl(bufnr, highlights, notif, 2, 0, #notif.message + 1)
+  -- base.content_hl(bufnr, highlights, notif, 2, 0)
+  -- base.body_hl(bufnr, highlights, notif, 2, 0, #notif.message + 1, #notif.message[#notif.message])
 end

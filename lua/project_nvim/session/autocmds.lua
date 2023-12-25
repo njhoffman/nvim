@@ -103,7 +103,10 @@ local setup = function()
         -- directory changed from outside
         history.write_projects_to_history()
         local dir = path.dir_pretty
-        vim.notify('CWD Changed! Exit from session ' .. dir, vim.log.levels.INFO, { title = 'Neovim Project' })
+        -- TODO: handle pre-initialization message
+        vim.defer_fn(function()
+          vim.notify('cwd exit from session: ' .. dir, vim.log.levels.DEBUG)
+        end, 100)
         path.dir_pretty = nil
         utils.is_session = false
         -- touch session file to update mtime and auto load it on next start

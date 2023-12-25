@@ -783,17 +783,24 @@ vmap('n', 'g<C-g>', {
   desc = 'show current and total characters, words, bytes and lines',
 })
 
-map('n', '_', '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>normal! <C-L><cr>', {
+map('n', '_', '<cmd>noh<cr> | <cmd>nohlsearch<cr>', {
   category = 'UI',
   desc = 'remove highlights and refresh',
+})
+
+map('n', '<M-c>', '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr>', {
+-- map('n', '<M-c>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr>', {
+  category = 'UI',
+  desc = 'close popups',
 })
 
 map(
   'n',
   '<C-_>',
-  '<cmd>noh<cr>| <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> | <cmd>normal! <C-L><cr>',
+  '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr>',
   { category = 'UI', desc = 'remove hls, close popups and refresh' }
 )
+
 
 -- map('n', '<M-b>', "<cmd>noh<cr> | <cmd>only<cr> | :RefreshLSP<cr> | :lua require'feline'.reset_highlights()<cr>", {
 --   category = 'UI',
@@ -808,12 +815,6 @@ map(
 --   category = 'UI',
 --   desc = 'close all other windows',
 -- })
-
-map('n', '<M-c>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> | <cmd>normal! <C-L><cr>', {
-  category = 'UI',
-  desc = 'close popups',
-})
-
 map('n', '<F1>', "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>", {
   plugin = 'telescope.nvim',
   category = 'UI',
@@ -888,15 +889,16 @@ map('n', '<C-c>', '<cmd>lua require"qf".toggle("c", true)<CR>', {
 -- nnoremap <leader>j <cmd>lua require'qf'.below('l')<CR> " Go to next location list entry from cursor
 -- nnoremap <leader>J <cmd>lua require'qf'.below('c')<CR> " Go to next quickfix entry from cursor
 -- nnoremap ]q <cmd>lua require'qf'.below('visible')<CR>
-map('n', '<M-.>', '<cmd>cnext<cr>', {
+map('n', '<M-lt>', '<cmd>cprev<cr>', {
+  category = 'Quickfix prev',
+  label = 'quickfix prev',
+})
+
+map('n', '<M->>', '<cmd>cnext<cr>', {
   category = 'Quickfix next',
   label = 'quickfix next',
 })
 
-map('n', '<M-,>', '<cmd>cprev<cr>', {
-  category = 'Quickfix next',
-  label = 'quickfix next',
-})
 
 --------------------------------------------------------------------------------------------------
 -- WINDOWS ---------------------------------------------------------------------------------------

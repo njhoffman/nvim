@@ -199,9 +199,9 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter' }, {
       and vim.bo.buftype ~= 'quickfix'
       and vim.bo.filetype ~= 'nofile'
     then
-      vim.cmd([[set norelativenumber number]])
+      vim.cmd([[setlocal norelativenumber number]])
     else
-      vim.cmd([[set norelativenumber nonumber]])
+      vim.cmd([[setlocal norelativenumber nonumber]])
     end
   end,
 })

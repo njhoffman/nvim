@@ -118,7 +118,10 @@ local close_multi = function(skip_prompt)
       end
     else
       if #get_loaded_buffers() > 0 then
-        vim.cmd('silent ' .. cmd .. '')
+        local ok, _ = pcall(vim.cmd, 'silent ' .. cmd) --[[  .. '!' ]]
+        if not ok then
+          vim.notify('close_multi failed: silent ' .. cmd .. '', 3)
+        end
       end
     end
   end
@@ -141,8 +144,8 @@ local close_popups = function()
         vim.api.nvim_win_close(win, false)
       end
     end
-    print('Closed ' .. n .. ' popup windows')
   end
+  print('Closed ' .. n .. ' popup windows')
 end
 
 return {

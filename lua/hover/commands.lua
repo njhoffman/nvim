@@ -15,7 +15,9 @@ local init = function()
   vim.api.nvim_create_augroup('Hover', { clear = true })
 
   cmd('HoverClose', function()
-    vim.api.nvim_win_close(state.winnr, true)
+    if vim.api.nvim_win_is_valid(state.winnr) then
+      vim.api.nvim_win_close(state.winnr, true)
+    end
   end, { desc = 'Close hover window' })
 
   cmd('Hover', handle_command(require('hover').hover_once), { desc = 'Open hover window once' })

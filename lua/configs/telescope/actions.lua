@@ -166,6 +166,19 @@ M.preview_scrolling_down = function(prompt_bufnr)
   -- actions_set.shift_selection(prompt_bufnr, results_height)
 end
 
+M.preview_toggle_wrap = function(prompt_bufnr)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  -- local results_height = vim.api.nvim_win_get_height(picker.results_win)
+  local status = state.get_status(prompt_bufnr)
+  local previewer = action_state.get_current_picker(prompt_bufnr).previewer
+  local preview_winid = status.layout.preview and status.layout.preview.winid
+  -- Check if we actually have a previewer and a preview window
+  if type(previewer) ~= 'table' or previewer.scroll_fn == nil or preview_winid == nil then
+    return
+  end
+  vim.api.nvim_win_set_option(preview_winid, 'wrap', not vim.api.nvim_win_get_option(preview_winid, 'wrap'))
+end
+
 M.toggle_whichkey = function(prompt_bufnr)
   local whichkey_opts = {
     separator = ' ➜ ',
@@ -435,8 +448,6 @@ M.delete_buffer = function(prompt_bufnr)
   end)
   vim.notify('removed ' .. #removed .. ' buffers', 2)
 end
-
-vim.dbglog('🪚 [1]: actions.lua:438')
 
 local function create_scratch_win(filetype, lines)
   local buf, win

@@ -1,5 +1,7 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
 local telescope = require('telescope')
+local sorters = require('telescope.sorters')
+
 local commands = require('configs.telescope.commands')
 local mappings = require('configs.telescope.mappings')
 local pickers = require('configs.telescope.pickers')
@@ -76,9 +78,12 @@ local telescope_config = {
     color_devicons = true,
     winblend = 0,
     mappings = mappings.main,
-    -- file_sorter = sorters.native_fzf_sorter,
+    -- generic_sorter = sorters.get_generic_fuzzy_sorter,
     generic_sorter = require('mini.fuzzy').get_telescope_sorter,
     file_sorter = require('mini.fuzzy').get_telescope_sorter,
+    -- file_sorter = sorters.get_substr_matcher,
+    -- file_sorter = sorters.fuzzy_with_index_bias,
+    -- file_sorter = sorters.native_fzf_sorter,
     include_extensions = true,
     path_display = display_path.init('simple'),
     file_ignore_patterns = {

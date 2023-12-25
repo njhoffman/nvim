@@ -35,7 +35,7 @@ local apply_config_file = function(name, plugin, dependency)
     local mod, mod_ok = vim.import(fname)
     if not mod_ok then
       state.errors[fname] = mod
-      logger:error('ERROR: ' .. fname .. vim.inspect(mod))
+      logger:error('error in lazy: ' .. fname .. vim.inspect(mod))
     else
       state.configs_loaded[name] = true
       return mod

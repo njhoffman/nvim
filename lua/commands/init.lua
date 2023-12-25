@@ -1,13 +1,12 @@
 local format = require('commands.format')
 local ui = require('commands.ui')
-local tip = require('commands.tip')
+local tips = require('commands.tips')
 local help = require('commands.help')
 local debug = require('commands.debug')
 -- local paste = require('commands.paste')
 local reload = require('commands.reload')
 local system = require('commands.system')
 require('commands.inspect')
-
 local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
 
@@ -20,8 +19,12 @@ vim.api.nvim_set_keymap('n', '<M-C-V>', ':Vblock<CR>', { noremap = true, silent 
 vim.api.nvim_set_keymap('x', '<M-C-V>', ':Vblock<CR>', { noremap = true, silent = true })
 
 --   
-cmd('Tip', tip.get_tip, { nargs = '*', desc = ' get a random neovim tip' })
-cmd('Reload', reload.reload(), { nargs = '*', desc = ' Reload /  Make' })
+cmd('Tip', tips.get_tip, { nargs = '*', complete = tips.complete, desc = ' get a random neovim tip' })
+
+cmd('Reload', reload(), { nargs = '*', desc = ' reload /  make basic' })
+cmd('Reload2', reload({ siblings = true }), { nargs = '*', desc = ' reload /  make siblings' })
+cmd('Reload3', reload({ siblings = true, extended = true }), { nargs = '*', desc = ' reload /  make extended' })
+
 cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })
 -- cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
 cmd('CloseMulti', ui.close_multi, { desc = 'Close tabpage, window, or buffer in that order' })
@@ -44,6 +47,13 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
   desc = 'Create lua help utility functions',
 })
+cmd('TrimTrailingWhitespace', format.trim_space, {
+  nargs = '?',
+  range = '%',
+  addr = 'lines',
+  preview = format.trim_space,
+  desc = 'Trims trailing whitespace in the current buffer.',
+})
 
 -- -- Mapping for dd that doesn't yank an empty line into your default register:
 -- keymap.set("n", "dd", function()
@@ -61,14 +71,6 @@ vim.api.nvim_create_autocmd('FileType', {
 -- -- using delete without yank
 -- keymap.set({ "n", "v" }, "<leader>d", "\"_d", { desc = "Delete without yank" })
 
--- Create the user command
--- cmd('TrimTrailingWhitespace', format.trim_space, {
---   nargs = '?',
---   range = '%',
---   addr = 'lines',
---   preview = format.trim_space,
---   desc = 'Trims trailing whitespace in the current buffer.',
--- })
 -- cmd(
 --   "PasteNoYank",
 --   paste.visual_paste_without_yank,

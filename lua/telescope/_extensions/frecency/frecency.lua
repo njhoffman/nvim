@@ -85,6 +85,10 @@ local frecency = function(user_opts)
   local delim = opts.filter_delimiter or ':'
   local filter_re = '^%s*(' .. delim .. '(%S+)' .. delim .. ')'
 
+  -- local sorter = opts.sorter or sorters.get_generic_fuzzy_sorter
+  -- local sorter = opts.sorter or sorters.get_substr_matcher
+  local sorter = opts.sorter or sorters.fuzzy_with_index_bias
+
   state.picker = pickers.new(opts, {
     prompt_title = 'Frecency',
     on_input_filter_cb = function(query_text)
@@ -131,9 +135,7 @@ local frecency = function(user_opts)
       entry_maker = entry_maker,
     }),
     previewer = require('telescope.config').values.file_previewer(opts),
-    sorter = sorters.get_generic_fuzzy_sorter(opts),
-    -- sorter = sorters.get_substr_matcher(opts),
-    -- sorter = sorters.fuzzy_with_index_bias(opts),
+    sorter = sorter(opts),
   })
   state.picker:find()
 

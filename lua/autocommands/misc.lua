@@ -138,7 +138,6 @@ vim.api.nvim_create_autocmd({ 'BufRead' }, {
   callback = function(event)
     -- vim.bo[event.buf].buflisted = false
     local buftype = vim.api.nvim_buf_get_option(event.buf, 'buftype')
-    vim.dbglog('🪚 [2]: render.lua:23')
     if buftype == 'nofile' then
       vim.keymap.set('n', 'q', '<cmd>q<cr>', { buffer = event.buf, silent = true })
       vim.keymap.set('n', '<M-{>', '<cmd>q<cr>', { buffer = event.buf, silent = true })
@@ -236,9 +235,7 @@ local get_last_char = function(chars, key)
     local current_line = vim.fn.trim(vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1] or '')
     local last_character = current_line and current_line:sub(-1) or ''
     local to_remove = ''
-    vim.dbglog(chars, key)
     if vim.fn.empty(chars) and vim.tbl_isempty(chars) and vim.fn.empty(key) then
-      vim.dbglog('TO REMOVE', last_character)
       to_remove = last_character
     else
       for _, char in ipairs(chars) do

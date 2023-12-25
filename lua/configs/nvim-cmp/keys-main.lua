@@ -58,7 +58,6 @@ local main = {
         --   -- fallback()
         -- else
         -- cmp.complete({})
-        vim.dbglog('complete')
         -- end
       end
     end,
@@ -66,7 +65,6 @@ local main = {
   ['<C-p>'] = {
     i = function(fallback)
       if cmp.visible() then
-        vim.dbglog('visible')
         cmp.select_prev_item({
           preserve_mapping_verticality = preserve_mapping_verticality,
           count = 1,
@@ -76,7 +74,6 @@ local main = {
         luasnip.expand_or_jump()
       else
         cmp.complete()
-        vim.dbglog('complete')
         -- elseif type(fallback) == 'function' then
         -- fallback()
       end

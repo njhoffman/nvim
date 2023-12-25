@@ -80,7 +80,7 @@ local function run_provider(provider, _opts)
     local active_pid = state.enabled[state.curr_idx]
     if provider.id == active_pid then
       async.scheduler()
-      ui.show_hover_new(provider.id, result, opts)
+      ui.create_hover(provider.id, result, opts)
     end
     ui.add_title()
     state.busy = false

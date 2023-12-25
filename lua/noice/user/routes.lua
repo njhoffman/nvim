@@ -67,10 +67,12 @@ local routes = {
     },
     opts = { skip = true },
   },
-  -- undo/redo related messages
   {
     filter = {
+      -- undo/redo related messages
       any = {
+        { event = 'msg_show', find = 'Already at newest change' },
+        { event = 'msg_show', find = 'Already at oldest change' },
         -- all '%d change; after #%d  %d seconds ago'
         { event = 'msg_show', find = '^%d+ change' },
         -- all '%d line less/more; before #%d  %d seconds ago'
@@ -82,9 +84,7 @@ local routes = {
       },
     },
     view = 'notify',
-    opts = {
-      replace = true,
-    },
+    opts = { replace = true },
   },
   {
     filter = {

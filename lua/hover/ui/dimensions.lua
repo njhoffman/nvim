@@ -1,4 +1,4 @@
-local config = require('hover.config').get()
+local config = require('hover.config')
 local state = require('hover.state')
 local ui_title = require('hover.ui.title')
 
@@ -35,6 +35,10 @@ local function get_lines_height(lines)
 end
 
 local function get_dimensions(lines, max, provider_id)
+  local dimensions = {
+    old_w = state.width,
+    old_h = state.height,
+  }
   local height = get_lines_height(lines)
   local width = 0
 
@@ -43,7 +47,7 @@ local function get_dimensions(lines, max, provider_id)
   if height > max.h then
     height = max.h
   elseif height < 1 then
-    height = config.min_height
+    height = config.get().min_height
   end
 
   for _, line in ipairs(lines) do
@@ -53,13 +57,13 @@ local function get_dimensions(lines, max, provider_id)
   end
   if width > max.w then
     width = max.w
-  elseif width < config.min_width then
-    width = config.min_width
+  elseif width < config.get().min_width then
+    width = config.get().min_width
   end
 
   state.width = title_width > width and title_width or width
   state.height = height
-  return state.width, state.height
+  return vim.tbl_deep_extend('force', dimensions, { new_w = state.width, new_h = state.height })
 end
 
 return { get_dimensions = get_dimensions, get_max_height = get_max_height, get_max_width = get_max_width }

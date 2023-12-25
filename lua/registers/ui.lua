@@ -204,7 +204,6 @@ local _create_window = function()
   }) or 'registers'
   -- TODO: add option for this
   vim.api.nvim_set_option_value('syntax', source_ft, { buf = state._buffer })
-  vim.dbglog('🪚 ft', source_ft)
 
   -- Make the buffer content cut-off instead of starting on new line
   vim.api.nvim_win_set_option(state._window, 'wrap', false)
@@ -441,9 +440,7 @@ local close_window = function(options)
   return utils._handle_callback_options(options, _close_window)
 end
 
-local switch_layout = function()
-  vim.dbglog('🪚 toggle layout', state._current_layout)
-end
+local switch_layout = function() end
 
 -- stylua: ignore
 return {

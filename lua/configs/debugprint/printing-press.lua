@@ -317,5 +317,32 @@ function M.removeLogs()
   vim.b.timelogStart = false ---@diagnostic disable-line: inject-field
 end
 
+local scopes = {
+  project = '**/*.lua',
+  open_bufs = vim.fn.expand('%:p'),
+  cwd = vim.fn.expand('%:p:h') .. '/**/*.lua',
+  -- buffer = vim.fn.expand('%:p'),
+}
+
+---Show log statements in quickfix with different scopes
+function M.quickfix(all, scope)
+  if all then
+    vim.cmd('vimgrep vim.dbglog ' .. scopes[scope])
+  else
+    vim.cmd('vimgrep /' .. config.marker .. '/g ' .. scopes[scope])
+  end
+  vim.cmd.copen()
+  vim.notify(
+    'Inserted '
+      .. vim.fn.getqflist({ size = -1 }).size
+      .. (all and ' log' or ' marker')
+      .. ' statements into quickfix from '
+      .. scope,
+    vim.log.levels.INFO,
+    { title = 'Chainsaw' }
+  )
+  vim.b.timelogStart = false ---@diagnostic disable-line: inject-field
+end
 --------------------------------------------------------------------------------
+
 return M

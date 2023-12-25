@@ -3,41 +3,60 @@ local capabilities = require('lsp.capabilities')
 local format = require('lsp.format')
 
 local setup_mappings = function()
-  local keymap_opts = { noremap = true, silent = true }
   vim.api.nvim_set_keymap(
     'n',
     '<C-T>',
     "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = true })<cr>",
-    keymap_opts
+    { silent = true, desc = 'show buffer diagnostics' }
   )
 
   vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
-  vim.api.nvim_set_keymap('n', '<M-T>', "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>", keymap_opts)
-  vim.api.nvim_set_keymap('n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', keymap_opts)
-  vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', keymap_opts)
-  vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', keymap_opts)
+  vim.api.nvim_set_keymap(
+    'n',
+    '<M-T>',
+    "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>",
+    { silent = true, desc = 'show workspace  diagnostics' }
+  )
+  vim.api.nvim_set_keymap(
+    'n',
+    '<Leader>e',
+    '<cmd>lua vim.diagnostic.open_float()<CR>',
+    { silent = true, desc = 'open diagnostic float' }
+  )
+  vim.api.nvim_set_keymap(
+    'n',
+    '[d',
+    '<cmd>lua vim.diagnostic.goto_prev()<CR>',
+    { silent = true, desc = 'prev diagnostic problem' }
+  )
+  vim.api.nvim_set_keymap(
+    'n',
+    ']d',
+    '<cmd>lua vim.diagnostic.goto_next()<CR>',
+    { silent = true, desc = 'next diagnostic problem' }
+  )
   vim.api.nvim_set_keymap(
     'n',
     '[e',
     '<cmd>lua vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })<CR>',
-    keymap_opts
+    { silent = true, desc = 'jump to prev error' }
   )
   vim.api.nvim_set_keymap(
     'n',
     ']e',
     '<cmd>lua vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })<CR>',
-    keymap_opts
+    { silent = true, desc = 'jump to next error' }
   )
-  vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', keymap_opts)
-  -- vim.keymap.set('n', '[e', function()
-  --   vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
-  -- end)
-  -- vim.keymap.set('n', ']e', function()
-  --   vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
-  -- end)
+  vim.api.nvim_set_keymap(
+    'n',
+    'gqd',
+    '<cmd>lua vim.diagnostic.setqflist({ open = true  })<CR>',
+    { silent = true, desc = 'diagnostics to quickfix' }
+  )
+
   -- if the file is .sql
   if vim.bo.filetype == 'sql' then
-    vim.keymap.set('n', '<leader>q', ':!sqlfluff fix -fq --dialect=postgres %<cr>')
+    vim.keymap.set('n', '<leader>', ':!sqlfluff fix -fq --dialect=postgres %<cr>')
   end
 end
 

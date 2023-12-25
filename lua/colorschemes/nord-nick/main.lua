@@ -4,6 +4,16 @@
 local lush = require('lush')
 local hsl = lush.hsl
 local clrutil = require('utils.colors')
+-- Title          xxx cterm=bold gui=bold guifg=#82aaff
+-- Visual         xxx guibg=#2d3f76
+-- VisualNC       xxx cleared
+-- WildMenu       xxx guibg=#2d3f76
+-- Folded         xxx guifg=#82aaff guibg=#3b4261
+-- FoldColumn     xxx guifg=#636da6 guibg=#222436
+-- DiffAdd        xxx guibg=#273849
+-- DiffChange     xxx guibg=#252a3f
+-- DiffDelete     xxx guibg=#3a273a
+-- DiffText       xxx guibg=#394b70
 
 local tokyoColors = {
   none = 'NONE',
@@ -329,12 +339,26 @@ return function(injected_functions)
     sym('@variable.builtin')({ Identifier }),
 
     sym('@text.todo.checked.markdown')({ fg = '#53fafa', gui = 'bold' }),
-    sym('@text.title.1.markdown')({ fg = '#3dbcff' }), -- @text.title #88aee9
-    sym('@text.title.2.markdown')({ fg = '#3ab4e8' }), -- @text.title
-    sym('@text.title.3.markdown')({ fg = '#37b0d8' }), -- @text.title
-    sym('@text.title.4.markdown')({ fg = '#34a4c8' }), -- @text.title
-    sym('@text.title.5.markdown')({ fg = '#3098b2' }), -- @text.title
-    sym('@text.title.6.markdown')({ fg = '#3092ae' }), -- @text.title
+    -- h1 = 'iris', h2 = 'foam', h3 = 'rose', h4 = 'gold', h5 = 'pine', h6 = 'foam',
+    -- #3dbcff  #f38ba8  #21c7a8  #7aa2f7 #272b40  #1e2718
+    -- #3ab4e8  #fab387  #82aaff  #e0af68 #2d2c39  #21262d
+    -- #37b0d8  #f9e2af  #7fdbca  #9ece68 #2a2a3a  #1d2229
+    -- #34a4c8  #a6e3a1  #f78c6c  #1abc9c #242d3d  #13181f
+    -- #3098b2  #74c7ec  #87bcff  #bb9af7 #2a2a40  #0c1118
+    -- #3092ae  #b4befe  #ae81ff  #9d7cd8 #2d2b3f  #0c0b12
+    sym('@text.title.1.markdown')({ fg = '#3092ae' }),
+    sym('@text.title.2.markdown')({ fg = '#3dbcff' }),
+    sym('@text.title.3.markdown')({ fg = '#3dbcff' }),
+    sym('@text.title.4.markdown')({ fg = '#1abccc' }),
+    sym('@text.title.5.markdown')({ fg = '#689af7' }),
+    sym('@text.title.6.markdown')({ fg = '#6a7cd8' }),
+    Headline1({ bg = '#081228', fg = sym('@text.title.1.markdown').fg }),
+    Headline2({ bg = '#020814', fg = sym('@text.title.2.markdown').fg }),
+    Headline3({ bg = '#000408', fg = sym('@text.title.3.markdown').fg }),
+    Headline4({ bg = '#040608', fg = sym('@text.title.4.markdown').fg }),
+    Headline5({ bg = '#020408', fg = sym('@text.title.5.markdown').fg }),
+    Headline6({ bg = '#000204', fg = sym('@text.title.6.markdown').fg }),
+    CodeBlock({ bg = '#090909' }),
     -- - @lsp.type.variable.javascript links to Variable priority: 125
     -- - @lsp.mod.defaultLibrary.javascript links to @lsp priority: 126
     -- - @lsp.typemod.variable.defaultLibrary.javascript links to Identifier priority: 127
@@ -432,11 +456,18 @@ return function(injected_functions)
     cssColor({ cssValueLength }),
     cssUnitDecorators({ cssValueLength }),
     --
-    manSectionHeading({ fg = '#6595f8' }),
-    manReference({ fg = '#4796bc' }),
+    manReference({ fg = '#2aa1ae' }),
+    manUnderline({ gui = 'italic', fg = '#2aa1ae' }),
+    manBold({ fg = '#0575af', gui = 'italic' }),
+    manItalic({ gui = 'italic', fg = '#2aa1ae' }),
+    manSectionHeading({ fg = '#25a5ff', gui = 'none,bold' }),
     -- manSubheading { Function  },
     -- manOptionDesc { Constant },
-    --
+    -- manHeader         Title
+    -- manSectionHeading Statement
+    -- manOptionDesc     Constant
+    -- manReference      PreProc
+    -- manSubHeading     Function
     liquidExpression({ Type }),
     liquidDelimiter({ fg = clr_over.orange }),
 
@@ -597,13 +628,6 @@ return function(injected_functions)
     pandocAtxHeaderMark({ fg = '#4575f8' }),
     pandocAtxStart({ fg = '#4575f8' }),
     helpHyperTextJump({ fg = '#6585b8', gui = 'none' }),
-    Headline1({ bg = '#081228' }), -- #1e2718
-    Headline2({ bg = '#020814' }), -- #21262d
-    Headline3({ bg = '#000408' }), -- #1d2229
-    Headline4({ bg = '#040608' }), -- #13181f
-    Headline5({ bg = '#020408' }), -- #0c1118
-    Headline6({ bg = '#000204' }), -- #0c0b12
-    CodeBlock({ bg = '#090909' }),
     Dash({ bg = '#341710', fg = '#341710' }),
     --
     -- Indent Blankline

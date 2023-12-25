@@ -15,7 +15,6 @@ local diff_commit_file_previewer = function(bufnr)
       local curr_name = git_utils.file_name_on_commit(commit_hash, filename_on_head, bufnr)
       local prev_name = git_utils.file_name_on_commit(prev_commit, filename_on_head, bufnr)
 
-      vim.dbglog('NAMES', curr_name, prev_name, prev_commit, bufnr)
       if prev_name ~= nil then
         return git_utils.git_diff_command({
           'git',

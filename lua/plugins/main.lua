@@ -407,6 +407,7 @@ local plugins = {
       { 'paopaol/telescope-git-diffs.nvim', dependencies = { 'nvim-lua/plenary.nvim', 'sindrets/diffview.nvim' } },
       {
         'luckasRanarison/nvim-devdocs',
+        enabled = false,
         dependencies = {
           'nvim-lua/plenary.nvim',
           'nvim-treesitter/nvim-treesitter',
@@ -473,7 +474,7 @@ local plugins = {
     dependencies = { 'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim' },
   },
   -- { 'rmagatti/auto-session', event = 'VimEnter' },
-  { 'wakatime/vim-wakatime', event = 'VeryLazy' },
+  { 'wakatime/vim-wakatime', enabled = false, event = 'VeryLazy' },
   { 'LunarVim/bigfile.nvim' },
   { 'carlosrocha/chrome-remote.nvim', event = 'VeryLazy' },
   {
@@ -486,7 +487,6 @@ local plugins = {
       'rouge8/neotest-rust',
       'akinsho/neotest-go',
       'nvim-treesitter/nvim-treesitter',
-      'antoinemadec/FixCursorHold.nvim',
       {
         'nvim-neotest/neotest-vim-test',
         dependencies = { 'vim-test/vim-test', cmd = { 'Test', 'TestNearest', 'TestFile' } },
@@ -589,7 +589,7 @@ local plugins = {
       'nvim-lua/plenary.nvim', -- required by telescope
       'MunifTanjim/nui.nvim',
       'nvim-treesitter/nvim-treesitter',
-      'rcarriga/nvim-notify',
+      'nvim-notify',
       'nvim-tree/nvim-web-devicons',
     },
     lazy = 'leetcode.nvim' ~= vim.fn.argv()[1],

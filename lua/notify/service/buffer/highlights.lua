@@ -59,15 +59,17 @@ function NotifyBufHighlights:new(notif, buffer, config)
   end
 
   -- special field for general custom highlights
-  if notif.body_highlights then
-    for i, hl_group in ipairs(notif.body_highlights) do
+  local body_highlights = notif.body_highlights or vim.tbl_get(notif, 'highlights', 'body')
+  local level_highlights = notif.body_level_highlights or vim.tbl_get(notif, 'highlights', 'level')
+  if body_highlights then
+    for i, hl_group in ipairs(body_highlights) do
       local _content, _content_def = set_linked_group(hl_group[1], true, true)
       groups[_content] = _content_def
       content[hl_group[1]] = _content
     end
     -- special field for custom highlights for each level
-  elseif notif.body_level_highlights then
-    for i, hl_group in ipairs(notif.body_level_highlights) do
+  elseif level_highlights then
+    for i, hl_group in ipairs(level_highlights) do
       local _content, _content_def = set_linked_group(hl_group[1], true, false)
       groups[_content] = _content_def
       content[hl_group[1]] = _content

@@ -47,16 +47,49 @@ local extension_configs = {
       show_unindexed = true,
       ignore_patterns = { '*.git/*', '/mnt/*', '*/tmp/*' },
       mappings = mappings.file,
+      -- stylua: ignore
       workspaces = {
-        ['etc'] = '/etc',
-        ['bin'] = baseDirs.home .. '/bin',
-        ['home'] = baseDirs.home,
-        ['config'] = baseDirs.home .. '/.config',
-        ['nvim-config'] = baseDirs.config,
-        ['nvim-data'] = baseDirs.data,
-        ['zettel'] = baseDirs.home .. '/zettelkasten',
-        ['zinit'] = baseDirs.home .. '/.zinit',
-        ['zsh'] = baseDirs.home .. '/.config/zsh',
+        ['etc']     = '/etc',
+        ['home']    = baseDirs.home,
+        ['bin']     = baseDirs.home .. '/bin',
+        ['git']     = baseDirs.home .. '/git',
+        ['config']  = baseDirs.home .. '/.config',
+        ['nvim']    = baseDirs.config,
+        ['lazy']    = baseDirs.data .. '/lazy',
+        ['runtime'] = baseDirs.data .. '/runtime',
+        ['zettel']  = baseDirs.home .. '/zettelkasten',
+        ['zinit']   = baseDirs.home .. '/.zinit',
+        ['zsh']     = baseDirs.home .. '/.config/zsh',
+      },
+    }
+    return frecency_cfg
+  end,
+  frecency_new = function()
+    local baseDirs = {
+      home = vim.fn.expand('$HOME'),
+      config = vim.fn.stdpath('config'),
+      data = vim.fn.stdpath('data'),
+    }
+    local frecency_cfg = {
+      -- db_root = "/home/my_username/path/to/db_root",
+      auto_validate = true,
+      show_scores = true,
+      show_unindexed = true,
+      disable_devicons = false,
+      ignore_patterns = { '*.git/*', '*/tmp/*' },
+      -- stylua: ignore
+      workspaces = {
+        ['etc']     = '/etc',
+        ['home']    = baseDirs.home,
+        ['bin']     = baseDirs.home .. '/bin',
+        ['git']     = baseDirs.home .. '/git',
+        ['config']  = baseDirs.home .. '/.config',
+        ['nvim']    = baseDirs.config,
+        ['lazy']    = baseDirs.data .. '/lazy',
+        ['runtime'] = baseDirs.data .. '/runtime',
+        ['zettel']  = baseDirs.home .. '/zettelkasten',
+        ['zinit']   = baseDirs.home .. '/.zinit',
+        ['zsh']     = baseDirs.home .. '/.config/zsh',
       },
     }
     return frecency_cfg
@@ -446,7 +479,6 @@ local load_extensions = function()
     .. ' out of '
     .. H.table_len(extension_configs)
     .. ' telescope plugins'
-  -- FIXME: this is not working
   -- vim.notify(end_msg, 1)
 end
 

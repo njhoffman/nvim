@@ -190,7 +190,7 @@ function M.get_project_root()
 
   local options = require('project_nvim.config').get()
   if type(options) ~= 'table' or type(options.detection_methods) ~= 'table' then
-    return vim.notify('Bad config file ...' .. vim.inspect(options), 5)
+    return vim.notify('Bad config file ...' .. vim.inspect(options), 4)
   end
   for _, detection_method in ipairs(options.detection_methods) do
     if detection_method == 'lsp' then

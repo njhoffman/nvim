@@ -207,6 +207,8 @@ local oldfiles = function(user_opts)
 
   logger:debug('launching oldfiles ' .. #results .. ' /' .. #vim.v.oldfiles)
 
+  local sorter = opts and opts.sorter or conf.file_sorter
+
   pickers
     .new(opts, {
       prompt_title = 'Oldfiles',
@@ -214,7 +216,7 @@ local oldfiles = function(user_opts)
         results = results,
         entry_maker = opts.entry_maker or gen_from_file(opts),
       }),
-      sorter = conf.file_sorter(opts),
+      sorter = sorter(opts),
       previewer = conf.file_previewer(opts),
       attach_mappings = function(_, map)
         for mode, mode_maps in pairs(opts.mappings or {}) do

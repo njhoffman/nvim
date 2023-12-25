@@ -53,15 +53,15 @@ local v = vim.version()
 -- local version = 'v' .. vim.fn.join({ v.major, v.minor, v.patch }, '.') .. ' :' .. v.api_level
 local v_full = vim.fn.matchstr(vim.api.nvim_command_output('version'), 'NVIM v\\zs[^\\n]*')
 -- NVIM v0.10.0-dev-927+g21152f790
--- TODO: 174 commits over 3 weeks from nightly
 local version = 'v' .. v_full .. ' :' .. v.api_level
 local load_time
 if not vim.g.load_time then
   load_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
   load_time = '      VimEnter in ' .. string.sub(string.gsub(load_time, ' ', ''), 1, 5) .. 's'
 else
-  load_time = 'Loaded in ' .. vim.g.load_time .. 's'
+  load_time = '⚡neovim loaded in ' .. vim.g.load_time .. 's'
 end
+-- TODO: 174 commits over 3 weeks from nightly
 
 local stats = require('lazy').stats()
 local plugins = ' Loaded ' .. stats.loaded .. ' out of ' .. stats.count .. ' plugins'
@@ -124,6 +124,7 @@ config.layout[4] = section_mru
 config.layout[6] = buttons
 config.layout[7] = { type = 'padding', val = 2 }
 config.layout[8] = footer
+
 require('alpha').setup(config)
 
 -- config.layout[2] = header_color()

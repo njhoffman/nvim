@@ -52,6 +52,12 @@ function NotificationBuf:open(win)
   end
   self._state = BufState.OPEN
   local record = self._notif:record()
+
+  if record.filetype and record.filetype ~= '' then
+    local buf = vim.api.nvim_win_get_buf(win)
+    api.nvim_set_option_value('filetype', record.filetype, { buf = buf })
+  end
+
   if self._notif.on_open then
     self._notif.on_open(win, record)
   end
@@ -104,12 +110,11 @@ function NotificationBuf:render()
   api.nvim_buf_set_option(buf, 'modifiable', true)
   api.nvim_buf_clear_namespace(buf, render_namespace, 0, -1)
 
-  api.nvim_buf_set_option(buf, 'filetype', notif.filetype or 'notify')
   vim.keymap.set('n', 'q', '<cmd>q<cr>', { buffer = buf, silent = true })
   vim.keymap.set('n', '<esc>', '<cmd>q<cr>', { buffer = buf, silent = true })
 
   notif.render(buf, notif, self.highlights, self._config)
-  api.nvim_buf_set_option(buf, 'modifiable', false)
+  api.nvim_set_option_value('modifiable', false, { buf = buf })
 
   local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
   local width = self._config.minimum_width()

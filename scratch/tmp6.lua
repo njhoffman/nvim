@@ -1,3 +1,8 @@
-local utils = require('notify.util.render')
-local file_pfx = string.gsub(vim.fn.stdpath('config') .. '/', os.getenv('HOME') .. '/', '')
-vim.dbglog('hi')
+local Manager = require('noice.message.manager')
+local Config = require('noice.config')
+local messages = Manager.get(Config.options.commands.history.filter, {
+  history = true,
+  sort = true,
+  reverse = true,
+})
+vim.dbglog(messages)

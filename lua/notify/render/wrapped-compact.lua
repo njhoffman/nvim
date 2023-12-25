@@ -52,24 +52,32 @@ return function(bufnr, notif, highlights, config)
     max_width = 80
   end
   local display_message = custom_wrap(vim.fn.deepcopy(notif.message), max_width)
+  -- local display_message = vim.fn.deepcopy(notif.message)
 
-  local default_titles = { 'Error', 'Warning', 'Notify' }
-  local has_valid_manual_title = type(title) == 'string' and #title > 0 and not vim.tbl_contains(default_titles, title)
+  -- local default_titles = { 'Error', 'Warning', 'Notify' }
+  -- local has_valid_manual_title = type(title) == 'string' and #title > 0 and not vim.tbl_contains(default_titles, title)
+  -- if has_valid_manual_title then
+  --   -- has title = icon + title as header row
+  --   prefix = string.format(' %s %s', icon, title)
+  --   table.insert(display_message, 1, prefix)
+  -- else
+  --   -- no title = prefix the icon
+  --   prefix = string.format(' %s', icon)
+  --   display_message[1] = string.format('%s %s', prefix, display_message[1])
+  -- end
 
-  if has_valid_manual_title then
-    -- has title = icon + title as header row
-    prefix = string.format(' %s %s', icon, title)
-    table.insert(display_message, 1, prefix)
+  if type(title) == 'string' and #title > 0 then
+    prefix = string.format('%s | %s:', icon, title)
   else
-    -- no title = prefix the icon
-    prefix = string.format(' %s', icon)
-    display_message[1] = string.format('%s %s', prefix, display_message[1])
+    prefix = string.format('%s |', icon)
   end
-
+  display_message[1] = string.format('%s %s', prefix, display_message[1])
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, display_message)
 
-  local icon_length = vim.str_utfindex(icon)
-  local prefix_length = vim.str_utfindex(prefix) + 1
+  -- local icon_length = vim.str_utfindex(icon)
+  -- local prefix_length = vim.str_utfindex(prefix)
+  local icon_length = icon and vim.str_utfindex(icon) or 0
+  local prefix_length = vim.str_utfindex(prefix)
 
   vim.api.nvim_buf_set_extmark(bufnr, namespace, 0, 0, {
     hl_group = highlights.icon,
@@ -82,9 +90,10 @@ return function(bufnr, notif, highlights, config)
     priority = 50,
   })
 
-  if notif.body_highlights then
-    base.content_hl(bufnr, highlights, notif, 0, prefix_length + 1)
-  else
-    base.body_hl(bufnr, highlights, notif, 0, prefix_length + 1, #display_message)
-  end
+  base.content_hl(bufnr, highlights, notif, 0, prefix_length + 1, #notif.message - 1)
+  -- if notif.body_highlights then
+  --   base.content_hl(bufnr, highlights, notif, 0, prefix_length + 1)
+  -- else
+  --   base.body_hl(bufnr, highlights, notif, 0, prefix_length + 1, #display_message[1])
+  -- end
 end

@@ -1,0 +1,23 @@
+-- setup({
+--     defaults = {
+--       interval = 3000,
+--       debug = false,
+--     },
+--     counts = {},
+--     lists = {
+--       -- au_commands = {},
+--       -- au_groups = {},
+--       -- keys_buffer = { align_cols = { lhs = { 8, 10 } } },
+--       -- keys_global = { align_cols = { lhs = { 8, 10 } } },
+--       -- highlights = {},
+--       -- vars_buffer = {
+--         --   interval = 3000,
+--         --   ignored = { 'b:barbecue_entries', 'b:match_midmap' },
+--       -- },
+--       vars_window = {},
+--       vars_predef = {},
+--       -- opts_buffer = {},
+--       -- opts_global = {},
+--       -- events = {event_list = events},
+--     },
+--   })

@@ -117,15 +117,36 @@ local events = {
   -- 'WinResized',
   -- 'WinScrolled',
 }
+-- keys_global = require('tracker.sources.keys')('g'),
+-- keys_buffer = require('tracker.sources.keys')('b'),
+-- opts_global = require('tracker.sources.options')('g'),
+-- opts_buffer = require('tracker.sources.options')('b'),
+-- opts_window = require('tracker.sources.options')('w'),
+-- vars_global = require('tracker.sources.variables')('g'),
+-- vars_buffer = require('tracker.sources.variables')('b'),
+-- vars_predef = require('tracker.sources.variables')('v'),
+-- vars_window = require('tracker.sources.variables')('w'),
+-- highlights  = require('tracker.sources.highlights'),
 
-require('tracker').setup({
-  metrics = {
-    -- aucommands = {},
-    -- augroups = {},
-    -- highlights = {},
-  },
-  list = {
-    -- highlights = {},
-    -- events = {event_list = events},
-  },
-})
+-- local tracker = require('tracker')
+-- local opt_b = tracker.opts_buffer
+-- local opt_g = tracker.opts_global
+-- local opt_w = tracker.opts_window
+-- vim.dbglog(vars_b)
+-- vim.dbglog(vars_b.get(vars_b))
+-- vim.dbglog(vars_g.get(vars_g))
+-- vim.dbglog(vars_w.get(vars_w))
+
+-- require('tracker').setup({
+--   counts = {
+--     -- aucommands = {},
+--     -- augroups = {},
+--     -- highlights = {},
+--   },
+--   lists = {
+--     -- highlights = {},
+--     -- variables_window = {},
+--     -- variables_buffer = {},
+--     -- events = {event_list = events},
+--   },
+-- })

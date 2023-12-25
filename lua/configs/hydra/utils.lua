@@ -5,7 +5,6 @@ local get_severity = function(type)
   elseif severity == false then
     severity = 0
   end
-  vim.dbglog('SEVERE', severity)
   return severity
 end
 

@@ -14,7 +14,7 @@
 local noice_views = require('noice.user.views')
 local noice_routes = require('noice.user.routes')
 local noice_mapping = require('noice.user.mapping')
-local render = require('configs.nvim-notify.render')
+local render = require('notify.render._entry')
 
 local cfg = {
   presets = {
@@ -108,7 +108,7 @@ local cfg = {
       },
     },
     -- ['cmdline'] = cmdlineView,
-    ['notify_error'] = noice_views.errorView,
+    -- ['notify_error'] = noice_views.errorView,
     ['notify'] = {
       -- render = 'minimal',
       merge = true,
@@ -248,6 +248,7 @@ require('telescope').load_extension('noice')
 noice_mapping.setup()
 
 vim.api.nvim_create_user_command('Silence', function()
+  vim.diagnostic.disable()
   require('notify').setup({ level = 5 })
   require('noice').setup({
     routes = {
@@ -261,7 +262,20 @@ vim.api.nvim_create_user_command('Silence', function()
       },
     },
   })
+  vim.cmd([[
+    set laststatus=0
+    set cmdheight=0
+    set nomore
+    echomsg 'Messages and lsp silenced...'
+  ]])
 end, { desc = 'silence messaging by redirect and skip output of all routes in noice' })
+
+vim.api.nvim_create_user_command('SilenceStop', function()
+  vim.diagnostic.enable()
+  require('configs.nvim-notify')
+  require('configs.noice')
+  require('vim-options')
+end, { desc = 'Undo silence command redirects and options' })
 
 vim.keymap.set('c', '<S-Enter>', function()
   require('noice').redirect(vim.fn.getcmdline())
