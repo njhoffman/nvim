@@ -4,6 +4,7 @@ local luasnip = require('luasnip')
 --       節 缾      了ﴰ   ﮕ ﳎ        陋 גּ גּ      ﴯ   
 local pfx = ' '
 local preserve_mapping_verticality = false
+
 local main = {
   ['<C-x><C-o>'] = cmp.mapping.complete({ desc = pfx .. 'start completion source' }),
   ['<C-x><C-s>'] = cmp.mapping.complete({
@@ -19,7 +20,7 @@ local main = {
     config = { sources = { { name = 'codeium', max_item_count = 10 }, { name = 'copilot', max_item_count = 10 } } },
   }),
   ['<C-n>'] = {
-    i = function(fallback)
+    i = function()
       if cmp.visible() then
         -- cmp.select_next_item({ behavior = types.cmp.SelectBehavior.Insert })
         cmp.select_next_item({
@@ -27,26 +28,26 @@ local main = {
           count = 1,
           behavior = cmp.SelectBehavior.Select,
         })
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      -- elseif type(fallback) == 'function' then
-      --   fallback()
+      -- elseif luasnip.expand_or_jumpable() then
+      --   luasnip.expand_or_jump()
       else
         cmp.complete()
         -- vim.api.nvim_set_option_value('omnifunc', nil, {})
+        -- elseif type(fallback) == 'function' then
+        --   fallback()
       end
     end,
   },
   ['<C-p>'] = {
-    i = function(fallback)
+    i = function()
       if cmp.visible() then
         cmp.select_prev_item({
           preserve_mapping_verticality = preserve_mapping_verticality,
           count = 1,
           behavior = cmp.SelectBehavior.Select,
         })
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
+      -- elseif luasnip.expand_or_jumpable() then
+      --   luasnip.expand_or_jump()
       -- elseif type(fallback) == 'function' then
       --   fallback()
       else
@@ -54,30 +55,32 @@ local main = {
       end
     end,
   },
-  ['<M-b>'] = cmp.mapping.scroll_docs(-6),
-  ['<M-f>'] = cmp.mapping.scroll_docs(6),
-  ['<C-f>'] = cmp.mapping.select_next_item({
-    count = 6,
-    behavior = cmp.SelectBehavior.Select,
-    preserve_mapping_verticality = true,
-  }),
-  ['<C-b>'] = cmp.mapping.select_prev_item({
-    count = 6,
-    behavior = cmp.SelectBehavior.Select,
-    preserve_mapping_verticality = true,
-  }),
-  ['<C-Space>'] = cmp.mapping.complete(),
-  ['<C-e>'] = cmp.mapping.abort(),
-  -- ['<CR>'] = cmp.mapping.confirm({ select = false }),
-  ['<CR>'] = {
-    i = function(fallback)
-      if cmp.visible() and cmp.get_active_entry() then
-        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-      elseif type(fallback) == 'function' then
-        fallback()
-      end
+  -- ['<M-b>'] = cmp.mapping.scroll_docs(-6),
+  -- ['<M-f>'] = cmp.mapping.scroll_docs(6),
+  ['<C-f>'] = {
+    i = function()
+      cmp.mapping.select_next_item({
+        count = 6,
+        behavior = cmp.SelectBehavior.Select,
+        preserve_mapping_verticality = true,
+      })
     end,
   },
+  -- ['<C-b>'] = cmp.mapping.select_prev_item({
+  --   count = 6,
+  --   behavior = cmp.SelectBehavior.Select,
+  --   preserve_mapping_verticality = true,
+  -- }),
+  -- ['<C-Space>'] = cmp.mapping.complete(),
+  -- ['<C-e>'] = cmp.mapping.abort(),
+  -- -- ['<CR>'] = cmp.mapping.confirm({ select = false }),
+  -- ['<CR>'] = {
+  --   i = function()
+  --     if cmp.visible() and cmp.get_active_entry() then
+  --       cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+  --     end
+  --   end,
+  -- },
   -- s = cmp.mapping.confirm({ select = true }),
   -- c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
   ['<M-/>'] = {
@@ -91,20 +94,16 @@ local main = {
   },
   -- require('luasnip').jumpable(1) and '<Plug>luasnip-jump-next' or '<tab>'
   ['<Tab>'] = {
-    i = function(fallback)
+    i = function()
       if luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
-      elseif type(fallback) == 'function' then
-        fallback()
       end
     end,
   },
   ['<S-Tab>'] = {
-    i = function(fallback)
+    i = function()
       if luasnip.jumpable(-1) then
         luasnip.jump(-1)
-      elseif type(fallback) == 'function' then
-        fallback()
       end
     end,
   },

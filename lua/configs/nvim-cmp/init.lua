@@ -100,11 +100,11 @@ local cfg = {
     end,
   },
   sorting = sorting,
-  -- experimental = {
-  --   ghost_text = {
-  --     hl_group = 'CmpGhostText',
-  --   },
-  -- },
+  experimental = {
+    ghost_text = {
+      hl_group = 'CmpGhostText',
+    },
+  },
   formatting = formatting,
   window = {
     max_width = MAX_DOCUMENT_WIDTH,
@@ -113,7 +113,58 @@ local cfg = {
     completion = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
     documentation = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
   },
-  mapping = cmp.mapping.preset.insert(mapping_main),
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item({
+      behavior = cmp.SelectBehavior.Select,
+      preserve_mapping_verticality = true,
+    }),
+    ['<C-n>'] = cmp.mapping.select_next_item({
+      behavior = cmp.SelectBehavior.Select,
+      preserve_mapping_verticality = true,
+    }),
+    ['<C-f>'] = cmp.mapping.select_next_item({
+      count = 6,
+      behavior = cmp.SelectBehavior.Select,
+      preserve_mapping_verticality = true,
+    }),
+    ['<C-b>'] = cmp.mapping.select_prev_item({
+      count = 6,
+      behavior = cmp.SelectBehavior.Select,
+      preserve_mapping_verticality = true,
+    }),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    }),
+    ['<M-b>'] = cmp.mapping.scroll_docs(-6),
+    ['<M-f>'] = cmp.mapping.scroll_docs(6),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif require('luasnip').expand_or_jumpable() then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif require('luasnip').jumpable(-1) then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  },
+  -- mapping = cmp.mapping.preset.insert({
+  --   ['<CR>'] = cmp.mapping.confirm(),
+  --   ['<C-n>'] = cmp.mapping.select_next_item(),
+  --   ['<C-p>'] = cmp.mapping.select_prev_item(),
+  -- }),
+  -- mapping = cmp.mapping.preset.insert(mapping_main),
   sources = cmp.config.sources(sources.main[1], sources.main[2]),
   view = {
     entries = {
@@ -176,18 +227,20 @@ local setup_cmp = function()
   --     return is_enabled() and not (line:find('%s%-%-?$') or line:find('^%-%-?$'))
   --   end,
   -- })
-  cmp.setup.cmdline({ '/', '?' }, {
-    mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
-    sources = cmp.config.sources(sources.cmdsearch),
-    matching = { disallow_symbol_nonprefix_matching = false },
-    -- sorting = { comparators = {} },
-  })
-  --
-  cmp.setup.cmdline(':', {
-    mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
-    sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
-    matching = { disallow_symbol_nonprefix_matching = false },
-  })
+  -- cmp.setup.cmdline({ '/', '?' }, {
+  --   mapping = cmp.mapping.preset.cmdline(mapping_sets),
+  --   -- mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
+  --   sources = cmp.config.sources(sources.cmdsearch),
+  --   matching = { disallow_symbol_nonprefix_matching = false },
+  --   -- sorting = { comparators = {} },
+  -- })
+  -- --
+  -- cmp.setup.cmdline(':', {
+  --   -- mapping = cmp.mapping.preset.cmdline(),
+  --   -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
+  --   sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
+  --   matching = { disallow_symbol_nonprefix_matching = false },
+  -- })
 end
 
 setup_cmp()
