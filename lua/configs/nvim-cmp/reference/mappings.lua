@@ -188,7 +188,6 @@ local in_history = false
 local cmdline = {
   ['<Tab>'] = cmp.mapping({
     c = function(fallback)
-      local cmp = require('cmp')
       if cmp.visible() then
         cmp.select_next_item()
       elseif type(fallback) == 'function' then
@@ -198,7 +197,6 @@ local cmdline = {
   }),
   ['<S-Tab>'] = cmp.mapping({
     c = function(fallback)
-      local cmp = require('cmp')
       if cmp.visible() then
         cmp.select_prev_item()
       elseif type(fallback) == 'function' then

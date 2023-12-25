@@ -16,6 +16,9 @@ local function manual_get_hl(name)
   local result = {
     foreground = tonumber(vim.fn.synIDattr(synID, 'fg'):gsub('#', ''), 16),
     background = tonumber(vim.fn.synIDattr(synID, 'bg'):gsub('#', ''), 16),
+    special = tonumber(vim.fn.synIDattr(synID, 'special'):gsub('#', ''), 16),
+    bold = vim.fn.synIDattr(synID, 'bold') == '1',
+    italic = vim.fn.synIDattr(synID, 'italic') == '1',
   }
   return result
 end
@@ -23,7 +26,6 @@ end
 local function get_hl(name)
   local definition = vim.api.nvim_get_hl_by_name(name, true)
   if definition[true] then
-    -- https://github.com/neovim/neovim/issues/18024
     return manual_get_hl(name)
   end
   return definition
@@ -58,18 +60,18 @@ function NotifyBufHighlights:new(notif, buffer, config)
     groups.repeat_count = repeat_count_def
   end
 
-  -- special field for general custom highlights
-  local body_highlights = notif.body_highlights or vim.tbl_get(notif, 'highlights', 'body')
-  local level_highlights = notif.body_level_highlights or vim.tbl_get(notif, 'highlights', 'level')
-  if body_highlights then
-    for i, hl_group in ipairs(body_highlights) do
+  local embedded_hls = vim.tbl_get(notif, 'highlights', 'body')
+  local level_hls = vim.tbl_get(notif, 'highlights', 'level')
+  if embedded_hls then
+    -- predefined content highlights  { "Comment", 3, 9, 14 }
+    for i, hl_group in ipairs(embedded_hls) do
       local _content, _content_def = set_linked_group(hl_group[1], true, true)
       groups[_content] = _content_def
       content[hl_group[1]] = _content
     end
+  elseif level_hls then
     -- special field for custom highlights for each level
-  elseif level_highlights then
-    for i, hl_group in ipairs(level_highlights) do
+    for i, hl_group in ipairs(level_hls) do
       local _content, _content_def = set_linked_group(hl_group[1], true, false)
       groups[_content] = _content_def
       content[hl_group[1]] = _content
@@ -190,7 +192,14 @@ function NotifyBufHighlights:set_opacity(alpha)
         .. ' guibg=#'
         .. string.format('%06x', util.blend(fields.background, background, alpha / 100))
     end
-
+    if fields.special then
+      hl_string = hl_string .. ' guisp=#' .. string.format('%06x', util.blend(fields.special, background, alpha / 100))
+    end
+    for _, style in ipairs({ 'bold', 'italic', 'underline' }) do
+      if fields[style] then
+        hl_string = hl_string .. ' gui=' .. style
+      end
+    end
     if hl_string ~= '' then
       -- Can't use nvim_set_hl https://github.com/neovim/neovim/issues/18160
       vim.cmd('hi ' .. group .. ' ' .. hl_string)

@@ -21,13 +21,13 @@ local split = function(lines, title)
 end
 
 local notify = function(lines, title, highlights)
-  local notify = vim.notify
-  notify(lines, 2, {
+  require('notify')(lines, 2, {
     timeout = 10000,
     -- title = { title, '' },
     -- render = 'default',
-    render = 'simple-notitle',
-    body_highlights = highlights,
+    highlights = {
+      body = highlights,
+    },
     -- hide_from_history = true,
   })
 end

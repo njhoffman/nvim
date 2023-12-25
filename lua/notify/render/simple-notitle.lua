@@ -6,7 +6,4 @@ return function(bufnr, notif, highlights, config)
   api.nvim_buf_set_lines(bufnr, 0, -1, false, notif.message)
 
   base.content_hl(bufnr, highlights, notif, 0, 0, #notif.message - 1)
-
-  -- base.content_hl(bufnr, highlights, notif, 0, 0)
-  -- base.body_hl(bufnr, highlights, notif, 0, 0, #notif.message - 1, #notif.message[#notif.message])
 end

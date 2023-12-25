@@ -5,6 +5,7 @@ local plugins = {
     'njhoffman/nvim-cmp',
     dir = '~/git/nvim-cmp',
     event = { 'InsertEnter', 'CmdlineEnter', 'CmdwinEnter' },
+    event = { 'VimEnter' },
     dependencies = {
       'David-Kunz/cmp-npm',
       'andersevenrud/cmp-tmux',

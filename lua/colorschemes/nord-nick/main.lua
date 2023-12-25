@@ -346,18 +346,25 @@ return function(injected_functions)
     -- #34a4c8  #a6e3a1  #f78c6c  #1abc9c #242d3d  #13181f
     -- #3098b2  #74c7ec  #87bcff  #bb9af7 #2a2a40  #0c1118
     -- #3092ae  #b4befe  #ae81ff  #9d7cd8 #2d2b3f  #0c0b12
-    sym('@text.title.1.markdown')({ fg = '#3092ae' }),
-    sym('@text.title.2.markdown')({ fg = '#3dbcff' }),
-    sym('@text.title.3.markdown')({ fg = '#3dbcff' }),
-    sym('@text.title.4.markdown')({ fg = '#1abccc' }),
-    sym('@text.title.5.markdown')({ fg = '#689af7' }),
-    sym('@text.title.6.markdown')({ fg = '#6a7cd8' }),
+    sym('@text.title.1.markdown')({ fg = '#4f7fd6' }),
+    sym('@text.title.2.markdown')({ fg = '#3470c6' }),
+    sym('@text.title.3.markdown')({ fg = '#2d68b4' }),
+    sym('@text.title.4.markdown')({ fg = '#1a84aa' }),
+    sym('@text.title.5.markdown')({ fg = '#088090' }),
+    sym('@text.title.6.markdown')({ fg = '#0a8088' }),
     Headline1({ bg = '#081228', fg = sym('@text.title.1.markdown').fg }),
     Headline2({ bg = '#020814', fg = sym('@text.title.2.markdown').fg }),
     Headline3({ bg = '#000408', fg = sym('@text.title.3.markdown').fg }),
     Headline4({ bg = '#040608', fg = sym('@text.title.4.markdown').fg }),
     Headline5({ bg = '#020408', fg = sym('@text.title.5.markdown').fg }),
     Headline6({ bg = '#000204', fg = sym('@text.title.6.markdown').fg }),
+    markdownH1({ fg = sym('@text.title.1.markdown').fg }),
+    markdownH2({ fg = sym('@text.title.2.markdown').fg }),
+    markdownH3({ fg = sym('@text.title.3.markdown').fg }),
+    markdownH4({ fg = sym('@text.title.4.markdown').fg }),
+    markdownH5({ fg = sym('@text.title.5.markdown').fg }),
+    markdownH6({ fg = sym('@text.title.6.markdown').fg }),
+
     CodeBlock({ bg = '#090909' }),
     -- - @lsp.type.variable.javascript links to Variable priority: 125
     -- - @lsp.mod.defaultLibrary.javascript links to @lsp priority: 126
@@ -601,7 +608,6 @@ return function(injected_functions)
     yamlTSField({ fg = '#717cb4' }),
     yamlBlockMappingKey({ yamlTSField }),
     -- html
-    -- markdownH {},
     -- markdownTSTitle {},
     htmlEndTag({ fg = '#7f90aa' }),
     htmlTagN({ fg = clr_over.orange }),

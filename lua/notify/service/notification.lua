@@ -38,8 +38,7 @@ function Notification:new(id, message, level, opts, config)
   elseif type(opts.filetype) == 'string' then
     filetype = opts.filetype
   elseif
-    not opts.body_highlights
-    and not (opts.highlights and type(opts.highlights.body) ~= 'nil')
+    not (opts.highlights and type(opts.highlights.body) ~= 'nil')
     and vim.fn.toupper(level) ~= 'ERROR'
     and #message > 1
   then
@@ -67,8 +66,6 @@ function Notification:new(id, message, level, opts, config)
     hide_from_history = opts.hide_from_history,
     render = opts.render,
     repeat_count = opts.repeat_count,
-    body_highlights = opts.body_highlights,
-    body_level_highlights = opts.body_level_highlights,
     highlights = opts.highlights,
   }
   self.__index = self
@@ -77,15 +74,18 @@ function Notification:new(id, message, level, opts, config)
 end
 
 function Notification:record()
+  -- stylua: ignore
   return {
-    id = self.id,
-    message = self.message,
-    level = self.level,
-    time = self.time,
-    title = self.title,
-    icon = self.icon,
-    render = self.render,
-    filetype = self.filetype,
+    id           = self.id,
+    message      = self.message,
+    level        = self.level,
+    time         = self.time,
+    title        = self.title,
+    icon         = self.icon,
+    render       = self.render,
+    filetype     = self.filetype,
+    highlights   = self.highlights,
+    repeat_count = self.repeat_count,
   }
 end
 

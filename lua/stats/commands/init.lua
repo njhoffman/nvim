@@ -1,5 +1,6 @@
 local output = require('stats.output')
 local utils = require('stats.utils')
+local list_align = require('notify.parsers.list_align')
 
 local completion = function(stats_map)
   return function(query, cmd)
@@ -26,7 +27,7 @@ end
 local stats_overview = function(view)
   view = view or 'notify'
   local counts = utils.get_counts()
-  local lines, hls = utils.align_list(counts)
+  local lines, hls = list_align(counts)
   -- FIX:  error when title is not array
   output[view](lines, nil, hls)
 end

@@ -5,7 +5,7 @@ local Manager = require('noice.message.manager')
 local Router = require('noice.message.router')
 local Util = require('noice.util')
 
-local parse_message = require('noice.view.backend.notify.parse')
+local parse_message = require('notify.gen-highlights')
 
 local M = {}
 

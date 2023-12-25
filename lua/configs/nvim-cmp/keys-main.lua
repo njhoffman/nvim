@@ -1,25 +1,5 @@
 local cmp = require('cmp')
-local cmp_types = require('cmp.types.cmp')
-local keymap = require('cmp.utils.keymap')
 local luasnip = require('luasnip')
-local feedkeys = require('cmp.utils.feedkeys')
-
-local send_enter = function()
-  local enter_key = vim.api.nvim_replace_termcodes('<CR>', true, true, true)
-  vim.api.nvim_feedkeys(enter_key, 'n', false)
-end
-
-local in_history = true
-
-local has_chars_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('.%+') == nil
-end
-
-local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
-end
 
 --       節 缾      了ﴰ   ﮕ ﳎ        陋 גּ גּ      ﴯ   
 local pfx = ' '
@@ -39,7 +19,7 @@ local main = {
     config = { sources = { { name = 'codeium', max_item_count = 10 }, { name = 'copilot', max_item_count = 10 } } },
   }),
   ['<C-n>'] = {
-    i = function()
+    i = function(fallback)
       if cmp.visible() then
         -- cmp.select_next_item({ behavior = types.cmp.SelectBehavior.Insert })
         cmp.select_next_item({
@@ -47,18 +27,13 @@ local main = {
           count = 1,
           behavior = cmp.SelectBehavior.Select,
         })
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      -- elseif type(fallback) == 'function' then
+      --   fallback()
       else
         cmp.complete()
         -- vim.api.nvim_set_option_value('omnifunc', nil, {})
-        -- if cmp.visible() then
-        -- vim.dbglog('visible')
-        -- elseif luasnip.expand_or_jumpable() then
-        --   luasnip.expand_or_jump()
-        --   -- elseif type(fallback) == 'function' then
-        --   -- fallback()
-        -- else
-        -- cmp.complete({})
-        -- end
       end
     end,
   },
@@ -72,10 +47,10 @@ local main = {
         })
       elseif luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
+      -- elseif type(fallback) == 'function' then
+      --   fallback()
       else
         cmp.complete()
-        -- elseif type(fallback) == 'function' then
-        -- fallback()
       end
     end,
   },

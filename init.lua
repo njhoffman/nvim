@@ -4,7 +4,7 @@
 require('globals')
 
 -- require('qfview').setup()
-require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
+require('utils.lazy').setup({ cache = false, reload = false, lazy = false })
 
 -- qfSeparator, qfLineNr, qfFilename
 for _, mod_name in ipairs({

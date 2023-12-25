@@ -170,12 +170,12 @@ local setup_cmp = function()
 
   -- LUA
   -- disable annoying --#region suggestions
-  cmp.setup.filetype('lua', {
-    enabled = function()
-      local line = vim.api.nvim_get_current_line()
-      return is_enabled() and not (line:find('%s%-%-?$') or line:find('^%-%-?$'))
-    end,
-  })
+  -- cmp.setup.filetype('lua', {
+  --   enabled = function()
+  --     local line = vim.api.nvim_get_current_line()
+  --     return is_enabled() and not (line:find('%s%-%-?$') or line:find('^%-%-?$'))
+  --   end,
+  -- })
   cmp.setup.cmdline({ '/', '?' }, {
     mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
     sources = cmp.config.sources(sources.cmdsearch),

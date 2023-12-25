@@ -32,7 +32,7 @@ local render = function(bufnr, notif, highlights, config)
   --   -- vim.dbglog('IS ERROR', is_error, first_line, notif.level, highlights)
   -- end
   -- vim.dbglog(notif.title, notif.message)
-  return require('notify.render.minimal')(bufnr, notif, highlights, config)
+  return require('notify.render.simple-notitle')(bufnr, notif, highlights, config)
   -- if is_error then
   --   -- return require('notify.render.error')(bufnr, notif, highlights, config)
   --   vim.dbglog('SKIPPING ERROR')

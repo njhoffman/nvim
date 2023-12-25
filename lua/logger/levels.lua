@@ -12,7 +12,7 @@ local log_levels = {
   -- ['lsp-root']         = { main = 0 },
   -- mapper               = { main = -1, module = -1 },
   -- mru                  = { main = -1 },
-  notify                  = { main = 2 },
+  notify                  = { main = 1 },
   -- project              = { main = 1 },
   lab                     = { main = 2 },
    root                   = { main = -1 },

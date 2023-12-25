@@ -23,6 +23,8 @@ local plugins = {
   },
   {
     'm4xshen/hardtime.nvim',
+    enabled = false,
+    lazy = false,
     dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
   },
   { 'famiu/bufdelete.nvim' },
