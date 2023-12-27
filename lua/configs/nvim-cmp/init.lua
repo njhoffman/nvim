@@ -143,126 +143,114 @@ local cfg = {
   },
 }
 
-local setup_cmp = function()
-  -- local debug = require('cmp.utils.debug')
-  -- local log = function(...)
-  --   if debug_flag then
-  --     local data = {}
-  --     for _, v in ipairs({ ... }) do
-  --       if not vim.tbl_contains({ 'string', 'number', 'boolean' }, type(v)) then
-  --         v = vim.inspect(v)
-  --       end
-  --       table.insert(data, v)
-  --     end
-  --   end
-  -- end
-  -- vim.tbl_deep_extend('force', debug, { log = log })
+-- local setup_cmp = function()
+-- local debug = require('cmp.utils.debug')
+-- local log = function(...)
+--   if debug_flag then
+--     local data = {}
+--     for _, v in ipairs({ ... }) do
+--       if not vim.tbl_contains({ 'string', 'number', 'boolean' }, type(v)) then
+--         v = vim.inspect(v)
+--       end
+--       table.insert(data, v)
+--     end
+--   end
+-- end
+-- vim.tbl_deep_extend('force', debug, { log = log })
 
-  cmp.setup(cfg)
-  -- cmp.setup.filetype('gitcommit', { sources = cmp.config.sources(sources.gitcommit) })
-  -- local defaultPlusZsh = vim.deepcopy(sources.main)
-  -- table.insert(defaultPlusZsh, { name = 'zsh' })
-  -- cmp.setup.filetype({ 'sh', 'make' }, {
-  --   sources = cmp.config.sources(defaultPlusZsh),
-  --   -- disable useless `\[` suggestions at end of line
-  --   enabled = function()
-  --     local col = vim.fn.col('.') - 1
-  --     local charBefore = vim.api.nvim_get_current_line():sub(col, col)
-  --     return charBefore ~= '\\'
-  --   end,
-  -- })
-  --
-  -- LUA
-  -- disable annoying --#region suggestions
-  cmp.setup.filetype('lua', {
-    enabled = function()
-      local line = vim.api.nvim_get_current_line()
-      return is_enabled() and not (line:find('%s%-%-?$') or line:find('^%-%-?$'))
-    end,
-  })
-  -- cmp.setup.cmdline({ '/', '?' }, {
-  --   -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
-  --   -- mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
-  --   mapping = {
-  --     ['<C-F>'] = {
-  --       c = function()
-  --         if cmp.visible() then
-  --           for _ = 1, 5 do
-  --             cmp.mapping.select_next_item({
-  --               behavior = cmp.SelectBehavior.Select,
-  --             })(nil)
-  --           end
-  --         else
-  --           cmp.complete()
-  --         end
-  --       end,
-  --     },
-  --     ['<C-B>'] = {
-  --       c = function()
-  --         if cmp.visible() then
-  --           for _ = 1, 5 do
-  --             cmp.mapping.select_prev_item({
-  --               behavior = cmp.SelectBehavior.Select,
-  --             })(nil)
-  --           end
-  --         else
-  --           cmp.complete()
-  --         end
-  --       end,
-  --     },
-  --   },
-  --   sources = cmp.config.sources(sources.cmdsearch),
-  --   matching = { disallow_symbol_nonprefix_matching = false },
-  --   -- sorting = { comparators = {} },
-  -- })
+cmp.setup(cfg)
+-- cmp.setup.filetype('gitcommit', { sources = cmp.config.sources(sources.gitcommit) })
+-- local defaultPlusZsh = vim.deepcopy(sources.main)
+-- table.insert(defaultPlusZsh, { name = 'zsh' })
+-- cmp.setup.filetype({ 'sh', 'make' }, {
+--   sources = cmp.config.sources(defaultPlusZsh),
+--   -- disable useless `\[` suggestions at end of line
+--   enabled = function()
+--     local col = vim.fn.col('.') - 1
+--     local charBefore = vim.api.nvim_get_current_line():sub(col, col)
+--     return charBefore ~= '\\'
+--   end,
+-- })
+--
+-- LUA
+-- disable annoying --#region suggestions
+cmp.setup.filetype('lua', {
+  enabled = function()
+    local line = vim.api.nvim_get_current_line()
+    return is_enabled() and not (line:find('%s%-%-?$') or line:find('^%-%-?$'))
+  end,
+})
+
+cmp.setup.cmdline({ '/', '?' }, {
+  -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
+  -- mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
+  mapping = {
+    ['<C-B>'] = cmp.mapping(
+      cmp.mapping.select_prev_item({
+        count = 6,
+        behavior = cmp.SelectBehavior.Select,
+        preserve_mapping_verticality = true,
+      }),
+      { 'i' }
+    ),
+    ['<C-F>'] = cmp.mapping(
+      cmp.mapping.select_next_item({
+        count = 6,
+        behavior = cmp.SelectBehavior.Select,
+        preserve_mapping_verticality = true,
+      }),
+      { 'i' }
+    ),
+  },
+  sources = cmp.config.sources(sources.cmdsearch),
+  matching = { disallow_symbol_nonprefix_matching = false },
+
   cmp.setup.cmdline(':', {
     mapping = {
-      -- ['<C-F>'] = {
-      --   c = function()
-      --     if cmp.visible() then
-      --       for _ = 1, 5 do
-      --         cmp.mapping.select_next_item({
-      --           behavior = cmp.SelectBehavior.Select,
-      --         })
-      --       end
-      --     else
-      --       cmp.complete()
-      --     end
-      --   end,
-      -- },
-      -- ['<C-B>'] = {
-      --   c = function()
-      --     if cmp.visible() then
-      --       for _ = 1, 5 do
-      --         cmp.mapping.select_prev_item({
-      --           behavior = cmp.SelectBehavior.Select,
-      --         })(nil)
-      --       end
-      --     else
-      --       cmp.complete()
-      --     end
-      --   end,
-      -- },
-      -- ['<C-n>'] = {
-      --   c = function(fallback)
-      --     local cmp = require('cmp')
-      --     if cmp.visible() then
-      --       cmp.select_next_item()
-      --     else
-      --       fallback()
-      --     end
-      --   end,
-      -- },
-      -- ['<C-p>'] = {
-      --   c = function(fallback)
-      --     local cmp = require('cmp')
-      --     if cmp.visible() then
-      --       cmp.select_prev_item()
-      --     else
-      --       fallback()
-      --     end
-      --   end,
-      -- },
+      ['<C-F>'] = {
+        c = function()
+          if cmp.visible() then
+            for _ = 1, 5 do
+              cmp.mapping.select_next_item({
+                behavior = cmp.SelectBehavior.Select,
+              })
+            end
+          else
+            cmp.complete()
+          end
+        end,
+      },
+      ['<C-B>'] = {
+        c = function()
+          if cmp.visible() then
+            for _ = 1, 5 do
+              cmp.mapping.select_prev_item({
+                behavior = cmp.SelectBehavior.Select,
+              })(nil)
+            end
+          else
+            cmp.complete()
+          end
+        end,
+      },
+      ['<C-n>'] = {
+        c = function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          else
+            fallback()
+          end
+        end,
+      },
+      ['<C-p>'] = {
+        c = function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          else
+            fallback()
+          end
+        end,
+      },
       ['<C-e>'] = {
         c = cmp.mapping.abort(),
       },
@@ -273,10 +261,26 @@ local setup_cmp = function()
     matching = { disallow_symbol_nonprefix_matching = false },
     -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
     sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
-  })
-end
+  }),
+})
 
-setup_cmp()
+-- setup_cmp()
+
+local function toggle_autocomplete()
+  local cmp = require('cmp')
+  local current_setting = cmp.get_config().completion.autocomplete
+  if current_setting and #current_setting > 0 then
+    cmp.setup({ completion = { autocomplete = false } })
+    vim.notify('Autocomplete disabled')
+  else
+    cmp.setup({ completion = { autocomplete = { cmp.TriggerEvent.TextChanged } } })
+    vim.notify('Autocomplete enabled')
+  end
+end
+-- Set a keymap like this for example:
+-- vim.api.nvim_set_keymap('n', '<Leader>a', ':NvimCmpToggle<CR>', { noremap = true, silent = true })
+
+vim.api.nvim_create_user_command('NvimCmpToggle', toggle_autocomplete, {})
 
 -- only appear if characters before cursor
 -- api.nvim_create_autocmd(

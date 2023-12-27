@@ -50,8 +50,11 @@ local tips_list = {
     'Live commands' .. nl .. '`Norm <keys>`' .. nl .. '`5Reg a`' .. nl .. '`G/^$/d`' .. nl .. '`%S/pattern/replace`',
     'Subvert `(:Subvert/pat/repl)` substitutes with case pattern matches',
     'To increment visually selected numbers sequentially ' .. nl .. '`g<C-S-A>`',
+    "To substitute without moving cursor:" .. nl .. ":exe 'norm m`' | %s/pattern/substitution/eg | norm g``",
+
   },
   movement = {
+    'Using the tag stack stack to navigate in and out of areas quickly:' .. nl .. '`<C-]> to enter, <C-T> to exit`',
     'Quick block navigation' .. nl .. '`<C-S-]>  <C-S-[>`',
     'Normal jump to node' .. nl .. '`<C-M-J>  <C-M-K>  <C-M-H>  <C-M-L>`',
     'Visual move selection' .. nl .. '(v)`<S-L>  <S-H>  <S-J>  <S-K>`',
@@ -89,6 +92,24 @@ local tips_list = {
 }
 
 return tips_list
+-- 1
+--
+-- Portal
+-- If I understand your question correctly, the key is to determine whether the character on the cursor is a matched delimiter.
+--
+-- Consider the normal mode commands v%"zy and v%%"zy.
+--
+-- If the cursor is on a matched delimiter, then the first command will yank a string of length at least 2—the delimiter, its pair, and any text in the middle—into @z. The second will yank a string of length exactly 1—again, the delimiter itself—into @z.
+-- If the cursor is on an unmatched delimiter, then the first command will yank a string of length 1—the delimiter itself—into @z. Abort.
+-- If the cursor is not on a delimiter and there is a delimiter in the line, then the second command will yank a string of length greater than 1 into @z. Abort.
+-- If the cursor is not on a delimiter and there is no other delimiter in the line, then the first command will yank a string of length exactly 1—the character itself—into @z. Abort.
+-- Thus, we have the following result:
+--
+-- The cursor is on a matched delimiter if and only if the normal mode command v%"zy yanks a string of length at least 2 into @z and the normal mode command v%%"zy yanks a string of length exactly 1 into @z.
+--
+-- Hints for VimL: :norm ... and strlen(@z) will help here.
+
+
 
 -- stylua: ignore
 -- cc C            " change (replace) entire line, to end of line

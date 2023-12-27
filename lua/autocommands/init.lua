@@ -1,5 +1,6 @@
 local commands = require('autocommands.commands')
 require('autocommands.misc')
+require('autocommands.tagstack')
 require('autocommands.skeletons')
 require('autocommands.startup')
 -- TODO: automatically build helptags in doc directory
@@ -205,16 +206,9 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter' }, {
     end
   end,
 })
--- -- show cursor line only in active window
--- local cursorGrp = api.nvim_create_augroup("CursorLine", { clear = true })
--- api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, { pattern = "*", command = "set cursorline", group = cursorGrp })
--- api.nvim_create_autocmd(
---   { "InsertEnter", "WinLeave" },
---   { pattern = "*", command = "set nocursorline", group = cursorGrp }
--- )
 autocmds.HighlightYank = {
   { 'TextYankPost', '*', "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=300 }" },
 }
-autocmds.PreserveCursor = { { 'BufReadPost', '*', commands.goto_last_pos } }
+-- autocmds.PreserveCursor = { { 'BufReadPost', '*', commands.goto_last_pos } }
 
 define_augroups(autocmds)

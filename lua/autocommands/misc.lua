@@ -17,24 +17,45 @@ vim.api.nvim_create_autocmd({ 'DirChanged', 'VimEnter' }, {
   end,
 })
 
-local timer = vim.loop.new_timer()
-local blink = function()
-  local cnt, blink_times = 0, 8
-  timer:start(
-    0,
-    100,
-    vim.schedule_wrap(function()
-      vim.cmd('set cursorcolumn! cursorline!')
-
-      cnt = cnt + 1
-      if cnt == blink_times then
-        timer:stop()
-      end
-    end)
-  )
-end
-
-vim.keymap.set('n', '<leader>cb', blink)
+-- better jumplists, keepjumps, lock
+-- https://github.com/inkarkat/vim-EnhancedJumps
+-- function! UpdateHeader()
+--     let b:winview = winsaveview()
+--
+--     " This is where I'd put the command to ignore future movements
+--
+--     "The periods concatenate all the arguments into one command.
+--     "Silent! suppresses errors, usually 'pattern not found'
+--     "The 1,6g means search only lines 1 thru 6
+--     "Search for File Name: followed by anything
+--     "'s'ubstitute
+--     "Substitute in 'File Name: ' and the results of the expand command, on the
+--     "current filename
+--     execute "silent! 1," . 6 . "g/File Name:.*/s//File Name: " . expand("%")
+--     execute "silent! 1," . 6 . "g/Last Modified:.*/s//Last Modified: " . strftime("%d-%m-%Y")
+--
+--     " This is where I'd put the command to start remembering movements again
+--
+--     call winrestview(b:winview)
+-- endfunction
+-- -- local timer = vim.loop.new_timer()
+-- -- local blink = function()
+-- --   local cnt, blink_times = 0, 8
+-- --   timer:start(
+-- --     0,
+-- --     100,
+-- --     vim.schedule_wrap(function()
+-- --       vim.cmd('set cursorcolumn! cursorline!')
+-- --
+-- --       cnt = cnt + 1
+-- --       if cnt == blink_times then
+-- --         timer:stop()
+-- --       end
+-- --     end)
+-- --   )
+-- -- end
+-- --
+-- vim.keymap.set('n', '<leader>cb', blink)
 
 -- Backup files
 local backupdir = vim.fn.expand('$HOME') .. '/.local/share/nvim/backup'
@@ -222,10 +243,10 @@ local file_pattern = {
 -- })
 --
 -- Check if we need to reload the file when it changed
-vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
-  group = vim.api.nvim_create_augroup('checktime', { clear = true }),
-  command = 'checktime',
-})
+-- vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+--   group = vim.api.nvim_create_augroup('checktime', { clear = true }),
+--   command = 'checktime',
+-- })
 
 local get_last_char = function(chars, key)
   return function()
