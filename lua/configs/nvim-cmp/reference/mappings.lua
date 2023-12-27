@@ -243,6 +243,8 @@ local cmdline = {
           behavior = cmp.SelectBehavior.Insert,
         })
         in_history = false
+      elseif type(fallback) == 'function' then
+        fallback()
       else
         -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
         feedkeys.call(keymap.t('<Up>'), 'c')

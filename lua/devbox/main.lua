@@ -39,7 +39,7 @@ local start = function()
   display.create_popup(state.popup.size)
   display.update_popup()
 
-  vim.api.nvim_create_user_command('DevboxStop', function()
+  vim.api.nvim_create_user_command('Devbox', function()
     vim.api.nvim_win_close(state.popup.winnr, true)
   end, { desc = 'Stop devbox inspection' })
 

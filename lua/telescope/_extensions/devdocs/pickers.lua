@@ -2,31 +2,19 @@ local M = {}
 
 local finders = require('telescope.finders')
 local pickers = require('telescope.pickers')
-local previewers = require('telescope.previewers')
-local state = require('telescope.state')
 local actions = require('telescope.actions')
 local action_state = require('telescope.actions.state')
 local config = require('telescope.config').values
-local entry_display = require('telescope.pickers.entry_display')
 
 local log = require('devdocs.log')
 local list = require('devdocs.list')
 local operations = require('devdocs.operations')
-local transpiler = require('devdocs.transpiler')
 local plugin_state = require('devdocs.state')
 local plugin_config = require('devdocs.config')
 
-local metadata_previewer = previewers.new_buffer_previewer({
-  title = 'Metadata',
-  define_preview = function(self, entry)
-    local bufnr = self.state.bufnr
-    local transpiled = transpiler.to_yaml(entry.value)
-    local lines = vim.split(transpiled, '\n')
-
-    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-    vim.bo[bufnr].ft = 'yaml'
-  end,
-})
+local previewers = require('telescope._extensions.devdocs.previewers')
+local entry_maker = require('telescope._extensions.devdocs.display')
+local devdoc_actions = require('telescope._extensions.devdocs.actions')
 
 ---@param prompt string
 ---@param entries RegisteryEntry[]
@@ -46,42 +34,9 @@ local function new_registery_picker(prompt, entries, on_attach)
       end,
     }),
     sorter = config.generic_sorter(plugin_config.options.telescope),
-    previewer = metadata_previewer,
+    previewer = previewers.metadata_previewer,
     attach_mappings = on_attach,
   })
-end
-
-local doc_previewer = previewers.new_buffer_previewer({
-  title = 'Preview',
-  keep_last_buf = true,
-  define_preview = function(self, entry)
-    local bufnr = self.state.bufnr
-
-    operations.read_entry_async(entry.value, function(filtered_lines)
-      vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, filtered_lines)
-
-      if plugin_config.options.previewer_cmd and plugin_config.options.picker_cmd then
-        plugin_state.set('preview_lines', filtered_lines)
-        operations.render_cmd(bufnr, true)
-      else
-        vim.bo[bufnr].ft = 'markdown'
-      end
-    end)
-  end,
-})
-
-local function open_doc(selection, float)
-  local bufnr = state.get_global_key('last_preview_bufnr')
-  local picker_cmd = plugin_config.options.picker_cmd
-
-  if picker_cmd or not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
-    bufnr = vim.api.nvim_create_buf(false, true)
-    local lines = plugin_state.get('preview_lines') or operations.read_entry(selection.value)
-    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-  end
-
-  plugin_state.set('last_mode', float and 'float' or 'normal')
-  operations.open(selection.value, bufnr, float)
 end
 
 M.installation_picker = function()
@@ -149,49 +104,35 @@ end
 ---@param entries DocEntry[]
 ---@param float? boolean
 M.open_picker = function(entries, float)
-  local displayer = entry_display.create({
-    separator = ' ',
-    items = {
-      { remaining = true },
-      { remaining = true },
-    },
-  })
-
   local picker = pickers.new(plugin_config.options.telescope, {
     prompt_title = 'Select an entry',
+    -- finder = function(_opts)
+    --   return finders.new_oneshot_job(command, _opts)
+    -- end,
+    --   finder = finders.new_dynamic({
+    --     fn = async(function(prompt)
+    --       return { prompt }
+    --     end),
+    --     entry_maker = require("telescope.make_entry").gen_from_string {}})
+
     finder = finders.new_table({
       results = entries,
-      entry_maker = function(entry)
-        return {
-          value = entry,
-          display = function()
-            return displayer({
-              { string.format('[%s]', entry.alias), 'markdownH1' },
-              { entry.name, 'markdownH2' },
-            })
-          end,
-          ordinal = string.format('[%s] %s', entry.alias, entry.name),
-        }
-      end,
+      entry_maker = entry_maker,
     }),
     sorter = config.generic_sorter(plugin_config.options.telescope),
-    previewer = doc_previewer,
-    attach_mappings = function()
-      actions.select_default:replace(function(prompt_bufnr)
+    previewer = previewers.doc_previewer,
+    attach_mappings = function(prompt_bufnr)
+      actions.select_default:replace(function()
         actions.close(prompt_bufnr)
-
         local selection = action_state.get_selected_entry()
-
         if selection then
           plugin_state.set('current_doc', selection.value.alias)
-          open_doc(selection, float)
+          devdoc_actions.open_doc(selection, float)
         end
       end)
-
       return true
     end,
   })
-
   picker:find()
 end
 

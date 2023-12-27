@@ -39,6 +39,7 @@ function Notification:new(id, message, level, opts, config)
     filetype = opts.filetype
   elseif
     not (opts.highlights and type(opts.highlights.body) ~= 'nil')
+    and type(opts.filetype) == 'nil'
     and vim.fn.toupper(level) ~= 'ERROR'
     and #message > 1
   then

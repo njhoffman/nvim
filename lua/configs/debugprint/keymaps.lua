@@ -7,8 +7,7 @@ local filetypes = require('configs.debugprint.filetypes')
 local setup_debugprint = function()
   -- stylua: ignore
   local keys = {
-    remove         = 'god',
-    -- remove_all     = 'goD',
+    remove         = 'goX',
     variable_below = 'goi', -- gov
     variable_above = 'goI', -- goV
     operator_below = 'goo',
@@ -115,30 +114,25 @@ local setup_printing_press = function()
   }
 
   local keys = {
+    remove                 = 'god',
+    remove_all             = 'goD',
     quickfix_cwd_all       = 'goqC',
     quickfix_cwd           = 'goqc',
     quickfix_open_bufs_all = 'goqO',
     quickfix_open_bufs     = 'goqo',
     quickfix_all           = 'goqD',
     quickfix               = 'goqd',
-    remove_all     = 'goD',
-    -- message      = '<leader>fm', -- goi
-    message      = 'gom', -- goi
-    message_above = 'goM', -- goi
-    -- variable     = '<leader>fl', -- goi
-    variable     = 'gov', -- goi
-    variable_above = 'goV', -- goi
-    object       = '<leader>fo', -- goi
-    -- beep         = '<leader>fb', -- gob
-    beep_above   = 'goB', -- gob
-    beep         = 'gob', -- gob
-    -- time         = '<leader>f1', -- got
-    time         = 'got', -- got
-    remove       = '<leader>fr', -- goD
-    debug        = '<leader>fd', --
-    -- assert       = '<leader>fA', -- goa
-    assert_above = 'goA', --
-    assert       = 'goa', --
+    message                = 'gom', -- goi
+    message_above          = 'goM', -- goi
+    variable               = 'gov', -- goi
+    variable_above         = 'goV', -- goi
+    object                 = '<leader>fo', -- goi
+    beep_above             = 'goB', -- gob
+    debug                  = 'go8', -- gob
+    beep                   = 'gob', -- gob
+    time                   = 'got', -- got
+    assert_above           = 'goA', --
+    assert                 = 'goa', --
   }
 
   local pp_path = "configs.debugprint.printing-press"
@@ -168,11 +162,13 @@ local setup_printing_press = function()
 
   keymap("n", keys.debug,
     function() require(pp_path).debugLog() end, { desc = " debugger log" })
+
   keymap("n", keys.assert,
     function() require(pp_path).assertLog() end, { desc = " assert log" })
 
   keymap("n", keys.remove,
     function() require(pp_path).removeLogs() end, { desc = "󰹝 remove log" })
+
   keymap("n", keys.quickfix,
     function() require(pp_path).quickfix(false, 'project') end, { desc = "󰹝 quickfix log markers in project" })
   keymap("n", keys.quickfix_all,

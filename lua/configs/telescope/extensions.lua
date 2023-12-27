@@ -64,36 +64,36 @@ local extension_configs = {
     }
     return frecency_cfg
   end,
-  frecency_new = function()
-    local baseDirs = {
-      home = vim.fn.expand('$HOME'),
-      config = vim.fn.stdpath('config'),
-      data = vim.fn.stdpath('data'),
-    }
-    local frecency_cfg = {
-      -- db_root = "/home/my_username/path/to/db_root",
-      auto_validate = true,
-      show_scores = true,
-      show_unindexed = true,
-      disable_devicons = false,
-      ignore_patterns = { '*.git/*', '*/tmp/*' },
-      -- stylua: ignore
-      workspaces = {
-        ['etc']     = '/etc',
-        ['home']    = baseDirs.home,
-        ['bin']     = baseDirs.home .. '/bin',
-        ['git']     = baseDirs.home .. '/git',
-        ['config']  = baseDirs.home .. '/.config',
-        ['nvim']    = baseDirs.config,
-        ['lazy']    = baseDirs.data .. '/lazy',
-        ['runtime'] = baseDirs.data .. '/runtime',
-        ['zettel']  = baseDirs.home .. '/zettelkasten',
-        ['zinit']   = baseDirs.home .. '/.zinit',
-        ['zsh']     = baseDirs.home .. '/.config/zsh',
-      },
-    }
-    return frecency_cfg
-  end,
+  -- frecency_new = function()
+  --   local baseDirs = {
+  --     home = vim.fn.expand('$HOME'),
+  --     config = vim.fn.stdpath('config'),
+  --     data = vim.fn.stdpath('data'),
+  --   }
+  --   local frecency_cfg = {
+  --     -- db_root = "/home/my_username/path/to/db_root",
+  --     auto_validate = true,
+  --     show_scores = true,
+  --     show_unindexed = true,
+  --     disable_devicons = false,
+  --     ignore_patterns = { '*.git/*', '*/tmp/*' },
+  --     -- stylua: ignore
+  --     workspaces = {
+  --       ['etc']     = '/etc',
+  --       ['home']    = baseDirs.home,
+  --       ['bin']     = baseDirs.home .. '/bin',
+  --       ['git']     = baseDirs.home .. '/git',
+  --       ['config']  = baseDirs.home .. '/.config',
+  --       ['nvim']    = baseDirs.config,
+  --       ['lazy']    = baseDirs.data .. '/lazy',
+  --       ['runtime'] = baseDirs.data .. '/runtime',
+  --       ['zettel']  = baseDirs.home .. '/zettelkasten',
+  --       ['zinit']   = baseDirs.home .. '/.zinit',
+  --       ['zsh']     = baseDirs.home .. '/.config/zsh',
+  --     },
+  --   }
+  --   return frecency_cfg
+  -- end,
   ['file_history'] = function()
     local cfg = {
       backup_dir = '~/.file-history-git',

@@ -9,83 +9,85 @@ local log_results = function(name, results)
   end
 end
 
-local buf_request_all = function(client_returns)
-  local clients = vim.lsp.get_active_clients()
-  ---@diagnostic disable-next-line: missing-parameter
-  local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
-
-  local results = {}
-  for i, client_return in ipairs(client_returns) do
-    if type(client_return) == 'table' and type(client_return.error) == 'table' then
-      vim.dbglog({ Error = client_return.error, Result = client_return.result })
-    else
-      local client_name = clients[i]
-      for _, result in ipairs(client_return.result or {}) do
-        result.client_name = client_name
-        table.insert(results, result)
+local defaults = {
+  request = function(lsp_name, params, cb)
+    vim.lsp.buf_request(0, lsp_name, params, cb)
+  end,
+  request_all = function(lsp_name, params, cb)
+    local params = vim.lsp.util.make_range_params()
+    params.context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics() }
+    vim.lsp.buf_request_all(0, lsp_name, params, cb)
+  end,
+  request_cb = function(done, get_contents, get_summary, params)
+    return function(err, result, _, _)
+      if err then
+        vim.dbglog({ Error = err, Result = result })
+      end
+      local contents = get_contents(result)
+      log_results(method[1], contents)
+      if not contents then
+        done({ summary = '  -------- ' .. method[1], idx = line_idx, hl = 'DebugMsg' })
+      else
+        local summary = get_summary(contents, load_time)
+        done({ summary = summary, idx = line_idx, hl = 'Keyword' })
       end
     end
-  end
+  end,
+  request_all_cb = function(done, get_contents, get_summary, params)
+    return function(client_returns)
+      local clients = vim.lsp.get_active_clients()
+      local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
+      local results = {}
+      for i, client_return in ipairs(client_returns) do
+        if type(client_return) == 'table' and type(client_return.error) == 'table' then
+          vim.dbglog({ Error = client_return.error, Result = client_return.result })
+        else
+          local client_name = clients[i]
+          for _, result in ipairs(client_return.result or {}) do
+            result.client_name = client_name
+            table.insert(results, result)
+          end
+        end
+      end
 
-  local contents = lsp_handlers.get_contents({ results = results, context = params.context })
-  log_results(method[1], contents)
-  if not contents then
-    done({ summary = '  -------- ' .. method[1], idx = line_idx, hl = 'DebugMsg' })
-  else
-    local summary = handler.get_summary(contents, load_time)
-    done({ summary = summary, idx = line_idx, hl = 'Keyword' })
-  end
-end
-
-local buffer_request_cb = function(err, result, _, _)
-  ---@diagnostic disable-next-line: missing-parameter
-  if err then
-    vim.dbglog({ Error = err, Result = result })
-  end
-  local contents = handler.get_contents(result)
-  log_results(method[1], contents)
-  if not contents then
-    done({ summary = '  -------- ' .. method[1], idx = line_idx, hl = 'DebugMsg' })
-  else
-    local summary = handler.get_summary(contents, load_time)
-    done({ summary = summary, idx = line_idx, hl = 'Keyword' })
-  end
-end
-
-local provider_map = {
-  default = {
-    request = function(lsp_name, params)
-      vim.lsp.buf_request(0, lsp_name, params, buffer_request_cb)
-    end,
-  },
-  references = {
-    request = function(lsp_name, params)
-      params.context = { includeDeclaration = vim.F.if_nil(nil, true) }
-      vim.lsp.buf_request(0, method[2], params, buffer_request_cb)
-    end,
-  },
-  codeaction = {
-    request = function(lsp_name, params)
-      params = vim.lsp.util.make_range_params()
-      params.context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics() }
-      vim.lsp.buf_request_all(0, method[2], params, buf_request_all)
-    end,
-  },
+      local contents = get_contents({ results = results, context = params.context })
+      log_results(method[1], contents)
+      if not contents then
+        done({ summary = '  -------- ' .. method[1], idx = line_idx, hl = 'DebugMsg' })
+      else
+        local summary = get_summary(contents, load_time)
+        done({ summary = summary, idx = line_idx, hl = 'Keyword' })
+      end
+    end
+  end,
+  get_contents = function(result)
+    if result and result.contents and result.contents.value then
+      return result.contents.value
+    end
+    return nil
+  end,
+  get_summary = function(name, content, load_time)
+    return load_time .. ' ' .. name .. '    ' .. #get_lines(content) .. ' lines'
+  end,
 }
 
 local lsp_method = function(method, done)
   local name, lsp_name = method[1], method[2]
-  local request = provider_map[name] and provider_map[name].request or provider_map.default.request
-  -- local req_state = { name = name, idx = state.current }
-  -- local curr = state.current
-
-  -- provider.handler(update_line_cb, provider)
+  local handler = lsp_handlers[name] or lsp_handlers.default
+  local defaults = lsp_handlers.default
+  local request = handler.request or defaults.request
+  local get_contents = handler.get_contents or defaults.get_contents
+  local get_summary = handler.get_summary or defaults.get_summary
   local params = {}
 
+  local request_cb = (handler.request_cb or defaults.request_cb)(done, method, params, get_contents, get_summary)
+  local req_state = { name = name, idx = state.current }
+  local curr = state.current
+
   if type(request) == 'function' then
-    request(lsp_name, params)
+    request(lsp_name, params, request_cb)
   else
-    defaults.request(lsp_name, params)
+    defaults.request(lsp_name, params, request_cb)
   end
 end
 

@@ -1,12 +1,3 @@
-local default_config = {
-  children = true,
-  siblings = false,
-  extended = false,
-  source = false,
-  dofile = false,
-  require = true,
-}
-
 local get_reload_type = function(cfg)
   local type = 'basic   '
   if cfg.extended == true then
@@ -122,7 +113,10 @@ local reload_package_chain = function(filepath, cfg)
       end
     end
   end
+
   sort_packages(packages)
+  -- add primary file to end of reloading chain
+  table.insert(packages.loaded, #packages.loaded - 1, paths.src_path)
 
   for _, pkg in ipairs(packages.loaded) do
     package['loaded'][pkg] = nil
@@ -139,8 +133,8 @@ local reload_package_chain = function(filepath, cfg)
       vim.notify('dofile: ' .. ppath .. '.lua', 1)
     end
     if cfg.require == true then
+      vim.notify('reloading: ' .. pkg, 1)
       require(pkg)
-      vim.notify('reloaded: ' .. pkg, 1)
     end
   end
 
@@ -168,6 +162,15 @@ local reload_package_chain = function(filepath, cfg)
   )
 end
 
+local default_config = {
+  children = true,
+  siblings = false,
+  extended = false,
+  source = false,
+  dofile = false,
+  require = true,
+}
+
 local reload = function(cfg)
   return function(cmd)
     local reload_cfg = vim.tbl_deep_extend('force', default_config, cfg or {})
@@ -190,9 +193,11 @@ local reload = function(cfg)
     elseif is_nvim_config then
       vim.dbglog('trying to', filepath)
       reload_package_chain(filepath, reload_cfg)
-    -- run `make`
+      -- run `make`
+      -- else
+      -- vim.cmd.lmake()
     else
-      vim.cmd.lmake()
+      vim.notify('not reloading: ' .. filepath, 3)
     end
   end
 end

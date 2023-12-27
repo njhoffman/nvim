@@ -86,6 +86,7 @@ local frecency = function(user_opts)
   local filter_re = '^%s*(' .. delim .. '(%S+)' .. delim .. ')'
 
   -- local sorter = opts.sorter or sorters.get_generic_fuzzy_sorter
+  -- local sorter = opts.sorter or sorters.get_generic_fuzzy_sorter
   -- local sorter = opts.sorter or sorters.get_substr_matcher
   local sorter = opts.sorter or sorters.fuzzy_with_index_bias
 

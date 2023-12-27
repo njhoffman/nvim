@@ -7,20 +7,17 @@ local pickers = require('telescope.pickers')
 local finders = require('telescope.finders')
 local conf = require('telescope.config').values
 
-local script = vim.fn.stdpath('config') .. '/lua/gitops/scripts/test.sh'
-local command = { script }
-
 local function test(opts)
   opts = opts or {}
-  -- local entry_maker = function(entry)
-  --   return make_entry.set_default_entry_mt({
-  --     value = entry,
-  --     text = entry.text,
-  --     display = entry.text,
-  --     ordinal = entry.text,
-  --     filename = entry.filename,
-  --   }, opts)
-  -- end
+  local entry_maker = function(entry)
+    return make_entry.set_default_entry_mt({
+      value = entry,
+      text = entry.text,
+      display = entry.text,
+      ordinal = entry.text,
+      filename = entry.filename,
+    }, opts)
+  end
   pickers
     .new(opts, {
       prompt_title = 'Locate',

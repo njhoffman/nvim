@@ -6,7 +6,8 @@ local debug = require('commands.debug')
 -- local paste = require('commands.paste')
 local reload = require('commands.reload')
 local system = require('commands.system')
-require('commands.inspect')
+local ansi = require('commands.ansi')
+
 local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
 
@@ -33,6 +34,8 @@ cmd('ClosePopups', ui.close_popups, { desc = 'Format buffer using lsp' })
 cmd('GetPaths', debug.get_paths, { desc = 'Get path collections (rtpaths, o.packpath, etc)' })
 cmd('Trash', system.trash_file, { desc = 'Send file to system trash' })
 cmd('Delete', system.trash_file, { desc = 'Send file to system trash' })
+cmd('YankPath', system.yank_path, { desc = 'Yank current file path' })
+cmd('YankCwd', system.yank_cwd, { desc = 'Yank current project directory' })
 -- cmd("TrashRecover", system.trash_file, { desc = "Send file to system trash" })
 vim.api.nvim_set_keymap('n', '<leader>iR', ':Reload<cr>', { noremap = true, silent = true })
 

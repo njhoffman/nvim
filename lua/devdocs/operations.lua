@@ -282,8 +282,7 @@ end
 ---@param bufnr number
 ---@param float boolean
 M.open = function(entry, bufnr, float)
-  vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
-
+  vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
   if not float then
     vim.api.nvim_set_current_buf(bufnr)
   else
@@ -312,6 +311,7 @@ M.open = function(entry, bufnr, float)
     M.render_cmd(bufnr)
   else
     vim.bo[bufnr].ft = 'markdown'
+    vim.bo[bufnr].syntax = 'pandoc'
   end
 
   vim.bo[bufnr].keywordprg = ':DevdocsKeywordprg'

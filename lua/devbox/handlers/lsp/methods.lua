@@ -90,10 +90,47 @@ local handlers = {
     end,
   },
   default = {
+    request = function(lsp_name, params, cb)
+      vim.lsp.buf_request(0, lsp_name, params, cb)
+    end,
+    request_cb = function(err, result, _, _)
+      if err then
+        vim.dbglog({ Error = err, Result = result })
+      end
+      local contents = handler.get_contents(result)
+      log_results(method[1], contents)
+      if not contents then
+        done({ summary = '  -------- ' .. method[1], idx = line_idx, hl = 'DebugMsg' })
+      else
+        local summary = handler.get_summary(contents, load_time)
+        done({ summary = summary, idx = line_idx, hl = 'Keyword' })
+      end
+    end
     get_contents = function(result)
+      if result and result.contents and result.contents.value then
+        return result.contents.value
+      end
       return nil
+    end,
+    get_summary = function(name, content, load_time)
+      return load_time .. ' ' .. name .. '    ' .. #get_lines(content) .. ' lines'
     end,
   },
 }
 
+-- local provider_map = {
+--   references = {
+--     request = function(lsp_name, params)
+--       params.context = { includeDeclaration = vim.F.if_nil(nil, true) }
+--       vim.lsp.buf_request(0, method[2], params, buffer_request_cb)
+--     end,
+--   },
+--   codeaction = {
+--     request = function(lsp_name, params)
+--       params = vim.lsp.util.make_range_params()
+--       params.context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics() }
+--       vim.lsp.buf_request_all(0, method[2], params, buf_request_all)
+--     end,
+--   },
+}
 return handlers

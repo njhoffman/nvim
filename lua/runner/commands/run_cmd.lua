@@ -3,10 +3,11 @@ local task_success = require('notifications.task-success')
 local utils = require('runner.utils')
 
 local handle_shell_output = function(output, cmd, time)
-  -- if false and task_error.is_match(output) then
+  vim.dbglog('output', output)
+  -- if task_error.is_match(output) then
   --   task_error.notify(output, cmd, time)
   -- else
-  --   task_success.notify(output, cmd, time)
+  task_success.notify(output, cmd, time)
   -- end
 end
 -- local job = require('plenary.job')
@@ -41,13 +42,7 @@ local exec_shell_cmd = function(run_cmd, no_notify)
   ]])
 
   local output = vim.api.nvim_eval('w:command_output') or { '' }
-  output = vim.tbl_map(function(line)
-    line = string.gsub(line, '%^%[%[', '\x1b[')
-    line = string.gsub(line, '\\x1b%[', '\x1b[')
-    return line
-  end, vim.api.nvim_eval('w:command_output') or { '' })
-  output = #output > 4 and vim.list_slice(output, 4) or output
-  ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
+  -- output = #output > 4 and vim.list_slice(output, 4) or output
   local diff_time = vim.fn.reltimestr(vim.fn.reltime(start_time)) * 10000
   if not no_notify then
     handle_shell_output(output, run_cmd, diff_time)
@@ -55,10 +50,8 @@ local exec_shell_cmd = function(run_cmd, no_notify)
 end
 
 local exec_vim_cmd = function(run_cmd, no_notify)
-  ---@diagnostic disable-next-line: missing-parameter
   local start_time = vim.fn.reltime()
   local ok, output = pcall(vim.fn.execute, run_cmd)
-  ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
   local diff_time = vim.fn.reltimestr(vim.fn.reltime(start_time)) * 10000
   local output_list = type(output) ~= 'table' and vim.fn.split(output, '\n') or output
   if not no_notify then

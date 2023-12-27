@@ -15,6 +15,7 @@ setmetatable(Logger, {
 })
 
 local Level = require('structlog.level')
+local pattern_filter = require('structlog.pattern')
 
 function Logger:new(name, sinks)
   local logger = {}
@@ -37,6 +38,10 @@ function Logger:clone()
 end
 
 local function log(logger, level, msg, events)
+  if pattern_filter(logger.name, level, msg) then
+    return false
+  end
+
   local kwargs = {
     level = Level.name(level),
     msg = msg,

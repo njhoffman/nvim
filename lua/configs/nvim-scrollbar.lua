@@ -106,7 +106,7 @@ local default_opts = {
     },
   },
   excluded_buftypes = {
-    'nofile',
+    -- 'nofile',
     'terminal',
   },
   excluded_filetypes = {

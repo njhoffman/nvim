@@ -40,20 +40,20 @@ local get_finder = function(opts, command)
       return finders.new_oneshot_job(command, _opts)
     end,
     dynamic_finder = function(_opts)
-      -- local a = require('plenary.async_lib')
-      -- local async = a.async
-      -- finder = finders.new_dynamic {
-      --     fn = async(function(prompt)
-      --       return { prompt }
-      --     end),
-      --     entry_maker = require("telescope.make_entry").gen_from_string {},
-      --   },
-      local _results = {}
+      local a = require('plenary.async_lib')
+      local async = a.async
       _opts.fn = function(prompt)
-        -- TODO: attach results cache to on_output
         return _results
       end
-      return finders.new_dynamic(opts)
+      -- return finders.new_dynamic(opts)
+      return finders.new_dynamic({
+        fn = async(function(prompt)
+          return { prompt }
+        end),
+        entry_maker = require('telescope.make_entry').gen_from_string({}),
+      })
+
+      -- local _results = {}
     end,
     static_table = function(_opts)
       local _results = {}

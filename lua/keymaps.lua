@@ -181,19 +181,19 @@ map('c', '<C-\\>', '<End>', {
   desc = ' go to end of command line',
 })
 
-map('c', '<M-p>', '<S-Up>', {
-  category = 'Command',
-  label = ' history up cmdline',
-  desc = ' navigate history up command line',
-})
-
---  c-$
-map('c', '<M-n>', '<S-Down>', {
-  category = 'Command',
-  label = ' history down cmdline',
-  desc = ' navigate history down command line',
-})
-
+-- map('c', '<M-p>', '<S-Up>', {
+--   category = 'Command',
+--   label = ' history up cmdline',
+--   desc = ' navigate history up command line',
+-- })
+--
+-- --  c-$
+-- map('c', '<M-n>', '<S-Down>', {
+--   category = 'Command',
+--   label = ' history down cmdline',
+--   desc = ' navigate history down command line',
+-- })
+--
 map('c', '<C-g>', '<C-r>%', {
   category = 'Command',
   label = ' insert filename cmdline',
@@ -1525,11 +1525,7 @@ map('n', '<leader>it', "<cmd>lua require('telescope.run')('lazy', 'lazy')<cr>", 
   desc = 'show lazy.nvim plugins in telescope',
 })
 
-map(
-  'n',
-  '<leader>iy',
-  "<cmd>let @+ = substitute(expand('%:p'), $HOME, '~', '') | lua print('Yanked: ' .. vim.fn.substitute(vim.fn.expand('%:p'), $HOME, '~', ''))<cr>",
-  {
+map( 'n', '<leader>iy', "<cmd>YankPath<cr>", {
     category = 'System',
     label = 'yank filename',
     desc = 'yank the current filename to clipboard',

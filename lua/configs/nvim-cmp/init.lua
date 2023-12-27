@@ -42,6 +42,11 @@ local is_not_filetype = function()
   return true
 end
 
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
+end
+
 local is_not_luasnip = function()
   ---@diagnostic disable-next-line: param-type-mismatch
   return not vim.fn.expand('%:p'):find('.*/nvim/lua/snippets/.*%.lua')
@@ -100,11 +105,11 @@ local cfg = {
     end,
   },
   sorting = sorting,
-  experimental = {
-    ghost_text = {
-      hl_group = 'CmpGhostText',
-    },
-  },
+  -- experimental = {
+  --   ghost_text = {
+  --     hl_group = 'CmpGhostText',
+  --   },
+  -- },
   formatting = formatting,
   window = {
     max_width = MAX_DOCUMENT_WIDTH,
@@ -113,58 +118,7 @@ local cfg = {
     completion = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
     documentation = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
   },
-  mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item({
-      behavior = cmp.SelectBehavior.Select,
-      preserve_mapping_verticality = true,
-    }),
-    ['<C-n>'] = cmp.mapping.select_next_item({
-      behavior = cmp.SelectBehavior.Select,
-      preserve_mapping_verticality = true,
-    }),
-    ['<C-f>'] = cmp.mapping.select_next_item({
-      count = 6,
-      behavior = cmp.SelectBehavior.Select,
-      preserve_mapping_verticality = true,
-    }),
-    ['<C-b>'] = cmp.mapping.select_prev_item({
-      count = 6,
-      behavior = cmp.SelectBehavior.Select,
-      preserve_mapping_verticality = true,
-    }),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
-    }),
-    ['<M-b>'] = cmp.mapping.scroll_docs(-6),
-    ['<M-f>'] = cmp.mapping.scroll_docs(6),
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif require('luasnip').expand_or_jumpable() then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif require('luasnip').jumpable(-1) then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-  },
-  -- mapping = cmp.mapping.preset.insert({
-  --   ['<CR>'] = cmp.mapping.confirm(),
-  --   ['<C-n>'] = cmp.mapping.select_next_item(),
-  --   ['<C-p>'] = cmp.mapping.select_prev_item(),
-  -- }),
-  -- mapping = cmp.mapping.preset.insert(mapping_main),
+  mapping = mapping_main,
   sources = cmp.config.sources(sources.main[1], sources.main[2]),
   view = {
     entries = {
@@ -181,12 +135,12 @@ local cfg = {
     behavior = cmp.ConfirmBehavior.Replace,
     select = false,
   },
-  -- confirmation = {
-  --   default_behavior = types.cmp.ConfirmBehavior.Insert,
-  --      get_commit_characters = function(commit_characters)
-  --        return commit_characters
-  --      end,
-  -- }
+  confirmation = {
+    default_behavior = cmp.ConfirmBehavior.Insert,
+    get_commit_characters = function(commit_characters)
+      return commit_characters
+    end,
+  },
 }
 
 local setup_cmp = function()
@@ -205,42 +159,121 @@ local setup_cmp = function()
   -- vim.tbl_deep_extend('force', debug, { log = log })
 
   cmp.setup(cfg)
-  cmp.setup.filetype('gitcommit', { sources = cmp.config.sources(sources.gitcommit) })
-
-  local defaultPlusZsh = vim.deepcopy(sources.main)
-  table.insert(defaultPlusZsh, { name = 'zsh' })
-  cmp.setup.filetype({ 'sh', 'make' }, {
-    sources = cmp.config.sources(defaultPlusZsh),
-    -- disable useless `\[` suggestions at end of line
-    enabled = function()
-      local col = vim.fn.col('.') - 1
-      local charBefore = vim.api.nvim_get_current_line():sub(col, col)
-      return charBefore ~= '\\'
-    end,
-  })
-
-  -- LUA
-  -- disable annoying --#region suggestions
-  -- cmp.setup.filetype('lua', {
+  -- cmp.setup.filetype('gitcommit', { sources = cmp.config.sources(sources.gitcommit) })
+  -- local defaultPlusZsh = vim.deepcopy(sources.main)
+  -- table.insert(defaultPlusZsh, { name = 'zsh' })
+  -- cmp.setup.filetype({ 'sh', 'make' }, {
+  --   sources = cmp.config.sources(defaultPlusZsh),
+  --   -- disable useless `\[` suggestions at end of line
   --   enabled = function()
-  --     local line = vim.api.nvim_get_current_line()
-  --     return is_enabled() and not (line:find('%s%-%-?$') or line:find('^%-%-?$'))
+  --     local col = vim.fn.col('.') - 1
+  --     local charBefore = vim.api.nvim_get_current_line():sub(col, col)
+  --     return charBefore ~= '\\'
   --   end,
   -- })
+  --
+  -- LUA
+  -- disable annoying --#region suggestions
+  cmp.setup.filetype('lua', {
+    enabled = function()
+      local line = vim.api.nvim_get_current_line()
+      return is_enabled() and not (line:find('%s%-%-?$') or line:find('^%-%-?$'))
+    end,
+  })
   -- cmp.setup.cmdline({ '/', '?' }, {
-  --   mapping = cmp.mapping.preset.cmdline(mapping_sets),
+  --   -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
   --   -- mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
+  --   mapping = {
+  --     ['<C-F>'] = {
+  --       c = function()
+  --         if cmp.visible() then
+  --           for _ = 1, 5 do
+  --             cmp.mapping.select_next_item({
+  --               behavior = cmp.SelectBehavior.Select,
+  --             })(nil)
+  --           end
+  --         else
+  --           cmp.complete()
+  --         end
+  --       end,
+  --     },
+  --     ['<C-B>'] = {
+  --       c = function()
+  --         if cmp.visible() then
+  --           for _ = 1, 5 do
+  --             cmp.mapping.select_prev_item({
+  --               behavior = cmp.SelectBehavior.Select,
+  --             })(nil)
+  --           end
+  --         else
+  --           cmp.complete()
+  --         end
+  --       end,
+  --     },
+  --   },
   --   sources = cmp.config.sources(sources.cmdsearch),
   --   matching = { disallow_symbol_nonprefix_matching = false },
   --   -- sorting = { comparators = {} },
   -- })
-  -- --
-  -- cmp.setup.cmdline(':', {
-  --   -- mapping = cmp.mapping.preset.cmdline(),
-  --   -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
-  --   sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
-  --   matching = { disallow_symbol_nonprefix_matching = false },
-  -- })
+  cmp.setup.cmdline(':', {
+    mapping = {
+      -- ['<C-F>'] = {
+      --   c = function()
+      --     if cmp.visible() then
+      --       for _ = 1, 5 do
+      --         cmp.mapping.select_next_item({
+      --           behavior = cmp.SelectBehavior.Select,
+      --         })
+      --       end
+      --     else
+      --       cmp.complete()
+      --     end
+      --   end,
+      -- },
+      -- ['<C-B>'] = {
+      --   c = function()
+      --     if cmp.visible() then
+      --       for _ = 1, 5 do
+      --         cmp.mapping.select_prev_item({
+      --           behavior = cmp.SelectBehavior.Select,
+      --         })(nil)
+      --       end
+      --     else
+      --       cmp.complete()
+      --     end
+      --   end,
+      -- },
+      -- ['<C-n>'] = {
+      --   c = function(fallback)
+      --     local cmp = require('cmp')
+      --     if cmp.visible() then
+      --       cmp.select_next_item()
+      --     else
+      --       fallback()
+      --     end
+      --   end,
+      -- },
+      -- ['<C-p>'] = {
+      --   c = function(fallback)
+      --     local cmp = require('cmp')
+      --     if cmp.visible() then
+      --       cmp.select_prev_item()
+      --     else
+      --       fallback()
+      --     end
+      --   end,
+      -- },
+      ['<C-e>'] = {
+        c = cmp.mapping.abort(),
+      },
+      ['<C-y>'] = {
+        c = cmp.mapping.confirm({ select = false }),
+      },
+    },
+    matching = { disallow_symbol_nonprefix_matching = false },
+    -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
+    sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
+  })
 end
 
 setup_cmp()

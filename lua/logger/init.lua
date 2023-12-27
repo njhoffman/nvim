@@ -1,6 +1,6 @@
 local sinks = require('logger.sinks')
 local structlog = require('structlog')
-local log_levels = require('logger.levels')
+local scope_levels = require('logger.levels').scopes
 local scopes = {}
 
 local sinks_config = {
@@ -13,7 +13,9 @@ local init = function(scope, sink_levels)
   if not vim.tbl_contains(scopes, scope) then
     table.insert(scopes, scope)
   end
-  sink_levels = sink_levels or log_levels[scope] or log_levels['*']
+
+  sink_levels = sink_levels or scope_levels[scope] or scope_levels['*']
+
   local has_level = function(lvl)
     return type(lvl) == 'number' and lvl >= 0
   end
@@ -37,7 +39,7 @@ local init = function(scope, sink_levels)
   return structlog.get_logger(scope) or {}
 end
 
-for name, config in pairs(log_levels) do
+for name, config in pairs(scope_levels) do
   init(name, config)
 end
 

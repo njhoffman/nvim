@@ -2,7 +2,7 @@
 local ns_id = vim.api.nvim_create_namespace('nvim-notify')
 
 local build_line = function(bufnr, linenum, parts)
-  local baleia = require('baleia').setup()
+  local baleia = require('baleia')
   local line = ''
   local hls = {}
 
@@ -16,7 +16,6 @@ local build_line = function(bufnr, linenum, parts)
   end
   -- vim.api.nvim_buf_set_lines(bufnr, linenum, -1, false, { line })
   baleia.buf_set_lines(bufnr, linenum, -1, false, { line })
-
   for _, hl in pairs(hls) do
     vim.api.nvim_buf_add_highlight(bufnr, ns_id, hl[1], linenum, hl[2], hl[3])
   end

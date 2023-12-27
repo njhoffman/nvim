@@ -346,12 +346,12 @@ return function(injected_functions)
     -- #34a4c8  #a6e3a1  #f78c6c  #1abc9c #242d3d  #13181f
     -- #3098b2  #74c7ec  #87bcff  #bb9af7 #2a2a40  #0c1118
     -- #3092ae  #b4befe  #ae81ff  #9d7cd8 #2d2b3f  #0c0b12
-    sym('@text.title.1.markdown')({ fg = '#4f7fd6' }),
-    sym('@text.title.2.markdown')({ fg = '#3470c6' }),
-    sym('@text.title.3.markdown')({ fg = '#2d68b4' }),
-    sym('@text.title.4.markdown')({ fg = '#1a84aa' }),
-    sym('@text.title.5.markdown')({ fg = '#088090' }),
-    sym('@text.title.6.markdown')({ fg = '#0a8088' }),
+    sym('@text.title.1.markdown')({ fg = '#4f86e6' }),
+    sym('@text.title.2.markdown')({ fg = '#347ad6' }),
+    sym('@text.title.3.markdown')({ fg = '#2d78c4' }),
+    sym('@text.title.4.markdown')({ fg = '#1a84ba' }),
+    sym('@text.title.5.markdown')({ fg = '#1080a0' }),
+    sym('@text.title.6.markdown')({ fg = '#0a8098' }),
     Headline1({ bg = '#081228', fg = sym('@text.title.1.markdown').fg }),
     Headline2({ bg = '#020814', fg = sym('@text.title.2.markdown').fg }),
     Headline3({ bg = '#000408', fg = sym('@text.title.3.markdown').fg }),

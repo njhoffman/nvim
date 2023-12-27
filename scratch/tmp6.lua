@@ -1,8 +1,5 @@
-local Manager = require('noice.message.manager')
-local Config = require('noice.config')
-local messages = Manager.get(Config.options.commands.history.filter, {
-  history = true,
-  sort = true,
-  reverse = true,
-})
-vim.dbglog(messages)
+local new_lines = { '\x1b[32mHello \x1b[33mworld!' }
+-- appending using Baleia API
+local lastline = vim.api.nvim_buf_line_count(0)
+local baleia = require('baleia').setup({})
+baleia.buf_set_lines(0, lastline, lastline, true, new_lines)

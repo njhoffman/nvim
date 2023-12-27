@@ -10,7 +10,6 @@ require('utils.lazy').setup({ cache = false, reload = false, lazy = false })
 for _, mod_name in ipairs({
   'keymaps',
   'commands',
-  'autocommands',
   'abbreviations',
   'dial',
   'wf-setup',
@@ -26,6 +25,8 @@ for _, mod_name in ipairs({
   'oldfiles',
   'hover.setup',
   'configs.feline',
+  'autocommands',
+  'baleia.setup',
 }) do
   vim.import(mod_name)
 end
@@ -50,6 +51,24 @@ vim.defer_fn(function()
     category = 'Motion',
     label = 'delete to eol',
     desc = 'delete until the end of line',
+  })
+
+  map('n', '<M-}>', '<cmd>norm v}<cr>', {
+    category = 'Motion',
+    desc = 'traverse blocks forward with select',
+  })
+  map('x', '<M-}>', '<cmd>norm }<cr>', {
+    category = 'Motion',
+    desc = 'traverse blocks forward with select',
+  })
+
+  map('n', '<M-{>', '<cmd>norm v{<cr>', {
+    category = 'Motion',
+    desc = 'traverse blocks backwards with select',
+  })
+  map('x', '<M-{>', '<cmd>norm {<cr>', {
+    category = 'Motion',
+    desc = 'traverse blocks backwards with select',
   })
 
   vim.keymap.set('n', '<M-0>', 'i<M-0><esc>', { remap = true, desc = 'warp pair symbol forwads' })

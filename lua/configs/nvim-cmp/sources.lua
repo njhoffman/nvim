@@ -16,6 +16,15 @@ local sources = {
       },
       -- { name = 'codeium', max_item_count = 3 },
       {
+        name = 'copilot',
+        max_item_count = 5,
+        -- vim.opt.scrollbuf = 999
+        trigger_characters = {
+          -- stylua: ignore
+          { '.', ':', '(', "'", '"', '[', ',', '#', '*', '@', '|', '=', '-', '{', '/', '\\', '+', '?', ' ', }, -- "\t", "\n", },
+        },
+      },
+      {
         name = 'buffer',
         option = {
           get_bufnrs = function()
@@ -75,36 +84,7 @@ local sources = {
       -- { name = 'nvim_lsp_signature_help' },
     },
     {
-      {
-        name = 'copilot',
-        max_item_count = 5,
-        -- vim.opt.scrollbuf = 999
-        trigger_characters = {
-          {
-            '.',
-            ':',
-            '(',
-            "'",
-            '"',
-            '[',
-            ',',
-            '#',
-            '*',
-            '@',
-            '|',
-            '=',
-            '-',
-            '{',
-            '/',
-            '\\',
-            '+',
-            '?',
-            ' ',
-            -- "\t",
-            -- "\n",
-          },
-        },
-      },
+      -- copilot
       { name = 'treesitter' },
       -- Distracting!
       -- { name = "spell" },

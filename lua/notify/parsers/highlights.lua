@@ -37,11 +37,11 @@ local parse_message = function(orig_msg, orig_opts)
         new_msg, highlights = gen_highlights(orig_msg)
         new_opts.highlights = vim.tbl_deep_extend('force', new_opts.highlights or {}, { body = highlights })
       else
-        new_opts.filetype = orig_opts.filetype or 'lua'
+        new_opts.filetype = orig_opts.filetype or ''
         new_msg = vim.inspect(orig_msg)
       end
     else
-      new_opts.filetype = orig_opts.filetype or 'lua'
+      new_opts.filetype = orig_opts.filetype or ''
       new_msg = vim.inspect(orig_msg)
     end
   end

@@ -5,11 +5,13 @@ end
 
 local file_picker = require('telescope._extensions.tester.file')
 local script_picker = require('telescope._extensions.tester.script')
+local dynamic_picker = require('telescope._extensions.tester.dynamic')
 
 return telescope.register_extension({
   exports = {
     file = file_picker,
     script = script_picker,
+    dynamic = dynamic_picker,
   },
 })
 

@@ -118,9 +118,9 @@ local close_multi = function(skip_prompt)
       end
     else
       if #get_loaded_buffers() > 0 then
-        local ok, _ = pcall(vim.cmd, 'silent ' .. cmd) --[[  .. '!' ]]
+        local ok, err = pcall(vim.cmd, 'silent ' .. cmd) --[[  .. '!' ]]
         if not ok then
-          vim.notify('close_multi failed: silent ' .. cmd .. '', 3)
+          vim.notify('close_multi failed: silent ' .. cmd .. ' ' .. vim.inspect(err), 3)
         end
       end
     end

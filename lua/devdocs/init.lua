@@ -3,7 +3,7 @@ local M = {}
 local log = require('devdocs.log')
 local list = require('devdocs.list')
 local state = require('devdocs.state')
-local pickers = require('devdocs.pickers')
+local pickers = require('telescope._extensions.devdocs.pickers')
 local operations = require('devdocs.operations')
 local config = require('devdocs.config')
 local completion = require('devdocs.completion')
@@ -111,28 +111,52 @@ M.keywordprg = function(args)
   end
 end
 
+M.setup_highlights = function()
+  vim.api.nvim_set_hl(0, 'TelescopeDevdocsCategory', { default = true, link = 'markdownH1' })
+  vim.api.nvim_set_hl(0, 'TelescopeDevdocsTitle', { default = true, link = 'markdownH2' })
+  vim.api.nvim_set_hl(0, 'TelescopeDevdocsLength', { default = true, link = 'TelescopeNormal' })
+  vim.api.nvim_set_hl(0, 'TelescopeDevdocsLastRead', { default = true, link = 'TelescopeComment' })
+end
+
 ---@param opts nvim_devdocs.Config
 M.setup = function(opts)
   config.setup(opts)
+  M.setup_highlights()
 
   vim.defer_fn(function()
     log.debug('Installing required docs')
     operations.install_args(config.options.ensure_installed)
   end, 3000)
 
+  --    
   local cmd = vim.api.nvim_create_user_command
-
-  cmd('DevdocsFetch', M.fetch_registery, {})
-  cmd('DevdocsInstall', M.install_doc, { nargs = '*', complete = completion.get_non_installed })
-  cmd('DevdocsUninstall', M.uninstall_doc, { nargs = '*', complete = completion.get_installed })
-  cmd('DevdocsOpen', M.open_doc, { nargs = '?', complete = completion.get_installed })
-  cmd('DevdocsOpenFloat', M.open_doc_float, { nargs = '?', complete = completion.get_installed })
+  cmd('DevdocsFetch', M.fetch_registery, { desc = ' reload devdocs registery' })
+  cmd(
+    'DevdocsInstall',
+    M.install_doc,
+    { nargs = '*', complete = completion.get_non_installed, desc = ' install devdoc source' }
+  )
+  cmd(
+    'DevdocsUninstall',
+    M.uninstall_doc,
+    { nargs = '*', complete = completion.get_installed, desc = ' uninstall devdoc source' }
+  )
+  cmd(
+    'DevdocsOpen',
+    M.open_doc,
+    { nargs = '?', complete = completion.get_installed, desc = ' open devdoc file in buffer' }
+  )
+  cmd(
+    'DevdocsOpenFloat',
+    M.open_doc_float,
+    { nargs = '?', complete = completion.get_installed, desc = ' open devdoc file in popup window' }
+  )
   cmd('DevdocsOpenCurrent', function()
     M.open_doc_current_file()
-  end, {})
+  end, { desc = ' open devdoc in current buffer' })
   cmd('DevdocsOpenCurrentFloat', function()
     M.open_doc_current_file(true)
-  end, {})
+  end, { desc = ' open devdoc in current float' })
   cmd('DevdocsKeywordprg', M.keywordprg, { nargs = '?' })
   cmd('DevdocsUpdate', M.update, { nargs = '*', complete = completion.get_updatable })
   cmd('DevdocsUpdateAll', M.update_all, {})

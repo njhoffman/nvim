@@ -74,7 +74,7 @@ local config = {
     timeLogStop = {
       nvim_lua = {
         'local durationSecs = os.difftime(os.time(), timelogStart) -- %s',
-        'print("%s:", durationSecs, "s")',
+        'vim.dbglog("%s:", durationSecs, "s")',
       },
       lua = {
         'local durationSecs = os.difftime(os.time(), timelogStart) -- %s',
@@ -313,7 +313,6 @@ function M.removeLogs()
     msg = msg:sub(1, -3) .. '.'
   end -- 1 = singular
   vim.notify(msg, vim.log.levels.INFO, { title = 'Chainsaw' })
-
   vim.b.timelogStart = false ---@diagnostic disable-line: inject-field
 end
 

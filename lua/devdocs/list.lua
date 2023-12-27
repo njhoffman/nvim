@@ -35,8 +35,8 @@ end
 ---@return DocEntry[] | nil
 M.get_doc_entries = function(aliases)
   local entries = {}
-  local index = fs.read_index()
 
+  local index = fs.read_index()
   if not index then
     return
   end

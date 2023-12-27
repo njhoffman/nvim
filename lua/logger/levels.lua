@@ -1,5 +1,5 @@
 -- stylua: ignore
-local log_levels = {
+local scopes = {
   ['*']                   = { main = 2 },
   -- hover                = { main = 0 },
   -- ['early-retirement'] = { main = -1 },
@@ -19,7 +19,10 @@ local log_levels = {
   -- telescope            = { main = -1 },
 }
 
+local patterns = {
+  notify = { 'devdocs', 2 },
+}
 -- `DEBUG_CODEIUM` environment variable: `trace`, `debug`, `info`, `warn`, `error`
 
 -- require('cmp.utils.debug').enable()/disable()
-return log_levels
+return { patterns = patterns, scopes = scopes }

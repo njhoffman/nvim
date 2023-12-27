@@ -30,7 +30,7 @@ local plugins = {
       never = { cursorline = { 'qf', 'noice', 'navbuddy' }, cursorcolumn = { 'qf', 'noice', 'navbuddy' } },
     },
   },
-  { 'lukas-reineke/indent-blankline.nvim', event = { 'BufReadPre', 'BufNewFile' } },
+  { 'lukas-reineke/indent-blankline.nvim', commit = '0dca928', event = { 'BufReadPre', 'BufNewFile' } },
   { 'Tyler-Barham/floating-help.nvim', cmd = 'FloatHelp' },
   { 'echasnovski/mini.clue', event = { 'VeryLazy' } },
   {
@@ -94,9 +94,10 @@ local plugins = {
     'sindrets/diffview.nvim',
     cmd = { 'Diffview', 'DiffviewLog', 'DiffviewOpen', 'DiffviewToggleFiles', 'DiffviewFileHistory' },
   },
-  { 'm00qek/baleia.nvim', cmd = 'BaleiaColorize' },
+  { 'm00qek/baleia.nvim', lazy = false },
   { 'folke/zen-mode.nvim', cmd = 'ZenMode', keys = { '<S-CR>' } },
   { 'folke/twilight.nvim', cmd = { 'Twilight', 'TwilightEnable' } },
+  -- { 'benlubas/wrapping-paper.nvim' },
   {
     'kevinhwang91/nvim-ufo',
     dependencies = 'kevinhwang91/promise-async',
