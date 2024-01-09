@@ -1,12 +1,15 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
 local telescope = require('telescope')
 local sorters = require('telescope.sorters')
+local previewers = require('telescope.previewers')
 
 local commands = require('configs.telescope.commands')
 local mappings = require('configs.telescope.mappings')
 local pickers = require('configs.telescope.pickers')
 local extensions = require('configs.telescope.extensions')
 local display_path = require('configs.telescope.display-path')
+local putils = require('telescope.previewers.utils')
+local pfiletype = require('plenary.filetype')
 
 local telescope_config = {
   defaults = {
@@ -26,30 +29,26 @@ local telescope_config = {
     },
     layout_config = {
       prompt_position = 'top',
+      preview_cutoff = 30,
       bottom_pane = {
         height = 25,
-        preview_cutoff = 40,
       },
       center = {
         preview_height = 0.5,
         height = 0.4,
-        preview_cutoff = 40,
         width = 0.5,
       },
       cursor = {
         height = 0.9,
-        preview_cutoff = 40,
         width = 0.8,
       },
       horizontal = {
         height = 0.9,
         width = 0.8,
-        preview_cutoff = 60,
         preview_width = 0.5,
       },
       vertical = {
         height = 0.9,
-        preview_cutoff = 40,
         width = 0.8,
         mirror = true,
         preview_height = 0.5,
@@ -58,9 +57,6 @@ local telescope_config = {
         flip_columns = 130,
       },
     },
-    file_previewer = require('telescope.previewers').vim_buffer_cat.new,
-    grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
-    qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
     cache_picker = {
       num_pickers = 20,
       limit_entries = 2000,
@@ -97,14 +93,15 @@ local telescope_config = {
       '%.plist$',
       -- other ignores are defined via .gitignore, .ignore, /fd/ignore, or /git/ignore
     },
+    -- file_previewer = previewers.buffer_cat,
+    grep_previewer = previewers.vim_buffer_vimgrep.new,
+    file_previewer = require('configs.telescope.previewers').buffer_cat,
+    qflist_previewer = previewers.vim_buffer_qflist.new,
     preview = {
       check_mime_type = true,
       ls_short = true,
       filesize_limit = 2,
-      timeout = 600, -- default 250
-      treesitter = true,
-      msg_bg_fillchar = '╱',
-      -- hide_on_startup = hide_preview,
+      timeout = 2000, -- default 250
     },
   },
   pickers = pickers,
@@ -117,7 +114,7 @@ extensions.load()
 -- vim.api.nvim_create_autocmd('User', {
 --   pattern = 'TelescopePreviewerLoaded',
 --   callback = function(args)
---     require('scrollbar.handlers').show()
---     -- vim.dbglog('PREVIEWER', args)
+--     -- require('scrollbar.handlers').show()
+--     vim.dbglog('PREVIEWER', args)
 --   end,
 -- })

@@ -67,7 +67,6 @@ M._qf_as_filenames = function(opts)
 
   return function(entry)
     local filename = entry.filename or vim.api.nvim_buf_get_name(entry.bufnr)
-
     return {
       valid = true,
       value = entry,

@@ -39,15 +39,8 @@ end
 
 function NotifyView:_notify(msg, opts)
   ---@type string?
-  local level = msg.level or self._opts.level
+  local level = msg.level
   local content = msg.content
-  -- if opts.repeat_count then
-  --   content = content .. ' #' .. opts.repeat_count
-  -- end
-  --
-  -- if msg.opts and msg.opts.is_nil then
-  --   content = nil
-  -- end
 
   local notif = require('notify')(content, level, opts)
   self.notif = notif

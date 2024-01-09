@@ -1,40 +1,17 @@
-local get_last_char = function(chars, key)
-  return function()
-    chars = type(chars) == 'string' and { chars } or (type(chars) == 'table' and chars) or {}
-    key = key or (type(chars) == 'table' and chars[1] or chars)
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local current_line = vim.fn.trim(vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1] or '')
-    local last_character = current_line and current_line:sub(-1) or ''
-    local to_remove = ''
-    vim.dbglog(chars, key)
-    if vim.fn.empty(chars) and vim.tbl_isempty(chars) and vim.fn.empty(key) then
-      vim.dbglog('TO REMOVE', last_character)
-      to_remove = last_character
-    else
-      for _, char in ipairs(chars) do
-        if char == last_character then
-          to_remove = char
-        end
-      end
+local pattern_filter = function(name, level, msg)
+  -- additional filtering based on scope and pattern
+  local skip = false
+  local lvl_patterns = require('logger.levels').patterns
+  for scope, filter in pairs(lvl_patterns) do
+    local pattern, scope_lvl = filter[1], filter[2]
+    if name == scope and string.match(msg, pattern) and level <= scope_lvl then
+      skip = true
     end
-
-    if to_remove ~= '' then
-      current_line = current_line and current_line:sub(1, -2) or ''
-    else
-      current_line = current_line .. key
-    end
-    vim.api.nvim_buf_set_lines(0, cursor[1] - 1, cursor[1], true, { current_line })
-    vim.cmd.normal('0==')
-    vim.api.nvim_win_set_cursor(0, { cursor[1], cursor[2] })
   end
+  return skip
 end
 
-local trailChars = { ',', ';', ')', "'", '"', '|', '\\', '{', '.', '}' }
-for _, key in ipairs(trailChars) do
-  vim.keymap.set('n', '<leader>a' .. key, get_last_char(key), {
-    desc = 'ﲖ toggle ' .. key .. ' end character',
-  })
-end
-
-vim.keymap.set('n', ',aa', get_last_char({ ',', ';' }), { desc = 'ﲖ toggle ,; end characters' })
-vim.keymap.set('n', ',A', get_last_char(), { desc = 'ﲖ strip end characters' })
+local level = 1
+local msg = '[devdocs] Installing required docs'
+vim.dbglog(string.match(msg, '^%[devdocs%]'))
+-- pattern_filter('notify', level, msg)

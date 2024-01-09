@@ -1,7 +1,3 @@
-if vim.b.did_ftplugin then
-  return
-end
-
 vim.opt_local.commentstring = '//%s'
 
 vim.g.go_fmt_autosave = 0

@@ -34,14 +34,8 @@ local get_tip = function(cmd)
     vim.notify(rand_tip, 2, {
       title = rand_cat,
       render = 'simple-notitle',
-      filetype = 'pandoc.markdown',
-      on_open = function(win)
-        local buf = vim.api.nvim_win_get_buf(win)
-        vim.api.nvim_set_option_value('conceallevel', 3, { win = win })
-        vim.api.nvim_set_option_value('concealcursor', '', { win = win })
-        vim.api.nvim_set_option_value('spell', false, { win = win })
-        vim.api.nvim_set_option_value('filetype', 'pandoc.markdown', { buf = buf })
-      end,
+      -- filetype = 'pandoc.markdown',
+      filetype = 'markdown',
       timeout = 8000,
     })
   else

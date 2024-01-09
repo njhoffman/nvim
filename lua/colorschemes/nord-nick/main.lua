@@ -169,12 +169,13 @@ return function(injected_functions)
     ConstantBuiltin({ fg = '#0698b3' }),
     Delimiter({ fg = '#5f6fa2' }),
     Directory({ fg = '#187298' }),
-    Field({ fg = '#4688B0' }),
+    -- Field({ fg = '#4688B0' }),
+    Field({ fg = '#467aB0' }),
     FoldColumn({ fg = '#4D578A', bg = '#000000' }),
     FoldText({ fg = '#41b1ff', gui = 'bold' }),
     Folded({ fg = '#6Db7ca', bg = '#111111', gui = 'bold' }),
     Function({ fg = '#2d79a7' }),
-    FunctionCall({ fg = '#3d89b7' }),
+    FunctionCall({ fg = '#4d79c7' }),
     -- Function({ fg = '#8c788c' }),
     -- FunctionCall({ fg = '#7f788f' }),
     Identifier({ fg = '#5e88b6' }),
@@ -187,7 +188,7 @@ return function(injected_functions)
     NonText({ bg = 'none', fg = '#556677' }),
     Operator({ fg = '#4866bf' }),
     -- Operator({ fg = '#28567f' }),
-    PreProc({ fg = '#4796bc' }),
+    PreProc({ fg = '#806a7f' }),
     QuickFixLine({ bg = '#172238' }),
     Repeat({ fg = '#806a7f' }),
     Scrollbar({ bg = '#111111', fg = '#334863' }),
@@ -199,7 +200,8 @@ return function(injected_functions)
     String({ fg = '#1094aa' }),
     Structure({ fg = '#3D71AC' }),
     Type({ fg = '#418cc4' }),
-    Variable({ fg = '#5a8ab0' }),
+    -- Variable({ fg = '#5a8ab0' }),
+    Variable({ fg = '#5a8ac0' }),
     healthError({ fg = '#BE6069', bg = 'none' }),
     healthSuccess({ fg = '#22BB99', bg = 'none' }),
     healthWarning({ fg = '#EBCA89', bg = 'none' }),
@@ -302,6 +304,7 @@ return function(injected_functions)
     sym('@nameSpace')({ Statement }),
     sym('@namespace')({ Statement }),
     sym('@namespace.builtin')({ Keyword }),
+    sym('@spell')({}),
     sym('@nospell')({ fg = 'none', bg = 'none', gui = 'none' }),
     sym('@number')({ Number }),
     sym('@operator')({ Operator }),
@@ -313,7 +316,6 @@ return function(injected_functions)
     sym('@punctuation.special')({ fg = '#888698' }), -- #89ddff
     sym('@punct.special')({ sym('@punctuation.special') }),
     sym('@punctuation.special.markdown')({ fg = '#645060' }), --  fg = '#89ddff'
-    sym('@spell')({}),
     sym('@string')({ String }),
     sym('@string.documentation')({ fg = '#406f88', gui = 'italic' }),
     sym('@string.escape')({ fg = '#bb9af7' }),
@@ -365,7 +367,8 @@ return function(injected_functions)
     markdownH5({ fg = sym('@text.title.5.markdown').fg }),
     markdownH6({ fg = sym('@text.title.6.markdown').fg }),
 
-    CodeBlock({ bg = '#090909' }),
+    -- CodeBlock({ bg = '#090909' }),
+    CodeBlock({ bg = '#101018' }),
     -- - @lsp.type.variable.javascript links to Variable priority: 125
     -- - @lsp.mod.defaultLibrary.javascript links to @lsp priority: 126
     -- - @lsp.typemod.variable.defaultLibrary.javascript links to Identifier priority: 127
@@ -644,6 +647,9 @@ return function(injected_functions)
     -- IblScope({ fg = colors.purple, gui = 'nocombine' }),
     -- IndentBlanklineIndent1({ bg = '#262626', gui = 'nocombine' }),
     -- IndentBlanklineIndent2({ bg = '#1f1f1f', gui = 'nocombine' }),
+
+    IndentGuidesEven({ bg = clrs.nord1 }),
+    IndentGuidesOdd({ bg = clrs.nord2 }),
     MiniIndentscopeSymbol({ fg = '#003460', bg = '#000f18' }),
     MiniIndentscopeSymbolOff({ fg = '#162f58' }),
     ---   indent is multiple of 'shiftwidth'.
@@ -671,6 +677,7 @@ return function(injected_functions)
     lsp_markdown1({ Normal }),
     DashboardHeader({ fg = '#8AFF80' }),
     DashboardKey({ fg = '#FF9580' }),
+    DashboardCenter({ fg = clrs.nord8 }),
     DashboardDesc({ fg = '#87FEF8' }),
     DashboardIcon({ fg = '#FCFC7F' }),
     DashboardShortCut({ fg = TokyoColors.cyan }),

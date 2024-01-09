@@ -1,3 +1,14 @@
+-- 06:48:20 PM msg_show.echomsg | [telescope] [WARN  18:48:20] /home/nicholas/git/telescope.nvim/lua/telescope/pickers.lua:644: Finder failed with msg:  /home/nicholas/git/telescope.nvim/lua/telescope/sorters.lua:430: attempt to index local 'entry' (a nil value)
+-- 06:42:33 PM msg_show.echo | E764: Option 'completefunc' is not set
+-- 06:42:37 PM msg_show.emsg   Error  | E764: Option 'completefunc' is not set
+-- 06:51:48 PM msg_show |           [17/>99]
+-- 08:16:53 PM msg_show.echo | E73: Tag stack empty
+-- 08:38:27 PM msg_show.echo | E662: At start of changelist
+
+-- 06:45:12 PM msg_show.echo | Error while evaluating dynamicNode@2 for snippet 'Require':
+-- 06:45:12 PM msg_show | attempt to call a nil value
+-- 06:45:12 PM msg_show | :h luasnip-docstring for more info
+
 local routes = {
   -- { filter = { event = 'notify.error_error' }, view = 'mini' },
   -- { filter = { event = 'msg_show.lua_error' }, view = 'mini' },
@@ -94,24 +105,24 @@ local routes = {
     },
     view = 'notify',
     opts = {
-      title = 'Error',
+      title = 'RPC Error',
       level = vim.log.levels.ERROR,
     },
   },
   -- route messages to notify view
-  {
-    view = 'notify',
-    -- opts = {
-    --   level = vim.log.levels.DEBUG,
-    -- },
-    filter = {
-      any = {
-        { event = 'msg_show', kind = '' },
-        { event = 'msg_show', kind = 'echo' },
-        { event = 'msg_show', kind = 'echomsg' },
-      },
-    },
-  },
+  -- {
+  --   view = 'notify',
+  --   -- opts = {
+  --   --   level = vim.log.levels.DEBUG,
+  --   -- },
+  --   filter = {
+  --     any = {
+  --       { event = 'msg_show', kind = '' },
+  --       { event = 'msg_show', kind = 'echo' },
+  --       { event = 'msg_show', kind = 'echomsg' },
+  --     },
+  --   },
+  -- },
   -- always route any messages with more than 20 lines to the split view
   {
     view = 'split',

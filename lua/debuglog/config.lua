@@ -9,7 +9,7 @@ local config = {
 
 config.outfile = {
   string.format('%s/%s.log', vim.api.nvim_call_function('stdpath', { 'data' }), 'inspect'),
-  string.format('%s/%s.log', vim.api.nvim_call_function('stdpath', { 'data' }), 'nvim'),
+  -- string.format('%s/%s.log', vim.api.nvim_call_function('stdpath', { 'data' }), 'nvim'),
 }
 config.start_time = os.clock()
 config = vim.tbl_deep_extend('force', default_config, config)

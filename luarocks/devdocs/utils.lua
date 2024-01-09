@@ -61,6 +61,66 @@ local get_count = function(config, aliases)
   return count
 end
 
+local split = function(str, sep)
+  local result = {}
+  local regex = ('([^%s]+)'):format(sep)
+  for each in str:gmatch(regex) do
+    table.insert(result, each)
+  end
+  return result
+end
+
+local read_entry = function(config, entry)
+  local splited_path = split(entry.path, ',')
+  local file = splited_path[1]
+  local file_path = config.DOCS_DIR:joinpath(entry.alias, file .. '.md')
+  local content = file_path:read()
+  local pattern = splited_path[2]
+  local next_pattern = nil
+
+  if entry.next_path ~= nil then
+    next_pattern = split(entry.next_path, ',')[2]
+  end
+
+  local lines = split(content, '\n')
+
+  -- https://stackoverflow.com/a/34953646/516188
+  local function create_pattern(text)
+    return text:gsub('([^%w])', '%%%1')
+  end
+
+  local filtered_lines = {}
+  local found = false
+  local pattern_lines = split(pattern, '\n')
+  local search_pattern = create_pattern(pattern_lines[1]) -- only search the first line
+  local next_search_pattern = nil
+
+  if next_pattern then
+    local next_pattern_lines = split(next_pattern, '\n')
+    next_search_pattern = create_pattern(next_pattern_lines[1]) -- only search the first line
+  end
+
+  for _, line in ipairs(lines) do
+    if found and next_search_pattern then
+      if line:match(next_search_pattern) then
+        break
+      end
+    end
+    if line:match(search_pattern) then
+      found = true
+    end
+    if found then
+      table.insert(filtered_lines, line)
+    end
+  end
+
+  if not found then
+    return lines
+  end
+
+  return filtered_lines
+end
+
 local debug = function(...)
   print(inspect(...))
 end
@@ -69,6 +129,7 @@ return {
   debug = debug,
   get_count = get_count,
   get_installed = get_installed,
+  read_entry = read_entry,
   read_index = read_index,
   read_lockfile = read_lockfile,
   file_exists = file_exists,

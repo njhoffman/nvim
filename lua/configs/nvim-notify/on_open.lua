@@ -53,8 +53,8 @@ local on_open_old = function(win)
 end
 
 local on_open = function(win, record)
-  local buf = vim.api.nvim_win_get_buf(win)
-  vim.api.nvim_win_set_option(win, 'sidescrolloff', 0)
+  -- local buf = vim.api.nvim_win_get_buf(win)
+  -- vim.api.nvim_set_option_value('sidescrolloff', 0, { win = win })
   -- local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
   -- vim.api.nvim_buf_set_option(buf, 'filetype', filetype)
 end

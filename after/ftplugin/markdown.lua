@@ -1,11 +1,10 @@
 -- Only do this when not yet done for this buffer
-
-if vim.b.did_ftplugin then
-  return
-end
+-- if vim.b.did_ftplugin then
+--   return
+-- end
 
 -- vim.opt.complete:append({ 'kspell' })
-vim.g.vim_markdown_conceal = 1
+vim.g.vim_markdown_conceal = 3
 vim.g.vim_markdown_math = 1
 vim.g.vim_markdown_frontmatter = 1
 vim.g.vim_markdown_toml_frontmatter = 1
@@ -27,8 +26,10 @@ vim.g.markdown_fenced_languages = {
   'go',
   'html',
   'ini=dosini',
+  'java',
   'javascript',
   'json',
+  'kotlin',
   'lua',
   'python',
   'ruby',
@@ -44,6 +45,7 @@ vim.g.markdown_fenced_languages = {
   'yaml',
   'zsh',
 }
+vim.api.nvim_set_option_value('conceallevel', 3, { win = 0 })
 --
 -- local toggle_todo = function()
 --   local linenr = vim.api.nvim_win_get_cursor(0)[1]

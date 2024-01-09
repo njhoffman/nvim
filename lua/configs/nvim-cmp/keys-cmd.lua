@@ -82,6 +82,20 @@ local cmdline = {
       end
     end,
   },
+  ['<C-F>'] = {
+    c = cmp.mapping.select_next_item({
+      count = 6,
+      behavior = cmp.SelectBehavior.Select,
+      preserve_mapping_verticality = true,
+    }),
+  },
+  ['<C-B>'] = {
+    c = cmp.mapping.select_prev_item({
+      count = 6,
+      behavior = cmp.SelectBehavior.Select,
+      preserve_mapping_verticality = true,
+    }),
+  },
   -- ['<C-n>'] = {
   --   c = function()
   --     if cmp.visible() then
@@ -117,32 +131,6 @@ local cmdline = {
   --     end
   --   end,
   -- },
-  ['<C-F>'] = {
-    c = function()
-      if cmp.visible() then
-        for _ = 1, 5 do
-          cmp.mapping.select_next_item({
-            behavior = cmp.SelectBehavior.Select,
-          })(nil)
-        end
-      else
-        cmp.complete()
-      end
-    end,
-  },
-  ['<C-B>'] = {
-    c = function(fallback)
-      if cmp.visible() then
-        for _ = 1, 5 do
-          cmp.mapping.select_prev_item({
-            behavior = cmp.SelectBehavior.Select,
-          })(nil)
-        end
-      else
-        cmp.complete()
-      end
-    end,
-  },
 }
 return cmdline
 -- local cmdline = {

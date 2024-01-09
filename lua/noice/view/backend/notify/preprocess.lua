@@ -44,7 +44,6 @@ local build_options = function(self, msg, replace_id)
       self.win = nil
     end,
     render = noice_util.protect(display.notify_render(self, msg.messages, self._opts.render, msg.content)),
-    -- render = noice_util.protect(self:notify_render(msg.messages, self._opts.render, msg.content)),
   }
 
   if msg.opts then

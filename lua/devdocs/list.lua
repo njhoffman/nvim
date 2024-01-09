@@ -33,7 +33,9 @@ end
 
 ---@param aliases string[]
 ---@return DocEntry[] | nil
-M.get_doc_entries = function(aliases)
+M.get_doc_entries = function(aliases, opts)
+  local operations = require('devdocs.operations')
+  opts = opts or {}
   local entries = {}
 
   local index = fs.read_index()
@@ -61,6 +63,10 @@ M.get_doc_entries = function(aliases)
           next_path = next_path,
         }
 
+        if opts.line_count then
+          local lines = operations.read_entry(doc_entry)
+          entry.line_count = #lines
+        end
         table.insert(entries, entry)
       end
     end

@@ -1,6 +1,6 @@
-local output_log = require("debuglog.output")
-local logutils = require("debuglog.utils")
-local config = require("debuglog.config")
+local output_log = require('debuglog.output')
+local logutils = require('debuglog.utils')
+local config = require('debuglog.config')
 local unpack = unpack or table.unpack
 
 local log = {}
@@ -10,7 +10,7 @@ log.new = function(standalone)
     obj[x.name] = function(...)
       return output_log(i, x, logutils.make_string, ...)
     end
-    obj[("fmt_%s"):format(x.name)] = function()
+    obj[('fmt_%s'):format(x.name)] = function()
       return output_log(i, x, function(...)
         local passed = { ... }
         local fmt = table.remove(passed, 1)

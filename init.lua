@@ -11,6 +11,7 @@ for _, mod_name in ipairs({
   'keymaps',
   'commands',
   'abbreviations',
+  'autocommands',
   'dial',
   'wf-setup',
   'devbox',
@@ -25,13 +26,10 @@ for _, mod_name in ipairs({
   'oldfiles',
   'hover.setup',
   'configs.feline',
-  'autocommands',
   'baleia.setup',
 }) do
   vim.import(mod_name)
 end
-
--- vim.fn.input()
 
 vim.defer_fn(function()
   require('sidebar').setup()

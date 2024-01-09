@@ -5,7 +5,6 @@ local plugins = {
     'njhoffman/nvim-cmp',
     dir = '~/git/nvim-cmp',
     event = { 'InsertEnter', 'CmdlineEnter', 'CmdwinEnter' },
-    event = { 'VimEnter' },
     dependencies = {
       'David-Kunz/cmp-npm',
       'andersevenrud/cmp-tmux',
@@ -14,6 +13,7 @@ local plugins = {
       'tzachar/cmp-ai',
       'f3fora/cmp-spell',
       'hrsh7th/cmp-calc',
+      -- https://github.com/smjonas/snippet-converter.nvim
       -- {
       --   'hrsh7th/cmp-omni',
       --   config = function()
@@ -37,6 +37,7 @@ local plugins = {
       'onsails/lspkind.nvim',
       'pontusk/cmp-vimwiki-tags',
       'rafamadriz/friendly-snippets',
+      'chrisgrieser/nvim-scissors',
       'ray-x/cmp-treesitter',
       'uga-rosa/cmp-dictionary',
       { 'zbirenbaum/copilot-cmp', dependencies = 'copilot.lua' },

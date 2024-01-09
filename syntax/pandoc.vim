@@ -235,7 +235,7 @@ elseif g:pandoc#syntax#colorcolumn == 2
     exe 'setlocal colorcolumn='.join(range(&textwidth+5, 2*&columns), ',')
 endif
 if g:pandoc#syntax#conceal#use != 0
-    setlocal conceallevel=2
+    setlocal conceallevel=3
 endif
 " }}}1
 

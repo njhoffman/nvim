@@ -53,6 +53,30 @@ require('ts_context_commentstring').setup({
   },
 })
 
+-- https://github.com/kjuulh/tree-sitter-hurl
+-- https://github.com/kjuulh/lazyvim/blob/ff018a06c332ab69d48faa546f789bd4cedb4710/lua/plugins/treesitter.lua
+-- local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+--
+-- -- https://github.com/nvim-treesitter/nvim-treesitter/tree/master#adding-parsers
+-- parser_config.hurl = {
+--   install_info = {
+--     url = '~/git/github.com/kjuulh/tree-sitter-hurl',
+--     files = { 'src/parser.c' },
+--     branch = 'main',
+--     generate_requires_npm = false,
+--     requires_generate_from_grammar = false,
+--   },
+--   filetype = 'hurl',
+-- }
+--
+-- -- https://neovim.io/doc/user/lua.html#vim.filetype.add()
+-- -- Search for vim.filetype.add
+-- vim.filetype.add({
+--   extension = {
+--     hurl = 'hurl',
+--   },
+-- })
+
 -- Steps for custom language injections
 -- Install nvim-treesitter/nvim-treesitter
 -- Install nvim-treesitter/playground

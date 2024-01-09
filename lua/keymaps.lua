@@ -244,9 +244,9 @@ map('n', '<BS>', '<cmd>e #<cr>', {
 })
 local bufvar = { { '<Plug>(CybuPrev)', '<Plug>(CybuNext)' }, { '<cmd>BufferPrev<cr>', '<cmd>BufferNext<cr>' } }
 
-map({ 'n' }, 'E', '<cmd>lua vim.treesitter.get_parser(0):parse()<cr>', {
+map({ 'n' }, '<leader>fs', '<cmd>lua vim.treesitter.get_parser(0):parse()<cr>', {
   category = 'Buffers',
-  label = '󰽙 reset buffer highlighting',
+  label = '󰽙 reset treesitter highlighting',
 })
 
 map('n', 'H', bufvar[2][1], {

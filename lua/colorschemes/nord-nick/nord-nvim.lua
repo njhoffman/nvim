@@ -338,17 +338,11 @@ local theme = lush(function()
     markdownFootnote({ fg = clrs.nord7 }),
     markdownId({ fg = clrs.nord7 }),
     markdownIdDeclaration({ fg = clrs.nord7 }),
-    markdownH1({ fg = clrs.nord8 }),
     markdownLinkText({ fg = clrs.nord8 }),
     markdownUrl({ fg = clrs.nord4, gui = 'NONE' }),
     markdownBold({ Bold }),
     markdownBoldDelimiter({ Keyword }),
     markdownFootnoteDefinition({ markdownFootnote }),
-    markdownH2({ markdownH1 }),
-    markdownH3({ markdownH1 }),
-    markdownH4({ markdownH1 }),
-    markdownH5({ markdownH1 }),
-    markdownH6({ markdownH1 }),
     markdownIdDelimiter({ Keyword }),
     markdownItalic({ Italic }),
     markdownItalicDelimiter({ Keyword }),
@@ -361,16 +355,8 @@ local theme = lush(function()
     htmlLink({ fg = clrs.nord4, gui = 'NONE' }),
     htmlBold({ Bold }),
     htmlTag({ Keyword }),
-    htmlEndTag({ htmlTag }),
     htmlItalic({ Italic }),
-    htmlH1({ markdownH1 }),
-    htmlH2({ markdownH1 }),
-    htmlH3({ markdownH1 }),
-    htmlH4({ markdownH1 }),
-    htmlH5({ markdownH1 }),
-    htmlH6({ markdownH1 }),
     htmlSpecialChar({ SpecialChar }),
-    htmlTagN({ htmlTag }),
     pandocReferenceURL({ gui = 'none', gui = 'none' }),
     pandocUListItem({ gui = 'none', gui = 'none' }),
     javaDocTags({ fg = clrs.nord7 }),
@@ -461,51 +447,17 @@ local theme = lush(function()
     xmlTagName({ Keyword }),
     xmlEndTag({ xmlTagName }),
     xmlProcessingDelim({ Keyword }),
-    yamlBlockMappingKey({ fg = clrs.nord7 }),
     yamlBool({ Keyword }),
     yamlDocumentStart({ Keyword }),
 
     -- +----------------+
     -- + Plugin Support +
     -- +----------------+
-    -- +--- UI ---+
-    -- dashboard
-    DashboardShortCut({ fg = clrs.nord7 }),
-    DashboardHeader({ fg = clrs.nord9 }),
-    DashboardCenter({ fg = clrs.nord8 }),
-    DashboardFooter({ fg = clrs.nord14, gui = 'italic' }),
-    -- fugitive.vim
-    -- > tpope/vim-fugitive
-    gitcommitDiscardedFile({ fg = clrs.nord11 }),
-    gitcommitUntrackedFile({ fg = clrs.nord11 }),
-    gitcommitSelectedFile({ fg = clrs.nord14 }),
-    -- vim-indent-guides
-    -- > nathanaelkane/vim-indent-guides
-    IndentGuidesEven({ bg = clrs.nord1 }),
-    IndentGuidesOdd({ bg = clrs.nord2 }),
-    -- vim-startify
-    -- > mhinz/vim-startify
-    StartifyFile({ fg = clrs.nord11 }),
-    StartifyFooter({ fg = clrs.nord7 }),
-    StartifyHeader({ fg = clrs.nord15 }),
-    StartifyNumber({ fg = clrs.nord13 }),
-    StartifyPath({ fg = clrs.nord8 }),
-    StartifyBracket({ Delimiter }),
-    StartifySlash({ Normal }),
     -- StartifySpecial({ Comment }),
     -- LspTrouble
     LspTroubleText({ fg = clrs.text }),
     LspTroubleCount({ fg = clrs.nord9, bg = clrs.active }),
     -- LspTroubleNormal({ fg = clrs.fg, bg = clrs.sidebar }),
-    -- Diff
-    diffAdded({ fg = clrs.nord14 }),
-    diffRemoved({ fg = clrs.nord11 }),
-    diffChanged({ fg = clrs.nord15 }),
-    diffOldFile({ fg = clrs.yelow }),
-    diffNewFile({ fg = clrs.nord12 }),
-    diffFile({ fg = clrs.nord7 }),
-    diffLine({ fg = clrs.comments }),
-    diffIndexLine({ fg = clrs.nord9 }),
     -- Neogit
     NeogitBranch({ fg = clrs.nord10 }),
     NeogitRemote({ fg = clrs.nord9 }),
@@ -529,28 +481,6 @@ local theme = lush(function()
     NvimTreeEmptyFolderName({ fg = clrs.disabled }),
     NvimTreeFolderIcon({ fg = clrs.accent }),
     NvimTreeIndentMarker({ fg = clrs.disabled }),
-    -- LspDiagnosticsError({ fg = clrs.error }),
-    -- LspDiagnosticsInformation({ fg = clrs.nord10 }),
-    -- LspDiagnosticsHint({ fg = clrs.nord9 }),
-    -- -- -- WhichKey
-    -- -- LspSaga
-    -- LspFloatWinNormal({ bg = clrs.contrast }),
-    -- LspFloatWinBorder({ fg = clrs.nord9 }),
-    -- LspSagaBorderTitle({ fg = clrs.nord8 }),
-    -- LspSagaHoverBorder({ fg = clrs.nord10 }),
-    -- LspSagaRenameBorder({ fg = clrs.nord14 }),
-    -- LspSagaDefPreviewBorder({ fg = clrs.nord14 }),
-    -- LspSagaCodeActionBorder({ fg = clrs.nord7 }),
-    -- LspSagaFinderSelection({ fg = clrs.nord14 }),
-    -- LspSagaCodeActionTitle({ fg = clrs.nord10 }),
-    -- LspSagaCodeActionContent({ fg = clrs.nord9 }),
-    -- LspSagaSignatureHelpBorder({ fg = clrs.nord13 }),
-    -- ReferencesCount({ fg = clrs.nord9 }),
-    -- DefinitionCount({ fg = clrs.nord9 }),
-    -- DefinitionIcon({ fg = clrs.nord7 }),
-    -- ReferencesIcon({ fg = clrs.nord7 }),
-    -- TargetWord({ fg = clrs.nord8 }),
-    -- --
     -- used for highlighting "text" references
     LspReferenceText({ gui = 'underline', fg = clrs.nord14 }),
     -- used for highlighting "read" references

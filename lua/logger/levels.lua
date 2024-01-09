@@ -20,7 +20,7 @@ local scopes = {
 }
 
 local patterns = {
-  notify = { 'devdocs', 2 },
+  notify = { '^%[devdocs%]', 2 },
 }
 -- `DEBUG_CODEIUM` environment variable: `trace`, `debug`, `info`, `warn`, `error`
 

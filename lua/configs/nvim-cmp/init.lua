@@ -118,7 +118,7 @@ local cfg = {
     completion = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
     documentation = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
   },
-  mapping = mapping_main,
+  mapping = cmp.mapping.preset.insert(mapping_main), --mapping_main,
   sources = cmp.config.sources(sources.main[1], sources.main[2]),
   view = {
     entries = {
@@ -183,88 +183,16 @@ cmp.setup.filetype('lua', {
 
 cmp.setup.cmdline({ '/', '?' }, {
   -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
-  -- mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
-  mapping = {
-    ['<C-B>'] = cmp.mapping(
-      cmp.mapping.select_prev_item({
-        count = 6,
-        behavior = cmp.SelectBehavior.Select,
-        preserve_mapping_verticality = true,
-      }),
-      { 'i' }
-    ),
-    ['<C-F>'] = cmp.mapping(
-      cmp.mapping.select_next_item({
-        count = 6,
-        behavior = cmp.SelectBehavior.Select,
-        preserve_mapping_verticality = true,
-      }),
-      { 'i' }
-    ),
-  },
+  mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
   sources = cmp.config.sources(sources.cmdsearch),
   matching = { disallow_symbol_nonprefix_matching = false },
-
-  cmp.setup.cmdline(':', {
-    mapping = {
-      ['<C-F>'] = {
-        c = function()
-          if cmp.visible() then
-            for _ = 1, 5 do
-              cmp.mapping.select_next_item({
-                behavior = cmp.SelectBehavior.Select,
-              })
-            end
-          else
-            cmp.complete()
-          end
-        end,
-      },
-      ['<C-B>'] = {
-        c = function()
-          if cmp.visible() then
-            for _ = 1, 5 do
-              cmp.mapping.select_prev_item({
-                behavior = cmp.SelectBehavior.Select,
-              })(nil)
-            end
-          else
-            cmp.complete()
-          end
-        end,
-      },
-      ['<C-n>'] = {
-        c = function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-          else
-            fallback()
-          end
-        end,
-      },
-      ['<C-p>'] = {
-        c = function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          else
-            fallback()
-          end
-        end,
-      },
-      ['<C-e>'] = {
-        c = cmp.mapping.abort(),
-      },
-      ['<C-y>'] = {
-        c = cmp.mapping.confirm({ select = false }),
-      },
-    },
-    matching = { disallow_symbol_nonprefix_matching = false },
-    -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
-    sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
-  }),
 })
 
--- setup_cmp()
+cmp.setup.cmdline(':', {
+  matching = { disallow_symbol_nonprefix_matching = false },
+  mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
+  sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
+})
 
 local function toggle_autocomplete()
   local cmp = require('cmp')

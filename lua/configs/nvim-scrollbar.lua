@@ -145,7 +145,7 @@ local default_opts = {
 local opts = {
   show = true,
   show_in_active_only = false,
-  hide_if_all_visible = true, -- Hides everything if all lines are visible
+  hide_if_all_visible = true,
   handle = {
     text = ' ',
     color = '#224385',
@@ -154,14 +154,14 @@ local opts = {
   autocmd = {
     render = {
       'BufWinEnter',
+      'CmdwinLeave',
       'TabEnter',
       'TermEnter',
-      'WinEnter',
-      'CmdwinLeave',
       'TextChanged',
-      'VimResized',
-      'WinScrolled',
       'User',
+      'VimResized',
+      'WinEnter',
+      'WinScrolled',
     },
     clear = {
       'BufWinLeave',
@@ -171,17 +171,17 @@ local opts = {
     },
   },
   excluded_buftypes = {
-    'nofile',
+    -- 'nofile',
     'terminal',
   },
   excluded_filetypes = {
-    -- 'cmp_docs',
+    'chatgpt-input',
+    'cmp_docs',
     'lazy',
+    'neoai-input',
+    'noice',
     'prompt',
     'TelescopePrompt',
-    'noice',
-    'neoai-input',
-    'chatgpt-input',
   },
   marks = {
     Cursor = {

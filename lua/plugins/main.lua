@@ -30,8 +30,13 @@ local plugins = {
       never = { cursorline = { 'qf', 'noice', 'navbuddy' }, cursorcolumn = { 'qf', 'noice', 'navbuddy' } },
     },
   },
-  { 'lukas-reineke/indent-blankline.nvim', commit = '0dca928', event = { 'BufReadPre', 'BufNewFile' } },
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    commit = '0dca928',
+    event = { 'BufReadPre', 'BufNewFile' },
+  },
   { 'Tyler-Barham/floating-help.nvim', cmd = 'FloatHelp' },
+  { 'tris203/hawtkeys.nvim', event = { 'VeryLazy' } },
   { 'echasnovski/mini.clue', event = { 'VeryLazy' } },
   {
     'nmac427/guess-indent.nvim',
@@ -94,7 +99,7 @@ local plugins = {
     'sindrets/diffview.nvim',
     cmd = { 'Diffview', 'DiffviewLog', 'DiffviewOpen', 'DiffviewToggleFiles', 'DiffviewFileHistory' },
   },
-  { 'm00qek/baleia.nvim', lazy = false },
+  { 'm00qek/baleia.nvim', lazy = false, commit = '56ad00d' },
   { 'folke/zen-mode.nvim', cmd = 'ZenMode', keys = { '<S-CR>' } },
   { 'folke/twilight.nvim', cmd = { 'Twilight', 'TwilightEnable' } },
   -- { 'benlubas/wrapping-paper.nvim' },
@@ -114,6 +119,22 @@ local plugins = {
         node_path = '/home/nicholas/.asdf/shims/node',
       })
     end,
+  },
+  { 'BlackLight/nvim-http' },
+  {
+    'jellydn/hurl.nvim',
+    dependencies = { 'MunifTanjim/nui.nvim' },
+    ft = 'hurl',
+    -- keys = {
+    --   -- Run API request
+    --   { "<leader>A", "<cmd>HurlRunner<CR>", desc = "Run All requests" },
+    --   { "<leader>a", "<cmd>HurlRunnerAt<CR>", desc = "Run Api request" },
+    --   { "<leader>te", "<cmd>HurlRunnerToEntry<CR>", desc = "Run Api request to entry" },
+    --   { "<leader>tm", "<cmd>HurlToggleMode<CR>", desc = "Hurl Toggle Mode" },
+    --   { "<leader>tv", "<cmd>HurlVerbose<CR>", desc = "Run Api in verbose mode" },
+    --   -- Run Hurl request in visual mode
+    --   { "<leader>h", ":HurlRunner<CR>", desc = "Hurl Runner", mode = "v" },
+    -- },
   },
   {
     'MaximilianLloyd/tw-values.nvim',
@@ -279,6 +300,7 @@ local plugins = {
   }, -- f2aaab1
   -- movement highlighters
   -- https://github.com/folke/flash.nvim
+  -- https://github.com/jjshoots/betterf.nvim/tree/main
   { 'phaazon/hop.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   {
     'folke/flash.nvim',
@@ -889,7 +911,6 @@ local plugins = {
   { 'stanangeloff/php.vim', ft = 'php', lazy = lz_syn },
   { 'tbastos/vim-lua', ft = 'lua', lazy = lz_syn },
   { 'tikhomirov/vim-glsl', ft = 'glsl', lazy = lz_syn },
-  -- { 'vim-pandoc/vim-pandoc-syntax', ft = { 'markdown', 'pandoc' }, lazy = lz_syn },
   { 'vim-utils/vim-man', ft = 'man', lazy = lz_syn },
   { 'vimwiki/vimwiki', ft = { 'markdown', 'vimwiki' }, lazy = lz_syn },
   { 'mtdl9/vim-log-highlighting', ft = { 'log', 'LOG' }, event = { 'BufReadPost', 'BufNewFile' }, lazy = lz_syn },

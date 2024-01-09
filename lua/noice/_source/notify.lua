@@ -7,6 +7,20 @@ local Util = require('noice.util')
 
 local parse_message = require('notify.gen-highlights')
 
+local pattern_filter = function(name, level, msg)
+  -- additional filtering based on scope and pattern
+  local skip = false
+  local lvl_patterns = require('logger.levels').patterns
+  for scope, filter in pairs(lvl_patterns) do
+    local pattern, scope_lvl = filter[1], filter[2]
+    vim.dbglog(level, scope_lvl, string.match(msg, pattern))
+    if name == scope and string.match(msg, pattern) and level <= scope_lvl then
+      skip = true
+    end
+  end
+  return skip
+end
+
 local M = {}
 
 ---@alias NotifyEvent "notify"
@@ -44,6 +58,10 @@ end
 ---@param level number|string
 ---@param opts? table<string, any>
 function M.notify(msg, level, opts)
+  if pattern_filter('notify', level, msg) then
+    return false
+  end
+
   local _msg, _opts = parse_message(msg, opts)
 
   if vim.in_fast_event() then

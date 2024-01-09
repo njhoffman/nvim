@@ -24,39 +24,74 @@ local function define_augroups(definitions)
   end
 end
 
+-- vim.filetype.add({
+--   extension = {
+--     foo = 'fooscript',
+--     bar = function(path, bufnr)
+--       if some_condition() then
+--         return 'barscript', function(bufnr)
+--           -- Set a buffer variable
+--           vim.b[bufnr].barscript_version = 2
+--         end
+--       end
+--       return 'bar'
+--     end,
+--   },
+--   filename = {
+--     ['.foorc'] = 'toml',
+--     ['/etc/foo/config'] = 'toml',
+--   },
+--   pattern = {
+--     ['.*&zwj;/etc/foo/.*'] = 'fooscript',
+--     -- Using an optional priority
+--     ['.*&zwj;/etc/foo/.*%.conf'] = { 'dosini', { priority = 10 } },
+--     -- A pattern containing an environment variable
+--     ['${XDG_CONFIG_HOME}/foo/git'] = 'git',
+--     ['README.(%a+)$'] = function(path, bufnr, ext)
+--       if ext == 'md' then
+--         return 'markdown'
+--       elseif ext == 'rst' then
+--         return 'rst'
+--       end
+--     end,
+--   },
+-- })
+--
+
 -- stylua: ignore
 local autocmds = {
-  wins = {
-    -- { {'WinEnter' }, '*', 'stopinsert' },
-    { 'BufEnter', 'NvimTree', 'setlocal cursorline' },
-    -- { "InsertLeave", '*',
-    -- function(event)
-    --   if vim.bo.ft == 'TelescopePrompt' and vim.fn.mode() == 'n' then
-    --     vim.cmd('startinsert!')
-    --     -- vim.schedule_wrap(function()
-    --     --   vim.cmd('startinsert')
-    --     -- end)
-    --   -- elseif vim.bo.ft == "lua" and vim.fn.mode() == 'i' then
-    --   --   vim.cmd('stopinsert')
-    --   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
-    --   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
-    --   end
-    --   vim.dbglog(vim.bo.ft, vim.fn.mode(), vim.fn.getftype(vim.fn.bufname(0)))
-    -- end
-  --   },
-  },
-  fasd = { { 'BufWrite', '*', commands.fasd_update } },
-  CommandWin = {
-    { 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=no syn=vim.lua | startinsert ' },
-    { 'CmdwinEnter', '*', 'let b:cpt_save = &cpt | set cpt=.' },
-    { 'CmdwinEnter', '*', 'nnoremap <silent><buffer> <esc> <C-c><C-c>' },
-    { 'CmdwinLeave', '*', 'let &cpt = b:cpt_save | let g:lens#disabled = 1' },
-  },
+wins = {
+-- { {'WinEnter' }, '*', 'stopinsert' },
+{ 'BufEnter', 'NvimTree', 'setlocal cursorline' },
+-- { "InsertLeave", '*',
+-- function(event)
+--   if vim.bo.ft == 'TelescopePrompt' and vim.fn.mode() == 'n' then
+--     vim.cmd('startinsert!')
+--     -- vim.schedule_wrap(function()
+--     --   vim.cmd('startinsert')
+--     -- end)
+--   -- elseif vim.bo.ft == "lua" and vim.fn.mode() == 'i' then
+--   --   vim.cmd('stopinsert')
+--   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
+--   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
+--   end
+--   vim.dbglog(vim.bo.ft, vim.fn.mode(), vim.fn.getftype(vim.fn.bufname(0)))
+-- end
+--   },
+},
+fasd = { { 'BufWrite', '*', commands.fasd_update } },
+CommandWin = {
+{ 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=no syn=vim.lua | startinsert ' },
+{ 'CmdwinEnter', '*', 'let b:cpt_save = &cpt | set cpt=.' },
+{ 'CmdwinEnter', '*', 'nnoremap <silent><buffer> <esc> <C-c><C-c>' },
+{ 'CmdwinLeave', '*', 'let &cpt = b:cpt_save | let g:lens#disabled = 1' },
+},
 
-  FiletypeDetect = {
-    -- { 'FileType', 'query',                 'setlocal nonumber norelativenumber' },
-    { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
+FiletypeDetect = {
+-- { 'FileType', 'query',                 'setlocal nonumber norelativenumber' },
+  { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
     { 'FileType', "neoai-output",          "setlocal ft=pandoc.markdown conceallevel=3 synmaxcol=1000" },
+    -- { {'FileType'}, "pandoc",          "setlocal syn=pandoc | setlocal conceallevel=3 synmaxcol=500" },
     { {'BufNewFile', 'BufRead'}, '*nvim/option-window', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>', },
     { { 'BufNewFile', 'BufRead' }, '*startuptime.tsv',   'setlocal ft=crontab syn=crontab' },
     -- { { 'BufNewFile', 'BufRead' }, '*.log',              "lua require('commands.format').create_cmd_truncate()" },

@@ -6,33 +6,24 @@ local get_theme = function(theme)
     layout_config = {
       bottom_pane = {
         height = 25,
-        preview_cutoff = 40,
-        prompt_position = 'top',
       },
       center = {
         preview_height = 0.5,
         height = 0.4,
-        preview_cutoff = 40,
-        prompt_position = 'top',
         width = 0.5,
       },
       cursor = {
         height = 0.9,
-        preview_cutoff = 40,
         width = 0.8,
       },
       horizontal = {
         height = 0.9,
-        prompt_position = 'top',
         width = 0.8,
-        preview_cutoff = 60,
         preview_width = 0.5,
       },
       vertical = {
         height = 0.9,
-        preview_cutoff = 40,
         width = 0.8,
-        prompt_position = 'top',
         mirror = true,
         preview_height = 0.5,
       },

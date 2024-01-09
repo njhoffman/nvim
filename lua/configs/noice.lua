@@ -264,7 +264,7 @@ vim.api.nvim_create_user_command('Silence', function()
   })
   vim.cmd([[
     set laststatus=0
-    set cmdheight=0
+    set cmdheight=1
     set nomore
     echomsg 'Messages and lsp silenced...'
   ]])

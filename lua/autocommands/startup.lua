@@ -20,7 +20,7 @@ local get_load_time = function()
   vim.defer_fn(function()
     vim.api.nvim_command('Tip')
     vim.defer_fn(function()
-      vim.notify('Loaded in `' .. load_time .. 's`', 1)
+      vim.notify('Loaded in `' .. load_time .. 's`', 1, { filetype = 'pandoc.markdown' })
     end, 2000)
   end, 2000)
 end
