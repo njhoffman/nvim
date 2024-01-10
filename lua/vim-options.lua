@@ -28,8 +28,8 @@ opt('confirm', true)
 opt('cpoptions', 'aABceFs_r') -- C causes certain vim programs to screw up, x makes command execute even if exiting
 opt('encoding', 'UTF-8')
 opt('fileencoding', 'utf-8')
--- opt('fillchars', 'eob: ') -- Don't show `~` outside of buffer
 
+-- opt('fillchars', 'eob: ') -- Don't show `~` outside of buffer
 vim.opt.fillchars:append({
   eob = ' ',
   fold = ' ',
@@ -87,8 +87,8 @@ opt('startofline', true) -- motions like "G" also move to the first char
 opt('switchbuf', 'useopen,usetab')
 opt('termguicolors', true)
 opt('timeout', true)
-opt('timeoutlen', 500) -- 1000
-opt('ttimeout', true) -- 50
+opt('timeoutlen', 200) -- 1000
+opt('ttimeout', true) 
 opt('ttimeoutlen', 30) -- 50
 opt('undolevels', 1000)
 opt('updatetime', 2000) -- 4000

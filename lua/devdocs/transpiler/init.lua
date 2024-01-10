@@ -1,121 +1,7 @@
 ---@diagnostic disable: need-check-nil, param-type-mismatch
+local t_utils = require('devdocs.transpiler.utils')
+
 local M = {}
-
-local normalize_html = function(str)
-  local symbol_map = {
-    ["&lt;"] = "<",
-    ["&gt;"] = ">",
-    ["&amp;"] = "&",
-    ["&quot;"] = '"',
-    ["&apos;"] = "'",
-    ["&nbsp;"] = " ",
-    ["&copy;"] = "©",
-    ["&ndash;"] = "–",
-  }
-
-  for key, value in pairs(symbol_map) do
-    str = str:gsub(key, value)
-  end
-
-  return str
-end
-
-local tag_mappings = {
-  h1 = { left = "# ", right = "\n\n" },
-  h2 = { left = "## ", right = "\n\n" },
-  h3 = { left = "### ", right = "\n\n" },
-  h4 = { left = "#### ", right = "\n\n" },
-  h5 = { left = "##### ", right = "\n\n" },
-  h6 = { left = "###### ", right = "\n\n" },
-  span = {},
-  nav = {},
-  header = {},
-  div = { left = "\n", right = "\n" },
-  section = { right = "\n" },
-  p = { right = "\n\n" },
-  ul = { right = "\n" },
-  ol = { right = "\n" },
-  dl = { right = "\n" },
-  dt = { right = "\n" },
-  figure = { right = "\n" },
-  dd = { left = ": " },
-  pre = { left = "\n```\n", right = "\n```\n" },
-  code = { left = "`", right = "`" },
-  samp = { left = "`", right = "`" },
-  var = { left = "`", right = "`" },
-  kbd = { left = "`", right = "`" },
-  mark = { left = "`", right = "`" },
-  tt = { left = "`", right = "`" },
-  b = { left = "`", right = "`" },
-  strong = { left = "**", right = "**" },
-  i = { left = "_", right = "_" },
-  s = { left = "~~", right = "~~" },
-  em = { left = "_", right = "_" },
-  small = { left = "_", right = "_" },
-  sup = { left = "^", right = "^" },
-  blockquote = { left = "> " },
-  summary = { left = "<", right = ">" },
-
-  -- TODO: Handle these correctly
-  math = { left = "```math\n", right = "\n```" },
-  annotation = { left = "[", right = "]" },
-  semantics = {},
-  mspace = { left = " " },
-  msup = { right = "^" },
-  mfrac = { right = "/" },
-  mrow = {},
-  mo = {},
-  mn = {},
-  mi = {},
-
-  br = { right = "\n" },
-  hr = { right = "---\n\n" },
-}
-
-local inline_tags = {
-  "span",
-  "a",
-  "strong",
-  "em",
-  "abbr",
-  "code",
-  "tt",
-  "i",
-  "s",
-  "b",
-  "sub",
-  "sup",
-  "mark",
-  "small",
-  "var",
-  "kbd",
-}
-
-local skipable_tags = {
-  "input",
-  "use",
-  "svg",
-  "button",
-
-  -- exceptions, (parent) table -> child
-  "tr",
-  "td",
-  "th",
-  "thead",
-  "tbody",
-}
-
-local monospace_tags = {
-  "code",
-  "tt",
-  "samp",
-  "kbd",
-}
-
-local is_inline_tag = function(tag_name) return vim.tbl_contains(inline_tags, tag_name) end
-local is_skipable_tag = function(tag_name) return vim.tbl_contains(skipable_tags, tag_name) end
-local is_monospace_tag = function(tag_name) return vim.tbl_contains(monospace_tags, tag_name) end
-
 local transpiler = {}
 
 ---HTML to Markdown transpiler
@@ -123,9 +9,9 @@ local transpiler = {}
 ---@param section_map table<string, string>? a map of the doc sections for indexing
 function transpiler:new(source, section_map)
   local new = {
-    parser = vim.treesitter.get_string_parser(source, "html"),
-    lines = vim.split(source, "\n"),
-    result = "",
+    parser = vim.treesitter.get_string_parser(source, 'html'),
+    lines = vim.split(source, '\n'),
+    result = '',
     section_map = section_map or {},
     sections = {},
   }
@@ -153,13 +39,15 @@ function transpiler:get_text_range(row_start, col_start, row_end, col_end)
     table.insert(extracted_lines, line)
   end
 
-  return table.concat(extracted_lines, "\n")
+  return table.concat(extracted_lines, '\n')
 end
 
 ---@param node TSNode
 ---@return string
 function transpiler:get_node_text(node)
-  if not node then return "" end
+  if not node then
+    return ''
+  end
 
   local row_start, col_start = node:start()
   local row_end, col_end = node:end_()
@@ -170,14 +58,18 @@ end
 
 ---@param node TSNode
 function transpiler:get_node_tag_name(node)
-  if not node then return "" end
+  if not node then
+    return ''
+  end
 
   local tag_name = nil
   local child = node:named_child()
 
   if child then
     local tag_node = child:named_child()
-    if tag_node then tag_name = self:get_node_text(tag_node) end
+    if tag_node then
+      tag_name = self:get_node_text(tag_node)
+    end
   end
 
   return tag_name
@@ -190,7 +82,9 @@ function transpiler:has_parent_tag(node, tag_name)
 
   while current do
     local parent_tag_name = self:get_node_tag_name(current)
-    if parent_tag_name == tag_name then return true end
+    if parent_tag_name == tag_name then
+      return true
+    end
     current = current:parent()
   end
 
@@ -200,12 +94,16 @@ end
 ---@param node TSNode
 ---@return table<string, string>
 function transpiler:get_node_attributes(node)
-  if not node then return {} end
+  if not node then
+    return {}
+  end
 
   local attributes = {}
   local tag_node = node:named_child()
 
-  if not tag_node then return {} end
+  if not tag_node then
+    return {}
+  end
 
   local tag_children = tag_node:named_children()
 
@@ -213,12 +111,14 @@ function transpiler:get_node_attributes(node)
     local attribute_node = tag_children[i]
     local attribute_name_node = attribute_node:named_child()
     local attribute_name = self:get_node_text(attribute_name_node)
-    local value = ""
+    local value = ''
 
     if attribute_name_node and attribute_name_node:next_named_sibling() then
       local quotetd_value_node = attribute_name_node:next_named_sibling()
       local value_node = quotetd_value_node:named_child()
-      if value_node then value = self:get_node_text(value_node) end
+      if value_node then
+        value = self:get_node_text(value_node)
+      end
     end
 
     attributes[attribute_name] = value
@@ -234,7 +134,7 @@ function transpiler:filter_tag_children(node)
   local children = node:named_children()
   local filtered = vim.tbl_filter(function(child)
     local type = child:type()
-    return type ~= "start_tag" and type ~= "end_tag"
+    return type ~= 'start_tag' and type ~= 'end_tag'
   end, children)
 
   return filtered
@@ -253,7 +153,7 @@ function transpiler:transpile()
     end
   end)
 
-  self.result = self.result:gsub("\n\n\n+", "\n\n")
+  self.result = self.result:gsub('\n\n\n+', '\n\n')
 
   return self.result, self.sections
 end
@@ -262,21 +162,21 @@ end
 ---@param node TSNode
 ---@return string
 function transpiler:eval(node)
-  local result = ""
+  local result = ''
   local node_type = node:type()
   local node_text = self:get_node_text(node)
   local tag_name = self:get_node_tag_name(node)
   local attributes = self:get_node_attributes(node)
 
-  if node_type == "text" or node_type == "entity" then
-    result = result .. normalize_html(node_text)
-  elseif node_type == "element" then
+  if node_type == 'text' or node_type == 'entity' then
+    result = result .. t_utils.normalize_html(node_text)
+  elseif node_type == 'element' then
     local tag_node = node:named_child()
     local tag_type = tag_node:type()
     local parent_node = node:parent()
     local parent_tag_name = self:get_node_tag_name(parent_node)
 
-    if tag_type == "start_tag" then
+    if tag_type == 'start_tag' then
       local children = self:filter_tag_children(node)
 
       for _, child in ipairs(children) do
@@ -284,41 +184,49 @@ function transpiler:eval(node)
       end
     end
 
-    if is_skipable_tag(tag_name) then return "" end
-    if is_monospace_tag(tag_name) and self:has_parent_tag(node, "pre") then return result end -- avoid nested code blocks
+    if t_utils.is_skipable_tag(tag_name) then
+      return ''
+    end
+    if t_utils.is_monospace_tag(tag_name) and self:has_parent_tag(node, 'pre') then
+      return result
+    end -- avoid nested code blocks
 
-    if tag_name == "a" then
-      result = string.format("[%s](%s)", result, attributes.href)
-    elseif tag_name == "img" and string.match(attributes.src, "^data:") then
-      result = string.format("![%s](%s)\n", attributes.alt, "data:inline_image")
-    elseif tag_name == "img" then
-      result = string.format("![%s](%s)\n", attributes.alt, attributes.src)
-    elseif tag_name == "pre" and attributes["data-language"] then
-      result = "\n```" .. attributes["data-language"] .. "\n" .. result .. "\n```\n"
-    elseif tag_name == "pre" and attributes["class"] then
-      local language = attributes["class"]:match("language%-(.+)")
-      result = "\n```" .. (language or "") .. "\n" .. result .. "\n```\n"
-    elseif tag_name == "abbr" then
-      result = string.format("%s(%s)", result, attributes.title)
-    elseif tag_name == "iframe" then
-      result = string.format("[%s](%s)\n", attributes.title, attributes.src)
-    elseif tag_name == "details" then
-      result = "..."
-    elseif tag_name == "table" then
-      result = self:eval_table(node) .. "\n"
-    elseif tag_name == "li" then
-      if parent_tag_name == "ul" then result = "- " .. result .. "\n" end
-      if parent_tag_name == "ol" then
+    if tag_name == 'a' then
+      result = string.format('[%s](%s)', result, attributes.href)
+    elseif tag_name == 'img' and string.match(attributes.src, '^data:') then
+      result = string.format('![%s](%s)\n', attributes.alt, 'data:inline_image')
+    elseif tag_name == 'img' then
+      result = string.format('![%s](%s)\n', attributes.alt, attributes.src)
+    elseif tag_name == 'pre' and attributes['data-language'] then
+      result = '\n```' .. attributes['data-language'] .. '\n' .. result .. '\n```\n'
+    elseif tag_name == 'pre' and attributes['class'] then
+      local language = attributes['class']:match('language%-(.+)')
+      result = '\n```' .. (language or '') .. '\n' .. result .. '\n```\n'
+    elseif tag_name == 'abbr' then
+      result = string.format('%s(%s)', result, attributes.title)
+    elseif tag_name == 'iframe' then
+      result = string.format('[%s](%s)\n', attributes.title, attributes.src)
+    elseif tag_name == 'details' then
+      result = '...'
+    elseif tag_name == 'table' then
+      result = self:eval_table(node) .. '\n'
+    elseif tag_name == 'li' then
+      if parent_tag_name == 'ul' then
+        result = '- ' .. result .. '\n'
+      end
+      if parent_tag_name == 'ol' then
         local siblings = self:filter_tag_children(parent_node)
         for i, sibling in ipairs(siblings) do
-          if node:equal(sibling) then result = i .. ". " .. result .. "\n" end
+          if node:equal(sibling) then
+            result = i .. '. ' .. result .. '\n'
+          end
         end
       end
     else
-      local map = tag_mappings[tag_name]
+      local map = t_utils.tag_mappings[tag_name]
       if map then
-        local left = map.left or ""
-        local right = map.right or ""
+        local left = map.left or ''
+        local right = map.right or ''
         result = left .. result .. right
       else
         result = result .. node_text
@@ -330,13 +238,17 @@ function transpiler:eval(node)
   local sibling = node:next_named_sibling()
 
   -- checks if there should be additional spaces or linebreaks
-  if parent and parent:type() == "fragment" and sibling then
+  if parent and parent:type() == 'fragment' and sibling then
     local start_row, start_col = node:end_()
     local target_row, target_col = sibling:start()
-    local is_inline = is_inline_tag(tag_name) or not tag_name -- is text
+    local is_inline = t_utils.is_inline_tag(tag_name) or not tag_name -- is text
 
-    if is_inline and start_col ~= target_col then result = result .. " " end
-    if is_inline then result = result .. string.rep("\n", target_row - start_row) end
+    if is_inline and start_col ~= target_col then
+      result = result .. ' '
+    end
+    if is_inline then
+      result = result .. string.rep('\n', target_row - start_row)
+    end
   end
 
   -- use the Markdown text for indexing docs in the index.json file
@@ -366,14 +278,14 @@ function transpiler:eval_child(node, parent_node)
     -- The <pre> HTML element represents preformatted text
     -- which is to be presented exactly as written in the HTML file
     -- FIXME: this implementation is still not completetely corect
-    if self:has_parent_tag(node, "pre") or attributes.class == "_rfc-pre" then
+    if self:has_parent_tag(node, 'pre') or attributes.class == '_rfc-pre' then
       local child = sibling:named_child()
 
       -- skip all the tags to get the actual text offset, see #56
       while child do
         local child_sibling = child:next_named_sibling()
 
-        if child:type() == "start_tag" and child_sibling then
+        if child:type() == 'start_tag' and child_sibling then
           local c_row, c_col = child:end_()
           local s_row, s_col = child_sibling:start()
 
@@ -394,19 +306,23 @@ function transpiler:eval_child(node, parent_node)
       while row ~= target_row or col ~= target_col do
         local char = self:get_text_range(row, col, row, col + 1)
 
-        if char ~= "" then
+        if char ~= '' then
           result = result .. char
           col = col + 1
         else
-          result = result .. "\n"
+          result = result .. '\n'
           row, col = row + 1, 0
         end
       end
     else
-      local is_inline = is_inline_tag(tag_name) or not tag_name -- is text
+      local is_inline = t_utils.is_inline_tag(tag_name) or not tag_name -- is text
 
-      if is_inline and start_col ~= target_col then result = result .. " " end
-      if is_inline then result = result .. string.rep("\n", target_row - start_row) end
+      if is_inline and start_col ~= target_col then
+        result = result .. ' '
+      end
+      if is_inline then
+        result = result .. string.rep('\n', target_row - start_row)
+      end
     end
   end
 
@@ -417,13 +333,13 @@ end
 ---@param node TSNode
 ---@return string
 function transpiler:eval_table(node)
-  local result = ""
+  local result = ''
   local children = self:filter_tag_children(node)
   ---@type TSNode[]
   local tr_nodes = {}
   local first_child_tag = self:get_node_tag_name(children[1])
 
-  if first_child_tag == "tr" then
+  if first_child_tag == 'tr' then
     vim.list_extend(tr_nodes, children)
   else
     -- extracts tr from thead, tbody
@@ -443,7 +359,7 @@ function transpiler:eval_table(node)
     colspan_map[i] = {}
 
     for j, tcol_node in ipairs(tr_children) do
-      local inner_result = ""
+      local inner_result = ''
       local tcol_children = self:filter_tag_children(tcol_node)
       local attributes = self:get_node_attributes(tcol_node)
 
@@ -451,12 +367,16 @@ function transpiler:eval_table(node)
         inner_result = inner_result .. self:eval(tcol_child)
       end
 
-      inner_result = inner_result:gsub("\n", "")
+      inner_result = inner_result:gsub('\n', '')
       result_map[i][j] = inner_result
       colspan_map[i][j] = attributes.colspan or 1
 
-      if not max_col_len_map[j] then max_col_len_map[j] = 1 end
-      if max_col_len_map[j] < #inner_result then max_col_len_map[j] = #inner_result end
+      if not max_col_len_map[j] then
+        max_col_len_map[j] = 1
+      end
+      if max_col_len_map[j] < #inner_result then
+        max_col_len_map[j] = #inner_result
+      end
     end
   end
 
@@ -467,22 +387,26 @@ function transpiler:eval_table(node)
       local colspan = tonumber(colspan_map[i][j])
       local col_len = max_col_len_map[current_col]
 
-      if not col_len then break end
+      if not col_len then
+        break
+      end
 
-      result = result .. "| " .. value .. string.rep(" ", col_len - #value + 1)
+      result = result .. '| ' .. value .. string.rep(' ', col_len - #value + 1)
       current_col = current_col + 1
 
       if colspan > 1 then
         local len = current_col + colspan - 1
         while current_col < len do
           local spacing = max_col_len_map[current_col]
-          if spacing then result = result .. string.rep(" ", spacing + 3) end
+          if spacing then
+            result = result .. string.rep(' ', spacing + 3)
+          end
           current_col = current_col + 1
         end
       end
     end
 
-    result = result .. "|\n"
+    result = result .. '|\n'
 
     -- generates row separator
     if i == 1 then
@@ -491,23 +415,27 @@ function transpiler:eval_table(node)
         local colspan = tonumber(colspan_map[i][j])
         local col_len = max_col_len_map[current_col]
 
-        if not col_len then break end
+        if not col_len then
+          break
+        end
 
-        local line = string.rep("-", col_len)
+        local line = string.rep('-', col_len)
         current_col = current_col + 1
 
         if colspan > 1 then
           local len = current_col + colspan - 1
           while current_col < len do
             local spacing = max_col_len_map[current_col]
-            if spacing then line = line .. string.rep("-", spacing + 3) end
+            if spacing then
+              line = line .. string.rep('-', spacing + 3)
+            end
             current_col = current_col + 1
           end
         end
-        result = result .. "| " .. string.gsub(line, "\n", "") .. " "
+        result = result .. '| ' .. string.gsub(line, '\n', '') .. ' '
       end
 
-      result = result .. "|\n"
+      result = result .. '|\n'
     end
   end
 
@@ -521,17 +449,19 @@ M.to_yaml = function(entry)
   local lines = {}
 
   for key, value in pairs(entry) do
-    if key == "attribution" then
-      value = normalize_html(value)
-      value = value:gsub("<a.*>(.*)</a>", "%1")
-      value = value:gsub("<br>", "")
-      value = value:gsub("\n *", " ")
+    if key == 'attribution' then
+      value = t_utils.normalize_html(value)
+      value = value:gsub('<a.*>(.*)</a>', '%1')
+      value = value:gsub('<br>', '')
+      value = value:gsub('\n *', ' ')
     end
-    if key == "links" then value = vim.fn.json_encode(value) end
-    table.insert(lines, key .. ": " .. value)
+    if key == 'links' then
+      value = vim.fn.json_encode(value)
+    end
+    table.insert(lines, key .. ': ' .. value)
   end
 
-  return table.concat(lines, "\n")
+  return table.concat(lines, '\n')
 end
 
 ---Converts HTML to markdown

@@ -46,10 +46,14 @@ M.open_doc_float = function(args)
   M.open_doc(args, true)
 end
 
-M.open_doc_current_file = function(float)
+M.get_by_filetype = function()
   local filetype = vim.bo.filetype
   local names = config.options.filetypes[filetype] or filetypes[filetype] or filetype
+  return names
+end
 
+M.open_doc_current_file = function(float)
+  local names = M.get_by_filetype()
   if type(names) == 'string' then
     names = { names }
   end

@@ -20,9 +20,15 @@ local doc_previewer = previewers.new_buffer_previewer({
   title = 'Preview',
   keep_last_buf = true,
   define_preview = function(self, entry)
+    if not vim.api.nvim_buf_is_valid(self.state.bufnr) then
+      return
+    end
     operations.read_entry_async(entry.value, function(filtered_lines)
       local bufnr = self.state.bufnr
       local winid = self.state.winid
+      if not vim.api.nvim_buf_is_valid(bufnr) then
+        return
+      end
       vim.api.nvim_set_option_value('modifiable', true, { buf = bufnr })
       vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, filtered_lines)
       if plugin_config.options.previewer_cmd and plugin_config.options.picker_cmd then

@@ -51,11 +51,12 @@ local get_installed = function(config)
 end
 
 local get_count = function(config, aliases)
-  local count = {}
+  local count = { ['*'] = 0 }
   local index = read_index(config) or {}
   for _, alias in pairs(aliases) do
     if index[alias] then
       count[alias] = #index[alias].entries
+      count['*'] = count['*'] + count[alias]
     end
   end
   return count
@@ -125,6 +126,15 @@ local debug = function(...)
   print(inspect(...))
 end
 
+local tbl_contains = function(tbl, value)
+  for _, v in ipairs(tbl) do
+    if v == value then
+      return true
+    end
+  end
+  return false
+end
+
 return {
   debug = debug,
   get_count = get_count,
@@ -134,4 +144,6 @@ return {
   read_lockfile = read_lockfile,
   file_exists = file_exists,
   get_keys = get_keys,
+  tbl_contains = tbl_contains,
+  split = split,
 }

@@ -723,10 +723,20 @@ map('n', 'U', '', {
   desc = 'disable line undo so it can prefix other commands',
 })
 
-  map('n', 'U', '<c-r>', {
+map('n', 'U', '<c-r>', {
   category = 'Motion',
   label = 'asssign line undo',
   desc = 'assign line undo',
+})
+
+map({ 'n' }, "<M-BS>", '<cmd>pop<cr>', {
+  category = 'Motion',
+  desc = 'jump to previous tag',
+})
+
+vmap({ 'n' }, "<C-]>",  {
+  category = 'Motion',
+  desc = 'jump to next tag',
 })
 
 -- TODO: create function to save last visual selection before undoing

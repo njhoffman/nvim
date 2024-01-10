@@ -15,6 +15,7 @@ local extension_configs = {
     ['show_domain_icons'] = true,
   },
 
+  ['devdocs']  = {},
   ['devhints'] = {},
   ['oldfiles'] = {
     mappings = mappings.file,

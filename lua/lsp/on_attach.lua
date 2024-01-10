@@ -5,7 +5,7 @@ local format = require('lsp.format')
 local setup_mappings = function()
   vim.api.nvim_set_keymap(
     'n',
-    '<M-T>',
+    '<C-t>',
     "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = true })<cr>",
     { silent = true, desc = 'show buffer diagnostics' }
   )
@@ -13,7 +13,7 @@ local setup_mappings = function()
   vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
   vim.api.nvim_set_keymap(
     'n',
-    '<M-w>',
+    '<M-T>',
     "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>",
     { silent = true, desc = 'show workspace  diagnostics' }
   )

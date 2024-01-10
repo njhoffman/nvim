@@ -1,6 +1,7 @@
-local init_config = function(arg)
+local init_config = function()
   local config = {}
-  local dir_path = arg or os.getenv('HOME') .. '/.local/share/nvim/devdocs'
+  -- TODO: enable env variable override
+  local dir_path = os.getenv('HOME') .. '/.local/share/nvim/devdocs'
   config.DATA_DIR = dir_path
   config.DOCS_DIR = dir_path .. '/docs'
   config.INDEX_PATH = dir_path .. '/index.json'

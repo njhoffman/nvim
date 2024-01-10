@@ -14,6 +14,7 @@ local plugin_config = require('devdocs.config')
 
 local previewers = require('telescope._extensions.devdocs.previewers')
 local entry_maker = require('telescope._extensions.devdocs.display')
+local entry_maker_dyn = require('telescope._extensions.devdocs.display-dyn')
 local devdoc_actions = require('telescope._extensions.devdocs.actions')
 
 ---@param prompt string
@@ -151,6 +152,35 @@ M.open_picker_alias = function(alias, float)
     plugin_state.set('current_doc', alias)
     M.open_picker(entries, float)
   end
+end
+
+M.open_picker_alias_dyn = function(opts)
+  opts = opts or {}
+  -- opts.entry_maker = opts.entry_maker or entry_maker_dyn
+  opts.entry_maker = entry_maker_dyn
+  local script_file = vim.fn.stdpath('config') .. '/luarocks/devdocs/lua_modules/bin/list'
+  -- local script_file = vim.fn.stdpath('config') .. '/lua/telescope/_extensions/tester/test.sh'
+  local command = { script_file }
+
+  vim.dbglog('oneshot job: ', command)
+  local picker = pickers.new(plugin_config.options.telescope, {
+    prompt_title = 'Select an entry',
+    finder = finders.new_oneshot_job(command, opts),
+    -- sorter = config.generic_sorter(plugin_config.options.telescope),
+    -- previewer = previewers.doc_previewer,
+    -- attach_mappings = function(prompt_bufnr)
+    --   actions.select_default:replace(function()
+    --     actions.close(prompt_bufnr)
+    --     local selection = action_state.get_selected_entry()
+    --     if selection then
+    --       plugin_state.set('current_doc', selection.value.alias)
+    --       devdoc_actions.open_doc(selection, float)
+    --     end
+    --   end)
+    --   return true
+    -- end,
+  })
+  picker:find()
 end
 
 return M

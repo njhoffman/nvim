@@ -1,4 +1,37 @@
+" let g:pandoc#syntax#newlines = 1
 let g:pandoc#syntax#style#emphases = 1
+"       let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby",
+"       "literatehaskell=lhaskell", "bash=sh"]
+" vim.g['pandoc#syntax#codeblocks#embeds#langs'] = {
+"   'awk',
+"   'bash=sh',
+"   'c',
+"   'cpp',
+"   'css',
+"   'go',
+"   'html',
+"   'ini=dosini',
+"   'java',
+"   'javascript',
+"   'json',
+"   'kotlin',
+"   'lua',
+"   'python',
+"   'python3=python',
+"   'pycon=python',
+"   'pycon3=python',
+"   'ruby',
+"   'rust',
+"   'sh',
+"   'shell=sh',
+"   'sql',
+"   'terraform',
+"   'ts=typescript',
+"   'vim',
+"   'xml',
+"   'yaml',
+"   'zsh',
+" }
 
 
 " vim-pandoc-syntax*
