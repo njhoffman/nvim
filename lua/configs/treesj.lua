@@ -25,6 +25,7 @@ local defaults = {
 
 require('treesj').setup({
   use_default_keymaps = false,
+  cursor_behavior = 'start',
   max_join_length = 1000,
   check_syntax_error = false,
 })
