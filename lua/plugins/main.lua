@@ -560,6 +560,7 @@ local plugins = {
   { 'wakatime/vim-wakatime', enabled = false, event = 'VeryLazy' },
   { 'LunarVim/bigfile.nvim' },
   { 'carlosrocha/chrome-remote.nvim', event = 'VeryLazy' },
+  { 'altermo/nxwm', event = 'VeryLazy', enabled = false },
   {
     'nvim-neotest/neotest',
     cmd = { 'Neotest', 'NeotestSummary', 'NeotestNearest', 'NeotestAttach' },

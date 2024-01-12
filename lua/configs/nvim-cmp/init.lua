@@ -69,6 +69,22 @@ end
 -- If you want insert `(` after select function or method item
 -- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 -- cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+local Kind = cmp.lsp.CompletionItemKind
+local function ls_name_from_event(event)
+  return event.entry.source.source.client.config.name
+end
+-- Add parenthesis on completion confirmation
+cmp.event:on('confirm_done', function(event)
+  local ok, ls_name = pcall(ls_name_from_event, event)
+  if ok and vim.tbl_contains({ 'rust_analyzer'}, ls_name) then
+    return
+  end
+  local completion_kind = event.entry:get_completion_item().kind
+  if vim.tbl_contains({ Kind.Function, Kind.Method }, completion_kind) then
+    local left = vim.api.nvim_replace_termcodes('<Left>', true, false, true)
+    vim.api.nvim_feedkeys('()' .. left, 'n', false)
+  end
+end)
 
 local cfg = {
   autocomplete = {

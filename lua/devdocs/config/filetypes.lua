@@ -1,5 +1,5 @@
 -- missing: nim, pony, crystal, apache pig
-local M = {
+local filetypes = {
   clojure = { 'reactivex' },
   cobol = { 'gnu_cobol' },
   coffee = { 'coffeescript' },
@@ -210,7 +210,7 @@ local M = {
     'relay',
     'requirejs',
     'rethinkdb',
-    'rethinkdb-javasript',
+    'rethinkdb-javascript',
     'rxjs',
     'sanctuary',
     'sanctuary_def',
@@ -271,4 +271,4 @@ local M = {
   },
 }
 
-return M
+return filetypes

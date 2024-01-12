@@ -40,7 +40,7 @@ local cfg = {
     hover = {
       enabled = true,
       -- view = nil, -- when nil, use defaults from documentation
-      opts = { win_options = {} }, -- merged with defaults from documentation
+      opts = { win_options = { scrolloff = 0, scrollback = 1 } }, -- merged with defaults from documentation
     },
     signature = {
       enabled = true,

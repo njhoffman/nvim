@@ -1,9 +1,4 @@
 local entry_display = require('telescope.pickers.entry_display')
--- alias = "python-3.12",
--- link = "library/asyncio-subprocess#asyncio.subprocess.Process",
--- name = "asyncio.subprocess.Process",
--- next_path = "46,`coroutine wait()`",
--- path = "46,`class asyncio.subprocess.Process`"
 
 local displayer = entry_display.create({
   separator = ' ',

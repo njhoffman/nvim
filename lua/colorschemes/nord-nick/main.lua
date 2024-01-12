@@ -909,6 +909,7 @@ return function(injected_functions)
     -- AerialVariableIcon({ Identifier }),
     -- +--- Telescope ---+
     TelescopeNormal({ fg = '#6D779a', bg = 'none', gui = 'none' }),
+    TelescopeComment({ Comment }),
     TelescopeBorder({ bg = 'none', fg = '#2299cc' }),
     TelescopePrompt({ bg = 'none' }),
     TelescopePromptTitle({ fg = '#07a0ff', bg = 'none' }),

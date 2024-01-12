@@ -72,8 +72,13 @@ local main = {
     }),
   },
   -- ['<C-space>'] = mapping.complete(),
-  ['<C-Space>'] = { i = mapping.confirm({ select = false }) },
-  ['<CR>'] = { i = mapping.confirm({ select = true }) },
+  ['<C-Space>'] = { i = mapping.complete() },
+  ['<CR>'] = { i = mapping.confirm({ select = false }) },
+  -- if cmp.get_active_entry() then
+  --        cmp.confirm()
+  --    else
+  --        require'ultimate-autopair.maps.cr'.cmpnewline()
+  --    end
   ['<C-D>'] = { i = mapping.abort() },
   ['<Tab>'] = {
     i = function(fallback)

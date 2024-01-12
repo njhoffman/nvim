@@ -10,6 +10,7 @@ local extensions = require('configs.telescope.extensions')
 local display_path = require('configs.telescope.display-path')
 local putils = require('telescope.previewers.utils')
 local pfiletype = require('plenary.filetype')
+local custom_previewers = require('configs.telescope.previewers')
 
 local telescope_config = {
   defaults = {
@@ -93,9 +94,8 @@ local telescope_config = {
       '%.plist$',
       -- other ignores are defined via .gitignore, .ignore, /fd/ignore, or /git/ignore
     },
-    -- file_previewer = previewers.buffer_cat,
     grep_previewer = previewers.vim_buffer_vimgrep.new,
-    file_previewer = require('configs.telescope.previewers').buffer_cat,
+    file_previewer = custom_previewers.buffer_cat,
     qflist_previewer = previewers.vim_buffer_qflist.new,
     preview = {
       check_mime_type = true,

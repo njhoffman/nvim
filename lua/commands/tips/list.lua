@@ -72,6 +72,12 @@ local tips_list = {
       .. nl
       .. '`% = matching, a = argument, A = attribute,  s = sentence,        p = paragraph,    q = quote`',
   },
+  autopairs = {
+    'Jump to end or out of pairs with tabout' .. nl .. '`(f*oo)  <tab>  (foo*)`' .. nl .. '`(f*oo)  <c-tab>  (foo)*` (hopout)',
+    'Fast warp input char to the next end pair' .. nl .. '`(*){}  <c-.>  ({}*)` (nocursormove=false)' .. nl .. '`(*){}  <c-\'>  (*{})` (nocursormove=true)',
+    'Fly (hop) to list of end-pairs' .. nl .. '`({[*] })  )  ({[] })*` (only_jump_end_pair=true)' .. nl .. '`*()  )  ()*` (only_jump_end_pair=false)',
+    'Automatically wrap surround pairs' .. nl .. '`*\'a`  (  `(*\'a\')`',
+  },
   global = {
     'To delete all lines that have only whitespace' .. nl .. '`:g/^s*$/d`',
     'To delete all non-matching lines' .. nl .. '`:vg/pattern/d`',

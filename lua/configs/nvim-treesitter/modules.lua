@@ -94,6 +94,7 @@ local modules = {
     additional_vim_regex_highlighting = {
       -- 'md',
       'make',
+      'zsh',
     },
     custom_captures = {
       -- Highlight the @foo.bar capture group with the "Identifier" highlight group.

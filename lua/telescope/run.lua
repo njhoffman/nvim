@@ -93,11 +93,11 @@ local function run(plugin, cmd, user_opts)
     return telemap[mapkey].cmd(opts)
   end
 
-  local ok, err1, err2
+  local ok, err
   if plugin == 'builtin' and type(builtin[cmd]) == 'function' then
-    ok, err1 = pcall(builtin[cmd], opts)
+    ok, err = pcall(builtin[cmd], opts)
   elseif type(extensions[plugin]) == 'table' and type(extensions[plugin][cmd]) == 'function' then
-    ok, err2 = pcall(extensions[plugin][cmd], opts)
+    ok, err = pcall(extensions[plugin][cmd], opts)
   else
     local msg = 'cmd: ' .. cmd
     if vim.fn.empty(plugin) == 0 then
@@ -107,10 +107,7 @@ local function run(plugin, cmd, user_opts)
   end
 
   if not ok then
-    vim.notify(
-      'Error running command "' .. cmd .. '" for extension "' .. plugin .. '"\n' .. vim.inspect(err1 or err2),
-      4
-    )
+    vim.notify('Error running command "' .. cmd .. '" for extension "' .. plugin .. '"\n' .. vim.inspect(err), 4)
   end
 end
 

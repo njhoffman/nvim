@@ -12,27 +12,21 @@ local operations = require('devdocs.operations')
 local plugin_state = require('devdocs.state')
 local plugin_config = require('devdocs.config')
 
-local previewers = require('telescope._extensions.devdocs.previewers')
-local entry_maker = require('telescope._extensions.devdocs.display')
-local entry_maker_dyn = require('telescope._extensions.devdocs.display-dyn')
 local devdoc_actions = require('telescope._extensions.devdocs.actions')
+local previewers = require('telescope._extensions.devdocs.previewers')
+local create_registry_maker = require('telescope._extensions.devdocs.display.registry')
+local docitems_entry_maker = require('telescope._extensions.devdocs.display.docitems')
 
 ---@param prompt string
----@param entries RegisteryEntry[]
+---@param entries RegistryEntry[]
 ---@param on_attach function
 ---@return Picker
-local function new_registery_picker(prompt, entries, on_attach)
+local function new_registry_picker(prompt, entries, on_attach)
   return pickers.new(plugin_config.options.telescope, {
     prompt_title = prompt,
     finder = finders.new_table({
       results = entries,
-      entry_maker = function(entry)
-        return {
-          value = entry,
-          display = entry.slug:gsub('~', '-'),
-          ordinal = entry.slug:gsub('~', '-'),
-        }
-      end,
+      entry_maker = create_registry_maker(entries),
     }),
     sorter = config.generic_sorter(plugin_config.options.telescope),
     previewer = previewers.metadata_previewer,
@@ -41,13 +35,13 @@ local function new_registery_picker(prompt, entries, on_attach)
 end
 
 M.installation_picker = function()
-  local non_installed = list.get_non_installed_registery()
+  local non_installed = list.get_non_installed_registry()
 
   if not non_installed then
     return
   end
 
-  local picker = new_registery_picker('Install documentation', non_installed, function()
+  local picker = new_registry_picker('Install documentation', non_installed, function()
     actions.select_default:replace(function(prompt_bufnr)
       local selection = action_state.get_selected_entry()
 
@@ -61,13 +55,13 @@ M.installation_picker = function()
 end
 
 M.uninstallation_picker = function()
-  local installed = list.get_installed_registery()
+  local installed = list.get_installed_registry()
 
   if not installed then
     return
   end
 
-  local picker = new_registery_picker('Uninstall documentation', installed, function()
+  local picker = new_registry_picker('Uninstall documentation', installed, function()
     actions.select_default:replace(function(prompt_bufnr)
       local selection = action_state.get_selected_entry()
       local alias = selection.value.slug:gsub('~', '-')
@@ -82,13 +76,13 @@ M.uninstallation_picker = function()
 end
 
 M.update_picker = function()
-  local updatable = list.get_updatable_registery()
+  local updatable = list.get_updatable_registry()
 
   if not updatable then
     return
   end
 
-  local picker = new_registery_picker('Update documentation', updatable, function()
+  local picker = new_registry_picker('Update documentation', updatable, function()
     actions.select_default:replace(function(prompt_bufnr)
       local selection = action_state.get_selected_entry()
       local alias = selection.value.slug:gsub('~', '-')
@@ -107,18 +101,9 @@ end
 M.open_picker = function(entries, float)
   local picker = pickers.new(plugin_config.options.telescope, {
     prompt_title = 'Select an entry',
-    -- finder = function(_opts)
-    --   return finders.new_oneshot_job(command, _opts)
-    -- end,
-    --   finder = finders.new_dynamic({
-    --     fn = async(function(prompt)
-    --       return { prompt }
-    --     end),
-    --     entry_maker = require("telescope.make_entry").gen_from_string {}})
-
     finder = finders.new_table({
       results = entries,
-      entry_maker = entry_maker,
+      entry_maker = docitems_entry_maker,
     }),
     sorter = config.generic_sorter(plugin_config.options.telescope),
     previewer = previewers.doc_previewer,
@@ -156,8 +141,7 @@ end
 
 M.open_picker_alias_dyn = function(opts)
   opts = opts or {}
-  -- opts.entry_maker = opts.entry_maker or entry_maker_dyn
-  opts.entry_maker = entry_maker_dyn
+  opts.entry_maker = opts.entry_maker or docitems_entry_maker
   local script_file = vim.fn.stdpath('config') .. '/luarocks/devdocs/lua_modules/bin/list'
   -- local script_file = vim.fn.stdpath('config') .. '/lua/telescope/_extensions/tester/test.sh'
   local command = { script_file }
@@ -167,7 +151,7 @@ M.open_picker_alias_dyn = function(opts)
     prompt_title = 'Select an entry',
     finder = finders.new_oneshot_job(command, opts),
     -- sorter = config.generic_sorter(plugin_config.options.telescope),
-    -- previewer = previewers.doc_previewer,
+    previewer = previewers.doc_previewer,
     -- attach_mappings = function(prompt_bufnr)
     --   actions.select_default:replace(function()
     --     actions.close(prompt_bufnr)

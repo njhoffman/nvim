@@ -45,10 +45,14 @@ vim.defer_fn(function()
   require('chatgpt').setup(chatgpt_cfg)
 
   local map = require('mapper').map
-  map('i', '<C-D>', '<cmd>norm d$<cr>', {
+  map('i', '<C-D>', '<cmd>norm x<cr>', { -- <C-o> + dl, norm lxh
     category = 'Motion',
-    label = 'delete to eol',
-    desc = 'delete until the end of line',
+    desc = 'delete next char',
+  })
+
+  map('i', '<M-d>', '<cmd>norm d$<cr>', {
+    category = 'Motion',
+    desc = 'delete next char',
   })
 
   map('n', '<M-}>', '<cmd>norm v}<cr>', {
@@ -71,8 +75,10 @@ vim.defer_fn(function()
 
   vim.keymap.set('n', '<M-0>', 'i<M-0><esc>', { remap = true, desc = 'warp pair symbol forwads' })
   vim.keymap.set('n', '<M-9>', 'i<M-9><esc>', { remap = true, desc = 'warp pair symbol backwards' })
-  vim.keymap.set({ 'i', 'n' }, '<M-.>', '<M-0>', { remap = true, desc = 'warp pair symbol forwads' })
-  vim.keymap.set({ 'i', 'n' }, '<M-,>', '<M-9>', { remap = true, desc = 'warp pair symbol forwads' })
+  vim.keymap.set({ 'i', 'n' }, '<M-.>', '<M-0>', { remap = true, desc = 'warp pair symbol forwards' })
+  vim.keymap.set({ 'i', 'n' }, '<M-,>', '<M-9>', { remap = true, desc = 'warp pair symbol forwards' })
+  vim.keymap.set('i', "<M-'>", '<M-0>', { remap = true, desc = 'warp pair symbol forwards' })
+  vim.keymap.set('i', '<M-;>', '<M-9>', { remap = true, desc = 'warp pair symbol backwards' })
 end, 100)
 
 -- require("notifications.recipes.progress").config()

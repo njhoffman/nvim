@@ -7,9 +7,8 @@ local pickers = require('telescope._extensions.devdocs.pickers')
 local operations = require('devdocs.operations')
 local config = require('devdocs.config')
 local completion = require('devdocs.completion')
-local filetypes = require('devdocs.filetypes')
 
-M.fetch_registery = operations.fetch
+M.fetch_registry = operations.fetch
 
 M.install_doc = function(args)
   if vim.tbl_isempty(args.fargs) then
@@ -48,19 +47,20 @@ end
 
 M.get_by_filetype = function()
   local filetype = vim.bo.filetype
-  local names = config.options.filetypes[filetype] or filetypes[filetype] or filetype
+  local names = config.options.filetypes[filetype] or filetype
   return names
 end
 
 M.open_doc_current_file = function(float)
-  local names = M.get_by_filetype()
-  if type(names) == 'string' then
-    names = { names }
+  local installed = list.get_installed_alias()
+  local aliases = installed
+  if type(aliases) == 'string' then
+    aliases = { aliases }
   end
 
-  local docs = vim.tbl_flatten(vim.tbl_map(function(name)
-    return list.get_doc_variants(name)
-  end, names))
+  local docs = vim.tbl_flatten(vim.tbl_map(function(alias)
+    return list.get_doc_variants(alias)
+  end, aliases))
   local entries = list.get_doc_entries(docs)
 
   if entries and not vim.tbl_isempty(entries) then
@@ -116,10 +116,18 @@ M.keywordprg = function(args)
 end
 
 M.setup_highlights = function()
-  vim.api.nvim_set_hl(0, 'TelescopeDevdocsCategory', { default = true, link = 'markdownH1' })
-  vim.api.nvim_set_hl(0, 'TelescopeDevdocsTitle', { default = true, link = 'markdownH2' })
-  vim.api.nvim_set_hl(0, 'TelescopeDevdocsLength', { default = true, link = 'TelescopeNormal' })
-  vim.api.nvim_set_hl(0, 'TelescopeDevdocsLastRead', { default = true, link = 'TelescopeComment' })
+  local set_hl = function(name, link)
+    vim.api.nvim_set_hl(0, name, { default = true, link = link })
+  end
+  set_hl('TelescopeDevdocsRegName', 'markdownH1')
+  set_hl('TelescopeDevdocsRegVersion', 'markdownH2')
+  set_hl('TelescopeDevdocsRegSize', 'TelescopeComment')
+  set_hl('TelescopeDevdocsRegModified', 'TelescopeComment')
+
+  set_hl('TelescopeDevdocsCategory', 'markdownH1')
+  set_hl('TelescopeDevdocsTitle', 'markdownH2')
+  set_hl('TelescopeDevdocsLength', 'TelescopeNormal')
+  set_hl('TelescopeDevdocsLastRead', 'TelescopeComment')
 end
 
 ---@param opts nvim_devdocs.Config
@@ -134,7 +142,7 @@ M.setup = function(opts)
 
   --    
   local cmd = vim.api.nvim_create_user_command
-  cmd('DevdocsFetch', M.fetch_registery, { desc = ' reload devdocs registery' })
+  cmd('DevdocsFetch', M.fetch_registry, { desc = ' reload devdocs registry' })
   cmd(
     'DevdocsInstall',
     M.install_doc,

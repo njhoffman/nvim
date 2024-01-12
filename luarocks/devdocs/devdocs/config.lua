@@ -6,7 +6,7 @@ local init_config = function()
   config.DOCS_DIR = dir_path .. '/docs'
   config.INDEX_PATH = dir_path .. '/index.json'
   config.LOCK_PATH = dir_path .. '/docs-lock.json'
-  config.REGISTRY_PATH = dir_path .. '/registery.json'
+  config.REGISTRY_PATH = dir_path .. '/registry.json'
   return config
 end
 

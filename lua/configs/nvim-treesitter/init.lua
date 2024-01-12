@@ -5,7 +5,6 @@ require('configs.nvim-treesitter.context')
 local ts = require('nvim-treesitter')
 
 ts.define_modules(tsmodules)
-
 local cfg = {
   -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   auto_install = true,
@@ -52,6 +51,8 @@ require('ts_context_commentstring').setup({
     typescript = { __default = '// %s', __multiline = '/* %s */' },
   },
 })
+
+vim.treesitter.language.register('bash', 'zsh')
 
 -- https://github.com/kjuulh/tree-sitter-hurl
 -- https://github.com/kjuulh/lazyvim/blob/ff018a06c332ab69d48faa546f789bd4cedb4710/lua/plugins/treesitter.lua

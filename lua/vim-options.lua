@@ -38,6 +38,7 @@ vim.opt.fillchars:append({
 })
 
 opt('foldmethod', 'manual')
+opt('foldlevel', 99)
 -- opt('formatoptions', 'jcroqlnt') -- (qjl1) Don't autoformat comments
 opt('grepformat', '%f:%l:%c:%m')
 opt('grepprg', 'set grepprg=rg --vimgrep --no-heading --smart-case')
@@ -88,7 +89,7 @@ opt('switchbuf', 'useopen,usetab')
 opt('termguicolors', true)
 opt('timeout', true)
 opt('timeoutlen', 200) -- 1000
-opt('ttimeout', true) 
+opt('ttimeout', true)
 opt('ttimeoutlen', 30) -- 50
 opt('undolevels', 1000)
 opt('updatetime', 2000) -- 4000

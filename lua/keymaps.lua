@@ -793,12 +793,12 @@ vmap('n', 'g<C-g>', {
   desc = 'show current and total characters, words, bytes and lines',
 })
 
-map('n', '_', '<cmd>noh<cr> | <cmd>nohlsearch<cr>', {
+map('n', '_', '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>LspRestart<cr>', {
   category = 'UI',
   desc = 'remove highlights and refresh',
 })
 
-map('n', '<M-c>', '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr>', {
+map('n', '<M-c>', '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr> | <cmd>LspRestart<cr>', {
 -- map('n', '<M-c>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr>', {
   category = 'UI',
   desc = 'close popups',
@@ -807,7 +807,7 @@ map('n', '<M-c>', '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr>', {
 map(
   'n',
   '<C-_>',
-  '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr>',
+  '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr> | <cmd>LspRestart<cr>',
   { category = 'UI', desc = 'remove hls, close popups and refresh' }
 )
 

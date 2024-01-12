@@ -41,6 +41,5 @@ local default_cfg = {
 }
 
 local cfg = {}
-return cfg
 
--- require('hawtkeys').setup(cfg)
+require('hawtkeys').setup(cfg)

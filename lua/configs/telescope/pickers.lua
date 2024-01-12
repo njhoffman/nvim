@@ -66,6 +66,7 @@ local pickers = {
     prompt_prefix = icons.file,
     mappings = mappings.file,
     find_command = commands.rg,
+    previewer = c_previewers.buffer_cat(),
   },
   fd = {
     debounce = 100,
@@ -92,7 +93,6 @@ local pickers = {
     debounce = 100,
     prompt_prefix = icons.history,
     mappings = mappings.file,
-    previewer = false,
     find_command = commands.rg,
   },
   grep_string = {

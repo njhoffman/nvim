@@ -82,12 +82,8 @@ M.buffer_cat = function(opts)
     define_preview = function(self, entry)
       local markdown_cb = function(bufnr)
         vim.schedule(function()
+          -- vim.treesitter.language.register('markdown', 'pandoc')
           vim.api.nvim_set_option_value('syntax', 'pandoc', { buf = self.state.bufnr })
-          -- local winid = vim.fn.bufwinid(bufnr)
-          -- vim.api.nvim_set_option_value('conceallevel', 3, { win = winid })
-          -- vim.filetype.add({ extension = { md = 'pandoc' },
-          -- vim.api.nvim_set_option_value('conceallevel', 3, { win = winid })
-          -- local winid = vim.fn.bufwinid(bufnr)
         end)
       end
 
