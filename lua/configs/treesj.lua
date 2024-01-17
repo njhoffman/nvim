@@ -127,32 +127,35 @@ local get_configured_node = function(node)
   return data
 end
 
-local split_mapping = function()
-  if langs[vim.bo.filetype] then
-    -- TODO: if not toggleable node (node identifier is not configured) go to first parenthesis
-    vim.keymap.set('n', 'gs', '<cmd>TSJToggle<cr>', { buffer = true, desc = 'treesj toggle cursor' })
-    vim.keymap.set('n', 'gJ', '<cmd>TSJJoin<cr>', { buffer = true, desc = 'treesj join cursor' })
-    vim.keymap.set('n', 'gS', '<cmd>TSJSplit<cr>', { buffer = true, desc = 'treesj split cursor' })
-  else
-    vim.keymap.set(
-      'n',
-      'gs',
-      "<cmd>lua require('mini.splitjoin').toggle()<cr>",
-      { buffer = true, desc = 'mini.sj toggle cursor' }
-    )
-    vim.keymap.set(
-      'n',
-      'gJ',
-      "<cmd>lua require('mini.splitjoin').join_at()<cr>",
-      { buffer = true, desc = 'mini.sj join cursor' }
-    )
-    vim.keymap.set(
-      'n',
-      'gS',
-      "<cmd>lua require('mini.splitjoin').split_at()<cr>",
-      { buffer = true, desc = 'mini.sj split cursor' }
-    )
+local split_toggle = function()
+  local results = require('mini.splitjoin').toggle()
+  if results == nil and langs[vim.bo.filetype] ~= nil then
+    require('treesj').toggle()
   end
+end
+vim.api.nvim_create_user_command('SplitToggle', split_toggle, {})
+
+local split_split = function()
+  local results = require('mini.splitjoin').split()
+  if results == nil and langs[vim.bo.filetype] ~= nil then
+    require('treesj').split()
+  end
+end
+vim.api.nvim_create_user_command('SplitSplit', split_split, {})
+
+local split_join = function()
+  local results = require('mini.splitjoin').join()
+  if results == nil and langs[vim.bo.filetype] ~= nil then
+    require('treesj').join()
+  end
+end
+vim.api.nvim_create_user_command('SplitJoin', split_join, {})
+
+local split_mapping = function()
+  -- TODO: if not toggleable node (node identifier is not configured) go to first parenthesis
+  vim.keymap.set('n', 'gs', '<cmd>SplitToggle<cr>', { buffer = true, desc = 'split toggle cursor' })
+  vim.keymap.set('n', 'gJ', '<cmd>SplitJoin<cr>', { buffer = true, desc = 'split join cursor' })
+  vim.keymap.set('n', 'gS', '<cmd>SplitSplit<cr>', { buffer = true, desc = 'split split cursor' })
 end
 
 vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, { pattern = '*', callback = split_mapping })

@@ -206,7 +206,8 @@ return function(injected_functions)
     healthError({ fg = '#BE6069', bg = 'none' }),
     healthSuccess({ fg = '#22BB99', bg = 'none' }),
     healthWarning({ fg = '#EBCA89', bg = 'none' }),
-    qfFilename({ Directory }),
+    qfFileName({ Directory }),
+    qfFileNameHead({ Keyword }),
     qfLineNr({ LineNr }),
     qfSeparator({ fg = '#322c2f' }), -- Delimiter
     qfSeparatorLeft({ qfSeparator }),
@@ -934,6 +935,7 @@ return function(injected_functions)
     TelescopeResultsSpecialComment({ fg = '#4488cc' }),
     TelescopeResultsField({ fg = '#4090ff' }),
     -- TelescopeWhichKeyMode({ TelescopeResultsConstant }),
+    TelescopeResultsSeparator({ fg = '#1f3f5f', bg = 'none' }),
     TelescopeWhichKeyBind({ fg = WhichKey.fg }),
     TelescopeWhichKeyBindCustom({ fg = WhichKey.fg, gui = 'bold' }),
     TelescopeWhichKeyName({ WhichKeyDesc }),

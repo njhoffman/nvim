@@ -69,8 +69,8 @@ function M.qftextfunc(info)
   local qfwinid = qflist.winid
   vim.api.nvim_win_set_option(qfwinid, 'foldmethod', 'expr')
   vim.api.nvim_win_set_option(qfwinid, 'fillchars', 'eob: ,fold: ')
-  vim.api.nvim_win_set_option(qfwinid, 'foldexpr', "v:lua.require'qfview'.foldexprfunc()")
-  vim.api.nvim_win_set_option(qfwinid, 'foldtext', "v:lua.require'qfview'.foldtextfunc()")
+  vim.api.nvim_win_set_option(qfwinid, 'foldexpr', "v:lua.require'quickfix.qfview'.foldexprfunc()")
+  vim.api.nvim_win_set_option(qfwinid, 'foldtext', "v:lua.require'quickfix.qfview'.foldtextfunc()")
 
   -- There are :colder :cnewer commands which reuse the same qf buffer
   -- We need to remove all related signs before adding new ones
@@ -141,7 +141,7 @@ end
 
 ---@diagnostic disable-next-line: unused-local
 function M.setup(options)
-  vim.api.nvim_set_option('quickfixtextfunc', "v:lua.require'qfview'.qftextfunc")
+  vim.api.nvim_set_option('quickfixtextfunc', "v:lua.require'quickfix.qfview'.qftextfunc")
 end
 
 return M

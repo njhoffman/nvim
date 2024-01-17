@@ -39,14 +39,14 @@ local main_maps = {
     ["<CR>"]        = select_default,
     ["<C-Up>"]      = actions.cycle_history_prev,
     ["<C-Down>"]    = actions.cycle_history_next,
-    ["<Up>"]        = actions.preview_scrolling_up,
-    ["<Down>"]      = actions.preview_scrolling_down,
+    ["<Up>"]        = c_actions.preview_scroll_up_line,
+    ["<Down>"]      = c_actions.preview_scroll_down_line,
     ["<M-b>"]       = actions.preview_scrolling_up,
     ["<M-f>"]       = actions.preview_scrolling_down,
     ["<M-w>"]       = c_actions.preview_toggle_wrap,
     ["<M-/>"]       = actions_layout.toggle_preview,
-    ["<M-->"]       = actions.cycle_previewers_prev, -- Ctrl-Alt -
-    ["<M-=>"]       = actions.cycle_previewers_next, -- Ctrl-Alt =
+    ["<M-(>"]       = actions.cycle_previewers_prev, -- Ctrl-Shift-(
+    ["<M-)>"]       = actions.cycle_previewers_next, -- Ctrl-Shift-)
     ["<C-G>"]       = actions.move_to_top,
     ["<C-B>"]       = c_actions.results_page_up,
     ["<C-F>"]       = c_actions.results_page_down,
@@ -63,15 +63,12 @@ local main_maps = {
     ["<M-,>"]       = c_actions.launch_find_pickers,
     ['<M-C-_>']     = c_actions.toggle_whichkey,
     ["<C-^>"]       = c_actions.search_jump_start,
-    ["<M-C-^>"]     = c_actions.switch_layout,
+    ["<M-^>"]       = c_actions.switch_layout,
     ["<M-C-Space>"] = c_actions.resume_picker_prev,
     ['<C-n>']       = actions.move_selection_next,
     ['<C-p>']       = actions.move_selection_previous,
     ["<S-Tab>"]     = actions.move_selection_previous,
     ["<Tab>"]       = actions.move_selection_next,
-    -- C-W toggle word wrap
-    -- ["<S-Tab>"]     = ignore, -- c_actions.results_toggle_up,
-    -- ["<Tab>"]       = ignore, -- c_actions.results_toggle_down,
   }, ignore_keys({
       "<PageUp>",
       "<PageDown>",

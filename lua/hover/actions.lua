@@ -51,22 +51,22 @@ local scroll_page_up = vim.api.nvim_replace_termcodes('<C-b>', true, false, true
 local scroll_page_down = vim.api.nvim_replace_termcodes('<C-f>', true, false, true)
 
 local scroll_float = function(scroll_key)
-  local winok, _ = pcall(vim.api.nvim_win_is_valid, state.winnr)
-  -- TODO: stop cursor scroll when reaches scroll offset
-  if winok then
+  if type(state.winnr) == 'number' and vim.api.nvim_win_is_valid(state.winnr) then
     local linenr = vim.api.nvim_win_get_cursor(state.winnr)[1]
-    local scrolloff = vim.api.nvim_get_option('scrolloff')
-    local winheight = vim.api.nvim_win_get_height(state.winnr)
+    local scrolloff = vim.api.nvim_get_option_value('scrolloff', { win = state.winnr })
+    local bufheight = vim.api.nvim_buf_line_count(state.bufnr)
+    if linenr < scrolloff then
+      vim.fn.win_execute(state.winnr, 'normal! ' .. (scrolloff - linenr) .. scroll_down)
+    end
     if scroll_key == scroll_up then
       if linenr > scrolloff then
         vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
       end
     else
-      if linenr < winheight - scrolloff then
+      if linenr < bufheight - scrolloff then
         vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
       end
     end
-    vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
   end
 end
 
@@ -79,10 +79,50 @@ M.scroll_down = function()
 end
 
 M.scroll_page_up = function()
-  scroll_float(scroll_page_up)
+  local winheight = vim.api.nvim_win_get_height(state.winnr) - 2
+  for i = 1, winheight do
+    vim.defer_fn(function()
+      scroll_float(scroll_up)
+    end, i * 30)
+  end
 end
 
 M.scroll_page_down = function()
-  scroll_float(scroll_page_down)
+  local winheight = vim.api.nvim_win_get_height(state.winnr) - 2
+  for i = 1, winheight do
+    vim.defer_fn(function()
+      scroll_float(scroll_down)
+    end, i * 30)
+  end
 end
+
+M.toggle_wrap = function()
+  local wrap = vim.api.nvim_get_option_value('wrap', { win = state.winnr })
+  vim.api.nvim_set_option_value('wrap', not wrap, { win = state.winnr })
+end
+
+M.toggle_full_size = function()
+  local winwidth = vim.api.nvim_win_get_width(state.winnr) + 1
+  local dims = {
+    old_w = winwidth,
+    old_h = state.height,
+    new_w = winwidth == state.width_full and state.width or state.width_full,
+    new_h = state.height,
+  }
+  require('hover.ui').resize_window(dims)
+end
+
+M.toggle_min_size = function()
+  local winwidth = vim.api.nvim_win_get_width(state.winnr) + 1
+  local winheight = vim.api.nvim_win_get_height(state.winnr) + 1
+  local is_minimized = winwidth == state.width_minimized
+  local dims = {
+    old_w = winwidth,
+    old_h = winheight,
+    new_w = is_minimized and state.width or state.width_minimized,
+    new_h = is_minimized and state.height or state.height_minimized,
+  }
+  require('hover.ui').resize_window(dims)
+end
+
 return M

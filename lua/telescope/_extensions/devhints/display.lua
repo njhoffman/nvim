@@ -59,8 +59,13 @@ local preview_topic = function(filetype)
     -- local title, subtitle, linecnt, lines = entry.value[1], entry.value[2], entry.value[3], entry.value[4]
     vim.api.nvim_buf_set_lines(bufnr, 0, 1, false, entry.value[4])
     vim.schedule(function()
-      telescope_utils.highlighter(bufnr, 'markdown')
-      vim.api.nvim_set_option('conceallevel', 3)
+      -- telescope_utils.highlighter(bufnr, 'markdown')
+      local winid = vim.fn.bufwinid(bufnr)
+      vim.bo[bufnr].ft = 'markdown'
+      vim.bo[bufnr].syntax = 'pandoc'
+      vim.wo[winid].conceallevel = 3
+      vim.wo[winid].scroll = 0
+      vim.wo[winid].sidescrolloff = 0
     end)
   end
 end

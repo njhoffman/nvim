@@ -3,7 +3,8 @@
 -- require('preload')
 require('globals')
 
--- require('qfview').setup()
+require('quickfix')
+
 require('utils.lazy').setup({ cache = false, reload = false, lazy = false })
 
 -- qfSeparator, qfLineNr, qfFilename

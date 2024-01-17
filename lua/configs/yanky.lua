@@ -39,8 +39,7 @@ local default = {
 local cfg = {
   ring = {
     history_length = 100,
-    storage = 'shada',
-    storage = 'sqlite', -- shada, sqlite, memory
+    storage = 'shada', -- shada, sqlite, memory
     storage_path = vim.fn.stdpath('data') .. '/databases/yanky.sqlite3', -- Only for sqlite storage
     sync_with_numbered_registers = true,
     cancel_event = 'update',
@@ -119,10 +118,13 @@ end, { expr = true })
 
 -- stylua: ignore start
 -- base mappings
-map('n', 'p',         '<Plug>(YankyPutAfter)',   { desc = ' paste (yanky)', noremap = false, silent = true })
-map('n', 'P',         '<Plug>(YankyPutBefore)',  { desc = ' paste & indent', noremap = false, silent = true })
-map({'n','o', 'x'}, 'y',    '<Plug>(YankyYank)',       { desc = ' sticky yank', noremap = false, silent = true })
--- map({'n', 'x'}, 'y',         'ygv<esc>',                { category = 'Motion', label = 'yank keep cursor begin', desc = '  yank maintaining cursor start position', silent = true })
+map({'n','o', 'x'}, 'y', '<Plug>(YankyYank)', { desc = ' sticky yank',  silent = true })
+map('n', 'yil', 'v0o$y', { category = 'Motion', desc = ' yank in line', silent = true }) -- <cmd>normal yy<cr>
+map('n', 'yy',  'v0o$y', { category = 'Motion', desc = ' yank in line'  })
+-- map({'n', 'x'}, 'y',         'ygv<esc>',  category = 'Motion', label = 'yank keep cursor begin', desc = '  yank maintaining cursor start position', silent = true })
+-- map('n', 'yy', 'mQ0y$`Q',                { category = 'Motion', label = 'yank in line no eol',    desc = '  yank in line no eol' })
+map('n', 'p', '<Plug>(YankyPutAfter)',  { desc = ' paste (yanky)',  silent = true })
+map('n', 'P', '<Plug>(YankyPutBefore)', { desc = ' paste & indent', silent = true })
 map('n', '<M-C-P>',  '<cmd>lua require("configs.yanky").yanky_cycle("prev")<cr>', { desc = ' cycle killring backward', silent = true })
 map('n', '<M-C-N>',  '<cmd>lua require("configs.yanky").yanky_cycle("next")<cr>',  { desc = ' cycle killring forward', silent = true })
 map({'o', 'x'}, '<leader>pl','<cmd>lua require("yanky.textobj").last_put()<cr>',  { desc = ' put last yanked text object', silent = true })
@@ -138,21 +140,17 @@ map("n", "<P", "<Plug>(YankyPutBeforeCharwise)",        { desc = ' paste befo
 map("n", ">P", "<Plug>(YankyPutAfterCharwise)",         { desc = ' paste after (charwise joined)' })
 map("n", "=p", "<Plug>(YankyPutAfterFilter)",           { desc = ' paste & reindent after line' })
 map("n", "=P", "<Plug>(YankyPutBeforeFilter)",          { desc = ' paste & reindent before line' })
--- '<cmd>norm vil<CR>'
--- map('n', 'yy', 'mQ0y$`Q',                { category = 'Motion', label = 'yank in line no eol',    desc = '  yank in line no eol' })
-map('n', 'yil', 'v0o$y',                    { category = 'Motion',   desc = ' yank in line', silent = true }) -- <cmd>normal yy<cr>
-map('n', 'yy', '<cmd>norm vil<CR>',         { category = 'Motion',   desc = ' yank in line' })
+
 map('n', 'gcp', '<cmd>norm p`[V`]gc`[<cr>', { category = 'Motion',   desc = ' paste as a comment' })
 map('n', 'gcP', '<cmd>norm p`[v`]gc`[<cr>', { category = 'Motion',   desc = ' paste as a comment' })
-
+map('n', '<leader>pc', '<cmd>normal p`[v`]gc<cr>', { category = 'Motion',  desc = ' paste as a comment' })
 map('n', '<leader>pp', '"*p',                      { category = 'Motion',  desc = ' paste primary (*) clipboard register' })
 map('n', '<leader>pm', '<cmd>set invpaste<cr>',    { category = 'Motion',  desc = ' toggle paste mode' })
-map('n', '<leader>pc', '<cmd>normal p`[v`]gc<cr>', { category = 'Motion',  desc = ' paste as a comment' })
 
 map("i", "<M-p>", function()
-	local regContent = vim.trim(vim.fn.getreg("+"))
-	vim.fn.setreg("+", regContent, "v") ---@diagnostic disable-line: param-type-mismatch
-	return "<C-g>u<C-r><C-o>+" -- "<C-g>u" adds undopoint before the paste
+  local regContent = vim.trim(vim.fn.getreg("+"))
+  vim.fn.setreg("+", regContent, "v") ---@diagnostic disable-line: param-type-mismatch
+  return "<C-g>u<C-r><C-o>+" -- "<C-g>u" adds undopoint before the paste
 end, { desc = " paste charwise", expr = true })
 
 return { yanky_cycle = yanky_cycle }

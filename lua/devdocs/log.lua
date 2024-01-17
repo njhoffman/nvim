@@ -17,23 +17,33 @@ local notify = vim.schedule_wrap(function(message, level)
   vim.notify('[devdocs] ' .. message, level)
 end)
 
+M.trace = function(message)
+  notify(message, vim.log.levels.TRACE)
+  vim.dbglog(message)
+  log.trace(message)
+end
+
 M.debug = function(message)
   notify(message, vim.log.levels.DEBUG)
+  vim.dbglog(message)
   log.debug(message)
 end
 
 M.info = function(message)
   notify(message, vim.log.levels.INFO)
+  vim.dbglog(message)
   log.info(message)
 end
 
 M.warn = function(message)
   notify(message, vim.log.levels.WARN)
+  vim.dbglog(message)
   log.warn(message)
 end
 
 M.error = function(message)
   notify(message, vim.log.levels.ERROR)
+  vim.dbglog(message)
   log.error(message)
 end
 

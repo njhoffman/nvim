@@ -2,8 +2,9 @@ local utils = require('yanky.utils')
 local highlight = require('yanky.highlight')
 local system_clipboard = require('yanky.system_clipboard')
 local preserve_cursor = require('yanky.preserve_cursor')
+local picker = require('yanky.picker')
+-- local picker = require('telescope._extensions.yank_hstory')
 local textobj = require('yanky.textobj')
-local picker = require('telescope._extensions.yank_history.picker')
 
 local yanky = {}
 
@@ -88,14 +89,6 @@ local function do_put(state, _)
   highlight.highlight_put(state)
 end
 
-function yanky.attach_metadata(entry)
-  entry.filetype = vim.bo.filetype or vim.api.nvim_get_option_value('filetype', {})
-  entry.date = os.date()
-  entry.project_root = require('project_nvim.root').get_project_root()
-  entry.cwd = vim.fn.getcwd()
-  entry.filename = vim.fn.expand('%:p')
-end
-
 function yanky.put(type, is_visual, callback)
   if not vim.tbl_contains(vim.tbl_values(yanky.type), type) then
     vim.notify('Invalid type ' .. type, vim.log.levels.ERROR)
@@ -110,7 +103,8 @@ function yanky.put(type, is_visual, callback)
   -- To allows cycling, we must store value here
   if vim.v.register == '=' then
     local entry = utils.get_register_info('=')
-    yanky.attach_metadata(entry)
+    entry.filetype = vim.bo.filetype
+
     yanky.history.push(entry)
   end
 
@@ -145,6 +139,14 @@ function yanky.attach_cancel()
       end,
     })
   end
+end
+
+function yanky.attach_metadata(entry)
+  entry.filetype = vim.bo.filetype or vim.api.nvim_get_option_value('filetype', {})
+  entry.date = os.date()
+  entry.project_root = require('project_nvim.root').get_project_root()
+  entry.cwd = vim.fn.getcwd()
+  entry.filename = vim.fn.expand('%:p')
 end
 
 function yanky.init_ring(type, register, count, is_visual, callback)
@@ -269,7 +271,8 @@ function yanky.on_yank()
     return
   end
   local entry = utils.get_register_info(vim.v.event.regname)
-  yanky.attach_metadata(entry)
+  entry.filetype = vim.bo.filetype
+
   yanky.history.push(entry)
 
   preserve_cursor.on_yank()
@@ -279,7 +282,7 @@ function yanky.yank(options)
   options = options or {}
   preserve_cursor.yank()
 
-  return string.format('%sy', options.register and '"):format()' .. options.register or '')
+  return string.format('%sy', options.register and '"' .. options.register or '')
 end
 
 function yanky.clear_history()
@@ -294,6 +297,14 @@ function yanky.register_plugs()
   end, { silent = true })
 
   vim.keymap.set('n', '<Plug>(YankyCycleBackward)', function()
+    yanky.cycle(-1)
+  end, { silent = true })
+
+  vim.keymap.set('n', '<Plug>(YankyPreviousEntry)', function()
+    yanky.cycle(1)
+  end, { silent = true })
+
+  vim.keymap.set('n', '<Plug>(YankyNextEntry)', function()
     yanky.cycle(-1)
   end, { silent = true })
 

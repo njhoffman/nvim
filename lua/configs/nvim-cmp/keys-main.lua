@@ -2,7 +2,8 @@ local luasnip = require('luasnip')
 local mapping = require('cmp.config.mapping')
 local types = require('cmp.types')
 
---       節 缾      了ﴰ   ﮕ ﳎ        陋 גּ גּ      ﴯ   
+--       節 缾      了ﴰ   ﮕ ﳎ  
+--      陋 גּ גּ      ﴯ   
 local pfx = ' '
 
 local has_words_before = function()
@@ -74,11 +75,16 @@ local main = {
   -- ['<C-space>'] = mapping.complete(),
   ['<C-Space>'] = { i = mapping.complete() },
   ['<CR>'] = { i = mapping.confirm({ select = false }) },
+
   -- if cmp.get_active_entry() then
   --        cmp.confirm()
   --    else
   --        require'ultimate-autopair.maps.cr'.cmpnewline()
   --    end
+  -- ["<CR>"] = cmp.mapping.confirm {
+  --   behavior = cmp.ConfirmBehavior.Insert,
+  --   select = true,
+  -- },
   ['<C-D>'] = { i = mapping.abort() },
   ['<Tab>'] = {
     i = function(fallback)

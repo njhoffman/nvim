@@ -15,7 +15,8 @@ local plugin_config = require('devdocs.config')
 local devdoc_actions = require('telescope._extensions.devdocs.actions')
 local previewers = require('telescope._extensions.devdocs.previewers')
 local create_registry_maker = require('telescope._extensions.devdocs.display.registry')
-local docitems_entry_maker = require('telescope._extensions.devdocs.display.docitems')
+local create_docitems_maker = require('telescope._extensions.devdocs.display.docitems')
+local docitems_entry_maker = require('telescope._extensions.devdocs.display.docitems-inline')
 
 ---@param prompt string
 ---@param entries RegistryEntry[]
@@ -141,17 +142,15 @@ end
 
 M.open_picker_alias_dyn = function(opts)
   opts = opts or {}
-  opts.entry_maker = opts.entry_maker or docitems_entry_maker
+  local installed = list.get_installed_registry()
+  opts.entry_maker = (opts.entry_maker or create_docitems_maker)(installed)
   local script_file = vim.fn.stdpath('config') .. '/luarocks/devdocs/lua_modules/bin/list'
-  -- local script_file = vim.fn.stdpath('config') .. '/lua/telescope/_extensions/tester/test.sh'
   local command = { script_file }
-
-  vim.dbglog('oneshot job: ', command)
   local picker = pickers.new(plugin_config.options.telescope, {
     prompt_title = 'Select an entry',
     finder = finders.new_oneshot_job(command, opts),
-    -- sorter = config.generic_sorter(plugin_config.options.telescope),
     previewer = previewers.doc_previewer,
+    -- sorter = config.generic_sorter(plugin_config.options.telescope),
     -- attach_mappings = function(prompt_bufnr)
     --   actions.select_default:replace(function()
     --     actions.close(prompt_bufnr)

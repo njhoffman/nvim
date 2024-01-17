@@ -1,3 +1,27 @@
+local timer_id = nil
+local function debounce(func, delay)
+  return function(...)
+    if timer_id then
+      vim.fn.timer_stop(timer_id)
+    end
+    local args = { ... }
+    timer_id = vim.fn.timer_start(delay, function()
+      func(unpack(args))
+    end)
+  end
+end
+
+local throttle = function(func, delay)
+  local lastRunTime = 0
+  return function(...)
+    local currentTime = os.clock() * 1000
+    if currentTime - lastRunTime >= delay then
+      func(...)
+      lastRunTime = currentTime
+    end
+  end
+end
+
 local human_size = function(bytes)
   if bytes <= 0 then
     return '0 B'
@@ -24,4 +48,9 @@ local get_widths = function(results)
   return widths
 end
 
-return { human_size = human_size, get_widths = get_widths }
+return {
+  human_size = human_size,
+  get_widths = get_widths,
+  debounce = debounce,
+  throttle = throttle,
+}

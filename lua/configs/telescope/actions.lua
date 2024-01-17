@@ -139,31 +139,48 @@ M.results_page_down = function(prompt_bufnr)
   actions_set.shift_selection(prompt_bufnr, results_height)
 end
 
-M.preview_scrolling_up = function(prompt_bufnr)
+local preview_scroll_line = function(prompt_bufnr, direction)
   local picker = action_state.get_current_picker(prompt_bufnr)
   local previewer = picker.previewer
-  -- local results_height = vim.api.nvim_win_get_height(picker.results_win)
   local status = state.get_status(prompt_bufnr)
+  local preview_height = vim.api.nvim_win_get_height(status.layout.preview.winid)
   -- Check if we actually have a previewer and a preview window
-  if type(previewer) ~= 'table' or previewer.scroll_fn == nil or status.preview_win == nil then
+  if type(previewer) ~= 'table' or status.preview_win == nil then
     return
   end
 
-  local direction = 1
-  local input = direction > 0 and [[]] or [[]]
-  -- local count = math.abs(direction)
+  local input = direction > 0 and [[j]] or [[k]]
+  local count = math.abs(direction)
 
   vim.api.nvim_win_call(status.preview_win, function()
-    -- :execute "normal \<Plug>(SmoothieDownwards)"
-    vim.fn.execute('normal! \\<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)')
+    -- vim.cmd([[ execute "normal! \<Plug>(SmoothieDownwards)" ]])
+    vim.cmd([[normal! ]] .. count .. input)
   end)
 end
+-- docs_view.scroll = function(self, delta)
+--   if self:visible() then
+--     local info = vim.fn.getwininfo(self.window.win)[1] or {}
+--     local top = info.topline or 1
+--     top = top + delta
+--     top = math.max(top, 1)
+--     top = math.min(top, self.window:get_content_height() - info.height + 1)
+--
+--     vim.defer_fn(function()
+--       vim.api.nvim_buf_call(self.window:get_buffer(), function()
+--         vim.api.nvim_command('normal! ' .. top .. 'zt')
+--         self.window:update()
+--       end)
+--     end, 0)
+--   end
+-- end
+--
 
-M.preview_scrolling_down = function(prompt_bufnr)
-  M.preview_scrolling_up(prompt_bufnr)
-  -- local picker = action_state.get_current_picker(prompt_bufnr)
-  -- local results_height = vim.api.nvim_win_get_height(picker.results_win)
-  -- actions_set.shift_selection(prompt_bufnr, results_height)
+M.preview_scroll_up_line = function(prompt_bufnr)
+  preview_scroll_line(prompt_bufnr, -1)
+end
+
+M.preview_scroll_down_line = function(prompt_bufnr)
+  preview_scroll_line(prompt_bufnr, 1)
 end
 
 M.preview_toggle_wrap = function(prompt_bufnr)

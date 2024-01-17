@@ -46,7 +46,6 @@ M.get_doc_entries = function(aliases, opts)
   for _, alias in pairs(aliases) do
     if index[alias] then
       local current_entries = index[alias].entries
-
       for idx, doc_entry in ipairs(current_entries) do
         local next_path = nil
         local entries_count = #current_entries
@@ -55,8 +54,10 @@ M.get_doc_entries = function(aliases, opts)
           next_path = current_entries[idx + 1].path
         end
 
+        -- vim.dbglog(doc_entry)
         local entry = {
           name = doc_entry.name,
+          type = doc_entry.type,
           path = doc_entry.path,
           link = doc_entry.link,
           alias = alias,

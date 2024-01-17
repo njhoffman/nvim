@@ -46,7 +46,7 @@ local check_and_format_buffer = function(ev)
   local last_line = vim.api.nvim_buf_line_count(bufnr)
   local lines = vim.api.nvim_buf_get_lines(bufnr, 0, last_line, false)
   local has_ansi, count = check_ansi_colors(lines)
-  if has_ansi then
+  if has_ansi == true then
     replace_ansi_codes(bufnr, count)
   end
   vim.dbglog('has_ansi: ' .. tostring(has_ansi) .. '(' .. bufnr .. ') count: ' .. count)

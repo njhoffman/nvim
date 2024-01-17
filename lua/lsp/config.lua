@@ -24,9 +24,7 @@ local diagnostic_config = {
   severity_sort = true,
   virtual_lines = false, -- { only_current_line = true, highlight_whole_line = false },
 }
-
 vim.api.nvim_set_hl(0, 'DiagnosticUnnecessary', { link = 'Comment' })
-
 vim.diagnostic.config(diagnostic_config)
 
 -- Show line diagnostics in floating popup on hover, except insert mode (CursorHoldI)

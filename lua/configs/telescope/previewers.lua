@@ -66,6 +66,23 @@ M.delta = previewers.new_termopen_previewer({
   end,
 })
 
+local new_maker = function(filepath, bufnr, opts)
+  opts = opts or {}
+  local ft = pfiletype.detect(filepath)
+  if ft == 'markdown' then
+    -- opts.use_ft_detect = false
+    -- putils.regex_highlighter(bufnr, 'pandoc')
+    -- putils.ts_highlighter(bufnr, 'markdown')
+    vim.schedule(function()
+      vim.api.nvim_set_option_value('syntax', 'pandoc', { buf = bufnr })
+      previewers.buffer_previewer_maker(filepath, bufnr, opts)
+    end)
+  end
+  vim.schedule(function()
+    previewers.buffer_previewer_maker(filepath, bufnr, opts)
+  end)
+end
+
 M.buffer_cat = function(opts)
   opts = opts or {}
   local cwd = opts.cwd or vim.loop.cwd()
@@ -98,6 +115,14 @@ M.buffer_cat = function(opts)
         file_encoding = opts.file_encoding,
       }
 
+      -- vim.api.nvim_set_option_value('scrolloff', 0, { win = self.state.winid })
+      -- self.window:option('conceallevel', 2)
+      -- self.window:option('concealcursor', 'n')
+      -- self.window:option('foldenable', false)
+      -- self.window:option('linebreak', true)
+      -- self.window:option('scrolloff', 0)
+      -- self.window:option('showbreak', 'NONE')
+      -- self.window:option('wrap', true)
       local extension = vim.fn.fnamemodify(p, ':e')
       if extension == 'md' then
         preview_opts.callback = markdown_cb

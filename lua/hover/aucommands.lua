@@ -3,18 +3,32 @@ local keymaps = require('hover.keymaps')
 local state = require('hover.state')
 local utils = require('hover.utils')
 
-local function open(winnr, _opts)
+local cleanup = function()
+  utils.clear_local_state(state)
+  keymaps.clear()
+  vim.api.nvim_del_augroup_by_name('Hover')
+end
+
+local create = function(winnr, _opts)
   local opts = _opts or {}
+  local winid = vim.fn.win_getid(winnr)
   vim.api.nvim_create_augroup('Hover', { clear = true })
+  vim.api.nvim_create_autocmd('WinClosed', {
+    callback = function(ev)
+      if tostring(ev.match) == tostring(winnr) then
+        cleanup()
+      end
+    end,
+    group = 'Hover',
+  })
 
   if opts.behavior == 'once' then
     vim.api.nvim_create_autocmd('CursorMoved', {
       callback = function()
         vim.api.nvim_win_close(winnr, true)
-        utils.clear_local_state(state)
-        vim.api.nvim_del_augroup_by_name('Hover')
-        keymaps.clear()
+        cleanup()
       end,
+      once = true,
       group = 'Hover',
     })
   elseif opts.behavior == 'cursor' then
@@ -37,19 +51,9 @@ local function open(winnr, _opts)
     --   end,
     --   group = "Hover",
     -- })
-
-    vim.api.nvim_create_autocmd('WinClosed', {
-      callback = function(ev)
-        if ev.match == tostring(winnr) then
-          vim.api.nvim_del_augroup_by_name('Hover')
-          utils.clear_local_state(state)
-          keymaps.clear()
-        end
-      end,
-      group = 'Hover',
-    })
   end
 end
+
 return {
-  open = open,
+  create = create,
 }

@@ -53,15 +53,13 @@ local function register(provider)
 end
 
 local function load_provider(provider)
-  local ui = require('hover.ui')
-  ui.load_hover(provider.id, provider._result)
-  ui.add_title()
+  require('hover.ui').load_hover(provider.id, provider._result)
+  require('hover.ui.title').add_title()
 end
 
 -- Must be called in async context
 local function run_provider(provider, _opts)
   local opts = _opts or {}
-  local ui = require('hover.ui')
 
   if opts.focusable ~= false and opts.focus ~= false then
     if ui.focus_or_close_hover() then
@@ -80,9 +78,9 @@ local function run_provider(provider, _opts)
     local active_pid = state.enabled[state.curr_idx]
     if provider.id == active_pid then
       async.scheduler()
-      ui.create_hover(provider.id, result, opts)
+      require('hover.ui').create_hover(provider.id, result, opts)
     end
-    ui.add_title()
+    require('hover.ui.title').add_title()
     state.busy = false
     if vim.fn.empty(state.next_job) == 0 then
       state.next_job()
@@ -92,7 +90,7 @@ local function run_provider(provider, _opts)
   return false
 end
 
-local function init(_opts)
+local function init_options(_opts)
   local config = require('hover.config').get()
   local opts = vim.tbl_deep_extend('force', config, _opts)
   if state.initialized then
@@ -105,17 +103,18 @@ local function init(_opts)
   return opts
 end
 
+local finished_cb = function(provider, start_time)
+  local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
+  -- state.provider = provider.name
+  provider._n = provider._n and provider._n + 1 or 1
+  provider._timing = load_time
+  return log.info(load_time .. ' ' .. provider.name)
+end
+
 local n = 0
 local function load(_opts)
-  local opts = init(_opts)
+  local opts = init_options(_opts)
   local start_time = vim.fn.reltime()
-  local finished = function(provider)
-    local load_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
-    -- state.provider = provider.name
-    provider._n = provider._n and provider._n + 1 or 1
-    provider._timing = load_time
-    return log.info(load_time .. ' ' .. provider.name)
-  end
 
   if state.busy == true then
     n = n + 1
@@ -127,18 +126,12 @@ local function load(_opts)
 
   state.busy = true
 
-  if type(opts.provider) == 'string' and #opts.provider > 0 then
-    for _, provider in ipairs(state.providers) do
-      async.scheduler()
-      if provider.name == opts.provider and run_provider(provider, opts) then
-        finished(provider)
-      end
-    end
-  else
-    for _, provider in ipairs(state.providers) do
-      async.scheduler()
-      if is_enabled(provider) and run_provider(provider, opts) then
-        finished(provider)
+  local target_provider = type(opts.provider) == 'string' and #opts.provider > 0 and opts.provider or nil
+  for _, provider in ipairs(state.providers) do
+    async.scheduler()
+    if target_provider ~= nil and provider.name == opts.provider or is_enabled(provider) then
+      if run_provider(provider, opts) then
+        finished_cb(provider, start_time)
       end
     end
   end

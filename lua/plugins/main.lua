@@ -208,11 +208,20 @@ local plugins = {
   {
     'gbprod/stay-in-place.nvim',
     config = function()
-      require('stay-in-place').setup({
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
+      local stayinplace = require('stay-in-place')
+      stayinplace.setup({
+        set_keymaps = false,
+        preserve_visual_selection = true,
       })
+      -- vim.keymap.set('n', '>', stayinplace.shift_right, { noremap = true, expr = true, noremap = true })
+      -- vim.keymap.set('n', '<', stayinplace.shift_left, { noremap = true, expr = true, noremap = true })
+      vim.keymap.set('n', '=', stayinplace.filter, { noremap = true, expr = true, noremap = true })
+      vim.keymap.set('n', '>>', stayinplace.shift_right_line, { noremap = true })
+      vim.keymap.set('n', '<<', stayinplace.shift_left_line, { noremap = true })
+      vim.keymap.set('n', '==', stayinplace.filter_line, { noremap = true })
+      vim.keymap.set('x', '>', stayinplace.shift_right_visual, { noremap = true })
+      vim.keymap.set('x', '<', stayinplace.shift_left_visual, { noremap = true })
+      vim.keymap.set('x', '=', stayinplace.filter_visual, { noremap = true })
     end,
   },
   {
@@ -349,7 +358,7 @@ local plugins = {
   { 'chrisgrieser/nvim-various-textobjs', event = { 'VeryLazy' } },
   -- split/join
   { 'echasnovski/mini.splitjoin', event = { 'VeryLazy' } },
-  { 'Wansmer/treesj', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
+  { 'Wansmer/treesj', dir = '~/git/treesj', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
   -- surround
   { 'echasnovski/mini.surround', event = { 'VeryLazy' } },
   -- traversal/swapping
@@ -463,25 +472,32 @@ local plugins = {
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       {
         'gbprod/yanky.nvim',
-        keys = {
-          -- https://github.com/gbprod/yanky.nvim#%EF%B8%8F-special-put
-          -- { 'p', '<Plug>(YankyPutAfter)', desc = '  paste (yanky)' },
-          -- { 'P', '<Plug>(YankyPutIndentAfterShiftRight)', desc = '  paste & indent' },
-          -- { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' }, desc = '  sticky yank' },
-          -- { '<M-C-P>', '<Plug>(YankyCycleForward)', desc = '  cycle killring' },
-          -- {
-          --   'p',
-          --   function()
-          --     require('yanky.textobj').last_put()
-          --   end,
-          --   mode = 'o',
-          --   desc = '󱡔 last paste textobj',
-          -- },
-          -- so it loads the killring in time
-          { 'Y', 'y$' },
-          'd',
-          'D',
-        },
+        -- keys = {
+        --   {
+        --     '<leader>p',
+        --     function()
+        --       require('telescope').extensions.yank_history.yank_history({})
+        --     end,
+        --     desc = 'Open Yank History',
+        --   },
+        --   { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' }, desc = 'Yank text' },
+        --   { 'p', '<Plug>(YankyPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after cursor' },
+        --   { 'P', '<Plug>(YankyPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before cursor' },
+        --   { 'gp', '<Plug>(YankyGPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after selection' },
+        --   { 'gP', '<Plug>(YankyGPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before selection' },
+        --   { '<c-p>', '<Plug>(YankyPreviousEntry)', desc = 'Select previous entry through yank history' },
+        --   { '<c-n>', '<Plug>(YankyNextEntry)', desc = 'Select next entry through yank history' },
+        --   { ']p', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
+        --   { '[p', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
+        --   { ']P', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
+        --   { '[P', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
+        --   { '>p', '<Plug>(YankyPutIndentAfterShiftRight)', desc = 'Put and indent right' },
+        --   { '<p', '<Plug>(YankyPutIndentAfterShiftLeft)', desc = 'Put and indent left' },
+        --   { '>P', '<Plug>(YankyPutIndentBeforeShiftRight)', desc = 'Put before and indent right' },
+        --   { '<P', '<Plug>(YankyPutIndentBeforeShiftLeft)', desc = 'Put before and indent left' },
+        --   { '=p', '<Plug>(YankyPutAfterFilter)', desc = 'Put after applying a filter' },
+        --   { '=P', '<Plug>(YankyPutBeforeFilter)', desc = 'Put before applying a filter' },
+        -- },
       },
       { 'GustavoKatel/telescope-asynctasks.nvim', dependencies = { 'skywind3000/asynctasks.vim' } },
       -- { "rmagatti/session-lens", dependencies = "rmagatti/auto-session" },
@@ -850,18 +866,6 @@ local plugins = {
         command = 'nnoremap <buffer> gta ' .. ":lua require('nvim-js-actions').js_arrow_fn.toggle()<CR>",
         -- can also do `require('nvim-js-actions/js-arrow-fn').toggle()`
       })
-    end,
-  },
-  {
-    'kevinhwang91/nvim-bqf',
-    enabled = false,
-    version = false,
-  },
-  {
-    'ashfinal/qfview.nvim',
-    enabled = false,
-    config = function()
-      require('qfview').setup({})
     end,
   },
   {

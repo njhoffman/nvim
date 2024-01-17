@@ -1,3 +1,15 @@
+require('quickfix.qfview').setup()
+
+local set_qflist_from_diagnostics = function()
+  vim.diagnostic.setqflist()
+end
+
+vim.api.nvim_create_user_command('LspQfDiag', set_qflist_from_diagnostics, {})
+
+vim.api.nvim_create_user_command('LspQfRef', function()
+  vim.lsp.buf.references()
+end, {})
+
 -- :vim[grep] — search using Vim’s native functionality.
 -- :gr[ep] — search via an external program specified by the grepprg setting.
 -- :helpgr[ep] — search help text files.
@@ -15,6 +27,7 @@
 -- :chi[story] — Show the list of quickfix lists.
 --
 -- gqr, gqd, gqt : lsp references, definitions, type definitions in quickfix
+
 -- Tip: Operating on the error list
 -- A powerful editing technique is to apply an operation or macro to each location or file in the quickfix list. This is done with :cdo or :cfdo respectively. Here are some examples where we populate the quickfix list using :grep (using ripgrep options) then perform a batch edit using :cdo or :cfdo.
 --

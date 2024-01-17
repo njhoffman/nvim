@@ -60,11 +60,10 @@ prefix('n', '<leader>cl', 'conceal 󰈉 ')
 -- vim.keymap.set("n", "<leader>hh", ":h <CR>")
 -- vim.keymap.set("x", "<leader>hh", 'y:h "<CR>')
 --
--- vim.keymap.set("n", "cn", "*``cgn")
 -- vim.keymap.set("x", "C", function()
 --     vim.api.nvim_input('y/"<CR>Ncgn')
 -- end, { silent = true })
---
+-- nmap cg* *Ncgn
 -- -- Make the last change as an initiation for cgn.
 -- vim.keymap.set("n", "g.", [[/\V<C-r>"<CR>cgn<C-a><Esc>]])
 --------------------------------------------------------------------------------------------------
@@ -73,28 +72,12 @@ prefix('n', '<leader>cl', 'conceal 󰈉 ')
 -- -- change local working directory
 -- keymap('n', '<leader>cd', ':lcd %:h<CR>', opts)
 --
--- -- source current lua file
--- keymap('n', '<leader>so', ':source % <bar> lua vim.notify("NeoVim config reloaded")<CR>', opts)
---
--- -- reload theme
--- keymap('n', '<leader>cc',
---   function()
---     -- remove cached colors module
---     package.loaded["config/colors"] = nil
---     vim.cmd("source " .. os.getenv("XDG_CONFIG_HOME") .. "/nvim/lua/config/theme.lua")
---     vim.notify("Reloaded theme")
---   end,
---   opts)
-
 -- Copy Last Command
 -- keymap("n", "<leader>lc", function()
 -- 	local lastCommand = fn.getreg(":"):gsub("^lua[ =]*", "")
 -- 	fn.setreg("+", lastCommand)
 -- 	u.notify("Copied", lastCommand)
 -- end, { desc = "󰘳 Copy last command" })
---
--- -- [l]ast command a[g]ain
--- keymap("n", "<leader>lg", ":<Up><CR>", { desc = "󰘳 Last command again", silent = true })
 --
 -- -- show current filetype & buftype
 -- keymap("n", "<leader>lf", function()
@@ -128,11 +111,13 @@ map({ 'n', 'v' }, ':', 'q:', {
   label = ' open cmdwin',
   desc = ' open the command window',
   nowait = true,
+  silent = true,
 })
 
 map({ 'n', 'v' }, '<M-:>', 'q:', {
   category = 'Command',
   realkeys = '<C-S-;>',
+  silent = true,
   label = ' open cmdwin',
   desc = ' open the command window',
 })
@@ -144,6 +129,12 @@ vmap({ 'c' }, '<C-T>', {
 })
 
 map('c', '<M-b>', '<C-T><Esc>', {
+  category = 'Command',
+  label = ' open cmdwin normal',
+  desc = ' open command window from the command line in normal mode',
+})
+
+map('c', '<M-f>', '<C-T><Esc>', {
   category = 'Command',
   label = ' open cmdwin normal',
   desc = ' open command window from the command line in normal mode',
@@ -544,13 +535,19 @@ vmap('n', 'gx', {
 
 --------------------------------------------------------------------------------------------------
 -- MOTION ----------------------------------------------------------------------------------------
+-- vim.keymap.set("x", "C", function()
+--     vim.api.nvim_input('y/"<CR>Ncgn')
+-- end, { silent = true })
+-- nmap cg* *Ncgn
+-- -- Make the last change as an initiation for cgn.
+-- vim.keymap.set("n", "g.", [[/\V<C-r>"<CR>cgn<C-a><Esc>]])
 
-map('n', 'gn', "g#<cmd>lua require('hlslens').start()<cr>", {
-  category = 'Motion',
-  plugin = 'hlslens',
-  label = 'prev search',
-  desc = 'next matching from previous search (hls lens)',
-})
+-- map('n', 'gn', "g#<cmd>lua require('hlslens').start()<cr>", {
+--   category = 'Motion',
+--   plugin = 'hlslens',
+--   label = 'prev search',
+--   desc = 'next matching from previous search (hls lens)',
+-- })
 
 map('n', '<leader>R', '*:%s//', {
   category = 'Motion',
@@ -798,15 +795,16 @@ map('n', '_', '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>LspRestart<cr>', {
   desc = 'remove highlights and refresh',
 })
 
-map('n', '<M-c>', '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr> | <cmd>LspRestart<cr>', {
--- map('n', '<M-c>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr>', {
-  category = 'UI',
-  desc = 'close popups',
-})
+map(
+  'n',
+  '<M-c>',
+  '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr> | <cmd>LspRestart<cr>',
+  { category = 'UI', desc = 'remove hls, close popups and refresh' }
+)
 
 map(
   'n',
-  '<C-_>',
+  '<M-->',
   '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr> | <cmd>LspRestart<cr>',
   { category = 'UI', desc = 'remove hls, close popups and refresh' }
 )
@@ -1375,18 +1373,18 @@ map('n', '<leader>]', '', {
   desc = '󰉶 unindent all lines',
 })
 
-map('v', '<', '<gv', {
-  category = 'Format',
-  label = '󰉶 unindent',
-  desc = '󰉶 unindent repeatedly',
-})
-
-map('v', '>', '>gv', {
-  category = 'Format',
-  label = '󰉶 indent',
-  desc = '󰉶 indent repeatedly',
-})
-
+-- map('x', '<', '<gv', {
+--   category = 'Format',
+--   label = '󰉶 unindent',
+--   desc = '󰉶 unindent repeatedly',
+-- })
+--
+-- map('x', '>', '>gv', {
+--   category = 'Format',
+--   label = '󰉶 indent',
+--   desc = '󰉶 indent repeatedly',
+-- })
+--
 map('n', 'g>', '<cmd>ISwapNodeWith<cr>', {
   category = 'Format',
   label = '易swap node with',

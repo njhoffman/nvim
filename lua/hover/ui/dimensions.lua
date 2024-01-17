@@ -20,6 +20,16 @@ local function get_max_width(num)
   return num
 end
 
+local function get_lines_width(lines)
+  local width = 0
+  for _, line in ipairs(lines) do
+    if #line > width then
+      width = #line
+    end
+  end
+  return width
+end
+
 local function get_lines_height(lines)
   -- TODO: rules should include two rows of ""
   local height = #lines + 1
@@ -35,34 +45,38 @@ local function get_lines_height(lines)
 end
 
 local function get_dimensions(lines, max, provider_id)
+  local _, title_width = ui_title.get_title(provider_id)
   local dimensions = {
     old_w = state.width,
     old_h = state.height,
   }
-  local height = get_lines_height(lines)
-  local width = 0
+  state.height_full = get_lines_height(lines)
+  state.width_full = get_lines_width(lines)
+  state.height_minimized = 1
+  state.width_minimized = title_width
 
-  local _, title_width = ui_title.get_title(provider_id)
-
-  if height > max.h then
-    height = max.h
-  elseif height < 1 then
-    height = config.get().min_height
+  -- if height > max.h then
+  --   height = max.h
+  -- elseif height < 1 then
+  --   height = config.get().min_height
+  -- end
+  if state.height_full > max.h then
+    state.height = max.h
+  elseif state.height_full < config.get().min_height then
+    state.height = config.get().min_height
+  else
+    state.height = state.height_full
   end
 
-  for _, line in ipairs(lines) do
-    if #line > width then
-      width = #line
-    end
+  if state.width_full > max.w then
+    state.width = max.w
+  elseif state.width_full < config.get().min_width then
+    state.width = config.get().min_width
+  else
+    state.width = state.width_full
   end
-  if width > max.w then
-    width = max.w
-  elseif width < config.get().min_width then
-    width = config.get().min_width
-  end
+  state.width = title_width > state.width and title_width or state.width
 
-  state.width = title_width > width and title_width or width
-  state.height = height
   return vim.tbl_deep_extend('force', dimensions, { new_w = state.width, new_h = state.height })
 end
 

@@ -1,4 +1,11 @@
 local fn = vim.fn
+local signMap = {
+  E = ' ',
+  W = ' ',
+  I = ' ',
+  H = ' ',
+  N = ' ',
+}
 
 -- :vimgrep /\w\+/j % | copen
 local format_filename = function(filename, limit, right_align)
@@ -82,7 +89,8 @@ _G.qftf = function(info)
       end
       local lnum = e.lnum > 99999 and -1 or e.lnum
       local col = e.col > 999 and -1 or e.col
-      local qtype = e.type == '' and '' or ' ' .. e.type:sub(1, 1):upper()
+      local qtype = e.type == '' and '' or ' ' .. signMap[e.type:sub(1, 1):upper()]
+      -- local qtype = e.type == '' and '' or ' ' .. e.type:sub(1, 1):upper()
       str = validFmt:format(fname, lnum, col, qtype, e.text)
     else
       str = e.text
