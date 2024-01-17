@@ -99,6 +99,20 @@ local tips_list = {
 
 return tips_list
 -- 1
+--- surround
+--- - `siw)` - add (`s`) for inner word (`iw`) parenthesis (`)`).
+--- - `siw?[[<CR>]]<CR>` - add (`s`) for inner word (`iw`) interactive surrounding (`?`): `[[` for left and `]]` for right.
+--- - `2sdf` - delete (`sd`) second (`2`) surrounding function call (`f`).
+--- - `sr)tdiv<CR>` - replace (`sr`) surrounding parenthesis (`)`) with tag (`t`) with identifier 'div' (`div<CR>` in command line prompt).
+--- - `sff` - find right (`sf`) part of surrounding function call (`f`).
+--- - `sh}` - highlight (`sh`) for a brief period of time surrounding curly brackets (`}`).
+---
+--- Extended mappings (temporary force "prev"/"next" search methods):
+--- - `sdnf` - delete (`sd`) next (`n`) function call (`f`).
+--- - `srlf(` - replace (`sd`) last (`l`) function call (`f`) with padded bracket (`(`).
+--- - `2sfnt` - find (`sf`) second (2) next (`n`) tag (`t`).
+--- - `shl}` - highlight (`sh`) last (`l`) second (`2`) curly bracket (`}`).
+---
 --
 -- Portal
 -- If I understand your question correctly, the key is to determine whether the character on the cursor is a matched delimiter.
@@ -110,14 +124,10 @@ return tips_list
 -- If the cursor is not on a delimiter and there is a delimiter in the line, then the second command will yank a string of length greater than 1 into @z. Abort.
 -- If the cursor is not on a delimiter and there is no other delimiter in the line, then the first command will yank a string of length exactly 1—the character itself—into @z. Abort.
 -- Thus, we have the following result:
---
+
 -- The cursor is on a matched delimiter if and only if the normal mode command v%"zy yanks a string of length at least 2 into @z and the normal mode command v%%"zy yanks a string of length exactly 1 into @z.
 --
 -- Hints for VimL: :norm ... and strlen(@z) will help here.
-
-
-
--- stylua: ignore
 -- cc C            " change (replace) entire line, to end of line
 -- c0              " change (replace) to the start of the line
 -- c$              " change (replace) to the end of the line
@@ -131,14 +141,14 @@ return tips_list
 -- <ctrl-w>        " delete a word backwards
 -- <ctrl-o>{cmd}   " execute one NORMAL mode command (see below note)
 -- "   A neat trick to cycle through the delete registers is to use `"1p` and then run `u.`, the undo+repeat advances the 'pasted register' so it will perform `"2p`, `"3p` and so forth# .
-    -- nnoremap <leader>b "_
-    -- nnoremap <leader>d "_d
-    -- nnoremap <leader>D "_D
-    -- nnoremap <leader>dd "_dd
-    -- xnoremap <leader>b "_
-    -- xnoremap <leader>D "_D
-    -- xnoremap <leader>D "_D
-    -- xnoremap <leader>x "_x
+-- nnoremap <leader>b "_
+-- nnoremap <leader>d "_d
+-- nnoremap <leader>D "_D
+-- nnoremap <leader>dd "_dd
+-- xnoremap <leader>b "_
+-- xnoremap <leader>D "_D
+-- xnoremap <leader>D "_D
+-- xnoremap <leader>x "_x
 -- o               " move to other end of marked area
 -- O               " move to other corner of block
 -- :g/regex/{ex}               " run :{ex} for every line matching regex
@@ -175,7 +185,7 @@ return tips_list
 -- " save all changes
 -- :wall
 -- - Macros are essentially just a saved series of keystrokes, if you’re recording a macro and make a mistake, don’t start over, instead, undo it and keep going normally, using macro `q` as an example (recorded with `qq`), once you’re finished with the macro, press `"qp` to paste it to an empty line, remove the mistaken keystrokes and the undo and copy it back into the `q` register with `"qy$`.
-  -- surroudn with multiple characters
+-- surroudn with multiple characters
 -- (from visual mode)
 -- c ``` <C-r>" ``` <Esc>
 -- :%s/myUniqueQuery/prefix&suffix

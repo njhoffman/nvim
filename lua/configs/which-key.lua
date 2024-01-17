@@ -75,6 +75,12 @@ local default_config = {
   },
 }
 
+-- u = { name = " 󰕌 Undo" },
+-- o = { name = "  Options" },
+-- p = { name = " 󰏗 Packages" },
+-- c = { name = "  Code Action" },
+-- i = { name = " 󱡴 Inspect" },
+
 local config = {
   plugins = {
     registers = false,
@@ -84,6 +90,9 @@ local config = {
   --   ['<M-g>'] = '<C-g>',
   --   ['<M-G>'] = '<C-G>',
   key_labels = {
+    ['telescope'] = ' ',
+    ['Telescope'] = ' ',
+    ['operator'] = '',
     ['<CR>'] = '↵',
     ['<BS>'] = '⌫',
     ['<space>'] = '󱁐',
@@ -91,7 +100,20 @@ local config = {
     ['<Esc>'] = '⎋',
   },
   -- hidden = { '<silent>', '<cmd>', '<Cmd>', '<CR>', '^:', '^ ', '^call ', '^lua ' }, -- hide mapping boilerplate
-  hidden = { '<Plug>', '^:lua ', '<cmd>' },
+  hidden = {
+    '<silent>',
+    '<cmd>',
+    '<Cmd>',
+    '<CR>',
+    'call',
+    'lua',
+    '^:',
+    '^ ',
+    'require',
+    'escope',
+    'erator',
+    '"',
+  }, --
   popup_mappings = {
     -- scroll_down = '<c-f>', -- binding to scroll down inside the popup
     -- scroll_up = '<c-b>', -- binding to scroll up inside the popup

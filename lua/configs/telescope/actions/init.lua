@@ -8,8 +8,12 @@ local H = require('helpers')
 local run = require('telescope.run')
 local telethemes = require('telescope.telethemes')
 local dirpicker = require('configs.telescope.dirpicker')
+local picker_history = require('configs.telescope.actions.picker-history')
 
 local M = {}
+
+M.next_picker = picker_history.next_picker
+M.prev_picker = picker_history.prev_picker
 
 local _open_buffer = function(open_cmd, prompt_bufnr)
   if open_cmd == 'vsplit' then

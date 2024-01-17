@@ -2,6 +2,9 @@ local cfg = {
   modes = {
     search = { enabled = false },
     char = {
+      search = { wrap = false },
+      highlight = { backdrop = false },
+      jump = { register = false },
       -- autohide = function(motion)
       --   -- autohide flash when the operator is `y` or `d`
       --   return vim.fn.mode(true):find('no') and (vim.v.operator == 'y' or vim.v.operator == 'd')
@@ -16,7 +19,36 @@ local cfg = {
     },
   },
 }
+
 require('flash').setup(cfg)
+
+-- keys = {
+--   {
+--     "s",
+--     mode = { "n", "x", "o" },
+--     function()
+--       -- default options: exact mode, multi window, all directions, with a backdrop
+--       require("flash").jump({ multi_window = false })
+--     end,
+--     desc = "Flash",
+--   },
+--   {
+--     "S",
+--     mode = { "n", "o", "x" },
+--     function()
+--       require("flash").treesitter()
+--     end,
+--     desc = "Flash Treesitter",
+--   },
+--   {
+--     "r",
+--     mode = "o",
+--     function()
+--       require("flash").remote()
+--     end,
+--     desc = "Remote Flash",
+--   },
+-- },
 
 -- require("flash").jump({continue = true})
 -- -- don't override ;, mappings if they exist

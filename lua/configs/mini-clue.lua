@@ -1,5 +1,6 @@
 local miniclue = require('mini.clue')
 local mapper_clues = require('mapper').clues or {}
+
 local clues = {
   miniclue.gen_clues.builtin_completion(),
   miniclue.gen_clues.g(),

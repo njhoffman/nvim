@@ -34,9 +34,56 @@ local default = {
   silent = false,
 }
 
+local cache
+
+-- Jump between text objects
+local function user_textobject_id(ai_type)
+  -- Get from user single character textobject identifier
+  local needs_help_msg = true
+  vim.defer_fn(function()
+    if not needs_help_msg then
+      return
+    end
+    local msg = string.format('Enter `%s` textobject identifier (single character) ', ai_type)
+    vim.notify(msg)
+  end, 1000)
+  local ok, char = pcall(vim.fn.getcharstr)
+  needs_help_msg = false
+
+  -- Terminate if couldn't get input (like with <C-c>) or it is `<Esc>`
+  if not ok or char == '\27' then
+    return nil
+  end
+
+  if char:find('^[%w%p%s]$') == nil then
+    vim.notify('Input must be single character: alphanumeric, punctuation, or space.')
+    return nil
+  end
+
+  return char
+end
+
+local function jump_textobject(prev_next, left_right, ai_type)
+  cache = {}
+
+  local ok, ai = pcall(require, 'mini.ai')
+  if not ok then
+    vim.notify('No mini-ai found')
+  end
+  -- Get user input
+  local tobj_id = user_textobject_id('a')
+  if tobj_id == nil then
+    return
+  end
+
+  -- Jump!
+  ai.move_cursor(left_right, ai_type, tobj_id, { n_times = vim.v.count1, search_method = prev_next })
+end
+
 local ai = require('mini.ai')
 local opts = {
   mappings = {
+
     -- Main textobject prefixes
     around = 'a',
     inside = 'i',
@@ -102,60 +149,59 @@ local opts = {
 
 ai.setup(opts)
 
--- Move cursor to corresponding edge of `a` textobject
-local gen_action = function(seq)
-  local edge = ({ ['['] = 'left', [']'] = 'right' })[seq:sub(1, 1)]
-  local ai_type = seq:sub(2, 2)
-  local prev_next = ({ l = 'prev', n = 'next' })[seq:sub(3, 3)]
-  vim.keymap.set({ 'n', 'v' }, seq, function()
-    jump_textobject(prev_next, edge, ai_type)
-  end, {
-    expr = true,
-    desc = string.format('Jump to %s edge of %s `%s` text object', edge, ai_type, prev_next),
-  })
-end
--- gen_action('[al')
--- gen_action(']al')
--- gen_action('[an')
--- gen_action(']an')
--- gen_action('[in')
--- gen_action(']in')
--- gen_action('[il')
--- gen_action(']il')
-
 local setup_keymaps = function()
-  local vmap = require('mapper').vmap
-  local prefix = require('mapper').prefix
+  -- Move cursor to corresponding edge of `a` textobject
+  local gen_action = function(seq)
+    local edge = ({ ['['] = 'left', [']'] = 'right' })[seq:sub(1, 1)]
+    local ai_type = seq:sub(2, 2)
+    local prev_next = ({ l = 'prev', n = 'next' })[seq:sub(3, 3)]
+    vim.keymap.set({ 'n', 'v' }, seq, function()
+      jump_textobject(prev_next, edge, ai_type)
+    end, {
+      expr = true,
+      desc = string.format('Jump to %s edge of %s `%s` text object', edge, ai_type, prev_next),
+    })
+  end
+
+  gen_action('[al')
+  gen_action(']al')
+  gen_action('[an')
+  gen_action(']an')
+  gen_action('[in')
+  gen_action(']in')
+  gen_action('[il')
+  gen_action(']il')
+
 
 -- stylua: ignore
-local i = {
-  [' ']    = 'inside whitespace',
-  ['"']    = 'inside quote "',
-  ["'"]    = "inside s-quote '",
-  ['`']    = 'inside apostrophe `',
-  ['(']    = 'inside (',
-  [')']    = 'inside ) including white-space',
-  ['>']    = 'inside > including white-space',
-  ['<lt>'] = 'inside <',
-  [']']    = 'inside ] including white-space',
-  ['[']    = 'inside [',
-  ['}']    = 'inside } including white-space',
-  ['{']    = 'inside {',
-  ['?']    = 'inside user prompt',
-  _        = 'inside underscore',
-  a        = 'inside argument',
-  A        = 'inside attribute',
-  b        = 'inside balanced: ), ], }',
-  c        = 'inside class',
-  C        = 'inside conditional',
-  f        = 'inside function',
-  l        = 'inside line',
-  L        = 'inside loop',
-  o        = 'inside block, conditional, loop',
-  q        = 'inside quote: `, ", \'',
-  t        = 'inside tag',
-  x        = 'inside comment',
-}
+  local i = {
+    [' ']    = 'inside whitespace',
+    ['"']    = 'inside quote "',
+    ["'"]    = "inside s-quote '",
+    ['`']    = 'inside apostrophe `',
+    ['(']    = 'inside (',
+    [')']    = 'inside ) including white-space',
+    ['>']    = 'inside > including white-space',
+    ['<lt>'] = 'inside <',
+    [']']    = 'inside ] including white-space',
+    ['[']    = 'inside [',
+    ['}']    = 'inside } including white-space',
+    ['{']    = 'inside {',
+    ['?']    = 'inside user prompt',
+    _        = 'inside underscore',
+    a        = 'inside argument',
+    A        = 'inside attribute',
+    b        = 'inside balanced: ), ], }',
+    c        = 'inside class',
+    C        = 'inside conditional',
+    f        = 'inside function',
+    l        = 'inside line',
+    L        = 'inside loop',
+    o        = 'inside block, conditional, loop',
+    q        = 'inside quote: `, ", \'',
+    t        = 'inside tag',
+    x        = 'inside comment',
+  }
 
   local a = vim.deepcopy(i)
   for k, v in pairs(a) do
@@ -165,9 +211,10 @@ local i = {
   local ic = vim.deepcopy(i)
   local ac = vim.deepcopy(a)
   for key, name in pairs({ n = 'Next', l = 'Last' }) do
-    i[key] = vim.tbl_extend('force', { name = 'Inside ' .. name .. ' textobject' }, ic)
-    a[key] = vim.tbl_extend('force', { name = 'Around ' .. name .. ' textobject' }, ac)
+    i[key] = vim.tbl_extend('force', { name = 'inside ' .. name .. ' textobject' }, ic)
+    a[key] = vim.tbl_extend('force', { name = 'around ' .. name .. ' textobject' }, ac)
   end
+  -- Note: mini.clue doesn't support operator pending motions
   require('which-key').register({
     mode = { 'o', 'x' },
     i = i,
@@ -176,91 +223,3 @@ local i = {
 end
 
 setup_keymaps()
-
-local setup_all_keymaps = function()
-  local prefixes = {
-    ['i'] = { name = 'inside' },
-    ['in'] = { name = 'next' },
-    ['il'] = { name = 'last' },
-    ['a'] = { name = 'around' },
-    ['an'] = { name = 'next' },
-    ['al'] = { name = 'last' },
-    ['g['] = { name = 'goto left' },
-    ['g]'] = { name = 'goto right' },
-  }
-
-  for k, v in ipairs(prefixes) do
-    prefix({ 'o', 'x' }, k, v.name)
-  end
-
-  local virtual_map = function(lhs, desc, modes)
-    modes = modes or { 'o', 'x' }
-    vmap(modes, lhs, { desc = desc, plugin = 'mini.ai', category = 'Motion' })
-  end
-
-  -- for k, v in pairs(vim.deepcopy(text_obj)) do
-  --   virtual_map('i' .. k, v)
-  -- end
-  --
-  for k, v in pairs(vim.deepcopy(text_obj)) do
-    local desc = string.gsub(tostring(v), 'including.*', '')
-    desc = string.gsub(desc, 'inside', 'around')
-    virtual_map('a' .. k, desc)
-  end
-
-  -- for k, v in pairs(vim.deepcopy(text_obj)) do
-  --   local desc = string.gsub(tostring(v), 'including.*', '')
-  --   desc = string.gsub(desc, 'inside', 'inside last')
-  --   virtual_map('il' .. k, desc)
-  -- end
-  --
-  -- for k, v in pairs(vim.deepcopy(text_obj)) do
-  --   local desc = string.gsub(tostring(v), 'including.*', '')
-  --   desc = string.gsub(desc, 'inside', 'inside next')
-  --   virtual_map('in' .. k, desc)
-  -- end
-  --
-  -- for k, v in pairs(vim.deepcopy(text_obj)) do
-  --   local desc = string.gsub(tostring(v), 'including.*', '')
-  --   desc = string.gsub(desc, 'inside', 'around last')
-  --   virtual_map('al' .. k, desc)
-  -- end
-  --
-  -- for k, v in pairs(vim.deepcopy(text_obj)) do
-  --   local desc = string.gsub(tostring(v), 'including.*', '')
-  --   desc = string.gsub(desc, 'inside', 'around next')
-  --   virtual_map('an' .. k, desc)
-  -- end
-
-  for k, v in pairs(vim.deepcopy(text_obj)) do
-    local desc = string.gsub(tostring(v), 'including.*', '')
-    desc = string.gsub(desc, 'inside', 'goto left')
-    virtual_map('g[' .. k, desc, { 'x', 'o', 'n' })
-  end
-
-  for k, v in pairs(vim.deepcopy(text_obj)) do
-    local desc = string.gsub(tostring(v), 'including.*', '')
-    desc = string.gsub(tostring(desc), 'inside', 'goto right')
-    virtual_map('g]' .. k, desc, { 'x', 'o', 'n' })
-  end
-end
-
--- w word
--- gn the next search pattern match
--- s inner sentence
--- b '(' ')' block
--- p`` paragraph
--- = @.assignment
--- b @.block
--- m @.call (function)
---   @.comment (only outer)
---   @.conditional
---   @.frame
--- f @.function
--- l @.loop
---   @.number (only inner)
--- a @.parameter
---   @.return
--- s @.statement
--- c @.class ?
--- register all text objects with mapper

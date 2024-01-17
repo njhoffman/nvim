@@ -89,6 +89,18 @@ require('ts-node-action').setup({
 local trigger_key = '+' -- T
 vim.keymap.set('n', trigger_key, require('ts-node-action').node_action, { desc = 'Trigger node action' })
 
+-- 	                       (*)	Ruby	js/ts/tsx/jsx	Lua	Python	PHP	Rust	C#	JSON	HTML	YAML	R
+-- toggle_boolean()         ✅        ✅      ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅
+-- cycle_case()             ✅        ✅      ✅ ✅ ✅ ✅ ✅ ✅ ✅
+-- cycle_quotes()           ✅        ✅      ✅ ✅ ✅ ✅ ✅
+-- toggle_multiline()       ✅        ✅      ✅ ✅ ✅ ✅ ✅ ✅
+-- toggle_operator()        ✅        ✅      ✅ ✅ ✅ ✅ ✅
+-- toggle_int_readability() ✅        ✅      ✅ ✅ ✅ ✅ ✅
+-- toggle_block()           ✅
+-- if/else <-> ternery      ✅ ✅
+-- if/postfix               ✅
+-- toggle_hash_style()      ✅
+-- conceal_string()         ✅            ✅
 -- lua/ts-node-action/filetypes/julia.lua
 -- local ret_san = function(input)
 --     if type(input) == "string" then return vim.fn.split(input, "\n") end

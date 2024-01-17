@@ -179,9 +179,14 @@ local plugins = {
     build = ':TSUpdate',
     event = { 'BufReadPost', 'BufNewFile' },
     dependencies = {
-      'JoosepAlviste/nvim-ts-context-commentstring',
-      -- https://github.com/David-Kunz/markid
-      -- /mfussenegger/nvim-treehopper
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      {
+        'JoosepAlviste/nvim-ts-context-commentstring',
+        lazy = true,
+        opts = {
+          enable_autocmd = false,
+        },
+      },
       'RRethy/nvim-treesitter-endwise',
       'theHamsta/nvim-treesitter-pairs',
       'RRethy/nvim-treesitter-textsubjects',
@@ -191,9 +196,26 @@ local plugins = {
       'nvim-lua/plenary.nvim',
       { 'ThePrimeagen/refactoring.nvim', dependencies = { { 'nvim-lua/plenary.nvim' } } },
       'nvim-treesitter/nvim-treesitter-refactor',
-      'nvim-treesitter/nvim-treesitter-textobjects',
       'nvim-treesitter/playground',
-      'romgrk/nvim-treesitter-context',
+      {
+        'nvim-treesitter/nvim-treesitter-context',
+        keys = {
+          {
+            '<leader>otc',
+            function()
+              local Util = require('utils.inject')
+              local tsc = require('treesitter-context')
+              tsc.toggle()
+              if Util.inject.get_upvalue(tsc.toggle, 'enabled') then
+                vim.notify('Enabled Treesitter Context', vim.lsp.log_levels.INFO, { title = 'Option' })
+              else
+                vim.notify('Disabled Treesitter Context', vim.lsp.log_levels.WARN, { title = 'Option' })
+              end
+            end,
+            desc = 'Toggle Treesitter Context',
+          },
+        },
+      },
       'windwp/nvim-ts-autotag',
       { 'ziontee113/query-secretary', keys = { '<leader><BS>' } },
       { 'ckolkey/ts-node-action', dependencies = { 'none-ls.nvim' } },
@@ -308,7 +330,6 @@ local plugins = {
     end,
   }, -- f2aaab1
   -- movement highlighters
-  -- https://github.com/folke/flash.nvim
   -- https://github.com/jjshoots/betterf.nvim/tree/main
   { 'phaazon/hop.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   {
@@ -345,7 +366,26 @@ local plugins = {
   -- matching
   { 'andymass/vim-matchup', lazy = false },
   -- pairs
-  -- { 'echasnovski/mini.pairs', event = 'InsertEnter' },
+  {
+    'echasnovski/mini.pairs',
+    event = 'VeryLazy',
+    enable = false,
+    keys = {
+      {
+        '<leader>otp',
+        function()
+          local Util = require('lazy.core.util')
+          vim.g.minipairs_disable = not vim.g.minipairs_disable
+          if vim.g.minipairs_disable then
+            Util.warn('Disabled auto pairs', { title = 'Option' })
+          else
+            Util.info('Enabled auto pairs', { title = 'Option' })
+          end
+        end,
+        desc = 'Toggle auto pairs',
+      },
+    },
+  },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
   {
     'altermo/ultimate-autopair.nvim',
@@ -374,8 +414,19 @@ local plugins = {
   { 'jkramer/vim-checkbox', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
   -- formatting
   { 'johmsalas/text-case.nvim', event = 'VeryLazy' },
-  { 'echasnovski/mini.comment', version = false, event = 'VeryLazy' },
-  { 'numToStr/Comment.nvim', event = 'VeryLazy' },
+  {
+    'echasnovski/mini.comment',
+    version = false,
+    event = 'VeryLazy',
+    opts = {
+      options = {
+        custom_commentstring = function()
+          return require('ts_context_commentstring.internal').calculate_commentstring() or vim.bo.commentstring
+        end,
+      },
+    },
+  },
+  -- { 'numToStr/Comment.nvim', event = 'VeryLazy' },
   { 'andrewferrier/debugprint.nvim', event = 'VeryLazy' },
   { 'ecthelionvi/NeoComposer.nvim', event = 'VeryLazy', dependencies = { 'kkharji/sqlite.lua', 'telescope.nvim' } },
   { 'tpope/vim-repeat', event = 'VeryLazy' },
@@ -825,6 +876,18 @@ local plugins = {
     opts = { automatic = true, command = true, executable = true, default = '/bin/bash' },
   },
   { 'ray-x/go.nvim', dependencies = { 'ray-x/guihua.lua' }, ft = 'go' },
+
+  -- { -- Formatter integration
+  --   'stevearc/conform.nvim',
+  --   cmd = 'ConformInfo',
+  --   config = function()
+  --     require('conform.formatters.injected').options.ignore_errors = true
+  --     require('conform').setup(formatterConfig)
+  --   end,
+  --   keys = {
+  --     { '<D-s>', formattingFunc, desc = '󰒕 Format & Save', mode = { 'n', 'x' } },
+  --   },
+  -- },
   -- { -- auto-convert string and f/template string
   --   'chrisgrieser/nvim-puppeteer',
   --   ft = { 'python', 'javascript', 'typescript', 'lua' },

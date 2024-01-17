@@ -34,11 +34,23 @@ local kind_comparator = function(entry1, entry2)
   end
 end
 
+-- comparators = {
+--   require('cmp_fuzzy_buffer.compare'),
+--   compare.offset,
+--   compare.exact,
+--   compare.score,
+--   compare.recently_used,
+--   compare.kind,
+--   compare.sort_text,
+--   compare.length,
+--   compare.order,
+-- },
 -- 				require("cmp_ai.compare"),
 local sorting = {
   priority_weight = 2,
   comparators = {
     require('copilot_cmp.comparators').prioritize,
+    require('cmp_fuzzy_buffer.compare'),
     cmp.config.compare.offset,
     under_comparator,
     cmp.config.compare.recently_used,

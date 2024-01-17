@@ -145,7 +145,7 @@ local create_window = function(width, height, opts)
 end
 
 local function create_hover(provider_id, result, opts)
-  if not result or not result.lines then
+  if type(result) ~= 'table' or type(result.lines) ~= 'table' then
     return
   end
 

@@ -1,3 +1,45 @@
+-- local sources = {
+--   { name = 'nvim_lsp' },
+--   { name = 'luasnip' },
+--   { name = 'treesitter', keyword_length = 2 },
+--
+--   -- { name = "cmp_tabnine", keyword_length = 0 },
+--   { name = 'emoji' },
+--   { name = 'path' },
+-- }
+-- if vim.o.ft == 'sql' then
+--   table.insert(sources, { name = 'vim-dadbod-completion' })
+-- end
+--
+-- if vim.o.ft == 'norg' then
+--   table.insert(sources, { name = 'neorg' })
+--   table.insert(sources, { name = 'spell' })
+--   table.insert(sources, { name = 'look' })
+-- end
+--
+-- if vim.o.ft == 'org' then
+--   table.insert(sources, { name = 'org' })
+--   table.insert(sources, { name = 'spell' })
+--   table.insert(sources, { name = 'look' })
+-- end
+-- if
+--   vim.o.ft == 'markdown'
+--   or vim.o.ft == 'txt'
+--   or vim.o.ft == 'html'
+--   or vim.o.ft == 'gitcommit'
+-- then
+--   table.insert(sources, { name = 'spell' })
+--   table.insert(sources, { name = 'look' })
+-- end
+-- if vim.o.ft == 'lua' then
+--   table.insert(sources, { name = 'nvim_lua' })
+-- end
+--
+-- if vim.o.ft == 'zsh' or vim.o.ft == 'sh' or vim.o.ft == 'fish' or vim.o.ft == 'proto' then
+--   table.insert(sources, { name = 'buffer', keyword_length = 3 })
+--   table.insert(sources, { name = 'calc' })
+-- end
+
 local sources = {
   main = {
     {

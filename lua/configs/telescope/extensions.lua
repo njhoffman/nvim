@@ -15,7 +15,7 @@ local extension_configs = {
     ['show_domain_icons'] = true,
   },
 
-  ['devdocs']  = {},
+  ['devdocs'] = {},
   ['devhints'] = {},
   ['oldfiles'] = {
     mappings = mappings.file,
@@ -28,7 +28,7 @@ local extension_configs = {
   ['env'] = {},
   -- ['fences'] = {},
   ['filetypes'] = {},
-  -- ['pickers_history'] = {},
+  ['pickers_history'] = {},
   -- ['smart_history'] = {},
 
   ['find_pickers'] = {},

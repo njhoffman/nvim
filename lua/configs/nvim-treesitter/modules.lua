@@ -108,21 +108,18 @@ local modules = {
     keymaps = {
       init_selection = 'vv',
       node_incremental = 'v',
-      -- scope_incremental = '<CR>',
+      scope_incremental = false,
       node_decremental = 'V',
     },
   },
   textsubjects = {
-    -- Lua, Rust, Go, Ruby, Python, JavaScript / JSX, TypeScript / TSX, Elixir, Julia.
-    -- v<CR><CR>...
-    enable = false,
+    enable = true,
+    prev_selection = '<BS>', -- (Optional) keymap to select the previous selection
     keymaps = {
-      ['gts'] = 'textsubjects-smart', -- works in visual mode
-      ['gto'] = 'textsubjects-container-outer',
-      ['.'] = 'textsubjects-smart',
-      -- ["<tab>"] = "textsubjects-container-outer",
-      -- [";"] = "textsubjects-container-outer",
-      -- ["<cr>"] = "textsubjects-smart", -- works in visual mode
+      ['<cr>'] = 'textsubjects-smart',
+      -- ['.'] = 'textsubjects-smart',
+      ['<C-CR>'] = 'textsubjects-container-outer',
+      ['<S-CR>'] = { 'textsubjects-container-inner', desc = 'Select inside containers (classes, functions, etc.)' },
     },
   },
   pairs = {

@@ -76,7 +76,7 @@ end
 -- Add parenthesis on completion confirmation
 cmp.event:on('confirm_done', function(event)
   local ok, ls_name = pcall(ls_name_from_event, event)
-  if ok and vim.tbl_contains({ 'rust_analyzer'}, ls_name) then
+  if ok and vim.tbl_contains({ 'rust_analyzer' }, ls_name) then
     return
   end
   local completion_kind = event.entry:get_completion_item().kind
@@ -196,6 +196,32 @@ cmp.setup.filetype('lua', {
     return is_enabled() and not (line:find('%s%-%-?$') or line:find('^%-%-?$'))
   end,
 })
+-- cmp.setup.cmdline(':', {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = cmp.config.sources({
+--     { name = 'path' },
+--   }, {
+--     { name = 'cmdline_history' },
+--     {
+--       name = 'cmdline',
+--       option = {
+--         ignore_cmds = { 'Man', '!' },
+--       },
+--     },
+--   }),
+-- })
+-- cmp.setup.cmdline('/', {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = {
+--     { name = 'buffer' },
+--     -- { name = 'cmdline_history' },
+--     -- { name = 'rg', keyword_length = 4 },  -- slow
+--     {
+--       name = 'fuzzy_buffer',
+--       option = { max_matches = 5, max_buffer_lines = 4000, min_match_length = 4 },
+--     },
+--   },
+-- })
 
 cmp.setup.cmdline({ '/', '?' }, {
   -- mapping = cmp.mapping.preset.cmdline(mapping_sets),

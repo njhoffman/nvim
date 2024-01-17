@@ -15,19 +15,22 @@ local handler = require('telescope._extensions.pickers_history.handler')
 -- sudo apt-get install sqlite3 libsqlite3-dev # Ubuntu
 
 local extension = {
-  setup = function(_, config)
-    config = config or {}
-    if config.history ~= false then
-      config.history.handler = function()
-        handler.get_smart_history()
-      end
-    end
-  end,
+  -- setup = function(_, config)
+  --   config = config or {}
+  --   if config.history ~= false then
+  --     config.history.handler = function()
+  --       handler.get_simple_history()
+  --       -- handler.get_smart_history()
+  --     end
+  --   end
+  -- end,
   exports = {
     history = function()
-      return handler.get_smart_history()
+      return handler.get_history()
+      --   return handler.get_smart_history()
+      --   return handler.get_simple_history()
     end,
   },
 }
-return telescope.register_extension(extension)
 -- extension.setup(_, { history = {} })
+return telescope.register_extension(extension)

@@ -257,4 +257,106 @@ utils.addToLuaLine = function(location, section, component)
   -- Theming needs to be re-applied, since the lualine-styling can change
   require('config.theme-customization').reloadTheming()
 end
+
+utils.load_env_file = function()
+  local env_file = require('core.global').home .. '/.env'
+  local env_contents = {}
+  if vim.fn.filereadable(env_file) ~= 1 then
+    print('.env file does not exist')
+    return
+  end
+  local contents = vim.fn.readfile(env_file)
+  for _, item in pairs(contents) do
+    local line_content = vim.fn.split(item, '=')
+    env_contents[line_content[1]] = line_content[2]
+  end
+
+  return env_contents
+end
+
+utils.load_dbs = function()
+  local env_contents = utils.load_env_file()
+  local dbs = {}
+  for key, value in pairs(env_contents) do
+    if vim.fn.stridx(key, 'DB_CONNECTION_') >= 0 then
+      local db_name = vim.fn.split(key, '_')[3]:lower()
+      dbs[db_name] = value
+    end
+  end
+  return dbs
+end
+
+utils.worktree = function()
+  local function git_worktree(arg)
+    if arg == 'create' then
+      require('telescope').extensions.git_worktree.create_git_worktree()
+    else
+      require('telescope').extensions.git_worktree.git_worktrees()
+    end
+  end
+
+  require('git-worktree').setup({})
+  vim.api.nvim_create_user_command('Worktree', "lua require'modules.tools.config'.worktree()(<f-args>)", {
+    nargs = '*',
+    complete = function()
+      return { 'create' }
+    end,
+  })
+
+  local Worktree = require('git-worktree')
+  Worktree.on_tree_change(function(op, metadata)
+    if op == Worktree.Operations.Switch then
+      print('Switched from ' .. metadata.prev_path .. ' to ' .. metadata.path)
+    end
+
+    if op == Worktree.Operations.Create then
+      print('Create worktree ' .. metadata.path)
+    end
+
+    if op == Worktree.Operations.Delete then
+      print('Delete worktree ' .. metadata.path)
+    end
+  end)
+  return { git_worktree = git_worktree }
+end
+
+utils.diffview = function()
+  local cb = require('diffview.config').diffview_callback
+  require('diffview').setup({
+    diff_binaries = false, -- Show diffs for binaries
+    use_icons = true, -- Requires nvim-web-devicons
+    enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
+    signs = { fold_closed = '', fold_open = '' },
+    file_panel = {
+      win_config = {
+        position = 'left', -- One of 'left', 'right', 'top', 'bottom'
+        width = 35, -- Only applies when position is 'left' or 'right'
+      },
+    },
+    key_bindings = {
+      -- The `view` bindings are active in the diff buffers, only when the current
+      -- tabpage is a Diffview.
+      view = {
+        ['<tab>'] = cb('select_next_entry'), -- Open the diff for the next file
+        ['<s-tab>'] = cb('select_prev_entry'), -- Open the diff for the previous file
+        ['<leader>e'] = cb('focus_files'), -- Bring focus to the files panel
+        ['<leader>b'] = cb('toggle_files'), -- Toggle the files panel.
+      },
+      file_panel = {
+        ['j'] = cb('next_entry'), -- Bring the cursor to the next file entry
+        ['<down>'] = cb('next_entry'),
+        ['k'] = cb('prev_entry'), -- Bring the cursor to the previous file entry.
+        ['<up>'] = cb('prev_entry'),
+        ['<cr>'] = cb('select_entry'), -- Open the diff for the selected entry.
+        ['o'] = cb('select_entry'),
+        ['R'] = cb('refresh_files'), -- Update stats and entries in the file list.
+        ['<tab>'] = cb('select_next_entry'),
+        ['<s-tab>'] = cb('select_prev_entry'),
+        ['<leader>e'] = cb('focus_files'),
+        ['<leader>b'] = cb('toggle_files'),
+      },
+    },
+  })
+end
+
 return utils

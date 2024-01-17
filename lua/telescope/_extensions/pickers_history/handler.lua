@@ -69,7 +69,7 @@ local get_history = function()
       end
 
       if line ~= '' then
-        ensure_content(self, title, cwd)
+        -- ensure_content(self, title, cwd)
         if self.content[#self.content] ~= line then
           table.insert(self.content, line)
 
@@ -102,10 +102,10 @@ local get_history = function()
         self:reset()
       end
     end,
-    pre_get = function(self, _, picker)
-      local cwd = picker.cwd or vim.loop.cwd()
-      ensure_content(self, picker.prompt_title, cwd)
-    end,
+    -- pre_get = function(self, _, picker)
+    --   local cwd = picker.cwd or vim.loop.cwd()
+    --   ensure_content(self, picker.prompt_title, cwd)
+    -- end,
   })
 end
 
@@ -158,7 +158,7 @@ local get_smart_history = function()
       local title = picker.prompt_title
       local cwd = picker.cwd or vim.loop.cwd()
       if line ~= '' then
-        ensure_content(self, title, cwd)
+        -- ensure_content(self, title, cwd)
         if self.content[#self.content] ~= line then
           table.insert(self.content, line)
 
@@ -180,10 +180,10 @@ local get_smart_history = function()
         self:reset()
       end
     end,
-    pre_get = function(self, _, picker)
-      local cwd = picker.cwd or vim.loop.cwd()
-      ensure_content(self, picker.prompt_title, cwd)
-    end,
+    -- pre_get = function(self, _, picker)
+    --   local cwd = picker.cwd or vim.loop.cwd()
+    --   ensure_content(self, picker.prompt_title, cwd)
+    -- end,
   })
 end
 

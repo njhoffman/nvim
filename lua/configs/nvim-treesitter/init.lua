@@ -53,6 +53,60 @@ require('ts_context_commentstring').setup({
 })
 
 vim.treesitter.language.register('bash', 'zsh')
+vim.filetype.add({
+  extension = { rasi = 'rasi' },
+  pattern = {
+    ['.*/waybar/config'] = 'jsonc',
+    ['.*/mako/config'] = 'dosini',
+    ['.*/kitty/*.conf'] = 'bash',
+  },
+})
+
+-- local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+-- parser_config.norg = {
+--   install_info = {
+--     url = 'https://github.com/nvim-neorg/tree-sitter-norg',
+--     files = { 'src/parser.c', 'src/scanner.cc' },
+--     branch = 'main',
+--   },
+-- }
+-- parser_config.sql = {
+--   install_info = {
+--     url = 'https://github.com/m-novikov/tree-sitter-sql',
+--     files = { 'src/parser.c' },
+--     branch = 'main',
+--   },
+--   filetype = {'sql', 'psql'},
+-- }
+
+-- textobj-unit
+local textobj_unit = 'treesitter._textobjects.unit'
+require(textobj_unit).setup()
+
+vim.api.nvim_set_keymap(
+  'x',
+  'iu',
+  ':lua require"' .. textobj_unit .. '".select()<CR>',
+  { noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+  'x',
+  'au',
+  ':lua require"' .. textobj_unit .. '".select(true)<CR>',
+  { noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+  'o',
+  'iu',
+  ':<c-u>lua require"' .. textobj_unit .. '".select()<CR>',
+  { noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+  'o',
+  'au',
+  ':<c-u>lua require"' .. textobj_unit .. '".select(true)<CR>',
+  { noremap = true, silent = true }
+)
 
 -- https://github.com/kjuulh/tree-sitter-hurl
 -- https://github.com/kjuulh/lazyvim/blob/ff018a06c332ab69d48faa546f789bd4cedb4710/lua/plugins/treesitter.lua

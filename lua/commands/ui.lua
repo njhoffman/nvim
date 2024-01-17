@@ -94,7 +94,8 @@ local get_splits = function(directions)
   return splits
 end
 
-local cmd = 'BufferDelete'
+-- local cmd = 'BufferDelete'
+local cmd = 'Bdelete'
 local close_multi = function(skip_prompt)
   local tabs = vim.api.nvim_list_tabpages() or {}
   local splits = get_splits({ 'l', 'h', 'j', 'k' }, true) or {}

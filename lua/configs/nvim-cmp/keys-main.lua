@@ -75,16 +75,14 @@ local main = {
   -- ['<C-space>'] = mapping.complete(),
   ['<C-Space>'] = { i = mapping.complete() },
   ['<CR>'] = { i = mapping.confirm({ select = false }) },
-
-  -- if cmp.get_active_entry() then
-  --        cmp.confirm()
-  --    else
-  --        require'ultimate-autopair.maps.cr'.cmpnewline()
-  --    end
-  -- ["<CR>"] = cmp.mapping.confirm {
-  --   behavior = cmp.ConfirmBehavior.Insert,
-  --   select = true,
-  -- },
+  ['<S-CR>'] = { i = mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Replace, select = true }) },
+  ['<C-CR>'] = {
+    i = function(fallback)
+      local cmp = require('cmp')
+      cmp.abort()
+      fallback()
+    end,
+  },
   ['<C-D>'] = { i = mapping.abort() },
   ['<Tab>'] = {
     i = function(fallback)

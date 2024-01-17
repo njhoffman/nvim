@@ -59,7 +59,7 @@ local telescope_config = {
       },
     },
     cache_picker = {
-      num_pickers = 20,
+      num_pickers = 100,
       limit_entries = 2000,
     },
     history = {
@@ -98,6 +98,7 @@ local telescope_config = {
     file_previewer = custom_previewers.buffer_cat,
     qflist_previewer = previewers.vim_buffer_qflist.new,
     preview = {
+      -- hide_on_startup = false,
       check_mime_type = true,
       ls_short = true,
       filesize_limit = 2,

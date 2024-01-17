@@ -26,9 +26,12 @@ local default_cfg = {
     resession = false,
   },
 }
+
 local cfg = { popup_options = { border = 'rounded' } }
+
 require('grapple').setup(cfg)
-vim.keymap.set('n', '<leader>m', require('grapple').toggle)
+
+vim.keymap.set('n', '<leader>m', require('grapple').toggle, { desc = 'grapple toggle position' })
 -- vim.keymap.set('n', '<leader>j', function()
 --   require('grapple').select({ key = '{name}' })
 -- end)

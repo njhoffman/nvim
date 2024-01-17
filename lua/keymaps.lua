@@ -1225,14 +1225,16 @@ map('n', '<M-g>', "<cmd>lua require('telescope.run')('projects','projects')<cr>"
   desc = 'find projects telescope',
 })
 
-map('n', '<C-Space>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
+map({ 'n', 'x' }, '<C-Space>', "<cmd>lua require('telescope.run')('find_pickers','find_pickers')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'repeat telescope',
   desc = 'repeast last telescope command',
 })
 
-map({ 'n', 'v' }, '<leader><leader>', "<cmd>lua require('telescope.run')('find_pickers','find_pickers')<cr>", {
+-- lua require('configs.telescope.actions').prev_picker()
+-- <cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>
+map({ 'n', 'x' }, '<leader><leader>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = 'prev' })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'find pickers',
