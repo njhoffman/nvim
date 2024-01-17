@@ -119,7 +119,8 @@ local clr_over = {
 return function(injected_functions)
   local sym = injected_functions.sym
   return {
-    Visual({ fg = 'none', bg = clr_over.selection, gui = 'bold,italic' }),
+    Visual({ fg = 'none', bg = '#101840', gui = 'bold,italic' }),
+    VisualAlt({ fg = 'none', bg = '#141436', gui = 'bold,italic' }),
     Error({ fg = clrs.error, bg = 'none' }),
     -- Error({ fg = "none", bg = "none" }),
     Underline({ gui = 'none' }),

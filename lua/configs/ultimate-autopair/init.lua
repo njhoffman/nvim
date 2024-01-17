@@ -232,8 +232,7 @@ local cfg = {
   },
 }
 
-local experimental = {
-}
+local experimental = {}
 -- extensions={
 --     {'cmdtype',{'/','?','@'}},
 --     'multichar',
@@ -254,7 +253,7 @@ require('ultimate-autopair.core').modes = { 'i', 'c', 'n', 't' }
 local configs = {
   ua.extend_default(cfg),
   { profile = require('ultimate-autopair.experimental.terminal').init, { '{', '}' } },
-  { profile = require('ultimate-autopair.experimental.matchpair').init },
+  -- { profile = require('ultimate-autopair.experimental.matchpair').init },
 }
 
 local left = vim.api.nvim_replace_termcodes('<Left>', true, false, true)

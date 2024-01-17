@@ -108,6 +108,21 @@ vim.api.nvim_set_keymap(
   { noremap = true, silent = true }
 )
 
+vim.api.nvim_set_keymap(
+  'n',
+  'ghiu',
+  ':lua require"' .. textobj_unit .. '".toggle_highlighting("VisualAlt")<CR>',
+  { noremap = true, silent = true }
+)
+
+vim.api.nvim_create_user_command( -- :TSUnitHighlight
+  'TSUnitHighlight',
+  ':lua require"' .. textobj_unit .. '".toggle_highlighting("VisualAlt")<CR>',
+  { nargs = 0 }
+)
+
+-- 'lua require"treesitter-unit".enable_highlighting()',
+
 -- https://github.com/kjuulh/tree-sitter-hurl
 -- https://github.com/kjuulh/lazyvim/blob/ff018a06c332ab69d48faa546f789bd4cedb4710/lua/plugins/treesitter.lua
 -- local parser_config = require('nvim-treesitter.parsers').get_parser_configs()

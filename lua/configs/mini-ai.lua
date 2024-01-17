@@ -81,9 +81,9 @@ local function jump_textobject(prev_next, left_right, ai_type)
 end
 
 local ai = require('mini.ai')
+
 local opts = {
   mappings = {
-
     -- Main textobject prefixes
     around = 'a',
     inside = 'i',
@@ -91,8 +91,8 @@ local opts = {
     -- Next/last variants
     around_next = 'an',
     inside_next = 'in',
-    around_last = 'al',
-    inside_last = 'il',
+    around_last = 'aN',
+    inside_last = 'iN',
 
     -- Move cursor to corresponding edge of `a` textobject
     goto_left = 'g[',
@@ -154,23 +154,23 @@ local setup_keymaps = function()
   local gen_action = function(seq)
     local edge = ({ ['['] = 'left', [']'] = 'right' })[seq:sub(1, 1)]
     local ai_type = seq:sub(2, 2)
-    local prev_next = ({ l = 'prev', n = 'next' })[seq:sub(3, 3)]
+    local prev_next = ({ ['N'] = 'prev', ['n'] = 'next' })[seq:sub(3, 3)]
     vim.keymap.set({ 'n', 'v' }, seq, function()
       jump_textobject(prev_next, edge, ai_type)
     end, {
       expr = true,
-      desc = string.format('Jump to %s edge of %s `%s` text object', edge, ai_type, prev_next),
+      desc = string.format('jump to %s edge of %s `%s` text object', edge, ai_type, prev_next),
     })
   end
 
-  gen_action('[al')
-  gen_action(']al')
   gen_action('[an')
   gen_action(']an')
+  gen_action('[aN')
+  gen_action(']aN')
   gen_action('[in')
   gen_action(']in')
-  gen_action('[il')
-  gen_action(']il')
+  gen_action('[iN')
+  gen_action(']iN')
 
 
 -- stylua: ignore
