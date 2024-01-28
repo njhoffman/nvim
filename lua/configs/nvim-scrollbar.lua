@@ -177,6 +177,7 @@ local opts = {
   excluded_filetypes = {
     'chatgpt-input',
     'cmp_docs',
+    'cmp_menu',
     'lazy',
     'neoai-input',
     'noice',
@@ -197,6 +198,7 @@ local opts = {
   handlers = {
     cursor = true,
     diagnostic = true,
+    handle = true,
     search = true, -- Requires hlslens to be loaded
   },
 }

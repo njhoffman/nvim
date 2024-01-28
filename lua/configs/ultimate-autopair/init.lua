@@ -40,7 +40,7 @@ local cfg = {
     --use multiple configs (|ultimate-autopair-map-multi-config|)
   },
   close = {
-    enable = true,
+    enable = false,
     map = '<M-)>', --string or table
     cmap = '<M-)>', --string or table
   },
@@ -49,26 +49,22 @@ local cfg = {
     enable_normal = true,
     enable_reverse = true,
     hopout = false,
+    multi = true,
     multiline = true,
-    nocursormove = false,
     do_nothing_if_fail = true,
-    faster = false, -- only enables jump over pair, goto/end nextline
-    -- multi = true,
-    -- {map='<A-e>',nocursormove=true},
-    -- {map='<A-f>',nocursormove=false},
-    map = '<M-0>', --string or table
-    rmap = '<M-9>', --string or table
-    cmap = '<M-0>', --string or table
-    rcmap = '<M-9>', --string or table
+    -- no_filter_nodes = { 'string', 'raw_string', 'string_literals', 'character_literal' },
+    { faster = false, nocursormove = false, map = '<M-0>', rmap = '<M-9>', cmap = '<M-0>', rcmap = '<M-9>' },
+    -- { faster = false, nocursormove = true, map = '<M-)>', rmap = '<M-(>', cmap = '<M-)>', rcmap = '<M-(>' },
+    { faster = true, nocursormove = true, map = "<M-'>", rmap = '<M-;>', cmap = "<M-'>", rcmap = '<M-;>' },
+    { faster = true, nocursormove = true, map = '<M-.>', rmap = '<M-,>', cmap = '<M-.>', rcmap = '<M-,>' },
     -- which nodes to skip for tsnode filtering
-    no_filter_nodes = { 'string', 'raw_string', 'string_literals', 'character_literal' },
     conf = {},
   },
   tabout = { -- *ultimate-autopair-map-tabout-config*
     enable = true,
     map = '<Tab>', --string or table
     cmap = '<Tab>', --string or table
-    hopout = true,
+    hopout = false,
     conf = {
       -- tabkey = '', -- key to trigger tabout, set to an empty string to disable
       -- backwards_tabkey = '', -- key to trigger backwards tabout, set to an empty string to disable
@@ -112,29 +108,6 @@ local cfg = {
     ft = { 'lua' },
     disable_start = true,
     disable_end = true,
-  },
-  internal_pairs = { -- *ultimate-autopair-pairs-default-pairs*
-    { '[', ']', fly = true, dosuround = true, newline = true, space = true },
-    { '(', ')', fly = true, dosuround = true, newline = true, space = true },
-    { '{', '}', fly = true, dosuround = true, newline = true, space = true },
-    { '"', '"', suround = true, multiline = false },
-    {
-      "'",
-      "'",
-      suround = true,
-      cond = function(fn)
-        return not fn.in_lisp() or fn.in_string()
-      end,
-      alpha = true,
-      nft = { 'tex' },
-      multiline = false,
-    },
-    { '`', '`', nft = { 'tex', 'latex' }, multiline = false },
-    { '``', "''", ft = { 'tex' } },
-    { '```', '```', newline = true, ft = { 'markdown' } },
-    { '<!--', '-->', ft = { 'markdown', 'html' } },
-    { '"""', '"""', newline = true, ft = { 'python' } },
-    { "'''", "'''", newline = true, ft = { 'python' } },
   },
   extensions = {
     -- -- disable in comments
@@ -199,7 +172,7 @@ local cfg = {
       -- p = 30,
       -- filter = false,
       -- alpha = false,
-      after = true,
+      -- after = true,
       -- no_python = false, -- Weather to disable f-string detection.
       -- all = false, -- Weather to check for all in-characters, not just start pairs.
     },
@@ -216,17 +189,42 @@ local cfg = {
       nofilter = true, -- get it working on strings
       p = 10,
       undomapconf = {},
-      undomap = '<M-BS>',
-      undocmap = '<M-BS>',
+      -- undomap = '<BS>',
+      -- undocmap = '<BS>',
+      -- undomap = '<M-BS>',
+      -- undocmap = '<M-BS>',
       only_jump_end_pair = false,
     },
   },
   { '*', '*', multiline = false, ft = { 'markdown' } },
   { '**', '**', multiline = false, ft = { 'markdown' } },
   { '$', '$', multiline = false, ft = { 'markdown' } },
+  internal_pairs = { -- *ultimate-autopair-pairs-default-pairs*
+    { '[', ']', fly = true, dosuround = true, newline = true, space = true },
+    { '(', ')', fly = true, dosuround = true, newline = true, space = true },
+    { '{', '}', fly = true, dosuround = true, newline = true, space = true },
+    { '"', '"', suround = true, multiline = false },
+    {
+      "'",
+      "'",
+      suround = true,
+      cond = function(fn)
+        return not fn.in_lisp() or fn.in_string()
+      end,
+      alpha = true,
+      nft = { 'tex' },
+      multiline = false,
+    },
+    { '`', '`', nft = { 'tex', 'latex' }, multiline = false },
+    { '``', "''", ft = { 'tex' } },
+    { '```', '```', newline = true, ft = { 'markdown' } },
+    { '<!--', '-->', ft = { 'markdown', 'html' } },
+    { '"""', '"""', newline = true, ft = { 'python' } },
+    { "'''", "'''", newline = true, ft = { 'python' } },
+  },
   config_internal_pairs = {
-    { '"', '"', fly = true },
-    { "'", "'", fly = true },
+    -- { '"', '"', fly = true },
+    -- { "'", "'", fly = true },
     { '`', '`', newline = true },
     { '(', ')', suround = true },
   },
@@ -253,7 +251,7 @@ require('ultimate-autopair.core').modes = { 'i', 'c', 'n', 't' }
 local configs = {
   ua.extend_default(cfg),
   { profile = require('ultimate-autopair.experimental.terminal').init, { '{', '}' } },
-  -- { profile = require('ultimate-autopair.experimental.matchpair').init },
+  { profile = require('ultimate-autopair.experimental.matchpair').init },
 }
 
 local left = vim.api.nvim_replace_termcodes('<Left>', true, false, true)
@@ -269,6 +267,7 @@ table.insert(configs, {
   { profile = 'map', { 'i', '"', '""' .. left } },
 })
 ua.init(configs)
+
 -- table.insert(ua.configs, {
 --   profile = 'map',
 --   { 'i', '(', '()' },

@@ -14,6 +14,42 @@ local custom_providers = {
   -- helptags = require('configs.feline.provider-helptags').provider,
   selection_count = require('configs.feline.provider-selection_count').provider,
 }
+
+-- bg_jobs, cmdline and qf components
+-- function M:update_status()
+--     if vim.env.CLEARCASE_CMDLINE then
+--         local pattern = '^' .. username .. '_at_'
+--         if vim.env.CLEARCASE_CMDLINE:match(pattern) then
+--             return ' ' .. vim.split(vim.env.CLEARCASE_CMDLINE, ' ')[2]:gsub(pattern, '')
+--         end
+--         return ' ' .. vim.split(vim.env.CLEARCASE_CMDLINE, ' ')[2]
+--     end
+--     return ''
+-- end
+-- function M:update_status()
+--     local keys = vim.tbl_keys(STORAGE.jobs) or {}
+--     if #keys > 0 then
+--         -- local icon = vim.env.NO_COOL_FONTS and 'Jobs' or require('utils.functions').get_icon('perf')
+--         return ('%sJobs: %s'):format(hl.component_format_highlight(self.jobs_hl), #keys)
+--     end
+--     return ''
+-- end
+-- function M:update_status()
+--     local qf_values = vim.fn.getqflist { items = 0, idx = 0 }
+--     if #qf_values.items > 0 then
+--         local valid = 0
+--         for _, item in ipairs(qf_values.items) do
+--             if item.valid == 1 then
+--                 valid = valid + 1
+--             end
+--         end
+--         if valid > 0 then
+--             return ('%s%s %s:%s'):format(hl.component_format_highlight(self.qf_counter), 'QF', qf_values.idx, valid)
+--         end
+--     end
+--     return ''
+-- end
+
 -- -- Current vi mode ------>
 -- local vi_mode_hl = function()
 --   return {

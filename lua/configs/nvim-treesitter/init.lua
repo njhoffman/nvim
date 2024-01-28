@@ -62,22 +62,33 @@ vim.filetype.add({
   },
 })
 
--- local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
--- parser_config.norg = {
---   install_info = {
---     url = 'https://github.com/nvim-neorg/tree-sitter-norg',
---     files = { 'src/parser.c', 'src/scanner.cc' },
---     branch = 'main',
---   },
--- }
--- parser_config.sql = {
---   install_info = {
---     url = 'https://github.com/m-novikov/tree-sitter-sql',
---     files = { 'src/parser.c' },
---     branch = 'main',
---   },
---   filetype = {'sql', 'psql'},
--- }
+local parsers = require('nvim-treesitter.parsers')
+local parser_config = parsers.get_parser_configs()
+parser_config.org = {
+  install_info = {
+    url = 'https://github.com/milisims/tree-sitter-org',
+    revision = 'f110024d539e676f25b72b7c80b0fd43c34264ef',
+    files = { 'src/parser.c', 'src/scanner.cc' },
+  },
+  filetype = 'org',
+}
+
+parser_config.norg = {
+  install_info = {
+    url = 'https://github.com/nvim-neorg/tree-sitter-norg',
+    files = { 'src/parser.c', 'src/scanner.cc' },
+    branch = 'main',
+  },
+}
+
+parser_config.sql = {
+  install_info = {
+    url = 'https://github.com/m-novikov/tree-sitter-sql',
+    files = { 'src/parser.c' },
+    branch = 'main',
+  },
+  filetype = { 'sql', 'psql' },
+}
 
 -- textobj-unit
 local textobj_unit = 'treesitter._textobjects.unit'
@@ -86,19 +97,19 @@ require(textobj_unit).setup()
 vim.api.nvim_set_keymap(
   'x',
   'iu',
-  ':lua require"' .. textobj_unit .. '".select()<CR>',
+  '<cmd>lua require"' .. textobj_unit .. '".select()<CR>',
   { noremap = true, silent = true }
 )
 vim.api.nvim_set_keymap(
   'x',
   'au',
-  ':lua require"' .. textobj_unit .. '".select(true)<CR>',
+  '<cmd>lua require"' .. textobj_unit .. '".select(true)<CR>',
   { noremap = true, silent = true }
 )
 vim.api.nvim_set_keymap(
   'o',
   'iu',
-  ':<c-u>lua require"' .. textobj_unit .. '".select()<CR>',
+  '<cmd><c-u>lua require"' .. textobj_unit .. '".select()<CR>',
   { noremap = true, silent = true }
 )
 vim.api.nvim_set_keymap(
@@ -111,13 +122,13 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap(
   'n',
   'ghiu',
-  ':lua require"' .. textobj_unit .. '".toggle_highlighting("VisualAlt")<CR>',
+  '<cmd>lua require"' .. textobj_unit .. '".toggle_highlighting("VisualAlt")<CR>',
   { noremap = true, silent = true }
 )
 
 vim.api.nvim_create_user_command( -- :TSUnitHighlight
   'TSUnitHighlight',
-  ':lua require"' .. textobj_unit .. '".toggle_highlighting("VisualAlt")<CR>',
+  '<cmd>lua require"' .. textobj_unit .. '".toggle_highlighting("VisualAlt")<CR>',
   { nargs = 0 }
 )
 

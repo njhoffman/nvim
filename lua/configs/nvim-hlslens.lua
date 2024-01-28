@@ -46,63 +46,27 @@ local hlslens_config = {
   nearest_only = true,
   nearest_float_when = 'auto',
   virt_priority = 100,
+  build_position_cb = function(plist, _, _, _)
+    require('scrollbar.handlers.search').handler.show(plist.start_pos)
+  end,
 }
 
 require('hlslens').setup(hlslens_config)
--- vim.cmd [[nmap <silent> n nzz:call BlingHighight()<CR>]]
 
--- integrate with vim-visual-multi multiple cursors
--- aug VMlens
---   au!
---   au User visual_multi_start lua require('vmlens').start()
---   au User visual_multi_exit lua require('vmlens').exit()
--- aug END
-vim.api.nvim_set_keymap(
-  'n',
-  'n',
-  [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  'n',
-  'N',
-  [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
-  { noremap = true, silent = true }
-)
+vim.cmd([[
+    augroup scrollbar_search_hide
+        autocmd!
+        autocmd CmdlineLeave : lua require('scrollbar.handlers.search').handler.hide()
+    augroup END
+]])
 
-vim.api.nvim_set_keymap('n', '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {
-  noremap = true,
-  silent = true,
-  -- label = 'search forward cursor',
-  desc = 'search forward word nearest to the cursor.',
-})
-
-vim.api.nvim_set_keymap('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {
-  noremap = true,
-  silent = true,
-  -- label = 'search backward cursor',
-  desc = 'search backward word nearest to the cursor.',
-})
-
-vim.api.nvim_set_keymap('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {
-  noremap = true,
-  silent = true,
-  -- label = 'search forward partial',
-  desc = 'search forward partial nearest to the cursor.',
-})
-
-vim.api.nvim_set_keymap('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {
-  noremap = true,
-  silent = true,
-  -- label = 'search backward partial',
-  desc = 'search backward partial nearest to the cursor.',
-})
--- vim.api.nvim_set_keymap('n', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], {})
--- vim.api.nvim_set_keymap('n', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], {})
--- vim.api.nvim_set_keymap('n', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], {})
--- vim.api.nvim_set_keymap('n', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], {})
---
--- vim.api.nvim_set_keymap('x', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], {})
--- vim.api.nvim_set_keymap('x', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], {})
--- vim.api.nvim_set_keymap('x', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], {})
--- vim.api.nvim_set_keymap('x', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], {})
+-- -- run `:nohlsearch` and export results to quickfix
+-- -- if Neovim is 0.8.0 before, remap yourself.
+-- vim.keymap.set({'n', 'x'}, '<Leader>L', function()
+--     vim.schedule(function()
+--         if require('hlslens').exportLastSearchToQuickfix() then
+--             vim.cmd('cw')
+--         end
+--     end)
+--     return ':noh<CR>'
+-- end, {expr = true})

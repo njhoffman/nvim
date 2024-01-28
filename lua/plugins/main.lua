@@ -6,6 +6,8 @@ local plugins = {
   { '3rd/image.nvim', enabled = false, event = 'VeryLazy', dependencies = 'nvim-treesitter' },
   { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-web-devicons' },
   { 'tamton-aquib/zone.nvim', enabled = false },
+  -- using lazy.nvim
+  -- { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
   {
     'romgrk/barbar.nvim',
     -- https://github.com/romgrk/barbar.nvim/pull/540
@@ -17,10 +19,23 @@ local plugins = {
     event = 'VimEnter',
     dependencies = 'nvim-web-devicons',
   },
-  { 'stevearc/stickybuf.nvim', event = 'VeryLazy' },
+  { 'declancm/cinnamon.nvim' },
+  {
+    'rasulomaroff/reactive.nvim',
+    enabled = true,
+    lazy = false,
+  },
+  {
+    'LintaoAmons/scratch.nvim',
+    event = 'VeryLazy',
+    -- Scratch, ScratchOpen, ScrathWithName, ScratchOpenFzf, ScratchPad
+    -- nvim -c 'lua require("scratch").scratchByType("md")'
+  },
+  -- { 'stevearc/stickybuf.nvim', event = 'VeryLazy' },
   { 'rgroli/other.nvim', event = 'VeryLazy' },
   {
     'tummetott/reticle.nvim',
+    enabled = false,
     lazy = false,
     event = { 'BufReadPre', 'BufNewFile' },
     -- reticle messes up with Neo-tree cursorline in search mode
@@ -37,7 +52,7 @@ local plugins = {
   },
   { 'Tyler-Barham/floating-help.nvim', cmd = 'FloatHelp' },
   { 'tris203/hawtkeys.nvim', event = { 'VeryLazy' } },
-  { 'echasnovski/mini.clue', event = { 'VeryLazy' } },
+  -- { 'echasnovski/mini.clue', event = { 'VeryLazy' } },
   {
     'nmac427/guess-indent.nvim',
     event = 'BufReadPre',
@@ -316,6 +331,7 @@ local plugins = {
     'psliwka/vim-smoothie',
     commit = '10fd0aa',
     init = function()
+      vim.g.smoothie_enabled = false
       vim.g.smoothie_break_on_reverse = 0
       vim.g.smoothie_enabled = 1
       vim.g.smoothie_no_default_mappings = 1
@@ -491,6 +507,7 @@ local plugins = {
       'nat-418/telescope-color-names.nvim',
       'nvim-lua/plenary.nvim',
       'nvim-lua/popup.nvim',
+      'piersolenski/telescope-import.nvim',
       'nvim-telescope/telescope-dap.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
       'nvim-telescope/telescope-ghq.nvim',

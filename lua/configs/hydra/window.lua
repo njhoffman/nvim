@@ -12,14 +12,14 @@ local function move_split_size()
     ]],
     config = {
       -- timeout = 4000,
-      invoke_on_body = false,
+      invoke_on_body = true,
       hint = {
         border = 'rounded',
         -- position = 'bottom',
       },
     },
     mode = 'n',
-    body = '<C-w>',
+    body = '<C-W>',
     heads = {
       -- Move focus
       { 'h', '<C-w>h' },

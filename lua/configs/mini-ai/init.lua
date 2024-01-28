@@ -159,7 +159,7 @@ local setup_keymaps = function()
       jump_textobject(prev_next, edge, ai_type)
     end, {
       expr = true,
-      desc = string.format('jump to %s edge of %s `%s` text object', edge, ai_type, prev_next),
+      desc = string.format('  jump to %s edge of %s `%s` text object', edge, ai_type, prev_next),
     })
   end
 
@@ -175,51 +175,56 @@ local setup_keymaps = function()
 
 -- stylua: ignore
   local i = {
-    [' ']    = 'inside whitespace',
-    ['"']    = 'inside quote "',
-    ["'"]    = "inside s-quote '",
-    ['`']    = 'inside apostrophe `',
-    ['(']    = 'inside (',
-    [')']    = 'inside ) including white-space',
-    ['>']    = 'inside > including white-space',
-    ['<lt>'] = 'inside <',
-    [']']    = 'inside ] including white-space',
-    ['[']    = 'inside [',
-    ['}']    = 'inside } including white-space',
-    ['{']    = 'inside {',
-    ['?']    = 'inside user prompt',
-    _        = 'inside underscore',
-    a        = 'inside argument',
-    A        = 'inside attribute',
-    b        = 'inside balanced: ), ], }',
-    c        = 'inside class',
-    C        = 'inside conditional',
-    f        = 'inside function',
-    l        = 'inside line',
-    L        = 'inside loop',
-    o        = 'inside block, conditional, loop',
-    q        = 'inside quote: `, ", \'',
-    t        = 'inside tag',
-    x        = 'inside comment',
+    [' ']    = '  inside whitespace',
+    ['"']    = '  inside quote "',
+    ["'"]    = "  inside s-quote '",
+    ['`']    = '  inside apostrophe `',
+    ['(']    = '  inside (',
+    [')']    = '  inside ) including white-space',
+    ['>']    = '  inside > including white-space',
+    ['<lt>'] = '  inside <',
+    [']']    = '  inside ] including white-space',
+    ['[']    = '  inside [',
+    ['}']    = '  inside } including white-space',
+    ['{']    = '  inside {',
+    ['?']    = '  inside user prompt',
+    _        = '  inside underscore',
+    a        = '  inside argument',
+    A        = '  inside attribute',
+    b        = '  inside balanced: ), ], }',
+    c        = '  inside class',
+    C        = '  inside conditional',
+    f        = '  inside function',
+    l        = '  inside line',
+    L        = '  inside loop',
+    o        = '  inside block, conditional, loop',
+    q        = '  inside quote: `, ", \'',
+    t        = '  inside tag',
+    x        = '  inside comment',
   }
 
   local a = vim.deepcopy(i)
   for k, v in pairs(a) do
-    a[k] = v:gsub(' including.*', '')
+    a[k] = v:gsub('including.*', '')
   end
 
   local ic = vim.deepcopy(i)
   local ac = vim.deepcopy(a)
-  for key, name in pairs({ n = 'Next', l = 'Last' }) do
-    i[key] = vim.tbl_extend('force', { name = 'inside ' .. name .. ' textobject' }, ic)
-    a[key] = vim.tbl_extend('force', { name = 'around ' .. name .. ' textobject' }, ac)
+  for key, name in pairs({ n = 'Next', N = 'Last' }) do
+    i[key] = vim.tbl_extend('force', { name = '  inside ' .. name .. ' textobject' }, ic)
+    a[key] = vim.tbl_extend('force', { name = '  around ' .. name .. ' textobject' }, ac)
   end
+
+  local vmap = require('mapper').vmap
+  for key, desc in pairs(i) do
+    vmap({ 'x', 'o' }, key, { desc = desc })
+  end
+
   -- Note: mini.clue doesn't support operator pending motions
-  require('which-key').register({
-    mode = { 'o', 'x' },
-    i = i,
-    a = a,
-  })
+  require('which-key').register({ mode = { 'o', 'x' }, i = i, a = a })
+  -- create virtual mappings of all textobjects
+  for _, key in ipairs({ 'i', 'a' }) do -- around/inside
+  end
 end
 
 setup_keymaps()

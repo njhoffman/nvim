@@ -46,7 +46,11 @@ local plugins = {
     lazy = false,
   },
   { 'folke/noice.nvim', lazy = false, event = 'VeryLazy' },
-  { 'folke/which-key.nvim', event = 'VeryLazy' },
+  {
+    'folke/which-key.nvim',
+    dir = '~/git/which-key.nvim',
+    event = 'VeryLazy',
+  },
   -- { 'freddiehaddad/feline.nvim', branch = 'main', event = 'VimEnter', lazy = false, },
 }
 

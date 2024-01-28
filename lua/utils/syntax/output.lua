@@ -16,7 +16,7 @@ local get_node_lines = function(node_results, opts)
   for _, node in ipairs(node_results) do
     node_under_cursor = node[2]
     node = node[1][1]
-    local path = opts.full_path and node.full_path or node.path
+    local path = opts.full_path and node and node.full_path or node.path
     vim.list_extend(lines, {
       "* Parser: " .. node.parser,
       string.format("* %s: ", opts.full_path and "Node path" or "Node") .. path,

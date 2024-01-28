@@ -76,7 +76,7 @@ miniclue.setup({
     -- { mode = 'c', keys = '<C-r>' },
 
     -- Window commands
-    { mode = 'n', keys = '<C-w>' },
+    -- { mode = 'n', keys = '<C-W>' },
 
     -- `z` key
     { mode = 'n', keys = 'z' },

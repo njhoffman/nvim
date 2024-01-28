@@ -134,7 +134,7 @@ M.enable_highlighting = function(higroup)
   local used_higroup = higroup or 'CursorLine'
   vim.cmd('augroup treesitter-unit-highlight')
   vim.cmd('autocmd!')
-  vim.cmd('autocmd CursorMoved * lua require"treesitter._textobjects.unit".highlight_unit("' .. used_higroup .. '")')
+  vim.cmd('autocmd CursorMoved * lua require("treesitter._textobjects.unit").highlight_unit("' .. used_higroup .. '")')
   vim.cmd('augroup END')
   M.highlight_unit(used_higroup)
   highlighting_enabled = true

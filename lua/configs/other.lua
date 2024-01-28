@@ -77,28 +77,31 @@ local default_cfg = {
 
 local ts_mappings = {
   {
-    pattern = '/src/app/(.*)/.*.ts$',
-    target = '/src/app/%1/%1.component.html',
-    context = 'component',
+    pattern = '(.*).ts',
+    target = {
+      { target = '%1.spec.ts', context = 'test' },
+      { target = '%1.test.ts', context = 'test' },
+    },
   },
   {
-    pattern = '/src/app/(.*)/.*.html$',
-    target = '/src/app/%1/%1.component.ts',
-    context = 'view',
-  },
-  {
-    pattern = '/src/app/(.*)/.*.ts$',
-    target = '/src/app/%1/%1.component.html',
-    context = 'component',
-  },
-  {
-    pattern = '/src/app/(.*)/.*.spec.ts$',
-    target = '/src/app/%1/%1.component.html',
+    pattern = '(.*).spec.ts',
+    target = '%1.ts',
     context = 'test',
   },
   {
-    pattern = '/src/(.*)/.*.ts$',
-    target = '/src/%1/\\(*.css\\|*.scss\\)',
+    pattern = '(.*).test.ts',
+    target = '%1.ts',
+    context = 'test',
+  },
+  {
+    pattern = '/(.*)/(.*).ts',
+    target = {
+      { target = '/test/%1/%2.ts', context = 'test' },
+    },
+  },
+  {
+    pattern = '/src/(.*)/(.*).ts$',
+    target = '/src/%1/%2\\(*.css\\|*.scss\\)',
     context = 'style',
   },
 }
@@ -131,6 +134,140 @@ local js_mappings = {
   },
 }
 
+local angular_mappings = {
+  {
+    pattern = '/(.*)/(.*)/([a-zA-Z-_]*).*.ts$',
+    target = {
+      {
+        target = '/%1/%2/%3.component.html',
+        context = 'html',
+      },
+      {
+        target = '/%1/%2/%3.component.scss',
+        context = 'scss',
+      },
+      {
+        target = '/%1/%2/%3.component.spec.ts',
+        context = 'test',
+      },
+    },
+  },
+  {
+    pattern = '/(.*)/(.*)/([a-zA-Z-_]*).*html$',
+    target = {
+      {
+        target = '/%1/%2/%3.component.ts',
+        context = 'component',
+      },
+      {
+        target = '/%1/%2/%3.component.scss',
+        context = 'scss',
+      },
+      {
+        target = '/%1/%2/%3.component.spec.ts',
+        context = 'test',
+      },
+    },
+  },
+  {
+    pattern = '/(.*)/(.*)/([a-zA-Z-_]*).*scss$',
+    target = {
+      {
+        target = '/%1/%2/%3.component.html',
+        context = 'html',
+      },
+      {
+        target = '/%1/%2/%3.component.ts',
+        context = 'component',
+      },
+      {
+        target = '/%1/%2/%3.component.spec.ts',
+        context = 'test',
+      },
+    },
+  },
+  {
+    pattern = '/(.*)/(.*)/([a-zA-Z-_]*).*spec.ts$',
+    target = {
+      {
+        target = '/%1/%2/%3.component.html',
+        context = 'html',
+      },
+      {
+        target = '/%1/%2/%3.component.scss',
+        context = 'scss',
+      },
+      {
+        target = '/%1/%2/%3.component.ts',
+        context = 'component',
+      },
+    },
+  },
+  {
+    pattern = '/(.*)/(.*).service.ts$',
+    target = {
+      {
+        target = '/%1/%2.service.spec.ts',
+        context = 'test',
+      },
+    },
+  },
+  {
+    pattern = '/(.*)/(.*).service.spec.ts$',
+    target = {
+      {
+        target = '/%1/%2.service.ts',
+        context = 'service',
+      },
+    },
+  },
+}
+
+local php_mappings = {
+  {
+    pattern = '/app/Http/Controllers/(.*)Controller.php$',
+    target = '/resources/views/%1/',
+    context = 'controller',
+    transformer = 'camelToKebap',
+  },
+  {
+    pattern = '/resources/views/(.*)/.*',
+    target = '/app/Http/Controllers/%1Controller.php',
+    context = 'view',
+    transformer = 'kebapToCamel',
+  },
+}
+
+local lua_mappings = {
+  -- {
+  --   context = 'lua main module',
+  --   pattern = '.*.lua$',
+  --   target = '.*/init.lua',
+  -- },
+  -- {
+  --   context = "file of same name, but in different directory",
+  --   pattern = ".*/(.-)$",
+  --   target = ".*/%1",
+  -- },
+  {
+    pattern = '(.*)/(.*).spec.lua$',
+    target = '%1/%2.lua',
+    context = 'implementation',
+  },
+  {
+    pattern = '(.*)/(.*).test.lua$',
+    target = '%1/%2.lua',
+    context = 'implementation',
+  },
+  {
+    pattern = '(.*)/(.*).lua$',
+    target = {
+      { target = '%1/%2.spec.lua', context = 'test' },
+      { target = '%1/%2.test.lua', context = 'test' },
+    },
+  },
+}
+
 local cfg = {
   -- keybindings = {
   --   ['<cr>'] = 'open_file_by_command()',
@@ -147,7 +284,7 @@ local cfg = {
   },
   mappings = {
     'livewire',
-    'angular',
+    -- 'angular',
     'laravel',
     'rails',
     'golang',
@@ -156,8 +293,15 @@ local cfg = {
       target = '/path/to/file/src/view/%1/',
       transformer = 'lowercase',
     },
+    unpack(lua_mappings),
     unpack(ts_mappings),
     unpack(js_mappings),
+  },
+  rememberBuffers = true,
+  transformers = {
+    lowercase = function(inputString)
+      return inputString:lower()
+    end,
   },
 }
 
@@ -174,13 +318,13 @@ vim.api.nvim_set_keymap(
   'n',
   '<leader>fN',
   '<cmd>:OtherSplit<CR>',
-  { noremap = true, silent = true, desc = 'l split other' }
+  { noremap = true, silent = true, desc = 'l other split' }
 )
 vim.api.nvim_set_keymap(
   'n',
   '<leader>fV',
   '<cmd>:OtherVSplit<CR>',
-  { noremap = true, silent = true, desc = 'l vsplit other' }
+  { noremap = true, silent = true, desc = 'l other vsplit' }
 )
 vim.api.nvim_set_keymap(
   'n',
@@ -202,16 +346,4 @@ vim.api.nvim_set_keymap(
 --   '<leader>fS',
 --   '<cmd>:Other scss<CR>',
 --   { noremap = true, silent = true }
--- )
 --
--- :Other	Tries to open the other/alternative file based on the configured mappings.
---   When there is a perfect match the corresponding file will be opened.
---   If there are multiple candidates, a file picker will be opened.
---   After picking a file, the two files hold an internal reference to each other.
---   In that way you only have to pick the other/alternative file once.
---   This behaviour can be turned off by setting the configuration-option rememberBuffers to false.
--- :OtherTabNew	Same as :Other but the file is opened in a new tab.
--- :OtherSplit	Same as :Other but the file is opened in a horizontal split.
--- :OtherVSplit	Same as :OtherSplit but the split is vertical.
--- :OtherClear	Clears the internal reference to the other/alternative file.
---    Afterwards a file picker will be opened again if there are multiple matches for the current file.

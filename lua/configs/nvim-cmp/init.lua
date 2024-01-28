@@ -93,8 +93,8 @@ local cfg = {
   },
   enabled = is_enabled,
   performance = {
-    debounce = 60,
-    throttle = 30,
+    debounce = 90,
+    throttle = 60,
     -- debounce = 60,
     -- throttle = 30,
     -- fetching_timeout = 500,
@@ -225,12 +225,14 @@ cmp.setup.filetype('lua', {
 
 cmp.setup.cmdline({ '/', '?' }, {
   -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
+  enabled = true,
   mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
   sources = cmp.config.sources(sources.cmdsearch),
   matching = { disallow_symbol_nonprefix_matching = false },
 })
 
 cmp.setup.cmdline(':', {
+  enabled = true,
   matching = { disallow_symbol_nonprefix_matching = false },
   mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
   sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
@@ -247,10 +249,8 @@ local function toggle_autocomplete()
     vim.notify('Autocomplete enabled')
   end
 end
--- Set a keymap like this for example:
--- vim.api.nvim_set_keymap('n', '<Leader>a', ':NvimCmpToggle<CR>', { noremap = true, silent = true })
 
-vim.api.nvim_create_user_command('NvimCmpToggle', toggle_autocomplete, {})
+vim.api.nvim_create_user_command('CmpToggle', toggle_autocomplete, { desc = 'Toggle nvim-cmp autocomplete' })
 
 -- only appear if characters before cursor
 -- api.nvim_create_autocmd(

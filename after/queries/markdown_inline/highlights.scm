@@ -8,7 +8,7 @@
   (#set! conceal "")
 )
 (
-  (strikethrough) @puntuation.strikethrough
+  (strikethrough) @punctuation.strikethrough
 )
 (code_span
   (code_span_delimiter) @markdown_code_span_delimiter

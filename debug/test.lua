@@ -5,8 +5,7 @@ b = 1
 -- %%
 
 if a and b then
-	print("a and b")
+  print('a and b')
 end
 
 -- %%
-

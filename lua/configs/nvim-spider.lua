@@ -5,7 +5,7 @@ require('spider').setup({
 })
 
 -- fix cw/dw operator behavior
-local map_w_type = 2 -- 1/2/3
+local map_w_type = 3 -- 1/2/3
 
 local mapper = require('mapper')
 local spider_map = function(modes, key, cmd_key, opts)

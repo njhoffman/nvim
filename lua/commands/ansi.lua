@@ -49,7 +49,7 @@ local check_and_format_buffer = function(ev)
   if has_ansi == true then
     replace_ansi_codes(bufnr, count)
   end
-  vim.dbglog('has_ansi: ' .. tostring(has_ansi) .. '(' .. bufnr .. ') count: ' .. count)
+  -- vim.dbglog('has_ansi: ' .. tostring(has_ansi) .. '(' .. bufnr .. ') count: ' .. count)
   -- if has_ansi then
   --   replace_ansi_codes(bufnr, count)
   -- end

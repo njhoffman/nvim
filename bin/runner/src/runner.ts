@@ -88,7 +88,7 @@ export const runner = {
 		this.instances.set(args.file, runner);
 		return [true];
 	},
-	
+
 	async invokePreprocessing(args: RunnerParams, config: CodeRunnerConfig) {
 		if ('preprocessors' in config && config.preprocessors.includes(Processors.EsBuild)) {
 			const { default: processor } = await import('@/processors/esbuild.js');
@@ -97,8 +97,8 @@ export const runner = {
 				const message = jsonrpc.notification(CodeRunnerMethod.Feedback, { file: args.file, ...data });
 				print(message);
 				throw new Error(LANG.ESBUILD_FAIL_RECOGNIZED);
-			} 
-			return { filePath: data, useSourceMap: true };		
+			}
+			return { filePath: data, useSourceMap: true };
 		}
 		return { filePath: args.file, useSourceMap: false };
 	},
@@ -111,7 +111,7 @@ export const runner = {
 		return [true];
 	},
 
-	resume(args: Omit<RunnerParams, 'config'>): [false, string] | [true]  {
+	resume(args: Omit<RunnerParams, 'config'>): [false, string] | [true] {
 		const runner = this.instances.get(args.file);
 		if (!runner) return [false, LANG.NOT_RUNNING];
 		runner.emit('resume');

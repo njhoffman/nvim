@@ -42,6 +42,8 @@ opt('foldlevel', 99)
 -- opt('formatoptions', 'jcroqlnt') -- (qjl1) Don't autoformat comments
 opt('grepformat', '%f:%l:%c:%m')
 opt('grepprg', 'set grepprg=rg --vimgrep --no-heading --smart-case')
+-- vim.o.grepprg =
+--     "rg --smart-case --vimgrep --no-heading --follow --multiline-dotall --hidden --pcre2 --regexp" -- IMPORTANT: pipes should be escaped! e.g. `"text\.(Success\|Info)\("`
 opt('helpheight', 25)
 opt('hidden', true)
 opt('hlsearch', true)
@@ -88,9 +90,9 @@ opt('startofline', true) -- motions like "G" also move to the first char
 opt('switchbuf', 'useopen,usetab')
 opt('termguicolors', true)
 opt('timeout', true)
-opt('timeoutlen', 200) -- 1000
+opt('timeoutlen', 400) -- 1000
 opt('ttimeout', true)
-opt('ttimeoutlen', 30) -- 50
+opt('ttimeoutlen', 10) -- 50
 opt('undolevels', 1000)
 opt('updatetime', 2000) -- 4000
 opt('whichwrap', 'b,s,<,>,[,],h,l')

@@ -1,7 +1,7 @@
 local Hydra = require('hydra')
 -- local popup = require("configs.hydra.popup")
-local levels = require('configs.hydra.levels')
-local utils = require('configs.hydra.utils')
+local levels = require('configs.hydra.lsp_levels')
+local utils = require('configs.hydra.lsp_utils')
 local hints = [[
                      LSP OPTIONS
     ────────────────────────────────────────────    ^
@@ -121,13 +121,14 @@ local hydra = function()
         border = 'rounded',
         position = 'middle',
       },
-      -- on_enter = function()
-      --   vim.bo.modifiable = false -- temporary set `nomodifiable` while Hydra is active
-      --   vim.cmd('VimadeFadeActive')
-      -- end,
-      -- on_exit = function()
-      --   vim.cmd('VimadeUnfadeActive')
-      -- end,
+      on_enter = function()
+        vim.schedule_wrap(vim.cmd('VimadeBufDisable'))
+        -- local curr_buf = vim.fn.bufnr('%')
+        -- vim.api.nvim_buf_set_var(curr_buf, 'vimade_disabled', value)
+      end,
+      on_exit = function()
+        vim.schedule_wrap(vim.cmd('VimadeBufEnable'))
+      end,
     },
     mode = { 'n', 'x' },
     body = 'gl',

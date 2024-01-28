@@ -1,15 +1,67 @@
+-- TODO: make todo styling optional
+-- TODO: optional winbar with total errors/current errors, title
+-- TODO: optional workspace scope for all, buffer scope for all, buffer scope for buffer
+-- TODO: QfDiagAll, QfDiagBufAll, QfDiagBuf, QfDiagOff, QfDiagBufOff
+-- TODO: Command parameter to set severity, todo items
+-- TODO: option for vimade qf list, vimade original buffer, vimade disable qf/original on diag change
+-- TODO: vim -q errorfile, vim -q <(yourlinter), vim -q <(!!), vimq() { vim -q <($(fc -nl -1)) }
+-- TODO: test telescope live_grep :cdo %s/foo/bar/g
+-- TODO: fugitive Git_diftool (all git changes), Gclog, review changes before commit (gitgutter)
+-- TODO: After doing any git grep command, just convert it to git jump grep https://github.com/git/git/tree/master/contrib/git-jump
+-- TODO: jumplist to quickfix https://github.com/gennaro-tedesco/dotfiles/blob/c1459c3cc97e4d6186decd1fb50b014b54bcfdbe/nvim/lua/utils.lua#L274-L289
+-- TODO: helpfiles ToC g0
+-- TODO: stefandtw/quickfix-reflector.vim, nvim-bqf
+-- TODO: ensure no blinking
+-- TODO: investigate initial workspace diagnostics vs switching to buffer
+-- TODO: investigate loclist vs qflist behavior
+
+vim.api.nvim_create_autocmd('QuickFixCmdPre', {
+  callback = function(ev)
+    vim.dbglog('qf pre', ev)
+  end,
+})
+vim.api.nvim_create_autocmd('QuickFixCmdPost', {
+  callback = function(ev)
+    vim.dbglog('qf post', ev)
+  end,
+})
+
 require('quickfix.qfview').setup()
+require('quickfix.diagnostics').setup()
+--
+-- To expand on this: neovim 0.6 nightly fetaures a handy setqflist in addition to the already available setloclist, which adds workspace diagnostics to the quickfix list (similar to what this plugin does).
+-- I am currently using something like this in my personal config:
+-- function update_diagnostics(global_too)
+--     if not vim.lsp.buf.server_ready() then
+--         return
+--     end
+--     if vim.fn.getloclist(vim.fn.winnr(), { title = 0 }).title == 'Buffer diagnostics' then
+--         vim.diagnostic.setloclist{ open = false, title = 'Buffer diagnostics' }
+--     end
+--     if global_too and vim.fn.getqflist{ title = 0 }.title == 'Workspace diagnostics' then
+--         vim.diagnostic.setqflist{ open = false,  title = 'Workspace diagnostics' }
+--     end
+-- end
+-- and in my setup.on_attach callback I have
+--
+-- vim.api.nvim_command('autocmd BufWinEnter * lua update_diagnostics(false)')
+-- vim.api.nvim_command('autocmd User DiagnosticsChanged lua update_diagnostics(true)')
+-- vim.api.nvim_buf_set_keymap(0, 'n', '<C-k>k','<CMD>silent! lua vim.diagnostic.setloclist{ title = "Buffer diagnostics" }<CR>', {noremap=true})
+-- vim.api.nvim_buf_set_keymap(0, 'n', '<C-k><C-k>','<CMD>silent! lua vim.diagnostic.setqflist{ title = "Workspace diagnostics" }<CR>', {noremap=true})
 
-local set_qflist_from_diagnostics = function()
-  vim.diagnostic.setqflist()
-end
+-- -- vim.api.nvim_create_autocmd('QuickFixCmdPost', { expr = true, cwindow = true })
+-- 	echo getqflist({'lines' : ["F1:10:Line10", "F2:20:Line20"]})
+-- 	echo getqflist({'lines' : systemlist('grep -Hn quickfix *')})
+-- This returns a dictionary where the "items" key contains the list of quickfix
+-- entries parsed from lines. The following shows how to use a custom
+-- 'errorformat' to parse the lines without modifying the 'errorformat' option:
+-- 	echo getqflist({'efm' : '%f#%l#%m', 'lines' : ['F1#10#Line']})
+--
 
-vim.api.nvim_create_user_command('LspQfDiag', set_qflist_from_diagnostics, {})
-
-vim.api.nvim_create_user_command('LspQfRef', function()
-  vim.lsp.buf.references()
-end, {})
-
+-- vim.api.nvim_exec([[
+--   autocmd QuickFixCmdPost [^l]* cwindow
+--   autocmd QuickFixCmdPost    l* lwindow
+-- ]], false)
 -- :vim[grep] — search using Vim’s native functionality.
 -- :gr[ep] — search via an external program specified by the grepprg setting.
 -- :helpgr[ep] — search help text files.

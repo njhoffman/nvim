@@ -1,7 +1,7 @@
-local hover = require('hover.hover')
 local keymaps = require('hover.keymaps')
 local state = require('hover.state')
 local utils = require('hover.utils')
+local providers = require('hover.providers')
 
 local cleanup = function()
   utils.clear_local_state(state)
@@ -36,7 +36,7 @@ local create = function(winnr, _opts)
       vim.api.nvim_create_autocmd('CursorMoved', {
         callback = function()
           utils.clear_local_state(state)
-          vim.defer_fn(hover.hover_cursor, 300)
+          vim.defer_fn(providers.load, 300)
         end,
         group = 'Hover',
         buffer = _bufnr,

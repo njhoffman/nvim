@@ -29,11 +29,9 @@ local format_filename = function(filename, limit, right_align)
   return filename
 end
 
-local get_max_widths = function(id)
-  id = id or 0
+local get_max_widths = function(items)
   local w = { fname = 0, line = 0, col = 0 }
-  local qf = fn.getqflist({ id = id, items = 0 })
-  for _, v in ipairs(qf.items) do
+  for _, v in ipairs(items) do
     -- bufnr, col, end_col, end_lumn, lnum, module, nr, pattern, text, type, validid, vcol
     local fname = ''
     if v.valid == 1 then
@@ -74,7 +72,7 @@ _G.qftf = function(info)
     items = fn.getloclist(info.winid, { id = info.id, items = 0 }).items
   end
 
-  local widths = get_max_widths(info.id)
+  local widths = get_max_widths(items)
   widths.fname = widths.fname > config.qf_width_limit and config.qf_width_limit or widths.fname
 
   -- local validFmt = '%s │%5d:%-3d│%s %s'

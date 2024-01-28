@@ -205,7 +205,7 @@ local theme = lush(function()
     -- -- + Language Base Groups +
     -- -- +----------------------+
     Boolean({ fg = clrs.nord9 }),
-    Character({ fg = clrs.nord14 }),
+    -- Character({ fg = clrs.nord14 }),
     -- Comment({ fg = clrs.nord3_bright, gui = spec.italicize_comments }),
     Conditional({ fg = clrs.nord9 }),
     Constant({ fg = clrs.nord13 }),

@@ -1,3 +1,5 @@
+-- vim.treesitter.language.register('markdown', 'neoai-output')
+
 require('neoai').setup({
   -- Below are the default options, feel free to override what you would like changed
   ui = {
@@ -10,7 +12,11 @@ require('neoai').setup({
   models = {
     {
       name = 'openai',
-      model = 'gpt-3.5-turbo',
+      model = {
+        'gpt-4-1106-preview',
+        'gpt-4',
+        'gpt-3-turbo',
+      },
       params = nil,
     },
   },

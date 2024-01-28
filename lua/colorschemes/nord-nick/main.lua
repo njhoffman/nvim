@@ -163,6 +163,7 @@ return function(injected_functions)
     -- base groups
     -- FoldIcon({ fg = "#4B4BBB" }),
     -- MatchParenCursor({ fg = "#fb8b8b" }),
+    Character({ fg = '#10a4ca', gui = 'bold' }),
     Comment({ fg = '#4a647b', gui = 'italic' }),
     Conceal({ bg = 'none' }),
     Conditional({ fg = '#70688a' }),
@@ -282,36 +283,164 @@ return function(injected_functions)
     -- language groups
     --
     TreesitterContext({ bg = '#1a0606', gui = 'italic' }),
-    -- sym("@conditional")({ fg = "#80788a" }),
+    -- @variable            ; various variable names
+    -- @variable.builtin    ; built-in variable names (e.g. `this`)
+    -- @variable.parameter  ; parameters of a function
+    -- @variable.member     ; object and struct fields
+    --
+    -- @constant          ; constant identifiers
+    -- @constant.builtin  ; built-in constant values
+    -- @constant.macro    ; constants defined by the preprocessor
+    --
+    -- @module            ; modules or namespaces
+    -- @module.builtin    ; built-in modules or namespaces
+    -- @label             ; GOTO and other labels (e.g. `label:` in C), including heredoc labels
+    -- Literals
+    -- @string                 ; string literals
+    -- @string.documentation   ; string documenting code (e.g. Python docstrings)
+    -- @string.regexp          ; regular expressions
+    -- @string.escape          ; escape sequences
+    -- @string.special         ; other special strings (e.g. dates)
+    -- @string.special.symbol  ; symbols or atoms
+    -- @string.special.url     ; URIs (e.g. hyperlinks)
+    -- @string.special.path    ; filenames
+    --
+    -- @character              ; character literals
+    -- @character.special      ; special characters (e.g. wildcards)
+    --
+    -- @boolean                ; boolean literals
+    -- @number                 ; numeric literals
+    -- @number.float           ; floating-point number literals
+    -- Types
+    -- @type             ; type or class definitions and annotations
+    -- @type.builtin     ; built-in types
+    -- @type.definition  ; identifiers in type definitions (e.g. `typedef <type> <identifier>` in C)
+    -- @type.qualifier   ; type qualifiers (e.g. `const`)
+    --
+    -- @attribute        ; attribute annotations (e.g. Python decorators)
+    -- @property         ; the key in key/value pairs
+    -- Functions
+    -- @function             ; function definitions
+    -- @function.builtin     ; built-in functions
+    -- @function.call        ; function calls
+    -- @function.macro       ; preprocessor macros
+    --
+    -- @function.method      ; method definitions
+    -- @function.method.call ; method calls
+    --
+    -- @constructor          ; constructor calls and definitions
+    -- @operator             ; symbolic operators (e.g. `+` / `*`)
+    -- Keywords
+    -- @keyword                   ; keywords not fitting into specific categories
+    -- @keyword.coroutine         ; keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
+    -- @keyword.function          ; keywords that define a function (e.g. `func` in Go, `def` in Python)
+    -- @keyword.operator          ; operators that are English words (e.g. `and` / `or`)
+    -- @keyword.import            ; keywords for including modules (e.g. `import` / `from` in Python)
+    -- @keyword.storage           ; modifiers that affect storage in memory or life-time
+    -- @keyword.repeat            ; keywords related to loops (e.g. `for` / `while`)
+    -- @keyword.return            ; keywords like `return` and `yield`
+    -- @keyword.debug             ; keywords related to debugging
+    -- @keyword.exception         ; keywords related to exceptions (e.g. `throw` / `catch`)
+    --
+    -- @keyword.conditional         ; keywords related to conditionals (e.g. `if` / `else`)
+    -- @keyword.conditional.ternary ; ternary operator (e.g. `?` / `:`)
+    --
+    -- @keyword.directive         ; various preprocessor directives & shebangs
+    -- @keyword.directive.define  ; preprocessor definition directives
+    -- Punctuation
+    -- @punctuation.delimiter ; delimiters (e.g. `;` / `.` / `,`)
+    -- @punctuation.bracket   ; brackets (e.g. `()` / `{}` / `[]`)
+    -- @punctuation.special   ; special symbols (e.g. `{}` in string interpolation)
+    -- Comments
+    -- @comment               ; line and block comments
+    -- @comment.documentation ; comments documenting code
+    --
+    -- @comment.error         ; error-type comments (e.g., `DEPRECATED:`)
+    -- @comment.warning       ; warning-type comments (e.g., `WARNING:`, `FIX:`)
+    -- @comment.hint          ; note-type comments (e.g., `NOTE:`)
+    -- @comment.info          ; info-type comments
+    -- @comment.todo          ; todo-type comments (e.g-, `TODO:`, `WIP:`)
+    -- Markup
+    -- Mainly for markup languages.
+    --
+    -- @markup.strong         ; bold text
+    -- @markup.italic         ; text with emphasis
+    -- @markup.strikethrough  ; strikethrough text
+    -- @markup.underline      ; underlined text (only for literal underline markup!)
+    --
+    -- @markup.heading        ; headings, titles (including markers)
+    --
+    -- @markup.quote          ; block quotes
+    -- @markup.math           ; math environments (e.g. `$ ... $` in LaTeX)
+    -- @markup.environment    ; environments (e.g. in LaTeX)
+    --
+    -- @markup.link           ; text references, footnotes, citations, etc.
+    -- @markup.link.label     ; link, reference descriptions
+    -- @markup.link.url       ; URL-style links
+    --
+    -- @markup.raw            ; literal or verbatim text (e.g., inline code)
+    -- @markup.raw.block      ; literal or verbatim text as a stand-alone block
+    --                        ; (use priority 90 for blocks with injections)
+    --
+    -- @markup.list           ; list markers
+    -- @markup.list.checked   ; checked todo-style list markers
+    -- @markup.list.unchecked ; unchecked todo-style list markers
+    -- @diff.plus       ; added text (for diff files)
+    -- @diff.minus      ; deleted text (for diff files)
+    -- @diff.delta      ; changed text (for diff files)
+    -- @tag           ; XML tag names
+    -- @tag.attribute ; XML tag attributes
+    -- @tag.delimiter ; XML tag delimiters
+    -- Non-highlighting captures
+    -- @none    ; completely disable the highlight
+    -- @conceal ; captures that are only meant to be concealed
+    -- @spell   ; for defining regions to be spellchecked
+    -- @nospell ; for defining regions that should NOT be spellchecked
+    --
+
+    -- sym("@keyword.conditional")({ fg = "#80788a" }),
+    sym('@markup.raw.markdown_inline')({ fg = '#2779aa', gui = 'none' }),
+    sym('@markup.raw.block')({ gui = 'none' }),
+    sym('@markup.raw')({ fg = '#2779aa', gui = 'none' }),
     sym('@boolean')({ Boolean }),
     sym('@comment')({ Comment }),
     sym('@comment.documentation')({ Comment }),
     sym('@constant')({ Constant }),
     sym('@constant.builtin')({ ConstantBuiltin }),
+    sym('@comment.warning')({ Warning }),
+    sym('@comment.danger')({ bg = '#db4b4b', fg = '#24283b' }),
+    sym('@diff.add')({ DiffAdd }),
+    sym('@diff.delete')({ DiffDelete }),
     sym('@error')({ Error }),
     sym('@exception')({ Special }),
-    sym('@field')({ Field }),
     sym('@function')({ Function }),
     sym('@function.builtin')({ Special }),
     sym('@function.call')({ FunctionCall }),
+    sym('@function.method')({ Function }),
+    sym('@function.method.call')({ FunctionCall }),
     sym('@include')({ Include }),
     sym('@keyword')({ Keyword }),
+    sym('@constant.luap')({ fg = '#2288cc', gui ='bold' }),
+    sym('@keyword.luap')({ fg = '#5886ff' }),
+    sym('@operator.luap')({ fg = '#08a4ea', gui = 'bold' }),
+    sym('@punctuation.delimiter.luap')({ fg = '#4866d8', gui = 'bold' }),
+    sym('@punctuation.bracket.luap')({ fg = '#8b8af7' }),
+    sym('@string.regexp')({ fg = '#1a84ba', gui = 'none' }),
+
+    sym('@keyword.exception')({ Special }),
     sym('@keyword.operator')({ Operator }),
     sym('@keyword.return')({ KeywordReturn }),
-    sym('@keywordFunction')({ Keyword }),
     sym('@keyword.function')({ KeywordFunction }),
-    sym('@label')({ Label }), -- For labels: `label:` in C and `:label:` in Lua.
     sym('@keyword.luadoc')({ gui = 'none' }),
+    sym('@label')({ Label }), -- For labels: `label:` in C and `:label:` in Lua.
     sym('@method')({ Function }),
     sym('@method.call')({ FunctionCall }),
-    sym('@nameSpace')({ Statement }),
-    sym('@namespace')({ Statement }),
-    sym('@namespace.builtin')({ Keyword }),
-    sym('@spell')({}),
+    sym('@module')({ Statement }),
+    sym('@module.builtin')({ Keyword }),
     sym('@nospell')({ fg = 'none', bg = 'none', gui = 'none' }),
     sym('@number')({ Number }),
     sym('@operator')({ Operator }),
-    sym('@parameter')({ Identifier }),
+    sym('@parameter')({ fg = '#41a6b5' }),
     sym('@property')({ Identifier }),
     sym('@punctuation.bracket')({ fg = '#7886a8' }), -- fg = "#a9b1d6"
     sym('@punct.bracket')({ sym('@punctuation.bracket') }),
@@ -322,28 +451,36 @@ return function(injected_functions)
     sym('@string')({ String }),
     sym('@string.documentation')({ fg = '#406f88', gui = 'italic' }),
     sym('@string.escape')({ fg = '#bb9af7' }),
-    sym('@string.regex')({ fg = '#b4f9f8' }),
     sym('@tag')({ fg = '#a78086' }),
     sym('@tag.attribute')({ fg = '#5599dd' }),
     sym('@tag.delimiter')({ sym('@tag') }),
-    sym('@text.literal')({ gui = 'none', fg = '#4789aa' }),
-    sym('@text.literal.markdown_inline')({ fg = '#4789aa' }),
-    sym('@text.reference')({ fg = '#1abc9c' }),
-    sym('@text.title')({ fg = Title.fg }),
-    sym('@text.todo')({ TodoMsg }),
-    sym('@text.todo.checked')({ fg = '#73daca' }),
-    sym('@text.todo.unchecked')({ fg = '#7aa2f7' }),
-    sym('@text.warning')({ Warning }),
-    sym('@text.danger')({ bg = '#db4b4b', fg = '#24283b' }),
-    sym('@text.diff.add')({ DiffAdd }),
-    sym('@text.diff.delete')({ DiffDelete }),
+    sym('@markup.strikethrough')({ gui = 'strikeout' }),
+    sym('@markup.italic')({ gui = 'italic' }),
+    sym('@markup.link.label.markdown')({ fg = '#6c81df' }),
+    sym('@markup.link.label.markdown_inline')({ fg = '#6c81df' }),
+    sym('@markup.link')({ fg = '#2aa1ae', gui = 'italic' }),
+    sym('@markup.heading')({ fg = Title.fg }),
+    sym('@markup.heading.1.markdown')({ fg = '#4f86e6' }),
+    sym('@markup.heading.2.markdown')({ fg = '#347ad6' }),
+    sym('@markup.heading.3.markdown')({ fg = '#2d78c4' }),
+    sym('@markup.heading.4.markdown')({ fg = '#1a84ba' }),
+    sym('@markup.heading.5.markdown')({ fg = '#1080a0' }),
+    sym('@markup.heading.6.markdown')({ fg = '#0a8098' }),
+    sym('@markup.list')({ Special }),
+    sym('@markup.list.checked')({ fg = '#73daca', gui = 'bold' }),
+    sym('@markup.list.unchecked')({ fg = '#7aa2f7' }),
+    -- sym('@markup.list.checked.markdown')({ fg = '#53fafa', gui = 'bold' }),
+    sym('@spell')({}),
     sym('@type')({ Type }),
     sym('@type.builtin')({ fg = '#487795' }),
     sym('@uri')({ fg = '#8eb9f6', gui = 'none' }),
     sym('@variable')({ Variable }),
     sym('@variable.builtin')({ Identifier }),
-
-    sym('@text.todo.checked.markdown')({ fg = '#53fafa', gui = 'bold' }),
+    sym('@variable.member')({ Field }),
+    sym('@variable.parameter')({ Identifier }),
+    sym('@variable.parameter.vimdoc')({ sym('@parameter') }),
+    -- sym('@markup')({ fg = '#0789aa' }), --  fg = '#89ddff'
+    -- @markup.list.unchecked.markdown
     -- h1 = 'iris', h2 = 'foam', h3 = 'rose', h4 = 'gold', h5 = 'pine', h6 = 'foam',
     -- #3dbcff  #f38ba8  #21c7a8  #7aa2f7 #272b40  #1e2718
     -- #3ab4e8  #fab387  #82aaff  #e0af68 #2d2c39  #21262d
@@ -351,24 +488,18 @@ return function(injected_functions)
     -- #34a4c8  #a6e3a1  #f78c6c  #1abc9c #242d3d  #13181f
     -- #3098b2  #74c7ec  #87bcff  #bb9af7 #2a2a40  #0c1118
     -- #3092ae  #b4befe  #ae81ff  #9d7cd8 #2d2b3f  #0c0b12
-    sym('@text.title.1.markdown')({ fg = '#4f86e6' }),
-    sym('@text.title.2.markdown')({ fg = '#347ad6' }),
-    sym('@text.title.3.markdown')({ fg = '#2d78c4' }),
-    sym('@text.title.4.markdown')({ fg = '#1a84ba' }),
-    sym('@text.title.5.markdown')({ fg = '#1080a0' }),
-    sym('@text.title.6.markdown')({ fg = '#0a8098' }),
-    Headline1({ bg = '#081228', fg = sym('@text.title.1.markdown').fg }),
-    Headline2({ bg = '#020814', fg = sym('@text.title.2.markdown').fg }),
-    Headline3({ bg = '#000408', fg = sym('@text.title.3.markdown').fg }),
-    Headline4({ bg = '#040608', fg = sym('@text.title.4.markdown').fg }),
-    Headline5({ bg = '#020408', fg = sym('@text.title.5.markdown').fg }),
-    Headline6({ bg = '#000204', fg = sym('@text.title.6.markdown').fg }),
-    markdownH1({ fg = sym('@text.title.1.markdown').fg }),
-    markdownH2({ fg = sym('@text.title.2.markdown').fg }),
-    markdownH3({ fg = sym('@text.title.3.markdown').fg }),
-    markdownH4({ fg = sym('@text.title.4.markdown').fg }),
-    markdownH5({ fg = sym('@text.title.5.markdown').fg }),
-    markdownH6({ fg = sym('@text.title.6.markdown').fg }),
+    Headline1({ bg = '#081228', fg = sym('@markup.heading.1.markdown').fg }),
+    Headline2({ bg = '#020814', fg = sym('@markup.heading.2.markdown').fg }),
+    Headline3({ bg = '#000408', fg = sym('@markup.heading.3.markdown').fg }),
+    Headline4({ bg = '#040608', fg = sym('@markup.heading.4.markdown').fg }),
+    Headline5({ bg = '#020408', fg = sym('@markup.heading.5.markdown').fg }),
+    Headline6({ bg = '#000204', fg = sym('@markup.heading.6.markdown').fg }),
+    markdownH1({ fg = sym('@markup.heading.1.markdown').fg }),
+    markdownH2({ fg = sym('@markup.heading.2.markdown').fg }),
+    markdownH3({ fg = sym('@markup.heading.3.markdown').fg }),
+    markdownH4({ fg = sym('@markup.heading.4.markdown').fg }),
+    markdownH5({ fg = sym('@markup.heading.5.markdown').fg }),
+    markdownH6({ fg = sym('@markup.heading.6.markdown').fg }),
 
     -- CodeBlock({ bg = '#090909' }),
     CodeBlock({ bg = '#101018' }),
@@ -386,8 +517,8 @@ return function(injected_functions)
     sym('@lsp.type.enumMember')({ sym('@constant') }),
     sym('@lsp.type.interface')({ fg = '#6ad5e8' }),
     sym('@lsp.type.keyword')({ sym('@keyword') }),
-    sym('@lsp.type.namespace')({ sym('@namespace') }),
-    sym('@lsp.type.parameter')({ sym('@parameter') }),
+    sym('@lsp.type.namespace')({ sym('@module') }),
+    sym('@lsp.type.parameter')({ sym('@variable.parameter') }),
     sym('@lsp.type.property')({ sym('@property') }),
     sym('@lsp.type.variable')({ sym('@variable') }),
     sym('@lsp.typemod.function.defaultLibrary')({ sym('@function.builtin') }),
@@ -412,7 +543,6 @@ return function(injected_functions)
     -- sym("@label")({fg = "#7aa2f7"}),
     -- sym("@namespace")({link = "Include"}),
     -- sym("@operator")({fg = "#89ddff"}),
-    -- sym("@parameter")({ fg = "#e0af68" }),
     -- sym("@property")({fg = "#73daca"}),
     -- sym("@text.todo.checked")({fg = "#73daca"}),
     -- sym("@text.todo.unchecked")({ fg = "#7aa2f7", }),
@@ -621,7 +751,7 @@ return function(injected_functions)
     CSVColumnHeaderEven({ fg = Statement.fg, bg = 'none' }),
     markdownLinkText({ fg = '#00ccff' }),
     pandocDelimitedCodeBlock({ gui = 'none' }),
-    pandocStrikeout({ gui = 'strikethrough' }),
+    -- pandocStrikeout({ gui = 'none' }),
     -- pandocEmphasis({ gui = 'italic', fg = '#bbbbcc' }),
     -- pandocStrong({ gui = 'none' }),
     -- pandocReferenceLabel { gui = "none", fg = clr_over.orange },
@@ -1079,5 +1209,37 @@ return function(injected_functions)
     -- GlanceFoldIcon
     -- GlanceIndent
     -- GlanceBorderTop
+    -- barbar
+    BufferCurrent({ fg = colors.fg, bg = 'NONE' }),
+    BufferCurrentIndex({ fg = colors.fg, bg = 'NONE' }),
+    BufferCurrentMod({ fg = colors.yellow, bg = 'NONE', gui = 'bold' }),
+    BufferCurrentSign({ fg = colors.cyan, bg = 'NONE' }),
+    BufferCurrentTarget({ fg = colors.red, bg = 'NONE', gui = 'bold' }),
+    BufferVisible({ fg = colors.fg, bg = 'none' }),
+    BufferVisibleIndex({ fg = colors.fg, bg = 'none' }),
+    BufferVisibleMod({ fg = colors.yellow, bg = 'none', gui = 'bold' }),
+    BufferVisibleSign({ fg = colors.light_gray, bg = 'none' }),
+    BufferVisibleTarget({ fg = colors.red, bg = 'none', gui = 'bold' }),
+    BufferInactive({ fg = colors.light_gray, bg = '#1C1F24' }),
+    BufferInactiveIndex({ fg = colors.light_gray, bg = '#1C1F24' }),
+    BufferInactiveMod({ fg = colors.yellow, bg = '#1C1F24' }),
+    BufferInactiveSign({ fg = colors.light_gray, bg = '#1C1F24' }),
+    BufferInactiveTarget({ fg = colors.red, bg = '#1C1F24', gui = 'bold' }),
+    BufferDefaultAlternate({ bg = '#0c2333' }), -- guifg=#4d576a guibg=#3c4353
+    BufferCurrentError({ bg = '#0c2333' }),
+    BufferAlternate({ bg = '#0c2333' }), -- guifg=#4d576a guibg=#3c4353
+    BufferAlternateHINT({ bg = '#0c2333' }),
+    BufferAlternateINFO({ bg = '#0c2333' }),
+    BufferAlternateMod({ bg = '#0c2333', fg = colors.yellow }),
+    BufferAlternateSign({ bg = '#0c2333' }),
+    BufferAlternateWARN({ bg = '#0c2333' }),
+    BufferAlternateADDED({ bg = '#0c2333' }),
+    BufferAlternateERROR({ bg = '#0c2333' }),
+    BufferAlternateIndex({ bg = '#0c2333' }),
+    BufferAlternateNumber({ bg = '#0c2333' }),
+    BufferAlternateTarget({ bg = '#0c2333' }),
+    BufferAlternateCHANGED({ bg = '#0c2333' }),
+    BufferAlternateDELETED({ bg = '#0c2333' }),
+    BufferAlternateSignRight({ bg = '#0c2333' }),
   }
 end

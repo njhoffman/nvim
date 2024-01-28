@@ -102,37 +102,37 @@ local default_cfg = {
     fat_headline_upper_string = '▃',
     fat_headline_lower_string = '🬂',
   },
-  org = {
-    query = vim.treesitter.query.parse(
-      'org',
-      [[
-          (headline (stars) @headline)
-
-          (
-              (expr) @dash
-              (#match? @dash "^-----+$")
-          )
-
-          (block
-              name: (expr) @_name
-              (#eq? @_name "src")
-          ) @codeblock
-
-          (paragraph . (expr) @quote
-              (#eq? @quote ">")
-          )
-      ]]
-    ),
-    headline_highlights = { 'Headline' },
-    codeblock_highlight = 'CodeBlock',
-    dash_highlight = 'Dash',
-    dash_string = '-',
-    quote_highlight = 'Quote',
-    quote_string = '┃',
-    fat_headlines = true,
-    fat_headline_upper_string = '▃',
-    fat_headline_lower_string = '🬂',
-  },
+  -- org = {
+  --   query = vim.treesitter.query.parse(
+  --     'org',
+  --     [[
+  --         (headline (stars) @headline)
+  --
+  --         (
+  --             (expr) @dash
+  --             (#match? @dash "^-----+$")
+  --         )
+  --
+  --         (block
+  --             name: (expr) @_name
+  --             (#eq? @_name "src")
+  --         ) @codeblock
+  --
+  --         (paragraph . (expr) @quote
+  --             (#eq? @quote ">")
+  --         )
+  --     ]]
+  --   ),
+  --   headline_highlights = { 'Headline' },
+  --   codeblock_highlight = 'CodeBlock',
+  --   dash_highlight = 'Dash',
+  --   dash_string = '-',
+  --   quote_highlight = 'Quote',
+  --   quote_string = '┃',
+  --   fat_headlines = true,
+  --   fat_headline_upper_string = '▃',
+  --   fat_headline_lower_string = '🬂',
+  -- },
 }
 -- TODO: make gradient headlines
 local config = {

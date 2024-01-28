@@ -325,6 +325,21 @@ local extension_configs = {
     -- Ctrl + x	Pastes the results into a new horizontal split
     -- Ctrl + r	Removes the selected query from the list
   }, require('telescope.themes').get_dropdown()),
+  ['import'] = {
+    -- Add imports to the top of the file keeping the cursor in place
+    insert_at_top = true,
+    -- Support additional languages
+    custom_languages = {
+      {
+        -- The regex pattern for the import statement
+        regex = [[^(?:import(?:[\"'\s]*([\w*{}\n, ]+)from\s*)?[\"'\s](.*?)[\"'\s].*)]],
+        -- The Vim filetypes
+        filetypes = { 'typescript', 'typescriptreact', 'javascript', 'react' },
+        -- The filetypes that ripgrep supports (find these via `rg --type-list`)
+        extensions = { 'js', 'ts' },
+      },
+    },
+  },
   ['lazy'] = {
     theme = 'ivy',
     show_icon = true,

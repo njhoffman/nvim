@@ -122,7 +122,7 @@ local sources = {
         option = { in_comment = true },
       },
       { name = 'plugins' },
-      { name = 'nvim_lsp_document_symbol' },
+      -- { name = 'nvim_lsp_document_symbol' },
       -- { name = 'nvim_lsp_signature_help' },
     },
     {

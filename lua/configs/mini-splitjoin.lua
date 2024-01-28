@@ -1,3 +1,6 @@
+
+  local gen_hook = require('mini.splitjoin').gen_hook
+
 -- No need to copy this inside `setup()`. Will be used automatically.
 local default_opt = {
   -- Module mappings, normal and visual modes
@@ -34,4 +37,5 @@ local default_opt = {
 local opts = {
   mappings = { toggle = '', split = '', join = '' },
 }
+
 require('mini.splitjoin').setup(opts)

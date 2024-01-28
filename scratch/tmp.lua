@@ -1,4 +1,10 @@
-local list = require('devdocs.list')
+local operators = vim.api.nvim_get_keymap('o')
+local motions = vim.api.nvim_get_keymap('')
 
-local installed = list.get_installed_registry()
-vim.dbglog(installed)
+for _, map in pairs(operators) do
+  print('Operator: ' .. map.lhs)
+end
+
+for _, map in pairs(motions) do
+  print('Motion: ' .. map.lhs)
+end

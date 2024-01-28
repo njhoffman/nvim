@@ -1,104 +1,124 @@
 local nl = '\n   ➜ '
+-- http://eriklievaart.com/cheat/applications/vim/vimquickfix.html
 
---stylua: ignore
-local tips_list = {
-  -- http://eriklievaart.com/cheat/applications/vim/vimquickfix.html
-  tmux = {
-    { 'Tmux fingers', '(start): <ctrl>+<a>+<ctrl>+<a>', '(jump):  <ctrl>+<a>+[F]', '(yank):  <ctrl>+[mark]' },
-    { 'Tmux swap pane shortcut', '<super>+<shift>+[,]', '<super>+<shift>+[.]', '<ctrl>+<a>+[hjkl]' },
-    'Tmux rotate active pane with other window panes' .. nl .. '<super>+<shift>+n',
-    'Tmux rotate alternate pane with other window panes' .. nl .. '<super>+n',
-    'Tmux in copy-mode Y yanks selection and inserts it into commandline',
-    'Tmux to paste system clipboard' .. nl .. '`<ctrl>+a+<ctrl>+p`',
-    'Tmux to paste buffer: <ctrl>+a+p' .. nl .. ' to select buffer to paste: <ctrl>+A+P ',
-  },
-  insert = {
-    {'To do a one-off normal command while in insert mode: ', '`<ctrl+o>(motion) i.e. <ctrl+o>w`'},
-    {'To jump to begining of line in insert mode:', '`<ctrl+[o][$]`'},
-    {'Jump over word while staying in insert mode:', '<ctrl>+f'},
-  },
-  misc = {
-    'To quickly output a lua function/variable' .. nl .. '`:lua =vim.diagnostic.config()`',
-    'To insert sequential numbers'
-      .. nl
-      .. '`:put=map(range(1,5)`'
-      .. nl
-      .. "`:put=map(range(1,5), 'v:val/2.0')` (increment by 0.5)"
-      .. nl
-      .. "`:put=join(range(1,5), ' & ')     ` (increment by 0.5)",
-  },
-  quickfix = {
-    'Populate the quickfix list with the results of a command, use `:cexpr`',
-    'Use the quickfix command `cope` to navigate multiple quickfix lists',
-    'Search current file and populate quickfix '       .. nl .. '`:vimgrep /re/ %:p`',
-    'Execute macro @a on every quickfix item '         .. nl .. '`:cdo! norm @a`',
-    'To perform search and replace on quickfix items ' .. nl .. '`:cdo! s/re/repl/`',
-    'Search recursively with grep for quickfix list '  .. nl .. '`:gr zsh . -R`',
-    'Search the files in the argument list with ##'    .. nl .. '`:vimgrep // ##`',
-    'Other vimgrep examples'
-      .. nl
-      .. '`:vimgrep /git/ install.sh`'
-      .. nl
-      .. '`:vimgrep /apt/ **/*.sh`'
-      .. nl
-      .. '`:vimgrep vim.dbglog **/*.lua`'
-      .. nl
-      .. '`:vimgrep /"[^"]i\\+"/ ~/.*`',
-  },
-  format = {
-    'Quick surround word near cursor with quote' .. nl .. '`s-SPC-"` / `s-s-"`',
-    'Live commands' .. nl .. '`Norm <keys>`' .. nl .. '`5Reg a`' .. nl .. '`G/^$/d`' .. nl .. '`%S/pattern/replace`',
-    'Subvert `(:Subvert/pat/repl)` substitutes with case pattern matches',
-    'To increment visually selected numbers sequentially ' .. nl .. '`g<C-S-A>`',
-    "To substitute without moving cursor:" .. nl .. ":exe 'norm m`' | %s/pattern/substitution/eg | norm g``",
+local tmux = {
+  { 'Tmux fingers', '(start): <ctrl>+<a>+<ctrl>+<a>', '(jump):  <ctrl>+<a>+[F]', '(yank):  <ctrl>+[mark]' },
+  { 'Tmux swap pane shortcut', '<super>+<shift>+[,]', '<super>+<shift>+[.]', '<ctrl>+<a>+[hjkl]' },
+  { 'Tmux rotate active pane with other window panes', '<super>+<shift>+n' },
+  { 'Tmux rotate alternate pane with other window panes', '<super>+n' },
+  { 'Tmux in copy-mode Y yanks selection and inserts it into commandline' },
+  { 'Tmux to paste system clipboard', '`<crl>+a+<ctrl>+p`' },
+  { 'Tmux to paste buffer: <ctrl>+a+p', ' to select buffer to paste: <ctrl>+A+P ' },
+}
 
-  },
-  movement = {
-    'Using the tag stack stack to navigate in and out of areas quickly:' .. nl .. '`<C-]> to enter, <C-T> to exit`',
-    'Quick block navigation' .. nl .. '`<C-S-]>  <C-S-[>`',
-    'Normal jump to node' .. nl .. '`<C-M-J>  <C-M-K>  <C-M-H>  <C-M-L>`',
-    'Visual move selection' .. nl .. '(v)`<S-L>  <S-H>  <S-J>  <S-K>`',
-    'Normal move (swap) line up/down' .. nl .. '`<M-S-J>  <M-S-K>`',
-    'Normal move (swap) node' .. nl .. '`<C-M-S-J>  <C-M-S-K>  <C-M-S-H> / <C-M-S-L>`',
-    'Exchange (swap) content inside argument and parenthesis with cx ' .. nl .. '`cxia` ➜ `cxi(`',
-    'Visual exchange (swap) inside function and block with X ' .. nl .. '`vifX` ➜ `vibX`',
-    'Text objects'
-      .. nl
-      .. '`c = class, C = conditional, f = function, ? = prompt, i = object`'
-      .. nl
-      .. '`b = balanced, B = block,    h = git-hunk,   o = block/cond/loop, L = loop`'
-      .. nl
-      .. '`t = tag,      w = word,     W = WORD,       x = comment,         l = last textobj, n = next textobj`'
-      .. nl
-      .. '`% = matching, a = argument, A = attribute,  s = sentence,        p = paragraph,    q = quote`',
-  },
-  autopairs = {
-    'Jump to end or out of pairs with tabout' .. nl .. '`(f*oo)  <tab>  (foo*)`' .. nl .. '`(f*oo)  <c-tab>  (foo)*` (hopout)',
-    'Fast warp input char to the next end pair' .. nl .. '`(*){}  <c-.>  ({}*)` (nocursormove=false)' .. nl .. '`(*){}  <c-\'>  (*{})` (nocursormove=true)',
-    'Fly (hop) to list of end-pairs' .. nl .. '`({[*] })  )  ({[] })*` (only_jump_end_pair=true)' .. nl .. '`*()  )  ()*` (only_jump_end_pair=false)',
-    'Automatically wrap surround pairs' .. nl .. '`*\'a`  (  `(*\'a\')`',
-  },
-  global = {
-    'To delete all lines that have only whitespace' .. nl .. '`:g/^s*$/d`',
-    'To delete all non-matching lines' .. nl .. '`:vg/pattern/d`',
-    'Display 5 lines of context for matches' .. nl .. '`g/pattern/z#.5|echo "=========="`',
-    'Copy all matches to end of file' .. nl .. '`:g/pattern/t$`',
-    'Move all matches to end of file' .. nl .. '`:g/pattern/m$`',
-    'Yank all matches to register A' .. nl .. '`qaq:g/pattern/y A`',
-    'Put all matches from register A into buffer' .. nl .. '`:g/pattern/pu A`',
-    'Increment each number at start of line by one' .. nl .. '`:.,$g/^d/exe "normal! <C-A>"`',
-    'Reverse lookup of first field separated by space' .. nl .. '`:g/pattern/?^w?p`',
-    'Reverse lookup of spaced fields with whole record' .. nl .. '`:g/pattern/?^w?|+,/^[^ ]/-1p`',
-    'Add text to end of line that begins with pattern' .. nl .. '`:g/^pattern/s/$/mytext`',
-    'Delete duplicates lines' .. nl .. '`:g/^(.*)(\\r?\\n\\1)+$/d`',
-    'Run macro in register q on matching lines' .. nl .. '`:g/pattern/normal @q`',
-    'Substitute all "bads" into "nice" only for lines that contain "good" ' .. nl .. '`:g/good/s/bad/nice/g`',
-    'Comment out all lines with "console"' .. nl .. '`:g/console/normal I//`',
+local insert = {
+  { 'To do a one-off normal command while in insert mode: ', '`<ctrl+o>(motion) i.e. <ctrl+o>w`' },
+  { 'To jump to begining of line in insert mode:', '`<ctrl+[o][$]`' },
+  { 'Jump over word while staying in insert mode:', '<ctrl>+f' },
+}
+
+local misc = {
+  { 'To quickly output a lua function/variable', '`:lua =vm.diagnostic.config()`' },
+  {
+    'To insert sequential numbers',
+    '`:put=map(range(1,5)`',
+    "`:put=map(range(1,5), 'v:val/2.0')` (increment by 0.5)",
+    "`:put=join(range(1,5), ' & ')     ` (increment by 0.5)",
   },
 }
 
-return tips_list
+local quickfix = {
+  { 'Populate the quickfix list with the results of a command, use `:cxpr`' },
+  { 'Use the quickfix command `cope` to navigate multiple quickfix lists' },
+  { 'Search current file and populate quickfix ', '`:vimgrep /re/ %:p' },
+  { 'Execute macro @a on every quickfix item ', '`:cdo! norm @a' },
+  { 'To perform search and replace on quickfix items ', '`:cdo! s/e/repl/`' },
+  { 'Search recursively with grep for quickfix list ', '`:gr zsh . -R' },
+  { 'Search the files in the argument list with ## ', '`:vimgrep // ##`' },
+  {
+    'Other vimgrep examples',
+    '`:vimgrep /git/ install.sh`',
+    '`:vimgrep /apt/ **/*.sh`',
+    '`:vimgrep vim.dbglog **/*.lua`',
+    '`:vimgrep /"[^"]i\\+"/ ~/.*`',
+  },
+}
+
+local format = {
+  { 'Quick surround word near cursor with quote', '`s-SPC-"` / `ss-"`' },
+  { 'Live commands', '`Norm <keys>`', '`5Reg a`', '`G/^$/d`', '`%Spattern/replace`' },
+  { 'Subvert `(:Subvert/pat/repl)` substitutes with case pattern matches' },
+  { 'To increment visually selected numbers sequentially ', '`gC-S-A>`' },
+  { 'To substitute without moving cursor:', ":exe 'norm m`' | %s/pattern/substitution/eg | norm g`" },
+}
+local movement = {
+  { 'Using the tag stack stack to navigate in and out of areas quickly:', '`<C-]> to enter, <C-T> to exit`' },
+  { 'Quick block navigation', '`<C-S-]>  <CS-[>`' },
+  { 'Normal jump to node', '`<C-M-J>  <C-M-K>  <C-M-H>  <CM-L>`' },
+  { 'Visual move selection', '(v)`<S-L>  <S-H>  <S-J>  <SK>`' },
+  { 'Normal move (swap) line up/down', '`<M-S-J>  <MS-K>`' },
+  { 'Normal move (swap) node', '`<C-M-S-J>  <C-M-S-K>  <C-M-S-H> / <CM-S-L>`' },
+  { 'Exchange (swap) content inside argument and parenthesis with cx ', '`cxia` ➜ `ci(`' },
+  { 'Visual exchange (swap) inside function and block with X ', '`vifX` ➜ `vbX`' },
+  {
+    'Text objects',
+    '`c = class, C = conditional, f = function, ? = prompt, i = object`',
+    '`b = balanced, B = block,    h = git-hunk,   o = block/cond/loop, L = loop`',
+    '`t = tag,      w = word,     W = WORD,       x = comment,         l = last textobj, n = next textobj`',
+    '`% = matching, a = argument, A = attribute,  s = sentence,        p = paragraph,    q = quote`',
+  },
+}
+
+local autopairs = {
+  { 'Jump to end or out of pairs with tabout', '`(f*oo)  <tab>  (foo*)`', '`(f*oo)  <c-tab>  (foo)*` (hpout)' },
+  {
+    'Fast warp input char to the next end pair',
+    '`(*){}  <c-.>  ({}*)` (nocursormove=false)',
+    "`(*){}  <c-'>  (*{})` (ncursormove=true)",
+  },
+  {
+    'Fly (hop) to list of end-pairs',
+    '`({[*] })  )  ({[] })*` (only_jump_end_pair=true)',
+    '`*()  )  ()*` (oly_jump_end_pair=false)',
+  },
+  { 'Automatically wrap surround pairs', "`*'a`  (  `(*'a)`" },
+}
+local global = {
+  { 'To delete all lines that have only whitespace', '`:g^s*$/d`' },
+  { 'To delete all non-matching lines', '`:v/pattern/d`' },
+  { 'Display 5 lines of context for matches', '`g/pattern/z#.5|echo "=========="`' },
+  { 'Copy all matches to end of file', '`:g/pattern/t$`' },
+  { 'Move all matches to end of file', '`:gpattern/m$`' },
+  { 'Yank all matches to register A', '`qaq:g/pattern/y A`' },
+  { 'Put all matches from register A into buffer', '`:g/pattern/pu A`' },
+  { 'Increment each number at start of line by one', '`:.,$g/^d/exe "normal! <CA>"`' },
+  { 'Reverse lookup of first field separated by space', '`:gpattern/?^w?p`' },
+  { 'Reverse lookup of spaced fields with whole record', '`:g/pattern/?^w?|+,/^[^ ]/-1`' },
+  { 'Add text to end of line that begins with pattern', '`:g^pattern/s/$/mytext`' },
+  { 'Delete duplicates lines', '`:g^(.*)(\\r?\\n\\1)+$/d`' },
+  { 'Run macro in register q on matching lines', '`:g/pattern/normal @q' },
+  { 'Substitute all "bads" into "nice" only for lines that contain "good" ', '`:ggood/s/bad/nice/g`' },
+  { 'Comment out all lines with "console"', '`:g/console/normal I/`' },
+}
+
+return {
+  autopairs = autopairs,
+  format = format,
+  global = global,
+  insert = insert,
+  misc = misc,
+  movement = movement,
+  quickfix = quickfix,
+  tmux = tmux,
+}
 -- 1
+
+-- sfn( - find next "(" character, repeat with '.'
+-- gq - format lines, i.e. gqap, gqq
+-- gw - like gq but returns cursor
+-- gn - Select the match of your last search
+-- cg* - replace word under cursor
+-- g.  - repeat previous search/replace done with operator i.e. ciw
 --- surround
 --- - `siw)` - add (`s`) for inner word (`iw`) parenthesis (`)`).
 --- - `siw?[[<CR>]]<CR>` - add (`s`) for inner word (`iw`) interactive surrounding (`?`): `[[` for left and `]]` for right.

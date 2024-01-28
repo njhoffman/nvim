@@ -23,6 +23,7 @@ local function get_source_code(f)
   end
   return table.concat(text, '\n')
 end
+
 local feedkeys = require('cmp.utils.feedkeys')
 
 local send_enter = function()
@@ -96,203 +97,52 @@ local cmdline = {
       preserve_mapping_verticality = true,
     }),
   },
-  -- ['<C-n>'] = {
-  --   c = function()
-  --     if cmp.visible() then
-  --       cmp.select_next_item({
-  --         preserve_mapping_verticality = preserve_mapping_verticality,
-  --         count = 1,
-  --         behavior = cmp.SelectBehavior.Select,
-  --       })
-  --       in_history = false
-  --     -- elseif in_history == true then
-  --     --   feedkeys.call(keymap.t('<Down>'), 'c')
-  --     else
-  --       cmp.complete()
-  --       -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
-  --     end
-  --   end,
-  -- },
-  -- ['<C-p>'] = {
-  --   c = function()
-  --     if cmp.visible() then
-  --       -- if in_history and (has_chars_before() or has_chars_after()) then
-  --       in_history = false
-  --       -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
-  --       cmp.select_prev_item({
-  --         preserve_mapping_verticality = preserve_mapping_verticality,
-  --         count = 1,
-  --         behavior = cmp.SelectBehavior.Select,
-  --       })
-  --       -- else
-  --       --   feedkeys.call(keymap.t('<Up>'), 'c')
-  --     else
-  --       cmp.complete()
-  --     end
-  --   end,
-  -- },
+  ['<C-n>'] = {
+    c = function()
+      local cmp = require('cmp')
+      local sel = cmp.get_selected_entry()
+      if cmp.visible() then
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+      else
+        cmp.complete()
+      end
+    end,
+  },
+  ['<C-p>'] = {
+    c = function()
+      local cmp = require('cmp')
+      if cmp.visible() then
+        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+      else
+        cmp.complete()
+      end
+    end,
+  },
+  ['<M-p>'] = {
+    c = function()
+      feedkeys.call(keymap.t('<Up>'), 'c')
+    end,
+  },
+  ['<M-n>'] = {
+    c = function()
+      feedkeys.call(keymap.t('<Down>'), 'c')
+    end,
+  },
+  ["<M-'>"] = {
+    c = function(fallback)
+      if cmp.visible() then
+        cmp.confirm({
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = true,
+        })
+      elseif type(fallback) == 'function' then
+        fallback()
+      end
+    end,
+  },
+  ['<CR>'] = { c = cmp.mapping.confirm({ select = false }) },
+  -- --   feedkeys.call(keymap.t('<Up>'), 'c')
+  --      cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
+  -- --   cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
 }
 return cmdline
--- local cmdline = {
---   ["<M-'>"] = {
---     c = function(fallback)
---       if cmp.visible() then
---         cmp.confirm({
---           behavior = cmp.ConfirmBehavior.Replace,
---           select = true,
---         })
---       elseif type(fallback) == 'function' then
---         fallback()
---       end
---     end,
---   },
---   ['<C-z>'] = {
---     c = function()
---       if cmp.visible() then
---         cmp.select_next_item()
---       else
---         cmp.complete()
---       end
---     end,
---   },
---   ['<Tab>'] = {
---     c = function()
---       if cmp.visible() then
---         cmp.select_next_item()
---       else
---         cmp.complete()
---       end
---     end,
---   },
---   ['<S-Tab>'] = {
---     c = function()
---       if cmp.visible() then
---         cmp.select_prev_item()
---       else
---         cmp.complete()
---       end
---     end,
---   },
---   ['<C-n>'] = {
---     c = function(fallback)
---       if cmp.visible() then
---         cmp.select_next_item({
---           preserve_mapping_verticality = preserve_mapping_verticality,
---           count = 1,
---           behavior = cmp.SelectBehavior.Select,
---         })
---       elseif type(fallback) == 'function' then
---         fallback()
---       else
---         cmp.complete()
---       end
---     end,
---   },
---   ['<C-p>'] = {
---     c = function(fallback)
---       if cmp.visible() then
---         cmp.select_prev_item({
---           preserve_mapping_verticality = preserve_mapping_verticality,
---           count = 1,
---           behavior = cmp.SelectBehavior.Select,
---         })
---       elseif type(fallback) == 'function' then
---         fallback()
---       else
---         cmp.complete()
---       end
---     end,
---   },
---   ['<C-e>'] = { c = cmp.mapping.abort() },
---   ['<C-y>'] = { c = cmp.mapping.confirm({ select = false }) },
--- }
--- --   ['<C-p>'] = {
--- --     c = function(fallback)
--- --       if cmp.visible() then
--- --         if in_history and has_chars_before() then
--- --           in_history = false
--- --           cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
--- --         elseif in_history then
--- --           feedkeys.call(keymap.t('<Up>'), 'c')
--- --         else
--- --           cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
--- --           -- cmp.select_prev_item()
--- --         end
--- --       elseif type(fallback) == 'function' then
--- --         fallback()
--- --       else
--- --         cmp.complete()
--- --       end
--- --     end,
--- --   },
--- --   ['<C-n>'] = {
--- --     c = function(fallback)
--- --       if cmp.visible() then
--- --         cmp.select_next_item({
--- --           preserve_mapping_verticality = preserve_mapping_verticality,
--- --           count = 1,
--- --           behavior = cmp.SelectBehavior.Select,
--- --         })
--- --       elseif type(fallback) == 'function' then
--- --         fallback()
--- --       else
--- --         cmp.complete()
--- --       end
--- --     end,
--- --   },
--- --   -- cmp.select_next_item({
--- --   --   preserve_mapping_verticality = preserve_mapping_verticality,
--- --   --   count = 1,
--- --   --   behavior = cmp.SelectBehavior.Select,
--- --   -- })
--- --   -- elseif in_history == true then
--- --   --   feedkeys.call(keymap.t('<Down>'), 'c')
--- --   --   -- cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
--- --   --   -- cmp.complete()
--- --   -- elseif has_chars_before() or not in_history then
--- --   --   in_history = false
--- --   --   -- cmp.complete()
--- --   --   cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
--- --   -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
--- --   -- ['<C-p>'] = {
--- --   --   c = function(fallback)
--- --   --     if cmp.visible() and cmp.get_selected_entry() then
--- --   --       cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
--- --   --     elseif in_history == true then
--- --   --       -- cmp.mapping.complete({ config = { sources = { { name = 'cmdline_history' } } } })
--- --   --       feedkeys.call(keymap.t('<Up>'), 'c')
--- --   --     -- elseif type(fallback) == 'function' then
--- --   --     --   fallback()
--- --   --     else
--- --   --       cmp.complete()
--- --   --     end
--- --   --   end,
--- --   -- },
--- --   ['<C-f>'] = {
--- --     c = function(fallback)
--- --       if cmp.visible() then
--- --         for _ = 1, 5 do
--- --           cmp.mapping.select_next_item({
--- --             behavior = cmp_types.SelectBehavior.Select,
--- --           })(nil)
--- --         end
--- --       elseif type(fallback) == 'function' then
--- --         fallback()
--- --       end
--- --     end,
--- --   },
--- --   ['<C-b>'] = {
--- --     c = function(fallback)
--- --       if cmp.visible() then
--- --         for _ = 1, 5 do
--- --           cmp.mapping.select_prev_item({
--- --             behavior = cmp_types.SelectBehavior.Select,
--- --           })(nil)
--- --         end
--- --       elseif type(fallback) == 'function' then
--- --         fallback()
--- --       end
--- --     end,
--- --   },
--- -- }
---

@@ -46,36 +46,44 @@ return function(bufnr, notif, highlights, config)
   local title = notif.title[1]
   local prefix
 
+  local default_titles = { 'Error', 'Warning', 'Notify' }
+  local has_valid_manual_title = type(title) == 'string' and #title > 0 and not vim.tbl_contains(default_titles, title)
+
+  -- If message has a `[plugin-name]` prefix but has no title, remove the prefix
+  -- and use it as title instead.
+  local pseudo_title = notif.message[1]:match('^%[.-%] ?')
+  if pseudo_title and not has_valid_manual_title then
+    notif.message[1] = notif.message[1]:sub(#pseudo_title + 1)
+    title = vim.trim(pseudo_title):sub(2, -2)
+    has_valid_manual_title = true
+  end
+
   -- wrap the text & add spacing
   local max_width = config.max_width()
   if max_width == nil then
     max_width = 80
   end
-  local display_message = custom_wrap(vim.fn.deepcopy(notif.message), max_width)
-  -- local display_message = vim.fn.deepcopy(notif.message)
+  local message = custom_wrap(vim.fn.deepcopy(notif.message), max_width)
 
-  -- local default_titles = { 'Error', 'Warning', 'Notify' }
-  -- local has_valid_manual_title = type(title) == 'string' and #title > 0 and not vim.tbl_contains(default_titles, title)
-  -- if has_valid_manual_title then
-  --   -- has title = icon + title as header row
-  --   prefix = string.format(' %s %s', icon, title)
-  --   table.insert(display_message, 1, prefix)
-  -- else
-  --   -- no title = prefix the icon
-  --   prefix = string.format(' %s', icon)
-  --   display_message[1] = string.format('%s %s', prefix, display_message[1])
-  -- end
-
-  if type(title) == 'string' and #title > 0 then
-    prefix = string.format('%s | %s:', icon, title)
+  if has_valid_manual_title then
+    -- has title = icon + title as header row
+    prefix = string.format(' %s %s', icon, title)
+    table.insert(message, 1, prefix)
   else
-    prefix = string.format('%s |', icon)
+    -- no title = prefix the icon
+    prefix = string.format(' %s', icon)
+    message[1] = string.format('%s %s', prefix, message[1])
   end
-  display_message[1] = string.format('%s %s', prefix, display_message[1])
-  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, display_message)
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, message)
 
-  -- local icon_length = vim.str_utfindex(icon)
-  -- local prefix_length = vim.str_utfindex(prefix)
+  -- if type(title) == 'string' and #title > 0 then
+  --   prefix = string.format('%s | %s:', icon, title)
+  -- else
+  --   prefix = string.format('%s |', icon)
+  -- end
+  -- message[1] = string.format('%s %s', prefix, display_message[1])
+  -- vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, display_message)
+
   local icon_length = icon and vim.str_utfindex(icon) or 0
   local prefix_length = vim.str_utfindex(prefix)
 

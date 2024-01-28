@@ -14,6 +14,11 @@ local function notify(msg, level)
   vim.notify(msg, vim.log.levels[level:upper()], { title = pluginName })
 end
 
+local set_alternate_buffer = function(buffer_a, buffer_b)
+  vim.api.nvim_set_current_buf(buffer_a)
+  vim.api.nvim_set_current_buf(buffer_b)
+end
+
 --------------------------------------------------------------------------------
 
 ---count number of windows, excluding various special windows (scrollbars,

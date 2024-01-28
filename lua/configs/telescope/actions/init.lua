@@ -1,6 +1,6 @@
-local actions = require('telescope.actions')
 local finders = require('telescope.finders')
 local config = require('telescope.config')
+local actions = require('telescope.actions')
 local action_state = require('telescope.actions.state')
 local actions_set = require('telescope.actions.set')
 local state = require('telescope.state')
@@ -8,12 +8,31 @@ local H = require('helpers')
 local run = require('telescope.run')
 local telethemes = require('telescope.telethemes')
 local dirpicker = require('configs.telescope.dirpicker')
+
 local picker_history = require('configs.telescope.actions.picker-history')
+local yank_actions = require('configs.telescope.actions.yank')
+local preview_actions = require('configs.telescope.actions.preview')
+local motion_actions = require('configs.telescope.actions.motion')
 
 local M = {}
 
-M.next_picker = picker_history.next_picker
-M.prev_picker = picker_history.prev_picker
+-- stylua: ignore start
+M.next_picker              = picker_history.next_picker
+M.prev_picker              = picker_history.prev_picker
+M.yank_selection           = yank_actions.yank_selection
+M.yank_selection_to_buffer = yank_actions.yank_selection_to_buffer
+M.results_toggle_up        = motion_actions.results_toggle_up
+M.results_toggle_down      = motion_actions.results_toggle_down
+M.results_page_up          = motion_actions.results_page_up
+M.results_page_down        = motion_actions.results_page_down
+M.search_backspace_word    = motion_actions.search_backspace_word
+M.search_jump_start        = motion_actions.search_jump_start
+M.preview_toggle_wrap      = preview_actions.preview_toggle_wrap
+M.preview_scroll_up        = preview_actions.preview_scroll_up
+M.preview_scroll_down      = preview_actions.preview_scroll_down
+M.preview_page_up          = preview_actions.preview_page_up
+M.preview_page_down        = preview_actions.preview_page_down
+-- stylua: ignore end
 
 local _open_buffer = function(open_cmd, prompt_bufnr)
   if open_cmd == 'vsplit' then
@@ -119,85 +138,6 @@ end
 M.resume_picker_next = function(prompt_bufnr)
   actions.toggle_selection(prompt_bufnr)
   actions.move_selection_next(prompt_bufnr)
-end
-
-M.results_toggle_up = function(prompt_bufnr)
-  actions.toggle_selection(prompt_bufnr)
-  actions.move_selection_previous(prompt_bufnr)
-end
-
-M.results_toggle_down = function(prompt_bufnr)
-  actions.toggle_selection(prompt_bufnr)
-  actions.move_selection_next(prompt_bufnr)
-end
-
-M.results_page_up = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local results_height = vim.api.nvim_win_get_height(picker.results_win)
-  actions_set.shift_selection(prompt_bufnr, -results_height)
-end
-
-M.results_page_down = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local results_height = vim.api.nvim_win_get_height(picker.results_win)
-  actions_set.shift_selection(prompt_bufnr, results_height)
-end
-
-local preview_scroll_line = function(prompt_bufnr, direction)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local previewer = picker.previewer
-  local status = state.get_status(prompt_bufnr)
-  local preview_height = vim.api.nvim_win_get_height(status.layout.preview.winid)
-  -- Check if we actually have a previewer and a preview window
-  if type(previewer) ~= 'table' or status.preview_win == nil then
-    return
-  end
-
-  local input = direction > 0 and [[j]] or [[k]]
-  local count = math.abs(direction)
-
-  vim.api.nvim_win_call(status.preview_win, function()
-    -- vim.cmd([[ execute "normal! \<Plug>(SmoothieDownwards)" ]])
-    vim.cmd([[normal! ]] .. count .. input)
-  end)
-end
--- docs_view.scroll = function(self, delta)
---   if self:visible() then
---     local info = vim.fn.getwininfo(self.window.win)[1] or {}
---     local top = info.topline or 1
---     top = top + delta
---     top = math.max(top, 1)
---     top = math.min(top, self.window:get_content_height() - info.height + 1)
---
---     vim.defer_fn(function()
---       vim.api.nvim_buf_call(self.window:get_buffer(), function()
---         vim.api.nvim_command('normal! ' .. top .. 'zt')
---         self.window:update()
---       end)
---     end, 0)
---   end
--- end
---
-
-M.preview_scroll_up_line = function(prompt_bufnr)
-  preview_scroll_line(prompt_bufnr, -1)
-end
-
-M.preview_scroll_down_line = function(prompt_bufnr)
-  preview_scroll_line(prompt_bufnr, 1)
-end
-
-M.preview_toggle_wrap = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  -- local results_height = vim.api.nvim_win_get_height(picker.results_win)
-  local status = state.get_status(prompt_bufnr)
-  local previewer = action_state.get_current_picker(prompt_bufnr).previewer
-  local preview_winid = status.layout.preview and status.layout.preview.winid
-  -- Check if we actually have a previewer and a preview window
-  if type(previewer) ~= 'table' or previewer.scroll_fn == nil or preview_winid == nil then
-    return
-  end
-  vim.api.nvim_win_set_option(preview_winid, 'wrap', not vim.api.nvim_win_get_option(preview_winid, 'wrap'))
 end
 
 M.toggle_whichkey = function(prompt_bufnr)
@@ -446,16 +386,6 @@ M.search_reset = function(prompt_bufnr, opts)
   -- current_picker:set_prompt(entry)
 end
 
-M.search_backspace_word = function(_)
-  local backspace_key = vim.api.nvim_replace_termcodes('<C-w>', true, true, true)
-  vim.api.nvim_feedkeys(backspace_key, 'i', true)
-end
-
-M.search_jump_start = function(_)
-  local home_key = vim.api.nvim_replace_termcodes('<Home>', true, true, true)
-  vim.api.nvim_feedkeys(home_key, 'i', true)
-end
-
 --- Delete the selected buffer or all the buffers selected using multi selection.
 ---@param prompt_bufnr number: The prompt bufnr
 M.delete_buffer = function(prompt_bufnr)
@@ -468,64 +398,6 @@ M.delete_buffer = function(prompt_bufnr)
     return ok
   end)
   vim.notify('removed ' .. #removed .. ' buffers', 2)
-end
-
-local function create_scratch_win(filetype, lines)
-  local buf, win
-  filetype = (filetype == nil and 'result') or filetype
-  vim.api.nvim_command('enew')
-  win = vim.api.nvim_get_current_win()
-  -- buf = vim.api.nvim_create_buf(true, true)
-  buf = vim.api.nvim_win_get_buf(win)
-
-  vim.api.nvim_buf_set_name(0, 'telecope-out #' .. buf)
-
-  vim.api.nvim_buf_set_option(0, 'buftype', 'nofile')
-  vim.api.nvim_buf_set_option(0, 'swapfile', false)
-  vim.api.nvim_buf_set_option(0, 'filetype', filetype)
-  vim.api.nvim_buf_set_option(0, 'bufhidden', 'wipe')
-
-  vim.api.nvim_command('setlocal wrap')
-  vim.api.nvim_command('setlocal cursorline')
-  -- vim.api.nvim_win_set_buf(win, buf)
-  vim.api.nvim_buf_set_lines(buf, 0, #lines, false, lines)
-end
-
-M.yank_selection_to_buffer = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local lines = {}
-  local multi_targets = picker:get_multi_selection()
-  if #multi_targets > 0 then
-    for _, target in ipairs(multi_targets) do
-      table.insert(lines, target.value or target[1])
-    end
-  else
-    local single_target = action_state.get_selected_entry().value or action_state.get_selected_entry()[1]
-    table.insert(lines, single_target)
-  end
-  actions.close(prompt_bufnr)
-  create_scratch_win('txt', lines)
-end
-
-M.yank_selection = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local lines = {}
-  local multi_targets = picker:get_multi_selection()
-  if #multi_targets > 0 then
-    for _, target in ipairs(multi_targets) do
-      table.insert(lines, target.value or target[1])
-    end
-  else
-    local single_target = action_state.get_selected_entry().value or action_state.get_selected_entry()[1]
-    table.insert(lines, single_target)
-  end
-  local register = '+'
-  if vim.o.clipboard == 'unnamed' then
-    register = '*'
-  end
-  vim.fn.setreg(register, vim.fn.join(lines, '\n'))
-  actions.close(prompt_bufnr)
-  vim.notify('Copied ' .. #lines .. ' lines to register ' .. register, 2)
 end
 
 M.refresh = function(prompt_bufnr)

@@ -24,6 +24,23 @@ u.ftAbbr('tre', 'then return end') -- codespell-ignore
 -- if in nvim dir, reload file/plugin, otherwise run `make`
 vim.api.nvim_set_keymap('n', '<localleader>1', ':luafile%<cr>', { silent = true })
 
+
+MiniSplitjoin = MiniSplitjoin or {}
+if MiniSplitjoin.gen_hook ~= nil then
+  local curly = { brackets = { '%b{}' } }
+  -- Add trailing comma when splitting inside curly brackets
+  local add_comma_curly = MiniSplitjoin.gen_hook.add_trailing_separator(curly)
+  -- Delete trailing comma when joining inside curly brackets
+  local del_comma_curly = MiniSplitjoin.gen_hook.del_trailing_separator(curly)
+  -- Pad curly brackets with single space after join
+  local pad_curly = MiniSplitjoin.gen_hook.pad_brackets(curly)
+  -- Create buffer-local config
+  vim.b.minisplitjoin_config = {
+    split = { hooks_post = { add_comma_curly } },
+    join = { hooks_post = { del_comma_curly, pad_curly } },
+  }
+end
+
 -- Enable `gf` for `require()`d files.
 -- Modified (slight cleanup) from
 -- https://gist.github.com/iagoleal/92bd781dae1926525cd5e049eb32d64b

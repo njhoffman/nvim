@@ -37,6 +37,7 @@ M.output_log = function(level, level_config, message_maker, ...)
         time_diff = #tostring(vim.fn.trim(time_diff)) < 9 and time_diff .. string.rep('0', 9 - #tostring(time_diff))
           or time_diff
         local str = string.format('%-9s %s\n', time_diff, msg)
+        -- local str = string.format('%-9s ', time_diff) .. msg .. '\n'
         fp:write(str)
         fp:close()
       end

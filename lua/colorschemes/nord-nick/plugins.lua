@@ -216,22 +216,6 @@ return function()
     -- BufferLineIndicatorSelected = { fg = colors.yellow },
     -- BufferLineFill = { bg = colors.bg },
 
-    -- -- barbar
-    BufferCurrent({ fg = colors.fg, bg = 'NONE' }),
-    BufferCurrentIndex({ fg = colors.fg, bg = 'NONE' }),
-    BufferCurrentMod({ fg = colors.yellow, bg = 'NONE', gui = 'bold' }),
-    BufferCurrentSign({ fg = colors.cyan, bg = 'NONE' }),
-    BufferCurrentTarget({ fg = colors.red, bg = 'NONE', gui = 'bold' }),
-    BufferVisible({ fg = colors.fg, bg = 'none' }),
-    BufferVisibleIndex({ fg = colors.fg, bg = 'none' }),
-    BufferVisibleMod({ fg = colors.yellow, bg = 'none', gui = 'bold' }),
-    BufferVisibleSign({ fg = colors.light_gray, bg = 'none' }),
-    BufferVisibleTarget({ fg = colors.red, bg = 'none', gui = 'bold' }),
-    BufferInactive({ fg = colors.light_gray, bg = '#1C1F24' }),
-    BufferInactiveIndex({ fg = colors.light_gray, bg = '#1C1F24' }),
-    BufferInactiveMod({ fg = colors.yellow, bg = '#1C1F24' }),
-    BufferInactiveSign({ fg = colors.light_gray, bg = '#1C1F24' }),
-    BufferInactiveTarget({ fg = colors.red, bg = '#1C1F24', gui = 'bold' }),
     TabLineFill({ fg = 'NONE', bg = colors.bg_dark }),
     -- Illuminate
     -- illuminatedCurWord = { bg = colors.highlight },

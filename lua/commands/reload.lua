@@ -120,6 +120,9 @@ local reload_package_chain = function(filepath, cfg)
 
   for _, pkg in ipairs(packages.loaded) do
     package['loaded'][pkg] = nil
+    if vim.loader and vim.loader.enabled then
+      vim.loader.reset(pkg)
+    end
     local ppath = vim.fn.stdpath('config') .. '/lua/' .. pkg:gsub('%.', '/')
     if vim.fn.filereadable(ppath .. '.lua') == 0 then
       ppath = ppath .. '/init'

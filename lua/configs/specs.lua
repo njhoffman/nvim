@@ -159,18 +159,18 @@ local default_config = {
   ignore_buftypes = { nofile = true, nowrite, quickfix, terminal, prompt },
 }
 require('specs').setup(custom_config3)
-vim.api.nvim_set_keymap(
-  'n',
-  'n',
-  'n:lua require("specs").show_specs({ width = 5, inc_ms = 5 })<CR>',
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  'n',
-  'N',
-  'N:lua require("specs").show_specs({ width = 5, inc_ms = 5 })<CR>',
-  { noremap = true, silent = true }
-)
+-- vim.api.nvim_set_keymap(
+--   'n',
+--   'n',
+--   'n:lua require("specs").show_specs({ width = 5, inc_ms = 5 })<CR>',
+--   { noremap = true, silent = true }
+-- )
+-- vim.api.nvim_set_keymap(
+--   'n',
+--   'N',
+--   'N:lua require("specs").show_specs({ width = 5, inc_ms = 5 })<CR>',
+--   { noremap = true, silent = true }
+-- )
 
 -- Faders:
 --   linear_fader ▁▂▂▃▃▄▄▅▅▆▆▇▇██

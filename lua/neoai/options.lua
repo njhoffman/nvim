@@ -1,3 +1,5 @@
+vim.treesitter.language.register('markdown', 'neoai-output')
+
 local options = {
   -- Below are the default options, feel free to override what you would like changed
   ui = {

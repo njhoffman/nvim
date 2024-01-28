@@ -59,7 +59,7 @@ local function gen_from_buffer(opts)
       valid = true,
 
       value = bufname,
-      ordinal = entry.bufnr .. file_name .. dir_name,
+      ordinal = entry.bufnr .. dir_name .. file_name .. dir_name,
       display = make_display,
 
       bufnr = entry.bufnr,

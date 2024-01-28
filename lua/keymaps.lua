@@ -3,25 +3,28 @@ local map = mapper.map
 local vmap = mapper.vmap
 local prefix = mapper.prefix
 
---       况  ﱔ    ﮝ  ﬠ ﬡ ײַ יִ       בּ 易
-
-prefix('n', 'z', 'folds 󰘖 ')
-prefix('n', 'g', 'go ײַ ')
-prefix('n', 'gh', 'hover  ')
+--       况  ﱔ  ﯕ            ﮝ    ﬠ ﬡ ײַ יִ  不 ﬆ       בּ 易    ﮒ   ﴞ  ﯓ ﭹ 難 ﱒ 
+--  朗浪  狼ﰅ         諾蠟廊 降    者     ﱒ ﯕ ﬡ 玲 癩ﰈ ﰺ  裸憎降   ײַ ﰲ ﰲ    隷濾 礪 閭 驪 麗 ﱵ  料
+-- 繁 署 者 臭ﳺ 禎 穀祐 ﱒ ﮒ ﮭ 󰘖 ﲖ 祖 ﮮ 祝 ﴻ ﯴ ﰌ 省 異  什  輪   ﭕ  ﱿ  蝹 ﬡ 李  惡   祉
+-- 隷שּׂ  שּׂ  שּׂ  שּׂ ﱕ      侮  滑 פּ 串     
+-- 󱋿 Jump back"
+prefix('n', 'z', 'folds ﱒ')
+prefix('n', 'g', 'go 隷')
+prefix('n', 'gh', 'hover  ')
 prefix('n', 'gt', 'text-case  ')
 prefix('n', 'gq', 'quickfix  ')
-prefix('n', 'gP', 'preview  ')
-prefix('n', 'go', 'debug out  ')
-prefix('n', ']', 'next 怜')
-prefix('n', '[', 'previous 玲')
+prefix('n', 'gP', 'preview  ')
+prefix('n', 'go', 'debug out  ')
+prefix('n', ']', 'next ')
+prefix('n', '[', 'previous 丹')
 
 --         
 -- prefix('n', '<c-w>', 'window')
 prefix('n', '<leader>g', 'git 󰊢')
 prefix('n', '<leader>f', 'file ')
-prefix('n', '<leader>p', 'paste ')
+prefix('n', '<leader>p', 'paste ') --  
 prefix('n', '<leader>i', 'internal  ')
-prefix('n', '<leader>u', 'undo 󰕌')
+prefix('n', '<leader>u', 'undo 漏')
 prefix('n', '<leader>cl', 'conceal 󰈉 ')
 
 -- 	u = { name = "" },
@@ -63,9 +66,7 @@ prefix('n', '<leader>cl', 'conceal 󰈉 ')
 -- vim.keymap.set("x", "C", function()
 --     vim.api.nvim_input('y/"<CR>Ncgn')
 -- end, { silent = true })
--- nmap cg* *Ncgn
--- -- Make the last change as an initiation for cgn.
--- vim.keymap.set("n", "g.", [[/\V<C-r>"<CR>cgn<C-a><Esc>]])
+
 --------------------------------------------------------------------------------------------------
 
 -- COMMAND ---------------------------------------------------------------------------------------
@@ -140,12 +141,6 @@ map('c', '<M-f>', '<C-T><Esc>', {
   desc = ' open command window from the command line in normal mode',
 })
 
-map('c', '<c-d>', '<C-c>', {
-  category = 'Command',
-  label = ' close cmdline',
-  desc = ' close the command line',
-})
-
 map('c', '<c-s>', '<cmd>silent! w<cr><esc>', {
   category = 'Command',
   label = ' save cmdline',
@@ -159,32 +154,44 @@ map('c', '<c-y>', '<c-r>*', {
   desc = ' yank from command line',
 })
 
+-- TODO: vmap C-u C-w
+-- TODO: make whichkey screen for cmdline
+map('c', '<C-d>', '<cmd>norm x<cr>', {
+  category = 'Command',
+  label = ' delete char cmdline',
+  desc = ' delete character to the right cmdline',
+})
+
+map('c', '<M-d>', '<cmd>norm d$<cr>', {
+  category = 'Command',
+  label = ' delete to eol',
+  desc = ' delete to end of line',
+})
+
 map('c', '<C-^>', '<Home>', {
   category = 'Command',
-  label = ' goto start cmdline',
+  label = ' goto start',
   desc = ' go to beginning of command line',
 })
 
---  c-$
-map('c', '<C-\\>', '<End>', {
+map('c', '<M-$>', '<End>', {
   category = 'Command',
-  label = ' goto end cmdline ',
+  label = ' goto end',
   desc = ' go to end of command line',
 })
 
--- map('c', '<M-p>', '<S-Up>', {
---   category = 'Command',
---   label = ' history up cmdline',
---   desc = ' navigate history up command line',
--- })
---
--- --  c-$
--- map('c', '<M-n>', '<S-Down>', {
---   category = 'Command',
---   label = ' history down cmdline',
---   desc = ' navigate history down command line',
--- })
---
+map('c', '<C-S-Left>', '<Left>', {
+  category = 'Command',
+  label = ' move left',
+  desc = ' move to the left by 1 character',
+})
+
+map('c', '<C-S-Right>', '<Right>', {
+  category = 'Command',
+  label = ' move right',
+  desc = ' move to the right by 1 character',
+})
+
 map('c', '<C-g>', '<C-r>%', {
   category = 'Command',
   label = ' insert filename cmdline',
@@ -192,37 +199,38 @@ map('c', '<C-g>', '<C-r>%', {
 })
 
 --------------------------------------------------------------------------------------------------
--- BUFFERS ---------------------------------------------------------------------------------------
-
-map({ 'n', 'x', 'i' }, '<C-d>', function()
-  -- require('funcs.alt-alt').betterClose()
-  require('commands.ui').close_multi()
-end, { desc = '󰽙 close buffer/window' })
-
--- -- COMMENTS
+-- COMMENTS ---------------------------------------------------------------------------------------
 map('n', 'gch', function()
   require('funcs.quality-of-life').commentHr()
-end, { desc = '  horizontal divider' })
+end, { category = 'Comments', desc = '  horizontal divider' })
 
 -- TODO: enable visual selection
 map({ 'x' }, 'gC', function()
   require('funcs.quality-of-life').duplicateAsComment()
-end, { desc = '  duplicate line as comment' })
+end, { category = 'Comments', desc = '  duplicate line as comment' })
 
 map({ 'n' }, 'gcC', function()
   require('funcs.quality-of-life').duplicateAsComment()
-end, { desc = '  duplicate line as comment' })
+end, { category = 'Comments', desc = '  duplicate line as comment' })
 
 map({ 'n' }, 'gc<space>', function()
   require('funcs.quality-of-life').duplicateAsComment()
-end, { desc = '  duplicate line as comment' })
+end, { category = 'Comments', desc = '  duplicate line as comment' })
 --
--- Jump history
--- non-unique, since it overwrites nvim default: https://neovim.io/doc/user/vim_diff.html#default-mappings
--- keymap("n", "<C-l>", "<C-i>", { desc = "󱋿 Jump forward", unique = false })
--- keymap("n", "<C-h>", "<C-o>", { desc = "󱋿 Jump back" })
+
+--------------------------------------------------------------------------------------------------
+-- BUFFERS ---------------------------------------------------------------------------------------
+
+map(
+  { 'n', 'x' },
+  '<C-d>',
+  -- "<cmd>lua require('funcs.alt-alt').betterClose()<cr>",
+  "<cmd> lua require('commands.ui').close_multi()<cr>",
+  { category = 'Buffers', desc = '󰽙 close buffer/window' }
+)
 
 map('n', '<CR>', '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
+  category = 'Buffers',
   label = '󰽙 goto alt-buffer',
   desc = '󰽙 goto alternative/last buffer',
 })
@@ -269,7 +277,6 @@ map('n', '<leader>*', '<cmd>wall<cr>', {
   category = 'Buffers',
   label = '󰽙 write all',
   silent = true,
-
   desc = '󰽙 write all buffers',
 })
 
@@ -292,24 +299,6 @@ map('i', '<M-BS>', '<Esc>cvb', {
   category = 'Buffers',
   desc = '󰽙 delete previous word',
   silent = true,
-})
-
--- TODO: multiple category Buffers, Windows
-map('n', '<C-d>', '<cmd>CloseMulti<cr>', {
-  category = 'Buffers',
-  label = '󰽙 close multi',
-  desc = '󰽙 close tabpage, window, or buffer in that order',
-})
-
-map('n', '<M-d>', '<cmd>CloseMultiNoPrompt<cr>', {
-  category = 'Buffers',
-  label = '󰽙 close multi noprompt',
-  desc = '󰽙 close tabpage, window, or buffer without prompting for save',
-})
-map('n', '<M-w>', '<cmd>set wrap!<cr>', {
-  category = 'Buffers',
-  label = '󰽙 toggle wrap',
-  desc = '󰽙 toggle word wrap',
 })
 
 map('n', '<leader><space>', '<C-^>', {
@@ -381,12 +370,6 @@ map('n', '<leader>cd', '<cmd>cd %:h<cr>', {
 -- )
 -- --------------------------------------------------------------------------------
 --
--- -- Append to / delete from EoL
--- local trailChars = { ",", ";", ")", "'", '"', "|", "\\", "{", ".", "}" }
--- for _, key in pairs(trailChars) do
---   keymap("n", "<leader>" .. key, "mzA" .. key .. "<Esc>`z", { desc = "which_key_ignore" })
--- end
---
 -- -- MAKE
 -- keymap("n", "<leader>r", function()
 --   vim.cmd("silent! update")
@@ -434,34 +417,34 @@ map('n', '<leader>cd', '<cmd>cd %:h<cr>', {
 --------------------------------------------------------------------------------
 -- UNDO
 
-map('n', '<leader>ur', function()
-  vim.cmd('silent later ' .. tostring(vim.opt.undolevels:get()))
-end, { desc = '󰛒 redo All' })
-
 -- save open time for each buffer
 vim.api.nvim_create_autocmd('BufReadPost', {
   callback = function()
     vim.b.timeOpened = os.time()
   end,
 })
-map({ 'n', 'x' }, '<leader>uc', function()
-  require('funcs.alt-alt').reopenBuffer()
-end, { desc = '󰽙 undo buffer closing' })
 
-map({ 'n', 'x' }, '<leader>ul', '<cmd>undolist<cr>', { desc = '󰽙 undo show list' })
-
--- -- undo 0, earlier 5m, earlier 1h, later 5h, later 1f (file writes later)
--- map('i', ',', ',<c-g>u', { category = 'Buffers', desc = 'add undo at ,' })
--- map('i', '.', '.<c-g>u', { category = 'Buffers', desc = 'add undo at .' })
+map('n', '<leader>ur', function()
+  vim.cmd('silent later ' .. tostring(vim.opt.undolevels:get()))
+end, { desc = '漏redo all' })
 
 map('n', '<leader>uo', function()
   local now = os.time()
   local secsPassed = now - vim.b.timeOpened
   vim.cmd.earlier(tostring(secsPassed) .. 's')
-end, { desc = '󰜊 Undo since last open' })
+end, { desc = '漏undo since last open' })
+
+map({ 'n', 'x' }, '<leader>uc', function()
+  require('funcs.alt-alt').reopenBuffer()
+end, { desc = '漏 undo buffer closing' })
+
+map({ 'n', 'x' }, '<leader>ul', '<cmd>undolist<cr>', { desc = '漏 undo show list' })
+
+-- -- undo 0, earlier 5m, earlier 1h, later 5h, later 1f (file writes later)
+-- map('i', ',', ',<c-g>u', { category = 'Buffers', desc = 'add undo at ,' })
+-- map('i', '.', '.<c-g>u', { category = 'Buffers', desc = 'add undo at .' })
 
 -- stylua: ignore start
---
 --------------------------------------------------------------------------------------------------
 -- MACROS ---------------------------------------------------------------------------------------
 
@@ -470,12 +453,12 @@ end, { desc = '󰜊 Undo since last open' })
 --   echo "@".getcmdline()
 --   execute ":'<,'>normal @".nr2char(getchar())
 -- endfunction
-map('x', '@', ':<C-u>echo "@".getcmdline() | execute ":\'<,\'>normal @" . nr2char(getchar())<CR>', {
+map('x', '@', '<cmd><C-u>echo "@".getcmdline() | execute ":\'<,\'>normal @" . nr2char(getchar())<CR>', {
   category = 'Macros',
   desc = 'allows running macros only on selected files',
 })
 
-map('x', '.', ':normal .<CR>', {
+map('x', '.', '<cmd>normal .<CR>', {
   category = 'Macros',
   desc = 'dot repeat macro',
 })
@@ -499,55 +482,75 @@ map('n', '<M-C-X>', '<cmd>silent! tabclose | xa<cr>', {
 
 map('n', '!@', '<cmd>@:<cr>', {
   category = 'Execute',
-  label = 'repeat ex-command',
-  desc = 'repeat the last command',
+  label = 'ﲵ repeat ex-command',
+  desc = 'ﲵ repeat the last command',
 })
 
 map('n', '!~', '<cmd>RunSelect<cr>', {
   category = 'Execute',
-  label = 'select runner task',
-  desc = 'assign task to runner',
+  label = 'ﲵ select runner task',
+  desc = 'ﲵ assign task to runner',
 })
 
 map('n', '!!', '<cmd>Run<cr>', {
   category = 'Execute',
-  label = 'repeat runner command',
-  desc = 'execute configured runner task',
+  label = 'ﲵ repeat runner command',
+  desc = 'ﲵ execute configured runner task',
 })
 
 map('n', '<M-r>', '<cmd>Restart<cr>', {
   category = 'Execute',
-  label = 'restart',
-  desc = 'restart neovim instance',
+  label = 'ﲵ restart',
+  desc = 'ﲵ restart neovim instance',
 })
 
 map('n', '<M-!>', '<cmd>RestartTarget<cr>', {
   category = 'Execute',
-  label = 'restart target',
-  desc = 'restart target of remote neovim instannce',
+  label = 'ﲵ restart target',
+  desc = 'ﲵ restart target of remote neovim instannce',
 })
 
 vmap('n', 'gx', {
   category = 'Execute',
-  label = 'xdg-open file',
-  desc = 'open file with xdg-open under cursor',
+  label = 'ﲵ xdg-open file',
+  desc = 'ﲵ open file with xdg-open under cursor',
+})
+--------------------------------------------------------------------------------------------------
+-- SEARCH ----------------------------------------------------------------------------------------
+
+local opts = { noremap = true, silent = true, desc = ' search' }
+
+-- --   ﰍ  
+-- local icon = ' '
+
+map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
+map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
+
+map('n', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
+map('n', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
+map('n', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], opts)
+map('n', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], opts)
+
+map('x', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
+map('x', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
+map('x', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], opts)
+map('x', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], opts)
+map('n', 'cg*', '*Ncgn', {
+  silent = true,
+  category = 'Search',
+  label = '  replace word (dot)',
+  desc = '  replace word under cursor (dot repeat)'
+})
+
+map('n', 'g.', [[/\V\C<C-r>"<CR>cgn<C-a><Esc>]], {
+  silent = true,
+  category = 'Search',
+  label = '  jump replace (dot)',
+  desc = '  jump to next match and replace (dot)',
 })
 
 --------------------------------------------------------------------------------------------------
 -- MOTION ----------------------------------------------------------------------------------------
--- vim.keymap.set("x", "C", function()
---     vim.api.nvim_input('y/"<CR>Ncgn')
--- end, { silent = true })
--- nmap cg* *Ncgn
--- -- Make the last change as an initiation for cgn.
--- vim.keymap.set("n", "g.", [[/\V<C-r>"<CR>cgn<C-a><Esc>]])
-
--- map('n', 'gn', "g#<cmd>lua require('hlslens').start()<cr>", {
---   category = 'Motion',
---   plugin = 'hlslens',
---   label = 'prev search',
---   desc = 'next matching from previous search (hls lens)',
--- })
 
 map('n', '<leader>R', '*:%s//', {
   category = 'Motion',
@@ -555,16 +558,20 @@ map('n', '<leader>R', '*:%s//', {
   desc = 'search and replace word under cursor',
 })
 
--- map("i", "jk", "<esc>", {
---   category = "Motion",
---   label = "insert mode escape",
---   desc = "quickly escape insert mode",
--- })
-
 map('i', 'kj', '<esc>', {
   category = 'Motion',
   label = 'insert mode escape',
   desc = 'quickly escape insert mode',
+})
+
+map('i', '<C-d>', '<cmd>norm x<cr>', { -- <C-o> + dl, norm lxh
+  category = 'Motion',
+  desc = 'delete next char',
+})
+
+map('i', '<M-d>', '<cmd>norm d$<cr>', {
+  category = 'Motion',
+  desc = 'delete to end of line',
 })
 
 map('n', 'D', 'd$', {
@@ -572,132 +579,111 @@ map('n', 'D', 'd$', {
   label = 'delete to end',
   desc = 'delete to end of line',
 })
---
--- map({ "v", "o" }, "al", "<cmd>normal 0v$h<cr>", {
---   category = "Motion",
---   label = "select a line",
---   desc = "select all characters in line without new line",
---   noremap = false,
--- })
---
--- map({ "v", "o" }, "il", "<cmd>normal ^vg_<cr>", {
---   category = "Motion",
---   label = "select in line",
---   desc = "select all characters in line from first non-blank to last non-blank character",
---   noremap = false,
--- })
 
 map('n', '<c-b>', '<Plug>(SmoothieBackwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
-  label = 'scroll backwards',
-  desc = 'smoothie scroll backwards',
+  label = ' scroll backwards',
+  desc = ' smoothie scroll backwards',
   noremap = false,
 })
 
 map('n', '<PageUp>', '<Plug>(SmoothieBackwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
-  label = 'scroll backwards',
-  desc = 'smoothie page-up scroll backwards',
+  label = ' scroll backwards',
+  desc = ' smoothie page-up scroll backwards',
   noremap = false,
 })
 
 map('n', '<c-f>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
-  label = 'scroll forwards',
-  desc = 'smoothie scroll forwards',
+  label = ' scroll forwards',
+  desc = ' smoothie scroll forwards',
   noremap = false,
 })
 
 map('n', '<PageDown>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
-  label = 'scroll forwards',
-  desc = 'smoothie page-down scroll forwards',
+  label = ' scroll forwards',
+  desc = ' smoothie page-down scroll forwards',
   noremap = false,
 })
 
 map('n', '<space>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
-  label = 'scroll forwards x2',
-  desc = 'smoothie scroll forwards x2',
+  label = ' scroll forwards x2',
+  desc = ' smoothie scroll forwards x2',
   noremap = false,
 })
 
 map('n', 'G', '<Plug>(Smoothie_G)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
-  label = 'scroll bottom',
-  desc = 'smoothie scroll to bottom',
+  label = ' scroll bottom',
+  desc = ' smoothie scroll to bottom',
   noremap = false,
 })
 
 map('n', 'gg', '<Plug>(Smoothie_gg)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
-  label = 'scroll top',
-  desc = 'smoothie scroll to top',
+  label = ' scroll top',
+  desc = ' smoothie scroll to top',
   noremap = false,
-})
-
--- todo: why do i ahve to rebind this
-map('i', '<C-D>', '<cmd>norm d$<cr>', {
-  category = 'Motion',
-  label = 'delete to eol',
-  desc = 'delete until the end of line',
 })
 
 map('n', 'gp', '`[v`]', {
   category = 'Motion',
-  label = 'select last visual',
-  desc = 'select last visual block afrom bracket marks',
+  label = ' select last visual',
+  desc = ' select last visual block afrom bracket marks',
 })
 
 vmap('n', 'gi', {
   category = 'Motion',
-  label = 'goto last insert',
-  desc = 'goto last mark of insertion',
+  label = ' goto last insert',
+  desc = ' goto last mark of insertion',
 })
 
 vmap('n', 'gI', {
   category = 'Motion',
-  label = 'goto begin insert',
-  desc = 'goto beginning mark of insertion',
+  label = ' goto begin insert',
+  desc = ' goto beginning mark of insertion',
 })
 
 vmap('n', 'gv', {
   category = 'Motion',
-  label = 'select last visual',
-  desc = 'select last visual block afrom bracket marks',
+  label = ' select last visual',
+  desc = ' select last visual block afrom bracket marks',
 })
 
 map('i', '<esc>', '<Esc>`^', {
   category = 'Motion',
-  desc = 'convenience cursor placement after insert',
+  desc = ' convenience cursor placement after insert',
   silent = true,
 })
 
 map({ 'n', 'v' }, "<M-;>", '<cmd>HopLineStart<cr>', {
   category = 'Motion',
   plugin = 'hop.nvim',
-  label = 'hop to line',
-  desc = 'hop to line',
+  label = ' hop to line',
+  desc = ' hop to line',
 })
 
 map({ 'n', 'v' }, "<M-'>", '<cmd>HopWord<cr>', {
   category = 'Motion',
   plugin = 'hop.nvim',
-  label = 'hop to word',
-  desc = 'hop to word',
+  label = ' hop to word',
+  desc = ' hop to word',
 })
 
 map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
   category = 'Motion',
-  label = 'select changed text',
-  desc = 're-select latest changed, put, or yanked text',
+  label = ' select changed text',
+  desc = ' re-select latest changed, put, or yanked text',
   expr = true,
 })
 
@@ -708,32 +694,52 @@ map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
 --  map('x', '*', [[y/\V<C-R>=escape(@", '/\')<CR><CR>]])
 --  map('x', '#', [[y?\V<C-R>=escape(@", '?\')<CR><CR>]])
 
-map('i', '<c-f>', '<Esc>ea', {
+map('i', '<C-f>', '<Esc>ea', {
   category = 'Motion',
-  label = 'jump over word',
-  desc = 'jump over word while staying in insert mode',
+  label = ' jump over word',
+  desc = '  jump over word while staying in insert mode',
 })
 
 map('n', 'U', '', {
   category = 'Motion',
-  label = 'disable line undo',
-  desc = 'disable line undo so it can prefix other commands',
+  label = '漏disable line undo',
+  desc = '漏disable line undo so it can prefix other commands',
 })
 
 map('n', 'U', '<c-r>', {
   category = 'Motion',
-  label = 'asssign line undo',
-  desc = 'assign line undo',
+  label = '漏asssign line undo',
+  desc = '漏assign line undo',
 })
 
 map({ 'n' }, "<M-BS>", '<cmd>pop<cr>', {
   category = 'Motion',
-  desc = 'jump to previous tag',
+  desc = ' jump to previous tag',
 })
 
-vmap({ 'n' }, "<C-]>",  {
+vmap({ 'n' }, "<C->",  {
   category = 'Motion',
-  desc = 'jump to next tag',
+  desc = ' jump to next tag',
+})
+
+map('n', '<M-}>', '<cmd>norm v}<cr>', {
+  category = 'Motion',
+  desc = ' traverse blocks forward with select',
+})
+
+map('x', '<M-}>', '<cmd>norm }<cr>', {
+  category = 'Motion',
+  desc = ' traverse blocks forward with select',
+})
+
+map('n', '<M-{>', '<cmd>norm v{<cr>', {
+  category = 'Motion',
+  desc = ' traverse blocks backwards with select',
+})
+
+map('x', '<M-{>', '<cmd>norm {<cr>', {
+  category = 'Motion',
+  desc = ' traverse blocks backwards with select',
 })
 
 -- TODO: create function to save last visual selection before undoing
@@ -774,23 +780,58 @@ vmap({ 'n' }, "<C-]>",  {
 -- local searching_google_in_visual = [[<ESC>gv"gy<ESC>:lua fn.system({'open', 'https://google.com/search?q=' .. vim.fn.getreg('g')})<CR>]]
 -- vim.api.nvim_set_keymap("n", "<C-q><C-g>", searching_google_in_normal, { silent = true, noremap = true })
 -- vim.api.nvim_set_keymap("v", "<C-q><C-g>", searching_google_in_visual, { silent = true, noremap = true })
+--
+-- " These mappings extend the spirit of * and # for visual searching.
+-- " Use visual select to select an area, then search for matches by
+-- " typing * or #. This is very useful for searching for other instances of
+-- " long, complex strings that may contain regex methacharacters and multiple
+-- " lines. You don't have to worry about quoting.
+-- vmap <silent> * y:let @/=substitute(escape(@",'.$*[^\/~'),'\n','\\n','g')<CR>n
+-- vmap <silent> # y:let @/=substitute(escape(@",'.$*[^\/~'),'\n','\\n','g')<CR>N
+-- vnoremap <silent> * :<C-U>
+--               \let old_reg=getreg('"')<bar>
+--               \let old_regmode=getregtype('"')<cr>
+--               \gvy/<C-R><C-R>=substitute(substitute(
+--               \escape(@", '\\/.*$^~[]' ), "\n$", "", ""),
+--               \"\n", '\\_[[:return:]]', "g")<cr><cr>
+--               \:call setreg('"', old_reg, old_regmode)<cr>
+-- vnoremap <silent> # :<C-U>
+--               \let old_reg=getreg('"')<bar>
+--               \let old_regmode=getregtype('"')<cr>
+--               \gvy?<C-R><C-R>=substitute(substitute(
+--               \escape(@", '\\/.*$^~[]' ), "\n$", "", ""),
+--               \"\n", '\\_[[:return:]]', "g")<cr><cr>
+--               \:call setreg('"', old_reg, old_regmode)<cr>
+-- " This maps \y so that it will yank the visual selection and quote the regex
+-- " metacharacters. For example, use v to select some text; type \y; then type
+-- " CTRL-R" to insert the yanked selection with metacharacters escaped.
+-- vmap <silent> <leader>y y:let @"=substitute(escape(@",'.$*[^\/~'),'\n','\\n','g')<CR>
+-- LINE & CHARACTER MOVEMENT
+-- keymap("n", "<Down>", [[<cmd>. move +1<CR>==]], { desc = "󰜮 Move Line Down" })
+-- keymap("n", "<Up>", [[<cmd>. move -2<CR>==]], { desc = "󰜷 Move Line Up" })
+-- keymap("n", "<Right>", [["zx"zp]], { desc = "➡️ Move Char Right" })
+-- keymap("n", "<Left>", [["zdh"zph]], { desc = "⬅ Move Char Left" })
+-- keymap("x", "<Down>", [[:move '>+1<CR>gv=gv]], { desc = "󰜮 Move Selection down", silent = true })
+-- keymap("x", "<Up>", [[:move '<-2<CR>gv=gv]], { desc = "󰜷 Move Selection up", silent = true })
+-- keymap("x", "<Right>", [["zx"zpgvlolo]], { desc = "➡️ Move Selection right" })
+-- keymap("x", "<Left>", [["zdh"zPgvhoho]],):format()):format()):format()):format()):format() { desc = "⬅ Move Selection left" })
+
+
+--------------------------------------------------------------------------------------------------
+-- Movement --------------------------------------------------------------------------------------------
+
+-- todo: why do i ahve to rebind this
+map('i', '<M-d>', '<cmd>norm d$<cr>', {
+  category = 'Motion',
+  label = 'delete to eol',
+  desc = 'delete until the end of line',
+})
+
 
 --------------------------------------------------------------------------------------------------
 -- UI --------------------------------------------------------------------------------------------
 
-vmap('n', 'g<C-G>', {
-  category = 'UI',
-  label = 'ascii cursor',
-  desc = 'show ascii under cursor',
-})
-
-vmap('n', 'g<C-g>', {
-  category = 'UI',
-  label = 'words/lines count',
-  desc = 'show current and total characters, words, bytes and lines',
-})
-
-map('n', '_', '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>LspRestart<cr>', {
+map('n', '_', '<cmd>noh<cr> | <cmd>nohlsearch<cr>', {
   category = 'UI',
   desc = 'remove highlights and refresh',
 })
@@ -802,109 +843,88 @@ map(
   { category = 'UI', desc = 'remove hls, close popups and refresh' }
 )
 
-map(
-  'n',
-  '<M-->',
-  '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr> | <cmd>LspRestart<cr>',
-  { category = 'UI', desc = 'remove hls, close popups and refresh' }
-)
-
-
--- map('n', '<M-b>', "<cmd>noh<cr> | <cmd>only<cr> | :RefreshLSP<cr> | :lua require'feline'.reset_highlights()<cr>", {
---   category = 'UI',
---   desc = 'remove hls, refresh colors and lsp',
--- })
-
--- map('n', '<M-C-_>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> |  <cmd>normal! <C-L><cr>', {
---   category = 'UI',
---   desc = 'close all other windows',
--- })
--- map('n', '<C-c>', '<cmd>only<cr> | <cmd>ClosePopups<cr> | <cmd>diffupdate<cr> | <cmd>normal! <C-L><cr>', {
---   category = 'UI',
---   desc = 'close all other windows',
--- })
 map('n', '<F1>', "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>", {
   plugin = 'telescope.nvim',
   category = 'UI',
-  desc = 'toggle help',
+  desc = '  toggle help',
 })
 
 map('n', '<F2>', '<cmd>WhichKey<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
-  desc = 'toggle whichkey',
+  desc = '  toggle whichkey'
 })
 -- ctrl+shift F2
 map('n', '<F38>', '<Leader>Wk', {
   plugin = 'wf.nvim',
   category = 'UI',
-  desc = 'toggle wf.nvim',
+  desc = '  toggle wf.nvim',
 })
 
 map('n', '<F3>', '<cmd>AerialToggle!float<cr>', {
   plugin = 'aerial.nvim',
   category = 'UI',
-  desc = 'toggle aerial sidebar',
+  desc = '  toggle aerial sidebar',
 })
 
 map('n', '<F4>', '<cmd>Neotree show toggle<cr>', {
   plugin = 'neo-tree',
   category = 'UI',
-  desc = 'toggle neotree',
+  desc = '  toggle neotree',
 })
 
 -- ctrl+shift+f4
 map('n', '<F40>', '<cmd>lua require("oil").open_float<cr>', {
   plugin = 'oil.nvim',
   category = 'UI',
-  desc = 'toggle oil file manager',
+  desc = '  toggle oil file manager',
 })
 
 map('n', '<F5>', "<cmd>lua require('telescope.run')('undo', 'undo')<cr>", {
   plugin = 'telescope.nvim',
   category = 'UI',
-  desc = 'toggle telescope undo',
+  desc = '  toggle telescope undo',
 })
 
 -- Shift-F5
 map('n', '<F17>', '<cmd>MundoToggle<cr>', {
   plugin = 'mundo',
   category = 'UI',
-  desc = 'toggle mundo undo',
+  desc = '  toggle mundo undo',
 })
 
 map('n', '<F6>', '<cmd>TSPlaygroundToggle<cr>', {
   category = 'UI',
   plugin = 'treesitter.nvim',
-  desc = 'toggle treesitter playground',
+  desc = '  toggle treesitter playground',
 })
 
 -- Shift-F6
 map('n', '<F18>', '<cmd>InspectTree<cr>', {
   category = 'UI',
   plugin = 'treesitter.nvim',
-  desc = 'toggle inspect treesitter',
+  desc = '  toggle inspect treesitter',
 })
 
 --------------------------------------------------------------------------------------------------
 -- QUICKFIX --------------------------------------------------------------------------------------
 
-map('n', '<C-c>', '<cmd>lua require"qf".toggle("c", true)<CR>', {
+map('n', '<C-q>', '<cmd>lua require"qf".toggle("c", true)<CR>', {
   category = 'Quickfix',
-  label = 'togggle quickfix',
-  desc = 'togggle quickfix window',
+  label = '  togggle quickfix',
+  desc = '  togggle quickfix window',
 })
 -- nnoremap <leader>j <cmd>lua require'qf'.below('l')<CR> " Go to next location list entry from cursor
 -- nnoremap <leader>J <cmd>lua require'qf'.below('c')<CR> " Go to next quickfix entry from cursor
 -- nnoremap ]q <cmd>lua require'qf'.below('visible')<CR>
 map('n', '<M-lt>', '<cmd>cprev<cr>', {
-  category = 'Quickfix prev',
-  label = 'quickfix prev',
+  category = '  Quickfix prev',
+  label = '  quickfix prev',
 })
 
 map('n', '<M->>', '<cmd>cnext<cr>', {
-  category = 'Quickfix next',
-  label = 'quickfix next',
+  category = '  Quickfix next',
+  label = '  quickfix next',
 })
 
 
@@ -988,6 +1008,12 @@ vmap('n', '<c-w>W', {
   label = ' window prev',
   desc = ' focus the previous window',
 })
+
+map('n', '<M-w>', '<cmd>set wrap!<cr>', {
+  category = 'Windows',
+  desc = ' toggle word wrap',
+})
+
 map('n', '<leader>:', '<c-w>W', {
   category = 'Window',
   label = ' window prev',
@@ -1091,46 +1117,33 @@ map('n', '<leader>cl3', '<cmd>set conceallevel=3<cr>', {
 --------------------------------------------------------------------------------------------------
 -- TREESITTER ------------------------------------------------------------------------------------
 
--- vmap('x', '<tab>', {
---   category = 'Treesitter',
---   plugin = 'treesitter.nvim',
---   label = 'incsel scope expand',
---   desc = 'scope incremental selection',
--- })
---
--- vmap('x', '<cr>', {
---   category = 'Treesitter',
---   plugin = 'treesitter.nvim',
---   label = 'incsel expand',
---   desc = 'incremental selection expand',
--- })
---
--- vmap('x', '<s-tab>', {
---   category = 'Treesitter',
---   plugin = 'treesitter.nvim',
---   label = 'incsel shrink',
---   desc = 'incremental selection shrink',
--- })
-
-vmap('n', 'g0', {
-  category = 'Treesitter',
-  plugin = 'treesitter.nvim',
-  label = 'list ts toc',
-  desc = 'list treesitter table of contents definitions',
-})
 
 --------------------------------------------------------------------------------------------------
--- PICKERS ---------------------------------------------------------------------------------------
+-- OTHER UI ---------------------------------------------------------------------------------------
+
+map('n', '<M-y>', '<cmd>ChatGPT<cr>', {
+  category = 'Other UI',
+  plugin = 'neo-ai',
+  label = 'toggle chatgpt',
+  desc = 'toggle chatgpt',
+})
+--
+map('n', '<C-y>', '<cmd>NeoAI<cr>', {
+  category = 'Other UI',
+  plugin = 'neo-ai',
+  label = 'toggle the side panel of neo ai',
+  desc = 'toggle the side panel of neo ai',
+})
 
 map('n', '<C-p>', "<cmd>lua require('telescope.run')('builtin', 'find_files')<cr>", {
-  category = 'Pickers',
+  category = 'Other UI',
   plugin = 'telescope.nvim',
   label = 'files project',
   desc = 'find files in project telescope',
 })
 
 map('n', '<C-\\>', "<cmd>lua require('telescope.run')('fd_cwd')<cr>", {
-  category = 'Pickers',
+  category = 'Other UI',
   plugin = 'telescope.nvim',
   label = 'files curr dir',
   desc = 'find files in current directory telescope',
@@ -1138,19 +1151,21 @@ map('n', '<C-\\>', "<cmd>lua require('telescope.run')('fd_cwd')<cr>", {
 
 -- map('n', '<M-Bslash>', '<cmd>lua require("oil").toggle_float()<cr>', {
 --   plugin = 'oil.nvim',
---   category = 'UI',
 --   desc = 'toggle oil file manager',
 -- })
 map('n', '<M-Bslash>', '<cmd>MiniFiles<cr>', {
   plugin = 'minifiles',
-  category = 'UI',
+  category = 'Other UI',
   desc = 'toggle minifiles file manager',
 })
+
+--------------------------------------------------------------------------------------------------
+-- PICKERS ---------------------------------------------------------------------------------------
 
 -- TODO: why does this not work? <cmd>lua require('oil').open_float<cr>
 map('n', '-', require("oil").toggle_float, {
   plugin = 'oil.nvim',
-  category = 'UI',
+  category = 'Pickers',
   desc = 'toggle oil file manager',
 })
 -- vim.keymap.set('n', '-', require('oil').open_float, { desc = 'Open parent directory' })
@@ -1211,7 +1226,7 @@ map('n', '<M-space>', "<cmd>lua require('telescope.run')('builtin','grep_string'
   desc = 'grep string under cursor in telescope',
 })
 
-map('n', '<M-/>', "<cmd>lua require('telescope.run')('builtin','help_tags', { cursor = true })<cr>", {
+map('n', '<M-/>', "<cmd>lua require('telescope.run')('builtin','help_tags', { theme = 'ivy', preview = true })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'helptags',
@@ -1225,21 +1240,29 @@ map('n', '<M-g>', "<cmd>lua require('telescope.run')('projects','projects')<cr>"
   desc = 'find projects telescope',
 })
 
-map({ 'n', 'x' }, '<C-Space>', "<cmd>lua require('telescope.run')('find_pickers','find_pickers')<cr>", {
-  category = 'Pickers',
-  plugin = 'telescope.nvim',
-  label = 'repeat telescope',
-  desc = 'repeast last telescope command',
-})
-
--- lua require('configs.telescope.actions').prev_picker()
--- <cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>
-map({ 'n', 'x' }, '<leader><leader>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = 'prev' })<cr>", {
+map({ 'n' }, '<C-Space>', "<cmd>lua require('telescope.run')('find_pickers','find_pickers')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'find pickers',
   desc = 'find pickers in telescope',
 })
+
+
+map({ 'n' }, '<leader><leader>', "<cmd>lua require('telescope.run')('find_pickers','find_pickers')<cr>", {
+  category = 'Pickers',
+  plugin = 'telescope.nvim',
+  label = 'find pickers',
+  desc = 'find pickers in telescope',
+})
+
+map({ 'n' }, '<M-,>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = prev })<cr>", {
+  category = 'Pickers',
+  plugin = 'telescope.nvim',
+  label = 'find pickers',
+  desc = 'find pickers in telescope',
+})
+
+-- lua require('configs.telescope.actions').prev_picker()
 
 map('n', '<M-e>', "<cmd>lua require('telescope.run')('builtin','live_grep')<cr>", {
   category = 'Pickers',
@@ -1248,19 +1271,6 @@ map('n', '<M-e>', "<cmd>lua require('telescope.run')('builtin','live_grep')<cr>"
   desc = 'live grep project in telescope',
 })
 
-map('n', '<M-y>', '<cmd>ChatGPT<cr>', {
-  category = 'Pickers',
-  plugin = 'neo-ai',
-  label = 'toggle chatgpt',
-  desc = 'toggle chatgpt',
-})
---
-map('n', '<C-y>', '<cmd>NeoAI<cr>', {
-  category = 'Pickers',
-  plugin = 'neo-ai',
-  label = 'toggle the side panel of neo ai',
-  desc = 'toggle the side panel of neo ai',
-})
 --------------------------------------------------------------------------------------------------
 -- GIT -------------------------------------------------------------------------------------------
 -- TODO: add precheck function to ensure in git dir
@@ -1405,11 +1415,11 @@ map({ 'v', 'n' }, '<M-">', '<esc><cmd>ISwapNodeWith<cr>', {
 --------------------------------------------------------------------------------------------------
 -- PAIRS -----------------------------------------------------------------------------------------
 
-map('n', ']a', ':execute ":" . v:count . "next"<CR>', {
+map('n', ']a', '<cmd>execute ":" . v:count . "next"<CR>', {
   category = 'Pairs',
   desc = 'execute next argument ',
 })
-map('n', '[a', ':execute ":" . v:count . "previous"<CR>', {
+map('n', '[a', '<cmd>execute ":" . v:count . "previous"<CR>', {
   category = 'Pairs',
   desc = 'execute prev argument ',
 })
@@ -1441,6 +1451,12 @@ map('t', '<C-w><C-l>', '<C-\\><C-n>C-w>l', {
 --------------------------------------------------------------------------------------------------
 -- HOVER -----------------------------------------------------------------------------------------
 
+vmap('n', 'g<C-g>', {
+  category = 'Hover',
+  label =  ' words/lines count',
+  desc = ' show current and total characters, words, bytes and lines',
+})
+
 map('n', 'gha', '<cmd>ascii<cr>', {
   category = 'Hover',
   label = ' ascii cursor',
@@ -1465,99 +1481,100 @@ map('n', 'ghw', 'g<C-g>', {
   desc = ' show wordcount under cursor',
 })
 
-map('n', 'ght', '<cmd>TSHighlightCapturesUnderCursor<cr>', {
+map('n', 'ghtt', '<cmd>TSHighlightCapturesUnderCursor<cr>', {
   category = 'Hover',
   plugin = 'treesitter.nvim',
   label = ' show ts highlights',
   desc = ' show treesitter highlights under cursor',
 })
 
-map('n', 'ghn', '<cmd>TSNodeUnderCursor<cr>', {
+map('n', 'ghtn', '<cmd>TSNodeUnderCursor<cr>', {
   category = 'Hover',
   plugin = 'treesitter.nvim',
   label = ' show ts node',
   desc = ' show treesitter node under cursor',
 })
+
 --------------------------------------------------------------------------------------------------
 -- SYSTEM ----------------------------------------------------------------------------------------
 
 map('n', '<leader>ii', '<cmd>ImportStatus<cr>', {
   category = 'System',
-  label = 'import status',
-  desc = 'show import status interface',
+  label =  '  import status',
+  desc = '  show import status interface',
 })
 
 map('n', '<leader>il', '<cmd>Lazy<cr>', {
   category = 'System',
   plugin = 'lazy.nvim',
-  label = 'lazy.nvim home view',
-  desc = 'show lazy.nvim home view',
+  label = '  lazy.nvim home view',
+  desc = '  show lazy.nvim home view',
 })
 
 map('n', '<leader>ix', '<cmd>Lazy clean<cr>', {
   category = 'System',
   plugin = 'lazy.nvim',
-  label = 'lazy.nvim clean plugins',
-  desc = 'show lazy.nvim plugin remover',
+  label = '  lazy.nvim clean plugins',
+  desc = '  show lazy.nvim plugin remover',
 })
 
 map('n', '<leader>ic', '<cmd>Lazy check<cr>', {
   category = 'System',
   plugin = 'lazy.nvim',
-  label = 'lazy.nvim check',
-  desc = 'show lazy.nvim plugins check',
+  label = '  lazy.nvim check',
+  desc = '  show lazy.nvim plugins check',
 })
 
 map('n', '<leader>is', '<cmd>Lazy sync<cr>', {
   category = 'System',
   plugin = 'lazy.nvim',
-  label = 'lazy.nvim sync',
-  desc = 'show lazy.nvim plugins sync',
+  label = '  lazy.nvim sync',
+  desc = '  show lazy.nvim plugins sync',
 })
 
 map('n', '<leader>io', '<cmd>option<cr>', {
   category = 'System',
-  label = 'show options window',
-  desc = 'show output of all configured options',
+  label = '  show options window',
+  desc = '  show output of all configured options',
 })
 
 map('n', '<leader>ip', '<cmd>Lazy profile<cr>', {
   category = 'System',
   plugin = 'lazy.nvim',
-  label = 'lazy.nvim profile',
-  desc = 'show lazy.nvim plugins profile',
+  label = '  lazy.nvim profile',
+  desc = '  show lazy.nvim plugins profile',
 })
 
 map('n', '<leader>it', "<cmd>lua require('telescope.run')('lazy', 'lazy')<cr>", {
   category = 'System',
   plugin = 'lazy.nvim',
-  label = 'lazy.nvim telescope',
-  desc = 'show lazy.nvim plugins in telescope',
+  label = '  lazy.nvim telescope',
+  desc = '  show lazy.nvim plugins in telescope',
 })
 
 map( 'n', '<leader>iy', "<cmd>YankPath<cr>", {
     category = 'System',
-    label = 'yank filename',
-    desc = 'yank the current filename to clipboard',
+    label = '  yank filename',
+    desc = '  yank the current filename to clipboard',
   }
 )
 
-map('n', '<leader>iY', ':%y+<CR>', {
+map('n', '<leader>iY', '<cmd>%y+<CR>', {
   category = 'System',
-  label = 'yank buffer',
-  desc = 'yank the full buffer to clipboard',
+  label = '  yank buffer',
+  desc = '  yank the full buffer to clipboard',
 })
 
 map('n', '<leader>if', '<cmd>file<cr>', {
   category = 'System',
-  desc = 'print filename in stdout',
-  label = 'print filename',
+  desc = '  print filename in stdout',
+  label = '  print filename',
 })
 
 map('n', '<leader>iF', "<cmd>lua print(vim.fn.expand('%:p'))<cr>", {
   category = 'System',
-  desc = 'print full filename in stdout',
-  label = 'print full filename',
+  desc = '  print full filename in stdout',
+  label = '  print full filename',
 })
 
 local pathOfThisFile = debug.getinfo(1).source:sub(2)
@@ -1571,41 +1588,6 @@ map({ 'n', 'i' }, 'g{', function()
 end, { desc = ' Open new scope' })
 
 --------------------------------------------------------------------------------
---
--- " These mappings extend the spirit of * and # for visual searching.
--- " Use visual select to select an area, then search for matches by
--- " typing * or #. This is very useful for searching for other instances of
--- " long, complex strings that may contain regex methacharacters and multiple
--- " lines. You don't have to worry about quoting.
--- vmap <silent> * y:let @/=substitute(escape(@",'.$*[^\/~'),'\n','\\n','g')<CR>n
--- vmap <silent> # y:let @/=substitute(escape(@",'.$*[^\/~'),'\n','\\n','g')<CR>N
--- vnoremap <silent> * :<C-U>
---               \let old_reg=getreg('"')<bar>
---               \let old_regmode=getregtype('"')<cr>
---               \gvy/<C-R><C-R>=substitute(substitute(
---               \escape(@", '\\/.*$^~[]' ), "\n$", "", ""),
---               \"\n", '\\_[[:return:]]', "g")<cr><cr>
---               \:call setreg('"', old_reg, old_regmode)<cr>
--- vnoremap <silent> # :<C-U>
---               \let old_reg=getreg('"')<bar>
---               \let old_regmode=getregtype('"')<cr>
---               \gvy?<C-R><C-R>=substitute(substitute(
---               \escape(@", '\\/.*$^~[]' ), "\n$", "", ""),
---               \"\n", '\\_[[:return:]]', "g")<cr><cr>
---               \:call setreg('"', old_reg, old_regmode)<cr>
--- " This maps \y so that it will yank the visual selection and quote the regex
--- " metacharacters. For example, use v to select some text; type \y; then type
--- " CTRL-R" to insert the yanked selection with metacharacters escaped.
--- vmap <silent> <leader>y y:let @"=substitute(escape(@",'.$*[^\/~'),'\n','\\n','g')<CR>
--- LINE & CHARACTER MOVEMENT
--- keymap("n", "<Down>", [[<cmd>. move +1<CR>==]], { desc = "󰜮 Move Line Down" })
--- keymap("n", "<Up>", [[<cmd>. move -2<CR>==]], { desc = "󰜷 Move Line Up" })
--- keymap("n", "<Right>", [["zx"zp]], { desc = "➡️ Move Char Right" })
--- keymap("n", "<Left>", [["zdh"zph]], { desc = "⬅ Move Char Left" })
--- keymap("x", "<Down>", [[:move '>+1<CR>gv=gv]], { desc = "󰜮 Move Selection down", silent = true })
--- keymap("x", "<Up>", [[:move '<-2<CR>gv=gv]], { desc = "󰜷 Move Selection up", silent = true })
--- keymap("x", "<Right>", [["zx"zpgvlolo]], { desc = "➡️ Move Selection right" })
--- keymap("x", "<Left>", [["zdh"zPgvhoho]],):format()):format()):format()):format()):format() { desc = "⬅ Move Selection left" })
 
 -- stats, additional debugging info
 -- map("n", "<leader>iF", "", {

@@ -94,6 +94,7 @@ local modules = {
     additional_vim_regex_highlighting = {
       -- 'md',
       'bash',
+      'help',
       'make',
       'zsh',
     },

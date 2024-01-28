@@ -5,12 +5,12 @@
 local keymap = {
   select_left = {
     '<M-C-H>',
-    { desc = 'select left node', plugin = 'SelectEase', category = 'Motion' },
+    { desc = ' select left node', plugin = 'SelectEase', category = 'Motion' },
   },
   select_right = {
     '<M-C-L>',
     {
-      desc = 'select right node',
+      desc = ' select right node',
       plugin = 'SelectEase',
       category = 'Motion',
     },
@@ -18,38 +18,38 @@ local keymap = {
   select_up = {
     '<M-C-K>',
     {
-      desc = 'select up node',
+      desc = ' select up node',
       plugin = 'SelectEase',
       category = 'Motion',
     },
   },
   select_down = {
     '<M-NL>',
-    { desc = 'select down node', plugin = 'SelectEase', category = 'Motion' },
+    { desc = ' select down node', plugin = 'SelectEase', category = 'Motion' },
   },
   swap_left = {
     '<M-C-S-Left>',
     {
-      desc = 'swap left node',
+      desc = ' swap left node',
       plugin = 'SelectEase',
       category = 'Motion',
     },
   },
   swap_right = {
     '<M-C-S-Right>',
-    { desc = 'swap right node', plugin = 'SelectEase', category = 'Motion' },
+    { desc = ' swap right node', plugin = 'SelectEase', category = 'Motion' },
   },
   swap_up = {
     '<M-C-S-Up>',
     {
-      desc = 'swap up node',
+      desc = ' swap up node',
       plugin = 'SelectEase',
       category = 'Motion',
     },
   },
   swap_down = {
     '<M-C-S-Down>',
-    { desc = 'swap down node', plugin = 'SelectEase', category = 'Motion' },
+    { desc = ' swap down node', plugin = 'SelectEase', category = 'Motion' },
   },
 }
 

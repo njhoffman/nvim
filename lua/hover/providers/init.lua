@@ -92,7 +92,7 @@ end
 
 local function init_options(_opts)
   local config = require('hover.config').get()
-  local opts = vim.tbl_deep_extend('force', config, _opts)
+  local opts = vim.tbl_deep_extend('force', config, _opts or {})
   if state.initialized then
     return opts
   end

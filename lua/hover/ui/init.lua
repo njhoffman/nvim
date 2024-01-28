@@ -96,7 +96,7 @@ local load_hover = function(provider_id, result, opts)
     -- lines = result.lines
     local max = get_max_size()
     local dims = ui_dimensions.get_dimensions(result.lines, max, provider_id)
-    get_styled_content(result.lines, state.width)
+    get_styled_content(result.lines, state.width - 1) -- 1 for scrollbar
     resize_window(dims)
 
     vim.api.nvim_win_set_buf(state.winnr, state.bufnr)
