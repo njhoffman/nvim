@@ -14,8 +14,11 @@ local scopes = {
   notify                  = { main = 1 },
   -- project              = { main = 1 },
   lab                     = { main = 2 },
-   root                   = { main = -1 },
+  root                    = { main = -1 },
   -- telescope            = { main = -1 },
+  -- reactive             = { main = 1 },
+  tail                    = { main = 0 },
+  whichkey                = { main = 1 },
 }
 
 local patterns = {

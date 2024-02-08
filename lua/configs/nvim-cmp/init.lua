@@ -93,8 +93,9 @@ local cfg = {
   },
   enabled = is_enabled,
   performance = {
-    debounce = 90,
-    throttle = 60,
+    debounce = 200,
+    throttle = 100,
+    max_view_entries = 200,
     -- debounce = 60,
     -- throttle = 30,
     -- fetching_timeout = 500,

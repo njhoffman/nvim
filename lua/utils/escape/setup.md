@@ -1,0 +1,37 @@
+============================================================================
+INTRODUCTION                                                     *escape-nvim*
+
+escape.nvim is a plugin, which will replace any text in your buffer
+with an escaped string.
+
+It can be used with visual mode and motions such as iw.
+
+Nice plugin! This seems like a good case for using custom motions, did you consider adding that as a feature? With that, one could e.g. use geiw to escape all characters inside of the current word
+==============================================================================
+
+USAGE                                                      *escape-nvim-usage*
+
+Setup a binding to any of the functions available
+>
+    vim.keymap.set({"n", "v"}, "<leader>e", require("escape").escape, { noremap = true, silent = true })
+<
+
+==============================================================================
+FUNCTIONS                                              *escape-nvim-functions*
+
+escape()                                                     *escape.escape()*
+    replaces the text as follows:
+    Some "Random String" -> Some \"Random String\"
+
+encode_uri_component()                         *escape.encode_uri_component()*
+    replaces the text as follows:
+    query string with a / -> query%20string%20with%20a%20%2F
+
+apply_converter({converter})                        *escape.apply_converter()*
+    replaces text by using the passed function
+
+    Parameters: ~
+        {converter} (function)  Function to apply to the visual selection
+                                Is called for each line, takes the line as
+                                an argument and returns the new content of
+                                the line

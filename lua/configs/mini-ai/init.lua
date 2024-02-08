@@ -1,39 +1,5 @@
 -- :h MiniAlign-glossary, MiniAlign-algorithm, MiniAlign-examples
 
-local default = {
-  -- Table with textobject id as fields, textobject specification as values.
-  -- Also use this to disable builtin textobjects. See |MiniAi.config|.
-  custom_textobjects = nil,
-
-  -- Module mappings. Use `''` (empty string) to disable one.
-  mappings = {
-    -- Main textobject prefixes
-    around = 'a',
-    inside = 'i',
-
-    -- Next/last variants
-    around_next = 'an',
-    inside_next = 'in',
-    around_last = 'al',
-    inside_last = 'il',
-
-    -- Move cursor to corresponding edge of `a` textobject
-    goto_left = 'g[',
-    goto_right = 'g]',
-  },
-
-  -- Number of lines within which textobject is searched
-  n_lines = 50,
-
-  -- How to search for object (first inside current line, then inside
-  -- neighborhood). One of 'cover', 'cover_or_next', 'cover_or_prev',
-  -- 'cover_or_nearest', 'next', 'previous', 'nearest'.
-  search_method = 'cover_or_next',
-
-  -- Whether to disable showing non-error feedback
-  silent = false,
-}
-
 local cache
 
 -- Jump between text objects
@@ -83,6 +49,8 @@ end
 local ai = require('mini.ai')
 
 local opts = {
+  -- TODO: investigate notification errors
+  silent = true,
   mappings = {
     -- Main textobject prefixes
     around = 'a',
@@ -99,6 +67,7 @@ local opts = {
     goto_right = 'g]',
   },
   n_lines = 500,
+  search_method = 'cover_or_nearest',
   custom_textobjects = {
     -- Make `|` select both edges in non-balanced way
     ['|'] = ai.gen_spec.pair('|', '|', { type = 'non-balanced' }),
@@ -159,6 +128,7 @@ local setup_keymaps = function()
       jump_textobject(prev_next, edge, ai_type)
     end, {
       expr = true,
+      remap = true,
       desc = string.format('  jump to %s edge of %s `%s` text object', edge, ai_type, prev_next),
     })
   end
@@ -171,7 +141,6 @@ local setup_keymaps = function()
   gen_action(']in')
   gen_action('[iN')
   gen_action(']iN')
-
 
 -- stylua: ignore
   local i = {
@@ -204,27 +173,25 @@ local setup_keymaps = function()
   }
 
   local a = vim.deepcopy(i)
-  for k, v in pairs(a) do
-    a[k] = v:gsub('including.*', '')
-  end
+  -- for k, v in pairs(a) do
+  --   a[k] = v:gsub(' including.*', ''):gsub('inside', 'around')
+  --   -- update desc of keymaps
+  --   update_desc('i' .. k, i[k])
+  --   update_desc('a' .. k, a[k])
+  --   -- vim.keymap.set({ 'x' }, existing_x.lhs, existing_x.rhs, { desc = a[k] })
+  --   -- vim.keymap.set({ 'o' }, existing_o.lhs, existing_o.rhs, { desc = a[k] })
+  -- end
 
-  local ic = vim.deepcopy(i)
-  local ac = vim.deepcopy(a)
-  for key, name in pairs({ n = 'Next', N = 'Last' }) do
-    i[key] = vim.tbl_extend('force', { name = '  inside ' .. name .. ' textobject' }, ic)
-    a[key] = vim.tbl_extend('force', { name = '  around ' .. name .. ' textobject' }, ac)
-  end
-
-  local vmap = require('mapper').vmap
-  for key, desc in pairs(i) do
-    vmap({ 'x', 'o' }, key, { desc = desc })
-  end
-
-  -- Note: mini.clue doesn't support operator pending motions
+  -- local ic = vim.deepcopy(i)
+  -- local ac = vim.deepcopy(a)
+  -- for key, name in pairs({ n = 'Next', l = 'Last' }) do
+  --   i[key] = vim.tbl_extend('force', { name = '  inside ' .. name .. ' textobject' }, ic)
+  --   a[key] = vim.tbl_extend('force', { name = '  around ' .. name .. ' textobject' }, ac)
+  -- end
   require('which-key').register({ mode = { 'o', 'x' }, i = i, a = a })
   -- create virtual mappings of all textobjects
-  for _, key in ipairs({ 'i', 'a' }) do -- around/inside
-  end
+  -- for _, key in ipairs({ 'i', 'a' }) do -- around/inside
+  -- end
 end
 
 setup_keymaps()

@@ -16,7 +16,7 @@ local default_cfg = {
   },
   n_lines = 20,
   respect_selection_type = false,
-  search_method = 'cover_or_next',
+  search_method = 'cover_or_nearest',
 }
 
 ---@diagnostic disable-next-line: unused-local
@@ -73,16 +73,25 @@ vim.keymap.set('n', 'yss', '^ys$', { silent = true, remap = true, desc = '󰅪 m
 vim.keymap.set(
   'n',
   's<space>',
-  '<cmd>execute "normal hwst\\<space>" . nr2char(getchar()) . "\\<lt>esc>"<cr>',
-  { silent = true, remap = true, desc = '󰅪 mini surround quick add word' }
+  "<cmd>execute 'normal! hwst )<esc>'<cr>",
+  { silent = true, desc = '󰅪 mini surround quick add word' }
 )
-
+-- lua vim.cmd("execute 'silent! normal hwst )<esc>'")
+-- execute "silent! normal hwst\<space>)\\<esc>"
+-- vim.cmd("execute normal 'hwst ' . nr2char(getchar()) . '<esc>'"),
+-- execute "silent! normal hwst\<space>)" | execute "normal <esc>"
 vim.keymap.set(
   'n',
   'ss',
-  '<cmd>execute "normal hwst\\<space>" . nr2char(getchar()) . "\\<lt>esc>"<cr>',
-  { silent = true, remap = true, desc = '󰅪 mini surround quick add word' }
+  "<cmd>execute 'silent! normal hwst )'<cr>",
+  -- "<cmd>execute 'silent! normal hwst )" .. vim.fn.nr2char(vim.fn.getchar()) .. "'<cr>",
+  { silent = true, desc = '󰅪 mini surround quick add word' }
 )
+
+-- silent! normal hwst (<esc>
+-- <Cmd>execute "silent! normal hwst\ " . nr2char(getchar()) . "<Esc>"<CR>
+-- <Cmd>execute "silent! normal hwst " . nr2char(getchar()) . "<Esc>"<CR>
+
 -- vim.cmd([[ noremap <silent> ss :execute "normal hwst\<space>" . nr2char(getchar()) . "\<lt>esc>"<cr> ]])
 --- Regular mappings:
 --- - `siw)` - add (`s`) for inner word (`iw`) parenthesis (`)`).
@@ -104,10 +113,10 @@ vim.keymap.set(
 -- - Nearest match. Whichever is closest among previous and next matches.
 --
 -- Possible values are:
--- - `'cover'` - use only covering match. Don't use either previous or next; report that there is no surrounding found.
--- - `'cover_or_next'` (default) - use covering match. If not found, use next.
--- - `'cover_or_prev'` - use covering match. If not found, use previous.
--- - `'cover_or_nearest'` - use covering match. If not found, use nearest.
--- - `'next'` - use next match.
--- - `'previous'` - use previous match.
--- - `'nearest'` - use nearest match.
+--  `'cover'` - use only covering match. Don't use either previous or next; report that there is no surrounding found.
+--  `'cover_or_next'` (default) - use covering match. If not found, use next.
+--  `'cover_or_prev'` - use covering match. If not found, use previous.
+--  `'cover_or_nearest'` - use covering match. If not found, use nearest.
+--  `'next'` - use next match.
+--  `'previous'` - use previous match.
+--  `'nearest'` - use nearest match.

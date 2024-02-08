@@ -112,26 +112,26 @@ require('mason-lspconfig').setup_handlers({
   -- ['tailwindcss'] = require('lsp.servers.tailwindcss'),
   ['tsserver'] = require('lsp.servers.tsserver'),
   ['jsonls'] = require('lsp.servers.jsonls'),
-  ['ltex'] = function()
-    lspconfig.ltex.setup({
-      filetypes = {
-        'bib',
-        'gitcommit',
-        'markdown',
-        'org',
-        -- "pandoc",
-        'plaintex',
-        'rst',
-        'rnoweb',
-        'tex',
-      },
-      settings = {
-        ltex = {
-          language = 'en-GB',
-        },
-      },
-    })
-  end,
+  -- ['ltex'] = function()
+  --   lspconfig.ltex.setup({
+  --     filetypes = {
+  --       'bib',
+  --       'gitcommit',
+  --       'markdown',
+  --       'org',
+  --       -- "pandoc",
+  --       'plaintex',
+  --       'rst',
+  --       'rnoweb',
+  --       'tex',
+  --     },
+  --     settings = {
+  --       ltex = {
+  --         language = 'en-GB',
+  --       },
+  --     },
+  --   })
+  -- end,
   -- https://github.com/xna00/unocss-language-server
   ['tailwindcss'] = function()
     lspconfig.tailwindcss.setup({

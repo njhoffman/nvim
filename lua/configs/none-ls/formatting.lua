@@ -49,8 +49,9 @@ end
 local get_config_file = function(patterns, start_dir)
   start_dir = start_dir or vim.fn.expand('%:p:h')
   patterns = patterns or {}
-  vim.dbglog('get_config_file', start_dir, patterns)
-  return search_ancestors(start_dir, patterns)
+  local config_file = search_ancestors(start_dir, patterns)
+  -- vim.dbglog('get_config_file', config_file)
+  return config_file
 end
 
 return {
@@ -173,6 +174,20 @@ return {
       }
     end,
   }),
+  -- --Shell
+  -- formatting.shfmt,
+  -- diagnostics.shellcheck.with { diagnostics_format = "#{m} [#{c}]" },
+  --
+  -- --python
+  -- formatting.autopep8.with { extra_args = { "--style", "{IndentWidth:2 }" } },
+  -- diagnostics.flake8,
+  --
+  -- -- cpp, cmake
+  -- formatting.clang_format.with { extra_args = { "--style", "{IndentWidth: 2}" } },
+  -- diagnostics.clang_check,
+  --
+  -- --Code Spell Checker
+  -- diagnostics.codespell.with { args = { "--ignore-words-list=Tung" } },
   null_ls.builtins.formatting.sqlfluff.with({
     extra_args = function(params)
       local file_extension = vim.fn.fnamemodify(params.bufname, ':e')
@@ -192,6 +207,7 @@ return {
   -- null_ls.builtins.formatting.standardts,
   null_ls.builtins.formatting.stylelint,
   null_ls.builtins.formatting.stylua.with({
+    _config_file = get_config_file(root_files.stylua),
     filetypes = { 'lua' },
     condition = function()
       if vim.bo.filetype ~= 'lua' then
@@ -207,6 +223,9 @@ return {
     -- -- params.bufnr, client_id, command, content, cwd, lsp_method, method, options, root
     extra_args = function(params)
       local local_config = get_config_file(root_files.stylua)
+      local bufnr = params.bufnr or 0
+      local column_width = vim.api.nvim_buf_get_option(bufnr, 'textwidth')
+      column_width = column_width > 0 and column_width or 120
       local args = {
         '--call-parentheses',
         'Always',
@@ -215,15 +234,19 @@ return {
         '--quote-style',
         'AutoPreferSingle',
         '--column-width',
-        vim.api.nvim_buf_get_option(params.bufnr, 'textwidth'),
+        column_width,
         '--indent-width',
-        vim.api.nvim_buf_get_option(params.bufnr, 'shiftwidth'),
+        vim.api.nvim_buf_get_option(bufnr, 'shiftwidth'),
       }
       if local_config ~= nil then
-        table.insert(args, #args - 1, '--config-path')
-        table.insert(args, #args - 1, local_config)
+        table.insert(args, '--config-path')
+        table.insert(args, local_config)
       end
       return args
+      -- sources.root, sources.cwd
+      -- editorconfig generator.opts._last_args, _last_command, _last_cwd
+      -- local sources = require("null-ls.sources")
+      -- local lua_src = sources.get_available('lua')
     end,
   }),
   -- null_ls.builtins.formatting.remark,

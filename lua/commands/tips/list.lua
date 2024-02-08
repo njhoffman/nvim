@@ -15,9 +15,15 @@ local insert = {
   { 'To do a one-off normal command while in insert mode: ', '`<ctrl+o>(motion) i.e. <ctrl+o>w`' },
   { 'To jump to begining of line in insert mode:', '`<ctrl+[o][$]`' },
   { 'Jump over word while staying in insert mode:', '<ctrl>+f' },
+  { 'insert char by decimal value', '`<ctrl-v>{n}`' },
+  { 'insert unicode char by decimal value', '`<ctrl-v>u{n}`' },
+  { 'delete a word backwards', '`<ctrl-w>`' },
+  { 'execute one NORMAL mode command (see below note)', '`<ctrl-o>{cmd}`' },
 }
 
 local misc = {
+  { 'To reset the mouse or keyboard', '`xinput --list--disable/--enable`' },
+  { 'To search for a character by unicode', '`/\v%u4e2d<CR>`' },
   { 'To quickly output a lua function/variable', '`:lua =vm.diagnostic.config()`' },
   {
     'To insert sequential numbers',
@@ -30,10 +36,10 @@ local misc = {
 local quickfix = {
   { 'Populate the quickfix list with the results of a command, use `:cxpr`' },
   { 'Use the quickfix command `cope` to navigate multiple quickfix lists' },
-  { 'Search current file and populate quickfix ', '`:vimgrep /re/ %:p' },
-  { 'Execute macro @a on every quickfix item ', '`:cdo! norm @a' },
+  { 'Search current file and populate quickfix ', '`:vimgrep /re/ %:p`' },
+  { 'Execute macro @a on every quickfix item ', '`:cdo! norm @a`' },
   { 'To perform search and replace on quickfix items ', '`:cdo! s/e/repl/`' },
-  { 'Search recursively with grep for quickfix list ', '`:gr zsh . -R' },
+  { 'Search recursively with grep for quickfix list ', '`:gr zsh . -R`' },
   { 'Search the files in the argument list with ## ', '`:vimgrep // ##`' },
   {
     'Other vimgrep examples',
@@ -51,21 +57,24 @@ local format = {
   { 'To increment visually selected numbers sequentially ', '`gC-S-A>`' },
   { 'To substitute without moving cursor:', ":exe 'norm m`' | %s/pattern/substitution/eg | norm g`" },
 }
+
 local movement = {
+  { 'To go to 80% of current file', '`:80%`' },
+  { 'To go to 5th column of current line', '`5|`' },
   { 'Using the tag stack stack to navigate in and out of areas quickly:', '`<C-]> to enter, <C-T> to exit`' },
-  { 'Quick block navigation', '`<C-S-]>  <CS-[>`' },
-  { 'Normal jump to node', '`<C-M-J>  <C-M-K>  <C-M-H>  <CM-L>`' },
-  { 'Visual move selection', '(v)`<S-L>  <S-H>  <S-J>  <SK>`' },
-  { 'Normal move (swap) line up/down', '`<M-S-J>  <MS-K>`' },
-  { 'Normal move (swap) node', '`<C-M-S-J>  <C-M-S-K>  <C-M-S-H> / <CM-S-L>`' },
+  { 'Quick block navigation', '`<C-S-]>  <C-S-[>`' },
+  { 'Normal jump to node', '`<C-M-J>  <C-M-K>  <C-M-H>  <C-M-L>`' },
+  { 'Visual move selection', '(v)`<S-L>  <S-H>  <S-J>  <S-K>`' },
+  { 'Normal move (swap) line up/down', '`<M-S-J>  <M-S-K>`' },
+  { 'Normal move (swap) node', '`<C-M-S-J>  <C-M-S-K>  <C-M-S-H>/<C-M-S-L>`' },
   { 'Exchange (swap) content inside argument and parenthesis with cx ', '`cxia` ➜ `ci(`' },
   { 'Visual exchange (swap) inside function and block with X ', '`vifX` ➜ `vbX`' },
   {
     'Text objects',
-    '`c = class, C = conditional, f = function, ? = prompt, i = object`',
-    '`b = balanced, B = block,    h = git-hunk,   o = block/cond/loop, L = loop`',
-    '`t = tag,      w = word,     W = WORD,       x = comment,         l = last textobj, n = next textobj`',
-    '`% = matching, a = argument, A = attribute,  s = sentence,        p = paragraph,    q = quote`',
+    '`c = class    C = conditional f = function   ? = prompt          i = object`',
+    '`b = balanced  B = block      h = git-hunk   o = block/cond/loop L = loop`',
+    '`t = tag       w = word       W = WORD       x = comment         l = last textobj  n = next textobj`',
+    '`% = matching  a = argument   A = attribute  s = sentence        p = paragraph     q = quote`',
   },
 }
 
@@ -79,13 +88,14 @@ local autopairs = {
   {
     'Fly (hop) to list of end-pairs',
     '`({[*] })  )  ({[] })*` (only_jump_end_pair=true)',
-    '`*()  )  ()*` (oly_jump_end_pair=false)',
+    '`*()  )  ()*`           (only_jump_end_pair=false)',
   },
   { 'Automatically wrap surround pairs', "`*'a`  (  `(*'a)`" },
 }
 local global = {
   { 'To delete all lines that have only whitespace', '`:g^s*$/d`' },
   { 'To delete all non-matching lines', '`:v/pattern/d`' },
+  { 'Delete upto next occurence of foo', '`d/foo`' },
   { 'Display 5 lines of context for matches', '`g/pattern/z#.5|echo "=========="`' },
   { 'Copy all matches to end of file', '`:g/pattern/t$`' },
   { 'Move all matches to end of file', '`:gpattern/m$`' },
@@ -111,7 +121,316 @@ return {
   quickfix = quickfix,
   tmux = tmux,
 }
--- 1
+
+--
+-- I have fallen in love of Ex commands, I've been using them every day since I learned them.
+--
+-- :{range}d deletes lines in range.
+--
+-- :{range}m{to} moves lines to line number.
+--
+-- :{range}t{to} copies lines.
+--
+-- :{range}s/search/replace/flags you know this one.
+--
+-- :{range}g/ifthelinecontainsthis/search/replace/flags bet you didn't know this one.
+--
+-- Range can be just two line numbers from;to (inclusive), or relative to 'from' like from;+5, or relative to current line like from,., or it can even be a search /fromthissearch//tothisseach/.
+--
+-- The only drawback is to momentarily disable relative line numbers but it is easy to toggle it with yor from vim-unimpaired. It makes you feel like a wizard when you run one of this commands and you don't even have to be in the same line.
+-- 							*'[* *`[*
+-- '[  `[			To the first character of the previously changed
+-- 			or yanked text.
+--
+-- 							*']* *`]*
+-- ']  `]			To the last character of the previously changed or
+-- 			yanked text.
+--
+-- After executing an operator the Cursor is put at the beginning of the text
+-- that was operated upon.  After a put command ("p" or "P") the cursor is
+-- sometimes placed at the first inserted line and sometimes on the last inserted
+-- character.  The four commands above put the cursor at either end.  Example:
+-- After yanking 10 lines you want to go to the last one of them: "10Y']".  After
+-- inserting several lines with the "p" command you want to jump to the lowest
+-- inserted line: "p']".  This also works for text that has been inserted.
+--
+-- Note: After deleting text, the start and end positions are the same, except
+-- when using blockwise Visual mode.  These commands do not work when no change
+-- was made yet in the current file.
+--
+-- 							*'<* *`<*
+-- '<  `<			To the first line or character of the last selected
+-- 			Visual area in the current buffer.  For block mode it
+-- 			may also be the last character in the first line (to
+-- 			be able to define the block).
+--
+-- 							*'>* *`>*
+-- '>  `>			To the last line or character of the last selected
+-- 			Visual area in the current buffer.  For block mode it
+-- 			may also be the first character of the last line (to
+-- 			be able to define the block).  Note that 'selection'
+-- 			applies, the position may be just after the Visual
+-- 			area.
+--
+-- 							*''* *``*
+-- ''  ``			To the position before the latest jump, or where the
+-- 			last "m'" or "m`" command was given.  Not set when the
+-- 			|:keepjumps| command modifier was used.
+-- 			Also see |restore-position|.
+--
+-- 							*'quote* *`quote*
+-- '"  `"			To the cursor position when last exiting the current
+-- 			buffer.  Defaults to the first character of the first
+-- 			line.  See |last-position-jump| for how to use this
+-- 			for each opened file.
+-- 			Only one position is remembered per buffer, not one
+-- 			for each window.  As long as the buffer is visible in
+-- 			a window the position won't be changed.  Mark is also
+-- 			reset when |:wshada| is run.
+--
+-- 							*'^* *`^*
+-- '^  `^			To the position where the cursor was the last time
+-- 			when Insert mode was stopped.  This is used by the
+-- 			|gi| command.  Not set when the |:keepjumps| command
+-- 			modifier was used.
+--
+-- 							*'.* *`.*
+-- '.  `.			To the position where the last change was made.  The
+-- 			position is at or near where the change started.
+-- 			Sometimes a command is executed as several changes,
+-- 			then the position can be near the end of what the
+-- 			command changed.  For example when inserting a word,
+-- 			the position will be on the last character.
+-- 			To jump to older changes use |g;|.
+--
+-- 							*'(* *`(*
+-- '(  `(			To the start of the current sentence, like the |(|
+-- 			command.
+--
+-- 							*')* *`)*
+-- ')  `)			To the end of the current sentence, like the |)|
+-- 			command.
+--
+-- 							*'{* *`{*
+-- '{  `{			To the start of the current paragraph, like the |{|
+-- 			command.
+--
+-- 							*'}* *`}*
+-- '}  `}			To the end of the current paragraph, like the |}|
+-- 			command.
+--
+-- These commands are not marks themselves, but jump to a mark:
+--
+-- 							*]'*
+-- ]'			[count] times to next line with a lowercase mark below
+-- 			the cursor, on the first non-blank character in the
+-- 			line.
+--
+-- 							*]`*
+-- ]`			[count] times to lowercase mark after the cursor.
+--
+-- 							*['*
+-- ['			[count] times to previous line with a lowercase mark
+-- 			before the cursor, on the first non-blank character in
+-- 			the line.
+--
+-- 							*[`*
+-- [`			[count] times to lowercase mark before the cursor.
+--
+--
+-- :loc[kmarks] {command}				*:loc* *:lock* *:lockmarks*
+-- 			Execute {command} without adjusting marks.  This is
+-- 			useful when changing text in a way that the line count
+-- 			will be the same when the change has completed.
+-- 			WARNING: When the line count does change, marks below
+-- 			the change will keep their line number, thus move to
+-- 			another text line.
+-- 			These items will not be adjusted for deleted/inserted
+-- 			lines:
+-- 			- lower case letter marks 'a - 'z
+-- 			- upper case letter marks 'A - 'Z
+-- 			- numbered marks '0 - '9
+-- 			- last insert position '^
+-- 			- last change position '.
+-- 			- last affected text area '[ and ']
+-- 			- the Visual area '< and '>
+-- 			- line numbers in placed signs
+-- 			- line numbers in quickfix positions
+-- 			- positions in the |jumplist|
+-- 			- positions in the |tagstack|
+-- 			These items will still be adjusted:
+-- 			- previous context mark ''
+-- 			- the cursor position
+-- 			- the view of a window on a buffer
+-- 			- folds
+-- 			- diffs
+--
+-- :kee[pmarks] {command}				*:kee* *:keep* *:keepmarks*
+-- 			Currently only has effect for the filter command
+-- 			|:range!|:
+-- 			- When the number of lines after filtering is equal to
+-- 			  or larger than before, all marks are kept at the
+-- 			  same line number.
+-- 			- When the number of lines decreases, the marks in the
+-- 			  lines that disappeared are deleted.
+-- 			In any case the marks below the filtered text have
+-- 			their line numbers adjusted, thus stick to the text,
+-- 			as usual.
+-- 			When the 'R' flag is missing from 'cpoptions' this has
+-- 			the same effect as using ":keepmarks".
+--
+-- 							*:keepj* *:keepjumps*
+-- :keepj[umps] {command}
+-- 			Moving around in {command} does not change the |''|,
+-- 			|'.| and |'^| marks, the |jumplist| or the
+-- 			|changelist|.
+-- 			Useful when making a change or inserting text
+-- 			automatically and the user doesn't want to go to this
+-- 			position.  E.g., when updating a "Last change"
+-- 			timestamp in the first line:
+--
+-- 				:let lnum = line(".")
+-- 				:keepjumps normal gg
+-- 				:call SetLastChange()
+-- 				:keepjumps exe "normal " .. lnum .. "G"
+--
+-- 			Note that ":keepjumps" must be used for every command.
+-- 			When invoking a function the commands in that function
+-- 			can still change the jumplist.  Also, for
+-- 			`:keepjumps exe 'command '` the "command" won't keep
+-- 			jumps.  Instead use: `:exe 'keepjumps command'`
+
+-- \%[]	A sequence of optionally matched atoms.  This always matches.
+-- 	It matches as much of the list of atoms it contains as possible.  Thus
+-- 	it stops at the first atom that doesn't match.  For example:
+-- 		/r\%[ead]
+--  	matches "r", "re", "rea" or "read".  The longest that matches is used.
+-- 	To match the Ex command "function", where "fu" is required and
+-- 	"nction" is optional, this would work:
+-- 		/\<fu\%[nction]\>
+--  	The end-of-word atom "\>" is used to avoid matching "fu" in "full".
+-- 	It gets more complicated when the atoms are not ordinary characters.
+-- 	You don't often have to use it, but it is possible.  Example:
+-- 		/\<r\%[[eo]ad]\>
+--  	Matches the words "r", "re", "ro", "rea", "roa", "read" and "road".
+-- 	There can be no \(\), \%(\) or \z(\) items inside the [] and \%[] does
+-- 	not nest.
+-- 	To include a "[" use "[[]" and for "]" use []]", e.g.,:
+-- 		/index\%[[[]0[]]]
+--  	matches "index" "index[", "index[0" and "index[0]".
+--
+--
+-- set iskeyword+=- and whatever. It's the dream with *.
+-- -------------------------------------------------------------------------
+--  LHS         RHS                                       Mode   Module
+-- -------------------------------------------------------------------------
+--  %           |<plug>(matchup-%)|                         nx     motion
+--  g%          |<plug>(matchup-g%)|                        nx     motion
+--  [%          |<plug>(matchup-[%)|                        nx     motion
+--  ]%          |<plug>(matchup-]%)|                        nx     motion
+--  z%          |<plug>(matchup-z%)|                        nx     motion
+--  a%          |<plug>(matchup-a%)|                        x      text_obj
+--  i%          |<plug>(matchup-i%)|                        x      text_obj
+--  ds%         |<plug>(matchup-ds%)|                       n      surround
+--  cs%         |<plug>(matchup-cs%)|                       n      surround
+--  (none)      |<plug>(matchup-hi-surround)|               n      matchparen
+-- -------------------------------------------------------------------------
+--  Operator pending maps
+-- -------------------------------------------------------------------------
+--  %           |<plug>(matchup-%)|                         o      motion
+--    ... And so on for g%, [%, ]%, z%, a%, i% ...
+-- matchup inclusive/exclusive operators
+-- match-up is designed so that `d]%` inside a set of parenthesis behaves exactly
+-- like `d])`, except generalized to words.
+--
+-- Put differently, forward exclusive motions will not include the close word.
+-- In this example, where `█` is the cursor position,
+--
+--   if █x | continue | endif
+--
+-- pressing `d]%` will produce (cursor on the `e`)
+--
+--   if endif
+--
+-- To include the close word, use either `dv]%` or `v]%d`.  This is also
+-- compatible with vim's `dv])` and `dv]}`.
+--
+-- Operators over backward exclusive motions will instead exclude the position
+-- the cursor was on before the operator was invoked.  For example, in
+--
+--   if █x | continue | endif
+--
+-- pressing `d[%` will produce
+--
+--   █x | continue | endif
+--
+-- This is compatible with vim's `d[(` and `d[{`.
+--
+--                                                                  *d%* *dg%*
+--
+-- Unlike `]%`, `%` is an |inclusive| motion.  As a special case for the `d` (delete)
+-- operator, if `d%` leaves behind lines white-space, they will be deleted also.
+-- In effect, it will be operating line-wise.  As an example, pressing `d%` will
+-- leave behind nothing.
+--
+--      █(
+--
+--      )
+--
+-- To operate character-wise in this situation, use `dv%` or `v%d`.  This is vim
+-- compatible with the built-in `d%` on items in 'matchpairs'.
+--
+--                                                         *matchup-feat-linewise*
+-- Line-wise operator/text-object combinations
+--
+-- Normally, the text objects |i%| and |a%| work character-wise.  However,
+-- there are some special cases.  For certain operators combined with |i%|,
+-- under certain conditions, match-up will effectively operate line-wise
+-- instead.  For example, in
+--
+--   if condition
+--    █call one()
+--     call two()
+--   endif
+--
+-- pressing `di%` will produce
+--
+--   if condition
+--   endif
+--
+-- even though deleting ` condition` would be suggested by the object `i%`.
+-- The intention is to make operators more useful in some cases.  The
+-- following rules apply:
+--
+-- 1. The operator must be listed in |g:matchup_text_obj_linewise_operators|.
+--    By default this is |d| and |y| (e.g., `di%` and `ya%`).
+--
+-- 2. The outer block must span multiple lines.
+--
+-- 3. The open and close delimiters must be more than one character long.  In
+--    particular, `di%` involving a `(`...`)` block will not be subject to
+--    these special rules.
+--
+-- To prevent this behavior for a particular operation, use `vi%d`.  Note that
+-- special cases involving indentation still apply (like with |i)| etc).
+--
+-- To disable this entirely, remove the operator from the following variable,
+--
+--   let g:matchup_text_obj_linewise_operators = [ 'y' ]
+--
+-- Note: unlike vim's built-in |i)|, |ab|, etc., |i%| does not make an existing visual
+-- mode character-wise.
+--
+-- A second special case involves `da%`.  In this example,
+--
+--     if condition
+--      █call one()
+--       call two()
+--     endif
+--
+-- pressing `da%` will delete all four lines and leave no white-space.  This is
+-- compatible with vim's `da(`, `dab`, etc.
+--
 
 -- sfn( - find next "(" character, repeat with '.'
 -- gq - format lines, i.e. gqap, gqq
@@ -147,28 +466,6 @@ return {
 
 -- The cursor is on a matched delimiter if and only if the normal mode command v%"zy yanks a string of length at least 2 into @z and the normal mode command v%%"zy yanks a string of length exactly 1 into @z.
 --
--- Hints for VimL: :norm ... and strlen(@z) will help here.
--- cc C            " change (replace) entire line, to end of line
--- c0              " change (replace) to the start of the line
--- c$              " change (replace) to the end of the line
--- d0              " delete (cut) to the beginning of the line
--- d/pattern       " delete (cut) to first occurrence of 'pattern'
--- "_dd            " delete line into the 'blackhole' register (no clipboard)
--- nnoremap Y y$
--- xnoremap Y <Esc>y$gv
--- <ctrl-v>{n}     " insert char by decimal value
--- <ctrl-v>u{n}    " insert unicode char by decimal value
--- <ctrl-w>        " delete a word backwards
--- <ctrl-o>{cmd}   " execute one NORMAL mode command (see below note)
--- "   A neat trick to cycle through the delete registers is to use `"1p` and then run `u.`, the undo+repeat advances the 'pasted register' so it will perform `"2p`, `"3p` and so forth# .
--- nnoremap <leader>b "_
--- nnoremap <leader>d "_d
--- nnoremap <leader>D "_D
--- nnoremap <leader>dd "_dd
--- xnoremap <leader>b "_
--- xnoremap <leader>D "_D
--- xnoremap <leader>D "_D
--- xnoremap <leader>x "_x
 -- o               " move to other end of marked area
 -- O               " move to other corner of block
 -- :g/regex/{ex}               " run :{ex} for every line matching regex
@@ -219,3 +516,309 @@ return {
 
 -- fly (insert) (type existing outer parenthesis to jump) ({[] })
 -- tabout (map,cmap)
+
+-- SEARCH/regex
+-- If a character is taken literally or not depends on the 'magic' option and the
+-- items in the pattern mentioned next.  The 'magic' option should always be set,
+-- but it can be switched off for Vi compatibility.  We mention the effect of
+-- 'nomagic' here for completeness, but we recommend against using that.
+--               */\m* */\M*
+-- Use of "\m" makes the pattern after it be interpreted as if 'magic' is set,
+-- ignoring the actual value of the 'magic' option.
+-- Use of "\M" makes the pattern after it be interpreted as if 'nomagic' is used.
+--               */\v* */\V*
+-- Use of "\v" means that after it, all ASCII characters except '0'-'9', 'a'-'z',
+-- 'A'-'Z' and '_' have special meaning: "very magic"
+--
+-- Use of "\V" means that after it, only a backslash and the terminating
+-- character (usually / or ?) have special meaning: "very nomagic"
+--
+-- |/\%d|	\%d	\%d	match specified decimal character (eg \%d123)
+-- |/\%x|	\%x	\%x	match specified hex character (eg \%x2a)
+-- |/\%o|	\%o	\%o	match specified octal character (eg \%o040)
+-- |/\%u|	\%u	\%u	match specified multibyte character (eg \%u20ac)
+-- |/\%U|	\%U	\%U	match specified large multibyte character (eg
+--       \%U12345678)
+-- \@=	Matches the preceding atom with zero width.
+--   Like "(?=pattern)" in Perl.
+--   Example			matches
+--   foo\(bar\)\@=		"foo" in "foobar"
+--   foo\(bar\)\@=foo	nothing
+-- foo\(bar\)\@=foobarfoo	nothing
+-- \@!	Matches with zero width if the preceding atom does NOT match at the
+--   current position. |/zero-width|
+--   Like "(?!pattern)" in Perl.
+--   Example			matches
+--   foo\(bar\)\@!		any "foo" not followed by "bar"
+--   a.\{-}p\@!		"a", "ap", "app", "appp", etc. not immediately
+--         followed by a "p"
+--   if \(\(then\)\@!.\)*$	"if " not followed by "then"
+-- avoid matching foobar:
+-- \(foo\)\@<!bar
+-- Useful example: to find "foo" in a line that does not contain "bar":
+--   /^\%(.*bar\)\@!.*\zsfoo
+-- \@<=	Matches with zero width if the preceding atom matches just before what
+--   follows. |/zero-width|
+--   Like "(?<=pattern)" in Perl, but Vim allows non-fixed-width patterns.
+--   Example			matches
+--   \(an\_s\+\)\@<=file	"file" after "an" and white space or an
+--         end-of-line
+--   For speed it's often much better to avoid this multi.  Try using "\zs"
+--   instead |/\zs|.  To match the same as the above example:
+--     an\_s\+\zsfile
+-- Example				matches
+-- \([a-z]\+\)\zs,\1		",abc" in "abc,abc"
+
+-- \@<!	Matches with zero width if the preceding atom does NOT match just
+--   before what follows.  Thus this matches if there is no position in the
+--   current or previous line where the atom matches such that it ends just
+--   before what follows.  |/zero-width|
+--   Like "(?<!pattern)" in Perl, but Vim allows non-fixed-width patterns.
+--   The match with the preceding atom is made to end just before the match
+--   with what follows, thus an atom that ends in ".*" will work.
+--   Warning: This can be slow (because many positions need to be checked
+--   for a match).  Use a limit if you can, see below.
+--   Example			matches
+--   \(foo\)\@<!bar		any "bar" that's not in "foobar"
+--   \(\/\/.*\)\@<!in	"in" which is not after "//"
+--
+-- \@123<!
+--   Like "\@<!" but only look back 123 bytes. This avoids trying lots of
+--   matches that are known to fail and make executing the pattern very
+--   slow.
+--
+--               */\@>*
+-- \@>	Matches the preceding atom like matching a whole pattern.
+--   Like "(?>pattern)" in Perl.
+--   Example		matches
+--   \(a*\)\@>a	nothing (the "a*" takes all the "a"'s, there can't be
+--       another one following)
+
+-- Character classes:
+-- \i	identifier character (see 'isident' option)	*/\i*
+-- \I	like "\i", but excluding digits			*/\I*
+-- \k	keyword character (see 'iskeyword' option)	*/\k*
+-- \K	like "\k", but excluding digits			*/\K*
+-- \f	file name character (see 'isfname' option)	*/\f*
+-- \F	like "\f", but excluding digits			*/\F*
+-- \p	printable character (see 'isprint' option)	*/\p*
+-- \P	like "\p", but excluding digits			*/\P*
+--
+-- NOTE: the above also work for multibyte characters.  The ones below only
+-- match ASCII characters, as indicated by the range.
+--
+-- 						*whitespace* *white-space*
+-- \s	whitespace character: <Space> and <Tab>		*/\s*
+-- \S	non-whitespace character; opposite of \s	*/\S*
+-- \d	digit:				[0-9]		*/\d*
+-- \D	non-digit:			[^0-9]		*/\D*
+-- \x	hex digit:			[0-9A-Fa-f]	*/\x*
+-- \X	non-hex digit:			[^0-9A-Fa-f]	*/\X*
+-- \o	octal digit:			[0-7]		*/\o*
+-- \O	non-octal digit:		[^0-7]		*/\O*
+-- \w	word character:			[0-9A-Za-z_]	*/\w*
+-- \W	non-word character:		[^0-9A-Za-z_]	*/\W*
+-- \h	head of word character:		[A-Za-z_]	*/\h*
+-- \H	non-head of word character:	[^A-Za-z_]	*/\H*
+-- \a	alphabetic character:		[A-Za-z]	*/\a*
+-- \A	non-alphabetic character:	[^A-Za-z]	*/\A*
+-- \l	lowercase character:		[a-z]		*/\l*
+-- \L	non-lowercase character:	[^a-z]		*/\L*
+-- \u	uppercase character:		[A-Z]		*/\u*
+-- \U	non-uppercase character:	[^A-Z]		*/\U*
+
+-- 		  Name	      Func	Contents
+-- *[:alnum:]*	  [:alnum:]   isalnum	ASCII letters and digits
+-- *[:alpha:]*	  [:alpha:]   isalpha	ASCII letters
+-- *[:blank:]*	  [:blank:]		space and tab
+-- *[:cntrl:]*	  [:cntrl:]   iscntrl	ASCII control characters
+-- *[:digit:]*	  [:digit:]		decimal digits '0' to '9'
+-- *[:graph:]*	  [:graph:]   isgraph	ASCII printable characters excluding
+-- 					space
+-- *[:lower:]*	  [:lower:]   (1)	lowercase letters (all letters when
+-- 					'ignorecase' is used)
+-- *[:print:]*	  [:print:]   (2)	printable characters including space
+-- *[:punct:]*	  [:punct:]   ispunct	ASCII punctuation characters
+-- *[:space:]*	  [:space:]		whitespace characters: space, tab, CR,
+-- 					NL, vertical tab, form feed
+-- *[:upper:]*	  [:upper:]   (3)	uppercase letters (all letters when
+-- 					'ignorecase' is used)
+-- *[:xdigit:]*	  [:xdigit:]		hexadecimal digits: 0-9, a-f, A-F
+-- *[:return:]*	  [:return:]		the <CR> character
+-- *[:tab:]*	  [:tab:]		the <Tab> character
+-- *[:escape:]*	  [:escape:]		the <Esc> character
+-- *[:backspace:]*	  [:backspace:]		the <BS> character
+-- *[:ident:]*	  [:ident:]		identifier character (same as "\i")
+-- *[:keyword:]*	  [:keyword:]		keyword character (same as "\k")
+-- *[:fname:]*	  [:fname:]		file name character (same as "\f")
+-- vim vs perl:
+-- Capability			in Vimspeak	in Perlspeak
+-- force case insensitivity	\c		(?i)
+-- force case sensitivity		\C		(?-i)
+-- backref-less grouping		\%(atom\)	(?:atom)
+-- conservative quantifiers	\{-n,m}		`*?,` +?, ??, {}?
+-- 0-width match			atom\@=		(?=atom)
+-- 0-width non-match		atom\@!		(?!atom)
+-- 0-width preceding match		atom\@<=	(?<=atom)
+-- 0-width preceding non-match	atom\@<!	(?<!atom)
+-- match without retry		atom\@>		(?>atom)
+-- match:
+-- :highlight MyGroup ctermbg=green guibg=green
+-- :match MyGroup /TODO/
+-- Another example, which highlights all characters in virtual
+-- column 72 and more:
+-- 	:highlight rightMargin term=bold ctermfg=blue guifg=blue
+-- 	:match rightMargin /.\%>72v/
+-- 	To highlight all character that are in virtual column 7:
+-- 	:highlight col8 ctermbg=grey guibg=grey
+-- 	:match col8 /\%<8v.\%>7v/
+-- The functions |matchfuzzy()| and |matchfuzzypos()| can be used to fuzzy search
+-- a string in a List of strings. The matchfuzzy() function returns a List of
+-- matching strings. The matchfuzzypos() functions returns the List of matches,
+-- the matching positions and the fuzzy match scores.
+--
+-- The "f" flag of `:vimgrep` enables fuzzy matching.
+--
+
+-- search flags:
+-- [&]	Must be the first one: Keep the flags from the previous substitute
+-- 	command.  Examples:
+-- 		:&&
+-- 		:s/this/that/&
+--  	Note that `:s` and `:&` don't keep the flags.
+--
+-- [c]	Confirm each substitution.  Vim highlights the matching string (with
+-- 	|hl-IncSearch|).  You can type:				*:s_c*
+-- 	    'y'	    to substitute this match
+-- 	    'l'	    to substitute this match and then quit ("last")
+-- 	    'n'	    to skip this match
+-- 	    <Esc>   to quit substituting
+-- 	    'a'	    to substitute this and all remaining matches
+-- 	    'q'	    to quit substituting
+-- 	    CTRL-E  to scroll the screen up
+-- 	    CTRL-Y  to scroll the screen down
+--
+-- 							*:s_e*
+-- [e]     When the search pattern fails, do not issue an error message and, in
+-- 	particular, continue in maps as if no error occurred.  This is most
+-- 	useful to prevent the "No match" error from breaking a mapping.  Vim
+-- 	does not suppress the following error messages, however:
+-- 		Regular expressions can't be delimited by letters
+-- 		\ should be followed by /, ? or &
+-- 		No previous substitute regular expression
+-- 		Trailing characters
+-- 		Interrupted
+--
+-- 							*:s_g*
+-- [g]	Replace all occurrences in the line.  Without this argument,
+-- 	replacement occurs only for the first occurrence in each line.  If the
+-- 	'gdefault' option is on, this flag is on by default and the [g]
+-- 	argument switches it off.
+--
+-- 							*:s_i*
+-- [i]	Ignore case for the pattern.  The 'ignorecase' and 'smartcase' options
+-- 	are not used.
+--
+-- 							*:s_I*
+-- [I]	Don't ignore case for the pattern.  The 'ignorecase' and 'smartcase'
+-- 	options are not used.
+--
+-- 							*:s_n*
+-- [n]	Report the number of matches, do not actually substitute.  The [c]
+-- 	flag is ignored.  The matches are reported as if 'report' is zero.
+-- 	Useful to |count-items|.
+-- 	If \= |sub-replace-expression| is used, the expression will be
+-- 	evaluated in the |sandbox| at every match.
+--
+-- [p]	Print the line containing the last substitute.  *:s_p*
+--
+-- [#]	Like [p] and prepend the line number.  *:s_#*
+--
+-- [l]	Like [p] but print the text like |:list|.  *:s_l*
+--
+-- 							*:s_r*
+-- [r]	Only useful in combination with `:&` or `:s` without arguments.  `:&r`
+-- 	works the same way as `:~`:  When the search pattern is empty, use the
+-- 	previously used search pattern instead of the search pattern from the
+-- 	last substitute or `:global`.  If the last command that did a search
+-- 	was a substitute or `:global`, there is no effect.  If the last
+-- 	command was a search command such as "/", use the pattern from that
+-- 	command.
+-- 	For `:s` with an argument this already happens:
+-- 		:s/blue/red/
+-- 		/green
+-- 		:s//red/   or  :~   or  :&r
+--  	The last commands will replace "green" with "red".
+-- 		:s/blue/red/
+-- 		/green
+-- 		:&
+--  	The last command will replace "blue" with "red".
+-- special characters:
+-- magic	nomagic	  action
+--   &	  \&	  replaced with the whole matched pattern	     *s/\&*
+--  \&	   &	  replaced with &
+--       \0	  replaced with the whole matched pattern	   *\0* *s/\0*
+--       \1	  replaced with the matched pattern in the first
+--       pair of ()					     *s/\1*
+--       \2	  replaced with the matched pattern in the second
+--       pair of ()					     *s/\2*
+--       ..	  ..						     *s/\3*
+--       \9	  replaced with the matched pattern in the ninth
+--       pair of ()					     *s/\9*
+--   ~	  \~	  replaced with the {string} of the previous
+--       substitute					     *s~*
+--  \~	   ~	  replaced with ~				     *s/\~*
+--       \u	  next character made uppercase			     *s/\u*
+--       \U	  following characters made uppercase, until \E      *s/\U*
+--       \l	  next character made lowercase			     *s/\l*
+--       \L	  following characters made lowercase, until \E      *s/\L*
+--       \e	  end of \u, \U, \l and \L (NOTE: not <Esc>!)	     *s/\e*
+--       \E	  end of \u, \U, \l and \L			     *s/\E*
+--       <CR>	  split line in two at this point
+--       (Type the <CR> as CTRL-V <Enter>)		     *s<CR>*
+--       \r	  idem						     *s/\r*
+--       \<CR>	  insert a carriage-return (CTRL-M)
+--       (Type the <CR> as CTRL-V <Enter>)		     *s/\<CR>*
+--       \n	  insert a <NL> (<NUL> in the file)
+--       (does NOT break the line)			     *s/\n*
+--       \b	  insert a <BS>					     *s/\b*
+--       \t	  insert a <Tab>				     *s/\t*
+--       \\	  insert a single backslash			     *s/\\*
+--       \x	  where x is any character not mentioned above:
+--       Reserved for future expansion
+
+-- Substitute with an expression			*sub-replace-expression*
+-- 						*sub-replace-\=* *s/\=*
+-- When the substitute string starts with "\=" the remainder is interpreted as an
+-- expression.
+--
+-- The special meaning for characters as mentioned at |sub-replace-special| does
+-- not apply except for "<CR>".  A <NL> character is used as a line break, you
+-- can get one with a double-quote string: "\n".  Prepend a backslash to get a
+-- real <NL> character (which will be a NUL in the file).
+--
+-- The "\=" notation can also be used inside the third argument {sub} of
+-- |substitute()| function.  In this case, the special meaning for characters as
+-- mentioned at |sub-replace-special| does not apply at all. Especially, <CR> and
+-- <NL> are interpreted not as a line break but as a carriage-return and a
+-- new-line respectively.
+--
+-- When the result is a |List| then the items are joined with separating line
+-- breaks.  Thus each item becomes a line, except that they can contain line
+-- breaks themselves.
+--
+-- The |submatch()| function can be used to obtain matched text.  The whole
+-- matched text can be accessed with "submatch(0)".  The text matched with the
+-- first pair of () with "submatch(1)".  Likewise for further sub-matches in ().
+--
+-- Be careful: The separation character must not appear in the expression!
+-- Consider using a character like "@" or ":".  There is no problem if the result
+-- of the expression contains the separation character.
+--
+-- Examples:
+-- 	:s@\n@\="\r" .. expand("$HOME") .. "\r"@
+-- This replaces an end-of-line with a new line containing the value of $HOME.
+--
+-- 	s/E/\="\<Char-0x20ac>"/g
+-- This replaces each 'E' character with a euro sign.  Read more in |<Char->|.
+--

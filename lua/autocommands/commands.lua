@@ -1,12 +1,46 @@
 local logger = require('logger').init('fasd')
 
-local function goto_last_pos()
-  -- " Return to last edit position when opening files (You want this!)
-  -- au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-  local last_pos = vim.fn.line('\'"')
-  if last_pos > 0 and last_pos <= vim.fn.line('$') then
-    vim.api.nvim_win_set_cursor(0, { last_pos, 0 })
+local set_cursor_position = function()
+  local last_line = vim.fn.line([['"]])
+  local buff_last_line = vim.fn.line('$')
+  local window_last_line = vim.fn.line('w$')
+  local window_first_line = vim.fn.line('w0')
+
+  -- If the last line is set and the less than the last line in the buffer
+  if last_line > 0 and last_line <= buff_last_line then
+    -- Check if the last line of the buffer is the same as the window
+    if window_last_line == buff_last_line then
+      -- Set line to last line edited
+      vim.api.nvim_command([[keepjumps normal! g`"]])
+      -- Try to center
+    elseif buff_last_line - last_line > ((window_last_line - window_first_line) / 2) - 1 then
+      vim.api.nvim_command([[keepjumps normal! g`"zz]])
+    else
+      vim.api.nvim_command([[keepjumps normal! G'"<c-e>]])
+    end
   end
+  if fn.foldclosed('.') ~= -1 and lastplace.options.lastplace_open_folds == 1 then
+    vim.api.nvim_command([[normal! zvzz]])
+  end
+end
+
+local function goto_last_pos()
+  local last_edit_pos = vim.fn.getpos('\'"')
+  if vim.v.vim_did_enter == 0 then
+    local last_arg = vim.v.argv[#vim.v.argv]
+    if last_arg:match('^%+%d+$') then
+      -- scroll to line
+      vim.api.nvim_command('keepjumps normal ' .. last_arg:gsub('%+', '') .. 'G')
+      return
+    end
+  end
+  if last_edit_pos and last_edit_pos[2] > 0 and last_edit_pos[2] <= vim.fn.line('$') then
+    -- vim.api.nvim_command('keepjumps normal ' .. last_edit_pos[2] .. 'G')
+    -- vim.api.nvim_command('keepjumps normal ' .. last_edit_pos[3] .. 'l')
+    vim.api.nvim_win_set_cursor(0, { last_edit_pos[2], last_edit_pos[3] })
+  end
+
+  --
 end
 
 local function file_exists(name)

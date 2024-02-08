@@ -93,6 +93,17 @@ local source_names = {
 
 --  local after_line = string.sub(line, cursor + 1, -1)
 -- stylua: ignore
+
+          -- buffer = '',
+          -- nvim_lsp = ' ',
+          -- luasnip = ' 🐍',
+          -- treesitter = ' ',
+          -- nvim_lua = ' ',
+          -- spell = ' 暈',
+          -- emoji = '󰞅',
+          -- copilot = "🤖",
+          -- cmp_tabnine = '🤖',
+          -- look = '',
 local lsp_symbols = {
   Boolean         = "◩",
   Class           = '󰌗', --   Class       = "󰠱 ",
@@ -159,6 +170,7 @@ local lsp_symbols = {
   Unit            = '', --   Unit        = "󰑭 ",
   Value           = '󰎠',
   Variable        = '', --   Variable    = "󰈜 ",
+  VariableParameter = '', --   Variable    = "󰈜 ",
   VariableBuiltin = '', --   Variable    = "󰈜 ",
   XX              = ' ', --   Variable    = "󰈜 ",
 }

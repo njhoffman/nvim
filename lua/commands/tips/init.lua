@@ -23,36 +23,17 @@ local parse_tip_args = function(args)
 end
 
 local get_tip = function(cmd)
-  local url = 'https://vtip.43z.one'
-  local job = require('plenary.job')
-  --2/3 times show custom tips
-  if #cmd.args > 1 or math.random(1, 3) >= 2 then
-    local rand_cat, rand_tip = parse_tip_args(cmd.fargs)
-    if type(rand_tip) == 'table' then
-      rand_tip = vim.fn.join(rand_tip, nl)
-    end
-    vim.notify(rand_tip, 2, {
-      title = rand_cat,
-      render = 'simple-notitle',
-      -- filetype = 'pandoc.markdown',
-      filetype = 'markdown',
-      timeout = 8000,
-    })
-  else
-    job
-      :new({
-        command = 'curl',
-        args = { url },
-        on_exit = function(j, exit_code)
-          local res = table.concat(j:result())
-          if exit_code ~= 0 then
-            res = 'Error fetching tip: ' .. res
-          end
-          vim.notify(res, 1, { render = 'simple-notitle' })
-        end,
-      })
-      :start()
+  local rand_cat, rand_tip = parse_tip_args(cmd.fargs)
+  if type(rand_tip) == 'table' then
+    rand_tip = vim.fn.join(rand_tip, nl)
   end
+  vim.notify(rand_tip, 2, {
+    title = rand_cat,
+    render = 'simple-notitle',
+    -- filetype = 'pandoc.markdown',
+    filetype = 'markdown',
+    timeout = 8000,
+  })
 end
 
 local complete = function(query, cmd)

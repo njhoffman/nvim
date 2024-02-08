@@ -25,34 +25,35 @@ end
 spider_map({ 'n', 'o', 'x' }, 'e', 'e')
 spider_map({ 'n', 'o', 'x' }, 'b', 'b')
 spider_map({ 'n', 'o', 'x' }, 'ge', 'ge')
+spider_map({ 'n', 'o', 'x' }, 'w', 'w')
 
 -- stylua: ignore
-if map_w_type == 1 then
-  -- map operator w to spider-e
-  spider_map({ 'o'},       'w', 'e', { desc = '󱇫 spider-w(e) motion' })
-  spider_map({ 'n', 'x' }, 'w', 'w')
-elseif map_w_type == 2 then
-  -- map operator w stays default, operator W to spider-w
-  spider_map({ 'o' },      'w', 'e', { desc = '󱇫 spider-w(e) motion' })
-  -- spider_map({ 'o' },      'W', 'w', { desc = '󱇫 spider-w(e) motion' })
-  spider_map('n', 'w', 'w')
-  -- spider_map('x', 'w', 'w')
-  -- spider_map('o', 'w', 'w')
-elseif map_w_type == 3 then
-  -- directly map cw/dw to ce/de
-  mapper.map(
-    'o',
-    'cw',
-    'ce',
-    { desc = '󱇫 spider-ce motion', plugin = 'nvim-spider', category = 'Motion', remap = true }
-  )
-  mapper.map(
-    'o',
-    'dw',
-    'de',
-    { desc = '󱇫 spider-de motion', plugin = 'nvim-spider', category = 'Motion', remap = true }
-  )
-else
-  -- default spider-w behavior (cw/dw deletes eol)
-  spider_map({ 'n', 'x', 'o' }, 'w', 'w')
-end
+-- if map_w_type == 1 then
+--   -- map operator w to spider-e
+--   spider_map({ 'o'},       'w', 'e', { desc = '󱇫 spider-w(e) motion' })
+--   spider_map({ 'n', 'x' }, 'w', 'w')
+-- elseif map_w_type == 2 then
+--   -- map operator w stays default, operator W to spider-w
+--   spider_map({ 'o' },      'w', 'e', { desc = '󱇫 spider-w(e) motion' })
+--   -- spider_map({ 'o' },      'W', 'w', { desc = '󱇫 spider-w(e) motion' })
+--   spider_map('n', 'w', 'w')
+--   -- spider_map('x', 'w', 'w')
+--   -- spider_map('o', 'w', 'w')
+-- elseif map_w_type == 3 then
+--   -- directly map cw/dw to ce/de
+--   mapper.map(
+--     'o',
+--     'cw',
+--     'ce',
+--     { desc = '󱇫 spider-ce motion', plugin = 'nvim-spider', category = 'Motion', remap = true }
+--   )
+--   mapper.map(
+--     'o',
+--     'dw',
+--     'de',
+--     { desc = '󱇫 spider-de motion', plugin = 'nvim-spider', category = 'Motion', remap = true }
+--   )
+-- else
+--   -- default spider-w behavior (cw/dw deletes eol)
+--   spider_map({ 'n', 'x', 'o' }, 'w', 'w')
+-- end

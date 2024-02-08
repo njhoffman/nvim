@@ -3,31 +3,35 @@ package.path = package.path .. ';' .. home .. '/.luarocks/share/lua/5.4/?.lua'
 package.path = package.path .. ';' .. home .. '/.luarocks/share/lua/5.4/?/init.lua'
 package.cpath = package.cpath .. ';' .. home .. '/.luarocks/lib/lua/5.4/?.so'
 
+-- TODO: send copy to both registers and tmux buffer
+local function copy(lines, _)
+  require('osc52').copy(table.concat(lines, '\n'))
+end
+
+local function paste()
+  return {
+    vim.fn.split(vim.fn.getreg(''), '\n'),
+    vim.fn.getregtype(''),
+  }
+end
+
 vim.g.start_time = vim.fn.reltime()
 -- let g:clipboard = {
 --    'name': 'myClipboard',
 --    'copy': {
 --       '+': ['tmux', 'load-buffer', '-'],
+--       ["+"] = "xclip -f -sel clip",
 --       '*': ['tmux', 'load-buffer', '-'],
+--      ['+'] = require('vim.clipboard.osc52').copy,
 --     },
 --    'paste': {
 --       '+': ['tmux', 'save-buffer', '-'],
 --       '*': ['tmux', 'save-buffer', '-'],
+--         ["*"] = "xclip -o -sel clip",
+--         ['*'] = require('vim.clipboard.osc52').paste,
 --    },
 --    'cache_enabled': 1,
 --  }
--- let g:clipboard = {
---      'name': 'myClipboard',
---      'copy': {
---         '+': {lines, regtype -> extend(g:, {'foo': [lines, regtype]}) },
---         '*': {lines, regtype -> extend(g:, {'foo': [lines, regtype]}) },
---       },
---      'paste': {
---         '+': {-> get(g:, 'foo', [])},
---         '*': {-> get(g:, 'foo', [])},
---      },
---    }
---
 vim.g.clipboard = {
   name = 'xsel',
   copy = {

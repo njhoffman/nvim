@@ -39,7 +39,7 @@ vim.g.vimade = {
     'Search',
     'SignColumn',
     -- 'Whitespace',
-    -- 'CursorLine',
+    'CursorLine',
     'CursorLineNr',
     -- 'Normal',
     -- "v2hexokinase",
@@ -49,7 +49,7 @@ vim.g.vimade = {
   enablebasegroups = 1,
   -- rowbufsize = 20, -- 15
   -- colbufsize = 20, -- 5
-  fadelevel = 0.60,
+  fadelevel = '0.60',
   signsretentionperiod = 2000,
   fadepriority = 100,
   enablesigns = 1,

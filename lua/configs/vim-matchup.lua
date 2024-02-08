@@ -1,4 +1,6 @@
 -- :NoMatchParen, :DoMatchParen, :MatchupShowTimes, :MatchupClearTimes
+
+-- TODO: map C-% to [% 
 vim.g.loaded_matchit = 1
 vim.g.disable_virtual_text = 1 -- disable virtual text highlighting virtual end of blocks for langs without markers
 
@@ -76,30 +78,8 @@ vim.g.matchup_matchparen_stopline = 800 -- (# of lines to search for highlightin
 -- Module matchparen
 -- To disable match highlighting at startup, use let g:matchup_matchparen_enabled = 0 in your vimrc. Note: vim's built-in plugin |pi_paren| plugin is also disabled. The variable g:loaded_matchparen has no effect on match-up.
 --
--- Customizing the highlighting colors
--- match-up uses the MatchParen highlighting group by default, which can be configured. For example,
---
--- :hi MatchParen ctermbg=blue guibg=lightblue cterm=italic gui=italic
--- You may want to put this inside a ColorScheme autocmd so it is preserved after colorscheme changes:
---
--- augroup matchup_matchparen_highlight
---   autocmd!
---   autocmd ColorScheme * hi MatchParen guifg=red
--- augroup END
--- You can also highlight words differently than parentheses using the MatchWord highlighting group. You might do this if you find the MatchParen style distracting for large blocks.
---
--- :hi MatchWord ctermfg=red guifg=blue cterm=underline gui=underline
--- There are also MatchParenCur and MatchWordCur which allow you to configure the highlight separately for the match under the cursor.
---
--- :hi MatchParenCur cterm=underline gui=underline
--- :hi MatchWordCur cterm=underline gui=underline
--- The matchparen module can be disabled on a per-buffer basis (there is no command for this). By default, when disabling highlighting for a particular buffer, the standard plugin matchparen will still be used for that buffer.
---
--- let b:matchup_matchparen_enabled = 0
--- default: 1
 --
 -- If this module is disabled on a particular buffer, match-up will still fall-back to the vim standard plugin matchparen, which will highlight matchpairs such as (), [], & {}. To disable this,
---
 -- let b:matchup_matchparen_fallback = 0
 -- default: 1
 --

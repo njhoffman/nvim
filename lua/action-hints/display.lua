@@ -33,7 +33,15 @@ local function set_virtual_text(bufnr, line, chunks)
   end
 
   -- Set the virtual text for the current line
-  vim.api.nvim_buf_set_virtual_text(bufnr, references_namespace, line, virtual_text_chunks, {})
+  local opts = {
+    virt_text = virtual_text_chunks,
+    virt_text_pos = 'eol', -- eol, right, inline
+    virt_text_hide = true,
+    hl_mode = 'combine', -- replace, combine,blend
+  }
+
+  -- vim.api.nvim_buf_set_virtual_text(bufnr, references_namespace, line, virtual_text_chunks, {})
+  vim.api.nvim_buf_set_extmark(bufnr, references_namespace, line, 0, opts)
   last_virtual_text_line = line
 end
 
@@ -81,15 +89,15 @@ local statusline = function(config)
 end
 
 local set_highlights = function(config)
-  if vim.o.termguicolors then
-    vim.api.nvim_command('highlight ActionHintsDefinition ctermfg=NONE guifg=' .. config.template.definition.color)
-    vim.api.nvim_command('highlight ActionHintsReferences ctermfg=NONE guifg=' .. config.template.references.color)
-    vim.api.nvim_command('highlight ActionHintsCodeActions ctermfg=NONE guifg=' .. config.template.codeactions.color)
-  else
-    vim.api.nvim_command('highlight ActionHintsDefinition guifg=NONE ctermfg=' .. config.template.definition.color)
-    vim.api.nvim_command('highlight ActionHintsReferences guifg=NONE ctermfg=' .. config.template.references.color)
-    vim.api.nvim_command('highlight ActionHintsCodeActions guifg=NONE ctermfg=' .. config.template.codeactions.color)
-  end
+  vim.api.nvim_command(
+    'highlight ActionHintsDefinition guibg=NONE ctermbg=NONE ctermfg=NONE guifg=' .. config.template.definition.color
+  )
+  vim.api.nvim_command(
+    'highlight ActionHintsReferences guibg=NONE ctermbg=NONE ctermfg=NONE guifg=' .. config.template.references.color
+  )
+  vim.api.nvim_command(
+    'highlight ActionHintsCodeActions guibg=NONE ctermbg=NONE ctermfg=NONE guifg=' .. config.template.codeactions.color
+  )
 end
 
 return {

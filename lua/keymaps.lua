@@ -104,14 +104,12 @@ map({ 'n', 'v' }, ';', ':', {
   category = 'Command',
   label = ' open cmdline',
   desc = ' open the command line',
-  nowait = true,
 })
 
 map({ 'n', 'v' }, ':', 'q:', {
   category = 'Command',
   label = ' open cmdwin',
   desc = ' open the command window',
-  nowait = true,
   silent = true,
 })
 
@@ -127,32 +125,44 @@ vmap({ 'c' }, '<C-T>', {
   category = 'Command',
   label = ' open cmdwin',
   desc = ' open the command window',
+  silent = false,
 })
 
 map('c', '<M-b>', '<C-T><Esc>', {
   category = 'Command',
   label = ' open cmdwin normal',
   desc = ' open command window from the command line in normal mode',
+  silent = false,
 })
 
 map('c', '<M-f>', '<C-T><Esc>', {
   category = 'Command',
   label = ' open cmdwin normal',
   desc = ' open command window from the command line in normal mode',
+  silent = false,
 })
 
 map('c', '<c-s>', '<cmd>silent! w<cr><esc>', {
   category = 'Command',
   label = ' save cmdline',
   desc = ' save in command line',
-  silent = true,
+  silent = false,
 })
 
-map('c', '<c-y>', '<c-r>*', {
+map('c', '<C-Y>', '<C-\\>ey', {
   category = 'Command',
   label = ' yank cmdline',
   desc = ' yank from command line',
+  remap = true,
 })
+
+-- Map 'j' and 'k' to behave like 'gj' and 'gk'
+vim.cmd([[
+  nnoremap j gj
+  nnoremap k gk
+  vnoremap j gj
+  vnoremap k gk
+]])
 
 -- TODO: vmap C-u C-w
 -- TODO: make whichkey screen for cmdline
@@ -162,7 +172,7 @@ map('c', '<C-d>', '<cmd>norm x<cr>', {
   desc = ' delete character to the right cmdline',
 })
 
-map('c', '<M-d>', '<cmd>norm d$<cr>', {
+map('c', '<M-d>', '<cmd>norm de<cr>', {
   category = 'Command',
   label = ' delete to eol',
   desc = ' delete to end of line',
@@ -196,6 +206,12 @@ map('c', '<C-g>', '<C-r>%', {
   category = 'Command',
   label = ' insert filename cmdline',
   desc = ' insert filename into the command line',
+})
+
+map('c', '<M-^>', '<cmd>lua require("commands.cmdline").toggle()<cr>', {
+  category = 'Command',
+  label = ' toggle cmdline',
+  desc = ' toggle cmdline depending on command mode',
 })
 
 --------------------------------------------------------------------------------------------------
@@ -523,11 +539,10 @@ local opts = { noremap = true, silent = true, desc = ' search' }
 -- --   ﰍ  
 -- local icon = ' '
 
-map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
-map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
-
-map('n', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
-map('n', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
+-- map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
+-- map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
+-- map('n', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
+-- map('n', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
 map('n', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], opts)
 map('n', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], opts)
 
@@ -569,7 +584,7 @@ map('i', '<C-d>', '<cmd>norm x<cr>', { -- <C-o> + dl, norm lxh
   desc = 'delete next char',
 })
 
-map('i', '<M-d>', '<cmd>norm d$<cr>', {
+map('i', '<M-d>', '<cmd>norm de<cr>', {
   category = 'Motion',
   desc = 'delete to end of line',
 })
@@ -580,6 +595,7 @@ map('n', 'D', 'd$', {
   desc = 'delete to end of line',
 })
 
+
 map('n', '<c-b>', '<Plug>(SmoothieBackwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
@@ -588,15 +604,7 @@ map('n', '<c-b>', '<Plug>(SmoothieBackwards)', {
   noremap = false,
 })
 
-map('n', '<PageUp>', '<Plug>(SmoothieBackwards)', {
-  category = 'Motion',
-  plugin = 'vim-smoothie',
-  label = ' scroll backwards',
-  desc = ' smoothie page-up scroll backwards',
-  noremap = false,
-})
-
-map('n', '<c-f>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
+map('n', '<c-f>', '<Plug>(SmoothieForwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
   label = ' scroll forwards',
@@ -604,13 +612,23 @@ map('n', '<c-f>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
   noremap = false,
 })
 
-map('n', '<PageDown>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
+map('n', '<M-f>', '<Plug>(SmoothieDownwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
   label = ' scroll forwards',
-  desc = ' smoothie page-down scroll forwards',
+  desc = ' smoothie scroll forwards',
   noremap = false,
 })
+
+map('n', '<M-b>', '<Plug>(SmoothieUpwards)', {
+  category = 'Motion',
+  plugin = 'vim-smoothie',
+  label = ' scroll forwards',
+  desc = ' smoothie scroll forwards',
+  noremap = false,
+})
+
+
 
 map('n', '<space>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
   category = 'Motion',
@@ -640,6 +658,12 @@ map('n', 'gp', '`[v`]', {
   category = 'Motion',
   label = ' select last visual',
   desc = ' select last visual block afrom bracket marks',
+})
+
+map('n', 'v', '<cmd>normal! v<cr>', {
+  category = 'Motion',
+  label = 'visual mode',
+  desc = 'enter visual mode and select 1 character',
 })
 
 vmap('n', 'gi', {
@@ -680,6 +704,7 @@ map({ 'n', 'v' }, "<M-'>", '<cmd>HopWord<cr>', {
   desc = ' hop to word',
 })
 
+-- nnoremap <expr> gV '`[' . strpart(getregtype(), 0, 1) . '`]'
 map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
   category = 'Motion',
   label = ' select changed text',
@@ -830,16 +855,28 @@ map('i', '<M-d>', '<cmd>norm d$<cr>', {
 
 --------------------------------------------------------------------------------------------------
 -- UI --------------------------------------------------------------------------------------------
+map('n', '', '<cmd>noh<cr> | <cmd>lua require("flash.util").exit()<cr>', {
+  category = 'UI',
+  noremap = false,
+  desc = 'remove highlights and refresh',
+})
 
-map('n', '_', '<cmd>noh<cr> | <cmd>nohlsearch<cr>', {
+map('n', '_', '<cmd>noh<cr> | <cmd>lua require("flash.util").exit()<cr>', {
   category = 'UI',
   desc = 'remove highlights and refresh',
 })
 
+-- map(
+--   'n',
+--   '<C-c>',
+--   '<cmd>noh<cr> | <cmd>ClosePopups<cr> | <cmd>LspRestart<cr>',
+--   { category = 'UI', desc = 'remove hls, close popups and refresh' }
+-- )
+
 map(
   'n',
   '<M-c>',
-  '<cmd>noh<cr> | <cmd>nohlsearch<cr> | <cmd>ClosePopups<cr> | <cmd>LspRestart<cr>',
+  '<cmd>noh<cr> | <cmd>ClosePopups<cr> | <cmd>LspRestart<cr> | <cmd>lua require("flash.util").exit()<cr>',
   { category = 'UI', desc = 'remove hls, close popups and refresh' }
 )
 
@@ -854,6 +891,43 @@ map('n', '<F2>', '<cmd>WhichKey<cr>', {
   category = 'UI',
   desc = '  toggle whichkey'
 })
+
+map('i', '<F2>', '<cmd>WhichKey "" i<cr>', {
+  plugin = 'which-key.nvim',
+  category = 'UI',
+  desc = '  toggle whichkey'
+})
+
+map('x', '<F2>', '<cmd>WhichKey "" x<cr>', {
+  plugin = 'which-key.nvim',
+  category = 'UI',
+  desc = '  toggle whichkey'
+})
+
+map('s', '<F2>', '<cmd>WhichKey "" s<cr>', {
+  plugin = 'which-key.nvim',
+  category = 'UI',
+  desc = '  toggle whichkey'
+})
+
+map('c', '<F2>', '<cmd>WhichKey "" c<cr>', {
+  plugin = 'which-key.nvim',
+  category = 'UI',
+  desc = '  toggle whichkey'
+})
+
+map('t', '<F2>', '<cmd>WhichKey "" c<cr>', {
+  plugin = 'which-key.nvim',
+  category = 'UI',
+  desc = '  toggle whichkey'
+})
+
+map('o', '<F2>', '<cmd>WhichKey "" o<cr>', {
+  plugin = 'which-key.nvim',
+  category = 'UI',
+  desc = '  toggle whichkey'
+})
+
 -- ctrl+shift F2
 map('n', '<F38>', '<Leader>Wk', {
   plugin = 'wf.nvim',
@@ -909,11 +983,11 @@ map('n', '<F18>', '<cmd>InspectTree<cr>', {
 --------------------------------------------------------------------------------------------------
 -- QUICKFIX --------------------------------------------------------------------------------------
 
-map('n', '<C-q>', '<cmd>lua require"qf".toggle("c", true)<CR>', {
-  category = 'Quickfix',
-  label = '  togggle quickfix',
-  desc = '  togggle quickfix window',
-})
+-- map('n', '<C-q>', '<cmd>lua require"qf".toggle("c", true)<CR>', {
+--   category = 'Quickfix',
+--   label = '  togggle quickfix',
+--   desc = '  togggle quickfix window',
+-- })
 -- nnoremap <leader>j <cmd>lua require'qf'.below('l')<CR> " Go to next location list entry from cursor
 -- nnoremap <leader>J <cmd>lua require'qf'.below('c')<CR> " Go to next quickfix entry from cursor
 -- nnoremap ]q <cmd>lua require'qf'.below('visible')<CR>
@@ -1121,14 +1195,21 @@ map('n', '<leader>cl3', '<cmd>set conceallevel=3<cr>', {
 --------------------------------------------------------------------------------------------------
 -- OTHER UI ---------------------------------------------------------------------------------------
 
-map('n', '<M-y>', '<cmd>ChatGPT<cr>', {
+map('n', '<M-C-Y>', '<cmd>ChatGPT<cr>', {
   category = 'Other UI',
   plugin = 'neo-ai',
   label = 'toggle chatgpt',
   desc = 'toggle chatgpt',
 })
 --
-map('n', '<C-y>', '<cmd>NeoAI<cr>', {
+map('n', '<C-Y>', '<cmd>NeoAI<cr>', {
+  category = 'Other UI',
+  plugin = 'neo-ai',
+  label = 'toggle the side panel of neo ai',
+  desc = 'toggle the side panel of neo ai',
+})
+
+map('n', '<M-y>', '<cmd>NeoAIToggle<cr>', {
   category = 'Other UI',
   plugin = 'neo-ai',
   label = 'toggle the side panel of neo ai',
@@ -1346,8 +1427,7 @@ map('n', '<leader>gR', '<cmd>Gitsigns reset_buffer<cr>', {
 -- FORMAT ----------------------------------------------------------------------------------------
 
 -- Delete trailing stuff
--- (wrapping in normal avoids temporarily scrolling to the side)
-map('n', 'X', '<cmd>normal!mz$x`z<CR>', { desc = '󱎘 Delete char at EoL' })
+map('n', '<leader>d', '<cmd>normal! mz$x`z<CR>', { desc = '󱎘 Delete char at EoL' })
 
 vmap('v', 'U', {
   category = 'Format',
@@ -1595,6 +1675,9 @@ end, { desc = ' Open new scope' })
 --   desc = "display filename in notification",
 --   label = "notify filename",
 -- })
+
+-- flit.nvim can do things like `ds`, `cs`, `ys` which allow to pre-visualize the text-object on which you're going to operate.
+-- This is the vim-way, I think.
 
 local map_textobjects = function()
   local textobjRemaps = {

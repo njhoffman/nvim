@@ -28,6 +28,13 @@ local defaults = {
 require('substitute').setup({
   on_substitute = require('yanky.integration').substitute(),
   range = { prefix = 'S' },
+  yank_substituted_text = false,
+  highlight_substituted_text = {
+    timer = 400,
+  },
+  exchange = {
+    preserve_cursor_position = false,
+  },
 })
 
 local function setup_keymaps()
@@ -36,8 +43,13 @@ local function setup_keymaps()
   local subex = require('substitute.exchange')
   local map = vim.keymap.set
 
+  local subop = function(...)
+    require('reactive').set_opfunc('S')
+    sub.operator(...)
+  end
+
   -- stylua: ignore
-  map('n', 'S',  sub.operator, { noremap = true, desc = 'substitute operator' })
+  map('n', 'S', subop, { noremap = true, desc = 'substitute operator' })
   map('n', 'S^', sub.line, { noremap = true, desc = 'substitute line' })
   map('n', 'S$', sub.eol, { noremap = true, desc = 'substitute eol' })
   map('x', 'S', sub.visual, { noremap = true, desc = 'substitute visual' })
@@ -45,14 +57,15 @@ local function setup_keymaps()
   map('x', 'P', sub.visual, { noremap = true })
   map('n', '<leader>sy', sub.line, { noremap = true, desc = 'substitute line' })
 
+  -- map('n', 'Sxc', subex.cancel, { noremap = true })
+  -- map('n', 'Sx', subex.operator, { noremap = true })
+  -- map('n', 'Sxx', subex.line, { noremap = true })
   map('n', 'cx', subex.operator, { noremap = true, desc = 'substitute exchange operator' })
   map('x', 'cx', subex.visual, { noremap = true, desc = 'substitute exchange visual' })
   map('n', 'X', subex.operator, { noremap = true, desc = 'substitute exchange operator' })
   map('x', 'X', subex.visual, { noremap = true, desc = 'substitute exchange visual' })
   map('n', 'cxc', subex.cancel, { noremap = true, desc = 'substitute exchange cancel' })
-  map('n', 'Sxc', subex.cancel, { noremap = true })
-  map('n', 'Sx', subex.operator, { noremap = true })
-  map('n', 'Sxx', subex.line, { noremap = true })
+  map('n', 'cxl', subex.line, { noremap = true, desc = 'substitute exchange line' })
 
   map('n', '<leader>s', function()
     subrange.operator({ prefix = 'S' })

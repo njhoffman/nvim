@@ -44,9 +44,9 @@ vim.api.nvim_create_user_command('SplitJoin', split_join, {})
 
 local split_mapping = function()
   -- TODO: if not toggleable node (node identifier is not configured) go to first parenthesis
-  vim.keymap.set('n', 'gs', '<cmd>SplitToggle<cr>', { buffer = true, desc = 'split toggle cursor' })
-  vim.keymap.set('n', 'gJ', '<cmd>SplitJoin<cr>', { buffer = true, desc = 'split join cursor' })
-  vim.keymap.set('n', 'gS', '<cmd>SplitSplit<cr>', { buffer = true, desc = 'split split cursor' })
+  vim.keymap.set('n', 'gs', '<cmd>SplitToggle<cr>', { buffer = false, desc = 'split toggle cursor' })
+  vim.keymap.set('n', 'gJ', '<cmd>SplitJoin<cr>', { buffer = false, desc = 'split join cursor' })
+  vim.keymap.set('n', 'gS', '<cmd>SplitSplit<cr>', { buffer = false, desc = 'split split cursor' })
   -- TODO: make hover information about node format
   -- utils.check_ts_node()
 end

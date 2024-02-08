@@ -248,44 +248,60 @@ local file_pattern = {
 --   command = 'checktime',
 -- })
 
-local get_last_char = function(chars, key)
+local get_last_char = function(chars, opts)
   return function()
+    opts = opts or {}
     chars = type(chars) == 'string' and { chars } or (type(chars) == 'table' and chars) or {}
-    key = key or (type(chars) == 'table' and chars[1] or chars)
+    local key = type(chars) == 'table' and chars[1] or chars
     local cursor = vim.api.nvim_win_get_cursor(0)
-    local current_line = vim.fn.trim(vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1] or '')
+    local current_line = vim.fn.trim(vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1]) or ''
+    local mode = opts.mode or (vim.tbl_isempty(chars) and 'strip') or 'toggle'
+
     local last_character = current_line and current_line:sub(-1) or ''
+    vim.dbglog(mode, last_character)
     local to_remove = ''
-    if vim.fn.empty(chars) and vim.tbl_isempty(chars) and vim.fn.empty(key) then
-      to_remove = last_character
-    else
+    local to_append = ''
+
+    if mode == 'toggle' then
+      to_append = key
       for _, char in ipairs(chars) do
         if char == last_character then
           to_remove = char
+          to_append = ''
         end
       end
+    elseif mode == 'append' then
+      to_append = vim.fn.nr2char(vim.fn.getchar())
+    elseif mode == 'strip' then
+      to_remove = last_character
+      vim.dbglog('remove', to_remove)
+      to_append = ''
     end
 
     if to_remove ~= '' then
-      current_line = current_line and current_line:sub(1, -2) or ''
-    else
-      current_line = current_line .. key
+      -- remove last matching of to_remove
+      current_line = current_line:sub(1, #current_line - #to_remove)
     end
+    current_line = current_line .. to_append
     vim.api.nvim_buf_set_lines(0, cursor[1] - 1, cursor[1], true, { current_line })
-    vim.cmd.normal('0==')
+    vim.cmd('silent! normal "0=="')
     vim.api.nvim_win_set_cursor(0, { cursor[1], cursor[2] })
   end
 end
 
-local trailChars = { ',', ';', ')', "'", '"', '|', '\\', '{', '.', '}' }
-for _, key in ipairs(trailChars) do
-  vim.keymap.set('n', '<leader>a' .. key, get_last_char(key), {
-    desc = 'ﲖ toggle ' .. key .. ' end character',
-  })
-end
+local trail_chars = { ',', ';', ')', "'", '"', '|', '\\', '.', '}' }
 
-vim.keymap.set('n', ',aa', get_last_char({ ',', ';' }), { desc = 'ﲖ toggle ,; end characters' })
-vim.keymap.set('n', ',A', get_last_char(), { desc = 'ﲖ strip end characters' })
+-- strip last character
+vim.keymap.set('n', '<leader>$', get_last_char(), { desc = 'ﲖ strip end characters' })
+-- append provided end character
+vim.keymap.set('n', '<leader>A', get_last_char(_, { mode = 'append' }), { desc = 'ﲖ append end character' })
+
+-- toggle provided end character
+-- vim.keymap.set('n', '<leader>a', get_last_char(_, { mode = 'toggle' }), {
+--   desc = 'ﲖ toggle ' .. char .. ' end character',
+-- })
+-- toggle common end characters
+vim.keymap.set('n', '<leader>aa', get_last_char(trail_chars), { desc = 'ﲖ toggle end characters: ,;)"|\\.}' })
 
 -- local all_filetypes = augroup('AllFileTypesLocalOptions')
 -- autocmd({ 'FileType' }, {

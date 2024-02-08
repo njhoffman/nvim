@@ -13,6 +13,7 @@ local icons = {
   file      = ' 󰝰  ',
   history   = ' 󰋚  ',
   git       = ' 󰊢  ',
+  help      = '   ',
   keymap    = '   ',
   misc_1    = '   ',
   palette   = '   ',
@@ -28,6 +29,7 @@ local pickers = {
     prompt_prefix = icons.misc_1,
     layout_config = { height = 15 },
     entry_maker = function(entry)
+      vim.dbglog('entry', entry)
       local displayer = entry_display.create({
         separator = ' ',
         items = {
@@ -67,6 +69,13 @@ local pickers = {
     mappings = mappings.file,
     find_command = commands.rg,
     previewer = c_previewers.buffer_cat(),
+  },
+  help_tags = {
+    debounce = 100,
+    prompt_prefix = icons.help,
+    -- layout_config = { height = 15 },
+    mappings = mappings.help,
+    -- previewer = c_previewers.buffer_cat(),
   },
   fd = {
     debounce = 100,
@@ -123,13 +132,13 @@ local pickers = {
   keymaps = {
     debounce = 100,
     prompt_prefix = icons.keymap,
-    entry_maker = require('configs.telescope.entry_makers').gen_from_keymaps({}),
+    entry_maker = require('configs.telescope.entry_makers.keymaps')({}),
     results_title = '@buf !sil *nor +expr  nowait',
     show_plug = false,
-    modes = { 'n', 'i', 'c', 'x', 'o', 't' },
-    lhs_filter = function(lhs)
-      return not lhs:find('Þ')
-    end, -- remove which-key mappings
+    modes = { 'n', 'i', 'c', 'x', 'o', 't', 's', 'l' },
+    -- lhs_filter = function(lhs)
+    --   return not lhs:find('Þ')
+    -- end, -- remove which-key mappings
     -- show_plug = true,
     -- only_buf = false
   },

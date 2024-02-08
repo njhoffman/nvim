@@ -3,7 +3,12 @@ local lz_syn = false
 
 local plugins = {
   { 'stevearc/dressing.nvim', dependencies = 'MunifTanjim/nui.nvim', event = 'VeryLazy' },
-  { '3rd/image.nvim', enabled = false, event = 'VeryLazy', dependencies = 'nvim-treesitter' },
+  {
+    '3rd/image.nvim',
+    enabled = false,
+    event = 'VeryLazy',
+    dependencies = 'nvim-treesitter',
+  },
   { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-web-devicons' },
   { 'tamton-aquib/zone.nvim', enabled = false },
   -- using lazy.nvim
@@ -19,12 +24,49 @@ local plugins = {
     event = 'VimEnter',
     dependencies = 'nvim-web-devicons',
   },
-  { 'declancm/cinnamon.nvim' },
+  { 'declancm/cinnamon.nvim', event = 'VeryLazy' },
+  {
+    'karb94/neoscroll.nvim',
+    config = function()
+      require('neoscroll').setup({
+        -- All these keys will be mapped to their corresponding default scrolling animation
+        -- mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>', '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
+        mappings = {},
+        hide_cursor = false, -- Hide cursor while scrolling
+        stop_eof = true, -- Stop at <EOF> when scrolling downwards
+        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+        easing_function = 'quartic', -- Default easing function
+        -- quadratic, cubic, quartic, quintic, circular, sine
+        pre_hook = nil, -- Function to run before the scrolling animation starts
+        post_hook = nil, -- Function to run after the scrolling animation ends
+        performance_mode = false, -- Disable "Performance Mode" on all buffers.
+      })
+      local t = {}
+      t['<PageUp>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '300', [['sine']] } }
+      t['<PageDown>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '300', [['sine']] } }
+      require('neoscroll.config').set_mappings(t)
+    end,
+  },
   {
     'rasulomaroff/reactive.nvim',
     enabled = true,
     lazy = false,
   },
+  -- {
+  --   'RutaTang/quicknote.nvim',
+  --   event = 'VeryLazy',
+  --   dependencies = { 'nvim-lua/plenary.nvim' },
+  --   config = function()
+  --     require('quicknote').setup({
+  --       mode = 'resident', -- "portable" | "resident"
+  --       sign = '', --                     
+  --       filetype = 'md',
+  --       git_branch_recognizable = false,
+  --     })
+  --     vim.api.nvim_set_keymap('n', '<leader>n', "<cmd>:lua require('quicknote').NewNoteAtCurrentLine()<cr>", {})
+  --   end,
+  -- },
   {
     'LintaoAmons/scratch.nvim',
     event = 'VeryLazy',
@@ -52,7 +94,11 @@ local plugins = {
   },
   { 'Tyler-Barham/floating-help.nvim', cmd = 'FloatHelp' },
   { 'tris203/hawtkeys.nvim', event = { 'VeryLazy' } },
-  -- { 'echasnovski/mini.clue', event = { 'VeryLazy' } },
+  {
+    'echasnovski/mini.clue',
+    enabled = false,
+    event = { 'VeryLazy' },
+  },
   {
     'nmac427/guess-indent.nvim',
     event = 'BufReadPre',
@@ -252,7 +298,7 @@ local plugins = {
       })
       -- vim.keymap.set('n', '>', stayinplace.shift_right, { noremap = true, expr = true, noremap = true })
       -- vim.keymap.set('n', '<', stayinplace.shift_left, { noremap = true, expr = true, noremap = true })
-      vim.keymap.set('n', '=', stayinplace.filter, { noremap = true, expr = true, noremap = true })
+      vim.keymap.set('n', '=', stayinplace.filter, { noremap = true, expr = true })
       vim.keymap.set('n', '>>', stayinplace.shift_right_line, { noremap = true })
       vim.keymap.set('n', '<<', stayinplace.shift_left_line, { noremap = true })
       vim.keymap.set('n', '==', stayinplace.filter_line, { noremap = true })
@@ -331,48 +377,39 @@ local plugins = {
     'psliwka/vim-smoothie',
     commit = '10fd0aa',
     init = function()
-      vim.g.smoothie_enabled = false
+      vim.g.smoothie_enabled = true
       vim.g.smoothie_break_on_reverse = 0
       vim.g.smoothie_enabled = 1
       vim.g.smoothie_no_default_mappings = 1
       vim.g.smoothie_experimental_mappings = 0
-      vim.g.smoothie_update_interval = 20
-      vim.g.smoothie_speed_constant_factor = 6
-      vim.g.smoothie_speed_linear_factor = 8
-      vim.g.smoothie_speed_exponentiation_factor = 0.9
+      vim.g.smoothie_update_interval = 20 -- 20
+      vim.g.smoothie_speed_constant_factor = 6 -- 10
+      vim.g.smoothie_speed_linear_factor = 8 -- 10
+      vim.g.smoothie_speed_exponentiation_factor = 0.9 -- 0.9
       vim.g.redraw_at_finish = 1
       -- vim.g.smoothie_minimum_speed = 0.6
       vim.g.smoothie_break_on_reverse = 0
     end,
   }, -- f2aaab1
   -- movement highlighters
+  -- https://github.com/tzachar/local-highlight.nvim
   -- https://github.com/jjshoots/betterf.nvim/tree/main
-  { 'phaazon/hop.nvim', event = { 'BufReadPost', 'BufNewFile' } },
+  {
+    'smoka7/hop.nvim',
+    event = { 'BufReadPost', 'BufNewFile' },
+  },
   {
     'folke/flash.nvim',
     event = 'VeryLazy',
-    opts = {},
     -- stylua: ignore
-    -- keys = {
-    --   { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-    --   { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-    --   { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-    --   { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-    --   { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-    -- },
+    keys = {
+      { "<leader>/", mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "<leader>?", mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      { "r",         mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "R",         mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<M-S>",     mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+    },
   },
-  -- {
-  --   'ggandor/flit.nvim',
-  --   dependencies = { 'ggandor/leap.nvim', 'tpope/vim-repeat' },
-  --   event = 'VeryLazy',
-  --   -- keys = function()
-  --   --   local ret = {}
-  --   --   for _, key in ipairs({ "f", "F", "t", "T" }) do
-  --   --     ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
-  --   --   end
-  --   --   return ret
-  --   -- end,
-  -- },
   -- cursor
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
   { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
@@ -406,7 +443,8 @@ local plugins = {
   {
     'altermo/ultimate-autopair.nvim',
     event = { 'InsertEnter' },
-    branch = 'v0.6',
+    -- branch = 'v0.6',
+    branch = 'development',
   },
   { 'gbprod/substitute.nvim', event = { 'VeryLazy' } },
   -- textobjects
@@ -414,24 +452,42 @@ local plugins = {
   { 'chrisgrieser/nvim-various-textobjs', event = { 'VeryLazy' } },
   -- split/join
   { 'echasnovski/mini.splitjoin', event = { 'VeryLazy' } },
-  { 'Wansmer/treesj', dir = '~/git/treesj', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
+  {
+    'Wansmer/treesj',
+    dir = '~/git/treesj',
+    event = { 'VeryLazy' },
+    dependencies = { 'nvim-treesitter' },
+  },
   -- surround
   { 'echasnovski/mini.surround', event = { 'VeryLazy' } },
   -- traversal/swapping
   { 'mizlan/iswap.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'ziontee113/SelectEase', event = 'VeryLazy' },
-  { 'chrisgrieser/nvim-spider', event = 'VeryLazy', commit = 'e0eeac5480704cc3fdd5bdadd4901ca5409d7838' },
+  {
+    'chrisgrieser/nvim-spider',
+    event = 'VeryLazy',
+    commit = 'e0eeac5480704cc3fdd5bdadd4901ca5409d7838',
+  },
   { 'echasnovski/mini.move', event = 'VeryLazy' },
   -- alignment
   { 'echasnovski/mini.align', event = 'VeryLazy' },
-  { 'dhruvasagar/vim-table-mode', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
+  {
+    'dhruvasagar/vim-table-mode',
+    event = 'VeryLazy',
+    ft = { 'markdown', 'pandoc', 'vimwiki' },
+  },
   { 'echasnovski/mini.doc', version = false, event = 'VeryLazy' },
   { 'echasnovski/mini.bracketed', event = 'VeryLazy' },
-  { 'jkramer/vim-checkbox', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
+  {
+    'jkramer/vim-checkbox',
+    event = 'VeryLazy',
+    ft = { 'markdown', 'pandoc', 'vimwiki' },
+  },
   -- formatting
   { 'johmsalas/text-case.nvim', event = 'VeryLazy' },
   {
     'echasnovski/mini.comment',
+    -- keep this for operator functions (dgc, dgb, cgc)
     version = false,
     event = 'VeryLazy',
     opts = {
@@ -442,11 +498,20 @@ local plugins = {
       },
     },
   },
-  -- { 'numToStr/Comment.nvim', event = 'VeryLazy' },
+  { 'numToStr/Comment.nvim', event = 'VeryLazy' },
   { 'andrewferrier/debugprint.nvim', event = 'VeryLazy' },
-  { 'ecthelionvi/NeoComposer.nvim', event = 'VeryLazy', dependencies = { 'kkharji/sqlite.lua', 'telescope.nvim' } },
+  -- https://github.com/kr40/nvim-macros
+  {
+    'ecthelionvi/NeoComposer.nvim',
+    event = 'VeryLazy',
+    dependencies = { 'kkharji/sqlite.lua', 'telescope.nvim' },
+  },
   { 'tpope/vim-repeat', event = 'VeryLazy' },
-  { 'smjonas/live-command.nvim', dependencies = { 'tpope/vim-abolish', 'rickhowe/diffchar.vim' }, event = 'VeryLazy' },
+  {
+    'smjonas/live-command.nvim',
+    dependencies = { 'tpope/vim-abolish', 'rickhowe/diffchar.vim' },
+    event = 'VeryLazy',
+  },
   { 'Konfekt/vim-alias', event = 'VeryLazy' },
   --
   -- pickers
@@ -571,7 +636,10 @@ local plugins = {
       -- { "rmagatti/session-lens", dependencies = "rmagatti/auto-session" },
       { 'PhilippFeO/telescope-filelinks.nvim' },
       { 'octarect/telescope-menu.nvim' },
-      { 'paopaol/telescope-git-diffs.nvim', dependencies = { 'nvim-lua/plenary.nvim', 'sindrets/diffview.nvim' } },
+      {
+        'paopaol/telescope-git-diffs.nvim',
+        dependencies = { 'nvim-lua/plenary.nvim', 'sindrets/diffview.nvim' },
+      },
       {
         'luckasRanarison/nvim-devdocs',
         enabled = false,
@@ -630,8 +698,15 @@ local plugins = {
   --
   { 'aserowy/tmux.nvim', event = 'VeryLazy' },
   { 'jbyuki/quickmath.nvim', cmd = 'Quickmath' },
-  { 'jameshiew/nvim-magic', dependencies = { 'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim', event = 'VeryLazy' } },
-  { 'michaelb/sniprun', build = 'bash install.sh', cmd = { 'SnipRun', 'SnipInfo' } },
+  {
+    'jameshiew/nvim-magic',
+    dependencies = { 'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim', event = 'VeryLazy' },
+  },
+  {
+    'michaelb/sniprun',
+    build = 'bash install.sh',
+    cmd = { 'SnipRun', 'SnipInfo' },
+  },
   { 'milisims/nvim-luaref', event = 'VeryLazy' },
   { 'windwp/nvim-spectre', cmd = 'Spectre' },
   { 'WaylonWalker/Telegraph.nvim', cmd = 'Telegraph' },
@@ -709,18 +784,26 @@ local plugins = {
   { 'cbochs/grapple.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
   { 'kelly-lin/ranger.nvim', lazy = true },
   { 'lambdalisue/suda.vim', event = 'VeryLazy' },
-  { 'skywind3000/asynctasks.vim', event = 'VeryLazy', dependencies = 'skywind3000/asyncrun.vim' },
-  { 'aymericbeaumet/vim-symlink', event = 'VeryLazy', dependencies = 'moll/vim-bbye' },
+  {
+    'skywind3000/asynctasks.vim',
+    event = 'VeryLazy',
+    dependencies = 'skywind3000/asyncrun.vim',
+  },
+  {
+    'aymericbeaumet/vim-symlink',
+    event = 'VeryLazy',
+    dependencies = 'moll/vim-bbye',
+  },
   { 't-troebst/perfanno.nvim', cmd = { 'PerfLoadFlat', 'PerfLoadCallGraph', 'PerfLoadFlameGraph' } },
   {
     'chrisgrieser/nvim-genghis',
     dependencies = { 'stevearc/dressing.nvim', 'nvim-cmp', 'hrsh7th/cmp-omni' },
     keys = {
-			-- stylua: ignore start
-			-- {"<C-p>", function() require("genghis").copyFilepath() end, desc = " Copy filepath" },
-			-- {"<C-n>", function() require("genghis").copyFilename() end, desc = " Copy filename" },
-			-- {"<C-r>", function() require("genghis").renameFile() end, desc = " Rename file" },
-			{"<leader>fx", function() require("genghis").chmodx() end, desc = " chmod +x" },
+      -- stylua: ignore start
+      -- {"<C-p>", function() require("genghis").copyFilepath() end, desc = " Copy filepath" },
+      -- {"<C-n>", function() require("genghis").copyFilename() end, desc = " Copy filename" },
+      -- {"<C-r>", function() require("genghis").renameFile() end, desc = " Rename file" },
+      { "<leader>fx", function() require("genghis").chmodx() end, desc = " chmod +x" },
       -- {"<C-d>", function() require("genghis").duplicateFile() end, desc = " Duplicate file" },
       -- {"<D-BS>", function() require("genghis").trashFile() end, desc = " Move file to trash" },
       -- {"<D-n>", function() require("genghis").createNewFile() end, desc = " Create new file" },
@@ -740,7 +823,11 @@ local plugins = {
     },
   },
   { 'echasnovski/mini.test', lazy = true },
-  { 'gennaro-tedesco/nvim-jqx', lazy = true, cmd = { 'JqxList', 'JqxQuery' } },
+  {
+    'gennaro-tedesco/nvim-jqx',
+    lazy = true,
+    cmd = { 'JqxList', 'JqxQuery' },
+  },
   { 'npxbr/glow.nvim', cmd = 'Glow' },
   { 'NTBBloodbath/rest.nvim', cmd = { 'RESTRunLast', 'RESTRun', 'RESTPreview' } },
   { 'dbeniamine/cheat.sh-vim', cmd = 'Cheat' },
@@ -748,7 +835,11 @@ local plugins = {
   { 'sidebar-nvim/sidebar.nvim', cmd = { 'SidebarNvimOpen', 'SidebarNvimToggle' } },
   { 'smoka7/hydra.nvim', event = 'VeryLazy' }, -- anuvyklack
   { 'NvChad/nvim-colorizer.lua', event = { 'BufReadPost', 'BufNewFile' } },
-  { 'nvim-colortils/colortils.nvim', cmd = 'Colortils', event = { 'BufReadPost', 'BufNewFile' } },
+  {
+    'nvim-colortils/colortils.nvim',
+    cmd = 'Colortils',
+    event = { 'BufReadPost', 'BufNewFile' },
+  },
   {
     'kawre/leetcode.nvim',
     build = ':TSUpdate html',
@@ -765,7 +856,11 @@ local plugins = {
       arg = 'leetcode.nvim',
     },
   },
-  { 'xeluxee/competitest.nvim', cmd = 'CompetiTestRun', dependencies = 'MunifTanjim/nui.nvim' },
+  {
+    'xeluxee/competitest.nvim',
+    cmd = 'CompetiTestRun',
+    dependencies = 'MunifTanjim/nui.nvim',
+  },
   {
     -- A lua profiler for neovim that is discovered thanks to https://www.reddit.com/r/neovim/comments/xicxox/comment/ip2hprd
     'stevearc/profile.nvim',
@@ -964,6 +1059,7 @@ local plugins = {
   { 'vuki656/package-info.nvim', dependencies = 'MunifTanjim/nui.nvim', ft = 'json' },
   { 'serenevoid/kiwi.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
   { 'herringtondarkholme/yats.vim', ft = 'typescript', lazy = lz_syn },
+  -- https://github.com/AndrewRadev/inline_edit.vim
   { 'AckslD/nvim-FeMaco.lua', ft = { 'markdown', 'pandoc' } },
   { 'njhoffman/vim-liquid', ft = 'liquid', lazy = lz_syn },
   -- { 'moll/vim-node', ft = { 'javascript' }, lazy = lz_syn },
@@ -998,11 +1094,25 @@ local plugins = {
   { 'tikhomirov/vim-glsl', ft = 'glsl', lazy = lz_syn },
   { 'vim-utils/vim-man', ft = 'man', lazy = lz_syn },
   { 'vimwiki/vimwiki', ft = { 'markdown', 'vimwiki' }, lazy = lz_syn },
-  { 'mtdl9/vim-log-highlighting', ft = { 'log', 'LOG' }, event = { 'BufReadPost', 'BufNewFile' }, lazy = lz_syn },
-  { 'hashivim/vim-terraform', ft = 'terraform', event = { 'BufReadPost', 'BufNewFile' }, lazy = lz_syn },
+  {
+    'mtdl9/vim-log-highlighting',
+    ft = { 'log', 'LOG' },
+    event = { 'BufReadPost', 'BufNewFile' },
+    lazy = lz_syn,
+  },
+  {
+    'hashivim/vim-terraform',
+    ft = 'terraform',
+    event = { 'BufReadPost', 'BufNewFile' },
+    lazy = lz_syn,
+  },
   { 'raimon49/requirements.txt.vim', event = 'VeryLazy', lazy = lz_syn },
   { 'godlygeek/tabular', event = 'VeryLazy', lazy = lz_syn },
-  { 'preservim/vim-markdown', commit = 'df4be86', dependencies = { 'godlygeek/tabular' } },
+  {
+    'preservim/vim-markdown',
+    commit = 'df4be86',
+    dependencies = { 'godlygeek/tabular' },
+  },
 }
 
 utils.apply_configs(plugins)

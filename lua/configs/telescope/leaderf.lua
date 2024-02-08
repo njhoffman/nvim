@@ -1,8 +1,28 @@
 local devicons = require('nvim-web-devicons')
 local entry_display = require('telescope.pickers.entry_display')
 
+-- TODO: make option for directory being common prefix, cwd .. directory, project .. directory
+
 local filter = vim.tbl_filter
 local map = vim.tbl_map
+
+local common_prefix = function(strings)
+  if #strings == 0 then
+    return ''
+  end
+
+  local prefix = strings[1]
+
+  for i = 1, #strings do
+    while strings[i]:find(prefix, 1, true) ~= 1 do
+      prefix = prefix:sub(1, #prefix - 1)
+    end
+  end
+
+  -- trim everything after final forward slash
+  prefix = prefix:gsub('/[^%/]*$', '')
+  return prefix
+end
 
 local function gen_from_buffer(opts)
   opts = opts or {}
@@ -19,6 +39,16 @@ local function gen_from_buffer(opts)
     return vim.fn.strdisplaywidth(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ':p:t'))
   end, bufnrs)))
 
+  local dirs = map(function(bufnr)
+    local dir_name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ':p:h') .. '/'
+    return dir_name:gsub(os.getenv('HOME'), '~')
+  end, bufnrs)
+
+  local common_dir_prefix = common_prefix(dirs)
+  if common_dir_prefix == '~' then
+    common_dir_prefix = ''
+  end
+
   local displayer = entry_display.create({
     separator = ' ',
     items = {
@@ -31,6 +61,8 @@ local function gen_from_buffer(opts)
   })
 
   local make_display = function(entry)
+    local dir_name = entry.dir_name
+
     return displayer({
       { entry.bufnr, 'TelescopeResultsNumber' },
       { entry.indicator, 'TelescopeResultsComment' },
@@ -49,6 +81,10 @@ local function gen_from_buffer(opts)
 
     local dir_name = vim.fn.fnamemodify(bufname, ':p:h')
     dir_name = string.gsub(dir_name, os.getenv('HOME'), '~')
+    if common_dir_prefix ~= '' then
+      dir_name = string.sub(dir_name, #common_dir_prefix + 1)
+      dir_name = #dir_name == 0 and './' or ('.' .. dir_name)
+    end
     local file_name = vim.fn.fnamemodify(bufname, ':p:t')
 
     local icons, highlight = devicons.get_icon(bufname, string.match(bufname, '%a+$'), { default = true })

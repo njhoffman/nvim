@@ -32,7 +32,8 @@ nnoremap <buffer> <LocalLeader>K  :<C-U>helpgrep <cword><CR>
 ]])
 
 if vim.startswith(vim.fn.expand('%'), vim.env.VIMRUNTIME) or vim.bo.readonly then
-  vim.api.nvim_create_autocmd('BufWinEnter', { buffer = 0, command = 'wincmd L | vertical resize 70' })
+  -- vim.api.nvim_create_autocmd('BufWinEnter', { buffer = 0, command = 'vertical resize 81' })
+
   -- https://vim.fandom.com/wiki/Learn_to_use_help
   -- TODO: reconcile with zoom
   vim.api.nvim_buf_set_keymap(0, 'n', '<C-Space>', '<C-]>', {})

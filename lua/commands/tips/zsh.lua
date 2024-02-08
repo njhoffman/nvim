@@ -1,0 +1,21 @@
+
+-- expansion
+-- You can use !$ to refer to the last argument of the previous command - so that cd above could be written as cd !$. This is probably my most-used expansion, especially with cd - I have even tweaked my cd so that if my previous command was a git clone, cd !$ will do the right thing and change directory into the repository I just cloned!
+-- You can use !^ to refer to the first argument of the previous command - I sometimes will do something like mv file.txt dir/ and then vim !$/!^ to edit the file I just moved!
+-- !! expands to the entire previous command line - you'll often come across this in the idiom sudo !! to re-invoke a command with sudo permissions, and I will sometimes do time !! to time a command I just ran. Another way I use this is diffing output of commands - I'll do something like some-command > /tmp/good-results, run some-other-command and eyeball the results, and then do combine <(!!) not /tmp/good-results to compare the two!
+-- !* expands to the entire previous command line's arguments - so the same as !!, just without the command itself.
+-- ...:h, ...:t allows you to do some path manipulation on the expansion - :h removes a trailing path component, :t extracts the trailing path component, etc. It comes in handy if you do something like vim long/path/to/a/file.txt, and then you want to search the directory file.txt is in - it's just an ack SEARCH_STRING !$:h away!
+-- !!:2 allows you to refer to the second argument of the previous command - you can use any number n in !!:n, but honestly I only ever find myself really using !!:2, because at a point it's easier to copy and paste or something rather than count how many tokens into your command line the argument is.
+-- .() { if [ $# -eq 0 ]; then cd ..; else source $\*; fi; }
+-- !^      first argument
+-- !$      last argument
+-- !*      all arguments
+-- !:2     second argument
+--
+-- !:2-3   second to third arguments
+-- !:2-$   second to last arguments
+-- !:2*    second to last arguments
+-- !:2-    second to next to last arguments
+--
+-- !:0     the command
+-- !!      repeat the previous line

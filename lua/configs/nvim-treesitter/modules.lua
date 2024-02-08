@@ -124,7 +124,7 @@ local modules = {
     },
   },
   pairs = {
-    enable = true,
+    enable = false,
     disable = {},
     -- highlight_pair_events = { "CursorMoved" }, -- e.g. {"CursorMoved"}, -- when to highlight the pairs, use {} to deactivate highlighting
     highlight_self = true, -- whether to highlight also the part of the pair under cursor (or only the partner)
@@ -133,8 +133,8 @@ local modules = {
     -- "call matchup#util#patch_match_words",
     keymaps = {
       -- goto_partner = "<leader>%",
-      goto_partner = '<leader>%',
-      delete_balanced = 'X',
+      goto_partner = false,
+      delete_balanced = false,
     },
     delete_balanced = {
       only_on_first_char = false, -- whether to trigger balanced delete when on first character of a pair

@@ -201,9 +201,23 @@ local cfg = {
   { '$', '$', multiline = false, ft = { 'markdown' } },
   internal_pairs = { -- *ultimate-autopair-pairs-default-pairs*
     { '[', ']', fly = true, dosuround = true, newline = true, space = true },
-    { '(', ')', fly = true, dosuround = true, newline = true, space = true },
+    {
+      '(',
+      ')',
+      fly = true,
+      dosuround = true,
+      newline = true,
+      space = true,
+      nft = { 'TelescopePrompt' },
+    },
     { '{', '}', fly = true, dosuround = true, newline = true, space = true },
-    { '"', '"', suround = true, multiline = false },
+    {
+      '"',
+      '"',
+      suround = true,
+      multiline = false,
+      nft = { 'TelescopePrompt' },
+    },
     {
       "'",
       "'",
@@ -212,7 +226,7 @@ local cfg = {
         return not fn.in_lisp() or fn.in_string()
       end,
       alpha = true,
-      nft = { 'tex' },
+      nft = { 'tex', 'TelescopePrompt' },
       multiline = false,
     },
     { '`', '`', nft = { 'tex', 'latex' }, multiline = false },

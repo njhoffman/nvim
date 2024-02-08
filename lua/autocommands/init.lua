@@ -5,6 +5,72 @@ require('autocommands.skeletons')
 require('autocommands.startup')
 -- TODO: automatically build helptags in doc directory
 
+local setup_nohlsearch = function()
+  vim.on_key(function(char)
+    if vim.fn.mode() == 'n' then
+      local new_hlsearch = vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
+      if vim.opt.hlsearch:get() ~= new_hlsearch then
+        vim.opt.hlsearch = new_hlsearch
+      end
+    end
+  end, namespace('auto_hlsearch'))
+
+  -- local ns_id = vim.api.nvim_create_namespace('hydra.plugin')
+  --
+  -- -- Restore options overridden by Hydra if it was emergency leaved with <C-c>.
+  -- local function emergency_exit(keys)
+  --    if _G.active_hydra and
+  --       keys == vim.api.nvim_replace_termcodes('<C-c>', true, true, true)
+  --    then
+  --       vim.schedule(function()
+  --          _G.active_hydra:_post()
+  --          _G.active_hydra = nil
+  --       end)
+  --    end
+  -- end
+  --
+  -- vim.on_key(emergency_exit, ns_id)
+  -- vim.on_key(nil, ns_id)
+  vim.on_key(function(char)
+    local key = vim.fn.keytrans(char)
+    local isCmdlineSearch = vim.fn.getcmdtype():find('[/?]') ~= nil
+    local searchMvKeys = { 'n', 'N', '*', '#' } -- works for RHS, therefore no need to consider remaps
+    local isNormalMode = vim.api.nvim_get_mode().mode == 'n'
+
+    local searchStarted = (key == '/' or key == '?') and isNormalMode
+    local searchConfirmed = (key == '<CR>' and isCmdlineSearch)
+    local searchCancelled = (key == '<Esc>' and isCmdlineSearch)
+    if not (searchStarted or searchConfirmed or searchCancelled or isNormalMode) then
+      return
+    end
+    local searchMovement = vim.tbl_contains(searchMvKeys, key)
+    local hlSearchOn = vim.o.hlsearch
+
+    if (searchMovement or searchConfirmed or searchStarted) and not hlSearchOn then
+      vim.opt.hlsearch = true
+    elseif (searchCancelled or not searchMovement) and hlSearchOn and not searchConfirmed then
+      vim.opt.hlsearch = false
+    end
+
+    -- nvim-hlslens plugin
+    if searchConfirmed or searchMovement then
+      local installed, hlslens = pcall(require, 'hlslens')
+      if installed then
+        hlslens.start()
+      end
+    end
+  end, vim.api.nvim_create_namespace('auto_nohl'))
+
+  vim.on_key(function(char)
+    if vim.fn.mode() == 'n' then
+      local new_hlsearch = vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
+      if vim.opt.hlsearch:get() ~= new_hlsearch then
+        vim.opt.hlsearch = new_hlsearch
+      end
+    end
+  end, vim.api.nvim_create_namespace('auto_hlsearch'))
+end
+
 local function define_augroups(definitions)
   for group_name, definition in pairs(definitions) do
     vim.api.nvim_create_augroup(group_name, { clear = true })
@@ -244,6 +310,7 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter' }, {
 autocmds.HighlightYank = {
   { 'TextYankPost', '*', "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=300 }" },
 }
--- autocmds.PreserveCursor = { { 'BufReadPost', '*', commands.goto_last_pos } }
+
+autocmds.PreserveCursor = { { 'BufReadPost', '*', commands.goto_last_pos } }
 
 define_augroups(autocmds)

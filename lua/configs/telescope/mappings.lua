@@ -134,7 +134,14 @@ local buffer_maps = {
   },
 }
 
+local help_maps = {
+  i = {
+    ['<CR>'] = actions.select_vertical,
+  },
+}
+
 local mappings = {
+  help = help_maps,
   grep = grep_maps,
   main = main_maps,
   file = file_maps,

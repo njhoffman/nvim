@@ -1,5 +1,7 @@
 -- No need to copy this inside `setup()`. Will be used automatically.
 
+-- TODO: dynamic [[, ]] mapping
+
 -- stylua: ignore
 local default = {
   -- First-level elements are tables describing behavior of a target:

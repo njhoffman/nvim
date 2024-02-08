@@ -1,7 +1,0 @@
-17:17:44  notify: (mini.ai) Enter `i` textobject identifier (single character) 
-17:17:44  notify: Error running notification service: ...cal/share/nvim/lazy/nvim-notify/lua/notify/util/init.lua:78: E565: Not allowed to change text or change window
-______________________________________________________________________
-
---        Enter at Wed 17 Jan 2024 05:17:39 PM CST
-______________________________________________________________________
-

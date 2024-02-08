@@ -240,7 +240,7 @@ local cfg = {
     context_operator       = { fg = tokyoColors.green2 },
     context_type_parameter = { fg = tokyoColors.green2 },
   },
-  exclude_filetypes = { "netrw", "toggleterm" },
+  exclude_filetypes = { "netrw", "toggleterm", "vim" },
   exclude_buftypes = {'nofile'},
   modified = function(bufnr)
     return vim.bo[bufnr].modified

@@ -2,6 +2,9 @@ local cmp_types = require('cmp.types.cmp')
 local cmp = require('cmp')
 local keymap = require('cmp.utils.keymap')
 local preserve_mapping_verticality = false
+local types = require('cmp.types')
+
+local cmp_mapping = require('cmp.config.mapping')
 
 local function get_source_code(f)
   local t = debug.getinfo(f)
@@ -45,26 +48,8 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
 
-local in_history = true
+local last_history_cmd = ''
 local cmdline = {
-  ['<Tab>'] = {
-    c = function()
-      if cmp.visible() then
-        cmp.select_next_item()
-      else
-        cmp.complete()
-      end
-    end,
-  },
-  ['<S-Tab>'] = {
-    c = function()
-      if cmp.visible() then
-        cmp.select_prev_item()
-      else
-        cmp.complete()
-      end
-    end,
-  },
   ['<C-e>'] = {
     c = function()
       if cmp.visible() then
@@ -74,12 +59,16 @@ local cmdline = {
       end
     end,
   },
+
+  -- ['<C-y>'] = cmp_mapping({
+  --   i = cmp_mapping.confirm({ behavior = ConfirmBehavior.Replace, select = false }),
+  -- }),
   ['<C-y>'] = {
-    c = function()
+    c = function(fallback)
       if cmp.visible() then
-        cmp.confirm({ select = false })
+        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
       else
-        cmp.complete()
+        fallback()
       end
     end,
   },
@@ -99,19 +88,40 @@ local cmdline = {
   },
   ['<C-n>'] = {
     c = function()
-      local cmp = require('cmp')
-      local sel = cmp.get_selected_entry()
-      if cmp.visible() then
+      local cmdline = vim.fn.getcmdline() or ''
+      local cmdpos = vim.fn.getcmdpos()
+      if cmdpos == 1 or last_history_cmd == cmdline then
+        feedkeys.call(keymap.t('<Down>'), 'c')
+        vim.schedule(function()
+          last_history_cmd = vim.fn.getcmdline() or ''
+        end)
+      elseif cmp.visible() then
         cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
       else
         cmp.complete()
       end
     end,
   },
+
+  -- :his[tory] [{name}] [{first}][, [{last}]]
+  -- :history / 6,12
+  -- 		List the contents of history {name} which can be:
+  -- 		c[md]	 or :		command-line history
+  -- 		s[earch] or / or ?	search string history
+  -- 		e[xpr]	 or =		expression register history
+  -- 		i[nput]	 or @		input line history
+  -- 		d[ebug]	 or >		debug command history
+  -- 		a[ll]			all of the above
   ['<C-p>'] = {
     c = function()
-      local cmp = require('cmp')
-      if cmp.visible() then
+      local cmdline = vim.fn.getcmdline() or ''
+      local cmdpos = vim.fn.getcmdpos()
+      if cmdpos == 1 or last_history_cmd == cmdline then
+        feedkeys.call(keymap.t('<Up>'), 'c')
+        vim.schedule(function()
+          last_history_cmd = vim.fn.getcmdline() or ''
+        end)
+      elseif cmp.visible() then
         cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
       else
         cmp.complete()
@@ -140,7 +150,48 @@ local cmdline = {
       end
     end,
   },
-  ['<CR>'] = { c = cmp.mapping.confirm({ select = false }) },
+  -- ['<CR>'] = {
+  --   c = cmp.mapping.confirm({ select = false }),
+  -- },
+
+  ['<CR>'] = cmp_mapping(function(fallback)
+    local confirm_opts = { behavior = types.cmp.ConfirmBehavior.Replace, select = false }
+    if cmp.visible() then
+      -- local is_insert_mode = function()
+      --   return vim.api.nvim_get_mode().mode:sub(1, 1) == 'i'
+      -- end
+      -- if is_insert_mode() then -- prevent overwriting brackets
+      --   confirm_opts.behavior = types.cmp.ConfirmBehavior.Insert
+      -- end
+      local entry = cmp.get_selected_entry()
+      -- local is_copilot = entry and entry.source.name == 'copilot'
+      -- if is_copilot then
+      --   confirm_opts.behavior = types.cmp.ConfirmBehavior.Replace
+      --   confirm_opts.select = true
+      -- end
+      if cmp.confirm(confirm_opts) then
+        return -- success, exit early
+      end
+    end
+    if type(fallback) == 'function' then
+      fallback() -- if not exited early, always fallback
+    end
+  end, { 'c' }),
+  ['<Tab>'] = cmp.mapping(function(fallback)
+    if cmp.visible() then
+      cmp.select_next_item()
+    else
+      fallback()
+    end
+  end, { 'c' }),
+
+  ['<S-Tab>'] = cmp.mapping(function(fallback)
+    if cmp.visible() then
+      cmp.select_prev_item()
+    else
+      fallback()
+    end
+  end, { 'c' }),
   -- --   feedkeys.call(keymap.t('<Up>'), 'c')
   --      cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
   -- --   cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })

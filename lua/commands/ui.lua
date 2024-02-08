@@ -21,6 +21,7 @@ local function check_nav_split(movement_key)
     local mapkeys = keymap[movement_key]
     local keys = { tmux_view = mapkeys[1] }
     -- only check one direction for split if navigating
+    vim.dbglog('nav split', { movement_key, curr_win, keys.tmux_view })
     if vim.fn.winnr(movement_key) ~= curr_win then
       vim.cmd('wincmd ' .. movement_key)
     else

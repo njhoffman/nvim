@@ -1,5 +1,56 @@
 local function move_split_size()
   local Hydra = require('hydra')
+  local resize_win = function(op)
+    return function()
+      local winid = vim.api.nvim_get_current_win()
+      local bufnr = vim.api.nvim_win_get_buf(winid)
+      local win_config = vim.api.nvim_win_get_config(winid)
+
+      vim.api.nvim_set_option_value('winfixwidth', false, { win = winid })
+      vim.api.nvim_set_option_value('equalalways', false, {})
+
+      win_config.relative = 'editor'
+      win_config.bufpos = { 0, 0 }
+
+      local size = {
+        width = vim.api.nvim_win_get_width(winid),
+        height = vim.api.nvim_win_get_height(winid),
+      }
+
+      -- vim.api.nvim_set_option_value('winfixwidth', false, { win = winid })
+      -- vim.api.nvim_set_option_value('winfixheight', false, { win = winid })
+      -- vim.api.nvim_set_option_value('modifiable', true, { buf = bufnr })
+      -- vim.api.nvim_set_option_value('equalalways', false)
+
+      if op == '+' then
+        -- vim.fn.feedkeys('<C-w>+', 'n')
+        size.height = size.height + 1
+      elseif op == '-' then
+        -- vim.fn.feedkeys('<C-w>-', 'n')
+        size.height = size.height - 1
+      elseif op == '<' then
+        -- vim.fn.feedkeys('2<C-w><', 'n')
+        -- local curwidth = vim.fn.winwidth(0)
+        -- local newwidth = curwidth - 5
+        -- vim.api.nvim_win_set_width(0, newwidth)
+        size.width = size.width - 5
+      else
+        -- vim.fn.feedkeys('2<C-w>>', 'n')
+        -- local curwidth = vim.fn.winwidth(0)
+        -- local newwidth = curwidth + 5
+        -- vim.api.nvim_win_set_width(0, newwidth)
+        size.width = size.width + 5
+      end
+
+      vim.dbglog(win_config)
+      win_config.width = size.width
+      win_config.height = size.height
+      -- vim.api.nvim_win_set_width(winid, size.width)
+      -- vim.api.nvim_win_set_height(winid, size.height)
+      vim.api.nvim_win_set_config(winid, win_config)
+    end
+  end
+
   Hydra({
     hint = [[
        ^^^^^^     Move     ^^^^^^   ^^     Split         ^^^^    Size
@@ -21,6 +72,7 @@ local function move_split_size()
     mode = 'n',
     body = '<C-W>',
     heads = {
+      -- TODO: enable popup windows if they are not notify
       -- Move focus
       { 'h', '<C-w>h' },
       { 'j', '<C-w>j' },
@@ -37,11 +89,12 @@ local function move_split_size()
       { 'v', '<C-w>v' },
       { 'q', '<Cmd>try | close | catch | endtry<CR>', { desc = 'close window' } },
       -- Size
-      { '+', '<C-w>+' },
-      { '-', '<C-w>-' },
-      { '>', '2<C-w>>', { desc = 'increase width' } },
-      { '<', '2<C-w><', { desc = 'decrease width' } },
+      { '+', resize_win('+'), { desc = 'increase height' } },
+      { '-', resize_win('-'), { desc = 'decrease height' } },
+      { '>', resize_win('>'), { desc = 'increase width' } },
+      { '<', resize_win('<'), { desc = 'decrease width' } },
       { '=', '<C-w>=', { desc = 'equalize' } },
+      -- maximize, minimize
       --
       { '<Esc>', nil, { exit = true } },
     },

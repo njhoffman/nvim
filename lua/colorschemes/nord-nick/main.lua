@@ -121,6 +121,7 @@ return function(injected_functions)
   return {
     Visual({ fg = 'none', bg = '#101840', gui = 'bold,italic' }),
     VisualAlt({ fg = 'none', bg = '#141436', gui = 'bold,italic' }),
+    VisualRed({ fg = 'none', bg = '#40112c', gui = 'bold,italic' }),
     Error({ fg = clrs.error, bg = 'none' }),
     -- Error({ fg = "none", bg = "none" }),
     Underline({ gui = 'none' }),
@@ -140,7 +141,7 @@ return function(injected_functions)
     -- TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     TabLine({ fg = clrs.nord3, bg = clrs.nord1, gui = 'NONE' }),
     TabLineSel({ fg = '#a6cfff', bg = '#213c64', gui = 'bold' }),
-    VertSplit({ fg = '#444464', bg = '#090909', gui = 'bold' }),
+    WinSeparator({ fg = '#444464', bg = '#090909', gui = 'bold' }),
     VisualNOS({ fg = 'none', bg = clr_over.selection }),
     -- TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     -- WinBar({ fg = "#313c84", bg = "#202331" }),
@@ -172,7 +173,8 @@ return function(injected_functions)
     Delimiter({ fg = '#5f6fa2' }),
     Directory({ fg = '#187298' }),
     -- Field({ fg = '#4688B0' }),
-    Field({ fg = '#467aB0' }),
+    -- Field({ fg = '#467aB0' }),
+    Field({ fg = '#467aB8' }),
     FoldColumn({ fg = '#4D578A', bg = '#000000' }),
     FoldText({ fg = '#41b1ff', gui = 'bold' }),
     Folded({ fg = '#6Db7ca', bg = '#111111', gui = 'bold' }),
@@ -264,10 +266,10 @@ return function(injected_functions)
     LspReferenceRead({ fg = Search.fg, gui = 'none' }), -- #22bb99, 628bff
     LspReferenceWrite({ fg = Search.fg, gui = 'none' }), -- #22bb99
     LspReferenceText({ fg = Search.fg, gui = 'none' }), -- #22bb99
-    DiffAdd({ bg = '#00361f' }), -- #00361f #001000 #22bb99
-    DiffChange({ bg = '#003050' }), -- #003050 #001030 #646ead
-    DiffDelete({ bg = '#3E0009' }), -- #3e0009 #300000 #be6069
-    DiffText({ gui = 'italic', bg = '#192b50' }), -- #464b5d #001030 #81a1c1
+    DiffAdd({ bg = '#001822' }), -- #00361f #001000 #22bb99
+    DiffChange({ bg = '#061024' }), -- #003050 #001030 #646ead
+    DiffDelete({ fg = '#444466', bg = '#0E0009' }), -- #3e0009 #300000 #be6069
+    DiffText({ gui = 'italic', bg = '#0e2040' }), -- #464b5d #001030 #81a1c1
     diffAdded({ fg = clrs.nord14 }),
     diffRemoved({ fg = clrs.nord11 }),
     diffChanged({ fg = clrs.nord15 }),
@@ -400,7 +402,7 @@ return function(injected_functions)
 
     -- sym("@keyword.conditional")({ fg = "#80788a" }),
     sym('@markup.raw.markdown_inline')({ fg = '#2779aa', gui = 'none' }),
-    sym('@markup.raw.block')({ gui = 'none' }),
+    sym('@markup.raw.block')({ gui = 'none', fg = '#2779aa' }),
     sym('@markup.raw')({ fg = '#2779aa', gui = 'none' }),
     sym('@boolean')({ Boolean }),
     sym('@comment')({ Comment }),
@@ -420,7 +422,7 @@ return function(injected_functions)
     sym('@function.method.call')({ FunctionCall }),
     sym('@include')({ Include }),
     sym('@keyword')({ Keyword }),
-    sym('@constant.luap')({ fg = '#2288cc', gui ='bold' }),
+    sym('@constant.luap')({ fg = '#2288cc', gui = 'bold' }),
     sym('@keyword.luap')({ fg = '#5886ff' }),
     sym('@operator.luap')({ fg = '#08a4ea', gui = 'bold' }),
     sym('@punctuation.delimiter.luap')({ fg = '#4866d8', gui = 'bold' }),
@@ -456,6 +458,8 @@ return function(injected_functions)
     sym('@tag.delimiter')({ sym('@tag') }),
     sym('@markup.strikethrough')({ gui = 'strikeout' }),
     sym('@markup.italic')({ gui = 'italic' }),
+    sym('@markup.strong.markdown')({ gui = 'bold' }),
+    sym('@markup.strong.markdown_inline')({ gui = 'bold' }),
     sym('@markup.link.label.markdown')({ fg = '#6c81df' }),
     sym('@markup.link.label.markdown_inline')({ fg = '#6c81df' }),
     sym('@markup.link')({ fg = '#2aa1ae', gui = 'italic' }),
@@ -1154,6 +1158,8 @@ return function(injected_functions)
     -- CybuBackgrou links to Normal
     -- CybuBorder links to FloatBorder
     -- CybuInfobar links to StatusLine
+    FlashBackdrop({ fg = '#405560' }), -- #1a1f2a
+    FlashLabel({ fg = '#cc0044', bg = '#000000', gui = 'bold,italic' }), -- #0d314c
 
     -- Dressing
     TaskFloat({ fg = '#2a8ccb' }),
@@ -1180,7 +1186,18 @@ return function(injected_functions)
     BackseatText({ DiagnosticFloatingHint, gui = 'italic' }),
 
     MatchParen({ fg = '#fb8b8b', gui = 'bold,' }),
-    MatchWord({ gui = 'bold' }),
+    MatchParenCur({
+      fg = '#ff9f9f',
+      gui = 'bold',
+    }), -- matchparen
+    MatchWord({
+      fg = '#7f6686',
+      gui = 'italic',
+    }),
+    MatchBackground({
+      gui = 'italic',
+      bg = '#0f2139',
+    }), -- colorcolumn
 
     RegistersPreview({ fg = '#009ac8', bg = 'none', gui = 'none' }), -- IncSearch
 

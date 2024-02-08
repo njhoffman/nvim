@@ -14,6 +14,14 @@ local entry_display = require('telescope.pickers.entry_display')
 --  entry.value.regtype       = "V",
 -- TelescopeResultsClass, Number, Comment, Field, Title, Border, Method, Normal, Constant, Function, Special
 -- Operator, Variable, Struct
+--                                 ﭨ  ﭨ  ﭨ  ﭨ  ﮜ  ﮜ  ﮜ  ﮜ        
+--  麗 濾ﮜ        縷 ﮜ          ﭟ   ﲵ  ﭟ
+local icons = {
+  ['v'] = '', -- Visual by character
+  ['V'] = '', -- Visual by line
+  ['vs'] = '麗', -- Visual by character using |v_CTRL-O| in Select mode
+  ['nl'] = '↳',
+}
 
 local gen_from_history = function(opts)
   local displayer = entry_display.create({
@@ -30,15 +38,15 @@ local gen_from_history = function(opts)
     local content = entry.content
     local content_lines = vim.split(content, '\n') or {}
 
-    --  麗 濾ﮜ        縷 ﮜ          ﭟ   ﲵ
     --  for |blockwise-visual| text <CTRL-V> is one character with value 0x15.
-    local type_icon = entry.value.regtype == 'v' and 'ﮜ' or entry.value.regtype == 'V' and '' or 'ﭟ'
+    local type_icon = icons[entry.value.regtype] or '?'
     local extension = vim.fn.fnamemodify(entry.value.filename, ':e')
     local file_icon, file_hl = devicons.get_icon(entry.value.filetype, extension)
     return displayer({
       {
-        #content_lines == 1 and '' or #content_lines - 1 .. '↳',
-        #content_lines == 1 and 'TelescopeResultsComment' or 'TelescopeResultsNumber',
+        #content_lines == 1 and '' or #content_lines == 2 and (' ' .. icons.nl) or (#content_lines - 1 .. icons.nl),
+        'TelescopeResultsComment',
+        -- #content_lines == 1 and 'TelescopeResultsComment' or 'TelescopeResultsNumber',
       },
       { type_icon, 'TelescopeResultsNumber' },
       { file_icon == nil and '' or file_icon, file_hl == nil and '' or file_hl },

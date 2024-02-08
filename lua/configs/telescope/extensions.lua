@@ -65,6 +65,10 @@ local extension_configs = {
     }
     return frecency_cfg
   end,
+  quicknote = {
+    defaultScope = 'CWD', -- CurrentBuffer, CWD or Global
+  },
+
   -- frecency_new = function()
   --   local baseDirs = {
   --     home = vim.fn.expand('$HOME'),

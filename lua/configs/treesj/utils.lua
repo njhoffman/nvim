@@ -111,7 +111,6 @@ local check_ts_node = function()
     return
   end
 
-  vim.dbglog(MODE .. ' from: ' .. (er - sr + 1) .. ' to ' .. #replacement)
   return MODE, (er - sr + 1), #replacement
 end
 

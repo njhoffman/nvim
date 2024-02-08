@@ -79,8 +79,8 @@ function mapping.get_defaults()
   return {
     default = mapping.put('p'),
     i = {
-      ['<c-g>'] = mapping.put('p'),
-      ['<c-k>'] = mapping.put('P'),
+      ['<M-p>'] = mapping.put('p'),
+      ['<M-C-P>'] = mapping.put('P'),
       ['<c-x>'] = mapping.delete(),
       ['<c-r>'] = mapping.set_register(utils.get_default_register()),
     },

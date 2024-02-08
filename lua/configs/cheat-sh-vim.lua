@@ -57,3 +57,5 @@
 -- <localleader>J Next "See also"
 -- <localleader>K Previous "See also"
 -- <localleader>L Next history
+
+vim.api.nvim_del_keymap('n', '<leader>?')

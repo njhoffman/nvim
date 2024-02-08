@@ -136,7 +136,7 @@ M.setup = function(opts)
   M.setup_highlights()
 
   vim.defer_fn(function()
-    log.debug('Installing required docs')
+    -- log.debug('Installing required docs')
     operations.install_args(config.options.ensure_installed)
   end, 3000)
 
@@ -173,8 +173,6 @@ M.setup = function(opts)
   cmd('DevdocsUpdate', M.update, { nargs = '*', complete = completion.get_updatable })
   cmd('DevdocsUpdateAll', M.update_all, {})
   cmd('DevdocsToggle', M.toggle, {})
-
-  log.debug('Plugin initialized')
 end
 
 return M

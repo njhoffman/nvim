@@ -67,11 +67,11 @@ return function(bufnr, notif, highlights, config)
 
   if has_valid_manual_title then
     -- has title = icon + title as header row
-    prefix = string.format(' %s %s', icon, title)
+    prefix = string.format(' %s %s ', icon, title)
     table.insert(message, 1, prefix)
   else
     -- no title = prefix the icon
-    prefix = string.format(' %s', icon)
+    prefix = string.format(' %s ', icon)
     message[1] = string.format('%s %s', prefix, message[1])
   end
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, message)
@@ -85,13 +85,14 @@ return function(bufnr, notif, highlights, config)
   -- vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, display_message)
 
   local icon_length = icon and vim.str_utfindex(icon) or 0
-  local prefix_length = vim.str_utfindex(prefix)
+  local prefix_length = vim.fn.strdisplaywidth(prefix)
 
   vim.api.nvim_buf_set_extmark(bufnr, namespace, 0, 0, {
     hl_group = highlights.icon,
     end_col = icon_length + 1,
     priority = 50,
   })
+
   vim.api.nvim_buf_set_extmark(bufnr, namespace, 0, icon_length + 1, {
     hl_group = highlights.title,
     end_col = prefix_length + 1,
