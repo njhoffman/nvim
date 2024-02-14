@@ -33,7 +33,7 @@ local plugins = {
         dependencies = { 'MunifTanjim/nui.nvim' },
         keys = {
           {
-            'gw',
+            'gWw',
             mode = { 'n', 'x' },
             function()
               require('wtf').ai()
@@ -42,7 +42,7 @@ local plugins = {
           },
           {
             mode = { 'n' },
-            'gW',
+            'gWW',
             function()
               require('wtf').search()
             end,

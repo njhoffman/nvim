@@ -50,7 +50,10 @@ function utils.get_data()
   data.last_line = vim.fn.line('$')
   data.first_line_visible = data.win_top_line == 1
   data.last_line_visible = data.win_bottom_line == data.last_line
-  data.window_height = vim.fn.winheight(0)
+  data.window_height = vim.api.nvim_win_get_height(0)
+  if vim.opt.winbar ~= '' then
+    data.window_height = data.window_height - 1
+  end
   data.cursor_win_line = vim.fn.winline()
   data.win_lines_below_cursor = data.window_height - data.cursor_win_line
   data.win_lines_above_cursor = data.cursor_win_line - 1
@@ -94,5 +97,31 @@ function utils.get_scrolloff()
     return window_scrolloff
   end
 end
-
 return utils
+
+-- Calculate the delay length.
+-- if config.max_length ~= -1 then
+--   if math.abs(distance) * delay_length > config.max_length then
+--     delay_length = math.floor((config.max_length / math.abs(distance)) + 0.5)
+--   end
+-- end
+
+-- I just tried it, but I felt nothing but faster with the easing function. I didn't feel the easing.
+--
+-- If you want to "feel" the easing you'll need to change the default time-step range instead of the easing function. That is what I was trying to explain here:
+--
+-- There isn't, mainly because you need to also specify the first and last time-step of the scrolling animation as additional arguments and you probably never want to set those to the same value for all the commands as some movements are very long (c-f/c-b) and some are very short (c-e/c-y).
+--
+-- So for instance if you change the c-d/c-u easing mappings from the README to:
+--
+-- t['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '7', '35', easing1}}
+-- t['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '7', '35', easing1}}
+-- You'll now "feel" the easing more because it goes from a time-step of 7 ms to a time-step of 35 ms instead of 15 ms. The easing function only determines how the time-step goes from 7 ms to 35 ms. Of course, the higher the value of the last time-step the slower the animation will "feel" towards the end of the scrolling animation. I don't particularly like it that high because you can notice the line-by-line scrolling and it doesn't look as smooth to me but everyone has their own preferences.
+--
+-- So for example with function(x) return x end the time-step will decrease from 7 ms to 35 ms linearly whereas with function(x) return math.pow(x, 2) end the time-step will decrease from 7 ms to 35 ms quadratically, i.e. slow at the beginning and quickly at the end.
+--
+-- The function function(x) return 0.5 end returns a constant so in that case the time-step will be constant throughout the whole scrolling animation. This obviously is totally unnecessary because you don't need an easing function to obtain this scrolling animation.
+--
+-- BTW, IDK if the information "Scrolling with easing function" was used for debugging, but it's noisy and useless in real use.
+--
+-- You will need to elaborate on what do you mean by "noisy". I am using the defaults and they work just fine for me.

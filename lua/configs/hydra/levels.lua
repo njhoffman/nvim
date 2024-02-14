@@ -61,7 +61,14 @@ local hydra = function(type)
       invoke_on_body = true,
       hint = {
         funcs = funcs(type),
-        border = 'rounded',
+        float_opts = {
+          -- row, col, height, width, relative, and anchor should not be
+          -- overridden
+          border = 'rounded',
+          style = 'minimal',
+          focusable = false,
+          noautocmd = true,
+        },
         position = 'middle',
       },
     },

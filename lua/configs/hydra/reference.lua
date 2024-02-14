@@ -52,7 +52,14 @@ local function hydra_git()
       invoke_on_body = true,
       hint = {
         position = 'bottom',
-        border = 'rounded',
+        float_opts = {
+          -- row, col, height, width, relative, and anchor should not be
+          -- overridden
+          border = 'rounded',
+          style = 'minimal',
+          focusable = false,
+          noautocmd = true,
+        },
       },
       on_enter = function()
         vim.bo.modifiable = false
@@ -140,7 +147,14 @@ Hydra({
     invoke_on_body = true,
     hint = {
       position = 'bottom',
-      border = 'rounded',
+      float_opts = {
+        -- row, col, height, width, relative, and anchor should not be
+        -- overridden
+        border = 'rounded',
+        style = 'minimal',
+        focusable = false,
+        noautocmd = true,
+      },
     },
   },
   mode = 'n',
@@ -218,7 +232,14 @@ Hydra({
     foreign_keys = 'run',
     invoke_on_body = true,
     hint = {
-      border = 'rounded',
+      float_opts = {
+        -- row, col, height, width, relative, and anchor should not be
+        -- overridden
+        border = 'rounded',
+        style = 'minimal',
+        focusable = false,
+        noautocmd = true,
+      },
     },
   },
   mode = 'n',
@@ -255,7 +276,14 @@ local lsp_hydra = Hydra({
   config = {
     color = 'pink',
     hint = {
-      border = 'rounded',
+      float_opts = {
+        -- row, col, height, width, relative, and anchor should not be
+        -- overridden
+        border = 'rounded',
+        style = 'minimal',
+        focusable = false,
+        noautocmd = true,
+      },
       offset = 2,
     },
   },
@@ -312,7 +340,14 @@ local misc_hydra = hydra({
   config = {
     color = 'pink',
     hint = {
-      border = 'rounded',
+      float_opts = {
+        -- row, col, height, width, relative, and anchor should not be
+        -- overridden
+        border = 'rounded',
+        style = 'minimal',
+        focusable = false,
+        noautocmd = true,
+      },
       offset = 2,
     },
   },
@@ -479,7 +514,14 @@ local new_hydra = {
   config = {
     hint = {
       position = 'middle-right',
-      border = border,
+      float_opts = {
+        -- row, col, height, width, relative, and anchor should not be
+        -- overridden
+        border = border,
+        style = 'minimal',
+        focusable = false,
+        noautocmd = true,
+      },
     },
     timeout = false,
     invoke_on_body = true,

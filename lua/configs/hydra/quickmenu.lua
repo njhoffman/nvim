@@ -29,7 +29,14 @@ _m_: Show Man Pages
       hint = {
         type = 'window',
         position = 'bottom',
-        border = 'rounded',
+        float_opts = {
+          -- row, col, height, width, relative, and anchor should not be
+          -- overridden
+          border = 'rounded',
+          style = 'minimal',
+          focusable = false,
+          noautocmd = true,
+        },
         show_name = true,
       },
     },

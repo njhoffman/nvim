@@ -83,6 +83,17 @@ local main = {
   ['<C-e>'] = { i = mapping.close() },
   ['<M-b>'] = { i = scroll_docs(-6) },
   ['<M-f>'] = { i = scroll_docs(6) },
+  ['()'] = {
+    i = function(fallback)
+      local cmp = require('cmp')
+      if cmp.visible() then
+        cmp.complete()
+        vim.api.nvim_put({ '()' }, 'c', false, true)
+      elseif type(fallback) == 'function' then
+        fallback()
+      end
+    end,
+  },
   ['<C-n>'] = {
     i = function()
       local cmp = require('cmp')

@@ -7,15 +7,6 @@ local M = {
   listeners_initialized = nil,
 }
 
--- stylua: ignore
-local opfunc_list = {
-  ['cx'] = 'v:lua.require"substitute.exchange".operator_callback',
-  ['X']  = 'v:lua.require"substitute.exchange".operator_callback',
-  ['S']  = 'v:lua.require"substitute".operator_callback',
-  ['gc'] = 'v:lua.MiniComment.operator',
-  ['s']  = 'v:lua.MiniSurround.add',
-}
-
 ---@param line string
 ---@return string[]
 local function parse_cmd(line)
@@ -51,8 +42,21 @@ M.cached_presets = {}
 function M:init()
   local Highlight = require('reactive.highlight')
   local Snapshot = require('reactive.snapshot')
+  local Util = require('reactive.util')
+  local function clear_winhighlight_options()
+    local windows = vim.api.nvim_list_wins()
+    Util.eachi(windows, function(win)
+      Util.delete_reactive_winhl(win)
+    end)
+  end
 
-  local function init_listeners()
+  local function clear_highlights()
+    for hl in pairs(Snapshot.cache.applied_hl) do
+      vim.cmd('highlight clear ' .. hl)
+    end
+  end
+
+  local function init_plugin()
     if self.listeners_initialized then
       return
     end
@@ -60,8 +64,7 @@ function M:init()
 
     local group = api.nvim_create_augroup('reactive.nvim', { clear = true })
     local virtual_op = vim.v.operator
-    local current_mode = vim.fn.mode()
-    local last_mode = nil
+    local last_mode = vim.fn.mode()
     local last_op = nil
     local last_opfunc = nil
 
@@ -70,9 +73,10 @@ function M:init()
       pattern = '*:*',
       desc = 'Reactive: watches for mode changes to update highlights and run callbacks',
       callback = function(opts)
-        local op = vim.v.operator
-        local op_func = Snapshot.current_opfunc
+        local op = virtual_op
+        local op_func = Snapshot.get_opfunc()
         local from, to = unpack(vim.split(opts.match, ':'))
+
         if last_mode ~= to or last_op ~= op or last_opfunc ~= op_func then
           logger.debug(
             'ModeChanged  '
@@ -86,7 +90,13 @@ function M:init()
           )
           -- virtual_op = vim.v.operator
           Snapshot:set_modes(from, to)
-          Highlight:apply(Snapshot:gen({ callbacks = true }))
+          local snap = Snapshot:gen({ callbacks = true })
+
+          Highlight:apply({
+            hl = snap.hl,
+            winhl = snap.winhl,
+            winid = api.nvim_get_current_win(),
+          })
           last_mode = to
           last_op = op
           last_opfunc = op_func
@@ -99,21 +109,36 @@ function M:init()
       desc = 'reactive watches for pseudo-mode changes from which-key to update highlights and run callbacks',
       callback = function(opts)
         local _, new_mode, keys = unpack(vim.split(opts.match, '_'))
-        virtual_op = keys and #keys > 0 and keys:sub(1, 1)
+        if keys and #keys > 0 then
+          -- virtual_op = 'g@' .. keys
+          virtual_op = keys
+        end
         if last_mode ~= new_mode or last_op ~= virtual_op then
           logger.debug(
             'WhichKeyMode '
-              .. current_mode
+              .. last_mode
               .. ':'
-              .. (new_mode and new_mode or ' ')
-              .. string.rep(' ', 5 - (#current_mode + (new_mode and #new_mode or 0)))
+              .. (new_mode or ' ')
+              .. string.rep(' ', 5 - (#last_mode + (new_mode and #new_mode or 0)))
               .. (virtual_op and #virtual_op > 0 and (" '" .. tostring(virtual_op) .. "'") or ' ')
               .. (keys and ' - ' .. keys or '')
           )
+
           -- vim.api.nvim_exec_autocmds('ModeChanged', { pattern = current_mode .. ':' .. new_mode })
-          Snapshot:set_modes(current_mode, new_mode)
-          current_mode = new_mode
-          Highlight:apply(Snapshot:gen({ callbacks = true, virtual_op = virtual_op }))
+          --  TODO: or inc_mode_config['o'].operators[virtual_op] then
+
+          Snapshot:set_modes(last_mode, new_mode)
+          local snap = Snapshot:gen({
+            callbacks = true,
+            virtual_op = virtual_op,
+          })
+
+          Highlight:apply({
+            hl = snap.hl,
+            winhl = snap.winhl,
+            winid = api.nvim_get_current_win(),
+          })
+          -- Highlight:apply(Snapshot:gen({ callbacks = true, virtual_op = virtual_op }))
           last_mode = new_mode
           last_op = virtual_op
         end
@@ -126,9 +151,12 @@ function M:init()
       group = group,
       desc = 'Reactive: applies active/inactive window highlights',
       callback = function(opts)
-        Highlight:apply(Snapshot:gen({
-          inactive_win = opts.event == 'WinLeave',
-        }))
+        local snap = Snapshot:gen({ inactive_win = opts.event == 'WinLeave' })
+        Highlight:apply({
+          hl = snap.hl,
+          winhl = snap.winhl,
+          winid = api.nvim_get_current_win(),
+        })
       end,
     })
 
@@ -137,37 +165,37 @@ function M:init()
       desc = 'Reactive: removes cached highlights',
       callback = function()
         Snapshot:clear_cache()
+        clear_winhighlight_options()
+        Highlight:sync()
       end,
     })
   end
 
-  local function clear_listeners()
+  local function stop_plugin()
     if not self.listeners_initialized then
       return
     end
     self.listeners_initialized = nil
 
+    -- clear listeners
     vim.api.nvim_del_augroup_by_name('reactive.nvim')
-
-    for hl in pairs(Snapshot.cache.applied_hl) do
-      vim.cmd('highlight clear ' .. hl)
-    end
-
     Snapshot:clear_cache()
+    clear_highlights()
+    clear_winhighlight_options()
   end
 
   local function toggle_listeners()
     if self.listeners_initialized then
-      clear_listeners()
+      stop_plugin()
     else
-      init_listeners()
+      init_plugin()
     end
   end
 
-  init_listeners()
+  init_plugin()
 
-  user_cmd('ReactiveStart', init_listeners, {})
-  user_cmd('ReactiveStop', clear_listeners, {})
+  user_cmd('ReactiveStart', init_plugin, {})
+  user_cmd('ReactiveStop', stop_plugin, {})
   user_cmd('ReactiveToggle', toggle_listeners, {})
   user_cmd('Reactive', function(opts)
     local cmd, val = unpack(vim.split(vim.trim(opts.args), '%s+'))
@@ -178,8 +206,6 @@ function M:init()
       vim.notify("reactive.nvim: There's no such a preset: " .. val, vim.log.levels.ERROR)
     else
       self.commands[cmd](val)
-
-      Highlight:apply(Snapshot:gen())
     end
   end, {
     complete = function(_, line)
@@ -189,7 +215,6 @@ function M:init()
         -- we only do this once
         if cmd[1] == '' then
           local State = require('reactive.state')
-          local Util = require('reactive.util')
 
           self.cached_presets.toggle = {}
           self.cached_presets.enable = {}

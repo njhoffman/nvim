@@ -25,48 +25,17 @@ local plugins = {
     dependencies = 'nvim-web-devicons',
   },
   { 'declancm/cinnamon.nvim', event = 'VeryLazy' },
-  {
-    'karb94/neoscroll.nvim',
-    config = function()
-      require('neoscroll').setup({
-        -- All these keys will be mapped to their corresponding default scrolling animation
-        -- mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>', '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
-        mappings = {},
-        hide_cursor = false, -- Hide cursor while scrolling
-        stop_eof = true, -- Stop at <EOF> when scrolling downwards
-        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-        easing_function = 'quartic', -- Default easing function
-        -- quadratic, cubic, quartic, quintic, circular, sine
-        pre_hook = nil, -- Function to run before the scrolling animation starts
-        post_hook = nil, -- Function to run after the scrolling animation ends
-        performance_mode = false, -- Disable "Performance Mode" on all buffers.
-      })
-      local t = {}
-      t['<PageUp>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '300', [['sine']] } }
-      t['<PageDown>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '300', [['sine']] } }
-      require('neoscroll.config').set_mappings(t)
-    end,
-  },
+  { 'karb94/neoscroll.nvim', event = 'VeryLazy' },
   {
     'rasulomaroff/reactive.nvim',
     enabled = true,
     lazy = false,
   },
-  -- {
-  --   'RutaTang/quicknote.nvim',
-  --   event = 'VeryLazy',
-  --   dependencies = { 'nvim-lua/plenary.nvim' },
-  --   config = function()
-  --     require('quicknote').setup({
-  --       mode = 'resident', -- "portable" | "resident"
-  --       sign = '', --                     
-  --       filetype = 'md',
-  --       git_branch_recognizable = false,
-  --     })
-  --     vim.api.nvim_set_keymap('n', '<leader>n', "<cmd>:lua require('quicknote').NewNoteAtCurrentLine()<cr>", {})
-  --   end,
-  -- },
+  {
+    'RutaTang/quicknote.nvim',
+    event = 'VeryLazy',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+  },
   {
     'LintaoAmons/scratch.nvim',
     event = 'VeryLazy',
@@ -359,9 +328,10 @@ local plugins = {
   },
   {
     'smoka7/multicursors.nvim',
+    enabled = false,
     event = 'VeryLazy',
     dependencies = {
-      'smoka7/hydra.nvim',
+      'nvimtools/hydra.nvim',
     },
     cmd = { 'MCstart', 'MCvisual', 'MCclear', 'MCpattern', 'MCvisualPattern', 'MCunderCursor' },
     keys = {
@@ -373,12 +343,11 @@ local plugins = {
       },
     },
   },
+  { 'anuvyklack/animation.nvim', dependencies = 'anuvyklack/middleclass' },
   {
     'psliwka/vim-smoothie',
     commit = '10fd0aa',
     init = function()
-      vim.g.smoothie_enabled = true
-      vim.g.smoothie_break_on_reverse = 0
       vim.g.smoothie_enabled = 1
       vim.g.smoothie_no_default_mappings = 1
       vim.g.smoothie_experimental_mappings = 0
@@ -388,7 +357,7 @@ local plugins = {
       vim.g.smoothie_speed_exponentiation_factor = 0.9 -- 0.9
       vim.g.redraw_at_finish = 1
       -- vim.g.smoothie_minimum_speed = 0.6
-      vim.g.smoothie_break_on_reverse = 0
+      vim.g.smoothie_break_on_reverse = 1
     end,
   }, -- f2aaab1
   -- movement highlighters
@@ -674,6 +643,7 @@ local plugins = {
   --
   -- git tools
   --
+  -- https://github.com/dlvhdr/gh-blame.nvim
   { 'rbong/vim-flog', cmd = { 'Flog', 'Flogsplit' } },
   { 'ThePrimeagen/git-worktree.nvim', event = 'VeryLazy' },
   { 'napisani/nvim-github-codesearch', cmd = 'GithubSearch', build = 'make' },
@@ -781,7 +751,7 @@ local plugins = {
     'jamestthompson3/nvim-remote-containers',
     cmd = { 'BuildImage', 'AttachToContainer', 'StartImage', 'ComposeUp', 'ComposeDown', 'ComposeDestroy' },
   },
-  { 'cbochs/grapple.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
+  { 'LeonHeidelbach/trailblazer.nvim' },
   { 'kelly-lin/ranger.nvim', lazy = true },
   { 'lambdalisue/suda.vim', event = 'VeryLazy' },
   {
@@ -833,7 +803,7 @@ local plugins = {
   { 'dbeniamine/cheat.sh-vim', cmd = 'Cheat' },
   { 'potamides/pantran.nvim', cmd = 'Pantran' },
   { 'sidebar-nvim/sidebar.nvim', cmd = { 'SidebarNvimOpen', 'SidebarNvimToggle' } },
-  { 'smoka7/hydra.nvim', event = 'VeryLazy' }, -- anuvyklack
+  { 'nvimtools/hydra.nvim', event = 'VeryLazy' }, -- anuvyklack
   { 'NvChad/nvim-colorizer.lua', event = { 'BufReadPost', 'BufNewFile' } },
   {
     'nvim-colortils/colortils.nvim',

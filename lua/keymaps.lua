@@ -12,7 +12,7 @@ prefix('n', 'z', 'folds ﱒ')
 prefix('n', 'g', 'go 隷')
 prefix('n', 'gh', 'hover  ')
 prefix('n', 'gt', 'text-case  ')
-prefix('n', 'gq', 'quickfix  ')
+prefix('n', 'gQ', 'quickfix  ')
 prefix('n', 'gP', 'preview  ')
 prefix('n', 'go', 'debug out  ')
 prefix('n', ']', 'next ')
@@ -158,10 +158,10 @@ map('c', '<C-Y>', '<C-\\>ey', {
 
 -- Map 'j' and 'k' to behave like 'gj' and 'gk'
 vim.cmd([[
-  nnoremap j gj
-  nnoremap k gk
-  vnoremap j gj
-  vnoremap k gk
+  " nnoremap j gj
+  " nnoremap k gk
+  " vnoremap j gj
+  " vnoremap k gk
 ]])
 
 -- TODO: vmap C-u C-w
@@ -456,6 +456,16 @@ end, { desc = '漏 undo buffer closing' })
 
 map({ 'n', 'x' }, '<leader>ul', '<cmd>undolist<cr>', { desc = '漏 undo show list' })
 
+map(
+  { 'i' },
+  '<C-r>',
+  '<cmd>silent! execute "normal <C-g>u<C-r><cr>"',
+  { desc = '漏 insert register without undo sequence', silent = true }
+)
+
+
+-- specify scope of undo change (break undo sequence on insert)
+--
 -- -- undo 0, earlier 5m, earlier 1h, later 5h, later 1f (file writes later)
 -- map('i', ',', ',<c-g>u', { category = 'Buffers', desc = 'add undo at ,' })
 -- map('i', '.', '.<c-g>u', { category = 'Buffers', desc = 'add undo at .' })
@@ -627,8 +637,6 @@ map('n', '<M-b>', '<Plug>(SmoothieUpwards)', {
   desc = ' smoothie scroll forwards',
   noremap = false,
 })
-
-
 
 map('n', '<space>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
   category = 'Motion',
@@ -935,18 +943,18 @@ map('n', '<F38>', '<Leader>Wk', {
   desc = '  toggle wf.nvim',
 })
 
-map('n', '<F3>', '<cmd>AerialToggle!float<cr>', {
-  plugin = 'aerial.nvim',
-  category = 'UI',
-  desc = '  toggle aerial sidebar',
-})
+-- map('n', '<F3>', '<cmd>AerialToggle!float<cr>', {
+--   plugin = 'aerial.nvim',
+--   category = 'UI',
+--   desc = '  toggle aerial sidebar',
+-- })
 
-map('n', '<F4>', '<cmd>Neotree show toggle<cr>', {
-  plugin = 'neo-tree',
-  category = 'UI',
-  desc = '  toggle neotree',
-})
-
+-- map('n', '<F4>', '<cmd>Neotree show toggle<cr>', {
+--   plugin = 'neo-tree',
+--   category = 'UI',
+--   desc = '  toggle neotree',
+-- })
+--
 -- ctrl+shift+f4
 map('n', '<F40>', '<cmd>lua require("oil").open_float<cr>', {
   plugin = 'oil.nvim',
@@ -954,12 +962,12 @@ map('n', '<F40>', '<cmd>lua require("oil").open_float<cr>', {
   desc = '  toggle oil file manager',
 })
 
-map('n', '<F5>', "<cmd>lua require('telescope.run')('undo', 'undo')<cr>", {
-  plugin = 'telescope.nvim',
-  category = 'UI',
-  desc = '  toggle telescope undo',
-})
-
+-- map('n', '<F5>', "<cmd>lua require('telescope.run')('undo', 'undo')<cr>", {
+--   plugin = 'telescope.nvim',
+--   category = 'UI',
+--   desc = '  toggle telescope undo',
+-- })
+--
 -- Shift-F5
 map('n', '<F17>', '<cmd>MundoToggle<cr>', {
   plugin = 'mundo',
@@ -983,11 +991,11 @@ map('n', '<F18>', '<cmd>InspectTree<cr>', {
 --------------------------------------------------------------------------------------------------
 -- QUICKFIX --------------------------------------------------------------------------------------
 
--- map('n', '<C-q>', '<cmd>lua require"qf".toggle("c", true)<CR>', {
---   category = 'Quickfix',
---   label = '  togggle quickfix',
---   desc = '  togggle quickfix window',
--- })
+map('n', '<C-q>', '<cmd>lua require"qf".toggle("c", true)<CR>', {
+  category = 'Quickfix',
+  label = '  togggle quickfix',
+  desc = '  togggle quickfix window',
+})
 -- nnoremap <leader>j <cmd>lua require'qf'.below('l')<CR> " Go to next location list entry from cursor
 -- nnoremap <leader>J <cmd>lua require'qf'.below('c')<CR> " Go to next quickfix entry from cursor
 -- nnoremap ]q <cmd>lua require'qf'.below('visible')<CR>

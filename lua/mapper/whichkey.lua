@@ -74,14 +74,14 @@ end
 
 local map = function(mode, lhs, label)
   if mode == '' then
-    wk.register({ [lhs] = { label }, { mode = 'n' } })
-    wk.register({ [lhs] = { label }, { mode = 'o' } })
-    wk.register({ [lhs] = { label }, { mode = 'v' } })
+    wk.register({ [lhs] = { label } }, { mode = 'n' })
+    wk.register({ [lhs] = { label } }, { mode = 'o' })
+    wk.register({ [lhs] = { label } }, { mode = 'v' })
   elseif mode == 'x' then
-    wk.register({ [lhs] = { label }, { mode = 'v' } })
-    wk.register({ [lhs] = { label }, { mode = 's' } })
+    wk.register({ [lhs] = { label } }, { mode = 'v' })
+    wk.register({ [lhs] = { label } }, { mode = 's' })
   else
-    wk.register({ [lhs] = { label }, { mode = mode } })
+    wk.register({ [lhs] = { label } }, { mode = mode })
   end
 end
 

@@ -54,7 +54,7 @@ local prefix = function(modes, prefix, name)
     local desc = '+' .. name
     -- vim.dbglog(mode, prefix, desc)
     records.add(true, mode, prefix, nil, { desc = desc })
-    wk.register({ [prefix] = { name = desc }, { mode = mode } })
+    wk.register({ [prefix] = { name = desc } }, { mode = mode })
   end
 end
 

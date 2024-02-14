@@ -13,7 +13,6 @@ local config = {
     --   enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
     --   suggestions = 20, -- how many suggestions should be shown in the list?
     -- },
-    presets = false,
     -- presets = {
     --   operators = true, -- adds help for operators like d, y, ...
     --   motions = true, -- adds help for motions
@@ -26,89 +25,65 @@ local config = {
     --   extra = false
     -- },
   },
+  operators = {
+    S = 'substitute  ',
+    X = 'exchange  ',
+    s = 'surround 󰅪',
+    ys = 'surround 󰅪',
+    ['cx'] = 'exchange  ',
+    ['gtoc'] = 'change to camel case',
+    ['gtod'] = 'change to dash case',
+    ['gtos'] = 'change to snake case',
+    ['gb'] = 'comments (block)  ',
+    ['gc'] = 'comments (line)  ',
+  },
   presets = {
-    -- spelling
-    --   { trigger = 'z=', mode = 'n', label = 'give spelling suggestions' },
-    -- marks
-    --   { trigger = "'", mode = "n", label = "μ,Ξ_Δ to the first CHAR on the line with mark μ" },
-    --   { trigger = "`", mode = "n", label = "μ,Ξ_Δ to the mark μ" },
-    --   { trigger = "g`", mode = "n", label = "μ,Ξ_like |'| but without changing the jumplist" },
-    --   { trigger = "g'", mode = "n", label = "μ,Ξ_like |`| but without changing the jumplist" },
-    --   ['^'] = 'Last position of cursor in insert mode',
-    --   ['.'] = 'Last change in current buffer',
-    --   ['"'] = 'Last exited current buffer',
-    --   ['0'] = 'In last file edited',
-    --   ["'"] = 'Back to line in current buffer where jumped from',
-    --   ['`'] = 'Back to position in current buffer where jumped from',
-    --   ['['] = 'To beginning of previously changed or yanked text',
-    --   [']'] = 'To end of previously changed or yanked text',
-    --   ['<lt>'] = 'To beginning of last visual selection',
-    --   ['>'] = 'To end of last visual selection',
-    -- registers
-      -- { trigger = '"', mode = 'n', label = 'λ_use λ for next delete, yank or put' },
-      -- { trigger = '@', mode = 'n', label = 'α,Ψ_execute the contents of register α N times' },
-      -- { trigger = '<c-r>', mode = 'i', label = "λ_insert a register's content" },
-      -- { trigger = '<c-r>', mode = 'c', label = "λ_insert a register's content or Δobject as if typed", },
+    -- 'text_objects',
+    -- 'windows',
+    -- 'nav',
+    -- 'z',
+    -- 'g',
     operators = function()
       return {
-        d = 'Delete',
-        c = 'Change',
-        y = 'Yank (copy)',
+        d = 'Delete ',
+        c = 'Change ',
+        y = 'Yank  ',
+        ['='] = "filter through 'equalprg'",
         ['g~'] = 'Toggle case',
         ['gu'] = 'Lowercase',
         ['gU'] = 'Uppercase',
+        ['gq'] = 'format text',
+        ['gw'] = 'format text, keep cursor',
         ['>'] = 'Indent right',
         ['<lt>'] = 'Indent left',
         ['zf'] = 'Create fold',
-        ['!'] = 'Filter through external program',
-        ['v'] = 'Visual Character Mode',
-        --- ["V"] = "Visual Line Mode",
-        -- ['c'] = 'ξ,ΛΨ_(change) delete text, start insert',
-        -- ['d'] = 'ξ,ΛΨ_delete text',
-        -- ['y'] = 'ξ,Λ_yank text',
-        -- ['!'] = 'ξζ,Ψ_filter text through the ζ command',
-        -- ['='] = "ξ,Ψ_filter lines through 'equalprg'",
-        -- ['g~'] = 'ξ,Ψ_swap case for text',
-        -- ['gU'] = 'ξ,Ψ_make text uppercase',
-        -- ['gu'] = 'ξ,Ψ_make text lowercase',
-        -- ['gq'] = 'ξ,Ψ_format text',
-        -- ['gw'] = 'ξ,Ψ_format text, keep Δ',
-        -- ['g?'] = 'ξ,Ψ_encode with Rot13',
-        -- ['g@'] = "ξ_call 'operatorfunc'",
-        -- ['zf'] = 'ξ_create a fold for text',
-        -- ['<LT>'] = "ξ,Ψ_shift lines one 'shiftwidth' leftwards",
-        -- ['>'] = "ξ,Ψ_shift lines one 'shiftwidth' rightwards",
-        -- -- ["V"] = "Visual Line Mode",
+        ['!'] = 'Filter external command',
+        -- ['v'] = 'Visual Character Mode',
+        -- ["V"] = "Visual Line Mode",
       }
     end,
-    motions = {
-      ['h'] = 'Left',
-      ['j'] = 'Down',
-      ['k'] = 'Up',
-      ['l'] = 'Right',
-      ['w'] = 'Next word',
-      ['%'] = "Matching character: '()', '{}', '[]'",
-      ['b'] = 'Previous word',
-      ['e'] = 'Next end of word',
-      ['ge'] ='Previous end of word',
-      ['0'] = 'Start of line',
-      ['^'] = 'Start of line (non-blank)',
-      ['$'] = 'End of line',
-      ['f'] = 'Move to next char',
-      ['F'] = 'Move to previous char',
-      ['t'] = 'Move before next char',
-      ['T'] = 'Move before previous char',
-      ['gg'] = 'First line',
-      ['G'] = 'Last line',
-      ['{'] = 'Previous empty line',
-      ['}'] = 'Next empty line',
-    },
-    -- 'motions',
-    'text_objects',
-    'windows',
-    'nav',
-    'z',
-    'g',
+    -- motions = {
+    --   ['h'] = 'Left',
+    --   ['j'] = 'Down',
+    --   ['k'] = 'Up',
+    --   ['l'] = 'Right',
+    --   ['w'] = 'Next word',
+    --   ['%'] = "Matching character: '()', '{}', '[]'",
+    --   ['b'] = 'Previous word',
+    --   ['e'] = 'Next end of word',
+    --   ['ge'] ='Previous end of word',
+    --   ['0'] = 'Start of line',
+    --   ['^'] = 'Start of line (non-blank)',
+    --   ['$'] = 'End of line',
+    --   ['f'] = 'Move to next char',
+    --   ['F'] = 'Move to previous char',
+    --   ['t'] = 'Move before next char',
+    --   ['T'] = 'Move before previous char',
+    --   ['gg'] = 'First line',
+    --   ['G'] = 'Last line',
+    --   ['{'] = 'Previous empty line',
+    --   ['}'] = 'Next empty line',
+    -- },
   },
   ignore_missing = false,
   -- autokey replacements
@@ -120,34 +95,7 @@ local config = {
     i = { 'j', 'k' },
     v = { 'j', 'k' },
   },
-  operators = {
-    gc = 'comments',
-    S = 'substitute',
-    c = "Change",
-    -- s = 'surround',
-    -- ["g@"] = "operatorfunc",
-
-    --
-    -- |c|	c	change
-    -- |d|	d	delete
-    -- |y|	y	yank into register (does not change the text)
-    -- |~|	~	swap case (only if 'tildeop' is set)
-    -- |g~|	g~	swap case
-    -- |gu|	gu	make lowercase
-    -- |gU|	gU	make uppercase
-    -- |!|	!	filter through an external program
-    -- |=|	=	filter through 'equalprg' or C-indenting if empty
-    -- |gq|	gq	text formatting
-    -- |gw|	gw	text formatting with no cursor movement
-    -- |g?|	g?	ROT13 encoding
-    -- |g@|	g@	call function set with the 'operatorfunc' option
-    -- |zf|	zf	define a fold
-    -- |>|	>	shift right
-    -- |<|	<	shift left
-    },
   triggers_nowait = {
-    -- 'c',
-    -- 'y',
     -- marks
     '`',
     "'",
@@ -160,18 +108,20 @@ local config = {
     'z=',
   },
   key_labels = {
-    ['telescope'] = ' ',
-    ['Telescope'] = ' ',
-    ['operator']  = '',
-    ['<CR>']      = '↵',
-    ['<BS>']      = '⌫',
-    ['<Tab>']     = '󰌒',
-    ['<Esc>']     = '⎋',
-    -- ['<space>']   = '󱁐',
+    ['telescope']     = ' ',
+    ['Telescope']     = ' ',
+    ['operator']      = '',
+    ['<CR>']          = '↵',
+    ['<BS>']          = '⌫',
+    ['<Tab>']         = '󰌒',
+    ['<Esc>']         = '⎋',
+    -- ['<space>']    = '󱁐',
+    ['<S-PageDown>']  = '<S-PgDown>',
+    ['<S-PageUp>']    = '<S-PgUp>',
     ['<PageDown>']    = '<PgDown>',
     ['<PageUp>']      = '<PgUp>',
-    ['<M-Bslash>']     = '<M-\\>',
-    ['<C-Bslash>']     = '<C-\\>',
+    ['<M-Bslash>']    = '<M-\\>',
+    ['<C-Bslash>']    = '<C-\\>',
     ['<space>']       = 'SPC',
     ['<M-Space>']     = 'M-SPC',
     ['<C-Space>']     = 'C-SPC',
@@ -205,12 +155,15 @@ local config = {
     '<ScrollWheelUp>'
   },
   popup_mappings = {
-    scroll_down = '<C-S-Down>', -- binding to scroll down inside the popup
-    scroll_up = '<C-S-Up>', -- binding to scroll up inside the popup
-    page_down = '<M-f>', -- binding to scroll down inside the popup
-    page_up = '<M-b>', -- binding to scroll up inside the popup
+    debug_mode   = '<F3>',       -- show detailed keymapping information
+    options_menu = '<F2>',       -- launch options menu
+    launch_wk    = '<F1>',       -- launch which-key manually
+    help_menu    = '<M-C-_>',    -- binding to scroll down inside the popup
+    scroll_down  = '<C-S-Down>', -- binding to scroll down inside the popup
+    scroll_up    = '<C-S-Up>',   -- binding to scroll up inside the popup
+    page_down    = '<M-f>',      -- binding to scroll down inside the popup
+    page_up      = '<M-b>',      -- binding to scroll up inside the popup
   },
-  show_help = true, -- show a help message in the command line for using WhichKey,
   popup_user_mappings = {
     ['<M-C-_>'] = function(key, mode)
       require('telescope.builtin').keymaps {
@@ -288,23 +241,52 @@ local config = {
 
 require('which-key').setup(config)
 
-require('which-key').register({ ['<C-Q>'] = { name = '+Test' }, { mode = 'n' } })
 _G._wk_timing = function()
-  local state = require('which-key.view').state
-  local lineout = ''
-  if state.timing.show_n > 0 then
-    lineout = lineout .. string.format('**show**   `%.4f` %2d', state.timing.show_average, state.timing.show_n)
-  end
-  if state.timing.keys_n > 0 then
-    lineout = lineout ~= '' and lineout .. '\n' or lineout
-    lineout = lineout .. string.format('**keys**   `%.4f` %2d', state.timing.keys_average, state.timing.keys_n)
-  end
-  if lineout ~= '' then
-    vim.notify(lineout, vim.log.levels.INFO, {
-      filetype = 'markdown',
-    })
-  end
+  vim.dbg(require('which-key.logger').timing_summary())
 end
+
+local get_hooks = function()
+  local all_hooks = require('which-key.keys.hooks')
+  local hooks = {}
+  for _, key in ipairs({ 'nop', 'auto', 'fast' }) do
+    for k, _ in pairs(all_hooks['hooked_' .. key]) do
+      local mode = k:sub(1, 1)
+      if type(tonumber(k:sub(2, 2))) == 'number' then
+        local pfx = 'buf_' .. k:sub(2, 2)
+        hooks[pfx] = hooks[pfx] or {}
+        hooks[pfx][mode] = hooks[pfx][mode] or {}
+        hooks[pfx][mode][k:sub(3)] = key
+      else
+        hooks[mode] = hooks[mode] or {}
+        hooks[mode][k:sub(2)] = key
+      end
+    end
+  end
+  return hooks
+end
+
+_G._wk_counts = function()
+  local counts = require('which-key.mapper').get_counts()
+  local hooks = get_hooks()
+  for key, val in pairs(hooks) do
+    if key:match('^buf_') then
+      counts['hook_' .. key] = counts['hook_' .. key] or {}
+      for k, v in pairs(val) do
+        counts['hook_' .. key][k] = #vim.tbl_keys(v)
+      end
+    else
+      counts['hook_' .. key] = #vim.tbl_keys(val)
+    end
+  end
+  vim.dbg(counts)
+end
+
+_G._wk_hooks = function()
+  local hooks = get_hooks()
+  vim.dbg(hooks)
+end
+
+-- require('which-key').register({ ['<C-Q>'] = { name = '+Test' }, { mode = 'n' } })
 
 -- :WhichKey " show all mappings
 -- :WhichKey <leader> " show all <leader> mappings

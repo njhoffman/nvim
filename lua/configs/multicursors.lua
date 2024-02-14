@@ -14,7 +14,14 @@ local default = {
   -- extend_keys = extend_keys,
   -- see :help hydra-config.hint
   hint_config = {
-    border = 'none',
+    float_opts = {
+      -- row, col, height, width, relative, and anchor should not be
+      -- overridden
+      border = 'rounded',
+      style = 'minimal',
+      focusable = false,
+      noautocmd = true,
+    },
     position = 'bottom',
   },
   -- accepted values:
@@ -46,7 +53,14 @@ local N = require('multicursors.normal_mode')
 
 local cfg = {
   hint_config = {
-    border = 'rounded',
+    float_opts = {
+      -- row, col, height, width, relative, and anchor should not be
+      -- overridden
+      border = 'rounded',
+      style = 'minimal',
+      focusable = false,
+      noautocmd = true,
+    },
     position = 'bottom-right',
   },
   generate_hints = {

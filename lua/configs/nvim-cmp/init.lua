@@ -1,8 +1,3 @@
--- merge: https://github.com/hrsh7th/cmp-cmdline/pull/25
--- https://github.com/hrsh7th/cmp-cmdline/pull/99
--- https://github.com/hrsh7th/cmp-cmdline/pull/76
--- https://github.com/hrsh7th/cmp-cmdline/pull/83
-
 local cmp = require('cmp')
 
 local debug_flag = false
@@ -63,28 +58,24 @@ local is_enabled = function()
     or cmp.close()
 end
 
--- 	local is_enabled = require("util.cmp").is_enabled
--- 	local cmp_tailwind = require("tailwindcss-colorizer-cmp")
--- 	local cmp_ai = require("cmp_ai.config")
--- If you want insert `(` after select function or method item
--- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
--- cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
-local Kind = cmp.lsp.CompletionItemKind
-local function ls_name_from_event(event)
-  return event.entry.source.source.client.config.name
+local append_parenthesis = function()
+  local Kind = cmp.lsp.CompletionItemKind
+  local function ls_name_from_event(event)
+    return event.entry.source.source.client.config.name
+  end
+  -- Add parenthesis on completion confirmation
+  cmp.event:on('confirm_done', function(event)
+    local ok, ls_name = pcall(ls_name_from_event, event)
+    if ok and vim.tbl_contains({ 'rust_analyzer' }, ls_name) then
+      return
+    end
+    local completion_kind = event.entry:get_completion_item().kind
+    if vim.tbl_contains({ Kind.Function, Kind.Method }, completion_kind) then
+      local left = vim.api.nvim_replace_termcodes('<Left>', true, false, true)
+      vim.api.nvim_feedkeys('()' .. left, 'n', false)
+    end
+  end)
 end
--- Add parenthesis on completion confirmation
-cmp.event:on('confirm_done', function(event)
-  local ok, ls_name = pcall(ls_name_from_event, event)
-  if ok and vim.tbl_contains({ 'rust_analyzer' }, ls_name) then
-    return
-  end
-  local completion_kind = event.entry:get_completion_item().kind
-  if vim.tbl_contains({ Kind.Function, Kind.Method }, completion_kind) then
-    local left = vim.api.nvim_replace_termcodes('<Left>', true, false, true)
-    vim.api.nvim_feedkeys('()' .. left, 'n', false)
-  end
-end)
 
 local cfg = {
   autocomplete = {
@@ -93,15 +84,13 @@ local cfg = {
   },
   enabled = is_enabled,
   performance = {
-    debounce = 200,
-    throttle = 100,
+    trigger_debounce = 300,
+    debounce = 100, --60
+    throttle = 50, --30
     max_view_entries = 200,
-    -- debounce = 60,
-    -- throttle = 30,
-    -- fetching_timeout = 500,
+    fetching_timeout = 200,
+    async_budget = 1,
     -- confirm_resolve_timeout = 80,
-    -- async_budget = 1,
-    -- max_view_entries = 200,
   },
   matching = {
     -- disallow_fuzzy_matching = false,
@@ -240,7 +229,6 @@ cmp.setup.cmdline(':', {
 })
 
 local function toggle_autocomplete()
-  local cmp = require('cmp')
   local current_setting = cmp.get_config().completion.autocomplete
   if current_setting and #current_setting > 0 then
     cmp.setup({ completion = { autocomplete = false } })

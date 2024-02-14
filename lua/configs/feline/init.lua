@@ -11,8 +11,7 @@ local custom_providers = {
   project = require('configs.feline.provider-project').provider,
   neocomposer = require('configs.feline.provider-neocomposer').provider,
   ascii = require('configs.feline.provider-ascii').provider,
-  -- helptags = require('configs.feline.provider-helptags').provider,
-  selection_count = require('configs.feline.provider-selection_count').provider,
+  line_count = require('configs.feline.provider-line_count').provider,
 }
 
 -- bg_jobs, cmdline and qf components
@@ -68,17 +67,10 @@ local custom_providers = {
 -- 		}
 -- 	end,
 -- }
---
 -- components.active[1][2] = {
 -- 	provider = function() return mode_colors[vim.fn.mode()][1] .. " " end,
 -- 	hl = vi_mode_hl,
 -- }
--- https://github.com/folke/noice.nvim/issues/359
--- {
---     function() return require("noice").api.status.command.get() end,
---     cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
---     color = fg("Statement")
--- },
 -- { "selectioncount", fmt = function(str) return str ~= "" and "礪" .. str or "" end },
 
 local status_comps = vim.deepcopy(defaults)
@@ -91,18 +83,19 @@ status_comps.active[1][4].left_sep = {
   str = ' ',
 }
 
-table.insert(status_comps.active[1], 7, custom_status_comps.FiletypeComponent)
 -- { provider = 'diagnostic_errors', hl = { fg = 'red' } },
 -- { provider = 'diagnostic_warnings', hl = { fg = 'yellow' } },
 -- { provider = 'diagnostic_hints', hl = { fg = 'cyan' } }
 -- { provider = 'diagnostic_info', hl = { fg = 'skyblue' } },
-table.insert(status_comps.active[1], 12, custom_status_comps.AsciiComponent)
+table.insert(status_comps.active[1], 7, custom_status_comps.AsciiComponent)
+table.insert(status_comps.active[1], 8, custom_status_comps.LineCountComponent)
 -- -- status_comps.active[2][2] = custom_status_comps.NeoComposerComponent
 -- status_comps.active[2][1] = custom_status_comps.HelpTagsComponent
 -- status_comps.active[2][2] = custom_status_comps.LspReferencesComponent
 -- status_comps.active[2][2] = custom_status_comps.LspCodeActionsComponent
 status_comps.active[2][1] = custom_status_comps.MacroComponent
-status_comps.active[2][2] = custom_status_comps.FelineCmdComponent
+-- status_comps.active[2][2] = custom_status_comps.FelineCmdComponent
+status_comps.active[2][2] = custom_status_comps.FiletypeComponent
 status_comps.active[2][3] = custom_status_comps.NoiceComponent
 status_comps.active[2][4] = custom_status_comps.GitBranchComponent
 status_comps.active[2][5] = custom_status_comps.GitDiffAddedComponent

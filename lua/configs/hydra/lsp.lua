@@ -118,7 +118,14 @@ local hydra = function()
       hint = {
         funcs = funcs,
         type = 'window',
-        border = 'rounded',
+        float_opts = {
+          -- row, col, height, width, relative, and anchor should not be
+          -- overridden
+          border = 'rounded',
+          style = 'minimal',
+          focusable = false,
+          noautocmd = true,
+        },
         position = 'middle',
       },
       on_enter = function()

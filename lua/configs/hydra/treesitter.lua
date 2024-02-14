@@ -142,7 +142,14 @@ local new_hydra = {
   config = {
     hint = {
       position = 'middle-right',
-      border = border,
+      float_opts = {
+        -- row, col, height, width, relative, and anchor should not be
+        -- overridden
+        border = border,
+        style = 'minimal',
+        focusable = false,
+        noautocmd = true,
+      },
     },
     timeout = false,
     invoke_on_body = true,

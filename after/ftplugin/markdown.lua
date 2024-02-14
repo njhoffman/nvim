@@ -48,8 +48,23 @@ vim.g.markdown_fenced_languages = {
   'yaml',
   'zsh',
 }
-vim.api.nvim_set_option_value('conceallevel', 3, { win = 0 })
---
+
+local toggle_headers = function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local winnr = vim.api.nvim_get_current_win()
+  local current_syn = vim.api.nvim_get_option_value('syntax', { buf = bufnr })
+  if current_syn == 'pandoc' then
+    require('headlines').setup({ markdown = { bullets = { '◉', '○', '✸', '✿' } } })
+    vim.api.nvim_set_option_value('syntax', 'markdown', { buf = bufnr })
+  else
+    require('headlines').setup({ markdown = { bullets = {} } })
+    vim.api.nvim_set_option_value('syntax', 'pandoc', { buf = bufnr })
+  end
+  vim.api.nvim_set_option_value('conceallevel', 3, { win = winnr })
+end
+
+vim.keymap.set('n', '<M-^>', toggle_headers, { desc = 'toggle between markdown bullets/flat headers', buffer = true })
+
 -- local toggle_todo = function()
 --   local linenr = vim.api.nvim_win_get_cursor(0)[1]
 --   local curline = vim.api.nvim_buf_get_lines(0, linenr - 1, linenr, false)[1]

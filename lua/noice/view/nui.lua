@@ -369,9 +369,11 @@ function NuiView:show()
     self:mount()
   end
 
-  vim.bo[self._nui.bufnr].modifiable = true
-  self:render(self._nui.bufnr)
-  vim.bo[self._nui.bufnr].modifiable = false
+  if type(self._nui.bufnr) == 'number' then
+    vim.api.nvim_set_option_value('modifiable', true, { buf = self._nui.bufnr })
+    self:render(self._nui.bufnr)
+    vim.api.nvim_set_option_value('modifiable', false, { buf = self._nui.bufnr })
+  end
 
   self._nui:show()
   if not self._nui.winid then

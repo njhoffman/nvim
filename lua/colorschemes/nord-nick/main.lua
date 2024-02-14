@@ -159,6 +159,7 @@ return function(injected_functions)
     CursorLine({ bg = '#061028' }),
     CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
     Cursor({ bg = '#4B5Bff' }),
+    ReactiveCursor({}),
     CursorColumn({ bg = CursorLine.bg }),
     ColorColumn({ bg = CursorLine.bg }),
     -- base groups
@@ -185,7 +186,7 @@ return function(injected_functions)
     Identifier({ fg = '#5e88b6' }),
     IncSearch({ fg = '#eceff4', bg = '#5d61ec' }),
     Include({ fg = '#4774c6' }),
-    Keyword({ fg = '#4177b2' }),
+    Keyword({ fg = '#1167a2' }),
     KeywordFunction({ fg = '#2D88BF' }),
     KeywordReturn({ fg = '#2D81BC' }),
     Label({ fg = '#3377ba' }),
@@ -862,6 +863,7 @@ return function(injected_functions)
     WhichKeyDesc({ fg = '#5d79a1', gui = 'italic' }), -- Identifier
     WhichKeySeperator({ fg = '#334664', gui = 'bold' }), -- DiffAdded
     WhichKeyFloat({ bg = NormalFloat.bg }), -- NormalFloat
+    WhichKeyCursorLine({ bg = '#0a2446', gui = 'bold' }),
     --     WhichKeyGroup = { fg = clrs.text },
     --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
     --     WhichKeySeperator = { fg = clrs.fg },

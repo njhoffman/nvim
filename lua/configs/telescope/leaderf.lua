@@ -2,6 +2,7 @@ local devicons = require('nvim-web-devicons')
 local entry_display = require('telescope.pickers.entry_display')
 
 -- TODO: make option for directory being common prefix, cwd .. directory, project .. directory
+-- TODO: special highlighting for alternate file assignment, add last time edited
 
 local filter = vim.tbl_filter
 local map = vim.tbl_map
@@ -32,13 +33,14 @@ local function gen_from_buffer(opts)
     return 1 == vim.fn.buflisted(b)
   end, vim.api.nvim_list_bufs())
 
-  local max_bufnr = math.max(unpack(bufnrs))
+  local max_bufnr = math.max(unpack(bufnrs) or 0)
   local bufnr_width = #tostring(max_bufnr)
-
-  local max_bufname = math.max(unpack(map(function(bufnr)
+  local bufnames = map(function(bufnr)
     return vim.fn.strdisplaywidth(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ':p:t'))
-  end, bufnrs)))
+  end, bufnrs)
 
+  local max_bufname = math.max(unpack(bufnames))
+  vim.dbglog(max_bufname, bufnames)
   local dirs = map(function(bufnr)
     local dir_name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ':p:h') .. '/'
     return dir_name:gsub(os.getenv('HOME'), '~')

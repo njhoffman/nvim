@@ -172,3 +172,4 @@ return setmetatable(M, {
             return waiting
         end
     end,
+  })

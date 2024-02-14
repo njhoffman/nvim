@@ -178,7 +178,14 @@ return function(use)
       -- Hint Options that are shared by all Hydras.
       local hint_options = {
         position = 'bottom',
-        border = 'solid',
+        float_opts = {
+          -- row, col, height, width, relative, and anchor should not be
+          -- overridden
+          border = 'rounded',
+          style = 'minimal',
+          focusable = false,
+          noautocmd = true,
+        },
         offset = 1,
       }
 

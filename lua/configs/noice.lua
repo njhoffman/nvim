@@ -249,6 +249,12 @@ noice_mapping.setup()
 
 vim.api.nvim_create_user_command('Silence', function()
   vim.diagnostic.disable()
+  local notify_stats = {
+    history = require('notify').pending(),
+    pending = require('notify').history(),
+    -- { filetype = "markdown", icon = "", id = 3, level = "INFO", message = { "Live commands", "   ➜ `Norm <keys>`", "   ➜ `5Reg a`", "   ➜ `G/^$/d`", "   ➜ `%Spattern/replace`" }, render = <function 3>, time = 1707851316, title = { "format", "13:08:36" } }
+  }
+  require('notify').dismiss({})
   require('notify').setup({ level = 5 })
   require('noice').setup({
     routes = {

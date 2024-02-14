@@ -16,7 +16,7 @@ local scopes = {
   lab                     = { main = 2 },
   root                    = { main = -1 },
   -- telescope            = { main = -1 },
-  -- reactive             = { main = 1 },
+  reactive                = { main = -1, module = 1 },
   tail                    = { main = 0 },
   whichkey                = { main = 1 },
 }

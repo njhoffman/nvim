@@ -137,7 +137,23 @@ local default_cfg = {
 -- TODO: make gradient headlines
 local config = {
   markdown = {
-    headline_highlights = { 'Headline1', 'Headline2', 'Headline3', 'Headline4', 'Headline5', 'Headline6' },
+    bullet_highlights = {
+      '@text.title.1.marker.markdown',
+      '@text.title.2.marker.markdown',
+      '@text.title.3.marker.markdown',
+      '@text.title.4.marker.markdown',
+      '@text.title.5.marker.markdown',
+      '@text.title.6.marker.markdown',
+    },
+    bullets = { '◉', '○', '✸', '✿' },
+    headline_highlights = {
+      'Headline1',
+      'Headline2',
+      'Headline3',
+      'Headline4',
+      'Headline5',
+      'Headline6',
+    },
     -- codeblock_highlight = 'CodeBlock',
     -- dash_highlight = 'Dash',
     -- dash_string = '-',
@@ -150,7 +166,15 @@ local config = {
     -- (lower blocks) ▃ ▁▂▃▄▅▆▇█  (upper blocks)▔🬂▀
   },
   pandoc = {
-    headline_highlights = { 'Headline1', 'Headline2', 'Headline3', 'Headline4', 'Headline5', 'Headline6' },
+    headline_highlights = {
+      'Headline1',
+      'Headline2',
+      'Headline3',
+      'Headline4',
+      'Headline5',
+      'Headline6',
+    },
+    bullets = {},
   },
   org = {
     headline_highlights = { 'Headline1', 'Headline2' },

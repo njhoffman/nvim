@@ -15,56 +15,63 @@ end
 function create_buffer(choices)
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, choices)
-  vim.api.nvim_buf_set_option(buf, "modifiable", false)
-  vim.api.nvim_buf_set_option(buf, "modified", false)
+  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+  vim.api.nvim_buf_set_option(buf, 'modified', false)
   return buf
 end
 
 function create_window(bufnr, height, width)
-  local anchor = "NW"
+  local anchor = 'NW'
 
   local winid = vim.api.nvim_open_win(bufnr, true, {
-    relative = "win",
+    relative = 'win',
     row = 0,
     col = 0,
     anchor = anchor,
     width = width,
     height = height,
-    style = "minimal",
-    border = "rounded",
+    style = 'minimal',
+    float_opts = {
+      -- row, col, height, width, relative, and anchor should not be
+      -- overridden
+      border = 'rounded',
+      style = 'minimal',
+      focusable = false,
+      noautocmd = true,
+    },
     focusable = true,
     noautocmd = true,
   })
-  vim.api.nvim_win_set_option(winid, "cursorline", true)
-  vim.api.nvim_win_set_option(winid, "winhl", "NormalFloat:TelescopePromptNormal,FloatBorder:TelescopePromptBorder")
-  vim.api.nvim_exec("stopinsert", true)
+  vim.api.nvim_win_set_option(winid, 'cursorline', true)
+  vim.api.nvim_win_set_option(winid, 'winhl', 'NormalFloat:TelescopePromptNormal,FloatBorder:TelescopePromptBorder')
+  vim.api.nvim_exec('stopinsert', true)
   return winid
 end
 
 function handle_window(bufnr, winid, selection_callback)
-  vim.api.nvim_create_autocmd({ "BufEnter", "BufLeave", "FocusLost" }, {
+  vim.api.nvim_create_autocmd({ 'BufEnter', 'BufLeave', 'FocusLost' }, {
     buffer = bufnr,
     callback = function()
       vim.api.nvim_win_close(winid, true)
       vim.api.nvim_buf_delete(bufnr, { force = true })
     end,
   })
-  for _, k in ipairs({ "<Esc>", "q" }) do
-    vim.keymap.set("", k, function()
-      vim.api.nvim_exec_autocmds("FocusLost", { buffer = bufnr })
+  for _, k in ipairs({ '<Esc>', 'q' }) do
+    vim.keymap.set('', k, function()
+      vim.api.nvim_exec_autocmds('FocusLost', { buffer = bufnr })
     end, { buffer = bufnr })
   end
 
-  vim.keymap.set("", "<Tab>", function()
+  vim.keymap.set('', '<Tab>', function()
     scroll(bufnr, winid, false)
   end, { buffer = bufnr })
-  vim.keymap.set("", "<S-Tab>", function()
+  vim.keymap.set('', '<S-Tab>', function()
     scroll(bufnr, winid, true)
   end, { buffer = bufnr })
 
-  vim.keymap.set("", "<CR>", function()
+  vim.keymap.set('', '<CR>', function()
     local line = vim.api.nvim_get_current_line()
-    vim.api.nvim_exec_autocmds("FocusLost", { buffer = bufnr })
+    vim.api.nvim_exec_autocmds('FocusLost', { buffer = bufnr })
     selection_callback(line)
   end, {
     buffer = bufnr,

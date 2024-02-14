@@ -3,6 +3,7 @@ local provider_git = require('configs.feline.provider-git')
 local provider_lsp_references = require('configs.feline.provider-lsp-references')
 -- local provider_lsp_code_actions = require('configs.feline.provider-lsp-code-actions')
 local provider_helptags = require('configs.feline.provider-helptags')
+local provider_line_count = require('configs.feline.provider-line_count')
 
 local M = {}
 
@@ -124,22 +125,19 @@ M.ProjectComponent = {
 M.GitBranchComponent = {
   provider = provider_git.git_branch,
   hl = {
-    fg = '#56b6c2',
-    bg = 'black',
+    fg = '#3696c2',
     style = 'bold',
   },
   left_sep = {
-    str = ' ',
+    str = '  ',
     hl = {
       fg = 'NONE',
-      bg = 'black',
     },
   },
   right_sep = {
     str = ' ',
     hl = {
       fg = 'NONE',
-      bg = 'black',
     },
   },
 }
@@ -264,6 +262,17 @@ M.SearchCountComponent = {
     bg = 'black',
   },
   left_sep = invi_sep,
+}
+
+M.LineCountComponent = {
+  enabled = function()
+    return vim.api.nvim_win_get_width(0) > 80
+  end,
+  hl = provider_line_count.get_hl,
+  update = provider_line_count.update,
+  provider = 'line_count',
+  left_sep = '',
+  right_sep = ' ',
 }
 
 M.ViMode = {

@@ -73,7 +73,7 @@ M.dbg = function(...)
   end
 
   local lines = vim.split(notify_msg, '\n')
-  if #lines >= currheight then
+  if false and #lines >= currheight then
     notify_msg = table.concat(vim.list_slice(lines, 0, currheight - 3), '\n')
     notify_msg = notify_msg .. '\n...' .. #lines .. ' more lines not shown'
   end -- notify.dismiss()

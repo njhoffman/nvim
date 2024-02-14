@@ -31,6 +31,22 @@ function M:set_opfunc(opfunc)
   self.current_opfunc = opfunc
 end
 
+function M.get_opfunc()
+  local reactive = require('reactive')
+  local matched = nil
+  if type(reactive.opfunc_list) == 'table' then
+    local opfunc = tostring(vim.opt.operatorfunc._value):gsub('"', "'")
+    for k, v in pairs(reactive.opfunc_list) do
+      local func = v:gsub('"', "'")
+      if opfunc == func then
+        matched = k
+        break
+      end
+    end
+  end
+  return M.current_opfunc or matched
+end
+
 ---@param opts? { inactive_win?: boolean, callbacks?: boolean }
 ---@return table<any>
 function M:gen(opts)
@@ -203,8 +219,7 @@ function M:gen(opts)
     end)
   end
 
-  -- self.current_opfunc = nil
-
+  self.current_opfunc = nil
   return self.snapshot
 end
 
@@ -213,20 +228,26 @@ end
 ---@param inc_mode_config Reactive.ModeConfig
 ---@param constraints TriggerConstraints<boolean>
 function M:merge_snapshot(preset_name, inc_mode, inc_mode_config, constraints, virtual_op)
-  if Util.is_op(inc_mode) and inc_mode_config.operators then
-    local op = virtual_op and virtual_op or vim.v.operator
+  -- if Util.is_op(inc_mode) and inc_mode_config.operators then
+  if inc_mode == 'no' or inc_mode == 'o' and inc_mode_config.operators then
+    local op = virtual_op or vim.v.operator
+    local opfunc = M.get_opfunc()
+    if string.match(virtual_op or '', '^g@') then
+      op, opfunc = virtual_op:match('^(g@)(.*)')
+    end
 
+    vim.dbglog('merge', inc_mode, op, opfunc)
     if op and inc_mode_config.operators[op] then
       if
         op == 'g@'
-        and self.current_opfunc
+        and opfunc
         and inc_mode_config.operators[op].opfuncs
-        and inc_mode_config.operators[op].opfuncs[self.current_opfunc]
+        and inc_mode_config.operators[op].opfuncs[opfunc]
       then
         self:form_snapshot(
           preset_name,
-          inc_mode_config.operators[op].opfuncs[self.current_opfunc],
-          ('@mode.%s.@op.g@.%s'):format(inc_mode, self.current_opfunc),
+          inc_mode_config.operators[op].opfuncs[opfunc],
+          ('@mode.%s.@op.g@.%s'):format(inc_mode, opfunc),
           constraints
         )
       else

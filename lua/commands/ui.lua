@@ -21,7 +21,6 @@ local function check_nav_split(movement_key)
     local mapkeys = keymap[movement_key]
     local keys = { tmux_view = mapkeys[1] }
     -- only check one direction for split if navigating
-    vim.dbglog('nav split', { movement_key, curr_win, keys.tmux_view })
     if vim.fn.winnr(movement_key) ~= curr_win then
       vim.cmd('wincmd ' .. movement_key)
     else
@@ -59,6 +58,26 @@ local function check_resize_split(navigation_key)
   end
 end
 
+local function numberOfWins()
+  local count = 0
+  local wins = vim.api.nvim_list_wins()
+  for _, win in pairs(wins) do
+    local winConf = vim.api.nvim_win_get_config(win)
+    local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win))
+
+    if bufname and bufname ~= '' and not winConf.external and winConf.focusable and vim.api.nvim_win_is_valid(win) then
+      count = count + 1
+    end
+  end
+  return count
+end
+
+local auto_close = {
+  'qf',
+  'help',
+  'notify',
+}
+
 local get_splits = function(directions)
   -- let window_count = winnr('$')
   -- let prev_window = winnr('#')
@@ -75,7 +94,6 @@ local get_splits = function(directions)
     'aerial',
     'NeoTree',
     'nerdtree',
-    'qf',
     'query',
   }
 
@@ -86,7 +104,8 @@ local get_splits = function(directions)
     local testwinid = vim.fn.win_getid(testwin)
     if curwin ~= testwinid and not vim.tbl_contains(splits, testwinid) then
       local bufid = vim.api.nvim_win_get_buf(testwinid)
-      local ft = vim.api.nvim_buf_get_option(bufid, 'filetype')
+      -- local ft = vim.api.nvim_buf_get_option(bufid, 'filetype')
+      local ft = vim.api.nvim_get_option_value('filetype', { buf = bufid })
       if not vim.tbl_contains(ignored_splits_ft, ft) then
         table.insert(splits, testwinid)
       end
@@ -103,18 +122,21 @@ local close_multi = function(skip_prompt)
   local curr_win = vim.api.nvim_get_current_win()
   local is_popup = vim.tbl_get(vim.api.nvim_win_get_config(curr_win), 'relative') ~= ''
   if #tabs > 1 then
-    vim.cmd('silent ' .. cmd .. '')
+    vim.cmd('silent! ' .. cmd .. '')
     vim.cmd('tabclose!')
     return
   end
+  local ft = vim.bo.filetype
 
-  if is_popup then
+  if vim.tbl_contains(auto_close, ft) then
+    pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
+  elseif is_popup then
     pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
   elseif #splits > 1 then
     pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
   else
     if skip_prompt == true then
-      vim.cmd('silent ' .. cmd .. '!')
+      vim.cmd('silent! ' .. cmd .. '!')
       if #get_loaded_buffers() == 0 then
         vim.cmd('exit')
       end
@@ -122,13 +144,13 @@ local close_multi = function(skip_prompt)
       if #get_loaded_buffers() > 0 then
         local ok, err = pcall(vim.cmd, 'silent ' .. cmd) --[[  .. '!' ]]
         if not ok then
-          vim.notify('close_multi failed: silent ' .. cmd .. ' ' .. vim.inspect(err), 3)
+          vim.notify('close_multi failed: silent ' .. cmd .. ' ' .. vim.inspect(err), 1)
         end
       end
     end
   end
   if #get_loaded_buffers() == 0 then
-    vim.cmd('Alpha')
+    vim.cmd('silent! Alpha')
   end
 end
 

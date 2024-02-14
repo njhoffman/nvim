@@ -117,7 +117,14 @@ local hydra = function()
       color = 'amaranth', -- amaranth, teal, pink, red, blue
       invoke_on_body = true,
       hint = {
-        border = 'rounded',
+        float_opts = {
+          -- row, col, height, width, relative, and anchor should not be
+          -- overridden
+          border = 'rounded',
+          style = 'minimal',
+          focusable = false,
+          noautocmd = true,
+        },
         position = 'middle',
       },
     },

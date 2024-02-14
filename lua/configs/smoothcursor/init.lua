@@ -26,11 +26,11 @@ local cfg = {
   disable_float_win = true, -- Disable in floating windows
   -- TODO: configure flyin effect with different colors and transparency
   -- flyin_effect      = 'bottom',   -- Choose "bottom" or "top" for flying effect
-  speed             = 65,    -- (25) Max speed is 100 to stick with your current position
-  intervals         = 25,    -- (35) Update intervals in milliseconds
+  speed             = 25,    -- (25) Max speed is 100 to stick with your current position
+  intervals         = 45,    -- (35) Update intervals in milliseconds
   cursor            = '▷',   --  ▷ Cursor shape (requires Nerd Font). Disabled in fancy mode.
   timeout           = 2000,  -- (3000) timeout for animations
   disabled_filetypes = { "TelescopePrompt", "NvimTree", 'qf' }
 }
--- require('smoothcursor').setup(cfg)
--- require('configs.smoothcursor.mode-changed')
+require('smoothcursor').setup(cfg)
+require('configs.smoothcursor.mode-changed')

@@ -1,3 +1,7 @@
+if true then
+  return false
+end
+
 -- qrs
 local defaults = {
   default_keymaps = true, -- Create default keymaps.

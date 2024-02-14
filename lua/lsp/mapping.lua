@@ -29,10 +29,10 @@ local mapping = {
     map('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   end,
   references = function()
-    map('n', 'gqr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    opts.desc = 'lsp references in quickfix'
+    map('n', 'gQr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
     -- references and definitions taken care of in plugin
     if not use_defref_plugin then
-      opts.desc = 'lsp references in quickfix'
       if is_installed('telescope.nvim') then
         opts.desc = 'lsp references in telescope'
         map('n', 'gr', "<cmd>lua require('telescope.run')('builtin', 'lsp_references')<cr>", opts)
@@ -47,7 +47,7 @@ local mapping = {
   end,
   implementation = function()
     opts.desc = 'lsp implementations in quickfix'
-    map('n', 'gqi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+    map('n', 'gQi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
     if vim.fn.exists(':Telescope') then
       opts.desc = 'lsp implementations in telescope'
       map('n', 'gI', "<cmd>lua require('telescope.run')('builtin', 'lsp_definitions')<cr>", opts)
@@ -61,7 +61,7 @@ local mapping = {
   end,
   type_definition = function()
     opts.desc = 'lsp type definitions in quickfix'
-    map('n', 'gqt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+    map('n', 'gQt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
     if vim.fn.exists(':Telescope') then
       opts.desc = 'lsp type definitions in telescope'
       map('n', 'gy', "<cmd>lua require('telescope.run')('builtin', 'lsp_type_definitions')<cr>", opts)
@@ -74,10 +74,10 @@ local mapping = {
     map('n', 'gPt', "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", opts)
   end,
   definition = function()
-    map('n', 'gqd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    opts.desc = 'lsp definitions in quickfix'
+    map('n', 'gQd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
     -- handled in plugin
     if not use_defref_plugin then
-      opts.desc = 'lsp definitions in quickfix'
       if vim.fn.exists(':Telescope') then
         opts.desc = 'lsp definitions in telescope'
         map('n', 'gd', "<cmd>lua require('telescope.run')('builtin', 'lsp_definitions')<cr>", opts)

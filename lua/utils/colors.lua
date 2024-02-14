@@ -1,13 +1,13 @@
 -- https://github.com/psliwka/termcolors.nvim/blob/master/lua/termcolors.lua
 
-local vivid = require("utils.colors-vivid")
+local vivid = require('utils.colors-vivid')
 
 local termcolors = {}
 
 local function color_from_syntax(name, type)
-  type = type or "fg"
+  type = type or 'fg'
   local result = vim.api.nvim_eval('synIDattr(synIDtrans(hlID("' .. name .. '")), "' .. type .. '#")')
-  if result == "" then
+  if result == '' then
     return nil
   else
     return result
@@ -15,7 +15,7 @@ local function color_from_syntax(name, type)
 end
 
 local function hex_to_rgb(color)
-  local hex = color:gsub("#", "")
+  local hex = color:gsub('#', '')
   return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5), 16)
 end
 
@@ -49,29 +49,29 @@ local function ordered_pairs(t)
 end
 
 local function is_light()
-  return vim.opt.background:get() == "light"
+  return vim.opt.background:get() == 'light'
 end
 
 function termcolors.scrape_current_colorscheme()
   local colors = ordered_table({})
-  colors.foreground = color_from_syntax("Normal", "fg")
-  colors.background = color_from_syntax("Normal", "bg")
+  colors.foreground = color_from_syntax('Normal', 'fg')
+  colors.background = color_from_syntax('Normal', 'bg')
   for i = 0, 255 do
-    colors["color" .. i] = vim.g["terminal_color_" .. i]
+    colors['color' .. i] = vim.g['terminal_color_' .. i]
   end
-  colors.cursor = color_from_syntax("cursor", "bg") or colors.foreground
-  colors.cursor_text_color = color_from_syntax("cursor", "fg") or colors.background
-  colors.url_color = color_from_syntax("url")
-  colors.selection_foreground = color_from_syntax("Visual", "fg") or "none"
-  colors.selection_background = color_from_syntax("Visual", "bg")
+  colors.cursor = color_from_syntax('cursor', 'bg') or colors.foreground
+  colors.cursor_text_color = color_from_syntax('cursor', 'fg') or colors.background
+  colors.url_color = color_from_syntax('url')
+  colors.selection_foreground = color_from_syntax('Visual', 'fg') or 'none'
+  colors.selection_background = color_from_syntax('Visual', 'bg')
   colors.tab_bar_background = termcolors.shade_color(colors.background, is_light() and -20 or -45)
   colors.active_tab_foreground = colors.foreground
   colors.active_tab_background = colors.background
-  colors.inactive_tab_foreground = color_from_syntax("Comment", "fg")
+  colors.inactive_tab_foreground = color_from_syntax('Comment', 'fg')
   colors.inactive_tab_background = termcolors.shade_color(colors.background, is_light() and -12 or -25)
-  colors.active_border_color = color_from_syntax("TabLineSel")
-  colors.inactive_border_color = color_from_syntax("VertSplit")
-  colors.bell_border_color = color_from_syntax("TextWarning")
+  colors.active_border_color = color_from_syntax('TabLineSel')
+  colors.inactive_border_color = color_from_syntax('VertSplit')
+  colors.bell_border_color = color_from_syntax('TextWarning')
 
   local cleaned_colors = ordered_table({})
   for setting_name, setting_value in ordered_pairs(colors) do
@@ -85,36 +85,36 @@ end
 function termcolors.shade_color(color, percent)
   local r, g, b = hex_to_rgb(color)
   if not r or not g or not b then
-    return "NONE"
+    return 'NONE'
   end
   r, g, b = alter(r, percent), alter(g, percent), alter(b, percent)
   r, g, b = math.min(r, 255), math.min(g, 255), math.min(b, 255)
-  return string.format("#%02x%02x%02x", r, g, b)
+  return string.format('#%02x%02x%02x', r, g, b)
 end
 
 function termcolors.generate_kitty_config()
-  local config = { "# Put the following lines in your ~/.config/kitty/kitty.conf" }
+  local config = { '# Put the following lines in your ~/.config/kitty/kitty.conf' }
   for setting_name, setting_value in ordered_pairs(termcolors.scrape_current_colorscheme()) do
-    table.insert(config, setting_name .. " " .. setting_value)
+    table.insert(config, setting_name .. ' ' .. setting_value)
   end
   return config
 end
 
 function termcolors.show()
   local buf = vim.api.nvim_create_buf(true, true)
-  vim.api.nvim_buf_set_name(buf, "Termcolors")
+  vim.api.nvim_buf_set_name(buf, 'Termcolors')
   vim.api.nvim_buf_set_lines(buf, 0, 1, true, termcolors.generate_kitty_config())
-  vim.api.nvim_buf_set_option(buf, "modifiable", false)
-  vim.api.nvim_buf_set_option(buf, "readonly", true)
-  vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
-  vim.api.nvim_buf_set_option(buf, "filetype", "conf")
-  vim.cmd("buffer " .. buf)
+  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+  vim.api.nvim_buf_set_option(buf, 'readonly', true)
+  vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
+  vim.api.nvim_buf_set_option(buf, 'filetype', 'conf')
+  vim.cmd('buffer ' .. buf)
 end
 
 function termcolors.get_color_from_hl(name)
   local result = {}
   for k, v in pairs(vim.api.nvim_get_hl_by_name(name, true)) do
-    result[k] = string.format("#%06x", v)
+    result[k] = string.format('#%06x', v)
   end
   return result
 end
@@ -316,19 +316,19 @@ function termcolors.desaturate(hex, pct)
   local newhsv = { hsv[1], hsv[2] - pct, hsv[3], 1 }
   newhsv[1] = newhsv[1] * 360
   local newrgb = { hsvToRgb(unpack(newhsv)) }
-  vim.dbglog("new", newrgb)
+  vim.dbglog('new', newrgb)
 end
 
 function termcolors.darken(color, percent)
   local r, g, b = termcolors.to_rgb(color)
-  if type(r) ~= "nil" and type(g) ~= "nil" and type(b) ~= "nil" then
+  if type(r) ~= 'nil' and type(g) ~= 'nil' and type(b) ~= 'nil' then
     r = termcolors.clamp_color(math.floor(tonumber(r * (100 - percent) / 100) or r))
     g = termcolors.clamp_color(math.floor(tonumber(g * (100 - percent) / 100) or g))
     b = termcolors.clamp_color(math.floor(tonumber(b * (100 - percent) / 100) or b))
   end
-  local new_color = "#" .. string.format("%0x", r) .. string.format("%0x", g) .. string.format("%0x", b)
+  local new_color = '#' .. string.format('%0x', r) .. string.format('%0x', g) .. string.format('%0x', b)
   if #new_color == 6 then
-    new_color = "#0" .. string.format("%0x", r) .. string.format("%0x", g) .. string.format("%0x", b)
+    new_color = '#0' .. string.format('%0x', r) .. string.format('%0x', g) .. string.format('%0x', b)
   end
 
   return new_color

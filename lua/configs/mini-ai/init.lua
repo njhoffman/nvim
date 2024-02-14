@@ -188,7 +188,7 @@ local setup_keymaps = function()
   --   i[key] = vim.tbl_extend('force', { name = '  inside ' .. name .. ' textobject' }, ic)
   --   a[key] = vim.tbl_extend('force', { name = '  around ' .. name .. ' textobject' }, ac)
   -- end
-  require('which-key').register({ mode = { 'o', 'x' }, i = i, a = a })
+  require('which-key').register({ i = i, a = a }, { mode = { 'o', 'x' } })
   -- create virtual mappings of all textobjects
   -- for _, key in ipairs({ 'i', 'a' }) do -- around/inside
   -- end

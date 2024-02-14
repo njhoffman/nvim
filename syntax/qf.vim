@@ -6,11 +6,12 @@ syn match qfFileName /^[^│]*/ contains=qfFileNameHead nextgroup=qfSeparatorLef
 syn match qfFileNameHead "\v[^/│]+ " contained containedin=qfFileName
 syn match qfSeparatorLeft /│/ contained nextgroup=qfLineNr
 syn match qfLineNr /[^│]*/ contained nextgroup=qfSeparatorRight
-syn match qfSeparatorRight '│' contained nextgroup=qfError,qfWarning,qfInfo,qfNote
+syn match qfSeparatorRight '│' contained nextgroup=qfError,qfWarning,qfInfo,qfNote,qfOther
 syn match qfError /  .*$/ contained
 syn match qfWarning /  .*$/ contained
 syn match qfInfo /  .*$/ contained
 syn match qfNote /  .*$/ contained
+syn match qfOther /.*$/ contained
 
 " syn match qfFileName /^[^│]*/ nextgroup=qfSeparatorLeft
 " syn match qfSeparatorLeft /│/ contained nextgroup=qfLineNr
@@ -30,6 +31,6 @@ hi def link qfError DiagnosticError
 hi def link qfWarning DiagnosticWarn
 hi def link qfInfo DiagnosticInfo
 hi def link qfNote DiagnosticHint
-
+hi def link qfOther Comment
 
 let b:current_syntax = 'qf'

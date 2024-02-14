@@ -130,7 +130,7 @@ local extension_configs = {
     },
   },
   ['variables'] = {},
-  ['which-key'] = {},
+  -- ['which-key'] = {},
 
   -- 3rd party to sort through
   ['undo'] = {

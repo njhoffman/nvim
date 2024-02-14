@@ -37,7 +37,14 @@ Hydra_Telescope = Hydra({
     invoke_on_body = true,
     hint = {
       position = 'middle',
-      border = 'rounded',
+      float_opts = {
+        -- row, col, height, width, relative, and anchor should not be
+        -- overridden
+        border = 'rounded',
+        style = 'minimal',
+        focusable = false,
+        noautocmd = true,
+      },
     },
   },
   mode = 'n',
@@ -86,7 +93,14 @@ Hydra_Options = Hydra({
     color = 'amaranth',
     invoke_on_body = true,
     hint = {
-      border = 'rounded',
+      float_opts = {
+        -- row, col, height, width, relative, and anchor should not be
+        -- overridden
+        border = 'rounded',
+        style = 'minimal',
+        focusable = false,
+        noautocmd = true,
+      },
       position = 'middle',
     },
   },
@@ -283,7 +297,14 @@ Hydra_Actions = Hydra({
     invoke_on_body = true,
     hint = {
       position = 'middle',
-      border = 'rounded',
+      float_opts = {
+        -- row, col, height, width, relative, and anchor should not be
+        -- overridden
+        border = 'rounded',
+        style = 'minimal',
+        focusable = false,
+        noautocmd = true,
+      },
     },
   },
   mode = 'n',
@@ -340,7 +361,14 @@ for _, value in pairs({
       color = 'pink',
       hint = {
         position = 'bottom',
-        border = 'rounded',
+        float_opts = {
+          -- row, col, height, width, relative, and anchor should not be
+          -- overridden
+          border = 'rounded',
+          style = 'minimal',
+          focusable = false,
+          noautocmd = true,
+        },
       },
       on_enter = function()
         if value == ',d' then

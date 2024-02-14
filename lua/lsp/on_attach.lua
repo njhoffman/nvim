@@ -49,7 +49,7 @@ local setup_mappings = function()
   )
   vim.api.nvim_set_keymap(
     'n',
-    'gqd',
+    'gQd',
     '<cmd>lua vim.diagnostic.setqflist({ open = true  })<CR>',
     { silent = true, desc = 'diagnostics to quickfix' }
   )
