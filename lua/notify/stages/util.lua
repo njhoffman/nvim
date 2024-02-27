@@ -71,7 +71,10 @@ local function window_intervals(windows, direction, cmp)
       local border_space = border_padding(direction, existing_conf)
       win_intervals[#win_intervals + 1] = {
         min = existing_conf[slot_key(direction)],
-        max = existing_conf[slot_key(direction)] + existing_conf[space_key(direction)] + border_space - 1,
+        max = existing_conf[slot_key(direction)]
+          + existing_conf[space_key(direction)]
+          + border_space
+          - 1,
       }
     end
   end
@@ -83,7 +86,8 @@ end
 
 function M.get_slot_range(direction)
   local top = vim.opt.showtabline:get() == 0 and 0 or 1
-  local bottom = vim.opt.lines:get() - (vim.opt.cmdheight:get() + (vim.opt.laststatus:get() > 0 and 1 or 0) + 1)
+  local bottom = vim.opt.lines:get()
+    - (vim.opt.cmdheight:get() + (vim.opt.laststatus:get() > 0 and 1 or 0) + 1)
   local left = 1
   local right = vim.opt.columns:get()
   if M.DIRECTION.TOP_DOWN == direction then
@@ -118,7 +122,9 @@ function M.available_slot(existing_wins, required_space, direction)
 
   for _, next_interval in ipairs(intervals) do
     if overlaps(next_interval, interval) then
-      interval = create_interval(move_slot(direction, increasing and next_interval.max or next_interval.min, 1))
+      interval = create_interval(
+        move_slot(direction, increasing and next_interval.max or next_interval.min, 1)
+      )
     end
   end
 
@@ -136,22 +142,22 @@ end
 function M.slot_after_previous(win, open_windows, direction)
   local key = slot_key(direction)
   local cmp = is_increasing(direction) and less or greater
-  local exists, cur_win_conf = pcall(vim.api.nvim_win_get_config, win)
+  local exists, cur_win_conf = util.get_win_config(win)
   if not exists then
     return 0
   end
 
-  local cur_slot = cur_win_conf[key][false]
+  local cur_slot = cur_win_conf[key]
   local win_confs = {}
   for _, w in ipairs(open_windows) do
-    local success, conf = pcall(vim.api.nvim_win_get_config, w)
+    local success, conf = util.get_win_config(w)
     if success then
       win_confs[w] = conf
     end
   end
 
   local preceding_wins = vim.tbl_filter(function(open_win)
-    return win_confs[open_win] and cmp(win_confs[open_win][key][false], cur_slot)
+    return win_confs[open_win] and cmp(win_confs[open_win][key], cur_slot)
   end, open_windows)
 
   if #preceding_wins == 0 then
@@ -159,11 +165,15 @@ function M.slot_after_previous(win, open_windows, direction)
     if is_increasing(direction) then
       return start
     end
-    return move_slot(direction, start, cur_win_conf[space_key(direction)] + border_padding(direction, cur_win_conf))
+    return move_slot(
+      direction,
+      start,
+      cur_win_conf[space_key(direction)] + border_padding(direction, cur_win_conf)
+    )
   end
 
   table.sort(preceding_wins, function(a, b)
-    return cmp(win_confs[a][key][false], win_confs[b][key][false])
+    return cmp(win_confs[a][key], win_confs[b][key])
   end)
 
   local last_win = preceding_wins[#preceding_wins]
@@ -172,13 +182,13 @@ function M.slot_after_previous(win, open_windows, direction)
   if is_increasing(direction) then
     return move_slot(
       direction,
-      last_win_conf[key][false],
+      last_win_conf[key],
       last_win_conf[space_key(direction)] + border_padding(direction, last_win_conf)
     )
   else
     return move_slot(
       direction,
-      last_win_conf[key][false],
+      last_win_conf[key],
       cur_win_conf[space_key(direction)] + border_padding(direction, cur_win_conf)
     )
   end

@@ -22,42 +22,12 @@ local modemap = {
   ['no^V'] = {},
 }
 
+-- TODO: different cursorline hl for initial WhichKey d and subsequent ones
 local reactive = require('reactive')
-
--- stylua: ignore
--- vim.opt.operatorfunc._value
-reactive.opfunc_list = {
-  -- ['cx'] = 'v:lua.require"substitute.exchange".operator_callback',
-  ['X']  = 'v:lua.require"substitute.exchange".operator_callback',
-  ['S']  = 'v:lua.require"substitute".operator_callback',
-  -- ['gc'] = 'v:lua.MiniComment.operator',
-  -- ['gb'] = 'v:lua.MiniComment.operator',
-  ['gc'] = "v:lua.require'Comment.api'.locked'toggle.linewise.current'", -- n:V V:n gc
-  ['gb'] = "v:lua.require'Comment.api'.locked'toggle.blockwise'", -- n:^V  ^V:i
-  ['ga'] = 'v:lua.MiniAlign.align_user',
-  ['gs'] = 'v:lua.MiniSplitjoin.operator',
-  ['s']  = 'v:lua.MiniSurround.add',
-  ["goo"]  = "v:lua.require'debugprint'.debugprint_cache",
-  ["gto"]  = "v:lua.MiniSurround.replace",
--- v:lua.require'stringcase.range'.operator_callback"
--- v:lua.require'stringcase.range'.selection_operator_callback"
--- v:lua.require'" .. constants.namespace .. "'.operator_callback" (textcase.nvim)
--- "v:lua.require'ts-node-action.repeat'.repeat_action"
--- vim.go.operatorfunc = "v:lua.__remote_op_opfunc"
--- vim.o.operatorfunc = 'v:lua.MiniBasics.put_empty_line'
--- "v:lua.require'utils.escape.operatorfunc'.operatorfunc")
--- vim.go.operatorfunc = [[{x -> x}]]
--- vim.go.operatorfunc = [[v:lua.require'flash.repeat'._repeat]]
--- "v:lua.require'refactoring'.debug.printf_operatorfunc"
--- "v:lua.require'gitsigns.repeat'.repeat_action"
--- vim.go.operatorfunc = "v:lua.require'debugprint'.debugprint_cache"
--- 'MiniOperators%.replace'
--- "v:lua.require'stay-in-place'.operator_callback"
--- "v:lua.require'refactoring'.debug.printf_operatorfunc"
--- v:lua.require'substitute.range'.operator_callback
--- v:lua.require'substitute.range'.selection_operator_callback
---
-}
+reactive.opfunc_get = function(opfunc)
+  local res = require('configs.reactive.opfuncs').get_opfunc(opfunc)
+  return res and res[1] and res[1][1] or nil
+end
 
 reactive.setup({
   builtin = {

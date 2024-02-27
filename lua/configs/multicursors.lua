@@ -80,8 +80,13 @@ local cfg = {
   },
 }
 
-vim.keymap.set('n', '<M-n>', '<cmd>MCstart<cr>', { noremap = false, desc = 'multicursor start' })
-vim.keymap.set('x', '<M-n>', '<cmd>MCvisual<cr>', { noremap = false, desc = 'multicursor visual start' })
+vim.keymap.set('n', '<M-C-N>', '<cmd>MCstart<cr>', { noremap = false, desc = 'multicursor start' })
+vim.keymap.set(
+  'x',
+  '<M-C-N>',
+  '<cmd>MCvisual<cr>',
+  { noremap = false, desc = 'multicursor visual start' }
+)
 
 require('multicursors').setup(cfg)
 

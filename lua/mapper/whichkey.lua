@@ -14,7 +14,8 @@ local function dump()
         for _ in pairs(node.children) do
           count = count + 1
         end
-        local auto_prefix = not node.mapping or (node.mapping.group == true and not node.mapping.cmd)
+        local auto_prefix = not node.mapping
+          or (node.mapping.group == true and not node.mapping.cmd)
         if node.prefix_i ~= '' and count > 0 and not auto_prefix then
           conflicts[node.mapping.prefix] = conflicts[node.mapping.prefix] or {}
           conflicts[node.mapping.prefix][tree.mode] = {
@@ -72,16 +73,19 @@ local function dump()
   return todo, ok, conflicts, wk_keys.duplicates
 end
 
-local map = function(mode, lhs, label)
+local map = function(mode, lhs, opts)
+  local label = opts.label or opts.desc or ''
+  opts.buffer = opts.buffer == true and 0 or opts.buffer
   if mode == '' then
-    wk.register({ [lhs] = { label } }, { mode = 'n' })
-    wk.register({ [lhs] = { label } }, { mode = 'o' })
-    wk.register({ [lhs] = { label } }, { mode = 'v' })
+    -- wk.register({ [lhs] = { label } }, { mode = 'n' })
+    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'n' }))
+    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'o' }))
+    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'v' }))
   elseif mode == 'x' then
-    wk.register({ [lhs] = { label } }, { mode = 'v' })
-    wk.register({ [lhs] = { label } }, { mode = 's' })
+    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 's' }))
+    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'v' }))
   else
-    wk.register({ [lhs] = { label } }, { mode = mode })
+    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = mode }))
   end
 end
 

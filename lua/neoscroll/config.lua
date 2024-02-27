@@ -66,7 +66,7 @@ local function map_key(key, func, args)
   local prefix = [[lua require('neoscroll').]]
   local lua_cmd = prefix .. func .. '(' .. args_str .. ')'
   local cmd = '<cmd>' .. lua_cmd .. '<CR>'
-  local opts = { silent = true, noremap = true }
+  local opts = { silent = true, noremap = false }
   vim.api.nvim_set_keymap('n', key, cmd, opts)
   vim.api.nvim_set_keymap('x', key, cmd, opts)
 end

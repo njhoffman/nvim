@@ -7,7 +7,7 @@ return {
   null_ls.builtins.diagnostics.checkmake,
   -- null_ls.builtins.diagnostics.clang_check,
   null_ls.builtins.diagnostics.dotenv_linter,
-  null_ls.builtins.diagnostics.editorconfig_checker,
+  -- null_ls.builtins.diagnostics.editorconfig_checker,
   null_ls.builtins.diagnostics.hadolint,
   -- null_ls.builtins.diagnostics.eslint_d,
   null_ls.builtins.diagnostics.gitlint.with({ extra_args = { '--ignore', 'B6' } }),

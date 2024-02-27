@@ -1,17 +1,29 @@
-local nl = '\n   ➜ '
 -- http://eriklievaart.com/cheat/applications/vim/vimquickfix.html
 
-local tmux = {
-  { 'Tmux fingers', '(start): <ctrl>+<a>+<ctrl>+<a>', '(jump):  <ctrl>+<a>+[F]', '(yank):  <ctrl>+[mark]' },
-  { 'Tmux swap pane shortcut', '<super>+<shift>+[,]', '<super>+<shift>+[.]', '<ctrl>+<a>+[hjkl]' },
-  { 'Tmux rotate active pane with other window panes', '<super>+<shift>+n' },
-  { 'Tmux rotate alternate pane with other window panes', '<super>+n' },
-  { 'Tmux in copy-mode Y yanks selection and inserts it into commandline' },
-  { 'Tmux to paste system clipboard', '`<crl>+a+<ctrl>+p`' },
-  { 'Tmux to paste buffer: <ctrl>+a+p', ' to select buffer to paste: <ctrl>+A+P ' },
+local nl = '\n   ➜ '
+
+local M = {}
+
+M.autopairs = {
+  {
+    'Jump to end or out of pairs with tabout',
+    '`(f*oo)  <tab>  (foo*)`',
+    '`(f*oo)  <c-tab>  (foo)*` (hpout)',
+  },
+  {
+    'Fast warp input char to the next end pair',
+    '`(*){}  <c-.>  ({}*)` (nocursormove=false)',
+    "`(*){}  <c-'>  (*{})` (ncursormove=true)",
+  },
+  {
+    'Fly (hop) to list of end-pairs',
+    '`({[*] })  )  ({[] })*` (only_jump_end_pair=true)',
+    '`*()  )  ()*`           (only_jump_end_pair=false)',
+  },
+  { 'Automatically wrap surround pairs', "`*'a`  (  `(*'a)`" },
 }
 
-local insert = {
+M.insert = {
   { 'To do a one-off normal command while in insert mode: ', '`<ctrl+o>(motion) i.e. <ctrl+o>w`' },
   { 'To jump to begining of line in insert mode:', '`<ctrl+[o][$]`' },
   { 'Jump over word while staying in insert mode:', '<ctrl>+f' },
@@ -21,11 +33,60 @@ local insert = {
   { 'execute one NORMAL mode command (see below note)', '`<ctrl-o>{cmd}`' },
 }
 
-local misc = {
-  { 'To quickly track autocmd events', ':autocmd WinScrolled * echom "scrolled"' },
+M.debug = {
+  { 'To quickly output a lua function/variable', '`:lua =vim.diagnostic.config()`' },
+  {
+    'Verbosity levels',
+    '`1: Lua assignments to options, mappings, etc`',
+    '`2: When a file is ":source"d, or |shada| file is read or written`',
+    '`3: UI info, terminal capabilities`',
+    '`4: Shell commands`',
+    '`5: Every searched tags file and include file`',
+    '`8: Files for which a group of autocommands is executed`',
+    '`9: Executed autocommands`',
+    '`11: Finding items in a path`',
+    '`12: Vimscript function calls`',
+    '`13: When an exception is thrown, caught, finished, or discarded`',
+    '`14: Anything pending in a ":finally" clause`',
+    '`15: Ex commands from a script (truncated at 200 characters)`',
+    '`16: Ex commands`',
+  },
+  { 'To quickly track autocmd events', '`:autocmd WinScrolled * echom "scrolled"`' },
+  {
+    'To time and debug syntax items',
+    '`syntime on`',
+    '[redraw at least once Ctrl-L]',
+    '`syntime report`',
+  },
+  {
+    'To profile a vimscript with all functions (!)',
+    '`:profile start /tmp/profile-vimscript.vim`',
+    '`:profile! file vimscript.vim`',
+    '`:source vimscript.vim | profile stop`',
+  },
+  {
+    'Set verbosity at startup `nvim -V3report.log` or ex-command:',
+    '`:set verbosefile=report.log`',
+    '`:set verbose=3`',
+  },
+  {
+    'To profile opening a file',
+    '`:profile start vim-markdown.log`',
+    '`:profile file * | profile func *`',
+    '`:e foo.md`',
+  },
+}
+
+M.misc = {
+  { 'Comments: dgc dgb cgc cgb ygc ygb gcip gcO gcA gco' },
+  { 'To traverse undo list:', '`[ g-  g+ ]`' },
+  {
+    'The "gm" motion moves horizontally by a division winwidth',
+    '`local gmColumn = math.floor(fn.winwidth("%")/ 2)`',
+    '`vim.opt.colorcolumn = gmColumn`',
+  },
   { 'To reset the mouse or keyboard', '`xinput --list--disable/--enable`' },
   { 'To search for a character by unicode', '`/\v%u4e2d<CR>`' },
-  { 'To quickly output a lua function/variable', '`:lua =vm.diagnostic.config()`' },
   {
     'To insert sequential numbers',
     '`:put=map(range(1,5)`',
@@ -34,7 +95,7 @@ local misc = {
   },
 }
 
-local quickfix = {
+M.quickfix = {
   { 'Populate the quickfix list with the results of a command, use `:cxpr`' },
   { 'Use the quickfix command `cope` to navigate multiple quickfix lists' },
   { 'Search current file and populate quickfix ', '`:vimgrep /re/ %:p`' },
@@ -51,18 +112,20 @@ local quickfix = {
   },
 }
 
-local format = {
+M.format = {
   { 'Quick surround word near cursor with quote', '`s-SPC-"` / `ss-"`' },
-  { 'Live commands', '`Norm <keys>`', '`5Reg a`', '`G/^$/d`', '`%Spattern/replace`' },
+  { 'Live commands', '`Norm <keys>`', '`5Reg a`', '`G/^$/d`', '`%S/pattern/replace`' },
   { 'Subvert `(:Subvert/pat/repl)` substitutes with case pattern matches' },
   { 'To increment visually selected numbers sequentially ', '`gC-S-A>`' },
-  { 'To substitute without moving cursor:', ":exe 'norm m`' | %s/pattern/substitution/eg | norm g`" },
 }
 
-local movement = {
+M.movement = {
   { 'To go to 80% of current file', '`:80%`' },
   { 'To go to 5th column of current line', '`5|`' },
-  { 'Using the tag stack stack to navigate in and out of areas quickly:', '`<C-]> to enter, <C-T> to exit`' },
+  {
+    'Using the tag stack stack to navigate in and out of areas quickly:',
+    '`<C-]> to enter, <C-T> to exit`',
+  },
   { 'Quick block navigation', '`<C-S-]>  <C-S-[>`' },
   { 'Normal jump to node', '`<C-M-J>  <C-M-K>  <C-M-H>  <C-M-L>`' },
   { 'Visual move selection', '(v)`<S-L>  <S-H>  <S-J>  <S-K>`' },
@@ -79,24 +142,39 @@ local movement = {
   },
 }
 
-local autopairs = {
-  { 'Jump to end or out of pairs with tabout', '`(f*oo)  <tab>  (foo*)`', '`(f*oo)  <c-tab>  (foo)*` (hpout)' },
+M.substitute = {
   {
-    'Fast warp input char to the next end pair',
-    '`(*){}  <c-.>  ({}*)` (nocursormove=false)',
-    "`(*){}  <c-'>  (*{})` (ncursormove=true)",
+    'To substitute without moving cursor:',
+    "\\`:exe 'norm m\\` | %s/pattern/substitution/eg | norm g`",
+  },
+  { 'To substitute from current line to last line', '`:,,$s/foo`' },
+  { 'Using the n flag runs the command in a sandbox with side ffects but no buffer change' },
+  {
+    'To append all regex matches to a register:',
+    "`:let @a='' | %s/regex/\\=setreg('A', submatch(0) . '\n')/n`",
+    "`:let @a='' | %s/regex/\\=setreg('A', submatch(0), 'V')/n`",
   },
   {
-    'Fly (hop) to list of end-pairs',
-    '`({[*] })  )  ({[] })*` (only_jump_end_pair=true)',
-    '`*()  )  ()*`           (only_jump_end_pair=false)',
+    'To append all regex matches to variable:',
+    '`:let t=[]  | %s/regex/\\=add(t, submatch(0))[-1]/g`',
   },
-  { 'Automatically wrap surround pairs', "`*'a`  (  `(*'a)`" },
+  { 'To append all quoted strings to a register:', '`let @a="" | g/"\zs.*\ze"/y A`' },
+  {
+    'To delete parts of line that are not in quotes:',
+    '`:%!grep --only-matching --extended-regexp \'".*"\'`',
+  },
+  {
+    'The subvert command `:Subvert/pat/repl` substitutes with case pattern matches',
+    '`:S/box{,es,ed,ing}/`',
+    '`:S /box/aw *.txt *.html`',
+    '`:%S/{,un}nec{ce,ces,e}sar{y,ily}/{}nec{es}sar{}/g`',
+  },
 }
-local global = {
+
+M.global = {
   { 'To delete all lines that have only whitespace', '`:g^s*$/d`' },
-  { 'To delete all non-matching lines', '`:v/pattern/d`' },
-  { 'Delete upto next occurence of foo', '`d/foo`' },
+  { 'To delete all non-matching lines', '`:v/pattern/d`', '`:g!/pattern/d`' },
+  { 'Delete up to next occurence of foo', '`d/foo`' },
   { 'Display 5 lines of context for matches', '`g/pattern/z#.5|echo "=========="`' },
   { 'Copy all matches to end of file', '`:g/pattern/t$`' },
   { 'Move all matches to end of file', '`:gpattern/m$`' },
@@ -106,19 +184,28 @@ local global = {
   { 'Reverse lookup of first field separated by space', '`:gpattern/?^w?p`' },
   { 'Reverse lookup of spaced fields with whole record', '`:g/pattern/?^w?|+,/^[^ ]/-1`' },
   { 'Add text to end of line that begins with pattern', '`:g^pattern/s/$/mytext`' },
-  { 'Delete duplicates lines', '`:g^(.*)(\\r?\\n\\1)+$/d`' },
+  { 'Delete duplicates lines', '`:g^(.*)(\\r?\\n\\1)+$/d`', '`:!uniq`' },
   { 'Run macro in register q on matching lines', '`:g/pattern/normal @q' },
-  { 'Substitute all "bads" into "nice" only for lines that contain "good" ', '`:ggood/s/bad/nice/g`' },
+  {
+    'Substitute all "bads" into "nice" only for lines that contain "good" ',
+    '`:ggood/s/bad/nice/g`',
+  },
   { 'Comment out all lines with "console"', '`:g/console/normal I/`' },
 }
 
-return {
-  autopairs = autopairs,
-  format = format,
-  global = global,
-  insert = insert,
-  misc = misc,
-  movement = movement,
-  quickfix = quickfix,
-  tmux = tmux,
+M.tmux = {
+  {
+    'Tmux fingers',
+    '(start): <ctrl>+<a>+<ctrl>+<a>',
+    '(jump):  <ctrl>+<a>+[F]',
+    '(yank):  <ctrl>+[mark]',
+  },
+  { 'Tmux swap pane shortcut', '<super>+<shift>+[,]', '<super>+<shift>+[.]', '<ctrl>+<a>+[hjkl]' },
+  { 'Tmux rotate active pane with other window panes', '<super>+<shift>+n' },
+  { 'Tmux rotate alternate pane with other window panes', '<super>+n' },
+  { 'Tmux in copy-mode Y yanks selection and inserts it into commandline' },
+  { 'Tmux to paste system clipboard', '`<crl>+a+<ctrl>+p`' },
+  { 'Tmux to paste buffer: <ctrl>+a+p', ' to select buffer to paste: <ctrl>+A+P ' },
 }
+
+return M

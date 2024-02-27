@@ -1,6 +1,7 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
-local actions_layout = require('telescope.actions.layout')
 local actions = require('telescope.actions')
+local mods = require('configs.telescope.actions.mods')
+local actions_layout = require('telescope.actions.layout')
 local c_actions = require('configs.telescope.actions')
 
 local send_to_qflist = function(prompt_bufnr)
@@ -147,7 +148,19 @@ local mappings = {
   file = file_maps,
   buffer = buffer_maps,
 }
-return mappings
+
+local mapping_funcs = {}
+for name, modes in pairs(mappings) do
+  mapping_funcs['_' .. name] = function(opts)
+    local newmaps = {}
+    for mode, maps in pairs(modes) do
+      newmaps[mode] = mods.gen_map_funcs(maps, opts)
+    end
+    return newmaps
+  end
+end
+
+return vim.tbl_deep_extend('force', {}, mappings, mapping_funcs)
 
 -- { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
 -- { "<leader>/", Util.telescope("live_grep"), desc = "Find in Files (Grep)" },

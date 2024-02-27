@@ -33,14 +33,13 @@ local function gen_from_buffer(opts)
     return 1 == vim.fn.buflisted(b)
   end, vim.api.nvim_list_bufs())
 
-  local max_bufnr = math.max(unpack(bufnrs) or 0)
+  local max_bufnr = math.max(unpack(bufnrs))
   local bufnr_width = #tostring(max_bufnr)
   local bufnames = map(function(bufnr)
     return vim.fn.strdisplaywidth(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ':p:t'))
   end, bufnrs)
 
   local max_bufname = math.max(unpack(bufnames))
-  vim.dbglog(max_bufname, bufnames)
   local dirs = map(function(bufnr)
     local dir_name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ':p:h') .. '/'
     return dir_name:gsub(os.getenv('HOME'), '~')
@@ -89,7 +88,8 @@ local function gen_from_buffer(opts)
     end
     local file_name = vim.fn.fnamemodify(bufname, ':p:t')
 
-    local icons, highlight = devicons.get_icon(bufname, string.match(bufname, '%a+$'), { default = true })
+    local icons, highlight =
+      devicons.get_icon(bufname, string.match(bufname, '%a+$'), { default = true })
 
     local file_name_highlight = entry.info.changed == 1 and 'BufferInactiveMod' or 'TelescopeNormal'
 
@@ -130,7 +130,11 @@ local function get_buffers(opts)
     if opts.cwd_only and not string.find(vim.api.nvim_buf_get_name(b), vim.loop.cwd(), 1, true) then
       return false
     end
-    if not opts.cwd_only and opts.cwd and not string.find(vim.api.nvim_buf_get_name(b), opts.cwd, 1, true) then
+    if
+      not opts.cwd_only
+      and opts.cwd
+      and not string.find(vim.api.nvim_buf_get_name(b), opts.cwd, 1, true)
+    then
       return false
     end
     return true

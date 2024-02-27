@@ -1,27 +1,50 @@
-local history = require('neoscroll.stats').history
-vim.dbglog(history)
 -- vim.dbglog('state', tbl_omit(state, { 'history' }))
 local ns = require('neoscroll')
+_G._scroll = ns.scroll
 
-ns.scroll(200, true, 500, 'sine', [[cursorline]])
-ns.scroll(-vim.wo.scroll, true, 350)
-ns.scroll(vim.wo.scroll, true, 350)
-ns.scroll(-vim.api.nvim_win_get_height(0), true, 550)
-ns.scroll(vim.api.nvim_win_get_height(0), true, 550)
-ns.scroll(-0.10, false, 100)
-ns.scroll(0.10, false, 100)
-ns.zt(200)
-ns.zz(200)
-ns.zb(200)
+_G._scroll_i = function()
+  local logger = require('logger').init('neoscroll')
+  local output = {}
+  local history = require('configs.neoscroll.stats').history
 
--- scroll(-vim.wo.scroll, true, 350)
--- scroll( vim.wo.scroll, true, 350)
--- scroll(-vim.api.nvim_win_get_height(0), true, 550)
--- scroll( vim.api.nvim_win_get_height(0), true, 550)
--- scroll(-0.10, false, 100)
--- scroll( 0.10, false, 100)
+  for _, hist in ipairs(history) do
+    local params = hist.params or {}
+    local stats = hist.stats or {}
+    local line = string.format(
+      '%2d %.3f %3d %4dms %4dn  avg: %2d  range: %2d:%2d %2d',
+      hist.n or 0,
+      hist.duration or 0,
+      math.abs(params.lines) or 0,
+      stats.time or 0,
+      stats.num or 0,
+      math.abs(stats.avg) or 0,
+      stats.min or 0,
+      stats.max or 0,
+      stats.median or 0
+    )
+    -- steps = {  avg = "5.25",  max = 6,  median = 5,  min = 5,  num = 12,  steps = " 5 5 5 5 5 5 5 5 5 6 6 6",  time = 63 }
+    table.insert(output, line)
+  end
+  for _, line in ipairs(output) do
+    logger:debug(line)
+  end
+end
+
+local scroll_test = function()
+  ns.scroll(200, true, 500, 'sine', [[cursorline]])
+  ns.scroll(-vim.wo.scroll, true, 350)
+  ns.scroll(vim.wo.scroll, true, 350)
+  ns.scroll(-vim.api.nvim_win_get_height(0), true, 550)
+  ns.scroll(vim.api.nvim_win_get_height(0), true, 550)
+  ns.scroll(-0.10, false, 100)
+  ns.scroll(0.10, false, 100)
+  ns.zt(200)
+  ns.zz(200)
+  ns.zb(200)
+end
 -- nnoremap n :execute "keepjumps norm! " . v:count1 . "nzz"
 -- nnoremap N :execute "keepjumps norm! " . v:count1 . "Nzz"
+
 --
 -- t['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '100' } }
 -- t['<PageUp>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '100' } }

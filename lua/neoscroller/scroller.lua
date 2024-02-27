@@ -191,7 +191,6 @@ local function stop_scrolling(move_cursor, info)
   local time_end = vim.fn.reltimestr(vim.fn.reltime(state.scroll_start))
   -- check if time_end is nil
   if type(time_end) == 'nil' or time_end == '' then
-    vim.dbglog('NIL empty', state)
   else
     local diff_time = string.format('%.2f%s', tonumber(time_end) * 1000, 'ms')
     -- state.line_range = table.insert(state.line_range, vim.fn.line('.'))

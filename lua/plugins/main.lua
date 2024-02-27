@@ -31,6 +31,7 @@ local plugins = {
     enabled = true,
     lazy = false,
   },
+  -- https://www.reddit.com/r/neovim/comments/1aupy8c/a_simple_journaling_system_built_with_mind_and/
   {
     'RutaTang/quicknote.nvim',
     event = 'VeryLazy',
@@ -42,7 +43,7 @@ local plugins = {
     -- Scratch, ScratchOpen, ScrathWithName, ScratchOpenFzf, ScratchPad
     -- nvim -c 'lua require("scratch").scratchByType("md")'
   },
-  -- { 'stevearc/stickybuf.nvim', event = 'VeryLazy' },
+  { 'stevearc/stickybuf.nvim', event = 'VeryLazy' },
   { 'rgroli/other.nvim', event = 'VeryLazy' },
   {
     'tummetott/reticle.nvim',
@@ -53,12 +54,15 @@ local plugins = {
     opts = {
       always = { cursorline = { 'neo-tree' } },
       on_startup = { cursorline = true, cursorcolumn = false },
-      never = { cursorline = { 'qf', 'noice', 'navbuddy' }, cursorcolumn = { 'qf', 'noice', 'navbuddy' } },
+      never = {
+        cursorline = { 'qf', 'noice', 'navbuddy' },
+        cursorcolumn = { 'qf', 'noice', 'navbuddy' },
+      },
     },
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    commit = '0dca928',
+    main = 'ibl',
     event = { 'BufReadPre', 'BufNewFile' },
   },
   { 'Tyler-Barham/floating-help.nvim', cmd = 'FloatHelp' },
@@ -127,7 +131,13 @@ local plugins = {
   { 'echasnovski/mini.trailspace', event = 'VeryLazy' },
   {
     'sindrets/diffview.nvim',
-    cmd = { 'Diffview', 'DiffviewLog', 'DiffviewOpen', 'DiffviewToggleFiles', 'DiffviewFileHistory' },
+    cmd = {
+      'Diffview',
+      'DiffviewLog',
+      'DiffviewOpen',
+      'DiffviewToggleFiles',
+      'DiffviewFileHistory',
+    },
   },
   { 'm00qek/baleia.nvim', lazy = false, commit = '56ad00d' },
   { 'folke/zen-mode.nvim', cmd = 'ZenMode', keys = { '<S-CR>' } },
@@ -187,6 +197,7 @@ local plugins = {
     dependencies = 'winston0410/cmd-parser.nvim',
   },
   { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
+  -- https://github.com/miversen33/sunglasses.nvim
   { 'TaDaa/vimade', event = 'VimEnter' },
   {
     'kevinhwang91/nvim-hlslens',
@@ -237,9 +248,17 @@ local plugins = {
               local tsc = require('treesitter-context')
               tsc.toggle()
               if Util.inject.get_upvalue(tsc.toggle, 'enabled') then
-                vim.notify('Enabled Treesitter Context', vim.lsp.log_levels.INFO, { title = 'Option' })
+                vim.notify(
+                  'Enabled Treesitter Context',
+                  vim.lsp.log_levels.INFO,
+                  { title = 'Option' }
+                )
               else
-                vim.notify('Disabled Treesitter Context', vim.lsp.log_levels.WARN, { title = 'Option' })
+                vim.notify(
+                  'Disabled Treesitter Context',
+                  vim.lsp.log_levels.WARN,
+                  { title = 'Option' }
+                )
               end
             end,
             desc = 'Toggle Treesitter Context',
@@ -371,13 +390,6 @@ local plugins = {
     'folke/flash.nvim',
     event = 'VeryLazy',
     -- stylua: ignore
-    keys = {
-      { "<leader>/", mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
-      { "<leader>?", mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
-      { "r",         mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
-      { "R",         mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<M-S>",     mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
-    },
   },
   -- cursor
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
@@ -386,7 +398,40 @@ local plugins = {
   { 'echasnovski/mini.animate', event = 'VeryLazy' },
   -- { 'otavioschwanck/cool-substitute.nvim' },
   -- matching
-  { 'andymass/vim-matchup', lazy = false },
+
+  {
+    'andymass/vim-matchup',
+    lazy = false,
+    init = function()
+      vim.g.matchup_text_obj_linewise_operators = { 'c', 'd', 'y' }
+      vim.g.loaded_matchit = 1
+      vim.g.disable_virtual_text = 1
+      -- disable virtual text highlighting virtual end of blocks for langs without markers
+
+      vim.g.matchup_enabled = 1 -- enable/disable plugin entirely
+      vim.g.matchup_matchparen_enabled = 1
+      vim.g.matchup_motion_enabled = 1
+      vim.g.matchup_text_obj_enabled = 1
+      vim.g.matchup_surround_enabled = 1 -- adds ds% and cs%
+
+      vim.g.matchup_delim_noskips = 1 -- matching between strings and constants (0 always, 1 no words, 2 never)
+      vim.g.matchup_delim_stopline = 2000 -- 1500  (# of lines to search for motions/text objects)
+
+      vim.g.matchup_matchparen_pumvisible = 0
+      -- 1 (show matching even when pum-completion is visible)
+      -- vim.g.matchup_matchparen_offscreen = { method = 'popup' } -- method = popup, status, status_minimal
+
+      vim.g.matchup_motion_override_Npercent = 0 -- enable vim default {count}%
+      vim.g.matchup_matchparen_timeout = 150 -- 300
+      vim.g.matchup_matchparen_insert_timeout = 30 -- 60
+      vim.g.matchup_matchparen_deferred = 1
+      vim.g.matchup_matchparen_deferred_fade_time = 0 -- 0 (ms match will disappear after no movement)
+      vim.g.matchup_matchparen_deferred_show_delay = 50 -- 50 (time between cursor stop moving and match check)
+      vim.g.matchup_matchparen_deferred_hide_delay = 700 -- 700 (hide stale matches after n seconds of cursor movement)
+      vim.g.matchup_matchparen_hi_surround_always = 1
+      vim.g.matchup_matchparen_stopline = 2000 -- (# of lines to search for highlighting only)
+    end,
+  },
   -- pairs
   {
     'echasnovski/mini.pairs',
@@ -435,7 +480,6 @@ local plugins = {
   {
     'chrisgrieser/nvim-spider',
     event = 'VeryLazy',
-    commit = 'e0eeac5480704cc3fdd5bdadd4901ca5409d7838',
   },
   { 'echasnovski/mini.move', event = 'VeryLazy' },
   -- alignment
@@ -456,13 +500,28 @@ local plugins = {
   { 'johmsalas/text-case.nvim', event = 'VeryLazy' },
   {
     'echasnovski/mini.comment',
-    -- keep this for operator functions (dgc, dgb, cgc)
-    version = false,
+    -- keep this for operator  (dgc, dgb, cgc) and visual functions
     event = 'VeryLazy',
     opts = {
+      -- mappings = {
+      --   comment_line = 'gcc',
+      --   comment_visual = 'gc',
+      --   comment = 'gc',
+      --   textobject = 'gc',
+      -- },
+      mappings = {
+        --   -- Toggle comment (like `gcip` - comment inner paragraph) for both Normal and Visual modes
+        comment = '', -- gc
+        comment_line = '', -- gcc
+        comment_visual = 'gc',
+        --   -- Define 'comment' textobject (like `dgc` - delete whole comment block)
+        --   -- Works also in Visual mode if mapping differs from `comment_visual`
+        text_object = 'gc',
+      },
       options = {
         custom_commentstring = function()
-          return require('ts_context_commentstring.internal').calculate_commentstring() or vim.bo.commentstring
+          return require('ts_context_commentstring.internal').calculate_commentstring()
+            or vim.bo.commentstring
         end,
       },
     },
@@ -478,7 +537,7 @@ local plugins = {
   { 'tpope/vim-repeat', event = 'VeryLazy' },
   {
     'smjonas/live-command.nvim',
-    dependencies = { 'tpope/vim-abolish', 'rickhowe/diffchar.vim' },
+    -- branch = 'remote',
     event = 'VeryLazy',
   },
   { 'Konfekt/vim-alias', event = 'VeryLazy' },
@@ -644,6 +703,26 @@ local plugins = {
   -- git tools
   --
   -- https://github.com/dlvhdr/gh-blame.nvim
+
+  {
+    'ray-x/forgit.nvim',
+    config = function()
+      require('forgit').setup({
+        debug = false, -- enable debug logging default path is ~/.cache/nvim/forgit.log
+        diff_pager = 'delta', -- you can use `diff`,         `diff-so-fancy`
+        diff_cmd = '', -- you can use `DiffviewOpen`, `Gvdiffsplit` or `!git diff`, auto if not set
+        fugitive = false, -- git fugitive installed?
+        abbreviate = false, -- abvreviate some of the commands e.g. gps -> git push
+        git_alias = true, -- git command extensions see: Git command alias
+        show_result = 'quickfix', -- show cmd result in quickfix or notify
+        shell_mode = true, -- set to true if you using zsh/bash and can not run forgit commands
+        height_ratio = 0.6, -- height ratio of floating window when split horizontally
+        cmds_list = {}, -- additional commands to show in Forgit command list
+        width_ratio = 0.6, -- width ratio of floating window when split vertically
+      })
+    end,
+  },
+
   { 'rbong/vim-flog', cmd = { 'Flog', 'Flogsplit' } },
   { 'ThePrimeagen/git-worktree.nvim', event = 'VeryLazy' },
   { 'napisani/nvim-github-codesearch', cmd = 'GithubSearch', build = 'make' },
@@ -658,7 +737,18 @@ local plugins = {
       vim.g.fugitive_no_maps = 1
     end,
     event = { 'BufReadPost', 'BufNewFile' },
-    cmd = { 'Git', 'Ggrep', 'GMove', 'GDelete', 'Gspilt', 'Gstatus', 'Gwrite', 'Gread', 'Gdiffsplit', 'Gedit' },
+    cmd = {
+      'Git',
+      'Ggrep',
+      'GMove',
+      'GDelete',
+      'Gspilt',
+      'Gstatus',
+      'Gwrite',
+      'Gread',
+      'Gdiffsplit',
+      'Gedit',
+    },
     dependencies = 'tpope/vim-rhubarb',
   },
   -- https://github.com/sam4llis/nvim-lua-gf
@@ -688,6 +778,7 @@ local plugins = {
   -- { 'rmagatti/auto-session', event = 'VimEnter' },
   { 'wakatime/vim-wakatime', enabled = false, event = 'VeryLazy' },
   { 'LunarVim/bigfile.nvim' },
+  -- https://github.com/miversen33/netman.nvim
   { 'carlosrocha/chrome-remote.nvim', event = 'VeryLazy' },
   { 'altermo/nxwm', event = 'VeryLazy', enabled = false },
   {
@@ -728,7 +819,14 @@ local plugins = {
   },
   {
     'chrisbra/unicode.vim',
-    cmd = { 'Digraphs', 'UnicodeSearch', 'UnicodeName', 'UnicodeTable', 'DownloadUnicode', 'UnicodeCache' },
+    cmd = {
+      'Digraphs',
+      'UnicodeSearch',
+      'UnicodeName',
+      'UnicodeTable',
+      'DownloadUnicode',
+      'UnicodeCache',
+    },
   },
   {
     'simonefranza/nvim-conv',
@@ -749,7 +847,14 @@ local plugins = {
   },
   {
     'jamestthompson3/nvim-remote-containers',
-    cmd = { 'BuildImage', 'AttachToContainer', 'StartImage', 'ComposeUp', 'ComposeDown', 'ComposeDestroy' },
+    cmd = {
+      'BuildImage',
+      'AttachToContainer',
+      'StartImage',
+      'ComposeUp',
+      'ComposeDown',
+      'ComposeDestroy',
+    },
   },
   { 'LeonHeidelbach/trailblazer.nvim' },
   { 'kelly-lin/ranger.nvim', lazy = true },
@@ -764,7 +869,10 @@ local plugins = {
     event = 'VeryLazy',
     dependencies = 'moll/vim-bbye',
   },
-  { 't-troebst/perfanno.nvim', cmd = { 'PerfLoadFlat', 'PerfLoadCallGraph', 'PerfLoadFlameGraph' } },
+  {
+    't-troebst/perfanno.nvim',
+    cmd = { 'PerfLoadFlat', 'PerfLoadCallGraph', 'PerfLoadFlameGraph' },
+  },
   {
     'chrisgrieser/nvim-genghis',
     dependencies = { 'stevearc/dressing.nvim', 'nvim-cmp', 'hrsh7th/cmp-omni' },
@@ -924,6 +1032,7 @@ local plugins = {
       'preservim/tagbar',
     },
   },
+  -- https://www.reddit.com/r/neovim/comments/1awiy1t/neovim_timetracking_system_using_timewarrior/
   {
     'mthbernardes/codeexplain.nvim',
     cmd = 'CodeExplain',
@@ -1008,7 +1117,8 @@ local plugins = {
           'typescript',
           'typescriptreact',
         },
-        command = 'nnoremap <buffer> gta ' .. ":lua require('nvim-js-actions').js_arrow_fn.toggle()<CR>",
+        command = 'nnoremap <buffer> gta '
+          .. ":lua require('nvim-js-actions').js_arrow_fn.toggle()<CR>",
         -- can also do `require('nvim-js-actions/js-arrow-fn').toggle()`
       })
     end,

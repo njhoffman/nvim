@@ -63,21 +63,25 @@ function M:init()
     self.listeners_initialized = true
 
     local group = api.nvim_create_augroup('reactive.nvim', { clear = true })
-    local virtual_op = vim.v.operator
     local last_mode = vim.fn.mode()
     local last_op = nil
     local last_opfunc = nil
+    -- TODO: without whichkey delete and substitute does not work
 
     aucmd('ModeChanged', {
       group = group,
       pattern = '*:*',
       desc = 'Reactive: watches for mode changes to update highlights and run callbacks',
       callback = function(opts)
-        local op = virtual_op
-        local op_func = Snapshot.get_opfunc()
+        local op = vim.v.operator
+        local op_func = op == 'g@'
+          and type(vim.opt.operatorfunc) == 'table'
+          and vim.opt.operatorfunc._value ~= ''
+          and vim.opt.operatorfunc._value
         local from, to = unpack(vim.split(opts.match, ':'))
-
+        -- vim.dbglog(from .. ':' .. to, op, op_func)
         if last_mode ~= to or last_op ~= op or last_opfunc ~= op_func then
+          local op_pfx = Snapshot.get_opfunc()
           logger.debug(
             'ModeChanged  '
               .. from
@@ -85,13 +89,10 @@ function M:init()
               .. to
               .. string.rep(' ', 5 - (#from + #to))
               .. (op and #op > 0 and (" '" .. tostring(op) .. "'") or '    ')
-              .. (op_func and #op_func > 0 and (' [' .. tostring(op_func) .. ']') or '    ')
-            -- .. (virtual_op and #virtual_op > 0 and (' "' .. tostring(virtual_op) .. '"') or '    ')
+              .. (op_pfx and #op_pfx > 0 and (' [' .. tostring(op_pfx) .. ']') or '    ')
           )
-          -- virtual_op = vim.v.operator
           Snapshot:set_modes(from, to)
           local snap = Snapshot:gen({ callbacks = true })
-
           Highlight:apply({
             hl = snap.hl,
             winhl = snap.winhl,
@@ -108,12 +109,8 @@ function M:init()
       pattern = 'WhichKeyMode_*',
       desc = 'reactive watches for pseudo-mode changes from which-key to update highlights and run callbacks',
       callback = function(opts)
-        local _, new_mode, keys = unpack(vim.split(opts.match, '_'))
-        if keys and #keys > 0 then
-          -- virtual_op = 'g@' .. keys
-          virtual_op = keys
-        end
-        if last_mode ~= new_mode or last_op ~= virtual_op then
+        local _, new_mode, virtual_op, virtual_opfunc = unpack(vim.split(opts.match, '_'))
+        if last_mode ~= new_mode or last_op ~= virtual_op or last_opfunc ~= virtual_opfunc then
           logger.debug(
             'WhichKeyMode '
               .. last_mode
@@ -121,16 +118,22 @@ function M:init()
               .. (new_mode or ' ')
               .. string.rep(' ', 5 - (#last_mode + (new_mode and #new_mode or 0)))
               .. (virtual_op and #virtual_op > 0 and (" '" .. tostring(virtual_op) .. "'") or ' ')
-              .. (keys and ' - ' .. keys or '')
+              .. (
+                virtual_opfunc
+                  and #virtual_opfunc > 0
+                  and (' [' .. tostring(virtual_opfunc) .. ']')
+                or '    '
+              )
           )
-
-          -- vim.api.nvim_exec_autocmds('ModeChanged', { pattern = current_mode .. ':' .. new_mode })
-          --  TODO: or inc_mode_config['o'].operators[virtual_op] then
-
           Snapshot:set_modes(last_mode, new_mode)
           local snap = Snapshot:gen({
             callbacks = true,
-            virtual_op = virtual_op,
+            virtual_op = (
+              virtual_op == 'g@'
+              and virtual_opfunc
+              and #virtual_opfunc > 0
+              and virtual_op .. virtual_opfunc
+            ) or virtual_op,
           })
 
           Highlight:apply({
@@ -138,9 +141,9 @@ function M:init()
             winhl = snap.winhl,
             winid = api.nvim_get_current_win(),
           })
-          -- Highlight:apply(Snapshot:gen({ callbacks = true, virtual_op = virtual_op }))
           last_mode = new_mode
           last_op = virtual_op
+          last_opfunc = virtual_opfunc
         end
       end,
     })

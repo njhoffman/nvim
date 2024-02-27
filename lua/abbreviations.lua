@@ -46,8 +46,15 @@ for wrong, correct in pairs(spellfixes) do
 end
 
 vim.cmd([[
+
+   " func Eatchar(pat)
+   "    let c = nr2char(getchar(0))
+   "    return (c =~ a:pat) ? '' : c
+   " endfunc
+   " iabbr <silent> if if ()<Left><C-R>=Eatchar('\s')<CR>
+
   cabbrev T Telescope
-  cabbrev D lua vim.dbglog(
+  cabbrev ( lua vim.dbglog(
 ]])
 
 -- vim.cmd('ab ng Neogit')

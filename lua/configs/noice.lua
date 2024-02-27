@@ -16,6 +16,38 @@ local noice_routes = require('noice.user.routes')
 local noice_mapping = require('noice.user.mapping')
 local render = require('notify.render._entry')
 
+local cmdline_popup = {
+  views = {
+    cmdline_popup = {
+      position = {
+        row = 5,
+        col = '50%',
+      },
+      size = {
+        width = 60,
+        height = 'auto',
+      },
+    },
+    popupmenu = {
+      relative = 'editor',
+      position = {
+        row = 8,
+        col = '50%',
+      },
+      size = {
+        width = 60,
+        height = 10,
+      },
+      border = {
+        style = 'rounded',
+        padding = { 0, 1 },
+      },
+      win_options = {
+        winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
+      },
+    },
+  },
+}
 local cfg = {
   presets = {
     bottom_search = false, -- use a classic bottom cmdline for search
@@ -40,7 +72,12 @@ local cfg = {
     hover = {
       enabled = true,
       -- view = nil, -- when nil, use defaults from documentation
-      opts = { win_options = { scrolloff = 0, scrollback = 1 } }, -- merged with defaults from documentation
+      opts = {
+        win_options = {
+          scrolloff = 0,
+          -- scrollback = 1,
+        },
+      }, -- merged with defaults from documentation
     },
     signature = {
       enabled = true,
@@ -48,7 +85,7 @@ local cfg = {
         enabled = true,
         trigger = true, -- Automatically show signature help when typing a trigger character from the LSP
         luasnip = true, -- Will open signature help when jumping to Luasnip insert nodes
-        throttle = 50, -- Debounce lsp signature help request by 50ms
+        throttle = 200, -- Debounce lsp signature help request by 50ms
       },
     },
     message = {
@@ -89,6 +126,17 @@ local cfg = {
     format = {
       -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
       -- conceal = false,
+      -- possible
+      replace = { pattern = '^:s/', icon = '', lang = 'vim', title = 'Replace' },
+      -- -- not possible
+      -- replace_range = {
+      --   pattern = '^:([0-9.%$+-]+)[,;]([0-9.%$+-]+)s/',
+      --   icon = '',
+      --   lang = 'vim',
+      --   title = 'Replace in range [\1 to \2]',
+      -- },
+      -- possible
+      replace_all = { pattern = '^:%%s/', icon = '', lang = 'vim', title = 'Replace All' },
     },
   },
   messages = {
@@ -254,6 +302,12 @@ vim.api.nvim_create_user_command('Silence', function()
     pending = require('notify').history(),
     -- { filetype = "markdown", icon = "", id = 3, level = "INFO", message = { "Live commands", "   ➜ `Norm <keys>`", "   ➜ `5Reg a`", "   ➜ `G/^$/d`", "   ➜ `%Spattern/replace`" }, render = <function 3>, time = 1707851316, title = { "format", "13:08:36" } }
   }
+  vim.notify(
+    'Messages and lsp silenced - ' .. 'pending: ' .. #(notify_stats.pending or {}),
+    'info',
+    { title = 'Silence', timeout = 5000 }
+  )
+
   require('notify').dismiss({})
   require('notify').setup({ level = 5 })
   require('noice').setup({
@@ -268,24 +322,87 @@ vim.api.nvim_create_user_command('Silence', function()
       },
     },
   })
+
   vim.cmd([[
     set laststatus=0
     set cmdheight=1
     set nomore
-    echomsg 'Messages and lsp silenced...'
   ]])
 end, { desc = 'silence messaging by redirect and skip output of all routes in noice' })
 
 vim.api.nvim_create_user_command('SilenceStop', function()
   vim.diagnostic.enable()
-  require('configs.nvim-notify')
-  require('configs.noice')
   require('vim-options')
+  require('notify').setup({ level = 2 })
+  require('noice').setup({
+    routes = {
+      {
+        filter = { event = 'msg_show', kind = '' }, -- find more_line, find written
+        opts = { skip = false },
+      },
+      {
+        filter = { event = 'notify.*', kind = '' }, -- find more_line, find written
+        opts = { skip = false },
+      },
+    },
+  })
 end, { desc = 'Undo silence command redirects and options' })
 
+local redirect_cmd = function(force_close)
+  local cmdline = vim.fn.getcmdline()
+  require('noice').redirect(cmdline)
+  -- cmdline.popup:append(cmdline, 'NoiceCmdlinePopup')
+  -- cmdline.clear()
+end
+
 vim.keymap.set('c', '<S-Enter>', function()
-  require('noice').redirect(vim.fn.getcmdline())
-end, { desc = 'redirect cmdline output to view' })
+  redirect_cmd()
+end, { desc = 'fork cmdline output to popup view' })
+
+vim.keymap.set('c', '<C-CR>', function()
+  redirect_cmd(true)
+end, { desc = 'redirect cmdline output to popup view' })
+
+-- scroll in a float window
+function scroll_in_float_win(move_step)
+  local windows = vim.api.nvim_list_wins()
+
+  for _, winid in ipairs(windows) do
+    -- the float window's relative is none,
+    -- then we can capture the float window
+    if vim.api.nvim_win_get_config(winid).relative ~= '' then
+      local bufid = vim.api.nvim_win_get_buf(winid)
+      local max_line_num = vim.api.nvim_buf_line_count(bufid)
+      local col_idx = vim.api.nvim_win_get_cursor(winid)[2]
+
+      if move_step < 0 then
+        -- upward moving
+        -- if the top visible line of the current window
+        -- is the first line, then don't do any move
+        local row_idx = vim.fn.getwininfo(winid)[1].topline
+
+        if row_idx + move_step <= 0 then
+          break
+        end
+        -- set the cursor to the top visible line - 1
+        vim.api.nvim_win_set_cursor(winid, { row_idx + move_step, col_idx })
+        break
+      else
+        -- downward moving
+        -- if the bottom visible line of the current window
+        -- is the last line, then don't do any move
+        local row_idx = vim.fn.getwininfo(winid)[1].botline
+
+        if row_idx + move_step > max_line_num then
+          break
+        end
+        -- set the cursor to the bottom visible line + 1
+        vim.api.nvim_win_set_cursor(winid, { row_idx + move_step, col_idx })
+        break
+      end
+    end
+  end
+end
 
 -- {
 --   -- default format
@@ -303,9 +420,6 @@ end, { desc = 'redirect cmdline output to view' })
 --   lsp_progress_done = ..., -- formatter used by lsp progress
 -- }
 
--- -- -- redirect ":hi"
--- require("noice").redirect("hi")
---
 -- -- redirect some function
 -- require("noice").redirect(function()
 --   print("test")

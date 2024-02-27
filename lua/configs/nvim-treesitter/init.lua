@@ -97,41 +97,68 @@ require(textobj_unit).setup()
 vim.api.nvim_set_keymap(
   'x',
   'iu',
-  '<cmd>lua require"' .. textobj_unit .. '".select()<CR>',
+  '<cmd>lua require("' .. textobj_unit .. '").select()<CR>',
   { noremap = true, silent = true }
 )
 vim.api.nvim_set_keymap(
   'x',
   'au',
-  '<cmd>lua require"' .. textobj_unit .. '".select(true)<CR>',
+  '<cmd>lua require("' .. textobj_unit .. '").select(true)<CR>',
   { noremap = true, silent = true }
 )
 vim.api.nvim_set_keymap(
   'o',
   'iu',
-  '<cmd><c-u>lua require"' .. textobj_unit .. '".select()<CR>',
+  '<cmd><c-u>lua require("' .. textobj_unit .. '").select()<CR>',
   { noremap = true, silent = true }
 )
 vim.api.nvim_set_keymap(
   'o',
   'au',
-  ':<c-u>lua require"' .. textobj_unit .. '".select(true)<CR>',
+  ':<c-u>lua require("' .. textobj_unit .. '").select(true)<CR>',
   { noremap = true, silent = true }
 )
 
 vim.api.nvim_set_keymap(
   'n',
   'ghiu',
-  '<cmd>lua require"' .. textobj_unit .. '".toggle_highlighting("VisualAlt")<CR>',
+  '<cmd>lua require("' .. textobj_unit .. '").toggle_highlighting("VisualAlt")<CR>',
   { noremap = true, silent = true }
 )
 
 vim.api.nvim_create_user_command( -- :TSUnitHighlight
   'TSUnitHighlight',
-  '<cmd>lua require"' .. textobj_unit .. '".toggle_highlighting("VisualAlt")<CR>',
+  'lua require("' .. textobj_unit .. '").toggle_highlighting("VisualAlt")',
   { nargs = 0 }
 )
 
+-- Custom filetype detection logic with the new Lua filetype plugin
+-- vim.filetype.add {
+--   extension = {
+--     cts = 'typescript',
+--     es6 = 'javascript',
+--     gif = 'image',
+--     jpeg = 'image',
+--     jpg = 'image',
+--     mdx = 'mdx',
+--     mts = 'typescript',
+--     png = 'image',
+--     sh = 'sh',
+--     zsh = 'sh',
+--   },
+--   filename = {
+--     ['.babelrc'] = 'json',
+--     ['.eslintrc'] = 'json',
+--     ['.prettierrc'] = 'json',
+--     ['.stylelintrc'] = 'json',
+--     ['.zshrc'] = 'sh',
+--     ['.zshenv'] = 'sh',
+--   },
+--   pattern = {
+--     ['.*config/git/config'] = 'gitconfig',
+--     ['.env.*'] = 'sh',
+--   },
+-- }
 -- 'lua require"treesitter-unit".enable_highlighting()',
 
 -- https://github.com/kjuulh/tree-sitter-hurl

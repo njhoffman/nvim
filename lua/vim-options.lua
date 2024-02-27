@@ -21,7 +21,7 @@ opt('breakindentopt', 'shift:2')
 opt('cedit', '<C-t>') -- ctrl-f interferes with popup completion
 opt('clipboard', 'unnamedplus')
 opt('cmdheight', 0) -- 0
-opt('cmdwinheight', 10)
+opt('cmdwinheight', 15)
 opt('completeopt', 'menuone,noselect,preview') -- noselect, noinsert
 opt('complete', '') -- no omnifunc, completefunc, tagfunc, etc
 opt('confirm', true)
@@ -67,7 +67,6 @@ opt('pumblend', 10)
 opt('pumheight', 10)
 opt('regexpengine', 0)
 opt('redrawtime', 3000)
-opt('scrolloff', 7)
 
 opt('selection', 'inclusive') -- old, exclusive, inclusive (default)
 opt('virtualedit', 'none') -- onemore, block, insert, all, none
@@ -83,27 +82,33 @@ opt('showmatch', true)
 opt('showmode', false)
 opt('tabline', '')
 opt('showtabline', 1)
+opt('scrolloff', 999)
+opt('sidescroll', 0)
 opt('sidescrolloff', 0)
 opt('smartcase', true)
 opt('splitbelow', true)
-opt('splitkeep', 'screen')
+opt('splitkeep', 'topline') -- cursor, screen, topline
 opt('splitright', true)
 opt('swapfile', false)
 opt('startofline', true) -- motions like "G" also move to the first char
 opt('switchbuf', 'useopen,usetab')
 opt('termguicolors', true)
-opt('textwidth', 120)
+
+opt('shiftwidth', 2)
+opt('tabstop', 2)
+opt('textwidth', 100)
 opt('timeout', true)
-opt('timeoutlen', 600) -- 1000
+opt('timeoutlen', 400) -- 1000
 opt('ttimeout', true)
 opt('ttimeoutlen', 30) -- 50
 opt('undolevels', 1000)
 opt('updatetime', 2000) -- 4000
-opt('whichwrap', 'b,s,<,>,[,],h,l')
+opt('whichwrap', '<,>,[,]') -- 'b,s,<,>,[,],h,l'
 opt('wildignore', '*.o,*~,*.pyc') -- wildchar	   /charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
 opt('wildmode', 'longest:full,full')
 -- opt('winminwidth', 1) -- vimade errors when this is larger
 opt('writebackup', true)
+opt('wrap', false)
 -- opt("display", "msgsep")
 -- opt("shortmess", o.shortmess .. "cS")
 -- -- opt("shortmess", "filnxtToOcSIs")
@@ -115,99 +120,4 @@ opt('writebackup', true)
 -- opt("wcm", 0x0e)
 
 -- opt('list', true) -- Define which helper symbols to show
--- opt('listchars', 'extends:…,precedes:…,nbsp:␣') -- Define which helper symbols to show
-vim.opt.listchars:append({
-  nbsp = '󰚌',
-  precedes = '…',
-  extends = '…',
-  multispace = '·',
-  -- overridden by indent-blankline
-  -- tab = '│ ',
-  conceal = '?',
-  lead = ' ',
-  trail = ' ',
-})
-
--- window scope
-opt('concealcursor', 'nc', window)
-opt('conceallevel', 0, window)
-opt('cursorline', true, window)
-opt('number', true, window)
-opt('relativenumber', true, window)
-opt('signcolumn', 'yes:1', window)
-opt('spell', false, window)
-opt('wrap', false, window)
--- opt('winbar', ' ', window)
-
--- buffer scope
-opt('expandtab', true, buffer)
-opt('fileformat', 'unix', buffer)
-opt('modeline', true, buffer)
-opt('shiftwidth', 2, buffer)
-opt('smartindent', false, buffer)
-opt('softtabstop', 0, buffer)
-opt('synmaxcol', 2000, buffer)
-opt('tabstop', 2, buffer)
-opt('undofile', true, buffer)
-opt('equalalways', true) -- make windows the samue width when closing one
-opt('cursorlineopt', 'both') -- should get cursorline in number too
-
--- vim.opt.guicursor = {
---   "i-ci-c:ver25", -- INFO with noice.nvim, the guicursor cannot be styled in the cmdline https://github.com/folke/noice.nvim/issues/552
---   "n-sm:block",
---   "r-cr-o-v:hor10",
---   "a:blinkwait200-blinkoff350-blinkon550",
--- }
-
--- extra undo-points (= more fine-grained undos)
--- WARN requires `remap = true`, since it otherwise prevents vim abbreviations
--- with those chars from working
--- for _, char in pairs { ".", ",", ";", '"', ":", "'", "<Space>" } do
---   vim.keymap.set("i", char, function()
---     if vim.bo.buftype ~= "" then return char end
---     return char .. "<C-g>u"
---   end, { desc = "󰕌 Extra undopoint for " .. char, remap = true, expr = true })
--- end
---
-
--- opt.cpoptions:append(">") -- when you yank multiple times into a register, this puts each on a new line
--- opt.nrformats:append("alpha") -- this means you can increment lists that have letters with `g ctrl-a`
--- vim.o.whichwrap = vim.o.whichwrap .. "<,>" -- Wrap movement between lines in edit mode with arrows
-
--- Enable syntax highlighing if it wasn't already (as it is time consuming)
--- if vim.fn.exists('syntax_on') ~= 1 then
---   vim.cmd([[syntax enable]])
--- end
-
--- -- Add empty lines before and after cursor line supporting dot-repeat
---  MiniBasics.put_empty_line = function(put_above)
---    -- This has a typical workflow for enabling dot-repeat:
---    -- - On first call it sets `operatorfunc`, caches data, and calls
---    --   `operatorfunc` on current cursor position.
---    -- - On second call it performs task: puts `v:count1` empty lines
---    --   above/below current line.
---    if type(put_above) == 'boolean' then
---      vim.o.operatorfunc = 'v:lua.MiniBasics.put_empty_line'
---      MiniBasics.cache_empty_line = { put_above = put_above }
---      return 'g@l'
---    end
---
---    local target_line = vim.fn.line('.') - (MiniBasics.cache_empty_line.put_above and 1 or 0)
---    vim.fn.append(target_line, vim.fn['repeat']({ '' }, vim.v.count1))
---  end
---
---  -- NOTE: if you don't want to support dot-repeat, use this snippet:
---  -- ```
---  -- map('n', 'gO', "<Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>")
---  -- map('n', 'go', "<Cmd>call append(line('.'),     repeat([''], v:count1))<CR>")
---  map('n', 'gO', 'v:lua.MiniBasics.put_empty_line(v:true)',  { desc = 'Put empty line above', expr = true })
---  map('n', 'go', 'v:lua.MiniBasics.put_empty_line(v:false)', { desc = 'Put empty line below', expr = true })
---
--- M.load_headless_options = function()
---   vim.opt.shortmess = "" -- try to prevent echom from cutting messages off or prompting
---   vim.opt.more = false -- don't pause listing when screen is filled
---   vim.opt.cmdheight = 9999 -- helps avoiding |hit-enter| prompts.
---   vim.opt.columns = 9999 -- set the widest screen possible
---   vim.opt.swapfile = false -- don't use a swap file
--- end
 --

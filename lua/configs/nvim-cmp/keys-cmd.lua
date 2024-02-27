@@ -35,17 +35,20 @@ local send_enter = function()
 end
 local has_chars_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('.%+') == nil
+  return col ~= 0
+    and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('.%+') == nil
 end
 
 local has_chars_after = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col + 1, col + 1):match('.%+') == nil
+  return vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col + 1, col + 1):match('.%+')
+    == nil
 end
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
+  return col ~= 0
+    and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
 
 local last_history_cmd = ''
@@ -141,41 +144,43 @@ local cmdline = {
   ["<M-'>"] = {
     c = function(fallback)
       if cmp.visible() then
-        cmp.confirm({
-          behavior = cmp.ConfirmBehavior.Replace,
-          select = true,
-        })
+        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
       elseif type(fallback) == 'function' then
         fallback()
       end
     end,
   },
-  -- ['<CR>'] = {
-  --   c = cmp.mapping.confirm({ select = false }),
-  -- },
-
+  -- ['<CR>'] = cmp_mapping(function(fallback)
+  --   if cmp.visible() then
+  --     return cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+  --   end
+  --   -- if type(fallback) == 'function' then
+  --   --   fallback() -- if not exited early, always fallback
+  --   -- end
+  -- end, { 'c' }),
   ['<CR>'] = cmp_mapping(function(fallback)
-    local confirm_opts = { behavior = types.cmp.ConfirmBehavior.Replace, select = false }
+    local opts = {
+      confirm_opts = { behavior = types.cmp.ConfirmBehavior.Replace, select = false },
+    }
     if cmp.visible() then
+      local confirm_opts = vim.deepcopy(opts.confirm_opts) -- avoid mutating the original opts below
       -- local is_insert_mode = function()
       --   return vim.api.nvim_get_mode().mode:sub(1, 1) == 'i'
       -- end
       -- if is_insert_mode() then -- prevent overwriting brackets
       --   confirm_opts.behavior = types.cmp.ConfirmBehavior.Insert
       -- end
-      local entry = cmp.get_selected_entry()
+      -- local entry = cmp.get_selected_entry()
       -- local is_copilot = entry and entry.source.name == 'copilot'
       -- if is_copilot then
-      --   confirm_opts.behavior = types.cmp.ConfirmBehavior.Replace
+      --   confirm_opts.behavior = ConfirmBehavior.Replace
       --   confirm_opts.select = true
       -- end
       if cmp.confirm(confirm_opts) then
         return -- success, exit early
       end
     end
-    if type(fallback) == 'function' then
-      fallback() -- if not exited early, always fallback
-    end
+    fallback() -- if not exited early, always fallback
   end, { 'c' }),
   ['<Tab>'] = cmp.mapping(function(fallback)
     if cmp.visible() then

@@ -11,7 +11,6 @@ local prefix = mapper.prefix
 prefix('n', 'z', 'folds ﱒ')
 prefix('n', 'g', 'go 隷')
 prefix('n', 'gh', 'hover  ')
-prefix('n', 'gt', 'text-case  ')
 prefix('n', 'gQ', 'quickfix  ')
 prefix('n', 'gP', 'preview  ')
 prefix('n', 'go', 'debug out  ')
@@ -257,7 +256,8 @@ map('n', '<BS>', '<cmd>e #<cr>', {
   desc = '󰽙 open the last buffer',
   silent = true,
 })
-local bufvar = { { '<Plug>(CybuPrev)', '<Plug>(CybuNext)' }, { '<cmd>BufferPrev<cr>', '<cmd>BufferNext<cr>' } }
+local bufvar =
+  { { '<Plug>(CybuPrev)', '<Plug>(CybuNext)' }, { '<cmd>BufferPrev<cr>', '<cmd>BufferNext<cr>' } }
 
 map({ 'n' }, '<leader>fs', '<cmd>lua vim.treesitter.get_parser(0):parse()<cr>', {
   category = 'Buffers',
@@ -548,6 +548,7 @@ local opts = { noremap = true, silent = true, desc = ' search' }
 
 -- --   ﰍ  
 -- local icon = ' '
+-- map("n", "g*", "*Ncgn", { desc = "Change word with . repeat" })
 
 -- map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
 -- map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
@@ -587,22 +588,26 @@ map('i', 'kj', '<esc>', {
   category = 'Motion',
   label = 'insert mode escape',
   desc = 'quickly escape insert mode',
+  silent = true
 })
 
 map('i', '<C-d>', '<cmd>norm x<cr>', { -- <C-o> + dl, norm lxh
   category = 'Motion',
   desc = 'delete next char',
+  silent = true
 })
 
 map('i', '<M-d>', '<cmd>norm de<cr>', {
   category = 'Motion',
   desc = 'delete to end of line',
+  silent = true
 })
 
 map('n', 'D', 'd$', {
   category = 'Motion',
   label = 'delete to end',
   desc = 'delete to end of line',
+  silent = true
 })
 
 
@@ -612,14 +617,16 @@ map('n', '<c-b>', '<Plug>(SmoothieBackwards)', {
   label = ' scroll backwards',
   desc = ' smoothie scroll backwards',
   noremap = false,
+  silent = true
 })
 
-map('n', '<c-f>', '<Plug>(SmoothieForwards)', {
+map('n', '<c-f>', '<Plug>(SmoothieDownwards)', {
   category = 'Motion',
   plugin = 'vim-smoothie',
   label = ' scroll forwards',
   desc = ' smoothie scroll forwards',
   noremap = false,
+  silent = true
 })
 
 map('n', '<M-f>', '<Plug>(SmoothieDownwards)', {
@@ -628,6 +635,7 @@ map('n', '<M-f>', '<Plug>(SmoothieDownwards)', {
   label = ' scroll forwards',
   desc = ' smoothie scroll forwards',
   noremap = false,
+  silent = true
 })
 
 map('n', '<M-b>', '<Plug>(SmoothieUpwards)', {
@@ -636,6 +644,7 @@ map('n', '<M-b>', '<Plug>(SmoothieUpwards)', {
   label = ' scroll forwards',
   desc = ' smoothie scroll forwards',
   noremap = false,
+  silent = true
 })
 
 map('n', '<space>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
@@ -644,6 +653,7 @@ map('n', '<space>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(Sm
   label = ' scroll forwards x2',
   desc = ' smoothie scroll forwards x2',
   noremap = false,
+  silent = true
 })
 
 map('n', 'G', '<Plug>(Smoothie_G)', {
@@ -652,6 +662,7 @@ map('n', 'G', '<Plug>(Smoothie_G)', {
   label = ' scroll bottom',
   desc = ' smoothie scroll to bottom',
   noremap = false,
+  silent = true
 })
 
 map('n', 'gg', '<Plug>(Smoothie_gg)', {
@@ -660,18 +671,21 @@ map('n', 'gg', '<Plug>(Smoothie_gg)', {
   label = ' scroll top',
   desc = ' smoothie scroll to top',
   noremap = false,
+  silent = true
 })
 
 map('n', 'gp', '`[v`]', {
   category = 'Motion',
   label = ' select last visual',
   desc = ' select last visual block afrom bracket marks',
+  silent = true
 })
 
 map('n', 'v', '<cmd>normal! v<cr>', {
   category = 'Motion',
   label = 'visual mode',
   desc = 'enter visual mode and select 1 character',
+  silent = true
 })
 
 vmap('n', 'gi', {
@@ -750,7 +764,7 @@ map({ 'n' }, "<M-BS>", '<cmd>pop<cr>', {
   desc = ' jump to previous tag',
 })
 
-vmap({ 'n' }, "<C->",  {
+vmap({ 'n' }, "<C-]>",  {
   category = 'Motion',
   desc = ' jump to next tag',
 })
@@ -906,13 +920,13 @@ map('i', '<F2>', '<cmd>WhichKey "" i<cr>', {
   desc = '  toggle whichkey'
 })
 
-map('x', '<F2>', '<cmd>WhichKey "" x<cr>', {
+map('x', '<F2>', '<cmd>WhichKey "" v<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = '  toggle whichkey'
 })
 
-map('s', '<F2>', '<cmd>WhichKey "" s<cr>', {
+map('s', '<F2>', '<cmd>WhichKey "" v<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = '  toggle whichkey'
@@ -924,7 +938,7 @@ map('c', '<F2>', '<cmd>WhichKey "" c<cr>', {
   desc = '  toggle whichkey'
 })
 
-map('t', '<F2>', '<cmd>WhichKey "" c<cr>', {
+map('t', '<F2>', '<cmd>WhichKey "" t<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = '  toggle whichkey'
@@ -1252,11 +1266,11 @@ map('n', '<M-Bslash>', '<cmd>MiniFiles<cr>', {
 -- PICKERS ---------------------------------------------------------------------------------------
 
 -- TODO: why does this not work? <cmd>lua require('oil').open_float<cr>
-map('n', '-', require("oil").toggle_float, {
-  plugin = 'oil.nvim',
-  category = 'Pickers',
-  desc = 'toggle oil file manager',
-})
+-- map('n', '-', require("oil").toggle_float, {
+--   plugin = 'oil.nvim',
+--   category = 'Pickers',
+--   desc = 'toggle oil file manager',
+-- })
 -- vim.keymap.set('n', '-', require('oil').open_float, { desc = 'Open parent directory' })
 
 map('n', '<C-g>', "<cmd>lua require('telescope.run')('leaderf', { theme = 'dropdown' })<cr>", {
@@ -1385,14 +1399,14 @@ map('n', '<leader>gs', "<cmd>require('telescope.run')('builtin', 'git_files')<cr
   desc = '󰊢 show git status in telescope',
 })
 
-map('n', '<leader>gc', '', {
+map('n', '<leader>gc', "<cmd>require('telescope.run')('builtin', 'git_commits')<cr>", {
   category = 'Git',
   plugin = 'telescope.nvim',
   label = '󰊢 git commits',
   desc = '󰊢 show git commits in telescope',
 })
 
-map('n', '<leader>gC', '', {
+map('n', '<leader>gC', "<cmd>require('telescope.run')('builtin', 'git_bcommits')<cr>", {
   category = 'Git',
   plugin = 'telescope.nvim',
   label = '󰊢 git bcommits',
@@ -1467,7 +1481,7 @@ map('n', '<leader>[', '`[V`]<', {
   desc = '󰉶 indent all lines',
 })
 
-map('n', '<leader>]', '', {
+map('n', '<leader>]', ' `[V`]>', {
   category = 'Format',
   label = '󰉶 unindent all lines',
   desc = '󰉶 unindent all lines',
@@ -1671,7 +1685,11 @@ map('n', '<leader>ie', function()
 end, { desc = '⌨️ Edit ' .. vim.fs.basename(pathOfThisFile) })
 
 -- open new scope / brace
-map({ 'n', 'i' }, 'g{', function()
+-- map({ 'i' }, 'g{', function()
+--   require('funcs.quality-of-life').openNewScope()
+-- end, { desc = ' Open new scope' })
+
+map({ 'n' }, 'g{', function()
   require('funcs.quality-of-life').openNewScope()
 end, { desc = ' Open new scope' })
 

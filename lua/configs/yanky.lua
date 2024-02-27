@@ -147,17 +147,19 @@ map('n', 'yil', 'v0o$y', { category = 'Motion', desc = '  yank in line', sile
 map('n', 'yy',  'v0o$y', { category = 'Motion', desc = '  yank in line'  })
 -- map({'n', 'x'}, 'y',         'ygv<esc>',  category = 'Motion', label = 'yank keep cursor begin', desc = '  yank maintaining cursor start position', silent = true })
 -- map('n', 'yy', 'mQ0y$`Q',                { category = 'Motion', label = 'yank in line no eol',    desc = '  yank in line no eol' })
-map('n', '<M-C-P>',  '<cmd>lua require("configs.yanky").yanky_cycle("prev")<cr>', { desc = '  cycle killring backward', silent = true })
-map('n', '<M-C-N>',  '<cmd>lua require("configs.yanky").yanky_cycle("next")<cr>',  { desc = '  cycle killring forward', silent = true })
+
+map('n', '<leader>p[',  '<cmd>lua require("configs.yanky").yanky_cycle("prev")<cr>', { desc = '  cycle killring backward', silent = true })
+map('n', '<leader>p]',  '<cmd>lua require("configs.yanky").yanky_cycle("next")<cr>',  { desc = '  cycle killring forward', silent = true })
+
 map({'o', 'x'}, '<leader>pl','<cmd>lua require("yanky.textobj").last_put()<cr>',  { desc = '  put last yanked text object', silent = true })
 
 -- unimpaired-like mappings
-map({"n","x"},    'p', '<Plug>(YankyPutAfter)',                    { desc = '  paste (yanky)',  silent = true })
-map({"n","x"},    'P', '<Plug>(YankyPutBefore)',                   { desc = '  paste & indent', silent = true })
-map({"n","x"},    "[p", "<Plug>(YankyGPutBeforeFilter)",   { desc = '  paste & indent before (linewise)' })
-map({"n","x"},    "[P", "<Plug>(YankyGPutAfterFilter)",         { desc = "  put yanked text before selection" })
-map({"n","x"},    "]p", "<Plug>(YankyPutIndentBeforeLinewise)",    { desc = '  paste & indent after (linewise)' })
-map({"n","x"},    "]P", "<Plug>(YankyPutIndentAfterLinewise)",           { desc = "  put yanked text after selection" })
+map({"n","x"}, 'p', '<Plug>(YankyPutAfter)',                    { desc = '  paste (yanky)',  silent = true })
+map({"n","x"}, 'P', '<Plug>(YankyPutBefore)',                   { desc = '  paste & indent', silent = true })
+map({"n","x"}, "[p", "<Plug>(YankyGPutAfterFilter)",   { desc = '  put yanked text after selection' })
+map({"n","x"}, "[P", "<Plug>(YankyGPutBeforeFilter)",         { desc = "  put yanked text before selection" })
+map({"n","x"}, "]p", "<Plug>(YankyPutIndentAfterLinewise)",    { desc = '  paste & indent after (linewise)' })
+map({"n","x"}, "]P", "<Plug>(YankyPutIndentBeforeLinewise)",           { desc = "  paste & indent before (linewise)" })
 -- { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after selection" },
 -- { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before selection" },
 -- map("n", "]P", "<Plug>(YankyPutIndentAfterBlockwise)",   { desc = '  paste & reindent after (blockwise)' })

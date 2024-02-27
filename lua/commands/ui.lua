@@ -65,7 +65,13 @@ local function numberOfWins()
     local winConf = vim.api.nvim_win_get_config(win)
     local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win))
 
-    if bufname and bufname ~= '' and not winConf.external and winConf.focusable and vim.api.nvim_win_is_valid(win) then
+    if
+      bufname
+      and bufname ~= ''
+      and not winConf.external
+      and winConf.focusable
+      and vim.api.nvim_win_is_valid(win)
+    then
       count = count + 1
     end
   end
@@ -73,6 +79,7 @@ local function numberOfWins()
 end
 
 local auto_close = {
+  'noice',
   'qf',
   'help',
   'notify',
@@ -84,6 +91,7 @@ local get_splits = function(directions)
 
   -- these ft will not window close on delete
   local ignored_window_ft = {}
+
   local ignored_splits_ft = {
     'CompetiTest',
     'Mundo',

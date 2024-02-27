@@ -6,6 +6,8 @@
 
 -- stylua: ignore
 local config = {
+  show_help = false,
+  show_keys = false,
   plugins = {
     registers = false,
     -- marks = true,
@@ -25,41 +27,63 @@ local config = {
     --   extra = false
     -- },
   },
+  -- stylua: ignore
   operators = {
-    S = 'substitute  ',
-    X = 'exchange  ',
-    s = 'surround 󰅪',
-    ys = 'surround 󰅪',
-    ['cx'] = 'exchange  ',
-    ['gtoc'] = 'change to camel case',
-    ['gtod'] = 'change to dash case',
-    ['gtos'] = 'change to snake case',
-    ['gb'] = 'comments (block)  ',
-    ['gc'] = 'comments (line)  ',
+    d    = 'delete ',
+    c    = 'change ',
+    y    = 'yank  ',
+    S    = 'substitute  ',
+    X    = 'exchange  ',
+    cx   = 'exchange  ',
+    dr   = 'delete remote object ',
+    cr   = 'change remote object ',
+    yr   = 'yank remote object ',
+    s    = 'surround add 󰅪',
+    ys   = 'surround add 󰅪',
+    ds   = 'surround delete 󰅪',
+    cs   = 'surround change 󰅪',
+    sF   = 'surround find right 󰅪',
+    sf   = 'surround find left 󰅪',
+    gb   = 'comments (block)  ',
+    gc   = 'comments (line)  ',
+    goo  = 'debugprint out t',
+    gtoc = 'change toCamelCase  ',
+    gtod = 'change to-dash-case  ',
+    gtoD = 'change to.dot.case  ',
+    gtof = 'change to/path/case  ',
+    gton = 'change TO_CONSTANT_CASE  ',
+    gtop = 'change ToPascalCase  ',
+    gtoP = 'change To phrase case  ',
+    gtos = 'change to_snake_case  ',
+    gtot = 'change To Title Case  ',
+    gtou = 'change to lower case  ',
+    gtoU = 'change TO UPPER CASE  ',
   },
   presets = {
-    -- 'text_objects',
+    'text_objects',
     -- 'windows',
     -- 'nav',
     -- 'z',
     -- 'g',
     operators = function()
       return {
-        d = 'Delete ',
-        c = 'Change ',
-        y = 'Yank  ',
-        ['='] = "filter through 'equalprg'",
-        ['g~'] = 'Toggle case',
-        ['gu'] = 'Lowercase',
-        ['gU'] = 'Uppercase',
-        ['gq'] = 'format text',
-        ['gw'] = 'format text, keep cursor',
-        ['>'] = 'Indent right',
-        ['<lt>'] = 'Indent left',
-        ['zf'] = 'Create fold',
-        ['!'] = 'Filter external command',
-        -- ['v'] = 'Visual Character Mode',
-        -- ["V"] = "Visual Line Mode",
+        d            =   'Delete',
+        c            =   'Change',
+        y            =   'Yank ',
+        ['=']        =   "Filter through 'equalprg'",
+        ['g~']       =   'Toggle case',
+        ['gu']       =   'Lowercase',
+        ['gU']       =   'Uppercase',
+        ['gq']       =   'Format text',
+        ['gw']       =   'Format text, keep cursor',
+        ['>']        =   'Indent right',
+        -- ['<lt>']  =   'Indent left',
+        ['<']        =   'Indent left',
+        ['zf']       =   'Create fold',
+        ['!']        =   'Filter external command',
+        -- ['v']     =   'Visual Character Mode',
+        -- ["V"]     =   "Visual Line Mode",
+        -- ["<C-v>"] =   "Visual Block Mode",
       }
     end,
     -- motions = {
@@ -85,55 +109,71 @@ local config = {
     --   ['}'] = 'Next empty line',
     -- },
   },
-  ignore_missing = false,
-  -- autokey replacements
-  --   ['<M-g>'] = '<C-g>',
-  --   ['<M-G>'] = '<C-G>',
-  triggers = 'auto', -- automatically setup triggers
+  ignore_unnamed_groups = false,
+  ignore_missing_desc = false,
+  triggers = 'auto', -- auto, all, or list
+  triggers_auto = {
+    groups = true,
+    presets = true
+  },
   triggers_blacklist = {
-    -- n = { 'v' },
+    n = { 'v' },
     i = { 'j', 'k' },
     v = { 'j', 'k' },
   },
   triggers_nowait = {
-    -- marks
+    'y',
+    'v',
+    -- -- marks
     '`',
     "'",
     'g`',
     "g'",
-    -- registers
-    -- '"',
-    -- '<c-r>',
-    -- spelling
-    'z=',
+    -- -- registers
+    -- -- '"',
+    -- -- '<c-r>',
+    -- -- spelling
+    -- 'z=',
   },
+
+--  בּ וּ הּ גּ דּ     壟   
   key_labels = {
-    ['telescope']     = ' ',
-    ['Telescope']     = ' ',
-    ['operator']      = '',
-    ['<CR>']          = '↵',
-    ['<BS>']          = '⌫',
-    ['<Tab>']         = '󰌒',
-    ['<Esc>']         = '⎋',
-    -- ['<space>']    = '󱁐',
-    ['<S-PageDown>']  = '<S-PgDown>',
-    ['<S-PageUp>']    = '<S-PgUp>',
-    ['<PageDown>']    = '<PgDown>',
-    ['<PageUp>']      = '<PgUp>',
-    ['<M-Bslash>']    = '<M-\\>',
-    ['<C-Bslash>']    = '<C-\\>',
-    ['<space>']       = 'SPC',
-    ['<M-Space>']     = 'M-SPC',
-    ['<C-Space>']     = 'C-SPC',
-    ['<M-C-Space>']   = 'M-C-SPC',
-    ['<M-C-S-Down>']  = '<C-M-J>',
-    ['<M-C-S-Up>']    = '<C-M-K>',
-    ['<M-C-S-Left>']  = '<C-M-H>',
-    ['<M-C-S-Right>'] = '<C-M-L>',
-    ['<C-S-Down>']    = '<C-M-j>',
-    ['<C-S-Up>']      = '<C-M-k>',
-    ['<C-S-Left>']    = '<C-M-h>',
-    ['<C-S-Right>']   = '<C-M-l>',
+    ['<leader>']       = ' ',
+    ['<M-']            = 'הּ',
+    ['M-']             = 'הּ',
+    ['-M>']            = 'הּ',
+    ['<C-']            = 'דּ',
+    ['C-']             = 'דּ',
+    ['-C>']            = 'דּ',
+    ['<S-']            = 'וּ',
+    ['S-']             = 'וּ',
+    ['-S>']            = 'וּ',
+    ['telescope']      = ' ',
+    ['Telescope']      = ' ',
+    ['operator']       = '',
+    -- ['<CR>']        = '↵',
+    -- ['<BS>']        = '⌫',
+    -- ['<Tab>']       = '󰌒',
+    -- ['<Esc>']       = '⎋',
+    -- ['<space>']     = '󱁐',
+    ['<space>']        = 'SPC',
+    ['<S-PageDown>']   = '<S-PgDn>',
+    ['<S-PageUp>']     = '<S-PgUp>',
+    ['<PageDown>']     = '<PgDn>',
+    ['<PageUp>']       = '<PgUp>',
+    ['<M-Bslash>']     = '<M-\\>',
+    ['<C-Bslash>']     = '<C-\\>',
+    -- ['<M-Space>']   = 'M-SPC',
+    -- ['<C-Space>']   = 'C-SPC',
+    -- ['<M-C-Space>'] = 'M-C-SPC',
+    ['<M-C-S-Down>']   = '<C-M-J>',
+    ['<M-C-S-Up>']     = '<C-M-K>',
+    ['<M-C-S-Left>']   = '<C-M-H>',
+    ['<M-C-S-Right>']  = '<C-M-L>',
+    ['<C-S-Down>']     = '<C-M-j>',
+    ['<C-S-Up>']       = '<C-M-k>',
+    ['<C-S-Left>']     = '<C-M-h>',
+    ['<C-S-Right>']    = '<C-M-l>',
   },
   hidden = {
     '<silent>',
@@ -154,7 +194,7 @@ local config = {
     '<ScrollWheelDown>',
     '<ScrollWheelUp>'
   },
-  popup_mappings = {
+  mappings = {
     debug_mode   = '<F3>',       -- show detailed keymapping information
     options_menu = '<F2>',       -- launch options menu
     launch_wk    = '<F1>',       -- launch which-key manually
@@ -164,7 +204,7 @@ local config = {
     page_down    = '<M-f>',      -- binding to scroll down inside the popup
     page_up      = '<M-b>',      -- binding to scroll up inside the popup
   },
-  popup_user_mappings = {
+  mappings_user = {
     ['<M-C-_>'] = function(key, mode)
       require('telescope.builtin').keymaps {
         modes = { mode },
@@ -240,51 +280,7 @@ local config = {
 }
 
 require('which-key').setup(config)
-
-_G._wk_timing = function()
-  vim.dbg(require('which-key.logger').timing_summary())
-end
-
-local get_hooks = function()
-  local all_hooks = require('which-key.keys.hooks')
-  local hooks = {}
-  for _, key in ipairs({ 'nop', 'auto', 'fast' }) do
-    for k, _ in pairs(all_hooks['hooked_' .. key]) do
-      local mode = k:sub(1, 1)
-      if type(tonumber(k:sub(2, 2))) == 'number' then
-        local pfx = 'buf_' .. k:sub(2, 2)
-        hooks[pfx] = hooks[pfx] or {}
-        hooks[pfx][mode] = hooks[pfx][mode] or {}
-        hooks[pfx][mode][k:sub(3)] = key
-      else
-        hooks[mode] = hooks[mode] or {}
-        hooks[mode][k:sub(2)] = key
-      end
-    end
-  end
-  return hooks
-end
-
-_G._wk_counts = function()
-  local counts = require('which-key.mapper').get_counts()
-  local hooks = get_hooks()
-  for key, val in pairs(hooks) do
-    if key:match('^buf_') then
-      counts['hook_' .. key] = counts['hook_' .. key] or {}
-      for k, v in pairs(val) do
-        counts['hook_' .. key][k] = #vim.tbl_keys(v)
-      end
-    else
-      counts['hook_' .. key] = #vim.tbl_keys(val)
-    end
-  end
-  vim.dbg(counts)
-end
-
-_G._wk_hooks = function()
-  local hooks = get_hooks()
-  vim.dbg(hooks)
-end
+require('configs.which-key.globals')
 
 -- require('which-key').register({ ['<C-Q>'] = { name = '+Test' }, { mode = 'n' } })
 

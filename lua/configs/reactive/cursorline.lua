@@ -7,7 +7,7 @@ local cursorline_preset = {
   static = {
     winhl = {
       inactive = {
-        CursorLine = { bg = '#060616' }, -- #061028
+        CursorLine = { bg = '#061016' }, -- #061028
         -- CursorLineNr = { fg = '#40a0f0', bg = '#101820', italic = true },
       },
     },
@@ -39,6 +39,18 @@ local cursorline_preset = {
                 -- StatusLine = { bg = '#5b21b6' },
               },
             },
+            ds = {
+              winhl = {
+                CursorLine = { bg = '#200018' },
+                CursorLineNr = { fg = '#8c8585', bg = '#200018' },
+              },
+            },
+          },
+          cs = {
+            winhl = {
+              CursorLine = { bg = '#101f3f' },
+              CursorLineNr = { fg = '#23d5ff', bg = '#162054', italic = true },
+            },
           },
         },
         -- switch case
@@ -59,7 +71,7 @@ local cursorline_preset = {
         d = {
           winhl = {
             CursorLine = { bg = '#200018' },
-            CursorLineNr = { fg = '#8c8585', bg = '#200808' },
+            CursorLineNr = { fg = '#8c8585', bg = '#200018' },
           },
         },
         -- yank

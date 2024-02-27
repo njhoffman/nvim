@@ -39,7 +39,8 @@ end
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
+  return col ~= 0
+    and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
 
 local is_not_luasnip = function()
@@ -54,7 +55,11 @@ local is_enabled = function()
   -- Get first word of cmdline
   local cmd = vim.fn.getcmdline():match('%S+')
   -- Return true if cmd isn't disabled else call/return cmp.close(), which returns false
-  return is_not_comment() and is_not_buftype() and is_not_filetype() and is_not_luasnip() and not disabled[cmd]
+  return is_not_comment()
+      and is_not_buftype()
+      and is_not_filetype()
+      and is_not_luasnip()
+      and not disabled[cmd]
     or cmp.close()
 end
 
@@ -121,8 +126,16 @@ local cfg = {
     max_width = MAX_DOCUMENT_WIDTH,
     col_offset = -3,
     side_padding = 0,
-    completion = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
-    documentation = cmp.config.window.bordered({ winhighlight = WIN_HIGHLIGHT, scrollbar = true, winblend = 0 }),
+    completion = cmp.config.window.bordered({
+      winhighlight = WIN_HIGHLIGHT,
+      scrollbar = true,
+      winblend = 0,
+    }),
+    documentation = cmp.config.window.bordered({
+      winhighlight = WIN_HIGHLIGHT,
+      scrollbar = true,
+      winblend = 0,
+    }),
   },
   mapping = cmp.mapping.preset.insert(mapping_main), --mapping_main,
   sources = cmp.config.sources(sources.main[1], sources.main[2]),
@@ -222,10 +235,20 @@ cmp.setup.cmdline({ '/', '?' }, {
 })
 
 cmp.setup.cmdline(':', {
-  enabled = true,
   matching = { disallow_symbol_nonprefix_matching = false },
   mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
   sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
+  enabled = function()
+    -- Set of commands where cmp will be disabled
+    local disabled = {
+      IncRename = true,
+    }
+    -- Get first word of cmdline
+    local cmd = vim.fn.getcmdline():match('%S+')
+    -- Return true if cmd isn't disabled
+    -- else call/return cmp.close(), which returns false
+    return not disabled[cmd] or cmp.close()
+  end,
 })
 
 local function toggle_autocomplete()
@@ -239,7 +262,11 @@ local function toggle_autocomplete()
   end
 end
 
-vim.api.nvim_create_user_command('CmpToggle', toggle_autocomplete, { desc = 'Toggle nvim-cmp autocomplete' })
+vim.api.nvim_create_user_command(
+  'CmpToggle',
+  toggle_autocomplete,
+  { desc = 'Toggle nvim-cmp autocomplete' }
+)
 
 -- only appear if characters before cursor
 -- api.nvim_create_autocmd(

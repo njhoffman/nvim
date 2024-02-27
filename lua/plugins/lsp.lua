@@ -26,6 +26,16 @@ local plugins = {
       'SmiteshP/nvim-navic',
       'aznhe21/actions-preview.nvim',
       'RRethy/vim-illuminate',
+      {
+        'artemave/workspace-diagnostics.nvim',
+        enabled = false,
+        config = function()
+          require('workspace-diagnostics').setup({})
+          --[[ workspace_files = function()
+              return { 'index.js', 'lib/banana.js' }
+            end ]]
+        end,
+      },
       -- 'zeioth/garbage-day.nvim',
       'b0o/schemastore.nvim', -- for jsonls
       {
@@ -72,7 +82,10 @@ local plugins = {
         enabled = false,
         dependencies = { 'nvim-lua/plenary.nvim' },
       },
-      { 'folke/neodev.nvim', dependencies = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason.nvim' } },
+      {
+        'folke/neodev.nvim',
+        dependencies = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason.nvim' },
+      },
       {
         'folke/trouble.nvim',
         cmd = { 'TroubleToggle', 'Trouble' },

@@ -8,7 +8,8 @@ require('autocommands.startup')
 local setup_nohlsearch = function()
   vim.on_key(function(char)
     if vim.fn.mode() == 'n' then
-      local new_hlsearch = vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
+      local new_hlsearch =
+        vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
       if vim.opt.hlsearch:get() ~= new_hlsearch then
         vim.opt.hlsearch = new_hlsearch
       end
@@ -63,7 +64,8 @@ local setup_nohlsearch = function()
 
   vim.on_key(function(char)
     if vim.fn.mode() == 'n' then
-      local new_hlsearch = vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
+      local new_hlsearch =
+        vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
       if vim.opt.hlsearch:get() ~= new_hlsearch then
         vim.opt.hlsearch = new_hlsearch
       end
@@ -155,7 +157,7 @@ CommandWin = {
 
 FiletypeDetect = {
 -- { 'FileType', 'query',                 'setlocal nonumber norelativenumber' },
-    { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
+    -- { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
     { 'FileType', "neoai-output",          "setlocal conceallevel=3 synmaxcol=1000" },
     -- { {'FileType'}, "pandoc",          "setlocal syn=pandoc | setlocal conceallevel=3 synmaxcol=500" },
     { {'BufNewFile', 'BufRead'}, '*nvim/option-window', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>', },
@@ -310,7 +312,11 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter' }, {
   end,
 })
 autocmds.HighlightYank = {
-  { 'TextYankPost', '*', "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=300 }" },
+  {
+    'TextYankPost',
+    '*',
+    "silent! lua vim.highlight.on_yank { higroup = 'IncSearch', timeout=300 }",
+  },
 }
 
 autocmds.PreserveCursor = { { 'BufReadPost', '*', commands.goto_last_pos } }

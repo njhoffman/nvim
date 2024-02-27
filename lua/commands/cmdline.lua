@@ -55,11 +55,12 @@ local toggle = function()
     end
   end
 
+  vim.dbglog('toggle', cmdline, cmdtype)
   if is_search then
     -- TODO: toggle between search and very magic modes
     -- elseif string.sub(cmdline, 1, 3) == 'vim' then
-    -- vim.o.inccommand = vim.o.inccommand == 'nosplit' and 'split' or 'nosplit'
-    -- vim.notify('inccommand: ' .. vim.o.inccommand)
+    vim.o.inccommand = vim.o.inccommand == 'nosplit' and 'split' or 'nosplit'
+    vim.notify('inccommand: ' .. vim.o.inccommand)
   elseif is_substitute then
     -- TODO: close command line and re-open it to show notification
     vim.o.inccommand = vim.o.inccommand == 'nosplit' and 'split' or 'nosplit'

@@ -119,8 +119,8 @@ local clr_over = {
 return function(injected_functions)
   local sym = injected_functions.sym
   return {
-    Visual({ fg = 'none', bg = '#101840', gui = 'bold,italic' }),
-    VisualAlt({ fg = 'none', bg = '#141436', gui = 'bold,italic' }),
+    Visual({ fg = 'none', bg = '#101840', gui = 'italic' }),
+    VisualAlt({ fg = 'none', bg = '#10082f', gui = 'italic' }),
     VisualRed({ fg = 'none', bg = '#40112c', gui = 'bold,italic' }),
     Error({ fg = clrs.error, bg = 'none' }),
     -- Error({ fg = "none", bg = "none" }),
@@ -142,7 +142,7 @@ return function(injected_functions)
     TabLine({ fg = clrs.nord3, bg = clrs.nord1, gui = 'NONE' }),
     TabLineSel({ fg = '#a6cfff', bg = '#213c64', gui = 'bold' }),
     WinSeparator({ fg = '#444464', bg = '#090909', gui = 'bold' }),
-    VisualNOS({ fg = 'none', bg = clr_over.selection }),
+    VisualNOS({ fg = 'none', bg = '#301840' }),
     -- TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     -- WinBar({ fg = "#313c84", bg = "#202331" }),
     -- WinBarNC({ fg = "#4f5362", bg = "#446faf" }),
@@ -184,9 +184,8 @@ return function(injected_functions)
     -- Function({ fg = '#8c788c' }),
     -- FunctionCall({ fg = '#7f788f' }),
     Identifier({ fg = '#5e88b6' }),
-    IncSearch({ fg = '#eceff4', bg = '#5d61ec' }),
     Include({ fg = '#4774c6' }),
-    Keyword({ fg = '#1167a2' }),
+    Keyword({ fg = '#3167a2' }),
     KeywordFunction({ fg = '#2D88BF' }),
     KeywordReturn({ fg = '#2D81BC' }),
     Label({ fg = '#3377ba' }),
@@ -198,7 +197,10 @@ return function(injected_functions)
     QuickFixLine({ bg = '#172238' }),
     Repeat({ fg = '#806a7f' }),
     Scrollbar({ bg = '#111111', fg = '#334863' }),
-    Search({ fg = '#74efff', bg = '#0d314c', gui = 'NONE' }),
+    IncSearch({ gui = 'bold', bg = '#6e3ce6', fg = '#aaffff' }),
+    Search({ fg = '#00cfff', gui = 'bold' }), -- bg = '#0d314c',
+    -- CurSearch({ fg = '#cc2266', gui = 'bold' }), --  bg = '#110033'
+    CurSearch({ IncSearch }), --  bg = '#110033'
     Special({ fg = '#487ac8' }),
     SpecialChar({ fg = '#b88698' }), -- For special punctutation that does not fall in the catagories before.
     SpecialComment({ fg = '#3698b3' }),
@@ -267,9 +269,9 @@ return function(injected_functions)
     LspReferenceRead({ fg = Search.fg, gui = 'none' }), -- #22bb99, 628bff
     LspReferenceWrite({ fg = Search.fg, gui = 'none' }), -- #22bb99
     LspReferenceText({ fg = Search.fg, gui = 'none' }), -- #22bb99
-    DiffAdd({ bg = '#001822' }), -- #00361f #001000 #22bb99
-    DiffChange({ bg = '#061024' }), -- #003050 #001030 #646ead
-    DiffDelete({ fg = '#444466', bg = '#0E0009' }), -- #3e0009 #300000 #be6069
+    DiffAdd({ bg = '#003c42' }), -- #00361f #001000 #22bb99
+    DiffChange({ bg = '#063054' }), -- #003050 #001030 #646ead
+    DiffDelete({ fg = '#444466', bg = '#240000' }), -- #3e0009 #300000 #be6069
     DiffText({ gui = 'italic', bg = '#0e2040' }), -- #464b5d #001030 #81a1c1
     diffAdded({ fg = clrs.nord14 }),
     diffRemoved({ fg = clrs.nord11 }),
@@ -857,8 +859,9 @@ return function(injected_functions)
     -- NotifyRunSuccessCommand({ fg = '#4fa7f2' }),
     NotifyRunSuccessOutput({ fg = Comment.fg }),
 
-    WhichKey({ fg = '#07c0f7', gui = 'bold' }), --Function
-    WhichKeyGroup({ fg = '#619cf4' }), -- Keyword
+    WhichKeyKey({ fg = '#07c0f7', gui = 'none' }), --Function
+    WhichKeyOperator({ fg = '#917ccf', gui = 'none' }), -- Keyword
+    WhichKeyGroup({ fg = '#418cf4', gui = 'none' }), -- Keyword
     -- WhichKeyDesc({ fg = "#5d79a1", gui = "italic" }), -- Identifier
     WhichKeyDesc({ fg = '#5d79a1', gui = 'italic' }), -- Identifier
     WhichKeySeperator({ fg = '#334664', gui = 'bold' }), -- DiffAdded
@@ -1101,8 +1104,11 @@ return function(injected_functions)
     --     WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
     --     WhichKeySeperator = { fg = clrs.fg },
     -- NavbuddyName({ fg = '#eceff4', bg = '#5d61ec' }),
-    NavbuddyName({ bg = '#40112c' }),
+    NavbuddyName({ bg = '#40112f', gui = 'bold' }),
     NavbuddyTitleBorder({ fg = '#222222' }),
+    NavbuddyScope({ bg = '#061026', gui = 'italic' }),
+    -- NavbuddyCursor({ gui = 'bold' }),
+    -- NavbuddyCursorLine({}),
     -- NavbuddyNormalTitle({ fg = "#222222" }),
 
     -- TelescopePromptCounter { NonText },

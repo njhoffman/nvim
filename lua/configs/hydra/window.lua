@@ -24,34 +24,31 @@ local function move_split_size()
 
       if op == '+' then
         -- vim.fn.feedkeys('<C-w>+', 'n')
-        size.height = size.height + 1
+        size.height = size.height + 2
       elseif op == '-' then
         -- vim.fn.feedkeys('<C-w>-', 'n')
-        size.height = size.height - 1
+        size.height = size.height - 2
       elseif op == '<' then
         -- vim.fn.feedkeys('2<C-w><', 'n')
         -- local curwidth = vim.fn.winwidth(0)
         -- local newwidth = curwidth - 5
         -- vim.api.nvim_win_set_width(0, newwidth)
-        size.width = size.width - 5
+        size.width = size.width - 3
       else
         -- vim.fn.feedkeys('2<C-w>>', 'n')
         -- local curwidth = vim.fn.winwidth(0)
         -- local newwidth = curwidth + 5
         -- vim.api.nvim_win_set_width(0, newwidth)
-        size.width = size.width + 5
+        size.width = size.width + 3
       end
 
-      vim.dbglog(win_config)
-      win_config.width = size.width
-      win_config.height = size.height
-      -- vim.api.nvim_win_set_width(winid, size.width)
-      -- vim.api.nvim_win_set_height(winid, size.height)
-      vim.api.nvim_win_set_config(winid, win_config)
+      vim.api.nvim_win_set_width(winid, size.width)
+      vim.api.nvim_win_set_height(winid, size.height)
     end
   end
 
   Hydra({
+    name = 'Window',
     hint = [[
        ^^^^^^     Move     ^^^^^^   ^^     Split         ^^^^    Size
        ^^^^^^--------------^^^^^^   ^^---------------    ^^^^-------------

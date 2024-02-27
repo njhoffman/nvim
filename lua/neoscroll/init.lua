@@ -82,8 +82,8 @@ local function window_reached_limit(data, move_cursor, direction)
         return true
       elseif opts.respect_scrolloff and data.lines_below_cursor <= utils.get_scrolloff() then
         return true
-      else
-        return data.lines_below_cursor == 0
+      elseif direction > 0 and data.lines_below_cursor == 0 then
+        return true
       end
     else
       return data.lines_below_cursor == 0 and data.win_lines_above_cursor == 0
@@ -106,7 +106,7 @@ local function cursor_reached_limit(data, direction)
     if opts.respect_scrolloff and data.lines_below_cursor <= utils.get_scrolloff() then
       return true
     end
-    return data.lines_below_cursor == 0
+    return direction > 0 and data.lines_below_cursor == 0
   end
 end
 
@@ -217,6 +217,7 @@ local function stop_scrolling(move_cursor, info)
       vim.cmd('TSBufEnable highlight')
     end
   end
+
   if opts.post_hook ~= nil then
     opts.post_hook(info, params)
   end
@@ -274,7 +275,13 @@ function neoscroll.scroll(lines, move_cursor, time, easing_function, info)
     return
   end
 
-  params = { lines, move_cursor, time, easing_function, info }
+  params = {
+    lines = lines,
+    move_cursor = move_cursor,
+    time = time,
+    easing_function = easing_function,
+    info = info,
+  }
 
   -- If still scrolling just modify the amount of lines to scroll
   -- If the scroll is in the opposite direction and
@@ -329,8 +336,10 @@ function neoscroll.scroll(lines, move_cursor, time, easing_function, info)
   -- Scroll the first line
 
   -- Callback function triggered by scroll_timer
+  local total_n = 0
   local function scroll_callback()
     lines_to_scroll = target_line - relative_line
+    total_n = total_n + lines_to_scroll
     data = utils.get_data()
     scroll_window, scroll_cursor = who_scrolls(data, move_cursor, lines_to_scroll)
     if not scroll_window and not scroll_cursor then
@@ -369,7 +378,8 @@ function neoscroll.zt(half_screen_time, easing, info)
   if lines == 0 then
     return
   end
-  local corrected_time = math.floor(half_screen_time * (math.abs(lines) / (window_height / 2)) + 0.5)
+  local corrected_time =
+    math.floor(half_screen_time * (math.abs(lines) / (window_height / 2)) + 0.5)
   neoscroll.scroll(lines, false, corrected_time, easing, info)
 end
 -- Wrapper for zz
@@ -379,7 +389,8 @@ function neoscroll.zz(half_screen_time, easing, info)
   if lines == 0 then
     return
   end
-  local corrected_time = math.floor(half_screen_time * (math.abs(lines) / (window_height / 2)) + 0.5)
+  local corrected_time =
+    math.floor(half_screen_time * (math.abs(lines) / (window_height / 2)) + 0.5)
   neoscroll.scroll(lines, false, corrected_time, easing, info)
 end
 -- Wrapper for zb
@@ -391,7 +402,8 @@ function neoscroll.zb(half_screen_time, easing, info)
   if lines == 0 then
     return
   end
-  local corrected_time = math.floor(half_screen_time * (math.abs(lines) / (window_height / 2)) + 0.5)
+  local corrected_time =
+    math.floor(half_screen_time * (math.abs(lines) / (window_height / 2)) + 0.5)
   neoscroll.scroll(lines, false, corrected_time, easing, info)
 end
 
@@ -400,7 +412,8 @@ function neoscroll.G(half_screen_time, easing, info)
   local window_height = vim.fn.winheight(0)
   local cursor_win_line = vim.fn.winline()
   local win_lines_below_cursor = window_height - cursor_win_line
-  local corrected_time = math.floor(half_screen_time * (math.abs(lines) / (window_height / 2)) + 0.5)
+  local corrected_time =
+    math.floor(half_screen_time * (math.abs(lines) / (window_height / 2)) + 0.5)
   neoscroll.scroll(lines, true, corrected_time, easing, { G = true })
 end
 
@@ -409,7 +422,8 @@ function neoscroll.gg(half_screen_time, easing, info)
   local window_height = vim.fn.winheight(0)
   local cursor_win_line = vim.fn.winline()
   lines = -lines - cursor_win_line
-  local corrected_time = math.floor(half_screen_time * (math.abs(lines) / (window_height / 2)) + 0.5)
+  local corrected_time =
+    math.floor(half_screen_time * (math.abs(lines) / (window_height / 2)) + 0.5)
   neoscroll.scroll(lines, true, corrected_time, easing, info)
 end
 

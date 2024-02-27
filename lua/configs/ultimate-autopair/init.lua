@@ -53,10 +53,31 @@ local cfg = {
     multiline = true,
     do_nothing_if_fail = true,
     -- no_filter_nodes = { 'string', 'raw_string', 'string_literals', 'character_literal' },
-    { faster = false, nocursormove = false, map = '<M-0>', rmap = '<M-9>', cmap = '<M-0>', rcmap = '<M-9>' },
+    {
+      faster = false,
+      nocursormove = false,
+      map = '<M-0>',
+      rmap = '<M-9>',
+      cmap = '<M-0>',
+      rcmap = '<M-9>',
+    },
     -- { faster = false, nocursormove = true, map = '<M-)>', rmap = '<M-(>', cmap = '<M-)>', rcmap = '<M-(>' },
-    { faster = true, nocursormove = true, map = "<M-'>", rmap = '<M-;>', cmap = "<M-'>", rcmap = '<M-;>' },
-    { faster = true, nocursormove = true, map = '<M-.>', rmap = '<M-,>', cmap = '<M-.>', rcmap = '<M-,>' },
+    {
+      faster = true,
+      nocursormove = true,
+      map = "<M-'>",
+      rmap = '<M-;>',
+      cmap = "<M-'>",
+      rcmap = '<M-;>',
+    },
+    {
+      faster = true,
+      nocursormove = true,
+      map = '<M-.>',
+      rmap = '<M-,>',
+      cmap = '<M-.>',
+      rcmap = '<M-,>',
+    },
     -- which nodes to skip for tsnode filtering
     conf = {},
   },
@@ -265,7 +286,7 @@ require('ultimate-autopair.core').modes = { 'i', 'c', 'n', 't' }
 local configs = {
   ua.extend_default(cfg),
   { profile = require('ultimate-autopair.experimental.terminal').init, { '{', '}' } },
-  { profile = require('ultimate-autopair.experimental.matchpair').init },
+  -- { profile = require('ultimate-autopair.experimental.matchpair').init },
 }
 
 local left = vim.api.nvim_replace_termcodes('<Left>', true, false, true)

@@ -225,7 +225,7 @@ return {
       local local_config = get_config_file(root_files.stylua)
       local bufnr = params.bufnr or 0
       local column_width = vim.api.nvim_buf_get_option(bufnr, 'textwidth')
-      column_width = column_width > 0 and column_width or 120
+      column_width = column_width > 0 and column_width or 100
       local args = {
         '--call-parentheses',
         'Always',

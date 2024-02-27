@@ -1,9 +1,9 @@
 -- https://raw.githubusercontent.com/smjonas/live-command.nvim/main/README.md
 
 local commands = {
-  Norm = { cmd = 'norm' },
-  G = { cmd = 'g' },
-  -- D = { cmd = 'd' },
+  Norm = { cmd = 'norm', hl_range = { kind = 'visible' } },
+  G = { cmd = 'g', hl_range = { 1, -1, kind = 'absolute' } },
+  D = { cmd = 'd', hl_range = { 1, -1, kind = 'absolute' } },
   Reg = {
     cmd = 'norm',
     args = function(opts)
@@ -11,7 +11,8 @@ local commands = {
     end,
     range = '',
   },
-  S = { cmd = 'Subvert' },
+  LSubvert = { cmd = 'Subvert' },
+  S = { cmd = 'Substitute', hl_range = { kind = 'visible' } },
 }
 
 require('live-command').setup({

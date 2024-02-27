@@ -2,24 +2,90 @@
 
 require('textcase').setup({
   prefix = 'gt', -- ga
+  default_keymappings_enabled = false,
+  -- enabled_methods = { "to_upper_case", "to_lower_case", "to_snake_case", "to_dash_case",
+  --   "to_title_dash_case", "to_constant_case", "to_dot_case", "to_phrase_case", "to_camel_case", "to_pascal_case",
+  --   "to_title_case", "to_path_case", "to_upper_phrase_case", "to_lower_phrase_case", },
 })
+-- stylua: ignore
+local key_defs = {
+  { method_name = 'to_constant_case', quick_replace = 'gtn', operator = 'gton', lsp_rename = 'gtrn' },
+  { method_name = 'to_camel_case',    quick_replace = 'gtc', operator = 'gtoc', lsp_rename = 'gtrc' },
+  { method_name = 'to_snake_case',    quick_replace = 'gts', operator = 'gtos', lsp_rename = 'gtrs' },
+  { method_name = 'to_dash_case',     quick_replace = 'gtd', operator = 'gtod', lsp_rename = 'gtrd' },
+  { method_name = 'to_pascal_case',   quick_replace = 'gtp', operator = 'gtop', lsp_rename = 'gtrp' },
+  { method_name = 'to_upper_case',    quick_replace = 'gtU', operator = 'gtoU', lsp_rename = 'gtrU' },
+  { method_name = 'to_lower_case',    quick_replace = 'gtu', operator = 'gtou', lsp_rename = 'gtru' },
+  { method_name = 'to_title_case',    quick_replace = 'gtt', operator = 'gtot', lsp_rename = 'gtrt' },
+  { method_name = "to_dot_case",      quick_replace = "gtD", operator = "gtoD", lsp_rename = "gtrD" },
+  { method_name = "to_phrase_case",   quick_replace = "gtP", operator = "gtoP", lsp_rename = "gtrP" },
+  { method_name = "to_path_case",     quick_replace = "gtf", operator = "gtof", lsp_rename = "gtrf" },
+}
 
-vim.api.nvim_set_keymap('n', 'gt.', '<cmd>TextCaseOpenTelescope<CR>', { desc = ' text-case open telescope' })
-vim.api.nvim_set_keymap('n', 'gtt', '<cmd>TextCaseOpenTelescope<CR>', { desc = ' text-case open telescope' })
-vim.api.nvim_set_keymap('v', 'gt.', '<cmd>TextCaseOpenTelescope<CR>', { desc = ' text-case open telescope' })
-vim.api.nvim_set_keymap(
-  'n',
-  'gta',
-  '<cmd>TextCaseOpenTelescopeQuickChange<CR>',
-  { desc = ' text-case telescope quick change' }
-)
-vim.api.nvim_set_keymap(
-  'n',
-  'gti',
-  '<cmd>TextCaseOpenTelescopeLSPChange<CR>',
-  { desc = ' text-case telescope lsp change' }
-)
+local map = require('mapper').map
+local prefix = require('mapper').prefix
 
+local register_keys = function(methods, keys, opts)
+  prefix('x', 'gt', 'text-case  ')
+  prefix('n', 'gt', 'text-case  ')
+  prefix('n', 'gtr', 'lsp rename')
+  prefix('n', 'gto', 'operator')
+
+  local ns = 'textcase'
+  for _, feature in ipairs({ 'line', 'eol', 'visual', 'operator', 'lsp_rename', 'current_word' }) do
+    if keys[feature] ~= nil then
+      local mode = 'n'
+      if feature == 'visual' then
+        mode = 'x'
+      end
+      local desc = methods.desc
+
+      if feature == 'current_word' then
+        desc = 'convert ' .. desc
+      elseif feature == 'lsp_rename' then
+        desc = 'LSP rename ' .. desc
+      end
+
+      map(
+        mode,
+        keys[feature],
+        "<cmd>lua require('" .. ns .. "')." .. feature .. "('" .. methods.method_name .. "')<cr>",
+        { desc = ' ' .. desc }
+      )
+    end
+  end
+
+  if keys['quick_replace'] ~= nil then
+    local keybind = keys['quick_replace']
+    local desc = 'convert ' .. methods.desc
+    local command = "<cmd>lua require('"
+      .. ns
+      .. "')."
+      .. 'quick_replace'
+      .. "('"
+      .. methods.method_name
+      .. "')<cr>"
+
+    map('n', keybind, command, { desc = ' ' .. desc })
+    map('x', keybind, command, { desc = ' ' .. desc })
+  end
+end
+
+local api = require('textcase.plugin.api')
+for _, def in ipairs(key_defs) do
+  register_keys(api[def.method_name], {
+    quick_replace = def.quick_replace,
+    operator = def.operator,
+    lsp_rename = def.lsp_rename,
+  })
+end
+
+map('n', 'gt.', '<cmd>TextCaseOpenTelescope<CR>', { desc = ' telescope convert current' })
+map('v', 'gt.', '<cmd>TextCaseOpenTelescope<CR>', { desc = ' telescope convert current' })
+map('n', 'gtr.', '<cmd>TextCaseOpenTelescopeLSPChange<CR>', { desc = ' telescope convert lsp' })
+
+-- '<cmd>TextCaseOpenTelescopeLSPChange<CR>',
+-- '<cmd>TextCaseOpenTelescopeQuickChange<CR>',
 -- SMART REPLACE: Select block of text, then use "Subs"
 -- '<,'>Subs/find text/replace text
 -- StepOne              step-one
@@ -37,39 +103,3 @@ vim.api.nvim_set_keymap(
 -- Title case    	 Lorem Ipsum 	 textcase.api.to_title_case
 -- Path case     	 lorem/ipsum 	 textcase.api.to_path_case
 -- Phrase case   	 Lorem ipsum 	 textcase.api.to_phrase_case
-
--- nnoremap gau :lua require('textcase').current_word('to_upper_case')<CR>
--- nnoremap gal :lua require('textcase').current_word('to_lower_case')<CR>
--- nnoremap gas :lua require('textcase').current_word('to_snake_case')<CR>
--- nnoremap gad :lua require('textcase').current_word('to_dash_case')<CR>
--- nnoremap gan :lua require('textcase').current_word('to_constant_case')<CR>
--- nnoremap gad :lua require('textcase').current_word('to_dot_case')<CR>
--- nnoremap gaa :lua require('textcase').current_word('to_phrase_case')<CR>
--- nnoremap gac :lua require('textcase').current_word('to_camel_case')<CR>
--- nnoremap gap :lua require('textcase').current_word('to_pascal_case')<CR>
--- nnoremap gat :lua require('textcase').current_word('to_title_case')<CR>
--- nnoremap gaf :lua require('textcase').current_word('to_path_case')<CR>
-
--- nnoremap gaU :lua require('textcase').lsp_rename('to_upper_case')<CR>
--- nnoremap gaL :lua require('textcase').lsp_rename('to_lower_case')<CR>
--- nnoremap gaS :lua require('textcase').lsp_rename('to_snake_case')<CR>
--- nnoremap gaD :lua require('textcase').lsp_rename('to_dash_case')<CR>
--- nnoremap gaN :lua require('textcase').lsp_rename('to_constant_case')<CR>
--- nnoremap gaD :lua require('textcase').lsp_rename('to_dot_case')<CR>
--- nnoremap gaA :lua require('textcase').lsp_rename('to_phrase_case')<CR>
--- nnoremap gaC :lua require('textcase').lsp_rename('to_camel_case')<CR>
--- nnoremap gaP :lua require('textcase').lsp_rename('to_pascal_case')<CR>
--- nnoremap gaT :lua require('textcase').lsp_rename('to_title_case')<CR>
--- nnoremap gaF :lua require('textcase').lsp_rename('to_path_case')<CR>
-
--- nnoremap geu :lua require('textcase').operator('to_upper_case')<CR>
--- nnoremap gel :lua require('textcase').operator('to_lower_case')<CR>
--- nnoremap ges :lua require('textcase').operator('to_snake_case')<CR>
--- nnoremap ged :lua require('textcase').operator('to_dash_case')<CR>
--- nnoremap gen :lua require('textcase').operator('to_constant_case')<CR>
--- nnoremap ged :lua require('textcase').operator('to_dot_case')<CR>
--- nnoremap gea :lua require('textcase').operator('to_phrase_case')<CR>
--- nnoremap gec :lua require('textcase').operator('to_camel_case')<CR>
--- nnoremap gep :lua require('textcase').operator('to_pascal_case')<CR>
--- nnoremap get :lua require('textcase').operator('to_title_case')<CR>
--- nnoremap gef :lua require('textcase').operator('to_path_case')<CR>

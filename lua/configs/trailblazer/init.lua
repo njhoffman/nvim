@@ -41,8 +41,8 @@ local config = {
     trail_mark_list_rows = 5,
     trail_mark_symbol_line_indicators_enabled = true, -- show indicators for all trail marks in symbol column
     move_to_nearest_before_peek = true,
-    move_to_nearest_before_peek_motion_directive_up = 'up',
-    move_to_nearest_before_peek_motion_directive_down = 'down',
+    move_to_nearest_before_peek_motion_directive_up = 'fpath_up',
+    move_to_nearest_before_peek_motion_directive_down = 'fpath_down',
   },
   event_list = {
     'TrailBlazerTrailMarkStackSaved',
@@ -56,8 +56,9 @@ local config = {
       motions = {
         new_trail_mark                      = '<leader>n', -- '<A-l>',
         track_back                          = '<leader>.', -- '<A-b>',
-        peek_move_next_down                 = '<leader>mm', -- '<A-J>',
-        peek_move_previous_up               = '<leader>m,', -- '<A-K>',
+        -- peek_move_next_down                 = '<leader>mm', -- '<A-J>',
+        peek_move_next_down                 = '<C-n>', -- '<A-J>',
+        peek_move_previous_up               = '<M-n>', -- '<A-K>',
         move_to_nearest                     = '<leader>m.', -- '<A-n>',
         toggle_trail_mark_list              = '<leader>mt', -- '<A-m>',
       },

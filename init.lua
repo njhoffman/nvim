@@ -5,7 +5,7 @@ require('globals')
 
 require('quickfix')
 
-require('utils.lazy').setup({ cache = false, reload = false, lazy = false })
+require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
 
 -- qfSeparator, qfLineNr, qfFilename
 for _, mod_name in ipairs({
@@ -23,7 +23,8 @@ for _, mod_name in ipairs({
   'configs.cinnamon',
   'tracker.setup',
   'configs.registers',
-  -- 'action-hints.setup',
+  'configs.neoscroll',
+  'action-hints.setup',
   -- 'winsep.setup',
   -- 'better_escape-setup',
   'early-retirement.setup',

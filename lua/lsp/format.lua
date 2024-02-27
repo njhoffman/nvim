@@ -14,7 +14,11 @@ local method = 'textDocument/formatting'
 
 ---@param bufnr number
 local get_filetypes = function(bufnr)
-  return vim.split(vim.api.nvim_get_option_value('filetype', { buf = bufnr }), '.', { plain = true, trimempty = true })
+  return vim.split(
+    vim.api.nvim_get_option_value('filetype', { buf = bufnr }),
+    '.',
+    { plain = true, trimempty = true }
+  )
 end
 
 ---@param bufnr number
@@ -114,7 +118,11 @@ M.format = function(options)
       end
     end
 
-    if client and not vim.tbl_contains(format_options.exclude or {}, client.name) and buf_client then
+    if
+      client
+      and not vim.tbl_contains(format_options.exclude or {}, client.name)
+      and buf_client
+    then
       table.insert(clients, client)
     end
   end
@@ -168,7 +176,9 @@ end
 ---@param bufnr? number
 M.on_attach = function(client, bufnr)
   if not client.supports_method(method) then
-    log.warn(string.format('"%s" is not supported for %s, not attaching lsp-format', method, client.name))
+    log.warn(
+      string.format('"%s" is not supported for %s, not attaching lsp-format', method, client.name)
+    )
     return
   end
   if not bufnr then
@@ -214,12 +224,17 @@ local handler = function(err, result, ctx)
   end
   if not vim.api.nvim_buf_is_loaded(ctx.bufnr) then
     vim.fn.bufload(ctx.bufnr)
-    vim.api.nvim_buf_set_var(ctx.bufnr, 'format_changedtick', vim.api.nvim_buf_get_var(ctx.bufnr, 'changedtick'))
+    vim.api.nvim_buf_set_var(
+      ctx.bufnr,
+      'format_changedtick',
+      vim.api.nvim_buf_get_var(ctx.bufnr, 'changedtick')
+    )
   end
   if
     not ctx.params.options.force
     and (
-      vim.api.nvim_buf_get_var(ctx.bufnr, 'format_changedtick') ~= vim.api.nvim_buf_get_var(ctx.bufnr, 'changedtick')
+      vim.api.nvim_buf_get_var(ctx.bufnr, 'format_changedtick')
+        ~= vim.api.nvim_buf_get_var(ctx.bufnr, 'changedtick')
       or vim.startswith(vim.api.nvim_get_mode().mode, 'i')
     )
   then
@@ -230,7 +245,7 @@ local handler = function(err, result, ctx)
   vim.lsp.util.apply_text_edits(result, ctx.bufnr, 'utf-16')
   if ctx.bufnr == vim.api.nvim_get_current_buf() then
     M.saving_buffers[ctx.bufnr] = true
-    vim.cmd([[update]])
+    vim.cmd([[keepjumps update]])
     M.saving_buffers[ctx.bufnr] = nil
   end
   M._next()
@@ -240,7 +255,11 @@ end
 ---@param client lsp.Client
 ---@param format_options table
 local format = function(bufnr, client, format_options)
-  vim.api.nvim_buf_set_var(bufnr, 'format_changedtick', vim.api.nvim_buf_get_var(bufnr, 'changedtick'))
+  vim.api.nvim_buf_set_var(
+    bufnr,
+    'format_changedtick',
+    vim.api.nvim_buf_get_var(bufnr, 'changedtick')
+  )
   local params = vim.lsp.util.make_formatting_params(format_options)
   local timeout_ms = 2000
   if true or format_options.sync then
@@ -260,7 +279,7 @@ M._next = function()
   local next_client = table.remove(next.clients, 1)
   format(next.bufnr, next_client, next.format_options)
   if M.trim_whitespace then
-    vim.cmd('TrimTrailingWhitespace')
+    vim.cmd('keepjumps TrimTrailingWhitespace')
   end
   if #next.clients == 0 then
     table.remove(M.queue, 1)

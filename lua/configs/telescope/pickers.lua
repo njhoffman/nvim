@@ -3,6 +3,7 @@ local previewers = require('telescope.previewers')
 local commands = require('configs.telescope.commands')
 local c_previewers = require('configs.telescope.previewers')
 local mappings = require('configs.telescope.mappings')
+local mods = require('configs.telescope.actions.mods')
 
 local entry_display = require('telescope.pickers.entry_display')
 local telescope_utils = require('telescope.utils')
@@ -29,7 +30,6 @@ local pickers = {
     prompt_prefix = icons.misc_1,
     layout_config = { height = 15 },
     entry_maker = function(entry)
-      vim.dbglog('entry', entry)
       local displayer = entry_display.create({
         separator = ' ',
         items = {
@@ -144,6 +144,9 @@ local pickers = {
   },
   highlights = {
     prompt_prefix = icons.palette,
+    mappings = mappings._main({
+      fn_yank = mods.yanks.highlights,
+    }),
     debounce = 100,
     layout_config = {
       horizontal = { preview_width = { 0.7, min = 30 } },
@@ -218,7 +221,16 @@ local pickers = {
   lsp_workspace_symbols = {
     debounce = 100,
     prompt_prefix = icons.symbol,
-    ignore_symbols = { 'boolean', 'number', 'string', 'variable', 'array', 'object', 'constant', 'package' },
+    ignore_symbols = {
+      'boolean',
+      'number',
+      'string',
+      'variable',
+      'array',
+      'object',
+      'constant',
+      'package',
+    },
     -- symbols_highlights = {
     --   'Class',
     --   'Function',
@@ -255,7 +267,16 @@ local pickers = {
       case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
       -- the default case_mode is "smart_case"
     }),
-    ignore_symbols = { 'boolean', 'number', 'string', 'variable', 'array', 'object', 'constant', 'package' },
+    ignore_symbols = {
+      'boolean',
+      'number',
+      'string',
+      'variable',
+      'array',
+      'object',
+      'constant',
+      'package',
+    },
     -- symbols_highlights = {
     --   'Class',
     --   'Function',

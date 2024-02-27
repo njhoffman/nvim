@@ -10,6 +10,7 @@ local scopes = {
   -- lsp                  = { main = 2 },
   -- ['lsp-root']         = { main = 0 },
   -- mapper               = { main = -1, module = -1 },
+  neoscroll               = { main = -1, module = 1 },
   -- mru                  = { main = -1 },
   notify                  = { main = 1 },
   -- project              = { main = 1 },

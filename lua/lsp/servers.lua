@@ -76,6 +76,10 @@ local util = require('lspconfig.util')
 util.default_config = vim.tbl_extend('force', util.default_config, {
   on_attach = require('lsp.on_attach'),
   capabilities = require('lsp.capabilities').make(),
+  flags = {
+    allow_incremental_sync = false,
+    debounce_text_changes = 500
+  }
 })
 
 require('mason-lspconfig').setup_handlers({

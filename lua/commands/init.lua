@@ -15,21 +15,49 @@ local bufcmd = vim.api.nvim_buf_create_user_command
 vim.api.nvim_create_user_command('Vblock', function()
   vim.o.virtualedit = vim.o.virtualedit == 'block' and 'none' or 'block'
   vim.notify('virtualedit: ' .. vim.o.virtualedit)
-end, { desc = 'Toggle block virtualedit', range = true })
-vim.api.nvim_set_keymap('n', '<M-C-V>', ':Vblock<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('x', '<M-C-V>', ':Vblock<CR>', { noremap = true, silent = true })
+  -- onemore, block, insert, all, none
+end, { desc = 'toggle virtualedit modes', range = true })
+
+vim.api.nvim_set_keymap(
+  'n',
+  '<M-C-V>',
+  ':Vblock<CR>',
+  { noremap = true, silent = true, desc = 'toggle virtualedit block' }
+)
+vim.api.nvim_set_keymap(
+  'x',
+  '<M-C-V>',
+  ':Vblock<CR>',
+  { noremap = true, silent = true, desc = 'toggle virtualedit block' }
+)
 
 --   
-cmd('Tip', tips.get_tip, { nargs = '*', complete = tips.complete, desc = ' get a random neovim tip' })
+cmd(
+  'Tip',
+  tips.get_tip,
+  { nargs = '*', complete = tips.complete, desc = ' get a random neovim tip' }
+)
 
 cmd('Reload', reload(), { nargs = '*', desc = ' reload /  make basic' })
-cmd('Reload2', reload({ siblings = true }), { nargs = '*', desc = ' reload /  make siblings' })
-cmd('Reload3', reload({ siblings = true, extended = true }), { nargs = '*', desc = ' reload /  make extended' })
+cmd(
+  'Reload2',
+  reload({ siblings = true }),
+  { nargs = '*', desc = ' reload /  make siblings' }
+)
+cmd(
+  'Reload3',
+  reload({ siblings = true, extended = true }),
+  { nargs = '*', desc = ' reload /  make extended' }
+)
 
 cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })
 -- cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
 cmd('CloseMulti', ui.close_multi, { desc = 'Close tabpage, window, or buffer in that order' })
-cmd('CloseMultiNoPrompt', ui.close_multi_no_prompt, { desc = 'Close tabpage, window, or buffer in that order' })
+cmd(
+  'CloseMultiNoPrompt',
+  ui.close_multi_no_prompt,
+  { desc = 'Close tabpage, window, or buffer in that order' }
+)
 cmd('ClosePopups', ui.close_popups, { desc = 'Format buffer using lsp' })
 cmd('GetPaths', debug.get_paths, { desc = 'Get path collections (rtpaths, o.packpath, etc)' })
 cmd('Trash', system.trash_file, { desc = 'Send file to system trash' })
@@ -50,6 +78,10 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
   desc = 'Create lua help utility functions',
 })
+
+cmd('HelpExport', help.export_help_files, { desc = 'export local help files' })
+cmd('HelpNew', help.edit_new_helpfile, { desc = 'edit new local helpfile' })
+
 cmd('TrimTrailingWhitespace', format.trim_space, {
   nargs = '?',
   range = '%',
@@ -66,14 +98,12 @@ cmd('TrimTrailingWhitespace', format.trim_space, {
 --     return "dd"
 --   end
 -- end, { expr = true })
-
 --
 -- -- greatest remap ever
 -- keymap.set("x", "p", "P")
 --
 -- -- using delete without yank
 -- keymap.set({ "n", "v" }, "<leader>d", "\"_d", { desc = "Delete without yank" })
-
 -- cmd(
 --   "PasteNoYank",
 --   paste.visual_paste_without_yank,
@@ -88,10 +118,31 @@ cmd('TrimTrailingWhitespace', format.trim_space, {
 
 -- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('...',true,true,true))
 -- TODO: c-s-d , c-s-f, c-s-h,l,j,k, c-s-|, c-s-+
-vim.keymap.set('n', '<C-S-Right>', ui.check_nav_split('l'), { noremap = true })
-vim.keymap.set('n', '<C-S-Left>', ui.check_nav_split('h'), { noremap = true })
-vim.keymap.set('n', '<C-S-Down>', ui.check_nav_split('j'), { noremap = true })
-vim.keymap.set('n', '<C-S-Up>', ui.check_nav_split('k'), { noremap = true })
+
+vim.keymap.set(
+  'n',
+  '<C-S-Right>',
+  ui.check_nav_split('l'),
+  { noremap = true, desc = ' right split or tmux pane' }
+)
+vim.keymap.set(
+  'n',
+  '<C-S-Left>',
+  ui.check_nav_split('h'),
+  { noremap = true, desc = ' left split or tmux pane ' }
+)
+vim.keymap.set(
+  'n',
+  '<C-S-Down>',
+  ui.check_nav_split('j'),
+  { noremap = true, desc = 'ﰬ down split or tmux pane' }
+)
+vim.keymap.set(
+  'n',
+  '<C-S-Up>',
+  ui.check_nav_split('k'),
+  { noremap = true, desc = ' up split or tmux pane' }
+)
 
 -- {
 --     name = "LvimCacheReset",

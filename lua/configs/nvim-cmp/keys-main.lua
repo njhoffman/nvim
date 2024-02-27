@@ -30,7 +30,8 @@ end
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
+  return col ~= 0
+    and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
 
 local toggle_docs = function()
@@ -73,7 +74,12 @@ local main = {
   ['<C-g>'] = {
     i = mapping.complete({
       desc = pfx .. 'start github copilot completion',
-      config = { sources = { { name = 'codeium', max_item_count = 10 }, { name = 'copilot', max_item_count = 10 } } },
+      config = {
+        sources = {
+          { name = 'codeium', max_item_count = 10 },
+          { name = 'copilot', max_item_count = 10 },
+        },
+      },
     }),
   },
   ['<M-/>'] = { i = toggle_docs },
@@ -83,17 +89,17 @@ local main = {
   ['<C-e>'] = { i = mapping.close() },
   ['<M-b>'] = { i = scroll_docs(-6) },
   ['<M-f>'] = { i = scroll_docs(6) },
-  ['()'] = {
-    i = function(fallback)
-      local cmp = require('cmp')
-      if cmp.visible() then
-        cmp.complete()
-        vim.api.nvim_put({ '()' }, 'c', false, true)
-      elseif type(fallback) == 'function' then
-        fallback()
-      end
-    end,
-  },
+  -- ['()'] = {
+  --   i = function(fallback)
+  --     local cmp = require('cmp')
+  --     if cmp.visible() then
+  --       cmp.complete()
+  --       vim.api.nvim_put({ '()' }, 'c', false, true)
+  --     elseif type(fallback) == 'function' then
+  --       fallback()
+  --     end
+  --   end,
+  -- },
   ['<C-n>'] = {
     i = function()
       local cmp = require('cmp')
@@ -128,22 +134,31 @@ local main = {
       preserve_mapping_verticality = true,
     }),
   },
-  ['<C-Space>'] = { i = mapping.complete() },
+
+  ['<C-Space>'] = {
+    i = function()
+      local cmp = require('cmp')
+      if cmp.visible() then
+        cmp.abort()
+      else
+        cmp.complete()
+      end
+    end,
+  },
   -- ['<CR>'] = { i = mapping.confirm({ select = false }) },
 
   ['<CR>'] = cmp_mapping({
     i = function(fallback)
       local cmp = require('cmp')
       local confirm_opts = { behavior = types.cmp.ConfirmBehavior.Replace, select = false }
-
       if cmp.visible() then
-        confirm_opts.behavior = types.cmp.ConfirmBehavior.Insert
-        local entry = cmp.get_selected_entry()
-        local is_copilot = entry and entry.source.name == 'copilot'
-        if is_copilot then
-          confirm_opts.behavior = types.cmp.ConfirmBehavior.Replace
-          confirm_opts.select = true
-        end
+        -- confirm_opts.behavior = types.cmp.ConfirmBehavior.Insert
+        -- local entry = cmp.get_selected_entry()
+        -- local is_copilot = entry and entry.source.name == 'copilot'
+        -- if is_copilot then
+        --   confirm_opts.behavior = types.cmp.ConfirmBehavior.Replace
+        --   confirm_opts.select = true
+        -- end
         if cmp.confirm(confirm_opts) then
           return
         end
@@ -154,10 +169,14 @@ local main = {
     end,
   }),
   ['<C-y>'] = cmp_mapping({
-    i = cmp_mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Replace, select = false }),
+    i = mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Replace, select = false }),
   }),
-  ['<S-CR>'] = { i = mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Replace, select = false }) },
-  ['<C-CR>'] = { i = mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Insert, select = true }) },
+  ['<S-CR>'] = {
+    i = mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Replace, select = false }),
+  },
+  ['<C-CR>'] = {
+    i = mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Insert, select = true }),
+  },
   ['<C-D>'] = {
     i = function(fallback)
       local cmp = require('cmp')

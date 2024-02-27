@@ -2,7 +2,7 @@ local lsp_icons = require('lsp.icons')
 local capabilities = require('lsp.capabilities')
 local format = require('lsp.format')
 
-local setup_mappings = function()
+local setup_mappings = function(client, bufnr)
   vim.api.nvim_set_keymap(
     'n',
     '<C-t>',
@@ -17,6 +17,16 @@ local setup_mappings = function()
     "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>",
     { silent = true, desc = 'show workspace  diagnostics' }
   )
+
+  -- vim.api.nvim_set_keymap('n', '<M-C-T>', '', {
+  --   silent = true,
+  --   desc = 'show full workspace  diagnostics',
+  --   callback = function()
+  --     require('workspace-diagnostics').populate_workspace_diagnostics(client, bufnr)
+  --     require('telescope.run')('builtin', 'diagnostics')
+  --   end,
+  -- })
+
   vim.api.nvim_set_keymap(
     'n',
     '<Leader>e',
@@ -61,7 +71,10 @@ local setup_mappings = function()
 end
 
 local icons = lsp_icons.get_icons('diagnostics')
-vim.fn.sign_define('DiagnosticSignError', { text = icons.error, texthl = 'LspDiagnosticsSignError' })
+vim.fn.sign_define(
+  'DiagnosticSignError',
+  { text = icons.error, texthl = 'LspDiagnosticsSignError' }
+)
 vim.fn.sign_define('DiagnosticSignWarn', { text = icons.warn, texthl = 'LspDiagnosticsSignWarn' })
 vim.fn.sign_define('DiagnosticSignInfo', { text = icons.info, texthl = 'LspDiagnosticsSignInfo' }) -- 󰌵
 vim.fn.sign_define('DiagnosticSignHint', { text = icons.hint, texthl = 'LspDiagnosticsSignHint' })
@@ -86,11 +99,10 @@ local on_attach = function(client, bufnr)
   -- vim.lsp.omnifunc = nil
   -- vim.api.nvim_set_option_value('omnifunc', nil, {})
   -- vim.api.nvim_set_option_value('omnifunc', nil, { buf = bufnr })
-
   format.on_attach(client, bufnr)
-  setup_mappings()
+  setup_mappings(client, bufnr)
 
-  client.config.flags.debounce_text_changes = 300
+  -- client.config.flags.debounce_text_changes = 300
   -- client.config.flags.allow_incremental_sync = true
 
   if client.name == 'lua_ls' then

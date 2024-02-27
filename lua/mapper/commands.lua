@@ -21,7 +21,7 @@ local vmap = function(modes, lhs, opts)
   -- TODO: add description to existing keymaps
   for _, mode in ipairs(modes) do
     records.add(true, mode, lhs, nil, key_opts, meta)
-    wkutils.map(mode, lhs, opts.label or opts.desc)
+    wkutils.map(mode, lhs, opts)
   end
 end
 
@@ -44,7 +44,7 @@ local map = function(modes, lhs, rhs, opts)
 
   for _, mode in ipairs(modes) do
     records.add(false, mode, lhs, rhs, key_opts, meta)
-    wkutils.map(mode, lhs, opts.label or opts.desc)
+    wkutils.map(mode, lhs, opts)
   end
 end
 

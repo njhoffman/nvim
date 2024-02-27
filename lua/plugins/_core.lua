@@ -37,7 +37,11 @@ local plugins = {
     event = 'VeryLazy',
     dependencies = { 'SmiteshP/nvim-navic', 'nvim-web-devicons' },
   },
-  { 'b0o/incline.nvim', enabled = false, event = 'VeryLazy' },
+  {
+    'b0o/incline.nvim',
+    enabled = false,
+    event = 'VeryLazy',
+  },
   {
     -- 'njhoffman/nvim-notify.nvim',
     -- name = 'nvim-notify',
@@ -50,6 +54,7 @@ local plugins = {
     'folke/which-key.nvim',
     dir = '~/git/which-key.nvim',
     event = 'VeryLazy',
+    dependencies = { 'nvim-lua/plenary.nvim' },
   },
   -- { 'freddiehaddad/feline.nvim', branch = 'main', event = 'VimEnter', lazy = false, },
 }
