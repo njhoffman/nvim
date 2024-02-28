@@ -14,7 +14,7 @@ local extension_configs = {
     ['show_http_headers'] = false,
     ['show_domain_icons'] = true,
   },
-
+  ['telescope-alternate'] = require('configs.telescope.extensions-alternate'),
   ['devdocs'] = {},
   ['devhints'] = {},
   ['oldfiles'] = {

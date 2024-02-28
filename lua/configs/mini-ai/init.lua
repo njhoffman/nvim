@@ -43,7 +43,12 @@ local function jump_textobject(prev_next, left_right, ai_type)
   end
 
   -- Jump!
-  ai.move_cursor(left_right, ai_type, tobj_id, { n_times = vim.v.count1, search_method = prev_next })
+  ai.move_cursor(
+    left_right,
+    ai_type,
+    tobj_id,
+    { n_times = vim.v.count1, search_method = prev_next }
+  )
 end
 
 local ai = require('mini.ai')
@@ -75,19 +80,38 @@ local opts = {
       { '%b()', '%b[]', '%b{}' },
       '^.%s*().-()%s*.$',
     },
+
     o = ai.gen_spec.treesitter({
       a = { '@block.outer', '@conditional.outer', '@loop.outer' },
       i = { '@block.inner', '@conditional.inner', '@loop.inner' },
     }, { desc = 'block/conditional/loop' }),
-    A = ai.gen_spec.treesitter({ a = '@attribute.outer', i = '@attribute.inner' }, { desc = 'attribute' }),
-    f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }, { desc = 'function' }),
+    A = ai.gen_spec.treesitter(
+      { a = '@attribute.outer', i = '@attribute.inner' },
+      { desc = 'attribute' }
+    ),
+    f = ai.gen_spec.treesitter(
+      { a = '@function.outer', i = '@function.inner' },
+      { desc = 'function' }
+    ),
     c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, { desc = 'class' }),
-    C = ai.gen_spec.treesitter({ a = '@conditional.outer', i = '@conditional.inner' }, { desc = 'conditional' }),
+    C = ai.gen_spec.treesitter(
+      { a = '@conditional.outer', i = '@conditional.inner' },
+      { desc = 'conditional' }
+    ),
     t = { '<([%p%w]-)%f[^<%w][^<>]->.-</%1>', '^<.->().*()</[^/]->$' },
     -- a/ i/
-    x = ai.gen_spec.treesitter({ a = '@comment.outer', i = '@comment.inner' }, { desc = 'comment' }),
-    L = ai.gen_spec.treesitter({ a = '@loop.outer', i = '@loop.inner' }, { desc = 'loop' }),
+    x = ai.gen_spec.treesitter(
+      { a = '@comment.outer', i = '@comment.inner' },
+      { desc = 'comment' }
+    ),
+    -- local gen_ai_spec = MiniExtras.gen_ai_spec
+    -- e = gen_ai_spec.buffer(),
+    -- D = gen_ai_spec.diagnostic(),
+    -- L = gen_ai_spec.line(),
+    -- N = gen_ai_spec.number(),
+    -- i = ai.gen_ai_spec.indent(),
     ['l'] = function(type)
+      -- L = ai.gen_ai_spec.line(),
       if vim.api.nvim_get_current_line() == '' then
         return
       end
@@ -105,7 +129,8 @@ local opts = {
         local first_non_blank = vim.fn.nextnonblank(1)
         local final_non_blank = vim.fn.prevnonblank(vim.fn.line('$'))
         local from = { line = first_non_blank, col = 1 }
-        local to = { line = final_non_blank, col = math.max(vim.fn.getline(final_non_blank):len(), 1) }
+        local to =
+          { line = final_non_blank, col = math.max(vim.fn.getline(final_non_blank):len(), 1) }
         return { from = from, to = to }
       elseif ai_type == 'a' then
         local from = { line = 1, col = 1 }

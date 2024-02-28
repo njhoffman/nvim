@@ -184,7 +184,8 @@ function M.textobj()
   local col = vim.fn.col('.')
   local line = vim.fn.getline('.')
 
-  handler:find_text_range(line, col)
+  local ret = handler:find_text_range(line, col)
+  vim.dbglog('ret', ret, col, line)
 end
 
 function M.command(direction, line_range, groups)

@@ -98,15 +98,56 @@ require('dial.config').augends:register_group({
 })
 
 local map = vim.keymap.set
-map('n', '<M-a>', require('dial.map').inc_normal(), { noremap = true, desc = 'dial increment normal' })
-map('n', '<M-x>', require('dial.map').dec_normal(), { noremap = true, desc = 'dial decrement normal' })
-map('n', 'g<M-a>', require('dial.map').inc_gnormal(), { noremap = true, desc = 'dial increment gnormal' })
-map('n', 'g<M-x>', require('dial.map').dec_gnormal(), { noremap = true, desc = 'dial decrement gnormal' })
+map(
+  'n',
+  '<M-a>',
+  require('dial.map').inc_normal(),
+  { noremap = true, desc = 'dial increment normal' }
+)
+map(
+  'n',
+  '<M-x>',
+  require('dial.map').dec_normal(),
+  { noremap = true, desc = 'dial decrement normal' }
+)
 
-map('v', '<M-a>', require('dial.map').inc_visual('visual'), { noremap = true, desc = 'dial increment visual' })
-map('v', '<M-x>', require('dial.map').dec_visual('visual'), { noremap = true, desc = 'dial decrement visual' })
-map('v', 'g<M-a>', require('dial.map').inc_gvisual('visual'), { noremap = true, desc = 'dial increment gvisual' })
-map('v', 'g<M-x>', require('dial.map').dec_gvisual('visual'), { noremap = true, desc = 'dial decrement gvisual' })
+map(
+  'v',
+  '<M-a>',
+  require('dial.map').inc_visual('visual'),
+  { noremap = true, desc = 'dial increment visual' }
+)
+map(
+  'v',
+  '<M-x>',
+  require('dial.map').dec_visual('visual'),
+  { noremap = true, desc = 'dial decrement visual' }
+)
+
+map(
+  'n',
+  '<M-C-A>',
+  require('dial.map').inc_gnormal(),
+  { noremap = true, desc = 'dial increment gnormal' }
+)
+map(
+  'n',
+  '<M-C-X>',
+  require('dial.map').dec_gnormal(),
+  { noremap = true, desc = 'dial decrement gnormal' }
+)
+map(
+  'v',
+  '<M-C-A>',
+  require('dial.map').inc_gvisual('visual'),
+  { noremap = true, desc = 'dial increment gvisual' }
+)
+map(
+  'v',
+  '<M-C-X>',
+  require('dial.map').dec_gvisual('visual'),
+  { noremap = true, desc = 'dial decrement gvisual' }
+)
 
 vim.cmd([[
   " autocmd FileType typescript lua vim.api.nvim_buf_set_keymap(0, "n", "<C-a>", require("dial.map").inc_normal("typescript"), {noremap = true})

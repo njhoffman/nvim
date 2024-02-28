@@ -3,10 +3,14 @@ local conf = require('telescope.config').values
 local builtin = require('telescope.builtin')
 local previewers = require('telescope.previewers')
 local Path = require('plenary.path')
+local keymaps_previewer = require('configs.telescope.previewers.keymaps')
+local pfiletype = require('plenary.filetype')
+-- local putils = require('plenary.utils')
 
 local M = {}
 
 -- NOTE: go check if file is in specific git repo: dotbare ls-files --error-unmatch ~/.zlua
+M.keymaps = keymaps_previewer
 
 M.git_status = function(opts)
   opts = opts or {}

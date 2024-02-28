@@ -205,7 +205,7 @@ local config = {
     page_up      = '<M-b>',      -- binding to scroll up inside the popup
   },
   mappings_user = {
-    ['<M-C-_>'] = function(key, mode)
+    ['<M-C-T>'] = function(key, mode)
       require('telescope.builtin').keymaps {
         modes = { mode },
         lhs_filter = function(lhs)

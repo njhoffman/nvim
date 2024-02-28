@@ -1,4 +1,5 @@
 local format = require('commands.format')
+local buffer = require('commands.buffer')
 local ui = require('commands.ui')
 local tips = require('commands.tips')
 local help = require('commands.help')

@@ -250,12 +250,13 @@ map('n', '<CR>', '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
   desc = '󰽙 goto alternative/last buffer',
 })
 
-map('n', '<BS>', '<cmd>e #<cr>', {
-  category = 'Buffers',
-  label = '󰽙 last buffer',
-  desc = '󰽙 open the last buffer',
-  silent = true,
-})
+-- map('n', '<BS>', '<cmd>e #<cr>', {
+--   category = 'Buffers',
+--   label = '󰽙 last buffer',
+--   desc = '󰽙 open the last buffer',
+--   silent = true,
+-- })
+
 local bufvar =
   { { '<Plug>(CybuPrev)', '<Plug>(CybuNext)' }, { '<cmd>BufferPrev<cr>', '<cmd>BufferNext<cr>' } }
 
@@ -497,7 +498,7 @@ map('n', '<C-X>', '<cmd>silent! tabclose | qa<cr>', {
   desc = 'quick exit with prompt for save',
 })
 
-map('n', '<M-C-X>', '<cmd>silent! tabclose | xa<cr>', {
+map('n', 'g<M-C-H>', '<cmd>silent! tabclose | xa<cr>', {
   category = 'Exiting',
   label = 'exit nosave',
   desc = 'quick exit without saving',

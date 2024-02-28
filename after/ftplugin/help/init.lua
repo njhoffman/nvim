@@ -40,18 +40,18 @@ local history_file = vim.fn.stdpath('data') .. '/help_history.json'
 
 local read_history = function()
   local file = io.open(history_file, 'r')
-  if file then
+  if false and file then
     local content = file:read('*a')
     file:close()
     help_history = vim.fn.json_decode(content)
-    vim.dbglog('help history: ' .. history_file .. ' - ' .. vim.inspect(help_history))
+    -- vim.dbglog('help history: ' .. history_file .. ' - ' .. vim.inspect(help_history))
   end
 end
 
 local write_history = function()
   local file = io.open(history_file, 'w')
-  if file and help_history ~= {} then
-    vim.dbglog('writing help history ', help_history)
+  if false and file and help_history ~= {} then
+    -- vim.dbglog('writing help history ', help_history)
     create = io.open(history_file, 'w')
     file:write(vim.fn.json_encode(help_history))
     file:close()
@@ -103,6 +103,7 @@ local refresh_state = function()
     and vim.api.nvim_buf_is_loaded(state.help_bufnr)
     and vim.fn.bufwinnr(state.help_bufnr)
 
+  -- vim.dbglog('state', state, vim.api.nvim_buf_is_loaded(state.help_bufnr))
   if state.help_winnr and state.help_winnr > -1 then
     state.textwidth = vim.api.nvim_get_option_value('textwidth', { buf = state.help_bufnr })
     state.help_winid = vim.fn.bufwinid(state.help_bufnr)
@@ -125,8 +126,12 @@ local refresh_state = function()
 end
 
 local resize_window = function()
-  refresh_state()
-
+  -- refresh_state()
+  --[[ vim.dbglog(
+    'state',
+    state,
+    type(state.help_bufnr) == 'number' and vim.api.nvim_buf_is_loaded(state.help_bufnr)
+  ) ]]
   if
     state.help_winnr
     and state.help_bufnr > -1
@@ -134,7 +139,7 @@ local resize_window = function()
   then
     if state.help_width and state.help_width < state.width_cutoff then
       if not state.vert_split then
-        vim.cmd('wincmd J')
+        vim.cmd('wincmd J | norm 0')
       end
       vim.api.nvim_set_option_value('wrap', true, { win = state.help_winid })
     elseif state.help_width and state.help_width < state.textwidth then
@@ -143,13 +148,14 @@ local resize_window = function()
       vim.api.nvim_set_option_value('wrap', true, { win = state.help_winid })
     else
       if state.vert_split then
-        vim.cmd('wincmd L')
+        vim.cmd('wincmd L | norm 0')
       end
       vim.api.nvim_win_set_width(state.help_winid, state.textwidth)
       vim.api.nvim_set_option_value('wrap', false, { win = state.help_winid })
     end
     local cursor = vim.api.nvim_win_get_cursor(state.help_winid)
     vim.api.nvim_win_set_cursor(state.help_winid, { cursor[1], 1 })
+    vim.cmd('norm 0')
   end
 end
 
@@ -163,23 +169,23 @@ local is_helpsplit = function(bufnr)
 end
 
 local augroup = vim.api.nvim_create_augroup('helpfile', { clear = true })
+local aucmd = vim.api.nvim_create_autocmd
 
 local create_autocmds = function()
-  local aucmd = vim.api.nvim_create_autocmd
-  aucmd({ 'WinResized' }, {
-    group = augroup,
-    callback = function(opts)
-      if is_helpsplit(opts.buf) then
-        debounce(resize_window(), 500)
-      end
-    end,
-  })
+  -- aucmd({ 'WinResized' }, {
+  --   group = augroup,
+  --   callback = function(opts)
+  --     if opts.buf == state.help_bufnr then
+  --       debounce(resize_window(), 500)
+  --     end
+  --   end,
+  -- })
 
   aucmd({ 'BufWinEnter' }, {
     group = augroup,
     callback = function(opts)
-      if is_helpsplit(opts.buf) then
-        debounce(refresh_state(), 500)
+      if opts.buf == state.help_bufnr then
+        -- debounce(refresh_state(), 500)
       end
     end,
   })
@@ -205,7 +211,8 @@ local create_autocmds = function()
   aucmd({ 'BufNewFile' }, {
     group = augroup,
     callback = function(opts)
-      debounce(load_file(opts), 500)
+      vim.cmd('set winminwidth=50 winwidth=80')
+      -- debounce(load_file(opts), 500)
     end,
   })
 
@@ -216,12 +223,12 @@ local create_autocmds = function()
     end
   end
 
-  aucmd({ 'WinClosed' }, {
-    group = augroup,
-    callback = function(opts)
-      debounce(teardown(opts), 500)
-    end,
-  })
+  -- aucmd({ 'WinClosed' }, {
+  --   group = augroup,
+  --   callback = function(opts)
+  --     debounce(teardown(opts), 500)
+  --   end,
+  -- })
 end
 
 local set_options = function()
@@ -233,7 +240,8 @@ local set_options = function()
   -- nnoremap <buffer> <LocalLeader>K  :<C-U>helpgrep <cword><CR>
   -- let b:undo_ftplugin .= '|nunmap <buffer> K'
 
-  vim.api.nvim_set_option_value('tabstop', 2, { buf = state.src_bufnr })
+  vim.api.nvim_set_option_value('colorcolumn', '', { win = state.help_winid })
+  vim.api.nvim_set_option_value('tabstop', 2, { buf = state.help_bufnr })
 end
 
 local set_keymaps = function()
@@ -253,7 +261,7 @@ local set_keymaps = function()
         state.help_bufnr,
         'n',
         '<leader>ml',
-        'maGovim:tw=78:ts=8:noet:ft=help:norl:<esc>`a',
+        'vim:tw=80:sw=2:ts=2:noet:ft=help:cole=2:norl:<esc>`a',
         { desc = 'set default help modeline' }
       )
     end

@@ -1,3 +1,36 @@
+-- [null-ls]  (code_actions/shellcheck.lua), which will be removed in March.
+-- [null-ls]  (diagnostics/gospel.lua), which will be removed in March.
+-- [null-ls]  (diagnostics/jsonlint.lua), which will be removed in March.
+-- [null-ls]  (diagnostics/misspell.lua), which will be removed in March.
+-- [null-ls]  (diagnostics/shellcheck.lua), which will be removed in March.
+-- [null-ls]  (diagnostics/standardrb.lua), which will be removed in March.
+-- [null-ls]  (formatting/beautysh.lua), which will be removed in March.
+-- [null-ls]  (formatting/eslint_d.lua), which will be removed in March.
+-- [null-ls]  (formatting/fixjson.lua), which will be removed in March.
+-- [null-ls]  (formatting/jq.lua), which will be removed in March.
+-- [null-ls]  (formatting/markdown_toc.lua), which will be removed in March.
+-- [null-ls]  (formatting/rustfmt.lua), which will be removed in March.
+-- [null-ls]  (formatting/standardrb.lua), which will be removed in March.
+-- [null-ls]  (formatting/trim_newlines.lua), which will be removed in March.
+-- [null-ls]  (formatting/xmlformat.lua), which will be removed in March.
+-- [null-ls]  (formatting/xmllint.lua), which will be removed in March.
+-- deleted:    code_actions/shellcheck.lua    (use bashls / available in gbprod/none-ls-shellcheck.nvim)
+-- deleted:    diagnostics/gospel.lua
+-- deleted:    diagnostics/jsonlint.lua       (use jsonls)
+-- deleted:    diagnostics/misspell.lua
+-- deleted:    diagnostics/shellcheck.lua     (use bashls / available in gbprod/none-ls-shellcheck.nvim)
+-- deleted:    diagnostics/standardjs.lua     (use eslint-language-server)
+-- deleted:    diagnostics/standardrb.lua     (use standardrb lsp)
+-- deleted:    formatting/beautysh.lua        (use shfmt)
+-- deleted:    formatting/eslint_d.lua        (use eslint-language-server)
+-- deleted:    formatting/fixjson.lua         (use jsonls)
+-- deleted:    formatting/jq.lua              (use jsonls)
+-- deleted:    formatting/markdown_toc.lua    (use marksman)
+-- deleted:    formatting/standardrb.lua      (use standardrb lsp)
+-- deleted:    formatting/trim_newlines.lua   (use editorconfig)
+-- deleted:    formatting/xmlformat.lua       (use lemminx)
+-- deleted:    formatting/xmllint.lua         (use lemminx)
+
 local u = require('null-ls.utils')
 local null_ls = require('null-ls')
 

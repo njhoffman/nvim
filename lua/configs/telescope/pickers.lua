@@ -68,6 +68,26 @@ local pickers = {
     prompt_prefix = icons.file,
     mappings = mappings.file,
     find_command = commands.rg,
+    -- path_display = require('configs.telescope.filetype-first'),
+    -- sorting_strategy = 'ascending',
+    -- layout_strategy = 'horizontal',
+    -- layout_config = {
+    --   preview_cutoff = 180,
+    --   horizontal = {
+    --     prompt_position = 'top',
+    --     preview_width = 0.5,
+    --     results_width = 0.5,
+    --   },
+    -- },
+    -- extensions_list = { 'fzf' },
+    -- extensions = {
+    --   fzf = {
+    --     fuzzy = true,
+    --     override_generic_sorter = true,
+    --     override_file_sorter = true,
+    --     case_mode = 'smart_case',
+    --   },
+    -- },
     previewer = c_previewers.buffer_cat(),
   },
   help_tags = {
@@ -133,8 +153,9 @@ local pickers = {
     debounce = 100,
     prompt_prefix = icons.keymap,
     entry_maker = require('configs.telescope.entry_makers.keymaps')({}),
-    results_title = '@buf !sil *nor +expr  nowait',
+    results_title = '@buf !sil *nor +exp  now',
     show_plug = false,
+    previewer = c_previewers.keymaps,
     modes = { 'n', 'i', 'c', 'x', 'o', 't', 's', 'l' },
     -- lhs_filter = function(lhs)
     --   return not lhs:find('Þ')

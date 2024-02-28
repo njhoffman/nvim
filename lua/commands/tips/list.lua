@@ -3,6 +3,8 @@
 local nl = '\n   ➜ '
 
 local M = {}
+-- assign ctrl-alt-bksp to restart x server
+-- setxkbmap -option terminate:ctrl_alt_bksp
 
 M.autopairs = {
   {

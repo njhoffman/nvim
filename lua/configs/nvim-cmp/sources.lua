@@ -1,4 +1,11 @@
--- local sources = {
+--[[ { name = "path" }, -- file paths
+		{ name = "nvim_lsp", keyword_length = 3 }, -- from language server
+		{ name = "nvim_lsp_signature_help" }, -- display function signatures with current parameter emphasized
+		{ name = "nvim_lua", keyword_length = 2 }, -- complete neovim's Lua runtime API such vim.lsp.*
+		{ name = "buffer", keyword_length = 2 }, -- source current buffer
+		{ name = "luasnip", keyword_length = 2 }, -- nvim-cmp source for vim-vsnip
+		{ name = "calc" }, -- source for math calculation
+-- local sources = { ]]
 --   { name = 'nvim_lsp' },
 --   { name = 'luasnip' },
 --   { name = 'treesitter', keyword_length = 2 },
@@ -105,7 +112,8 @@ local sources = {
         option = { use_show_condition = true },
         entry_filter = function()
           local context = require('cmp.config.context')
-          return not context.in_treesitter_capture('string') and not context.in_syntax_group('String')
+          return not context.in_treesitter_capture('string')
+            and not context.in_syntax_group('String')
         end,
         -- source.entry_filter = function()
         --           local context = require("cmp.config.context")

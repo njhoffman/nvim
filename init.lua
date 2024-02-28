@@ -13,7 +13,6 @@ for _, mod_name in ipairs({
   'commands',
   'abbreviations',
   'autocommands',
-  'dial',
   'wf-setup',
   'devbox',
   'project',

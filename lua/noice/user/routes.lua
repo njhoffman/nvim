@@ -125,7 +125,7 @@ local routes = {
   -- },
   -- always route any messages with more than 20 lines to the split view
   {
-    view = 'split',
+    view = 'popup',
     filter = { event = 'msg_show', min_height = 20 },
   },
   -- { filter = { event = 'msg_show', find = '^ERROR: ' }, view = 'notify' },

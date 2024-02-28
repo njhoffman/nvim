@@ -120,7 +120,10 @@ local modules = {
       ['<cr>'] = 'textsubjects-smart',
       -- ['.'] = 'textsubjects-smart',
       ['<C-CR>'] = 'textsubjects-container-outer',
-      ['<S-CR>'] = { 'textsubjects-container-inner', desc = 'Select inside containers (classes, functions, etc.)' },
+      ['<S-CR>'] = {
+        'textsubjects-container-inner',
+        desc = 'Select inside containers (classes, functions, etc.)',
+      },
     },
   },
   pairs = {
@@ -174,53 +177,30 @@ local modules = {
       lookahead = true,
       enable = false,
       keymaps = {
-        -- ['aa'] = '@parameter.outer',
-        -- ['ia'] = '@parameter.inner',
-        -- ['af'] = '@function.outer',
-        -- ['if'] = '@function.inner',
+        ['aa'] = '@parameter.outer',
+        ['ia'] = '@parameter.inner',
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
         -- ['ac'] = '@class.outer',
-        -- ["at"] = "@class.outer",
+        ['at'] = '@class.outer',
         -- ['ic'] = '@class.inner',
-        -- ["it"] = "@class.inner",
-        -- ['a/'] = '@comment.outer',
-        -- ['i/'] = '@comment.inner',
-        -- ['ab'] = '@block.outer',
-        -- ['ib'] = '@block.inner',
-        -- ["ac"] = "@call.outer",
-        -- ["ic"] = "@call.inner",
-        -- ["al"] = "@loop.outer",
-        -- ["il"] = "@loop.inner",
-        -- ["ai"] = "@conditional.outer",
-        -- ["ii"] = "@conditional.inner",
-        -- ["as"] = "@statement.outer",
-        -- ["is"] = "@scopename.inner",
-        -- ["aA"] = "@attribute.outer",
-        -- ["iA"] = "@attribute.inner",
-        -- ["aF"] = "@frame.outer",
-        -- ["iF"] = "@frame.inner",
-        -- INFO: outer key textobj defined via various textobjs
-        -- ["ik"] = { query = "@assignment.lhs", desc = "󱡔 inner key textobj" },
-        -- ["a<CR>"] = { query = "@return.outer", desc = "󱡔 outer return textobj" },
-        -- ["i<CR>"] = { query = "@return.inner", desc = "󱡔 inner return textobj" },
-        -- ["a/"] = { query = "@regex.outer", desc = "󱡔 outer regex textobj" },
-        -- ["i/"] = { query = "@regex.inner", desc = "󱡔 inner regex textobj" },
-        -- ["aa"] = { query = "@parameter.outer", desc = "󱡔 outer parameter textobj" },
-        -- ["ia"] = { query = "@parameter.inner", desc = "󱡔 inner parameter textobj" },
-        --
-        -- -- stylua: ignore start
-        -- ["iu"] = { query = "@loop.inner", desc = "󱡔 inner loop textobj" }, -- mnemonic: luup
-        -- ["au"] = { query = "@loop.outer", desc = "󱡔 outer loop textobj" },
-        -- ["a" .. textobjMaps.func] = { query = "@function.outer", desc = "󱡔 outer function textobj" },
-        -- ["i" .. textobjMaps.func] = { query = "@function.inner", desc = "󱡔 inner function textobj" },
-        -- ["a" .. textobjMaps.cond] = { query = "@conditional.outer", desc = "󱡔 outer cond. textobj" },
-        -- ["i" .. textobjMaps.cond] = { query = "@conditional.inner", desc = "󱡔 inner cond. textobj" },
-        -- ["a" .. textobjMaps.call] = { query = "@call.outer", desc = "󱡔 outer call textobj" },
-        -- ["i" .. textobjMaps.call] = { query = "@call.inner", desc = "󱡔 inner call textobj" },
-        -- -- stylua: ignore end
-        --
-        -- -- INFO later remapped to q only in operator pending mode to avoid conflict
-        -- -- @comment.inner not supported yet for most languages
-        -- ["&&&"] = { query = "@comment.outer", desc = "which_key_ignore" },
+        ['it'] = '@class.inner',
+        ['a/'] = '@comment.outer',
+        ['i/'] = '@comment.inner',
+        ['ab'] = '@block.outer',
+        ['ib'] = '@block.inner',
+        ['ac'] = '@call.outer',
+        ['ic'] = '@call.inner',
+        ['al'] = '@loop.outer',
+        ['il'] = '@loop.inner',
+        ['ai'] = '@conditional.outer',
+        ['ii'] = '@conditional.inner',
+        ['as'] = '@statement.outer',
+        ['is'] = '@scopename.inner',
+        ['aA'] = '@attribute.outer',
+        ['iA'] = '@attribute.inner',
+        ['aF'] = '@frame.outer',
+        ['iF'] = '@frame.inner',
       },
     },
     swap = {
@@ -236,90 +216,7 @@ local modules = {
       goto_previous_start = { ['[f'] = '@function.outer', ['[c'] = '@class.outer' },
       goto_previous_end = { ['[F'] = '@function.outer', ['[C'] = '@class.outer' },
     },
-    -- select = {
-    -- 			enable = true,
-    --
-    -- 			-- Automatically jump forward to textobj, similar to targets.vim
-    -- 			lookahead = true,
-    -- 			keymaps = {
-    -- 				-- You can use the capture groups defined in textobjects.scm
-    -- 				["a="] = { query = "@assignment.outer", desc = "Select outer part of an assignment" },
-    -- 				["i="] = { query = "@assignment.inner", desc = "Select inner part of an assignment" },
-    -- 				["l="] = { query = "@assignment.lhs", desc = "Select left hand side of an assignment" },
-    -- 				["r="] = { query = "@assignment.rhs", desc = "Select right hand side of an assignment" },
-    --
-    -- 				["aa"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/argument" },
-    -- 				["ia"] = { query = "@parameter.inner", desc = "Select inner part of a parameter/argument" },
-    --
-    -- 				["ai"] = { query = "@conditional.outer", desc = "Select outer part of a conditional" },
-    -- 				["ii"] = { query = "@conditional.inner", desc = "Select inner part of a conditional" },
-    --
-    -- 				["al"] = { query = "@loop.outer", desc = "Select outer part of a loop" },
-    -- 				["il"] = { query = "@loop.inner", desc = "Select inner part of a loop" },
-    --
-    -- 				["af"] = { query = "@call.outer", desc = "Select outer part of a function call" },
-    -- 				["if"] = { query = "@call.inner", desc = "Select inner part of a function call" },
-    --
-    -- 				["am"] = { query = "@function.outer", desc = "Select outer part of a method/function definition" },
-    -- 				["im"] = { query = "@function.inner", desc = "Select inner part of a method/function definition" },
-    --
-    -- 				["ac"] = { query = "@class.outer", desc = "Select outer part of a class" },
-    -- 				["ic"] = { query = "@class.inner", desc = "Select inner part of a class" },
-    -- 			},
-    --
-    -- 		},
-    -- 		swap = {
-    -- 			enable = true,
-    -- 			swap_next = {
-    -- 				["<leader>sna"] = "@parameter.inner", -- swap parameters/argument with next
-    -- 				["<leader>snm"] = "@function.outer", -- swap function with next
-    -- 			},
-    -- 			swap_previous = {
-    -- 				["<leader>spa"] = "@parameter.inner", -- swap parameters/argument with prev
-    -- 				["<leader>spm"] = "@function.outer", -- swap function with previous
-    -- 			},
-    --
-    -- 		},
-    -- 		move = {
-    -- 			enable = true,
-    -- 			set_jumps = true, -- whether to set jumps in the jumplist
-    -- 			goto_next_start = {
-    -- 				["]f"] = { query = "@call.outer", desc = "Next function call start" },
-    -- 				["]m"] = { query = "@function.outer", desc = "Next method/function def start" },
-    -- 				["]c"] = { query = "@class.outer", desc = "Next class start" },
-    -- 				["]i"] = { query = "@conditional.outer", desc = "Next conditional start" },
-    -- 				["]l"] = { query = "@loop.outer", desc = "Next loop start" },
-    -- 				["]p"] = { query = "@parameter.inner", desc = "Next parameter start" },
-    --
-    -- 				-- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
-    -- 				-- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
-    -- 				["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-    -- 				["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
-    -- 			},
-    -- 			goto_next_end = {
-    -- 				["]F"] = { query = "@call.outer", desc = "Next function call end" },
-    -- 				["]M"] = { query = "@function.outer", desc = "Next method/function def end" },
-    -- 				["]C"] = { query = "@class.outer", desc = "Next class end" },
-    -- 				["]I"] = { query = "@conditional.outer", desc = "Next conditional end" },
-    -- 				["]L"] = { query = "@loop.outer", desc = "Next loop end" },
-    -- 			},
-    -- 			goto_previous_start = {
-    -- 				["[f"] = { query = "@call.outer", desc = "Prev function call start" },
-    -- 				["[m"] = { query = "@function.outer", desc = "Prev method/function def start" },
-    -- 				["[c"] = { query = "@class.outer", desc = "Prev class start" },
-    -- 				["[i"] = { query = "@conditional.outer", desc = "Prev conditional start" },
-    -- 				["[l"] = { query = "@loop.outer", desc = "Prev loop start" },
-    -- 				["[p"] = { query = "@parameter.inner", desc = "Prev parameter start" },
-    -- 			},
-    -- 			goto_previous_end = {
-    -- 				["[F"] = { query = "@call.outer", desc = "Prev function call end" },
-    -- 				["[M"] = { query = "@function.outer", desc = "Prev method/function def end" },
-    -- 				["[C"] = { query = "@class.outer", desc = "Prev class end" },
-    -- 				["[I"] = { query = "@conditional.outer", desc = "Prev conditional end" },
-    -- 				["[L"] = { query = "@loop.outer", desc = "Prev loop end" },
-    -- 			},
-    -- 		},
-    -- 	},
+
     lsp_interop = {
       enable = true,
       border = 'none',
@@ -342,3 +239,114 @@ local modules = {
 }
 
 return modules
+
+--[[ keys = {
+  {
+    '<leader>H',
+    function()
+      vim.cmd.TSTextobjectPeekDefinitionCode('@function.outer')
+    end,
+    desc = ' Hover Peek Function',
+  },
+  {
+    'q',
+    function()
+      vim.cmd.TSTextobjectSelect('@comment.outer')
+    end,
+    mode = 'o', -- only operator-pending to not conflict with commenting selection
+    desc = '󱡔  single comment textobj',
+  },
+  {
+    'dq',
+    function()
+      local cursor = vim.api.nvim_win_get_cursor(0)
+      vim.cmd.TSTextobjectSelect('@comment.outer')
+      -- u.normal('d')
+      vim.api.nvim_win_set_cursor(0, cursor)
+    end,
+    desc = ' Sticky Delete Comment',
+  },
+  {
+    'cq',
+    function()
+      vim.cmd.TSTextobjectSelect('@comment.outer')
+      -- u.normal('d')
+      local comStr = vim.bo.commentstring:format('')
+      local line = vim.api.nvim_get_current_line():gsub('%s+$', '')
+      vim.api.nvim_set_current_line(line .. ' ' .. comStr)
+      vim.cmd.startinsert({ bang = true })
+    end,
+    desc = ' Change Comment',
+  },
+  {
+    '<C-j>',
+    '<cmd>TSTextobjectGotoNextStart @function.outer<CR>zv',
+    desc = ' Goto Next Function',
+  },
+  {
+    '<C-k>',
+    '<cmd>TSTextobjectGotoPreviousStart @function.outer<CR>zv',
+    desc = ' Goto Previous Function',
+  },
+  ['aC'] = { query = '@conditional.outer', desc = 'ts: all conditional' },
+  ['iC'] = { query = '@conditional.inner', desc = 'ts: inner conditional' },
+  -- You can use the capture groups defined in textobjects.scm
+  ['a='] = { query = '@assignment.outer', desc = 'Select outer part of an assignment' },
+  ['i='] = { query = '@assignment.inner', desc = 'Select inner part of an assignment' },
+  ['l='] = { query = '@assignment.lhs', desc = 'Select left hand side of an assignment' },
+  ['r='] = { query = '@assignment.rhs', desc = 'Select right hand side of an assignment' },
+
+  ['aa'] = {
+    query = '@parameter.outer',
+    desc = 'Select outer part of a parameter/argument',
+  },
+  ['ia'] = {
+    query = '@parameter.inner',
+    desc = 'Select inner part of a parameter/argument',
+  },
+
+  ['ai'] = { query = '@conditional.outer', desc = 'Select outer part of a conditional' },
+  ['ii'] = { query = '@conditional.inner', desc = 'Select inner part of a conditional' },
+
+  ['al'] = { query = '@loop.outer', desc = 'Select outer part of a loop' },
+  ['il'] = { query = '@loop.inner', desc = 'Select inner part of a loop' },
+
+  ['af'] = { query = '@call.outer', desc = 'Select outer part of a function call' },
+  ['if'] = { query = '@call.inner', desc = 'Select inner part of a function call' },
+
+  ['am'] = {
+    query = '@function.outer',
+    desc = 'Select outer part of a method/function definition',
+  },
+  ['im'] = {
+    query = '@function.inner',
+    desc = 'Select inner part of a method/function definition',
+  },
+
+  ['ac'] = { query = '@class.outer', desc = 'Select outer part of a class' },
+  ['ic'] = { query = '@class.inner', desc = 'Select inner part of a class' },
+  -- 			},
+
+         --[[ INFO: outer key textobj defined via various textobjs
+         ["ik"] = { query = "@assignment.lhs", desc = "󱡔 inner key textobj" },
+         ["a<CR>"] = { query = "@return.outer", desc = "󱡔 outer return textobj" },
+         ["i<CR>"] = { query = "@return.inner", desc = "󱡔 inner return textobj" },
+         ["a/"] = { query = "@regex.outer", desc = "󱡔 outer regex textobj" },
+         ["i/"] = { query = "@regex.inner", desc = "󱡔 inner regex textobj" },
+         ["aa"] = { query = "@parameter.outer", desc = "󱡔 outer parameter textobj" },
+         ["ia"] = { query = "@parameter.inner", desc = "󱡔 inner parameter textobj" },
+
+         -- stylua: ignore start
+         ["iu"] = { query = "@loop.inner", desc = "󱡔 inner loop textobj" }, -- mnemonic: luup
+         ["au"] = { query = "@loop.outer", desc = "󱡔 outer loop textobj" },
+         ["a" .. textobjMaps.func] = { query = "@function.outer", desc = "󱡔 outer function textobj" },
+         ["i" .. textobjMaps.func] = { query = "@function.inner", desc = "󱡔 inner function textobj" },
+         ["a" .. textobjMaps.cond] = { query = "@conditional.outer", desc = "󱡔 outer cond. textobj" },
+         ["i" .. textobjMaps.cond] = { query = "@conditional.inner", desc = "󱡔 inner cond. textobj" },
+         ["a" .. textobjMaps.call] = { query = "@call.outer", desc = "󱡔 outer call textobj" },
+         ["i" .. textobjMaps.call] = { query = "@call.inner", desc = "󱡔 inner call textobj" },
+         -- stylua: ignore end
+
+         -- INFO later remapped to q only in operator pending mode to avoid conflict
+         -- @comment.inner not supported yet for most languages
+         ["&&&"] = { query = "@comment.outer", desc = "which_key_ignore" }, ]]

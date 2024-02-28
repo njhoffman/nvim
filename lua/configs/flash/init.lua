@@ -4,6 +4,10 @@
 --     \ , 'cterm'   : ['NONE', 'grey'    , 'NONE']
 -- vimade_3670    xxx ctermfg=146 guifg=#264e8e
 
+-- https://github.com/vsedov/nvim/blob/master/lua/modules/movement/flash/nav/lib.lua
+-- https://github.com/folke/flash.nvim/discussions/24
+-- https://github.com/folke/flash.nvim/pull/51
+
 local modes = {
   search = {
     enabled = false,
