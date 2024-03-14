@@ -1,18 +1,13 @@
 -- TODO: attach to 'alternate' service
 
+local smoothie = require('commands.buffer.smoothie')
+
+smoothie.setup_paging()
+
 local Path = require('plenary.path')
 local popup = require('plenary.popup')
 
-local state = {
-  popup_title = false,
-  popup_width = false,
-  histories = {},
-  ignores = {
-    [''] = true,
-    ['netrw'] = true,
-  },
-  popup_winid = nil,
-}
+local state = require('commands.buffer.state')
 
 local function to_relative_path(path)
   return Path:new(path):make_relative(vim.loop.cwd())
@@ -92,6 +87,7 @@ M.toggle_popup = function()
   for _, buf in ipairs(h.bufs) do
     table.insert(contents, buf.nm)
   end
+
   state.popup_winid = popup.create(contents, {
     title = state.popup_title or 'History',
     borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },

@@ -414,4 +414,4 @@ function s:do_vertical_cursor_movement(movement, properties)
   endif
 endfunction
 
-" vim: et ts=2
+vim: et ts=2

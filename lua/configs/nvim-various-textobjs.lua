@@ -21,6 +21,7 @@ local various_textobjs = require('various-textobjs')
 various_textobjs.setup({
   useDefaultKeymaps = true,
   disabledKeymaps = {
+    'P',
     'ig', -- Replaced with iG
     'ag', -- Replaced with aG
     'ii', -- Just use iI
@@ -42,6 +43,7 @@ various_textobjs.setup({
     'aS', -- Replaced with a-
     'in', -- Disabled, use treesitter's iN, instead
     'an', -- Disabled, use treesitter's aN, instead
+    'gc', -- commenting already setup
   },
 })
 -- " % ' ( ) < > ? [ ] _ ` { } ia iA ib iB ic iC if ih ii il iL in iN io ip iq is
@@ -139,22 +141,22 @@ map('n', 'dsi', function()
   vim.cmd(tostring(startBorderLn) .. ' delete')
 end, { desc = 'Delete surrounding indentation' })
 
-map('n', 'P', function()
-  require('various-textobjs').lastChange()
-  local changeFound = vim.fn.mode():find('v')
-  if changeFound then
-    vim.cmd.normal({ '>', bang = true })
-  end
-end, {})
-
+-- map('n', 'P', function()
+--   require('various-textobjs').lastChange()
+--   local changeFound = vim.fn.mode():find('v')
+--   if changeFound then
+--     vim.cmd.normal({ '>', bang = true })
+--   end
+-- end, {})
+--
 -- when on unindented line, `ii` should select entire buffer
-map('o', 'ii', function()
-  if tonumber(vim.fn.indent('.')) == 0 then
-    require('various-textobjs').entireBuffer()
-  else
-    require('various-textobjs').indentation('inner', 'inner')
-  end
-end)
+-- map('o', 'ii', function()
+--   if tonumber(vim.fn.indent('.')) == 0 then
+--     require('various-textobjs').entireBuffer()
+--   else
+--     require('various-textobjs').indentation('inner', 'inner')
+--   end
+-- end)
 
 local function openURL(url)
   local opener

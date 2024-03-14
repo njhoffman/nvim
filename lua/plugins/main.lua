@@ -27,6 +27,12 @@ local plugins = {
   { 'declancm/cinnamon.nvim', event = 'VeryLazy' },
   { 'karb94/neoscroll.nvim', event = 'VeryLazy' },
   {
+    '00sapo/visual.nvim',
+    enabled = false,
+    dependencies = { 'nvim-treesitter', 'nvim-treesitter-textobjects' }, -- this is needed so that visual.nvim is loaded *afterwards* Treesitter
+    event = 'VeryLazy',
+  },
+  {
     'rasulomaroff/reactive.nvim',
     enabled = true,
     lazy = false,
@@ -570,7 +576,6 @@ local plugins = {
       },
     },
   },
-  { 'anuvyklack/animation.nvim', dependencies = 'anuvyklack/middleclass' },
 
   {
     'psliwka/vim-smoothie',
@@ -602,7 +607,7 @@ local plugins = {
   },
   -- cursor
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
-  { 'edluffy/specs.nvim', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'edluffy/specs.nvim', enabled = false, event = { 'BufReadPost', 'BufNewFile' } },
   { 'gen740/SmoothCursor.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'echasnovski/mini.animate', event = 'VeryLazy' },
   -- { 'otavioschwanck/cool-substitute.nvim' },
@@ -718,7 +723,7 @@ local plugins = {
       -- },
       mappings = {
         --   -- Toggle comment (like `gcip` - comment inner paragraph) for both Normal and Visual modes
-        comment = '', -- gc
+        comment = 'gc', -- gc
         comment_line = '', -- gcc
         comment_visual = 'gc',
         --   -- Define 'comment' textobject (like `dgc` - delete whole comment block)

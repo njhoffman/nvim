@@ -47,7 +47,8 @@ return {
   null_ls.builtins.diagnostics.stylelint,
   null_ls.builtins.diagnostics.terraform_validate,
   null_ls.builtins.diagnostics.tfsec,
-  null_ls.builtins.diagnostics.todo_comments,
+  -- NOTE: causes treesitter overruns
+  -- null_ls.builtins.diagnostics.todo_comments,
   null_ls.builtins.diagnostics.trail_space.with({
     -- for 'mail' it's just annoying
     disabled_filetypes = { 'dirbuf', 'gitcommit', 'lua', 'markdown', 'mail' },

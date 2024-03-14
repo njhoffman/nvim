@@ -153,15 +153,16 @@ local pickers = {
     debounce = 100,
     prompt_prefix = icons.keymap,
     entry_maker = require('configs.telescope.entry_makers.keymaps')({}),
-    results_title = '@buf !sil *nor +exp  now',
+    results_title = '@buf !sil *nor  exp  now',
     show_plug = false,
     previewer = c_previewers.keymaps,
     modes = { 'n', 'i', 'c', 'x', 'o', 't', 's', 'l' },
-    -- lhs_filter = function(lhs)
-    --   return not lhs:find('Þ')
-    -- end, -- remove which-key mappings
-    -- show_plug = true,
-    -- only_buf = false
+    lhs_filter = function(lhs)
+      -- remove which-key mappings
+      -- return not lhs:find('Þ')
+      return true
+    end,
+    only_buf = false,
   },
   highlights = {
     prompt_prefix = icons.palette,

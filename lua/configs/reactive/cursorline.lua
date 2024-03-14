@@ -106,15 +106,16 @@ local cursorline_preset = {
     -- visual
     [{ 'v', 'V', '\x16' }] = {
       winhl = {
-        CursorLineNr = { fg = '#6874fe', bg = '#141436', italic = true },
-        Visual = { bg = '#14143f', bold = true, italic = true },
+        CursorLine = { bg = '#f20f20' },
+        CursorLineNr = { fg = '#6874fe', bg = '#220818', italic = true },
+        Visual = { bg = '#08203f', bold = true, italic = true },
       },
     },
     -- select
     [{ 's', 'S', '\x13' }] = {
       winhl = {
         CursorLineNr = { fg = '#c4b5fd', italic = true },
-        Visual = { bg = '#2e1065' },
+        Visual = { bg = '#28203f', bold = true, italic = true },
       },
     },
     -- replace

@@ -22,7 +22,7 @@ for _, mod_name in ipairs({
   'configs.cinnamon',
   'tracker.setup',
   'configs.registers',
-  'configs.neoscroll',
+  -- 'configs.neoscroll',
   'action-hints.setup',
   -- 'winsep.setup',
   -- 'better_escape-setup',

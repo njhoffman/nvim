@@ -409,9 +409,9 @@ local extension_configs = {
     --     })
     --   )
     -- )
-    mappings = {
-      main_menu = { [{ 'i', 'n' }] = '<M-Bslash>' },
-    },
+    -- mappings = {
+    --   main_menu = { [{ 'i', 'n' }] = '<M-Bslash>' },
+    -- },
   },
   ['node_modules'] = {},
   ['npm'] = {},

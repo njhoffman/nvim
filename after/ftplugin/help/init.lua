@@ -68,8 +68,10 @@ end
 
 local state = {
   width_cutoff = 60,
-  src_bufnr = vim.api.nvim_get_current_buf(),
+  src_bufnr = vim.fn.bufnr('$'),
+  src_winnr = vim.fn.bufwinnr('$'),
 }
+state.src_name = state.src_bufnr and vim.api.nvim_buf_get_name(state.src_bufnr)
 
 local get_help_bufnr = function()
   local help_bufnr = vim.fn.bufnr('*help*')
@@ -83,11 +85,7 @@ end
 local refresh_state = function()
   local src_valid = type(state.src_bufnr) == 'number'
     and vim.api.nvim_buf_is_loaded(state.src_bufnr)
-  if src_valid then
-    state.src_winid = vim.fn.bufwinid(state.src_bufnr)
-    state.src_winnr = vim.fn.bufwinnr(state.src_bufnr)
-    state.src_name = vim.api.nvim_buf_get_name(state.src_bufnr)
-  else
+  if not src_valid then
     for _, k in pairs({ 'src_bufnr', 'src_winid', 'src_winnr', 'src_name' }) do
       state[k] = nil
     end
@@ -126,7 +124,7 @@ local refresh_state = function()
 end
 
 local resize_window = function()
-  -- refresh_state()
+  refresh_state()
   --[[ vim.dbglog(
     'state',
     state,
@@ -185,6 +183,7 @@ local create_autocmds = function()
     group = augroup,
     callback = function(opts)
       if opts.buf == state.help_bufnr then
+        vim.cmd('set winwidth=80 winminwidth=50')
         -- debounce(refresh_state(), 500)
       end
     end,
@@ -211,7 +210,7 @@ local create_autocmds = function()
   aucmd({ 'BufNewFile' }, {
     group = augroup,
     callback = function(opts)
-      vim.cmd('set winminwidth=50 winwidth=80')
+      vim.cmd('set winwidth=80 winminwidth=50')
       -- debounce(load_file(opts), 500)
     end,
   })
@@ -240,6 +239,8 @@ local set_options = function()
   -- nnoremap <buffer> <LocalLeader>K  :<C-U>helpgrep <cword><CR>
   -- let b:undo_ftplugin .= '|nunmap <buffer> K'
 
+  vim.api.nvim_set_option_value('winfixheight', true, { win = state.help_winid })
+  vim.api.nvim_set_option_value('winfixwidth', true, { win = state.help_winid })
   vim.api.nvim_set_option_value('colorcolumn', '', { win = state.help_winid })
   vim.api.nvim_set_option_value('tabstop', 2, { buf = state.help_bufnr })
 end

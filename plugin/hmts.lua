@@ -45,7 +45,11 @@ local function path_diff(target_path, node_path)
   local is_match = false
 
   while true do
-    if #node_path == 0 or #target_path == 0 or not regex_match(target_path[#target_path], node_path[#node_path]) then
+    if
+      #node_path == 0
+      or #target_path == 0
+      or not regex_match(target_path[#target_path], node_path[#node_path])
+    then
       break
     end
     is_match = true

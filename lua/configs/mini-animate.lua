@@ -76,9 +76,10 @@ local alt_opts = {
     -- Animate for 200 milliseconds with linear easing
     timing = animate.gen_timing.linear({ duration = 200, unit = 'total' }),
     -- Animate only if there are at least 3 windows
-    subresize = animate.gen_subscroll.equal({ predicate = is_many_wins }),
+    -- subresize = animate.gen_subscroll.equal({ predicate = is_many_wins }),
   },
   open = {
+
     enable = true,
     -- Animate for 400 milliseconds with linear easing
     timing = animate.gen_timing.linear({ duration = 400, unit = 'total' }),
@@ -108,28 +109,41 @@ end
 
 local cfg = {
   cursor = {
-    enable = true,
+    enable = false,
     -- gen_path.line(), gen_path.angle(), gen_path.walls(), gen_path.spiral()
     timing = animate.gen_timing.linear({ duration = 100, unit = 'total' }),
-    path = animate.gen_path.line(),
-    -- path = animate.gen_path.angle(),
+    -- path = animate.gen_path.line(),
+    path = animate.gen_path.angle(),
   },
-  scroll = { enable = false },
+  scroll = {
+    enable = true,
+    -- Animate for 200 milliseconds with linear easing
+    timing = animate.gen_timing.quadratic({ duration = 200, unit = 'total' }),
+    -- Animate equally but with at most 120 steps instead of default 60
+    subscroll = animate.gen_subscroll.equal({ max_output_steps = 120 }), -- Animate equally but with at most 120 steps instead of default 60
+  },
   resize = {
     timing = animate.gen_timing.linear({ duration = 200, unit = 'total' }),
     -- subresize = animate.gen_subscroll.equal({ predicate = is_many_wins }),
   },
   open = {
-    enable = true,
-    timing = animate.gen_timing.linear({ duration = 100, unit = 'total' }),
+    -- Animate for 400 milliseconds with linear easing
+    timing = animate.gen_timing.linear({ duration = 400, unit = 'total' }),
+    -- Animate with wiping from nearest edge instead of default static one
     winconfig = animate.gen_winconfig.wipe({ direction = 'from_edge' }),
-    winblend = animate.gen_winblend.linear({ from = 70, to = 100 }),
+    -- Make bigger windows more transparent
+    winblend = animate.gen_winblend.linear({ from = 50, to = 100 }),
   },
+
   close = {
-    enable = true,
-    timing = animate.gen_timing.linear({ duration = 100, unit = 'total' }),
+    -- Animate for 400 milliseconds with linear easing
+    timing = animate.gen_timing.linear({ duration = 300, unit = 'total' }),
+    -- Animate with wiping to nearest edge instead of default static one
     winconfig = animate.gen_winconfig.wipe({ direction = 'to_edge' }),
-    winblend = animate.gen_winblend.linear({ from = 100, to = 70 }),
+    -- Make bigger windows more transparent
+    winblend = animate.gen_winblend.linear({ from = 100, to = 50 }),
   },
 }
 require('mini.animate').setup(cfg)
+
+-- require('mini.animate').execute_after('scroll', 'normal! n nzvzz')

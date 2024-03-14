@@ -119,7 +119,10 @@ local clr_over = {
 return function(injected_functions)
   local sym = injected_functions.sym
   return {
-    Visual({ fg = 'none', bg = '#101840', gui = 'italic' }),
+    -- Visual({ fg = 'none', bg = '#101840', gui = 'italic' }),
+    Visual({ bg = '#2e3c64' }),
+    -- VisualNOS({ fg = 'none', bg = '#301840' }),
+    VisualNOS = { bg = '#2e3c64' },
     VisualAlt({ fg = 'none', bg = '#10082f', gui = 'italic' }),
     VisualRed({ fg = 'none', bg = '#40112c', gui = 'bold,italic' }),
     Error({ fg = clrs.error, bg = 'none' }),
@@ -142,7 +145,6 @@ return function(injected_functions)
     TabLine({ fg = clrs.nord3, bg = clrs.nord1, gui = 'NONE' }),
     TabLineSel({ fg = '#a6cfff', bg = '#213c64', gui = 'bold' }),
     WinSeparator({ fg = '#444464', bg = '#090909', gui = 'bold' }),
-    VisualNOS({ fg = 'none', bg = '#301840' }),
     -- TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     -- WinBar({ fg = "#313c84", bg = "#202331" }),
     -- WinBarNC({ fg = "#4f5362", bg = "#446faf" }),
@@ -151,20 +153,28 @@ return function(injected_functions)
     -- WinBarGitDirty({ fg = "#d7afd7", bg = "#202331", gui = "bold" }),
     -- WinBarIndicator({ fg = "#5fafd7", bg = "#202331", gui = "bold" }),
     -- WinBarInactive({ bg = "#3a3a3a", fg = "#777777", gui = "bold" }),
-    SignColumn({ bg = 'none' }),
+    Cursor({ bg = '#3760bf', fg = '#e1e2e7' }),
+    -- Cursor({ bg = '#4B5Bff' }),
+    CursorColumn({ bg = '#061028' }),
+    ColorColumn({ bg = '#061028' }),
+    CursorLineNr({ fg = '#44aaff', bg = '#061028', gui = 'italic' }),
     LineNr({ fg = clrs.nord3 }),
-    Boolean({ fg = '#5370af' }),
-    Number({ fg = '#4078c0' }),
-    -- CursorLine({ bg = '#0a1020' }),
+    SignColumn({ bg = 'none' }),
+    IncSearch({ gui = 'bold', bg = '#4e3ce6', fg = '#88aaff' }),
+    Search({ fg = '#00cfff', gui = 'bold' }), -- bg = '#0d314c',
+    CurSearch({ gui = 'bold', bg = '#6e3ce6', fg = '#aaffff' }), --  bg = '#110033'
     CursorLine({ bg = '#061028' }),
-    CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
-    Cursor({ bg = '#4B5Bff' }),
+    -- CursorLine({ bg = '#0a1020' }),
+    -- CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
+    -- CurSearch({ fg = '#cc2266', gui = 'bold' }), --  bg = '#110033'
     ReactiveCursor({}),
-    CursorColumn({ bg = CursorLine.bg }),
-    ColorColumn({ bg = CursorLine.bg }),
+    -- CursorColumn({ bg = CursorLine.bg }),
+    -- ColorColumn({ bg = CursorLine.bg }),
     -- base groups
     -- FoldIcon({ fg = "#4B4BBB" }),
     -- MatchParenCursor({ fg = "#fb8b8b" }),
+    Boolean({ fg = '#5370af' }),
+    Number({ fg = '#4078c0' }),
     Character({ fg = '#10a4ca', gui = 'bold' }),
     Comment({ fg = '#4a647b', gui = 'italic' }),
     Conceal({ bg = 'none' }),
@@ -183,7 +193,7 @@ return function(injected_functions)
     FunctionCall({ fg = '#4d79c7' }),
     -- Function({ fg = '#8c788c' }),
     -- FunctionCall({ fg = '#7f788f' }),
-    Identifier({ fg = '#5e88b6' }),
+    Identifier({ fg = '#4e73c6' }),
     Include({ fg = '#4774c6' }),
     Keyword({ fg = '#3167a2' }),
     KeywordFunction({ fg = '#2D88BF' }),
@@ -197,15 +207,11 @@ return function(injected_functions)
     QuickFixLine({ bg = '#172238' }),
     Repeat({ fg = '#806a7f' }),
     Scrollbar({ bg = '#111111', fg = '#334863' }),
-    IncSearch({ gui = 'bold', bg = '#6e3ce6', fg = '#aaffff' }),
-    Search({ fg = '#00cfff', gui = 'bold' }), -- bg = '#0d314c',
-    -- CurSearch({ fg = '#cc2266', gui = 'bold' }), --  bg = '#110033'
-    CurSearch({ IncSearch }), --  bg = '#110033'
     Special({ fg = '#487ac8' }),
     SpecialChar({ fg = '#b88698' }), -- For special punctutation that does not fall in the catagories before.
     SpecialComment({ fg = '#3698b3' }),
     Statement({ fg = '#5191D1' }),
-    String({ fg = '#1094aa' }),
+    String({ fg = '#1684a4' }),
     Structure({ fg = '#3D71AC' }),
     Type({ fg = '#418cc4' }),
     -- Variable({ fg = '#5a8ab0' }),
@@ -287,7 +293,31 @@ return function(injected_functions)
     WarningMsg({ bg = 'none', fg = clrs.nord13 }),
     -- language groups
     --
-    TreesitterContext({ bg = '#1a0606', gui = 'italic' }),
+    TreesitterContext({ bg = '#1a0606', fg = '#143658' }),
+    TreesitterContextLineNumber({
+      fg = '#244668',
+      bg = '#1a0606',
+    }),
+    TreesitterContextLineNumberBottom({
+      fg = '#244668',
+      -- gui = 'underline',
+      guisp = 'Grey',
+    }),
+    TreesitterContextBottom({
+      fg = '#00a6f8',
+      -- fg = '#102648',
+      -- gui = 'underline',
+      guisp = 'Grey',
+    }),
+
+    -- TreesitterContextSeparator({}),
+
+    -- underline across the screen..
+    -- hi TreesitterContextBottom gui=underline guisp=Grey
+    -- hi TreesitterContextLineNumberBottom gui=underline guisp=Grey
+    -- Or an underline below the line numbers only:
+    -- hi TreesitterContextLineNumberBottom gui=underline guisp=Grey
+
     -- @variable            ; various variable names
     -- @variable.builtin    ; built-in variable names (e.g. `this`)
     -- @variable.parameter  ; parameters of a function

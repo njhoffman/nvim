@@ -14,6 +14,8 @@ end
 
 local split_toggle = function()
   if langs[vim.bo.filetype] ~= nil then
+    local node = require('configs.treesj.utils').check_ts_node()
+    vim.dbglog('node', node)
     require('treesj').toggle()
   else
     local results = require('mini.splitjoin').toggle()
@@ -44,7 +46,12 @@ vim.api.nvim_create_user_command('SplitJoin', split_join, {})
 
 local split_mapping = function()
   -- TODO: if not toggleable node (node identifier is not configured) go to first parenthesis
-  vim.keymap.set('n', 'gs', '<cmd>SplitToggle<cr>', { buffer = false, desc = 'split toggle cursor' })
+  vim.keymap.set(
+    'n',
+    'gs',
+    '<cmd>SplitToggle<cr>',
+    { buffer = false, desc = 'split toggle cursor' }
+  )
   vim.keymap.set('n', 'gJ', '<cmd>SplitJoin<cr>', { buffer = false, desc = 'split join cursor' })
   vim.keymap.set('n', 'gS', '<cmd>SplitSplit<cr>', { buffer = false, desc = 'split split cursor' })
   -- TODO: make hover information about node format

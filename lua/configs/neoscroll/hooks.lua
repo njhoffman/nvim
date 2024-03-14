@@ -11,6 +11,7 @@ hooks.pre_hook = function(info, params)
 
   vim.opt.eventignore:append(events)
   ts_ctx.disable()
+  vim.api.nvim_buf_set_var(0, 'minianimate_disable', 1)
 end
 
 hooks.steps_hook = function(...)
@@ -19,6 +20,11 @@ hooks.steps_hook = function(...)
 end
 
 hooks.post_hook = function(info)
+  -- post_hook = function(info)
+  --   if info == 'centercursor' then
+  --     vim.cmd('normal! zz')
+  --   end
+  -- end,
   -- vim.defer_fn(function()
   --   require('neoscroll').zz(zz_time_ms, easing)
   -- end, defer_time_ms)
@@ -28,6 +34,7 @@ hooks.post_hook = function(info)
 
   local stats_mod = require('configs.neoscroll.stats')
   vim.opt.eventignore:remove(events)
+  -- vim.api.nvim_buf_del_var(0, 'minianimate_disable')
   ts_ctx.enable()
   if #state.steps > 0 then
     local stats = stats_mod.summarize_scroll(state.steps, state.params)

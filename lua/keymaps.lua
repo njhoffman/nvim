@@ -611,69 +611,85 @@ map('n', 'D', 'd$', {
   silent = true
 })
 
+-- vim.keymap.set({ 'n', 'x' }, '<C-u>', "<Cmd>lua Scroll('<C-u>', 1, 1)<CR>")
+-- vim.keymap.set({ 'n', 'x' }, '<C-d>', "<Cmd>lua Scroll('<C-d>', 1, 1)<CR>")
+-- <cmd>silent! execute "normal! 3<C-d><cr>  <cmd>normal! 3<C-d><cr>
+-- map('n', '<c-f>', '<cmd>execute "normal! "<cr>', {
+--   category = 'Motion',
+--   plugin = 'vim-smoothie',
+--   label = ' scroll forwards',
+--   desc = ' smoothie scroll forwards',
+--   noremap = false,
+--    silent = true
+--  })
+--  map('n', '<c-b>', '<cmd>execute "normal! "<cr>', {
+--    category = 'Motion',
+--    plugin = 'vim-smoothie',
+--    label = ' scroll forwards',
+-- desc = ' smoothie scroll forwards',
+-- noremap = false,
+--   silent = true
+-- })
 
-map('n', '<c-b>', '<Plug>(SmoothieBackwards)', {
-  category = 'Motion',
-  plugin = 'vim-smoothie',
-  label = ' scroll backwards',
-  desc = ' smoothie scroll backwards',
-  noremap = false,
-  silent = true
-})
+-- map('n', '<c-b>', '<Plug>(SmoothieBackwards)', {
+--   category = 'Motion',
+--   plugin = 'vim-smoothie',
+--   label = ' scroll backwards',
+--   desc = ' smoothie scroll backwards',
+--   noremap = false,
+--   silent = true
+-- })
 
-map('n', '<c-f>', '<Plug>(SmoothieDownwards)', {
-  category = 'Motion',
-  plugin = 'vim-smoothie',
-  label = ' scroll forwards',
-  desc = ' smoothie scroll forwards',
-  noremap = false,
-  silent = true
-})
+-- map('n', '<c-f>', '<Plug>(SmoothieDownwards)', {
+--   category = 'Motion',
+--   plugin = 'vim-smoothie',
+--   label = ' scroll forwards',
+--   desc = ' smoothie scroll forwards',
+--   noremap = false,
+--   silent = true
+-- })
 
-map('n', '<M-f>', '<Plug>(SmoothieDownwards)', {
-  category = 'Motion',
-  plugin = 'vim-smoothie',
-  label = ' scroll forwards',
-  desc = ' smoothie scroll forwards',
-  noremap = false,
-  silent = true
-})
+-- map('n', '<M-f>', '<Plug>(SmoothieDownwards)', {
+--   category = 'Motion',
+--   plugin = 'vim-smoothie',
+--   label = ' scroll forwards',
+--   desc = ' smoothie scroll forwards',
+--   noremap = false,
+--   silent = true
+-- })
 
-map('n', '<M-b>', '<Plug>(SmoothieUpwards)', {
-  category = 'Motion',
-  plugin = 'vim-smoothie',
-  label = ' scroll forwards',
-  desc = ' smoothie scroll forwards',
-  noremap = false,
-  silent = true
-})
+-- map('n', '<M-b>', '<Plug>(SmoothieUpwards)', {
+--   category = 'Motion',
+--   plugin = 'vim-smoothie',
+--   label = ' scroll forwards',
+--   desc = ' smoothie scroll forwards',
+--   noremap = false,
+--   silent = true
+-- })
 
-map('n', '<space>', '<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)', {
-  category = 'Motion',
-  plugin = 'vim-smoothie',
-  label = ' scroll forwards x2',
-  desc = ' smoothie scroll forwards x2',
-  noremap = false,
-  silent = true
-})
+local get_last_visual_selection = function()
 
-map('n', 'G', '<Plug>(Smoothie_G)', {
-  category = 'Motion',
-  plugin = 'vim-smoothie',
-  label = ' scroll bottom',
-  desc = ' smoothie scroll to bottom',
-  noremap = false,
-  silent = true
-})
+-- 'gp', '`[v`]'
+-- `[  `]
+ local ranges = {
+   last = { vim.fn.getpos("'<"), vim.fn.getpos("'>") },
+   paste = { vim.fn.getpos("`["), vim.fn.getpos("`]`") }
+ }
 
-map('n', 'gg', '<Plug>(Smoothie_gg)', {
-  category = 'Motion',
-  plugin = 'vim-smoothie',
-  label = ' scroll top',
-  desc = ' smoothie scroll to top',
-  noremap = false,
-  silent = true
-})
+ local _, start_line, start_col, _ = unpack(ranges.last[1])
+ local _, end_line, end_col, _ = unpack(ranges.last[2])
+
+ return {
+  start_line = start_line-1,
+  start_col = start_col-1,
+  end_line = end_line-1,
+  end_col = end_col,
+ }
+
+  -- start_col = start_col-1,
+  -- end_line = end_line-1,
+  -- end_col = end_col,
+end
 
 map('n', 'gp', '`[v`]', {
   category = 'Motion',
@@ -746,6 +762,7 @@ map('i', '<C-f>', '<Esc>ea', {
   category = 'Motion',
   label = ' jump over word',
   desc = '  jump over word while staying in insert mode',
+  noremap = true,
 })
 
 map('n', 'U', '', {
