@@ -6,17 +6,7 @@ require('spider').setup({
 local mapper = require('mapper')
 local spider_map = function(modes, key, cmd_key, opts, flags)
   -- NOTE: for dot repeat to work, must be in form of Ex-commands
-  mapper.map(
-    modes,
-    key,
-    "<cmd>lua require('spider').motion('" .. cmd_key .. "')<CR>",
-    vim.tbl_extend('force', {
-      desc = '󱇫 spider-' .. cmd_key .. ' motion',
-      silent = true,
-      category = 'Motion',
-      plugin = 'nvim-spider',
-    }, opts or {})
-  )
+  mapper.map(modes, key, "<cmd>lua require('spider').motion('" .. cmd_key .. "')<CR>", opts)
 end
 
 -- skipInsignificantPunctuation = true for operators
@@ -30,14 +20,20 @@ end
 -- { "zb", "<cmd>lua require('spider').motion('b')<CR>", mode = "o", desc = "Spider-b" },
 -- spider_key("H", "b"),
 -- spider_key("L", "w"),
-spider_map({ 'n', 'o', 'x' }, 'w', 'w')
-spider_map({ 'n', 'o', 'x' }, 'e', 'e') -- d
+spider_map({ 'n', 'x' }, 'w', 'w')
+spider_map({ 'n', 'x' }, 'e', 'e')
+spider_map({ 'o' }, 'w', 'e')
+
 spider_map({ 'n', 'o', 'x' }, 'b', 'b')
 spider_map({ 'n', 'o', 'x' }, 'ge', 'ge')
--- vim.keymap.set({ "n", "o", "x" }, 'dw', 'de', { remap = true, desc = '󱇫 spider-de motion (dw remap fix)' })
--- vim.keymap.set({ "n", "o", "x" }, 'cw', 'ce', { remap = true, desc = '󱇫 spider-ce motion (cw remap fix)' })
-vim.keymap.set({ 'n' }, 'dw', 'de', { remap = true, desc = '󱇫 spider-de motion (dw remap fix)' })
-vim.keymap.set({ 'n' }, 'cw', 'ce', { remap = true, desc = '󱇫 spider-ce motion (cw remap fix)' })
+-- vim.keymap.set(
+--   { 'n', 'o', 'x' },
+--   'cw',
+--   'ce',
+--   { remap = true, desc = '󱇫 spider-ce motion (cw remap fix)' }
+-- )
+-- vim.keymap.set({ 'n' }, 'dw', 'de', { remap = true, desc = '󱇫 spider-de motion (dw remap fix)' })
+-- vim.keymap.set({ 'n' }, 'cw', 'ce', { remap = true, desc = '󱇫 spider-ce motion (cw remap fix)' })
 -- vim.keymap.set("o", "w", "<cmd>lua require('spider').motion('w')<CR>"
 
 -- For a version of iw that considers camelCase, check out the subword text object of nvim-various-textobjs.

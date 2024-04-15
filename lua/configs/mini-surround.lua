@@ -24,6 +24,9 @@ local default_cfg = {
 --   mappings = { add = 'ys', delete = 'ds', find = '', find_left = '', highlight = '', replace = 'cs', update_n_lines = '', suffix_last = '', suffix_next = '', }, search_method = 'cover_or_next',
 -- }
 
+-- TODO: yank surround text-obj
+-- TODO: n/N traverses them
+
 local custom_surroundings = {
   -- Lua long brackets - ysiwS
   B = {
@@ -57,36 +60,39 @@ local cfg = {
   highlight_duration = 400,
   n_lines = 200,
   respect_selection_type = true,
-  search_method = 'cover_or_nearest',
+  search_method = 'cover_or_next',
+  -- search_method = 'cover_or_nearest',
   silent = true,
 }
 
 --stylua: ignore
 require('mini.surround').setup(cfg)
--- vim.keymap.set('x', 'ys', 's', { silent = true, remap = true, desc = '󰅪 mini surround add visual selection' })
--- vim.keymap.set('x', 'ys', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
-vim.keymap.set('n', 'ys', 's', { silent = true, remap = true, desc = '󰅪 mini surround add operator' })
-vim.keymap.set('n', 'yS', 'ys$', { silent = true, remap = true, desc = '󰅪 mini surround to end of line' })
-vim.keymap.set('n', 'sS', 's0', { silent = true, remap = true, desc = '󰅪 mini surround to begin of line' })
-vim.keymap.set('n', 'yss', '^ys$', { silent = true, remap = true, desc = '󰅪 mini surround add line' })
--- vim.keymap.set('n', 'yss', 'ys_', { remap = true })
-vim.keymap.set(
-  'n',
-  's<space>',
-  "<cmd>execute 'normal! hwst )<esc>'<cr>",
-  { silent = true, desc = '󰅪 mini surround quick add word' }
-)
--- lua vim.cmd("execute 'silent! normal hwst )<esc>'")
--- execute "silent! normal hwst\<space>)\\<esc>"
--- vim.cmd("execute normal 'hwst ' . nr2char(getchar()) . '<esc>'"),
--- execute "silent! normal hwst\<space>)" | execute "normal <esc>"
-vim.keymap.set(
-  'n',
-  'ss',
-  "<cmd>execute 'silent! normal hwst )'<cr>",
+
+local extra_mappings = function()
+  local get_opts = function(desc)
+    return { silent = true, remap = true, desc = desc }
+  end
+  local map = vim.keymap.set
+  -- vim.keymap.set('x', 'ys', 's', { silent = true, remap = true, desc = '󰅪 mini surround add visual selection' })
+  -- vim.keymap.set('x', 'ys', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
+  map('n', 'ys', 's', get_opts('󰅪 mini surround add operator'))
+  map('n', 'yS', 'ys$', get_opts('󰅪 mini surround to end of line'))
+  map('n', 'sS', 's0', get_opts('󰅪 mini surround to begin of line'))
+  map('n', 'yss', '^ys$', get_opts('󰅪 mini surround add line'))
+  map(
+    'n',
+    's<space>',
+    "<cmd>execute 'normal hwst )<esc>'<cr>",
+    get_opts('󰅪 mini surround quick add')
+  )
+  -- vim.keymap.set('n', 'yss', 'ys_', { remap = true })
+  -- lua vim.cmd ("execute 'silent! normal hwst )<esc>'")
+  -- execute "silent! normal hwst\<space>)\\<esc>"
+  -- vim.cmd("execute normal 'hwst ' . nr2char(getchar()) . '<esc>'"),
+  -- execute "silent! normal hwst\<space>)" | execute "normal <esc>"
   -- "<cmd>execute 'silent! normal hwst )" .. vim.fn.nr2char(vim.fn.getchar()) .. "'<cr>",
-  { silent = true, desc = '󰅪 mini surround quick add word' }
-)
+  map('n', 'ss', "<cmd>execute 'normal hwst ('<cr>", get_opts('󰅪 mini surround quick add word'))
+end
 
 -- silent! normal hwst (<esc>
 -- <Cmd>execute "silent! normal hwst\ " . nr2char(getchar()) . "<Esc>"<CR>

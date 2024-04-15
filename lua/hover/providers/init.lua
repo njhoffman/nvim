@@ -1,3 +1,5 @@
+-- https://github.com/lewis6991/hover.nvim/tree/main/lua/hover/providers
+
 local async = require('hover.async')
 local state = require('hover.state')
 local log = require('hover.utils').logger()
@@ -29,7 +31,10 @@ end
 local function register(provider)
   if not provider.execute or type(provider.execute) ~= 'function' then
     vim.notify(
-      string.format('error: hover provider %s does not provide an execute function', provider.name or 'NA'),
+      string.format(
+        'error: hover provider %s does not provide an execute function',
+        provider.name or 'NA'
+      ),
       vim.log.levels.ERROR
     )
     return
@@ -62,7 +67,7 @@ local function run_provider(provider, _opts)
   local opts = _opts or {}
 
   if opts.focusable ~= false and opts.focus ~= false then
-    if ui.focus_or_close_hover() then
+    if utils.focus_or_close_hover() then
       return true
     end
   end
@@ -126,7 +131,8 @@ local function load(_opts)
 
   state.busy = true
 
-  local target_provider = type(opts.provider) == 'string' and #opts.provider > 0 and opts.provider or nil
+  local target_provider = type(opts.provider) == 'string' and #opts.provider > 0 and opts.provider
+    or nil
   for _, provider in ipairs(state.providers) do
     async.scheduler()
     if target_provider ~= nil and provider.name == opts.provider or is_enabled(provider) then
@@ -137,7 +143,11 @@ local function load(_opts)
   end
   if not opts.silent and vim.tbl_isempty(state.enabled) then
     state.busy = false
-    vim.api.nvim_echo({ { 'hover.nvim: could not find any hover providers', 'WarningMsg' } }, false, {})
+    vim.api.nvim_echo(
+      { { 'hover.nvim: could not find any hover providers', 'WarningMsg' } },
+      false,
+      {}
+    )
   end
 end
 

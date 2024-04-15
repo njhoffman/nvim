@@ -26,7 +26,8 @@ local use_defref_plugin = true
 local mapping = {
   rename = function()
     opts.desc = 'rename buffer'
-    map('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    -- map('n', 'gM', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    map('n', 'gM', '<cmd>Rename<CR>', opts)
   end,
   references = function()
     opts.desc = 'lsp references in quickfix'
@@ -64,7 +65,12 @@ local mapping = {
     map('n', 'gQt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
     if vim.fn.exists(':Telescope') then
       opts.desc = 'lsp type definitions in telescope'
-      map('n', 'gy', "<cmd>lua require('telescope.run')('builtin', 'lsp_type_definitions')<cr>", opts)
+      map(
+        'n',
+        'gy',
+        "<cmd>lua require('telescope.run')('builtin', 'lsp_type_definitions')<cr>",
+        opts
+      )
     else
       map('n', 'gy', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
     end
@@ -108,8 +114,8 @@ local mapping = {
     -- map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   end,
   codelens = function(cmd)
-    opts.desc = 'lsp code lens'
-    map('n', 'gL', cmd, opts)
+    -- opts.desc = 'lsp code lens'
+    -- map('n', 'gL', cmd, opts)
   end,
   formatting = function(cmd)
     opts.desc = 'lsp file format'

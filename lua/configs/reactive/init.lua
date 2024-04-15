@@ -1,3 +1,4 @@
+-- https://github.com/rasulomaroff/reactive.nvim/commit/57f43fac69b1a3ff9f82ad1e10ac3d34d52e6b39
 local modemap = {
   n = {},
   i = {},
@@ -6,28 +7,17 @@ local modemap = {
   v = {},
   V = {},
   ['^V'] = {},
-  -- o = {},
   no = {},
-  os = {},
   noc = {},
-  oc = {},
   noy = {},
-  oy = {},
   nod = {},
-  od = {},
   nov = {},
-  ov = {},
   noV = {},
-  oV = {},
   ['no^V'] = {},
 }
 
 -- TODO: different cursorline hl for initial WhichKey d and subsequent ones
 local reactive = require('reactive')
-reactive.opfunc_get = function(opfunc)
-  local res = require('configs.reactive.opfuncs').get_opfunc(opfunc)
-  return res and res[1] and res[1][1] or nil
-end
 
 reactive.setup({
   builtin = {
@@ -37,15 +27,8 @@ reactive.setup({
   },
 })
 
-local preprocess = function(preset)
-  local no_operators = preset.modes.no.operators or {}
-  preset.modes.o = vim.tbl_deep_extend('force', preset.modes.no, preset.modes.o)
-  return preset
-end
-
-local cursorline_preset = preprocess(require('configs.reactive.cursorline'))
+local cursorline_preset = require('configs.reactive.cursorline')
 -- local cursor_preset = require('configs.reactive.cursor')
-
 -- require('reactive').add_preset(cursor_preset)
 require('reactive').add_preset(cursorline_preset)
 

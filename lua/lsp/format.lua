@@ -176,7 +176,7 @@ end
 ---@param bufnr? number
 M.on_attach = function(client, bufnr)
   if not client.supports_method(method) then
-    log.warn(
+    log.debug(
       string.format('"%s" is not supported for %s, not attaching lsp-format', method, client.name)
     )
     return

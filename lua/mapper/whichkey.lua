@@ -79,8 +79,8 @@ local map = function(mode, lhs, opts)
   if mode == '' then
     -- wk.register({ [lhs] = { label } }, { mode = 'n' })
     wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'n' }))
-    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'o' }))
-    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'v' }))
+    -- wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'o' }))
+    -- wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'v' }))
   elseif mode == 'x' then
     wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 's' }))
     wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'v' }))

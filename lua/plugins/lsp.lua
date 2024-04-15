@@ -119,8 +119,15 @@ local plugins = {
   -- https://github.com/stevearc/conform.nvim
   {
     'nvimtools/none-ls.nvim',
+    commit = '1dad329b3899413e7e8e03412b2489dbcda5f7e4',
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
+      -- https://github.com/nvimtools/none-ls-extras.nvim
+      -- https://github.com/gbprod/none-ls-php.nvim
+      -- https://github.com/gbprod/none-ls-shellcheck.nvim
+      -- https://github.com/gbprod/none-ls-luacheck.nvim
+      -- https://github.com/gbprod/none-ls-psalm.nvim
+      -- https://github.com/gbprod/none-ls-ecs.nvim
       'nvim-lua/plenary.nvim',
       'ThePrimeagen/refactoring.nvim',
       'mason.nvim',

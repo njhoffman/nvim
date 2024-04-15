@@ -40,7 +40,7 @@ local scroll_page = function(action, user_args)
   end
 end
 
-require('neoscroll').scroll(lines, move_cursor, time, easing_function, info)
+-- require('neoscroll').scroll(lines, move_cursor, time, easing_function, info)
 -- end
 
 -- function neoscroll.scroll(lines, move_cursor, time, easing_function, info)
@@ -65,14 +65,23 @@ require('neoscroll').scroll(lines, move_cursor, time, easing_function, info)
 
 -- map_key('<C-f>', 'page_down', scroll_page, { time = 600  } )
 
+local get_height = function()
+  local height = vim.api.nvim_win_get_height(0)
+  vim.dbglog(height)
+  return height
+end
 local t = {}
 -- t['<PageUp>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '300', [['sine']], [['centercursor']] } }
 -- t['<PageDown>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '300', [['sine']], [['centercursor']] } }
 
-t['<C-b>'] =
-  { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '300', [['sine']], [['centercursor']] } }
-t['<C-f>'] =
-  { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '300', [['sine']], [['centercursor']] } }
+t['<C-b>'] = {
+  'scroll',
+  { '-vim.api.nvim_win_get_height(0)', 'true', '300', [['sine']], [['centercursor']] },
+}
+t['<C-f>'] = {
+  'scroll',
+  { get_height, 'true', '300', [['sine']], [['centercursor']] },
+}
 
 -- t['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '7', '35', easing1}}
 -- t['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '7', '35', easing1}}
@@ -80,3 +89,43 @@ t['<C-f>'] =
 t[',gg'] = { 'scroll', { '-2*vim.api.nvim_buf_line_count(0)', 'true', '1', '5', e } }
 t[',G'] = { 'scroll', { '2*vim.api.nvim_buf_line_count(0)', 'true', '1', '5', e } }
 require('neoscroll.config').set_mappings(t)
+
+-- function _G.set_terminal_keymaps()
+--   local opts = { buffer = 0 }
+--   vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+--   vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+--   vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+--   vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+--   vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+-- end
+
+-- vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+-- vim.keymap.set("n", "<C-d>", "<C-d>zz",
+--   { desc = "scroll down and then center the cursorline" })
+
+-- vim.keymap.set("n", "<C-u>", "<C-u>zz",
+--   { desc = "scroll up and then center the cursorline" })
+
+-- vim.keymap.set("n", "zo", "zozz",
+--   { desc = "open fold and then center the cursorline" })
+
+-- vim.keymap.set("n", "zr", "zrzz",
+--   { desc = "open fold and then center the cursorline" })
+
+-- vim.keymap.set("n", "zR", "zRzz",
+--   { desc = "open all folds and then center the cursorline" })
+
+-- vim.keymap.set("n", "zc", "zczz",
+--   { desc = "close fold and then center the cursorline" })
+
+-- vim.keymap.set("n", "zm", "zmzz",
+--   { desc = "close fold and then center the cursorline" })
+
+-- vim.keymap.set("n", "zM", "zMzz",
+--   { desc = "close all folds and then center the cursorline" })
+
+-- vim.keymap.set("n", "n", "nzz",
+--   { desc = "move to the next search match and then center the cursorline" })
+
+-- vim.keymap.set("n", "N", "Nzz",
+--   { desc = "move to the prev search match and then center the cursorline" })

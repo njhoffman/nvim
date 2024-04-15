@@ -67,7 +67,12 @@ local modules = {
     },
   },
   refactor = {
-    smart_rename = { enable = true, keymaps = { smart_rename = 'gR' } }, -- grr default
+    smart_rename = {
+      enable = false,
+      keymaps = {
+        smart_rename = 'gm',
+      },
+    }, -- grr default
     -- highlight_definitions = { enable = true },
     highlight_current_scope = { enable = false },
     navigation = {
@@ -107,7 +112,7 @@ local modules = {
     enable = true,
     disable = { 'markdown' },
     keymaps = {
-      init_selection = 'vv',
+      init_selection = false,
       node_incremental = 'v',
       scope_incremental = false,
       node_decremental = 'V',
@@ -205,8 +210,8 @@ local modules = {
     },
     swap = {
       enable = true,
-      swap_next = { ['<leader>xa'] = '@parameter.inner' },
-      swap_previous = { ['<leader>xA'] = '@parameter.inner' },
+      swap_next = { ['>;'] = '@parameter.inner' },
+      swap_previous = { ['<;'] = '@parameter.inner' },
     },
     move = {
       enable = true,

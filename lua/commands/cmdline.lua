@@ -93,4 +93,26 @@ local toggle = function()
     end
   end
 end
-return { toggle = toggle }
+
+local function open_cmdline_with_path(path)
+  local escaped =
+    vim.api.nvim_replace_termcodes(': ' .. vim.fn.fnameescape(path) .. '<Home>', true, false, true)
+  vim.api.nvim_feedkeys(escaped, 'n', false)
+end
+
+local open_last_search = function()
+  local cmdline = vim.fn.getcmdline() or ''
+  local cmdtype = vim.fn.getcmdtype() or ''
+  local last_search = vim.fn.getreg('/')
+  local fullpath = cmdline .. last_search
+  if cmdtype == '/' or cmdtype == '?' then
+    if last_search ~= '' then
+      vim.fn.setcmdline(fullpath)
+    end
+  else
+    require('flash').jump({ continue = true })
+    -- open_cmdline_with_path(fullpath)
+  end
+end
+
+return { toggle = toggle, open_last_search = open_last_search }

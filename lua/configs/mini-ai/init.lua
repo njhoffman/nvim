@@ -60,13 +60,11 @@ local opts = {
     -- Main textobject prefixes
     around = 'a',
     inside = 'i',
-
     -- Next/last variants
     around_next = 'an',
     inside_next = 'in',
     around_last = 'aN',
     inside_last = 'iN',
-
     -- Move cursor to corresponding edge of `a` textobject
     goto_left = 'g[',
     goto_right = 'g]',
@@ -76,40 +74,30 @@ local opts = {
   custom_textobjects = {
     -- Make `|` select both edges in non-balanced way
     ['|'] = ai.gen_spec.pair('|', '|', { type = 'non-balanced' }),
-    ['b'] = {
-      { '%b()', '%b[]', '%b{}' },
-      '^.%s*().-()%s*.$',
-    },
-
-    o = ai.gen_spec.treesitter({
+    ['b'] = { { '%b()', '%b[]', '%b{}' }, '^.%s*().-()%s*.$' },
+    ['o'] = ai.gen_spec.treesitter({
       a = { '@block.outer', '@conditional.outer', '@loop.outer' },
       i = { '@block.inner', '@conditional.inner', '@loop.inner' },
     }, { desc = 'block/conditional/loop' }),
-    A = ai.gen_spec.treesitter(
+    ['A'] = ai.gen_spec.treesitter(
       { a = '@attribute.outer', i = '@attribute.inner' },
       { desc = 'attribute' }
     ),
-    f = ai.gen_spec.treesitter(
+    ['f'] = ai.gen_spec.treesitter(
       { a = '@function.outer', i = '@function.inner' },
       { desc = 'function' }
     ),
-    c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, { desc = 'class' }),
-    C = ai.gen_spec.treesitter(
+    ['C'] = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, { desc = 'class' }),
+    ['c'] = ai.gen_spec.treesitter(
       { a = '@conditional.outer', i = '@conditional.inner' },
       { desc = 'conditional' }
     ),
-    t = { '<([%p%w]-)%f[^<%w][^<>]->.-</%1>', '^<.->().*()</[^/]->$' },
+    ['t'] = { '<([%p%w]-)%f[^<%w][^<>]->.-</%1>', '^<.->().*()</[^/]->$' },
     -- a/ i/
-    x = ai.gen_spec.treesitter(
+    ['x'] = ai.gen_spec.treesitter(
       { a = '@comment.outer', i = '@comment.inner' },
       { desc = 'comment' }
     ),
-    -- local gen_ai_spec = MiniExtras.gen_ai_spec
-    -- e = gen_ai_spec.buffer(),
-    -- D = gen_ai_spec.diagnostic(),
-    -- L = gen_ai_spec.line(),
-    -- N = gen_ai_spec.number(),
-    -- i = ai.gen_ai_spec.indent(),
     ['l'] = function(type)
       -- L = ai.gen_ai_spec.line(),
       if vim.api.nvim_get_current_line() == '' then
@@ -123,7 +111,7 @@ local opts = {
       local to = { line = to_line, col = to_col + 1 }
       return { from = from, to = to }
     end,
-    e = function(ai_type)
+    ['e'] = function(ai_type)
       -- entire buffer
       if ai_type == 'i' then
         local first_non_blank = vim.fn.nextnonblank(1)
@@ -138,6 +126,12 @@ local opts = {
         return { from = from, to = to }
       end
     end,
+    -- local gen_ai_spec = MiniExtras.gen_ai_spec
+    -- e = gen_ai_spec.buffer(),
+    -- D = gen_ai_spec.diagnostic(),
+    -- L = gen_ai_spec.line(),
+    -- N = gen_ai_spec.number(),
+    -- i = ai.gen_ai_spec.indent(),
   },
 }
 
@@ -182,12 +176,13 @@ local setup_keymaps = function()
     ['}']    = '  inside } including white-space',
     ['{']    = '  inside {',
     ['?']    = '  inside user prompt',
+    [';']    = '  inside argument',
     _        = '  inside underscore',
-    a        = '  inside argument',
     A        = '  inside attribute',
     b        = '  inside balanced: ), ], }',
-    c        = '  inside class',
-    C        = '  inside conditional',
+    c        = '  inside conditional',
+    C        = '  inside class',
+    e        = '  inside entire buffer',
     f        = '  inside function',
     l        = '  inside line',
     L        = '  inside loop',
@@ -198,14 +193,9 @@ local setup_keymaps = function()
   }
 
   local a = vim.deepcopy(i)
-  -- for k, v in pairs(a) do
-  --   a[k] = v:gsub(' including.*', ''):gsub('inside', 'around')
-  --   -- update desc of keymaps
-  --   update_desc('i' .. k, i[k])
-  --   update_desc('a' .. k, a[k])
-  --   -- vim.keymap.set({ 'x' }, existing_x.lhs, existing_x.rhs, { desc = a[k] })
-  --   -- vim.keymap.set({ 'o' }, existing_o.lhs, existing_o.rhs, { desc = a[k] })
-  -- end
+  for k, v in pairs(a) do
+    a[k] = v:gsub('inside', 'around'):gsub(' including.*', '')
+  end
 
   -- local ic = vim.deepcopy(i)
   -- local ac = vim.deepcopy(a)
@@ -213,10 +203,10 @@ local setup_keymaps = function()
   --   i[key] = vim.tbl_extend('force', { name = '  inside ' .. name .. ' textobject' }, ic)
   --   a[key] = vim.tbl_extend('force', { name = '  around ' .. name .. ' textobject' }, ac)
   -- end
-  require('which-key').register({ i = i, a = a }, { mode = { 'o', 'x' } })
-  -- create virtual mappings of all textobjects
-  -- for _, key in ipairs({ 'i', 'a' }) do -- around/inside
-  -- end
+  require('which-key').register({
+    i = i,
+    a = a,
+  }, { mode = { 'v', 'o' } })
 end
 
 setup_keymaps()

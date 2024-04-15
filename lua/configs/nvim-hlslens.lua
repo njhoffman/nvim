@@ -1,3 +1,33 @@
+-- -- IMPROVES ASTERISK BEHAVIOR
+-- "haya14busa/vim-asterisk",
+-- config = function()
+--   vim.keymap.set('n', '*',
+--     [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]],
+--     {})
+--   vim.keymap.set('n', '#',
+--     [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]],
+--     {})
+--   vim.keymap.set('n', 'g*',
+--     [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]],
+--     {})
+--   vim.keymap.set('n', 'g#',
+--     [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]],
+--     {})
+
+--   vim.keymap.set('x', '*',
+--     [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]],
+--     {})
+--   vim.keymap.set('x', '#',
+--     [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]],
+--     {})
+--   vim.keymap.set('x', 'g*',
+--     [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]],
+--     {})
+--   vim.keymap.set('x', 'g#',
+--     [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]],
+--     {})
+-- end
+
 local override_lens = function(render, posList, nearest, idx, _)
   -- formats virtual text as a bubble
   local lnum, col = unpack(posList[idx])

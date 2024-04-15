@@ -119,8 +119,7 @@ local clr_over = {
 return function(injected_functions)
   local sym = injected_functions.sym
   return {
-    -- Visual({ fg = 'none', bg = '#101840', gui = 'italic' }),
-    Visual({ bg = '#2e3c64' }),
+    Visual({ fg = 'none', bg = '#171f47', gui = 'italic' }),
     -- VisualNOS({ fg = 'none', bg = '#301840' }),
     VisualNOS = { bg = '#2e3c64' },
     VisualAlt({ fg = 'none', bg = '#10082f', gui = 'italic' }),
@@ -129,7 +128,7 @@ return function(injected_functions)
     -- Error({ fg = "none", bg = "none" }),
     Underline({ gui = 'none' }),
     Underlined({ gui = 'none' }),
-    Normal({ fg = clrs.nord4.darken(40), bg = 'none' }),
+    Normal({ fg = '#667da9', bg = 'none' }),
     -- ui components
     NormalWindow({ fg = Normal.fg, bg = 'none' }),
     NormalFloat({ fg = Normal.fg, bg = 'none' }), -- normal text and background color for floating windows
@@ -139,7 +138,7 @@ return function(injected_functions)
     Pmenu({ fg = '#618cc4', bg = 'none' }),
     PmenuSel({ fg = '#44bfcf', bg = '#1a1f2f' }),
     PmenuSbar({ fg = '#313c84', bg = '#202331' }),
-    PmenuThumb({ fg = '#1f3352', bg = '#446faf' }),
+    PmenuThumb({ fg = '#1f3352', bg = '#244f7f' }),
     -- TabLine({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     -- TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     TabLine({ fg = clrs.nord3, bg = clrs.nord1, gui = 'NONE' }),
@@ -157,16 +156,16 @@ return function(injected_functions)
     -- Cursor({ bg = '#4B5Bff' }),
     CursorColumn({ bg = '#061028' }),
     ColorColumn({ bg = '#061028' }),
-    CursorLineNr({ fg = '#44aaff', bg = '#061028', gui = 'italic' }),
+    CursorLineNr({ fg = '#44aaff', gui = 'italic' }),
+    CursorLine({ bg = '#061028' }),
+    -- CursorLine({ bg = '#0a1020' }),
+    -- CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
+    -- CurSearch({ fg = '#cc2266', gui = 'bold' }), --  bg = '#110033'
     LineNr({ fg = clrs.nord3 }),
     SignColumn({ bg = 'none' }),
     IncSearch({ gui = 'bold', bg = '#4e3ce6', fg = '#88aaff' }),
     Search({ fg = '#00cfff', gui = 'bold' }), -- bg = '#0d314c',
     CurSearch({ gui = 'bold', bg = '#6e3ce6', fg = '#aaffff' }), --  bg = '#110033'
-    CursorLine({ bg = '#061028' }),
-    -- CursorLine({ bg = '#0a1020' }),
-    -- CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
-    -- CurSearch({ fg = '#cc2266', gui = 'bold' }), --  bg = '#110033'
     ReactiveCursor({}),
     -- CursorColumn({ bg = CursorLine.bg }),
     -- ColorColumn({ bg = CursorLine.bg }),
@@ -926,16 +925,18 @@ return function(injected_functions)
     TSRainbowGreen({ fg = clrutil.shade_color('#689d6a', -30) }),
     TSRainbowViolet({ fg = clrutil.shade_color('#b16286', -30) }),
     TSRainbowCyan({ fg = clrutil.shade_color('#a89984', -30) }),
+    CmpCursorLine({ bg = '#142446', gui = 'bold' }),
+    CmpNormal({ fg = '#667da9', bg = '#06061a' }),
+    CmpFloatBorder({ fg = '#3f5382', bg = '#000a1a' }), --
     CmpGhostLight({ fg = '#1f4f94' }),
     CmpGhostDark({ fg = '#27476c' }),
     CmpGhostText({ CmpGhostLight }),
     -- CmpPmenu({ bg = '#142a30' }),
-
     CmpPmenu({ bg = '#001020' }),
     CmpPmenuBorder({ bg = '#242a30' }),
     -- CmpDocumentation({ fg = tokyoColors.fg, bg = tokyoColors.bg_float }),
     -- CmpDocumentationBorder({ fg = tokyoColors.border_highlight, bg = tokyoColors.bg_float }),
-    CmpItemMenu({ fg = colors.light_gray }),
+    CmpItemMenu({ fg = '#6C7A96' }),
     CmpItemAbbr({ fg = '#4c74a4' }),
     CmpItemAbbrDeprecated({ fg = colors.fg, gui = 'strikethrough' }),
     CmpItemAbbrMatch({ fg = '#208Ff8', gui = 'italic' }),
@@ -1222,7 +1223,32 @@ return function(injected_functions)
     SpecsCursor({ bg = '#1f6385' }),
     HighlightUndo({ fg = '#b7001e', bg = '#0f2139' }),
     BackseatText({ DiagnosticFloatingHint, gui = 'italic' }),
+    FlashCharMatch({ fg = '#33c78a', bg = '#0a331a' }),
+    FlashCharLabel({ fg = '#33aaff', bg = '#001122', gui = 'bold,italic' }),
+    -- FlashCharLabel({ fg = '#ff00ff', bg = '#000000', gui = 'bold,italic' }),
+    -- FlashBackdrop = { fg = '#545c7e', },
+    -- FlashLabel = { bg = '#ff007c', bold = true, fg = '#c0caf5', },
+    -- FloatBorder = { bg = '#1f2335', fg = '#29a4bd' },
+    -- FloatTitle = { bg = '#1f2335', fg = '#29a4bd' },
+    -- highlight MatchParen gui=BOLD guifg=#ffaf00 guibg=#444444
+    -- hi FlashCurrent guifg=#ffaf00 gui=Bold
+    -- hi FlashBackdrop guifg=#666666
+    -- hi FlashMatch guifg=#EEEEEE
+    -- hi FlashLabel guifg=#ff5555 guibg=#000000 gui=Bold
+    -- hi Search guibg=#444444 gui=Bold
+    -- FlashBackdrop({	Comment	}), -- backdrop
+    -- FlashMatch({	Search	}), -- search matches
+    -- FlashCurrent({	IncSearch	}), -- current match
+    -- FlashLabel({	Substitute	}), -- jump label
+    -- FlashPrompt({	MsgArea	}), -- prompt
+    -- FlashPromptIcon({	Special	}), -- prompt icon
+    -- FlashCursor({Cursor})	-- cursor
+    -- FlashBackdropRemote
+    -- FlashRemoteLine
 
+    -- RenamerNormal Normal
+    RenamerBorder({ fg = '#4466ff' }),
+    -- RenamerTitle Identifier
     MatchParen({ fg = '#fb8b8b', gui = 'bold,' }),
     MatchParenCur({
       fg = '#ff9f9f',

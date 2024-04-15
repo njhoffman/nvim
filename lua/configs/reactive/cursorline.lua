@@ -5,90 +5,32 @@ local cursorline_preset = {
     vim.opt.guicursor:append('a:ReactiveCursor')
   end,
   static = {
+    hl = {
+      CursorLine = { bg = '#061028' },
+      CursorLineNr = { fg = '#44aaff', bg = '#061028', italic = true },
+    },
     winhl = {
-      inactive = {
-        CursorLine = { bg = '#061016' }, -- #061028
-        -- CursorLineNr = { fg = '#40a0f0', bg = '#101820', italic = true },
-      },
+      -- active = {
+      -- CursorLine = { bg = '#061028' },
+      -- CursorLineNr = { fg = '#44aaff', italic = true },
+      -- },
+      -- inactive = {
+      --   CursorLine = { bg = '#061028' },
+      --   CursorLineNr = { fg = '#44aaff', bold = true },
+      -- },
     },
   },
   modes = {
-    o = {
-      -- winhl = { CursorLine = { bg = '#0e2d3d' } },
-      -- hl = { CursorLineNr = { bg = '#0487f8' } },
-      operators = {
-        c = {
-          winhl = {
-            CursorLine = { bg = '#162858' },
-            CursorLineNr = { fg = '#23d5ff', bg = '#162054', italic = true },
-          },
-        },
-      },
-    },
-    no = {
-      winhl = { CursorLine = { bg = '#001f2f' } },
-      operators = {
-        ['g@'] = {
-          -- winhl = {},
-          -- hl = {},
-          opfuncs = {
-            -- 'S' here is that unique name we passed into the `set_opfunc` method in the mapping
-            S = {
-              winhl = {
-                CursorLine = { bg = '#1a1030' }, -- #061028
-                -- StatusLine = { bg = '#5b21b6' },
-              },
-            },
-            ds = {
-              winhl = {
-                CursorLine = { bg = '#200018' },
-                CursorLineNr = { fg = '#8c8585', bg = '#200018' },
-              },
-            },
-          },
-          cs = {
-            winhl = {
-              CursorLine = { bg = '#101f3f' },
-              CursorLineNr = { fg = '#23d5ff', bg = '#162054', italic = true },
-            },
-          },
-        },
-        -- switch case
-        [{ 'gu', 'gU', 'g~', '~' }] = {
-          winhl = {
-            CursorLine = { bg = '#334155' },
-            CursorLineNr = { fg = '#cbd5e1', bg = '#334155', italic = true },
-          },
-        },
-        -- change
-        c = {
-          winhl = {
-            CursorLine = { bg = '#101f3f' },
-            CursorLineNr = { fg = '#23d5ff', bg = '#162054', italic = true },
-          },
-        },
-        -- delete
-        d = {
-          winhl = {
-            CursorLine = { bg = '#200018' },
-            CursorLineNr = { fg = '#8c8585', bg = '#200018' },
-          },
-        },
-        -- yank
-        y = {
-          winhl = {
-            CursorLine = { bg = '#121240' },
-            CursorLineNr = { fg = '#8dbaff', bg = '#11183e', italic = true },
-          },
-        },
-      },
-    },
     [{ 'i', 'niI' }] = {
       winhl = {
-        -- #10a4ca
-        CursorLine = { bg = '#00181f' },
-        CursorLineNr = { fg = '#33bca6', bg = '#00121c', italic = true },
+        -- #10a4ca, #00181f
+        CursorLine = { bg = '#00121a' },
+        CursorLineNr = { fg = '#33bca6', bg = '#00121a', italic = true },
       },
+      -- hl = {
+      --   WhichKeyKey = { fg = '#00ccaa' },
+      --   barbecue_basename = { fg = '#00ccaa' },
+      -- },
     },
     -- command
     c = {
@@ -100,14 +42,13 @@ local cursorline_preset = {
     n = {
       winhl = {
         CursorLine = { bg = '#040f20' },
-        CursorLineNr = { fg = '#40a0f0', bg = '#101820', italic = true },
+        CursorLineNr = { fg = '#40a0f0', bg = '#040f20', italic = true },
       },
     },
     -- visual
     [{ 'v', 'V', '\x16' }] = {
       winhl = {
-        CursorLine = { bg = '#f20f20' },
-        CursorLineNr = { fg = '#6874fe', bg = '#220818', italic = true },
+        CursorLineNr = { fg = '#6874fe', italic = true },
         Visual = { bg = '#08203f', bold = true, italic = true },
       },
     },
@@ -123,6 +64,73 @@ local cursorline_preset = {
       winhl = {
         CursorLine = { bg = '#1f1400' },
         CursorLineNr = { fg = '#fdba74', bg = '#281010', italic = true },
+      },
+    },
+    no = {
+      winhl = {
+        CursorLine = { bg = '#06162f' },
+        CursorLineNr = { bg = '#06162f' },
+      },
+      operators = {
+        ['g@'] = {
+          -- winhl = {}, hl = {},
+          opfuncs = {
+            S = {
+              winhl = {
+                CursorLine = { bg = '#1a1030' }, -- #061028
+                CursorLineNr = { bg = '#1a1030' }, -- #061028
+                -- StatusLine = { bg = '#5b21b6' },
+              },
+            },
+            X = {
+              winhl = {
+                CursorLine = { bg = '#1a1030' }, -- #061028
+                CursorLineNr = { bg = '#1a1030' }, -- #061028
+                -- StatusLine = { bg = '#5b21b6' },
+              },
+            },
+            ds = {
+              winhl = {
+                CursorLine = { bg = '#1a0010' },
+                CursorLineNr = { fg = '#8c8585', bg = '#1a0010', italic = true },
+              },
+            },
+            cs = {
+              winhl = {
+                CursorLine = { bg = '#041230' }, -- #162054
+                CursorLineNr = { fg = '#23d5ff', bg = '#041230', italic = true },
+              },
+            },
+          },
+        },
+        -- switch case
+        [{ 'gu', 'gU', 'g~', '~' }] = {
+          winhl = {
+            CursorLine = { bg = '#18263a' },
+            CursorLineNr = { fg = '#cbd5e1', bg = '#18263a', italic = true },
+          },
+        },
+        -- change
+        c = {
+          winhl = {
+            CursorLine = { bg = '#041230' }, -- #162054
+            CursorLineNr = { fg = '#23d5ff', bg = '#041230', italic = true },
+          },
+        },
+        -- delete
+        d = {
+          winhl = {
+            CursorLine = { bg = '#1a0010' },
+            CursorLineNr = { fg = '#8c8585', bg = '#1a0010', italic = true },
+          },
+        },
+        -- yank
+        y = {
+          winhl = {
+            CursorLine = { bg = '#16103f' }, -- #121240
+            CursorLineNr = { fg = '#8dbaff', bg = '#16103f', italic = true },
+          },
+        },
       },
     },
   },

@@ -1,7 +1,7 @@
 -- https://raw.githubusercontent.com/johmsalas/text-case.nvim/main/README.md
 
 require('textcase').setup({
-  prefix = 'gt', -- ga
+  prefix = 'gtt', -- ga
   default_keymappings_enabled = false,
   -- enabled_methods = { "to_upper_case", "to_lower_case", "to_snake_case", "to_dash_case",
   --   "to_title_dash_case", "to_constant_case", "to_dot_case", "to_phrase_case", "to_camel_case", "to_pascal_case",
@@ -9,27 +9,26 @@ require('textcase').setup({
 })
 -- stylua: ignore
 local key_defs = {
-  { method_name = 'to_constant_case', quick_replace = 'gtn', operator = 'gton', lsp_rename = 'gtrn' },
-  { method_name = 'to_camel_case',    quick_replace = 'gtc', operator = 'gtoc', lsp_rename = 'gtrc' },
-  { method_name = 'to_snake_case',    quick_replace = 'gts', operator = 'gtos', lsp_rename = 'gtrs' },
-  { method_name = 'to_dash_case',     quick_replace = 'gtd', operator = 'gtod', lsp_rename = 'gtrd' },
-  { method_name = 'to_pascal_case',   quick_replace = 'gtp', operator = 'gtop', lsp_rename = 'gtrp' },
-  { method_name = 'to_upper_case',    quick_replace = 'gtU', operator = 'gtoU', lsp_rename = 'gtrU' },
-  { method_name = 'to_lower_case',    quick_replace = 'gtu', operator = 'gtou', lsp_rename = 'gtru' },
-  { method_name = 'to_title_case',    quick_replace = 'gtt', operator = 'gtot', lsp_rename = 'gtrt' },
-  { method_name = "to_dot_case",      quick_replace = "gtD", operator = "gtoD", lsp_rename = "gtrD" },
-  { method_name = "to_phrase_case",   quick_replace = "gtP", operator = "gtoP", lsp_rename = "gtrP" },
-  { method_name = "to_path_case",     quick_replace = "gtf", operator = "gtof", lsp_rename = "gtrf" },
+  { method_name = 'to_constant_case', quick_replace = 'gttn', operator = 'gton', lsp_rename = 'gtrn' },
+  { method_name = 'to_camel_case',    quick_replace = 'gttc', operator = 'gtoc', lsp_rename = 'gtrc' },
+  { method_name = 'to_snake_case',    quick_replace = 'gtts', operator = 'gtos', lsp_rename = 'gtrs' },
+  { method_name = 'to_dash_case',     quick_replace = 'gttd', operator = 'gtod', lsp_rename = 'gtrd' },
+  { method_name = 'to_pascal_case',   quick_replace = 'gttp', operator = 'gtop', lsp_rename = 'gtrp' },
+  { method_name = 'to_upper_case',    quick_replace = 'gttU', operator = 'gtoU', lsp_rename = 'gtrU' },
+  { method_name = 'to_lower_case',    quick_replace = 'gttu', operator = 'gtou', lsp_rename = 'gtru' },
+  { method_name = 'to_title_case',    quick_replace = 'gttt', operator = 'gtot', lsp_rename = 'gtrt' },
+  { method_name = "to_dot_case",      quick_replace = "gttD", operator = "gtoD", lsp_rename = "gtrD" },
+  { method_name = "to_phrase_case",   quick_replace = "gttP", operator = "gtoP", lsp_rename = "gtrP" },
+  { method_name = "to_path_case",     quick_replace = "gttf", operator = "gtof", lsp_rename = "gtrf" },
 }
 
 local map = require('mapper').map
 local prefix = require('mapper').prefix
 
 local register_keys = function(methods, keys, opts)
-  prefix('x', 'gt', 'text-case  ')
-  prefix('n', 'gt', 'text-case  ')
-  prefix('n', 'gtr', 'lsp rename')
-  prefix('n', 'gto', 'operator')
+  prefix({ 'x', 'n' }, 'gtt', 'text case replace  ')
+  prefix('n', 'gtr', 'text case lsp rename  ')
+  prefix('n', 'gto', 'text case operator  ')
 
   local ns = 'textcase'
   for _, feature in ipairs({ 'line', 'eol', 'visual', 'operator', 'lsp_rename', 'current_word' }) do
@@ -80,8 +79,12 @@ for _, def in ipairs(key_defs) do
   })
 end
 
-map('n', 'gt.', '<cmd>TextCaseOpenTelescope<CR>', { desc = ' telescope convert current' })
-map('v', 'gt.', '<cmd>TextCaseOpenTelescope<CR>', { desc = ' telescope convert current' })
+map(
+  { 'n', 'v' },
+  'gt.',
+  '<cmd>TextCaseOpenTelescope<CR>',
+  { desc = ' telescope convert current' }
+)
 map('n', 'gtr.', '<cmd>TextCaseOpenTelescopeLSPChange<CR>', { desc = ' telescope convert lsp' })
 
 -- '<cmd>TextCaseOpenTelescopeLSPChange<CR>',

@@ -8,16 +8,20 @@ local prefix = mapper.prefix
 -- 繁 署 者 臭ﳺ 禎 穀祐 ﱒ ﮒ ﮭ 󰘖 ﲖ 祖 ﮮ 祝 ﴻ ﯴ ﰌ 省 異  什  輪   ﭕ  ﱿ  蝹 ﬡ 李  惡   祉
 -- 隷שּׂ  שּׂ  שּׂ  שּׂ ﱕ      侮  滑 פּ 串     
 -- 󱋿 Jump back"
-prefix('n', 'z', 'folds ﱒ')
+--         
+
+prefix({ 'n', 'x', 'o' }, ',', 'leader')
+prefix({ 'n', 'x', 'o' }, ']', 'next ')
+prefix({ 'n', 'x', 'o' }, '[', 'previous 丹')
+prefix({ 'n', 'x', 'o' }, '<leader>\\', 'flash ⚡')
+
 prefix('n', 'g', 'go 隷')
+prefix('n', 'z', 'folds ﱒ')
 prefix('n', 'gh', 'hover  ')
 prefix('n', 'gQ', 'quickfix  ')
 prefix('n', 'gP', 'preview  ')
 prefix('n', 'go', 'debug out  ')
-prefix('n', ']', 'next ')
-prefix('n', '[', 'previous 丹')
 
---         
 -- prefix('n', '<c-w>', 'window')
 prefix('n', '<leader>g', 'git 󰊢')
 prefix('n', '<leader>f', 'file ')
@@ -114,27 +118,26 @@ map({ 'n', 'v' }, ':', 'q:', {
 
 map({ 'n', 'v' }, '<M-:>', 'q:', {
   category = 'Command',
-  realkeys = '<C-S-;>',
   silent = true,
   label = ' open cmdwin',
   desc = ' open the command window',
 })
 
-vmap({ 'c' }, '<C-T>', {
+vmap({ 'c' }, '<C-]>', {
   category = 'Command',
   label = ' open cmdwin',
   desc = ' open the command window',
   silent = false,
 })
 
-map('c', '<M-b>', '<C-T><Esc>', {
+map('c', '<M-b>', '<C-]><Esc>', {
   category = 'Command',
   label = ' open cmdwin normal',
   desc = ' open command window from the command line in normal mode',
   silent = false,
 })
 
-map('c', '<M-f>', '<C-T><Esc>', {
+map('c', '<M-f>', '<C-]><Esc>', {
   category = 'Command',
   label = ' open cmdwin normal',
   desc = ' open command window from the command line in normal mode',
@@ -201,7 +204,7 @@ map('c', '<C-S-Right>', '<Right>', {
   desc = ' move to the right by 1 character',
 })
 
-map('c', '<C-g>', '<C-r>%', {
+map('c', '<M-g>', '<C-r>%', {
   category = 'Command',
   label = ' insert filename cmdline',
   desc = ' insert filename into the command line',
@@ -240,7 +243,7 @@ map(
   { 'n', 'x' },
   '<C-d>',
   -- "<cmd>lua require('funcs.alt-alt').betterClose()<cr>",
-  "<cmd> lua require('commands.ui').close_multi()<cr>",
+  '<cmd>CloseMulti<cr>',
   { category = 'Buffers', desc = '󰽙 close buffer/window' }
 )
 
@@ -259,12 +262,6 @@ map('n', '<CR>', '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
 
 local bufvar =
   { { '<Plug>(CybuPrev)', '<Plug>(CybuNext)' }, { '<cmd>BufferPrev<cr>', '<cmd>BufferNext<cr>' } }
-
-map({ 'n' }, '<leader>fs', '<cmd>lua vim.treesitter.get_parser(0):parse()<cr>', {
-  category = 'Buffers',
-  label = '󰽙 reset treesitter highlighting',
-})
-
 map('n', 'H', bufvar[2][1], {
   category = 'Buffers',
   label = '󰽙 left buffer',
@@ -277,10 +274,9 @@ map('n', 'L', bufvar[2][2], {
   desc = '󰽙 open the right (next) buffer',
 })
 
-map('n', '<leader>!', '<cmd>BufferCloseAllButCurrent<cr>', {
+map({ 'n' }, '<leader>fH', '<cmd>lua vim.treesitter.get_parser(0):parse()<cr>', {
   category = 'Buffers',
-  label = '󰽙 close other bufs',
-  desc = '󰽙 close all buffers except current',
+  label = '󰽙 reset treesitter highlighting',
 })
 
 map({ 'n', 's', 'v', 'i' }, '<C-s>', '<cmd>silent! w<cr><esc>', {
@@ -290,24 +286,30 @@ map({ 'n', 's', 'v', 'i' }, '<C-s>', '<cmd>silent! w<cr><esc>', {
   silent = true,
 })
 
-map('n', '<leader>*', '<cmd>wall<cr>', {
+map('n', '<leader>f*w', '<cmd>wall<cr>', {
   category = 'Buffers',
   label = '󰽙 write all',
   silent = true,
   desc = '󰽙 write all buffers',
 })
 
-map('n', '<leader>w', '<cmd>noa w<cr>', {
+map('n', '<leader>fw', '<cmd>noa w<cr>', {
   category = 'Buffers',
   label = '󰽙 write noa',
   desc = '󰽙 write without autocommands',
   silent = true,
 })
 
-map('n', '<leader>D', '<cmd>BufferDelete<cr>', {
+map('n', '<leader>fd', '<cmd>BufferDelete<cr>', {
   category = 'Buffers',
   label = '󰽙 delete buffer',
   desc = '󰽙 delete buffer without closing window',
+})
+
+map('n', '<leader>f*d', '<cmd>BufferCloseAllButCurrent<cr>', {
+  category = 'Buffers',
+  label = '󰽙 close other bufs',
+  desc = '󰽙 close all buffers except current',
 })
 
 -- map('n', '<S-Space>', '"_caw', { desc = '󱡔 change word' })
@@ -576,6 +578,15 @@ map('n', 'g.', [[/\V\C<C-r>"<CR>cgn<C-a><Esc>]], {
   desc = '  jump to next match and replace (dot)',
 })
 
+map({ 'n' }, 'g/', "<cmd>lua require('commands.cmdline').open_last_search')<cr>", {
+  category = 'Search',
+  label = '  open last search'
+})
+
+-- switch escape and enter in search mode to 'accept' it for smoother operation
+vim.cmd[[
+  cnoremap <expr> <Esc> getcmdtype() =~ '^[/?]$' ? '<Enter>' : '<C-C>'
+]]
 --------------------------------------------------------------------------------------------------
 -- MOTION ----------------------------------------------------------------------------------------
 
@@ -698,12 +709,12 @@ map('n', 'gp', '`[v`]', {
   silent = true
 })
 
-map('n', 'v', '<cmd>normal! v<cr>', {
-  category = 'Motion',
-  label = 'visual mode',
-  desc = 'enter visual mode and select 1 character',
-  silent = true
-})
+-- map('n', 'v', '<cmd>normal! v<cr>', {
+--   category = 'Motion',
+--   label = 'visual mode',
+--   desc = 'enter visual mode and select 1 character',
+--   silent = true
+-- })
 
 vmap('n', 'gi', {
   category = 'Motion',
@@ -729,7 +740,7 @@ map('i', '<esc>', '<Esc>`^', {
   silent = true,
 })
 
-map({ 'n', 'v' }, "<M-;>", '<cmd>HopLineStart<cr>', {
+map({ 'n', 'v' }, '<M-">', '<cmd>HopLineStart<cr>', {
   category = 'Motion',
   plugin = 'hop.nvim',
   label = ' hop to line',
@@ -895,6 +906,7 @@ map('i', '<M-d>', '<cmd>norm d$<cr>', {
 
 --------------------------------------------------------------------------------------------------
 -- UI --------------------------------------------------------------------------------------------
+
 map('n', '', '<cmd>noh<cr> | <cmd>lua require("flash.util").exit()<cr>', {
   category = 'UI',
   noremap = false,
@@ -929,52 +941,58 @@ map('n', '<F1>', "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>"
 map('n', '<F2>', '<cmd>WhichKey<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
-  desc = '  toggle whichkey'
+  desc = '  toggle whichkey nor'
 })
 
 map('i', '<F2>', '<cmd>WhichKey "" i<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
-  desc = '  toggle whichkey'
+  desc = '  toggle whichkey ins'
 })
 
 map('x', '<F2>', '<cmd>WhichKey "" v<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
-  desc = '  toggle whichkey'
+  desc = '  toggle whichkey vis'
 })
 
 map('s', '<F2>', '<cmd>WhichKey "" v<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
-  desc = '  toggle whichkey'
+  desc = '  toggle whichkey vis'
 })
 
 map('c', '<F2>', '<cmd>WhichKey "" c<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
-  desc = '  toggle whichkey'
+  desc = '  toggle whichkey cmd'
 })
 
 map('t', '<F2>', '<cmd>WhichKey "" t<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
-  desc = '  toggle whichkey'
+  desc = '  toggle whichkey term'
 })
 
 map('o', '<F2>', '<cmd>WhichKey "" o<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
-  desc = '  toggle whichkey'
+  desc = '  toggle whichkey op'
 })
 
--- ctrl+shift F2
-map('n', '<F38>', '<Leader>Wk', {
+map('n', '<F5>', '<cmd>WhichKeyBackground<cr>', {
+  plugin = 'which-key.nvim',
+  category = 'UI',
+  desc = '  toggle whichkey background',
+})
+
+map('n', '<F6>', '<Leader>Wk', {
   plugin = 'wf.nvim',
   category = 'UI',
   desc = '  toggle wf.nvim',
 })
 
+-- ctrl+shift F2 = <F38>
 -- map('n', '<F3>', '<cmd>AerialToggle!float<cr>', {
 --   plugin = 'aerial.nvim',
 --   category = 'UI',
@@ -1469,30 +1487,6 @@ map('n', '<leader>gR', '<cmd>Gitsigns reset_buffer<cr>', {
 -- Delete trailing stuff
 map('n', '<leader>d', '<cmd>normal! mz$x`z<CR>', { desc = '󱎘 Delete char at EoL' })
 
-vmap('v', 'U', {
-  category = 'Format',
-  label = 'uppercase word',
-  desc = 'format uppercase word',
-})
-
-vmap('v', 'u', {
-  category = 'Format',
-  label = 'lowercase word',
-  desc = 'format lowercase word',
-})
-
--- vmap('n', 'gu', {
---   category = 'Format',
---   label = 'format lowercase',
---   desc = 'format lowercase word',
--- })
---
--- vmap('n', 'gU', {
---   category = 'Format',
---   label = 'format uppsercase',
---   desc = 'format uppercase word',
--- })
-
 map('n', '<leader>[', '`[V`]<', {
   category = 'Format',
   label = '󰉶 indent all lines',
@@ -1525,7 +1519,7 @@ map('n', 'g>', '<cmd>ISwapNodeWith<cr>', {
 })
 
 -- TODO: allow range
-map({ 'v', 'n' }, '<M-">', '<esc><cmd>ISwapNodeWith<cr>', {
+map({ 'v', 'n' }, '<M-;>', '<esc><cmd>ISwapNodeWith<cr>', {
   category = 'Format',
   label = '易swap node with',
   desc = '易swap/exchange node objects with',

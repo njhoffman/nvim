@@ -15,7 +15,7 @@ end
 local split_toggle = function()
   if langs[vim.bo.filetype] ~= nil then
     local node = require('configs.treesj.utils').check_ts_node()
-    vim.dbglog('node', node)
+    -- vim.dbglog('node', node)
     require('treesj').toggle()
   else
     local results = require('mini.splitjoin').toggle()

@@ -27,23 +27,40 @@ local config = {
     --   extra = false
     -- },
   },
+
   -- stylua: ignore
   operators = {
-    d    = 'delete ',
-    c    = 'change ',
-    y    = 'yank  ',
-    S    = 'substitute  ',
-    X    = 'exchange  ',
-    cx   = 'exchange  ',
-    dr   = 'delete remote object ',
-    cr   = 'change remote object ',
-    yr   = 'yank remote object ',
-    s    = 'surround add 󰅪',
-    ys   = 'surround add 󰅪',
-    ds   = 'surround delete 󰅪',
-    cs   = 'surround change 󰅪',
-    sF   = 'surround find right 󰅪',
-    sf   = 'surround find left 󰅪',
+    ['!'] = 'filter external',
+    ['='] = 'indent  ',
+    ['>'] = 'indent right ﲒ ',
+    ['<'] = 'indent left ﲑ ',
+    ['zf'] = 'create fold  ', --    ﬡ
+    ['g~'] = 'toggle case  ',
+    ['gu'] = 'lowercase  ',
+    ['gU'] = 'uppercase  ',
+    -- ['gq'] = 'format ',
+    -- ['gw'] = 'format (cursor)',
+    d = 'delete ',
+    c = 'change ',
+    y = 'yank  ',
+    S = 'substitute  ',
+    X = 'exchange  ',
+    cx = 'exchange  ',
+    s    = 'add surround 󰅪',
+    -- ys   = 'yank surround 󰅪',
+    -- ds   = 'delete surround 󰅪',
+    -- cs   = 'change surround 󰅪',
+    -- sF   = 'surround find right 󰅪',
+    -- sf   = 'surround find left 󰅪',
+    -- evaluate = { prefix = 'g=' },
+    -- -- Exchange text regions
+    -- exchange = { prefix = 'gtx', reindent_linewise = true },
+    -- -- Multiply (duplicate) text
+    -- multiply = { prefix = 'gtm', func = nil },
+    -- -- Replace text with register
+    -- replace = { prefix = 'gtr', reindent_linewise = true },
+    -- -- Sort text
+    -- sort = { prefix = 'gts' },
     gb   = 'comments (block)  ',
     gc   = 'comments (line)  ',
     goo  = 'debugprint out t',
@@ -63,51 +80,30 @@ local config = {
     'text_objects',
     -- 'windows',
     -- 'nav',
-    -- 'z',
-    -- 'g',
+    'z',
+    'g',
     operators = function()
       return {
         d            =   'Delete',
         c            =   'Change',
         y            =   'Yank ',
-        ['=']        =   "Filter through 'equalprg'",
+        ['=']        =   "Filter 'equalprg'",
         ['g~']       =   'Toggle case',
         ['gu']       =   'Lowercase',
         ['gU']       =   'Uppercase',
         ['gq']       =   'Format text',
-        ['gw']       =   'Format text, keep cursor',
+        ['gw']       =   'Format text (keep cursor)',
         ['>']        =   'Indent right',
         -- ['<lt>']  =   'Indent left',
         ['<']        =   'Indent left',
         ['zf']       =   'Create fold',
-        ['!']        =   'Filter external command',
-        -- ['v']     =   'Visual Character Mode',
-        -- ["V"]     =   "Visual Line Mode",
-        -- ["<C-v>"] =   "Visual Block Mode",
+        ['!']        =   'Filter command',
+        ['v']     =   'Visual Character Mode',
+        ["V"]     =   "Visual Line Mode",
+        ["<C-v>"] =   "Visual Block Mode",
       }
     end,
-    -- motions = {
-    --   ['h'] = 'Left',
-    --   ['j'] = 'Down',
-    --   ['k'] = 'Up',
-    --   ['l'] = 'Right',
-    --   ['w'] = 'Next word',
-    --   ['%'] = "Matching character: '()', '{}', '[]'",
-    --   ['b'] = 'Previous word',
-    --   ['e'] = 'Next end of word',
-    --   ['ge'] ='Previous end of word',
-    --   ['0'] = 'Start of line',
-    --   ['^'] = 'Start of line (non-blank)',
-    --   ['$'] = 'End of line',
-    --   ['f'] = 'Move to next char',
-    --   ['F'] = 'Move to previous char',
-    --   ['t'] = 'Move before next char',
-    --   ['T'] = 'Move before previous char',
-    --   ['gg'] = 'First line',
-    --   ['G'] = 'Last line',
-    --   ['{'] = 'Previous empty line',
-    --   ['}'] = 'Next empty line',
-    -- },
+    'motions'
   },
   ignore_unnamed_groups = false,
   ignore_missing_desc = false,
@@ -138,7 +134,8 @@ local config = {
 
 --  בּ וּ הּ גּ דּ     壟   
   key_labels = {
-    ['<leader>']       = ' ',
+    -- ['<leader>']       = ' ',
+    ['<leader>']       = ',',
     ['<M-']            = 'הּ',
     ['M-']             = 'הּ',
     ['-M>']            = 'הּ',
@@ -192,10 +189,10 @@ local config = {
   ignored = {
     '<2-LeftMouse>',
     '<ScrollWheelDown>',
-    '<ScrollWheelUp>'
+    '<ScrollWheelUp>',
   },
   mappings = {
-    debug_mode   = '<F3>',       -- show detailed keymapping information
+    toggle_debug   = '<F3>',       -- show detailed keymapping information
     options_menu = '<F2>',       -- launch options menu
     launch_wk    = '<F1>',       -- launch which-key manually
     help_menu    = '<M-C-_>',    -- binding to scroll down inside the popup

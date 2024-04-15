@@ -51,6 +51,7 @@ local plugins = {
   },
   { 'folke/noice.nvim', lazy = false, event = 'VeryLazy' },
   {
+    -- https://github.com/tamton-aquib/keys.nvim
     'folke/which-key.nvim',
     dir = '~/git/which-key.nvim',
     event = 'VeryLazy',

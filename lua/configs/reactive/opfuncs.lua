@@ -1,35 +1,13 @@
 local opfuncs = {
-  ['v:lua.MiniAlign.align_user'] = {
-    { 'ga' },
-    'align content ',
-  },
+  ['v:lua.MiniAlign.align_user'] = { { 'ga' }, 'align content ' },
 
-  ['v:lua.require"treesj".__repeat'] = {
-    { 'gs', 'gJ' },
-    'split/join content ',
-  },
+  ['v:lua.require"treesj".__repeat'] = { { 'gs', 'gJ' }, 'split/join content ' },
+  ['v:lua.require"ts-node-action.repeat".repeat_action'] = { { '+' }, 'do node action  ' },
 
-  ['v:lua.require"ts-node-action.repeat".repeat_action'] = {
-    { '+' },
-    'do node action  ',
-  },
-
-  ['v:lua.MiniSurround.add'] = {
-    { 's', 'ys' },
-    'surround add 󰅪',
-  },
-  ['v:lua.MiniSurround.find'] = {
-    { 'sf', 'sF' },
-    'surround find 󰅪',
-  },
-  ['v:lua.MiniSurround.replace'] = {
-    { 'cs' },
-    'surround replace 󰅪',
-  },
-  ['v:lua.MiniSurround.delete'] = {
-    { 'ds' },
-    'surround delete 󰅪',
-  },
+  ['v:lua.MiniSurround.add'] = { { 's' }, 'surround add 󰅪' },
+  ['v:lua.MiniSurround.find'] = { { 'sf', 'sF' }, 'surround find 󰅪' },
+  ['v:lua.MiniSurround.replace'] = { { 'cs' }, 'surround replace 󰅪' },
+  ['v:lua.MiniSurround.delete'] = { { 'ds' }, 'surround delete 󰅪' },
 
   -- [''] = {
   --   { 'cr' },
@@ -39,31 +17,18 @@ local opfuncs = {
   --   { 'dr' },
   --   'delete remote object',
   -- },
-
   ['v:lua.require"textcase".operator_callback'] = {
     { 'gtoc', 'gtod', 'gtoD', 'gtof', 'gton', 'gtop', 'gtoP', 'gtos', 'gtot', 'gtou', 'gtoU' },
     'change text case  ',
   },
 
-  ['v:lua.require"substitute".operator_callback'] = {
-    { 'S' },
-    'substitute  ',
-  },
-  ['v:lua.require"substitute.exchange".operator_callback'] = {
-    { 'X', 'cx' },
-    'exchange  ',
-  },
+  ['v:lua.require"substitute".operator_callback'] = { { 'S' }, 'substitute  ' },
+  ['v:lua.require"substitute.exchange".operator_callback'] = { { 'X', 'cx' }, 'exchange  ' },
 
-  ['v:lua.require"Comment.api".locked"toggle.blockwise"'] = {
-    { 'gb' },
-    'comments (block)  ',
-  },
+  ['v:lua.require"Comment.api".locked"toggle.blockwise"'] = { { 'gb' }, 'comments (block)  ' },
 
   -- ['v:lua.MiniComment.operator'] = {
-  ['v:lua.require"Comment.api".locked"toggle.linewise"'] = {
-    { 'gc' },
-    'comments (line)  ',
-  },
+  ['v:lua.require"Comment.api".locked"toggle.linewise"'] = { { 'gc' }, 'comments (line)  ' },
   -- v:lua.require"Comment.api".locked"toggle.linewise.count_repeat"
   ['v:lua.require"Comment.api".locked"toggle.linewise.current"'] = {
     { 'gcc' },
@@ -75,10 +40,7 @@ local opfuncs = {
     'comments (block)  ',
   },
 
-  ['v:lua.require"debugprint".debugprint_motion_callback'] = {
-    { 'goo' },
-    'debugprint out t',
-  },
+  ['v:lua.require"debugprint".debugprint_motion_callback'] = { { 'goo' }, 'debugprint out t' },
   -- v:lua.require'" .. constants.namespace .. "'.operator_callback" (textcase.nvim)
   -- v:lua.MiniBasics.put_empty_line
   -- v:lua.MiniSurround.replace
@@ -100,21 +62,4 @@ local opfuncs = {
   --
 }
 
-local get_opfunc = function(opfunc)
-  opfunc = tostring(opfunc or vim.api.nvim_get_option_value('operatorfunc')):gsub("'", '"')
-  return opfuncs[opfunc]
-end
-
-local get_prefix = function(prefix)
-  for k, v in pairs(opfuncs) do
-    if vim.tbl_contains(v[1], prefix) then
-      return k
-    end
-  end
-end
-
-return {
-  opfuncs = opfuncs,
-  get_opfunc = get_opfunc,
-  get_prefix = get_prefix,
-}
+return opfuncs

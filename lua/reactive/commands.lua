@@ -1,11 +1,8 @@
 local api = vim.api
 local aucmd = api.nvim_create_autocmd
 local user_cmd = api.nvim_create_user_command
-local logger = require('reactive.logger')
 
-local M = {
-  listeners_initialized = nil,
-}
+local logger = require('reactive.logger')
 
 ---@param line string
 ---@return string[]
@@ -22,6 +19,11 @@ local function parse_cmd(line)
 
   return cmd_parts
 end
+
+local M = {
+  listeners_initialized = false,
+  last = { mode = '', op = '', opfunc = '' },
+}
 
 M.commands = {
   -- todo:
@@ -61,47 +63,17 @@ function M:init()
       return
     end
     self.listeners_initialized = true
-
     local group = api.nvim_create_augroup('reactive.nvim', { clear = true })
-    local last_mode = vim.fn.mode()
-    local last_op = nil
-    local last_opfunc = nil
-    -- TODO: without whichkey delete and substitute does not work
-
     aucmd('ModeChanged', {
       group = group,
       pattern = '*:*',
       desc = 'Reactive: watches for mode changes to update highlights and run callbacks',
       callback = function(opts)
-        local op = vim.v.operator
-        local op_func = op == 'g@'
-          and type(vim.opt.operatorfunc) == 'table'
-          and vim.opt.operatorfunc._value ~= ''
-          and vim.opt.operatorfunc._value
         local from, to = unpack(vim.split(opts.match, ':'))
-        -- vim.dbglog(from .. ':' .. to, op, op_func)
-        if last_mode ~= to or last_op ~= op or last_opfunc ~= op_func then
-          local op_pfx = Snapshot.get_opfunc()
-          logger.debug(
-            'ModeChanged  '
-              .. from
-              .. ':'
-              .. to
-              .. string.rep(' ', 5 - (#from + #to))
-              .. (op and #op > 0 and (" '" .. tostring(op) .. "'") or '    ')
-              .. (op_pfx and #op_pfx > 0 and (' [' .. tostring(op_pfx) .. ']') or '    ')
-          )
-          Snapshot:set_modes(from, to)
-          local snap = Snapshot:gen({ callbacks = true })
-          Highlight:apply({
-            hl = snap.hl,
-            winhl = snap.winhl,
-            winid = api.nvim_get_current_win(),
-          })
-          last_mode = to
-          last_op = op
-          last_opfunc = op_func
-        end
+        Snapshot:set_modes(from, to)
+        local snap = Snapshot:gen({ callbacks = true })
+        Highlight:apply({ hl = snap.hl, winhl = snap.winhl, winid = api.nvim_get_current_win() })
+        -- logger.log_mode(from, to, op, op_key or op_func, op_pfx)
       end,
     })
 
@@ -110,41 +82,10 @@ function M:init()
       desc = 'reactive watches for pseudo-mode changes from which-key to update highlights and run callbacks',
       callback = function(opts)
         local _, new_mode, virtual_op, virtual_opfunc = unpack(vim.split(opts.match, '_'))
-        if last_mode ~= new_mode or last_op ~= virtual_op or last_opfunc ~= virtual_opfunc then
-          logger.debug(
-            'WhichKeyMode '
-              .. last_mode
-              .. ':'
-              .. (new_mode or ' ')
-              .. string.rep(' ', 5 - (#last_mode + (new_mode and #new_mode or 0)))
-              .. (virtual_op and #virtual_op > 0 and (" '" .. tostring(virtual_op) .. "'") or ' ')
-              .. (
-                virtual_opfunc
-                  and #virtual_opfunc > 0
-                  and (' [' .. tostring(virtual_opfunc) .. ']')
-                or '    '
-              )
-          )
-          Snapshot:set_modes(last_mode, new_mode)
-          local snap = Snapshot:gen({
-            callbacks = true,
-            virtual_op = (
-              virtual_op == 'g@'
-              and virtual_opfunc
-              and #virtual_opfunc > 0
-              and virtual_op .. virtual_opfunc
-            ) or virtual_op,
-          })
-
-          Highlight:apply({
-            hl = snap.hl,
-            winhl = snap.winhl,
-            winid = api.nvim_get_current_win(),
-          })
-          last_mode = new_mode
-          last_op = virtual_op
-          last_opfunc = virtual_opfunc
-        end
+        -- Snapshot:set_op(virtual_op)
+        -- Snapshot:set_opfunc(virtual_opfunc)
+        -- Snapshot:set_modes(from, new_mode)
+        vim.dbglog(new_mode, virtual_op, virtual_opfunc)
       end,
     })
 

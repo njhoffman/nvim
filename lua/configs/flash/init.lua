@@ -7,7 +7,8 @@
 -- https://github.com/vsedov/nvim/blob/master/lua/modules/movement/flash/nav/lib.lua
 -- https://github.com/folke/flash.nvim/discussions/24
 -- https://github.com/folke/flash.nvim/pull/51
-
+-- hit a upper label of above labels to select a visual by line in range jumps,
+-- if label is upper, do nothing.
 local modes = {
   search = {
     enabled = false,
@@ -21,26 +22,57 @@ local modes = {
   },
   char = {
     enabled = true,
-    keys = { 'f', 'F', 't', 'T', ';', ':' },
-    highlight = { backdrop = true },
+    keys = {
+      'f',
+      'F',
+      't',
+      'T',
+      ';',
+      ':',
+    },
+    label = {
+      -- format = function(opts)
+      --   -- always show first and second label
+      --   return {
+      --     { opts.match.label1, 'FlashMatch' },
+      --     { opts.match.label2, 'FlashLabel' },
+      --   }
+      -- end,
+      style = 'overlay',
+      current = false,
+      after = false,
+      before = false,
+      distance = false,
+    },
+    highlight = {
+      backdrop = true,
+      matches = true,
+      priority = 5000,
+      groups = {
+        label = 'FlashCharLabel', -- :hi for f/F
+        match = 'FlashCharMatch', -- :hi for t/T
+      },
+    },
     jump = { history = true, nohlsearch = true, register = false },
-    jump_labels = false,
-    search = { wrap = false },
+    jump_labels = true,
+    remote_op = { restore = true, motion = false },
+    search = { wrap = false, multi_window = false },
     multi_line = true,
     config = function(opts)
-      -- -- autohide flash when in operator-pending mode
-      opts.autohide = opts.autohide or vim.fn.mode(true):find('no')
+      opts.autohide = vim.fn.mode(true):find('no')
+      -- Show jump labels not in operator-pending mode
       opts.jump_labels = not vim.fn.mode(true):find('o')
         and vim.v.count == 0
         and vim.fn.reg_executing() == ''
         and vim.fn.reg_recording() == ''
       -- Show jump labels only in operator-pending mode
-      -- opts.jump_labels = vim.v.count == 0 and vim.fn.mode(true):find('o')
+      opts.jump_labels = vim.v.count == 0 and vim.fn.mode(true):find('o')
     end,
-    autohide = function(motion)
-      -- autohide flash when the operator is `y` or `d`
-      return vim.fn.mode(true):find('no') and (vim.v.operator == 'y' or vim.v.operator == 'd')
-    end,
+    autohide = true,
+    -- autohide = function(motion)
+    --   -- autohide flash when the operator is `y` or `d`
+    --   return vim.fn.mode(true):find('no') and (vim.v.operator == 'y' or vim.v.operator == 'd')
+    -- end,
     char_actions = function(motion)
       return {
         [';'] = 'next', -- set to `right` to always go right
@@ -53,34 +85,35 @@ local modes = {
       }
     end,
   },
-  -- options used for remote flash
-  remote = {
-    remote_op = { restore = true, motion = true },
-  },
   treesitter = {
-    labels = 'asdfghjklqwertyuiopzxcvbnm',
     -- labels = 'abcdefghijklmnopqrstuvwxyz',
-    jump = { pos = 'range' },
+    jump = { pos = 'start' },
     search = { incremental = false },
-    label = { before = true, after = false, style = 'inline' },
+    label = { before = true, after = true, style = 'inline', upper = false },
     highlight = {
-      backdrop = true,
-      matches = true,
+      backdrop = false,
+      matches = false,
     },
   },
   treesitter_search = {
     jump = { pos = 'range' },
     search = { multi_window = true, wrap = true, incremental = false },
     remote_op = { restore = true },
-    label = { before = true, after = false, style = 'inline' },
+    label = { before = true, after = true, style = 'inline' },
     highlight = {
       backdrop = true,
       matches = true,
     },
   },
+  -- options used for remote flash
+  remote = {
+    remote_op = { restore = true, motion = true },
+  },
 }
 
 local cfg = {
+  labels = 'asdfghjklqwertyuiopzxcvbnm',
+  use_upper_select_visual_line = false,
   modes = modes,
   search = {
     exclude = {
@@ -88,10 +121,10 @@ local cfg = {
       'cmp_menu',
       'noice',
       'flash_prompt',
-      function(win)
-        -- exclude non-focusable windows
-        return not vim.api.nvim_win_get_config(win).focusable
-      end,
+      -- function(win)
+      --   -- exclude non-focusable windows
+      --   return not vim.api.nvim_win_get_config(win).focusable
+      -- end,
     },
   },
   highlight = {
@@ -121,9 +154,8 @@ local cfg = {
     nohlsearch = true,
     -- automatically jump when there is only one match
     autojump = true,
-    -- You can force inclusive/exclusive jumps by setting the
-    -- `inclusive` option. By default it will be automatically
-    -- set based on the mode.
+    -- You can force inclusive/exclusive jumps by setting the `inclusive` option.
+    -- By default it will be automatically set based on the mode.
     inclusive = nil, ---@type boolean?
     -- jump position offset. Not used for range jumps.
     -- 0: default
@@ -138,8 +170,7 @@ local cfg = {
     min_pattern_length = 0,
     rainbow = {
       enabled = false,
-      -- number between 1 and 9
-      shade = 5,
+      shade = 5, -- number between 1 and 9
     },
   },
   prompt = {
@@ -163,7 +194,7 @@ local cfg = {
     -- `true`: always enter a new motion when doing a remote operation
     -- `false`: use the window's cursor position and jump target
     -- `nil`: act as `true` for remote windows, `false` for the current window
-    motion = false,
+    motion = true,
   },
 }
 

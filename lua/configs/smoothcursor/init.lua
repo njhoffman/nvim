@@ -20,7 +20,7 @@ local fancy_1 = {
 -- stylua: ignore
 local cfg = {
   type              = 'exp', -- Cursor movement calculation method, choose "default", "exp" (exponential) or "matrix".
-  always_redraw     = false, -- (true) always redraw screen on update
+  always_redraw     = true, -- (true) always redraw screen on update
   fancy             = fancy_1,
   threshold         = 3,     -- (3) Animate only if cursor moves more than this many lines
   disable_float_win = true, -- Disable in floating windows
@@ -32,5 +32,6 @@ local cfg = {
   timeout           = 2000,  -- (3000) timeout for animations
   disabled_filetypes = { "TelescopePrompt", "NvimTree", 'qf' }
 }
+
 require('smoothcursor').setup(cfg)
 require('configs.smoothcursor.mode-changed')

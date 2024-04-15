@@ -7,6 +7,7 @@
 local actions = require('configs.flash.actions')
 
 local setup_char_mappings = function()
+  -- for _, key in ipairs({ ';', ',' }) do
   for _, key in ipairs({ ';', ':' }) do
     local existing = {
       n = vim.fn.maparg(key, 'n', false, false),
@@ -51,71 +52,81 @@ local setup_char_mappings = function()
   end
 end
 
+local pfx = 'g\\'
+
 -- stylua:ignore
 local setup_search_mappings = function()
-  -- mapper.map({ 'c' }, '<M-S>', function()
-
   vim.keymap.set({ 'c' }, '<M-S>', function()
     require('flash').toggle()
-  end, { noremap = true, silent = true, desc = 'Toggle remote flash' })
+  end, { noremap = true, silent = true, desc = '⚡toggle flash search' })
 
-  -- mapper.map({ 'n', 'o', 'x' }, '<leader>/', function()
-  --   require('flash').jump()
-  -- end, { noremap = true, silent = true, desc = ' Flash Jump' })
-
-  -- mapper.map({ 'n', 'o', 'x' }, '<leader>?', function()
-  --   require('flash').treesitter()
-  -- end, { noremap = true, silent = true, desc = 'Flash Treesitter' })
+  -- or
+  -- { "<c-s>", mode = { "c" }, function() require("flash").toggle_current_search() end, desc = "Toggle Current Flash Search" },
+  -- i.e. dr<search>w   gcr<search>c
 
   vim.keymap.set({ 'o' }, 'r', function()
     require('flash').remote()
-  end, { noremap = true, silent = true, desc = 'remote flash' })
+  end, { noremap = true, desc = '⚡remote flash operator' })
 
-  vim.keymap.set(
-    { 'o' },
-    '<leader>so',
-    actions.jump_line,
-    { noremap = true, silent = true, desc = 'Flash jump to line op' }
-  )
+  -- r<match>u  r<search>D  rvaby (yank remote block)  rab<match>@a (apply macro)
+  vim.keymap.set({ 'n' }, 'gr', function()
+    local state = require('flash').jump({
+      remote_op = { restore = false },
+    })
+    vim.api.nvim_create_autocmd('TextChanged', {
+      once = true,
+      buffer = vim.api.nvim_get_current_buf(),
+      callback = function(ev)
+        state:restore()
+      end,
+    })
+  end, { noremap = true, silent = true, desc = '⚡remote flash command' })
 
-  vim.keymap.set({ 'n', 'o' }, '\\', function()
-    require('flash').treesitter_search()
-  end, { noremap = true, silent = true, desc = 'flash treesitter search' })
+  vim.keymap.set({ 'n', 'o', 'x' }, '\\', function()
+    require('flash').jump()
+  end, { noremap = true, silent = true, desc = '⚡flash jump' })
 
-  -- mapper.map(
+  vim.keymap.set({ 'n', 'o', 'x' }, 'g\\t', function()
+    require('flash').treesitter()
+  end, { noremap = true, silent = true, desc = '⚡flash treesitter' })
+
   vim.keymap.set(
     { 'n', 'x', 'o' },
-    '<leader>sl',
+    'g\\l',
     actions.jump_line,
-    { noremap = true, silent = true, desc = 'flash to line' }
+    { noremap = true, silent = true, desc = '⚡flash jump to line' }
   )
 
-  -- mapper.map(
   vim.keymap.set(
     { 'n', 'o', 'x' },
-    '<leader>sw',
+    'g\\w',
     actions.jump_start_words,
-    { noremap = true, silent = true, desc = 'flash jump start words' }
+    { noremap = true, silent = true, desc = '⚡flash jump start words' }
   )
 
   vim.keymap.set(
     { 'n', 'o', 'x' },
-    '<leader>ss',
-    actions.search_words_2char,
-    { noremap = true, silent = true, desc = 'flash treesitter search 2chars' }
-  )
-  vim.keymap.set(
-    { 'n', 'o', 'x' },
-    '<leader>sW',
+    'g\\W',
     actions.jump_words,
-    { noremap = true, silent = true, desc = 'flash jump full words' }
+    { noremap = true, silent = true, desc = '⚡flash jump full words' }
   )
 
   vim.keymap.set(
     { 'n', 'o', 'x' },
-    '<leader>se',
+    'g\\e',
     actions.jump_diag,
-    { noremap = true, silent = true, desc = 'flash jump diagnostics' }
+    { noremap = true, silent = true, desc = '⚡flash jump diagnostics' }
+  )
+
+  vim.keymap.set({ 'n', 'o' }, 'g\\s', function()
+    require('flash').treesitter_search()
+  end, { noremap = true, silent = true, desc = '⚡flash treesitter search' })
+
+  vim.keymap.set(
+    { 'n', 'o', 'x' },
+    'g\\S',
+    actions.search_words_2char,
+    { noremap = true, silent = true, desc = '⚡flash treesitter search 2chars' }
   )
 
   -- mapper.map({ 'n', 'x' }, 'rx', function()
@@ -187,6 +198,13 @@ return { setup = setup }
 --     M.state:hide()
 --   end
 -- end
+
+-- One thing you could do, is run jump with remote_op.restore = false. This will return a state object.
+-- Once that function returns, you will be at the remote location.
+
+-- So now you could create a buffer local mapping <enter> for example that does state:restore() and deletes the mapping again.
+
+-- This way you could do remotely what you want and eventually press <enter> to get back to your original position.
 
 --
 --

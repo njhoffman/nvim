@@ -1,6 +1,5 @@
 local format = require('commands.format')
 local buffer = require('commands.buffer')
-local ui = require('commands.ui')
 local tips = require('commands.tips')
 local help = require('commands.help')
 local debug = require('commands.debug')
@@ -11,6 +10,8 @@ local ansi = require('commands.ansi')
 
 local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
+
+require('commands.ui').setup()
 
 -- TODO: resume visual selection after switching
 vim.api.nvim_create_user_command('Vblock', function()
@@ -53,13 +54,6 @@ cmd(
 
 cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })
 -- cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
-cmd('CloseMulti', ui.close_multi, { desc = 'Close tabpage, window, or buffer in that order' })
-cmd(
-  'CloseMultiNoPrompt',
-  ui.close_multi_no_prompt,
-  { desc = 'Close tabpage, window, or buffer in that order' }
-)
-cmd('ClosePopups', ui.close_popups, { desc = 'Format buffer using lsp' })
 cmd('GetPaths', debug.get_paths, { desc = 'Get path collections (rtpaths, o.packpath, etc)' })
 cmd('Trash', system.trash_file, { desc = 'Send file to system trash' })
 cmd('Delete', system.trash_file, { desc = 'Send file to system trash' })
@@ -111,39 +105,6 @@ cmd('TrimTrailingWhitespace', format.trim_space, {
 --   { desc = "Paste to visual selection buffer without overwriting register" }
 -- )
 -- vim.keymap.set("v", "p", paste.visual_paste_without_yank, { noremap = true, silent = true })
-
--- vim.keymap.set('n', '<M-l>', ui.check_resize_split('l'), { noremap = true })
--- vim.keymap.set('n', '<M-h>', ui.check_resize_split('h'), { noremap = true })
--- vim.keymap.set('n', '<M-j>', ui.check_resize_split('j'), { noremap = true })
--- vim.keymap.set('n', '<M-k>', ui.check_resize_split('k'), { noremap = true })
-
--- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('...',true,true,true))
--- TODO: c-s-d , c-s-f, c-s-h,l,j,k, c-s-|, c-s-+
-
-vim.keymap.set(
-  'n',
-  '<C-S-Right>',
-  ui.check_nav_split('l'),
-  { noremap = true, desc = ' right split or tmux pane' }
-)
-vim.keymap.set(
-  'n',
-  '<C-S-Left>',
-  ui.check_nav_split('h'),
-  { noremap = true, desc = ' left split or tmux pane ' }
-)
-vim.keymap.set(
-  'n',
-  '<C-S-Down>',
-  ui.check_nav_split('j'),
-  { noremap = true, desc = 'ﰬ down split or tmux pane' }
-)
-vim.keymap.set(
-  'n',
-  '<C-S-Up>',
-  ui.check_nav_split('k'),
-  { noremap = true, desc = ' up split or tmux pane' }
-)
 
 -- {
 --     name = "LvimCacheReset",

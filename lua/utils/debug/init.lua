@@ -1,4 +1,5 @@
 -- selene: allow(global_usage)
+-- https://github.com/stevearc/profile.nvim
 
 _G.dd = function(...)
   require('utils.debug.debug').dump(...)

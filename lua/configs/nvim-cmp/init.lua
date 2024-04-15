@@ -2,8 +2,8 @@ local cmp = require('cmp')
 
 local debug_flag = false
 local MAX_DOCUMENT_WIDTH = 40
--- local WIN_HIGHLIGHT = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:Search"
-local WIN_HIGHLIGHT = 'Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None'
+local WIN_HIGHLIGHT =
+  'Normal:CmpNormal,FloatBorder:CmpFloatBorder,CursorLine:CmpCursorLine,Search:None'
 
 local sources = require('configs.nvim-cmp.sources')
 local mapping_cmdline = require('configs.nvim-cmp.keys-cmd')

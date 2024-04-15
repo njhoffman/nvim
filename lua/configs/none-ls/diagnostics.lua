@@ -18,7 +18,7 @@ return {
   -- null_ls.builtins.diagnostics.markdownlint,
   -- null_ls.builtins.diagnostics.markuplint,
   -- null_ls.builtins.diagnostics.mdl,
-  null_ls.builtins.diagnostics.misspell.with({ filetypes = { 'tex' }, args = { '$FILENAME' } }),
+  -- null_ls.builtins.diagnostics.misspell.with({ filetypes = { 'tex' }, args = { '$FILENAME' } }),
   null_ls.builtins.diagnostics.proselint.with({
     filetypes = { 'markdown', 'tex' },
     extra_filetypes = { 'txt', 'text', 'org' },

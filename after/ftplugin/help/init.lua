@@ -278,9 +278,9 @@ local set_syntax = function()
 end
 
 local init = function()
-  resize_window()
-  read_history()
-  create_autocmds()
+  -- resize_window()
+  -- read_history()
+  -- create_autocmds()
   set_options()
   set_keymaps()
   set_syntax()

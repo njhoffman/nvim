@@ -21,14 +21,27 @@ local setup = function(options)
     end,
   })
 
-  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+  vim.api.nvim_create_autocmd({
+    'CursorMovedI',
+  }, {
+    group = augroup,
+    desc = 'ActionHints providers insert clear',
+    callback = function()
+      utils.throttle(display.clear_virtual_text, 100, {}, 'clear')
+      state.is_cleared = true
+      -- utils.debounce(providers.update, 1000)(config.values)
+    end,
+  })
+
+  vim.api.nvim_create_autocmd({ 'CursorMoved' }, {
     group = augroup,
     desc = 'ActionHints providers update',
     callback = function()
       utils.throttle(display.clear_virtual_text, 100, {}, 'clear')
       state.is_cleared = true
-
-      utils.debounce(providers.update, 1000)(config.values)
+      if vim.api.nvim_get_mode().mode == 'n' then
+        utils.debounce(providers.update, 1000)(config.values)
+      end
     end,
   })
 end

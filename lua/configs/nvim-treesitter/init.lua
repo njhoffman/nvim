@@ -121,7 +121,7 @@ vim.api.nvim_set_keymap(
 
 vim.api.nvim_set_keymap(
   'n',
-  'ghiu',
+  'ghu',
   '<cmd>lua require("' .. textobj_unit .. '").toggle_highlighting("VisualAlt")<CR>',
   { noremap = true, silent = true }
 )

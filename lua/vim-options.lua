@@ -18,7 +18,7 @@ opt('backup', false)
 opt('backupcopy', 'auto')
 opt('breakindent', true)
 opt('breakindentopt', 'shift:2')
-opt('cedit', '<C-t>') -- ctrl-f interferes with popup completion
+opt('cedit', '<C-]>') -- ctrl-f interferes with popup completion
 opt('clipboard', 'unnamedplus')
 opt('cmdheight', 0) -- 0
 opt('cmdwinheight', 15)
@@ -73,8 +73,8 @@ opt('showmatch', true)
 opt('showmode', false)
 opt('tabline', '')
 opt('showtabline', 1)
--- opt('scrolloff', 0)
-opt('scrolloff', 999)
+opt('scrolloff', 10)
+-- opt('scrolloff', 999)
 opt('sidescroll', 0)
 opt('sidescrolloff', 0)
 opt('smartcase', true)
@@ -168,7 +168,6 @@ opt('cursorlineopt', 'both') -- should get cursorline in number too
 --   "a:blinkwait200-blinkoff350-blinkon550",
 -- }
 
-
 -- opt('fillchars', 'eob: ') -- Don't show `~` outside of buffer
 vim.opt.fillchars:append({
   eob = ' ',
@@ -230,80 +229,79 @@ vim.opt.fillchars:append({
 -- end
 --
 
-
-		-- set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-		  -- \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-		  -- \,sm:block-blinkwait175-blinkoff150-blinkon175
+-- set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+-- \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+-- \,sm:block-blinkwait175-blinkoff150-blinkon175
 
 -- <	The option is a comma-separated list of parts.  Each part consists of a
-	-- mode-list and an argument-list:
-		-- mode-list:argument-list,mode-list:argument-list,..
-	-- The mode-list is a dash separated list of these modes:
-		-- n	Normal mode
-		-- v	Visual mode
-		-- ve	Visual mode with 'selection' "exclusive" (same as 'v',
-			-- if not specified)
-		-- o	Operator-pending mode
-		-- i	Insert mode
-		-- r	Replace mode
-		-- c	Command-line Normal (append) mode
-		-- ci	Command-line Insert mode
-		-- cr	Command-line Replace mode
-		-- sm	showmatch in Insert mode
-		-- a	all modes
-	-- The argument-list is a dash separated list of these arguments:
-		-- hor{N}	horizontal bar, {N} percent of the character height
-		-- ver{N}	vertical bar, {N} percent of the character width
-		-- block	block cursor, fills the whole character
-			-- - Only one of the above three should be present.
-			-- - Default is "block" for each mode.
-		-- blinkwait{N}				*cursor-blinking*
-		-- blinkon{N}
-		-- blinkoff{N}
-			-- blink times for cursor: blinkwait is the delay before
-			-- the cursor starts blinking, blinkon is the time that
-			-- the cursor is shown and blinkoff is the time that the
-			-- cursor is not shown.  Times are in msec.  When one of
-			-- the numbers is zero, there is no blinking. E.g.: >vim
-				-- set guicursor=n:blinkon0
+-- mode-list and an argument-list:
+-- mode-list:argument-list,mode-list:argument-list,..
+-- The mode-list is a dash separated list of these modes:
+-- n	Normal mode
+-- v	Visual mode
+-- ve	Visual mode with 'selection' "exclusive" (same as 'v',
+-- if not specified)
+-- o	Operator-pending mode
+-- i	Insert mode
+-- r	Replace mode
+-- c	Command-line Normal (append) mode
+-- ci	Command-line Insert mode
+-- cr	Command-line Replace mode
+-- sm	showmatch in Insert mode
+-- a	all modes
+-- The argument-list is a dash separated list of these arguments:
+-- hor{N}	horizontal bar, {N} percent of the character height
+-- ver{N}	vertical bar, {N} percent of the character width
+-- block	block cursor, fills the whole character
+-- - Only one of the above three should be present.
+-- - Default is "block" for each mode.
+-- blinkwait{N}				*cursor-blinking*
+-- blinkon{N}
+-- blinkoff{N}
+-- blink times for cursor: blinkwait is the delay before
+-- the cursor starts blinking, blinkon is the time that
+-- the cursor is shown and blinkoff is the time that the
+-- cursor is not shown.  Times are in msec.  When one of
+-- the numbers is zero, there is no blinking. E.g.: >vim
+-- set guicursor=n:blinkon0
 -- <			- Default is "blinkon0" for each mode.
-		-- {group-name}
-			-- Highlight group that decides the color and font of the
-			-- cursor.
-			-- In the |TUI|:
-			-- - |inverse|/reverse and no group-name are interpreted
-			  -- as "host-terminal default cursor colors" which
-			  -- typically means "inverted bg and fg colors".
-			-- - |ctermfg| and |guifg| are ignored.
-		-- {group-name}/{group-name}
-			-- Two highlight group names, the first is used when
-			-- no language mappings are used, the other when they
-			-- are. |language-mapping|
+-- {group-name}
+-- Highlight group that decides the color and font of the
+-- cursor.
+-- In the |TUI|:
+-- - |inverse|/reverse and no group-name are interpreted
+-- as "host-terminal default cursor colors" which
+-- typically means "inverted bg and fg colors".
+-- - |ctermfg| and |guifg| are ignored.
+-- {group-name}/{group-name}
+-- Two highlight group names, the first is used when
+-- no language mappings are used, the other when they
+-- are. |language-mapping|
 
-	-- Examples of parts:
-	   -- n-c-v:block-nCursor	In Normal, Command-line and Visual mode, use a
-				-- block cursor with colors from the "nCursor"
-				-- highlight group
-	   -- n-v-c-sm:block,i-ci-ve:ver25-Cursor,r-cr-o:hor20
-				-- In Normal et al. modes, use a block cursor
-				-- with the default colors defined by the host
-				-- terminal.  In Insert-like modes, use
-				-- a vertical bar cursor with colors from
-				-- "Cursor" highlight group.  In Replace-like
-				-- modes, use an underline cursor with
-				-- default colors.
-	   -- i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
-				-- In Insert and Command-line Insert mode, use a
-				-- 30% vertical bar cursor with colors from the
-				-- "iCursor" highlight group.  Blink a bit
-				-- faster.
+-- Examples of parts:
+-- n-c-v:block-nCursor	In Normal, Command-line and Visual mode, use a
+-- block cursor with colors from the "nCursor"
+-- highlight group
+-- n-v-c-sm:block,i-ci-ve:ver25-Cursor,r-cr-o:hor20
+-- In Normal et al. modes, use a block cursor
+-- with the default colors defined by the host
+-- terminal.  In Insert-like modes, use
+-- a vertical bar cursor with colors from
+-- "Cursor" highlight group.  In Replace-like
+-- modes, use an underline cursor with
+-- default colors.
+-- i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
+-- In Insert and Command-line Insert mode, use a
+-- 30% vertical bar cursor with colors from the
+-- "iCursor" highlight group.  Blink a bit
+-- faster.
 
-	-- The 'a' mode is different.  It will set the given argument-list for
-	-- all modes.  It does not reset anything to defaults.  This can be used
-	-- to do a common setting for all modes.  For example, to switch off
-	-- blinking: "a:blinkon0"
+-- The 'a' mode is different.  It will set the given argument-list for
+-- all modes.  It does not reset anything to defaults.  This can be used
+-- to do a common setting for all modes.  For example, to switch off
+-- blinking: "a:blinkon0"
 
-	-- Examples of cursor highlighting: >vim
-	    -- highlight Cursor gui=reverse guifg=NONE guibg=NONE
-	    -- highlight Cursor gui=NONE guifg=bg guibg=fg
+-- Examples of cursor highlighting: >vim
+-- highlight Cursor gui=reverse guifg=NONE guibg=NONE
+-- highlight Cursor gui=NONE guifg=bg guibg=fg
 -- <

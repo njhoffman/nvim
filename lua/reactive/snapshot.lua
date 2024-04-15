@@ -1,17 +1,19 @@
 local Util = require('reactive.util')
 
 local shape_fields = { 'winhl', 'hl' }
-local logger = require('logger').init('reactive')
 
 local M = {
   current_opfunc = nil,
+  current_op = nil,
   from = nil,
   to = vim.fn.mode(true),
-  matched_opfuncs = {},
-  missed_opfuncs = {},
   cache = {
     applied_hl = {},
     transformed_winhl = {},
+  },
+  opfuncs = {
+    matched = {},
+    missed = {},
   },
 }
 
@@ -34,40 +36,42 @@ function M:set_opfunc(opfunc)
   self.current_opfunc = opfunc
 end
 
-function M.get_opfunc()
-  local reactive = require('reactive')
-  local matched = nil
-  if M.current_opfunc or type(reactive.opfunc_get) == 'function' and vim.v.operator == 'g@' then
-    local opfunc = tostring(
-      M.current_opfunc or vim.api.nvim_get_option_value('operatorfunc', { scope = 'global' })
-    ):gsub("'", '"')
-    matched = reactive.opfunc_get(opfunc) or M.current_opfunc
-    if
-      not matched
-      and type(opfunc) == 'table'
-      and #opfunc > 0
-      and not vim.tbl_contains(M.missed_opfunc, opfunc)
-    then
-      table.insert(M.missed_opfuncs, opfunc)
-      -- vim.notify('Reactive: Operator function not found: ' .. opfunc, vim.log.levels.DEBUG)
-      logger:info('missing operator function: ' .. opfunc)
-    else
-      table.insert(M.matched_opfuncs, {
-        os.time(),
-        matched,
-        vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()),
-        vim.api.nvim_win_get_cursor(0),
-      })
-      logger:debug('operator function found: ' .. opfunc)
-    end
+function M:set_op(op)
+  self.current_op = op
+end
+
+function M:get_op()
+  return self.current_op or vim.v.operator
+end
+
+function M:get_opfunc()
+  return self:get_op() == 'g@' and self.current_opfunc or self:lookup_opfunc()
+end
+
+function M:lookup_opfunc()
+  local opdefs = require('configs.reactive.opfuncs') or {}
+  local opfunc =
+    tostring(vim.api.nvim_get_option_value('operatorfunc', { scope = 'global' })):gsub("'", '"')
+
+  local op_def = opdefs[opfunc]
+  local op_key = op_def and op_def[1] and op_def[1][1]
+
+  if op_def and type(op_def) == 'table' and #opfunc > 0 then
+    self.opfuncs.matched[op_key] = self.opfuncs.matched[op_key] or 0
+    self.opfuncs.matched[op_key] = self.opfuncs.matched[op_key] + 1
+  else
+    self.opfuncs.missed[opfunc] = self.opfuncs.missed[opfunc] or 0
+    self.opfuncs.missed[opfunc] = self.opfuncs.missed[opfunc] + 1
   end
-  return matched
+  --   vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()),
+  --   vim.api.nvim_win_get_cursor(0),
+  -- logger.log_opfunc(op_key or opfunc, op_def)
+  return op_key, opfunc
 end
 
 ---@param opts? { inactive_win?: boolean, callbacks?: boolean }
----@return table<any>
+---@return { winhl: table<string, string>, hl: table<string, table> }
 function M:gen(opts)
-  opts = opts or {}
   local State = require('reactive.state')
 
   self.snapshot = { winhl = {}, hl = {} }
@@ -142,13 +146,7 @@ function M:gen(opts)
           return
         end
 
-        self:merge_snapshot(
-          preset.name,
-          inc_mode,
-          inc_mode_config,
-          scope[preset.name].constraints,
-          opts.virtual_op
-        )
+        self:merge_snapshot(preset.name, inc_mode, inc_mode_config, scope[preset.name].constraints)
 
         if len > 1 and inc_mode_config.exact then
           if type(inc_mode_config.exact) == 'boolean' then
@@ -202,13 +200,7 @@ function M:gen(opts)
           return
         end
 
-        self:merge_snapshot(
-          preset.name,
-          inc_mode,
-          inc_mode_config,
-          local_constraints,
-          opts.virtual_op
-        )
+        self:merge_snapshot(preset.name, inc_mode, inc_mode_config, local_constraints)
       end
     end)
   end)
@@ -249,6 +241,8 @@ function M:gen(opts)
   end
 
   self.current_opfunc = nil
+  self.current_op = nil
+
   return self.snapshot
 end
 
@@ -256,20 +250,14 @@ end
 ---@param inc_mode string
 ---@param inc_mode_config Reactive.ModeConfig
 ---@param constraints TriggerConstraints<boolean>
-function M:merge_snapshot(preset_name, inc_mode, inc_mode_config, constraints, virtual_op)
-  -- if Util.is_op(inc_mode) and inc_mode_config.operators then
-  if inc_mode == 'no' or inc_mode == 'o' and inc_mode_config.operators then
-    local op = virtual_op or vim.v.operator
-    local opfunc = M.get_opfunc()
-    if string.match(virtual_op or '', '^g@') then
-      op, opfunc = virtual_op:match('^(g@)(.*)')
-    end
+function M:merge_snapshot(preset_name, inc_mode, inc_mode_config, constraints)
+  if Util.is_op(inc_mode) and inc_mode_config.operators then
+    local op = self:get_op()
 
-    -- vim.dbglog('merge', inc_mode, op, opfunc)
     if op and inc_mode_config.operators[op] then
+      local opfunc = self:get_opfunc()
       if
-        op == 'g@'
-        and opfunc
+        opfunc
         and inc_mode_config.operators[op].opfuncs
         and inc_mode_config.operators[op].opfuncs[opfunc]
       then
@@ -279,8 +267,6 @@ function M:merge_snapshot(preset_name, inc_mode, inc_mode_config, constraints, v
           ('@mode.%s.@op.g@.%s'):format(inc_mode, opfunc),
           constraints
         )
-      else
-        self.current_opfunc = nil
       end
 
       self:form_snapshot(
@@ -332,6 +318,10 @@ local merge_handlers = {
   end,
 }
 
+---@param preset_name string
+---@param highlights table<string, table> | fun(): table<string, table>
+---@param scope string
+---@param constraints TriggerConstraints
 function M:form_snapshot(preset_name, highlights, scope, constraints)
   local opts = { scope = scope, preset_name = preset_name }
 

@@ -19,7 +19,7 @@ for _, mod_name in ipairs({
   'runner',
   'stats',
   'devdocs.setup',
-  'configs.cinnamon',
+  -- 'configs.cinnamon',
   'tracker.setup',
   'configs.registers',
   -- 'configs.neoscroll',

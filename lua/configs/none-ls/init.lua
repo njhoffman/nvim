@@ -1,3 +1,6 @@
+-- https://github.com/nvimtools/none-ls.nvim/discussions/81
+-- https://github.com/nvimtools/none-ls.nvim/commit/2236d2bf621b64ccbceebc452137b25ecc7f6228
+
 -- [null-ls]  (code_actions/shellcheck.lua), which will be removed in March.
 -- [null-ls]  (diagnostics/gospel.lua), which will be removed in March.
 -- [null-ls]  (diagnostics/jsonlint.lua), which will be removed in March.
@@ -14,7 +17,6 @@
 -- [null-ls]  (formatting/trim_newlines.lua), which will be removed in March.
 -- [null-ls]  (formatting/xmlformat.lua), which will be removed in March.
 -- [null-ls]  (formatting/xmllint.lua), which will be removed in March.
--- deleted:    code_actions/shellcheck.lua    (use bashls / available in gbprod/none-ls-shellcheck.nvim)
 -- deleted:    diagnostics/gospel.lua
 -- deleted:    diagnostics/jsonlint.lua       (use jsonls)
 -- deleted:    diagnostics/misspell.lua
@@ -30,6 +32,7 @@
 -- deleted:    formatting/trim_newlines.lua   (use editorconfig)
 -- deleted:    formatting/xmlformat.lua       (use lemminx)
 -- deleted:    formatting/xmllint.lua         (use lemminx)
+vim.g.nonels_supress_issue58 = true
 
 local u = require('null-ls.utils')
 local null_ls = require('null-ls')
@@ -39,8 +42,8 @@ local null_ls = require('null-ls')
 local custom_sources = require('configs.none-ls.custom')
 local source_categories = {
   require('configs.none-ls.codeactions'),
-  require('configs.none-ls.diagnostics'),
   require('configs.none-ls.formatting'),
+  require('configs.none-ls.diagnostics'),
   custom_sources.formatting,
   custom_sources.diagnostics,
   custom_sources.codeactions,

@@ -1,22 +1,21 @@
 local utils = require('utils.lazy')
 local lz_syn = false
 
+-- NOTE: generate new plugins from https://github.com/ellisonleao/nvim-plugin-template
+
 local plugins = {
   { 'stevearc/dressing.nvim', dependencies = 'MunifTanjim/nui.nvim', event = 'VeryLazy' },
-  {
-    '3rd/image.nvim',
-    enabled = false,
-    event = 'VeryLazy',
-    dependencies = 'nvim-treesitter',
-  },
+  -- display window manager: https://github.com/altermo/nwm
+  { '3rd/image.nvim', enabled = false, event = 'VeryLazy', dependencies = 'nvim-treesitter' },
+
+  -- https://gist.github.com/GnikDroy/62556534324f9dc9192f7bba5a88cc43
   { 'goolord/alpha-nvim', event = 'VimEnter', dependencies = 'nvim-web-devicons' },
+
   { 'tamton-aquib/zone.nvim', enabled = false },
-  -- using lazy.nvim
+  -- https://github.com/romgrk/barbar.nvim/pull/540
   -- { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
   {
     'romgrk/barbar.nvim',
-    -- https://github.com/romgrk/barbar.nvim/pull/540
-    -- 'gbprod/barbar.nvim',
     -- branch = 'fix-telescope-insert',
     init = function()
       vim.g.barbar_auto_setup = false
@@ -32,24 +31,15 @@ local plugins = {
     dependencies = { 'nvim-treesitter', 'nvim-treesitter-textobjects' }, -- this is needed so that visual.nvim is loaded *afterwards* Treesitter
     event = 'VeryLazy',
   },
-  {
-    'rasulomaroff/reactive.nvim',
-    enabled = true,
-    lazy = false,
-  },
+  { 'rasulomaroff/reactive.nvim', enabled = true, lazy = false },
   -- https://www.reddit.com/r/neovim/comments/1aupy8c/a_simple_journaling_system_built_with_mind_and/
-  {
-    'RutaTang/quicknote.nvim',
-    event = 'VeryLazy',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-  },
+  { 'RutaTang/quicknote.nvim', event = 'VeryLazy', dependencies = { 'nvim-lua/plenary.nvim' } },
   {
     'LintaoAmons/scratch.nvim',
     event = 'VeryLazy',
     -- Scratch, ScratchOpen, ScrathWithName, ScratchOpenFzf, ScratchPad
     -- nvim -c 'lua require("scratch").scratchByType("md")'
   },
-  { 'stevearc/stickybuf.nvim', event = 'VeryLazy' },
   { 'rgroli/other.nvim', event = 'VeryLazy' },
   {
     'tummetott/reticle.nvim',
@@ -66,20 +56,12 @@ local plugins = {
       },
     },
   },
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    main = 'ibl',
-    event = { 'BufReadPre', 'BufNewFile' },
-  },
+  { 'lukas-reineke/indent-blankline.nvim', main = 'ibl', event = { 'BufReadPre', 'BufNewFile' } },
   { 'Tyler-Barham/floating-help.nvim', cmd = 'FloatHelp' },
   { 'monaqa/dial.nvim', event = { 'VeryLazy' }, dependencies = { 'nvim-lua/plenary.nvim' } },
   { 'tris203/hawtkeys.nvim', event = { 'VeryLazy' } },
 
-  {
-    'echasnovski/mini.clue',
-    enabled = false,
-    event = { 'VeryLazy' },
-  },
+  { 'echasnovski/mini.clue', enabled = false, event = { 'VeryLazy' } },
   {
     'nmac427/guess-indent.nvim',
     event = 'BufReadPre',
@@ -158,6 +140,7 @@ local plugins = {
     event = { 'BufReadPost', 'InsertEnter' },
   },
   {
+    -- https://github.com/luckasRanarison/tailwind-tools.nvim
     'laytan/tailwind-sorter.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-lua/plenary.nvim' },
     build = 'cd formatter && npm i && npm run build',
@@ -222,6 +205,7 @@ local plugins = {
   },
   { 'Bekaboo/deadcolumn.nvim', event = { 'VimEnter' } },
   -- treesitter
+  -- https://github.com/ziontee113/query-secretary
   {
     'nvim-treesitter/nvim-treesitter',
     lazy = true,
@@ -277,238 +261,17 @@ local plugins = {
       },
       'windwp/nvim-ts-autotag',
       { 'ziontee113/query-secretary', keys = { '<leader><BS>' } },
-      { 'ckolkey/ts-node-action', dependencies = { 'none-ls.nvim' } },
     },
   },
   { 'echasnovski/mini.ai', event = { 'VeryLazy' } },
-  {
-    'chrisgrieser/nvim-various-textobjs',
-    event = { 'VeryLazy' },
-    -- opts = { useDefaultKeymaps = false },
-  },
-
-  -- stylua: ignore
-  --     -- {
-  --     -- 			{
-  --     -- 				"<leader>H",
-  --     -- 				function() vim.cmd.TSTextobjectPeekDefinitionCode("@function.outer") end,
-  --     -- 				desc = " Hover Peek Function",
-  --     -- 			},
-  --     -- 			{
-  --     -- 				"q",
-  --     -- 				function() vim.cmd.TSTextobjectSelect("@comment.outer") end,
-  --     -- 				mode = "o", -- only operator-pending to not conflict with commenting selection
-  --     -- 				desc = "󱡔  single comment textobj",
-  --     -- 			},
-  --     -- 			{
-  --     -- 				"dq",
-  --     -- 				function()
-  --     -- 					local cursor = vim.api.nvim_win_get_cursor(0)
-  --     -- 					vim.cmd.TSTextobjectSelect("@comment.outer")
-  --     -- 					u.normal("d")
-  --     -- 					vim.api.nvim_win_set_cursor(0, cursor)
-  --     -- 				end,
-  --     -- 				desc = " Sticky Delete Comment",
-  --     -- 			},
-  --     -- 			{
-  --     -- 				"cq",
-  --     -- 				function()
-  --     -- 					vim.cmd.TSTextobjectSelect("@comment.outer")
-  --     -- 					u.normal("d")
-  --     -- 					local comStr = vim.bo.commentstring:format("")
-  --     -- 					local line = vim.api.nvim_get_current_line():gsub("%s+$", "")
-  --     -- 					vim.api.nvim_set_current_line(line .. " " .. comStr)
-  --     -- 					vim.cmd.startinsert { bang = true }
-  --     -- 				end,
-  --     -- 				desc = " Change Comment",
-  --     -- 			},
-  --     -- 			{
-  --     -- 				"<C-j>",
-  --     -- 				"<cmd>TSTextobjectGotoNextStart @function.outer<CR>zv",
-  --     -- 				desc = " Goto Next Function",
-  --     -- 			},
-  --     -- 			{
-  --     -- 				"<C-k>",
-  --     -- 				"<cmd>TSTextobjectGotoPreviousStart @function.outer<CR>zv",
-  --     -- 				desc = " Goto Previous Function",
-  --     -- 			},
-  --     -- 			-----------------------------------------------------------------------
-  --     -- 			-- INFO outer key textobj defined via various textobjs
-  --     -- 			-- stylua: ignore start
-  --     -- 			{ "ik", "<cmd>TSTextobjectSelect @assignment.lhs<CR>", mode = { "x", "o" }, desc = "󱡔 inner key" },
-  --     -- 			{ "a<CR>", "<cmd>TSTextobjectSelect @return.outer<CR>", mode = { "x", "o" }, desc = "󱡔 outer return" },
-  --     -- 			{ "i<CR>", "<cmd>TSTextobjectSelect @return.inner<CR>", mode = { "x", "o" }, desc = "󱡔 inner return" },
-  --     -- 			{ "a/", "<cmd>TSTextobjectSelect @regex.outer<CR>", mode = { "x", "o" }, desc = "󱡔 outer regex" },
-  --     -- 			{ "i/", "<cmd>TSTextobjectSelect @regex.inner<CR>", mode = { "x", "o" }, desc = "󱡔 inner regex" },
-  --     -- 			{ "aa", "<cmd>TSTextobjectSelect @parameter.outer<CR>", mode = { "x", "o" }, desc = "󱡔 outer parameter" },
-  --     -- 			{ "ia", "<cmd>TSTextobjectSelect @parameter.inner<CR>", mode = { "x", "o" }, desc = "󱡔 inner parameter" },
-  --     -- 			{ "iu", "<cmd>TSTextobjectSelect @loop.inner<CR>", mode = { "x", "o" }, desc = "󱡔 inner loop" },
-  --     -- 			{ "au", "<cmd>TSTextobjectSelect @loop.outer<CR>", mode = { "x", "o" }, desc = "󱡔 outer loop" },
-  --     -- 			{ "af", "<cmd>TSTextobjectSelect @function.outer<CR>", mode = {"x","o"},desc = "󱡔 outer function" },
-  --     -- 			{ "if", "<cmd>TSTextobjectSelect @function.inner<CR>", mode = {"x","o"},desc = "󱡔 inner function" },
-  --     -- 			{ "ao", "<cmd>TSTextobjectSelect @conditional.outer<CR>", mode = {"x","o"},desc = "󱡔 outer cond." },
-  --     -- 			{ "io", "<cmd>TSTextobjectSelect @conditional.inner<CR>", mode = {"x","o"},desc = "󱡔 inner cond." },
-  --     -- 			{ "al", "<cmd>TSTextobjectSelect @call.outer<CR>", mode = {"x","o"},desc = "󱡔 outer call" },
-  --     -- 			{ "il", "<cmd>TSTextobjectSelect @call.inner<CR>", mode = {"x","o"},desc = "󱡔 inner call" },
-  --     -- 			-- stylua: ignore end
-  --     -- 		},
-  --     { "<Space>", "<cmd>lua require('various-textobjs').subword('inner')<CR>", mode = "o", desc = "󱡔 inner subword" },
-  --     { "a<Space>", "<cmd>lua require('various-textobjs').subword('outer')<CR>", mode = { "o", "x" }, desc = "󱡔 outer subword" },
-
-  --     { "iv", "<cmd>lua require('various-textobjs').value('inner')<CR>", mode = { "x", "o" }, desc = "󱡔 inner value" },
-  --     { "av", "<cmd>lua require('various-textobjs').value('outer')<CR>", mode = { "x", "o" }, desc = "󱡔 outer value" },
-  --     -- INFO `ik` defined via treesitter to exclude `local` and `let`;
-  --     { "ak", "<cmd>lua require('various-textobjs').key('outer')<CR>", mode = { "x", "o" }, desc = "󱡔 outer key" },
-
-  --     { "pp", "<cmd>lua require('various-textobjs').lastChange()<CR>", mode = "o", desc = "󱡔 last paste" },
-  --     { "gg", "<cmd>lua require('various-textobjs').entireBuffer()<CR>", mode = { "x", "o" }, desc = "󱡔 entire buffer" },
-
-  --     { "n", "<cmd>lua require('various-textobjs').nearEoL()<CR>", mode = "o", desc = "󱡔 near EoL" },
-  --     { "m", "<cmd>lua require('various-textobjs').toNextClosingBracket()<CR>", mode = { "o", "x" }, desc = "󱡔 to next closing bracket" },
-  --     { "w", "<cmd>lua require('various-textobjs').toNextQuotationMark()<CR>", mode = "o", desc = "󱡔 to next quote", nowait = true },
-  --     { "b", "<cmd>lua require('various-textobjs').anyBracket('inner')<CR>", mode = "o", desc = "󱡔 inner anyBracket" },
-  --     { "B", "<cmd>lua require('various-textobjs').anyBracket('outer')<CR>", mode = "o", desc = "󱡔 outer anyBracket" },
-  --     { "k", "<cmd>lua require('various-textobjs').anyQuote('inner')<CR>", mode = "o", desc = "󱡔 inner anyQuote" },
-  --     { "K", "<cmd>lua require('various-textobjs').anyQuote('outer')<CR>", mode = "o", desc = "󱡔 outer anyQuote" },
-  --     { "iR", "<cmd>lua require('various-textobjs').doubleSquareBrackets('inner')<CR>", mode = { "x", "o" }, desc = "󱡔 inner wikilink" },
-  --     { "aR", "<cmd>lua require('various-textobjs').doubleSquareBrackets('outer')<CR>", mode = { "x", "o" }, desc = "󱡔 outer wikilink" },
-
-  --     -- INFO not setting in visual mode, to keep visual block mode replace
-  --     { "rv", "<cmd>lua require('various-textobjs').restOfWindow()<CR>", mode = "o", desc = "󱡔 rest of viewport" },
-  --     { "rp", "<cmd>lua require('various-textobjs').restOfParagraph()<CR>", mode = "o", desc = "󱡔 rest of paragraph" },
-  --     { "ri", "<cmd>lua require('various-textobjs').restOfIndentation()<CR>", mode = "o", desc = "󱡔 rest of indentation" },
-  --     { "rg", "G", mode = "o", desc = "󱡔 rest of buffer" },
-
-  --     { "ge", "<cmd>lua require('various-textobjs').diagnostic()<CR>", mode = { "x", "o" }, desc = "󱡔 diagnostic" },
-  --     { "L", "<cmd>lua require('various-textobjs').url()<CR>", mode = "o", desc = "󱡔 link" },
-  --     { "o", "<cmd>lua require('various-textobjs').column()<CR>", mode = "o", desc = "󱡔 column" },
-
-  --     { "in", "<cmd>lua require('various-textobjs').notebookCell('inner')<CR>", mode = { "x", "o" }, desc = "󱡔 inner notebookCell" },
-  --     { "an", "<cmd>lua require('various-textobjs').notebookCell('outer')<CR>", mode = { "x", "o" }, desc = "󱡔 outer notebookCell" },
-
-  --     { "ii", "<cmd>lua require('various-textobjs').indentation('inner', 'inner')<CR>", mode = { "x", "o" }, desc = "󱡔 inner indent" },
-  --     { "ai", "<cmd>lua require('various-textobjs').indentation('outer', 'outer')<CR>", mode = { "x", "o" }, desc = "󱡔 outer indent" },
-  --     { "aj", "<cmd>lua require('various-textobjs').indentation('outer', 'inner')<CR>", mode = { "x", "o" }, desc = "󱡔 top-border indent" },
-  --     { "ig", "<cmd>lua require('various-textobjs').greedyOuterIndentation('inner')<CR>", mode = { "x", "o" }, desc = "󱡔 inner greedy indent" },
-  --     { "ag", "<cmd>lua require('various-textobjs').greedyOuterIndentation('outer')<CR>", mode = { "x", "o" }, desc = "󱡔 outer greedy indent" },
-
-  --     { "i.", "<cmd>lua require('various-textobjs').chainMember('inner')<CR>", mode = { "x", "o" }, desc = "󱡔 inner indent" },
-  --     { "a.", "<cmd>lua require('various-textobjs').chainMember('outer')<CR>", mode = { "x", "o" }, desc = "󱡔 outer indent" },
-
-  --     { "u", "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>", mode = "o", desc = "󱡔 multi-line-comment" },
-  --     { "guu", "guu" }, -- do not use `u` as textobject when using `guu`
-
-  --       -- python
-  --       { "iy", "<cmd>lua require('various-textobjs').pyTripleQuotes('inner')<CR>", ft = "python", mode = { "x", "o" }, desc = "󱡔 inner tripleQuotes" },
-  --       { "ay", "<cmd>lua require('various-textobjs').pyTripleQuotes('outer')<CR>", ft = "python", mode = { "x", "o" }, desc = "󱡔 outer tripleQuotes" },
-
-  --       -- markdown
-  --       { "iE", "<cmd>lua require('various-textobjs').mdFencedCodeBlock('inner')<CR>", mode = { "x", "o" }, ft = "markdown", desc = "󱡔 inner CodeBlock" },
-  --       { "aE", "<cmd>lua require('various-textobjs').mdFencedCodeBlock('outer')<CR>", mode = { "x", "o" }, ft = "markdown", desc = "󱡔 outer CodeBlock" },
-  --       { "il", "<cmd>lua require('various-textobjs').mdlink('inner')<CR>", mode = { "x", "o" }, ft = "markdown", desc = "󱡔 inner md link" },
-  --       { "al", "<cmd>lua require('various-textobjs').mdlink('outer')<CR>", mode = { "x", "o" }, ft = "markdown", desc = "󱡔 outer md link" },
-  --       { "if", "<cmd>lua require('various-textobjs').mdEmphasis('inner')<CR>", mode = { "x", "o" }, ft = "markdown", desc = "󱡔 inner md formatting" },
-  --         { "af", "<cmd>lua require('various-textobjs').mdEmphasis('outer')<CR>", mode = { "x", "o" }, ft = "markdown", desc = "󱡔 outer md formatting" },
-
-  --         -- css
-  --         { "is", "<cmd>lua require('various-textobjs').cssSelector('inner')<CR>", mode = { "x", "o" }, ft = "css", desc = "󱡔 inner selector" },
-  --         { "as", "<cmd>lua require('various-textobjs').cssSelector('outer')<CR>", mode = { "x", "o" }, ft = "css", desc = "󱡔 outer selector" },
-  --         { "i#", "<cmd>lua require('various-textobjs').cssColor('inner')<CR>", mode = { "x", "o" }, ft = "css", desc = "󱡔 inner color" },
-  --         { "a#", "<cmd>lua require('various-textobjs').cssColor('outer')<CR>", mode = { "x", "o" }, ft = "css", desc = "󱡔 outer color" },
-
-  --         -- shell
-  --         { "pi", "<cmd>lua require('various-textobjs').shellPipe('inner')<CR>", mode = "o", ft = "sh", desc = "󱡔 inner pipe" },
-  --       -- stylua: ignore end
-
-  --       { -- delete surrounding indentation
-  --         "dsi",
-  --         function()
-  --           require("various-textobjs").indentation("outer", "outer")
-  --           local indentationFound = vim.fn.mode():find("V")
-  --           if not indentationFound then return end
-
-  --           u.normal("<") -- dedent indentation
-  --           local endBorderLn = vim.api.nvim_buf_get_mark(0, ">")[1]
-  --           local startBorderLn = vim.api.nvim_buf_get_mark(0, "<")[1]
-  --         vim.cmd(tostring(endBorderLn) .. " delete") -- delete end first so line index is not shifted
-  --         vim.cmd(tostring(startBorderLn) .. " delete")
-  --       end,
-  --       desc = " Delete surrounding indent",
-  --     },
-  --     { -- yank surrounding inner indentation
-  --       "ysii", -- `ysi` would conflict with `ysib` and other textobs
-  --       function()
-  --       -- identify start- and end-border
-  --       local startPos = vim.api.nvim_win_get_cursor(0)
-  --       require("various-textobjs").indentation("outer", "outer")
-  --       local indentationFound = vim.fn.mode():find("V")
-  --       if not indentationFound then return end
-  --       u.normal("V") -- leave visual mode so <> marks are set
-  --       vim.api.nvim_win_set_cursor(0, startPos) -- restore (= sticky)
-
-  --       -- copy them into the + register
-  --       local startLn = vim.api.nvim_buf_get_mark(0, "<")[1] - 1
-  --       local endLn = vim.api.nvim_buf_get_mark(0, ">")[1] - 1
-  --       local startLine = vim.api.nvim_buf_get_lines(0, startLn, startLn + 1, false)[1]
-  --       local endLine = vim.api.nvim_buf_get_lines(0, endLn, endLn + 1, false)[1]
-  --       vim.fn.setreg("+", startLine .. "\n" .. endLine .. "\n")
-
-  --       -- highlight yanked text
-  --       local ns = vim.api.nvim_create_namespace("ysi")
-  --       vim.highlight.range(0, ns, "IncSearch", { startLn, 0 }, { startLn, -1 })
-  --       vim.highlight.range(0, ns, "IncSearch", { endLn, 0 }, { endLn, -1 })
-  --       vim.defer_fn(function() vim.api.nvim_buf_clear_namespace(0, ns, 0, -1) end, 1000)
-  --     end,
-  --     desc = "󰅍 Yank surrounding indent",
-  --   },
-  --   { -- indent last paste
-  --     "P",
-  --     function()
-  --       require("various-textobjs").lastChange()
-  --       local changeFound = vim.fn.mode():find("v")
-  --       if changeFound then u.normal(">") end
-  --     end,
-  --     desc = " Indent Last Paste",
-  --   },
-  --   { -- open URL (forward seeking)
-  --     "gx",
-  --     function()
-  --       require("various-textobjs").url()
-  --       local foundURL = vim.fn.mode():find("v")
-  --       if foundURL then
-  --         u.normal('"zy')
-  --         local url = vim.fn.getreg("z")
-  --         vim.fn.system { "open", url }
-  --       end
-  --     end,
-  --     desc = "󰌹 Smart URL Opener",
-  --   },
-  -- },
+  { 'chrisgrieser/nvim-various-textobjs', event = { 'VeryLazy' } },
   { 'stevearc/aerial.nvim', event = { 'VeryLazy' }, dependencies = { 'nvim-treesitter' } },
   -- motion
   { 'rainbowhxch/accelerated-jk.nvim', enabled = false, event = 'VeryLazy' },
   { 'abecodes/tabout.nvim', event = { 'InsertEnter' } },
   { 'roobert/tabtree.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'Weissle/easy-action' },
-  {
-    'gbprod/stay-in-place.nvim',
-    config = function()
-      local stayinplace = require('stay-in-place')
-      stayinplace.setup({
-        set_keymaps = false,
-        preserve_visual_selection = true,
-      })
-      -- vim.keymap.set('n', '>', stayinplace.shift_right, { noremap = true, expr = true, noremap = true })
-      -- vim.keymap.set('n', '<', stayinplace.shift_left, { noremap = true, expr = true, noremap = true })
-      vim.keymap.set('n', '=', stayinplace.filter, { noremap = true, expr = true })
-      vim.keymap.set('n', '>>', stayinplace.shift_right_line, { noremap = true })
-      vim.keymap.set('n', '<<', stayinplace.shift_left_line, { noremap = true })
-      vim.keymap.set('n', '==', stayinplace.filter_line, { noremap = true })
-      vim.keymap.set('x', '>', stayinplace.shift_right_visual, { noremap = true })
-      vim.keymap.set('x', '<', stayinplace.shift_left_visual, { noremap = true })
-      vim.keymap.set('x', '=', stayinplace.filter_visual, { noremap = true })
-    end,
-  },
+  { 'gbprod/stay-in-place.nvim' },
   {
     'cbochs/portal.nvim',
     -- Optional dependencies
@@ -596,14 +359,13 @@ local plugins = {
   -- movement highlighters
   -- https://github.com/tzachar/local-highlight.nvim
   -- https://github.com/jjshoots/betterf.nvim/tree/main
+  { 'smoka7/hop.nvim', event = { 'BufReadPost', 'BufNewFile' } },
+  { 'folke/flash.nvim', event = 'VeryLazy' },
   {
-    'smoka7/hop.nvim',
-    event = { 'BufReadPost', 'BufNewFile' },
-  },
-  {
-    'folke/flash.nvim',
+    's1n7ax/nvim-window-picker',
+    name = 'window-picker',
     event = 'VeryLazy',
-    -- stylua: ignore
+    version = '2.*',
   },
   -- cursor
   { 'romainl/vim-cool', event = { 'BufReadPost', 'BufNewFile' } },
@@ -633,13 +395,13 @@ local plugins = {
 
       vim.g.matchup_matchparen_pumvisible = 0
       -- 1 (show matching even when pum-completion is visible)
-      -- vim.g.matchup_matchparen_offscreen = { method = 'popup' } -- method = popup, status, status_minimal
+      vim.g.matchup_matchparen_offscreen = { method = 'popup' } -- method = popup, status, status_minimal
 
       vim.g.matchup_motion_override_Npercent = 0 -- enable vim default {count}%
       vim.g.matchup_matchparen_timeout = 150 -- 300
       vim.g.matchup_matchparen_insert_timeout = 30 -- 60
       vim.g.matchup_matchparen_deferred = 1
-      vim.g.matchup_matchparen_deferred_fade_time = 0 -- 0 (ms match will disappear after no movement)
+      vim.g.matchup_matchparen_deferred_fade_time = 300 -- 0 (ms match will disappear after no movement)
       vim.g.matchup_matchparen_deferred_show_delay = 50 -- 50 (time between cursor stop moving and match check)
       vim.g.matchup_matchparen_deferred_hide_delay = 700 -- 700 (hide stale matches after n seconds of cursor movement)
       vim.g.matchup_matchparen_hi_surround_always = 1
@@ -668,14 +430,8 @@ local plugins = {
     },
   },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
-  {
-    'altermo/ultimate-autopair.nvim',
-    event = { 'InsertEnter' },
-    -- branch = 'v0.6',
-    branch = 'development',
-  },
+  { 'altermo/ultimate-autopair.nvim', event = { 'InsertEnter' }, branch = 'development' }, -- branch = 'v0.6',
   { 'gbprod/substitute.nvim', event = { 'VeryLazy' } },
-  -- textobjects
   -- split/join
   { 'echasnovski/mini.splitjoin', event = { 'VeryLazy' } },
   {
@@ -689,43 +445,28 @@ local plugins = {
   -- traversal/swapping
   { 'mizlan/iswap.nvim', event = { 'BufReadPost', 'BufNewFile' } },
   { 'ziontee113/SelectEase', event = 'VeryLazy' },
-  {
-    'chrisgrieser/nvim-spider',
-    event = 'VeryLazy',
-  },
+  { 'chrisgrieser/nvim-spider', event = 'VeryLazy' },
   { 'echasnovski/mini.move', event = 'VeryLazy' },
   -- alignment
   { 'echasnovski/mini.align', event = 'VeryLazy' },
-  {
-    'dhruvasagar/vim-table-mode',
-    event = 'VeryLazy',
-    ft = { 'markdown', 'pandoc', 'vimwiki' },
-  },
+  { 'dhruvasagar/vim-table-mode', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
   { 'echasnovski/mini.doc', version = false, event = 'VeryLazy' },
   { 'echasnovski/mini.bracketed', event = 'VeryLazy' },
-  {
-    'jkramer/vim-checkbox',
-    event = 'VeryLazy',
-    ft = { 'markdown', 'pandoc', 'vimwiki' },
-  },
+  { 'jkramer/vim-checkbox', event = 'VeryLazy', ft = { 'markdown', 'pandoc', 'vimwiki' } },
   -- formatting
   { 'johmsalas/text-case.nvim', event = 'VeryLazy' },
+  { 'echasnovski/mini.operators', version = false },
   {
+    -- https://www.reddit.com/r/neovim/comments/1bq0cxy/minidiff_work_with_diff_hunks_interactively/
     'echasnovski/mini.comment',
     -- keep this for operator  (dgc, dgb, cgc) and visual functions
     event = 'VeryLazy',
     opts = {
-      -- mappings = {
-      --   comment_line = 'gcc',
-      --   comment_visual = 'gc',
-      --   comment = 'gc',
-      --   textobject = 'gc',
-      -- },
       mappings = {
         --   -- Toggle comment (like `gcip` - comment inner paragraph) for both Normal and Visual modes
-        comment = 'gc', -- gc
+        comment = '', -- gc
         comment_line = '', -- gcc
-        comment_visual = 'gc',
+        comment_visual = 'gc', -- gc
         --   -- Define 'comment' textobject (like `dgc` - delete whole comment block)
         --   -- Works also in Visual mode if mapping differs from `comment_visual`
         text_object = 'gc',
@@ -738,8 +479,9 @@ local plugins = {
       },
     },
   },
+  -- keep this for block functions
   { 'numToStr/Comment.nvim', event = 'VeryLazy' },
-  { 'andrewferrier/debugprint.nvim', event = 'VeryLazy' },
+  { 'andrewferrier/debugprint.nvim', commit = '5b450f9', event = 'VeryLazy' },
   -- https://github.com/kr40/nvim-macros
   {
     'ecthelionvi/NeoComposer.nvim',
@@ -747,11 +489,7 @@ local plugins = {
     dependencies = { 'kkharji/sqlite.lua', 'telescope.nvim' },
   },
   { 'tpope/vim-repeat', event = 'VeryLazy' },
-  {
-    'smjonas/live-command.nvim',
-    -- branch = 'remote',
-    event = 'VeryLazy',
-  },
+  { 'smjonas/live-command.nvim', event = 'VeryLazy' }, -- branch = 'remote',
   { 'Konfekt/vim-alias', event = 'VeryLazy' },
   --
   -- pickers
@@ -825,6 +563,7 @@ local plugins = {
       'nvim-telescope/telescope-symbols.nvim',
       'nvim-telescope/telescope-ui-select.nvim',
       'nvim-telescope/telescope-z.nvim',
+      'catgoose/telescope-helpgrep.nvim',
       'paopaol/telescope-git-diffs.nvim',
       'ptethng/telescope-makefile',
       'rlch/github-notifications.nvim',
@@ -844,6 +583,8 @@ local plugins = {
       { 'nvim-telescope/telescope-frecency.nvim', dependencies = { 'kkharji/sqlite.lua' } },
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       {
+        -- https://github.com/ptdewey/yankbank-nvim
+        -- https://github.com/mistricky/codesnap.nvim
         'gbprod/yanky.nvim',
         -- keys = {
         --   {
@@ -872,6 +613,7 @@ local plugins = {
         --   { '=P', '<Plug>(YankyPutBeforeFilter)', desc = 'Put before applying a filter' },
         -- },
       },
+      -- https://github.com/rktjmp/fwatch.nvim
       { 'GustavoKatel/telescope-asynctasks.nvim', dependencies = { 'skywind3000/asynctasks.vim' } },
       -- { "rmagatti/session-lens", dependencies = "rmagatti/auto-session" },
       { 'PhilippFeO/telescope-filelinks.nvim' },
@@ -915,7 +657,6 @@ local plugins = {
   -- git tools
   --
   -- https://github.com/dlvhdr/gh-blame.nvim
-
   {
     'ray-x/forgit.nvim',
     config = function()
@@ -935,6 +676,7 @@ local plugins = {
     end,
   },
 
+  -- https://www.reddit.com/r/neovim/comments/1broo6b/my_git_github_workflow_an_efficient_yet_messy/
   { 'rbong/vim-flog', cmd = { 'Flog', 'Flogsplit' } },
   { 'ThePrimeagen/git-worktree.nvim', event = 'VeryLazy' },
   { 'napisani/nvim-github-codesearch', cmd = 'GithubSearch', build = 'make' },
@@ -968,6 +710,8 @@ local plugins = {
   -- { 'tpope/vim-apathy' }
   -- tools and integrations
   --
+  -- https://neovimcraft.com/plugin/otavioschwanck/tmux-awesome-manager.nvim
+  -- https://www.reddit.com/r/neovim/comments/1bempth/neovim_project_management_with_tmux_zoxide_fzf/
   { 'aserowy/tmux.nvim', event = 'VeryLazy' },
   { 'jbyuki/quickmath.nvim', cmd = 'Quickmath' },
   {
@@ -998,10 +742,12 @@ local plugins = {
     cmd = { 'Neotest', 'NeotestSummary', 'NeotestNearest', 'NeotestAttach' },
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'nvim-neotest/neotest-python',
       'nvim-neotest/neotest-plenary',
+      'nvim-neotest/neotest-python',
       'rouge8/neotest-rust',
       'akinsho/neotest-go',
+      'nvim-neotest/nvim-nio',
+      'antoinemadec/FixCursorHold.nvim',
       'nvim-treesitter/nvim-treesitter',
       {
         'nvim-neotest/neotest-vim-test',
@@ -1009,6 +755,7 @@ local plugins = {
       },
     },
   },
+  { 'filipdutescu/renamer.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
   -- quickfix file renamer
   {
     'gabrielpoca/replacer.nvim',
@@ -1068,19 +815,12 @@ local plugins = {
       'ComposeDestroy',
     },
   },
+  -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-visits.md
   { 'LeonHeidelbach/trailblazer.nvim' },
   { 'kelly-lin/ranger.nvim', lazy = true },
   { 'lambdalisue/suda.vim', event = 'VeryLazy' },
-  {
-    'skywind3000/asynctasks.vim',
-    event = 'VeryLazy',
-    dependencies = 'skywind3000/asyncrun.vim',
-  },
-  {
-    'aymericbeaumet/vim-symlink',
-    event = 'VeryLazy',
-    dependencies = 'moll/vim-bbye',
-  },
+  { 'skywind3000/asynctasks.vim', event = 'VeryLazy', dependencies = 'skywind3000/asyncrun.vim' },
+  { 'aymericbeaumet/vim-symlink', event = 'VeryLazy', dependencies = 'moll/vim-bbye' },
   -- https://github.com/krady21/compiler-explorer.nvim
   {
     't-troebst/perfanno.nvim',
@@ -1113,12 +853,9 @@ local plugins = {
       'New',
     },
   },
+
   { 'echasnovski/mini.test', lazy = true },
-  {
-    'gennaro-tedesco/nvim-jqx',
-    lazy = true,
-    cmd = { 'JqxList', 'JqxQuery' },
-  },
+  { 'gennaro-tedesco/nvim-jqx', lazy = true, cmd = { 'JqxList', 'JqxQuery' } },
   { 'npxbr/glow.nvim', cmd = 'Glow' },
   { 'NTBBloodbath/rest.nvim', cmd = { 'RESTRunLast', 'RESTRun', 'RESTPreview' } },
   { 'dbeniamine/cheat.sh-vim', cmd = 'Cheat' },
@@ -1126,11 +863,7 @@ local plugins = {
   { 'sidebar-nvim/sidebar.nvim', cmd = { 'SidebarNvimOpen', 'SidebarNvimToggle' } },
   { 'nvimtools/hydra.nvim', event = 'VeryLazy' }, -- anuvyklack
   { 'NvChad/nvim-colorizer.lua', event = { 'BufReadPost', 'BufNewFile' } },
-  {
-    'nvim-colortils/colortils.nvim',
-    cmd = 'Colortils',
-    event = { 'BufReadPost', 'BufNewFile' },
-  },
+  { 'nvim-colortils/colortils.nvim', cmd = 'Colortils', event = { 'BufReadPost', 'BufNewFile' } },
   {
     'kawre/leetcode.nvim',
     build = ':TSUpdate html',
@@ -1147,11 +880,7 @@ local plugins = {
       arg = 'leetcode.nvim',
     },
   },
-  {
-    'xeluxee/competitest.nvim',
-    cmd = 'CompetiTestRun',
-    dependencies = 'MunifTanjim/nui.nvim',
-  },
+  { 'xeluxee/competitest.nvim', cmd = 'CompetiTestRun', dependencies = 'MunifTanjim/nui.nvim' },
   {
     -- A lua profiler for neovim that is discovered thanks to https://www.reddit.com/r/neovim/comments/xicxox/comment/ip2hprd
     'stevearc/profile.nvim',
@@ -1165,8 +894,7 @@ local plugins = {
     config = function()
       require('sort').setup({
         {
-          -- List of delimiters, in descending order of priority, to automatically
-          -- sort on.
+          -- List of delimiters, in descending order of priority, to automatically sort on.
           delimiters = {
             ',',
             '|',
@@ -1336,10 +1064,13 @@ local plugins = {
       })
     end,
   },
+  -- for rendering panda dataframes in dap using visidata
+  -- https://github.com/Willem-J-an/visidata.nvim
   {
     'ten3roberts/qf.nvim',
     -- Unlike :cnext and :cprev, :Qnext and :Qprev will not navigate to valid entries which contain file names, as well as wrapping.
-    -- :Qsave, :Qload:Qbelow, :Qabove, :Lbelow, Labove, etc will navigate to the next or previous entry relative to the cursor. However, unlike :cabove it will cross buffer boundaries.
+    -- :Qsave, :Qload:Qbelow, :Qabove, :Lbelow, Labove, etc will navigate to the next or previous entry relative to the cursor.
+    -- However, unlike :cabove it will cross buffer boundaries.
   },
   -- https://github.com/Zeioth/markmap.nvim
   {
@@ -1401,11 +1132,7 @@ local plugins = {
   },
   { 'raimon49/requirements.txt.vim', event = 'VeryLazy', lazy = lz_syn },
   { 'godlygeek/tabular', event = 'VeryLazy', lazy = lz_syn },
-  {
-    'preservim/vim-markdown',
-    commit = 'df4be86',
-    dependencies = { 'godlygeek/tabular' },
-  },
+  { 'preservim/vim-markdown', commit = 'df4be86', dependencies = { 'godlygeek/tabular' } },
 }
 
 utils.apply_configs(plugins)

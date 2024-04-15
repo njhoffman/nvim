@@ -140,10 +140,12 @@ keymap('n', 'dd', function()
   return 'dd'
 end, { expr = true, nowait = true })
 
+--  TODO: gcp/gcP/gbp/gbP new line with indent, gc< and gb< inline
+
 -- stylua: ignore start
 -- base mappings
 map({'n','o', 'x'}, 'y', '<Plug>(YankyYank)', { desc = '  sticky yank',  silent = true })
-map('n', 'yil', 'v0o$y', { category = 'Motion', desc = '  yank in line', silent = true }) -- <cmd>normal yy<cr>
+-- map('n', 'yil', 'v0o$y', { category = 'Motion', desc = '  yank in line', silent = true }) -- <cmd>normal yy<cr>
 map('n', 'yy',  'v0o$y', { category = 'Motion', desc = '  yank in line'  })
 -- map({'n', 'x'}, 'y',         'ygv<esc>',  category = 'Motion', label = 'yank keep cursor begin', desc = '  yank maintaining cursor start position', silent = true })
 -- map('n', 'yy', 'mQ0y$`Q',                { category = 'Motion', label = 'yank in line no eol',    desc = '  yank in line no eol' })

@@ -27,24 +27,28 @@ local function find_and_run_codelens()
     return a.range.start.line > b.range.start.line
   end)
 
-  vim.api.nvim_win_set_cursor(0, { lenses[1].range.start.line + 1, lenses[1].range.start.character })
+  vim.api.nvim_win_set_cursor(
+    0,
+    { lenses[1].range.start.line + 1, lenses[1].range.start.character }
+  )
   vim.lsp.codelens.run()
   vim.api.nvim_win_set_cursor(0, { row, col }) -- restore cursor
 end
 
 local code_lens_provider = function(_, bufnr)
-  vim.cmd('highlight default link LspCodeLens NonText')
-  vim.cmd('highlight default link LspCodeLensSeparator NonText')
+  return
+  -- vim.cmd('highlight default link LspCodeLens NonText')
+  -- vim.cmd('highlight default link LspCodeLensSeparator NonText')
 
-  local group = vim.api.nvim_create_augroup('LspCodelens', {})
-  vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'BufWritePost', 'CursorHold' }, {
-    buffer = bufnr,
-    group = group,
-    callback = function()
-      return vim.lsp.codelens.refresh()
-    end,
-  })
-  mapping.codelens(find_and_run_codelens)
+  -- local group = vim.api.nvim_create_augroup('LspCodelens', {})
+  -- vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'BufWritePost', 'CursorHold' }, {
+  --   buffer = bufnr,
+  --   group = group,
+  --   callback = function()
+  --     return vim.lsp.codelens.refresh()
+  --   end,
+  -- })
+  -- mapping.codelens(find_and_run_codelens)
 end
 
 local document_formatting_provider = function(client, bufnr)
