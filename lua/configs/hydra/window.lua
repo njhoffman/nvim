@@ -74,7 +74,7 @@ local function move_split_size()
       },
     },
     mode = 'n',
-    body = '<C-W>',
+    body = '<leader>!w',
     heads = {
       -- TODO: enable popup windows if they are not notify
       -- Move focus

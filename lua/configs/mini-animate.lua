@@ -109,18 +109,39 @@ end
 
 local cfg = {
   cursor = {
-    enable = false,
+    enable = true,
     -- gen_path.line(), gen_path.angle(), gen_path.walls(), gen_path.spiral()
     timing = animate.gen_timing.linear({ duration = 100, unit = 'total' }),
     -- path = animate.gen_path.line(),
     path = animate.gen_path.angle(),
+    -- timing = animate.gen_timing.linear({ duration = 50, unit = "total" }),
   },
   scroll = {
-    enable = true,
+    enable = false,
     -- Animate for 200 milliseconds with linear easing
     timing = animate.gen_timing.quadratic({ duration = 200, unit = 'total' }),
+    subscroll = animate.gen_subscroll.equal({
+      max_output_steps = 120,
+      predicate = function(total_scroll)
+        if mouse_scrolled then
+          mouse_scrolled = false
+          return false
+        end
+        return total_scroll > 5
+      end,
+    }),
     -- Animate equally but with at most 120 steps instead of default 60
-    subscroll = animate.gen_subscroll.equal({ max_output_steps = 120 }), -- Animate equally but with at most 120 steps instead of default 60
+    -- subscroll = animate.gen_subscroll.equal({ max_output_steps = 120 }),
+    -- subscroll = animate.gen_subscroll.equal({
+    --   predicate = function(total_scroll)
+    --     if mouse_scrolled then
+    --       mouse_scrolled = false
+    --       return false
+    --     end
+    --     return total_scroll > 1
+    --   end,
+    -- }),
+    -- Animate equally but with at most 120 steps instead of default 60
   },
   resize = {
     timing = animate.gen_timing.linear({ duration = 200, unit = 'total' }),
@@ -144,6 +165,7 @@ local cfg = {
     winblend = animate.gen_winblend.linear({ from = 100, to = 50 }),
   },
 }
+
 require('mini.animate').setup(cfg)
 
 -- require('mini.animate').execute_after('scroll', 'normal! n nzvzz')

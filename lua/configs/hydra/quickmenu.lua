@@ -40,7 +40,7 @@ _m_: Show Man Pages
         show_name = true,
       },
     },
-    body = '<A-q>',
+    body = '<leader>!m',
     heads = {
       { 't', cmd('Telescope help_tags'), { desc = 'Open Help Tags', silent = true } },
       { 'k', ":lua require('telescope.builtin').keymaps()<CR>", { desc = 'Open Neovim Keymaps', silent = true } },

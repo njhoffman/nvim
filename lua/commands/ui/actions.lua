@@ -7,8 +7,9 @@ local auto_close = {
   'notify',
 }
 
--- local cmd = 'BufferDelete'
-local cmd = 'Bdelete'
+-- local cmd =
+local cmd = 'bd' -- 'BufferDelete', 'Bdelete'
+
 local close_multi = function(skip_prompt)
   local tabs = vim.api.nvim_list_tabpages() or {}
   local splits = utils.get_splits({ 'l', 'h', 'j', 'k' }, true) or {}
@@ -21,27 +22,26 @@ local close_multi = function(skip_prompt)
   end
   local bufs = utils.get_loaded_buffers()
   local ft = vim.bo.filetype
+  local ok, err = nil, nil
+  if is_popup or #splits > 1 then
+    ok, err = pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
+  end
 
-  if vim.tbl_contains(auto_close, ft) then
-    pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
-  elseif is_popup then
-    pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
-  elseif #splits > 1 then
-    pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
-  else
+  if not ok then
+    -- if vim.tbl_contains(auto_close, ft) then
+    --   pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
+    -- end
     if skip_prompt == true then
       vim.cmd('silent! ' .. cmd .. '!')
       if #bufs == 0 then
         vim.cmd('exit')
       end
-    else
-      if #bufs > 0 then
-        local ok, err = pcall(vim.api.nvim_command, 'silent ' .. cmd)
-        if not ok then
-          vim.notify('close_multi failed: silent ' .. cmd .. ' ' .. vim.inspect(err), 1)
-        end
-      end
+    elseif #bufs > 0 then
+      ok, err = pcall(vim.api.nvim_command, 'silent ' .. cmd)
     end
+  end
+  if not ok then
+    vim.notify('close_multi failed: silent ' .. cmd .. ' ' .. vim.inspect(err), 1)
   end
   if #bufs == 0 then
     vim.cmd('silent! Alpha')

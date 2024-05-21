@@ -1,12 +1,12 @@
-local require = require("noice.util.lazy")
+local require = require('noice.util.lazy')
 
-local Util = require("noice.util")
-local Config = require("noice.config")
-local Menu = require("nui.menu")
-local Api = require("noice.api")
-local NuiLine = require("nui.line")
-local Scrollbar = require("noice.view.scrollbar")
-local Highlights = require("noice.config.highlights")
+local Util = require('noice.util')
+local Config = require('noice.config')
+local Menu = require('nui.menu')
+local Api = require('noice.api')
+local NuiLine = require('nui.line')
+local Scrollbar = require('noice.view.scrollbar')
+local Highlights = require('noice.config.highlights')
 
 local M = {}
 ---@type NuiMenu|NuiTree
@@ -26,7 +26,7 @@ function M.align(state)
   for _, item in ipairs(state.items) do
     local width = item.text:width()
     if width < max_width then
-      item.text:append(string.rep(" ", max_width - width))
+      item.text:append(string.rep(' ', max_width - width))
     end
   end
   return max_width
@@ -37,30 +37,31 @@ end
 function M.format_abbr(item, prefix)
   local text = item.abbr or item.word
   if prefix and text:lower():find(prefix:lower(), 1, true) == 1 then
-    item.text:append(text:sub(1, #prefix), "NoicePopupmenuMatch")
-    item.text:append(text:sub(#prefix + 1), "NoiceCompletionItemWord")
+    item.text:append(text:sub(1, #prefix), 'NoicePopupmenuMatch')
+    item.text:append(text:sub(#prefix + 1), 'NoiceCompletionItemWord')
   else
-    item.text:append(text, "NoiceCompletionItemWord")
+    item.text:append(text, 'NoiceCompletionItemWord')
   end
 end
 
 ---@param item CompleteItem
 function M.format_menu(item)
-  if item.menu and item.menu ~= "" then
-    item.text:append(" ")
-    item.text:append(item.menu, "NoiceCompletionItemMenu")
+  if item.menu and item.menu ~= '' then
+    item.text:append(' ')
+    item.text:append(item.menu, 'NoiceCompletionItemMenu')
   end
 end
 
 ---@param item CompleteItem
 function M.format_kind(item)
-  if item.kind and item.kind ~= "" then
-    local hl_group = "CompletionItemKind" .. item.kind
-    hl_group = Highlights.defaults[hl_group] and ("Noice" .. hl_group) or "NoiceCompletionItemKindDefault"
+  if item.kind and item.kind ~= '' then
+    local hl_group = 'CompletionItemKind' .. item.kind
+    hl_group = Highlights.defaults[hl_group] and ('Noice' .. hl_group)
+      or 'NoiceCompletionItemKindDefault'
     local icon = Config.options.popupmenu.kind_icons[item.kind]
-    item.text:append(" ")
+    item.text:append(' ')
     if icon then
-      item.text:append(vim.trim(icon) .. " ", hl_group)
+      item.text:append(vim.trim(icon) .. ' ', hl_group)
     end
     item.text:append(item.kind, hl_group)
   end
@@ -70,43 +71,49 @@ end
 function M.opts(state)
   local is_cmdline = state.grid == -1
 
-  local view = require("noice.config.views").get_options(is_cmdline and "cmdline_popupmenu" or "popupmenu")
+  local view =
+    require('noice.config.views').get_options(is_cmdline and 'cmdline_popupmenu' or 'popupmenu')
 
   local _opts = vim.deepcopy(view or {})
   _opts.enter = false
-  _opts.type = "popup"
+  _opts.type = 'popup'
 
   local opts = Util.nui.normalize(_opts)
   ---@cast opts _.NuiPopupOptions
 
-  local padding = opts.border and opts.border.padding or {
-    left = 0,
-    right = 0,
-    top = 0,
-    bottom = 0,
-  }
+  local padding = opts.border and opts.border.padding
+    or {
+      left = 0,
+      right = 0,
+      top = 0,
+      bottom = 0,
+    }
 
-  local position_auto = not opts.position or opts.position.col == "auto"
+  local position_auto = not opts.position or opts.position.col == 'auto'
   if is_cmdline then
     if position_auto then
       -- Anchor to the cmdline
       local pos = Api.get_cmdline_position()
       if pos then
-        opts.relative = { type = "editor" }
+        opts.relative = { type = 'editor' }
         opts.position = {
           row = pos.screenpos.row,
           col = pos.screenpos.col + state.col - padding.left,
         }
+        -- the padding might get the window below 0
+        if opts.position.col < 0 then
+          opts.position.col = 0
+        end
         if pos.screenpos.row == vim.go.lines then
           opts.position.row = opts.position.row - 1
-          opts.anchor = "SW"
+          opts.anchor = 'SW'
         end
       end
     end
   else
-    opts.relative = { type = "cursor" }
-    local border = vim.tbl_get(opts, "border", "style")
-    local offset = (border == nil or border == "none") and 0 or 1
+    opts.relative = { type = 'cursor' }
+    local border = vim.tbl_get(opts, 'border', 'style')
+    local offset = (border == nil or border == 'none') and 0 or 1
     opts.position = {
       row = 1 + offset,
       col = -padding.left,
@@ -116,8 +123,8 @@ function M.opts(state)
   -- manage left/right padding on the line
   -- otherwise the selected CursorLine does not extend to the edges
   if opts.border and opts.border.padding then
-    opts.border.padding = vim.tbl_deep_extend("force", {}, padding, { left = 0, right = 0 })
-    if opts.size and type(opts.size.width) == "number" then
+    opts.border.padding = vim.tbl_deep_extend('force', {}, padding, { left = 0, right = 0 })
+    if opts.size and type(opts.size.width) == 'number' then
       opts.size.width = opts.size.width + padding.left + padding.right
     end
   end
@@ -149,12 +156,12 @@ function M.show(state)
   end
 
   for _, item in ipairs(state.items) do
-    if type(item) == "string" then
+    if type(item) == 'string' then
       item = { word = item }
     end
     item.text = NuiLine()
     if padding.left then
-      item.text:append(string.rep(" ", padding.left))
+      item.text:append(string.rep(' ', padding.left))
     end
   end
 
@@ -168,15 +175,15 @@ function M.show(state)
 
   for _, item in ipairs(state.items) do
     if padding.right then
-      item.text:append(string.rep(" ", padding.right))
+      item.text:append(string.rep(' ', padding.right))
     end
     for _, t in ipairs(item.text._texts) do
-      t._content = t._content:gsub("[\n\r]+", " ")
+      t._content = t._content:gsub('[\n\r]+', ' ')
     end
   end
 
   opts = vim.tbl_deep_extend(
-    "force",
+    'force',
     opts,
     Util.nui.get_layout({
       width = max_width + 1, -- +1 for scrollbar
@@ -216,9 +223,9 @@ function M.create(items, opts)
     lines = items,
   })
   M.menu:mount()
-  Util.tag(M.menu.bufnr, "popupmenu")
+  Util.tag(M.menu.bufnr, 'popupmenu')
   if M.menu.border then
-    Util.tag(M.menu.border.bufnr, "popupmenu.border")
+    Util.tag(M.menu.border.bufnr, 'popupmenu.border')
   end
 
   M.scroll = Scrollbar({
@@ -237,7 +244,7 @@ end
 function M.on_select(state)
   if M.menu and state.selected ~= -1 then
     vim.api.nvim_win_set_cursor(M.menu.winid, { state.selected + 1, 0 })
-    vim.api.nvim_exec_autocmds("WinScrolled", { modeline = false })
+    vim.api.nvim_exec_autocmds('WinScrolled', { modeline = false })
   end
 end
 

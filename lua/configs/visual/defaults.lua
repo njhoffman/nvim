@@ -312,3 +312,4 @@ local defaults = {
     },
   },
 }
+return defaults

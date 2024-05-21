@@ -17,6 +17,7 @@ local focus_or_close_hover = function()
     vim.api.nvim_command('wincmd p')
     return true
   end
+
   local win = find_window_by_var('hover', state.bufnr)
   if win and vim.api.nvim_win_is_valid(win) and vim.fn.pumvisible() == 0 then
     -- focus and return the existing buf, win
@@ -39,7 +40,9 @@ local get_styled_content = function(_lines, width)
 end
 
 local is_resize_finished = function(dims)
-  return (dims.new_w == dims.old_w and dims.new_h == dims.old_h) or not vim.api.nvim_win_is_valid(state.winnr)
+  return (dims.new_w == dims.old_w and dims.new_h == dims.old_h)
+    or not state.winnr
+    or not vim.api.nvim_win_is_valid(state.winnr)
 end
 
 local function resize_window(dims)
@@ -50,10 +53,12 @@ local function resize_window(dims)
     }
     dims.old_w = dims.old_w + inc.w
     dims.old_h = dims.old_h + inc.h
+
     if not is_resize_finished(dims) then
       vim.api.nvim_win_set_config(state.winnr, { width = dims.old_w, height = dims.old_h })
       resize_window(dims)
     end
+    vim.api.nvim_set_option_value('scrolloff', math.floor(dims.new_h / 2), { win = state.winnr })
   end, 1)
 end
 
@@ -62,15 +67,6 @@ local get_max_size = function()
     w = ui_dimensions.get_max_width(config.get().max_width),
     h = ui_dimensions.get_max_height(config.get().max_height),
   }
-end
-
-local set_scrolloff = function()
-  local curr_so = vim.api.nvim_get_option_value('scrolloff', { win = state.winnr })
-  local scrolloff = ui_dimensions.get_max_height('50%')
-  if scrolloff > curr_so then
-    scrolloff = curr_so
-  end
-  vim.api.nvim_set_option_value('scrolloff', scrolloff, { win = state.winnr })
 end
 
 local set_filetype = function(ft)
@@ -88,8 +84,6 @@ local load_hover = function(provider_id, result, opts)
     -- end
   end
   state.bufnr = state.ft_bufnr[ft]
-
-  set_scrolloff()
 
   vim.api.nvim_set_option_value('winbar', '...', { win = state.winnr })
   if result and type(result) == 'table' and result.lines then
@@ -115,7 +109,7 @@ local create_window = function(width, height, opts)
     relative = 'win',
     height = height,
     width = width,
-    focusable = true,
+    focusable = false,
     bufpos = { 0, 0 },
     row = vim.api.nvim_win_get_height(0) - 1,
     col = vim.api.nvim_win_get_width(0),
@@ -125,8 +119,6 @@ local create_window = function(width, height, opts)
     -- title = "Hover",
     -- titlepos = 'Center'
   })
-
-  set_scrolloff()
 
   -- Setup keymaps
   require('hover.aucommands').create(state.winnr, opts)
@@ -138,6 +130,7 @@ local create_window = function(width, height, opts)
   vim.api.nvim_set_option_value('winblend', 20, { win = state.winnr })
   vim.api.nvim_set_option_value('wrap', false, { win = state.winnr })
   vim.api.nvim_set_option_value('scroll', 0, { win = state.winnr })
+  vim.api.nvim_set_option_value('scrolloff', math.floor(height / 2), { win = state.winnr })
   vim.api.nvim_set_option_value('sidescrolloff', 0, { win = state.winnr })
   -- vim.api.nvim_set_option_value('modifiable', false, { buf = state.bufnr })
   -- vim.api.nvim_set_option_value('readonly', true, { buf = state.bufnr })

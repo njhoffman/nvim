@@ -1,0 +1,163 @@
+
+--- Module config
+---
+--- Default values:
+---@eval return MiniDoc.afterlines_to_code(MiniDoc.current.eval_section)
+---@text                                               *MiniSurround-vim-surround-config*
+--- # Setup similar to 'tpope/vim-surround' ~
+---
+--- This module is primarily designed after 'machakann/vim-sandwich'. To get
+--- behavior closest to 'tpope/vim-surround' (but not identical), use this setup:
+--- >
+---   require('mini.surround').setup({
+---     mappings = {
+---       add = 'ys',
+---       delete = 'ds',
+---       find = '',
+---       find_left = '',
+---       highlight = '',
+---       replace = 'cs',
+---       update_n_lines = '',
+---
+---       -- Add this only if you don't want to use extended mappings
+---       suffix_last = '',
+---       suffix_next = '',
+---     },
+---     search_method = 'cover_or_next',
+---   })
+---
+---   -- Remap adding surrounding to Visual mode selection
+---   vim.keymap.del('x', 'ys')
+---   vim.keymap.set('x', 'S', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
+---
+---   -- Make special mapping for "add surrounding for line"
+---   vim.keymap.set('n', 'yss', 'ys_', { remap = true })
+--- <
+--- # Options ~
+---
+--- ## Custom surroundings ~
+---
+--- User can define own surroundings by supplying `config.custom_surroundings`.
+--- It should be a **table** with keys being single character surrounding
+--- identifier and values - surround specification (see
+--- |MiniSurround-surround-specification|).
+---
+--- General recommendations:
+--- - In `config.custom_surroundings` only some data can be defined (like only
+---   `output`). Other fields will be taken from builtin surroundings.
+--- - Function returning surround info at <input> or <output> fields of
+---   specification is helpful when user input is needed (like asking for
+---   function name). Use |input()| or |MiniSurround.user_input()|. Return
+---   `nil` to stop any current surround operation.
+---
+--- Examples of using `config.custom_surroundings` (see more examples at
+--- |MiniSurround.gen_spec|):
+--- >
+---   local surround = require('mini.surround')
+---   surround.setup({
+---     custom_surroundings = {
+---       -- Make `)` insert parts with spaces. `input` pattern stays the same.
+---       [')'] = { output = { left = '( ', right = ' )' } },
+---
+---       -- Use function to compute surrounding info
+---       ['*'] = {
+---         input = function()
+---           local n_star = MiniSurround.user_input('Number of * to find: ')
+---           local many_star = string.rep('%*', tonumber(n_star) or 1)
+---           return { many_star .. '().-()' .. many_star }
+---         end,
+---         output = function()
+---           local n_star = MiniSurround.user_input('Number of * to output: ')
+---           local many_star = string.rep('*', tonumber(n_star) or 1)
+---           return { left = many_star, right = many_star }
+---         end,
+---       },
+---     },
+---   })
+---
+---   -- Create custom surrounding for Lua's block string `[[...]]`. Use this inside
+---   -- autocommand or 'after/ftplugin/lua.lua' file.
+---   vim.b.minisurround_config = {
+---     custom_surroundings = {
+---       s = {
+---         input = { '%[%[().-()%]%]' },
+---         output = { left = '[[', right = ']]' },
+---       },
+---     },
+---   }
+--- <
+--- ## Respect selection type ~
+---
+--- Boolean option `config.respect_selection_type` controls whether to respect
+--- selection type when adding and deleting surrounding. When enabled:
+--- - Linewise adding places surroundings on separate lines while indenting
+---   surrounded lines ones.
+--- - Deleting surroundings which look like they were the result of linewise
+---   adding will act to revert it: delete lines with surroundings and dedent
+---   surrounded lines ones.
+--- - Blockwise adding places surroundings on whole edges, not only start and
+---   end of selection. Note: it doesn't really work outside of text and in
+---   presence of multibyte characters; and probably won't due to
+---   implementation difficulties.
+---
+--- ## Search method ~
+---
+--- Value of `config.search_method` defines how best match search is done.
+--- Based on its value, one of the following matches will be selected:
+--- - Covering match. Left/right edge is before/after left/right edge of
+---   reference region.
+--- - Previous match. Left/right edge is before left/right edge of reference
+---   region.
+--- - Next match. Left/right edge is after left/right edge of reference region.
+--- - Nearest match. Whichever is closest among previous and next matches.
+---
+--- Possible values are:
+--- - `'cover'` - use only covering match. Don't use either previous or
+---   next; report that there is no surrounding found.
+--- - `'cover_or_next'` (default) - use covering match. If not found, use next.
+--- - `'cover_or_prev'` - use covering match. If not found, use previous.
+--- - `'cover_or_nearest'` - use covering match. If not found, use nearest.
+--- - `'next'` - use next match.
+--- - `'previous'` - use previous match.
+--- - `'nearest'` - use nearest match.
+---
+--- Note: search is first performed on the reference region lines and only
+--- after failure - on the whole neighborhood defined by `config.n_lines`. This
+--- means that with `config.search_method` not equal to `'cover'`, "previous"
+--- or "next" surrounding will end up as search result if they are found on
+--- first stage although covering match might be found in bigger, whole
+--- neighborhood. This design is based on observation that most of the time
+--- operation is done within reference region lines (usually cursor line).
+---
+--- Here is an example of how replacing `)` with `]` surrounding is done based
+--- on a value of `'config.search_method'` when cursor is inside `bbb` word:
+--- - `'cover'`:         `(a) bbb (c)` -> `(a) bbb (c)` (with message)
+--- - `'cover_or_next'`: `(a) bbb (c)` -> `(a) bbb [c]`
+--- - `'cover_or_prev'`: `(a) bbb (c)` -> `[a] bbb (c)`
+--- - `'cover_or_nearest'`: depends on cursor position.
+---   For first and second `b` - as in `cover_or_prev` (as previous match is
+---   nearer), for third - as in `cover_or_next` (as next match is nearer).
+--- - `'next'`:          `(a) bbb (c)` -> `(a) bbb [c]`. Same outcome for `(bbb)`.
+--- - `'prev'`:          `(a) bbb (c)` -> `[a] bbb (c)`. Same outcome for `(bbb)`.
+--- - `'nearest'`: depends on cursor position (same as in `'cover_or_nearest'`).
+---
+--- ## Search suffixes ~
+---
+--- To provide more searching possibilities, 'mini.surround' creates extended
+--- mappings force "prev" and "next" methods for particular search. It does so
+--- by appending mapping with certain suffix: `config.mappings.suffix_last` for
+--- mappings which will use "prev" search method, `config.mappings.suffix_next`
+--- - "next" search method.
+---
+--- Notes:
+--- - It creates new mappings only for actions involving surrounding search:
+---   delete, replace, find (right and left), highlight.
+--- - All new mappings behave the same way as if `config.search_method` is set
+---   to certain search method. They are dot-repeatable, respect |[count]|, etc.
+--- - Supply empty string to disable creation of corresponding set of mappings.
+---
+--- Example with default values (`n` for `suffix_next`, `l` for `suffix_last`)
+--- and initial line `(aa) (bb) (cc)`.
+--- - Typing `sdn)` with cursor inside `(aa)` results into `(aa) bb (cc)`.
+--- - Typing `sdl)` with cursor inside `(cc)` results into `(aa) bb (cc)`.
+--- - Typing `2srn)]` with cursor inside `(aa)` results into `(aa) (bb) [cc]`.

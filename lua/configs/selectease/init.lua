@@ -2,8 +2,6 @@ local actions = require('configs.selectease.actions')
 local keymap = require('configs.selectease.mapping')
 local M = require('mapper')
 
-local select_ease = require('SelectEase')
-
 -- local vmap = require("mapper").vmap
 
 -- SelectEase is a tool designed to identify all nodes that match a query and select the relevant target

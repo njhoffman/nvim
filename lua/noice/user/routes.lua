@@ -15,6 +15,17 @@ local routes = {
   -- skip all lines
   -- { filter = { event = "msg_show", ["not"] = { kind = { "confirm", "confirm_sub" }, }, }, opts = { skip = true }, },
   {
+    view = 'popup',
+    filter = { event = 'msg_show', min_height = 25 },
+  },
+  {
+    view = 'notify',
+    opts = {
+      level = vim.log.levels.DEBUG,
+    },
+    filter = { any = { { event = 'msg_history_show' } } },
+  },
+  {
     view = 'mini',
     filter = {
       any = {
@@ -22,6 +33,7 @@ local routes = {
         { event = 'msg_show', find = '%d+B written$' },
         { event = 'msg_show', find = '%d+L, %d+B$' },
         { event = 'msg_show', find = '%-%-No lines in buffer%-%-' },
+
         -- all "Closed # popup windows" to mini
         { event = 'msg_show', find = '^Closed %d+ popup windows' },
         -- all "Cannot make changes, 'modifiable' is off" to mini
@@ -38,6 +50,7 @@ local routes = {
         { event = 'msg_show', find = '^E433:' },
         -- all 'no more items' to mini
         { event = 'msg_show', find = '^E553:' },
+        -- Too many nodes but not enough keys!
         -- Diagnostics
         { event = 'msg_show', find = 'No more valid diagnostics to move to' },
         -- :make
@@ -124,10 +137,6 @@ local routes = {
   --   },
   -- },
   -- always route any messages with more than 20 lines to the split view
-  {
-    view = 'popup',
-    filter = { event = 'msg_show', min_height = 20 },
-  },
   -- { filter = { event = 'msg_show', find = '^ERROR: ' }, view = 'notify' },
   -- { filter = { event = 'msg_show', kind = '', find = '^".+"  ?%d+L, %d+B$' }, opts = { skip = true }, },
   -- { filter = { event = 'msg_show', kind = '', find = '^".+"  ?%[.+%] %d+L, %d+B$' },

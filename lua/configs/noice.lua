@@ -14,40 +14,9 @@
 local noice_views = require('noice.user.views')
 local noice_routes = require('noice.user.routes')
 local noice_mapping = require('noice.user.mapping')
+
 local render = require('notify.render._entry')
 
-local cmdline_popup = {
-  views = {
-    cmdline_popup = {
-      position = {
-        row = 5,
-        col = '50%',
-      },
-      size = {
-        width = 60,
-        height = 'auto',
-      },
-    },
-    popupmenu = {
-      relative = 'editor',
-      position = {
-        row = 8,
-        col = '50%',
-      },
-      size = {
-        width = 60,
-        height = 10,
-      },
-      border = {
-        style = 'rounded',
-        padding = { 0, 1 },
-      },
-      win_options = {
-        winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
-      },
-    },
-  },
-}
 local cfg = {
   presets = {
     bottom_search = false, -- use a classic bottom cmdline for search
@@ -120,24 +89,25 @@ local cfg = {
       ['{%S-}'] = '@parameter',
     },
   },
+  -- stylua: ignore
   cmdline = {
     view = 'cmdline_popup', -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
     opts = {}, -- global options for the cmdline. See section on views
     format = {
-      -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
-      -- conceal = false,
-      -- possible
-      replace = { pattern = '^:s/', icon = '', lang = 'vim', title = 'Replace' },
-      -- -- not possible
-      -- replace_range = {
-      --   pattern = '^:([0-9.%$+-]+)[,;]([0-9.%$+-]+)s/',
-      --   icon = '',
-      --   lang = 'vim',
-      --   title = 'Replace in range [\1 to \2]',
-      -- },
-      -- possible
-      replace_all = { pattern = '^:%%s/', icon = '', lang = 'vim', title = 'Replace All' },
-    },
+      filter      = { icon = "",     pattern = "^:%s*!",          lang = "bash",   title = 'shell' },
+      cmdline     = { icon = "" ,    pattern = "^:",              lang = "vim" },
+      lua         = { icon = "",     pattern = "^:%s*lua%s+",     lang = "lua"   },
+      luaexpr     = { icon = ' ',    pattern = "^:=",             lang = "lua",    title = 'eval'  },
+      help        = { icon = "",     pattern = "^:%s*he?l?p?%s+", lang = "help",   title = 'help' },
+      numb        = { icon = '礪',    pattern = '^:%d+$',          lang = 'bash',   conceal = false  },
+      IncRename   = { icon = ' ',    pattern = '^:IncRename ',    lang = 'bash',   conceal = false, opts = { relative = 'cursor' } },
+      subs        = { icon = '',     pattern = '^:s/',            lang = 'vim',    conceal = false, title = 'replace' },
+      subs_all    = { icon = '',     pattern = '^:%%s/',          lang = 'vim',    conceal = false,   title = 'replace  all' },
+      global      = { icon = ' ',    pattern = '^:g/',            lang = 'vim',    conceal = false,   title = 'replace  all' },
+      -- input       = { icon = ' ',  pattern = '^:/',             lang = 'vim' },  -- Used by input()
+      -- search_down = { icon = ' ', pattern = '^/',              lang = 'regex',  kind = 'search' },
+      -- search_up   = { icon = ' ', pattern = '^%? ',            lang = 'regex',  kind = 'search' },
+    }
   },
   messages = {
     enabled = true, -- enables the Noice messages UI
@@ -204,10 +174,55 @@ local cfg = {
         cursorline = false,
       },
     },
+    popup = {
+      -- size = 50,
+      -- size = "50%",
+      -- size = 0.5,
+      -- size = {
+      --   width = 80,
+      --   height = 40,
+      -- },
+      -- size = {
+      --   width = "80%",
+      --   height = 0.6,
+      -- },
+      size = {
+        -- max_height = math.ceil(0.8 * vim.o.lines),
+        -- width = 'auto',
+        -- max_width = 120,
+        -- width = math.floor(0.9 * vim.o.columns),
+        width = '90%',
+        min_width = 10,
+        height = 20,
+      },
+      border = {
+        style = 'rounded',
+        padding = { left = 1, right = 1 },
+      },
+      close = {
+        keys = { 'q', '<esc>' },
+      },
+      -- win_options = {
+      --      winbar = "",
+      --      foldenable = false,
+      --      cursorline = true,
+      --      cursorlineopt = "line",
+      --      winhighlight = {
+      --        Normal = "NoicePopupmenu", -- change to NormalFloat to make it look like other floats
+      --        FloatBorder = "NoicePopupmenuBorder", -- border highlight
+      --        CursorLine = "NoicePopupmenuSelected", -- used for highlighting the selected item
+      --        PmenuMatch = "NoicePopupmenuMatch", -- used to highlight the part of the item that matches the input
+      --      },
+      --    },
+    },
     cmdline_output = {
       format = 'details',
       view = 'popup',
+      buf_options = {
+        filetype = 'lua',
+      },
     },
+    -- nui cmdline popup
     popupmenu = {
       relative = 'editor',
       position = {
@@ -226,6 +241,10 @@ local cfg = {
         winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
       },
     },
+  },
+  redirect = {
+    view = 'cmdline_output',
+    filter = { event = 'msg_show' },
   },
   notify = {
     -- Noice can be used as `vim.notify` so you can route any notification like other messages
@@ -302,14 +321,14 @@ vim.api.nvim_create_user_command('Silence', function()
     pending = require('notify').history(),
     -- { filetype = "markdown", icon = "", id = 3, level = "INFO", message = { "Live commands", "   ➜ `Norm <keys>`", "   ➜ `5Reg a`", "   ➜ `G/^$/d`", "   ➜ `%Spattern/replace`" }, render = <function 3>, time = 1707851316, title = { "format", "13:08:36" } }
   }
+  local num_pending = #(notify_stats.pending or {})
+  require('notify').dismiss({ silent = true, pending = true })
   vim.notify(
-    'Messages and lsp silenced - ' .. 'pending: ' .. #(notify_stats.pending or {}),
+    'Messages and lsp silenced - ' .. 'pending: ' .. num_pending,
     'info',
     { title = 'Silence', timeout = 5000 }
   )
-
-  require('notify').dismiss({})
-  require('notify').setup({ level = 5 })
+  -- require('notify').setup({ level = 5 })
   require('noice').setup({
     routes = {
       {
@@ -333,7 +352,7 @@ end, { desc = 'silence messaging by redirect and skip output of all routes in no
 vim.api.nvim_create_user_command('SilenceStop', function()
   vim.diagnostic.enable()
   require('vim-options')
-  require('notify').setup({ level = 2 })
+  -- require('notify').setup({ level = 2 })
   require('noice').setup({
     routes = {
       {
@@ -349,10 +368,13 @@ vim.api.nvim_create_user_command('SilenceStop', function()
 end, { desc = 'Undo silence command redirects and options' })
 
 local redirect_cmd = function(force_close)
-  local cmdline = vim.fn.getcmdline()
-  require('noice').redirect(cmdline)
-  -- cmdline.popup:append(cmdline, 'NoiceCmdlinePopup')
-  -- cmdline.clear()
+  local cmd = vim.fn.getcmdline()
+  require('noice').redirect(cmd)
+  -- local cmdline = require('noice.ui.cmdline')
+  -- cmdline.message:append(cmdline, 'NoiceCmdlinePopup')
+  -- cmdline.message:clear()
+  -- cmdline.disable() / on_hide
+  -- cmdline.update()
 end
 
 vim.keymap.set('c', '<S-Enter>', function()

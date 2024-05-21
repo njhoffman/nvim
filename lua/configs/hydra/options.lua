@@ -129,7 +129,7 @@ local hydra = function()
       },
     },
     mode = { 'n', 'x' },
-    body = 'gO',
+    body = '<leader>!o',
     -- buffer = true,
     -- on_enter = function()
     --   print("Hydra enter")

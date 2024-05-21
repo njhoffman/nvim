@@ -47,16 +47,6 @@ vim.g.clipboard = {
 vim.g.qf_disable_statusline = true -- This should be the default
 vim.g.Eunuch_find_executable = 'fd' -- I use my fork of vim-eunuch
 vim.g.Illuminate_ftblacklist = { '.*' } -- Only use lsp highlighting from the plugin
-vim.g.netrw_banner = false
-vim.g.netrw_silent = 1
--- vim.g.netrw_http_cmd = 'curl'
--- vim.g.netrw_http_xcmd = '-o'
--- fixes unlisted buffer error
--- https://github.com/romgrk/barbar.nvim/issues/82#issuecomment-748498951
-vim.g.netrw_bufsettings = 'noma nomod nonu nowrap ro buflisted'
--- disable netrw
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_netrw = 1
 
 vim.g.tex_flavor = 'latex'
 vim.g.vimtex_view_method = 'skim'
@@ -93,20 +83,37 @@ vim.lsp.log_levels['INSPECT'] = 4
 vim.lsp.log_levels['RUN'] = 4
 vim.lsp.log_levels['STATUS'] = 4
 
+-- Disable menu loading
+vim.g.did_install_default_menus = 1
+vim.g.did_install_syntax_menu = 1
+
+vim.g.netrw_banner = false
+vim.g.netrw_silent = 1
+-- newtrw liststyle: https://medium.com/usevim/the-netrw-style-options-3ebe91d42456
+-- vim.g.netrw_liststyle = 3
+-- vim.g.netrw_http_cmd = 'curl'
+-- vim.g.netrw_http_xcmd = '-o'
+-- fixes unlisted buffer error: https://github.com/romgrk/barbar.nvim/issues/82#issuecomment-748498951
+-- vim.g.netrw_bufsettings = 'noma nomod nonu nowrap ro buflisted'
+
+-- https://raw.githubusercontent.com/romgrk/barbar.nvim/master/README.md
 local disabled_built_ins = {
-  -- "netrw",
-  -- "netrwPlugin",
-  -- "netrwSettings",
-  -- "netrwFileHandlers",
+  -- 'netrw',
+  -- 'netrwPlugin',
+  -- 'netrwSettings',
+  -- 'netrwFileHandlers',
   'matchit',
   'matchparen',
   '2html_plugin',
   'getscript',
   'getscriptPlugin',
   'gzip',
-  'logipat',
+  'logiPat',
+  -- 'remote_plugins',
   'rrhelper',
   'spellfile_plugin',
+  'sql_completion',
+  'syntax_completion',
   'tar',
   'tarPlugin',
   'vimball',

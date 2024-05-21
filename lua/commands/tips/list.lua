@@ -95,7 +95,57 @@ M.misc = {
     "`:put=map(range(1,5), 'v:val/2.0')` (increment by 0.5)",
     "`:put=join(range(1,5), ' & ')     ` (increment by 0.5)",
   },
+  {
+    'To replace current buffer with shell cmd output',
+    '`:r !ls | wc`',
+    '`:%!uniq -c | sort -nr`',
+    '`:r !sort # | uniq -c | sort -nr`',
+  },
+  {
+    'To run a vim command after a shell command use execute',
+    "`:execute 'r !ls' | '[`",
+    "`:execute '%!sort | uniq -c'`",
+    "`:execute 'r !sort # | uniq -c'`",
+  },
+  -- :map  _ls  :!ls -l %:S<CR>:echo "the end"<CR>
+  -- :w !name	send the current buffer as standard input to command "name"
+  -- new | 0r !ls ^@ $,$d
+  {
+    'To use | for separator after shell command insert <NL> with <C-V>010',
+    '`:r !date<NL>-join`',
+    '`:r !sort # <NL> !uniq -c`?',
+  },
+  {
+    'Output shell output to new buffer',
+    '`:enew | set ft=log | r !sort #`',
+  },
 }
+--- ranges        :5,10
+-- {number}     	an absolute line number
+-- .            	the current line			  *:.*
+-- $            	the last line in the file		  *:$*
+-- %            	equal to 1,$ (the entire file)		  *:%*
+-- 't           	position of mark t (lowercase)		  *:'*
+-- 'T           	position of mark T (uppercase); when the mark is in another file it cannot be used in a range
+-- /{pattern}[/]	the next line where {pattern} matches	  *:/*
+-- ?{pattern}[?]	the previous line where {pattern} matches *:?*
+-- \/           	the next line where the previously used search matches
+-- \?           	the previous line where the previously used search pattern matches
+-- \&           	the next line where the previously used substitute pattern matches
+--- filtering
+-- *!*        !{motion}{filter}	Filter {motion} text lines through the external program {filter}.
+-- *!!*       !!{filter}		Filter [count] lines through the external program {filter}.
+-- *v_!*      {Visual}!{filter}	Filter the highlighted lines through the external program {filter} (for {Visual} see |Visual-mode|).
+--*:range!*  :{range}![!]{filter} [!][arg] Filter {range} lines through the external program {filter}.
+--            Vim replaces the optional bangs with the latest given command and appends the optional [arg].
+--              When the 'R' flag is included in 'cpoptions' marks in the filtered lines are deleted, unless the
+--              |:keepmarks| command is used.  Example: > :keepmarks '<,'>!sort <
+--              When the number of lines after filtering is less than before, marks in the missing lines are deleted anyway.
+-- *=*       ={motion}		Filter {motion} lines through the external program given with the 'equalprg' option.
+--             When the 'equalprg' option is empty (this is the default), use the internal formatting function |C-indenting| and |'lisp'|.
+--             But when 'indentexpr' is not empty, it will be used instead |indent-expression|.
+-- *==*      ==			Filter [count] lines like with ={motion}.
+-- *v_=*    {Visual}=		Filter the highlighted lines like with ={motion}.
 
 M.quickfix = {
   { 'Populate the quickfix list with the results of a command, use `:cxpr`' },

@@ -105,7 +105,7 @@ local setup = function()
         local dir = path.dir_pretty
         -- TODO: handle pre-initialization message
         vim.defer_fn(function()
-          vim.notify('cwd exit from session: ' .. dir, vim.log.levels.DEBUG)
+          vim.notify('cwd exit from session: ' .. dir, vim.log.levels.TRACE)
         end, 100)
         path.dir_pretty = nil
         utils.is_session = false

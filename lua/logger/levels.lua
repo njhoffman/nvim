@@ -1,6 +1,7 @@
 -- stylua: ignore
 local scopes = {
   ['*']                   = { main = 2 },
+  buffers                 = { main = 2 },
   -- hover                = { main = 0 },
   -- ['early-retirement'] = { main = -1 },
   -- fasd                 = { main = 0 },

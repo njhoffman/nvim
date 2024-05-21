@@ -4,16 +4,11 @@ local shape_fields = { 'winhl', 'hl' }
 
 local M = {
   current_opfunc = nil,
-  current_op = nil,
   from = nil,
   to = vim.fn.mode(true),
   cache = {
     applied_hl = {},
     transformed_winhl = {},
-  },
-  opfuncs = {
-    matched = {},
-    missed = {},
   },
 }
 
@@ -36,65 +31,15 @@ function M:set_opfunc(opfunc)
   self.current_opfunc = opfunc
 end
 
-function M:set_op(op)
-  self.current_op = op
-end
-
-function M:get_op()
-  return self.current_op or vim.v.operator
-end
-
-function M:get_opfunc()
-  return self:get_op() == 'g@' and self.current_opfunc or self:lookup_opfunc()
-end
-
-function M:lookup_opfunc()
-  local opdefs = require('configs.reactive.opfuncs') or {}
-  local opfunc =
-    tostring(vim.api.nvim_get_option_value('operatorfunc', { scope = 'global' })):gsub("'", '"')
-
-  local op_def = opdefs[opfunc]
-  local op_key = op_def and op_def[1] and op_def[1][1]
-
-  if op_def and type(op_def) == 'table' and #opfunc > 0 then
-    self.opfuncs.matched[op_key] = self.opfuncs.matched[op_key] or 0
-    self.opfuncs.matched[op_key] = self.opfuncs.matched[op_key] + 1
-  else
-    self.opfuncs.missed[opfunc] = self.opfuncs.missed[opfunc] or 0
-    self.opfuncs.missed[opfunc] = self.opfuncs.missed[opfunc] + 1
-  end
-  --   vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()),
-  --   vim.api.nvim_win_get_cursor(0),
-  -- logger.log_opfunc(op_key or opfunc, op_def)
-  return op_key, opfunc
-end
-
 ---@param opts? { inactive_win?: boolean, callbacks?: boolean }
----@return { winhl: table<string, string>, hl: table<string, table> }
+---@return { winhl: { current: table<string, string>, noncurrent: table<string, string> }, hl: table<string, table> }
 function M:gen(opts)
   local State = require('reactive.state')
 
-  self.snapshot = { winhl = {}, hl = {} }
-
-  -- if we're leaving a window, then we just color that window with `inactive` colors, if presented
-  if opts and opts.inactive_win then
-    State:iterate_presets(function(preset)
-      local constraints = {}
-
-      if
-        preset.static
-        and not vim.tbl_isempty(preset.static)
-        and not self:process_constraints(preset.skip, constraints)
-      then
-        self:form_snapshot(preset.name, {
-          winhl = preset.static.winhl and preset.static.winhl.inactive,
-          hl = preset.static.hl,
-        }, '@static.inactive', constraints)
-      end
-    end)
-
-    return self.snapshot
-  end
+  self.snapshot = {
+    winhl = { current = {}, noncurrent = {} },
+    hl = {},
+  }
 
   local mode = self.to
   local mode_len = #mode
@@ -108,6 +53,8 @@ function M:gen(opts)
   local has_static = false
 
   Util.iterate_mode_reverse(mode, function(inc_mode, len)
+    local is_original_mode = len == mode_len
+
     return State:iterate_presets(function(preset)
       if not preset.modes then
         return
@@ -130,11 +77,11 @@ function M:gen(opts)
 
       local inc_mode_config = preset.modes[inc_mode]
 
-      if dropped_presets[preset.name] or not inc_mode_config then
+      if dropped_presets[preset.name] then
         return
       end
 
-      if len == mode_len then
+      if is_original_mode then
         if preset.static and not vim.tbl_isempty(preset.static) then
           has_static = true
         end
@@ -146,7 +93,16 @@ function M:gen(opts)
           return
         end
 
-        self:merge_snapshot(preset.name, inc_mode, inc_mode_config, scope[preset.name].constraints)
+        if not inc_mode_config then
+          return
+        end
+
+        self:merge({
+          preset_name = preset.name,
+          inc_mode = inc_mode,
+          inc_mode_config = inc_mode_config,
+          constraints = scope[preset.name].constraints,
+        })
 
         if len > 1 and inc_mode_config.exact then
           if type(inc_mode_config.exact) == 'boolean' then
@@ -168,6 +124,9 @@ function M:gen(opts)
           end
         end
       else
+        if not inc_mode_config then
+          return
+        end
         -- we shouldn't mutate original constraints
         local local_constraints = vim.deepcopy(scope[preset.name].constraints)
 
@@ -200,7 +159,12 @@ function M:gen(opts)
           return
         end
 
-        self:merge_snapshot(preset.name, inc_mode, inc_mode_config, local_constraints)
+        self:merge({
+          preset_name = preset.name,
+          inc_mode = inc_mode,
+          inc_mode_config = inc_mode_config,
+          constraints = local_constraints,
+        })
       end
     end)
   end)
@@ -208,10 +172,25 @@ function M:gen(opts)
   if has_static or (opts and opts.callbacks) then
     State:iterate_presets(function(preset)
       if preset.static and not vim.tbl_isempty(preset.static) then
-        self:form_snapshot(preset.name, {
-          winhl = preset.static.winhl and preset.static.winhl.active,
-          hl = preset.static.hl,
-        }, '@static.active', scope[preset.name] and scope[preset.name].constraints or {})
+        self:form({
+          preset_name = preset.name,
+          highlights = {
+            winhl = preset.static.winhl and preset.static.winhl.active,
+            hl = preset.static.hl,
+          },
+          scope = '@static.current',
+          constraints = scope[preset.name] and scope[preset.name].constraints or {},
+        })
+
+        self:form({
+          preset_name = preset.name,
+          highlights = {
+            winhl = preset.static.winhl and preset.static.winhl.inactive,
+          },
+          scope = '@static.noncurrent',
+          constraints = scope[preset.name] and scope[preset.name].constraints or {},
+          window_scope = 'noncurrent',
+        })
       end
 
       if not opts or not opts.callbacks or not preset.modes or dropped_presets[preset.name] then
@@ -241,54 +220,57 @@ function M:gen(opts)
   end
 
   self.current_opfunc = nil
-  self.current_op = nil
 
   return self.snapshot
 end
 
----@param preset_name string
----@param inc_mode string
----@param inc_mode_config Reactive.ModeConfig
----@param constraints TriggerConstraints<boolean>
-function M:merge_snapshot(preset_name, inc_mode, inc_mode_config, constraints)
-  if Util.is_op(inc_mode) and inc_mode_config.operators then
-    local op = self:get_op()
+---@param opts { preset_name: string, inc_mode: string, inc_mode_config: Reactive.ModeConfig, constraints: TriggerConstraints<boolean> }
+function M:merge(opts)
+  if Util.is_op(opts.inc_mode) then
+    local op = vim.v.operator
 
-    if op and inc_mode_config.operators[op] then
-      local opfunc = self:get_opfunc()
+    if opts.inc_mode_config.operators and opts.inc_mode_config.operators[op] then
       if
-        opfunc
-        and inc_mode_config.operators[op].opfuncs
-        and inc_mode_config.operators[op].opfuncs[opfunc]
+        op == 'g@'
+        and self.current_opfunc
+        and opts.inc_mode_config.operators[op].opfuncs
+        and opts.inc_mode_config.operators[op].opfuncs[self.current_opfunc]
       then
-        self:form_snapshot(
-          preset_name,
-          inc_mode_config.operators[op].opfuncs[opfunc],
-          ('@mode.%s.@op.g@.%s'):format(inc_mode, opfunc),
-          constraints
-        )
+        self:form({
+          preset_name = opts.preset_name,
+          highlights = opts.inc_mode_config.operators[op].opfuncs[self.current_opfunc],
+          scope = ('@mode.%s.@op.g@.%s'):format(opts.inc_mode, self.current_opfunc),
+          constraints = opts.constraints,
+        })
       end
 
-      self:form_snapshot(
-        preset_name,
-        inc_mode_config.operators[op],
-        ('@mode.%s.@op.%s'):format(inc_mode, op),
-        constraints
-      )
+      self:form({
+        preset_name = opts.preset_name,
+        highlights = opts.inc_mode_config.operators[op],
+        scope = ('@mode.%s.@op.%s'):format(opts.inc_mode, op),
+        constraints = opts.constraints,
+      })
     end
   end
 
-  self:form_snapshot(preset_name, inc_mode_config, ('@mode.%s'):format(inc_mode), constraints)
+  self:form({
+    preset_name = opts.preset_name,
+    highlights = opts.inc_mode_config,
+    scope = ('@mode.%s'):format(opts.inc_mode),
+    constraints = opts.constraints,
+  })
 end
 
 local merge_handlers = {
   winhl = function(highlights, opts)
     Util.each(highlights, function(hl_group, hl_val)
-      if M.snapshot.winhl[hl_group] then
+      -- if a group is already applied, then we won't overwrite it
+      -- meaning that it had a higher priority
+      if M.snapshot.winhl[opts.window_scope][hl_group] then
         return
       end
 
-      local key = opts.preset_name .. opts.scope .. hl_group
+      local key = opts.scope .. hl_group
       local cached_hl = M.cache.transformed_winhl[key]
 
       if not cached_hl then
@@ -296,13 +278,16 @@ local merge_handlers = {
         -- collecting all transformed highlights so that we can clear them
         -- if the "ReactiveDisable" autocmd is fired
         M.cache.applied_hl[rhs] = true
-        -- since we don't want to transform a highlight group over and over again,
+        -- since we don't want to transform a highlight group and set a highlight value over and over again,
         -- it's better to cache it once and then extract from the cache
-        M.cache.transformed_winhl[key] = rhs
+        -- but we won't cache it if this highlight is dynamic
+        if not opts.nocache then
+          M.cache.transformed_winhl[key] = rhs
+        end
 
-        M.snapshot.winhl[hl_group] = rhs
+        M.snapshot.winhl[opts.window_scope][hl_group] = rhs
       else
-        M.snapshot.winhl[hl_group] = cached_hl
+        M.snapshot.winhl[opts.window_scope][hl_group] = cached_hl
       end
     end)
   end,
@@ -318,19 +303,30 @@ local merge_handlers = {
   end,
 }
 
----@param preset_name string
----@param highlights table<string, table> | fun(): table<string, table>
----@param scope string
----@param constraints TriggerConstraints
-function M:form_snapshot(preset_name, highlights, scope, constraints)
-  local opts = { scope = scope, preset_name = preset_name }
+---@param opts { preset_name: string, highlights: table<string, table | fun(): table>, scope: string, constraints: TriggerConstraints, window_scope?: 'current' | 'noncurrent' }
+function M:form(opts)
+  local handler_options = {
+    scope = string.format('@preset.%s.%s', opts.preset_name, opts.scope),
+    preset_name = opts.preset_name,
+    window_scope = opts.window_scope or 'current',
+  }
 
   Util.each(merge_handlers, function(value)
-    if not highlights[value] or constraints and constraints[value] then
+    if not opts.highlights[value] or opts.constraints and opts.constraints[value] then
       return
     end
 
-    merge_handlers[value](highlights[value], opts)
+    local highlight_values = opts.highlights[value]
+
+    -- highlights can be passed as a funtion and thus be dynamic
+    -- in that case we won't cache their values in the `winhl` option
+    -- because they can always be different
+    if type(opts.highlights[value]) == 'function' then
+      handler_options.nocache = true
+      highlight_values = opts.highlights[value]()
+    end
+
+    merge_handlers[value](highlight_values, handler_options)
   end)
 end
 

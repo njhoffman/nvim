@@ -11,8 +11,11 @@ local pattern_filter = function(name, level, msg)
   local lvl_patterns = require('logger.levels').patterns
   for scope, filter in pairs(lvl_patterns) do
     local pattern, scope_lvl = filter[1], filter[2]
-    if name == scope and string.match(msg, pattern) and level <= scope_lvl then
-      skip = true
+    msg = type(msg) == 'string' and { msg } or msg
+    for _, m in ipairs(msg) do
+      if name == scope and string.match(m, pattern) and level <= scope_lvl then
+        skip = true
+      end
     end
   end
   return skip

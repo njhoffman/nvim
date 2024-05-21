@@ -165,17 +165,17 @@ local config = {
     fat_headline_lower_string = '▔',
     -- (lower blocks) ▃ ▁▂▃▄▅▆▇█  (upper blocks)▔🬂▀
   },
-  pandoc = {
-    headline_highlights = {
-      'Headline1',
-      'Headline2',
-      'Headline3',
-      'Headline4',
-      'Headline5',
-      'Headline6',
-    },
-    bullets = {},
-  },
+  -- pandoc = {
+  --   headline_highlights = {
+  --     'Headline1',
+  --     'Headline2',
+  --     'Headline3',
+  --     'Headline4',
+  --     'Headline5',
+  --     'Headline6',
+  --   },
+  --   bullets = {},
+  -- },
   org = {
     headline_highlights = { 'Headline1', 'Headline2' },
   },

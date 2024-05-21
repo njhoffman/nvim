@@ -128,38 +128,38 @@ end
 
 -- stylua: ignore
 local autocmds = {
-wins = {
--- { {'WinEnter' }, '*', 'stopinsert' },
-{ 'BufEnter', 'NvimTree', 'setlocal cursorline' },
--- { "InsertLeave", '*',
--- function(event)
---   if vim.bo.ft == 'TelescopePrompt' and vim.fn.mode() == 'n' then
---     vim.cmd('startinsert!')
---     -- vim.schedule_wrap(function()
---     --   vim.cmd('startinsert')
---     -- end)
---   -- elseif vim.bo.ft == "lua" and vim.fn.mode() == 'i' then
---   --   vim.cmd('stopinsert')
---   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
---   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
---   end
---   vim.dbglog(vim.bo.ft, vim.fn.mode(), vim.fn.getftype(vim.fn.bufname(0)))
--- end
---   },
-},
-fasd = { { 'BufWrite', '*', commands.fasd_update } },
-CommandWin = {
-{ 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=no syn=vim.lua | startinsert ' },
-{ 'CmdwinEnter', '*', 'let b:cpt_save = &cpt | set cpt=.' },
-{ 'CmdwinEnter', '*', 'nnoremap <silent><buffer> <esc> <C-c><C-c>' },
-{ 'CmdwinLeave', '*', 'let &cpt = b:cpt_save | let g:lens#disabled = 1' },
-},
-
-FiletypeDetect = {
--- { 'FileType', 'query',                 'setlocal nonumber norelativenumber' },
+  wins = {
+    -- { {'WinEnter' }, '*', 'stopinsert' },
+    { 'BufEnter', 'NvimTree', 'setlocal cursorline' },
+    -- { "InsertLeave", '*',
+      -- function(event)
+        --   if vim.bo.ft == 'TelescopePrompt' and vim.fn.mode() == 'n' then
+          --     vim.cmd('startinsert!')
+          --     -- vim.schedule_wrap(function()
+              --     --   vim.cmd('startinsert')
+            --     -- end)
+        --   -- elseif vim.bo.ft == "lua" and vim.fn.mode() == 'i' then
+          --   --   vim.cmd('stopinsert')
+          --   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
+          --   --   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
+        --   end
+        --   vim.dbglog(vim.bo.ft, vim.fn.mode(), vim.fn.getftype(vim.fn.bufname(0)))
+      -- end
+    --   },
+  },
+  fasd = { { 'BufWrite', '*', commands.fasd_update } },
+  CommandWin = {
+    { 'CmdwinEnter', '*', 'setlocal nonumber norelativenumber signcolumn=no syn=vim.lua | startinsert ' },
+    { 'CmdwinEnter', '*', 'let b:cpt_save = &cpt | set cpt=.' },
+    { 'CmdwinEnter', '*', 'nnoremap <silent><buffer> <esc> <C-c><C-c>' },
+    { 'CmdwinLeave', '*', 'let &cpt = b:cpt_save | let g:lens#disabled = 1' },
+  },
+  FiletypeDetect = {
+    { 'FileType', "neoai-output",          "setlocal ft=markdown conceallevel=3 synmaxcol=1000" },
+    -- { 'FileType', 'query',                 'setlocal nonumber norelativenumber' },
     -- { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
-    { 'FileType', "neoai-output",          "setlocal conceallevel=3 synmaxcol=1000" },
-    -- { {'FileType'}, "pandoc",          "setlocal syn=pandoc | setlocal conceallevel=3 synmaxcol=500" },
+    { 'FileType', "pandoc",          "setlocal syn=pandoc" },
+    { 'FileType', "markdown",          "setlocal syn=markdown" },
     { {'BufNewFile', 'BufRead'}, '*nvim/option-window', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>', },
     { { 'BufNewFile', 'BufRead' }, '*startuptime.tsv',   'setlocal ft=crontab syn=crontab' },
     -- { { 'BufNewFile', 'BufRead' }, '*.log',              "lua require('commands.format').create_cmd_truncate()" },
@@ -171,10 +171,8 @@ FiletypeDetect = {
     { { 'BufNewFile', 'BufRead' }, '.env.*',             'setlocal ft=bash syn=bash' },
     { { 'BufNewFile', 'BufRead' }, '*.env',              'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, 'conf.*',             'setlocal ft=config syn=config' },
-    -- { { 'BufNewFile', 'BufRead' }, '*.md',               'setlocal syn=pandoc | setlocal conceallevel=3 synmaxcol=500' },
-    { { 'BufNewFile', 'BufRead' }, '*.md',               'setlocal conceallevel=3 syn=pandoc' },
-    { { 'BufNewFile', 'BufRead' }, '*/zettelkasten/*.md','setlocal conceallevel=3 syn=markdown' },
---     { { 'BufNewFile', 'BufRead' }, '.tasks',             'setlocal ft=asynctasks' },
+    { { 'BufNewFile', 'BufRead' }, '*.md',               'setlocal ft=markdown syn=pandoc' },
+    --     { { 'BufNewFile', 'BufRead' }, '.tasks',             'setlocal ft=asynctasks' },
     { { 'BufNewFile', 'BufRead' }, '*.visidatarc',       'setlocal ft=python' },
     { { 'BufNewFile', 'BufRead' }, '.vimtasks',          'setlocal ft=asynctasks' },
     { { 'BufNewFile', 'BufRead' }, '*.cheat',            'setlocal ft=bash | let b:is_bash =1' },
@@ -198,14 +196,14 @@ FiletypeDetect = {
     { { 'BufNewFile', 'BufRead' }, '*/ansible/*.yml',    'set ft=yaml.ansible' },
     { { 'BufNewFile', 'BufRead' }, '*/ansible/*.yaml',   'set ft=yaml.ansible' },
     { { 'BufNewFile', 'BufRead', 'BufEnter'}, 'dbee-*.*',            'setlocal ft=tablegen' },
--- u BufRead *.yaml,*.yml if search('hosts:\|tasks:', 'nw') | set ft=yaml.ansible | endif
-    -- { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 synmaxcol=500" },
-    --   au BufNewFile,BufRead .pa set ft=config
-    --   au BufNewFile,BufRead */ansible/*.yml  set ft=yaml.ansible
-    --   au BufNewFile,BufRead *.j2,*/ansible/*/templates/* set ft=config.jinja2
-    --   au BufNewFile,BufRead bundles.txt setlocal ft=sh
-    --   au BufNewFile,BufRead bundles.*.txt setlocal ft=sh
-    --   " au BufEnter * if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' | setf preview | endif
+    -- u BufRead *.yaml,*.yml if search('hosts:\|tasks:', 'nw') | set ft=yaml.ansible | endif
+      -- { "BufNewFile,BufRead", "*.md", "setlocal ft=markdown.pandoc conceallevel=2 synmaxcol=500" },
+      --   au BufNewFile,BufRead .pa set ft=config
+      --   au BufNewFile,BufRead */ansible/*.yml  set ft=yaml.ansible
+      --   au BufNewFile,BufRead *.j2,*/ansible/*/templates/* set ft=config.jinja2
+      --   au BufNewFile,BufRead bundles.txt setlocal ft=sh
+      --   au BufNewFile,BufRead bundles.*.txt setlocal ft=sh
+      --   " au BufEnter * if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' | setf preview | endif
   },
   VimadeDap = {
     { 'FileType', 'dap-log', 'VimadeBufDisable' },
@@ -252,6 +250,7 @@ FiletypeDetect = {
     { 'BufWritePost', '*tmux.conf', [[execute ':!tmux source-file %']] },
   },
 }
+
 -- autocmds.NumberToggle = {
 --   {
 --     { 'BufEnter', 'FocusGained', 'InsertLeave' },
@@ -319,6 +318,8 @@ autocmds.HighlightYank = {
   },
 }
 
-autocmds.PreserveCursor = { { 'BufReadPost', '*', commands.goto_last_pos } }
+-- autocmds.PreserveCursor = {
+--   { 'BufRead', '*', commands.goto_last_pos },
+-- }
 
 define_augroups(autocmds)

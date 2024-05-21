@@ -146,6 +146,7 @@ local opts = {
   show = true,
   show_in_active_only = false,
   hide_if_all_visible = true,
+  throttle_ms = 1000,
   handle = {
     text = ' ',
     color = '#224385',
@@ -158,7 +159,7 @@ local opts = {
       'TabEnter',
       'TermEnter',
       'TextChanged',
-      'User',
+      -- 'User',
       'VimResized',
       'WinEnter',
       'WinScrolled',
@@ -176,6 +177,7 @@ local opts = {
   },
   excluded_filetypes = {
     'chatgpt-input',
+    'notify',
     'cmp_docs',
     'cmp_menu',
     'lazy',
@@ -202,4 +204,4 @@ local opts = {
     search = true, -- Requires hlslens to be loaded
   },
 }
-require('scrollbar').setup(opts)
+-- require('scrollbar').setup(opts)

@@ -1,3 +1,5 @@
+-- https://github.com/XXiaoA/ns-textobject.nvim
+
 local modules = {
   query_linter = {
     enable = true,
@@ -94,6 +96,7 @@ local modules = {
     enable = true,
     use_languagetree = true,
     disable = {
+      'tmux',
       'css', -- PENDING https://github.com/tree-sitter/tree-sitter-css/issues/34
     },
     additional_vim_regex_highlighting = {
@@ -120,12 +123,11 @@ local modules = {
   },
   textsubjects = {
     enable = true,
-    prev_selection = '<BS>', -- (Optional) keymap to select the previous selection
+    prev_selection = '<M-BS>', -- (Optional) keymap to select the previous selection
     keymaps = {
-      ['<cr>'] = 'textsubjects-smart',
-      -- ['.'] = 'textsubjects-smart',
-      ['<C-CR>'] = 'textsubjects-container-outer',
-      ['<S-CR>'] = {
+      [','] = 'textsubjects-smart',
+      ['<Tab>'] = 'textsubjects-container-outer',
+      ['<S-Tab>'] = {
         'textsubjects-container-inner',
         desc = 'Select inside containers (classes, functions, etc.)',
       },
@@ -180,7 +182,7 @@ local modules = {
     select = {
       disable = { 'markdown' }, -- so `al` can be remapped to link text object
       lookahead = true,
-      enable = false,
+      enable = true,
       keymaps = {
         ['aa'] = '@parameter.outer',
         ['ia'] = '@parameter.inner',

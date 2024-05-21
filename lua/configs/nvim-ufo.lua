@@ -18,7 +18,12 @@ vim.o.foldmethod = 'manual'
 
 vim.keymap.set('n', 'zR', require('ufo').openAllFolds, { desc = '󰘖 open all folds' })
 vim.keymap.set('n', 'zM', require('ufo').closeAllFolds, { desc = '󰘖 close all folds' })
-vim.keymap.set('n', 'zr', require('ufo').openFoldsExceptKinds, { desc = '󰘖 open folds except kinds' })
+vim.keymap.set(
+  'n',
+  'zr',
+  require('ufo').openFoldsExceptKinds,
+  { desc = '󰘖 open folds except kinds' }
+)
 vim.keymap.set('n', 'zm', require('ufo').closeFoldsWith, { desc = '󰘖 close folds with' }) -- closeAllFolds == closeFoldsWith(0)
 vim.keymap.set('n', 'zK', function()
   local winid = require('ufo').peekFoldedLinesUnderCursor()
@@ -88,7 +93,7 @@ local config = {
     return { 'treesitter', 'indent' }
     -- return ftMap[filetype] -- or
   end,
-  close_fold_kinds = { 'comment', 'imports' and 'region' },
+  close_fold_kinds_for_ft = { 'comment', 'imports' and 'region' },
   preview = {
     win_config = {
       border = 'rounded',

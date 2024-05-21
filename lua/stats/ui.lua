@@ -1,3 +1,4 @@
+local stats_select = function(items, opts, cb)
   opts.prompt = opts.prompt or 'Title Test'
   local backend_opts = {
     position = '90%',
@@ -57,7 +58,8 @@
       return conf
     end,
   }
-  require('dressing.select.nui').select(backend_opts, items, opts, cb)
+  require('dressing.select.nui').select(backend_opts, items, opts, fetch_stats)
+end
 
 local fetch_stats = function()
   local stat_items = get_items()
@@ -71,13 +73,12 @@ local fetch_stats = function()
   end)
 end
 
-  -- local event = require('nui.utils.autocmd').event
-  -- nui_select:on(event.BufLeave, function()
-  --   vim.dbglog('DONT LEAVE')
-  --   -- cb(nil, nil)
-  -- end, { once = true })
-  -- menu:mount()
+-- local event = require('nui.utils.autocmd').event
+-- nui_select:on(event.BufLeave, function()
+--   vim.dbglog('DONT LEAVE')
+--   -- cb(nil, nil)
+-- end, { once = true })
+-- menu:mount()
 
-  -- stats_select:on(event.BufLeave, menu.menu_props.on_close, { once = true })
-  -- vim.ui.select(, opts, cb)
-end
+-- stats_select:on(event.BufLeave, menu.menu_props.on_close, { once = true })
+-- vim.ui.select(, opts, cb)

@@ -34,6 +34,7 @@ local main_maps = {
   -- stylua: ignore
   -- NOTE: have to assign all possible custom keys here and filter later from lazy loading
   i = vim.tbl_extend('force', {
+    ["<C-\\>"]      = c_actions.flash,
     ["<C-D>"]       = c_actions.search_reset,
     ["<C-U>"]       = c_actions.search_backspace_word,
     ["<Esc>"]       = actions.close,
@@ -43,10 +44,8 @@ local main_maps = {
     ['<C-p>']       = actions.move_selection_previous,
     ["<Tab>"]       = actions.move_selection_next,
     ["<S-Tab>"]     = actions.move_selection_previous,
-    ["<C-Up>"]      = actions.cycle_history_prev,
-    ["<C-Down>"]    = actions.cycle_history_next,
-    ["<Up>"]        = actions.preview_scrolling_up,
-    ["<Down>"]      = actions.preview_scrolling_down,
+    ["<Up>"]        = actions.cycle_history_prev,
+    ["<Down>"]      = actions.cycle_history_next,
     ["<C-S-Up>"]    = c_actions.preview_scroll_up,
     ["<C-S-Down>"]  = c_actions.preview_scroll_down,
     ["<M-b>"]       = c_actions.preview_page_up,
@@ -75,10 +74,8 @@ local main_maps = {
     ["<M-.>"]       = c_actions.next_picker,
     ["<M-c>"]       = actions.close,
     ["<C-X>"]       = actions.close,
-    -- ["<M-d>"]       = actions.close,
+    -- ["<M-d>"]    = actions.close,
   }, ignore_keys({
-      "<PageUp>",
-      "<PageDown>",
       '<C-Space>',
       "<M-d>",
       '<M-q>',
@@ -95,6 +92,7 @@ local main_maps = {
   ),
   n = {
     ['q'] = actions.close,
+    ['s'] = c_actions.flash,
   },
   -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
   -- [S-F1-9] = add/remove secondary sort #

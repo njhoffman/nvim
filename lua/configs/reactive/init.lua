@@ -28,9 +28,10 @@ reactive.setup({
 })
 
 local cursorline_preset = require('configs.reactive.cursorline')
--- local cursor_preset = require('configs.reactive.cursor')
+-- vim.dbglog(cursorline_preset)
+reactive.add_preset(cursorline_preset)
+-- -- local cursor_preset = require('configs.reactive.cursor')
 -- require('reactive').add_preset(cursor_preset)
-require('reactive').add_preset(cursorline_preset)
 
 -- |c |	c 	change
 -- |d |	d 	delete

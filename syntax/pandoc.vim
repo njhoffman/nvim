@@ -19,7 +19,11 @@ scriptencoding utf-8
 " Version: 5.0
 
 " Configuration: {{{1
-"
+
+if exists('b:current_syntax')
+    finish
+endif
+
 " use conceal? {{{2
 if !exists('g:pandoc#syntax#conceal#use')
     if v:version < 703

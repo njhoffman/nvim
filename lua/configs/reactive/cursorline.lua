@@ -56,6 +56,7 @@ local cursorline_preset = {
     [{ 's', 'S', '\x13' }] = {
       winhl = {
         CursorLineNr = { fg = '#c4b5fd', italic = true },
+        CursorLine = { bg = '#28203f' },
         Visual = { bg = '#28203f', bold = true, italic = true },
       },
     },

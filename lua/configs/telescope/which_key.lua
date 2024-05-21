@@ -178,13 +178,41 @@ end
 
 local setup_highlights = function()
   vim.api.nvim_set_hl(0, 'TelescopeWhichKeyNormal', { default = true, link = 'TelescopePrompt' })
-  vim.api.nvim_set_hl(0, 'TelescopeWhichKeyBorder', { default = true, link = 'TelescopePromptBorder' })
-  vim.api.nvim_set_hl(0, 'TelescopeWhichKeyMode', { default = true, link = 'TelescopeResultsConstant' })
-  vim.api.nvim_set_hl(0, 'TelescopeWhichKeyBind', { default = true, link = 'TelescopeResultsVariable' })
-  vim.api.nvim_set_hl(0, 'TelescopeWhichKeyName', { default = true, link = 'TelescopeResultsFunction' })
-  vim.api.nvim_set_hl(0, 'TelescopeWhichKeyModeCustom', { default = true, link = 'TelescopeWhichKeyMode' })
-  vim.api.nvim_set_hl(0, 'TelescopeWhichKeyBindCustom', { default = true, link = 'TelescopeWhichKeyBind' })
-  vim.api.nvim_set_hl(0, 'TelescopeWhichKeyNameCustom', { default = true, link = 'TelescopeWhichKeyName' })
+  vim.api.nvim_set_hl(
+    0,
+    'TelescopeWhichKeyBorder',
+    { default = true, link = 'TelescopePromptBorder' }
+  )
+  vim.api.nvim_set_hl(
+    0,
+    'TelescopeWhichKeyMode',
+    { default = true, link = 'TelescopeResultsConstant' }
+  )
+  vim.api.nvim_set_hl(
+    0,
+    'TelescopeWhichKeyBind',
+    { default = true, link = 'TelescopeResultsVariable' }
+  )
+  vim.api.nvim_set_hl(
+    0,
+    'TelescopeWhichKeyName',
+    { default = true, link = 'TelescopeResultsFunction' }
+  )
+  vim.api.nvim_set_hl(
+    0,
+    'TelescopeWhichKeyModeCustom',
+    { default = true, link = 'TelescopeWhichKeyMode' }
+  )
+  vim.api.nvim_set_hl(
+    0,
+    'TelescopeWhichKeyBindCustom',
+    { default = true, link = 'TelescopeWhichKeyBind' }
+  )
+  vim.api.nvim_set_hl(
+    0,
+    'TelescopeWhichKeyNameCustom',
+    { default = true, link = 'TelescopeWhichKeyName' }
+  )
 end
 
 --- Display the keymaps of registered actions similar to which-key.nvim.<br>
@@ -318,8 +346,10 @@ local which_key = function(prompt_bufnr, opts)
     + opts.name_width
     + (3 * #opts.separator)
   local num_total_columns = math.floor((vim.o.columns - #column_indent) / entry_width)
-  opts.num_rows =
-    math.min(math.ceil(#mappings / num_total_columns), resolver.resolve_height(opts.max_height)(_, _, vim.o.lines))
+  opts.num_rows = math.min(
+    math.ceil(#mappings / num_total_columns),
+    resolver.resolve_height(opts.max_height)(_, _, vim.o.lines)
+  )
   local total_available_entries = opts.num_rows * num_total_columns
   local winheight = opts.num_rows + 2 * opts.line_padding
 
@@ -352,7 +382,16 @@ local which_key = function(prompt_bufnr, opts)
     line = prompt_pos == true and vim.o.lines - winheight + 1 or 1,
     col = 0,
     border = { prompt_pos and 1 or 0, 0, not prompt_pos and 1 or 0, 0 },
-    borderchars = { prompt_pos and '─' or ' ', '', not prompt_pos and '─' or ' ', '', '', '', '', '' },
+    borderchars = {
+      prompt_pos and '─' or ' ',
+      '',
+      not prompt_pos and '─' or ' ',
+      '',
+      '',
+      '',
+      '',
+      '',
+    },
     noautocmd = true,
     title = { { text = title_text, pos = prompt_pos and 'N' or 'S' } },
   }
@@ -375,7 +414,13 @@ local which_key = function(prompt_bufnr, opts)
     end,
   })
 
-  a.nvim_buf_set_lines(km_buf, 0, -1, false, utils.repeated_table(opts.num_rows + 2 * opts.line_padding, column_indent))
+  a.nvim_buf_set_lines(
+    km_buf,
+    0,
+    -1,
+    false,
+    utils.repeated_table(opts.num_rows + 2 * opts.line_padding, column_indent)
+  )
 
   local keymap_highlights = a.nvim_create_namespace('telescope_whichkey')
   local highlights = {}
@@ -399,14 +444,22 @@ local which_key = function(prompt_bufnr, opts)
     local row_ = highlight_tbl.row
     local col = highlight_tbl.col
     for _, hl_block in ipairs(highlight) do
-      a.nvim_buf_add_highlight(km_buf, keymap_highlights, hl_block[2], row_, col + hl_block[1][1], col + hl_block[1][2])
+      a.nvim_buf_add_highlight(
+        km_buf,
+        keymap_highlights,
+        hl_block[2],
+        row_,
+        col + hl_block[1][1],
+        col + hl_block[1][2]
+      )
     end
   end
 
   -- only set up autocommand after showing preview completed
   if opts.close_with_action then
     vim.schedule(function()
-      vim.api.nvim_create_autocmd('User TelescopeKeymap', {
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'TelescopeKeymap',
         once = true,
         callback = function()
           pcall(vim.api.nvim_win_close, km_win_id, true)

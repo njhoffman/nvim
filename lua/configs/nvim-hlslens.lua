@@ -34,9 +34,11 @@ local override_lens = function(render, posList, nearest, idx, _)
   local text = ('%d/%d'):format(idx, #posList)
   local chunks = {
     { ' ', 'Ignore' }, -- = padding
-    { '', 'HLSearchReversed' },
+    -- { '', 'HLSearchReversed' },
+    { '', 'HLSearchReversed' },
     { text, 'HlSearchLensNear' },
-    { '', 'HLSearchReversed' },
+    -- { '', 'HLSearchReversed' },
+    { '', 'HLSearchReversed' },
   }
   render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
 end

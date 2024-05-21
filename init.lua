@@ -1,11 +1,10 @@
--- strace gvim -V9log.txt file.tex > stdout.txt 2> stderr.txt
+-- require('internals').init()
 
--- require('preload')
 require('globals')
 
-require('quickfix')
+vim.import('quickfix')
 
-require('utils.lazy').setup({ cache = true, reload = false, lazy = false })
+require('utils.lazy').setup({ cache = false, reload = false, lazy = false })
 
 -- qfSeparator, qfLineNr, qfFilename
 for _, mod_name in ipairs({
@@ -22,6 +21,7 @@ for _, mod_name in ipairs({
   -- 'configs.cinnamon',
   'tracker.setup',
   'configs.registers',
+  -- 'configs.nvim-scrollbar',
   -- 'configs.neoscroll',
   'action-hints.setup',
   -- 'winsep.setup',
@@ -39,6 +39,7 @@ end
 
 vim.defer_fn(function()
   require('sidebar').setup()
+  require('histories').setup()
 
   -- 'lab.setup',
   local llm_config = require('llm-config')
@@ -46,9 +47,6 @@ vim.defer_fn(function()
 
   local neoai_cfg = require('neoai.options')
   require('neoai').setup(neoai_cfg)
-
-  local chatgpt_cfg = require('configs.chatgpt')
-  require('chatgpt').setup(chatgpt_cfg)
 
   -- local map = require('mapper').map
 
@@ -61,7 +59,8 @@ vim.defer_fn(function()
   -- vim.keymap.set({ 'i', 'n' }, '<M-,>', '<M-9>', { remap = true, desc = 'warp pair symbol forwards' })
   -- vim.keymap.set('i', "<M-'>", '<M-0>', { remap = true, desc = 'warp pair symbol forwards' })
   -- vim.keymap.set('i', '<M-;>', '<M-9>', { remap = true, desc = 'warp pair symbol backwards' })
+
+  -- require('internals').setup()
 end, 100)
 
 -- require("notifications.recipes.progress").config()
--- require "plenary.profile".stop()

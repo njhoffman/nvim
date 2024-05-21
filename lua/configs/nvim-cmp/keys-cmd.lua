@@ -6,7 +6,7 @@ local types = require('cmp.types')
 
 local cmp_mapping = require('cmp.config.mapping')
 
-local function get_source_code(f)
+local get_source_code = function(f)
   local t = debug.getinfo(f)
   if t.linedefined < 0 then
     print('source', t.source)
@@ -50,22 +50,31 @@ local has_words_before = function()
   return col ~= 0
     and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
+-- :his[tory] [{name}] [{first}][, [{last}]]
+-- :history / 6,12
+-- 		List the contents of history {name} which can be:
+-- 		c[md]	 or :		command-line history
+-- 		s[earch] or / or ?	search string history
+-- 		e[xpr]	 or =		expression register history
+-- 		i[nput]	 or @		input line history
+-- 		d[ebug]	 or >		debug command history
+-- 		a[ll]			all of the above
+-- ['<C-y>'] = cmp_mapping({
+--   i = cmp_mapping.confirm({ behavior = ConfirmBehavior.Replace, select = false }),
+-- }),
 
 local last_history_cmd = ''
 local cmdline = {
   ['<C-e>'] = {
-    c = function()
+    c = function(fallback)
       if cmp.visible() then
         cmp.abort()
-      else
-        cmp.complete()
+      elseif not cmp.complete() then
+        fallback()
       end
     end,
   },
 
-  -- ['<C-y>'] = cmp_mapping({
-  --   i = cmp_mapping.confirm({ behavior = ConfirmBehavior.Replace, select = false }),
-  -- }),
   ['<C-y>'] = {
     c = function(fallback)
       if cmp.visible() then
@@ -89,55 +98,56 @@ local cmdline = {
       preserve_mapping_verticality = true,
     }),
   },
+  ['<Esc>'] = {
+    c = function(fallback)
+      if cmp.get_selected_entry() then
+        cmp.abort()
+      else
+        feedkeys.call(keymap.t('<C-c>'), 'c')
+      end
+      -- fallback()
+    end,
+  },
   ['<C-n>'] = {
-    c = function()
+    c = function(fallback)
       local cmdline = vim.fn.getcmdline() or ''
       local cmdpos = vim.fn.getcmdpos()
-      if cmdpos == 1 or last_history_cmd == cmdline then
-        feedkeys.call(keymap.t('<Down>'), 'c')
-        vim.schedule(function()
-          last_history_cmd = vim.fn.getcmdline() or ''
-        end)
-      elseif cmp.visible() then
+      -- if cmdpos >= 2 or last_history_cmd == cmdline then
+      --   feedkeys.call(keymap.t('<Down>'), 'c')
+      --   vim.schedule(function()
+      --     last_history_cmd = vim.fn.getcmdline() or ''
+      --   end)
+      if cmp.visible() then
         cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-      else
-        cmp.complete()
+      elseif not cmp.complete() then
+        fallback()
       end
     end,
   },
 
-  -- :his[tory] [{name}] [{first}][, [{last}]]
-  -- :history / 6,12
-  -- 		List the contents of history {name} which can be:
-  -- 		c[md]	 or :		command-line history
-  -- 		s[earch] or / or ?	search string history
-  -- 		e[xpr]	 or =		expression register history
-  -- 		i[nput]	 or @		input line history
-  -- 		d[ebug]	 or >		debug command history
-  -- 		a[ll]			all of the above
   ['<C-p>'] = {
-    c = function()
+    c = function(fallback)
       local cmdline = vim.fn.getcmdline() or ''
       local cmdpos = vim.fn.getcmdpos()
-      if cmdpos == 1 or last_history_cmd == cmdline then
-        feedkeys.call(keymap.t('<Up>'), 'c')
-        vim.schedule(function()
-          last_history_cmd = vim.fn.getcmdline() or ''
-        end)
-      elseif cmp.visible() then
+      -- if cmdpos >= 2 or last_history_cmd == cmdline then
+      --   feedkeys.call(keymap.t('<Up>'), 'c')
+      --   vim.schedule(function()
+      --     last_history_cmd = vim.fn.getcmdline() or ''
+      --   end)
+      if cmp.visible() then
         cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-      else
-        cmp.complete()
+      elseif not cmp.complete() then
+        fallback()
       end
     end,
   },
   ['<M-p>'] = {
-    c = function()
+    c = function(fallback)
       feedkeys.call(keymap.t('<Up>'), 'c')
     end,
   },
   ['<M-n>'] = {
-    c = function()
+    c = function(fallback)
       feedkeys.call(keymap.t('<Down>'), 'c')
     end,
   },
@@ -145,43 +155,70 @@ local cmdline = {
     c = function(fallback)
       if cmp.visible() then
         cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
-      elseif type(fallback) == 'function' then
+      end
+      if type(fallback) == 'function' then
         fallback()
       end
     end,
   },
-  -- ['<CR>'] = cmp_mapping(function(fallback)
-  --   if cmp.visible() then
-  --     return cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-  --   end
-  --   -- if type(fallback) == 'function' then
-  --   --   fallback() -- if not exited early, always fallback
-  --   -- end
-  -- end, { 'c' }),
+
+  -- ['<BS>'] = {
+  --   c = function(fallback)
+  --     local cmdpos = vim.fn.getcmdpos()
+  --     if cmdpos < 2 then
+  --       return cmp.close()
+  --     else
+  --       fallback()
+  --     end
+  --   end,
+  -- },
+  ['<M-BS>'] = {
+    c = function(fallback)
+      local cmdpos = vim.fn.getcmdpos()
+      if cmdpos < 2 then
+        return cmp.close()
+      else
+        fallback()
+      end
+    end,
+  },
+
   ['<CR>'] = cmp_mapping(function(fallback)
-    local opts = {
-      confirm_opts = { behavior = types.cmp.ConfirmBehavior.Replace, select = false },
-    }
+    local opts = { confirm_opts = { behavior = types.cmp.ConfirmBehavior.Insert, select = false } }
     if cmp.visible() then
       local confirm_opts = vim.deepcopy(opts.confirm_opts) -- avoid mutating the original opts below
-      -- local is_insert_mode = function()
-      --   return vim.api.nvim_get_mode().mode:sub(1, 1) == 'i'
-      -- end
-      -- if is_insert_mode() then -- prevent overwriting brackets
-      --   confirm_opts.behavior = types.cmp.ConfirmBehavior.Insert
-      -- end
-      -- local entry = cmp.get_selected_entry()
-      -- local is_copilot = entry and entry.source.name == 'copilot'
-      -- if is_copilot then
-      --   confirm_opts.behavior = ConfirmBehavior.Replace
-      --   confirm_opts.select = true
-      -- end
+      local is_insert_mode = function()
+        return vim.api.nvim_get_mode().mode:sub(1, 1) == 'i'
+      end
+      if is_insert_mode() then -- prevent overwriting brackets
+        confirm_opts.behavior = types.cmp.ConfirmBehavior.Insert
+      end
+      local entry = cmp.get_selected_entry()
+      local is_copilot = entry and entry.source.name == 'copilot'
+      if is_copilot then
+        -- confirm_opts.behavior = ConfirmBehavior.Replace
+        confirm_opts.select = true
+      end
       if cmp.confirm(confirm_opts) then
         return -- success, exit early
       end
     end
     fallback() -- if not exited early, always fallback
   end, { 'c' }),
+  ['<S-CR>'] = {
+    c = function(fallback)
+      -- if cmp.visible() then
+      --   cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
+      -- end
+      fallback()
+      feedkeys.call(keymap.t('<C-c>'), 'c')
+    end,
+    -- c = cmp.mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Replace, select = false }),
+  },
+  ['<C-CR>'] = {
+    c = cmp.mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Insert, select = false }),
+  },
+
   ['<Tab>'] = cmp.mapping(function(fallback)
     if cmp.visible() then
       cmp.select_next_item()
@@ -197,8 +234,7 @@ local cmdline = {
       fallback()
     end
   end, { 'c' }),
-  -- --   feedkeys.call(keymap.t('<Up>'), 'c')
-  --      cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
+  -- --   feedkeys.call(keymap.t('<Up>'), 'c') cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
   -- --   cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
 }
 return cmdline

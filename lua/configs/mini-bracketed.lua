@@ -14,15 +14,15 @@ local default = {
   --
   -- See `:h MiniBracketed.config` for more info.
 
-  buffer     = { suffix = 'b', options = {} },
+  buffer     = { suffix = 'gb', options = {} },
   comment    = { suffix = 'c', options = {} },
   conflict   = { suffix = 'x', options = {} },
   diagnostic = { suffix = 'd', options = {} },
-  file       = { suffix = 'f', options = {} },
-  indent     = { suffix = 'i', options = {} },
-  jump       = { suffix = 'j', options = {} },
-  location   = { suffix = 'l', options = {} },
-  oldfile    = { suffix = 'o', options = {} },
+  file       = { suffix = 'gf', options = {} },
+  indent     = { suffix = 'gi', options = {} },
+  jump       = { suffix = 'gj', options = {} },
+  location   = { suffix = 'gl', options = {} },
+  oldfile    = { suffix = 'go', options = {} },
   quickfix   = { suffix = 'q', options = {} },
   treesitter = { suffix = 't', options = {} },
   undo       = { suffix = 'u', options = {} },
@@ -30,7 +30,23 @@ local default = {
   yank       = { suffix = 'y', options = {} },
 }
 
-require('mini.bracketed').setup({ undo = { suffix = '' } })
+-- stylua: ignore
+require('mini.bracketed').setup({
+  buffer     = { suffix = 'gb', options = {} },
+  comment    = { suffix = 'c', options  = {} },
+  conflict   = { suffix = 'x', options  = {} },
+  diagnostic = { suffix = 'd', options  = {} },
+  file       = { suffix = 'gf', options = {} },
+  indent     = { suffix = 'gi', options = {} },
+  jump       = { suffix = 'gj', options = {} },
+  location   = { suffix = 'gl', options = {} },
+  oldfile    = { suffix = 'go', options = {} },
+  quickfix   = { suffix = 'q', options  = {} },
+  treesitter = { suffix = 't', options  = {} },
+  window     = { suffix = 'w', options  = {} },
+  yank       = { suffix = 'y', options  = {} },
+  undo       = { suffix = 'gu', options = {} },
+})
 
 -- Target                                            	 Mappings	Lua function
 -- Buffer                                            	 [B [b ]b ]B	MiniBracketed.buffer()

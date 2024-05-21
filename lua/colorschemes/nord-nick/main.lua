@@ -126,8 +126,6 @@ return function(injected_functions)
     VisualRed({ fg = 'none', bg = '#40112c', gui = 'bold,italic' }),
     Error({ fg = clrs.error, bg = 'none' }),
     -- Error({ fg = "none", bg = "none" }),
-    Underline({ gui = 'none' }),
-    Underlined({ gui = 'none' }),
     Normal({ fg = '#667da9', bg = 'none' }),
     -- ui components
     NormalWindow({ fg = Normal.fg, bg = 'none' }),
@@ -161,7 +159,7 @@ return function(injected_functions)
     -- CursorLine({ bg = '#0a1020' }),
     -- CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
     -- CurSearch({ fg = '#cc2266', gui = 'bold' }), --  bg = '#110033'
-    LineNr({ fg = clrs.nord3 }),
+    LineNr({ fg = '#2D476A' }),
     SignColumn({ bg = 'none' }),
     IncSearch({ gui = 'bold', bg = '#4e3ce6', fg = '#88aaff' }),
     Search({ fg = '#00cfff', gui = 'bold' }), -- bg = '#0d314c',
@@ -175,7 +173,7 @@ return function(injected_functions)
     Boolean({ fg = '#5370af' }),
     Number({ fg = '#4078c0' }),
     Character({ fg = '#10a4ca', gui = 'bold' }),
-    Comment({ fg = '#4a647b', gui = 'italic' }),
+    Comment({ fg = '#405f88', gui = 'italic' }),
     Conceal({ bg = 'none' }),
     Conditional({ fg = '#70688a' }),
     Constant({ fg = '#3698b3' }),
@@ -205,7 +203,7 @@ return function(injected_functions)
     PreProc({ fg = '#4796bc' }),
     QuickFixLine({ bg = '#172238' }),
     Repeat({ fg = '#806a7f' }),
-    Scrollbar({ bg = '#111111', fg = '#334863' }),
+    Scrollbar({ bg = '#111111', fg = '#224385' }),
     Special({ fg = '#487ac8' }),
     SpecialChar({ fg = '#b88698' }), -- For special punctutation that does not fall in the catagories before.
     SpecialComment({ fg = '#3698b3' }),
@@ -433,9 +431,6 @@ return function(injected_functions)
     --
 
     -- sym("@keyword.conditional")({ fg = "#80788a" }),
-    sym('@markup.raw.markdown_inline')({ fg = '#2779aa', gui = 'none' }),
-    sym('@markup.raw.block')({ gui = 'none', fg = '#2779aa' }),
-    sym('@markup.raw')({ fg = '#2779aa', gui = 'none' }),
     sym('@boolean')({ Boolean }),
     sym('@comment')({ Comment }),
     sym('@comment.documentation')({ Comment }),
@@ -457,10 +452,6 @@ return function(injected_functions)
     sym('@constant.luap')({ fg = '#2288cc', gui = 'bold' }),
     sym('@keyword.luap')({ fg = '#5886ff' }),
     sym('@operator.luap')({ fg = '#08a4ea', gui = 'bold' }),
-    sym('@punctuation.delimiter.luap')({ fg = '#4866d8', gui = 'bold' }),
-    sym('@punctuation.bracket.luap')({ fg = '#8b8af7' }),
-    sym('@string.regexp')({ fg = '#1a84ba', gui = 'none' }),
-
     sym('@keyword.exception')({ Special }),
     sym('@keyword.operator')({ Operator }),
     sym('@keyword.return')({ KeywordReturn }),
@@ -477,24 +468,33 @@ return function(injected_functions)
     sym('@parameter')({ fg = '#41a6b5' }),
     sym('@property')({ Identifier }),
     sym('@punctuation.bracket')({ fg = '#7886a8' }), -- fg = "#a9b1d6"
-    sym('@punct.bracket')({ sym('@punctuation.bracket') }),
+    sym('@punctuation.bracket.luap')({ fg = '#8b8af7' }),
     sym('@punctuation.delimiter')({ fg = '#7886a8' }),
+    sym('@punctuation.delimiter.luap')({ fg = '#4866d8', gui = 'bold' }),
     sym('@punctuation.special')({ fg = '#888698' }), -- #89ddff
-    sym('@punct.special')({ sym('@punctuation.special') }),
     sym('@punctuation.special.markdown')({ fg = '#645060' }), --  fg = '#89ddff'
+    sym('@punctuation.strikethrough.markdown_inline')({ Normal }),
     sym('@string')({ String }),
+    sym('@string.regexp')({ fg = '#1a84ba', gui = 'none' }),
+    sym('@string.special.url')({ gui = 'italic' }),
     sym('@string.documentation')({ fg = '#406f88', gui = 'italic' }),
     sym('@string.escape')({ fg = '#bb9af7' }),
     sym('@tag')({ fg = '#a78086' }),
     sym('@tag.attribute')({ fg = '#5599dd' }),
     sym('@tag.delimiter')({ sym('@tag') }),
-    sym('@markup.strikethrough')({ gui = 'strikeout' }),
+    sym('@markup.raw.markdown_inline')({ fg = '#2779aa', gui = 'none' }),
+    sym('@markup.raw.block')({ gui = 'none', fg = '#2779aa' }),
+    sym('@markup.raw')({ fg = '#2779aa', gui = 'none' }),
+    sym('@markup.strikethrough')({ gui = 'strikethrough' }),
+    sym('@markup.strikethrough.markdown_inline')({ gui = 'strikethrough', fg = Normal.fg }),
     sym('@markup.italic')({ gui = 'italic' }),
+    sym('@markup.italic.markdown_inline')({ gui = 'italic', fg = '#839ac6' }),
     sym('@markup.strong.markdown')({ gui = 'bold' }),
-    sym('@markup.strong.markdown_inline')({ gui = 'bold' }),
-    sym('@markup.link.label.markdown')({ fg = '#6c81df' }),
-    sym('@markup.link.label.markdown_inline')({ fg = '#6c81df' }),
+    sym('@markup.strong.markdown_inline')({ gui = 'bold', fg = '#839ac6' }),
     sym('@markup.link')({ fg = '#2aa1ae', gui = 'italic' }),
+    sym('@markup.link.label.markdown')({ fg = '#5c71cf' }),
+    -- sym('@markup.link.label.markdown_inline')({ fg = '#6c81ff', gui = 'italic' }),
+    sym('@markup.link.label.markdown_inline')({ fg = '#0081aa', gui = 'italic' }),
     sym('@markup.heading')({ fg = Title.fg }),
     sym('@markup.heading.1.markdown')({ fg = '#4f86e6' }),
     sym('@markup.heading.2.markdown')({ fg = '#347ad6' }),
@@ -530,13 +530,6 @@ return function(injected_functions)
     Headline4({ bg = '#040608', fg = sym('@markup.heading.4.markdown').fg }),
     Headline5({ bg = '#020408', fg = sym('@markup.heading.5.markdown').fg }),
     Headline6({ bg = '#000204', fg = sym('@markup.heading.6.markdown').fg }),
-    markdownH1({ fg = sym('@markup.heading.1.markdown').fg }),
-    markdownH2({ fg = sym('@markup.heading.2.markdown').fg }),
-    markdownH3({ fg = sym('@markup.heading.3.markdown').fg }),
-    markdownH4({ fg = sym('@markup.heading.4.markdown').fg }),
-    markdownH5({ fg = sym('@markup.heading.5.markdown').fg }),
-    markdownH6({ fg = sym('@markup.heading.6.markdown').fg }),
-
     -- CodeBlock({ bg = '#090909' }),
     CodeBlock({ bg = '#101018' }),
     -- - @lsp.type.variable.javascript links to Variable priority: 125
@@ -785,9 +778,19 @@ return function(injected_functions)
     htmlTagN({ fg = clr_over.orange }),
     CSVColumnHeaderOdd({ String }),
     CSVColumnHeaderEven({ fg = Statement.fg, bg = 'none' }),
-    markdownLinkText({ fg = '#00ccff' }),
+    -- markdownLinkText({ fg = '#702cff' }),
+    -- markdownH1({ fg = sym('@markup.heading.1.markdown').fg }),
+    -- markdownH2({ fg = sym('@markup.heading.2.markdown').fg }),
+    -- markdownH3({ fg = sym('@markup.heading.3.markdown').fg }),
+    -- markdownH4({ fg = sym('@markup.heading.4.markdown').fg }),
+    -- markdownH5({ fg = sym('@markup.heading.5.markdown').fg }),
+    -- markdownH6({ fg = sym('@markup.heading.6.markdown').fg }),
+    pandocAutomaticLink({ gui = 'italic' }),
+    pandocReferenceURL({ gui = 'italic' }),
+    pandocReferenceDefinitionAddress({ gui = 'italic' }),
     pandocDelimitedCodeBlock({ gui = 'none' }),
-    -- pandocStrikeout({ gui = 'none' }),
+    pandocStrikeout({ gui = 'strikethrough' }),
+    -- pandocEllipses({}),
     -- pandocEmphasis({ gui = 'italic', fg = '#bbbbcc' }),
     -- pandocStrong({ gui = 'none' }),
     -- pandocReferenceLabel { gui = "none", fg = clr_over.orange },
@@ -938,7 +941,7 @@ return function(injected_functions)
     -- CmpDocumentationBorder({ fg = tokyoColors.border_highlight, bg = tokyoColors.bg_float }),
     CmpItemMenu({ fg = '#6C7A96' }),
     CmpItemAbbr({ fg = '#4c74a4' }),
-    CmpItemAbbrDeprecated({ fg = colors.fg, gui = 'strikethrough' }),
+    CmpItemAbbrDeprecated({ fg = '#3c6494', gui = 'strikethrough' }),
     CmpItemAbbrMatch({ fg = '#208Ff8', gui = 'italic' }),
     CmpItemAbbrMatchFuzzy({ fg = '#008Fb8', gui = 'italic' }),
     CmpItemKindArray({ fg = tokyoColors.blue }),
@@ -1080,7 +1083,7 @@ return function(injected_functions)
     AerialVariableIcon({ CmpItemKindVariable }),
     -- AerialVariableIcon({ Identifier }),
     -- +--- Telescope ---+
-    TelescopeNormal({ fg = '#6D779a', bg = 'none', gui = 'none' }),
+    TelescopeNormal({ fg = '#4f6f9f', bg = 'none', gui = 'none' }), -- #6d779a
     TelescopeComment({ Comment }),
     TelescopeBorder({ bg = 'none', fg = '#2299cc' }),
     TelescopePrompt({ bg = 'none' }),
@@ -1089,16 +1092,16 @@ return function(injected_functions)
     TelescopePromptNormal({ fg = '#2299cc', bg = 'none' }),
     TelescopePromptBorder({ fg = '#416191', bg = 'none' }),
     TelescopePromptPrefix({ fg = '#2977FF', bg = 'none' }),
-    TelescopeMultiIcon({ fg = '#0066ff' }),
     TelescopePreviewBorder({ fg = '#416191', bg = 'none' }),
     TelescopeResults({ bg = 'none' }),
     TelescopeResultsBorder({ fg = '#416191', bg = 'none' }),
     TelescopeSelectionCaret({ fg = '#04c9fc' }),
-    TelescopeSelection({ fg = '#38aaee', gui = 'bold', bg = CursorLine.bg }), -- bg = "#202324"
-    TelescopeMatching({ fg = '#7997FF', bg = 'none' }),
+    TelescopeSelection({ fg = '#008acf', gui = 'bold', bg = CursorLine.bg }), -- bg = "#202324"
+    TelescopeMatching({ fg = '#4070cc', bg = 'none' }),
     TelescopeFrecencyScores({ fg = '#34799c' }),
     TelescopeBufferLoaded({ fg = '#47a0f0' }),
-    TelescopeMultiSelection({ fg = '#4060ff', gui = 'italic' }),
+    TelescopeMultiIcon({ fg = '#20a0ff', gui = 'bold' }),
+    TelescopeMultiSelection({ fg = '#2080cf', bg = 'none', gui = 'italic' }),
     TelescopeTitle({ fg = '#2299ff', gui = 'bold ' }),
     TelescopePreviewTitle({ fg = '#47a0f0', bg = 'none' }),
     TelescopeResultsTitle({ fg = '#64a9ec', bg = 'none' }),
@@ -1112,8 +1115,8 @@ return function(injected_functions)
     TelescopeWhichKeyName({ WhichKeyDesc }),
     TelescopeWhichKeyNameCustom({ fg = '#88aee9', gui = 'bold' }),
     TelescopeWhichKeyBorder({ WhichKeyDesc }),
-    -- { entry.value.event, "vimAutoEvent" },
-    -- { entry.value.group_name, "vimAugroup" },
+    vimAugroup({ fg = '#2080cf' }),
+    vimAutoEvent({ TelescopeResultsField }),
     -- { entry.value.pattern, "vimAutoCmdSfxList" },
     -- "TelescopeResultsDiffAdd" },
     -- "TelescopeResultsDiffAdd" },
@@ -1151,13 +1154,7 @@ return function(injected_functions)
     IlluminatedWordRead({ bg = '#101c39', gui = '' }),
     IlluminatedWordText({ bg = '#101c39', gui = '' }),
     IlluminatedWordWrite({ bg = '#101c39', gui = '' }),
-    -- noice.nvim
 
-    NoiceCursor({ bg = '#4B6BfB' }),
-    NoiceCmdlinePopupBorderHelp({ fg = '#8888ff' }),
-    NoiceCmdlinePopupBorderLua({ fg = '#44aaff' }),
-    NoiceCmdlinePopupBorder({ fg = '#4466ff' }),
-    NoiceCmdline({ fg = '#88aaff' }),
     -- git-conflict-nvim
     GitConflictCurrent({ bg = '#203d5e' }),
     GitConflictIncoming({ bg = '#003723' }),
@@ -1222,6 +1219,7 @@ return function(injected_functions)
 
     SpecsCursor({ bg = '#1f6385' }),
     HighlightUndo({ fg = '#b7001e', bg = '#0f2139' }),
+    HighlightRedo({ fg = '#00ffdd', bg = '#003149' }),
     BackseatText({ DiagnosticFloatingHint, gui = 'italic' }),
     FlashCharMatch({ fg = '#33c78a', bg = '#0a331a' }),
     FlashCharLabel({ fg = '#33aaff', bg = '#001122', gui = 'bold,italic' }),
@@ -1245,26 +1243,14 @@ return function(injected_functions)
     -- FlashCursor({Cursor})	-- cursor
     -- FlashBackdropRemote
     -- FlashRemoteLine
-
     -- RenamerNormal Normal
     RenamerBorder({ fg = '#4466ff' }),
     -- RenamerTitle Identifier
     MatchParen({ fg = '#fb8b8b', gui = 'bold,' }),
-    MatchParenCur({
-      fg = '#ff9f9f',
-      gui = 'bold',
-    }), -- matchparen
-    MatchWord({
-      fg = '#7f6686',
-      gui = 'italic',
-    }),
-    MatchBackground({
-      gui = 'italic',
-      bg = '#0f2139',
-    }), -- colorcolumn
-
+    MatchParenCur({ fg = '#ff9f9f', gui = 'bold' }), -- matchparen
+    MatchWord({ fg = '#7f6686', gui = 'italic' }),
+    MatchBackground({ gui = 'italic', bg = '#0f2139' }), -- colorcolumn
     RegistersPreview({ fg = '#009ac8', bg = 'none', gui = 'none' }), -- IncSearch
-
     SmoothCursor({ fg = '#0081ca', gui = 'bold' }),
     LeapMatch({ fg = '#00ffdd', bg = 'none' }), -- IncSearch
     -- LeapLabelPrimary
@@ -1322,5 +1308,86 @@ return function(injected_functions)
     BufferAlternateCHANGED({ bg = '#0c2333' }),
     BufferAlternateDELETED({ bg = '#0c2333' }),
     BufferAlternateSignRight({ bg = '#0c2333' }),
+    -- noice.nvim
+    NoiceCursor({ bg = '#4B6BfB' }),
+    NoiceCmdline({ fg = '#00aacc' }),
+
+    -- NeoTreeNormal guibg=#010409"
+    -- NeoTreeNormalNC guibg=#010409"
+    -- NoiceCmdlinePopup guibg=#0a0e12"
+    -- NoiceCmdlineIconCmdline guifg=#d2a8ff"
+    -- NoiceCmdlineIcon({ fg = '#00aacc' }),
+    -- NoiceCmdlineIconCalculator({ fg = '#6F65f0' }),
+    -- NoiceCmdlineIconCmdline({ fg = '#88c0d0' }),
+    -- NoiceCmdlineIconFilter({ fg = '#b48ead' }),
+    -- NoiceCmdlineIconHelp({ fg = '#24a2ac' }),
+    -- NoiceCmdlineIconIncRename({ fg = '#b48ead' }),
+    -- NoiceCmdlineIconInput({ fg = '#88c0d0' }),
+    -- NoiceCmdlineIconLua({ fg = '#2a76b7' }),
+    -- NoiceCmdlineIconSearch({ fg = '#b48ead' }),
+    -- NoiceCmdlinePopup({ fg = '#00aacc' }),
+    -- NoiceCmdlinePopupBorder({ fg = '#4466ff' }),
+    -- NoiceCmdlinePopupBorderCalculator({ fg = '#81A1C1' }),
+    -- NoiceCmdlinePopupBorderCmdline({ fg = '#88c0d0' }),
+    -- NoiceCmdlinePopupBorderFilter({ fg = '#b16286' }),
+    -- NoiceCmdlinePopupBorderHelp({ fg = '#2d78c4' }),
+    -- NoiceCmdlinePopupBorderIncRename({ fg = '#b48ead' }),
+    -- NoiceCmdlinePopupBorderInput({ fg = '#88c0d0' }),
+    -- NoiceCmdlinePopupBorderLua({ fg = '#2a76b7' }),
+    -- NoiceCmdlinePopupBorderLuaExpr({ fg = '#44aaff' }),
+    -- NoiceCmdlinePopupBorderNumb({ fg = '#8888ff' }),
+    -- NoiceCmdlinePopupBorderSearch({ fg = '#b48ead'  }),
+    -- NoiceCmdlinePopupSubs({ fg = '#6B8BFF' }),
+    -- NoiceCmdlinePopupTitle({ fg = '#A3BE8C' }),
+    -- NoiceCmdlinePrompt({ fg = '#68e0f5" ' }),
+    --	NoiceConfirm                      = { fg = C.frost.turquoise, bg = C.bg },           --normal for the confirm view
+    -- NoiceConfirmBorder                = { fg = C.frost.turquoise, bg = C.bg },           --Border for the confirm view
+    -- NoiceCursor                       = { fg = C.blend.blue, bg = C.blend.bluec1 },      --fake Cursor
+    -- NoiceFormatConfirm                = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --
+    -- NoiceFormatConfirmDefault         = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --
+    -- NoiceFormatLevelDebug             = { fg = C.aurora.green, bg = C.none },            --
+    -- NoiceFormatLevelError             = { fg = C.aurora.red, bg = C.none },              --
+    -- NoiceFormatLevelInfo              = { fg = C.frost.turquoise, bg = C.none },         --
+    -- NoiceFormatLevelOff               = { fg = C.night.c3, bg = C.none },                --
+    -- NoiceFormatLevelTrace             = { fg = C.aurora.green, bg = C.none },            --
+    -- NoiceFormatLevelWarn              = { fg = C.aurora.yellow, bg = C.none },           --
+    -- NoiceFormatProgressDone           = { fg = C.frost.turquoise, bg = C.none },         --progress bar done
+    -- NoiceFormatProgressTodo           = { fg = C.aurora.yellow, bg = C.none },           --progress bar todo
+    -- NoiceFormatTitle                  = { fg = C.fg, bg = C.none },                      --
+    -- NoiceFormatEvent                  = { fg = C.frost.turquoise, bg = C.bg },           --
+    -- NoiceLspProgressClient            = { fg = C.frost.turquoise, bg = C.bg, blend = 5 }, --lsp progress client name
+    -- NoiceLspProgressSpinner           = { fg = C.aurora.green, bg = C.bg, blend = 5 },   --lsp progress spinner
+    -- NoiceLspProgressTitle             = { fg = C.fg, bg = C.bg },                        --lsp progress title
+    -- NoiceMini                         = { fg = C.fg, bg = C.bg, blend = 0 },             --normal for mini view
+    -- NoicePopup                        = { fg = C.frost.turquoise, bg = C.bg },           --Normal for popup views
+    -- NoicePopupBorder                  = { fg = C.frost.turquoise, bg = C.bg },           --Border for popup views
+    -- NoicePopupmenu                    = { fg = C.frost.turquoise, bg = C.blend.blue },   --normal for the popupmenu
+    -- NoicePopupmenuBorder              = { fg = C.frost.turquoise, bg = C.bg },           --Popupmenu border
+    -- NoicePopupmenuMatch               = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --part of the item that matches the input
+    -- NoicePopupmenuSelected            = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --selected item in the popupmenu
+    -- NoiceScrollbar                    = { fg = C.night.c2, bg = C.none },                --Normal for scrollbar
+    -- NoiceScrollbarThumb               = { fg = C.night.c2, bg = C.none },                --Scrollbar thumb
+    -- NoiceSplit                        = { fg = C.fg, bg = C.bg },                        --Normal for split views
+    -- NoiceSplitBorder                  = { fg = C.night.c1, bg = C.bg },                  --Border for split views
+    -- 	-hi(0, "NoiceCmdlineIconIncRename", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlineIconInput", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlineIconLua", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlineIconSearch", { fg = "#fee19f" })
+    -- hi(0, "NoiceCmdlinePopup", { bg = "#10121e" })
+    -- hi(0, "NoiceCmdlinePopupBorder", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlinePopupBorderCalculator", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlinePopupBorderCmdline", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlinePopupBorderFilter", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlinePopupBorderHelp", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlinePopupBorderIncRename", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlinePopupBorderInput", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlinePopupBorderLua", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlinePopupBorderSearch", { fg = "#fee19f" })
+    -- hi(0, "NoiceCmdlinePopupTitle", { fg = "#68e0f5" })
+    -- hi(0, "NoiceCmdlinePrompt", { bold = true, fg = "#82b4ff" })
+    -- hi(0, "NoiceCompletionItemKindC- NoiceVirtualText                  = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --Default hl group for virtualtext viewsNoiceConfirm                      = { fg = C.frost.turquoise, bg = C.bg },           --normal for the confirm view
+
+    -- ScrolllView
+    ScrollView({ bg = '#224385' }),
   }
 end

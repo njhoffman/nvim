@@ -11,67 +11,73 @@ local setup_char_mappings = function()
   for _, key in ipairs({ ';', ':' }) do
     local existing = {
       n = vim.fn.maparg(key, 'n', false, false),
-      -- x = vim.fn.maparg(key, 'x', false, false),
+      x = vim.fn.maparg(key, 'x', false, false),
       o = vim.fn.maparg(key, 'o', false, false),
       s = vim.fn.maparg(key, 's', false, false),
     }
-    vim.keymap.set(
-      { 'n', 'o' }, -- {'x', 'n', 'o' },
-      key,
-      function()
-        local Config = require('flash.config')
-        local Repeat = require('flash.repeat')
-        local char = require('flash.plugins.char')
-        local state = char.state or {}
+    vim.keymap.set({ 'n', 'o', 'x' }, key, function()
+      local Config = require('flash.config')
+      local Repeat = require('flash.repeat')
+      local char = require('flash.plugins.char')
+      local state = char.state or {}
 
-        local mode = vim.fn.mode()
-        local is_visible = state and state.visible
+      local mode = vim.fn.mode()
+      local exists = existing[mode]
+      if mode == 'v' or mode == 'V' or mode == '' then
+        exists = existing.x
+      end
+      local is_visible = state and state.visible
 
-        if is_visible then
-          char.jumping = true
-          local autohide = Config.get('char').autohide
-          if Repeat.is_repeat then
-            char.jump_labels = false -- never show jump labels when repeating
-            char.state:jump({ count = vim.v.count1 })
-            char.state:show()
-          else
-            char.jump(key)
-          end
-          vim.schedule(function()
-            char.jumping = false
-            if char.state and autohide then
-              char.state:hide()
-            end
-          end)
-        elseif existing[mode] and existing[mode] ~= '' then
-          vim.api.nvim_feedkeys(existing[mode], mode, true)
+      if is_visible then
+        char.jumping = true
+        local autohide = Config.get('char').autohide
+        if Repeat.is_repeat then
+          char.jump_labels = false -- never show jump labels when repeating
+          char.state:jump({ count = vim.v.count1 })
+          char.state:show()
+        else
+          char.jump(key)
         end
-      end,
-      { remap = true, silent = true }
-    )
+        vim.schedule(function()
+          char.jumping = false
+          if char.state and autohide then
+            char.state:hide()
+          end
+        end)
+      elseif exists and exists ~= '' then
+        vim.api.nvim_feedkeys(exists, 'n', true)
+      end
+    end, { remap = true, silent = true })
   end
 end
 
+-- 'ygw',
+-- function()
+--   require('flash').jump {
+--     action = function(match, state)
+--       vim.api.nvim_set_current_win(match.win)
+--       vim.api.nvim_win_set_cursor(match.win, match.pos)
+--       vim.cmd.norm { args = { 'yiw' }, bang = true }
+--       state:restore()
+--     end,
+--   }
+-- end,
 local pfx = 'g\\'
 
--- stylua:ignore
-local setup_search_mappings = function()
-  vim.keymap.set({ 'c' }, '<M-S>', function()
-    require('flash').toggle()
-  end, { noremap = true, silent = true, desc = '⚡toggle flash search' })
-
-  -- or
-  -- { "<c-s>", mode = { "c" }, function() require("flash").toggle_current_search() end, desc = "Toggle Current Flash Search" },
+local setup_remote_mappings = function()
   -- i.e. dr<search>w   gcr<search>c
-
   vim.keymap.set({ 'o' }, 'r', function()
-    require('flash').remote()
+    require('flash').remote({ restore = true })
   end, { noremap = true, desc = '⚡remote flash operator' })
 
-  -- r<match>u  r<search>D  rvaby (yank remote block)  rab<match>@a (apply macro)
+  vim.keymap.set({ 'o' }, 'R', function()
+    require('flash').remote({ restore = false })
+  end, { noremap = true, desc = '⚡remote flash operator (norestore)' })
+
+  -- gr<match>u  gr<search>D  grvaby (yank remote block)  grab<match>@a (apply macro)
   vim.keymap.set({ 'n' }, 'gr', function()
     local state = require('flash').jump({
-      remote_op = { restore = false },
+      remote_op = { restore = true },
     })
     vim.api.nvim_create_autocmd('TextChanged', {
       once = true,
@@ -82,13 +88,30 @@ local setup_search_mappings = function()
     })
   end, { noremap = true, silent = true, desc = '⚡remote flash command' })
 
+  vim.keymap.set({ 'n' }, 'gR', function()
+    local state = require('flash').jump({
+      remote_op = { restore = false },
+    })
+  end, { noremap = true, silent = true, desc = '⚡remote flash no restore' })
+end
+
+-- stylua:ignore
+local setup_search_mappings = function()
+  vim.keymap.set({ 'c' }, '<C-S>', function()
+    require('flash').toggle_current_search()
+  end, {
+    noremap = true,
+    silent = true,
+    desc = '⚡toggle flash current search',
+  })
+
   vim.keymap.set({ 'n', 'o', 'x' }, '\\', function()
     require('flash').jump()
   end, { noremap = true, silent = true, desc = '⚡flash jump' })
 
   vim.keymap.set({ 'n', 'o', 'x' }, 'g\\t', function()
     require('flash').treesitter()
-  end, { noremap = true, silent = true, desc = '⚡flash treesitter' })
+  end, { noremap = true, silent = true, desc = '⚡flash jump treesitter' })
 
   vim.keymap.set(
     { 'n', 'x', 'o' },
@@ -119,14 +142,18 @@ local setup_search_mappings = function()
   )
 
   vim.keymap.set({ 'n', 'o' }, 'g\\s', function()
+    vim.api.nvim_feedkeys('/', 'n', true)
+  end, { noremap = true, silent = true, desc = '⚡flash search forward' })
+
+  vim.keymap.set({ 'n', 'o' }, 'g\\St', function()
     require('flash').treesitter_search()
   end, { noremap = true, silent = true, desc = '⚡flash treesitter search' })
 
   vim.keymap.set(
     { 'n', 'o', 'x' },
-    'g\\S',
+    'g\\Sc',
     actions.search_words_2char,
-    { noremap = true, silent = true, desc = '⚡flash treesitter search 2chars' }
+    { noremap = true, silent = true, desc = '⚡flash search 2chars' }
   )
 
   -- mapper.map({ 'n', 'x' }, 'rx', function()
@@ -143,6 +170,7 @@ end
 
 local setup = function()
   setup_char_mappings()
+  setup_remote_mappings()
   setup_search_mappings()
 end
 

@@ -1,5 +1,5 @@
 if vim.g.neovide then
-  vim.opt.guifont = 'DejaVuSansMono Nerd Font:h8' -- text below applies for VimScript
+  -- vim.opt.guifont = 'DejaVuSansMono Nerd Font:h10' -- text below applies for VimScript
   -- vim.opt.guifont = { "Font name", ":size" }
 
   -- desktop
@@ -52,6 +52,50 @@ if vim.g.neovide then
   vim.g.neovide_cursor_vfx_particle_phase = 1.5
   vim.g.neovide_cursor_vfx_particle_curl = 1.0
   vim.g.neovide_cursor_vfx_particle_speed = 10.0
+  -- vim.opt.guifont = 'DejaVuSansMono Nerd Font:h10' -- text below applies for VimScript
+
+  -- map.set({ "n", "v" }, "<C-+>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
+  -- map.set({ "n", "v" }, "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
+  -- map.set({ "n" , "v" }, "<C-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
+  -- local function neovideScale(amount)
+  --   local temp = vim.g.neovide_scale_factor + amount
+  --   if temp < 0.5 then
+  --     return
+  --   end
+  --   vim.g.neovide_scale_factor = temp
+  -- end
+
+  -- map("n", "<C-=>", function()
+  --   neovideScale(0.1)
+  -- end)
+
+  -- map("n", "<C-->", function()
+  --   neovideScale(-0.1)
+  -- end)
+  vim.cmd([[
+
+  let s:guifontsize=10
+  let s:guifont="Fira\\ Code\\ SemiBold"
+  " set guifont=Fira\ Code\ SemiBold:h13
+  set guifont=DejaVuSansMono\ Nerd\ Font:h10
+
+" let g:neovide_refresh_rate=60
+" let g:neovide_transparency=0.8
+" let g:neovide_no_idle=v:false
+" let g:neovide_fullscreen=v:false
+" let g:neovide_cursor_animation_length=0.20
+" let g:neovide_cursor_trail_length=0.5
+" let g:neovide_cursor_antialiasing=v:true
+" let g:neovide_cursor_vfx_mode = "ripple"
+
+  function! AdjustFontSize(amount)
+      let s:guifontsize = s:guifontsize + a:amount
+      execute "set guifont=" .. s:guifont .. ":h" .. s:guifontsize
+  endfunction
+
+  nnoremap <C-+> <cmd>call AdjustFontSize(+1)<cr>
+  nnoremap <C--> <cmd>call AdjustFontSize(-1)<cr>
+]])
 end
 
 -- if vim.g.neovide == true then

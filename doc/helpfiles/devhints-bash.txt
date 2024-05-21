@@ -1,4 +1,4 @@
-*devhints-bash.txt* Devhints Bash Cheatsheet
+*devhints-bash* Devhints Bash Cheatsheet
 
 >bash
   #!/usr/bin/env bash

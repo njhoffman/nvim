@@ -1,5 +1,6 @@
 local keymap = require('mapper').map
-local filetypes = require('configs.debugprint.filetypes')
+-- local keymap = vim.keymap.set
+-- local filetypes = require('configs.debugprint.filetypes')
 
 -- vim.dbglog("🪚 [2]: init.lua:7: lua=", lua)
 -- vim.dbglog("🪚 lua: ", lua)
@@ -30,16 +31,16 @@ local setup_debugprint = function()
     return require('debugprint').debugprint({ variable = true })
   end, {
     expr = true,
-    label = ' inspect var below',
-    desc = ' inspect variable below cursor or await typed expression',
+    label = ' [i]nspect var below',
+    desc = ' [i]nspect variable below cursor or await typed expression',
   })
 
   keymap({ 'n', 'x' }, keys.variable_above, function()
     return require('debugprint').debugprint({ variable = true, above = true })
   end, {
     expr = true,
-    label = ' inspect var above',
-    desc = ' inspect variable above cursor or await typed expression',
+    label = ' [i]nspect var above',
+    desc = ' [i]nspect variable above cursor or await typed expression',
   })
 
   keymap('n', keys.operator_below, function()

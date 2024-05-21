@@ -1,0 +1,38 @@
+--stylua: ignore
+local ts = {
+  remote_node             = '<cr>',
+  tree_search             = 'R',
+  op_tree_search          = 'M',
+  goto_prefix             = ';;',
+  goto_next               = ';;',
+  goto_previous           = ';;',
+  goto_next_outer         = ']]',
+  goto_previous_outer     = '[[',
+  goto_next_end           = '<leader>]', -- ")",
+  goto_previous_end       = '<leader>[', -- "(",
+  goto_next_outer_end     = '<leader>]]', -- "))",
+  goto_previous_outer_end = '<leader>[[', -- "((",
+
+  select                  = '&',
+  select_dynamic          = 'm',
+  select_remote           = 'r',
+  select_remote_dynamic   = 'ir',
+  select_outer            = '<M-S-7>', -- M-&
+  select_next             = 'in',
+  select_previous         = 'iN',
+  select_next_outer       = 'an',
+  select_previous_outer   = 'aN',
+
+  exchange_node           = 'rix',
+  exchange_motion         = 'rx',
+  exchange_vline          = 'rxx',
+  remote_replace          = ';R',
+  replace_remote_motion   = ';ry',
+  replace_remote_d_motion = ';rd',
+  replace_remote_c_motion = ';rc',
+  replace_node            = ';rY',
+  replace_d_node          = ';rD',
+  replace_c_node          = ';rC',
+  treesitter_unit         = 'u',
+  treesitter_dynamic      = ';rw',
+}

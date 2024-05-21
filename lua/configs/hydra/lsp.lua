@@ -138,7 +138,7 @@ local hydra = function()
       end,
     },
     mode = { 'n', 'x' },
-    body = 'gl',
+    body = '<leader>!l',
   })
 end
 

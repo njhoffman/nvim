@@ -114,7 +114,12 @@ function M.setup()
     end
   end
 
-  for _, key in ipairs({ 'f', 'F', 't', 'T', ';', ',' }) do
+  for _, key in ipairs({
+    'f',
+    'F',
+    't',
+    'T', --[[ ';', ',' ]]
+  }) do
     if keys[key] then
       vim.keymap.set({ 'n', 'x', 'o' }, keys[key], function()
         M.jumping = true

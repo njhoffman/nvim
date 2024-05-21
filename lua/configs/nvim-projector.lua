@@ -56,4 +56,4 @@ local default = {
     },
   },
 }
-require('dbee').setup()
+-- require('dbee').setup()

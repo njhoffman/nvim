@@ -15,6 +15,70 @@ local plugins = {
   -- https://github.com/romgrk/barbar.nvim/pull/540
   -- { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
   {
+    'chrishrb/gx.nvim',
+    keys = { { 'gx', '<cmd>Browse<cr>', mode = { 'n', 'x' } } },
+    cmd = { 'Browse' },
+    init = function()
+      vim.g.netrw_nogx = 1 -- disable netrw gx
+    end,
+    dependencies = { 'nvim-lua/plenary.nvim' },
+
+    -- you can specify also another config if you want
+    config = function()
+      require('gx').setup({
+        open_browser_app = 'xdg-open', -- specify your browser app; default for macOS is "open", Linux "xdg-open" and Windows "powershell.exe"
+        -- open_browser_args = { '--background' }, -- specify any arguments, such as --background for macOS' "open".
+        handlers = {
+          plugin = true, -- open plugin links in lua (e.g. packer, lazy, ..)
+          github = true, -- open github issues
+          brewfile = true, -- open Homebrew formulaes and casks
+          package_json = true, -- open dependencies from package.json
+          search = true, -- search the web/selection on the web if nothing else is found
+          go = true, -- open pkg.go.dev from an import statement (uses treesitter)
+          jira = { -- custom handler to open Jira tickets (these have higher precedence than builtin handlers)
+            name = 'jira', -- set name of handler
+            handle = function(mode, line, _)
+              local ticket = require('gx.helper').find(line, mode, '(%u+-%d+)')
+              if ticket and #ticket < 20 then
+                return 'http://jira.company.com/browse/' .. ticket
+              end
+            end,
+          },
+          rust = { -- custom handler to open rust's cargo packages
+            name = 'rust', -- set name of handler
+            filetype = { 'toml' }, -- you can also set the required filetype for this handler
+            filename = 'Cargo.toml', -- or the necessary filename
+            handle = function(mode, line, _)
+              local crate = require('gx.helper').find(line, mode, '(%w+)%s-=%s')
+
+              if crate then
+                return 'https://crates.io/crates/' .. crate
+              end
+            end,
+          },
+        },
+        handler_options = {
+          search_engine = 'google', -- you can select between google, bing, duckduckgo, and ecosia
+          -- search_engine = 'https://search.brave.com/search?q=', -- or you can pass in a custom search engine
+          select_for_search = false, -- if your cursor is e.g. on a link, the pattern for the link AND for the word will always match. This disables this behaviour for default so that the link is opened without the select option for the word AND link
+
+          git_remotes = { 'upstream', 'origin' }, -- list of git remotes to search for git issue linking, in priority
+          -- git_remotes = function(fname) -- you can also pass in a function
+          --   if fname:match('myproject') then
+          --     return { 'mygit' }
+          --   end
+          --   return { 'upstream', 'origin' }
+          -- end,
+          --
+          git_remote_push = false, -- use the push url for git issue linking,
+          -- git_remote_push = function(fname) -- you can also pass in a function
+          --   return fname:match('myproject')
+          -- end,
+        },
+      })
+    end,
+  },
+  {
     'romgrk/barbar.nvim',
     -- branch = 'fix-telescope-insert',
     init = function()
@@ -28,8 +92,12 @@ local plugins = {
   {
     '00sapo/visual.nvim',
     enabled = false,
-    dependencies = { 'nvim-treesitter', 'nvim-treesitter-textobjects' }, -- this is needed so that visual.nvim is loaded *afterwards* Treesitter
+    dependencies = { 'nvim-treesitter', 'nvim-various-textobjs', 'nvim-treesitter-textobjects' },
     event = 'VeryLazy',
+  },
+  {
+    'Makaze/watch.nvim',
+    cmd = { 'WatchStart', 'WatchStop', 'WatchFile' },
   },
   { 'rasulomaroff/reactive.nvim', enabled = true, lazy = false },
   -- https://www.reddit.com/r/neovim/comments/1aupy8c/a_simple_journaling_system_built_with_mind_and/
@@ -130,7 +198,7 @@ local plugins = {
     },
   },
   { 'm00qek/baleia.nvim', lazy = false, commit = '56ad00d' },
-  { 'folke/zen-mode.nvim', cmd = 'ZenMode', keys = { '<S-CR>' } },
+  { 'folke/zen-mode.nvim', cmd = 'ZenMode' },
   { 'folke/twilight.nvim', cmd = { 'Twilight', 'TwilightEnable' } },
   -- { 'benlubas/wrapping-paper.nvim' },
   {
@@ -150,6 +218,16 @@ local plugins = {
         node_path = '/home/nicholas/.asdf/shims/node',
       })
     end,
+  },
+  {
+    'jackMort/ChatGPT.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'nvim-lua/plenary.nvim',
+      'folke/trouble.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
   },
   { 'BlackLight/nvim-http' },
   {
@@ -187,7 +265,67 @@ local plugins = {
     event = { 'BufReadPost', 'BufNewFile' },
     dependencies = 'winston0410/cmd-parser.nvim',
   },
-  { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
+  -- { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
+  {
+    'dstein64/nvim-scrollview',
+    -- `conflicts`    git merge conflicts
+    -- `cursor`       cursor position
+    -- `diagnostics`  errors, warnings, info, and hints via |vim.diagnostic|
+    -- `folds`        closed folds
+    -- `loclist`      items on the location list
+    -- `marks`
+    -- `quickfix`     items on the quickfix list
+    -- `search`
+    -- `spell`        spell check items when the |'spell'| option is enabled
+    -- `textwidth`    line lengths exceeding the value of the |'textwidth'| option, when non-zero
+    -- `trail`        trailing whitespace, when the |'list'| option is enabled and the |'listchars'| option includes "trail"
+    config = function()
+      require('scrollview').setup({
+        excluded_filetypes = {
+          'chatgpt-input',
+          'notify',
+          'cmp_docs',
+          'cmp_menu',
+          'lazy',
+          'neoai-input',
+          'noice',
+          'prompt',
+          'TelescopePrompt',
+          'nerdtree',
+        },
+        winblend_gui = 30,
+        current_only = false,
+        -- base = 'buffer',
+        -- column = 80,
+        floating_windows = true,
+        -- signs_on_startup = { 'all' },
+        signs_on_startup = {
+          'conflicts',
+          -- 'cursor',
+          'diagnostics',
+          -- 'folds',
+          -- 'loclist',
+          -- 'marks',
+          -- 'quickfix',
+          'search',
+          -- 'spell',
+          -- 'textwidth',
+          -- 'trail',
+        },
+        diagnostics_severities = { vim.diagnostic.severity.ERROR },
+      })
+    end,
+  },
+  {
+    'jinh0/eyeliner.nvim',
+    config = function()
+      require('eyeliner').setup({
+        highlight_on_key = true, -- show highlights only after keypress
+        dim = true, -- dim all other characters if set to true (recommended!)
+      })
+    end,
+  },
+
   -- https://github.com/miversen33/sunglasses.nvim
   { 'TaDaa/vimade', event = 'VimEnter' },
   {
@@ -203,6 +341,7 @@ local plugins = {
       })
     end,
   },
+  { 'hrsh7th/nvim-kit' },
   { 'Bekaboo/deadcolumn.nvim', event = { 'VimEnter' } },
   -- treesitter
   -- https://github.com/ziontee113/query-secretary
@@ -347,8 +486,8 @@ local plugins = {
       vim.g.smoothie_enabled = 1
       vim.g.smoothie_no_default_mappings = 1
       vim.g.smoothie_experimental_mappings = 0
-      vim.g.smoothie_update_interval = 20 -- 20
-      vim.g.smoothie_speed_constant_factor = 6 -- 10
+      vim.g.smoothie_update_interval = 10 -- 20
+      vim.g.smoothie_speed_constant_factor = 10 -- 10
       vim.g.smoothie_speed_linear_factor = 8 -- 10
       vim.g.smoothie_speed_exponentiation_factor = 0.9 -- 0.9
       vim.g.redraw_at_finish = 1
@@ -395,13 +534,13 @@ local plugins = {
 
       vim.g.matchup_matchparen_pumvisible = 0
       -- 1 (show matching even when pum-completion is visible)
-      vim.g.matchup_matchparen_offscreen = { method = 'popup' } -- method = popup, status, status_minimal
+      vim.g.matchup_matchparen_offscreen = {} -- method = popup, status, status_minimal, empty dict to disable
 
       vim.g.matchup_motion_override_Npercent = 0 -- enable vim default {count}%
       vim.g.matchup_matchparen_timeout = 150 -- 300
       vim.g.matchup_matchparen_insert_timeout = 30 -- 60
       vim.g.matchup_matchparen_deferred = 1
-      vim.g.matchup_matchparen_deferred_fade_time = 300 -- 0 (ms match will disappear after no movement)
+      vim.g.matchup_matchparen_deferred_fade_time = 0 -- 0 (ms match will disappear after no movement)
       vim.g.matchup_matchparen_deferred_show_delay = 50 -- 50 (time between cursor stop moving and match check)
       vim.g.matchup_matchparen_deferred_hide_delay = 700 -- 700 (hide stale matches after n seconds of cursor movement)
       vim.g.matchup_matchparen_hi_surround_always = 1
@@ -481,12 +620,55 @@ local plugins = {
   },
   -- keep this for block functions
   { 'numToStr/Comment.nvim', event = 'VeryLazy' },
-  { 'andrewferrier/debugprint.nvim', commit = '5b450f9', event = 'VeryLazy' },
+  {
+    'andrewferrier/debugprint.nvim',
+    event = 'VeryLazy',
+    -- opts = {
+    --         keymaps = {
+    --             normal = {
+    --                 plain_below = "g?p",
+    --                 plain_above = "g?P",
+    --                 variable_below = "g?v",
+    --                 variable_above = "g?V",
+    --                 variable_below_alwaysprompt = nil,
+    --                 variable_above_alwaysprompt = nil,
+    --                 textobj_below = "g?o",
+    --                 textobj_above = "g?O",
+    --                 toggle_comment_debug_prints = nil,
+    --                 delete_debug_prints = nil,
+    --             },
+    --             visual = {
+    --                 variable_below = "g?v",
+    --                 variable_above = "g?V",
+    --             },
+    --         },
+    --         commands = {
+    --             toggle_comment_debug_prints = "ToggleCommentDebugPrints",
+    --             delete_debug_prints = "DeleteDebugPrints",
+    --         },
+    --     },
+    --     -- The 'keys' and 'cmds' sections of this configuration are only needed if
+    --     -- you want to take advantage of `lazy.nvim` lazy-loading.
+    --     keys = {
+    --         { "g?p", mode = 'n' },
+    --         { "g?P", mode = 'n' },
+    --         { "g?v", mode = 'n' },
+    --         { "g?V", mode = 'n' },
+    --         { "g?o", mode = 'n' },
+    --         { "g?O", mode = 'n' },
+    --         { "g?v", mode = 'x' },
+    --         { "g?V", mode = 'x' },
+    --     },
+    --     cmd = {
+    --         "ToggleCommentDebugPrints",
+    --         "DeleteDebugPrints",
+    --     },
+  },
   -- https://github.com/kr40/nvim-macros
   {
     'ecthelionvi/NeoComposer.nvim',
     event = 'VeryLazy',
-    dependencies = { 'kkharji/sqlite.lua', 'telescope.nvim' },
+    dependencies = { 'kkharji/sqlite.lua', 'nvim-telescope/telescope.nvim' },
   },
   { 'tpope/vim-repeat', event = 'VeryLazy' },
   { 'smjonas/live-command.nvim', event = 'VeryLazy' }, -- branch = 'remote',
@@ -519,9 +701,9 @@ local plugins = {
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-web-devicons', 'MunifTanjim/nui.nvim' },
   },
   {
-    'njhoffman/telescope.nvim',
-    -- 'nvim-telescope/telescope.nvim',
-    dir = '~/git/telescope.nvim',
+    -- 'njhoffman/telescope.nvim',
+    'nvim-telescope/telescope.nvim',
+    dir = '/home/nicholas/git/telescope.nvim',
     cmd = 'Telescope',
     -- opts = { extensions = { gpt = { title = "Gpt Actions", } } },
     -- event = 'VeryLazy',
@@ -571,6 +753,106 @@ local plugins = {
       'doctorfree/cheatsheet.nvim',
       'tamago324/telescope-openbrowser.nvim',
       'tsakirist/telescope-lazy.nvim',
+      {
+        'agoodshort/telescope-git-submodules.nvim',
+        enabled = false,
+        dependencies = {
+          'akinsho/toggleterm.nvim',
+        },
+        config = function()
+          require('telescope').load_extension('git_submodules')
+          -- require("telescope").setup({
+          --     extensions = {
+          --       git_submodules = {
+          --         git_cmd = "lazygit",
+          --         previewer = true,
+          --         terminal_id = 9,
+          --         terminal_display_name = "Lazygit",
+          --         diffview_keymap = "<C-d>",
+          --       },
+          --     },
+          --   })
+        end,
+      },
+      { 'natecraddock/telescope-zf-native.nvim' },
+      {
+        'lalitmee/browse.nvim',
+        config = function()
+          -- require('browse.devdocs').search_with_filetype()
+          -- require('browse.mdn').search()
+          require('browse').setup({
+            -- search provider you want to use
+            provider = 'google', -- duckduckgo, bing
+            -- either pass it here or just pass the table to the functions
+            -- see below for more
+            bookmarks = {},
+            icons = {
+              bookmark_alias = '->', -- if you have nerd fonts, you can set this to ""
+              bookmarks_prompt = '', -- if you have nerd fonts, you can set this to "󰂺 "
+              grouped_bookmarks = '->', -- if you have nerd fonts, you can set this to 
+            },
+          })
+          -- local bookmarks = {
+          --   ["github"] = {
+          --       ["name"] = "search github from neovim",
+          --       ["code_search"] = "https://github.com/search?q=%s&type=code",
+          --       ["repo_search"] = "https://github.com/search?q=%s&type=repositories",
+          --       ["issues_search"] = "https://github.com/search?q=%s&type=issues",
+          --       ["pulls_search"] = "https://github.com/search?q=%s&type=pullrequests",
+          --   },
+          -- }
+          -- local bookmarks = {
+          --   "https://github.com/search?q=%s&type=code",
+          --   "https://github.com/search?q=%s&type=repositories",
+          -- }
+          -- local bookmarks = {
+          --   "https://github.com/hoob3rt/lualine.nvim",
+          --   "https://github.com/neovim/neovim",
+          --   "https://neovim.discourse.group/",
+          --   "https://github.com/nvim-telescope/telescope.nvim",
+          --   "https://github.com/rockerBOO/awesome-neovim",
+          -- }
+
+          --   function command(name, rhs, opts)
+          --     opts = opts or {}
+          --     vim.api.nvim_create_user_command(name, rhs, opts)
+          --   end
+
+          --   command('InputSearch', function()
+          --     browse.input_search()
+          --   end, {})
+
+          --   -- this will open telescope using dropdown theme with all the available options
+          --   -- in which `browse.nvim` can be used
+          --   command('Browse', function()
+          --     browse.browse({ bookmarks = bookmarks })
+          --   end)
+
+          --   command('Bookmarks', function()
+          --     browse.open_bookmarks({ bookmarks = bookmarks })
+          --   end)
+
+          --   command('DevdocsSearch', function()
+          --     browse.devdocs.search()
+          --   end)
+
+          --   command('DevdocsFiletypeSearch', function()
+          --     browse.devdocs.search_with_filetype()
+          --   end)
+
+          --   command('MdnSearch', function()
+          --     browse.mdn.search()
+          --   end)
+        end,
+      },
+      {
+        'isak102/telescope-git-file-history.nvim',
+        dependencies = { 'tpope/vim-fugitive' },
+      },
+      {
+        'fdschmidt93/telescope-egrepify.nvim',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+      },
       {
         'prochri/telescope-all-recent.nvim',
         dependencies = { 'kkharji/sqlite.lua', 'telescope-ui-select.nvim', 'dressing.nvim' },
@@ -657,6 +939,26 @@ local plugins = {
   -- git tools
   --
   -- https://github.com/dlvhdr/gh-blame.nvim
+  {
+    -- https://vi.stackexchange.com/questions/42785/how-to-do-fuzzy-live-grep-on-git-files
+    'moyiz/git-dev.nvim',
+    config = function()
+      -- local repo = vim.fn.input('Repository name / URI: ')
+      -- git = {
+      --    base_uri_format = "https://git.home.arpa/%s.git",
+      --  }
+      -- if repo ~= '' then
+      --   require('git-dev').open(repo)
+      -- end
+    end,
+    -- -- Change default URI
+    -- opts = { git = { base_uri_format = "https://git.home.arpa/%s.git" } }
+    -- -- Open my own repositories by name with SSH.
+    -- -- E.g. "git-dev.nvim" rather than "moyiz/git-dev.nvim"
+    -- opts = { git = { default_org = "moyiz", base_uri_format = "git@github.com:%s.git" } }
+    -- -- Enforce only full URIs (do not accept partial names).
+    -- opts = { git = { base_uri_format = "%s" } }
+  },
   {
     'ray-x/forgit.nvim',
     config = function()
@@ -868,7 +1170,7 @@ local plugins = {
     'kawre/leetcode.nvim',
     build = ':TSUpdate html',
     dependencies = {
-      'njhoffman/telescope.nvim',
+      'nvim-telescope/telescope.nvim',
       'nvim-lua/plenary.nvim', -- required by telescope
       'MunifTanjim/nui.nvim',
       'nvim-treesitter/nvim-treesitter',

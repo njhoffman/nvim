@@ -45,6 +45,7 @@ end
 -- cmp_tabnine = '🤖',
 -- look = '﬜',
 -- stylua: ignore
+
 local source_names = {
   async_path =                { ' ', 'CmpSourceAsyncPath' },
   calc =                      { '󰃬 ', 'CmpSourceCalc' },

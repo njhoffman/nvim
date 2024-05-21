@@ -67,11 +67,16 @@ local get_history_by_bufname = function(bufname)
 end
 
 local state = {
-  width_cutoff = 60,
-  src_bufnr = vim.fn.bufnr('$'),
-  src_winnr = vim.fn.bufwinnr('$'),
+  width_cutoff = 120,
+  src_bufnr = vim.fn.bufnr('#'),
+  src_winnr = vim.fn.bufwinnr('#'),
+  src_winid = vim.fn.bufwinid(vim.fn.bufnr('#')),
+  help_bufnr = vim.fn.bufnr('%'),
+  help_winnr = vim.fn.bufwinnr('%'),
+  help_winid = vim.fn.bufwinid(vim.fn.bufnr('%')),
 }
 state.src_name = state.src_bufnr and vim.api.nvim_buf_get_name(state.src_bufnr)
+state.help_name = state.help_bufnr and vim.api.nvim_buf_get_name(state.help_bufnr)
 
 local get_help_bufnr = function()
   local help_bufnr = vim.fn.bufnr('*help*')
@@ -83,23 +88,23 @@ local get_help_bufnr = function()
 end
 
 local refresh_state = function()
-  local src_valid = type(state.src_bufnr) == 'number'
-    and vim.api.nvim_buf_is_loaded(state.src_bufnr)
-  if not src_valid then
-    for _, k in pairs({ 'src_bufnr', 'src_winid', 'src_winnr', 'src_name' }) do
-      state[k] = nil
-    end
-  end
+  -- local src_valid = type(state.src_bufnr) == 'number'
+  --   and vim.api.nvim_buf_is_loaded(state.src_bufnr)
+  -- if not src_valid then
+  --   for _, k in pairs({ 'src_bufnr', 'src_winid', 'src_winnr', 'src_name' }) do
+  --     state[k] = nil
+  --   end
+  -- end
 
-  local help_valid = type(state.help_bufnr) == 'number'
-    and vim.api.nvim_buf_is_loaded(state.help_bufnr)
+  -- local help_valid = type(state.help_bufnr) == 'number'
+  --   and vim.api.nvim_buf_is_loaded(state.help_bufnr)
 
-  if not help_valid then
-    state.help_bufnr = get_help_bufnr()
-  end
-  state.help_winnr = state.help_bufnr > -1
-    and vim.api.nvim_buf_is_loaded(state.help_bufnr)
-    and vim.fn.bufwinnr(state.help_bufnr)
+  -- if not help_valid then
+  --   state.help_bufnr = get_help_bufnr()
+  -- end
+  -- state.help_winnr = state.help_bufnr > -1
+  --   and vim.api.nvim_buf_is_loaded(state.help_bufnr)
+  --   and vim.fn.bufwinnr(state.help_bufnr)
 
   -- vim.dbglog('state', state, vim.api.nvim_buf_is_loaded(state.help_bufnr))
   if state.help_winnr and state.help_winnr > -1 then
@@ -124,7 +129,7 @@ local refresh_state = function()
 end
 
 local resize_window = function()
-  refresh_state()
+  -- refresh_state()
   --[[ vim.dbglog(
     'state',
     state,
@@ -135,27 +140,62 @@ local resize_window = function()
     and state.help_bufnr > -1
     and vim.api.nvim_buf_is_loaded(state.help_bufnr)
   then
-    if state.help_width and state.help_width < state.width_cutoff then
-      if not state.vert_split then
+    local props = {
+      textwidth = vim.api.nvim_get_option_value('textwidth', { buf = state.help_bufnr }),
+      help_width = vim.api.nvim_win_get_width(state.help_winid),
+      help_height = vim.api.nvim_win_get_height(state.help_winid),
+      src_width = vim.api.nvim_win_get_width(state.src_winid),
+      src_height = vim.api.nvim_win_get_height(state.src_winid),
+      editor_width = vim.api.nvim_get_option_value('columns', { scope = 'global' }),
+      editor_height = vim.api.nvim_get_option_value('lines', { scope = 'global' }),
+      vert_split = vim.fn.winnr('j') ~= vim.fn.winnr() or vim.fn.winnr('k') ~= vim.fn.winnr(),
+      line_width = 0,
+    }
+
+    props.max_width = math.floor(0.7 * props.editor_width)
+    props.max_height = math.floor(0.7 * props.editor_height)
+    -- let width_ratio = winwidth(0) / str2float(&columns)
+    -- let height_ratio = winheight(0) / str2float(&lines)
+    for i = 1, vim.fn.line('$') do
+      local len = vim.fn.strdisplaywidth(vim.fn.getline(i))
+      if len > props.line_width then
+        props.line_width = len
+      end
+    end
+
+    local width = math.max(props.line_width, props.textwidth)
+    vim.dbglog('props', props, width)
+
+    if props.editor_width < state.width_cutoff then
+      if not props.vert_split then
         vim.cmd('wincmd J | norm 0')
       end
-      vim.api.nvim_set_option_value('wrap', true, { win = state.help_winid })
-    elseif state.help_width and state.help_width < state.textwidth then
-      local new_width = math.floor(0.8 * state.help_width)
-      vim.api.nvim_win_set_width(state.help_winid, new_width)
+      -- vim.api.nvim_set_option_value('winfixwidth', false, { win = state.help_winid })
+      vim.api.nvim_win_set_height(state.help_winid, props.max_height)
       vim.api.nvim_set_option_value('wrap', true, { win = state.help_winid })
     else
-      if state.vert_split then
+      if props.vert_split then
         vim.cmd('wincmd L | norm 0')
       end
-      vim.api.nvim_win_set_width(state.help_winid, state.textwidth)
-      vim.api.nvim_set_option_value('wrap', false, { win = state.help_winid })
+      if props.max_width < width then
+        -- vim.api.nvim_set_option_value('winfixwidth', false, { win = state.help_winid })
+        vim.api.nvim_set_option_value('winwidth', props.max_width, { scope = 'global' })
+        -- vim.api.nvim_win_set_width(state.help_winid, props.max_width)
+        vim.api.nvim_set_option_value('wrap', true, { win = state.help_winid })
+      else
+        vim.api.nvim_set_option_value('winfixwidth', true, { win = state.help_winid })
+        vim.api.nvim_win_set_width(state.help_winid, width)
+        -- vim.api.nvim_set_option_value('winwidth', width, { scope = 'global' })
+        vim.api.nvim_set_option_value('wrap', false, { win = state.help_winid })
+      end
     end
-    local cursor = vim.api.nvim_win_get_cursor(state.help_winid)
-    vim.api.nvim_win_set_cursor(state.help_winid, { cursor[1], 1 })
-    vim.cmd('norm 0')
+    -- local cursor = vim.api.nvim_win_get_cursor(state.help_winid)
+    -- vim.api.nvim_win_set_cursor(state.help_winid, { cursor[1], 1 })
+    -- vim.cmd('norm 0')
   end
 end
+
+_G.resize = resize_window
 
 local is_helpsplit = function(bufnr)
   return bufnr == state.src_bufnr
@@ -239,10 +279,11 @@ local set_options = function()
   -- nnoremap <buffer> <LocalLeader>K  :<C-U>helpgrep <cword><CR>
   -- let b:undo_ftplugin .= '|nunmap <buffer> K'
 
-  vim.api.nvim_set_option_value('winfixheight', true, { win = state.help_winid })
-  vim.api.nvim_set_option_value('winfixwidth', true, { win = state.help_winid })
+  vim.api.nvim_set_option_value('winfixheight', false, { win = state.help_winid })
+  vim.api.nvim_set_option_value('winfixwidth', false, { win = state.help_winid })
+  vim.api.nvim_set_option_value('cursorcolumn', false, { win = state.help_winid })
   vim.api.nvim_set_option_value('colorcolumn', '', { win = state.help_winid })
-  vim.api.nvim_set_option_value('tabstop', 2, { buf = state.help_bufnr })
+  -- vim.api.nvim_set_option_value('tabstop', 2, { buf = state.help_bufnr })
 end
 
 local set_keymaps = function()
@@ -254,18 +295,18 @@ local set_keymaps = function()
   then
     bufmap(state.help_bufnr, 'n', '<C-Space>', '<C-]>', { desc = 'jump to tag definition' })
     bufmap(state.help_bufnr, 'n', '<BS>', '<C-O>', { desc = 'jump to prev visited tag' })
-    if
-      vim.startswith(tostring(vim.fn.expand('%')) or '', vim.env.VIMRUNTIME or '')
-      or vim.bo.readonly
-    then
-      bufmap(
-        state.help_bufnr,
-        'n',
-        '<leader>ml',
-        'vim:tw=80:sw=2:ts=2:noet:ft=help:cole=2:norl:<esc>`a',
-        { desc = 'set default help modeline' }
-      )
-    end
+    -- if
+    --   vim.startswith(tostring(vim.fn.expand('%')) or '', vim.env.VIMRUNTIME or '')
+    --   or vim.bo.readonly
+    -- then
+    --   bufmap(
+    --     state.help_bufnr,
+    --     'n',
+    --     '<leader>ml',
+    --     'vim:tw=80:sw=2:ts=2:noet:ft=help:cole=2:norl:<esc>`a',
+    --     { desc = 'set default help modeline' }
+    --   )
+    -- end
   end
 end
 

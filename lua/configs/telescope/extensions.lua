@@ -4,8 +4,6 @@ local H = require('helpers')
 local actions = require('telescope.actions')
 local mappings = require('configs.telescope.mappings')
 
--- require'telescope.builtin'.grep_string{ shorten_path = true, word_match = "-w", only_sort_text = true, search = '' }
-
 local extension_configs = {
   -- locally managed
   ['arecibo'] = {
@@ -54,6 +52,7 @@ local extension_configs = {
         ['home']    = baseDirs.home,
         ['bin']     = baseDirs.home .. '/bin',
         ['git']     = baseDirs.home .. '/git',
+        ['configs'] = baseDirs.home .. '/git/repo-refs/nvim-configs',
         ['config']  = baseDirs.home .. '/.config',
         ['nvim']    = baseDirs.config,
         ['lazy']    = baseDirs.data .. '/lazy',
@@ -129,6 +128,37 @@ local extension_configs = {
       -- theme = "dropdown",
     },
   },
+  ['zf-native'] = {
+    -- options for sorting file-like items
+    file = {
+      -- override default telescope file sorter
+      enable = true,
+
+      -- highlight matching text in results
+      highlight_results = true,
+
+      -- enable zf filename match priority
+      match_filename = true,
+
+      -- optional function to define a sort order when the query is empty
+      initial_sort = nil,
+    },
+
+    -- options for sorting all other items
+    generic = {
+      -- override default telescope generic item sorter
+      enable = true,
+
+      -- highlight matching text in results
+      highlight_results = true,
+
+      -- disable zf filename match priority
+      match_filename = false,
+
+      -- optional function to define a sort order when the query is empty
+      initial_sort = nil,
+    },
+  },
   ['variables'] = {},
   -- ['which-key'] = {},
 
@@ -175,13 +205,119 @@ local extension_configs = {
     grep_open_files = false, -- search in opened files
     lang = nil, -- string value, sepcify language for ast-grep `nil` for default
   },
-  ['bookmarks'] = {
-    selected_browser = 'chrome',
-    url_open_command = 'xdg-open',
-    url_open_plugin = nil, -- vim_external, open_browser
-    firefox_profile_name = nil,
-  },
+  -- ['bookmarks'] = {
+  --   selected_browser = 'chrome',
+  --   url_open_command = 'xdg-open',
+  --   url_open_plugin = nil, -- vim_external, open_browser
+  --   firefox_profile_name = nil,
+  -- },
   ['changes'] = {},
+  ['egrepify'] = {
+    -- intersect tokens in prompt ala "str1.*str2" that ONLY matches
+    -- if str1 and str2 are consecutively in line with anything in between (wildcard)
+    AND = true, -- default
+    permutations = false, -- opt-in to imply AND & match all permutations of prompt tokens
+    lnum = true, -- default, not required
+    lnum_hl = 'EgrepifyLnum', -- default, not required, links to `Constant`
+    col = false, -- default, not required
+    col_hl = 'EgrepifyCol', -- default, not required, links to `Constant`
+    title = true, -- default, not required, show filename as title rather than inline
+    filename_hl = 'EgrepifyFile', -- default, not required, links to `Title`
+    -- suffix = long line, see screenshot
+    -- EXAMPLE ON HOW TO ADD PREFIX!
+    prefixes = {
+      -- ADDED ! to invert matches example prompt: ! sorter
+      -- matches all lines that do not comprise sorter
+      -- rg --invert-match -- sorter
+      ['!'] = {
+        flag = 'invert-match',
+      },
+      -- HOW TO OPT OUT OF PREFIX
+      -- ^ is not a default prefix and safe example
+      ['^'] = false,
+      -- DEFAULTS
+      -- filter for file suffixes
+      -- example prompt: #lua,md $MY_PROMPT
+      -- searches with ripgrep prompt $MY_PROMPT in files with extensions lua and md
+      -- i.e. rg --glob="*.{lua,md}" -- $MY_PROMPT
+      ['#'] = {
+        -- #$REMAINDER
+        -- # is caught prefix
+        -- `input` becomes $REMAINDER
+        -- in the above example #lua,md -> input: lua,md
+        flag = 'glob',
+        cb = function(input)
+          return string.format([[*.{%s}]], input)
+        end,
+      },
+      -- filter for (partial) folder names
+      -- example prompt: >conf $MY_PROMPT
+      -- searches with ripgrep prompt $MY_PROMPT in paths that have "conf" in folder
+      -- i.e. rg --glob="**/conf*/**" -- $MY_PROMPT
+      ['>'] = {
+        flag = 'glob',
+        cb = function(input)
+          return string.format([[**/{%s}*/**]], input)
+        end,
+      },
+      -- filter for (partial) file names
+      -- example prompt: &egrep $MY_PROMPT
+      -- searches with ripgrep prompt $MY_PROMPT in paths that have "egrep" in file name
+      -- i.e. rg --glob="*egrep*" -- $MY_PROMPT
+      ['&'] = {
+        flag = 'glob',
+        cb = function(input)
+          return string.format([[*{%s}*]], input)
+        end,
+      },
+    },
+    -- default mappings
+    mappings = {
+      i = {
+        -- toggle prefixes, prefixes is default
+        ['<C-z>'] = require('telescope._extensions.egrepify.actions').toggle_prefixes,
+        -- toggle AND, AND is default, AND matches tokens and any chars in between
+        ['<C-a>'] = require('telescope._extensions.egrepify.actions').toggle_and,
+        -- toggle permutations, permutations of tokens is opt-in
+        ['<C-r>'] = require('telescope._extensions.egrepify.actions').toggle_permutations,
+      },
+    },
+  },
+  ['helpgrep'] = {
+    prompt_title = 'Help Grep',
+    -- glob_pattern = "*.txt",
+    -- disable_coordinates = true,
+    -- path_display = { "tail" },
+    ignore_paths = {
+      vim.fn.stdpath('state') .. '/lazy/readme',
+    },
+    mappings = {
+      i = {
+        ['<CR>'] = actions.select_default,
+        ['<C-v>'] = actions.select_vertical,
+      },
+      n = {
+        ['<CR>'] = actions.select_default,
+        ['<C-s>'] = actions.select_horizontal,
+      },
+    },
+    default_grep = require('telescope.builtin').live_grep,
+  },
+  ['git_file_history'] = {
+    -- Keymaps inside the picker
+    mappings = {
+      i = {
+        ['<C-g>'] = require('telescope').extensions.git_file_history.actions.open_in_browser,
+      },
+      n = {
+        ['<C-g>'] = require('telescope').extensions.git_file_history.actions.open_in_browser,
+      },
+    },
+
+    -- The command to use for opening the browser (nil or string)
+    -- If nil, it will check if xdg-open, open, start, wslview are available, in that order.
+    browser_command = nil,
+  },
   ['cheatsheet'] = {},
   ['cder'] = {
     prompt_title = 'cder',

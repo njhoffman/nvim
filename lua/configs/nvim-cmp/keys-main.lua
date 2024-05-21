@@ -16,9 +16,6 @@ local scroll_docs = function(direction)
       for i = 1, winheight do
         vim.defer_fn(function()
           require('cmp').scroll_docs(direction < 0 and -1 or 1)
-          -- if not  then
-          --   fallback()
-          -- end
           -- mapping.scroll_docs()
         end, i * 30)
       end
@@ -177,13 +174,18 @@ local main = {
   ['<C-CR>'] = {
     i = mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Insert, select = true }),
   },
-  ['<C-D>'] = {
+  ['<C-d>'] = {
     i = function(fallback)
-      local cmp = require('cmp')
-      if cmp.visible() then
-        cmp.abort()
+      if not require('cmp').abort() then
+        fallback()
       end
-      vim.cmd('norm x')
+    end,
+  },
+  ['<C-t>'] = {
+    i = function(fallback)
+      if not require('cmp').abort() then
+        fallback()
+      end
     end,
   },
   ['<M-d>'] = {

@@ -56,12 +56,10 @@ require('copilot').setup({
     enabled = true,
     auto_trigger = false,
     keymap = {
-      accept = '<C-CR>',
-      accept_word = false,
-      accept_line = false,
-      next = '<M-}>',
-      prev = '<M-{>',
-      dismiss = '<C-d>',
+      -- accept = '<C-CR>',
+      -- next = '<M-}>',
+      -- prev = '<M-{>',
+      -- dismiss = '<C-d>',
     },
   },
   panel = {

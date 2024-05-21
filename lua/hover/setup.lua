@@ -1,17 +1,17 @@
-require("hover").setup({
+require('hover').setup({
   init = function()
     -- Require providers
-    require("hover.providers.lsp-hover")
-    require("hover.providers.lsp-signature")
-    require("hover.providers.lsp-definition")
+    require('hover.providers.lsp-hover')
+    require('hover.providers.lsp-signature')
+    require('hover.providers.lsp-definition')
     -- -- -- require("hover.providers.lsp-type-definition")
-    require("hover.providers.help")
-    require("hover.providers.syntax")
+    require('hover.providers.help')
+    require('hover.providers.syntax')
     -- require("hover.providers.man")
     -- require("hover.providers.dictionary")
     -- require("hover.providers.gh")
   end,
-  border = "rounded",
+  border = 'rounded',
   focusable = false,
 })
 

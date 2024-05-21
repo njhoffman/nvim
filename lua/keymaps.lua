@@ -72,28 +72,13 @@ prefix('n', '<leader>cl', 'conceal 󰈉 ')
 
 --------------------------------------------------------------------------------------------------
 
--- COMMAND ---------------------------------------------------------------------------------------
--- -- change local working directory
--- keymap('n', '<leader>cd', ':lcd %:h<CR>', opts)
---
--- Copy Last Command
--- keymap("n", "<leader>lc", function()
--- 	local lastCommand = fn.getreg(":"):gsub("^lua[ =]*", "")
--- 	fn.setreg("+", lastCommand)
--- 	u.notify("Copied", lastCommand)
--- end, { desc = "󰘳 Copy last command" })
---
--- -- show current filetype & buftype
--- keymap("n", "<leader>lf", function()
--- 	local out = {
--- 		"filetype: " .. bo.filetype,
--- 		"buftype: " .. bo.buftype,
--- 		("indent: %s (%s)"):format(bo.expandtab and "spaces" or "tabs", bo.tabstop),
--- 	}
--- 	local ok, node = pcall(vim.treesitter.get_node)
--- 	if ok and node then table.insert(out, "node: " .. node:type()) end
--- 	u.notify("Buffer Information", table.concat(out, "\n"), "trace")
--- end, { desc = " Buffer Info" })
+-- Map 'j' and 'k' to behave like 'gj' and 'gk'
+vim.cmd([[
+    nnoremap j gj
+    nnoremap k gk
+    vnoremap j gj
+    vnoremap k gk
+]])
 
 -- TODO: differentiate between vim/lua, auto remove comments
 
@@ -106,14 +91,8 @@ map({ 'v' }, '<space>', '"xy:@x<cr>', {
 map({ 'n', 'v' }, ';', ':', {
   category = 'Command',
   label = ' open cmdline',
-  desc = ' open the command line',
-})
-
-map({ 'n', 'v' }, ':', 'q:', {
-  category = 'Command',
-  label = ' open cmdwin',
-  desc = ' open the command window',
   silent = true,
+  desc = ' open the command line',
 })
 
 map({ 'n', 'v' }, '<M-:>', 'q:', {
@@ -123,67 +102,71 @@ map({ 'n', 'v' }, '<M-:>', 'q:', {
   desc = ' open the command window',
 })
 
-vmap({ 'c' }, '<C-]>', {
-  category = 'Command',
-  label = ' open cmdwin',
-  desc = ' open the command window',
-  silent = false,
-})
-
 map('c', '<M-b>', '<C-]><Esc>', {
   category = 'Command',
   label = ' open cmdwin normal',
   desc = ' open command window from the command line in normal mode',
-  silent = false,
+  silent = true,
 })
 
-map('c', '<M-f>', '<C-]><Esc>', {
+map('c', '<M-f>', '<C-]>', {
   category = 'Command',
-  label = ' open cmdwin normal',
-  desc = ' open command window from the command line in normal mode',
-  silent = false,
+  label = ' open cmdwin insert',
+  desc = ' open command window from the command line in insert mode',
+  silent = true,
 })
 
-map('c', '<c-s>', '<cmd>silent! w<cr><esc>', {
+map('c', '<M-S>', '<cmd>w<cr><esc>', {
   category = 'Command',
   label = ' save cmdline',
   desc = ' save in command line',
-  silent = false,
 })
 
-map('c', '<C-Y>', '<C-\\>ey', {
-  category = 'Command',
-  label = ' yank cmdline',
-  desc = ' yank from command line',
-  remap = true,
-})
-
--- Map 'j' and 'k' to behave like 'gj' and 'gk'
-vim.cmd([[
-  " nnoremap j gj
-  " nnoremap k gk
-  " vnoremap j gj
-  " vnoremap k gk
-]])
+-- map('c', '<C-Y>', '<C-\\>ey', {
+--   category = 'Command',
+--   label = ' yank cmdline',
+--   desc = ' yank from command line',
+--   remap = true,
+-- })
 
 -- TODO: vmap C-u C-w
 -- TODO: make whichkey screen for cmdline
-map('c', '<C-d>', '<cmd>norm x<cr>', {
+map('c', '<C-t>', '<Right><Del><Left>', {
   category = 'Command',
-  label = ' delete char cmdline',
-  desc = ' delete character to the right cmdline',
+  label = ' delete char',
+  desc = ' delete character to the right of cmdline',
 })
 
-map('c', '<M-d>', '<cmd>norm de<cr>', {
+-- CTRL-\ e {expr}       :cmap <F7> <C-\>eAppendSome()<CR>
+-- CTRL-R
+--   CTRL-F	the Filename under the cursor
+--   CTRL-P	the Filename under the cursor, expanded with 'path' as in |gf|
+--   CTRL-W	the Word under the cursor
+--   CTRL-A	the WORD under the cursor; see |WORD|
+--   CTRL-L	the line under the cursor
+
+map('c', '<C-d>', '<Right><Del><Left>', {
   category = 'Command',
-  label = ' delete to eol',
-  desc = ' delete to end of line',
+  label = ' delete word',
+  desc = ' delete word to the right of cmdline',
+})
+
+map('c', '<M-d>', '<Right><Del><Left>', {
+  category = 'Command',
+  label = ' delete eol',
+  desc = ' delete to end of cmdline',
 })
 
 map('c', '<C-^>', '<Home>', {
   category = 'Command',
   label = ' goto start',
   desc = ' go to beginning of command line',
+})
+
+map('c', '<M-^>', '<cmd>lua require("commands.cmdline").toggle()<cr>', {
+  category = 'Command',
+  label = ' toggle cmdline',
+  desc = ' toggle cmdline depending on command mode',
 })
 
 map('c', '<M-$>', '<End>', {
@@ -197,6 +180,11 @@ map('c', '<C-S-Left>', '<Left>', {
   label = ' move left',
   desc = ' move to the left by 1 character',
 })
+map('c', '<M-C-H>', '<S-Left>', {
+  category = 'Command',
+  label = ' move left word',
+  desc = ' move to the left by 1 word',
+})
 
 map('c', '<C-S-Right>', '<Right>', {
   category = 'Command',
@@ -204,16 +192,16 @@ map('c', '<C-S-Right>', '<Right>', {
   desc = ' move to the right by 1 character',
 })
 
+map('c', '<M-C-L>', '<S-Right>', {
+  category = 'Command',
+  label = ' move right word',
+  desc = ' move to the right by 1 word',
+})
+
 map('c', '<M-g>', '<C-r>%', {
   category = 'Command',
   label = ' insert filename cmdline',
   desc = ' insert filename into the command line',
-})
-
-map('c', '<M-^>', '<cmd>lua require("commands.cmdline").toggle()<cr>', {
-  category = 'Command',
-  label = ' toggle cmdline',
-  desc = ' toggle cmdline depending on command mode',
 })
 
 --------------------------------------------------------------------------------------------------
@@ -247,12 +235,12 @@ map(
   { category = 'Buffers', desc = '󰽙 close buffer/window' }
 )
 
-map('n', '<CR>', '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
-  category = 'Buffers',
-  label = '󰽙 goto alt-buffer',
-  desc = '󰽙 goto alternative/last buffer',
-})
-
+-- map('n', '<CR>', '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
+--   category = 'Buffers',
+--   label = '󰽙 goto alt-buffer',
+--   desc = '󰽙 goto alternative/last buffer',
+-- })
+-- keymap({ "n", "x", "i" }, "<C-CR>", "<C-w>w", { desc = " Next Window" })
 -- map('n', '<BS>', '<cmd>e #<cr>', {
 --   category = 'Buffers',
 --   label = '󰽙 last buffer',
@@ -262,6 +250,7 @@ map('n', '<CR>', '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
 
 local bufvar =
   { { '<Plug>(CybuPrev)', '<Plug>(CybuNext)' }, { '<cmd>BufferPrev<cr>', '<cmd>BufferNext<cr>' } }
+
 map('n', 'H', bufvar[2][1], {
   category = 'Buffers',
   label = '󰽙 left buffer',
@@ -291,6 +280,13 @@ map('n', '<leader>f*w', '<cmd>wall<cr>', {
   label = '󰽙 write all',
   silent = true,
   desc = '󰽙 write all buffers',
+})
+
+map('n', '<leader>w', '<cmd>noa w<cr>', {
+  category = 'Buffers',
+  label = '󰽙 write noa',
+  desc = '󰽙 write without autocommands',
+  silent = true,
 })
 
 map('n', '<leader>fw', '<cmd>noa w<cr>', {
@@ -578,16 +574,57 @@ map('n', 'g.', [[/\V\C<C-r>"<CR>cgn<C-a><Esc>]], {
   desc = '  jump to next match and replace (dot)',
 })
 
-map({ 'n' }, 'g/', "<cmd>lua require('commands.cmdline').open_last_search')<cr>", {
-  category = 'Search',
-  label = '  open last search'
-})
-
+-- map('n', '<esc>', "<cmd>getcmdtype() =~ '^[/?]$'<cr>", {
+--   silent = true,
+--   category = 'Search',
+--   label = '  jump replace (dot)',
+--   desc = '  jump to next match and replace (dot)',
+-- })
 -- switch escape and enter in search mode to 'accept' it for smoother operation
-vim.cmd[[
-  cnoremap <expr> <Esc> getcmdtype() =~ '^[/?]$' ? '<Enter>' : '<C-C>'
-]]
+
+-- vim.cmd[[
+--   cnoremap <expr> <Esc> getcmdtype() =~ '^[/?]$' ? '<Enter>' : '<C-C>'
+-- ]]
 --------------------------------------------------------------------------------------------------
+-- map('c', '<esc>', function()
+--   local regtype = vim.fn.getregtype('/')
+--   local regval  = vim.fn.getreg('/')
+--   local cmdtype = vim.fn.getcmdtype()
+--   local reginfo = vim.fn.getreginfo('/')
+--   if cmdtype == '/' or cmdtype == '?'  then
+--     local cmdline = vim.fn.getcmdline()
+--     cmdline = vim.fn.trim(cmdline and #tostring(cmdline) > 0 and cmdline:sub(2))
+--     if not cmdline or cmdline == '' or cmdline == 'v:false' then
+--       -- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Enter>', true, false, true), 'c')
+--       -- vim.fn.setcmdline(regval)
+--       vim.dbglog('1', cmdline, cmdtype, regval)
+--       local searchcount = vim.fn.searchcount({ maxcount = 0 })
+
+--       -- schedule a <cr> input to trigger the search
+--       vim.schedule(function()
+--         vim.api.nvim_input('<cr>')
+--         -- vim.api.nvim_input(M.op and '<cr>' or '<esc>')
+--         vim.fn.setreg('/', '')
+--         vim.fn.histdel('search', -1)
+--       end)
+--     else
+--       vim.dbglog(vim.fn.histnr('search'), vim.fn.histget('search', vim.fn.histnr('search')))
+--       -- clear search registers
+--       -- if vim.fn.histget('search', -1) == cmdline then
+--       -- end
+--       -- vim.dbglog('2.5', vim.fn.getcmdline(), vim.fn.getreg('/'), vim.fn.histnr('search'), vim.fn.histget('search', vim.fn.histnr('search')))
+--       -- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-c>', true, false, true), 'c')
+--       -- vim.fn.histdel('search', -1)
+--     end
+--   else
+--     vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-c>', true, false, true), 'c')
+--   end
+-- end, {
+--   silent = true,
+--   category = 'Search',
+--   label = '  search escape handler',
+--   desc = '  switch escape and enter in search mode to "accept" it for smoother operation',
+-- })
 -- MOTION ----------------------------------------------------------------------------------------
 
 map('n', '<leader>R', '*:%s//', {
@@ -603,13 +640,16 @@ map('i', 'kj', '<esc>', {
   silent = true
 })
 
-map('i', '<C-d>', '<cmd>norm x<cr>', { -- <C-o> + dl, norm lxh
+map('i', '<M-lt>', '<C-d>', { category = 'Motion', desc = 'deindent line', silent = true })
+map('i', '<M->>', '<C-t>', { category = 'Motion', desc = 'indent line', silent = true })
+
+map('i', '<C-t>', '<cmd>norm x<cr>', { -- <C-o> + dl, norm lxh
   category = 'Motion',
   desc = 'delete next char',
   silent = true
 })
 
-map('i', '<M-d>', '<cmd>norm de<cr>', {
+map('i', '<C-d>', '<cmd>norm de<cr>', {
   category = 'Motion',
   desc = 'delete to end of line',
   silent = true
@@ -709,13 +749,6 @@ map('n', 'gp', '`[v`]', {
   silent = true
 })
 
--- map('n', 'v', '<cmd>normal! v<cr>', {
---   category = 'Motion',
---   label = 'visual mode',
---   desc = 'enter visual mode and select 1 character',
---   silent = true
--- })
-
 vmap('n', 'gi', {
   category = 'Motion',
   label = ' goto last insert',
@@ -762,17 +795,31 @@ map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
   expr = true,
 })
 
---  -- Search inside visually highlighted text. Use `silent = false` for it to
---  -- make effect immediately.
+--  -- Search inside visually highlighted text. Use `silent = false` for it to make effect immediately.
 --  map('x', 'g/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
 --  -- Search visually selected text (slightly better than builtins in Neovim>=0.8)
 --  map('x', '*', [[y/\V<C-R>=escape(@", '/\')<CR><CR>]])
 --  map('x', '#', [[y?\V<C-R>=escape(@", '?\')<CR><CR>]])
+-- vnoremap * y/\V<C-R>=substitute(escape(@@,"/\\"),"\n","\\\\n","ge")<CR><CR>
+-- vnoremap # y?\V<C-R>=substitute(escape(@@,"?\\"),"\n","\\\\n","ge")<CR><CR>
+-- vnoremap / <Esc>/\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
+-- vnoremap ? <Esc>?\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
+-- -Make dot work over visual line selections- vnoremap * y/\V<C-R>=escape(@“,’/\’)<CR><CR>
+-- xnoremap . :norm.<CR>
+-- nnoremap <silent> gt :set operatorfunc=DotRepeat<cr>g@
+-- au ModeChanged [vV\x16]:* :redraw!
 
 map('i', '<C-f>', '<Esc>ea', {
   category = 'Motion',
   label = ' jump over word',
   desc = '  jump over word while staying in insert mode',
+  noremap = true,
+})
+
+map('i', '<M-f>', '<Esc>bi', {
+  category = 'Motion',
+  label = ' jump prev word',
+  desc = '  jump prev word while staying in insert mode',
   noremap = true,
 })
 
@@ -986,11 +1033,11 @@ map('n', '<F5>', '<cmd>WhichKeyBackground<cr>', {
   desc = '  toggle whichkey background',
 })
 
-map('n', '<F6>', '<Leader>Wk', {
-  plugin = 'wf.nvim',
-  category = 'UI',
-  desc = '  toggle wf.nvim',
-})
+-- map('n', '<F6>', '<Leader>Wk', {
+--   plugin = 'wf.nvim',
+--   category = 'UI',
+--   desc = '  toggle wf.nvim',
+-- })
 
 -- ctrl+shift F2 = <F38>
 -- map('n', '<F3>', '<cmd>AerialToggle!float<cr>', {
@@ -1135,15 +1182,27 @@ map('n', '<leader>=', '<c-w>=', {
   desc = ' resize windows evenly',
 })
 
+map('n', '<M-w>', '<cmd>set wrap!<cr>', {
+  category = 'Windows',
+  desc = ' toggle word wrap',
+})
+
+vmap('n', '<c-w>w', {
+  category = 'Window',
+  label = ' window next',
+  desc = ' focus the next window',
+})
+
 vmap('n', '<c-w>W', {
   category = 'Window',
   label = ' window prev',
   desc = ' focus the previous window',
 })
 
-map('n', '<M-w>', '<cmd>set wrap!<cr>', {
-  category = 'Windows',
-  desc = ' toggle word wrap',
+map('n', '<leader>;', '<c-w>w', {
+  category = 'Window',
+  label = ' window next',
+  desc = ' focus the next window',
 })
 
 map('n', '<leader>:', '<c-w>W', {
@@ -1152,28 +1211,17 @@ map('n', '<leader>:', '<c-w>W', {
   desc = ' focus the previous window',
 })
 
-vmap('n', '<c-w>w', {
+map('n', '<M-Tab>', '<c-w>w', {
   category = 'Window',
-  label = ' window next',
-  desc = ' focus the next window',
-})
-map('n', '<leader>;', '<c-w>w', {
-  category = 'Window',
-  label = ' window next',
+  label = 'window next',
   desc = ' focus the next window',
 })
 
--- map('n', '<Tab>', '<c-w>w', {
---   category = 'Window',
---   label = 'window next',
---   desc = ' focus the next window',
--- })
---
--- map('n', '<S-Tab>', '<c-w>W', {
---   category = 'Window',
---   label = 'window prev ',
---   desc = ' focus the prev window',
--- })
+map('n', '<M-S-Tab>', '<c-w>W', {
+  category = 'Window',
+  label = 'window prev ',
+  desc = ' focus the prev window',
+})
 
 map('n', '<leader>H', '<cmd>vnew<cr>', {
   category = 'Window',
@@ -1260,7 +1308,7 @@ map('n', '<M-C-Y>', '<cmd>ChatGPT<cr>', {
   desc = 'toggle chatgpt',
 })
 --
-map('n', '<C-Y>', '<cmd>NeoAI<cr>', {
+map('n', '<C-y>', '<cmd>NeoAI<cr>', {
   category = 'Other UI',
   plugin = 'neo-ai',
   label = 'toggle the side panel of neo ai',
@@ -1499,24 +1547,25 @@ map('n', '<leader>]', ' `[V`]>', {
   desc = '󰉶 unindent all lines',
 })
 
--- map('x', '<', '<gv', {
---   category = 'Format',
---   label = '󰉶 unindent',
---   desc = '󰉶 unindent repeatedly',
--- })
---
--- map('x', '>', '>gv', {
---   category = 'Format',
---   label = '󰉶 indent',
---   desc = '󰉶 indent repeatedly',
--- })
---
-map('n', 'g>', '<cmd>ISwapNodeWith<cr>', {
+map('x', '<', '<gv', {
+  category = 'Format',
+  label = '󰉶 unindent',
+  desc = '󰉶 unindent repeatedly',
+})
+
+map('x', '>', '>gv', {
+  category = 'Format',
+  label = '󰉶 indent',
+  desc = '󰉶 indent repeatedly',
+})
+
+map('n', '<M->', '<cmd>ISwapNodeWith<cr>', {
   category = 'Format',
   label = '易swap node with',
   desc = '易swap/exchange node objects with',
   plugin = 'iswap.nvim',
 })
+
 
 -- TODO: allow range
 map({ 'v', 'n' }, '<M-;>', '<esc><cmd>ISwapNodeWith<cr>', {
@@ -1595,19 +1644,20 @@ map('n', 'ghw', 'g<C-g>', {
   desc = ' show wordcount under cursor',
 })
 
-map('n', 'ghtt', '<cmd>TSHighlightCapturesUnderCursor<cr>', {
+map('n', 'ght', '<cmd>TSNodeUnderCursor<cr>', {
+  category = 'Hover',
+  plugin = 'treesitter.nvim',
+  label = ' show ts node',
+  desc = ' show treesitter node under cursor',
+})
+
+map('n', 'ghT', '<cmd>TSHighlightCapturesUnderCursor<cr>', {
   category = 'Hover',
   plugin = 'treesitter.nvim',
   label = ' show ts highlights',
   desc = ' show treesitter highlights under cursor',
 })
 
-map('n', 'ghtn', '<cmd>TSNodeUnderCursor<cr>', {
-  category = 'Hover',
-  plugin = 'treesitter.nvim',
-  label = ' show ts node',
-  desc = ' show treesitter node under cursor',
-})
 
 --------------------------------------------------------------------------------------------------
 -- SYSTEM ----------------------------------------------------------------------------------------

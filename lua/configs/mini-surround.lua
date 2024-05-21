@@ -1,3 +1,7 @@
+-- https://github.com/echasnovski/mini.nvim/pull/566
+-- https://github.com/echasnovski/mini.nvim/issues/191
+-- https://github.com/echasnovski/mini.nvim/issues/770
+-- When using blockwise mode and respect_selection_type, multiline selections aren't properly highlighted
 ---@diagnostic disable-next-line: unused-local
 local default_cfg = {
   custom_surroundings = nil,
@@ -16,7 +20,7 @@ local default_cfg = {
   },
   n_lines = 20,
   respect_selection_type = false,
-  search_method = 'cover_or_nearest',
+  search_method = 'cover_or_next',
 }
 
 ---@diagnostic disable-next-line: unused-local
@@ -57,12 +61,13 @@ local cfg = {
     -- suffix_last = 'l', -- Suffix to search with "prev" method
     -- suffix_next = 'n', -- Suffix to search with "next" method
   },
+  highlight_input = true,
   highlight_duration = 400,
-  n_lines = 200,
+  n_lines = 40,
   respect_selection_type = true,
   search_method = 'cover_or_next',
   -- search_method = 'cover_or_nearest',
-  silent = true,
+  silent = false,
 }
 
 --stylua: ignore

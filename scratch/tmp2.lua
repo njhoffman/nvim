@@ -1,93 +1,90 @@
-local grammar_targets = {
-  ['['] = '',
-  [']'] = '',
-  ['('] = '',
-  [')'] = '',
-  ['{'] = '',
-  ['}'] = '',
-  ['<'] = '',
-  ['>'] = '',
-  ['`'] = '',
-  ["'"] = '',
-  ['"'] = '',
-}
-
-local abbreviated_targets = {
-  ['b'] = ' [bracket]',
-}
-
-local keywords_targets = {
-  ['w'] = ' [word]',
-  ['W'] = ' [WORD]',
-  ['f'] = ' [function]',
-  ['q'] = ' [quote]',
-}
-
-local all_targets = {}
-for k, v in pairs(grammar_targets) do
-  all_targets[k] = v
-end
-for k, v in pairs(abbreviated_targets) do
-  all_targets[k] = v
-end
-for k, v in pairs(keywords_targets) do
-  all_targets[k] = v
-end
-
-local abbreviated_and_grammar_targets = {}
-for k, v in pairs(grammar_targets) do
-  abbreviated_and_grammar_targets[k] = v
-end
-for k, v in pairs(abbreviated_targets) do
-  abbreviated_and_grammar_targets[k] = v
-end
-
-local mappings = {
-  ['s'] = { name = 'surround' },
-}
-
--- around mappings
-mappings['sa'] = { name = 'around' }
-for char, desc in pairs(all_targets) do
-  mappings['sa'][char] = { name = desc }
-  for ichar, target in pairs(abbreviated_and_grammar_targets) do
-    mappings['sa'][char][ichar] =
-      { "<CMD>call feedkeys('ysa" .. char .. ichar .. "')<CR>", 'ysa' .. char .. ichar .. target }
+-- vim.api.nvim_set_keymap("n", "gm", "<cmd>lua format_range_operator()<CR>", {noremap = true})
+function format_range_operator()
+  local old_func = vim.go.operatorfunc
+  _G.op_func_formatting = function()
+    local start = vim.api.nvim_buf_get_mark(0, '[')
+    local finish = vim.api.nvim_buf_get_mark(0, ']')
+    vim.lsp.buf.range_formatting({}, start, finish)
+    vim.go.operatorfunc = old_func
+    _G.op_func_formatting = nil
   end
+  vim.go.operatorfunc = 'v:lua.op_func_formatting'
+  vim.api.nvim_feedkeys('g@', 'n', false)
 end
 
--- inner mappings
-mappings['si'] = { name = 'inner' }
-for char, desc in pairs(all_targets) do
-  mappings['si'][char] = { name = desc }
-  for ichar, target in pairs(all_targets) do
-    mappings['si'][char][ichar] =
-      { "<CMD>call feedkeys('ysi" .. char .. ichar .. "')<CR>", 'ysi' .. char .. ichar .. target }
+-- vim.api.nvim_set_keymap("n", "gm", "<cmd>lua format_range_operator()<CR>", {noremap = true})
+-- vim.api.nvim_set_keymap("n", "gm", "<cmd>lua format_range_operator()<CR>", {noremap = true})
+-- If invoked as a preview callback, performs 'inccommand' preview by
+-- highlighting trailing whitespace in the current buffer.
+
+local function trim_space_preview(opts, preview_ns, preview_buf)
+  vim.cmd('hi clear Whitespace')
+  local line1 = opts.line1
+  local line2 = opts.line2
+  local buf = vim.api.nvim_get_current_buf()
+  local lines = vim.api.nvim_buf_get_lines(buf, line1 - 1, line2, false)
+  local preview_buf_line = 0
+
+  for i, line in ipairs(lines) do
+    local start_idx, end_idx = string.find(line, '%s+$')
+
+    if start_idx then
+      -- Highlight the match
+      vim.api.nvim_buf_add_highlight(
+        buf,
+        preview_ns,
+        'Substitute',
+        line1 + i - 2,
+        start_idx - 1,
+        end_idx
+      )
+
+      -- Add lines and set highlights in the preview buffer
+      -- if inccommand=split
+      if preview_buf then
+        local prefix = string.format('|%d| ', line1 + i - 1)
+
+        vim.api.nvim_buf_set_lines(
+          preview_buf,
+          preview_buf_line,
+          preview_buf_line,
+          false,
+          { prefix .. line }
+        )
+        vim.api.nvim_buf_add_highlight(
+          preview_buf,
+          preview_ns,
+          'Substitute',
+          preview_buf_line,
+          #prefix + start_idx - 1,
+          #prefix + end_idx
+        )
+        preview_buf_line = preview_buf_line + 1
+      end
+    end
   end
+
+  -- Return the value of the preview type
+  return 2
 end
 
--- change mappings
-mappings['cs'] = { name = 'change' }
-for char, desc in pairs(all_targets) do
-  mappings['cs'][char] = { name = desc }
-  for ichar, target in pairs(all_targets) do
-    mappings['cs'][char][ichar] =
-      { "<CMD>call feedkeys('cs" .. char .. ichar .. "')<CR>", 'cs' .. char .. ichar .. target }
+-- Trims all trailing whitespace in the current buffer.
+local function trim_space(opts)
+  local line1 = opts.line1
+  local line2 = opts.line2
+  local buf = vim.api.nvim_get_current_buf()
+  local lines = vim.api.nvim_buf_get_lines(buf, line1 - 1, line2, false)
+
+  local new_lines = {}
+  for i, line in ipairs(lines) do
+    new_lines[i] = string.gsub(line, '%s+$', '')
   end
+  vim.api.nvim_buf_set_lines(buf, line1 - 1, line2, false, new_lines)
 end
 
--- delete mappings
-mappings['ds'] = { name = 'delete' }
-for char, target in pairs(all_targets) do
-  mappings['ds'][char] = { "<CMD>call feedkeys('ds" .. char .. "')<CR>", 'ds' .. char .. target }
-end
-
--- -- line mappings
--- mappings['s']['s'] = { name = '[s] line' }
--- for char, target in pairs(all_targets) do
---   mappings['s']['s'][char] =
---     { "<CMD>call feedkeys('yss" .. char .. "')<CR>", 'yss' .. char .. target }
--- end
-
-vim.dbglog(mappings)
--- require('which-key').register(mappings)
+-- Create the user command
+vim.api.nvim_create_user_command(
+  'TrimTrailingWhitespace',
+  trim_space,
+  { nargs = '?', range = '%', addr = 'lines', preview = trim_space_preview }
+)

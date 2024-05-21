@@ -90,12 +90,12 @@ local cfg = {
   enabled = is_enabled,
   performance = {
     trigger_debounce = 300,
-    debounce = 100, --60
-    throttle = 50, --30
+    debounce = 100, --60  This is the interval used to group up completions from different sources for filtering and displaying.
+    throttle = 50, --30 This is used to delay filtering and displaying completions.
     max_view_entries = 200,
-    fetching_timeout = 200,
+    fetching_timeout = 500,
     async_budget = 1,
-    -- confirm_resolve_timeout = 80,
+    confirm_resolve_timeout = 80,
   },
   matching = {
     -- disallow_fuzzy_matching = false,
@@ -107,7 +107,7 @@ local cfg = {
   completion = {
     keyword_length = 1,
     -- keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
-    completeopt = 'menuone,noselect,preview',
+    completeopt = 'menuone,noselect,preview', -- menu, menuone,noselect
     -- completeopt = 'menuone,preview,noselect,noinsert',
   },
   snippet = {

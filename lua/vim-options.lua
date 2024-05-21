@@ -66,14 +66,14 @@ opt('sessionoptions', 'buffers,curdir,folds,help,resize,winpos,terminal') -- win
 opt('shada', "!,'1000,<100,s500")
 
 -- F silents filename (but needed for bufread on vimenter), C? default: filnxtToOCF
-opt('shortmess', 'ltToOcCFa') -- ltToOCF
+opt('shortmess', 'tToOcCFaI') -- ltToOCF
 opt('showbreak', '↳ ')
 opt('showcmd', true)
 opt('showmatch', true)
 opt('showmode', false)
 opt('tabline', '')
 opt('showtabline', 1)
-opt('scrolloff', 10)
+opt('scrolloff', 0)
 -- opt('scrolloff', 999)
 opt('sidescroll', 0)
 opt('sidescrolloff', 0)
@@ -85,14 +85,6 @@ opt('swapfile', false)
 opt('startofline', true) -- motions like "G" also move to the first char
 opt('switchbuf', 'useopen,usetab')
 opt('termguicolors', true)
-
-opt('smoothscroll', true, window)
-opt('concealcursor', 'nc', window)
-opt('conceallevel', 0, window)
-opt('cursorline', true, window)
-opt('number', true, window)
-opt('relativenumber', true, window)
-opt('signcolumn', 'yes:1', window)
 
 opt('textwidth', 100)
 opt('shiftwidth', 2)
@@ -138,10 +130,13 @@ opt('writebackup', true)
 -- window scope
 opt('concealcursor', 'nc', window)
 opt('conceallevel', 0, window)
+opt('colorcolumn', '+1', window)
+opt('cursorcolumn', false, window)
 opt('cursorline', true, window)
 opt('number', true, window)
 opt('relativenumber', true, window)
 opt('signcolumn', 'yes:1', window)
+opt('smoothscroll', true, window)
 opt('spell', false, window)
 opt('wrap', false, window)
 -- opt('winbar', ' ', window)
@@ -156,7 +151,7 @@ opt('softtabstop', 0, buffer)
 opt('synmaxcol', 2000, buffer)
 opt('tabstop', 2, buffer)
 opt('undofile', true, buffer)
-opt('equalalways', true) -- make windows the samue width when closing one
+opt('equalalways', false) -- make windows the samue width when closing one
 opt('cursorlineopt', 'both') -- should get cursorline in number too
 
 -- vim.o.guicursor = 'n-v-c-sm-i-ci-ve:block,r-cr-o:hor20,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor'

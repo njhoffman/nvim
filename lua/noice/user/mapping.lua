@@ -1,14 +1,3 @@
-local function get_key_cmd(mode, lhs)
-  local keys = vim.api.nvim_get_keymap(mode)
-  local old_val = nil
-  for _, key in ipairs(keys) do
-    if key.lhs == lhs then
-      old_val = key.callback or key.rhs
-    end
-  end
-  return old_val
-end
-
 local function is_lsp_float_open(window_id)
   return window_id and window_id ~= 0 and vim.api.nvim_win_is_valid(window_id)
 end
@@ -27,19 +16,6 @@ local function scroll(sendkeys)
   return false
 end
 
-local old_keys = {
-  prev = {
-    n = get_key_cmd('n', '<M-b>'),
-    i = get_key_cmd('i', '<M-b>'),
-    s = get_key_cmd('s', '<M-b>'),
-  },
-  next = {
-    n = get_key_cmd('n', '<M-f>'),
-    i = get_key_cmd('i', '<M-f>'),
-    s = get_key_cmd('s', '<M-f>'),
-  },
-}
-
 local function escape_term_codes(str)
   return vim.api.nvim_replace_termcodes(str, true, false, true)
 end
@@ -51,34 +27,43 @@ local scroll_keys = {
   scroll_down = escape_term_codes('<Down>'),
 }
 
+local function scroll_lsp_popups(key, scroll_height)
+  return function()
+    vim.dbglog('try scroll', key)
+    if not require('noice.lsp').scroll(scroll_height) then
+      vim.dbglog('here', key)
+      return key
+    end
+  end
+end
+
 local setup = function()
-  vim.keymap.set({ 'n', 'i', 's' }, '<M-f>', function()
-    if not require('noice.lsp').scroll(2) then
-      return '<M-f>'
-    end
-  end, { silent = true, expr = true })
+  vim.keymap.set(
+    { 'n', 'i', 's' },
+    '<M-f>',
+    scroll_lsp_popups('<M-f>', 4),
+    { silent = true, expr = true }
+  )
 
-  vim.keymap.set({ 'n', 'i', 's' }, '<M-b>', function()
-    if not require('noice.lsp').scroll(-2) then
-      return '<M-b>'
-    end
-  end, { silent = true, expr = true })
+  vim.keymap.set(
+    { 'n', 'i', 's' },
+    '<M-b>',
+    scroll_lsp_popups('<M-b>', -4),
+    { silent = true, expr = true }
+  )
 
-  -- for _, mode in ipairs({ 'n', 'i', 's' }) do
-  --   for _, direction in ipairs({ 'prev', 'next' }) do
-  --     local lhs = direction == 'prev' and '<M-b>' or '<M-f>'
-  --     local scroll_key = direction == 'prev' and scroll_keys.page_up or scroll_keys.page_down
-  --
-  --     vim.keymap.set(mode, lhs, function()
-  --       local res = scroll(scroll_key)
-  --
-  --       if not res then
-  --         -- old_keys[direction][mode]()
-  --         vim.dbglog('no scroll, do the old key', old_keys[direction][mode])
-  --       end
-  --     end)
-  --   end
-  -- end
+  vim.keymap.set(
+    { 'n', 'i', 's' },
+    '<C-S-Up>',
+    scroll_lsp_popups('<C-S-Up>', -2),
+    { silent = true, expr = true }
+  )
+  vim.keymap.set(
+    { 'n', 'i', 's' },
+    '<C-S-Down>',
+    scroll_lsp_popups('<C-S-Down>', 2),
+    { silent = true, expr = true }
+  )
 end
 
 -- :execute "normal \<Plug>(SmoothieDownwards)"

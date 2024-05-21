@@ -20,9 +20,9 @@ local various_textobjs = require('various-textobjs')
 various_textobjs.setup({
   -- lines to seek forwards for "small" textobjs (mostly characterwise textobjs)
   -- set to 0 to only look in the current line
-  lookForwardSmall = 10,
+  lookForwardSmall = 20,
   -- lines to seek forwards for "big" textobjs (mostly linewise textobjs)
-  lookForwardBig = 25,
+  lookForwardBig = 50,
   useDefaultKeymaps = true,
   disabledKeymaps = {
     'P', -- Used for paste operator
@@ -136,7 +136,7 @@ map('n', 'dsi', function()
   end
 
   -- Dedent indentation
-  vim.cmd.normal({ '<', bang = true })
+  vim.fn.normal({ '<', bang = true })
 
   -- Delete surrounding lines
   local endBorderLn = vim.api.nvim_buf_get_mark(0, '>')[1] + 1
@@ -149,7 +149,7 @@ end, { desc = 'Delete surrounding indentation' })
 --   require('various-textobjs').lastChange()
 --   local changeFound = vim.fn.mode():find('v')
 --   if changeFound then
---     vim.cmd.normal({ '>', bang = true })
+--     vim.fn.normal({ '>', bang = true })
 --   end
 -- end, {})
 --
@@ -175,7 +175,7 @@ local function openURL(url)
   vim.fn.system(openCommand)
 end
 
-map('n', 'gx', function()
+map('n', 'gX', function()
   require('various-textobjs').url()
   local foundURL = vim.fn.mode():find('v')
   if foundURL then
@@ -208,7 +208,7 @@ map('n', '<leader>p>', function()
   require('various-textobjs').lastChange()
   local changeFound = vim.fn.mode():find('v')
   if changeFound then
-    vim.cmd.normal({ '>', bang = true })
+    vim.fn.normal({ '>', bang = true })
   end
 end, { desc = 'indent last paste' })
 
@@ -220,7 +220,7 @@ map('n', 'ysi', function()
   if not indentationFound then
     return
   end
-  vim.cmd.normal({ 'V', bang = true }) -- leave visual mode so the `'<` `'>` marks are set
+  vim.fn.normal({ 'V', bang = true }) -- leave visual mode so the `'<` `'>` marks are set
   vim.api.nvim_win_set_cursor(0, startPos) -- restore (= sticky)
 
   -- copy them into the + register

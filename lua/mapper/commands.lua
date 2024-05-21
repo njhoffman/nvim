@@ -11,11 +11,7 @@ local vmap = function(modes, lhs, opts)
   opts = opts or {}
   modes = type(modes) == 'string' and { modes } or modes
   local meta = vim.fn.deepcopy(opts)
-  local key_opts = {
-    desc = opts.desc or opts.label,
-  }
   for _, mod in ipairs(keymods) do
-    key_opts[mod] = opts[mod]
     meta[mod] = nil
   end
   -- TODO: add description to existing keymaps
@@ -31,6 +27,7 @@ local map = function(modes, lhs, rhs, opts)
   local meta = vim.fn.deepcopy(opts)
   local key_opts = {
     desc = opts.desc or opts.label,
+    noremap = (opts.remap == 1 or opts.noremap == 0) and 0 or opts.noremap == 1 and 1 or nil,
   }
   if force_unique then
     opts.unique = true

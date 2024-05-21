@@ -53,7 +53,7 @@ local sources = {
       {
         name = 'nvim_lsp',
         -- max_item_count = 10,
-        -- keyword_length = 2,
+        keyword_length = 1,
         -- trigger_characters = { '-' },
         entry_filter = function(entry, ctx)
           local kind = require('cmp.types.lsp').CompletionItemKind[entry:get_kind()]
@@ -64,14 +64,16 @@ local sources = {
         end,
       },
       -- { name = 'codeium', max_item_count = 3 },
+      -- copilot
       {
         name = 'copilot',
-        max_item_count = 5,
+        -- max_item_count = 5,
+        keyword_length = 3,
         -- vim.opt.scrollbuf = 999
-        trigger_characters = {
+        -- trigger_characters = {
           -- stylua: ignore
           { '.', ':', '(', "'", '"', '[', ',', '#', '*', '@', '|', '=', '-', '{', '/', '\\', '+', '?', ' ', }, -- "\t", "\n", },
-        },
+        -- },
       },
       {
         name = 'buffer',
@@ -93,6 +95,7 @@ local sources = {
       },
       {
         name = 'cmp_yanky',
+        keyword_length = 3,
         option = {
           onlyCurrentFiletype = true, -- default: false
           minLength = 3,
@@ -109,6 +112,7 @@ local sources = {
       -- },
       {
         name = 'luasnip',
+        keyword_length = 3,
         option = { use_show_condition = true },
         entry_filter = function()
           local context = require('cmp.config.context')
@@ -127,61 +131,63 @@ local sources = {
       {
         name = 'diag-codes',
         -- default completion available only in comment context
+        keyword_length = 3,
         option = { in_comment = true },
       },
       { name = 'plugins' },
+      {
+        name = 'treesitter',
+        max_item_count = 3,
+        keyword_length = 3,
+      },
       -- { name = 'nvim_lsp_document_symbol' },
       -- { name = 'nvim_lsp_signature_help' },
     },
-    {
-      -- copilot
-      { name = 'treesitter' },
-      -- Distracting!
-      -- { name = "spell" },
-      -- { name = "dictionary" },
-      -- {
-      --   name = 'nvim_lua',
-      --   group_index = 2,
-      -- },
-      -- {
-      --   name = 'crates',
-      --   group_index = 2,
-      -- },
-      -- {
-      --   name = 'treesitter',
-      --   keyword_length = 3,
-      --   group_index = 3,
-      -- },
-      -- {
-      --   name = 'path',
-      --   keyword_length = 3,
-      --   group_index = 3,
-      -- },
-      -- {
-      --   name = 'buffer',
-      --   keyword_length = 3,
-      --   group_index = 4,
-      --   option = {
-      --     get_bufnrs = function()
-      --       local bufs = {}
-      --       for _, win in ipairs(vim.api.nvim_list_wins()) do
-      --         bufs[vim.api.nvim_win_get_buf(win)] = true
-      --       end
-      --       return vim.tbl_keys(bufs)
-      --     end,
-      --   },
-      -- },
-      -- {
-      --   name = 'emoji',
-      --   keyword_length = 2,
-      --   group_index = 5,
-      -- },
-      -- {
-      --   name = 'nerdfont',
-      --   keyword_length = 2,
-      --   group_index = 5,
-      -- },
-    },
+    -- Distracting!
+    -- { name = "spell" },
+    -- { name = "dictionary" },
+    -- {
+    --   name = 'nvim_lua',
+    --   group_index = 2,
+    -- },
+    -- {
+    --   name = 'crates',
+    --   group_index = 2,
+    -- },
+    -- {
+    --   name = 'treesitter',
+    --   keyword_length = 3,
+    --   group_index = 3,
+    -- },
+    -- {
+    --   name = 'path',
+    --   keyword_length = 3,
+    --   group_index = 3,
+    -- },
+    -- {
+    --   name = 'buffer',
+    --   keyword_length = 3,
+    --   group_index = 4,
+    --   option = {
+    --     get_bufnrs = function()
+    --       local bufs = {}
+    --       for _, win in ipairs(vim.api.nvim_list_wins()) do
+    --         bufs[vim.api.nvim_win_get_buf(win)] = true
+    --       end
+    --       return vim.tbl_keys(bufs)
+    --     end,
+    --   },
+    -- },
+    -- {
+    --   name = 'emoji',
+    --   keyword_length = 2,
+    --   group_index = 5,
+    -- },
+    -- {
+    --   name = 'nerdfont',
+    --   keyword_length = 2,
+    --   group_index = 5,
+    -- },
   },
   gitcommit = {
     { name = 'cmp_git' },
@@ -212,7 +218,7 @@ local sources = {
     },
     {
       { name = 'async_path' },
-      { name = 'cmdline_history', max_item_count = 5 },
+      { name = 'cmdline_history' },
       -- { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
       -- { name = "dictionary" },
       -- { name = "buffer" },

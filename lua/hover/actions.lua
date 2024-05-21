@@ -51,34 +51,38 @@ local scroll_page_up = vim.api.nvim_replace_termcodes('<C-b>', true, false, true
 local scroll_page_down = vim.api.nvim_replace_termcodes('<C-f>', true, false, true)
 
 local scroll_float = function(scroll_key)
-  if type(state.winnr) == 'number' and vim.api.nvim_win_is_valid(state.winnr) then
-    local linenr = vim.api.nvim_win_get_cursor(state.winnr)[1]
-    local scrolloff = vim.api.nvim_get_option_value('scrolloff', { win = state.winnr })
-    local bufheight = vim.api.nvim_buf_line_count(state.bufnr)
-    if linenr < scrolloff then
-      vim.fn.win_execute(state.winnr, 'normal! ' .. (scrolloff - linenr) .. scroll_down)
+  if not state.winnr or not vim.api.nvim_win_is_valid(state.winnr) then
+    return scroll_key
+  end
+  local linenr = vim.api.nvim_win_get_cursor(state.winnr)[1]
+  local scrolloff = vim.api.nvim_get_option_value('scrolloff', { win = state.winnr })
+  local bufheight = vim.api.nvim_buf_line_count(state.bufnr)
+  if linenr < scrolloff then
+    vim.fn.win_execute(state.winnr, 'normal! ' .. (scrolloff - linenr) .. scroll_down)
+  end
+  if scroll_key == scroll_up then
+    if linenr > scrolloff then
+      vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
     end
-    if scroll_key == scroll_up then
-      if linenr > scrolloff then
-        vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
-      end
-    else
-      if linenr < bufheight - scrolloff then
-        vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
-      end
+  else
+    if linenr < bufheight - scrolloff then
+      vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
     end
   end
 end
 
 M.scroll_up = function()
-  scroll_float(scroll_up)
+  return scroll_float(scroll_up)
 end
 
 M.scroll_down = function()
-  scroll_float(scroll_down)
+  return scroll_float(scroll_down)
 end
 
 M.scroll_page_up = function()
+  if not state.winnr or not vim.api.nvim_win_is_valid(state.winnr) then
+    return scroll_up
+  end
   local winheight = vim.api.nvim_win_get_height(state.winnr) - 2
   for i = 1, winheight do
     vim.defer_fn(function()
@@ -88,6 +92,9 @@ M.scroll_page_up = function()
 end
 
 M.scroll_page_down = function()
+  if not state.winnr or not vim.api.nvim_win_is_valid(state.winnr) then
+    return scroll_down
+  end
   local winheight = vim.api.nvim_win_get_height(state.winnr) - 2
   for i = 1, winheight do
     vim.defer_fn(function()

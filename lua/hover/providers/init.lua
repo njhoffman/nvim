@@ -12,7 +12,7 @@ local function is_enabled(provider)
     return provider._enabled
   end
 
-  if type(provider.enabled == 'function') then
+  if type(provider.enabled) == 'function' then
     enabled = provider.enabled()
   else
     enabled = provider.enabled

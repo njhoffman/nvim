@@ -1,7 +1,7 @@
 local max_width = function(lines)
   local max = {}
   for _, line in ipairs(lines) do
-    local cols = vim.tbl_isarray(line) and line or { line }
+    local cols = vim.isarray(line) and line or { line }
     for i, col in ipairs(cols) do
       max[i] = math.max(#tostring(col), max[i] or 0)
     end

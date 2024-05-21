@@ -19,13 +19,13 @@ local lua = {
 require('debugprint').setup({
   print_tag = '🪚' .. ' ',
   move_to_debugline = true,
-  create_keymaps = false,
-  create_commands = false,
+  -- create_keymaps = false,
+  -- create_commands = true,
   display_counter = true,
   display_snippet = false,
-  filetypes = { lua = lua },
 })
 
+require('debugprint').add_custom_filetypes({ lua = lua })
 vim.api.nvim_create_user_command('DeleteDebugs', function(opts)
   -- Note: you must set `range=true` and pass through opts for ranges to work
   require('debugprint').deleteprints(opts)

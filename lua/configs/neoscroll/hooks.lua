@@ -11,7 +11,7 @@ hooks.pre_hook = function(info, params)
 
   vim.opt.eventignore:append(events)
   ts_ctx.disable()
-  vim.api.nvim_buf_set_var(0, 'minianimate_disable', 1)
+  -- vim.api.nvim_buf_set_var(0, 'minianimate_disable', 1)
 end
 
 hooks.steps_hook = function(...)
