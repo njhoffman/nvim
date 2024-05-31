@@ -98,7 +98,7 @@ end
 -- stylua:ignore
 local setup_search_mappings = function()
   vim.keymap.set({ 'c' }, '<C-S>', function()
-    require('flash').toggle_current_search()
+    require('flash.plugins.search').toggle_current_search()
   end, {
     noremap = true,
     silent = true,
@@ -169,7 +169,7 @@ local setup_search_mappings = function()
 end
 
 local setup = function()
-  setup_char_mappings()
+  -- setup_char_mappings()
   setup_remote_mappings()
   setup_search_mappings()
 end

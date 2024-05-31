@@ -5,8 +5,7 @@
 -- 3. open a floating window with that content
 -- 4. on change set the document content
 
-local function start(url)
-  local client = require('chrome-remote.chrome').new()
+local function start(client, url)
   local err = client:open_url(url)
   if err then
     print(vim.inspect(err))

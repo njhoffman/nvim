@@ -4,24 +4,18 @@ local NuiText = require('nui.text')
 -- TODO: have separate notify, noice, and log levels
 local logfile = function(lvl, content)
   local logger = require('logger').init('notify')
-  local new_content = content
-  if string.match(content, '\n') then
-    -- new_content = '\n' .. content
-    new_content = ''
-    for _, line in ipairs(vim.fn.split(content, '\n')) do
-      new_content = new_content .. '\n    ' .. line
-    end
-  end
+  content = vim.trim(content:gsub('\n$', ''))
+  -- strip all new lines
   if lvl == 0 then
-    logger:trace(new_content)
+    logger:trace(content)
   elseif lvl == 1 then
-    logger:debug(new_content)
+    logger:debug(content)
   elseif lvl == 2 then
-    logger:info(new_content)
+    logger:info(content)
   elseif lvl == 3 then
-    logger:warn(new_content)
+    logger:warn(content)
   else
-    logger:error(new_content)
+    logger:error(content)
   end
 end
 

@@ -119,14 +119,34 @@ local clr_over = {
 return function(injected_functions)
   local sym = injected_functions.sym
   return {
-    Visual({ fg = 'none', bg = '#171f47', gui = 'italic' }),
+    -- CurSearch({ fg = '#cc2266', gui = 'bold' }), --  bg = '#110033'
+
+    -- Search        xxx guifg=#d6deeb guibg=#38507a
+    -- CurSearchxxx guifg=#011627 guibg=#f78c6c
+    -- IncSearchxxx guifg=#011627 guibg=#ffcb8b
+    -- Visual        xxx links to NightflyVisual
+    -- VisualNOSxxx guifg=#c3ccdc guibg=#1d3b53
+    -- Visual        xxx links to NightflyVisual
+    -- VisualNOSxxx guifg=#c3ccdc guibg=#1d3b53
+    -- NightflyVisualxxx guibg=#1d3b53
+    -- WinBarxxx guifg=#c3ccdc guibg=#0e293f
+    -- WinBarNCxxx guifg=#a1aab8 guibg=#0e293f
+
+    Normal({ fg = '#667da9', bg = 'none' }),
+    -- NormalNC({ gui = '#010409' }),
+    SignColumn({ bg = 'none' }),
+    Search({ bg = '#0e1c36', fg = '#008fff', gui = 'italic' }), -- bg = '#0d314c',
+    IncSearch({ bg = '#23518b', fg = '#88aaff', gui = 'italic' }),
+    CurSearch({ bg = '#6e3ce6', fg = '#aaffff', gui = 'bold' }), --  bg = '#110033'
     -- VisualNOS({ fg = 'none', bg = '#301840' }),
-    VisualNOS = { bg = '#2e3c64' },
+    -- Visual({ bg = '#171f47', fg = 'none', gui = 'italic' }),
+    Visual({ bg = '#021626', gui = 'bold,italic' }),
+    VisualNOS({ bg = '#1d3b53' }),
     VisualAlt({ fg = 'none', bg = '#10082f', gui = 'italic' }),
     VisualRed({ fg = 'none', bg = '#40112c', gui = 'bold,italic' }),
+    LineNr({ fg = '#2D476A' }),
     Error({ fg = clrs.error, bg = 'none' }),
     -- Error({ fg = "none", bg = "none" }),
-    Normal({ fg = '#667da9', bg = 'none' }),
     -- ui components
     NormalWindow({ fg = Normal.fg, bg = 'none' }),
     NormalFloat({ fg = Normal.fg, bg = 'none' }), -- normal text and background color for floating windows
@@ -154,16 +174,10 @@ return function(injected_functions)
     -- Cursor({ bg = '#4B5Bff' }),
     CursorColumn({ bg = '#061028' }),
     ColorColumn({ bg = '#061028' }),
-    CursorLineNr({ fg = '#44aaff', gui = 'italic' }),
     CursorLine({ bg = '#061028' }),
+    CursorLineNr({ fg = '#44aaff', gui = 'italic' }),
     -- CursorLine({ bg = '#0a1020' }),
     -- CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
-    -- CurSearch({ fg = '#cc2266', gui = 'bold' }), --  bg = '#110033'
-    LineNr({ fg = '#2D476A' }),
-    SignColumn({ bg = 'none' }),
-    IncSearch({ gui = 'bold', bg = '#4e3ce6', fg = '#88aaff' }),
-    Search({ fg = '#00cfff', gui = 'bold' }), -- bg = '#0d314c',
-    CurSearch({ gui = 'bold', bg = '#6e3ce6', fg = '#aaffff' }), --  bg = '#110033'
     ReactiveCursor({}),
     -- CursorColumn({ bg = CursorLine.bg }),
     -- ColorColumn({ bg = CursorLine.bg }),
@@ -1309,9 +1323,11 @@ return function(injected_functions)
     BufferAlternateDELETED({ bg = '#0c2333' }),
     BufferAlternateSignRight({ bg = '#0c2333' }),
     -- noice.nvim
-    NoiceCursor({ bg = '#4B6BfB' }),
+    -- NoiceCursor({ bg = '#4B6BfB' }),  #51e3ed
+    NoiceCursor({ bg = '#003558', gui = 'bold', fg = '#17a9b3' }),
     NoiceCmdline({ fg = '#00aacc' }),
-
+    NeoTreeTitleBar({ bg = '#1f2342' }),
+    NeoTreeFileNameOpened({ gui = 'bold' }),
     -- NeoTreeNormal guibg=#010409"
     -- NeoTreeNormalNC guibg=#010409"
     -- NoiceCmdlinePopup guibg=#0a0e12"
@@ -1345,6 +1361,7 @@ return function(injected_functions)
     -- NoiceCursor                       = { fg = C.blend.blue, bg = C.blend.bluec1 },      --fake Cursor
     -- NoiceFormatConfirm                = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --
     -- NoiceFormatConfirmDefault         = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --
+    -- NoiceFormatLevelDebug             = { fg = C.aurora.green, bg = C.none },            --
     -- NoiceFormatLevelDebug             = { fg = C.aurora.green, bg = C.none },            --
     -- NoiceFormatLevelError             = { fg = C.aurora.red, bg = C.none },              --
     -- NoiceFormatLevelInfo              = { fg = C.frost.turquoise, bg = C.none },         --
@@ -1386,6 +1403,12 @@ return function(injected_functions)
     -- hi(0, "NoiceCmdlinePopupTitle", { fg = "#68e0f5" })
     -- hi(0, "NoiceCmdlinePrompt", { bold = true, fg = "#82b4ff" })
     -- hi(0, "NoiceCompletionItemKindC- NoiceVirtualText                  = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --Default hl group for virtualtext viewsNoiceConfirm                      = { fg = C.frost.turquoise, bg = C.bg },           --normal for the confirm view
+
+    MiniJump({ fg = '#ff00a0' }),
+    -- Eyeliner
+    EyelinerPrimary({ fg = '#e06c75', gui = 'bold' }),
+    EyelinerSecondary({ fg = '#d19a66', gui = 'bold' }),
+    EyelinerDimmed({ fg = '#4e5769' }),
 
     -- ScrolllView
     ScrollView({ bg = '#224385' }),

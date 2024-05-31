@@ -208,7 +208,6 @@ end
 local get_simple_history = function()
   return histories.new({
     init = function(obj)
-      vim.dbglog('history init', obj)
       local p = Path:new(obj.path)
       if not p:exists() then
         p:touch({ parents = true })

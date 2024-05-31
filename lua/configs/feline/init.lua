@@ -143,6 +143,7 @@ local statusline_cfg = {
       '^query',
       '^spectre_panel',
       '^startify$',
+      '^Telescope',
       '^tablegen$',
       '^tsplayground$',
     },

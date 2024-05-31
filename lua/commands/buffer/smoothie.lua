@@ -102,9 +102,9 @@ local setup_paging = function()
     silent! map <S-Up>     <Plug>(SmoothieBackwards)
     silent! map <PageUp>   <Plug>(SmoothieBackwards)
     silent! map <Space>    <Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)
-    silent! nmap  G       <Plug>(Smoothie_G)
+    silent! <nowait> nmap  G       <Plug>(Smoothie_G)
 
-     silent! nmap gg       <Plug>(Smoothie_gg)
+     silent! <nowait> nmap gg       <Plug>(Smoothie_gg)
     " noremap <silent> <Plug>(Smoothie_gg)       <cmd>call smoothie#cursor_movement('gg') <CR>
   "    silent! map <unique> <C-f>      <Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)
   "    silent! map <unique> <C-b>      <Plug>(SmoothieUpwards)

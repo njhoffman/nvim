@@ -31,7 +31,6 @@ for _, mod_name in ipairs({
   'tail',
   'hover.setup',
   'configs.feline',
-  'nvim-lastplace-setup',
   'baleia.setup',
 }) do
   vim.import(mod_name)
@@ -50,8 +49,8 @@ vim.defer_fn(function()
 
   -- local map = require('mapper').map
 
-  vim.keymap.set('n', '<M-0>', 'i<M-0><esc>', { remap = true, desc = 'warp pair symbol forwads' })
-  vim.keymap.set('n', '<M-9>', 'i<M-9><esc>', { remap = true, desc = 'warp pair symbol backwards' })
+  -- vim.keymap.set('n', '<M-0>', 'i<M-0><esc>', { remap = true, desc = 'warp pair symbol forwads' })
+  -- vim.keymap.set('n', '<M-9>', 'i<M-9><esc>', { remap = true, desc = 'warp pair symbol backwards' })
   -- vim.keymap.set('n', '<M-)>', 'i<M-)><esc>', { remap = true, desc = 'warp pair symbol forwads' })
   -- vim.keymap.set('n', '<M-(>', 'i<M-(><esc>', { remap = true, desc = 'warp pair symbol backwards' })
 

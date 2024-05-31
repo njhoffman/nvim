@@ -42,4 +42,8 @@ require("iswap").setup({
   -- Other default options you probably should not change:
   debug = nil,
   hl_grey_priority = "1000",
-})
+}
+
+
+
+)

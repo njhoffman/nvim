@@ -64,8 +64,8 @@ local cfg = {
     reset = '<esc>',
     -- reset = '<BS>',
     -- reveal_cwd = '@',
-    show_help = '<M-C-_>',
-    -- show_help = 'g?',
+    -- show_help = '<M-C-_>',
+    show_help = '<M-/>',
     -- synchronize = '=',
     -- trim_left = '<',
     -- trim_right = '>',
@@ -78,13 +78,12 @@ local minifiles_toggle = function()
   end
 end
 
-vim.api.nvim_create_user_command('MiniFiles', minifiles_toggle, { desc = 'toggle minifiles file manager' })
+vim.api.nvim_create_user_command(
+  'MiniFiles',
+  minifiles_toggle,
+  { desc = 'toggle minifiles file manager' }
+)
 
--- local buf_map = function(mode, lhs, rhs, desc)
---   -- Use `nowait` to account for non-buffer mappings starting with `lhs`
---   H.map(mode, lhs, rhs, { buffer = buf_id, desc = desc, nowait = true })
--- end
---
 -- --stylua: ignore start
 -- buf_map('n', mappings.close,       MiniFiles.close,       'Close')
 -- buf_map('n', mappings.go_in,       go_in_with_count,      'Go in entry')

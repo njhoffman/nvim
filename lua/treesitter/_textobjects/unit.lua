@@ -84,6 +84,7 @@ local function get_selection_range(outer)
   if node == nil then
     return
   end
+  vim.dbglog('MAIN', node, get_text(bufnr, sel_row))
   local start_row, start_col, end_row, end_col = node:range()
 
   local mode = 'v'
@@ -95,7 +96,8 @@ local function get_selection_range(outer)
       if text == '' then
         end_row = move_row_while_empty(bufnr, end_row + 2, 1) - 1
         start_col = 0
-        mode = 'V'
+        mode = 'v'
+        -- mode = 'V'
       end
     end
   end
@@ -134,7 +136,11 @@ M.enable_highlighting = function(higroup)
   local used_higroup = higroup or 'CursorLine'
   vim.cmd('augroup treesitter-unit-highlight')
   vim.cmd('autocmd!')
-  vim.cmd('autocmd CursorMoved * lua require("treesitter._textobjects.unit").highlight_unit("' .. used_higroup .. '")')
+  vim.cmd(
+    'autocmd CursorMoved * lua require("treesitter._textobjects.unit").highlight_unit("'
+      .. used_higroup
+      .. '")'
+  )
   vim.cmd('augroup END')
   M.highlight_unit(used_higroup)
   highlighting_enabled = true

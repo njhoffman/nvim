@@ -57,7 +57,7 @@ require('ts_context_commentstring').setup({
   },
 })
 
-vim.treesitter.language.register('bash', 'zsh')
+-- vim.treesitter.language.register('bash', 'zsh')
 vim.filetype.add({
   extension = { rasi = 'rasi' },
   pattern = {

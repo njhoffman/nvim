@@ -15,6 +15,53 @@ local plugins = {
   -- https://github.com/romgrk/barbar.nvim/pull/540
   -- { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
   {
+    'romgrk/barbar.nvim',
+    -- branch = 'fix-telescope-insert',
+    lazy = false,
+    init = function()
+      vim.g.barbar_auto_setup = false
+    end,
+    event = 'VimEnter',
+    dependencies = 'nvim-web-devicons',
+  },
+  { 'declancm/cinnamon.nvim', event = 'VeryLazy' },
+  { 'karb94/neoscroll.nvim', event = 'VeryLazy' },
+  {
+    '00sapo/visual.nvim',
+    enabled = false,
+    dependencies = { 'nvim-treesitter', 'nvim-various-textobjs', 'nvim-treesitter-textobjects' },
+    event = 'VeryLazy',
+  },
+  {
+    'Makaze/watch.nvim',
+    cmd = { 'WatchStart', 'WatchStop', 'WatchFile' },
+  },
+  { 'rasulomaroff/reactive.nvim', enabled = true, lazy = false },
+  -- https://www.reddit.com/r/neovim/comments/1aupy8c/a_simple_journaling_system_built_with_mind_and/
+  { 'RutaTang/quicknote.nvim', event = 'VeryLazy', dependencies = { 'nvim-lua/plenary.nvim' } },
+  {
+    'LintaoAmons/scratch.nvim',
+    event = 'VeryLazy',
+    -- Scratch, ScratchOpen, ScrathWithName, ScratchOpenFzf, ScratchPad
+    -- nvim -c 'lua require("scratch").scratchByType("md")'
+  },
+  { 'rgroli/other.nvim', event = 'VeryLazy' },
+  {
+    'tummetott/reticle.nvim',
+    enabled = false,
+    lazy = false,
+    event = { 'BufReadPre', 'BufNewFile' },
+    -- reticle messes up with Neo-tree cursorline in search mode
+    opts = {
+      always = { cursorline = { 'neo-tree' } },
+      on_startup = { cursorline = true, cursorcolumn = false },
+      never = {
+        cursorline = { 'qf', 'noice', 'navbuddy' },
+        cursorcolumn = { 'qf', 'noice', 'navbuddy' },
+      },
+    },
+  },
+  {
     'chrishrb/gx.nvim',
     keys = { { 'gx', '<cmd>Browse<cr>', mode = { 'n', 'x' } } },
     cmd = { 'Browse' },
@@ -79,50 +126,27 @@ local plugins = {
     end,
   },
   {
-    'romgrk/barbar.nvim',
-    -- branch = 'fix-telescope-insert',
-    init = function()
-      vim.g.barbar_auto_setup = false
+    'rmagatti/gx-extended.nvim',
+    config = function()
+      -- package.json - gx when cursor is under an npm dependency, navigates to https://www.npmjs.com/package/[packageName]
+      -- plugins.lua - In packer.nvim's convention plugins.lua file, gx when cursor is under a plugin dependency, navigates to https://github.com/[user/org]/[repo]
+      -- *.tf - In a terraform file, gx when cursor is under a terraform resource definition navigates to https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/[resourceName]
+      -- * - In any file, gx navigates to no-protocol-urls like google.com, docs.google.com, etc.
+      require('gx-extended').setup({
+        extensions = {
+          { -- match github repos in lazy.nvim plugin specs
+            patterns = { '*/plugins/**/*.lua' },
+            name = 'neovim plugins',
+            match_to_url = function(line_string)
+              local line = string.match(line_string, '["|\'].*/.*["|\']')
+              local repo = vim.split(line, ':')[1]:gsub('["|\']', '')
+              local url = 'https://github.com/' .. repo
+              return line and repo and url or nil
+            end,
+          },
+        },
+      })
     end,
-    event = 'VimEnter',
-    dependencies = 'nvim-web-devicons',
-  },
-  { 'declancm/cinnamon.nvim', event = 'VeryLazy' },
-  { 'karb94/neoscroll.nvim', event = 'VeryLazy' },
-  {
-    '00sapo/visual.nvim',
-    enabled = false,
-    dependencies = { 'nvim-treesitter', 'nvim-various-textobjs', 'nvim-treesitter-textobjects' },
-    event = 'VeryLazy',
-  },
-  {
-    'Makaze/watch.nvim',
-    cmd = { 'WatchStart', 'WatchStop', 'WatchFile' },
-  },
-  { 'rasulomaroff/reactive.nvim', enabled = true, lazy = false },
-  -- https://www.reddit.com/r/neovim/comments/1aupy8c/a_simple_journaling_system_built_with_mind_and/
-  { 'RutaTang/quicknote.nvim', event = 'VeryLazy', dependencies = { 'nvim-lua/plenary.nvim' } },
-  {
-    'LintaoAmons/scratch.nvim',
-    event = 'VeryLazy',
-    -- Scratch, ScratchOpen, ScrathWithName, ScratchOpenFzf, ScratchPad
-    -- nvim -c 'lua require("scratch").scratchByType("md")'
-  },
-  { 'rgroli/other.nvim', event = 'VeryLazy' },
-  {
-    'tummetott/reticle.nvim',
-    enabled = false,
-    lazy = false,
-    event = { 'BufReadPre', 'BufNewFile' },
-    -- reticle messes up with Neo-tree cursorline in search mode
-    opts = {
-      always = { cursorline = { 'neo-tree' } },
-      on_startup = { cursorline = true, cursorcolumn = false },
-      never = {
-        cursorline = { 'qf', 'noice', 'navbuddy' },
-        cursorcolumn = { 'qf', 'noice', 'navbuddy' },
-      },
-    },
   },
   { 'lukas-reineke/indent-blankline.nvim', main = 'ibl', event = { 'BufReadPre', 'BufNewFile' } },
   { 'Tyler-Barham/floating-help.nvim', cmd = 'FloatHelp' },
@@ -205,7 +229,7 @@ local plugins = {
     'kevinhwang91/nvim-ufo',
     dependencies = 'kevinhwang91/promise-async',
     cmd = { 'UfoEnable', 'UfoAttach', 'UfoEnableFold' },
-    event = { 'BufReadPost', 'InsertEnter' },
+    -- event = { 'BufReadPost', 'InsertEnter' },
   },
   {
     -- https://github.com/luckasRanarison/tailwind-tools.nvim
@@ -317,11 +341,27 @@ local plugins = {
     end,
   },
   {
-    'jinh0/eyeliner.nvim',
+    'echasnovski/mini.jump',
     config = function()
-      require('eyeliner').setup({
-        highlight_on_key = true, -- show highlights only after keypress
-        dim = true, -- dim all other characters if set to true (recommended!)
+      require('mini.jump').setup({
+        -- Module mappings. Use `''` (empty string) to disable one.
+        mappings = {
+          forward = 'f',
+          backward = 'F',
+          forward_till = 't',
+          backward_till = 'T',
+          repeat_jump = ';',
+        },
+
+        -- Delay values (in ms) for different functionalities. Set any of them to
+        -- a very big number (like 10^7) to virtually disable.
+        delay = {
+          -- Delay between jump and highlighting all possible jumps
+          highlight = 2500,
+
+          -- Delay between jump and automatic stop if idle (no jump is done)
+          idle_stop = 10000000,
+        },
       })
     end,
   },
@@ -569,7 +609,11 @@ local plugins = {
     },
   },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
-  { 'altermo/ultimate-autopair.nvim', event = { 'InsertEnter' }, branch = 'development' }, -- branch = 'v0.6',
+  {
+    'altermo/ultimate-autopair.nvim',
+    event = { 'InsertEnter', 'CmdlineEnter' },
+    branch = 'development',
+  }, -- branch = 'v0.6',
   { 'gbprod/substitute.nvim', event = { 'VeryLazy' } },
   -- split/join
   { 'echasnovski/mini.splitjoin', event = { 'VeryLazy' } },
@@ -701,6 +745,11 @@ local plugins = {
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-web-devicons', 'MunifTanjim/nui.nvim' },
   },
   {
+    'moyiz/git-dev.nvim',
+    event = 'VeryLazy',
+    opts = {},
+  },
+  {
     -- 'njhoffman/telescope.nvim',
     'nvim-telescope/telescope.nvim',
     dir = '/home/nicholas/git/telescope.nvim',
@@ -732,6 +781,7 @@ local plugins = {
       'nat-418/telescope-color-names.nvim',
       'nvim-lua/plenary.nvim',
       'nvim-lua/popup.nvim',
+      'dharmx/telescope-media.nvim',
       'piersolenski/telescope-import.nvim',
       'nvim-telescope/telescope-dap.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
@@ -745,6 +795,8 @@ local plugins = {
       'nvim-telescope/telescope-symbols.nvim',
       'nvim-telescope/telescope-ui-select.nvim',
       'nvim-telescope/telescope-z.nvim',
+      'dawsers/telescope-file-history.nvim',
+      'Azeirah/nvim-redux',
       'catgoose/telescope-helpgrep.nvim',
       'paopaol/telescope-git-diffs.nvim',
       'ptethng/telescope-makefile',
@@ -863,6 +915,7 @@ local plugins = {
       { 'mvaldes14/terraform.nvim', dependencies = { 'plenary.nvim', 'nui.nvim' } },
       { 'kkharji/sqlite.lua', run = 'luarocks install sqlite luv' },
       { 'nvim-telescope/telescope-frecency.nvim', dependencies = { 'kkharji/sqlite.lua' } },
+      { 'nvim-telescope/telescope-fzy-native.nvim' },
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       {
         -- https://github.com/ptdewey/yankbank-nvim
@@ -898,6 +951,7 @@ local plugins = {
       -- https://github.com/rktjmp/fwatch.nvim
       { 'GustavoKatel/telescope-asynctasks.nvim', dependencies = { 'skywind3000/asynctasks.vim' } },
       -- { "rmagatti/session-lens", dependencies = "rmagatti/auto-session" },
+      -- https://github.com/sachinsenal0x64/hot.nvim
       { 'PhilippFeO/telescope-filelinks.nvim' },
       { 'octarect/telescope-menu.nvim' },
       {
@@ -985,7 +1039,12 @@ local plugins = {
   { 'akinsho/git-conflict.nvim', version = '*', lazy = false },
   { 'pwntester/octo.nvim', cmd = 'Octo', dependencies = 'nvim-web-devicons' },
   { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' },
-  { 'lewis6991/gitsigns.nvim', event = 'BufReadPost', dependencies = 'nvim-lua/plenary.nvim' },
+  {
+    'lewis6991/gitsigns.nvim',
+    event = 'BufReadPost',
+    dependencies = 'nvim-lua/plenary.nvim',
+    commit = 'd6a3bf0b36b7e0f09e39f738f9f87ab1e3c450dc',
+  },
   { 'rhysd/git-messenger.vim', cmd = 'GitMessenger' },
   {
     'tpope/vim-fugitive',
@@ -1049,7 +1108,6 @@ local plugins = {
       'rouge8/neotest-rust',
       'akinsho/neotest-go',
       'nvim-neotest/nvim-nio',
-      'antoinemadec/FixCursorHold.nvim',
       'nvim-treesitter/nvim-treesitter',
       {
         'nvim-neotest/neotest-vim-test',
@@ -1255,6 +1313,7 @@ local plugins = {
       require('fundo').install()
     end,
   },
+  -- https://github.com/nfrid/due.nvim
   {
     'tools-life/taskwiki',
     cmd = { 'TW', 'TWSync' },
@@ -1419,6 +1478,7 @@ local plugins = {
   { 'tbastos/vim-lua', ft = 'lua', lazy = lz_syn },
   { 'tikhomirov/vim-glsl', ft = 'glsl', lazy = lz_syn },
   { 'vim-utils/vim-man', ft = 'man', lazy = lz_syn },
+  { 'vim-crystal/vim-crystal', ft = 'crystal', lz_sym = lz_sym },
   { 'vimwiki/vimwiki', ft = { 'markdown', 'vimwiki' }, lazy = lz_syn },
   {
     'mtdl9/vim-log-highlighting',

@@ -40,7 +40,7 @@ end
 function NotifyView:_notify(msg, opts)
   ---@type string?
   local level = msg.level
-  local content = msg.content
+  local content = vim.trim(msg.content)
 
   local notif = require('notify')(content, level, opts)
   self.notif = notif

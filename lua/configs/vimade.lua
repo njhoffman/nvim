@@ -1,67 +1,74 @@
 --  vim.g.vimade = {
---    enabletreesitter = 1,
---    basegroups = {
---      "VirtualText",
---      "Search",
---      "SignColumn",
---      "v2hexokinase", "LineNr",
---      "CursorLine",
---      "CursorLineNr",
---      "DiffAdd",
---      "DiffChange",
---      "DiffDelete",
---      "DiffText",
---      "FoldColumn",
---      "Whitespace"
---    },
---    rowbufsize = 15,
---    colbufsize = 15,
---    fadelevel = 0.7,
---    signsretentionperiod = 1000,
---    fadepriority = 50,
---    enablesigns = 1,
---    enablefocusfading = 1
--- --  }
-
 -- TODO: have separate fade level for focus events
 
 vim.g.vimade = {
   -- running = 0,
-  basebg = '#001144',
+  basebg = '#041026',
   basegroups = {
+    'Conceal',
+    'CursorLine',
+    'CursorLineNr',
+    -- 'ColorColumn',
     'LineNr',
     'DiffAdd',
     'DiffChange',
     'DiffDelete',
     'DiffText',
+    'EndOfBuffer',
     'FoldColumn',
     'Folded',
+    'NonText',
+    -- 'MiniIndentscopeSymbol',
+    -- 'IblScope',
+    -- 'IblIndent',
+    -- 'IblWhitespace',
+    -- '@ibl.scope.char.1',
+    -- '@ibl.indent.char.1',
+    -- '@ibl.whitespace.char.1',
     'Search',
     'SignColumn',
-    -- 'Whitespace',
-    'CursorLine',
-    'CursorLineNr',
-    -- 'Normal',
-    -- "v2hexokinase",
+    -- 'Scrollbar',
+    -- 'ScrollView',
+    'SpecialKey',
+    -- 'StatusLine',
+    'WinBar',
+    'WinSeparator',
+    'Whitespace',
+    'VirtualText',
+    'barbecue_basename',
+    'barbecue_normal',
+    'barbecue_context',
   },
-
+  checkinterval = 100,
   detecttermcolors = 1,
   enablebasegroups = 1,
-  -- rowbufsize = 20, -- 15
-  -- colbufsize = 20, -- 5
-  fadelevel = '0.50',
-  signsretentionperiod = 4000,
-  fadepriority = 10,
-  enablesigns = 0,
-  signspriority = 31,
-  enabletreesitter = 1,
   enablefocusfading = 1,
-  checkinterval = 100,
-  groupdiff = 0,
+  enablesigns = 0,
+  enabletreesitter = 1,
+  fadelevel = '0.50',
+  fadepriority = 100,
+  groupdiff = 1,
   groupscrollbind = 1,
+  signspriority = 31,
+  signsretentionperiod = 4000,
   usecursorhold = 0,
 }
 
+vim.api.nvim_create_augroup('VimadeEvents', { clear = true })
+vim.api.nvim_create_autocmd({ 'FocusLost' }, {
+  group = 'VimadeEvents',
+  callback = function(ev)
+    local winid = vim.fn.bufwinid(ev.buf)
+    vim.api.nvim_set_option_value('colorcolumn', '', { win = winid })
+  end,
+})
+vim.api.nvim_create_autocmd({ 'FocusGained' }, {
+  group = 'VimadeEvents',
+  callback = function(ev)
+    local winid = vim.fn.bufwinid(ev.buf)
+    vim.api.nvim_set_option_value('colorcolumn', '+1', { win = winid })
+  end,
+})
 -- window instead of bufer fading
 -- augroup SemiDimPerWin
 -- au!

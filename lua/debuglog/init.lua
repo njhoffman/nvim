@@ -9,7 +9,7 @@ M.log = log.info
 
 M.timer = timer
 
-M.inspect = require('debuglog.parsers.inspect')
+M.inspect = require('debuglog.parsers.inspect-simple')
 M.traceback = require('debuglog.parsers.traceback')
 M.dump = require('debuglog.parsers.dump')
 

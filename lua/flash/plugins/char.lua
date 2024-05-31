@@ -114,12 +114,7 @@ function M.setup()
     end
   end
 
-  for _, key in ipairs({
-    'f',
-    'F',
-    't',
-    'T', --[[ ';', ',' ]]
-  }) do
+  for _, key in ipairs({ 'f', 'F', 't', 'T', ';', ',' }) do
     if keys[key] then
       vim.keymap.set({ 'n', 'x', 'o' }, keys[key], function()
         M.jumping = true
@@ -246,10 +241,6 @@ function M.jump(key)
   M.state:update({ force = true })
 
   if M.jump_labels then
-    if Config.get('char').jump.autojump and #M.state.results == 1 then
-      M.state:hide()
-      return M.state
-    end
     parsed.actions[Util.CR] = function()
       return false
     end

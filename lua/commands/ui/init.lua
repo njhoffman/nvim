@@ -2,30 +2,10 @@ local actions = require('commands.ui.actions')
 local utils = require('commands.ui.utils')
 
 local setup_keymaps = function()
-  vim.keymap.set(
-    'n',
-    '<C-S-Right>',
-    utils.check_nav_split('l'),
-    { noremap = true, desc = ' right split or tmux pane' }
-  )
-  vim.keymap.set(
-    'n',
-    '<C-S-Left>',
-    utils.check_nav_split('h'),
-    { noremap = true, desc = ' left split or tmux pane ' }
-  )
-  vim.keymap.set(
-    'n',
-    '<C-S-Down>',
-    utils.check_nav_split('j'),
-    { noremap = true, desc = 'ﰬ down split or tmux pane' }
-  )
-  vim.keymap.set(
-    'n',
-    '<C-S-Up>',
-    utils.check_nav_split('k'),
-    { noremap = true, desc = ' up split or tmux pane' }
-  )
+  vim.keymap.set({ 'n', 'v' }, '<C-S-Right>', utils.check_nav_split('l'), { noremap = true, desc = ' right split or tmux pane' })
+  vim.keymap.set({ 'n', 'v' }, '<C-S-Left>', utils.check_nav_split('h'), { noremap = true, desc = ' left split or tmux pane ' })
+  vim.keymap.set({ 'n', 'v' }, '<C-S-Down>', utils.check_nav_split('j'), { noremap = true, desc = 'ﰬ down split or tmux pane' })
+  vim.keymap.set({ 'n', 'v' }, '<C-S-Up>', utils.check_nav_split('k'), { noremap = true, desc = ' up split or tmux pane' })
 end
 
 local setup_commands = function()

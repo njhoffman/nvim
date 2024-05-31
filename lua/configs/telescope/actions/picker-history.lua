@@ -13,7 +13,6 @@ local augroup = 'telescope-picker-history'
 
 local function setup()
   vim.api.nvim_create_augroup(augroup, {})
-  vim.api.nvim_set_var('cached_picker_idx', 0)
   vim.api.nvim_create_autocmd('WinLeave', {
     group = augroup,
     callback = function()
@@ -76,5 +75,5 @@ return {
   prev_picker = function()
     picker_history(true)
   end,
-  -- setup = setup,
+  setup = setup,
 }

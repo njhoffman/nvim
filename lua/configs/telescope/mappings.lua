@@ -1,6 +1,5 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
 local actions = require('telescope.actions')
-local mods = require('configs.telescope.actions.mods')
 local actions_layout = require('telescope.actions.layout')
 local c_actions = require('configs.telescope.actions')
 
@@ -54,8 +53,10 @@ local main_maps = {
     ["<M-/>"]       = actions_layout.toggle_preview,
     ["<M-(>"]       = actions.cycle_previewers_prev, -- Ctrl-Shift-(
     ["<M-)>"]       = actions.cycle_previewers_next, -- Ctrl-Shift-)
-    ["<C-B>"]       = c_actions.results_page_up,
-    ["<C-F>"]       = c_actions.results_page_down,
+    -- ["<C-B>"]       = c_actions.results_page_up,
+    -- ["<C-F>"]       = c_actions.results_page_down,
+    ["<C-B>"]       = actions.results_scrolling_up,
+    ["<C-F>"]       = actions.results_scrolling_down,
     ["<M-p>"]       = c_actions.results_toggle_up,
     ["<M-n>"]       = c_actions.results_toggle_down,
     ["<M-a>"]       = actions.toggle_all,
@@ -63,6 +64,7 @@ local main_maps = {
     ["<C-Y>"]       = c_actions.yank_selection,
     ["<M-y>"]       = c_actions.yank_selection_to_buffer,
     ["<M-g>"]       = c_actions.launch_projects,
+    ["<C-e>"]       = c_actions.launch_buffers,
     ["<M-e>"]       = c_actions.launch_live_grep,
     ["<M-u>"]       = c_actions.launch_find_files,
     ["<M-T>"]       = c_actions.launch_find_pickers, -- Ctrl-Shift-T
@@ -139,26 +141,33 @@ local help_maps = {
   },
 }
 
+local keymaps_maps = {
+  i = {
+    ['<C-Y>'] = c_actions.yank_keymaps,
+    ['<M-y>'] = c_actions.yank_keymaps_to_buffer,
+    ['<CR>'] = actions.select_vertical,
+  },
+}
+
+local highlights_maps = {
+  i = {
+    ['<C-Y>'] = c_actions.yank_selection,
+    ['<M-y>'] = c_actions.yank_selection_to_buffer,
+    ['<CR>'] = c_actions.select_highlights,
+  },
+}
+
 local mappings = {
   help = help_maps,
   grep = grep_maps,
   main = main_maps,
   file = file_maps,
   buffer = buffer_maps,
+  highlights = highlights_maps,
+  keymaps = keymaps_maps,
 }
 
-local mapping_funcs = {}
-for name, modes in pairs(mappings) do
-  mapping_funcs['_' .. name] = function(opts)
-    local newmaps = {}
-    for mode, maps in pairs(modes) do
-      newmaps[mode] = mods.gen_map_funcs(maps, opts)
-    end
-    return newmaps
-  end
-end
-
-return vim.tbl_deep_extend('force', {}, mappings, mapping_funcs)
+return mappings
 
 -- { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
 -- { "<leader>/", Util.telescope("live_grep"), desc = "Find in Files (Grep)" },

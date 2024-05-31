@@ -24,7 +24,7 @@ M.convert = function()
   local has_interpolation = false
 
   for child in node:iter_children() do
-    local child_text = vim.treesitter.query.get_node_text(child, 0)
+    local child_text = vim.treesitter.get_node_text(child, 0)
 
     has_interpolation = child_text:match('${')
 

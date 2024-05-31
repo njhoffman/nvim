@@ -21,7 +21,7 @@ local cfg = {
   presets = {
     bottom_search = false, -- use a classic bottom cmdline for search
     command_palette = true, -- position the cmdline and popupmenu together
-    long_message_to_split = false, -- long messages will be sent to a split
+    long_message_to_split = true, -- long messages will be sent to a split
     inc_rename = true, -- enables an input dialog for inc-rename.nvim
     lsp_doc_border = true, -- add a border to hover docs and signature help
   },
@@ -94,19 +94,19 @@ local cfg = {
     view = 'cmdline_popup', -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
     opts = {}, -- global options for the cmdline. See section on views
     format = {
-      filter      = { icon = "",     pattern = "^:%s*!",          lang = "bash",   title = 'shell' },
-      cmdline     = { icon = "" ,    pattern = "^:",              lang = "vim" },
-      lua         = { icon = "",     pattern = "^:%s*lua%s+",     lang = "lua"   },
-      luaexpr     = { icon = ' ',    pattern = "^:=",             lang = "lua",    title = 'eval'  },
-      help        = { icon = "",     pattern = "^:%s*he?l?p?%s+", lang = "help",   title = 'help' },
-      numb        = { icon = '礪',    pattern = '^:%d+$',          lang = 'bash',   conceal = false  },
-      IncRename   = { icon = ' ',    pattern = '^:IncRename ',    lang = 'bash',   conceal = false, opts = { relative = 'cursor' } },
-      subs        = { icon = '',     pattern = '^:s/',            lang = 'vim',    conceal = false, title = 'replace' },
-      subs_all    = { icon = '',     pattern = '^:%%s/',          lang = 'vim',    conceal = false,   title = 'replace  all' },
-      global      = { icon = ' ',    pattern = '^:g/',            lang = 'vim',    conceal = false,   title = 'replace  all' },
-      -- input       = { icon = ' ',  pattern = '^:/',             lang = 'vim' },  -- Used by input()
-      -- search_down = { icon = ' ', pattern = '^/',              lang = 'regex',  kind = 'search' },
-      -- search_up   = { icon = ' ', pattern = '^%? ',            lang = 'regex',  kind = 'search' },
+      cmdline        = { icon = ' ' ,    pattern = "^:",               lang =    "vim" , conceal      = true,  title    = 'vimcmd' },
+      filter         = { icon = ' ',     pattern = "^:%s*!",           lang =    "bash", conceal      = true,  title    = 'shell' },
+      lua            = { icon = ' ',     pattern = "^:%s*lua%s+",      lang =    "lua",  conceal      = true,  title    = 'lua' },
+      luaexpr        = { icon = ' ',    pattern  = "^:= %s*",           lang = "lua",  conceal = true,  title   = 'lua-eval'  },
+      help           = { icon = ' ',     pattern = "^:%s*he?l?p?%s+",  lang =    "help", conceal      = true,  title    = 'help' },
+      numb           = { icon = '礪',    pattern  = '^:%d+$',           lang =    'vim',  conceal      = false, title    = 'range' },
+      IncRename      = { icon = ' ',    pattern  = '^:IncRename ',     lang =    'vim',  conceal      = true,  title    = 'rename', opts = { relative = 'cursor' } },
+      subs           = { icon = ' ',     pattern = '^:s/',             lang =    'vim',  conceal      = true,  title    = 'replace' },
+      subs_all       = { icon = ' ',     pattern = '^:%%s/',           lang =    'vim',  conceal      = true,  title    = 'replace %' },
+      global         = { icon = ' ',    pattern  = '^:g/',             lang =    'vim',  conceal      = true,  title    = 'global' },
+      -- input       = { icon = ' ',  pattern    = '^:/',             lang  =    'vim' },  -- Used by input()
+      -- search_down = { icon = ' ', pattern    = '^/',              lang  =    'regex',  kind       = 'search' },
+      -- search_up   = { icon = ' ', pattern    = '^%? ',            lang  =    'regex',  kind       = 'search' },
     }
   },
   messages = {

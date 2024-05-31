@@ -4,6 +4,7 @@ local commands = {
   Norm = { cmd = 'norm', hl_range = { kind = 'visible' } },
   G = { cmd = 'g', hl_range = { 1, -1, kind = 'absolute' } },
   D = { cmd = 'd', hl_range = { 1, -1, kind = 'absolute' } },
+  -- :5Reg a (preview macros) -> :norm 5@a
   Reg = {
     cmd = 'norm',
     args = function(opts)
@@ -12,7 +13,9 @@ local commands = {
     range = '',
   },
   LSubvert = { cmd = 'Subvert' },
-  S = { cmd = 'Substitute', hl_range = { kind = 'visible' } },
+  -- :S/txt/repl/g
+  -- Sub = { cmd = '%s', hl_range = { kind = 'visible' } },
+  S = { cmd = 's', hl_range = { kind = 'visible' } },
 }
 
 require('live-command').setup({

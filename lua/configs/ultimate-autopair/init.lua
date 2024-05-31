@@ -1,9 +1,38 @@
+local exclude = {
+  buftype = {
+    'prompt',
+    'nofile',
+    'quickfix',
+    'nofile',
+  },
+  ft = {
+    'TelescopePrompt',
+    'alpha',
+    'dap.*',
+    'dashboard',
+    'DressingInput',
+    'help',
+    'mason',
+    'neo-tree',
+    'noice',
+    'NoiceCommandline',
+    'notify',
+    'oil',
+    'packer',
+    'qf',
+    'spectre_panel',
+    'startify',
+    'tablegen',
+    'tsplayground',
+  },
+}
+
 local cfg = {
   profile = 'default',
   map = true,
   cmap = false, -- disable in command mode
   pair_map = true,
-  pair_cmap = true,
+  pair_cmap = false,
   multiline = true,
   cr = {
     enable = true,
@@ -39,11 +68,13 @@ local cfg = {
     multi = false,
     --use multiple configs (|ultimate-autopair-map-multi-config|)
   },
+
   close = {
-    enable = false,
-    map = '<M-)>', --string or table
-    cmap = '<M-)>', --string or table
+    enable = true,
+    map = '<C-]>', --string or table
+    cmap = '<C-]>', --string or table
   },
+
   fastwarp = {
     enable = true,
     enable_normal = true,
@@ -54,6 +85,22 @@ local cfg = {
     do_nothing_if_fail = true,
     -- no_filter_nodes = { 'string', 'raw_string', 'string_literals', 'character_literal' },
     {
+      faster = true,
+      nocursormove = true,
+      map = '<C-0>',
+      rmap = '<C-9>',
+      cmap = '<C-0>',
+      rcmap = '<C-9>',
+    },
+    {
+      faster = false,
+      nocursormove = true,
+      map = '<M-)>',
+      rmap = '<M-(>',
+      cmap = '<M-)>',
+      rcmap = '<M-(>',
+    },
+    {
       faster = false,
       nocursormove = false,
       map = '<M-0>',
@@ -61,23 +108,22 @@ local cfg = {
       cmap = '<M-0>',
       rcmap = '<M-9>',
     },
-    -- { faster = false, nocursormove = true, map = '<M-)>', rmap = '<M-(>', cmap = '<M-)>', rcmap = '<M-(>' },
-    {
-      faster = true,
-      nocursormove = true,
-      map = "<M-'>",
-      rmap = '<M-;>',
-      cmap = "<M-'>",
-      rcmap = '<M-;>',
-    },
-    {
-      faster = true,
-      nocursormove = true,
-      map = '<M-.>',
-      rmap = '<M-,>',
-      cmap = '<M-.>',
-      rcmap = '<M-,>',
-    },
+    -- {
+    --   faster = true,
+    --   nocursormove = true,
+    --   map = "<M-'>",
+    --   rmap = '<M-;>',
+    --   cmap = "<M-'>",
+    --   rcmap = '<M-;>',
+    -- },
+    -- {
+    --   faster = true,
+    --   nocursormove = true,
+    --   map = '<M-.>',
+    --   rmap = '<M-,>',
+    --   cmap = '<M-.>',
+    --   rcmap = '<M-,>',
+    -- },
     -- which nodes to skip for tsnode filtering
     conf = {},
   },
@@ -137,7 +183,8 @@ local cfg = {
     --     {
     --       'call',
     --       function(o)
-    --         local status, node = pcall(vim.treesitter.get_node, { pos = { o.linenr - 1, o.col - 2 } })
+    --         local status, node =
+    --           pcall(vim.treesitter.get_node, { pos = { o.linenr - 1, o.col - 2 } })
     --         return o.incmd
     --           or o.col == 1
     --           or not status
@@ -147,7 +194,7 @@ local cfg = {
     --     },
     --   },
     -- },
-    cmdtype = { skip = { '/', '?', '@', '-' }, p = 100 },
+    cmdtype = { skip = { '/', '?', '@', '-', ':' }, p = 100 },
     escape = { filter = true, p = 80 },
     utf8 = { p = 70 },
     -- { 'treenode', { inside = { 'comment' } } },
@@ -183,7 +230,9 @@ local cfg = {
     cond = {
       cond = {
         function(fn)
-          return not fn.in_macro() and not fn.in_node('comment')
+          return not fn.in_macro()
+            and not fn.in_node('comment')
+            and not vim.tbl_contains(exclude.buftype, vim.bo.buftype)
         end,
       },
       p = 40,
@@ -202,19 +251,19 @@ local cfg = {
       dosuround = true, -- {dosuround} `boolean`: Weather to do surround
       suround = true, --   {suround} `boolean`: Weather to be allowed to be surrounded
     },
-    filetype = { p = 90, nft = { 'TelescopePrompt', 'Noice', 'noice' }, tree = true },
+    filetype = { p = 90, nft = exclude.ft, tree = true },
     -- Get Fly Mode working on strings: https://github.com/altermo/ultimate-autopair.nvim/issues/17
     -- {'fly',{')','}',']',' ',"'",'"',nofilter=true}},
     fly = {
       other_char = { ' ' },
       nofilter = true, -- get it working on strings
       p = 10,
+      -- only_jump_end_pair = false,
       undomapconf = {},
       -- undomap = '<BS>',
       -- undocmap = '<BS>',
       -- undomap = '<M-BS>',
       -- undocmap = '<M-BS>',
-      only_jump_end_pair = false,
     },
   },
   { '*', '*', multiline = false, ft = { 'markdown' } },
@@ -229,7 +278,6 @@ local cfg = {
       dosuround = true,
       newline = true,
       space = true,
-      nft = { 'TelescopePrompt' },
     },
     { '{', '}', fly = true, dosuround = true, newline = true, space = true },
     {
@@ -237,7 +285,6 @@ local cfg = {
       '"',
       suround = true,
       multiline = false,
-      nft = { 'TelescopePrompt' },
     },
     {
       "'",
@@ -247,12 +294,13 @@ local cfg = {
         return not fn.in_lisp() or fn.in_string()
       end,
       alpha = true,
-      nft = { 'tex', 'TelescopePrompt' },
       multiline = false,
     },
+    -- **|** --> press backspace --> |**
+    { '*', '*', ft = { 'markdown' }, disable_start = true, disable_end = true },
     { '`', '`', nft = { 'tex', 'latex' }, multiline = false },
     { '``', "''", ft = { 'tex' } },
-    { '```', '```', newline = true, ft = { 'markdown' } },
+    { '```', '```', ft = { 'markdown' }, newline = true },
     { '<!--', '-->', ft = { 'markdown', 'html' } },
     { '"""', '"""', newline = true, ft = { 'python' } },
     { "'''", "'''", newline = true, ft = { 'python' } },
@@ -265,7 +313,32 @@ local cfg = {
   },
 }
 
-local experimental = {}
+local create_undo_map = function(key)
+  return {
+    'i',
+    key,
+    function()
+      return vim.api.nvim_replace_termcodes(key .. '<C-g>u', true, true, true)
+    end,
+  }
+end
+
+require('ultimate-autopair').init({
+  require('ultimate-autopair').extend_default(cfg),
+  {
+    profile = 'map',
+    p = -1,
+    create_undo_map(' '),
+    create_undo_map('-'),
+    create_undo_map('_'),
+    create_undo_map(':'),
+    create_undo_map('.'),
+    create_undo_map('/'),
+  },
+})
+
+-- require('configs.ultimate-autopair.esc-disable')
+
 -- extensions={
 --     {'cmdtype',{'/','?','@'}},
 --     'multichar',
@@ -276,144 +349,4 @@ local experimental = {}
 --     'filetype',
 --     {'alpha',{before={"'"}}},
 --     {'suround',{'"',"'"}},
---     {'fly',{')','}',']',' ',"'",'"',nofilter=true}},
--- },
-
--- {|M}.foo('bar') > {M.foo('bar')|}
-local ua = require('ultimate-autopair')
-require('ultimate-autopair.core').modes = { 'i', 'c', 'n', 't' }
-
-local configs = {
-  ua.extend_default(cfg),
-  { profile = require('ultimate-autopair.experimental.terminal').init, { '{', '}' } },
-  -- { profile = require('ultimate-autopair.experimental.matchpair').init },
-}
-
-local left = vim.api.nvim_replace_termcodes('<Left>', true, false, true)
-table.insert(configs, {
-  profile = 'cond',
-  rule = function()
-    return vim.o.filetype == 'lua'
-  end,
-  check = function(o)
-    return not vim.startswith(o.line, '@')
-  end,
-  { profile = 'map', { 'i', '(', '()' .. left } },
-  { profile = 'map', { 'i', '"', '""' .. left } },
-})
-ua.init(configs)
-
--- table.insert(ua.configs, {
---   profile = 'map',
---   { 'i', '(', '()' },
---   {
---     { 'i', 'c' },
---     ')',
---     function(o, m)
---       return o.linenr
---     end,
---     p = 20,
---   },
--- })
-
--- dev debug
---  `ua._list`
--- dev testing
--- ` _G.UA_DEV=true` for dev testing (and `_G.UA_DEV='ok'`
-
--- ua.list, ua.toggle,
--- require('ultimate-autopair.core').modes = { 'i', 'c', 'n' }
--- require('ultimate-autopair').setup(cfg)
-
--- require('ultimate-autopair').init({ cfg, { profile = require('ultimate-autopair.experimental.matchpair').init } })
-
--- filetype = 'noice'
--- config_internal_pairs = {
---   { '(', ')', nft = { filetype } },
---   { '{', '}', nft = { filetype } },
---   { '[', ']', nft = { filetype } },
--- }
---  Example (`*` is cursor)(n
--- | before     | after
--- |------------+------------
--- | (*){}      | (*{})
--- | (*){foo}   | (*{foo})
--- | (*)foo     | (*foo)
--- | (foo*),bar | (foo,bar*)
-
--- ext-fly
--- | ({[*] }) | )   | ({[] })* |                          |
--- | *()      | )   | ()*      | only_jump_end_pair=false |
--- close
--- | before | after |
--- |--------+-------|
--- | (*     | (*)   |
--- | ({*    | ({*}) |
--- | (*)    | (*)   |
--- | "*     | "*"   |
-
--- cr
--- | before | after  | config    |
--- |--------+--------+-----------|
--- | {*}    | {      |           |
--- |        | \t*    |           |
--- |        | }      |           |
--- |--------+--------+-----------|
--- | {*     | {      | autoclose |
--- |        | \t*    |           |
--- |        | }      |           |
--- |--------+--------+-----------|
--- | {foo*} | {foo   |           |
--- |        | \t*    |           |
--- |        | }      |           |
--- |--------+--------+-----------|
--- | {*foo} | {      |           |
--- |        | \t*foo |           |
--- |        | }      |           |
-
--- {(*)} > fastwarp > {(}*)
--- (*) > fastwarp > (\n*)
--- {(*)} > fastwarp > {(}|)
--- {*}M.foo('bar') > {M.foo('bar')|} (faster=true)
-
--- ext-surround
--- | before | key | after  |
--- |--------+-----+--------|
--- | *'a'   | (   | (*'a') |
--- local configs = {
---   upair.extend_default({
---     --space2={enable=true},
---     bs = { space = 'balance', indent_ignore = true, single_delete = true, map = { '<C-w>', '<bs>' } },
---     cr = { autoclose = true },
---     fastwarp = {
---       multi = true,
---       {},
---       {
---         faster = true,
---         map = '<C-A-e>',
---         cmap = '<C-A-e>',
---         rmap = '<C-A-S-e>',
---         rcmap = '<C-A-S-e>',
---       },
---     },
---     tabout = { enable = true, hopout = true },
---     extensions = { cond = { cond = {
---       function(fn)
---         return not fn.in_macro()
---       end,
---     } } },
---     { '<<', '>>', newline = true, dosuround = true }, --For testing
---     { '*', '*', multiline = false, ft = { 'markdown' } },
---     { '**', '**', multiline = false, ft = { 'markdown' } },
---     { '$', '$', multiline = false, ft = { 'markdown' } },
---     config_internal_pairs = { {
---       '[',
---       ']',
---       cond = function(_, o)
---         return o.line:sub(o.col - 4, o.col) ~= '\\x1b'
---       end,
---     } },
---   }),
---   { profile = require('ultimate-autopair.experimental.terminal').init, { '{', '}' } },
---   { profile = require('ultimate-autopair.experimental.matchpair').init },
--- }
+--     {'fly',{')','}',']',' ',"'",'"',nofilter=t

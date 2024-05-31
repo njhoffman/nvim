@@ -3,7 +3,6 @@ local previewers = require('telescope.previewers')
 local commands = require('configs.telescope.commands')
 local c_previewers = require('configs.telescope.previewers')
 local mappings = require('configs.telescope.mappings')
-local mods = require('configs.telescope.actions.mods')
 
 local entry_display = require('telescope.pickers.entry_display')
 local telescope_utils = require('telescope.utils')
@@ -64,6 +63,7 @@ local pickers = {
     end,
   },
   find_files = {
+    previewer = c_previewers.buffer_cat(),
     debounce = 100,
     prompt_prefix = icons.file,
     mappings = mappings.file,
@@ -88,10 +88,32 @@ local pickers = {
     --     case_mode = 'smart_case',
     --   },
     -- },
-    previewer = c_previewers.buffer_cat(),
   },
+
+  -- | `User TelescopeFindPre`         | Do it before Telescope creates all the floating windows |
+  -- | `User TelescopePreviewerLoaded` | Do it after Telescope previewer window is created       |
+  -- | `User TelescopeResumePost`      | Do it after Telescope resume action is fully completed  |
+  -- vim.api.nvim_create_autocmd("User", {
+  --   pattern = "TelescopePreviewerLoaded",
+  --   callback = function(args)
+  --     if args.data.filetype ~= "help" then
+  --       vim.wo.number = true
+  --     elseif args.data.bufname:match("*.csv") then
+  --       vim.wo.wrap = false
+  --     end
+  --   end,
+  -- })
+  -- ```
+  -- vim.opt.signcolumn = "no"
+  -- vim.opt_local.number = false
+  -- vim.cmd[[
+  -- wincmd L
+  -- vert resize 78
+  -- ]]
+
   help_tags = {
-    debounce = 100,
+    debounce = 500,
+    -- file_sorter = require('telescope.sorters').get_fzy_sorter,
     prompt_prefix = icons.help,
     -- layout_config = { height = 15 },
     mappings = mappings.help,
@@ -155,6 +177,7 @@ local pickers = {
     entry_maker = require('configs.telescope.entry_makers.keymaps')({}),
     results_title = '@buf !sil *map  exp  now',
     show_plug = false,
+    mappings = mappings.keymaps,
     previewer = c_previewers.keymaps,
     modes = { 'n', 'i', 'c', 'x', 'o', 't', 's', 'l' },
     lhs_filter = function(lhs)
@@ -166,9 +189,7 @@ local pickers = {
   },
   highlights = {
     prompt_prefix = icons.palette,
-    mappings = mappings._main({
-      fn_yank = mods.yanks.highlights,
-    }),
+    mappings = mappings.highlights,
     debounce = 100,
     layout_config = {
       horizontal = { preview_width = { 0.7, min = 30 } },

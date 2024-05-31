@@ -18,7 +18,7 @@ local sections = {
       return is_installed('neo-tree.nvim')
     end,
     open = function()
-      vim.cmd('Neotree show')
+      vim.cmd('Neotree show right')
     end,
     close = function()
       vim.cmd('Neotree close')

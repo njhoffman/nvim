@@ -1,7 +1,7 @@
 local log = require('vim.lsp.log')
 
 local M = {
-  trim_whitespace = false,
+  trim_whitespace = true,
   format_options = {},
   disabled = false,
   disabled_filetypes = {},

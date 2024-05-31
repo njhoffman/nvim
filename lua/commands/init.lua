@@ -85,6 +85,7 @@ cmd('TrimTrailingWhitespace', format.trim_space, {
   desc = 'Trims trailing whitespace in the current buffer.',
 })
 
+
 -- -- Mapping for dd that doesn't yank an empty line into your default register:
 -- keymap.set("n", "dd", function()
 --   if vim.api.nvim_get_current_line():match("^%s*$") then

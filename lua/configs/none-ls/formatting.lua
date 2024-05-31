@@ -87,49 +87,49 @@ return {
   -- null_ls.builtins.formatting.nginx_beautifier,
   -- null_ls.builtins.formatting.pg_format,
   -- null_ls.builtins.formatting.prettier_eslint,
-  -- null_ls.builtins.formatting.prettierd.with({
-  --   filetypes = {
-  --     "javascript",
-  --     "javascriptreact",
-  --     "typescript",
-  --     "typescriptreact",
-  --     "vue",
-  --     "css",
-  --     "scss",
-  --     "less",
-  --     "html",
-  --     "json",
-  --     "jsonc",
-  --     "yaml",
-  --     "markdown",
-  --     "markdown.mdx",
-  --     "graphql",
-  --     "handlebars",
-  --   },
-  --   condition = function()
-  --     local prettier_found = search_ancestors(vim.fn.expand("%:p:h"), "%.prettierrc")
-  --     if prettier_found and #prettier_found > 0 then
-  --       vim.notify("prettierd: " .. prettier_found[1], 0)
-  --       return true
-  --     end
-  --     return false
-  --   end,
-  --   cwd = h.cache.by_bufnr(function(params)
-  --     return lsp_util.root_pattern({
-  --       ".prettierrc",
-  --       ".prettierrc.json",
-  --       ".prettierrc.yml",
-  --       ".prettierrc.yaml",
-  --       ".prettierrc.json5",
-  --       ".prettierrc.js",
-  --       ".prettierrc.cjs",
-  --       ".prettierrc.toml",
-  --       "prettier.config.js",
-  --       "prettier.config.cjs",
-  --       "package.json"
-  --     })(params.bufname)
-  --   end),
-  -- }),
+  null_ls.builtins.formatting.prettierd.with({
+    filetypes = {
+      'javascript',
+      'javascriptreact',
+      'typescript',
+      'typescriptreact',
+      'vue',
+      'css',
+      'scss',
+      'less',
+      'html',
+      'json',
+      'jsonc',
+      'yaml',
+      'markdown',
+      'markdown.mdx',
+      'graphql',
+      'handlebars',
+    },
+    condition = function()
+      -- local prettier_found = search_ancestors(vim.fn.expand("%:p:h"), "%.prettierrc")
+      -- if prettier_found and #prettier_found > 0 then
+      --   vim.notify("prettierd: " .. prettier_found[1], 0)
+      --   return true
+      -- end
+      return true
+    end,
+    cwd = h.cache.by_bufnr(function(params)
+      return lsp_util.root_pattern({
+        '.prettierrc',
+        '.prettierrc.json',
+        '.prettierrc.yml',
+        '.prettierrc.yaml',
+        '.prettierrc.json5',
+        '.prettierrc.js',
+        '.prettierrc.cjs',
+        '.prettierrc.toml',
+        'prettier.config.js',
+        'prettier.config.cjs',
+        'package.json',
+      })(params.bufname)
+    end),
+  }),
   -- null_ls.builtins.formatting.prettier.with({
   --   filetypes = { 'css', 'html', 'less', 'scss', 'toml', 'yaml' },
   --   extra_args = function(params)
@@ -256,25 +256,22 @@ return {
   -- null_ls.builtins.formatting.terraform_fmt,
   -- null_ls.builtins.formatting.tidy,
 
-  null_ls.builtins.formatting.trim_newlines.with({
-    filetypes = {
-      'tex',
-      'markdown',
-      'text',
-      'txt',
-      'org',
-    },
-    extra_args = function(params)
-      return {
-        '--no-trim-blank-lines',
-        '--no-trim-empty-lines',
-        '--no-trim-final-newlines',
-      }
-    end,
-  }),
-  -- null_ls.builtins.formatting.trim_whitespace.with({
-  --   filetypes = { 'tex', 'markdown', 'text', 'txt', 'org', },
-  -- }), -- only works for ff=unix
+  -- null_ls.builtins.formatting.trim_newlines.with({
+  --   -- filetypes = {
+  --   --   'tex',
+  --   --   'markdown',
+  --   --   'text',
+  --   --   'txt',
+  --   --   'org',
+  --   -- },
+  --   extra_args = function(params)
+  --     return {
+  --       '--no-trim-blank-lines',
+  --       '--no-trim-empty-lines',
+  --       '--no-trim-final-newlines',
+  --     }
+  --   end,
+  -- }),
 
   null_ls.builtins.formatting.xmlformat,
   null_ls.builtins.formatting.xmllint,

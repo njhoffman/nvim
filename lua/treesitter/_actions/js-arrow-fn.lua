@@ -135,7 +135,8 @@ local js_filetypes = {
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = js_filetypes,
-  command = 'nnoremap <buffer> <leader>ta ' .. ":lua require('treesitter._actions.js-arrow-fn').toggle()<CR>",
+  command = 'nnoremap <buffer> <leader>ta '
+    .. ":lua require('treesitter._actions.js-arrow-fn').toggle()<CR>",
 })
 
 return M

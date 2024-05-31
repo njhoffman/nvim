@@ -15,15 +15,15 @@ local routes = {
   -- skip all lines
   -- { filter = { event = "msg_show", ["not"] = { kind = { "confirm", "confirm_sub" }, }, }, opts = { skip = true }, },
   {
-    view = 'popup',
-    filter = { event = 'msg_show', min_height = 25 },
-  },
-  {
     view = 'notify',
     opts = {
       level = vim.log.levels.DEBUG,
     },
     filter = { any = { { event = 'msg_history_show' } } },
+  },
+  {
+    view = 'popup',
+    filter = { event = 'msg_show', min_height = 25 },
   },
   {
     view = 'mini',

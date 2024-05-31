@@ -6,7 +6,7 @@ local config = {
   search = {
     trigger = '',
     max_length = false,
-    wrap = false,
+    wrap = true,
     multi_window = true,
     incremental = true,
     exclude = {
@@ -40,13 +40,13 @@ local config = {
     -- jump position
     pos = 'start', ---@type "start" | "end" | "range"
     -- add pattern to search history
-    history = false,
+    history = true,
     -- add pattern to search register
-    register = false,
+    register = true,
     -- clear highlight after jump
     nohlsearch = true,
     -- automatically jump when there is only one match
-    autojump = true,
+    autojump = false,
     -- You can force inclusive/exclusive jumps by setting the `inclusive` option.
     -- By default it will be automatically set based on the mode.
     inclusive = nil, ---@type boolean?

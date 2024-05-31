@@ -5,19 +5,17 @@ local cursorline_preset = {
     vim.opt.guicursor:append('a:ReactiveCursor')
   end,
   static = {
-    hl = {
-      CursorLine = { bg = '#061028' },
-      CursorLineNr = { fg = '#44aaff', bg = '#061028', italic = true },
-    },
     winhl = {
-      -- active = {
-      -- CursorLine = { bg = '#061028' },
-      -- CursorLineNr = { fg = '#44aaff', italic = true },
-      -- },
-      -- inactive = {
-      --   CursorLine = { bg = '#061028' },
-      --   CursorLineNr = { fg = '#44aaff', bold = true },
-      -- },
+      active = {
+
+        -- CursorLine({ bg = '#061028' }),
+        -- CursorLine = { bg = '#061028' },
+        -- CursorLineNr = { fg = '#44aaff', italic = true },
+      },
+      inactive = {
+        -- CursorLine = { bg = '#001018' },
+        -- CursorLineNr = { fg = '#44aaff', bold = true },
+      },
     },
   },
   modes = {
@@ -25,7 +23,7 @@ local cursorline_preset = {
       winhl = {
         -- #10a4ca, #00181f
         CursorLine = { bg = '#00121a' },
-        CursorLineNr = { fg = '#33bca6', bg = '#00121a', italic = true },
+        CursorLineNr = { fg = '#33acb6', bg = '#00121a', italic = true },
       },
       -- hl = {
       --   WhichKeyKey = { fg = '#00ccaa' },
@@ -48,7 +46,7 @@ local cursorline_preset = {
     -- visual
     [{ 'v', 'V', '\x16' }] = {
       winhl = {
-        CursorLineNr = { fg = '#6874fe', italic = true },
+        -- CursorLineNr = { fg = '#6874fe', italic = true },
         Visual = { bg = '#08203f', bold = true, italic = true },
       },
     },
@@ -121,6 +119,7 @@ local cursorline_preset = {
         -- delete
         d = {
           winhl = {
+            Cursor = { underline = true, bg = '#200808' },
             CursorLine = { bg = '#1a0010' },
             CursorLineNr = { fg = '#8c8585', bg = '#1a0010', italic = true },
           },
@@ -128,7 +127,7 @@ local cursorline_preset = {
         -- yank
         y = {
           winhl = {
-            CursorLine = { bg = '#16103f' }, -- #121240
+            CursorLine = { bg = '#16103f' },
             CursorLineNr = { fg = '#8dbaff', bg = '#16103f', italic = true },
           },
         },

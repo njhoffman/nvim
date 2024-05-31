@@ -217,11 +217,10 @@ return function()
     -- BufferLineFill = { bg = colors.bg },
 
     TabLineFill({ fg = 'NONE', bg = colors.bg_dark }),
+    TabLine({ fg = colors.bg, bg = colors.bg_dark }),
+    TabLineSel({ fg = colors.bg, bg = colors.bg_dark }),
     -- Illuminate
     -- illuminatedCurWord = { bg = colors.highlight },
-
-    -- TabLine({ fg = colors.bg, bg = colors.bg_dark }),
-    -- TabLineSel({ fg = colors.bg, bg = colors.bg_dark }),
 
     -- -- Sneak
     -- Sneak = { fg = colors.bg, bg = colors.fg },

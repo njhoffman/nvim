@@ -318,7 +318,33 @@ local extension_configs = {
     -- If nil, it will check if xdg-open, open, start, wslview are available, in that order.
     browser_command = nil,
   },
-  ['cheatsheet'] = {},
+  ['cheatsheet'] = function()
+    local ctactions = require('cheatsheet.telescope.actions')
+    require('cheatsheet').setup({
+      bundled_cheetsheets = {
+        enabled = { 'default', 'lua', 'markdown', 'regex', 'netrw', 'unicode' },
+        disabled = { 'nerd-fonts' },
+      },
+      bundled_plugin_cheatsheets = {
+        enabled = {
+          'auto-session',
+          'goto-preview',
+          'octo.nvim',
+          'telescope.nvim',
+          'vim-easy-align',
+          'vim-sandwich',
+        },
+        disabled = { 'gitsigns' },
+      },
+      include_only_installed_plugins = true,
+      telescope_mappings = {
+        ['<CR>'] = ctactions.select_or_fill_commandline,
+        ['<A-CR>'] = ctactions.select_or_execute,
+        ['<C-Y>'] = ctactions.copy_cheat_value,
+        ['<C-E>'] = ctactions.edit_user_cheatsheet,
+      },
+    })
+  end,
   ['cder'] = {
     prompt_title = 'cder',
     --   dir_command = { 'fd', '--hidden', '--type=d', '.', os.getenv('HOME') },
@@ -433,6 +459,10 @@ local extension_configs = {
     override_file_sorter = true, -- override the file sorter
     case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
   },
+  ['fzy_native'] = {
+    override_generic_sorter = false,
+    override_file_sorter = true,
+  },
   ['gh'] = {},
   ['ghn'] = {},
   ['ghq'] = {},
@@ -509,6 +539,18 @@ local extension_configs = {
   },
   ['luasnip'] = {},
   -- ["make"]           = {},
+  ['media'] = {
+    backend = 'viu', -- image/gif backend
+    flags = {
+      viu = {
+        move = true, -- GIF preview
+      },
+    },
+    -- on_confirm_single = canned.single.copy_path,
+    -- on_confirm_muliple = canned.multiple.bulk_copy,
+    -- cache_path = vim.fn.stdpath('cache') .. '/media',
+  },
+
   ['media_files'] = {
     filetypes = { 'png', 'webp', 'jpg', 'jpeg', 'webm', 'pdf', 'mp4', 'svg', 'mpv', 'mkv' },
     find_cmd = 'fd', -- find command (defaults to `fd`)

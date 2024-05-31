@@ -91,13 +91,11 @@ map({ 'v' }, '<space>', '"xy:@x<cr>', {
 map({ 'n', 'v' }, ';', ':', {
   category = 'Command',
   label = ' open cmdline',
-  silent = true,
   desc = ' open the command line',
 })
 
 map({ 'n', 'v' }, '<M-:>', 'q:', {
   category = 'Command',
-  silent = true,
   label = ' open cmdwin',
   desc = ' open the command window',
 })
@@ -106,14 +104,12 @@ map('c', '<M-b>', '<C-]><Esc>', {
   category = 'Command',
   label = ' open cmdwin normal',
   desc = ' open command window from the command line in normal mode',
-  silent = true,
 })
 
 map('c', '<M-f>', '<C-]>', {
   category = 'Command',
   label = ' open cmdwin insert',
   desc = ' open command window from the command line in insert mode',
-  silent = true,
 })
 
 map('c', '<M-S>', '<cmd>w<cr><esc>', {
@@ -131,10 +127,21 @@ map('c', '<M-S>', '<cmd>w<cr><esc>', {
 
 -- TODO: vmap C-u C-w
 -- TODO: make whichkey screen for cmdline
-map('c', '<C-t>', '<Right><Del><Left>', {
+-- map('c', '<C-t>', '<Right><Del><Left>', {
+--   category = 'Command',
+--   label = ' delete char',
+--   desc = ' delete character to the right of cmdline',
+-- })
+
+-- TODO: conditional C-t for cmdline
+vmap('c', '<C-g>', {
   category = 'Command',
-  label = ' delete char',
-  desc = ' delete character to the right of cmdline',
+  label = ' next search match',
+})
+
+map('c', '<M-g>', '<C-t>', {
+  category = 'Command',
+  label = ' prev search match',
 })
 
 -- CTRL-\ e {expr}       :cmap <F7> <C-\>eAppendSome()<CR>
@@ -198,7 +205,8 @@ map('c', '<M-C-L>', '<S-Right>', {
   desc = ' move to the right by 1 word',
 })
 
-map('c', '<M-g>', '<C-r>%', {
+-- todo: ctrl-shift- %
+map('c', '<M-%>', '<C-r>%', {
   category = 'Command',
   label = ' insert filename cmdline',
   desc = ' insert filename into the command line',
@@ -235,11 +243,19 @@ map(
   { category = 'Buffers', desc = '󰽙 close buffer/window' }
 )
 
--- map('n', '<CR>', '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
---   category = 'Buffers',
---   label = '󰽙 goto alt-buffer',
---   desc = '󰽙 goto alternative/last buffer',
--- })
+--  'o<Esc>j'  'm`O<Esc>``'
+map('n', '<CR>', 'O<Esc>', {
+  category = 'Buffers',
+  label = '󰽙 insert new line',
+  desc = '󰽙 insert new line without leaving insert mode',
+})
+
+map('n', '<S-CR>', '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
+
+  category = 'Buffers',
+  label = '󰽙 goto alt-buffer',
+  desc = '󰽙 goto alternative/last buffer',
+})
 -- keymap({ "n", "x", "i" }, "<C-CR>", "<C-w>w", { desc = " Next Window" })
 -- map('n', '<BS>', '<cmd>e #<cr>', {
 --   category = 'Buffers',
@@ -248,16 +264,25 @@ map(
 --   silent = true,
 -- })
 
-local bufvar =
-  { { '<Plug>(CybuPrev)', '<Plug>(CybuNext)' }, { '<cmd>BufferPrev<cr>', '<cmd>BufferNext<cr>' } }
+map('n', '<C-Tab>', '<cmd>tabn<cr>', {
+  category = 'Buffers',
+  label = '󰽙 next tab',
+  desc = '󰽙 open the next tab',
+})
 
-map('n', 'H', bufvar[2][1], {
+map('n', '<C-S-Tab>', '<cmd>tabp<cr>', {
+  category = 'Buffers',
+  label = '󰽙 prev  tab',
+  desc = '󰽙 open the prev tab',
+})
+
+map('n', 'H', '<Cmd>BufferPrev<cr>', {
   category = 'Buffers',
   label = '󰽙 left buffer',
   desc = '󰽙 open the left (prev) buffer',
 })
 
-map('n', 'L', bufvar[2][2], {
+map('n', 'L', '<Cmd>BufferNext<cr>', {
   category = 'Buffers',
   label = '󰽙 right buffer',
   desc = '󰽙 open the right (next) buffer',
@@ -504,24 +529,24 @@ map('n', 'g<M-C-H>', '<cmd>silent! tabclose | xa<cr>', {
 
 --------------------------------------------------------------------------------------------------
 -- EXECUTE ---------------------------------------------------------------------------------------
-
-map('n', '!@', '<cmd>@:<cr>', {
+-- map('n', '<C-1>', '<cmd>RunFile<cr>', {
+map('n', '<C-1>', 'luafile %', {
   category = 'Execute',
-  label = 'ﲵ repeat ex-command',
-  desc = 'ﲵ repeat the last command',
+  label = 'ﲵ luafile bufer',
+  desc = 'ﲵ luafile buffer',
 })
 
-map('n', '!~', '<cmd>RunSelect<cr>', {
-  category = 'Execute',
-  label = 'ﲵ select runner task',
-  desc = 'ﲵ assign task to runner',
-})
+-- map('n', '!~', '<cmd>RunSelect<cr>', {
+--   category = 'Execute',
+--   label = 'ﲵ select runner task',
+--   desc = 'ﲵ assign task to runner',
+-- })
 
-map('n', '!!', '<cmd>Run<cr>', {
-  category = 'Execute',
-  label = 'ﲵ repeat runner command',
-  desc = 'ﲵ execute configured runner task',
-})
+-- map('n', '!!', '<cmd>Run<cr>', {
+--   category = 'Execute',
+--   label = 'ﲵ repeat runner command',
+--   desc = 'ﲵ execute configured runner task',
+-- })
 
 map('n', '<M-r>', '<cmd>Restart<cr>', {
   category = 'Execute',
@@ -1258,6 +1283,29 @@ map('n', '<leader>|', '<c-w>|', {
   desc = ' maximize width of horizontal split',
 })
 
+map('n', '<M-S-Right>', '<cmd>wincmd l<cr>', {
+  category = 'Window',
+  label = ' select right window',
+  desc = ' move to right window',
+})
+
+map('n', '<M-S-Left>', '<cmd>wincmd h<cr>', {
+  category = 'Window',
+  label = ' select left window',
+  desc = ' move to left window',
+})
+map('n', '<M-S-Down>', '<cmd>wincmd j<cr>', {
+  category = 'Window',
+  label = ' select down window',
+  desc = ' move to bottom  window',
+})
+
+map('n', '<M-S-Up>', '<cmd>wincmd k<cr>', {
+  category = 'Window',
+  label = ' select up window',
+  desc = ' move to up window',
+})
+
 map('n', '<leader>q', '<cmd>silent! tabclose | Sayonara<cr>', {
   category = 'Window',
   label = ' close window',
@@ -1392,6 +1440,14 @@ map('n', '<C-e>', "<cmd>lua require('telescope.run')('builtin','live_grep', { gr
   desc = 'live grep open buffers in telescope',
 })
 
+
+map('n', '<M-e>', "<cmd>lua require('telescope.run')('builtin','live_grep')<cr>", {
+  category = 'Pickers',
+  plugin = 'telescope.nvim',
+  label = 'grep project',
+  desc = 'live grep project in telescope',
+})
+
 map('n', '<M-u>', "<cmd>lua require('telescope.run')('oldfiles', 'oldfiles')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
@@ -1442,6 +1498,8 @@ map({ 'n' }, '<leader><leader>', "<cmd>lua require('telescope.run')('find_picker
   desc = 'find pickers in telescope',
 })
 
+
+-- map({ 'n' }, '<M-,>', "<cmd>lua require('configs.telescope.actions.picker-history').prev_picker()<cr>", {
 map({ 'n' }, '<M-,>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = prev })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
@@ -1449,15 +1507,15 @@ map({ 'n' }, '<M-,>', "<cmd>lua require('telescope.run')('builtin','resume', { c
   desc = 'find pickers in telescope',
 })
 
+
+-- map({ 'n' }, '<M-.>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
+--     category = 'Pickers',
+--     plugin = 'telescope.nvim',
+--     label = 'find pickers',
+--     desc = 'find pickers in telescope',
+--   })
+
 -- lua require('configs.telescope.actions').prev_picker()
-
-map('n', '<M-e>', "<cmd>lua require('telescope.run')('builtin','live_grep')<cr>", {
-  category = 'Pickers',
-  plugin = 'telescope.nvim',
-  label = 'grep project',
-  desc = 'live grep project in telescope',
-})
-
 --------------------------------------------------------------------------------------------------
 -- GIT -------------------------------------------------------------------------------------------
 -- TODO: add precheck function to ensure in git dir

@@ -11,11 +11,8 @@ local pattern_filter = function(name, level, msg)
   local lvl_patterns = require('logger.levels').patterns
   for scope, filter in pairs(lvl_patterns) do
     local pattern, scope_lvl = filter[1], filter[2]
-    msg = type(msg) == 'string' and { msg } or msg
-    for _, m in ipairs(msg) do
-      if name == scope and string.match(m, pattern) and level <= scope_lvl then
-        skip = true
-      end
+    if name == scope and string.match(msg, pattern) and level <= scope_lvl then
+      skip = true
     end
   end
   return skip
@@ -58,6 +55,11 @@ end
 ---@param level number|string
 ---@param opts? table<string, any>
 function M.notify(msg, level, opts)
+  if type(msg) == 'table' then
+    -- msg = type(msg) == 'string' and { msg } or msg
+    return vim.dbglog('ERROR', msg, level, opts)
+  end
+
   if pattern_filter('notify', level, msg) then
     return false
   end
@@ -70,7 +72,7 @@ function M.notify(msg, level, opts)
   end
 
   level = M.get_level(level)
-  local message = Message('notify', level, msg)
+  local message = Message('notify', level, vim.fn.trim(msg))
   message.opts = opts or {}
   message.level = level
 

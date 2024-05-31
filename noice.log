@@ -1,0 +1,15 @@
+{ "cmdline_show", "sl:1", "tick:18493", "mode:c", { { 0, "" } } }
+{ "cmdline_show", "sl:1", "tick:18495", "mode:c", { { 0, "N" } } }
+{ "cmdline_show", "sl:1", "tick:18497", "mode:c", { { 0, "No" } } }
+{ "cmdline_show", "sl:1", "tick:18499", "mode:c", { { 0, "Noi" } } }
+{ "cmdline_show", "sl:1", "tick:18501", "mode:c", { { 0, "Noic" } } }
+{ "cmdline_show", "sl:1", "tick:18503", "mode:c", { { 0, "Noice" } } }
+{ "cmdline_show", "sl:1", "tick:18505", "mode:c", { { 0, "Noice " } } }
+{ "cmdline_show", "sl:1", "tick:18507", "mode:c", { { 0, "Noice h" } } }
+{ "cmdline_show", "sl:1", "tick:18509", "mode:c", { { 0, "Noice hi" } } }
+{ "cmdline_show", "sl:1", "tick:18511", "mode:c", { { 0, "Noice his" } } }
+{ "cmdline_show", "sl:1", "tick:18513", "mode:c", { { 0, "Noice hist" } } }
+{ "cmdline_show", "sl:1", "tick:18515", "mode:c", { { 0, "Noice histo" } } }
+{ "cmdline_show", "sl:1", "tick:18517", "mode:c", { { 0, "Noice histor" } } }
+{ "cmdline_show", "sl:1", "tick:18519", "mode:c", { { 0, "Noice history" } } }
+{ "cmdline_hide", "sl:1", "tick:18521", false, 1 }

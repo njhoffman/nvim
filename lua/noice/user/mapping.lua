@@ -52,18 +52,19 @@ local setup = function()
     { silent = true, expr = true }
   )
 
-  vim.keymap.set(
-    { 'n', 'i', 's' },
-    '<C-S-Up>',
-    scroll_lsp_popups('<C-S-Up>', -2),
-    { silent = true, expr = true }
-  )
-  vim.keymap.set(
-    { 'n', 'i', 's' },
-    '<C-S-Down>',
-    scroll_lsp_popups('<C-S-Down>', 2),
-    { silent = true, expr = true }
-  )
+  -- vim.keymap.set(
+  --   { 'n', 'i', 's' },
+  --   '<C-S-Up>',
+  --   scroll_lsp_popups('<C-S-Up>', -2),
+  --   { silent = true, expr = true }
+  -- )
+  --
+  -- vim.keymap.set(
+  --   { 'n', 'i', 's' },
+  --   '<C-S-Down>',
+  --   scroll_lsp_popups('<C-S-Down>', 2),
+  --   { silent = true, expr = true }
+  -- )
 end
 
 -- :execute "normal \<Plug>(SmoothieDownwards)"

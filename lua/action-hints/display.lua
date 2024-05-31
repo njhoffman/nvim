@@ -49,6 +49,7 @@ local function update_virtual_text(config)
   if config.use_virtual_text then
     local bufnr = vim.api.nvim_get_current_buf()
     local cursor = vim.api.nvim_win_get_cursor(0)
+
     local definition_status = state.available.definitions and config.template.definition.text or ''
     local reference_status = state.current.references > 0
         and string.format(config.template.references.text, tostring(state.current.references))
@@ -56,6 +57,7 @@ local function update_virtual_text(config)
     local codeaction_status = state.current.codeactions > 0
         and string.format(config.template.codeactions.text, tostring(state.current.codeactions))
       or ''
+
     local chunks = {
       { definition_status, 'ActionHintsDefinition' },
       { reference_status, 'ActionHintsReferences' },
@@ -90,13 +92,16 @@ end
 
 local set_highlights = function(config)
   vim.api.nvim_command(
-    'highlight ActionHintsDefinition guibg=NONE ctermbg=NONE ctermfg=NONE guifg=' .. config.template.definition.color
+    'highlight ActionHintsDefinition guibg=NONE ctermbg=NONE ctermfg=NONE guifg='
+      .. config.template.definition.color
   )
   vim.api.nvim_command(
-    'highlight ActionHintsReferences guibg=NONE ctermbg=NONE ctermfg=NONE guifg=' .. config.template.references.color
+    'highlight ActionHintsReferences guibg=NONE ctermbg=NONE ctermfg=NONE guifg='
+      .. config.template.references.color
   )
   vim.api.nvim_command(
-    'highlight ActionHintsCodeActions guibg=NONE ctermbg=NONE ctermfg=NONE guifg=' .. config.template.codeactions.color
+    'highlight ActionHintsCodeActions guibg=NONE ctermbg=NONE ctermfg=NONE guifg='
+      .. config.template.codeactions.color
   )
 end
 

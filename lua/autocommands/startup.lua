@@ -1,3 +1,4 @@
+-- TODO: handle startup messages and v:errmsg
 local get_load_time = function()
   local load_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
   load_time = string.sub(string.gsub(load_time, ' ', ''), 1, 5)

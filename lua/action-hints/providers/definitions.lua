@@ -24,6 +24,7 @@ local function definitions(config)
     if vim.tbl_count(result) > 0 then
       state.available.definitions = true
       state.current.definitions = vim.tbl_count(result) - 1
+      state.stats.counts.definitions = state.stats.counts.definitions + 1
       display.update_virtual_text(config)
       return
     end

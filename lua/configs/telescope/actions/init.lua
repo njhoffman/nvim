@@ -2,37 +2,34 @@ local finders = require('telescope.finders')
 local config = require('telescope.config')
 local actions = require('telescope.actions')
 local action_state = require('telescope.actions.state')
-local actions_set = require('telescope.actions.set')
 local state = require('telescope.state')
 local H = require('helpers')
 local run = require('telescope.run')
-local telethemes = require('telescope.telethemes')
 local dirpicker = require('configs.telescope.dirpicker')
 
-local picker_history = require('configs.telescope.actions.picker-history')
-local yank_actions = require('configs.telescope.actions.yank')
-local preview_actions = require('configs.telescope.actions.preview')
-local motion_actions = require('configs.telescope.actions.motion')
+local groups = {
+  'picker-history',
+  'yank',
+  'motion',
+  'preview',
+  'switchers',
+}
+local base = 'configs.telescope.actions'
 
 local M = {}
-
+for _, group in ipairs(groups) do
+  local mod = require(base .. '.' .. group)
+  for _, k in ipairs(vim.tbl_keys(mod)) do
+    M[k] = mod[k]
+  end
+end
 -- stylua: ignore start
-M.next_picker              = picker_history.next_picker
-M.prev_picker              = picker_history.prev_picker
-M.yank_selection           = yank_actions.yank_selection
-M.yank_selection_to_buffer = yank_actions.yank_selection_to_buffer
-M.results_toggle_up        = motion_actions.results_toggle_up
-M.results_toggle_down      = motion_actions.results_toggle_down
-M.results_page_up          = motion_actions.results_page_up
-M.results_page_down        = motion_actions.results_page_down
-M.search_backspace_word    = motion_actions.search_backspace_word
-M.search_jump_start        = motion_actions.search_jump_start
-M.preview_toggle_wrap      = preview_actions.preview_toggle_wrap
-M.preview_scroll_up        = preview_actions.preview_scroll_up
-M.preview_scroll_down      = preview_actions.preview_scroll_down
-M.preview_page_up          = preview_actions.preview_page_up
-M.preview_page_down        = preview_actions.preview_page_down
 -- stylua: ignore end
+
+M.launch_projects = function(prompt_bufnr)
+  vim.api.nvim_set_var('project_buf_skip', 1)
+  run('projects', 'projects', {})
+end
 
 M.flash = function(prompt_bufnr)
   require('flash').jump({
@@ -186,147 +183,24 @@ M.toggle_whichkey = function(prompt_bufnr)
   require('configs.telescope.which_key')(prompt_bufnr, whichkey_opts)
 end
 
-M.switch_layout = function(prompt_bufnr, _opts)
-  local opts = _opts or {}
+M.select_highlights = function(prompt_bufnr)
+  local utils = require('telescope.utils')
   local picker = action_state.get_current_picker(prompt_bufnr)
+  local multi_targets = picker:get_multi_selection()
+  local num_selections = #multi_targets
 
-  if picker.layout_strategy == 'bottom_pane' then
-    opts = telethemes.get_theme('dropdown')
-  elseif picker.layout_strategy == 'center' then
-    opts.layout_config = config.values.layout_config
-    opts.layout_strategy = 'flex'
-  elseif picker.layout_strategy == 'flex' then
-    opts = telethemes.get_theme('cursor')
-  elseif picker.layout_strategy == 'cursor' then
-    opts = telethemes.get_theme('ivy')
-  elseif picker.layout_strategy == 'cursor' then
-    opts = telethemes.get_theme('minimal')
+  if not num_selections or num_selections < 1 then
+    utils.__warn_no_selection('builtin.highlights')
+    return
   end
-  opts.results_title = picker.results_title
 
-  actions.close(prompt_bufnr)
-
-  vim.api.nvim_set_var('project_buf_skip', 1)
-  run('builtin', 'resume', opts)
-end
-
-M.switch_file_pickers_prev = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local prompt_text = picker:_get_prompt()
-
-  -- local state = require("telescope.actions.state")
-  -- if vim.api.nvim_buf_is_valid(prompt_bufnr) then
-  --   actions.close(prompt_bufnr)
-  -- end
-  local opts = { default_text = prompt_text }
-
-  vim.api.nvim_set_var('project_buf_skip', 1)
-  if picker.prompt_title == 'Frecency' then
-    run('builtin', 'find_files', opts)
-  elseif picker.prompt_title == 'Find Files' then
-    run('oldfiles', 'oldfiles', opts)
-  else
-    run('frecency', 'frecency', opts)
-  end
-end
-
-M.switch_file_pickers_next = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local prompt_text = picker:_get_prompt()
-
-  -- local state = require("telescope.actions.state")
-  -- if vim.api.nvim_buf_is_valid(prompt_bufnr) then
-  --   actions.close(prompt_bufnr)
-  -- end
-  local opts = { default_text = prompt_text }
-
-  vim.api.nvim_set_var('project_buf_skip', 1)
-  if picker.prompt_title == 'Frecency' then
-    run('oldfiles', 'oldfiles', opts)
-  elseif picker.prompt_title == 'Find Files' then
-    run('frecency', 'frecency', opts)
-  else
-    run('builtin', 'find_files', opts)
-  end
-end
-
-M.switch_grep_pickers_prev = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local prompt_text = picker:_get_prompt()
-  local opts = { default_text = prompt_text }
-  -- if vim.api.nvim_buf_is_valid(prompt_bufnr) then
-  --   actions.close(prompt_bufnr)
-  -- end
-
-  local bufnr = vim.api.nvim_win_get_buf(picker.original_win_id)
-  local bufparts = vim.split(vim.api.nvim_buf_get_name(bufnr), '/')
-  table.remove(bufparts)
-
-  local is_grep_project = string.match(picker.prompt_title, 'Live Grep Project')
-  local is_grep_buffer = string.match(picker.prompt_title, 'Live Grep Buffers')
-  local is_grep_cwd = string.match(picker.prompt_title, 'Live Grep CWD')
-
-  if is_grep_project then
-    opts.cwd = vim.fn.join(bufparts, '/')
-  elseif is_grep_buffer then
-    opts.grep_open_files = false
-  elseif is_grep_cwd then
-    opts.grep_open_files = true
-  end
-  vim.api.nvim_set_var('project_buf_skip', 1)
-  run('builtin', 'live_grep', opts)
-end
-
-M.switch_grep_pickers_next = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local prompt_text = picker:_get_prompt()
-  local opts = { default_text = prompt_text }
-  -- if vim.api.nvim_buf_is_valid(prompt_bufnr) then
-  --   actions.close(prompt_bufnr)
-  -- end
-
-  local bufnr = vim.api.nvim_win_get_buf(picker.original_win_id)
-  local bufparts = vim.split(vim.api.nvim_buf_get_name(bufnr), '/')
-  table.remove(bufparts)
-
-  local is_grep_project = string.match(picker.prompt_title, 'Live Grep Project')
-  local is_grep_buffer = string.match(picker.prompt_title, 'Live Grep Buffers')
-  local is_grep_cwd = string.match(picker.prompt_title, 'Live Grep CWD')
-  if is_grep_project then
-    opts.grep_open_files = true
-  elseif is_grep_buffer then
-    opts.cwd = vim.fn.join(bufparts, '/')
-  elseif is_grep_cwd then
-    opts.grep_open_files = false
-  end
-  vim.api.nvim_set_var('project_buf_skip', 1)
-  run('builtin', 'live_grep', opts)
-end
-
-M.launch_find_pickers = function(prompt_bufnr)
-  vim.api.nvim_set_var('project_buf_skip', 1)
-  run('find_pickers', 'find_pickers', {})
-end
-
-M.launch_projects = function(prompt_bufnr)
-  vim.api.nvim_set_var('project_buf_skip', 1)
-  run('projects', 'projects', {})
-end
-
-M.launch_find_files = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local prompt_text = picker:_get_prompt()
-  local opts = { default_text = prompt_text, cwd = picker.cwd }
-  vim.api.nvim_set_var('project_buf_skip', 1)
-  run('builtin', 'find_files', opts)
-end
-
-M.launch_live_grep = function(prompt_bufnr)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local prompt_text = picker:_get_prompt()
-  local opts = { default_text = prompt_text, cwd = picker.cwd }
-  vim.api.nvim_set_var('project_buf_skip', 1)
-  run('builtin', 'live_grep', opts)
+  actions.select_default:replace(function(bufnr)
+    actions.close(bufnr)
+    for _, entry in ipairs(multi_targets) do
+      vim.cmd('hi ' .. entry.value)
+    end
+  end)
+  actions.select_default(prompt_bufnr)
 end
 
 M.directory_picker = function(bufnr)

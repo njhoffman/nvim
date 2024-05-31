@@ -1,5 +1,33 @@
 -- https://raw.githubusercontent.com/nvim-neo-tree/neo-tree.nvim/v2.x/README.md
 
+local renderer = require('neo-tree.ui.renderer')
+
+local move_cursor_down = function(state, scroll_padding)
+  renderer.focus_node(state, nil, true, 1, scroll_padding)
+  vim.cmd('redraw!')
+end
+
+local move_cursor_up = function(state, scroll_padding)
+  -- local lines = math.floor(vim.o.lines / 3)
+  renderer.focus_node(state, nil, true, -1, scroll_padding)
+  vim.cmd('redraw!')
+end
+
+local move_cursor_page_down = function(state, scroll_padding)
+  -- local buf_lines = #(vim.api.nvim_buf_get_lines(state.bufnr) or {})
+  -- local lines = math.floor(vim.o.lines / 3)
+  local tree = state.tree
+  local node = tree:get_node()
+  renderer.focus_node(state, nil, true, 12, scroll_padding)
+  vim.cmd('redraw!')
+end
+
+local move_cursor_page_up = function(state, scroll_padding)
+  -- local lines = math.floor(vim.o.lines / 3)
+  renderer.focus_node(state, nil, true, -12, scroll_padding)
+  vim.cmd('redraw!')
+end
+
 local cfg = {
   sources = {
     'filesystem',
@@ -10,8 +38,17 @@ local cfg = {
   enable_diagnostics = false,
 
   window = {
-    position = 'right',
-    -- width = '30%',
+    popup = { -- settings that apply to float position only
+      size = {
+        height = '80%',
+        width = '50%',
+      },
+      position = '50%', -- 50% means center it
+      -- you can also specify border here, if you want a different setting from
+      -- the global popup_border_style.
+    },
+    position = 'float',
+    -- position = 'right',
     width = function(state)
       return math.min(40, math.floor(vim.o.columns * 0.3))
     end,
@@ -33,13 +70,24 @@ local cfg = {
       ['m'] = 'move', -- takes text input for destination, also accepts the config.show_path and config.insert_as options
       ['e'] = 'toggle_auto_expand_width',
       ['q'] = 'close_window',
-      [''] = 'close_window',
+      ['<M-}>'] = 'close_window',
       ['?'] = 'show_help',
+      ['<M-/>'] = 'show_help',
       ['<'] = 'prev_source',
       ['>'] = 'next_source',
+      ['<M-b>'] = { 'scroll_preview', config = { direction = 10 } },
+      ['<M-f>'] = { 'scroll_preview', config = { direction = -10 } },
+      ['<C-p>'] = 'move_cursor_up',
+      ['<C-n>'] = 'move_cursor_down',
+      ['<C-b>'] = 'move_cursor_page_up',
+      ['<C-f>'] = 'move_cursor_page_down',
     },
   },
   commands = {
+    move_cursor_up = move_cursor_up,
+    move_cursor_down = move_cursor_down,
+    move_cursor_page_up = move_cursor_page_up,
+    move_cursor_page_down = move_cursor_page_down,
     nil_fn = function()
       return false
     end,
@@ -438,7 +486,13 @@ local default_config = {
             highlight = 'NeoTreeSymbolicLinkTarget',
           },
           { 'clipboard', zindex = 10 },
-          { 'diagnostics', errors_only = true, zindex = 20, align = 'right', hide_when_expanded = true },
+          {
+            'diagnostics',
+            errors_only = true,
+            zindex = 20,
+            align = 'right',
+            hide_when_expanded = true,
+          },
           { 'git_status', zindex = 10, align = 'right', hide_when_expanded = true },
           { 'file_size', zindex = 10, align = 'right' },
           { 'type', zindex = 10, align = 'right' },

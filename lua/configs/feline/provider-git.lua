@@ -38,7 +38,7 @@ end
 
 -- Utility function to check if git provider information is available
 function M.git_info_exists()
-  return get_buf_var('gitsigns_head') or get_buf_var('gitsigns_status_dict')
+  return vim.api.nvim_get_buf_var('gitsigns_head') or vim.api.nvim, 'gitsigns_status_dict'
 end
 
 return M

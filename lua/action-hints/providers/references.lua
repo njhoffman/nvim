@@ -35,6 +35,7 @@ local function references(config)
     if vim.tbl_count(result) > 0 then
       state.available.references = true
       state.current.references = vim.tbl_count(result) - 1
+      state.stats.counts.references = state.stats.counts.references + 1
       display.update_virtual_text(config)
       return
     end

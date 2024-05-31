@@ -1,11 +1,11 @@
-local cb = require "diffview.config".diffview_callback
+local cb = require('diffview.config').diffview_callback
 
-require "diffview".setup {
+require('diffview').setup({
   diff_binaries = false, -- Show diffs for binaries
   use_icons = true, -- Requires nvim-web-devicons
   file_panel = {
     win_config = {
-      position = "left",
+      position = 'left',
       width = 35,
       height = 16,
     },
@@ -14,26 +14,26 @@ require "diffview".setup {
     -- The `view` bindings are active in the diff buffers, only when the current
     -- tabpage is a Diffview.
     view = {
-      ["<tab>"] = cb("select_next_entry"), -- Open the diff for the next file
-      ["<s-tab>"] = cb("select_prev_entry"), -- Open the diff for the previous file
-      ["<leader>e"] = cb("focus_files"), -- Bring focus to the files panel
-      ["<leader>b"] = cb("toggle_files"), -- Toggle the files panel.
+      ['<tab>'] = cb('select_next_entry'), -- Open the diff for the next file
+      ['<s-tab>'] = cb('select_prev_entry'), -- Open the diff for the previous file
+      ['<leader>e'] = cb('focus_files'), -- Bring focus to the files panel
+      ['<leader>b'] = cb('toggle_files'), -- Toggle the files panel.
     },
     file_panel = {
-      ["j"] = cb("next_entry"), -- Bring the cursor to the next file entry
-      ["<down>"] = cb("next_entry"),
-      ["k"] = cb("prev_entry"), -- Bring the cursor to the previous file entry.
-      ["<up>"] = cb("prev_entry"),
-      ["<cr>"] = cb("select_entry"), -- Open the diff for the selected entry.
-      ["o"] = cb("select_entry"),
-      ["R"] = cb("refresh_files"), -- Update stats and entries in the file list.
-      ["<tab>"] = cb("select_next_entry"),
-      ["<s-tab>"] = cb("select_prev_entry"),
-      ["<leader>e"] = cb("focus_files"),
-      ["<leader>b"] = cb("toggle_files"),
+      ['j'] = cb('next_entry'), -- Bring the cursor to the next file entry
+      ['<down>'] = cb('next_entry'),
+      ['k'] = cb('prev_entry'), -- Bring the cursor to the previous file entry.
+      ['<up>'] = cb('prev_entry'),
+      ['<cr>'] = cb('select_entry'), -- Open the diff for the selected entry.
+      ['o'] = cb('select_entry'),
+      ['R'] = cb('refresh_files'), -- Update stats and entries in the file list.
+      ['<tab>'] = cb('select_next_entry'),
+      ['<s-tab>'] = cb('select_prev_entry'),
+      ['<leader>e'] = cb('focus_files'),
+      ['<leader>b'] = cb('toggle_files'),
     },
   },
-}
+})
 
 -- diff_binaries = false,    -- Show diffs for binaries
 -- file_panel = {
@@ -63,7 +63,81 @@ require "diffview".setup {
 --     ["<leader>b"] = cb("toggle_files"),
 --   }
 -- }
-
+-- local fn = vim.fn
+-- local api = vim.api
+-- local actions = require('diffview.actions')
+--
+-- require('diffview').setup({
+--   diff_binaries = false,
+--   enhanced_diff_hl = true,
+--   use_icons = true,
+--   file_panel = {
+--     win_config = {
+--       width = 40,
+--     },
+--   },
+--   view = {
+--     default = {
+--       winbar_info = true,
+--     },
+--     file_history = {
+--       winbar_info = true,
+--     },
+--   },
+--   keymaps = {
+--     disable_defaults = true,
+--     view = {
+--       { 'n', ']f', actions.select_next_entry },
+--       { 'n', '[f', actions.select_prev_entry },
+--       {
+--         'n',
+--         'q',
+--         function()
+--           vim.cmd.tabclose()
+--         end,
+--       },
+--     },
+--     file_panel = {
+--       { 'n', 'j', actions.next_entry },
+--       { 'n', 'k', actions.prev_entry },
+--       { 'n', '<CR>', actions.focus_entry },
+--       { 'n', '-', actions.toggle_stage_entry },
+--       { 'n', 'U', actions.unstage_all },
+--       { 'n', 'X', actions.restore_entry },
+--       { 'n', 'R', actions.refresh_files },
+--       { 'n', ']f', actions.select_next_entry },
+--       { 'n', '[f', actions.select_prev_entry },
+--       {
+--         'n',
+--         'q',
+--         function()
+--           vim.cmd.tabclose()
+--         end,
+--       },
+--     },
+--     file_history_panel = {
+--       { 'n', '<CR>', actions.select_entry },
+--       { 'n', 'j', actions.next_entry },
+--       { 'n', 'k', actions.prev_entry },
+--       { 'n', ']f', actions.select_next_entry },
+--       { 'n', '[f', actions.select_prev_entry },
+--       {
+--         'n',
+--         'q',
+--         function()
+--           vim.cmd.tabclose()
+--         end,
+--       },
+--     },
+--   },
+--   hooks = {
+--     diff_buf_win_enter = function(buf, win, ctx)
+--       vim.schedule(function()
+--         fn.win_execute(win, 'normal! gg')
+--       end)
+--     end,
+--   },
+-- })
 -- :DiffviewOpen [git rev] [args] [ -- {paths...}]
 --[[ Calling :DiffviewOpen with no args opens a new Diffview that compares against HEAD. You can also provide any valid git rev to view only changes for that rev. Examples:
 

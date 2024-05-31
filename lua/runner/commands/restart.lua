@@ -1,4 +1,4 @@
-local utils = require("runner.utils")
+local utils = require('runner.utils')
 
 vim.cmd([[
   let s:server_name = escape(substitute(substitute(v:servername, '\$', '', ''), '/tmp', '', ''), '\')
@@ -61,10 +61,8 @@ vim.cmd([[
 ]])
 
 local restart_target = function()
-  local commands = { "RestartCmd" }
+  local commands = { 'RestartCmd' }
   utils.remote_commands(commands, true)
 end
 
-return {
-  restart_target = restart_target,
-}
+return restart_target

@@ -20,11 +20,10 @@ local function check_nav_split(movement_key)
     local curr_win = vim.fn.winnr()
     local mapkeys = keymap[movement_key]
     local keys = { tmux_view = mapkeys[1] }
+    vim.dbglog('check nav', movement_key)
     -- only check one direction for split if navigating
     if vim.fn.winnr(movement_key) ~= curr_win then
-      vim.defer_fn(function()
-        vim.cmd('wincmd ' .. movement_key)
-      end, 1)
+      vim.cmd('wincmd ' .. movement_key)
     else
       vim.fn.system('tmux select-pane ' .. keys.tmux_view)
     end
@@ -85,8 +84,6 @@ local get_splits = function(directions)
   -- let prev_window = winnr('#')
 
   -- these ft will not window close on delete
-  local ignored_window_ft = {}
-
   local ignored_splits_ft = {
     'CompetiTest',
     'Mundo',

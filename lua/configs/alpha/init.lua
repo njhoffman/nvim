@@ -13,7 +13,8 @@ local utils = require('configs.alpha.utils')
 --      })
 
 vim.keymap.set('n', '<C-CR>', '<cmd>Alpha<cr>', { nowait = true, desc = 'load alpha start screen' })
-local header = { type = 'text', val = headers.big_header, opts = { position = 'center', hl = 'Type' } }
+local header =
+  { type = 'text', val = headers.big_header, opts = { position = 'center', hl = 'Type' } }
 
 local my_unimpaired = {
   '[s ]s    prev/next spelling error',
@@ -42,7 +43,10 @@ local block1 = {
   type = 'group',
   val = utils.col(
     { my_unimpaired, vim_signature },
-    { position = 'center', hl = { { 'Comment', 0, -1 }, { 'Title', 92, 97 }, { 'Title', 137, 154 } } }
+    {
+      position = 'center',
+      hl = { { 'Comment', 0, -1 }, { 'Title', 92, 97 }, { 'Title', 137, 154 } },
+    }
   ),
   opts = {
     spacing = 0,

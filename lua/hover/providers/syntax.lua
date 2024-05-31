@@ -23,10 +23,10 @@ local execute = async.void(function(done)
   }
 
   local lines = { hl = {}, node = {} }
-  if #captures.node > 0 then
+  if captures.node and #captures.node > 0 then
     lines.node = synutils.get_node_lines(captures.node)
   end
-  if #captures.hl > 0 then
+  if captures.hl and #captures.hl > 0 then
     lines.hl = synutils.get_hl_lines(captures.hl)
   end
 

@@ -19,6 +19,8 @@ end
 
 local function start(url)
   local client = require('chrome-remote.chrome').new()
+  vim.dbglog('trying url', client)
+
   client:open_url(url)
 
   local editor_open = false
@@ -116,5 +118,6 @@ local function start(url)
 end
 
 require('chrome-remote.actions').list(nil, function(err, choice)
+  vim.dbglog('you choice: ', choice)
   coroutine.wrap(start)(choice.webSocketDebuggerUrl)
 end)

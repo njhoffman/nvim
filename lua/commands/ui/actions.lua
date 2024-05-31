@@ -1,52 +1,63 @@
 local utils = require('commands.ui.utils')
 
-local auto_close = {
-  'noice',
-  'qf',
-  'help',
-  'notify',
+local config = {
+  auto_close_ft = {
+    'noice',
+    'qf',
+    'help',
+    'notify',
+  },
+  cmd = 'bdelete', -- 'BufferDelete', 'Bdelete'
 }
 
--- local cmd =
-local cmd = 'bd' -- 'BufferDelete', 'Bdelete'
+local state = {}
+
+local is_popup = function(win)
+  return vim.tbl_get(vim.api.nvim_win_get_config(win or 0), 'relative') ~= ''
+end
+
+local get_state = function()
+  state = vim.tbl_deep_extend('force', state, {
+    tabs = vim.api.nvim_list_tabpages() or {},
+    splits = utils.get_splits({ 'l', 'h', 'j', 'k' }) or {},
+    curr_win = vim.api.nvim_get_current_win(),
+    curr_tab = vim.api.nvim_get_current_tabpage(),
+    bufs = utils.get_loaded_buffers(),
+    ft = vim.bo.filetype,
+  })
+  state.curr_is_popup = is_popup(state.curr_win)
+  state.curr_tab_wins = vim.api.nvim_tabpage_list_wins(state.curr_tab)
+  vim.dbglog('state', state)
+end
 
 local close_multi = function(skip_prompt)
-  local tabs = vim.api.nvim_list_tabpages() or {}
-  local splits = utils.get_splits({ 'l', 'h', 'j', 'k' }, true) or {}
-  local curr_win = vim.api.nvim_get_current_win()
-  local is_popup = vim.tbl_get(vim.api.nvim_win_get_config(curr_win), 'relative') ~= ''
-  if #tabs > 1 then
-    vim.cmd('silent! ' .. cmd .. '')
-    vim.cmd('tabclose!')
-    return
-  end
-  local bufs = utils.get_loaded_buffers()
-  local ft = vim.bo.filetype
-  local ok, err = nil, nil
-  if is_popup or #splits > 1 then
-    ok, err = pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
+  get_state()
+
+  if #state.tabs > 1 and #state.curr_tab_wins == 1 then
+    return vim.cmd('tabclose!')
   end
 
-  if not ok then
-    -- if vim.tbl_contains(auto_close, ft) then
-    --   pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
-    -- end
-    if skip_prompt == true then
-      vim.cmd('silent! ' .. cmd .. '!')
-      if #bufs == 0 then
-        vim.cmd('exit')
-      end
-    elseif #bufs > 0 then
-      ok, err = pcall(vim.api.nvim_command, 'silent ' .. cmd)
-    end
+  if state.curr_is_popup or #state.splits > 1 then
+    return vim.api.nvim_win_close(state.curr_win, skip_prompt)
   end
-  if not ok then
-    vim.notify('close_multi failed: silent ' .. cmd .. ' ' .. vim.inspect(err), 1)
+
+  -- if vim.tbl_contains(auto_close_ft, ft) then
+  --   pcall(vim.api.nvim_win_close, curr_win, skip_prompt)
+  -- end
+
+  if #state.bufs > 1 then
+    return vim.api.nvim_command('silent! ' .. config.cmd)
   end
-  if #bufs == 0 then
+
+  if #state.bufs == 1 then
     vim.cmd('silent! Alpha')
+    return vim.api.nvim_command(config.cmd .. ' #')
   end
+  -- elseif state.ft ~= 'alpha' then
+  --   vim.api.nvim_command('silent! ' .. config.cmd .. (skip_prompt == true and '!' or ''))
 end
+
+-- TODO: autocmd to handle start page as last buffer
 
 local close_multi_no_prompt = function()
   close_multi(true)

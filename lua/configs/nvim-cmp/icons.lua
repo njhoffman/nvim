@@ -165,6 +165,7 @@ local lsp_symbols = {
   Parameter            = ' ',
   Preproc              = '', --   Property    = "󰜢",
   Property             = '󰖷', --   Property    = "󰜢",
+  PunctuationSpecial   = "",
   Reference            = '󰈝', --   Reference   = "󰈇 ",
   Repeat               = '',
   Snippet              = '', --   Snippet     = 󰅱 ,
@@ -194,6 +195,7 @@ local lsp_symbols = {
   Value                = '󰎠',
   Variable             = '', --   Variable    = "󰈜 ",
   VariableBuiltin      = '', --   Variable    = "󰈜 ",
+  VariableMember       = '', --   Variable    = "󰈜 ",
   VariableParameter    = '', --   Variable    = "󰈜 ",
   XX                   = ' ', --   Variable   = "󰈜 ",
 }

@@ -204,4 +204,3 @@ local defs = {
   { ts.remote_op,               { 'o', 'x' }, 'Replace remote op target' },
   { ts.remote,                  { 'n'     },     'Replace remote target' },
 }
-}

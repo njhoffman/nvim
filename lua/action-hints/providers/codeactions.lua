@@ -67,6 +67,7 @@ local function codeactions(config)
   vim.lsp.buf_request_all(bufnr, 'textDocument/codeAction', params, function(responses, _, _)
     if not responses then
       state.available.codeactions = false
+      state.stats.counts.codeactions = state.stats.counts.codeactions + 1
       state.current.codeactions = 0
       return
     end
@@ -82,6 +83,7 @@ local function codeactions(config)
     if vim.tbl_count(results) > 0 then
       state.available.codeactions = true
       state.current.codeactions = vim.tbl_count(results)
+      state.stats.counts.codeactions = state.stats.counts.codeactions + 1
       display.update_virtual_text(config)
       return
     end

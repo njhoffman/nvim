@@ -161,14 +161,14 @@ function M.jump(opts)
       current = m
     end
   end
-  if state.opts.jump.autojump then
-    current = state:jump(current)
-  end
-  -- current = state:jump(current)
+  -- if state.opts.jump.autojump then
+  --   current = state:jump(current)
+  -- end
+  current = state:jump(current)
 
   state:loop({
     abort = function()
-      Util.exit()
+      vim.cmd([[normal! v]])
     end,
     actions = {
       [';'] = function()

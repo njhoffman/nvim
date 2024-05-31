@@ -63,25 +63,6 @@ local is_enabled = function()
     or cmp.close()
 end
 
-local append_parenthesis = function()
-  local Kind = cmp.lsp.CompletionItemKind
-  local function ls_name_from_event(event)
-    return event.entry.source.source.client.config.name
-  end
-  -- Add parenthesis on completion confirmation
-  cmp.event:on('confirm_done', function(event)
-    local ok, ls_name = pcall(ls_name_from_event, event)
-    if ok and vim.tbl_contains({ 'rust_analyzer' }, ls_name) then
-      return
-    end
-    local completion_kind = event.entry:get_completion_item().kind
-    if vim.tbl_contains({ Kind.Function, Kind.Method }, completion_kind) then
-      local left = vim.api.nvim_replace_termcodes('<Left>', true, false, true)
-      vim.api.nvim_feedkeys('()' .. left, 'n', false)
-    end
-  end)
-end
-
 local cfg = {
   autocomplete = {
     cmp.TriggerEvent.InsertEnter,
@@ -267,6 +248,32 @@ vim.api.nvim_create_user_command(
   toggle_autocomplete,
   { desc = 'Toggle nvim-cmp autocomplete' }
 )
+
+local pairs_integration = function()
+  local cmp = require('cmp')
+  local kind = cmp.lsp.CompletionItemKind
+
+  local function ls_name_from_event(event)
+    return event.entry.source.source.client.config.name
+  end
+
+  -- Add parenthesis on completion confirmation
+  cmp.event:on('confirm_done', function(event)
+    local ok, ls_name = pcall(ls_name_from_event, event)
+    local server_blacklist = { 'rust-analyzer', 'lua_ls', 'typst_lsp' }
+    if ok and vim.tbl_contains(server_blacklist, ls_name) then
+      return
+    end
+
+    local completion_kind = event.entry:get_completion_item().kind
+    if vim.tbl_contains({ kind.Function, kind.Method }, completion_kind) then
+      local left = vim.api.nvim_replace_termcodes('<Left>', true, true, true)
+      vim.api.nvim_feedkeys('()' .. left, 'n', false)
+    end
+  end)
+end
+
+pairs_integration()
 
 -- only appear if characters before cursor
 -- api.nvim_create_autocmd(

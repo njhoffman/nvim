@@ -234,11 +234,6 @@ local modules = {
     -- integration with treesitter-pairs
     enable = true, -- mandatory, false will disable the whole extension
     -- disable = {"c", "ruby"} -- optional, list of language that will be disabled
-    --[[ do not use virtual text to highlight the virtual end of a block, for languages without explicit end markers (e.g., Python). ]]
-    -- disable_virtual_text = {},
-    --[[ additionally include traditional vim regex matches for symbols.
-    --For example, highlights /* */ comments in C++ which are not supported in tree-sitter matching. ]]
-    -- include_match_words = {},
   },
   endwise = {
     enable = true,

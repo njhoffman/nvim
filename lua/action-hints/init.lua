@@ -37,10 +37,12 @@ local setup = function(options)
     group = augroup,
     desc = 'ActionHints providers update',
     callback = function()
-      utils.throttle(display.clear_virtual_text, 100, {}, 'clear')
+      -- utils.throttle(display.clear_virtual_text, 100, {}, 'clear')
+      display.clear_virtual_text()
       state.is_cleared = true
       if vim.api.nvim_get_mode().mode == 'n' then
-        utils.debounce(providers.update, 1000)(config.values)
+        -- utils.debounce(providers.update, 1000)(config.values)
+        providers.update(config.values)
       end
     end,
   })
