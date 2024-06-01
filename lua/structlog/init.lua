@@ -40,4 +40,14 @@ function M.get_logger(name)
   return logger:clone()
 end
 
+function M.update_sink_level(scope, sink_name, level)
+  local logsinks = loggers[scope] and loggers[scope].sinks or {}
+  for _, sink in ipairs(logsinks) do
+    if sink.name == sink_name then
+      sink.level = level
+    end
+  end
+end
+
+M.loggers = loggers
 return M

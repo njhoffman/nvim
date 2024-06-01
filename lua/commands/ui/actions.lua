@@ -27,7 +27,6 @@ local get_state = function()
   })
   state.curr_is_popup = is_popup(state.curr_win)
   state.curr_tab_wins = vim.api.nvim_tabpage_list_wins(state.curr_tab)
-  vim.dbglog('state', state)
 end
 
 local close_multi = function(skip_prompt)

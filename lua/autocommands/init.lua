@@ -5,6 +5,7 @@ local telescope = require('autocommands.telescope')
 
 require('autocommands.misc')
 require('autocommands.tagstack')
+require('autocommands.events')
 require('autocommands.skeletons')
 require('autocommands.startup')
 
@@ -153,7 +154,6 @@ local create_augroups = function(definitions) -- {{{1
       created[group_name] = created[group_name] + 1
     end
   end
-  vim.dbglog('created', created)
 end
 
 create_augroups(autocmds)

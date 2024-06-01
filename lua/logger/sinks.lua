@@ -1,5 +1,10 @@
 local structlog = require('structlog')
 
+local sinks_config = {
+  main = { banner = true },
+  module = { banner = false },
+}
+
 local M = {}
 M.console = function()
   return structlog.sinks.Console(structlog.level.WARN, {
@@ -22,7 +27,11 @@ M.notify = function()
     processors = {
       structlog.processors.Namer(),
     },
-    formatter = structlog.formatters.Format('%s', { 'msg' }, { blacklist = { 'level', 'logger_name' } }), --
+    formatter = structlog.formatters.Format(
+      '%s',
+      { 'msg' },
+      { blacklist = { 'level', 'logger_name' } }
+    ), --
     params_map = { title = 'logger_name' },
   })
 end
@@ -40,8 +49,8 @@ local log_banner = function(file)
   table.insert(banner_files, file)
 end
 
-M.file = function(level, logfile, config)
-  config = config or {}
+M.file = function(level, logfile, name)
+  local config = sinks_config[name] or {}
   if type(logfile) ~= 'string' or #logfile == 0 then
     logfile = vim.fn.stdpath('data') .. '/nvim.log'
   end
@@ -50,6 +59,7 @@ M.file = function(level, logfile, config)
     log_banner(logfile)
   end
   return structlog.sinks.File(level, logfile, {
+    name = name,
     processors = {
       structlog.processors.Namer(),
       -- structlog.processors.StackWriter({ "line", "file" }, {

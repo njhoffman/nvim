@@ -1,7 +1,5 @@
-local config = require('config').Treesitter
 local tsmodules = require('configs.nvim-treesitter.modules')
 
-require('configs.nvim-treesitter.context')
 local ts = require('nvim-treesitter')
 
 ts.define_modules(tsmodules)
@@ -40,6 +38,8 @@ require(textobj_unit).setup()
 vim.cmd('packadd matchit')
 require('nvim-treesitter.configs').setup(cfg)
 require('nvim-treesitter.install').prefer_git = true
+
+require('configs.nvim-treesitter.context')
 
 vim.g.skip_ts_context_commentstring_module = true
 require('ts_context_commentstring').setup({

@@ -25,6 +25,7 @@ function File:new(level, path, opts)
 
   file.level = level
   file.path = path
+  file.name = opts.name or ''
   file.processors = opts.processors or {}
   file.formatter = opts.formatter or KeyValue()
   file.iolib = opts.iolib or io

@@ -40,7 +40,8 @@ source_base._diff = function(_, prev_items, curr_items)
 end
 
 source_base._serialize = function(self, items)
-  local fields = self:_get_opt({ 'id_fields', 'data_fields', 'desc_fields', 'fields' }) or build_fields(items)
+  local fields = self:_get_opt({ 'id_fields', 'data_fields', 'fields_out', 'fields' })
+    or build_fields(items)
   return diff_delta.serialize_data(items, fields)
 end
 
@@ -48,19 +49,22 @@ source_base._build_results = function(self, results, items, opts)
   results.items = results.items or {}
   results.columns = results.columns or {}
   opts = opts or {}
-  local fields = self:_get_opt({ 'data_fields', 'id_fields', 'desc_fields', 'fields' }) or build_fields(items)
+  local fields = self:_get_opt({ 'data_fields', 'id_fields', 'fields_out', 'fields' })
+    or build_fields(items)
   for _, item in ipairs(items) do
     local result = {}
     for _, field in ipairs(fields) do
       if item[field] ~= nil then
         result[field] = item[field]
-        results.columns[field] = results.columns[field] and math.max(#tostring(item[field]), results.columns[field])
+        results.columns[field] = results.columns[field]
+            and math.max(#tostring(item[field]), results.columns[field])
           or #tostring(item[field])
       end
     end
     for key, val in pairs(opts.extra or {}) do
       result[key] = tostring(val)
-      results.columns[key] = results.columns[key] and math.max(#tostring(val), results.columns[key]) or #tostring(val)
+      results.columns[key] = results.columns[key] and math.max(#tostring(val), results.columns[key])
+        or #tostring(val)
     end
     table.insert(results.items, result)
   end
@@ -68,15 +72,20 @@ end
 
 local log_func = vim.dbglog or print
 source_base._output_diff = function(self, delta)
-  local diff_items = vim.tbl_flatten({ vim.tbl_get(delta, 'added'), vim.tbl_get(delta, 'removed') })
-  local fields = self:_get_opt({ 'desc_fields', 'id_fields', 'data_fields', 'fields' }) or build_fields(diff_items)
+  local diff_items = vim.fn.flatten({ vim.tbl_get(delta, 'added'), vim.tbl_get(delta, 'removed') })
+  local fields = self:_get_opt({ 'fields_out', 'id_fields', 'data_fields', 'fields' })
+    or build_fields(diff_items)
 
-  local desc_fields = function(item)
+  local fields_out = function(item)
     local ignore = { 'scope', 'mode', 'bufnr', 'winnr', 'buffer' }
     fields = type(fields) == 'string' and { fields } or fields
     local desc_field = nil
     for _, field in ipairs(fields) do
-      if not vim.tbl_contains(ignore, field) and type(item.value[field]) ~= 'nil' and item.value[field] ~= '' then
+      if
+        not vim.tbl_contains(ignore, field)
+        and type(item.value[field]) ~= 'nil'
+        and item.value[field] ~= ''
+      then
         desc_field = desc_field == nil and '' or desc_field
         desc_field = desc_field .. ' ' .. tostring(item.value[field])
       end
@@ -91,7 +100,7 @@ source_base._output_diff = function(self, delta)
       or item.value.scope
       or ' '
     local prefix = icon .. ' ' .. scope .. (item.value.mode or ' ')
-    local desc = desc_fields(item) or item.item_id
+    local desc = fields_out(item) or item.item_id
     local nr = item.value.bufnr or item.value.winnr or item.value.buffer or ''
     desc = (nr ~= '' and ' ' .. nr or '') .. desc
     local msg = symbol .. desc .. (self.show_delta and ' (' .. delta.count .. ')' or '')

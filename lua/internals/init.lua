@@ -6,6 +6,10 @@
 -- :profile file *
 -- :profile stop/pause
 
+-- Stats
+-- TrackerStart, TrackDiff, DiffTrack, StatsDiff
+-- ProfileStart, ProfileStop, ProfileView
+
 local modules = require('internals.modules')
 local commands = require('internals.commands')
 

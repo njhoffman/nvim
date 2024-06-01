@@ -80,23 +80,20 @@ local defaultSettings = {
 }
 
 local on_attach = function(bufnr)
-  vim.dbglog('attaching')
   if vim.api.nvim_buf_get_name(bufnr):match('quicknotes/daily') then
     return false
   end
 
   -- git rev-parse --is-bare-repository
   local ok, gitsigns = pcall(vim.api.nvim_buf_get_var, bufnr, 'gitsigns_status_dict')
-  vim.dbglog('gs', ok, gitsigns)
   if ok == true then
     local check_bare_command =
       { 'git', "--git-dir='" .. gitsigns.gitdir .. "'", 'rev-parse', '--is-bare-repository' }
     local is_bare = string.gsub(vim.fn.system(vim.fn.join(check_bare_command, ' ')), '\n', '')
-    vim.dbglog('check bare', check_bare_command, gitsigns)
     gitsigns.is_bare = is_bare == 'true' and true or false
     vim.api.nvim_buf_set_var(bufnr, 'gitsigns_status_dict', gitsigns)
-    vim.fn.setenv('GIT_WORK_TREE', gitsigns.root)
-    vim.fn.setenv('GIT_DIR', gitsigns.gitdir)
+    -- vim.fn.setenv('GIT_WORK_TREE', gitsigns.root)
+    -- vim.fn.setenv('GIT_DIR', gitsigns.gitdir)
   end
 
   local gs = package.loaded.gitsigns

@@ -16,8 +16,32 @@ require('treesitter-context').setup({
       -- 'case',
     },
   },
-  on_attach = function(bufnr)
-    -- local winid = vim.fn.bufwinid(bufnr)
-    -- vim.api.nvim_set_option_value('winblend', 70, { win = winid })
-  end,
+  -- on_attach = function(bufnr)
+  --   local winid = vim.fn.bufwinid(bufnr)
+  --   vim.api.nvim_set_option_value('winblend', 80, { win = winid })
+  -- end,
 })
+
+-- keys = {
+--   {
+--     '<leader>otc',
+--     function()
+--       local Util = require('utils.inject')
+--       local tsc = require('treesitter-context')
+--       tsc.toggle()
+--       if Util.inject.get_upvalue(tsc.toggle, 'enabled') then
+--         vim.notify(
+--           'Enabled Treesitter Context',
+--           vim.lsp.log_levels.INFO,
+--           { title = 'Option' }
+--         )
+--       else
+--         vim.notify(
+--           'Disabled Treesitter Context',
+--           vim.lsp.log_levels.WARN,
+--           { title = 'Option' }
+--         )
+--       end
+--     end,
+--     desc = 'Toggle Treesitter Context',
+--   },

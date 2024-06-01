@@ -23,8 +23,10 @@ u.ftAbbr('tre', 'then return end') -- codespell-ignore
 
 -- if in nvim dir, reload file/plugin, otherwise run `make`
 vim.api.nvim_set_keymap('n', '<localleader>1', '<cmd>luafile %<cr>', { silent = true })
+vim.api.nvim_set_keymap('n', '<C-1>', '<cmd>Reload | luafile %<cr>', { silent = true })
 
 MiniSplitjoin = MiniSplitjoin or {}
+
 if MiniSplitjoin.gen_hook ~= nil then
   local curly = { brackets = { '%b{}' } }
   -- Add trailing comma when splitting inside curly brackets

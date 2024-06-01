@@ -41,7 +41,9 @@ local get_keymaps = function(scopes, modes)
 end
 
 local init_source = function(scopes, modes)
-  scopes = type(scopes) == 'table' and scopes or type(scopes) == 'string' and { scopes } or vim.tbl_keys(all_scopes)
+  scopes = type(scopes) == 'table' and scopes
+    or type(scopes) == 'string' and { scopes }
+    or vim.tbl_keys(all_scopes)
   modes = type(modes) == 'table' and modes or type(modes) == 'string' and { modes } or all_modes
   local prefix = (scopes and #scopes > 0 and vim.fn.join(scopes, '') or '')
     .. (modes and #modes > 0 and '_' .. vim.fn.join(modes, '') or '')

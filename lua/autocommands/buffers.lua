@@ -18,7 +18,7 @@ local fasd_update = function()
   local logger = require('logger').init('fasd')
   local fname = vim.api.nvim_buf_get_name(0)
   if
-    vim.bo.buftype ~= ''
+    vim.bo.buftype == ''
     and not vim.tbl_contains(ignored.fileypes, vim.bo.filetype)
     and fname ~= ''
     and fname ~= last_file

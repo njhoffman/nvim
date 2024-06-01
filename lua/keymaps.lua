@@ -530,11 +530,13 @@ map('n', 'g<M-C-H>', '<cmd>silent! tabclose | xa<cr>', {
 --------------------------------------------------------------------------------------------------
 -- EXECUTE ---------------------------------------------------------------------------------------
 -- map('n', '<C-1>', '<cmd>RunFile<cr>', {
-map('n', '<C-1>', 'luafile %', {
-  category = 'Execute',
-  label = 'ﲵ luafile bufer',
-  desc = 'ﲵ luafile buffer',
-})
+-- map('n', '<C-1>', '<cmd>luafile %<cr>', {
+--   category = 'Execute',
+--   label = 'ﲵ luafile bufer',
+--   desc = 'ﲵ luafile buffer',
+--   silent = true
+-- })
+-- vim.api.nvim_set_keymap('n', '<localleader>1', '<cmd>luafile %<cr>', { silent = true })
 
 -- map('n', '!~', '<cmd>RunSelect<cr>', {
 --   category = 'Execute',
@@ -542,11 +544,11 @@ map('n', '<C-1>', 'luafile %', {
 --   desc = 'ﲵ assign task to runner',
 -- })
 
--- map('n', '!!', '<cmd>Run<cr>', {
---   category = 'Execute',
---   label = 'ﲵ repeat runner command',
---   desc = 'ﲵ execute configured runner task',
--- })
+map('n', '!!', '<cmd>@:<cr>', {
+  category = 'Execute',
+  label = 'ﲵ repeat runner command',
+  desc = 'ﲵ execute configured runner task',
+})
 
 map('n', '<M-r>', '<cmd>Restart<cr>', {
   category = 'Execute',

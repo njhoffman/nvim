@@ -411,33 +411,7 @@ local plugins = {
       { 'ThePrimeagen/refactoring.nvim', dependencies = { { 'nvim-lua/plenary.nvim' } } },
       'nvim-treesitter/nvim-treesitter-refactor',
       'nvim-treesitter/playground',
-      {
-        'nvim-treesitter/nvim-treesitter-context',
-        keys = {
-          {
-            '<leader>otc',
-            function()
-              local Util = require('utils.inject')
-              local tsc = require('treesitter-context')
-              tsc.toggle()
-              if Util.inject.get_upvalue(tsc.toggle, 'enabled') then
-                vim.notify(
-                  'Enabled Treesitter Context',
-                  vim.lsp.log_levels.INFO,
-                  { title = 'Option' }
-                )
-              else
-                vim.notify(
-                  'Disabled Treesitter Context',
-                  vim.lsp.log_levels.WARN,
-                  { title = 'Option' }
-                )
-              end
-            end,
-            desc = 'Toggle Treesitter Context',
-          },
-        },
-      },
+      { 'nvim-treesitter/nvim-treesitter-context' },
       'windwp/nvim-ts-autotag',
       { 'ziontee113/query-secretary', keys = { '<leader><BS>' } },
     },

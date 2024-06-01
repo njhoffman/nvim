@@ -52,7 +52,7 @@ local function log(logger, level, msg, events)
   end
 
   for _, sink in ipairs(logger.sinks) do
-    if level >= sink.level then
+    if level >= sink.level and sink.level ~= -1 then
       local sink_kwargs = vim.deepcopy(kwargs)
 
       for _, processor in ipairs(sink.processors) do

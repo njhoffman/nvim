@@ -1,7 +1,7 @@
 local run_file_handler = function(ev)
   local handlers = {
     lua = function(f)
-      vim.cmdd('luafile %')
+      vim.cmd('luafile %')
     end,
     vim = function()
       vim.cmd('source %')

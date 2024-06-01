@@ -29,9 +29,11 @@ defaults.output = function(source, delta)
       name        = source.name,
       icon        = source.icon or ' ',
       label       = source.label or source.name,
-      desc_fields = source.desc_fields,
+      fields_out  = source.fields_out,
+      lineout     = vim.dbglog
+
     }
-    output.output_diff(props, delta)
+    output.diff(props, delta)
     -- if opts.only_metrics then
     --   output.output_metric(props, delta)
     -- else

@@ -194,7 +194,7 @@ local reload = function(cfg)
       return
     -- unload from lua cache (assuming that the pwd is ~/.config/nvim)
     elseif is_nvim_config then
-      vim.dbglog('trying to', filepath)
+      -- vim.dbglog('trying to', filepath)
       reload_package_chain(filepath, reload_cfg)
       -- run `make`
       -- else

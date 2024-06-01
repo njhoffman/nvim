@@ -9,6 +9,14 @@ vim.api.nvim_create_user_command('Stats', stats.command, {
   nargs = '*',
 })
 
+-- local track = require('stats.track') -- StatsTrack, DiffTrack, TrackDiff
+-- vim.api.nvim_create_user_command('StatsTrack', track.command, {
+--   desc = 'Internal stats monitoring and difference tracking',
+--   complete = track.completion(track_map),
+--   nargs = '*',
+-- })
+--
+
 -- local watch = require('stats.watch')
 -- vim.api.nvim_create_user_command('StatsWatch', watch.command, {
 --   desc = 'Internal stats continuous monitoring',
@@ -16,14 +24,9 @@ vim.api.nvim_create_user_command('Stats', stats.command, {
 --   nargs = '*',
 -- })
 --
--- local track = require('stats.track')
--- vim.api.nvim_create_user_command('StatsTrack', track.command, {
---   desc = 'Internal stats monitoring and difference tracking',
---   complete = track.completion(track_map),
---   nargs = '*',
--- })
---
+
 -- local stats_select = function() end
 -- vim.api.nvim_create_user_command('StatsSelect', stats_select, {
 --   desc = 'Internal stats monitoring and difference tracking',
 -- })
+--

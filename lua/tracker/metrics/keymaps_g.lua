@@ -1,16 +1,15 @@
 local provider = function(_)
   return {
-    name = "keymaps_g",
-    id_fields = { "mode", "lhs", "rhs" },
-    -- desc_fields = { "group_name", "pattern", "event" },
+    name = 'keymaps_g',
+    id_fields = { 'mode', 'lhs', 'rhs' },
     get_data = function()
       local keymaps = {
-        n = vim.api.nvim_get_keymap("n"),
-        i = vim.api.nvim_get_keymap("i"),
-        o = vim.api.nvim_get_keymap("o"),
-        v = vim.api.nvim_get_keymap("v"),
-        c = vim.api.nvim_get_keymap("c"),
-        t = vim.api.nvim_get_keymap("t"),
+        n = vim.api.nvim_get_keymap('n'),
+        i = vim.api.nvim_get_keymap('i'),
+        o = vim.api.nvim_get_keymap('o'),
+        v = vim.api.nvim_get_keymap('v'),
+        c = vim.api.nvim_get_keymap('c'),
+        t = vim.api.nvim_get_keymap('t'),
       }
       local key_table = {}
       for mode, keys in pairs(keymaps) do
