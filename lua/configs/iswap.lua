@@ -37,13 +37,9 @@ require("iswap").setup({
 
   -- Automatically swap with only two arguments
   -- default nil
-  autoswap = false,
+  autoswap = true,
 
   -- Other default options you probably should not change:
   debug = nil,
   hl_grey_priority = "1000",
-}
-
-
-
-)
+})

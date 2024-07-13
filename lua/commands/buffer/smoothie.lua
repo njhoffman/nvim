@@ -86,25 +86,23 @@ local setup_paging = function()
     noremap <silent> <Plug>(SmoothieUpwards)   <cmd>call smoothie#upwards()             <CR>
     noremap <silent> <Plug>(SmoothieForwards)  <cmd>call smoothie#forwards()            <CR>
     noremap <silent> <Plug>(SmoothieBackwards) <cmd>call smoothie#backwards()           <CR>
-    " noremap <silent> <Plug>(Smoothie_gg)       <cmd>call smoothie#cursor_movement('gg') <CR>
-    " noremap <silent> <Plug>(Smoothie_G)        <cmd>call smoothie#cursor_movement('G')  <CR>
+    noremap <silent> <Plug>(Smoothie_gg)       <cmd>call smoothie#cursor_movement('gg') <CR>
+    noremap <silent> <Plug>(Smoothie_G)        <cmd>call smoothie#cursor_movement('G')  <CR>
 
-    nnoremap <silent> <Plug>(Smoothie_gg)       :<C-U>call smoothie#cursor_movement('gg') <CR>
-    nnoremap <silent> <Plug>(Smoothie_G)        :<C-U>call smoothie#cursor_movement('G')  <CR>
-    " noremap <silent> <Plug>(Smoothie_G)        <cmd>call smoothie#cursor_movement('G')  <CR>
 
     " silent! map <C-D>      <Plug>(SmoothieDownwards)
     " silent! map <C-U>      <Plug>(SmoothieUpwards)
-    silent! map <C-F>      <Plug>(SmoothieDownwards)
-    silent! map <S-Down>   <Plug>(SmoothieForwards)
-    silent! map <PageDown> <Plug>(SmoothieForwards)
-    silent! map <C-B>      <Plug>(SmoothieBackwards)
+    " silent! map <C-F>      <Plug>(SmoothieForwards)
+    " silent! map <C-B>      <Plug>(SmoothieBackwards)
+    silent! map <C-F>      <Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)
+    silent! map <C-B>      <Plug>(SmoothieUpwards)<Plug>(SmoothieUpwards)
+    silent! map <Space>    <Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)
     silent! map <S-Up>     <Plug>(SmoothieBackwards)
     silent! map <PageUp>   <Plug>(SmoothieBackwards)
-    silent! map <Space>    <Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)
-    silent! <nowait> nmap  G       <Plug>(Smoothie_G)
-
-     silent! <nowait> nmap gg       <Plug>(Smoothie_gg)
+    silent! map <S-Down>   <Plug>(SmoothieForwards)
+    silent! map <PageDown> <Plug>(SmoothieForwards)
+    silent! map  G       <Plug>(Smoothie_G)
+    silent! map gg       <Plug>(Smoothie_gg)
     " noremap <silent> <Plug>(Smoothie_gg)       <cmd>call smoothie#cursor_movement('gg') <CR>
   "    silent! map <unique> <C-f>      <Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)
   "    silent! map <unique> <C-b>      <Plug>(SmoothieUpwards)

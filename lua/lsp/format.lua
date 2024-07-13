@@ -36,22 +36,22 @@ end
 M.setup = function(format_options)
   M.format_options = vim.tbl_deep_extend('force', M.format_options, format_options or {})
 
-  vim.api.nvim_create_user_command('Format', M.format, { nargs = '*', bar = true, force = true })
-  vim.api.nvim_create_user_command(
-    'FormatToggle',
-    M.toggle,
-    { nargs = '?', bar = true, complete = 'filetype', force = true }
-  )
-  vim.api.nvim_create_user_command(
-    'FormatDisable',
-    M.disable,
-    { nargs = '?', bar = true, complete = 'filetype', force = true }
-  )
-  vim.api.nvim_create_user_command(
-    'FormatEnable',
-    M.enable,
-    { nargs = '?', bar = true, complete = 'filetype', force = true, bang = true }
-  )
+  -- vim.api.nvim_create_user_command('Format', M.format, { nargs = '*', bar = true, force = true })
+  -- vim.api.nvim_create_user_command(
+  --   'FormatToggle',
+  --   M.toggle,
+  --   { nargs = '?', bar = true, complete = 'filetype', force = true }
+  -- )
+  -- vim.api.nvim_create_user_command(
+  --   'FormatDisable',
+  --   M.disable,
+  --   { nargs = '?', bar = true, complete = 'filetype', force = true }
+  -- )
+  -- vim.api.nvim_create_user_command(
+  --   'FormatEnable',
+  --   M.enable,
+  --   { nargs = '?', bar = true, complete = 'filetype', force = true, bang = true }
+  -- )
 end
 
 ---@param key string
@@ -80,6 +80,7 @@ end
 
 ---@param options table
 M.format = function(options)
+  vim.dbglog('old format...', options)
   local bufnr = options.buf or vim.api.nvim_get_current_buf()
   if M.saving_buffers[bufnr] or M.disabled then
     return

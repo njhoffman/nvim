@@ -29,6 +29,7 @@ local cfg = {
   incremental_selection = tsmodules.incremental_custom,
   endwise = tsmodules.endwise,
 }
+-- vim.treesitter.language.add()
 
 -- textobj-unit
 local textobj_unit = 'treesitter._textobjects.unit'

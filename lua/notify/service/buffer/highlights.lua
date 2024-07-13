@@ -8,7 +8,7 @@ local util = require('notify.util')
 ---@field icon string
 ---@field body string
 ---@field buffer number
----@field _config table
+---@field background_colour string
 local NotifyBufHighlights = {}
 
 local function manual_get_hl(name)
@@ -87,7 +87,7 @@ function NotifyBufHighlights:new(notif, buffer, config)
     title = title,
     icon = icon,
     buffer = buffer,
-    _config = config,
+    background_colour = config.background_colour(),
   }
 
   self.__index = self
@@ -175,17 +175,21 @@ function NotifyBufHighlights:_redefine_treesitter()
 end
 
 function NotifyBufHighlights:set_opacity(alpha)
-  if not self._treesitter_redefined and vim.api.nvim_buf_get_option(self.buffer, 'filetype') ~= 'notify' then
+  if
+    not self._treesitter_redefined
+    and vim.api.nvim_buf_get_option(self.buffer, 'filetype') ~= 'notify'
+  then
     self:_redefine_treesitter()
   end
   self.opacity = alpha
-  local background = self._config.background_colour()
+  local background = self.background_colour
   for group, fields in pairs(self.groups) do
     local updated_fields = {}
     vim.api.nvim_set_hl(0, group, updated_fields)
     local hl_string = ''
     if fields.foreground then
-      hl_string = 'guifg=#' .. string.format('%06x', util.blend(fields.foreground, background, alpha / 100))
+      hl_string = 'guifg=#'
+        .. string.format('%06x', util.blend(fields.foreground, background, alpha / 100))
     end
     if fields.background then
       hl_string = hl_string
@@ -193,7 +197,9 @@ function NotifyBufHighlights:set_opacity(alpha)
         .. string.format('%06x', util.blend(fields.background, background, alpha / 100))
     end
     if fields.special then
-      hl_string = hl_string .. ' guisp=#' .. string.format('%06x', util.blend(fields.special, background, alpha / 100))
+      hl_string = hl_string
+        .. ' guisp=#'
+        .. string.format('%06x', util.blend(fields.special, background, alpha / 100))
     end
     for _, style in ipairs({ 'bold', 'italic', 'underline' }) do
       if fields[style] then

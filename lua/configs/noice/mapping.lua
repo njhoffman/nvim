@@ -1,8 +1,8 @@
-local function is_lsp_float_open(window_id)
+local is_lsp_float_open = function(window_id)
   return window_id and window_id ~= 0 and vim.api.nvim_win_is_valid(window_id)
 end
 
-local function scroll(sendkeys)
+local scroll = function(sendkeys)
   for _, kind in ipairs({ 'hover', 'signature' }) do
     local message = require('noice.lsp.docs').get(kind)
     local win = message:win()

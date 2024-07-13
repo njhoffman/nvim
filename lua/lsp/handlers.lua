@@ -1,5 +1,5 @@
-local mapping = require('lsp.mapping')
-local format = require('commands.format')
+local mapping = require("lsp.mapping")
+-- local format = require('commands.format')
 
 local color_provider = function(client, bufnr)
   local cap = client.server_capabilities
@@ -20,7 +20,7 @@ local function find_and_run_codelens()
   end, lenses)
 
   if #lenses == 0 then
-    return vim.notify('Could not find codelens to run.', 3)
+    return vim.notify("Could not find codelens to run.", 3)
   end
 
   table.sort(lenses, function(a, b)
@@ -64,22 +64,22 @@ local document_formatting_provider = function(client, bufnr)
   --     callback = require('commands.format').format,
   --   -- command = command,
   -- })
-end
+    end
 
 local document_formatting_range_provider = function(_, _)
-  mapping.formatting_range()
+  -- mapping.formatting_range()
 end
 
 local function highlight_references()
-  local ts_utils = require('nvim-treesitter.ts_utils')
+  local ts_utils = require("nvim-treesitter.ts_utils")
   local node = ts_utils.get_node_at_cursor()
   while node ~= nil do
     local node_type = node:type()
     if
-      node_type == 'string'
-      or node_type == 'string_fragment'
-      or node_type == 'template_string'
-      or node_type == 'document' -- for inline gql`` strings
+      node_type == "string"
+      or node_type == "string_fragment"
+      or node_type == "template_string"
+      or node_type == "document" -- for inline gql`` strings
     then
       -- who wants to highlight a string? i don't. yuck
       return
@@ -90,15 +90,15 @@ local function highlight_references()
 end
 
 local document_highlight_provider = function(client, bufnr)
-  if false and not require('utils.lazy').is_installed('vim-illuminate') then
+  if false and not require("utils.lazy").is_installed("vim-illuminate") then
     if client.server_capabilities.documentHighlightProvider then
-      local group = vim.api.nvim_create_augroup('LspHighlight', {})
-      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+      local group = vim.api.nvim_create_augroup("LspHighlight", {})
+      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
         buffer = bufnr,
         group = group,
         callback = highlight_references,
       })
-      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+      vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
         buffer = bufnr,
         group = group,
         callback = function()
@@ -106,7 +106,7 @@ local document_highlight_provider = function(client, bufnr)
         end,
       })
     else
-      vim.notify('Lost documentHighlightProvider \n' .. vim.inspect(client.server_abilities), 4)
+      vim.notify("Lost documentHighlightProvider \n" .. vim.inspect(client.server_abilities), 4)
     end
   end
 end
@@ -125,7 +125,7 @@ local signature_help_provider = function(_, bufnr)
     ---@diagnostic disable-next-line: undefined-field
     local window_id = _G._LSP_SIG_CFG.winnr
     if is_lsp_float_open(window_id) then
-      vim.fn.win_execute(window_id, 'normal! ' .. sendkeys)
+      vim.fn.win_execute(window_id, "normal! " .. sendkeys)
     end
   end
 
@@ -147,10 +147,10 @@ local signature_help_provider = function(_, bufnr)
 
   mapping.signature_hover()
 
-  local page_up_mapping = escape_term_codes('<C-b>')
-  local page_down_mapping = escape_term_codes('<C-f>')
-  local scroll_up_mapping = escape_term_codes('<Up>')
-  local scroll_down_mapping = escape_term_codes('<Down>')
+  local page_up_mapping = escape_term_codes("<C-b>")
+  local page_down_mapping = escape_term_codes("<C-f>")
+  local scroll_up_mapping = escape_term_codes("<Up>")
+  local scroll_down_mapping = escape_term_codes("<Down>")
 
   -- mapping.signature_preview_up(function()
   --   scroll_float(scroll_up_mapping)
@@ -257,7 +257,7 @@ end
 
 local hover_provider = function(_, _)
   -- vim already has builtin docs
-  if vim.bo.ft ~= 'vim' then
+  if vim.bo.ft ~= "vim" then
     mapping.hover()
   end
 end

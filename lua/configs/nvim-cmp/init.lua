@@ -110,12 +110,12 @@ local cfg = {
     completion = cmp.config.window.bordered({
       winhighlight = WIN_HIGHLIGHT,
       scrollbar = true,
-      winblend = 0,
+      winblend = 10,
     }),
     documentation = cmp.config.window.bordered({
       winhighlight = WIN_HIGHLIGHT,
       scrollbar = true,
-      winblend = 0,
+      winblend = 10,
     }),
   },
   mapping = cmp.mapping.preset.insert(mapping_main), --mapping_main,
@@ -248,6 +248,9 @@ vim.api.nvim_create_user_command(
   toggle_autocomplete,
   { desc = 'Toggle nvim-cmp autocomplete' }
 )
+-- cmp.event:on('menu_opened', function(event)
+--   local win = event.window.entries_win
+-- end)
 
 local pairs_integration = function()
   local cmp = require('cmp')

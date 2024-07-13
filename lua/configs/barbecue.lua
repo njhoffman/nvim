@@ -240,11 +240,18 @@ local cfg = {
     context_operator       = { fg = tokyoColors.green2 },
     context_type_parameter = { fg = tokyoColors.green2 },
   },
-  exclude_filetypes = { "netrw", "toggleterm", "vim" },
+  exclude_filetypes = {
+    'ansible_hosts',
+    "netrw",
+    "toggleterm",
+    "vim",
+  },
   exclude_buftypes = {'nofile'},
   modified = function(bufnr)
     return vim.bo[bufnr].modified
   end,
+  create_autocmd = false,
+  dir_display_limit = 10,
   show_modified = true,
   show_basename = true,
   show_dirname = true,
@@ -265,6 +272,7 @@ local cfg = {
     modified = "●",
     ellipsis = "…",
   },
+  attach_navic = false,
   lead_custom_section = function()
     return ' '
   end,
@@ -272,6 +280,20 @@ local cfg = {
 
 
 require('barbecue').setup(cfg)
+
+vim.api.nvim_create_autocmd({
+  "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
+  "BufWinEnter",
+  "CursorHold",
+  "InsertLeave",
+  -- include this if you have set `show_modified` to `true`
+  "BufModifiedSet",
+}, {
+  group = vim.api.nvim_create_augroup("barbecue.updater", {}),
+  callback = function()
+    require("barbecue.ui").update()
+  end,
+})
 
 -- vim.api.nvim_create_autocmd({
 --   "WinScrolled", -- or WinResized on NVIM-v0.9 and higher

@@ -67,10 +67,6 @@ local notify_handler = function(changes)
     align = { 'center', 'center', 'center', 'center', nil },
   })
 
-  if state.notify_wid and vim.api.nvim_win_is_valid(state.notify_wid) then
-    local sizes = get_dimensions(lines, state.notify_wid)
-    resize_window(state.notify_wid, sizes)
-  end
   local notif = notify(lines, 3, {
     timeout = false,
     on_close = function()

@@ -12,11 +12,14 @@
 ---@field keep fun(): boolean
 ---@field on_open fun(win: number, record: notify.Record) | nil
 ---@field on_close fun(win: number, record: notify.Record) | nil
+---@field on_replace fun(win: number, prev: notify.Notification, next: notify.Notification) | nil
 ---@field render fun(buf: integer, notification: notify.Notification, highlights: table<string, string>)
 local Notification = {}
 
 local level_maps = vim.tbl_extend('keep', {}, vim.log.levels)
-vim.tbl_add_reverse_lookup(level_maps)
+for label, num in pairs(level_maps) do
+  level_maps[num] = label
+end
 
 function Notification:new(id, message, level, opts, config)
   if type(level) == 'number' then
@@ -63,6 +66,7 @@ function Notification:new(id, message, level, opts, config)
     keep = opts.keep,
     on_open = opts.on_open,
     on_close = opts.on_close,
+    on_replace = opts.on_replace,
     animate = opts.animate ~= false,
     hide_from_history = opts.hide_from_history,
     render = opts.render,

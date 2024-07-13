@@ -95,7 +95,7 @@ local handlers = {
     end,
     request_cb = function(err, result, _, _)
       if err then
-        vim.dbglog({ Error = err, Result = result })
+        vim.dbglog('hover request error', { Error = err, Result = result })
       end
       local contents = handler.get_contents(result)
       log_results(method[1], contents)
@@ -105,7 +105,7 @@ local handlers = {
         local summary = handler.get_summary(contents, load_time)
         done({ summary = summary, idx = line_idx, hl = 'Keyword' })
       end
-    end
+    end,
     get_contents = function(result)
       if result and result.contents and result.contents.value then
         return result.contents.value
@@ -132,5 +132,4 @@ local handlers = {
 --       vim.lsp.buf_request_all(0, method[2], params, buf_request_all)
 --     end,
 --   },
-}
 return handlers

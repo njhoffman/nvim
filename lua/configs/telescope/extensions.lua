@@ -128,6 +128,26 @@ local extension_configs = {
       -- theme = "dropdown",
     },
   },
+  ['helpgrep'] = {
+    prompt_title = 'Helptags Grep',
+    -- glob_pattern = "*.txt",
+    -- disable_coordinates = true,
+    -- path_display = { "tail" },
+    ignore_paths = {
+      vim.fn.stdpath('state') .. '/lazy/readme',
+    },
+    mappings = {
+      i = {
+        ['<CR>'] = actions.select_default,
+        ['<C-v>'] = actions.select_vertical,
+      },
+      n = {
+        ['<CR>'] = actions.select_default,
+        ['<C-s>'] = actions.select_horizontal,
+      },
+    },
+    default_grep = require('telescope.builtin').live_grep,
+  },
   ['zf-native'] = {
     -- options for sorting file-like items
     file = {
@@ -282,26 +302,6 @@ local extension_configs = {
         ['<C-r>'] = require('telescope._extensions.egrepify.actions').toggle_permutations,
       },
     },
-  },
-  ['helpgrep'] = {
-    prompt_title = 'Help Grep',
-    -- glob_pattern = "*.txt",
-    -- disable_coordinates = true,
-    -- path_display = { "tail" },
-    ignore_paths = {
-      vim.fn.stdpath('state') .. '/lazy/readme',
-    },
-    mappings = {
-      i = {
-        ['<CR>'] = actions.select_default,
-        ['<C-v>'] = actions.select_vertical,
-      },
-      n = {
-        ['<CR>'] = actions.select_default,
-        ['<C-s>'] = actions.select_horizontal,
-      },
-    },
-    default_grep = require('telescope.builtin').live_grep,
   },
   ['git_file_history'] = {
     -- Keymaps inside the picker
@@ -663,21 +663,23 @@ end
 local load_extensions = function()
   local installed = {}
   for ext_name, _ in pairs(extension_configs) do
-    local ok, err = pcall(telescope.load_extension, ext_name)
-    if ok then
-      table.insert(installed, 0, ext_name)
-    else
-      local err_str = vim.split(err, '\n')
-      local err_msg = 'Error loading telescope plugin: ' .. ext_name .. ' - ' .. err_str[1]
-      vim.notify(err_msg, 4)
-    end
+    local res = require('telescope').load_extension(ext_name)
+    -- vim.dbglog('res', ext_name, #vim.tbl_keys(res))
+    table.insert(installed, ext_name)
+    -- local ok, err = pcall(telescope.load_extension, ext_name)
+    -- if ok then
+    -- else
+    --   local err_str = vim.split(err, '\n')
+    --   local err_msg = 'Error loading telescope plugin: ' .. ext_name .. ' - ' .. err_str[1]
+    --   vim.notify(err_msg, 4)
+    -- end
   end
   local end_msg = 'Loaded '
     .. H.table_len(installed)
     .. ' out of '
     .. H.table_len(extension_configs)
     .. ' telescope plugins'
-  -- vim.notify(end_msg, 1)
+  vim.notify(end_msg, 2)
 end
 
 -- vim.keymap.set("n", "<leader>fS", function()
@@ -691,14 +693,6 @@ return {
   get = get_extensions,
 }
 
---  Z telescope plugin:
---  <CR> (edit)	builtin.find_files    <C-x> (split)	:chdir to the dir
---  <C-v> (vsplit)	:lchdir to the dir  <C-t> (tabedit)	:tchdir to the dir
---  cmd Set command list to execute z -l or compatibles. Default: {vim.o.shell, '-c', 'z -l'}
---  cwd Transform result paths into relative ones with this value as base dir. Default: vim.fn.getcwd()
---  tail_path Show only basename of the path. Default value: false
---  shorten_path Call pathshorten() for each path. Default value: false
-
 --  FZF Syntax:
 --  Token	Match type	Description
 --  sbtrkt	fuzzy-match	Items that match sbtrkt
@@ -709,17 +703,3 @@ return {
 --  !^music	inverse-prefix-exact-match	Items that do not start with music
 --  !.mp3$	inverse-suffix-exact-match	Items that do not end with .mp3
 --  A single bar character term acts as an OR ope
-
---  File Browser
---  Insert / Normal	Action
---  <C-f>/f	Toggle between file and folder browser
---  <C-y>/y	Copy (multi-selected) files or folders to cwd
---  <C-d>/dd	Delete (multi-selected) files or folders
---  <C-r>/r	Rename (multi-selected) files
---  <C-e>/e	Add File/Folder at cwd; trailing / creates folder
---       /m	Move multi-selected files to cwd
---  <C-h>/h	Toggle hidden files
---  <C-o>/o	Open file with default system application
---  <C-g>/g	Go to parent directory
---  <C-w>/w	Go to current working directory
---  <A-e>/--	Toggle all entires ignoring ./ and ../

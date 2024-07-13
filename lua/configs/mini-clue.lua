@@ -21,7 +21,7 @@ local get_count = function(_clues)
   local count = { total = 0 }
   for _, clue in ipairs(_clues) do
     for _, trigger in ipairs(clue) do
-      if vim.tbl_islist(trigger) then
+      if vim.islist(trigger) then
         for _, subtrigger in ipairs(trigger) do
           count.total = count.total + 1
           if type(subtrigger.mode) == 'nil' then

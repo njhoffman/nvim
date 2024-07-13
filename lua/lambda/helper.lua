@@ -53,7 +53,7 @@ lambda.preserve = function(cmd)
 end
 
 lambda.PASTE = function(data)
-  if not vim.tbl_islist(data) then
+  if not vim.islist(data) then
     if type(data) == type('') then
       data = vim.split(data, '\n')
     else

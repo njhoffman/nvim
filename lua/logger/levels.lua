@@ -10,6 +10,8 @@ local scopes = {
   -- git                  = { main = 0 },
   -- hover                = { main = 2 },
   lazy                    = { main = 2 },
+  ['lazy:help']                = { main = 1 },
+  ['lazy:docs']                = { main = 1 },
   -- lsp                  = { main = 2 },
   -- mapper               = { main = -1, module = -1 },
   neoscroll               = { main = -1, module = 1 },

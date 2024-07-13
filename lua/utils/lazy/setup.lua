@@ -1,3 +1,4 @@
+-- local helputils = require('utils.help.lazy')
 local state = require('utils.lazy.state')
 
 local setup = function(opts)
@@ -75,6 +76,16 @@ local setup = function(opts)
         enabled = opts.cache,
       },
       reset_packpath = true,
+    },
+    -- lazy can generate helptags from the headings in markdown readme files,
+    -- so :help works even for plugins that don't have vim docs.
+    -- when the readme opens with :help it will be correctly displayed as markdown
+    readme = {
+      enabled = true,
+      root = vim.fn.stdpath("state") .. "/lazy/readme",
+      files = { "README.md", "lua/**/README.md" },
+      -- only generate markdown helptags for plugins that dont have docs
+      skip_if_doc_exists = false,
     },
     custom_keys = {
       -- ["<C-f"] = false,

@@ -14,13 +14,15 @@ local title_ignore = {
 }
 
 local render = function(bufnr, notif, highlights, config)
-  local title = (notif.title and type(notif.title) == 'table' and notif.title[1]) and notif.title[1] or ''
+  local title = (notif.title and type(notif.title) == 'table' and notif.title[1]) and notif.title[1]
+    or ''
   -- if notif.level == 'ERROR' and #title == 0 then
   --   title = 'ERROR'
   --   notif.title[1] = title
   -- end
 
-  local first_line = type(notif.message) == 'table' and notif.message[1] or vim.fn.split(notif.message, '\n')[1]
+  local first_line = type(notif.message) == 'table' and notif.message[1]
+    or vim.fn.split(notif.message, '\n')[1]
 
   local is_error = false
   for _, pattern in ipairs(error_patterns) do

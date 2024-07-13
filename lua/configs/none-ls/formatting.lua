@@ -1,34 +1,34 @@
-local null_ls = require('null-ls')
-local h = require('null-ls.helpers')
-local scan = require('plenary.scandir')
+local null_ls = require("null-ls")
+local h = require("null-ls.helpers")
+local scan = require("plenary.scandir")
 
 local root_files = {
   eslint = {
-    '.eslintrc',
-    '.eslintrc.js',
-    '.eslintrc.json',
+    ".eslintrc",
+    ".eslintrc.js",
+    ".eslintrc.json",
   },
   prettier = {
-    '.prettierrc',
-    '.prettierrc.js',
-    '.prettierrc.json',
+    ".prettierrc",
+    ".prettierrc.js",
+    ".prettierrc.json",
   },
   stylua = {
-    'stylua.toml',
-    '.stylua.toml',
+    "stylua.toml",
+    ".stylua.toml",
   },
   elm = {
-    'elm.json',
+    "elm.json",
   },
 }
 
-local lsp_util = require('lspconfig/util')
+local lsp_util = require("lspconfig/util")
 -- local stylua_found = util.root_pattern({'stylua.toml', '.stylua.toml'})(params.bufname)
 
 function search_ancestors(path, patterns)
   local stats = vim.loop.fs_stat(path)
-  local parent = vim.fn.fnamemodify(path, ':h')
-  if stats and stats.type == 'directory' then
+  local parent = vim.fn.fnamemodify(path, ":h")
+  if stats and stats.type == "directory" then
     local matched_files = scan.scan_dir(path, {
       depth = 1,
       add_dirs = false,
@@ -39,7 +39,7 @@ function search_ancestors(path, patterns)
       return matched_files[1]
     end
   end
-  if parent ~= nil and path ~= '/' then
+  if parent ~= nil and path ~= "/" then
     return search_ancestors(parent, patterns)
   else
     return false
@@ -47,7 +47,7 @@ function search_ancestors(path, patterns)
 end
 
 local get_config_file = function(patterns, start_dir)
-  start_dir = start_dir or vim.fn.expand('%:p:h')
+  start_dir = start_dir or vim.fn.expand("%:p:h")
   patterns = patterns or {}
   local config_file = search_ancestors(start_dir, patterns)
   -- vim.dbglog('get_config_file', config_file)
@@ -58,11 +58,11 @@ return {
   -- Formatters
   -- null_ls.builtins.formatting.asmfmt,
   null_ls.builtins.formatting.beautysh.with({
-    filetypes = { 'sh', 'bash' },
+    filetypes = { "sh", "bash" },
     extra_args = function(params)
       return {
-        '--indent-size',
-        vim.api.nvim_buf_get_option(params.bufnr, 'shiftwidth'),
+        "--indent-size",
+        vim.api.nvim_buf_get_option(params.bufnr, "shiftwidth"),
       }
     end,
   }),
@@ -89,22 +89,22 @@ return {
   -- null_ls.builtins.formatting.prettier_eslint,
   null_ls.builtins.formatting.prettierd.with({
     filetypes = {
-      'javascript',
-      'javascriptreact',
-      'typescript',
-      'typescriptreact',
-      'vue',
-      'css',
-      'scss',
-      'less',
-      'html',
-      'json',
-      'jsonc',
-      'yaml',
-      'markdown',
-      'markdown.mdx',
-      'graphql',
-      'handlebars',
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "vue",
+      "css",
+      "scss",
+      "less",
+      "html",
+      "json",
+      "jsonc",
+      "yaml",
+      "markdown",
+      "markdown.mdx",
+      "graphql",
+      "handlebars",
     },
     condition = function()
       -- local prettier_found = search_ancestors(vim.fn.expand("%:p:h"), "%.prettierrc")
@@ -116,17 +116,17 @@ return {
     end,
     cwd = h.cache.by_bufnr(function(params)
       return lsp_util.root_pattern({
-        '.prettierrc',
-        '.prettierrc.json',
-        '.prettierrc.yml',
-        '.prettierrc.yaml',
-        '.prettierrc.json5',
-        '.prettierrc.js',
-        '.prettierrc.cjs',
-        '.prettierrc.toml',
-        'prettier.config.js',
-        'prettier.config.cjs',
-        'package.json',
+        ".prettierrc",
+        ".prettierrc.json",
+        ".prettierrc.yml",
+        ".prettierrc.yaml",
+        ".prettierrc.json5",
+        ".prettierrc.js",
+        ".prettierrc.cjs",
+        ".prettierrc.toml",
+        "prettier.config.js",
+        "prettier.config.cjs",
+        "package.json",
       })(params.bufname)
     end),
   }),
@@ -146,31 +146,31 @@ return {
   -- null_ls.builtins.formatting.shellharden.with({ filetypes = { 'sh', 'bash' } }),
   null_ls.builtins.formatting.rustfmt.with({
     extra_args = function(params)
-      local Path = require('plenary.path')
-      local cargo_toml = Path:new(params.root .. '/' .. 'Cargo.toml')
+      local Path = require("plenary.path")
+      local cargo_toml = Path:new(params.root .. "/" .. "Cargo.toml")
       if cargo_toml:exists() and cargo_toml:is_file() then
         for _, line in ipairs(cargo_toml:readlines()) do
           local edition = line:match([[^edition%s*=%s*%"(%d+)%"]])
           if edition then
-            return { '--edition=' .. edition }
+            return { "--edition=" .. edition }
           end
         end
       end
       -- default edition when we don't find `Cargo.toml` or the `edition` in it.
-      return { '--edition=2021' }
+      return { "--edition=2021" }
     end,
   }),
   null_ls.builtins.formatting.shfmt.with({
-    filetypes = { 'sh', 'bash' },
+    filetypes = { "sh", "bash" },
     extra_args = function(params)
       return {
-        '--case-indent',
-        '--space-redirects',
-        '--simplify',
-        '--language-dialect',
-        'bash',
-        '--indent',
-        vim.api.nvim_buf_get_option(params.bufnr, 'shiftwidth'),
+        "--case-indent",
+        "--space-redirects",
+        "--simplify",
+        "--language-dialect",
+        "bash",
+        "--indent",
+        vim.api.nvim_buf_get_option(params.bufnr, "shiftwidth"),
       }
     end,
   }),
@@ -190,15 +190,15 @@ return {
   -- diagnostics.codespell.with { args = { "--ignore-words-list=Tung" } },
   null_ls.builtins.formatting.sqlfluff.with({
     extra_args = function(params)
-      local file_extension = vim.fn.fnamemodify(params.bufname, ':e')
+      local file_extension = vim.fn.fnamemodify(params.bufname, ":e")
       -- ANSI,Athena,BigQuery,ClickHouse,DataBricks,dbt,Exasol,Firebird,Greenplum,
       -- Hive,Impala,Materialize,MySQL,Oracle,PostgreSQL,Redshift,Spark,SQLServer,Snowflake,
       -- SQLite,T-SQL,Teradata,Trino
       return {
-        '--dialect',
-        'postgres',
-        '--indentation',
-        vim.api.nvim_buf_get_option(params.bufnr, 'shiftwidth'),
+        "--dialect",
+        "postgres",
+        "--indentation",
+        vim.api.nvim_buf_get_option(params.bufnr, "shiftwidth"),
       }
     end,
   }),
@@ -206,49 +206,49 @@ return {
   null_ls.builtins.formatting.standardrb,
   -- null_ls.builtins.formatting.standardts,
   null_ls.builtins.formatting.stylelint,
-  null_ls.builtins.formatting.stylua.with({
-    _config_file = get_config_file(root_files.stylua),
-    filetypes = { 'lua' },
-    condition = function()
-      if vim.bo.filetype ~= 'lua' then
-        return false
-      end
-      local config_file = get_config_file(root_files.stylua)
-      return vim.fn.executable('stylua') > 0 and config_file
-    end,
-    -- -- cwd = h.cache.by_bufnr(function(params)
-    -- --   local util = require "lspconfig/util"
-    -- --   return stylua_found
-    -- -- end),
-    -- -- params.bufnr, client_id, command, content, cwd, lsp_method, method, options, root
-    extra_args = function(params)
-      local local_config = get_config_file(root_files.stylua)
-      local bufnr = params.bufnr or 0
-      local column_width = vim.api.nvim_buf_get_option(bufnr, 'textwidth')
-      column_width = column_width > 0 and column_width or 100
-      local args = {
-        '--call-parentheses',
-        'Always',
-        '--collapse-simple-statement',
-        'Never',
-        '--quote-style',
-        'AutoPreferSingle',
-        '--column-width',
-        column_width,
-        '--indent-width',
-        vim.api.nvim_buf_get_option(bufnr, 'shiftwidth'),
-      }
-      if local_config ~= nil then
-        table.insert(args, '--config-path')
-        table.insert(args, local_config)
-      end
-      return args
-      -- sources.root, sources.cwd
-      -- editorconfig generator.opts._last_args, _last_command, _last_cwd
-      -- local sources = require("null-ls.sources")
-      -- local lua_src = sources.get_available('lua')
-    end,
-  }),
+  -- null_ls.builtins.formatting.stylua.with({
+  --   _config_file = get_config_file(root_files.stylua),
+  --   filetypes = { 'lua' },
+  --   condition = function()
+  --     if vim.bo.filetype ~= 'lua' then
+  --       return false
+  --     end
+  --     local config_file = get_config_file(root_files.stylua)
+  --     return vim.fn.executable('stylua') > 0 and config_file
+  --   end,
+  --   -- -- cwd = h.cache.by_bufnr(function(params)
+  --   -- --   local util = require "lspconfig/util"
+  --   -- --   return stylua_found
+  --   -- -- end),
+  --   -- -- params.bufnr, client_id, command, content, cwd, lsp_method, method, options, root
+  --   extra_args = function(params)
+  --     local local_config = get_config_file(root_files.stylua)
+  --     local bufnr = params.bufnr or 0
+  --     local column_width = vim.api.nvim_buf_get_option(bufnr, 'textwidth')
+  --     column_width = column_width > 0 and column_width or 100
+  --     local args = {
+  --       '--call-parentheses',
+  --       'Always',
+  --       '--collapse-simple-statement',
+  --       'Never',
+  --       '--quote-style',
+  --       'AutoPreferSingle',
+  --       '--column-width',
+  --       column_width,
+  --       '--indent-width',
+  --       vim.api.nvim_buf_get_option(bufnr, 'shiftwidth'),
+  --     }
+  --     if local_config ~= nil then
+  --       table.insert(args, '--config-path')
+  --       table.insert(args, local_config)
+  --     end
+  --     return args
+  --     -- sources.root, sources.cwd
+  --     -- editorconfig generator.opts._last_args, _last_command, _last_cwd
+  --     -- local sources = require("null-ls.sources")
+  --     -- local lua_src = sources.get_available('lua')
+  --   end,
+  -- }),
   -- null_ls.builtins.formatting.remark,
   null_ls.builtins.formatting.rubocop,
   -- null_ls.builtins.formatting.rubyfmt,
@@ -280,8 +280,8 @@ return {
   -- null_ls.builtins.formatting.yq,
   null_ls.builtins.formatting.golines.with({
     extra_args = {
-      '--max-len=120',
-      '--base-formatter=gofumpt',
+      "--max-len=120",
+      "--base-formatter=gofumpt",
     },
   }),
 }

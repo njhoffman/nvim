@@ -1,14 +1,14 @@
-local lspconfig = require('lspconfig')
+local lspconfig = require("lspconfig")
 local util = lspconfig.util
 
 local default_workspace = {
   library = {
-    vim.fn.expand('$VIMRUNTIME'),
-    vim.fn.stdpath('config'),
-    require('neodev.config').types(),
-    '${3rd}/busted/library',
-    '${3rd}/luassert/library',
-    '${3rd}/luv/library',
+    vim.fn.expand("$VIMRUNTIME"),
+    vim.fn.stdpath("config"),
+    require("neodev.config").types(),
+    "${3rd}/busted/library",
+    "${3rd}/luassert/library",
+    "${3rd}/luv/library",
   },
 
   maxPreload = 5000,
@@ -16,7 +16,7 @@ local default_workspace = {
 }
 local workspace2 = {
   checkThirdParty = false,
-  library = vim.api.nvim_get_runtime_file('', true),
+  library = vim.api.nvim_get_runtime_file("", true),
   -- library = {
   --   vim.fn.expand "$VIMRUNTIME",
   --   -- get_lvim_base_dir(),
@@ -59,20 +59,20 @@ local workspace2 = {
 
 local luarocks_settings = {
   runtime = {
-    version = 'Lua 5.3',
+    version = "Lua 5.3",
     path = {
-      '?.lua',
-      '?/init.lua',
-      vim.fn.expand('~/.luarocks/share/lua/5.3/?.lua'),
-      vim.fn.expand('~/.luarocks/share/lua/5.3/?/init.lua'),
-      '/usr/share/5.3/?.lua',
-      '/usr/share/lua/5.3/?/init.lua',
+      "?.lua",
+      "?/init.lua",
+      vim.fn.expand("~/.luarocks/share/lua/5.3/?.lua"),
+      vim.fn.expand("~/.luarocks/share/lua/5.3/?/init.lua"),
+      "/usr/share/5.3/?.lua",
+      "/usr/share/lua/5.3/?/init.lua",
     },
   },
   workspace = {
     library = {
-      vim.fn.expand('~/.luarocks/share/lua/5.3'),
-      '/usr/share/lua/5.3',
+      vim.fn.expand("~/.luarocks/share/lua/5.3"),
+      "/usr/share/lua/5.3",
     },
   },
 }
@@ -90,38 +90,38 @@ local lua_ls = function()
       -- plugins = false,
       -- plugins = true,
       plugins = {
-        'barbar.nvim',
+        "barbar.nvim",
         -- "debugprint.nvim",
         -- "feline.nvim",
         -- "fidget.nvim",
-        'lspconfig',
+        "lspconfig",
         -- "mason",
-        'mason-lspconfig',
+        "mason-lspconfig",
         -- "neo-tree.nvim",
-        'nvim-cmp',
+        "nvim-cmp",
         -- "nvim-dap",
         -- "nvim-dap-ui",
-        'nvim-notify',
-        'nvim-treesitter',
+        "nvim-notify",
+        "nvim-treesitter",
         -- "octo.nvim",
-        'plenary.nvim',
-        'telescope.nvim',
+        "plenary.nvim",
+        "telescope.nvim",
         -- "trouble.nvim",
         -- "vimade",
-        'which-key.nvim',
+        "which-key.nvim",
       },
     },
     setup_jsonls = true,
     pathStrict = true,
   }
 
-  require('neodev').setup(neodev_config)
+  require("neodev").setup(neodev_config)
 
-  lspconfig['lua_ls'].setup({
+  lspconfig["lua_ls"].setup({
     -- log_level = vim.lsp.protocol.MessageType.Warn,
     -- before_init = require("neodev.lsp").before_init,
     cmd = {
-      'lua-language-server',
+      "lua-language-server",
       -- "--logpath",
       -- vim.fn.stdpath("data"),
       -- "--loglevel",
@@ -129,16 +129,16 @@ local lua_ls = function()
     },
     root_dir = function(fname)
       local root_files = {
-        '.editorconfig',
-        '.stylua.toml',
-        'stylua.toml',
-        'selene.toml',
-        'selene.yml',
-        '.project',
-        '.luarc.json',
-        '.luarc.jsonc',
-        '.luacheckrc',
-        'vim.toml',
+        ".editorconfig",
+        ".stylua.toml",
+        "stylua.toml",
+        "selene.toml",
+        "selene.yml",
+        ".project",
+        ".luarc.json",
+        ".luarc.jsonc",
+        ".luacheckrc",
+        "vim.toml",
       }
 
       local pattern_root = nil
@@ -148,8 +148,8 @@ local lua_ls = function()
         if pattern_root ~= nil then
           pattern_root = pattern_root ~= vim.env.HOME and pattern_root or nil
           if pattern_root ~= nil then
-            local pattern_parts = vim.fn.split(pattern_root, '/')
-            if pattern_parts[#pattern_parts] == 'lua' then
+            local pattern_parts = vim.fn.split(pattern_root, "/")
+            if pattern_parts[#pattern_parts] == "lua" then
               lua_root = pattern_root
               pattern_root = nil
             end
@@ -163,7 +163,7 @@ local lua_ls = function()
     end,
 
     on_attach = function(client, bufnr)
-      require('lsp.on_attach')(client, bufnr)
+      require("lsp.on_attach")(client, bufnr)
       -- client.server_capabilities.semanticTokensProvider = nil
     end,
 
@@ -172,39 +172,39 @@ local lua_ls = function()
         format = {
           enable = false,
           defaultConfig = {
-            indent_style = 'space',
-            indent_size = '2',
+            indent_style = "space",
+            indent_size = "2",
             align_call_args = true,
             align_function_params = true,
             continuation_indent = 4,
-            quote_style = 'double',
-            trailing_table_separator = 'smart',
+            quote_style = "double",
+            trailing_table_separator = "smart",
           },
         },
         hint = {
           enable = true,
-          arrayIndex = 'Disable', -- "Enable", "Auto", "Disable"
+          arrayIndex = "Disable", -- "Enable", "Auto", "Disable"
           await = true,
-          paramName = 'Disable', -- "All", "Literal", "Disable"
+          paramName = "Disable", -- "All", "Literal", "Disable"
           paramType = false,
-          semicolon = 'Disable', -- "All", "SameLine", "Disable"
+          semicolon = "Disable", -- "All", "SameLine", "Disable"
           setType = true,
         },
         semantic = {
           enable = false,
         },
         diagnostics = {
-          globals = { 'vim', 'string', 'table', 'require', 'ipairs', 'pairs', 'print' },
+          globals = { "vim", "string", "table", "require", "ipairs", "pairs", "print" },
         },
         completion = {
-          callSnippet = 'Replace',
+          callSnippet = "Replace",
         },
         workspace = default_workspace,
         telemetry = {
           enable = false,
         },
         runtime = {
-          version = 'LuaJIT',
+          version = "LuaJIT",
         },
       },
     },

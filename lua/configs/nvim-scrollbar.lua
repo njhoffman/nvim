@@ -176,15 +176,15 @@ local opts = {
     'terminal',
   },
   excluded_filetypes = {
+    'TelescopePrompt',
     'chatgpt-input',
-    'notify',
     'cmp_docs',
     'cmp_menu',
     'lazy',
     'neoai-input',
     'noice',
+    -- 'notify',
     'prompt',
-    'TelescopePrompt',
   },
   marks = {
     Cursor = {

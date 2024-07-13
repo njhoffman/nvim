@@ -1,19 +1,22 @@
--- 06:48:20 PM msg_show.echomsg | [telescope] [WARN  18:48:20] /home/nicholas/git/telescope.nvim/lua/telescope/pickers.lua:644: Finder failed with msg:  /home/nicholas/git/telescope.nvim/lua/telescope/sorters.lua:430: attempt to index local 'entry' (a nil value)
--- 06:42:33 PM msg_show.echo | E764: Option 'completefunc' is not set
--- 06:42:37 PM msg_show.emsg   Error  | E764: Option 'completefunc' is not set
--- 06:51:48 PM msg_show |           [17/>99]
--- 08:16:53 PM msg_show.echo | E73: Tag stack empty
--- 08:38:27 PM msg_show.echo | E662: At start of changelist
-
--- 06:45:12 PM msg_show.echo | Error while evaluating dynamicNode@2 for snippet 'Require':
--- 06:45:12 PM msg_show | attempt to call a nil value
--- 06:45:12 PM msg_show | :h luasnip-docstring for more info
+-- popupmenu: hide,select,show
+-- cmdline: hide,pos,show,special_char,block_append,block_hide,block_show
+-- update: bg,fg,menu,sp
+-- msg: clear,history_clear,history_show,ruler,set_pos,show,showcmd,showmode
+-- win: close,hide,extmark,viewport,viewport_margins
+-- win: pos,external_pos,float_pos
+-- mode_change,mode_info
+-- highlight_set,hl_attr_define,hl_group_set
+-- put,option_set
+-- cursor_goto,resize,scroll
 
 local routes = {
   -- { filter = { event = 'notify.error_error' }, view = 'mini' },
   -- { filter = { event = 'msg_show.lua_error' }, view = 'mini' },
-  -- skip all lines
-  -- { filter = { event = "msg_show", ["not"] = { kind = { "confirm", "confirm_sub" }, }, }, opts = { skip = true }, },
+  {
+    -- view = 'popup',
+    view = 'split',
+    filter = { event = 'msg_show', min_height = 25 },
+  },
   {
     view = 'notify',
     opts = {
@@ -21,10 +24,7 @@ local routes = {
     },
     filter = { any = { { event = 'msg_history_show' } } },
   },
-  {
-    view = 'popup',
-    filter = { event = 'msg_show', min_height = 25 },
-  },
+  -- always route any messages with more than 20 lines to the split view
   {
     view = 'mini',
     filter = {
@@ -136,7 +136,6 @@ local routes = {
   --     },
   --   },
   -- },
-  -- always route any messages with more than 20 lines to the split view
   -- { filter = { event = 'msg_show', find = '^ERROR: ' }, view = 'notify' },
   -- { filter = { event = 'msg_show', kind = '', find = '^".+"  ?%d+L, %d+B$' }, opts = { skip = true }, },
   -- { filter = { event = 'msg_show', kind = '', find = '^".+"  ?%[.+%] %d+L, %d+B$' },
@@ -150,6 +149,16 @@ local routes = {
 
 return routes
 
+-- 06:48:20 PM msg_show.echomsg | [telescope] [WARN  18:48:20] /home/nicholas/git/telescope.nvim/lua/telescope/pickers.lua:644: Finder failed with msg:  /home/nicholas/git/telescope.nvim/lua/telescope/sorters.lua:430: attempt to index local 'entry' (a nil value)
+-- 06:42:33 PM msg_show.echo | E764: Option 'completefunc' is not set
+-- 06:42:37 PM msg_show.emsg   Error  | E764: Option 'completefunc' is not set
+-- 06:51:48 PM msg_show |           [17/>99]
+-- 08:16:53 PM msg_show.echo | E73: Tag stack empty
+-- 08:38:27 PM msg_show.echo | E662: At start of changelist
+
+-- 06:45:12 PM msg_show.echo | Error while evaluating dynamicNode@2 for snippet 'Require':
+-- 06:45:12 PM msg_show | attempt to call a nil value
+-- 06:45:12 PM msg_show | :h luasnip-docstring for more info
 -- FILTERS                       *noice.nvim-noice-(nice,-noise,-notice)-filters*
 -- **Noice** uses filters to route messages to specific views.
 --   ------------------------------------------------------------------------------

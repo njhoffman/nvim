@@ -1,21 +1,21 @@
-local lsp_icons = require('lsp.icons')
-local capabilities = require('lsp.capabilities')
-local format = require('lsp.format')
+local lsp_icons = require("lsp.icons")
+local capabilities = require("lsp.capabilities")
+-- local format = require('lsp.format')
 
 local setup_mappings = function(client, bufnr)
   vim.api.nvim_set_keymap(
-    'n',
-    '<C-t>',
+    "n",
+    "<C-t>",
     "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = true })<cr>",
-    { silent = true, desc = 'show buffer diagnostics' }
+    { silent = true, desc = "show buffer diagnostics" }
   )
 
   vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
   vim.api.nvim_set_keymap(
-    'n',
-    '<M-T>',
+    "n",
+    "<M-T>",
     "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>",
-    { silent = true, desc = 'show workspace  diagnostics' }
+    { silent = true, desc = "show workspace  diagnostics" }
   )
 
   -- vim.api.nvim_set_keymap('n', '<M-C-T>', '', {
@@ -28,58 +28,58 @@ local setup_mappings = function(client, bufnr)
   -- })
 
   vim.api.nvim_set_keymap(
-    'n',
-    '<Leader>e',
-    '<cmd>lua vim.diagnostic.open_float()<CR>',
-    { silent = true, desc = 'open diagnostic float' }
+    "n",
+    "<Leader>e",
+    "<cmd>lua vim.diagnostic.open_float()<CR>",
+    { silent = true, desc = "open diagnostic float" }
   )
   vim.api.nvim_set_keymap(
-    'n',
-    '[d',
-    '<cmd>lua vim.diagnostic.goto_prev()<CR>',
-    { silent = true, desc = 'prev diagnostic problem' }
+    "n",
+    "[d",
+    "<cmd>lua vim.diagnostic.goto_prev()<CR>",
+    { silent = true, desc = "prev diagnostic problem" }
   )
   vim.api.nvim_set_keymap(
-    'n',
-    ']d',
-    '<cmd>lua vim.diagnostic.goto_next()<CR>',
-    { silent = true, desc = 'next diagnostic problem' }
+    "n",
+    "]d",
+    "<cmd>lua vim.diagnostic.goto_next()<CR>",
+    { silent = true, desc = "next diagnostic problem" }
   )
   vim.api.nvim_set_keymap(
-    'n',
-    '[e',
-    '<cmd>lua vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })<CR>',
-    { silent = true, desc = 'jump to prev error' }
+    "n",
+    "[e",
+    "<cmd>lua vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })<CR>",
+    { silent = true, desc = "jump to prev error" }
   )
   vim.api.nvim_set_keymap(
-    'n',
-    ']e',
-    '<cmd>lua vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })<CR>',
-    { silent = true, desc = 'jump to next error' }
+    "n",
+    "]e",
+    "<cmd>lua vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })<CR>",
+    { silent = true, desc = "jump to next error" }
   )
   vim.api.nvim_set_keymap(
-    'n',
-    'gQd',
-    '<cmd>lua vim.diagnostic.setqflist({ open = true  })<CR>',
-    { silent = true, desc = 'diagnostics to quickfix' }
+    "n",
+    "gQd",
+    "<cmd>lua vim.diagnostic.setqflist({ open = true  })<CR>",
+    { silent = true, desc = "diagnostics to quickfix" }
   )
 
   -- if the file is .sql
-  if vim.bo.filetype == 'sql' then
-    vim.keymap.set('n', '<leader>', ':!sqlfluff fix -fq --dialect=postgres %<cr>')
+  if vim.bo.filetype == "sql" then
+    vim.keymap.set("n", "<leader>", ":!sqlfluff fix -fq --dialect=postgres %<cr>")
   end
 end
 
-local icons = lsp_icons.get_icons('diagnostics')
+local icons = lsp_icons.get_icons("diagnostics")
 vim.fn.sign_define(
-  'DiagnosticSignError',
-  { text = icons.error, texthl = 'LspDiagnosticsSignError' }
+  "DiagnosticSignError",
+  { text = icons.error, texthl = "LspDiagnosticsSignError" }
 )
-vim.fn.sign_define('DiagnosticSignWarn', { text = icons.warn, texthl = 'LspDiagnosticsSignWarn' })
-vim.fn.sign_define('DiagnosticSignInfo', { text = icons.info, texthl = 'LspDiagnosticsSignInfo' }) -- 󰌵
-vim.fn.sign_define('DiagnosticSignHint', { text = icons.hint, texthl = 'LspDiagnosticsSignHint' })
+vim.fn.sign_define("DiagnosticSignWarn", { text = icons.warn, texthl = "LspDiagnosticsSignWarn" })
+vim.fn.sign_define("DiagnosticSignInfo", { text = icons.info, texthl = "LspDiagnosticsSignInfo" }) -- 󰌵
+vim.fn.sign_define("DiagnosticSignHint", { text = icons.hint, texthl = "LspDiagnosticsSignHint" })
 
-format.setup()
+-- format.setup()
 
 -- exclude is a table of LSP servers that should not format the buffer.
 -- Alternatively, you can also just not call on_attach for the clients you don't want to use for formatting.
@@ -90,31 +90,34 @@ format.setup()
 -- vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
 
 local on_attach = function(client, bufnr)
-  local ok, disable_lsp = pcall(vim.api.nvim_buf_get_var, 0, 'disable_lsp')
+  local ok, disable_lsp = pcall(vim.api.nvim_buf_get_var, 0, "disable_lsp")
   if disable_lsp == 1 then
-    return vim.notify('Skipping buffer lsp', 1)
+    return vim.notify("Skipping buffer lsp", 1)
   end
 
+  if client.server_capabilities["documentSymbolProvider"] then
+    require("nvim-navic").attach(client, bufnr)
+  end
   --       vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
   -- vim.lsp.omnifunc = nil
   -- vim.api.nvim_set_option_value('omnifunc', nil, {})
   -- vim.api.nvim_set_option_value('omnifunc', nil, { buf = bufnr })
-  format.on_attach(client, bufnr)
+  -- format.on_attach(client, bufnr)
   setup_mappings(client, bufnr)
 
   -- client.config.flags.debounce_text_changes = 300
   -- client.config.flags.allow_incremental_sync = true
 
-  if client.name == 'lua_ls' then
+  if client.name == "lua_ls" then
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
-  elseif client.name == 'pyright' then
+  elseif client.name == "pyright" then
     client.server_capabilities.hoverProvider = false
-  elseif client.name == 'pylsp' then
+  elseif client.name == "pylsp" then
     client.server_capabilities.documentSymbolProvider = false
     client.server_capabilities.renameProvider = false
     client.server_capabilities.signatureHelpProvider = false
-  elseif client.name == 'cssls' then
+  elseif client.name == "cssls" then
     client.server_capabilities.textDocument.completion.completionItem.snippetSupport = true
   end
 

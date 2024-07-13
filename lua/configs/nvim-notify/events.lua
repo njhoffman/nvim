@@ -52,11 +52,45 @@ local on_open_old = function(win)
   end
 end
 
+local function resize_window(wid, sizes, interval)
+  interval = interval or 5
+  local from = sizes.from
+  local to = sizes.to
+  vim.defer_fn(function()
+    local inc = {
+      w = to.width > from.width and 1 or to.width < from.width and -1 or 0,
+      h = to.height > from.height and 1 or to.height < from.height and -1 or 0,
+    }
+    from.width = from.width + inc.w
+    from.height = from.height + inc.h
+    if  vim.api.nvim_win_is_valid(wid) then
+      vim.api.nvim_win_set_width(wid, from.width)
+      vim.api.nvim_win_set_height(wid, from.height)
+      if from.width ~= to.width or from.height ~= to.height and vim.api.nvim_win_is_valid(wid) then
+        resize_window(wid, sizes)
+      end
+    end
+  end, interval)
+end
+
+local on_replace = function(win, prev, next)
+  -- _state, _buffer, _config,
+  -- _notif.icon/id/level/message[]/filetype/highlights/title/on_open/on_close
+  -- highlights.body/border/content/groups/icon/opacity
+  local sizes = {
+    from = { width = prev._width, height = prev._height },
+    to = { width = next._width, height = next._height },
+  }
+  resize_window(win, sizes)
+end
+
 local on_open = function(win, record)
   -- local buf = vim.api.nvim_win_get_buf(win)
+  -- local height = #record.message
+  -- vim.dbglog('height', height)
   -- vim.api.nvim_set_option_value('sidescrolloff', 0, { win = win })
   -- local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
   -- vim.api.nvim_buf_set_option(buf, 'filetype', filetype)
 end
 
-return on_open
+return { on_open = on_open, on_replace = on_replace }

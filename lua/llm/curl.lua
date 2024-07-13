@@ -8,7 +8,7 @@ local function build_args(opts, stream)
     '-sS', -- silent (no progress) but show errors
   }
 
-  if opts.args ~= nil and vim.tbl_islist(opts.args) then
+  if opts.args ~= nil and vim.islist(opts.args) then
     for _,arg in ipairs(opts.args) do
       table.insert(args, arg)
     end

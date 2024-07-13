@@ -170,15 +170,30 @@ return function(injected_functions)
     -- WinBarGitDirty({ fg = "#d7afd7", bg = "#202331", gui = "bold" }),
     -- WinBarIndicator({ fg = "#5fafd7", bg = "#202331", gui = "bold" }),
     -- WinBarInactive({ bg = "#3a3a3a", fg = "#777777", gui = "bold" }),
-    Cursor({ bg = '#3760bf', fg = '#e1e2e7' }),
+    -- Cursor({ bg = '#3760bf' }), cursor = "0x5f36ff" text = "0xf1d1d1"
+    Cursor({ bg = '#3f56ff' }),
+    nCursor({ Cursor }),
+    iCursor({ Cursor }),
+    lCursor({ gui = 'reverse' }),
     -- Cursor({ bg = '#4B5Bff' }),
+    -- NavbuddyCursor({ gui = 'bold' }),
+    SpecsCursor({ bg = '#1f6385' }),
+    SmoothCursor({ fg = '#0081ca', gui = 'bold' }),
+    -- NoiceCursor({ bg = '#4B6BfB' }),  #51e3ed
+    NoiceCursor({ bg = '#003558', gui = 'bold', fg = '#17a9b3' }),
+    HopCursor({ Cursor }),
+    ReactiveCursor({ Cursor }),
+    -- ScrollViewCursorxxx links to WarningMsg
+    -- MiniAnimateCursorxxx cterm=reverse,nocombine gui=reverse,nocombine
+    -- CursorIMxxx cterm=reverse gui=reverse
+    -- FlashCursor({Cursor})	-- cursor
+    -- BqfPreviewCursor { Cursor },
     CursorColumn({ bg = '#061028' }),
     ColorColumn({ bg = '#061028' }),
     CursorLine({ bg = '#061028' }),
     CursorLineNr({ fg = '#44aaff', gui = 'italic' }),
     -- CursorLine({ bg = '#0a1020' }),
     -- CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
-    ReactiveCursor({}),
     -- CursorColumn({ bg = CursorLine.bg }),
     -- ColorColumn({ bg = CursorLine.bg }),
     -- base groups
@@ -479,7 +494,7 @@ return function(injected_functions)
     sym('@nospell')({ fg = 'none', bg = 'none', gui = 'none' }),
     sym('@number')({ Number }),
     sym('@operator')({ Operator }),
-    sym('@parameter')({ fg = '#41a6b5' }),
+    sym('@parameter')({ Statement }),
     sym('@property')({ Identifier }),
     sym('@punctuation.bracket')({ fg = '#7886a8' }), -- fg = "#a9b1d6"
     sym('@punctuation.bracket.luap')({ fg = '#8b8af7' }),
@@ -855,7 +870,6 @@ return function(injected_functions)
     InfoWindowFloat({ fg = '#2886bf', bg = 'none' }),
     BqfPreviewFloat({ Normal }),
     BqfPreviewBorder({ Normal }),
-    -- BqfPreviewCursor { Cursor },
     BqfPreviewRange({ IncSearch }),
     BqfSign({ fg = 'cyan' }),
     -- zshVariableDef { Normal },
@@ -1231,7 +1245,6 @@ return function(injected_functions)
     -- HlSearchLens({ fg = '#ff2266', bg = '#003333' }), -- WildMenu
     -- HlSearchLensNear({ fg = '#00ddff', bg = 'none' }), -- IncSearch
 
-    SpecsCursor({ bg = '#1f6385' }),
     HighlightUndo({ fg = '#b7001e', bg = '#0f2139' }),
     HighlightRedo({ fg = '#00ffdd', bg = '#003149' }),
     BackseatText({ DiagnosticFloatingHint, gui = 'italic' }),
@@ -1254,7 +1267,6 @@ return function(injected_functions)
     -- FlashLabel({	Substitute	}), -- jump label
     -- FlashPrompt({	MsgArea	}), -- prompt
     -- FlashPromptIcon({	Special	}), -- prompt icon
-    -- FlashCursor({Cursor})	-- cursor
     -- FlashBackdropRemote
     -- FlashRemoteLine
     -- RenamerNormal Normal
@@ -1265,7 +1277,6 @@ return function(injected_functions)
     MatchWord({ fg = '#7f6686', gui = 'italic' }),
     MatchBackground({ gui = 'italic', bg = '#0f2139' }), -- colorcolumn
     RegistersPreview({ fg = '#009ac8', bg = 'none', gui = 'none' }), -- IncSearch
-    SmoothCursor({ fg = '#0081ca', gui = 'bold' }),
     LeapMatch({ fg = '#00ffdd', bg = 'none' }), -- IncSearch
     -- LeapLabelPrimary
     -- LeapLabelSelected
@@ -1323,9 +1334,9 @@ return function(injected_functions)
     BufferAlternateDELETED({ bg = '#0c2333' }),
     BufferAlternateSignRight({ bg = '#0c2333' }),
     -- noice.nvim
-    -- NoiceCursor({ bg = '#4B6BfB' }),  #51e3ed
-    NoiceCursor({ bg = '#003558', gui = 'bold', fg = '#17a9b3' }),
-    NoiceCmdline({ fg = '#00aacc' }),
+    NoiceCmdlinePopupTitle({ bold = true, fg = '#82b4ff' }),
+    NoiceCmdlinePopupBorderFilter({ fg = '#643e5d' }),
+    NoiceCmdlineIconFilter({ fg = '#643e5d' }),
     NeoTreeTitleBar({ bg = '#1f2342' }),
     NeoTreeFileNameOpened({ gui = 'bold' }),
     -- NeoTreeNormal guibg=#010409"
@@ -1354,7 +1365,6 @@ return function(injected_functions)
     -- NoiceCmdlinePopupBorderNumb({ fg = '#8888ff' }),
     -- NoiceCmdlinePopupBorderSearch({ fg = '#b48ead'  }),
     -- NoiceCmdlinePopupSubs({ fg = '#6B8BFF' }),
-    -- NoiceCmdlinePopupTitle({ fg = '#A3BE8C' }),
     -- NoiceCmdlinePrompt({ fg = '#68e0f5" ' }),
     --	NoiceConfirm                      = { fg = C.frost.turquoise, bg = C.bg },           --normal for the confirm view
     -- NoiceConfirmBorder                = { fg = C.frost.turquoise, bg = C.bg },           --Border for the confirm view

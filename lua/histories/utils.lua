@@ -7,7 +7,7 @@ local get_change_hash = function(c)
     c.col + c.lnum
 end
 
-local process_list = function(list, pos_idx)
+local process_list = function(list, pos_idx, unique)
   local new_list = {}
   local hashes = {}
   local hash_id = pos_idx
@@ -16,7 +16,7 @@ local process_list = function(list, pos_idx)
     local hash, hash_n = get_change_hash(item)
     hash_id = hash_id + i + hash_n
     item.idx = i
-    if not vim.list_contains(hashes, hash) then
+    if not unique or vim.list_contains(hashes, hash) then
       if i == (#list - pos_idx) then
         new_idx = #new_list
         hash_id = hash_id + i

@@ -15,7 +15,7 @@
 
 -- `g:smoothie_experimental_mappings`: Set this to true to enable additional,
 
-vim.g.smoothie_speed_constant_factor = 5
+-- vim.g.smoothie_speed_constant_factor = 5
 -- if !exists('g:smoothie_minimum_speed')
 --   ""
 --   " Minimum scrolling speed (in lines per second) the animation will stay

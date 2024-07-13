@@ -1,6 +1,42 @@
 local require = require('noice.util.lazy')
 local Config = require('noice.config')
 
+-- {
+--   -- default format
+--   default = { "{level} ", "{title} ", "{message}" },
+--   -- default format for vim.notify views
+--   notify = { "{message}" },
+--   -- default format for the history
+--   details = { "{level} ", "{date} ", "{event}",
+--     { "{kind}", before = { ".", hl_group = "NoiceFormatKind" } },
+--     " ", "{title} ", "{cmdline} ", "{message}",
+--   },
+--   telescope = ..., -- formatter used to display telescope results
+--   telescope_preview = ..., -- formatter used to preview telescope results
+--   lsp_progress = ..., -- formatter used by lsp progress
+--   lsp_progress_done = ..., -- formatter used by lsp progress
+-- }
+
+-- -- redirect some function
+-- require("noice").redirect(function()
+--   print("test")
+-- end)
+--
+-- vim.api.nvim_create_autocmd('BufEnter', {})
+
+-- notify           notify     nvim-notify with level=nil, replace=false,
+--                             merge=false
+-- split            split      horizontal split
+-- vsplit           split      vertical split
+-- popup            popup      simple popup
+-- mini             mini       minimal view, by default bottom right, right-aligned
+-- cmdline          popup      bottom line, similar to the classic cmdline
+-- cmdline_popup    popup      fancy cmdline popup, with different styles according
+-- cmdline_output   split      split used by config.presets.cmdline_output_to_split
+-- messages         split      split used for :messages
+-- confirm          popup      popup used for confirm events
+-- hover            popup      popup used for lsp signature help and hover
+-- popupmenu        nui.menu   special view with the options used to render the
 local cmdlineView = {
   reverse = false,
   align = 'message-left',
@@ -90,52 +126,7 @@ local miniViewDefault = {
   },
 }
 
-local errorViewFormat = {
-  '{date} ',
-  '{event}',
-  { '{kind}', before = { '.', hl_group = 'NoiceFormatKind' } },
-  ' ',
-  '{level} ',
-  '{cmdline} ',
-  '{title} ',
-  '| {message}',
-}
-
-local historyView = {
-  -- options for the message history that you get with `:Noice`
-  -- view = 'split',
-  view = 'popup',
-  opts = { enter = true, format = errorViewFormat },
-  filter = {
-    any = {
-      { event = '' },
-      { event = 'notify' },
-      { error = true },
-      { warning = true },
-      { event = 'msg_show' },
-      { event = 'lsp', kind = 'message' },
-    },
-  },
-}
-
-local errorView = {
-  -- backend = 'notify',
-  opts = { enter = true, format = errorViewFormat },
-  filter = {
-    any = {
-      { event = '' },
-      { event = 'notify' },
-      { error = true },
-      { warning = true },
-      { event = 'msg_show' },
-    },
-  },
-}
-
 return {
-  historyView = historyView,
-  errorView = errorView,
   miniView = miniView,
   cmdlineView = cmdlineView,
-  errorViewFormat = errorViewFormat,
 }

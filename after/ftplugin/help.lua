@@ -40,7 +40,7 @@ local set_syntax = function()
   -- local putils = require('telescope.previewers.utils')
   -- putils.ts_highlighter(state.src_bufnr, 'markdown')
   -- putils.regex_highlighter(state.src_bufnr, 'pandoc')
-  vim.treesitter.language.register('help', 'markdown')
+  -- vim.treesitter.language.register('help', 'markdown')
   -- vim.treesitter.language.register('help', { 'txt', 'text' })
   vim.treesitter.start()
 end

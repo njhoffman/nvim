@@ -160,7 +160,7 @@ end
 -- util.try_get_keys({foo = "bar", hoge = "fuga", teka = "pika"}, ["teka", "foo"])
 -- -> ["pika", "bar"]
 function M.try_get_keys(tbl, keylst)
-  if not vim.tbl_islist(keylst) then
+  if not vim.x_islist(keylst) then
     return nil, 'the 2nd argument is not list.'
   end
 

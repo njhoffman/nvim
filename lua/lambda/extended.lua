@@ -35,7 +35,7 @@ local extended = {
       -- if the comparison was successful
       for case, action in pairs(statements) do
         -- If the case statement is a list of data then compare that
-        if type(case) == 'table' and vim.tbl_islist(case) then
+        if type(case) == 'table' and vim.islist(case) then
           for _, subcase in ipairs(case) do
             if compare(value, subcase) then
               -- The action can be a function, in which case it is invoked

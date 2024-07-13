@@ -54,7 +54,6 @@ opt('matchtime', 3) -- How many tenths of a second to blink when matching bracke
 opt('modelines', 5)
 opt('mouse', 'nivh')
 opt('previewheight', 15)
-opt('pumblend', 10)
 opt('pumheight', 10)
 opt('regexpengine', 0)
 opt('redrawtime', 3000)
@@ -128,6 +127,10 @@ opt('writebackup', true)
 })
 ]]
 -- window scope
+
+opt('pumblend', 10)
+-- opt('winblend', 15, window)
+
 opt('concealcursor', 'nc', window)
 opt('conceallevel', 0, window)
 opt('colorcolumn', '+1', window)
@@ -153,17 +156,27 @@ opt('tabstop', 2, buffer)
 opt('undofile', true, buffer)
 opt('equalalways', false) -- make windows the samue width when closing one
 opt('cursorlineopt', 'both') -- should get cursorline in number too
-
--- vim.o.guicursor = 'n-v-c-sm-i-ci-ve:block,r-cr-o:hor20,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor'
-
--- vim.opt.guicursor = {
---   "i-ci-c:ver25", -- INFO with noice.nvim, the guicursor cannot be styled in the cmdline https://github.com/folke/noice.nvim/issues/552
---   "n-sm:block",
---   "r-cr-o-v:hor10",
---   "a:blinkwait200-blinkoff350-blinkon550",
--- }
-
+opt(
+  'guicursor',
+  vim.fn.join({
+    'n-v-c:block-Cursor',
+    'i-ci-ve:ver25-iCursor',
+    'r-cr:hor30-Cursor',
+    'o:hor50-Cursor',
+    'a:blinkwait400-blinkoff200-blinkon300-Cursor/lCursor',
+    'sm:block-blinkwait175-blinkoff150-blinkon175',
+  }, ',')
+)
+-- i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
+-- sm:block-blinkwait175-blinkoff150-blinkon175
+-- blinkwait175-blinkoff150-blinkon175-Cursor/lCursor
+-- blinkwait300-blinkoff150-blinkon200-Cursor/lCursor
+-- blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+-- blinkwait300-blinkoff150-blinkon200-Cursor/lCursor
+-- blinkwait200-blinkoff350-blinkon550-Cursor/lCursor
+-- blinkwait200-blinkoff350-blinkon550-Cursor/lCursor
 -- opt('fillchars', 'eob: ') -- Don't show `~` outside of buffer
+
 vim.opt.fillchars:append({
   eob = ' ',
   fold = ' ',
@@ -223,80 +236,10 @@ vim.opt.fillchars:append({
 --   vim.opt.swapfile = false -- don't use a swap file
 -- end
 --
+-- n-c-v:block-nCursor	In Normal, Command-line and Visual mode, use a
+-- n-v-c-sm:block,i-ci-ve:ver25-Cursor,r-cr-o:hor20
+-- i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
 
 -- set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
 -- \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
 -- \,sm:block-blinkwait175-blinkoff150-blinkon175
-
--- <	The option is a comma-separated list of parts.  Each part consists of a
--- mode-list and an argument-list:
--- mode-list:argument-list,mode-list:argument-list,..
--- The mode-list is a dash separated list of these modes:
--- n	Normal mode
--- v	Visual mode
--- ve	Visual mode with 'selection' "exclusive" (same as 'v',
--- if not specified)
--- o	Operator-pending mode
--- i	Insert mode
--- r	Replace mode
--- c	Command-line Normal (append) mode
--- ci	Command-line Insert mode
--- cr	Command-line Replace mode
--- sm	showmatch in Insert mode
--- a	all modes
--- The argument-list is a dash separated list of these arguments:
--- hor{N}	horizontal bar, {N} percent of the character height
--- ver{N}	vertical bar, {N} percent of the character width
--- block	block cursor, fills the whole character
--- - Only one of the above three should be present.
--- - Default is "block" for each mode.
--- blinkwait{N}				*cursor-blinking*
--- blinkon{N}
--- blinkoff{N}
--- blink times for cursor: blinkwait is the delay before
--- the cursor starts blinking, blinkon is the time that
--- the cursor is shown and blinkoff is the time that the
--- cursor is not shown.  Times are in msec.  When one of
--- the numbers is zero, there is no blinking. E.g.: >vim
--- set guicursor=n:blinkon0
--- <			- Default is "blinkon0" for each mode.
--- {group-name}
--- Highlight group that decides the color and font of the
--- cursor.
--- In the |TUI|:
--- - |inverse|/reverse and no group-name are interpreted
--- as "host-terminal default cursor colors" which
--- typically means "inverted bg and fg colors".
--- - |ctermfg| and |guifg| are ignored.
--- {group-name}/{group-name}
--- Two highlight group names, the first is used when
--- no language mappings are used, the other when they
--- are. |language-mapping|
-
--- Examples of parts:
--- n-c-v:block-nCursor	In Normal, Command-line and Visual mode, use a
--- block cursor with colors from the "nCursor"
--- highlight group
--- n-v-c-sm:block,i-ci-ve:ver25-Cursor,r-cr-o:hor20
--- In Normal et al. modes, use a block cursor
--- with the default colors defined by the host
--- terminal.  In Insert-like modes, use
--- a vertical bar cursor with colors from
--- "Cursor" highlight group.  In Replace-like
--- modes, use an underline cursor with
--- default colors.
--- i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
--- In Insert and Command-line Insert mode, use a
--- 30% vertical bar cursor with colors from the
--- "iCursor" highlight group.  Blink a bit
--- faster.
-
--- The 'a' mode is different.  It will set the given argument-list for
--- all modes.  It does not reset anything to defaults.  This can be used
--- to do a common setting for all modes.  For example, to switch off
--- blinking: "a:blinkon0"
-
--- Examples of cursor highlighting: >vim
--- highlight Cursor gui=reverse guifg=NONE guibg=NONE
--- highlight Cursor gui=NONE guifg=bg guibg=fg
--- <

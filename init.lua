@@ -1,51 +1,52 @@
 -- require('internals').init()
 
-require('globals')
+require("globals")
 
-vim.import('quickfix')
+vim.import("quickfix")
 
-require('utils.lazy').setup({ cache = false, reload = false, lazy = false })
+require("utils.lazy").setup({ cache = false, reload = false, lazy = false })
 
 -- qfSeparator, qfLineNr, qfFilename
+
 for _, mod_name in ipairs({
-  'keymaps',
-  'commands',
-  'abbreviations',
-  'autocommands',
-  'wf-setup',
-  'devbox',
-  'project',
-  'runner',
-  'stats',
-  'devdocs.setup',
+  "keymaps",
+  "commands",
+  "abbreviations",
+  "autocommands",
+  "wf-setup",
+  "devbox",
+  "project",
+  "runner",
+  "stats",
+  "devdocs.setup",
   -- 'configs.cinnamon',
-  'tracker.setup',
-  'configs.registers',
+  "tracker.setup",
+  "configs.registers",
   -- 'configs.nvim-scrollbar',
   -- 'configs.neoscroll',
-  'action-hints.setup',
+  "action-hints.setup",
   -- 'winsep.setup',
   -- 'better_escape-setup',
-  'early-retirement.setup',
-  'oldfiles',
-  'tail',
-  'hover.setup',
-  'configs.feline',
-  'baleia.setup',
+  "early-retirement.setup",
+  "oldfiles",
+  "tail",
+  "hover.setup",
+  "configs.feline",
+  "baleia.setup",
 }) do
   vim.import(mod_name)
 end
 
 vim.defer_fn(function()
-  require('sidebar').setup()
-  require('histories').setup()
+  require("sidebar").setup()
+  require("histories").setup()
 
   -- 'lab.setup',
-  local llm_config = require('llm-config')
-  require('llm').setup(llm_config)
+  local llm_config = require("llm-config")
+  require("llm").setup(llm_config)
 
-  local neoai_cfg = require('neoai.options')
-  require('neoai').setup(neoai_cfg)
+  local neoai_cfg = require("neoai.options")
+  require("neoai").setup(neoai_cfg)
 
   -- local map = require('mapper').map
 

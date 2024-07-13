@@ -15,7 +15,7 @@ local get_icon = function(method, lsp)
     cssls =                  { get_by_ft("css") },
     dockerls =               { get_by_ft("dockerfile") },
     efm =                    { get_by_ft("conf") },
-    eslint =                 { get_by_ft("javascript") },
+    eslint =                 { get_by_ft("js") },
     golangci_lint_ls =       { get_by_ft("go") },
     gopls =                  { get_by_ft("go") },
     gradle_language_server = { get_by_ft("kotlin") },
@@ -27,13 +27,13 @@ local get_icon = function(method, lsp)
     ltex =                   { get_by_ft("markdown") },
     lua_ls =                 { get_by_ft("lua") },
     marksman  =              { get_by_ft("markdown") },
-    pyright =                { get_by_ft("python") },
-    pylsp =                  { get_by_ft("python") },
+    pyright =                { get_by_ft("py") },
+    pylsp =                  { get_by_ft("py") },
     sqls =                   { get_by_ft("sql") },
     stylelint_lsp =          { get_by_ft("scss") },
     tailwindcss =            { get_by_ft("less") },
     terraformls =            { get_by_ext("tf") },
-    tsserver =               { get_by_ft("javascript") },
+    tsserver =               { get_by_ft("js") },
     vimls =                  { get_by_ft("vim") },
     yamlls =                 { get_by_ft("yaml") },
   }
@@ -43,7 +43,11 @@ local get_icon = function(method, lsp)
     -- icon = get_by_ft('git')
     icon = { ' ', 'GitLogo' }
   elseif type(lsp) == 'string' and lsp ~= '' then
-    if type(icon_map) == 'table' and type(icon_map[lsp]) == 'table' and type(icon_map[lsp][1]) == 'string' then
+    if
+      type(icon_map) == 'table'
+      and type(icon_map[lsp]) == 'table'
+      and type(icon_map[lsp][1]) == 'string'
+    then
       icon = icon_map[lsp]
     else
       vim.dbglog(icon_map, lsp)

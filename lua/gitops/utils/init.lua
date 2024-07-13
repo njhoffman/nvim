@@ -79,7 +79,7 @@ end
 M.get_widths = function(part_lines)
   local widths = {}
   for _, line in ipairs(part_lines) do
-    if vim.tbl_islist(line) then
+    if vim.islist(line) then
       for n, part in ipairs(line) do
         if type(widths[n]) == 'nil' then
           widths[n] = 0

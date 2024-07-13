@@ -1,4 +1,27 @@
 --  vim.g.vimade = {
+--    enabletreesitter = 1,
+--    basegroups = {
+--      "Search",
+--      "SignColumn",
+--      "v2hexokinase", "LineNr",
+--      "CursorLine",
+--      "CursorLineNr",
+--      "DiffAdd",
+--      "DiffChange",
+--      "DiffDelete",
+--      "DiffText",
+--      "FoldColumn",
+--      "Whitespace"
+--    },
+--    rowbufsize = 15,
+--    colbufsize = 15,
+--    fadelevel = 0.7,
+--    signsretentionperiod = 1000,
+--    fadepriority = 50,
+--    enablesigns = 1,
+--    enablefocusfading = 1
+-- --  }
+
 -- TODO: have separate fade level for focus events
 
 vim.g.vimade = {
@@ -25,7 +48,7 @@ vim.g.vimade = {
     -- '@ibl.scope.char.1',
     -- '@ibl.indent.char.1',
     -- '@ibl.whitespace.char.1',
-    'Search',
+    -- 'Search',
     'SignColumn',
     -- 'Scrollbar',
     -- 'ScrollView',
@@ -45,7 +68,7 @@ vim.g.vimade = {
   enablefocusfading = 1,
   enablesigns = 0,
   enabletreesitter = 1,
-  fadelevel = '0.50',
+  fadelevel = 0.5,
   fadepriority = 100,
   groupdiff = 1,
   groupscrollbind = 1,
@@ -62,6 +85,8 @@ vim.api.nvim_create_autocmd({ 'FocusLost' }, {
     vim.api.nvim_set_option_value('colorcolumn', '', { win = winid })
   end,
 })
+
+-- vim.cmd('VimadeFadeActive')
 vim.api.nvim_create_autocmd({ 'FocusGained' }, {
   group = 'VimadeEvents',
   callback = function(ev)
@@ -69,33 +94,50 @@ vim.api.nvim_create_autocmd({ 'FocusGained' }, {
     vim.api.nvim_set_option_value('colorcolumn', '+1', { win = winid })
   end,
 })
--- window instead of bufer fading
--- augroup SemiDimPerWin
--- au!
--- au WinLeave * call OnWinLeave()
--- au WinEnter * call OnWinEnter()
--- au! TextChangedI,TextChanged * call UpdateBufferAsync()
--- augroup END
+-- vim.api.nvim_create_autocmd({ 'BufWinEnter', 'BufWinLeave' }, {
+--   group = 'VimadeEvents',
+--   callback = function(ev)
+--     local state = {
+--       bufnr = ev.buf,
+--       winnr = vim.fn.bufwinnr(ev.buf),
+--       ft = vim.api.nvim_buf_get_option(ev.buf, 'filetype'),
+--       buftype = vim.api.nvim_buf_get_option(ev.buf, 'buftype'),
+--       bufname = vim.api.nvim_buf_get_name(ev.buf),
+--     }
+--     local wininfo = vim.fn.getwininfo(state.winnr)
+--     vim.dbglog(ev.event .. ':' .. state.bufnr .. ' ' .. state.buftype .. ' ' .. state.ft)
+--   end,
+-- })
 
--- function! OnWinEnter ()
---     VimadeFadeActive
---     VimadeWinDisable
--- endfunction
--- function! OnWinLeave ()
---     VimadeWinEnable
--- endfunction
+-- vim.cmd([[
+--  " window instead of bufer fading
+--  augroup SemiDimPerWin
+--  au!
+--  au WinLeave * call OnWinLeave()
+--  au WinEnter * call OnWinEnter()
+--  au! TextChangedI,TextChanged * call UpdateBufferAsync()
+--  augroup END
 
--- function! UpdateBufferAsync ()
---     if exists('g:update_vimade')
---         return
---     endif
---     let g:update_vimade = timer_start(1, 'DoUpdateBuffer') "change the timer value from 1 to whatever to help with performance
--- endfunction
+--   function! OnWinEnter ()
+--       VimadeFadeActive
+--       VimadeWinDisable
+--   endfunction
+--   function! OnWinLeave ()
+--       VimadeWinEnable
+--   endfunction
 
--- function! DoUpdateBuffer (w)
---     unlet g:update_vimade
---     call vimade#BufDisable()
---     call vimade#BufEnable()
--- endfunction
+--  function! UpdateBufferAsync ()
+--      if exists('g:update_vimade')
+--          return
+--      endif
+--      let g:update_vimade = timer_start(1, 'DoUpdateBuffer') "change the timer value from 1 to whatever to help with performance
+--  endfunction
 
+--  function! DoUpdateBuffer (w)
+--      unlet g:update_vimade
+--      call vimade#BufDisable()
+--      call vimade#BufEnable()
+--  endfunction
+
+-- ]])
 -- print(vim.inspect(vim.g.vimade.fadelevel))

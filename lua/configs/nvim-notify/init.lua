@@ -1,13 +1,12 @@
 -- https://raw.githubusercontent.com/rcarriga/nvim-notify/master/README.md
 -- increase fade in frequency
 
-local on_open = require('configs.nvim-notify.on_open')
+local events = require('configs.nvim-notify.events')
 local render = require('notify.render._entry')
 
 local cfg = {
   level = vim.log.levels.DEBUG,
   fps = 30,
-  render = render,
   stages = 'fade_in_slide_out',
   -- background_colour = '#000000',
   timeout = 5000,
@@ -28,7 +27,9 @@ local cfg = {
     RUN = '',
     STATUS = '',
   },
-  on_open = on_open,
+  render = render,
+  on_open = events.on_open,
+  on_replace = events.on_replace,
 }
 require('notify').setup(cfg)
 -- vim.notify = require('notify').notify
