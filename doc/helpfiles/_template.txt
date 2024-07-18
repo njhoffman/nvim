@@ -1,8 +1,8 @@
-*_template.txt* Helpfile template
+*__helpfiles.txt* Template for making local helpfiles
 
 Only the first line is really important.
+                                                    *template-settings*
 
-																					*template-settings*
 Tag names for in between * asterisks * (cannot have duplicates!)
 
 Special highlighting occurs with words in <angle-brackets>, {braces}, or
@@ -50,4 +50,4 @@ Commands:
   :Correct {word}
     Add a correction for {word}.
 
-vim:ft=help:tw=80:ts=2:sw=2:cole=2
+vim:ft=help:tw=80:ts=8:sw=2:cole=2

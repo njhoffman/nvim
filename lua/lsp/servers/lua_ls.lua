@@ -5,7 +5,6 @@ local default_workspace = {
   library = {
     vim.fn.expand("$VIMRUNTIME"),
     vim.fn.stdpath("config"),
-    require("neodev.config").types(),
     "${3rd}/busted/library",
     "${3rd}/luassert/library",
     "${3rd}/luv/library",
@@ -14,108 +13,10 @@ local default_workspace = {
   maxPreload = 5000,
   preloadFileSize = 10000,
 }
-local workspace2 = {
-  checkThirdParty = false,
-  library = vim.api.nvim_get_runtime_file("", true),
-  -- library = {
-  --   vim.fn.expand "$VIMRUNTIME",
-  --   -- get_lvim_base_dir(),
-  --   require("neodev.config").types(),
-  --   "${3rd}/luv/library",
-  --   "${3rd}/busted/library",
-  --   "${3rd}/luassert/library",
-  -- },
-  maxPreload = 5000,
-  preloadFileSize = 10000,
-}
-
--- local add_packages_to_workspace = function(packages, config)
---   -- config.settings.Lua = config.settings.Lua or { workspace = default_workspace }
---   local runtimedirs = vim.api.nvim__get_runtime({ 'lua' }, true, { is_lua = true })
---   local workspace = config.settings.Lua.workspace
---   for _, v in pairs(runtimedirs) do
---     for _, pack in ipairs(packages) do
---       if v:match(pack) and not vim.tbl_contains(workspace.library, v) then
---         table.insert(workspace.library, v)
---       end
---     end
---   end
--- end
--- local make_on_new_config = function(on_new_config, _)
---   return lspconfig.util.add_hook_before(on_new_config, function(new_config, _)
---     local server_name = new_config.name
---
---     if server_name ~= "lua_ls" then
---       return
---     end
---     local plugins = { "plenary.nvim", "telescope.nvim", "nvim-treesitter", "LuaSnip" }
---     add_packages_to_workspace(plugins, new_config)
---   end)
--- end
-
--- lspconfig.util.default_config = vim.tbl_extend('force', lspconfig.util.default_config, {
---   on_new_config = make_on_new_config(lspconfig.util.default_config.on_new_config),
--- })
-
-local luarocks_settings = {
-  runtime = {
-    version = "Lua 5.3",
-    path = {
-      "?.lua",
-      "?/init.lua",
-      vim.fn.expand("~/.luarocks/share/lua/5.3/?.lua"),
-      vim.fn.expand("~/.luarocks/share/lua/5.3/?/init.lua"),
-      "/usr/share/5.3/?.lua",
-      "/usr/share/lua/5.3/?/init.lua",
-    },
-  },
-  workspace = {
-    library = {
-      vim.fn.expand("~/.luarocks/share/lua/5.3"),
-      "/usr/share/lua/5.3",
-    },
-  },
-}
 
 local lua_ls = function()
-  local neodev_config = {
-    debug = false,
-    library = {
-      -- for your Neovim config directory, the config.library settings will be used as is
-      -- for plugin directories (root_dirs having a /lua directory), config.library.plugins will be disabled
-      -- for any other directory, config.library.enabled will be set to false
-      enabled = true, -- when not enabled, lua-dev will not change any settings to the LSP server
-      runtime = true, -- runtime path
-      types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-      -- plugins = false,
-      -- plugins = true,
-      plugins = {
-        "barbar.nvim",
-        -- "debugprint.nvim",
-        -- "feline.nvim",
-        -- "fidget.nvim",
-        "lspconfig",
-        -- "mason",
-        "mason-lspconfig",
-        -- "neo-tree.nvim",
-        "nvim-cmp",
-        -- "nvim-dap",
-        -- "nvim-dap-ui",
-        "nvim-notify",
-        "nvim-treesitter",
-        -- "octo.nvim",
-        "plenary.nvim",
-        "telescope.nvim",
-        -- "trouble.nvim",
-        -- "vimade",
-        "which-key.nvim",
-      },
-    },
-    setup_jsonls = true,
-    pathStrict = true,
-  }
-
-  require("neodev").setup(neodev_config)
+  -- require('lsp.servers.neodev')
+  -- table_insert(default_workspace.library, require("neodev.config").types()),
 
   lspconfig["lua_ls"].setup({
     -- log_level = vim.lsp.protocol.MessageType.Warn,

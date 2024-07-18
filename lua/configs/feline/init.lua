@@ -1,17 +1,17 @@
-local defaults = require('feline.default_components').statusline.icons
+local defaults = require("feline.default_components").statusline.icons
 -- local provider_neocomposer = require('configs.feline.provider-neocomposer')
-local custom_status_comps = require('configs.feline.components')
-local colors = require('configs.feline.colors')
+local custom_status_comps = require("configs.feline.components")
+local colors = require("configs.feline.colors")
 
 -- o[a]  N?: dap
 
 local custom_providers = {
   -- lsp_code_actions = require('configs.feline.provider-lsp-code-actions').provider,
   -- lsp_references = require('configs.feline.provider-lsp-references').provider,
-  project = require('configs.feline.provider-project').provider,
-  neocomposer = require('configs.feline.provider-neocomposer').provider,
-  ascii = require('configs.feline.provider-ascii').provider,
-  line_count = require('configs.feline.provider-line_count').provider,
+  project = require("configs.feline.provider-project").provider,
+  neocomposer = require("configs.feline.provider-neocomposer").provider,
+  ascii = require("configs.feline.provider-ascii").provider,
+  line_count = require("configs.feline.provider-line_count").provider,
 }
 
 -- bg_jobs, cmdline and qf components
@@ -78,9 +78,9 @@ table.insert(status_comps.active[1], 3, custom_status_comps.ProjectComponent)
 status_comps.active[1][4].left_sep = {
   hl = {
     -- bg = require('feline.providers.vi_mode').get_mode_color(),
-    bg = 'oceanblue',
+    bg = "oceanblue",
   },
-  str = ' ',
+  str = " ",
 }
 
 -- { provider = 'diagnostic_errors', hl = { fg = 'red' } },
@@ -110,94 +110,53 @@ local statusline_cfg = {
   colors = { bg = colors.main.bg, fg = colors.main.fg },
   vi_mode_colors = colors.vi_mode,
   separators = {
-    vertical_bar = '┃',
-    vertical_bar_thin = '│',
-    left = '',
-    right = '',
-    block = '█',
-    left_filled = '',
-    right_filled = '',
-    slant_left = '',
-    slant_left_thin = ' ',
-    slant_right = '',
-    slant_right_thin = ' ',
-    slant_left_2 = '',
-    slant_left_2_thin = ' ',
-    slant_right_2 = '',
-    slant_right_2_thin = ' ',
-    left_rounded = '',
-    left_rounded_thin = '',
-    right_rounded = '',
-    right_rounded_thin = '',
-    circle = '●',
+    vertical_bar = "┃",
+    vertical_bar_thin = "│",
+    left = "",
+    right = "",
+    block = "█",
+    left_filled = "",
+    right_filled = "",
+    slant_left = "",
+    slant_left_thin = " ",
+    slant_right = "",
+    slant_right_thin = " ",
+    slant_left_2 = "",
+    slant_left_2_thin = " ",
+    slant_right_2 = "",
+    slant_right_2_thin = " ",
+    left_rounded = "",
+    left_rounded_thin = "",
+    right_rounded = "",
+    right_rounded_thin = "",
+    circle = "●",
   },
   force_inactive = {
     filetypes = {
-      '^NvimTree$',
-      '^fugitive$',
-      '^fugitiveblame$',
-      '^help$',
-      '^neo-tree',
-      '^packer$',
-      '^qf$',
-      '^query',
-      '^spectre_panel',
-      '^startify$',
-      '^Telescope',
-      '^tablegen$',
-      '^tsplayground$',
+      "^NvimTree$",
+      "^fugitive$",
+      "^fugitiveblame$",
+      "^help$",
+      "^neo-tree",
+      "^packer$",
+      "^qf$",
+      "^query",
+      "^spectre_panel",
+      "^startify$",
+      "^Telescope",
+      "^tablegen$",
+      "^tsplayground$",
     },
     buftypes = {
-      '^nofile$',
-      '^terminal$',
+      "^nofile$",
+      "^terminal$",
     },
     bufnames = {},
   },
   custom_providers = custom_providers,
 }
-require('feline').setup(statusline_cfg)
+require("feline").setup(statusline_cfg)
 
--- lsp = {
---    function()
---      local buf_clients = vim.lsp.get_active_clients { bufnr = 0 }
---      if #buf_clients == 0 then
---        return "LSP Inactive"
---      end
---
---      local buf_ft = vim.bo.filetype
---      local buf_client_names = {}
---      local copilot_active = false
---
---      -- add client
---      for _, client in pairs(buf_clients) do
---        if client.name ~= "null-ls" and client.name ~= "copilot" then
---          table.insert(buf_client_names, client.name)
---        end
---
---        if client.name == "copilot" then
---          copilot_active = true
---        end
---      end
---
---      -- add formatter
---      local formatters = require "lvim.lsp.null-ls.formatters"
---      local supported_formatters = formatters.list_registered(buf_ft)
---      vim.list_extend(buf_client_names, supported_formatters)
---
---      -- add linter
---      local linters = require "lvim.lsp.null-ls.linters"
---      local supported_linters = linters.list_registered(buf_ft)
---      vim.list_extend(buf_client_names, supported_linters)
---
---      local unique_client_names = vim.fn.uniq(buf_client_names)
---
---      local language_servers = "[" .. table.concat(unique_client_names, ", ") .. "]"
---
---      if copilot_active then
---        language_servers = language_servers .. "%#SLCopilot#" .. " " .. lvim.icons.git.Octoface .. "%*"
---      end
---
---      return language_servers
---    end,
---    color = { gui = "bold" },
---    co
+vim.api.nvim_create_user_command("FelineRestart", function()
+  require("feline").setup(statusline_cfg)
+end, { desc = "Restart feline status line" })

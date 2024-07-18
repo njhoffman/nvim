@@ -9,18 +9,18 @@ vim.cmd([[
 
 local HIGHLIGHTS = {
   native = {
-    [vim.diagnostic.severity.ERROR] = 'DiagnosticVirtualLinesError',
-    [vim.diagnostic.severity.WARN] = 'DiagnosticVirtualLinesWarn',
-    [vim.diagnostic.severity.INFO] = 'DiagnosticVirtualLinesInfo',
-    [vim.diagnostic.severity.HINT] = 'DiagnosticVirtualLinesHint',
+    [vim.diagnostic.severity.ERROR] = "DiagnosticVirtualLinesError",
+    [vim.diagnostic.severity.WARN] = "DiagnosticVirtualLinesWarn",
+    [vim.diagnostic.severity.INFO] = "DiagnosticVirtualLinesInfo",
+    [vim.diagnostic.severity.HINT] = "DiagnosticVirtualLinesHint",
   },
 }
 
 -- These don't get copied, do they? We only pass around and compare pointers, right?
-local SPACE = 'space'
-local DIAGNOSTIC = 'diagnostic'
-local OVERLAP = 'overlap'
-local BLANK = 'blank'
+local SPACE = "space"
+local DIAGNOSTIC = "diagnostic"
+local OVERLAP = "overlap"
+local BLANK = "blank"
 
 ---Returns the distance between two columns in cells.
 ---
@@ -50,14 +50,14 @@ function M.show(namespace, bufnr, diagnostics, opts, source)
     return
   end
   vim.validate({
-    namespace = { namespace, 'n' },
-    bufnr = { bufnr, 'n' },
+    namespace = { namespace, "n" },
+    bufnr = { bufnr, "n" },
     diagnostics = {
       diagnostics,
-      vim.tbl_islist,
-      'a list of diagnostics',
+      vim.islist,
+      "a list of diagnostics",
     },
-    opts = { opts, 't', true },
+    opts = { opts, "t", true },
   })
 
   table.sort(diagnostics, function(a, b)
@@ -72,7 +72,7 @@ function M.show(namespace, bufnr, diagnostics, opts, source)
   if #diagnostics == 0 then
     return
   end
-  local highlight_groups = HIGHLIGHTS[source or 'native']
+  local highlight_groups = HIGHLIGHTS[source or "native"]
 
   -- This loop reads line by line, and puts them into stacks with some
   -- extra data, since rendering each line will require understanding what
@@ -88,20 +88,26 @@ function M.show(namespace, bufnr, diagnostics, opts, source)
     local stack = line_stacks[diagnostic.lnum]
 
     if diagnostic.lnum ~= prev_lnum then
-      table.insert(stack, { SPACE, string.rep(' ', distance_between_cols(bufnr, diagnostic.lnum, 0, diagnostic.col)) })
+      table.insert(
+        stack,
+        { SPACE, string.rep(" ", distance_between_cols(bufnr, diagnostic.lnum, 0, diagnostic.col)) }
+      )
     elseif diagnostic.col ~= prev_col then
       -- Clarification on the magic numbers below:
       -- +1: indexing starting at 0 in one API but at 1 on the other.
       -- -1: for non-first lines, the previous col is already drawn.
-      table.insert(
-        stack,
-        { SPACE, string.rep(' ', distance_between_cols(bufnr, diagnostic.lnum, prev_col + 1, diagnostic.col) - 1) }
-      )
+      table.insert(stack, {
+        SPACE,
+        string.rep(
+          " ",
+          distance_between_cols(bufnr, diagnostic.lnum, prev_col + 1, diagnostic.col) - 1
+        ),
+      })
     else
       table.insert(stack, { OVERLAP, diagnostic.severity })
     end
 
-    if diagnostic.message:find('^%s*$') then
+    if diagnostic.message:find("^%s*$") then
       table.insert(stack, { BLANK, diagnostic })
     else
       table.insert(stack, { DIAGNOSTIC, diagnostic })
@@ -146,7 +152,7 @@ function M.show(namespace, bufnr, diagnostics, opts, source)
         local diagnostic = lelements[i][2]
         local empty_space_hi
         if opts.virtual_lines and opts.virtual_lines.highlight_whole_line == false then
-          empty_space_hi = ''
+          empty_space_hi = ""
         else
           empty_space_hi = highlight_groups[diagnostic.severity]
         end
@@ -163,19 +169,22 @@ function M.show(namespace, bufnr, diagnostics, opts, source)
             if multi == 0 then
               table.insert(left, { data, empty_space_hi })
             else
-              table.insert(left, { string.rep('─', data:len()), highlight_groups[diagnostic.severity] })
+              table.insert(
+                left,
+                { string.rep("─", data:len()), highlight_groups[diagnostic.severity] }
+              )
             end
           elseif type == DIAGNOSTIC then
             -- If an overlap follows this, don't add an extra column.
             if lelements[j + 1][1] ~= OVERLAP then
-              table.insert(left, { '│', highlight_groups[data.severity] })
+              table.insert(left, { "│", highlight_groups[data.severity] })
             end
             overlap = false
           elseif type == BLANK then
             if multi == 0 then
-              table.insert(left, { '└', highlight_groups[data.severity] })
+              table.insert(left, { "└", highlight_groups[data.severity] })
             else
-              table.insert(left, { '┴', highlight_groups[data.severity] })
+              table.insert(left, { "┴", highlight_groups[data.severity] })
             end
             multi = multi + 1
           elseif type == OVERLAP then
@@ -185,17 +194,20 @@ function M.show(namespace, bufnr, diagnostics, opts, source)
 
         local center_symbol
         if overlap and multi > 0 then
-          center_symbol = '┼'
+          center_symbol = "┼"
         elseif overlap then
-          center_symbol = '├'
+          center_symbol = "├"
         elseif multi > 0 then
-          center_symbol = '┴'
+          center_symbol = "┴"
         else
-          center_symbol = '╰' -- └
+          center_symbol = "╰" -- └
         end
         -- local center_text =
         local center = {
-          { string.format('%s%s', center_symbol, '──── '), highlight_groups[diagnostic.severity] },
+          {
+            string.format("%s%s", center_symbol, "──── "),
+            highlight_groups[diagnostic.severity],
+          },
         }
 
         -- TODO: We can draw on the left side if and only if:
@@ -206,11 +218,11 @@ function M.show(namespace, bufnr, diagnostics, opts, source)
 
         local msg
         if diagnostic.code then
-          msg = string.format('%s: %s', diagnostic.code, diagnostic.message)
+          msg = string.format("%s: %s", diagnostic.code, diagnostic.message)
         else
           msg = diagnostic.message
         end
-        for msg_line in msg:gmatch('([^\n]+)') do
+        for msg_line in msg:gmatch("([^\n]+)") do
           local vline = {}
           vim.list_extend(vline, left)
           vim.list_extend(vline, center)
@@ -220,9 +232,10 @@ function M.show(namespace, bufnr, diagnostics, opts, source)
 
           -- Special-case for continuation lines:
           if overlap then
-            center = { { '│', highlight_groups[diagnostic.severity] }, { '     ', empty_space_hi } }
+            center =
+              { { "│", highlight_groups[diagnostic.severity] }, { "     ", empty_space_hi } }
           else
-            center = { { '      ', empty_space_hi } }
+            center = { { "      ", empty_space_hi } }
           end
         end
       end

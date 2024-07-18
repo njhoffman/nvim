@@ -40,26 +40,26 @@
 --   orig.on_render(...)
 -- end
 
-local noice_cmd = require('noice.ui.cmdline')
+local noice_cmd = require("noice.ui.cmdline")
 
 -- buf = 3, event = "CmdlineEnter", file = ":", group = 57, id = 176, match = ":"
 
 local old_fadelevel = nil
 -- vim.api.nvim_get_var('vimade').fadelevel
-local augroup = vim.api.nvim_create_augroup('cmdline', { clear = true })
-vim.api.nvim_create_autocmd({ 'CmdlineEnter', 'CmdlineLeave' }, {
+local augroup = vim.api.nvim_create_augroup("cmdline", { clear = true })
+vim.api.nvim_create_autocmd({ "CmdlineEnter", "CmdlineLeave" }, {
   group = augroup,
   callback = function(ev)
-    if ev.event == 'CmdlineLeave' then
+    if ev.event == "CmdlineLeave" then
       -- vim.dbglog(
       --   'cmdline leave: ' .. vim.api.nvim_get_current_buf(),
       --   vim.api.nvim_get_current_win()
       -- )
-      vim.cmd('VimadeBufEnable')
+      -- vim.cmd("VimadeBufEnable")
       return
     end
     -- vim.dbglog('cmdline enter: ' .. vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win())
-    vim.cmd('VimadeBufDisable')
+    -- vim.cmd('VimadeBufDisable')
 
     local state = {
       cmdopen = false,

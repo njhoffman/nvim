@@ -49,21 +49,29 @@ function M.preview_location(location, context, before_context)
     vim.fn.bufload(bufnr)
   end
   local range = location.targetRange or location.range
-  local contents =
-  vim.api.nvim_buf_get_lines(bufnr, range.start.line - before_context, range["end"].line + 1 + context, false)
+  local contents = vim.api.nvim_buf_get_lines(
+    bufnr,
+    range.start.line - before_context,
+    range["end"].line + 1 + context,
+    false
+  )
   local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
   return vim.lsp.util.open_floating_preview(contents, filetype)
 end
 
 M.switch_header_source = function()
-  vim.lsp.buf_request(0, "textDocument/switchSourceHeader",
+  vim.lsp.buf_request(
+    0,
+    "textDocument/switchSourceHeader",
     vim.lsp.util.make_text_document_params(),
     function(err, _, result, _, _)
-      if err then print(err)
+      if err then
+        print(err)
       else
         vim.cmd("e " .. vim.uri_to_fname(result))
       end
-    end)
+    end
+  )
 end
 
 function M.preview_location_callback(_, method, result)
@@ -72,7 +80,7 @@ function M.preview_location_callback(_, method, result)
     vim.lsp.log.info(method, "No location found")
     return nil
   end
-  if vim.tbl_islist(result) then
+  if vim.islist(result) then
     M.preview_location(result[1], context)
   else
     M.preview_location(result, context)
@@ -83,5 +91,3 @@ function M.peek_definition()
   local params = vim.lsp.util.make_position_params()
   return vim.lsp.buf_request(0, "textDocument/definition", params, M.preview_location_callback)
 end
-
-

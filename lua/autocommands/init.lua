@@ -1,13 +1,13 @@
 -- local commands = require('autocommands.commands')
-local buffers = require('autocommands.buffers')
-local windows = require('autocommands.windows')
-local telescope = require('autocommands.telescope')
+local buffers = require("autocommands.buffers")
+local windows = require("autocommands.windows")
+local telescope = require("autocommands.telescope")
 
-require('autocommands.misc')
-require('autocommands.tagstack')
-require('autocommands.events')
-require('autocommands.skeletons')
-require('autocommands.startup')
+require("autocommands.misc")
+require("autocommands.tagstack")
+require("autocommands.events")
+require("autocommands.skeletons")
+require("autocommands.startup")
 
 -- stylua: ignore start
 
@@ -30,7 +30,7 @@ local autocmds = {
   FiletypeDetect = {
     -- { 'FileType', 'query',                 'setlocal nonumber norelativenumber' },
     -- { 'FileType', 'code-action-menu-menu', 'set sidescrolloff=0 nocursorline' },
-    { { 'FileType' },              "neoai-output",        "setlocal ft=markdown conceallevel=3 synmaxcol=1000" },
+    { { 'FileType' },              "neoai-output",        "setlocal conceallevel=3 synmaxcol=1000" },
     { { 'FileType' },              "pandoc",              "setlocal syn=pandoc" },
     { { 'FileType' },              "markdown",            "setlocal syn=markdown" },
     { { 'BufNewFile', 'BufRead' }, '*nvim/option-window', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>', },
@@ -54,7 +54,7 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, 'nord-nvim.lua',       'setlocal syn=lua | let b:disable_lsp=1' },
     { { 'BufNewFile', 'BufRead' }, '*.t',                 'setlocal ft=tangle' },
     { { 'BufNewFile', 'BufRead' }, 'git',                 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer>  :q<cr>' },
-    { { 'BufNewFile', 'BufRead' }, '*.*rc',               'setlocal ft=log' },
+    -- { { 'BufNewFile', 'BufRead' }, '*.*rc',               'setlocal ft=log' },
     { { 'BufNewFile', 'BufRead' }, '*.log',               'setlocal ft=log' },
     { { 'BufNewFile', 'BufRead' }, '*.conf',              'setlocal ft=conf.dosini' },
     { { 'BufNewFile', 'BufRead' }, '*.pa',                'setlocal ft=conf' },
@@ -80,33 +80,6 @@ local autocmds = {
       --   au BufNewFile,BufRead bundles.*.txt setlocal ft=sh
       --   " au BufEnter * if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' | setf preview | endif
   },
-  Vimade = {
-    { 'FileType', 'cmp_menu',          'VimadeBufDisable' },
-    { 'FileType', 'dap-log',           'VimadeBufDisable' },
-    { 'FileType', 'dap-repl',          'VimadeBufDisable' },
-    { 'FileType', 'dapui_console',     'VimadeBufDisable' },
-    { 'FileType', 'dapui_stacks',      'VimadeBufDisable' },
-    { 'FileType', 'dapui_breakpoints', 'VimadeBufDisable' },
-    { 'FileType', 'dapui_scopes',      'VimadeBufDisable' },
-    { 'FileType', 'dapui_watches',     'VimadeBufDisable' },
-    { 'FileType', 'CompetiTest',       'VimadeBufDisable' },
-    { 'FileType', 'SidebarNvim',       'VimadeBufDisable' },
-    { 'FileType', 'Trouble',           'VimadeBufDisable' },
-    { 'FileType', 'aerial',            'VimadeBufDisable' },
-    { 'FileType', 'tablegen',          'VimadeBufDisable' },
-    { 'FileType', 'nerdtree',          'VimadeBufDisable' },
-    { 'FileType', 'neo-tree',          'VimadeBufDisable' },
-    { 'FileType', 'noice',             'VimadeBufDisable' },
-    { 'FileType', 'Mundo',             'VimadeBufDisable' },
-    { 'FileType', 'NvimTree',          'VimadeBufDisable' },
-    { 'FileType', 'MundoDiff',         'VimadeBufDisable' },
-    -- { 'FileType', 'qf',                'VimadeBufDisable' },
-    -- { 'FileType', 'query.treesitter', 'VimadeBufDisable' },
-    -- { "FileType", "noice", "VimadeUnfadeActive" },
-    -- { "FocusLost", "*", "VimadeFadeActive" },
-    -- { "FocusGained", "*", "VimadeUnfadeActive" },
-    -- { "BufLeave,FocusLost", "*", M.vimadeCheck() },
-  },
   Terminal = {
     { 'TermOpen', '*', [[tnoremap <buffer> <Esc> <c-\><c-n>]] },
     { "TermOpen", "*", "set nonumber norelativenumber" },
@@ -123,7 +96,7 @@ local autocmds = {
   },
   LineNumbers     = { { 'BufEnter', 'FocusGained', 'FocusLost'  }, '*', windows.line_numbers },
   BuffersSpecial  = { { 'BufNew', 'BufReadPost' }, '*', windows.handle_special },
-  FasdUpdate      = { { 'BufWrite' },     '*',  buffers.fasd_update },
+  FasdUpdate      = { { 'BufWritePost' }, '*',  buffers.fasd_update },
   RestoreCursor   = { { 'BufRead' },      '*',  windows.restore_cursor },
   HighlightYank   = { { 'TextYankPost' }, '*',  windows.highlight_yank },
   TelescopeWinbar = { { 'User' }, 'TelescopeFindPre', telescope.winbar_sync },
@@ -158,5 +131,36 @@ local create_augroups = function(definitions) -- {{{1
     end
   end
 end
+
+if false  then
+  autocmds.Vimade = {
+    { 'FileType', 'cmp_menu',          'VimadeBufDisable' },
+    { 'FileType', 'dap-log',           'VimadeBufDisable' },
+    { 'FileType', 'dap-repl',          'VimadeBufDisable' },
+    { 'FileType', 'dapui_console',     'VimadeBufDisable' },
+    { 'FileType', 'dapui_stacks',      'VimadeBufDisable' },
+    { 'FileType', 'dapui_breakpoints', 'VimadeBufDisable' },
+    { 'FileType', 'dapui_scopes',      'VimadeBufDisable' },
+    { 'FileType', 'dapui_watches',     'VimadeBufDisable' },
+    { 'FileType', 'CompetiTest',       'VimadeBufDisable' },
+    { 'FileType', 'SidebarNvim',       'VimadeBufDisable' },
+    { 'FileType', 'Trouble',           'VimadeBufDisable' },
+    { 'FileType', 'aerial',            'VimadeBufDisable' },
+    { 'FileType', 'tablegen',          'VimadeBufDisable' },
+    { 'FileType', 'nerdtree',          'VimadeBufDisable' },
+    { 'FileType', 'neo-tree',          'VimadeBufDisable' },
+    { 'FileType', 'noice',             'VimadeBufDisable' },
+    { 'FileType', 'Mundo',             'VimadeBufDisable' },
+    { 'FileType', 'NvimTree',          'VimadeBufDisable' },
+    { 'FileType', 'MundoDiff',         'VimadeBufDisable' },
+    -- { 'FileType', 'qf',                'VimadeBufDisable' },
+    -- { 'FileType', 'query.treesitter', 'VimadeBufDisable' },
+    -- { "FileType", "noice", "VimadeUnfadeActive" },
+    -- { "FocusLost", "*", "VimadeFadeActive" },
+    -- { "FocusGained", "*", "VimadeUnfadeActive" },
+    -- { "BufLeave,FocusLost", "*", M.vimadeCheck() },
+  }
+end
+
 
 create_augroups(autocmds)

@@ -9,53 +9,56 @@
 -- put,option_set
 -- cursor_goto,resize,scroll
 
+-- Guide to messages
+-- https://github.com/folke/noice.nvim/wiki/A-Guide-to-Messages#messages-and-notifications-in-neovim
 local routes = {
   -- { filter = { event = 'notify.error_error' }, view = 'mini' },
   -- { filter = { event = 'msg_show.lua_error' }, view = 'mini' },
+  -- { filter = { event = "lsp", kind = "progress",
+  --             cond = function(message)
+  --               local client = vim.tbl_get(message.opts, "progress", "client")
+  --               return client == "lua_ls"
+  --             end }, opts = { skip = true }, }
+  -- always route any messages with more than 25 lines to the split view
+  { view = "cmdline_output", filter = { event = "msg_show", min_height = 25 } },
   {
-    -- view = 'popup',
-    view = 'split',
-    filter = { event = 'msg_show', min_height = 25 },
-  },
-  {
-    view = 'notify',
+    view = "notify",
     opts = {
       level = vim.log.levels.DEBUG,
     },
-    filter = { any = { { event = 'msg_history_show' } } },
+    filter = { any = { { event = "msg_history_show" } } },
   },
-  -- always route any messages with more than 20 lines to the split view
   {
-    view = 'mini',
+    view = "mini",
     filter = {
       any = {
         -- write/deletion messages
-        { event = 'msg_show', find = '%d+B written$' },
-        { event = 'msg_show', find = '%d+L, %d+B$' },
-        { event = 'msg_show', find = '%-%-No lines in buffer%-%-' },
+        { event = "msg_show", find = "%d+B written$" },
+        { event = "msg_show", find = "%d+L, %d+B$" },
+        { event = "msg_show", find = "%-%-No lines in buffer%-%-" },
 
         -- all "Closed # popup windows" to mini
-        { event = 'msg_show', find = '^Closed %d+ popup windows' },
+        { event = "msg_show", find = "^Closed %d+ popup windows" },
         -- all "Cannot make changes, 'modifiable' is off" to mini
-        { event = 'msg_show', find = '^E21:' },
+        { event = "msg_show", find = "^E21:" },
         -- Could not apply exmtark to....
-        { event = 'msg_show', find = '^Could not apply exmtark to ' },
+        { event = "msg_show", find = "^Could not apply exmtark to " },
         -- all search not found messages to mini
-        { event = 'msg_show', find = '^E486: Pattern not found' },
+        { event = "msg_show", find = "^E486: Pattern not found" },
         -- no tags file message
-        { event = 'msg_show', find = '^E433:' },
+        { event = "msg_show", find = "^E433:" },
         -- tags not found message
-        { event = 'msg_show', find = '^E426:' },
+        { event = "msg_show", find = "^E426:" },
         -- no previous command name
-        { event = 'msg_show', find = '^E433:' },
+        { event = "msg_show", find = "^E433:" },
         -- all 'no more items' to mini
-        { event = 'msg_show', find = '^E553:' },
+        { event = "msg_show", find = "^E553:" },
         -- Too many nodes but not enough keys!
         -- Diagnostics
-        { event = 'msg_show', find = 'No more valid diagnostics to move to' },
+        { event = "msg_show", find = "No more valid diagnostics to move to" },
         -- :make
-        { event = 'msg_show', find = '^:!make' },
-        { event = 'msg_show', find = '^%(%d+ of %d+%):' },
+        { event = "msg_show", find = "^:!make" },
+        { event = "msg_show", find = "^%(%d+ of %d+%):" },
       },
       -- -- nvim-treesitter
       -- { filter = { event = "msg_show", find = "^%[nvim%-treesitter%]" }, view = "mini" },
@@ -80,13 +83,13 @@ local routes = {
       any = {
         -- hide treesitter out of bounds messages
         -- TODO: set syn to filetype after this happens
-        { event = 'msg_show', find = '^Error in decoration provider treesitter/highlighter.line:' },
+        { event = "msg_show", find = "^Error in decoration provider treesitter/highlighter.line:" },
         -- hide hover no information available
-        { event = 'msg_show', find = 'No information available' },
+        { event = "msg_show", find = "No information available" },
         -- hide diagnostics messages
-        { event = 'lsp', find = ' diagnostics_on_open ' },
+        { event = "lsp", find = " diagnostics_on_open " },
         -- all jsonls Unhandled method textDocument/diagnostic errors hidden
-        { event = 'notify', find = '^jsonls: ' },
+        { event = "notify", find = "^jsonls: " },
       },
     },
     opts = { skip = true },
@@ -95,30 +98,30 @@ local routes = {
     filter = {
       -- undo/redo related messages
       any = {
-        { event = 'msg_show', find = 'Already at newest change' },
-        { event = 'msg_show', find = 'Already at oldest change' },
+        { event = "msg_show", find = "Already at newest change" },
+        { event = "msg_show", find = "Already at oldest change" },
         -- all '%d change; after #%d  %d seconds ago'
-        { event = 'msg_show', find = '^%d+ change' },
+        { event = "msg_show", find = "^%d+ change" },
         -- all '%d line less/more; before #%d  %d seconds ago'
-        { event = 'msg_show', find = '^%d+ line less' },
-        { event = 'msg_show', find = '^%d+ line more' },
-        { event = 'msg_show', find = '^%d+ more lines?' },
+        { event = "msg_show", find = "^%d+ line less" },
+        { event = "msg_show", find = "^%d+ line more" },
+        { event = "msg_show", find = "^%d+ more lines?" },
         -- all delete line messages to imini
-        { event = 'msg_show', find = '^%d+ fewer lines?' },
+        { event = "msg_show", find = "^%d+ fewer lines?" },
       },
     },
-    view = 'notify',
+    view = "notify",
     opts = { replace = true },
   },
   {
     filter = {
       any = {
-        { event = 'msg_show', find = '^RPC%[Error%]' },
+        { event = "msg_show", find = "^RPC%[Error%]" },
       },
     },
-    view = 'notify',
+    view = "notify",
     opts = {
-      title = 'RPC Error',
+      title = "RPC Error",
       level = vim.log.levels.ERROR,
     },
   },

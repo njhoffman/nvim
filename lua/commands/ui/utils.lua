@@ -4,7 +4,7 @@ local function get_loaded_buffers()
   local vim_fn = vim.fn
   local buflisted = vim_fn.buflisted
 
-  for buffer = 1, vim_fn.bufnr('$') do
+  for buffer = 1, vim_fn.bufnr("$") do
     if buflisted(buffer) == 1 then
       len = len + 1
       buffers[len] = buffer
@@ -15,27 +15,27 @@ local function get_loaded_buffers()
 end
 
 local function check_nav_split(movement_key)
-  local keymap = { h = { '-L' }, l = { '-R' }, k = { '-U' }, j = { '-D' } }
+  local keymap = { h = { "-L" }, l = { "-R" }, k = { "-U" }, j = { "-D" } }
   return function()
     local curr_win = vim.fn.winnr()
     local mapkeys = keymap[movement_key]
     local keys = { tmux_view = mapkeys[1] }
-    vim.dbglog('check nav', movement_key)
+    -- vim.dbglog('check nav', movement_key)
     -- only check one direction for split if navigating
     if vim.fn.winnr(movement_key) ~= curr_win then
-      vim.cmd('wincmd ' .. movement_key)
+      vim.cmd("wincmd " .. movement_key)
     else
-      vim.fn.system('tmux select-pane ' .. keys.tmux_view)
+      vim.fn.system("tmux select-pane " .. keys.tmux_view)
     end
   end
 end
 
 local function check_resize_split(navigation_key)
   local keymap = {
-    h = { '-L 2', '2>', 'l', '2<' },
-    l = { '-R 2', '2<', 'h', '2>' },
-    k = { '-U 1', '1-', 'j', '1+' },
-    j = { '-D 1', '1+', 'k', '1-' },
+    h = { "-L 2", "2>", "l", "2<" },
+    l = { "-R 2", "2<", "h", "2>" },
+    k = { "-U 1", "1-", "j", "1+" },
+    j = { "-D 1", "1+", "k", "1-" },
   }
   return function()
     local curr_win = vim.fn.winnr()
@@ -51,11 +51,11 @@ local function check_resize_split(navigation_key)
     local alt_split = vim.fn.winnr(keys.alt_nav) ~= curr_win
 
     if has_split then
-      vim.cmd('wincmd ' .. keys.vim_resize)
+      vim.cmd("wincmd " .. keys.vim_resize)
     elseif alt_split then
-      vim.cmd('wincmd ' .. keys.alt_resize)
+      vim.cmd("wincmd " .. keys.alt_resize)
     end
-    vim.fn.system('tmux resize-pane ' .. keys.tmux_resize)
+    vim.fn.system("tmux resize-pane " .. keys.tmux_resize)
   end
 end
 
@@ -68,7 +68,7 @@ local function numberOfWins()
 
     if
       bufname
-      and bufname ~= ''
+      and bufname ~= ""
       and not winConf.external
       and winConf.focusable
       and vim.api.nvim_win_is_valid(win)
@@ -85,16 +85,16 @@ local get_splits = function(directions)
 
   -- these ft will not window close on delete
   local ignored_splits_ft = {
-    'CompetiTest',
-    'Mundo',
-    'MundoDiff',
-    'NvimTree',
-    'SidebarNvim',
-    'Trouble',
-    'aerial',
-    'NeoTree',
-    'nerdtree',
-    'query',
+    "CompetiTest",
+    "Mundo",
+    "MundoDiff",
+    "NvimTree",
+    "SidebarNvim",
+    "Trouble",
+    "aerial",
+    "NeoTree",
+    "nerdtree",
+    "query",
   }
 
   local splits = {}
@@ -105,7 +105,7 @@ local get_splits = function(directions)
     if curwin ~= testwinid and not vim.tbl_contains(splits, testwinid) then
       local bufid = vim.api.nvim_win_get_buf(testwinid)
       -- local ft = vim.api.nvim_buf_get_option(bufid, 'filetype')
-      local ft = vim.api.nvim_get_option_value('filetype', { buf = bufid })
+      local ft = vim.api.nvim_get_option_value("filetype", { buf = bufid })
       if not vim.tbl_contains(ignored_splits_ft, ft) then
         table.insert(splits, testwinid)
       end

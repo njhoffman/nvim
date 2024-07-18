@@ -17,10 +17,10 @@
 ---<
 ---@brief ]]
 
-local ui = require('registers.ui')
-local mappings = require('registers.mappings')
-local state = require('registers.state')
-local config = require('registers.config')
+local ui = require("registers.ui")
+local mappings = require("registers.mappings")
+local state = require("registers.state")
+local config = require("registers.config")
 
 ---@class registers
 ---@field options options
@@ -115,22 +115,16 @@ local registers = {}
 ---@param options? options Plugin configuration options.
 ---@usage `require("registers").setup({})`
 function registers.setup(options)
-  -- Ensure that we have the proper neovim version
-  if vim.fn.has('nvim-0.7.0') == 0 then
-    vim.api.nvim_err_writeln('registers.nvim requires at least Neovim 0.7.0')
-    return
-  end
-
   local opts = config.setup(options)
-
-  -- Create a namespace for the highlights and signs
-  state._namespace = vim.api.nvim_create_namespace('registers')
-  mappings.setup()
 
   -- Create the user command to manually open the window with :Registers
   if opts.register_user_command then
-    vim.api.nvim_create_user_command('Registers', ui.show_window({ mode = 'paste' }), {})
+    vim.api.nvim_create_user_command("Registers", ui.show_window({ mode = "paste" }), {})
   end
+
+  -- Create a namespace for the highlights and signs
+  state._namespace = vim.api.nvim_create_namespace("registers")
+  mappings.setup()
 end
 
 return registers

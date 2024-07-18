@@ -1,25 +1,25 @@
-local augend = require('dial.augend')
+local augend = require("dial.augend")
 
 local new_augends = {
   -- date with format `yyyy/mm/dd`
-  ['%Y/%m/%d'] = augend.date.new({
-    pattern = '%Y/%m/%d',
-    default_kind = 'day',
+  ["%Y/%m/%d"] = augend.date.new({
+    pattern = "%Y/%m/%d",
+    default_kind = "day",
     -- if true, it does not match dates which does not exist, such as 2022/05/32
     only_valid = true,
     -- if true, it only matches dates with word boundary
     word = false,
   }),
-  hexcolor = augend.hexcolor.new({ case = 'lower' }),
+  hexcolor = augend.hexcolor.new({ case = "lower" }),
   -- uppercase hex number (0x1A1A, 0xEEFE, etc.)
   hexinteger = augend.integer.new({
     radix = 16,
-    prefix = '0x',
+    prefix = "0x",
     natural = true,
-    case = 'upper',
+    case = "upper",
   }),
   hexinteger2 = augend.user.new({
-    find = require('dial.augend.common').find_pattern('%d+'),
+    find = require("dial.augend.common").find_pattern("%d+"),
     add = function(text, addend, cursor)
       local n = tonumber(text)
       n = math.floor(n * (2 ^ addend))
@@ -29,17 +29,17 @@ local new_augends = {
     end,
   }),
   booland = augend.constant.new({
-    elements = { 'and', 'or' },
+    elements = { "and", "or" },
     word = true, -- if false, "sand" is incremented into "sor", "doctor" into "doctand", etc.
     cyclic = true, -- "or" is incremented into "and".
   }),
   boolenable = augend.constant.new({
-    elements = { 'enable', 'disable' },
+    elements = { "enable", "disable" },
     word = true,
     cyclic = true,
   }),
   boolsymbol = augend.constant.new({
-    elements = { '&&', '||' },
+    elements = { "&&", "||" },
     word = false,
     cyclic = true,
   }),
@@ -48,10 +48,10 @@ local common = {
   augend.semver.alias.semver,
   new_augends.hexcolor,
 
-  augend.date.alias['%Y-%m-%d'],
-  augend.date.alias['%m/%d'],
-  augend.date.alias['%H:%M'],
-  new_augends['%Y/%m/%d'],
+  augend.date.alias["%Y-%m-%d"],
+  augend.date.alias["%m/%d"],
+  augend.date.alias["%H:%M"],
+  new_augends["%Y/%m/%d"],
 
   augend.integer.alias.decimal,
   augend.integer.alias.hex,
@@ -69,10 +69,10 @@ local common_examples = {
   augend.semver.alias.semver,
   new_augends.hexcolor,
 
-  augend.date.alias['%Y-%m-%d'],
-  augend.date.alias['%m/%d'],
-  augend.date.alias['%H:%M'],
-  new_augends['%Y/%m/%d'],
+  augend.date.alias["%Y-%m-%d"],
+  augend.date.alias["%m/%d"],
+  augend.date.alias["%H:%M"],
+  new_augends["%Y/%m/%d"],
 
   augend.integer.alias.decimal,
   augend.integer.alias.hex,
@@ -86,67 +86,73 @@ local common_examples = {
   new_augends.boolsymbol,
 }
 
-require('dial.config').augends:register_group({
-  default = vim.tbl_deep_extend('force', common, {}),
-  visual = vim.tbl_deep_extend('force', common, {}),
-  typescript = vim.tbl_deep_extend('force', common, {
-    augend.constant.new({ elements = { 'let', 'const' } }),
+require("dial.config").augends:register_group({
+  default = vim.tbl_deep_extend("force", common, {}),
+  visual = vim.tbl_deep_extend("force", common, {}),
+  typescript = vim.tbl_deep_extend("force", common, {
+    augend.constant.new({ elements = { "let", "const" } }),
   }),
-  markdown = vim.tbl_deep_extend('force', common, {
+  markdown = vim.tbl_deep_extend("force", common, {
     augend.misc.alias.markdown_header,
   }),
 })
 
+-- TODO: use mapper and transition to <C-=> <C-+> <C--> <C-_>
+-- TODO: change terminal fonts to <C-M--> <C-M-=>, try to separate mappings below
+-- fonts: <C-equals>,<C-minus>
+--        <M-equals> ^[=   <C-M-equals> ^[=    <C-S-plus>   ^[+   <C-S-M-plus>  ^[+
+--        <M-minus>  ^[-   <C-M-minus>  ^[-    <C-S-under>  ^_    <C-S-M-under> ^[^_
+
 local map = vim.keymap.set
 map(
-  'n',
-  '<M-a>',
-  require('dial.map').inc_normal(),
-  { noremap = true, desc = 'dial increment normal' }
+  "n",
+  "<M-a>",
+  require("dial.map").inc_normal(),
+  { noremap = true, desc = "dial increment normal" }
 )
 map(
-  'n',
-  '<M-x>',
-  require('dial.map').dec_normal(),
-  { noremap = true, desc = 'dial decrement normal' }
-)
-
-map(
-  'v',
-  '<M-a>',
-  require('dial.map').inc_visual('visual'),
-  { noremap = true, desc = 'dial increment visual' }
-)
-map(
-  'v',
-  '<M-x>',
-  require('dial.map').dec_visual('visual'),
-  { noremap = true, desc = 'dial decrement visual' }
+  "n",
+  "<M-x>",
+  require("dial.map").dec_normal(),
+  { noremap = true, desc = "dial decrement normal" }
 )
 
 map(
-  'n',
-  '<M-C-A>',
-  require('dial.map').inc_gnormal(),
-  { noremap = true, desc = 'dial increment gnormal' }
+  "v",
+  "<M-a>",
+  require("dial.map").inc_visual("visual"),
+  { noremap = true, desc = "dial increment visual" }
 )
 map(
-  'n',
-  '<M-C-X>',
-  require('dial.map').dec_gnormal(),
-  { noremap = true, desc = 'dial decrement gnormal' }
+  "v",
+  "<M-x>",
+  require("dial.map").dec_visual("visual"),
+  { noremap = true, desc = "dial decrement visual" }
+)
+
+map(
+  "n",
+  "<M-C-A>",
+  require("dial.map").inc_gnormal(),
+  { noremap = true, desc = "dial increment gnormal" }
 )
 map(
-  'v',
-  '<M-C-A>',
-  require('dial.map').inc_gvisual('visual'),
-  { noremap = true, desc = 'dial increment gvisual' }
+  "n",
+  "<M-C-X>",
+  require("dial.map").dec_gnormal(),
+  { noremap = true, desc = "dial decrement gnormal" }
 )
 map(
-  'v',
-  '<M-C-X>',
-  require('dial.map').dec_gvisual('visual'),
-  { noremap = true, desc = 'dial decrement gvisual' }
+  "v",
+  "<M-C-A>",
+  require("dial.map").inc_gvisual("visual"),
+  { noremap = true, desc = "dial increment gvisual" }
+)
+map(
+  "v",
+  "<M-C-X>",
+  require("dial.map").dec_gvisual("visual"),
+  { noremap = true, desc = "dial decrement gvisual" }
 )
 
 vim.cmd([[

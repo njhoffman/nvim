@@ -51,13 +51,24 @@ local sources = {
   main = {
     {
       {
-        name = 'nvim_lsp',
+        name = "lazydev",
+        -- group_index = 0,
+        entry_filter = function()
+          if vim.bo.filetype ~= "lua" then
+            return false
+          end
+          return true
+        end,
+        priority = 100,
+      },
+      {
+        name = "nvim_lsp",
         -- max_item_count = 10,
-        keyword_length = 1,
+        -- keyword_length = 1,
         -- trigger_characters = { '-' },
         entry_filter = function(entry, ctx)
-          local kind = require('cmp.types.lsp').CompletionItemKind[entry:get_kind()]
-          if kind == 'Snippet' and ctx.prev_context.filetype == 'java' then
+          local kind = require("cmp.types.lsp").CompletionItemKind[entry:get_kind()]
+          if kind == "Snippet" and ctx.prev_context.filetype == "java" then
             return false
           end
           return true
@@ -66,7 +77,7 @@ local sources = {
       -- { name = 'codeium', max_item_count = 3 },
       -- copilot
       {
-        name = 'copilot',
+        name = "copilot",
         -- max_item_count = 5,
         keyword_length = 3,
         -- vim.opt.scrollbuf = 999
@@ -76,7 +87,7 @@ local sources = {
         -- },
       },
       {
-        name = 'buffer',
+        name = "buffer",
         option = {
           get_bufnrs = function()
             local bufs = {}
@@ -89,12 +100,12 @@ local sources = {
       },
       {
         -- TODO: make sure duplicates prioritize this over nvim_lsp
-        name = 'faker.quick_data',
-        keyword_pattern = '@.*',
+        name = "faker.quick_data",
+        keyword_pattern = "@.*",
         -- keyword_pattern = [[@\k*.\?\k*.\?\k*.\?\k*]],
       },
       {
-        name = 'cmp_yanky',
+        name = "cmp_yanky",
         keyword_length = 3,
         option = {
           onlyCurrentFiletype = true, -- default: false
@@ -111,13 +122,13 @@ local sources = {
       --   end,
       -- },
       {
-        name = 'luasnip',
+        name = "luasnip",
         keyword_length = 3,
         option = { use_show_condition = true },
         entry_filter = function()
-          local context = require('cmp.config.context')
-          return not context.in_treesitter_capture('string')
-            and not context.in_syntax_group('String')
+          local context = require("cmp.config.context")
+          return not context.in_treesitter_capture("string")
+            and not context.in_syntax_group("String")
         end,
         -- source.entry_filter = function()
         --           local context = require("cmp.config.context")
@@ -129,14 +140,14 @@ local sources = {
         --         end
       },
       {
-        name = 'diag-codes',
+        name = "diag-codes",
         -- default completion available only in comment context
         keyword_length = 3,
         option = { in_comment = true },
       },
-      { name = 'plugins' },
+      { name = "plugins" },
       {
-        name = 'treesitter',
+        name = "treesitter",
         max_item_count = 3,
         keyword_length = 3,
       },
@@ -190,35 +201,36 @@ local sources = {
     -- },
   },
   gitcommit = {
-    { name = 'cmp_git' },
-    { name = 'nvim_lsp' },
-    { name = 'nvim_lua' },
-    { name = 'nvim_lsp_document_symbol' },
-    { name = 'buffer' },
-    { name = 'dictionary' },
-    { name = 'spell' },
-    { name = 'path' },
+    { name = "cmp_git" },
+    { name = "nvim_lsp" },
+    { name = "nvim_lua" },
+    { name = "nvim_lsp_document_symbol" },
+    { name = "buffer" },
+    { name = "dictionary" },
+    { name = "spell" },
+    { name = "path" },
   },
   cmdsearch = {
     -- { name = 'nvim_lsp' },
-    { name = 'buffer' },
-    { name = 'nvim_lsp_document_symbol' },
+
+    { name = "buffer" },
+    { name = "nvim_lsp_document_symbol" },
     -- { name = 'dictionary' },
     {
-      name = 'fuzzy_buffer',
+      name = "fuzzy_buffer",
       option = { max_matches = 5, max_buffer_lines = 4000, min_match_length = 4 },
     },
   },
   cmdline = {
     {
       {
-        name = 'cmdline',
-        option = { ignore_cmds = { 'Man', '!' } },
+        name = "cmdline",
+        option = { ignore_cmds = { "Man", "!" } },
       },
     },
     {
-      { name = 'async_path' },
-      { name = 'cmdline_history' },
+      { name = "async_path" },
+      { name = "cmdline_history" },
       -- { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
       -- { name = "dictionary" },
       -- { name = "buffer" },

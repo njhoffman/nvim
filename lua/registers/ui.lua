@@ -1,7 +1,7 @@
-local uv = require('luv')
-local config = require('registers.config')
-local state = require('registers.state')
-local highlights = require('registers.highlights')
+local uv = require("luv")
+local config = require("registers.config")
+local state = require("registers.state")
+local highlights = require("registers.highlights")
 
 ---@private
 ---Close the window.
@@ -46,7 +46,7 @@ local _fill_window = function()
   local options = config.get()
 
   -- Don't allow the buffer to be modified
-  vim.api.nvim_buf_set_option(state._buffer, 'modifiable', true)
+  vim.api.nvim_buf_set_option(state._buffer, "modifiable", true)
 
   -- Create an array of lines for all the registers
   local lines = {}
@@ -58,7 +58,7 @@ local _fill_window = function()
 
   -- Add the empty line
   if options.show_empty then
-    lines[#lines + 1] = 'Empty: ' .. table.concat(state._empty_registers, ' ')
+    lines[#lines + 1] = "Empty: " .. table.concat(state._empty_registers, " ")
   end
 
   -- Write the lines to the buffer
@@ -84,13 +84,13 @@ local _fill_window = function()
   end
 
   -- Don't allow the buffer to be modified
-  vim.api.nvim_buf_set_option(state._buffer, 'modifiable', false)
+  vim.api.nvim_buf_set_option(state._buffer, "modifiable", false)
 end
 
 ---@private
 ---Create the window and the buffer.
 local _create_window = function()
-  local utils = require('registers.utils')
+  local utils = require("registers.utils")
 
   -- Stop when the window is interrupted
   if utils._is_interrupted() then
@@ -98,11 +98,15 @@ local _create_window = function()
   end
 
   -- Handle illegal mode combinations
-  if state._mode == 'paste' and state._previous_mode == 'i' then
+  if state._mode == "paste" and state._previous_mode == "i" then
     vim.api.nvim_err_writeln(
       "registers.nvim doesn't support `registers.show_window('paste')` being invoked from insert mode"
     )
-  elseif state._mode == 'insert' and state._previous_mode ~= 'i' and state._previous_mode ~= 'c' then
+  elseif
+    state._mode == "insert"
+    and state._previous_mode ~= "i"
+    and state._previous_mode ~= "c"
+  then
     vim.api.nvim_err_writeln(
       "registers.nvim doesn't support `registers.show_window('insert')` being invoked from any mode other than insert mode"
     )
@@ -120,10 +124,10 @@ local _create_window = function()
   state._buffer = vim.api.nvim_create_buf(false, true)
 
   -- Remove the buffer when the window is closed
-  vim.api.nvim_buf_set_option(state._buffer, 'bufhidden', 'wipe')
+  vim.api.nvim_buf_set_option(state._buffer, "bufhidden", "wipe")
 
   -- Set the filetype
-  vim.api.nvim_buf_set_option(state._buffer, 'filetype', 'registers')
+  vim.api.nvim_buf_set_option(state._buffer, "filetype", "registers")
 
   -- Stop when the window is interrupted
   if utils._is_interrupted() then
@@ -134,7 +138,7 @@ local _create_window = function()
   local options = config.get()
 
   -- redraw at top
-  vim.cmd('normal! zt')
+  vim.cmd("normal! zt")
 
   -- The width is based on the longest line, but it will be truncated if the max width is supplied and is longer
   local window_width
@@ -155,9 +159,9 @@ local _create_window = function()
   -- Create the floating window
   local default_window_options = {
     -- Place the window next to the cursor
-    relative = 'cursor',
+    relative = "cursor",
     -- Remove all window decorations
-    style = 'minimal',
+    style = "minimal",
     -- Width of the window
     width = window_width,
     -- Height of the window
@@ -166,12 +170,12 @@ local _create_window = function()
     row = 1,
     col = 0,
     -- How the edges are rendered
-    border = options.window.border or 'rounded',
+    border = options.window.border or "rounded",
   }
 
   local window_options = default_window_options
   if options.layouts and #options.layouts > 0 then
-    if type(options.layouts[1]) == 'function' then
+    if type(options.layouts[1]) == "function" then
       state._current_layout = 1
       window_options = options.layouts[1](default_window_options)
     end
@@ -181,49 +185,52 @@ local _create_window = function()
   state._window = vim.api.nvim_open_win(state._buffer, true, window_options)
 
   -- Register an autocommand to close the window if focus is lost
-  local group = vim.api.nvim_create_augroup('RegistersWindow', {})
-  vim.api.nvim_create_autocmd('BufLeave', {
+  local group = vim.api.nvim_create_augroup("RegistersWindow", {})
+  vim.api.nvim_create_autocmd("BufLeave", {
     group = group,
-    pattern = '<buffer>',
+    pattern = "<buffer>",
     callback = _close_window,
   })
 
   -- TODO: make hover out optional
   -- Register an autocommand to trigger events when the cursor moves
-  if type(options.events.on_register_highlighted) == 'function' then
+  if type(options.events.on_register_highlighted) == "function" then
     state._previous_cursor_line = nil
-    vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
       group = group,
       buffer = state._buffer,
       callback = _cursor_moved,
     })
   end
 
-  local source_ft = vim.api.nvim_get_option_value('filetype', {
-    buf = state._preview_buffer,
-  }) or 'registers'
+  -- TODO: save source_ft with register
+  -- local source_ft = vim.api.nvim_get_option_value("filetype", {
+  --   buf = state._preview_buffer,
+  -- }) or "registers"
+  local source_ft = "registers"
+
   -- TODO: add option for this
-  vim.api.nvim_set_option_value('syntax', source_ft, { buf = state._buffer })
+  vim.api.nvim_set_option_value("syntax", source_ft, { buf = state._buffer })
 
   -- Make the buffer content cut-off instead of starting on new line
-  vim.api.nvim_win_set_option(state._window, 'wrap', false)
+  vim.api.nvim_win_set_option(state._window, "wrap", false)
 
   -- Show a column on the left for the register names
   vim.api.nvim_win_set_option(
     state._window,
-    'signcolumn',
+    "signcolumn",
     -- Add space for the extra symbol in the sign column depending on whether we should show the register types
-    options.show_register_types and 'yes:2' or 'yes'
+    options.show_register_types and "yes:2" or "yes"
   )
 
   -- Highlight the cursor line
   if options.window.highlight_cursorline then
-    vim.api.nvim_win_set_option(state._window, 'cursorline', true)
+    vim.api.nvim_win_set_option(state._window, "cursorline", true)
   end
 
   -- Make the window transparent
   if options.window.transparency then
-    vim.api.nvim_win_set_option(state._window, 'winblend', options.window.transparency)
+    vim.api.nvim_win_set_option(state._window, "winblend", options.window.transparency)
   end
 
   -- Add the colors
@@ -233,7 +240,7 @@ local _create_window = function()
   _fill_window()
 
   -- Apply the key bindings to the buffer
-  local mappings = require('registers.mappings')
+  local mappings = require("registers.mappings")
   mappings._set_bindings()
 
   -- Stop when the window is interrupted
@@ -247,11 +254,15 @@ local _create_window = function()
   state._key_interrupt_timer = nil
 
   -- Ensure the window shows up
-  vim.cmd('redraw!')
+  vim.cmd("redraw!")
 
   -- Put the window in normal mode when using a visual selection
   if state._previous_mode_is_visual() then
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-\\><C-N>', true, true, true), 'n', true)
+    vim.api.nvim_feedkeys(
+      vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true),
+      "n",
+      true
+    )
   end
 end
 
@@ -278,14 +289,20 @@ end
 ---})
 ---@usage ]]
 local show_window = function(options)
-  options = vim.tbl_deep_extend('keep', options or {}, {
+  options = vim.tbl_deep_extend("keep", options or {}, {
     delay = 0,
-    mode = 'motion',
+    mode = "motion",
   })
 
   return function()
     -- Reset the interruption check
     state._interrupted_by = nil
+
+    -- Reset the one-time keystroke guard
+    state._has_determined_register = false
+
+    -- Keeps subsequent non-register keys that are pressed before the window closes
+    state._keys_to_press_at_the_very_end = ""
 
     -- Do a quick check if a key is not pressed already while calling this function
     local key = vim.fn.getchar(false)
@@ -324,7 +341,7 @@ local show_window = function(options)
     -- Open the window when another key hasn't been pressed in the meantime
     if state._interrupted_by == nil then
       -- Keep track of the count that's used to invoke the window so it can be applied again
-      state._operator_count = vim.api.nvim_get_vvar('count')
+      state._operator_count = vim.api.nvim_get_vvar("count")
 
       -- Store the mode which defaults to motion
       state._mode = options.mode
@@ -337,27 +354,69 @@ local show_window = function(options)
     else
       -- While in a motion mode is shown simulate the pressing of the key depending on the mode
       local charstr = vim.fn.nr2char(state._interrupted_by)
-      if state._previous_mode == 'n' or state._previous_mode == 'v' then
+      if state._previous_mode == "n" or state._previous_mode == "v" then
         return '"' .. charstr
       else
-        return vim.api.nvim_replace_termcodes('<C-R>', true, true, true) .. charstr
+        return vim.api.nvim_replace_termcodes("<C-R>", true, true, true) .. charstr
       end
     end
   end
+end
+---`require("registers").apply_register({...})`
+---@class apply_register_options
+---@field mode? register_mode How the register should be applied. If `nil` then the mode in which the window is opened is used.
+---@field keep_open_until_keypress? boolean If `true`, keep the window open until another key is pressed, only applicable when the mode is `"motion"`.
+
+---Apply the specified register.
+---@return function callback Function that can be used to pass to configuration options with callbacks.
+---@usage [[
+---require("registers").setup({
+---    bind_keys = {
+---        -- Always paste the register when selecting with Enter
+---        ["<CR>"] = require("registers").apply_register({ mode = "paste" }),
+---    }
+---})
+---
+---require("registers").setup({
+---    bind_keys = {
+---        -- When pressing a key of the register, wait for another key press before closing the window
+---        registers = require("registers").apply_register({ keep_open_until_keypress = true }),
+---    }
+---})
+---@usage ]]
+
+local apply_register = function(options)
+  local utils = require("registers.utils")
+  return utils._handle_callback_options(options --[[@as callback_options]], function(register, mode)
+    -- When the current line needs to be selected a window also needs to be open
+    if register == nil and state._window == nil then
+      vim.api.nvim_err_writeln("registers window isn't open, can't apply register")
+      return
+    end
+
+    -- Overwrite the mode
+    if options and options.mode then
+      state._mode = options.mode --[[@as register_mode]]
+    elseif mode then
+      state._mode = mode
+    end
+
+    utils._apply_register(register, options and options.keep_open_until_keypress)
+  end)
 end
 
 ---Move the cursor up in the window.
 ---@param options? callback_options Options for firing the callback.
 ---@return function callback Function that can be used to pass to configuration options with callbacks.
 local move_cursor_up = function(options)
-  local utils = require('registers.utils')
+  local utils = require("registers.utils")
   return utils._handle_callback_options(options, function()
     if state._window == nil then
       vim.api.nvim_err_writeln("registers window isn't open, can't move cursor")
       return
     end
 
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Up>', true, true, true), 'n', true)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, true, true), "n", true)
   end)
 end
 
@@ -365,14 +424,14 @@ end
 ---@param options? callback_options Options for firing the callback.
 ---@return function callback Function that can be used to pass to configuration options with callbacks.
 local move_cursor_down = function(options)
-  local utils = require('registers.utils')
+  local utils = require("registers.utils")
   return utils._handle_callback_options(options, function()
     if state._window == nil then
       vim.api.nvim_err_writeln("registers window isn't open, can't move cursor")
       return
     end
 
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Down>', true, true, true), 'n', true)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Down>", true, true, true), "n", true)
   end)
 end
 
@@ -393,7 +452,7 @@ local _move_cursor_to_register = function(register)
       vim.api.nvim_win_set_cursor(state._window, { i, 0 })
 
       -- Redraw the line so it gets highlighted
-      vim.api.nvim_command('silent! redraw')
+      vim.api.nvim_command("silent! redraw")
 
       return
     end
@@ -408,9 +467,9 @@ end
 ---@param options callback_options|move_cursor_to_register_options Options for firing the callback.
 ---@return function callback Function that can be used to pass to configuration options with callbacks.
 local move_cursor_to_register = function(options)
-  local utils = require('registers.utils')
+  local utils = require("registers.utils")
   if not options.register then
-    error('a register must be passed to `registers.move_cursor_to_register`')
+    error("a register must be passed to `registers.move_cursor_to_register`")
   end
 
   return utils._handle_callback_options(options --[[@as callback_options]], function()
@@ -436,7 +495,7 @@ end
 ---})
 ---@usage ]]
 local close_window = function(options)
-  local utils = require('registers.utils')
+  local utils = require("registers.utils")
   return utils._handle_callback_options(options, _close_window)
 end
 
@@ -447,6 +506,7 @@ return {
   _close_window            = _close_window,
   _fill_window             = _fill_window,
   _move_cursor_to_register = _move_cursor_to_register,
+  apply_register           = apply_register,
   close_window             = close_window,
   switch_layout            = switch_layout,
   show_window              = show_window,

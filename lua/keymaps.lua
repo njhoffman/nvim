@@ -1,4 +1,4 @@
-local mapper = require('mapper')
+local mapper = require("mapper")
 local map = mapper.map
 local vmap = mapper.vmap
 local prefix = mapper.prefix
@@ -10,25 +10,25 @@ local prefix = mapper.prefix
 -- 󱋿 Jump back"
 --         
 
-prefix({ 'n', 'x', 'o' }, ',', 'leader')
-prefix({ 'n', 'x', 'o' }, ']', 'next ')
-prefix({ 'n', 'x', 'o' }, '[', 'previous 丹')
-prefix({ 'n', 'x', 'o' }, '<leader>\\', 'flash ⚡')
+prefix({ "n", "x", "o" }, ",", "leader")
+prefix({ "n", "x", "o" }, "]", "next ")
+prefix({ "n", "x", "o" }, "[", "previous 丹")
+prefix({ "n", "x", "o" }, "<leader>\\", "flash ⚡")
 
-prefix('n', 'g', 'go 隷')
-prefix('n', 'z', 'folds ﱒ')
-prefix('n', 'gh', 'hover  ')
-prefix('n', 'gQ', 'quickfix  ')
-prefix('n', 'gP', 'preview  ')
-prefix('n', 'go', 'debug out  ')
+prefix("n", "g", "go 隷")
+prefix("n", "z", "folds ﱒ")
+prefix("n", "gh", "hover  ")
+prefix("n", "gQ", "quickfix  ")
+prefix("n", "gP", "preview  ")
+prefix("n", "go", "debug out  ")
 
 -- prefix('n', '<c-w>', 'window')
-prefix('n', '<leader>g', 'git 󰊢')
-prefix('n', '<leader>f', 'file ')
-prefix('n', '<leader>p', 'paste ') --  
-prefix('n', '<leader>i', 'internal  ')
-prefix('n', '<leader>u', 'undo 漏')
-prefix('n', '<leader>cl', 'conceal 󰈉 ')
+prefix("n", "<leader>g", "git 󰊢")
+prefix("n", "<leader>f", "file ")
+prefix("n", "<leader>p", "paste ") --  
+prefix("n", "<leader>i", "internal  ")
+prefix("n", "<leader>u", "undo 漏")
+prefix("n", "<leader>cl", "conceal 󰈉 ")
 
 -- 	u = { name = "" },
 -- -- leader prefixes normal mode
@@ -82,40 +82,40 @@ vim.cmd([[
 
 -- TODO: differentiate between vim/lua, auto remove comments
 
-map({ 'v' }, '<space>', '"xy:@x<cr>', {
-  category = 'Command',
-  label = ' execute selected',
-  desc = ' execute selected lines',
+map({ "v" }, "<space>", '"xy:@x<cr>', {
+  category = "Command",
+  label = " execute selected",
+  desc = " execute selected lines",
 })
 
-map({ 'n', 'v' }, ';', ':', {
-  category = 'Command',
-  label = ' open cmdline',
-  desc = ' open the command line',
+map({ "n", "v" }, ";", ":", {
+  category = "Command",
+  label = " open cmdline",
+  desc = " open the command line",
 })
 
-map({ 'n', 'v' }, '<M-:>', 'q:', {
-  category = 'Command',
-  label = ' open cmdwin',
-  desc = ' open the command window',
+map({ "n", "v" }, "<M-:>", "q:", {
+  category = "Command",
+  label = " open cmdwin",
+  desc = " open the command window",
 })
 
-map('c', '<M-b>', '<C-]><Esc>', {
-  category = 'Command',
-  label = ' open cmdwin normal',
-  desc = ' open command window from the command line in normal mode',
+map("c", "<M-b>", "<C-]><Esc>", {
+  category = "Command",
+  label = " open cmdwin normal",
+  desc = " open command window from the command line in normal mode",
 })
 
-map('c', '<M-f>', '<C-]>', {
-  category = 'Command',
-  label = ' open cmdwin insert',
-  desc = ' open command window from the command line in insert mode',
+map("c", "<M-f>", "<C-]>", {
+  category = "Command",
+  label = " open cmdwin insert",
+  desc = " open command window from the command line in insert mode",
 })
 
-map('c', '<M-S>', '<cmd>w<cr><esc>', {
-  category = 'Command',
-  label = ' save cmdline',
-  desc = ' save in command line',
+map("c", "<M-S>", "<cmd>w<cr><esc>", {
+  category = "Command",
+  label = " save cmdline",
+  desc = " save in command line",
 })
 
 -- map('c', '<C-Y>', '<C-\\>ey', {
@@ -134,14 +134,14 @@ map('c', '<M-S>', '<cmd>w<cr><esc>', {
 -- })
 
 -- TODO: conditional C-t for cmdline
-vmap('c', '<C-g>', {
-  category = 'Command',
-  label = ' next search match',
+vmap("c", "<C-g>", {
+  category = "Command",
+  label = " next search match",
 })
 
-map('c', '<M-g>', '<C-t>', {
-  category = 'Command',
-  label = ' prev search match',
+map("c", "<M-g>", "<C-t>", {
+  category = "Command",
+  label = " prev search match",
 })
 
 -- CTRL-\ e {expr}       :cmap <F7> <C-\>eAppendSome()<CR>
@@ -152,109 +152,109 @@ map('c', '<M-g>', '<C-t>', {
 --   CTRL-A	the WORD under the cursor; see |WORD|
 --   CTRL-L	the line under the cursor
 
-map('c', '<C-d>', '<Right><Del><Left>', {
-  category = 'Command',
-  label = ' delete word',
-  desc = ' delete word to the right of cmdline',
+map("c", "<C-d>", "<Right><Del><Left>", {
+  category = "Command",
+  label = " delete word",
+  desc = " delete word to the right of cmdline",
 })
 
-map('c', '<M-d>', '<Right><Del><Left>', {
-  category = 'Command',
-  label = ' delete eol',
-  desc = ' delete to end of cmdline',
+map("c", "<M-d>", "<Right><Del><Left>", {
+  category = "Command",
+  label = " delete eol",
+  desc = " delete to end of cmdline",
 })
 
-map('c', '<C-^>', '<Home>', {
-  category = 'Command',
-  label = ' goto start',
-  desc = ' go to beginning of command line',
+map("c", "<C-^>", "<Home>", {
+  category = "Command",
+  label = " goto start",
+  desc = " go to beginning of command line",
 })
 
-map('c', '<M-^>', '<cmd>lua require("commands.cmdline").toggle()<cr>', {
-  category = 'Command',
-  label = ' toggle cmdline',
-  desc = ' toggle cmdline depending on command mode',
+map("c", "<M-^>", '<cmd>lua require("commands.cmdline").toggle()<cr>', {
+  category = "Command",
+  label = " toggle cmdline",
+  desc = " toggle cmdline depending on command mode",
 })
 
-map('c', '<M-$>', '<End>', {
-  category = 'Command',
-  label = ' goto end',
-  desc = ' go to end of command line',
+map("c", "<M-$>", "<End>", {
+  category = "Command",
+  label = " goto end",
+  desc = " go to end of command line",
 })
 
-map('c', '<C-S-Left>', '<Left>', {
-  category = 'Command',
-  label = ' move left',
-  desc = ' move to the left by 1 character',
+map("c", "<C-S-Left>", "<Left>", {
+  category = "Command",
+  label = " move left",
+  desc = " move to the left by 1 character",
 })
-map('c', '<M-C-H>', '<S-Left>', {
-  category = 'Command',
-  label = ' move left word',
-  desc = ' move to the left by 1 word',
-})
-
-map('c', '<C-S-Right>', '<Right>', {
-  category = 'Command',
-  label = ' move right',
-  desc = ' move to the right by 1 character',
+map("c", "<M-C-H>", "<S-Left>", {
+  category = "Command",
+  label = " move left word",
+  desc = " move to the left by 1 word",
 })
 
-map('c', '<M-C-L>', '<S-Right>', {
-  category = 'Command',
-  label = ' move right word',
-  desc = ' move to the right by 1 word',
+map("c", "<C-S-Right>", "<Right>", {
+  category = "Command",
+  label = " move right",
+  desc = " move to the right by 1 character",
+})
+
+map("c", "<M-C-L>", "<S-Right>", {
+  category = "Command",
+  label = " move right word",
+  desc = " move to the right by 1 word",
 })
 
 -- todo: ctrl-shift- %
-map('c', '<M-%>', '<C-r>%', {
-  category = 'Command',
-  label = ' insert filename cmdline',
-  desc = ' insert filename into the command line',
+map("c", "<M-%>", "<C-r>%", {
+  category = "Command",
+  label = " insert filename cmdline",
+  desc = " insert filename into the command line",
 })
 
 --------------------------------------------------------------------------------------------------
 -- COMMENTS ---------------------------------------------------------------------------------------
-map('n', 'gch', function()
-  require('funcs.quality-of-life').commentHr()
-end, { category = 'Comments', desc = '  horizontal divider' })
+map("n", "gch", function()
+  require("funcs.quality-of-life").commentHr()
+end, { category = "Comments", desc = "  horizontal divider" })
 
 -- TODO: enable visual selection
-map({ 'x' }, 'gC', function()
-  require('funcs.quality-of-life').duplicateAsComment()
-end, { category = 'Comments', desc = '  duplicate line as comment' })
+map({ "x" }, "gC", function()
+  require("funcs.quality-of-life").duplicateAsComment()
+end, { category = "Comments", desc = "  duplicate line as comment" })
 
-map({ 'n' }, 'gcC', function()
-  require('funcs.quality-of-life').duplicateAsComment()
-end, { category = 'Comments', desc = '  duplicate line as comment' })
+map({ "n" }, "gcC", function()
+  require("funcs.quality-of-life").duplicateAsComment()
+end, { category = "Comments", desc = "  duplicate line as comment" })
 
-map({ 'n' }, 'gc<space>', function()
-  require('funcs.quality-of-life').duplicateAsComment()
-end, { category = 'Comments', desc = '  duplicate line as comment' })
+map({ "n" }, "gc<space>", function()
+  require("funcs.quality-of-life").duplicateAsComment()
+end, { category = "Comments", desc = "  duplicate line as comment" })
 --
 
 --------------------------------------------------------------------------------------------------
 -- BUFFERS ---------------------------------------------------------------------------------------
 
 map(
-  { 'n', 'x' },
-  '<C-d>',
+  { "n", "x" },
+  "<C-d>",
   -- "<cmd>lua require('funcs.alt-alt').betterClose()<cr>",
-  '<cmd>CloseMulti<cr>',
-  { category = 'Buffers', desc = '󰽙 close buffer/window' }
+  "<cmd>CloseMulti<cr>",
+  { category = "Buffers", desc = "󰽙 close buffer/window" }
 )
 
 --  'o<Esc>j'  'm`O<Esc>``'
-map('n', '<CR>', 'O<Esc>', {
-  category = 'Buffers',
-  label = '󰽙 insert new line',
-  desc = '󰽙 insert new line without leaving insert mode',
+map("n", "<CR>", "O<Esc>", {
+  category = "Buffers",
+  label = "󰽙 insert new line",
+  desc = "󰽙 insert new line without leaving insert mode",
 })
 
-map('n', '<S-CR>', '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
+map("n", "<S-CR>", '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
 
-  category = 'Buffers',
-  label = '󰽙 goto alt-buffer',
-  desc = '󰽙 goto alternative/last buffer',
+  category = "Buffers",
+  label = "󰽙 goto alt-buffer",
+  desc = "󰽙 goto alternative/last buffer",
 })
 -- keymap({ "n", "x", "i" }, "<C-CR>", "<C-w>w", { desc = " Next Window" })
 -- map('n', '<BS>', '<cmd>e #<cr>', {
@@ -264,124 +264,124 @@ map('n', '<S-CR>', '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
 --   silent = true,
 -- })
 
-map('n', '<C-Tab>', '<cmd>tabn<cr>', {
-  category = 'Buffers',
-  label = '󰽙 next tab',
-  desc = '󰽙 open the next tab',
+map("n", "<C-Tab>", "<cmd>tabn<cr>", {
+  category = "Buffers",
+  label = "󰽙 next tab",
+  desc = "󰽙 open the next tab",
 })
 
-map('n', '<C-S-Tab>', '<cmd>tabp<cr>', {
-  category = 'Buffers',
-  label = '󰽙 prev  tab',
-  desc = '󰽙 open the prev tab',
+map("n", "<C-S-Tab>", "<cmd>tabp<cr>", {
+  category = "Buffers",
+  label = "󰽙 prev  tab",
+  desc = "󰽙 open the prev tab",
 })
 
-map('n', 'H', '<Cmd>BufferPrev<cr>', {
-  category = 'Buffers',
-  label = '󰽙 left buffer',
-  desc = '󰽙 open the left (prev) buffer',
+map("n", "H", "<Cmd>BufferPrev<cr>", {
+  category = "Buffers",
+  label = "󰽙 left buffer",
+  desc = "󰽙 open the left (prev) buffer",
 })
 
-map('n', 'L', '<Cmd>BufferNext<cr>', {
-  category = 'Buffers',
-  label = '󰽙 right buffer',
-  desc = '󰽙 open the right (next) buffer',
+map("n", "L", "<Cmd>BufferNext<cr>", {
+  category = "Buffers",
+  label = "󰽙 right buffer",
+  desc = "󰽙 open the right (next) buffer",
 })
 
-map({ 'n' }, '<leader>fH', '<cmd>lua vim.treesitter.get_parser(0):parse()<cr>', {
-  category = 'Buffers',
-  label = '󰽙 reset treesitter highlighting',
+map({ "n" }, "<leader>fH", "<cmd>lua vim.treesitter.get_parser(0):parse()<cr>", {
+  category = "Buffers",
+  label = "󰽙 reset treesitter highlighting",
 })
 
-map({ 'n', 's', 'v', 'i' }, '<C-s>', '<cmd>silent! w<cr><esc>', {
-  category = 'Buffers',
-  label = '󰽙 write buffer',
-  desc = '󰽙 write to buffer',
+map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>silent! w<cr><esc>", {
+  category = "Buffers",
+  label = "󰽙 write buffer",
+  desc = "󰽙 write to buffer",
   silent = true,
 })
 
-map('n', '<leader>f*w', '<cmd>wall<cr>', {
-  category = 'Buffers',
-  label = '󰽙 write all',
+map("n", "<leader>f*w", "<cmd>wall<cr>", {
+  category = "Buffers",
+  label = "󰽙 write all",
   silent = true,
-  desc = '󰽙 write all buffers',
+  desc = "󰽙 write all buffers",
 })
 
-map('n', '<leader>w', '<cmd>noa w<cr>', {
-  category = 'Buffers',
-  label = '󰽙 write noa',
-  desc = '󰽙 write without autocommands',
-  silent = true,
-})
-
-map('n', '<leader>fw', '<cmd>noa w<cr>', {
-  category = 'Buffers',
-  label = '󰽙 write noa',
-  desc = '󰽙 write without autocommands',
+map("n", "<leader>w", "<cmd>noa w<cr>", {
+  category = "Buffers",
+  label = "󰽙 write noa",
+  desc = "󰽙 write without autocommands",
   silent = true,
 })
 
-map('n', '<leader>fd', '<cmd>BufferDelete<cr>', {
-  category = 'Buffers',
-  label = '󰽙 delete buffer',
-  desc = '󰽙 delete buffer without closing window',
+map("n", "<leader>fw", "<cmd>noa w<cr>", {
+  category = "Buffers",
+  label = "󰽙 write noa",
+  desc = "󰽙 write without autocommands",
+  silent = true,
 })
 
-map('n', '<leader>f*d', '<cmd>BufferCloseAllButCurrent<cr>', {
-  category = 'Buffers',
-  label = '󰽙 close other bufs',
-  desc = '󰽙 close all buffers except current',
+map("n", "<leader>fd", "<cmd>BufferDelete<cr>", {
+  category = "Buffers",
+  label = "󰽙 delete buffer",
+  desc = "󰽙 delete buffer without closing window",
+})
+
+map("n", "<leader>f*d", "<cmd>BufferCloseAllButCurrent<cr>", {
+  category = "Buffers",
+  label = "󰽙 close other bufs",
+  desc = "󰽙 close all buffers except current",
 })
 
 -- map('n', '<S-Space>', '"_caw', { desc = '󱡔 change word' })
 -- map('n', '<S-Space>', '"_daw', { desc = '󱡔 delete word' })
-map('i', '<M-BS>', '<Esc>cvb', {
-  category = 'Buffers',
-  desc = '󰽙 delete previous word',
+map("i", "<M-BS>", "<Esc>cvb", {
+  category = "Buffers",
+  desc = "󰽙 delete previous word",
   silent = true,
 })
 
-map('n', '<leader><space>', '<C-^>', {
-  category = 'Buffers',
-  desc = '󰽙 switch to last buffer',
+map("n", "<leader><space>", "<C-^>", {
+  category = "Buffers",
+  desc = "󰽙 switch to last buffer",
 })
 
-map('n', '<leader>fn', [[:e <C-R>=expand("%:p:h") . "/" <CR>]], {
-  category = 'Buffers',
-  label = '󰽙 new file in cwd',
-  desc = '󰽙 create new file in current directory',
+map("n", "<leader>fn", [[:e <C-R>=expand("%:p:h") . "/" <CR>]], {
+  category = "Buffers",
+  label = "󰽙 new file in cwd",
+  desc = "󰽙 create new file in current directory",
 })
 
-map('n', '<leader>fn', [[:vsp <C-R>=expand("%:p:h") . "/" <CR>]], {
-  category = 'Buffers',
-  label = '󰽙 new file h-split',
-  desc = '󰽙 create new file in a horizontal split',
+map("n", "<leader>fn", [[:vsp <C-R>=expand("%:p:h") . "/" <CR>]], {
+  category = "Buffers",
+  label = "󰽙 new file h-split",
+  desc = "󰽙 create new file in a horizontal split",
 })
 
-map('n', '<leader>fp', "<cmd>echo expand('%:p')<CR>", {
-  category = 'Buffers',
-  label = '󰽙 print path',
-  desc = '󰽙 print path of current buffer',
+map("n", "<leader>fp", "<cmd>echo expand('%:p')<CR>", {
+  category = "Buffers",
+  label = "󰽙 print path",
+  desc = "󰽙 print path of current buffer",
 })
 
-map('n', 'gf', '/"\\|\'<cr>hgF', {
+map("n", "gf", "/\"\\|'<cr>hgF", {
   silent = true,
-  category = 'Buffers',
-  label = '󰽙 goto file',
-  desc = '󰽙 open file under cursor',
+  category = "Buffers",
+  label = "󰽙 goto file",
+  desc = "󰽙 open file under cursor",
 })
 
-vmap('n', 'gF', {
+vmap("n", "gF", {
   silent = true,
-  category = 'Buffers',
-  label = '󰽙 goto file:num',
-  desc = '󰽙 open file:num under cursor ',
+  category = "Buffers",
+  label = "󰽙 goto file:num",
+  desc = "󰽙 open file:num under cursor ",
 })
 
-map('n', '<leader>cd', '<cmd>cd %:h<cr>', {
-  category = 'Buffers',
-  label = '󰽙 cd buffer',
-  desc = '󰽙 change current working directory to buffer directory',
+map("n", "<leader>cd", "<cmd>cd %:h<cr>", {
+  category = "Buffers",
+  label = "󰽙 cd buffer",
+  desc = "󰽙 change current working directory to buffer directory",
 })
 
 --------------------------------------------------------------------------------
@@ -458,33 +458,33 @@ map('n', '<leader>cd', '<cmd>cd %:h<cr>', {
 -- UNDO
 
 -- save open time for each buffer
-vim.api.nvim_create_autocmd('BufReadPost', {
+vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function()
     vim.b.timeOpened = os.time()
   end,
 })
 
-map('n', '<leader>ur', function()
-  vim.cmd('silent later ' .. tostring(vim.opt.undolevels:get()))
-end, { desc = '漏redo all' })
+map("n", "<leader>ur", function()
+  vim.cmd("silent later " .. tostring(vim.opt.undolevels:get()))
+end, { desc = "漏redo all" })
 
-map('n', '<leader>uo', function()
+map("n", "<leader>uo", function()
   local now = os.time()
   local secsPassed = now - vim.b.timeOpened
-  vim.cmd.earlier(tostring(secsPassed) .. 's')
-end, { desc = '漏undo since last open' })
+  vim.cmd.earlier(tostring(secsPassed) .. "s")
+end, { desc = "漏undo since last open" })
 
-map({ 'n', 'x' }, '<leader>uc', function()
-  require('funcs.alt-alt').reopenBuffer()
-end, { desc = '漏 undo buffer closing' })
+map({ "n", "x" }, "<leader>uc", function()
+  require("funcs.alt-alt").reopenBuffer()
+end, { desc = "漏 undo buffer closing" })
 
-map({ 'n', 'x' }, '<leader>ul', '<cmd>undolist<cr>', { desc = '漏 undo show list' })
+map({ "n", "x" }, "<leader>ul", "<cmd>undolist<cr>", { desc = "漏 undo show list" })
 
 map(
-  { 'i' },
-  '<C-r>',
+  { "i" },
+  "<C-r>",
   '<cmd>silent! execute "normal <C-g>u<C-r><cr>"',
-  { desc = '漏 insert register without undo sequence', silent = true }
+  { desc = "漏 insert register without undo sequence", silent = true }
 )
 
 
@@ -544,11 +544,16 @@ map('n', 'g<M-C-H>', '<cmd>silent! tabclose | xa<cr>', {
 --   desc = 'ﲵ assign task to runner',
 -- })
 
-map('n', '!!', '<cmd>@:<cr>', {
+map('n', '!@', '<cmd>@:<cr>', {
   category = 'Execute',
-  label = 'ﲵ repeat runner command',
-  desc = 'ﲵ execute configured runner task',
+  label = 'ﲵ repeat last command',
 })
+
+map('n', '!!', '<cmd>@:<cr>', {
+    category = 'Execute',
+    label = 'ﲵ repeat runner command',
+      desc = 'ﲵ execute configured runner task',
+    })
 
 map('n', '<M-r>', '<cmd>Restart<cr>', {
   category = 'Execute',
@@ -765,9 +770,18 @@ local get_last_visual_selection = function()
  }
 
   -- start_col = start_col-1,
-  -- end_line = end_line-1,
+  -- end_line = end_line0,
   -- end_col = end_col,
 end
+
+-- TODO: disable <C-V> in alacritty
+-- TODO: go back to original position after select all
+
+map('n', '<leader>%', 'ggv$G$', {
+    category = 'Motion',
+    label = ' visual select entire buffer',
+    silent = true
+  })
 
 map('n', 'gp', '`[v`]', {
   category = 'Motion',
@@ -1457,7 +1471,10 @@ map('n', '<M-u>', "<cmd>lua require('telescope.run')('oldfiles', 'oldfiles')<cr>
   desc = 'mru files in telescope',
 })
 
-map('n', '<M-i>', "<cmd>lua require('telescope.run')('messages', 'messages')<cr>", {
+-- ^[[105;5u
+ -- :map <YourKeyCombination> <C-v>uXXXX
+
+map('n', '<C-i>', "<cmd>lua require('telescope.run')('messages', 'messages')<cr>", {
   category = 'Pickers',
   plugin = 'notify.nvim',
   label = 'notifications',

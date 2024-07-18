@@ -51,24 +51,24 @@ end
 function M.format_range_operator()
   local old_func = vim.go.operatorfunc
   _G.op_func_formatting = function()
-    local start = getmark(0, '[')
-    local finish = getmark(0, ']')
+    local start = getmark(0, "[")
+    local finish = getmark(0, "]")
     lsp.buf.format({
-      range = { start = start, ['end'] = finish },
+      range = { start = start, ["end"] = finish },
     })
     vim.go.operatorfunc = old_func
     _G.op_func_formatting = nil
   end
-  vim.go.operatorfunc = 'v:lua.op_func_formatting'
-  feedkeys('g@', 'n', false)
+  vim.go.operatorfunc = "v:lua.op_func_formatting"
+  feedkeys("g@", "n", false)
 end
 
 -- TODO: Figure out the easiest way to implement this
 function M.range_diagnostics(opts, buf_nr, start, finish)
-  start = start or getmark(0, '[')
-  finish = finish or getmark(0, ']')
+  start = start or getmark(0, "[")
+  finish = finish or getmark(0, "]")
 
-  vim.notify('Unimplemented', vim.log.levels.ERROR)
+  vim.notify("Unimplemented", vim.log.levels.ERROR)
 end
 
 -- Preview definitions and things
@@ -78,25 +78,25 @@ local function preview_location_callback(_, result)
     return nil
   end
   lsp.util.preview_location(result[1], {
-    border = 'rounded',
+    border = "rounded",
   })
 end
 
 function M.preview_location_at(name)
   return function()
     local params = lsp.util.make_position_params()
-    return lsp.buf_request(0, 'textDocument/' .. name, params, preview_location_callback)
+    return lsp.buf_request(0, "textDocument/" .. name, params, preview_location_callback)
   end
 end
 
 function M.view_location_split_callback(split_cmd)
   local util = vim.lsp.util
-  local log = require('vim.lsp.log')
+  local log = require("vim.lsp.log")
 
   -- note, this handler style is for neovim 0.5.1/0.6, if on 0.5, call with function(_, method, result)
   local function handler(_, result, ctx)
     if result == nil or vim.tbl_isempty(result) then
-      local _ = log.info() and log.info(ctx.method, 'No location found')
+      local _ = log.info() and log.info(ctx.method, "No location found")
       return nil
     end
     local oe = vim.lsp.get_client_by_id(ctx.client_id).offset_encoding
@@ -105,13 +105,13 @@ function M.view_location_split_callback(split_cmd)
       cmd(split_cmd)
     end
 
-    if vim.tbl_islist(result) then
+    if vim.islist(result) then
       util.jump_to_location(result[1], oe)
 
       if #result > 1 then
         util.set_qflist(util.locations_to_items(result))
-        api.nvim_command('copen')
-        api.nvim_command('wincmd p')
+        api.nvim_command("copen")
+        api.nvim_command("wincmd p")
       end
     else
       util.jump_to_location(result, oe)
@@ -128,7 +128,7 @@ function M.view_location_split(name, split_cmd)
     params.context = {
       includeDeclaration = true,
     }
-    return lsp.buf_request(0, 'textDocument/' .. name, params, cb)
+    return lsp.buf_request(0, "textDocument/" .. name, params, cb)
   end
 end
 
@@ -142,19 +142,19 @@ function M.view_location_pick_callback(title)
     local oe = vim.lsp.get_client_by_id(ctx.client_id).offset_encoding
 
     local res = result
-    if vim.tbl_islist(result) then
+    if vim.islist(result) then
       if #result > 1 then
         local opts = {
           prompt_title = title,
           attach_mappings = function(bufnr, map)
-            map({ 'i', 'n' }, '<cr>', utils.telescope.select_pick_window)
+            map({ "i", "n" }, "<cr>", utils.telescope.select_pick_window)
             return true
           end,
         }
         utils.telescope.from_qf_items(lsp.util.locations_to_items(result, oe), opts)
         return
       end
-      if title == 'references' then
+      if title == "references" then
         return
       end
       res = result[1]
@@ -181,7 +181,7 @@ function M.view_location_pick(name)
     params.context = {
       includeDeclaration = true,
     }
-    return lsp.buf_request(0, 'textDocument/' .. name, params, cb)
+    return lsp.buf_request(0, "textDocument/" .. name, params, cb)
   end
 end
 
@@ -205,13 +205,13 @@ function M.toggle_diag_lines(enable)
   end
   if enable then
     vim.diagnostic.config({
-      virtual_lines = require('langs').diagnostic_config_all.virtual_lines,
+      virtual_lines = require("langs").diagnostic_config_all.virtual_lines,
       virtual_text = false,
     })
   else
     vim.diagnostic.config({
       virtual_lines = false,
-      virtual_text = require('langs').diagnostic_config_all.virtual_text,
+      virtual_text = require("langs").diagnostic_config_all.virtual_text,
     })
   end
 end
@@ -240,11 +240,11 @@ function M.run_any_codelens(select)
   local codelens = lsp.codelens.get(0)
   select = select or vim.ui.select
   select(codelens, {
-    prompt = 'CodeLens actions:',
+    prompt = "CodeLens actions:",
     format_item = function(item)
-      local title = item.command.title .. ': '
+      local title = item.command.title .. ": "
       if item.command.arguments[1] then
-        title = title .. item.command.arguments[1].kind .. ' ' .. item.command.arguments[1].label
+        title = title .. item.command.arguments[1].kind .. " " .. item.command.arguments[1].label
       end
 
       return title
@@ -265,28 +265,28 @@ end
 -- Jump between diagnostics
 -- TODO: clean up and remove the deprecate functions
 function M.diag_line(opts)
-  diags.open_float(vim.tbl_deep_extend('keep', opts or {}, { scope = 'line' }))
+  diags.open_float(vim.tbl_deep_extend("keep", opts or {}, { scope = "line" }))
 end
 function M.diag_cursor(opts)
-  diags.open_float(vim.tbl_deep_extend('keep', opts or {}, { scope = 'cursor' }))
+  diags.open_float(vim.tbl_deep_extend("keep", opts or {}, { scope = "cursor" }))
 end
 function M.diag_buffer(opts)
-  diags.open_float(vim.tbl_deep_extend('keep', opts or {}, { scope = 'buffer' }))
+  diags.open_float(vim.tbl_deep_extend("keep", opts or {}, { scope = "buffer" }))
 end
 
 function M.hover(handler)
-  if type(handler) == 'table' then
+  if type(handler) == "table" then
     local config = handler
     handler = function(err, result, ctx)
       vim.lsp.handlers.hover(err, result, ctx, config)
     end
   end
   local params = vim.lsp.util.make_position_params()
-  vim.lsp.buf_request(0, 'textDocument/hover', params, handler)
+  vim.lsp.buf_request(0, "textDocument/hover", params, handler)
 end
 function M.auto_hover()
-  local auto_hover = vim.api.nvim_create_augroup('auto_hover', {})
-  vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+  local auto_hover = vim.api.nvim_create_augroup("auto_hover", {})
+  vim.api.nvim_create_autocmd({ "CursorHold" }, {
     group = auto_hover,
     callback = function()
       if vim.b.cursor_hold_hover then
@@ -294,12 +294,12 @@ function M.auto_hover()
       end
       M.hover({
         focusable = false,
-        border = 'single',
+        border = "single",
       })
       vim.b.cursor_hold_hover = true
     end,
   })
-  vim.api.nvim_create_autocmd({ 'CursorMoved' }, {
+  vim.api.nvim_create_autocmd({ "CursorMoved" }, {
     group = auto_hover,
     callback = function()
       vim.b.cursor_hold_hover = false
@@ -311,21 +311,21 @@ local hover_hydra
 function M.repeatable_hover(hover, k)
   hover = hover or vim.lsp.buf.hover
   if false then
-    k = k or 'h'
+    k = k or "h"
     if not hover_hydra then
-      hover_hydra = require('hydra')({
-        mode = { 'n', 'x' },
+      hover_hydra = require("hydra")({
+        mode = { "n", "x" },
         hint = false,
         body = nil,
         heads = {
-          { 'h', hover, { desc = 'LSP Hover' } },
+          { "h", hover, { desc = "LSP Hover" } },
           {
-            '<esc>',
+            "<esc>",
             function()
               hover() -- TODO: how to do this better?
               vim.api.nvim_win_close(0, true)
             end,
-            { desc = 'Close', exit = true, private = true },
+            { desc = "Close", exit = true, private = true },
           },
         },
       })
@@ -351,13 +351,13 @@ function M.get_highest_diag(ns, bufnr)
   -- return highest
 end
 function M.diag_next(opts)
-  diags.goto_next(vim.tbl_extend('keep', opts or {}, {
+  diags.goto_next(vim.tbl_extend("keep", opts or {}, {
     enable_popup = true,
     severity = M.get_highest_diag(),
   }))
 end
 function M.diag_prev(opts)
-  diags.goto_prev(vim.tbl_extend('keep', opts or {}, {
+  diags.goto_prev(vim.tbl_extend("keep", opts or {}, {
     enable_popup = true,
     severity = M.get_highest_diag(),
   }))
@@ -371,9 +371,9 @@ function M.error_prev()
 end
 
 function M.live_codelens()
-  local id = vim.api.nvim_create_augroup('lsp_codelens_refresh', { clear = false })
+  local id = vim.api.nvim_create_augroup("lsp_codelens_refresh", { clear = false })
   vim.api.nvim_create_autocmd(
-    { 'CursorHold', 'InsertLeave', 'BufWritePost' },
+    { "CursorHold", "InsertLeave", "BufWritePost" },
     { buffer = 0, callback = vim.lsp.codelens.refresh, group = id }
   )
 end
@@ -384,7 +384,7 @@ M.rename = (function()
     local result
     local method
     local err = select(1, ...)
-    local is_new = not select(4, ...) or type(select(4, ...)) ~= 'number'
+    local is_new = not select(4, ...) or type(select(4, ...)) ~= "number"
     if is_new then
       method = select(3, ...).method
       result = select(2, ...)
@@ -400,18 +400,18 @@ M.rename = (function()
       end
 
       -- echo the resulting changes
-      local new_word = ''
+      local new_word = ""
       if result and result.changes then
         local msg = {}
         for f, c in pairs(result.changes) do
           new_word = c[1].newText
-          table.insert(msg, ('%d changes -> %s'):format(#c, utils.get_relative_path(f)))
+          table.insert(msg, ("%d changes -> %s"):format(#c, utils.get_relative_path(f)))
         end
-        local currName = vfn.expand('<cword>')
+        local currName = vfn.expand("<cword>")
         vim.notify(
           msg,
           vim.log.levels.INFO,
-          { title = ('Rename: %s -> %s'):format(currName, new_word) }
+          { title = ("Rename: %s -> %s"):format(currName, new_word) }
         )
       end
     end
@@ -420,15 +420,15 @@ M.rename = (function()
   end
 
   local function do_rename()
-    local new_name = vim.trim(vfn.getline('.'):sub(5, -1))
+    local new_name = vim.trim(vfn.getline("."):sub(5, -1))
     cmd([[q!]])
     local params = lsp.util.make_position_params()
-    local curr_name = vfn.expand('<cword>')
+    local curr_name = vfn.expand("<cword>")
     if not (new_name and #new_name > 0) or new_name == curr_name then
       return
     end
     params.newName = new_name
-    lsp.buf_request(0, 'textDocument/rename', params, handler)
+    lsp.buf_request(0, "textDocument/rename", params, handler)
   end
 
   return function()
@@ -437,7 +437,7 @@ M.rename = (function()
       -- enter = do_rename,
       enter = vim.lsp.buf.rename,
       startup = function()
-        feedkeys(t('viw<C-G>'), 'n', false)
+        feedkeys(t("viw<C-G>"), "n", false)
       end,
       init_cword = true,
       at_begin = true, -- FIXME: What happened to this?
@@ -449,19 +449,19 @@ end)()
 -- Use select mode for renaming
 M.renamer = (function()
   local function del_keymaps()
-    vim.keymap.del('i', '<CR>')
-    vim.keymap.del('i', '<ESC><ESC>')
+    vim.keymap.del("i", "<CR>")
+    vim.keymap.del("i", "<ESC><ESC>")
   end
 
   local function enter_cb(old, oldpos)
     -- local cword = vfn.expand "<cword>"
     -- utils.dump(cword)
-    cmd('stopinsert')
+    cmd("stopinsert")
     vim.defer_fn(function()
       -- vim.api.nvim_win_set_cursor(0, oldpos)
-      local cword = vfn.expand('<cword>')
+      local cword = vfn.expand("<cword>")
       -- utils.dump(cword)
-      feedkeys(t('ciw' .. old .. '<ESC>'), 'n', false)
+      feedkeys(t("ciw" .. old .. "<ESC>"), "n", false)
 
       del_keymaps()
 
@@ -470,9 +470,9 @@ M.renamer = (function()
   end
 
   local function cancel_cb(old)
-    cmd('stopinsert')
+    cmd("stopinsert")
     -- feedkeys(t "u", "n", false)
-    feedkeys(t('ciw' .. old .. '<ESC>'), 'n', false)
+    feedkeys(t("ciw" .. old .. "<ESC>"), "n", false)
     del_keymaps()
   end
 
@@ -483,14 +483,14 @@ M.renamer = (function()
     local cancel = function()
       cancel_cb(old)
     end
-    vim.keymap.setl('i', '<CR>', enter, { silent = true })
-    vim.keymap.setl('i', '<M-CR>', enter, { silent = true })
-    vim.keymap.setl('i', '<ESC><ESC>', cancel, { silent = true })
+    vim.keymap.setl("i", "<CR>", enter, { silent = true })
+    vim.keymap.setl("i", "<M-CR>", enter, { silent = true })
+    vim.keymap.setl("i", "<ESC><ESC>", cancel, { silent = true })
   end
 
   return function()
-    local old = vfn.expand('<cword>')
-    feedkeys(t('viw<C-G>'), 'n', false) -- Go select mode
+    local old = vfn.expand("<cword>")
+    feedkeys(t("viw<C-G>"), "n", false) -- Go select mode
     mk_keymaps(old)
   end
 end)()
@@ -500,15 +500,15 @@ function M.format(opts)
   opts = opts or { async = true }
   local buf = vim.api.nvim_get_current_buf()
   local ft = vim.bo[buf].filetype
-  local have_nls = #require('null-ls.sources').get_available(ft, 'NULL_LS_FORMATTING') > 0
+  local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
 
-  vim.lsp.buf.format(vim.tbl_extend('force', {
+  vim.lsp.buf.format(vim.tbl_extend("force", {
     bufnr = buf,
     filter = function(client)
       if have_nls then
-        return client.name == 'null-ls'
+        return client.name == "null-ls"
       end
-      return client.name ~= 'null-ls'
+      return client.name ~= "null-ls"
     end,
   }, opts))
 end
@@ -516,23 +516,23 @@ end
 M.format_on_save = function(m)
   vim.g.Format_on_save_mode = m
   -- TODO: only if client has formatting
-  local id = vim.api.nvim_create_augroup('format_on_save', { clear = true })
+  local id = vim.api.nvim_create_augroup("format_on_save", { clear = true })
   local cb = function()
     local mode = vim.b.Format_on_save_mode
     if mode == nil then
       mode = vim.g.Format_on_save_mode
     end
-    if type(mode) == 'string' and mode:sub(1, 3) == 'mod' then
-      cmd('FormatModifications')
-    elseif mode == true or mode == 'all' then
+    if type(mode) == "string" and mode:sub(1, 3) == "mod" then
+      cmd("FormatModifications")
+    elseif mode == true or mode == "all" then
       local ok, _ = pcall(M.format, { timeout_ms = O.format_on_save_timeout })
       if not ok then
-        vim.notify('Error running format on save', vim.log.levels.ERROR)
+        vim.notify("Error running format on save", vim.log.levels.ERROR)
         vim.b.Format_on_save_mode = false
       end
     end
   end
-  vim.api.nvim_create_autocmd('BufWritePre', {
+  vim.api.nvim_create_autocmd("BufWritePre", {
     callback = cb,
     group = id,
   })
@@ -556,9 +556,9 @@ vim.lsp.buf.cancel_formatting = function(bufnr)
     for _, client in ipairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
       for id, request in pairs(client.requests or {}) do
         if
-          request.type == 'pending'
+          request.type == "pending"
           and request.bufnr == bufnr
-          and request.method == 'textDocument/formatting'
+          and request.method == "textDocument/formatting"
         then
           client.cancel_request(id)
         end
@@ -568,10 +568,10 @@ vim.lsp.buf.cancel_formatting = function(bufnr)
 end
 
 M.on_attach = function(on_attach, group)
-  if type(group) == 'string' then
+  if type(group) == "string" then
     group = vim.api.nvim_create_augroup(group, { clear = true })
   end
-  vim.api.nvim_create_autocmd('LspAttach', {
+  vim.api.nvim_create_autocmd("LspAttach", {
     group = group,
     callback = function(args)
       local buffer = args.buf
@@ -583,15 +583,15 @@ end
 
 M.document_highlight = function(client, bufnr)
   if client.server_capabilities.documentHighlightProvider then
-    local id = vim.api.nvim_create_augroup('document_highlight', { clear = false })
-    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+    local id = vim.api.nvim_create_augroup("document_highlight", { clear = false })
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
       buffer = bufnr,
       group = id,
       callback = function()
         vim.lsp.buf.document_highlight()
       end,
     })
-    vim.api.nvim_create_autocmd({ 'CursorMoved' }, {
+    vim.api.nvim_create_autocmd({ "CursorMoved" }, {
       buffer = bufnr,
       group = id,
       callback = function()
@@ -610,12 +610,12 @@ function M.rename_file(new_name)
     local done_rename = false
     for _, client in pairs(lsp.get_active_clients({ bufnr = bufnr })) do
       if
-        vim.tbl_get(client, 'server_capabilities', 'workspace', 'fileOperations', 'willRename')
+        vim.tbl_get(client, "server_capabilities", "workspace", "fileOperations", "willRename")
       then
         local params = {
-          files = { { newUri = 'file://' .. data.new_name, oldUri = 'file://' .. data.old_name } },
+          files = { { newUri = "file://" .. data.new_name, oldUri = "file://" .. data.old_name } },
         }
-        local resp = client.request_sync('workspace/willRenameFiles', params, 1000)
+        local resp = client.request_sync("workspace/willRenameFiles", params, 1000)
         if resp then
           utils.dump(resp)
           vim.lsp.util.apply_workspace_edit(resp.result, client.offset_encoding)
@@ -625,7 +625,7 @@ function M.rename_file(new_name)
       end
     end
     if done_rename then
-      vim.notify('No clients support rename files', vim.log.levels.ERROR, { title = 'LSP' })
+      vim.notify("No clients support rename files", vim.log.levels.ERROR, { title = "LSP" })
     end
   end
 
@@ -635,7 +635,7 @@ function M.rename_file(new_name)
     if name == nil then
       return
     end
-    local new_name = string.format('%s/%s', vim.fs.dirname(old_name), name)
+    local new_name = string.format("%s/%s", vim.fs.dirname(old_name), name)
     prepare_rename({ old_name = old_name, new_name = new_name })
     vim.lsp.util.rename(old_name, new_name, {})
   end
@@ -644,7 +644,7 @@ function M.rename_file(new_name)
     do_rename(new_name)
   else
     vim.ui.input({
-      prompt = 'Rename ' .. old_name,
+      prompt = "Rename " .. old_name,
       default = old_name,
     }, do_rename)
   end

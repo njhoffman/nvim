@@ -1,14 +1,14 @@
 local utils = {}
 -- Utilities ------------------------------------------------------------------
 utils.echo = function(msg, is_important)
-  local Config = require('mini.surround.Config')
+  local Config = require("mini.surround.Config")
   if Config.get_config().silent then
     return
   end
 
   -- Construct message chunks
-  msg = type(msg) == 'string' and { { msg } } or msg
-  table.insert(msg, 1, { '(mini.surround) ', 'WarningMsg' })
+  msg = type(msg) == "string" and { { msg } } or msg
+  table.insert(msg, 1, { "(mini.surround) ", "WarningMsg" })
 
   -- Avoid hit-enter-prompt
   local max_width = vim.o.columns * math.max(vim.o.cmdheight - 1, 0) + vim.v.echospace
@@ -28,7 +28,7 @@ utils.echo = function(msg, is_important)
 end
 
 utils.unecho = function()
-  local Config = require('mini.surround.Config')
+  local Config = require("mini.surround.Config")
   if Config.cache.msg_shown then
     vim.cmd([[echo '' | redraw]])
   end
@@ -44,7 +44,7 @@ utils.string_find = function(s, pattern, init)
   -- Match only start of full string if pattern says so.
   -- This is needed because `string.find()` doesn't do this.
   -- Example: `string.find('(aaa)', '^.*$', 4)` returns `4, 5`
-  if pattern:sub(1, 1) == '^' then
+  if pattern:sub(1, 1) == "^" then
     if init > 1 then
       return nil
     end
@@ -55,8 +55,8 @@ utils.string_find = function(s, pattern, init)
   -- doesn't allow `x` be present inside `.-` match, just as with `yyy`. Which
   -- also leads to a behavior similar to punctuation id (like with `va_`): no
   -- covering is possible, only next, previous, or nearest.
-  local check_left, _, prev = string.find(pattern, '(.)%.%-')
-  local is_pattern_special = check_left ~= nil and prev ~= '%'
+  local check_left, _, prev = string.find(pattern, "(.)%.%-")
+  local is_pattern_special = check_left ~= nil and prev ~= "%"
   if not is_pattern_special then
     return string.find(s, pattern, init)
   end
@@ -80,11 +80,11 @@ end
 ---   product. Else - make it single item list.
 ---@private
 utils.cartesian_product = function(arr)
-  if not (type(arr) == 'table' and #arr > 0) then
+  if not (type(arr) == "table" and #arr > 0) then
     return {}
   end
   arr = vim.tbl_map(function(x)
-    return vim.tbl_islist(x) and x or { x }
+    return vim.islist(x) and x or { x }
   end, arr)
 
   local res, cur_item = {}, {}
@@ -107,7 +107,7 @@ utils.cartesian_product = function(arr)
 end
 
 utils.wrap_callable_table = function(x)
-  if vim.is_callable(x) and type(x) == 'table' then
+  if vim.is_callable(x) and type(x) == "table" then
     return function(...)
       return x(...)
     end

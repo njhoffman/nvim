@@ -19,7 +19,7 @@ if vim.g.neovide then
 
   -- Helper function for transparency formatting
   local alpha = function()
-    return string.format('%x', math.floor(255 * vim.g.transparency or 0.8))
+    return string.format("%x", math.floor(255 * vim.g.transparency or 0.8))
   end
 
   -- let g:neovide_transparency=0.7
@@ -45,7 +45,7 @@ if vim.g.neovide then
   vim.g.neovide_cursor_animate_in_insert_mode = true
   vim.g.neovide_cursor_animate_command_line = true
   vim.g.neovide_cursor_unfocused_outline_width = 0.125
-  vim.g.neovide_cursor_vfx_mode = '' -- railgun, torpedo, pixiedust, sonicboom, ripple, wireframe
+  vim.g.neovide_cursor_vfx_mode = "" -- railgun, torpedo, pixiedust, sonicboom, ripple, wireframe
   vim.g.neovide_cursor_vfx_opacity = 200.0
   vim.g.neovide_cursor_vfx_particle_lifetime = 1.2
   vim.g.neovide_cursor_vfx_particle_density = 7.0
@@ -74,10 +74,10 @@ if vim.g.neovide then
   -- end)
   vim.cmd([[
 
-  let s:guifontsize=10
-  let s:guifont="Fira\\ Code\\ SemiBold"
+  " let s:guifontsize=8
+  " let s:guifont="Fira\ Code\ Regular"
   " set guifont=Fira\ Code\ SemiBold:h13
-  set guifont=DejaVuSansMono\ Nerd\ Font:h10
+  set guifont=DejaVuSansMono\ Nerd\ Font:h9
 
 " let g:neovide_refresh_rate=60
 " let g:neovide_transparency=0.8

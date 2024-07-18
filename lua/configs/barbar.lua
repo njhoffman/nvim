@@ -1,12 +1,13 @@
-require('barbar').setup({
+require("barbar").setup({
   -- auto_hide = true,
   -- insert_at_end = false,
   -- insert_at_start = false,
+  -- hide = { inactive = true },
   highlight_alternate = true,
   highlights = {
     fill = {
-      fg = { attribute = 'fg', highlight = 'TabLine' }, -- change to this
-      bg = { attribute = 'bg', highlight = 'TabLine' },
+      fg = { attribute = "fg", highlight = "TabLine" }, -- change to this
+      bg = { attribute = "bg", highlight = "TabLine" },
     },
   },
   icons = {
@@ -16,9 +17,9 @@ require('barbar').setup({
     -- separator = { left = '▎' },
     separator_at_end = true,
     pinned = {
-      button = '',
+      button = "",
       filename = true,
-      separator = { right = ' ' },
+      separator = { right = " " },
     },
   },
 })
@@ -34,9 +35,9 @@ require('barbar').setup({
 --  }
 --
 
-vim.opt.sessionoptions:append('globals')
-vim.api.nvim_create_user_command('Mksession', function(attr)
-  vim.api.nvim_exec_autocmds('User', { pattern = 'SessionSavePre' })
+vim.opt.sessionoptions:append("globals")
+vim.api.nvim_create_user_command("Mksession", function(attr)
+  vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })
   -- Neovim 0.8<=
   vim.cmd.mksession({ bang = attr.bang, args = attr.fargs })
-end, { bang = true, complete = 'file', nargs = '?' })
+end, { bang = true, complete = "file", nargs = "?" })

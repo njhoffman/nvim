@@ -1,8 +1,8 @@
-local Layout = require('nui.layout')
-local Popup = require('nui.popup')
+local Layout = require("nui.layout")
+local Popup = require("nui.popup")
 
 local get_component_heights = function(output_height_percentage)
-  local lines_height = vim.api.nvim_get_option('lines')
+  local lines_height = vim.api.nvim_get_option("lines")
   local statusline_height = vim.o.laststatus == 0 and 0 or 1 -- height of the statusline if present
   local cmdline_height = vim.o.cmdheight -- height of the cmdline if present
   local tabline_height = vim.o.showtabline == 0 and 0 or 1 -- height of the tabline if present
@@ -27,20 +27,26 @@ local create_components = function(state, config, current_model)
     enter = false,
     focusable = true,
     zindex = 50,
-    position = '50%',
+    position = "50%",
     border = {
-      style = 'rounded',
+      style = "rounded",
       text = {
-        top = ' ' .. cfg.output_popup_text .. ' ',
-        top_align = 'center',
-        bottom = current_model.model .. ' (' .. current_model.name.name .. ') ',
-        bottom_align = 'right',
+        top = " " .. cfg.output_popup_text .. " ",
+        top_align = "center",
+        bottom = current_model.model .. " (" .. current_model.name.name .. ") ",
+        bottom_align = "right",
       },
     },
     buf_options = {
       modifiable = false,
       readonly = true,
-      filetype = 'neoai-output',
+      syntax = "pandoc",
+      -- filetype = "markdown.neoai-output",
+      filetype = "markdown",
+      buftype = "nofile",
+      bufhidden = "hide",
+      swapfile = false,
+      -- buflisted = false
     },
     -- win_options = {
     -- 	winblend = 10,
@@ -55,26 +61,26 @@ local create_components = function(state, config, current_model)
     enter = true,
     focusable = true,
     zindex = 50,
-    position = '50%',
+    position = "50%",
     border = {
-      style = 'rounded',
+      style = "rounded",
       padding = {
         left = 1,
         right = 1,
       },
       text = {
-        top = #cfg.input_popup_text > 0 and ' ' .. config.options.ui.input_popup_text .. ' ' or '',
-        top_align = 'center',
+        top = #cfg.input_popup_text > 0 and " " .. config.options.ui.input_popup_text .. " " or "",
+        top_align = "center",
       },
     },
     buf_options = {
       modifiable = true,
       readonly = false,
-      filetype = 'neoai-input',
+      filetype = "neoai-input",
     },
     win_options = {
       winblend = 0,
-      winhighlight = 'Normal:Normal,FloatBorder:FloatBorder',
+      winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
       wrap = true,
     },
   })
@@ -82,20 +88,20 @@ local create_components = function(state, config, current_model)
   local component_heights = get_component_heights(config.options.ui.output_popup_height)
   state.layout = Layout(
     {
-      relative = 'editor',
+      relative = "editor",
       position = {
         row = component_heights.starting_row,
-        col = '100%',
+        col = "100%",
       },
       size = {
-        width = config.options.ui.width .. '%',
+        width = config.options.ui.width .. "%",
         height = component_heights.layout,
       },
     },
     Layout.Box({
       Layout.Box(state.output_popup, { size = component_heights.output }),
       Layout.Box(state.input_popup, { size = component_heights.prompt }),
-    }, { dir = 'col' })
+    }, { dir = "col" })
   )
 end
 

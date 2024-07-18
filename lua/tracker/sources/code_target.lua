@@ -1,14 +1,14 @@
-local base_source = require('tracker.sources._base')
+local base_source = require("tracker.sources._base")
 
 local get_code_target = function(self)
-  local location = self:_get_opt('location')
-  local target = self:_get_opt('target')
+  local location = self:_get_opt("location")
+  local target = self:_get_opt("target")
   if not location then
-    vim.notify('No location provided for code_target source', 3)
+    vim.notify("No location provided for code_target source", 3)
   else
     local parsed_values = {}
     local target_values = vim.fn.deepcopy(target and require(location)[target] or require(location))
-    if vim.tbl_islist(target_values) then
+    if vim.islist(target_values) then
       for i, val in ipairs(target_values) do
         table.insert(parsed_values, { key = i, value = val })
       end

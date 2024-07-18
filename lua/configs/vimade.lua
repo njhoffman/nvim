@@ -26,21 +26,22 @@
 
 vim.g.vimade = {
   -- running = 0,
-  basebg = '#041026',
+  basebg = "#041026",
   basegroups = {
-    'Conceal',
-    'CursorLine',
-    'CursorLineNr',
-    -- 'ColorColumn',
-    'LineNr',
-    'DiffAdd',
-    'DiffChange',
-    'DiffDelete',
-    'DiffText',
-    'EndOfBuffer',
-    'FoldColumn',
-    'Folded',
-    'NonText',
+    "Conceal",
+    -- "ColorColumn",
+    "CursorLine",
+    "CursorLineNr",
+    "CursorColumn",
+    "LineNr",
+    "DiffAdd",
+    "DiffChange",
+    "DiffDelete",
+    "DiffText",
+    "EndOfBuffer",
+    "FoldColumn",
+    "Folded",
+    "NonText",
     -- 'MiniIndentscopeSymbol',
     -- 'IblScope',
     -- 'IblIndent',
@@ -49,18 +50,18 @@ vim.g.vimade = {
     -- '@ibl.indent.char.1',
     -- '@ibl.whitespace.char.1',
     -- 'Search',
-    'SignColumn',
+    "SignColumn",
     -- 'Scrollbar',
     -- 'ScrollView',
-    'SpecialKey',
+    "SpecialKey",
     -- 'StatusLine',
-    'WinBar',
-    'WinSeparator',
-    'Whitespace',
-    'VirtualText',
-    'barbecue_basename',
-    'barbecue_normal',
-    'barbecue_context',
+    "WinBar",
+    "WinSeparator",
+    "Whitespace",
+    "VirtualText",
+    "barbecue_basename",
+    "barbecue_normal",
+    "barbecue_context",
   },
   checkinterval = 100,
   detecttermcolors = 1,
@@ -77,21 +78,21 @@ vim.g.vimade = {
   usecursorhold = 0,
 }
 
-vim.api.nvim_create_augroup('VimadeEvents', { clear = true })
-vim.api.nvim_create_autocmd({ 'FocusLost' }, {
-  group = 'VimadeEvents',
+vim.api.nvim_create_augroup("VimadeEvents", { clear = true })
+vim.api.nvim_create_autocmd({ "FocusLost", "WinLeave" }, {
+  group = "VimadeEvents",
   callback = function(ev)
     local winid = vim.fn.bufwinid(ev.buf)
-    vim.api.nvim_set_option_value('colorcolumn', '', { win = winid })
+    vim.api.nvim_set_option_value("colorcolumn", "0", { win = winid })
   end,
 })
 
 -- vim.cmd('VimadeFadeActive')
-vim.api.nvim_create_autocmd({ 'FocusGained' }, {
-  group = 'VimadeEvents',
+vim.api.nvim_create_autocmd({ "FocusGained", "WinEnter" }, {
+  group = "VimadeEvents",
   callback = function(ev)
     local winid = vim.fn.bufwinid(ev.buf)
-    vim.api.nvim_set_option_value('colorcolumn', '+1', { win = winid })
+    vim.api.nvim_set_option_value("colorcolumn", "+1", { win = winid })
   end,
 })
 -- vim.api.nvim_create_autocmd({ 'BufWinEnter', 'BufWinLeave' }, {

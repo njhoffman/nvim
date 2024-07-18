@@ -1,30 +1,30 @@
 -- vim.treesitter.language.register('markdown', 'neoai-output')
 
-require('neoai').setup({
+require("neoai").setup({
   -- Below are the default options, feel free to override what you would like changed
   ui = {
-    output_popup_text = 'NeoAI',
-    input_popup_text = 'Prompt',
+    output_popup_text = "NeoAI",
+    input_popup_text = "Prompt",
     width = 30, -- As percentage eg. 30%
     output_popup_height = 80, -- As percentage eg. 80%
-    submit = '<Enter>', -- Key binding to submit the prompt
+    submit = "<Enter>", -- Key binding to submit the prompt
   },
   models = {
     {
-      name = 'openai',
+      name = "openai",
       model = {
-        'gpt-4-1106-preview',
-        'gpt-4',
-        'gpt-3-turbo',
+        "gpt-4-1106-preview",
+        "gpt-4",
+        "gpt-3-turbo",
       },
       params = nil,
     },
   },
   register_output = {
-    ['g'] = function(output)
+    ["g"] = function(output)
       return output
     end,
-    ['c'] = require('neoai.utils').extract_code_snippets,
+    ["c"] = require("neoai.utils").extract_code_snippets,
   },
   inject = {
     cutoff_width = 75,
@@ -32,46 +32,46 @@ require('neoai').setup({
   prompts = {
     context_prompt = function(context)
       return "Hey, I'd like to provide some context for future "
-        .. 'messages. Here is the code/text that I want to refer '
-        .. 'to in our upcoming conversations:\n\n'
+        .. "messages. Here is the code/text that I want to refer "
+        .. "to in our upcoming conversations:\n\n"
         .. context
     end,
   },
   mappings = {
-    ['select_up'] = '<C-t>',
-    ['select_down'] = '<M-T>',
+    ["select_up"] = "<C-t>",
+    ["select_down"] = "<M-T>",
   },
   api_key = {
-    env = 'OPENAI_API_KEY',
+    env = "OPENAI_API_KEY",
     value = nil,
   },
   shortcuts = {
     {
-      name = 'textify',
-      key = '<leader>Is',
-      desc = 'fix text with AI',
+      name = "textify",
+      key = "<leader>Is",
+      desc = "fix text with AI",
       use_context = true,
       prompt = [[
                 Please rewrite the text to make it more readable, clear,
                 concise, and fix any grammatical, punctuation, or spelling
                 errors
             ]],
-      modes = { 'v' },
+      modes = { "v" },
       strip_function = nil,
     },
     {
-      name = 'gitcommit',
-      key = '<leader>Ig',
-      desc = 'generate git commit message',
+      name = "gitcommit",
+      key = "<leader>Ig",
+      desc = "generate git commit message",
       use_context = false,
       prompt = function()
         return [[
                     Using the following git diff generate a consise and
                     clear git commit message, with a short title summary
                     that is 75 characters or less:
-                ]] .. vim.fn.system('git diff --cached')
+                ]] .. vim.fn.system("git diff --cached")
       end,
-      modes = { 'n' },
+      modes = { "n" },
       strip_function = nil,
     },
   },

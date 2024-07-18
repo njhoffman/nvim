@@ -273,11 +273,11 @@ local config = {
   },
   mode_highlights = {}, -- separator, group, desc float value, border, mode
   debug = true,
-  vimade_fade = true,
+  vimade_fade = false,
 }
 
-require('which-key').setup(config)
-require('configs.which-key.globals')
+require("which-key").setup(config)
+require("configs.which-key.globals")
 
 -- require('which-key').register({ ['<C-Q>'] = { name = '+Test' }, { mode = 'n' } })
 

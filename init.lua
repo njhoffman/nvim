@@ -40,6 +40,7 @@ end
 vim.defer_fn(function()
   require("sidebar").setup()
   require("histories").setup()
+  -- require("synshade").setup()
 
   -- 'lab.setup',
   local llm_config = require("llm-config")
@@ -47,7 +48,6 @@ vim.defer_fn(function()
 
   local neoai_cfg = require("neoai.options")
   require("neoai").setup(neoai_cfg)
-
   -- local map = require('mapper').map
 
   -- vim.keymap.set('n', '<M-0>', 'i<M-0><esc>', { remap = true, desc = 'warp pair symbol forwads' })
@@ -55,6 +55,7 @@ vim.defer_fn(function()
   -- vim.keymap.set('n', '<M-)>', 'i<M-)><esc>', { remap = true, desc = 'warp pair symbol forwads' })
   -- vim.keymap.set('n', '<M-(>', 'i<M-(><esc>', { remap = true, desc = 'warp pair symbol backwards' })
 
+  --
   -- vim.keymap.set({ 'i', 'n' }, '<M-.>', '<M-0>', { remap = true, desc = 'warp pair symbol forwards' })
   -- vim.keymap.set({ 'i', 'n' }, '<M-,>', '<M-9>', { remap = true, desc = 'warp pair symbol forwards' })
   -- vim.keymap.set('i', "<M-'>", '<M-0>', { remap = true, desc = 'warp pair symbol forwards' })

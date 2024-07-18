@@ -1,11 +1,11 @@
 local config = {
   auto_save_trailblazer_state_on_exit = true,
   auto_load_trailblazer_state_on_enter = true,
-  custom_session_storage_dir = vim.fn.stdpath('data') .. '/trailblazer',
+  custom_session_storage_dir = vim.fn.stdpath("data") .. "/trailblazer",
   trail_options = {
     available_trail_mark_modes = {
-      'global_chron_buf_switch_group_chron',
-      'buffer_local_line_sorted',
+      "global_chron_buf_switch_group_chron",
+      "buffer_local_line_sorted",
       -- 'custom_ord',
       --    This is a dynamic mode which will only be available and switched to once the trail mark order in any other selection mode has been manually changed from inside the trail mark list.
       -- 'global_chron',
@@ -27,13 +27,13 @@ local config = {
       -- 'buffer_local_line_sorted',
       --    Only current buffer marks are traversed from BOF to EOF.
     },
-    current_trail_mark_mode = 'global_chron_buf_switch_group_chron',
+    current_trail_mark_mode = "global_chron_buf_switch_group_chron",
     verbose_trail_mark_select = true,
-    mark_symbol = '•',
-    newest_mark_symbol = '',
-    cursor_mark_symbol = '',
-    next_mark_symbol = 'ﭠ',
-    previous_mark_symbol = 'ﭢ',
+    mark_symbol = "•",
+    newest_mark_symbol = "",
+    cursor_mark_symbol = "",
+    next_mark_symbol = "ﭠ",
+    previous_mark_symbol = "ﭢ",
     multiple_mark_symbol_counters_enabled = true,
     number_line_color_enabled = true,
     symmbol_line_enabled = true,
@@ -41,13 +41,13 @@ local config = {
     trail_mark_list_rows = 5,
     trail_mark_symbol_line_indicators_enabled = true, -- show indicators for all trail marks in symbol column
     move_to_nearest_before_peek = true,
-    move_to_nearest_before_peek_motion_directive_up = 'fpath_up',
-    move_to_nearest_before_peek_motion_directive_down = 'fpath_down',
+    move_to_nearest_before_peek_motion_directive_up = "fpath_up",
+    move_to_nearest_before_peek_motion_directive_down = "fpath_down",
   },
   event_list = {
-    'TrailBlazerTrailMarkStackSaved',
+    "TrailBlazerTrailMarkStackSaved",
     -- "TrailBlazerTrailMarkStackDeleted",
-    'TrailBlazerCurrentTrailMarkStackChanged',
+    "TrailBlazerCurrentTrailMarkStackChanged",
     -- "TrailBlazerTrailMarkStackSortModeChanged"
   },
   force_mappings = { -- rename this to "force_mappings" to completely override default mappings
@@ -81,32 +81,32 @@ local config = {
     nv = {
       motions = {
         -- Jump to the trail mark under your cursor and set the current trail mark cursor.
-        qf_motion_move_trail_mark_stack_cursor = '<CR>',
+        qf_motion_move_trail_mark_stack_cursor = "<CR>",
       },
       actions = {
         -- d	d	Delete the trail mark under your cursor or all trail marks within your selection.
-        qf_action_delete_trail_mark_selection = 'd',
+        qf_action_delete_trail_mark_selection = "d",
         -- v or V	v or V	Enter visual line mode and select multiple trail marks.
-        qf_action_save_visual_selection_start_line = 'v',
+        qf_action_save_visual_selection_start_line = "v",
       },
       alt_actions = {
-        qf_action_save_visual_selection_start_line = 'V',
+        qf_action_save_visual_selection_start_line = "V",
       },
     },
     v = {
       actions = {
         -- Jump to the trail mark under your cursor and set the current trail mark cursor
-        qf_action_move_selected_trail_marks_down = '<C-S-Down>',
+        qf_action_move_selected_trail_marks_down = "<C-S-Down>",
         -- Ctrl + k	<C-k>	Move trail marks within your selection up the stack.
-        qf_action_move_selected_trail_marks_up = '<C-S-Up>jk',
+        qf_action_move_selected_trail_marks_up = "<C-S-Up>jk",
       },
     },
   },
 }
 
-config.hl_groups = require('configs.trailblazer.highlights')
+config.hl_groups = require("configs.trailblazer.highlights")
 
-require('trailblazer').setup(config)
+require("trailblazer").setup(config)
 
 -- {
 --   "<A-l>",

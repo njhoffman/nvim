@@ -1,20 +1,20 @@
 local fancy_1 = {
   enable = true,
   head = {
-    cursor = '▷', -- ▷ ◆
-    texthl = 'SmoothCursor',
+    cursor = "▷", -- ▷ ◆
+    texthl = "SmoothCursor",
     linehl = nil,
   }, -- false to disable fancy head
   body = {
-    { cursor = '', texthl = 'SmoothCursorRed' },
-    { cursor = '•', texthl = 'SmoothCursorOrange' },
-    { cursor = '•', texthl = 'SmoothCursorYellow' },
-    { cursor = '•', texthl = 'SmoothCursorGreen' },
-    { cursor = '.', texthl = 'SmoothCursorAqua' },
-    { cursor = '.', texthl = 'SmoothCursorBlue' },
-    { cursor = '.', texthl = 'SmoothCursorPurple' },
+    { cursor = "", texthl = "SmoothCursorRed" },
+    { cursor = "•", texthl = "SmoothCursorOrange" },
+    { cursor = "•", texthl = "SmoothCursorYellow" },
+    { cursor = "•", texthl = "SmoothCursorGreen" },
+    { cursor = ".", texthl = "SmoothCursorAqua" },
+    { cursor = ".", texthl = "SmoothCursorBlue" },
+    { cursor = ".", texthl = "SmoothCursorPurple" },
   },
-  tail = { cursor = nil, texthl = 'SmoothCursor' }, -- false to disable fancy tail
+  tail = { cursor = nil, texthl = "SmoothCursor" }, -- false to disable fancy tail
 }
 
 -- stylua: ignore
@@ -30,8 +30,8 @@ local cfg = {
   intervals         = 45,    -- (35) Update intervals in milliseconds
   cursor            = '▷',   --  ▷ Cursor shape (requires Nerd Font). Disabled in fancy mode.
   timeout           = 2000,  -- (3000) timeout for animations
-  disabled_filetypes = { "TelescopePrompt", "NvimTree", 'qf' }
+  disabled_filetypes = { "TelescopePrompt", "NvimTree", 'qf', 'noice' }
 }
 
-require('smoothcursor').setup(cfg)
-require('configs.smoothcursor.mode-changed')
+require("smoothcursor").setup(cfg)
+require("configs.smoothcursor.mode-changed")

@@ -1,7 +1,7 @@
-local require = require('noice.util.lazy')
+local require = require("noice.util.lazy")
 
-local Util = require('noice.util')
-local _ = require('nui.utils')._
+local Util = require("noice.util")
+local _ = require("nui.utils")._
 
 local M = {}
 
@@ -12,14 +12,14 @@ function M.normalize(opts)
 
   M.normalize_win_options(opts)
 
-  if opts.type == 'split' then
+  if opts.type == "split" then
     ---@cast opts NuiSplitOptions
     return M.normalize_split_options(opts)
-  elseif opts.type == 'popup' then
+  elseif opts.type == "popup" then
     ---@cast opts NuiPopupOptions
     return M.normalize_popup_options(opts)
   end
-  error('Missing type for ' .. vim.inspect(opts))
+  error("Missing type for " .. vim.inspect(opts))
 end
 
 ---@param opts? NoiceNuiOptions
@@ -48,10 +48,10 @@ function M.overlap(win1, win2)
   local bb2 = M.bounds(win2)
 
   -- # determine the coordinates of the intersection rectangle
-  local x_left = math.max(bb1['xmin'], bb2['xmin'])
-  local y_top = math.max(bb1['ymin'], bb2['ymin'])
-  local x_right = math.min(bb1['xmax'], bb2['xmax'])
-  local y_bottom = math.min(bb1['ymax'], bb2['ymax'])
+  local x_left = math.max(bb1["xmin"], bb2["xmin"])
+  local y_top = math.max(bb1["ymin"], bb2["ymin"])
+  local x_right = math.min(bb1["xmax"], bb2["xmax"])
+  local y_bottom = math.min(bb1["ymax"], bb2["ymax"])
 
   if x_right < x_left or y_bottom < y_top then
     return 0.0
@@ -62,8 +62,8 @@ function M.overlap(win1, win2)
   local intersection_area = math.max(x_right - x_left, 1) * math.max(y_bottom - y_top, 1)
 
   -- # compute the area of both AABBs
-  local bb1_area = (bb1['xmax'] - bb1['xmin']) * (bb1['ymax'] - bb1['ymin'])
-  local bb2_area = (bb2['xmax'] - bb2['xmin']) * (bb2['ymax'] - bb2['ymin'])
+  local bb1_area = (bb1["xmax"] - bb1["xmin"]) * (bb1["ymax"] - bb1["ymin"])
+  local bb2_area = (bb2["xmax"] - bb2["xmin"]) * (bb2["ymax"] - bb2["ymin"])
 
   -- # compute the intersection over union by taking the intersection
   -- # area and dividing it by the sum of prediction + ground-truth
@@ -75,7 +75,7 @@ function M.normalize_size(opts)
   if opts.size.max_width and opts.size.win_width == nil then
     opts.size.win_width_used = opts.border.padding.left
       + opts.border.padding.right
-      + vim.api.nvim_win_get_option(0, 'numberwidth')
+      + vim.api.nvim_win_get_option(0, "numberwidth")
     opts.size.win_width = vim.o.columns - opts.size.win_width_used + 1
     opts.size.max_width = math.min(opts.size.max_width, opts.size.win_width)
   end
@@ -95,7 +95,7 @@ function M.normalize_popup_options(opts)
 
   -- border
   local border = opts.border
-  if type(border) == 'string' then
+  if type(border) == "string" then
     opts.border = { style = border }
   end
 
@@ -105,7 +105,10 @@ function M.normalize_popup_options(opts)
   end
 
   -- fix border text
-  if opts.border and (not opts.border.style or opts.border.style == 'none' or opts.border.style == 'shadow') then
+  if
+    opts.border
+    and (not opts.border.style or opts.border.style == "none" or opts.border.style == "shadow")
+  then
     opts.border.text = nil
   end
   return opts
@@ -117,32 +120,32 @@ function M.normalize_split_options(opts)
   opts = vim.deepcopy(opts or {})
 
   -- relative
-  require('nui.split.utils').normalize_options(opts)
+  require("nui.split.utils").normalize_options(opts)
 
   return opts
 end
 
 ---@param hl string|table<string,string>
 function M.get_win_highlight(hl)
-  if type(hl) == 'string' then
+  if type(hl) == "string" then
     return hl
   end
   local ret = {}
   for key, value in pairs(hl) do
-    table.insert(ret, key .. ':' .. value)
+    table.insert(ret, key .. ":" .. value)
   end
-  return table.concat(ret, ',')
+  return table.concat(ret, ",")
 end
 
 ---@param opts? NuiBorder|_.NuiBorderStyle|_.NuiBorder
 ---@return _.NuiBorderPadding
 function M.normalize_padding(opts)
   opts = opts or {}
-  if type(opts) == 'string' then
+  if type(opts) == "string" then
     opts = { style = opts }
   end
 
-  if vim.tbl_islist(opts.padding) then
+  if vim.islist(opts.padding) then
     if #opts.padding == 2 then
       return {
         top = opts.padding[1],
@@ -159,7 +162,7 @@ function M.normalize_padding(opts)
       }
     end
   end
-  return vim.tbl_deep_extend('force', {
+  return vim.tbl_deep_extend("force", {
     left = 0,
     right = 0,
     top = 0,
@@ -199,29 +202,29 @@ function M.get_layout(dim, _opts)
     return math.max(min or 1, math.min(value, max or 1000))
   end
 
-  if opts.type == 'split' then
+  if opts.type == "split" then
     ---@cast opts _.NuiSplitOptions
-    if size == 'auto' then
-      if position == 'top' or position == 'bottom' then
+    if size == "auto" then
+      if position == "top" or position == "bottom" then
         size = minmax(opts.min_size, opts.max_size, dim.height)
       else
         size = minmax(opts.min_size, opts.max_size, dim.width)
       end
     end
-  elseif opts.type == 'popup' then
-    if size.width == 'auto' then
+  elseif opts.type == "popup" then
+    if size.width == "auto" then
       size.width = minmax(size.min_width, size.max_width, dim.width)
       dim.width = size.width
     end
-    if size.height == 'auto' then
+    if size.height == "auto" then
       size.height = minmax(size.min_height, size.max_height, dim.height)
       dim.height = size.height
     end
-    if position and not (opts.relative and opts.relative.type == 'cursor') then
-      if type(position.col) == 'number' and position.col < 0 then
+    if position and not (opts.relative and opts.relative.type == "cursor") then
+      if type(position.col) == "number" and position.col < 0 then
         position.col = vim.o.columns + position.col - dim.width
       end
-      if type(position.row) == 'number' and position.row < 0 then
+      if type(position.row) == "number" and position.row < 0 then
         position.row = vim.o.lines + position.row - dim.height
       end
     end
@@ -231,20 +234,20 @@ function M.get_layout(dim, _opts)
 end
 
 function M.anchor(width, height)
-  local anchor = ''
+  local anchor = ""
   local lines_above = vim.fn.screenrow() - 1
   local lines_below = vim.fn.winheight(0) - lines_above
 
   if height < lines_below then
-    anchor = anchor .. 'N'
+    anchor = anchor .. "N"
   else
-    anchor = anchor .. 'S'
+    anchor = anchor .. "S"
   end
 
   if vim.go.columns - vim.fn.screencol() > width then
-    anchor = anchor .. 'W'
+    anchor = anchor .. "W"
   else
-    anchor = anchor .. 'E'
+    anchor = anchor .. "E"
   end
   return anchor
 end
@@ -259,8 +262,8 @@ function M.scroll(win, delta)
 
   vim.defer_fn(function()
     vim.api.nvim_buf_call(buf, function()
-      vim.api.nvim_command('noautocmd silent! normal! ' .. top .. 'zt')
-      vim.api.nvim_exec_autocmds('WinScrolled', { modeline = false })
+      vim.api.nvim_command("noautocmd silent! normal! " .. top .. "zt")
+      vim.api.nvim_exec_autocmds("WinScrolled", { modeline = false })
     end)
   end, 0)
 end

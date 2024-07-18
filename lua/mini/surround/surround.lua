@@ -1,6 +1,6 @@
-local Config = require('mini.surround.Config')
-local Span = require('mini.surround.Span')
-local utils = require('mini.surround.utils')
+local Config = require("mini.surround.Config")
+local Span = require("mini.surround.Span")
+local utils = require("mini.surround.utils")
 
 local H = {}
 
@@ -44,7 +44,7 @@ H.get_surround_spec = function(sur_type, use_cache)
   end
 
   -- Track identifier for possible messages. Use metatable to pass
-  -- `vim.tbl_islist()` check.
+  -- `vim.islist()` check.
   res = setmetatable(res, { __index = { id = char } })
 
   -- Cache result
@@ -58,7 +58,7 @@ end
 H.make_surrounding_table = function()
   -- Extend builtins with data from `config`
   local surroundings = vim.tbl_deep_extend(
-    'force',
+    "force",
     Config.builtin_surroundings,
     Config.get_config().custom_surroundings or {}
   )
@@ -66,7 +66,7 @@ H.make_surrounding_table = function()
   -- Add possibly missing information from default surrounding info
   for char, info in pairs(surroundings) do
     local default = Config.get_default_surrounding_info(char)
-    surroundings[char] = vim.tbl_deep_extend('force', default, info)
+    surroundings[char] = vim.tbl_deep_extend("force", default, info)
   end
 
   -- Use default surrounding info for not supplied single character identifier
@@ -78,39 +78,39 @@ H.make_surrounding_table = function()
 end
 
 H.is_surrounding_info = function(x, sur_type)
-  if sur_type == 'input' then
+  if sur_type == "input" then
     return H.is_composed_pattern(x) or H.is_region_pair(x) or H.is_region_pair_array(x)
-  elseif sur_type == 'output' then
-    return (type(x) == 'table' and type(x.left) == 'string' and type(x.right) == 'string')
+  elseif sur_type == "output" then
+    return (type(x) == "table" and type(x.left) == "string" and type(x.right) == "string")
   end
 end
 
 H.is_region = function(x)
-  if type(x) ~= 'table' then
+  if type(x) ~= "table" then
     return false
   end
-  local from_is_valid = type(x.from) == 'table'
-    and type(x.from.line) == 'number'
-    and type(x.from.col) == 'number'
+  local from_is_valid = type(x.from) == "table"
+    and type(x.from.line) == "number"
+    and type(x.from.col) == "number"
   -- Allow `to` to be `nil` to describe empty regions
   local to_is_valid = true
   if x.to ~= nil then
-    to_is_valid = type(x.to) == 'table'
-      and type(x.to.line) == 'number'
-      and type(x.to.col) == 'number'
+    to_is_valid = type(x.to) == "table"
+      and type(x.to.line) == "number"
+      and type(x.to.col) == "number"
   end
   return from_is_valid and to_is_valid
 end
 
 H.is_region_pair = function(x)
-  if type(x) ~= 'table' then
+  if type(x) ~= "table" then
     return false
   end
   return H.is_region(x.left) and H.is_region(x.right)
 end
 
 H.is_region_pair_array = function(x)
-  if not vim.tbl_islist(x) then
+  if not vim.islist(x) then
     return false
   end
   for _, v in ipairs(x) do
@@ -122,12 +122,12 @@ H.is_region_pair_array = function(x)
 end
 
 H.is_composed_pattern = function(x)
-  if not (vim.tbl_islist(x) and #x > 0) then
+  if not (vim.islist(x) and #x > 0) then
     return false
   end
   for _, val in ipairs(x) do
     local val_type = type(val)
-    if not (val_type == 'table' or val_type == 'string' or vim.is_callable(val)) then
+    if not (val_type == "table" or val_type == "string" or vim.is_callable(val)) then
       return false
     end
   end
@@ -146,16 +146,16 @@ H.find_surrounding = function(surr_spec, opts)
     return surr_spec
   end
 
-  opts = vim.tbl_deep_extend('force', Config.get_default_opts(), opts or {})
-  Config.validate_search_method(opts.search_method, 'search_method')
+  opts = vim.tbl_deep_extend("force", Config.get_default_opts(), opts or {})
+  Config.validate_search_method(opts.search_method, "search_method")
 
   local region_pair = H.find_surrounding_region_pair(surr_spec, opts)
   if region_pair == nil then
     local msg = ([[No surrounding '%s%s' found within %d line%s and `config.search_method = '%s'`.]]):format(
-      opts.n_times > 1 and opts.n_times or '',
+      opts.n_times > 1 and opts.n_times or "",
       surr_spec.id,
       opts.n_lines,
-      opts.n_lines > 1 and 's' or '',
+      opts.n_lines > 1 and "s" or "",
       opts.search_method
     )
     Config.message(msg)
@@ -211,12 +211,12 @@ H.find_surrounding_region_pair = function(surr_spec, opts)
   local extract = function(span, extract_pattern)
     -- Use table extract pattern to allow array of regions as surrounding spec
     -- Pair of spans is constructed based on best region pair
-    if type(extract_pattern) == 'table' then
+    if type(extract_pattern) == "table" then
       return extract_pattern
     end
 
     -- First extract local (with respect to best matched span) surrounding spans
-    local s = neigh['1d']:sub(span.from, span.to - 1)
+    local s = neigh["1d"]:sub(span.from, span.to - 1)
     local local_surr_spans = H.extract_surr_spans(s, extract_pattern)
 
     -- Convert local spans to global
@@ -254,14 +254,14 @@ end
 -- Work with treesitter surrounding -------------------------------------------
 H.prepare_captures = function(captures)
   local is_capture = function(x)
-    return type(x) == 'string' and x:sub(1, 1) == '@'
+    return type(x) == "string" and x:sub(1, 1) == "@"
   end
 
   if
-    not (type(captures) == 'table' and is_capture(captures.outer) and is_capture(captures.inner))
+    not (type(captures) == "table" and is_capture(captures.outer) and is_capture(captures.inner))
   then
     Config.error(
-      'Wrong format for `captures`. See `MiniSurround.gen_spec.input.treesitter()` for details.'
+      "Wrong format for `captures`. See `MiniSurround.gen_spec.input.treesitter()` for details."
     )
   end
 
@@ -269,8 +269,8 @@ H.prepare_captures = function(captures)
 end
 
 H.get_matched_node_pairs_plugin = function(captures)
-  local ts_queries = require('nvim-treesitter.query')
-  local ts_parsers = require('nvim-treesitter.parsers')
+  local ts_queries = require("nvim-treesitter.query")
+  local ts_parsers = require("nvim-treesitter.parsers")
 
   -- This is a modified version of `ts_queries.get_capture_matches_recursively`
   -- source code which keeps track of match language
@@ -280,7 +280,7 @@ H.get_matched_node_pairs_plugin = function(captures)
     parser:for_each_tree(function(tree, lang_tree)
       local lang = lang_tree:lang()
       local lang_matches =
-        ts_queries.get_capture_matches(0, captures.outer, 'textobjects', tree:root(), lang)
+        ts_queries.get_capture_matches(0, captures.outer, "textobjects", tree:root(), lang)
       for _, m in pairs(lang_matches) do
         m.lang = lang
       end
@@ -294,7 +294,7 @@ H.get_matched_node_pairs_plugin = function(captures)
       -- Pick inner node as the biggest node matching inner query. This is
       -- needed because query output is not quaranteed to come in order.
       local matches_inner =
-        ts_queries.get_capture_matches(0, captures.inner, 'textobjects', node_outer, match.lang)
+        ts_queries.get_capture_matches(0, captures.inner, "textobjects", node_outer, match.lang)
       local nodes_inner = vim.tbl_map(function(x)
         return x.node
       end, matches_inner)
@@ -310,14 +310,14 @@ H.get_matched_node_pairs_builtin = function(captures)
   local lang = vim.bo.filetype
   local ok, parser = pcall(vim.treesitter.get_parser, 0, lang)
   if not ok then
-    Config.error_treesitter('parser', lang)
+    Config.error_treesitter("parser", lang)
   end
 
-  local get_query = vim.fn.has('nvim-0.9') == 1 and vim.treesitter.query.get
+  local get_query = vim.fn.has("nvim-0.9") == 1 and vim.treesitter.query.get
     or vim.treesitter.get_query
-  local query = get_query(lang, 'textobjects')
+  local query = get_query(lang, "textobjects")
   if query == nil then
-    Config.error_treesitter('query', lang)
+    Config.error_treesitter("query", lang)
   end
 
   -- Remove leading '@'
@@ -399,7 +399,7 @@ H.find_best_match = function(neighborhood, surr_spec, reference_span, opts)
     -- Iterate over all matched spans
     for _, nested_pattern in ipairs(utils.cartesian_product(surr_spec)) do
       current_nested_pattern = nested_pattern
-      H.iterate_matched_spans(neighborhood['1d'], nested_pattern, f)
+      H.iterate_matched_spans(neighborhood["1d"], nested_pattern, f)
     end
   end
 
@@ -426,7 +426,7 @@ H.iterate_matched_spans = function(line, nested_pattern, f)
       next_span = pattern
     end
 
-    local is_same_balanced = type(pattern) == 'string' and pattern:match('^%%b(.)%1$') ~= nil
+    local is_same_balanced = type(pattern) == "string" and pattern:match("^%%b(.)%1$") ~= nil
     local init = 1
     while init <= level_line:len() do
       local from, to = next_span(level_line, init)
@@ -436,7 +436,7 @@ H.iterate_matched_spans = function(line, nested_pattern, f)
 
       if level == max_level then
         local found_match = Span.new(from + level_offset, to + level_offset)
-        local found_match_id = string.format('%s_%s', found_match.from, found_match.to)
+        local found_match_id = string.format("%s_%s", found_match.from, found_match.to)
         if not visited[found_match_id] then
           f(found_match)
           visited[found_match_id] = true
@@ -461,10 +461,10 @@ end
 H.get_marks_pos = function(mode)
   -- Region is inclusive on both ends
   local mark1, mark2
-  if mode == 'visual' then
-    mark1, mark2 = '<', '>'
+  if mode == "visual" then
+    mark1, mark2 = "<", ">"
   else
-    mark1, mark2 = '[', ']'
+    mark1, mark2 = "[", "]"
   end
 
   local pos1 = vim.api.nvim_buf_get_mark(0, mark1)
@@ -473,14 +473,14 @@ H.get_marks_pos = function(mode)
   local selection_type = H.get_selection_type(mode)
 
   -- Tweak position in linewise mode as marks are placed on the first column
-  if selection_type == 'linewise' then
+  if selection_type == "linewise" then
     -- Move start mark past the indent
-    local _, line1_indent = vim.fn.getline(pos1[1]):find('^%s*')
+    local _, line1_indent = vim.fn.getline(pos1[1]):find("^%s*")
     pos1[2] = line1_indent
 
     -- Move end mark to the last character (` - 2` here because `col()` returns
     -- column right after the last 1-based column)
-    pos2[2] = vim.fn.col({ pos2[1], '$' }) - 2
+    pos2[2] = vim.fn.col({ pos2[1], "$" }) - 2
   end
 
   -- Make columns 1-based instead of 0-based. This is needed because
@@ -495,7 +495,7 @@ H.get_marks_pos = function(mode)
   --   insert to the left of the mark.
   -- - For the second mark we want last byte of symbol. To add surrounding to
   --   the right, use `pos2[2] + 1`.
-  if mode == 'visual' and vim.o.selection == 'exclusive' then
+  if mode == "visual" and vim.o.selection == "exclusive" then
     -- Respect 'selection' option
     pos2[2] = pos2[2] - 1
   else
@@ -517,14 +517,14 @@ H.get_marks_pos = function(mode)
 end
 
 H.get_selection_type = function(mode)
-  if (mode == 'char') or (mode == 'visual' and vim.fn.visualmode() == 'v') then
-    return 'charwise'
+  if (mode == "char") or (mode == "visual" and vim.fn.visualmode() == "v") then
+    return "charwise"
   end
-  if (mode == 'line') or (mode == 'visual' and vim.fn.visualmode() == 'V') then
-    return 'linewise'
+  if (mode == "line") or (mode == "visual" and vim.fn.visualmode() == "V") then
+    return "linewise"
   end
-  if (mode == 'block') or (mode == 'visual' and vim.fn.visualmode() == '\22') then
-    return 'blockwise'
+  if (mode == "block") or (mode == "visual" and vim.fn.visualmode() == "\22") then
+    return "blockwise"
   end
 end
 
@@ -535,23 +535,23 @@ end
 
 H.set_cursor_nonblank = function(line)
   H.set_cursor(line, 1)
-  vim.cmd('normal! ^')
+  vim.cmd("normal! ^")
 end
 
 H.compare_pos = function(pos1, pos2)
   if pos1.line < pos2.line then
-    return '<'
+    return "<"
   end
   if pos1.line > pos2.line then
-    return '>'
+    return ">"
   end
   if pos1.col < pos2.col then
-    return '<'
+    return "<"
   end
   if pos1.col > pos2.col then
-    return '>'
+    return ">"
   end
-  return '='
+  return "="
 end
 
 H.cursor_cycle = function(pos_array, dir)
@@ -564,16 +564,16 @@ H.cursor_cycle = function(pos_array, dir)
     compare = H.compare_pos(cur_pos, pos)
     -- Take position when moving to left if cursor is strictly on right.
     -- This will lead to updating `res_pos` until the rightmost such position.
-    to_left = compare == '>' and dir == 'left'
+    to_left = compare == ">" and dir == "left"
     -- Take position when moving to right if cursor is strictly on left.
     -- This will update result only once leading to the leftmost such position.
-    to_right = res_pos == nil and compare == '<' and dir == 'right'
+    to_right = res_pos == nil and compare == "<" and dir == "right"
     if to_left or to_right then
       res_pos = pos
     end
   end
 
-  res_pos = res_pos or (dir == 'right' and pos_array[1] or pos_array[#pos_array])
+  res_pos = res_pos or (dir == "right" and pos_array[1] or pos_array[#pos_array])
   H.set_cursor(res_pos.line, res_pos.col)
 end
 
@@ -586,7 +586,7 @@ H.user_surround_id = function(sur_type)
       return
     end
 
-    local msg = string.format('Enter %s surrounding identifier (single character) ', sur_type)
+    local msg = string.format("Enter %s surrounding identifier (single character) ", sur_type)
     utils.echo(msg)
     Config.cache.msg_shown = true
   end, 1000)
@@ -595,12 +595,12 @@ H.user_surround_id = function(sur_type)
   utils.unecho()
 
   -- Terminate if couldn't get input (like with <C-c>) or it is `<Esc>`
-  if not ok or char == '\27' then
+  if not ok or char == "\27" then
     return nil
   end
 
-  if char:find('^[%w%p%s]$') == nil then
-    Config.message('Input must be single character: alphanumeric, punctuation, or space.')
+  if char:find("^[%w%p%s]$") == nil then
+    Config.message("Input must be single character: alphanumeric, punctuation, or space.")
     return nil
   end
 
@@ -650,13 +650,13 @@ H.region_replace = function(region, text)
   end
 
   -- Allow single string as replacement
-  if type(text) == 'string' then
+  if type(text) == "string" then
     text = { text }
   end
 
   -- Allow `\n` in string to denote new lines
   if #text > 0 then
-    text = vim.split(table.concat(text, '\n'), '\n')
+    text = vim.split(table.concat(text, "\n"), "\n")
   end
 
   -- Replace. Use `pcall()` to do nothing if some position is out of bounds.
@@ -672,7 +672,7 @@ H.surr_to_pos_array = function(surr)
     end
     -- Don't go past the line if it is not empty
     if utils.get_line_cols(pos.line) < pos.col and pos.col > 1 then
-      pos = correction_direction == 'left' and H.pos_to_left(pos) or H.pos_to_right(pos)
+      pos = correction_direction == "left" and H.pos_to_left(pos) or H.pos_to_right(pos)
     end
 
     -- Don't add duplicate. Assumes that positions are used increasingly.
@@ -686,12 +686,12 @@ H.surr_to_pos_array = function(surr)
   -- Possibly correct position towards inside of surrounding region
   -- Also don't add positions from empty regions
   if not H.region_is_empty(surr.left) then
-    append_position(surr.left.from, 'right')
-    append_position(surr.left.to, 'right')
+    append_position(surr.left.from, "right")
+    append_position(surr.left.to, "right")
   end
   if not H.region_is_empty(surr.right) then
-    append_position(surr.right.from, 'left')
-    append_position(surr.right.to, 'left')
+    append_position(surr.right.from, "left")
+    append_position(surr.right.to, "left")
   end
 
   return res
@@ -707,7 +707,7 @@ H.region_highlight = function(buf_id, region)
   -- Indexing is zero-based. Rows - end-inclusive, columns - end-exclusive.
   local from_line, from_col, to_line, to_col =
     region.from.line - 1, region.from.col - 1, region.to.line - 1, region.to.col
-  vim.highlight.range(buf_id, ns_id, 'MiniSurround', { from_line, from_col }, { to_line, to_col })
+  vim.highlight.range(buf_id, ns_id, "MiniSurround", { from_line, from_col }, { to_line, to_col })
 end
 
 H.region_unhighlight = function(buf_id, region)
@@ -733,7 +733,7 @@ H.get_range_indent = function(from_line, to_line)
   local lines = vim.api.nvim_buf_get_lines(0, from_line - 1, to_line, true)
   local n_indent_cur, indent_cur
   for _, l in ipairs(lines) do
-    _, n_indent_cur, indent_cur = l:find('^(%s*)')
+    _, n_indent_cur, indent_cur = l:find("^(%s*)")
 
     -- Don't indent blank lines
     if n_indent_cur < n_indent and n_indent_cur < l:len() then
@@ -741,14 +741,14 @@ H.get_range_indent = function(from_line, to_line)
     end
   end
 
-  return indent or ''
+  return indent or ""
 end
 
 H.shift_indent = function(command, from_line, to_line)
   if to_line < from_line then
     return
   end
-  vim.cmd('silent ' .. from_line .. ',' .. to_line .. command)
+  vim.cmd("silent " .. from_line .. "," .. to_line .. command)
 end
 
 H.is_line_blank = function(line_num)
@@ -761,14 +761,14 @@ H.extract_surr_spans = function(s, extract_pattern)
 
   local is_all_numbers = true
   for _, pos in ipairs(positions) do
-    if type(pos) ~= 'number' then
+    if type(pos) ~= "number" then
       is_all_numbers = false
     end
   end
 
   local is_valid_positions = is_all_numbers and (#positions == 2 or #positions == 4)
   if not is_valid_positions then
-    local msg = 'Could not extract proper positions (two or four empty captures) from '
+    local msg = "Could not extract proper positions (two or four empty captures) from "
       .. string.format([[string '%s' with extraction pattern '%s'.]], s, extract_pattern)
     Config.error(msg)
   end
@@ -796,11 +796,11 @@ H.get_neighborhood = function(reference_region, n_neighbors)
   local neigh2d = vim.api.nvim_buf_get_lines(0, line_start - 1, line_end, false)
   -- Append 'newline' character to distinguish between lines in 1d case
   for k, v in pairs(neigh2d) do
-    neigh2d[k] = v .. '\n'
+    neigh2d[k] = v .. "\n"
   end
 
   -- '1d neighborhood': position is determined by offset from start
-  local neigh1d = table.concat(neigh2d, '')
+  local neigh1d = table.concat(neigh2d, "")
 
   -- Convert 2d buffer position to 1d offset
   local pos_to_offset = function(pos)
@@ -869,8 +869,8 @@ H.get_neighborhood = function(reference_region, n_neighbors)
   return {
     n_neighbors = n_neighbors,
     region = reference_region,
-    ['1d'] = neigh1d,
-    ['2d'] = neigh2d,
+    ["1d"] = neigh1d,
+    ["2d"] = neigh2d,
     pos_to_offset = pos_to_offset,
     offset_to_pos = offset_to_pos,
     region_to_span = region_to_span,

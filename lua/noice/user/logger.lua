@@ -1,0 +1,69 @@
+-- "noice.ui.cmdline" :159
+-- log_cmdline(format, message, self.state)
+local log_cmdline = function(format, message, state)
+  -- message
+  -- {
+  -- _lines = { [1]  = _texts = [1] = { _content, _length, _width, class, extmark = { relative =
+  --           true, virt_text ={ [1] = { [1] = " ", [2] = "NoiceCmdlineIcon" } }, virt_text_win_col = 0  }}
+  -- class = { name = 'NoiceBlock', __meta = { __index, __tostring, append, content, highlight,
+  -- init, is_instance_of, render, width }, static }
+  -- ctime = 1720873761,
+  -- event = "cmdline",
+  -- fix_cr = false,
+  -- id = 1,
+  -- kind = "search_down",
+  -- mtime = 1720873828,
+  -- opts = {},
+  -- tick = 746
+  -- }
+  --
+  -- format
+  -- {
+  --   conceal = true,
+  --   icon = " ",
+  --   icon_hl_group = "NoiceCmdlineIcon",
+  --   kind = "eval_lua",
+  --   lang = "lua",
+  --   name = "eval_lua",
+  --   opts = {
+  --     border = {
+  --       style = "rounded",
+  --       text = {
+  --         top = "eval-lua"
+  --       }
+  --     },
+  --     position = {
+  --       col = "50%",
+  --       row = "10%"
+  --     },
+  --     win_options = {
+  --       winhighlight = {
+  --         FloatBorder = "NoiceCmdlinePopupBorderEval_lua",
+  --         FloatTitle = "NoiceCmdlinePopupTitleEval_lua"
+  --       }
+  --     }
+  --   },
+  --   pattern = {
+  --     [1] = "^:=%s*",
+  --     [2] = "^:lua%s=%s*"
+  --   },
+  --   title = "eval-lua",
+  --   view = "cmdline_popup"
+  -- }
+  --
+  -- state
+  -- {
+  --     content = {
+  --         [1] = {
+  --             [1] = 0,
+  --             [2] = "="
+  --         }
+  --     },
+  --     event = "cmdline_show",
+  --     firstc = ":",
+  --     indent = 0,
+  --     level = 1,
+  --     pos = 1,
+  --     prompt = ""
+  -- }
+end

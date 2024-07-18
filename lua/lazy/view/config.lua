@@ -1,4 +1,3 @@
--- NOTE: overridden for keys customization
 local M = {}
 
 ---@class LazyViewCommand
@@ -25,16 +24,18 @@ function M.get_commands()
   return ret
 end
 
-M.dimmed_commits = { "build", "ci", "chore", "doc", "test" }
+M.dimmed_commits = { "bot", "build", "ci", "chore", "doc", "style", "test" }
 
 M.keys = {
   hover = "K",
   diff = "d",
   close = "q",
   details = "<cr>",
-  profile_sort = "<C-s>",
+  profile_sort = "<M-s>",
   profile_filter = "<M-f>",
-  abort = "<M-d>",
+  abort = "<C-c>",
+  next = "]]",
+  prev = "[[",
 }
 
 ---@type table<string,LazyViewCommand>
@@ -144,10 +145,16 @@ M.commands = {
   },
   build = {
     desc = "Rebuild a plugin",
-    id = 13,
+    id = 15,
     plugins = true,
     plugins_required = true,
     key_plugin = "gb",
+  },
+  reload = {
+    desc = "Reload a plugin (experimental!!)",
+    plugins = true,
+    plugins_required = true,
+    id = 16,
   },
 }
 

@@ -3,17 +3,17 @@
 
 -- todo: better version of this where it scans table and ensures never more than two elements
 local has_embedded_hls = function(msg)
-  return type(msg[1]) == 'table' and type(msg[1][1]) == 'table' and type(msg[1][1][1]) == 'string'
+  return type(msg[1]) == "table" and type(msg[1][1]) == "table" and type(msg[1][1][1]) == "string"
 end
 
 local gen_highlights = function(orig_msg)
-  local msg = ''
+  local msg = ""
   local highlights = {}
   for n, line in ipairs(orig_msg) do
     if n > 1 then
-      msg = msg .. '\n'
+      msg = msg .. "\n"
     end
-    local line_msg = ''
+    local line_msg = ""
     for _, v in ipairs(line) do
       line_msg = line_msg .. v[1]
       if v[2] then
@@ -27,21 +27,22 @@ end
 
 local parse_message = function(orig_msg, orig_opts)
   local new_opts = orig_opts or {}
-  local new_msg = orig_msg or ''
+  local new_msg = orig_msg or ""
   local highlights = {}
-  if type(new_msg) == 'table' then
-    if vim.tbl_islist(orig_msg) then
-      if type(orig_msg[1]) == 'string' then
-        new_msg = vim.fn.join(orig_msg, '\n')
+  if type(new_msg) == "table" then
+    if vim.islist(orig_msg) then
+      if type(orig_msg[1]) == "string" then
+        new_msg = vim.fn.join(orig_msg, "\n")
       elseif has_embedded_hls(orig_msg) then
         new_msg, highlights = gen_highlights(orig_msg)
-        new_opts.highlights = vim.tbl_deep_extend('force', new_opts.highlights or {}, { body = highlights })
+        new_opts.highlights =
+          vim.tbl_deep_extend("force", new_opts.highlights or {}, { body = highlights })
       else
-        new_opts.filetype = orig_opts.filetype or ''
+        new_opts.filetype = orig_opts.filetype or ""
         new_msg = vim.inspect(orig_msg)
       end
     else
-      new_opts.filetype = orig_opts.filetype or ''
+      new_opts.filetype = orig_opts.filetype or ""
       new_msg = vim.inspect(orig_msg)
     end
   end

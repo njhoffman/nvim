@@ -1,4 +1,4 @@
-local glob = require('project_nvim.utils.globtopattern')
+local glob = require("project_nvim.utils.globtopattern")
 local uv = vim.loop
 
 local M = {}
@@ -6,9 +6,9 @@ local M = {}
 function M.lsp_workspace_root(client, fname)
   local root_dir = false
   local workspace_folders = client.workspace_folders or client.workspaceFolders
-  local is_windows = vim.loop.os_uname().version:match('Windows')
-  fname = vim.fn.fnamemodify(vim.fn.resolve(fname), ':p')
-  local sep = is_windows and '\\' or '/'
+  local is_windows = vim.loop.os_uname().version:match("Windows")
+  fname = vim.fn.fnamemodify(vim.fn.resolve(fname), ":p")
+  local sep = is_windows and "\\" or "/"
   local fname_parts = vim.split(fname, sep, { trimempty = true })
   if workspace_folders then
     for _, schema in pairs(workspace_folders) do
@@ -35,11 +35,11 @@ end
 function M.find_lsp_root()
   -- Get lsp client for current buffer
   -- Returns nil or string
-  local options = require('project_nvim.config').get()
+  local options = require("project_nvim.config").get()
 
   local original_bufnr = vim.api.nvim_get_current_buf()
-  local buf_ft = vim.api.nvim_buf_get_option(original_bufnr, 'filetype')
-  local clients = vim.lsp.get_active_clients({ bufnr = original_bufnr })
+  local buf_ft = vim.api.nvim_buf_get_option(original_bufnr, "filetype")
+  local clients = vim.lsp.get_clients({ bufnr = original_bufnr })
   -- local clients = vim.lsp.get_active_clients()
   local fname = vim.api.nvim_buf_get_name(original_bufnr)
   -- local fname = vim.api.nvim_buf_get_name(0)
@@ -53,7 +53,7 @@ function M.find_lsp_root()
     if not vim.tbl_contains(options.ignore_lsp, client.name) then
       local filetypes = client.filetypes
       local workspace_folders = client.workspace_folders
-      fname = uv.fs_realpath(fname) or vim.fn.fnamemodify(vim.fn.resolve(fname), ':p')
+      fname = uv.fs_realpath(fname) or vim.fn.fnamemodify(vim.fn.resolve(fname), ":p")
       if workspace_folders then
         for _, schema in ipairs(workspace_folders) do
           local ws_dir = uv.fs_realpath(schema.name)
@@ -75,17 +75,17 @@ function M.find_lsp_root()
 end
 
 function M.find_pattern_root()
-  local options = require('project_nvim.config').get()
+  local options = require("project_nvim.config").get()
 
-  local search_dir = vim.fn.expand('%:p:h', true)
+  local search_dir = vim.fn.expand("%:p:h", true)
 
-  local last_dir_cache = ''
+  local last_dir_cache = ""
   local curr_dir_cache = {}
 
   local function get_parent(_path)
-    _path = _path:match('^(.*)/')
-    if _path == '' then
-      _path = '/'
+    _path = _path:match("^(.*)/")
+    if _path == "" then
+      _path = "/"
     end
     return _path
   end
@@ -110,7 +110,7 @@ function M.find_pattern_root()
   end
 
   local function is(dir, identifier)
-    dir = dir:match('.*/(.*)')
+    dir = dir:match(".*/(.*)")
     return dir == identifier
   end
 
@@ -148,11 +148,11 @@ function M.find_pattern_root()
 
   local function match(dir, pattern)
     local first_char = pattern:sub(1, 1)
-    if first_char == '=' then
+    if first_char == "=" then
       return is(dir, pattern:sub(2))
-    elseif first_char == '^' then
+    elseif first_char == "^" then
       return sub(dir, pattern:sub(2))
-    elseif first_char == '>' then
+    elseif first_char == ">" then
       return child(dir, pattern:sub(2))
     else
       return has(dir, pattern)
@@ -163,7 +163,7 @@ function M.find_pattern_root()
   while true do
     for _, pattern in ipairs(options.patterns) do
       local exclude = false
-      if pattern:sub(1, 1) == '!' then
+      if pattern:sub(1, 1) == "!" then
         exclude = true
         pattern = pattern:sub(2)
       end
@@ -171,7 +171,7 @@ function M.find_pattern_root()
         if exclude then
           break
         else
-          return search_dir, 'pattern ' .. pattern
+          return search_dir, "pattern " .. pattern
         end
       end
     end
@@ -188,17 +188,17 @@ end
 function M.get_project_root()
   -- returns project root, as well as method
 
-  local options = require('project_nvim.config').get()
-  if type(options) ~= 'table' or type(options.detection_methods) ~= 'table' then
-    return vim.notify('Bad config file ...' .. vim.inspect(options), 4)
+  local options = require("project_nvim.config").get()
+  if type(options) ~= "table" or type(options.detection_methods) ~= "table" then
+    return vim.notify("Bad config file ..." .. vim.inspect(options), 4)
   end
   for _, detection_method in ipairs(options.detection_methods) do
-    if detection_method == 'lsp' then
+    if detection_method == "lsp" then
       local root, lsp_name = M.find_lsp_root()
       if root ~= nil then
         return root, 'lsp "' .. lsp_name .. '"'
       end
-    elseif detection_method == 'pattern' then
+    elseif detection_method == "pattern" then
       local root, method = M.find_pattern_root()
       if root ~= nil then
         return root, method

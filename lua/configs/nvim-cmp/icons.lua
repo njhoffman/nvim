@@ -18,6 +18,7 @@ local setup_highlights = function()
   vim.api.nvim_set_hl(0, 'CmpSourceQuickData',             { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceFuzzyBuffer',           { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceFuzzyPath',             { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceLazyDev',               { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceLook',                  { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceLuasnip',               { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceNpm',                   { default = true, link = 'CmpSource' })
@@ -59,9 +60,10 @@ local source_names = {
   copilot =                   { ' ', 'CmpSourceCopilot' }, -- " 
   dictionary =                { ' ', 'CmpSourceDictionary' },
   emoji =                     { ' ', 'CmpSourceEmoji' },
-  ['faker.quick_data']      = { ' ', 'CmpSourceQuickData' }, --       
+  ['faker.quick_data'] =      { ' ', 'CmpSourceQuickData' }, --       
   fuzzy_buffer =              { ' ', 'CmpSourceFuzzyBuffer' },
   fuzzy_path =                { ' ', 'CmpSourceFuzzyPath' },
+  lazydev =                   { '󰒲 ', 'CmpSourceLazyDev' },
   look =                      { ' ', 'CmpSourceLook' },
   luasnip =                   { ' ', 'CmpSourceLuasnip' },
   npm =                       { ' ', 'CmpSourceNpm' },
@@ -154,8 +156,9 @@ local lsp_symbols = {
   MarkupHeading5Marker = '',
   MarkupHeading6Marker = '',
   MarkupLink           = '',
-  MarkupRawBlock       = '',
-  MarkupRawDelimiter   = '' ,
+  MarkupRaw            = '',
+  MarkupRawBlock       = '', -- ''
+  MarkupRawDelimiter   = '' ,
   Method               = '󰆧',
   Module               = '󰅩', --   Module      = "󰏓 ",
   Namespace            = "󰌗",

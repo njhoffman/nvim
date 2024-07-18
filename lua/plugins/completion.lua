@@ -1,18 +1,26 @@
-local utils = require('utils.lazy')
+local utils = require("utils.lazy")
 
 local plugins = {
   {
-    'njhoffman/nvim-cmp',
-    dir = '~/git/nvim-cmp',
-    event = { 'InsertEnter', 'CmdlineEnter', 'CmdwinEnter' },
+    "njhoffman/nvim-cmp",
+    dir = "~/git/nvim-cmp",
+    event = { "InsertEnter", "CmdlineEnter", "CmdwinEnter" },
+
+    opts = function(_, opts)
+      opts.sources = opts.sources or {}
+      table.insert(opts.sources, {
+        name = "lazydev",
+        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+      })
+    end,
     dependencies = {
-      'David-Kunz/cmp-npm',
-      'andersevenrud/cmp-tmux',
-      'JMarkin/cmp-diag-codes',
-      'dmitmel/cmp-cmdline-history',
-      'tzachar/cmp-ai',
-      'f3fora/cmp-spell',
-      'hrsh7th/cmp-calc',
+      "David-Kunz/cmp-npm",
+      "andersevenrud/cmp-tmux",
+      "JMarkin/cmp-diag-codes",
+      "dmitmel/cmp-cmdline-history",
+      "tzachar/cmp-ai",
+      "f3fora/cmp-spell",
+      "hrsh7th/cmp-calc",
       -- https://github.com/smjonas/snippet-converter.nvim
       -- {
       --   'hrsh7th/cmp-omni',
@@ -22,58 +30,62 @@ local plugins = {
       --      })
       --   end,
       -- },
-      'hrsh7th/cmp-cmdline',
-      'hrsh7th/cmp-emoji',
-      { 'chrisgrieser/cmp_yanky', dependencies = 'yanky.nvim' },
-      { 'hrsh7th/cmp-nvim-lsp', dependencies = 'nvim-lspconfig' },
-      'hrsh7th/cmp-nvim-lsp-document-symbol',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
-      'hrsh7th/cmp-nvim-lua',
-      'FelipeLema/cmp-async-path',
-      'hrsh7th/cmp-path',
-      'tamago324/cmp-zsh',
-      'jc-doyle/cmp-pandoc-references',
-      'roobert/tailwindcss-colorizer-cmp.nvim',
-      'onsails/lspkind.nvim',
-      'pontusk/cmp-vimwiki-tags',
-      'rafamadriz/friendly-snippets',
-      'chrisgrieser/nvim-scissors',
-      'ray-x/cmp-treesitter',
-      'uga-rosa/cmp-dictionary',
-      { 'zbirenbaum/copilot-cmp', dependencies = 'copilot.lua' },
-      { 'tzachar/cmp-fuzzy-path', dependencies = { 'tzachar/fuzzy.nvim' } },
-      { 'tzachar/cmp-fuzzy-buffer', dependencies = { 'tzachar/fuzzy.nvim' } },
-      { 'saadparwaiz1/cmp_luasnip', dependencies = { 'L3MON4D3/LuaSnip' } },
-      { 'petertriho/cmp-git', dependencies = { 'nvim-lua/plenary.nvim' } },
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-emoji",
+      { "chrisgrieser/cmp_yanky", dependencies = "yanky.nvim" },
+      { "hrsh7th/cmp-nvim-lsp", dependencies = "nvim-lspconfig" },
+      "hrsh7th/cmp-nvim-lsp-document-symbol",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
+      "hrsh7th/cmp-nvim-lua",
+      "FelipeLema/cmp-async-path",
+      "hrsh7th/cmp-path",
+      "tamago324/cmp-zsh",
+      "jc-doyle/cmp-pandoc-references",
+      "roobert/tailwindcss-colorizer-cmp.nvim",
+      "onsails/lspkind.nvim",
+      "pontusk/cmp-vimwiki-tags",
+      "rafamadriz/friendly-snippets",
+      "chrisgrieser/nvim-scissors",
+      "ray-x/cmp-treesitter",
+      "uga-rosa/cmp-dictionary",
+
+      { "zbirenbaum/copilot-cmp", dependencies = "copilot.lua" },
+      { "tzachar/cmp-fuzzy-path", dependencies = { "tzachar/fuzzy.nvim" } },
+      { "tzachar/cmp-fuzzy-buffer", dependencies = { "tzachar/fuzzy.nvim" } },
+      { "saadparwaiz1/cmp_luasnip", dependencies = { "L3MON4D3/LuaSnip" } },
+      { "petertriho/cmp-git", dependencies = { "nvim-lua/plenary.nvim" } },
       {
-        'KadoBOT/cmp-plugins',
+        "KadoBOT/cmp-plugins",
         config = function()
-          require('cmp-plugins').setup({
+          require("cmp-plugins").setup({
             -- files = { ".*\\.lua" }  -- default
-            files = { 'plugins/', 'configs/' }, -- Recommended: use static filenames or partial paths
+            files = { "plugins/", "configs/" }, -- Recommended: use static filenames or partial paths
           })
         end,
       },
     },
   },
   {
-    'zbirenbaum/copilot.lua',
-    cmd = 'Copilot',
-    build = ':Copilot auth',
-    event = 'InsertEnter',
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    build = ":Copilot auth",
+    event = "InsertEnter",
   },
   {
-    'L3MON4D3/LuaSnip',
-    build = 'make install_jsregexp',
+    "L3MON4D3/LuaSnip",
+    build = "make install_jsregexp",
     dependencies = {
-      'rafamadriz/friendly-snippets',
-      'molleweide/LuaSnip-snippets.nvim',
-      { 'dsznajder/vscode-es7-javascript-react-snippets', build = 'yarn install --frozen-lockfile && yarn compile' },
-      'honza/vim-snippets',
+      "rafamadriz/friendly-snippets",
+      "molleweide/LuaSnip-snippets.nvim",
+      {
+        "dsznajder/vscode-es7-javascript-react-snippets",
+        build = "yarn install --frozen-lockfile && yarn compile",
+      },
+      "honza/vim-snippets",
     },
     opts = {
       history = true,
-      delete_check_events = 'TextChanged',
+      delete_check_events = "TextChanged",
     },
     -- stylua: ignore
     -- keys = {

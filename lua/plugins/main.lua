@@ -148,7 +148,6 @@ local plugins = {
       })
     end,
   },
-  { "lukas-reineke/indent-blankline.nvim", main = "ibl", event = { "BufReadPre", "BufNewFile" } },
   { "Tyler-Barham/floating-help.nvim", cmd = "FloatHelp" },
   { "monaqa/dial.nvim", event = { "VeryLazy" }, dependencies = { "nvim-lua/plenary.nvim" } },
   { "tris203/hawtkeys.nvim", event = { "VeryLazy" } },
@@ -162,7 +161,38 @@ local plugins = {
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
     end,
   },
+  {
+    "tris203/precognition.nvim",
+    --event = "VeryLazy",
+    opts = {
+      startVisible = false,
+      -- showBlankVirtLine = true,
+      -- highlightColor = { link = "Comment" },
+      -- hints = {
+      --      Caret = { text = "^", prio = 2 },
+      --      Dollar = { text = "$", prio = 1 },
+      --      MatchingPair = { text = "%", prio = 5 },
+      --      Zero = { text = "0", prio = 1 },
+      --      w = { text = "w", prio = 10 },
+      --      b = { text = "b", prio = 9 },
+      --      e = { text = "e", prio = 8 },
+      --      W = { text = "W", prio = 7 },
+      --      B = { text = "B", prio = 6 },
+      --      E = { text = "E", prio = 5 },
+      -- },
+      -- gutterHints = {
+      --     G = { text = "G", prio = 10 },
+      --     gg = { text = "gg", prio = 9 },
+      --     PrevParagraph = { text = "{", prio = 8 },
+      --     NextParagraph = { text = "}", prio = 8 },
+      -- },
+      -- disabled_fts = {
+      --     "startify",
+      -- },
+    },
+  },
   { "echasnovski/mini.clue", enabled = false, event = { "VeryLazy" } },
+  { "lukas-reineke/indent-blankline.nvim", main = "ibl", event = { "BufReadPre", "BufNewFile" } },
   {
     "nmac427/guess-indent.nvim",
     event = "BufReadPre",
@@ -263,6 +293,7 @@ local plugins = {
     },
   },
   { "BlackLight/nvim-http" },
+  -- https://github.com/oysandvik94/curl.nvim
   {
     "jellydn/hurl.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },
@@ -313,28 +344,47 @@ local plugins = {
     -- `textwidth`    line lengths exceeding the value of the |'textwidth'| option, when non-zero
     -- `trail`        trailing whitespace, when the |'list'| option is enabled and the |'listchars'| option includes "trail"
     config = function()
+      -- TODO: winblend_gui for floating windows
+      -- shape = { head = "▲", body = "█", tail = "▼" },
+      -- `simple`     Top position reflects the window's top line number relative to the document's
+      --              line count. The height reflects the size of the window relative to the document's
+      --              line count. Mouse drag may be unresponsive when there are closed folds.
+      -- `virtual`    Position and height like `simple`, but line numbers and document line count are updated
+      --              to virtual counterparts that account for closed folds. The top position reflects the
+      --              window's top virtual line number relative to the document's virtual line count.
+      --              The height reflects the size of the window relative to the document's virtual
+      --              line count. Works slower than `simple` mode.
+      -- `proper`     Position and height like 'virtual', but diff filler and virtual text lines are also
+      --              considered. Works slower than `virtual` mode.
+      -- `auto`       'Proper' when having few buffer lines and luajit, else `virtual` mode is used.
       require("scrollview").setup({
         excluded_filetypes = {
+          "TelescopePrompt",
           "chatgpt-input",
-          "notify",
           "cmp_docs",
           "cmp_menu",
           "lazy",
           "neoai-input",
-          "noice",
-          "prompt",
-          "TelescopePrompt",
           "nerdtree",
+          "noice",
+          "notify",
+          "prompt",
         },
+        signs_max_per_row = 2,
+        -- text = "┆", "▁", "", "", " ", ﹘‐ ‑ ‒ – — ― ‖ ‗﹉ ﹊ ﹋ ﹌ ﹍ ﹎ ﹏
+        cursor_symbol = "•",
+        search_symbol = { vim.fn.nr2char(0x2261) }, -- { "-", "= ", vim.fn.nr2char(0x2261) },
+        diagnostics_error_symbol = { "" }, -- { "-", "= " },
+        diagnostics_warn_symbol = { "—" }, -- { "-", "= " },
         winblend_gui = 30,
         current_only = false,
-        -- base = 'buffer',
+        -- base = "right", -- left, right, buffer
         -- column = 80,
+        -- zindex = 40,
         floating_windows = true,
-        -- signs_on_startup = { 'all' },
         signs_on_startup = {
           "conflicts",
-          -- 'cursor',
+          "cursor",
           "diagnostics",
           -- 'folds',
           -- 'loclist',
@@ -344,13 +394,15 @@ local plugins = {
           -- 'spell',
           -- 'textwidth',
           -- 'trail',
+          -- 'all'
         },
-        diagnostics_severities = { vim.diagnostic.severity.ERROR },
+        diagnostics_severities = { vim.diagnostic.severity.WARN, vim.diagnostic.severity.ERROR },
       })
     end,
   },
   {
     "echasnovski/mini.jump",
+    -- local override
     config = function()
       require("mini.jump").setup({
         -- Module mappings. Use `''` (empty string) to disable one.
@@ -376,7 +428,7 @@ local plugins = {
   },
 
   -- https://github.com/miversen33/sunglasses.nvim
-  { "TaDaa/vimade", event = "VimEnter" },
+  { "TaDaa/vimade", event = "VimEnter", enabled = false },
   {
     "kevinhwang91/nvim-hlslens",
     event = { "VimEnter" },
@@ -622,6 +674,7 @@ local plugins = {
   { "echasnovski/mini.bracketed", event = "VeryLazy" },
   { "jkramer/vim-checkbox", event = "VeryLazy", ft = { "markdown", "pandoc", "vimwiki" } },
   -- formatting
+  { "ckolkey/ts-node-action", dependencies = { "nvim-treesitter" } },
   { "johmsalas/text-case.nvim", event = "VeryLazy" },
   { "echasnovski/mini.operators", version = false },
   {
@@ -811,7 +864,7 @@ local plugins = {
           --   })
         end,
       },
-      { "natecraddock/telescope-zf-native.nvim" },
+      -- { "natecraddock/telescope-zf-native.nvim" },
       {
         "lalitmee/browse.nvim",
         config = function()
@@ -1069,6 +1122,8 @@ local plugins = {
     cmd = { "SnipRun", "SnipInfo" },
   },
   { "milisims/nvim-luaref", event = "VeryLazy" },
+  -- https://github.com/MagicDuck/grug-far.nvim
+  -- https://github.com/chrisgrieser/nvimorip-substitute
   { "windwp/nvim-spectre", cmd = "Spectre" },
   { "WaylonWalker/Telegraph.nvim", cmd = "Telegraph" },
   {
@@ -1098,6 +1153,30 @@ local plugins = {
         dependencies = { "vim-test/vim-test", cmd = { "Test", "TestNearest", "TestFile" } },
       },
     },
+  },
+
+  {
+    "smjonas/inc-rename.nvim",
+    config = function()
+      require("inc_rename").setup({
+        -- the name of the command
+        cmd_name = "RenameInc",
+        -- cmd_name = "IncRename",
+        -- the highlight group used for highlighting the identifier's new name
+        hl_group = "Substitute",
+        -- whether an empty new name should be previewed; if false the command preview will be cancelled instead
+        preview_empty_name = false,
+        -- whether to display a `Renamed m instances in n files` message after a rename operation
+        show_message = true,
+        -- whether to save the "IncRename" command in the commandline history (set to false to prevent issues with
+        -- navigating to older entries that may arise due to the behavior of command preview)
+        save_in_cmdline_history = true,
+        -- the type of the external input buffer to use (the only supported value is currently "dressing")
+        input_buffer_type = nil,
+        -- callback to run after renaming, receives the result table (from LSP handler) as an argument
+        post_hook = nil,
+      })
+    end,
   },
   { "filipdutescu/renamer.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   -- quickfix file renamer
@@ -1160,7 +1239,7 @@ local plugins = {
     },
   },
   -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-visits.md
-  { "LeonHeidelbach/trailblazer.nvim" },
+  { "LeonHeidelbach/trailblazer.nvim", enabled = false },
   { "kelly-lin/ranger.nvim", lazy = true },
   { "lambdalisue/suda.vim", event = "VeryLazy" },
   { "skywind3000/asynctasks.vim", event = "VeryLazy", dependencies = "skywind3000/asyncrun.vim" },
@@ -1173,29 +1252,33 @@ local plugins = {
   {
     "chrisgrieser/nvim-genghis",
     dependencies = { "stevearc/dressing.nvim", "nvim-cmp", "hrsh7th/cmp-omni" },
-    keys = {
-      -- stylua: ignore start
-      -- {"<C-p>", function() require("genghis").copyFilepath() end, desc = " Copy filepath" },
-      -- {"<C-n>", function() require("genghis").copyFilename() end, desc = " Copy filename" },
-      -- {"<C-r>", function() require("genghis").renameFile() end, desc = " Rename file" },
-      { "<leader>fx", function() require("genghis").chmodx() end, desc = " chmod +x" },
-      -- {"<C-d>", function() require("genghis").duplicateFile() end, desc = " Duplicate file" },
-      -- {"<D-BS>", function() require("genghis").trashFile() end, desc = " Move file to trash" },
-      -- {"<D-n>", function() require("genghis").createNewFile() end, desc = " Create new file" },
-      -- {"X", function() require("genghis").moveSelectionToNewFile() end, mode = "x", desc = " Selection to new file" },
-      -- stylua: ignore end
-    },
-    cmd = {
-      "NewFromSelection",
-      "Duplicate",
-      "Rename",
-      "Trash",
-      "Move",
-      "CopyFilename",
-      "CopyFilepath",
-      "Chmodx",
-      "New",
-    },
+    config = function()
+      -- default config
+      require("genghis").setup({
+        backdrop = {
+          enabled = true,
+          blend = 50,
+        },
+        -- default is ` "trash" ` on Mac/Windows, and `{ "gio", "trash" }` on Linux
+        trashCmd = "trash",
+      })
+      -- .createNewFile: Create a new file.
+      -- .duplicateFile: Duplicate the current file.
+      -- .moveSelectionToNewFile: Prompts for a new file name and moves the current selection to that new file. (Note that this is a Visual Line mode command, the selection is moved linewise.)
+      -- .renameFile: Rename the current file.
+      -- .moveAndRenameFile: Move and Rename the current file. Keeps the old name if the new path ends with /. Works like the Unix mv command.
+      -- .moveToFolderInCwd: Move the current file to an existing folder in the current working directory.
+      -- .copyFilename: Copy the file name.
+      -- .copyFilepath: Copy the absolute file path.
+      -- .copyFilepathWithTilde: Copy the absolute file path, replacing the home directory with ~.
+      -- .copyRelativePath: Copy the relative file path.
+      -- .copyDirectoryPath: Copy the absolute directory path.
+      -- .copyRelativeDirectoryPath: Copy the relative directory path.
+      -- .chmodx: Makes current file executable. Equivalent to chmod +x.
+      -- .trashFile: Move the current file to the trash location.
+      vim.cmd.cabbrev("Files Genghis")
+      vim.cmd.cabbrev("F Genghis")
+    end,
   },
 
   { "echasnovski/mini.test", lazy = true },

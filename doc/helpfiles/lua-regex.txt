@@ -1,6 +1,7 @@
-*lua-regex.txt* Lua RegEx patterns
+*lua-regex.txt* Lua RegEx patterns and functions
 
-Contents ~
+==============================================================================
+Table of Contents                            *lua-regex-table-of-contents*
 
 1.  [Introduction](#ftoc-heading-1)
 2.  [Pattern Match Functions](#ftoc-heading-2)

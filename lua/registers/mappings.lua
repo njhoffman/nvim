@@ -1,6 +1,6 @@
-local state = require('registers.state')
-local config = require('registers.config')
-local ui = require('registers.ui')
+local state = require("registers.state")
+local config = require("registers.config")
+local ui = require("registers.ui")
 
 ---@private
 ---Whether a key should be bound.
@@ -9,7 +9,7 @@ local ui = require('registers.ui')
 ---@nodiscard
 local _key_should_be_bound = function(option)
   local options = config.get()
-  if type(options.bind_keys) == 'boolean' then
+  if type(options.bind_keys) == "boolean" then
     return options.bind_keys --[[@as boolean]]
   else
     return options.bind_keys[option]
@@ -30,13 +30,13 @@ local _set_bindings = function()
       callback = callback,
     }
 
-    vim.api.nvim_buf_set_keymap(state._buffer, 'n', key, '', map_options)
-    vim.api.nvim_buf_set_keymap(state._buffer, 'i', key, '', map_options)
-    vim.api.nvim_buf_set_keymap(state._buffer, 'x', key, '', map_options)
+    vim.api.nvim_buf_set_keymap(state._buffer, "n", key, "", map_options)
+    vim.api.nvim_buf_set_keymap(state._buffer, "i", key, "", map_options)
+    vim.api.nvim_buf_set_keymap(state._buffer, "x", key, "", map_options)
   end
 
   -- Map all register keys
-  if _key_should_be_bound('registers') then
+  if _key_should_be_bound("registers") then
     for key, callback in pairs(state._mappings) do
       set_keymap_all_modes(key, callback)
     end
@@ -44,17 +44,38 @@ local _set_bindings = function()
 
   -- TODO: fix this in configuration
   -- Map the keys for moving up and down
-  if _key_should_be_bound('k') then
-    set_keymap_all_modes('k', options.bind_keys.ctrl_k)
+  if _key_should_be_bound("k") then
+    set_keymap_all_modes("k", options.bind_keys.ctrl_k)
   end
-  if _key_should_be_bound('j') then
-    set_keymap_all_modes('j', options.bind_keys.ctrl_j)
+  if _key_should_be_bound("j") then
+    set_keymap_all_modes("j", options.bind_keys.ctrl_j)
   end
-  if _key_should_be_bound('ctrl_p') then
-    set_keymap_all_modes('<c-p>', options.bind_keys.ctrl_p)
+  if _key_should_be_bound("ctrl_p") then
+    set_keymap_all_modes("<c-p>", options.bind_keys.ctrl_p)
   end
-  if _key_should_be_bound('ctrl_n') then
-    set_keymap_all_modes('<c-n>', options.bind_keys.ctrl_n)
+  if _key_should_be_bound("ctrl_n") then
+    set_keymap_all_modes("<c-n>", options.bind_keys.ctrl_n)
+  end
+end
+
+local _bind_global_key = function(index, key, mode)
+  if _key_should_be_bound(index) then
+    vim.api.nvim_set_keymap(mode, key, "", {
+      callback = function()
+        -- Don't open the registers window in a telescope prompt or in a non-modifiable buffer
+        if
+          not vim.bo.modifiable
+          or vim.bo.filetype == "TelescopePrompt"
+          or vim.bo.filetype == "DressingInput"
+        then
+          return vim.api.nvim_replace_termcodes(key, true, true, true)
+        else
+          -- Call the callback function passed to the options
+          return options.bind_keys[index]()
+        end
+      end,
+      expr = true,
+    })
   end
 end
 
@@ -67,10 +88,14 @@ local _bind_global_key = function(index, key, mode)
   local options = config.get()
 
   if _key_should_be_bound(index) then
-    vim.api.nvim_set_keymap(mode, key, '', {
+    vim.api.nvim_set_keymap(mode, key, "", {
       callback = function()
         -- Don't open the registers window in a telescope prompt or in a non-modifiable buffer
-        if not vim.bo.modifiable or vim.bo.filetype == 'TelescopePrompt' or vim.bo.filetype == 'DressingInput' then
+        if
+          not vim.bo.modifiable
+          or vim.bo.filetype == "TelescopePrompt"
+          or vim.bo.filetype == "DressingInput"
+        then
           return vim.api.nvim_replace_termcodes(key, true, true, true)
         else
           -- Call the callback function passed to the options
@@ -159,9 +184,9 @@ local setup = function()
   -- Pre-fill the key mappings
   _fill_mappings()
   -- Bind the keys if applicable
-  _bind_global_key('normal', '"', 'n')
-  _bind_global_key('visual', '"', 'x')
-  _bind_global_key('insert', '<C-R>', 'i')
+  _bind_global_key("normal", '"', "n")
+  _bind_global_key("visual", '"', "x")
+  _bind_global_key("insert", "<C-R>", "i")
 end
 
 return {

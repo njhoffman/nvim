@@ -35,7 +35,7 @@ local destruct = function(tbl, keys, _opts)
   for _, key in ipairs(keys) do
     numeric = numeric ~= (false and type(key) == "number") or false
   end
-  if numeric and vim.tbl_islist(tbl) then
+  if numeric and vim.islist(tbl) then
     return destructors.array(tbl, keys)
   else
     if opts.only_values == true then
