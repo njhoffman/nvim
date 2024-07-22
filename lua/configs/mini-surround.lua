@@ -7,20 +7,22 @@ local default_cfg = {
   custom_surroundings = nil,
   highlight_duration = 500,
   mappings = {
-    add = 'sa', -- Add surrounding in Normal and Visual modes
-    delete = 'sd', -- Delete surrounding
-    find = 'sf', -- Find surrounding (to the right)
-    find_left = 'sF', -- Find surrounding (to the left)
-    highlight = 'sh', -- Highlight surrounding
-    replace = 'sr', -- Replace surrounding
-    update_n_lines = 'sn', -- Update `n_lines`
+    add = "sa", -- Add surrounding in Normal and Visual modes
+    delete = "sd", -- Delete surrounding
+    find = "sf", -- Find surrounding (to the right)
+    find_left = "sF", -- Find surrounding (to the left)
+    highlight = "sh", -- Highlight surrounding
+    replace = "sr", -- Replace surrounding
+    update_n_lines = "sn", -- Update `n_lines`
 
-    suffix_last = 'l', -- Suffix to search with "prev" method
-    suffix_next = 'n', -- Suffix to search with "next" method
+    suffix_last = "l", -- Suffix to search with "prev" method
+    suffix_next = "n", -- Suffix to search with "next" method
   },
   n_lines = 20,
   respect_selection_type = false,
-  search_method = 'cover_or_next',
+  search_method = "cover_or_next",
+  -- 'cover', 'cover_or_next', 'cover_or_prev',
+  -- 'cover_or_nearest', 'next', 'prev', 'nearest'
 }
 
 ---@diagnostic disable-next-line: unused-local
@@ -35,12 +37,12 @@ local custom_surroundings = {
   -- Lua long brackets - ysiwS
   B = {
     -- Configuration for "input" (like for delete) is done with Lua patterns
-    input = { find = '%[%[.-%]%]', extract = '^(..).*(..)$' },
+    input = { find = "%[%[.-%]%]", extract = "^(..).*(..)$" },
     -- Configuration for "output" (like for add) is done with plain text
-    output = { left = '[[', right = ']]' },
+    output = { left = "[[", right = "]]" },
   },
   -- Use `(` to insert with spaces, `)` will still add without them
-  ['('] = { output = { left = '( ', right = ' )' } },
+  ["("] = { output = { left = "( ", right = " )" } },
 }
 
 -- stylua: ignore
@@ -80,15 +82,15 @@ local extra_mappings = function()
   local map = vim.keymap.set
   -- vim.keymap.set('x', 'ys', 's', { silent = true, remap = true, desc = '󰅪 mini surround add visual selection' })
   -- vim.keymap.set('x', 'ys', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
-  map('n', 'ys', 's', get_opts('󰅪 mini surround add operator'))
-  map('n', 'yS', 'ys$', get_opts('󰅪 mini surround to end of line'))
-  map('n', 'sS', 's0', get_opts('󰅪 mini surround to begin of line'))
-  map('n', 'yss', '^ys$', get_opts('󰅪 mini surround add line'))
+  map("n", "ys", "s", get_opts("󰅪 mini surround add operator"))
+  map("n", "yS", "ys$", get_opts("󰅪 mini surround to end of line"))
+  map("n", "sS", "s0", get_opts("󰅪 mini surround to begin of line"))
+  map("n", "yss", "^ys$", get_opts("󰅪 mini surround add line"))
   map(
-    'n',
-    's<space>',
+    "n",
+    "s<space>",
     "<cmd>execute 'normal hwst )<esc>'<cr>",
-    get_opts('󰅪 mini surround quick add')
+    get_opts("󰅪 mini surround quick add")
   )
   -- vim.keymap.set('n', 'yss', 'ys_', { remap = true })
   -- lua vim.cmd ("execute 'silent! normal hwst )<esc>'")
@@ -96,7 +98,7 @@ local extra_mappings = function()
   -- vim.cmd("execute normal 'hwst ' . nr2char(getchar()) . '<esc>'"),
   -- execute "silent! normal hwst\<space>)" | execute "normal <esc>"
   -- "<cmd>execute 'silent! normal hwst )" .. vim.fn.nr2char(vim.fn.getchar()) .. "'<cr>",
-  map('n', 'ss', "<cmd>execute 'normal hwst ('<cr>", get_opts('󰅪 mini surround quick add word'))
+  map("n", "ss", "<cmd>execute 'normal hwst ('<cr>", get_opts("󰅪 mini surround quick add word"))
 end
 
 -- silent! normal hwst (<esc>

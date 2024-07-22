@@ -1,5 +1,5 @@
-local require = require('noice.util.lazy')
-local Config = require('noice.config')
+local require = require("noice.util.lazy")
+local Config = require("noice.config")
 
 -- {
 --   -- default format
@@ -39,7 +39,7 @@ local Config = require('noice.config')
 -- popupmenu        nui.menu   special view with the options used to render the
 local cmdlineView = {
   reverse = false,
-  align = 'message-left',
+  align = "message-left",
   timeout = 5000,
   position = { row = -2, col = -2 },
 
@@ -47,20 +47,20 @@ local cmdlineView = {
     max_height = math.ceil(0.8 * vim.o.lines),
     max_width = math.ceil(0.5 * vim.o.columns),
     min_width = 30,
-    width = 'auto',
-    height = 'auto',
+    width = "auto",
+    height = "auto",
   },
   border = {
-    text = { top = '', top_align = 'left', bottom = '' },
+    text = { top = "", top_align = "left", bottom = "" },
     style = {
-      { '▐', 'NoiceMiniBorder' },
-      { ' ', 'NoiceMini' },
-      { ' ', 'NoiceMini' },
-      { ' ', 'NoiceMini' },
-      { ' ', 'NoiceMini' },
-      { ' ', 'NoiceMini' },
-      { '▐', 'NoiceMiniBorder' },
-      { '▐', 'NoiceMiniBorder' },
+      { "▐", "NoiceMiniBorder" },
+      { " ", "NoiceMini" },
+      { " ", "NoiceMini" },
+      { " ", "NoiceMini" },
+      { " ", "NoiceMini" },
+      { " ", "NoiceMini" },
+      { "▐", "NoiceMiniBorder" },
+      { "▐", "NoiceMiniBorder" },
     },
     padding = { top = 0, bottom = 0, left = 1, right = 0 },
   },
@@ -68,60 +68,60 @@ local cmdlineView = {
 }
 
 local miniView = {
-  backend = 'mini',
-  relative = 'editor',
-  align = 'message-left',
+  backend = "mini",
+  relative = "editor",
+  align = "message-left",
   timeout = 100,
   reverse = true,
   position = { row = -2, col = 0 },
-  size = 'auto',
+  size = "auto",
   zindex = 60,
   border = {
     style = {
-      { '╭', 'NoiceCmdlineBorder' },
-      { '─', 'NoiceCmdlineBorder' },
-      { '╮', 'NoiceCmdlineBorder' },
-      { '│', 'NoiceCmdlineBorder' },
-      { '╯', 'NoiceCmdlineBorder' },
-      { '─', 'NoiceCmdlineBorder' },
-      { '╰', 'NoiceCmdlineBorder' },
-      { '│', 'NoiceCmdlineBorder' },
+      { "╭", "NoiceCmdlineBorder" },
+      { "─", "NoiceCmdlineBorder" },
+      { "╮", "NoiceCmdlineBorder" },
+      { "│", "NoiceCmdlineBorder" },
+      { "╯", "NoiceCmdlineBorder" },
+      { "─", "NoiceCmdlineBorder" },
+      { "╰", "NoiceCmdlineBorder" },
+      { "│", "NoiceCmdlineBorder" },
     },
     padding = { left = 1, right = 1 },
   },
 
   win_options = {
     winblend = 0,
-    winhighlight = { Normal = 'NoiceCmdlineNormal', IncSearch = '', Search = '' },
+    winhighlight = { Normal = "NoiceCmdlineNormal", IncSearch = "", Search = "" },
   },
 }
 
 local miniViewDefault = {
-  backend = 'mini',
-  relative = 'editor',
-  align = 'message-right',
+  backend = "mini",
+  relative = "editor",
+  align = "message-right",
   timeout = 2000,
   reverse = true,
   focusable = false,
   position = {
     row = -1,
-    col = '100%',
+    col = "100%",
     -- col = 0,
   },
-  size = 'auto',
+  size = "auto",
   border = {
-    style = 'none',
+    style = "none",
   },
   zindex = 60,
   win_options = {
-    winbar = '',
+    winbar = "",
     foldenable = false,
     winblend = 30,
     winhighlight = {
-      Normal = 'NoiceMini',
-      IncSearch = '',
-      CurSearch = '',
-      Search = '',
+      Normal = "NoiceMini",
+      IncSearch = "",
+      CurSearch = "",
+      Search = "",
     },
   },
 }

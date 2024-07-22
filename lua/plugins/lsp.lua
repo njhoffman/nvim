@@ -123,25 +123,7 @@ local plugins = {
     dependencies = { "neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
   },
   -- https://github.com/jmbuhr/otter.nvim
-  -- https://github.com/stevearc/conform.nvim
   -- {
-  --   "nvimtools/none-ls.nvim",
-  --   enabled = false,
-  --   commit = "1dad329b3899413e7e8e03412b2489dbcda5f7e4",
-  --   event = { "BufReadPre", "BufNewFile" },
-  --   dependencies = {
-  --     -- https://github.com/nvimtools/none-ls-extras.nvim
-  --     -- https://github.com/gbprod/none-ls-php.nvim
-  --     -- https://github.com/gbprod/none-ls-shellcheck.nvim
-  --     -- https://github.com/gbprod/none-ls-luacheck.nvim
-  --     -- https://github.com/gbprod/none-ls-psalm.nvim
-  --     -- https://github.com/gbprod/none-ls-ecs.nvim
-  --     "nvim-lua/plenary.nvim",
-  --     "ThePrimeagen/refactoring.nvim",
-  --     "mason.nvim",
-  --     "ckolkey/ts-node-action",
-  --   },
-  -- },
   { "mfussenegger/nvim-lint", event = { "BufReadPre", "BufNewFile" } },
   {
     "stevearc/aerial.nvim",

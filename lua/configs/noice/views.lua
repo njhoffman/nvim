@@ -109,6 +109,14 @@ local popupView = {
   -- },
 }
 
+local hover_changes = {
+  opacity = 80,
+  border = { style = "none", padding = { 0, 0 } },
+  position = { row = 1, col = 0 },
+  -- shadow_blend = 36, -- if you using shadow as border use this set the opacity
+  -- shadow_guibg = 'Black', -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
+}
+
 local hoverView = {
   view = "popup",
   relative = "cursor",
@@ -123,7 +131,7 @@ local hoverView = {
   },
   border = {
     style = "none",
-    padding = { 0, 2 },
+    padding = { 0, 1 },
   },
   position = { row = 1, col = 0 },
   win_options = {

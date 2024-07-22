@@ -192,64 +192,21 @@ local plugins = {
     },
   },
   { "echasnovski/mini.clue", enabled = false, event = { "VeryLazy" } },
+
   { "lukas-reineke/indent-blankline.nvim", main = "ibl", event = { "BufReadPre", "BufNewFile" } },
   {
     "nmac427/guess-indent.nvim",
     event = "BufReadPre",
-    opts = {
-      -- due to code blocks and bullets often having spaces or tabs
-      filetype_exclude = { "markdown" },
-      --   auto_cmd = true, -- Set to false to disable automatic execution
-      --   override_editorconfig = false, -- Set to true to override settings set by .editorconfig
-      --   filetype_exclude = { -- A list of filetypes for which the auto command gets disabled
-      --     'netrw',
-      --     'tutor',
-      --   },
-      --   buftype_exclude = { -- A list of buffer types for which the auto command gets disabled
-      --     'help',
-      --     'nofile',
-      --     'terminal',
-      --     'prompt',
-      --   },
-    },
+    opts = require("configs.guess-indent__opts"),
   },
   {
     "echasnovski/mini.indentscope",
     event = { "BufReadPre", "BufNewFile" },
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "*",
-        callback = function()
-          local ft = vim.api.nvim_buf_get_option(0, "filetype")
-          local bt = vim.api.nvim_buf_get_option(0, "buftype")
-          local ft_exclude = {
-            "alpha",
-            "dap.*",
-            "dashboard",
-            "guihua",
-            "help",
-            "lazy",
-            "lspinfo",
-            "mason",
-            "neo-tree",
-            "noice",
-            "null-ls-info",
-            "qf",
-            "sidekick",
-            "neo-tree",
-            "NvimTree",
-            "tablegen",
-            "Trouble",
-          }
-          local bt_exclude = { "terminal", "prompt", "nofile", "quickfix" }
-          if vim.tbl_contains(ft_exclude, ft) or vim.tbl_contains(bt_exclude, bt) then
-            vim.b.miniindentscope_disable = true
-          end
-        end,
-      })
-    end,
+    init = require("configs.mini-indentscope__init"),
   },
   { "echasnovski/mini.trailspace", event = "VeryLazy" },
+  -- https://github.com/Mr-LLLLL/cool-chunk.nvim
+
   {
     "sindrets/diffview.nvim",
     cmd = {
@@ -282,6 +239,8 @@ local plugins = {
       })
     end,
   },
+
+  -- https://github.com/Aaronik/GPTModels.nvim
   {
     "jackMort/ChatGPT.nvim",
     event = "VeryLazy",
@@ -292,6 +251,7 @@ local plugins = {
       "nvim-telescope/telescope.nvim",
     },
   },
+
   { "BlackLight/nvim-http" },
   -- https://github.com/oysandvik94/curl.nvim
   {
@@ -427,7 +387,7 @@ local plugins = {
     end,
   },
 
-  -- https://github.com/miversen33/sunglasses.nvim
+  { "miversen33/sunglasses.nvim", enabled = false },
   { "TaDaa/vimade", event = "VimEnter", enabled = false },
   {
     "kevinhwang91/nvim-hlslens",
@@ -1031,6 +991,7 @@ local plugins = {
   -- git tools
   --
   -- https://github.com/dlvhdr/gh-blame.nvim
+  -- https://github.com/ejrichards/baredot.nvim
   {
     -- https://vi.stackexchange.com/questions/42785/how-to-do-fuzzy-live-grep-on-git-files
     "moyiz/git-dev.nvim",
@@ -1123,7 +1084,20 @@ local plugins = {
   },
   { "milisims/nvim-luaref", event = "VeryLazy" },
   -- https://github.com/MagicDuck/grug-far.nvim
-  -- https://github.com/chrisgrieser/nvimorip-substitute
+  {
+    "chrisgrieser/nvim-rip-substitute",
+    cmd = "RipSubstitute",
+    keys = {
+      {
+        "<leader>fs",
+        function()
+          require("rip-substitute").sub()
+        end,
+        mode = { "n", "x" },
+        desc = " rip substitute",
+      },
+    },
+  },
   { "windwp/nvim-spectre", cmd = "Spectre" },
   { "WaylonWalker/Telegraph.nvim", cmd = "Telegraph" },
   {
@@ -1380,7 +1354,9 @@ local plugins = {
       require("fundo").install()
     end,
   },
+  -- https://github.com/otavioschwanck/arrow.nvim
   -- https://github.com/nfrid/due.nvim
+  -- https://github.com/huantrinh1802/m_taskwarrior_d.nvim
   {
     "tools-life/taskwiki",
     cmd = { "TW", "TWSync" },

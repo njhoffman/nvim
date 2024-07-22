@@ -1,7 +1,7 @@
-local Hydra = require('hydra')
+local Hydra = require("hydra")
 -- local popup = require("configs.hydra.popup")
-local levels = require('configs.hydra.lsp_levels')
-local utils = require('configs.hydra.lsp_utils')
+local levels = require("configs.hydra.lsp_levels")
+local utils = require("configs.hydra.lsp_utils")
 local hints = [[
                      LSP OPTIONS
     ────────────────────────────────────────────    ^
@@ -25,32 +25,32 @@ local hydra_level = function(type)
 end
 
 local heads = {
-  { 'd', utils.toggle_diagnostic('buffer'), { desc = 'enabled buffer' } },
-  { 'D', utils.toggle_diagnostic('global'), { desc = 'enabled global' } },
-  { 'i', utils.toggle_diagnostic('update_in_insert'), { desc = 'update in insert' } },
-  { 'f', utils.toggle_diagnostic('format'), { desc = 'format on write' } },
-  { 's', utils.toggle_diagnostic('signs'), { desc = 'signs toggle' } },
-  { 'S', hydra_level('signs'), { desc = 'signs level', exit = true } },
-  { 'v', utils.toggle_diagnostic('virtual_text'), { desc = 'virtual text toggle' } },
-  { 'V', hydra_level('virtual_text'), { desc = 'virtual text level', exit = true } },
-  { 'u', utils.toggle_diagnostic('underline'), { desc = 'underline toggle' } },
-  { 'U', hydra_level('underline'), { desc = 'underline level', exit = true } },
-  { 'l', utils.toggle_diagnostic('vl_current'), { desc = 'virtual lines only current' } },
-  { 'z', utils.toggle_diagnostic('virtual_lines'), { desc = 'virtual lines toggle' } },
-  { 'Z', hydra_level('virtual_lines'), { desc = 'virtual lines level', exit = true } },
-  { '<Esc>', nil, { exit = true } },
+  { "d", utils.toggle_diagnostic("buffer"), { desc = "enabled buffer" } },
+  { "D", utils.toggle_diagnostic("global"), { desc = "enabled global" } },
+  { "i", utils.toggle_diagnostic("update_in_insert"), { desc = "update in insert" } },
+  { "f", utils.toggle_diagnostic("format"), { desc = "format on write" } },
+  { "s", utils.toggle_diagnostic("signs"), { desc = "signs toggle" } },
+  { "S", hydra_level("signs"), { desc = "signs level", exit = true } },
+  { "v", utils.toggle_diagnostic("virtual_text"), { desc = "virtual text toggle" } },
+  { "V", hydra_level("virtual_text"), { desc = "virtual text level", exit = true } },
+  { "u", utils.toggle_diagnostic("underline"), { desc = "underline toggle" } },
+  { "U", hydra_level("underline"), { desc = "underline level", exit = true } },
+  { "l", utils.toggle_diagnostic("vl_current"), { desc = "virtual lines only current" } },
+  { "z", utils.toggle_diagnostic("virtual_lines"), { desc = "virtual lines toggle" } },
+  { "Z", hydra_level("virtual_lines"), { desc = "virtual lines level", exit = true } },
+  { "<Esc>", nil, { exit = true } },
 }
 
 local toggles = {
   --    󰄬  󰄭       󰅚 󰙧 
   --            
-  yes = '  ',
-  no = '  ',
+  yes = "  ",
+  no = "  ",
   num = function(num)
-    return ' ' .. num .. ' '
+    return " " .. num .. " "
   end,
   lvl = function(num)
-    return ' ' .. num .. ' '
+    return " " .. num .. " "
     -- return '[' .. string.lower(tostring(vim.lsp.log_levels[num])) .. ']'
     -- return string.format("%8s", "[" .. string.lower(tostring(vim.lsp.log_levels[num])) .. "]")
   end,
@@ -70,75 +70,75 @@ local funcs = {
     return vim.b.format_on_write == 0 and toggles.no or toggles.yes
   end,
   s_toggle = function()
-    local severity = utils.get_severity('signs')
+    local severity = utils.get_severity("signs")
     return severity > 0 and toggles.yes or toggles.no
   end,
   s_level = function()
-    local severity = utils.get_severity('signs')
+    local severity = utils.get_severity("signs")
     return toggles.lvl(severity)
   end,
   vt_toggle = function()
-    local severity = utils.get_severity('virtual_text')
+    local severity = utils.get_severity("virtual_text")
     return severity > 0 and toggles.yes or toggles.no
   end,
   vt_level = function()
-    local severity = utils.get_severity('virtual_text')
+    local severity = utils.get_severity("virtual_text")
     return toggles.lvl(severity)
   end,
   vl_current = function()
-    local only_current = vim.tbl_get(vim.diagnostic.config(), 'virtual_lines', 'only_current_line')
+    local only_current = vim.tbl_get(vim.diagnostic.config(), "virtual_lines", "only_current_line")
     return only_current == true and toggles.yes or toggles.no
   end,
   vl_toggle = function()
-    local severity = utils.get_severity('virtual_lines')
+    local severity = utils.get_severity("virtual_lines")
     return severity > 0 and toggles.yes or toggles.no
   end,
   vl_level = function()
-    local severity = utils.get_severity('virtual_lines')
+    local severity = utils.get_severity("virtual_lines")
     return toggles.lvl(severity)
   end,
   ul_toggle = function()
-    local severity = utils.get_severity('underline')
+    local severity = utils.get_severity("underline")
     return severity > 0 and toggles.yes or toggles.no
   end,
   ul_level = function()
-    local severity = utils.get_severity('underline')
+    local severity = utils.get_severity("underline")
     return toggles.lvl(severity)
   end,
 }
 
 local hydra = function()
   return Hydra({
-    name = 'LSP',
+    name = "LSP",
     hint = hints,
     heads = heads,
     config = {
-      color = 'amaranth', -- amaranth, teal, pink, red, blue
+      color = "amaranth", -- amaranth, teal, pink, red, blue
       invoke_on_body = true,
       hint = {
         funcs = funcs,
-        type = 'window',
+        type = "window",
         float_opts = {
           -- row, col, height, width, relative, and anchor should not be
           -- overridden
-          border = 'rounded',
-          style = 'minimal',
+          border = "rounded",
+          style = "minimal",
           focusable = false,
           noautocmd = true,
         },
-        position = 'middle',
+        position = "middle",
       },
       on_enter = function()
-        vim.schedule_wrap(vim.cmd('VimadeBufDisable'))
+        -- vim.schedule_wrap(vim.cmd("VimadeBufDisable"))
         -- local curr_buf = vim.fn.bufnr('%')
         -- vim.api.nvim_buf_set_var(curr_buf, 'vimade_disabled', value)
       end,
       on_exit = function()
-        vim.schedule_wrap(vim.cmd('VimadeBufEnable'))
+        -- vim.schedule_wrap(vim.cmd('VimadeBufEnable'))
       end,
     },
-    mode = { 'n', 'x' },
-    body = '<leader>!l',
+    mode = { "n", "x" },
+    body = "<leader>!l",
   })
 end
 

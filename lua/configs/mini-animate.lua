@@ -127,7 +127,7 @@ local cfg = {
           mouse_scrolled = false
           return false
         end
-        return total_scroll > 5
+        return total_scroll > 1
       end,
     }),
     -- Animate equally but with at most 120 steps instead of default 60
@@ -141,13 +141,13 @@ local cfg = {
     --     return total_scroll > 1
     --   end,
     -- }),
-    -- Animate equally but with at most 120 steps instead of default 60
   },
   resize = {
     timing = animate.gen_timing.linear({ duration = 200, unit = "total" }),
     -- subresize = animate.gen_subscroll.equal({ predicate = is_many_wins }),
   },
   open = {
+    enable = false,
     -- Animate for 400 milliseconds with linear easing
     timing = animate.gen_timing.linear({ duration = 400, unit = "total" }),
     -- Animate with wiping from nearest edge instead of default static one
@@ -157,6 +157,7 @@ local cfg = {
   },
 
   close = {
+    enable = false,
     -- Animate for 400 milliseconds with linear easing
     timing = animate.gen_timing.linear({ duration = 300, unit = "total" }),
     -- Animate with wiping to nearest edge instead of default static one

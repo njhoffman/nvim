@@ -3,7 +3,22 @@ local commands = require("configs.noice.commands")
 local mapping = require("configs.noice.mapping")
 local views = require("configs.noice.views")
 
--- TODO: customize presets
+---@param message NoiceMessage
+---@param stay? fun():boolean
+-- function M.show(message, stay)
+--   M.autohide()
+--   message.opts.timeout = 100
+--   message.opts.keep = function()
+--     return true
+--   end
+--   message.opts.stay = stay
+--   for _, m in pairs(M._messages) do
+--     if m ~= message then
+--       M.hide(m)
+--     end
+--   end
+--   Manager.add(message)
+-- end
 
 local config = {
   presets = {
