@@ -14,6 +14,7 @@ local plugins = {
       "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
       "weilbith/nvim-code-action-menu",
+      -- "Chaitanyabsprip/fastaction.nvim",
       {
         "adoyle-h/lsp-toggle.nvim",
         config = function()

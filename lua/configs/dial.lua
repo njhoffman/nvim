@@ -106,51 +106,52 @@ require("dial.config").augends:register_group({
 local map = vim.keymap.set
 map(
   "n",
-  "<M-a>",
+  "<C-a>",
   require("dial.map").inc_normal(),
   { noremap = true, desc = "dial increment normal" }
 )
+
 map(
   "n",
-  "<M-x>",
+  "<C-x>",
   require("dial.map").dec_normal(),
   { noremap = true, desc = "dial decrement normal" }
 )
 
 map(
   "v",
-  "<M-a>",
+  "<C-a>",
   require("dial.map").inc_visual("visual"),
   { noremap = true, desc = "dial increment visual" }
 )
 map(
   "v",
-  "<M-x>",
+  "<C-x>",
   require("dial.map").dec_visual("visual"),
   { noremap = true, desc = "dial decrement visual" }
 )
 
 map(
   "n",
-  "<M-C-A>",
+  "<M-a>",
   require("dial.map").inc_gnormal(),
   { noremap = true, desc = "dial increment gnormal" }
 )
 map(
   "n",
-  "<M-C-X>",
+  "<M-x>",
   require("dial.map").dec_gnormal(),
   { noremap = true, desc = "dial decrement gnormal" }
 )
 map(
   "v",
-  "<M-C-A>",
+  "<M-a>",
   require("dial.map").inc_gvisual("visual"),
   { noremap = true, desc = "dial increment gvisual" }
 )
 map(
   "v",
-  "<M-C-X>",
+  "<M-x>",
   require("dial.map").dec_gvisual("visual"),
   { noremap = true, desc = "dial decrement gvisual" }
 )

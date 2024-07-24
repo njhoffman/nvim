@@ -205,7 +205,7 @@ return function(injected_functions)
     Comment({ fg = "#405f88", gui = "italic" }),
     Conceal({ bg = "none" }),
     Conditional({ fg = "#70688a" }),
-    Constant({ fg = "#3698b3" }),
+    Constant({ fg = "#5599cc" }),
     ConstantBuiltin({ fg = "#0698b3" }),
     Delimiter({ fg = "#5f6fa2" }),
     Directory({ fg = "#187298" }),
@@ -337,86 +337,6 @@ return function(injected_functions)
       guisp = "Grey",
     }),
 
-    -- TreesitterContextSeparator({}),
-
-    -- underline across the screen..
-    -- hi TreesitterContextBottom gui=underline guisp=Grey
-    -- hi TreesitterContextLineNumberBottom gui=underline guisp=Grey
-    -- Or an underline below the line numbers only:
-    -- hi TreesitterContextLineNumberBottom gui=underline guisp=Grey
-
-    -- @variable            ; various variable names
-    -- @variable.builtin    ; built-in variable names (e.g. `this`)
-    -- @variable.parameter  ; parameters of a function
-    -- @variable.member     ; object and struct fields
-    --
-    -- @constant          ; constant identifiers
-    -- @constant.builtin  ; built-in constant values
-    -- @constant.macro    ; constants defined by the preprocessor
-    --
-    -- @module            ; modules or namespaces
-    -- @module.builtin    ; built-in modules or namespaces
-    -- @label             ; GOTO and other labels (e.g. `label:` in C), including heredoc labels
-    -- Literals
-    -- @string                 ; string literals
-    -- @string.documentation   ; string documenting code (e.g. Python docstrings)
-    -- @string.regexp          ; regular expressions
-    -- @string.escape          ; escape sequences
-    -- @string.special         ; other special strings (e.g. dates)
-    -- @string.special.symbol  ; symbols or atoms
-    -- @string.special.url     ; URIs (e.g. hyperlinks)
-    -- @string.special.path    ; filenames
-    --
-    -- @character              ; character literals
-    -- @character.special      ; special characters (e.g. wildcards)
-    --
-    -- @boolean                ; boolean literals
-    -- @number                 ; numeric literals
-    -- @number.float           ; floating-point number literals
-    -- Types
-    -- @type             ; type or class definitions and annotations
-    -- @type.builtin     ; built-in types
-    -- @type.definition  ; identifiers in type definitions (e.g. `typedef <type> <identifier>` in C)
-    -- @type.qualifier   ; type qualifiers (e.g. `const`)
-    --
-    -- @attribute        ; attribute annotations (e.g. Python decorators)
-    -- @property         ; the key in key/value pairs
-    -- Functions
-    -- @function             ; function definitions
-    -- @function.builtin     ; built-in functions
-    -- @function.call        ; function calls
-    -- @function.macro       ; preprocessor macros
-    --
-    -- @function.method      ; method definitions
-    -- @function.method.call ; method calls
-    --
-    -- @constructor          ; constructor calls and definitions
-    -- @operator             ; symbolic operators (e.g. `+` / `*`)
-    -- Keywords
-    -- @keyword                   ; keywords not fitting into specific categories
-    -- @keyword.coroutine         ; keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
-    -- @keyword.function          ; keywords that define a function (e.g. `func` in Go, `def` in Python)
-    -- @keyword.operator          ; operators that are English words (e.g. `and` / `or`)
-    -- @keyword.import            ; keywords for including modules (e.g. `import` / `from` in Python)
-    -- @keyword.storage           ; modifiers that affect storage in memory or life-time
-    -- @keyword.repeat            ; keywords related to loops (e.g. `for` / `while`)
-    -- @keyword.return            ; keywords like `return` and `yield`
-    -- @keyword.debug             ; keywords related to debugging
-    -- @keyword.exception         ; keywords related to exceptions (e.g. `throw` / `catch`)
-    --
-    -- @keyword.conditional         ; keywords related to conditionals (e.g. `if` / `else`)
-    -- @keyword.conditional.ternary ; ternary operator (e.g. `?` / `:`)
-    --
-    -- @keyword.directive         ; various preprocessor directives & shebangs
-    -- @keyword.directive.define  ; preprocessor definition directives
-    -- Punctuation
-    -- @punctuation.delimiter ; delimiters (e.g. `;` / `.` / `,`)
-    -- @punctuation.bracket   ; brackets (e.g. `()` / `{}` / `[]`)
-    -- @punctuation.special   ; special symbols (e.g. `{}` in string interpolation)
-    -- Comments
-    -- @comment               ; line and block comments
-    -- @comment.documentation ; comments documenting code
-    --
     -- @comment.error         ; error-type comments (e.g., `DEPRECATED:`)
     -- @comment.warning       ; warning-type comments (e.g., `WARNING:`, `FIX:`)
     -- @comment.hint          ; note-type comments (e.g., `NOTE:`)
@@ -463,6 +383,7 @@ return function(injected_functions)
     -- sym("@keyword.conditional")({ fg = "#80788a" }),
     sym("@boolean")({ Boolean }),
     sym("@comment")({ Comment }),
+    sym("@comment.note")({ fg = "#278d8b" }),
     sym("@comment.documentation")({ Comment }),
     sym("@constant")({ Constant }),
     sym("@constant.builtin")({ ConstantBuiltin }),
@@ -1417,6 +1338,7 @@ return function(injected_functions)
     -- hi(0, "NoiceCmdlinePrompt", { bold = true, fg = "#82b4ff" })
     -- hi(0, "NoiceCompletionItemKindC- NoiceVirtualText                  = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --Default hl group for virtualtext viewsNoiceConfirm                      = { fg = C.frost.turquoise, bg = C.bg },           --normal for the confirm view
 
+    RecallMark({ fg = "#00baca" }),
     MiniJump({ fg = "#ff00a0" }),
     -- Eyeliner
     EyelinerPrimary({ fg = "#e06c75", gui = "bold" }),

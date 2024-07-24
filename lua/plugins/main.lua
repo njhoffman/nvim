@@ -192,8 +192,8 @@ local plugins = {
     },
   },
   { "echasnovski/mini.clue", enabled = false, event = { "VeryLazy" } },
+  { "echasnovski/mini.trailspace", event = "VeryLazy" },
 
-  { "lukas-reineke/indent-blankline.nvim", main = "ibl", event = { "BufReadPre", "BufNewFile" } },
   {
     "nmac427/guess-indent.nvim",
     event = "BufReadPre",
@@ -203,10 +203,47 @@ local plugins = {
     "echasnovski/mini.indentscope",
     event = { "BufReadPre", "BufNewFile" },
     init = require("configs.mini-indentscope__init"),
+    enabled = false,
   },
-  { "echasnovski/mini.trailspace", event = "VeryLazy" },
-  -- https://github.com/Mr-LLLLL/cool-chunk.nvim
-
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    event = { "BufReadPre", "BufNewFile" },
+    enabled = true,
+  },
+  {
+    "shellRaining/hlchunk.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      local cfg = {
+        chunk = {
+          enable = true,
+          priority = 15,
+          use_treesitter = true,
+          chars = {
+            horizontal_line = "─",
+            vertical_line = "│",
+            left_top = "┌",
+            left_bottom = "└",
+            right_arrow = "─",
+          },
+          -- style = "#0088aa",
+          style = "#006677",
+          -- style} = {
+          --   { fg = "#806d9c" },
+          --   { fg = "#c21f30" },
+          -- },
+          textobject = "",
+          max_file_size = 1024 * 1024,
+          error_sign = true,
+          -- animation related
+          duration = 200,
+          delay = 300,
+        },
+      }
+      require("hlchunk").setup(cfg)
+    end,
+  },
   {
     "sindrets/diffview.nvim",
     cmd = {
@@ -1352,6 +1389,46 @@ local plugins = {
         -- },
       }
       require("fundo").install()
+    end,
+  },
+
+  {
+    "fnune/recall.nvim",
+    version = "*",
+    config = function()
+      local recall = require("recall")
+      recall.setup({
+        -- sign = "",
+        -- sign_highlight = "@comment.note",
+        sign = "",
+        sign_highlight = "RecallMark",
+        telescope = {
+          autoload = true,
+          mappings = {
+            unmark_selected_entry = {
+              normal = "dd",
+              insert = "<M-d>",
+            },
+          },
+        },
+
+        wshada = vim.fn.has("nvim-0.10") == 0,
+      })
+      -- Using commands:
+      vim.keymap.set("n", "mm", recall.toggle, { noremap = true, silent = true })
+      vim.keymap.set("n", "mn", recall.goto_next, { noremap = true, silent = true })
+      vim.keymap.set("n", "mp", recall.goto_prev, { noremap = true, silent = true })
+      vim.keymap.set("n", "mc", recall.clear, { noremap = true, silent = true })
+      vim.keymap.set("n", "ml", ":Telescope recall<CR>", { noremap = true, silent = true })
+      -- -- In your Neovim configuration:
+      -- vim.opt.exrc = true
+      -- vim.opt.secure = true
+      --
+      -- -- /path/to/your/project/.nvim.lua:
+      -- vim.opt.shadafile = ".vim/project.shada"
+      --
+      -- -- Optionally, in the project's .gitignore or ~/.config/git/ignore:
+      -- .vim
     end,
   },
   -- https://github.com/otavioschwanck/arrow.nvim
