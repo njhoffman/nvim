@@ -48,12 +48,11 @@ local create_components = function(state, config, current_model)
       swapfile = false,
       -- buflisted = false
     },
-    -- win_options = {
-    -- 	winblend = 10,
-    -- 	winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
-    -- },
     win_options = {
+      conceallevel = 3,
+      winblend = 10,
       wrap = true,
+      -- 	winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
     },
   })
 
