@@ -133,7 +133,7 @@ return function(injected_functions)
     -- WinBarNCxxx guifg=#a1aab8 guibg=#0e293f
 
     Normal({ fg = "#667da9", bg = "none" }),
-    -- NormalNC({ gui = '#010409' }),
+    NormalNC({ fg = "#465d89" }),
     SignColumn({ bg = "none" }),
     Search({ bg = "#0e1c36", fg = "#008fff", gui = "italic" }), -- bg = '#0d314c',
     IncSearch({ bg = "#23518b", fg = "#88aaff", gui = "italic" }),
@@ -174,7 +174,7 @@ return function(injected_functions)
     Cursor({ bg = "#3f56ff" }),
     nCursor({ Cursor }),
     iCursor({ Cursor }),
-    lCursor({ gui = "reverse" }),
+    lCursor({ gui = "reverse" }), -- language mapping active
     -- Cursor({ bg = '#4B5Bff' }),
     -- NavbuddyCursor({ gui = 'bold' }),
     SpecsCursor({ bg = "#1f6385" }),
