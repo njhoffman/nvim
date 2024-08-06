@@ -196,6 +196,8 @@ return function(injected_functions)
     -- CursorLineNr({ fg = '#44aaff', bg = CursorLine.bg, gui = 'italic' }),
     -- CursorColumn({ bg = CursorLine.bg }),
     -- ColorColumn({ bg = CursorLine.bg }),
+    StatusLine({ fg = "NONE", bg = "NONE" }),
+
     -- base groups
     -- FoldIcon({ fg = "#4B4BBB" }),
     -- MatchParenCursor({ fg = "#fb8b8b" }),

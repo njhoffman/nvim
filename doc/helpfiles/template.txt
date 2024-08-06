@@ -1,0 +1,53 @@
+*__helpfiles.txt* Template for making local helpfiles
+
+Only the first line is really important.
+                                                    *template-settings*
+
+Tag names for in between * asterisks * (cannot have duplicates!)
+
+Special highlighting occurs with words in <angle-brackets>, {braces}, or
+  keycodes (CTRL-X ALT-X META-X) or `grave marks`
+
+Make headings by appending space tilde or grave (_~ or _`) at eol ~
+
+Reference other headers with | pipes | - |add-local-help| - |write-local-help|
+
+ALL CAPS ARE HIGHLIGHTED WITH A STATEMENT HIGHLIGHT
+IT CAN ALSO BECOME HEADLINE
+
+  note Note NOTE note: Note: NOTE: Notes Notes:
+  WARNING WARNING: Warning:
+  DEPRECATED DEPRECATED: Deprecated:
+  https://www.google.com
+
+Example settings section using Lua callback: >lua
+  vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
+    pattern = {"*.c", "*.h"},
+    callback = function(ev)
+    print(string.format('event fired: %s', vim.inspect(ev)))
+    end
+  })
+<
+To use syntax use right arrow (>) plus syntax name:  >bash
+  myvar=$(ls -alh | grep -r)
+<
+Close with (<) or automatically any line starting at column 1
+
+====================================================================
+CONTENTS                                            *template-contents*
+
+    1. Usage ................ |PotionUsage|
+    2. Mappings ............. |PotionMappings|
+    3. License .............. |PotionLicense|
+
+----------------------------------------------------------------------
+
+Mappings:
+  <Leader>a   or   <Plug>TypecorrAdd;
+    Add a correction for the word under the cursor.
+
+Commands:
+  :Correct {word}
+    Add a correction for {word}.
+
+vim:ft=help:tw=80:ts=8:sw=2:cole=2

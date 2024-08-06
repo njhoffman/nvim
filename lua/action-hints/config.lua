@@ -3,13 +3,13 @@ local default_references_color
 local default_codeactions_color
 
 if vim.o.termguicolors then
-  default_definitions_color = '#6dd8e6'
-  default_references_color = '#ff6666'
-  default_codeactions_color = '#3388ff'
+  default_definitions_color = "#6dd8e6"
+  default_references_color = "#ff6666"
+  default_codeactions_color = "#3388ff"
 else
-  default_definitions_color = 'green'
-  default_references_color = 'red'
-  default_codeactions_color = 'blue'
+  default_definitions_color = "green"
+  default_references_color = "red"
+  default_codeactions_color = "blue"
 end
 
 local default_config = {
@@ -19,11 +19,11 @@ local default_config = {
     codeactions = 1000,
   },
   template = {
-    definitions = { text = ' ⊛', color = default_definitions_color },
-    references = { text = ' ↱%s', color = default_references_color },
-    codeactions = { text = ' %s', color = default_codeactions_color },
+    definitions = { text = " ⊛", color = default_definitions_color },
+    references = { text = " ↱%s", color = default_references_color },
+    codeactions = { text = " %s", color = default_codeactions_color },
   },
-  use_virtual_text = false,
+  use_virtual_text = true,
 }
 
 local config = default_config
@@ -35,7 +35,7 @@ local setup = function(options)
 
   -- Merge keys
   for k, v in pairs(options) do
-    if k == 'template' and type(v) == 'table' then
+    if k == "template" and type(v) == "table" then
       for tk, tv in pairs(v) do
         config.template[tk] = tv
       end

@@ -1,3 +1,5 @@
+-- https://www.reddit.com/r/neovim/comments/1ee6oqt/helpviewnvim_an_impractical_way_to_view_help_files/
+
 -- local setup_autocmds = function()
 --   vim.api.nvim_create_autocmd('BufWinEnter', {
 --     pattern = '*',
@@ -85,3 +87,4 @@ local init = function()
 end
 
 init()
+-- require("after.ftplugin.help-view")

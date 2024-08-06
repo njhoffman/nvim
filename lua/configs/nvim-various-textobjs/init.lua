@@ -1,3 +1,7 @@
+-- https://github.com/jeetsukumaran/vim-indentwise
+-- https://github.com/jessekelighine/vindent.vim
+-- https://github.com/chrisgrieser/nvim-various-textobjs/blob/main/README.md#delete-surrounding-indentation
+
 local map = function(modes, lhs, rhs, opts)
   if type(opts) == "string" then
     opts = { desc = "韛" .. opts } --  鶴 韛     ﱕ 
@@ -208,20 +212,20 @@ map("n", "<leader>p>", function()
   require("various-textobjs").lastChange()
   local changeFound = vim.fn.mode():find("v")
   if changeFound then
-    vim.fn.normal({ ">", bang = true })
+    vim.cmd.normal({ ">", bang = true })
   end
 end, { desc = "indent last paste" })
 
 map("n", "ysi", function()
-  -- identify start- and end-border
   local startPos = vim.api.nvim_win_get_cursor(0)
+
+  -- identify start- and end-border
   require("various-textobjs").indentation("outer", "outer")
   local indentationFound = vim.fn.mode():find("V")
   if not indentationFound then
     return
   end
-  vim.fn.normal({ "V", bang = true }) -- leave visual mode so the `'<` `'>` marks are set
-  vim.api.nvim_win_set_cursor(0, startPos) -- restore (= sticky)
+  vim.cmd.normal({ "V", bang = true }) -- leave visual mode so the '< '> marks are set
 
   -- copy them into the + register
   local startLn = vim.api.nvim_buf_get_mark(0, "<")[1] - 1
@@ -232,9 +236,12 @@ map("n", "ysi", function()
 
   -- highlight yanked text
   local ns = vim.api.nvim_create_namespace("ysi")
-  vim.highlight.range(0, ns, "IncSearch", { startLn, 0 }, { startLn + 1, 0 })
-  vim.highlight.range(0, ns, "IncSearch", { endLn, 0 }, { endLn + 1, 0 })
+  vim.api.nvim_buf_add_highlight(0, ns, "IncSearch", startLn, 0, -1)
+  vim.api.nvim_buf_add_highlight(0, ns, "IncSearch", endLn, 0, -1)
   vim.defer_fn(function()
     vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
-  end, 300)
+  end, 1000)
+
+  -- restore cursor position
+  vim.api.nvim_win_set_cursor(0, startPos)
 end, { desc = "Yank surrounding indent" })

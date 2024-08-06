@@ -227,18 +227,18 @@ local plugins = {
             left_bottom = "└",
             right_arrow = "─",
           },
-          -- style = "#0088aa",
-          style = "#006677",
-          -- style} = {
-          --   { fg = "#806d9c" },
-          --   { fg = "#c21f30" },
-          -- },
+          style = {
+            { fg = "#005678", bg = "#001018" },
+            -- { fg = "#007698", bg = "#000000" },
+            { fg = "#4056a7", bg = "#000000" },
+          },
+          -- style} = { { fg = "#806d9c" }, { fg = "#c21f30" } },
           textobject = "",
           max_file_size = 1024 * 1024,
           error_sign = true,
           -- animation related
-          duration = 200,
-          delay = 300,
+          duration = 250,
+          delay = 250,
         },
       }
       require("hlchunk").setup(cfg)
@@ -1342,8 +1342,16 @@ local plugins = {
       -- .copyRelativeDirectoryPath: Copy the relative directory path.
       -- .chmodx: Makes current file executable. Equivalent to chmod +x.
       -- .trashFile: Move the current file to the trash location.
+      vim.cmd.cabbrev("Chmodx Genghis chmodx")
+      vim.cmd.cabbrev("New Genghis createNewFile")
+      vim.cmd.cabbrev("Rename Genghis moveAndRename")
       vim.cmd.cabbrev("Files Genghis")
       vim.cmd.cabbrev("F Genghis")
+      vim.cmd.cabbrev("F Genghis")
+      vim.cmd.cabbrev("Fdupe Genghis duplicateFile")
+      vim.cmd.cabbrev("Fnew Genghis createNewFile")
+      vim.cmd.cabbrev("Fren Genghis moveAndRename")
+      vim.cmd.cabbrev("Fdel Genghis trashFile")
     end,
   },
 
@@ -1527,6 +1535,7 @@ local plugins = {
       require("dbee").install()
     end,
   },
+  -- https://github.com/mei28/luminate.nvim
   { "tzachar/highlight-undo.nvim", event = { "BufEnter", "BufReadPost", "BufNewFile" } },
   {
     "kndndrj/nvim-projector",

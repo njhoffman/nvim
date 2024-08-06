@@ -1,48 +1,48 @@
 -- https://raw.githubusercontent.com/roobert/action-hints.nvim/main/lua/action-hints/init.lua
 
-local config = require('action-hints.config')
-local utils = require('action-hints.utils')
-local state = require('action-hints.state')
+local config = require("action-hints.config")
+local utils = require("action-hints.utils")
+local state = require("action-hints.state")
 
 local setup = function(options)
   config.setup(options)
-  local display = require('action-hints.display')
-  local providers = require('action-hints.providers')
+  local display = require("action-hints.display")
+  local providers = require("action-hints.providers")
   display.set_highlights(config.values)
 
   -- create augroup named ActionHints
-  local augroup = vim.api.nvim_create_augroup('ActionHints', { clear = true })
-  vim.api.nvim_create_autocmd({ 'OptionSet' }, {
+  local augroup = vim.api.nvim_create_augroup("ActionHints", { clear = true })
+  vim.api.nvim_create_autocmd({ "OptionSet" }, {
     group = augroup,
-    desc = 'ActionHints highlights setup',
-    pattern = { 'termguicolors' },
+    desc = "ActionHints highlights setup",
+    pattern = { "termguicolors" },
     callback = function()
       display.set_highlights(config.values)
     end,
   })
 
   vim.api.nvim_create_autocmd({
-    'CursorMovedI',
+    "CursorMovedI",
   }, {
     group = augroup,
-    desc = 'ActionHints providers insert clear',
+    desc = "ActionHints providers insert clear",
     callback = function()
-      utils.throttle(display.clear_virtual_text, 100, {}, 'clear')
+      utils.throttle(display.clear_virtual_text, 100, {}, "clear")
       state.is_cleared = true
       -- utils.debounce(providers.update, 1000)(config.values)
     end,
   })
 
-  vim.api.nvim_create_autocmd({ 'CursorMoved' }, {
+  vim.api.nvim_create_autocmd({ "CursorMoved" }, {
     group = augroup,
-    desc = 'ActionHints providers update',
+    desc = "ActionHints providers update",
     callback = function()
       -- utils.throttle(display.clear_virtual_text, 100, {}, 'clear')
       display.clear_virtual_text()
       state.is_cleared = true
-      if vim.api.nvim_get_mode().mode == 'n' then
-        -- utils.debounce(providers.update, 1000)(config.values)
-        providers.update(config.values)
+      if vim.api.nvim_get_mode().mode == "n" then
+        utils.debounce(providers.update, 1000)(config.values)
+        -- providers.update(config.values)
       end
     end,
   })

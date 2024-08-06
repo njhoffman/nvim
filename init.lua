@@ -24,7 +24,7 @@ for _, mod_name in ipairs({
   "configs.registers",
   -- 'configs.nvim-scrollbar',
   -- 'configs.neoscroll',
-  "action-hints.setup",
+  -- "action-hints.setup",
   -- 'winsep.setup',
   -- 'better_escape-setup',
   "early-retirement.setup",

@@ -1527,12 +1527,12 @@ map({ 'n' }, '<M-,>', "<cmd>lua require('telescope.run')('builtin','resume', { c
 })
 
 
--- map({ 'n' }, '<M-.>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
---     category = 'Pickers',
---     plugin = 'telescope.nvim',
---     label = 'find pickers',
---     desc = 'find pickers in telescope',
---   })
+map({ 'n' }, '<M-.>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
+    category = 'Pickers',
+    plugin = 'telescope.nvim',
+    label = 'find pickers',
+    desc = 'find pickers in telescope',
+  })
 
 -- lua require('configs.telescope.actions').prev_picker()
 --------------------------------------------------------------------------------------------------
