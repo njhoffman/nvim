@@ -3,7 +3,7 @@ local get_change_hash = function(c)
     tostring(c.col),
     tostring(c.coladd),
     tostring(c.lnum),
-  }, ''),
+  }, ""),
     c.col + c.lnum
 end
 
@@ -26,21 +26,21 @@ local process_list = function(list, pos_idx, unique)
       table.insert(hashes, hash)
     end
   end
-  return new_list, hash_id, new_idx
+  return new_list, new_idx, hash_id
 end
 
 local align_text = function(text, width, type)
   local left, right = 0, 0
   local len = vim.fn.strwidth(text)
-  if type == 'right' then
+  if type == "right" then
     left = width - len
-  elseif type == 'center' then
+  elseif type == "center" then
     left = math.floor((width - len) / 2)
     right = math.ceil((width - len) / 2)
   else
     right = width - len
   end
-  return string.rep(' ', left) .. text .. string.rep(' ', right), { left, len }
+  return string.rep(" ", left) .. text .. string.rep(" ", right), { left, len }
 end
 
 local build_highlight_table = function(rows, opts)
@@ -49,7 +49,7 @@ local build_highlight_table = function(rows, opts)
   if opts.headers then
     local header_row = {}
     for i, header in ipairs(opts.headers) do
-      table.insert(header_row, { header, 'Title' })
+      table.insert(header_row, { header, "Title" })
     end
     table.insert(rows, 1, header_row)
   end
@@ -58,13 +58,13 @@ local build_highlight_table = function(rows, opts)
   for _, row in ipairs(rows) do
     for i, item in ipairs(row) do
       local width = colwidths[i] or 0
-      colwidths[i] = math.max(width, vim.fn.strwidth(item[1] or ''))
+      colwidths[i] = math.max(width, vim.fn.strwidth(item[1] or ""))
     end
   end
 
   local lines, highlights = {}, {}
   for _, row in ipairs(rows) do
-    local line = ''
+    local line = ""
     for i, item in ipairs(row) do
       local text, pos = align_text(item[1], colwidths[i] + opts.padding, opts.align[i])
       local start = #line + pos[1]

@@ -74,8 +74,8 @@ opt("showmode", false)
 opt("tabline", "")
 opt("showtabline", 1)
 opt("scroll", 0)
--- opt("scrolloff", 0)
-opt("scrolloff", 999)
+opt("scrolloff", 0)
+-- opt("scrolloff", 999)
 opt("sidescroll", 0)
 opt("sidescrolloff", 0)
 opt("smartcase", true)
@@ -158,6 +158,7 @@ opt("tabstop", 2, buffer)
 opt("undofile", true, buffer)
 opt("equalalways", false) -- make windows the samue width when closing one
 opt("cursorlineopt", "both") -- should get cursorline in number too
+opt("guifont", "FiraCode Nerd Font:h12") -- text below applies for VimScript
 opt(
   "guicursor",
   vim.fn.join({

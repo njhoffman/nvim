@@ -27,7 +27,7 @@ local watch_changes = function(unique)
         if is_popup(winnr) then
           return false
         end
-        local changes, hash_id = get_items(bufnr, unique)
+        local changes, change_idx, hash_id = get_items(bufnr, unique)
         if hash_id ~= last_hash then
           view.load(changes)
           last_hash = hash_id
@@ -78,11 +78,11 @@ local start = function(opts)
   if opts.watch then
     watch_changes(opts.unique)
   else
-    local changes, curr_idx = get_items(nil, opts.unique)
+    local changes, _, curr_idx = get_items(nil, opts.unique)
     view.notify_handler(changes, curr_idx, opts)
   end
 end
 
 -- watch_changes()
-
 return { start = start }
+-- start()

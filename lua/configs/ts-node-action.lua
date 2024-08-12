@@ -1,18 +1,19 @@
 -- https://github.com/Wansmer/sibling-swap.nvim
 
-local actions = require('ts-node-action.actions')
-local helpers = require('ts-node-action.helpers')
+local actions = require("ts-node-action.actions")
+local helpers = require("ts-node-action.helpers")
 
 local toggle_boolean = function(boolean_pair_override)
-  local boolean_pair = vim.tbl_deep_extend('force', { ['and'] = 'or', ['or'] = 'and' }, boolean_pair_override or {})
+  local boolean_pair =
+    vim.tbl_deep_extend("force", { ["and"] = "or", ["or"] = "and" }, boolean_pair_override or {})
   local function action(node)
     return boolean_pair[helpers.node_text(node)] or helpers.node_text(node)
   end
-  return { { action, name = 'Toggle Boolean' } }
+  return { { action, name = "Toggle Boolean" } }
 end
 
 local swap_quotes = function(node)
-  local helpers = require('ts-node-action.helpers')
+  local helpers = require("ts-node-action.helpers")
   local text = helpers.node_text(node)
   local wrapped = string.gsub(text, [[(["'])]], function(s)
     if s == "'" then
@@ -25,16 +26,16 @@ local swap_quotes = function(node)
   return { wrapped }
 end
 
-local ruby_actions = require('ts-node-action.filetypes.ruby')
-ruby_actions['string'] = swap_quotes
+local ruby_actions = require("ts-node-action.filetypes.ruby")
+ruby_actions["string"] = swap_quotes
 
-local javascript_actions = require('ts-node-action.filetypes.javascript')
-javascript_actions['update_expression'] = function(node)
+local javascript_actions = require("ts-node-action.filetypes.javascript")
+javascript_actions["update_expression"] = function(node)
   local default_increment_operators = {
-    ['++'] = '+=1',
-    ['+=1'] = '++',
-    ['--'] = '-=1',
-    ['-=1'] = '--',
+    ["++"] = "+=1",
+    ["+=1"] = "++",
+    ["--"] = "-=1",
+    ["-=1"] = "--",
   }
   local replacement = {}
   for child, _ in node:iter_children() do
@@ -45,12 +46,12 @@ javascript_actions['update_expression'] = function(node)
       table.insert(replacement, text)
     end
   end
-  return table.concat(replacement, '')
+  return table.concat(replacement, "")
 end
-javascript_actions['augmented_assignment_expression'] = function(node)
+javascript_actions["augmented_assignment_expression"] = function(node)
   local default_increment_operators = {
-    ['+='] = '++',
-    ['-='] = '--',
+    ["+="] = "++",
+    ["-="] = "--",
   }
   local replacement = {}
   for child, _ in node:iter_children() do
@@ -61,33 +62,38 @@ javascript_actions['augmented_assignment_expression'] = function(node)
       table.insert(replacement, text)
     end
   end
-  return table.concat(replacement, ' ')
+  return table.concat(replacement, " ")
 end
 
-require('ts-node-action').setup({
-  ['*'] = { ['boolean_operator'] = toggle_boolean() },
+require("ts-node-action").setup({
+  ["*"] = { ["boolean_operator"] = toggle_boolean() },
   -- ["*"] = require "ts-node-action.filetypes.global",
-  lua = require('ts-node-action.filetypes.lua'),
-  json = require('ts-node-action.filetypes.json'),
-  julia = require('ts-node-action.filetypes.julia'),
-  yaml = require('ts-node-action.filetypes.yaml'),
+  lua = require("ts-node-action.filetypes.lua"),
+  json = require("ts-node-action.filetypes.json"),
+  julia = require("ts-node-action.filetypes.julia"),
+  yaml = require("ts-node-action.filetypes.yaml"),
   ruby = ruby_actions,
   eruby = ruby_actions,
-  python = require('ts-node-action.filetypes.python'),
-  php = require('ts-node-action.filetypes.php'),
-  rust = require('ts-node-action.filetypes.rust'),
-  html = require('ts-node-action.filetypes.html'),
+  python = require("ts-node-action.filetypes.python"),
+  php = require("ts-node-action.filetypes.php"),
+  rust = require("ts-node-action.filetypes.rust"),
+  html = require("ts-node-action.filetypes.html"),
   javascript = javascript_actions,
   javascriptreact = javascript_actions,
   typescript = javascript_actions,
   typescriptreact = javascript_actions,
-  svelte = require('ts-node-action.filetypes.javascript'),
-  sql = require('ts-node-action.filetypes.sql'),
-  r = require('ts-node-action.filetypes.r'),
+  svelte = require("ts-node-action.filetypes.javascript"),
+  sql = require("ts-node-action.filetypes.sql"),
+  r = require("ts-node-action.filetypes.r"),
 })
 
-local trigger_key = '+' -- T
-vim.keymap.set('n', trigger_key, require('ts-node-action').node_action, { desc = 'Trigger node action' })
+local trigger_key = "+" -- T
+vim.keymap.set(
+  "n",
+  trigger_key,
+  require("ts-node-action").node_action,
+  { desc = "Trigger node action" }
+)
 
 -- 	                       (*)	Ruby	js/ts/tsx/jsx	Lua	Python	PHP	Rust	C#	JSON	HTML	YAML	R
 -- toggle_boolean()         ✅        ✅      ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅

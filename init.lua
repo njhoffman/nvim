@@ -2,6 +2,7 @@
 
 require("globals")
 
+-- https://github.com/stevearc/quicker.nvim
 vim.import("quickfix")
 
 require("utils.lazy").setup({ cache = false, reload = false, lazy = false })
@@ -62,6 +63,15 @@ vim.defer_fn(function()
   -- vim.keymap.set('i', '<M-;>', '<M-9>', { remap = true, desc = 'warp pair symbol backwards' })
 
   -- require('internals').setup()
+  if vim.g.started_by_firenvim then
+    vim.api.nvim_set_keymap("n", "<C-z>", "<Cmd>call firenvim#hide_frame()<CR>", {})
+    vim.api.nvim_set_keymap("n", "<Esc><Esc>", "<Cmd>call firenvim#focus_page()<CR>", {})
+
+    vim.api.nvim_create_autocmd({ "BufEnter" }, {
+      pattern = "github.com_*.txt",
+      command = "set filetype=markdown",
+    })
+  end
 end, 100)
 
 -- require("notifications.recipes.progress").config()

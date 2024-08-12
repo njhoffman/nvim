@@ -27,6 +27,8 @@ local truncate_changes = function(changes, curr_idx, opts)
 end
 
 local notify_handler = function(changes, curr_idx, opts)
+  vim.dbglog("changes", changes)
+  vim.dbglog("curr_idx", curr_idx)
   changes = truncate_changes(changes, curr_idx, opts)
 
   local hls = default_highlights

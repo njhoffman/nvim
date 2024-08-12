@@ -1,0 +1,155 @@
+*_vimium.txt* Vimium-C Shortcuts
+
+NAVIGATING THE PAGE
+yy            `copyCurrentUrl`                             Copy page's info (use type=url/title/frame, decoded)
+              `copyCurrentTitle`                           Copy current tab's title
+<f7>          `openUrl`                                    Open URL (use url:string, urls:string[], reuse=newFg/current/newBg/reuse, incognito, window, position)
+              `openCopiedUrlInCurrentTab`                  Open the clipboard's URL in the current tab
+              `openCopiedUrlInNewTab`                      Open the clipboard's URL in N new tabs
+r             `reload`                                     Reload current frame (use hard)
+<a-r>         `reloadTab`                                  Reload N tabs
+R             `reloadGivenTab`                             Reload N-th tab (use hard)
+              `toggleUrl`                                  Modify the URL of the current tab page and visit
+gs            `toggleViewSource`                           View page source
+gu            `goUp`                                       Go up the URL hierarchy (use trailingSlash=null/true/false)
+gU            `goToRoot`                                   Go to root of current URL hierarchy
+]]            `goNext`                                     Follow the link labeled next or ">" (use sed=true, patterns:string, rel:string, noRel, isNext)
+[[            `goPrevious`                                 Follow the link labeled previous or "<"
+<s-f1> <f2>   `switchFocus`                                Blur activeElement or refocus it (use flash, select=""/all/all-line/start/end)
+i gi          `focusInput`                                 Focus the N-th visible text box on the page and cycle using tab (use keep, select=""/all/all-line/start/end)
+              `focusOrLaunch`                              Focus a tab with given URL or open it (use url:string, prefix)
+gf            `nextFrame`                                  Cycle forward to the next frame on the page
+gF            `mainFrame`                                  Select the tab's main/top frame
+              `parentFrame`                                Focus a parent frame
+<f1>          `simulateBackspace`                          Simulate backspace once if focused
+<c-:i>        `dispatchEvent`                              Simulate dipatching arbitrary DOM event (use key="key,keyCode,code",init:{})
+              `enterInsertMode`                            Enter insert mode (use key:string, unhover, reset)
+<f8> v        `enterVisualMode`                            Enter visual mode
+V             `enterVisualLineMode`                        Enter visual line mode
+
+
+SCROLLING AND ZOOMING
+j             `scrollDown`                                 Scroll down (use keepHover=true|false|auto|never)
+k             `scrollUp`                                   Scroll up (use keepHover=true|false|auto|never)
+h             `scrollLeft`                                 Scroll left
+l             `scrollRight`                                Scroll right
+gg            `scrollToTop`                                Scroll to the top of the page
+G             `scrollToBottom`                             Scroll to the bottom of the page
+zH            `scrollToLeft`                               Scroll all the way to the left
+zL            `scrollToRight`                              Scroll all the way to the right
+<c-f>         `scrollPageDown`                             Scroll a page down
+<c-b>         `scrollPageUp`                               Scroll a page up
+<a-j>         `scrollPxDown`                               Scroll 1px down
+<a-k>         `scrollPxUp`                                 Scroll 1px up
+              `scrollPxLeft`                               Scroll 1px left
+              `scrollPxRight`                              Scroll 1px right
+<space>       `scrollFullPageDown`                         Scroll a full page down
+              `scrollFullPageUp`                           Scroll a full page up
+              `scrollSelect`                               Switch in items of a (closed) selection box (use dir=down|up, position=""|begin|end)
+              `zoom`                                       Make a current tab zoom (use in, out, reset)
+              `zoomIn`                                     Make a current tab zoom in
+              `zoomOut`                                    Make a current tab zoom out
+              `zoomReset`                                  Reset zoom level
+
+LINK HINTS AND MARKS
+              `LinkHints.activate`                         Open a link in the current tab (use button=""/right, touch=false/true/"auto")
+              `LinkHints.activateFocus`                    Focus an element
+              `LinkHints.activateHover`                    Select an element and hover (use showUrl=true)
+              `LinkHints.activateLeave`                    Let mouse leave link
+              `LinkHints.activateEdit`                     Select an editable area
+gv yv         `LinkHints.activateSelect`                   Select text and enter visual mode (use visual=true, caret, then:{})
+yf            `LinkHints.activateCopyLinkUrl`              Copy a link URL to the clipboard
+              `LinkHints.activateCopyLinkText`             Copy a link text to the clipboard (use join:boolean/string)
+              `LinkHints.activateOpenInNewTab`             Open a link in a new tab
+qf            `LinkHints.activateOpenInNewForegroundTab`   Open a link in a new tab and switch to it
+<a-f>         `LinkHints.activateWithQueue`                Open multiple links in a new tab
+yi            `LinkHints.activateCopyImage`                Copy image to the clipboard (use richText=safe)
+              `LinkHints.activateDownloadImage`            Download image, video and audio
+              `LinkHints.activateOpenImage`                Show image in a new tab (use auto=true)
+              `LinkHints.activateDownloadLink`             Download link URL
+              `LinkHints.activateOpenIncognito`            Open a link in incognito window
+              `LinkHints.activateOpenUrl`                  Open a URL directly without simulating mouse actions
+              `LinkHints.activateSearchLinkText`           Open or search a link text
+              `LinkHints.click`                            Click selected text, focused element or the nearest clicked (use direct=true|element|sel|focus|click|sel,focus,click)
+              `LinkHints.unhoverLast`                      Stop hovering at last location
+m             `Marks.activateCreate`                       Create a new mark (use swap)
+``            `Marks.activate`                             Go to a mark (use prefix=true, swap, mapKey)
+              `Marks.clearLocal`                           Remove all local marks for this site
+              `Marks.clearGlobal`                          Remove all global marks
+
+USING THE VOMNIBAR AND SEARCHING
+; o            `Vomnibar.activate`                  Open URL, bookmark, or history entry (use keyword="", url:boolean/string)
+: O            `Vomnibar.activateInNewTab`          Open URL, history, … in a new tab (use keyword, url)
+b              `Vomnibar.activateBookmarks`         Open a bookmark
+B              `Vomnibar.activateBookmarksInNewTab` Open a bookmark in a new tab
+               `Vomnibar.activateHistory`           Open a history
+               `Vomnibar.activateHistoryInNewTab`   Open a history in a new tab
+T              `Vomnibar.activateTabs`              Search through your open tabs
+ge             `Vomnibar.activateEditUrl`           Edit the current URL
+gE             `Vomnibar.activateEditUrlInNewTab`   Edit the current URL and open in a new tab
+               `LinkHints.activateOpenVomnibar`     Edit a link text on Vomnibar (use url, newtab, then:{})
+               `toggleVomnibarStyle`                Toggle styles of vomnibar page (use style=dark, current)
+/              `enterFindMode`                      Enter find mode (use last, selected=true)
+gn } n         `performFind`                        Cycle forward to the next find match
+gN { N         `performBackwardsFind`               Cycle backward to the previous find match
+<a-n>          `performAnotherFind`                 Find the second or even earlier query words
+               `clearFindHistory`                   Clear find mode history
+
+
+NAVIGATING HISTORY AND MANIPULATING TABS
+`< <c-<>` g[ g{         `goBack`                    Go back in history (use reuse=current/newBg/newFg)
+`> <c->>` g] g}         `goForward`                 Go forward in history
+`<a-s-r>`               `reopenTab`                 Reopen current page
+L <a-s-c> gt K <a-v>  `nextTab`                   Go one tab right (use blur)
+H <a-c> gT J          `previousTab`               Go one tab left (use blur)
+g0                    `firstTab`                  Go to the first N-th tab
+g$                    `lastTab`                   Go to the last N-th tab
+<a-t>                 `createTab`                 Create new tabs
+yt                    `duplicateTab`              Duplicate current tab for N times
+<c-d> x               `removeTab`                 Close N tabs (use keepWindow=""/always, mayClose, goto=""/left/right/previous)
+                      `removeRightTab`            Close N-th tab on the right
+X                     `restoreTab`                Restore closed tabs
+                      `restoreGivenTab`           Restore the last N-th tab
+                      `discardTab`                Discard some other tabs
+                      `moveTabToNextWindow`       Move tab to next window (use last, position, right=true, tabs)
+                      `moveTabToNewWindow`        Move N tabs to new window (use limited=null/true/false)
+                      `moveTabToIncognito`        Make tab in incognito window
+                      `joinTabs`                  Collect all tabs into current window
+                      `sortTabs`                  Sort all tabs in current window (use sort=recency|createTime)
+<a-p>                 `togglePinTab`              Pin or unpin N tabs
+<a-m>                 `toggleMuteTab`             Mute or unmute current tab (use all, other)
+^                     `visitPreviousTab`          Go to previously-visited tab on current window (use blur, acrossWindows, onlyActive)
+                      `closeTabsOnLeft`           Close all tabs on the left (use $count=0)
+                      `closeTabsOnRight`          Close all tabs on the right (use $count=0)
+                      `closeOtherTabs`            Close all other tabs (use filter=""/url/url+hash/url+title)
+                      `moveTabLeft`               Move tab to the left (use group=true)
+                      `moveTabRight`              Move tab to the right (use group=true)
+                      `toggleContentSetting`      Toggle the site's content settings (use type=images)
+                      `enableContentSettingTemp`  Enable the site's ContentSetting in incognito window
+                      `clearContentSettings`      Clear extension's content settings
+                      `copyWindowInfo`            Copy title/URL info of a current window (use format="${title}: ${url}", join:true/string, decoded)
+                      `captureTab`                Capture visible area of current tab
+                      `toggleWindow`              Change window status (use states="normal,maximized")
+
+MISCELLANEOUS
+?                                    `showHelp`                  Show help
+                                     `autoCopy`                  Copy selected text or current frame's title or URL (use text: string, url, decoded)
+                                     `autoOpen`                  Open selected or copied text in a new tab
+                                     `searchAs`                  Search selected or copied text using current search engine (use copied=true, selected=true)
+                                     `searchInAnother`           Redo search in another search engine (use keyword, reuse=current/newFg/newBg/reuse)
+                                     `showTip`                   Show a tip on the HUD (use text:string)
+                                     `openBookmark`              Open a bookmark (folder) (use title, path)
+                                     `addBookmark`               Add tabs into a bookmark folder (use folder:string)
+                                     `toggleStyle`               Add or disable CSS styles (use id/selector:string, css: string)
+                                     `toggleLinkHintCharacters`  Toggle the other link hints (use value:string)
+<c-b:i> <a-f:i>                      `editText`                  Send editing action to browser (use run:string, dom=false)
+                                     `toggleSwitchTemp`          Toggle switch only on current page (use key:string, [value:any])
+                                     `passNextKey`               Pass the next keys to the page (use expect:string, normal)
+                                     `debugBackground`           Debug the background page
+                                     `reset`                     Reset to normal mode
+<c-n:i> <c-p:i> F f <c-j:i> <c-k:i>  `runKey`                    Select and run another mapped key sequence (use expect:Envs, keys:KeySequence[]|string)
+                                     `sendToExtension`           Send message to another extension (use id:string, data:any, raw)
+                                     `confirm`                   Display confirmation dialog and wait (use ask:string, $then, $else)
+                                     `blank`                     Do nothing
+                                     `closeDownloadBar`          Close the bottom download bar elegantly
+vim:ft=help

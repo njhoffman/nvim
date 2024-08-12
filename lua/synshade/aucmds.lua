@@ -13,7 +13,7 @@ end
 --- Restore the default highlight namespace
 ---
 ---@param event table arguments from the associated `:h nvim_create_autocmd` setup
-on_focus_or_close = function(event)
+local on_focus_or_close = function(event)
   if not check_enabled() then
     return
   end
@@ -35,7 +35,7 @@ end
 --- Set the synshade highlight namespace
 ---
 ---@param _ table? arguments from the associated `:h nvim_create_autocmd` setup
-on_unfocus = function(_)
+local on_unfocus = function(_)
   if not check_enabled() then
     return
   end
@@ -53,7 +53,7 @@ end
 --- Redefine highlights in both namespaces based on colors in new colorscheme
 ---
 ---@param _ table arguments from the associated `:h nvim_create_autocmd` setup
-on_colorscheme = function(_)
+local on_colorscheme = function(_)
   if not check_enabled() then
     return
   end

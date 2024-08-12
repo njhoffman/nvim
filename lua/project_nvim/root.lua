@@ -185,6 +185,20 @@ function M.find_pattern_root()
   end
 end
 
+function M.find_dotbare_root()
+  -- toplevel = vim.env.HOME,
+  -- gitdir = vim.env.HOME .. "/.cfg",
+  local search_dir = vim.fn.expand("%:p:h", true)
+  local dotbare_dir = "/home/nicholas/.cfg"
+  local check_bare_command =
+    { "git", "--git-dir='" .. dotbare_dir .. "'", "rev-parse", "--is-bare-repository" }
+  -- git --git-dir=/home/nicholas/.cfg --work-tree=/home/nicholas ls-files ~/.config/picom/picom.conf
+  -- git --git-dir=/home/nicholas/.cfg --work-tree=/home/nicholas ls-files .config/picom/picom.conf
+  -- git ls-tree --full-tree --name-only -r HEAD
+  -- git --git-dir=/home/nicholas/.cfg --work-tree=/home/nicholas ls-tree -r master --name-only
+  local is_bare = string.gsub(vim.fn.system(vim.fn.join(check_bare_command, " ")), "\n", "")
+end
+
 function M.get_project_root()
   -- returns project root, as well as method
 

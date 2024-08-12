@@ -84,16 +84,30 @@ local plugins = {
           library = {
             -- See the configuration section for more details
             -- Load luvit types when the `vim.uv` word is found
+            "lazy.nvim",
             { path = "luvit-meta/library", words = { "vim%.uv" } },
+            -- -- Library paths can be absolute
+            -- "~/projects/my-awesome-lib",
+            -- -- Or relative, which means they will be resolved from the plugin dir.
+            -- "lazy.nvim",
+            -- "luvit-meta/library",
+            -- -- It can also be a table with trigger words / mods
+            -- -- Only load luvit types when the `vim.uv` word is found
+            -- { path = "luvit-meta/library", words = { "vim%.uv" } },
+            -- -- always load the LazyVim library
+            -- "LazyVim",
+            -- -- Only load the lazyvim library when the `LazyVim` global is found
+            -- { path = "LazyVim", words = { "LazyVim" } },
+            -- -- Load the wezterm types when the `wezterm` module is required
+            -- -- Needs `justinsgithub/wezterm-types` to be installed
+            -- { path = "wezterm-types", mods = { "wezterm" } },
+            -- -- Load the xmake types when opening file named `xmake.lua`
+            -- -- Needs `LelouchHe/xmake-luals-addon` to be installed
+            -- { path = "xmake-luals-addon/library", files = { "xmake.lua" } },
           },
         },
       },
       { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
-      {
-        "folke/neodev.nvim",
-        dependencies = { "williamboman/mason-lspconfig.nvim", "williamboman/mason.nvim" },
-        enabled = false,
-      },
       {
         "folke/trouble.nvim",
         cmd = { "TroubleToggle", "Trouble" },

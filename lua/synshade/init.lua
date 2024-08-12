@@ -25,7 +25,7 @@ local utils = require("synshade.utils")
 --- Setup everything required for this module to run
 ---
 ---@param skip_config boolean? skip re-doing user configuration setup, useful when re-enabling, etc.
-local setup_all = function(skip_config)
+local _setup_all = function(skip_config)
   if not skip_config then
     setup_user_config()
   end
@@ -45,8 +45,8 @@ end
 ---   `:h VimEnter`
 ---
 ---@param _ table arguments from the associated `:h nvim_create_autocmd` setup
-__.setup_callback = function(_)
-  __.setup_all(false)
+local _setup_callback = function(_)
+  _setup_all(false)
 end
 
 --- Enable this plugin
@@ -98,17 +98,12 @@ end
 ---@public
 ---@param user_config SynshadeUserConfiguration see `:h synshade-setup`
 synshade.setup = function(user_config)
-  if not utils.verify_version() then
-    return
-  end
-
   if state.user_config then
     return
   end
 
   state.user_config = user_config
-
-  on_or_after_vimenter(__.setup_callback)
+  on_or_after_vimenter(_setup_callback)
 end
 
 return synshade

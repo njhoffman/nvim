@@ -65,27 +65,6 @@ local common = {
   new_augends.boolsymbol,
 }
 
-local common_examples = {
-  augend.semver.alias.semver,
-  new_augends.hexcolor,
-
-  augend.date.alias["%Y-%m-%d"],
-  augend.date.alias["%m/%d"],
-  augend.date.alias["%H:%M"],
-  new_augends["%Y/%m/%d"],
-
-  augend.integer.alias.decimal,
-  augend.integer.alias.hex,
-  new_augends.hexinteger,
-
-  augend.constant.alias.bool,
-  augend.constant.alias.alpha,
-  augend.constant.alias.Alpha,
-  new_augends.booland,
-  new_augends.boolenable,
-  new_augends.boolsymbol,
-}
-
 require("dial.config").augends:register_group({
   default = vim.tbl_deep_extend("force", common, {}),
   visual = vim.tbl_deep_extend("force", common, {}),
@@ -97,64 +76,37 @@ require("dial.config").augends:register_group({
   }),
 })
 
--- TODO: use mapper and transition to <C-=> <C-+> <C--> <C-_>
--- TODO: change terminal fonts to <C-M--> <C-M-=>, try to separate mappings below
--- fonts: <C-equals>,<C-minus>
---        <M-equals> ^[=   <C-M-equals> ^[=    <C-S-plus>   ^[+   <C-S-M-plus>  ^[+
---        <M-minus>  ^[-   <C-M-minus>  ^[-    <C-S-under>  ^_    <C-S-M-under> ^[^_
+local rhs_func = function(direction, op)
+  return function()
+    local buf = vim.api.nvim_get_current_buf()
+    local is_readonly = vim.api.nvim_buf_get_option(buf, "readonly")
+    local is_modifiable = vim.api.nvim_buf_get_option(buf, "modifiable")
+    -- vim.dbglog(buf, is_readonly, is_modifiable)
+    if not is_readonly and is_modifiable then
+      return require("dial.map").manipulate(direction, op)
+    end
+    return ""
+    -- TODO: should we disable the default <C-a> mappings too?
+  end
+end
 
-local map = vim.keymap.set
-map(
-  "n",
-  "<C-a>",
-  require("dial.map").inc_normal(),
-  { noremap = true, desc = "dial increment normal" }
-)
+local dial_map = function(mode, lhs, direction, op, desc)
+  vim.keymap.set(mode, lhs, rhs_func(direction, op), {
+    -- buffer = true,
+    noremap = true,
+    silent = true,
+    desc = desc,
+  })
+end
 
-map(
-  "n",
-  "<C-x>",
-  require("dial.map").dec_normal(),
-  { noremap = true, desc = "dial decrement normal" }
-)
-
-map(
-  "v",
-  "<C-a>",
-  require("dial.map").inc_visual("visual"),
-  { noremap = true, desc = "dial increment visual" }
-)
-map(
-  "v",
-  "<C-x>",
-  require("dial.map").dec_visual("visual"),
-  { noremap = true, desc = "dial decrement visual" }
-)
-
-map(
-  "n",
-  "<M-a>",
-  require("dial.map").inc_gnormal(),
-  { noremap = true, desc = "dial increment gnormal" }
-)
-map(
-  "n",
-  "<M-x>",
-  require("dial.map").dec_gnormal(),
-  { noremap = true, desc = "dial decrement gnormal" }
-)
-map(
-  "v",
-  "<M-a>",
-  require("dial.map").inc_gvisual("visual"),
-  { noremap = true, desc = "dial increment gvisual" }
-)
-map(
-  "v",
-  "<M-x>",
-  require("dial.map").dec_gvisual("visual"),
-  { noremap = true, desc = "dial decrement gvisual" }
-)
+dial_map("n", "<C-a>", "increment", "normal", " dial increment normal")
+dial_map("n", "<C-x>", "decrement", "normal", " dial increment normal")
+dial_map("v", "<C-a>", "increment", "visual", " dial increment visual")
+dial_map("v", "<C-x>", "decrement", "visual", " dial increment visual")
+dial_map("n", "<M-a>", "increment", "gnormal", " dial increment gnormal")
+dial_map("n", "<M-x>", "decrement", "gnormal", " dial increment gnormal")
+dial_map("v", "<M-a>", "increment", "gvisual", " dial increment gvisual")
+dial_map("v", "<M-x>", "decrement", "gvisual", " dial increment gvisual")
 
 vim.cmd([[
   " autocmd FileType typescript lua vim.api.nvim_buf_set_keymap(0, "n", "<C-a>", require("dial.map").inc_normal("typescript"), {noremap = true})
@@ -166,33 +118,26 @@ vim.cmd([[
   command! -range -nargs=? DialDecrement lua require"dial.command".command("decrement", {from = <line1>, to = <line2>}, {<f-args>})
 ]])
 
--- map({ 'n', 'v' }, '<leader>fi', '<Plug>(dial-increment)', {
---   category = 'Format',
---   label = 'dial increment',
---   desc = 'increment item(s) selected in visual mode',
---   plugin = 'dial.nvim',
--- })
--- map({ 'n', 'v' }, '<leader>fd', '<Plug>(dial-decrement)', {
---   category = 'Format',
---   label = 'dial decrement',
---   desc = 'decrement item(s) selected in visual mode',
---   plugin = 'dial.nvim',
--- })
---
--- vmap('v', 'g<M-a>', {
---   category = 'Format',
---   label = 'dial increment additional',
---   desc = 'increment item(s) selected in visual mode',
---   plugin = 'dial.nvim',
--- })
---
--- vmap('v', 'g<M-x>', {
---   category = 'Format',
---   label = 'dial decrement additional',
---   desc = 'increment item(s) selected in visual mode',
---   plugin = 'dial.nvim',
--- })
---
+-- local common_examples = {
+--   augend.semver.alias.semver,
+--   new_augends.hexcolor,
+
+--   augend.date.alias["%Y-%m-%d"],
+--   augend.date.alias["%m/%d"],
+--   augend.date.alias["%H:%M"],
+--   new_augends["%Y/%m/%d"],
+
+--   augend.integer.alias.decimal,
+--   augend.integer.alias.hex,
+--   new_augends.hexinteger,
+
+--   augend.constant.alias.bool,
+--   augend.constant.alias.alpha,
+--   augend.constant.alias.Alpha,
+--   new_augends.booland,
+--   new_augends.boolenable,
+--   new_augends.boolsymbol,
+-- }
 -- 168
 -- change augends in VISUAL mode
 -- ,fi <C-up>

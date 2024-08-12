@@ -72,7 +72,8 @@ local utils = require("registers.utils")
 
 registers.setup({
   layouts = { layout_1, layout_2, layout_3 },
-  show = '*+"-:/_=#%.0123456789abcdefghilmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  -- show = '*+"-:/_=#%.0123456789abcdefghilmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  show = '%*+".0123456789acgq:/_=#',
   -- Show a line at the bottom with registers that aren't filled
   show_empty = true,
   -- Expose the :Registers user command

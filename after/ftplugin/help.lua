@@ -36,6 +36,7 @@ local set_options = function()
   vim.api.nvim_set_option_value("sidescroll",    1,     { win = state.help_winid })
   vim.api.nvim_set_option_value("sidescrolloff", 1,     { win = state.help_winid })
   vim.api.nvim_set_option_value("signcolumn",   "no",   { win = state.help_winid })
+  vim.api.nvim_set_option_value("conceallevel",  3,     { win = state.help_winid })
 end
 
 local set_keymaps = function()
@@ -69,7 +70,7 @@ local set_syntax = function()
   -- putils.regex_highlighter(state.src_bufnr, 'pandoc')
   -- vim.treesitter.language.register('help', 'markdown')
   -- vim.treesitter.language.register('help', { 'txt', 'text' })
-  vim.treesitter.start()
+  -- vim.treesitter.start()
 end
 
 local init = function()

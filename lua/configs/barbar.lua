@@ -1,5 +1,5 @@
 require("barbar").setup({
-  -- auto_hide = true,
+  auto_hide = 1,
   -- insert_at_end = false,
   -- insert_at_start = false,
   -- hide = { inactive = true },

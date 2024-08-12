@@ -151,12 +151,7 @@ local on_detach = function()
 end
 
 local mySettings = {
-  worktrees = {
-    {
-      toplevel = vim.env.HOME,
-      gitdir = vim.env.HOME .. "/.cfg",
-    },
-  },
+  worktrees = { { toplevel = vim.env.HOME, gitdir = vim.env.HOME .. "/.cfg" } },
   on_attach = on_attach,
   signs = signs_thin(),
   current_line_blame_opts = { delay = 1000, virt_text_pos = "eol" },

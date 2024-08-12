@@ -1474,7 +1474,7 @@ map('n', '<M-u>', "<cmd>lua require('telescope.run')('oldfiles', 'oldfiles')<cr>
 -- ^[[105;5u
  -- :map <YourKeyCombination> <C-v>uXXXX
 
-map('n', '<C-i>', "<cmd>lua require('telescope.run')('messages', 'messages')<cr>", {
+map('n', '<M-i>', "<cmd>lua require('telescope.run')('messages', 'messages')<cr>", {
   category = 'Pickers',
   plugin = 'notify.nvim',
   label = 'notifications',
