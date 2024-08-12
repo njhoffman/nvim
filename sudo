@@ -1,1 +1,0 @@
-ForwardX11 on tee -a /etc/ssh/ssh_config
