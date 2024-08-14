@@ -22,6 +22,7 @@ for _, mod_name in ipairs({
   "devdocs.setup",
   -- 'configs.cinnamon',
   "tracker.setup",
+  "tmux.setup",
   "configs.registers",
   -- 'configs.nvim-scrollbar',
   -- 'configs.neoscroll',

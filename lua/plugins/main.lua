@@ -1167,7 +1167,6 @@ local plugins = {
   --
   -- https://neovimcraft.com/plugin/otavioschwanck/tmux-awesome-manager.nvim
   -- https://www.reddit.com/r/neovim/comments/1bempth/neovim_project_management_with_tmux_zoxide_fzf/
-  { "aserowy/tmux.nvim", event = "VeryLazy" },
   { "jbyuki/quickmath.nvim", cmd = "Quickmath" },
   {
     "jameshiew/nvim-magic",
