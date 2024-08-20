@@ -140,7 +140,8 @@ return function(injected_functions)
     CurSearch({ bg = "#6e3ce6", fg = "#aaffff", gui = "bold" }), --  bg = '#110033'
     -- VisualNOS({ fg = 'none', bg = '#301840' }),
     -- Visual({ bg = '#171f47', fg = 'none', gui = 'italic' }),
-    Visual({ bg = "#021626", gui = "bold,italic" }),
+    -- Visual({ bg = "#021626", gui = "bold,italic" }),
+    Visual({ bg = "#08203f", gui = "bold,italic" }),
     VisualNOS({ bg = "#1d3b53" }),
     VisualAlt({ fg = "none", bg = "#10082f", gui = "italic" }),
     VisualRed({ fg = "none", bg = "#40112c", gui = "bold,italic" }),

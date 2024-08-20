@@ -1,11 +1,11 @@
 " handle node_module gf jumping
 au FileType javascript,json,jsx,typescript,tsx call ImproveNodeEditing()
 
-" automatically convert strings to template form
-augroup ConvertToTemplateString
-  autocmd!
-  autocmd InsertLeave,TextChanged <buffer> lua require("treesitter._actions.js-template-string").convert()
-augroup END
+" " automatically convert strings to template form
+" augroup ConvertToTemplateString
+"   autocmd!
+"   autocmd InsertLeave,TextChanged <buffer> lua require("treesitter._actions.js-template-string").convert()
+" augroup END
 
 function! ImproveNodeEditing()
   setlocal isfname+=@-@ " some node_modules are namespaced with an @

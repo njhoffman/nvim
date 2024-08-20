@@ -1,11 +1,11 @@
-local previewers = require('telescope.previewers')
+local previewers = require("telescope.previewers")
 
-local commands = require('configs.telescope.commands')
-local c_previewers = require('configs.telescope.previewers')
-local mappings = require('configs.telescope.mappings')
+local commands = require("configs.telescope.commands")
+local c_previewers = require("configs.telescope.previewers")
+local mappings = require("configs.telescope.mappings")
 
-local entry_display = require('telescope.pickers.entry_display')
-local telescope_utils = require('telescope.utils')
+local entry_display = require("telescope.pickers.entry_display")
+local telescope_utils = require("telescope.utils")
 
 -- stylua: ignore
 local icons = {
@@ -25,12 +25,12 @@ local icons = {
 
 local pickers = {
   diagnostics = {
-    theme = 'ivy',
+    theme = "ivy",
     prompt_prefix = icons.misc_1,
     layout_config = { height = 15 },
     entry_maker = function(entry)
       local displayer = entry_display.create({
-        separator = ' ',
+        separator = " ",
         items = {
           { width = 4 },
         },
@@ -39,16 +39,16 @@ local pickers = {
         value = entry.filename,
         display = function(item)
           local colors = {
-            ['ERROR'] = 'Red',
-            ['WARN'] = 'Purple',
-            ['INFO'] = 'Yellow',
-            ['HINT'] = 'Blue',
+            ["ERROR"] = "Red",
+            ["WARN"] = "Purple",
+            ["INFO"] = "Yellow",
+            ["HINT"] = "Blue",
           }
           return displayer({
-            { string.format('%4d', item.lnum), 'Aqua' },
-            { telescope_utils.transform_path({}, item.filename), '' },
+            { string.format("%4d", item.lnum), "Aqua" },
+            { telescope_utils.transform_path({}, item.filename), "" },
             {
-              string.format('%s> %s', string.lower(string.sub(item.type, 1, 1)), item.text),
+              string.format("%s> %s", string.lower(string.sub(item.type, 1, 1)), item.text),
               colors[entry.type],
             },
           })
@@ -63,7 +63,7 @@ local pickers = {
     end,
   },
   find_files = {
-    previewer = c_previewers.buffer_cat(),
+    -- previewer = c_previewers.buffer_cat(),
     debounce = 100,
     prompt_prefix = icons.file,
     mappings = mappings.file,
@@ -129,12 +129,12 @@ local pickers = {
     debounce = 100,
     prompt_prefix = icons.palette,
     enable_preview = true,
-    layout_strategy = 'horizontal',
+    layout_strategy = "horizontal",
     layout_config = {
       horizontal = {
         height = 0.4,
         width = { 0.3, min = 15 },
-        anchor = 'SE',
+        anchor = "SE",
         preview_width = 1,
       },
       -- preview_width = 1, -- needs preview for live preview of the theme
@@ -149,14 +149,14 @@ local pickers = {
   grep_string = {
     prompt_prefix = icons.search,
     disable_coordinates = true,
-    additional_args = { '--trim', '--hidden', '--glob=!.git' },
+    additional_args = { "--trim", "--hidden", "--glob=!.git", "-j1" },
   },
   live_grep = {
     debounce = 100,
     prompt_prefix = icons.search,
     mappings = mappings.grep,
     find_command = commands.rg,
-    additional_args = { '--trim', '--hidden', '--glob=!.git' },
+    additional_args = { "--trim", "--hidden", "--glob=!.git", "-j1" },
   },
   buffers = {
     debounce = 100,
@@ -174,12 +174,12 @@ local pickers = {
   keymaps = {
     debounce = 100,
     prompt_prefix = icons.keymap,
-    entry_maker = require('configs.telescope.entry_makers.keymaps')({}),
-    results_title = '@buf !sil *map  exp  now',
+    entry_maker = require("configs.telescope.entry_makers.keymaps")({}),
+    results_title = "@buf !sil *map  exp  now",
     show_plug = false,
     mappings = mappings.keymaps,
     previewer = c_previewers.keymaps,
-    modes = { 'n', 'i', 'c', 'x', 'o', 't', 's', 'l' },
+    modes = { "n", "i", "c", "x", "o", "t", "s", "l" },
     lhs_filter = function(lhs)
       -- remove which-key mappings
       -- return not lhs:find('Þ')
@@ -201,41 +201,68 @@ local pickers = {
     show_untracked = true,
     enabled = false,
     previewer = c_previewers.delta,
-    theme = 'dropdown',
+    theme = "dropdown",
   },
   git_commits = {
     enabled = false,
     prompt_prefix = icons.git,
     debounce = 100,
-    previewer = require('telescope.previewers').new_termopen_previewer({
+    previewer = require("telescope.previewers").new_termopen_previewer({
       dyn_title = function(_, entry)
         return entry.value
       end, -- use hash as title
       get_command = function(entry, status)
         local hash = entry.value
         local previewWinWidth = vim.api.nvim_win_get_width(status.preview_win)
-        local statArgs = ('%s,%s,25'):format(previewWinWidth, math.floor(previewWinWidth / 2))
+        local statArgs = ("%s,%s,25"):format(previewWinWidth, math.floor(previewWinWidth / 2))
         local previewFormat =
-          '%C(bold)%C(magenta)%s %n%C(reset)%C(cyan)%D%C(reset)%b %n%C(blue)%an %C(yellow)(%ch) %C(reset)'
+          "%C(bold)%C(magenta)%s %n%C(reset)%C(cyan)%D%C(reset)%b %n%C(blue)%an %C(yellow)(%ch) %C(reset)"
         local cmd = {
-          'git show ' .. hash,
-          '--color=always',
-          '--stat=' .. statArgs,
+          "git show " .. hash,
+          "--color=always",
+          "--stat=" .. statArgs,
           "--format='" .. previewFormat .. "'",
           "| sed -e 's/^ //' -e '$d' ;", -- remove clutter
         }
-        return table.concat(cmd, ' ')
+        return table.concat(cmd, " ")
       end,
     }),
     layout_config = { horizontal = { height = 0.99 } },
     -- add commit time (%cr) & `--all`
-    git_command = { 'git', 'log', '--all', '--pretty=%h %s\t%cr', '--', '.' },
+    git_command = { "git", "log", "--all", "--pretty=%h %s\t%cr", "--", "." },
     -- previewer = c_previewers.delta,
   },
   git_branches = {
     debounce = 100,
     prompt_prefix = icons.git,
     show_remote_tracking_branches = true,
+    previewer = require("telescope.previewers").new_termopen_previewer({
+      get_command = function(entry)
+        return {
+          "git",
+          "--no-pager",
+          "log",
+          "--max-count",
+          "150",
+          "--pretty=format:%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset",
+          "--abbrev-commit",
+          "--date=relative",
+          entry.value,
+        }
+      end,
+      scroll_fn = function(self, direction)
+        if not self.state then
+          return
+        end
+
+        local input = direction > 0 and [[�]] or [[�]]
+        local count = math.abs(direction)
+
+        vim.api.nvim_buf_call(self.state.termopen_bufnr, function()
+          vim.cmd([[normal! ]] .. count .. input)
+        end)
+      end,
+    }),
   },
   git_bcommits = {
     debounce = 100,
@@ -243,16 +270,16 @@ local pickers = {
     prompt_prefix = icons.git,
     -- git_command = { "git", "log", "--pretty=%h %s\t%cr" }, -- add commit time (%cr)
     git_command = {
-      'git',
-      'log',
-      '--date=format:%y/%m/%d %H:%M',
-      '--pretty=format:%C(auto) %h %ad %s',
+      "git",
+      "log",
+      "--date=format:%y/%m/%d %H:%M",
+      "--pretty=format:%C(auto) %h %ad %s",
     },
     previewer = {
-      previewers.git_commit_diff_as_was.new({ current_file = vim.fn.expand('%') }),
-      previewers.git_commit_diff_to_parent.new({ current_file = vim.fn.expand('%') }),
-      previewers.git_commit_diff_to_head.new({ current_file = vim.fn.expand('%') }),
-      previewers.git_commit_message.new({ current_file = vim.fn.expand('%') }),
+      previewers.git_commit_diff_as_was.new({ current_file = vim.fn.expand("%") }),
+      previewers.git_commit_diff_to_parent.new({ current_file = vim.fn.expand("%") }),
+      previewers.git_commit_diff_to_head.new({ current_file = vim.fn.expand("%") }),
+      previewers.git_commit_message.new({ current_file = vim.fn.expand("%") }),
       -- c_previewers.delta
     },
     -- previewer = c_previewers.delta,
@@ -265,14 +292,14 @@ local pickers = {
     debounce = 100,
     prompt_prefix = icons.symbol,
     ignore_symbols = {
-      'boolean',
-      'number',
-      'string',
-      'variable',
-      'array',
-      'object',
-      'constant',
-      'package',
+      "boolean",
+      "number",
+      "string",
+      "variable",
+      "array",
+      "object",
+      "constant",
+      "package",
     },
     -- symbols_highlights = {
     --   'Class',
@@ -287,38 +314,38 @@ local pickers = {
     -- },
   },
   spell_suggest = {
-    initial_mode = 'normal',
+    initial_mode = "normal",
     prompt_prefix = icons.spelling,
     previewer = false,
-    theme = 'cursor',
+    theme = "cursor",
     layout_config = { cursor = { width = 0.3 } },
   },
   lsp_references = {
     debounce = 100,
     prompt_prefix = icons.reference,
     include_current_line = false,
-    theme = 'dropdown',
-    path_display = { 'tail' },
+    theme = "dropdown",
+    path_display = { "tail" },
   },
   lsp_document_symbols = {
     debounce = 100,
     prompt_prefix = icons.symbol,
-    sorter = require('telescope').extensions.fzf.native_fzf_sorter({
+    sorter = require("telescope").extensions.fzf.native_fzf_sorter({
       fuzzy = true, -- false will only do exact matching
       override_generic_sorter = true, -- override the generic sorter
       override_file_sorter = true, -- override the file sorter
-      case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
+      case_mode = "smart_case", -- or "ignore_case" or "respect_case"
       -- the default case_mode is "smart_case"
     }),
     ignore_symbols = {
-      'boolean',
-      'number',
-      'string',
-      'variable',
-      'array',
-      'object',
-      'constant',
-      'package',
+      "boolean",
+      "number",
+      "string",
+      "variable",
+      "array",
+      "object",
+      "constant",
+      "package",
     },
     -- symbols_highlights = {
     --   'Class',

@@ -1,16 +1,11 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
-local telescope = require('telescope')
-local sorters = require('telescope.sorters')
-local previewers = require('telescope.previewers')
+local telescope = require("telescope")
 
-local commands = require('configs.telescope.commands')
-local mappings = require('configs.telescope.mappings')
-local pickers = require('configs.telescope.pickers')
-local extensions = require('configs.telescope.extensions')
-local display_path = require('configs.telescope.display-path')
-local putils = require('telescope.previewers.utils')
-local pfiletype = require('plenary.filetype')
-local custom_previewers = require('configs.telescope.previewers')
+local commands = require("configs.telescope.commands")
+local mappings = require("configs.telescope.mappings")
+local pickers = require("configs.telescope.pickers")
+local extensions = require("configs.telescope.extensions")
+local display_path = require("configs.telescope.display-path")
 
 local telescope_config = {
   defaults = {
@@ -19,18 +14,18 @@ local telescope_config = {
     hidden = true,
     no_ignore = false,
     wrap_results = false,
-    layout_strategy = 'flex', -- flex, horizontal, veritical, center
-    selection_caret = '▶ ',
-    multi_icon = '󰒆 ', --  '◆ 󰒆 ',
-    prompt_prefix = ' 🔍 ', -- " 🔍 ",'   '
+    layout_strategy = "flex", -- flex, horizontal, veritical, center
+    selection_caret = "▶ ",
+    multi_icon = "󰒆 ", --  '◆ 󰒆 ',
+    prompt_prefix = " 🔍 ", -- " 🔍 ",'   '
     border_chars = {
-      preview = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
-      prompt = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
-      results = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+      preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+      prompt = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+      results = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
     },
     layout_config = {
-      prompt_position = 'top',
-      preview_cutoff = 30,
+      prompt_position = "top",
+      preview_cutoff = 120,
       bottom_pane = {
         height = 25,
       },
@@ -63,40 +58,43 @@ local telescope_config = {
       limit_entries = 2000,
     },
     history = {
-      handler = require('telescope._extensions.pickers_history.handler').get_history,
-      path = vim.fn.stdpath('data') .. '/databases/telescope_history.sqlite3',
+      handler = require("telescope._extensions.pickers_history.handler").get_history,
+      path = vim.fn.stdpath("data") .. "/databases/telescope_history.sqlite3",
       limit = 2000,
     },
     vimgrep_arguments = commands.vimgrep,
     find_command = commands.rg,
-    selection_strategy = 'reset', -- follow, reset, row
-    sorting_strategy = 'ascending',
-    scroll_strategy = 'cycle',
+    selection_strategy = "reset", -- follow, reset, row
+    sorting_strategy = "ascending",
+    scroll_strategy = "cycle",
     color_devicons = true,
+    use_less = true,
+    set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,   color_devicons = true,
     winblend = 0,
     mappings = mappings.main,
     -- generic_sorter = sorters.get_generic_fuzzy_sorter,
-    generic_sorter = require('mini.fuzzy').get_telescope_sorter,
-    file_sorter = require('mini.fuzzy').get_telescope_sorter,
+    generic_sorter = require("mini.fuzzy").get_telescope_sorter,
+    file_sorter = require("mini.fuzzy").get_telescope_sorter,
     -- file_sorter = sorters.get_substr_matcher,
     -- file_sorter = sorters.fuzzy_with_index_bias,
     -- file_sorter = sorters.native_fzf_sorter,
     include_extensions = true,
-    path_display = display_path.init('simple'),
+    path_display = display_path.init("simple"),
     file_ignore_patterns = {
-      '%.pdf$',
-      '%.png$',
-      '%.gif$',
-      '%.jpe?g$',
-      '%.icns$',
-      '%.pxd$',
-      '%.zip$',
-      '%.plist$',
+      "%.pdf$",
+      "%.png$",
+      "%.gif$",
+      "%.jpe?g$",
+      "%.icns$",
+      "%.pxd$",
+      "%.zip$",
+      "%.plist$",
       -- other ignores are defined via .gitignore, .ignore, /fd/ignore, or /git/ignore
     },
-    grep_previewer = previewers.vim_buffer_vimgrep.new,
-    file_previewer = custom_previewers.buffer_cat,
-    qflist_previewer = previewers.vim_buffer_qflist.new,
+    grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+    file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+    qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+    buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
     preview = {
       -- hide_on_startup = false,
       check_mime_type = true,

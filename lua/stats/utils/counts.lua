@@ -7,12 +7,12 @@
 local counts = {}
 
 counts.aucommands = function()
-  local aucounts = require('stats.utils.aucommands').traverse()
+  local aucounts = require("stats.utils.aucommands").traverse()
   return aucounts.total
 end
 
 counts.augroups = function()
-  local aucounts = require('stats.utils.aucommands').traverse()
+  local aucounts = require("stats.utils.aucommands").traverse()
   return aucounts.groups
 end
 
@@ -22,12 +22,13 @@ end
 
 counts.memory = function()
   local pid = vim.fn.getpid()
-  return table.remove(vim.fn.systemlist('ps h -p ' .. pid .. ' -o rss'), 1)
+  return table.remove(vim.fn.systemlist("ps h -p " .. pid .. " -o rss"), 1)
 end
 
 counts.virtual = function()
   local pid = vim.fn.getpid()
-  return table.remove(vim.fn.systemlist('ps h -p ' .. pid .. ' -o vsz'), 1)
+  -- vim.uv.get_free_memory() get_total, get_available, get_constrained
+  return table.remove(vim.fn.systemlist("ps h -p " .. pid .. " -o vsz"), 1)
 end
 
 counts.timers = function()
@@ -61,9 +62,9 @@ end
 
 local get_options = function(scope, conf_opts)
   local res = {}
-  scope = scope or 'all'
+  scope = scope or "all"
   for _, v in pairs(vim.api.nvim_get_all_options_info()) do
-    if scope == 'all' or scope == v.scope then
+    if scope == "all" or scope == v.scope then
       table.insert(res, v)
     end
   end
@@ -74,15 +75,15 @@ local get_options = function(scope, conf_opts)
 end
 
 counts.options_buffer = function()
-  return #get_options('buf')
+  return #get_options("buf")
 end
 
 counts.options_window = function()
-  return #get_options('win')
+  return #get_options("win")
 end
 
 counts.options_global = function()
-  return #get_options('global')
+  return #get_options("global")
 end
 
 counts.options = function()
@@ -104,7 +105,7 @@ local exe_output = function(cmd)
     let output = copy(@") | let @" = temp_reg | let w:output_len=len(split(output, "\n"))
   ]]
   vim.cmd(cmd_lines)
-  return vim.api.nvim_eval('w:output_len')
+  return vim.api.nvim_eval("w:output_len")
 end
 
 --stylua: ignore
@@ -127,9 +128,9 @@ local count_commands = {
 }
 
 local function format_int(number)
-  local i, j, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
-  int = int:reverse():gsub('(%d%d%d)', '%1,')
-  return minus .. int:reverse():gsub('^,', '') .. fraction
+  local i, j, minus, int, fraction = tostring(number):find("([-]?)(%d+)([.]?%d*)")
+  int = int:reverse():gsub("(%d%d%d)", "%1,")
+  return minus .. int:reverse():gsub("^,", "") .. fraction
 end
 
 for i, cmd_item in ipairs(count_commands) do
@@ -141,11 +142,11 @@ end
 
 local get_counts = function(keys)
   local default_keys = {
-    'virtual',
-    'memory',
-    'augroups',
-    'aucommands',
-    'variables',
+    "virtual",
+    "memory",
+    "augroups",
+    "aucommands",
+    "variables",
     -- 'variables_predef',
     -- 'variables_buffer',
     -- 'variables_window',
@@ -154,17 +155,17 @@ local get_counts = function(keys)
     -- 'options_buffer',
     -- 'options_window',
     -- 'options_global',
-    'functions',
-    'commands',
-    'packages',
-    'scriptnames',
+    "functions",
+    "commands",
+    "packages",
+    "scriptnames",
     -- 'oldfiles',
     -- 'changes',
     -- 'history',
-    'namespaces',
-    'highlights',
-    'ext_leaked',
-    'timers',
+    "namespaces",
+    "highlights",
+    "ext_leaked",
+    "timers",
     -- syntax
     -- messages
     -- menu

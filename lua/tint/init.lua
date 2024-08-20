@@ -36,7 +36,11 @@ local logtime = {
   end,
 }
 
-local tint = { transforms = { SATURATE_TINT = "saturate_tint" } }
+local tint = {
+  transforms = {
+    SATURATE_TINT = "saturate_tint",
+  },
+}
 
 -- Private "namespace" for functions, etc. that might not be defined before they are used
 local __ = { enabled = true, current_window = nil }
@@ -57,6 +61,8 @@ __.default_config = {
     unfocus = { "WinLeave" },
   },
 }
+
+__.wins = {}
 
 -- Pre-defined transforms that can be used by the user
 __.transforms = {
@@ -142,15 +148,18 @@ end
 ---
 ---@param hl_group_name string
 ---@param hl_def table The highlight definition, see `:h nvim_set_hl`
-local function set_default_ns(hl_group_name, hl_def)
-  vim.api.nvim_set_hl(__.default_ns, hl_group_name, hl_def)
+local function set_default_ns(hl_group_name, hl_def, ns)
+  ns = ns or __.default_ns
+  vim.api.nvim_set_hl(ns, hl_group_name, hl_def)
 end
 
 --- Create the "tinted" highlight namespace
 ---
 ---@param hl_group_name string
 ---@param hl_def table # highlight definition, see `:h nvim_set_hl`
-local function set_tint_ns(hl_group_name, hl_def)
+local function set_tint_ns(hl_group_name, hl_def, ns)
+  ns = ns or __.tint_ns
+
   local ignored = hl_group_is_ignored(hl_group_name)
   local hl_group_info = { hl_group_name = hl_group_name }
 
@@ -181,33 +190,51 @@ local function set_tint_ns(hl_group_name, hl_def)
     )
   end
 
-  vim.api.nvim_set_hl(__.tint_ns, hl_group_name, hl_def)
+  vim.api.nvim_set_hl(ns, hl_group_name, hl_def)
 end
 
 --- Backwards compatibile (for now) method of getting highlights as nvim__get_hl_defs is removed in #22693
 ---
 ---@return table<string, any> # highlight definitions
-local function get_global_highlights()
-  ---@diagnostic disable-next-line: undefined-field
-  return vim.api.nvim__get_hl_defs and vim.api.nvim__get_hl_defs(0) or vim.api.nvim_get_hl(0, {})
+local function get_highlights(ns_id)
+  ns_id = ns_id or 0
+  return vim.api.nvim_get_hl(ns_id, {})
 end
 
 --- Setup color namespaces such that they can be set per-window
-local function setup_namespaces()
+local function setup_global_namespaces()
   if not __.default_ns and not __.tint_ns then
     __.default_ns = vim.api.nvim_create_namespace("_tint_norm")
     __.tint_ns = vim.api.nvim_create_namespace("_tint_dim")
   end
 
-  -- vim.dbglog("set_namespaces")
-  logtime.start("set_namespaces")
-  for hl_group_name, hl_def in pairs(get_global_highlights()) do
+  logtime.start("set_global_ns")
+  for hl_group_name, hl_def in pairs(get_highlights()) do
     -- Ensure we only have valid keys copied over
     hl_def = ensure_valid_hl_keys(hl_def)
     set_default_ns(hl_group_name, hl_def)
     set_tint_ns(hl_group_name, hl_def)
   end
-  logtime.stop("set_namespaces")
+  logtime.stop("set_global_ns")
+end
+
+--- Setup color namespaces such that they can be set per-window
+local function setup_local_namespaces(winid)
+  if not __.locals[winid] or not __.locals[winid].default_ns and not __.locals[winid].tint then
+    __.locals[winid] = {
+      default_ns = vim.api.nvim_create_namespace("_tint_" .. winid .. "_norm"),
+      tint_ns = vim.api.nvim_create_namespace("_tint_" .. winid .. "_dim"),
+    }
+  end
+
+  logtime.start("set_local_ns")
+  for hl_group_name, hl_def in pairs(get_highlights(winid)) do
+    -- Ensure we only have valid keys copied over
+    hl_def = ensure_valid_hl_keys(hl_def)
+    set_default_ns(hl_group_name, hl_def, "_tint_" .. winid .. "_norm")
+    set_tint_ns(hl_group_name, hl_def, "_tint_" .. winid .. "_dim")
+  end
+  logtime.stop("set_local_ns")
 end
 
 --- Create an `:h augroup` for autocommands used by this plugin
@@ -241,22 +268,6 @@ local function setup_autocmds()
   aucmd({ "ColorScheme" }, { group = augroup, pattern = { "*" }, callback = __.on_colorscheme })
 
   __.setup_autocmds = true
-end
-
---- Verify the version of Neovim running has `nvim_win_set_hl_ns`, added via !13457
----
----@return boolean # whether or not the running Neovim instance has the functions necessary for this function to run
-local function verify_version()
-  if not vim.api.nvim_win_set_hl_ns then
-    vim.notify(
-      "tint.nvim requires a newer version of Neovim that provides 'nvim_win_set_hl_ns'",
-      vim.lsp.log_levels.ERROR
-    )
-
-    return false
-  end
-
-  return true
 end
 
 --- Swap old configuration keys to new ones, handle cases `tbl_extend` does not (nested config values)
@@ -507,7 +518,7 @@ __.setup_all = function(skip_config)
     setup_user_config()
   end
 
-  setup_namespaces()
+  setup_global_namespaces()
   setup_autocmds()
 
   -- Used to in two scenarios:
@@ -575,10 +586,6 @@ end
 ---@public
 ---@param user_config TintUserConfiguration see `:h tint-setup`
 tint.setup = function(user_config)
-  if not verify_version() then
-    return
-  end
-
   if __.user_config then
     return
   end
@@ -596,15 +603,18 @@ tint.refresh = function()
     return
   end
 
-  setup_namespaces()
+  setup_global_namespaces()
 end
 
 --- Tint the specified window
 ---
 ---@public
 ---@param winid number a valid window handle
-tint.tint = function(winid, event)
-  -- event = "focusLost", "WinLeave", {"FloatWinEnter", 15} {"WinEnter",23}, {} ""
+tint.tint = function(winid, opts)
+  -- opts.transform = 'name' or  func() or
+  --      { tint: 1, tint_with_threshold: true, saturate: true }
+  -- opts.ignore_hls = {},
+  -- opts.event = "focusLost", "WinLeave", {"FloatWinEnter", 15} {"WinEnter",23}, {} ""
   winid = winid or vim.api.nvim_get_current_win()
   if not __.user_config or not vim.api.nvim_win_is_valid(winid) then
     return
