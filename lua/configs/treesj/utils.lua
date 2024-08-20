@@ -1,17 +1,17 @@
-local notify = require('treesj.notify')
-local search = require('treesj.search')
-local TreeSJ = require('treesj.treesj')
-local tu = require('treesj.treesj.utils')
-local settings = require('treesj.settings').settings
+local notify = require("treesj.notify")
+local search = require("treesj.search")
+local TreeSJ = require("treesj.treesj")
+local tu = require("treesj.utils")
+local settings = require("treesj.settings").settings
 local msg = notify.msg
-local tsj_format = require('treesj.format')
+local tsj_format = require("treesj.format")
 
 local override = {}
 local mode = nil
 local selector = nil
 local MAX_LENGTH = 1000
-local SPLIT = 'split'
-local JOIN = 'join'
+local SPLIT = "split"
+local JOIN = "join"
 
 local check_ts_node = function()
   local ok_ts, parser = pcall(vim.treesitter.get_parser, 0)
@@ -46,7 +46,7 @@ local check_ts_node = function()
 
     -- Required to create an independent copy of the preset
     override = override or {}
-    tsn_data.preset = vim.tbl_deep_extend('force', tsn_data.preset, override)
+    tsn_data.preset = vim.tbl_deep_extend("force", tsn_data.preset, override)
 
     node = tsn_data.tsnode
     p = tsn_data.preset
@@ -56,7 +56,7 @@ local check_ts_node = function()
     p = p[MODE]
 
     local enable
-    if type(p.enable) == 'function' then
+    if type(p.enable) == "function" then
       enable = p.enable(node)
     else
       enable = p.enable
@@ -67,12 +67,12 @@ local check_ts_node = function()
       start_node = node:parent()
     else
       -- Need to use a copy of the preset so that it can be updated on the fly
-      tsn_data.preset = vim.tbl_deep_extend('force', {}, tsn_data.preset)
+      tsn_data.preset = vim.tbl_deep_extend("force", {}, tsn_data.preset)
       break
     end
   end
 
-  if type(p.fallback) == 'function' then
+  if type(p.fallback) == "function" then
     p.fallback(tsn_data.tsnode)
     return
   end
@@ -89,7 +89,7 @@ local check_ts_node = function()
   end
 
   if search.has_disabled_descendants(node, MODE, lang) then
-    local no_format_with = p and vim.inspect(p.no_format_with) or ''
+    local no_format_with = p and vim.inspect(p.no_format_with) or ""
     notify.info(msg.no_format_with, MODE, node:type(), no_format_with)
     return
   end

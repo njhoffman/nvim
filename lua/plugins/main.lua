@@ -711,8 +711,9 @@ local plugins = {
   -- split/join
   { "echasnovski/mini.splitjoin", event = { "VeryLazy" } },
   {
-    "Wansmer/treesj",
-    dir = "~/git/treesj",
+    -- "Wansmer/treesj",
+    "njhoffman/treesj",
+    -- dir = "~/git/treesj",
     event = { "VeryLazy" },
     dependencies = { "nvim-treesitter" },
   },
