@@ -14,8 +14,13 @@ require("barbar").setup({
     -- diagnostics = {
     --   [vim.diagnostic.severity.ERROR] = { enabled = true, icon = '' },
     -- },
+
     -- separator = { left = '▎' },
+    -- right = { " " },
+
+    separator = { right = " ", left = " " },
     separator_at_end = true,
+
     pinned = {
       button = "",
       filename = true,
