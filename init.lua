@@ -33,6 +33,7 @@ for _, mod_name in ipairs({
   "oldfiles",
   "tail",
   "hover.setup",
+  "NeoComposer._setup",
   "configs.feline",
   "baleia.setup",
 }) do

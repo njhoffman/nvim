@@ -266,6 +266,7 @@ local plugins = {
     "kevinhwang91/nvim-ufo",
     dependencies = "kevinhwang91/promise-async",
     cmd = { "UfoEnable", "UfoAttach", "UfoEnableFold" },
+    enabled = false,
     -- event = { 'BufReadPost', 'InsertEnter' },
   },
   {
@@ -284,6 +285,7 @@ local plugins = {
   -- https://github.com/Aaronik/GPTModels.nvim
   {
     "jackMort/ChatGPT.nvim",
+    enabled = false,
     event = "VeryLazy",
     dependencies = {
       "MunifTanjim/nui.nvim",
@@ -804,11 +806,16 @@ local plugins = {
     --     },
   },
   -- https://github.com/kr40/nvim-macros
-  {
-    "ecthelionvi/NeoComposer.nvim",
-    event = "VeryLazy",
-    dependencies = { "kkharji/sqlite.lua", "nvim-telescope/telescope.nvim" },
-  },
+  -- {
+  --   "chrisgrieser/nvim-recorder",
+  --   dependencies = "rcarriga/nvim-notify", -- optional
+  --   opts = {}, -- required even with default settings, since it calls `setup()`
+  -- },
+  -- {
+  --   "ecthelionvi/NeoComposer.nvim",
+  --   event = "VeryLazy",
+  --   dependencies = { "kkharji/sqlite.lua", "nvim-telescope/telescope.nvim" },
+  -- },
   { "tpope/vim-repeat", event = "VeryLazy" },
   { "smjonas/live-command.nvim", event = "VeryLazy" }, -- branch = 'remote',
   { "Konfekt/vim-alias", event = "VeryLazy" },

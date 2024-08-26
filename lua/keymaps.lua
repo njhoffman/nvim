@@ -514,18 +514,17 @@ map('x', '.', '<cmd>normal .<CR>', {
 })
 --------------------------------------------------------------------------------------------------
 -- EXITING ---------------------------------------------------------------------------------------
-
-map('n', '<M-C-X>', '<cmd>silent! tabclose | qa<cr>', {
+map('n', '<M-X>', '<cmd>silent! tabclose | qa<cr>', {
   category = 'Exiting',
   label = 'exit save',
   desc = 'quick exit with prompt for save',
 })
 
-map('n', 'g<M-C-H>', '<cmd>silent! tabclose | xa<cr>', {
-  category = 'Exiting',
-  label = 'exit nosave',
-  desc = 'quick exit without saving',
-})
+-- map('n', '<M-C-X>', '<cmd>silent! tabclose | xa<cr>', {
+--   category = 'Exiting',
+--   label = 'exit nosave',
+--   desc = 'quick exit without saving',
+-- })
 
 --------------------------------------------------------------------------------------------------
 -- EXECUTE ---------------------------------------------------------------------------------------

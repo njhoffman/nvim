@@ -1,24 +1,24 @@
-local finders = require('telescope.finders')
-local config = require('telescope.config')
-local actions = require('telescope.actions')
-local action_state = require('telescope.actions.state')
-local state = require('telescope.state')
-local H = require('helpers')
-local run = require('telescope.run')
-local dirpicker = require('configs.telescope.dirpicker')
+local finders = require("telescope.finders")
+local config = require("telescope.config")
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+local state = require("telescope.state")
+local H = require("helpers")
+local run = require("telescope.run")
+local dirpicker = require("configs.telescope.dirpicker")
 
 local groups = {
-  'picker-history',
-  'yank',
-  'motion',
-  'preview',
-  'switchers',
+  "picker-history",
+  "yank",
+  "motion",
+  "preview",
+  "switchers",
 }
-local base = 'configs.telescope.actions'
+local base = "configs.telescope.actions"
 
 local M = {}
 for _, group in ipairs(groups) do
-  local mod = require(base .. '.' .. group)
+  local mod = require(base .. "." .. group)
   for _, k in ipairs(vim.tbl_keys(mod)) do
     M[k] = mod[k]
   end
@@ -27,35 +27,42 @@ end
 -- stylua: ignore end
 
 M.launch_projects = function(prompt_bufnr)
-  vim.api.nvim_set_var('project_buf_skip', 1)
-  run('projects', 'projects', {})
+  vim.api.nvim_set_var("project_buf_skip", 1)
+  run("projects", "projects", {})
+end
+
+M.close = function(prompt_bufnr)
+  -- switch mode to normal
+  vim.schedule(function()
+    actions.close(prompt_bufnr)
+  end)
 end
 
 M.flash = function(prompt_bufnr)
-  require('flash').jump({
-    pattern = '^',
+  require("flash").jump({
+    pattern = "^",
     label = { after = { 0, 0 } },
     search = {
-      mode = 'search',
+      mode = "search",
       exclude = {
         function(win)
-          return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= 'TelescopeResults'
+          return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults"
         end,
       },
     },
     action = function(match)
-      local picker = require('telescope.actions.state').get_current_picker(prompt_bufnr)
+      local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
       picker:set_selection(match.pos[1] - 1)
     end,
   })
 end
 
 local _open_buffer = function(open_cmd, prompt_bufnr)
-  if open_cmd == 'vsplit' then
+  if open_cmd == "vsplit" then
     actions.file_vsplit(prompt_bufnr)
-  elseif open_cmd == 'split' then
+  elseif open_cmd == "split" then
     actions.file_split(prompt_bufnr)
-  elseif open_cmd == 'tabe' then
+  elseif open_cmd == "tabe" then
     actions.file_tab(prompt_bufnr)
   else
     -- actions.file_edit(prompt_bufnr)
@@ -76,26 +83,26 @@ end
 local _multi_open = function(prompt_bufnr, open_cmd)
   local picker = action_state.get_current_picker(prompt_bufnr)
   local multi_targets = picker:get_multi_selection()
-  open_cmd = open_cmd or 'insert'
+  open_cmd = open_cmd or "insert"
   local num_selections = #multi_targets
 
   if not num_selections or num_selections <= 1 then
     -- actions.add_selection(prompt_bufnr)
     actions.select_default(prompt_bufnr)
-  elseif open_cmd == 'quickfix' then
+  elseif open_cmd == "quickfix" then
     _multi_open_qf(multi_targets, prompt_bufnr)
   else -- insert method
     local cwd = picker.cwd
     if cwd == nil then
-      cwd = ''
+      cwd = ""
     else
-      cwd = string.format('%s/', cwd)
+      cwd = string.format("%s/", cwd)
     end
     actions.close(prompt_bufnr)
     for _, entry in ipairs(multi_targets) do
-      local edit_cmd = string.format('%s %s%s', open_cmd, cwd, entry.value)
+      local edit_cmd = string.format("%s %s%s", open_cmd, cwd, entry.value)
       if entry.filename then
-        edit_cmd = string.format('%s %s%s', open_cmd, cwd, entry.filename)
+        edit_cmd = string.format("%s %s%s", open_cmd, cwd, entry.filename)
       end
       vim.cmd(edit_cmd)
     end
@@ -103,23 +110,23 @@ local _multi_open = function(prompt_bufnr, open_cmd)
 end
 
 M.multi_open_vsplit = function(prompt_bufnr)
-  _multi_open(prompt_bufnr, 'vsplit')
+  _multi_open(prompt_bufnr, "vsplit")
 end
 
 M.multi_open_split = function(prompt_bufnr)
-  _multi_open(prompt_bufnr, 'split')
+  _multi_open(prompt_bufnr, "split")
 end
 
 M.multi_open_tab = function(prompt_bufnr)
-  _multi_open(prompt_bufnr, 'tabe')
+  _multi_open(prompt_bufnr, "tabe")
 end
 
 M.multi_open = function(prompt_bufnr)
-  _multi_open(prompt_bufnr, 'edit')
+  _multi_open(prompt_bufnr, "edit")
 end
 
 M.multi_to_qflist = function(prompt_bufnr)
-  _multi_open(prompt_bufnr, 'quickfix')
+  _multi_open(prompt_bufnr, "quickfix")
 end
 
 vim.g.telescope_cache_index = 1
@@ -132,7 +139,7 @@ M.resume_picker_prev = function(prompt_bufnr)
   -- end
 
   local picker = action_state.get_current_picker(prompt_bufnr)
-  local cached_pickers_num = #state.get_global_key('cached_pickers')
+  local cached_pickers_num = #state.get_global_key("cached_pickers")
 
   -- local idx = picker.cache_picker and picker.cache_picker.index
   local idx = vim.g.telescope_cache_index
@@ -147,7 +154,7 @@ M.resume_picker_prev = function(prompt_bufnr)
   -- opts._cache_picker = opts.cache_picker
   opts.cache_picker = false
   -- run('builtin', 'resume', opts)
-  run('builtin', 'resume')
+  run("builtin", "resume")
   vim.g.telescope_cache_index = idx
 end
 
@@ -158,9 +165,9 @@ end
 
 M.toggle_whichkey = function(prompt_bufnr)
   local whichkey_opts = {
-    separator = ' ➜ ',
+    separator = " ➜ ",
     -- separator = " -> ",
-    column_padding = ' ',
+    column_padding = " ",
     -- column_padding = "  "
     -- max_height = 0.4,
     -- only_show_current_mode = true,
@@ -180,24 +187,24 @@ M.toggle_whichkey = function(prompt_bufnr)
     -- border_hl = "TelescopePromptBorder",
     -- winblend = 15, --  config.values.winblend,
   }
-  require('configs.telescope.which_key')(prompt_bufnr, whichkey_opts)
+  require("configs.telescope.which_key")(prompt_bufnr, whichkey_opts)
 end
 
 M.select_highlights = function(prompt_bufnr)
-  local utils = require('telescope.utils')
+  local utils = require("telescope.utils")
   local picker = action_state.get_current_picker(prompt_bufnr)
   local multi_targets = picker:get_multi_selection()
   local num_selections = #multi_targets
 
   if not num_selections or num_selections < 1 then
-    utils.__warn_no_selection('builtin.highlights')
+    utils.__warn_no_selection("builtin.highlights")
     return
   end
 
   actions.select_default:replace(function(bufnr)
     actions.close(bufnr)
     for _, entry in ipairs(multi_targets) do
-      vim.cmd('hi ' .. entry.value)
+      vim.cmd("hi " .. entry.value)
     end
   end)
   actions.select_default(prompt_bufnr)
@@ -209,16 +216,16 @@ M.directory_picker = function(bufnr)
   local prompt_text = current_picker:_get_prompt()
 
   local opts = {}
-  opts.default_text = prompt_text or ''
-  opts.result_title = 'Choose Directory'
+  opts.default_text = prompt_text or ""
+  opts.result_title = "Choose Directory"
   local dirpicker_mappings = {
     default = function(directory)
       opts.cwd = directory
-      opts.results_title = string.gsub(directory, os.getenv('HOME') or '', '~')
-      if picker_title == 'Find Files' then
-        pcall(require('telescope.builtin').find_files, opts)
-      elseif string.find(picker_title, '%^Grep') then
-        pcall(require('telescope.builtin').live_grep, opts)
+      opts.results_title = string.gsub(directory, os.getenv("HOME") or "", "~")
+      if picker_title == "Find Files" then
+        pcall(require("telescope.builtin").find_files, opts)
+      elseif string.find(picker_title, "%^Grep") then
+        pcall(require("telescope.builtin").live_grep, opts)
       else
         vim.notify("Error: don't know what picker to open: " .. picker_title)
       end
@@ -236,26 +243,26 @@ M.directory_up = function(prompt_bufnr)
   local prompt_text = picker:_get_prompt()
   local dir = picker.cwd or vim.fn.getcwd() or selection.cwd
 
-  if not string.match(dir, '^/') then
-    dir = vim.fn.getcwd() .. '/' .. picker.cwd
+  if not string.match(dir, "^/") then
+    dir = vim.fn.getcwd() .. "/" .. picker.cwd
   end
 
-  if dir ~= '/' then
-    local dir_split = H.split_string(dir, '/')
+  if dir ~= "/" then
+    local dir_split = H.split_string(dir, "/")
     table.remove(dir_split)
-    dir = '/' .. table.concat(dir_split, '/')
-    dir = dir:gsub(vim.fn.getenv('HOME'), '~')
+    dir = "/" .. table.concat(dir_split, "/")
+    dir = dir:gsub(vim.fn.getenv("HOME"), "~")
 
     local opts = {
       results_title = dir,
       cwd = dir,
       follow = true,
-      default_text = prompt_text or '',
+      default_text = prompt_text or "",
       prompt_prefix = prompt_prefix,
     }
 
     actions.close(prompt_bufnr)
-    require('telescope.run')('builtin', 'find_files', opts)
+    require("telescope.run")("builtin", "find_files", opts)
   end
 end
 
@@ -285,21 +292,21 @@ M.delete_buffer = function(prompt_bufnr)
   local current_picker = action_state.get_current_picker(prompt_bufnr)
   local removed = {}
   current_picker:delete_selection(function(selection)
-    local force = vim.api.nvim_buf_get_option(selection.bufnr, 'buftype') == 'terminal'
+    local force = vim.api.nvim_buf_get_option(selection.bufnr, "buftype") == "terminal"
     local ok = pcall(vim.api.nvim_buf_delete, selection.bufnr, { force = force })
     table.insert(removed, selection.value)
     return ok
   end)
-  vim.notify('removed ' .. #removed .. ' buffers', 2)
+  vim.notify("removed " .. #removed .. " buffers", 2)
 end
 
 M.refresh = function(prompt_bufnr)
-  local make_entry = require('telescope.make_entry')
+  local make_entry = require("telescope.make_entry")
 
   local opts = {}
   opts.entry_maker = make_entry.gen_from_file(opts)
 
-  local cmd = { 'fd', '--type', 'f', '--hidden' }
+  local cmd = { "fd", "--type", "f", "--hidden" }
   local current_picker = action_state.get_current_picker(prompt_bufnr)
   current_picker:refresh(finders.new_oneshot_job(cmd, opts), {})
 end

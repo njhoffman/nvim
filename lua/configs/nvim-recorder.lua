@@ -1,15 +1,14 @@
-local defaultConfig = {
-  -- Named registers where macros are saved. The first register is the default
-  -- register/macro-slot used after startup.
+local cfg = {
+  -- Named registers where macros are saved. The first register is the default register/macro-slot used after startup.
   slots = { "a", "b" },
 
   -- default keymaps, see README for description what the commands do
   mapping = {
-    startStopRecording = "q",
-    playMacro = "Q",
-    switchSlot = "<M-C-Q>",
+    startStopRecording = "Q",
+    playMacro = "qq",
     editMacro = "cq",
     yankMacro = "yq", -- also decodes it for turning macros to mappings
+    switchSlot = "<M-C-Q>",
     addBreakPoint = "##", -- ⚠️ this should be a string you don't use in insert mode during a macro
   },
 
@@ -29,12 +28,11 @@ local defaultConfig = {
   dapSharedKeymaps = false,
 }
 -- default values
-require("recorder").setup(defaultConfig)
--- -- indicates whether you are currently recording. Useful if you are using
+require("recorder").setup(cfg)
+
 -- require("recorder").recordingStatus()
--- -- displays non-empty macro-slots (registers) and indicates the selected ones.
 -- require("recorder").displaySlots()
--- -- 💡 put the components in different status line segments so they have a different color
+
 -- Basics
 -- startStopRecording: Starts recording to the current macro slot (so you do not need to specify a register). Press again to end the recording.
 -- playMacro: Plays the macro in the current slot (without the need to specify a register).

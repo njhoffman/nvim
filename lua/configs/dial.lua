@@ -99,14 +99,17 @@ local dial_map = function(mode, lhs, direction, op, desc)
   })
 end
 
-dial_map("n", "<C-a>", "increment", "normal", " dial increment normal")
-dial_map("n", "<C-x>", "decrement", "normal", " dial increment normal")
-dial_map("v", "<C-a>", "increment", "visual", " dial increment visual")
-dial_map("v", "<C-x>", "decrement", "visual", " dial increment visual")
-dial_map("n", "<M-a>", "increment", "gnormal", " dial increment gnormal")
-dial_map("n", "<M-x>", "decrement", "gnormal", " dial increment gnormal")
-dial_map("v", "<M-a>", "increment", "gvisual", " dial increment gvisual")
-dial_map("v", "<M-x>", "decrement", "gvisual", " dial increment gvisual")
+-- disable default C-A / C-X behavior because it changes values to easily
+vim.keymap.set("n", "<C-a>", "<nop>")
+vim.keymap.set("n", "<C-x>", "<nop>")
+dial_map("n", "<M-a>", "increment", "normal", " dial increment normal")
+dial_map("n", "<M-x>", "decrement", "normal", " dial increment normal")
+dial_map("v", "<M-a>", "increment", "visual", " dial increment visual")
+dial_map("v", "<M-x>", "decrement", "visual", " dial increment visual")
+dial_map("n", "<M-C-A>>", "increment", "gnormal", " dial increment gnormal")
+dial_map("n", "<M-C-X>", "decrement", "gnormal", " dial increment gnormal")
+dial_map("v", "<M-C-A>", "increment", "gvisual", " dial increment gvisual")
+dial_map("v", "<M-C-X>", "decrement", "gvisual", " dial increment gvisual")
 
 vim.cmd([[
   " autocmd FileType typescript lua vim.api.nvim_buf_set_keymap(0, "n", "<C-a>", require("dial.map").inc_normal("typescript"), {noremap = true})

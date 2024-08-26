@@ -1,7 +1,7 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
-local actions = require('telescope.actions')
-local actions_layout = require('telescope.actions.layout')
-local c_actions = require('configs.telescope.actions')
+local actions = require("telescope.actions")
+local actions_layout = require("telescope.actions.layout")
+local c_actions = require("configs.telescope.actions")
 
 local send_to_qflist = function(prompt_bufnr)
   -- actions.send_to_qflist(prompt_bufnr)
@@ -16,7 +16,7 @@ local select_default = function(prompt_bufnr)
   actions.center(prompt_bufnr)
 end
 
-local logger = require('logger').init('telescope')
+local logger = require("logger").init("telescope")
 local ignore_keys = function(keys)
   local ignore_map = {}
   for _, key in ipairs(keys) do
@@ -24,7 +24,7 @@ local ignore_keys = function(keys)
     --   logger:trace('ignoring ' .. key .. ' for ' .. prompt_bufnr)
     --   return false
     -- end
-    ignore_map[key] = 'nop'
+    ignore_map[key] = "nop"
   end
   return ignore_map
 end
@@ -93,8 +93,8 @@ local main_maps = {
     })
   ),
   n = {
-    ['q'] = actions.close,
-    ['s'] = c_actions.flash,
+    ["q"] = actions.close,
+    ["s"] = c_actions.flash,
   },
   -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
   -- [S-F1-9] = add/remove secondary sort #
@@ -104,32 +104,32 @@ local main_maps = {
 local grep_maps = {
   i = {
     -- change directory functionality
-    ['<M-{>'] = c_actions.switch_grep_pickers_prev,
-    ['<M-}>'] = c_actions.switch_grep_pickers_next,
-    ['<M-lt>'] = c_actions.directory_up,
-    ['<M->>'] = c_actions.directory_picker,
-    ['<CR>'] = c_actions.multi_open,
+    ["<M-{>"] = c_actions.switch_grep_pickers_prev,
+    ["<M-}>"] = c_actions.switch_grep_pickers_next,
+    ["<M-lt>"] = c_actions.directory_up,
+    ["<M->>"] = c_actions.directory_picker,
+    ["<CR>"] = c_actions.multi_open,
     -- ['<C-Q>'] = c_actions.multi_to_qflist,
-    ['<C-Q>'] = send_to_qflist,
+    ["<C-Q>"] = send_to_qflist,
   },
 }
 
 local file_maps = {
   i = {
-    ['<M-{>'] = c_actions.switch_file_pickers_prev,
-    ['<M-}>'] = c_actions.switch_file_pickers_next,
-    ['<M-lt>'] = c_actions.directory_up,
-    ['<M->>'] = c_actions.directory_picker,
-    ['<CR>'] = c_actions.multi_open,
+    ["<M-{>"] = c_actions.switch_file_pickers_prev,
+    ["<M-}>"] = c_actions.switch_file_pickers_next,
+    ["<M-lt>"] = c_actions.directory_up,
+    ["<M->>"] = c_actions.directory_picker,
+    ["<CR>"] = c_actions.multi_open,
     -- ['<C-Q>'] = c_actions.multi_to_qflist,
-    ['<C-Q>'] = send_to_qflist,
+    ["<C-Q>"] = send_to_qflist,
   },
 }
 
 local buffer_maps = {
   i = {
-    ['<C-Del>'] = c_actions.delete_buffer,
-    ['<M-d>'] = c_actions.delete_buffer,
+    ["<C-Del>"] = c_actions.delete_buffer,
+    ["<M-d>"] = c_actions.delete_buffer,
     -- ['<C-Del>'] = 'delete_buffer',
     -- ['<M-d>'] = 'delete_buffer',
   },
@@ -137,23 +137,23 @@ local buffer_maps = {
 
 local help_maps = {
   i = {
-    ['<CR>'] = actions.select_vertical,
+    ["<CR>"] = actions.select_vertical,
   },
 }
 
 local keymaps_maps = {
   i = {
-    ['<C-Y>'] = c_actions.yank_keymaps,
-    ['<M-y>'] = c_actions.yank_keymaps_to_buffer,
-    ['<CR>'] = actions.select_vertical,
+    ["<C-Y>"] = c_actions.yank_keymaps,
+    ["<M-y>"] = c_actions.yank_keymaps_to_buffer,
+    ["<CR>"] = actions.select_vertical,
   },
 }
 
 local highlights_maps = {
   i = {
-    ['<C-Y>'] = c_actions.yank_selection,
-    ['<M-y>'] = c_actions.yank_selection_to_buffer,
-    ['<CR>'] = c_actions.select_highlights,
+    ["<C-Y>"] = c_actions.yank_selection,
+    ["<M-y>"] = c_actions.yank_selection_to_buffer,
+    ["<CR>"] = c_actions.select_highlights,
   },
 }
 

@@ -54,6 +54,7 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, 'nord-nvim.lua',       'setlocal syn=lua | let b:disable_lsp=1' },
     { { 'BufNewFile', 'BufRead' }, '*.t',                 'setlocal ft=tangle' },
     { { 'BufNewFile', 'BufRead' }, 'git',                 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer>  :q<cr>' },
+    { { 'BufNewFile', 'BufRead' }, 'grc/conf.*',          'setlocal ft=config' },
     -- { { 'BufNewFile', 'BufRead' }, '*.*rc',               'setlocal ft=log' },
     { { 'BufNewFile', 'BufRead' }, '*.log',               'setlocal ft=log' },
     { { 'BufNewFile', 'BufRead' }, '*.conf',              'setlocal ft=conf.dosini' },
