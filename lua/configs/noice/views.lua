@@ -166,13 +166,13 @@ local miniView = {
   },
 }
 
-local render = require("notify.render._entry")
+-- local render = require("notify.render._entry")
 
 local notifyView = {
   -- render = 'minimal',
   merge = true,
-  render = render,
-  level = vim.log.levels.TRACE,
+  -- render = render,
+  -- level = vim.log.levels.TRACE,
   -- fps = 30,
   -- stages = 'fade_in_slide_out',
   -- background_colour = '#000000',

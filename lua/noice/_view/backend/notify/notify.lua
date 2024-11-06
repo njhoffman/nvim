@@ -1,12 +1,12 @@
-local require = require('noice.util.lazy')
+local require = require("noice.util.lazy")
 
-local View = require('noice.view')
-local preprocess = require('noice.view.backend.notify.preprocess')
-local postprocess = require('noice.view.backend.notify.postprocess')
-local display = require('noice.view.backend.notify.display')
+local View = require("noice.view")
+local preprocess = require("noice.view.backend.notify.preprocess")
+local postprocess = require("noice.view.backend.notify.postprocess")
+local display = require("noice.view.backend.notify.display")
 
 local defaults = {
-  title = 'Notification',
+  title = "Notification",
   merge = false,
   level = nil, -- vim.log.levels.INFO,
   replace = false,
@@ -20,21 +20,21 @@ local defaults = {
 ---@field notif notify.Record
 ---@field super NoiceView
 ---@diagnostic disable-next-line: undefined-field
-local NotifyView = View:extend('NotifyView')
+local NotifyView = View:extend("NotifyView")
 function NotifyView.dismiss()
-  require('notify').dismiss({ pending = true, silent = true })
+  require("notify").dismiss({ pending = true, silent = true })
 end
 
 function NotifyView:is_available()
-  return pcall(_G.require, 'notify') == true
+  return pcall(_G.require, "notify") == true
 end
 
 function NotifyView:update_options()
-  self._opts = vim.tbl_deep_extend('force', defaults, self._opts)
+  self._opts = vim.tbl_deep_extend("force", defaults, self._opts)
 end
 
 function NotifyView:update_active()
-  self._active = vim.tbl_deep_extend('force', {}, self._active)
+  self._active = vim.tbl_deep_extend("force", {}, self._active)
 end
 
 function NotifyView:_notify(msg, opts)
@@ -42,7 +42,7 @@ function NotifyView:_notify(msg, opts)
   local level = msg.level
   local content = vim.trim(msg.content)
 
-  local notif = require('notify')(content, level, opts)
+  local notif = require("notify")(content, level, opts)
   self.notif = notif
   for _, m in ipairs(msg.messages) do
     m.opts = m.opts or {}

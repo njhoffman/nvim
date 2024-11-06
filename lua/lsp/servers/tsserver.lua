@@ -1,29 +1,29 @@
-local utils = require('lsp.utils')
+local utils = require("lsp.utils")
 
 local opts = {
   init_options = {
-    hostInfo = 'neovim',
+    hostInfo = "neovim",
     preferences = {
       disableSuggestions = true,
     },
   },
   filetypes = {
-    'javascript',
-    'javascriptreact',
-    'javascript.jsx',
-    'typescript',
-    'typescriptreact',
-    'typescript.tsx',
+    "javascript",
+    "javascriptreact",
+    "javascript.jsx",
+    "typescript",
+    "typescriptreact",
+    "typescript.tsx",
   },
-  root_dir = utils.initRoot('tsserver', {
+  root_dir = utils.initRoot("ts_ls", {
     {
-      'tsconfig.json',
-      'jsconfig.json',
+      "tsconfig.json",
+      "jsconfig.json",
     },
     {
-      'package.json',
+      "package.json",
     },
-    'git_ancestor',
+    "git_ancestor",
   }),
   single_file_support = true,
   settings = {
@@ -58,7 +58,7 @@ local opts = {
   on_attach = function(client, bufnr)
     -- require('nvim-lsp-ts-utils').setup({ filter_out_diagnostics_by_code = { 80001 } })
     -- require('nvim-lsp-ts-utils').setup_client(client)
-    require('lsp.on_attach')(client, bufnr)
+    require("lsp.on_attach")(client, bufnr)
   end,
   -- setup = function(_, _opts)
   --   vim.dbglog('tsserver setup', _opts)
@@ -77,7 +77,7 @@ local opts = {
 
 local typescript_wrapper = function()
   -- Typescript: FixAll, RenameFile, RemoveUnused, OrganizeImports, AddMissingImports, GoToSourceDefinition
-  require('typescript').setup({
+  require("typescript").setup({
     disable_commands = false,
     debug = false,
     go_to_source_definition = {
@@ -95,7 +95,7 @@ local typescript_tools_wrapper = function()
     -- spawn additional tsserver instance to calculate diagnostics on it
     separate_diagnostic_server = true,
     -- "change"|"insert_leave" determine when the client asks the server about diagnostic
-    publish_diagnostic_on = 'insert_leave',
+    publish_diagnostic_on = "insert_leave",
     -- array of strings("fix_all"|"add_missing_imports"|"remove_unused"|
     -- "remove_unused_imports"|"organize_imports") -- or string "all"
     -- to include all supported code actions specify commands exposed as code_actions
@@ -108,7 +108,7 @@ local typescript_tools_wrapper = function()
     -- tsserver_plugins = { "@styled/typescript-styled-plugin" },
     -- this value is passed to: https://nodejs.org/api/cli.html#--max-old-space-sizesize-in-megabytes
     -- memory limit in megabytes or "auto"(basically no limit)
-    tsserver_max_memory = 'auto',
+    tsserver_max_memory = "auto",
     -- https://github.com/pmizio/typescript-tools.nvim/blob/master/lua/typescript-tools/config.lua#L17
     tsserver_format_options = {},
     -- tsserver_format_options = {
@@ -129,11 +129,12 @@ local typescript_tools_wrapper = function()
 
   -- Ignore 'This may be converted to an async function' diagnostics.
   opts.handlers = opts.handlers or {}
-  opts.handlers['textDocument/publishDiagnostics'] = require('typescript-tools.api').filter_diagnostics({
-    80006,
-  })
+  opts.handlers["textDocument/publishDiagnostics"] =
+    require("typescript-tools.api").filter_diagnostics({
+      80006,
+    })
 
-  require('typescript-tools').setup(opts)
+  require("typescript-tools").setup(opts)
 end
 
 local tsserver = function()

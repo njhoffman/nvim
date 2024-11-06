@@ -580,6 +580,8 @@ local opts = { noremap = true, silent = true, desc = ' search' }
 -- local icon = ' '
 -- map("n", "g*", "*Ncgn", { desc = "Change word with . repeat" })
 
+map('n', '<C-n>', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
+map('n', '<M-n>', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
 -- map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
 -- map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
 -- map('n', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
@@ -1067,11 +1069,11 @@ map('o', '<F2>', '<cmd>WhichKey "" o<cr>', {
   desc = '  toggle whichkey op'
 })
 
-map('n', '<F5>', '<cmd>WhichKeyBackground<cr>', {
-  plugin = 'which-key.nvim',
-  category = 'UI',
-  desc = '  toggle whichkey background',
-})
+-- map('n', '<F5>', '<cmd>WhichKeyBackground<cr>', {
+--   plugin = 'which-key.nvim',
+--   category = 'UI',
+--   desc = '  toggle whichkey background',
+-- })
 
 -- map('n', '<F6>', '<Leader>Wk', {
 --   plugin = 'wf.nvim',

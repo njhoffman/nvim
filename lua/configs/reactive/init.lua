@@ -6,18 +6,18 @@ local modemap = {
   s = {},
   v = {},
   V = {},
-  ['^V'] = {},
+  ["^V"] = {},
   no = {},
   noc = {},
   noy = {},
   nod = {},
   nov = {},
   noV = {},
-  ['no^V'] = {},
+  ["no^V"] = {},
 }
 
 -- TODO: different cursorline hl for initial WhichKey d and subsequent ones
-local reactive = require('reactive')
+local reactive = require("reactive")
 
 reactive.setup({
   builtin = {
@@ -27,11 +27,10 @@ reactive.setup({
   },
 })
 
-local cursorline_preset = require('configs.reactive.cursorline')
--- vim.dbglog(cursorline_preset)
+local cursorline_preset = require("configs.reactive.cursorline")
 reactive.add_preset(cursorline_preset)
--- -- local cursor_preset = require('configs.reactive.cursor')
--- require('reactive').add_preset(cursor_preset)
+-- local cursor_preset = require("configs.reactive.cursor")
+-- require("reactive").add_preset(cursor_preset)
 
 -- |c |	c 	change
 -- |d |	d 	delete

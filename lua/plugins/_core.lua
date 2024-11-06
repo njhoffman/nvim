@@ -28,8 +28,15 @@ local plugins = {
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
   },
   {
+    "njhoffman/nvim-notify.nvim",
+    name = "nvim-notify",
+    dir = "~/git/nvim-notify",
+    -- "rcarriga/nvim-notify",
+    lazy = false,
+  },
+  {
     "folke/noice.nvim",
-    branch = "release-please--branches--main--components--noice.nvim",
+    dependencies = { "nvim-notify" },
     lazy = false,
   },
   { "famiu/bufdelete.nvim" },
@@ -47,13 +54,6 @@ local plugins = {
     "b0o/incline.nvim",
     enabled = false,
     event = "VeryLazy",
-  },
-  {
-    -- 'njhoffman/nvim-notify.nvim',
-    -- name = 'nvim-notify',
-    -- dir = '~/git/nvim-notify',
-    "rcarriga/nvim-notify",
-    lazy = false,
   },
   {
     -- https://github.com/tamton-aquib/keys.nvim

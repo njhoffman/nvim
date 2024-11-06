@@ -27,5 +27,15 @@ A **socket** unit in systemd manages system communication points. Sockets handle
 
 In summary, while `.service` files are used to manage the lifecycle of services, `.socket` files are used to manage network or IPC endpoints and can activate services on demand, thereby providing more efficient resource usage and potentially faster service response times.
 
+### Input/Output Redirection
+https://www.gnu.org/software/bash/manual/html_node/Redirections.html
+https://stackoverflow.com/questions/20915326/redirecting-the-output-of-my-bash-to-a-log-file
+https://unix.stackexchange.com/questions/28503/how-can-i-send-stdout-to-multiple-commands
+https://stackoverflow.com/questions/4489139/bash-process-substitution-and-syncing
+https://stackoverflow.com/questions/692000/how-do-i-write-standard-error-to-a-file-while-using-tee-with-a-pipe
+https://unix.stackexchange.com/questions/616697/how-to-pipe-output-of-command-to-two-separate-commands-and-store-outputs
+
+
+
 --------
 vim:ft=help:tw=80:ts=8:sw=2:cole=2
