@@ -449,13 +449,12 @@ return function(injected_functions)
     sym("@markup.link.label.markdown")({ fg = "#5c71cf" }),
     -- sym('@markup.link.label.markdown_inline')({ fg = '#6c81ff', gui = 'italic' }),
     sym("@markup.link.label.markdown_inline")({ fg = "#0081aa", gui = "italic" }),
-    sym("@markup.heading")({ fg = Title.fg }),
-    sym("@markup.heading.1.markdown")({ fg = "#4f86e6" }),
-    sym("@markup.heading.2.markdown")({ fg = "#347ad6" }),
-    sym("@markup.heading.3.markdown")({ fg = "#2d78c4" }),
-    sym("@markup.heading.4.markdown")({ fg = "#1a84ba" }),
-    sym("@markup.heading.5.markdown")({ fg = "#1080a0" }),
-    sym("@markup.heading.6.markdown")({ fg = "#0a8098" }),
+    -- sym("@markup.heading")({ fg = Title.fg }),
+    -- sym("@markup.heading.1.markdown")({ bg = "#081228", fg = "#4f86e6" }),
+    -- sym("@markup.heading.2.markdown")({ bg = "#020814", fg = "#347ad6" }),
+    -- sym("@markup.heading.3.markdown")({ bg = "#000408", fg = "#2d78c4" }),
+    -- sym("@markup.heading.4.markdown")({ bg = "#040608", fg = "#1a84ba" }),
+    -- sym("@markup.heading.5.markdown")({ bg = "#020408", fg = "#1080a0" }),
     sym("@markup.list")({ Special }),
     sym("@markup.list.checked")({ fg = "#73daca", gui = "bold" }),
     sym("@markup.list.unchecked")({ fg = "#7aa2f7" }),
@@ -471,19 +470,6 @@ return function(injected_functions)
     sym("@variable.parameter.vimdoc")({ sym("@parameter") }),
     -- sym('@markup')({ fg = '#0789aa' }), --  fg = '#89ddff'
     -- @markup.list.unchecked.markdown
-    -- h1 = 'iris', h2 = 'foam', h3 = 'rose', h4 = 'gold', h5 = 'pine', h6 = 'foam',
-    -- #3dbcff  #f38ba8  #21c7a8  #7aa2f7 #272b40  #1e2718
-    -- #3ab4e8  #fab387  #82aaff  #e0af68 #2d2c39  #21262d
-    -- #37b0d8  #f9e2af  #7fdbca  #9ece68 #2a2a3a  #1d2229
-    -- #34a4c8  #a6e3a1  #f78c6c  #1abc9c #242d3d  #13181f
-    -- #3098b2  #74c7ec  #87bcff  #bb9af7 #2a2a40  #0c1118
-    -- #3092ae  #b4befe  #ae81ff  #9d7cd8 #2d2b3f  #0c0b12
-    Headline1({ bg = "#081228", fg = sym("@markup.heading.1.markdown").fg }),
-    Headline2({ bg = "#020814", fg = sym("@markup.heading.2.markdown").fg }),
-    Headline3({ bg = "#000408", fg = sym("@markup.heading.3.markdown").fg }),
-    Headline4({ bg = "#040608", fg = sym("@markup.heading.4.markdown").fg }),
-    Headline5({ bg = "#020408", fg = sym("@markup.heading.5.markdown").fg }),
-    Headline6({ bg = "#000204", fg = sym("@markup.heading.6.markdown").fg }),
     -- CodeBlock({ bg = '#090909' }),
     CodeBlock({ bg = "#101018" }),
     -- - @lsp.type.variable.javascript links to Variable priority: 125
@@ -733,13 +719,6 @@ return function(injected_functions)
     CSVColumnHeaderOdd({ String }),
     CSVColumnHeaderEven({ fg = Statement.fg, bg = "none" }),
     -- markdownLinkText({ fg = '#702cff' }),
-    -- markdownH1({ fg = sym('@markup.heading.1.markdown').fg }),
-    -- markdownH2({ fg = sym('@markup.heading.2.markdown').fg }),
-    -- markdownH3({ fg = sym('@markup.heading.3.markdown').fg }),
-    -- markdownH4({ fg = sym('@markup.heading.4.markdown').fg }),
-    -- markdownH5({ fg = sym('@markup.heading.5.markdown').fg }),
-    -- markdownH6({ fg = sym('@markup.heading.6.markdown').fg }),
-
     pandocAutomaticLink({ gui = "italic" }),
     pandocReferenceURL({ gui = "italic" }),
     pandocReferenceDefinitionAddress({ gui = "italic" }),
@@ -1340,6 +1319,20 @@ return function(injected_functions)
     -- hi(0, "NoiceCmdlinePopupTitle", { fg = "#68e0f5" })
     -- hi(0, "NoiceCmdlinePrompt", { bold = true, fg = "#82b4ff" })
     -- hi(0, "NoiceCompletionItemKindC- NoiceVirtualText                  = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --Default hl group for virtualtext viewsNoiceConfirm                      = { fg = C.frost.turquoise, bg = C.bg },           --normal for the confirm view
+
+    -- default helpview colors
+    -- #97b4ba, #7f9ba0, #29313e, #92a5cc, #332d39, #aa8ba5
+    -- color1_bg = "#f265b5"
+    -- color2_bg = "#37f499"
+    -- color3_bg = "#04d1f9"
+    -- color4_bg = "#a48cf2"
+    -- color5_bg = "#f1fc79"
+    -- color6_bg = "#f7c67f"
+    -- color_fg = "#323449"
+    HelpviewHeading1({ fg = "#97B4BA", bg = "#29313e" }), -- DiagnosticOk
+    HelpviewHeading2({ fg = "#92a5cc", bg = "#332d39" }), -- DiagnosticInfo
+    HelpviewHeading3({ fg = "LightGrey" }), -- DiagnosticHint
+    HelpviewHeading4({ fg = "#004444" }), -- Special
 
     RecallMark({ fg = "#00baca" }),
     MiniJump({ fg = "#ff00a0" }),

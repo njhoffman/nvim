@@ -1200,12 +1200,14 @@ vmap('n', '<c-w>-', {
   desc = ' decrease height of focused window',
 })
 
+-- actually map to reverse direction to be compatible with indent motions
 vmap('n', '<c-w><', {
   category = 'Window',
   label = ' window +width',
   desc = ' increase width of focused window',
 })
 
+-- actually map to reverse direction to be compatible with indent motions
 vmap('n', '<c-w>>', {
   category = 'Window',
   label = ' window -width',
@@ -1277,6 +1279,8 @@ map('n', '<leader>V', '<cmd>new<cr>', {
   desc = ' window split vertically',
 })
 
+-- TODO: switch _ and | and make thme toggleable
+
 vmap('n', '<c-w>_', {
   category = 'Window',
   label = ' max v-split height',
@@ -1294,6 +1298,7 @@ vmap('n', '<c-w>|', {
   label = ' max h-split width',
   desc = ' maximize width of horizontal split',
 })
+
 map('n', '<leader>|', '<c-w>|', {
   category = 'Window',
   label = ' max h-split width',

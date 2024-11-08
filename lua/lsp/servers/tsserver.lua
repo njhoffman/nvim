@@ -15,7 +15,7 @@ local opts = {
     "typescriptreact",
     "typescript.tsx",
   },
-  root_dir = utils.initRoot("ts_ls", {
+  root_dir = utils.initRoot("tsserver", {
     {
       "tsconfig.json",
       "jsconfig.json",

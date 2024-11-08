@@ -148,7 +148,11 @@ local plugins = {
       })
     end,
   },
-  { "Tyler-Barham/floating-help.nvim", cmd = "FloatHelp" },
+  {
+    "OXY2DEV/helpview.nvim",
+    lazy = false, -- ft = "help",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+  },
   {
     "monaqa/dial.nvim",
     event = { "VeryLazy" },
@@ -723,7 +727,7 @@ local plugins = {
   { "echasnovski/mini.surround", event = { "VeryLazy" } },
   -- traversal/swapping
   { "mizlan/iswap.nvim", event = { "BufReadPost", "BufNewFile" } },
-  { "ziontee113/SelectEase", event = "VeryLazy" },
+  { "ziontee113/SelectEase", enabled = false, event = "VeryLazy" },
   { "chrisgrieser/nvim-spider", event = "VeryLazy" },
   { "echasnovski/mini.move", event = "VeryLazy" },
   -- alignment
@@ -1604,7 +1608,11 @@ local plugins = {
     end,
   },
   -- https://github.com/mei28/luminate.nvim
-  { "tzachar/highlight-undo.nvim", event = { "BufEnter", "BufReadPost", "BufNewFile" } },
+  {
+    "tzachar/highlight-undo.nvim",
+    enabled = false,
+    event = { "BufEnter", "BufReadPost", "BufNewFile" },
+  },
   {
     "kndndrj/nvim-projector",
     event = { "VeryLazy" },
@@ -1655,18 +1663,26 @@ local plugins = {
     -- However, unlike :cabove it will cross buffer boundaries.
   },
   -- https://github.com/Zeioth/markmap.nvim
+  { "AckslD/nvim-FeMaco.lua", ft = { "markdown", "pandoc" } },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+    opts = {},
+  },
   {
     "lukas-reineke/headlines.nvim",
+    enabled = false,
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     ft = { "markdown", "pandoc", "pandoc.markdown", "markdown.pandoc" },
   },
+  { "njhoffman/markpan.nvim", enabled = false },
+
   { "elkasztano/nushell-syntax-vim", ft = "nu", lazy = lz_syn },
   { "iamcco/markdown-preview.nvim", build = "cd app && yarn install", cmd = "MarkdownPreview" },
   { "vuki656/package-info.nvim", dependencies = "MunifTanjim/nui.nvim", ft = "json" },
   { "serenevoid/kiwi.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   { "herringtondarkholme/yats.vim", ft = "typescript", lazy = lz_syn },
   -- https://github.com/AndrewRadev/inline_edit.vim
-  { "AckslD/nvim-FeMaco.lua", ft = { "markdown", "pandoc" } },
   { "njhoffman/vim-liquid", ft = "liquid", lazy = lz_syn },
   -- { 'moll/vim-node', ft = { 'javascript' }, lazy = lz_syn },
   { "bfrg/vim-jq", ft = "jq", lazy = lz_syn },

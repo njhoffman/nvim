@@ -1,15 +1,15 @@
 local default_cfg = {
   mappings = {
     -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
-    left = '<M-h>',
-    right = '<M-l>',
-    down = '<M-j>',
-    up = '<M-k>',
+    left = "<M-h>",
+    right = "<M-l>",
+    down = "<M-j>",
+    up = "<M-k>",
     -- Move current line in Normal mode
-    line_left = '<M-h>',
-    line_right = '<M-l>',
-    line_down = '<M-j>',
-    line_up = '<M-k>',
+    line_left = "<M-h>",
+    line_right = "<M-l>",
+    line_down = "<M-j>",
+    line_up = "<M-k>",
   },
   options = {
     reindent_linewise = true,
@@ -22,10 +22,10 @@ require('mini.move').setup({
     right      = 'L',
     down       = 'J',
     up         = 'K',
-    line_left  = '<M-H>',
-    line_right = '<M-L>',
-    line_down  = '<M-J>',
-    line_up    = '<M-K>',
+    line_left  = '<M-C-H>',
+    line_right = '<M-C-L>',
+    line_down  = '<M-NL>',
+    line_up    = '<M-C-K>',
   },
 })
 vim.cmd([[

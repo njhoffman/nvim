@@ -1,8 +1,8 @@
 local get_icon = function(method, lsp)
-  local devicons = require('nvim-web-devicons')
+  local devicons = require("nvim-web-devicons")
   local get_by_ft = devicons.get_icon_by_filetype
   local get_by_ext = function(ext)
-    return devicons.get_icon('', ext)
+    return devicons.get_icon("", ext)
   end
 
   -- stylua: ignore
@@ -33,25 +33,25 @@ local get_icon = function(method, lsp)
     stylelint_lsp =          { get_by_ft("scss") },
     tailwindcss =            { get_by_ft("less") },
     terraformls =            { get_by_ext("tf") },
-    tsserver =               { get_by_ft("js") },
+    ts_ls =                  { get_by_ft("js") },
     vimls =                  { get_by_ft("vim") },
     yamlls =                 { get_by_ft("yaml") },
   }
 
-  local icon = { ' ', 'DevIconDart' }
-  if method == '.git' then
+  local icon = { " ", "DevIconDart" }
+  if method == ".git" then
     -- icon = get_by_ft('git')
-    icon = { ' ', 'GitLogo' }
-  elseif type(lsp) == 'string' and lsp ~= '' then
+    icon = { " ", "GitLogo" }
+  elseif type(lsp) == "string" and lsp ~= "" then
     if
-      type(icon_map) == 'table'
-      and type(icon_map[lsp]) == 'table'
-      and type(icon_map[lsp][1]) == 'string'
+      type(icon_map) == "table"
+      and type(icon_map[lsp]) == "table"
+      and type(icon_map[lsp][1]) == "string"
     then
       icon = icon_map[lsp]
     else
       vim.dbglog(icon_map, lsp)
-      vim.notify('no matching icon found: ' .. lsp, 4)
+      vim.notify("no matching icon found: " .. lsp, 4)
     end
   end
   return icon[1], icon[2]
