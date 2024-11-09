@@ -449,12 +449,6 @@ return function(injected_functions)
     sym("@markup.link.label.markdown")({ fg = "#5c71cf" }),
     -- sym('@markup.link.label.markdown_inline')({ fg = '#6c81ff', gui = 'italic' }),
     sym("@markup.link.label.markdown_inline")({ fg = "#0081aa", gui = "italic" }),
-    -- sym("@markup.heading")({ fg = Title.fg }),
-    -- sym("@markup.heading.1.markdown")({ bg = "#081228", fg = "#4f86e6" }),
-    -- sym("@markup.heading.2.markdown")({ bg = "#020814", fg = "#347ad6" }),
-    -- sym("@markup.heading.3.markdown")({ bg = "#000408", fg = "#2d78c4" }),
-    -- sym("@markup.heading.4.markdown")({ bg = "#040608", fg = "#1a84ba" }),
-    -- sym("@markup.heading.5.markdown")({ bg = "#020408", fg = "#1080a0" }),
     sym("@markup.list")({ Special }),
     sym("@markup.list.checked")({ fg = "#73daca", gui = "bold" }),
     sym("@markup.list.unchecked")({ fg = "#7aa2f7" }),
@@ -1320,7 +1314,6 @@ return function(injected_functions)
     -- hi(0, "NoiceCmdlinePrompt", { bold = true, fg = "#82b4ff" })
     -- hi(0, "NoiceCompletionItemKindC- NoiceVirtualText                  = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --Default hl group for virtualtext viewsNoiceConfirm                      = { fg = C.frost.turquoise, bg = C.bg },           --normal for the confirm view
 
-    -- default helpview colors
     -- #97b4ba, #7f9ba0, #29313e, #92a5cc, #332d39, #aa8ba5
     -- color1_bg = "#f265b5"
     -- color2_bg = "#37f499"
@@ -1328,11 +1321,30 @@ return function(injected_functions)
     -- color4_bg = "#a48cf2"
     -- color5_bg = "#f1fc79"
     -- color6_bg = "#f7c67f"
-    -- color_fg = "#323449"
-    HelpviewHeading1({ fg = "#97B4BA", bg = "#29313e" }), -- DiagnosticOk
-    HelpviewHeading2({ fg = "#92a5cc", bg = "#332d39" }), -- DiagnosticInfo
-    HelpviewHeading3({ fg = "LightGrey" }), -- DiagnosticHint
-    HelpviewHeading4({ fg = "#004444" }), -- Special
+    --
+    -- heading colors
+    -- #435580  #131829  { bg = #1e2718, fg = #98C379, gui = "bold" }) { fg = c.bright_yellow, bold = true }
+    -- #997b52  #191c1d  { bg = #21262d, fg = #61AFEF, gui = "bold" }) { fg = c.bright_cyan, bold = true }
+    -- #5f794a  #171a1b  { bg = #2c1517, fg = #E06C75, gui = "bold" }) { fg = c.bright_green, bold = true }
+    -- #1b5b55  #0d171f  { bg = #27182C, fg = #C678DD, gui = "bold" }) { fg = c.yellow }
+    -- #544773  #0d171f  { bg = #3e2e1e, fg = #E5C07B, gui = "bold" }) { fg = c.cyan }
+
+    -- NOTE      = #0196b0
+    -- TIP       = #035b26
+    -- IMPORTANT = #079c7e
+    -- WARN      = #73501c
+    -- ERROR     = #991a1a
+    sym("@markup.heading.1.markdown")({ fg = "#435580", bg = "#131829" }),
+    sym("@markup.heading.2.markdown")({ fg = "#997b52", bg = "#191c1d" }),
+    sym("@markup.heading.3.markdown")({ fg = "#5f794a", bg = "#171a1b" }),
+    sym("@markup.heading.4.markdown")({ fg = "#1b5b55", bg = "#0d171f" }),
+    sym("@markup.heading.5.markdown")({ fg = "#544773", bg = "#0d171f" }),
+    sym("@markup.heading.6.markdown")({ fg = "#544773", bg = "#0d171f" }),
+
+    HelpviewHeading1({ fg = "#492040", bg = "#1f2425" }), -- DiagnosticOk
+    HelpviewHeading2({ fg = "#63543b", bg = "#11101e" }), -- DiagnosticInfo
+    HelpviewHeading3({ fg = "#432941", bg = "#211a25" }), -- DiagnosticHint
+    HelpviewHeading4({ fg = "#432941", bg = "#211a25" }), -- Special
 
     RecallMark({ fg = "#00baca" }),
     MiniJump({ fg = "#ff00a0" }),
