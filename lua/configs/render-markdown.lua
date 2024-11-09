@@ -464,5 +464,11 @@ local default_cfg = {
   custom_handlers = {},
 }
 
--- local cfg = default_cfg
-require("render-markdown").setup()
+local cfg = {
+  file_types = { "markdown", "vimwiki" },
+  heading = {
+    position = "inline",
+  },
+}
+
+require("render-markdown").setup(cfg)

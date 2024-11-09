@@ -465,7 +465,6 @@ return function(injected_functions)
     -- sym('@markup')({ fg = '#0789aa' }), --  fg = '#89ddff'
     -- @markup.list.unchecked.markdown
     -- CodeBlock({ bg = '#090909' }),
-    CodeBlock({ bg = "#101018" }),
     -- - @lsp.type.variable.javascript links to Variable priority: 125
     -- - @lsp.mod.defaultLibrary.javascript links to @lsp priority: 126
     -- - @lsp.typemod.variable.defaultLibrary.javascript links to Identifier priority: 127
@@ -1328,26 +1327,55 @@ return function(injected_functions)
     -- #5f794a  #171a1b  { bg = #2c1517, fg = #E06C75, gui = "bold" }) { fg = c.bright_green, bold = true }
     -- #1b5b55  #0d171f  { bg = #27182C, fg = #C678DD, gui = "bold" }) { fg = c.yellow }
     -- #544773  #0d171f  { bg = #3e2e1e, fg = #E5C07B, gui = "bold" }) { fg = c.cyan }
+    CodeBlock({ bg = "#101018" }),
+    RenderMarkdownH1({ fg = "#4385c0" }),
+    RenderMarkdownH2({ fg = "#917A66" }),
+    RenderMarkdownH3({ fg = "#406ff2" }),
+    RenderMarkdownH4({ fg = "#1b8b95" }),
+    RenderMarkdownH5({ fg = "#725591" }),
+    RenderMarkdownH6({ fg = "#725591" }),
+    RenderMarkdownH1Bg({ bg = "#0f162a" }),
+    RenderMarkdownH2Bg({ bg = "#141413" }),
+    RenderMarkdownH3Bg({ bg = "#12102f" }),
+    RenderMarkdownH4Bg({ bg = "#0d1f26" }),
+    RenderMarkdownH5Bg({ bg = "#181416" }),
+    RenderMarkdownH6Bg({ bg = "#0a0608" }),
+    sym("@markup.heading.1.markdown")({ fg = RenderMarkdownH1.fg, bg = RenderMarkdownH1Bg.bg }),
+    sym("@markup.heading.2.markdown")({ fg = RenderMarkdownH2.fg, bg = RenderMarkdownH2Bg.bg }),
+    sym("@markup.heading.3.markdown")({ fg = RenderMarkdownH3.fg, bg = RenderMarkdownH3Bg.bg }),
+    sym("@markup.heading.4.markdown")({ fg = RenderMarkdownH4.fg, bg = RenderMarkdownH4Bg.bg }),
+    sym("@markup.heading.5.markdown")({ fg = RenderMarkdownH5.fg, bg = RenderMarkdownH5Bg.bg }),
+    sym("@markup.heading.6.markdown")({ fg = RenderMarkdownH6.fg, bg = RenderMarkdownH6Bg.bg }),
+    RenderMarkdownBullet({ fg = "#846d59" }),
+    RenderMarkdownTableRow({ fg = "#804c65" }),
+    RenderMarkdownTableHead({ fg = "#804c65" }),
+    RenderMarkdownTablFill({ fg = "#804c65" }),
+    RenderMarkdownDash({ fg = "#624b17" }),
+    RenderMarkdownInfo({ fg = "#0078a4" }),
+    RenderMarkdownSuccess({ fg = "#079c7e" }),
+    RenderMarkdownHint({ fg = "#276cce" }),
+    RenderMarkdownWarn({ fg = "#83601f" }),
+    RenderMarkdownError({ fg = "#991a1a" }),
+    -- RenderMarkdownCodeInline({}),
+    RenderMarkdownCode({ CodeBlock }),
 
-    -- NOTE      = #0196b0
-    -- TIP       = #035b26
-    -- IMPORTANT = #079c7e
-    -- WARN      = #73501c
-    -- ERROR     = #991a1a
-    sym("@markup.heading.1.markdown")({ fg = "#435580", bg = "#131829" }),
-    sym("@markup.heading.2.markdown")({ fg = "#997b52", bg = "#191c1d" }),
-    sym("@markup.heading.3.markdown")({ fg = "#5f794a", bg = "#171a1b" }),
-    sym("@markup.heading.4.markdown")({ fg = "#1b5b55", bg = "#0d171f" }),
-    sym("@markup.heading.5.markdown")({ fg = "#544773", bg = "#0d171f" }),
-    sym("@markup.heading.6.markdown")({ fg = "#544773", bg = "#0d171f" }),
+    HelpviewTitle({ fg = "#c19A96", bg = "#141000", gui = "bold" }),
+    HelpviewHeading1({ fg = "#1b8b95", bg = "#001208", gui = "bold" }),
+    HelpviewHeading2({ fg = "#826591", bg = "#080406", gui = "bold" }),
+    HelpviewHeading3({ fg = "#688cce", bg = "#182c4e", gui = "bold" }),
+    HelpviewHeading4({ fg = "#448c8e", bg = "#08162b", gui = "bold" }),
 
-    HelpviewHeading1({ fg = "#492040", bg = "#1f2425" }), -- DiagnosticOk
-    HelpviewHeading2({ fg = "#63543b", bg = "#11101e" }), -- DiagnosticInfo
-    HelpviewHeading3({ fg = "#432941", bg = "#211a25" }), -- DiagnosticHint
-    HelpviewHeading4({ fg = "#432941", bg = "#211a25" }), -- Special
+    HelpviewCode({ CodeBlock }),
+    HelpviewInlineCode({ CodeBlock }),
+    HelpviewCodeLanguage({ fg = "#5f798a", bg = "none", italic = true }),
+
+    HelpviewTaglink({ fg = "#01aab5", bg = "none", gui = "bold" }),
+    HelpviewOptionlink({ fg = "#7755aa", bg = "none" }),
+    HelpviewMentionlink({ fg = "#3388cc", bg = "none", gui = "italic" }),
 
     RecallMark({ fg = "#00baca" }),
     MiniJump({ fg = "#ff00a0" }),
+
     -- Eyeliner
     EyelinerPrimary({ fg = "#e06c75", gui = "bold" }),
     EyelinerSecondary({ fg = "#d19a66", gui = "bold" }),

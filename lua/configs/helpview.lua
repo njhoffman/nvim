@@ -1,15 +1,4 @@
-local cfg = {
-  headings = {
-    -- NOTE: HelpviewHeading1, etc are assigned to the following groups
-    -- DiagnosticOk, DiagnosticHint, DiagnosticInfo, Special
-    -- in current colorscheme these are assigned to default colors
-  },
-  code_blocks = {
-    hl = "CodeBlock", -- Highlight group for the code block
-    -- enable = true,
-    -- language_hl = "CodeLang"  -- Highlight group for the language name
-  },
-}
+local cfg = {}
 
 require("helpview").setup(cfg)
 
