@@ -727,7 +727,7 @@ local plugins = {
   { "echasnovski/mini.surround", event = { "VeryLazy" } },
   -- traversal/swapping
   { "mizlan/iswap.nvim", event = { "BufReadPost", "BufNewFile" } },
-  { "ziontee113/SelectEase", enabled = false, event = "VeryLazy" },
+  { "ziontee113/SelectEase", enabled = true, event = "VeryLazy" },
   { "chrisgrieser/nvim-spider", event = "VeryLazy" },
   { "echasnovski/mini.move", event = "VeryLazy" },
   -- alignment
