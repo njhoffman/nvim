@@ -1212,11 +1212,11 @@ return function(injected_functions)
     -- ('BufferCurrentMod',     #ECBE7B,   #282c34, 'none')
     -- ('BufferCurrentSign',    #51afef,   #282c34, 'none')
     -- ('BufferCurrentTarget',  #ff6c6b,   #282c34, 'bold')
-    BufferCurrent({ fg = "#a8c0f0", bg = "#002d59", gui = "bold" }),
-    BufferCurrentError({ bg = "#002d59" }),
+    BufferCurrent({ fg = "#a8c0f0", bg = "#003d79", gui = "bold" }),
+    BufferCurrentError({ bg = "#003d79" }),
     -- BufferCurrentIndex({ fg = colors.fg, bg = "NONE" }),
-    BufferCurrentMod({ fg = colors.yellow, bg = "#002d59", gui = "bold" }),
-    BufferCurrentSign({ fg = "#51afef", bg = "#002d59" }),
+    BufferCurrentMod({ fg = colors.yellow, bg = "#003d79", gui = "bold" }),
+    BufferCurrentSign({ fg = "#51afff", bg = "#003d79" }),
     -- BufferCurrentSignRight({ bg = colors.red }),
     -- BufferCurrentTarget({ fg = colors.red, bg = "NONE", gui = "bold" }),
     -- BufferVisible({ fg = colors.fg, bg = "none" }),
@@ -1230,20 +1230,21 @@ return function(injected_functions)
     -- BufferInactiveSign({ fg = colors.light_gray, bg = "#1C1F24" }),
     -- BufferInactiveTarget({ fg = colors.red, bg = "#1C1F24", gui = "bold" }),
     -- BufferDefaultAlternate({ bg = "#0c2333" }), -- guifg=#4d576a guibg=#3c4353
-    BufferAlternate({ bg = "#0c2333" }), -- guifg=#4d576a guibg=#3c4353
-    BufferAlternateADDED({ bg = "#0c2333" }),
-    BufferAlternateARN({ bg = "#0c2333" }),
-    BufferAlternateCHANGED({ bg = "#0c2333" }),
-    BufferAlternateDELETED({ bg = "#0c2333" }),
-    BufferAlternateERROR({ bg = "#0c2333" }),
-    BufferAlternateHINT({ bg = "#0c2333" }),
-    BufferAlternateINFO({ bg = "#0c2333" }),
-    BufferAlternateIndex({ bg = "#0c2333" }),
-    BufferAlternateMod({ bg = "#0c2333", fg = "#988881" }),
-    BufferAlternateNumber({ bg = "#0c2333" }),
-    BufferAlternateSign({ bg = "#0c2333" }),
-    BufferAlternateSignRight({ bg = "#0c2333" }),
-    BufferAlternateTarget({ bg = "#0c2333" }),
+    BufferAlternate({ bg = "#162343" }), -- guifg=#4d576a guibg=#3c4353
+    -- BufferAlternateADDED({ bg = "#0c2333" }),
+    -- BufferAlternateARN({ bg = "#0c2333" }),
+    -- BufferAlternateCHANGED({ bg = "#0c2333" }),
+    -- BufferAlternateDELETED({ bg = "#0c2333" }),
+    -- BufferAlternateERROR({ bg = "#0c2333" }),
+    -- BufferAlternateHINT({ bg = "#0c2333" }),
+    -- BufferAlternateINFO({ bg = "#0c2333" }),
+    -- BufferAlternateIndex({ bg = "#0c2333" }),
+    BufferAlternateMod({ bg = "#162343", fg = "#988881" }),
+    BufferAlternateIcon({ bg = "#162343", fg = "#3a5677" }),
+    -- BufferAlternateNumber({ bg = "#0c2333" }),
+    -- BufferAlternateSign({ bg = "#0c2333" }),
+    -- BufferAlternateSignRight({ bg = "#0c2333" }),
+    -- BufferAlternateTarget({ bg = "#0c2333" }),
 
     -- ('BufferVisible',        #9ca0a4,   #282c34, 'none')
     -- ('BufferVisibleIndex',   #e6e6e6,   #282c34, 'none')

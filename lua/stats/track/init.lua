@@ -1,12 +1,12 @@
 local completion = function(stats_map)
   return function(query, cmd)
-    if query == '' then
-      cmd = string.gsub(string.gsub(cmd, 'StatsTrack ', ''), ' $', '')
+    if query == "" then
+      cmd = string.gsub(string.gsub(cmd, "StatsTrack ", ""), " $", "")
       local cmds = {}
       if #cmd > 0 then
-        local stats_cmd = vim.tbl_get(stats_map, unpack(vim.split(cmd, ' ')))
+        local stats_cmd = vim.tbl_get(stats_map, unpack(vim.split(cmd, " ")))
         if stats_cmd ~= nil then
-          if vim.tbl_isarray(stats_cmd) then
+          if vim.isarray(stats_cmd) then
             cmds = vim.tbl_values(stats_cmd)
           else
             cmds = vim.tbl_keys(stats_cmd)

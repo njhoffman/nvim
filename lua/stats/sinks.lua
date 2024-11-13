@@ -30,6 +30,14 @@ local notify = function(lines, title, highlights)
     },
     -- hide_from_history = true,
   })
+  -- require("notify")(lines, 2, {
+  --   timeout = 10000,
+  --   title = { title, "" },
+  --   render = "default",
+  --   -- render = "simple",
+  --   body_highlights = highlights,
+  --   hide_from_history = true,
+  -- })
 end
 
 return {

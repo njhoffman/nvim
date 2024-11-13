@@ -1,7 +1,6 @@
 local M = {}
 
 local MAX_ARG_LEN = 200
-local tbl_isarray = vim.isarray or vim.tbl_isarray or vim.islist
 local pack_len = vim.F.pack_len
 local split = vim.split
 
@@ -42,7 +41,7 @@ end
 local function sanitize(table)
   local clean = {}
   local iterfn
-  if tbl_isarray(table) then
+  if vim.isarray(table) then
     iterfn = ipairs
   else
     iterfn = pairs

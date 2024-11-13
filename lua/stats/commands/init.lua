@@ -1,16 +1,16 @@
-local output = require('stats.output')
-local utils = require('stats.utils')
-local list_align = require('notify.parsers.list_align')
+local output = require("stats.output")
+local utils = require("stats.utils")
+-- local list_align = require("notify.parsers.list_align")
 
 local completion = function(stats_map)
   return function(query, cmd)
-    if query == '' then
-      cmd = string.gsub(string.gsub(cmd, 'Stats ', ''), ' $', '')
+    if query == "" then
+      cmd = string.gsub(string.gsub(cmd, "Stats ", ""), " $", "")
       local cmds = {}
       if #cmd > 0 then
-        local stats_cmd = vim.tbl_get(stats_map, unpack(vim.split(cmd, ' ')))
+        local stats_cmd = vim.tbl_get(stats_map, unpack(vim.split(cmd, " ")))
         if stats_cmd ~= nil then
-          if vim.tbl_isarray(stats_cmd) then
+          if vim.isarray(stats_cmd) then
             cmds = vim.tbl_values(stats_cmd)
           else
             cmds = vim.tbl_keys(stats_cmd)
@@ -25,11 +25,15 @@ local completion = function(stats_map)
 end
 
 local stats_overview = function(view)
-  view = view or 'notify'
+  view = view or "notify"
   local counts = utils.get_counts()
-  local lines, hls = list_align(counts)
+  -- local lines, hls = list_align(counts)
   -- FIX:  error when title is not array
-  output[view](lines, nil, hls)
+  -- output[view](lines, nil, hls)
+
+  vim.dbglog("lines", counts)
+  local lines, hls = utils.align_list(counts)
+  output[view](lines, "Overview", hls)
 end
 
 local command = function(cmd)

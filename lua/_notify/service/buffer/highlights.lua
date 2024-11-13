@@ -1,4 +1,4 @@
-local util = require('notify.util')
+local util = require("notify.util")
 
 ---@class NotifyBufHighlights
 ---@field groups table
@@ -14,11 +14,11 @@ local NotifyBufHighlights = {}
 local function manual_get_hl(name)
   local synID = vim.fn.synIDtrans(vim.fn.hlID(name))
   local result = {
-    foreground = tonumber(vim.fn.synIDattr(synID, 'fg'):gsub('#', ''), 16),
-    background = tonumber(vim.fn.synIDattr(synID, 'bg'):gsub('#', ''), 16),
-    special = tonumber(vim.fn.synIDattr(synID, 'special'):gsub('#', ''), 16),
-    bold = vim.fn.synIDattr(synID, 'bold') == '1',
-    italic = vim.fn.synIDattr(synID, 'italic') == '1',
+    foreground = tonumber(vim.fn.synIDattr(synID, "fg"):gsub("#", ""), 16),
+    background = tonumber(vim.fn.synIDattr(synID, "bg"):gsub("#", ""), 16),
+    special = tonumber(vim.fn.synIDattr(synID, "special"):gsub("#", ""), 16),
+    bold = vim.fn.synIDattr(synID, "bold") == "1",
+    italic = vim.fn.synIDattr(synID, "italic") == "1",
   }
   return result
 end
@@ -32,19 +32,19 @@ local function get_hl(name)
 end
 
 function NotifyBufHighlights:new(notif, buffer, config)
-  local level = notif.level or 'INFO'
+  local level = notif.level or "INFO"
 
   local function set_linked_group(section, skip_prefix, skip_level)
-    local orig = (skip_prefix and '' or 'Notify') .. (skip_level and '' or level) .. section
+    local orig = (skip_prefix and "" or "Notify") .. (skip_level and "" or level) .. section
     local new = orig .. buffer
     vim.api.nvim_set_hl(0, new, { link = orig })
     return new, get_hl(new)
   end
 
-  local title, title_def = set_linked_group('Title')
-  local border, border_def = set_linked_group('Border')
-  local body, body_def = set_linked_group('Body')
-  local icon, icon_def = set_linked_group('Icon')
+  local title, title_def = set_linked_group("Title")
+  local border, border_def = set_linked_group("Border")
+  local body, body_def = set_linked_group("Body")
+  local icon, icon_def = set_linked_group("Icon")
 
   local groups = {
     [title] = title_def,
@@ -56,12 +56,12 @@ function NotifyBufHighlights:new(notif, buffer, config)
   local content = {}
   -- special field for repeating messages
   if notif.repeat_count then
-    local repeat_count, repeat_count_def = set_linked_group('RepeatCount', false, true)
+    local repeat_count, repeat_count_def = set_linked_group("RepeatCount", false, true)
     groups.repeat_count = repeat_count_def
   end
 
-  local embedded_hls = vim.tbl_get(notif, 'highlights', 'body')
-  local level_hls = vim.tbl_get(notif, 'highlights', 'level')
+  local embedded_hls = vim.tbl_get(notif, "highlights", "body")
+  local level_hls = vim.tbl_get(notif, "highlights", "level")
   if embedded_hls then
     -- predefined content highlights  { "Comment", 3, 9, 14 }
     for i, hl_group in ipairs(embedded_hls) do
@@ -96,12 +96,12 @@ function NotifyBufHighlights:new(notif, buffer, config)
 end
 
 function NotifyBufHighlights:_redefine_treesitter()
-  local buf_highlighter = require('vim.treesitter.highlighter').active[self.buffer]
+  local buf_highlighter = require("vim.treesitter.highlighter").active[self.buffer]
 
   if not buf_highlighter then
     return
   end
-  local render_namespace = vim.api.nvim_create_namespace('notify-treesitter-override')
+  local render_namespace = vim.api.nvim_create_namespace("notify-treesitter-override")
   vim.api.nvim_buf_clear_namespace(self.buffer, render_namespace, 0, -1)
 
   local function link(orig)
@@ -150,8 +150,8 @@ function NotifyBufHighlights:_redefine_treesitter()
             capture_hl = is_vim_hl and general_hl or (tree:lang() .. general_hl)
           else
             capture_hl = query._query.captures[capture]
-            if not vim.startswith(capture_hl, '_') then
-              capture_hl = '@' .. capture_hl .. '.' .. tree:lang()
+            if not vim.startswith(capture_hl, "_") then
+              capture_hl = "@" .. capture_hl .. "." .. tree:lang()
             end
           end
 
@@ -177,7 +177,7 @@ end
 function NotifyBufHighlights:set_opacity(alpha)
   if
     not self._treesitter_redefined
-    and vim.api.nvim_buf_get_option(self.buffer, 'filetype') ~= 'notify'
+    and vim.api.nvim_buf_get_option(self.buffer, "filetype") ~= "notify"
   then
     self:_redefine_treesitter()
   end
@@ -186,29 +186,29 @@ function NotifyBufHighlights:set_opacity(alpha)
   for group, fields in pairs(self.groups) do
     local updated_fields = {}
     vim.api.nvim_set_hl(0, group, updated_fields)
-    local hl_string = ''
+    local hl_string = ""
     if fields.foreground then
-      hl_string = 'guifg=#'
-        .. string.format('%06x', util.blend(fields.foreground, background, alpha / 100))
+      hl_string = "guifg=#"
+        .. string.format("%06x", util.blend(fields.foreground, background, alpha / 100))
     end
     if fields.background then
       hl_string = hl_string
-        .. ' guibg=#'
-        .. string.format('%06x', util.blend(fields.background, background, alpha / 100))
+        .. " guibg=#"
+        .. string.format("%06x", util.blend(fields.background, background, alpha / 100))
     end
     if fields.special then
       hl_string = hl_string
-        .. ' guisp=#'
-        .. string.format('%06x', util.blend(fields.special, background, alpha / 100))
+        .. " guisp=#"
+        .. string.format("%06x", util.blend(fields.special, background, alpha / 100))
     end
-    for _, style in ipairs({ 'bold', 'italic', 'underline' }) do
+    for _, style in ipairs({ "bold", "italic", "underline" }) do
       if fields[style] then
-        hl_string = hl_string .. ' gui=' .. style
+        hl_string = hl_string .. " gui=" .. style
       end
     end
-    if hl_string ~= '' then
+    if hl_string ~= "" then
       -- Can't use nvim_set_hl https://github.com/neovim/neovim/issues/18160
-      vim.cmd('hi ' .. group .. ' ' .. hl_string)
+      vim.cmd("hi " .. group .. " " .. hl_string)
     end
   end
 end
@@ -218,6 +218,6 @@ function NotifyBufHighlights:get_opacity()
 end
 
 ---@return NotifyBufHighlights
-return function(level, buffer, config)
-  return NotifyBufHighlights:new(level, buffer, config)
+return function(notif, buffer, config)
+  return NotifyBufHighlights:new(notif, buffer, config)
 end

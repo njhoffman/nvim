@@ -54,15 +54,7 @@ local config = {
   },
   format = {
     telescope = views.telescopeViewFormat,
-    level = {
-      icons = {
-        error = "",
-        warn = "",
-        info = "",
-        debug = "",
-        trace = "",
-      },
-    },
+    level = { icons = { error = "", warn = "", info = "", debug = "", trace = "" } },
   },
   commands = {
     history = views.historyView,
@@ -86,12 +78,10 @@ local error_message = function(message, opts)
   end
 end
 
--- vim.cmd([[]])
--- require('noice').setup(cfg)
 require("noice").setup(config)
 require("telescope").load_extension("noice")
 
--- commands.setup()
--- mapping.setup()
+commands.setup()
+mapping.setup()
 
 -- require("noice.user.cmdline")

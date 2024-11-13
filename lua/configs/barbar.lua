@@ -28,7 +28,7 @@ require("barbar").setup({
       filename = true,
       separator = { right = " " },
     },
-    alternate = { filetype = { custom_colors = false, enabled = true } },
+    alternate = { filetype = { custom_colors = true, enabled = true } },
   },
 })
 

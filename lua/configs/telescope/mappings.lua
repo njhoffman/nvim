@@ -42,14 +42,15 @@ local main_maps = {
     ['<C-n>']       = actions.move_selection_next,
     ['<C-p>']       = actions.move_selection_previous,
     ["<Tab>"]       = actions.move_selection_next,
-    ["<S-Tab>"]     = actions.move_selection_previous,
-    ["<Up>"]        = actions.cycle_history_prev,
+    ["<<M-C-Up>"]     = actions.move_selection_previous,
+    ["<M-C-Down>"]        = actions.cycle_history_prev,
     ["<Down>"]      = actions.cycle_history_next,
-    ["<C-S-Up>"]    = c_actions.preview_scroll_up,
-    ["<C-S-Down>"]  = c_actions.preview_scroll_down,
+    ["<M-k>"]       = c_actions.preview_scroll_up,
+    ["<M-j>"]       = c_actions.preview_scroll_down,
     ["<M-b>"]       = c_actions.preview_page_up,
     ["<M-f>"]       = c_actions.preview_page_down,
     ["<M-w>"]       = c_actions.preview_toggle_wrap,
+
     ["<M-/>"]       = actions_layout.toggle_preview,
     ["<M-?>"]       = actions_layout.toggle_preview,
     ["<M-(>"]       = actions.cycle_previewers_prev, -- Ctrl-Shift-(
@@ -60,6 +61,7 @@ local main_maps = {
     ["<C-F>"]       = actions.results_scrolling_down,
     ["<M-p>"]       = c_actions.results_toggle_up,
     ["<M-n>"]       = c_actions.results_toggle_down,
+
     ["<M-a>"]       = actions.toggle_all,
     ["<C-c>"]       = actions.drop_all,
     ["<C-Y>"]       = c_actions.yank_selection,
@@ -84,7 +86,7 @@ local main_maps = {
       '<M-q>',
       "<M-{>",
       "<M-}>",
-      "<M-k>",
+      -- "<M-k>",
       "<C-,>",
       "<C-.>",
       "<C-L>",
@@ -97,8 +99,7 @@ local main_maps = {
     ["q"] = actions.close,
     ["s"] = c_actions.flash,
   },
-  -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set
-  -- [S-F1-9] = add/remove secondary sort #
+  -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set [S-F1-9] = add/remove secondary sort #
   -- [??] = clear sort
 }
 

@@ -16,43 +16,43 @@
 ---@field render fun(buf: integer, notification: notify.Notification, highlights: table<string, string>)
 local Notification = {}
 
-local level_maps = vim.tbl_extend('keep', {}, vim.log.levels)
+local level_maps = vim.tbl_extend("keep", {}, vim.log.levels)
 for label, num in pairs(level_maps) do
   level_maps[num] = label
 end
 
 function Notification:new(id, message, level, opts, config)
-  if type(level) == 'number' then
+  if type(level) == "number" then
     level = level_maps[level]
   end
-  if type(message) == 'string' then
-    message = vim.split(message, '\n')
+  if type(message) == "string" then
+    message = vim.split(message, "\n")
   end
-  level = vim.fn.toupper(level or 'info')
+  level = vim.fn.toupper(level or "info")
   local time = vim.fn.localtime()
-  local title = opts.title or ''
-  if type(title) == 'string' then
+  local title = opts.title or ""
+  if type(title) == "string" then
     title = { title, vim.fn.strftime(config.time_formats().notification, time) }
   end
 
-  local filetype = 'notify'
-  if type(opts.filetype) == 'function' then
+  local filetype = "notify"
+  if type(opts.filetype) == "function" then
     filetype = opts.filetype()
-  elseif type(opts.filetype) == 'string' then
+  elseif type(opts.filetype) == "string" then
     filetype = opts.filetype
   elseif
-    not (opts.highlights and type(opts.highlights.body) ~= 'nil')
-    and type(opts.filetype) == 'nil'
-    and vim.fn.toupper(level) ~= 'ERROR'
+    not (opts.highlights and type(opts.highlights.body) ~= "nil")
+    and type(opts.filetype) == "nil"
+    and vim.fn.toupper(level) ~= "ERROR"
     and #message > 1
   then
-    filetype = 'lua'
+    filetype = "lua"
   end
 
   vim.validate({
-    message = { message, 'table' },
-    level = { level, 'string' },
-    title = { title, 'table' },
+    message = { message, "table" },
+    level = { level, "string" },
+    title = { title, "table" },
   })
   local notif = {
     id = id,
