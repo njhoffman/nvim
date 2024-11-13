@@ -1,7 +1,7 @@
-local coreutils = require('utils.core')
-local logutils = require('debuglog.utils')
-local log = require('debuglog.log')
-local timer = require('debuglog.timer')
+local coreutils = require("utils.core")
+local logutils = require("debuglog.utils")
+local log = require("debuglog.log")
+local timer = require("debuglog.timer")
 
 local M = {}
 log:new()
@@ -9,9 +9,16 @@ M.log = log.info
 
 M.timer = timer
 
-M.inspect = require('debuglog.parsers.inspect-simple')
-M.traceback = require('debuglog.parsers.traceback')
-M.dump = require('debuglog.parsers.dump')
+-- prints directly to stdout
+M.inspect = require("debuglog.parsers.inspect-simple")
+
+-- returns string
+M.dump = require("debuglog.parsers.dump")
+M.n = require("debuglog.parsers.dump")
+
+-- returns list of lines
+M.traceback = require("debuglog.parsers.traceback")
+M.namespaces = require("debuglog.parsers.namespaces")
 
 -- shows only on screen notification
 M.buf = function(...)
@@ -22,10 +29,10 @@ M.buf = function(...)
   -- { "1:[@/home/nicholas/.config/nvim/lua/logger/utils.lua]:25 -> field:traceback", "2:[@/home/nichola s/.config/nvim/lua/debuglog/init.lua]:105 -> field:dbgbuf", "3:[:lua]:1" }
   -- 3:[:lua]:1  = command line
   vim.api.nvim_set_current_buf(bufnr)
-  vim.api.nvim_buf_set_name(bufnr, 'inspect-' .. bufnr)
-  vim.api.nvim_buf_set_option(bufnr, 'filetype', 'lua')
+  vim.api.nvim_buf_set_name(bufnr, "inspect-" .. bufnr)
+  vim.api.nvim_buf_set_option(bufnr, "filetype", "lua")
   msg = logutils.make_string(msg)
-  local lines = vim.split(msg, '\n')
+  local lines = vim.split(msg, "\n")
   vim.api.nvim_buf_set_lines(bufnr, 0, #lines, false, lines)
 end
 
@@ -39,19 +46,19 @@ M.dbg = function(...)
 
   log.info(msg)
   local notify_msg = logutils.make_string(msg)
-  local orig_map = coreutils.find(vim.api.nvim_get_keymap('n'), 'lhs', 'gF')
+  local orig_map = coreutils.find(vim.api.nvim_get_keymap("n"), "lhs", "gF")
   local args = {}
   args.timeout = 5000
-  args.render = 'minimal'
+  args.render = "minimal"
   args.hide_from_history = true
   args.on_open = function(notify_win)
     local buf = vim.api.nvim_win_get_buf(notify_win)
-    vim.api.nvim_buf_set_option(buf, 'filetype', 'lua')
+    vim.api.nvim_buf_set_option(buf, "filetype", "lua")
     local cb_close = function()
       vim.api.nvim_set_current_win(currwin)
       vim.api.nvim_win_close(notify_win, true)
-      if type(orig_map) == 'table' and type(orig_map.lhs) == 'string' then
-        pcall(vim.api.nvim_del_keymap, { 'n', 'gF' })
+      if type(orig_map) == "table" and type(orig_map.lhs) == "string" then
+        pcall(vim.api.nvim_del_keymap, { "n", "gF" })
         pcall(vim.api.nvim_set_keymap, {
           orig_map.mode,
           orig_map.lhs,
@@ -68,17 +75,17 @@ M.dbg = function(...)
       M.buf(msg)
     end
 
-    vim.api.nvim_buf_set_keymap(buf, 'n', 'gf', '', { callback = cb_close })
-    vim.api.nvim_set_keymap('n', 'gF', '', { callback = cb_close })
+    vim.api.nvim_buf_set_keymap(buf, "n", "gf", "", { callback = cb_close })
+    vim.api.nvim_set_keymap("n", "gF", "", { callback = cb_close })
   end
 
-  local lines = vim.split(notify_msg, '\n')
+  local lines = vim.split(notify_msg, "\n")
   if false and #lines >= currheight then
-    notify_msg = table.concat(vim.list_slice(lines, 0, currheight - 3), '\n')
-    notify_msg = notify_msg .. '\n...' .. #lines .. ' more lines not shown'
+    notify_msg = table.concat(vim.list_slice(lines, 0, currheight - 3), "\n")
+    notify_msg = notify_msg .. "\n..." .. #lines .. " more lines not shown"
   end -- notify.dismiss()
   -- vim.notify(notify_msg, "inspect", args)
-  require('notify').notify(notify_msg, 'inspect', args)
+  require("notify").notify(notify_msg, "inspect", args)
 end
 
 return M

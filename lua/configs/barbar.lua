@@ -4,12 +4,12 @@ require("barbar").setup({
   -- insert_at_start = false,
   -- hide = { inactive = true },
   highlight_alternate = true,
-  highlights = {
-    fill = {
-      fg = { attribute = "fg", highlight = "TabLine" }, -- change to this
-      bg = { attribute = "bg", highlight = "TabLine" },
-    },
-  },
+  -- highlights = {
+  --   fill = {
+  --     fg = { attribute = "fg", highlight = "TabLine" }, -- change to this
+  --     bg = { attribute = "bg", highlight = "TabLine" },
+  --   },
+  -- },
   icons = {
     -- diagnostics = {
     --   [vim.diagnostic.severity.ERROR] = { enabled = true, icon = '' },
@@ -18,14 +18,17 @@ require("barbar").setup({
     -- separator = { left = '▎' },
     -- right = { " " },
 
-    separator = { right = " ", left = " " },
+    separator = { left = "▎", right = "" },
+    -- If true, add an additional separator at the end of the buffer list
     separator_at_end = true,
 
+    preset = "default",
     pinned = {
       button = "",
       filename = true,
       separator = { right = " " },
     },
+    alternate = { filetype = { custom_colors = false, enabled = true } },
   },
 })
 

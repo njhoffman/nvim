@@ -15,7 +15,7 @@ local opts = {
     "typescriptreact",
     "typescript.tsx",
   },
-  root_dir = utils.initRoot("tsserver", {
+  root_dir = utils.initRoot("ts_ls", {
     {
       "tsconfig.json",
       "jsconfig.json",
@@ -60,19 +60,28 @@ local opts = {
     -- require('nvim-lsp-ts-utils').setup_client(client)
     require("lsp.on_attach")(client, bufnr)
   end,
-  -- setup = function(_, _opts)
-  --   vim.dbglog('tsserver setup', _opts)
-  --   require('lazyvim.util').on_attach(function(client, buffer)
-  --     vim.dbglog('lazy handler', client.name)
-  --     if client.name == 'tsserver' then
-  --       -- client.server_capabilities.documentFormatting = false
-  --       vim.keymap.set('n', '<leader>co', '<cmd>TypescriptOrganizeImports<CR>', { buffer = buffer, desc = 'Organize Imports' })
-  --       vim.keymap.set('n', '<leader>cR', '<cmd>TypescriptRenameFile<CR>', { desc = 'Rename File', buffer = buffer })
-  --     end
-  --   end)
-  --   require('typescript').setup({ server = _opts })
-  -- end
-  -- },
+  setup = function(_, _opts)
+    vim.dbglog("ts_ls setup", _opts)
+    require("lazyvim.util").on_attach(function(client, buffer)
+      vim.dbglog("lazy handler", client.name)
+      if client.name == "tsserver" then
+        -- client.server_capabilities.documentFormatting = false
+        vim.keymap.set(
+          "n",
+          "<leader>co",
+          "<cmd>TypescriptOrganizeImports<CR>",
+          { buffer = buffer, desc = "Organize Imports" }
+        )
+        vim.keymap.set(
+          "n",
+          "<leader>cR",
+          "<cmd>TypescriptRenameFile<CR>",
+          { desc = "Rename File", buffer = buffer }
+        )
+      end
+    end)
+    require("typescript").setup({ server = _opts })
+  end,
 }
 
 local typescript_wrapper = function()
@@ -137,7 +146,7 @@ local typescript_tools_wrapper = function()
   require("typescript-tools").setup(opts)
 end
 
-local tsserver = function()
+local ts_ls = function()
   -- local bufnr = vim.api.nvim_get_current_buf()
   -- vim.keymap.set({ c, x, o }, "gO", function()
   --   local params = {
@@ -148,12 +157,12 @@ local tsserver = function()
   --   vim.notify("Imports organized.")
   -- end, { buffer = bufnr })
 
-  -- lspconfig.tsserver.setup(opts)
+  require("lspconfig").ts_ls.setup(opts)
   -- typescript_tools_wrapper()
-  typescript_wrapper()
+  -- typescript_wrapper()
 end
 
-return tsserver
+return ts_ls
 
 -- tsserver = { logDirectory, logVerbosity?: 'off' | 'terse' | 'normal' | 'requestTime' | 'verbose';)   trace?: 'off' | 'messages' | 'verbose';
 -- prefrences = {

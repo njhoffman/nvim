@@ -115,7 +115,7 @@ require("mason-lspconfig").setup_handlers({
   ["lua_ls"] = require("lsp.servers.lua_ls"),
   ["stylelint_lsp"] = require("lsp.servers.stylelint_lsp"),
   -- ['tailwindcss'] = require('lsp.servers.tailwindcss'),
-  ["ts_ls"] = require("lsp.servers.tsserver"),
+  ["ts_ls"] = require("lsp.servers.ts_ls"),
   ["jsonls"] = require("lsp.servers.jsonls"),
   -- ['ltex'] = function()
   --   lspconfig.ltex.setup({

@@ -94,7 +94,7 @@ local settings = {
     "sqls",
     "sumneko_lua",
     "terraformls",
-    "tsserver",
+    "tl_ls",
     "vimls",
     "yamlls",
     -- "null-ls",

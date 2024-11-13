@@ -71,12 +71,12 @@ local plugins = {
       "mickael-menu/zk-nvim",
       "dnlhc/glance.nvim",
       -- ft = {'javascript','javascriptreact','javascript.jsx','typescript','typescriptreact','typescript.tsx'}
-      { "jose-elias-alvarez/typescript.nvim" },
-      {
-        "pmizio/typescript-tools.nvim",
-        enabled = false,
-        dependencies = { "nvim-lua/plenary.nvim" },
-      },
+      -- { "jose-elias-alvarez/typescript.nvim" },
+      -- {
+      --   "pmizio/typescript-tools.nvim",
+      --   enabled = false,
+      --   dependencies = { "nvim-lua/plenary.nvim" },
+      -- },
       {
         "folke/lazydev.nvim",
         ft = "lua", -- only load on lua files

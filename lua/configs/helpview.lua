@@ -1,4 +1,31 @@
-local cfg = {}
+local cfg = {
+  option_links = {
+    padding_left = " ",
+    padding_right = " ",
+    -- icon = " ",
+    hl = "HelpviewOptionLink",
+    conceal_before = 1,
+    conceal_after = 1,
+  },
+  arguments = {
+    -- icon = "󰂓 ",
+    hl = "@variable.parameter.vimdoc",
+    conceal_before = 1,
+    conceal_after = 1,
+  },
+  headings = {
+    -- ● ○ ◆ ◇
+    heading_1 = { style = "simple", hl = "Heading1", marker = "═", sign = "◆" },
+    heading_2 = { style = "simple", hl = "Heading2", marker = "─", sign = "◇" },
+    heading_3 = { style = "simple", hl = "Heading3", sign = "" },
+    heading_4 = { style = "simple", hl = "Heading4", sign = "" },
+  },
+  notes = {
+    default = { padding_right = " ", icon = " ", hl = "@comment.note" },
+    warning = { padding_right = " ", icon = "   ", hl = "@comment.warning" },
+    deprecated = { padding_right = " ", icon = "  ", hl = "@comment.error" },
+  },
+}
 
 require("helpview").setup(cfg)
 
@@ -119,6 +146,170 @@ local default_cfg = {
 	}
 }
 
+-- 	arguments = {
+-- 		icon = "󰂓 ",
+-- 		hl = "@variable.parameter.vimdoc",
+
+-- 		conceal_before = 1, conceal_after = 1
+-- 	},
+
+-- 	code_blocks = {
+-- 		hl = "HelpviewCode",
+-- 		language_hl = "HelpviewCodeLanguage"
+-- 	},
+
+-- 	group_names = {
+-- 		enable = true,
+
+-- 		icon = "󰏘 ",
+-- 	},
+
+-- 	headings = {
+-- 		heading_1 = {
+-- 			style = "simple",
+-- 			hl = "Heading1",
+-- 			marker = "═",
+
+-- 			sign = " "
+-- 		},
+-- 		heading_2 = {
+-- 			style = "simple",
+-- 			hl = "Heading2",
+-- 			marker = "─",
+
+-- 			sign = " "
+-- 		},
+-- 		heading_3 = {
+-- 			style = "simple",
+-- 			hl = "Heading3",
+
+-- 			sign = " "
+-- 		},
+-- 		heading_4 = {
+-- 			style = "simple",
+-- 			hl = "Heading4",
+
+-- 			sign = "󰓫 "
+-- 		},
+-- 	},
+
+-- 	horizontal_rules = {
+-- 		parts = {
+-- 			{
+-- 				type = "repeating",
+-- 				repeat_amount = function (buf_info)
+-- 					return math.floor((buf_info.width - 3) / 2);
+-- 				end,
+
+-- 				direction = "left",
+-- 				hl = { "HelpviewGradient1", "HelpviewGradient2", "HelpviewGradient3", "HelpviewGradient4", "HelpviewGradient5", "HelpviewGradient6" }
+-- 			},
+-- 			{
+-- 				type = "text",
+-- 				text = "  ",
+
+-- 				hl = "HelpviewGradient10"
+-- 			},
+-- 			{ -- Nerd font characters have 1.5x the width of
+-- 			  -- normal text. So we add this half character
+-- 				type = "text",
+-- 				text = "╶",
+
+-- 				hl = "HelpviewGradient6"
+-- 			},
+-- 			{
+-- 				type = "repeating",
+-- 				repeat_amount = function (buf_info)
+-- 					return math.floor((buf_info.width - 3) / 2) - 1;
+-- 				end,
+
+-- 				direction = "right",
+-- 				hl = { "HelpviewGradient1", "HelpviewGradient2", "HelpviewGradient3", "HelpviewGradient4", "HelpviewGradient5", "HelpviewGradient6" }
+-- 			},
+-- 		}
+-- 	},
+
+-- 	inline_codes = {
+-- 		padding_left = " ",
+-- 		padding_right = " ",
+
+-- 		hl = "HelpviewInlineCode"
+-- 	},
+
+-- 	keycodes = {
+-- 		icon = "󰌌 ",
+-- 		hl = "Special",
+
+-- 		conceal_before = function (data)
+-- 			if data.extracted then
+-- 				return 1;
+-- 			else
+-- 				return 0;
+-- 			end
+-- 		end,
+-- 		conceal_after = function (data)
+-- 			if data.extracted then
+-- 				return 1;
+-- 			else
+-- 				return 0;
+-- 			end
+-- 		end,
+-- 	},
+
+-- 	mention_links = {
+-- 		icon = " ",
+-- 		hl = "HelpviewMentionlink"
+-- 	},
+
+-- 	modelines = {
+-- 		style = "expanded",
+
+-- 		icon_hl = "DiagnosticOk",
+-- 		selector_hl = "@property.class.css",
+-- 		surround_hl = "@punctuation.bracket",
+
+-- 		option_hl = "@property.css",
+-- 	},
+
+-- 	notes = {
+-- 		default = {
+-- 			padding_right = " ",
+-- 			icon = "   ", hl = "@comment.note"
+-- 		},
+
+-- 		warning = {
+-- 			padding_right = " ",
+-- 			icon = "   ", hl = "@comment.warning"
+-- 		},
+
+-- 		deprecated = {
+-- 			padding_right = " ",
+-- 			icon = "  ", hl = "@comment.error"
+-- 		}
+-- 	},
+
+-- 	option_links = {
+-- 		padding_left = " ",
+-- 		padding_right = " ",
+
+-- 		icon = " ",
+-- 		hl = "HelpviewOptionLink",
+
+-- 		conceal_before = 1, conceal_after = 1
+-- 	},
+
+-- 	tag_links = {
+-- 		padding_left = " ",
+-- 		padding_right = " ",
+
+-- 		hl = "HelpviewTaglink"
+-- 	},
+
+-- 	title = {
+-- 		style = "simple",
+-- 		hl = "HelpviewTitle",
+-- 	}
+-- };
 -- 💻 Code blocks and Inline codes
 --    HelpviewCode,                 background of code blocks. From Normal.
 --    HelpviewCodeLanguage,         background for language names. From Comment.

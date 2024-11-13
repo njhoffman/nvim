@@ -498,8 +498,8 @@ local plugins = {
       -- cannot use my utility, as the value of IncSearch needs to be retrieved dynamically
       vim.api.nvim_create_autocmd("ColorScheme", {
         callback = function()
-          local reversed = require("utils.core").getHighlightValue("IncSearch", "bg")
-          vim.api.nvim_set_hl(0, "HLSearchReversed", { fg = reversed })
+          local reversed = require("utils.core").getHighlightValue("CurSearch", "bg")
+          vim.api.nvim_set_hl(0, "HlSearchReversed", { fg = reversed })
         end,
       })
     end,
@@ -524,7 +524,11 @@ local plugins = {
         },
       },
 
-      "RRethy/nvim-treesitter-endwise",
+      {
+        -- "RRethy/nvim-treesitter-endwise",
+        -- https://github.com/RRethy/nvim-treesitter-endwise/pull/42
+        "metiulekm/nvim-treesitter-endwise",
+      },
       "theHamsta/nvim-treesitter-pairs",
       "RRethy/nvim-treesitter-textsubjects",
       "HiPhish/nvim-ts-rainbow2",
@@ -600,8 +604,9 @@ local plugins = {
   },
   {
     "csessh/stopinsert.nvim",
+    enabled = false,
     opts = {
-      idle_time_jms = 8000,
+      idle_time_jms = 30000,
       show_popup_msg = false,
       clear_popup_msg = 5000,
       disabled_filetypes = {
@@ -1586,6 +1591,16 @@ local plugins = {
   -- https://github.com/otavioschwanck/arrow.nvim
   -- https://github.com/nfrid/due.nvim
   -- https://github.com/huantrinh1802/m_taskwarrior_d.nvim
+  -- { "ribelo/taskwarrior.nvim" },
+  -- {
+  --   'mawkler/demicolon.nvim',
+  --   -- keys = { ';', ',', 't', 'f', 'T', 'F', ']', '[', ']d', '[d' }, -- Uncomment this to lazy load
+  --   dependencies = {
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'nvim-treesitter/nvim-treesitter-textobjects',
+  --   },
+  --   opts = {}
+  -- },
   {
     "tools-life/taskwiki",
     cmd = { "TW", "TWSync" },

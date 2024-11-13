@@ -78,6 +78,7 @@ local build_highlight_table = function(rows, opts)
 end
 
 return {
+  align_text = align_text,
   process_list = process_list,
   build_highlight_table = build_highlight_table,
 }

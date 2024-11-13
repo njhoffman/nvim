@@ -1,7 +1,7 @@
 -- reference for comment formatting/diagnostic directives
 
 local d = {
-  tsserver = {
+  tl_ls = {
     line = [[// @ts-ignore: ignore next line]],
     file = [[// @ts-nocheck: ignore this file]],
   },

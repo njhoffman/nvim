@@ -1501,6 +1501,13 @@ map('n', '<M-/>', "<cmd>lua require('telescope.run')('builtin','help_tags', { th
   desc = 'helptags in telescope',
 })
 
+map('n', '<M-?>', "<cmd>lua require('telescope.run')('builtin','help_tags', { theme = 'ivy', preview = true })<cr>", {
+    category = 'Pickers',
+    plugin = 'telescope.nvim',
+    label = 'helptags',
+    desc = 'helptags in telescope',
+  })
+
 map('n', '<M-g>', "<cmd>lua require('telescope.run')('projects','projects')<cr>", {
   category = 'Pickers',
   plugin = 'projects_nvim',

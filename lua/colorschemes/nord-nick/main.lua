@@ -137,7 +137,7 @@ return function(injected_functions)
     SignColumn({ bg = "none" }),
     Search({ bg = "#0e1c36", fg = "#008fff", gui = "italic" }), -- bg = '#0d314c',
     IncSearch({ bg = "#23518b", fg = "#88aaff", gui = "italic" }),
-    CurSearch({ bg = "#6e3ce6", fg = "#aaffff", gui = "bold" }), --  bg = '#110033'
+    CurSearch({ bg = "#4e3ce6", fg = "#aaffff", gui = "bold" }), --  bg = '#110033'
     -- VisualNOS({ fg = 'none', bg = '#301840' }),
     -- Visual({ bg = '#171f47', fg = 'none', gui = 'italic' }),
     -- Visual({ bg = "#021626", gui = "bold,italic" }),
@@ -158,12 +158,13 @@ return function(injected_functions)
     PmenuSel({ fg = "#44bfcf", bg = "#1a1f2f" }),
     PmenuSbar({ fg = "#313c84", bg = "#202331" }),
     PmenuThumb({ fg = "#1f3352", bg = "#244f7f" }),
-    -- TabLine({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
+    -- TabLine({ fg = clrs.nord3, bg = clrs.nord1, gui = "NONE" }),
     -- TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
-    TabLine({ fg = clrs.nord3, bg = clrs.nord1, gui = "NONE" }),
-    TabLineSel({ fg = "#a6cfff", bg = "#213c64", gui = "bold" }),
+    -- TabLineSel({ fg = "#a6cfff", bg = "#213c64", gui = "bold" }),
+    TabLine({ fg = "#616F89", bg = "#21242b", gui = "NONE" }),
+    TabLineFill({ fg = "none", bg = "#1c1f24" }),
+    TabLineSel({ fg = "#51afef", bg = "#282c34" }),
     WinSeparator({ fg = "#444464", bg = "#090909", gui = "bold" }),
-    -- TabLineFill({ fg = clrs.nord4, bg = clrs.nord1, gui = "NONE" }),
     -- WinBar({ fg = "#313c84", bg = "#202331" }),
     -- WinBarNC({ fg = "#4f5362", bg = "#446faf" }),
     -- WinBarLocation({ fg = "#888888", bg = "#202331", gui = "bold" }),
@@ -1188,7 +1189,7 @@ return function(injected_functions)
     -- GlancePreviewBorderBottom
     -- GlanceWinBarFilename
     -- GlanceWinBarFilepath
-    -- GlanceWinBarTitle
+    -- GlanceinBarTitle
     -- GlanceListNormal
     -- GlanceListFilename
     -- GlanceListFilepath
@@ -1200,38 +1201,64 @@ return function(injected_functions)
     -- GlanceFoldIcon
     -- GlanceIndent
     -- GlanceBorderTop
+
     -- barbar
-    BufferCurrent({ fg = colors.fg, bg = "NONE" }),
-    BufferCurrentIndex({ fg = colors.fg, bg = "NONE" }),
-    BufferCurrentMod({ fg = colors.yellow, bg = "NONE", gui = "bold" }),
-    BufferCurrentSign({ fg = colors.cyan, bg = "NONE" }),
-    BufferCurrentTarget({ fg = colors.red, bg = "NONE", gui = "bold" }),
-    BufferVisible({ fg = colors.fg, bg = "none" }),
-    BufferVisibleIndex({ fg = colors.fg, bg = "none" }),
-    BufferVisibleMod({ fg = colors.yellow, bg = "none", gui = "bold" }),
-    BufferVisibleSign({ fg = colors.light_gray, bg = "none" }),
-    BufferVisibleTarget({ fg = colors.red, bg = "none", gui = "bold" }),
-    BufferInactive({ fg = colors.light_gray, bg = "#1C1F24" }),
-    BufferInactiveIndex({ fg = colors.light_gray, bg = "#1C1F24" }),
-    BufferInactiveMod({ fg = colors.yellow, bg = "#1C1F24" }),
-    BufferInactiveSign({ fg = colors.light_gray, bg = "#1C1F24" }),
-    BufferInactiveTarget({ fg = colors.red, bg = "#1C1F24", gui = "bold" }),
-    BufferDefaultAlternate({ bg = "#0c2333" }), -- guifg=#4d576a guibg=#3c4353
-    BufferCurrentError({ bg = "#0c2333" }),
+    -- ('BufferTabpages',       #51afef,   #3E4556, 'bold')
+    BufferTabpages({ fg = "#51afef", bg = "#3e4556", gui = "bold" }),
+    -- ('BufferTabpageFill',    '#3f444a', #1c1f24, 'bold')
+    BufferTabpagesFill({ fg = "#3f444a", bg = "#1c1f24", gui = "bold" }),
+    -- ('BufferCurrent',        #e6e6e6,   #282c34, 'none')
+    -- ('BufferCurrentIndex',   #73797e,   #282c34, 'none')
+    -- ('BufferCurrentMod',     #ECBE7B,   #282c34, 'none')
+    -- ('BufferCurrentSign',    #51afef,   #282c34, 'none')
+    -- ('BufferCurrentTarget',  #ff6c6b,   #282c34, 'bold')
+    BufferCurrent({ fg = "#a8c0f0", bg = "#002d59", gui = "bold" }),
+    BufferCurrentError({ bg = "#002d59" }),
+    -- BufferCurrentIndex({ fg = colors.fg, bg = "NONE" }),
+    BufferCurrentMod({ fg = colors.yellow, bg = "#002d59", gui = "bold" }),
+    BufferCurrentSign({ fg = "#51afef", bg = "#002d59" }),
+    -- BufferCurrentSignRight({ bg = colors.red }),
+    -- BufferCurrentTarget({ fg = colors.red, bg = "NONE", gui = "bold" }),
+    -- BufferVisible({ fg = colors.fg, bg = "none" }),
+    -- BufferVisibleIndex({ fg = colors.fg, bg = "none" }),
+    -- BufferVisibleMod({ fg = colors.yellow, bg = "none", gui = "bold" }),
+    -- BufferVisibleSign({ bg = colors.light_gray }),
+    -- BufferVisibleTarget({ fg = colors.red, bg = "none", gui = "bold" }),
+    -- BufferInactive({ fg = colors.light_gray, bg = "#1C1F24" }),
+    -- BufferInactiveIndex({ fg = colors.light_gray, bg = "#1C1F24" }),
+    -- BufferInactiveMod({ fg = colors.yellow, bg = "#1C1F24" }),
+    -- BufferInactiveSign({ fg = colors.light_gray, bg = "#1C1F24" }),
+    -- BufferInactiveTarget({ fg = colors.red, bg = "#1C1F24", gui = "bold" }),
+    -- BufferDefaultAlternate({ bg = "#0c2333" }), -- guifg=#4d576a guibg=#3c4353
     BufferAlternate({ bg = "#0c2333" }), -- guifg=#4d576a guibg=#3c4353
-    BufferAlternateHINT({ bg = "#0c2333" }),
-    BufferAlternateINFO({ bg = "#0c2333" }),
-    BufferAlternateMod({ bg = "#0c2333", fg = colors.yellow }),
-    BufferAlternateSign({ bg = "#0c2333" }),
-    BufferAlternateWARN({ bg = "#0c2333" }),
     BufferAlternateADDED({ bg = "#0c2333" }),
-    BufferAlternateERROR({ bg = "#0c2333" }),
-    BufferAlternateIndex({ bg = "#0c2333" }),
-    BufferAlternateNumber({ bg = "#0c2333" }),
-    BufferAlternateTarget({ bg = "#0c2333" }),
+    BufferAlternateARN({ bg = "#0c2333" }),
     BufferAlternateCHANGED({ bg = "#0c2333" }),
     BufferAlternateDELETED({ bg = "#0c2333" }),
+    BufferAlternateERROR({ bg = "#0c2333" }),
+    BufferAlternateHINT({ bg = "#0c2333" }),
+    BufferAlternateINFO({ bg = "#0c2333" }),
+    BufferAlternateIndex({ bg = "#0c2333" }),
+    BufferAlternateMod({ bg = "#0c2333", fg = "#988881" }),
+    BufferAlternateNumber({ bg = "#0c2333" }),
+    BufferAlternateSign({ bg = "#0c2333" }),
     BufferAlternateSignRight({ bg = "#0c2333" }),
+    BufferAlternateTarget({ bg = "#0c2333" }),
+
+    -- ('BufferVisible',        #9ca0a4,   #282c34, 'none')
+    -- ('BufferVisibleIndex',   #e6e6e6,   #282c34, 'none')
+    -- ('BufferVisibleMod',     #ECBE7B,   #282c34, 'none')
+    -- ('BufferVisibleSign',    '#3f444a', #282c34, 'none')
+    -- ('BufferVisibleTarget',  #ff6c6b,   #282c34, 'bold')
+    -- ('BufferInactive',       #73797e,   #1c1f24, 'none')
+    -- ('BufferInactiveIndex',  #73797e,   #1c1f24, 'none')
+    -- ('BufferInactiveMod',    #ECBE7B,   #1c1f24, 'none')
+    -- ('BufferInactiveSign',   '#3f444a', #1c1f24, 'none')
+    -- ('BufferInactiveTarget', #ff6c6b,   #1c1f24, 'bold')
+    -- ('BufferOffset',         #73797e,   #282c34, 'bold')
+    -- ('BufferScrollArrow',    #b1b1b1,   #1c1f24, 'bold')
+    -- ('BufferPart',           #51afef,   #D8EEFD, 'bold')
+
     -- noice.nvim
     NoiceCmdlinePopupTitle({ bold = true, fg = "#82b4ff" }),
     NoiceCmdlinePopupBorderFilter({ fg = "#643e5d" }),
@@ -1360,7 +1387,7 @@ return function(injected_functions)
     RenderMarkdownCode({ CodeBlock }),
 
     HelpviewTitle({ fg = "#c19A96", bg = "#141000", gui = "bold" }),
-    HelpviewHeading1({ fg = "#1b8b95", bg = "#001208", gui = "bold" }),
+    HelpviewHeading1({ fg = "#1b8b95", bg = "#001808", gui = "bold" }),
     HelpviewHeading2({ fg = "#826591", bg = "#080406", gui = "bold" }),
     HelpviewHeading3({ fg = "#688cce", bg = "#182c4e", gui = "bold" }),
     HelpviewHeading4({ fg = "#448c8e", bg = "#08162b", gui = "bold" }),

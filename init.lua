@@ -36,6 +36,7 @@ for _, mod_name in ipairs({
   "NeoComposer._setup",
   "configs.feline",
   "baleia.setup",
+  -- "demicolon.setup",
 }) do
   vim.import(mod_name)
 end

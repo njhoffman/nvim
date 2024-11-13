@@ -1,6 +1,6 @@
-local log = require('debuglog')
-local logutils = require('debuglog.utils')
-local config = require('debuglog.config')
+local log = require("debuglog")
+local logutils = require("debuglog.utils")
+local config = require("debuglog.config")
 
 local M = {}
 
@@ -13,10 +13,10 @@ M.buf = function(...)
   -- 3:[:lua]:1  = command line
   local source_ft = vim.bo.filetype
   vim.api.nvim_set_current_buf(bufnr)
-  vim.api.nvim_buf_set_name(bufnr, 'inspect-' .. bufnr)
+  vim.api.nvim_buf_set_name(bufnr, "inspect-" .. bufnr)
   vim.bo.filetype = source_ft
   msg = logutils.make_string(msg)
-  local lines = vim.split(msg, '\n')
+  local lines = vim.split(msg, "\n")
   vim.api.nvim_buf_set_lines(bufnr, 0, #lines, false, lines)
 end
 
@@ -36,27 +36,27 @@ M.log = function(...)
   log:new(config)
   log.info(msg)
 
-  local notify = require('notify')
+  local notify = require("notify")
   local notify_msg = logutils.make_string(msg)
   local args = {}
   args.timeout = 5000
-  args.render = 'minimal'
+  args.render = "minimal"
   args.on_open = function(win)
     local buf = vim.api.nvim_win_get_buf(win)
-    vim.api.nvim_buf_set_option(buf, 'filetype', 'lua')
+    vim.api.nvim_buf_set_option(buf, "filetype", "lua")
   end
 
-  local lines = vim.split(notify_msg, '\n')
+  local lines = vim.split(notify_msg, "\n")
   if false and #lines >= currheight then
-    notify_msg = table.concat(vim.list_slice(lines, 0, currheight - 3), '\n')
-    notify_msg = notify_msg .. '\n...' .. #lines .. ' more lines not shown'
+    notify_msg = table.concat(vim.list_slice(lines, 0, currheight - 3), "\n")
+    notify_msg = notify_msg .. "\n..." .. #lines .. " more lines not shown"
   end
   -- notify.dismiss()
-  notify(notify_msg, 'info', args)
+  notify(notify_msg, "info", args)
 end
 
 M.inspect = function(...)
-  local notify = require('notify')
+  local notify = require("notify")
   local msg = ... or {}
   local cols = math.floor(vim.opt.columns:get() / 3 * 2)
   local currwin = vim.api.nvim_get_current_win()
@@ -67,29 +67,28 @@ M.inspect = function(...)
     timeout = 8000,
     minimum_width = 20,
     maximum_width = cols,
-    render = 'minimal',
+    render = "minimal",
     -- keep = function() return true end,
     on_open = function(notify_win)
       local buf = vim.api.nvim_win_get_buf(notify_win)
       local cb = function()
         dump_buffer(currwin, notify_win, msg)
       end
-      vim.api.nvim_buf_set_keymap(buf, 'n', 'gf', '', { callback = cb })
-      vim.api.nvim_buf_set_keymap(buf, 'n', '<2-LeftMouse>', '', { callback = cb })
-      vim.api.nvim_buf_set_option(buf, 'filetype', 'lua')
+      vim.api.nvim_buf_set_keymap(buf, "n", "gf", "", { callback = cb })
+      vim.api.nvim_buf_set_keymap(buf, "n", "<2-LeftMouse>", "", { callback = cb })
+      vim.api.nvim_buf_set_option(buf, "filetype", "lua")
     end,
   }
 
-  local lines = vim.split(notify_msg, '\n')
+  local lines = vim.split(notify_msg, "\n")
   if #lines >= currheight then
-    notify_msg = table.concat(vim.list_slice(lines, 0, currheight - 3), '\n')
-    notify_msg = notify_msg .. '\n...' .. #lines .. ' more lines not shown'
+    notify_msg = table.concat(vim.list_slice(lines, 0, currheight - 3), "\n")
+    notify_msg = notify_msg .. "\n..." .. #lines .. " more lines not shown"
   end
-  notify(notify_msg, 'inspect', args)
+  notify(notify_msg, "inspect", args)
 end
 
 vim.dbg = M.inspect
-vim._log = log.info
 vim._buf = M.buf
 
 vim.dbg_test = function()

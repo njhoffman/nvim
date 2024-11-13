@@ -1,12 +1,12 @@
--- local notify = require('notify').notify
-local notify = vim.notify
+local notify = require("notify").notify
+-- local notify = vim.notify
 
 local delay = 2000
 local timeout = 2000
 
 local notify_errors = function()
   -- error2 gives eol problem
-  local errors = require('notify.examples.errors')
+  local errors = require("notify.examples.errors")
   notify(errors[6], 4, { timeout = timeout })
   -- local delay = 1000
   -- for i, example in pairs(examples) do
@@ -18,29 +18,29 @@ local notify_errors = function()
 end
 
 local notify_merge = function()
-  local level = 'info'
+  local level = "info"
   for i = 1, 5 do
-    notify('Rendering merge ' .. i, level, { timeout = timeout })
+    notify("Rendering merge " .. i, level, { timeout = timeout })
   end
-  level = 'debug'
+  level = "debug"
   for _ = 1, 5 do
-    notify('Rendering merge', level, { timeout = timeout })
+    notify("Rendering merge", level, { timeout = timeout })
   end
 end
 
 local notify_duplicates = function()
-  local level = 'info'
+  local level = "info"
   local _delay = 0
   for _ = 1, 8 do
     vim.defer_fn(function()
-      notify('Rendering duplicates', level, { timeout = timeout })
+      notify("Rendering duplicates", level, { timeout = timeout })
     end, _delay)
     _delay = _delay + 200
   end
-  local level = 'debug'
+  local level = "debug"
   for _ = 1, 10 do
     vim.defer_fn(function()
-      notify('Rendering duplicates', level, { timeout = timeout })
+      notify("Rendering duplicates", level, { timeout = timeout })
     end, _delay)
     _delay = _delay + 200
   end
@@ -48,18 +48,18 @@ end
 
 local custom_messages = {
   {
-    { { 'Notify', 'Keyword' }, { ' ' }, { 'Custom highlights', 'Comment' } },
+    { { "Notify", "Keyword" }, { " " }, { "Custom highlights", "Comment" } },
   },
   {
     {
-      { 'Notify', 'Keyword' },
-      { ' ' },
-      { 'Custom highlights', 'Comment' },
+      { "Notify", "Keyword" },
+      { " " },
+      { "Custom highlights", "Comment" },
     },
     {
-      { 'Line 2 Operator', 'Operator' },
-      { ' Normal ' },
-      { 'highlight', 'Comment' },
+      { "Line 2 Operator", "Operator" },
+      { " Normal " },
+      { "highlight", "Comment" },
     },
   },
 }
@@ -69,7 +69,7 @@ local notify_custom_hl = function()
   for _, msg in ipairs(custom_messages) do
     vim.defer_fn(function()
       notify(msg, 2, {
-        render = 'simple-notitle',
+        render = "simple-notitle",
         timeout = timeout,
       })
     end, _delay)
@@ -79,9 +79,9 @@ local notify_custom_hl = function()
   for _, msg in ipairs(custom_messages) do
     vim.defer_fn(function()
       notify(msg, 1, {
-        render = 'simple-notitle',
+        render = "simple-notitle",
         timeout = timeout,
-        title = 'custom hl title',
+        title = "custom hl title",
       })
     end, _delay)
     _delay = _delay + delay
@@ -90,15 +90,16 @@ end
 
 local notify_long = function()
   local msg =
-    'Use parentheses to group and prioritize calculations. For example, <Ctrl>+<R>=3*(4+2) will calculate the result of the expression 3*(4+2).'
+    "Use parentheses to group and prioritize calculations. For example, <Ctrl>+<R>=3*(4+2) will calculate the result of the expression 3*(4+2)."
 end
 
-local notify = function(opts)
+local notif_levels = function(opts)
   return function()
-    local name = opts._name and opts._name .. ' ' or '' .. opts.render and opts.render or 'default'
+    local name = opts._name and opts._name .. " " or ""
+    local render = opts.render or "default"
     local _delay = 0
-    for _, level in ipairs({ 'trace', 'debug', 'info', 'warn', 'error' }) do
-      local msg = 'Rendering ' .. name .. ' level: ' .. level
+    for _, level in ipairs({ "trace", "debug", "info", "warn", "error" }) do
+      local msg = "Rendering " .. name .. "(" .. render .. ") level: " .. level
       vim.defer_fn(function()
         notify(msg, level, {
           timeout = timeout,
@@ -114,20 +115,21 @@ end
 -- stylua: ignore
 local funcs = {
   -- errors           = notify_errors,
-  minimal                 = notify({ render = 'minimal' }),
-  simple_notitle          = notify({ render = 'simple-notitle' }),
-  simple                  = notify({ render = 'simple' }),
-  compact                 = notify({ render = 'compact' }),
-  wrappped_compact        = notify({ render = 'wrapped-compact' }),
-  default                 = notify({ render = 'default' }),
-  title1_simple           = notify({ _name  = 'title1', render = 'simple',          title = 'Simple title1'  }),
-  title1_compact          = notify({ _name  = 'title1', render = 'compact',         title = 'Compact title1' }),
-  title1_wrappped_compact = notify({ _name  = 'title1', render = 'wrapped-compact', title = 'Wrapped title1' }),
-  title1_default          = notify({ _name  = 'title1', render = 'default',         title = 'Default title1' }),
-  title2_simple           = notify({ _name  = 'title2', render = 'simple',          title = {'Simple title2',  '10:50:32' }}),
-  title2_compact          = notify({ _name  = 'title2', render = 'compact',         title = {'Compact title2', '10:50:32' }}),
-  title2_wrappped_compact = notify({ _name  = 'title2', render = 'wrapped-compact', title = {'Wrapped title2', '10:50:32' }}),
-  title2_default          = notify({ _name  = 'title2', render = 'default',         title = {'Default title2', '10:50:32' }}),
+  minimal                = notif_levels({ render = 'minimal' }),
+  simple                 = notif_levels({ render = 'simple' }),
+  compact                = notif_levels({ render = 'compact' }),
+  default                = notif_levels({ render = 'default' }),
+  wrapped_minimal        = notif_levels({ render = 'wrapped-minimal' }),
+  wrapped_compact        = notif_levels({ render = 'wrapped-compact' }),
+  wrapped_default        = notif_levels({ render = 'wrapped-default' }),
+  -- title1_simple           = notify({ _name  = 'title1', render = 'simple',          title = 'Simple title1'  }),
+  -- title1_compact          = notify({ _name  = 'title1', render = 'compact',         title = 'Compact title1' }),
+  -- title1_wrappped_compact = notify({ _name  = 'title1', render = 'wrapped-compact', title = 'Wrapped title1' }),
+  -- title1_default          = notify({ _name  = 'title1', render = 'default',         title = 'Default title1' }),
+  -- title2_simple           = notify({ _name  = 'title2', render = 'simple',          title = {'Simple title2',  '10:50:32' }}),
+  -- title2_compact          = notify({ _name  = 'title2', render = 'compact',         title = {'Compact title2', '10:50:32' }}),
+  -- title2_wrappped_compact = notify({ _name  = 'title2', render = 'wrapped-compact', title = {'Wrapped title2', '10:50:32' }}),
+  -- title2_default          = notify({ _name  = 'title2', render = 'default',         title = {'Default title2', '10:50:32' }}),
 
   -- merge            = notify_merge,
   -- duplicates       = notify_duplicates,
@@ -136,11 +138,11 @@ local funcs = {
 
 local notify_test = function(category)
   if category ~= nil then
-    category = type(category) == 'string' and { category } or category
+    category = type(category) == "string" and { category } or category
     local _delay = 0
     for _, cat in ipairs(category) do
       if not funcs[cat] then
-        vim.dbglog('*** invalid category ***', cat)
+        vim.dbglog("*** invalid category ***", cat)
       else
         vim.defer_fn(funcs[cat], _delay)
         _delay = _delay + delay * 5
@@ -150,29 +152,29 @@ local notify_test = function(category)
 end
 
 -- require('noice').setup({ views = { notify = { level = vim.lsp.log_levels['TRACE'] } } })
-require('notify').setup({ level = vim.lsp.log_levels['TRACE'] })
+require("notify").setup({ level = vim.lsp.log_levels["TRACE"] })
 -- vim.dbglog('level', require('notify')._config().level())
 -- require('notify.config').setup({ level = vim.lsp.log_levels['INFO'] })
 -- require('notify').instance({ level = vim.lsp.log_levels['INFO'] })
 notify_test({
   -- 'errors',
+  "minimal",
+  "simple",
+  "compact",
+  "default",
+  "wrapped_minimal",
+  "wrapped_compact",
+  "wrapped_default",
 
-  'minimal',
-  'simple_notitle',
-  'simple',
-  'compact',
-  'wrapped_compact',
-  'default',
+  -- "title1_simple",
+  -- "title1_compact",
+  -- "title1_wrapped_compact",
+  -- "title1_default",
 
-  'title1_simple',
-  'title1_compact',
-  'title1_wrapped_compact',
-  'title1_default',
-
-  'title2_simple',
-  'title2_compact',
-  'title2_wrapped_compact',
-  'title2_default',
+  -- "title2_simple",
+  -- "title2_compact",
+  -- "title2_wrapped_compact",
+  -- "title2_default",
 
   -- 'ml_minimal',
   -- 'ml_simple',

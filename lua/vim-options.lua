@@ -96,7 +96,7 @@ opt("timeoutlen", 500) -- 1000
 opt("ttimeout", true) -- 50
 opt("ttimeoutlen", 30) -- 50
 opt("undolevels", 2000)
-opt("updatetime", 2000) -- 4000
+opt("updatetime", 200) -- 4000
 opt("whichwrap", "<,>,[,]") -- 'b,s,<,>,[,],h,l'
 opt("virtualedit", "block") -- onemore, block, insert, all
 opt("wildignore", "*.o,*~,*.pyc") -- wildchar     /charm for wildmenu  0x1a ^Z, 0x1b

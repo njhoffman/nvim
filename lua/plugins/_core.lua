@@ -34,27 +34,16 @@ local plugins = {
     -- "rcarriga/nvim-notify",
     lazy = false,
   },
-  {
-    "folke/noice.nvim",
-    dependencies = { "nvim-notify" },
-    lazy = false,
-  },
+  { "folke/noice.nvim", dependencies = { "nvim-notify" }, lazy = false },
   { "famiu/bufdelete.nvim" },
   { "nvim-tree/nvim-web-devicons", dependencies = { "DaikyXendo/nvim-material-icon" } },
   {
-    -- 'njhoffman/barbecue.nvim',
-    -- dir = '~/git/barbecue.nvim',
     "utilyre/barbecue.nvim",
     event = "VeryLazy",
-    -- branch = "master",
     name = "barbecue",
     dependencies = { "SmiteshP/nvim-navic", "nvim-tree/nvim-web-devicons" },
   },
-  {
-    "b0o/incline.nvim",
-    enabled = false,
-    event = "VeryLazy",
-  },
+  { "b0o/incline.nvim", enabled = false, event = "VeryLazy" },
   {
     -- https://github.com/tamton-aquib/keys.nvim
     "folke/which-key.nvim",
