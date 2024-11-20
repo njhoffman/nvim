@@ -1,20 +1,20 @@
 ---@tag notify.config
 
 local Config = {}
-local util = require('notify.util')
+local util = require("notify.util")
 
-require('notify.config.highlights')
+require("notify.config.highlights")
 
 local BUILTIN_RENDERERS = {
-  DEFAULT = 'default',
-  MINIMAL = 'minimal',
+  DEFAULT = "default",
+  MINIMAL = "minimal",
 }
 
 local BUILTIN_STAGES = {
-  FADE = 'fade',
-  SLIDE = 'slide',
-  FADE_IN_SLIDE_OUT = 'fade_in_slide_out',
-  STATIC = 'static',
+  FADE = "fade",
+  SLIDE = "slide",
+  FADE_IN_SLIDE_OUT = "fade_in_slide_out",
+  STATIC = "static",
 }
 
 local default_config = {
@@ -24,7 +24,7 @@ local default_config = {
   max_height = nil,
   stages = BUILTIN_STAGES.FADE_IN_SLIDE_OUT,
   render = BUILTIN_RENDERERS.DEFAULT,
-  background_colour = 'NotifyBackground',
+  background_colour = "NotifyBackground",
   on_open = nil,
   on_close = nil,
   on_replace = nil,
@@ -32,16 +32,10 @@ local default_config = {
   fps = 30,
   top_down = true,
   time_formats = {
-    notification_history = '%FT%T',
-    notification = '%T',
+    notification_history = "%FT%T",
+    notification = "%T",
   },
-  icons = {
-    ERROR = '',
-    WARN = '',
-    INFO = '',
-    DEBUG = '',
-    TRACE = '✎',
-  },
+  icons = { ERROR = "", WARN = "", INFO = "", DEBUG = "", TRACE = "✎" },
 }
 
 ---@class notify.Config
@@ -64,10 +58,10 @@ local default_config = {
 local opacity_warned = false
 
 local function validate_highlight(colour_or_group, needs_opacity)
-  if type(colour_or_group) == 'function' then
+  if type(colour_or_group) == "function" then
     return colour_or_group
   end
-  if colour_or_group:sub(1, 1) == '#' then
+  if colour_or_group:sub(1, 1) == "#" then
     return function()
       return colour_or_group
     end
@@ -86,32 +80,32 @@ require("notify").setup({
   background_colour = "#000000",
 })
 ```
-Defaulting to #000000]], 'warn', {
-            title = 'nvim-notify',
+Defaulting to #000000]], "warn", {
+            title = "nvim-notify",
             on_open = function(win)
               local buf = vim.api.nvim_win_get_buf(win)
-              vim.api.nvim_buf_set_option(buf, 'filetype', 'markdown')
+              vim.api.nvim_buf_set_option(buf, "filetype", "markdown")
             end,
           })
         end)
       end
-      return '#000000'
+      return "#000000"
     end
-    return string.format('#%x', group.background)
+    return string.format("#%x", group.background)
   end
 end
 
 function Config._format_default()
-  local lines = { 'Default values:', '>lua' }
-  for line in vim.gsplit(vim.inspect(default_config), '\n', true) do
-    table.insert(lines, '  ' .. line)
+  local lines = { "Default values:", ">lua" }
+  for line in vim.gsplit(vim.inspect(default_config), "\n", true) do
+    table.insert(lines, "  " .. line)
   end
-  table.insert(lines, '<')
+  table.insert(lines, "<")
   return lines
 end
 
 function Config.setup(custom_config)
-  local user_config = vim.tbl_deep_extend('keep', custom_config or {}, default_config)
+  local user_config = vim.tbl_deep_extend("keep", custom_config or {}, default_config)
   local config = {}
 
   function config.merged()
@@ -120,7 +114,7 @@ function Config.setup(custom_config)
 
   function config.level()
     local level = user_config.level
-    if type(level) == 'number' then
+    if type(level) == "number" then
       return level
     end
     return vim.log.levels[vim.fn.toupper(level)] or vim.log.levels.INFO
@@ -131,7 +125,7 @@ function Config.setup(custom_config)
   end
 
   function config.background_colour()
-    return tonumber(user_config.background_colour():gsub('#', '0x'), 16)
+    return tonumber(user_config.background_colour():gsub("#", "0x"), 16)
   end
 
   function config.time_formats()
@@ -189,13 +183,13 @@ function Config.setup(custom_config)
   local needs_opacity =
     vim.tbl_contains({ BUILTIN_STAGES.FADE_IN_SLIDE_OUT, BUILTIN_STAGES.FADE }, stages)
 
-  if needs_opacity and not vim.opt.termguicolors:get() and vim.fn.has('nvim-0.10') == 0 then
+  if needs_opacity and not vim.opt.termguicolors:get() and vim.fn.has("nvim-0.10") == 0 then
     user_config.stages = BUILTIN_STAGES.STATIC
     vim.schedule(function()
       vim.notify(
-        'Opacity changes require termguicolors to be set.\nChange to different animation stages or set termguicolors to disable this warning',
-        'warn',
-        { title = 'nvim-notify' }
+        "Opacity changes require termguicolors to be set.\nChange to different animation stages or set termguicolors to disable this warning",
+        "warn",
+        { title = "nvim-notify" }
       )
     end)
   end

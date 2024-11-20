@@ -8,15 +8,7 @@ local cfg = {
   auto_install = true,
   ensure_installed = "all",
   -- ignore_install = { 'comment' },
-  indent = {
-    enable = true,
-    disable = {
-      "markdown", -- indentation at bullet points worse
-      "lua", -- `o` sometimes get weird behavior
-      "javascript", -- `o` sometimes get weird behavior
-    },
-  },
-
+  indent = tsmodules.indent,
   playground = tsmodules.playground,
   highlight = tsmodules.highlight,
   refactor = tsmodules.refactor,

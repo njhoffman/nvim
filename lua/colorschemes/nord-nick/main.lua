@@ -1355,7 +1355,7 @@ return function(injected_functions)
     -- #5f794a  #171a1b  { bg = #2c1517, fg = #E06C75, gui = "bold" }) { fg = c.bright_green, bold = true }
     -- #1b5b55  #0d171f  { bg = #27182C, fg = #C678DD, gui = "bold" }) { fg = c.yellow }
     -- #544773  #0d171f  { bg = #3e2e1e, fg = #E5C07B, gui = "bold" }) { fg = c.cyan }
-    CodeBlock({ bg = "#101018" }),
+    CodeBlock({ bg = "#040814" }), -- bg = "#101018"
     RenderMarkdownH1({ fg = "#4385c0" }),
     RenderMarkdownH2({ fg = "#917A66" }),
     RenderMarkdownH3({ fg = "#406ff2" }),

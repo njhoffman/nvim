@@ -31,7 +31,6 @@ local stats_overview = function(view)
   -- FIX:  error when title is not array
   -- output[view](lines, nil, hls)
 
-  vim.dbglog("lines", counts)
   local lines, hls = utils.align_list(counts)
   output[view](lines, "Overview", hls)
 end

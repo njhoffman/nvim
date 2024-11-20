@@ -43,6 +43,17 @@ local default_cfg = {
 }
 
 require("copilot").setup({
+  filetypes = {
+    yaml = false,
+    markdown = false,
+    help = false,
+    gitcommit = false,
+    gitrebase = false,
+    hgcommit = false,
+    svn = false,
+    cvs = false,
+    ["."] = false,
+  },
   server_opts_overrides = {
     -- trace = 'verbose',
     settings = {
@@ -66,7 +77,7 @@ require("copilot").setup({
   },
   panel = {
     enabled = true,
-    auto_refresh = true,
+    auto_refresh = false,
     keymap = {
       jump_prev = "[[",
       jump_next = "]]",

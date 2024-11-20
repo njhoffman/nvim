@@ -1,4 +1,6 @@
 local cfg = {
+  -- hybrid_modes = { "n", "s", "v" },
+  modes = { "n", "s", "c", "x", "v", "V", "" },
   option_links = {
     padding_left = " ",
     padding_right = " ",
@@ -13,6 +15,12 @@ local cfg = {
     conceal_before = 1,
     conceal_after = 1,
   },
+  code_blocks = {
+    enable = true,
+    hl = "HelpviewCode",
+    -- language_hl = "HelpviewCodeLanguage",
+    language_hl = "Comment",
+  },
   headings = {
     -- ● ○ ◆ ◇
     heading_1 = { style = "simple", hl = "Heading1", marker = "═", sign = "◆" },
@@ -26,7 +34,6 @@ local cfg = {
     deprecated = { padding_right = " ", icon = "  ", hl = "@comment.error" },
   },
 }
-
 require("helpview").setup(cfg)
 
 -- stylua: ignore
@@ -59,6 +66,7 @@ local default_cfg = {
     enable = true,
     hl = "Code",              -- Highlight group for the code block
     language_hl = "CodeLang", -- Highlight group for the language name
+
   },
   group_names = {
     enable = true,

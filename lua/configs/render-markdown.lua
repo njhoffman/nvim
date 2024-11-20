@@ -467,16 +467,17 @@ local default_cfg = {
 local cfg = {
   file_types = { "markdown", "vimwiki" },
   code = {
-    sign = true,
     -- Determines how code blocks & inline code are rendered:
     --  none:     disables all rendering
     --  normal:   adds highlight group to code blocks & inline code, adds padding to code blocks
     --  language: adds language icon to sign column if enabled and icon + name above code blocks
     --  full:     normal + language
     -- style = "full",
+    sign = false,
     position = "right",
     -- language_pad = 0,
     -- language_name = true,
+    highlight_language = "Comment",
   },
   heading = {
     position = "inline",

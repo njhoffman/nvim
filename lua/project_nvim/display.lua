@@ -1,9 +1,17 @@
 local get_icon = function(method, lsp)
-  local devicons = require("nvim-web-devicons")
-  local get_by_ft = devicons.get_icon_by_filetype
-  local get_by_ext = function(ext)
-    return devicons.get_icon("", ext)
+  -- local devicons = require("nvim-web-devicons")
+  local MiniIcons = require("mini.icons")
+
+  local get_by_ft = function(ft)
+    return MiniIcons.get("filetype", ft) -- Has `'M'` as icon
+    -- devicons.get_icon_by_filetype
   end
+
+  local get_by_ext = function(ext)
+    return MiniIcons.get("extension", ext) -- Has `'M'` as icon
+    -- return devicons.get_icon("", ext)
+  end
+
 
   -- stylua: ignore
   local icon_map =     {
@@ -32,7 +40,7 @@ local get_icon = function(method, lsp)
     sqls =                   { get_by_ft("sql") },
     stylelint_lsp =          { get_by_ft("scss") },
     tailwindcss =            { get_by_ft("less") },
-    terraformls =            { get_by_ext("tf") },
+    tsserver =               { get_by_ft("js") },
     ts_ls =                  { get_by_ft("js") },
     vimls =                  { get_by_ft("vim") },
     yamlls =                 { get_by_ft("yaml") },

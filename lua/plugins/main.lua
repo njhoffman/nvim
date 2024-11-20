@@ -2,6 +2,9 @@ local utils = require("utils.lazy")
 local lz_syn = false
 
 -- NOTE: generate new plugins from https://github.com/ellisonleao/nvim-plugin-template
+-- https://github.com/meznaric/key-analyzer.nvim?tab=readme-ov-file
+-- https://github.com/kovidgoyal/kitty/pull/7681
+-- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/debug.lua
 
 local plugins = {
   { "stevearc/dressing.nvim", dependencies = "MunifTanjim/nui.nvim", event = "VeryLazy" },
@@ -1451,13 +1454,38 @@ local plugins = {
 
   { "echasnovski/mini.test", lazy = true },
   { "gennaro-tedesco/nvim-jqx", lazy = true, cmd = { "JqxList", "JqxQuery" } },
+  {
+    "linrongbin16/fzfx.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      {
+        "junegunn/fzf",
+        -- optional for the 'fzf' command
+        build = function()
+          vim.fn["fzf#install"]()
+        end,
+      },
+    },
+
+    -- specify version to avoid break changes
+    -- version = 'v5.*',
+
+    config = function()
+      require("fzfx").setup()
+    end,
+  },
   { "npxbr/glow.nvim", cmd = "Glow" },
   -- { "NTBBloodbath/rest.nvim", cmd = { "RESTRunLast", "RESTRun", "RESTPreview" } },
   { "dbeniamine/cheat.sh-vim", cmd = "Cheat" },
   { "potamides/pantran.nvim", cmd = "Pantran" },
   { "sidebar-nvim/sidebar.nvim", cmd = { "SidebarNvimOpen", "SidebarNvimToggle" } },
   { "nvimtools/hydra.nvim", event = "VeryLazy" }, -- anuvyklack
-  { "NvChad/nvim-colorizer.lua", event = { "BufReadPost", "BufNewFile" } },
+  {
+    "NvChad/nvim-colorizer.lua",
+    -- event = { "BufReadPost", "BufNewFile" },
+    event = { "InsertEnter" },
+    config = true,
+  },
   { "nvim-colortils/colortils.nvim", cmd = "Colortils", event = { "BufReadPost", "BufNewFile" } },
   {
     "kawre/leetcode.nvim",
@@ -1698,7 +1726,11 @@ local plugins = {
   { "AckslD/nvim-FeMaco.lua", ft = { "markdown", "pandoc" } },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      -- "nvim-tree/nvim-web-devicons",
+      "echasnovski/mini.icons",
+    }, -- if you prefer nvim-web-devicons
     opts = {},
   },
   {

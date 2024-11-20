@@ -110,6 +110,10 @@ require("mason-lspconfig").setup_handlers({
   end,
   ["cssls"] = function() end,
   -- ['jdtls'] = noop,  root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1]),
+  ["jqls"] = function()
+    lspconfig.jqls.setup({})
+  end,
+
   ["bashls"] = require("lsp.servers.bashls"),
   ["eslint"] = require("lsp.servers.eslint"),
   ["lua_ls"] = require("lsp.servers.lua_ls"),

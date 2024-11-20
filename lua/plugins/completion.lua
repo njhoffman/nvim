@@ -49,7 +49,11 @@ local plugins = {
       "ray-x/cmp-treesitter",
       "uga-rosa/cmp-dictionary",
 
-      { "zbirenbaum/copilot-cmp", dependencies = "copilot.lua" },
+      {
+        "zbirenbaum/copilot-cmp",
+        event = "InsertEnter",
+        dependencies = "copilot.lua",
+      },
       { "tzachar/cmp-fuzzy-path", dependencies = { "tzachar/fuzzy.nvim" } },
       { "tzachar/cmp-fuzzy-buffer", dependencies = { "tzachar/fuzzy.nvim" } },
       { "saadparwaiz1/cmp_luasnip", dependencies = { "L3MON4D3/LuaSnip" } },

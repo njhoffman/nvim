@@ -1,3 +1,5 @@
+local ts_utils = require("nvim-treesitter.ts_utils")
+
 local hl_stub = function()
   local bufnr = vim.api.nvim_get_current_buf()
   local ns_id = vim.api.nvim_create_namespace("error_messages")
@@ -84,10 +86,42 @@ local buffer_range_highlights = function(bufnr, range)
 
   -- local ns_id = vim.api.nvim_get_hl_ns({ winid = winid })
   local text = vim.api.nvim_buf_get_text(bufnr, range[1], range[2], range[3], range[4], {})
-  local highlights = {
-    ts = {},
-    ext = {},
+  local highlights = { ts = {}, ext = {} }
+  highlights.ts = ts_range_highlights(bufnr, range)
+  highlights.ext = vim.api.nvim_buf_get_extmarks(
+    bufnr,
+    -1,
+    { range[1], 0 },
+    { range[3], range[4] },
+    { details = true, overlap = true, type = "highlight" }
+  )
+
+  return text, highlights
+end
+
+local parse_range = function(start_pos, end_pos)
+  start_pos = type(start_pos) == "number" and { start_pos, 0 }
+    or type(start_pos) == "table" and start_pos
+    or { 0, 0 }
+  end_pos = type(end_pos) == "number" and { end_pos, 0 }
+    or type(end_pos) == "table" and end_pos
+    or { -1, -1 }
+
+  local range = {
+    math.max(start_pos[1] - 1, 0),
+    math.max(start_pos[2] - 1, 0),
+    math.max(end_pos[1] - 1, -1),
+    end_pos[2] == 0 and -1 or end_pos[2],
   }
+  return range
+end
+
+local buffer_range_highlights = function(bufnr, range)
+  bufnr = bufnr or 0
+
+  -- local ns_id = vim.api.nvim_get_hl_ns({ winid = winid })
+  local text = vim.api.nvim_buf_get_text(bufnr, range[1], range[2], range[3], range[4], {})
+  local highlights = { ts = {}, ext = {} }
   highlights.ts = ts_range_highlights(bufnr, range)
   highlights.ext = vim.api.nvim_buf_get_extmarks(
     bufnr,
@@ -103,8 +137,11 @@ end
 local build_virtual_text = function(bufnr, range, highlights)
   bufnr = bufnr or 0
   local virt_text = {}
+
+  -- [61] = { anon = "chunk", name = "boolean", range = { [1] = 51, [2] = 73, [3] = 51, [4] = 76, n = 4 }, text = "true" },
   for _, hl in ipairs(highlights.ts) do
   end
+  -- vim.api.nvim_buf_set_extmark(bufnr, ns_id, line, col, opts)
 
   -- • id : id of the extmark to edit.
   -- • end_row : ending line of the mark, 0-based inclusive.
@@ -146,46 +183,29 @@ local build_virtual_text = function(bufnr, range, highlights)
   --  • spell: boolean indicating that spell checking should be performed within this extmark
   --  • ui_watched: boolean that indicates the mark should be drawn by a UI. When set, the UI will receive win_extmark events. Note: the mark is positioned by virt_text attributes. Can be used together with virt_text.
   --  • url: A URL to associate with this extmark. In the TUI, the OSC 8 control sequence is used to generate a clickable hyperlink to this URL.
-
-  -- vim.api.nvim_buf_set_extmark(bufnr, ns_id, line, col, opts)
 end
-
--- local ns_id_lines = vim.api.nvim_create_namespace('review_comments')
--- local ns_id_text = vim.api.nvim_create_namespace('code_quality')
-
--- -- Detailed review comment above the function
--- vim.api.nvim_buf_set_extmark(bufnr, ns_id_lines, 49, 0, {
---     virt_lines = {{{"Consider using a more descriptive name for this function", "ReviewComment"}}},
---     virt_lines_above = true,
--- })
-
--- -- Simple note for code quality next to line 50
--- vim.api.nvim_buf_set_extmark(bufnr, ns_id_text, 49, 0, {
---     virt_text = {{"// Check variables naming conventions", "InlineNote"}}
--- })
 
 local state = { buffers = {} }
 local ns_pfx = "_tint_"
 
 local buffer_overlay = function(bufnr, range, opts)
-  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  bufnr = bufnr and bufnr ~= 0 and bufnr or vim.api.nvim_get_current_buf()
   opts = opts or {}
   state.buffers[bufnr] = state.buffers[bufnr] or { head = {}, middle = {}, tail = {} }
+  local ns_prefix = ns_pfx .. bufnr .. "_" .. opts.name or "overlay" .. "_"
 
-  local ns_name = ns_pfx .. bufnr .. "_" .. (opts.name or ("overlay_" .. ns_idx))
+  local ns_prevs = vim.tbl_filter(function(ns_name)
+    return string.match(ns_name, ns_prefix)
+  end, vim.tbl_keys(vim.api.nvim_get_namespaces()))
+
+  vim.dbglog("prev", ns_prevs)
+  local ns_name = string.format("%s%s", ns_prefix, #ns_prevs + 1)
   local ns_id = vim.api.nvim_create_namespace(ns_name)
 
-  local range = parse_range({ 45, 0 }, { 46, 0 })
-  -- local buf_range = parse_range(0, -1)
-  local hls = buffer_range_highlights(bufnr, range)
-  build_virtual_text(bufnr, range, hls)
+  local buf_range = parse_range(range[1], range[2])
+  local text, hls = buffer_range_highlights(bufnr, buf_range)
+
+  return ns_name, buf_range, hls
 end
 
-local range_1 = parse_range({ 2, 0 }, { 3, 0 })
-local range_2 = parse_range({ 6, 32 }, { 11, 20 })
-
-local search_ns_1 =
-  buffer_overlay(bufnr, range_1, { name = "search_1", transform = { opacity = 0.9 } })
--- local buf_range = parse_range(0, -1)
-local highlights = buffer_range_highlights(bufnr, buf_range)
-build_virtual_text(bufnr, highlights)
+return { buffer_overlay = buffer_overlay }

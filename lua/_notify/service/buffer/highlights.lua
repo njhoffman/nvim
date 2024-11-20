@@ -54,29 +54,31 @@ function NotifyBufHighlights:new(notif, buffer, config)
   }
 
   local content = {}
-  -- special field for repeating messages
-  if notif.repeat_count then
-    local repeat_count, repeat_count_def = set_linked_group("RepeatCount", false, true)
-    groups.repeat_count = repeat_count_def
-  end
 
-  local embedded_hls = vim.tbl_get(notif, "highlights", "body")
-  local level_hls = vim.tbl_get(notif, "highlights", "level")
-  if embedded_hls then
-    -- predefined content highlights  { "Comment", 3, 9, 14 }
-    for i, hl_group in ipairs(embedded_hls) do
-      local _content, _content_def = set_linked_group(hl_group[1], true, true)
-      groups[_content] = _content_def
-      content[hl_group[1]] = _content
-    end
-  elseif level_hls then
-    -- special field for custom highlights for each level
-    for i, hl_group in ipairs(level_hls) do
-      local _content, _content_def = set_linked_group(hl_group[1], true, false)
-      groups[_content] = _content_def
-      content[hl_group[1]] = _content
-    end
-  end
+  -- -- special field for repeating messages
+  -- if notif.repeat_count then
+  --   local repeat_count, repeat_count_def = set_linked_group("RepeatCount", false, true)
+  --   groups.repeat_count = repeat_count_def
+  -- end
+  --
+  -- local embedded_hls = vim.tbl_get(notif, "highlights", "body")
+  -- local level_hls = vim.tbl_get(notif, "highlights", "level")
+
+  -- if embedded_hls then
+  --   -- predefined content highlights  { "Comment", 3, 9, 14 }
+  --   for i, hl_group in ipairs(embedded_hls) do
+  --     local _content, _content_def = set_linked_group(hl_group[1], true, true)
+  --     groups[_content] = _content_def
+  --     content[hl_group[1]] = _content
+  --   end
+  -- elseif level_hls then
+  --   -- special field for custom highlights for each level
+  --   for i, hl_group in ipairs(level_hls) do
+  --     local _content, _content_def = set_linked_group(hl_group[1], true, false)
+  --     groups[_content] = _content_def
+  --     content[hl_group[1]] = _content
+  --   end
+  -- end
 
   local buf_highlights = {
     groups = groups,

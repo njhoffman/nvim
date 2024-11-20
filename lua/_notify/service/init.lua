@@ -1,5 +1,5 @@
-local util = require('notify.util')
-local NotificationBuf = require('notify.service.buffer')
+local util = require("notify.util")
+local NotificationBuf = require("notify.service.buffer")
 
 ---@class NotificationService
 ---@field private _config notify.ServiceConfig
@@ -33,7 +33,7 @@ function NotificationService:_run()
   local succees, updated =
     pcall(self._animator.render, self._animator, self._pending, 1 / self._fps)
   if not succees then
-    print('Error running notification service: ' .. updated)
+    print("Error running notification service: " .. updated)
     self._running = false
     return
   end
@@ -61,7 +61,7 @@ function NotificationService:push(notif)
     -- https://github.com/rcarriga/nvim-notify/issues/5
     pcall(self._animator.render, self._animator, self._pending, 1 / self._fps)
   end
-  vim.cmd('redraw')
+  vim.cmd("redraw")
   return buf
 end
 
@@ -69,26 +69,26 @@ function NotificationService:replace(id, notif)
   local existing = self._buffers[id]
   if not (existing and existing:is_valid()) then
     vim.notify(
-      'No matching notification found to replace id: '
+      "No matching notification found to replace id: "
         .. vim.inspect(id)
-        .. '\n'
+        .. "\n"
         .. vim.inspect(vim.tbl_keys(self._buffers))
     )
     return
   end
-  local prev = vim.deepcopy(existing)
+  -- local prev = vim.deepcopy(existing)
   existing:set_notification(notif)
   self._buffers[id] = nil
   self._buffers[notif.id] = existing
   pcall(existing.render, existing)
 
   local win = vim.fn.bufwinid(existing:buffer())
-  if notif.on_replace then
-    notif.on_replace(win, prev, existing)
-  end
-  if self._config.on_replace() then
-    self._config.on_replace()(win, prev, existing)
-  end
+  -- if notif.on_replace then
+  --   notif.on_replace(win, prev, existing)
+  -- end
+  -- if self._config.on_replace() then
+  --   self._config.on_replace()(win, prev, existing)
+  -- end
   if win ~= -1 then
     -- Highlights can change name if level changed so we have to re-link
     -- vim.wo does not behave like setlocal, thus we use setwinvar to set a
@@ -97,8 +97,8 @@ function NotificationService:replace(id, notif)
     -- see e.g. neovim#14595
     vim.fn.setwinvar(
       win,
-      '&winhl',
-      'Normal:' .. existing.highlights.body .. ',FloatBorder:' .. existing.highlights.border
+      "&winhl",
+      "Normal:" .. existing.highlights.body .. ",FloatBorder:" .. existing.highlights.border
     )
     self._animator:on_refresh(win)
   end
@@ -115,7 +115,7 @@ function NotificationService:dismiss(opts)
       cleared = cleared + 1
     end
     if not opts.silent then
-      vim.notify('Cleared ' .. cleared .. ' pending notifications')
+      vim.notify("Cleared " .. cleared .. " pending notifications")
     end
   end
 end

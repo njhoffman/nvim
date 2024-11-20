@@ -1,4 +1,5 @@
 -- http://eriklievaart.com/cheat/applications/vim/vimquickfix.html
+-- https://www.reddit.com/r/neovim/comments/1g380b0/what_key_combinations_do_you_wish_you_learned/
 
 local nl = "\n   ➜ "
 
