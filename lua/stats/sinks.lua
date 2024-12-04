@@ -25,13 +25,13 @@ local notify = function(lines, title, highlights)
     timeout = 10000,
     title = { title, "" },
     -- render = 'default',
-    hl_groups = {
+    highlights = {
       body = "NotifyINFOBody",
       border = "NotifyINFOBorder",
       icon = "NotifyINFOIcon",
       title = "NotifyINFOTitle",
+      inline = highlights,
     },
-    hl_inline = highlights,
     -- hide_from_history = true,
   })
   -- require("notify")(lines, 2, {

@@ -24,7 +24,8 @@ local build_failed_parts = function(imported)
     end
 
     local icon = " " .. opts.user_opts.import_failed_icon .. " "
-    local time = math.floor(detail.import_time / 1000000 * 100) / 100 .. " ms "
+    local time = string.format("%.2f", math.floor(detail.import_time / 1000000 * 100) / 100)
+      .. " ms "
 
     local message = detail.summary or " -- "
     -- print(string.format("%-12s%-12s%-12s", "Some", "String", "Test"))
@@ -32,7 +33,7 @@ local build_failed_parts = function(imported)
     -- + : always prefix with a sign, using + if field positive
     -- 0 : left-fill with zeroes rather than spaces
     -- (space) : If positive, put a space where the + would have been
-    -- foo = data .. string.rep("-", 50 - data:len())
+    --           foo = data .. string.rep("-", 50 - data:len())
 
     local parts = {
       { icon, "ImportFailedIcon" },
@@ -60,7 +61,8 @@ local build_success_parts = function(imported)
     end
 
     local icon = " " .. opts.user_opts.import_success_icon .. " "
-    local time = math.floor(detail.import_time / 1000000 * 100) / 100 .. " ms "
+    local time = string.format("%.2f", math.floor(detail.import_time / 1000000 * 100) / 100)
+      .. " ms "
     local message = detail.summary or "" -- or ("#" .. tostring(detail.load_n))
 
     local parts = {

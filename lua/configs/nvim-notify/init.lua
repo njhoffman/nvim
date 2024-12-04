@@ -2,14 +2,13 @@
 -- increase fade in frequency
 
 local events = require("configs.nvim-notify.events")
--- local render = require("notify.render._entry")
-
+-- local render =
 local cfg = {
   level = vim.log.levels.DEBUG,
   fps = 30,
   -- stages = "fade_in_slide_out",
   stages = "fade",
-  background_colour = "#000000",
+  -- background_colour = "#000000",
   timeout = 5000,
   minimum_width = 3,
   max_height = function()
@@ -28,10 +27,11 @@ local cfg = {
     RUN = "",
     STATUS = "",
   },
-  -- render = render,
+  render = require("notify.render._entry"),
   on_open = events.on_open,
   on_replace = events.on_replace,
 }
+_G._NOTIFY_EXPERIMENTAL = true
 require("notify").setup(cfg)
 
 -- You can also use plenary's async library to avoid using callbacks:

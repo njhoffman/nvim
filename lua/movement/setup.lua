@@ -1,25 +1,25 @@
 local g, api = vim.g, vim.api
 -- require('internal.winbar')
 
-local cache_dir = vim.env.HOME .. '/.cache/nvim/'
+local cache_dir = vim.env.HOME .. "/.cache/nvim/"
 
 local vim = vim
 
 local createdir = function()
   local data_dir = {
-    cache_dir .. 'backup',
-    cache_dir .. 'session',
-    cache_dir .. 'swap',
-    cache_dir .. 'tags',
-    cache_dir .. 'undo',
+    cache_dir .. "backup",
+    cache_dir .. "session",
+    cache_dir .. "swap",
+    cache_dir .. "tags",
+    cache_dir .. "undo",
   }
   -- There only check once that If cache_dir exists
   -- Then I don't want to check subs dir exists
   if vim.fn.isdirectory(cache_dir) == 0 then
-    os.execute('mkdir -p ' .. cache_dir)
+    os.execute("mkdir -p " .. cache_dir)
     for _, v in pairs(data_dir) do
       if vim.fn.isdirectory(v) == 0 then
-        os.execute('mkdir -p ' .. v)
+        os.execute("mkdir -p " .. v)
       end
     end
   end
@@ -57,48 +57,48 @@ local file_type = function()
 
   vim.filetype.add({
     extension = {
-      lock = 'yaml',
+      lock = "yaml",
     },
     filename = {
-      ['NEOGIT_COMMIT_EDITMSG'] = 'NeogitCommitMessage',
-      ['.psqlrc'] = 'conf', -- TODO: find a better filetype
-      ['go.mod'] = 'gomod',
-      ['.gitignore'] = 'conf',
-      ['launch.json'] = 'jsonc',
-      Podfile = 'ruby',
-      Brewfile = 'ruby',
+      ["NEOGIT_COMMIT_EDITMSG"] = "NeogitCommitMessage",
+      [".psqlrc"] = "conf", -- TODO: find a better filetype
+      ["go.mod"] = "gomod",
+      [".gitignore"] = "conf",
+      ["launch.json"] = "jsonc",
+      Podfile = "ruby",
+      Brewfile = "ruby",
     },
     pattern = {
-      ['.*%.conf'] = 'conf',
-      ['.*%.theme'] = 'conf',
-      ['.*%.gradle'] = 'groovy',
-      ['.*%.env%..*'] = 'env',
+      [".*%.conf"] = "conf",
+      [".*%.theme"] = "conf",
+      [".*%.gradle"] = "groovy",
+      [".*%.env%..*"] = "env",
     },
   })
 end
 
 local leader_map = function()
-  vim.g.mapleader = ' '
-  vim.g.maplocalleader = ','
-  vim.keymap.set('n', '<SPACE>', '<Nop>', { noremap = true })
-  vim.keymap.set('n', ' ', '', { noremap = true })
-  vim.keymap.set('x', ' ', '', { noremap = true })
-  vim.keymap.set('n', '<esc>', function()
-    require('notify').dismiss()
+  vim.g.mapleader = " "
+  vim.g.maplocalleader = ","
+  vim.keymap.set("n", "<SPACE>", "<Nop>", { noremap = true })
+  vim.keymap.set("n", " ", "", { noremap = true })
+  vim.keymap.set("x", " ", "", { noremap = true })
+  vim.keymap.set("n", "<esc>", function()
+    require("notify").dismiss()
     vim.cmd.nohl()
   end, {})
 end
 
 local load_core = function()
-  require('movement.globals')
+  require("movement.globals")
   -- require('core.pack')
   -- createdir()
   -- disable_distribution_plugins()
   -- leader_map()
   -- require('core.options')
-  require('movement.autocmd')
+  require("movement.autocmd")
   -- require('core.autocmd_optional')
-  require('movement.cmd')
+  require("movement.cmd")
   -- require('keymaps')
   -- file_type()
   -- require('core.pack'):boot_strap()

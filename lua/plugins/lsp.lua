@@ -133,8 +133,7 @@ local plugins = {
   {
     "SmiteshP/nvim-navbuddy",
     dir = "~/git/nvim-navbuddy",
-    event = { "LspAttach" },
-    cmd = { "Navbuddy" },
+    event = { "VeryLazy" },
     dependencies = { "neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
   },
   -- https://github.com/jmbuhr/otter.nvim

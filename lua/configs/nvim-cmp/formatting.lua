@@ -112,7 +112,7 @@ local format = function(entry, vim_item)
   end
 
   if type(icons.symbols[vim_item.kind]) == "nil" then
-    vim.notify("No symbol icon: " .. vim_item.kind, 2)
+    vim.notify("No symbol icon: " .. (vim_item.kind or "nil"), 2)
   else
     vim_item.kind_hl_group = "CmpItemKind" .. vim_item.kind
     vim_item.kind = icons.symbols[vim_item.kind]

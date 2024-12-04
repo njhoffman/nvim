@@ -1,11 +1,11 @@
-local ui_state = require('import.ui.state')
-local format_module = require('import.ui.format').module
-local cmds = require('import.commands')
+local ui_state = require("import.ui.state")
+local format_mod = require("import.ui.format").module
+local cmds = require("import.commands")
 
 local _update_main_buffer_line = function(lineno, new_text)
-  vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modifiable', true)
+  vim.api.nvim_set_option_value("modifiable", true, { buf = ui_state.buf_handle })
   vim.api.nvim_buf_set_lines(ui_state.buf_handle, lineno - 1, lineno, false, { new_text })
-  vim.api.nvim_buf_set_option(ui_state.buf_handle, 'modifiable', false)
+  vim.api.nvim_set_option_value("modifiable", false, { buf = ui_state.buf_handle })
 end
 
 local _selected_module = function(line)
@@ -13,14 +13,14 @@ local _selected_module = function(line)
   if not module then
     return
   end
-  _update_main_buffer_line(line, '...')
+  _update_main_buffer_line(line, "...")
   cmds.reload(module)
-  _update_main_buffer_line(line, format_module(module))
+  _update_main_buffer_line(line, format_mod(module))
 end
 
 local _close = function()
   ui_state.is_displayed = false
-  local bufs = { 'view_buf_handle', 'buf_win_handle', 'view_win_handle', 'buf_handle' }
+  local bufs = { "view_buf_handle", "buf_win_handle", "view_win_handle", "buf_handle" }
   for _, buf in pairs(bufs) do
     local bufnr = ui_state[buf] and tonumber(ui_state[buf])
     if bufnr and vim.api.nvim_buf_is_loaded(bufnr) then

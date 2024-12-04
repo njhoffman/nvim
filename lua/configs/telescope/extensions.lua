@@ -183,6 +183,87 @@ local extension_configs = {
   -- ['which-key'] = {},
 
   -- 3rd party to sort through
+  -- ["feed"] = {
+  --   ---@type string
+  --   db_dir = vim.fn.stdpath("data") .. "/feed",
+  --   ---@type string
+  --   colorscheme = "morning",
+  --   ---@type string
+  --   date_format = "%Y-%m-%d",
+  --   ---@type string
+  --   split_cmd = "13split",
+  --   ---@type boolean
+  --   enable_default_keybindings = true,
+  --   options = {
+  --     ---@type table<string, any>
+  --     index = {
+  --       conceallevel = 0,
+  --       wrap = false,
+  --       number = false,
+  --       relativenumber = false,
+  --       modifiable = false,
+  --       listchars = "tab:> ,nbsp:+",
+  --     },
+
+  --     ---@type table<string, any>
+  --     entry = {
+  --       conceallevel = 3,
+  --       concealcursor = "nvc",
+  --       wrap = true,
+  --       number = false,
+  --       relativenumber = false,
+  --       modifiable = false,
+  --       filetype = "markdown",
+  --     },
+  --   },
+  --   ---@type table<string, any>
+  --   layout = {
+  --     {
+  --       "feed",
+  --       width = 25,
+  --       color = "Title",
+  --     },
+  --     {
+  --       "tags",
+  --       width = 25,
+  --       color = "WhiteSpace",
+  --     },
+  --     {
+  --       "title",
+  --       right_justify = false,
+  --       width = 80,
+  --       color = "@markup.strong",
+  --     },
+  --     header = "Hint: <M-CR> open in split | <CR> open | + add tag | - remove tag | ? help", -- TODO: placeholder set to nil
+  --   },
+  --   search = {
+  --     default_query = "@6-months-ago +unread",
+  --   },
+  --   ---@type feed.feed[]
+  --   feeds = {},
+  --   integrations = {
+  --     telescope = {},
+  --   },
+  -- },
+  ["cmdline"] = {
+    -- Adjust telescope picker size and layout
+    picker = {
+      layout_config = {
+        width = 120,
+        height = 25,
+      },
+    },
+    -- Adjust your mappings
+    mappings = {
+      complete = "<Tab>",
+      run_selection = "<C-CR>",
+      run_input = "<CR>",
+    },
+    -- Triggers any shell command using overseer.nvim (`:!`)
+    overseer = {
+      enabled = true,
+    },
+  },
   ["undo"] = {
     use_delta = true,
     -- side_by_side = true,

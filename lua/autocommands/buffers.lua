@@ -77,8 +77,6 @@ local hlsearch_off = function()
 end
 
 return {
-  lsp_diagnostics = lsp_diagnostics,
-  lsp_progress = lsp_progress,
   fasd_update = fasd_update,
   hlsearch_on = hlsearch_on,
   hlsearch_off = hlsearch_off,

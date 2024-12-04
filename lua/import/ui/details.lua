@@ -37,10 +37,19 @@ local output_logs = function(lines, logs)
   end
 end
 
+local output_report = function(lines, reports)
+  table.insert(lines, "    Reports (" .. #reports .. "): ")
+  for _, log in ipairs(reports) do
+    for line in log:gmatch("[^\n]+") do
+      table.insert(lines, string.format("%s%s", whitespace, line))
+    end
+  end
+end
+
 local detail_lines = function()
   local module = ui_state._get_module(vim.api.nvim_win_get_cursor(0)[1] - 1)
   if not module then
-    vim.api.nvim_buf_set_option(ui_state.view_buf_handle, "modifiable", true)
+    vim.api.nvim_set_option_value("modifiable", true, { buf = ui_state.view_buf_handle })
     vim.api.nvim_buf_set_lines(ui_state.view_buf_handle, 0, -1, false, {})
     return
   end
@@ -50,7 +59,10 @@ local detail_lines = function()
 
   table.insert(lines, module)
   table.insert(lines, "    Imported: " .. details.status)
-  table.insert(lines, "    Import Time: " .. math.floor(details.import_time / 1000000 * 1000) / 1000 .. " ms")
+  table.insert(
+    lines,
+    "    Import Time: " .. math.floor(details.import_time / 1000000 * 1000) / 1000 .. " ms"
+  )
   table.insert(lines, "")
 
   -- vim.dbglog(module, details)
@@ -65,6 +77,10 @@ local detail_lines = function()
 
   if details.logs and #details.logs > 0 then
     output_logs(lines, details.logs)
+  end
+
+  if details.report and #details.report > 0 then
+    output_report(lines, details.report)
   end
 
   vim.api.nvim_buf_set_option(ui_state.view_buf_handle, "modifiable", true)

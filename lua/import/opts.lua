@@ -14,23 +14,28 @@ local default_opts = {
   import_show_percentages = false,
   import_sort_times = false,
   detailed_metrics = true,
+  benchmarks = {
+    -- "keymaps",
+    -- "aucommands",
+    -- "variables",
+  },
 }
 
-local user_opts = vim.deepcopy(default_opts)
+local opts = vim.deepcopy(default_opts)
 
-local config = function(configuration)
-  configuration = configuration or {}
-  local _opts = vim.deepcopy(default_opts)
-  for key, value in pairs(configuration) do
+local config = function(conf)
+  local _opts = vim.tbl_deep_extend("force", opts, conf or {})
+  for key, value in pairs(conf) do
     if key == "output_split_type" and (value ~= "horizontal" and value ~= "vertical") then
       value = "horizontal"
     end
     _opts[key] = value
   end
-  user_opts = _opts
+  opts = _opts
+  return opts
 end
 
 return {
-  user_opts = user_opts,
+  user_opts = opts,
   config = config,
 }

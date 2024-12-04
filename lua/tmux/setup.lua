@@ -7,7 +7,7 @@ require("tmux").setup({
   },
   navigation = {
     -- cycles to opposite pane while navigating into the border
-    cycle_navigation = true,
+    cycle_navigation = false,
     -- enables default keybindings (C-hjkl) for normal mode
     enable_default_keybindings = false,
     -- prevents unzoom tmux when navigating beyond vim border
@@ -15,26 +15,46 @@ require("tmux").setup({
   },
   resize = {
     enable_default_keybindings = false,
-    resize_step_x = 1,
+    resize_step_x = 2,
     resize_step_y = 1,
   },
 })
 
 -- TODO: only vim navigate on splits
-vim.api.nvim_set_keymap("n", "<M-h>", '<cmd>lua require("tmux").resize_left()<cr>', {})
-vim.api.nvim_set_keymap("n", "<M-l>", '<cmd>lua require("tmux").resize_right()<cr>', {})
+vim.api.nvim_set_keymap(
+  "n",
+  "<M-h>",
+  '<cmd>lua require("tmux").resize_left()<cr>',
+  { nowait = true, noremap = false }
+)
+vim.api.nvim_set_keymap(
+  "n",
+  "<M-l>",
+  '<cmd>lua require("tmux").resize_right()<cr>',
+  { nowait = true, noremap = false }
+)
 vim.api.nvim_set_keymap("n", "<M-k>", '<cmd>lua require("tmux").resize_top()<cr>', {})
 vim.api.nvim_set_keymap("n", "<M-j>", '<cmd>lua require("tmux").resize_bottom()<cr>', {})
 
-vim.api.nvim_set_keymap("n", "<C-h>", '<cmd>lua require("tmux").move_left()<cr>', {})
-vim.api.nvim_set_keymap("n", "<C-l>", '<cmd>lua require("tmux").move_right()<cr>', {})
-vim.api.nvim_set_keymap("n", "<C-k>", '<cmd>lua require("tmux").move_top()<cr>', {})
-vim.api.nvim_set_keymap("n", "<C-j>", '<cmd>lua require("tmux").move_bottom()<cr>', {})
+vim.api.nvim_set_keymap("n", "<C-h>", '<cmd>lua require("tmux").move_left()<cr>', { nowait = true })
+vim.api.nvim_set_keymap(
+  "n",
+  "<C-l>",
+  '<cmd>lua require("tmux").move_right()<cr>',
+  { nowait = true }
+)
+vim.api.nvim_set_keymap("n", "<C-k>", '<cmd>lua require("tmux").move_top()<cr>', { nowait = true })
+vim.api.nvim_set_keymap(
+  "n",
+  "<C-j>",
+  '<cmd>lua require("tmux").move_bottom()<cr>',
+  { nowait = true }
+)
 
-vim.api.nvim_set_keymap("n", "<C-S-H>", '<cmd>lua require("tmux").move_left()<cr>', {})
-vim.api.nvim_set_keymap("n", "<C-S-L>", '<cmd>lua require("tmux").move_right()<cr>', {})
-vim.api.nvim_set_keymap("n", "<C-S-K>", '<cmd>lua require("tmux").move_top()<cr>', {})
-vim.api.nvim_set_keymap("n", "<C-S-J>", '<cmd>lua require("tmux").move_bottom()<cr>', {})
+-- vim.api.nvim_set_keymap("n", "<C-S-H>", '<cmd>lua require("tmux").move_left()<cr>', {})
+-- vim.api.nvim_set_keymap("n", "<C-S-L>", '<cmd>lua require("tmux").move_right()<cr>', {})
+-- vim.api.nvim_set_keymap("n", "<C-S-K>", '<cmd>lua require("tmux").move_top()<cr>', {})
+-- vim.api.nvim_set_keymap("n", "<C-S-J>", '<cmd>lua require("tmux").move_bottom()<cr>', {})
 
 -- vim.api.nvim_set_keymap("n", "<M-C-S-Right>", '<cmd>lua require("tmux").move_right()<cr>', {})
 -- vim.api.nvim_set_keymap("n", "<M-C-S-Up>", '<cmd>lua require("tmux").move_top()<cr>', {})

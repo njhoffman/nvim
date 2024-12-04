@@ -24,77 +24,183 @@
 
 -- TODO: have separate fade level for focus events
 
-vim.g.vimade = {
-  -- running = 0,
-  basebg = "#041026",
-  basegroups = {
-    "Conceal",
-    -- "ColorColumn",
-    "CursorLine",
-    "CursorLineNr",
-    "CursorColumn",
-    "LineNr",
-    "DiffAdd",
-    "DiffChange",
-    "DiffDelete",
-    "DiffText",
-    "EndOfBuffer",
-    "FoldColumn",
-    "Folded",
-    "NonText",
-    -- 'MiniIndentscopeSymbol',
-    -- 'IblScope',
-    -- 'IblIndent',
-    -- 'IblWhitespace',
-    -- '@ibl.scope.char.1',
-    -- '@ibl.indent.char.1',
-    -- '@ibl.whitespace.char.1',
-    -- 'Search',
-    "SignColumn",
-    -- 'Scrollbar',
-    -- 'ScrollView',
-    "SpecialKey",
-    -- 'StatusLine',
-    "WinBar",
-    "WinSeparator",
-    "Whitespace",
-    "VirtualText",
-    "barbecue_basename",
-    "barbecue_normal",
-    "barbecue_context",
+-- 'cmp_menu',
+-- 'dap-log',
+-- 'dap-repl',
+-- 'dapui_console',
+-- 'dapui_stacks',
+-- 'dapui_breakpoints',
+-- 'dapui_scopes',
+-- 'dapui_watches',
+-- 'CompetiTest',
+-- 'SidebarNvim',
+-- 'Trouble',
+-- 'aerial',
+-- 'tablegen',
+-- 'nerdtree',
+-- 'neo-tree',
+-- 'noice',
+-- 'Mundo',
+-- 'NvimTree',
+-- 'MundoDiff',
+local Fade = require("vimade.style.fade").Fade
+local direction = require("vimade.style.value.direction")
+local ease = require("vimade.style.value.ease")
+local animate = require("vimade.style.value.animate")
+
+local fade1 = Fade({
+  value = animate.Number({
+    start = 1,
+    to = 0.2,
+  }),
+})
+
+local fade2 = Fade({
+  value = animate.Number({
+    start = 1,
+    to = 0.2,
+    direction = direction.IN_OUT,
+    ease = ease.OUT_BOUNCE,
+    duration = 1000,
+    delay = 100,
+  }),
+})
+
+local EXCLUDE_NAMES = { "LineNr", "LineNrBelow", "LineNrAbove", "WinSeparator", "EndOfBuffer" }
+local NO_VISIBILITY_NAMES = { "LineNr", "LineNrBelow", "LineNrAbove", "EndOfBuffer" }
+local LOW_VISIBILITY_NAMES = { "WinSeparator" }
+
+local Default = require("vimade.recipe.default").Default({ animate = true })
+local Minimalist = require("vimade.recipe.minimalist").Minimalist({ animate = false })
+
+local vimade = require("vimade")
+vimade.setup({
+  style = Minimalist.style,
+  fadelevel = function(style, _)
+    if style.win.buf_opts.syntax == "neo-tree" then
+      return 0.8
+    else
+      return 0.5
+    end
+  end,
+  blocklist = {
+    only_behind_float_windows = function(win, current)
+      -- current can be nil
+      if (win.win_config.relative == "") and (current and current.win_config.relative ~= "") then
+        return false
+      end
+      return true
+    end,
+    buf_opts = {
+      buftype = {
+        "prompt",
+        "terminal",
+      },
+      -- filetype = {
+      --   "CompetiTest",
+      --   "Mundo",
+      --   "MundoDiff",
+      --   "NvimTree",
+      --   "SidebarNvim",
+      --   "Trouble",
+      --   "aerial",
+      --   "cmp_menu",
+      --   "dap-log",
+      --   "dap-repl",
+      --   "dapui_breakpoints",
+      --   "dapui_console",
+      --   "dapui_scopes",
+      --   "dapui_stacks",
+      --   "dapui_watches",
+      --   "neo-tree",
+      --   "nerdtree",
+      --   "noice",
+      --   "tablegen",
+      -- },
+    },
+    win_config = { relative = true },
   },
-  checkinterval = 100,
-  detecttermcolors = 1,
-  enablebasegroups = 1,
-  enablefocusfading = 1,
-  enablesigns = 0,
-  enabletreesitter = 1,
-  fadelevel = 0.5,
-  fadepriority = 100,
+  link = {},
   groupdiff = 1,
-  groupscrollbind = 1,
-  signspriority = 31,
-  signsretentionperiod = 4000,
-  usecursorhold = 0,
-}
-
-vim.api.nvim_create_augroup("VimadeEvents", { clear = true })
-vim.api.nvim_create_autocmd({ "FocusLost", "WinLeave" }, {
-  group = "VimadeEvents",
-  callback = function(ev)
-    local winid = vim.fn.bufwinid(ev.buf)
-    vim.api.nvim_set_option_value("colorcolumn", "0", { win = winid })
-  end,
+  groupscrollbind = 0,
+  enablefocusfading = 1,
+  normalid = "",
+  normalncid = "",
+  nohlcheck = 1,
 })
 
--- vim.cmd('VimadeFadeActive')
-vim.api.nvim_create_autocmd({ "FocusGained", "WinEnter" }, {
-  group = "VimadeEvents",
-  callback = function(ev)
-    local winid = vim.fn.bufwinid(ev.buf)
-    vim.api.nvim_set_option_value("colorcolumn", "+1", { win = winid })
-  end,
-})
+-- vim.g.vimade = {
+--   -- running = 0,
+--   basebg = "#041026",
+--   basegroups = {
+--     "Conceal",
+--     -- "ColorColumn",
+--     "CursorLine",
+--     "CursorLineNr",
+--     "CursorColumn",
+--     "LineNr",
+--     "DiffAdd",
+--     "DiffChange",
+--     "DiffDelete",
+--     "DiffText",
+--     "EndOfBuffer",
+--     "FoldColumn",
+--     "Folded",
+--     "NonText",
+--     -- 'MiniIndentscopeSymbol',
+--     -- 'IblScope',
+--     -- 'IblIndent',
+--     -- 'IblWhitespace',
+--     -- '@ibl.scope.char.1',
+--     -- '@ibl.indent.char.1',
+--     -- '@ibl.whitespace.char.1',
+--     -- 'Search',
+--     "SignColumn",
+--     -- 'Scrollbar',
+--     -- 'ScrollView',
+--     "SpecialKey",
+--     -- 'StatusLine',
+--     "WinBar",
+--     "WinSeparator",
+--     "Whitespace",
+--     "VirtualText",
+--     "barbecue_basename",
+--     "barbecue_normal",
+--     "barbecue_context",
+--   },
+--   checkinterval = 100,
+--   detecttermcolors = 1,
+--   enablebasegroups = 1,
+--   enablefocusfading = 1,
+--   enablesigns = 0,
+--   enabletreesitter = 1,
+--   fadelevel = 0.5,
+--   fadepriority = 100,
+--   groupdiff = 1,
+--   groupscrollbind = 1,
+--   signspriority = 31,
+--   signsretentionperiod = 4000,
+--   usecursorhold = 0,
+-- }
+--
+-- vim.api.nvim_create_augroup("VimadeEvents", { clear = true })
+-- vim.api.nvim_create_autocmd({ "FocusLost", "WinLeave" }, {
+--   group = "VimadeEvents",
+--   callback = function(ev)
+--     local winid = vim.fn.bufwinid(ev.buf)
+--     vim.api.nvim_set_option_value("colorcolumn", "0", { win = winid })
+--   end,
+-- })
+--
+-- -- vim.cmd('VimadeFadeActive')
+-- vim.api.nvim_create_autocmd({ "FocusGained", "WinEnter" }, {
+--   group = "VimadeEvents",
+--   callback = function(ev)
+--     local winid = vim.fn.bufwinid(ev.buf)
+--     vim.api.nvim_set_option_value("colorcolumn", "+1", { win = winid })
+--   end,
+-- })
+
 -- vim.api.nvim_create_autocmd({ 'BufWinEnter', 'BufWinLeave' }, {
 --   group = 'VimadeEvents',
 --   callback = function(ev)

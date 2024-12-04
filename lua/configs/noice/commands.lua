@@ -3,17 +3,20 @@ local restore_routes = nil
 local silence_start = function()
   vim.diagnostic.disable()
   local notify_stats = {
-    history = require("notify").pending(),
-    pending = require("notify").history(),
+    pending = require("notify").pending(),
+    history = require("notify").history(),
+    noice = #require("noice.message.manager")._history,
     -- { filetype = "markdown", icon = "", id = 3, level = "INFO", message = { "Live commands", "   ➜ `Norm <keys>`", "   ➜ `5Reg a`", "   ➜ `G/^$/d`", "   ➜ `%Spattern/replace`" }, render = <function 3>, time = 1707851316, title = { "format", "13:08:36" } }
   }
 
-  local noice_count = #require("noice.message.manager")._history
-  local num_pending = #(notify_stats.pending or {})
-
-  require("notify").dismiss({ silent = true, pending = true })
+  local noice_count =
+require("notify").dismiss({ silent = true, pending = true })
   vim.notify(
-    "Messages and lsp silenced - " .. "pending: " .. num_pending .. " - noice: " .. noice_count,
+    "Messages and lsp silenced - "
+      .. "pending: "
+      .. notify_stats.pending
+      .. " - noice: "
+      .. notify_stats.noice,
     "info",
     { title = "Silence", timeout = 5000 }
   )

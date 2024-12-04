@@ -11,6 +11,15 @@
 --   vim.keymap.set('x', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], {})
 -- end
 
+-- local kopts = {noremap = true, silent = true}
+--
+-- vim.api.nvim_set_keymap('n', 'n', [[<Cmd>lua Scroll("n", 1, 1); require('hlslens').start()<CR>]], kopts)
+-- vim.api.nvim_set_keymap('n', 'N', [[<Cmd>lua Scroll("N", 1, 1); require('hlslens').start()<CR>]], kopts)
+-- vim.api.nvim_set_keymap('n', '*', [[<Cmd>lua Scroll("*", 1, 1); require('hlslens').start()<CR>]], kopts)
+-- vim.api.nvim_set_keymap('n', '#', [[<Cmd>lua Scroll("#", 1, 1); require('hlslens').start()<CR>]], kopts)
+-- vim.api.nvim_set_keymap('n', 'g*', [[<Cmd>lua Scroll("g*", 1, 1); require('hlslens').start()<CR>]], kopts)
+-- vim.api.nvim_set_keymap('n', 'g#', [[#<Cmd>lua Scroll("g#", 1, 1); require('hlslens').start()<CR>]], kopts)
+
 local override_lens = function(render, posList, nearest, idx, _)
   -- formats virtual text as a bubble
   local lnum, col = unpack(posList[idx])
@@ -68,12 +77,12 @@ local hlslens_config = {
 
 require("hlslens").setup(hlslens_config)
 
-vim.cmd([[
-    augroup scrollbar_search_hide
-        autocmd!
-        autocmd CmdlineLeave : lua require('scrollbar.handlers.search').handler.hide()
-    augroup END
-]])
+-- vim.cmd([[
+--     augroup scrollbar_search_hide
+--         autocmd!
+--         autocmd CmdlineLeave : lua require('scrollbar.handlers.search').handler.hide()
+--     augroup END
+-- ]])
 
 -- -- run `:nohlsearch` and export results to quickfix
 -- -- if Neovim is 0.8.0 before, remap yourself.

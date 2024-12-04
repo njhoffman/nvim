@@ -7,7 +7,6 @@ local benchmarks = require("import.benchmarks")
 local defaults = {
   hide_output = false,
   hide_errors = false,
-  -- benchmarks = { "keymaps", "aucommands", "variables" },
   benchmarks = {},
 }
 
@@ -88,7 +87,8 @@ local import = function(path, success_cb, import_opts)
     for i = 1, #_ do
       table.insert(print_safe_args, tostring(_[i]))
     end
-    local print_log = string.format(log_format, path, os.date(log_fmt), table.concat(print_safe_args))
+    local print_log =
+      string.format(log_format, path, os.date(log_fmt), table.concat(print_safe_args))
     table.insert(logs.print, print_log)
     if user_opts.import_enable_better_printing then
       table.insert(logs.replay, { level = "print", log = print_log })
@@ -103,7 +103,8 @@ local import = function(path, success_cb, import_opts)
     for i = 1, #_ do
       table.insert(print_safe_args, tostring(_[i]))
     end
-    local error_log = string.format("ERROR: " .. log_format, path, os.date(log_fmt), table.concat(print_safe_args))
+    local error_log =
+      string.format("ERROR: " .. log_format, path, os.date(log_fmt), table.concat(print_safe_args))
     table.insert(logs.error, error_log)
     if user_opts.import_enable_better_printing then
       table.insert(logs.replay, { level = "error", log = error_log })
@@ -115,8 +116,10 @@ local import = function(path, success_cb, import_opts)
   _G.print = print_shim
   _G.error = error_shim
 
+  local bm_opts = vim.tbl_deep_extend("force", import_opts.benchmarks, user_opts.benchmarks)
+
   local metrics = reporter.calc_metrics()
-  prepare_benchmarks(path, import_opts.benchmarks or {})
+  prepare_benchmarks(path, bm_opts)
   local mod_status, mod_ret = pcall(require, path)
   reporter.calc_metrics(metrics)
 

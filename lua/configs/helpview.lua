@@ -1,16 +1,68 @@
+-- arguments = {},          -- {arg}
+-- 	group_names = {},        -- $Group$
+-- 	inline_codes = {},       -- `code`
+-- 	keycodes = {},           -- <ESC>
+-- 	mention_links = {},      -- |link|
+-- 	modelines = {},          -- vim:
+-- 	notes = {},              -- Note:
+-- 	option_links = {},       -- 'option'
+-- 	tag_links = {},          -- <tag>
+-- 	title = {}
 local cfg = {
   -- hybrid_modes = { "n", "s", "v" },
   modes = { "n", "s", "c", "x", "v", "V", "" },
   option_links = {
-    padding_left = " ",
-    padding_right = " ",
+    padding_left = "",
+    padding_right = "",
     -- icon = " ",
-    hl = "HelpviewOptionLink",
+    hl = "Optionlink", -- Highlight group
+    -- hl = "HelpviewOptionLink",
     conceal_before = 1,
     conceal_after = 1,
   },
+  inline_codes = {
+    enable = true,
+    padding_left = "",
+    padding_right = "",
+    icon = "",
+    hl = "InlineCode",
+    conceal_before = 1,
+    conceal_after = 1,
+  },
+  keycodes = {
+    enable = true, -- For toggling this feature
+    hl = "Keycode", -- Highlight group
+    icon = "",
+    -- padding_left = "", -- Padding for the left side
+    -- padding_right = "  ", -- Padding for the right side
+    -- -- icon = " ", -- Icon to use 󰌌  
+    -- conceal_before = 1,
+    -- conceal_after = 1,
+    conceal_before = function(data)
+      if data.extracted then
+        return 1
+      else
+        return 0
+      end
+    end,
+    conceal_after = function(data)
+      if data.extracted then
+        return 1
+      else
+        return 0
+      end
+    end,
+  },
+  mention_links = {
+    enable = true, -- For toggling this feature
+    padding_left = "", -- Padding for the left side
+    padding_right = "", -- Padding for the right side
+    icon = " ", -- Icon to use
+    hl = "Mentionlink", -- Highlight group
+  },
   arguments = {
-    -- icon = "󰂓 ",
+    -- icon = "󰂓 ",  󰅪  
+    icon = " ",
     hl = "@variable.parameter.vimdoc",
     conceal_before = 1,
     conceal_after = 1,

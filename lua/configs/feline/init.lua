@@ -12,6 +12,7 @@ local custom_providers = {
   neocomposer = require("configs.feline.provider-neocomposer").provider,
   ascii = require("configs.feline.provider-ascii").provider,
   line_count = require("configs.feline.provider-line_count").provider,
+  misc_stats = require("configs.feline.provider-misc-stats").provider,
 }
 
 -- bg_jobs, cmdline and qf components
@@ -93,8 +94,9 @@ table.insert(status_comps.active[1], 8, custom_status_comps.LineCountComponent)
 -- status_comps.active[2][1] = custom_status_comps.HelpTagsComponent
 -- status_comps.active[2][2] = custom_status_comps.LspReferencesComponent
 -- status_comps.active[2][2] = custom_status_comps.LspCodeActionsComponent
-status_comps.active[2][1] = custom_status_comps.MacroComponent
+-- status_comps.active[2][1] = custom_status_comps.MacroComponent
 -- status_comps.active[2][2] = custom_status_comps.FelineCmdComponent
+status_comps.active[2][1] = custom_status_comps.MiscStats
 status_comps.active[2][2] = custom_status_comps.FiletypeComponent
 status_comps.active[2][3] = custom_status_comps.NoiceComponent
 status_comps.active[2][4] = custom_status_comps.GitBranchComponent

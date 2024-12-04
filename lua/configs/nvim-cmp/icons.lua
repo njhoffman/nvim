@@ -95,20 +95,15 @@ local source_names = {
   --         vim.api.nvim_set_hl(0, "SLSeparator", { fg = cursorline_hl.background, bg = statusline_hl.background })
 
 --  local after_line = string.sub(line, cursor + 1, -1)
--- stylua: ignore
 
-          -- buffer = '',
-          -- nvim_lsp = ' ',
-          -- luasnip = ' 🐍',
-          -- treesitter = ' ',
-          -- nvim_lua = ' ',
-          -- spell = ' 暈',
-          -- emoji = '󰞅',
-          -- copilot = "🤖",
-          -- cmp_tabnine = '🤖',
-          -- look = '',
+-- buffer = '', nvim_lsp = ' ', luasnip = ' 🐍', treesitter = ' ',
+-- nvim_lua = ' ', spell = ' 暈', emoji = '󰞅', copilot = "🤖",
+-- cmp_tabnine = '🤖', look = '',
+
+-- stylua: ignore
 local lsp_symbols = {
   Boolean              = "◩",
+  CharacterSpecial     = "",
   Class                = '󰌗', --   Class       = "󰠱 ",
   Codeium              = '',
   Color                = '󰏘',
@@ -155,6 +150,7 @@ local lsp_symbols = {
   MarkupHeading4Marker = '',
   MarkupHeading5Marker = '',
   MarkupHeading6Marker = '',
+  MarkupList           = '',
   MarkupLink           = '',
   MarkupRaw            = '',
   MarkupRawBlock       = '', -- ''

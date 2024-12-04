@@ -1,6 +1,6 @@
-local handlers = require('scrollbar.handlers')
-local const = require('scrollbar.const')
-local utils = require('scrollbar.utils')
+local handlers = require("scrollbar.handlers")
+local const = require("scrollbar.const")
+local utils = require("scrollbar.utils")
 
 local NAMESPACE = vim.api.nvim_create_namespace(const.NAME_PREFIX)
 
@@ -13,7 +13,7 @@ end
 M.render = function()
   M.clear()
 
-  local config = require('scrollbar.config').get()
+  local config = require("scrollbar.config").get()
 
   if not config.show then
     return
@@ -27,7 +27,7 @@ M.render = function()
     return
   end
 
-  if type(config.excluded_fn) == 'function' and config.excluded_fn() then
+  if type(config.excluded_fn) == "function" and config.excluded_fn() then
     return
   end
 
@@ -38,8 +38,8 @@ M.render = function()
   end
 
   local visible_lines = vim.api.nvim_win_get_height(0)
-  local first_visible_line = vim.fn.line('w0')
-  local last_visible_line = vim.fn.line('w$')
+  local first_visible_line = vim.fn.line("w0")
+  local last_visible_line = vim.fn.line("w$")
   local folds = {}
 
   if
@@ -140,8 +140,8 @@ M.render = function()
 
     if mark_line >= 0 then
       local handle_opts = {
-        virt_text_pos = 'right_align',
-        hl_mode = 'blend',
+        virt_text_pos = "right_align",
+        hl_mode = "blend",
       }
 
       local handle_mark = nil
@@ -166,11 +166,11 @@ M.render = function()
         local handle_mark_text = config.handle.text
 
         if not show_handle then
-          handle_mark_text = ''
+          handle_mark_text = ""
         end
 
         handle_opts.virt_text = {
-          { handle_mark_text, utils.get_highlight_name('', show_handle) },
+          { handle_mark_text, utils.get_highlight_name("", show_handle) },
         }
       end
 
@@ -187,7 +187,7 @@ M.render = function()
 
       if mark_line >= 0 then
         local mark_opts = {
-          virt_text_pos = 'right_align',
+          virt_text_pos = "right_align",
           virt_text = { { mark.text, utils.get_highlight_name(mark.type, false) } },
         }
         vim.api.nvim_buf_set_extmark(0, NAMESPACE, mark_line, 0, mark_opts)
@@ -207,31 +207,31 @@ M.throttled_render = M.render
 --     {all =  { height = 51, leftcol = 0, skipcol = 0, topfill = 0, topline = 27, width = 122 }
 
 M.on_scroll = function(ev)
-  -- local wins = { 0 }
-  -- if vim.v.event.all ~= nil then
-  --   wins = {}
-  --   for win, _ in pairs(vim.v.event) do
-  --     if win ~= 'all' then
-  --       table.insert(wins, tonumber(win))
-  --     end
-  --   end
-  -- end
-  -- for _, win in ipairs(wins) do
-  -- vim.dbglog(ev.match, vim.v.event)
-  local win = vim.api.nvim_get_current_win() or 0
-  if tonumber(ev.match) ~= nil then
-    win = tonumber(ev.match) or win
-  elseif type(ev.buf) == 'number' then
-    win = vim.fn.bufwinid(ev.buf) or win
+  local wins = { 0 }
+  if vim.v.event.all ~= nil then
+    wins = {}
+    for win, _ in pairs(vim.v.event) do
+      if win ~= "all" then
+        table.insert(wins, tonumber(win))
+      end
+    end
   end
-  vim.dbglog(ev.event .. ' : ' .. win .. ' ' .. ev.match)
-  if vim.api.nvim_win_is_valid(win) then
-    vim.api.nvim_win_call(win, function()
-      handlers.show()
-      M.render()
-    end)
+  for _, win in ipairs(wins) do
+    -- vim.dbglog(ev.match, vim.v.event)
+    -- local win = vim.api.nvim_get_current_win() or 0
+    if tonumber(ev.match) ~= nil then
+      win = tonumber(ev.match) or win
+    elseif type(ev.buf) == "number" then
+      win = vim.fn.bufwinid(ev.buf) or win
+    end
+    vim.dbglog(ev.event .. " : " .. win .. " " .. ev.match)
+    if vim.api.nvim_win_is_valid(win) then
+      vim.api.nvim_win_call(win, function()
+        handlers.show()
+        M.render()
+      end)
+    end
   end
-  -- end
 end
 
 return M

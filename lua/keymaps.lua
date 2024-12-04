@@ -1255,13 +1255,13 @@ map('n', '<leader>:', '<c-w>W', {
   desc = ' focus the previous window',
 })
 
-map('n', '<M-Tab>', '<c-w>w', {
+map('n', '<C-Tab>', '<c-w>w', {
   category = 'Window',
   label = 'window next',
   desc = ' focus the next window',
 })
 
-map('n', '<M-S-Tab>', '<c-w>W', {
+map('n', '<C-S-Tab>', '<c-w>W', {
   category = 'Window',
   label = 'window prev ',
   desc = ' focus the prev window',

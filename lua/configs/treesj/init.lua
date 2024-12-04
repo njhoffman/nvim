@@ -1,59 +1,57 @@
-local langs = require('configs.treesj.langs')
+local langs = require("configs.treesj.langs")
 
-require('treesj').setup({
+require("treesj").setup({
   use_default_keymaps = false,
-  cursor_behavior = 'hold',
-  max_join_length = 1000,
+  cursor_behavior = "hold",
+  max_join_length = 2000,
   check_syntax_error = true,
   langs = langs,
 })
 
 local fallback_log = function(mode, results)
-  vim.dbglog('fallback to mini.' .. mode, results[1])
+  vim.dbglog("fallback to mini." .. mode, results)
+end
+
+local try_treesj = function(mode)
+  local node = require("configs.treesj.utils").check_ts_node()
+  return node ~= nil and langs[vim.bo.filetype] and (node == mode or mode == "toggle")
 end
 
 local split_toggle = function()
-  if langs[vim.bo.filetype] ~= nil then
-    local node = require('configs.treesj.utils').check_ts_node()
-    -- vim.dbglog('node', node)
-    require('treesj').toggle()
+  if not try_treesj("toggle") then
+    local results = require("mini.splitjoin").toggle()
+    fallback_log("toggle", results)
   else
-    local results = require('mini.splitjoin').toggle()
-    fallback_log('toggle', results)
+    require("treesj").toggle()
   end
 end
-vim.api.nvim_create_user_command('SplitToggle', split_toggle, {})
+vim.api.nvim_create_user_command("SplitToggle", split_toggle, {})
 
 local split_split = function()
-  if langs[vim.bo.filetype] ~= nil then
-    require('treesj').split({ split = { recursive = true } })
+  if not try_treesj("split") then
+    local results = require("mini.splitjoin").split()
+    fallback_log("split", results)
   else
-    local results = require('mini.splitjoin').split()
-    fallback_log('split', results)
+    require("treesj").split()
   end
 end
-vim.api.nvim_create_user_command('SplitSplit', split_split, {})
+vim.api.nvim_create_user_command("SplitSplit", split_split, {})
 
 local split_join = function()
-  if langs[vim.bo.filetype] ~= nil then
-    require('treesj').join()
+  if not try_treesj("join") then
+    local results = require("mini.splitjoin").join()
+    fallback_log("join", results)
   else
-    local results = require('mini.splitjoin').join()
-    fallback_log('join', results)
+    require("treesj").join()
   end
 end
-vim.api.nvim_create_user_command('SplitJoin', split_join, {})
+vim.api.nvim_create_user_command("SplitJoin", split_join, {})
 
 local split_mapping = function()
   -- TODO: if not toggleable node (node identifier is not configured) go to first parenthesis
-  vim.keymap.set(
-    'n',
-    'gs',
-    '<cmd>SplitToggle<cr>',
-    { buffer = false, desc = 'split toggle cursor' }
-  )
-  vim.keymap.set('n', 'gJ', '<cmd>SplitJoin<cr>', { buffer = false, desc = 'split join cursor' })
-  vim.keymap.set('n', 'gS', '<cmd>SplitSplit<cr>', { buffer = false, desc = 'split split cursor' })
+  vim.keymap.set("n", "gs", split_toggle, { buffer = false, desc = "split toggle cursor" })
+  vim.keymap.set("n", "gJ", split_join, { buffer = false, desc = "split join cursor" })
+  vim.keymap.set("n", "gS", split_split, { buffer = false, desc = "split split cursor" })
   -- TODO: make hover information about node format
   -- utils.check_ts_node()
 end

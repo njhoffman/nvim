@@ -1387,6 +1387,9 @@ return function(injected_functions)
     -- RenderMarkdownCodeInline({}),
     RenderMarkdownCode({ CodeBlock }),
 
+    mkdCode({ CodeBlock }),
+    -- mkdCodeEnd({ mkdCode }),
+
     HelpviewTitle({ fg = "#c19A96", bg = "#141000", gui = "bold" }),
     HelpviewHeading1({ fg = "#1b8b95", bg = "#001808", gui = "bold" }),
     HelpviewHeading2({ fg = "#826591", bg = "#080406", gui = "bold" }),
@@ -1395,10 +1398,11 @@ return function(injected_functions)
 
     HelpviewCode({ CodeBlock }),
     HelpviewInlineCode({ CodeBlock }),
-    HelpviewCodeLanguage({ fg = "#5f798a", bg = "none", italic = true }),
+    HelpviewCodeLanguage({ fg = "#5f798a", bg = "none", gui = "italic" }),
 
-    HelpviewTaglink({ fg = "#01aab5", bg = "none", gui = "bold" }),
-    HelpviewOptionlink({ fg = "#7755aa", bg = "none" }),
+    HelpviewKeycode({ fg = "#836681" }),
+    HelpviewTaglink({ fg = "#01aab5", bg = "none", gui = "italic,nocombine" }),
+    HelpviewOptionlink({ fg = "#3388cc", bg = "none", gui = "nocombine" }),
     HelpviewMentionlink({ fg = "#3388cc", bg = "none", gui = "italic" }),
 
     RecallMark({ fg = "#00baca" }),

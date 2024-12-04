@@ -35,16 +35,53 @@ function M.setup()
   end
 end
 
+function M.get_horizontal_state()
+  local state = {
+    curr_win = vim.fn.winnr(),
+    left_win = vim.fn.winnr("h"),
+    right_win = vim.fn.winnr("l"),
+    left_border = nvim.is_nvim_border("h"),
+    right_border = nvim.is_nvim_border("l"),
+  }
+  state = vim.tbl_deep_extend("force", state, {
+    left_split = state.curr_win ~= state.left_win,
+    right_split = state.curr_win ~= state.right_win,
+  })
+  return state
+end
+
 function M.to_left()
-  local is_border = nvim.is_nvim_border("l")
-  if is_border and is_tmux_target("l") then
+  vim.g.minianimate_disable = true
+  local state = M.get_horizontal_state()
+  if state.left_split then
+    vim.fn.win_move_separator(state.left_win, -options.resize.resize_step_x - 1)
+  elseif state.right_split then
+    vim.fn.win_move_separator(state.curr_win, -options.resize.resize_step_x - 1)
+  elseif is_tmux_target("h") then
     tmux.resize("h", options.resize.resize_step_x)
-    tmux.resize("h", options.resize.resize_step_x)
-  elseif is_border then
-    nvim.resize("x", "+", options.resize.resize_step_x)
+  elseif is_tmux_target("l") then
+    tmux.resize("l", options.resize.resize_step_x)
   else
-    vim.fn.win_move_separator(0, -options.resize.resize_step_x)
+    nvim.resize("x", "-", options.resize.resize_step_x)
   end
+  vim.b.minianimate_disable = false
+end
+
+function M.to_right()
+  vim.g.minianimate_disable = true
+  local state = M.get_horizontal_state()
+  if state.left_split then
+    vim.fn.win_move_separator(state.left_win, options.resize.resize_step_x)
+  elseif state.right_split then
+    vim.fn.win_move_separator(state.curr_win, options.resize.resize_step_x)
+  elseif is_tmux_target("h") then
+    tmux.resize("l", options.resize.resize_step_x)
+  elseif is_tmux_target("l") then
+    tmux.resize("h", options.resize.resize_step_x)
+  else
+    nvim.resize("x", "+", options.resize.resize_step_x)
+  end
+  vim.b.minianimate_disable = false
 end
 
 function M.to_bottom()
@@ -66,18 +103,6 @@ function M.to_top()
     nvim.resize("y", "+", options.resize.resize_step_y)
   else
     vim.fn.win_move_statusline(0, -options.resize.resize_step_y)
-  end
-end
-
-function M.to_right()
-  local is_border = nvim.is_nvim_border("l")
-  if is_border and is_tmux_target("l") then
-    tmux.resize("l", options.resize.resize_step_x)
-    tmux.resize("l", options.resize.resize_step_x)
-  elseif is_border then
-    nvim.resize("x", "-", options.resize.resize_step_x)
-  else
-    vim.fn.win_move_separator(0, options.resize.resize_step_x)
   end
 end
 

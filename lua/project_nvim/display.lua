@@ -30,6 +30,7 @@ local get_icon = function(method, lsp)
     graphql =                { get_by_ft("graphql") },
     html =                   { get_by_ft("html") },
     jdtls =                  { get_by_ft("java") },
+    jqls =                   { get_by_ft("jq") },
     jsonls =                 { get_by_ft("json") },
     kotlin_language_server = { get_by_ft('kotlin')},
     ltex =                   { get_by_ft("markdown") },

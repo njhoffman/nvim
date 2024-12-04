@@ -1,11 +1,16 @@
-require('quicknote').setup({
-  mode = 'resident', -- "portable" | "resident"
-  sign = ' ', --                      
-  filetype = 'md',
+require("quicknote").setup({
+  mode = "portable", -- "portable" | "resident"
+  sign = " ", --                      
+  filetype = "md",
   git_branch_recognizable = false,
 })
 
-vim.api.nvim_set_keymap('n', '<leader>N', "<cmd>:lua require('quicknote').NewNoteAtCurrentLine()<cr>", {})
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>N",
+  "<cmd>:lua require('quicknote').NewNoteAtCurrentLine()<cr>",
+  {}
+)
 
 -- Description
 -- NewNoteAtCWD()                 	create a note at current working directory

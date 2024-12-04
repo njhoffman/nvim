@@ -95,9 +95,6 @@ local on_attach = function(client, bufnr)
     return vim.notify("Skipping buffer lsp", 1)
   end
 
-  if client.server_capabilities["documentSymbolProvider"] then
-    require("nvim-navic").attach(client, bufnr)
-  end
   --       vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
   -- vim.lsp.omnifunc = nil
   -- vim.api.nvim_set_option_value('omnifunc', nil, {})
@@ -125,6 +122,11 @@ local on_attach = function(client, bufnr)
   --   -- vim.dbglog('INLAY HINTS AVAILABLE')
   --   vim.lsp.inlay_hint.enable(bufnr, true)
   -- end
+  -- TODO: fix vimls documentSymbolProvider sorting
+  if client.server_capabilities.documentSymbolProvider and client.name ~= "vimls" then
+    vim.api.nvim_set_var("navic_silence", true)
+    require("nvim-navic").attach(client, bufnr)
+  end
 
   capabilities.resolve(client, bufnr)
 end

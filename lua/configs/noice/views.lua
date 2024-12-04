@@ -169,31 +169,11 @@ local miniView = {
 -- local render = require("notify.render._entry")
 
 local notifyView = {
-  -- render = 'minimal',
-  merge = true,
-  -- render = render,
-  -- level = vim.log.levels.TRACE,
-  -- fps = 30,
-  -- stages = 'fade_in_slide_out',
-  -- background_colour = '#000000',
-  -- timeout = 5000,
-  -- minimum_width = 5,
-  -- max_height = function()
-  --   return math.floor(vim.opt.lines:get() / 5 * 4)
-  -- end,
-  -- max_width = function()
-  --   return math.floor(vim.opt.columns:get() / 5 * 3)
-  -- end,
-  -- icons = {
-  --   ERROR = '',
-  --   WARN = '',
-  --   INFO = '',
-  --   DEBUG = '',
-  --   TRACE = '✎',
-  --   INSPECT = '',
-  --   RUN = '',
-  --   STATUS = '',
-  -- },
+  backend = "notify",
+  fallback = "mini",
+  format = "notify",
+  replace = false,
+  merge = false,
 }
 
 local cmdlinePopupView = {

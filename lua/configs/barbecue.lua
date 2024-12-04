@@ -244,7 +244,7 @@ local cfg = {
     'ansible_hosts',
     "netrw",
     "toggleterm",
-    "vim",
+    -- "vim",
   },
   exclude_buftypes = {'nofile'},
   modified = function(bufnr)
@@ -282,7 +282,7 @@ local cfg = {
 require('barbecue').setup(cfg)
 
 vim.api.nvim_create_autocmd({
-  "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
+  "WinResized", -- or WinResized on NVIM-v0.9 and higher
   "BufWinEnter",
   "CursorHold",
   "InsertLeave",

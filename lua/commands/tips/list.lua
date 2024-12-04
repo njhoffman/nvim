@@ -80,22 +80,7 @@ M.debug = {
   },
 }
 
-M.misc = {
-  { "Comments: dgc dgb cgc cgb ygc ygb gcip gcO gcA gco" },
-  { "To traverse undo list:", "`[ g-  g+ ]`" },
-  {
-    'The "gm" motion moves horizontally by a division winwidth',
-    '`local gmColumn = math.floor(fn.winwidth("%")/ 2)`',
-    "`vim.opt.colorcolumn = gmColumn`",
-  },
-  { "To reset the mouse or keyboard", "`xinput --list--disable/--enable`" },
-  { "To search for a character by unicode", "`/\v%u4e2d<CR>`" },
-  {
-    "To insert sequential numbers",
-    "`:put=map(range(1,5)`",
-    "`:put=map(range(1,5), 'v:val/2.0')` (increment by 0.5)",
-    "`:put=join(range(1,5), ' & ')     ` (increment by 0.5)",
-  },
+M.shell = {
   {
     "To replace current buffer with shell cmd output",
     "`:r !ls | wc`",
@@ -119,6 +104,24 @@ M.misc = {
   {
     "Output shell output to new buffer",
     "`:enew | set ft=log | r !sort #`",
+  },
+}
+
+M.misc = {
+  { "Comments: dgc dgb cgc cgb ygc ygb gcip gcO gcA gco" },
+  { "To traverse undo list:", "`[ g-  g+ ]`" },
+  {
+    'The "gm" motion moves horizontally by a division winwidth',
+    '`local gmColumn = math.floor(fn.winwidth("%")/ 2)`',
+    "`vim.opt.colorcolumn = gmColumn`",
+  },
+  { "To reset the mouse or keyboard", "`xinput --list--disable/--enable`" },
+  { "To search for a character by unicode", "`/\v%u4e2d<CR>`" },
+  {
+    "To insert sequential numbers",
+    "`:put=map(range(1,5)`",
+    "`:put=map(range(1,5), 'v:val/2.0')` (increment by 0.5)",
+    "`:put=join(range(1,5), ' & ')     ` (increment by 0.5)",
   },
 }
 
@@ -197,13 +200,6 @@ M.movement = {
   { "Normal move (swap) node", "`<C-M-S-J>  <C-M-S-K>  <C-M-S-H>/<C-M-S-L>`" },
   { "Exchange (swap) content inside argument and parenthesis with cx ", "`cxia` ➜ `ci(`" },
   { "Visual exchange (swap) inside function and block with X ", "`vifX` ➜ `vbX`" },
-  {
-    "Text objects",
-    "`c = class    C = conditional f = function   ? = prompt          i = object`",
-    "`b = balanced  B = block      h = git-hunk   o = block/cond/loop L = loop`",
-    "`t = tag       w = word       W = WORD       x = comment         l = last textobj  n = next textobj`",
-    "`% = matching  a = argument   A = attribute  s = sentence        p = paragraph     q = quote`",
-  },
 }
 
 M.substitute = {
@@ -232,6 +228,17 @@ M.substitute = {
     "`:S/box{,es,ed,ing}/`",
     "`:S /box/aw *.txt *.html`",
     "`:%S/{,un}nec{ce,ces,e}sar{y,ily}/{}nec{es}sar{}/g`",
+  },
+}
+
+M.textobjects = {
+  { "Toggle commenting on comment block", "gcgc" },
+  {
+    "Text objects",
+    "`c = class    C = conditional f = function   ? = prompt          i = object`",
+    "`b = balanced  B = block      h = git-hunk   o = block/cond/loop L = loop`",
+    "`t = tag       w = word       W = WORD       x = comment         l = last textobj  n = next textobj`",
+    "`% = matching  a = argument   A = attribute  s = sentence        p = paragraph     q = quote`",
   },
 }
 

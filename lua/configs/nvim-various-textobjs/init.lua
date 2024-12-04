@@ -24,9 +24,10 @@ local various_textobjs = require("various-textobjs")
 various_textobjs.setup({
   -- lines to seek forwards for "small" textobjs (mostly characterwise textobjs)
   -- set to 0 to only look in the current line
-  lookForwardSmall = 20,
-  -- lines to seek forwards for "big" textobjs (mostly linewise textobjs)
-  lookForwardBig = 50,
+  forwardLooking = {
+    small = 20,
+    big = 50,
+  },
   useDefaultKeymaps = true,
   disabledKeymaps = {
     "P", -- Used for paste operator

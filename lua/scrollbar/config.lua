@@ -7,132 +7,135 @@ local config = {
   hide_if_all_visible = false, -- Hides everything if all lines are visible
   throttle_ms = 100,
   handle = {
-    text = ' ',
+    text = " ",
     blend = 30, -- Integer between 0 and 100. 0 for fully opaque and 100 to full transparent. Defaults to 30.
     color = nil,
     color_nr = nil, -- cterm
-    highlight = 'CursorColumn',
+    highlight = "CursorColumn",
     hide_if_all_visible = true, -- Hides handle if all lines are visible
   },
   marks = {
     Cursor = {
-      text = '•',
+      text = "•",
       priority = 0,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = 'Normal',
+      highlight = "Normal",
     },
     Search = {
-      text = { '-', '=' },
+      text = { "-", "=" },
       priority = 1,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = 'Search',
+      highlight = "Search",
     },
     Error = {
-      text = { '-', '=' },
+      text = { "-", "=" },
       priority = 2,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = 'DiagnosticVirtualTextError',
+      highlight = "DiagnosticVirtualTextError",
     },
     Warn = {
-      text = { '-', '=' },
+      text = { "-", "=" },
       priority = 3,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = 'DiagnosticVirtualTextWarn',
+      highlight = "DiagnosticVirtualTextWarn",
     },
     Info = {
-      text = { '-', '=' },
+      text = { "-", "=" },
       priority = 4,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = 'DiagnosticVirtualTextInfo',
+      highlight = "DiagnosticVirtualTextInfo",
     },
     Hint = {
-      text = { '-', '=' },
+      text = { "-", "=" },
       priority = 5,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = 'DiagnosticVirtualTextHint',
+      highlight = "DiagnosticVirtualTextHint",
     },
     Misc = {
-      text = { '-', '=' },
+      text = { "-", "=" },
       priority = 6,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = 'Normal',
+      highlight = "Normal",
     },
     GitAdd = {
-      text = '┆',
+      text = "┆",
       priority = 7,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = 'GitSignsAdd',
+      highlight = "GitSignsAdd",
     },
     GitChange = {
-      text = '┆',
+      text = "┆",
       priority = 7,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = 'GitSignsChange',
+      highlight = "GitSignsChange",
     },
     GitDelete = {
-      text = '▁',
+      text = "▁",
       priority = 7,
       gui = nil,
       color = nil,
       cterm = nil,
       color_nr = nil, -- cterm
-      highlight = 'GitSignsDelete',
+      highlight = "GitSignsDelete",
     },
   },
   excluded_buftypes = {
-    'terminal',
+    "terminal",
   },
   excluded_filetypes = {
-    'cmp_docs',
-    'cmp_menu',
-    'noice',
-    'prompt',
-    'TelescopePrompt',
+    "dropbar_menu",
+    "dropbar_menu_fzf",
+    "DressingInput",
+    "cmp_docs",
+    "cmp_menu",
+    "noice",
+    "prompt",
+    "TelescopePrompt",
   },
   excluded_fn = nil,
   autocmd = {
     render = {
-      'BufWinEnter',
-      'CmdwinLeave',
-      'TabEnter',
-      'TermEnter',
-      'TextChanged',
-      'VimResized',
-      'WinEnter',
-      'WinScrolled',
+      "BufWinEnter",
+      "TabEnter",
+      "TermEnter",
+      "WinEnter",
+      "CmdwinLeave",
+      "TextChanged",
+      "VimResized",
+      "WinScrolled",
     },
     clear = {
-      'BufWinLeave',
-      'TabLeave',
-      'TermLeave',
-      'WinLeave',
+      "BufWinLeave",
+      "TabLeave",
+      "TermLeave",
+      "WinLeave",
     },
   },
   handlers = {
@@ -148,7 +151,7 @@ local config = {
 local M = {}
 
 M.set = function(overrides)
-  config = vim.tbl_deep_extend('force', config, overrides or {})
+  config = vim.tbl_deep_extend("force", config, overrides or {})
   return config
 end
 

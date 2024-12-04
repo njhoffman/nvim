@@ -336,7 +336,7 @@ require("ultimate-autopair").init({
     create_undo_map("/"),
   },
   {
-    profile = require("ultimate-autopair.experimental.cmpair").init,
+    -- profile = require("ultimate-autopair.experimental.cmpair").init,
   },
 })
 

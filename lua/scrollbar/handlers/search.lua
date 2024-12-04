@@ -1,11 +1,11 @@
-local utils = require('scrollbar.utils')
-local render = require('scrollbar.scrollbar').throttled_render
+local utils = require("scrollbar.utils")
+local render = require("scrollbar.scrollbar").throttled_render
 
 local M = {}
 
 M.handler = {
   show = function(plist)
-    local config = require('scrollbar.config').get()
+    local config = require("scrollbar.config").get()
 
     if config.handlers.search then
       local search_scrollbar_marks = {}
@@ -13,8 +13,8 @@ M.handler = {
       for _, result in pairs(plist) do
         table.insert(search_scrollbar_marks, {
           line = result[1] - 1,
-          text = config.marks['Search'].text[1],
-          type = 'Search',
+          text = config.marks["Search"].text[1],
+          type = "Search",
           level = 1,
         })
       end
@@ -52,8 +52,8 @@ M.nohlsearch = function()
   end
 
   vim.schedule(function()
-    local pattern = vim.fn.getreg('/')
-    if pattern == '' then
+    local pattern = vim.fn.getreg("/")
+    if pattern == "" then
       M.hide_all()
       return
     end
@@ -62,8 +62,8 @@ M.nohlsearch = function()
   if not vim.v.event.abort then
     local cmdl = vim.trim(vim.fn.getcmdline())
     if #cmdl > 2 then
-      for _, cl in ipairs(vim.split(cmdl, '|')) do
-        if ('nohlsearch'):match(vim.trim(cl)) then
+      for _, cl in ipairs(vim.split(cmdl, "|")) do
+        if ("nohlsearch"):match(vim.trim(cl)) then
           M.hide_all()
           return
         end
@@ -73,20 +73,21 @@ M.nohlsearch = function()
 end
 
 M.setup = function(overrides)
-  local ok, hlslens = pcall(require, 'hlslens')
+  local ok, hlslens = pcall(require, "hlslens")
+  vim.dbglog("SCROLLBAR")
 
   if not ok then
     vim.notify(
-      '[scrollbar.nvim] hlslens module not available. Search handler was not loaded.',
+      "[scrollbar.nvim] hlslens module not available. Search handler was not loaded.",
       vim.log.levels.WARN
     )
     return
   end
 
-  local config = require('scrollbar.config').get()
+  local config = require("scrollbar.config").get()
   config.handlers.search = true
 
-  local hlslens_config = vim.tbl_deep_extend('force', {
+  local hlslens_config = vim.tbl_deep_extend("force", {
     build_position_cb = function(plist, _, _, _)
       M.handler.show(plist.start_pos)
     end,

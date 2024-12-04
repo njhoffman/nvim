@@ -493,7 +493,11 @@ local plugins = {
   },
 
   { "miversen33/sunglasses.nvim", enabled = false },
-  { "TaDaa/vimade", event = "VimEnter", enabled = false },
+  {
+    "TaDaa/vimade",
+    event = { "VimEnter" },
+    enabled = true,
+  },
   {
     "kevinhwang91/nvim-hlslens",
     event = { "VimEnter" },
@@ -643,6 +647,7 @@ local plugins = {
 
   {
     "psliwka/vim-smoothie",
+    enabled = false,
     commit = "10fd0aa",
     init = function()
       vim.g.smoothie_enabled = 1
@@ -671,7 +676,7 @@ local plugins = {
     version = "2.*",
   },
   -- cursor
-  { "romainl/vim-cool", event = { "BufReadPost", "BufNewFile" } },
+  -- { "romainl/vim-cool", event = { "BufReadPost", "BufNewFile" } },
   { "edluffy/specs.nvim", enabled = false, event = { "BufReadPost", "BufNewFile" } },
   { "gen740/SmoothCursor.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "echasnovski/mini.animate", event = "VeryLazy" },
@@ -734,10 +739,11 @@ local plugins = {
   },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
   {
-    "altermo/ultimate-autopair.nvim",
+    "njhoffman/ultimate-autopair.nvim",
+    dir = "~/git/ultimate-autopair.nvim",
     event = { "InsertEnter", "CmdlineEnter" },
-    branch = "development",
-  }, -- branch = 'v0.6',
+    branch = "v0.6",
+  },
   { "gbprod/substitute.nvim", event = { "VeryLazy" } },
   -- split/join
   { "echasnovski/mini.splitjoin", event = { "VeryLazy" } },
@@ -845,6 +851,7 @@ local plugins = {
   --   event = "VeryLazy",
   --   dependencies = { "kkharji/sqlite.lua", "nvim-telescope/telescope.nvim" },
   -- },
+  { "smilhey/ed-cmd.nvim", enabled = false },
   { "tpope/vim-repeat", event = "VeryLazy" },
   { "smjonas/live-command.nvim", event = "VeryLazy" }, -- branch = 'remote',
   { "Konfekt/vim-alias", event = "VeryLazy" },
@@ -880,6 +887,7 @@ local plugins = {
     event = "VeryLazy",
     opts = {},
   },
+  { "neo451/feed.nvim", enabled = false },
   {
     -- 'njhoffman/telescope.nvim',
     "nvim-telescope/telescope.nvim",
@@ -900,6 +908,7 @@ local plugins = {
       "cljoly/telescope-repo.nvim",
       "crispgm/telescope-heading.nvim",
       "dhruvmanila/telescope-bookmarks.nvim",
+      "jonarrien/telescope-cmdline.nvim",
       "elianiva/telescope-npm.nvim",
       "frenchtoasters/telescope-kubectl.nvim",
       "nvim-web-devicons",
@@ -909,10 +918,10 @@ local plugins = {
       "ghassan0/telescope-glyph.nvim",
       "Marskey/telescope-sg",
       "danielvolchek/tailiscope.nvim",
-      "nat-418/telescope-color-names.nvim",
       "nvim-lua/plenary.nvim",
       "nvim-lua/popup.nvim",
       "dharmx/telescope-media.nvim",
+      "nat-418/telescope-color-names.nvim",
       "piersolenski/telescope-import.nvim",
       "nvim-telescope/telescope-dap.nvim",
       "nvim-telescope/telescope-file-browser.nvim",
@@ -1670,8 +1679,8 @@ local plugins = {
   -- https://github.com/mei28/luminate.nvim
   {
     "tzachar/highlight-undo.nvim",
-    enabled = false,
-    event = { "BufEnter", "BufReadPost", "BufNewFile" },
+    enabled = true,
+    event = { "VeryLazy" },
   },
   {
     "kndndrj/nvim-projector",
@@ -1779,7 +1788,7 @@ local plugins = {
   { "tbastos/vim-lua", ft = "lua", lazy = lz_syn },
   { "tikhomirov/vim-glsl", ft = "glsl", lazy = lz_syn },
   { "vim-utils/vim-man", ft = "man", lazy = lz_syn },
-  { "vim-crystal/vim-crystal", ft = "crystal", lz_sym = lz_sym },
+  { "vim-crystal/vim-crystal", ft = "crystal", lz_sym = lz_syn },
   { "vimwiki/vimwiki", ft = { "markdown", "vimwiki" }, lazy = lz_syn },
   {
     "mtdl9/vim-log-highlighting",

@@ -25,7 +25,7 @@ local telescope_config = {
     },
     layout_config = {
       prompt_position = "top",
-      preview_cutoff = 120,
+      preview_cutoff = 60,
       bottom_pane = {
         height = 25,
       },
@@ -50,7 +50,9 @@ local telescope_config = {
         preview_height = 0.5,
       },
       flex = {
-        flip_columns = 130,
+        -- width = 0.9,
+        -- flip_lines = 60,
+        flip_columns = 120,
       },
     },
     cache_picker = {
