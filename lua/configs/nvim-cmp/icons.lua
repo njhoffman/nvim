@@ -66,6 +66,7 @@ local source_names = {
   lazydev =                   { '󰒲 ', 'CmpSourceLazyDev' },
   look =                      { ' ', 'CmpSourceLook' },
   luasnip =                   { ' ', 'CmpSourceLuasnip' },
+  nerdfont =                  { ' ', 'CmpSourceNpm' },
   npm =                       { ' ', 'CmpSourceNpm' },
   nvim_lsp =                  { ' ', 'CmpSourceNvimLsp' },
   nvim_lsp_document_symbol =  { '󰒕 ', 'CmpSourceNvimLspDocumentSymbol' },

@@ -1,24 +1,5 @@
-local telemap = require('telescope.telemap')
-local telethemes = require('telescope.telethemes')
-local action_state = require('telescope.actions.state')
-
--- -- telescope
--- which would then be available for downstream use. Seems to work for me in simple test. If you run into issue, you might want to vim.schedule the name setting.
--- If extensions need to be supported you should look at telescope/command.lua in the repo to see how you can get them.
--- local ts_pickers = setmetatable({}, {
---   __index = function(_, key)
---     return function(topts)
---       topts = topts or {}
---       local builtin = require "telescope.builtin"
---       builtin[key](topts)
---       local bufnr = vim.api.nvim_get_current_buf()
---       if vim.bo[bufnr].filetype == "TelescopePrompt" then
---         local current_picker = require("telescope.actions.state").get_current_picker(bufnr)
---         current_picker._name = key
---       end
---     end
---   end,
--- })
+local telemap = require("telescope.telemap")
+local telethemes = require("telescope.telethemes")
 
 local log_picker = function(picker)
   local p = vim.deepcopy(picker)
@@ -27,87 +8,49 @@ local log_picker = function(picker)
   vim.dbglog(p)
 end
 
-local function get_options(mapkey, user_opts, bufnr)
-  user_opts = user_opts or {}
-  local theme_opts = {}
-  local map_opts = vim.tbl_get(telemap, mapkey, 'opts') or {}
-  local opts = {}
-  if type(map_opts) == 'table' then
-    opts = map_opts
-  elseif type(map_opts) == 'function' then
-    opts = map_opts(user_opts)
-  end
-
-  if type(user_opts.theme) == 'string' then
-    theme_opts = telethemes.get_theme(user_opts.theme)
-  elseif type(opts.theme) == 'string' then
-    theme_opts = telethemes.get_theme(opts.theme)
-  end
-
-  local cached_pickers = require('telescope.state').get_global_key('cached_pickers') or {}
-  for i, picker in ipairs(cached_pickers) do
-    -- picker:get_multi_selection(),
-    -- local selection = action_state.get_selected_entry() or nil
-
-    local cache_idx = picker.cache_picker and picker.cache_picker.index
-    local cached = {
-      num_results = picker.manager:num_results(),
-      query = action_state.get_current_line(),
-      -- selection_row = picker:get_selection_row(),
-      -- selection = selection,
-      -- prefix = picker.prompt_prefix,
-      cache_idx = cache_idx,
-      title = picker.prompt_title,
-      cwd = picker.cwd,
-    }
-    -- vim.dbglog('cache', i, cached.cache_idx, cached.title, cached.cwd, cached.num_results)
-  end
-  local combined = vim.tbl_deep_extend('keep', user_opts or {}, opts, theme_opts)
-  -- vim.dbglog('combined', combined)
-  return combined
-end
-
 local function run(plugin, cmd, user_opts)
+  user_opts = user_opts or {}
   local bufnr = vim.api.nvim_get_current_buf()
-  local extensions = require('telescope._extensions').manager
-  local builtin = require('telescope.builtin')
+  local extensions = require("telescope._extensions").manager
+  local builtin = require("telescope.builtin")
 
-  local mapkey = plugin
-
-  -- TODO: lookup and match single commands
   -- single word command given, either run(cmd, opts) or run(cmd, _, opts)
-  if type(cmd) == 'nil' or type(cmd) == 'table' then
-    user_opts = (type(cmd) == 'table' and cmd) or user_opts
-    cmd = vim.fn.empty(cmd) == 1 and plugin or cmd
-    plugin = ''
-  else
-    mapkey = mapkey .. '_' .. cmd
+  if type(cmd) == "table" or type(cmd) == "nil" then
+    user_opts = type(cmd) == "table" and cmd or user_opts
+    cmd = plugin
+    plugin = "builtin"
   end
 
-  local opts = get_options(mapkey, user_opts, bufnr)
+  local mapkey = cmd
+  if not telemap[cmd] then
+    mapkey = plugin .. "_" .. cmd
+  end
 
-  local tele_cmd = vim.tbl_get(telemap, mapkey, 'cmd')
-  if type(tele_cmd) == 'table' then
-    plugin, cmd = table.unpack(tele_cmd)
-  elseif type(tele_cmd) == 'function' then
-    return telemap[mapkey].cmd(opts)
+  local opts = vim.tbl_get(telemap, mapkey, "opts") or {}
+  if type(opts) == "function" then
+    opts = opts(user_opts)
+  end
+
+  local theme = user_opts.theme or opts.theme or nil
+  if theme then
+    opts = vim.tbl_deep_extend("force", opts, telethemes.get_theme(theme))
+  end
+  opts = vim.tbl_deep_extend("force", opts, user_opts)
+
+  local fun = vim.tbl_get(telemap, mapkey, "fun")
+  if type(fun) == "table" then
+    plugin, cmd = table.unpack(fun)
+  elseif type(fun) == "function" then
+    return telemap[mapkey].fun(opts)
   end
 
   local ok, err
-  if plugin == 'builtin' and type(builtin[cmd]) == 'function' then
-    ok, err = pcall(builtin[cmd], opts)
-  elseif type(extensions[plugin]) == 'table' and type(extensions[plugin][cmd]) == 'function' then
-    ok, err = pcall(extensions[plugin][cmd], opts)
+  if plugin == "builtin" and type(builtin[cmd]) == "function" then
+    return builtin[cmd](opts)
+  elseif vim.tbl_get(extensions, plugin, cmd) then
+    extensions[plugin][cmd](opts)
   else
-    local msg = 'cmd: ' .. cmd
-    if vim.fn.empty(plugin) == 0 then
-      msg = 'plugin: ' .. plugin .. ' - ' .. msg
-    end
-    vim.notify('No telescope extension found with ' .. msg)
-  end
-
-  if not ok then
-    vim.notify('Error running command "' .. cmd .. '" for extension "' .. plugin .. '"\n' .. vim.inspect(err), 4)
+    vim.notify("No telescope extension found for plugin: " .. plugin .. ",  command: " .. cmd)
   end
 end
 

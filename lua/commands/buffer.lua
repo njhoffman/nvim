@@ -1,13 +1,14 @@
 -- TODO: attach to 'alternate' service
 
-local smoothie = require('commands.buffer.smoothie')
+local smoothie = require("commands.buffer.smoothie")
 
-smoothie.setup_paging()
+smoothie.setup_aucmds()
+smoothie.setup_keymaps()
 
-local Path = require('plenary.path')
-local popup = require('plenary.popup')
+local Path = require("plenary.path")
+local popup = require("plenary.popup")
 
-local state = require('commands.buffer.state')
+local state = require("commands.buffer.state")
 
 local function to_relative_path(path)
   return Path:new(path):make_relative(vim.loop.cwd())
@@ -89,44 +90,44 @@ M.toggle_popup = function()
   end
 
   state.popup_winid = popup.create(contents, {
-    title = state.popup_title or 'History',
-    borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+    title = state.popup_title or "History",
+    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
     width = state.popup_width or vim.api.nvim_win_get_width(winid) - 10,
   })
   local bufnr = vim.api.nvim_win_get_buf(state.popup_winid)
-  vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
+  vim.api.nvim_set_option_value("modifiable", false, { buf = bufnr })
   vim.api.nvim_buf_set_keymap(
     bufnr,
-    'n',
-    'q',
+    "n",
+    "q",
     "<Cmd> lua require('history').toggle_popup()<CR>",
     {}
   )
   vim.api.nvim_buf_set_keymap(
     bufnr,
-    'n',
-    '<Esc>',
+    "n",
+    "<Esc>",
     "<Cmd> lua require('history').toggle_popup()<CR>",
     {}
   )
   vim.api.nvim_buf_set_keymap(
     bufnr,
-    'n',
-    '<C-c>',
+    "n",
+    "<C-c>",
     "<Cmd> lua require('history').toggle_popup()<CR>",
     {}
   )
   vim.api.nvim_buf_set_keymap(
     bufnr,
-    'n',
-    '<CR>',
+    "n",
+    "<CR>",
     "<Cmd> lua require('history').select_file_in_history()<CR>",
     {}
   )
-  vim.api.nvim_buf_add_highlight(bufnr, 0, 'Identifier', h.index - 1, 0, -1)
-  vim.api.nvim_set_option_value('number', true, { win = state.popup_winid })
+  vim.api.nvim_buf_add_highlight(bufnr, 0, "Identifier", h.index - 1, 0, -1)
+  vim.api.nvim_set_option_value("number", true, { win = state.popup_winid })
   vim.api.nvim_win_set_cursor(state.popup_winid, { h.index, 0 })
-  vim.api.nvim_create_autocmd('BufLeave', {
+  vim.api.nvim_create_autocmd("BufLeave", {
     buffer = bufnr,
     nested = true,
     once = true,
@@ -152,29 +153,29 @@ M.setup = function(opts)
     opts.set_keybinds = true
   end
 
-  opts.popup_title = opts.popup_title or 'History'
+  opts.popup_title = opts.popup_title or "History"
   -- opts.set_keybinds = opts.set_keybinds or true
 
-  local history_nvim = vim.api.nvim_create_augroup('history_nvim', {
+  local history_nvim = vim.api.nvim_create_augroup("history_nvim", {
     clear = true,
   })
 
-  vim.api.nvim_create_autocmd('BufEnter', {
+  vim.api.nvim_create_autocmd("BufEnter", {
     group = history_nvim,
     callback = M.push,
   })
 
   if opts.set_keybinds then
-    vim.keymap.set('n', opts.keybinds.back or '<leader>bb', M.back)
-    vim.keymap.set('n', opts.keybinds.forward or '<leader>bf', M.forward)
-    vim.keymap.set('n', opts.keybinds.view or '<leader>bv', M.toggle_popup)
+    vim.keymap.set("n", opts.keybinds.back or "<leader>bb", M.back)
+    vim.keymap.set("n", opts.keybinds.forward or "<leader>bf", M.forward)
+    vim.keymap.set("n", opts.keybinds.view or "<leader>bv", M.toggle_popup)
   end
 end
 
 M.setup({
   keybinds = {
-    back = '<leader>bp',
-    forward = '<leader>bn',
-    view = '<leader>bv',
+    back = "<leader>bp",
+    forward = "<leader>bn",
+    view = "<leader>bv",
   },
 })

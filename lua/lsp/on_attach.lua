@@ -1,6 +1,53 @@
 local lsp_icons = require("lsp.icons")
 local capabilities = require("lsp.capabilities")
--- local format = require('lsp.format')
+local format = require("lsp.format")
+local original_paste = vim.paste
+
+_G.jump = function()
+  MiniAnimate.config.scroll.enable = false
+  MiniJump2d.start()
+  -- Need `vim.schedule()` here to still have it disabled at animation's start
+  vim.schedule(function()
+    MiniAnimate.config.scroll.enable = true
+  end)
+end
+
+_G.diagnostic_goto = function(direction)
+  vim.diagnostic["goto_" .. direction]()
+  MiniAnimate.execute_after("scroll", function()
+    vim.defer_fn(vim.diagnostic.open_float, 5)
+  end)
+end
+
+-- local cache_enable_scroll = MiniAnimate.config.scroll.enable
+
+-- 'MiniAnimate.execute_after("scroll", "normal! zvzz")<CR>'
+-- vim.paste = function(lines, phase)
+--   if phase == 1 then
+--     cache_enable_scroll = MiniAnimate.config.scroll.enable
+--     MiniAnimate.config.scroll.enable = false
+--   end
+
+--   pcall(original_paste, lines, phase)
+
+--   if phase == 3 then
+--     MiniAnimate.config.scroll.enable = cache_enable_scroll
+--   end
+-- end
+-- local diagnostic_goto = function(next, severity)
+--   local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
+--   severity = severity and vim.diagnostic.severity[severity] or nil
+--   return function()
+--     go({ severity = severity })
+--   end
+-- end
+-- map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+-- map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
+-- map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
+-- map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
+-- map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
+-- map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
+-- map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
 local setup_mappings = function(client, bufnr)
   vim.api.nvim_set_keymap(
@@ -10,7 +57,6 @@ local setup_mappings = function(client, bufnr)
     { silent = true, desc = "show buffer diagnostics" }
   )
 
-  vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
   vim.api.nvim_set_keymap(
     "n",
     "<M-T>",
@@ -88,7 +134,6 @@ vim.fn.sign_define("DiagnosticSignHint", { text = icons.hint, texthl = "LspDiagn
 -- force will write the format result to the buffer, even if the buffer changed after the format request started.
 -- vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded', max_width = 80 })
 -- vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
-
 local on_attach = function(client, bufnr)
   local ok, disable_lsp = pcall(vim.api.nvim_buf_get_var, 0, "disable_lsp")
   if disable_lsp == 1 then

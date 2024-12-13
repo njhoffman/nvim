@@ -1,5 +1,5 @@
-local map = require('mapper').map
-local a = require('hover.actions')
+local map = require("mapper").map
+local a = require("hover.actions")
 
 -- stylua: ignore
 local default_mapping = {
@@ -28,6 +28,8 @@ local default_mapping = {
       -- ['q']          = { a.close,            { desc = ' ' }},
       ['<Up>']       = { a.scroll_up,           { desc = ' ' }},
       ['<Down>']     = { a.scroll_down,         { desc = ' ' }},
+      -- ['<C-K>']   = { a.scroll_up,           { desc = ' ' }},
+      -- ['<C-J>']   = { a.scroll_down,           { desc = ' ' }},
       ['<C-S-Up>']   = { a.scroll_up,           { desc = ' ' }},
       ['<C-S-Down>'] = { a.scroll_down,         { desc = ' ' }},
       ['<M-b>']      = { a.scroll_page_up,      { desc = ' ' }},
@@ -55,7 +57,7 @@ local function get_key_cmd(mode, lhs)
 end
 
 local clear = function()
-  local config = require('hover.config').get()
+  local config = require("hover.config").get()
   for mode, keys in pairs(config.mapping.global) do
     for lhs, _ in pairs(keys) do
       local ok, _ = pcall(vim.keymap.del, mode, lhs)
@@ -67,8 +69,8 @@ local clear = function()
 end
 
 local assign_open_keymaps = function(_opts)
-  local config = require('hover.config').get()
-  local opts = vim.tbl_deep_extend('keep', _opts or {}, config)
+  local config = require("hover.config").get()
+  local opts = vim.tbl_deep_extend("keep", _opts or {}, config)
   for mode, keys in pairs(opts.mapping.global) do
     opts.mapping.old[mode] = opts.mapping.old[mode] or {}
     for lhs, key_item in pairs(keys) do
@@ -86,7 +88,7 @@ local assign_open_keymaps = function(_opts)
 end
 
 local init = function()
-  local config = require('hover.config').get()
+  local config = require("hover.config").get()
   config.mapping.old = config.mapping.old or {}
   for mode, keys in pairs(config.mapping.inactive) do
     config.mapping.old[mode] = config.mapping.old[mode] or {}

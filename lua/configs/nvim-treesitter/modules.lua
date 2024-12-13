@@ -124,19 +124,23 @@ local modules = {
     enable = true,
     disable = { "markdown" },
     keymaps = {
-      init_selection = false,
-      node_incremental = "v",
-      scope_incremental = false,
-      node_decremental = "V",
+      -- <Tab>/<S-Tab>  v/V  + -
+      -- init_selection = "v",
+      init_selection = "gn",
+      scope_incremental = "gn",
+      node_incremental = "<C-n>",
+      node_decremental = "<C-p>",
     },
   },
   textsubjects = {
     enable = true,
-    prev_selection = "<M-BS>", -- (Optional) keymap to select the previous selection
+    prev_selection = "-", -- (Optional) keymap to select the previous selection
     keymaps = {
-      [","] = "textsubjects-smart",
-      ["<Tab>"] = "textsubjects-container-outer",
-      ["<S-Tab>"] = {
+      -- . ; i;  <CR>
+      -- ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+      ["+"] = "textsubjects-smart",
+      -- [";"] = "textsubjects-container-outer",
+      ["i+"] = {
         "textsubjects-container-inner",
         desc = "Select inside containers (classes, functions, etc.)",
       },
@@ -163,7 +167,7 @@ local modules = {
     },
   },
   rainbow = {
-
+    enable = false,
     -- `html` - `rainbow-tags` Matches both opening and closing tags in their entirety
     --`javascript`
     --   - `rainbow-parens-react` Supports the angle brackets of React.js tags
@@ -179,7 +183,6 @@ local modules = {
       "TSRainbowViolet",
       "TSRainbowCyan",
     },
-    enable = false,
     -- disable = { "jsx", "cpp" },
     query = { "rainbow-parens", html = "rainbow-tags", latex = "rainbow-blocks" },
     strategy = require("ts-rainbow").strategy["local"],
@@ -192,51 +195,77 @@ local modules = {
       disable = { "markdown" }, -- so `al` can be remapped to link text object
       lookahead = true,
       enable = true,
+      -- You can choose the select mode (default is charwise 'v')
+      -- selection_modes = {
+      --   ['@parameter.outer'] = 'v', -- charwise
+      --   ['@function.outer'] = 'V', -- linewise
+      --   ['@class.outer'] = '<c-v>', -- blockwise
+      -- },
       keymaps = {
-        ["aa"] = "@parameter.outer",
-        ["ia"] = "@parameter.inner",
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        -- ['ac'] = '@class.outer',
-        ["at"] = "@class.outer",
-        -- ['ic'] = '@class.inner',
-        ["it"] = "@class.inner",
-        ["a/"] = "@comment.outer",
-        ["i/"] = "@comment.inner",
-        ["ab"] = "@block.outer",
-        ["ib"] = "@block.inner",
-        ["ac"] = "@call.outer",
-        ["ic"] = "@call.inner",
-        ["aL"] = "@loop.outer",
-        ["iL"] = "@loop.inner",
-        ["ai"] = "@conditional.outer",
-        ["ii"] = "@conditional.inner",
-        ["as"] = "@statement.outer",
-        ["is"] = "@scopename.inner",
-        ["aA"] = "@attribute.outer",
-        ["iA"] = "@attribute.inner",
-        ["aF"] = "@frame.outer",
-        ["iF"] = "@frame.inner",
+        -- / comment.outer
+        --   number.inner
+        --   assignment.inner  assignment.outer
+        --   assignment.lhs    assignment.rhs
+        -- B block.inner       block.outer
+        --   call.inner        call.outer
+        --   conditional.inner conditional.outer
+        -- f function.inner    function.outer
+        -- L loop.inner        loop.outer
+        -- a parameter.inner   parameter.outer
+        --   return.inner      return.outer
+        ["/"] = "@comment.outer",
+        -- ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+        -- ["as"] = "@statement.outer",
+        -- ["is"] = "@scopename.inner",
+        -- ["aF"] = "@frame.outer",
+        -- ["iF"] = "@frame.inner",
       },
     },
     swap = {
       enable = true,
-      swap_next = { [">;"] = "@parameter.inner" },
-      swap_previous = { ["<;"] = "@parameter.inner" },
+      swap_next = {
+        [">;"] = "@parameter.inner",
+        [">a"] = "@parameter.inner",
+      },
+      swap_previous = {
+        ["<;"] = "@parameter.inner",
+        ["<a"] = "@parameter.inner",
+      },
     },
     move = {
       enable = true,
       set_jumps = true,
-      goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-      goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
-      goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
-      goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
+      goto_next_start = {
+        ["]f"] = "@function.outer",
+        ["]c"] = "@class.outer",
+        ["]["] = "@block.outer",
+      },
+      goto_next_end = {
+        ["]F"] = "@function.outer",
+        ["]C"] = "@class.outer",
+        ["]]"] = "@block.outer",
+      },
+      goto_previous_start = {
+        ["[f"] = "@function.outer",
+        ["[c"] = "@class.outer",
+        ["[["] = "@block.outer",
+      },
+      goto_previous_end = {
+        ["[F"] = "@function.outer",
+        ["[C"] = "@class.outer",
+        ["[]"] = "@block.outer",
+      },
     },
 
     lsp_interop = {
       enable = true,
       border = "none",
-      peek_definition_code = { ["gPf"] = "@function.outer", ["gPc"] = "@class.outer" },
+      peek_definition_code = {
+        -- ["<leader>df"] = "@function.outer",
+        -- ["<leader>dF"] = "@class.outer",
+        ["gPf"] = "@function.outer",
+        ["gPc"] = "@class.outer",
+      },
     },
   },
   matchup = {
@@ -338,26 +367,26 @@ return modules
   ['ic'] = { query = '@class.inner', desc = 'Select inner part of a class' },
   -- 			},
 
-         --[[ INFO: outer key textobj defined via various textobjs
-         ["ik"] = { query = "@assignment.lhs", desc = "󱡔 inner key textobj" },
-         ["a<CR>"] = { query = "@return.outer", desc = "󱡔 outer return textobj" },
-         ["i<CR>"] = { query = "@return.inner", desc = "󱡔 inner return textobj" },
-         ["a/"] = { query = "@regex.outer", desc = "󱡔 outer regex textobj" },
-         ["i/"] = { query = "@regex.inner", desc = "󱡔 inner regex textobj" },
-         ["aa"] = { query = "@parameter.outer", desc = "󱡔 outer parameter textobj" },
-         ["ia"] = { query = "@parameter.inner", desc = "󱡔 inner parameter textobj" },
+--[[ INFO: outer key textobj defined via various textobjs
+ ["ik"] = { query = "@assignment.lhs", desc = "󱡔 inner key textobj" },
+ ["a<CR>"] = { query = "@return.outer", desc = "󱡔 outer return textobj" },
+ ["i<CR>"] = { query = "@return.inner", desc = "󱡔 inner return textobj" },
+ ["a/"] = { query = "@regex.outer", desc = "󱡔 outer regex textobj" },
+ ["i/"] = { query = "@regex.inner", desc = "󱡔 inner regex textobj" },
+ ["aa"] = { query = "@parameter.outer", desc = "󱡔 outer parameter textobj" },
+ ["ia"] = { query = "@parameter.inner", desc = "󱡔 inner parameter textobj" },
 
-         -- stylua: ignore start
-         ["iu"] = { query = "@loop.inner", desc = "󱡔 inner loop textobj" }, -- mnemonic: luup
-         ["au"] = { query = "@loop.outer", desc = "󱡔 outer loop textobj" },
-         ["a" .. textobjMaps.func] = { query = "@function.outer", desc = "󱡔 outer function textobj" },
-         ["i" .. textobjMaps.func] = { query = "@function.inner", desc = "󱡔 inner function textobj" },
-         ["a" .. textobjMaps.cond] = { query = "@conditional.outer", desc = "󱡔 outer cond. textobj" },
-         ["i" .. textobjMaps.cond] = { query = "@conditional.inner", desc = "󱡔 inner cond. textobj" },
-         ["a" .. textobjMaps.call] = { query = "@call.outer", desc = "󱡔 outer call textobj" },
-         ["i" .. textobjMaps.call] = { query = "@call.inner", desc = "󱡔 inner call textobj" },
-         -- stylua: ignore end
+ -- stylua: ignore start
+ ["iu"] = { query = "@loop.inner", desc = "󱡔 inner loop textobj" }, -- mnemonic: luup
+ ["au"] = { query = "@loop.outer", desc = "󱡔 outer loop textobj" },
+ ["a" .. textobjMaps.func] = { query = "@function.outer", desc = "󱡔 outer function textobj" },
+ ["i" .. textobjMaps.func] = { query = "@function.inner", desc = "󱡔 inner function textobj" },
+ ["a" .. textobjMaps.cond] = { query = "@conditional.outer", desc = "󱡔 outer cond. textobj" },
+ ["i" .. textobjMaps.cond] = { query = "@conditional.inner", desc = "󱡔 inner cond. textobj" },
+ ["a" .. textobjMaps.call] = { query = "@call.outer", desc = "󱡔 outer call textobj" },
+ ["i" .. textobjMaps.call] = { query = "@call.inner", desc = "󱡔 inner call textobj" },
+ -- stylua: ignore end
 
-         -- INFO later remapped to q only in operator pending mode to avoid conflict
-         -- @comment.inner not supported yet for most languages
-         ["&&&"] = { query = "@comment.outer", desc = "which_key_ignore" }, ]]
+ -- INFO later remapped to q only in operator pending mode to avoid conflict
+ -- @comment.inner not supported yet for most languages
+ ["&&&"] = { query = "@comment.outer", desc = "which_key_ignore" }, ]]

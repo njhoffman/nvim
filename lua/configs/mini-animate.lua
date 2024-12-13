@@ -3,6 +3,20 @@ local is_many_wins = function(sizes_from, sizes_to)
   return vim.tbl_count(sizes_from) >= 3
 end
 
+-- vim.keymap.set("c", "<CR>", function()
+--   disable_animation = true
+--   return "<CR>"
+-- end, { expr = true })
+-- local original_paste = vim.paste
+-- vim.paste = function(...)
+--   local cache_enable_scroll = MiniAnimate.config.scroll.enable
+--   MiniAnimate.config.scroll.enable = false
+
+--   pcall(original_paste, ...)
+
+--   MiniAnimate.config.scroll.enable = cache_enable_scroll
+-- end
+
 -- don't use animate when scrolling with the mouse
 local mouse_scrolled = false
 for _, scroll in ipairs({ "Up", "Down" }) do
@@ -13,20 +27,9 @@ for _, scroll in ipairs({ "Up", "Down" }) do
   end, { expr = true })
 end
 
-vim.api.nvim_create_autocmd("User", {
-  pattern = { "ScrollStart", "ScrollStop" },
-  callback = function(ev)
-    if ev.match == "ScrollStart" then
-      vim.b.minianimate_disable = true
-    else
-      vim.b.minianimate_disable = false
-    end
-  end,
-})
-
 local cfg = {
   cursor = {
-    enable = true,
+    enable = false,
     -- gen_path.line(), gen_path.angle(), gen_path.walls(), gen_path.spiral()
     timing = animate.gen_timing.linear({ duration = 100, unit = "total" }),
     -- path = animate.gen_path.line(),
@@ -36,24 +39,28 @@ local cfg = {
   scroll = {
     enable = true,
     -- Animate for 200 milliseconds with linear easing
-    -- timing = animate.gen_timing.linear({ duration = 150, unit = 'total' }),
-    timing = animate.gen_timing.quadratic({ duration = 200, unit = "total" }),
+    timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
+    -- timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
+    -- timing = function(_, n)
+    --   return math.min(5, 250 / n)
+    -- end,
     subscroll = animate.gen_subscroll.equal({
       -- max_output_steps = 60,
       -- Animate equally but with at most 120 steps instead of default 60
-      max_output_steps = 120,
+      -- max_output_steps = 80,
+      -- predicate = function(destination) return destination[1] < -2 or 2 < destination[1] end,
       predicate = function(total_scroll)
         if mouse_scrolled then
           mouse_scrolled = false
           return false
         end
-        return total_scroll > 1
+        return total_scroll > 2
       end,
     }),
   },
   resize = {
     enable = true,
-    timing = animate.gen_timing.linear({ duration = 200, unit = "total" }),
+    timing = animate.gen_timing.linear({ duration = 50, unit = "total" }),
     -- subresize = animate.gen_subscroll.equal({ predicate = is_many_wins }),
   },
   open = {
@@ -91,8 +98,50 @@ local cfg = {
   },
 }
 
-require("mini.animate").setup(cfg)
+--     local mouse_scrolled = false
+--     for _, scroll in ipairs({ "Up", "Down" }) do
+--       local key = "<ScrollWheel" .. scroll .. ">"
+--       vim.keymap.set({ "", "i" }, key, function()
+--         mouse_scrolled = true
+--         return key
+--       end, { expr = true })
+--     end
+--
+--     vim.api.nvim_create_autocmd("FileType", {
+--       pattern = "grug-far",
+--       callback = function()
+--         vim.b.minianimate_disable = true
+--       end,
+--     })
+--
+--     Snacks.toggle({
+--       name = "Mini Animate",
+--       get = function()
+--         return not vim.g.minianimate_disable
+--       end,
+--       set = function(state)
+--         vim.g.minianimate_disable = not state
+--       end,
+--     }):map("<leader>ua")
+--
+--     local animate = require("mini.animate")
+--     return vim.tbl_deep_extend("force", opts, {
+--       resize = {
+--         timing = animate.gen_timing.linear({ duration = 50, unit = "total" }),
+--       },
+--       scroll = {
+--         timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
+--         subscroll = animate.gen_subscroll.equal({
+--           predicate = function(total_scroll)
+--             if mouse_scrolled then
+--               mouse_scrolled = false
+--               return false
+--             end
+--             return total_scroll > 1
+--           end,
+--         }),
 
+require("mini.animate").setup(cfg)
 -- require('mini.animate').execute_after('scroll', 'normal! n nzvzz')
 
 ---@diagnostic disable-next-line: unused-local

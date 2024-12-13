@@ -1,15 +1,15 @@
 local function move_split_size()
-  local Hydra = require('hydra')
+  local Hydra = require("hydra")
   local resize_win = function(op)
     return function()
       local winid = vim.api.nvim_get_current_win()
       local bufnr = vim.api.nvim_win_get_buf(winid)
       local win_config = vim.api.nvim_win_get_config(winid)
 
-      vim.api.nvim_set_option_value('winfixwidth', false, { win = winid })
-      vim.api.nvim_set_option_value('equalalways', false, {})
+      vim.api.nvim_set_option_value("winfixwidth", false, { win = winid })
+      vim.api.nvim_set_option_value("equalalways", false, {})
 
-      win_config.relative = 'editor'
+      win_config.relative = "editor"
       win_config.bufpos = { 0, 0 }
 
       local size = {
@@ -22,13 +22,13 @@ local function move_split_size()
       -- vim.api.nvim_set_option_value('modifiable', true, { buf = bufnr })
       -- vim.api.nvim_set_option_value('equalalways', false)
 
-      if op == '+' then
+      if op == "+" then
         -- vim.fn.feedkeys('<C-w>+', 'n')
         size.height = size.height + 2
-      elseif op == '-' then
+      elseif op == "-" then
         -- vim.fn.feedkeys('<C-w>-', 'n')
         size.height = size.height - 2
-      elseif op == '<' then
+      elseif op == "<" then
         -- vim.fn.feedkeys('2<C-w><', 'n')
         -- local curwidth = vim.fn.winwidth(0)
         -- local newwidth = curwidth - 5
@@ -48,7 +48,7 @@ local function move_split_size()
   end
 
   Hydra({
-    name = 'Window',
+    name = "Window",
     hint = [[
        ^^^^^^     Move     ^^^^^^   ^^     Split         ^^^^    Size
        ^^^^^^--------------^^^^^^   ^^---------------    ^^^^-------------
@@ -65,42 +65,42 @@ local function move_split_size()
         float_opts = {
           -- row, col, height, width, relative, and anchor should not be
           -- overridden
-          border = 'rounded',
-          style = 'minimal',
+          border = "rounded",
+          style = "minimal",
           focusable = false,
           noautocmd = true,
         },
         -- position = 'bottom',
       },
     },
-    mode = 'n',
-    body = '<leader>!w',
+    mode = "n",
+    body = "g!w",
     heads = {
       -- TODO: enable popup windows if they are not notify
       -- Move focus
-      { 'h', '<C-w>h' },
-      { 'j', '<C-w>j' },
-      { 'k', '<C-w>k' },
-      { 'l', '<C-w>l' },
+      { "h", "<C-w>h" },
+      { "j", "<C-w>j" },
+      { "k", "<C-w>k" },
+      { "l", "<C-w>l" },
       -- Move window
       -- https://github.com/sindrets/winshift.nvim
-      { 'H', '<Cmd>WinShift left<CR>' },
-      { 'J', '<Cmd>WinShift down<CR>' },
-      { 'K', '<Cmd>WinShift up<CR>' },
-      { 'L', '<Cmd>WinShift right<CR>' },
+      { "H", "<Cmd>WinShift left<CR>" },
+      { "J", "<Cmd>WinShift down<CR>" },
+      { "K", "<Cmd>WinShift up<CR>" },
+      { "L", "<Cmd>WinShift right<CR>" },
       -- Split
-      { 's', '<C-w>s' },
-      { 'v', '<C-w>v' },
-      { 'q', '<Cmd>try | close | catch | endtry<CR>', { desc = 'close window' } },
+      { "s", "<C-w>s" },
+      { "v", "<C-w>v" },
+      { "q", "<Cmd>try | close | catch | endtry<CR>", { desc = "close window" } },
       -- Size
-      { '+', resize_win('+'), { desc = 'increase height' } },
-      { '-', resize_win('-'), { desc = 'decrease height' } },
-      { '>', resize_win('>'), { desc = 'increase width' } },
-      { '<', resize_win('<'), { desc = 'decrease width' } },
-      { '=', '<C-w>=', { desc = 'equalize' } },
+      { "+", resize_win("+"), { desc = "increase height" } },
+      { "-", resize_win("-"), { desc = "decrease height" } },
+      { ">", resize_win(">"), { desc = "increase width" } },
+      { "<", resize_win("<"), { desc = "decrease width" } },
+      { "=", "<C-w>=", { desc = "equalize" } },
       -- maximize, minimize
       --
-      { '<Esc>', nil, { exit = true } },
+      { "<Esc>", nil, { exit = true } },
     },
   })
 end

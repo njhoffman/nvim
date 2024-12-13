@@ -137,14 +137,14 @@ return function(injected_functions)
     SignColumn({ bg = "none" }),
     Search({ bg = "#0e1c36", fg = "#008fff", gui = "italic" }), -- bg = '#0d314c',
     IncSearch({ bg = "#23518b", fg = "#88aaff", gui = "italic" }),
-    CurSearch({ bg = "#4e3ce6", fg = "#aaffff", gui = "bold" }), --  bg = '#110033'
+    CurSearch({ bg = "#4e3ce6", fg = "#aaffff" }), --  bg = '#110033'
     -- VisualNOS({ fg = 'none', bg = '#301840' }),
     -- Visual({ bg = '#171f47', fg = 'none', gui = 'italic' }),
     -- Visual({ bg = "#021626", gui = "bold,italic" }),
-    Visual({ bg = "#08203f", gui = "bold,italic" }),
+    Visual({ bg = "#08203f", gui = "italic" }),
     VisualNOS({ bg = "#1d3b53" }),
     VisualAlt({ fg = "none", bg = "#10082f", gui = "italic" }),
-    VisualRed({ fg = "none", bg = "#40112c", gui = "bold,italic" }),
+    VisualRed({ fg = "none", bg = "#40112c", gui = "italic" }),
     LineNr({ fg = "#2D476A" }),
     Error({ fg = clrs.error, bg = "none" }),
     -- Error({ fg = "none", bg = "none" }),
@@ -180,9 +180,9 @@ return function(injected_functions)
     -- Cursor({ bg = '#4B5Bff' }),
     -- NavbuddyCursor({ gui = 'bold' }),
     SpecsCursor({ bg = "#1f6385" }),
-    SmoothCursor({ fg = "#0081ca", gui = "bold" }),
+    SmoothCursor({ fg = "#0081ca", gui = "italic" }),
     -- NoiceCursor({ bg = '#4B6BfB' }),  #51e3ed
-    NoiceCursor({ bg = "#003558", gui = "bold", fg = "#17a9b3" }),
+    NoiceCursor({ bg = "#003558", gui = "italic", fg = "#17a9b3" }),
     HopCursor({ Cursor }),
     ReactiveCursor({ Cursor }),
     -- ScrollViewCursorxxx links to WarningMsg
@@ -205,7 +205,7 @@ return function(injected_functions)
     -- MatchParenCursor({ fg = "#fb8b8b" }),
     Boolean({ fg = "#5370af" }),
     Number({ fg = "#4078c0" }),
-    Character({ fg = "#10a4ca", gui = "bold" }),
+    Character({ fg = "#10a4ca" }),
     Comment({ fg = "#405f88", gui = "italic" }),
     Conceal({ bg = "none" }),
     Conditional({ fg = "#70688a" }),
@@ -217,8 +217,8 @@ return function(injected_functions)
     -- Field({ fg = '#467aB0' }),
     Field({ fg = "#467aB8" }),
     FoldColumn({ fg = "#4D578A", bg = "#000000" }),
-    FoldText({ fg = "#41b1ff", gui = "bold" }),
-    Folded({ fg = "#6Db7ca", bg = "#111111", gui = "bold" }),
+    FoldText({ fg = "#41b1ff" }),
+    Folded({ fg = "#6Db7ca", bg = "#111111" }),
     Function({ fg = "#2d79a7" }),
     FunctionCall({ fg = "#4d79c7" }),
     -- Function({ fg = '#8c788c' }),
@@ -262,7 +262,7 @@ return function(injected_functions)
     EndOfBuffer({ fg = clrs.nord1 }),
     ErrorMsg({ Error }),
     ModeMsg({ fg = clrs.nord10 }),
-    MoreMsg({ fg = clrs.nord8, gui = "bold" }),
+    MoreMsg({ fg = clrs.nord8 }),
     DebugMsg({ fg = Comment.fg }),
     Question({ fg = clrs.nord4 }),
     -- +--- LSP ---+
@@ -319,8 +319,8 @@ return function(injected_functions)
     diffLine({ fg = "#464B5D" }),
     diffIndexLine({ fg = clrs.nord9 }),
     Todo({ fg = "none", bg = "none", gui = "none" }),
-    TodoMsg({ fg = "#2583cB", gui = "bold, italic" }),
-    Warning({ bg = "none", fg = "#aB6F34", gui = "bold, italic" }),
+    TodoMsg({ fg = "#2583cB", gui = "italic" }),
+    Warning({ bg = "none", fg = "#aB6F34", gui = "italic" }),
     WarningMsg({ bg = "none", fg = clrs.nord13 }),
     -- language groups
     --
@@ -404,9 +404,9 @@ return function(injected_functions)
     sym("@function.method.call")({ FunctionCall }),
     sym("@include")({ Include }),
     sym("@keyword")({ Keyword }),
-    sym("@constant.luap")({ fg = "#2288cc", gui = "bold" }),
+    sym("@constant.luap")({ fg = "#2288cc" }),
     sym("@keyword.luap")({ fg = "#5886ff" }),
-    sym("@operator.luap")({ fg = "#08a4ea", gui = "bold" }),
+    sym("@operator.luap")({ fg = "#08a4ea" }),
     sym("@keyword.exception")({ Special }),
     sym("@keyword.operator")({ Operator }),
     sym("@keyword.return")({ KeywordReturn }),
@@ -425,7 +425,7 @@ return function(injected_functions)
     sym("@punctuation.bracket")({ fg = "#7886a8" }), -- fg = "#a9b1d6"
     sym("@punctuation.bracket.luap")({ fg = "#8b8af7" }),
     sym("@punctuation.delimiter")({ fg = "#7886a8" }),
-    sym("@punctuation.delimiter.luap")({ fg = "#4866d8", gui = "bold" }),
+    sym("@punctuation.delimiter.luap")({ fg = "#4866d8" }),
     sym("@punctuation.special")({ fg = "#888698" }), -- #89ddff
     sym("@punctuation.special.markdown")({ fg = "#645060" }), --  fg = '#89ddff'
     sym("@punctuation.strikethrough.markdown_inline")({ Normal }),
@@ -444,7 +444,7 @@ return function(injected_functions)
     sym("@markup.strikethrough.markdown_inline")({ gui = "strikethrough", fg = Normal.fg }),
     sym("@markup.italic")({ gui = "italic" }),
     sym("@markup.italic.markdown_inline")({ gui = "italic", fg = "#839ac6" }),
-    sym("@markup.strong.markdown")({ gui = "bold" }),
+    sym("@markup.strong.markdown")({ gui = "" }),
     sym("@markup.strong.markdown_inline")({ gui = "bold", fg = "#839ac6" }),
     sym("@markup.link")({ fg = "#2aa1ae", gui = "italic" }),
     sym("@markup.link.label.markdown")({ fg = "#5c71cf" }),
@@ -547,7 +547,7 @@ return function(injected_functions)
     -- typescriptAsyncFuncKeyword({ Keyword }),
     typescriptIdentifierName({ Variable }),
     typescriptTypeReference({ Operator }),
-    typescriptTypeBrackets({ fg = "#3BaBcB", gui = "bold" }),
+    typescriptTypeBrackets({ fg = "#3BaBcB" }),
 
     cssTSType({ fg = "#486795" }),
     cssTSPunctDelimiter({ fg = "#4784a6" }),
@@ -856,7 +856,7 @@ return function(injected_functions)
     TSRainbowGreen({ fg = clrutil.shade_color("#689d6a", -30) }),
     TSRainbowViolet({ fg = clrutil.shade_color("#b16286", -30) }),
     TSRainbowCyan({ fg = clrutil.shade_color("#a89984", -30) }),
-    CmpCursorLine({ bg = "#142446", gui = "bold" }),
+    CmpCursorLine({ bg = "#142446" }),
     CmpNormal({ fg = "#667da9", bg = "#06061a" }),
     CmpFloatBorder({ fg = "#3f5382", bg = "#000a1a" }), --
     CmpGhostLight({ fg = "#1f4f94" }),
@@ -1390,11 +1390,11 @@ return function(injected_functions)
     mkdCode({ CodeBlock }),
     -- mkdCodeEnd({ mkdCode }),
 
-    HelpviewTitle({ fg = "#c19A96", bg = "#141000", gui = "bold" }),
-    HelpviewHeading1({ fg = "#1b8b95", bg = "#001808", gui = "bold" }),
-    HelpviewHeading2({ fg = "#826591", bg = "#080406", gui = "bold" }),
-    HelpviewHeading3({ fg = "#688cce", bg = "#182c4e", gui = "bold" }),
-    HelpviewHeading4({ fg = "#448c8e", bg = "#08162b", gui = "bold" }),
+    HelpviewTitle({ fg = "#a5a07B", bg = "#100800", gui = "bold" }),
+    HelpviewHeading1({ fg = "#1b8b95", bg = "#001808", gui = "" }),
+    HelpviewHeading2({ fg = "#826591", bg = "#080406", gui = "" }),
+    HelpviewHeading3({ fg = "#688cce", bg = "#182c4e", gui = "" }),
+    HelpviewHeading4({ fg = "#448c8e", bg = "#08162b", gui = "" }),
 
     HelpviewCode({ CodeBlock }),
     HelpviewInlineCode({ CodeBlock }),
@@ -1407,6 +1407,8 @@ return function(injected_functions)
 
     RecallMark({ fg = "#00baca" }),
     MiniJump({ fg = "#ff00a0" }),
+
+    CodeiumSuggestion({ fg = "#e06c75", gui = "italic" }),
 
     -- Eyeliner
     EyelinerPrimary({ fg = "#e06c75", gui = "bold" }),

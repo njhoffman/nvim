@@ -1,5 +1,6 @@
 local Hydra = require("hydra")
 -- local popup = require("configs.hydra.popup")
+
 local levels = require("configs.hydra.lsp_levels")
 local utils = require("configs.hydra.lsp_utils")
 local hints = [[
@@ -110,6 +111,8 @@ local funcs = {
 local hydra = function()
   return Hydra({
     name = "LSP",
+    mode = { "n", "x" },
+    body = "g!l",
     hint = hints,
     heads = heads,
     config = {
@@ -128,17 +131,15 @@ local hydra = function()
         },
         position = "middle",
       },
-      on_enter = function()
-        -- vim.schedule_wrap(vim.cmd("VimadeBufDisable"))
-        -- local curr_buf = vim.fn.bufnr('%')
-        -- vim.api.nvim_buf_set_var(curr_buf, 'vimade_disabled', value)
-      end,
-      on_exit = function()
-        -- vim.schedule_wrap(vim.cmd('VimadeBufEnable'))
-      end,
+      -- on_enter = function()
+      --   -- vim.schedule_wrap(vim.cmd("VimadeBufDisable"))
+      --   -- local curr_buf = vim.fn.bufnr('%')
+      --   -- vim.api.nvim_buf_set_var(curr_buf, 'vimade_disabled', value)
+      -- end,
+      -- on_exit = function()
+      --   -- vim.schedule_wrap(vim.cmd('VimadeBufEnable'))
+      -- end,
     },
-    mode = { "n", "x" },
-    body = "<leader>!l",
   })
 end
 

@@ -3,14 +3,27 @@
 let g:smoothie_enabled = 1
 let g:smoothie_no_default_mappings = 1
 let g:smoothie_experimental_mappings = 0
-let g:smoothie_update_interval = 10 " 20
+let g:smoothie_update_interval = 20 " 20
 let g:smoothie_speed_constant_factor = 10 " 10
 let g:smoothie_speed_linear_factor = 8 " 10
 let g:smoothie_speed_exponentiation_factor = 0.9 " 0.9
-let g:redraw_at_finish = 1
-let g:smoothie_minimum_speed = 0.6
+let g:smoothie_minimum_speed = 0.9
 let g:smoothie_break_on_reverse = 1
+let g:smoothie_hide_cursor = 0
+let g:smoothie_redraw_at_finish = 0
 
+
+" vim.g.smoothie_enabled = 1
+" vim.g.smoothie_no_default_mappings = 1
+" vim.g.smoothie_experimental_mappings = 0
+" vim.g.smoothie_update_interval = 20
+"       -- vim.g.smoothie_update_interval = 10 -- 20
+" vim.g.smoothie_speed_constant_factor = 10
+" vim.g.smoothie_speed_linear_factor = 10
+"       -- vim.g.smoothie_speed_linear_factor = 8 -- 10
+" vim.g.smoothie_speed_exponentiation_factor = 0.9
+" vim.g.redraw_at_finish = 1
+" vim.g.smoothie_minimum_speed = 0.9
 ""
 " This variable is used to inform the s:step_*() functions about whether the
 " current movement is a cursor movement or a scroll movement.  Used for
@@ -71,6 +84,44 @@ if !exists('g:smoothie_break_on_reverse')
   " disabled by default.
   let g:smoothie_break_on_reverse = 0
 endif
+
+if !exists('g:smoothie_redraw_at_finish')
+  ""
+  " Force screen redraw when the animation is finished, which clears sporadic
+  " display artifacts which I encountered f.ex. when scrolling through buffers
+  " containing emoji. Disabled by default
+  let g:smoothie_redraw_at_finish = 0
+endif
+
+if !exists('g:smoothie_hide_cursor')
+  ""
+  " Hide cursor while scrolling, only supported in Neovim
+  " Inspired by Neoscroll
+  let g:smoothie_hide_cursor = has('nvim')
+endif
+
+let s:target_view = {}
+
+" Highlight group to hide the cursor
+if g:smoothie_hide_cursor
+  augroup custom_highlight
+  autocmd!
+  autocmd ColorScheme * highlight SmoothieHiddenCursor gui=reverse blend=100
+  augroup END
+  highlight SmoothieHiddenCursor gui=reverse blend=100
+endif
+
+function! s:hide_cursor() abort
+  if &termguicolors && &guicursor !~# 'a:SmoothieHiddenCursor'
+    let s:guicursor=&guicursor
+    set guicursor=a:SmoothieHiddenCursor
+  endif
+endfunction
+function! s:unhide_cursor() abort
+  if &guicursor ==# 'a:SmoothieHiddenCursor'
+    let &guicursor=s:guicursor
+  endif
+endfunction
 
 ""
 " Execute {command}, but saving 'scroll' value before, and restoring it
@@ -186,12 +237,17 @@ function s:start_moving()
     call s:ring_bell()
   endif
   if &scrolloff && &scrolloff > 0
-    let s:scrolloffset = &scrolloff < &lines / 2 ? &scrolloff : &lines / 2
+    let s:scrolloffset = &scrolloff < (&lines - 2) / 2 ? &scrolloff : (&lines - 2) / 2
   else
     let s:scrolloffset = 0
   endif
+  if g:smoothie_hide_cursor ==# 1
+    call s:hide_cursor()
+  endif
+  let s:target_view = winsaveview()
   if !exists('s:timer_id')
-    doautocmd User ScrollStart
+    exe 'sleep ' . g:smoothie_update_interval . ' m'
+    execute("doautocmd User ScrollStart")
     let s:timer_id = timer_start(g:smoothie_update_interval, function('s:movement_tick'), {'repeat': -1})
   endif
 endfunction
@@ -201,12 +257,40 @@ endfunction
 function s:stop_moving()
   let s:target_displacement = 0
   let s:subline_position = 0.0
+  if &scrolloff && &scrolloff > 0
+    let s:scrolloffset = &scrolloff < (&lines - 2) / 2 ? &scrolloff : (&lines - 2) / 2
+  else
+    let s:scrolloffset = 0
+  endif
+  let s:target_view = {}
   if exists('s:timer_id')
-    doautocmd User ScrollStop
     call timer_stop(s:timer_id)
     unlet s:timer_id
   endif
+  if g:smoothie_redraw_at_finish
+    mode
+  endif
+  if g:smoothie_hide_cursor == 1
+    call s:unhide_cursor()
+  endif
+  exe 'sleep ' . g:smoothie_update_interval . ' m'
+  execute("doautocmd User ScrollStop")
 endfunction
+
+""
+" Skip animation and jump to target position immediately if we're moving and
+" the user is about to leave the window or switch to a different buffer.
+function! s:handle_leave_event() abort
+  if !empty(s:target_view)
+    call s:stop_moving()
+  endif
+endfunction
+
+augroup smoother_leave_handlers
+  autocmd!
+  autocmd WinLeave,BufLeave * call s:handle_leave_event()
+augroup end
+
 
 ""
 " Calculate optimal movement velocity (in lines per second, negative value
@@ -247,11 +331,11 @@ function s:movement_tick(_)
     let s:subline_position = l:subline_step_size - l:step_size
   endif
 
-  if l:step_size
-    " Usually Vim handles redraws well on its own, but without explicit redraw
-    " I've encountered some sporadic display artifacts.  TODO: debug further.
-    redraw
-  endif
+  " if l:step_size
+  "   " Usually Vim handles redraws well on its own, but without explicit redraw
+  "   " I've encountered some sporadic display artifacts.  TODO: debug further.
+  "   redraw
+  " endif
 endfunction
 
 ""
@@ -259,6 +343,7 @@ endfunction
 " position).  If we're already moving, try to do the smart thing, taking into
 " account our progress in reaching the target set previously.
 function s:update_target(lines)
+  " echom s:target_displacement.' '.a:lines
   if g:smoothie_break_on_reverse && s:target_displacement * a:lines < 0
     call s:stop_moving()
   else
@@ -322,52 +407,61 @@ endfunction
 ""
 " Smooth equivalent to ^D.
 function smoothie#downwards()
-  if !g:smoothie_enabled
-    exe "normal! \<C-d>"
-    return
+  if line('.') < line('$')
+    if !g:smoothie_enabled
+      exe "normal! \<C-d>"
+      return
+    endif
+    let s:ctrl_f_invoked = v:false
+    call s:count_to_scroll()
+    call s:update_target(&scroll)
   endif
-  let s:ctrl_f_invoked = v:false
-  call s:count_to_scroll()
-  call s:update_target(&scroll)
 endfunction
 
 ""
 " Smooth equivalent to ^U.
 function smoothie#upwards()
-  if !g:smoothie_enabled
-    exe "normal! \<C-u>"
-    return
+  if winline() > 1
+    if !g:smoothie_enabled
+      exe "normal! \<C-u>"
+      return
+    endif
+    let s:ctrl_f_invoked = v:false
+    call s:count_to_scroll()
+    call s:update_target(-&scroll)
   endif
-  let s:ctrl_f_invoked = v:false
-  call s:count_to_scroll()
-  call s:update_target(-&scroll)
 endfunction
 
 ""
 " Smooth equivalent to ^F.
 function smoothie#forwards()
-  if !g:smoothie_enabled
-    exe "normal! \<C-f>"
-    return
+  if line('.') < line('$')
+    if !g:smoothie_enabled
+      exe "normal! \<C-f>"
+      return
+    endif
+    let s:ctrl_f_invoked = v:true
+    call s:update_target(winheight(0) * v:count1)
   endif
-  let s:ctrl_f_invoked = v:true
-  call s:update_target(winheight(0) * v:count1)
 endfunction
 
 ""
 " Smooth equivalent to ^B.
 function smoothie#backwards()
-  if !g:smoothie_enabled
-    exe "normal! \<C-b>"
-    return
-  endif
-  let s:ctrl_f_invoked = v:false
-  call s:update_target(-winheight(0) * v:count1)
+  if winline() > 1
+    if !g:smoothie_enabled
+      exe "normal! \<C-b>"
+      return
+    endif
+    let s:ctrl_f_invoked = v:false
+    call s:update_target(-winheight(0) * v:count1)
+  end
 endfunction
 
 ""
 " Smoothie equivalent for G and gg
 " NOTE: I have also added - movement to dempnstrate how to add more new movements in the future
+" TODO: debug gg animating twice up and no animation for jump down
 function smoothie#cursor_movement(movement)
   let l:movements = {
         \'gg': {
@@ -426,5 +520,6 @@ function s:do_vertical_cursor_movement(movement, properties)
     call cursor(line('.'), match(getline('.'),'\S')+1)
   endif
 endfunction
+
 
 " vim: et ts=2

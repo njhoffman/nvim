@@ -1,10 +1,10 @@
-local config = require('hover.config')
-local state = require('hover.state')
-local ui_title = require('hover.ui.title')
+local config = require("hover.config")
+local state = require("hover.state")
+local ui_title = require("hover.ui.title")
 
 local function get_max_height(num)
-  if string.find(tostring(num), '%%') then
-    local pct = string.match(tostring(num), '([0-9]+)%%')
+  if string.find(tostring(num), "%%") then
+    local pct = string.match(tostring(num), "([0-9]+)%%")
     local currheight = vim.api.nvim_win_get_height(0)
     return math.floor(currheight * pct / 100)
   end
@@ -12,8 +12,8 @@ local function get_max_height(num)
 end
 
 local function get_max_width(num)
-  if string.find(tostring(num), '%%') then
-    local pct = string.match(tostring(num), '([0-9]+)%%')
+  if string.find(tostring(num), "%%") then
+    local pct = string.match(tostring(num), "([0-9]+)%%")
     local currwidth = vim.api.nvim_win_get_width(0)
     return math.floor(currwidth * pct / 100)
   end
@@ -32,12 +32,12 @@ end
 
 local function get_lines_height(lines)
   -- TODO: rules should include two rows of ""
-  local height = #lines + 1
+  local height = #lines
   local sub = 0
   for _, line in ipairs(lines) do
-    if string.match(line, '^```') then
+    if string.match(line, "^```") then
       sub = sub + 1
-    elseif string.match(line, '^---$') then
+    elseif string.match(line, "^---$") then
       sub = sub + 2
     end
   end
@@ -77,7 +77,11 @@ local function get_dimensions(lines, max, provider_id)
   end
   state.width = title_width > state.width and title_width or state.width
 
-  return vim.tbl_deep_extend('force', dimensions, { new_w = state.width, new_h = state.height })
+  return vim.tbl_deep_extend("force", dimensions, { new_w = state.width, new_h = state.height })
 end
 
-return { get_dimensions = get_dimensions, get_max_height = get_max_height, get_max_width = get_max_width }
+return {
+  get_dimensions = get_dimensions,
+  get_max_height = get_max_height,
+  get_max_width = get_max_width,
+}

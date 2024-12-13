@@ -36,15 +36,14 @@ M.log = function(...)
   log:new(config)
   log.info(msg)
 
-  local notify = require("notify")
   local notify_msg = logutils.make_string(msg)
   local args = {}
-  args.timeout = 5000
+  args.timeout = 7000
   args.render = "minimal"
-  args.on_open = function(win)
-    local buf = vim.api.nvim_win_get_buf(win)
-    vim.api.nvim_buf_set_option(buf, "filetype", "lua")
-  end
+  -- args.on_open = function(win)
+  --   local buf = vim.api.nvim_win_get_buf(win)
+  --   vim.api.nvim_buf_set_option(buf, "filetype", "lua")
+  -- end
 
   local lines = vim.split(notify_msg, "\n")
   if false and #lines >= currheight then
@@ -52,11 +51,10 @@ M.log = function(...)
     notify_msg = notify_msg .. "\n..." .. #lines .. " more lines not shown"
   end
   -- notify.dismiss()
-  notify(notify_msg, "info", args)
+  require("notify").notify(notify_msg, "info", args)
 end
 
 M.inspect = function(...)
-  local notify = require("notify")
   local msg = ... or {}
   local cols = math.floor(vim.opt.columns:get() / 3 * 2)
   local currwin = vim.api.nvim_get_current_win()
@@ -85,14 +83,14 @@ M.inspect = function(...)
     notify_msg = table.concat(vim.list_slice(lines, 0, currheight - 3), "\n")
     notify_msg = notify_msg .. "\n..." .. #lines .. " more lines not shown"
   end
-  notify(notify_msg, "inspect", args)
+  require("notify").notify(notify_msg, "inspect", args)
 end
 
 vim.dbg = M.inspect
 vim._buf = M.buf
 
 vim.dbg_test = function()
-  vim._log(vim.api.nvim_get_all_options_info())
+  M.log(vim.api.nvim_get_all_options_info())
 end
 
 --[[ vim.api.nvim_create_user_command(

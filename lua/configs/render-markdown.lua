@@ -466,6 +466,17 @@ local default_cfg = {
 
 local cfg = {
   file_types = { "markdown", "vimwiki" },
+  -- "●", "○", "◆", "◇"
+  --        
+  bullet = {
+    -- Turn on / off list bullet rendering
+    enabled = true,
+    icons = { "", "○", "◆", "◇" },
+    ordered_icons = {},
+    left_pad = 0,
+    right_pad = 0,
+    highlight = "RenderMarkdownBullet",
+  },
   code = {
     -- Determines how code blocks & inline code are rendered:
     --  none:     disables all rendering

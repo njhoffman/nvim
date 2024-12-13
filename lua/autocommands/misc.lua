@@ -304,29 +304,29 @@ end
 
 local trail_chars = { ",", ";", ")", "'", '"', "|", "\\", ".", "}" }
 
--- strip last character
-vim.keymap.set("n", "<leader>$", get_last_char(), { desc = "ﲖ strip end characters" })
--- append provided end character
-vim.keymap.set(
-  "n",
-  "<leader>A",
-  get_last_char(_, { mode = "append" }),
-  { desc = "ﲖ append end character" }
-)
-
--- toggle provided end character
--- vim.keymap.set('n', '<leader>a', get_last_char(_, { mode = 'toggle' }), {
---   desc = 'ﲖ toggle ' .. char .. ' end character',
--- })
-
--- toggle common end characters
-vim.keymap.set(
-  "n",
-  "<leader>a",
-  get_last_char(trail_chars),
-  { desc = 'ﲖ toggle end characters: ,;)"|\\.}' }
-)
-
+-- -- strip last character
+-- vim.keymap.set("n", "<leader>$", get_last_char(), { desc = "ﲖ strip end characters" })
+-- -- append provided end character
+-- vim.keymap.set(
+--   "n",
+--   "<leader>A",
+--   get_last_char(_, { mode = "append" }),
+--   { desc = "ﲖ append end character" }
+-- )
+--
+-- -- toggle provided end character
+-- -- vim.keymap.set('n', '<leader>a', get_last_char(_, { mode = 'toggle' }), {
+-- --   desc = 'ﲖ toggle ' .. char .. ' end character',
+-- -- })
+--
+-- -- toggle common end characters
+-- vim.keymap.set(
+--   "n",
+--   "<leader>a",
+--   get_last_char(trail_chars),
+--   { desc = 'ﲖ toggle end characters: ,;)"|\\.}' }
+-- )
+--
 -- local all_filetypes = augroup('AllFileTypesLocalOptions')
 -- autocmd({ 'FileType' }, {
 --   group = all_filetypes,

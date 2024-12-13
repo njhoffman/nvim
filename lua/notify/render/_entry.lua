@@ -37,7 +37,8 @@ local render = function(bufnr, notif, highlights, config)
   elseif #title > 0 and not vim.tbl_contains(title_ignore, title) then
     -- return require('notify.render.compact')(bufnr, notif, highlights, config)
     -- return require("notify.render._simple-notitle")(bufnr, notif, highlights, config)
-    return require("notify.render._wrapped-compact")(bufnr, notif, highlights, config)
+    return require("notify.render._simple-notitle")(bufnr, notif, highlights, config)
+    -- return require("notify.render._wrapped-compact")(bufnr, notif, highlights, config)
     -- return require('notify.render.' .. render_title)(bufnr, notif, highlights, config)
   else
     -- return require("notify.render._wrapped-compact")(bufnr, notif, highlights, config)

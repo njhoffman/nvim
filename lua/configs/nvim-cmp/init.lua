@@ -1,9 +1,15 @@
 local cmp = require("cmp")
 
 local debug_flag = false
-local MAX_DOCUMENT_WIDTH = 40
+local MAX_DOCUMENT_WIDTH = 60
 local WIN_HIGHLIGHT =
   "Normal:CmpNormal,FloatBorder:CmpFloatBorder,CursorLine:CmpCursorLine,Search:None"
+-- winhighlight = table.concat({
+--   "Normal:Normal",
+--   "FloatBorder:SuggestWidgetBorder",
+--   "CursorLine:Normal",
+--   "Search:None", --[[ , ]]
+-- }, ","),
 
 local sources = require("configs.nvim-cmp.sources")
 local mapping_cmdline = require("configs.nvim-cmp.keys-cmd")
@@ -69,14 +75,23 @@ local cfg = {
     cmp.TriggerEvent.TextChanged,
   },
   enabled = is_enabled,
+  --stylua: ignore start
+  --   parse_delay = 1,
+  --   slow_parse_delay = 50,
+  --   max_iterations = 400,
+  --   max_concurrent_partial_parses = 30,
+  --   debounce = {
+  --   partial_parse = 3,
+  --   partial_insert_mode = 100,
+  --   total_parse = 700,
   performance = {
-    trigger_debounce = 300,
-    debounce = 100, --60  This is the interval used to group up completions from different sources for filtering and displaying.
-    throttle = 50, --30 This is used to delay filtering and displaying completions.
-    max_view_entries = 200,
-    fetching_timeout = 500,
-    async_budget = 1,
+    debounce                = 60, --60  This is the interval used to group up completions from different sources for filtering and displaying.
+    throttle                = 30, --30 This is used to delay filtering and displaying completions.
+    max_view_entries        = 400,
+    fetching_timeout        = 500,
+    async_budget            = 1,
     confirm_resolve_timeout = 80,
+    trigger_debounce        = 300,
   },
   matching = {
     -- disallow_fuzzy_matching = false,

@@ -1,97 +1,135 @@
-local mapper = require("mapper")
-local map = mapper.map
-
-vim.cmd([[
-  " nnoremap <expr> j v:count ? 'j' : 'gj'
-  " nnoremap <expr> k v:count ? 'k' : 'gk'
-"    nnoremap <C-y> 3<C-y>
-"   nnoremap <C-e> 3<C-e>
-  " nnoremap <C-d> 40jzz
-  " nnoremap <C-u> 40kzz
-  ]])
+local ts_ctx = require("treesitter-context")
+local state = { started = false }
+--[[
+   '<C-D>'                  'z+'
+   '<C-U>'                   'z^'
+   '<C-F>'                   'zt'
+   '<S-Down>'                'z<CR>'
+   '<PageDown>'              'z.'
+   '<C-B>'                   'zz'
+   '<S-Up>'                  'z-'
+   '<PageUp>'                'zb'
+    '<ScrollWheelDown>'       'H'
+    '<ScrollWheelUp>'         'M'
+    'gg'                      'L'
+    'G'                       '{'
+    'n'                       '}'
+    'N'                       'j'
+    '#'                       'k'
+    '*'
+    'g*'
+    'g#'
+  ]]
+local get_state = function()
+  -- stylua: ignore
+  local smooth_status = require('smoothcursor.utils').smoothcursor_status()
+  return vim.tbl_extend("force", state, {
+    relativenumber = vim.api.nvim_get_option_value("relativenumber", { win = 0 }),
+    tscontext = ts_ctx.enabled(),
+    minianimate = not vim.b.minianimate_disable,
+    cursor = vim.o.guicursor ~= "a:noCursor",
+    smoothcursor = smooth_status,
+  })
+end
 
 local cfg = {
   -- ignore_events = { "WinScrolled", "CursorMoved" },
   events_ignored = {},
-  relativenumber_off = false,
+  relativenumber_off = true,
   tscontext_disable = true,
+  cursor_hide = false,
+  animate_disable = true,
+  hlchunk_disable = true,
+  smoothcursor_disable = true,
 }
 
-local scroll_aucmds = function()
-  local ts_ctx = require("treesitter-context")
-  local get_state = function()
-    return { relativenumber = vim.o.relativenumber, tscontext = ts_ctx.enabled() }
+local hook_start = function()
+  local curr = get_state()
+  if not curr.started then
+    state.started = true
+    if cfg.animate_disable and curr.minianimate then
+      vim.b.minianimate_disable = true
+    end
+    if cfg.relativenumber_off and curr.relativenumber then
+      state.prev_relativenumber = true
+      vim.cmd([[setlocal norelativenumber number]])
+      vim.opt_local.relativenumber = false
+    end
+    if cfg.tscontext_disable and curr.tscontext then
+      ts_ctx.disable()
+    end
+    if cfg.cursor_hide and curr.cursor then
+      state.prev_cursor = vim.o.guicursor
+      vim.opt.guicursor = "a:noCursor"
+    end
+    if cfg.smoothcursor_disable and curr.smoothcursor then
+      require("smoothcursor.utils").smoothcursor_stop()
+      state.smoothcursor_disabled = true
+    end
+    vim.opt.eventignore:append(cfg.events_ignored)
   end
-  local state = get_state()
+end
 
-  vim.api.nvim_create_autocmd({ "WinScrolled" }, {
-    callback = function()
-      state = get_state()
-      if cfg.relativenumber_off and state.relativenumber then
-        vim.cmd("set relativenumber norelativenumber")
+local hook_stop = function()
+  local curr = get_state()
+  if curr.started then
+    state.started = false
+    if cfg.animate_disable and not curr.minianimate then
+      vim.b.minianimate_disable = false
+    end
+    if cfg.relativenumber_off and not curr.relativenumber and state.prev_relativenumber then
+      vim.cmd([[setlocal relativenumber number]])
+      state.prev_relativenumber = nil
+    end
+    if cfg.tscontext_disable and not curr.tscontext then
+      ts_ctx.enable()
+    end
+    if cfg.smoothcursor_disable and not curr.smoothcursor and curr.smoothcursor_disabled then
+      require("smoothcursor.utils").smoothcursor_start()
+      state.smoothcursor_disabled = nil
+    end
+    if cfg.cursor_hide and not curr.cursor then
+      vim.o.guicursor = state.prev_cursor
+      state.prev_cursor = nil
+    end
+    vim.opt.eventignore:remove(cfg.events_ignored)
+  end
+end
+
+local setup_aucmds = function()
+  vim.api.nvim_create_autocmd("User", {
+    pattern = { "ScrollStart", "ScrollStop", "MiniAnimateDoneCursor", "MiniAnimateDoneScroll" },
+    callback = function(ev)
+      if ev.match == "ScrollStart" then
+        hook_start()
+        -- vim.dbglog("start", get_state())
+      else
+        hook_stop()
+        -- vim.dbglog("stop", get_state())
       end
-      if cfg.tscontext_disable and state.tscontext then
-        ts_ctx.disable()
-      end
-      vim.opt.eventignore:append(cfg.events_ignored)
     end,
   })
 
-  -- this autocommand turns relative numberin on when we have idled (stopped scrolling)
-  vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-    callback = function()
-      if state.relativenumber and cfg.relativenumber_off and not vim.o.relativenumber then
-        vim.cmd("set relativenumber relativenumber")
-      end
-      if state.tscontext and cfg.tscontext_disable and not ts_ctx.enabled() then
-        ts_ctx.enable()
-      end
-      vim.opt.eventignore:remove(cfg.events_ignored)
+  vim.api.nvim_create_autocmd({ "WinScrolled", "CursorHold", "CursorHoldI" }, {
+    callback = function(ev)
+
+      -- if state.started == true and ev.event == "CursorHold" or ev.event == "CursorHoldI" then
+      --   vim.dbglog(" hold:", ev.event, get_state())
+      -- elseif not state.started and ev.event == "WinScrolled" then
+      --   vim.dbglog(" scroll:", get_state())
+      -- end
+      -- if ev.match == "WinScrolled" then
+      --   hook_start()
+      -- else
+      --   hook_stop()
+      -- end
     end,
   })
 end
 
--- scroll_aucmds()
-
-local setup_paging = function()
-  -- local page_down = vim.api.nvim_replace_termcodes("<C-f>", true, true, true)
-  -- local page_up = vim.api.nvim_replace_termcodes("<C-b>", true, true, true)
-  -- local bottom_margin = 5
-
-  -- local scroll_up = function()
-  --   local winheight = vim.api.nvim_win_get_height(0)
-  --   local cursor = vim.api.nvim_win_get_cursor(0)
-  --   local top_margin = math.max(bottom_margin, winheight - cursor[1] - 1)
-  --   -- vim.cmd('normal! ' .. winheight .. 'k') --  .. page_up)
-  --   vim.cmd("normal! " .. winheight .. "k") --  .. page_up)
-  --   -- vim.cmd('normal ' .. page_up)
-  --   -- if cursor[1] - (winheight * 1) < top_margin then
-  --   --   vim.cmd('normal! gg')
-  --   -- else
-  --   -- vim.cmd('normal! ' .. winheight .. 'k') --  .. page_up)
-  --   -- vim.cmd('normal! ' .. winheight .. page_up)
-  --   -- end
-  -- end
-  -- -- map('n', '<C-b>', scroll_up, {
-  -- --   category = 'motion',
-  -- --   desc = ' scroll upwards',
-  -- --   silent = true,
-  -- -- })
-
-  -- local scroll_down = function()
-  --   local winheight = vim.api.nvim_win_get_height(0)
-  --   local cursor = vim.api.nvim_win_get_cursor(0)
-  --   local last_line = vim.fn.line("$")
-  --   local top_margin = math.max(bottom_margin, winheight - cursor[1] - 1)
-
-  --   -- vim.cmd('normal! ')
-  --   -- vim.cmd('normal! ' .. winheight .. 'j') --  .. page_up)
-  --   -- if cursor[1] + (winheight * 1) > last_line then
-  --   --   vim.cmd('normal! G')
-  --   -- else
-  --   -- end
-  -- end
-
+local mapper = require("mapper")
+local map = mapper.map
+local setup_keymaps = function()
   vim.cmd([[
     noremap <silent> <Plug>(SmoothieDownwards) <cmd>call smoothie#downwards()           <CR>
     noremap <silent> <Plug>(SmoothieUpwards)   <cmd>call smoothie#upwards()             <CR>
@@ -100,74 +138,72 @@ local setup_paging = function()
     noremap <silent> <Plug>(Smoothie_gg)       <cmd>call smoothie#cursor_movement('gg') <CR>
     noremap <silent> <Plug>(Smoothie_G)        <cmd>call smoothie#cursor_movement('G')  <CR>
 
-    " silent! map <C-D>      <Plug>(SmoothieDownwards)
-    " silent! map <C-U>      <Plug>(SmoothieUpwards)
-    " silent! map <C-F>      <Plug>(SmoothieForwards)
-    " silent! map <C-B>      <Plug>(SmoothieBackwards)
-    " silent! map <C-F>      <Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)
-    " silent! map <C-B>      <Plug>(SmoothieUpwards)<Plug>(SmoothieUpwards)
-    " silent! map <Space>    <Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)
-    " silent! map <PageUp>   <Plug>(SmoothieBackwards)
-    " silent! map <PageDown> <Plug>(SmoothieForwards)
-    " silent! map  G       <Plug>(Smoothie_G)
-    " silent! map gg       <Plug>(Smoothie_gg)
+    " nnoremap <unique> <C-D> <cmd>call smoothie#do("\<C-D>") <CR>
+    " vnoremap <unique> <C-D> <cmd>call smoothie#do("\<C-D>") <CR>
   ]])
 
-  map("n", "gg", "<Plug>(Smoothie_gg)", {
+  map({ "n", "v" }, "gg", "<Plug>(Smoothie_gg)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll top",
-    silent = true,
   })
 
-  map("n", "G", "<Plug>(Smoothie_G)", {
+  map({ "n", "v" }, "G", "<Plug>(Smoothie_G)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll bottom",
-    silent = true,
   })
 
-  map("n", "<C-f>", "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)", {
+  map({ "v", "n" }, "<C-f>", "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll downwards",
-    noremap = false,
-    silent = true,
+    remap = true,
   })
 
-  map("n", "<C-b>", "<Plug>(SmoothieUpwards)<Plug>(SmoothieUpwards)", {
+  map({ "v", "n" }, "<C-b>", "<Plug>(SmoothieUpwards)<Plug>(SmoothieUpwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll upwards",
-    noremap = false,
-    silent = true,
+    remap = true,
   })
-  map("n", "<PageUp>", "<Plug>(SmoothieBackwards)", {
+  map({ "v", "n" }, "<PageUp>", "<Plug>(SmoothieBackwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
-    plugin = "vim-smoothie",
-    desc = " scroll backwards",
+    desc = " scroll upwards",
     silent = true,
+    remap = true,
   })
 
-  map("n", "<PageDown>", "<Plug>(SmoothieForwards)", {
+  map({ "n", "v" }, "<PageDown>", "<Plug>(SmoothieForwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
-    desc = " scroll forwards",
-    silent = true,
+    desc = " scroll downwards",
+    remap = true,
   })
 
   map(
-    "n",
+    { "n", "v" },
     "<space>",
-    "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)",
+    "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)",
     {
       category = "Motion",
-      desc = " scroll forwards x2",
-      noremap = false,
-      silent = true,
+      desc = " scroll forwards x,2",
     }
   )
 end
 
-return { setup_paging = setup_paging }
+local setup_keymaps_v2 = function()
+  vim.cmd([[
+  nnoremap <unique> <C-F> <cmd>call smoother#do("\<C-D>") <CR>
+  vnoremap <unique> <C-F> <cmd>call smoother#do("\<C-D>") <CR>
+  nnoremap <unique> <C-B> <cmd>call smoother#do("\<C-U>") <CR>
+  vnoremap <unique> <C-B> <cmd>call smoother#do("\<C-U>") <CR>
+]])
+end
+
+return {
+  -- setup_keymaps = setup_keymaps,
+  setup_keymaps = setup_keymaps,
+  setup_aucmds = setup_aucmds,
+}

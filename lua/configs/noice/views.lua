@@ -169,6 +169,7 @@ local miniView = {
 -- local render = require("notify.render._entry")
 
 local notifyView = {
+  -- backend = { "snacks", "notify" },
   backend = "notify",
   fallback = "mini",
   format = "notify",

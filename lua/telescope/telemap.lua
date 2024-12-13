@@ -1,27 +1,27 @@
-local commands = require('configs.telescope.commands')
-local leaderf = require('configs.telescope.leaderf')
-local make_entry = require('telescope.make_entry')
+local commands = require("configs.telescope.commands")
+local leaderf = require("configs.telescope.leaderf")
+local make_entry = require("telescope.make_entry")
 
 local get_cwd = function(user_opts)
-  return (user_opts.cwd or vim.fn.getcwd()):gsub(vim.fn.getenv('HOME'), '~')
+  return (user_opts.cwd or vim.fn.getcwd()):gsub(vim.fn.getenv("HOME"), "~")
 end
 
 local file_count = function(cwd)
-  local cmd = vim.fn.copy(commands.rg) or { 'rg' }
-  table.insert(cmd, cwd or vim.fn.getcwd() or vim.fn.getenv('HOME'))
+  local cmd = vim.fn.copy(commands.rg) or { "rg" }
+  table.insert(cmd, cwd or vim.fn.getcwd() or vim.fn.getenv("HOME"))
   local output = vim.fn.system(cmd)
   local lines = vim.tbl_filter(function(line)
     return #line > 0
-  end, vim.split(output, '\n'))
+  end, vim.split(output, "\n"))
   return #lines
 end
 
 local get_help_word = function()
-  local word = vim.fn.expand('<cWORD>') or ''
-  local args_pattern = '%([^)]*%)?.*'
-  local vim_pattern = 'vim%.api%.'
-  word = string.gsub(word, args_pattern, '()')
-  word = string.gsub(word, vim_pattern, '')
+  local word = vim.fn.expand("<cWORD>") or ""
+  local args_pattern = "%([^)]*%)?.*"
+  local vim_pattern = "vim%.api%."
+  word = string.gsub(word, args_pattern, "()")
+  word = string.gsub(word, vim_pattern, "")
   return word
 end
 
@@ -32,27 +32,27 @@ local telemap = {
   -- },
   leaderf = {
     opts = function(user_opts)
-      local theme_name = user_opts and user_opts.theme or 'dropdown'
+      local theme_name = user_opts and user_opts.theme or "dropdown"
       return {
-        prompt_title = 'Buffers',
+        prompt_title = "Buffers",
         theme = theme_name,
         entry_maker = leaderf.gen_from_buffer(),
       }
     end,
-    cmd = function(opts)
-      require('telescope.builtin').buffers(opts)
+    fun = function(opts)
+      require("telescope.builtin").buffers(opts)
     end,
   },
   fd_cwd = {
     opts = function(user_opts)
-      local directory = vim.api.nvim_buf_get_name(0):match('(.*' .. '/' .. ')')
+      local directory = vim.api.nvim_buf_get_name(0):match("(.*" .. "/" .. ")")
       user_opts.cwd = directory
       return {
         results_title = get_cwd(user_opts),
         cwd = directory,
       }
     end,
-    cmd = { 'builtin', 'fd' },
+    fun = { "builtin", "fd" },
   },
   projects_projects = {
     opts = {
@@ -64,7 +64,7 @@ local telemap = {
   builtin_diagnostics = {
     opts = function(user_opts)
       user_opts = user_opts or {}
-      if user_opts.bufnr == true or type(user_opts.bufnr) == 'number' then
+      if user_opts.bufnr == true or type(user_opts.bufnr) == "number" then
         user_opts.bufnr = 0
       end
       local gen_opts = {
@@ -77,7 +77,7 @@ local telemap = {
         },
       }
       if user_opts.bufnr == 0 then
-        gen_opts.path_display = 'hidden'
+        gen_opts.path_display = "hidden"
       end
       return {
         bufnr = user_opts.bufnr,
@@ -119,9 +119,9 @@ local telemap = {
   builtin_help_tags = {
     opts = function(user_opts)
       local opts = user_opts or {}
-      opts.theme = opts.theme or 'dropdown_preview'
+      opts.theme = opts.theme or "dropdown_preview"
       if opts.cursor then
-        local match, word = require('utils.helptags').search_cursor_word()
+        local match, word = require("utils.helptags").search_cursor_word()
         if match then
           opts.default_text = word
         end
@@ -131,6 +131,8 @@ local telemap = {
   },
   builtin_find_files = {
     opts = function(user_opts)
+      local opts = user_opts or {}
+      opts.theme = opts.theme or "flex"
       return {
         results_title = get_cwd(user_opts),
       }
@@ -155,24 +157,24 @@ local telemap = {
           end
           return true
         end, vim.api.nvim_list_bufs())
-        user_opts.results_title = 'Buffers (' .. #bufnrs .. ')'
-        user_opts.prompt_title = 'Live Grep Buffers'
+        user_opts.results_title = "Buffers (" .. #bufnrs .. ")"
+        user_opts.prompt_title = "Live Grep Buffers"
       else
         local count = file_count(user_opts.cwd or vim.fn.getcwd())
-        user_opts.results_title = get_cwd(user_opts) .. ' (' .. count .. ')'
-        user_opts.prompt_title = user_opts.cwd and 'Live Grep CWD' or 'Live Grep Project'
+        user_opts.results_title = get_cwd(user_opts) .. " (" .. count .. ")"
+        user_opts.prompt_title = user_opts.cwd and "Live Grep CWD" or "Live Grep Project"
       end
       return user_opts
     end,
   },
   messages_messages = {
     opts = {
-      theme = 'ivy',
+      theme = "ivy",
     },
   },
   notify_notify = {
     opts = {
-      theme = 'ivy',
+      theme = "ivy",
     },
   },
 }

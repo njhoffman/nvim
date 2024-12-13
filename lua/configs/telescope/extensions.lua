@@ -114,6 +114,7 @@ local extension_configs = {
     sorter = sorters.fuzzy_with_index_bias,
     -- sorter = sorters.highlighter_only
   },
+  ["nerdy"] = {},
   ["options"] = {},
   ["projects"] = {
     workspaces = {

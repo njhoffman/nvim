@@ -2,6 +2,24 @@
 -- require('globals.record-events')
 -- require('globals.overrides')
 
+-- profiling startup setup : PROF=1 nvim
+if vim.env.PROF then
+  local local_path = vim.fn.getenv("home") .. "/git/snacks.nvim"
+  local lazy_path = vim.fn.stdpath("data") .. "/lazy/snacks.nvim"
+  local snacks = vim.fn.isdirectory(local_path) == 1 and local_path
+    or vim.fn.isdirectory(lazy_path) and lazy_path
+  if snacks then
+    vim.opt.rtp:append(snacks)
+    require("snacks.profiler").startup({
+      startup = {
+        event = "VimEnter", -- stop profiler on this event. Defaults to `VimEnter`
+        -- event = "UIEnter",
+        -- event = "VeryLazy",
+      },
+    })
+  end
+end
+
 -- global require handler
 require("globals.importer")
 vim.import("globals.variables")
@@ -19,6 +37,9 @@ if debuglog then
   vim.dbglog = debuglog.log or _nil()
   vim.dbgbuf = debuglog.buf or _nil()
   vim.dbgtime = debuglog.timer or _nil()
+  vim.print = vim.dbg
+  -- vim.dbg.log = vim.dbglog
+
   -- vim.inspect = debuglog.dump or vim.inspect
   vim.dump = debuglog.dump
 
@@ -47,12 +68,6 @@ if debuglog then
   end
 end
 
--- local logger = vim.import('logger')
--- if logger ~= nil and logger.init ~= nil then
---   vim.logger = logger.init('root')
---   vim.notify = logger.notify
--- end
-
 N = vim.dbg
 
 D = vim.dbglog
@@ -65,3 +80,32 @@ R = function(...)
   RELOAD(...)
   return require(...)
 end
+
+-- setup lodash global
+local lodash = require("lodash")
+_G._ = lodash
+
+-- setup module helpers to attach to lodash global
+
+-- --stylua: ignore
+-- local mods_map = {
+--   -- { "buffers",    "buf", "Buffers functions" },
+--   { require('globals.mods.windows'),    "win", "Windows functions" },
+--   -- { "treesitter", "ts",  "Treesiter helpers" },
+--   -- { "extmarks",   "ext", "Highlights and extmarks" },
+--   -- { "trace",      "tr", "Tracing functions and utilities" },
+-- }
+
+-- for i, modkeys in ipairs(mods_map) do
+--   mods[i][4] = win_fns
+-- end
+
+-- _G._mods = mods
+
+-- local logger = vim.import('logger')
+-- if logger ~= nil and logger.init ~= nil then
+--   vim.logger = logger.init('root')
+--   vim.notify = logger.notify
+-- end
+
+-- _ = require("lodash")

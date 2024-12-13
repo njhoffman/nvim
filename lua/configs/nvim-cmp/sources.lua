@@ -1,19 +1,3 @@
---[[ { name = "path" }, -- file paths
-		{ name = "nvim_lsp", keyword_length = 3 }, -- from language server
-		{ name = "nvim_lsp_signature_help" }, -- display function signatures with current parameter emphasized
-		{ name = "nvim_lua", keyword_length = 2 }, -- complete neovim's Lua runtime API such vim.lsp.*
-		{ name = "buffer", keyword_length = 2 }, -- source current buffer
-		{ name = "luasnip", keyword_length = 2 }, -- nvim-cmp source for vim-vsnip
-		{ name = "calc" }, -- source for math calculation
--- local sources = { ]]
---   { name = 'nvim_lsp' },
---   { name = 'luasnip' },
---   { name = 'treesitter', keyword_length = 2 },
---
---   -- { name = "cmp_tabnine", keyword_length = 0 },
---   { name = 'emoji' },
---   { name = 'path' },
--- }
 -- if vim.o.ft == 'sql' then
 --   table.insert(sources, { name = 'vim-dadbod-completion' })
 -- end
@@ -64,8 +48,8 @@ local sources = {
       {
         name = "nvim_lsp",
         -- max_item_count = 10,
-        -- keyword_length = 1,
         -- trigger_characters = { '-' },
+        keyword_length = 1,
         entry_filter = function(entry, ctx)
           local kind = require("cmp.types.lsp").CompletionItemKind[entry:get_kind()]
           if kind == "Snippet" and ctx.prev_context.filetype == "java" then
@@ -74,12 +58,12 @@ local sources = {
           return true
         end,
       },
-      -- { name = 'codeium', max_item_count = 3 },
+      { name = "codeium", max_item_count = 3 },
       -- copilot
       {
         name = "copilot",
-        -- max_item_count = 5,
         keyword_length = 3,
+        -- max_item_count = 5,
         -- vim.opt.scrollbuf = 999
         -- trigger_characters = {
           -- stylua: ignore
@@ -88,6 +72,7 @@ local sources = {
       },
       {
         name = "buffer",
+        keyword_length = 2,
         option = {
           get_bufnrs = function()
             local bufs = {}
@@ -145,6 +130,7 @@ local sources = {
         keyword_length = 3,
         option = { in_comment = true },
       },
+      { name = "nerdfont" },
       { name = "plugins" },
       {
         name = "treesitter",

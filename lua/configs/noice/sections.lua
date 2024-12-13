@@ -1,25 +1,25 @@
 local popupmenu = {
-  relative = 'editor',
+  relative = "editor",
   position = {
     row = 11,
-    col = '50%',
+    col = "50%",
   },
   size = {
     width = 60,
     height = 10,
   },
   border = {
-    style = 'rounded',
+    style = "rounded",
     padding = { 0, 1 },
   },
   win_options = {
-    winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
+    winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
   },
 }
 
 local redirect = {
-  view = 'cmdline_output',
-  filter = { event = 'msg_show' },
+  view = "cmdline_output",
+  filter = { event = "msg_show" },
 }
 
 local notify = {
@@ -28,8 +28,8 @@ local notify = {
   -- event is always "notify" and kind can be any log level as a string
   -- The default routes will forward notifications to nvim-notify
   -- Benefit of using Noice for this is the routing and consistent history view
-  view = 'notify',
-  fallback = 'mini',
+  view = "notify",
+  fallback = "mini",
   enabled = true,
   -- format = "notify",
   -- replace = false,
@@ -41,8 +41,8 @@ local markdown = {
   -- Markdown.keys(buf) (hover)
   hover = {
     -- noice.text.markdown.keys -- Markdown.keys
-    ['|(%S-)|'] = vim.cmd.help, -- vim help links
-    ['%[.-%]%((%S-)%)'] = require('noice.util').open, -- markdown links
+    ["|(%S-)|"] = vim.cmd.help, -- vim help links
+    ["%[.-%]%((%S-)%)"] = require("noice.util").open, -- markdown links
   },
   highlights = {
     -- noice.text.markdown.format --  Markdown.format
@@ -59,12 +59,12 @@ local markdown = {
     --                 • on_start:
     -- nvim_buf_del_keymap({buffer}, {mode}, {lhs})           *nvim_buf_del_keymap()*
 
-    ['|%S-|'] = '@text.reference',
-    ['@%S+'] = '@parameter',
-    ['^%s*(Parameters:)'] = '@text.title',
-    ['^%s*(Return:)'] = '@text.title',
-    ['^%s*(See also:)'] = '@text.title',
-    ['{%S-}'] = '@parameter',
+    ["|%S-|"] = "@text.reference",
+    ["@%S+"] = "@parameter",
+    ["^%s*(Parameters:)"] = "@text.title",
+    ["^%s*(Return:)"] = "@text.title",
+    ["^%s*(See also:)"] = "@text.title",
+    ["{%S-}"] = "@parameter",
   },
 }
 
@@ -72,7 +72,7 @@ local smart_move = {
   -- noice tries to move out of the way of existing floating windows.
   enabled = true, -- you can disable this behaviour here
   -- add any filetypes here, that shouldn't trigger smart move.
-  excluded_filetypes = { 'cmp_menu', 'cmp_docs', 'notify' },
+  excluded_filetypes = { "cmp_menu", "cmp_docs", "notify" },
 }
 
 local sections = {
@@ -81,10 +81,10 @@ local sections = {
   redirect = redirect,
   smart_move = smart_move,
   notify = notify,
-  lsp = require('configs.noice.lsp'),
-  cmdline = require('configs.noice.cmdline'),
-  routes = require('configs.noice.routes'),
-  views = require('configs.noice.views').config,
+  lsp = require("configs.noice.lsp"),
+  cmdline = require("configs.noice.cmdline"),
+  routes = require("configs.noice.routes"),
+  views = require("configs.noice.views").config,
   -- popoupmenu = require('configs.noice.popupmenu'),
 }
 

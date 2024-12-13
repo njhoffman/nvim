@@ -24,15 +24,16 @@ end
 ---@param max_width number
 ---@return string[]
 local function custom_wrap(lines, max_width)
-  local wrapped_lines = {}
-  for _, line in pairs(lines) do
-    local new_lines = split_length(line, max_width)
-    for _, nl in ipairs(new_lines) do
-      nl = nl:gsub("^%s*", " "):gsub("%s*$", " ") -- ensure padding
-      table.insert(wrapped_lines, nl)
-    end
-  end
-  return wrapped_lines
+  -- local wrapped_lines = {}
+  -- for _, line in pairs(lines) do
+  --   local new_lines = split_length(line, max_width)
+  --   for _, nl in ipairs(new_lines) do
+  --     nl = nl:gsub("^%s*", " "):gsub("%s*$", " ") -- ensure padding
+  --     table.insert(wrapped_lines, nl)
+  --   end
+  -- end
+  -- return wrapped_lines
+  return lines
 end
 
 local function get_title(notif)

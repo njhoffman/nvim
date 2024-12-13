@@ -252,6 +252,7 @@ local plugins = {
           delay = 250,
         },
       }
+
       require("hlchunk").setup(cfg)
     end,
   },
@@ -424,6 +425,7 @@ local plugins = {
       -- `auto`       'Proper' when having few buffer lines and luajit, else `virtual` mode is used.
       require("scrollview").setup({
         excluded_filetypes = {
+          "WhichKey",
           "TelescopePrompt",
           "chatgpt-input",
           "cmp_docs",
@@ -494,11 +496,6 @@ local plugins = {
 
   { "miversen33/sunglasses.nvim", enabled = false },
   {
-    "TaDaa/vimade",
-    event = { "VimEnter" },
-    enabled = true,
-  },
-  {
     "kevinhwang91/nvim-hlslens",
     event = { "VimEnter" },
     init = function()
@@ -550,7 +547,7 @@ local plugins = {
       { "ziontee113/query-secretary", keys = { "<leader><BS>" } },
     },
   },
-  { "echasnovski/mini.ai", event = { "VeryLazy" } },
+  { "echasnovski/mini.ai", event = { "VeryLazy" }, dependencies = { "echasnovski/mini.extra" } },
   { "chrisgrieser/nvim-various-textobjs", event = { "VeryLazy" } },
   { "stevearc/aerial.nvim", event = { "VeryLazy" }, dependencies = { "nvim-treesitter" } },
   -- motion
@@ -679,7 +676,25 @@ local plugins = {
   -- { "romainl/vim-cool", event = { "BufReadPost", "BufNewFile" } },
   { "edluffy/specs.nvim", enabled = false, event = { "BufReadPost", "BufNewFile" } },
   { "gen740/SmoothCursor.nvim", event = { "BufReadPost", "BufNewFile" } },
-  { "echasnovski/mini.animate", event = "VeryLazy" },
+  {
+    "sphamba/smear-cursor.nvim",
+    event = "VeryLazy",
+    cond = vim.g.neovide == nil,
+    opts = {
+      cursor_color = "none",
+      distance_stop_animating = 0.2, -- 0.1      > 0
+      hide_target_hack = true,
+      legacy_computing_symbols_support = true,
+      stiffness = 0.6, -- 0.6      [0, 1]
+      trailing_stiffness = 0.3, -- 0.3      [0, 1]
+      -- transparent_bg_fallback_color = "#303030",
+    },
+  },
+  {
+    "echasnovski/mini.animate",
+    cond = vim.g.neovide == nil,
+    event = "VeryLazy",
+  },
   -- { 'otavioschwanck/cool-substitute.nvim' },
   -- matching
 
@@ -771,6 +786,9 @@ local plugins = {
   { "ckolkey/ts-node-action", dependencies = { "nvim-treesitter" } },
   { "johmsalas/text-case.nvim", event = "VeryLazy" },
   { "echasnovski/mini.operators", version = false },
+  { "echasnovski/mini.jump", version = false },
+  { "echasnovski/mini.jump2d", version = false },
+
   {
     -- https://www.reddit.com/r/neovim/comments/1bq0cxy/minidiff_work_with_diff_hunks_interactively/
     "echasnovski/mini.comment",
@@ -888,6 +906,16 @@ local plugins = {
     opts = {},
   },
   { "neo451/feed.nvim", enabled = false },
+  -- Lazy
+  {
+    "2kabhishek/nerdy.nvim",
+    dependencies = {
+      "stevearc/dressing.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    cmd = "Nerdy",
+    -- Running the python scripts/generator.py command will automatically fetch new icons from source and update the icons.
+  },
   {
     -- 'njhoffman/telescope.nvim',
     "nvim-telescope/telescope.nvim",
@@ -1462,6 +1490,15 @@ local plugins = {
   },
 
   { "echasnovski/mini.test", lazy = true },
+  {
+    "ibhagwan/fzf-lua",
+    -- optional for icon support
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      -- calling `setup` is optional for customization
+      require("fzf-lua").setup({})
+    end,
+  },
   { "gennaro-tedesco/nvim-jqx", lazy = true, cmd = { "JqxList", "JqxQuery" } },
   {
     "linrongbin16/fzfx.nvim",
@@ -1491,9 +1528,9 @@ local plugins = {
   { "nvimtools/hydra.nvim", event = "VeryLazy" }, -- anuvyklack
   {
     "NvChad/nvim-colorizer.lua",
-    -- event = { "BufReadPost", "BufNewFile" },
-    event = { "InsertEnter" },
-    config = true,
+    event = { "BufReadPost", "BufNewFile" },
+    -- event = { "InsertEnter" },
+    -- config = true,
   },
   { "nvim-colortils/colortils.nvim", cmd = "Colortils", event = { "BufReadPost", "BufNewFile" } },
   {

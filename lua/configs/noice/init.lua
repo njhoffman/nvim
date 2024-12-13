@@ -84,4 +84,7 @@ require("telescope").load_extension("noice")
 commands.setup()
 mapping.setup()
 
+vim.treesitter.language.register("lua", { "log" })
+vim.treesitter.language.register("lua", { "noice" })
+
 -- require("noice.user.cmdline")

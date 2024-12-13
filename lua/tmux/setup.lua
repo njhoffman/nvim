@@ -38,9 +38,23 @@ vim.api.nvim_set_keymap("n", "<M-j>", '<cmd>lua require("tmux").resize_bottom()<
 
 vim.api.nvim_set_keymap("n", "<C-h>", '<cmd>lua require("tmux").move_left()<cr>', { nowait = true })
 vim.api.nvim_set_keymap(
+  "i",
+  "<C-h>",
+  '<esc><cmd>lua require("tmux").move_left()<cr>',
+  { nowait = true }
+)
+
+vim.api.nvim_set_keymap(
   "n",
   "<C-l>",
   '<cmd>lua require("tmux").move_right()<cr>',
+  { nowait = true }
+)
+
+vim.api.nvim_set_keymap(
+  "i",
+  "<C-l>",
+  '<esc><cmd>lua require("tmux").move_right()<cr>',
   { nowait = true }
 )
 vim.api.nvim_set_keymap("n", "<C-k>", '<cmd>lua require("tmux").move_top()<cr>', { nowait = true })

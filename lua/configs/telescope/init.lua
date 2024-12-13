@@ -23,6 +23,14 @@ local telescope_config = {
       prompt = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
       results = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
     },
+    cycle_layout_list = { "flex", "horizontal", "vertical", "bottom_pane", "center" },
+    preview = {
+      hide_on_startup = true,
+      check_mime_type = true,
+      ls_short = true,
+      filesize_limit = 2,
+      timeout = 2000, -- default 250
+    },
     layout_config = {
       prompt_position = "top",
       preview_cutoff = 60,
@@ -52,7 +60,19 @@ local telescope_config = {
       flex = {
         -- width = 0.9,
         -- flip_lines = 60,
+        -- flip_lines = 5,
         flip_columns = 120,
+        horizontal = {
+          height = 0.9,
+          width = 0.8,
+          preview_width = 0.5,
+        },
+        vertical = {
+          height = 0.9,
+          width = 0.8,
+          mirror = true,
+          preview_height = 0.5,
+        },
       },
     },
     cache_picker = {
@@ -97,13 +117,6 @@ local telescope_config = {
     file_previewer = require("telescope.previewers").vim_buffer_cat.new,
     qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
     buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
-    preview = {
-      -- hide_on_startup = false,
-      check_mime_type = true,
-      ls_short = true,
-      filesize_limit = 2,
-      timeout = 2000, -- default 250
-    },
   },
   pickers = pickers,
   extensions = extensions.get(),

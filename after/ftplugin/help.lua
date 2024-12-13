@@ -35,7 +35,7 @@ local set_options = function()
   vim.api.nvim_set_option_value("cursorcolumn",  false, { win = state.help_winid })
   vim.api.nvim_set_option_value("colorcolumn",   "",    { win = state.help_winid })
   vim.api.nvim_set_option_value("sidescroll",    1,     { win = state.help_winid })
-  vim.api.nvim_set_option_value("sidescrolloff", 1,     { win = state.help_winid })
+  -- vim.api.nvim_set_option_value("sidescrolloff", 1,     { win = state.help_winid })
   vim.api.nvim_set_option_value("signcolumn",   "no",   { win = state.help_winid })
   vim.api.nvim_set_option_value("conceallevel",  3,     { win = state.help_winid })
 end
@@ -54,7 +54,7 @@ local set_keymaps = function()
       "n",
       "]]",
       "/|.\\{-}|<cr>",
-      { desc = "jump to next tag in buffer", silent = true, nowait = true, noremap = false }
+      { desc = "jump to next tag in buffer", silent = true, nowait = true, noremap = true }
     )
     bufmap(
       0,

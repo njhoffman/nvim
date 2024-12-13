@@ -145,6 +145,9 @@ M.GitBranchComponent = {
 
 M.GitDiffAddedComponent = {
   provider = provider_git.git_diff_added,
+  enabled = function()
+    return vim.api.nvim_win_get_width(0) > 110
+  end,
   hl = {
     fg = "#129A77",
     bg = "black",
@@ -153,6 +156,9 @@ M.GitDiffAddedComponent = {
 
 M.GitDiffChangedComponent = {
   provider = provider_git.git_diff_changed,
+  enabled = function()
+    return vim.api.nvim_win_get_width(0) > 110
+  end,
   hl = {
     fg = "#6191f1",
     bg = "black",
@@ -161,6 +167,9 @@ M.GitDiffChangedComponent = {
 
 M.GitDiffRemovedComponent = {
   provider = provider_git.git_diff_removed,
+  enabled = function()
+    return vim.api.nvim_win_get_width(0) > 110
+  end,
   hl = {
     fg = "#8F313A",
     bg = "black",
@@ -185,7 +194,7 @@ M.ScrollBarComponent = {
 M.FiletypeComponent = {
   -- Enable if current window width is higher than 100
   enabled = function()
-    return vim.api.nvim_win_get_width(0) > 120
+    return vim.api.nvim_get_option_value("columns", { scope = "global" }) > 120
   end,
   hl = { fg = "#988088" },
   provider = {
@@ -267,7 +276,7 @@ M.SearchCountComponent = {
 
 M.LineCountComponent = {
   enabled = function()
-    return vim.api.nvim_win_get_width(0) > 80
+    return vim.api.nvim_get_option_value("columns", { scope = "global" }) > 80
   end,
   hl = provider_line_count.get_hl,
   update = provider_line_count.update,
@@ -366,20 +375,16 @@ M.ViMode = {
 }
 
 M.MiscStats = {
-  enabled = function()
-    return vim.api.nvim_win_get_width(0) > 80
-  end,
   hl = {
-    fg = "cyan",
-    bg = "black",
+    fg = "#4488ff",
   },
   enabled = function()
-    return vim.api.nvim_win_get_width(0) > 80
+    return vim.api.nvim_get_option_value("columns", { scope = "global" }) > 80
   end,
   provider = {
     name = "misc_stats",
   },
-  left_sep = "",
+  left_sep = " ",
   right_sep = " ",
 }
 

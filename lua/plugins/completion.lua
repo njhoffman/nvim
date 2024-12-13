@@ -38,6 +38,7 @@ local plugins = {
       "hrsh7th/cmp-nvim-lsp-signature-help",
       "hrsh7th/cmp-nvim-lua",
       "FelipeLema/cmp-async-path",
+      "chrisgrieser/cmp-nerdfont",
       "hrsh7th/cmp-path",
       "tamago324/cmp-zsh",
       "jc-doyle/cmp-pandoc-references",

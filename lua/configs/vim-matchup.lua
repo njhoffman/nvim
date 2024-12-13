@@ -1,6 +1,80 @@
 -- :NoMatchParen, :DoMatchParen, :MatchupShowTimes, :MatchupClearTimes
+--  
+--
+local vmap = require("mapper").vmap
+
+-- stylua: ignore start
+vmap({"n", "x", "o"}, "%",   { label = " forwards match-words",             desc = " Go forwards to next matching word ifword is recognized" })
+vmap({"n", "x", "o"}, "g%",  { label = " backwards {n}match-words",         desc = " Go backwards to nth previous matching word" })
+vmap({"n", "x", "o"}, "[%",  { label = " prev {n}outer-open-word",          desc = " Go to nth previous outer open word" })
+vmap({"n", "x", "o"}, "]%",  { label = " next {n}outer-close-word",         desc = " Go to nth next outer close word" })
+vmap({"n", "x", "o"}, "z%",  { label = " to inside nearest block",          desc = " Go to inside nth nearest block" })
+vmap({     "x", "o"}, "a%",  { label = " select any-block",                 desc = " Select an |any-block| like built-in |ab|" })
+vmap({     "x", "o"}, "i%",  { label = " select in any-block",              desc = " Select an |open-to-close-block| like built-in |ib|" })
+vmap({"n"          }, "ds%", { label = " delete {n}surround match-words",   desc = " Delete nth surrounding matching words" })
+vmap({"n"          }, "cs%", { label = " change {n}surround match-words",   desc = " Change nth surrounding matching words" })
+-- vmap({"n", "v", "o"}, "%",   { label = " forwards {n}match-words",          desc = " If {n} < 7, go forwards {n}), else go forwards {n}percent" })
+-- vmap({"v", "o"}, "a%",  { label = " select {n}open-to-close-block",    desc = " Select nth |open-to-close-block|." })
+-- vmap({"v", "o"}, "i%",  { label = " select in {n}open-to-close-block", desc = " Select nth the inside of an |open-to-close-block|"})
+-- i  !*    <C-G>%
+-- n  !*    %
+-- n  !*    [%
+-- n  !*    ]%
+-- n  !*    cs%
+-- n  !*    ds%
+-- n  !*    g%
+-- n  !*    z%
+-- o  !*    %
+-- o  !*    [%
+-- o  !*    ]%
+-- o  !*    a%
+-- o  !*    g%
+-- o  !*    i%
+-- o  !*    z%
+-- x  !*    %
+-- x  !*    [%
+-- x  !*    ]%
+-- x  !*    a%
+-- x  !*    g%
+-- x  !*    i%
+-- x  !*    z%
+-- stylua: ignore end
 
 -- TODO: map C-% to [% 
+--
+-- %                     on a recognized word, go forwards to its next matching word (inclusive)
+--                       If at a close word, cycle back to the corresponding open word.
+--                       If the cursor is not on a word, seek forwards to one and then jump to its match.
+-- (){count}%            If {count} is less than 7, go forwards {count} times.
+--                       Otherwise, go to {count} percentage in the file (|N%|).
+-- g%                    When on a recognized word, go backwards to [count]thprevious matching word.
+--                       If at an open word, cycle around to the corresponding close word.
+--                       If the cursor is not on a word, seek forwards to one and then jump to its match.
+-- [%                    Go to [count]th previous outer open word.
+--                       Allows navigation to the start of blocks surrounding the cursor.
+--                       This is similar to vim's built-in |[(| and |[{| and is an |exclusive| motion (|matchup-feat-exclusive|).
+-- ]%                    Go to [count]th next outer close word.
+--                       Allows navigation to the end of blocks surrounding the cursor.
+--                       This is similar to vim's built-in |])| and |]}| and is an |exclusive| motion (|matchup-feat-exclusive|).
+-- z%                    Go to to inside [count]th nearest block.
+--                       This is an |exclusive| motion when used with operators, except it eats white-space.
+-- a%                    Select an |any-block|. This closely matches vim's built-in |ab|.
+-- i%                    Select the inside of an |any-block|. This closely matches vim's built-in |ib|.
+-- {count}a%             Select an |open-to-close-block|. This closely matches vim's built-in |ib|.
+-- {count}i%             Select the inside of an |open-to-close-block|.
+-- {count}ds%            Delete {count}th surrounding matching words.
+-- {count}cs%            Change {count}th surrounding matching words.
+-- {count}a%             Select an |open-to-close-block|. This closely matches vim's built-in |ib|.
+--                       When {count} is greater than 1, select the {count}th surrounding open-to-close block.
+-- {count}i%             Select the inside of an |open-to-close-block|.
+--                       When {count} is greater than 1, select the inside of the {count}th surrounding open-to-close block.
+-- {count}ds%            Delete {count}th surrounding matching words.
+--                       This only works for open and close words.
+-- {count}cs%            Change {count}th surrounding matching words.
+--                       This only works for open and close words.
+--                       If vim-surround is installed, you can type replacements according to that plugin's rules.
+--                       Otherwise, match-up will give you the opportunity to type a single character.
+--                       Some simple replacement pairs are supported.
 
 -- :hi MatchParen ctermbg=blue guibg=lightblue cterm=italic gui=italic
 -- :hi MatchWord ctermfg=red guifg=blue cterm=underline gui=underline

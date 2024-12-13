@@ -72,17 +72,26 @@ prefix("n", "<leader>cl", "conceal 󰈉 ")
 
 --------------------------------------------------------------------------------------------------
 
+-- -- better up/down
+-- map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+-- map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+-- map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+-- map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+--
 -- Map 'j' and 'k' to behave like 'gj' and 'gk'
 vim.cmd([[
     nnoremap j gj
     nnoremap k gk
     vnoremap j gj
     vnoremap k gk
+    tnoremap <Esc> <C-\><C-n>
+    tnoremap <M-[> <Esc>
+    tnoremap <C-v><Esc> <Esc>
 ]])
 
 -- TODO: differentiate between vim/lua, auto remove comments
 
-map({ "v" }, "<space>", '"xy:@x<cr>', {
+map({ "v" }, "<C-Space>", '"xy:@x<cr>', {
   category = "Command",
   label = " execute selected",
   desc = " execute selected lines",
@@ -92,6 +101,7 @@ map({ "n", "v" }, ";", ":", {
   category = "Command",
   label = " open cmdline",
   desc = " open the command line",
+  silent = false,
 })
 
 map({ "n", "v" }, "<M-:>", "q:", {
@@ -549,10 +559,10 @@ map('n', '!@', '<cmd>@:<cr>', {
 })
 
 map('n', '!!', '<cmd>@:<cr>', {
-    category = 'Execute',
-    label = 'ﲵ repeat runner command',
-      desc = 'ﲵ execute configured runner task',
-    })
+  category = 'Execute',
+  label = 'ﲵ repeat runner command',
+  desc = 'ﲵ execute configured runner task',
+})
 
 map('n', '<M-r>', '<cmd>Restart<cr>', {
   category = 'Execute',
@@ -580,12 +590,12 @@ local opts = { noremap = true, silent = true, desc = ' search' }
 -- local icon = ' '
 -- map("n", "g*", "*Ncgn", { desc = "Change word with . repeat" })
 
-map('n', '<C-n>', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
-map('n', '<M-n>', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
--- map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
--- map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
--- map('n', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
--- map('n', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
+-- map('n', '<C-n>', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
+-- map('n', '<M-n>', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
+map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
+map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
+map('n', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
+map('n', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
 map('n', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], opts)
 map('n', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], opts)
 
@@ -996,17 +1006,17 @@ map('i', '<M-d>', '<cmd>norm d$<cr>', {
 --------------------------------------------------------------------------------------------------
 -- UI --------------------------------------------------------------------------------------------
 
-map('n', '', '<cmd>noh<cr> | <cmd>lua require("flash.util").exit()<cr>', {
-  category = 'UI',
-  noremap = false,
-  desc = 'remove highlights and refresh',
-})
+-- map('n', '', '<cmd>noh<cr> | <cmd>lua require("flash.util").exit()<cr>', {
+--   category = 'UI',
+--   noremap = true,
+--   desc = 'remove highlights and refresh',
+-- })
 
-map('n', '_', '<cmd>noh<cr> | <cmd>lua require("flash.util").exit()<cr>', {
-  category = 'UI',
-  desc = 'remove highlights and refresh',
-})
-
+-- map('n', '_', '<cmd>noh<cr> | <cmd>lua require("flash.util").exit()<cr>', {
+--   category = 'UI',
+--   desc = 'remove highlights and refresh',
+-- })
+--
 -- map(
 --   'n',
 --   '<C-c>',
@@ -1182,6 +1192,12 @@ vmap('n', '<c-w>o', {
   desc = ' close other windows except current',
 })
 
+map('n', '<M-o>', '<c-w>o', {
+  category = 'Window',
+  label = ' close other windows',
+  desc = ' close other windows except current',
+})
+
 vmap('n', '<C-w>x', {
   category = 'Window',
   label = ' swap windows',
@@ -1280,6 +1296,21 @@ map('n', '<leader>V', '<cmd>new<cr>', {
 })
 
 -- TODO: switch _ and | and make thme toggleable
+map('n', '_', function()
+  local winid = vim.api.nvim_get_current_win()
+  local win_max = vim.api.nvim_get_option_value('lines', {
+    scope = 'global'
+  }) - vim.api.nvim_win_get_height(winid) < vim.api.nvim_get_option_value('winheight', { scope = 'global'  })
+  if win_max then
+    vim.cmd('wincmd =')
+  else
+    vim.cmd('wincmd _')
+  end
+end, {
+    category = 'Window',
+    label = ' toggle max h-split height',
+    desc = ' toggle max height of vertical split',
+  })
 
 vmap('n', '<c-w>_', {
   category = 'Window',
@@ -1291,6 +1322,22 @@ map('n', '<leader>_', '<c-w>_', {
   category = 'Window',
   label = ' max v-split height',
   desc = ' maximize height of vertical split',
+})
+
+map('n', '|', function()
+  local winid = vim.api.nvim_get_current_win()
+  local win_max = vim.api.nvim_get_option_value('columns', {
+   scope = 'global'
+  }) - vim.api.nvim_win_get_width(winid) < vim.api.nvim_get_option_value('winwidth', { scope = 'global' })
+  if win_max then
+    vim.cmd('wincmd =')
+  else
+    vim.cmd('wincmd |')
+  end
+end, {
+  category = 'Window',
+  label = ' toggle max v-split width',
+  desc = ' toggle max width of horizontal split',
 })
 
 vmap('n', '<c-w>|', {

@@ -1,88 +1,88 @@
-local format = require('commands.format')
-local buffer = require('commands.buffer')
-local tips = require('commands.tips')
-local help = require('commands.help')
-local debug = require('commands.debug')
+local format = require("commands.format")
+local buffer = require("commands.buffer")
+local tips = require("commands.tips")
+local help = require("commands.help")
+local debug = require("commands.debug")
 -- local paste = require('commands.paste')
-local reload = require('commands.reload')
-local system = require('commands.system')
-local ansi = require('commands.ansi')
+local reload = require("commands.reload")
+local system = require("commands.system")
+local ansi = require("commands.ansi")
 
 local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
 
-require('commands.ui').setup()
+require("commands.ui").setup()
 
 -- TODO: resume visual selection after switching
-vim.api.nvim_create_user_command('Vblock', function()
-  vim.o.virtualedit = vim.o.virtualedit == 'block' and 'none' or 'block'
-  vim.notify('virtualedit: ' .. vim.o.virtualedit)
+vim.api.nvim_create_user_command("Vblock", function()
+  vim.o.virtualedit = vim.o.virtualedit == "block" and "none" or "block"
+  vim.notify("virtualedit: " .. vim.o.virtualedit)
   -- onemore, block, insert, all, none
-end, { desc = 'toggle virtualedit modes', range = true })
+end, { desc = "toggle virtualedit modes", range = true })
 
 vim.api.nvim_set_keymap(
-  'n',
-  '<M-C-V>',
-  ':Vblock<CR>',
-  { noremap = true, silent = true, desc = 'toggle virtualedit block' }
+  "n",
+  "<M-C-V>",
+  ":Vblock<CR>",
+  { noremap = true, silent = true, desc = "toggle virtualedit block" }
 )
 vim.api.nvim_set_keymap(
-  'x',
-  '<M-C-V>',
-  ':Vblock<CR>',
-  { noremap = true, silent = true, desc = 'toggle virtualedit block' }
+  "x",
+  "<M-C-V>",
+  ":Vblock<CR>",
+  { noremap = true, silent = true, desc = "toggle virtualedit block" }
 )
 
 --   
 cmd(
-  'Tip',
+  "Tip",
   tips.get_tip,
-  { nargs = '*', complete = tips.complete, desc = ' get a random neovim tip' }
+  { nargs = "*", complete = tips.complete, desc = " get a random neovim tip" }
 )
 
-cmd('Reload', reload(), { nargs = '*', desc = ' reload /  make basic' })
+cmd("Reload", reload(), { nargs = "*", desc = " reload /  make basic" })
 cmd(
-  'Reload2',
+  "Reload2",
   reload({ siblings = true }),
-  { nargs = '*', desc = ' reload /  make siblings' }
+  { nargs = "*", desc = " reload /  make siblings" }
 )
 cmd(
-  'Reload3',
+  "Reload3",
   reload({ siblings = true, extended = true }),
-  { nargs = '*', desc = ' reload /  make extended' }
+  { nargs = "*", desc = " reload /  make extended" }
 )
 
-cmd('TruncateLog', format.truncate_log, { desc = 'Truncate log ' })
+cmd("TruncateLog", format.truncate_log, { desc = "Truncate log " })
 -- cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
-cmd('GetPaths', debug.get_paths, { desc = 'Get path collections (rtpaths, o.packpath, etc)' })
-cmd('Trash', system.trash_file, { desc = 'Send file to system trash' })
-cmd('Delete', system.trash_file, { desc = 'Send file to system trash' })
-cmd('YankPath', system.yank_path, { desc = 'Yank current file path' })
-cmd('YankCwd', system.yank_cwd, { desc = 'Yank current project directory' })
+cmd("GetPaths", debug.get_paths, { desc = "Get path collections (rtpaths, o.packpath, etc)" })
+cmd("Trash", system.trash_file, { desc = "Send file to system trash" })
+cmd("Delete", system.trash_file, { desc = "Send file to system trash" })
+cmd("YankPath", system.yank_path, { desc = "Yank current file path" })
+cmd("YankCwd", system.yank_cwd, { desc = "Yank current project directory" })
 -- cmd("TrashRecover", system.trash_file, { desc = "Send file to system trash" })
-vim.api.nvim_set_keymap('n', '<leader>iR', ':Reload<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>iR", ":Reload<cr>", { noremap = true, silent = true })
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'lua',
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "lua",
   callback = function()
-    bufcmd(0, 'Help', help.get_help_cursor, { desc = 'Jump to helpfile under cursor' })
-    vim.keymap.set('n', 'gH', '<cmd>Help<cr>', {
-      desc = 'open help item under cursor',
+    bufcmd(0, "Help", help.get_help_cursor, { desc = "Jump to helpfile under cursor" })
+    vim.keymap.set("n", "gH", "<cmd>Help<cr>", {
+      desc = "open help item under cursor",
       buffer = 0,
     })
   end,
-  desc = 'Create lua help utility functions',
+  desc = "Create lua help utility functions",
 })
 
-cmd('HelpExport', help.export_help_files, { desc = 'export local help files' })
-cmd('HelpNew', help.edit_new_helpfile, { desc = 'edit new local helpfile' })
+cmd("HelpExport", help.export_help_files, { desc = "export local help files" })
+cmd("HelpNew", help.edit_new_helpfile, { desc = "edit new local helpfile" })
 
-cmd('TrimTrailingWhitespace', format.trim_space, {
-  nargs = '?',
-  range = '%',
-  addr = 'lines',
+cmd("TrimTrailingWhitespace", format.trim_space, {
+  nargs = "?",
+  range = "%",
+  addr = "lines",
   preview = format.trim_space,
-  desc = 'Trims trailing whitespace in the current buffer.',
+  desc = "Trims trailing whitespace in the current buffer.",
 })
 
 -- -- Mapping for dd that doesn't yank an empty line into your default register:
