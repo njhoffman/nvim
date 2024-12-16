@@ -255,7 +255,7 @@ local cfg = {
   show_modified = true,
   show_basename = true,
   show_dirname = true,
-  show_navic = true,
+  show_navic = false,
   context_follow_icon_color = true,
   -- project  = { show = false },
   -- dirname  = { show = true },

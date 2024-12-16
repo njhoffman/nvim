@@ -99,6 +99,14 @@ counts.packages = function()
   return #vim.tbl_keys(package.loaded)
 end
 
+counts.windows = function()
+  return #vim.api.nvim_list_wins()
+end
+
+counts.buffers = function()
+  return #vim.api.nvim_list_bufs()
+end
+
 local exe_output = function(cmd)
   local cmd_lines = [[
     let temp_reg = @" | redir @" | silent! execute "]] .. cmd .. [[" | redir END
@@ -155,10 +163,10 @@ local get_counts = function(keys)
     -- 'options_buffer',
     -- 'options_window',
     -- 'options_global',
-    "functions",
-    "commands",
-    "packages",
-    "scriptnames",
+    -- "functions",
+    -- "commands",
+    -- "packages",
+    -- "scriptnames",
     -- 'oldfiles',
     -- 'changes',
     -- 'history',
@@ -166,6 +174,8 @@ local get_counts = function(keys)
     "highlights",
     "ext_leaked",
     "timers",
+    "windows",
+    "buffers",
     -- syntax
     -- messages
     -- menu

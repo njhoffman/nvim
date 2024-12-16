@@ -367,7 +367,7 @@ local cfg = {
   statuscolumn = { enabled = false },
   toggle = { enabled = true },
   words = {
-    enabled = true,
+    enabled = false,
     debounce = 200, -- time in ms to wait before updating
     notify_jump = false, -- show a notification when jumping
     notify_end = true, -- show a notification when reaching the end

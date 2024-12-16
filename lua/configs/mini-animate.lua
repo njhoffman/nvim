@@ -59,18 +59,18 @@ local cfg = {
     }),
   },
   resize = {
-    enable = true,
+    enable = false,
     timing = animate.gen_timing.linear({ duration = 50, unit = "total" }),
     -- subresize = animate.gen_subscroll.equal({ predicate = is_many_wins }),
   },
   open = {
-    enable = true,
+    enable = false,
     -- Animate for 400 milliseconds with linear easing
     timing = animate.gen_timing.linear({ duration = 400, unit = "total" }),
     -- Animate with wiping from nearest edge instead of default static one
     winconfig = animate.gen_winconfig.wipe({ direction = "from_edge" }),
     -- Make bigger windows more transparent
-    -- winblend = animate.gen_winblend.linear({ from = 50, to = 100 }),
+    winblend = animate.gen_winblend.linear({ from = 50, to = 100 }),
 
     -- -- Animate for 400 milliseconds with linear easing
     -- timing = animate.gen_timing.linear({ duration = 400, unit = "total" }),
@@ -87,7 +87,7 @@ local cfg = {
     -- Animate with wiping to nearest edge instead of default static one
     winconfig = animate.gen_winconfig.wipe({ direction = "to_edge" }),
     -- Make bigger windows more transparent
-    -- winblend = animate.gen_winblend.linear({ from = 100, to = 50 }),
+    winblend = animate.gen_winblend.linear({ from = 100, to = 50 }),
 
     -- -- Animate for 400 milliseconds with linear easing
     -- timing = animate.gen_timing.linear({ duration = 400, unit = "total" }),

@@ -199,11 +199,10 @@ local default_cfg = {
 		icon = "",                -- Icon to use
 		hl = "Taglink"            -- Highlight group
 	},
-	title = {
-		style = "simple",         -- Name of the rendering style
-		parts = {},               -- Parts of the border when style is
-		hl = "Title",             -- Highlight group for the title
-	}
+  title = {
+    style = "simple",
+    hl = "HelpviewTitle",
+  }
 }
 
 -- 	arguments = {

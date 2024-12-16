@@ -1,19 +1,24 @@
 
 -- stylua: ignore
 local cmdlines = {
-  { 'cmdline',    '',   'vimcmd',     "vim",   "^:"             }, -- "^:%s*"
-  { 'filter',     '',   'shell',      "bash",  "^:!"            }, -- "^:%s*!"
-  { 'lua',        '',   'lua',        "lua",   "^:lua%s+"       },
-  { 'eval_lua',   ' ',  'eval-lua',   "lua",   {"^:=%s*", "^:lua%s=%s*"} },
-  { 'help',       '',   'help',       "vim",   "^:he?l?p?%s+"   },
-  { 'inc_rename', ' ',  'rename',     'vim',   '^:RenameInc%s+' },
-  { 'subs',       '',   'replace' ,   'regex', '^:s/'           },
-  { 'subs_all',   ' ',  'replace %',  'regex', '^:%%s/'         },
-  { 'global',     ' ',  'global',     'regex', '^:g/'           },
-  { 'global_all', ' ',  'global %',   'regex', '^:%%g/'         },
-  { 'input',      ' ',  'input',      'vim',   '^:/'            },
-  { 'search_up',  ' ', 'search up',  'regex', '^%?'            },
-  { 'search_down',' ', 'search down','regex', '^/'             },
+  { 'cmdline',     '',   'Vimcmd',         "vim",   "^:"             }, -- "^:%s*"
+  { 'visual',      '礪',  'Visual',         "vim",   "^:'<,'>"        },
+  { 'filter',      '',   'Shell',          "bash",  "^:!"            }, -- "^:%s*!"    
+  { 'lua',         '',   'Lua',            "lua",   "^:lua%s+"       },
+  { 'eval_lua',    ' ',  'Inspect Lua',    "lua",   {"^:=%s*", "^:lua%s=%s*"} }, --
+  { 'help',        '',   'Help',           "vim",   "^:he?l?p?%s+"   },
+  { 'inc_rename',  ' ',  'Rename',         'vim',   '^:RenameInc%s+' },
+  { 'preview',     '󰻏 ',  'Preview Command','vim',   '^:Preview%s+'   },
+  { 'subs',        '',   'Replace',        'regex', '^:s/'           },
+  -- { 'visual',      '礪',  'visual',         "vim",   "^:'<,'>"        },
+  { 'subs_all',    ' ',  'Replace Buffer', 'regex', '^:%%s/'         },
+  { 'global',      ' ',  'Global',         'regex', '^:g/'           },
+  -- { 'visual',      '礪',  'visual',         "vim",   "^:'<,'>"        },
+  { 'global_inv',  ' ',  'Global Inverse', 'regex', '^:g!/'           },
+  { 'global_all',  ' ',  'Global Buffer',  'regex', '^:%%g/'         },
+  { 'input',       ' ',  'Input',          'vim',   '^:/'            },
+  { 'search_up',   ' ', 'Search Up',      'regex', '^%?'            },
+  { 'search_down', ' ', 'Search Down',    'regex', '^/'             },
   -- { 'line',       '礪',  'range',      'vim',   '^:%d+$'    },
   -- { 'range',      '礪',  'range',      'vim',   '^:%d+,%d+$'    },
   -- TODO: eval_live: lua, shell, json, html, sql, git, chrome-remote, awk/grep/sed
@@ -59,12 +64,12 @@ local config = {
     position = { row = "10%", col = "50%" },
     border = { style = "rounded" },
     -- animate = {
-    --   start = { position = { row = "90%", col = "50%" }, winoptions = { winblend = 80 }, },
-    --   ending = { position = { row = "20%", col = "50%" }, winoptions = { winblend = 0 }, },
+    --   start = { position = { row = "90%", col = "50%" }, winoptions = { winblend = 80 } },
+    --   ending = { position = { row = "20%", col = "50%" }, winoptions = { winblend = 0 } },
     -- },
   },
   win_options = {
-    -- winblend = 50,
+    -- winblend = 20,
     -- winhighlight = {
     --   Normal = 'NoiceCmdlinePopup',
     --   FloatBorder = 'NoiceCmdlinePopupBorder',

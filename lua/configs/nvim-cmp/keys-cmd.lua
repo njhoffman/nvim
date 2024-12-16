@@ -29,6 +29,15 @@ end
 
 local feedkeys = require("cmp.utils.feedkeys")
 
+local toggle_docs = function()
+  local cmp = require("cmp")
+  if cmp.visible() and cmp.core.view.docs_view:visible() then
+    cmp.close_docs()
+  else
+    cmp.open_docs()
+  end
+end
+
 local send_enter = function()
   local enter_key = vim.api.nvim_replace_termcodes("<CR>", true, true, true)
   vim.api.nvim_feedkeys(enter_key, "n", false)
@@ -66,6 +75,7 @@ end
 local last_history_cmd = ""
 
 local cmdline = {
+  ["<M-/>"] = { c = toggle_docs },
   ["<C-e>"] = {
     c = function(fallback)
       if cmp.visible() then

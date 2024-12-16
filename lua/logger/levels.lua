@@ -3,6 +3,7 @@
 local scopes = {
   ['*']                   = { main = 2 },
   buffers                 = { main = 2 },
+  cmdline                 = { main = 0 },
   -- hover                = { main = 0 },
   -- ['early-retirement'] = { main = -1 },
   events                  = { main = 2 },

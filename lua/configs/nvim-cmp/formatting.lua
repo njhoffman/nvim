@@ -112,19 +112,11 @@ local format = function(entry, vim_item)
   end
 
   if type(icons.symbols[vim_item.kind]) == "nil" then
-    vim.notify("No symbol icon: " .. (vim_item.kind or "nil"), 2)
+    vim.notify("No symbol icon: " .. (vim_item.kind or vim.inspect(vim_item)), 2)
   else
     vim_item.kind_hl_group = "CmpItemKind" .. vim_item.kind
     vim_item.kind = icons.symbols[vim_item.kind]
   end
-
-  -- -- switch source and symbol icons
-  -- local tmp = vim_item.menu or ''
-  -- vim_item.menu = vim_item.kind .. ' '
-  -- vim_item.kind = ' ' .. tmp
-  -- tmp = vim_item.menu_hl_group or ''
-  -- vim_item.menu_hl_group = vim_item.kind_hl_group or ''
-  -- vim_item.kind_hl_group = tmp
 
   if vim.tbl_contains({ "nvim_lsp" }, entry.source.name) then
     vim_item = format_tailwind(vim_item)

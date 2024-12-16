@@ -22,8 +22,8 @@ local icons = {
 local colors = {
   -- ['n'] = { fg = '#fa4842', bold = true },
   ["n"] = { fg = "#0081ca", bold = true },
-  ["no"] = { fg = "#0081ca", bold = true },
-  ["o"] = { fg = "#0081ca", bold = true },
+  ["no"] = { fg = "#aa80af", bold = true },
+  ["o"] = { fg = "#aa80af", bold = true },
   ["v"] = { fg = "#8f41fa", bold = true },
   ["V"] = { fg = "#8f41fa", bold = true },
   [""] = { fg = "#8f41fa", bold = true },

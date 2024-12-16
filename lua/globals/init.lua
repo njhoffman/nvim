@@ -37,7 +37,7 @@ if debuglog then
   vim.dbglog = debuglog.log or _nil()
   vim.dbgbuf = debuglog.buf or _nil()
   vim.dbgtime = debuglog.timer or _nil()
-  vim.print = vim.dbg
+  vim.print = debuglog.dbg
   -- vim.dbg.log = vim.dbglog
 
   -- vim.inspect = debuglog.dump or vim.inspect

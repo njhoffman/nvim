@@ -22,13 +22,15 @@ local state = { started = false }
   ]]
 local get_state = function()
   -- stylua: ignore
-  local smooth_status = require('smoothcursor.utils').smoothcursor_status()
+  local smooth_status = type(package.loaded.smoothcursor) == 'table' and require('smoothcursor.utils').smoothcursor_status()
   return vim.tbl_extend("force", state, {
     relativenumber = vim.api.nvim_get_option_value("relativenumber", { win = 0 }),
     tscontext = ts_ctx.enabled(),
-    minianimate = not vim.b.minianimate_disable,
+    minianimate = type(package.loaded["mini.animate"]) == "table" and not vim.b.minianimate_disable,
     cursor = vim.o.guicursor ~= "a:noCursor",
     smoothcursor = smooth_status,
+    smearcursor = type(package.loaded["smear_cursor"]) == "table"
+      and require("smear_cursor").enabled,
   })
 end
 
@@ -40,6 +42,7 @@ local cfg = {
   cursor_hide = false,
   animate_disable = true,
   hlchunk_disable = true,
+  smearcursor_disable = true,
   smoothcursor_disable = true,
 }
 
@@ -61,6 +64,10 @@ local hook_start = function()
     if cfg.cursor_hide and curr.cursor then
       state.prev_cursor = vim.o.guicursor
       vim.opt.guicursor = "a:noCursor"
+    end
+    if cfg.smearcursor_disable and curr.smearcursor then
+      require("smear_cursor").toggle()
+      state.smearcursor_disabled = true
     end
     if cfg.smoothcursor_disable and curr.smoothcursor then
       require("smoothcursor.utils").smoothcursor_stop()
@@ -87,6 +94,10 @@ local hook_stop = function()
     if cfg.smoothcursor_disable and not curr.smoothcursor and curr.smoothcursor_disabled then
       require("smoothcursor.utils").smoothcursor_start()
       state.smoothcursor_disabled = nil
+    end
+    if cfg.smearcursor_disable and not curr.smearcursor and curr.smearcursor_disabled then
+      require("smear_cursor").toggle()
+      state.smearcursor_disabled = nil
     end
     if cfg.cursor_hide and not curr.cursor then
       vim.o.guicursor = state.prev_cursor
@@ -158,28 +169,27 @@ local setup_keymaps = function()
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll downwards",
-    remap = true,
+    remap = false,
   })
 
   map({ "v", "n" }, "<C-b>", "<Plug>(SmoothieUpwards)<Plug>(SmoothieUpwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll upwards",
-    remap = true,
+    remap = false,
   })
   map({ "v", "n" }, "<PageUp>", "<Plug>(SmoothieBackwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll upwards",
-    silent = true,
-    remap = true,
+    remap = false,
   })
 
   map({ "n", "v" }, "<PageDown>", "<Plug>(SmoothieForwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll downwards",
-    remap = true,
+    remap = false,
   })
 
   map(

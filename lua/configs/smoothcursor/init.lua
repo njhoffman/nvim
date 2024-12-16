@@ -1,7 +1,7 @@
 local fancy_1 = {
   enable = true,
   head = {
-    cursor = "▷", -- ▷ ◆
+    cursor = "▷", -- ▷ ◆  • • • . . .
     texthl = "SmoothCursor",
     linehl = nil,
   }, -- false to disable fancy head
@@ -27,6 +27,7 @@ local cfg = {
   -- TODO: configure flyin effect with different colors and transparency
   -- flyin_effect      = 'bottom',   -- Choose "bottom" or "top" for flying effect
   speed             = 50,    -- (25) Max speed is 100 to stick with your current position
+  priority          = 5,              -- Set marker priority
   intervals         = 25,    -- (35) Update intervals in milliseconds
   cursor            = '▷',   --  ▷ Cursor shape (requires Nerd Font). Disabled in fancy mode.
   timeout           = 1000,  -- (3000) timeout for animations

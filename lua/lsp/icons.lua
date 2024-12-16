@@ -108,7 +108,7 @@ icons.lsp_numbers = {
 
 local get_icons = function(set, idx)
   idx = idx or 1
-  vim.dbglog(set)
+  -- vim.dbglog(set)
   set = type(set) == 'string' and { set } or set
   local icon_set = set and vim.tbl_get(icons, unpack(set)) or icons.lsp
   return vim.tbl_map(function(icon)

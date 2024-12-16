@@ -151,7 +151,7 @@ endfunction
 function s:step_up()
   if line('.') > 1
     if s:cursor_movement || (s:scrolloffset > 0 && line('$') - line('.') < s:scrolloffset)
-      exe 'normal! k'
+      exe 'normal! gk'
       return 0
     endif
     call s:execute_preserving_scroll("normal! 1\<C-U>")
@@ -169,7 +169,7 @@ function s:step_down()
 
   if line('.') < line('$')
     if s:cursor_movement || (s:scrolloffset > 0 && line('.') < s:scrolloffset)
-      exe 'normal! j'
+      exe 'normal! gj'
       return 0
     endif
 
@@ -184,12 +184,10 @@ function s:step_down()
       call s:execute_preserving_scroll("normal! \<C-E>")
     endif
     return 0
-
-  elseif s:ctrl_f_invoked && winline() > 1
-    " cursor is already on last line of buffer, but not on last line of window ^F can scroll more
-    call s:execute_preserving_scroll("normal! \<C-E>")
-    return 0
-
+  " elseif s:ctrl_f_invoked && winline() > 1
+  "   " cursor is already on last line of buffer, but not on last line of window ^F can scroll more
+  "   call s:execute_preserving_scroll("normal! \<C-E>")
+  "   return 0
   else
     return 1
   endif
@@ -291,7 +289,6 @@ augroup smoother_leave_handlers
   autocmd WinLeave,BufLeave * call s:handle_leave_event()
 augroup end
 
-
 ""
 " Calculate optimal movement velocity (in lines per second, negative value
 " means to move upwards) for the next animation frame.
@@ -331,11 +328,11 @@ function s:movement_tick(_)
     let s:subline_position = l:subline_step_size - l:step_size
   endif
 
-  " if l:step_size
-  "   " Usually Vim handles redraws well on its own, but without explicit redraw
-  "   " I've encountered some sporadic display artifacts.  TODO: debug further.
-  "   redraw
-  " endif
+  if l:step_size
+    " Usually Vim handles redraws well on its own, but without explicit redraw
+    " I've encountered some sporadic display artifacts.  TODO: debug further.
+    redraw
+  endif
 endfunction
 
 ""
@@ -458,6 +455,12 @@ function smoothie#backwards()
   end
 endfunction
 
+function smoothie#stop()
+  if !empty(s:target_view)
+    call s:stop_moving()
+  endif
+  endfunction
+
 ""
 " Smoothie equivalent for G and gg
 " NOTE: I have also added - movement to dempnstrate how to add more new movements in the future
@@ -491,24 +494,33 @@ endfunction
 function s:do_vertical_cursor_movement(movement, properties)
   let s:cursor_movement = v:true
   let s:ctrl_f_invoked = v:false
+
+  let l:search = [v:hlsearch, @/, v:searchforward]
+
   " If in operator pending mode, disable vim-smoothie and use the normal non-smoothie version of the movement
   if !g:smoothie_enabled || mode(1) =~# 'o' && mode(1) =~? 'no'
     " If in operator-pending mode, prefer the movement to be linewise
     exe 'normal! ' . (mode(1) ==# 'no' ? 'V' : '') . v:count . a:movement
     return
   endif
+
   let l:target = eval(a:properties['target_expr'])
   let l:target = (l:target > line('$') ? line('$') : l:target)
   let l:target = (foldclosed(l:target) != -1 ? foldclosed(l:target) : l:target)
+
   if foldclosed('.') == l:target
     let s:cursor_movement = v:false
     return
   endif
+
   " if this is a jump command, append current position to the jumplist
   if a:properties['jump_commmand']
     execute "normal! m'"
   endif
+
   call s:update_target(s:calculate_screen_lines(line('.'), l:target))
+  let l:search = [v:hlsearch, @/, v:searchforward]
+
   " suspend further commands till the destination is reached
   " see point (3) of https://github.com/psliwka/vim-smoothie/issues/1#issuecomment-560158642
   while line('.') != l:target
@@ -519,6 +531,7 @@ function s:do_vertical_cursor_movement(movement, properties)
     " move cursor to the first non-blank character of the line
     call cursor(line('.'), match(getline('.'),'\S')+1)
   endif
+  return [v:hlsearch, @/, v:searchforward]
 endfunction
 
 

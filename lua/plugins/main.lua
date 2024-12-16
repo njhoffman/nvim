@@ -214,7 +214,7 @@ local plugins = {
     "echasnovski/mini.indentscope",
     event = { "BufReadPre", "BufNewFile" },
     init = require("configs.mini-indentscope__init"),
-    enabled = false,
+    enabled = true,
   },
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -248,8 +248,8 @@ local plugins = {
           max_file_size = 1024 * 1024,
           error_sign = true,
           -- animation related
-          duration = 250,
-          delay = 250,
+          duration = 200,
+          delay = 200,
         },
       }
 
@@ -640,26 +640,6 @@ local plugins = {
         desc = "Create a selection for selected text or word under the cursor",
       },
     },
-  },
-
-  {
-    "psliwka/vim-smoothie",
-    enabled = false,
-    commit = "10fd0aa",
-    init = function()
-      vim.g.smoothie_enabled = 1
-      vim.g.smoothie_no_default_mappings = 1
-      vim.g.smoothie_experimental_mappings = 0
-      vim.g.smoothie_update_interval = 10 -- 20
-      vim.g.smoothie_speed_constant_factor = 10 -- 10
-      -- vim.g.smoothie_speed_constant_factor = 5
-      vim.g.smoothie_speed_linear_factor = 8 -- 10
-      vim.g.smoothie_speed_exponentiation_factor = 0.9 -- 0.9
-      vim.g.redraw_at_finish = 1
-      -- vim.g.smoothie_minimum_speed = 0.9
-      vim.g.smoothie_minimum_speed = 0.6
-      vim.g.smoothie_break_on_reverse = 1
-    end,
   }, -- f2aaab1
   -- movement highlighters
   -- https://github.com/tzachar/local-highlight.nvim
@@ -673,22 +653,11 @@ local plugins = {
     version = "2.*",
   },
   -- cursor
-  -- { "romainl/vim-cool", event = { "BufReadPost", "BufNewFile" } },
-  { "edluffy/specs.nvim", enabled = false, event = { "BufReadPost", "BufNewFile" } },
   { "gen740/SmoothCursor.nvim", event = { "BufReadPost", "BufNewFile" } },
   {
     "sphamba/smear-cursor.nvim",
     event = "VeryLazy",
     cond = vim.g.neovide == nil,
-    opts = {
-      cursor_color = "none",
-      distance_stop_animating = 0.2, -- 0.1      > 0
-      hide_target_hack = true,
-      legacy_computing_symbols_support = true,
-      stiffness = 0.6, -- 0.6      [0, 1]
-      trailing_stiffness = 0.3, -- 0.3      [0, 1]
-      -- transparent_bg_fallback_color = "#303030",
-    },
   },
   {
     "echasnovski/mini.animate",
@@ -732,26 +701,6 @@ local plugins = {
     end,
   },
   -- pairs
-  {
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    enable = false,
-    keys = {
-      {
-        "<leader>otp",
-        function()
-          local Util = require("lazy.core.util")
-          vim.g.minipairs_disable = not vim.g.minipairs_disable
-          if vim.g.minipairs_disable then
-            Util.warn("Disabled auto pairs", { title = "Option" })
-          else
-            Util.info("Enabled auto pairs", { title = "Option" })
-          end
-        end,
-        desc = "Toggle auto pairs",
-      },
-    },
-  },
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
   {
     "njhoffman/ultimate-autopair.nvim",
@@ -817,46 +766,6 @@ local plugins = {
   {
     "andrewferrier/debugprint.nvim",
     event = "VeryLazy",
-    -- opts = {
-    --         keymaps = {
-    --             normal = {
-    --                 plain_below = "g?p",
-    --                 plain_above = "g?P",
-    --                 variable_below = "g?v",
-    --                 variable_above = "g?V",
-    --                 variable_below_alwaysprompt = nil,
-    --                 variable_above_alwaysprompt = nil,
-    --                 textobj_below = "g?o",
-    --                 textobj_above = "g?O",
-    --                 toggle_comment_debug_prints = nil,
-    --                 delete_debug_prints = nil,
-    --             },
-    --             visual = {
-    --                 variable_below = "g?v",
-    --                 variable_above = "g?V",
-    --             },
-    --         },
-    --         commands = {
-    --             toggle_comment_debug_prints = "ToggleCommentDebugPrints",
-    --             delete_debug_prints = "DeleteDebugPrints",
-    --         },
-    --     },
-    --     -- The 'keys' and 'cmds' sections of this configuration are only needed if
-    --     -- you want to take advantage of `lazy.nvim` lazy-loading.
-    --     keys = {
-    --         { "g?p", mode = 'n' },
-    --         { "g?P", mode = 'n' },
-    --         { "g?v", mode = 'n' },
-    --         { "g?V", mode = 'n' },
-    --         { "g?o", mode = 'n' },
-    --         { "g?O", mode = 'n' },
-    --         { "g?v", mode = 'x' },
-    --         { "g?V", mode = 'x' },
-    --     },
-    --     cmd = {
-    --         "ToggleCommentDebugPrints",
-    --         "DeleteDebugPrints",
-    --     },
   },
   -- https://github.com/kr40/nvim-macros
   -- {

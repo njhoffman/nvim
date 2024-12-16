@@ -1,4 +1,4 @@
-local logger = require('logger').init('cmdline')
+local logger = require("logger").init("cmdline")
 
 local preview_commands = {}
 -- G, IncRename, Subs, Reg, TrimTrailingWhitespace, Norm, Refactor, S
@@ -9,7 +9,7 @@ for key, attrs in pairs(vim.api.nvim_get_commands({ builtin = false })) do
 end
 
 local get_substitute_flags = function(cmdline)
-  local flags = vim.fn.matchstr(cmdline, '%(\\[a-zA-Z]\\)')
+  local flags = vim.fn.matchstr(cmdline, "%(\\[a-zA-Z]\\)")
   -- local new_flags = ''
   -- if flags ~= '' then
   --   for i = 1, #flags do
@@ -29,24 +29,58 @@ local get_substitute_flags = function(cmdline)
   return flags
 end
 
+local function open_cmdline_with_path(path)
+  local escaped =
+    vim.api.nvim_replace_termcodes(": " .. vim.fn.fnameescape(path) .. "<Home>", true, false, true)
+  vim.api.nvim_feedkeys(escaped, "n", false)
+end
+
+local open_last_search = function()
+  local cmdline = vim.fn.getcmdline() or ""
+  local cmdtype = vim.fn.getcmdtype() or ""
+  local last_search = vim.fn.getreg("/")
+  local fullpath = cmdline .. last_search
+  if cmdtype == "/" or cmdtype == "?" then
+    -- vim.api.nvim_feedkeys('/' .. fullpath, 'n', true)
+    -- local escaped = vim.api.nvim_replace_termcodes(
+    --   ': ' .. vim.fn.fnameescape(fullpath) .. '<Home>',
+    --   true,
+    --   false,
+    --   true
+    -- )
+    local key = vim.api.nvim_replace_termcodes("<cr>", true, false, true)
+    vim.api.nvim_feedkeys(key, "n", false)
+    -- vim.api.nvim_feedkeys(escaped, 'n', false)
+    -- if last_search ~= '' then
+    --   vim.fn.setcmdline(fullpath)
+    -- end
+  else
+    local key = vim.api.nvim_replace_termcodes("<C-c>", true, false, true)
+    vim.api.nvim_feedkeys(key, "n", false)
+    -- vim.api.nvim_feedkeys('/' .. fullpath, 'n', true)
+    -- require('flash').jump({ continue = true })
+    -- open_cmdline_with_path(fullpath)
+  end
+end
+
 local toggle = function()
-  local cmdline = vim.fn.getcmdline() or ''
-  local cmdtype = vim.fn.getcmdtype() or ''
+  local cmdline = vim.fn.getcmdline() or ""
+  local cmdtype = vim.fn.getcmdtype() or ""
   local new_cmdline = nil
   local subs_prefixes = {
-    ':s',
-    ':S',
-    '%:s',
-    '%:substitute',
-    '%:S',
-    '%:Subvert',
-    '%:sm',
-    '%:smagic',
-    '%:sno',
-    '%:snomagic',
+    ":s",
+    ":S",
+    "%:s",
+    "%:substitute",
+    "%:S",
+    "%:Subvert",
+    "%:sm",
+    "%:smagic",
+    "%:sno",
+    "%:snomagic",
   } -- '%:g', '%:v', '%:m',
 
-  local is_search = cmdtype == '/' or cmdtype == '?'
+  local is_search = cmdtype == "/" or cmdtype == "?"
   local is_substitute = false
   for _, pfx in ipairs(subs_prefixes) do
     if string.sub(cmdline, 1, #pfx) == pfx then
@@ -55,75 +89,39 @@ local toggle = function()
     end
   end
 
+  local toggle_inccommand = function()
+    local new_inc = vim.o.inccommand == "nosplit" and "split" or "nosplit"
+    vim.dbglog(vim.o.inccommand, new_inc)
+    vim.api.nvim_set_option_value("inccommand", new_inc, { scope = "global" })
+    vim.dbglog("inccommand: " .. vim.o.inccommand)
+  end
   if is_search then
     -- TODO: toggle between search and very magic modes
     -- elseif string.sub(cmdline, 1, 3) == 'vim' then
-    vim.o.inccommand = vim.o.inccommand == 'nosplit' and 'split' or 'nosplit'
-    vim.notify('inccommand: ' .. vim.o.inccommand)
+    toggle_inccommand()
   elseif is_substitute then
+    toggle_inccommand()
     -- TODO: close command line and re-open it to show notification
-    vim.o.inccommand = vim.o.inccommand == 'nosplit' and 'split' or 'nosplit'
-    vim.notify('inccommand: ' .. vim.o.inccommand)
-    -- local backspace = vim.api.nvim_replace_termcodes('<BS>', true, false, true)
-    -- local left = vim.api.nvim_replace_termcodes('<Left>', true, false, true)
-    -- local right = vim.api.nvim_replace_termcodes('<Right>', true, false, true)
-    -- vim.api.nvim_feedkeys(left .. right, '', false)
-    -- vim.api.nvim_feedkeys(' ' .. backspace, '', false)
-    -- vim.cmd([[ feedkeys  \<BS> ]])
-  elseif cmdline[1] == '!' then
+  elseif cmdline[1] == "!" then
     new_cmdline = cmdline:sub(2)
-  elseif string.sub(cmdline, 1, 3) == 'vim' then
-    new_cmdline = 'lua ' .. cmdline
-  elseif string.sub(cmdline, 1, 5) == 'lua =' then
-    new_cmdline = 'lua ' .. string.sub(cmdline, 6)
-  elseif string.sub(cmdline, 1, 4) == 'lua ' then
-    new_cmdline = 'lua =' .. string.sub(cmdline, 5)
-  elseif string.sub(cmdline, 1, 5) == 'echom' then
+  elseif string.sub(cmdline, 1, 3) == "vim" then
+    new_cmdline = "lua " .. cmdline
+  elseif string.sub(cmdline, 1, 5) == "lua =" then
+    new_cmdline = "lua " .. string.sub(cmdline, 6)
+  elseif string.sub(cmdline, 1, 4) == "lua " then
+    new_cmdline = "lua =" .. string.sub(cmdline, 5)
+  elseif string.sub(cmdline, 1, 5) == "echom" then
     new_cmdline = string.sub(cmdline, 6)
-  elseif string.sub(cmdline, 1, 4) == 'echo' then
+  elseif string.sub(cmdline, 1, 4) == "echo" then
     new_cmdline = string.sub(cmdline, 5)
-  elseif string.sub(cmdline, 1, 4) == 'echo' then
+  elseif string.sub(cmdline, 1, 4) == "echo" then
     new_cmdline = string.sub(cmdline, 5)
   end
   if new_cmdline ~= nil then
     if cmdline ~= new_cmdline then
       vim.fn.setcmdline(new_cmdline)
-      logger:info('cmdline from: ' .. cmdline .. ' to: ' .. new_cmdline)
+      logger:info("cmdline from: " .. cmdline .. " to: " .. new_cmdline)
     end
-  end
-end
-
-local function open_cmdline_with_path(path)
-  local escaped =
-    vim.api.nvim_replace_termcodes(': ' .. vim.fn.fnameescape(path) .. '<Home>', true, false, true)
-  vim.api.nvim_feedkeys(escaped, 'n', false)
-end
-
-local open_last_search = function()
-  local cmdline = vim.fn.getcmdline() or ''
-  local cmdtype = vim.fn.getcmdtype() or ''
-  local last_search = vim.fn.getreg('/')
-  local fullpath = cmdline .. last_search
-  if cmdtype == '/' or cmdtype == '?' then
-    -- vim.api.nvim_feedkeys('/' .. fullpath, 'n', true)
-    -- local escaped = vim.api.nvim_replace_termcodes(
-    --   ': ' .. vim.fn.fnameescape(fullpath) .. '<Home>',
-    --   true,
-    --   false,
-    --   true
-    -- )
-    local key = vim.api.nvim_replace_termcodes('<cr>', true, false, true)
-    vim.api.nvim_feedkeys(key, 'n', false)
-    -- vim.api.nvim_feedkeys(escaped, 'n', false)
-    -- if last_search ~= '' then
-    --   vim.fn.setcmdline(fullpath)
-    -- end
-  else
-    local key = vim.api.nvim_replace_termcodes('<C-c>', true, false, true)
-    vim.api.nvim_feedkeys(key, 'n', false)
-    -- vim.api.nvim_feedkeys('/' .. fullpath, 'n', true)
-    -- require('flash').jump({ continue = true })
-    -- open_cmdline_with_path(fullpath)
   end
 end
 

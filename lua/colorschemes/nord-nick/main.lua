@@ -111,9 +111,9 @@ local clr_over = {
   yellow = "#bdb994",
   yellow_faded = "#7B6B3B",
   purple_faded = "#6A6CAB",
-  red_faded = "#7F212A",
-  green_faded = "#027A57",
-  blue_faded = "#4161B1",
+  red_faded = "#430000",
+  green_faded = "#004a47",
+  blue_faded = "#173787",
 }
 
 return function(injected_functions)
@@ -413,6 +413,7 @@ return function(injected_functions)
     sym("@keyword.function")({ KeywordFunction }),
     sym("@keyword.luadoc")({ gui = "none" }),
     sym("@label")({ Label }), -- For labels: `label:` in C and `:label:` in Lua.
+    sym("@label.vimdoc")({ Label }), -- For labels: `label:` in C and `:label:` in Lua.
     sym("@method")({ Function }),
     sym("@method.call")({ FunctionCall }),
     sym("@module")({ Statement }),
@@ -751,7 +752,8 @@ return function(injected_functions)
 
     IndentGuidesEven({ bg = clrs.nord1 }),
     IndentGuidesOdd({ bg = clrs.nord2 }),
-    MiniIndentscopeSymbol({ fg = "#003460", bg = "#000f18" }),
+    MiniIndentscopeSymbol({ fg = "#162a3a", bg = "#000816" }),
+    -- MiniIndentscopeSymbol({ fg = "#003460", bg = "#000f18" }),
     MiniIndentscopeSymbolOff({ fg = "#162f58" }),
     ---   indent is multiple of 'shiftwidth'.
     --
@@ -817,8 +819,6 @@ return function(injected_functions)
     NotifyRUNTitle({ fg = "#06c0f6" }),
     NotifyRUNIcon({ fg = "#c6b087" }),
     -- NotifyRunSuccessCommand({ fg = '#4fa7f2' }),
-    NotifyRunSuccessOutput({ fg = Comment.fg }),
-
     WhichKeyKey({ fg = "#07c0f7", gui = "none" }), --Function
     WhichKeyOperator({ fg = "#917ccf", gui = "none" }), -- Keyword
     WhichKeyGroup({ fg = "#418cf4", gui = "none" }), -- Keyword
@@ -1260,45 +1260,74 @@ return function(injected_functions)
     -- ('BufferScrollArrow',    #b1b1b1,   #1c1f24, 'bold')
     -- ('BufferPart',           #51afef,   #D8EEFD, 'bold')
 
+    NotifyRunSuccessOutput({ fg = Comment.fg }),
     -- noice.nvim
     NoiceCmdlinePopupTitle({ bold = true, fg = "#82b4ff" }),
-    NoiceCmdlinePopupBorderFilter({ fg = "#643e5d" }),
-    NoiceCmdlineIconFilter({ fg = "#643e5d" }),
+    -- NoiceCmdlinePopupTitleCmdline({ fg = "" }),
+    -- NoiceCmdlinePopupBorderCmdline({ fg = "" }),
+
+    NoiceCmdlinePopupTitleFilter({ fg = "#b48ead" }),
+    NoiceCmdlinePopupBorderFilter({ fg = "#845e6d" }),
+    NoiceCmdlineIconFilter({ fg = "#845e6d", gui = "bold" }),
+
+    NoiceCmdlinePopupTitleEval_lua({ fg = "#44a0ff", bg = "none" }),
+    NoiceCmdlinePopupBorderEval_lua({ fg = "#2080ff", bg = "none" }),
+    NoiceCmdlineIconEval_lua({ fg = "#2080ff", bg = "none", gui = "bold" }),
+
+    NoiceCmdlinePopupTitleLua({ fg = "#22aafF", bg = "none" }),
+    NoiceCmdlinePopupBorderLua({ fg = "#0099fF", bg = "none" }),
+    NoiceCmdlineIconLua({ fg = "#0099fF", bg = "none", gui = "bold" }),
+
+    NoiceCmdlinePopupTitleHelp({ fg = "#8898FF" }),
+    NoiceCmdlinePopupBorderHelp({ fg = "#6B7BFF" }),
+    NoiceCmdlineIconHelp({ fg = "#6B7BFF", gui = "bold" }),
+
+    NoiceCmdlinePopupTitleGlobal({ fg = "#60afff" }),
+    NoiceCmdlinePopupBorderGlobal({ fg = "#00afef" }),
+    NoiceCmdlineIconGlobal({ fg = "#00afef", gui = "bold" }),
+    -- ('BufferCurrentSign',    ,   #282c34, 'none')
+    -- NoiceCmdlinePopupTitleHelp({ fg = "#aa00aa" }),
+    -- NoiceCmdlinePopupBorderHelp({ fg = "#aa00aa" }),
+    -- NoiceCmdlineIconHelp({ fg = "#aa00aa" }),
+
+    -- NoiceCmdlinePopupTitleInput({ fg = "" }),
+    -- NoiceCmdlinePopupBorderInput({ fg = "" }),
+    -- NoiceCmdlinePopupBorderSubs({ fg = "" }),
+    -- NoiceCmdlinePopupTitleSubs({ fg = "" }),
+    -- NoiceCmdlinePopupTitleSearch({ fg = "" }),
+    -- NoiceCmdlinePopupBorderSearch({ fg = "" }),
+    -- NoiceCmdlinePopupTitlePreview({ fg = "" }),
+    -- NoiceCmdlinePopupBorderPreview({ fg = "" }),
+    -- NoiceCmdlinePopupTitleCalculator({ fg = "" }),
+    -- NoiceCmdlinePopupBorderCalculator({ fg = "" }),
+    -- NoiceCmdlinePopupBorderIncRename({ fg = "" }),
+    -- NoiceCmdlinePopupTitleIncRename({ fg = "" }),
+    -- NoiceCmdlinePopupTitleInc_rename({ fg = "" }),
+    -- NoiceCmdlinePopupBorderInc_rename({ fg = "" }),
+
     NeoTreeTitleBar({ bg = "#1f2342" }),
     NeoTreeFileNameOpened({ gui = "bold" }),
     -- NeoTreeNormal guibg=#010409"
     -- NeoTreeNormalNC guibg=#010409"
     -- NoiceCmdlinePopup guibg=#0a0e12"
     -- NoiceCmdlineIconCmdline guifg=#d2a8ff"
-    -- NoiceCmdlineIcon({ fg = '#00aacc' }),
-    -- NoiceCmdlineIconCalculator({ fg = '#6F65f0' }),
-    -- NoiceCmdlineIconCmdline({ fg = '#88c0d0' }),
-    -- NoiceCmdlineIconFilter({ fg = '#b48ead' }),
-    -- NoiceCmdlineIconHelp({ fg = '#24a2ac' }),
-    -- NoiceCmdlineIconIncRename({ fg = '#b48ead' }),
-    -- NoiceCmdlineIconInput({ fg = '#88c0d0' }),
-    -- NoiceCmdlineIconLua({ fg = '#2a76b7' }),
-    -- NoiceCmdlineIconSearch({ fg = '#b48ead' }),
     -- NoiceCmdlinePopup({ fg = '#00aacc' }),
     -- NoiceCmdlinePopupBorder({ fg = '#4466ff' }),
     -- NoiceCmdlinePopupBorderCalculator({ fg = '#81A1C1' }),
     -- NoiceCmdlinePopupBorderCmdline({ fg = '#88c0d0' }),
     -- NoiceCmdlinePopupBorderFilter({ fg = '#b16286' }),
     -- NoiceCmdlinePopupBorderHelp({ fg = '#2d78c4' }),
-    -- NoiceCmdlinePopupBorderIncRename({ fg = '#b48ead' }),
-    -- NoiceCmdlinePopupBorderInput({ fg = '#88c0d0' }),
     -- NoiceCmdlinePopupBorderLua({ fg = '#2a76b7' }),
     -- NoiceCmdlinePopupBorderLuaExpr({ fg = '#44aaff' }),
     -- NoiceCmdlinePopupBorderNumb({ fg = '#8888ff' }),
-    -- NoiceCmdlinePopupBorderSearch({ fg = '#b48ead'  }),
+    -- NoiceCmdlinePopupBorderSearch({ fg = '#6B8BFF'  }),
     -- NoiceCmdlinePopupSubs({ fg = '#6B8BFF' }),
     -- NoiceCmdlinePrompt({ fg = '#68e0f5" ' }),
-    --	NoiceConfirm                      = { fg = C.frost.turquoise, bg = C.bg },           --normal for the confirm view
+    -- NoiceConfirm                      = { fg = C.frost.turquoise, bg = C.bg },           --normal for the confirm view
     -- NoiceConfirmBorder                = { fg = C.frost.turquoise, bg = C.bg },           --Border for the confirm view
     -- NoiceCursor                       = { fg = C.blend.blue, bg = C.blend.bluec1 },      --fake Cursor
     -- NoiceFormatConfirm                = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --
     -- NoiceFormatConfirmDefault         = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --
-    -- NoiceFormatLevelDebug             = { fg = C.aurora.green, bg = C.none },            --
     -- NoiceFormatLevelDebug             = { fg = C.aurora.green, bg = C.none },            --
     -- NoiceFormatLevelError             = { fg = C.aurora.red, bg = C.none },              --
     -- NoiceFormatLevelInfo              = { fg = C.frost.turquoise, bg = C.none },         --
@@ -1323,23 +1352,6 @@ return function(injected_functions)
     -- NoiceScrollbarThumb               = { fg = C.night.c2, bg = C.none },                --Scrollbar thumb
     -- NoiceSplit                        = { fg = C.fg, bg = C.bg },                        --Normal for split views
     -- NoiceSplitBorder                  = { fg = C.night.c1, bg = C.bg },                  --Border for split views
-    -- 	-hi(0, "NoiceCmdlineIconIncRename", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlineIconInput", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlineIconLua", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlineIconSearch", { fg = "#fee19f" })
-    -- hi(0, "NoiceCmdlinePopup", { bg = "#10121e" })
-    -- hi(0, "NoiceCmdlinePopupBorder", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlinePopupBorderCalculator", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlinePopupBorderCmdline", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlinePopupBorderFilter", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlinePopupBorderHelp", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlinePopupBorderIncRename", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlinePopupBorderInput", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlinePopupBorderLua", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlinePopupBorderSearch", { fg = "#fee19f" })
-    -- hi(0, "NoiceCmdlinePopupTitle", { fg = "#68e0f5" })
-    -- hi(0, "NoiceCmdlinePrompt", { bold = true, fg = "#82b4ff" })
-    -- hi(0, "NoiceCompletionItemKindC- NoiceVirtualText                  = { fg = C.frost.turquoise, bg = C.blend.turquoise }, --Default hl group for virtualtext viewsNoiceConfirm                      = { fg = C.frost.turquoise, bg = C.bg },           --normal for the confirm view
 
     -- #97b4ba, #7f9ba0, #29313e, #92a5cc, #332d39, #aa8ba5
     -- color1_bg = "#f265b5"
@@ -1390,7 +1402,7 @@ return function(injected_functions)
     mkdCode({ CodeBlock }),
     -- mkdCodeEnd({ mkdCode }),
 
-    HelpviewTitle({ fg = "#a5a07B", bg = "#100800", gui = "bold" }),
+    HelpviewTitle({ fg = "#a5707B", bg = "#100606", gui = "italic" }),
     HelpviewHeading1({ fg = "#1b8b95", bg = "#001808", gui = "" }),
     HelpviewHeading2({ fg = "#826591", bg = "#080406", gui = "" }),
     HelpviewHeading3({ fg = "#688cce", bg = "#182c4e", gui = "" }),

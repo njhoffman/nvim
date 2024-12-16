@@ -174,42 +174,56 @@ map("c", "<M-d>", "<Right><Del><Left>", {
   desc = " delete to end of cmdline",
 })
 
-map("c", "<C-^>", "<Home>", {
+map("c", "<C-^>", "<C-Home>", {
+  silent = false,
   category = "Command",
   label = " goto start",
   desc = " go to beginning of command line",
 })
 
 map("c", "<M-^>", '<cmd>lua require("commands.cmdline").toggle()<cr>', {
+  silent = false,
   category = "Command",
   label = " toggle cmdline",
   desc = " toggle cmdline depending on command mode",
 })
 
-map("c", "<M-$>", "<End>", {
+map("c", "<C-$>", "<C-End>", {
+  silent = false,
   category = "Command",
   label = " goto end",
   desc = " go to end of command line",
 })
 
-map("c", "<C-S-Left>", "<Left>", {
+map("c", "<M-$>", "<C-End>", {
+  silent = false,
+  category = "Command",
+  label = " goto end",
+  desc = " go to end of command line",
+})
+
+map("c", "<C-h>", "<Left>", {
+  silent = false,
   category = "Command",
   label = " move left",
   desc = " move to the left by 1 character",
 })
 map("c", "<M-C-H>", "<S-Left>", {
+  silent = false,
   category = "Command",
   label = " move left word",
   desc = " move to the left by 1 word",
 })
 
-map("c", "<C-S-Right>", "<Right>", {
+map("c", "<C-l>", "<Right>", {
+  silent = false,
   category = "Command",
   label = " move right",
   desc = " move to the right by 1 character",
 })
 
 map("c", "<M-C-L>", "<S-Right>", {
+  silent = false,
   category = "Command",
   label = " move right word",
   desc = " move to the right by 1 word",
@@ -220,6 +234,12 @@ map("c", "<M-%>", "<C-r>%", {
   category = "Command",
   label = " insert filename cmdline",
   desc = " insert filename into the command line",
+})
+
+map("c", "<M-C-e>", [[<c-\>eexpandcmd(getcmdline())<CR>]], {
+  category = "Command",
+  label = " expand special characters",
+  desc = " expand special cmdline characters in place",
 })
 
 --------------------------------------------------------------------------------------------------
@@ -592,17 +612,18 @@ local opts = { noremap = true, silent = true, desc = ' search' }
 
 -- map('n', '<C-n>', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
 -- map('n', '<M-n>', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
-map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
-map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
+-- map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
+-- map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
 map('n', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
-map('n', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
-map('n', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], opts)
-map('n', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], opts)
+-- map('n', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
+-- map('n', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], opts)
+-- map('n', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], opts)
+--
+-- map('x', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
+-- map('x', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
+-- map('x', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], opts)
+-- map('x', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], opts)
 
-map('x', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
-map('x', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
-map('x', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], opts)
-map('x', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], opts)
 map('n', 'cg*', '*Ncgn', {
   silent = true,
   category = 'Search',
@@ -794,13 +815,13 @@ map('n', '<leader>%', 'ggv$G$', {
     silent = true
   })
 
-map('n', 'gp', '`[v`]', {
-  category = 'Motion',
-  label = ' select last visual',
-  desc = ' select last visual block afrom bracket marks',
-  silent = true
-})
-
+-- map('n', 'gp', '`[v`]', {
+--   category = 'Motion',
+--   label = ' select last visual',
+--   desc = ' select last visual block afrom bracket marks',
+--   silent = true
+-- })
+--
 vmap('n', 'gi', {
   category = 'Motion',
   label = ' goto last insert',
@@ -875,16 +896,16 @@ map('i', '<M-f>', '<Esc>bi', {
   noremap = true,
 })
 
-map('n', 'U', '', {
-  category = 'Motion',
-  label = '漏disable line undo',
-  desc = '漏disable line undo so it can prefix other commands',
-})
-
 map('n', 'U', '<c-r>', {
   category = 'Motion',
   label = '漏asssign line undo',
   desc = '漏assign line undo',
+})
+
+map('n', 'U', '', {
+  category = 'Motion',
+  label = '漏disable line undo',
+  desc = '漏disable line undo so it can prefix other commands',
 })
 
 map({ 'n' }, "<M-BS>", '<cmd>pop<cr>', {
@@ -915,6 +936,26 @@ map('n', '<M-{>', '<cmd>norm v{<cr>', {
 map('x', '<M-{>', '<cmd>norm {<cr>', {
   category = 'Motion',
   desc = ' traverse blocks backwards with select',
+})
+
+map({'n', 'o', 'v'}, '[[', '?{<CR>w99[{', {
+  category = 'Motion',
+  desc = ' traverse backward to section {',
+})
+
+map({'n', 'o', 'v'}, ']]', 'j0[[%/{<CR>', {
+  category = 'Motion',
+  desc = ' traverse forward to section {',
+})
+
+map({'n', 'o', 'v'}, '][', '/}<CR>b99]}', {
+  category = 'Motion',
+  desc = ' traverse forward to section }',
+})
+
+map({'n', 'o', 'v'}, '[]', 'k$][%?}<CR>', {
+  category = 'Motion',
+  desc = ' traverse backward to section {',
 })
 
 -- TODO: create function to save last visual selection before undoing
@@ -1006,23 +1047,12 @@ map('i', '<M-d>', '<cmd>norm d$<cr>', {
 --------------------------------------------------------------------------------------------------
 -- UI --------------------------------------------------------------------------------------------
 
--- map('n', '', '<cmd>noh<cr> | <cmd>lua require("flash.util").exit()<cr>', {
---   category = 'UI',
---   noremap = true,
---   desc = 'remove highlights and refresh',
--- })
+map('n', '<esc>', '<cmd>noh<cr> | <cmd>call smoothie#stop()<cr>', {
+  category = 'UI',
+  nowait = true,
+  desc = 'remove highlights and stop scrolling',
+})
 
--- map('n', '_', '<cmd>noh<cr> | <cmd>lua require("flash.util").exit()<cr>', {
---   category = 'UI',
---   desc = 'remove highlights and refresh',
--- })
---
--- map(
---   'n',
---   '<C-c>',
---   '<cmd>noh<cr> | <cmd>ClosePopups<cr> | <cmd>LspRestart<cr>',
---   { category = 'UI', desc = 'remove hls, close popups and refresh' }
--- )
 
 map(
   'n',
@@ -1036,6 +1066,13 @@ map('n', '<F1>', "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>"
   category = 'UI',
   desc = '  toggle help',
 })
+
+map('n', '<F12>', "<cmd>Stats<cr>", {
+  plugin = 'telescope.nvim',
+  category = 'UI',
+  desc = '  toggle help',
+})
+
 
 map('n', '<F2>', '<cmd>WhichKey<cr>', {
   plugin = 'which-key.nvim',
@@ -1079,11 +1116,12 @@ map('o', '<F2>', '<cmd>WhichKey "" o<cr>', {
   desc = '  toggle whichkey op'
 })
 
--- map('n', '<F5>', '<cmd>WhichKeyBackground<cr>', {
---   plugin = 'which-key.nvim',
---   category = 'UI',
---   desc = '  toggle whichkey background',
--- })
+-- shift+F2
+map('n', '<F14>', '<cmd>WhichKeyBackground<cr>', {
+  plugin = 'which-key.nvim',
+  category = 'UI',
+  desc = '  toggle whichkey background',
+})
 
 -- map('n', '<F6>', '<Leader>Wk', {
 --   plugin = 'wf.nvim',

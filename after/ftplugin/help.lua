@@ -23,11 +23,11 @@ end
 
 local set_options = function()
   local state = get_state()
-  local formatoptions = vim.api.nvim_get_option_value("formatoptions", { buf = state.src_bufnr })
-    or ""
-  if not string.find(formatoptions, "c") then
-    vim.api.nvim_set_option_value("formatoptions", formatoptions .. "c", { buf = state.src_bufnr })
-  end
+  -- local formatoptions = vim.api.nvim_get_option_value("formatoptions", { buf = state.src_bufnr })
+  --   or ""
+  -- if not string.find(formatoptions, "c") then
+  --   vim.api.nvim_set_option_value("formatoptions", formatoptions .. "c", { buf = state.src_bufnr })
+  -- end
 
   -- stylua: ignore start
   vim.api.nvim_set_option_value("winfixheight",  false, { win = state.help_winid })
@@ -46,20 +46,24 @@ local set_keymaps = function()
   if state.help_bufnr and state.help_bufnr > -1 and vim.api.nvim_buf_is_valid(state.help_bufnr) then
     -- nnoremap <buffer> <LocalLeader>K  :<C-U>helpgrep <cword><CR>
     -- let b:undo_ftplugin .= '|nunmap <buffer> K'
-    bufmap(0, "n", "<C-Space>", "<C-]>", { desc = "jump to tag definition" })
-    bufmap(0, "n", "<CR>", "<C-]>", { desc = "jump to tag definition" })
-    bufmap(0, "n", "<BS>", "<C-O>", { desc = "jump to prev visited tag" })
+
+    -- TODO: show display for tags and use jumps if out of tags
+    bufmap(state.help_bufnr, "n", "<CR>", "<C-]>", { desc = "jump to tag definition" })
+
+    bufmap(state.help_bufnr, "n", "<M-}>", "<cmd>pop<cr>", { desc = "jump to prev visited tag" })
+    bufmap(state.help_bufnr, "n", "<BS>", "<cmd>pop<cr>", { desc = "jump to prev visited tag" })
+
     bufmap(
-      0,
+      state.help_bufnr,
       "n",
-      "]]",
+      "<M-)>",
       "/|.\\{-}|<cr>",
       { desc = "jump to next tag in buffer", silent = true, nowait = true, noremap = true }
     )
     bufmap(
-      0,
+      state.help_bufnr,
       "n",
-      "[[",
+      "<M-(>",
       "?|.\\{-}|<cr>",
       { desc = "jump to prev tag in buffer", silent = true, nowait = true, noremap = false }
     )

@@ -15,12 +15,12 @@
 
 -- local fade1 = Fade({ value = animate.Number({ start = 1, to = 0.2, }) })
 -- local Default = require("vimade.recipe.default").Default({ animate = true })
-local Minimalist = require("vimade.recipe.minimalist").Minimalist({
+local Minimalist = require("configs.vimade.minimalist").Minimalist({
   animate = false,
   low_visibility_fadelevel = 0.3,
   -- exclude_names ={'LineNr', 'LineNrBelow', 'LineNrAbove', 'EndOfBuffer'
   -- low_visibility_names = {'WinSeparator'},
-  -- no_visibility_names = {'LineNr', 'LineNrBelow', 'LineNrAbove', 'WinSeparator', 'EndOfBuffer'},
+  -- no_visibility_names = {'LineNr', 'LineNrBelow', 'LineNrAbove', 'EndOfBuffer'},
   condition = function(style, state)
     -- vim.dbglog("condition")
     -- vim.dbglog(style.win)
@@ -50,38 +50,6 @@ local get_active_info = function(curr)
 end
 -- local global_vars = "vimade_init", "vimade_timer", "vimade_loaded", "vimade_paused",
 -- "vimade_running", "vimade_error_count", "vimade_fade_active", "vimade_python_setup",
--- local example_info = {
---   [true] = 6, CHANGED = 2, ERROR = 1, HLCHECK = 8, READY = 0, RECALCULATE = 4,
---   blocklist = {
---     default = {
---       buf_opts = { buftype = { "prompt", "terminal" } },
---       win_config = { relative = true },
---       win_type = true
---    } },
---   callbacks = {},
---   current = { bufnr = 1, tabnr = 1, winid = 1000 },
---   fademinimap = true,
---   groupdiff = true,
---   groupscrollbind = false,
---   is_dark = true,
---   link = { default = {} },
---   nc_buffers = true,
---   nc_windows = false,
---   ncmode = "buffers",
---   nohlcheck = true,
---   normalid = 77,
---   normalncid = 59,
---   now = 50723558,
---   renderer = "lua",
---   termguicolors = true,
---   tick_id = 215,
---   tick_state = 0,
---   vimade_fade_active = false,
---   vimade_lua = {
---     fadelevel = <function 1>,
---     style = { { attach = <function 2>, value = <function 3> }, {
---       attach = <function 4> }, { attach = <function 5> }, { attach = <function 6>
--- } } } }
 
 local M = {}
 
@@ -133,8 +101,10 @@ M.fadelevel = function(fadelevel_cfg)
       if curr.wintype == "popup" then
         fadelevel = fadelevel_cfg.popup or default_fadelevel()
       end
+    elseif vim.fn.getcmdtype() ~= "" then
+      fadelevel = fadelevel_cfg.cmdline or default_fadelevel()
     end
-    -- vim.dbglog('fade: ' .. fadelevel, curr.buf_info.name)
+    -- vim.dbglog("fade: " .. fadelevel)
     return fadelevel
   end
 end

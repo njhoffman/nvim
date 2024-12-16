@@ -13,9 +13,12 @@ _G.jump = function()
 end
 
 _G.diagnostic_goto = function(direction)
-  vim.diagnostic["goto_" .. direction]()
+  -- vim.diagnostic["goto_" .. direction]()
+  vim.diagnostic.jump({ count = (direction == "prev" and -1 or 1) })
   MiniAnimate.execute_after("scroll", function()
-    vim.defer_fn(vim.diagnostic.open_float, 5)
+    vim.schedule(function()
+      vim.defer_fn(vim.diagnostic.open_float, 100)
+    end)
   end)
 end
 
@@ -82,13 +85,13 @@ local setup_mappings = function(client, bufnr)
   vim.api.nvim_set_keymap(
     "n",
     "[d",
-    "<cmd>lua vim.diagnostic.goto_prev()<CR>",
+    '<cmd>lua _G.diagnostic_goto("prev")<cr>',
     { silent = true, desc = "prev diagnostic problem" }
   )
   vim.api.nvim_set_keymap(
     "n",
     "]d",
-    "<cmd>lua vim.diagnostic.goto_next()<CR>",
+    '<cmd>lua _G.diagnostic_goto("next")<cr>',
     { silent = true, desc = "next diagnostic problem" }
   )
   vim.api.nvim_set_keymap(

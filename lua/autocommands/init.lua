@@ -48,7 +48,6 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, 'conf.*',              'setlocal ft=config syn=config' },
     -- TODO: bring back toggler between indented lines (pandoc vs markdown)
     -- { { 'BufNewFile', 'BufRead' }, '*.md',                'setlocal ft=markdown syn=pandoc' },
-    { { 'BufNewFile', 'BufRead' }, '*.visidatarc',        'setlocal ft=python' },
     { { 'BufNewFile', 'BufRead' }, '.vimtasks',           'setlocal ft=asynctasks' },
     { { 'BufNewFile', 'BufRead' }, '*.cheat',             'setlocal ft=bash | let b:is_bash =1' },
     { { 'BufNewFile', 'BufRead' }, 'Dockerfile*',         'setlocal ft=Dockerfile' },
