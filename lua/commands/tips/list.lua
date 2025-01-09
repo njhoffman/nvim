@@ -96,6 +96,7 @@ M.shell = {
   -- :map  _ls  :!ls -l %:S<CR>:echo "the end"<CR>
   -- :w !name	send the current buffer as standard input to command "name"
   -- new | 0r !ls ^@ $,$d
+  -- <C-o> allows you to use any normal mode keymap in insert mode once. So, to move to beginning <C-o>0 to move to end <C-o>$ (or <Esc>A), for vertical movement <C-o><count>j or <C-o><count>k
   {
     "To use | for separator after shell command insert <NL> with <C-V>010",
     "`:r !date<NL>-join`",

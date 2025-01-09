@@ -117,7 +117,7 @@ local fn_map = {
     },
   },
   underscore = {
-    ["Arrays"] = {
+    ["Array"] = {
       "first",
       "initial",
       "last",
@@ -140,7 +140,7 @@ local fn_map = {
       "findLastIndex",
       "range",
     },
-    ["Collections"] = {
+    ["Collection"] = {
       "contains",
       "countBy",
       "each",
@@ -167,7 +167,7 @@ local fn_map = {
       "toArray",
       "where",
     },
-    ["Functions"] = {
+    ["Function"] = {
       "bind",
       "bindAll",
       "partial",
@@ -184,7 +184,7 @@ local fn_map = {
       "compose",
       "restArguments",
     },
-    ["Objects"] = {
+    ["Object"] = {
       "allKeys",
       "clone",
       "create",

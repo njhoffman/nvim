@@ -1,4 +1,4 @@
-local mapping = require("lsp.mapping")
+local mapping = require("lsp.mapping").mapping
 -- local format = require('commands.format')
 
 local color_provider = function(client, bufnr)
@@ -64,7 +64,7 @@ local document_formatting_provider = function(client, bufnr)
   --     callback = require('commands.format').format,
   --   -- command = command,
   -- })
-    end
+end
 
 local document_formatting_range_provider = function(_, _)
   -- mapping.formatting_range()

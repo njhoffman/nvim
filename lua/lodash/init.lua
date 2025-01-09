@@ -1,24 +1,5 @@
 -- #!/usr/bin/env lua
 
--- for cat in pairs(fn_map.lodash) do
---   fn_map.underscore[cat] = {}
---   for _, fn in pairs(fn_map.lodash[cat]) do
---     -- for _, fn in ipairs(vim.tbl_keys(underscore)) do
---     if vim.tbl_contains(vim.tbl_keys(underscore), fn) then
---       table.insert(fn_map.underscore[cat], fn)
---     end
---   end
--- end
-
--- for cat in pairs(fn_map.lodash) do
---   fn_map.lodash_extras[cat] = {}
---   for _, fn in pairs(fn_map.lodash[cat]) do
---     if not vim.tbl_contains(fn_map.underscore[cat], fn) then
---       table.insert(fn_map.lodash_extras[cat], fn)
---     end
---   end
--- end
-
 local lodash = require("lodash.lodash")
 local underscore = require("lodash.underscore")
 
@@ -27,6 +8,7 @@ local fn_map = require("lodash.map")
 local utils = vim.deepcopy(underscore)
 
 for u_cat, u_fns in pairs(fn_map.underscore) do
+  u_cat = "_" .. u_cat
   utils[u_cat] = {}
   for _, u_fn in ipairs(u_fns) do
     local fn = type(lodash[u_fn]) == "function" and lodash[u_fn] or underscore[u_fn]
@@ -43,6 +25,7 @@ end
 utils._extras = {}
 
 for l_cat, l_fns in pairs(fn_map.lodash) do
+  l_cat = "_" .. l_cat
   for _, l_fn in ipairs(l_fns) do
     local fn = type(lodash[l_fn]) == "function" and lodash[l_fn]
     if fn and not vim.list_contains(vim.tbl_keys(utils), l_fn) then
@@ -54,8 +37,8 @@ for l_cat, l_fns in pairs(fn_map.lodash) do
         utils[l_cat][alias] = fn
         utils[alias] = fn
       end
-    else
-      table.insert(utils._extras, l_fn)
+      -- else
+      --   table.insert(utils._extras, l_fn)
     end
   end
 end

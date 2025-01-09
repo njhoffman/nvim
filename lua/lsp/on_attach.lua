@@ -1,7 +1,5 @@
 local lsp_icons = require("lsp.icons")
 local capabilities = require("lsp.capabilities")
-local format = require("lsp.format")
-local original_paste = vim.paste
 
 _G.jump = function()
   MiniAnimate.config.scroll.enable = false
@@ -12,9 +10,9 @@ _G.jump = function()
   end)
 end
 
-_G.diagnostic_goto = function(direction)
-  -- vim.diagnostic["goto_" .. direction]()
-  vim.diagnostic.jump({ count = (direction == "prev" and -1 or 1) })
+_G.diagnostic_goto = function(direction, severity)
+  severity = severity and vim.diagnostic.severity[severity] or nil
+  vim.diagnostic.jump({ count = (direction == "prev" and -1 or 1), severity = severity })
   MiniAnimate.execute_after("scroll", function()
     vim.schedule(function()
       vim.defer_fn(vim.diagnostic.open_float, 100)
@@ -24,6 +22,8 @@ end
 
 -- local cache_enable_scroll = MiniAnimate.config.scroll.enable
 
+-- local format = require("lsp.format")
+-- local original_paste = vim.paste
 -- 'MiniAnimate.execute_after("scroll", "normal! zvzz")<CR>'
 -- vim.paste = function(lines, phase)
 --   if phase == 1 then
@@ -37,87 +37,6 @@ end
 --     MiniAnimate.config.scroll.enable = cache_enable_scroll
 --   end
 -- end
--- local diagnostic_goto = function(next, severity)
---   local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
---   severity = severity and vim.diagnostic.severity[severity] or nil
---   return function()
---     go({ severity = severity })
---   end
--- end
--- map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
--- map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
--- map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
--- map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
--- map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
--- map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
--- map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
-
-local setup_mappings = function(client, bufnr)
-  vim.api.nvim_set_keymap(
-    "n",
-    "<C-t>",
-    "<cmd>lua require('telescope.run')('builtin', 'diagnostics', { bufnr = true })<cr>",
-    { silent = true, desc = "show buffer diagnostics" }
-  )
-
-  vim.api.nvim_set_keymap(
-    "n",
-    "<M-T>",
-    "<cmd>lua require('telescope.run')('builtin', 'diagnostics')<cr>",
-    { silent = true, desc = "show workspace  diagnostics" }
-  )
-
-  -- vim.api.nvim_set_keymap('n', '<M-C-T>', '', {
-  --   silent = true,
-  --   desc = 'show full workspace  diagnostics',
-  --   callback = function()
-  --     require('workspace-diagnostics').populate_workspace_diagnostics(client, bufnr)
-  --     require('telescope.run')('builtin', 'diagnostics')
-  --   end,
-  -- })
-
-  vim.api.nvim_set_keymap(
-    "n",
-    "<Leader>e",
-    "<cmd>lua vim.diagnostic.open_float()<CR>",
-    { silent = true, desc = "open diagnostic float" }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "[d",
-    '<cmd>lua _G.diagnostic_goto("prev")<cr>',
-    { silent = true, desc = "prev diagnostic problem" }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "]d",
-    '<cmd>lua _G.diagnostic_goto("next")<cr>',
-    { silent = true, desc = "next diagnostic problem" }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "[e",
-    "<cmd>lua vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })<CR>",
-    { silent = true, desc = "jump to prev error" }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "]e",
-    "<cmd>lua vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })<CR>",
-    { silent = true, desc = "jump to next error" }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "gQd",
-    "<cmd>lua vim.diagnostic.setqflist({ open = true  })<CR>",
-    { silent = true, desc = "diagnostics to quickfix" }
-  )
-
-  -- if the file is .sql
-  if vim.bo.filetype == "sql" then
-    vim.keymap.set("n", "<leader>", ":!sqlfluff fix -fq --dialect=postgres %<cr>")
-  end
-end
 
 local icons = lsp_icons.get_icons("diagnostics")
 vim.fn.sign_define(
@@ -138,17 +57,17 @@ vim.fn.sign_define("DiagnosticSignHint", { text = icons.hint, texthl = "LspDiagn
 -- vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded', max_width = 80 })
 -- vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
 local on_attach = function(client, bufnr)
+  -- vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+  -- vim.lsp.omnifunc = nil
+  -- vim.api.nvim_set_option_value('omnifunc', nil, {})
+  -- vim.api.nvim_set_option_value('omnifunc', nil, { buf = bufnr })
+  -- format.on_attach(client, bufnr)
   local ok, disable_lsp = pcall(vim.api.nvim_buf_get_var, 0, "disable_lsp")
   if disable_lsp == 1 then
     return vim.notify("Skipping buffer lsp", 1)
   end
 
-  --       vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
-  -- vim.lsp.omnifunc = nil
-  -- vim.api.nvim_set_option_value('omnifunc', nil, {})
-  -- vim.api.nvim_set_option_value('omnifunc', nil, { buf = bufnr })
-  -- format.on_attach(client, bufnr)
-  setup_mappings(client, bufnr)
+  require("lsp.mapping").setup_mappings(client, bufnr)
 
   -- client.config.flags.debounce_text_changes = 300
   -- client.config.flags.allow_incremental_sync = true

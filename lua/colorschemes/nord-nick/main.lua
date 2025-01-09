@@ -120,20 +120,8 @@ return function(injected_functions)
   local sym = injected_functions.sym
   return {
     -- CurSearch({ fg = '#cc2266', gui = 'bold' }), --  bg = '#110033'
-
-    -- Search        xxx guifg=#d6deeb guibg=#38507a
-    -- CurSearchxxx guifg=#011627 guibg=#f78c6c
-    -- IncSearchxxx guifg=#011627 guibg=#ffcb8b
-    -- Visual        xxx links to NightflyVisual
-    -- VisualNOSxxx guifg=#c3ccdc guibg=#1d3b53
-    -- Visual        xxx links to NightflyVisual
-    -- VisualNOSxxx guifg=#c3ccdc guibg=#1d3b53
-    -- NightflyVisualxxx guibg=#1d3b53
-    -- WinBarxxx guifg=#c3ccdc guibg=#0e293f
-    -- WinBarNCxxx guifg=#a1aab8 guibg=#0e293f
-
-    Normal({ fg = "#667da9", bg = "none" }),
-    NormalNC({ fg = "#465d89" }),
+    Normal({ fg = "#4C7fb0", bg = "none" }),
+    NormalNC({ fg = "#4C84b8" }),
     SignColumn({ bg = "none" }),
     Search({ bg = "#0e1c36", fg = "#008fff", gui = "italic" }), -- bg = '#0d314c',
     IncSearch({ bg = "#23518b", fg = "#88aaff", gui = "italic" }),
@@ -165,14 +153,6 @@ return function(injected_functions)
     TabLineFill({ fg = "none", bg = "#1c1f24" }),
     TabLineSel({ fg = "#51afef", bg = "#282c34" }),
     WinSeparator({ fg = "#444464", bg = "#090909", gui = "bold" }),
-    -- WinBar({ fg = "#313c84", bg = "#202331" }),
-    -- WinBarNC({ fg = "#4f5362", bg = "#446faf" }),
-    -- WinBarLocation({ fg = "#888888", bg = "#202331", gui = "bold" }),
-    -- WinBarModified({ fg = "#d7d787", bg = "#202331", gui = "bold" }),
-    -- WinBarGitDirty({ fg = "#d7afd7", bg = "#202331", gui = "bold" }),
-    -- WinBarIndicator({ fg = "#5fafd7", bg = "#202331", gui = "bold" }),
-    -- WinBarInactive({ bg = "#3a3a3a", fg = "#777777", gui = "bold" }),
-    -- Cursor({ bg = '#3760bf' }), cursor = "0x5f36ff" text = "0xf1d1d1"
     Cursor({ bg = "#3f56ff" }),
     nCursor({ Cursor }),
     iCursor({ Cursor }),
@@ -199,12 +179,13 @@ return function(injected_functions)
     -- CursorColumn({ bg = CursorLine.bg }),
     -- ColorColumn({ bg = CursorLine.bg }),
     StatusLine({ fg = "NONE", bg = "NONE" }),
+    Tag({ fg = "#7c688c" }),
 
     -- base groups
     -- FoldIcon({ fg = "#4B4BBB" }),
     -- MatchParenCursor({ fg = "#fb8b8b" }),
-    Boolean({ fg = "#5370af" }),
-    Number({ fg = "#4078c0" }),
+    Boolean({ fg = "#83709f" }),
+    Number({ fg = "#2074c0" }),
     Character({ fg = "#10a4ca" }),
     Comment({ fg = "#405f88", gui = "italic" }),
     Conceal({ bg = "none" }),
@@ -223,12 +204,12 @@ return function(injected_functions)
     FunctionCall({ fg = "#4d79c7" }),
     -- Function({ fg = '#8c788c' }),
     -- FunctionCall({ fg = '#7f788f' }),
-    Identifier({ fg = "#4e73c6" }),
+    Identifier({ fg = "#406faf" }),
     Include({ fg = "#4774c6" }),
     Italic({ gui = "italic" }),
     Keyword({ fg = "#3167a2" }),
     KeywordFunction({ fg = "#2D88BF" }),
-    KeywordReturn({ fg = "#2D81BC" }),
+    KeywordReturn({ fg = "#2D61aC" }),
     Label({ fg = "#3377ba" }),
     NonText({ bg = "none", fg = "#556677" }),
     Operator({ fg = "#4866bf" }),

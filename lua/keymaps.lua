@@ -19,7 +19,7 @@ prefix("n", "g", "go 隷")
 prefix("n", "z", "folds ﱒ")
 prefix("n", "gh", "hover  ")
 prefix("n", "gQ", "quickfix  ")
-prefix("n", "gP", "preview  ")
+prefix("n", "g?", "preview  ")
 prefix("n", "go", "debug out  ")
 
 -- prefix('n', '<c-w>', 'window')
@@ -248,8 +248,15 @@ map("n", "gch", function()
   require("funcs.quality-of-life").commentHr()
 end, { category = "Comments", desc = "  horizontal divider" })
 
--- TODO: enable visual selection
 map({ "x" }, "gC", function()
+  require("funcs.quality-of-life").duplicateAsComment()
+end, { category = "Comments", desc = "  duplicate line as comment" })
+
+map({ "x" }, "gcC", function()
+  require("funcs.quality-of-life").duplicateAsComment()
+end, { category = "Comments", desc = "  duplicate line as comment" })
+
+map({ "x" }, "gc<space>", function()
   require("funcs.quality-of-life").duplicateAsComment()
 end, { category = "Comments", desc = "  duplicate line as comment" })
 
@@ -630,7 +637,12 @@ map('n', 'cg*', '*Ncgn', {
   label = '  replace word (dot)',
   desc = '  replace word under cursor (dot repeat)'
 })
-
+-- nnoremap c# #``cgN
+-- nnoremap c* *``cgn
+-- nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
+--   nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
+--   which replaces the word under cursor for whatever you want; after that, you can keep pressing . and it will keep substituting all the instances of the original word (ala multiple cursors). You can skip them with n (as you would in a normal search). The second mapping goes the other way around: substitutes upwards.
+--
 map('n', 'g.', [[/\V\C<C-r>"<CR>cgn<C-a><Esc>]], {
   silent = true,
   category = 'Search',
@@ -726,85 +738,6 @@ map('n', 'D', 'd$', {
   silent = true
 })
 
--- vim.keymap.set({ 'n', 'x' }, '<C-u>', "<Cmd>lua Scroll('<C-u>', 1, 1)<CR>")
--- vim.keymap.set({ 'n', 'x' }, '<C-d>', "<Cmd>lua Scroll('<C-d>', 1, 1)<CR>")
--- <cmd>silent! execute "normal! 3<C-d><cr>  <cmd>normal! 3<C-d><cr>
--- map('n', '<c-f>', '<cmd>execute "normal! "<cr>', {
---   category = 'Motion',
---   plugin = 'vim-smoothie',
---   label = ' scroll forwards',
---   desc = ' smoothie scroll forwards',
---   noremap = false,
---    silent = true
---  })
---  map('n', '<c-b>', '<cmd>execute "normal! "<cr>', {
---    category = 'Motion',
---    plugin = 'vim-smoothie',
---    label = ' scroll forwards',
--- desc = ' smoothie scroll forwards',
--- noremap = false,
---   silent = true
--- })
-
--- map('n', '<c-b>', '<Plug>(SmoothieBackwards)', {
---   category = 'Motion',
---   plugin = 'vim-smoothie',
---   label = ' scroll backwards',
---   desc = ' smoothie scroll backwards',
---   noremap = false,
---   silent = true
--- })
-
--- map('n', '<c-f>', '<Plug>(SmoothieDownwards)', {
---   category = 'Motion',
---   plugin = 'vim-smoothie',
---   label = ' scroll forwards',
---   desc = ' smoothie scroll forwards',
---   noremap = false,
---   silent = true
--- })
-
--- map('n', '<M-f>', '<Plug>(SmoothieDownwards)', {
---   category = 'Motion',
---   plugin = 'vim-smoothie',
---   label = ' scroll forwards',
---   desc = ' smoothie scroll forwards',
---   noremap = false,
---   silent = true
--- })
-
--- map('n', '<M-b>', '<Plug>(SmoothieUpwards)', {
---   category = 'Motion',
---   plugin = 'vim-smoothie',
---   label = ' scroll forwards',
---   desc = ' smoothie scroll forwards',
---   noremap = false,
---   silent = true
--- })
-
-local get_last_visual_selection = function()
-
--- 'gp', '`[v`]'
--- `[  `]
- local ranges = {
-   last = { vim.fn.getpos("'<"), vim.fn.getpos("'>") },
-   paste = { vim.fn.getpos("`["), vim.fn.getpos("`]`") }
- }
-
- local _, start_line, start_col, _ = unpack(ranges.last[1])
- local _, end_line, end_col, _ = unpack(ranges.last[2])
-
- return {
-  start_line = start_line-1,
-  start_col = start_col-1,
-  end_line = end_line-1,
-  end_col = end_col,
- }
-
-  -- start_col = start_col-1,
-  -- end_line = end_line0,
-  -- end_col = end_col,
-end
 
 -- TODO: disable <C-V> in alacritty
 -- TODO: go back to original position after select all
@@ -812,15 +745,13 @@ end
 map('n', '<leader>%', 'ggv$G$', {
     category = 'Motion',
     label = ' visual select entire buffer',
-    silent = true
   })
 
--- map('n', 'gp', '`[v`]', {
---   category = 'Motion',
---   label = ' select last visual',
---   desc = ' select last visual block afrom bracket marks',
---   silent = true
--- })
+map('n', 'gy', '`[v`]', {
+  category = 'Motion',
+  label = ' select last visual',
+  desc = ' select last visual block afrom bracket marks',
+})
 --
 vmap('n', 'gi', {
   category = 'Motion',
@@ -957,6 +888,13 @@ map({'n', 'o', 'v'}, '[]', 'k$][%?}<CR>', {
   category = 'Motion',
   desc = ' traverse backward to section {',
 })
+map('x', 'I', function() return vim.fn.mode() == 'V' and '^<C-v>I' or 'I' end, { expr = true, desc = "Block insert in line visual mode" })
+map('x', 'A', function() return vim.fn.mode() == 'V' and '$<C-v>A' or 'A' end, { expr = true, desc = "Block insert in line visual mode" })
+
+local searching_google_in_normal = [[:lua fn.system({'open', 'https://google.com/search?q=' .. vim.fn.expand("<cword>")})<CR>]]
+local searching_google_in_visual = [[<ESC>gv"gy<ESC>:lua fn.system({'open', 'https://google.com/search?q=' .. vim.fn.getreg('g')})<CR>]]
+vim.api.nvim_set_keymap("n", "g!!", searching_google_in_normal, { silent = true, noremap = true })
+vim.api.nvim_set_keymap("v", "g!!", searching_google_in_visual, { silent = true, noremap = true })
 
 -- TODO: create function to save last visual selection before undoing
 -- map('n', 'Uv', 'u"`[" . strpart(getregtype(), 0, 1) . "`]"gA', {
@@ -971,14 +909,6 @@ map({'n', 'o', 'v'}, '[]', 'k$][%?}<CR>', {
 --   desc = 'undo align, re-select visual range and align interactive',
 -- })
 
--- nnoremap U <nop>
--- nnoremap US :Gstatus<cr>
--- nnoremap UY :Gpull<cr>
--- nnoremap UP :Gpush<cr>
--- nnoremap UD :Gdiff<cr>
--- nnoremap UB :Gblame -w<cr>
--- nnoremap UE :Gedit<cr>
-
 -- Shift-CR, Ctrl-CR in alacritty
 -- - { key: Return,   mods: Shift,   chars: "\x1b[13;2u" }
 -- - { key: Return,   mods: Control, chars: "\x1b[13;5u" }
@@ -990,12 +920,6 @@ map({'n', 'o', 'v'}, '[]', 'k$][%?}<CR>', {
 -- map ctrl+tab                 send_text all \x1b[9;5u       # <c-tab>
 -- map ctrl+shift+tab           send_text all \x1b[9;6u       # <c-s-tab>
 
--- TODO: google searching
--- vim.api.nvim_set_keymap("n", "<C-q>", "", { silent = true, noremap = true })
--- local searching_google_in_normal = [[:lua fn.system({'open', 'https://google.com/search?q=' .. vim.fn.expand("<cword>")})<CR>]]
--- local searching_google_in_visual = [[<ESC>gv"gy<ESC>:lua fn.system({'open', 'https://google.com/search?q=' .. vim.fn.getreg('g')})<CR>]]
--- vim.api.nvim_set_keymap("n", "<C-q><C-g>", searching_google_in_normal, { silent = true, noremap = true })
--- vim.api.nvim_set_keymap("v", "<C-q><C-g>", searching_google_in_visual, { silent = true, noremap = true })
 --
 -- " These mappings extend the spirit of * and # for visual searching.
 -- " Use visual select to select an area, then search for matches by
@@ -1052,7 +976,6 @@ map('n', '<esc>', '<cmd>noh<cr> | <cmd>call smoothie#stop()<cr>', {
   nowait = true,
   desc = 'remove highlights and stop scrolling',
 })
-
 
 map(
   'n',
@@ -1155,6 +1078,91 @@ map('n', '<F40>', '<cmd>lua require("oil").open_float<cr>', {
 --   desc = '  toggle telescope undo',
 -- })
 --
+-- nnoremap <silent><F6> <ESC>:execute 'colo' colors_name<cr>:syntax sync fromstart<cr>
+-- redraw and reset syntax highlighting ff
+-- nnoremap Q @q
+-- Insert line above cursor and move cursor to that line at correct indent while staying in insert mode
+-- inoremap <silent><c-o> <esc>O
+-- Escape spaces in command-mode by pressing space twice
+-- cnoremap <space><space> \<space>
+
+-- yank paste, paste the last yank
+-- nnoremap yp "0p
+-- nnoremap yP "0P
+
+-- vip:s/...
+-- :h c_CTRL-R_CTRL-w
+-- :'{,'}s/\<<C-r><C-W>\>/
+
+-- " Add a space before/after line but keep normal mode
+-- nnoremap <leader>o o<ESC>
+-- nnoremap <leader>O O<ESC>
+
+-- nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
+-- nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
+
+-- dp to "_d
+-- nnoremap <leader>< V`]<
+-- nnoremap <leader>> V`]>
+
+-- Insert line above cursor and move cursor to that line at correct indent while staying in insert mode
+--   inoremap <silent><c-o> <esc>O
+
+-- cmap w!! w !sudo tee > /dev/null %
+-- For when you have edited a file and forgot to be root.
+
+-- inoremap jj <esc>
+-- nnoremap Y y$
+-- " buffers overview
+-- nnoremap gb :ls<CR>:b
+-- " quick copy
+-- nnoremap gy :%y+<CR>
+
+-- nnoremap <Leader>S :<C-U>%substitute/\<<C-R><C-W>\>//g<Left><Left>
+--
+-- nnoremap <Leader>s :<C-U>%substitute/\</g<Left><Left>
+-- xnoremap <Leader>s :substitute/\</g<Left><Left>
+-- nnoremap <Leader>g :<C-U>%global/\<
+-- xnoremap <Leader>g :global/\<
+-- nnoremap <Leader>v :<C-U>%vglobal/\<
+-- xnoremap <Leader>v :vglobal/\<
+-- nnoremap <Leader><Leader> :<C-U>update<CR>
+-- xnoremap <Leader><Leader> <Esc>:<C-U>update<CR>gv
+
+-- gets the git history of the visual selection
+-- map(
+--   'v',
+--   '<leader>l',
+--   ":<c-u>exe ':term git log -L' line(\"'<\").','.line(\"'>\").':'.expand('%')<CR>",
+--   silentnoremap
+-- )
+
+
+-- vim.keymap.set('v', 'YOUR_MAPPING', [[y`>pgv:norm gcc<CR>`>j^]], { noremap = true, silent = true })
+-- M.comment_yank_paste = function()
+-- 	local win = api.nvim_get_current_win()
+-- 	local cur = api.nvim_win_get_cursor(win)
+-- 	local vstart = fn.getpos("v")[2]
+-- 	local current_line = fn.line(".")
+-- 	if vstart == current_line then
+-- 		cmd.yank()
+-- 		require("Comment.api").toggle.linewise.current()
+-- 		cmd.put()
+-- 		set_cur(win, { cur[1] + 1, cur[2] })
+-- 	else
+-- 		if vstart < current_line then
+-- 			cmd(":" .. vstart .. "," .. current_line .. "y")
+-- 			cmd.put()
+-- 			set_cur(win, { fn.line("."), cur[2] })
+-- 		else
+-- 			cmd(":" .. current_line .. "," .. vstart .. "y")
+-- 			set_cur(win, { vstart, cur[2] })
+-- 			cmd.put()
+-- 			set_cur(win, { fn.line("."), cur[2] })
+-- 		end
+-- 		require("Comment.api").toggle.linewise(fn.visualmode())
+-- 	end
+-- end
 -- Shift-F5
 map('n', '<F17>', '<cmd>MundoToggle<cr>', {
   plugin = 'mundo',
@@ -1757,6 +1765,7 @@ map('n', ']a', '<cmd>execute ":" . v:count . "next"<CR>', {
   category = 'Pairs',
   desc = 'execute next argument ',
 })
+
 map('n', '[a', '<cmd>execute ":" . v:count . "previous"<CR>', {
   category = 'Pairs',
   desc = 'execute prev argument ',

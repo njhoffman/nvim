@@ -83,10 +83,9 @@ end
 
 -- setup lodash global
 local lodash = require("lodash")
-_G._ = lodash
+_ = lodash
 
 -- setup module helpers to attach to lodash global
-
 -- --stylua: ignore
 -- local mods_map = {
 --   -- { "buffers",    "buf", "Buffers functions" },

@@ -54,7 +54,7 @@ local setup = function()
   local vimade_cfg = {
     style = v_utils.style,
     fadelevel = v_utils.fadelevel(fadelevel_cfg),
-    enablefocusfading = false,
+    enablefocusfading = true,
     -- blocklist = {
     -- only_behind_float_windows = function(win, current)
     --   -- current can be nil
@@ -71,7 +71,6 @@ local setup = function()
     -- win_config = {},
     -- win_config = { relative = true },
     -- },
-    -- normalid = 0,
     -- filetype = {
     --   "CompetiTest",
     --   "Mundo",

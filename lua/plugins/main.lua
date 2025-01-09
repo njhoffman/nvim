@@ -41,7 +41,12 @@ local plugins = {
   },
   { "rasulomaroff/reactive.nvim", enabled = true, lazy = false },
   -- https://www.reddit.com/r/neovim/comments/1aupy8c/a_simple_journaling_system_built_with_mind_and/
-  { "RutaTang/quicknote.nvim", event = "VeryLazy", dependencies = { "nvim-lua/plenary.nvim" } },
+  {
+    "RutaTang/quicknote.nvim",
+    enabled = false,
+    event = "VeryLazy",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
   {
     "LintaoAmons/scratch.nvim",
     event = "VeryLazy",

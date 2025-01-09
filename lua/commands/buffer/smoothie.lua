@@ -1,5 +1,59 @@
 local ts_ctx = require("treesitter-context")
 local state = { started = false }
+-- <cmd>silent! execute "normal! 3<C-d><cr>  <cmd>normal! 3<C-d><cr>
+-- map('n', '<c-f>', '<cmd>execute "normal! "<cr>', {
+--   category = 'Motion',
+--   plugin = 'vim-smoothie',
+--   label = ' scroll forwards',
+--   desc = ' smoothie scroll forwards',
+--   noremap = false,
+--    silent = true
+--  })
+--  map('n', '<c-b>', '<cmd>execute "normal! "<cr>', {
+--    category = 'Motion',
+--    plugin = 'vim-smoothie',
+--    label = ' scroll forwards',
+-- desc = ' smoothie scroll forwards',
+-- noremap = false,
+--   silent = true
+-- })
+
+-- map('n', '<c-b>', '<Plug>(SmoothieBackwards)', {
+--   category = 'Motion',
+--   plugin = 'vim-smoothie',
+--   label = ' scroll backwards',
+--   desc = ' smoothie scroll backwards',
+--   noremap = false,
+--   silent = true
+-- })
+
+-- map('n', '<c-f>', '<Plug>(SmoothieDownwards)', {
+--   category = 'Motion',
+--   plugin = 'vim-smoothie',
+--   label = ' scroll forwards',
+--   desc = ' smoothie scroll forwards',
+--   noremap = false,
+--   silent = true
+-- })
+
+-- map('n', '<M-f>', '<Plug>(SmoothieDownwards)', {
+--   category = 'Motion',
+--   plugin = 'vim-smoothie',
+--   label = ' scroll forwards',
+--   desc = ' smoothie scroll forwards',
+--   noremap = false,
+--   silent = true
+-- })
+
+-- map('n', '<M-b>', '<Plug>(SmoothieUpwards)', {
+--   category = 'Motion',
+--   plugin = 'vim-smoothie',
+--   label = ' scroll forwards',
+--   desc = ' smoothie scroll forwards',
+--   noremap = false,
+--   silent = true
+-- })
+
 --[[
    '<C-D>'                  'z+'
    '<C-U>'                   'z^'

@@ -7,6 +7,18 @@ local H = require("helpers")
 local run = require("telescope.run")
 local dirpicker = require("configs.telescope.dirpicker")
 
+-- vim.keymap.set('n', '<leader>st', function()
+--    local file_extension = vim.fn.input 'File extension to search (e.g., *.js): '
+--    builtin.live_grep {
+--      prompt_title = 'Live Grep by File Type',
+--      shorten_path = true,
+--      additional_args = function()
+--        return { '--glob', file_extension }
+--      end,
+--    }
+--  end, { desc = '[S]earch by File [T]ype' })```
+--
+
 local groups = {
   "picker-history",
   "yank",
