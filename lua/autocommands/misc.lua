@@ -1,20 +1,16 @@
 local set_window_title = function()
-  if not os.getenv("TMUX") then
-    os.execute("tmux setenv custom_path " .. vim.fn.getcwd())
-  end
-  local path = vim.split(vim.fn.getcwd(), "/", {})
-  vim.opt.titlestring = [[%{v:progname}: ]] .. vim.fn.join({ path[#path - 1], path[#path] }, "/")
-  vim.opt.title = true
+	if not os.getenv("TMUX") then os.execute("tmux setenv custom_path " .. vim.fn.getcwd()) end
+	local path = vim.split(vim.fn.getcwd(), "/", {})
+	vim.opt.titlestring = [[%{v:progname}: ]] .. vim.fn.join({ path[#path - 1], path[#path] }, "/")
+	vim.opt.title = true
 end
 
 vim.api.nvim_create_autocmd({ "DirChanged", "VimEnter" }, {
-  group = vim.api.nvim_create_augroup("UpdateDirectory", { clear = true }),
-  callback = function()
-    local scope = vim.v.event.scope
-    if scope == nil or scope == "global" then
-      set_window_title()
-    end
-  end,
+	group = vim.api.nvim_create_augroup("UpdateDirectory", { clear = true }),
+	callback = function()
+		local scope = vim.v.event.scope
+		if scope == nil or scope == "global" then set_window_title() end
+	end,
 })
 
 -- better jumplists, keepjumps, lock
@@ -63,12 +59,10 @@ vim.fn.mkdir(backupdir, "p")
 vim.opt.backupdir = backupdir .. "//"
 vim.opt.backup = true
 vim.api.nvim_create_autocmd("BufWritePre", {
-  group = vim.api.nvim_create_augroup("VimBackup", { clear = true }),
-  desc = "Add timestamp to backup extension",
-  pattern = "*",
-  callback = function()
-    vim.opt.backupext = "-" .. vim.fn.strftime("%Y%m%d%H%M")
-  end,
+	group = vim.api.nvim_create_augroup("VimBackup", { clear = true }),
+	desc = "Add timestamp to backup extension",
+	pattern = "*",
+	callback = function() vim.opt.backupext = "-" .. vim.fn.strftime("%Y%m%d%H%M") end,
 })
 --
 -- M.reload_lua = function()
@@ -113,57 +107,57 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 -- close some filetypes with q or <esc>
 local winclose_group = vim.api.nvim_create_augroup("WinClose_q", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
-  group = winclose_group,
-  pattern = {
-    "NvimTree",
-    "PlenaryTestPopup",
-    "lspinfo",
-    "man",
-    "nerdtree",
-    "noice",
-    "startuptime",
-  },
-  callback = function(event)
-    -- vim.bo[event.buf].buflisted = false
-    vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-    vim.keymap.set("n", "<esc>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-  end,
+	group = winclose_group,
+	pattern = {
+		"NvimTree",
+		"PlenaryTestPopup",
+		"lspinfo",
+		-- "man",
+		"nerdtree",
+		"noice",
+		"startuptime",
+	},
+	callback = function(event)
+		-- vim.bo[event.buf].buflisted = false
+		vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+		vim.keymap.set("n", "<esc>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+	end,
 })
 
 -- close some filetypes with q or shift-esc
 vim.api.nvim_create_autocmd("FileType", {
-  group = winclose_group,
-  pattern = {
-    "Mundo",
-    "MundoDiff",
-    "dashboard",
-    "fugitive",
-    "help",
-    "neo-tree",
-    "tablegen",
-    "qf",
-    "query",
-    "spectre_panel",
-    "tsplayground",
-  },
-  callback = function(event)
-    -- vim.bo[event.buf].buflisted = false
-    vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-    vim.keymap.set("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-  end,
+	group = winclose_group,
+	pattern = {
+		"Mundo",
+		"MundoDiff",
+		"dashboard",
+		"fugitive",
+		"help",
+		"neo-tree",
+		"tablegen",
+		"qf",
+		"query",
+		"spectre_panel",
+		"tsplayground",
+	},
+	callback = function(event)
+		-- vim.bo[event.buf].buflisted = false
+		vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+		vim.keymap.set("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+	end,
 })
 
 -- close some buftypes with q or esc
 vim.api.nvim_create_autocmd({ "BufRead" }, {
-  group = winclose_group,
-  callback = function(event)
-    -- vim.bo[event.buf].buflisted = false
-    local buftype = vim.api.nvim_buf_get_option(event.buf, "buftype")
-    if buftype == "nofile" then
-      vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-      vim.keymap.set("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-    end
-  end,
+	group = winclose_group,
+	callback = function(event)
+		-- vim.bo[event.buf].buflisted = false
+		local buftype = vim.api.nvim_buf_get_option(event.buf, "buftype")
+		if buftype == "nofile" then
+			vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+			vim.keymap.set("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+		end
+	end,
 })
 
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
@@ -193,28 +187,26 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
-  group = vim.api.nvim_create_augroup("resize_splits", { clear = true }),
-  callback = function()
-    vim.cmd("tabdo wincmd =")
-  end,
+	group = vim.api.nvim_create_augroup("resize_splits", { clear = true }),
+	callback = function() vim.cmd("tabdo wincmd =") end,
 })
 
 -- Buffer
 local file_pattern = {
-  "*.css",
-  "*.fish",
-  "*.html",
-  "*.json",
-  "*.lua",
-  "*.md",
-  "*.rb",
-  "*.sass",
-  "*.scss",
-  "*.sh",
-  "*.ts",
-  "Dockerfile",
-  "docker-compose.yaml",
-  "*.cpp",
+	"*.css",
+	"*.fish",
+	"*.html",
+	"*.json",
+	"*.lua",
+	"*.md",
+	"*.rb",
+	"*.sass",
+	"*.scss",
+	"*.sh",
+	"*.ts",
+	"Dockerfile",
+	"docker-compose.yaml",
+	"*.cpp",
 }
 
 -- local cursor_line = vim.api.nvim_create_augroup('BufferDetectChanges', {})
@@ -228,78 +220,78 @@ local file_pattern = {
 --
 
 local remove_eol_comments = function(comment_syntax, lines)
-  if not lines then
-    local cur_pos = vim.api.nvim_win_get_cursor(0)
-    vim.api.nvim_command("%s/" .. comment_syntax .. ".*//g")
-    vim.api.nvim_win_set_cursor(0, cur_pos)
-    return ""
-  else
-    for i, line in ipairs(lines) do
-      lines[i] = line:gsub(comment_syntax .. ".*", "")
-    end
-    return lines
-  end
+	if not lines then
+		local cur_pos = vim.api.nvim_win_get_cursor(0)
+		vim.api.nvim_command("%s/" .. comment_syntax .. ".*//g")
+		vim.api.nvim_win_set_cursor(0, cur_pos)
+		return ""
+	else
+		for i, line in ipairs(lines) do
+			lines[i] = line:gsub(comment_syntax .. ".*", "")
+		end
+		return lines
+	end
 end
 
 local remove_eol_comments_ft = function(lines)
-  local ft = vim.bo.filetype
-  if ft == "javascript" or ft == "c" or ft == "cpp" then
-    remove_eol_comments("//", lines)
-  elseif ft == "lua" then
-    remove_eol_comments("--", lines)
-  elseif ft == "python" then
-    remove_eol_comments("#", lines)
-  else
-    print("Unrecognized filetype.")
-  end
+	local ft = vim.bo.filetype
+	if ft == "javascript" or ft == "c" or ft == "cpp" then
+		remove_eol_comments("//", lines)
+	elseif ft == "lua" then
+		remove_eol_comments("--", lines)
+	elseif ft == "python" then
+		remove_eol_comments("#", lines)
+	else
+		print("Unrecognized filetype.")
+	end
 end
 
 local get_current_lines = function()
-  local cursor = vim.api.nvim_win_get_cursor(0)
+	local cursor = vim.api.nvim_win_get_cursor(0)
 
-  -- local current_line = vim.fn.trim(
-  --   remove_eol_comments_ft(vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1])
-  -- ) or ''
-  local current_line = vim.fn.trim(
-    remove_eol_comments_ft(vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1]) or ""
-  )
+	-- local current_line = vim.fn.trim(
+	--   remove_eol_comments_ft(vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1])
+	-- ) or ''
+	local current_line = vim.fn.trim(
+		remove_eol_comments_ft(vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1]) or ""
+	)
 end
 
 local get_last_char = function(chars, opts)
-  return function()
-    opts = opts or {}
-    chars = type(chars) == "string" and { chars } or (type(chars) == "table" and chars) or {}
-    local key = type(chars) == "table" and chars[1] or chars
-    local mode = opts.mode or (vim.tbl_isempty(chars) and "strip") or "toggle"
+	return function()
+		opts = opts or {}
+		chars = type(chars) == "string" and { chars } or (type(chars) == "table" and chars) or {}
+		local key = type(chars) == "table" and chars[1] or chars
+		local mode = opts.mode or (vim.tbl_isempty(chars) and "strip") or "toggle"
 
-    local last_character = current_line and current_line:sub(-1) or ""
-    local to_remove, to_append = "", ""
+		local last_character = current_line and current_line:sub(-1) or ""
+		local to_remove, to_append = "", ""
 
-    if mode == "toggle" then
-      to_append = key
-      for _, char in ipairs(chars) do
-        if char == last_character then
-          to_remove = char
-          to_append = ""
-        end
-      end
-    elseif mode == "append" then
-      to_append = vim.fn.nr2char(vim.fn.getchar())
-    elseif mode == "strip" then
-      to_remove = last_character
-      vim.dbglog("remove", to_remove)
-      to_append = ""
-    end
+		if mode == "toggle" then
+			to_append = key
+			for _, char in ipairs(chars) do
+				if char == last_character then
+					to_remove = char
+					to_append = ""
+				end
+			end
+		elseif mode == "append" then
+			to_append = vim.fn.nr2char(vim.fn.getchar())
+		elseif mode == "strip" then
+			to_remove = last_character
+			vim.dbglog("remove", to_remove)
+			to_append = ""
+		end
 
-    if to_remove ~= "" then
-      -- remove last matching of to_remove
-      current_line = current_line:sub(1, #current_line - #to_remove)
-    end
-    current_line = current_line .. to_append
-    vim.api.nvim_buf_set_lines(0, cursor[1] - 1, cursor[1], true, { current_line })
-    vim.cmd('silent! normal "0=="')
-    vim.api.nvim_win_set_cursor(0, { cursor[1], cursor[2] })
-  end
+		if to_remove ~= "" then
+			-- remove last matching of to_remove
+			current_line = current_line:sub(1, #current_line - #to_remove)
+		end
+		current_line = current_line .. to_append
+		vim.api.nvim_buf_set_lines(0, cursor[1] - 1, cursor[1], true, { current_line })
+		vim.cmd('silent! normal "0=="')
+		vim.api.nvim_win_set_cursor(0, { cursor[1], cursor[2] })
+	end
 end
 
 local trail_chars = { ",", ";", ")", "'", '"', "|", "\\", ".", "}" }

@@ -1,11 +1,11 @@
 local default = {
   ring = {
     history_length = 100,
-    storage = 'shada',
-    storage_path = vim.fn.stdpath('data') .. '/databases/yanky.db', -- Only for sqlite storage
+    storage = "shada",
+    storage_path = vim.fn.stdpath("data") .. "/databases/yanky.db", -- Only for sqlite storage
     sync_with_numbered_registers = true,
-    cancel_event = 'update',
-    ignore_registers = { '_' },
+    cancel_event = "update",
+    ignore_registers = { "_" },
     update_register_on_cycle = false,
   },
   picker = {
@@ -39,11 +39,11 @@ local default = {
 local cfg = {
   ring = {
     history_length = 100,
-    storage = 'shada', -- shada, sqlite, memory
-    storage_path = vim.fn.stdpath('data') .. '/databases/yanky.sqlite3', -- Only for sqlite storage
+    storage = "shada", -- shada, sqlite, memory
+    storage_path = vim.fn.stdpath("data") .. "/databases/yanky.sqlite3", -- Only for sqlite storage
     sync_with_numbered_registers = true,
-    cancel_event = 'update',
-    ignore_registers = { '_' },
+    cancel_event = "update",
+    ignore_registers = { "_" },
     update_register_on_cycle = false,
   },
   highlight = {
@@ -86,26 +86,26 @@ local cfg = {
   -- },
 }
 
-local yanky = require('yanky')
+local yanky = require("yanky")
 yanky.register_plugs()
 yanky.setup(cfg)
 
 -- local map = vim.keymap.set
-local map = require('mapper').map
+local map = require("mapper").map
 
 -- gp = "GPutAfter",
 -- gP = "GPutBefore",
 
 local yanky_cycle = function(direction)
-  local history = require('yanky.history')
+  local history = require("yanky.history")
   local count = history.storage.length()
-  if direction == 'next' then
+  if direction == "next" then
     vim.cmd([[ execute "normal! \<Plug>(YankyCycleForward)" ]])
   else
     vim.cmd([[ execute "normal! \<Plug>(YankyCycleBackward)" ]])
   end
   if history.position > 1 and history.position < count then
-    vim.notify(history.position .. '/' .. count .. ' yank ring', vim.log.levels.INFO)
+    vim.notify(history.position .. "/" .. count .. " yank ring", vim.log.levels.INFO)
   end
 end
 
@@ -129,15 +129,15 @@ local keymap = uniqueKeymap
 -- do not clutter register with x
 -- keymap({ 'n', 'x' }, 'x', '"_x')
 -- do not clutter register with c/C (like substitute command)
-keymap({ 'n', 'x' }, 'c', '"_c', { nowait = true })
-keymap('n', 'C', '"_C', { nowait = true })
+keymap({ "n", "x" }, "c", '"_c', { nowait = true })
+keymap("n", "C", '"_C', { nowait = true })
 
 -- do not clutter the register if blank line is deleted
-keymap('n', 'dd', function()
-  if vim.api.nvim_get_current_line():find('^%s*$') then
+keymap("n", "dd", function()
+  if vim.api.nvim_get_current_line():find("^%s*$") then
     return '"_dd'
   end
-  return 'dd'
+  return "dd"
 end, { expr = true, nowait = true })
 
 --  TODO: gcp/gcP/gbp/gbP new line with indent, gc< and gb< inline
@@ -154,6 +154,9 @@ map('n', '<leader>p[',  '<cmd>lua require("configs.yanky").yanky_cycle("prev")<c
 map('n', '<leader>p]',  '<cmd>lua require("configs.yanky").yanky_cycle("next")<cr>',  { desc = '  cycle killring forward', silent = true })
 
 map({'o', 'x'}, '<leader>pl','<cmd>lua require("yanky.textobj").last_put()<cr>',  { desc = '  put last yanked text object', silent = true })
+
+map({"n","x"}, '<M-p>', '<Plug>(YankyPutAfterFilter)', { desc = '  put yanked text after selection' })
+map({"n","x"}, '<M-C-P>', '<Plug>(YankyPutBeforeFilter)', { desc = '  put yanked text after selection' })
 
 -- unimpaired-like mappings
 map({"n","x"}, 'p', '<Plug>(YankyPutAfter)',                    { desc = '  paste (yanky)',  silent = true })

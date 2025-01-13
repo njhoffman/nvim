@@ -143,7 +143,7 @@ local cmdline = {
       end
     end,
   },
-  ["<M-p>"] = {
+  ["<M-P>"] = {
     c = function()
       feedkeys.call(keymap.t("<Up>"), "c")
     end,

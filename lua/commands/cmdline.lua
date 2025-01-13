@@ -8,6 +8,23 @@ for key, attrs in pairs(vim.api.nvim_get_commands({ builtin = false })) do
   end
 end
 
+-- manpages info
+-- K or CTRL-]               Jump to the manpage for the <cWORD> under the cursor. Takes a count for the section.
+-- CTRL-T                    Jump back to the location that the manpage was opened from.
+-- gO                        Show the manpage outline. |gO|
+-- q                        :quit if invoked as $MANPAGER, otherwise :close.
+-- *g:no_man_maps*             Do not create mappings in manpage buffers.
+-- *g:ft_man_folding_enable*   Fold manpages with foldmethod=indent foldnestmax=1.
+-- *b:man_default_sects*       Comma-separated, ordered list of preferred sections.
+-- For example in C one usually wants section 3 or 2: >
+--   :let b:man_default_sections = '3,2'
+--   *g:man_hardwrap*            Hard-wrap to $MANWIDTH or window width if $MANWIDTH is empty. Enabled by default. Set |FALSE| to enable soft wrapping.
+--
+-- :vertical Man printf
+-- :hide Man printf
+-- prevent hard wrapping with groff
+-- export MANWIDTH=999
+
 local get_substitute_flags = function(cmdline)
   local flags = vim.fn.matchstr(cmdline, "%(\\[a-zA-Z]\\)")
   -- local new_flags = ''

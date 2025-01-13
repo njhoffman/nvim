@@ -391,7 +391,7 @@ require("snacks").setup(cfg)
 -- vim.keymap.set("<leader>ps", function()
 --   Snacks.profiler.scratch()
 -- end, { desc = "Profiler Scratch Bufer" })
-vim.keymap.set("n", "<leader>.", function()
+vim.keymap.set("n", "<leader><", function()
   Snacks.scratch()
 end, { desc = "Toggle scratch buffer" })
 --     desc = "Neovim News",
