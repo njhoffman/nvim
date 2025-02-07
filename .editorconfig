@@ -1,32 +1,12 @@
-root                     = true
-
 [*]
-end_of_line              = lf
-insert_final_newline     = true
 trim_trailing_whitespace = true
 charset                  = utf-8
 max_line_length          = 100
 
-[*.{bash,sh}]
-indent_style       = space
-indent_size        = 2
-charset            = utf-8
-shell_variant      = bash
-binary_next_line   = false
-switch_case_indent = true
-space_redirects    = true
-keep_padding       = true
-function_next_line = false
-
-[{*.lua,*.tl,}]
-indent_style             = space
-indent_size              = 2
-
 [*.lua]
-# [basic]
 continuation_indent      = 4
 quote_style              = double
 trailing_table_separator = smart
-# [align]
+call_arg_parentheses     = keep
 align_call_args          = true
 align_function_params    = true

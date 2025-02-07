@@ -2,10 +2,13 @@ local capabilities = require("lsp.capabilities")
 local lsp_icons = require("lsp.icons")
 
 _G.jump = function()
-	MiniAnimate.config.scroll.enable = false
-	MiniJump2d.start()
-	-- Need `vim.schedule()` here to still have it disabled at animation's start
-	vim.schedule(function() MiniAnimate.config.scroll.enable = true end)
+	---@diagnostic disable: undefined-global
+	if type(MiniJump2d) ~= "table" and type(MiniAnimate) ~= "table" then
+		MiniAnimate.config.scroll.enable = false
+		MiniJump2d.start()
+		-- Need `vim.schedule()` here to still have it disabled at animation's start
+		vim.schedule(function() MiniAnimate.config.scroll.enable = true end)
+	end
 end
 
 _G.diagnostic_goto = function(direction, severity)
@@ -35,10 +38,18 @@ end
 -- end
 
 local icons = lsp_icons.get_icons("diagnostics")
-vim.fn.sign_define("DiagnosticSignError", { text = icons.error, texthl = "LspDiagnosticsSignError" })
-vim.fn.sign_define("DiagnosticSignWarn", { text = icons.warn, texthl = "LspDiagnosticsSignWarn" })
-vim.fn.sign_define("DiagnosticSignInfo", { text = icons.info, texthl = "LspDiagnosticsSignInfo" }) -- 󰌵
-vim.fn.sign_define("DiagnosticSignHint", { text = icons.hint, texthl = "LspDiagnosticsSignHint" })
+local define_sign = function(level)
+	local level_uc = string.upper(level[1]) .. string.sub(level, 2)
+	vim.fn.sign_define("DiagnosticSign" .. level_uc, {
+		text = icons[level],
+		texthl = "LspDiagnosticsSign" .. level_uc,
+		priority = 6,
+	})
+end
+
+for _, level in ipairs { "error", "warn", "info", "hint" } do
+	define_sign(level)
+end
 
 -- format.setup()
 

@@ -4,29 +4,29 @@ local actions_layout = require("telescope.actions.layout")
 local c_actions = require("configs.telescope.actions")
 
 local send_to_qflist = function(prompt_bufnr)
-  -- actions.send_to_qflist(prompt_bufnr)
-  -- actions.open_qflist(prompt_bufnr)
-  -- actions.center(prompt_bufnr)
-  actions.smart_send_to_qflist(prompt_bufnr) -- sends selected, or if none selected, sends all
-  vim.cmd.cfirst()
+	-- actions.send_to_qflist(prompt_bufnr)
+	-- actions.open_qflist(prompt_bufnr)
+	-- actions.center(prompt_bufnr)
+	actions.smart_send_to_qflist(prompt_bufnr) -- sends selected, or if none selected, sends all
+	vim.cmd.cfirst()
 end
 
 local select_default = function(prompt_bufnr)
-  actions.select_default(prompt_bufnr)
-  actions.center(prompt_bufnr)
+	actions.select_default(prompt_bufnr)
+	actions.center(prompt_bufnr)
 end
 
 local logger = require("logger").init("telescope")
 local ignore_keys = function(keys)
-  local ignore_map = {}
-  for _, key in ipairs(keys) do
-    -- ignore_map[key] = function(prompt_bufnr)
-    --   logger:trace('ignoring ' .. key .. ' for ' .. prompt_bufnr)
-    --   return false
-    -- end
-    ignore_map[key] = "nop"
-  end
-  return ignore_map
+	local ignore_map = {}
+	for _, key in ipairs(keys) do
+		-- ignore_map[key] = function(prompt_bufnr)
+		--   logger:trace('ignoring ' .. key .. ' for ' .. prompt_bufnr)
+		--   return false
+		-- end
+		ignore_map[key] = "nop"
+	end
+	return ignore_map
 end
 
 local main_maps = {
@@ -45,8 +45,8 @@ local main_maps = {
     ["<<M-C-Up>"]     = actions.move_selection_previous,
     ["<M-C-Down>"]        = actions.cycle_history_prev,
     ["<Down>"]      = actions.cycle_history_next,
-    ["<M-k>"]       = c_actions.preview_scroll_up,
-    ["<M-j>"]       = c_actions.preview_scroll_down,
+    ["<C-S-Up>"]       = c_actions.preview_scroll_up,
+    ["<C-S-Down>"]       = c_actions.preview_scroll_down,
     ["<M-b>"]       = c_actions.preview_page_up,
     ["<M-f>"]       = c_actions.preview_page_down,
     ["<M-w>"]       = c_actions.preview_toggle_wrap,
@@ -95,78 +95,78 @@ local main_maps = {
       "<C-V>",
     })
   ),
-  n = {
-    ["q"] = actions.close,
-    ["s"] = c_actions.flash,
-  },
-  -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set [S-F1-9] = add/remove secondary sort #
-  -- [??] = clear sort
+	n = {
+		["q"] = actions.close,
+		["s"] = c_actions.flash,
+	},
+	-- [F1-9] = set primary sort if # not set, toggle primary/secondary if set [S-F1-9] = add/remove secondary sort #
+	-- [??] = clear sort
 }
 
 local grep_maps = {
-  i = {
-    -- change directory functionality
-    ["<M-{>"] = c_actions.switch_grep_pickers_prev,
-    ["<M-}>"] = c_actions.switch_grep_pickers_next,
-    ["<M-lt>"] = c_actions.directory_up,
-    ["<M->>"] = c_actions.directory_picker,
-    ["<CR>"] = c_actions.multi_open,
-    -- ['<C-Q>'] = c_actions.multi_to_qflist,
-    ["<C-Q>"] = send_to_qflist,
-  },
+	i = {
+		-- change directory functionality
+		["<M-{>"] = c_actions.switch_grep_pickers_prev,
+		["<M-}>"] = c_actions.switch_grep_pickers_next,
+		["<M-lt>"] = c_actions.directory_up,
+		["<M->>"] = c_actions.directory_picker,
+		["<CR>"] = c_actions.multi_open,
+		-- ['<C-Q>'] = c_actions.multi_to_qflist,
+		["<C-Q>"] = send_to_qflist,
+	},
 }
 
 local file_maps = {
-  i = {
-    ["<M-{>"] = c_actions.switch_file_pickers_prev,
-    ["<M-}>"] = c_actions.switch_file_pickers_next,
-    ["<M-lt>"] = c_actions.directory_up,
-    ["<M->>"] = c_actions.directory_picker,
-    ["<CR>"] = c_actions.multi_open,
-    -- ['<C-Q>'] = c_actions.multi_to_qflist,
-    ["<C-Q>"] = send_to_qflist,
-  },
+	i = {
+		["<M-{>"] = c_actions.switch_file_pickers_prev,
+		["<M-}>"] = c_actions.switch_file_pickers_next,
+		["<M-lt>"] = c_actions.directory_up,
+		["<M->>"] = c_actions.directory_picker,
+		["<CR>"] = c_actions.multi_open,
+		-- ['<C-Q>'] = c_actions.multi_to_qflist,
+		["<C-Q>"] = send_to_qflist,
+	},
 }
 
 local buffer_maps = {
-  i = {
-    ["<C-Del>"] = c_actions.delete_buffer,
-    ["<M-d>"] = c_actions.delete_buffer,
-    -- ['<C-Del>'] = 'delete_buffer',
-    -- ['<M-d>'] = 'delete_buffer',
-  },
+	i = {
+		["<C-Del>"] = c_actions.delete_buffer,
+		["<M-d>"] = c_actions.delete_buffer,
+		-- ['<C-Del>'] = 'delete_buffer',
+		-- ['<M-d>'] = 'delete_buffer',
+	},
 }
 
 local help_maps = {
-  i = {
-    ["<CR>"] = actions.select_vertical,
-  },
+	i = {
+		["<CR>"] = actions.select_vertical,
+	},
 }
 
 local keymaps_maps = {
-  i = {
-    ["<C-Y>"] = c_actions.yank_keymaps,
-    ["<M-y>"] = c_actions.yank_keymaps_to_buffer,
-    ["<CR>"] = actions.select_vertical,
-  },
+	i = {
+		["<C-Y>"] = c_actions.yank_keymaps,
+		["<M-y>"] = c_actions.yank_keymaps_to_buffer,
+		["<CR>"] = actions.select_vertical,
+	},
 }
 
 local highlights_maps = {
-  i = {
-    ["<C-Y>"] = c_actions.yank_selection,
-    ["<M-y>"] = c_actions.yank_selection_to_buffer,
-    ["<CR>"] = c_actions.select_highlights,
-  },
+	i = {
+		["<C-Y>"] = c_actions.yank_selection,
+		["<M-y>"] = c_actions.yank_selection_to_buffer,
+		["<CR>"] = c_actions.select_highlights,
+	},
 }
 
 local mappings = {
-  help = help_maps,
-  grep = grep_maps,
-  main = main_maps,
-  file = file_maps,
-  buffer = buffer_maps,
-  highlights = highlights_maps,
-  keymaps = keymaps_maps,
+	help = help_maps,
+	grep = grep_maps,
+	main = main_maps,
+	file = file_maps,
+	buffer = buffer_maps,
+	highlights = highlights_maps,
+	keymaps = keymaps_maps,
 }
 
 return mappings

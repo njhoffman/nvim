@@ -1,89 +1,90 @@
 local default = {
-  ring = {
-    history_length = 100,
-    storage = "shada",
-    storage_path = vim.fn.stdpath("data") .. "/databases/yanky.db", -- Only for sqlite storage
-    sync_with_numbered_registers = true,
-    cancel_event = "update",
-    ignore_registers = { "_" },
-    update_register_on_cycle = false,
-  },
-  picker = {
-    select = {
-      action = nil, -- nil to use default put action
-    },
-    telescope = {
-      use_default_mappings = true, -- if default mappings should be used
-      mappings = nil, -- nil to use default mappings or no mappings (see `use_default_mappings`)
-    },
-  },
-  system_clipboard = {
-    sync_with_ring = true,
-  },
-  highlight = {
-    on_put = true,
-    on_yank = true,
-    timer = 500,
-  },
-  preserve_cursor_position = {
-    enabled = true,
-  },
-  textobj = {
-    enabled = true,
-  },
+	ring = {
+		history_length = 100,
+		storage = "shada",
+		storage_path = vim.fn.stdpath("data") .. "/databases/yanky.db", -- Only for sqlite storage
+		sync_with_numbered_registers = true,
+		cancel_event = "update",
+		ignore_registers = { "_" },
+		update_register_on_cycle = false,
+	},
+	picker = {
+		select = {
+			action = nil, -- nil to use default put action
+		},
+		telescope = {
+			use_default_mappings = true, -- if default mappings should be used
+			mappings = nil, -- nil to use default mappings or no mappings (see `use_default_mappings`)
+		},
+	},
+	system_clipboard = {
+		sync_with_ring = true,
+	},
+	highlight = {
+		on_put = true,
+		on_yank = true,
+		timer = 500,
+	},
+	preserve_cursor_position = {
+		enabled = true,
+	},
+	textobj = {
+		enabled = true,
+	},
 }
 -- textobj = {
 --   enabled = true,
 -- },
 
 local cfg = {
-  ring = {
-    history_length = 100,
-    storage = "shada", -- shada, sqlite, memory
-    storage_path = vim.fn.stdpath("data") .. "/databases/yanky.sqlite3", -- Only for sqlite storage
-    sync_with_numbered_registers = true,
-    cancel_event = "update",
-    ignore_registers = { "_" },
-    update_register_on_cycle = false,
-  },
-  highlight = {
-    on_put = true,
-    on_yank = true,
-    timer = 200,
-  },
-  system_clipboard = {
-    sync_with_ring = true,
-  },
-  textobj = {
-    enabled = true,
-  },
-  preserve_cursor_position = {
-    enabled = true,
-  },
-  -- picker = {
-  --   -- select = {
-  --   -- 	action = require("yanky.picker").actions.put("p"),
-  --   -- },
-  --   telescope = {
-  --     mappings = {
-  --       default = mapping.put('p'),
-  --       i = {
-  --         ['<c-p>'] = mapping.put('p'),
-  --         ['<c-k>'] = mapping.put('P'),
-  --         ['<c-x>'] = mapping.delete(),
-  --         ['<c-r>'] = mapping.set_register(utils.get_default_register()),
-  --       },
-  --       n = {
-  --         p = mapping.put('p'),
-  --         P = mapping.put('P'),
-  --         gp = mapping.put('gp'),
-  --         gP = mapping.put('gP'),
-  --         d = mapping.delete(),
-  --         r = mapping.set_register(utils.get_default_register()),
-  --       },
-  --     },
-  --   },
-  -- },
+	ring = {
+		history_length = 100,
+		storage = "shada", -- shada, sqlite, memory
+		storage_path = vim.fn.stdpath("data") .. "/databases/yanky.sqlite3", -- Only for sqlite storage
+		sync_with_numbered_registers = true,
+		cancel_event = "update",
+		ignore_registers = { "_" },
+		update_register_on_cycle = false,
+	},
+	-- tiny-glimmer handles highlights
+	highlight = {
+		on_put = false,
+		on_yank = false,
+		timer = 200,
+	},
+	system_clipboard = {
+		sync_with_ring = true,
+	},
+	textobj = {
+		enabled = true,
+	},
+	preserve_cursor_position = {
+		enabled = true,
+	},
+	-- picker = {
+	--   -- select = {
+	--   -- 	action = require("yanky.picker").actions.put("p"),
+	--   -- },
+	--   telescope = {
+	--     mappings = {
+	--       default = mapping.put('p'),
+	--       i = {
+	--         ['<c-p>'] = mapping.put('p'),
+	--         ['<c-k>'] = mapping.put('P'),
+	--         ['<c-x>'] = mapping.delete(),
+	--         ['<c-r>'] = mapping.set_register(utils.get_default_register()),
+	--       },
+	--       n = {
+	--         p = mapping.put('p'),
+	--         P = mapping.put('P'),
+	--         gp = mapping.put('gp'),
+	--         gP = mapping.put('gP'),
+	--         d = mapping.delete(),
+	--         r = mapping.set_register(utils.get_default_register()),
+	--       },
+	--     },
+	--   },
+	-- },
 }
 
 local yanky = require("yanky")
@@ -96,18 +97,18 @@ local map = require("mapper").map
 -- gp = "GPutAfter",
 -- gP = "GPutBefore",
 
-local yanky_cycle = function(direction)
-  local history = require("yanky.history")
-  local count = history.storage.length()
-  if direction == "next" then
-    vim.cmd([[ execute "normal! \<Plug>(YankyCycleForward)" ]])
-  else
-    vim.cmd([[ execute "normal! \<Plug>(YankyCycleBackward)" ]])
-  end
-  if history.position > 1 and history.position < count then
-    vim.notify(history.position .. "/" .. count .. " yank ring", vim.log.levels.INFO)
-  end
-end
+-- local yanky_cycle = function(direction)
+--   local history = require("yanky.history")
+--   local count = history.storage.length()
+--   if direction == "next" then
+--     vim.cmd([[ execute "normal! \<Plug>(YankyCycleForward)" ]])
+--   else
+--     vim.cmd([[ execute "normal! \<Plug>(YankyCycleBackward)" ]])
+--   end
+--   if history.position > 1 and history.position < count then
+--     vim.notify(history.position .. "/" .. count .. " yank ring", vim.log.levels.INFO)
+--   end
+-- end
 
 ---ensures unique keymaps https://www.reddit.com/r/neovim/comments/16h2lla/can_you_make_neovim_warn_you_if_your_config_maps/
 ---@alias vimMode "n"|"v"|"x"|"i"|"o"|"c"|"t"|"ia"|"ca"|"!a"
@@ -116,13 +117,9 @@ end
 ---@param rhs string|function
 ---@param opts? { unique: boolean, desc: string, buffer: boolean, nowait: boolean, remap: boolean }
 function uniqueKeymap(modes, lhs, rhs, opts)
-  if not opts then
-    opts = {}
-  end
-  if opts.unique == nil then
-    opts.unique = true
-  end
-  vim.keymap.set(modes, lhs, rhs, opts)
+	if not opts then opts = {} end
+	if opts.unique == nil then opts.unique = true end
+	vim.keymap.set(modes, lhs, rhs, opts)
 end
 
 local keymap = uniqueKeymap
@@ -134,10 +131,8 @@ keymap("n", "C", '"_C', { nowait = true })
 
 -- do not clutter the register if blank line is deleted
 keymap("n", "dd", function()
-  if vim.api.nvim_get_current_line():find("^%s*$") then
-    return '"_dd'
-  end
-  return "dd"
+	if vim.api.nvim_get_current_line():find("^%s*$") then return '"_dd' end
+	return "dd"
 end, { expr = true, nowait = true })
 
 --  TODO: gcp/gcP/gbp/gbP new line with indent, gc< and gb< inline

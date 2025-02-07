@@ -1,7 +1,7 @@
 -- local commands = require('autocommands.commands')
 local buffers = require("autocommands.buffers")
-local windows = require("autocommands.windows")
 local telescope = require("autocommands.telescope")
+local windows = require("autocommands.windows")
 
 require("autocommands.misc")
 require("autocommands.tagstack")
@@ -103,7 +103,7 @@ local autocmds = {
   BuffersSpecial  = { { 'BufNew', 'BufReadPost' }, '*', windows.handle_special },
   FasdUpdate      = { { 'BufWritePost' }, '*',  buffers.fasd_update },
   RestoreCursor   = { { 'BufRead' },      '*',  windows.restore_cursor },
-  HighlightYank   = { { 'TextYankPost' }, '*',  windows.highlight_yank },
+  -- HighlightYank   = { { 'TextYankPost' }, '*',  windows.highlight_yank },
   TelescopeWinbar = { { 'User' }, 'TelescopeFindPre', telescope.winbar_sync },
   ReloadOnWrite   = { { 'BufWritePost' }, 'tmux.conf', [[execute ':!tmux source-file %']] } ,
 

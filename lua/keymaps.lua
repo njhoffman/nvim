@@ -92,40 +92,40 @@ vim.cmd([[
 -- TODO: differentiate between vim/lua, auto remove comments
 
 map({ "v" }, "<C-Space>", '"xy:@x<cr>', {
-  category = "Command",
-  label = " execute selected",
-  desc = " execute selected lines",
+	category = "Command",
+	label = " execute selected",
+	desc = " execute selected lines",
 })
 
 map({ "n", "v" }, ";", ":", {
-  category = "Command",
-  label = " open cmdline",
-  desc = " open the command line",
-  silent = false,
+	category = "Command",
+	label = " open cmdline",
+	desc = " open the command line",
+	silent = false,
 })
 
 map({ "n", "v" }, "<M-:>", "q:", {
-  category = "Command",
-  label = " open cmdwin",
-  desc = " open the command window",
+	category = "Command",
+	label = " open cmdwin",
+	desc = " open the command window",
 })
 
 map("c", "<M-b>", "<C-]><Esc>", {
-  category = "Command",
-  label = " open cmdwin normal",
-  desc = " open command window from the command line in normal mode",
+	category = "Command",
+	label = " open cmdwin normal",
+	desc = " open command window from the command line in normal mode",
 })
 
 map("c", "<M-f>", "<C-]>", {
-  category = "Command",
-  label = " open cmdwin insert",
-  desc = " open command window from the command line in insert mode",
+	category = "Command",
+	label = " open cmdwin insert",
+	desc = " open command window from the command line in insert mode",
 })
 
 map("c", "<M-S>", "<cmd>w<cr><esc>", {
-  category = "Command",
-  label = " save cmdline",
-  desc = " save in command line",
+	category = "Command",
+	label = " save cmdline",
+	desc = " save in command line",
 })
 
 -- map('c', '<C-Y>', '<C-\\>ey', {
@@ -145,13 +145,13 @@ map("c", "<M-S>", "<cmd>w<cr><esc>", {
 
 -- TODO: conditional C-t for cmdline
 vmap("c", "<C-g>", {
-  category = "Command",
-  label = " next search match",
+	category = "Command",
+	label = " next search match",
 })
 
 map("c", "<M-g>", "<C-t>", {
-  category = "Command",
-  label = " prev search match",
+	category = "Command",
+	label = " prev search match",
 })
 
 -- CTRL-\ e {expr}       :cmap <F7> <C-\>eAppendSome()<CR>
@@ -163,135 +163,145 @@ map("c", "<M-g>", "<C-t>", {
 --   CTRL-L	the line under the cursor
 
 map("c", "<C-d>", "<Right><Del><Left>", {
-  category = "Command",
-  label = " delete word",
-  desc = " delete word to the right of cmdline",
+	category = "Command",
+	label = " delete word",
+	desc = " delete word to the right of cmdline",
 })
 
 map("c", "<M-d>", "<Right><Del><Left>", {
-  category = "Command",
-  label = " delete eol",
-  desc = " delete to end of cmdline",
+	category = "Command",
+	label = " delete eol",
+	desc = " delete to end of cmdline",
 })
 
 map("c", "<C-^>", "<C-Home>", {
-  silent = false,
-  category = "Command",
-  label = " goto start",
-  desc = " go to beginning of command line",
+	silent = false,
+	category = "Command",
+	label = " goto start",
+	desc = " go to beginning of command line",
 })
 
 map("c", "<M-^>", '<cmd>lua require("commands.cmdline").toggle()<cr>', {
-  silent = false,
-  category = "Command",
-  label = " toggle cmdline",
-  desc = " toggle cmdline depending on command mode",
+	silent = false,
+	category = "Command",
+	label = " toggle cmdline",
+	desc = " toggle cmdline depending on command mode",
 })
 
 map("c", "<C-$>", "<C-End>", {
-  silent = false,
-  category = "Command",
-  label = " goto end",
-  desc = " go to end of command line",
+	silent = false,
+	category = "Command",
+	label = " goto end",
+	desc = " go to end of command line",
 })
 
 map("c", "<M-$>", "<C-End>", {
-  silent = false,
-  category = "Command",
-  label = " goto end",
-  desc = " go to end of command line",
+	silent = false,
+	category = "Command",
+	label = " goto end",
+	desc = " go to end of command line",
 })
 
 map("c", "<C-h>", "<Left>", {
-  silent = false,
-  category = "Command",
-  label = " move left",
-  desc = " move to the left by 1 character",
+	silent = false,
+	category = "Command",
+	label = " move left",
+	desc = " move to the left by 1 character",
 })
 map("c", "<M-C-H>", "<S-Left>", {
-  silent = false,
-  category = "Command",
-  label = " move left word",
-  desc = " move to the left by 1 word",
+	silent = false,
+	category = "Command",
+	label = " move left word",
+	desc = " move to the left by 1 word",
 })
 
 map("c", "<C-l>", "<Right>", {
-  silent = false,
-  category = "Command",
-  label = " move right",
-  desc = " move to the right by 1 character",
+	silent = false,
+	category = "Command",
+	label = " move right",
+	desc = " move to the right by 1 character",
 })
 
 map("c", "<M-C-L>", "<S-Right>", {
-  silent = false,
-  category = "Command",
-  label = " move right word",
-  desc = " move to the right by 1 word",
+	silent = false,
+	category = "Command",
+	label = " move right word",
+	desc = " move to the right by 1 word",
 })
 
 -- todo: ctrl-shift- %
 map("c", "<M-%>", "<C-r>%", {
-  category = "Command",
-  label = " insert filename cmdline",
-  desc = " insert filename into the command line",
+	category = "Command",
+	label = " insert filename cmdline",
+	desc = " insert filename into the command line",
 })
 
 map("c", "<M-C-e>", [[<c-\>eexpandcmd(getcmdline())<CR>]], {
-  category = "Command",
-  label = " expand special characters",
-  desc = " expand special cmdline characters in place",
+	category = "Command",
+	label = " expand special characters",
+	desc = " expand special cmdline characters in place",
 })
 
 --------------------------------------------------------------------------------------------------
 -- COMMENTS ---------------------------------------------------------------------------------------
-map("n", "gch", function()
-  require("funcs.quality-of-life").commentHr()
-end, { category = "Comments", desc = "  horizontal divider" })
+map(
+	"n",
+	"gch",
+	function() require("funcs.quality-of-life").commentHr() end,
+	{ category = "Comments", desc = "  horizontal divider" }
+)
 
-map({ "x" }, "gC", function()
-  require("funcs.quality-of-life").duplicateAsComment()
-end, { category = "Comments", desc = "  duplicate line as comment" })
+map(
+	{ "n", "x" },
+	"gC",
+	function() require("funcs.quality-of-life").duplicateAsComment() end,
+	{ category = "Comments", desc = "  duplicate line as comment" }
+)
 
-map({ "x" }, "gcC", function()
-  require("funcs.quality-of-life").duplicateAsComment()
-end, { category = "Comments", desc = "  duplicate line as comment" })
+map(
+	{ "n", "x" },
+	"gcC",
+	function() require("funcs.quality-of-life").duplicateAsComment() end,
+	{ category = "Comments", desc = "  duplicate line as comment" }
+)
 
-map({ "x" }, "gc<space>", function()
-  require("funcs.quality-of-life").duplicateAsComment()
-end, { category = "Comments", desc = "  duplicate line as comment" })
+map(
+	{ "n", "x" },
+	"gc<space>",
+	function() require("funcs.quality-of-life").duplicateAsComment() end,
+	{ category = "Comments", desc = "  duplicate line as comment" }
+)
 
-map({ "n" }, "gcC", function()
-  require("funcs.quality-of-life").duplicateAsComment()
-end, { category = "Comments", desc = "  duplicate line as comment" })
-
-map({ "n" }, "gc<space>", function()
-  require("funcs.quality-of-life").duplicateAsComment()
-end, { category = "Comments", desc = "  duplicate line as comment" })
---
+map({ "n", "x" }, "gc<cr>", function()
+	-- switch to visual line mode
+	vim.cmd("normal! V")
+	require("funcs.quality-of-life").duplicateAsComment()
+end, { category = "Comments", desc = "  duplicate line as comment, force line mode" })
+-- TODO: make operator mapping, map shift/ctrl enter in visual mode
 
 --------------------------------------------------------------------------------------------------
 -- BUFFERS ---------------------------------------------------------------------------------------
 
 map(
-  { "n", "x" },
-  "<C-d>",
-  -- "<cmd>lua require('funcs.alt-alt').betterClose()<cr>",
-  "<cmd>CloseMulti<cr>",
-  { category = "Buffers", desc = "󰽙 close buffer/window" }
+	{ "n", "x" },
+	"<C-d>",
+	-- "<cmd>lua require('funcs.alt-alt').betterClose()<cr>",
+	"<cmd>CloseMulti<cr>",
+	{ category = "Buffers", desc = "󰽙 close buffer/window" }
 )
 
 --  'o<Esc>j'  'm`O<Esc>``'
 map("n", "<CR>", "O<Esc>", {
-  category = "Buffers",
-  label = "󰽙 insert new line",
-  desc = "󰽙 insert new line without leaving insert mode",
+	category = "Buffers",
+	label = "󰽙 insert new line",
+	desc = "󰽙 insert new line without leaving insert mode",
 })
 
 map("n", "<S-CR>", '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
 
-  category = "Buffers",
-  label = "󰽙 goto alt-buffer",
-  desc = "󰽙 goto alternative/last buffer",
+	category = "Buffers",
+	label = "󰽙 goto alt-buffer",
+	desc = "󰽙 goto alternative/last buffer",
 })
 -- keymap({ "n", "x", "i" }, "<C-CR>", "<C-w>w", { desc = " Next Window" })
 -- map('n', '<BS>', '<cmd>e #<cr>', {
@@ -302,123 +312,123 @@ map("n", "<S-CR>", '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
 -- })
 
 map("n", "<C-Tab>", "<cmd>tabn<cr>", {
-  category = "Buffers",
-  label = "󰽙 next tab",
-  desc = "󰽙 open the next tab",
+	category = "Buffers",
+	label = "󰽙 next tab",
+	desc = "󰽙 open the next tab",
 })
 
 map("n", "<C-S-Tab>", "<cmd>tabp<cr>", {
-  category = "Buffers",
-  label = "󰽙 prev  tab",
-  desc = "󰽙 open the prev tab",
+	category = "Buffers",
+	label = "󰽙 prev  tab",
+	desc = "󰽙 open the prev tab",
 })
 
 map("n", "H", "<Cmd>BufferPrev<cr>", {
-  category = "Buffers",
-  label = "󰽙 left buffer",
-  desc = "󰽙 open the left (prev) buffer",
+	category = "Buffers",
+	label = "󰽙 left buffer",
+	desc = "󰽙 open the left (prev) buffer",
 })
 
 map("n", "L", "<Cmd>BufferNext<cr>", {
-  category = "Buffers",
-  label = "󰽙 right buffer",
-  desc = "󰽙 open the right (next) buffer",
+	category = "Buffers",
+	label = "󰽙 right buffer",
+	desc = "󰽙 open the right (next) buffer",
 })
 
 map({ "n" }, "<leader>fH", "<cmd>lua vim.treesitter.get_parser(0):parse()<cr>", {
-  category = "Buffers",
-  label = "󰽙 reset treesitter highlighting",
+	category = "Buffers",
+	label = "󰽙 reset treesitter highlighting",
 })
 
 map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>silent! w<cr><esc>", {
-  category = "Buffers",
-  label = "󰽙 write buffer",
-  desc = "󰽙 write to buffer",
-  silent = true,
+	category = "Buffers",
+	label = "󰽙 write buffer",
+	desc = "󰽙 write to buffer",
+	silent = true,
 })
 
 map("n", "<leader>f*w", "<cmd>wall<cr>", {
-  category = "Buffers",
-  label = "󰽙 write all",
-  silent = true,
-  desc = "󰽙 write all buffers",
+	category = "Buffers",
+	label = "󰽙 write all",
+	silent = true,
+	desc = "󰽙 write all buffers",
 })
 
 map("n", "<leader>w", "<cmd>noa w<cr>", {
-  category = "Buffers",
-  label = "󰽙 write noa",
-  desc = "󰽙 write without autocommands",
-  silent = true,
+	category = "Buffers",
+	label = "󰽙 write noa",
+	desc = "󰽙 write without autocommands",
+	silent = true,
 })
 
 map("n", "<leader>fw", "<cmd>noa w<cr>", {
-  category = "Buffers",
-  label = "󰽙 write noa",
-  desc = "󰽙 write without autocommands",
-  silent = true,
+	category = "Buffers",
+	label = "󰽙 write noa",
+	desc = "󰽙 write without autocommands",
+	silent = true,
 })
 
 map("n", "<leader>fd", "<cmd>BufferDelete<cr>", {
-  category = "Buffers",
-  label = "󰽙 delete buffer",
-  desc = "󰽙 delete buffer without closing window",
+	category = "Buffers",
+	label = "󰽙 delete buffer",
+	desc = "󰽙 delete buffer without closing window",
 })
 
 map("n", "<leader>f*d", "<cmd>BufferCloseAllButCurrent<cr>", {
-  category = "Buffers",
-  label = "󰽙 close other bufs",
-  desc = "󰽙 close all buffers except current",
+	category = "Buffers",
+	label = "󰽙 close other bufs",
+	desc = "󰽙 close all buffers except current",
 })
 
 -- map('n', '<S-Space>', '"_caw', { desc = '󱡔 change word' })
 -- map('n', '<S-Space>', '"_daw', { desc = '󱡔 delete word' })
 map("i", "<M-BS>", "<Esc>cvb", {
-  category = "Buffers",
-  desc = "󰽙 delete previous word",
-  silent = true,
+	category = "Buffers",
+	desc = "󰽙 delete previous word",
+	silent = true,
 })
 
 map("n", "<leader><space>", "<C-^>", {
-  category = "Buffers",
-  desc = "󰽙 switch to last buffer",
+	category = "Buffers",
+	desc = "󰽙 switch to last buffer",
 })
 
 map("n", "<leader>fn", [[:e <C-R>=expand("%:p:h") . "/" <CR>]], {
-  category = "Buffers",
-  label = "󰽙 new file in cwd",
-  desc = "󰽙 create new file in current directory",
+	category = "Buffers",
+	label = "󰽙 new file in cwd",
+	desc = "󰽙 create new file in current directory",
 })
 
 map("n", "<leader>fn", [[:vsp <C-R>=expand("%:p:h") . "/" <CR>]], {
-  category = "Buffers",
-  label = "󰽙 new file h-split",
-  desc = "󰽙 create new file in a horizontal split",
+	category = "Buffers",
+	label = "󰽙 new file h-split",
+	desc = "󰽙 create new file in a horizontal split",
 })
 
 map("n", "<leader>fp", "<cmd>echo expand('%:p')<CR>", {
-  category = "Buffers",
-  label = "󰽙 print path",
-  desc = "󰽙 print path of current buffer",
+	category = "Buffers",
+	label = "󰽙 print path",
+	desc = "󰽙 print path of current buffer",
 })
 
 map("n", "gf", "/\"\\|'<cr>hgF", {
-  silent = true,
-  category = "Buffers",
-  label = "󰽙 goto file",
-  desc = "󰽙 open file under cursor",
+	silent = true,
+	category = "Buffers",
+	label = "󰽙 goto file",
+	desc = "󰽙 open file under cursor",
 })
 
 vmap("n", "gF", {
-  silent = true,
-  category = "Buffers",
-  label = "󰽙 goto file:num",
-  desc = "󰽙 open file:num under cursor ",
+	silent = true,
+	category = "Buffers",
+	label = "󰽙 goto file:num",
+	desc = "󰽙 open file:num under cursor ",
 })
 
 map("n", "<leader>cd", "<cmd>cd %:h<cr>", {
-  category = "Buffers",
-  label = "󰽙 cd buffer",
-  desc = "󰽙 change current working directory to buffer directory",
+	category = "Buffers",
+	label = "󰽙 cd buffer",
+	desc = "󰽙 change current working directory to buffer directory",
 })
 
 --------------------------------------------------------------------------------
@@ -496,32 +506,36 @@ map("n", "<leader>cd", "<cmd>cd %:h<cr>", {
 
 -- save open time for each buffer
 vim.api.nvim_create_autocmd("BufReadPost", {
-  callback = function()
-    vim.b.timeOpened = os.time()
-  end,
+	callback = function() vim.b.timeOpened = os.time() end,
 })
 
-map("n", "<leader>ur", function()
-  vim.cmd("silent later " .. tostring(vim.opt.undolevels:get()))
-end, { desc = "漏redo all" })
+map(
+	"n",
+	"<leader>ur",
+	function() vim.cmd("silent later " .. tostring(vim.opt.undolevels:get())) end,
+	{ desc = "漏redo all" }
+)
 
 map("n", "<leader>uo", function()
-  local now = os.time()
-  local secsPassed = now - vim.b.timeOpened
-  vim.cmd.earlier(tostring(secsPassed) .. "s")
+	local now = os.time()
+	local secsPassed = now - vim.b.timeOpened
+	vim.cmd.earlier(tostring(secsPassed) .. "s")
 end, { desc = "漏undo since last open" })
 
-map({ "n", "x" }, "<leader>uc", function()
-  require("funcs.alt-alt").reopenBuffer()
-end, { desc = "漏 undo buffer closing" })
+map(
+	{ "n", "x" },
+	"<leader>uc",
+	function() require("funcs.alt-alt").reopenBuffer() end,
+	{ desc = "漏 undo buffer closing" }
+)
 
 map({ "n", "x" }, "<leader>ul", "<cmd>undolist<cr>", { desc = "漏 undo show list" })
 
 map(
-  { "i" },
-  "<C-r>",
-  '<cmd>silent! execute "normal <C-g>u<C-r><cr>"',
-  { desc = "漏 insert register without undo sequence", silent = true }
+	{ "i" },
+	"<C-r>",
+	'<cmd>silent! execute "normal <C-g>u<C-r><cr>"',
+	{ desc = "漏 insert register without undo sequence", silent = true }
 )
 
 

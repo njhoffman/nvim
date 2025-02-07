@@ -104,7 +104,20 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 --   end,
 -- })
 --
+
 -- close some filetypes with q or <esc>
+local quick_close = function(event)
+	-- vim.bo[event.buf].buflisted = false
+	vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+	vim.keymap.set("n", "<esc>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+end
+
+-- close some filetypes with q or ctrl-shift-esc
+local long_close = function(event)
+	vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+	vim.keymap.set("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+end
+
 local winclose_group = vim.api.nvim_create_augroup("WinClose_q", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
 	group = winclose_group,
@@ -113,18 +126,12 @@ vim.api.nvim_create_autocmd("FileType", {
 		"PlenaryTestPopup",
 		"lspinfo",
 		-- "man",
-		"nerdtree",
 		"noice",
 		"startuptime",
 	},
-	callback = function(event)
-		-- vim.bo[event.buf].buflisted = false
-		vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-		vim.keymap.set("n", "<esc>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-	end,
+	callback = quick_close,
 })
 
--- close some filetypes with q or shift-esc
 vim.api.nvim_create_autocmd("FileType", {
 	group = winclose_group,
 	pattern = {
@@ -140,23 +147,17 @@ vim.api.nvim_create_autocmd("FileType", {
 		"spectre_panel",
 		"tsplayground",
 	},
-	callback = function(event)
-		-- vim.bo[event.buf].buflisted = false
-		vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-		vim.keymap.set("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-	end,
+	callback = long_close,
 })
 
 -- close some buftypes with q or esc
-vim.api.nvim_create_autocmd({ "BufRead" }, {
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
 	group = winclose_group,
 	callback = function(event)
-		-- vim.bo[event.buf].buflisted = false
-		local buftype = vim.api.nvim_buf_get_option(event.buf, "buftype")
-		if buftype == "nofile" then
-			vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-			vim.keymap.set("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-		end
+		local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
+		local wintype = vim.fn.win_gettype(vim.fn.bufwinid(event.buf))
+		vim.dbglog(event, "\n", buftype, wintype)
+		if buftype == "nofile" and wintype == "popup" then quick_close(event) end
 	end,
 })
 
