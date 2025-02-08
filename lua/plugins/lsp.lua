@@ -107,8 +107,8 @@ local plugins = {
     },
     config = function()
       vim.import("lsp.capabilities")
-      vim.import("lsp.servers")
       vim.import("lsp.config")
+      vim.import("lsp.servers")
       vim.import("lsp.lines")
       vim.import("configs.definition-or-references")
     end,

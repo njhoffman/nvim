@@ -156,8 +156,8 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
 	callback = function(event)
 		local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
 		local wintype = vim.fn.win_gettype(vim.fn.bufwinid(event.buf))
-		vim.dbglog(event, "\n", buftype, wintype)
-		if buftype == "nofile" and wintype == "popup" then quick_close(event) end
+		-- vim.dbglog(event, "\n", buftype, wintype)
+		-- if buftype == "nofile" and wintype == "popup" then quick_close(event) end
 	end,
 })
 

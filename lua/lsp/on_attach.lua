@@ -1,5 +1,4 @@
 local capabilities = require("lsp.capabilities")
-local lsp_icons = require("lsp.icons")
 
 _G.jump = function()
 	---@diagnostic disable: undefined-global
@@ -36,20 +35,6 @@ end
 --     MiniAnimate.config.scroll.enable = cache_enable_scroll
 --   end
 -- end
-
-local icons = lsp_icons.get_icons("diagnostics")
-local define_sign = function(level)
-	local level_uc = string.upper(level[1]) .. string.sub(level, 2)
-	vim.fn.sign_define("DiagnosticSign" .. level_uc, {
-		text = icons[level],
-		texthl = "LspDiagnosticsSign" .. level_uc,
-		priority = 6,
-	})
-end
-
-for _, level in ipairs { "error", "warn", "info", "hint" } do
-	define_sign(level)
-end
 
 -- format.setup()
 

@@ -32,7 +32,7 @@ local get_all_modules = function()
     table.insert(results, path)
   end
   table.sort(results, function(a, b)
-    return a:upper() < b:upper()
+    return string.upper(a) < string.upper(b)
   end)
   return results
 end
@@ -53,11 +53,11 @@ end
 
 local get_mod_status = function(module)
   local details = {
-    status = 'unknown',
+    status = "unknown",
     imported = false,
     import_time = -1,
-    summary = '',
-    report = '',
+    summary = "",
+    report = "",
     message = {},
   }
 
@@ -65,32 +65,32 @@ local get_mod_status = function(module)
   local mod_fail = status.failures[module]
 
   if not mod_info then
-    details.summary = 'Missing import state: ' .. vim.inspect(module)
+    details.summary = "Missing import state: " .. vim.inspect(module)
     return details
   end
 
   if mod_fail then
-    details.status = 'failed'
+    details.status = "failed"
   else
-    details.status = 'success'
+    details.status = "success"
     details.imported = true
   end
 
-  if type(mod_info.import_message) == 'string' then
+  if type(mod_info.import_message) == "string" then
     details.stack = {}
-    for line, _ in mod_info.import_message:gmatch('([^\r\n]*)') do
+    for line, _ in mod_info.import_message:gmatch("([^\r\n]*)") do
       table.insert(details.message, line)
       table.insert(details.stack, line)
     end
   end
 
   local keymap = {
-    { 'import_time', 'import_time' },
-    { 'errors', 'error_logs' },
-    { 'logs', 'print_logs' },
-    { 'summary', 'summary' },
-    { 'report', 'report' },
-    { 'load_n', 'load_n' },
+    { "import_time", "import_time" },
+    { "errors", "error_logs" },
+    { "logs", "print_logs" },
+    { "summary", "summary" },
+    { "report", "report" },
+    { "load_n", "load_n" },
   }
 
   for _, v in pairs(keymap) do

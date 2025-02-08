@@ -1,0 +1,27 @@
+    # Define a custom command "move-pane-to-previous-window"
+    bind-key m run-shell "bash ~/.tmux-move-pane-to-prev-window.sh"
+    
+
+    #!/bin/bash
+
+    # Get the current pane ID
+    CURRENT_PANE=$(tmux display-message -p '#P')
+
+    # Get the ID of the previous window
+    PREVIOUS_WINDOW=$(tmux display-message -p '#{previous_window}')
+
+    # Count the number of panes in the previous window
+    NUM_PANES=$(tmux list-panes -t $PREVIOUS_WINDOW | wc -l)
+
+    if [ "$NUM_PANES" = "1" ]; then
+        # If only one pane in the previous window, join it
+        tmux join-pane -s $CURRENT_PANE -t $PREVIOUS_WINDOW
+    else
+        # Otherwise, swap with the last pane of that window
+        LAST_PANE_ID=$(tmux list-panes -t $PREVIOUS_WINDOW -F '#{pane_id}' | tail -n 1)
+        tmux swap-pane -s $CURRENT_PANE -t $LAST_PANE_ID
+    fi
+    
+
+    chmod +x ~/.tmux-move-pane-to-prev-window.sh
+    

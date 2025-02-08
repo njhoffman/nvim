@@ -1,389 +1,361 @@
 -- arguments = {},          -- {arg}
--- 	group_names = {},        -- $Group$
+-- 	highlight_groups = {},        -- $Group$
 -- 	inline_codes = {},       -- `code`
 -- 	keycodes = {},           -- <ESC>
--- 	mention_links = {},      -- |link|
+-- 	taglinks = {},      -- |link|
 -- 	modelines = {},          -- vim:
 -- 	notes = {},              -- Note:
--- 	option_links = {},       -- 'option'
--- 	tag_links = {},          -- <tag>
+-- 	optionlinks = {},       -- 'option'
+-- 	taglinks = {},          -- <tag>
 -- 	title = {}
+
 local cfg = {
-  -- hybrid_modes = { "n", "s", "v" },
-  modes = { "n", "s", "c", "x", "v", "V", "" },
-  option_links = {
-    padding_left = "",
-    padding_right = "",
-    -- icon = " ",
-    hl = "Optionlink", -- Highlight group
-    -- hl = "HelpviewOptionLink",
-    conceal_before = 1,
-    conceal_after = 1,
+  preview = {
+    -- hybrid_modes = { "n", "s", "v" },
+    modes = { "n", "s", "c", "x", "v", "V", "" },
   },
-  inline_codes = {
-    enable = true,
-    padding_left = "",
-    padding_right = "",
-    icon = "",
-    hl = "InlineCode",
-    conceal_before = 1,
-    conceal_after = 1,
-  },
-  keycodes = {
-    enable = true, -- For toggling this feature
-    hl = "Keycode", -- Highlight group
-    icon = "",
-    -- padding_left = "", -- Padding for the left side
-    -- padding_right = "  ", -- Padding for the right side
-    -- -- icon = " ", -- Icon to use 󰌌  
-    -- conceal_before = 1,
-    -- conceal_after = 1,
-    conceal_before = function(data)
-      if data.extracted then
-        return 1
-      else
-        return 0
-      end
-    end,
-    conceal_after = function(data)
-      if data.extracted then
-        return 1
-      else
-        return 0
-      end
-    end,
-  },
-  mention_links = {
-    enable = true, -- For toggling this feature
-    padding_left = "", -- Padding for the left side
-    padding_right = "", -- Padding for the right side
-    icon = " ", -- Icon to use
-    hl = "Mentionlink", -- Highlight group
-  },
-  arguments = {
-    -- icon = "󰂓 ",  󰅪  
-    icon = " ",
-    hl = "@variable.parameter.vimdoc",
-    conceal_before = 1,
-    conceal_after = 1,
-  },
-  code_blocks = {
-    enable = true,
-    hl = "HelpviewCode",
-    -- language_hl = "HelpviewCodeLanguage",
-    language_hl = "Comment",
-  },
-  headings = {
-    -- ● ○ ◆ ◇
-    heading_1 = { style = "simple", hl = "Heading1", marker = "═", sign = "◆" },
-    heading_2 = { style = "simple", hl = "Heading2", marker = "─", sign = "◇" },
-    heading_3 = { style = "simple", hl = "Heading3", sign = "" },
-    heading_4 = { style = "simple", hl = "Heading4", sign = "" },
-  },
-  notes = {
-    default = { padding_right = " ", icon = " ", hl = "@comment.note" },
-    warning = { padding_right = " ", icon = "   ", hl = "@comment.warning" },
-    deprecated = { padding_right = " ", icon = "  ", hl = "@comment.error" },
+  vimdoc = {
+    optionlinks = {
+      enable = true,
+      default = {
+        padding_left = "",
+        padding_right = "",
+        -- icon = " ",
+        hl = "Optionlink", -- Highlight group
+        -- hl = "HelpviewOptionLink",
+      },
+    },
+    inline_codes = {
+      enable = true,
+      padding_left = "",
+      padding_right = "",
+      icon = "",
+      hl = "InlineCode",
+    },
+    keycodes = {
+      enable = true, -- For toggling this feature
+      default = {
+        hl = "Keycode", -- Highlight group
+        icon = "",
+      },
+    },
+    arguments = {
+      enable = true,
+      default = {
+        icon = " ",
+        hl = "@variable.parameter.vimdoc",
+      },
+    },
+    taglinks = {
+      default = {
+        enable = true, -- For} toggling this feature
+        padding_left = "", -- Padding for the left side
+        padding_right = "", -- Padding for the right side
+        icon = " ", -- Icon to use
+        hl = "Mentionlink", -- Highlight group
+      },
+    },
+    code_blocks = {
+      enable = true,
+      -- border_hl = "Code",
+      default = {
+        block_hl = "HelpviewCode",
+        -- language_hl = "HelpviewCodeLanguage",
+        -- language_hl = "Comment",
+      },
+    },
+    headings = {
+      -- ● ○ ◆ ◇
+      heading_1 = { style = "simple", hl = "Heading1", marker = "═", sign = "◆" },
+      heading_2 = { style = "simple", hl = "Heading2", marker = "─", sign = "◇" },
+      heading_3 = { style = "simple", hl = "Heading3", sign = "" },
+      heading_4 = { style = "simple", hl = "Heading4", sign = "" },
+    },
+    notes = {
+      default = { padding_right = " ", icon = " ", hl = "@comment.note" },
+      warning = { padding_right = " ", icon = "   ", hl = "@comment.warning" },
+      deprecated = { padding_right = " ", icon = "  ", hl = "@comment.error" },
+    },
   },
 }
-require("helpview").setup(cfg)
 
--- stylua: ignore
-local default_cfg = {
-  -- buftypes to ignore
-  buf_ignore = {},
-  -- Modes where the plugin is enabled
-  modes = {},
-  -- Modes where "hybrid_mode" is used
-  hybrid_modes = {},
-  -- Functions to call on various events
-  callbacks = {
-    -- When plugin is enabled
-    on_enable = nil,
-    -- When plugin is disabled
-    on_disable = nil,
+require("helpview").setup()
 
-    -- When mode changes
-    on_mode_change = nil,
-  },
-  -- Rendering configuration
-  arguments = {
-    enable = true,            -- For toggling this feature
-    padding_left = "",        -- Padding for the left side
-    padding_right = "",       -- Padding for the right side
-    icon = "󰂖 ",              -- Icon to use
-    hl = "Argument",          -- Highlight group
-  },
-  code_blocks = {
-    enable = true,
-    hl = "Code",              -- Highlight group for the code block
-    language_hl = "CodeLang", -- Highlight group for the language name
+-- local deafult = {
+--   renderers = {},
+--   preview = {
+--     enable = true,
+--     enable_hybrid_mode = true,
 
-  },
-  group_names = {
-    enable = true,
-    padding_left = "",        -- Padding for the left side
-    padding_right = "",       -- Padding for the right side
-    icon = "󰏘 ",              -- Icon for the hl group name
-  },
-  headings = {
-    enable = true,
-    heading_1 = {},
-    heading_2 = {},
-    heading_3 = {},
-    heading_4 = {},
-    -- { hl = "H1", marker = "═", sign = " " }
-  },
-  horizontal_rules = {
-    enable = true,
-    parts = {},               -- parts can be either text or repeat
-    -- { type = "text", text = "  ", hl = "Title" }
-    -- { type = "simple", text = "•", repeat_amount = 10,
-    --   direction = "left", hl = { "Gradient1", "Gradient2" } }
-  },
-	inline_codes = {
-		enable = true,            -- For toggling this feature
-		padding_left = " ",       -- Padding for the left side
-		padding_right = " ",      -- Padding for the right side
-		icon = "",                -- Icon to use
-		hl = "InlineCode"         -- Highlight group
-	},
-  keycodes = {
-    enable = true,            -- For toggling this feature
-    padding_left = "",        -- Padding for the left side
-    padding_right = "",       -- Padding for the right side
-    icon = "󰌌 ",              -- Icon to use
-    hl = "Special",           -- Highlight group
-  },
-  mention_links = {
-    enable = true,            -- For toggling this feature
-    padding_left = "",        -- Padding for the left side
-    padding_right = "",       -- Padding for the right side
-    icon = " ",              -- Icon to use
-    hl = "Mentionlink",       -- Highlight group
-  },
-	modelines = {
-		enable = true,           -- For toggling this feature
-		style = "expanded",      -- Style of the modeline
-		icon = " ",             -- Icon to use for the selector
-		selector = ".vim",       -- Text to use as the selector
-	},
-	notes = {
-		enable = true,            -- For toggling this feature
-		-- Default configuration
-		default = {
-			padding_left = nil,
-			padding_right = " ",
-			icon = " ",
-			hl = "@comment.note"
-		},
-		-- You can also use the notes text as the key to change it's configuration
-		warning = {
-			padding_left = " ",
-			padding_right = " ",
-			icon = " ",
-			hl = "@comment.warn"
-		}
-	},
-  option_links = {
-		enable = true,            -- For toggling this feature
-		padding_left = " ",       -- Padding for the left side
-		padding_right = " ",      -- Padding for the right side
-		icon = " ",              -- Icon to use
-		hl = "Optionlink"         -- Highlight group
-  },
-	tag_links = {
-		enable = true,            -- For toggling this feature
-		padding_left = " ",       -- Padding for the left side
-		padding_right = " ",      -- Padding for the right side
-		icon = "",                -- Icon to use
-		hl = "Taglink"            -- Highlight group
-	},
-  title = {
-    style = "simple",
-    hl = "HelpviewTitle",
-  }
-}
+--     modes = { "n", "c", "no" },
+--     hybrid_modes = {},
+--     linewise_hybrid_mode = false,
 
--- 	arguments = {
--- 		icon = "󰂓 ",
--- 		hl = "@variable.parameter.vimdoc",
+--     filetypes = { "help" },
+--     ignore_previews = {},
+--     ignore_buftypes = {},
+--     condition = nil,
 
--- 		conceal_before = 1, conceal_after = 1
--- 	},
+--     max_buf_lines = 500,
+--     draw_range = { 2 * vim.o.lines, 2 * vim.o.lines },
+--     edit_range = { 0, 0 },
 
--- 	code_blocks = {
--- 		hl = "HelpviewCode",
--- 		language_hl = "HelpviewCodeLanguage"
--- 	},
+--     debounce = 150,
+--     callbacks = {},
 
--- 	group_names = {
--- 		enable = true,
+--     icon_provider = "internal",
 
--- 		icon = "󰏘 ",
--- 	},
+--     splitview_winopts = { split = "right" },
+--     preview_winopts = { width = math.floor(80) },
+--   },
+--   vimdoc = {
+--     arguments = {
+--       enable = true,
 
--- 	headings = {
--- 		heading_1 = {
--- 			style = "simple",
--- 			hl = "Heading1",
--- 			marker = "═",
+--       default = {
+--         hl = "Argument",
+--         padding_left = " ",
+--         padding_right = " ",
+--       },
+--     },
 
--- 			sign = " "
--- 		},
--- 		heading_2 = {
--- 			style = "simple",
--- 			hl = "Heading2",
--- 			marker = "─",
+--     code_blocks = {
+--       enable = true,
 
--- 			sign = " "
--- 		},
--- 		heading_3 = {
--- 			style = "simple",
--- 			hl = "Heading3",
+--       border_hl = "Code",
 
--- 			sign = " "
--- 		},
--- 		heading_4 = {
--- 			style = "simple",
--- 			hl = "Heading4",
+--       default = { block_hl = "HelpviewCode" },
 
--- 			sign = "󰓫 "
--- 		},
--- 	},
+--       ["diff"] = {
+--         block_hl = function(_, line)
+--           if line:match("^%s*%+") then
+--             return "HelpviewPalette4"
+--           elseif line:match("^%s*%-") then
+--             return "HelpviewPalette1"
+--           else
+--             return "HelpviewCode"
+--           end
+--         end,
+--       },
+--     },
 
--- 	horizontal_rules = {
--- 		parts = {
--- 			{
--- 				type = "repeating",
--- 				repeat_amount = function (buf_info)
--- 					return math.floor((buf_info.width - 3) / 2);
--- 				end,
+--     headings = {
+--       enable = true,
 
--- 				direction = "left",
--- 				hl = { "HelpviewGradient1", "HelpviewGradient2", "HelpviewGradient3", "HelpviewGradient4", "HelpviewGradient5", "HelpviewGradient6" }
--- 			},
--- 			{
--- 				type = "text",
--- 				text = "  ",
+--       heading_1 = {
+--         sign = " ⣾⣿⠛⣿⣷ ",
+--         sign_hl = "Palette1Inv",
 
--- 				hl = "HelpviewGradient10"
--- 			},
--- 			{ -- Nerd font characters have 1.5x the width of
--- 			  -- normal text. So we add this half character
--- 				type = "text",
--- 				text = "╶",
+--         marker_hl = "Palette1Bg",
 
--- 				hl = "HelpviewGradient6"
--- 			},
--- 			{
--- 				type = "repeating",
--- 				repeat_amount = function (buf_info)
--- 					return math.floor((buf_info.width - 3) / 2) - 1;
--- 				end,
+--         hl = "Palette1Fg",
+--       },
 
--- 				direction = "right",
--- 				hl = { "HelpviewGradient1", "HelpviewGradient2", "HelpviewGradient3", "HelpviewGradient4", "HelpviewGradient5", "HelpviewGradient6" }
--- 			},
--- 		}
--- 	},
+--       heading_2 = {
+--         sign = " ⣠⠞⠛⠳⣄ ",
+--         sign_hl = "Palette2Inv",
 
--- 	inline_codes = {
--- 		padding_left = " ",
--- 		padding_right = " ",
+--         marker_hl = "Palette2",
+--         hl = "Palette2Fg",
+--       },
 
--- 		hl = "HelpviewInlineCode"
--- 	},
+--       heading_3 = {
+--         sign = " ⣯⣤⠛⣤⣽ ",
+--         sign_hl = "Palette3Inv",
 
--- 	keycodes = {
--- 		icon = "󰌌 ",
--- 		hl = "Special",
+--         marker_hl = "Palette3",
+--         hl = "Palette3",
+--       },
 
--- 		conceal_before = function (data)
--- 			if data.extracted then
--- 				return 1;
--- 			else
--- 				return 0;
--- 			end
--- 		end,
--- 		conceal_after = function (data)
--- 			if data.extracted then
--- 				return 1;
--- 			else
--- 				return 0;
--- 			end
--- 		end,
--- 	},
+--       heading_4 = {
+--         sign = " ⠓⣠⣿⣄⠚ ",
+--         sign_hl = "Palette4Inv",
 
--- 	mention_links = {
--- 		icon = " ",
--- 		hl = "HelpviewMentionlink"
--- 	},
+--         marker_hl = "Palette4",
+--         hl = "Palette4",
+--       },
+--     },
 
--- 	modelines = {
--- 		style = "expanded",
+--     highlight_groups = {
+--       enable = true,
+--     },
+--     horizontal_rules = {
+--       parts = {
+--         {
+--           type = "repeating",
+--           repeat_amount = function(buffer)
+--             return math.ceil((vim.bo[buffer].tw - 3) / 2)
+--           end,
 
--- 		icon_hl = "DiagnosticOk",
--- 		selector_hl = "@property.class.css",
--- 		surround_hl = "@punctuation.bracket",
+--           text = "─",
+--           hl = {
+--             "HelpviewGradient1",
+--             "HelpviewGradient1",
+--             "HelpviewGradient2",
+--             "HelpviewGradient2",
+--             "HelpviewGradient3",
+--             "HelpviewGradient3",
+--             "HelpviewGradient4",
+--             "HelpviewGradient4",
+--             "HelpviewGradient5",
+--             "HelpviewGradient5",
+--             "HelpviewGradient6",
+--             "HelpviewGradient6",
+--             "HelpviewGradient7",
+--             "HelpviewGradient7",
+--             "HelpviewGradient8",
+--             "HelpviewGradient8",
+--             "HelpviewGradient8",
+--             "HelpviewGradient8",
+--           },
+--         },
+--         {
+--           type = "text",
+--           text = " ◈ ",
+--         },
+--         {
+--           type = "repeating",
+--           repeat_amount = function(buffer)
+--             return math.floor((vim.bo[buffer].tw - 3) / 2)
+--           end,
+--           direction = "right",
 
--- 		option_hl = "@property.css",
--- 	},
+--           text = "─",
+--           hl = {
+--             "HelpviewGradient1",
+--             "HelpviewGradient1",
+--             "HelpviewGradient2",
+--             "HelpviewGradient2",
+--             "HelpviewGradient3",
+--             "HelpviewGradient3",
+--             "HelpviewGradient4",
+--             "HelpviewGradient4",
+--             "HelpviewGradient5",
+--             "HelpviewGradient5",
+--             "HelpviewGradient6",
+--             "HelpviewGradient6",
+--             "HelpviewGradient7",
+--             "HelpviewGradient7",
+--             "HelpviewGradient8",
+--             "HelpviewGradient8",
+--             "HelpviewGradient8",
+--             "HelpviewGradient8",
+--           },
+--         },
+--       },
+--     },
 
--- 	notes = {
--- 		default = {
--- 			padding_right = " ",
--- 			icon = "   ", hl = "@comment.note"
--- 		},
+--     inline_codes = {
+--       enable = true,
 
--- 		warning = {
--- 			padding_right = " ",
--- 			icon = "   ", hl = "@comment.warning"
--- 		},
+--       hl = "Palette5",
 
--- 		deprecated = {
--- 			padding_right = " ",
--- 			icon = "  ", hl = "@comment.error"
--- 		}
--- 	},
+--       padding_left = " ",
+--       padding_right = " ",
+--     },
 
--- 	option_links = {
--- 		padding_left = " ",
--- 		padding_right = " ",
+--     keycodes = {
+--       enable = true,
 
--- 		icon = " ",
--- 		hl = "HelpviewOptionLink",
+--       default = {
+--         hl = "Keycode",
 
--- 		conceal_before = 1, conceal_after = 1
--- 	},
+--         padding_left = " ",
+--         padding_right = " ",
+--       },
+--     },
 
--- 	tag_links = {
--- 		padding_left = " ",
--- 		padding_right = " ",
+--     modelines = {
+--       enable = true,
 
--- 		hl = "HelpviewTaglink"
--- 	},
+--       border = "─",
+--       border_hl = "@text.todo.unchecked",
 
--- 	title = {
--- 		style = "simple",
--- 		hl = "HelpviewTitle",
--- 	}
--- };
--- 💻 Code blocks and Inline codes
---    HelpviewCode,                 background of code blocks. From Normal.
---    HelpviewCodeLanguage,         background for language names. From Comment.
--- 🔖 Headings
---    HelpviewHeading1,             from DiagnosticOk.
---    HelpviewHeading2,             from DiagnosticHint.
---    HelpviewHeading3,             from DiagnosticInfo.
---    HelpviewHeading4,             from Special.
--- 📏 Horizontal rules
---    HelpviewGradient1,            from Normal.
---    HelpviewGradient2,            from Tag
---      to HelpviewGradient10,      from Tag
--- 🤔 Others
---    HelpviewTaglink,              from Title.
---    HelpviewOptionlink,           from Tag.
---    HelpviewMentionlink,          from Title.
--- 📖 Title
---    HelpviewTitle,                from DiagnosticWarn.
+--       data_types = {
+--         ["nil"] = { value_hl = "@constant.builtin" },
+--         ["string"] = { value_hl = "String" },
+--         ["number"] = { value_hl = "Number" },
+--         ["boolean"] = { value_hl = "Boolean" },
+--       },
+
+--       default = {
+--         option_hl = "@property",
+--         value_hl = "Comment",
+--       },
+--     },
+
+--     notes = {
+--       enable = true,
+
+--       default = {
+--         hl = "Palette5Inv",
+--         padding_left = " ",
+--         padding_right = " ",
+--       },
+
+--       ["[dD]eprecated"] = {
+--         hl = "Palette1Inv",
+--       },
+
+--       ["[wW]arning"] = {
+--         hl = "Palette3Inv",
+--       },
+--     },
+
+--     optionlinks = {
+--       enable = true,
+
+--       default = {
+--         hl = "Optionlink",
+--         padding_left = " ",
+--         padding_right = " ",
+--       },
+--     },
+
+--     tags = {
+--       enable = true,
+
+--       default = {
+--         hl = "Tag",
+
+--         padding_left = " ",
+--         padding_right = " ",
+--       },
+
+--       ["%.txt$"] = {
+--         hl = "Palette3",
+--       },
+--     },
+
+--     taglinks = {
+--       enable = true,
+
+--       default = {
+--         hl = "Taglink",
+
+--         padding_left = " ",
+--         padding_right = " ",
+--       },
+--     },
+--     urls = {
+--       enable = true,
+
+--       default = {
+--         icon = "󰌷 ",
+--         hl = "@string.special.url.vimdoc",
+--       },
+
+--       ---+${lua, Github sites}
+
+--       ["github%.com/[%a%d%-%_%.]+%/?$"] = {
+--         --- github.com/<user>
+--         icon = " ",
+--         hl = "HelpviewPalette0Fg",
+
+--         text = function(_, item)
+--           return string.match(item.label, "github%.com/([%a%d%-%_%.]+)%/?$")
+--         end,
+--       },
+--     },
+--   },
+-- }
