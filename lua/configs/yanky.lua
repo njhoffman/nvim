@@ -1,90 +1,90 @@
 local default = {
-	ring = {
-		history_length = 100,
-		storage = "shada",
-		storage_path = vim.fn.stdpath("data") .. "/databases/yanky.db", -- Only for sqlite storage
-		sync_with_numbered_registers = true,
-		cancel_event = "update",
-		ignore_registers = { "_" },
-		update_register_on_cycle = false,
-	},
-	picker = {
-		select = {
-			action = nil, -- nil to use default put action
-		},
-		telescope = {
-			use_default_mappings = true, -- if default mappings should be used
-			mappings = nil, -- nil to use default mappings or no mappings (see `use_default_mappings`)
-		},
-	},
-	system_clipboard = {
-		sync_with_ring = true,
-	},
-	highlight = {
-		on_put = true,
-		on_yank = true,
-		timer = 500,
-	},
-	preserve_cursor_position = {
-		enabled = true,
-	},
-	textobj = {
-		enabled = true,
-	},
+  ring = {
+    history_length = 100,
+    storage = "shada",
+    storage_path = vim.fn.stdpath("data") .. "/databases/yanky.db", -- Only for sqlite storage
+    sync_with_numbered_registers = true,
+    cancel_event = "update",
+    ignore_registers = { "_" },
+    update_register_on_cycle = false,
+  },
+  picker = {
+    select = {
+      action = nil, -- nil to use default put action
+    },
+    telescope = {
+      use_default_mappings = true, -- if default mappings should be used
+      mappings = nil, -- nil to use default mappings or no mappings (see `use_default_mappings`)
+    },
+  },
+  system_clipboard = {
+    sync_with_ring = true,
+  },
+  highlight = {
+    on_put = true,
+    on_yank = true,
+    timer = 500,
+  },
+  preserve_cursor_position = {
+    enabled = true,
+  },
+  textobj = {
+    enabled = true,
+  },
 }
 -- textobj = {
 --   enabled = true,
 -- },
 
 local cfg = {
-	ring = {
-		history_length = 100,
-		storage = "shada", -- shada, sqlite, memory
-		storage_path = vim.fn.stdpath("data") .. "/databases/yanky.sqlite3", -- Only for sqlite storage
-		sync_with_numbered_registers = true,
-		cancel_event = "update",
-		ignore_registers = { "_" },
-		update_register_on_cycle = false,
-	},
-	-- tiny-glimmer handles highlights
-	highlight = {
-		on_put = false,
-		on_yank = false,
-		timer = 200,
-	},
-	system_clipboard = {
-		sync_with_ring = true,
-	},
-	textobj = {
-		enabled = true,
-	},
-	preserve_cursor_position = {
-		enabled = true,
-	},
-	-- picker = {
-	--   -- select = {
-	--   -- 	action = require("yanky.picker").actions.put("p"),
-	--   -- },
-	--   telescope = {
-	--     mappings = {
-	--       default = mapping.put('p'),
-	--       i = {
-	--         ['<c-p>'] = mapping.put('p'),
-	--         ['<c-k>'] = mapping.put('P'),
-	--         ['<c-x>'] = mapping.delete(),
-	--         ['<c-r>'] = mapping.set_register(utils.get_default_register()),
-	--       },
-	--       n = {
-	--         p = mapping.put('p'),
-	--         P = mapping.put('P'),
-	--         gp = mapping.put('gp'),
-	--         gP = mapping.put('gP'),
-	--         d = mapping.delete(),
-	--         r = mapping.set_register(utils.get_default_register()),
-	--       },
-	--     },
-	--   },
-	-- },
+  ring = {
+    history_length = 100,
+    storage = "shada", -- shada, sqlite, memory
+    storage_path = vim.fn.stdpath("data") .. "/databases/yanky.sqlite3", -- Only for sqlite storage
+    sync_with_numbered_registers = true,
+    cancel_event = "update",
+    ignore_registers = { "_" },
+    update_register_on_cycle = false,
+  },
+  -- tiny-glimmer handles highlights
+  highlight = {
+    on_put = false,
+    on_yank = false,
+    timer = 200,
+  },
+  system_clipboard = {
+    sync_with_ring = true,
+  },
+  textobj = {
+    enabled = true,
+  },
+  preserve_cursor_position = {
+    enabled = true,
+  },
+  -- picker = {
+  --   -- select = {
+  --   -- 	action = require("yanky.picker").actions.put("p"),
+  --   -- },
+  --   telescope = {
+  --     mappings = {
+  --       default = mapping.put('p'),
+  --       i = {
+  --         ['<c-p>'] = mapping.put('p'),
+  --         ['<c-k>'] = mapping.put('P'),
+  --         ['<c-x>'] = mapping.delete(),
+  --         ['<c-r>'] = mapping.set_register(utils.get_default_register()),
+  --       },
+  --       n = {
+  --         p = mapping.put('p'),
+  --         P = mapping.put('P'),
+  --         gp = mapping.put('gp'),
+  --         gP = mapping.put('gP'),
+  --         d = mapping.delete(),
+  --         r = mapping.set_register(utils.get_default_register()),
+  --       },
+  --     },
+  --   },
+  -- },
 }
 
 local yanky = require("yanky")
@@ -117,9 +117,13 @@ local map = require("mapper").map
 ---@param rhs string|function
 ---@param opts? { unique: boolean, desc: string, buffer: boolean, nowait: boolean, remap: boolean }
 function uniqueKeymap(modes, lhs, rhs, opts)
-	if not opts then opts = {} end
-	if opts.unique == nil then opts.unique = true end
-	vim.keymap.set(modes, lhs, rhs, opts)
+  if not opts then
+    opts = {}
+  end
+  if opts.unique == nil then
+    opts.unique = true
+  end
+  vim.keymap.set(modes, lhs, rhs, opts)
 end
 
 local keymap = uniqueKeymap
@@ -131,8 +135,10 @@ keymap("n", "C", '"_C', { nowait = true })
 
 -- do not clutter the register if blank line is deleted
 keymap("n", "dd", function()
-	if vim.api.nvim_get_current_line():find("^%s*$") then return '"_dd' end
-	return "dd"
+  if vim.api.nvim_get_current_line():find("^%s*$") then
+    return '"_dd'
+  end
+  return "dd"
 end, { expr = true, nowait = true })
 
 --  TODO: gcp/gcP/gbp/gbP new line with indent, gc< and gb< inline
@@ -175,9 +181,6 @@ map("n", "<P", "<Plug>(YankyPutBeforeCharwise)",         { desc = '  paste be
 map("n", ">P", "<Plug>(YankyPutAfterCharwise)",          { desc = '  paste after (charwise)' })
 --   require("yanky.picker").actions.put("gp") -- put after cursor and leave the cursor after
 --   require("yanky.picker").actions.put("gP") -- put before cursor and leave the cursor after
-map('n', 'gcp', '<cmd>norm p`[V`]gc`[<cr>',              { category = 'Motion',   desc = '  paste as a comment' })
-map('n', 'gcP', '<cmd>norm p`[v`]gc`[<cr>',              { category = 'Motion',   desc = '  paste as a comment' })
-map('n', '<leader>pc', '<cmd>normal p`[v`]gc<cr>',       { category = 'Motion',  desc = '  paste as a comment' })
 map('n', '<leader>pp', '"*p',                            { category = 'Motion',  desc = '  paste primary (*) clipboard register' })
 map('n', '<leader>pm', '<cmd>set invpaste<cr>',          { category = 'Motion',  desc = '  toggle paste mode' })
 map("i", "<M-p>", function()

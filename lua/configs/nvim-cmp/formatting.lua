@@ -144,6 +144,7 @@ end
 -- end,
 
 return {
+  expandable_indicator = true,
   fields = { "menu", "abbr", "kind" },
   format = format,
 }

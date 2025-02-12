@@ -1,7 +1,8 @@
 local cmp = require("cmp")
+local types = require("cmp.types")
 
 local debug_flag = false
-local MAX_DOCUMENT_WIDTH = 60
+local WIDE_HEIGHT = 60
 local WIN_HIGHLIGHT =
   "Normal:CmpNormal,FloatBorder:CmpFloatBorder,CursorLine:CmpCursorLine,Search:None"
 -- winhighlight = table.concat({
@@ -65,32 +66,30 @@ local is_enabled = function()
       and is_not_buftype()
       and is_not_filetype()
       and is_not_luasnip()
+      and vim.fn.reg_recording() == ""
+      and vim.fn.reg_executing() == ""
       and not disabled[cmd]
     or cmp.close()
 end
 
 local cfg = {
+  preselect = types.cmp.PreselectMode.None,
+  -- preselect = types.cmp.PreselectMode.Item,
   autocomplete = {
-    cmp.TriggerEvent.InsertEnter,
+    -- cmp.TriggerEvent.TextChanged,
     cmp.TriggerEvent.TextChanged,
+    cmp.TriggerEvent.InsertEnter,
   },
   enabled = is_enabled,
   --stylua: ignore start
-  --   parse_delay = 1,
-  --   slow_parse_delay = 50,
-  --   max_iterations = 400,
-  --   max_concurrent_partial_parses = 30,
-  --   debounce = {
-  --   partial_parse = 3,
-  --   partial_insert_mode = 100,
-  --   total_parse = 700,
   performance = {
     debounce                = 60, --60  This is the interval used to group up completions from different sources for filtering and displaying.
     throttle                = 30, --30 This is used to delay filtering and displaying completions.
-    max_view_entries        = 400,
-    fetching_timeout        = 500,
-    async_budget            = 1,
+    filtering_context_budget = 3,
     confirm_resolve_timeout = 80,
+    max_view_entries        = 400,
+    async_budget            = 1,
+    fetching_timeout        = 500,
     trigger_debounce        = 300,
   },
   matching = {
@@ -99,11 +98,14 @@ local cfg = {
     -- disallow_partial_fuzzy_matching = true,
     -- disallow_partial_matching = false,
     -- disallow_prefix_unmatching = false,
+    -- disallow_symbol_nonprefix_matching = true,
   },
   completion = {
-    keyword_length = 1,
+    keyword_length = 0,
+    -- keyword_length = 1,
     -- keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
-    completeopt = "menuone,noselect,preview", -- menu, menuone,noselect
+    completeopt = 'menu,menuone,noinsert,noselect',
+    -- completeopt = "menuone,noselect,preview", -- menu, menuone,noselect
     -- completeopt = 'menuone,preview,noselect,noinsert',
   },
   snippet = {
@@ -112,22 +114,19 @@ local cfg = {
     end,
   },
   sorting = sorting,
-  -- experimental = {
-  --   ghost_text = {
-  --     hl_group = 'CmpGhostText',
-  --   },
-  -- },
+  -- experimental = { ghost_text = { hl_group = 'CmpGhostText', }, },
   formatting = formatting,
   window = {
-    max_width = MAX_DOCUMENT_WIDTH,
-    col_offset = -3,
-    side_padding = 0,
     completion = cmp.config.window.bordered({
       winhighlight = WIN_HIGHLIGHT,
       scrollbar = true,
       winblend = 10,
+      col_offset = -3,
+      side_padding = 0,
     }),
     documentation = cmp.config.window.bordered({
+      max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
+        max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
       winhighlight = WIN_HIGHLIGHT,
       scrollbar = true,
       winblend = 10,
@@ -137,21 +136,17 @@ local cfg = {
   sources = cmp.config.sources(sources.main[1], sources.main[2]),
   view = {
     entries = {
-      -- name = 'custom',
+      name = 'custom',
       selection_order = "near_cursor",
       vertical_positioning = "auto", -- above, below, auto
-      follow_cursor = true,
+      follow_cursor = false,
     },
     docs = {
       auto_open = true,
     },
   },
-  confirm_opts = {
-    behavior = cmp.ConfirmBehavior.Replace,
-    select = false,
-  },
   confirmation = {
-    default_behavior = cmp.ConfirmBehavior.Insert,
+    default_behavior = types.cmp.ConfirmBehavior.Insert,
     get_commit_characters = function(commit_characters)
       return commit_characters
     end,
@@ -174,6 +169,29 @@ local cfg = {
 -- vim.tbl_deep_extend('force', debug, { log = log })
 
 cmp.setup(cfg)
+
+cmp.setup.cmdline(":", {
+  -- matching = { disallow_symbol_nonprefix_matching = false },
+  mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
+  sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
+  enabled = function()
+    -- Set of commands where cmp will be disabled
+    local disabled = { IncRename = true }
+    -- Get first word of cmdline
+    local cmd = vim.fn.getcmdline():match("%S+")
+    -- Return true if cmd isn't disabled
+    -- else call/return cmp.close(), which returns false
+    return not disabled[cmd] or cmp.close()
+  end,
+})
+
+cmp.setup.cmdline({ "/", "?" }, {
+  -- matching = { disallow_symbol_nonprefix_matching = false },
+  -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
+  enabled = true,
+  mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
+  sources = cmp.config.sources(sources.cmdsearch),
+})
 -- cmp.setup.filetype('gitcommit', { sources = cmp.config.sources(sources.gitcommit) })
 -- local defaultPlusZsh = vim.deepcopy(sources.main)
 -- table.insert(defaultPlusZsh, { name = 'zsh' })
@@ -221,31 +239,6 @@ cmp.setup.filetype("lua", {
 --     },
 --   },
 -- })
-
-cmp.setup.cmdline({ "/", "?" }, {
-  -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
-  enabled = true,
-  mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
-  sources = cmp.config.sources(sources.cmdsearch),
-  matching = { disallow_symbol_nonprefix_matching = false },
-})
-
-cmp.setup.cmdline(":", {
-  matching = { disallow_symbol_nonprefix_matching = false },
-  mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
-  sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
-  enabled = function()
-    -- Set of commands where cmp will be disabled
-    local disabled = {
-      IncRename = true,
-    }
-    -- Get first word of cmdline
-    local cmd = vim.fn.getcmdline():match("%S+")
-    -- Return true if cmd isn't disabled
-    -- else call/return cmp.close(), which returns false
-    return not disabled[cmd] or cmp.close()
-  end,
-})
 
 local function toggle_autocomplete()
   local current_setting = cmp.get_config().completion.autocomplete

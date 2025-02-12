@@ -26,7 +26,7 @@ local plugins = {
       },
       "SmiteshP/nvim-navic",
       "aznhe21/actions-preview.nvim",
-      "RRethy/vim-illuminate",
+      -- "RRethy/vim-illuminate",
       {
         "artemave/workspace-diagnostics.nvim",
         enabled = false,
@@ -61,7 +61,7 @@ local plugins = {
           },
         },
       },
-      "KostkaBrukowa/definition-or-references.nvim",
+      -- "KostkaBrukowa/definition-or-references.nvim",
       "nanotee/sqls.nvim",
       "tami5/lspsaga.nvim",
       { "Exafunction/codeium.nvim", event = "BufEnter" },

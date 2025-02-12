@@ -9,8 +9,7 @@ local silence_start = function()
     -- { filetype = "markdown", icon = "", id = 3, level = "INFO", message = { "Live commands", "   ➜ `Norm <keys>`", "   ➜ `5Reg a`", "   ➜ `G/^$/d`", "   ➜ `%Spattern/replace`" }, render = <function 3>, time = 1707851316, title = { "format", "13:08:36" } }
   }
 
-  local noice_count =
-require("notify").dismiss({ silent = true, pending = true })
+  local noice_count = require("notify").dismiss({ silent = true, pending = true })
   vim.notify(
     "Messages and lsp silenced - "
       .. "pending: "
@@ -79,6 +78,10 @@ local setup = function()
     silence_stop,
     { desc = "Undo silence command redirects and options" }
   )
+
+  vim.keymap.set("c", "<M-C-C>", function()
+    silence_start()
+  end, { desc = "fork cmdline output to popup view" })
 
   vim.keymap.set("c", "<S-Enter>", function()
     redirect_cmd()

@@ -1,4 +1,4 @@
-local hsl = require('lush').hsl
+local hsl = require("lush").hsl
 
 ---@diagnostic disable undefined-global
 --luacheck: ignore
@@ -6,101 +6,101 @@ local hsl = require('lush').hsl
 local tokyoColors = {}
 
 tokyoColors = {
-  none = 'NONE',
-  bg_dark = '#1c1f24',
-  bg = '#24283b',
-  bg_highlight = '#292e42',
-  terminal_black = '#414868',
-  fg = '#c0caf5',
-  fg_dark = '#a9b1d6',
-  fg_gutter = '#3b4261',
-  dark3 = '#545c7e',
-  comment = '#565f89',
-  dark5 = '#737aa2',
-  blue0 = '#3d59a1',
-  blue = '#7aa2f7',
-  cyan = '#7dcfff',
-  blue1 = '#2ac3de',
-  blue2 = '#0db9d7',
-  blue5 = '#89ddff',
-  blue6 = '#B4F9F8',
-  blue7 = '#394b70',
-  magenta = '#bb9af7',
-  magenta2 = '#ff007c',
-  purple = '#9d7cd8',
-  orange = '#ff9e64',
-  yellow = '#e0af68',
-  green = '#9ece6a',
-  green1 = '#73daca',
-  green2 = '#41a6b5',
-  teal = '#1abc9c',
-  red = '#f7768e',
-  red1 = '#db4b4b',
-  git = { change = '#6183bb', add = '#449dab', delete = '#914c54', conflict = '#bb7a61' },
-  gitSigns = { add = '#164846', change = '#394b70', delete = '#823c41' },
+  none = "NONE",
+  bg_dark = "#1c1f24",
+  bg = "#24283b",
+  bg_highlight = "#292e42",
+  terminal_black = "#414868",
+  fg = "#c0caf5",
+  fg_dark = "#a9b1d6",
+  fg_gutter = "#3b4261",
+  dark3 = "#545c7e",
+  comment = "#565f89",
+  dark5 = "#737aa2",
+  blue0 = "#3d59a1",
+  blue = "#7aa2f7",
+  cyan = "#7dcfff",
+  blue1 = "#2ac3de",
+  blue2 = "#0db9d7",
+  blue5 = "#89ddff",
+  blue6 = "#B4F9F8",
+  blue7 = "#394b70",
+  magenta = "#bb9af7",
+  magenta2 = "#ff007c",
+  purple = "#9d7cd8",
+  orange = "#ff9e64",
+  yellow = "#e0af68",
+  green = "#9ece6a",
+  green1 = "#73daca",
+  green2 = "#41a6b5",
+  teal = "#1abc9c",
+  red = "#f7768e",
+  red1 = "#db4b4b",
+  git = { change = "#6183bb", add = "#449dab", delete = "#914c54", conflict = "#bb7a61" },
+  gitSigns = { add = "#164846", change = "#394b70", delete = "#823c41" },
 }
 
 return function()
   local colors = {
-    fg = '#C8D0E0',
-    fg_light = '#E5E9F0',
-    bg_dark = '#1c1f24',
-    bg = '#2E3440',
-    gray = '#646A76',
-    light_gray = '#6C7A96',
-    cyan = '#88C0D0',
-    blue = '#81A1C1',
-    dark_blue = '#5E81AC',
-    green = '#A3BE8C',
-    light_green = '#8FBCBB',
-    dark_red = '#BF616A',
-    red = '#D57780',
-    light_red = '#DE878F',
-    pink = '#E85B7A',
-    dark_pink = '#E44675',
-    orange = '#D08F70',
-    yellow = '#EBCB8B',
-    purple = '#B988B0',
-    light_purple = '#B48EAD',
-    none = 'NONE',
-    highlight = hsl('#101c39'),
+    fg = "#C8D0E0",
+    fg_light = "#E5E9F0",
+    bg_dark = "#1c1f24",
+    bg = "#2E3440",
+    gray = "#646A76",
+    light_gray = "#6C7A96",
+    cyan = "#88C0D0",
+    blue = "#81A1C1",
+    dark_blue = "#5E81AC",
+    green = "#A3BE8C",
+    light_green = "#8FBCBB",
+    dark_red = "#BF616A",
+    red = "#D57780",
+    light_red = "#DE878F",
+    pink = "#E85B7A",
+    dark_pink = "#E44675",
+    orange = "#D08F70",
+    yellow = "#EBCB8B",
+    purple = "#B988B0",
+    light_purple = "#B48EAD",
+    none = "NONE",
+    highlight = hsl("#101c39"),
   }
 
   local clr_over = {
     -- select ion = "#2F3243",
     -- -selection = "#0f2a56",
-    selection = '#122244',
-    orange = '#cc8877',
-    yellow = '#bdb994',
-    yellow_faded = '#7B6B3B',
-    purple_faded = '#6A6CAB',
-    red_faded = '#7F212A',
-    green_faded = '#128A67',
-    blue_faded = '#5171A1',
+    selection = "#122244",
+    orange = "#cc8877",
+    yellow = "#bdb994",
+    yellow_faded = "#7B6B3B",
+    purple_faded = "#6A6CAB",
+    red_faded = "#7F212A",
+    green_faded = "#128A67",
+    blue_faded = "#5171A1",
   }
   return {
 
     -- +--- DAP ---+
-    DAPLogPointSign({ fg = '#00f1f5' }),
-    DAPBreakpointSign({ fg = '#4790ff' }),
-    DAPStopSign({ fg = '#07ffc0' }),
-    DAPStopSignText({ bg = '#280000' }),
-    DapUIScope({ fg = '#00F1F5' }),
-    DapUIType({ fg = '#74b4cF' }),
-    DapUIDecoration({ fg = '#00F1F5' }),
-    DapUIThread({ fg = '#A9FF68' }),
-    DapUIStoppedThread({ fg = '#00f1f5' }),
-    DapUISource({ fg = '#8484FF' }),
-    DapUILineNumber({ fg = '#00f1f5' }),
-    DapUIFloatBorder({ fg = '#00F1F5' }),
-    DapUIWatchesHeader({ fg = '#00F1F5' }),
-    DapUIWatchesEmpty({ fg = '#F70067' }),
-    DapUIWatchesValue({ fg = '#A9FF68' }),
-    DapUIWatchesError({ fg = '#F70067' }),
-    DapUIBreakpointsPath({ fg = '#00F1F5' }),
-    DapUIBreakpointsInfo({ fg = '#A9FF68' }),
-    DapUIBreakpointsCurrentLine({ fg = '#A9FF68', gui = 'bold' }),
-    DapUIVariable({ fg = '#6484cF' }),
+    DAPLogPointSign({ fg = "#00f1f5" }),
+    DAPBreakpointSign({ fg = "#4790ff" }),
+    DAPStopSign({ fg = "#07ffc0" }),
+    DAPStopSignText({ bg = "#280000" }),
+    DapUIScope({ fg = "#00F1F5" }),
+    DapUIType({ fg = "#74b4cF" }),
+    DapUIDecoration({ fg = "#00F1F5" }),
+    DapUIThread({ fg = "#A9FF68" }),
+    DapUIStoppedThread({ fg = "#00f1f5" }),
+    DapUISource({ fg = "#8484FF" }),
+    DapUILineNumber({ fg = "#00f1f5" }),
+    DapUIFloatBorder({ fg = "#00F1F5" }),
+    DapUIWatchesHeader({ fg = "#00F1F5" }),
+    DapUIWatchesEmpty({ fg = "#F70067" }),
+    DapUIWatchesValue({ fg = "#A9FF68" }),
+    DapUIWatchesError({ fg = "#F70067" }),
+    DapUIBreakpointsPath({ fg = "#00F1F5" }),
+    DapUIBreakpointsInfo({ fg = "#A9FF68" }),
+    DapUIBreakpointsCurrentLine({ fg = "#A9FF68", gui = "bold" }),
+    DapUIVariable({ fg = "#6484cF" }),
     -- DapUIFrameName { Normal },
     -- DapUIBreakpointsLive { DapUILineNumber },
     -- DapVariableTreeType { Comment },
@@ -109,8 +109,8 @@ return function()
     -- DapVariableTreeNumber { Number },
 
     -- +--- PackageInfo ---+
-    PackageInfoOutdatedVersion({ fg = '#d19a66' }),
-    PackageInfoUpToDateVersion({ fg = '#3C4048' }),
+    PackageInfoOutdatedVersion({ fg = "#d19a66" }),
+    PackageInfoUpToDateVersion({ fg = "#3C4048" }),
 
     -- Folding Highlights
     -- UfoPreviewSbar({ PmenuSbar }),
@@ -148,7 +148,7 @@ return function()
     -- NotifyTRACETitle = { fg = colors.hint },
 
     -- -- NeoTree
-    NeoTreeIndentMarker({ fg = '#222222' }),
+    NeoTreeIndentMarker({ fg = "#222222" }),
     -- -- Trouble
     -- TroubleCount = { fg = colors.purple },
     -- TroubleNormal = { fg = colors.fg },
@@ -216,7 +216,7 @@ return function()
     -- BufferLineIndicatorSelected = { fg = colors.yellow },
     -- BufferLineFill = { bg = colors.bg },
 
-    TabLineFill({ fg = 'NONE', bg = colors.bg_dark }),
+    TabLineFill({ fg = "NONE", bg = colors.bg_dark }),
     TabLine({ fg = colors.bg, bg = colors.bg_dark }),
     TabLineSel({ fg = colors.bg, bg = colors.bg_dark }),
     -- Illuminate
@@ -238,6 +238,69 @@ return function()
 
     -- -- Fern
     -- FernBranchText = { fg = colors.blue },
+
+    -- WFComment({ fg = "#2aa1ae"}),
+    -- WFWhichRem({ fg = "#2aa1ae"}),
+    -- WFFreeze({ fg = "#2aa1ae"}),
+    -- WFSeparator({ fg = "#2aa1ae"}),
+    -- WFTitleOutput({ fg = "#67b11d"}),
+    -- WFTitleWhich({ fg = "#67b11d"}),
+    -- WFTitleFuzzy({ fg = "#67b11d"}),
+    -- WFNormal({ fg = "#4583a0"}),
+    -- WFWhichDesc({fg = "#4583a0" }),
+    -- WFFocus({fg = "#4583a0"}),
+    -- WFWhichUnique({fg = "#ce537a"}),
+    -- WFExpandable({fg = "#ce537a"}),
+    -- WFFloatBorder({fg = "#2d9574"}),
+    -- WFFloatBorderFocus({fg = "#2d9574"}),
+    -- WFTitleFreeze({fg = "#2aa1ae"}),
+    -- WFWhichOn({fg = "#4f97d7"}),
+    -- WFFuzzy({fg = "#bc6ec5"}),
+    -- WFGroup({fg = "#bc6ec5"}),
+    -- WFWhichObjCounter({fg = "#44505c"}),
+    -- WFFuzzyPrompt({fg = "#f2241f"}),
+
+    --  WFNormal({Normal}),
+    --  WFFloatBorder({FloatBorder}),
+    --  WFFloatBorderFocus({FloatBorder}),
+    --  WFComment({Comment}),
+    --  WFWhichRem({Comment}),
+    --  WFWhichOn({Keyword}),
+    --  WFFuzzy({String}),
+    --  WFFuzzyPrompt({Error}),
+    --  WFFocus({WFNormal}),
+    --  WFFreeze({Comment}),
+    --  WFWhichObjCounter({NonText}),
+    --  WFWhichDesc({Normal}),
+    --  WFSeparator({Comment}),
+    --  WFGroup({Function}),
+    --  WFWhichUnique({Type}),
+    --  WFExpandable({Type}),
+    --  WFTitleOutput({Title}),
+    --  WFTitleWhich({Title}),
+    --  WFTitleFuzzy({Title}),
+    --  WFTitleFreeze({WFFreeze}),
+
+    -- betterlua
+    -- set g:lua_subversion to change the highlighting of the standard library
+    -- set g:BetterLua_enable_emmylua to 0 to turn off EmmyLua comment highlighting
+    -- luaAttrib
+    -- luaFuncCall
+    -- luaEmmyKeyword The @ directives like @param, @type
+    -- luaEmmyClassName
+    -- luaEmmyAliasName
+    -- luaEmmyParamName
+    -- luaEmmyFieldName
+    -- luaEmmyFieldExposure: public, protected, or private after a @field directive
+    -- luaEmmyGenericName
+    -- luaEmmyGenericParentName
+    -- luaEmmyFieldName
+    -- luaEmmyLang
+    -- luaEmmyType:  Type names the string in @param foo string or @type string for var annotations
+    -- luaSelf - Self, while not a keyword, has a highlight group
+    -- luaSymbol - Operator symbols are now highlighted
+    -- Varargs has a separate highlight group to not get highlighted as a partial concatenation operator
+    -- luaVarargs
 
     -- -- Lightspeed
     -- LightspeedLabel = { fg = colors.pink, gui = "bold,underline" },

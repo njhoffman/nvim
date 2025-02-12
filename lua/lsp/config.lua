@@ -1,28 +1,29 @@
 require("lsp.float-diag")
 
 local opts = {
-  virtual_text = false,
-  underline = false,
   signs_priority = 6,
   inlay_hints = false,
+  underline = false,
+  virtual_text = false,
 }
 
 local diag_defaults = {
-  virtual_text = true,
-  underline = true,
-  signs = true,
-  update_in_insert = false,
   severity_sort = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
   virtual_lines = false,
+  virtual_text = true,
 }
 
-local is_legacy = not vim.fn.has("nvim-0.10.0")
-
-local diag_cfg = {}
-
+local diag_cfg = vim.deepcopy(diag_defaults)
 for _, key in ipairs(vim.tbl_keys(diag_defaults)) do
-  diag_cfg[key] = opts[key] or diag_defaults[key]
+  if opts[key] ~= nil then
+    diag_cfg[key] = opts[key]
+  end
 end
+
+local is_legacy = not vim.fn.has("nvim-0.10.0")
 
 -- underline = { severity = { min = vim.diagnostic.severity.ERROR } },
 -- virtual_lines = false, -- { only_current_line = true, highlight_whole_line = false },
@@ -94,7 +95,6 @@ end
 --   end)
 -- end
 
-vim.dbglog(diag_cfg)
 vim.diagnostic.config(diag_cfg)
 
 -- Show line diagnostics in floating popup on hover, except insert mode (CursorHoldI)

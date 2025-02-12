@@ -18,7 +18,7 @@ local process_list = function(list, pos_idx, unique)
     item.idx = i
     if not unique or vim.list_contains(hashes, hash) then
       if i == (#list - pos_idx) then
-        new_idx = #new_list
+        new_idx = #new_list + 1
         hash_id = hash_id + i
         item.curr = true
       end
@@ -26,6 +26,7 @@ local process_list = function(list, pos_idx, unique)
       table.insert(hashes, hash)
     end
   end
+  -- vim.dbglog("ret", new_idx, pos_idx)
   return new_list, new_idx, hash_id
 end
 
@@ -48,7 +49,7 @@ local build_highlight_table = function(rows, opts)
   opts.padding = opts.padding or 2
   if opts.headers then
     local header_row = {}
-    for i, header in ipairs(opts.headers) do
+    for _, header in ipairs(opts.headers) do
       table.insert(header_row, { header, "Title" })
     end
     table.insert(rows, 1, header_row)

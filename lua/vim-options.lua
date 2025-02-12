@@ -104,6 +104,34 @@ opt("wildignore", "*.o,*~,*.pyc") -- wildchar	   /charm for wildmenu  0x1a ^Z, 0
 opt("wildmode", "longest:full,full")
 -- opt('winminwidth', 1) -- vimade errors when this is larger
 opt("writebackup", true)
+
+-- opt("diffopt", "internal,filler,closeoff,linematch:60")
+opt("diffopt", "internal,filler,closeoff,linematch:60,algorithm:histogram,context:5")
+-- opt("diffopt", "internal,filler,closeoff,linematch:60,algorithm:histogram,indent-heuristic")
+-- filler           Show filler lines, to keep the text synchronized with a window that has inserted lines at the same position. Mostly useful when windows are side-by-side and 'scrollbind' is set.
+-- context:{n}      Use a context of {n} lines between a change and a fold that contains unchanged lines.
+-- iblank           Ignore changes where lines are all blank. Adds the "-B" flag to the "diff" command if 'diffexpr' is empty.
+-- icase            Ignore changes in case of text. "a" and "A" are considered the same. Adds the "-i" flag to the "diff" command if 'diffexpr' is empty.
+-- iwhite           Ignore changes in amount of white space. Adds the "-b" flag to the "diff" command if 'diffexpr' is empty
+-- iwhiteall        Ignore all white space changes. Adds the "-w" flag to the "diff" command if 'diffexpr' is empty
+-- iwhiteeol        Ignore white space changes at end of line. Adds the "-Z" flag to the "diff" command if 'diffexpr' is empty.
+-- horizontal       Start diff mode with horizontal splits (unless explicitly specified otherwise).
+-- vertical         Start diff mode with vertical splits (unless explicitly specified otherwise).
+-- closeoff         When a window is closed where 'diff' is set and there is only one window remaining in the same tab page with 'diff' set, execute `:diffoff` in that window. This undoes a `:diffsplit` command.
+-- hiddenoff        Do not use diff mode for a buffer when it becomes hidden.
+-- foldcolumn:{n}   Set the 'foldcolumn' option to {n} when starting diff mode. Without this 2 is used.
+-- followwrap       Follow the 'wrap' option and leave as it is.
+-- internal         Use the internal diff library.
+-- indent-heuristic Use the indent heuristic for the internal diff library.
+-- linematch:{n}    Enable a second stage diff on each generated hunk in order to align lines. When the total number of lines in a hunk exceeds {n},
+--     the second stage diff will not be performed as very large hunks can cause noticeable lag. A recommended setting is "linematch:60", as this
+--     will enable alignment for a 2 buffer diff with hunks of up to 30 lines each, or a 3 buffer diff with hunks of up to 20 lines each.
+-- algorithm:{text} Use the specified diff algorithm with the internal diff engine. Currently supported algorithms are:
+--  myers      the default algorithm
+--  minimal    spend extra time to generate the smallest possible diff
+--  patience   patience diff algorithm
+--  histogram  histogram diff algorithm
+
 -- opt("display", "msgsep")
 -- opt("shortmess", o.shortmess .. "cS")
 -- -- opt("shortmess", "filnxtToOcSIs")
@@ -116,20 +144,9 @@ opt("writebackup", true)
 
 -- opt('list', true) -- Define which helper symbols to show
 -- opt('listchars', 'extends:…,precedes:…,nbsp:␣') -- Define which helper symbols to show
---[[ vim.opt.listchars:append({
-  nbsp = '󰚌',
-  precedes = '…',
-  extends = '…',
-  multispace = '·',
-  -- overridden by indent-blankline
-  -- tab = '│ ',
-  conceal = '?',
-  lead = ' ',
-  trail = ' ',
-})
-]]
--- window scope
+--[[ vim.opt.listchars:append({ nbsp = '󰚌', precedes = '…', extends = '…', multispace = '·', tab = '│ ', conceal = '?', lead = ' ', trail = ' ', }) ]]
 
+-- window scope
 opt("pumblend", 10)
 -- opt('winblend', 15, window)
 

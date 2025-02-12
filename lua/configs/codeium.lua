@@ -39,11 +39,11 @@ local cfg = {
   },
 }
 
-vim.keymap.set(
-  { "n", "i" },
-  "<M-n>",
-  "<cmd>lua require('codeium.virtual_text').cycle_or_complete()<cr>"
-)
+-- vim.keymap.set(
+--   { "n", "i" },
+--   "<M-n>",
+--   "<cmd>lua require('codeium.virtual_text').cycle_or_complete()<cr>"
+-- )
 
 -- -- Request completions immediately.
 -- require('codeium.virtual_text').complete()

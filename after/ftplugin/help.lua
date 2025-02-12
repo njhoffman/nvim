@@ -29,6 +29,14 @@ local set_options = function()
   --   vim.api.nvim_set_option_value("formatoptions", formatoptions .. "c", { buf = state.src_bufnr })
   -- end
 
+-- set winbar=%<%f%=\ [%1*%M%*%n%R%H]\ %-19(%3l,%02c%03V%)%O'%02b'
+-- set winbar=%<%f\ %h%w%m%r%=%-14.(%l,%c%V%)\ %P
+  -- hi User1 term=inverse,bold guibg=inverse,bold guifg=red
+  -- local winbar = vim.api.nvim_get_option_value("winbar", { win = state.help_winid }) or ""
+  -- if not string.find(winbar, "%%#") then
+  --   local winbar = "%#WinBar#%=%#WinBarSep#"
+  -- end
+
   -- stylua: ignore start
   vim.api.nvim_set_option_value("winfixheight",  false, { win = state.help_winid })
   vim.api.nvim_set_option_value("winfixwidth",   false, { win = state.help_winid })

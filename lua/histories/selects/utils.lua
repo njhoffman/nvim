@@ -5,12 +5,18 @@ local get_hash = function(vis)
   return vim.fn.sha256(vim.fn.json_encode(vis))
 end
 
-local get_pos = function()
+-- '[ ']  	To the first/last character of the previously changed or yanked text.
+-- '< '>  	To the first line or character of the last selected Visual area in the current buffer.
+-- ''  ``		To the position before the latest jump, or where the last "m'" or "m`" command was given
+-- '^ `^		To the position where the cursor was the last time when Insert mode was stopped.
+-- '" `"		To the cursor position when last exiting the current
+-- '. `.		To the position where the last change was made.
+local get_pos = function(buf, mode)
   local pos = vim.fn.getpos
   local curr = {
-    -- '[  `[			To the first character of the previously changed or yanked text.
-    -- ']  `]			To the last character of the previously changed or yanked text.
     -- bufnum, lnum, coln, offset (if virtualedit is used)
+    buffer = buf,
+    mode = mode,
     select = { from = pos("'<"), to = pos("'>") },
     change = { from = pos("'["), to = pos("']") },
   }

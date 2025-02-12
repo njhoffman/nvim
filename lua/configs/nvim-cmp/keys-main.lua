@@ -1,8 +1,7 @@
+local cmp = require("cmp")
 local luasnip = require("luasnip")
 local mapping = require("cmp.config.mapping")
 local types = require("cmp.types")
-
-local cmp_mapping = require("cmp.config.mapping")
 
 --       節 缾      了ﴰ   ﮕ ﳎ  
 --      陋 גּ גּ      ﴯ   
@@ -10,7 +9,6 @@ local cmp_mapping = require("cmp.config.mapping")
 local pfx = " "
 
 local scroll_docs = function(direction)
-  local cmp = require("cmp")
   return function(fallback)
     -- local winheight = vim.api.nvim_win_get_height(state.winnr) - 2
     if cmp.visible() and cmp.core.view.docs_view:visible() then
@@ -34,7 +32,6 @@ local has_words_before = function()
 end
 
 local toggle_docs = function()
-  local cmp = require("cmp")
   if cmp.visible() and cmp.core.view.docs_view:visible() then
     cmp.close_docs()
   else
@@ -103,9 +100,8 @@ local main = {
   -- },
   ["<C-n>"] = {
     i = function()
-      local cmp = require("cmp")
       if cmp.visible() then
-        cmp.select_next_item({ behavior = types.cmp.SelectBehavior.Select })
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
       else
         cmp.complete()
       end
@@ -113,9 +109,8 @@ local main = {
   },
   ["<C-p>"] = {
     i = function()
-      local cmp = require("cmp")
       if cmp.visible() then
-        cmp.select_prev_item({ behavior = types.cmp.SelectBehavior.Select })
+        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
       else
         cmp.complete()
       end
@@ -124,21 +119,20 @@ local main = {
   ["<C-B>"] = {
     i = mapping.select_prev_item({
       count = 6,
-      behavior = types.cmp.SelectBehavior.Select,
+      behavior = cmp.SelectBehavior.Select,
       preserve_mapping_verticality = true,
     }),
   },
   ["<C-F>"] = {
     i = mapping.select_next_item({
       count = 6,
-      behavior = types.cmp.SelectBehavior.Select,
+      behavior = cmp.SelectBehavior.Select,
       preserve_mapping_verticality = true,
     }),
   },
 
   ["<C-Space>"] = {
     i = function()
-      local cmp = require("cmp")
       if cmp.visible() then
         cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
       else
@@ -151,18 +145,16 @@ local main = {
   },
   -- ['<CR>'] = { i = mapping.confirm({ select = false }) },
 
-  ["<CR>"] = cmp_mapping({
+  ["<CR>"] = mapping({
     i = function(fallback)
-      local cmp = require("cmp")
-      local confirm_opts = { behavior = types.cmp.ConfirmBehavior.Replace, select = false }
+      local confirm_opts = { behavior = cmp.ConfirmBehavior.Insert, select = true }
       if cmp.visible() then
-        -- confirm_opts.behavior = types.cmp.ConfirmBehavior.Insert
-        -- local entry = cmp.get_selected_entry()
-        -- local is_copilot = entry and entry.source.name == 'copilot'
-        -- if is_copilot then
-        --   confirm_opts.behavior = types.cmp.ConfirmBehavior.Replace
-        --   confirm_opts.select = true
-        -- end
+        local entry = cmp.get_selected_entry()
+        local is_copilot = entry and entry.source.name == 'copilot'
+        if is_copilot then
+          confirm_opts.behavior = cmp.ConfirmBehavior.Replace
+          confirm_opts.select = true
+        end
         if cmp.confirm(confirm_opts) then
           return
         end
@@ -172,14 +164,14 @@ local main = {
       end
     end,
   }),
-  ["<C-y>"] = cmp_mapping({
-    i = mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Replace, select = false }),
+  ["<C-Y>"] = mapping({
+    i = mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
   }),
   ["<S-CR>"] = {
-    i = mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Replace, select = false }),
+    i = mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
   },
   ["<C-CR>"] = {
-    i = mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Insert, select = true }),
+    i = mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true }),
   },
   ["<C-d>"] = {
     i = function(fallback)
@@ -197,7 +189,6 @@ local main = {
   },
   ["<M-d>"] = {
     i = function(fallback)
-      local cmp = require("cmp")
       if cmp.visible() then
         cmp.abort()
       end
@@ -206,7 +197,6 @@ local main = {
   },
   ["<Tab>"] = {
     i = function(fallback)
-      local cmp = require("cmp")
       if cmp.visible() then
         cmp.select_next_item({ behavior = types.cmp.SelectBehavior.Select })
       elseif luasnip.expand_or_jumpable() then
@@ -221,7 +211,6 @@ local main = {
   },
   ["<S-Tab>"] = {
     i = function(fallback)
-      local cmp = require("cmp")
       if cmp.visible() then
         -- cmp.select_prev_item()
         cmp.select_prev_item({ behavior = types.cmp.SelectBehavior.Select })

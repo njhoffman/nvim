@@ -1,18 +1,45 @@
 ---@diagnostic disable
 --luacheck: ignore
 
-local ok, lush = pcall(require, 'lush')
-local ok_main, hl_main = pcall(require, 'colorschemes.nord-nick.main')
-local ok_plugins, hl_plugins = pcall(require, 'colorschemes.nord-nick.plugins')
-local ok_nord, nord = pcall(require, 'colorschemes.nord-nick.nord-nvim')
+local lush = require("lush")
 
-if not ok or not ok_nord or not ok_plugins or not ok_main then
-  vim.notify('Problem loading nord-nick', 1)
-else
-  local plugins = lush.extends({ nord }).with(hl_plugins)
-  local main = lush.extends({ plugins }).with(hl_main)
-  return main
+local hl_files = { "main", "plugins", "nord-nvim" }
+
+local loaded = {}
+for _, hl_file in ipairs({ "main", "plugins", "nord-nvim" }) do
+  local ok, hls = pcall(require, "colorschemes.nord-nick." .. hl_file)
+  if ok then
+    table.insert(loaded, { name = hl_file, highlights = hls })
+  else
+    vim.notify("Error loading " .. hl_file .. " highlight file\n" .. vim.inspect(hls), 1)
+  end
 end
+
+-- local ok_main, hl_main = pcall(require, "colorschemes.nord-nick.main")
+-- local ok_plugins, hl_plugins = pcall(require, "colorschemes.nord-nick.plugins")
+-- local ok_nord, nord = pcall(require, "colorschemes.nord-nick.nord-nvim")
+
+local colors = nil
+for _, hl_idx in ipairs(vim.fn.reverse(vim.tbl_keys(loaded))) do
+  local hl_name = loaded[hl_idx].name
+  if colors == nil then
+    colors = loaded[hl_idx].highlights
+  else
+    -- colors = lush.extends({ colors }).with(loaded[hl_key].highlights)
+
+    local ok, res = pcall(lush.extends({ colors }).with, loaded[hl_idx].highlights)
+    if not ok then
+      vim.notify("Error merging highlights from: " .. hl_name .. "\n" .. vim.inspect(res), 1)
+    else
+      colors = res
+    end
+  end
+end
+return colors
+-- local ok, err = pcall(lush.extends({ plugins }).with, hl_main)
+-- vim.dbglog(ok, err)
+-- local main = lush.extends({ plugins }).with(hl_main)
+-- return main
 -- Supports the following keys:
 --
 --   fg:    sets the `fg` property of a highlight group.

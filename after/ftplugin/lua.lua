@@ -22,9 +22,9 @@ u.ftAbbr("===", "==")
 u.ftAbbr("tre", "then return end") -- codespell-ignore
 
 -- if in nvim dir, reload file/plugin, otherwise run `make`
-vim.api.nvim_set_keymap("n", "<C-1>", "<cmd>Reload | luafile %<cr>", { silent = true })
-vim.api.nvim_set_keymap("n", "<F5>", "<cmd>luafile %<cr>", { silent = true })
-vim.api.nvim_set_keymap("n", "<F17>", "<cmd>Reload | luafile %<cr>", { silent = true })
+vim.api.nvim_set_keymap("n", "<C-1>", "<cmd>Reload | luafile %<cr>", { silent = false })
+vim.api.nvim_set_keymap("n", "<F5>", "<cmd>luafile %<cr>", { silent = false })
+vim.api.nvim_set_keymap("n", "<F17>", "<cmd>Reload | luafile %<cr>", { silent = false })
 
 MiniSplitjoin = MiniSplitjoin or {}
 

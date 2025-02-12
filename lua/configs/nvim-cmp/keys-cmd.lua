@@ -1,10 +1,9 @@
-local cmp_types = require("cmp.types.cmp")
 local cmp = require("cmp")
 local keymap = require("cmp.utils.keymap")
 local preserve_mapping_verticality = false
 local types = require("cmp.types")
 
-local cmp_mapping = require("cmp.config.mapping")
+local mapping = require("cmp.config.mapping")
 
 local get_source_code = function(f)
   local t = debug.getinfo(f)
@@ -28,15 +27,6 @@ local get_source_code = function(f)
 end
 
 local feedkeys = require("cmp.utils.feedkeys")
-
-local toggle_docs = function()
-  local cmp = require("cmp")
-  if cmp.visible() and cmp.core.view.docs_view:visible() then
-    cmp.close_docs()
-  else
-    cmp.open_docs()
-  end
-end
 
 local send_enter = function()
   local enter_key = vim.api.nvim_replace_termcodes("<CR>", true, true, true)
@@ -75,7 +65,6 @@ end
 local last_history_cmd = ""
 
 local cmdline = {
-  ["<M-/>"] = { c = toggle_docs },
   ["<C-e>"] = {
     c = function(fallback)
       if cmp.visible() then
@@ -143,7 +132,7 @@ local cmdline = {
       end
     end,
   },
-  ["<M-P>"] = {
+  ["<M-p>"] = {
     c = function()
       feedkeys.call(keymap.t("<Up>"), "c")
     end,
@@ -180,14 +169,17 @@ local cmdline = {
       local cmdpos = vim.fn.getcmdpos()
       if cmdpos < 2 then
         return cmp.close()
-      else
+      elseif type(fallback) == "function" then
         fallback()
       end
     end,
   },
+  ["<C-y>"] = mapping({
+    c = mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+  }),
 
-  ["<CR>"] = cmp_mapping(function(fallback)
-    local opts = { confirm_opts = { behavior = types.cmp.ConfirmBehavior.Insert, select = false } }
+  ["<CR>"] = mapping(function(fallback)
+    local opts = { confirm_opts = { behavior = cmp.ConfirmBehavior.Insert, select = false } }
     if cmp.visible() then
       local confirm_opts = vim.deepcopy(opts.confirm_opts) -- avoid mutating the original opts below
       local is_insert_mode = function()
@@ -206,7 +198,9 @@ local cmdline = {
         return -- success, exit early
       end
     end
-    fallback() -- if not exited early, always fallback
+    if type(fallback) == "function" then
+      fallback() -- if not exited early, always fallback
+    end
   end, { "c" }),
 
   ["<S-CR>"] = {
@@ -226,15 +220,15 @@ local cmdline = {
   ["<Tab>"] = cmp.mapping(function(fallback)
     if cmp.visible() then
       cmp.select_next_item()
-    else
-      fallback()
+    elseif type(fallback) == "function" then
+      fallback() -- if not exited early, always fallback
     end
   end, { "c" }),
 
   ["<S-Tab>"] = cmp.mapping(function(fallback)
     if cmp.visible() then
       cmp.select_prev_item()
-    else
+    elseif type(fallback) == "function" then
       fallback()
     end
   end, { "c" }),

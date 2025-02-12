@@ -55,7 +55,7 @@ local sources = {
           if kind == "Snippet" and ctx.prev_context.filetype == "java" then
             return false
           end
-          return true
+          return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text"
         end,
       },
       { name = "codeium", max_item_count = 3 },
@@ -70,6 +70,9 @@ local sources = {
           { '.', ':', '(', "'", '"', '[', ',', '#', '*', '@', '|', '=', '-', '{', '/', '\\', '+', '?', ' ', }, -- "\t", "\n", },
         -- },
       },
+      { name = "nvim_lsp_signature_help" },
+    },
+    {
       {
         name = "buffer",
         keyword_length = 2,
@@ -139,52 +142,52 @@ local sources = {
       },
       -- { name = 'nvim_lsp_document_symbol' },
       -- { name = 'nvim_lsp_signature_help' },
+      -- Distracting!
+      -- { name = "spell" },
+      -- { name = "dictionary" },
+      -- {
+      --   name = 'nvim_lua',
+      --   group_index = 2,
+      -- },
+      -- {
+      --   name = 'crates',
+      --   group_index = 2,
+      -- },
+      -- {
+      --   name = 'treesitter',
+      --   keyword_length = 3,
+      --   group_index = 3,
+      -- },
+      -- {
+      --   name = 'path',
+      --   keyword_length = 3,
+      --   group_index = 3,
+      -- },
+      -- {
+      --   name = 'buffer',
+      --   keyword_length = 3,
+      --   group_index = 4,
+      --   option = {
+      --     get_bufnrs = function()
+      --       local bufs = {}
+      --       for _, win in ipairs(vim.api.nvim_list_wins()) do
+      --         bufs[vim.api.nvim_win_get_buf(win)] = true
+      --       end
+      --       return vim.tbl_keys(bufs)
+      --     end,
+      --   },
+      -- },
+      -- {
+      --   name = 'emoji',
+      --   keyword_length = 2,
+      --   group_index = 5,
+      -- },
+      -- {
+      --   name = 'nerdfont',
+      --   keyword_length = 2,
+      --   group_index = 5,
+      -- },
     },
-    -- Distracting!
-    -- { name = "spell" },
-    -- { name = "dictionary" },
-    -- {
-    --   name = 'nvim_lua',
-    --   group_index = 2,
-    -- },
-    -- {
-    --   name = 'crates',
-    --   group_index = 2,
-    -- },
-    -- {
-    --   name = 'treesitter',
-    --   keyword_length = 3,
-    --   group_index = 3,
-    -- },
-    -- {
-    --   name = 'path',
-    --   keyword_length = 3,
-    --   group_index = 3,
-    -- },
-    -- {
-    --   name = 'buffer',
-    --   keyword_length = 3,
-    --   group_index = 4,
-    --   option = {
-    --     get_bufnrs = function()
-    --       local bufs = {}
-    --       for _, win in ipairs(vim.api.nvim_list_wins()) do
-    --         bufs[vim.api.nvim_win_get_buf(win)] = true
-    --       end
-    --       return vim.tbl_keys(bufs)
-    --     end,
-    --   },
-    -- },
-    -- {
-    --   name = 'emoji',
-    --   keyword_length = 2,
-    --   group_index = 5,
-    -- },
-    -- {
-    --   name = 'nerdfont',
-    --   keyword_length = 2,
-    --   group_index = 5,
-    -- },
   },
   gitcommit = {
     { name = "cmp_git" },

@@ -25,15 +25,15 @@ local default_cfg = {
 --     :find()
 -- end
 
-local telescope_handler = require('configs.definition-or-references.telescope')
+local telescope_handler = require("configs.definition-or-references.telescope")
 
 local cfg = { on_references_result = telescope_handler, debug = false }
 
-require('definition-or-references').setup(cfg)
+require("definition-or-references").setup(cfg)
 
 vim.keymap.set(
-  'n',
-  'gd',
-  require('definition-or-references').definition_or_references,
-  { silent = true, desc = 'lsp definition or references' }
+  "n",
+  "gd",
+  require("definition-or-references").definition_or_references,
+  { silent = true, desc = "lsp definition or references" }
 )

@@ -133,18 +133,20 @@ local modules = {
     },
   },
   textsubjects = {
-    enable = true,
-    prev_selection = "-", -- (Optional) keymap to select the previous selection
-    keymaps = {
-      -- . ; i;  <CR>
-      -- ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-      ["+"] = "textsubjects-smart",
-      -- [";"] = "textsubjects-container-outer",
-      ["i+"] = {
-        "textsubjects-container-inner",
-        desc = "Select inside containers (classes, functions, etc.)",
-      },
-    },
+    enable = false,
+    -- prev_selection = "-", -- (Optional) keymap to select the previous selection
+    -- prev_selection = ',',
+    -- keymaps = {
+    -- ['.'] = 'textsubjects-smart',
+    -- [';'] = 'textsubjects-container-outer',
+    -- ['i;'] = 'textsubjects-container-inner',
+
+    -- ["+"] = "textsubjects-smart",
+    -- ["i+"] = {
+    --   "textsubjects-container-inner",
+    --   desc = "Select inside containers (classes, functions, etc.)",
+    -- },
+    -- },
   },
   pairs = {
     enable = false,
