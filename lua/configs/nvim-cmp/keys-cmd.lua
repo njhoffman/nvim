@@ -132,7 +132,7 @@ local cmdline = {
       end
     end,
   },
-  ["<M-p>"] = {
+  ["<M-P>"] = {
     c = function()
       feedkeys.call(keymap.t("<Up>"), "c")
     end,
@@ -174,8 +174,8 @@ local cmdline = {
       end
     end,
   },
-  ["<C-y>"] = mapping({
-    c = mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+  ["<C-Y>"] = mapping({
+    c = mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
   }),
 
   ["<CR>"] = mapping(function(fallback)
@@ -198,6 +198,7 @@ local cmdline = {
         return -- success, exit early
       end
     end
+
     if type(fallback) == "function" then
       fallback() -- if not exited early, always fallback
     end
@@ -214,7 +215,7 @@ local cmdline = {
     -- c = cmp.mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Replace, select = false }),
   },
   ["<C-CR>"] = {
-    c = cmp.mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Insert, select = false }),
+    c = cmp.mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Insert, select = true }),
   },
 
   ["<Tab>"] = cmp.mapping(function(fallback)

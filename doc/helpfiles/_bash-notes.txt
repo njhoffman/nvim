@@ -35,7 +35,42 @@ https://stackoverflow.com/questions/4489139/bash-process-substitution-and-syncin
 https://stackoverflow.com/questions/692000/how-do-i-write-standard-error-to-a-file-while-using-tee-with-a-pipe
 https://unix.stackexchange.com/questions/616697/how-to-pipe-output-of-command-to-two-separate-commands-and-store-outputs
 
+### Parameter expansion
+
+>bash
+  OPTS="-avr --delete --progress --exclude=${EXCLUDE} --delete-excluded"
+
+  # bash splits string list into multiple arguments
+  rsync $OPTS $SRC $DST
+
+  # zsh specifically request split into words set sh word splitting
+  rsync ${=OPTS} $SRC $DST
+  set -o shwordsplit 2>/dev/null
+
+  # make it an array for bash/zsh/ksh compatibility
+  OPTS=(-avr --delete --progress --exclude="$EXCLUDE" --delete-excluded)
+  rsync "${OPTS[@]}" "$SRC" "$DST"
+
+  # full compatibility with POSIX use positional parameters (only array available)
+  set -- -avr --delete --progress --exclude="$EXCLUDE" --delete-excluded
+  rsync "$@" "$SRC" "$DST"
+
+  # more zsh examples
+  _v1=windows && _v2_windows=/mnt/d
+  printf '%s\n' ${(P)${:-_v2_$_v1}}
+  printf '%s\n' ${(e)${:-\$_v2_$_v1}}
+  varname=_v2_$_v1 && printf '%s\n' ${(P)varname}
+  expansions_to_evaluate=\$_v2_$_v1
+  printf '%s\n' ${(e)expansions_to_evaluate}
+Or:
 
 
+### ZSH compatibility
+
+>bash
+  # test if shell is ZSH
+  [ -n "${ZSH_VERSION:-}" ] && set -A OPTS ${=OPTS}
+  # run any shell with zsh
+  emulate bash >/dev/null 2>/dev/null || true
 --------
 vim:ft=help:tw=80:ts=8:sw=2:cole=2

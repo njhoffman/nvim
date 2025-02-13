@@ -4,7 +4,7 @@
 local events = require("configs.nvim-notify.events")
 -- local render =
 local cfg = {
-  level = vim.log.levels.DEBUG,
+  level = vim.lsp.log.levels.DEBUG,
   fps = 30,
   stages = "fade_in_slide_out",
   -- stages = "fade",

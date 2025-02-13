@@ -19,8 +19,8 @@ local silence_start = function()
     "info",
     { title = "Silence", timeout = 5000 }
   )
-  require("notify").setup({ level = 5 })
   require("notify").dismiss({ silent = true, pending = true })
+  require("notify").setup({ level = 5 })
 
   -- require('noice').disable()
   restore_routes = vim.fn.deepcopy(require("noice.config").routes)
@@ -31,12 +31,6 @@ local silence_start = function()
       { filter = { event = "notify.*", kind = "" }, opts = { skip = true } },
     },
   })
-
-  -- vim.cmd([[
-  --   set laststatus=0
-  --   set cmdheight=1
-  --   set nomore
-  -- ]])
 end
 
 local silence_stop = function()
@@ -81,7 +75,7 @@ local setup = function()
 
   vim.keymap.set("c", "<M-C-C>", function()
     silence_start()
-  end, { desc = "fork cmdline output to popup view" })
+  end, { desc = "silence messaging and skip noice routes output" })
 
   vim.keymap.set("c", "<S-Enter>", function()
     redirect_cmd()

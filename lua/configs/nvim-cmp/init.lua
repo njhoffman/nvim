@@ -59,6 +59,16 @@ local is_enabled = function()
   local disabled = {
     IncRename = true,
   }
+
+  -- enabled = function()
+  -- local buftype = vim.bo.buftype
+  --
+  -- if buftype == 'prompt' or buftype == 'nofile' then
+  -- return false
+  -- end
+  --
+  -- return true
+  -- end
   -- Get first word of cmdline
   local cmd = vim.fn.getcmdline():match("%S+")
   -- Return true if cmd isn't disabled else call/return cmp.close(), which returns false
@@ -73,14 +83,14 @@ local is_enabled = function()
 end
 
 local cfg = {
-  preselect = types.cmp.PreselectMode.None,
-  -- preselect = types.cmp.PreselectMode.Item,
+  preselect = types.cmp.PreselectMode.Item,
+  -- preselect = cmp.PreselectMode.None,
   autocomplete = {
-    -- cmp.TriggerEvent.TextChanged,
-    cmp.TriggerEvent.TextChanged,
-    cmp.TriggerEvent.InsertEnter,
+    types.cmp.TriggerEvent.TextChanged,
+    -- cmp.TriggerEvent.InsertEnter,
   },
   enabled = is_enabled,
+
   --stylua: ignore start
   performance = {
     debounce                = 60, --60  This is the interval used to group up completions from different sources for filtering and displaying.
@@ -102,7 +112,6 @@ local cfg = {
   },
   completion = {
     keyword_length = 0,
-    -- keyword_length = 1,
     -- keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
     completeopt = 'menu,menuone,noinsert,noselect',
     -- completeopt = "menuone,noselect,preview", -- menu, menuone,noselect
@@ -132,6 +141,10 @@ local cfg = {
       winblend = 10,
     }),
   },
+  confirm_opts = {
+    behavior = cmp.ConfirmBehavior.Replace,
+    select = true,
+  },
   mapping = cmp.mapping.preset.insert(mapping_main), --mapping_main,
   sources = cmp.config.sources(sources.main[1], sources.main[2]),
   view = {
@@ -145,12 +158,7 @@ local cfg = {
       auto_open = true,
     },
   },
-  confirmation = {
-    default_behavior = types.cmp.ConfirmBehavior.Insert,
-    get_commit_characters = function(commit_characters)
-      return commit_characters
-    end,
-  },
+  confirmation = { default_behavior = cmp.ConfirmBehavior.Replace },
 }
 
 -- local setup_cmp = function()
@@ -171,27 +179,33 @@ local cfg = {
 cmp.setup(cfg)
 
 cmp.setup.cmdline(":", {
+  -- completion = { autocomplete = false },
   -- matching = { disallow_symbol_nonprefix_matching = false },
-  mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
+  mapping = mapping_cmdline,
+  -- mapping = cmp.mapping.preset.cmdline(),
+  -- mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
   sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
-  enabled = function()
-    -- Set of commands where cmp will be disabled
-    local disabled = { IncRename = true }
-    -- Get first word of cmdline
-    local cmd = vim.fn.getcmdline():match("%S+")
-    -- Return true if cmd isn't disabled
-    -- else call/return cmp.close(), which returns false
-    return not disabled[cmd] or cmp.close()
-  end,
+  -- enabled = function()
+  --   -- Set of commands where cmp will be disabled
+  --   local disabled = { IncRename = true }
+  --   -- Get first word of cmdline
+  --   local cmd = vim.fn.getcmdline():match("%S+")
+  --   -- Return true if cmd isn't disabled
+  --   -- else call/return cmp.close(), which returns false
+  --   return not disabled[cmd] or cmp.close()
+  -- end,
 })
 
 cmp.setup.cmdline({ "/", "?" }, {
+  -- completion = { autocomplete = false },
+  enabled = true,
+  mapping = mapping_cmdline,
   -- matching = { disallow_symbol_nonprefix_matching = false },
   -- mapping = cmp.mapping.preset.cmdline(mapping_sets),
-  enabled = true,
-  mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
+  -- mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources(sources.cmdsearch),
 })
+
 -- cmp.setup.filetype('gitcommit', { sources = cmp.config.sources(sources.gitcommit) })
 -- local defaultPlusZsh = vim.deepcopy(sources.main)
 -- table.insert(defaultPlusZsh, { name = 'zsh' })
@@ -261,7 +275,6 @@ vim.api.nvim_create_user_command(
 -- end)
 
 local pairs_integration = function()
-  local cmp = require("cmp")
   local kind = cmp.lsp.CompletionItemKind
 
   local function ls_name_from_event(event)
