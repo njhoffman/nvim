@@ -54,6 +54,7 @@ local setup = function()
   local vimade_cfg = {
     style = v_utils.style,
     fadelevel = v_utils.fadelevel(fadelevel_cfg),
+    -- ncmode = "focus",
     enablefocusfading = true,
     -- blocklist = {
     -- only_behind_float_windows = function(win, current)

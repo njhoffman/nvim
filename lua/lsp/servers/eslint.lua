@@ -1,36 +1,56 @@
-local lspconfig = require('lspconfig')
-local utils = require('lsp.utils')
+local lspconfig = require("lspconfig")
+local util = require("lsp.utils")
+local lspconfig_util = require("lspconfig.util")
+
+local root_file = {
+  ".eslintrc",
+  ".eslintrc.js",
+  ".eslintrc.cjs",
+  ".eslintrc.yaml",
+  ".eslintrc.yml",
+  ".eslintrc.json",
+  "eslint.config.js",
+  "eslint.config.mjs",
+  "eslint.config.cjs",
+  "eslint.config.ts",
+  "eslint.config.mts",
+  "eslint.config.cts",
+}
 
 local eslint = function()
-  vim.api.nvim_create_autocmd('BufWritePost', {
-    pattern = { '*.tsx', '*.ts', '*.jsx', '*.js' },
-    command = 'silent! EslintFixAll',
-    group = vim.api.nvim_create_augroup('JavaScriptFormatting', {}),
+  vim.api.nvim_create_autocmd("BufWritePost", {
+    pattern = { "*.tsx", "*.ts", "*.jsx", "*.js" },
+    command = "silent! EslintFixAll",
+    group = vim.api.nvim_create_augroup("JavaScriptFormatting", {}),
   })
+  -- root_dir = utils.initRoot("eslint", {
+  --   "package_json:eslintConfig",
+  --   {
+  --     ".eslintrc",
+  --     ".eslintrc.js",
+  --     ".eslintrc.cjs",
+  --     ".eslintrc.yaml",
+  --     ".eslintrc.yml",
+  --     ".eslintrc.json",
+  --     "eslint.config.js",
+  --   },
+  -- }),
 
   lspconfig.eslint.setup({
-    root_dir = utils.initRoot('eslint', {
-      'package_json:eslintConfig',
-      {
-        '.eslintrc',
-        '.eslintrc.js',
-        '.eslintrc.cjs',
-        '.eslintrc.yaml',
-        '.eslintrc.yml',
-        '.eslintrc.json',
-        'eslint.config.js',
-      },
-    }),
+    root_dir = function(fname)
+      root_file = lspconfig_util.insert_package_json(root_file, "eslintConfig", fname)
+      return util.root_pattern(unpack(root_file))(fname)
+    end,
     filetypes = {
-      'javascript',
-      'javascriptreact',
-      'javascript.jsx',
-      'typescript',
-      'typescriptreact',
-      'typescript.tsx',
-      'vue',
-      'svelte',
-      'astro',
+      "javascript",
+      "javascriptreact",
+      "javascript.jsx",
+      "typescript",
+      "typescriptreact",
+      "typescript.tsx",
+      "vue",
+      "svelte",
+      "astro",
     },
     -- handlers = {
     --   {
@@ -42,15 +62,15 @@ local eslint = function()
     -- },
     settings = {
       enable = true,
-      packageManager = 'yarn',
+      packageManager = "yarn",
       probe = {
-        'javascript',
-        'javascriptreact',
-        'typescript',
-        'typescriptreact',
-        'html',
-        'vue',
-        'markdown',
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "html",
+        "vue",
+        "markdown",
       },
       tslint = {
         enable = true,
@@ -58,7 +78,7 @@ local eslint = function()
       codeAction = {
         disableRuleComment = {
           enable = true,
-          location = 'separateLine',
+          location = "separateLine",
         },
         showDocumentation = {
           enable = true,
@@ -66,29 +86,29 @@ local eslint = function()
       },
       codeActionOnSave = {
         enable = true,
-        mode = 'all',
+        mode = "all",
       },
       experimental = {
         useFlatConfig = false,
       },
       format = true,
-      nodePath = '',
-      onIgnoredFiles = 'off',
+      nodePath = "",
+      onIgnoredFiles = "off",
       problems = {
         shortenToSingleLine = false,
       },
       quiet = false,
       rulesCustomizations = {},
-      run = 'onType',
+      run = "onType",
       useESLintClass = false,
-      validate = 'on',
+      validate = "on",
       workingDirectory = {
-        mode = 'location',
+        mode = "location",
       },
       -- workingDirectories = { "./client", "./server" }
     },
     on_attach = function(client, bufnr)
-      require('lsp.on_attach')(client, bufnr)
+      require("lsp.on_attach")(client, bufnr)
     end,
   })
 end

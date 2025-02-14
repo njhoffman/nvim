@@ -139,7 +139,7 @@ return function(injected_functions)
     CurSearch({ bg = "#4e3ce6", fg = "#aaffff" }), --  bg = '#110033'
     -- CurSearch({ fg = '#cc2266', gui = 'bold' }), --  bg = '#110033'
 
-    Visual({ bg = "#08203f", gui = "italic" }), -- bg - #171f47, bg = #021626, gui = bold,italic
+    Visual({ bg = "#08203f", gui = "italic,bold" }), -- bg - #171f47, bg = #021626, gui = bold,italic
     VisualNOS({ bg = "#1d3b53" }), -- bg = '#301840'
     VisualAlt({ fg = "none", bg = "#10082f", gui = "italic" }),
     VisualRed({ fg = "none", bg = "#40112c", gui = "italic" }),
@@ -1288,6 +1288,29 @@ return function(injected_functions)
     ScrollView({ bg = "#224385" }),
     ScrollViewCursor({ fg = "#334365" }),
     ScrollViewSearch({ fg = "#3373c5" }),
+
+    -- TinyGlimmer({ bg = "#1f2342" }),
+
+    TinyGlimmerFrom({ bg = VisualAlt.bg }),
+    TinyGlimmerTo({ bg = Normal.bg }),
+
+    TinyGlimmerDelete({ bg = "#582032" }),
+    TinyGlimmerAdd({ bg = "#065C5C" }),
+
+    TinyGlimmerYankFrom({ bg = "#3373c5" }),
+    TinyGlimmerYankTo({ TinyGlimmerTo }),
+
+    TinyGlimmerSubFrom({ bg = "#5303f5" }),
+    TinyGlimmerSubTo({ TinyGlimmerTo }),
+
+    TinyGlimmerPasteFrom({ bg = DiffAdd.bg }),
+    TinyGlimmerPasteTo({ TinyGlimmerTo }),
+
+    TinyGlimmerSearchFrom({ bg = "#3373c5" }),
+    TinyGlimmerSearchTo({ TinyGlimmerTo }),
+
+    TinyGlimmerPulsarFrom({ bg = "#224488" }),
+    TinyGlimmerPulsarTo({ TinyGlimmerTo }),
 
     -- multicursor.nvim
     MultiCursorCursor({ Cursor }),

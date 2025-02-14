@@ -86,8 +86,8 @@ local cfg = {
   preselect = types.cmp.PreselectMode.Item,
   -- preselect = cmp.PreselectMode.None,
   autocomplete = {
-    types.cmp.TriggerEvent.TextChanged,
-    -- cmp.TriggerEvent.InsertEnter,
+    cmp.TriggerEvent.TextChanged,
+    cmp.TriggerEvent.InsertEnter,
   },
   enabled = is_enabled,
 
@@ -195,6 +195,18 @@ cmp.setup.cmdline(":", {
   --   return not disabled[cmd] or cmp.close()
   -- end,
 })
+-- cmp.setup.cmdline(':', {
+--   sources = cmp.config.sources({
+--     { name = 'path' }
+--   }, {
+--       {
+--         name = 'cmdline',
+--         option = {
+--           ignore_cmds = { 'Man', '!' }
+--         }
+--       }
+--     })
+-- })
 
 cmp.setup.cmdline({ "/", "?" }, {
   -- completion = { autocomplete = false },

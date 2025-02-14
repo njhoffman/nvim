@@ -384,16 +384,17 @@ local cfg = {
 require("snacks").setup(cfg)
 
 -- -- Toggle the profiler
--- Snacks.toggle.profiler():map("<leader>pp")
+Snacks.toggle.profiler():map("<leader>iP")
 -- -- Toggle the profiler highlights
--- Snacks.toggle.profiler_highlights():map("<leader>ph")
+Snacks.toggle.profiler_highlights():map("<leader>iH")
 
--- vim.keymap.set("<leader>ps", function()
+-- vim.keymap.set("<leader>iS", function()
 --   Snacks.profiler.scratch()
 -- end, { desc = "Profiler Scratch Bufer" })
-vim.keymap.set("n", "<leader><", function()
-  Snacks.scratch()
-end, { desc = "Toggle scratch buffer" })
+
+-- vim.keymap.set("n", "<leader><", function()
+--   Snacks.scratch()
+-- end, { desc = "Toggle scratch buffer" })
 --     desc = "Neovim News",
 --     function()
 --       Snacks.win({

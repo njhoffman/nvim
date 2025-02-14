@@ -89,19 +89,33 @@ end
 
 function M.pasteAsComment(after_cursor)
   -- get content of paste register
-  local clipboard_reg = vim.o.clipboard:match("unnamedplus") and "+" or "*"
-  local lines = vim.split(vim.fn.getreg(clipboard_reg), "\n", { trimempty = true })
-  local commented = {}
-  for _, line in ipairs(lines) do
+  local clip_reg = vim.o.clipboard:match("unnamedplus") and "+" or "*"
+  local clipboard = vim.tbl_deep_extend("force", {}, {
+    type = "l",
+    reg = clip_reg,
+    commented = {},
+  }, vim.fn.getreginfo(clip_reg))
+
+  clipboard.type = clipboard.regtype == "v" and #clipboard.commented == 1 and "c"
+    or clipboard.regtype:match("") and "b"
+    or "l"
+  for _, line in ipairs(clipboard.regcontents or {}) do
     local indent, content = line:match("^(%s*)(.*)")
-    table.insert(commented, indent .. vim.bo.commentstring:format(content))
+    table.insert(clipboard.commented, indent .. vim.bo.commentstring:format(content))
   end
-  vim.dbglog("line", #lines, #lines, #commented, lines, commented)
-  vim.api.nvim_put(commented, "l", true, after_cursor)
+  -- vim.dbglog("line", #lines, #lines, #lines, after_cursor, vim.fn.getreginfo(clipboard_reg))
+  vim.api.nvim_put(clipboard.commented, "", after_cursor, false)
 end
 
 --------------------------------------------------------------------------------
-
+local propTypes = {
+  prototypeChain = true,
+  top = false,
+  enumerables = true,
+  nonenumerables = true,
+  strings = true,
+  symbols = true,
+}
 function M.openAlfredPref()
   local parentFolder = vim.fn.expand("%:p:h")
   if not parentFolder:find("Alfred%.alfredpreferences") then

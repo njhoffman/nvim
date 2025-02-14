@@ -7,6 +7,33 @@ for key, attrs in pairs(vim.api.nvim_get_commands({ builtin = false })) do
     table.insert(preview_commands, key)
   end
 end
+-- # Ctrl+A: move the cursor to the beginning of the line.
+-- # Ctrl+D: if the line is empty, equivalent to EOF; typically, exit the shell. Otherwise, delete
+-- # Ctrl+E: move the cursor to the end of the line.
+-- # Ctrl+K: delete the the rest of the line after the cursor.
+-- # Ctrl+O: submit the current line and load the next line from history (if any).
+-- # Ctrl+T: flip the two characters around the cursor.
+-- # Ctrl+U: delete the text from the start of the line to the cursor.
+-- # Ctrl+Y: yank the text from the kill ring (paste previously deleted text).
+-- # already set
+-- #          vicmd beginning-of-line  '^^'
+-- #          vicmd end-of-line       '^[$'
+-- # mapped to other
+-- #   bindkey -M viins backward-char '^H'
+-- #   bindkey -M viins forward-char  '^L'
+-- bindkey -M viins '^t'   vi-delete-char
+-- bindkey -M vicmd '^t'   vi-delete-char
+-- bindkey -M viins "^w"   backward-kill-word
+-- bindkey -M vicmd "^w"   backward-kill-word
+-- bindkey -M viins "^u"   backward-kill-line
+-- bindkey -M vicmd "^u"   backward-kill-line
+-- bindkey -M vicmd '^E'   end-of-line
+-- bindkey -M viins '^A'   beginning-of-line
+-- bindkey -M viins '^E'   end-of-line
+-- bindkey -M viins '^[^H' backward-word
+-- bindkey -M viins '^[^L' forward-word
+-- bindkey -M viins  '^^'  beginning-of-line
+-- bindkey -M viins '^[$'  end-of-line
 
 -- manpages info
 -- K or CTRL-]               Jump to the manpage for the <cWORD> under the cursor. Takes a count for the section.

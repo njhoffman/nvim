@@ -1,12 +1,11 @@
-local lspconfig = require('lspconfig')
+local lspconfig = require("lspconfig")
 local util = lspconfig.util
 
 local jsonls = function()
   lspconfig.jsonls.setup({
-    filetypes = { 'json', 'jsonc' },
+    filetypes = { "json", "jsonc" },
     root_dir = function(fname)
-      vim.dbglog('JSONLS', fname)
-      return util.root_pattern('package.json')(fname) or util.find_git_ancestor(fname)
+      return util.root_pattern("package.json")(fname) or util.find_git_ancestor(fname)
     end,
     init_options = {
       provideFormatter = true,
@@ -21,16 +20,16 @@ local jsonls = function()
         },
         schemas = {
           {
-            fileMatch = { 'package.json' },
-            url = 'https://json.schemastore.org/package.json',
+            fileMatch = { "package.json" },
+            url = "https://json.schemastore.org/package.json",
           },
           {
-            fileMatch = { 'tsconfig.json', 'tsconfig.*.json' },
-            url = 'http://json.schemastore.org/tsconfig',
+            fileMatch = { "tsconfig.json", "tsconfig.*.json" },
+            url = "http://json.schemastore.org/tsconfig",
           },
           {
-            fileMatch = { '*.json' },
-            schemas = require('schemastore').json.schemas(), -- ignore = { '.eslintrc', 'package.json', },
+            fileMatch = { "*.json" },
+            schemas = require("schemastore").json.schemas(), -- ignore = { '.eslintrc', 'package.json', },
           },
         },
         -- diagnostics
@@ -42,9 +41,9 @@ local jsonls = function()
         Format = {
           function(arg)
             local bufnr = arg.fargs[1] and tonumber(arg.fargs[1]) or 0
-            local lsp_name = arg.fargs[2] or ''
+            local lsp_name = arg.fargs[2] or ""
             if vim.b.format_on_write == 0 then
-              vim.notify('Skipping format on write: ' .. lsp_name, 1)
+              vim.notify("Skipping format on write: " .. lsp_name, 1)
               return
             end
             vim.lsp.buf.format({

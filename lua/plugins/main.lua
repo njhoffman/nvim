@@ -235,7 +235,7 @@ local plugins = {
       local cfg = {
         chunk = {
           enable = true,
-          priority = 15,
+          priority = 5,
           use_treesitter = true,
           chars = {
             horizontal_line = "─",
@@ -491,7 +491,6 @@ local plugins = {
     -- local override
     config = function()
       require("mini.jump").setup({
-        -- Module mappings. Use `''` (empty string) to disable one.
         mappings = {
           forward = "f",
           backward = "F",
@@ -499,14 +498,8 @@ local plugins = {
           backward_till = "T",
           repeat_jump = ";",
         },
-
-        -- Delay values (in ms) for different functionalities. Set any of them to
-        -- a very big number (like 10^7) to virtually disable.
         delay = {
-          -- Delay between jump and highlighting all possible jumps
-          highlight = 2500,
-
-          -- Delay between jump and automatic stop if idle (no jump is done)
+          highlight = 500,
           idle_stop = 10000000,
         },
       })
@@ -578,6 +571,7 @@ local plugins = {
   {
     "cbochs/portal.nvim",
     -- Optional dependencies
+    enabled = false,
     dependencies = {
       "cbochs/grapple.nvim",
       "ThePrimeagen/harpoon",
@@ -1493,27 +1487,27 @@ local plugins = {
       --   ]])
     end,
   },
-  {
-    "simnalamburt/vim-mundo",
-    cmd = { "MundoToggle", "MundoShow", "MundoHide" },
-    build = function()
-      vim.cmd([[UpdateRemotePlugins]])
-    end,
-    init = function()
-      vim.g.mundo_prefer_python3 = 1
-      vim.g.mundo_width = 35
-      vim.g.mundo_preview_height = 10
-      vim.g.mundo_right = 1
-      vim.g.mundo_help = 0
-      vim.g.mundo_disable = 0
-      vim.g.mundo_preview_bottom = 1
-      vim.g.mundo_close_on_revert = 0
-      vim.g.mundo_auto_preview = 1
-      vim.g.mundo_playback_delay = 60
-      -- vim.g.mundo_preview_statusline = nil
-      -- vim.g.mundo_tree_statusline = nil
-    end,
-  },
+  -- {
+  --   "simnalamburt/vim-mundo",
+  --   cmd = { "MundoToggle", "MundoShow", "MundoHide" },
+  --   build = function()
+  --     vim.cmd([[UpdateRemotePlugins]])
+  --   end,
+  --   init = function()
+  --     vim.g.mundo_prefer_python3 = 1
+  --     vim.g.mundo_width = 35
+  --     vim.g.mundo_preview_height = 10
+  --     vim.g.mundo_right = 1
+  --     vim.g.mundo_help = 0
+  --     vim.g.mundo_disable = 0
+  --     vim.g.mundo_preview_bottom = 1
+  --     vim.g.mundo_close_on_revert = 0
+  --     vim.g.mundo_auto_preview = 1
+  --     vim.g.mundo_playback_delay = 60
+  --     -- vim.g.mundo_preview_statusline = nil
+  --     -- vim.g.mundo_tree_statusline = nil
+  --   end,
+  -- },
   {
 
     "kevinhwang91/nvim-fundo",
@@ -1639,7 +1633,7 @@ local plugins = {
   },
   {
     "tzachar/highlight-undo.nvim",
-    enabled = true,
+    enabled = false,
     event = { "VeryLazy" },
   },
   {
