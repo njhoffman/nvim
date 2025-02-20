@@ -39,7 +39,6 @@ local plugins = {
     "Makaze/watch.nvim",
     cmd = { "WatchStart", "WatchStop", "WatchFile" },
   },
-  { "rasulomaroff/reactive.nvim", enabled = true, lazy = false },
   -- https://www.reddit.com/r/neovim/comments/1aupy8c/a_simple_journaling_system_built_with_mind_and/
   {
     "RutaTang/quicknote.nvim",
@@ -280,8 +279,9 @@ local plugins = {
     "kevinhwang91/nvim-ufo",
     dependencies = "kevinhwang91/promise-async",
     cmd = { "UfoEnable", "UfoAttach", "UfoEnableFold" },
-    enabled = false,
+    enabled = true,
     -- event = { 'BufReadPost', 'InsertEnter' },
+    event = { "UIEnter" },
   },
   {
     -- https://github.com/luckasRanarison/tailwind-tools.nvim
@@ -405,6 +405,7 @@ local plugins = {
       show_unknown_classes = true, -- Shows the unknown classes popup
     },
   },
+  -- https://github.com/jackplus-xyz/monaspace.nvim
   { "nyngwang/NeoZoom.lua", enabled = false, event = "VeryLazy" },
   { "matbme/JABS.nvim", event = { "BufReadPost", "BufNewFile" } },
   -- { 'ghillb/cybu.nvim', event = { 'BufRead', 'BufNewFile' } },
@@ -653,11 +654,15 @@ local plugins = {
     version = "2.*",
   },
   -- cursor
-  { "gen740/SmoothCursor.nvim", event = { "BufReadPost", "BufNewFile" } },
+  -- { "gen740/SmoothCursor.nvim", event = { "BufReadPost", "BufNewFile" } },
   {
     "sphamba/smear-cursor.nvim",
-    event = "VeryLazy",
     cond = vim.g.neovide == nil,
+  },
+  {
+    "rasulomaroff/reactive.nvim",
+    enabled = true,
+    dependencies = { "sphamba/smear-cursor.nvim" },
   },
   {
     "echasnovski/mini.animate",
@@ -978,10 +983,10 @@ local plugins = {
         "isak102/telescope-git-file-history.nvim",
         dependencies = { "tpope/vim-fugitive" },
       },
-      {
-        "fdschmidt93/telescope-egrepify.nvim",
-        dependencies = { "nvim-lua/plenary.nvim" },
-      },
+      -- {
+      --   "fdschmidt93/telescope-egrepify.nvim",
+      --   dependencies = { "nvim-lua/plenary.nvim" },
+      -- },
       {
         "prochri/telescope-all-recent.nvim",
         dependencies = { "kkharji/sqlite.lua", "telescope-ui-select.nvim", "dressing.nvim" },
@@ -1240,7 +1245,11 @@ local plugins = {
       --   })
     end,
   },
-  { "carlosrocha/chrome-remote.nvim", event = "VeryLazy" },
+  { "lucamot/chrome-remote.nvim", event = "VeryLazy" },
+  {
+    "lucamot/chrome-dev-console.nvim",
+    dependencies = { "lucamot/chrome-remote.nvim" },
+  },
   { "altermo/nxwm", event = "VeryLazy", enabled = false },
   {
     "nvim-neotest/neotest",
@@ -1404,7 +1413,159 @@ local plugins = {
       require("fzf-lua").setup({})
     end,
   },
-  { "gennaro-tedesco/nvim-jqx", lazy = true, cmd = { "JqxList", "JqxQuery" } },
+  -- curl https://til.hashrocket.com/api/developer_posts.json?username=doriankarter | jq
+  {
+    "cenk1cenk2/jq.nvim",
+    dependencies = {
+      -- https://github.com/nvim-lua/plenary.nvim
+      "nvim-lua/plenary.nvim",
+      -- https://github.com/MunifTanjim/nui.nvim
+      "MunifTanjim/nui.nvim",
+      -- https://github.com/grapp-dev/nui-components.nvim
+      "grapp-dev/nui-components.nvim",
+    },
+    config = function()
+      local defaults = {
+        log_level = vim.log.levels.INFO,
+        debounce = 25,
+        commands = {
+          { command = "jq", filetype = "json" },
+          { command = "yq", filetype = "json" },
+        },
+        ui = {
+          autoclose = true,
+          border = "single",
+          width = function(columns)
+            if columns < 120 then
+              return math.floor(columns * 0.95)
+            end
+
+            return 120
+          end,
+          height = function(lines)
+            if lines < 36 then
+              return math.floor(lines * 0.95)
+            end
+
+            return 36
+          end,
+          keymap = {
+            close = "<Esc>",
+            focus_next = "<Tab>",
+            focus_prev = "<S-Tab>",
+            focus_left = nil,
+            focus_right = nil,
+            focus_up = nil,
+            focus_down = nil,
+          },
+        },
+      }
+      require("jq").setup(defaults)
+
+      -- require("jq").run({
+      --   --- you can pass additional options to configure the current instance
+      --   -- if you want to toggle from the memory
+      --   toggle = true,
+      --   -- commands for the instance else it will use the default
+      --   -- the default command would be the first one in the table
+      --   commands = {
+      --     {
+      --       -- command to be run
+      --       command = "jq",
+      --       -- filetype of the output
+      --       filetype = "json",
+      --       -- hidden arguments that will not be shown in the ui
+      --       arguments = "-r",
+      --     },
+      --   },
+      --   -- arguments to start with in the ui
+      --   arguments = "",
+      --   -- query to start with, if not provided it will use the default
+      --   query = ".",
+      -- })
+      -- require("jq").run({
+      --   filename = "test.json",
+      --   lines = { "lines", "i", "obtained", "from", "somewhere" }
+      -- })
+    end,
+  },
+  {
+    "gennaro-tedesco/nvim-jqx",
+    event = { "BufReadPost" },
+    ft = { "json", "yaml" },
+    cmd = { "JqxList", "JqxQuery" },
+    init = function()
+      local jqx = require("nvim-jqx.config")
+      jqx.geometry.border = "single"
+      jqx.geometry.width = 0.7
+
+      jqx.query_key = "X" -- keypress to query jq on keys
+      jqx.sort = false -- show the json keys as they appear instead of sorting them alphabetically
+      jqx.show_legend = true -- show key queried as first line in the jqx floating window
+      jqx.use_quickfix = false -- if you prefer the location list
+    end,
+    -- Try it out directly with nvim examples/test.json -c JqxList.
+    -- JqxList	populate the quickfix window with json keys
+    -- JqxList string	populate the quickfix window with string values
+    -- JqxQuery	executes a generic jq query in the current file
+    -- <CR>	go to key location in file
+    -- X	query values of key under cursor
+    -- <Esc>	close floating window
+    -- Why not automatically formatting your json files as you open them? Set up the autogroup
+    -- local jqx = vim.api.nvim_create_augroup("Jqx", {})
+    -- vim.api.nvim_clear_autocmds({ group = jqx })
+    -- vim.api.nvim_create_autocmd("BufWinEnter", {
+    -- pattern = { "*.json", "*.yaml" },
+    -- desc = "preview json and yaml files on open",
+    -- group = jqx,
+    -- callback = function()
+    -- vim.cmd.JqxList()
+    -- end,
+    -- })
+  },
+  {
+    "yochem/jq-playground.nvim",
+    config = function()
+      local cfg = {
+        cmd = { "jq" }, -- gojq, jaq
+        output_window = {
+          split_direction = "right",
+          width = nil,
+          height = nil,
+        },
+        query_window = {
+          split_direction = "bottom",
+          width = nil,
+          height = 0.3,
+        },
+        disable_default_keymap = false,
+      }
+      -- -- start the playground
+      -- vim.keymap.set("n", "<leader>jq", vim.cmd.JqPlayground)
+      --
+      -- -- when in the query window, run the jq query
+      -- vim.keymap.set("n", "R", "<Plug>(JqPlaygroundRunQuery)")
+      -- :JqPlayground sample.json
+      -- Some random tips that you may find useful while using this plugin.
+      --
+      -- If you have a saved jq program that you want to load into the filter window, then run:
+      --
+      -- :r path/to/some/query.jq
+      -- If you want to save the current query or output json, navigate to that buffer and run:
+      --
+      -- :w path/to/save/query.jq
+      -- " or:
+      -- :w path/to/save/output.json
+      -- Start the JQ editor from the command line without loading the input file:
+      --
+      -- $ nvim +'JqPlayground input.json'
+      -- $ # or put this in your bashrc:
+      -- $ jqplay() { nvim +"JqPlayground $1"; }
+    end,
+    opts = {
+      cmd = { "gojq" },
+    },
+  },
   {
     "linrongbin16/fzfx.nvim",
     dependencies = {

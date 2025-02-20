@@ -21,7 +21,7 @@ local split = function(lines, title)
 end
 
 local notify = function(lines, title, highlights)
-  require("notify")(lines, 2, {
+  require("notify").notify(lines, "inspect", {
     timeout = 10000,
     title = { title, "" },
     -- render = 'default',
@@ -32,16 +32,8 @@ local notify = function(lines, title, highlights)
       title = "NotifyINFOTitle",
       inline = highlights,
     },
-    -- hide_from_history = true,
+    hide_from_history = true,
   })
-  -- require("notify")(lines, 2, {
-  --   timeout = 10000,
-  --   title = { title, "" },
-  --   render = "default",
-  --   -- render = "simple",
-  --   body_highlights = highlights,
-  --   hide_from_history = true,
-  -- })
 end
 
 return {
@@ -51,27 +43,3 @@ return {
   buffer = buffer,
   popup = popup,
 }
--- [1] = {
---     [1] = "Keyword",
---     [2] = 0,
---     [3] = 0,
---     [4] = 6
--- },
--- [2] = {
---     [1] = "Comment",
---     [2] = 0,
---     [3] = 7,
---     [4] = 24
--- },
--- [3] = {
---     [1] = "Operator",
---     [2] = 1,
---     [3] = 0,
---     [4] = 15
--- },
--- [4] = {
---     [1] = "Comment",
---     [2] = 1,
---     [3] = 23,
---     [4] = 32
--- }

@@ -1,4 +1,4 @@
--- local utils = require('configs.chrome-remote.utils')
+local utils = require("configs.chrome-remote.utils")
 -- -- lua.chrome-remote.base6
 -- local basepath = 'configs.chrome-remote.modules'
 -- -- https://github.com/cyrus-and/chrome-remote-interface
@@ -11,13 +11,14 @@
 --   -- restart = require(basepath .. 'restart'),
 --   inspect = require(basepath .. '.inspect'),
 -- }
---
--- require('chrome-remote').setup({
---   connection = {
---     host = 'localhost',
---     port = 9222,
---   },
--- })
+
+-- https://theosteiner.de/debugging-javascript-frameworks-in-neovim
+require("chrome-remote").setup({
+  connection = {
+    host = "localhost",
+    port = 9222,
+  },
+})
 --
 -- vim.api.nvim_create_user_command(
 --   'ChromeInspect',

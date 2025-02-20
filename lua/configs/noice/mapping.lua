@@ -53,9 +53,9 @@ local setup = function()
   -- vim.keymap.set({ 'n', 'i', 's' }, '<C-S-Down>', scroll_lsp_popups('<C-S-Down>', 2), { silent = true, expr = true })
 
   -- Adding the following keymap, will redirect the active cmdline when pressing <S-Enter>. The cmdline stays open, so you can change the command and execute it again. When exiting the cmdline, the popup window will be focused.
-  vim.keymap.set("c", "<S-Enter>", function()
-    require("noice").redirect(vim.fn.getcmdline())
-  end, { desc = "Redirect Cmdline" })
+  -- vim.keymap.set("c", "<S-Enter>", function()
+  --   require("noice").redirect(vim.fn.getcmdline())
+  -- end, { desc = "Redirect Cmdline" })
 end
 
 return { setup = setup }

@@ -8,7 +8,6 @@ return {
   layout_strategy = "flex",
   layout_config = {
     prompt_position = "top",
-    mirror = true,
     preview_cutoff = 20,
     bottom_pane = {
       height = 25,
@@ -28,14 +27,15 @@ return {
       -- flip_lines = 40,
       horizontal = {
         height = 0.7,
+        mirror = false,
       },
       vertical = {
+        mirror = true,
         height = 0.9,
       },
     },
   },
   dynamic_preview_title = true,
-  hidden = true,
   no_ignore = false,
   preview = {
     hide_on_startup = vim.o.columns > 80,

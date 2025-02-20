@@ -2,15 +2,6 @@ local set_option = vim.api.nvim_set_option_value
 
 -- turn off relative or all line numbering depending on conditions
 
--- autocmds.NumberToggle = {
---   {
---     { 'BufEnter', 'FocusGained', 'InsertLeave' },
---     '*',
---     "if &readonly != 1 && &buftype != 'prompt' && &filetype != 'nofile' && &buftype != 'nofile' && &buftype != 'quickfix' | set relativenumber | endif",
---   },
---   { { 'BufLeave', 'FocusLost', 'InsertEnter' }, '*', 'set norelativenumber' },
--- }
-
 -- -- Don't want relative no on inactive Windows
 -- local relativeNo = vim.api.nvim_create_augroup('RelativeNo', { clear = true })
 -- vim.api.nvim_create_autocmd({ 'BufNew', 'BufEnter', 'FocusGained', 'InsertLeave' }, {
@@ -34,8 +25,8 @@ local set_option = vim.api.nvim_set_option_value
 
 local line_numbers = function(ev)
   local num_off = {
-    filetypes = { 'nofile' },
-    buftypes = { 'nofile', 'quickfix', 'prompt' },
+    filetypes = { "nofile" },
+    buftypes = { "nofile", "quickfix", "prompt" },
   }
 
   -- local winid = vim.fn.bufwinid(ev.buf)
@@ -66,17 +57,17 @@ end
 local handle_special = function()
   vim.defer_fn(function()
     -- no list chars in special buffers
-    if vim.bo.buftype ~= '' and vim.bo.ft ~= 'query' then
+    if vim.bo.buftype ~= "" and vim.bo.ft ~= "query" then
       disable_list()
     end
   end, 1)
 end
 
 local highlight_yank = function()
-  if vim.v.event.operator == 'y' then
+  if vim.v.event.operator == "y" then
     -- Highlight the yanked area
     vim.highlight.on_yank({
-      hlgroup = 'Visual', -- IncRename
+      hlgroup = "Visual", -- IncRename
       on_visual = true,
       on_macro = true,
       timeout = 150,
@@ -85,20 +76,20 @@ local highlight_yank = function()
 end
 
 local goto_last_pos = function(bufnr)
-  local logger = require('logger').init('buffers')
+  local logger = require("logger").init("buffers")
   local options = {
     open_folds = 1,
     ignore = {
-      buftypes = { 'quickfix', 'nofile', 'help' },
-      filetypes = { 'gitcommit', 'gitrebase', 'svn', 'hgcommit' },
+      buftypes = { "quickfix", "nofile", "help" },
+      filetypes = { "gitcommit", "gitrebase", "svn", "hgcommit" },
     },
   }
 
   -- scroll to line if included in startup args
   if vim.v.vim_did_enter == 0 then
     local last_arg = vim.v.argv[#vim.v.argv]
-    if last_arg:match('^%+%d+$') then
-      return vim.api.nvim_command('keepjumps normal ' .. last_arg:gsub('%+', '') .. 'G')
+    if last_arg:match("^%+%d+$") then
+      return vim.api.nvim_command("keepjumps normal " .. last_arg:gsub("%+", "") .. "G")
     end
   end
 
@@ -106,15 +97,15 @@ local goto_last_pos = function(bufnr)
   local pos = {
     exit_line = vim.fn.line([['"]], winid),
     exit_col = vim.fn.col([['"]], winid),
-    buf_last = vim.fn.line('$', winid),
-    win_first = vim.fn.line('w0', winid),
-    win_last = vim.fn.line('w$', winid),
+    buf_last = vim.fn.line("$", winid),
+    win_first = vim.fn.line("w0", winid),
+    win_last = vim.fn.line("w$", winid),
   }
 
   local buf = {
     name = vim.api.nvim_buf_get_name(bufnr),
-    type = vim.api.nvim_get_option_value('buftype', { buf = bufnr }),
-    ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr }),
+    type = vim.api.nvim_get_option_value("buftype", { buf = bufnr }),
+    ft = vim.api.nvim_get_option_value("filetype", { buf = bufnr }),
   }
 
   if
@@ -122,13 +113,13 @@ local goto_last_pos = function(bufnr)
     or vim.tbl_contains(options.ignore.filetypes, buf.ft)
   then
     return logger:debug(
-      'restore skip (' .. bufnr .. ') - ' .. buf.name .. ' ' .. buf.type .. ' ' .. buf.ft
+      "restore skip (" .. bufnr .. ") - " .. buf.name .. " " .. buf.type .. " " .. buf.ft
     )
   end
 
   -- if the last line is set and the less than the last line in the buffer
   if pos.exit_line > 0 and pos.exit_line <= pos.buf_last then
-    logger:debug('restore (' .. bufnr .. ') ' .. pos.exit_line .. ':' .. pos.exit_col)
+    logger:debug("restore (" .. bufnr .. ") " .. pos.exit_line .. ":" .. pos.exit_col)
     if pos.win_last == pos.buf_last then
       vim.api.nvim_command([[keepjumps normal! g`"]])
     elseif pos.buf_last - pos.exit_line > ((pos.win_last - pos.win_first) / 2) - 1 then
@@ -138,7 +129,7 @@ local goto_last_pos = function(bufnr)
     end
   end
 
-  if vim.fn.foldclosed(vim.fn.line('.')) ~= -1 and options.open_folds == 1 then
+  if vim.fn.foldclosed(vim.fn.line(".")) ~= -1 and options.open_folds == 1 then
     vim.api.nvim_command([[normal! zvzz]])
   end
   --  -- vim.api.nvim_command('keepjumps normal ' .. pos[2] .. 'G')
@@ -151,8 +142,8 @@ local restore_cursor = function(opts)
   -- last selected position  '< and '>  last position before jump  '' ``
   -- last exited position    '" `"      last change position       '. `.
   -- last insert position    '^ `^      last affected text area    '[ and ']
-  vim.api.nvim_create_autocmd('BufWinEnter', {
-    group = 'RestoreCursor',
+  vim.api.nvim_create_autocmd("BufWinEnter", {
+    group = "RestoreCursor",
     buffer = opts.buf,
     callback = function()
       goto_last_pos(opts.buf)

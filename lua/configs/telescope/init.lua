@@ -50,10 +50,10 @@ local basecfg = {
     "%.plist$",
     -- other ignores are defined via .gitignore, .ignore, /fd/ignore, or /git/ignore
   },
-  grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-  file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-  qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
-  buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
+  -- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+  -- file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+  -- qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+  -- buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
 }
 local layout_config = vim.tbl_deep_extend("force", basecfg, require("telescope._layouts.default"))
 local telescope_config = {

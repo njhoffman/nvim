@@ -83,6 +83,6 @@ local start = function(opts)
   end
 end
 
-start({ watch = true })
+-- start({ watch = true })
 
--- return { start = start }
+return { start = start }

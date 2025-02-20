@@ -1,16 +1,20 @@
 local set_window_title = function()
-	if not os.getenv("TMUX") then os.execute("tmux setenv custom_path " .. vim.fn.getcwd()) end
-	local path = vim.split(vim.fn.getcwd(), "/", {})
-	vim.opt.titlestring = [[%{v:progname}: ]] .. vim.fn.join({ path[#path - 1], path[#path] }, "/")
-	vim.opt.title = true
+  if not os.getenv("TMUX") then
+    os.execute("tmux setenv custom_path " .. vim.fn.getcwd())
+  end
+  local path = vim.split(vim.fn.getcwd(), "/", {})
+  vim.opt.titlestring = [[%{v:progname}: ]] .. vim.fn.join({ path[#path - 1], path[#path] }, "/")
+  vim.opt.title = true
 end
 
 vim.api.nvim_create_autocmd({ "DirChanged", "VimEnter" }, {
-	group = vim.api.nvim_create_augroup("UpdateDirectory", { clear = true }),
-	callback = function()
-		local scope = vim.v.event.scope
-		if scope == nil or scope == "global" then set_window_title() end
-	end,
+  group = vim.api.nvim_create_augroup("UpdateDirectory", { clear = true }),
+  callback = function()
+    local scope = vim.v.event.scope
+    if scope == nil or scope == "global" then
+      set_window_title()
+    end
+  end,
 })
 
 -- better jumplists, keepjumps, lock
@@ -59,10 +63,12 @@ vim.fn.mkdir(backupdir, "p")
 vim.opt.backupdir = backupdir .. "//"
 vim.opt.backup = true
 vim.api.nvim_create_autocmd("BufWritePre", {
-	group = vim.api.nvim_create_augroup("VimBackup", { clear = true }),
-	desc = "Add timestamp to backup extension",
-	pattern = "*",
-	callback = function() vim.opt.backupext = "-" .. vim.fn.strftime("%Y%m%d%H%M") end,
+  group = vim.api.nvim_create_augroup("VimBackup", { clear = true }),
+  desc = "Add timestamp to backup extension",
+  pattern = "*",
+  callback = function()
+    vim.opt.backupext = "-" .. vim.fn.strftime("%Y%m%d%H%M")
+  end,
 })
 --
 -- M.reload_lua = function()
@@ -107,58 +113,71 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 -- close some filetypes with q or <esc>
 local quick_close = function(event)
-	-- vim.bo[event.buf].buflisted = false
-	vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-	vim.keymap.set("n", "<esc>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+  -- vim.bo[event.buf].buflisted = false
+  vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+  vim.keymap.set("n", "<esc>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
 end
 
 -- close some filetypes with q or ctrl-shift-esc
 local long_close = function(event)
-	vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-	vim.keymap.set("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+  -- vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "", {
+  -- callback = function()
+  -- vim.api.nvim_command("close")
+  -- end,
+  -- })
+  vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+  vim.keymap.set("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
 end
 
 local winclose_group = vim.api.nvim_create_augroup("WinClose_q", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
-	group = winclose_group,
-	pattern = {
-		"NvimTree",
-		"PlenaryTestPopup",
-		"lspinfo",
-		-- "man",
-		"noice",
-		"startuptime",
-	},
-	callback = quick_close,
+  group = winclose_group,
+  pattern = {
+    "NvimTree",
+    "PlenaryTestPopup",
+    "checkhealth",
+    "fugitive",
+    "lspinfo",
+    -- "man",
+    "noice",
+    "startuptime",
+    "vim",
+    -- "",
+  },
+  callback = quick_close,
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	group = winclose_group,
-	pattern = {
-		"Mundo",
-		"MundoDiff",
-		"dashboard",
-		"fugitive",
-		"help",
-		"neo-tree",
-		"tablegen",
-		"qf",
-		"query",
-		"spectre_panel",
-		"tsplayground",
-	},
-	callback = long_close,
+  group = winclose_group,
+  pattern = {
+    "Mundo",
+    "MundoDiff",
+    "dashboard",
+    "help",
+    "neo-tree",
+    "qf",
+    "query",
+    "spectre_panel",
+    "tablegen",
+    "tsplayground",
+  },
+  callback = long_close,
 })
 
 -- close some buftypes with q or esc
-vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
-	group = winclose_group,
-	callback = function(event)
-		local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
-		local wintype = vim.fn.win_gettype(vim.fn.bufwinid(event.buf))
-		-- vim.dbglog(event, "\n", buftype, wintype)
-		-- if buftype == "nofile" and wintype == "popup" then quick_close(event) end
-	end,
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+  group = winclose_group,
+  callback = function(event)
+    local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
+    local wintype = vim.fn.win_gettype(vim.fn.bufwinid(event.buf))
+    local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
+
+    if buftype == "nofile" and wintype == "popup" then
+      quick_close(event)
+    elseif filetype == "" then
+      quick_close(event)
+    end
+  end,
 })
 
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
@@ -188,27 +207,11 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
-	group = vim.api.nvim_create_augroup("resize_splits", { clear = true }),
-	callback = function() vim.cmd("tabdo wincmd =") end,
+  group = vim.api.nvim_create_augroup("resize_splits", { clear = true }),
+  callback = function()
+    vim.cmd("tabdo wincmd =")
+  end,
 })
-
--- Buffer
-local file_pattern = {
-	"*.css",
-	"*.fish",
-	"*.html",
-	"*.json",
-	"*.lua",
-	"*.md",
-	"*.rb",
-	"*.sass",
-	"*.scss",
-	"*.sh",
-	"*.ts",
-	"Dockerfile",
-	"docker-compose.yaml",
-	"*.cpp",
-}
 
 -- local cursor_line = vim.api.nvim_create_augroup('BufferDetectChanges', {})
 -- autocmd({ 'FocusGained', 'BufEnter' }, {
@@ -219,106 +222,6 @@ local file_pattern = {
 --   end,
 -- })
 --
-
-local remove_eol_comments = function(comment_syntax, lines)
-	if not lines then
-		local cur_pos = vim.api.nvim_win_get_cursor(0)
-		vim.api.nvim_command("%s/" .. comment_syntax .. ".*//g")
-		vim.api.nvim_win_set_cursor(0, cur_pos)
-		return ""
-	else
-		for i, line in ipairs(lines) do
-			lines[i] = line:gsub(comment_syntax .. ".*", "")
-		end
-		return lines
-	end
-end
-
-local remove_eol_comments_ft = function(lines)
-	local ft = vim.bo.filetype
-	if ft == "javascript" or ft == "c" or ft == "cpp" then
-		remove_eol_comments("//", lines)
-	elseif ft == "lua" then
-		remove_eol_comments("--", lines)
-	elseif ft == "python" then
-		remove_eol_comments("#", lines)
-	else
-		print("Unrecognized filetype.")
-	end
-end
-
-local get_current_lines = function()
-	local cursor = vim.api.nvim_win_get_cursor(0)
-
-	-- local current_line = vim.fn.trim(
-	--   remove_eol_comments_ft(vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1])
-	-- ) or ''
-	local current_line = vim.fn.trim(
-		remove_eol_comments_ft(vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1]) or ""
-	)
-end
-
-local get_last_char = function(chars, opts)
-	return function()
-		opts = opts or {}
-		chars = type(chars) == "string" and { chars } or (type(chars) == "table" and chars) or {}
-		local key = type(chars) == "table" and chars[1] or chars
-		local mode = opts.mode or (vim.tbl_isempty(chars) and "strip") or "toggle"
-
-		local last_character = current_line and current_line:sub(-1) or ""
-		local to_remove, to_append = "", ""
-
-		if mode == "toggle" then
-			to_append = key
-			for _, char in ipairs(chars) do
-				if char == last_character then
-					to_remove = char
-					to_append = ""
-				end
-			end
-		elseif mode == "append" then
-			to_append = vim.fn.nr2char(vim.fn.getchar())
-		elseif mode == "strip" then
-			to_remove = last_character
-			vim.dbglog("remove", to_remove)
-			to_append = ""
-		end
-
-		if to_remove ~= "" then
-			-- remove last matching of to_remove
-			current_line = current_line:sub(1, #current_line - #to_remove)
-		end
-		current_line = current_line .. to_append
-		vim.api.nvim_buf_set_lines(0, cursor[1] - 1, cursor[1], true, { current_line })
-		vim.cmd('silent! normal "0=="')
-		vim.api.nvim_win_set_cursor(0, { cursor[1], cursor[2] })
-	end
-end
-
-local trail_chars = { ",", ";", ")", "'", '"', "|", "\\", ".", "}" }
-
--- -- strip last character
--- vim.keymap.set("n", "<leader>$", get_last_char(), { desc = "ﲖ strip end characters" })
--- -- append provided end character
--- vim.keymap.set(
---   "n",
---   "<leader>A",
---   get_last_char(_, { mode = "append" }),
---   { desc = "ﲖ append end character" }
--- )
---
--- -- toggle provided end character
--- -- vim.keymap.set('n', '<leader>a', get_last_char(_, { mode = 'toggle' }), {
--- --   desc = 'ﲖ toggle ' .. char .. ' end character',
--- -- })
---
--- -- toggle common end characters
--- vim.keymap.set(
---   "n",
---   "<leader>a",
---   get_last_char(trail_chars),
---   { desc = 'ﲖ toggle end characters: ,;)"|\\.}' }
--- )
 --
 -- local all_filetypes = augroup('AllFileTypesLocalOptions')
 -- autocmd({ 'FileType' }, {
@@ -361,15 +264,8 @@ local trail_chars = { ",", ";", ")", "'", '"', "|", "\\", ".", "}" }
 --   end,
 -- })
 
--- if config.autocommands.relnum_in_visual_mode and vim.fn.exists('##ModeChanged') == 1 then
---    -- Show relative line numbers only when they matter (linewise and blockwise
---    -- selection) and 'number' is set (avoids horizontal flickering)
---    vim.cmd([[autocmd ModeChanged *:[V\x16]* let &l:relativenumber = &l:number == 1]])
---    -- - Using `mode () =~#...` handles switching between linewise and blockwise mode.
---    vim.cmd([[autocmd ModeChanged [V\x16]*:* let &l:relativenumber = mode() =~# '^[V\x16]']])
---  end
-
 -- #{?pane_in_mode,#[fg=white#,bg=red],#[fg=red#,bg=white]}#W .
+
 vim.cmd([[
   command! SqlVis silent !tmux display-popup -b rounded -S 'fg=\#2255AA' -T '' -E -h 70\% -w90\% "psql --csv postgres://spadash:spadash@localhost/spadash --file=%:p | /bin/zsh -c 'vd -f csv --color-default=\"8 on black\" '"
 ]])

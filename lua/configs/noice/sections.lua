@@ -18,7 +18,7 @@ local popupmenu = {
 }
 
 local redirect = {
-  view = "cmdline_output",
+  view = "popup",
   filter = { event = "msg_show" },
 }
 

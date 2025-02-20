@@ -24,6 +24,7 @@ for _, mod_name in ipairs({
   "tracker.setup",
   "tmux.setup",
   "configs.registers",
+  "configs.smoothcursor",
   -- 'configs.nvim-scrollbar',
   -- 'configs.neoscroll',
   -- "action-hints.setup",

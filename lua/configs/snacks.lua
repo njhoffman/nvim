@@ -264,7 +264,6 @@ local scratch_cfg = {
 local toggle_cfg = {
   ---@class snacks.toggle.Config
   ---@field icon? string|{ enabled: string, disabled: string }
-  ---@field color? string|{ enabled: string, disabled: string }
   map = vim.keymap.set, -- keymap.set function to use
   which_key = true, -- integrate with which-key to show enabled/disabled icons and colors
   notify = true, -- show a notification when toggling
@@ -312,8 +311,8 @@ local cfg = {
   bigfile = { enabled = true },
   dashboard = { enabled = false },
   debug = { enabled = true },
-  profiler = { enabled = true },
   notifier = { enabled = false, timeout = 3000 },
+  profiler = { enabled = true },
   quickfile = { enabled = false },
   scroll = {
     enabled = false,
@@ -364,6 +363,8 @@ local cfg = {
     height = 0.4,
     width = 0.4,
   },
+  input = { enabled = true },
+  picker = { enabled = true },
   statuscolumn = { enabled = false },
   toggle = { enabled = true },
   words = {

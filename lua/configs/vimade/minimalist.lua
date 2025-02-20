@@ -7,9 +7,38 @@ local FADE = require("vimade.style.fade")
 local TINT = require("vimade.style.tint")
 local TYPE = require("vimade.util.type")
 
-local EXCLUDE_NAMES = { "LineNr", "LineNrBelow", "LineNrAbove", "WinSeparator", "EndOfBuffer" }
-local NO_VISIBILITY_NAMES = { "LineNr", "LineNrBelow", "LineNrAbove", "EndOfBuffer" }
-local LOW_VISIBILITY_NAMES = { "WinSeparator" }
+local EXCLUDE_NAMES = {
+  -- "CursorLineNr",
+  -- "ReactiveCursorLineNr",
+  -- "ReactiveCursorLineNr@preset.cursorline.@mode.i",
+  -- "ReactiveCursorLineNr@preset.cursorline.@mode.n",
+  -- "ReactiveCursorLineNr@preset.cursorline.@mode.no",
+  -- "ReactiveCursorLineNr@preset.cursorline.@mode.no.@op.d",
+  -- "ReactiveCursorLine@preset.cursorline.@static.current",
+  -- "ReactiveCursorLine",
+  "LineNr",
+  "LineNrBelow",
+  "LineNrAbove",
+  "WinSeparator",
+  "EndOfBuffer",
+}
+local NO_VISIBILITY_NAMES = {
+  -- "CursorLineNr",
+  -- "ReactiveCursorLineNr",
+  -- "ReactiveCursorLineNr@preset.cursorline.@mode.i",
+  -- "ReactiveCursorLineNr@preset.cursorline.@mode.n",
+  -- "ReactiveCursorLineNr@preset.cursorline.@mode.no",
+  -- "ReactiveCursorLineNr@preset.cursorline.@mode.no.@op.d",
+  -- "ReactiveCursorLine@preset.cursorline.@static.current",
+  -- "ReactiveCursorLine",
+  "LineNr",
+  "LineNrBelow",
+  "LineNrAbove",
+  "EndOfBuffer",
+}
+local LOW_VISIBILITY_NAMES = {
+  "WinSeparator",
+}
 
 local animate_minimalist = function(config)
   local animation = {

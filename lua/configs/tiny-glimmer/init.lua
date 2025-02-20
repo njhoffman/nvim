@@ -1,12 +1,21 @@
 local glimmer = require("tiny-glimmer")
-
--- default_animation = "fade",
--- refresh_interval_ms = 6,
+-- https://github.com/rachartier/tiny-glimmer.nvim/issues/21
 
 local cfg = {
-  -- transparency_color = "#000000",
+  disable_warnings = false,
+  refresh_interval_ms = 1,
   -- transparency_color = nil,
-  default_animation = "fade",
+  transparency_color = "#000000",
+  default_animation = {
+    name = "fade",
+    settings = {
+      max_duration = 1000,
+      min_duration = 1000,
+      from_color = "DiffDelete",
+      -- to_color = "Normal",
+    },
+  },
+
   presets = {
     pulsar = {
       enabled = true,
@@ -16,9 +25,9 @@ local cfg = {
         settings = {
           max_duration = 1000,
           min_duration = 1000,
-          from_color = "TinyGlimmerPulsarFrom",
-          to_color = "TinyGlimmerPulsarTo",
-          -- from_color = "Visual",
+          -- from_color = "TinyGlimmerPulsarFrom",
+          -- to_color = "TinyGlimmerPulsarTo",
+          from_color = "Visual",
           -- to_color = "Normal",
           -- from_color = "DiffDelete",
           -- to_color = "Normal",
@@ -30,26 +39,39 @@ local cfg = {
     support = {
       substitute = {
         enabled = true,
-        default_animation = {
-          name = "fade",
-          -- default_animation = "left_to_right",
-          from_color = "TinyGlimmerSubFrom",
-          to_color = "TinyGlimmerSubTo",
-        },
+        -- default_animation = {
+        --   name = "left_to_right",
+        --   --   -- name = "bounce",
+        --   settings = {
+        --     -- max_duration = 350,
+        --     -- min_duration = 350,
+        --     -- min_progress = 0.85,
+        --     -- chars_for_max_duration = 25,
+        --     -- lingering_time = 50,
+        --     max_duration = 600,
+        --     min_duration = 600,
+        --     lingering_time = 200,
+        --     from_color = "TinyGlimmerSubFrom",
+        --     -- to_color = "TinyGlimmerSubTo",
+        --   },
+        -- },
       },
     },
   },
   overwrite = {
     search = {
       enabled = true,
-      default_animation = "pulse",
-      from_color = "TinyGlimmerSearchFrom",
-      to_color = "TinyGlimmerSearchTo",
-      max_duration = 600,
-      min_duration = 400,
-      chars_for_max_duration = 15,
-      pulse_count = 2,
-      intensity = 1.2,
+      default_animation = {
+        name = "pulse",
+        settings = {
+          from_color = "TinyGlimmerSearchFrom",
+          to_color = "TinyGlimmerSearchTo",
+          max_duration = 600,
+          min_duration = 400,
+          -- pulse_count = 2,
+          -- intensity = 1.2,
+        },
+      },
     },
     undo = {
       enabled = true,
@@ -61,7 +83,7 @@ local cfg = {
           min_duration = 500,
         },
       },
-      undo_mapping = "u",
+      -- undo_mapping = "u",
     },
     redo = {
       enabled = true,
@@ -73,7 +95,7 @@ local cfg = {
           min_duration = 500,
         },
       },
-      redo_mapping = "<c-r>",
+      -- redo_mapping = "<c-r>",
     },
     paste = {
       enabled = true,
@@ -85,31 +107,90 @@ local cfg = {
           max_duration = 400,
           min_duration = 300,
           from_color = "TinyGlimmerPasteFrom",
-          to_color = "TinyGlimmerPasteTo",
+          -- to_color = "TinyGlimmerPasteTo",
         },
       },
     },
+    yank = {
+      enabled = true,
+      default_animation = {
+        -- name = "bounce",
+        name = "pulse",
+        settings = {
+          max_duration = 400,
+          min_duration = 200,
+          chars_for_max_duration = 15,
+          pulse_count = 2,
+          intensity = 0.8,
+          from_color = "TinyGlimmerYankFrom",
+          -- to_color = "TinyGlimmerYankTo",
+        },
+      },
+    },
+  },
+  virt_text = {
+    priority = 2048,
   },
 }
 
 glimmer.setup(cfg)
 
-local factory = require("tiny-glimmer.animation.factory")
-
-local _manage_animation = factory._manage_animation
--- AnimationFactory:_manage_animation(animation_obj, buffer)
-local namespace = require("tiny-glimmer.namespace")
-
-local manage_animation = function(self, animation_obj, buffer)
-  if not vim.api.nvim_buf_is_valid(buffer) then
-    vim.dbglog("closing buffer", buffer, self.buffers)
-    vim.api.nvim_buf_clear_namespace(0, namespace.tiny_glimmer_animation_ns, 0, -1)
-    self.buffers[buffer] = nil
-    vim.dbglog(self.buffers)
-    -- self.buffers[buffer].animations[line_key]:stop()
-  else
-    _manage_animation(self, animation_obj, buffer)
+local view_buffers = function()
+  local buffers = require("tiny-glimmer.animation.factory").instance.buffers
+  local empty = {}
+  for bufnr, bufobj in pairs(buffers) do
+    if bufobj.animations == {} and bufobj.named_animations == {} then
+      table.insert(empty, bufnr)
+    else
+      vim.dbglog(bufnr, bufobj)
+    end
   end
+  vim.dbglog(empty)
 end
 
-factory._manage_animation = manage_animation
+local namespace = require("tiny-glimmer.namespace").tiny_glimmer_animation_ns
+local animation = require("tiny-glimmer.glimmer_animation")
+local orig_cleanup = animation.cleanup
+animation.cleanup = function(self)
+  -- self.active = false
+  if not vim.api.nvim_buf_is_valid(self.buffer) or not vim.api.nvim_buf_is_loaded(self.buffer) then
+    -- vim.dbglog("buffer not valid", self.buffer)
+    vim.api.nvim_buf_clear_namespace(0, namespace, self.range.start_line, self.range.end_line + 1)
+    self.reserved_ids = {}
+  end
+
+  for _, id in ipairs(self.reserved_ids) do
+    vim.api.nvim_buf_del_extmark(self.buffer, namespace, id)
+  end
+
+  orig_cleanup(self)
+end
+
+-- require('tiny-glimmer').enable()  -- Enable animations
+-- require('tiny-glimmer').disable() -- Disable animations
+-- require('tiny-glimmer').toggle()  -- Toggle animations
+
+-- --- Change highlight
+-- --- @param animation_name string|string[] The animation name. Can be a string or a table of strings.
+-- ---    If a table is passed, each animation will have their highlight changed.
+-- ---    If a string is passed, only the provided animation have their highlight changed.
+-- ---    You can pass 'all' to change all animations.
+-- --- @param hl table The highlight configuration
+-- -- Examples:
+-- -- require('tiny-glimmer').change_hl('fade', { from_color = '#FF0000', to_color = '#0000FF' })
+-- -- require('tiny-glimmer').change_hl('all', { from_color = '#FF0000', to_color = '#0000FF' })
+-- -- require('tiny-glimmer').change_hl({'fade', 'pulse'}, { from_color = '#FF0000', to_color = '#0000FF' })
+-- require('tiny-glimmer').change_hl(animation_name, hl)
+
+-- -- When overwrite.search.enabled is true
+-- require('tiny-glimmer').search_next() -- Same as `n`
+-- require('tiny-glimmer').search_prev() -- Same as `N`
+-- require('tiny-glimmer').search_under_cursor() -- Same as `*`
+
+-- -- When overwrite.paste.enabled is true
+-- require('tiny-glimmer').paste() -- Same as `p`
+-- require('tiny-glimmer').Paste() -- Same as `P`
+
+-- -- Undo operations (requires undo.enabled = true)
+-- require('tiny-glimmer').undo()   -- Undo changes
+-- require('tiny-glimmer').redo()   -- Redo changes

@@ -29,6 +29,9 @@ reactive.setup({
 
 local cursorline_preset = require("configs.reactive.cursorline")
 reactive.add_preset(cursorline_preset)
+
+-- https://github.com/rasulomaroff/reactive.nvim/issues/15
+
 -- local cursor_preset = require("configs.reactive.cursor")
 -- require("reactive").add_preset(cursor_preset)
 

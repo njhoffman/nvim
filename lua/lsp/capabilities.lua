@@ -1,9 +1,9 @@
-local lspdefs = require('lsp.definitions')
-local windows = require('lspconfig.ui.windows')
-local handlers = require('lsp.handlers')
-local logger = require('logger').init('lsp')
+local lspdefs = require("lsp.definitions")
+local windows = require("lsp.windows")
+local handlers = require("lsp.handlers")
+local logger = require("logger").init("lsp")
 
-windows.default_options = { border = 'rounded' }
+windows.default_options = { border = "rounded" }
 
 local function close_preview_window(winnr, bufnrs)
   vim.schedule(function()
@@ -12,20 +12,20 @@ local function close_preview_window(winnr, bufnrs)
       return
     end
 
-    local augroup = 'preview_window_' .. winnr
+    local augroup = "preview_window_" .. winnr
     pcall(vim.api.nvim_del_augroup_by_name, augroup)
     pcall(vim.api.nvim_win_close, winnr, true)
   end)
 end
 
 local function close_preview_autocmd(events, winnr, bufnrs)
-  local augroup = vim.api.nvim_create_augroup('preview_window_' .. winnr, {
+  local augroup = vim.api.nvim_create_augroup("preview_window_" .. winnr, {
     clear = true,
   })
 
   -- close the preview window when entered a buffer that is not
   -- the floating window buffer or the buffer that spawned it
-  vim.api.nvim_create_autocmd('BufEnter', {
+  vim.api.nvim_create_autocmd("BufEnter", {
     group = augroup,
     callback = function()
       close_preview_window(winnr, bufnrs)
@@ -71,36 +71,36 @@ local function show_capabilities()
     end
 
     local lines = {
-      'Client: ' .. client.name .. ' (id ' .. tostring(client.id) .. ')',
+      "Client: " .. client.name .. " (id " .. tostring(client.id) .. ")",
     }
     for _, key in ipairs(vim.fn.sort(filtered)) do
-      table.insert(lines, '      ' .. key)
+      table.insert(lines, "      " .. key)
     end
     for _, key in ipairs(vim.fn.sort(skipped)) do
-      table.insert(lines, '    󰍴  ' .. key)
+      table.insert(lines, "    󰍴  " .. key)
     end
     return lines
   end
 
   for _, client in ipairs(buf_clients) do
     vim.list_extend(buf_lines, make_client_info(client))
-    vim.list_extend(buf_lines, { '' })
+    vim.list_extend(buf_lines, { "" })
   end
 
-  vim.api.nvim_win_set_option(win_id, 'wrap', true)
+  vim.api.nvim_win_set_option(win_id, "wrap", true)
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, buf_lines)
-  vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
-  vim.api.nvim_buf_set_option(bufnr, 'filetype', 'lspinfo')
+  vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
+  vim.api.nvim_buf_set_option(bufnr, "filetype", "lspinfo")
   -- vim.api.nvim_set_hl(0, 'LspInfoBorder', { link = 'LspFloatWinBorder' })
   local configs_pattern = [[\%(]] .. table.concat(buf_client_names, [[\|]]) .. [[\)]]
-  vim.cmd([[syntax match Title /\%(Client\):.*\zs]] .. configs_pattern .. '/')
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<esc>', '<cmd>bd<CR>', { noremap = true })
+  vim.cmd([[syntax match Title /\%(Client\):.*\zs]] .. configs_pattern .. "/")
+  vim.api.nvim_buf_set_keymap(bufnr, "n", "<esc>", "<cmd>bd<CR>", { noremap = true })
   -- close_preview_autocmd({ "BufHidden", "BufLeave" }, win_id, { bufnr })
 end
 
 local try_capability = function(client, bufnr, capability)
   if client.server_capabilities[capability] then
-    logger:debug('(' .. client.name .. ') ' .. bufnr .. ' ' .. capability)
+    logger:debug("(" .. client.name .. ") " .. bufnr .. " " .. capability)
     if handlers[capability] then
       handlers[capability](client, bufnr)
     end
@@ -116,14 +116,14 @@ end
 local make_capabilities = function()
   -- TODO: do I need this?
   local capabilities =
-    require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+    require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
   capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
     lineFoldingOnly = true,
   }
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = { 'documentation', 'detail', 'additionalTextEdits' },
+    properties = { "documentation", "detail", "additionalTextEdits" },
   }
 
   return capabilities

@@ -23,6 +23,77 @@ local extension_configs = {
   },
   ["messages"] = {},
   ["enhanced_find_files"] = {},
+  ["egrepify"] = {
+    -- intersect tokens in prompt ala "str1.*str2" that ONLY matches
+    -- if str1 and str2 are consecutively in line with anything in between (wildcard)
+    AND = true, -- default
+    permutations = false, -- opt-in to imply AND & match all permutations of prompt tokens
+    lnum = true, -- default, not required
+    lnum_hl = "EgrepifyLnum", -- default, not required, links to `Constant`
+    col = false, -- default, not required
+    col_hl = "EgrepifyCol", -- default, not required, links to `Constant`
+    title = true, -- default, not required, show filename as title rather than inline
+    filename_hl = "EgrepifyFile", -- default, not required, links to `Title`
+    -- suffix = long line, see screenshot
+    -- EXAMPLE ON HOW TO ADD PREFIX!
+    prefixes = {
+      -- ADDED ! to invert matches example prompt: ! sorter
+      -- matches all lines that do not comprise sorter
+      -- rg --invert-match -- sorter
+      ["!"] = {
+        flag = "invert-match",
+      },
+      -- HOW TO OPT OUT OF PREFIX
+      -- ^ is not a default prefix and safe example
+      ["^"] = false,
+      -- DEFAULTS
+      -- filter for file suffixes
+      -- example prompt: #lua,md $MY_PROMPT
+      -- searches with ripgrep prompt $MY_PROMPT in files with extensions lua and md
+      -- i.e. rg --glob="*.{lua,md}" -- $MY_PROMPT
+      ["#"] = {
+        -- #$REMAINDER
+        -- # is caught prefix
+        -- `input` becomes $REMAINDER
+        -- in the above example #lua,md -> input: lua,md
+        flag = "glob",
+        cb = function(input)
+          return string.format([[*.{%s}]], input)
+        end,
+      },
+      -- filter for (partial) folder names
+      -- example prompt: >conf $MY_PROMPT
+      -- searches with ripgrep prompt $MY_PROMPT in paths that have "conf" in folder
+      -- i.e. rg --glob="**/conf*/**" -- $MY_PROMPT
+      [">"] = {
+        flag = "glob",
+        cb = function(input)
+          return string.format([[**/{%s}*/**]], input)
+        end,
+      },
+      -- filter for (partial) file names
+      -- example prompt: &egrep $MY_PROMPT
+      -- searches with ripgrep prompt $MY_PROMPT in paths that have "egrep" in file name
+      -- i.e. rg --glob="*egrep*" -- $MY_PROMPT
+      ["&"] = {
+        flag = "glob",
+        cb = function(input)
+          return string.format([[*{%s}*]], input)
+        end,
+      },
+    },
+    -- default mappings
+    mappings = {
+      i = {
+        -- toggle prefixes, prefixes is default
+        ["<C-z>"] = require("telescope._extensions.egrepify.actions").toggle_prefixes,
+        -- toggle AND, AND is default, AND matches tokens and any chars in between
+        ["<C-a>"] = require("telescope._extensions.egrepify.actions").toggle_and,
+        -- toggle permutations, permutations of tokens is opt-in
+        ["<C-r>"] = require("telescope._extensions.egrepify.actions").toggle_permutations,
+      },
+    },
+  },
   ["env"] = {},
   -- ['fences'] = {},
   ["filetypes"] = {},
@@ -314,77 +385,6 @@ local extension_configs = {
   --   firefox_profile_name = nil,
   -- },
   ["changes"] = {},
-  ["egrepify"] = {
-    -- intersect tokens in prompt ala "str1.*str2" that ONLY matches
-    -- if str1 and str2 are consecutively in line with anything in between (wildcard)
-    AND = true, -- default
-    permutations = false, -- opt-in to imply AND & match all permutations of prompt tokens
-    lnum = true, -- default, not required
-    lnum_hl = "EgrepifyLnum", -- default, not required, links to `Constant`
-    col = false, -- default, not required
-    col_hl = "EgrepifyCol", -- default, not required, links to `Constant`
-    title = true, -- default, not required, show filename as title rather than inline
-    filename_hl = "EgrepifyFile", -- default, not required, links to `Title`
-    -- suffix = long line, see screenshot
-    -- EXAMPLE ON HOW TO ADD PREFIX!
-    prefixes = {
-      -- ADDED ! to invert matches example prompt: ! sorter
-      -- matches all lines that do not comprise sorter
-      -- rg --invert-match -- sorter
-      ["!"] = {
-        flag = "invert-match",
-      },
-      -- HOW TO OPT OUT OF PREFIX
-      -- ^ is not a default prefix and safe example
-      ["^"] = false,
-      -- DEFAULTS
-      -- filter for file suffixes
-      -- example prompt: #lua,md $MY_PROMPT
-      -- searches with ripgrep prompt $MY_PROMPT in files with extensions lua and md
-      -- i.e. rg --glob="*.{lua,md}" -- $MY_PROMPT
-      ["#"] = {
-        -- #$REMAINDER
-        -- # is caught prefix
-        -- `input` becomes $REMAINDER
-        -- in the above example #lua,md -> input: lua,md
-        flag = "glob",
-        cb = function(input)
-          return string.format([[*.{%s}]], input)
-        end,
-      },
-      -- filter for (partial) folder names
-      -- example prompt: >conf $MY_PROMPT
-      -- searches with ripgrep prompt $MY_PROMPT in paths that have "conf" in folder
-      -- i.e. rg --glob="**/conf*/**" -- $MY_PROMPT
-      [">"] = {
-        flag = "glob",
-        cb = function(input)
-          return string.format([[**/{%s}*/**]], input)
-        end,
-      },
-      -- filter for (partial) file names
-      -- example prompt: &egrep $MY_PROMPT
-      -- searches with ripgrep prompt $MY_PROMPT in paths that have "egrep" in file name
-      -- i.e. rg --glob="*egrep*" -- $MY_PROMPT
-      ["&"] = {
-        flag = "glob",
-        cb = function(input)
-          return string.format([[*{%s}*]], input)
-        end,
-      },
-    },
-    -- default mappings
-    mappings = {
-      i = {
-        -- toggle prefixes, prefixes is default
-        ["<C-z>"] = require("telescope._extensions.egrepify.actions").toggle_prefixes,
-        -- toggle AND, AND is default, AND matches tokens and any chars in between
-        ["<C-a>"] = require("telescope._extensions.egrepify.actions").toggle_and,
-        -- toggle permutations, permutations of tokens is opt-in
-        ["<C-r>"] = require("telescope._extensions.egrepify.actions").toggle_permutations,
-      },
-    },
-  },
   ["git_file_history"] = {
     -- Keymaps inside the picker
     mappings = {
@@ -608,16 +608,24 @@ local extension_configs = {
   ["lazygit"] = {},
   ["live_grep_args"] = {
     auto_quoting = true, -- enable/disable auto-quoting,
-    mappings = {
-      -- ... Your other configuration ...
-      -- ['<C-Space>'] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Insert, select = true, },
-      -- ["<c-f>"] = function(prompt_bufnr) actions_set.shift_selection(prompt_bufnr, 10) end,
-      -- ["<c-b>"] = function(prompt_bufnr) actions_set.shift_selection(prompt_bufnr, -10) end,
-      ["<c-u>"] = false,
-      ["<a-n>"] = actions.toggle_selection + actions.move_selection_next,
-      ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous,
-      ["<cr>"] = actions.select_default + actions.center,
+    mappings = { -- extend mappings
+      i = {
+        ["<C-k>"] = require("telescope-live-grep-args.actions").quote_prompt(),
+        ["<C-i>"] = require("telescope-live-grep-args.actions").quote_prompt({
+          postfix = " --iglob ",
+        }),
+        -- freeze the current list and start a fuzzy search in the frozen list
+        ["<C-space>"] = actions.to_fuzzy_refine,
+      },
     },
+    -- ... Your other configuration ...
+    -- ['<C-Space>'] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Insert, select = true, },
+    -- ["<c-f>"] = function(prompt_bufnr) actions_set.shift_selection(prompt_bufnr, 10) end,
+    -- ["<c-b>"] = function(prompt_bufnr) actions_set.shift_selection(prompt_bufnr, -10) end,
+    -- ["<c-u>"] = false,
+    -- ["<a-n>"] = actions.toggle_selection + actions.move_selection_next,
+    -- ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous,
+    -- ["<cr>"] = actions.select_default + actions.center,,
   },
   ["luasnip"] = {},
   -- ["make"]           = {},

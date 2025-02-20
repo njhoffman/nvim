@@ -4,11 +4,11 @@
 local events = require("configs.nvim-notify.events")
 -- local render =
 local cfg = {
-  level = vim.lsp.log.levels.DEBUG,
+  level = vim.lsp.log.levels.INFO,
   fps = 30,
   stages = "fade_in_slide_out",
   -- stages = "fade",
-  -- background_colour = "#000000",
+  background_colour = "#000000",
   timeout = 5000,
   minimum_width = 3,
   max_height = function()

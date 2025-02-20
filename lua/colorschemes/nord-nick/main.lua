@@ -1294,10 +1294,10 @@ return function(injected_functions)
     TinyGlimmerFrom({ bg = VisualAlt.bg }),
     TinyGlimmerTo({ bg = Normal.bg }),
 
-    TinyGlimmerDelete({ bg = "#582032" }),
-    TinyGlimmerAdd({ bg = "#065C5C" }),
+    TinyGlimmerDelete({ bg = "#583042" }),
+    TinyGlimmerAdd({ bg = "#064C8C" }),
 
-    TinyGlimmerYankFrom({ bg = "#3373c5" }),
+    TinyGlimmerYankFrom({ bg = "#032568" }),
     TinyGlimmerYankTo({ TinyGlimmerTo }),
 
     TinyGlimmerSubFrom({ bg = "#5303f5" }),
@@ -1309,7 +1309,7 @@ return function(injected_functions)
     TinyGlimmerSearchFrom({ bg = "#3373c5" }),
     TinyGlimmerSearchTo({ TinyGlimmerTo }),
 
-    TinyGlimmerPulsarFrom({ bg = "#224488" }),
+    TinyGlimmerPulsarFrom({ bg = "#123448" }),
     TinyGlimmerPulsarTo({ TinyGlimmerTo }),
 
     -- multicursor.nvim

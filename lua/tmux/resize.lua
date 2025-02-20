@@ -81,7 +81,7 @@ function M.disable_animation()
 end
 
 function M.get_horizontal_state()
-  local state = {
+  local horiz_state = {
     curr_win = vim.fn.winnr(),
     left_win = vim.fn.winnr("h"),
     right_win = vim.fn.winnr("l"),
@@ -91,47 +91,15 @@ function M.get_horizontal_state()
     -- left_border = nvim.is_nvim_border("h"),
     -- right_border = nvim.is_nvim_border("l"),
   }
-  state = vim.tbl_deep_extend("force", state, {
-    left_split = state.curr_win ~= state.left_win,
-    right_split = state.curr_win ~= state.right_win,
+  horiz_state = vim.tbl_deep_extend("force", horiz_state, {
+    left_split = horiz_state.curr_win ~= horiz_state.left_win,
+    right_split = horiz_state.curr_win ~= horiz_state.right_win,
   })
-  return state
-end
-
-function M.to_left()
-  M.disable_animation()
-  local state = M.get_horizontal_state()
-  if state.left_split then
-    vim.fn.win_move_separator(state.left_win, -state.step_size)
-  elseif state.right_split then
-    vim.fn.win_move_separator(state.curr_win, -state.step_size)
-  elseif state.left_tmux then
-    tmux.resize("h", state.step_size)
-  elseif state.right_tmux then
-    tmux.resize("l", state.step_size)
-  else
-    nvim.resize("x", "-", state.step_size)
-  end
-end
-
-function M.to_right()
-  M.disable_animation()
-  local state = M.get_horizontal_state()
-  if state.left_split then
-    vim.fn.win_move_separator(state.left_win, state.step_size)
-  elseif state.right_split then
-    vim.fn.win_move_separator(state.curr_win, state.step_size)
-  elseif state.left_tmux then
-    tmux.resize("l", state.step_size)
-  elseif state.right_tmux then
-    tmux.resize("h", state.step_size)
-  else
-    nvim.resize("x", "+", state.step_size)
-  end
+  return horiz_state
 end
 
 function M.get_vertical_state()
-  local state = {
+  local vert_state = {
     curr_win = vim.fn.winnr(),
     down_win = vim.fn.winnr("j"),
     up_win = vim.fn.winnr("k"),
@@ -141,45 +109,75 @@ function M.get_vertical_state()
     -- down_border = nvim.is_nvim_border("h"),
     -- up_border = nvim.is_nvim_border("l"),
   }
-  state = vim.tbl_deep_extend("force", state, {
-    down_split = state.curr_win ~= state.down_win,
-    up_split = state.curr_win ~= state.up_win,
+  vert_state = vim.tbl_deep_extend("force", vert_state, {
+    down_split = vert_state.curr_win ~= vert_state.down_win,
+    up_split = vert_state.curr_win ~= vert_state.up_win,
   })
-  return state
+  return vert_state
+end
+
+function M.to_left()
+  M.disable_animation()
+  local win_state = M.get_horizontal_state()
+  if win_state.left_split then
+    vim.fn.win_move_separator(win_state.left_win, -win_state.step_size)
+  elseif win_state.right_split then
+    vim.fn.win_move_separator(win_state.curr_win, -win_state.step_size)
+  elseif win_state.left_tmux then
+    tmux.resize("h", win_state.step_size)
+  elseif win_state.right_tmux then
+    tmux.resize("l", win_state.step_size)
+  else
+    nvim.resize("x", "-", win_state.step_size)
+  end
+end
+
+function M.to_right()
+  M.disable_animation()
+  local win_state = M.get_horizontal_state()
+  if win_state.left_split then
+    vim.fn.win_move_separator(win_state.left_win, win_state.step_size)
+  elseif win_state.right_split then
+    vim.fn.win_move_separator(win_state.curr_win, win_state.step_size)
+  elseif win_state.left_tmux then
+    tmux.resize("l", win_state.step_size)
+  elseif win_state.right_tmux then
+    tmux.resize("h", win_state.step_size)
+  else
+    nvim.resize("x", "+", win_state.step_size)
+  end
 end
 
 function M.to_bottom()
-  vim.g.minianimate_disable = true
-  local state = M.get_vertical_state()
-  if state.top_split then
-    vim.fn.win_move_separator(state.top_win, state.step_size)
-  elseif state.bottom_split then
-    vim.fn.win_move_separator(state.curr_win, state.step_size)
-  elseif state.top_tmux then
-    tmux.resize("j", state.step_size)
-  elseif state.bottom_tmux then
-    tmux.resize("k", state.step_size)
+  M.disable_animation()
+  local win_state = M.get_vertical_state()
+  if win_state.up_split then
+    vim.fn.win_move_statusline(win_state.up_win, win_state.step_size)
+  elseif win_state.down_split then
+    vim.fn.win_move_statusline(win_state.curr_win, win_state.step_size)
+  elseif win_state.top_tmux then
+    tmux.resize("k", win_state.step_size)
+  elseif win_state.down_tmux then
+    tmux.resize("j", win_state.step_size)
   else
-    nvim.resize("y", "-", state.step_size)
+    nvim.resize("y", "-", win_state.step_size)
   end
-  vim.g.minianimate_disable = false
 end
 
 function M.to_top()
-  vim.g.minianimate_disable = true
-  local state = M.get_vertical_state()
-  if state.top_split then
-    vim.fn.win_move_separator(state.top_win, state.step_size)
-  elseif state.bottom_split then
-    vim.fn.win_move_separator(state.curr_win, state.step_size)
-  elseif state.top_tmux then
-    tmux.resize("j", state.step_size)
-  elseif state.bottom_tmux then
-    tmux.resize("k", state.step_size)
+  M.disable_animation()
+  local win_state = M.get_vertical_state()
+  if win_state.up_split then
+    vim.fn.win_move_statusline(win_state.up_win, -win_state.step_size)
+  elseif win_state.down_split then
+    vim.fn.win_move_statusline(win_state.curr_win, -win_state.step_size)
+  elseif win_state.top_tmux then
+    tmux.resize("j", win_state.step_size)
+  elseif win_state.down_tmux then
+    tmux.resize("k", win_state.step_size)
   else
-    nvim.resize("y", "+", state.step_size)
+    nvim.resize("y", "+", win_state.step_size)
   end
-  vim.g.minianimate_disable = false
 end
 
 return M

@@ -72,6 +72,7 @@ local is_enabled = function()
   -- Get first word of cmdline
   local cmd = vim.fn.getcmdline():match("%S+")
   -- Return true if cmd isn't disabled else call/return cmp.close(), which returns false
+  -- return false
   return is_not_comment()
       and is_not_buftype()
       and is_not_filetype()

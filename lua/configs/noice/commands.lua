@@ -77,7 +77,7 @@ local setup = function()
     silence_start()
   end, { desc = "silence messaging and skip noice routes output" })
 
-  vim.keymap.set("c", "<S-Enter>", function()
+  vim.keymap.set("c", "<S-CR>", function()
     redirect_cmd()
   end, { desc = "fork cmdline output to popup view" })
 

@@ -204,19 +204,19 @@ local cmdline = {
     end
   end, { "c" }),
 
-  ["<S-CR>"] = {
-    c = function(fallback)
-      -- if cmp.visible() then
-      --   cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
-      -- end
-      fallback()
-      feedkeys.call(keymap.t("<C-c>"), "c")
-    end,
-    -- c = cmp.mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Replace, select = false }),
-  },
-  ["<C-CR>"] = {
-    c = cmp.mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Insert, select = true }),
-  },
+  -- ["<S-CR>"] = {
+  --   c = function(fallback)
+  --     -- if cmp.visible() then
+  --     --   cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
+  --     -- end
+  --     fallback()
+  --     feedkeys.call(keymap.t("<C-c>"), "c")
+  --   end,
+  --   -- c = cmp.mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Replace, select = false }),
+  -- },
+  -- ["<C-CR>"] = {
+  --   c = cmp.mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Insert, select = true }),
+  -- },
 
   ["<Tab>"] = cmp.mapping(function(fallback)
     if cmp.visible() then

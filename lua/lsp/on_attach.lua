@@ -1,21 +1,25 @@
 local capabilities = require("lsp.capabilities")
 
 _G.jump = function()
-	---@diagnostic disable: undefined-global
-	if type(MiniJump2d) ~= "table" and type(MiniAnimate) ~= "table" then
-		MiniAnimate.config.scroll.enable = false
-		MiniJump2d.start()
-		-- Need `vim.schedule()` here to still have it disabled at animation's start
-		vim.schedule(function() MiniAnimate.config.scroll.enable = true end)
-	end
+  ---@diagnostic disable: undefined-global
+  if type(MiniJump2d) ~= "table" and type(MiniAnimate) ~= "table" then
+    MiniAnimate.config.scroll.enable = false
+    MiniJump2d.start()
+    -- Need `vim.schedule()` here to still have it disabled at animation's start
+    vim.schedule(function()
+      MiniAnimate.config.scroll.enable = true
+    end)
+  end
 end
 
 _G.diagnostic_goto = function(direction, severity)
-	severity = severity and vim.diagnostic.severity[severity] or nil
-	vim.diagnostic.jump { count = (direction == "prev" and -1 or 1), severity = severity }
-	MiniAnimate.execute_after("scroll", function()
-		vim.schedule(function() vim.defer_fn(vim.diagnostic.open_float, 100) end)
-	end)
+  severity = severity and vim.diagnostic.severity[severity] or nil
+  vim.diagnostic.jump({ count = (direction == "prev" and -1 or 1), severity = severity })
+  MiniAnimate.execute_after("scroll", function()
+    vim.schedule(function()
+      vim.defer_fn(vim.diagnostic.open_float, 100)
+    end)
+  end)
 end
 
 -- local cache_enable_scroll = MiniAnimate.config.scroll.enable
@@ -48,53 +52,55 @@ end
 
 -- Custom on attach function which disables formatting where Conform will instead be used to format.
 local lsp_on_attach_no_formatting = function(client)
-	client.server_capabilities.documentFormattingProvider = false
-	client.server_capabilities.documentRangeFormattingProvider = false
+  client.server_capabilities.documentFormattingProvider = false
+  client.server_capabilities.documentRangeFormattingProvider = false
 end
 
 local on_attach = function(client, bufnr)
-	-- vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
-	-- vim.lsp.omnifunc = nil
-	-- vim.api.nvim_set_option_value('omnifunc', nil, {})
-	-- vim.api.nvim_set_option_value('omnifunc', nil, { buf = bufnr })
-	-- format.on_attach(client, bufnr)
-	local ok, disable_lsp = pcall(vim.api.nvim_buf_get_var, 0, "disable_lsp")
-	if disable_lsp == 1 then return vim.notify("Skipping buffer lsp", 1) end
+  -- vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+  -- vim.lsp.omnifunc = nil
+  -- vim.api.nvim_set_option_value('omnifunc', nil, {})
+  -- vim.api.nvim_set_option_value('omnifunc', nil, { buf = bufnr })
+  -- format.on_attach(client, bufnr)
+  local ok, disable_lsp = pcall(vim.api.nvim_buf_get_var, 0, "disable_lsp")
+  if disable_lsp == 1 then
+    return vim.notify("Skipping buffer lsp", 1)
+  end
 
-	require("lsp.mapping").setup_mappings(client, bufnr)
+  require("lsp.mapping").setup_mappings(client, bufnr)
 
-	-- client.config.flags.debounce_text_changes = 300
-	-- client.config.flags.allow_incremental_sync = true
+  -- client.config.flags.debounce_text_changes = 300
+  -- client.config.flags.allow_incremental_sync = true
 
-	if client.name == "lua_ls" then
-		client.server_capabilities.documentFormattingProvider = false
-		client.server_capabilities.documentRangeFormattingProvider = false
-	elseif client.name == "bashls" then
-		client.server_capabilities.documentFormattingProvider = false
-		client.server_capabilities.documentRangeFormattingProvider = false
-	elseif client.name == "pyright" then
-		client.server_capabilities.hoverProvider = false
-	elseif client.name == "pylsp" then
-		client.server_capabilities.documentSymbolProvider = false
-		client.server_capabilities.renameProvider = false
-		client.server_capabilities.signatureHelpProvider = false
-	elseif client.name == "cssls" then
-		client.server_capabilities.documentFormattingProvider = false
-		client.server_capabilities.documentRangeFormattingProvider = false
-		client.server_capabilities.textDocument.completion.completionItem.snippetSupport = true
-	end
+  if client.name == "lua_ls" then
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+  elseif client.name == "bashls" then
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+  elseif client.name == "pyright" then
+    client.server_capabilities.hoverProvider = false
+  elseif client.name == "pylsp" then
+    client.server_capabilities.documentSymbolProvider = false
+    client.server_capabilities.renameProvider = false
+    client.server_capabilities.signatureHelpProvider = false
+  elseif client.name == "cssls" then
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+    client.server_capabilities.textDocument.completion.completionItem.snippetSupport = true
+  end
 
-	-- if client.server_capabilities.inlayHintProvider then
-	--   -- vim.dbglog('INLAY HINTS AVAILABLE')
-	--   vim.lsp.inlay_hint.enable(bufnr, true)
-	-- end
-	-- TODO: fix vimls documentSymbolProvider sorting
-	if client.server_capabilities.documentSymbolProvider and client.name ~= "vimls" then
-		vim.api.nvim_set_var("navic_silence", true)
-		require("nvim-navic").attach(client, bufnr)
-	end
+  -- if client.server_capabilities.inlayHintProvider then
+  --   -- vim.dbglog('INLAY HINTS AVAILABLE')
+  --   vim.lsp.inlay_hint.enable(bufnr, true)
+  -- end
+  -- TODO: fix vimls documentSymbolProvider sorting
+  if client.server_capabilities.documentSymbolProvider and client.name ~= "vimls" then
+    vim.api.nvim_set_var("navic_silence", true)
+    require("nvim-navic").attach(client, bufnr)
+  end
 
-	capabilities.resolve(client, bufnr)
+  capabilities.resolve(client, bufnr)
 end
 
 return on_attach
