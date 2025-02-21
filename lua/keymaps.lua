@@ -23,6 +23,7 @@ prefix("n", "g?", "preview  ")
 prefix("n", "go", "debug out  ")
 
 -- prefix('n', '<c-w>', 'window')
+prefix("n", "<leader>s", "snacks ")
 prefix("n", "<leader>g", "git 󰊢")
 prefix("n", "<leader>f", "file ")
 prefix("n", "<leader>p", "paste ") --  
@@ -203,13 +204,19 @@ map("c", "<M-g>", "<C-t>", {
 -- Alt+?      List all possible completions
 -- Alt+*      Insert all possible completions
 
-map("c", "<C-d>", "<Right><Del><Left>", {
+map("c", "<C-t>", "<Del>", {
   category = "Command",
-  label = " delete word",
-  desc = " delete word to the right of cmdline",
+  label = " delete char right",
+  desc = " delete one char to the right",
 })
 
-map("c", "<M-d>", "<Right><Del><Left>", {
+map("c", "<C-d>", "<S-Right><C-w>", {
+  category = "Command",
+  label = " delete word right",
+  desc = " delete one word to the right",
+})
+
+map("c", "<M-d>", '<cmd>lua require("commands.cmdline").delete_eol()<cr>', {
   category = "Command",
   label = " delete eol",
   desc = " delete to end of cmdline",
@@ -344,12 +351,18 @@ map("n", "<CR>", "O<Esc>", {
   desc = "󰽙 insert new line without leaving insert mode",
 })
 
-map("n", "<S-CR>", '<cmd>lua require("funcs.alt-alt").gotoAltBuffer()<cr>', {
-
+map("n", "<BS>", "<cmd>AltLoad<cr>", {
   category = "Buffers",
   label = "󰽙 goto alt-buffer",
   desc = "󰽙 goto alternative/last buffer",
 })
+
+map("n", "<C-^>", "<cmd>AltLoad<cr>", {
+  category = "Buffers",
+  label = "󰽙 goto alt-buffer",
+  desc = "󰽙 goto alternative/last buffer",
+})
+
 -- keymap({ "n", "x", "i" }, "<C-CR>", "<C-w>w", { desc = " Next Window" })
 -- map('n', '<BS>', '<cmd>e #<cr>', {
 --   category = 'Buffers',
@@ -568,9 +581,7 @@ map("n", "<leader>uo", function()
   vim.cmd.earlier(tostring(secsPassed) .. "s")
 end, { desc = "漏undo since last open" })
 
-map({ "n", "x" }, "<leader>uc", function()
-  require("funcs.alt-alt").reopenBuffer()
-end, { desc = "漏 undo buffer closing" })
+map({ "n", "x" }, "<leader>ub", "<cmd>AltReopen<cr>", { desc = "漏 undo buffer closing" })
 
 map({ "n", "x" }, "<leader>ul", "<cmd>undolist<cr>", { desc = "漏 undo show list" })
 
@@ -780,13 +791,13 @@ map('i', 'kj', '<esc>', {
 map('i', '<M-lt>', '<C-d>', { category = 'Motion', desc = 'deindent line', silent = true })
 map('i', '<M->>', '<C-t>', { category = 'Motion', desc = 'indent line', silent = true })
 
-map('i', '<C-t>', '<cmd>norm x<cr>', { -- <C-o> + dl, norm lxh
+map('i', '<C-t>', '<cmd>norm! x<cr>', { -- <C-o> + dl, norm lxh
   category = 'Motion',
   desc = 'delete next char',
   silent = true
 })
 
-map('i', '<C-d>', '<cmd>norm de<cr>', {
+map('i', '<C-d>', '<cmd>norm! de<cr>', {
   category = 'Motion',
   desc = 'delete to end of line',
   silent = true

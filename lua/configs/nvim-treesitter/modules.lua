@@ -215,7 +215,7 @@ local modules = {
         -- L loop.inner        loop.outer
         -- a parameter.inner   parameter.outer
         --   return.inner      return.outer
-        ["/"] = "@comment.outer",
+        -- ["/"] = "@comment.outer",
         -- ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
         -- ["as"] = "@statement.outer",
         -- ["is"] = "@scopename.inner",

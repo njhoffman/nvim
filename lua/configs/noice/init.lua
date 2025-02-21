@@ -27,6 +27,13 @@ local config = {
   notify = sections.notify,
   lsp = sections.lsp,
   -- popupmenu = sections.popupmenu,
+  inc_rename = {
+    cmdline = {
+      format = {
+        IncRename = { icon = "⟳" },
+      },
+    },
+  },
   messages = {
     enabled = true, -- enables the Noice messages UI
     view = "notify", -- default view for messages

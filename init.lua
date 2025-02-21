@@ -44,6 +44,7 @@ for _, mod_name in ipairs({
 end
 
 vim.defer_fn(function()
+  require("alt").setup()
   require("sidebar").setup()
   require("histories").setup()
   -- require("synshade").setup()

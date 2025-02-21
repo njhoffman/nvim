@@ -78,6 +78,7 @@ local plugins = {
     lazy = false,
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
   },
+  -- https://github.com/VonHeikemen/searchbox.nvim
   {
     "folke/noice.nvim",
     dependencies = { "nvim-notify" },

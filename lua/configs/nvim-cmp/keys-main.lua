@@ -1,7 +1,6 @@
 local cmp = require("cmp")
 local luasnip = require("luasnip")
 local mapping = require("cmp.config.mapping")
-local types = require("cmp.types")
 
 --       節 缾      了ﴰ   ﮕ ﳎ  
 --      陋 גּ גּ      ﴯ   
@@ -11,7 +10,7 @@ local pfx = " "
 local scroll_docs = function(direction)
   return function(fallback)
     -- local winheight = vim.api.nvim_win_get_height(state.winnr) - 2
-    if cmp.visible() and cmp.core.view.docs_view:visible() then
+    if cmp.visible() and cmp.visible_docs() then
       local winheight = math.abs(direction)
       for i = 1, winheight do
         vim.defer_fn(function()
@@ -32,7 +31,7 @@ local has_words_before = function()
 end
 
 local toggle_docs = function()
-  if cmp.visible() and cmp.core.view.docs_view:visible() then
+  if cmp.visible() and cmp.visible_docs() then
     cmp.close_docs()
   else
     cmp.open_docs()
@@ -147,32 +146,24 @@ local main = {
 
   ["<CR>"] = mapping({
     i = function(fallback)
-      local confirm_opts = { behavior = cmp.ConfirmBehavior.Insert, select = true }
+      local confirm_opts = { behavior = cmp.ConfirmBehavior.Insert, select = false }
       if cmp.visible() then
         local entry = cmp.get_selected_entry()
         local is_copilot = entry and entry.source.name == 'copilot'
         if is_copilot then
           confirm_opts.behavior = cmp.ConfirmBehavior.Replace
-          confirm_opts.select = true
+          confirm_opts.select = false
         end
         if cmp.confirm(confirm_opts) then
           return
         end
       end
-      if type(fallback) == "function" then
-        fallback() -- if not exited early, always fallback
-      end
+      fallback() -- if not exited early, always fallback
     end,
   }),
   ["<C-Y>"] = mapping({
     i = mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
   }),
-  ["<S-CR>"] = {
-    i = mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-  },
-  ["<C-CR>"] = {
-    i = mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true }),
-  },
   ["<C-d>"] = {
     i = function(fallback)
       if not require("cmp").abort() then
@@ -195,32 +186,29 @@ local main = {
       vim.cmd("norm de")
     end,
   },
-  ["<Tab>"] = {
-    i = function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item({ behavior = types.cmp.SelectBehavior.Select })
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      --   vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
-      elseif has_words_before() then
-        cmp.complete()
-      elseif type(fallback) == "function" then
-        fallback()
-      end
-    end,
-  },
-  ["<S-Tab>"] = {
-    i = function(fallback)
-      if cmp.visible() then
-        -- cmp.select_prev_item()
-        cmp.select_prev_item({ behavior = types.cmp.SelectBehavior.Select })
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      elseif type(fallback) == "function" then
-        fallback()
-      end
-    end,
-  },
+  ["<Tab>"] = mapping(function(fallback)
+    if cmp.visible() then
+      cmp.select_next_item()
+    elseif luasnip.expand_or_locally_jumpable() then
+      luasnip.expand_or_jump()
+    elseif luasnip.jumpable(1) then
+      luasnip.jump(1)
+    elseif has_words_before() then
+      -- cmp.complete()
+      fallback()
+    else
+      fallback()
+    end
+  end, { "i", "s" }),
+  ["<S-Tab>"] = mapping(function(fallback)
+    if cmp.visible() then
+      cmp.select_prev_item()
+    elseif luasnip.jumpable(-1) then
+      luasnip.jump(-1)
+    else
+      fallback()
+    end
+  end, { "i", "s" }),
 }
 
 return main

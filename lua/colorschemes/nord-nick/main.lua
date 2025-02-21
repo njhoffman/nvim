@@ -1312,6 +1312,10 @@ return function(injected_functions)
     TinyGlimmerPulsarFrom({ bg = "#123448" }),
     TinyGlimmerPulsarTo({ TinyGlimmerTo }),
 
+    -- substitute.nvim / vim-abolish
+    SubstituteExchange({ Visual }),
+    SubstituteRange({ Visual }),
+
     -- multicursor.nvim
     MultiCursorCursor({ Cursor }),
     MultiCursorVisual({ Visual }),

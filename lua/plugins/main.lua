@@ -231,10 +231,21 @@ local plugins = {
     "shellRaining/hlchunk.nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
+      local styles = {
+        normal = {
+          { fg = "#005678", bg = "#001018" },
+          { fg = "#4056a7", bg = "#100018" },
+          { fg = "#806d9c", bg = "#180010" },
+        },
+        error = {
+          { fg = "#7a0000", bg = "#200610" },
+          { fg = "#f35336", bg = "#201410" },
+        },
+      }
       local cfg = {
         chunk = {
           enable = true,
-          priority = 5,
+          priority = 10,
           use_treesitter = true,
           chars = {
             horizontal_line = "─",
@@ -243,12 +254,7 @@ local plugins = {
             left_bottom = "└",
             right_arrow = "─",
           },
-          style = {
-            { fg = "#005678", bg = "#001018" },
-            -- { fg = "#007698", bg = "#000000" },
-            { fg = "#4056a7", bg = "#000000" },
-          },
-          -- style} = { { fg = "#806d9c" }, { fg = "#c21f30" } },
+          style = { styles.normal[1], styles.error[1] },
           textobject = "",
           max_file_size = 1024 * 1024,
           error_sign = true,
@@ -785,6 +791,7 @@ local plugins = {
   -- },
   { "smilhey/ed-cmd.nvim", enabled = false },
   { "tpope/vim-repeat", event = "VeryLazy" },
+  -- https://github.com/chentoast/live.nvim/tree/master
   { "smjonas/live-command.nvim", event = "VeryLazy" }, -- branch = 'remote',
   { "Konfekt/vim-alias", event = "VeryLazy" },
   --
@@ -1274,7 +1281,7 @@ local plugins = {
     config = function()
       require("inc_rename").setup({
         -- the name of the command
-        cmd_name = "RenameInc",
+        -- cmd_name = "RenameInc",
         -- cmd_name = "IncRename",
         -- the highlight group used for highlighting the identifier's new name
         hl_group = "Substitute",

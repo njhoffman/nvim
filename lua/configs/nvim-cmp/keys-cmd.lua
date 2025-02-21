@@ -110,8 +110,8 @@ local cmdline = {
       --   end)
       if cmp.visible() then
         cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-      elseif not cmp.complete() then
-        fallback()
+      else
+        cmp.complete()
       end
     end,
   },
@@ -127,8 +127,8 @@ local cmdline = {
       --   end)
       if cmp.visible() then
         cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-      elseif not cmp.complete() then
-        fallback()
+      else
+        cmp.complete()
       end
     end,
   },
@@ -198,10 +198,7 @@ local cmdline = {
         return -- success, exit early
       end
     end
-
-    if type(fallback) == "function" then
-      fallback() -- if not exited early, always fallback
-    end
+    fallback() -- if not exited early, always fallback
   end, { "c" }),
 
   -- ["<S-CR>"] = {
@@ -218,21 +215,21 @@ local cmdline = {
   --   c = cmp.mapping.confirm({ behavior = types.cmp.ConfirmBehavior.Insert, select = true }),
   -- },
 
-  ["<Tab>"] = cmp.mapping(function(fallback)
-    if cmp.visible() then
-      cmp.select_next_item()
-    elseif type(fallback) == "function" then
-      fallback() -- if not exited early, always fallback
-    end
-  end, { "c" }),
+  -- ["<Tab>"] = cmp.mapping(function(fallback)
+  --   if cmp.visible() then
+  --     cmp.select_next_item()
+  --   elseif type(fallback) == "function" then
+  --     fallback() -- if not exited early, always fallback
+  --   end
+  -- end, { "c" }),
 
-  ["<S-Tab>"] = cmp.mapping(function(fallback)
-    if cmp.visible() then
-      cmp.select_prev_item()
-    elseif type(fallback) == "function" then
-      fallback()
-    end
-  end, { "c" }),
+  -- ["<S-Tab>"] = cmp.mapping(function(fallback)
+  --   if cmp.visible() then
+  --     cmp.select_prev_item()
+  --   elseif type(fallback) == "function" then
+  --     fallback()
+  --   end
+  -- end, { "c" }),
   -- --   feedkeys.call(keymap.t('<Up>'), 'c') cmp.mapping.complete({ config = { sources = { { name = "cmdline_history" } } } })
   -- --   cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
 }

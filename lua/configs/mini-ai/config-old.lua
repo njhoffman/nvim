@@ -187,12 +187,12 @@ local setup_keymaps = function()
     ["'"]    = "  inside s-quote '",
     ['`']    = '  inside apostrophe `',
     ['(']    = '  inside (',
-    [')']    = '  inside ) including white-space',
-    ['>']    = '  inside > including white-space',
+    [')']    = '  inside ) with white-space',
+    ['>']    = '  inside > with white-space',
     ['<lt>'] = '  inside <',
-    [']']    = '  inside ] including white-space',
+    [']']    = '  inside ] with white-space',
     ['[']    = '  inside [',
-    ['}']    = '  inside } including white-space',
+    ['}']    = '  inside } with white-space',
     ['{']    = '  inside {',
     ['?']    = '  inside user prompt',
     ['a']    = '  inside argument',
@@ -209,7 +209,7 @@ local setup_keymaps = function()
     ['o']    = '  inside block, conditional, loop',
     ['q']    = '  inside quote: `, ", \'',
     ['t']    = '  inside tag',
-    -- ['x']    = '  inside comment',
+    ['x']    = '  inside comment',
   }
 
   local a = vim.deepcopy(i)

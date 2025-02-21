@@ -21,19 +21,6 @@ end
 -- # mapped to other
 -- #   bindkey -M viins backward-char '^H'
 -- #   bindkey -M viins forward-char  '^L'
--- bindkey -M viins '^t'   vi-delete-char
--- bindkey -M vicmd '^t'   vi-delete-char
--- bindkey -M viins "^w"   backward-kill-word
--- bindkey -M vicmd "^w"   backward-kill-word
--- bindkey -M viins "^u"   backward-kill-line
--- bindkey -M vicmd "^u"   backward-kill-line
--- bindkey -M vicmd '^E'   end-of-line
--- bindkey -M viins '^A'   beginning-of-line
--- bindkey -M viins '^E'   end-of-line
--- bindkey -M viins '^[^H' backward-word
--- bindkey -M viins '^[^L' forward-word
--- bindkey -M viins  '^^'  beginning-of-line
--- bindkey -M viins '^[$'  end-of-line
 
 -- manpages info
 -- K or CTRL-]               Jump to the manpage for the <cWORD> under the cursor. Takes a count for the section.
@@ -107,6 +94,13 @@ local open_last_search = function()
   end
 end
 
+local delete_eol = function()
+  local cmdline = vim.fn.getcmdline() or ""
+  local cmdpos = vim.fn.getcmdpos()
+  local new_cmdline = string.sub(cmdline, 1, cmdpos - 1)
+  vim.fn.setcmdline(new_cmdline)
+end
+
 local toggle = function()
   local cmdline = vim.fn.getcmdline() or ""
   local cmdtype = vim.fn.getcmdtype() or ""
@@ -169,4 +163,4 @@ local toggle = function()
   end
 end
 
-return { toggle = toggle, open_last_search = open_last_search }
+return { toggle = toggle, open_last_search = open_last_search, delete_eol = delete_eol }
