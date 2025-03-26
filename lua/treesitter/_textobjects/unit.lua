@@ -1,4 +1,4 @@
-local ts_utils = require('nvim-treesitter.ts_utils')
+local ts_utils = require("nvim-treesitter.ts_utils")
 
 -- There are no options yet, maybe in the future
 local options = {}
@@ -36,10 +36,10 @@ end
 
 local move_row_while_empty = function(bufnr, curr_line, delta)
   local line = curr_line
-  if get_text(bufnr, line) == '' then
+  if get_text(bufnr, line) == "" then
     local parent = line + delta
     local line_parent = get_text(bufnr, parent)
-    while parent >= 0 and line_parent == '' do
+    while parent >= 0 and line_parent == "" do
       line = parent
       parent = line + delta
       line_parent = get_text(bufnr, parent)
@@ -51,7 +51,7 @@ end
 local move_col_while_empty = function(bufnr, curr_line)
   local line = curr_line
   local text = get_text(bufnr, line)
-  local found = string.find(text, '[^%s]')
+  local found = string.find(text, "[^%s]")
   return found and found - 1 or 0
 end
 
@@ -60,10 +60,10 @@ local select_range = function(bufnr, start_row, start_col, end_row, end_col, mod
   start_col = start_col + 1
   end_row = end_row + 1
   end_col = end_col + 1
-  mode = mode or 'v'
-  vim.fn.setpos('.', { bufnr, start_row, start_col, 0 })
-  vim.cmd('normal! ' .. mode, true, true, true)
-  vim.fn.setpos('.', { bufnr, end_row, end_col - 1, 0 })
+  mode = mode or "v"
+  vim.fn.setpos(".", { bufnr, start_row, start_col, 0 })
+  vim.cmd("normal! " .. mode, true, true, true)
+  vim.fn.setpos(".", { bufnr, end_row, end_col - 1, 0 })
 end
 
 local function get_selection_range(outer)
@@ -72,7 +72,7 @@ local function get_selection_range(outer)
 
   local sel_row = cursor[1]
   local sel_col = cursor[2]
-  if outer and get_text(bufnr, sel_row) == '' then
+  if outer and get_text(bufnr, sel_row) == "" then
     sel_row = move_row_while_empty(bufnr, sel_row, 1) + 1
     sel_col = 0
   end
@@ -84,19 +84,18 @@ local function get_selection_range(outer)
   if node == nil then
     return
   end
-  vim.dbglog('MAIN', node, get_text(bufnr, sel_row))
   local start_row, start_col, end_row, end_col = node:range()
 
-  local mode = 'v'
+  local mode = "v"
   if outer then
     if cursor[1] < sel_row then
       start_row = move_row_while_empty(bufnr, start_row, -1) - 1
     else
       local text = get_text(bufnr, end_row + 2)
-      if text == '' then
+      if text == "" then
         end_row = move_row_while_empty(bufnr, end_row + 2, 1) - 1
         start_col = 0
-        mode = 'v'
+        mode = "v"
         -- mode = 'V'
       end
     end
@@ -113,7 +112,7 @@ M.select = function(outer)
   select_range(bufnr, start_row, start_col, end_row, end_col, mode)
 end
 
-local highlight_ns = vim.api.nvim_create_namespace('treesitter-unit-ns')
+local highlight_ns = vim.api.nvim_create_namespace("treesitter-unit-ns")
 local last_start
 local last_end
 
@@ -133,23 +132,23 @@ end
 
 local highlighting_enabled = false
 M.enable_highlighting = function(higroup)
-  local used_higroup = higroup or 'CursorLine'
-  vim.cmd('augroup treesitter-unit-highlight')
-  vim.cmd('autocmd!')
+  local used_higroup = higroup or "CursorLine"
+  vim.cmd("augroup treesitter-unit-highlight")
+  vim.cmd("autocmd!")
   vim.cmd(
     'autocmd CursorMoved * lua require("treesitter._textobjects.unit").highlight_unit("'
       .. used_higroup
       .. '")'
   )
-  vim.cmd('augroup END')
+  vim.cmd("augroup END")
   M.highlight_unit(used_higroup)
   highlighting_enabled = true
 end
 
 M.disable_highlighting = function()
-  vim.cmd('augroup treesitter-unit-highlight')
-  vim.cmd('autocmd!')
-  vim.cmd('augroup END')
+  vim.cmd("augroup treesitter-unit-highlight")
+  vim.cmd("autocmd!")
+  vim.cmd("augroup END")
   local bufnr = vim.api.nvim_get_current_buf()
   vim.api.nvim_buf_clear_namespace(bufnr, highlight_ns, 0, -1)
   highlighting_enabled = false
@@ -167,17 +166,17 @@ M.delete = function(for_change)
   local bufnr = vim.api.nvim_get_current_buf()
   local node = get_main_node()
   local start_row, start_col, end_row, end_col = node:range()
-  local replaced = for_change and ' ' or ''
+  local replaced = for_change and " " or ""
   vim.api.nvim_buf_set_text(bufnr, start_row, start_col, end_row, end_col, { replaced })
 end
 
 M.change = function()
   M.delete(true)
-  vim.cmd('startinsert')
+  vim.cmd("startinsert")
 end
 
 M.setup = function(opts)
-  options = vim.tbl_deep_extend('force', options, opts or {})
+  options = vim.tbl_deep_extend("force", options, opts or {})
 end
 
 return M

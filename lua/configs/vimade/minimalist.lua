@@ -19,7 +19,6 @@ local EXCLUDE_NAMES = {
   "LineNr",
   "LineNrBelow",
   "LineNrAbove",
-  "WinSeparator",
   "EndOfBuffer",
 }
 local NO_VISIBILITY_NAMES = {

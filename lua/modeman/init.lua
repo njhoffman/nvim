@@ -1,38 +1,41 @@
--- n      Normal                                                 'NORMAL',
--- no     Operator-pending                                       'OP',
--- nov    Operator-pending (forced charwise |o_v|)               'OP',
--- noV    Operator-pending (forced linewise |o_V|)               'OP',
--- no   Operator-pending (forced blockwise |o_CTRL-V|)         'OP',
--- niI    Normal using |i_CTRL-O| in |Insert-mode|               'NORMAL',
--- niR    Normal using |i_CTRL-O| in |Replace-mode|              'NORMAL',
--- niV    Normal using |i_CTRL-O| in |Virtual-Replace-mode|      'NORMAL',
--- nt     Normal in |terminal| (insert goes to Terminal mode)    'TERM',
--- ntT    Normal using |t_CTRL-\_CTRL-O| in |Terminal-mode|
--- v      Visual by character                                    'VISUAL',
--- vs     Visual by character using |v_CTRL-O| in Select mode    'VISUAL',
--- V      Visual by line                                         'LINES',
--- Vs     Visual by line using |v_CTRL-O| in Select mode         'LINES',
---      Visual blockwise                                       'BLOCK',
--- s    Visual blockwise using |v_CTRL-O| in Select mode       'BLOCK',
--- s      Select by character                                    'SELECT',
--- S      Select by line                                         'SELECT',
---      Select blockwise                                       'BLOCK',
--- i      Insert                                                 'INSERT',
--- ic     Insert mode completion |compl-generic|                 'INSERT',
--- ix     Insert mode |i_CTRL-X| completion                      'INSERT',
--- R      Replace |R|                                            'REPLACE',
--- Rc     Replace mode completion |compl-generic|                'REPLACE',
--- Rx     Replace mode |i_CTRL-X| completion                     'REPLACE',
--- Rv     Virtual Replace |gR|                                   'V-REPLACE
--- Rvc    Virtual Replace mode completion |compl-generic|
--- Rvx    Virtual Replace mode |i_CTRL-X| completion
--- c      Command-line editing                                   'COMMAND',
--- cr     Command-line editing overstrike mode |c_<Insert>|      'COMMAND',
--- cv     Vim Ex mode |gQ|                                       'COMMAND',
--- cvr    Vim Ex mode while in overstrike mode |c_<Insert>|
--- r      Hit-enter prompt                                       'ENTER',
--- rm     The -- more -- prompt                                  'MORE',
--- r?     A |:confirm| query of some sort                        'CONFIRM',
--- !      Shell or external command is executing                 'SHELL',
--- t      Terminal mode: keys go to the job                      'TERM',
--- ['null'] = 'NONE',
+local logger = require("modeman.logger")
+local visual = require("modeman.state.visual")
+local operator = require("modeman.state.operator")
+local ns = require("modeman.namespace")
+local state = require("modeman.state")
+
+local function mode_get_state(ev)
+  local match = type(ev) == "table" and vim.fn.empty(ev.match) == 0 and ev.match
+    or ":" .. vim.fn.mode(true)
+  local from, mode = table.unpack(vim.split(match, ":"))
+  return {
+    from = vim.fn.empty(from) == 0 and vim.fn.keytrans(from),
+    mode = vim.fn.empty(mode) == 0 and vim.fn.keytrans(mode),
+    buf = ev and ev.buf or vim.api.nvim_get_current_buf(),
+  }
+end
+
+local refresh_state = function(event)
+  local curr = mode_get_state(event)
+  local op_state = operator.get_state(curr)
+  local vis_state = visual.get_state(curr)
+  local new_state = vim.tbl_deep_extend("force", curr, op_state or {}, vis_state or {})
+
+  if not vim.deep_equal(state.curr, new_state) then
+    state.last = vim.fn.deepcopy(state.curr or {})
+    state.curr = new_state
+  end
+  logger.log_mode(state.curr)
+  -- vim.dbglog(vim.inspect(state.curr, { newline = "" }), vim.inspect(state.last, { newline = "" }))
+end
+
+refresh_state()
+
+vim.api.nvim_create_autocmd("ModeChanged", {
+  group = ns.augroup_id,
+  pattern = "*:*",
+  desc = "modeman: watches for mode changes to update highlights and run callbacks",
+  callback = refresh_state,
+})
+
+return state

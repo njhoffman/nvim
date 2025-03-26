@@ -37,33 +37,6 @@ local colors = {
   -- ! C C R S V c i n r s t v
 }
 
-local ns_vis = vim.api.nvim_create_namespace("modeman/visual")
-local visual_from = function(ev)
-  vim.api.nvim_buf_clear_namespace(ev.buf, ns_vis, 0, -1)
-  vim.dbglog("end", ev.buf)
-end
-
-local visual_to = function(ev)
-  -- get visual mode range
-  local start_pos = vim.fn.getpos("'<")
-  local end_pos = vim.fn.getpos("'>")
-
-  -- highlight number signs for lines inlucded in visual range
-  for i = start_pos[2], end_pos[2], 1 do
-    -- highlightt number column extmarks
-    local bars = { thick = "▎", thin = "│" }
-    vim.dbglog("vis", ev.buf, i, end_pos[2])
-    vim.api.nvim_buf_set_extmark(ev.buf, ns_vis, i, 0, {
-      -- virt_text = { { " " .. i .. " ", "SmoothCursor" } },
-      -- virt_text_pos = "overlay",
-      hl_mode = "combine",
-      sign_text = bars.thick,
-      sign_hl_group = "SmoothCursorPurple",
-      number_hl_group = "SmoothCursorCyan",
-    })
-  end
-end
-
 vim.api.nvim_create_autocmd({ "ModeChanged" }, {
   callback = function(ev)
     local set_mode = function(icon, opts)
@@ -81,12 +54,6 @@ vim.api.nvim_create_autocmd({ "ModeChanged" }, {
     end
 
     local from, to = unpack(vim.split(ev.match, ":"))
-    if vim.fn.tolower(string.sub(from, 1)) == "v" then
-      visual_to(ev)
-    elseif vim.fn.tolower(string.sub(to, 1)) == "v" then
-      visual_from(ev)
-    end
-
     local icon, color = icons[string.sub(to, 1, 1)], colors[string.sub(to, 1, 1)]
     if icon == nil then
       icon = icons["*"]

@@ -1,4 +1,4 @@
-local linterConfig = vim.fn.stdpath("config") .. ".linter_configs"
+local linterConfig = vim.fn.stdpath("config") .. "/.linter_configs"
 
 -- function config.get_lsp_fallback(bufnr)
 --   local formatters = require("conform").list_formatters(bufnr)

@@ -75,17 +75,30 @@ prefix("n", "<leader>cl", "conceal 󰈉 ")
 --------------------------------------------------------------------------------------------------
 
 -- -- better up/down
--- map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
--- map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
--- map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
--- map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
---
--- Map 'j' and 'k' to behave like 'gj' and 'gk'
+-- TODO: test for foldlines and disable variable
+map(
+  { "n", "x" },
+  "j",
+  "v:count == 0 && &wrap ? 'gj' : 'j'",
+  { desc = "Down", expr = true, silent = true }
+)
+map(
+  { "n", "x" },
+  "k",
+  "v:count == 0 && &wrap ? 'gk' : 'k'",
+  { desc = "Up", expr = true, silent = true }
+)
+
 vim.cmd([[
-    nnoremap j gj
-    nnoremap k gk
-    vnoremap j gj
-    vnoremap k gk
+    " nnoremap <expr> j (foldclosed(line('.')) != -1 || &wrap) ? 'gj' : 'j'
+    " nnoremap <expr> k (foldclosed(line('.')) != -1 || &wrap) ? 'gk' : 'k'
+    " vnoremap <expr> j (foldclosed(line('.')) != -1 || &wrap) ? 'gj' : 'j'
+    " vnoremap <expr> k (foldclosed(line('.')) != -1 || &wrap) ? 'gk' : 'k'
+    " nnoremap j gj
+    " nnoremap k gk
+    " vnoremap j gj
+    " vnoremap k gk
+    "
     tnoremap <Esc> <C-\><C-n>
     tnoremap <M-[> <Esc>
     tnoremap <C-v><Esc> <Esc>
@@ -112,24 +125,6 @@ map({ "n", "v" }, "<M-:>", "q:", {
   desc = " open the command window",
 })
 
-map("c", "<M-b>", "<C-]><Esc>", {
-  category = "Command",
-  label = " open cmdwin normal",
-  desc = " open command window from the command line in normal mode",
-})
-
-map("c", "<M-f>", "<C-]>", {
-  category = "Command",
-  label = " open cmdwin insert",
-  desc = " open command window from the command line in insert mode",
-})
-
-map("c", "<M-S>", "<cmd>w<cr><esc>", {
-  category = "Command",
-  label = " save cmdline",
-  desc = " save in command line",
-})
-
 -- map('c', '<C-Y>', '<C-\\>ey', {
 --   category = 'Command',
 --   label = ' yank cmdline',
@@ -144,17 +139,6 @@ map("c", "<M-S>", "<cmd>w<cr><esc>", {
 --   label = ' delete char',
 --   desc = ' delete character to the right of cmdline',
 -- })
-
--- TODO: conditional C-t for cmdline
-vmap("c", "<C-g>", {
-  category = "Command",
-  label = " next search match",
-})
-
-map("c", "<M-g>", "<C-t>", {
-  category = "Command",
-  label = " prev search match",
-})
 
 -- CTRL-\ e {expr}       :cmap <F7> <C-\>eAppendSome()<CR>
 -- CTRL-R
@@ -204,19 +188,33 @@ map("c", "<M-g>", "<C-t>", {
 -- Alt+?      List all possible completions
 -- Alt+*      Insert all possible completions
 
-map("c", "<C-t>", "<Del>", {
+map("c", "<M-b>", "<C-]><Esc>", {
   category = "Command",
-  label = " delete char right",
-  desc = " delete one char to the right",
+  label = " open cmdwin normal",
+  desc = " open command window from the command line in normal mode",
 })
 
-map("c", "<C-d>", "<S-Right><C-w>", {
+map("c", "<M-f>", "<C-]>", {
+  category = "Command",
+  label = " open cmdwin insert",
+  desc = " open command window from the command line in insert mode",
+})
+
+map("c", "<M-S>", "<cmd>w<cr><esc>", {
+  category = "Command",
+  label = " save cmdline",
+  desc = " save in command line",
+})
+
+map("c", "<C-Del>", "<S-Right><C-w>", {
+  silent = false,
   category = "Command",
   label = " delete word right",
   desc = " delete one word to the right",
 })
 
-map("c", "<M-d>", '<cmd>lua require("commands.cmdline").delete_eol()<cr>', {
+map("c", "<C-D>", '<cmd>lua require("commands.cmdline").delete_eol()<cr>', {
+  silent = false,
   category = "Command",
   label = " delete eol",
   desc = " delete to end of cmdline",
@@ -227,6 +225,18 @@ map("c", "<C-^>", "<C-Home>", {
   category = "Command",
   label = " goto start",
   desc = " go to beginning of command line",
+})
+
+vmap("c", "<C-g>", {
+  category = "Command",
+  label = " next search match",
+})
+
+map("c", "<M-g>", '<cmd>lua require("commands.cmdline").jump_search_prev()<cr>', {
+  silent = false,
+  category = "Command",
+  label = " toggle cmdline",
+  desc = " toggle cmdline depending on command mode",
 })
 
 map("c", "<M-^>", '<cmd>lua require("commands.cmdline").toggle()<cr>', {
@@ -243,19 +253,13 @@ map("c", "<C-$>", "<C-End>", {
   desc = " go to end of command line",
 })
 
-map("c", "<M-$>", "<C-End>", {
-  silent = false,
-  category = "Command",
-  label = " goto end",
-  desc = " go to end of command line",
-})
-
 map("c", "<C-h>", "<Left>", {
   silent = false,
   category = "Command",
   label = " move left",
   desc = " move to the left by 1 character",
 })
+
 map("c", "<M-C-H>", "<S-Left>", {
   silent = false,
   category = "Command",
@@ -279,16 +283,21 @@ map("c", "<M-C-L>", "<S-Right>", {
 
 -- todo: ctrl-shift- %
 map("c", "<M-%>", "<C-r>%", {
+  silent = false,
   category = "Command",
   label = " insert filename cmdline",
   desc = " insert filename into the command line",
 })
 
-map("c", "<M-C-e>", [[<c-\>eexpandcmd(getcmdline())<CR>]], {
+map("c", "<M-C-e>", [[<c-\>expandcmd(getcmdline())<CR>]], {
+  silent = false,
   category = "Command",
   label = " expand special characters",
   desc = " expand special cmdline characters in place",
 })
+
+-- "<C-r>=expand('%:p:h')<CR>/", { noremap = true, silent = false }) -- expand path
+-- "<C-r>=expand('%:p:r')<CR>", { noremap = true, silent = false })  -- expand file (not ext)
 
 --------------------------------------------------------------------------------------------------
 -- COMMENTS ---------------------------------------------------------------------------------------
@@ -370,18 +379,6 @@ map("n", "<C-^>", "<cmd>AltLoad<cr>", {
 --   desc = '󰽙 open the last buffer',
 --   silent = true,
 -- })
-
-map("n", "<C-Tab>", "<cmd>tabn<cr>", {
-  category = "Buffers",
-  label = "󰽙 next tab",
-  desc = "󰽙 open the next tab",
-})
-
-map("n", "<C-S-Tab>", "<cmd>tabp<cr>", {
-  category = "Buffers",
-  label = "󰽙 prev  tab",
-  desc = "󰽙 open the prev tab",
-})
 
 map("n", "H", "<Cmd>BufferPrev<cr>", {
   category = "Buffers",
@@ -1069,50 +1066,92 @@ map('n', '<F12>', "<cmd>Stats<cr>", {
 })
 
 
-map('n', '<F2>', '<cmd>WhichKey<cr>', {
+map('n', '<F2>', '<cmd>WhatKey<cr>', {
+  plugin = 'what-key.nvim',
+  category = 'UI',
+  desc = '  toggle whatkey nor'
+})
+
+map('i', '<F2>', '<cmd>WhatKey "" i<cr>', {
+  plugin = 'what-key.nvim',
+  category = 'UI',
+  desc = '  toggle whatkey ins'
+})
+
+map('x', '<F2>', '<cmd>WhatKey "" v<cr>', {
+  plugin = 'what-key.nvim',
+  category = 'UI',
+  desc = '  toggle whatkey vis'
+})
+
+map('s', '<F2>', '<cmd>WhatKey "" v<cr>', {
+  plugin = 'what-key.nvim',
+  category = 'UI',
+  desc = '  toggle whatkey vis'
+})
+
+map('c', '<F2>', '<cmd>WhatKey "" c<cr>', {
+  plugin = 'what-key.nvim',
+  category = 'UI',
+  desc = '  toggle whatkey cmd'
+})
+
+map('t', '<F2>', '<cmd>WhatKey "" t<cr>', {
+  plugin = 'what-key.nvim',
+  category = 'UI',
+  desc = '  toggle whatkey term'
+})
+
+map('o', '<F2>', '<cmd>WhatKey "" o<cr>', {
+  plugin = 'what-key.nvim',
+  category = 'UI',
+  desc = '  toggle whatkey op'
+})
+
+map('n', '<F3>', '<cmd>WhichKey<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = '  toggle whichkey nor'
 })
 
-map('i', '<F2>', '<cmd>WhichKey "" i<cr>', {
+map('i', '<F3>', '<cmd>WhichKey i<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = '  toggle whichkey ins'
 })
 
-map('x', '<F2>', '<cmd>WhichKey "" v<cr>', {
+map('x', '<F3>', '<cmd>WhichKey x<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = '  toggle whichkey vis'
 })
 
-map('s', '<F2>', '<cmd>WhichKey "" v<cr>', {
+map('s', '<F3>', '<cmd>WhichKey s<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = '  toggle whichkey vis'
 })
 
-map('c', '<F2>', '<cmd>WhichKey "" c<cr>', {
+map('c', '<F3>', '<cmd>WhichKey c<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = '  toggle whichkey cmd'
 })
 
-map('t', '<F2>', '<cmd>WhichKey "" t<cr>', {
+map('t', '<F3>', '<cmd>WhichKey t<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = '  toggle whichkey term'
 })
 
-map('o', '<F2>', '<cmd>WhichKey "" o<cr>', {
+map('o', '<F3>', '<cmd>WhichKey o<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = '  toggle whichkey op'
 })
 
 -- shift+F2
-map('n', '<F14>', '<cmd>WhichKeyBackground<cr>', {
+map('n', '<F14>', '<cmd>WhatKeyBackground<cr>', {
   plugin = 'which-key.nvim',
   category = 'UI',
   desc = '  toggle whichkey background',
@@ -1389,17 +1428,30 @@ map('n', '<leader>:', '<c-w>W', {
   desc = ' focus the previous window',
 })
 
-map('n', '<C-Tab>', '<c-w>w', {
+map({'n'}, '<C-Tab>', '<c-w>w', {
   category = 'Window',
   label = 'window next',
   desc = ' focus the next window',
 })
 
-map('n', '<C-S-Tab>', '<c-w>W', {
+map({'i'}, '<C-Tab>', '<c-o><c-w>w', {
+  category = 'Window',
+  label = 'window next',
+  desc = ' focus the next window',
+})
+
+map({'i'}, '<C-S-Tab>', '<c-o><c-w>W', {
   category = 'Window',
   label = 'window prev ',
   desc = ' focus the prev window',
 })
+
+map({'n'}, '<C-S-Tab>', '<c-w>W', {
+  category = 'Window',
+  label = 'window prev ',
+  desc = ' focus the prev window',
+})
+
 
 map('n', '<leader>H', '<cmd>vnew<cr>', {
   category = 'Window',
@@ -1412,6 +1464,8 @@ map('n', '<leader>V', '<cmd>new<cr>', {
   label = ' window split-v',
   desc = ' window split vertically',
 })
+
+map({ "n" }, "<C-w><C-CR>", "<cmd>lua require('commands.ui').smart_win_split()<cr>", { desc = " smart window split" })
 
 -- TODO: switch _ and | and make thme toggleable
 map('n', '_', function()

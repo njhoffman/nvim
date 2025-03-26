@@ -5,7 +5,7 @@ require("globals")
 -- https://github.com/stevearc/quicker.nvim
 vim.import("quickfix")
 
-require("utils.lazy").setup({ cache = false, reload = false, lazy = false })
+require("utils.lazy").setup({ cache = false, reload = true, lazy = false })
 
 -- qfSeparator, qfLineNr, qfFilename
 
@@ -14,7 +14,6 @@ for _, mod_name in ipairs({
   "commands",
   "abbreviations",
   "autocommands",
-  "wf-setup",
   "devbox",
   "project",
   "runner",
@@ -44,6 +43,7 @@ for _, mod_name in ipairs({
 end
 
 vim.defer_fn(function()
+  require("modeman")
   require("alt").setup()
   require("sidebar").setup()
   require("histories").setup()

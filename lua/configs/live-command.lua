@@ -39,6 +39,8 @@ local old_commands = {
 
 local commands = {
   Norm = { cmd = "norm" },
+  -- G = { cmd = "g" },
+  -- V = { cmd = "v" },
 }
 
 -- Transforms ":5Reg a" into ":norm 5@a"

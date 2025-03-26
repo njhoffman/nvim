@@ -108,7 +108,7 @@ local default_cfg = {
   top_down = true, -- place notifications from top to bottom
   date_format = "%R", -- time format for notifications
   -- format for footer when more lines are available
-  -- %d is replaced with the number of lines.
+  -- `%d` is replaced with the number of lines.
   -- only works for styles with a border
   ---@type string|boolean
   more_format = " ↓ %d lines ",

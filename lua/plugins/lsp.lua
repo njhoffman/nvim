@@ -6,7 +6,6 @@ local plugins = {
   {
     "bassamsdata/namu.nvim",
   },
-
   {
     "neovim/nvim-lspconfig",
     opts = {

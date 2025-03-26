@@ -723,7 +723,29 @@ return function(injected_functions)
     -- NotifyRunSuccessCommand({ fg = '#4fa7f2' }),
     NotifyRunSuccessOutput({ fg = Comment.fg }),
 
-    -- whichkey
+    -- whatkey
+    WhatKeyKey({ fg = "#07c0f7", gui = "none" }), --Function
+    WhatKeyOperator({ fg = "#917ccf", gui = "none" }), -- Keyword
+    WhatKeyGroup({ fg = "#418cf4", gui = "none" }), -- Keyword
+    -- WhatKeyDesc({ fg = "#5d79a1", gui = "italic" }), -- Identifier
+    WhatKeyDesc({ fg = "#5d79a1", gui = "italic" }), -- Identifier
+    WhatKeySeperator({ fg = "#334664", gui = "bold" }), -- DiffAdded
+    WhatKeyFloat({ bg = NormalFloat.bg }), -- NormalFloat
+    WhatKeyCursorLine({ bg = "#0a2446", gui = "bold" }),
+    -- WhatKeyGroup = { fg = clrs.text },
+    -- WhatKeyDesc = { fg = clrs.nord7, gui = "italic" },
+    -- WhatKeySeperator = { fg = clrs.fg },
+    -- WhatKeyValue { bg = clrs.float }, -- Comment
+    -- WhatKey = { fg = colors.purple, gui = "bold" },
+    -- WhatKeyGroup = { fg = colors.cyan },
+    -- WhatKeyDesc = { fg = colors.blue, gui = "italic" },
+    -- WhatKeySeperator = { fg = colors.green },
+    -- WhatKeyFloat = { bg = colors.active },
+    -- WhatKeyGroup = { fg = clrs.text },
+    -- WhatKeyDesc = { fg = clrs.nord7, gui = "italic" },
+    -- WhatKeySeperator = { fg = clrs.fg },
+
+    -- whatkey
     WhichKeyKey({ fg = "#07c0f7", gui = "none" }), --Function
     WhichKeyOperator({ fg = "#917ccf", gui = "none" }), -- Keyword
     WhichKeyGroup({ fg = "#418cf4", gui = "none" }), -- Keyword
@@ -732,6 +754,13 @@ return function(injected_functions)
     WhichKeySeperator({ fg = "#334664", gui = "bold" }), -- DiffAdded
     WhichKeyFloat({ bg = NormalFloat.bg }), -- NormalFloat
     WhichKeyCursorLine({ bg = "#0a2446", gui = "bold" }),
+
+    -- WhichKey({ fg = "#0db9d7" }),
+    -- WhichKeyGroup({ fg = c.blue }),
+    -- WhichKeyDesc({ fg = c.magenta }),
+    -- WhichKeySeparator({ fg = c.comment }),
+    -- WhichKeyNormal({ bg = c.bg_sidebar }),
+    -- WhichKeyValue({ fg = c.dark5 }),
     -- WhichKeyGroup = { fg = clrs.text },
     -- WhichKeyDesc = { fg = clrs.nord7, gui = "italic" },
     -- WhichKeySeperator = { fg = clrs.fg },

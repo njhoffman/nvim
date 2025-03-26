@@ -5,7 +5,7 @@ local setup_auto_cmds = function()
   vim.api.nvim_create_autocmd({ "FocusLost", "WinLeave" }, {
     group = "VimadeEvents",
     callback = function(ev)
-      -- local winid = vim.fn.bufwinid(ev.buf)
+      local winid = vim.fn.bufwinid(ev.buf)
       -- vim.dbglog(ev.event)
       -- M.vimade_fade_global(0.5)
     end,
@@ -15,7 +15,7 @@ local setup_auto_cmds = function()
   vim.api.nvim_create_autocmd({ "FocusGained", "WinEnter" }, {
     group = "VimadeEvents",
     callback = function(ev)
-      -- local winid = vim.fn.bufwinid(ev.buf)
+      local winid = vim.fn.bufwinid(ev.buf)
       -- vim.dbglog(ev.event)
       -- M.vimade_unfade_global()
     end,
@@ -27,6 +27,8 @@ local setup_user_cmds = function()
   for _, cmd in ipairs(clear_commands) do
     vim.api.nvim_del_user_command(cmd)
   end
+  vim.api.nvim_create_user_command("VimadeInfo", v_utils.vimade_info, { desc = "vimade info" })
+
   vim.api.nvim_create_user_command(
     "VimadeReload",
     v_utils.vimade_reload,
@@ -44,18 +46,22 @@ end
 
 local setup = function()
   local fadelevel_cfg = {
+    dimmed = 0.5,
     popup = 0.6,
     split = 0.7,
-    global = 0.5,
+    global = 0.6,
     cmdline = 0.8,
     neotree = 0.8,
     whichkey = 0.8,
   }
+
   local vimade_cfg = {
     style = v_utils.style,
     fadelevel = v_utils.fadelevel(fadelevel_cfg),
     -- ncmode = "focus",
     enablefocusfading = true,
+    -- usecursorhold = true,
+    -- nohlcheck = false,
     -- blocklist = {
     -- only_behind_float_windows = function(win, current)
     --   -- current can be nil
@@ -70,8 +76,7 @@ local setup = function()
     -- },
     -- wintype = true,
     -- win_config = {},
-    -- win_config = { relative = true },
-    -- },
+    -- win_config = { relative = true }, },
     -- filetype = {
     --   "CompetiTest",
     --   "Mundo",
@@ -102,12 +107,10 @@ local setup = function()
     -- groupscrollbind = 0,
     -- normalid = "",
     -- normalncid = "",
-    -- nohlcheck = 1,
   }
 
   local setup_delay = vim.v.vim_did_enter == 1 and 500 or 3000
   vim.defer_fn(function()
-    vim.dbglog("loading vimade: " .. vim.v.vim_did_enter)
     require("vimade").setup(vimade_cfg)
     setup_user_cmds()
     setup_auto_cmds()

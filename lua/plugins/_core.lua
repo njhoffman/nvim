@@ -50,6 +50,7 @@ local plugins = {
   },
   {
     "rktjmp/lush.nvim",
+    dependencies = { "Iron-E/nvim-highlite" },
     priority = 1000,
     lazy = false,
     keys = {
@@ -62,9 +63,6 @@ local plugins = {
         noremap = true,
       },
     },
-    config = function()
-      vim.cmd("colorscheme nord-nick")
-    end,
   },
   {
     "TaDaa/vimade",
@@ -103,10 +101,24 @@ local plugins = {
   { "b0o/incline.nvim", enabled = false, event = "VeryLazy" },
   {
     -- https://github.com/tamton-aquib/keys.nvim
-    "folke/which-key.nvim",
-    dir = "~/git/which-key.nvim",
+    "njhoffman/what-key.nvim",
+    dir = "~/git/what-key.nvim",
+    -- name = "what-key",
     event = "VeryLazy",
     dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Buffer Local Keymaps (which-key)",
+      },
+    },
   },
   -- { 'freddiehaddad/feline.nvim', branch = 'main', event = 'VimEnter', lazy = false, },
 }

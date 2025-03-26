@@ -55,36 +55,35 @@ function M.selectAltFile()
   end)
 end
 
+local logger = require("logger").init("alt")
 function M.lookupAltFile(ev)
   if not ev.match or ev.match == "" then
     return
   end
   local altFile, reopen = getAltFile(ev.match)
-  vim.dbglog(ev.match, altFile)
-  if altFile then
-    local altOpen = false
-    for _, buf in ipairs(vim.fn.getbufinfo({ buflisted = 1 })) do
-      altOpen = buf.name == altFile or altOpen
-    end
-    local msg = "skipping unopened alt: "
+  if not altFile then
+    logger:trace("no match: " .. ev.match)
+    return
+  end
+  local altOpen = false
+  for _, buf in ipairs(vim.fn.getbufinfo({ buflisted = 1 })) do
+    altOpen = buf.name == altFile or altOpen
+  end
+  local msg = "skipping unopened alt: "
+    .. utils.formatPath(altFile)
+    .. " for: "
+    .. utils.formatPath(file)
+  if reopen and not altOpen then
+    msg = "setting unopened alt: "
       .. utils.formatPath(altFile)
       .. " for: "
       .. utils.formatPath(file)
-    if reopen and not altOpen then
-      msg = "setting unopened alt: "
-        .. utils.formatPath(altFile)
-        .. " for: "
-        .. utils.formatPath(file)
-      vim.fn.setreg("#", altFile)
-    elseif not reopen and altOpen then
-      msg = "setting opened alt: "
-        .. utils.formatPath(altFile)
-        .. " for: "
-        .. utils.formatPath(file)
-      vim.fn.setreg("#", altFile)
-    end
-    vim.dbglog(msg)
+    vim.fn.setreg("#", altFile)
+  elseif not reopen and altOpen then
+    msg = "setting opened alt: " .. utils.formatPath(altFile) .. " for: " .. utils.formatPath(file)
+    vim.fn.setreg("#", altFile)
   end
+  logger:info(msg)
 end
 
 function M.inspectState()

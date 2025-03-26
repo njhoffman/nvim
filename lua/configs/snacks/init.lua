@@ -2,17 +2,23 @@ local profiler_cfg = require("configs.snacks.profiler")
 local toggle_cfg = require("configs.snacks.toggle")
 local scratch_cfg = require("configs.snacks.scratch")
 local notifier_cfg = require("configs.snacks.notifier")
+local styles_cfg = require("configs.snacks.styles")
 
 local cfg = {
-  scratch = scratch_cfg,
-  profiler = profiler_cfg,
-  toggle = toggle_cfg,
   notifier = notifier_cfg,
-  debug = { enabled = true },
+  profiler = profiler_cfg,
+  scratch = scratch_cfg,
+  styles = styles_cfg,
+  toggle = toggle_cfg,
 
   bigfile = { enabled = true },
   dashboard = { enabled = false },
+  debug = { enabled = true },
+  input = { enabled = true },
+  picker = { enabled = true },
   quickfile = { enabled = false },
+  statuscolumn = { enabled = false },
+
   scroll = {
     enabled = false,
     animate = {
@@ -26,9 +32,6 @@ local cfg = {
         and vim.bo[buf].buftype ~= "terminal"
     end,
   },
-  input = { enabled = true },
-  picker = { enabled = true },
-  statuscolumn = { enabled = false },
   words = {
     enabled = false,
     debounce = 200, -- time in ms to wait before updating
@@ -37,11 +40,6 @@ local cfg = {
     foldopen = true, -- open folds after jumping
     jumplist = true, -- set jump point before jumping
     modes = { "n", "i", "c" }, -- modes to show references
-  },
-  styles = {
-    notification = {
-      wo = { wrap = false }, -- Wrap notifications
-    },
   },
 }
 

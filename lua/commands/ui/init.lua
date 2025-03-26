@@ -27,4 +27,4 @@ local setup = function()
   setup_commands()
 end
 
-return { setup = setup }
+return { setup = setup, smart_win_split = actions.smart_win_split }

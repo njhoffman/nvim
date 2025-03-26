@@ -188,6 +188,14 @@ M.format = {
 }
 
 M.movement = {
+  {
+    "Force a motion to be line/char/blockwise with visualmode after operator and before motion",
+    "`dj` ➜ `dvj` ➜ `dVj` ➜ `d<C-V>j`",
+  },
+  {
+    "Select+Motion+Operator is interchangeable with Operator+Select+Motion",
+    "`<C-V>3jd` ➜ `d<C-V>3j`",
+  },
   { "To go to 80% of current file", "`:80%`" },
   { "To go to 5th column of current line", "`5|`" },
   {

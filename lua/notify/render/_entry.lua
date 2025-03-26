@@ -26,14 +26,14 @@ local render = function(bufnr, notif, highlights, config)
 
   local is_error = false
   for _, pattern in ipairs(error_patterns) do
-    is_error = is_error or string.match(first_line, pattern)
+    is_error = false -- is_error or string.match(first_line, pattern)
   end
 
   if is_error then
-    -- return require('notify.render.error')(bufnr, notif, highlights, config)
     -- notif.level = 'ERROR'
     -- return require('notify.render.wrapped-compact')(bufnr, notif, highlights, config)
-    return require("notify.render._simple-notitle")(bufnr, notif, highlights, config)
+    return require("notify.render._error")(bufnr, notif, highlights, config)
+    -- return require("notify.render._simple-notitle")(bufnr, notif, highlights, config)
   elseif #title > 0 and not vim.tbl_contains(title_ignore, title) then
     -- return require('notify.render.compact')(bufnr, notif, highlights, config)
     -- return require("notify.render._simple-notitle")(bufnr, notif, highlights, config)

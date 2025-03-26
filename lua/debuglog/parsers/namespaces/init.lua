@@ -227,4 +227,37 @@ local namespaces = function(opts)
   return output
 end
 
+--------------
+---Extmarks Totals
+--   global ns                     32,500   2,500      300
+--   anon  ns (17)
+--   named ns (32)                32,500   2,500      300
+--   total
+--
+--------------
+---Extmarks by namespace
+--                       id   bufs   virt    sign    high    total
+--   NeoComposerYank      3
+--   MiniAnimateCursor    1
+--   nvim-navbuddy        0
+--   selecta_highlights
+--   todo-comments
+--   tiny-glimmer
+--   git-conflict
+--   vimade
+--------------
+-- Extmarks by buffer
+--                    attrs    lines   virt    sign    high    total
+--   buf_a_32
+--   buf_i_22
+--   buf_h_2
+--   active (13)
+--   hidden (18)
+--   loaded
+--   listed
+--   total (17)
+----------------
+
+------------
+-- vim.dbglog(table.concat(namespaces(), "\n"))
 return namespaces

@@ -1,22 +1,22 @@
-local conf = require('telescope.config').values
-local utils = require('telescope.utils')
-local entry_display = require('telescope.pickers.entry_display')
-local action_state = require('telescope.actions.state')
-local resolver = require('telescope.config.resolve')
-local popup = require('plenary.popup')
+local conf = require("telescope.config").values
+local utils = require("telescope.utils")
+local entry_display = require("telescope.pickers.entry_display")
+local action_state = require("telescope.actions.state")
+local resolver = require("telescope.config.resolve")
+local popup = require("plenary.popup")
 local a = vim.api
 
 -- Best effort to infer function names for actions.which_key
 function _get_anon_function_name(info)
   -- info.linedefined = 125,
   -- info.source = "@/home/nicholas/.config/nvim/lua/configs/telescope/actions.lua"
-  local Path = require('plenary.path')
+  local Path = require("plenary.path")
   local fname
   -- if fn defined in string (ie loadstring) source is string
   -- if fn defined in file, source is file name prefixed with a `@´
-  local path = Path:new((info.source:gsub('@', '')))
+  local path = Path:new((info.source:gsub("@", "")))
   if not path:exists() then
-    return '<anonymous>'
+    return "<anonymous>"
   end
   for i, line in ipairs(path:readlines()) do
     if i == info.linedefined then
@@ -26,24 +26,24 @@ function _get_anon_function_name(info)
   end
 
   -- test if assignment or named function, otherwise anon
-  if (fname:match('=') == nil) and (fname:match('function %S+%(') == nil) then
-    return '<anonymous>'
+  if (fname:match("=") == nil) and (fname:match("function %S+%(") == nil) then
+    return "<anonymous>"
   else
     local patterns = {
-      { 'function', '' }, -- remove function
-      { 'local', '' }, -- remove local
-      { '[%s=]', '' }, -- remove whitespace and =
-      { [=[%[["']]=], '' }, -- remove left-hand bracket of table assignment
-      { [=[["']%]]=], '' }, -- remove right-ahnd bracket of table assignment
-      { '%((.+)%)', '' }, -- remove function arguments
-      { '(.+)%.', '' }, -- remove TABLE. prefix if available
+      { "function", "" }, -- remove function
+      { "local", "" }, -- remove local
+      { "[%s=]", "" }, -- remove whitespace and =
+      { [=[%[["']]=], "" }, -- remove left-hand bracket of table assignment
+      { [=[["']%]]=], "" }, -- remove right-ahnd bracket of table assignment
+      { "%((.+)%)", "" }, -- remove function arguments
+      { "(.+)%.", "" }, -- remove TABLE. prefix if available
     }
     for _, tbl in ipairs(patterns) do
       fname = (fname:gsub(tbl[1], tbl[2])) -- make sure only string is returned
     end
     -- not sure if this can happen, catch all just in case
-    if fname == nil or fname == '' then
-      return '<anonymous>'
+    if fname == nil or fname == "" then
+      return "<anonymous>"
     end
     return fname
   end
@@ -54,15 +54,15 @@ end
 function get_registered_mappings(prompt_bufnr)
   -- require('telescope.actions.utils').get_registered_mappings
   local ret = {}
-  for _, mode in ipairs({ 'n', 'i' }) do
+  for _, mode in ipairs({ "n", "i" }) do
     for _, mapping in ipairs(vim.api.nvim_buf_get_keymap(prompt_bufnr, mode)) do
       -- ensure only telescope mappings
       if mapping.desc then
-        if mapping.desc:sub(1, 10) == 'telescope|' then
+        if mapping.desc:sub(1, 10) == "telescope|" then
           table.insert(ret, { mode = mode, keybind = mapping.lhs, desc = mapping.desc:sub(11) })
-        elseif mapping.desc:sub(1, 11) == 'telescopej|' then
+        elseif mapping.desc:sub(1, 11) == "telescopej|" then
           local fname = _get_anon_function_name(vim.json.decode(mapping.desc:sub(12)))
-          fname = fname:lower() == mapping.lhs:lower() and '<anonymous>' or fname
+          fname = fname:lower() == mapping.lhs:lower() and "<anonymous>" or fname
           table.insert(ret, {
             mode = mode,
             keybind = mapping.lhs,
@@ -177,41 +177,41 @@ local get_default_mappings = function()
 end
 
 local setup_highlights = function()
-  vim.api.nvim_set_hl(0, 'TelescopeWhichKeyNormal', { default = true, link = 'TelescopePrompt' })
+  vim.api.nvim_set_hl(0, "TelescopeWhichKeyNormal", { default = true, link = "TelescopePrompt" })
   vim.api.nvim_set_hl(
     0,
-    'TelescopeWhichKeyBorder',
-    { default = true, link = 'TelescopePromptBorder' }
+    "TelescopeWhichKeyBorder",
+    { default = true, link = "TelescopePromptBorder" }
   )
   vim.api.nvim_set_hl(
     0,
-    'TelescopeWhichKeyMode',
-    { default = true, link = 'TelescopeResultsConstant' }
+    "TelescopeWhichKeyMode",
+    { default = true, link = "TelescopeResultsConstant" }
   )
   vim.api.nvim_set_hl(
     0,
-    'TelescopeWhichKeyBind',
-    { default = true, link = 'TelescopeResultsVariable' }
+    "TelescopeWhichKeyBind",
+    { default = true, link = "TelescopeResultsVariable" }
   )
   vim.api.nvim_set_hl(
     0,
-    'TelescopeWhichKeyName',
-    { default = true, link = 'TelescopeResultsFunction' }
+    "TelescopeWhichKeyName",
+    { default = true, link = "TelescopeResultsFunction" }
   )
   vim.api.nvim_set_hl(
     0,
-    'TelescopeWhichKeyModeCustom',
-    { default = true, link = 'TelescopeWhichKeyMode' }
+    "TelescopeWhichKeyModeCustom",
+    { default = true, link = "TelescopeWhichKeyMode" }
   )
   vim.api.nvim_set_hl(
     0,
-    'TelescopeWhichKeyBindCustom',
-    { default = true, link = 'TelescopeWhichKeyBind' }
+    "TelescopeWhichKeyBindCustom",
+    { default = true, link = "TelescopeWhichKeyBind" }
   )
   vim.api.nvim_set_hl(
     0,
-    'TelescopeWhichKeyNameCustom',
-    { default = true, link = 'TelescopeWhichKeyName' }
+    "TelescopeWhichKeyNameCustom",
+    { default = true, link = "TelescopeWhichKeyName" }
   )
 end
 
@@ -219,7 +219,7 @@ end
 --- - Notes:
 ---   - The defaults can be overridden via |action_generate.which_key|.
 ---@param prompt_bufnr number: The prompt bufnr
-local which_key = function(prompt_bufnr, opts)
+local what_key = function(prompt_bufnr, opts)
   opts = opts or {}
   opts.max_height = vim.F.if_nil(opts.max_height, 0.4)
   opts.only_show_current_mode = vim.F.if_nil(opts.only_show_current_mode, true)
@@ -227,23 +227,23 @@ local which_key = function(prompt_bufnr, opts)
   opts.keybind_width = vim.F.if_nil(opts.keybind_width, 7)
   opts.name_width = vim.F.if_nil(opts.name_width, 30)
   opts.line_padding = vim.F.if_nil(opts.line_padding, 1)
-  opts.separator = vim.F.if_nil(opts.separator, ' -> ')
+  opts.separator = vim.F.if_nil(opts.separator, " -> ")
   opts.close_with_action = vim.F.if_nil(opts.close_with_action, true)
-  opts.normal_hl = vim.F.if_nil(opts.normal_hl, 'TelescopeWhichKeyNormal')
-  opts.border_hl = vim.F.if_nil(opts.border_hl, 'TelescopeWhichKeyBorder')
+  opts.normal_hl = vim.F.if_nil(opts.normal_hl, "TelescopeWhichKeyNormal")
+  opts.border_hl = vim.F.if_nil(opts.border_hl, "TelescopeWhichKeyBorder")
   opts.winblend = vim.F.if_nil(opts.winblend, conf.winblend)
-  opts.column_padding = vim.F.if_nil(opts.column_padding, '  ')
+  opts.column_padding = vim.F.if_nil(opts.column_padding, "  ")
 
   -- Assigning into 'opts.column_indent' would override a number with a string and
   -- cause issues with subsequent calls, keep a local copy of the string instead
-  local column_indent = table.concat(utils.repeated_table(vim.F.if_nil(opts.column_indent, 4), ' '))
+  local column_indent = table.concat(utils.repeated_table(vim.F.if_nil(opts.column_indent, 4), " "))
 
   -- close on repeated keypress
   local km_bufs = (function()
     local ret = {}
     local bufs = a.nvim_list_bufs()
     for _, buf in ipairs(bufs) do
-      for _, bufname in ipairs({ '_TelescopeWhichKey', '_TelescopeWhichKeyBorder' }) do
+      for _, bufname in ipairs({ "_TelescopeWhichKey", "_TelescopeWhichKeyBorder" }) do
         if string.find(a.nvim_buf_get_name(buf), bufname) then
           table.insert(ret, buf)
         end
@@ -285,9 +285,9 @@ local which_key = function(prompt_bufnr, opts)
   })
 
   local make_display = function(mapping)
-    local mode_hl = mapping.custom and 'TelescopeWhichKeyModeCustom' or 'TelescopeWhichKeyMode'
-    local bind_hl = mapping.custom and 'TelescopeWhichKeyBindCustom' or 'TelescopeWhichKeyBind'
-    local name_hl = mapping.custom and 'TelescopeWhichKeyNameCustom' or 'TelescopeWhichKeyName'
+    local mode_hl = mapping.custom and "TelescopeWhichKeyModeCustom" or "TelescopeWhichKeyMode"
+    local bind_hl = mapping.custom and "TelescopeWhichKeyBindCustom" or "TelescopeWhichKeyBind"
+    local name_hl = mapping.custom and "TelescopeWhichKeyNameCustom" or "TelescopeWhichKeyName"
     if opts.only_show_current_mode then
       return displayer({
         { mapping.keybind, vim.F.if_nil(opts.keybind_hl, bind_hl) },
@@ -306,18 +306,18 @@ local which_key = function(prompt_bufnr, opts)
   local mappings = {}
   local mode = a.nvim_get_mode().mode
   for _, v in pairs(get_registered_mappings(prompt_bufnr)) do
-    if v.desc and v.desc ~= 'which_key' and v.desc ~= 'nop' then
+    if v.desc and v.desc ~= "what_key" and v.desc ~= "nop" then
       if not opts.only_show_current_mode or mode == v.mode then
         table.insert(mappings, {
-          custom = type(default_mappings[v.mode][v.keybind]) ~= 'string',
+          custom = type(default_mappings[v.mode][v.keybind]) ~= "string",
           mode = v.mode,
           keybind = v.keybind,
           name = v.desc,
         })
-        if v.desc == '<anonymous>' then
-          utils.notify('actions.which_key', {
-            msg = 'No name available for anonymous functions.',
-            level = 'INFO',
+        if v.desc == "<anonymous>" then
+          utils.notify("actions.what_key", {
+            msg = "No name available for anonymous functions.",
+            level = "INFO",
             once = true,
           })
         end
@@ -369,11 +369,11 @@ local which_key = function(prompt_bufnr, opts)
   local prompt_pos = prompt_row < 0.4 * vim.o.lines
     or prompt_row < 0.6 * vim.o.lines and results_row + preview_row < vim.o.lines
 
-  local modes = { n = 'Normal', i = 'Insert' }
-  local title_mode = opts.only_show_current_mode and modes[mode] .. ' Mode ' or ''
-  local title_text = title_mode .. 'Keymaps'
+  local modes = { n = "Normal", i = "Insert" }
+  local title_mode = opts.only_show_current_mode and modes[mode] .. " Mode " or ""
+  local title_text = title_mode .. "Keymaps"
   local popup_opts = {
-    relative = 'editor',
+    relative = "editor",
     enter = false,
     minwidth = vim.o.columns,
     maxwidth = vim.o.columns,
@@ -383,34 +383,34 @@ local which_key = function(prompt_bufnr, opts)
     col = 0,
     border = { prompt_pos and 1 or 0, 0, not prompt_pos and 1 or 0, 0 },
     borderchars = {
-      prompt_pos and '─' or ' ',
-      '',
-      not prompt_pos and '─' or ' ',
-      '',
-      '',
-      '',
-      '',
-      '',
+      prompt_pos and "─" or " ",
+      "",
+      not prompt_pos and "─" or " ",
+      "",
+      "",
+      "",
+      "",
+      "",
     },
     noautocmd = true,
-    title = { { text = title_text, pos = prompt_pos and 'N' or 'S' } },
+    title = { { text = title_text, pos = prompt_pos and "N" or "S" } },
   }
-  local km_win_id, km_opts = popup.create('', popup_opts)
+  local km_win_id, km_opts = popup.create("", popup_opts)
   local km_buf = a.nvim_win_get_buf(km_win_id)
-  a.nvim_buf_set_name(km_buf, '_TelescopeWhichKey')
-  a.nvim_buf_set_name(km_opts.border.bufnr, '_TelescopeTelescopeWhichKeyBorder')
-  a.nvim_win_set_option(km_win_id, 'winhl', 'Normal:' .. opts.normal_hl)
-  a.nvim_win_set_option(km_opts.border.win_id, 'winhl', 'Normal:' .. opts.border_hl)
-  a.nvim_win_set_option(km_win_id, 'winblend', opts.winblend)
-  a.nvim_win_set_option(km_win_id, 'foldenable', false)
+  a.nvim_buf_set_name(km_buf, "_TelescopeWhichKey")
+  a.nvim_buf_set_name(km_opts.border.bufnr, "_TelescopeTelescopeWhichKeyBorder")
+  a.nvim_win_set_option(km_win_id, "winhl", "Normal:" .. opts.normal_hl)
+  a.nvim_win_set_option(km_opts.border.win_id, "winhl", "Normal:" .. opts.border_hl)
+  a.nvim_win_set_option(km_win_id, "winblend", opts.winblend)
+  a.nvim_win_set_option(km_win_id, "foldenable", false)
 
-  vim.api.nvim_create_autocmd('BufLeave', {
+  vim.api.nvim_create_autocmd("BufLeave", {
     buffer = km_buf,
     once = true,
     callback = function()
       pcall(vim.api.nvim_win_close, km_win_id, true)
       pcall(vim.api.nvim_win_close, km_opts.border.win_id, true)
-      require('telescope.utils').buf_delete(km_buf)
+      require("telescope.utils").buf_delete(km_buf)
     end,
   })
 
@@ -422,13 +422,13 @@ local which_key = function(prompt_bufnr, opts)
     utils.repeated_table(opts.num_rows + 2 * opts.line_padding, column_indent)
   )
 
-  local keymap_highlights = a.nvim_create_namespace('telescope_whichkey')
+  local keymap_highlights = a.nvim_create_namespace("telescope_whatkey")
   local highlights = {}
   for index, mapping in ipairs(mappings) do
     local row = utils.cycle(index, opts.num_rows) - 1 + opts.line_padding
     local prev_line = a.nvim_buf_get_lines(km_buf, row, row + 1, false)[1]
     if index == total_available_entries and total_available_entries > #mappings then
-      local new_line = prev_line .. '...'
+      local new_line = prev_line .. "..."
       a.nvim_buf_set_lines(km_buf, row, row + 1, false, { new_line })
       break
     end
@@ -458,17 +458,17 @@ local which_key = function(prompt_bufnr, opts)
   -- only set up autocommand after showing preview completed
   if opts.close_with_action then
     vim.schedule(function()
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'TelescopeKeymap',
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "TelescopeKeymap",
         once = true,
         callback = function()
           pcall(vim.api.nvim_win_close, km_win_id, true)
           pcall(vim.api.nvim_win_close, km_opts.border.win_id, true)
-          require('telescope.utils').buf_delete(km_buf)
+          require("telescope.utils").buf_delete(km_buf)
         end,
       })
     end)
   end
 end
 
-return which_key
+return what_key

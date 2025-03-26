@@ -1,7 +1,10 @@
+-- TODO: add option for truncating, banner, timm format
 
+-- 0:trace 1:debug 2:info 3:warn 4:error -1:none
 -- stylua: ignore
 local scopes = {
   ['*']                   = { main = 2 },
+  alt                     = { main = 1, module = 0 },
   buffers                 = { main = 2 },
   cmdline                 = { main = 0 },
   -- hover                = { main = 0 },
@@ -15,9 +18,11 @@ local scopes = {
   ['lazy:docs']                = { main = 1 },
   -- lsp                  = { main = 2 },
   -- mapper               = { main = -1, module = -1 },
+  modeman                 = { main = 3, module = 0 },
   neoscroll               = { main = -1, module = 1 },
   -- mru                  = { main = -1 },
-  notify                  = { main = 1 },
+  notifier                = { main = 0, module = 0 },
+  notify                  = { main = 0 },
   -- project              = { main = 1 },
   lab                     = { main = 2 },
   root                    = { main = 0 },

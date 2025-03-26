@@ -151,7 +151,7 @@ endfunction
 function s:step_up()
   if line('.') > 1
     if s:cursor_movement || (s:scrolloffset > 0 && line('$') - line('.') < s:scrolloffset)
-      exe 'normal! gk'
+      exe 'normal! k'
       return 0
     endif
     call s:execute_preserving_scroll("normal! 1\<C-U>")
@@ -169,7 +169,7 @@ function s:step_down()
 
   if line('.') < line('$')
     if s:cursor_movement || (s:scrolloffset > 0 && line('.') < s:scrolloffset)
-      exe 'normal! gj'
+      exe 'normal! j'
       return 0
     endif
 
@@ -185,7 +185,8 @@ function s:step_down()
     endif
     return 0
   " elseif s:ctrl_f_invoked && winline() > 1
-  "   " cursor is already on last line of buffer, but not on last line of window ^F can scroll more
+  "   " cursor is already on last line of buffer,
+  "   but not on last line of window ^F can scroll more
   "   call s:execute_preserving_scroll("normal! \<C-E>")
   "   return 0
   else
@@ -217,13 +218,11 @@ function s:step_many(lines)
 endfunction
 
 ""
-" A Number indicating how many lines do we need yet to move down (or up, if
-" it's negative), to achieve what the user wants.
+" A Number indicating how many lines do we need yet to move down (or up, if it's negative), to achieve what the user wants.
 let s:target_displacement = 0
 
 ""
-" A Float between -1.0 and 1.0 keeping our position between integral lines,
-" used to make the animation smoother.
+" A Float between -1.0 and 1.0 keeping our position between integral lines, used to make the animation smoother.
 let s:subline_position = 0.0
 
 ""
@@ -289,6 +288,20 @@ augroup smoother_leave_handlers
   autocmd WinLeave,BufLeave * call s:handle_leave_event()
 augroup end
 
+
+""
+" Stop moving and jump to target immediately if we detect the animation is
+" stuck. This is a workaround to partially mitigate
+" https://github.com/psliwka/vim-smoother/issues/40
+function! s:abort_if_stuck(desired_new_position) abort
+  let l:current_position = s:filter_dict(winsaveview(), s:animated_view_elements)
+  for key in s:animated_view_elements
+    if l:current_position[key] != a:desired_new_position[key]
+      call s:finish_moving()
+    endif
+  endfor
+endfunction
+
 ""
 " Calculate optimal movement velocity (in lines per second, negative value
 " means to move upwards) for the next animation frame.
@@ -328,7 +341,7 @@ function s:movement_tick(_)
     let s:subline_position = l:subline_step_size - l:step_size
   endif
 
-  if l:step_size
+  if l:step_size && s:cursor_movement
     " Usually Vim handles redraws well on its own, but without explicit redraw
     " I've encountered some sporadic display artifacts.  TODO: debug further.
     redraw

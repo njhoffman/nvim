@@ -1,92 +1,43 @@
-local wk_keys = require('which-key.keys')
-local wk = require('which-key')
+local whichkey = require("which-key")
 
-local function dump()
-  local ok = {}
-  local todo = {}
-  local conflicts = {}
-  for _, tree in pairs(wk_keys.mappings) do
-    wk_keys.update_keymaps(tree.mode, tree.buf)
-    tree.tree:walk(
-      ---@param node Node
-      function(node)
-        local count = 0
-        for _ in pairs(node.children) do
-          count = count + 1
-        end
-        local auto_prefix = not node.mapping
-          or (node.mapping.group == true and not node.mapping.cmd)
-        if node.prefix_i ~= '' and count > 0 and not auto_prefix then
-          conflicts[node.mapping.prefix] = conflicts[node.mapping.prefix] or {}
-          conflicts[node.mapping.prefix][tree.mode] = {
-            group = node.mapping.group,
-            cmd = node.mapping.cmd,
-            label = node.mapping.label,
-            opts = node.mapping.opts,
-            prefix_n = node.prefix_n,
-            prefix_i = node.prefix_i,
-          }
-          if count > 0 then
-            conflicts[node.mapping.prefix][tree.mode].children = count
-            -- for _, child in pairs(node.children) do
-            --   local child_count = 0
-            --   for _ in pairs(child.children) do
-            --     child_count = child_count + 1
-            --   end
-            --   local child_prefix = not child.mapping or (child.mapping.group == true and not child.mapping.cmd)
-            --
-            --   if child.prefix_i ~= "" and child_count > 0 and not child_prefix then
-            --     conflicts[child.mapping.prefix] = conflicts[child.mapping.prefix] or {}
-            --
-            --     conflicts[child.mapping.prefix][tree.mode] = {
-            --       group = child.mapping.group,
-            --       cmd = child.mapping.cmd,
-            --       label = child.mapping.label,
-            --       desc = child.mapping.desc,
-            --       opts = child.mapping.opts,
-            --       prefix_i = child.prefix_i,
-            --       prefix_n = child.prefix_n,
-            --     }
-            --     if child_count > 0 then
-            --       conflicts[child.mapping.prefix][tree.mode].children = child_count
-            --     end
-            --   end
-            -- end
-          end
-        else
-          if node.mapping then
-            if node.mapping.label then
-              ok[tree.mode] = ok[tree.mode] or {}
-              todo[tree.mode] = todo[tree.mode] or {}
-              ok[tree.mode][node.mapping.prefix] = node.mapping.label
-              todo[tree.mode][node.mapping.prefix] = nil
-            elseif not ok[node.mapping.prefix] then
-              todo[tree.mode] = todo[tree.mode] or {}
-              todo[tree.mode][node.mapping.prefix] = node.mapping.cmd or ''
-            end
-          end
-        end
-      end
-    )
-  end
-
-  return todo, ok, conflicts, wk_keys.duplicates
-end
+-- - **[1]**(`string`) lhs **(required)**
+-- - **[2]**(`string|fun()`) rhs **(optional)**when present, it will create the mapping
+-- - **desc**(`string|fun():string`) description **(required for non-groups)**
+-- - **group**(`string|fun():string`) group name **(optional)**
+-- - **mode**(`string|string[]`) mode **(optional, defaults to "n")**
+-- - **cond**(`boolean|fun():boolean`) condition to enable the mapping **(optional)**
+-- - **hidden**(`boolean`) hide the mapping **(optional)**
+-- - **icon**(`string|wk.Icon|fun():(wk.Icon|string)`) icon spec **(optional)**
+-- - **proxy**(`string`) proxy to another mapping **(optional)**
+-- - **expand**(`fun():wk.Spec`) nested mappings **(optional)**
+-- - any other option valid for `vim.keymap.set`. These are only used for creating mappings.
+-- When `desc`, `group`, or `icon` are functions, they are evaluated every time the popup is shown.
+-- wk.add({
+--   { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find File", mode = "n" },
+--   { "<leader>fb", function() print("hello") end, desc = "Foobar" },
+--   { "<leader>fn", desc = "New File" },
+--   { "<leader>f1", hidden = true }, -- hide this keymap
+--   { "<leader>w", proxy = "<c-w>", group = "windows" }, -- proxy to window mappings
+--   {
+--     mode = { "n", "v" }, -- NORMAL and VISUAL mode
+--     { "<leader>q", "<cmd>q<cr>", desc = "Quit" },
+--   }
+-- })
 
 local map = function(mode, lhs, opts)
-  local label = opts.label or opts.desc or ''
-  opts.buffer = opts.buffer == true and 0 or opts.buffer
-  if mode == '' then
-    -- wk.register({ [lhs] = { label } }, { mode = 'n' })
-    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'n' }))
-    -- wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'o' }))
-    -- wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'v' }))
-  elseif mode == 'x' then
-    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 's' }))
-    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = 'v' }))
-  else
-    wk.register({ [lhs] = { label } }, vim.tbl_deep_extend('force', opts, { mode = mode }))
-  end
+  local key = vim.tbl_deep_extend("force", opts, {
+    [1] = lhs,
+    desc = opts.label or opts.desc or "",
+    buffer = opts.buffer == true and 0 or opts.buffer,
+    mode = mode == "" and "n" or mode,
+  })
+  key.label = nil
+  key.category = nil
+  whichkey.add(key)
 end
 
-return { map = map, dump = dump }
+local prefix = function(mode, prefix, name)
+  whichkey.add({ prefix, group = name, mode = mode })
+end
+
+return { map = map, prefix = prefix }

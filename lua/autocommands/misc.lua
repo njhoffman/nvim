@@ -174,8 +174,8 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 
     if buftype == "nofile" and wintype == "popup" then
       quick_close(event)
-    elseif filetype == "" then
-      quick_close(event)
+      -- elseif filetype == "" then
+      --   quick_close(event)
     end
   end,
 })
@@ -213,14 +213,12 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
   end,
 })
 
--- local cursor_line = vim.api.nvim_create_augroup('BufferDetectChanges', {})
--- autocmd({ 'FocusGained', 'BufEnter' }, {
---   group = buffer,
---   pattern = file_pattern,
---   callback = function()
---     cmd.checktime()
---   end,
--- })
+vim.api.nvim_create_autocmd({ "FocusGained", "CursorHold" }, {
+  group = vim.api.nvim_create_augroup("buffer_changes", { clear = true }),
+  callback = function()
+    vim.cmd("checktime")
+  end,
+})
 --
 --
 -- local all_filetypes = augroup('AllFileTypesLocalOptions')

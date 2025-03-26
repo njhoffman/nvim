@@ -16,8 +16,8 @@
 -- local fade1 = Fade({ value = animate.Number({ start = 1, to = 0.2, }) })
 -- local Default = require("vimade.recipe.default").Default({ animate = true })
 local Minimalist = require("configs.vimade.minimalist").Minimalist({
-  animate = false,
-  low_visibility_fadelevel = 0.3,
+  animate = true,
+  low_visibility_fadelevel = 0.5,
   -- exclude_names ={'LineNr', 'LineNrBelow', 'LineNrAbove', 'EndOfBuffer'
   -- low_visibility_names = {'WinSeparator'},
   -- no_visibility_names = {'LineNr', 'LineNrBelow', 'LineNrAbove', 'EndOfBuffer'},
@@ -51,9 +51,10 @@ end
 -- local global_vars = "vimade_init", "vimade_timer", "vimade_loaded", "vimade_paused",
 -- "vimade_running", "vimade_error_count", "vimade_fade_active", "vimade_python_setup",
 
-local M = {}
+local M = {
+  debug_flag = false,
+}
 
-M.debug_flag = false
 M.vimade_toggle_debug = function()
   M.debug_flag = not M.debug_flag
   -- print("vimade debug flag is now: " .. tostring(M.debug_flag))
@@ -104,7 +105,6 @@ M.fadelevel = function(fadelevel_cfg)
     elseif vim.fn.getcmdtype() ~= "" then
       fadelevel = fadelevel_cfg.cmdline or default_fadelevel()
     end
-    -- vim.dbglog("fade: " .. fadelevel)
     return fadelevel
   end
 end

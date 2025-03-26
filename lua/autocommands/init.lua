@@ -99,13 +99,13 @@ local autocmds = {
     -- { {'InsertEnter' }, '         *', 'set guicursor=n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20' },
     -- { {'VimLeave','VimSuspend'}, '*', 'set guicursor=a:block-blinkon90' },
   },
-  LineNumbers     = { { 'BufEnter', 'FocusGained', 'FocusLost'  }, '*', windows.line_numbers },
+  -- LineNumbers     = { { 'BufEnter', 'BufLeave', 'FocusGained', 'FocusLost'  }, '*', windows.line_numbers },
   BuffersSpecial  = { { 'BufNew', 'BufReadPost' }, '*', windows.handle_special },
   FasdUpdate      = { { 'BufWritePost' }, '*',  buffers.fasd_update },
   RestoreCursor   = { { 'BufRead' },      '*',  windows.restore_cursor },
   -- HighlightYank   = { { 'TextYankPost' }, '*',  windows.highlight_yank },
   TelescopeWinbar = { { 'User' }, 'TelescopeFindPre', telescope.winbar_sync },
-  ReloadOnWrite   = { { 'BufWritePost' }, 'tmux.conf', [[execute ':!tmux source-file %']] } ,
+  ReloadOnWrite   = { { 'BufWritePost' }, 'tmux.conf', [[execute ':!tmux source-file % && notify-send "HEY"']] } ,
 
   -- { 'BufWinLeave', '*', remove_buffer },
   -- TrailingWhitespace =  {

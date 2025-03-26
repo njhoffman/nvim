@@ -1,11 +1,14 @@
 require("lsp.float-diag")
 
 local opts = {
+  log_level = 2,
   signs_priority = 6,
   inlay_hints = false,
   underline = false,
   virtual_text = false,
 }
+
+vim.lsp.set_log_level(opts.log_level)
 
 local diag_defaults = {
   severity_sort = true,

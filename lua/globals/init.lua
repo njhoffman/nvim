@@ -31,6 +31,11 @@ local _nil = function()
   return nil
 end
 
+-- setup lodash global
+
+local lodash = require("lodash")
+vim._ = lodash
+
 local debuglog = vim.import("debuglog")
 if debuglog then
   vim.dbg = debuglog.dbg or _nil()
@@ -39,31 +44,30 @@ if debuglog then
   vim.dbgtime = debuglog.timer or _nil()
   vim.print = debuglog.dbg
   -- vim.dbg.log = vim.dbglog
-
   -- vim.inspect = debuglog.dump or vim.inspect
-  vim.dump = debuglog.dump
 
   local log_lines = function(lines)
     debuglog.log(type(lines) == "string" and lines or table.concat(lines, "\n  "))
   end
 
-  vim._log_dump = function(val, indent, padding, filter, udata)
+  vim.dbgout = {}
+  vim.dbgout.dump = function(val, indent, padding, filter, udata)
     log_lines(debuglog.dump(val, indent, padding, filter, udata))
   end
 
-  vim._log_ns = function()
+  vim.dbgout.ns = function()
     log_lines(debuglog.namespaces({ buf_id = -1, show_extmarks = false }))
   end
 
-  vim._log_buf = function()
+  vim.dbgout.buf = function()
     log_lines(debuglog.namespaces({ buf_id = 0, show_extmarks = false }))
   end
 
-  vim._log_extmarks = function(ns)
+  vim.dbgout.extmarks = function(ns)
     log_lines(debuglog.namespaces({ buf_id = -1, show_extmarks = true, ns = ns }))
   end
 
-  vim._log_extmarks_buf = function(ns)
+  vim.dbgout.extmarks_buf = function(ns)
     log_lines(debuglog.namespaces({ buf_id = 0, show_extmarks = true, ns = ns }))
   end
 end
@@ -80,10 +84,6 @@ R = function(...)
   RELOAD(...)
   return require(...)
 end
-
--- setup lodash global
-local lodash = require("lodash")
-_ = lodash
 
 -- setup module helpers to attach to lodash global
 -- --stylua: ignore

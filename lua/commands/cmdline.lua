@@ -163,4 +163,14 @@ local toggle = function()
   end
 end
 
-return { toggle = toggle, open_last_search = open_last_search, delete_eol = delete_eol }
+local jump_search_prev = function(path)
+  local escaped = vim.api.nvim_replace_termcodes("<C-t>", true, false, true)
+  vim.api.nvim_feedkeys(escaped, "n", false)
+end
+
+return {
+  toggle = toggle,
+  jump_search_prev = jump_search_prev,
+  open_last_search = open_last_search,
+  delete_eol = delete_eol,
+}

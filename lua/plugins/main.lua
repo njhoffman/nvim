@@ -158,6 +158,7 @@ local plugins = {
   {
     "OXY2DEV/helpview.nvim",
     lazy = false, -- ft = "help",
+    -- enabled = false,
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
   {
@@ -571,6 +572,7 @@ local plugins = {
   { "stevearc/aerial.nvim", event = { "VeryLazy" }, dependencies = { "nvim-treesitter" } },
   -- motion
   { "rainbowhxch/accelerated-jk.nvim", enabled = false, event = "VeryLazy" },
+  -- https://github.com/AgusDOLARD/backout.nvim
   { "abecodes/tabout.nvim", event = { "InsertEnter" } },
   { "roobert/tabtree.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "Weissle/easy-action" },
@@ -1047,37 +1049,9 @@ local plugins = {
         "paopaol/telescope-git-diffs.nvim",
         dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
       },
-      {
-        "luckasRanarison/nvim-devdocs",
-        enabled = false,
-        dependencies = {
-          "nvim-lua/plenary.nvim",
-          "nvim-treesitter/nvim-treesitter",
-        },
-        -- run = 'DevdocsFetch',
-        opts = {
-          dir_path = vim.fn.stdpath("data") .. "/devdocs", -- installation directory
-          telescope = {}, -- passed to the telescope picker
-          telescope_alt = {}, -- when searching globally without preview
-          float_win = { -- passed to nvim_open_win(), see :h api-floatwin
-            relative = "editor",
-            height = 25,
-            width = 100,
-            border = "rounded",
-          },
-          wrap = false, -- text wrap
-          ensure_installed = {}, -- get automatically installed
-          -- DevdocsFetch: Fetch DevDocs metadata.
-          -- DevdocsInstall: Install documentation, 0-n args.
-          -- DevdocsUninstall: Uninstall documentation, 0-n args.
-          -- DevdocsOpen: Open documentation in a normal buffer, 0 or 1 arg.
-          -- DevdocsOpenFloat: Open documentation in a floating window, 0 or 1 arg.
-          -- DevdocsUpdate: Update documentation, 1-n args.
-          -- DevdocsUpdateAll: Update all documentations.
-        },
-      },
     },
   },
+
   --
   -- git tools
   --
@@ -1186,6 +1160,9 @@ local plugins = {
   },
   { "windwp/nvim-spectre", cmd = "Spectre" },
   { "WaylonWalker/Telegraph.nvim", cmd = "Telegraph" },
+  {
+    "OXY2DEV/patterns.nvim",
+  },
   {
     "bennypowers/nvim-regexplainer",
     cmd = { "RegexplainerShow", "RegexplainerToggle" },
@@ -1853,6 +1830,63 @@ local plugins = {
     -- :Qsave, :Qload:Qbelow, :Qabove, :Lbelow, Labove, etc will navigate to the next or previous entry relative to the cursor.
     -- However, unlike :cabove it will cross buffer boundaries.
   },
+  {
+    "maskudo/devdocs.nvim",
+    enabled = false,
+    lazy = false,
+    dependencies = {
+      "folke/snacks.nvim",
+    },
+    keys = {
+      {
+        "<leader>ho",
+        mode = "n",
+        "<cmd>DevDocs get<cr>",
+        desc = "Get Devdocs",
+      },
+      {
+        "<leader>hi",
+        mode = "n",
+        "<cmd>DevDocs install<cr>",
+        desc = "Install Devdocs",
+      },
+      {
+        "<leader>hv",
+        mode = "n",
+        function()
+          local devdocs = require("devdocs")
+          local installedDocs = devdocs.GetInstalledDocs()
+          vim.ui.select(installedDocs, {}, function(selected)
+            if not selected then
+              return
+            end
+            local docDir = devdocs.GetDocDir(selected)
+            -- prettify the filename as you wish
+            Snacks.picker.files({ cwd = docDir })
+          end)
+        end,
+        desc = "View Devdocs",
+      },
+    },
+    opts = {
+      ensure_installed = {
+        "go",
+        "html",
+        -- "dom",
+        "http",
+        -- "css",
+        -- "javascript",
+        -- "rust",
+        -- some docs such as lua require version number along with the language name
+        -- check `DevDocs install` to view the actual names of the docs
+        "lua~5.1",
+        -- "openjdk~21"
+      },
+    },
+  },
+
+  -- https://github.com/fredrikaverpil/godoc.nvim
+  -- https://github.com/fredrikaverpil/pydoc.nvim
   -- https://github.com/Zeioth/markmap.nvim
   { "AckslD/nvim-FeMaco.lua", ft = { "markdown", "pandoc" } },
   {

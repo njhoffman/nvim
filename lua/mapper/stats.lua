@@ -1,4 +1,4 @@
-local wkutils = require('mapper.whichkey')
+local wkutils = require("mapper.whichkey")
 
 -- local function total(counts)
 --   return counts.normal + counts.visual + counts.insert + counts.operator + counts.command
@@ -71,12 +71,12 @@ local wkutils = require('mapper.whichkey')
 --   return keystats
 -- end
 
-local wk_keys = require('which-key.keys')
+local wk_keys = require("what-key.keys")
 
 local get_stats = function()
   local function length(T)
     local count = 0
-    if type(T) == 'table' then
+    if type(T) == "table" then
       for _ in pairs(T) do
         count = count + 1
       end
@@ -95,28 +95,28 @@ local get_stats = function()
       + counts.terminal
   end
 
-  local maptree = require('mapper').tree
+  local maptree = require("mapper").tree
   local mapper = {
-    normal = length(maptree['n']),
-    insert = length(maptree['i']),
-    command = length(maptree['c']),
-    operator = length(maptree['o']),
-    visual = length(maptree['v']),
-    select = length(maptree['s']),
-    terminal = length(maptree['t']),
-    vis_select = length(maptree['x']),
+    normal = length(maptree["n"]),
+    insert = length(maptree["i"]),
+    command = length(maptree["c"]),
+    operator = length(maptree["o"]),
+    visual = length(maptree["v"]),
+    select = length(maptree["s"]),
+    terminal = length(maptree["t"]),
+    vis_select = length(maptree["x"]),
   }
   mapper.total = total(mapper)
 
   local neovim = {
-    normal = length(vim.api.nvim_get_keymap('n')),
-    insert = length(vim.api.nvim_get_keymap('i')),
-    command = length(vim.api.nvim_get_keymap('c')),
-    operator = length(vim.api.nvim_get_keymap('o')),
-    visual = length(vim.api.nvim_get_keymap('v')),
-    select = length(vim.api.nvim_get_keymap('s')),
-    terminal = length(vim.api.nvim_get_keymap('t')),
-    vis_select = length(vim.api.nvim_get_keymap('x')),
+    normal = length(vim.api.nvim_get_keymap("n")),
+    insert = length(vim.api.nvim_get_keymap("i")),
+    command = length(vim.api.nvim_get_keymap("c")),
+    operator = length(vim.api.nvim_get_keymap("o")),
+    visual = length(vim.api.nvim_get_keymap("v")),
+    select = length(vim.api.nvim_get_keymap("s")),
+    terminal = length(vim.api.nvim_get_keymap("t")),
+    vis_select = length(vim.api.nvim_get_keymap("x")),
   }
   neovim.total = total(neovim)
 
@@ -168,21 +168,21 @@ local get_stats = function()
   }
   for _, conflict_group in pairs(conflicts) do
     for mode in pairs(conflict_group) do
-      if mode == 'n' then
+      if mode == "n" then
         conf_count.normal = conf_count.normal + 1
-      elseif mode == 'i' then
+      elseif mode == "i" then
         conf_count.insert = conf_count.insert + 1
-      elseif mode == 'c' then
+      elseif mode == "c" then
         conf_count.command = conf_count.command + 1
-      elseif mode == 'o' then
+      elseif mode == "o" then
         conf_count.operator = conf_count.operator + 1
-      elseif mode == 'v' then
+      elseif mode == "v" then
         conf_count.visual = conf_count.visual + 1
-      elseif mode == 's' then
+      elseif mode == "s" then
         conf_count.select = conf_count.select + 1
-      elseif mode == 'x' then
+      elseif mode == "x" then
         conf_count.vis_select = conf_count.vis_select + 1
-      elseif mode == 't' then
+      elseif mode == "t" then
         conf_count.terminal = conf_count.terminal + 1
       end
     end
@@ -197,44 +197,44 @@ local function dump_out(opt)
   opt = opt
     or {
       -- key_types = { "todo", "ok", "duplicates", "conflicts" },
-      key_types = { 'conflicts' },
-      output = 'notify', -- buffer, echo, file
+      key_types = { "conflicts" },
+      output = "notify", -- buffer, echo, file
     }
 
   local lines = {}
 
-  if vim.tbl_contains(opt.key_types, 'ok') then
+  if vim.tbl_contains(opt.key_types, "ok") then
     for mode, keys in pairs(ok) do
       for key, def in pairs(keys) do
-        table.insert(lines, 'ok:   (' .. mode .. ') "' .. key .. '" ' .. def)
+        table.insert(lines, "ok:   (" .. mode .. ') "' .. key .. '" ' .. def)
       end
     end
   end
 
-  if vim.tbl_contains(opt.key_types, 'todo') then
+  if vim.tbl_contains(opt.key_types, "todo") then
     for mode, keys in pairs(todo) do
       for key, def in pairs(keys) do
-        table.insert(lines, 'todo: (' .. mode .. ') ' .. '"' .. key .. '" ' .. def)
+        table.insert(lines, "todo: (" .. mode .. ") " .. '"' .. key .. '" ' .. def)
       end
     end
   end
 
-  if vim.tbl_contains(opt.key_types, 'duplicates') then
+  if vim.tbl_contains(opt.key_types, "duplicates") then
     for _, dup in pairs(wk_keys.duplicates) do
-      local msg = ''
+      local msg = ""
       if dup.buf == dup.other.buffer then
-        msg = 'dupe: '
+        msg = "dupe: "
       else
         -- msg = "buffer-local keymap overriding global:"
-        msg = 'dupe local:'
+        msg = "dupe local:"
       end
       -- msg = (msg .. " (**%q**) buf: %d, lhs: **%q**"):format(dup.mode, dup.buf or 0, dup.prefix)
-      msg = (msg .. ' (**%s**) buf: %d, lhs: **%s**'):format(dup.mode, dup.buf or 0, dup.prefix)
+      msg = (msg .. " (**%s**) buf: %d, lhs: **%s**"):format(dup.mode, dup.buf or 0, dup.prefix)
       table.insert(lines, msg)
     end
   end
 
-  if vim.tbl_contains(opt.key_types, 'conflicts') then
+  if vim.tbl_contains(opt.key_types, "conflicts") then
     local sorted_conflicts = {}
     for prefix, _conflicts in pairs(conflicts) do
       for mode, conflict in pairs(_conflicts) do
@@ -247,15 +247,15 @@ local function dump_out(opt)
       return a.prefix_n < b.prefix_n
     end)
     for _, conflict in ipairs(sorted_conflicts) do
-      local children = conflict.children and (conflict.children .. 'x') or ''
-      local rhs_label = conflict.group and 'rhs-group' or 'rhs'
+      local children = conflict.children and (conflict.children .. "x") or ""
+      local rhs_label = conflict.group and "rhs-group" or "rhs"
       -- local msg = ("conf: (%q) %2s lhs: %q, rhs: %q"):format(mode, children, prefix, conflict.cmd or "")
-      local msg = ('conf: (%s) %2s lhs: %s   %s: %s'):format(
+      local msg = ("conf: (%s) %2s lhs: %s   %s: %s"):format(
         conflict.mode,
         children,
         conflict.prefix_n,
         rhs_label,
-        conflict.cmd or ''
+        conflict.cmd or ""
       )
       table.insert(lines, msg)
     end

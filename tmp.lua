@@ -1,206 +1,248 @@
+local utils = require("notify.util.render")
+local errors = require("notify.demo.errors")
+local file_pfx = string.gsub(vim.fn.stdpath("config") .. "/", os.getenv("HOME") .. "/", "")
 
-
-
-local M = {}
--- = {
---   remote_jump             = '<cr>',
---   tree_search             = 'R',
---   op_tree_search          = 'M',
---   goto_prefix             = ';;',
---   goto_next               = ';;',
---   goto_previous           = ';;',
---   goto_next_outer         = ']]',
---   goto_previous_outer     = '[[',
---   goto_next_end           = '<leader>]', -- ")",
---   goto_previous_end       = '<leader>[', -- "(",
---   goto_next_outer_end     = '<leader>]]', -- "))",
---   goto_previous_outer_end = '<leader>[[', -- "((",
---   select                  = '&',
---   select_dynamic          = 'm',
---   select_remote           = 'r',
---   select_remote_dynamic   = 'ir',
---   select_outer            = '<M-S-7>', -- M-&
---   select_next             = 'in',
---   select_previous         = 'iN',
---   select_next_outer       = 'an',
---   select_previous_outer   = 'aN',
---   exchange_node           = 'rix',
---   exchange_motion         = 'rx',
---   exchange_vline          = 'rxx',
---   remote_replace          = ';R',
---   replace_remote_motion   = ';ry',
---   replace_remote_d_motion = ';rd',
---   replace_remote_c_motion = ';rc',
---   replace_node            = ';rY',
---   replace_d_node          = ';rD',
---   replace_c_node          = ';rC',
---   remote_op               = 'u',
---   remote                  = ';rw',
--- }
-
-local remote_jump = function()
-  require("flash").jump({ mode = "remote_ts" })
+local get_path = function(file)
+  local path = vim.fn.trim(file) or file
+  local file_match = string.match(path, ".*" .. file_pfx)
+  if file_match then
+    path = vim.fn.stdpath("config") .. "/" .. string.gsub(path, file_match, "")
+  elseif not string.match(path, "^/") then
+    path = vim.fn.stdpath("config") .. "/" .. string.gsub(path, "^./", "")
+  end
+  return path
 end
 
-local tree_search = function()
-  Flash.treesitter_search({
-      label = { before = true, after = true, style = 'inline' },
-      remote_op = { restore = true },
-    })
-end
-
-local op_tree_search = function()
-  Flash.treesitter_search({
-      label = { before = true, after = true, style = "inline" },
-      remote_op = { restore = true },
-    })
-end
-
-local select_remote_node = function()
-  require("flash").jump({ mode = "remote_ts" })
-end
-
-local select_remote_node_next = function()
-  require("flash").jump({ mode = "remote_ts", treesitter = { starting_from_pos = true } })
-end
-
-local select_remote_node_prev  = function()
-  require("flash").jump({ mode = "remote_ts", treesitter = { ending_at_pos = true } })
-end
-
-local select_remote_node_end = function()
-require("flash").jump({ mode = "remote_ts", treesitter = { end_of_node = true }, jump = { pos = "end" } })
-end
-
-local select_remote_node_start = function()
-  require("flash").jump({
-      mode = "remote_ts",
-      treesitter = { start_of_node = true },
-      jump = { pos = "start" },
-    })
-
-end
-
-  local jump_cword = function()
-    require("flash").jump({ mode = "textcase", pattern = vim.fn.expand("<cword>") })
+local logger = require("logger").init("notifier")
+local log_parts = function(parts, lines)
+  local output = {
+    "[prefix]     " .. parts.prefix,
+    "[code]       " .. parts.code,
+    "[title]      " .. parts.title,
+    "[message]    " .. parts.message,
+    "[subtitle]   " .. parts.subtitle,
+    "[submessage] " .. parts.submessage,
+    "[subscope]   " .. parts.subscope,
+    "[subdetails] " .. parts.subdetails,
+    "[linenr]     " .. parts.linenr,
+    "[filepath]   " .. parts.filepath,
+    "[prettypath] " .. parts.prettypath,
+  }
+  for i, stackgroup in ipairs(parts.stackgroups) do
+    table.insert(output, "[stack " .. i .. "]     \n    " .. table.concat(stackgroup, "\n    "))
   end
 
-  local jump_word = function()
-    require("flash").jump({ mode = "textcase", pattern = vim.fn.expand("<cWORD>") })
+  table.insert(output, '[lines]      \n    "' .. table.concat(lines, '"\n    "') .. '"')
+  local is_valid = #parts.title > 0 and (vim.fn.empty(parts.line) or type(parts.line) == "number")
+  vim.dbglog("\n" .. table.concat(output, "\n  "))
+  -- if #parts.title == 0 or #parts.stack == 0 or (parts.line and type(parts.line) == "number") then
+  --   logger:warn("Invalid error parsing \n  " .. table.concat(output, "\n  "))
+  -- else
+  --   logger:debug("Successful error parsing \n  " .. table.concat(output, "\n  "))
+  -- end
+end
+
+local get_stackgroups = function(lines)
+  local stackgroups = {}
+  local stackline_idx = 0
+  for i, line in ipairs(lines) do
+    if string.match(line, "^%s+") and stackline_idx == 0 then
+      stackline_idx = i
+      table.insert(stackgroups, {})
+    end
+    if stackline_idx > 0 then
+      line = utils.path_nvim(string.gsub(line, "^%s+", ""))
+      if string.len(line) > 0 then
+        table.insert(stackgroups[#stackgroups], line)
+      end
+    elseif string.match(line, "stack traceback:") then
+      stackline_idx = stackline_idx == 0 and i or stackline_idx
+      table.insert(stackgroups, {})
+    end
   end
+  stackline_idx = stackline_idx == 0 and 1 or stackline_idx - 1
+  return stackgroups, vim.fn.slice(lines, 0, stackline_idx)
+end
 
-  -- local goto_next =
-  -- local goto_previous =
-  -- local goto_next_outer =
-  -- local goto_previous_outer =
-  -- local goto_next_end =
-  -- local goto_previous_end =
-  -- local goto_next_outer_end =
-  -- local goto_previous_outer_end =
-  -- local select_outer =
-  -- local select_next =
-  -- local select_previous =
-  -- local select_next_outer =
-  -- local select_previous_outer =
+local error_patterns = {
+  is_error = {
+    "^Vim%(?[a-z]*%)?:E[%d]+: ?%w+.*",
+    "^Vim%(?[a-z]*%)?:Error %w+.*",
+    "^E[%d]+: ?%w+.*",
+    "^Error %w+.*",
+  },
+  -- E5108: Error executing lua: /home/nicholas/.config/nvim/lua/funcs/alt-alt.lua:116:
+  -- Vim:E565: Not allowed to change text or change window
+  items = {
+    -- "(E?[%d]*):?(.*)",
+    -- "([^:]-):(E[%d]+):(.*)",
+    -- "(Vim%(?[a-z]*%)?):?(E?[%d]*):? ?(Error %w+.*)",
+    -- "([^:]-):?(E[%d]-):? ?(%w+.*)",
+    -- "([^:]-):?(E?[%d]-):? ?(Error .*)",
 
-  local exchange_node =             function() lib.swap_with({ mode = 'remote_ts' }) end
-  local exchange_motion =           function() lib.swap_with() end
-  local exchange_vline =            function() lib.swap_with({ exchange = { visual_mode = 'V', } }) end
-  local remote_replace =            function() lib.swap_with({ exchange = { not_there = true } }) end
-  local replace_remote_motion =     function() vim.api.nvim_feedkeys(';r', 'm', false) vim.schedule(function() require('flash').jump({ mode = 'remote_ts' }) end) end
-  local replace_remote_d_motion =   function() lib.swap_with({ exchange = { not_there = true } }) end
-  local replace_remote_c_motion =   function() lib.swap_with({ exchange = { not_there = true } }) end
-  local replace_node =              function() lib.swap_with({ mode = 'remote_ts', exchange = { not_there = true } }) end
-  local replace_d_node =            function() lib.swap_with({ mode = 'remote_ts', exchange = { not_there = true } }) end
-  local replace_c_node =            function() lib.swap_with({ mode = 'remote_ts', exchange = { not_there = true } }) end
-
-  local remote_op = function()
-    Flash.treesitter({
-        filter = function(matches)
-          ---@param m Flash.Match.TS
-          -- for all matches,  match[n+1] should use previous match[n] label. Do in reverse order, to prevet copying first label to all matches
-          for i = #matches, 2, -1 do
-            matches[i].label = matches[i - 1].label
-          end
-          table.remove(matches, 1) -- remove first match, as it is same as word under cursor thus redundant with word motion
-        end
-        label = {
-          rainbow = {
-            enabled = true,
-          },
-        },
-      })
-  end
-
-  local remote = function()
-    Flash.jump({
-        matcher = gen_dyn_matcher(basic_query),
-        -- select the range
-        jump = { pos = 'range' },
-      })
-  end
-
-
-  function() Flash.treesitter_search({ label = { before = true, after = true, style = 'inline' }, remote_op = { restore = true } }) end
-  function() require('flash').jump({ mode = 'remote_ts' }) end
-  function() require('flash').jump({ mode = 'remote_ts', treesitter = { starting_from_pos = true } }) end
-  function() require('flash').jump({ mode = 'remote_ts', treesitter = { ending_at_pos = true } }) end
-  function() require('flash').jump({ mode = 'remote_ts', treesitter = { end_of_node = true }, jump = { pos = 'end' } }) end
-  function() require('flash').jump({ mode = 'remote_ts', treesitter = { start_of_node = true }, jump = { pos = 'start' } }) end
-  function() require('flash').jump({ mode = 'textcase', pattern = vim.fn.expand('<cword>') }) end
-  function() require('flash').jump({ mode = 'textcase', pattern = vim.fn.expand('<cWORD>') }) end
-  function() require('flash').jump({ continue = true }) end
-
-  function() lib.swap_with({ mode = 'remote_ts' }) end
-  function() lib.swap_with() end
-  function() lib.swap_with({ exchange = { visual_mode = 'V', } }) end
-  function() lib.swap_with({ exchange = { not_there = true } }) end
-  function() vim.api.nvim_feedkeys(';r', 'm', false) vim.schedule(function() require('flash').jump({ mode = 'remote_ts' }) end) end
-  function() lib.swap_with({ exchange = { not_there = true } }) end
-  function() lib.swap_with({ exchange = { not_there = true } }) end
-  function() lib.swap_with({ mode = 'remote_ts', exchange = { not_there = true } }) end
-  function() lib.swap_with({ mode = 'remote_ts', exchange = { not_there = true } }) end
-  function() lib.swap_with({ mode = 'remote_ts', exchange = { not_there = true } }) end
-
-
-ts.goto_prev = ts.goto_previous
-ts.select_prev = ts.select_previous
-
-ts.select_node_next = ts.goto_next .. ts.select_remote_dynamic
-ts.select_node_prev = ts.goto_prev .. ts.select_remote_dynamic
-ts.jump_node_end    = ts.goto_next .. ts.select_remote_dynamic
-ts.jump_node_start  = ts.goto_prev .. ts.select_remote_dynamic
-ts.jump_cword       = ts.goto_prefix .. 'W'
-ts.jump_continue    = ts.goto_prefix .. 'n'
-
--- TODO: stop verbs from being labels TODO: allow searching continuations 'Flash <cword>', },
--- TODO: y<motion><something><leap><motion>
--- TODO: use leap?
-
-local defs = {
-  { ts.remote_jump,             { 'o', 'x' }, 'Remote Jump' },
-  { ts.tree_search,              { 'n'      }, 'Treesitter Search | show labeled treesitter nodes around the search matches', },
-  { ts.op_tree_search,          { 'x', 'o' }, 'Treesitter Search | show labeled treesitter nodes around the search matches', },
-  { ts.select_remote_dynamic,   { 'o', 'x' }, 'Remote Node' },
-  { ts.select_node_next,        { 'o', 'x' }, 'Select node' },
-  { ts.select_node_prev,        { 'o', 'x' }, 'Select node' },
-  { ts.jump_node_end,           { 'n'      }, 'Jump to end of node' },
-  { ts.jump_node_start,         { 'n'      }, 'Jump to start of node' },
-  { ts.jump_cword,              { 'n'      }, 'Flash <cWORD>' },
-  { ts.jump_continue,           { 'n'      }, 'Continue Flash' },
-  { ts.exchange_node,           { 'x', 'n' }, 'Exchange <motion1> with <node>' },
-  { ts.exchange_motion,         { 'n', 'x' }, 'Exchange <motion1> with <motion2>' },
-  { ts.exchange_vline,          { 'n', 'x' }, 'Exchange V<motion1> with V<motion2>' },
-  { ts.remote_replace,          { 'n'      }, 'Remote Replace' },
-  -- TODO: Copy there, Paste here
-  -- NOTE: fix start
-  { ts.replace_remote_motion,   { 'x', 'n' }, 'Replace with <remote-motion>' },
-  { ts.replace_remote_d_motion, { 'x', 'n' }, 'Replace with d<remote-motion>' },
-  { ts.replace_remote_c_motion, { 'x', 'n' }, 'Replace with c<remote-motion>' },
-  { ts.replace_node,            { 'n'      }, 'Replace with <node>' },
-  { ts.replace_d_node,          { 'x', 'n' }, 'Replace with d<node>' },
-  { ts.replace_c_node,          { 'x', 'n' }, 'Replace with c<node>' },
--- NOTE: fix end
-  { ts.remote_op,               { 'o', 'x' }, 'Replace remote op target' },
-  { ts.remote,                  { 'n'     },     'Replace remote target' },
+    -- "([^:]+):(E[%d]+): (.*)",
+    -- "([^:]-):?(E[%d]+): (.*)",
+    -- "([^:]-):?(E[%d]+): (.*)",
+    -- E5112: Error while creating lua chunk: lua/scripts/notify-test.lua:10: 'end' expected (to close 'function' at line 50) near '<eof>'
+    -- Error executing Lua callback: /home/nicholas/.local/share/nvim/lazy/vimade/lua/vimade.lua:15: table index is nil
+    "(Vim%(?[a-z]*%)?):?([E%d]+):? (.*)",
+    "([%a%(%)]-):?([E%d]+): (.*)",
+    -- "([%a%(%)]-):?(E?[%d]*):?(%a+.*)",
+    "([%a%(%)]-):?(E[%d]+): ?(%w+.*)",
+    "([%a%(%)]-):?(E?[%d]*):? ?(Error .*)",
+  },
+  -- path = '',
+  -- linenr = '',
 }
+
+local function remove_substring(str, substring)
+  -- Find the starting index of the substring
+  local start_index, end_index = string.find(str, substring, 1, true)
+
+  -- If the substring does not exist, return the original string
+  if not start_index then
+    return str
+  end
+
+  -- Concatenate the parts of the string before and after the substring
+  local result = string.sub(str, 1, start_index - 1) .. string.sub(str, end_index + 1)
+
+  return result
+end
+
+local parse_error_item = function(item, parts)
+  -- vim.dbglog("item", item)
+  -- local parts = { message = item[#item], code = item[#item - 1] }
+  -- local parts = {
+  --   code = string.match(title_line, ":?(E[%d]+)") or "",
+  --   title = string.match(title_line, ":?E[%d]+: ([^:]+:[^:]+:[^:]+)")
+  --     or string.match(title_line, ": ([^:]+:[^:]+:[^:]+)")
+  --     or "",
+  --   subtitle = '',
+  -- }
+
+  -- parts.message = string.match(title_line, "[^: ]*:[^:]*: ([^:]*)") or ""
+  -- parts.path = string.match(title_line, "([^: ]*):") or ""
+  -- parts.linenr = string.match(title_line, "[^: ]*:([^:]*):") or ""
+  -- parts.fullpath = get_path(parts.path)
+  -- parts.prettypath = utils.path_nvim(string.gsub(parts.fullpath, "^%s+", ""))
+  return parts
+end
+
+local match_error_item = function(item, idx)
+  local new_match = nil
+  for _, pfx in ipairs({ ": ", "^" }) do
+    for j, pattern in ipairs(error_patterns.items) do
+      new_match = { string.match(item, pfx .. pattern) }
+      if vim.fn.empty(new_match) == 0 then
+        vim.dbglog(idx .. "-" .. j .. "\n", new_match, "\n", pfx .. pattern)
+        -- vim.dbglog(
+        --   "\n",
+        --   vim.fn.empty(new_match) .. " " .. type(new_match),
+        --   "\n",
+        --   idx .. "-" .. tostring(j) .. pfx .. "| " .. #new_match .. " " .. new_match,
+        --   "\n",
+        --   pattern
+        -- )
+        goto continue
+      end
+    end
+  end
+  ::continue::
+  return new_match
+end
+
+local get_error_items = function(error_lines)
+  local error_items = {}
+  for i = #error_lines, 1, -1 do
+    if i == #error_lines then
+      local curr = error_lines[i]
+      while vim.fn.empty(curr) == 0 do
+        local new_match = match_error_item(curr)
+        -- vim.dbglog(curr, new_match)
+        if not vim.fn.empty(new_match) == 0 then
+          table.insert(error_items, new_match)
+          curr = remove_substring(curr, new_match)
+        else
+          table.insert(error_items, curr)
+          curr = ""
+        end
+      end
+    end
+  end
+  return error_items
+end
+
+local check_error = function(lines)
+  local is_error = false
+  for _, pattern in ipairs(error_patterns.is_error) do
+    is_error = is_error or string.match(lines[1], pattern)
+  end
+  return is_error
+end
+
+local run_test = function(vals, testvals)
+  local test_results = {}
+  for i, val in ipairs(vals) do
+    local testval = testvals[i]
+    local test_result = { val = val, testval = testval }
+    if type(val) == "table" then
+      for j, v in ipairs(val) do
+        local tv = testval[j]
+        if v == tv then
+          table.insert(test_result, { val = v, testval = tv, result = "pass" })
+        else
+          table.insert(test_result, { val = v, testval = tv, result = "fail" })
+        end
+      end
+    else
+      if val == testval then
+        test_result.result = "pass"
+      else
+        test_result.result = "fail"
+      end
+    end
+    table.insert(test_results, test_result)
+  end
+  return test_results
+end
+
+local display_tests = function(results, testprops)
+  vim.dbglog(testprops, results)
+end
+
+local run_errors = function(run_tests, indices)
+  for idx, err in ipairs(errors) do
+    local error_msg, testprops = err[1], err[2]
+    if vim.fn.empty(indices) == 1 or vim.tbl_contains(indices, idx) then
+      local lines = type(error_msg) == "table" and error_msg or vim.fn.split(error_msg, "\n")
+      local is_error = check_error(lines)
+      if not is_error then
+        vim.dbglog("not error", idx, error_msg)
+      else
+        local stackgroups, error_lines = get_stackgroups(lines)
+        local error_items = get_error_items(error_lines)
+        if run_tests and testprops and testprops.items then
+          local test_results = run_test(error_items, testprops.items)
+          display_tests(test_results, { name = "Error Items", msg = error_msg, idx = idx })
+        end
+
+        local error_props = { stackgroups = stackgroups }
+
+        -- vim.dbglog("error matches", error_matches)
+        -- for _, error_item in ipairs(error_items) do
+        --   parse_error_item(error_item, error_props)
+        -- end
+
+        -- vim.dbglog(idx .. "\n    " .. table.concat(lines, "\n    "), parts)
+        -- log_parts(parts, lines)
+      end
+    end
+
+    -- parse_error(error_msg, idx)
+  end
+end
+
+local opts = { indices = {}, run_tests = true }
+
+run_errors(opts.run_tests, opts.indices)

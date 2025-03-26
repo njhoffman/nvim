@@ -10,13 +10,14 @@ local default_cfg = {
       open = "<M-CR>",
     },
     layout = {
-      position = "bottom", -- | top | left | right
-      ratio = 0.3,
+      position = "bottom", -- | top | left | right | horizontal | vertical
+      ratio = 0.4,
     },
   },
   suggestion = {
     enabled = true,
     auto_trigger = false,
+    hide_during_completion = true,
     debounce = 75,
     keymap = {
       accept = "<M-l>",
@@ -38,8 +39,21 @@ local default_cfg = {
     cvs = false,
     ["."] = false,
   },
-  copilot_node_command = "node", -- Node.js version must be > 16.x
-  server_opts_overrides = {},
+  logger = {
+    file = vim.fn.stdpath("log") .. "/copilot-lua.log",
+    file_log_level = vim.log.levels.OFF,
+    print_log_level = vim.log.levels.WARN,
+    trace_lsp = "off", -- "off" | "messages" | "verbose"
+    trace_lsp_progress = false,
+    log_lsp_messages = false,
+  },
+  copilot_node_command = "node", -- Node.js version must be > 18.x
+  workspace_folders = {},
+  copilot_model = "", -- Current LSP default is gpt-35-turbo, supports gpt-4o-copilot
+  root_dir = function()
+    return vim.fs.dirname(vim.fs.find(".git", { upward = true })[1])
+  end,
+  should_attach = nil, -- type is fun(bufnr: integer, bufname: string): boolean
 }
 
 require("copilot").setup({
@@ -64,7 +78,7 @@ require("copilot").setup({
     },
   },
   suggestion = {
-    enabled = true,
+    enabled = false,
     auto_trigger = false,
     keymap = {
       -- accept = '<C-CR>',
@@ -77,21 +91,25 @@ require("copilot").setup({
   },
   panel = {
     enabled = true,
-    auto_refresh = false,
+    auto_refresh = true,
     keymap = {
       jump_prev = "[[",
       jump_next = "]]",
       accept = "<CR>",
+      open = "<M-CR>",
       -- refresh = 'gr',
       refresh = false,
-      -- open = '<M-y>',
-      open = "<M-C-G>",
     },
     layout = {
       position = "bottom", -- | top | left | right
       ratio = 0.3,
     },
   },
+  root_dir = function()
+    return vim.fs.dirname(vim.fs.find(".git", { upward = true })[1])
+  end,
+  workspace_folders = { "/home/nicholas/.config/nvim" },
+  copilot_model = "gpt-4o-copilot", -- Current LSP default is gpt-35-turbo, supports gpt-4o-copilot
 })
 
 -- vim.keymap.set({ 'i', 'n' }, '<M-y>', function()

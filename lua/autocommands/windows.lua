@@ -24,22 +24,26 @@ local set_option = vim.api.nvim_set_option_value
 -- })
 
 local line_numbers = function(ev)
-  local num_off = {
-    filetypes = { "nofile" },
-    buftypes = { "nofile", "quickfix", "prompt" },
-  }
+  local winid = vim.fn.bufwinid(ev.buf)
+  if winid > -1 and vim.api.nvim_win_is_valid(winid) then
+    local always_off = {
+      filetypes = {},
+      buftypes = { "nofile", "quickfix", "prompt", "help" },
+    }
 
-  -- local winid = vim.fn.bufwinid(ev.buf)
-  -- if winid > -1 then
-  if
-    not vim.g.zen_mode_active
-    and not vim.bo.readonly
-    and not vim.tbl_contains(num_off.buftypes, vim.bo.buftype)
-    and not vim.tbl_contains(num_off.filetypes, vim.bo.filetype)
-  then
-    vim.cmd([[set relativenumber number]])
-  else
-    vim.cmd([[set norelativenumber nonumber]])
+    local entering = ev.event == "BufEnter" or ev.event == "FocusGained"
+
+    local num_enabled = not vim.g.zen_mode_active
+      and not vim.bo.modifiable
+      and not vim.bo.readonly
+      and not vim.tbl_contains(always_off.buftypes, vim.bo.buftype)
+      and not vim.tbl_contains(always_off.filetypes, vim.bo.filetype)
+
+    if entering and num_enabled then
+      vim.cmd([[set relativenumber number]])
+    elseif not entering then
+      vim.cmd([[set norelativenumber nonumber]])
+    end
   end
 end
 

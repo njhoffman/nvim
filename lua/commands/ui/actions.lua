@@ -1,25 +1,25 @@
-local utils = require('commands.ui.utils')
+local utils = require("commands.ui.utils")
 
 local config = {
   auto_close_ft = {
-    'noice',
-    'qf',
-    'help',
-    'notify',
+    "noice",
+    "qf",
+    "help",
+    "notify",
   },
-  cmd = 'bdelete', -- 'BufferDelete', 'Bdelete'
+  cmd = "bdelete", -- 'BufferDelete', 'Bdelete'
 }
 
 local state = {}
 
 local is_popup = function(win)
-  return vim.tbl_get(vim.api.nvim_win_get_config(win or 0), 'relative') ~= ''
+  return vim.tbl_get(vim.api.nvim_win_get_config(win or 0), "relative") ~= ""
 end
 
 local get_state = function()
-  state = vim.tbl_deep_extend('force', state, {
+  state = vim.tbl_deep_extend("force", state, {
     tabs = vim.api.nvim_list_tabpages() or {},
-    splits = utils.get_splits({ 'l', 'h', 'j', 'k' }) or {},
+    splits = utils.get_splits({ "l", "h", "j", "k" }) or {},
     curr_win = vim.api.nvim_get_current_win(),
     curr_tab = vim.api.nvim_get_current_tabpage(),
     bufs = utils.get_loaded_buffers(),
@@ -33,7 +33,7 @@ local close_multi = function(skip_prompt)
   get_state()
 
   if #state.tabs > 1 and #state.curr_tab_wins == 1 then
-    return vim.cmd('tabclose!')
+    return vim.cmd("tabclose!")
   end
 
   if state.curr_is_popup or #state.splits > 1 then
@@ -45,12 +45,12 @@ local close_multi = function(skip_prompt)
   -- end
 
   if #state.bufs > 1 then
-    return vim.api.nvim_command('silent! ' .. config.cmd)
+    return vim.api.nvim_command("silent! " .. config.cmd)
   end
 
   if #state.bufs == 1 then
-    vim.cmd('silent! Alpha')
-    return vim.api.nvim_command(config.cmd .. ' #')
+    vim.cmd("silent! Alpha")
+    return vim.api.nvim_command(config.cmd .. " #")
   end
   -- elseif state.ft ~= 'alpha' then
   --   vim.api.nvim_command('silent! ' .. config.cmd .. (skip_prompt == true and '!' or ''))
@@ -66,18 +66,34 @@ local close_popups = function()
   local n = 0
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     if vim.api.nvim_win_is_valid(win) then
-      local config = vim.api.nvim_win_get_config(win)
-      if config.relative ~= '' then
+      local win_config = vim.api.nvim_win_get_config(win)
+      if win_config.relative ~= "" then
         n = n + 1
         vim.api.nvim_win_close(win, false)
       end
     end
   end
-  print('Closed ' .. n .. ' popup windows')
+  print("Closed " .. n .. " popup windows")
+end
+
+-- Fcheck window dimensions and split on conditions
+local smart_win_split = function()
+  local cfg = { min_width = 50, min_height = 20, flip_ratio = 3 }
+
+  local width = vim.api.nvim_win_get_width(0)
+  local height = vim.api.nvim_win_get_height(0)
+
+  -- split vertically if width ratio met
+  if (width / height) > cfg.flip_ratio and cfg.min_width < width / 2 then
+    vim.cmd("vsplit #")
+  elseif cfg.min_height < height / 2 then
+    vim.cmd("split #")
+  end
 end
 
 return {
   close_multi = close_multi,
   close_multi_no_prompt = close_multi_no_prompt,
   close_popups = close_popups,
+  smart_win_split = smart_win_split,
 }
