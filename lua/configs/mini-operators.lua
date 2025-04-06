@@ -51,11 +51,14 @@ local cfg = {
   -- Evaluate text and replace with output
   evaluate = { prefix = "g=" },
   -- Exchange text regions
-  exchange = { prefix = "gtx", reindent_linewise = true },
+  exchange = { prefix = "" },
+  -- exchange = { prefix = "gtx", reindent_linewise = true },
   -- Multiply (duplicate) text
   multiply = { prefix = "gtm", func = nil },
   -- Replace text with register
-  replace = { prefix = "gtr", reindent_linewise = true },
+  -- replace = { prefix = "gtr", reindent_linewise = true },
+  -- { textobject = 'cr', line = 'crr', selection = 'cr' }
+  replace = { prefix = "" },
   -- Sort text
   sort = { prefix = "gts" },
 }

@@ -38,8 +38,6 @@ local config = {
     ['g~'] = 'toggle case  ',
     ['gu'] = 'lowercase  ',
     ['gU'] = 'uppercase  ',
-    -- ['gq'] = 'format ',
-    -- ['gw'] = 'format (cursor)',
     d = 'delete ',
     c = 'change ',
     y = 'yank  ',
@@ -64,6 +62,8 @@ local config = {
     gb   = 'comments (block)  ',
     gc   = 'comments (line)  ',
     goo  = 'debugprint out t',
+    gtf = 'format',
+    gtF = 'format (restore cursor)',
     gtoc = 'change toCamelCase  ',
     gtod = 'change to-dash-case  ',
     gtoD = 'change to.dot.case  ',
@@ -91,7 +91,7 @@ local config = {
         ['g~']       =   'Toggle case',
         ['gu']       =   'Lowercase',
         ['gU']       =   'Uppercase',
-        ['gq']       =   'Format text',
+        -- ['gq']       =   'Format text',
         ['gw']       =   'Format text (keep cursor)',
         ['>']        =   'Indent right',
         -- ['<lt>']  =   'Indent left',
@@ -289,9 +289,10 @@ local config = {
     }
   },
   icons = {
-    breadcrumb = '»', -- symbol used in the command line area that shows your active key combo
-    separator = '➜', -- symbol used between a key and it's label
-    group = '+', -- symbol prepended to a group
+    breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
+    separator = "➜", -- symbol used between a key and it's label
+    group = "+", -- symbol prepended to a group
+    ellipsis = "…",
     -- ellipsis = "…",
     -- -- set to false to disable all mapping icons, both those explicitly added in a mapping and those from rules
     -- mappings = true,
@@ -301,8 +302,36 @@ local config = {
     -- -- use the highlights from mini.icons When `false`, it will use `WhichKeyIcon` instead
     -- colors = true,
     -- -- used by key format
-    -- keys = {
-    -- },
+    keys = {
+      Up = " ",
+      Down = " ",
+      Left = " ",
+      Right = " ",
+      C = "󰘴 ",
+      M = "󰘵 ",
+      D = "󰘳 ",
+      S = "󰘶 ",
+      CR = "󰌑 ",
+      Esc = "󱊷 ",
+      ScrollWheelDown = "󱕐 ",
+      ScrollWheelUp = "󱕑 ",
+      NL = "󰌑 ",
+      BS = "󰁮",
+      Space = "󱁐 ",
+      Tab = "󰌒 ",
+      F1 = "󱊫",
+      F2 = "󱊬",
+      F3 = "󱊭",
+      F4 = "󱊮",
+      F5 = "󱊯",
+      F6 = "󱊰",
+      F7 = "󱊱",
+      F8 = "󱊲",
+      F9 = "󱊳",
+      F10 = "󱊴",
+      F11 = "󱊵",
+      F12 = "󱊶",
+    },
   },
   hooks = {
     list_pre = function(items)

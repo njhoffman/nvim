@@ -27,7 +27,7 @@ local cfg = {
           min_duration = 1000,
           -- from_color = "TinyGlimmerPulsarFrom",
           -- to_color = "TinyGlimmerPulsarTo",
-          from_color = "Visual",
+          from_color = "VisualAlt",
           -- to_color = "Normal",
           -- from_color = "DiffDelete",
           -- to_color = "Normal",
@@ -35,32 +35,31 @@ local cfg = {
       },
     },
   },
-  {
-    support = {
-      substitute = {
-        enabled = true,
-        -- default_animation = {
-        --   name = "left_to_right",
-        --   --   -- name = "bounce",
-        --   settings = {
-        --     -- max_duration = 350,
-        --     -- min_duration = 350,
-        --     -- min_progress = 0.85,
-        --     -- chars_for_max_duration = 25,
-        --     -- lingering_time = 50,
-        --     max_duration = 600,
-        --     min_duration = 600,
-        --     lingering_time = 200,
-        --     from_color = "TinyGlimmerSubFrom",
-        --     -- to_color = "TinyGlimmerSubTo",
-        --   },
-        -- },
+  support = {
+    substitute = {
+      enabled = true,
+      default_animation = {
+        name = "left_to_right",
+        --   -- name = "bounce",
+        settings = {
+          -- max_duration = 350,
+          -- min_duration = 350,
+          -- min_progress = 0.85,
+          -- chars_for_max_duration = 25,
+          -- lingering_time = 50,
+          max_duration = 600,
+          min_duration = 600,
+          lingering_time = 200,
+          from_color = "TinyGlimmerSubFrom",
+          -- to_color = "TinyGlimmerSubTo",
+        },
       },
     },
   },
   overwrite = {
     search = {
-      enabled = true,
+      enabled = false,
+      -- next_mapping = { lhs = "n", rhs = "'Nn'[v:searchforward].'zv'" },
       default_animation = {
         name = "pulse",
         settings = {
@@ -99,16 +98,16 @@ local cfg = {
     },
     paste = {
       enabled = true,
-      default_animation = {
-        name = "reverse_fade",
-        settings = {
-          easing = "outBack",
-          chars_for_max_duration = 10,
-          max_duration = 400,
-          min_duration = 300,
-          from_color = "TinyGlimmerPasteFrom",
-          -- to_color = "TinyGlimmerPasteTo",
-        },
+      -- paste_mapping = has_yanky and { lhs = "p", rhs = "<Plug>(YankyPutAfter)" } or nil,
+      -- Paste_mapping = has_yanky and { lhs = "P", rhs = "<Plug>(YankyPutBefore)" } or nil,      default_animation = {
+      name = "reverse_fade",
+      settings = {
+        easing = "outBack",
+        chars_for_max_duration = 10,
+        max_duration = 400,
+        min_duration = 300,
+        from_color = "TinyGlimmerPasteFrom",
+        -- to_color = "TinyGlimmerPasteTo",
       },
     },
     yank = {
@@ -150,11 +149,11 @@ end
 
 local namespace = require("tiny-glimmer.namespace").tiny_glimmer_animation_ns
 local animation = require("tiny-glimmer.glimmer_animation")
-local orig_cleanup = animation.cleanup
+local orig_cleanup = vim.fn.deepcopy(animation.cleanup)
 animation.cleanup = function(self)
   -- self.active = false
   if not vim.api.nvim_buf_is_valid(self.buffer) or not vim.api.nvim_buf_is_loaded(self.buffer) then
-    -- vim.dbglog("buffer not valid", self.buffer)
+    vim.dbglog("buffer not valid", self.buffer)
     vim.api.nvim_buf_clear_namespace(0, namespace, self.range.start_line, self.range.end_line + 1)
     self.reserved_ids = {}
   end
@@ -169,14 +168,6 @@ end
 -- require('tiny-glimmer').enable()  -- Enable animations
 -- require('tiny-glimmer').disable() -- Disable animations
 -- require('tiny-glimmer').toggle()  -- Toggle animations
-
--- --- Change highlight
--- --- @param animation_name string|string[] The animation name. Can be a string or a table of strings.
--- ---    If a table is passed, each animation will have their highlight changed.
--- ---    If a string is passed, only the provided animation have their highlight changed.
--- ---    You can pass 'all' to change all animations.
--- --- @param hl table The highlight configuration
--- -- Examples:
 -- -- require('tiny-glimmer').change_hl('fade', { from_color = '#FF0000', to_color = '#0000FF' })
 -- -- require('tiny-glimmer').change_hl('all', { from_color = '#FF0000', to_color = '#0000FF' })
 -- -- require('tiny-glimmer').change_hl({'fade', 'pulse'}, { from_color = '#FF0000', to_color = '#0000FF' })

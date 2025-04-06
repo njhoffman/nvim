@@ -207,39 +207,39 @@ local setup_keymaps = function()
     " vnoremap <unique> <C-D> <cmd>call smoothie#do("\<C-D>") <CR>
   ]])
 
-  map({ "n", "v" }, "gg", "<Plug>(Smoothie_gg)", {
+  map({ "n", "x" }, "gg", "<Plug>(Smoothie_gg)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll top",
   })
 
-  map({ "n", "v" }, "G", "<Plug>(Smoothie_G)", {
+  map({ "n", "x" }, "G", "<Plug>(Smoothie_G)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll bottom",
   })
 
-  map({ "v", "n" }, "<C-f>", "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)", {
+  map({ "n", "x" }, "<C-f>", "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll downwards",
     remap = false,
   })
 
-  map({ "v", "n" }, "<C-b>", "<Plug>(SmoothieUpwards)<Plug>(SmoothieUpwards)", {
+  map({ "n", "x" }, "<C-b>", "<Plug>(SmoothieUpwards)<Plug>(SmoothieUpwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll upwards",
     remap = false,
   })
-  map({ "v", "n" }, "<PageUp>", "<Plug>(SmoothieBackwards)", {
+  map({ "n", "x" }, "<PageUp>", "<Plug>(SmoothieBackwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll upwards",
     remap = false,
   })
 
-  map({ "n", "v" }, "<PageDown>", "<Plug>(SmoothieForwards)", {
+  map({ "n", "x" }, "<PageDown>", "<Plug>(SmoothieForwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
     desc = " scroll downwards",
@@ -247,7 +247,7 @@ local setup_keymaps = function()
   })
 
   map(
-    { "n", "v" },
+    { "n", "x" },
     "<space>",
     "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)",
     {

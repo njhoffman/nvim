@@ -63,11 +63,16 @@ local log_mode = function(curr)
   local opdesc = curr.opfunc
       and #curr.opfunc > 0
       and ("`" .. tostring(curr.opdesc or curr.opfunc) .. "`")
-    or curr.typed and #curr.typed > 0 and (" '" .. curr.typed .. "'")
+    or curr.typed and #curr.typed > 0 and ("'" .. curr.typed .. "'")
     or ""
 
   -- variable widths depending on control characters
-  local w = { has_ctrl(from) and 3 or 4, has_ctrl(to) and 3 or 4, 4, 6 }
+  local w = {
+    has_ctrl(from) and 3 or 4,
+    has_ctrl(to) and 3 or 4,
+    4,
+    6,
+  }
 
   local msg = string.format(
     "%" .. w[1] .. "s:%-" .. w[2] .. "s %" .. w[3] .. "s %" .. w[4] .. "s %s",

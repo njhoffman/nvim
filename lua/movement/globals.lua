@@ -2,35 +2,23 @@ _G = _G or {}
 _G.lambda = {}
 
 -- local lambda = require('lambda')
-require('lambda.options')
-require('lambda.helper')
-require('lambda.styles')
-require('lambda.highlights')
+require("lambda.options")
+require("lambda.helper")
+require("lambda.styles")
+require("lambda.highlights")
 
 _G.map = vim.keymap.set
 _G.P = vim.print
-_G.__remote_op_opfunc = function(motion)
-  vim.notify('hi ' .. motion)
-end
 
 P = vim.pretty_print
-
-_G.dump = function(...)
-  local objects = vim.tbl_map(vim.inspect, { ... })
-  if #objects == 0 then
-    -- print("nil")
-  end
-  print(unpack(objects))
-  return ...
-end
 
 ---Reloads a module
 ---@param module string Name of the module
 _G.RELOAD = function(module)
-  return require('plenary.reload').reload_module(module)
+  return require("plenary.reload").reload_module(module)
 end
 
-_G.lprint = require('lambda.log').lprint
+_G.lprint = require("lambda.log").lprint
 
 local function merge_table(a)
   return function(t)
@@ -73,7 +61,7 @@ vim.g.personal_module = {
   ---@return boolean
   exists = function(path, is_config)
     if is_config then
-      path = vim.fn.stdpath('config') .. '/lua/' .. path:gsub('%.', '/') .. '.lua'
+      path = vim.fn.stdpath("config") .. "/lua/" .. path:gsub("%.", "/") .. ".lua"
     end
     local st = vim.loop.fs_stat(path)
     return st and true or false
@@ -90,7 +78,7 @@ vim.g.personal_module = {
     end
     return res
   end,
-  md = merge_table({ 'markdown', 'html', 'NeogitCommitMessage', 'gitcommit', 'octo' }),
+  md = merge_table({ "markdown", "html", "NeogitCommitMessage", "gitcommit", "octo" }),
   ---Open buf of filepath if exists, and new if not
   ---@param filepath string? absolute path to filename
   ---@param check_exists boolean? check if filename exists beforehand

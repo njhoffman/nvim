@@ -1,19 +1,19 @@
-local modes = require('configs.flash.modes')
+local modes = require("configs.flash.modes")
 local config = {
-  labels = 'asdfghjklqwertyuiopzxcvbnm',
+  labels = "asdfghjklqwertyuiopzxcvbnm",
   use_upper_select_visual_line = false,
   modes = modes,
   search = {
-    trigger = '',
+    trigger = "",
     max_length = false,
     wrap = true,
     multi_window = true,
-    incremental = true,
+    incremental = false,
     exclude = {
-      'notify',
-      'cmp_menu',
-      'noice',
-      'flash_prompt',
+      "notify",
+      "cmp_menu",
+      "noice",
+      "flash_prompt",
       function(win)
         -- exclude non-focusable windows
         return not vim.api.nvim_win_get_config(win).focusable
@@ -28,17 +28,17 @@ local config = {
     -- extmark priority
     priority = 5000,
     groups = {
-      match = 'FlashMatch',
-      current = 'FlashCurrent',
-      backdrop = 'FlashBackdrop',
-      label = 'FlashLabel',
+      match = "FlashMatch",
+      current = "FlashCurrent",
+      backdrop = "FlashBackdrop",
+      label = "FlashLabel",
     },
   },
   jump = {
     -- save location in the jumplist
     jumplist = true,
     -- jump position
-    pos = 'start', ---@type "start" | "end" | "range"
+    pos = "start", ---@type "start" | "end" | "range"
     -- add pattern to search history
     history = true,
     -- add pattern to search register
@@ -65,14 +65,14 @@ local config = {
   },
   prompt = {
     enabled = true,
-    prefix = { { '⚡', 'FlashPromptIcon' } },
+    prefix = { { "⚡", "FlashPromptIcon" } },
     win_config = {
       row = 15,
       col = (vim.o.columns / 2) - 15,
       width = 30,
       height = 1,
-      border = 'rounded',
-      relative = 'editor',
+      border = "rounded",
+      relative = "editor",
       zindex = 1000,
     },
   },
@@ -88,7 +88,7 @@ local config = {
   },
 }
 
-local setup_mappings = require('configs.flash.mappings').setup
+local setup_mappings = require("configs.flash.mappings").setup
 
 local get_config = function()
   setup_mappings()

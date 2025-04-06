@@ -21,7 +21,7 @@ local scopes = {
   modeman                 = { main = 3, module = 0 },
   neoscroll               = { main = -1, module = 1 },
   -- mru                  = { main = -1 },
-  notifier                = { main = 0, module = 0 },
+  notifier                = { main = 1, module = 0 },
   notify                  = { main = 0 },
   -- project              = { main = 1 },
   lab                     = { main = 2 },

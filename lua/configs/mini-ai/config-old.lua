@@ -102,7 +102,6 @@ local opts = {
     -- --    a = gen_spec.argument({ brackets = { '%b()' }, separator = ';' }),
     -- -- Tweak function call to not detect dot in function name
     -- --    f = gen_spec.function_call({ name_pattern = '[%w_]' }),
-    -- N = gen_ai_spec.number(),
     -- i = ai.gen_ai_spec.indent(),
     ["*"] = ai.gen_spec.pair("*", "*", { type = "greedy" }),
     ["_"] = ai.gen_spec.pair("_", "_", { type = "greedy" }),
@@ -119,7 +118,6 @@ local opts = {
       { a = "@attribute.outer", i = "@attribute.inner" },
       { desc = "  attribute" }
     ),
-    --      { { '%b()', '%b[]', '%b{}' }, '^.().*().$' }
     ["b"] = { { "%b()", "%b[]", "%b{}" }, "^.%s*().-()%s*.$" },
     ["B"] = ai.gen_spec.treesitter(
       { a = "@block.outer", i = "@block.inner" },
@@ -134,11 +132,16 @@ local opts = {
       { desc = "  class" }
     ),
     ["d"] = gen_ai_spec.diagnostic(),
+    ["D"] = gen_ai_spec.number(),
     ["f"] = ai.gen_spec.treesitter(
       { a = "@function.outer", i = "@function.inner" },
       { desc = "  function" }
     ),
     ["g"] = gen_ai_spec.buffer(),
+    ["k"] = ai.gen_spec.treesitter({
+      i = { "@key.inner", "@assignment.lhs" },
+      a = { "@key.inner", "@assignment.lhs" },
+    }, { desc = "  key from kv pair" }),
     ["l"] = gen_ai_spec.line(),
     ["L"] = ai.gen_spec.treesitter(
       { a = "@loop.outer", i = "@loop.inner" },
@@ -149,6 +152,10 @@ local opts = {
       i = { "@block.inner", "@conditional.inner", "@loop.inner" },
     }, { desc = "  block/conditional/loop" }),
     ["t"] = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
+    ["v"] = ai.gen_spec.treesitter({
+      i = { "@value.inner", "@assignment.rhs" },
+      a = { "@value.inner", "@assignment.rhs" },
+    }, { desc = "  key from kv pair" }),
   },
 }
 
@@ -178,38 +185,38 @@ local setup_keymaps = function()
 
 -- stylua: ignore
   local i = {
-    ['*']    = '  inside asterisk *',
-    ['|']    = '  inside pipe |',
-    ['_']    = '  inside underscore a',
-    [';']    = '  inside argument',
-    [' ']    = '  inside whitespace',
-    ['"']    = '  inside quote "',
-    ["'"]    = "  inside s-quote '",
-    ['`']    = '  inside apostrophe `',
-    ['(']    = '  inside (',
-    [')']    = '  inside ) with white-space',
-    ['>']    = '  inside > with white-space',
-    ['<lt>'] = '  inside <',
-    [']']    = '  inside ] with white-space',
-    ['[']    = '  inside [',
-    ['}']    = '  inside } with white-space',
-    ['{']    = '  inside {',
-    ['?']    = '  inside user prompt',
-    ['a']    = '  inside argument',
-    ['A']    = '  inside attribute',
-    ['b']    = '  inside balanced: ), ], }',
-    ['B']    = '  inside block',
-    ['c']    = '  inside conditional',
-    ['C']    = '  inside class',
-    ['d']    = '  inside diagnostic',
-    ['g']    = '  inside entire buffer',
-    ['f']    = '  inside function',
-    ['l']    = '  inside line',
-    ['L']    = '  inside loop',
-    ['o']    = '  inside block, conditional, loop',
-    ['q']    = '  inside quote: `, ", \'',
-    ['t']    = '  inside tag',
-    ['x']    = '  inside comment',
+    ['*']    = '  inner asterisk *',
+    ['|']    = '  inner pipe |',
+    ['_']    = '  inner underscore a',
+    [';']    = '  inner argument',
+    [' ']    = '  inner whitespace',
+    ['"']    = '  inner quote "',
+    ["'"]    = "  inner s-quote '",
+    ['`']    = '  inner apostrophe `',
+    ['(']    = '  inner (',
+    [')']    = '  inner ) with white-space',
+    ['>']    = '  inner > with white-space',
+    ['<lt>'] = '  inner <',
+    [']']    = '  inner ] with white-space',
+    ['[']    = '  inner [',
+    ['}']    = '  inner } with white-space',
+    ['{']    = '  inner {',
+    ['?']    = '  inner user prompt',
+    ['a']    = '  inner argument',
+    ['A']    = '  inner attribute',
+    ['b']    = '  inner balanced: ), ], }',
+    ['B']    = '  inner block',
+    ['c']    = '  inner conditional',
+    ['C']    = '  inner class',
+    ['d']    = '  inner diagnostic',
+    ['g']    = '  inner entire buffer',
+    ['f']    = '  inner function',
+    ['l']    = '  inner line',
+    ['L']    = '  inner loop',
+    ['o']    = '  inner block, conditional, loop',
+    ['q']    = '  inner quote: `, ", \'',
+    ['t']    = '  inner tag',
+    ['x']    = '  inner comment',
   }
 
   local a = vim.deepcopy(i)

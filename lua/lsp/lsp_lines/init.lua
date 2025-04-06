@@ -1,7 +1,7 @@
 local M = {}
 
-local diagnostic_utils = require('lsp.lsp_lines.diagnostic_utils')
-local render = require('lsp.lsp_lines.render')
+local diagnostic_utils = require("lsp.lsp_lines.diagnostic_utils")
+local render = require("lsp.lsp_lines.render")
 
 local function render_current_line(diagnostics, ns, bufnr, opts)
   local current_line_diag = {}
@@ -18,17 +18,25 @@ local function render_current_line(diagnostics, ns, bufnr, opts)
   render.show(ns, bufnr, current_line_diag, opts)
 end
 
+local default_opts = {
+  only_current_line = false,
+  highlight_whole_line = false,
+  symbol_arrow = "──── ",
+}
+---
 ---@class Opts
 ---@field virtual_lines OptsVirtualLines Options for lsp_lines plugin
 
 ---@class OptsVirtualLines
----@field only_current_line boolean Only render for current line
+---@field only_current_line boolean|number Only render for current line, if number delay ms
 ---@field highlight_whole_line boolean Highlight empty space to the left of a diagnostic
+---@field symbol_arrow string Symbol of arrow pointing to error
 
 -- Registers a wrapper-handler to render lsp lines.
 -- This should usually only be called once, during initialisation.
-M.setup = function(_opts)
-  vim.api.nvim_create_augroup('LspLines', { clear = true })
+M.setup = function(init_opts)
+  init_opts = vim.tbl_deep_extend("force", default_opts, init_opts or {})
+  vim.api.nvim_create_augroup("LspLines", { clear = true })
   -- TODO: On LSP restart (e.g.: diagnostics cleared), errors don't go away.
   vim.diagnostic.handlers.virtual_lines = {
     ---@param namespace number
@@ -36,32 +44,23 @@ M.setup = function(_opts)
     ---@param diagnostics table
     ---@param opts boolean|Opts
     show = function(namespace, bufnr, diagnostics, opts)
-      opts = vim.tbl_deep_extend('force', _opts or {}, opts or {})
+      opts = vim.tbl_deep_extend("force", init_opts, opts or {})
       local ns = vim.diagnostic.get_namespace(namespace)
       if not ns.user_data.virt_lines_ns then
-        ns.user_data.virt_lines_ns = vim.api.nvim_create_namespace('')
+        ns.user_data.virt_lines_ns = vim.api.nvim_create_namespace("")
       end
 
       diagnostics = diagnostic_utils.filter(bufnr, diagnostics, opts.virtual_lines)
       diagnostics = diagnostic_utils.format(bufnr, diagnostics, opts.virtual_lines)
 
-      vim.api.nvim_clear_autocmds({ group = 'LspLines' })
-      vim.api.nvim_create_autocmd('WinEnter', {
-        callback = function()
-          local floating = vim.api.nvim_win_get_config(0).relative ~= ''
-          vim.diagnostic.config({
-            virtual_text = floating,
-            virtual_lines = not floating,
-          })
-        end,
-      })
+      vim.api.nvim_clear_autocmds({ group = "LspLines" })
       if opts.virtual_lines.only_current_line then
-        vim.api.nvim_create_autocmd('CursorMoved', {
+        vim.api.nvim_create_autocmd("CursorMoved", {
           buffer = bufnr,
           callback = function()
             render_current_line(diagnostics, ns.user_data.virt_lines_ns, bufnr, opts)
           end,
-          group = 'LspLines',
+          group = "LspLines",
         })
         -- Also show diagnostics for the current line before the first CursorMoved event
         render_current_line(diagnostics, ns.user_data.virt_lines_ns, bufnr, opts)
@@ -75,7 +74,7 @@ M.setup = function(_opts)
       local ns = vim.diagnostic.get_namespace(namespace)
       if ns.user_data.virt_lines_ns then
         render.hide(ns.user_data.virt_lines_ns, bufnr)
-        vim.api.nvim_clear_autocmds({ group = 'LspLines' })
+        vim.api.nvim_clear_autocmds({ group = "LspLines" })
       end
     end,
   }

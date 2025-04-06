@@ -5,8 +5,7 @@ local options = require("tmux.configuration.options")
 local M = {}
 function M.setup()
   if options.navigation.enable_default_keybindings then
-    vim.dbglog("SETUP TMUX")
-    keymaps.register("n", {
+    keymaps.register({ "n", "x" }, {
       ["<C-h>"] = [[<cmd>lua require'tmux'.move_left()<cr>]],
       ["<C-j>"] = [[<cmd>lua require'tmux'.move_bottom()<cr>]],
       ["<C-k>"] = [[<cmd>lua require'tmux'.move_top()<cr>]],

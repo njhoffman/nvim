@@ -1,27 +1,5 @@
 local v_utils = require("configs.vimade.utils")
 
-local setup_auto_cmds = function()
-  vim.api.nvim_create_augroup("VimadeEvents", { clear = true })
-  vim.api.nvim_create_autocmd({ "FocusLost", "WinLeave" }, {
-    group = "VimadeEvents",
-    callback = function(ev)
-      local winid = vim.fn.bufwinid(ev.buf)
-      -- vim.dbglog(ev.event)
-      -- M.vimade_fade_global(0.5)
-    end,
-  })
-  --
-  -- -- vim.cmd('VimadeFadeActive')
-  vim.api.nvim_create_autocmd({ "FocusGained", "WinEnter" }, {
-    group = "VimadeEvents",
-    callback = function(ev)
-      local winid = vim.fn.bufwinid(ev.buf)
-      -- vim.dbglog(ev.event)
-      -- M.vimade_unfade_global()
-    end,
-  })
-end
-
 local setup_user_cmds = function()
   local clear_commands = { "VimadeInfo" }
   for _, cmd in ipairs(clear_commands) do
@@ -50,16 +28,44 @@ local setup = function()
     popup = 0.6,
     split = 0.7,
     global = 0.6,
-    cmdline = 0.8,
+    cmdline = 0.7,
     neotree = 0.8,
     whichkey = 0.8,
   }
 
   local vimade_cfg = {
     style = v_utils.style,
-    fadelevel = v_utils.fadelevel(fadelevel_cfg),
+    -- fadelevel = v_utils.fadelevel(fadelevel_cfg),
+    fadelevel = 0.65,
     -- ncmode = "focus",
     enablefocusfading = true,
+    checkinterval = 500,
+    focus = {
+      providers = {
+        filetypes = {
+          default = {
+            -- {'snacks', {}},
+            -- { "mini", {} },
+            -- { "hlchunk", {} },
+            { "treesitter", { min_node_size = 2, exclude = { "if_statement" } } },
+
+            -- if treesitter fails or there isn't a good match, fallback to blanks
+            -- (similar to limelight)
+            {
+              "blanks",
+              {
+                min_size = 1,
+                max_size = "35%",
+              },
+            },
+            -- if blanks fails to find a good match, fallback to static 35%
+            { "static", {
+              size = "35%",
+            } },
+          },
+        },
+      },
+    },
     -- usecursorhold = true,
     -- nohlcheck = false,
     -- blocklist = {
@@ -113,7 +119,6 @@ local setup = function()
   vim.defer_fn(function()
     require("vimade").setup(vimade_cfg)
     setup_user_cmds()
-    setup_auto_cmds()
   end, setup_delay)
 end
 

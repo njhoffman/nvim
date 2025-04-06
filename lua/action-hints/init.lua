@@ -3,11 +3,18 @@
 local config = require("action-hints.config")
 local utils = require("action-hints.utils")
 local state = require("action-hints.state")
+local display = require("action-hints.display")
+local providers = require("action-hints.providers")
+
+local clear = function()
+  display.clear_virtual_text()
+  state.current = { references = 0, definitions = 0, codeactions = 0 }
+  state.available = { references = false, definitions = false, codeactions = false }
+  state.is_cleared = true
+end
 
 local setup = function(options)
   config.setup(options)
-  local display = require("action-hints.display")
-  local providers = require("action-hints.providers")
   display.set_highlights(config.values)
 
   -- create augroup named ActionHints
@@ -21,15 +28,12 @@ local setup = function(options)
     end,
   })
 
-  vim.api.nvim_create_autocmd({
-    "CursorMovedI",
-  }, {
+  vim.api.nvim_create_autocmd({ "ModeChanged" }, {
     group = augroup,
+    pattern = "*:i",
     desc = "ActionHints providers insert clear",
     callback = function()
-      utils.throttle(display.clear_virtual_text, 100, {}, "clear")
-      state.is_cleared = true
-      -- utils.debounce(providers.update, 1000)(config.values)
+      clear()
     end,
   })
 
@@ -37,9 +41,7 @@ local setup = function(options)
     group = augroup,
     desc = "ActionHints providers update",
     callback = function()
-      -- utils.throttle(display.clear_virtual_text, 100, {}, 'clear')
-      display.clear_virtual_text()
-      state.is_cleared = true
+      clear()
       if vim.api.nvim_get_mode().mode == "n" then
         utils.debounce(providers.update, 1000)(config.values)
         -- providers.update(config.values)

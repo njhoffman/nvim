@@ -43,6 +43,7 @@ local notify_handler = function(changes, curr_idx, opts)
   for i, change in ipairs(changes) do
     local line = vim.api.nvim_buf_get_lines(0, change.lnum - 1, change.lnum, false)[1]
     local text = vim.trim(line and line:sub(change.col + 1, change.col + 20) or "")
+    -- TODO: if first item is string assume its a highlight for the whole line
     table.insert(rows, {
       { change.curr and "" or " ", hls.icon },
       { tostring(change.idx), hls.number },
@@ -74,7 +75,6 @@ local notify_handler = function(changes, curr_idx, opts)
           local total_lines = vim.api.nvim_buf_line_count(bufnr)
           local win_height = vim.api.nvim_win_get_height(wid)
           if total_lines > win_height then
-            vim.dbglog("scroll", total_lines)
             vim.api.nvim_win_set_cursor(wid, { total_lines, 0 })
           end
         end

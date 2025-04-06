@@ -2,8 +2,11 @@
 local M = {}
 
 local to_severity = function(severity)
-  if type(severity) == 'string' then
-    return assert(vim.diagnostic.severity[string.upper(severity)], string.format('Invalid severity: %s', severity))
+  if type(severity) == "string" then
+    return assert(
+      vim.diagnostic.severity[string.upper(severity)],
+      string.format("Invalid severity: %s", severity)
+    )
   end
   return severity
 end
@@ -13,7 +16,7 @@ local filter_by_severity = function(severity, diagnostics)
     return diagnostics
   end
 
-  if type(severity) ~= 'table' then
+  if type(severity) ~= "table" then
     severity = to_severity(severity)
     return vim.tbl_filter(function(t)
       return t.severity == severity
@@ -52,15 +55,15 @@ local function prefix_source(diagnostics)
     end
 
     local t = vim.deepcopy(d)
-    t.message = string.format('%s: %s', d.source, d.message)
+    t.message = string.format("%s: %s", d.source, d.message)
     return t
   end, diagnostics)
 end
 
 local function reformat_diagnostics(format, diagnostics)
   vim.validate({
-    format = { format, 'f' },
-    diagnostics = { diagnostics, 't' },
+    format = { format, "function" },
+    diagnostics = { diagnostics, "table" },
   })
 
   local formatted = vim.deepcopy(diagnostics)
@@ -74,7 +77,7 @@ M.format = function(bufnr, diagnostics, opts)
   if opts.format then
     diagnostics = reformat_diagnostics(opts.format, diagnostics)
   end
-  if opts.source and (opts.source ~= 'if_many' or count_sources(bufnr) > 1) then
+  if opts.source and (opts.source ~= "if_many" or count_sources(bufnr) > 1) then
     diagnostics = prefix_source(diagnostics)
   end
   return diagnostics

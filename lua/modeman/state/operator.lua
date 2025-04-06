@@ -3,7 +3,7 @@ local opfunc_defs = require("modeman.config.operator-map") or {}
 local ns_op = vim.api.nvim_create_namespace("modeman/operator")
 
 local is_op_mode = function(mode)
-  return type(mode) == "string" and mode:find("no") ~= nil
+  return type(mode) == "string" and (mode:find("no") ~= nil)
 end
 
 local get_op = function(mode)
@@ -49,6 +49,7 @@ local onkey = function(key, typed)
   -- key is after mappings applied, typed is before mappings applied
   -- if key == '\27' then was_cancelled = true end
   local trans = { key = vim.fn.keytrans(key), typed = vim.fn.strtrans(typed) }
+  vim.dbglog("operator", key, typed, trans.key, trans.typed)
   if type(trans.key) == "string" and #trans.key > 0 then
     if type(trans.typed) == "string" and #trans.typed > 0 then
       key_state.typed = trans.typed

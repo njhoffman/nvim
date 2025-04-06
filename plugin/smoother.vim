@@ -1,4 +1,4 @@
-let g:smoother_enabled = 1
+let g:smoother_enabled = 0
 let g:smoother_no_default_mappings = 1
 let g:smoother_experimental_mappings = 0
 let g:smoother_update_interval = 10 " 20

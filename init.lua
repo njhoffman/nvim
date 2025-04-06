@@ -10,12 +10,12 @@ require("utils.lazy").setup({ cache = false, reload = true, lazy = false })
 -- qfSeparator, qfLineNr, qfFilename
 
 for _, mod_name in ipairs({
+  "project",
   "keymaps",
   "commands",
   "abbreviations",
   "autocommands",
   "devbox",
-  "project",
   "runner",
   "stats",
   "devdocs.setup",
@@ -26,14 +26,14 @@ for _, mod_name in ipairs({
   "configs.smoothcursor",
   -- 'configs.nvim-scrollbar',
   -- 'configs.neoscroll',
-  -- "action-hints.setup",
+  "action-hints.setup",
   -- 'winsep.setup',
   -- 'better_escape-setup',
   "early-retirement.setup",
   "oldfiles",
   "tail",
   "hover.setup",
-  "NeoComposer._setup",
+  -- "NeoComposer._setup",
   "configs.feline",
   "configs.definition-or-references",
   "baleia.setup",
@@ -43,11 +43,14 @@ for _, mod_name in ipairs({
 end
 
 vim.defer_fn(function()
-  require("modeman")
+  -- require("modeman")
   require("alt").setup()
+  require("live-command.setup")
   require("sidebar").setup()
   require("histories").setup()
   -- require("synshade").setup()
+  require("scrollview.setup")
+  require("configs.tiny-glimmer")
 
   -- 'lab.setup',
   local llm_config = require("llm-config")

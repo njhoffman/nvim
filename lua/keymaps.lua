@@ -15,14 +15,18 @@ prefix({ "n", "x", "o" }, "]", "next ")
 prefix({ "n", "x", "o" }, "[", "previous 丹")
 prefix({ "n", "x", "o" }, "<leader>\\", "flash ⚡")
 
+prefix("n", "m", "marks ⚑")
 prefix("n", "g", "go 隷")
 prefix("n", "z", "folds ﱒ")
-prefix("n", "gh", "hover  ")
-prefix("n", "gQ", "quickfix  ")
-prefix("n", "g?", "preview  ")
+prefix("n", "gh", "hover ")
+prefix("n", "gl", "lsp 󰃤")
+prefix("n", "gq", "quickfix  ")
+prefix("n", "gp", "preview  ")
 prefix("n", "go", "debug out  ")
+prefix("n", "gt", "text ops  ")
+prefix("n", "g\\", "flash ⚡")
 
--- prefix('n', '<c-w>', 'window')
+prefix("n", "<c-w>", "window ")
 prefix("n", "<leader>s", "snacks ")
 prefix("n", "<leader>g", "git 󰊢")
 prefix("n", "<leader>f", "file ")
@@ -76,18 +80,11 @@ prefix("n", "<leader>cl", "conceal 󰈉 ")
 
 -- -- better up/down
 -- TODO: test for foldlines and disable variable
-map(
-  { "n", "x" },
-  "j",
-  "v:count == 0 && &wrap ? 'gj' : 'j'",
-  { desc = "Down", expr = true, silent = true }
-)
-map(
-  { "n", "x" },
-  "k",
-  "v:count == 0 && &wrap ? 'gk' : 'k'",
-  { desc = "Up", expr = true, silent = true }
-)
+map({ "n", "x" }, "j", "gj", { desc = "Down wrapped", silent = true, noremap = true })
+
+-- "v:count == 0 && &wrap ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true }
+-- "v:count == 0 && &wrap ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true }
+map({ "n", "x" }, "k", "gk", { desc = "Up wrapped", silent = true, noremap = true })
 
 vim.cmd([[
     " nnoremap <expr> j (foldclosed(line('.')) != -1 || &wrap) ? 'gj' : 'j'
@@ -98,7 +95,7 @@ vim.cmd([[
     " nnoremap k gk
     " vnoremap j gj
     " vnoremap k gk
-    "
+
     tnoremap <Esc> <C-\><C-n>
     tnoremap <M-[> <Esc>
     tnoremap <C-v><Esc> <Esc>
@@ -106,20 +103,20 @@ vim.cmd([[
 
 -- TODO: differentiate between vim/lua, auto remove comments
 
-map({ "v" }, "<C-Space>", '"xy:@x<cr>', {
+map({ "x" }, "<C-Space>", '"xy:@x<cr>', {
   category = "Command",
   label = " execute selected",
   desc = " execute selected lines",
 })
 
-map({ "n", "v" }, ";", ":", {
+map({ "n", "x" }, ";", ":", {
   category = "Command",
   label = " open cmdline",
   desc = " open the command line",
   silent = false,
 })
 
-map({ "n", "v" }, "<M-:>", "q:", {
+map({ "n", "x" }, "<M-:>", "q:", {
   category = "Command",
   label = " open cmdwin",
   desc = " open the command window",
@@ -246,7 +243,7 @@ map("c", "<M-^>", '<cmd>lua require("commands.cmdline").toggle()<cr>', {
   desc = " toggle cmdline depending on command mode",
 })
 
-map("c", "<C-$>", "<C-End>", {
+map("c", "<M-$>", "<C-End>", {
   silent = false,
   category = "Command",
   label = " goto end",
@@ -354,7 +351,7 @@ map(
 )
 
 --  'o<Esc>j'  'm`O<Esc>``'
-map("n", "<CR>", "O<Esc>", {
+map("n", "<S-CR>", "O<Esc>", {
   category = "Buffers",
   label = "󰽙 insert new line",
   desc = "󰽙 insert new line without leaving insert mode",
@@ -600,9 +597,8 @@ map(
 --------------------------------------------------------------------------------------------------
 -- MACROS ---------------------------------------------------------------------------------------
 
-
 -- use Q to record macro, qq to run macro (NeoComposer)
-map('n', 'q', '<nop>')
+-- map('n', 'q', '<nop>')
 
 -- Taking from here: https://github.com/stoeffel/.dotfiles/blob/master/vim/visual-at.vim
 -- function! ExecuteMacroOverVisualRange()
@@ -846,19 +842,19 @@ map('i', '<esc>', '<Esc>`^', {
   silent = true,
 })
 
-map({ 'n', 'v' }, '<M-">', '<cmd>HopLineStart<cr>', {
-  category = 'Motion',
-  plugin = 'hop.nvim',
-  label = ' hop to line',
-  desc = ' hop to line',
-})
+-- map({ 'n', 'v' }, '<M-">', '<cmd>HopLineStart<cr>', {
+--   category = 'Motion',
+--   plugin = 'hop.nvim',
+--   label = ' hop to line',
+--   desc = ' hop to line',
+-- })
 
-map({ 'n', 'v' }, "<M-'>", '<cmd>HopWord<cr>', {
-  category = 'Motion',
-  plugin = 'hop.nvim',
-  label = ' hop to word',
-  desc = ' hop to word',
-})
+-- map({ 'n', 'v' }, "<M-'>", '<cmd>HopWord<cr>', {
+--   category = 'Motion',
+--   plugin = 'hop.nvim',
+--   label = ' hop to word',
+--   desc = ' hop to word',
+-- })
 
 -- nnoremap <expr> gV '`[' . strpart(getregtype(), 0, 1) . '`]'
 map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
@@ -918,42 +914,33 @@ vmap({ 'n' }, "<C-]>",  {
   desc = ' jump to next tag',
 })
 
-map('n', '<M-}>', '<cmd>norm v}<cr>', {
+map({'n', 'x'}, '<M-}>', '<cmd>norm }<cr>', {
   category = 'Motion',
   desc = ' traverse blocks forward with select',
 })
 
-map('x', '<M-}>', '<cmd>norm }<cr>', {
-  category = 'Motion',
-  desc = ' traverse blocks forward with select',
-})
 
-map('n', '<M-{>', '<cmd>norm v{<cr>', {
+map({'n', 'x'}, '<M-{>', '<cmd>norm {<cr>', {
   category = 'Motion',
   desc = ' traverse blocks backwards with select',
 })
 
-map('x', '<M-{>', '<cmd>norm {<cr>', {
-  category = 'Motion',
-  desc = ' traverse blocks backwards with select',
-})
-
-map({'n', 'o', 'v'}, '[[', '?{<CR>w99[{', {
+map({'n', 'o', 'x'}, '[[', '?{<CR>w99[{', {
   category = 'Motion',
   desc = ' traverse backward to section {',
 })
 
-map({'n', 'o', 'v'}, ']]', 'j0[[%/{<CR>', {
+map({'n', 'o', 'x'}, ']]', 'j0[[%/{<CR>', {
   category = 'Motion',
   desc = ' traverse forward to section {',
 })
 
-map({'n', 'o', 'v'}, '][', '/}<CR>b99]}', {
+map({'n', 'o', 'x'}, '][', '/}<CR>b99]}', {
   category = 'Motion',
   desc = ' traverse forward to section }',
 })
 
-map({'n', 'o', 'v'}, '[]', 'k$][%?}<CR>', {
+map({'n', 'o', 'x'}, '[]', 'k$][%?}<CR>', {
   category = 'Motion',
   desc = ' traverse backward to section {',
 })
@@ -963,7 +950,7 @@ map('x', 'A', function() return vim.fn.mode() == 'V' and '$<C-v>A' or 'A' end, {
 local searching_google_in_normal = [[:lua fn.system({'open', 'https://google.com/search?q=' .. vim.fn.expand("<cword>")})<CR>]]
 local searching_google_in_visual = [[<ESC>gv"gy<ESC>:lua fn.system({'open', 'https://google.com/search?q=' .. vim.fn.getreg('g')})<CR>]]
 vim.api.nvim_set_keymap("n", "g!!", searching_google_in_normal, { silent = true, noremap = true })
-vim.api.nvim_set_keymap("v", "g!!", searching_google_in_visual, { silent = true, noremap = true })
+vim.api.nvim_set_keymap("x", "g!!", searching_google_in_visual, { silent = true, noremap = true })
 
 -- TODO: create function to save last visual selection before undoing
 -- map('n', 'Uv', 'u"`[" . strpart(getregtype(), 0, 1) . "`]"gA', {
@@ -1428,10 +1415,16 @@ map('n', '<leader>:', '<c-w>W', {
   desc = ' focus the previous window',
 })
 
-map({'n'}, '<C-Tab>', '<c-w>w', {
+map({'n', 'x'}, '<C-Tab>', '<c-w>w', {
   category = 'Window',
   label = 'window next',
   desc = ' focus the next window',
+})
+
+map({'n', 'x'}, '<C-S-Tab>', '<c-w>W', {
+  category = 'Window',
+  label = 'window prev ',
+  desc = ' focus the prev window',
 })
 
 map({'i'}, '<C-Tab>', '<c-o><c-w>w', {
@@ -1445,13 +1438,6 @@ map({'i'}, '<C-S-Tab>', '<c-o><c-w>W', {
   label = 'window prev ',
   desc = ' focus the prev window',
 })
-
-map({'n'}, '<C-S-Tab>', '<c-w>W', {
-  category = 'Window',
-  label = 'window prev ',
-  desc = ' focus the prev window',
-})
-
 
 map('n', '<leader>H', '<cmd>vnew<cr>', {
   category = 'Window',
@@ -1841,6 +1827,21 @@ map('n', '<leader>gR', '<cmd>Gitsigns reset_buffer<cr>', {
 --------------------------------------------------------------------------------------------------
 -- FORMAT ----------------------------------------------------------------------------------------
 
+map('n', 'gtf', 'gq', {
+  category = 'Format',
+  label = '󰉶 format',
+  desc = '󰉶 format operator',
+})
+
+map('n', 'gtF', 'gw', {
+  category = 'Format',
+  label = '󰉶 format restore',
+  desc = '󰉶 format operator with cursor restore',
+})
+
+-- map('n', 'gq', '<nop>')
+-- map('n', 'gw', '<nop>')
+
 -- Delete trailing stuff
 map('n', '<leader>d', '<cmd>normal! mz$x`z<CR>', { desc = '󱎘 Delete char at EoL' })
 
@@ -1868,16 +1869,8 @@ map('x', '>', '>gv', {
   desc = '󰉶 indent repeatedly',
 })
 
-map('n', '<M->', '<cmd>ISwapNodeWith<cr>', {
-  category = 'Format',
-  label = '易swap node with',
-  desc = '易swap/exchange node objects with',
-  plugin = 'iswap.nvim',
-})
 
-
--- TODO: allow range
-map({ 'v', 'n' }, '<M-;>', '<esc><cmd>ISwapNodeWith<cr>', {
+map({ 'n' }, '<M-;>', '<cmd>ISwapNodeWith<cr>', {
   category = 'Format',
   label = '易swap node with',
   desc = '易swap/exchange node objects with',

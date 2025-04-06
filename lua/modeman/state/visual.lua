@@ -1,4 +1,5 @@
 local ns = require("modeman.namespace")
+local ns_op = vim.api.nvim_create_namespace("modeman/visual")
 
 local visual_state = function(curr)
   -- visual range:
@@ -70,6 +71,9 @@ local mode_to = function(curr)
   --   })
   -- end
 end
+-- 10:34:47  modeman:    n:no   'g@'   [gs] `split/join content `
+-- 10:34:48  modeman:   no:n    'y'            3: 35:0   -  38:  8:0
+-- 10:34:48  modeman:   no:n    'y'          123:135:0   - 338:128:5
 
 local is_visual = function(mode)
   if type(mode) ~= "string" or mode == "" then
@@ -80,13 +84,50 @@ local is_visual = function(mode)
   return vismode == "v" or vismode == ""
 end
 
+local parse_key = function(typed, keymap)
+  local parse = function(key)
+    return { key, vim.fn.keytrans(key), vim.fn.strtrans(key) }
+  end
+  local parsed = {
+    typed = parse(typed),
+    keymap = parse(keymap),
+  }
+  vim.dbglog(parsed.typed, parsed.keymap)
+  -- vim.dbglog(string.format("%5s  %s", parsed.typed[3], parsed.keymap[3]))
+end
+
+local key_state = { typed = nil, keys = {} }
+local onkey = function(keymap, typed)
+  -- key is after mappings applied, typed is before mappings applied
+  parse_key(typed, keymap)
+  -- if key == '\27' then was_cancelled = true end
+  -- if type(trans.key) == "string" and #trans.key > 0 then
+  --   if type(trans.typed) == "string" and #trans.typed > 0 then
+  --     key_state.typed = trans.typed
+  --     table.insert(key_state.keys, trans.typed)
+  --   else
+  --     table.insert(key_state.keys, trans.key)
+  --   end
+  -- end
+end
+
 local get_state = function(curr)
   local vis_state = {}
-  -- if is_visual(curr.from) then
-  --   mode_from(curr)
-  -- elseif is_visual(curr.mode) then
-  --   vis_state = mode_to(curr)
-  -- end
+  if is_visual(curr.mode) then
+    -- mode_to(curr)
+    vis_state = {}
+    vim.on_key(onkey, ns_op)
+  elseif is_visual(curr.from) then
+    vim.on_key(nil, ns_op)
+    if type(key_state.typed) == "string" and #key_state.typed > 0 then
+      vis_state = vim.tbl_deep_extend("force", vis_state, key_state)
+    end
+    key_state = { typed = nil, keys = {} }
+    --   vis_state = mode_to(curr)
+  end
+  if vim.fn.empty(vis_state) == 0 then
+    vim.dbglog("vis", vis_state.typed, vis_state.keys)
+  end
   return vis_state
 end
 return { get_state = get_state }

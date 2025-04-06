@@ -1,6 +1,7 @@
-local get_severity = function(type)
-  local severity = vim.tbl_get(vim.diagnostic.config(), type, 'severity', 'min') or vim.diagnostic.config()[type]
-  if severity == true then
+local get_severity = function(lsp_type)
+  local severity = vim.tbl_get(vim.diagnostic.config(), lsp_type, "severity", "min")
+    or vim.diagnostic.config()[lsp_type]
+  if severity == true or type(severity) == "table" then
     severity = 4
   elseif severity == false then
     severity = 0
@@ -13,7 +14,7 @@ local function get_difference(original, modified)
   if original == modified then
     return nil
   end -- no changes
-  if not (type(original) == 'table' and type(modified) == 'table') then
+  if not (type(original) == "table" and type(modified) == "table") then
     return { from = original, to = modified }
   end -- primitive types
   local result = {}
@@ -42,7 +43,7 @@ local update_diagnostic = function(type, level)
     -- else
     vim.diagnostic.config({ [type] = { severity = { min = level } } })
     -- end
-    output_difference(type .. '=' .. level, old, vim.diagnostic.config())
+    output_difference(type .. "=" .. level, old, vim.diagnostic.config())
   end
 end
 
@@ -50,23 +51,23 @@ local toggle_diagnostic = function(type)
   return function()
     local old_config = vim.diagnostic.config()
     -- TODO: make into a map, add virtual text handler
-    if type == 'buffer' then
+    if type == "buffer" then
       if vim.diagnostic.is_disabled(0) then
         vim.diagnostic.enable(0)
       else
         vim.diagnostic.disable(0)
       end
-    elseif type == 'global' then
+    elseif type == "global" then
       if vim.diagnostic.is_disabled() then
         vim.diagnostic.enable()
       else
         vim.diagnostic.disable()
       end
-    elseif type == 'format' then
+    elseif type == "format" then
       vim.b.format_on_write = vim.b.format_on_write == 0 and 1 or 0
-    elseif type == 'virtual_lines' then
-      local severity = get_severity('virtual_lines')
-      local only_current = vim.tbl_get(old_config, 'virtual_lines', 'only_current_line')
+    elseif type == "virtual_lines" then
+      local severity = get_severity("virtual_lines")
+      local only_current = vim.tbl_get(old_config, "virtual_lines", "only_current_line")
       -- local whole_line = vim.tbl_get(old_config, 'virtual_lines', 'only_current_line')
       if severity > 0 then
         vim.diagnostic.config({
@@ -84,9 +85,9 @@ local toggle_diagnostic = function(type)
           virtual_text = false,
         })
       end
-    elseif type == 'vl_current' then
-      local severity = get_severity('virtual_lines')
-      local only_current = vim.tbl_get(old_config, 'virtual_lines', 'only_current_line')
+    elseif type == "vl_current" then
+      local severity = get_severity("virtual_lines")
+      local only_current = vim.tbl_get(old_config, "virtual_lines", "only_current_line")
       vim.diagnostic.config({
         virtual_lines = { only_current_line = not only_current, severity = { min = severity } },
       })

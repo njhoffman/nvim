@@ -7,7 +7,11 @@ local lz_syn = false
 -- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/debug.lua
 
 local plugins = {
-  { "stevearc/dressing.nvim", dependencies = "MunifTanjim/nui.nvim", event = "VeryLazy" },
+  {
+    "stevearc/dressing.nvim",
+    dependencies = { "MunifTanjim/nui.nvim", "nvim-telescope/telescope.nvim" },
+    event = "VeryLazy",
+  },
   -- display window manager: https://github.com/altermo/nwm
   { "3rd/image.nvim", enabled = false, event = "VeryLazy", dependencies = "nvim-treesitter" },
 
@@ -27,8 +31,8 @@ local plugins = {
     event = "VimEnter",
     dependencies = "nvim-web-devicons",
   },
-  { "declancm/cinnamon.nvim", event = "VeryLazy" },
-  { "karb94/neoscroll.nvim", event = "VeryLazy" },
+  { "declancm/cinnamon.nvim", event = "VeryLazy", enabled = false },
+  { "karb94/neoscroll.nvim", event = "VeryLazy", enabled = false },
   {
     "00sapo/visual.nvim",
     enabled = false,
@@ -424,77 +428,6 @@ local plugins = {
   },
   -- { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
   {
-    "dstein64/nvim-scrollview",
-    -- `conflicts`    git merge conflicts
-    -- `cursor`       cursor position
-    -- `diagnostics`  errors, warnings, info, and hints via |vim.diagnostic|
-    -- `folds`        closed folds
-    -- `loclist`      items on the location list
-    -- `marks`
-    -- `quickfix`     items on the quickfix list
-    -- `search`
-    -- `spell`        spell check items when the |'spell'| option is enabled
-    -- `textwidth`    line lengths exceeding the value of the |'textwidth'| option, when non-zero
-    -- `trail`        trailing whitespace, when the |'list'| option is enabled and the |'listchars'| option includes "trail"
-    config = function()
-      -- TODO: winblend_gui for floating windows
-      -- shape = { head = "▲", body = "█", tail = "▼" },
-      -- `simple`     Top position reflects the window's top line number relative to the document's
-      --              line count. The height reflects the size of the window relative to the document's
-      --              line count. Mouse drag may be unresponsive when there are closed folds.
-      -- `virtual`    Position and height like `simple`, but line numbers and document line count are updated
-      --              to virtual counterparts that account for closed folds. The top position reflects the
-      --              window's top virtual line number relative to the document's virtual line count.
-      --              The height reflects the size of the window relative to the document's virtual
-      --              line count. Works slower than `simple` mode.
-      -- `proper`     Position and height like 'virtual', but diff filler and virtual text lines are also
-      --              considered. Works slower than `virtual` mode.
-      -- `auto`       'Proper' when having few buffer lines and luajit, else `virtual` mode is used.
-      require("scrollview").setup({
-        excluded_filetypes = {
-          "WhichKey",
-          "TelescopePrompt",
-          "chatgpt-input",
-          "cmp_docs",
-          "cmp_menu",
-          "lazy",
-          "neoai-input",
-          "nerdtree",
-          "noice",
-          "notify",
-          "prompt",
-        },
-        signs_max_per_row = 2,
-        -- text = "┆", "▁", "", "", " ", ﹘‐ ‑ ‒ – — ― ‖ ‗﹉ ﹊ ﹋ ﹌ ﹍ ﹎ ﹏
-        cursor_symbol = "•",
-        search_symbol = { vim.fn.nr2char(0x2261) }, -- { "-", "= ", vim.fn.nr2char(0x2261) },
-        diagnostics_error_symbol = { "" }, -- { "-", "= " },
-        diagnostics_warn_symbol = { "—" }, -- { "-", "= " },
-        winblend_gui = 30,
-        current_only = false,
-        -- base = "right", -- left, right, buffer
-        -- column = 80,
-        -- zindex = 40,
-        floating_windows = true,
-        signs_on_startup = {
-          "conflicts",
-          "cursor",
-          "diagnostics",
-          -- 'folds',
-          -- 'loclist',
-          -- 'marks',
-          -- 'quickfix',
-          "search",
-          -- 'spell',
-          -- 'textwidth',
-          -- 'trail',
-          -- 'all'
-        },
-        diagnostics_severities = { vim.diagnostic.severity.WARN, vim.diagnostic.severity.ERROR },
-      })
-    end,
-  },
-  {
     "echasnovski/mini.jump",
     -- local override
     config = function()
@@ -743,7 +676,6 @@ local plugins = {
   { "dhruvasagar/vim-table-mode", event = "VeryLazy", ft = { "markdown", "pandoc", "vimwiki" } },
   { "echasnovski/mini.doc", version = false, event = "VeryLazy" },
   { "echasnovski/mini.bracketed", event = "VeryLazy" },
-  { "jkramer/vim-checkbox", event = "VeryLazy", ft = { "markdown", "pandoc", "vimwiki" } },
   -- formatting
   { "ckolkey/ts-node-action", dependencies = { "nvim-treesitter" } },
   { "johmsalas/text-case.nvim", event = "VeryLazy" },
@@ -794,7 +726,6 @@ local plugins = {
   { "smilhey/ed-cmd.nvim", enabled = false },
   { "tpope/vim-repeat", event = "VeryLazy" },
   -- https://github.com/chentoast/live.nvim/tree/master
-  { "smjonas/live-command.nvim", event = "VeryLazy" }, -- branch = 'remote',
   { "Konfekt/vim-alias", event = "VeryLazy" },
   --
   -- pickers
@@ -1298,32 +1229,41 @@ local plugins = {
     end,
   },
   {
-    "chrisbra/unicode.vim",
-    cmd = {
-      "Digraphs",
-      "UnicodeSearch",
-      "UnicodeName",
-      "UnicodeTable",
-      "DownloadUnicode",
-      "UnicodeCache",
-    },
-  },
-  {
-    "simonefranza/nvim-conv",
-    cmd = {
-      "ConvBin",
-      "ConvDec",
-      "ConvHex",
-      "ConvOct",
-      "ConvFarenheit",
-      "ConvCelsius",
-      "ConvStr",
-      "ConvBytes",
-      "ConvMetricImperial",
-      "ConvDataTransRate",
-      "ConvColor",
-      "ConvSetPrecision",
-    },
+    "cjodo/convert.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    -- keys = {
+    --   { "<leader>cn", "<cmd>ConvertFindNext<CR>", desc = "Find next convertable unit" },
+    --   { "<leader>cc", "<cmd>ConvertFindCurrent<CR>", desc = "Find convertable unit in current line" },
+    --   -- Add "v" to enable converting a selected region
+    --   { "<leader>ca", "<cmd>ConvertAll<CR>", mode = {"n", "v"}, desc = "Convert all of a specified unit" },
+    -- },
+    config = function()
+      -- Size Units: 📏 px	Pixels          rem	Relative to root element
+      --                cm	Centimeters     in	Inches
+      --                mm	Millimeters     pt	Points
+      --                pc	Picas
+      -- Color Formats: 🎨 rgb	Red-Green-Blue
+      --                   hex	Hexadecimal color code
+      --                   hsl	Hue-Saturation-Lightness
+      --
+      -- Number Systems 🔢 bin	Binary
+      --                   hexadecimal	Hexadecimal
+      --                   octal	Octal
+      --                 * Defined with respective prefix: 0b, 0x, 0o
+      -- :ConvertFindNext	Finds the next convertible unit
+      -- :ConvertFindCurrent	Finds the convertible unit in the current line (starting from cursor)
+      -- :ConvertAll	Converts all instances in a buffer or visual mode selection of one unit to another of the same type (size, color)
+      local convert = require("convert")
+      convert.setup({
+        keymaps = {
+          focus_next = { "j", "<Down>", "<Tab>" },
+          focus_prev = { "k", "<Up>", "<S-Tab>" },
+          close = { "<Esc>", "<C-c>", "qq" },
+          submit = { "<CR>", "<Space>" },
+        },
+        modes = { "color", "size", "numbers" }, -- available conversion modes
+      })
+    end,
   },
   {
     "jamestthompson3/nvim-remote-containers",
@@ -1398,6 +1338,7 @@ local plugins = {
     end,
   },
   -- curl https://til.hashrocket.com/api/developer_posts.json?username=doriankarter | jq
+  -- https://github.com/nmiguel/jqscratch.nvim/tree/master
   {
     "cenk1cenk2/jq.nvim",
     dependencies = {
@@ -1607,52 +1548,8 @@ local plugins = {
       return vim.env.NVIM_PROFILE ~= nil
     end,
   },
-  {
-    "sQVe/sort.nvim",
-    -- Optional setup for overriding defaults.
-    config = function()
-      require("sort").setup({
-        {
-          -- List of delimiters, in descending order of priority, to automatically sort on.
-          delimiters = {
-            ",",
-            "|",
-            ";",
-            ":",
-            "s", -- Space
-            "t", -- Tab
-          },
-        },
-        -- Input configuration here.
-        -- Refer to the configuration section below for options.
-      })
-      -- vim.cmd([[
-      --   nnoremap <silent> go <Cmd>Sort<CR>
-      --   vnoremap <silent> go <Esc><Cmd>Sort<CR>
-      --   ]])
-    end,
-  },
-  -- {
-  --   "simnalamburt/vim-mundo",
-  --   cmd = { "MundoToggle", "MundoShow", "MundoHide" },
-  --   build = function()
-  --     vim.cmd([[UpdateRemotePlugins]])
-  --   end,
-  --   init = function()
-  --     vim.g.mundo_prefer_python3 = 1
-  --     vim.g.mundo_width = 35
-  --     vim.g.mundo_preview_height = 10
-  --     vim.g.mundo_right = 1
-  --     vim.g.mundo_help = 0
-  --     vim.g.mundo_disable = 0
-  --     vim.g.mundo_preview_bottom = 1
-  --     vim.g.mundo_close_on_revert = 0
-  --     vim.g.mundo_auto_preview = 1
-  --     vim.g.mundo_playback_delay = 60
-  --     -- vim.g.mundo_preview_statusline = nil
-  --     -- vim.g.mundo_tree_statusline = nil
-  --   end,
-  -- },
+  { "sQVe/sort.nvim" },
+  -- https://github.com/mbbill/undotree
   {
 
     "kevinhwang91/nvim-fundo",
@@ -1673,45 +1570,7 @@ local plugins = {
     end,
   },
 
-  {
-    "fnune/recall.nvim",
-    version = "*",
-    config = function()
-      local recall = require("recall")
-      recall.setup({
-        -- sign = "",
-        -- sign_highlight = "@comment.note",
-        sign = "",
-        sign_highlight = "RecallMark",
-        telescope = {
-          autoload = true,
-          mappings = {
-            unmark_selected_entry = {
-              normal = "dd",
-              insert = "<M-d>",
-            },
-          },
-        },
-
-        wshada = vim.fn.has("nvim-0.10") == 0,
-      })
-      -- Using commands:
-      vim.keymap.set("n", "mm", recall.toggle, { noremap = true, silent = true })
-      vim.keymap.set("n", "mn", recall.goto_next, { noremap = true, silent = true })
-      vim.keymap.set("n", "mp", recall.goto_prev, { noremap = true, silent = true })
-      vim.keymap.set("n", "mc", recall.clear, { noremap = true, silent = true })
-      vim.keymap.set("n", "<leader>.", ":Telescope recall<CR>", { noremap = true, silent = true })
-      -- -- In your Neovim configuration:
-      -- vim.opt.exrc = true
-      -- vim.opt.secure = true
-      --
-      -- -- /path/to/your/project/.nvim.lua:
-      -- vim.opt.shadafile = ".vim/project.shada"
-      --
-      -- -- Optionally, in the project's .gitignore or ~/.config/git/ignore:
-      -- .vim
-    end,
-  },
+  { "fnune/recall.nvim", version = "*" },
   -- https://github.com/otavioschwanck/arrow.nvim
   -- https://github.com/nfrid/due.nvim
   -- https://github.com/huantrinh1802/m_taskwarrior_d.nvim
@@ -1772,15 +1631,6 @@ local plugins = {
     -- },
   },
   -- https://github.com/mei28/luminate.nvim
-  {
-    "rachartier/tiny-glimmer.nvim",
-    event = "VeryLazy",
-  },
-  {
-    "tzachar/highlight-undo.nvim",
-    enabled = false,
-    event = { "VeryLazy" },
-  },
   {
     "kndndrj/nvim-projector",
     event = { "VeryLazy" },
@@ -1908,6 +1758,7 @@ local plugins = {
 
   { "elkasztano/nushell-syntax-vim", ft = "nu", lazy = lz_syn },
   { "iamcco/markdown-preview.nvim", build = "cd app && yarn install", cmd = "MarkdownPreview" },
+  -- https://github.com/kiyoon/jupynium.nvim
   { "vuki656/package-info.nvim", dependencies = "MunifTanjim/nui.nvim", ft = "json" },
   { "serenevoid/kiwi.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   { "herringtondarkholme/yats.vim", ft = "typescript", lazy = lz_syn },

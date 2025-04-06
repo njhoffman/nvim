@@ -63,7 +63,7 @@ various_textobjs.setup({
     -- "aI"  outer', 'outer'
     disabledDefaults = {
       "|", -- column: Disabled
-      "L", -- URL: Replaced with u
+      "L", -- URL: Replaced with U
       "r", -- Rest of paragraph: Used for remote operator
       "R", -- Rest of indentation: Keep open for remote operator
       "ig", -- Replaced with iG
@@ -105,7 +105,7 @@ end, "Greedy outer indentation")
 -- map(ox, "al", function()
 --   return various_textobjs.lineCharacterwise("outer")
 -- end, "Line")
-map(ox, "u", various_textobjs.url, "URL")
+map(ox, "U", various_textobjs.url, "URL")
 -- map(ox, "id", various_textobjs.diagnostic, "Diagnostic")
 map(ox, "?", various_textobjs.diagnostic, "Diagnostic")
 map(ox, "i-", function()
@@ -265,3 +265,20 @@ map("n", "ysi", function()
   -- restore cursor position
   vim.api.nvim_win_set_cursor(0, startPos)
 end, { desc = "Yank surrounding indent" })
+
+-- { "im", ft = { "markdown", "toml" }, mode = { "o", "x" }, function() require("various-textobjs").mdlink("inner") end, desc = "Markdown Link" },
+-- { "am", ft = { "markdown", "toml" }, mode = { "o", "x" }, function() require("various-textobjs").mdlink("outer") end, desc = "Markdown Link" },
+-- { "iC", ft = { "markdown" }, mode = { "o", "x" }, function() require("various-textobjs").mdFencedCodeBlock("inner") end, desc = "CodeBlock" },
+-- { "aC", ft = { "markdown" }, mode = { "o", "x" }, function() require("various-textobjs").mdFencedCodeBlock("outer") end, desc = "CodeBlock" },
+-- { "ie", ft = { "markdown" }, mode = { "o", "x" }, function() require("various-textobjs").mdEmphasis("inner") end, desc = "Emphasis" },
+-- { "ae", ft = { "markdown" }, mode = { "o", "x" }, function() require("various-textobjs").mdEmphasis("outer") end, desc = "Emphasis" },
+-- { "gd", mode = { "o", "x" }, function() require("various-textobjs").diagnostics() end, desc = "Diagnostics" },
+-- { "iy", ft = { "python" }, mode = { "o", "x" }, function() require("various-textobjs").pyTripleQuotes("inner") end, desc = "Triple Quotes" },
+-- { "ay", ft = { "python" }, mode = { "o", "x" }, function() require("various-textobjs").pyTripleQuotes("outer") end, desc = "Triple Quotes" },
+-- { "iC", ft = { "css", "scss", "less" }, mode = { "o", "x" }, function() require("various-textobjs").cssSelector("inner") end, desc = "CSS Selector" },
+-- { "aC", ft = { "css", "scss", "less" }, mode = { "o", "x" }, function() require("various-textobjs").cssSelector("outer") end, desc = "CSS Selector" },
+-- { "i#", ft = { "css", "scss", "less" }, mode = { "o", "x" }, function() require("various-textobjs").cssColor("inner") end, desc = "CSS Color" },
+-- { "a#", ft = { "css", "scss", "less" }, mode = { "o", "x" }, function() require("various-textobjs").cssColor("outer") end, desc = "CSS Color" },
+-- { "iP", ft = { "sh" }, mode = { "o", "x" }, function() require("various-textobjs").shellPipe("inner") end, desc = "Pipe" },
+-- { "aP", ft = { "sh" }, mode = { "o", "x" }, function() require("various-textobjs").shellPipe("outer") end, desc = "Pipe" },
+-- { "iH", ft = { "html, xml, css, scss, less" }, mode = { "o", "x" }, function() require("various-textobjs").htmlAttribute("inner") end, desc = "HTML Attribute" },

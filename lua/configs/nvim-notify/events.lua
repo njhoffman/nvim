@@ -80,7 +80,7 @@ local on_replace = function(win, prev, next)
 
   local win_valid = vim.api.nvim_win_is_valid(win)
   local buf = win_valid and vim.api.nvim_win_get_buf(win)
-  logger:debug(
+  logger:trace(
     "REPLACE - "
       .. (next.id or -1)
       .. ":"
@@ -106,7 +106,7 @@ local on_open = function(win, notif)
   -- local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
   -- .. ", record: " icon,level,id,title,time,render,filetype,message
   local buf = vim.api.nvim_win_get_buf(win)
-  logger:debug(
+  logger:trace(
     "OPEN - "
       .. (notif.id or -1)
       .. ":"

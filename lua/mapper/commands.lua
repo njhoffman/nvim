@@ -13,29 +13,20 @@ local update_keys =
 local vmap = function(modes, lhs, opts)
   opts = opts or {}
   modes = type(modes) == "string" and { modes } or modes
-  opts.remap = opts.remap == true or opts.noremap == false
-  -- opts.noremap = (opts.remap == 1 or opts.noremap == 0) and 0 or opts.noremap == 1 and 1 or nil
-  opts.silent = opts.silent ~= false
-  local meta = vim.fn.deepcopy(opts)
-  for _, mod in ipairs(keymods) do
-    meta[mod] = nil
-  end
-  -- TODO: add description to existing keymaps
   for _, mode in ipairs(modes) do
     local maps = vim.iter(vim.api.nvim_get_keymap(mode))
     local existing = maps:find(function(k)
       return k.lhs == lhs
     end)
-    if existing then
-      for _, name in ipairs(update_keys) do
-        opts[name] = opts[name] or existing[name]
+
+    local key_opts = { desc = opts.desc }
+    if existing and existing.lhs == lhs then
+      for _, mod in ipairs({ "remap", "nowait", "script", "expr", "unique" }) do
+        key_opts[mod] = existing[mod]
       end
-      vim.keymap.set(
-        existing.mode,
-        existing.lhs,
-        existing.rhs or existing.callback,
-        { desc = opts.desc }
-      )
+
+      -- vim.api.nvim_set_keymap(mode, lhs, existing.rhs or "", key_opts)
+      -- vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, existing.rhs or '', opts)
     end
     whatkey_utils.map(mode, lhs, opts)
     whichkey_utils.map(mode, lhs, opts)
@@ -66,13 +57,13 @@ local map = function(modes, lhs, rhs, opts)
   end
 end
 
-local prefix = function(modes, prefix, name)
+local prefix = function(modes, pfx, name)
   modes = type(modes) ~= "table" and { modes } or modes
   for _, mode in ipairs(modes) do
     -- local desc = "+" .. name
     -- records.add(true, mode, prefix, nil, { desc = desc })
-    whichkey_utils.prefix(mode, prefix, name)
-    whatkey_utils.prefix(mode, prefix, name)
+    whichkey_utils.prefix(mode, pfx, name)
+    whatkey_utils.prefix(mode, pfx, name)
   end
 end
 

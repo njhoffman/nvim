@@ -4,7 +4,9 @@ local opts = {
   log_level = 2,
   signs_priority = 6,
   inlay_hints = false,
-  underline = false,
+  underline = {
+    severity = { min = vim.diagnostic.severity.WARN },
+  },
   virtual_text = false,
 }
 

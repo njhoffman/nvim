@@ -1,7 +1,6 @@
 " map <Plug> <Plug>(mkdx-checkbox-next-n)
-
-  map <Plug> <Plug>(mkdx-toggle-checkbox-n)
-  map <Plug> <Plug>(mkdx-toggle-checkbox-v)
+" map <Plug> <Plug>(mkdx-toggle-checkbox-n)
+" map <Plug> <Plug>(mkdx-toggle-checkbox-v)
 " this will remap <leader>q in every filetype, not very handy in most cases
 " map <leader>tn <Plug>(mkdx-toggle-checkbox-n)
 

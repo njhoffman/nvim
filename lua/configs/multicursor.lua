@@ -54,48 +54,48 @@ end
 
 local setup_keymaps = function()
   -- Easy way to add and remove cursors using the main cursor.
-  set({ "n", "v" }, keymaps.toggle, mc.toggleCursor, "multicursor toggle")
+  set({ "n", "x" }, keymaps.toggle, mc.toggleCursor, "multicursor toggle")
 
   -- Add or skip cursor above/below the main cursor.
-  set({ "n", "v" }, keymaps.lineAddAbove, function()
+  set({ "n", "x" }, keymaps.lineAddAbove, function()
     mc.lineAddCursor(-1)
   end, "multicursor line add above")
-  set({ "n", "v" }, keymaps.lineAddBelow, function()
+  set({ "n", "x" }, keymaps.lineAddBelow, function()
     mc.lineAddCursor(1)
   end, "multicursor line add below")
-  set({ "n", "v" }, keymaps.lineSkipAbove, function()
+  set({ "n", "x" }, keymaps.lineSkipAbove, function()
     mc.lineSkipCursor(-1)
   end, "multicursor line skip above")
-  set({ "n", "v" }, keymaps.lineSkipBelow, function()
+  set({ "n", "x" }, keymaps.lineSkipBelow, function()
     mc.lineSkipCursor(1)
   end, "multicursor line skip below")
 
   -- Add or skip adding a new cursor by matching word/selection
-  set({ "n", "v" }, keymaps.matchAddAbove, function()
+  set({ "n", "x" }, keymaps.matchAddAbove, function()
     mc.matchAddCursor(1)
   end, "multicursor match add above")
-  set({ "n", "v" }, keymaps.matchAddBelow, function()
+  set({ "n", "x" }, keymaps.matchAddBelow, function()
     mc.matchAddCursor(-1)
   end, "multicursor match add below")
-  set({ "n", "v" }, keymaps.matchSkipAbove, function()
+  set({ "n", "x" }, keymaps.matchSkipAbove, function()
     mc.matchSkipCursor(1)
   end, "multicursor match skip above")
-  set({ "n", "v" }, keymaps.matchSkipBelow, function()
+  set({ "n", "x" }, keymaps.matchSkipBelow, function()
     mc.matchSkipCursor(-1)
   end, "multicursor match skip below")
 
   -- Add all matches in the document
-  set({ "n", "v" }, keymaps.matchAddAll, mc.matchAllAddCursors, "multicursor match add all")
+  set({ "n", "x" }, keymaps.matchAddAll, mc.matchAllAddCursors, "multicursor match add all")
 
   -- Rotate the main cursor.
-  set({ "n", "v" }, keymaps.next, mc.nextCursor, "multicursor next cursor")
-  set({ "n", "v" }, keymaps.prev, mc.prevCursor, "multicursor prev cursor")
+  set({ "n", "x" }, keymaps.next, mc.nextCursor, "multicursor next cursor")
+  set({ "n", "x" }, keymaps.prev, mc.prevCursor, "multicursor prev cursor")
 
   -- Delete the main cursor.
-  set({ "n", "v" }, keymaps.delete, mc.deleteCursor, "multicursor delete cursor")
+  set({ "n", "x" }, keymaps.delete, mc.deleteCursor, "multicursor delete cursor")
 
   -- Clone every cursor and disable the originals.
-  set({ "n", "v" }, keymaps.duplicate, mc.duplicateCursors, "multicursor duplicate cursor")
+  set({ "n", "x" }, keymaps.duplicate, mc.duplicateCursors, "multicursor duplicate cursor")
 
   -- bring back cursors if you accidentally clear them
   set("n", keymaps.restore, mc.restoreCursors, "multicursor restore cursors")
@@ -104,11 +104,11 @@ local setup_keymaps = function()
   set("n", keymaps.align, mc.alignCursors, "multicursor align columns")
 
   -- Split visual selections by regex.
-  set("v", keymaps.split, mc.splitCursors, "multicursor split selection by regex")
+  set("x", keymaps.split, mc.splitCursors, "multicursor split selection by regex")
 
   -- -- Append/insert for each line of visual selections.
-  set("v", keymaps.insertVisual, mc.insertVisual, "multicursor insert cursor on each selected line")
-  set("v", keymaps.appendVisual, mc.appendVisual, "multicursor append cursor on each selected line")
+  set("x", keymaps.insertVisual, mc.insertVisual, "multicursor insert cursor on each selected line")
+  set("x", keymaps.appendVisual, mc.appendVisual, "multicursor append cursor on each selected line")
 
   -- save original keymapping of escape
   local orig_escape = get_key_cmd("n", keymaps.escape)

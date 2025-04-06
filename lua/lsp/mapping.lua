@@ -30,22 +30,24 @@ local mapping = {
     -- references and definitions taken care of in plugin
     opts.desc = "lsp references in telescope"
     map("n", "glr", "<cmd>lua require('telescope.run')('builtin', 'lsp_references')<cr>", opts)
-    opts.desc = "lsp references"
-    map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+    opts.desc = "lsp references in quickfix"
+    map("n", "glR", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+    map("n", "gqr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
   end,
   references_preview = function()
     opts.desc = "preview lsp references"
-    map("n", "g?r", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", opts)
+    map("n", "gpr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", opts)
   end,
   implementation = function()
-    opts.desc = "lsp implementations in quickfix"
-    map("n", "gQi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
     opts.desc = "lsp implementations in telescope"
     map("n", "gli", "<cmd>lua require('telescope.run')('builtin', 'lsp_definitions')<cr>", opts)
+    opts.desc = "lsp implementations in quickfix"
+    map("n", "gqi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+    map("n", "glI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
   end,
   implementation_preview = function()
     opts.desc = "preview lsp implementaitons"
-    map("n", "g?i", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", opts)
+    map("n", "gpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", opts)
   end,
   type_definition = function()
     opts.desc = "lsp type definitions in telescope"
@@ -56,37 +58,45 @@ local mapping = {
       opts
     )
     opts.desc = "lsp type definitions in quickfix"
-    map("n", "gQt", "<Cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+    map("n", "glT", "<Cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+    map("n", "gqt", "<Cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
   end,
   type_definition_preview = function()
     opts.desc = "preview lsp type definitions"
-    map("n", "gPt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", opts)
+    map("n", "gpt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", opts)
   end,
   definition = function()
     opts.desc = "lsp definitions in telescope"
     map("n", "gld", "<cmd>lua require('telescope.run')('builtin', 'lsp_definitions')<cr>", opts)
     opts.desc = "lsp definitions in quickfix"
-    map("n", "gQd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
+    map("n", "gqd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
+    map("n", "glD", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
   end,
   definition_preview = function()
     opts.desc = "preview lsp definitions"
-    map("n", "g?d", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", opts)
+    map("n", "gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", opts)
   end,
   declaration = function()
     opts.desc = "lsp declarations in quickfix"
-    map("n", "gQd", "<Cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+    map("n", "gqy", "<Cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+    map("n", "gly", "<Cmd>lua vim.lsp.buf.declaration()<CR>", opts)
   end,
   code_action = function()
-    opts.desc = "view code action menu"
+    opts.desc = "lsp code actions in menu"
+    map("n", "glc", "<cmd>CodeActionMenu<CR>", opts)
+    opts.desc = "lsp code actions in telescope"
     -- "<cmd>lua vim.lsp.buf.code_action()<CR>"
-    map("n", "glc", '<cmd>lua require("actions-preview").code_actions()<CR>', opts)
-    map("n", "gG", "<cmd>CodeActionMenu<CR>", opts)
+    map("n", "gla", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+    opts.desc = "lsp code actions in quickfix"
+    map("n", "glA", '<cmd>lua require("actions-preview").code_actions()<CR>', opts)
+    map("n", "gqa", '<cmd>lua require("actions-preview").code_actions()<CR>', opts)
   end,
   hover = function()
-    opts.desc = "hover provider under cursor"
+    opts.desc = "lsp custom hover under cursor"
     pcall(vim.keymap.del, "n", "K")
     map("n", "K", "<Cmd>Hover<CR>", opts)
-    -- map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    opts.desc = "lsp hover under cursor"
+    map("n", "glh", "<Cmd>lua vim.lsp.buf.hover()<CR>", opts)
   end,
   codelens = function(cmd)
     -- opts.desc = 'lsp code lens'
@@ -103,6 +113,7 @@ local mapping = {
   signature_hover = function()
     opts.desc = "lsp signature hover"
     map("n", "gK", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+    map("n", "glH", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
   end,
   signature_preview_up = function(cmd)
     opts.desc = "lsp signature preview up"
@@ -192,7 +203,7 @@ local setup_mappings = function(client, bufnr)
 
   vim.api.nvim_set_keymap(
     "n",
-    "gQd",
+    "gqd",
     "<cmd>lua vim.diagnostic.setqflist({ open = true  })<CR>",
     { silent = true, desc = "diagnostics to quickfix" }
   )

@@ -1,4 +1,4 @@
-local state = require('action-hints.state')
+local state = require("action-hints.state")
 
 local timer_id = nil
 local function debounce(func, delay)
@@ -28,7 +28,8 @@ local function throttle(func, delay, config, name)
 end
 
 local supports_method = function(method)
-  local clients = vim.lsp.buf_get_clients()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local clients = vim.lsp.get_clients({ bufnr = bufnr })
   for _, client in pairs(clients) do
     if client.server_capabilities[method] then
       return true
@@ -42,7 +43,7 @@ local function is_cursor_on_whitespace()
   local cursor = vim.api.nvim_win_get_cursor(0)
   local line = vim.api.nvim_buf_get_lines(bufnr, cursor[1] - 1, cursor[1], false)[1]
   local char = line:sub(cursor[2] + 1, cursor[2] + 1)
-  return char:match('^%s$') ~= nil
+  return char:match("^%s$") ~= nil
 end
 
 return {

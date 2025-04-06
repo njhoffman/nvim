@@ -6,11 +6,21 @@
 
 local cfg = {
   debug = false, -- enable wk.log in the current directory
-  preset = "modern", -- classic, modern, helix
+  preset = "helix", -- classic, modern, helix
+  delay = function(ctx)
+    return ctx.plugin and 0 or 200
+  end,
   triggers = {
     { "<leader>", mode = { "n", "v" } },
+    -- { "<auto>", mode = "nxso" },
     -- { "<auto>", mode = "nixsotc" },
   },
+  -- Start hidden and wait for a key to be pressed before showing the popup
+  -- Only used by enabled xo mapping modes.
+  ---@param ctx { mode: string, operator: string }
+  defer = function(ctx)
+    return ctx.mode == "V" or ctx.mode == "<C-V>"
+  end,
   keys = {
     scroll_down = "<C-f>", -- binding to scroll down inside the popup
     scroll_up = "<C-b>", -- binding to scroll up inside the popup

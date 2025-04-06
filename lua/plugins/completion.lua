@@ -53,7 +53,7 @@ local plugins = {
       {
         "zbirenbaum/copilot-cmp",
         event = "InsertEnter",
-        dependencies = "copilot.lua",
+        dependencies = "zbirenbaum/copilot.lua",
       },
       { "tzachar/cmp-fuzzy-path", dependencies = { "tzachar/fuzzy.nvim" } },
       { "tzachar/cmp-fuzzy-buffer", dependencies = { "tzachar/fuzzy.nvim" } },

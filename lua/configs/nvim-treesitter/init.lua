@@ -22,10 +22,6 @@ local cfg = {
   endwise = tsmodules.endwise,
 }
 
--- textobj-unit
-local textobj_unit = "treesitter._textobjects.unit"
-require(textobj_unit).setup()
-
 -- for matcher module
 vim.cmd("packadd matchit")
 require("nvim-treesitter.configs").setup(cfg)
@@ -49,7 +45,9 @@ require("ts_context_commentstring").setup({
   },
 })
 
--- vim.treesitter.language.register('bash', 'zsh')
+-- use bash parser for zsh files
+vim.treesitter.language.register("bash", "zsh")
+
 vim.filetype.add({
   extension = { rasi = "rasi" },
   pattern = {
@@ -57,6 +55,18 @@ vim.filetype.add({
     [".*/mako/config"] = "dosini",
     [".*/kitty/*.conf"] = "bash",
   },
+})
+
+vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
+  desc = "User: Highlights for the Treesitter `comments` parser",
+  callback = function()
+    -- FIX lua todo-comments https://github.com/stsewd/tree-sitter-comment/issues/22
+    -- https://github.com/LuaLS/lua-language-server/issues/1809
+    vim.api.nvim_set_hl(0, "@lsp.type.comment.lua", {})
+
+    -- Define `@comment.bold` for `queries/comment/highlights.scm`
+    vim.api.nvim_set_hl(0, "@comment.bold", { bold = true })
+  end,
 })
 
 local parsers = require("nvim-treesitter.parsers")
@@ -87,29 +97,45 @@ parser_config.sql = {
   filetype = { "sql", "psql" },
 }
 
+-- textobj-unit
+local textobj_unit = "treesitter._textobjects.unit"
+require(textobj_unit).setup()
+
 vim.api.nvim_set_keymap(
   "x",
   "iu",
-  '<cmd>lua require("' .. textobj_unit .. '").select()<CR>',
-  { noremap = true, silent = true }
+  ':lua require("' .. textobj_unit .. '").select()<CR>',
+  { noremap = true }
 )
 vim.api.nvim_set_keymap(
   "x",
   "au",
-  '<cmd>lua require("' .. textobj_unit .. '").select(true)<CR>',
-  { noremap = true, silent = true }
+  ':lua require("' .. textobj_unit .. '").select(true)<CR>',
+  { noremap = true }
 )
 vim.api.nvim_set_keymap(
   "o",
   "iu",
-  '<cmd><c-u>lua require("' .. textobj_unit .. '").select()<CR>',
-  { noremap = true, silent = true }
+  ':<c-u>lua require("' .. textobj_unit .. '").select()<CR>',
+  { noremap = true }
 )
 vim.api.nvim_set_keymap(
   "o",
   "au",
   ':<c-u>lua require("' .. textobj_unit .. '").select(true)<CR>',
-  { noremap = true, silent = true }
+  { noremap = true }
+)
+vim.api.nvim_set_keymap(
+  "x",
+  "u",
+  ':lua require("' .. textobj_unit .. '").select()<CR>',
+  { noremap = true }
+)
+vim.api.nvim_set_keymap(
+  "o",
+  "u",
+  ':<c-u>lua require("' .. textobj_unit .. '").select()<CR>',
+  { noremap = true }
 )
 
 vim.api.nvim_set_keymap(

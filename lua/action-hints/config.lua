@@ -18,10 +18,11 @@ local default_config = {
     definitions = 1000,
     codeactions = 1000,
   },
+  exclude = { references = { cwords = { "vim", "require" } } },
   template = {
-    definitions = { text = " ⊛", color = default_definitions_color },
-    references = { text = " ↱%s", color = default_references_color },
-    codeactions = { text = " %s", color = default_codeactions_color },
+    definitions = { text = "⊛", color = default_definitions_color },
+    references = { text = "↱%s", color = default_references_color },
+    codeactions = { text = "%s", color = default_codeactions_color },
   },
   use_virtual_text = true,
 }

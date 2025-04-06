@@ -1,3 +1,6 @@
+-- https://github.com/OXY2DEV/nvim/blob/main/lua/scripts/cmdline.lua
+-- https://www.reddit.com/r/neovim/comments/1f0ade1/the_amount_of_customisation_neovim_provides_is/
+-- https://gist.github.com/OXY2DEV/af052d26cf5a37e1725c9cc7e4d68e8c
 local logger = require("logger").init("cmdline")
 
 local preview_commands = {}

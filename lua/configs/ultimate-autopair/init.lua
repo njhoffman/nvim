@@ -59,7 +59,7 @@ local cfg = {
     --balance:
     --  Will prioritize balanced spaces
     --  ( |foo  ) > bs > ( |foo )
-    indent_ignore = false,
+    indent_ignore = true,
     --(\n\t|\n) > bs > (|)
     single_delete = false,
     -- <!--|--> > bs > <!-|

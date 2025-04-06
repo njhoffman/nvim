@@ -139,9 +139,10 @@ return function(injected_functions)
     CurSearch({ bg = "#4e3ce6", fg = "#aaffff" }), --  bg = '#110033'
     -- CurSearch({ fg = '#cc2266', gui = 'bold' }), --  bg = '#110033'
 
-    Visual({ bg = "#08203f", gui = "italic,bold" }), -- bg - #171f47, bg = #021626, gui = bold,italic
+    -- bg - #171f47, bg = #021626, gui = bold,italic
+    Visual({ bg = "#08204f", gui = "italic,bold" }),
     VisualNOS({ bg = "#1d3b53" }), -- bg = '#301840'
-    VisualAlt({ fg = "none", bg = "#10082f", gui = "italic" }),
+    VisualAlt({ fg = "none", bg = "#10083f", gui = "italic" }),
     VisualRed({ fg = "none", bg = "#40112c", gui = "italic" }),
 
     DiffAdd({ bg = "#003c42" }), -- #00361f #001000 #22bb99
@@ -182,7 +183,7 @@ return function(injected_functions)
     TabLineFill({ fg = "none", bg = "#1c1f24" }), -- fg = clrs.nord4, bg = clrs.nord1, gui = "NONE"
     TabLineSel({ fg = "#51afef", bg = "#282c34" }), -- fg = "#a6cfff", bg = "#213c64", gui = "bold"
     Title({ fg = "#88aee9", gui = "NONE" }),
-    WinSeparator({ fg = "#444464", bg = "#090909", gui = "bold" }),
+    WinSeparator({ fg = "#444464", bg = "#090919", gui = "bold" }),
     -- CodeBlock({ bg = '#090909' }),
     CodeBlock({ bg = "#040814" }), -- bg = "#101018"
     CodeBlockInline({ bg = "#040814" }), -- bg = "#101018"
@@ -227,7 +228,7 @@ return function(injected_functions)
     Label({ fg = "#3377ba" }),
     NonText({ bg = "none", fg = "#556677" }),
     Operator({ fg = "#4866bf" }), -- fg = '#28567f'
-    PreProc({ fg = "#4796bc" }), -- fg = '#806a7f'
+    PreProc({ fg = "#00769c" }), -- fg = '#806a7f'
     QuickFixLine({ bg = "#172238" }),
     Repeat({ fg = "#806a7f" }),
     Special({ fg = "#487ac8" }),
@@ -337,7 +338,7 @@ return function(injected_functions)
     sym("@label.vimdoc")({ Label }), -- For labels: `label:` in C and `:label:` in Lua.
     sym("@method")({ Function }),
     sym("@method.call")({ FunctionCall }),
-    sym("@module")({ Statement }),
+    sym("@module")({ PreProc }),
     sym("@module.builtin")({ Keyword }),
     sym("@nospell")({ fg = "none", bg = "none", gui = "none" }),
     sym("@number")({ Number }),
@@ -402,10 +403,10 @@ return function(injected_functions)
     DiagnosticSignWarn({ DiagnosticWarn }),
     DiagnosticSignHint({ DiagnosticHint }),
     DiagnosticSignInfo({ DiagnosticInfo }),
-    DiagnosticUnderlineError({ fg = "none", gui = "none" }),
-    DiagnosticUnderlineWarn({ fg = "none", gui = "none" }),
-    DiagnosticUnderlineHint({ fg = "none", gui = "none" }),
-    DiagnosticUnderlineInfo({ fg = "none", gui = "none" }),
+    DiagnosticUnderlineError({ sp = DiagnosticError.fg, gui = "undercurl" }),
+    DiagnosticUnderlineWarn({ sp = DiagnosticWarn.fg, gui = "undercurl" }),
+    DiagnosticUnderlineHint({ sp = DiagnosticHint.fg, gui = "undercurl" }),
+    DiagnosticUnderlineInfo({ sp = DiagnosticInfo.fg, gui = "undercurl" }),
     DiagnosticVirtualTextError({ fg = "#9a4c54", gui = "italic" }), -- #ffc777
     DiagnosticVirtualTextWarn({ fg = "#7c706a", gui = "italic" }), -- #c53b53
     DiagnosticVirtualTextHint({ fg = "#457d8c", gui = "italic" }), -- "#4fd6be"
@@ -1324,12 +1325,12 @@ return function(injected_functions)
     TinyGlimmerTo({ bg = Normal.bg }),
 
     TinyGlimmerDelete({ bg = "#583042" }),
-    TinyGlimmerAdd({ bg = "#064C8C" }),
+    TinyGlimmerAdd({ bg = "#065C6C" }),
 
     TinyGlimmerYankFrom({ bg = "#032568" }),
     TinyGlimmerYankTo({ TinyGlimmerTo }),
 
-    TinyGlimmerSubFrom({ bg = "#5303f5" }),
+    TinyGlimmerSubFrom({ bg = "#3303a5" }),
     TinyGlimmerSubTo({ TinyGlimmerTo }),
 
     TinyGlimmerPasteFrom({ bg = DiffAdd.bg }),
@@ -1342,8 +1343,8 @@ return function(injected_functions)
     TinyGlimmerPulsarTo({ TinyGlimmerTo }),
 
     -- substitute.nvim / vim-abolish
-    SubstituteExchange({ Visual }),
-    SubstituteRange({ Visual }),
+    SubstituteExchange({ VisualRed }),
+    SubstituteRange({ VisualRed }),
 
     -- multicursor.nvim
     MultiCursorCursor({ Cursor }),

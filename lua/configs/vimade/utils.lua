@@ -16,7 +16,7 @@
 -- local fade1 = Fade({ value = animate.Number({ start = 1, to = 0.2, }) })
 -- local Default = require("vimade.recipe.default").Default({ animate = true })
 local Minimalist = require("configs.vimade.minimalist").Minimalist({
-  animate = true,
+  animate = false,
   low_visibility_fadelevel = 0.5,
   -- exclude_names ={'LineNr', 'LineNrBelow', 'LineNrAbove', 'EndOfBuffer'
   -- low_visibility_names = {'WinSeparator'},
@@ -105,6 +105,7 @@ M.fadelevel = function(fadelevel_cfg)
     elseif vim.fn.getcmdtype() ~= "" then
       fadelevel = fadelevel_cfg.cmdline or default_fadelevel()
     end
+    vim.dbglog(fadelevel)
     return fadelevel
   end
 end

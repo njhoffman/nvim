@@ -9,17 +9,11 @@
 --   { width = 50, height = 2, focusable = false, wrap = false}
 -- )
 --
-vim.diagnostic.config({
-  virtual_text = false,
-  -- virtual_lines = {
-  --   only_current_line = true,
-  --   highlight_whole_line = false,
-  -- },
-})
 
-require('lsp.lsp_lines').setup({
+require("lsp.lsp_lines").setup({
   virtual_lines = {
     only_current_line = true,
     highlight_whole_line = false,
+    symbol_arrow = "──── ",
   },
 })

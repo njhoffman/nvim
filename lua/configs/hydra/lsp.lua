@@ -59,10 +59,10 @@ local toggles = {
 
 local funcs = {
   buffer = function()
-    return vim.diagnostic.is_disabled(0) and toggles.no or toggles.yes
+    return not vim.diagnostic.is_enabled({ bufnr = 0 }) and toggles.no or toggles.yes
   end,
   global = function()
-    return vim.diagnostic.is_disabled() and toggles.no or toggles.yes
+    return not vim.diagnostic.is_enabled() and toggles.no or toggles.yes
   end,
   insert = function()
     return vim.diagnostic.config().update_in_insert and toggles.yes or toggles.no
