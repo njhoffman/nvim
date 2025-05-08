@@ -11,7 +11,6 @@ local default_cfg = {
   -- For example see Wiki pages
   on_references_result = nil,
 }
-
 -- local function handle_references_response(result)
 --   require('telescope.pickers')
 --     .new({}, {
@@ -26,11 +25,8 @@ local default_cfg = {
 -- end
 
 local telescope_handler = require("configs.definition-or-references.telescope")
-
 local cfg = { on_references_result = telescope_handler, debug = false }
-
 require("definition-or-references").setup(cfg)
-
 vim.keymap.set(
   "n",
   "gd",

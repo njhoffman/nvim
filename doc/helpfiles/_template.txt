@@ -8,16 +8,11 @@ Tag names for in between * asterisks * (cannot have duplicates!)
 Special highlighting occurs with words in <angle-brackets>, {braces}, or
   keycodes (CTRL-X ALT-X META-X) or `grave marks`
 
-Make headings by appending space tilde or grave (_~ or _`) at eol ~
-
 Reference other headers with | pipes | - |add-local-help| - |write-local-help|
 
-ALL CAPS ARE HIGHLIGHTED WITH A STATEMENT HIGHLIGHT
-IT CAN ALSO BECOME HEADLINE
-
-  note Note NOTE note: Note: NOTE: Notes Notes:
-  WARNING WARNING: Warning:
-  DEPRECATED DEPRECATED: Deprecated:
+ Note:              NOTE:                 Notes:
+  WARNING               WARNING:              Warning:
+  DEPRECATED            DEPRECATED:           Deprecated:
   https://www.google.com
 
 Example settings section using Lua callback: >lua
@@ -32,6 +27,21 @@ To use syntax use right arrow (>) plus syntax name:  >bash
   myvar=$(ls -alh | grep -r)
 <
 Close with (<) or automatically any line starting at column 1
+
+
+==================
+HEADING 1 10= followed by text and optional               *tags*
+
+------------------
+HEADING 2 10- followed by text and optional               *tags*
+
+HEADING 3(ALL CAPS)
+
+HEADING 4 (end with ~) ~
+
+horizontal rule without text below them: (--- or ====)
+-------------
+
 
 ====================================================================
 CONTENTS                                            *template-contents*

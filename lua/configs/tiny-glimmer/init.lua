@@ -23,8 +23,8 @@ local cfg = {
       default_animation = {
         name = "fade",
         settings = {
-          max_duration = 1000,
-          min_duration = 1000,
+          max_duration = 500,
+          min_duration = 500,
           -- from_color = "TinyGlimmerPulsarFrom",
           -- to_color = "TinyGlimmerPulsarTo",
           from_color = "VisualAlt",
@@ -56,6 +56,26 @@ local cfg = {
       },
     },
   },
+  -- overwrite = {
+  --        search = {
+  --          enabled = true,
+  --          default_animation = {
+  --            name = "rainbow",
+  --            settings = {
+  --              to_color = vim.opt.hlsearch and "CurSearch" or "Search",
+  --            },
+  --          },
+  --        },
+  --      },
+  --      default_animation = "rainbow",
+  --      animations = {
+  --        rainbow = {
+  --          max_duration = 200,
+  --          min_duration = 100,
+  --          chars_for_max_duration = 20,
+  --        },
+  --      }
+  --    },
   overwrite = {
     search = {
       enabled = false,
@@ -153,7 +173,6 @@ local orig_cleanup = vim.fn.deepcopy(animation.cleanup)
 animation.cleanup = function(self)
   -- self.active = false
   if not vim.api.nvim_buf_is_valid(self.buffer) or not vim.api.nvim_buf_is_loaded(self.buffer) then
-    vim.dbglog("buffer not valid", self.buffer)
     vim.api.nvim_buf_clear_namespace(0, namespace, self.range.start_line, self.range.end_line + 1)
     self.reserved_ids = {}
   end

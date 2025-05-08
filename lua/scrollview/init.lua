@@ -3723,6 +3723,7 @@ end
 -- (e.g., vim.cmd('help')).
 if api.nvim_create_autocmd ~= nil then
   api.nvim_create_autocmd("CmdlineLeave", {
+    group = utils.augroup,
     callback = function()
       if to_bool(vim.v.event.abort) then
         return

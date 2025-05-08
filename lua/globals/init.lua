@@ -38,13 +38,13 @@ vim._ = lodash
 
 local debuglog = vim.import("debuglog")
 if debuglog then
+  vim.inspect = debuglog.inspect or vim.inspect
   vim.dbg = debuglog.dbg or _nil()
   vim.dbglog = debuglog.log or _nil()
   vim.dbgbuf = debuglog.buf or _nil()
   vim.dbgtime = debuglog.timer or _nil()
   vim.print = debuglog.dbg
   -- vim.dbg.log = vim.dbglog
-  -- vim.inspect = debuglog.dump or vim.inspect
 
   local log_lines = function(lines)
     debuglog.log(type(lines) == "string" and lines or table.concat(lines, "\n  "))

@@ -1,7 +1,7 @@
 local load_main = function()
-  local setup = require('configs.flash.setup')
+  local setup = require("configs.flash.setup")
   local config = setup.get_config()
-  require('flash').setup(config)
+  require("flash").setup(config)
 end
 
 -- local load_lambda = function()
@@ -18,7 +18,6 @@ end
 -- end
 
 load_main()
-
 -- load_lambda()
 
 -- local flash = require("flash")

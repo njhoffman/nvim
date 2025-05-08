@@ -22,7 +22,7 @@ opt("cedit", "<C-]>") -- ctrl-f interferes with popup completion
 opt("clipboard", "unnamedplus")
 opt("cmdheight", 0) -- 0
 opt("cmdwinheight", 15)
-opt("completeopt", "menuone,noselect,preview") -- noselect, noinsert
+opt("completeopt", "menuone,noselect,fuzzy") -- noselect, noinsert
 opt("complete", "") -- no omnifunc, completefunc, tagfunc, etc
 opt("confirm", true)
 opt("cpoptions", "aABceFs_r") -- C causes certain vim programs to screw up, x makes command execute even if exiting
@@ -32,6 +32,7 @@ opt("fileencoding", "utf-8")
 -- :set rdb=line wd=100
 opt("foldmethod", "manual")
 opt("foldlevel", 99)
+opt("foldminlines", 0)
 -- opt('formatoptions', 'jcroqlnt') -- (qjl1) Don't autoformat comments
 opt("grepformat", "%f:%l:%c:%m")
 opt("grepprg", "set grepprg=rg --vimgrep --no-heading --smart-case")
@@ -148,7 +149,7 @@ opt("diffopt", "internal,filler,closeoff,linematch:60,algorithm:histogram,contex
 
 -- window scope
 opt("pumblend", 10)
--- opt('winblend', 15, window)
+-- opt("winblend", 20, window)
 
 opt("concealcursor", "nc", window)
 opt("conceallevel", 0, window)
@@ -203,6 +204,12 @@ vim.opt.fillchars:append({
   vert = "║",
   horiz = "═",
 })
+
+local default_keys = { "grn", "gra", "grr", "gri", "gO", "<C-s>" }
+for _, key in ipairs(default_keys) do
+  pcall(vim.keymap.del, "n", key)
+  pcall(vim.keymap.del, "v", key)
+end
 
 -- extra undo-points (= more fine-grained undos)
 -- WARN requires `remap = true`, since it otherwise prevents vim abbreviations

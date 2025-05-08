@@ -1,4 +1,4 @@
-local wk_utils = require("mapper.whichkey")
+local wk_utils = require("what-key.mapper.utils")
 local sort_by_mode = true
 
 local sort_table = function(tbl)

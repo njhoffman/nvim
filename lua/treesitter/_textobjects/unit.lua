@@ -95,8 +95,7 @@ local function get_selection_range(outer)
       if text == "" then
         end_row = move_row_while_empty(bufnr, end_row + 2, 1) - 1
         start_col = 0
-        mode = "v"
-        -- mode = 'V'
+        mode = "V"
       end
     end
   end

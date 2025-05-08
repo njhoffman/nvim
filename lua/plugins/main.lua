@@ -7,20 +7,13 @@ local lz_syn = false
 -- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/debug.lua
 
 local plugins = {
-  {
-    "stevearc/dressing.nvim",
-    dependencies = { "MunifTanjim/nui.nvim", "nvim-telescope/telescope.nvim" },
-    event = "VeryLazy",
-  },
-  -- display window manager: https://github.com/altermo/nwm
-  { "3rd/image.nvim", enabled = false, event = "VeryLazy", dependencies = "nvim-treesitter" },
-
   -- https://gist.github.com/GnikDroy/62556534324f9dc9192f7bba5a88cc43
+  { "dundalek/bloat.nvim", cmd = "Bloat" },
   { "goolord/alpha-nvim", event = "VimEnter", dependencies = "nvim-web-devicons" },
-
   { "tamton-aquib/zone.nvim", enabled = false },
   -- https://github.com/romgrk/barbar.nvim/pull/540
   -- { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
+  { "jrop/u.nvim", lazy = true },
   {
     "romgrk/barbar.nvim",
     -- branch = 'fix-telescope-insert',
@@ -39,10 +32,7 @@ local plugins = {
     dependencies = { "nvim-treesitter", "nvim-various-textobjs", "nvim-treesitter-textobjects" },
     event = "VeryLazy",
   },
-  {
-    "Makaze/watch.nvim",
-    cmd = { "WatchStart", "WatchStop", "WatchFile" },
-  },
+  { "Makaze/watch.nvim", cmd = { "WatchStart", "WatchStop", "WatchFile" } },
   -- https://www.reddit.com/r/neovim/comments/1aupy8c/a_simple_journaling_system_built_with_mind_and/
   {
     "RutaTang/quicknote.nvim",
@@ -58,21 +48,6 @@ local plugins = {
   },
   { "rgroli/other.nvim", event = "VeryLazy" },
   {
-    "tummetott/reticle.nvim",
-    enabled = false,
-    lazy = false,
-    event = { "BufReadPre", "BufNewFile" },
-    -- reticle messes up with Neo-tree cursorline in search mode
-    opts = {
-      always = { cursorline = { "neo-tree" } },
-      on_startup = { cursorline = true, cursorcolumn = false },
-      never = {
-        cursorline = { "qf", "noice", "navbuddy" },
-        cursorcolumn = { "qf", "noice", "navbuddy" },
-      },
-    },
-  },
-  {
     "chrishrb/gx.nvim",
     keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" } } },
     cmd = { "Browse" },
@@ -80,105 +55,17 @@ local plugins = {
       vim.g.netrw_nogx = 1 -- disable netrw gx
     end,
     dependencies = { "nvim-lua/plenary.nvim" },
-
-    -- you can specify also another config if you want
-    config = function()
-      require("gx").setup({
-        open_browser_app = "xdg-open", -- specify your browser app; default for macOS is "open", Linux "xdg-open" and Windows "powershell.exe"
-        -- open_browser_args = { '--background' }, -- specify any arguments, such as --background for macOS' "open".
-        handlers = {
-          plugin = true, -- open plugin links in lua (e.g. packer, lazy, ..)
-          github = true, -- open github issues
-          brewfile = true, -- open Homebrew formulaes and casks
-          package_json = true, -- open dependencies from package.json
-          search = true, -- search the web/selection on the web if nothing else is found
-          go = true, -- open pkg.go.dev from an import statement (uses treesitter)
-          jira = { -- custom handler to open Jira tickets (these have higher precedence than builtin handlers)
-            name = "jira", -- set name of handler
-            handle = function(mode, line, _)
-              local ticket = require("gx.helper").find(line, mode, "(%u+-%d+)")
-              if ticket and #ticket < 20 then
-                return "http://jira.company.com/browse/" .. ticket
-              end
-            end,
-          },
-          rust = { -- custom handler to open rust's cargo packages
-            name = "rust", -- set name of handler
-            filetype = { "toml" }, -- you can also set the required filetype for this handler
-            filename = "Cargo.toml", -- or the necessary filename
-            handle = function(mode, line, _)
-              local crate = require("gx.helper").find(line, mode, "(%w+)%s-=%s")
-
-              if crate then
-                return "https://crates.io/crates/" .. crate
-              end
-            end,
-          },
-        },
-        handler_options = {
-          search_engine = "google", -- you can select between google, bing, duckduckgo, and ecosia
-          -- search_engine = 'https://search.brave.com/search?q=', -- or you can pass in a custom search engine
-          select_for_search = false, -- if your cursor is e.g. on a link, the pattern for the link AND for the word will always match. This disables this behaviour for default so that the link is opened without the select option for the word AND link
-
-          git_remotes = { "upstream", "origin" }, -- list of git remotes to search for git issue linking, in priority
-          -- git_remotes = function(fname) -- you can also pass in a function
-          --   if fname:match('myproject') then
-          --     return { 'mygit' }
-          --   end
-          --   return { 'upstream', 'origin' }
-          -- end,
-          --
-          git_remote_push = false, -- use the push url for git issue linking,
-          -- git_remote_push = function(fname) -- you can also pass in a function
-          --   return fname:match('myproject')
-          -- end,
-        },
-      })
-    end,
   },
-  {
-    "rmagatti/gx-extended.nvim",
-    config = function()
-      -- package.json - gx when cursor is under an npm dependency, navigates to https://www.npmjs.com/package/[packageName]
-      -- plugins.lua - In packer.nvim's convention plugins.lua file, gx when cursor is under a plugin dependency, navigates to https://github.com/[user/org]/[repo]
-      -- *.tf - In a terraform file, gx when cursor is under a terraform resource definition navigates to https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/[resourceName]
-      -- * - In any file, gx navigates to no-protocol-urls like google.com, docs.google.com, etc.
-      require("gx-extended").setup({
-        extensions = {
-          { -- match github repos in lazy.nvim plugin specs
-            patterns = { "*/plugins/**/*.lua" },
-            name = "neovim plugins",
-            match_to_url = function(line_string)
-              local line = string.match(line_string, "[\"|'].*/.*[\"|']")
-              local repo = vim.split(line, ":")[1]:gsub("[\"|']", "")
-              local url = "https://github.com/" .. repo
-              return line and repo and url or nil
-            end,
-          },
-        },
-      })
-    end,
-  },
-  {
-    "OXY2DEV/helpview.nvim",
-    lazy = false, -- ft = "help",
-    -- enabled = false,
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-  },
-  {
-    "monaqa/dial.nvim",
-    event = { "VeryLazy" },
-    dependencies = { "nvim-lua/plenary.nvim" },
-  },
+  { "rmagatti/gx-extended.nvim" },
+  { "OXY2DEV/helpview.nvim", ft = "help", dependencies = { "nvim-treesitter/nvim-treesitter" } },
+  { "monaqa/dial.nvim", event = { "VeryLazy" }, dependencies = { "nvim-lua/plenary.nvim" } },
   { "tris203/hawtkeys.nvim", event = { "VeryLazy" } },
   { "nvzone/showkeys", cmd = "ShowkeysToggle" },
   {
     "stevearc/conform.nvim",
-    lazy = false,
-    -- event = { 'BufWritePre' },
+    event = { "BufWritePre" },
     cmd = { "ConformInfo" },
     init = function()
-      -- If you want the formatexpr, here is the place to set it
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
     end,
   },
@@ -214,7 +101,6 @@ local plugins = {
   },
   { "echasnovski/mini.clue", enabled = false, event = { "VeryLazy" } },
   { "echasnovski/mini.trailspace", event = "VeryLazy" },
-
   {
     "nmac427/guess-indent.nvim",
     event = "BufReadPre",
@@ -224,53 +110,18 @@ local plugins = {
     "echasnovski/mini.indentscope",
     event = { "BufReadPre", "BufNewFile" },
     init = require("configs.mini-indentscope__init"),
-    enabled = true,
   },
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     event = { "BufReadPre", "BufNewFile" },
-    enabled = true,
   },
+  { "shellRaining/hlchunk.nvim", event = { "BufReadPre", "BufNewFile" } },
   {
-    "shellRaining/hlchunk.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      local styles = {
-        normal = {
-          { fg = "#005678", bg = "#001018" },
-          { fg = "#4056a7", bg = "#100018" },
-          { fg = "#806d9c", bg = "#180010" },
-        },
-        error = {
-          { fg = "#7a0000", bg = "#200610" },
-          { fg = "#f35336", bg = "#201410" },
-        },
-      }
-      local cfg = {
-        chunk = {
-          enable = true,
-          priority = 10,
-          use_treesitter = true,
-          chars = {
-            horizontal_line = "─",
-            vertical_line = "│",
-            left_top = "┌",
-            left_bottom = "└",
-            right_arrow = "─",
-          },
-          style = { styles.normal[1], styles.error[1] },
-          textobject = "",
-          max_file_size = 1024 * 1024,
-          error_sign = true,
-          -- animation related
-          duration = 200,
-          delay = 200,
-        },
-      }
-
-      require("hlchunk").setup(cfg)
-    end,
+    "huy-hng/anyline.nvim",
+    enabled = false,
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    event = "VeryLazy",
   },
   {
     "sindrets/diffview.nvim",
@@ -290,9 +141,34 @@ local plugins = {
     "kevinhwang91/nvim-ufo",
     dependencies = "kevinhwang91/promise-async",
     cmd = { "UfoEnable", "UfoAttach", "UfoEnableFold" },
-    enabled = true,
-    -- event = { 'BufReadPost', 'InsertEnter' },
     event = { "UIEnter" },
+  },
+  {
+    "soemre/commentless.nvim",
+    cmd = "Commentless",
+    keys = {
+      {
+        "<leader>-",
+        function()
+          require("commentless").toggle()
+        end,
+        desc = "Toggle Comments",
+      },
+      {
+        "z-",
+        function()
+          require("commentless").toggle()
+        end,
+        desc = "Toggle Comments",
+      },
+    },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      hide_following_blank_lines = true,
+      foldtext = function(folded_count)
+        return "(" .. folded_count .. " comments)"
+      end,
+    },
   },
   {
     -- https://github.com/luckasRanarison/tailwind-tools.nvim
@@ -321,68 +197,10 @@ local plugins = {
   },
 
   -- lazy.nvim
-  {
-    "robitx/gp.nvim",
-    config = function()
-      local conf = {
-        -- For customization, refer to Install > Configuration in the Documentation/Readme
-      }
-      require("gp").setup(conf)
-
-      -- Setup shortcuts here (see Usage > Shortcuts in the Documentation/Readme)
-    end,
-  },
-
+  { "robitx/gp.nvim" },
   { "BlackLight/nvim-http" },
   -- https://github.com/oysandvik94/curl.nvim
-  {
-    "oysandvik94/curl.nvim",
-    cmd = { "CurlOpen" },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    --     config = function()
-    -- " A buffer that is scoped to the current working directory
-    -- :CurlOpen
-    --
-    -- " A global buffer that will be the same for all Neovim instances
-    -- :CurlOpen global
-    --
-    -- " Create or open a new collection with the given scope
-    -- :CurlOpen collection global {any_name}
-    -- :CurlOpen collection scoped {any_name}
-    --
-    -- " Open a picker to select a collection
-    -- :CurlCollection global
-    -- :CurlCollection scoped
-    -- local curl = require("curl")
-    -- curl.setup({})
-    --
-    -- vim.keymap.set("n", "<leader>cc", function()
-    --     curl.open_curl_tab()
-    -- end, { desc = "Open a curl tab scoped to the current working directory" })
-    --
-    -- vim.keymap.set("n", "<leader>co", function()
-    --     curl.open_global_tab()
-    -- end, { desc = "Open a curl tab with gloabl scope" })
-    --
-    -- -- These commands will prompt you for a name for your collection
-    -- vim.keymap.set("n", "<leader>csc", function()
-    --       curl.create_scoped_collection()
-    -- end, { desc = "Create or open a collection with a name from user input" })
-    --
-    -- vim.keymap.set("n", "<leader>cgc", function()
-    --       curl.create_global_collection()
-    -- end, { desc = "Create or open a global collection with a name from user input" })
-    --
-    -- vim.keymap.set("n", "<leader>fsc", function()
-    --       curl.pick_scoped_collection()
-    -- end, { desc = "Choose a scoped collection and open it" })
-    --
-    -- vim.keymap.set("n", "<leader>fgc", function()
-    --       curl.pick_global_collection()
-    -- end, { desc = "Choose a global collection and open it" })
-  },
+  { "oysandvik94/curl.nvim", cmd = { "CurlOpen" }, dependencies = { "nvim-lua/plenary.nvim" } },
   {
     "mistweaverco/kulala.nvim",
     config = function()
@@ -408,9 +226,7 @@ local plugins = {
   {
     "MaximilianLloyd/tw-values.nvim",
     -- ft = 'typescriptreact, typescript, astro, vue, svelte, html'
-    keys = {
-      { "<leader>sv", "<cmd>TWValues<cr>", desc = "Show tailwind CSS values" },
-    },
+    keys = { { "<leader>sv", "<cmd>TWValues<cr>", desc = "Show tailwind CSS values" } },
     opts = {
       border = "rounded", -- Valid window border style,
       show_unknown_classes = true, -- Shows the unknown classes popup
@@ -421,12 +237,18 @@ local plugins = {
   { "matbme/JABS.nvim", event = { "BufReadPost", "BufNewFile" } },
   -- { 'ghillb/cybu.nvim', event = { 'BufRead', 'BufNewFile' } },
   { "nacro90/numb.nvim", event = { "BufReadPost", "BufNewFile" } },
-  {
-    "winston0410/range-highlight.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    dependencies = "winston0410/cmd-parser.nvim",
-  },
+  { "winston0410/range-highlight.nvim", event = { "CmdlineEnter" } },
   -- { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
+  {
+    "echasnovski/mini.jump2d",
+    version = false,
+    config = function()
+      require("mini.jump2d").setup({
+        allowed_lines = { cursor_before = false },
+        allowed_windows = { not_current = false },
+      })
+    end,
+  },
   {
     "echasnovski/mini.jump",
     -- local override
@@ -462,7 +284,7 @@ local plugins = {
     end,
   },
   { "hrsh7th/nvim-kit" },
-  { "Bekaboo/deadcolumn.nvim", event = { "VimEnter" } },
+  { "Bekaboo/deadcolumn.nvim" },
   -- treesitter
   -- https://github.com/ziontee113/query-secretary
   {
@@ -487,7 +309,19 @@ local plugins = {
         "metiulekm/nvim-treesitter-endwise",
       },
       "theHamsta/nvim-treesitter-pairs",
-      -- "RRethy/nvim-treesitter-textsubjects",
+      {
+        "RRethy/nvim-treesitter-textsubjects",
+        config = function()
+          require("nvim-treesitter-textsubjects").configure({
+            prev_selection = ",",
+            keymaps = {
+              ["."] = "textsubjects-smart",
+              ["/"] = "textsubjects-container-outer",
+              ["i/"] = "textsubjects-container-inner",
+            },
+          })
+        end,
+      },
       "HiPhish/nvim-ts-rainbow2",
       "jbyuki/tree-sitter-ntangle",
       { "sustech-data/wildfire.nvim", enabled = false },
@@ -512,54 +346,8 @@ local plugins = {
   { "gbprod/stay-in-place.nvim" },
   {
     "cbochs/portal.nvim",
-    -- Optional dependencies
     enabled = false,
-    dependencies = {
-      "cbochs/grapple.nvim",
-      "ThePrimeagen/harpoon",
-      -- require("portal").setup({
-      --     ---@type "debug" | "info" | "warn" | "error"
-      --     log_level = "warn",
-      --
-      --     ---The base filter applied to every search.
-      --     ---@type Portal.SearchPredicate | nil
-      --     filter = nil,
-      --
-      --     ---The maximum number of results for any search.
-      --     ---@type integer | nil
-      --     max_results = nil,
-      --
-      --     ---The maximum number of items that can be searched.
-      --     ---@type integer
-      --     lookback = 100,
-      --
-      --     ---An ordered list of keys for labelling portals.
-      --     ---Labels will be applied in order, or to match slotted results.
-      --     ---@type string[]
-      --     labels = { "j", "k", "h", "l" },
-      --
-      --     ---Select the first portal when there is only one result.
-      --     select_first = false,
-      --
-      --     ---Keys used for exiting portal selection. Disable with [{key}] = false
-      --     ---to `false`.
-      --     ---@type table<string, boolean>
-      --     escape = {
-      --         ["<esc>"] = true,
-      --     },
-      --
-      --     ---The raw window options used for the portal window
-      --     window_options = {
-      --         relative = "cursor",
-      --         width = 80,
-      --         height = 3,
-      --         col = 2,
-      --         focusable = false,
-      --         border = "single",
-      --         noautocmd = true,
-      --     },
-      -- })
-    },
+    dependencies = { "cbochs/grapple.nvim", "ThePrimeagen/harpoon" },
   },
   {
     "csessh/stopinsert.nvim",
@@ -579,73 +367,22 @@ local plugins = {
       -- StopInsertPlug enable/disable/toggle/status
     },
   },
-  {
-    "jake-stewart/multicursor.nvim",
-    branch = "1.0",
-  },
+  { "jake-stewart/multicursor.nvim", branch = "1.0" },
   -- movement highlighters
   -- https://github.com/tzachar/local-highlight.nvim
   -- https://github.com/jjshoots/betterf.nvim/tree/main
   { "smoka7/hop.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "folke/flash.nvim", event = "VeryLazy" },
-  {
-    "s1n7ax/nvim-window-picker",
-    name = "window-picker",
-    event = "VeryLazy",
-    version = "2.*",
-  },
+  { "s1n7ax/nvim-window-picker", name = "window-picker", event = "VeryLazy", version = "2.*" },
   -- cursor
   -- { "gen740/SmoothCursor.nvim", event = { "BufReadPost", "BufNewFile" } },
-  {
-    "sphamba/smear-cursor.nvim",
-    cond = vim.g.neovide == nil,
-  },
-  {
-    "rasulomaroff/reactive.nvim",
-    enabled = true,
-    dependencies = { "sphamba/smear-cursor.nvim" },
-  },
-  {
-    "echasnovski/mini.animate",
-    cond = vim.g.neovide == nil,
-    event = "VeryLazy",
-  },
+  { "sphamba/smear-cursor.nvim", cond = vim.g.neovide == nil },
+  { "rasulomaroff/reactive.nvim", enabled = true, dependencies = { "sphamba/smear-cursor.nvim" } },
+  { "echasnovski/mini.animate", cond = vim.g.neovide == nil, event = "VeryLazy" },
   -- { 'otavioschwanck/cool-substitute.nvim' },
   -- matching
 
-  {
-    "andymass/vim-matchup",
-    lazy = false,
-    init = function()
-      vim.g.matchup_text_obj_linewise_operators = { "c", "d", "y" }
-      vim.g.loaded_matchit = 1
-      vim.g.disable_virtual_text = 1
-      -- disable virtual text highlighting virtual end of blocks for langs without markers
-
-      vim.g.matchup_enabled = 1 -- enable/disable plugin entirely
-      vim.g.matchup_matchparen_enabled = 1
-      vim.g.matchup_motion_enabled = 1
-      vim.g.matchup_text_obj_enabled = 1
-      vim.g.matchup_surround_enabled = 1 -- adds ds% and cs%
-
-      vim.g.matchup_delim_noskips = 1 -- matching between strings and constants (0 always, 1 no words, 2 never)
-      vim.g.matchup_delim_stopline = 2000 -- 1500  (# of lines to search for motions/text objects)
-
-      vim.g.matchup_matchparen_pumvisible = 0
-      -- 1 (show matching even when pum-completion is visible)
-      vim.g.matchup_matchparen_offscreen = {} -- method = popup, status, status_minimal, empty dict to disable
-
-      vim.g.matchup_motion_override_Npercent = 0 -- enable vim default {count}%
-      vim.g.matchup_matchparen_timeout = 150 -- 300
-      vim.g.matchup_matchparen_insert_timeout = 30 -- 60
-      vim.g.matchup_matchparen_deferred = 1
-      vim.g.matchup_matchparen_deferred_fade_time = 0 -- 0 (ms match will disappear after no movement)
-      vim.g.matchup_matchparen_deferred_show_delay = 50 -- 50 (time between cursor stop moving and match check)
-      vim.g.matchup_matchparen_deferred_hide_delay = 700 -- 700 (hide stale matches after n seconds of cursor movement)
-      vim.g.matchup_matchparen_hi_surround_always = 1
-      vim.g.matchup_matchparen_stopline = 2000 -- (# of lines to search for highlighting only)
-    end,
-  },
+  { "andymass/vim-matchup", lazy = false, init = require("configs.vim-matchup__init") },
   -- pairs
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
   {
@@ -657,18 +394,12 @@ local plugins = {
   { "gbprod/substitute.nvim", event = { "VeryLazy" } },
   -- split/join
   { "echasnovski/mini.splitjoin", event = { "VeryLazy" } },
-  {
-    -- "Wansmer/treesj",
-    "njhoffman/treesj",
-    -- dir = "~/git/treesj",
-    event = { "VeryLazy" },
-    dependencies = { "nvim-treesitter" },
-  },
+  { "njhoffman/treesj", event = { "VeryLazy" }, dependencies = { "nvim-treesitter" } },
   -- surround
   { "echasnovski/mini.surround", event = { "VeryLazy" } },
   -- traversal/swapping
   { "mizlan/iswap.nvim", event = { "BufReadPost", "BufNewFile" } },
-  { "ziontee113/SelectEase", enabled = true, event = "VeryLazy" },
+  { "gsuuon/tshjkl.nvim", event = "VeryLazy" },
   { "chrisgrieser/nvim-spider", event = "VeryLazy" },
   { "echasnovski/mini.move", event = "VeryLazy" },
   -- alignment
@@ -680,38 +411,17 @@ local plugins = {
   { "ckolkey/ts-node-action", dependencies = { "nvim-treesitter" } },
   { "johmsalas/text-case.nvim", event = "VeryLazy" },
   { "echasnovski/mini.operators", version = false },
-  { "echasnovski/mini.jump", version = false },
-  { "echasnovski/mini.jump2d", version = false },
 
   {
     -- https://www.reddit.com/r/neovim/comments/1bq0cxy/minidiff_work_with_diff_hunks_interactively/
-    "echasnovski/mini.comment",
     -- keep this for operator  (dgc, dgb, cgc) and visual functions
+    "mini.comment",
+    dir = "~/.config/nvim/lua/mini/comment",
     event = "VeryLazy",
-    opts = {
-      mappings = {
-        --   -- Toggle comment (like `gcip` - comment inner paragraph) for both Normal and Visual modes
-        comment = "", -- gc
-        comment_line = "", -- gcc
-        comment_visual = "gc", -- gc
-        --   -- Define 'comment' textobject (like `dgc` - delete whole comment block)
-        --   -- Works also in Visual mode if mapping differs from `comment_visual`
-        text_object = "gc",
-      },
-      options = {
-        custom_commentstring = function()
-          return require("ts_context_commentstring.internal").calculate_commentstring()
-            or vim.bo.commentstring
-        end,
-      },
-    },
   },
   -- keep this for block functions
   { "numToStr/Comment.nvim", event = "VeryLazy" },
-  {
-    "andrewferrier/debugprint.nvim",
-    event = "VeryLazy",
-  },
+  { "andrewferrier/debugprint.nvim", event = "VeryLazy" },
   -- https://github.com/kr40/nvim-macros
   -- {
   --   "chrisgrieser/nvim-recorder",
@@ -729,7 +439,6 @@ local plugins = {
   { "Konfekt/vim-alias", event = "VeryLazy" },
   --
   -- pickers
-  --
   -- https://github.com/axkirillov/easypick.nvim
   -- https://github.com/adoyle-h/telescope-extension-maker.nvim
   -- https://github.com/adoyle-h/ad-telescope-extensions.nvim
@@ -739,12 +448,7 @@ local plugins = {
   -- "nvim-telescope/telescope-vimspector",
   -- "benfowler/telescope-luasnip.nvim",
   { "echasnovski/mini.fuzzy", event = "VeryLazy" },
-  {
-    "stevearc/oil.nvim",
-    opts = {},
-    -- Optional dependencies
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-  },
+  { "stevearc/oil.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
   { "echasnovski/mini.files", version = false },
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -754,22 +458,16 @@ local plugins = {
     branch = "v3.x",
     dependencies = { "nvim-lua/plenary.nvim", "nvim-web-devicons", "MunifTanjim/nui.nvim" },
   },
-  {
-    "moyiz/git-dev.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
+  { "moyiz/git-dev.nvim", event = "VeryLazy", opts = {} },
   { "neo451/feed.nvim", enabled = false },
   -- Lazy
   {
     "2kabhishek/nerdy.nvim",
-    dependencies = {
-      "stevearc/dressing.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-    cmd = "Nerdy",
+    dependencies = { "stevearc/dressing.nvim", "nvim-telescope/telescope.nvim" },
     -- Running the python scripts/generator.py command will automatically fetch new icons from source and update the icons.
+    cmd = "Nerdy",
   },
+  -- https://github.com/2KAbhishek/pickme.nvim
   {
     -- 'njhoffman/telescope.nvim',
     "nvim-telescope/telescope.nvim",
@@ -849,80 +547,8 @@ local plugins = {
         end,
       },
       -- { "natecraddock/telescope-zf-native.nvim" },
-      {
-        "lalitmee/browse.nvim",
-        config = function()
-          -- require('browse.devdocs').search_with_filetype()
-          -- require('browse.mdn').search()
-          require("browse").setup({
-            -- search provider you want to use
-            provider = "google", -- duckduckgo, bing
-            -- either pass it here or just pass the table to the functions
-            -- see below for more
-            bookmarks = {},
-            icons = {
-              bookmark_alias = "->", -- if you have nerd fonts, you can set this to ""
-              bookmarks_prompt = "", -- if you have nerd fonts, you can set this to "󰂺 "
-              grouped_bookmarks = "->", -- if you have nerd fonts, you can set this to 
-            },
-          })
-          -- local bookmarks = {
-          --   ["github"] = {
-          --       ["name"] = "search github from neovim",
-          --       ["code_search"] = "https://github.com/search?q=%s&type=code",
-          --       ["repo_search"] = "https://github.com/search?q=%s&type=repositories",
-          --       ["issues_search"] = "https://github.com/search?q=%s&type=issues",
-          --       ["pulls_search"] = "https://github.com/search?q=%s&type=pullrequests",
-          --   },
-          -- }
-          -- local bookmarks = {
-          --   "https://github.com/search?q=%s&type=code",
-          --   "https://github.com/search?q=%s&type=repositories",
-          -- }
-          -- local bookmarks = {
-          --   "https://github.com/hoob3rt/lualine.nvim",
-          --   "https://github.com/neovim/neovim",
-          --   "https://neovim.discourse.group/",
-          --   "https://github.com/nvim-telescope/telescope.nvim",
-          --   "https://github.com/rockerBOO/awesome-neovim",
-          -- }
-
-          --   function command(name, rhs, opts)
-          --     opts = opts or {}
-          --     vim.api.nvim_create_user_command(name, rhs, opts)
-          --   end
-
-          --   command('InputSearch', function()
-          --     browse.input_search()
-          --   end, {})
-
-          --   -- this will open telescope using dropdown theme with all the available options
-          --   -- in which `browse.nvim` can be used
-          --   command('Browse', function()
-          --     browse.browse({ bookmarks = bookmarks })
-          --   end)
-
-          --   command('Bookmarks', function()
-          --     browse.open_bookmarks({ bookmarks = bookmarks })
-          --   end)
-
-          --   command('DevdocsSearch', function()
-          --     browse.devdocs.search()
-          --   end)
-
-          --   command('DevdocsFiletypeSearch', function()
-          --     browse.devdocs.search_with_filetype()
-          --   end)
-
-          --   command('MdnSearch', function()
-          --     browse.mdn.search()
-          --   end)
-        end,
-      },
-      {
-        "isak102/telescope-git-file-history.nvim",
-        dependencies = { "tpope/vim-fugitive" },
-      },
+      { "lalitmee/browse.nvim" },
+      { "isak102/telescope-git-file-history.nvim", dependencies = { "tpope/vim-fugitive" } },
       -- {
       --   "fdschmidt93/telescope-egrepify.nvim",
       --   dependencies = { "nvim-lua/plenary.nvim" },
@@ -939,37 +565,9 @@ local plugins = {
       { "nvim-telescope/telescope-frecency.nvim", dependencies = { "kkharji/sqlite.lua" } },
       { "nvim-telescope/telescope-fzy-native.nvim" },
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-      {
-        -- https://github.com/ptdewey/yankbank-nvim
-        -- https://github.com/mistricky/codesnap.nvim
-        "gbprod/yanky.nvim",
-        -- keys = {
-        --   {
-        --     '<leader>p',
-        --     function()
-        --       require('telescope').extensions.yank_history.yank_history({})
-        --     end,
-        --     desc = 'Open Yank History',
-        --   },
-        --   { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' }, desc = 'Yank text' },
-        --   { 'p', '<Plug>(YankyPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after cursor' },
-        --   { 'P', '<Plug>(YankyPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before cursor' },
-        --   { 'gp', '<Plug>(YankyGPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after selection' },
-        --   { 'gP', '<Plug>(YankyGPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before selection' },
-        --   { '<c-p>', '<Plug>(YankyPreviousEntry)', desc = 'Select previous entry through yank history' },
-        --   { '<c-n>', '<Plug>(YankyNextEntry)', desc = 'Select next entry through yank history' },
-        --   { ']p', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
-        --   { '[p', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
-        --   { ']P', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
-        --   { '[P', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
-        --   { '>p', '<Plug>(YankyPutIndentAfterShiftRight)', desc = 'Put and indent right' },
-        --   { '<p', '<Plug>(YankyPutIndentAfterShiftLeft)', desc = 'Put and indent left' },
-        --   { '>P', '<Plug>(YankyPutIndentBeforeShiftRight)', desc = 'Put before and indent right' },
-        --   { '<P', '<Plug>(YankyPutIndentBeforeShiftLeft)', desc = 'Put before and indent left' },
-        --   { '=p', '<Plug>(YankyPutAfterFilter)', desc = 'Put after applying a filter' },
-        --   { '=P', '<Plug>(YankyPutBeforeFilter)', desc = 'Put before applying a filter' },
-        -- },
-      },
+      -- https://github.com/ptdewey/yankbank-nvim
+      -- https://github.com/mistricky/codesnap.nvim
+      { "gbprod/yanky.nvim" },
       -- https://github.com/rktjmp/fwatch.nvim
       { "GustavoKatel/telescope-asynctasks.nvim", dependencies = { "skywind3000/asynctasks.vim" } },
       -- { "rmagatti/session-lens", dependencies = "rmagatti/auto-session" },
@@ -1008,25 +606,7 @@ local plugins = {
     -- -- Enforce only full URIs (do not accept partial names).
     -- opts = { git = { base_uri_format = "%s" } }
   },
-  {
-    "ray-x/forgit.nvim",
-    config = function()
-      require("forgit").setup({
-        debug = false, -- enable debug logging default path is ~/.cache/nvim/forgit.log
-        diff_pager = "delta", -- you can use `diff`,         `diff-so-fancy`
-        diff_cmd = "", -- you can use `DiffviewOpen`, `Gvdiffsplit` or `!git diff`, auto if not set
-        fugitive = false, -- git fugitive installed?
-        abbreviate = false, -- abvreviate some of the commands e.g. gps -> git push
-        git_alias = true, -- git command extensions see: Git command alias
-        show_result = "quickfix", -- show cmd result in quickfix or notify
-        shell_mode = true, -- set to true if you using zsh/bash and can not run forgit commands
-        height_ratio = 0.6, -- height ratio of floating window when split horizontally
-        cmds_list = {}, -- additional commands to show in Forgit command list
-        width_ratio = 0.6, -- width ratio of floating window when split vertically
-      })
-    end,
-  },
-
+  { "ray-x/forgit.nvim" },
   -- https://www.reddit.com/r/neovim/comments/1broo6b/my_git_github_workflow_an_efficient_yet_messy/
   { "rbong/vim-flog", cmd = { "Flog", "Flogsplit" } },
   { "ThePrimeagen/git-worktree.nvim", event = "VeryLazy" },
@@ -1034,11 +614,7 @@ local plugins = {
   { "akinsho/git-conflict.nvim", version = "*", lazy = false },
   { "pwntester/octo.nvim", cmd = "Octo", dependencies = "nvim-web-devicons" },
   { "kdheepak/lazygit.nvim", cmd = "LazyGit" },
-  {
-    "lewis6991/gitsigns.nvim",
-    event = "BufReadPost",
-    dependencies = "nvim-lua/plenary.nvim",
-  },
+  { "lewis6991/gitsigns.nvim", event = "BufReadPost", dependencies = "nvim-lua/plenary.nvim" },
   { "rhysd/git-messenger.vim", cmd = "GitMessenger" },
   {
     "tpope/vim-fugitive",
@@ -1068,11 +644,7 @@ local plugins = {
   -- https://neovimcraft.com/plugin/otavioschwanck/tmux-awesome-manager.nvim
   -- https://www.reddit.com/r/neovim/comments/1bempth/neovim_project_management_with_tmux_zoxide_fzf/
   { "jbyuki/quickmath.nvim", cmd = "Quickmath" },
-  {
-    "michaelb/sniprun",
-    build = "bash install.sh",
-    cmd = { "SnipRun", "SnipInfo" },
-  },
+  { "michaelb/sniprun", build = "bash install.sh", cmd = { "SnipRun", "SnipInfo" } },
   { "milisims/nvim-luaref", event = "VeryLazy" },
   -- https://github.com/MagicDuck/grug-far.nvim
   {
@@ -1091,9 +663,7 @@ local plugins = {
   },
   { "windwp/nvim-spectre", cmd = "Spectre" },
   { "WaylonWalker/Telegraph.nvim", cmd = "Telegraph" },
-  {
-    "OXY2DEV/patterns.nvim",
-  },
+  { "OXY2DEV/patterns.nvim" },
   {
     "bennypowers/nvim-regexplainer",
     cmd = { "RegexplainerShow", "RegexplainerToggle" },
@@ -1106,65 +676,10 @@ local plugins = {
   {
     "glacambre/firenvim",
     build = ":call firenvim#install(0)",
-    init = function()
-      vim.g.firenvim_config = {
-        globalSettings = {
-          -- alt = "all",
-          -- ['<C-w>'] = 'noop',
-          -- ['<C-n>'] = 'default'
-          ignoreKeys = {
-            all = { "<C-->" },
-            normal = { "<C-1>", "<C-2>" },
-          },
-        },
-        localSettings = {
-          [".*"] = {
-            -- cmdline = "neovim",
-            content = "text", -- text, html
-            priority = 0,
-            -- selector = 'textarea:not([readonly], [aria-readonly]), div[role="textbox"]',
-            takeover = "never",
-            -- `always`, `empty`, `never`, `nonempty` or `once`.
-          },
-        },
-      }
-      -- vim.api.nvim_create_autocmd({ "UIEnter" }, {
-      --   callback = function(event)
-      --     local client = vim.api.nvim_get_chan_info(vim.v.event.chan).client
-      --     if client ~= nil and client.name == "Firenvim" then
-      --       vim.o.laststatus = 0
-      --     end
-      --   end,
-      -- })
-
-      -- ### Interacting with the page
-      -- You can execute javascript in the page by using `firenvim#eval_js`. The code has to be a valid javascript expression (NOT a statement). You can provide the name of a function that should be executed with the result of the expression. Note that some pages prevent evaluating JavaScript with their [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) and this can't be worked around. Here's an example:
-      -- vim.fn['firenvim#eval_js']('alert("Hello World!")', 'MyFunction')
-      -- A function named `firenvim#press_keys()` will allow you to send key events to the underlying input field by taking a list of vim-like keys (e.g. `a`, `<CR>`, `<Space>`…) as argument. Note that this only "triggers" an event, it does not add text to the input field. For example if you'd like firenvim to send `<CR>` to the webpage when you press `<CR>` in the editor, you can use the following mapping which is useful with chat apps:
-      -- vim.api.nvim_create_autocmd({'BufEnter', {
-      --     pattern = "riot.im_*",
-      --     command = [[inoremap <CR> <Esc>:w<CR>:call firenvim#press_keys("<LT>CR>")<CR>ggdGa]],
-      -- })
-      -- Depending on how large the edited buffer is, this could be a little slow. This more sophisticated approach will throttle writes:
-      -- vim.api.nvim_create_autocmd({'TextChanged', 'TextChangedI'}, {
-      --     callback = function(e)
-      --       if vim.g.timer_started == true then
-      --         return
-      --       end
-      --       vim.g.timer_started = true
-      --       vim.fn.timer_start(10000, function()
-      --         vim.g.timer_started = false
-      --         vim.cmd('silent write')
-      --       end)
-      --     end
-      --   })
-    end,
+    init = require("configs.firenvim__init"),
   },
   { "lucamot/chrome-remote.nvim", event = "VeryLazy" },
-  {
-    "lucamot/chrome-dev-console.nvim",
-    dependencies = { "lucamot/chrome-remote.nvim" },
-  },
+  { "lucamot/chrome-dev-console.nvim", dependencies = { "lucamot/chrome-remote.nvim" } },
   { "altermo/nxwm", event = "VeryLazy", enabled = false },
   {
     "nvim-neotest/neotest",
@@ -1184,29 +699,7 @@ local plugins = {
     },
   },
 
-  {
-    "smjonas/inc-rename.nvim",
-    config = function()
-      require("inc_rename").setup({
-        -- the name of the command
-        -- cmd_name = "RenameInc",
-        -- cmd_name = "IncRename",
-        -- the highlight group used for highlighting the identifier's new name
-        hl_group = "Substitute",
-        -- whether an empty new name should be previewed; if false the command preview will be cancelled instead
-        preview_empty_name = false,
-        -- whether to display a `Renamed m instances in n files` message after a rename operation
-        show_message = true,
-        -- whether to save the "IncRename" command in the commandline history (set to false to prevent issues with
-        -- navigating to older entries that may arise due to the behavior of command preview)
-        save_in_cmdline_history = true,
-        -- the type of the external input buffer to use (the only supported value is currently "dressing")
-        input_buffer_type = nil,
-        -- callback to run after renaming, receives the result table (from LSP handler) as an argument
-        post_hook = nil,
-      })
-    end,
-  },
+  { "smjonas/inc-rename.nvim" },
   { "filipdutescu/renamer.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   -- quickfix file renamer
   {
@@ -1228,43 +721,7 @@ local plugins = {
       vim.g.RenamerShowHiddenEnabled = true
     end,
   },
-  {
-    "cjodo/convert.nvim",
-    dependencies = { "MunifTanjim/nui.nvim" },
-    -- keys = {
-    --   { "<leader>cn", "<cmd>ConvertFindNext<CR>", desc = "Find next convertable unit" },
-    --   { "<leader>cc", "<cmd>ConvertFindCurrent<CR>", desc = "Find convertable unit in current line" },
-    --   -- Add "v" to enable converting a selected region
-    --   { "<leader>ca", "<cmd>ConvertAll<CR>", mode = {"n", "v"}, desc = "Convert all of a specified unit" },
-    -- },
-    config = function()
-      -- Size Units: 📏 px	Pixels          rem	Relative to root element
-      --                cm	Centimeters     in	Inches
-      --                mm	Millimeters     pt	Points
-      --                pc	Picas
-      -- Color Formats: 🎨 rgb	Red-Green-Blue
-      --                   hex	Hexadecimal color code
-      --                   hsl	Hue-Saturation-Lightness
-      --
-      -- Number Systems 🔢 bin	Binary
-      --                   hexadecimal	Hexadecimal
-      --                   octal	Octal
-      --                 * Defined with respective prefix: 0b, 0x, 0o
-      -- :ConvertFindNext	Finds the next convertible unit
-      -- :ConvertFindCurrent	Finds the convertible unit in the current line (starting from cursor)
-      -- :ConvertAll	Converts all instances in a buffer or visual mode selection of one unit to another of the same type (size, color)
-      local convert = require("convert")
-      convert.setup({
-        keymaps = {
-          focus_next = { "j", "<Down>", "<Tab>" },
-          focus_prev = { "k", "<Up>", "<S-Tab>" },
-          close = { "<Esc>", "<C-c>", "qq" },
-          submit = { "<CR>", "<Space>" },
-        },
-        modes = { "color", "size", "numbers" }, -- available conversion modes
-      })
-    end,
-  },
+  { "cjodo/convert.nvim", dependencies = { "MunifTanjim/nui.nvim" } },
   {
     "jamestthompson3/nvim-remote-containers",
     cmd = {
@@ -1287,46 +744,7 @@ local plugins = {
     "t-troebst/perfanno.nvim",
     cmd = { "PerfLoadFlat", "PerfLoadCallGraph", "PerfLoadFlameGraph" },
   },
-  {
-    "chrisgrieser/nvim-genghis",
-    dependencies = { "stevearc/dressing.nvim", "nvim-cmp", "hrsh7th/cmp-omni" },
-    config = function()
-      -- default config
-      require("genghis").setup({
-        backdrop = {
-          enabled = true,
-          blend = 50,
-        },
-        -- default is ` "trash" ` on Mac/Windows, and `{ "gio", "trash" }` on Linux
-        trashCmd = "trash",
-      })
-      -- .createNewFile: Create a new file.
-      -- .duplicateFile: Duplicate the current file.
-      -- .moveSelectionToNewFile: Prompts for a new file name and moves the current selection to that new file. (Note that this is a Visual Line mode command, the selection is moved linewise.)
-      -- .renameFile: Rename the current file.
-      -- .moveAndRenameFile: Move and Rename the current file. Keeps the old name if the new path ends with /. Works like the Unix mv command.
-      -- .moveToFolderInCwd: Move the current file to an existing folder in the current working directory.
-      -- .copyFilename: Copy the file name.
-      -- .copyFilepath: Copy the absolute file path.
-      -- .copyFilepathWithTilde: Copy the absolute file path, replacing the home directory with ~.
-      -- .copyRelativePath: Copy the relative file path.
-      -- .copyDirectoryPath: Copy the absolute directory path.
-      -- .copyRelativeDirectoryPath: Copy the relative directory path.
-      -- .chmodx: Makes current file executable. Equivalent to chmod +x.
-      -- .trashFile: Move the current file to the trash location.
-      vim.cmd.cabbrev("Chmodx Genghis chmodx")
-      vim.cmd.cabbrev("New Genghis createNewFile")
-      vim.cmd.cabbrev("Rename Genghis moveAndRename")
-      vim.cmd.cabbrev("Files Genghis")
-      vim.cmd.cabbrev("F Genghis")
-      vim.cmd.cabbrev("F Genghis")
-      vim.cmd.cabbrev("Fdupe Genghis duplicateFile")
-      vim.cmd.cabbrev("Fnew Genghis createNewFile")
-      vim.cmd.cabbrev("Fren Genghis moveAndRename")
-      vim.cmd.cabbrev("Fdel Genghis trashFile")
-    end,
-  },
-
+  { "chrisgrieser/nvim-genghis", event = "VeryLazy" },
   { "echasnovski/mini.test", lazy = true },
   {
     "ibhagwan/fzf-lua",
@@ -1342,77 +760,10 @@ local plugins = {
   {
     "cenk1cenk2/jq.nvim",
     dependencies = {
-      -- https://github.com/nvim-lua/plenary.nvim
       "nvim-lua/plenary.nvim",
-      -- https://github.com/MunifTanjim/nui.nvim
       "MunifTanjim/nui.nvim",
-      -- https://github.com/grapp-dev/nui-components.nvim
       "grapp-dev/nui-components.nvim",
     },
-    config = function()
-      local defaults = {
-        log_level = vim.log.levels.INFO,
-        debounce = 25,
-        commands = {
-          { command = "jq", filetype = "json" },
-          { command = "yq", filetype = "json" },
-        },
-        ui = {
-          autoclose = true,
-          border = "single",
-          width = function(columns)
-            if columns < 120 then
-              return math.floor(columns * 0.95)
-            end
-
-            return 120
-          end,
-          height = function(lines)
-            if lines < 36 then
-              return math.floor(lines * 0.95)
-            end
-
-            return 36
-          end,
-          keymap = {
-            close = "<Esc>",
-            focus_next = "<Tab>",
-            focus_prev = "<S-Tab>",
-            focus_left = nil,
-            focus_right = nil,
-            focus_up = nil,
-            focus_down = nil,
-          },
-        },
-      }
-      require("jq").setup(defaults)
-
-      -- require("jq").run({
-      --   --- you can pass additional options to configure the current instance
-      --   -- if you want to toggle from the memory
-      --   toggle = true,
-      --   -- commands for the instance else it will use the default
-      --   -- the default command would be the first one in the table
-      --   commands = {
-      --     {
-      --       -- command to be run
-      --       command = "jq",
-      --       -- filetype of the output
-      --       filetype = "json",
-      --       -- hidden arguments that will not be shown in the ui
-      --       arguments = "-r",
-      --     },
-      --   },
-      --   -- arguments to start with in the ui
-      --   arguments = "",
-      --   -- query to start with, if not provided it will use the default
-      --   query = ".",
-      -- })
-      -- require("jq").run({
-      --   filename = "test.json",
-      --   lines = { "lines", "i", "obtained", "from", "somewhere" }
-      -- })
-    end,
   },
   {
     "gennaro-tedesco/nvim-jqx",
@@ -1448,49 +799,7 @@ local plugins = {
     -- end,
     -- })
   },
-  {
-    "yochem/jq-playground.nvim",
-    config = function()
-      local cfg = {
-        cmd = { "jq" }, -- gojq, jaq
-        output_window = {
-          split_direction = "right",
-          width = nil,
-          height = nil,
-        },
-        query_window = {
-          split_direction = "bottom",
-          width = nil,
-          height = 0.3,
-        },
-        disable_default_keymap = false,
-      }
-      -- -- start the playground
-      -- vim.keymap.set("n", "<leader>jq", vim.cmd.JqPlayground)
-      --
-      -- -- when in the query window, run the jq query
-      -- vim.keymap.set("n", "R", "<Plug>(JqPlaygroundRunQuery)")
-      -- :JqPlayground sample.json
-      -- Some random tips that you may find useful while using this plugin.
-      --
-      -- If you have a saved jq program that you want to load into the filter window, then run:
-      --
-      -- :r path/to/some/query.jq
-      -- If you want to save the current query or output json, navigate to that buffer and run:
-      --
-      -- :w path/to/save/query.jq
-      -- " or:
-      -- :w path/to/save/output.json
-      -- Start the JQ editor from the command line without loading the input file:
-      --
-      -- $ nvim +'JqPlayground input.json'
-      -- $ # or put this in your bashrc:
-      -- $ jqplay() { nvim +"JqPlayground $1"; }
-    end,
-    opts = {
-      cmd = { "gojq" },
-    },
-  },
+  { "yochem/jq-playground.nvim", opts = { cmd = { "gojq" } } },
   {
     "linrongbin16/fzfx.nvim",
     dependencies = {
@@ -1503,10 +812,6 @@ local plugins = {
         end,
       },
     },
-
-    -- specify version to avoid break changes
-    -- version = 'v5.*',
-
     config = function()
       require("fzfx").setup()
     end,
@@ -1517,12 +822,7 @@ local plugins = {
   { "potamides/pantran.nvim", cmd = "Pantran" },
   { "sidebar-nvim/sidebar.nvim", cmd = { "SidebarNvimOpen", "SidebarNvimToggle" } },
   { "nvimtools/hydra.nvim", event = "VeryLazy" }, -- anuvyklack
-  {
-    "NvChad/nvim-colorizer.lua",
-    event = { "BufReadPost", "BufNewFile" },
-    -- event = { "InsertEnter" },
-    -- config = true,
-  },
+  { "NvChad/nvim-colorizer.lua", event = { "BufReadPost", "BufNewFile" } },
   { "nvim-colortils/colortils.nvim", cmd = "Colortils", event = { "BufReadPost", "BufNewFile" } },
   {
     "kawre/leetcode.nvim",
@@ -1551,7 +851,6 @@ local plugins = {
   { "sQVe/sort.nvim" },
   -- https://github.com/mbbill/undotree
   {
-
     "kevinhwang91/nvim-fundo",
     dependencies = "kevinhwang91/promise-async",
     config = function()
@@ -1613,6 +912,7 @@ local plugins = {
       vim.cmd([[silent UpdateRemotePlugins]])
     end,
   },
+  -- https://github.com/wylie102/duckdb.yazi
   {
     "kndndrj/nvim-dbee",
     dependencies = { "MunifTanjim/nui.nvim" },
@@ -1622,14 +922,7 @@ local plugins = {
       require("dbee").install()
     end,
   },
-  {
-    "letieu/graphql.nvim",
-    -- keys = {
-    --   { "<leader>gg", function() require("graphql").open() end, desc = "graphql - Open" },
-    --   { "<leader>gq", function() require("graphql").close() end },
-    --   { "<leader>gr", function() require("graphql").run() end }
-    -- },
-  },
+  { "letieu/graphql.nvim" },
   -- https://github.com/mei28/luminate.nvim
   {
     "kndndrj/nvim-projector",
@@ -1641,11 +934,7 @@ local plugins = {
   -- filetypes
   --
   { "AndrewRadev/id3.vim", ft = "mp3" },
-  {
-    "susensio/magic-bang.nvim",
-    ft = "sh",
-    opts = { automatic = true, command = true, executable = true, default = "/bin/bash" },
-  },
+  { "susensio/magic-bang.nvim", event = "BufNewFile", cmd = "Bang" },
   { "ray-x/go.nvim", dependencies = { "ray-x/guihua.lua" }, ft = "go" },
   {
     "llllvvuu/nvim-js-actions",
@@ -1680,73 +969,14 @@ local plugins = {
     -- :Qsave, :Qload:Qbelow, :Qabove, :Lbelow, Labove, etc will navigate to the next or previous entry relative to the cursor.
     -- However, unlike :cabove it will cross buffer boundaries.
   },
-  {
-    "maskudo/devdocs.nvim",
-    enabled = false,
-    lazy = false,
-    dependencies = {
-      "folke/snacks.nvim",
-    },
-    keys = {
-      {
-        "<leader>ho",
-        mode = "n",
-        "<cmd>DevDocs get<cr>",
-        desc = "Get Devdocs",
-      },
-      {
-        "<leader>hi",
-        mode = "n",
-        "<cmd>DevDocs install<cr>",
-        desc = "Install Devdocs",
-      },
-      {
-        "<leader>hv",
-        mode = "n",
-        function()
-          local devdocs = require("devdocs")
-          local installedDocs = devdocs.GetInstalledDocs()
-          vim.ui.select(installedDocs, {}, function(selected)
-            if not selected then
-              return
-            end
-            local docDir = devdocs.GetDocDir(selected)
-            -- prettify the filename as you wish
-            Snacks.picker.files({ cwd = docDir })
-          end)
-        end,
-        desc = "View Devdocs",
-      },
-    },
-    opts = {
-      ensure_installed = {
-        "go",
-        "html",
-        -- "dom",
-        "http",
-        -- "css",
-        -- "javascript",
-        -- "rust",
-        -- some docs such as lua require version number along with the language name
-        -- check `DevDocs install` to view the actual names of the docs
-        "lua~5.1",
-        -- "openjdk~21"
-      },
-    },
-  },
-
+  { "maskudo/devdocs.nvim", enabled = false, lazy = false, dependencies = { "folke/snacks.nvim" } },
   -- https://github.com/fredrikaverpil/godoc.nvim
   -- https://github.com/fredrikaverpil/pydoc.nvim
   -- https://github.com/Zeioth/markmap.nvim
   { "AckslD/nvim-FeMaco.lua", ft = { "markdown", "pandoc" } },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      -- "nvim-tree/nvim-web-devicons",
-      "echasnovski/mini.icons",
-    }, -- if you prefer nvim-web-devicons
-    opts = {},
+    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons", opts = {} },
   },
   {
     "lukas-reineke/headlines.nvim",
@@ -1755,8 +985,231 @@ local plugins = {
     ft = { "markdown", "pandoc", "pandoc.markdown", "markdown.pandoc" },
   },
   { "njhoffman/markpan.nvim", enabled = false },
-
-  { "elkasztano/nushell-syntax-vim", ft = "nu", lazy = lz_syn },
+  -- "martinlroth/vim-acpi-asl"                # ACPI ASL
+  -- "pearofducks/ansible-vim"                 # Ansible 2.x
+  -- "sheerun/apiblueprint.vim"                # API Blueprint
+  -- "mityu/vim-applescript"                   # AppleScript
+  -- "sudar/vim-arduino-syntax"                # Arduino
+  -- "asciidoc/vim-asciidoc"                   # AsciiDoc
+  -- "aliou/bats.vim"                          # BATS
+  -- "bazelbuild/vim-bazel"                    # Bazel
+  -- "google/vim-maktaba"                      # Bazel
+  -- "jwalton512/vim-blade"                    # Blade templates
+  -- "bfontaine/Brewfile.vim"                  # Brewfile
+  -- "vim-jp/vim-cpp"                          # C++
+  -- "octol/vim-cpp-enhanced-highlight"        # C++
+  -- "OrangeT/vim-csharp"                      # C#
+  -- "OmniSharp/omnisharp-vim"                 # C#
+  -- "isobit/vim-caddyfile"                    # Caddyfile
+  -- "nastevens/vim-cargo-make"                # Cargo Make (Rust cargo extension)
+  -- "mhinz/vim-crates"                        # Cargo.toml (Rust)
+  -- "hellerve/carp-vim"                       # Carp
+  -- "vadv/vim-chef"                           # Chef
+  -- "mtscout6/vim-cjsx"                       # CJSX (JSX equivalent in CoffeeScript)
+  -- "guns/vim-clojure-static"                 # Clojure
+  -- "tpope/vim-fireplace"                     # Clojure
+  -- "guns/vim-clojure-highlight"              # Clojure
+  -- "pboettch/vim-cmake-syntax"               # Cmake
+  -- "vhdirk/vim-cmake"                        # Cmake
+  -- "kchmck/vim-coffee-script"                # CoffeScript
+  -- "elubow/cql-vim"                          # Cassandra CQL
+  -- "victoredwardocallaghan/cryptol.vim"      # Cryptol
+  -- "vim-crystal/vim-crystal"                 # Crystal
+  -- "hail2u/vim-css3-syntax"                  # CSS
+  -- "chrisbra/csv.vim"                        # CSV
+  -- "tpope/vim-cucumber"                      # Cucumber
+  -- "mgrabovsky/vim-cuesheet"                 # Cue
+  -- "jjaderberg/vim-syntax-cipher"            # Cypher
+  -- "JesseKPhillips/d.vim"                    # D Lang
+  -- "mlr-msft/vim-loves-dafny"                # Dafny
+  -- "dart-lang/dart-vim-plugin"               # Dart
+  -- "vmchale/dhall-vim"                       # Dhall
+  -- "ekalinin/Dockerfile.vim"                 # Dockerfile
+  -- "nastevens/vim-duckscript"                # Duckscript
+  -- "elixir-editors/vim-elixir"               # Elixir
+  -- "yalesov/vim-emblem"				      # Emblem
+  -- "vim-erlang/vim-erlang-runtime"           # Erlang
+  -- "vim-scripts/ferm.vim"                    # Ferm
+  -- "georgewitteman/vim-fish"                 # Fish
+  -- "dcharbon/vim-flatbuffers"                # Flatbuffers
+  -- "kblin/vim-fountain"                      # Fountain
+  -- "calviken/vim-gdscript3"                  # GDScript 3
+  -- "tikhomirov/vim-glsl"                     # OpenGL Shading Language
+  -- "gleam-lang/gleam.vim"                    # Gleam
+  -- "maelvls/gmpl.vim"                        # GMPL
+  -- "vim-scripts/gnuplot-syntax-highlighting" # GNUPlot
+  -- "fatih/vim-go"                            # Go
+  -- "tfnico/vim-gradle"                       # Gradle
+  -- "jparise/vim-graphql"                     # GraphQL
+  -- "hhvm/vim-hack"                           # Hack
+  -- "sheerun/vim-haml"                        # Haml
+  -- "mustache/vim-mustache-handlebars"        # Handlebars
+  -- "CH-DanReif/haproxy.vim"                  # HAProxy
+  -- "neovimhaskell/haskell-vim"               # Haskel
+  -- "yaymukund/vim-haxe"                      # Haxe
+  -- "b4b4r07/vim-hcl"                         # HCL
+  -- "towolf/vim-helm"                         # Helm Templates
+  -- "zebradil/hive.vim"                       # Hive
+  -- "othree/html5.vim"                        # HTML5
+  -- "mboughaba/i3config.vim"                  # i3
+  -- "chutzpah/icalendar.vim"                  # icalendar
+  -- "idris-hackers/idris-vim"                 # Idris
+  -- "HiPhish/info.vim"                        # Info
+  -- "vmchale/ion-vim"                         # Ion
+  -- "jez/vim-ispc"                            # ISPC
+  -- "pangloss/vim-javascript"                 # Javascript
+  -- "briancollins/vim-jst"                    # JST
+  -- "maxmellon/vim-jsx-pretty"                # JSX
+  -- "martinda/Jenkinsfile-vim-syntax"         # Jenkins
+  -- "lepture/vim-jinja"                       # Jinja
+  -- "elzr/vim-json"                           # Json
+  -- "GutenYe/json5.vim"                       # Json5
+  -- "JuliaEditorSupport/julia-vim"            # Julia
+  -- "udalov/kotlin-vim"                       # Kotlin
+  -- "lervag/vimtex"                           # Latex
+  -- "xuhdev/vim-latex-live-preview"           # Latex
+  -- "ledger/vim-ledger"                       # Ledger
+  -- "groenewege/vim-less"                     # Less
+  -- "sersorrel/vim-lilypond"                  # Lilypond
+  -- "gkz/vim-ls"                              # LiveScript
+  -- "MTDL9/vim-log-highlighting"              # Log
+  -- "tbastos/vim-lua"                         # Lua
+  -- "jstrater/mpvim"                          # Macports
+  -- "sophacles/vim-bundle-mako"               # Mako
+  -- "plasticboy/vim-markdown"                 # Markdown
+  -- "rhysd/vim-gfm-syntax"                    # Markdown (github)
+  -- "voldikss/vim-mma"                        # Mathematica
+  -- "daeyun/vim-matlab"                       # Matlab
+  -- "jxnblk/vim-mdx-js"                       # MDX
+  -- "stewy33/mercury-vim"                     # Mercury
+  -- "leafo/moonscript-vim"                    # MoonScript
+  -- "chr4/nginx.vim"                          # Nginx
+  -- "zah/nim.vim"                             # Nim
+  -- "LnL7/vim-nix"                            # Nix
+  -- "b4winckler/vim-objc"                     # Objective-C
+  -- "ocaml/vim-ocaml"                         # OCaml
+  -- "McSinyx/vim-octave"                      # Octave
+  -- "mcnelson/vim-pawn"                       # Pawn
+  -- "vim-pandoc/vim-pandoc"                   # Pandoc
+  -- "vim-pandoc/vim-pandoc-syntax"            # Pandoc
+  -- "vim-perl/vim-perl"                       # PERL
+  -- "lifepillar/pgsql.vim"                    # PostgreSQL
+  -- "StanAngeloff/php.vim"                    # PHP
+  -- "aklt/plantuml-syntax"                    # PlantUML
+  -- "jakwings/vim-pony"                       # Ponylang
+  -- "PProvost/vim-ps1"                        # PowerShell
+  -- "adimit/prolog.vim"                       # Prolog
+  -- "uarun/vim-protobuf"                      # Protocol Buffers
+  -- "digitaltoad/vim-pug"                     # Pug template
+  -- "rodjek/vim-puppet"                       # Puppet
+  -- "purescript-contrib/purescript-vim"       # PureScript
+  -- "vim-python/python-syntax"                # Python
+  -- "Vimjas/vim-python-pep8-indent"           # Python
+  -- "artoj/qmake-syntax-vim"                  # QMake
+  -- "peterhoeg/vim-qml"                       # QML
+  -- "jalvesaq/Nvim-R"                         # R
+  -- "wlangstroth/vim-racket"                  # Racket
+  -- "jneen/ragel.vim"                         # Ragel
+  -- "Raku/vim-raku"                           # Raku
+  -- "IN3D/vim-raml"                           # RAML
+  -- "adamclerk/vim-razor"                     # Razor view engine
+  -- "reasonml-editor/vim-reason-plus"         # Reason
+  -- "keith/rspec.vim"                         # RSpec
+  -- "marshallward/vim-restructuredtext"       # reStructuredText
+  -- "vim-ruby/vim-ruby"                       # Ruby
+  -- "rust-lang/rust.vim"                      # Rust
+  -- "arzg/vim-rust-syntax-ext"                # Rust
+  -- "derekwyatt/vim-sbt"                      # SBT
+  -- "derekwyatt/vim-scala"                    # Scala
+  -- "cakebaker/scss-syntax.vim"               # SCSS
+  -- "arzg/vim-sh"                             # Shell
+  -- "slim-template/vim-slim"                  # Slim
+  -- "slime-lang/vim-slime-syntax"             # Slime
+  -- "jez/vim-better-sml"                      # SML
+  -- "bohlender/vim-smt2"                      # SMT-LIB2
+  -- "tomlion/vim-solidity"                    # Solidity
+  -- "tpope/vim-dotenv"                        # SQl
+  -- "tpope/vim-dadbod"                        # SQl
+  -- "kristijanhusak/vim-dadbod-completion"    # SQl
+  -- "kristijanhusak/vim-dadbod-ui"            # SQl
+  -- "cappyzawa/starlark.vim"                  # Starlark
+  -- "hhsnopek/vim-sugarss"                    # Sugarss
+  -- "wavded/vim-stylus"                       # Stylus
+  -- "leafOfTree/vim-svelte-plugin"            # Svelte
+  -- "jasonshell/vim-svg-indent"               # SVG
+  -- "vim-scripts/svg.vim"                     # SVG
+  -- "keith/swift.vim"                         # Swift
+  -- "wgwoods/vim-systemd-syntax"              # Systemd
+  -- "baskerville/vim-sxhkdrc"                 # SXHKD (bspwm)
+  -- "hashivim/vim-terraform"                  # Terraform
+  -- "timcharper/textile.vim"                  # Textile
+  -- "solarnz/thrift.vim"                      # Thrift
+  -- "ericpruitt/tmux.vim"                     # Tmux
+  -- "wellbredgrapefruit/tomdoc.vim"           # TomDoc
+  -- "cespare/vim-toml"                        # TOML
+  -- "c-cube/vim-tptp"                         # TPTP
+  -- "lumiliet/vim-twig"                       # Twig
+  -- "HerringtonDarkholme/yats.vim"            # TypeScript
+  -- "ollykel/v-vim"                           # V
+  -- "arrufat/vala.vim"                        # Vala
+  -- "vim-scripts/vbnet.vim"                   # VB.NET
+  -- "smerrill/vcl-vim-plugin"                 # VCL
+  -- "lepture/vim-velocity"                    # Velocity
+  -- "vifm/vifm.vim"                           # vifm
+  -- "suoto/vim-hdl"                           # VHDL
+  -- "posva/vim-vue"                           # Vue
+  -- "amal-khailtash/vim-xdc-syntax"           # XDC
+  -- "vim-scripts/XSLT-syntax"                 # XSL
+  -- "amadeus/vim-xml"                         # XML
+  -- "stephpy/vim-yaml"                        # YAML
+  -- "nathanalderson/yang.vim"                 # YANG
+  -- "sheerun/vim-yardoc"                      # YARD Documentation
+  -- "xwsoul/vim-zephir"                       # Zephir
+  -- "ziglang/zig.vim"                         # Zig
+  -- "zinit-zsh/zinit-vim-syntax"              # Zinit
+  -- Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': ['Jenkinsfile', 'groovy'] }
+  -- Plug 'jvirtanen/vim-hcl', { 'for': ['nomad', 'hcl'] }
+  -- KcPlug8 'puremourning/vimspector', {'on': '<Plug>VimspectorContinue'}  " Debugger
+  -- KcPlugCoc 'neoclide/coc.nvim', {'branch': 'release'} " coc-nvim, for language server
+  -- KcPlugCoc 'antoinemadec/coc-fzf', {'branch': 'release'} " Use FZF instead of coc.nvim built-in fuzzy finder
+  -- KcPlugCoc 'kamilcuk/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp'], 'dir': plugdir.'kamilcuk-vim-lsp-cxx-highlight'}
+  -- " KcPlugCoc 'stefantb/vim-lsp-cxx-highlight', {'for': ['c', 'cpp'], 'dir': plugdir.'stefantb-vim-lsp-cxx-highlight'}
+  -- Plug 'mrk21/yaml-vim', { 'for': [ 'yml', 'yaml' ] }
+  -- Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+  -- hail2u/vim-css3-syntax	CSS3 syntax support to vim's built-in syntax/css.vim
+  -- othree/csscomplete.vim	Updated built-in CSS complete with latest standards
+  -- groenewege/vim-less	Syntax for LESS
+  -- iloginow/vim-stylus	Syntax, indentation and autocomplete for Stylus
+  -- mustache/vim-mustache-handlebars	Mustache and handlebars syntax
+  -- digitaltoad/vim-pug	Pug (formerly Jade) syntax and indentation
+  -- othree/html5.vim	HTML5 omnicomplete and syntax
+  -- plasticboy/vim-markdown	Markdown syntax highlighting
+  -- rhysd/vim-gfm-syntax	GitHub Flavored Markdown syntax highlight extension
+  -- pangloss/vim-javascript	Enhanced Javascript syntax
+  -- HerringtonDarkholme/yats.vim	Advanced TypeScript Syntax Highlighting
+  -- MaxMEllon/vim-jsx-pretty	React JSX syntax pretty highlighting
+  -- leafOfTree/vim-svelte-plugin	Syntax and indent plugin for Svelte
+  -- heavenshell/vim-jsdoc	Generate JSDoc to your JavaScript code
+  -- moll/vim-node	Superb development with Node.js
+  -- posva/vim-vue	Syntax Highlight for Vue.js components
+  -- fatih/vim-go	Go development
+  -- vim-python/python-syntax	Enhanced version of the original Python syntax
+  -- Vimjas/vim-python-pep8-indent	A nicer Python indentation style
+  -- vim-scripts/python_match.vim	Extend the % motion for Python files
+  -- StanAngeloff/php.vim	Up-to-date PHP syntax file (5.3 – 7.1 support)
+  -- keith/swift.vim	Swift support
+  -- rust-lang/rust.vim	Rust support
+  -- vim-jp/syntax-vim-ex	Improved Vim syntax highlighting
+  -- chrisbra/csv.vim	Handling column separated data
+  -- tpope/vim-git	Git runtime files
+  -- MTDL9/vim-log-highlighting	Syntax highlighting for generic log files
+  -- cespare/vim-toml	Syntax for TOML
+  -- mboughaba/i3config.vim	i3 window manager config syntax
+  -- dag/vim-fish	Fish shell edit support
+  -- jstrater/mpvim	Macports portfile configuration files
+  -- robbles/logtash.vim	Highlights logstash configuration files
+  -- IN3D/vim-raml	Syntax and language settings for RAML
+  -- towolf/vim-helm	Syntax for Helm templates (yaml + gotmpl + sprig)
   { "iamcco/markdown-preview.nvim", build = "cd app && yarn install", cmd = "MarkdownPreview" },
   -- https://github.com/kiyoon/jupynium.nvim
   { "vuki656/package-info.nvim", dependencies = "MunifTanjim/nui.nvim", ft = "json" },
@@ -1797,21 +1250,11 @@ local plugins = {
   { "vim-utils/vim-man", ft = "man", lazy = lz_syn },
   { "vim-crystal/vim-crystal", ft = "crystal", lz_sym = lz_syn },
   { "vimwiki/vimwiki", ft = { "markdown", "vimwiki" }, lazy = lz_syn },
-  {
-    "mtdl9/vim-log-highlighting",
-    ft = { "log", "LOG" },
-    event = { "BufReadPost", "BufNewFile" },
-    lazy = lz_syn,
-  },
-  {
-    "hashivim/vim-terraform",
-    ft = "terraform",
-    event = { "BufReadPost", "BufNewFile" },
-    lazy = lz_syn,
-  },
   { "raimon49/requirements.txt.vim", event = "VeryLazy", lazy = lz_syn },
   { "godlygeek/tabular", event = "VeryLazy", lazy = lz_syn },
   { "preservim/vim-markdown", commit = "df4be86", dependencies = { "godlygeek/tabular" } },
+  { "mtdl9/vim-log-highlighting", ft = { "log", "LOG" }, event = { "BufReadPost", "BufNewFile" } },
+  { "hashivim/vim-terraform", ft = "terraform", event = { "BufReadPost", "BufNewFile" } },
 }
 
 utils.apply_configs(plugins)

@@ -8,13 +8,14 @@ local extensions = require("configs.telescope.extensions")
 local display_path = require("configs.telescope.display-path")
 
 local basecfg = {
+  scrolling_limit = 20000,
   wrap_results = false,
   selection_caret = "▶ ",
   multi_icon = "󰒆 ", --  '◆ 󰒆 ',
   prompt_prefix = " 🔍 ", -- " 🔍 ",'   '
   cycle_layout_list = { "flex", "horizontal", "vertical", "bottom_pane", "center" },
   cache_picker = {
-    num_pickers = 100,
+    num_pickers = 10,
     limit_entries = 2000,
   },
   history = {

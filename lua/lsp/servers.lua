@@ -87,6 +87,7 @@ require("mason-lspconfig").setup_handlers({
     -- vim.notify("setting up lsp: " .. server_name, 1)
     -- local opts = vim.tbl_deep_extend("force", opts, lspconfig[server_name] or {})
     -- local config = get_config(server_name)
+
     local capabilities = lspconfig[server_name].capabilities or util.default_config.capabilities
     if server_name == "cssls" then
       capabilities.textDocument.completion.completionItem.snippetSupport = true

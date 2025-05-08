@@ -2,7 +2,8 @@ local cmp = require("cmp")
 local types = require("cmp.types")
 
 local debug_flag = false
-local WIDE_HEIGHT = 60
+
+local WIDE_HEIGHT = 80
 local WIN_HIGHLIGHT =
   "Normal:CmpNormal,FloatBorder:CmpFloatBorder,CursorLine:CmpCursorLine,Search:None"
 -- winhighlight = table.concat({
@@ -127,7 +128,18 @@ local cfg = {
   -- experimental = { ghost_text = { hl_group = 'CmpGhostText', }, },
   formatting = formatting,
   window = {
+
     completion = cmp.config.window.bordered({
+--     border = opts.border or 'rounded',
+--     winhighlight = opts.winhighlight
+--       or 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None',
+--     zindex = opts.zindex or 1001,
+--     scrolloff = opts.scrolloff or 0,
+--     col_offset = opts.col_offset or 0,
+--     side_padding = opts.side_padding or 1,
+--     scrollbar = opts.scrollbar == nil and true or opts.scrollbar,
+--     max_width = opts.max_width or 0,
+--     max_height = opts.max_height or 0,
       winhighlight = WIN_HIGHLIGHT,
       scrollbar = true,
       winblend = 10,
@@ -136,7 +148,7 @@ local cfg = {
     }),
     documentation = cmp.config.window.bordered({
       max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
-        max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
+      max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
       winhighlight = WIN_HIGHLIGHT,
       scrollbar = true,
       winblend = 10,

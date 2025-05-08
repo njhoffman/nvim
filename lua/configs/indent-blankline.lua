@@ -13,25 +13,25 @@
 -- vim.cmd([[highlight default IndentBlanklineIndent6 guifg=#C678DD gui=nocombine]])
 
 local ft_exclude = {
-  'alpha',
-  'dap.*',
-  'dashboard',
-  'guihua',
-  'help',
-  'lazy',
-  'lspinfo',
-  'mason',
-  'navbuddy',
-  'neo-tree',
-  'noice',
-  'null-ls-info',
-  'qf',
-  'sidekick',
-  'NvimTree',
-  'tablegen',
-  'Trouble',
+  "alpha",
+  "dap.*",
+  "dashboard",
+  "guihua",
+  "help",
+  "lazy",
+  "lspinfo",
+  "mason",
+  "navbuddy",
+  "neo-tree",
+  "noice",
+  "null-ls-info",
+  "qf",
+  "sidekick",
+  "NvimTree",
+  "tablegen",
+  "Trouble",
 }
-local bt_exclude = { 'terminal', 'prompt', 'nofile', 'quickfix' }
+local bt_exclude = { "terminal", "prompt", "nofile", "quickfix", "markdown" }
 
 -- require('indent_blankline').setup({
 --   -- for example, context is off by default, use this to turn it on
@@ -45,9 +45,9 @@ local bt_exclude = { 'terminal', 'prompt', 'nofile', 'quickfix' }
 
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 vim.g.indent_blankline_use_treesitter = false
-require('ibl').setup({
+require("ibl").setup({
   debounce = 100,
-  indent = { char = '│' },
+  indent = { char = "│" },
   -- whitespace = { highlight = { 'Whitespace', 'NonText' } },
   scope = { enabled = false },
   exclude = { filetypes = ft_exclude, buftypes = bt_exclude },

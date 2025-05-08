@@ -1,4 +1,5 @@
-local inspect = function(tbl, depth, n)
+local M = {}
+M.inspect = function(tbl, depth, n)
   n = n or 2
   depth = depth or 5
 
@@ -39,4 +40,4 @@ local inspect = function(tbl, depth, n)
   end
 end
 
-return inspect
+return M.inspect

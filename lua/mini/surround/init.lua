@@ -1,6 +1,6 @@
-local Config = require('mini.surround.Config')
-local H = require('mini.surround.surround')
-local state = require('mini.surround.state')
+local Config = require("mini.surround.Config")
+local H = require("mini.surround.surround")
+local state = require("mini.surround.state")
 
 -- Module definition ==========================================================
 local MiniSurround = {}
@@ -33,7 +33,7 @@ end
 MiniSurround.add = function(mode)
   -- Needed to disable in visual mode
   if Config.is_disabled() then
-    return '<Esc>'
+    return "<Esc>"
   end
 
   -- Get marks' positions based on current mode
@@ -42,13 +42,13 @@ MiniSurround.add = function(mode)
   -- Get surround info. Try take from cache only in not visual mode (as there
   -- is no intended dot-repeatability).
   local surr_info
-  if mode == 'visual' then
-    surr_info = H.get_surround_spec('output', false)
+  if mode == "visual" then
+    surr_info = H.get_surround_spec("output", false)
   else
-    surr_info = H.get_surround_spec('output', true)
+    surr_info = H.get_surround_spec("output", true)
   end
   if surr_info == nil then
-    return '<Esc>'
+    return "<Esc>"
   end
 
   -- Extend parts based on provided `[count]` before operator (if this is not
@@ -63,7 +63,7 @@ MiniSurround.add = function(mode)
   -- Possibly deal with linewise and blockwise addition separately
   local respect_selection_type = Config.get_config().respect_selection_type
 
-  if not respect_selection_type or marks.selection_type == 'charwise' then
+  if not respect_selection_type or marks.selection_type == "charwise" then
     -- Begin insert from right to not break column numbers
     -- Insert after the right mark (`+ 1` is for that)
     H.region_replace(
@@ -78,12 +78,12 @@ MiniSurround.add = function(mode)
     return
   end
 
-  if marks.selection_type == 'linewise' then
+  if marks.selection_type == "linewise" then
     local from_line, to_line = marks.first.line, marks.second.line
 
     -- Save current range indent and indent surrounded lines
     local init_indent = H.get_range_indent(from_line, to_line)
-    H.shift_indent('>', from_line, to_line)
+    H.shift_indent(">", from_line, to_line)
 
     -- Put cursor on the start of first surrounded line
     H.set_cursor_nonblank(from_line)
@@ -95,7 +95,7 @@ MiniSurround.add = function(mode)
     return
   end
 
-  if marks.selection_type == 'blockwise' then
+  if marks.selection_type == "blockwise" then
     -- NOTE: this doesn't work with mix of multibyte and normal characters, as
     -- well as outside of text lines.
     local from_col, to_col = marks.first.col, marks.second.col
@@ -119,9 +119,9 @@ end
 --- No need to use it directly, everything is setup in |MiniSurround.setup|.
 MiniSurround.delete = function()
   -- Find input surrounding region
-  local surr = H.find_surrounding(H.get_surround_spec('input', true))
+  local surr = H.find_surrounding(H.get_surround_spec("input", true))
   if surr == nil then
-    return '<Esc>'
+    return "<Esc>"
   end
 
   -- Highlight input surrounding region
@@ -130,7 +130,7 @@ MiniSurround.delete = function()
   if config.highlight_input then
     H.region_highlight(state.buf_id, surr.left)
     H.region_highlight(state.buf_id, surr.right)
-    vim.cmd('redraw')
+    vim.cmd("redraw")
   end
 
   -- Delete surrounding region. Begin with right to not break column numbers.
@@ -159,7 +159,7 @@ MiniSurround.delete = function()
     and H.is_line_blank(to_line)
   if is_linewise_delete then
     -- Dedent surrounded lines
-    H.shift_indent('<', from_line, to_line)
+    H.shift_indent("<", from_line, to_line)
 
     -- Place cursor on first surrounded line
     H.set_cursor_nonblank(from_line + 1)
@@ -176,9 +176,9 @@ end
 --- No need to use it directly, everything is setup in |MiniSurround.setup|.
 MiniSurround.replace = function()
   -- Find input surrounding region
-  local surr = H.find_surrounding(H.get_surround_spec('input', true))
+  local surr = H.find_surrounding(H.get_surround_spec("input", true))
   if surr == nil then
-    return '<Esc>'
+    return "<Esc>"
   end
 
   -- Highlight input surrounding region
@@ -188,11 +188,11 @@ MiniSurround.replace = function()
   if config.highlight_input then
     H.region_highlight(state.buf_id, surr.left)
     H.region_highlight(state.buf_id, surr.right)
-    vim.cmd('redraw')
+    vim.cmd("redraw")
   end
 
   -- Get output surround info
-  local new_surr_info = H.get_surround_spec('output', true)
+  local new_surr_info = H.get_surround_spec("output", true)
 
   -- Unhighlight input surrounding region
   if config.highlight_input then
@@ -202,7 +202,7 @@ MiniSurround.replace = function()
 
   -- Abort if no output surround info
   if new_surr_info == nil then
-    return '<Esc>'
+    return "<Esc>"
   end
 
   -- Replace by parts starting from right to not break column numbers
@@ -219,9 +219,9 @@ end
 --- No need to use it directly, everything is setup in |MiniSurround.setup|.
 MiniSurround.find = function()
   -- Find surrounding region
-  local surr = H.find_surrounding(H.get_surround_spec('input', true))
+  local surr = H.find_surrounding(H.get_surround_spec("input", true))
   if surr == nil then
-    return '<Esc>'
+    return "<Esc>"
   end
 
   -- Highlight input surrounding region
@@ -240,11 +240,11 @@ MiniSurround.find = function()
   local pos_array = H.surr_to_pos_array(surr)
 
   -- Cycle cursor through positions
-  local dir = Config.cache.direction or 'right'
+  local dir = Config.cache.direction or "right"
   H.cursor_cycle(pos_array, dir)
 
   -- Open 'enough folds' to show cursor
-  vim.cmd('normal! zv')
+  vim.cmd("normal! zv")
 end
 
 --- Highlight surrounding
@@ -252,9 +252,9 @@ end
 --- No need to use it directly, everything is setup in |MiniSurround.setup|.
 MiniSurround.highlight = function()
   -- Find surrounding region
-  local surr = H.find_surrounding(H.get_surround_spec('input', true))
+  local surr = H.find_surrounding(H.get_surround_spec("input", true))
   if surr == nil then
-    return '<Esc>'
+    return "<Esc>"
   end
 
   -- Setup config
@@ -360,13 +360,13 @@ MiniSurround.gen_spec = { input = {}, output = {} }
 ---   no 'nvim-treesitter'.
 --- |MiniAi.gen_spec.treesitter()| for similar 'mini.ai' generator.
 MiniSurround.gen_spec.input.treesitter = function(captures, opts)
-  opts = vim.tbl_deep_extend('force', { use_nvim_treesitter = true }, opts or {})
+  opts = vim.tbl_deep_extend("force", { use_nvim_treesitter = true }, opts or {})
   captures = H.prepare_captures(captures)
 
   return function()
     -- Get array of matched treesitter nodes
-    local has_nvim_treesitter = pcall(require, 'nvim-treesitter')
-      and pcall(require, 'nvim-treesitter.query')
+    local has_nvim_treesitter = pcall(require, "nvim-treesitter")
+      and pcall(require, "nvim-treesitter.query")
     local node_pair_querier = (has_nvim_treesitter and opts.use_nvim_treesitter)
         and H.get_matched_node_pairs_plugin
       or H.get_matched_node_pairs_builtin

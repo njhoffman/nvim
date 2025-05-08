@@ -1,12 +1,11 @@
-local lsp_icons = require('lsp.icons')
+local lsp_icons = require("lsp.icons")
 
 local sources = {
-  'todo_comments',
-  'Lua Diagnostics.',
-  'editorconfig_checker',
-  'shellcheck',
+  "todo_comments",
+  "Lua Diagnostics.",
+  "editorconfig_checker",
+  "shellcheck",
 }
-
 -- wrap open_float to inspect diagnostics and use the severity color for border
 -- bufnr = 10, col = 35, end_col = 0, end_lnum = 4, lnum = 3, message = "INFO, HINT", namespace = 93, row = 4, severity = 4, source = "todo_comments"
 --     bufnr = 8, code = "missing-fields", col = 15, end_col = 61, end_lnum = 186, lnum = 186,
@@ -16,7 +15,7 @@ local sources = {
 -- }
 
 local severity_name = function(severity_level)
-  local lvl = type(severity_level) == 'number' and severity_level or tonumber(severity_level)
+  local lvl = type(severity_level) == "number" and severity_level or tonumber(severity_level)
   return string.lower(vim.diagnostic.severity[lvl])
 end
 
@@ -52,78 +51,103 @@ end
 
 local generate_border = function(max_severity)
   local border_color = ({
-    [vim.diagnostic.severity.HINT] = 'DiagnosticFloatingHintBorder',
-    [vim.diagnostic.severity.INFO] = 'DiagnosticFloatingInfoBorder',
-    [vim.diagnostic.severity.WARN] = 'DiagnosticFloatingWarnBorder',
-    [vim.diagnostic.severity.ERROR] = 'DiagnosticFloatingErrorBorder',
+    [vim.diagnostic.severity.HINT] = "DiagnosticFloatingHintBorder",
+    [vim.diagnostic.severity.INFO] = "DiagnosticFloatingInfoBorder",
+    [vim.diagnostic.severity.WARN] = "DiagnosticFloatingWarnBorder",
+    [vim.diagnostic.severity.ERROR] = "DiagnosticFloatingErrorBorder",
   })[max_severity]
 
   return {
-    { '╭', border_color },
-    { '─', border_color },
-    { '╮', border_color },
-    { '│', border_color },
-    { '╯', border_color },
-    { '─', border_color },
-    { '╰', border_color },
-    { '│', border_color },
+    { "╭", border_color },
+    { "─", border_color },
+    { "╮", border_color },
+    { "│", border_color },
+    { "╯", border_color },
+    { "─", border_color },
+    { "╰", border_color },
+    { "│", border_color },
   }
 end
 
-local float_options = function()
-  local opts = {
-    header = '',
-    close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
+local float_options = function(maxwidth)
+  local win_opts = {
+    header = "",
+    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
     focusable = false,
-    style = 'minimal',
-    scope = 'cursor',
-    source = 'always',
+    style = "minimal",
+    scope = "cursor",
+    source = "always",
+    width = maxwidth,
     format = function(diag)
       -- See null-ls.nvim#632, neovim#17222 for how to pick up `code`
       local user_data
       user_data = diag.user_data or {}
       user_data = user_data.lsp or user_data.null_ls or user_data
       -- local code = (diag.symbol or diag.code or user_data.symbol or user_data.code)
-      return string.format('%s', diag.message)
+      diag.source = vim.fn.substitute(diag.source, "\\.$", "", "g")
+      diag.message = vim.fn.substitute(diag.message, "\\.$", "", "g")
+      return string.format("%s", diag.message)
     end,
     prefix = function(diag, i, total)
-      local icons = lsp_icons.get_icons('diagnostics')
+      local icons = lsp_icons.get_icons("diagnostics")
       -- local num_prefix = string.format('%d. ', i)
-      local icon_prefix = string.format('%s ', icons[severity_name(diag.severity)])
+      local icon_prefix = string.format("%s ", icons[severity_name(diag.severity)])
       local hl_group = ({
-        [vim.diagnostic.severity.HINT] = 'DiagnosticFloatingHint',
-        [vim.diagnostic.severity.INFO] = 'DiagnosticFloatingInfo',
-        [vim.diagnostic.severity.WARN] = 'DiagnosticFloatingWarn',
-        [vim.diagnostic.severity.ERROR] = 'DiagnosticFloatingError',
+        [vim.diagnostic.severity.HINT] = "DiagnosticFloatingHint",
+        [vim.diagnostic.severity.INFO] = "DiagnosticFloatingInfo",
+        [vim.diagnostic.severity.WARN] = "DiagnosticFloatingWarn",
+        [vim.diagnostic.severity.ERROR] = "DiagnosticFloatingError",
       })[diag.severity]
       return icon_prefix, hl_group
     end,
   }
-  return opts
+  return win_opts
 end
 
-vim.diagnostic.open_float = (function(orig)
-  return function(_opts)
+vim.diagnostic.open_float = (function(orig_open_float)
+  return function(_opts, ...)
+    if _opts == nil or type(_opts) == "number" then
+      local bufnr = _opts
+      _opts = ... or {} --- @type vim.diagnostic.Opts.Float
+      _opts.bufnr = bufnr
+    end
+
+    local opts = vim.tbl_deep_extend("force", float_options(), _opts or {})
     local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
-    local opts = vim.tbl_deep_extend('force', _opts or {}, float_options())
-    -- A more robust solution would check the "scope" value in `opts` to
-    -- determine where to get diagnostics from
-    local diagnostics = vim.diagnostic.get(opts.bufnr or 0, { lnum = lnum })
+    local diagnostics = vim.diagnostic.get(opts.bufnr or 0, { namespace = nil, lnum = lnum })
+    if vim.tbl_isempty(diagnostics) then
+      return
+    end
+    -- local maxwidth = 0
+    -- diagnostics = vim.tbl_map(function(d)
+    --   --  Lua Syntax Check.: Unexpected <exp> . [exp-in-action]
+    --   d.source = vim.fn.substitute(d.source, "%.", "", "g")
+    --   d.message = vim.fn.substitute(d.message, "%.", "", "g")
+    --   local w = {
+    --     icon = 1,
+    --     code = vim.fn.strlen(d.code) + 3,
+    --     message = vim.fn.strlen(d.message) + 1,
+    --     source = vim.fn.strlen(d.source) + 2,
+    --   }
+    --   maxwidth = math.max(w.icon + w.code + w.message + w.source, maxwidth)
+    --   return d
+    -- end, diagnostics)
+
     local max_severity = get_max_severity(diagnostics)
     opts.border = generate_border(max_severity)
-
-    local max_level = severity_name(max_severity) or 'info'
-    local bufnr, winnr = orig(opts)
+    local bufnr, winnr = orig_open_float(opts)
+    -- local max_level = severity_name(max_severity) or "info"
 
     if winnr and vim.api.nvim_win_is_valid(winnr) then
       -- use the same transparency effect from cmp
-      vim.api.nvim_win_set_option(
-        winnr,
-        'winhighlight',
-        'Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None'
+      vim.api.nvim_set_option_value(
+        "winhighlight",
+        "Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None",
+        { scope = "local", win = winnr }
       )
       -- vim.api.nvim_win_set_option(winnr, 'winblend', 10)
     end
+    return bufnr, winnr
   end
 end)(vim.diagnostic.open_float)
 

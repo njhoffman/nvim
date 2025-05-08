@@ -1,23 +1,32 @@
 local utils = require("utils.lazy")
 
+--   "pmizio/typescript-tools.nvim",
+-- "RRethy/vim-illuminate",
+-- 'zeioth/garbage-day.nvim',
 -- https://github.com/onsails/diaglist.nvim
+-- https://github.com/mfussenegger/nvim-jdtls
+-- https://github.com/jmbuhr/otter.nvim
+-- "KostkaBrukowa/definition-or-references.nvim",
+-- "Chaitanyabsprip/fastaction.nvim",
+-- { 'Wansmer/symbol-usage.nvim', event = 'LspAttach' },
+-- { "jose-elias-alvarez/typescript.nvim" },
+-- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },
+--   { "inkarkat/vim-UnconditionalPaste",
+--   requires = "inkarkat/vim-ingo-library" },
 
 local plugins = {
-  {
-    "bassamsdata/namu.nvim",
-  },
+  { "bassamsdata/namu.nvim" },
   {
     "neovim/nvim-lspconfig",
-    opts = {
-      inlay_hints = { enabled = true },
-    },
+    opts = { inlay_hints = { enabled = true } },
     event = { "BufReadPost", "BufNewFile", "LspAttach" },
     dependencies = {
-      { "williamboman/mason.nvim", cmd = "Mason" },
-      "williamboman/mason-lspconfig.nvim",
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
+      -- Core package manager – last 1.x commit (May 2 2025)
+      { "williamboman/mason.nvim", commit = "4da89f3" }, -- v1.‑series
+      -- LSP bridge – latest 1.x release tag (Feb 15 2025)
+      { "williamboman/mason-lspconfig.nvim", commit = "1a31f82" }, -- v1.32.0
+      { "WhoIsSethDaniel/mason-tool-installer.nvim", commit = "125551" },
       "weilbith/nvim-code-action-menu",
-      -- "Chaitanyabsprip/fastaction.nvim",
       {
         "adoyle-h/lsp-toggle.nvim",
         config = function()
@@ -27,20 +36,8 @@ local plugins = {
           })
         end,
       },
-      "SmiteshP/nvim-navic",
       "aznhe21/actions-preview.nvim",
-      -- "RRethy/vim-illuminate",
-      {
-        "artemave/workspace-diagnostics.nvim",
-        enabled = false,
-        config = function()
-          require("workspace-diagnostics").setup({})
-          --[[ workspace_files = function()
-              return { 'index.js', 'lib/banana.js' }
-            end ]]
-        end,
-      },
-      -- 'zeioth/garbage-day.nvim',
+      { "artemave/workspace-diagnostics.nvim" },
       "b0o/schemastore.nvim", -- for jsonls
       {
         "piersolenski/wtf.nvim",
@@ -64,44 +61,16 @@ local plugins = {
           },
         },
       },
-      -- "KostkaBrukowa/definition-or-references.nvim",
       "nanotee/sqls.nvim",
       "tami5/lspsaga.nvim",
       { "Exafunction/codeium.nvim", event = "BufEnter" },
-      -- { 'Wansmer/symbol-usage.nvim', event = 'LspAttach' },
       "rmagatti/goto-preview",
       "kosayoda/nvim-lightbulb",
       "mickael-menu/zk-nvim",
       "dnlhc/glance.nvim",
-      -- ft = {'javascript','javascriptreact','javascript.jsx','typescript','typescriptreact','typescript.tsx'}
-      -- { "jose-elias-alvarez/typescript.nvim" },
-      -- {
-      --   "pmizio/typescript-tools.nvim",
-      --   enabled = false,
-      --   dependencies = { "nvim-lua/plenary.nvim" },
-      -- },
-      {
-        "folke/lazydev.nvim",
-        ft = "lua", -- only load on lua files
-        opts = {
-          library = {
-            -- See the configuration section for more details
-            -- Load luvit types when the `vim.uv` word is found
-            "lazy.nvim",
-            { path = "luvit-meta/library", words = { "vim%.uv" } },
-            { path = "LazyVim", words = { "LazyVim" } },
-            -- "~/projects/my-awesome-lib",
-            -- "luvit-meta/library",
-            -- { path = "wezterm-types", mods = { "wezterm" } },
-            -- { path = "xmake-luals-addon/library", files = { "xmake.lua" } },
-          },
-        },
-      },
+      { "folke/lazydev.nvim", ft = "lua" },
       { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
-      {
-        "folke/trouble.nvim",
-        cmd = { "TroubleToggle", "Trouble" },
-      },
+      { "folke/trouble.nvim", cmd = { "TroubleToggle", "Trouble" } },
       {
         "folke/lsp-colors.nvim",
         opts = { Error = "#db4b4b", Warn = "#e0af68", Info = "#0db9d7", Hint = "#10B981" },
@@ -116,18 +85,13 @@ local plugins = {
       vim.import("configs.definition-or-references")
     end,
   },
-  {
-    "james1236/backseat.nvim",
-    cmd = { "Backseat", "BackseatAsk", "BackseatClear" },
-  },
+  { "james1236/backseat.nvim", cmd = { "Backseat", "BackseatAsk", "BackseatClear" } },
   {
     "SmiteshP/nvim-navbuddy",
     dir = "~/git/nvim-navbuddy",
     event = { "VeryLazy" },
     dependencies = { "neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
   },
-  -- https://github.com/jmbuhr/otter.nvim
-  -- {
   { "mfussenegger/nvim-lint", event = { "BufReadPre", "BufNewFile" } },
   {
     "stevearc/aerial.nvim",
@@ -135,7 +99,6 @@ local plugins = {
     cmd = { "AerialToggle", "AerialNext", "AerialGo", "AerialOpen", "AerialPrev", "AerialOpenAll" },
     dependencies = { "nvim-web-devicons" },
   },
-  -- https://github.com/mfussenegger/nvim-jdtls
   {
     "folke/todo-comments.nvim",
     event = { "BufReadPost", "BufNewFile" },

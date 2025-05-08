@@ -68,7 +68,7 @@ local plugins = {
     "TaDaa/vimade",
     -- event = { "VimEnter" },
     lazy = false,
-    enabled = true,
+    enabled = false,
   },
   {
     "m4xshen/hardtime.nvim",

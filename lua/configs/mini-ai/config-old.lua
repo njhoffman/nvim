@@ -29,7 +29,6 @@ end
 
 local function jump_textobject(prev_next, left_right, ai_type)
   cache = {}
-
   local ok, ai = pcall(require, "mini.ai")
   if not ok then
     vim.notify("No mini-ai found")
@@ -50,7 +49,9 @@ local function jump_textobject(prev_next, left_right, ai_type)
 end
 
 local ai = require("mini.ai")
-local gen_ai_spec = require("mini.extra").gen_ai_spec
+local extra_ai = require("mini.extra").gen_ai_spec
+local ts = ai.gen_spec.treesitter
+local pair = ai.gen_spec.pair
 
 local opts = {
   -- TODO: investigate notification errors
@@ -68,20 +69,13 @@ local opts = {
     goto_left = "g[",
     goto_right = "g]",
   },
-  n_lines = 500,
-  -- - `'cover'` - use only covering match. Don't use either previous or next; report that there is no textobject found.
-  -- - `'cover_or_next'` (default) - use covering match. If not found, use next.
-  -- - `'cover_or_prev'` - use covering match. If not found, use previous.
-  -- - `'cover_or_nearest'` - use covering match. If not found, use nearest.
-  -- - `'next'` - use next match.
-  -- - `'prev'` - use previous match.
-  -- - `'nearest'` - use nearest match.
+  n_lines = 2000,
+  -- cover_or_next    next
+  -- cover_or_prev    cover prev
+  -- cover_or_nearest nearest
   search_method = "cover_or_nearest",
-  --   comment.outer
-  --   number.inner
   --   assignment.inner  assignment.outer
   --   assignment.lhs    assignment.rhs
-  -- B block.inner       block.outer
   --   call.inner        call.outer
   -- c conditional.inner conditional.outer
   -- f function.inner    function.outer
@@ -98,64 +92,53 @@ local opts = {
     -- -- Number: { '%f[%d]%d+' }
     -- -- Date in 'YYYY-MM-DD' format: { '()%d%d%d%d%-%d%d%-%d%d()' }
     -- -- Lua block string: { '%[%[().-()%]%]' }
-    -- -- Tweak argument to be recognized only inside `()` between `;`
-    -- --    a = gen_spec.argument({ brackets = { '%b()' }, separator = ';' }),
-    -- -- Tweak function call to not detect dot in function name
-    -- --    f = gen_spec.function_call({ name_pattern = '[%w_]' }),
-    -- i = ai.gen_ai_spec.indent(),
-    ["*"] = ai.gen_spec.pair("*", "*", { type = "greedy" }),
-    ["_"] = ai.gen_spec.pair("_", "_", { type = "greedy" }),
-    ["|"] = ai.gen_spec.pair("|", "|", { type = "non-balanced" }),
-    [";"] = ai.gen_spec.treesitter(
-      { a = "@parameter.outer", i = "@parameter.inner" },
-      { desc = "  argument" }
-    ),
-    ["a"] = ai.gen_spec.treesitter(
-      { a = "@parameter.outer", i = "@parameter.inner" },
-      { desc = "  argument" }
-    ),
-    ["A"] = ai.gen_spec.treesitter(
-      { a = "@attribute.outer", i = "@attribute.inner" },
-      { desc = "  attribute" }
-    ),
+    ["$"] = pair("$", "$", { type = "balanced" }),
+    ["*"] = pair("*", "*", { type = "greedy" }),
+    ["_"] = pair("_", "_", { type = "greedy" }),
+    ["|"] = pair("|", "|", { type = "non-balanced" }),
+    [";"] = ts({ a = "@parameter.outer", i = "@parameter.inner" }),
+    ["a"] = ts({ a = "@parameter.outer", i = "@parameter.inner" }),
+    ["A"] = ts({ a = "@attribute.outer", i = "@attribute.inner" }),
     ["b"] = { { "%b()", "%b[]", "%b{}" }, "^.%s*().-()%s*.$" },
-    ["B"] = ai.gen_spec.treesitter(
-      { a = "@block.outer", i = "@block.inner" },
-      { desc = "  block" }
-    ),
-    ["c"] = ai.gen_spec.treesitter(
-      { a = "@conditional.outer", i = "@conditional.inner" },
-      { desc = "  conditional" }
-    ),
-    ["C"] = ai.gen_spec.treesitter(
-      { a = "@class.outer", i = "@class.inner" },
-      { desc = "  class" }
-    ),
-    ["d"] = gen_ai_spec.diagnostic(),
-    ["D"] = gen_ai_spec.number(),
-    ["f"] = ai.gen_spec.treesitter(
-      { a = "@function.outer", i = "@function.inner" },
-      { desc = "  function" }
-    ),
-    ["g"] = gen_ai_spec.buffer(),
-    ["k"] = ai.gen_spec.treesitter({
+    ["B"] = ts({ a = "@block.outer", i = "@block.inner" }),
+    ["c"] = ts({ a = "@conditional.outer", i = "@conditional.inner" }),
+    ["d"] = extra_ai.diagnostic(),
+    ["D"] = extra_ai.number(),
+    ["f"] = ts({ a = "@function.outer", i = "@function.inner" }),
+    ["g"] = extra_ai.buffer(),
+    ["k"] = ts({
       i = { "@key.inner", "@assignment.lhs" },
       a = { "@key.inner", "@assignment.lhs" },
-    }, { desc = "  key from kv pair" }),
-    ["l"] = gen_ai_spec.line(),
-    ["L"] = ai.gen_spec.treesitter(
-      { a = "@loop.outer", i = "@loop.inner" },
-      { desc = "  loop" }
-    ),
-    ["o"] = ai.gen_spec.treesitter({
+    }),
+    ["i"] = extra_ai.indent(),
+    ["l"] = extra_ai.line(),
+    ["L"] = ts({ a = "@loop.outer", i = "@loop.inner" }),
+    ["o"] = ts({
       a = { "@block.outer", "@conditional.outer", "@loop.outer" },
       i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-    }, { desc = "  block/conditional/loop" }),
+    }),
+    ["p"] = {
+      {
+        "\n%s*\n()().-()\n%s*\n()[%s]*", -- normal paragraphs
+        "^()().-()\n%s*\n[%s]*()", -- paragraph at start of file
+        "\n%s*\n()().-()()$", -- paragraph at end of file
+      },
+    },
+    -- line (same key as visual line in my mappings)
+
+    ["q"] = { { "%b''", '%b""', "%b``" }, "^.().*().$" },
+    ["s"] = ts({
+      a = { "@function.outer", "@class.outer", "@testitem.outer" },
+      i = { "@function.inner", "@class.inner", "@testitem.inner" },
+    }),
     ["t"] = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
-    ["v"] = ai.gen_spec.treesitter({
+    ["v"] = ts({
       i = { "@value.inner", "@assignment.rhs" },
       a = { "@value.inner", "@assignment.rhs" },
-    }, { desc = "  key from kv pair" }),
+    }),
+    ["w"] = { "()()%f[%w_][%w_]+()[ \t]*()" },
+    ["W"] = { { "()()%f[%w%p][%w%p]+()[ \t]*()" } },
+    ["x"] = ts({ a = "@comment.outer", i = "@comment.inner" }),
   },
 }
 
@@ -193,6 +176,7 @@ local setup_keymaps = function()
     ['"']    = '  inner quote "',
     ["'"]    = "  inner s-quote '",
     ['`']    = '  inner apostrophe `',
+    ['$']    = '  inner $',
     ['(']    = '  inner (',
     [')']    = '  inner ) with white-space',
     ['>']    = '  inner > with white-space',
@@ -209,14 +193,21 @@ local setup_keymaps = function()
     ['c']    = '  inner conditional',
     ['C']    = '  inner class',
     ['d']    = '  inner diagnostic',
-    ['g']    = '  inner entire buffer',
     ['f']    = '  inner function',
+    ['g']    = '  inner entire buffer',
+    ['k']    = "  key from kv pair",
     ['l']    = '  inner line',
     ['L']    = '  inner loop',
+    ['i']    = '  inner indent',
     ['o']    = '  inner block, conditional, loop',
+    ['p']    = '  inner paragraph',
     ['q']    = '  inner quote: `, ", \'',
+    ['s']    = '  scope',
     ['t']    = '  inner tag',
     ['x']    = '  inner comment',
+    ['v']    = "  value from kv pair",
+    ['w']    = "  word",
+    ['W']    = "  WORD"
   }
 
   local a = vim.deepcopy(i)

@@ -4,21 +4,21 @@
 local skeletons = {
   python      = 'py',
   applescript = 'applescript',
-  javascript  = 'jxa',
+  -- javascript  = 'jxa',
   make        = 'make',
-  bash        = 'sh',
-  sh          = 'sh',
-  zsh         = 'zsh',
+  -- bash        = 'sh',
+  -- sh          = 'sh',
+  -- zsh         = 'zsh',
 }
 local write_file = function(filename)
   -- write file
   -- (idempotent, since Filetype event sometimes triggered multiple times)
-  local file = io.open(filename, 'r')
+  local file = io.open(filename, "r")
   if not file then
     return
   end
 
-  local lines = vim.split(file:read('*a'), '\n')
+  local lines = vim.split(file:read("*a"), "\n")
   file:close()
 
   vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
@@ -28,18 +28,18 @@ end
 local load_skeleton = function(ctx)
   vim.defer_fn(function()
     if ctx.match and skeletons[ctx.match] then
-      local fileStats = vim.loop.fs_stat(vim.fn.expand('%'))
-      local specialBuffer = vim.bo.buftype ~= ''
+      local fileStats = vim.loop.fs_stat(vim.fn.expand("%"))
+      local specialBuffer = vim.bo.buftype ~= ""
       -- if specialBuffer or not fileStats then
       if specialBuffer then
         return
       end
       local filetype = ctx.match
       local ext = skeletons[filetype]
-      local skeletonFile = vim.fn.stdpath('config') .. '/templates/skeleton.' .. ext
+      local skeletonFile = vim.fn.stdpath("config") .. "/templates/skeleton." .. ext
       local noSkeleton = vim.loop.fs_stat(skeletonFile) == nil
       if noSkeleton then
-        vim.notify('Skeleton', 'Skeleton file not found.', 'error')
+        vim.notify("Skeleton", "Skeleton file not found.", "error")
         return
       end
 
@@ -52,9 +52,9 @@ local load_skeleton = function(ctx)
   end, 1)
 end
 
-local augroup = vim.api.nvim_create_augroup('templates', { clear = true })
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = '*',
+local augroup = vim.api.nvim_create_augroup("templates", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
   group = augroup,
   callback = load_skeleton,
 })

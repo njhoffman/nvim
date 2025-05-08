@@ -1,24 +1,34 @@
 require("lsp.float-diag")
 
 local opts = {
+  -- inlay_hints = false,
   log_level = 2,
   signs_priority = 6,
-  inlay_hints = false,
-  underline = {
-    severity = { min = vim.diagnostic.severity.WARN },
+  underline = false,
+  -- underline = {
+  --   severity = { min = vim.diagnostic.severity.WARN },
+  -- },
+  jump = {
+    float = true,
+    wrap = true,
   },
-  virtual_text = false,
+  severity_sort = true,
 }
 
 vim.lsp.set_log_level(opts.log_level)
 
 local diag_defaults = {
-  severity_sort = true,
+  float = true,
+  severity_sort = false,
   signs = true,
   underline = true,
   update_in_insert = false,
   virtual_lines = false,
-  virtual_text = true,
+  virtual_text = false,
+  jump = {
+    float = false,
+    wrap = true,
+  },
 }
 
 local diag_cfg = vim.deepcopy(diag_defaults)

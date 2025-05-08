@@ -85,6 +85,40 @@ cmd("TrimTrailingWhitespace", format.trim_space, {
   desc = "Trims trailing whitespace in the current buffer.",
 })
 
+cmd("Google", function(o)
+  -- local escaped = require('socket.url').escape(o.args)
+  local escaped = vim.uri_encode(o.args)
+  local url = ("https://www.google.com/search?q=%s"):format(escaped)
+  vim.ui.open(url)
+end, { nargs = 1, desc = "search in google" })
+
+cmd("Reddit", function(o)
+  -- local escaped = require('socket.url').escape(o.args)
+  local escaped = vim.uri_encode(o.args)
+  local url = ("https://www.google.com/search?q=site:reddit.com%20%s"):format(escaped)
+  vim.ui.open(url)
+end, { nargs = 1, desc = "search in reddit" })
+
+local web_query = function(engine)
+  local engines = {
+    google = { prompt = " Google: ", url = "https://www.google.com/search?q=" },
+  }
+
+  local selected = engines[engine or "google"]
+  local input = vim.fn.input(selected.prompt)
+  local response = not (input == nil or input == "")
+
+  -- Start off with the current buf type. This will add lua for lua files ruby for rb files and so on.
+  local query = vim.bo.filetype
+  if response then
+    query = query .. " " .. input
+  else
+    query = query .. " " .. vim.fn.expand("<cword>")
+  end
+
+  os.execute([[open ']] .. selected.url .. query .. "'")
+end
+
 -- -- Mapping for dd that doesn't yank an empty line into your default register:
 -- keymap.set("n", "dd", function()
 --   if vim.api.nvim_get_current_line():match("^%s*$") then

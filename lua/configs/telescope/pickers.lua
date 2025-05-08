@@ -64,7 +64,7 @@ local pickers = {
   },
   find_files = {
     -- previewer = c_previewers.buffer_cat(),
-    debounce = 100,
+    -- debounce = 100,
     prompt_prefix = icons.file,
     mappings = mappings.file,
     find_command = commands.rg,
@@ -112,7 +112,7 @@ local pickers = {
   -- ]]
 
   help_tags = {
-    debounce = 500,
+    -- debounce = 500,
     -- file_sorter = require('telescope.sorters').get_fzy_sorter,
     prompt_prefix = icons.help,
     -- layout_config = { height = 15 },
@@ -120,13 +120,13 @@ local pickers = {
     -- previewer = c_previewers.buffer_cat(),
   },
   fd = {
-    debounce = 100,
+    -- debounce = 100,
     mappings = mappings.file,
     prompt_prefix = icons.file,
     find_command = commands.rg,
   },
   colorscheme = {
-    debounce = 100,
+    -- debounce = 100,
     prompt_prefix = icons.palette,
     enable_preview = true,
     layout_strategy = "horizontal",
@@ -141,7 +141,7 @@ local pickers = {
     },
   },
   oldfiles = {
-    debounce = 100,
+    -- debounce = 100,
     prompt_prefix = icons.history,
     mappings = mappings.file,
     find_command = commands.rg,
@@ -152,14 +152,14 @@ local pickers = {
     additional_args = { "--trim", "--hidden", "--glob=!.git", "-j1" },
   },
   live_grep = {
-    debounce = 100,
+    -- debounce = 100,
     prompt_prefix = icons.search,
     mappings = mappings.grep,
     find_command = commands.rg,
     additional_args = { "--trim", "--hidden", "--glob=!.git", "-j1" },
   },
   buffers = {
-    debounce = 100,
+    -- debounce = 100,
     prompt_prefix = icons.buffer,
     show_all_buffers = true,
     sort_mru = true,
@@ -172,7 +172,7 @@ local pickers = {
     -- },
   },
   keymaps = {
-    debounce = 100,
+    -- debounce = 100,
     prompt_prefix = icons.keymap,
     entry_maker = require("configs.telescope.entry_makers.keymaps")({}),
     results_title = "@buf !sil *map  exp  now",
@@ -190,13 +190,13 @@ local pickers = {
   highlights = {
     prompt_prefix = icons.palette,
     mappings = mappings.highlights,
-    debounce = 100,
+    -- debounce = 100,
     layout_config = {
       horizontal = { preview_width = { 0.7, min = 30 } },
     },
   },
   git_status = {
-    debounce = 100,
+    -- debounce = 100,
     prompt_prefix = icons.git,
     show_untracked = true,
     enabled = false,
@@ -206,7 +206,7 @@ local pickers = {
   git_commits = {
     enabled = false,
     prompt_prefix = icons.git,
-    debounce = 100,
+    -- debounce = 100,
     previewer = require("telescope.previewers").new_termopen_previewer({
       dyn_title = function(_, entry)
         return entry.value
@@ -233,7 +233,7 @@ local pickers = {
     -- previewer = c_previewers.delta,
   },
   git_branches = {
-    debounce = 100,
+    -- debounce = 100,
     prompt_prefix = icons.git,
     show_remote_tracking_branches = true,
     previewer = require("telescope.previewers").new_termopen_previewer({
@@ -265,7 +265,7 @@ local pickers = {
     }),
   },
   git_bcommits = {
-    debounce = 100,
+    -- debounce = 100,
     mappings = mappings.file,
     prompt_prefix = icons.git,
     -- git_command = { "git", "log", "--pretty=%h %s\t%cr" }, -- add commit time (%cr)
@@ -289,7 +289,7 @@ local pickers = {
     -- git_command = { "git", "log", "--format=%h%d (%ar) %s <%an>" },
   },
   lsp_workspace_symbols = {
-    debounce = 100,
+    -- debounce = 100,
     prompt_prefix = icons.symbol,
     ignore_symbols = {
       "boolean",
@@ -321,14 +321,14 @@ local pickers = {
     layout_config = { cursor = { width = 0.3 } },
   },
   lsp_references = {
-    debounce = 100,
+    -- debounce = 100,
     prompt_prefix = icons.reference,
     include_current_line = false,
     theme = "dropdown",
     path_display = { "tail" },
   },
   lsp_document_symbols = {
-    debounce = 100,
+    -- debounce = 100,
     prompt_prefix = icons.symbol,
     sorter = require("telescope").extensions.fzf.native_fzf_sorter({
       fuzzy = true, -- false will only do exact matching

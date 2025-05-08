@@ -5,7 +5,7 @@ require("globals")
 -- https://github.com/stevearc/quicker.nvim
 vim.import("quickfix")
 
-require("utils.lazy").setup({ cache = false, reload = true, lazy = false })
+require("utils.lazy").setup({ cache = true, reload = false, lazy = false })
 
 -- qfSeparator, qfLineNr, qfFilename
 
@@ -26,12 +26,13 @@ for _, mod_name in ipairs({
   "configs.smoothcursor",
   -- 'configs.nvim-scrollbar',
   -- 'configs.neoscroll',
-  "action-hints.setup",
+  -- "action-hints.setup",
   -- 'winsep.setup',
   -- 'better_escape-setup',
   "early-retirement.setup",
   "oldfiles",
   "tail",
+  "configs.mini-comment",
   "hover.setup",
   -- "NeoComposer._setup",
   "configs.feline",
@@ -50,26 +51,12 @@ vim.defer_fn(function()
   require("histories").setup()
   -- require("synshade").setup()
   require("scrollview.setup")
-  require("configs.tiny-glimmer")
 
   -- 'lab.setup',
   local llm_config = require("llm-config")
   require("llm").setup(llm_config)
-
   local neoai_cfg = require("neoai.options")
   require("neoai").setup(neoai_cfg)
-  -- local map = require('mapper').map
-
-  -- vim.keymap.set('n', '<M-0>', 'i<M-0><esc>', { remap = true, desc = 'warp pair symbol forwads' })
-  -- vim.keymap.set('n', '<M-9>', 'i<M-9><esc>', { remap = true, desc = 'warp pair symbol backwards' })
-  -- vim.keymap.set('n', '<M-)>', 'i<M-)><esc>', { remap = true, desc = 'warp pair symbol forwads' })
-  -- vim.keymap.set('n', '<M-(>', 'i<M-(><esc>', { remap = true, desc = 'warp pair symbol backwards' })
-
-  --
-  -- vim.keymap.set({ 'i', 'n' }, '<M-.>', '<M-0>', { remap = true, desc = 'warp pair symbol forwards' })
-  -- vim.keymap.set({ 'i', 'n' }, '<M-,>', '<M-9>', { remap = true, desc = 'warp pair symbol forwards' })
-  -- vim.keymap.set('i', "<M-'>", '<M-0>', { remap = true, desc = 'warp pair symbol forwards' })
-  -- vim.keymap.set('i', '<M-;>', '<M-9>', { remap = true, desc = 'warp pair symbol backwards' })
 
   -- require('internals').setup()
   if vim.g.started_by_firenvim then
@@ -83,4 +70,7 @@ vim.defer_fn(function()
   end
 end, 100)
 
+vim.defer_fn(function()
+  require("configs.tiny-glimmer")
+end, 500)
 -- require("notifications.recipes.progress").config()

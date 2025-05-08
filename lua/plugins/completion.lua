@@ -1,5 +1,27 @@
 local utils = require("utils.lazy")
 
+-- andersevenrud/cmp-tmux
+-- chrisgrieser/cmp-nerdfont
+-- David-Kunz/cmp-npm
+-- f3fora/cmp-spell
+-- FelipeLema/cmp-async-path
+-- hrsh7th/cmp-buffer
+-- hrsh7th/cmp-calc
+-- hrsh7th/cmp-cmdline
+-- hrsh7th/cmp-emoji
+-- hrsh7th/cmp-nvim-lsp
+-- hrsh7th/cmp-nvim-lsp-document-symbol
+-- hrsh7th/cmp-nvim-lsp-signature-help
+-- hrsh7th/cmp-nvim-lua
+-- hrsh7th/cmp-omni
+-- hrsh7th/cmp-path
+-- jc-doyle/cmp-pandoc-references
+-- js-everts/cmp-tailwind-colors
+-- lukas-reineke/cmp-rg
+-- quangnguyen30192/cmp-nvim-tags
+-- ray-x/cmp-treesitter
+-- rcarriga/cmp-dap
+
 local plugins = {
   {
     "njhoffman/nvim-cmp",
@@ -15,46 +37,31 @@ local plugins = {
     end,
     dependencies = {
       "David-Kunz/cmp-npm",
-      "andersevenrud/cmp-tmux",
       "JMarkin/cmp-diag-codes",
+      "andersevenrud/cmp-tmux",
+      "chrisgrieser/cmp-nerdfont",
+      "chrisgrieser/nvim-scissors",
       "dmitmel/cmp-cmdline-history",
-      "tzachar/cmp-ai",
       "f3fora/cmp-spell",
       "hrsh7th/cmp-calc",
-      -- https://github.com/smjonas/snippet-converter.nvim
-      -- {
-      --   'hrsh7th/cmp-omni',
-      --   config = function()
-      --     require('cmp').setup({
-      --       sources = {{ name = 'omni', option = { disable_omnifuncs = { 'v:lua.vim.lsp.omnifunc' } } } },
-      --      })
-      --   end,
-      -- },
       "hrsh7th/cmp-cmdline",
       "hrsh7th/cmp-emoji",
-      { "chrisgrieser/cmp_yanky", dependencies = "yanky.nvim" },
-      { "hrsh7th/cmp-nvim-lsp", dependencies = "nvim-lspconfig" },
       "hrsh7th/cmp-nvim-lsp-document-symbol",
       "hrsh7th/cmp-nvim-lsp-signature-help",
       "hrsh7th/cmp-nvim-lua",
-      "FelipeLema/cmp-async-path",
-      "chrisgrieser/cmp-nerdfont",
-      "hrsh7th/cmp-path",
-      "tamago324/cmp-zsh",
       "jc-doyle/cmp-pandoc-references",
-      "roobert/tailwindcss-colorizer-cmp.nvim",
+      "lukas-reineke/cmp-rg",
       "onsails/lspkind.nvim",
       "pontusk/cmp-vimwiki-tags",
       "rafamadriz/friendly-snippets",
-      "chrisgrieser/nvim-scissors",
       "ray-x/cmp-treesitter",
+      "roobert/tailwindcss-colorizer-cmp.nvim",
+      "tamago324/cmp-zsh",
+      "tzachar/cmp-ai",
       "uga-rosa/cmp-dictionary",
-
-      {
-        "zbirenbaum/copilot-cmp",
-        event = "InsertEnter",
-        dependencies = "zbirenbaum/copilot.lua",
-      },
+      { "chrisgrieser/cmp_yanky", dependencies = "yanky.nvim" },
+      { "hrsh7th/cmp-nvim-lsp", dependencies = "nvim-lspconfig" },
+      { "zbirenbaum/copilot-cmp", event = "InsertEnter", dependencies = "zbirenbaum/copilot.lua" },
       { "tzachar/cmp-fuzzy-path", dependencies = { "tzachar/fuzzy.nvim" } },
       { "tzachar/cmp-fuzzy-buffer", dependencies = { "tzachar/fuzzy.nvim" } },
       { "saadparwaiz1/cmp_luasnip", dependencies = { "L3MON4D3/LuaSnip" } },
@@ -70,12 +77,7 @@ local plugins = {
       },
     },
   },
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    build = ":Copilot auth",
-    event = "InsertEnter",
-  },
+  { "zbirenbaum/copilot.lua", cmd = "Copilot", build = ":Copilot auth", event = "InsertEnter" },
   {
     "L3MON4D3/LuaSnip",
     build = "make install_jsregexp",
@@ -109,7 +111,3 @@ local plugins = {
 
 utils.apply_configs(plugins)
 return plugins
-
--- ["cmp-tabnine"] = { "tzachar/cmp-tabnine", run = "./install.sh", after = "nvim-cmp" },
---   { "inkarkat/vim-UnconditionalPaste",
---   requires = "inkarkat/vim-ingo-library" },

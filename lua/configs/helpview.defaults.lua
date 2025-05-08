@@ -403,7 +403,7 @@ local defaults = {
           --- _ in the site name so, we won't
           --- be replacing `_`s with ` `s.
           file = string.gsub(file, "%.html$", "")
-          return string.format("%s(%s) - Neovim docs", utils.normalize_str(file), tag)
+          -- return string.format("%s(%s) - Neovim docs", utils.normalize_str(file), tag)
         end,
       },
       ["neovim%.io/doc/user/.*$"] = {
@@ -412,7 +412,7 @@ local defaults = {
         text = function(_, item)
           local file = string.match(item.label, "neovim%.io/doc/user/(.*)$")
           file = string.gsub(file, "%.html$", "")
-          return string.format("%s - Neovim docs", utils.normalize_str(file))
+          -- return string.format("%s - Neovim docs", utils.normalize_str(file))
         end,
       },
       ["github%.com/vim/vim"] = {
@@ -513,5 +513,4 @@ local renderers = {
     -- item.text = { ">diff", "    + h" },
     -- item.top_border = { false, false },
   end,
-  },
 }

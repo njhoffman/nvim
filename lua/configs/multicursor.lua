@@ -22,10 +22,10 @@ local keymaps = {
   insertVisual   = "gI",                -- v   I
   appendVisual   = "gA",                -- v   A
 
-  lineAddAbove   = "<up>",              -- nv
-  lineAddBelow   = "<down>",            -- nv
-  lineSkipAbove  = "<C-Up>",            -- nv  <leader><up>
-  lineSkipBelow  = "<C-Down>",          -- nv  <leader><down>
+  lineAddAbove   = "<S-Up>",              -- nv
+  lineAddBelow   = "<S-Down>",            -- nv
+  lineSkipAbove  = "<M-S-Up>",            -- nv  <leader><up>
+  lineSkipBelow  = "<M-S-Down>",          -- nv  <leader><down>
   matchAddAbove  = "<leader>mn",        -- nv  <leader>n
   matchAddBelow  = "<leader>mN",        -- nv  <leader>N
   matchSkipAbove = "<leader>ms",        -- nv  <leader>s

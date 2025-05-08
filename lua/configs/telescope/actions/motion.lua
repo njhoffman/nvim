@@ -1,17 +1,22 @@
-local actions = require('telescope.actions')
-local action_state = require('telescope.actions.state')
-local actions_set = require('telescope.actions.set')
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+local actions_set = require("telescope.actions.set")
 
 local M = {}
 
 M.search_backspace_word = function(_)
-  local backspace_key = vim.api.nvim_replace_termcodes('<C-w>', true, true, true)
-  vim.api.nvim_feedkeys(backspace_key, 'i', true)
+  local backspace_key = vim.api.nvim_replace_termcodes("<C-w>", true, true, true)
+  vim.api.nvim_feedkeys(backspace_key, "i", true)
 end
 
 M.search_jump_start = function(_)
-  local home_key = vim.api.nvim_replace_termcodes('<Home>', true, true, true)
-  vim.api.nvim_feedkeys(home_key, 'i', true)
+  local home_key = vim.api.nvim_replace_termcodes("<Home>", true, true, true)
+  vim.api.nvim_feedkeys(home_key, "i", true)
+end
+
+M.search_jump_end = function(_)
+  local end_key = vim.api.nvim_replace_termcodes("<End>", true, true, true)
+  vim.api.nvim_feedkeys(end_key, "i", true)
 end
 
 M.results_toggle_up = function(prompt_bufnr)

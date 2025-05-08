@@ -13,7 +13,7 @@ local extension_configs = {
     ["show_domain_icons"] = true,
   },
   ["telescope-alternate"] = require("configs.telescope.extensions-alternate"),
-  ["devdocs"] = {},
+  -- ["devdocs"] = {},
   ["devhints"] = {},
   ["oldfiles"] = {
     mappings = mappings.file,
@@ -252,7 +252,7 @@ local extension_configs = {
   --   },
   -- },
   ["variables"] = {},
-  -- ['which-key'] = {},
+  ["what-key"] = {},
 
   -- 3rd party to sort through
   -- ["feed"] = {

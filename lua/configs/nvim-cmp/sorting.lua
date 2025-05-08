@@ -99,8 +99,9 @@ local default_sorting = {
 local sorting = {
   priority_weight = 0,
   comparators = {
-    require("copilot_cmp.comparators").prioritize,
+    require("cmp_fuzzy_path.compare"),
     require("cmp_fuzzy_buffer.compare"),
+    require("copilot_cmp.comparators").prioritize,
     compare.offset,
     under_comparator,
     compare.exact,

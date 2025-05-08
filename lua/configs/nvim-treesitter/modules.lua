@@ -133,20 +133,8 @@ local modules = {
     },
   },
   textsubjects = {
+    -- https://github.com/RRethy/nvim-treesitter-textsubjects
     enable = false,
-    -- prev_selection = "-", -- (Optional) keymap to select the previous selection
-    -- prev_selection = ',',
-    -- keymaps = {
-    -- ['.'] = 'textsubjects-smart',
-    -- [';'] = 'textsubjects-container-outer',
-    -- ['i;'] = 'textsubjects-container-inner',
-
-    -- ["+"] = "textsubjects-smart",
-    -- ["i+"] = {
-    --   "textsubjects-container-inner",
-    --   desc = "Select inside containers (classes, functions, etc.)",
-    -- },
-    -- },
   },
   pairs = {
     enable = false,
@@ -271,9 +259,10 @@ local modules = {
     },
   },
   matchup = {
-    -- integration with treesitter-pairs
+    -- vim-matchup integration with treesitter-pairs
     enable = true, -- mandatory, false will disable the whole extension
     -- disable = {"c", "ruby"} -- optional, list of language that will be disabled
+    disable_virtual_text = true,
   },
   endwise = {
     enable = true,

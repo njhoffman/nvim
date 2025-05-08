@@ -15,22 +15,18 @@ function M.setup()
 end
 
 function M.to_left()
-  -- vim.dbglog("to left")
   navigate.to("h")
 end
 
 function M.to_bottom()
-  -- vim.dbglog("to bottom")
   navigate.to("j")
 end
 
 function M.to_top()
-  -- vim.dbglog("to top")
   navigate.to("k")
 end
 
 function M.to_right()
-  -- vim.dbglog("to right")
   navigate.to("l")
 end
 

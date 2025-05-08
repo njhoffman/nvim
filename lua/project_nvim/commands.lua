@@ -47,7 +47,7 @@ local set_pwd = function(dir, method)
   return false
 end
 
-local on_buf_enter = function()
+local on_buf_enter = function(ev)
   if vim.v.vim_did_enter == 0 or not path.is_file() then
     return
   end
@@ -69,7 +69,9 @@ local on_buf_enter = function()
     return
   end
 
-  logger:trace("buf: " .. path.home_path(tostring(root_path)) .. " (" .. tostring(method) .. ")")
+  logger:trace(
+    "buf: " .. path.home_path(tostring(root_path)) .. " (" .. tostring(method) .. ") " .. ev.event
+  )
   set_pwd(root_path, method)
 end
 
@@ -115,7 +117,7 @@ local function setup_au()
   vim.api.nvim_create_augroup("project_nvim", { clear = true })
   local options = require("project_nvim.config").get()
   if not options.manual_mode then
-    vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "VimEnter" }, {
+    vim.api.nvim_create_autocmd({ "BufEnter", "LspAttach" }, {
       pattern = "*",
       callback = on_buf_enter,
       desc = "Check new buffer paths to identify project changes",

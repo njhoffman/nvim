@@ -94,5 +94,3 @@ local state = scrollview.setup({
   },
   diagnostics_severities = { vim.diagnostic.severity.WARN, vim.diagnostic.severity.ERROR },
 })
-
-vim.dbglog("state", state)

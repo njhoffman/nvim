@@ -54,7 +54,7 @@ local cfg = {
           mouse_scrolled = false
           return false
         end
-        return total_scroll > 2
+        return total_scroll > 3
       end,
     }),
   },

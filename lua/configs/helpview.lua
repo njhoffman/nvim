@@ -1,10 +1,23 @@
 local cfg = {
   preview = {
-    -- hybrid_modes = { "n", "s", "v" },
-    modes = { "n", "s", "c", "x", "v", "V", "" },
-    -- modes = { "n", "c", "no" },
-    -- hybrid_modes = {},
-    linewise_hybrid_mode = true,
+    -- enable = true,
+    modes = { "n", "no", "s", "c", "x", "v", "V", "" },
+    enable_hybrid_mode = true,
+    hybrid_modes = {},
+    linewise_hybrid_mode = false,
+    -- filetypes = { "help" },
+    -- ignore_previews = {},
+    -- ignore_buftypes = {},
+    -- condition = nil,
+
+    --   draw_range = { 2 * vim.o.lines, 2 * vim.o.lines },
+    --   edit_range = { 0, 0 },
+    -- max_buf_lines = 500,
+    -- debounce = 150,
+    -- callbacks = {},
+    -- icon_provider = "internal",
+    -- splitview_winopts = { split = "right" },
+    -- preview_winopts = { width = math.floor(80) }
   },
   vimdoc = {
     optionlinks = {
@@ -39,8 +52,8 @@ local cfg = {
       },
     },
     taglinks = {
+      enable = true, -- For} toggling this feature
       default = {
-        enable = true, -- For} toggling this feature
         padding_left = "", -- Padding for the left side
         padding_right = "", -- Padding for the right side
         icon = " ", -- Icon to use
@@ -49,11 +62,13 @@ local cfg = {
     },
     code_blocks = {
       enable = true,
-      -- border_hl = "Code",
+      border_hl = "CodeBlock",
+      -- border_hl = "HelpviewCode",
       default = {
-        block_hl = "HelpviewCode",
+        block_hl = "CodeBlock",
+        language_hl = "Comment",
+        -- block_hl = "HelpviewCode",
         -- language_hl = "HelpviewCodeLanguage",
-        -- language_hl = "Comment",
       },
       -- ["diff"] = {
       --   block_hl = function (_, line)
@@ -67,8 +82,12 @@ local cfg = {
       --   end
       -- }
     },
+    highlight_groups = {
+      enable = true,
+    },
     headings = {
       -- ● ○ ◆ ◇
+      enable = true,
       heading_1 = { style = "simple", hl = "Heading1", marker = "═", sign = "◆" },
       heading_2 = { style = "simple", hl = "Heading2", marker = "─", sign = "◇" },
       heading_3 = { style = "simple", hl = "Heading3", sign = "" },
@@ -79,6 +98,7 @@ local cfg = {
       -- heading_4 = { sign = " ⠓⣠⣿⣄⠚ ", sign_hl = "Palette4Inv", marker_hl = "Palette4", hl = "Palette4" },
     },
     notes = {
+      enable = true,
       default = { padding_right = " ", icon = " ", hl = "@comment.note" },
       warning = { padding_right = " ", icon = "   ", hl = "@comment.warning" },
       deprecated = { padding_right = " ", icon = "  ", hl = "@comment.error" },

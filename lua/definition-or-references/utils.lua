@@ -40,7 +40,7 @@ function M.get_filename_fn()
 end
 
 function M.make_params()
-  local params = vim.lsp.util.make_position_params(0)
+  local params = vim.lsp.util.make_position_params(0, "utf-8")
 
   params.context = { includeDeclaration = false }
 

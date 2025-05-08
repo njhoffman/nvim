@@ -1,4 +1,6 @@
-local M = {}
+local augroup = vim.api.nvim_create_augroup("scrollview_lua", { clear = true })
+
+local M = { augroup = augroup }
 
 -- Returns the index of x in l if present, or the index for insertion
 -- otherwise. Assumes that l is sorted.
@@ -46,14 +48,14 @@ end
 -- Takes a list of lists. Each sublist is comprised of a highlight group name
 -- and a corresponding string to echo.
 function M.echo(echo_list)
-  vim.cmd('redraw')
+  vim.cmd("redraw")
   for _, item in ipairs(echo_list) do
     local hlgroup, string = unpack(item)
     vim.g.scrollview_echo_string = string
-    vim.cmd('echohl ' .. hlgroup .. ' | echon g:scrollview_echo_string')
+    vim.cmd("echohl " .. hlgroup .. " | echon g:scrollview_echo_string")
     vim.g.scrollview_echo_string = vim.NIL
   end
-  vim.cmd('echohl None')
+  vim.cmd("echohl None")
 end
 
 -- For sorted list l with no duplicates, return the previous item before the
@@ -116,7 +118,7 @@ function M.subsequent(l, item, count, wrapscan)
   end
   local idx = M.binary_search(l, item)
   if idx <= #l and l[idx] == item then
-    idx = idx + 1  -- use the next item
+    idx = idx + 1 -- use the next item
   end
   idx = idx + count - 1
   if idx > #l then
@@ -142,9 +144,9 @@ end
 -- Returns true for boolean true and any non-zero number, otherwise returns
 -- false.
 function M.to_bool(x)
-  if type(x) == 'boolean' then
+  if type(x) == "boolean" then
     return x
-  elseif type(x) == 'number' then
+  elseif type(x) == "number" then
     return x ~= 0
   end
   return false

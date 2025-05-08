@@ -35,7 +35,7 @@ local formatters_by_ft = {
 	handlebars      = { prettier },
 	html            = { prettier },
 	htmlangular     = { prettier },
-	javascript      = { eslint, prettier },
+	javascript      = { eslint },
 	javascriptreact = { eslint },
 	json            = { "jq", prettier },
 	jsonc           = { "jq", prettier },
@@ -163,6 +163,10 @@ vim.api.nvim_create_user_command("Format", function(args)
   end
   require("conform").format({ async = true, lsp_fallback = true, range = range })
 end, { range = true })
+
+vim.api.nvim_create_user_command("ConformLog", "e " .. vim.fn.stdpath("data") .. "/conform.log", {
+  desc = "Open the conform log file",
+})
 
 -- local event = 'BufWritePost'
 -- if format_options.sync then

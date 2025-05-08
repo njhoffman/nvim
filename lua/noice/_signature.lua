@@ -25,7 +25,6 @@ function M.show(message, stay)
   Manager.add(message)
 end
 
--- local Docs = require("noice.lsp.docs")
 -- hover, signature, message, documentation defaults
 -- hover = {
 --     enabled = true,
@@ -58,7 +57,6 @@ end
 --   opts = {},
 -- },
 -- -- defaults for hover and signature help
-
 -- documentation = {
 --   view = 'hover',
 --   --  opts = { replace = true, render = "plain", format = { "{message}" },

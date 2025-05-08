@@ -10,7 +10,8 @@ M.log = log.info
 M.timer = timer
 
 -- prints directly to stdout
-M.inspect = require("debuglog.parsers.inspect-simple")
+M.inspect_simple = require("debuglog.parsers.inspect-simple")
+M.inspect = require("debuglog.parsers.inspect")
 
 -- returns string
 M.dump = require("debuglog.parsers.dump")

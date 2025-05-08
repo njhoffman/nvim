@@ -9,10 +9,16 @@ local DefinitionOrReferences = {}
 function DefinitionOrReferences.definition_or_references()
   config.get_config().before_start_callback()
   methods.clear_references()
+  methods.clear_implementations()
   methods.clear_definitions()
-  -- sending references request before definitons to parallelize both requests
-  definitions()
+  -- sending references (and implementations) requests before
+  -- definitons to parallelize both requests
+
   references.send_references_request()
+  if config.get_config().include_implementations then
+    references.send_implementations_request()
+  end
+  definitions()
 end
 
 return DefinitionOrReferences

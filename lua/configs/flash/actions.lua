@@ -1,20 +1,20 @@
 local function _helper(start, finish, op)
   vim.api.nvim_win_set_cursor(0, start)
-  vim.cmd('normal! v')
+  vim.cmd("normal! v")
   vim.api.nvim_win_set_cursor(0, finish)
-  vim.api.nvim_feedkeys(op or 'p', 'ni', false)
+  vim.api.nvim_feedkeys(op or "p", "ni", false)
 end
 
 local _swap_with = function(opts, ma, mb)
   local reg = vim.fn.getreg('"')
-  vim.api.nvim_feedkeys('`' .. ma .. 'v`' .. mb .. 'y', 'n', false)
+  vim.api.nvim_feedkeys("`" .. ma .. "v`" .. mb .. "y", "n", false)
   local start, finish = vim.api.nvim_buf_get_mark(0, ma), vim.api.nvim_buf_get_mark(0, mb)
   _G.__remote_op_opfunc = function()
-    _helper(vim.api.nvim_buf_get_mark(0, '['), vim.api.nvim_buf_get_mark(0, ']'))
+    _helper(vim.api.nvim_buf_get_mark(0, "["), vim.api.nvim_buf_get_mark(0, "]"))
   end
-  vim.go.operatorfunc = 'v:lua.__remote_op_opfunc'
-  vim.api.nvim_feedkeys('g@', 'n', false)
-  require('flash').remote(vim.tbl_deep_extend('force', {
+  vim.go.operatorfunc = "v:lua.__remote_op_opfunc"
+  vim.api.nvim_feedkeys("g@", "n", false)
+  require("flash").remote(vim.tbl_deep_extend("force", {
     remote = {
       on_restore = vim.schedule_wrap(function()
         _helper(start, finish)
@@ -25,21 +25,21 @@ local _swap_with = function(opts, ma, mb)
 end
 
 local swap_with = function(opts)
-  local v = vim.api.nvim_get_mode().mode:lower() == 'v'
+  local v = vim.api.nvim_get_mode().mode:lower() == "v"
   if v then
-    _swap_with(opts, '<', '>')
+    _swap_with(opts, "<", ">")
   else
     _G.__remote_op_opfunc = function()
-      _swap_with(opts, v and '<' or '[', v and '>' or ']')
+      _swap_with(opts, v and "<" or "[", v and ">" or "]")
     end
-    vim.go.operatorfunc = 'v:lua.__remote_op_opfunc'
-    vim.api.nvim_feedkeys('g@', 'n', false)
+    vim.go.operatorfunc = "v:lua.__remote_op_opfunc"
+    vim.api.nvim_feedkeys("g@", "n", false)
   end
 end
 
 -- jump full words
 local search_words_2char = function()
-  local Flash = require('flash')
+  local Flash = require("flash")
   local function format_first_match(opts)
     opts = opts or {}
     return {
@@ -56,7 +56,7 @@ local search_words_2char = function()
   end
 
   Flash.jump({
-    search = { mode = 'search' },
+    search = { mode = "search" },
     label = { after = false, before = { 0, 0 }, uppercase = false, format = format_first_match },
     pattern = [[\<]],
     action = function(match, state)
@@ -91,12 +91,12 @@ end
 
 -- jump full words
 local jump_words = function()
-  require('flash').jump({
-    pattern = '.', -- initialize pattern with any char
+  require("flash").jump({
+    pattern = ".", -- initialize pattern with any char
     search = {
       mode = function(pattern)
         -- remove leading dot
-        if pattern:sub(1, 1) == '.' then
+        if pattern:sub(1, 1) == "." then
           pattern = pattern:sub(2)
         end
         -- return word pattern and proper skip pattern
@@ -104,24 +104,24 @@ local jump_words = function()
       end,
     },
     -- select the range
-    jump = { pos = 'range' },
+    jump = { pos = "range" },
   })
 end
 
 -- force linewise: <operator>V<motion>
 local jump_line = function()
-  require('flash').jump({
-    search = { mode = 'search', max_length = 0 },
+  require("flash").jump({
+    search = { mode = "search", max_length = 0 },
     label = { after = { 0, 0 } },
-    pattern = '^',
+    pattern = "^",
   })
 end
 
 local jump_start_words = function()
-  require('flash').jump({
+  require("flash").jump({
     search = {
       mode = function(str)
-        return '\\<' .. str
+        return "\\<" .. str
       end,
     },
   })
@@ -129,7 +129,7 @@ end
 
 -- show diagnostics at target
 local jump_diag = function()
-  require('flash').jump({
+  require("flash").jump({
     matcher = function(win)
       ---@param diag Diagnostic
       return vim.tbl_map(function(diag)
@@ -149,7 +149,50 @@ local jump_diag = function()
   })
 end
 
+-- require("flash").jump({
+-- search = { mode = "search", max_length = 0 },
+-- label = { after = { 0, 0 } },
+-- pattern = "^", -- replace with $ for end of line
+-- })
+local jump_line_above = function()
+  -- move to lines above the cursor
+  local col = vim.api.nvim_win_get_cursor(0)[2]
+  require("flash").jump({
+    jump = { offset = col },
+    search = {
+      mode = "search",
+      max_length = 0,
+      forward = false,
+      wrap = false,
+      multi_window = false,
+    },
+    pattern = "^",
+    label = { before = { 0, col } },
+    highlight = { matches = false },
+  })
+end
+
+local jump_line_below = function()
+  -- move to lines above the cursor
+  local col = vim.api.nvim_win_get_cursor(0)[2]
+  require("flash").jump({
+    jump = { offset = col },
+    search = {
+      mode = "search",
+      max_length = 0,
+      forward = true,
+      wrap = false,
+      multi_window = false,
+    },
+    pattern = "^",
+    label = { before = { 0, col } },
+    highlight = { matches = false },
+  })
+end
+
 return {
+  jump_line_below = jump_line_below,
+  jump_line_above = jump_line_above,
   jump_line = jump_line,
   swap_with = swap_with,
   search_words_2char = search_words_2char,

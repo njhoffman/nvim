@@ -1,3 +1,7 @@
+-- https://github.com/stevearc/conform.nvim/issues/515
+-- https://github.com/stevearc/conform.nvim/issues/364
+-- https://github.com/mantoni/eslint_d.js
+
 local lspconfig = require("lspconfig")
 local util = require("lsp.utils")
 local lspconfig_util = require("lspconfig.util")
@@ -113,4 +117,61 @@ local eslint = function()
   })
 end
 
+--   "eslint",
+--     lspconfig.eslint.setup({
+--       cmd = { "vscode-eslint-language-server", "--stdio" },
+--       capabilities = capabilities,
+--       handlers = handlers,
+--       filetypes = {
+--         "javascript",
+--         "javascriptreact",
+--         "javascript.jsx",
+--         "typescript",
+--         "typescriptreact",
+--         "typescript.tsx",
+--         "vue",
+--         "svelte",
+--         "astro",
+--       },
+--       root_dir = require("lspconfig.util").root_pattern(".git"),
+--       settings = {
+--         codeAction = {
+--           disableRuleComment = {
+--             enable = true,
+--             location = "separateLine",
+--           },
+--           showDocumentation = {
+--             enable = true,
+--           },
+--         },
+--         codeActionOnSave = {
+--           enable = false,
+--           mode = "all",
+--         },
+--         experimental = {
+--           useFlatConfig = false,
+--         },
+--         format = true,
+--         nodePath = "",
+--         onIgnoredFiles = "off",
+--         packageManager = "npm",
+--         problems = {
+--           shortenToSingleLine = false,
+--         },
+--         quiet = false,
+--         rulesCustomizations = {},
+--         run = "onType",
+--         useESLintClass = false,
+--         validate = "on",
+--         workingDirectory = {
+--           mode = "location",
+--         },
+--       },
+--       on_attach = function(_, bufnr)
+--         api.nvim_create_autocmd("BufWritePre", {
+--           buffer = bufnr,
+--           command = "EslintFixAll",
+--         })
+--       end,
+--     })
 return eslint

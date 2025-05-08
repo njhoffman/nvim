@@ -64,6 +64,12 @@ function M.commentHr()
   end
 end
 
+local comments = {
+  paste_type = "", -- b, c, l or '' to guess from content
+  trim_leading_indent = true,
+  indent_token = false,
+}
+
 function M.duplicateAsComment()
   local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
   local ln_beg = vim.fn.line("v") or ln
@@ -78,7 +84,11 @@ function M.duplicateAsComment()
   local commentedLines = {}
   for _, line in ipairs(currLines) do
     local indent, content = line:match("^(%s*)(.*)")
-    table.insert(commentedLines, indent .. vim.bo.commentstring:format(content))
+    if comments.indent_token then
+      table.insert(commentedLines, indent .. vim.bo.commentstring:format(content))
+    else
+      table.insert(commentedLines, vim.bo.commentstring:format(indent .. content))
+    end
   end
   vim.api.nvim_buf_set_lines(0, ln_beg - 1, ln_beg - 1, false, commentedLines)
   vim.api.nvim_win_set_cursor(0, { ln_beg + lines, col })
@@ -99,12 +109,19 @@ function M.pasteAsComment(after_cursor)
   clipboard.type = clipboard.regtype == "v" and #clipboard.commented == 1 and "c"
     or clipboard.regtype:match("") and "b"
     or "l"
+
   for _, line in ipairs(clipboard.regcontents or {}) do
     local indent, content = line:match("^(%s*)(.*)")
-    table.insert(clipboard.commented, indent .. vim.bo.commentstring:format(content))
+    if comments.indent_token then
+      table.insert(clipboard.commented, indent .. vim.bo.commentstring:format(content))
+    else
+      table.insert(clipboard.commented, vim.bo.commentstring:format(indent .. content))
+    end
   end
   -- vim.dbglog("line", #lines, #lines, #lines, after_cursor, vim.fn.getreginfo(clipboard_reg))
-  vim.api.nvim_put(clipboard.commented, "", after_cursor, false)
+
+  -- local paste_type = comments.force_mode or ""
+  vim.api.nvim_put(clipboard.commented, clipboard.type, after_cursor, false)
 end
 
 --------------------------------------------------------------------------------

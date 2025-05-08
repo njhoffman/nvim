@@ -1,4 +1,4 @@
----@diagnostic disable undefined-global
+---@diagnostic disable undefined-globalcolor/nick
 
 local lush = require("lush")
 local hsl = lush.hsl
@@ -116,7 +116,7 @@ return function(injected_functions)
     -- DiffChange     xxx guibg=#252a3f
     -- DiffDelete     xxx guibg=#3a273a
     -- DiffText       xxx guibg=#394b70
-    Normal({ fg = "#4C7fb0", bg = "none" }),
+    Normal({ fg = "#4f7aaf", bg = "none" }),
     NormalNC({ fg = "#4C84b8" }),
 
     Todo({ fg = "none", bg = "none", gui = "none" }),
@@ -185,7 +185,7 @@ return function(injected_functions)
     Title({ fg = "#88aee9", gui = "NONE" }),
     WinSeparator({ fg = "#444464", bg = "#090919", gui = "bold" }),
     -- CodeBlock({ bg = '#090909' }),
-    CodeBlock({ bg = "#040814" }), -- bg = "#101018"
+    CodeBlock({ bg = "#081018" }), -- bg = "#101018"
     CodeBlockInline({ bg = "#040814" }), -- bg = "#101018"
 
     Cursor({ bg = "#3f56ff" }), -- bg = '#4B5Bff'
@@ -335,7 +335,6 @@ return function(injected_functions)
     sym("@keyword.operator")({ Operator }),
     sym("@keyword.return")({ KeywordReturn }),
     sym("@label")({ Label }), -- For labels: `label:` in C and `:label:` in Lua.
-    sym("@label.vimdoc")({ Label }), -- For labels: `label:` in C and `:label:` in Lua.
     sym("@method")({ Function }),
     sym("@method.call")({ FunctionCall }),
     sym("@module")({ PreProc }),
@@ -375,7 +374,10 @@ return function(injected_functions)
     sym("@variable.builtin")({ Identifier }),
     sym("@variable.member")({ Field }),
     sym("@variable.parameter")({ Identifier }),
-    sym("@variable.parameter.vimdoc")({ sym("@parameter") }),
+    sym("@label.vimdoc")({ fg = "#0099cc", gui = "bold" }),
+    sym("@variable.parameter.vimdoc")({ fg = "#2288a9" }),
+    -- #81c2e1
+    -- #253245
     -- +--- LSP ---+
     LspDiagnosticsSignError({ fg = "#702e34" }),
     LspDiagnosticsSignWarn({ fg = "#574c47" }),

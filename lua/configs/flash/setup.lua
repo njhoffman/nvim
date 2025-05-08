@@ -1,4 +1,11 @@
 local modes = require("configs.flash.modes")
+
+-- FlashBackdrop = { fg = "#545c7e" },
+-- FlashCurrent = { bg = "#ff966c", fg = "#1b1d2b" },
+-- FlashLabel = { bg = "#ff007c", bold = true, fg = "#c8d3f5" },
+-- FlashMatch = { bg = "#3e68d7", fg = "#c8d3f5" },
+-- FlashCursor = { reverse = true },
+
 local config = {
   labels = "asdfghjklqwertyuiopzxcvbnm",
   use_upper_select_visual_line = false,
@@ -8,6 +15,7 @@ local config = {
     max_length = false,
     wrap = true,
     multi_window = true,
+    multi_line = false,
     incremental = false,
     exclude = {
       "notify",
@@ -20,6 +28,7 @@ local config = {
       end,
     },
   },
+
   highlight = {
     -- show a backdrop with hl FlashBackdrop
     backdrop = true,
@@ -56,12 +65,18 @@ local config = {
     offset = nil, ---@type number
   },
   label = {
+    format = function(opts)
+      return { {
+        opts.match.label,
+        opts.hl_group,
+      } }
+    end,
     current = true,
     -- after = {0, 2}
     after = false,
     before = true, ---@type boolean|number[]
     -- minimum pattern length to show labels Ignored for custom labelers.
-    min_pattern_length = 0,
+    reuse = "none",
   },
   prompt = {
     enabled = true,
@@ -79,14 +94,24 @@ local config = {
   -- options for remote operator pending mode
   remote_op = {
     -- restore window views and cursor position after doing a remote operation
-    restore = false,
+    restore = true,
     -- For `jump.pos = "range"`, this setting is ignored.
     -- `true`: always enter a new motion when doing a remote operation
     -- `false`: use the window's cursor position and jump target
     -- `nil`: act as `true` for remote windows, `false` for the current window
     motion = true,
   },
+  -- action = function(match, self)
+  --   local Jump = require("flash.jump")
+  --   vim.dbglog("action", match.label, match.pos[1], match.pos[2])
+  --   Jump.jump(match, self)
+  --   vim.schedule(function()
+  --     Jump.on_jump(self)
+  --   end)
+  -- end,
 }
+-- vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#000000", bg = "#ff007c" })
+vim.api.nvim_set_hl(0, "FlashBackdrop", { fg = "#243c6e" })
 
 local setup_mappings = require("configs.flash.mappings").setup
 

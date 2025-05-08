@@ -1,148 +1,152 @@
-local dap = require('dap')
+local dap = require("dap")
 
-dap.set_log_level('info')
+dap.set_log_level("info")
 -- nvim-dap/lua/dap/log.lua:29
 -- mfussenegger/nvim-dap
 
-local basepath = vim.fn.stdpath('data') .. '/mason/packages'
+local basepath = vim.fn.stdpath("data") .. "/mason/packages"
 
 dap.adapters.bashdb = {
-  type = 'executable',
-  command = basepath .. '/bash-debug-adapter/bash-debug-adapter',
-  name = 'bashdb',
+  type = "executable",
+  command = basepath .. "/bash-debug-adapter/bash-debug-adapter",
+  name = "bashdb",
 }
 dap.configurations.sh = {
   {
-    type = 'bashdb',
-    request = 'launch',
-    name = 'Launch file',
+    type = "bashdb",
+    request = "launch",
+    name = "Launch file",
     showDebugOutput = true,
-    pathBashdb = basepath .. '/bash-debug-adapter/extension/bashdb_dir/bashdb',
-    pathBashdbLib = basepath .. '/bash-debug-adapter/extension/bashdb_dir',
+    pathBashdb = basepath .. "/bash-debug-adapter/extension/bashdb_dir/bashdb",
+    pathBashdbLib = basepath .. "/bash-debug-adapter/extension/bashdb_dir",
     trace = true,
-    file = '${file}',
-    program = '${file}',
-    cwd = '${workspaceFolder}',
-    pathCat = 'cat',
-    pathBash = '/bin/bash',
-    pathMkfifo = 'mkfifo',
-    pathPkill = 'pkill',
+    file = "${file}",
+    program = "${file}",
+    cwd = "${workspaceFolder}",
+    pathCat = "cat",
+    pathBash = "/bin/bash",
+    pathMkfifo = "mkfifo",
+    pathPkill = "pkill",
     args = {},
     env = {},
-    terminalKind = 'integrated',
+    terminalKind = "integrated",
   },
 }
 
 dap.adapters.node2 = {
-  type = 'executable',
-  command = basepath .. '/node-debug2-adapter/node-debug2-adapter',
+  type = "executable",
+  command = basepath .. "/node-debug2-adapter/node-debug2-adapter",
 }
+
 dap.configurations.javascript = {
   {
-    name = 'Launch',
-    type = 'node2',
-    request = 'launch',
-    program = '${file}',
+    name = "Launch",
+    type = "node2",
+    request = "launch",
+    program = "${file}",
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
-    protocol = 'inspector',
-    console = 'integratedTerminal',
+    protocol = "inspector",
+    console = "integratedTerminal",
   },
   {
     -- For this to work you need to make sure the node process is started with the `--inspect` flag.
-    name = 'Attach to process',
-    type = 'node2',
-    request = 'attach',
-    processId = require('dap.utils').pick_process,
+    name = "Attach to process",
+    type = "node2",
+    request = "attach",
+    processId = require("dap.utils").pick_process,
   },
 }
 dap.configurations.javascriptreact = {
   {
-    type = 'node2',
-    request = 'launch',
-    program = '${workspaceFolder}/${file}',
+    name = "React",
+    type = "node2",
+    request = "launch",
+    program = "${workspaceFolder}/${file}",
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
-    protocol = 'inspector',
-    console = 'integratedTerminal',
+    protocol = "inspector",
+    console = "integratedTerminal",
   },
 }
 dap.configurations.typescript = {
   {
-    type = 'node2',
-    request = 'launch',
-    program = '${workspaceFolder}/${file}',
+    name = "Typescript",
+    type = "node2",
+    request = "launch",
+    program = "${workspaceFolder}/${file}",
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
-    protocol = 'inspector',
-    console = 'integratedTerminal',
+    protocol = "inspector",
+    console = "integratedTerminal",
   },
 }
 
 -- If you prefer to start delve manually, you can use the following adapter definition instead:
 -- dap.adapters.delve = { type = "server", host = "127.0.0.1", port = 38697 }
 dap.adapters.delve = {
-  type = 'server',
-  port = '${port}',
+  name = "Delve server",
+  type = "server",
+  port = "${port}",
   executable = {
-    command = 'dlv',
-    args = { 'dap', '-l', '127.0.0.1:${port}' },
+    command = "dlv",
+    args = { "dap", "-l", "127.0.0.1:${port}" },
   },
 }
 -- https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
 dap.configurations.go = {
   {
-    type = 'delve',
-    name = 'Debug',
-    request = 'launch',
-    program = '${file}',
+    type = "delve",
+    name = "Debug",
+    request = "launch",
+    program = "${file}",
   },
   {
-    type = 'delve',
-    name = 'Debug test', -- configuration for debugging test files
-    request = 'launch',
-    mode = 'test',
-    program = '${file}',
+    type = "delve",
+    name = "Debug test", -- configuration for debugging test files
+    request = "launch",
+    mode = "test",
+    program = "${file}",
   },
   -- works with go.mod packages and sub packages
   {
-    type = 'delve',
-    name = 'Debug test (go.mod)',
-    request = 'launch',
-    mode = 'test',
-    program = './${relativeFileDirname}',
+    type = "delve",
+    name = "Debug test (go.mod)",
+    request = "launch",
+    mode = "test",
+    program = "./${relativeFileDirname}",
   },
 }
 
 dap.adapters.nlua = function(callback, lua_config)
   callback({
-    type = 'server',
-    host = lua_config.host or '127.0.0.1',
+    type = "server",
+    host = lua_config.host or "127.0.0.1",
     port = lua_config.port or 8090,
   })
 end
 
 dap.configurations.lua = {
   {
-    type = 'nlua',
-    request = 'attach',
-    name = 'Attach to running Neovim instance',
-    --   host = function()
-    --     local value = vim.fn.input('Host [127.0.0.1]: ')
-    --     if value ~= "" then
-    --       return value
-    --     end
-    --     return '127.0.0.1'
-    --   end,
-    --   port = function()
-    --     local val = tonumber(vim.fn.input('Port: '))
-    --     assert(val, "Please provide a port number")
-    --     return val
-    --   end,
+    type = "nlua",
+    request = "attach",
+    name = "Attach to running Neovim instance",
+    host = function()
+      local value = vim.fn.input("Host [127.0.0.1]: ")
+      if value ~= "" then
+        return value
+      end
+      return "127.0.0.1"
+    end,
+    port = function()
+      local val = tonumber(vim.fn.input("Port: "))
+      assert(val, "Please provide a port number")
+      return val
+    end,
   },
 }
 
-require('configs.nvim-dap-ui')
+require("configs.nvim-dap-ui")
 
 -- dap.adapters.go = {
 --   type = "executable",
@@ -355,3 +359,51 @@ require('configs.nvim-dap-ui')
 -- --     dlvToolPath = vim.fn.exepath("dlv"),
 -- --   },
 -- -- }
+-- 	"mfussenegger/nvim-dap",
+-- 	keys = {
+-- 		{ "6", function() require("dap").step_over() end, desc = " Step over" },
+-- 		{ "7", function() require("dap").continue() end, desc = " Continue" },
+-- 		{ "8", function() require("dap").toggle_breakpoint() end, desc = " Toggle breakpoint" },
+--
+-- 		{ "gb", function() gotoBreakpoint("next") end, desc = " Goto next breakpoint" },
+-- 		{ "gB", function() gotoBreakpoint("prev") end, desc = " Goto previous breakpoint" },
+--
+-- 		{ "<leader>do", function() require("dap").step_out() end, desc = "󰆸 Step out" },
+-- 		{ "<leader>di", function() require("dap").step_in() end, desc = "󰆹 Step in" },
+-- 		{ "<leader>dc", function() require("dap").run_to_cursor() end, desc = "󰆿 Run to cursor" },
+-- 		{ "<leader>dr", function() require("dap").restart() end, desc = " Restart" },
+-- 		{ "<leader>dt", function() require("dap").terminate() end, desc = " Terminate" },
+-- 		-- stylua: ignore
+-- 		{ "<leader>dd", function() require("dap").clear_breakpoints() end, desc = "󰅗 Delete breakpoints" },
+-- 	},
+-- 	init = function() vim.g.whichkeyAddSpec { "<leader>d", group = "󰃤 Debugger" } end,
+-- 	config = function()
+-- 		-- ICONS & HIGHLIGHTS
+-- 		vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticInfo" })
+-- 		vim.fn.sign_define("DapBreakpointCondition", { text = "󰇽", texthl = "DiagnosticInfo" })
+-- 		vim.fn.sign_define("DapLogPoint", { text = "󰍩", texthl = "DiagnosticInfo" })
+-- 		vim.fn.sign_define("DapLogRejected", { text = "", texthl = "DiagnosticInfo" })
+-- 		vim.fn.sign_define("DapStopped", {
+-- 			text = "󰳟",
+-- 			texthl = "DiagnosticHint",
+-- 			linehl = "DiagnosticVirtualTextHint",
+-- 			numhl = "DiagnosticVirtualTextHint",
+-- 		})
+--
+-- 		-- LISTENERS
+-- 		local listeners = require("dap").listeners.after
+-- 		-- start nvim-dap-virtual-text
+-- 		listeners.attach.dapVirtText = function()
+-- 			local installed, dapVirtText = pcall(require, "nvim-dap-virtual-text")
+-- 			if installed then dapVirtText.enable() end
+-- 		end
+-- 		-- enable/disable diagnostics & line numbers
+-- 		listeners.attach.dapItself = function()
+-- 			vim.opt.number = true
+-- 			vim.diagnostic.enable(false)
+-- 		end
+-- 		listeners.disconnect.dapItself = function()
+-- 			vim.opt.number = false
+-- 			vim.diagnostic.enable(true)
+-- 		end
+--

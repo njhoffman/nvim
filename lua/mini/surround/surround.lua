@@ -599,11 +599,6 @@ H.user_surround_id = function(sur_type)
     return nil
   end
 
-  if char:find("^[%w%p%s]$") == nil then
-    Config.message("Input must be single character: alphanumeric, punctuation, or space.")
-    return nil
-  end
-
   return char
 end
 

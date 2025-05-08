@@ -12,6 +12,7 @@ local init = function()
         "help",
         "lazy",
         "lspinfo",
+        "markdown",
         "mason",
         "neo-tree",
         "noice",

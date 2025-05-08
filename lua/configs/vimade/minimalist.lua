@@ -30,6 +30,8 @@ local NO_VISIBILITY_NAMES = {
   -- "ReactiveCursorLineNr@preset.cursorline.@mode.no.@op.d",
   -- "ReactiveCursorLine@preset.cursorline.@static.current",
   -- "ReactiveCursorLine",
+  "CursorLine",
+  "ColorColumn",
   "LineNr",
   "LineNrBelow",
   "LineNrAbove",

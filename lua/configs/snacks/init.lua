@@ -3,6 +3,7 @@ local toggle_cfg = require("configs.snacks.toggle")
 local scratch_cfg = require("configs.snacks.scratch")
 local notifier_cfg = require("configs.snacks.notifier")
 local styles_cfg = require("configs.snacks.styles")
+local picker_cfg = require("configs.snacks.picker")
 
 local cfg = {
   notifier = notifier_cfg,
@@ -10,12 +11,12 @@ local cfg = {
   scratch = scratch_cfg,
   styles = styles_cfg,
   toggle = toggle_cfg,
+  picker = picker_cfg,
 
   bigfile = { enabled = true },
   dashboard = { enabled = false },
   debug = { enabled = true },
   input = { enabled = true },
-  picker = { enabled = true },
   quickfile = { enabled = false },
   statuscolumn = { enabled = false },
 
@@ -43,7 +44,40 @@ local cfg = {
   },
 }
 
+local runner_cfg = {
+  run_key = "<C-CR>",
+  output_switch_key = "<Tab>",
+  sources = {
+    python = { { "python3" }, extension = "py" },
+    javascript = { { "deno" }, extension = "js" },
+    typescript = { { "deno" }, extension = "ts" },
+    cs = { "dotnet-script" },
+    rust = {
+      function(filepath, bin_path)
+        return { "rustc", filepath, "-o", bin_path }
+      end,
+      extension = "rs",
+      binary = true,
+    },
+    c = {
+      function(filepath, bin_path)
+        return { "gcc", filepath, "-o", bin_path }
+      end,
+      extension = "c",
+      binary = true,
+    },
+    cpp = {
+      function(filepath, bin_path)
+        return { "g++", filepath, "-o", bin_path }
+      end,
+      extension = "cpp",
+      binary = true,
+    },
+  },
+}
+
 require("snacks").setup(cfg)
+require("configs.snacks.scratch-runner").setup(runner_cfg)
 
 -- Profiling Neovim Startup
 if vim.env.PROF then

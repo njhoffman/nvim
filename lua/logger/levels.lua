@@ -23,7 +23,7 @@ local scopes = {
   -- mru                  = { main = -1 },
   notifier                = { main = 1, module = 0 },
   notify                  = { main = 0 },
-  -- project              = { main = 1 },
+  -- project              = { main = 0 },
   lab                     = { main = 2 },
   root                    = { main = 0 },
   -- telescope            = { main = -1 },

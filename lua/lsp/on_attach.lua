@@ -2,7 +2,7 @@ local capabilities = require("lsp.capabilities")
 
 _G.jump = function()
   ---@diagnostic disable: undefined-global
-  if type(MiniJump2d) ~= "table" and type(MiniAnimate) ~= "table" then
+  if type(MiniJump2d) == "table" and type(MiniAnimate) == "table" then
     MiniAnimate.config.scroll.enable = false
     MiniJump2d.start()
     -- Need `vim.schedule()` here to still have it disabled at animation's start
@@ -57,22 +57,26 @@ local lsp_on_attach_no_formatting = function(client)
 end
 
 local on_attach = function(client, bufnr)
+  vim.api.nvim_set_option_value("omnifunc", nil, { buf = bufnr })
+  vim.api.nvim_set_option_value("completefunc", nil, { buf = bufnr })
+
   -- vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
   -- vim.lsp.omnifunc = nil
-  -- vim.api.nvim_set_option_value('omnifunc', nil, {})
-  -- vim.api.nvim_set_option_value('omnifunc', nil, { buf = bufnr })
   -- format.on_attach(client, bufnr)
+
   local ok, disable_lsp = pcall(vim.api.nvim_buf_get_var, 0, "disable_lsp")
   if disable_lsp == 1 then
     return vim.notify("Skipping buffer lsp", 1)
   end
-
   require("lsp.mapping").setup_mappings(client, bufnr)
 
   -- client.config.flags.debounce_text_changes = 300
   -- client.config.flags.allow_incremental_sync = true
 
   if client.name == "lua_ls" then
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+  elseif client.name == "ts_ls" then
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
   elseif client.name == "bashls" then
@@ -94,11 +98,6 @@ local on_attach = function(client, bufnr)
   --   -- vim.dbglog('INLAY HINTS AVAILABLE')
   --   vim.lsp.inlay_hint.enable(bufnr, true)
   -- end
-  -- TODO: fix vimls documentSymbolProvider sorting
-  if client.server_capabilities.documentSymbolProvider and client.name ~= "vimls" then
-    vim.api.nvim_set_var("navic_silence", true)
-    require("nvim-navic").attach(client, bufnr)
-  end
 
   capabilities.resolve(client, bufnr)
 end

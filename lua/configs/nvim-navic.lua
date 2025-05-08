@@ -73,7 +73,10 @@ local cfg_defaults = {
 -- vim.api.nvim_set_var("navic_silence", true)
 local navic = require("nvim-navic")
 local cfg = {
-  lsp = { auto_attach = false, preference = { "pylsp", "pyright" } },
+  lsp = {
+    auto_attach = false,
+    preference = { "pylsp", "pyright" },
+  },
 }
 navic.setup(cfg)
 

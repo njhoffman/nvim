@@ -4,6 +4,9 @@ local mapping = require("configs.noice.mapping")
 local views = require("configs.noice.views")
 
 local config = {
+  health = {
+    checker = false, -- Disable if you don't want health checks to run
+  },
   presets = {
     bottom_search = false, -- use a classic bottom cmdline for search
     command_palette = false, -- position the cmdline and popupmenu together
@@ -51,14 +54,14 @@ local config = {
     -- :Noice last
     last = vim.tbl_extend("force", views.historyView, { filter_opts = { count = 10 } }),
     -- :Noice errors
-    errors = {
-      -- options for the message history that you get with `:Noice errors`
-      -- view = 'popup',
-      view = views.errorView,
-      -- opts = { enter = true, format = views.errorViewFormat },
-      filter = { error = true },
-      filter_opts = { reverse = true },
-    },
+    -- errors = {
+    --   -- options for the message history that you get with `:Noice errors`
+    --   -- view = 'popup',
+    --   view = views.errorView,
+    --   -- opts = { enter = true, format = views.errorViewFormat },
+    --   filter = { error = true },
+    --   filter_opts = { reverse = true },
+    -- },
   },
 }
 
@@ -73,8 +76,5 @@ require("telescope").load_extension("noice")
 
 commands.setup()
 mapping.setup()
-
-vim.treesitter.language.register("lua", { "log" })
-vim.treesitter.language.register("lua", { "noice" })
 
 -- require("noice.user.cmdline")

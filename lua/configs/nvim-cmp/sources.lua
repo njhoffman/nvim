@@ -43,7 +43,6 @@ local sources = {
           end
           return true
         end,
-        priority = 100,
       },
       {
         name = "nvim_lsp",
@@ -58,33 +57,65 @@ local sources = {
           return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text"
         end,
       },
-      -- { name = "codeium", max_item_count = 3 },
-      -- copilot
-      -- {
-      --   name = "copilot",
-      --   keyword_length = 3,
-      --   -- max_item_count = 5,
-      --   -- vim.opt.scrollbuf = 999
-      --   -- trigger_characters = {
-      --     -- stylua: ignore
-      --     { '.', ':', '(', "'", '"', '[', ',', '#', '*', '@', '|', '=', '-', '{', '/', '\\', '+', '?', ' ', }, -- "\t", "\n", },
-      --   -- },
-      -- },
-      -- { name = "nvim_lsp_signature_help" },
+      { name = "codeium", max_item_count = 3 },
+      {
+        name = "copilot",
+        keyword_length = 3,
+        -- max_item_count = 5,
+        -- vim.opt.scrollbuf = 999
+        -- trigger_characters = {
+          -- stylua: ignore
+          { '.', ':', '(', "'", '"', '[', ',', '#', '*', '@', '|', '=', '-', '{', '/', '\\', '+', '?', ' ', }, -- "\t", "\n", },
+        -- },
+      },
+      { name = "nvim_lua" },
+      { name = "nvim_lsp_document_symbol" },
+      { name = "nvim_lsp_signature_help" },
+      { name = "dap" },
+      {
+        name = "treesitter",
+        max_item_count = 5,
+        entry_filter = function(entry, vim_item)
+          if entry.kind == 15 then
+            local cursor_pos = vim.api.nvim_win_get_cursor(0)
+            local line = vim.api.nvim_get_current_line()
+            local next_char = line:sub(cursor_pos[2] + 1, cursor_pos[2] + 1)
+            if next_char == '"' or next_char == "'" then
+              vim_item.abbr = vim_item.abbr:sub(1, -2)
+            end
+          end
+          return vim_item
+        end,
+      },
     },
     {
+      { name = "fuzzy_path", option = { fd_timeout_msec = 1500 } },
       {
-        name = "buffer",
-        keyword_length = 2,
+        name = "fuzzy_buffer",
         option = {
+          -- get_bufnrs = function()
+          --   return { vim.api.nvim_get_current_buf() }
+          -- end
           get_bufnrs = function()
             local bufs = {}
-            for _, win in ipairs(vim.api.nvim_list_wins()) do
-              bufs[vim.api.nvim_win_get_buf(win)] = true
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+              local buftype = vim.api.nvim_buf_get_option(buf, "buftype")
+              if buftype ~= "nofile" and buftype ~= "prompt" then
+                bufs[#bufs + 1] = buf
+              end
             end
-            return vim.tbl_keys(bufs)
+            return bufs
           end,
         },
+      },
+      {
+        name = "rg",
+        keyword_length = 5,
+        max_item_count = 5,
+        option = {
+          additional_arguments = "--smart-case --hidden",
+        },
+        group_index = 3,
       },
       {
         -- TODO: make sure duplicates prioritize this over nvim_lsp
@@ -100,15 +131,6 @@ local sources = {
           minLength = 3,
         },
       },
-      -- {
-      --   name = 'omni',
-      --   option = {
-      --     disable_omnifuncs = { 'v:lua.vim.lsp.omnifunc' },
-      --   },
-      --   entry_filter = function(entry)
-      --     return entry.word:match('^[%w_]+$')
-      --   end,
-      -- },
       {
         name = "luasnip",
         keyword_length = 3,
@@ -136,56 +158,20 @@ local sources = {
       { name = "nerdfont" },
       { name = "plugins" },
       {
-        name = "treesitter",
-        max_item_count = 3,
-        keyword_length = 3,
+        name = "emoji",
+        group_index = 9,
+        entry_filter = function()
+          if vim.bo.filetype ~= "gitcommit" then
+            return false
+          end
+          return true
+        end,
       },
-      -- { name = 'nvim_lsp_document_symbol' },
-      -- { name = 'nvim_lsp_signature_help' },
-      -- Distracting!
       -- { name = "spell" },
       -- { name = "dictionary" },
       -- {
-      --   name = 'nvim_lua',
-      --   group_index = 2,
-      -- },
-      -- {
       --   name = 'crates',
       --   group_index = 2,
-      -- },
-      -- {
-      --   name = 'treesitter',
-      --   keyword_length = 3,
-      --   group_index = 3,
-      -- },
-      -- {
-      --   name = 'path',
-      --   keyword_length = 3,
-      --   group_index = 3,
-      -- },
-      -- {
-      --   name = 'buffer',
-      --   keyword_length = 3,
-      --   group_index = 4,
-      --   option = {
-      --     get_bufnrs = function()
-      --       local bufs = {}
-      --       for _, win in ipairs(vim.api.nvim_list_wins()) do
-      --         bufs[vim.api.nvim_win_get_buf(win)] = true
-      --       end
-      --       return vim.tbl_keys(bufs)
-      --     end,
-      --   },
-      -- },
-      -- {
-      --   name = 'emoji',
-      --   keyword_length = 2,
-      --   group_index = 5,
-      -- },
-      -- {
-      --   name = 'nerdfont',
-      --   keyword_length = 2,
-      --   group_index = 5,
       -- },
     },
   },
@@ -200,11 +186,9 @@ local sources = {
     { name = "path" },
   },
   cmdsearch = {
-    -- { name = 'nvim_lsp' },
-
-    { name = "buffer" },
+    { name = "nvim_lsp" },
     { name = "nvim_lsp_document_symbol" },
-    -- { name = 'dictionary' },
+    { name = "fuzzy_path" },
     {
       name = "fuzzy_buffer",
       option = { max_matches = 5, max_buffer_lines = 4000, min_match_length = 4 },
@@ -218,7 +202,22 @@ local sources = {
       },
     },
     {
-      { name = "async_path" },
+      { name = "fuzzy_path", option = { fd_timeout_msec = 1500 } },
+      {
+        name = "fuzzy_buffer",
+        option = {
+          get_bufnrs = function()
+            local bufs = {}
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+              local buftype = vim.api.nvim_buf_get_option(buf, "buftype")
+              if buftype ~= "nofile" and buftype ~= "prompt" then
+                bufs[#bufs + 1] = buf
+              end
+            end
+            return bufs
+          end,
+        },
+      },
       { name = "cmdline_history" },
       -- { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
       -- { name = "dictionary" },

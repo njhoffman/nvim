@@ -1,10 +1,10 @@
+local ft_noice = "noice.log"
+
 local lsp_progress = {
   {
     "{progress} ",
     key = "progress.percentage",
-    contents = {
-      { "{data.progress.message} " },
-    },
+    contents = { { "{data.progress.message} " } },
   },
   "({data.progress.percentage}%) ",
   { "{spinner} ", hl_group = "NoiceLspProgressSpinner" },
@@ -73,6 +73,7 @@ local errorView = {
 local popupView = {
   backend = "popup",
   relative = "editor",
+  buf_options = { filetype = ft_noice },
   close = {
     events = { "BufLeave" },
     keys = { "q", "<esc>" },
@@ -82,6 +83,7 @@ local popupView = {
   win_options = {
     winhighlight = { Normal = "NoicePopup", FloatBorder = "NoicePopupBorder" },
     winbar = "",
+    scrolloff = 9999,
     foldenable = false,
   },
   -- size = { width = "120", height = "20", },
@@ -136,6 +138,7 @@ local hoverView = {
   position = { row = 1, col = 0 },
   win_options = {
     wrap = true,
+    scrolloff = 9999,
     linebreak = true,
   },
 }
@@ -144,6 +147,7 @@ local cmdlineOutputSplitView = {
   format = "details",
   view = "split",
   enter = true,
+  buf_options = { filetype = ft_noice },
 }
 
 local cmdlineOutputPopupView = {
@@ -155,8 +159,8 @@ local cmdlineOutputPopupView = {
     max_height = vim.o.lines - 9,
   },
   position = { row = 6, col = "50%" },
-  win_options = { colorcolumn = "", signcolumn = "no" },
-  buf_options = { filetype = "noice" },
+  win_options = { colorcolumn = "", signcolumn = "no", scrolloff = 9999 },
+  buf_options = { filetype = ft_noice },
 }
 
 local miniView = {
@@ -182,6 +186,7 @@ local cmdlinePopupView = {
   position = { row = 10, col = "50%" },
   size = { width = 60, height = "auto" },
   win_options = {
+    scrolloff = 9999,
     winhighlight = {
       Normal = "NoiceCmdlinePopup",
       FloatBorder = "NoiceCmdlinePopupBorder",
@@ -221,8 +226,13 @@ local config = {
   notify = notifyView,
   cmdline_popup = cmdlinePopupView,
   cmdline_output = cmdlineOutputPopupView,
-  cmdline_output_popup = cmdlineOutputPopupView,
-  cmdline_output_split = cmdlineOutputSplitView,
+  -- split
+  -- vsplit
+  -- cmdline
+  -- messages
+  -- confirm
+  -- hover
+  -- popupmenu
 }
 
 return {

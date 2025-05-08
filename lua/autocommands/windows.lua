@@ -127,7 +127,8 @@ local goto_last_pos = function(bufnr)
     if pos.win_last == pos.buf_last then
       vim.api.nvim_command([[keepjumps normal! g`"]])
     elseif pos.buf_last - pos.exit_line > ((pos.win_last - pos.win_first) / 2) - 1 then
-      vim.api.nvim_command([[keepjumps normal! g`"zz]])
+      -- vim.api.nvim_command([[keepjumps normal! g`"zz]])
+      vim.api.nvim_command([[keepjumps normal! g`"]])
     else
       vim.api.nvim_command([[keepjumps normal! G'"<c-e>]])
     end

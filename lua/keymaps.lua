@@ -442,11 +442,6 @@ map("i", "<M-BS>", "<Esc>cvb", {
   silent = true,
 })
 
-map("n", "<leader><space>", "<C-^>", {
-  category = "Buffers",
-  desc = "󰽙 switch to last buffer",
-})
-
 map("n", "<leader>fn", [[:e <C-R>=expand("%:p:h") . "/" <CR>]], {
   category = "Buffers",
   label = "󰽙 new file in cwd",
@@ -914,15 +909,31 @@ vmap({ 'n' }, "<C-]>",  {
   desc = ' jump to next tag',
 })
 
-map({'n', 'x'}, '<M-}>', '<cmd>norm }<cr>', {
+map({'n', 'x'}, '<M-}>', '<cmd>norm v}<cr>', {
   category = 'Motion',
-  desc = ' traverse blocks forward with select',
+  desc = ' select next block',
 })
 
 
-map({'n', 'x'}, '<M-{>', '<cmd>norm {<cr>', {
+map({'n'}, '<M-{>', '<cmd>norm v{<cr>', {
   category = 'Motion',
-  desc = ' traverse blocks backwards with select',
+  desc = ' visual select previous block ',
+})
+
+map({'n'}, '<M-}>', '<cmd>norm v}<cr>', {
+  category = 'Motion',
+  desc = ' visual select next block',
+})
+
+
+map({'x'}, '<M-{>', '<cmd>norm {<cr>', {
+  category = 'Motion',
+  desc = ' select previous block',
+})
+
+map({'x'}, '<M-}>', '<cmd>norm }<cr>', {
+  category = 'Motion',
+  desc = ' select next block',
 })
 
 map({'n', 'o', 'x'}, '[[', '?{<CR>w99[{', {
@@ -1409,6 +1420,12 @@ map('n', '<leader>;', '<c-w>w', {
   desc = ' focus the next window',
 })
 
+map({ 'n' }, '<leader><leader>', "<c-w>W", {
+  category = 'Pickers',
+  label = ' window prev',
+  desc = ' focus the prev window',
+})
+
 map('n', '<leader>:', '<c-w>W', {
   category = 'Window',
   label = ' window prev',
@@ -1510,28 +1527,28 @@ map('n', '<leader>|', '<c-w>|', {
   desc = ' maximize width of horizontal split',
 })
 
-map('n', '<M-S-Right>', '<cmd>wincmd l<cr>', {
-  category = 'Window',
-  label = ' select right window',
-  desc = ' move to right window',
-})
+-- map('n', '<M-S-Right>', '<cmd>wincmd l<cr>', {
+--   category = 'Window',
+--   label = ' select right window',
+--   desc = ' move to right window',
+-- })
 
-map('n', '<M-S-Left>', '<cmd>wincmd h<cr>', {
-  category = 'Window',
-  label = ' select left window',
-  desc = ' move to left window',
-})
-map('n', '<M-S-Down>', '<cmd>wincmd j<cr>', {
-  category = 'Window',
-  label = ' select down window',
-  desc = ' move to bottom  window',
-})
+-- map('n', '<M-S-Left>', '<cmd>wincmd h<cr>', {
+--   category = 'Window',
+--   label = ' select left window',
+--   desc = ' move to left window',
+-- })
+-- map('n', '<M-S-Down>', '<cmd>wincmd j<cr>', {
+--   category = 'Window',
+--   label = ' select down window',
+--   desc = ' move to bottom  window',
+-- })
 
-map('n', '<M-S-Up>', '<cmd>wincmd k<cr>', {
-  category = 'Window',
-  label = ' select up window',
-  desc = ' move to up window',
-})
+-- map('n', '<M-S-Up>', '<cmd>wincmd k<cr>', {
+--   category = 'Window',
+--   label = ' select up window',
+--   desc = ' move to up window',
+-- })
 
 map('n', '<leader>q', '<cmd>silent! tabclose | Sayonara<cr>', {
   category = 'Window',
@@ -1728,13 +1745,13 @@ map({ 'n' }, '<C-Space>', "<cmd>lua require('telescope.run')('find_pickers','fin
 })
 
 
-map({ 'n' }, '<leader><leader>', "<cmd>lua require('telescope.run')('find_pickers','find_pickers')<cr>", {
-  category = 'Pickers',
-  plugin = 'telescope.nvim',
-  label = 'find pickers',
-  desc = 'find pickers in telescope',
-})
 
+map({ 'n' }, '<leader><space>', "<cmd>lua Snacks.picker.pickers()<cr>", {
+  category = 'Pickers',
+  plugin = 'snacks.nvim',
+  label = 'snacks pickers',
+  desc = 'find pickers in snacks',
+})
 
 -- map({ 'n' }, '<M-,>', "<cmd>lua require('configs.telescope.actions.picker-history').prev_picker()<cr>", {
 map({ 'n' }, '<M-,>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = prev })<cr>", {
@@ -1869,6 +1886,17 @@ map('x', '>', '>gv', {
   desc = '󰉶 indent repeatedly',
 })
 
+-- map('n', '<', '<<', {
+--   category = 'Format',
+--   label = '󰉶 unindent',
+--   desc = '󰉶 unindent repeatedly',
+-- })
+
+-- map('n', '>', '>>', {
+--   category = 'Format',
+--   label = '󰉶 indent',
+--   desc = '󰉶 indent repeatedly',
+-- })
 
 map({ 'n' }, '<M-;>', '<cmd>ISwapNodeWith<cr>', {
   category = 'Format',

@@ -8,6 +8,10 @@ DefinitionOrReferences.options = {
   -- Prints useful logs about what event are triggered, and reasons actions are executed.
   debug = false,
 
+  -- Specifies whether or not implementations (if supported by the LSP)
+  -- should be included in the references list
+  include_implementations = false,
+
   -- Callback that gets called just before sending first request
   before_start_callback = function() end,
 
@@ -37,7 +41,6 @@ function DefinitionOrReferences.setup(options)
 
   DefinitionOrReferences.options =
     vim.tbl_deep_extend("keep", options, DefinitionOrReferences.options)
-
   return DefinitionOrReferences.options
 end
 

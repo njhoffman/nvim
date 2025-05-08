@@ -1,5 +1,7 @@
 local utils = require("lsp.utils")
 
+local formatter_bin = "eslint_d"
+
 local opts = {
   init_options = {
     hostInfo = "neovim",
@@ -64,8 +66,7 @@ local opts = {
     vim.dbglog("ts_ls setup", _opts)
     require("lazyvim.util").on_attach(function(client, buffer)
       vim.dbglog("lazy handler", client.name)
-      if client.name == "tsserver" then
-        -- client.server_capabilities.documentFormatting = false
+      if client.name == "ts_ls" then
         vim.keymap.set(
           "n",
           "<leader>co",

@@ -1,3 +1,4 @@
+-- stylua: ignore
 local profiler_cfg = {
   autocmds = true,
   runtime = vim.env.VIMRUNTIME, ---@type string
@@ -20,12 +21,10 @@ local profiler_cfg = {
     align = 80,
   },
   pick = {
-    picker = "auto", ---@type snacks.profiler.Picker
-    ---@type snacks.profiler.Badge.type[]
+    picker = "snacks", -- snacks, trouble, fzf-lua
     badges = { "time", "count", "name" },
-    ---@type snacks.profiler.Highlights
     preview = {
-      badges = { "time", "pct", "count" },
+      badges = { "time", "count" },
       align = "right",
     },
   },
@@ -38,16 +37,48 @@ local profiler_cfg = {
   ---@type table<string, snacks.profiler.Pick|fun():snacks.profiler.Pick>
   presets = {
     startup = { min_time = 1, sort = false },
-    on_stop = {},
+    on_stop = {
+      min_time = 1,
+      structure = true,
+      -- loc = "def", -- def, ref
+      -- max_shade = 20
+      -- filter = {}
+      sort = "time", -- time, count, false
+      -- "name" fully qualified name of the function
+      -- "def" definition
+      -- "ref" reference (caller)
+      -- "require" require
+      -- "autocmd" autocmd
+      -- "modname" module name of the called function
+      -- "def_file" file of the definition
+      -- "def_modname" module name of the definition
+      -- "def_plugin" plugin that defines the function
+      -- "ref_file" file of the reference
+      -- "ref_modname" module name of the reference
+      -- "ref_plugin" plugin that references the function
+      group = 'name',
+      -- name? string|boolean fully qualified name of the function
+      -- def? string|boolean location of the definition
+      -- ref? string|boolean location of the reference (caller)
+      -- require? string|boolean special case for require
+      -- autocmd? string|boolean special case for autocmd
+      -- modname? string|boolean module name
+      -- def_file? string|boolean file of the definition
+      -- def_modname? string|boolean module name of the definition
+      -- def_plugin? string|boolean plugin that defines the function
+      -- ref_file? string|boolean file of the reference
+      -- ref_modname? string|boolean module name of the reference
+      -- ref_plugin? string|boolean plugin that references the function
+    },
     filter_by_plugin = function()
       return { filter = { def_plugin = vim.fn.input("Filter by plugin: ") } }
     end,
   },
   ---@type string[]
   globals = {
-    "vim",
-    "vim.api",
-    "vim.keymap",
+    -- "vim",
+    -- "vim.api",
+    -- "vim.keymap",
     -- "Snacks.dashboard.Dashboard",
   },
   -- filter modules by pattern. longest patterns are matched first
@@ -69,16 +100,16 @@ local profiler_cfg = {
     ["^ibl%.utils%."] = false,
   },
   icons = {
-    time = " ",
-    pct = " ",
-    count = " ",
+    time    = " ",
+    pct     = " ",
+    count   = " ",
     require = "󰋺 ",
     modname = "󰆼 ",
-    plugin = " ",
+    plugin  = " ",
     autocmd = "⚡",
-    file = " ",
-    fn = "󰊕 ",
-    status = "󰈸 ",
+    file    = " ",
+    fn      = "󰊕 ",
+    status  = "󰈸 ",
   },
 }
 
