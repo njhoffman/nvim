@@ -1,3 +1,4 @@
+-- https://www.reddit.com/r/neovim/comments/1j55o9c/share_your_custom_toggles_using_snacks_toggle/
 local profiler_cfg = require("configs.snacks.profiler")
 local toggle_cfg = require("configs.snacks.toggle")
 local scratch_cfg = require("configs.snacks.scratch")

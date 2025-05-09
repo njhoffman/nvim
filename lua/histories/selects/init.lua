@@ -1,8 +1,8 @@
-local state = require('histories.state')
-local track = require('histories.track')
-local view = require('histories.selects.view')
+local state = require("histories.state")
+local track = require("histories.track")
+local view = require("histories.selects.view")
 
-local config = { max = 100 }
+local config = { max = 5 }
 
 local get_items = function()
   return state.selects, state.select_idx
@@ -14,7 +14,7 @@ local start = function()
 end
 
 local init = function(opts)
-  config = vim.tbl_extend('force', config, opts or {})
+  config = vim.tbl_extend("force", config, opts or {})
   track.watch(config.max)
 end
 

@@ -1,46 +1,60 @@
 local state = require("histories.state")
 local select_utils = require("histories.selects.utils")
 
-local last = { select = nil, change = nil }
+local last_hash = nil
 
 local ns = vim.api.nvim_create_namespace("selects")
 
-local add_select = function(curr, hash)
+local create_mark = function(curr)
   -- let g:mark_id = nvim_buf_set_extmark(0, g:mark_ns, 0, 2, {})
-  vim.dbglog("add", curr, hash)
-  if
-    last.select ~= hash.select
-    and vim.fn.join(curr.select.from, " ") ~= vim.fn.join(curr.select.to, " ")
-  then
-    local extmark_id =
-      vim.api.nvim_buf_set_extmark(curr.select.to[1], ns, curr.select.from[2] - 1, 0, {
-        virt_text = { { "-" .. #state.selects, "Comment" } },
-        virt_text_pos = "right_align",
-      })
-    if curr.select.from[2] ~= curr.select.to[2] then
-      local extmark_id =
-        vim.api.nvim_buf_set_extmark(curr.select.to[1], ns, curr.select.to[2] - 1, 0, {
-          virt_text = { { "select-" .. #state.selects, "Comment" } },
-          virt_text_pos = "right_align",
-        })
-    end
+  local end_line_length =
+    vim.api.nvim_buf_get_lines(curr.pos.to[1], curr.pos.to[2] - 1, curr.pos.to[2], false)[1]:len()
+  local end_col = curr.pos.to[3] == vim.v.maxcol and end_line_length or curr.pos.to[3]
 
-    table.insert(
-      state.selects,
-      vim.tbl_deep_extend("force", {}, curr.select, {
-        id = extmark_id,
-        name = vim.api.nvim_buf_get_name(curr.select.to[1]),
-        time = os.time(),
-      })
-    )
-    vim.dbglog("select", #state.selects, state.selects[#state.selects])
-    last.select = hash.select
+  local mark =
+    vim.api.nvim_buf_set_extmark(curr.pos.from[1], ns, curr.pos.from[2] - 1, curr.pos.from[3], {
+      -- hl_group = "VisualRed",
+      end_row = curr.pos.to[2] - 1,
+      end_col = end_col,
+    })
+  return mark
+end
+
+local get_mark = function(mark_id, buf)
+  return vim.api.nvim_buf_get_extmark_by_id(buf or 0, ns, mark_id, { details = true })
+end
+
+local truncate = function(buf, len)
+  local new_state = {}
+  local count = 0
+  for _, v in ipairs(state.selects) do
+    if v.buf == buf then
+      count = count + 1
+      if count <= len then
+        table.insert(new_state, v)
+      end
+    else
+      table.insert(new_state, v)
+    end
   end
-  -- local max = 10
-  -- trim entries after max_selects
-  -- for _ = 1, #state.selects - max do
-  --   table.remove(state.selects, 1)
-  -- end
+  state.selects = new_state
+end
+
+local add_select = function(curr, hash, max)
+  if last_hash ~= hash and vim.fn.join(curr.pos.from, " ") ~= vim.fn.join(curr.pos.to, " ") then
+    table.insert(state.selects, {
+      hash = hash,
+      buf = curr.buffer,
+      type = curr.type,
+      mark = create_mark(curr),
+      name = vim.api.nvim_buf_get_name(curr.pos.to[1]),
+      time = os.time(),
+    })
+    vim.dbglog("select", #state.selects, state.selects[#state.selects])
+    last_hash = hash
+  end
+
+  truncate(curr.buffer, max)
 end
 
 -- return visual_str[tostring(vim.fn.mode())]
@@ -53,9 +67,7 @@ local watch = function(max)
       local from, _ = unpack(vim.split(ev.match, ":"))
       if vim.tbl_contains({ "v", "V", "" }, from) then
         local curr, hash = select_utils.get_select_pos(ev.buf, from)
-        vim.dbglog(curr)
-
-        -- add_select(curr, hash)
+        add_select(curr, hash, max)
         -- select_utils.log()
       end
     end,
@@ -68,6 +80,6 @@ end
 --   end
 -- end)(vim.paste)
 
-watch()
+watch(5)
 
 -- return { watch = watch }

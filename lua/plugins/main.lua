@@ -17,7 +17,6 @@ local plugins = {
   {
     "romgrk/barbar.nvim",
     -- branch = 'fix-telescope-insert',
-    lazy = false,
     init = function()
       vim.g.barbar_auto_setup = false
     end,
@@ -47,6 +46,9 @@ local plugins = {
     -- nvim -c 'lua require("scratch").scratchByType("md")'
   },
   { "rgroli/other.nvim", event = "VeryLazy" },
+
+  -- https://www.reddit.com/r/neovim/comments/1jelzey/pathfindernvim_a_multiline_gfgf_replacement/
+  -- https://github.com/hawkinst/pathfinder.nvim
   {
     "chrishrb/gx.nvim",
     keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" } } },
@@ -139,6 +141,7 @@ local plugins = {
   -- { 'benlubas/wrapping-paper.nvim' },
   {
     "kevinhwang91/nvim-ufo",
+    enabled = false,
     dependencies = "kevinhwang91/promise-async",
     cmd = { "UfoEnable", "UfoAttach", "UfoEnableFold" },
     event = { "UIEnter" },
@@ -237,6 +240,7 @@ local plugins = {
   { "matbme/JABS.nvim", event = { "BufReadPost", "BufNewFile" } },
   -- { 'ghillb/cybu.nvim', event = { 'BufRead', 'BufNewFile' } },
   { "nacro90/numb.nvim", event = { "BufReadPost", "BufNewFile" } },
+  -- https://github.com/tzachar/local-highlight.nvim
   { "winston0410/range-highlight.nvim", event = { "CmdlineEnter" } },
   -- { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
   {
@@ -249,6 +253,9 @@ local plugins = {
       })
     end,
   },
+
+  -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-keymap.md
+  -- https://www.reddit.com/r/neovim/comments/1kdrhjn/minikeymap_make_special_key_mappings_multistep/
   {
     "echasnovski/mini.jump",
     -- local override
@@ -338,6 +345,8 @@ local plugins = {
   { "chrisgrieser/nvim-various-textobjs", event = { "VeryLazy" } },
   { "stevearc/aerial.nvim", event = { "VeryLazy" }, dependencies = { "nvim-treesitter" } },
   -- motion
+
+  -- https://github.com/FluxxField/smart-motion.nvim
   { "rainbowhxch/accelerated-jk.nvim", enabled = false, event = "VeryLazy" },
   -- https://github.com/AgusDOLARD/backout.nvim
   { "abecodes/tabout.nvim", event = { "InsertEnter" } },
@@ -646,6 +655,32 @@ local plugins = {
   { "jbyuki/quickmath.nvim", cmd = "Quickmath" },
   { "michaelb/sniprun", build = "bash install.sh", cmd = { "SnipRun", "SnipInfo" } },
   { "milisims/nvim-luaref", event = "VeryLazy" },
+
+  {
+    "mikavilpas/yazi.nvim",
+    event = "VeryLazy",
+    dependencies = { "folke/snacks.nvim" },
+    keys = {
+      {
+        "<leader>\\",
+        mode = { "n", "v" },
+        "<cmd>Yazi<cr>",
+        desc = "Open yazi at the current file",
+      },
+      --   {
+      --     -- Open in the current working directory
+      --     "<leader>cw",
+      --     "<cmd>Yazi cwd<cr>",
+      --     desc = "Open the file manager in nvim's working directory",
+      --   },
+      --   {
+      --     "<c-up>",
+      --     "<cmd>Yazi toggle<cr>",
+      --     desc = "Resume the last yazi session",
+      --   },
+      -- },
+    },
+  },
   -- https://github.com/MagicDuck/grug-far.nvim
   {
     "chrisgrieser/nvim-rip-substitute",

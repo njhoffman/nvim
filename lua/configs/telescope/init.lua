@@ -1,4 +1,6 @@
 -- https://raw.githubusercontent.com/nvim-telescope/telescope.nvim/master/README.md
+-- https://github.com/nvim-telescope/telescope.nvim/issues/3125
+-- https://gist.github.com/xzbdmw/fb20eb84655b7c13b9e8aec760c992c0
 local telescope = require("telescope")
 
 local commands = require("configs.telescope.commands")

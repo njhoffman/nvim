@@ -81,7 +81,13 @@ prefix("n", "<leader>cl", "conceal 󰈉 ")
 -- -- better up/down
 -- TODO: test for foldlines and disable variable
 map({ "n", "x" }, "j", "gj", { desc = "Down wrapped", silent = true, noremap = true })
+-- map({ "n", "x" }, "k", function()
+--   return vim.v.count > 0 and "m'" .. vim.v.count .. "k" or "gk"
+-- end, { expr = true })
 
+-- vim.keymap.set("n", "j", function()
+--   return vim.v.count > 0 and "m'" .. vim.v.count .. "j" or "gj"
+-- end, { expr = true })
 -- "v:count == 0 && &wrap ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true }
 -- "v:count == 0 && &wrap ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true }
 map({ "n", "x" }, "k", "gk", { desc = "Up wrapped", silent = true, noremap = true })

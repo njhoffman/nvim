@@ -255,6 +255,7 @@ function s:stop_moving()
   let s:target_displacement = 0
   let s:subline_position = 0.0
   if &scrolloff && &scrolloff > 0
+    " math.ceil(winheight(0) / 2)
     let s:scrolloffset = &scrolloff < (&lines - 2) / 2 ? &scrolloff : (&lines - 2) / 2
   else
     let s:scrolloffset = 0

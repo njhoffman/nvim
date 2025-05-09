@@ -1,3 +1,6 @@
+-- https://github.com/artemave/workspace-diagnostics.nvim
+-- https://github.com/Danisaski/neodafer/blob/main/lua/daniel/diagnostics.lua
+
 local lsp_icons = require("lsp.icons")
 
 local sources = {

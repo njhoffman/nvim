@@ -22,60 +22,17 @@ local get_pos = function(from, to)
   return to == nil and get_pos_line(from) or { from = get_pos_line(from), to = get_pos_line(to) }
 end
 
--- local pos_are_equal = function(pos1, pos2)
---   local get_line = function(pos)
---     return vim.api.nvim_buf_get_lines(pos.buffer, pos[2] - 1, pos[2], false)[1]
---   end
---   if pos1.from and pos2.from then
---     local lengths = {
---       pos1 = { #get_line(pos1.from), #get_line(pos1.to) },
---       pos2 = { #get_line(pos2.from), #get_line(pos2.to) },
---     }
---     pos1.from[2] == pos2.from[2] and pos1.to[3] == pos2.to[3]
---   else
---     local lengths = { pos1 = #get_line(pos1), pos2 = #get_line(pos2) }
---   end
--- end
-
-local get_change_pos = function(buf, mode)
-  local pos = { op = get_pos("'[", "']"), select = get_pos("'<", "'>"), change = get_pos("'.") }
-  local type = "change"
-  if tostring(pos.op) == tostring(pos.select) then
-    type = "yank"
-  elseif tostring(pos.change) == tostring(pos.op.from) then
-    type = "paste"
-  end
-  local curr = {
-    buffer = buf,
-    mode = mode,
-    type = type,
-    pos = pos.op,
-  }
-  local hash = get_hash(curr.pos)
-  return curr, hash
-end
-
 local get_select_pos = function(buf, mode)
+  local pos = get_pos("'<", "'>")
   local curr = {
     buffer = buf,
     mode = mode,
     type = "v-" .. (mode == "\22" and "block" or mode == "V" and "line" or "char"),
-    select = get_pos("'<", "'>"),
-    op = get_pos("'[", "']"),
-    change = get_pos("'."),
+    pos = pos,
   }
   -- curr.pos.to[3] = curr.pos.to[3] == vim.v.maxcol and -1 or curr.pos.to[3]
   local hash = get_hash(curr.pos)
   return curr, hash
-end
-
-local has_valid_range = function(vis)
-  local bufnr = vim.api.nvim_get_current_buf()
-  local bufname = vim.api.nvim_buf_get_name(bufnr)
-  local from_line = vis.from[2]
-  local to_line = vis.to[2]
-  local buf = vim.api.nvim_buf_get_lines(bufnr, from_line - 1, to_line, true)
-  return #buf > 0 and vis.name == bufname
 end
 
 local log = function()
@@ -99,16 +56,9 @@ local log = function()
       vim.fn.substitute(vis.name, vim.fn.getcwd() .. "/", "", "g")
     )
   end
-  -- local extmarks = vim.api.nvim_buf_get_extmarks(buf, ns, 0, -1, {
-  --   -- type = 'highlight', -- highlight, sign, virt_text, virt_lines
-  --   details = true,
-  --   hl_name = true,
-  -- })
 end
 
 return {
   log = log,
-  has_valid_range = has_valid_range,
   get_select_pos = get_select_pos,
-  get_change_pos = get_change_pos,
 }

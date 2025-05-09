@@ -1,4 +1,11 @@
 local utils = require("utils.lazy")
+
+-- https://zignar.net/2023/06/10/debugging-lua-in-neovim/
+-- https://github.com/LiadOz/nvim-dap-repl-highlights
+-- https://github.com/igorlfs/nvim-dap-view?tab=readme-ov-file
+-- https://www.reddit.com/r/neovim/comments/1j3oinw/nvimdapview_threads_view_is_here_now_a_full/
+-- https://www.reddit.com/r/neovim/comments/1kednez/i_created_debug_mode_for_neovim_debugmasternvim/
+-- https://github.com/miroshQa/debugmaster.nvim
 -- https://theosteiner.de/debugging-javascript-frameworks-in-neovim
 -- https://github.com/krady21/compiler-explorer.nvim
 -- https://github.com/p00f/godbolt.nvim
