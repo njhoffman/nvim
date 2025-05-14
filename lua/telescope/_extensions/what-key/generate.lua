@@ -20,11 +20,11 @@ end
 
 local get_ok_keys = function()
   local widths = { key = 0, mode = 0, def = 0 }
-  local todo, ok, conflicts, dupes = wk_utils.dump()
+  local wk = wk_utils.dump()
 
-  sort_table(ok)
+  sort_table(wk.ok)
   local lines = {}
-  for ok_mode, ok_keys in pairs(ok) do
+  for ok_mode, ok_keys in pairs(wk.ok) do
     for ok_key, ok_def in pairs(ok_keys) do
       local line = { key = ok_key, mode = ok_mode, def = ok_def }
       table.insert(lines, line)
@@ -38,24 +38,25 @@ end
 
 local get_todo_keys = function()
   local widths = { key = 0, mode = 0, def = 0 }
-  local todo, ok, conflicts, dupes = wk_utils.dump()
-  sort_table(todo)
+  -- local todo, ok, conflicts, dupes = wk_utils.dump()
+  local wk = wk_utils.dump()
+  sort_table(wk.todo)
 
   local lines = {}
   -- for _, conflict in ipairs(conflicts) do
   --   table.insert(lines, "conf: " .. conflict)
   -- end
   if sort_by_mode then
-    table.sort(todo, function(a, b)
+    table.sort(wk.todo, function(a, b)
       return a.mode .. a.key < b.mode .. b.key
     end)
   else
-    table.sort(todo, function(a, b)
+    table.sort(wk.todo, function(a, b)
       return a.key .. a.mode < b.key .. b.mode
     end)
   end
 
-  for todo_mode, todo_keys in pairs(todo) do
+  for todo_mode, todo_keys in pairs(wk.todo) do
     for todo_key, todo_def in pairs(todo_keys) do
       local line = { key = todo_key, mode = todo_mode, def = todo_def }
       table.insert(lines, line)

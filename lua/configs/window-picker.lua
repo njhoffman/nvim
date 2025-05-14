@@ -1,12 +1,12 @@
-local picker = require('window-picker')
-picker.setup({ fg_color = '#000000' })
+local picker = require("window-picker")
+picker.setup({ fg_color = "#000000" })
 
-vim.keymap.set('n', '<leader>W', function()
+vim.keymap.set("n", "ghW", function()
   local picked_window_id = picker.pick_window({
-    hint = 'floating-big-letter',
+    hint = "floating-big-letter",
   }) or vim.api.nvim_get_current_win()
   vim.api.nvim_set_current_win(picked_window_id)
-end, { desc = 'pick a window' })
+end, { desc = "pick a window" })
 
 local defaults = {
   -- type of hints you want to get
@@ -15,11 +15,11 @@ local defaults = {
   -- 'statusline-winbar' draw on 'statusline' if possible, if not 'winbar' will be
   -- 'floating-big-letter' draw big letter on a floating window
   -- used
-  hint = 'statusline-winbar',
+  hint = "statusline-winbar",
 
   -- when you go to window selection mode, status bar will show one of
   -- following letters on them so you can use that letter to select the window
-  selection_chars = 'FJDKSLA;CMRUEIWOQP',
+  selection_chars = "FJDKSLA;CMRUEIWOQP",
 
   -- This section contains picker specific configurations
   picker_config = {
@@ -28,14 +28,14 @@ local defaults = {
       -- It supports '%' printf style. Such as `return char .. ': %f'` to display
       -- buffer file path. See :h 'stl' for details.
       selection_display = function(char, windowid)
-        return '%=' .. char .. '%='
+        return "%=" .. char .. "%="
       end,
 
       -- whether you want to use winbar instead of the statusline
       -- "always" means to always use winbar,
       -- "never" means to never use winbar
       -- "smart" means to use winbar if cmdheight=0 and statusline if cmdheight > 0
-      use_winbar = 'never', -- "always" | "never" | "smart"
+      use_winbar = "never", -- "always" | "never" | "smart"
     },
 
     floating_big_letter = {
@@ -44,7 +44,7 @@ local defaults = {
       -- additionally, user can pass in a table of fonts in to font
       -- property to use instead
 
-      font = 'ansi-shadow', -- ansi-shadow |
+      font = "ansi-shadow", -- ansi-shadow |
     },
   },
 
@@ -52,7 +52,7 @@ local defaults = {
   show_prompt = true,
 
   -- prompt message to show to get the user input
-  prompt_message = 'Pick window: ',
+  prompt_message = "Pick window: ",
 
   -- if you want to manually filter out the windows, pass in a function that
   -- takes two parameters. You should return window ids that should be
@@ -80,10 +80,10 @@ local defaults = {
     -- filter using buffer options
     bo = {
       -- if the file type is one of following, the window will be ignored
-      filetype = { 'NvimTree', 'neo-tree', 'notify' },
+      filetype = { "NvimTree", "neo-tree", "notify" },
 
       -- if the file type is one of following, the window will be ignored
-      buftype = { 'terminal' },
+      buftype = { "terminal" },
     },
 
     -- filter using window options
@@ -103,25 +103,25 @@ local defaults = {
   highlights = {
     statusline = {
       focused = {
-        fg = '#ededed',
-        bg = '#e35e4f',
+        fg = "#ededed",
+        bg = "#e35e4f",
         bold = true,
       },
       unfocused = {
-        fg = '#ededed',
-        bg = '#44cc41',
+        fg = "#ededed",
+        bg = "#44cc41",
         bold = true,
       },
     },
     winbar = {
       focused = {
-        fg = '#ededed',
-        bg = '#e35e4f',
+        fg = "#ededed",
+        bg = "#e35e4f",
         bold = true,
       },
       unfocused = {
-        fg = '#ededed',
-        bg = '#44cc41',
+        fg = "#ededed",
+        bg = "#44cc41",
         bold = true,
       },
     },

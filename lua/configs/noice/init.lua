@@ -3,6 +3,22 @@ local commands = require("configs.noice.commands")
 local mapping = require("configs.noice.mapping")
 local views = require("configs.noice.views")
 
+-- 			{ filter = { event = "msg_show", find = "%d+B written$" }, view = "mini" },
+-- 			{ filter = { event = "msg_show", find = "%d+L, %d+B$" }, view = "mini" },
+-- 			{ filter = { event = "msg_show", find = "%-%-No lines in buffer%-%-" }, view = "mini" },
+--
+-- 			-- search
+-- 			{ filter = { event = "msg_show", find = "^E486: Pattern not found" }, view = "mini" },
+-- 			{ filter = { event = "msg_show", find = "^[/?]." }, skip = true },
+--
+-- 			-- output from `:Inspect` for easier copying
+-- 			{ filter = { event = "msg_show", find = "Treesitter.*- @" }, view = "popup" },
+--
+-- 			-- FIX https://github.com/artempyanykh/marksman/issues/348
+-- 			{ filter = { event = "notify", find = "^Client marksman quit with" }, skip = true },
+--
+-- 			-- code actions
+-- 			{ filter = { event = "notify", find = "No code actions available" }, skip = true },
 local config = {
   health = {
     checker = false, -- Disable if you don't want health checks to run

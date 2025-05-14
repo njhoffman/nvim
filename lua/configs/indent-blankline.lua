@@ -46,7 +46,7 @@ local bt_exclude = { "terminal", "prompt", "nofile", "quickfix", "markdown" }
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 vim.g.indent_blankline_use_treesitter = false
 require("ibl").setup({
-  debounce = 100,
+  debounce = 300,
   indent = { char = "│" },
   -- whitespace = { highlight = { 'Whitespace', 'NonText' } },
   scope = { enabled = false },

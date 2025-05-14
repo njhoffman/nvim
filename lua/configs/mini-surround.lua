@@ -3,16 +3,18 @@
 -- https://github.com/echasnovski/mini.nvim/issues/770
 -- When using blockwise mode and respect_selection_type, multiline selections aren't properly highlighted
 ---@diagnostic disable-next-line: unused-local
+
+-- stylua: ignore
 local default_cfg = {
   custom_surroundings = nil,
   highlight_duration = 500,
   mappings = {
-    add = "sa", -- Add surrounding in Normal and Visual modes
-    delete = "sd", -- Delete surrounding
-    find = "sf", -- Find surrounding (to the right)
-    find_left = "sF", -- Find surrounding (to the left)
-    highlight = "sh", -- Highlight surrounding
-    replace = "sr", -- Replace surrounding
+    add            = "sa", -- Add surrounding in Normal and Visual modes
+    delete         = "sd", -- Delete surrounding
+    find           = "sf", -- Find surrounding (to the right)
+    find_left      = "sF", -- Find surrounding (to the left)
+    highlight      = "sh", -- Highlight surrounding
+    replace        = "sr", -- Replace surrounding
     update_n_lines = "sn", -- Update `n_lines`
 
     suffix_last = "l", -- Suffix to search with "prev" method
@@ -24,11 +26,6 @@ local default_cfg = {
   -- 'cover', 'cover_or_next', 'cover_or_prev',
   -- 'cover_or_nearest', 'next', 'prev', 'nearest'
 }
-
----@diagnostic disable-next-line: unused-local
--- local vim_surround = {
---   mappings = { add = 'ys', delete = 'ds', find = '', find_left = '', highlight = '', replace = 'cs', update_n_lines = '', suffix_last = '', suffix_next = '', }, search_method = 'cover_or_next',
--- }
 
 -- TODO: yank surround text-obj
 -- TODO: n/N traverses them
@@ -100,6 +97,8 @@ local extra_mappings = function()
   -- "<cmd>execute 'silent! normal hwst )" .. vim.fn.nr2char(vim.fn.getchar()) .. "'<cr>",
   map("n", "ss", "<cmd>execute 'normal hwst ('<cr>", get_opts("󰅪 mini surround quick add word"))
 end
+
+extra_mappings()
 
 -- silent! normal hwst (<esc>
 -- <Cmd>execute "silent! normal hwst\ " . nr2char(getchar()) . "<Esc>"<CR>

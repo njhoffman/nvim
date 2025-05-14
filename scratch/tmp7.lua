@@ -188,6 +188,7 @@ list_namespaces({ filter = { has_hls = true, has_leaked = false }, sort = "name"
 vim.keymap.set("n", "<F10>", toggle_tint, { noremap = true, nowait = true })
 vim.keymap.set("n", "<F12>", tint.debuginfo, { noremap = true, nowait = true })
 
+-- get highlights from a buffer range
 local function ts_range_highlights(bufnr, buf_range)
   local parser = vim.treesitter.get_parser(bufnr)
   local root_tree = parser:parse()[1]

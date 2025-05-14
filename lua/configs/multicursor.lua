@@ -8,29 +8,33 @@ mc.setup({
   -- signs = {},
 })
 
--- stylua: ignore
-local keymaps = {
-  toggle         = "<M-n>",             -- nv  <c-q>
-  escape         = "<Esc>",             -- n   <esc>
-  next           = "<right>",           -- nv
-  prev           = "<left>",            -- nv
-  delete         = "<leader>mx",        -- nv  <leader>x
-  restore        = "<leader>mr",        -- n   <leader>gv
-  duplicate      = "<leader>md",        -- nv  <leader><c-q>
-  align          = "<leader>ma",        -- n   <leader>a
-  split          = "gS",                -- v   S
-  insertVisual   = "gI",                -- v   I
-  appendVisual   = "gA",                -- v   A
+local pfx = "<leader>m"
 
-  lineAddAbove   = "<S-Up>",              -- nv
-  lineAddBelow   = "<S-Down>",            -- nv
-  lineSkipAbove  = "<M-S-Up>",            -- nv  <leader><up>
-  lineSkipBelow  = "<M-S-Down>",          -- nv  <leader><down>
-  matchAddAbove  = "<leader>mn",        -- nv  <leader>n
-  matchAddBelow  = "<leader>mN",        -- nv  <leader>N
-  matchSkipAbove = "<leader>ms",        -- nv  <leader>s
-  matchSkipBelow = "<leader>mS",        -- nv  <leader>S
-  matchAddAll    = "<leader>mA",        -- nv  <leader>A
+-- stylua: ignore
+local keymaps    = {
+  toggle         = {"<C-m>"},                 -- nv  <c-q>
+  escape         = {"<Esc>"},                 -- n   <esc>
+  next           = {"<right>"},               -- nv
+  prev           = {"<left>"},                -- nv
+  -- delete         = {pfx .. "x"},            -- nv  <leader>x
+  restore        = {pfx .. "u"},            -- n   <leader>gv
+  duplicate      = {pfx .. "d"},            -- nv  <leader><c-q>
+  align          = {pfx .. "a"},            -- n   <leader>a
+  split          = {pfx .. "s", "gS"},       -- v   S
+  insertVisual   = {pfx .. "i", "gI"},       -- v   I
+  appendVisual   = {pfx .. "a", "gA"},       -- v   A
+  matchInteract  = {pfx .. "m"},             -- v   M
+  matchAddAbove  = {pfx .. "N"},            -- nv  <leader>n
+  matchAddBelow  = {pfx .. "n"},            -- nv  <leader>N
+  matchSkipAbove = {pfx .. "K"},            -- nv  <leader>s
+  matchSkipBelow = {pfx .. "J"},            -- nv  <leader>S
+  matchAddAll    = {pfx .. "A"},            -- nv  <leader>A
+  lineAddAbove   = {pfx .. "k"},          -- nv
+  lineAddBelow   = {pfx .. "j"},          -- nv
+  lineSkipAbove  = {pfx .. "K"},          -- nv  <leader><up>
+  lineSkipBelow  = {pfx .. "J"},          -- nv  <leader><down>
+  jumpForward    = {"<c-i>" },
+  jumpBackward   = {"<c-o>" },
 }
 
 local get_key_cmd = function(mode, lhs)
@@ -47,14 +51,20 @@ end
 
 local map = require("mapper").map
 local set = function(modes, lhs, rhs, desc)
-  if type(lhs) == "string" and lhs ~= "" then
-    map(modes, lhs, rhs, { desc = desc })
+  lhs = type(lhs) == "table" and lhs or { lhs }
+  for _, l in ipairs(lhs) do
+    if type(l) == "string" and l ~= "" then
+      map(modes, l, rhs, { desc = desc })
+    end
   end
 end
 
 local setup_keymaps = function()
   -- Easy way to add and remove cursors using the main cursor.
   set({ "n", "x" }, keymaps.toggle, mc.toggleCursor, "multicursor toggle")
+
+  -- Interactively ask for a pattern, add a cursor for each match of this pattern over every visual selections.
+  set({ "x" }, keymaps.matchInteract, mc.matchCursors, "multicursor match input pattern")
 
   -- Add or skip cursor above/below the main cursor.
   set({ "n", "x" }, keymaps.lineAddAbove, function()
@@ -92,7 +102,14 @@ local setup_keymaps = function()
   set({ "n", "x" }, keymaps.prev, mc.prevCursor, "multicursor prev cursor")
 
   -- Delete the main cursor.
-  set({ "n", "x" }, keymaps.delete, mc.deleteCursor, "multicursor delete cursor")
+  set(
+    { "n", "x" },
+    keymaps.delete,
+    mc.addKeymapLayer(function(layerSet)
+      layerSet("n", "x", mc.deleteCursor)
+    end),
+    "multicursor delete cursor"
+  )
 
   -- Clone every cursor and disable the originals.
   set({ "n", "x" }, keymaps.duplicate, mc.duplicateCursors, "multicursor duplicate cursor")
@@ -103,12 +120,24 @@ local setup_keymaps = function()
   -- Align cursor columns.
   set("n", keymaps.align, mc.alignCursors, "multicursor align columns")
 
-  -- Split visual selections by regex.
+  -- Interactively ask for a regex separator, split every visual selection
   set("x", keymaps.split, mc.splitCursors, "multicursor split selection by regex")
 
   -- -- Append/insert for each line of visual selections.
   set("x", keymaps.insertVisual, mc.insertVisual, "multicursor insert cursor on each selected line")
   set("x", keymaps.appendVisual, mc.appendVisual, "multicursor append cursor on each selected line")
+
+  set({ "n", "x" }, keymaps.jumpForward, mc.jumpForward, "multicursor jumplist fowards")
+  set({ "n", "x" }, keymaps.jumpBackward, mc.jumpBackward, "multicursor jumplist backwards")
+
+  --     get first cursor
+  --     mc.action(function(ctx)
+  --         local cursor = ctx:firstCursor()
+  --         vim.print(cursor:getLine())
+  --         cursor:feedkeys("ihello world")
+  --     end)
+  --   mc.matchSkipCursor(-1)
+  -- end, "multicursor match skip below")
 
   -- save original keymapping of escape
   local orig_escape = get_key_cmd("n", keymaps.escape)
@@ -146,12 +175,11 @@ local setup_keymaps = function()
   -- set("v", "<leader>T", function()
   --   mc.transposeCursors(-1)
   -- end)
-  --
-  -- -- Jumplist support
-  -- set({ "v", "n" }, "<c-i>", mc.jumpForward)
-  -- set({ "v", "n" }, "<c-o>", mc.jumpBackward)
 
-  -- It starts with <c-n> to select a word, then it seems to add keymaps with single keystrokes like `n`, `N`, `q`, `Q` to go the next, previous, skip and remove actions respectively
+  -- It starts with <c-n> to select a word then it seems to
+  -- add keymaps with single keystrokes like `n` `N` `q` `Q`
+  -- to go the next previous skip and remove actions respectively
+
   -- vim.keymap.set("n", "n", function()
   --     if (mc.hasCursors()) {
   --         mc.addCursor("*")

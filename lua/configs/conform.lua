@@ -55,7 +55,7 @@ local formatters_by_ft = {
 	typescript      = { eslint, prettier },
 	typescriptreact = { eslint, prettier },
 	vue             = { eslint },
-	-- ["_"]        = { "trim_whitespace" },
+	["_"]        = { "trim_whitespace" },
 }
 
 local formatters = {

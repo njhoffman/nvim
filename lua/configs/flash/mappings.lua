@@ -70,8 +70,8 @@ local pfx = "g\\"
 local keys = {
   op_remote_restore = { "r" },
   op_remote_norestore = { "R" },
-  remote_restore = { "gr", pfx .. "r" },
-  remote_norestore = { "gR", pfx .. "R" },
+  remote_restore = { "gr", "grr", pfx .. "r" },
+  remote_norestore = { "grR", pfx .. "R" },
 }
 local mapper = require("mapper")
 local map = function(modes, lhs, rhs, opts)

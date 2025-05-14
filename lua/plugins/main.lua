@@ -415,7 +415,9 @@ local plugins = {
   { "echasnovski/mini.align", event = "VeryLazy" },
   { "dhruvasagar/vim-table-mode", event = "VeryLazy", ft = { "markdown", "pandoc", "vimwiki" } },
   { "echasnovski/mini.doc", version = false, event = "VeryLazy" },
-  { "echasnovski/mini.bracketed", event = "VeryLazy" },
+  {
+    "echasnovski/mini.bracketed" --[[ , event = "VeryLazy" ]],
+  },
   -- formatting
   { "ckolkey/ts-node-action", dependencies = { "nvim-treesitter" } },
   { "johmsalas/text-case.nvim", event = "VeryLazy" },
@@ -482,6 +484,7 @@ local plugins = {
     "nvim-telescope/telescope.nvim",
     dir = "/home/nicholas/git/telescope.nvim",
     cmd = "Telescope",
+    lazy = false,
     -- opts = { extensions = { gpt = { title = "Gpt Actions", } } },
     -- event = 'VeryLazy',
     dependencies = {
@@ -624,6 +627,26 @@ local plugins = {
   { "pwntester/octo.nvim", cmd = "Octo", dependencies = "nvim-web-devicons" },
   { "kdheepak/lazygit.nvim", cmd = "LazyGit" },
   { "lewis6991/gitsigns.nvim", event = "BufReadPost", dependencies = "nvim-lua/plenary.nvim" },
+  {
+    "lewis6991/satellite.nvim",
+    enabled = false,
+    event = "VeryLazy",
+    init = function()
+      vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
+        desc = "User: Change `SatelliteQuickfix` color",
+        callback = function()
+          vim.api.nvim_set_hl(0, "SatelliteQuickfix", { link = "DiagnosticSignInfo" })
+        end,
+      })
+    end,
+    opts = {
+      winblend = 10, -- only little transparency, since otherwise hard to see in some themes
+      handlers = {
+        cursor = { enable = false },
+        marks = { enable = false },
+      },
+    },
+  },
   { "rhysd/git-messenger.vim", cmd = "GitMessenger" },
   {
     "tpope/vim-fugitive",
@@ -735,7 +758,6 @@ local plugins = {
   },
 
   { "smjonas/inc-rename.nvim" },
-  { "filipdutescu/renamer.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   -- quickfix file renamer
   {
     "gabrielpoca/replacer.nvim",

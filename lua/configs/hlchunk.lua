@@ -52,7 +52,7 @@ local cfg = {
       right_arrow = "─",
     },
     style = { styles.normal[1], styles.error[1] },
-    textobject = "",
+    textobject = "ic",
     max_file_size = 1024 * 1024,
     error_sign = true,
     -- animation related

@@ -79,6 +79,7 @@ local plugins = {
   -- https://github.com/VonHeikemen/searchbox.nvim
   {
     "folke/noice.nvim",
+    enabled = false,
     dependencies = { "nvim-notify" },
     event = { "VeryLazy" },
   },

@@ -77,9 +77,14 @@ local cfg = {
   --      }
   --    },
   overwrite = {
+    auto_map = true,
     search = {
       enabled = false,
       -- next_mapping = { lhs = "n", rhs = "'Nn'[v:searchforward].'zv'" },
+      -- -- Keys to navigate to the next match
+      --  next_mapping = "n",
+      --  -- Keys to navigate to the previous match
+      --  prev_mapping = "N",
       default_animation = {
         name = "pulse",
         settings = {
@@ -94,6 +99,7 @@ local cfg = {
     },
     undo = {
       enabled = true,
+      -- undo_mapping = "u",
       default_animation = {
         name = "fade",
         settings = {
@@ -102,10 +108,10 @@ local cfg = {
           min_duration = 500,
         },
       },
-      -- undo_mapping = "u",
     },
     redo = {
       enabled = true,
+      -- redo_mapping = "<c-r>",
       default_animation = {
         name = "fade",
         settings = {
@@ -114,13 +120,18 @@ local cfg = {
           min_duration = 500,
         },
       },
-      -- redo_mapping = "<c-r>",
     },
     paste = {
+      -- TODO: enable for other paste keys
       enabled = true,
       -- paste_mapping = has_yanky and { lhs = "p", rhs = "<Plug>(YankyPutAfter)" } or nil,
       -- Paste_mapping = has_yanky and { lhs = "P", rhs = "<Plug>(YankyPutBefore)" } or nil,      default_animation = {
       name = "reverse_fade",
+      -- -- Keys to paste
+      -- paste_mapping = "p",
+      -- -- Keys to paste above the cursor
+      -- Paste_mapping = "P",
+
       settings = {
         easing = "outBack",
         chars_for_max_duration = 10,
@@ -150,6 +161,11 @@ local cfg = {
   virt_text = {
     priority = 2048,
   },
+  hijack_ft_disabled = {
+    "alpha",
+    "snacks_dashboard",
+    "snacks_picker_input",
+  },
 }
 
 glimmer.setup(cfg)
@@ -165,23 +181,6 @@ local view_buffers = function()
     end
   end
   vim.dbglog(empty)
-end
-
-local namespace = require("tiny-glimmer.namespace").tiny_glimmer_animation_ns
-local animation = require("tiny-glimmer.glimmer_animation")
-local orig_cleanup = vim.fn.deepcopy(animation.cleanup)
-animation.cleanup = function(self)
-  -- self.active = false
-  if not vim.api.nvim_buf_is_valid(self.buffer) or not vim.api.nvim_buf_is_loaded(self.buffer) then
-    vim.api.nvim_buf_clear_namespace(0, namespace, self.range.start_line, self.range.end_line + 1)
-    self.reserved_ids = {}
-  end
-
-  for _, id in ipairs(self.reserved_ids) do
-    vim.api.nvim_buf_del_extmark(self.buffer, namespace, id)
-  end
-
-  orig_cleanup(self)
 end
 
 -- require('tiny-glimmer').enable()  -- Enable animations

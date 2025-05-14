@@ -230,7 +230,7 @@ map("n", "<leader>p>", function()
   end
 end, { desc = "Indent last paste" })
 
-map("n", "ysi", function()
+map("n", "ysii", function()
   local startPos = vim.api.nvim_win_get_cursor(0)
 
   -- identify start- and end-border
@@ -249,7 +249,7 @@ map("n", "ysi", function()
   vim.fn.setreg("+", startLine .. "\n" .. endLine .. "\n")
 
   -- highlight yanked text
-  local ns = vim.api.nvim_create_namespace("ysi")
+  local ns = vim.api.nvim_create_namespace("ysii")
   vim.api.nvim_buf_add_highlight(0, ns, "IncSearch", startLn, 0, -1)
   vim.api.nvim_buf_add_highlight(0, ns, "IncSearch", endLn, 0, -1)
   vim.defer_fn(function()

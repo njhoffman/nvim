@@ -18,7 +18,7 @@ local basecfg = {
   cycle_layout_list = { "flex", "horizontal", "vertical", "bottom_pane", "center" },
   cache_picker = {
     num_pickers = 10,
-    limit_entries = 2000,
+    limit_entries = 10000,
   },
   history = {
     handler = require("telescope._extensions.pickers_history.handler").get_history,
@@ -32,7 +32,7 @@ local basecfg = {
   scroll_strategy = "cycle",
   color_devicons = true,
   use_less = true,
-  set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,   color_devicons = true,
+  -- set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,   color_devicons = true,
   mappings = mappings.main,
   -- generic_sorter = sorters.get_generic_fuzzy_sorter,
   generic_sorter = require("mini.fuzzy").get_telescope_sorter,
@@ -58,17 +58,25 @@ local basecfg = {
   -- qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
   -- buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
 }
-local layout_config = vim.tbl_deep_extend("force", basecfg, require("telescope._layouts.default"))
-local telescope_config = {
-  defaults = layout_config,
-  pickers = pickers,
-  extensions = extensions.get(),
-}
-
-telescope.setup(telescope_config)
-extensions.load()
 
 local group = vim.api.nvim_create_augroup("Hacks", { clear = true })
+vim.api.nvim_create_autocmd("VimEnter", {
+  pattern = "*",
+  callback = function()
+    local layout_config =
+      vim.tbl_deep_extend("force", basecfg, require("telescope._layouts.default"))
+    -- vim.dbglog("layout", layout_config)
+    local telescope_config = {
+      defaults = layout_config,
+      pickers = pickers,
+      extensions = extensions.get(),
+    }
+    telescope.setup(telescope_config)
+    extensions.load()
+  end,
+  desc = "Create startup time notification when vim is finished loading",
+})
+
 -- https://github.com/nvim-telescope/telescope.nvim/issues/2890
 -- https://github.com/nvim-telescope/telescope.nvim/issues/2995
 -- https://github.com/neovim/neovim/issues/27038

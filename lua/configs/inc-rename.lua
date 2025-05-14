@@ -1,3 +1,7 @@
+-- vim.keymap.set("n", "<C-r>", api.fs.rename_sub, opts("Rename: Omit Filename"))
+-- vim.keymap.set("n", "e", api.fs.rename_basename, opts("Rename: Basename"))
+-- vim.keymap.set("n", "r", api.fs.rename, opts("Rename"))
+
 require("inc_rename").setup({
   -- the name of the command
   -- cmd_name = "RenameInc",

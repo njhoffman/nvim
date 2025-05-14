@@ -3,6 +3,14 @@ local keymap = require("cmp.utils.keymap")
 local preserve_mapping_verticality = false
 local types = require("cmp.types")
 
+local toggle_docs = function()
+  if cmp.visible() and cmp.visible_docs() then
+    cmp.close_docs()
+  else
+    cmp.open_docs()
+  end
+end
+
 local mapping = require("cmp.config.mapping")
 
 local get_source_code = function(f)
@@ -65,6 +73,10 @@ end
 local last_history_cmd = ""
 
 local cmdline = {
+  ["<M-}>"] = { c = toggle_docs },
+  ["<F37>"] = { c = toggle_docs },
+  ["<C-S-Down>"] = { i = mapping.scroll_docs(1) },
+  ["<C-S-Up>"] = { i = mapping.scroll_docs(-1) },
   ["<C-e>"] = {
     c = function(fallback)
       if cmp.visible() then
@@ -99,6 +111,7 @@ local cmdline = {
       -- fallback()
     end,
   },
+
   ["<C-n>"] = {
     c = function(fallback)
       local cmdline = vim.fn.getcmdline() or ""

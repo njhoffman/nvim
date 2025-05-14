@@ -1,6 +1,8 @@
 local state = require("histories.state")
 local utils = require("histories.utils")
 
+local ns = vim.api.nvim_create_namespace("selects")
+
 local get_hash = function(vis)
   return vim.fn.sha256(vim.fn.json_encode(vis))
 end
@@ -58,7 +60,41 @@ local log = function()
   end
 end
 
+local select_range = function(range, mode)
+  local bufnr, start_row, start_col, end_row, end_col = table.unpack(range)
+  start_row = start_row + 1
+  start_col = start_col + 1
+  end_row = end_row + 1
+  end_col = end_col + 1
+  mode = mode or "v"
+  vim.fn.setpos(".", { bufnr, start_row, start_col, 0 })
+  vim.cmd("normal! " .. mode, true, true, true)
+  vim.fn.setpos(".", { bufnr, end_row, end_col - 1, 0 })
+end
+
+local create_mark = function(pos)
+  -- let g:mark_id = nvim_buf_set_extmark(0, g:mark_ns, 0, 2, {})
+  local end_line_length =
+    vim.api.nvim_buf_get_lines(pos.to[1], pos.to[2] - 1, pos.to[2], false)[1]:len()
+  local end_col = pos.to[3] == vim.v.maxcol and end_line_length or pos.to[3]
+
+  local mark = vim.api.nvim_buf_set_extmark(pos.from[1], ns, pos.from[2] - 1, pos.from[3], {
+    -- hl_group = "VisualRed",
+    end_row = pos.to[2] - 1,
+    end_col = end_col,
+  })
+  return mark
+end
+
+local get_mark_range = function(mark_id, buf)
+  local mark = vim.api.nvim_buf_get_extmark_by_id(buf or 0, ns, mark_id, { details = true })
+  return { buf, mark[1], mark[2], mark[3].end_row, mark[3].end_col }
+end
+
 return {
   log = log,
+  create_mark = create_mark,
+  get_mark_range = get_mark_range,
+  select_range = select_range,
   get_select_pos = get_select_pos,
 }

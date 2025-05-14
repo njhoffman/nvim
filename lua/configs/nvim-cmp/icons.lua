@@ -100,7 +100,7 @@ local source_names = {
 -- buffer = '', nvim_lsp = ' ', luasnip = ' 🐍', treesitter = ' ',
 -- nvim_lua = ' ', spell = ' 暈', emoji = '󰞅', copilot = "🤖",
 -- cmp_tabnine = '🤖', look = '',
-
+-- 󰋺      󰈠  󰖋  󰬥  󰥝  󰶮  󱀯  󰾜  󰢖  󱘭  󱤭
 -- stylua: ignore
 local lsp_symbols = {
   Boolean              = "◩",
@@ -135,6 +135,7 @@ local lsp_symbols = {
   KeywordConditional   = 'נּ',
   KeywordCoroutine     = '󰌋', --   Keyword     = "󰔌 ",
   KeywordFunction      = '' , --   Keyword    = "󰔌 ",
+  KeywordImport        = '󰬥' , --   Keyword    = "󰔌 ",
   KeywordOperator      = '',
   KeywordRepeat        = '',
   KeywordReturn        = '', --   Keyword     = "󰔌 ",

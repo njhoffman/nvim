@@ -79,9 +79,9 @@ local modules = {
   },
   refactor = {
     smart_rename = {
-      enable = false,
+      enable = true,
       keymaps = {
-        smart_rename = "gm",
+        smart_rename = "grn",
       },
     }, -- grr default
     -- highlight_definitions = { enable = true },

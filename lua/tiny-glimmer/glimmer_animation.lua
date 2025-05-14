@@ -27,35 +27,35 @@ local animation_pool_id = 0
 ---@param effect Effect The animation effect implementation to use
 ---@return GlimmerAnimation The created animation instance
 function GlimmerAnimation.new(effect, opts)
-	if not opts.range then
-		error("TinyGlimmer: range is required in opts")
-	end
+  if not opts.range then
+    error("TinyGlimmer: range is required in opts")
+  end
 
-	local self = setmetatable({}, GlimmerAnimation)
+  local self = setmetatable({}, GlimmerAnimation)
 
-	self.effect = effect
-	self.effect:build_starter()
+  self.effect = effect
+  self.effect:build_starter()
 
-	self.default_effect_settings = vim.deepcopy(effect.settings)
+  self.default_effect_settings = vim.deepcopy(effect.settings)
 
-	self.range = opts.range
-	self.start_time = 0
-	self.active = false
+  self.range = opts.range
+  self.start_time = 0
+  self.active = false
 
-	self.id = animation_pool_id
-	self.co = nil
+  self.id = animation_pool_id
+  self.co = nil
 
-	self.overwrite_from_color = opts.overwrite_from_color
-	self.overwrite_to_color = opts.overwrite_to_color
+  self.overwrite_from_color = opts.overwrite_from_color
+  self.overwrite_to_color = opts.overwrite_to_color
 
-	self.reserved_ids = {}
-	self.index_reserved_ids = 1
+  self.reserved_ids = {}
+  self.index_reserved_ids = 1
 
-	self.buffer = vim.api.nvim_get_current_buf()
+  self.buffer = vim.api.nvim_get_current_buf()
 
-	animation_pool_id = animation_pool_id + 1
+  animation_pool_id = animation_pool_id + 1
 
-	return self
+  return self
 end
 
 ---Computes animation duration based on content length
@@ -63,93 +63,102 @@ end
 ---@param settings { min_duration: number, max_duration: number, chars_for_max_duration: number } Duration configuration
 ---@return number duration Duration in milliseconds
 local function calculate_duration(length, settings)
-	local calculated_duration = length * settings.max_duration / settings.chars_for_max_duration
+  local calculated_duration = length * settings.max_duration / settings.chars_for_max_duration
 
-	if calculated_duration < settings.min_duration then
-		return settings.min_duration
-	end
+  if calculated_duration < settings.min_duration then
+    return settings.min_duration
+  end
 
-	return math.min(calculated_duration, settings.max_duration)
+  return math.min(calculated_duration, settings.max_duration)
 end
 
 ---Cleans up the animation effect
 function GlimmerAnimation:cleanup()
-	self.active = false
+  self.active = false
 
-	for _, id in ipairs(self.reserved_ids) do
-		vim.api.nvim_buf_del_extmark(self.buffer, namespace, id)
-	end
+  if not vim.api.nvim_buf_is_valid(self.buffer) or not vim.api.nvim_buf_is_loaded(self.buffer) then
+    self.reserved_ids = {}
+  end
 
-	vim.api.nvim_buf_clear_namespace(0, namespace, self.range.start_line, self.range.end_line + 1)
+  for _, id in ipairs(self.reserved_ids) do
+    vim.api.nvim_buf_del_extmark(self.buffer, namespace, id)
+  end
 
-	animation_pool_id = animation_pool_id - 1
-	if animation_pool_id < 0 then
-		animation_pool_id = 0
-	end
+  vim.api.nvim_buf_clear_namespace(0, namespace, self.range.start_line, self.range.end_line + 1)
+
+  animation_pool_id = animation_pool_id - 1
+  if animation_pool_id < 0 then
+    animation_pool_id = 0
+  end
 end
 
 ---Updates the animation effect based on progress
 ---@param progress number Progress of the animation (0 to 1)
 ---@return number updated_animation_progress Updated progress of the animation
 function GlimmerAnimation:update_effect(progress)
-	local easing = self.effect.settings.easing or nil
+  local easing = self.effect.settings.easing or nil
 
-	local updated_color, updated_animation_progress = self.effect:update_fn(progress, easing)
+  local updated_color, updated_animation_progress = self.effect:update_fn(progress, easing)
 
-	vim.api.nvim_set_hl(0, "TinyGlimmerAnimationHighlight_" .. self.id, { bg = updated_color })
+  vim.api.nvim_set_hl(0, "TinyGlimmerAnimationHighlight_" .. self.id, { bg = updated_color })
 
-	-- TODO: there must be a better way to handle this
-	if self.overwrite_from_color or self.overwrite_to_color then
-		self.effect.settings.from_color = self.overwrite_from_color or self.default_effect_settings.from_color
-		self.effect.settings.to_color = self.overwrite_to_color or self.default_effect_settings.to_color
+  -- TODO: there must be a better way to handle this
+  if self.overwrite_from_color or self.overwrite_to_color then
+    self.effect.settings.from_color = self.overwrite_from_color
+      or self.default_effect_settings.from_color
+    self.effect.settings.to_color = self.overwrite_to_color or self.default_effect_settings.to_color
 
-		local updated_color_overwrite, _ = self.effect:update_fn(progress, easing)
+    local updated_color_overwrite, _ = self.effect:update_fn(progress, easing)
 
-		vim.api.nvim_set_hl(0, "TinyGlimmerAnimationOverwriteHighlight_" .. self.id, { bg = updated_color_overwrite })
+    vim.api.nvim_set_hl(
+      0,
+      "TinyGlimmerAnimationOverwriteHighlight_" .. self.id,
+      { bg = updated_color_overwrite }
+    )
 
-		self.effect.settings.from_color = self.default_effect_settings.from_color
-		self.effect.settings.to_color = self.default_effect_settings.to_color
-	end
+    self.effect.settings.from_color = self.default_effect_settings.from_color
+    self.effect.settings.to_color = self.default_effect_settings.to_color
+  end
 
-	return updated_animation_progress
+  return updated_animation_progress
 end
 
 ---Gets the highlight group for the animation
 ---@return string Highlight group name
 function GlimmerAnimation:get_hl_group()
-	return "TinyGlimmerAnimationHighlight_" .. self.id
+  return "TinyGlimmerAnimationHighlight_" .. self.id
 end
 
 ---Gets the overwrite highlight group for the animation
 ---@return string Overwrite highlight group name
 function GlimmerAnimation:get_overwrite_hl_group()
-	return "TinyGlimmerAnimationOverwriteHighlight_" .. self.id
+  return "TinyGlimmerAnimationOverwriteHighlight_" .. self.id
 end
 
 ---Stops the animation
 function GlimmerAnimation:stop()
-	self.active = false
-	self:cleanup()
+  self.active = false
+  self:cleanup()
 end
 
 --- Gets the total reserved namespace IDs
 --- @return table The reserved namespace IDs
 function GlimmerAnimation:get_reserved_ids()
-	return self.reserved_ids
+  return self.reserved_ids
 end
 
 --- Gets a reserved namespace ID from the pool
 --- @return number The reserved namespace ID
 function GlimmerAnimation:get_reserved_id()
-	local id = self.reserved_ids[self.index_reserved_ids]
-	self.index_reserved_ids = self.index_reserved_ids + 1
+  local id = self.reserved_ids[self.index_reserved_ids]
+  self.index_reserved_ids = self.index_reserved_ids + 1
 
-	-- Should not happen, but just in case
-	if self.index_reserved_ids > #self.reserved_ids then
-		self.index_reserved_ids = 1
-	end
+  -- Should not happen, but just in case
+  if self.index_reserved_ids > #self.reserved_ids then
+    self.index_reserved_ids = 1
+  end
 
-	return id
+  return id
 end
 
 ---Starts the animation
@@ -157,40 +166,41 @@ end
 ---@param length number Length of the content to animate
 ---@param callbacks { on_update: function, on_complete?: function } Callbacks for animation events
 function GlimmerAnimation:start(refresh_interval_ms, length, callbacks)
-	self.active = true
-	self.start_time = vim.loop.now()
-	self.reserved_ids = namespace_id_pool.reserve_ns_ids(self.range.end_line - self.range.start_line + 1)
+  self.active = true
+  self.start_time = vim.loop.now()
+  self.reserved_ids =
+    namespace_id_pool.reserve_ns_ids(self.range.end_line - self.range.start_line + 1)
 
-	self.co = coroutine.create(function()
-		while self.active do
-			local current_time = vim.loop.hrtime() / 1e6
-			local elapsed_time = current_time - self.start_time
-			local duration = calculate_duration(length, self.effect.settings)
+  self.co = coroutine.create(function()
+    while self.active do
+      local current_time = vim.loop.hrtime() / 1e6
+      local elapsed_time = current_time - self.start_time
+      local duration = calculate_duration(length, self.effect.settings)
 
-			local progress = math.min(elapsed_time / duration, 1)
-			local updated_animation_progress = self:update_effect(progress)
+      local progress = math.min(elapsed_time / duration, 1)
+      local updated_animation_progress = self:update_effect(progress)
 
-			callbacks.on_update(updated_animation_progress)
+      callbacks.on_update(updated_animation_progress)
 
-			if progress >= 1 then
-				vim.defer_fn(function()
-					self:stop()
-					if callbacks.on_complete then
-						callbacks.on_complete()
-					end
-				end, self.effect.settings.lingering_time or 0)
-				break
-			end
+      if progress >= 1 then
+        vim.defer_fn(function()
+          self:stop()
+          if callbacks.on_complete then
+            callbacks.on_complete()
+          end
+        end, self.effect.settings.lingering_time or 0)
+        break
+      end
 
-			vim.defer_fn(function()
-				coroutine.resume(self.co)
-			end, refresh_interval_ms)
+      vim.defer_fn(function()
+        coroutine.resume(self.co)
+      end, refresh_interval_ms)
 
-			coroutine.yield()
-		end
-	end)
+      coroutine.yield()
+    end
+  end)
 
-	coroutine.resume(self.co)
+  coroutine.resume(self.co)
 end
 
 return GlimmerAnimation

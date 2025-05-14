@@ -165,11 +165,9 @@ local cfg = {
       name = 'custom',
       selection_order = "near_cursor",
       vertical_positioning = "auto", -- above, below, auto
-      follow_cursor = false,
+      follow_cursor = true,
     },
-    docs = {
-      auto_open = true,
-    },
+    docs = { auto_open = true, },
   },
   confirmation = { default_behavior = cmp.ConfirmBehavior.Replace },
 }

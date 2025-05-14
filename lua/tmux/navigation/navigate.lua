@@ -4,12 +4,8 @@ local nvim = require("tmux.wrapper.nvim")
 local options = require("tmux.configuration.options")
 local tmux = require("tmux.wrapper.tmux")
 
-local opposite_directions = {
-  h = "l",
-  j = "k",
-  k = "j",
-  l = "h",
-}
+local opposite_directions = { h = "l", j = "k", k = "j", l = "h" }
+local i3_directions = { j = "down", l = "right", k = "up", h = "left" }
 
 local M = {}
 function M.has_tmux_target(direction)
@@ -33,17 +29,22 @@ function M.to(direction)
   log.debug(
     "navigate_to: "
       .. direction
-      .. ", nvim: "
+      .. ", nvim border: "
       .. tostring(is_nvim_border)
-      .. ", tmux: "
+      .. ", tmux target: "
       .. tostring(is_tmux_target)
   )
+
   if (is_nvim_border or is_float) and is_tmux_target then
     tmux.change_pane(direction)
   elseif is_nvim_border and options.navigation.cycle_navigation then
     nvim.wincmd(opposite_directions[direction], 999)
   elseif not is_float and not is_nvim_border then
     nvim.wincmd(direction, vim.v.count)
+  elseif i3_directions[direction] ~= nil then
+    vim.dbglog("do it", i3_directions[direction])
+    -- run i3-msg "focus "right""
+    vim.fn.system("i3-msg 'focus " .. i3_directions[direction] .. "'")
   end
 end
 

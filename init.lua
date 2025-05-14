@@ -2,6 +2,7 @@
 
 require("globals")
 
+vim.import("configs.noice")
 -- https://github.com/stevearc/quicker.nvim
 vim.import("quickfix")
 
@@ -71,6 +72,7 @@ vim.defer_fn(function()
 end, 100)
 
 vim.defer_fn(function()
+  vim.import("configs.telescope")
   require("configs.tiny-glimmer")
 end, 500)
 -- require("notifications.recipes.progress").config()
