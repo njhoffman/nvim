@@ -1,9 +1,18 @@
 local recall = require("recall")
+
 recall.setup({
   -- sign = "",
   -- sign_highlight = "@comment.note",
   sign = "",
   sign_highlight = "RecallMark",
+  -- TODO: make more keybindings and commands for filters
+  filters = {
+    -- Read more about `exrc`: `:h exrc`.
+    same_project = false,
+    same_file = false,
+    same_filetype = false,
+    only_loaded = false,
+  },
   telescope = {
     autoload = true,
     mappings = {
@@ -16,27 +25,31 @@ recall.setup({
 
   wshada = vim.fn.has("nvim-0.10") == 0,
 })
--- Using commands:
-vim.keymap.set("n", "mm", recall.toggle, { noremap = true, silent = true, desc = "marks toggle" })
-vim.keymap.set(
-  "n",
-  "mn",
-  recall.goto_next,
-  { noremap = true, silent = true, desc = "marks goto next" }
-)
-vim.keymap.set(
-  "n",
-  "mp",
-  recall.goto_prev,
-  { noremap = true, silent = true, desc = "marks goto prev" }
-)
-vim.keymap.set("n", "mc", recall.clear, { noremap = true, silent = true, desc = "marks clear" })
-vim.keymap.set(
-  "n",
-  "m/",
-  ":Telescope recall<CR>",
-  { noremap = true, silent = true, desc = "marks view in telescope" }
-)
+
+-- stylua: ignore
+--  
+local mappings = {
+  { "mm", recall.toggle,           "  marks toggle" },
+  { "mn", recall.goto_next,        "  marks  go to next " },
+  { "mp", recall.goto_prev,        "  marks go to prev " },
+  { "mt", ":Telescope recall<CR>", "  marks open telescope" },
+  { "mx", recall.clear,            "  marks remove cursor" },
+  { "mX", recall.clear,            "  marks clear all" },
+}
+
+local create_mappings = function()
+  for _, mapping in ipairs(mappings) do
+    vim.keymap.set(
+      "n",
+      mapping[1],
+      mapping[2],
+      { noremap = true, silent = true, desc = mapping[3] }
+    )
+  end
+end
+
+create_mappings()
+
 -- -- In your Neovim configuration:
 -- vim.opt.exrc = true
 -- vim.opt.secure = true

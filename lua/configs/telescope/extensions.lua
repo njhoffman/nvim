@@ -15,6 +15,8 @@ local extension_configs = {
   ["telescope-alternate"] = require("configs.telescope.extensions-alternate"),
   -- ["devdocs"] = {},
   ["devhints"] = {},
+  ["nerdy"] = {},
+
   ["oldfiles"] = {
     mappings = mappings.file,
     include_current_session = true,
@@ -185,7 +187,6 @@ local extension_configs = {
     sorter = sorters.fuzzy_with_index_bias,
     -- sorter = sorters.highlighter_only
   },
-  ["nerdy"] = {},
   ["options"] = {},
   ["projects"] = {
     workspaces = {

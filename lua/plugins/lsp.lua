@@ -36,9 +36,20 @@ local plugins = {
           })
         end,
       },
+      { "weilbith/nvim-code-action-menu" },
       "aznhe21/actions-preview.nvim",
       { "artemave/workspace-diagnostics.nvim" },
       "b0o/schemastore.nvim", -- for jsonls
+      { "yarospace/dev-tools.nvim" },
+      {
+        "rachartier/tiny-code-action.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        -- optional picker via telescope
+        { "nvim-telescope/telescope.nvim" },
+        -- optional picker via fzf-lua
+        { "ibhagwan/fzf-lua" },
+        -- .. or via snacks { "folke/snacks.nvim", opts = { terminal = {}, }
+      },
       {
         "piersolenski/wtf.nvim",
         dependencies = { "MunifTanjim/nui.nvim" },

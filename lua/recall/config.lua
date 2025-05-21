@@ -4,6 +4,14 @@ M.opts = {
   sign = "",
   sign_highlight = "@comment.note",
 
+  filters = {
+    -- Read more about `exrc`: `:h exrc`.
+    same_project = false,
+    same_file = false,
+    same_filetype = false,
+    only_loaded = false,
+  },
+
   telescope = {
     autoload = true,
     mappings = {

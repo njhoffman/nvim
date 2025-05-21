@@ -11,11 +11,24 @@ local display_path = require("configs.telescope.display-path")
 
 local basecfg = {
   scrolling_limit = 20000,
+  debounce = 50,
   wrap_results = false,
   selection_caret = "▶ ",
   multi_icon = "󰒆 ", --  '◆ 󰒆 ',
   prompt_prefix = " 🔍 ", -- " 🔍 ",'   '
   cycle_layout_list = { "flex", "horizontal", "vertical", "bottom_pane", "center" },
+  defaults = {
+    set_env = {
+      DFT_DISPLAY = "inline",
+      LESS = "", -- -RS
+      DELTA_PAGER = "less",
+      -- Set explicit value of $LESS to make git-delta paging nicer in Telescope.
+    },
+    preview = {
+      filesize_limit = 0.9999,
+      timeout = 500,
+    },
+  },
   cache_picker = {
     num_pickers = 10,
     limit_entries = 10000,

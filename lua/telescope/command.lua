@@ -42,11 +42,11 @@
 --- as there are spaces in the option.
 ---
 ---@brief ]]
-local themes = require "telescope.themes"
-local builtin = require "telescope.builtin"
+local themes = require("telescope.themes")
+local builtin = require("telescope.builtin")
 local extensions = require("telescope._extensions").manager
-local config = require "telescope.config"
-local utils = require "telescope.utils"
+local config = require("telescope.config")
+local utils = require("telescope.utils")
 local command = {}
 
 local arg_value = {
@@ -232,7 +232,7 @@ end
 function command.load_command(cmd, ...)
   local args = { ... }
   if cmd == nil then
-    run_command { cmd = "builtin" }
+    run_command({ cmd = "builtin" })
     return
   end
 

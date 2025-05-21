@@ -1,7 +1,7 @@
 local cfg = {
   preview = {
     -- enable = true,
-    modes = { "n", "no", "s", "c", "x", "v", "V", "" },
+    modes = { "n", "i", "no", "s", "c", "x", "v", "V", "" },
     enable_hybrid_mode = true,
     hybrid_modes = {},
     linewise_hybrid_mode = false,

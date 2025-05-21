@@ -34,7 +34,8 @@ M.find_mark = function(direction)
   local current_pos = vim.api.nvim_win_get_cursor(0)
   local current_bufnr = vim.api.nvim_get_current_buf()
 
-  local latest_mark = M.current_pos_if_mark(marks, current_pos, current_bufnr) or M.latest_mark_from_jumplist(marks)
+  local latest_mark = M.current_pos_if_mark(marks, current_pos, current_bufnr)
+    or M.latest_mark_from_jumplist(marks)
 
   if not latest_mark then
     latest_mark = direction == "next" and marks[1] or marks[#marks]
@@ -61,7 +62,7 @@ end
 M.goto_mark = function(direction)
   local mark = M.find_mark(direction)
   if mark then
-    vim.cmd("silent buffer " .. mark.file)
+    vim.cmd("edit " .. mark.file)
     vim.api.nvim_win_set_cursor(0, { mark.pos[2], mark.pos[3] })
   else
     print("No global marks set")

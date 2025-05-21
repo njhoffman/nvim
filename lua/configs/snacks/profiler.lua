@@ -22,7 +22,7 @@ local profiler_cfg = {
   },
   pick = {
     picker = "snacks", -- snacks, trouble, fzf-lua
-    badges = { "time", "count", "name" },
+    badges = { "pct", "count", "name" },
     preview = {
       badges = { "time", "count" },
       align = "right",

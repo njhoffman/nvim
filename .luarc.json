@@ -1,0 +1,12 @@
+{
+    "diagnostics.globals": [
+        "vim",
+        "string",
+        "table",
+        "require",
+        "ipairs",
+        "pairs",
+        "print",
+        "print_table_outline"
+    ]
+}

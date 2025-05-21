@@ -925,9 +925,6 @@ local plugins = {
       require("fundo").install()
     end,
   },
-
-  { "fnune/recall.nvim", version = "*" },
-  -- https://github.com/otavioschwanck/arrow.nvim
   -- https://github.com/nfrid/due.nvim
   -- https://github.com/huantrinh1802/m_taskwarrior_d.nvim
   -- { "ribelo/taskwarrior.nvim" },

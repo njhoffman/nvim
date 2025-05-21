@@ -6,17 +6,17 @@ local create_scratch_win = function(filetype, lines)
   filetype = filetype == nil and "result" or filetype
   vim.cmd("new")
   local bufnr = vim.api.nvim_get_current_buf()
-  -- local winnr = vim.api.nvim_get_current_win()
-  -- local bufnr = vim.api.nvim_win_get_buf(winnr)
-  -- vim.api.nvim_create_buf(true, true)
-  vim.api.nvim_set_option_value("buftype", "nofile", { buf = bufnr })
   vim.api.nvim_buf_set_name(bufnr, "telescope-out #" .. bufnr)
+
+  vim.api.nvim_set_option_value("buftype", "nofile", { buf = bufnr })
   vim.api.nvim_set_option_value("filetype", filetype, { buf = bufnr })
-  -- vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = bufnr })
-  -- vim.api.nvim_set_option_value('swapfile', false, { buf = bufnr })
+  vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = bufnr })
+  vim.api.nvim_set_option_value("swapfile", false, { buf = bufnr })
   vim.api.nvim_buf_set_lines(bufnr, 0, #lines, false, lines)
 end
 
+-- local winnr = vim.api.nvim_get_current_win()
+-- local bufnr = vim.api.nvim_win_get_buf(winnr)
 --   local current_picker = action_state.get_current_picker(prompt_bufnr)
 --   action_utils.map_entries(prompt_bufnr, function(entry, _, row)
 --     current_picker._multi:toggle(entry)
@@ -73,7 +73,7 @@ local parse_default_entries = function(entries)
   return values, lines
 end
 
-local get_yank_lines = function(picker, parse_fn)
+local get_selected_items = function(picker, parse_fn)
   -- local cached_pickers = state.get_global_key "cached_pickers"
   local entries = picker:get_multi_selection()
     or { action_state.get_selected_entry() or picker:get_selected_entry() }
@@ -88,41 +88,40 @@ local get_yank_lines = function(picker, parse_fn)
   return parse_fn(entries)
 end
 
+local get_selected_summary = function(items)
+  items = type(items) == "table" and items or { items }
+  local summary = {}
+  for _, item in ipairs(items) do
+    if type(item) == "table" then
+      local lineout = ""
+      for _, val in pairs(items) do
+        lineout = lineout .. " " .. val
+      end
+      table.insert(lineout)
+    end
+    table.insert(summary, tostring(item))
+  end
+  return table.concat(summary, "\n")
+end
+
 local yank_selection = function(prompt_bufnr, opts)
   opts = opts or {}
+  opts.register = opts.register or "+"
 
   local picker = action_state.get_current_picker(prompt_bufnr)
-  local parse_fn = opts.parse_fn or parse_default_entries
-  local values, lines = get_yank_lines(picker, parse_fn)
-
   local ft = opts.filetype
     or opts.preview_ft
     or picker.preview_bufnr
       and vim.api.nvim_buf_is_valid(picker.preview_bufnr)
       and vim.api.nvim_buf_get_var(picker.preview_bufnr, "filetype")
 
-  local register = "+"
-  if vim.o.clipboard == "unnamed" then
-    register = "*"
-  end
+  local parse_fn = opts.parse_fn or parse_default_entries
+  local items, lines = get_selected_items(picker, parse_fn)
+  local summary = get_selected_summary(items)
 
-  local content = (type(values) == "table" and #values > 0 and values)
-    or (type(values) == "string" and values ~= "" and values)
-    or nil
-
-  --  .. #lines .. " lines to register " .. register, 2, { filetype = ft }
-  local message = "values copied to register: " .. register
-  if content == nil then
-    content = lines
-    message = "full table copied to register: " .. register
-  end
-
-  if type(content) == "table" then
-    message = #content .. " items with " .. message
-  end
-  vim.fn.setreg(register, type(content) == "table" and vim.fn.join(content, "\n") or content)
-
-  vim.notify(message, 2, { filetype = ft })
+  opts.register = vim.o.clipboard == "unnamed" and "*" or "+"
+  vim.fn.setreg(opts.register, summary)
+  vim.notify(#items .. " summary items copied to register: " .. opts.register)
   return lines, ft
 end
 

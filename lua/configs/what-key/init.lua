@@ -1,9 +1,3 @@
--- u = { name = " 󰕌 Undo" },
--- o = { name = "  Options" },
--- p = { name = " 󰏗 Packages" },
--- c = { name = "  Code Action" },
--- i = { name = " 󱡴 Inspect" },
-
 -- stylua: ignore
 local config = {
   show_help = false,

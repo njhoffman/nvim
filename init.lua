@@ -27,7 +27,7 @@ for _, mod_name in ipairs({
   "configs.smoothcursor",
   -- 'configs.nvim-scrollbar',
   -- 'configs.neoscroll',
-  -- "action-hints.setup",
+  "action-hints.setup",
   -- 'winsep.setup',
   -- 'better_escape-setup',
   "early-retirement.setup",
@@ -58,6 +58,8 @@ vim.defer_fn(function()
   require("llm").setup(llm_config)
   local neoai_cfg = require("neoai.options")
   require("neoai").setup(neoai_cfg)
+
+  require("configs.recall")
 
   -- require('internals').setup()
   if vim.g.started_by_firenvim then

@@ -80,6 +80,13 @@ M.debug = {
   },
 }
 
+-- Delete/fold/comment/etc. paragraphs without leaving your position (zfarp[leap]).
+-- Clone text objects in the blink of an eye, even from another window, by turning on paste_on_remote_yank (yaRp[leap]).
+-- Do the above stunt in Insert mode (...<C-o>yaRW[leap]...).
+-- Fix a typo with a short, atomic command sequence (cimw[leap][correction]).
+-- Operate on distant lines: drr[leap].
+-- Use count: e.g. y3rr[leap] yanks 3 lines, just as 3yy would do.
+
 M.shell = {
   {
     "To replace current buffer with shell cmd output",
