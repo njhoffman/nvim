@@ -45,9 +45,9 @@ local cfg = {
     'qf',
     'noice',
   },
-  show_last_positions = "enter",
+  show_last_positions = "",
+  -- show_last_positions = "leave",
 }
 
 require("smoothcursor").setup(cfg)
-
 require("configs.smoothcursor.mode-changed")

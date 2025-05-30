@@ -58,6 +58,7 @@ local state = scrollview.setup({
     "TelescopePrompt",
     "chatgpt-input",
     "cmp_docs",
+    "noice.log",
     "cmp_menu",
     "lazy",
     "neoai-input",

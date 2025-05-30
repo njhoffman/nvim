@@ -42,7 +42,7 @@ opt("helpheight", 25)
 opt("hidden", true)
 opt("hlsearch", true)
 opt("ignorecase", true)
-opt("inccommand", "nosplit")
+opt("inccommand", "split")
 opt("incsearch", true)
 opt("joinspaces", false)
 opt("jumpoptions", "stack") -- https://www.reddit.com/r/neovim/comments/16nead7/comment/k1e1nj5/?context=3

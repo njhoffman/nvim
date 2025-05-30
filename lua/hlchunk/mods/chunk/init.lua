@@ -289,7 +289,7 @@ function ChunkMod:extra()
     api.nvim_win_set_cursor(0, { s_row, 0 })
     vim.cmd("normal! V")
     api.nvim_win_set_cursor(0, { e_row, 0 })
-  end)
+  end, { desc = "hlchunk: select inner chunk" })
 end
 
 return ChunkMod

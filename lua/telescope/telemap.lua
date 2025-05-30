@@ -25,6 +25,27 @@ local get_help_word = function()
   return word
 end
 
+local grep_options = function(user_opts)
+  if user_opts.grep_open_files then
+    local bufnrs = vim.tbl_filter(function(b)
+      if 1 ~= vim.fn.buflisted(b) then
+        return false
+      end
+      if user_opts.grep_only_loaded and not vim.api.nvim_buf_is_loaded(b) then
+        return false
+      end
+      return true
+    end, vim.api.nvim_list_bufs())
+    user_opts.results_title = "Buffers (" .. #bufnrs .. ")"
+    user_opts.prompt_title = "Live Grep Buffers"
+  else
+    local count = file_count(user_opts.cwd or vim.fn.getcwd())
+    user_opts.results_title = get_cwd(user_opts) .. " (" .. count .. ")"
+    user_opts.prompt_title = user_opts.cwd and "Live Grep CWD" or "Live Grep Project"
+  end
+  return user_opts
+end
+
 local telemap = {
   -- nvim_github_codesearch = {
   --   gh api -X GET rate_limit | jq '.rate.remaining',
@@ -146,26 +167,10 @@ local telemap = {
     end,
   },
   builtin_live_grep = {
-    opts = function(user_opts)
-      if user_opts.grep_open_files then
-        local bufnrs = vim.tbl_filter(function(b)
-          if 1 ~= vim.fn.buflisted(b) then
-            return false
-          end
-          if user_opts.grep_only_loaded and not vim.api.nvim_buf_is_loaded(b) then
-            return false
-          end
-          return true
-        end, vim.api.nvim_list_bufs())
-        user_opts.results_title = "Buffers (" .. #bufnrs .. ")"
-        user_opts.prompt_title = "Live Grep Buffers"
-      else
-        local count = file_count(user_opts.cwd or vim.fn.getcwd())
-        user_opts.results_title = get_cwd(user_opts) .. " (" .. count .. ")"
-        user_opts.prompt_title = user_opts.cwd and "Live Grep CWD" or "Live Grep Project"
-      end
-      return user_opts
-    end,
+    opts = grep_options,
+  },
+  egrepify_egrepify = {
+    opts = grep_options,
   },
   messages_messages = {
     opts = {

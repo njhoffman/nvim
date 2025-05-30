@@ -198,6 +198,21 @@ local cmdlinePopupView = {
     cursorline = false,
   },
 }
+local splitView = {
+  backend = "split",
+  enter = false,
+  relative = "editor",
+  position = "bottom",
+  size = "20%",
+  close = {
+    keys = { "q" },
+  },
+  buf_options = { filetype = ft_noice },
+  win_options = {
+    winhighlight = { Normal = "NoiceSplit", FloatBorder = "NoiceSplitBorder" },
+    wrap = true,
+  },
+}
 
 -- builtin views:
 --   cmdline        popup      mini      mini
@@ -220,13 +235,14 @@ local cmdlinePopupView = {
 --              border = { style = "rounded", padding = { 0, 1 }, },
 --              win_options = { winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" }, }, },
 
+-- stylua: ignore
 local config = {
-  mini = miniView,
-  popup = popupView,
-  notify = notifyView,
-  cmdline_popup = cmdlinePopupView,
+  mini           = miniView,
+  popup          = popupView,
+  notify         = notifyView,
+  cmdline_popup  = cmdlinePopupView,
   cmdline_output = cmdlineOutputPopupView,
-  -- split
+  split          = splitView
   -- vsplit
   -- cmdline
   -- messages
@@ -235,10 +251,11 @@ local config = {
   -- popupmenu
 }
 
+-- stylua: ignore
 return {
-  config = config,
-  historyView = historyView,
-  errorView = errorView,
-  errorViewFormat = errorViewFormat,
+  config              = config,
+  historyView         = historyView,
+  errorView           = errorView,
+  errorViewFormat     = errorViewFormat,
   telescopeViewFormat = telescopeViewFormat,
 }

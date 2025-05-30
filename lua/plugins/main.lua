@@ -24,7 +24,7 @@ local plugins = {
     dependencies = "nvim-web-devicons",
   },
   { "declancm/cinnamon.nvim", event = "VeryLazy", enabled = false },
-  { "karb94/neoscroll.nvim", event = "VeryLazy", enabled = false },
+  { "karb94/neoscroll.nvim", event = "VeryLazy", enabled = true },
   {
     "00sapo/visual.nvim",
     enabled = false,
@@ -296,7 +296,6 @@ local plugins = {
   -- https://github.com/ziontee113/query-secretary
   {
     "nvim-treesitter/nvim-treesitter",
-    lazy = true,
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "TSTextobjectSelect", "TSTextobjectGotoPreviousStart" },
@@ -341,8 +340,15 @@ local plugins = {
       { "ziontee113/query-secretary", keys = { "<leader><BS>" } },
     },
   },
-  { "echasnovski/mini.ai", event = { "VeryLazy" }, dependencies = { "echasnovski/mini.extra" } },
-  { "chrisgrieser/nvim-various-textobjs", event = { "VeryLazy" } },
+  {
+    "echasnovski/mini.ai",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = { "echasnovski/mini.extra" },
+  },
+  {
+    "chrisgrieser/nvim-various-textobjs",
+    event = { "BufReadPost", "BufNewFile" },
+  },
   { "stevearc/aerial.nvim", event = { "VeryLazy" }, dependencies = { "nvim-treesitter" } },
   -- motion
 

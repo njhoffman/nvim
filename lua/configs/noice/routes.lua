@@ -19,15 +19,14 @@ local routes = {
   --               local client = vim.tbl_get(message.opts, "progress", "client")
   --               return client == "lua_ls"
   --             end }, opts = { skip = true }, }
+
   -- always route any messages with more than 25 lines to the split view
   { view = "cmdline_output", filter = { event = "msg_show", min_height = 25 } },
-  {
-    view = "notify",
-    opts = {
-      level = vim.log.levels.DEBUG,
-    },
-    filter = { any = { { event = "msg_history_show" } } },
-  },
+  -- {
+  --   view = "notify",
+  --   opts = { level = vim.log.levels.DEBUG },
+  --   filter = { any = { { event = "msg_history_show" } } },
+  -- },
   {
     view = "mini",
     filter = {

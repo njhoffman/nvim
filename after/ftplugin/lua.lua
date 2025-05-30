@@ -22,9 +22,7 @@ u.ftAbbr("===", "==")
 u.ftAbbr("tre", "then return end") -- codespell-ignore
 
 -- if in nvim dir, reload file/plugin, otherwise run `make`
-vim.api.nvim_set_keymap("n", "<C-1>", "<cmd>Reload | luafile %<cr>", { silent = false })
-vim.api.nvim_set_keymap("n", "<F5>", "<cmd>luafile %<cr>", { silent = false })
-vim.api.nvim_set_keymap("n", "<F17>", "<cmd>Reload | luafile %<cr>", { silent = false })
+vim.api.nvim_set_keymap("n", "<F5>", "<cmd>Reload3<cr>", { silent = false })
 
 MiniSplitjoin = MiniSplitjoin or {}
 
@@ -122,3 +120,5 @@ end
 -- Set options to open require with gf
 vim.opt_local.include = [=[\v<((do|load)file|require)\s*\(?['"]\zs[^'"]+\ze['"]]=]
 vim.opt_local.includeexpr = "v:lua.Find_Required_Path(v:fname)"
+
+-- vim.bo.includeexpr = [[v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)]]

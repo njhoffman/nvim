@@ -1,17 +1,18 @@
-local state = require('neoscroll.state')
+local state = require("configs.neoscroll.state")
 
 -- local events = {}
-local events = { 'WinScrolled', 'CursorMoved' }
-local ts_ctx = require('treesitter-context')
+local events = { "WinScrolled", "CursorMoved" }
+local ts_ctx = require("treesitter-context")
 
 local hooks = {}
 hooks.pre_hook = function(info, params)
+  vim.dbglog("prehook")
   state.params = params
   state.start = vim.fn.reltime()
 
   vim.opt.eventignore:append(events)
   ts_ctx.disable()
-  -- vim.api.nvim_buf_set_var(0, 'minianimate_disable', 1)
+  vim.b.minianimate_disable = true
 end
 
 hooks.steps_hook = function(...)
@@ -32,10 +33,7 @@ hooks.post_hook = function(info)
   --   vim.cmd('normal zz')
   -- end
 
-  local stats_mod = require('configs.neoscroll.stats')
-  vim.opt.eventignore:remove(events)
-  -- vim.api.nvim_buf_del_var(0, 'minianimate_disable')
-  ts_ctx.enable()
+  local stats_mod = require("configs.neoscroll.stats")
   if #state.steps > 0 then
     local stats = stats_mod.summarize_scroll(state.steps, state.params)
     table.insert(stats_mod.history, {
@@ -45,6 +43,12 @@ hooks.post_hook = function(info)
       stats = vim.fn.deepcopy(stats),
       params = vim.fn.deepcopy(state.params),
     })
+  else
+    vim.defer_fn(function()
+      vim.opt.eventignore:remove(events)
+      vim.b.minianimate_disable = false
+      ts_ctx.enable()
+    end, 200)
   end
 end
 

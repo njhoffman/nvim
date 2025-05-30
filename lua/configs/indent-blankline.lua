@@ -24,6 +24,7 @@ local ft_exclude = {
   "navbuddy",
   "neo-tree",
   "noice",
+  "noice.log",
   "null-ls-info",
   "qf",
   "sidekick",

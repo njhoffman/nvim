@@ -18,14 +18,16 @@ local default_cfg = {
 -- stylua: ignore
 require('mini.move').setup({
   mappings = {
+  -- visual
     left       = 'H',
     right      = 'L',
     down       = 'J',
     up         = 'K',
-    line_left  = '<M-C-H>',
-    line_right = '<M-C-L>',
-    line_down  = '<M-NL>',
-    line_up    = '<M-C-K>',
+
+    line_left  = '<leader>H',
+    line_right = '<leader>L',
+    line_down  = '<leader>J',
+    line_up    = '<leader>K',
   },
 })
 vim.cmd([[

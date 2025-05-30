@@ -1,5 +1,5 @@
 local utils = require("telescope.utils")
-
+local parse = require("configs.telescope.which_key.parse")
 -- TODO: get function name desc like get_registered_mappings
 local get_default_mappings = function()
   -- local default_mappings = conf.mappings
@@ -106,13 +106,14 @@ local function get_registered_mappings(prompt_bufnr)
   -- require('telescope.actions.utils').get_registered_mappings
   local ret = {}
   for _, mode in ipairs({ "n", "i" }) do
-    for _, mapping in ipairs(vim.api.nvim_buf_get_keymap(prompt_bufnr, mode)) do
+    local keymaps = vim.api.nvim_buf_get_keymap(prompt_bufnr, mode)
+    for _, mapping in ipairs(keymaps) do
       -- ensure only telescope mappings
       if mapping.desc then
         if mapping.desc:sub(1, 10) == "telescope|" then
           table.insert(ret, { mode = mode, keybind = mapping.lhs, desc = mapping.desc:sub(11) })
         elseif mapping.desc:sub(1, 11) == "telescopej|" then
-          local fname = _get_anon_function_name(vim.json.decode(mapping.desc:sub(12)))
+          local fname = parse._get_anon_function_name(vim.json.decode(mapping.desc:sub(12)))
           fname = fname:lower() == mapping.lhs:lower() and "<anonymous>" or fname
           table.insert(ret, {
             mode = mode,
@@ -164,6 +165,7 @@ local setup_mappings = function(prompt_bufnr, opts)
       return false
     end
   end)
+  return mappings
 end
 
 return { setup_mappings = setup_mappings }

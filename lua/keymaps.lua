@@ -386,13 +386,85 @@ map("n", "<C-^>", "<cmd>AltLoad<cr>", {
 map("n", "H", "<Cmd>BufferPrev<cr>", {
   category = "Buffers",
   label = "󰽙 left buffer",
-  desc = "󰽙 open the left (prev) buffer",
+  desc = "󰽙 open the buffer to the left",
+})
+
+map("n", "<leader>bp", "<Cmd>BufferPrev<cr>", {
+  category = "Buffers",
+  label = "󰽙 left buffer",
+  desc = "󰽙 open the buffer to the left",
 })
 
 map("n", "L", "<Cmd>BufferNext<cr>", {
   category = "Buffers",
   label = "󰽙 right buffer",
-  desc = "󰽙 open the right (next) buffer",
+  desc = "󰽙 open the buffer to the right",
+})
+
+map("n", "<leader>bn", "<Cmd>BufferNext<cr>", {
+  category = "Buffers",
+  label = "󰽙 right buffer",
+  desc = "󰽙 open the buffer to the right",
+})
+
+map("n", "<M-C-L>", "<Cmd>BufferForward<cr>", {
+  category = "Buffers",
+  label = "󰽙 forward buffer",
+  desc = "󰽙 open the next buffer in history",
+})
+
+map("n", "<leader>bN", "<Cmd>BufferForward<cr>", {
+  category = "Buffers",
+  label = "󰽙 forward buffer",
+  desc = "󰽙 open the next buffer in history",
+})
+
+map("n", "<leader>bf", "<Cmd>BufferForward<cr>", {
+  category = "Buffers",
+  label = "󰽙 forward buffer",
+  desc = "󰽙 open the next buffer in history",
+})
+
+map("n", "<M-C-H>", "<Cmd>BufferBack<cr>", {
+  category = "Buffers",
+  label = "󰽙 back buffer",
+  desc = "󰽙 open the previous buffer in history",
+})
+
+map("n", "<leader>bP", "<Cmd>BufferBack<cr>", {
+  category = "Buffers",
+  label = "󰽙 back buffer",
+  desc = "󰽙 open the previous buffer in history",
+})
+map("n", "<leader>bb", "<Cmd>BufferBack<cr>", {
+  category = "Buffers",
+  label = "󰽙 back buffer",
+  desc = "󰽙 open the previous buffer in history",
+})
+
+map("n", "<leader>bv", "<cmd>BufferHistory<cr>", { desc = "󰽙 view history" })
+
+map("n", "<C-1>", "<Cmd>BufferFirst<cr>", {
+  category = "Buffers",
+  label = "󰽙 first buffer",
+  desc = "󰽙 open the first buffer",
+})
+
+map("n", "<C-9>", "<Cmd>BufferLast<cr>", {
+  category = "Buffers",
+  label = "󰽙 last buffer",
+  desc = "󰽙 open the last buffer",
+})
+
+map("n", "<M-(>", "<cmd>BufferMovePrevious<cr>", {
+  category = "Buffers",
+  label = "󰽙 move buffer left",
+  desc = "󰽙 move the buffer to the left",
+})
+map("n", "<M-)>", "<cmd>BufferMoveNext<cr>", {
+  category = "Buffers",
+  label = "󰽙 move buffer right",
+  desc = "󰽙 move the buffer to the right",
 })
 
 map({ "n" }, "<leader>fH", "<cmd>lua vim.treesitter.get_parser(0):parse()<cr>", {
@@ -716,6 +788,23 @@ map('n', 'g.', [[/\V\C<C-r>"<CR>cgn<C-a><Esc>]], {
   desc = '  jump to next match and replace (dot)',
 })
 
+-- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
+map({"n", "x", "o"}, "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+map({"n", "x", "o"}, "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
+
+-- nmap [[ ?^.section <CR>
+-- nmap ]] /?section /<CR>
+
+local function open_last_search(reverse)
+  return function()
+    local last_search = vim.fn.getreg('/')
+    local prefix = reverse and "?" or '/'
+    vim.cmd('normal ' .. prefix .. last_search)
+  end
+end
+
+map('n', '<M-f>', open_last_search(), {noremap = true, silent = true})
+
 -- map('n', '<esc>', "<cmd>getcmdtype() =~ '^[/?]$'<cr>", {
 --   silent = true,
 --   category = 'Search',
@@ -813,11 +902,6 @@ map('n', '<leader>%', 'ggv$G$', {
     label = ' visual select entire buffer',
   })
 
-map('n', 'gy', '`[v`]', {
-  category = 'Motion',
-  label = ' select last visual',
-  desc = ' select last visual block afrom bracket marks',
-})
 --
 vmap('n', 'gi', {
   category = 'Motion',
@@ -831,6 +915,12 @@ vmap('n', 'gI', {
   desc = ' goto beginning mark of insertion',
 })
 
+map('n', 'gy', "'[,']", {
+  category = 'Motion',
+  label = ' select last visual',
+  desc = ' select last visual block afrom bracket marks',
+})
+
 vmap('n', 'gv', {
   category = 'Motion',
   label = ' select last visual',
@@ -842,21 +932,15 @@ map('i', '<esc>', '<Esc>`^', {
   desc = ' convenience cursor placement after insert',
   silent = true,
 })
+-- Map({ "n", "x", "o" }, "gV", "`[v`]")
 
--- map({ 'n', 'v' }, '<M-">', '<cmd>HopLineStart<cr>', {
---   category = 'Motion',
---   plugin = 'hop.nvim',
---   label = ' hop to line',
---   desc = ' hop to line',
--- })
+-- map("n", "gV", "`[v`]", { desc = "visually select the block of text", silent = true })
 
--- map({ 'n', 'v' }, "<M-'>", '<cmd>HopWord<cr>', {
---   category = 'Motion',
---   plugin = 'hop.nvim',
---   label = ' hop to word',
---   desc = ' hop to word',
--- })
+-- Map({ "n", "x", "o" }, "gV", "`[v`]")
+-- map("n", "gV", "`[v`]", { desc = "visually select the block of text", silent = true })
+-- map('n', 'gV', "'`['.strpart(getregtype(), 0, 1).'`]'", { expr = true, desc = ' re-select latest changed, put, or yanked text' })
 
+-- map({ "n", "x", "o" }, "gV", "`[v`]")
 -- nnoremap <expr> gV '`[' . strpart(getregtype(), 0, 1) . '`]'
 map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
   category = 'Motion',
@@ -915,21 +999,16 @@ vmap({ 'n' }, "<C-]>",  {
   desc = ' jump to next tag',
 })
 
-map({'n', 'x'}, '<M-}>', '<cmd>norm v}<cr>', {
-  category = 'Motion',
-  desc = ' select next block',
-})
 
+-- map({'n'}, '<M-{>', '<cmd>norm v{<cr>', {
+--   category = 'Motion',
+--   desc = ' visual select previous block ',
+-- })
 
-map({'n'}, '<M-{>', '<cmd>norm v{<cr>', {
-  category = 'Motion',
-  desc = ' visual select previous block ',
-})
-
-map({'n'}, '<M-}>', '<cmd>norm v}<cr>', {
-  category = 'Motion',
-  desc = ' visual select next block',
-})
+-- map({'n'}, '<M-}>', '<cmd>norm v}<cr>', {
+--   category = 'Motion',
+--   desc = ' visual select next block',
+-- })
 
 
 map({'x'}, '<M-{>', '<cmd>norm {<cr>', {
@@ -1053,7 +1132,7 @@ map('n', '<esc>', '<cmd>noh<cr> | <cmd>call smoothie#stop()<cr>', {
 map(
   'n',
   '<M-c>',
-  '<cmd>noh<cr> | <cmd>ClosePopups<cr> | <cmd>LspRestart<cr> | <cmd>lua require("flash.util").exit()<cr>',
+  '<cmd>noh<cr> | <cmd>ClosePopups<cr> |  <cmd>lua require("flash.util").exit()<cr>',
   { category = 'UI', desc = 'remove hls, close popups and refresh' }
 )
 
@@ -1462,13 +1541,13 @@ map({'i'}, '<C-S-Tab>', '<c-o><c-w>W', {
   desc = ' focus the prev window',
 })
 
-map('n', '<leader>H', '<cmd>vnew<cr>', {
+map('n', '<leader>v', '<cmd>vnew<cr>', {
   category = 'Window',
   label = ' window split-h',
   desc = ' window split horizontally',
 })
 
-map('n', '<leader>V', '<cmd>new<cr>', {
+map('n', '<leader>s', '<cmd>new<cr>', {
   category = 'Window',
   label = ' window split-v',
   desc = ' window split vertically',
@@ -1683,7 +1762,7 @@ map('n', '<M-C-Space>', '<cmd>Navbuddy<cr>', {
   desc = 'explore symbols with navbuddy',
 })
 
-map('n', '<C-e>', "<cmd>lua require('telescope.run')('builtin','live_grep', { grep_open_files = true })<cr>", {
+map('n', '<C-e>', "<cmd>lua require('telescope.run')('egrepify','egrepify', { grep_open_files = true })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'grep buffers',
@@ -1691,7 +1770,7 @@ map('n', '<C-e>', "<cmd>lua require('telescope.run')('builtin','live_grep', { gr
 })
 
 
-map('n', '<M-e>', "<cmd>lua require('telescope.run')('builtin','live_grep')<cr>", {
+map('n', '<M-e>', "<cmd>lua require('telescope.run')('egrepify','egrepify')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'grep project',
@@ -1715,12 +1794,12 @@ map('n', '<M-i>', "<cmd>lua require('telescope.run')('messages', 'messages')<cr>
   desc = 'notifications in telescope',
 })
 
-map('n', '<M-space>', "<cmd>lua require('telescope.run')('builtin','grep_string', { theme = 'ivy' })<cr>", {
-  category = 'Pickers',
-  plugin = 'telescope.nvim',
-  label = 'grep cursor',
-  desc = 'grep string under cursor in telescope',
-})
+-- map('n', '<M-space>', "<cmd>lua require('telescope.run')('builtin','grep_string', { theme = 'ivy' })<cr>", {
+--   category = 'Pickers',
+--   plugin = 'telescope.nvim',
+--   label = 'grep cursor',
+--   desc = 'grep string under cursor in telescope',
+-- })
 
 map('n', '<M-/>', "<cmd>lua require('telescope.run')('builtin','help_tags', { theme = 'ivy', preview = true })<cr>", {
   category = 'Pickers',

@@ -169,7 +169,7 @@ local default_config = {
   children = true,
   siblings = false,
   extended = false,
-  source = false,
+  source = true,
   dofile = false,
   require = true,
 }

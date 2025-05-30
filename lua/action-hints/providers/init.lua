@@ -10,9 +10,9 @@ local update = function(config)
     if utils.supports_method("definitionProvider") then
       utils.throttle(definitions, delays.definitions, config, "definitions")
     end
-    if utils.supports_method("referencesProvider") then
-      utils.throttle(references, delays.references, config, "references")
-    end
+    -- if utils.supports_method("referencesProvider") then
+    --   utils.throttle(references, delays.references, config, "references")
+    -- end
     if utils.supports_method("codeActionProvider") then
       utils.throttle(codeactions, delays.codeactions, config, "codeactions")
     end

@@ -2,47 +2,47 @@
 return {
   ---@type SmoothCursorConfig
   value = {
-    cursor = '',
-    texthl = 'SmoothCursor',
+    cursor = "",
+    texthl = "SmoothCursor",
     linehl = nil,
 
     fancy = {
       enable = false,
       head = {
-        cursor = '▷',
-        texthl = 'SmoothCursor',
+        cursor = "▷",
+        texthl = "SmoothCursor",
         linehl = nil,
       },
       body = {
-        { cursor = '󰝥', texthl = 'SmoothCursorRed' },
-        { cursor = '󰝥', texthl = 'SmoothCursorOrange' },
-        { cursor = '●', texthl = 'SmoothCursorYellow' },
-        { cursor = '•', texthl = 'SmoothCursorGreen' },
-        { cursor = '•', texthl = 'SmoothCursorAqua' },
-        { cursor = '∙', texthl = 'SmoothCursorBlue' },
-        { cursor = '∙', texthl = 'SmoothCursorPurple' },
+        { cursor = "󰝥", texthl = "SmoothCursorRed" },
+        { cursor = "󰝥", texthl = "SmoothCursorOrange" },
+        { cursor = "●", texthl = "SmoothCursorYellow" },
+        { cursor = "•", texthl = "SmoothCursorGreen" },
+        { cursor = "•", texthl = "SmoothCursorAqua" },
+        { cursor = "∙", texthl = "SmoothCursorBlue" },
+        { cursor = "∙", texthl = "SmoothCursorPurple" },
       },
-      tail = { cursor = nil, texthl = 'SmoothCursor' },
+      tail = { cursor = nil, texthl = "SmoothCursor" },
     },
     matrix = { -- for matrix mode
       head = {
-        cursor = require('smoothcursor.matrix_chars'),
+        cursor = require("smoothcursor.matrix_chars"),
         texthl = {
-          'SmoothCursor',
+          "SmoothCursor",
         },
         linehl = nil,
       },
       body = {
         length = 6,
-        cursor = require('smoothcursor.matrix_chars'),
+        cursor = require("smoothcursor.matrix_chars"),
         texthl = {
-          'SmoothCursorGreen',
+          "SmoothCursorGreen",
         },
       },
       tail = {
         cursor = nil,
         texthl = {
-          'SmoothCursor',
+          "SmoothCursor",
         },
       },
       unstop = false,
@@ -52,7 +52,7 @@ return {
     flyin_effect = nil,
     intervals = 35,
     timeout = 3000,
-    type = 'default',
+    type = "default",
     threshold = 3,
     max_threshold = nil,
     speed = 25,
@@ -61,6 +61,6 @@ return {
     disable_float_win = false,
     disabled_filetypes = nil,
     enabled_filetypes = nil,
-    show_last_positions = 'leave',
+    show_last_positions = "leave",
   },
 }

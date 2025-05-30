@@ -196,7 +196,7 @@ M.format = {
 
 M.movement = {
   {
-    "Force a motion to be line/char/blockwise with visualmode after operator and before motion",
+    "(forced-motion) Force a motion to be line/char/blockwise with visualmode after operator and before motion",
     "`dj` ➜ `dvj` ➜ `dVj` ➜ `d<C-V>j`",
   },
   {

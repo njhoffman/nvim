@@ -26,11 +26,9 @@ various_textobjs.setup({
     -- number                 = "n",
     -- value                  = "v",
     -- key                    = "k",
-    -- subword                = "S", -- lowercase taken for sentence textobj
     -- notebookCell           = "N",
     -- closedFold             = "z", -- z is the common prefix for folds
     -- chainMember            = "m",
-    -- lineCharacterwise      = "_",
     -- greedyOuterIndentation = "g",
     -- anyQuote               = "q",
     -- anyBracket             = "o",
@@ -62,7 +60,7 @@ various_textobjs.setup({
     -- "iI"  inner', 'inner'
     -- "aI"  outer', 'outer'
     disabledDefaults = {
-      "|", -- column: Disabled
+      "_", -- lineCharacterwise , use 'l'
       "L", -- URL: Replaced with U
       "r", -- Rest of paragraph: Used for remote operator
       "R", -- Rest of indentation: Keep open for remote operator
@@ -81,8 +79,8 @@ various_textobjs.setup({
       "ao", -- anyBracket: Replaced with aO
       "iD", -- Use vim-textobj-user's date instead
       "aD", -- Use vim-textobj-user's date instead
-      "iS", -- subword: Replaced with i-
-      "aS", -- subword: Replaced with a-
+      "iS", -- subword: Replaced with i_
+      "aS", -- subword: Replaced with a_
       "in", -- Disabled, use treesitter's iN, instead
       "an", -- Disabled, use treesitter's aN, instead
       "iN", -- Disabled, use treesitter's iN, instead
@@ -99,12 +97,12 @@ local ox = { "o", "x" }
 map(ox, "U", various_textobjs.url, "URL")
 -- map(ox, "id", various_textobjs.diagnostic, "Diagnostic")
 map(ox, "?", various_textobjs.diagnostic, "Diagnostic")
--- map(ox, "i-", function()
---   return various_textobjs.subword("inner")
--- end, "Subword")
--- map(ox, "a-", function()
---   return various_textobjs.subword("outer")
--- end, "Subword")
+map(ox, "i_", function()
+  return various_textobjs.subword("inner")
+end, "Subword")
+map(ox, "a_", function()
+  return various_textobjs.subword("outer")
+end, "Subword")
 map(ox, "]}", function()
   return various_textobjs.toNextClosingBracket()
 end, "To next closing bracket")

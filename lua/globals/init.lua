@@ -44,6 +44,7 @@ if debuglog then
   vim.dbgbuf = debuglog.buf or _nil()
   vim.dbgtime = debuglog.timer or _nil()
   vim.print = debuglog.dbg
+  -- _G.print = debuglog.dbg
   -- vim.dbg.log = vim.dbglog
 
   local log_lines = function(lines)

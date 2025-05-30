@@ -15,7 +15,8 @@ local View = require("noice.view")
 local defaults = {
   title = "Notification",
   merge = false,
-  level = nil, -- vim.log.levels.INFO,
+  level = nil,
+  vim.log.levels.INFO,
   replace = false,
 }
 

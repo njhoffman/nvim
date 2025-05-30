@@ -95,7 +95,7 @@ M.switch_grep_pickers_prev = function(prompt_bufnr)
   end
   vim.api.nvim_set_var("project_buf_skip", 1)
   -- run("egrepify", "egrepify", opts)
-  run("builtin", "live_grep", opts)
+  run("egrepify", "egrepify", opts)
 end
 
 M.switch_grep_pickers_next = function(prompt_bufnr)
@@ -122,7 +122,7 @@ M.switch_grep_pickers_next = function(prompt_bufnr)
   end
   vim.api.nvim_set_var("project_buf_skip", 1)
   -- run("egrepify", "egrepify", opts)
-  run("builtin", "live_grep", opts)
+  run("egrepify", "egrepify", opts)
 end
 
 M.launch_find_pickers = function()
@@ -148,8 +148,8 @@ M.launch_live_grep = function(prompt_bufnr)
   local prompt_text = picker:_get_prompt()
   local opts = { default_text = prompt_text, cwd = picker.cwd }
   vim.api.nvim_set_var("project_buf_skip", 1)
-  run("builtin", "live_grep", opts)
-  -- run("egrepify", "egrepify", opts)
+  -- run("builtin", "live_grep", opts)
+  run("egrepify", "egrepify", opts)
 end
 
 return M

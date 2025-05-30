@@ -1,5 +1,7 @@
 -- TODO: attach to 'alternate' service
 
+local timeago = require("commands.timeago")
+local devicons = require("nvim-web-devicons")
 local smoothie = require("commands.buffer.smoothie")
 
 smoothie.setup_aucmds()
@@ -38,25 +40,33 @@ M.push = function()
     end
   end
 
-  table.insert(h.bufs, { nr = bufnr, nm = bufnm })
+  table.insert(h.bufs, { nr = bufnr, nm = bufnm, time = os.time(), ft = vim.bo.filetype })
   h.index = #h.bufs
 end
 
 M.back = function()
   local winid = vim.api.nvim_get_current_win()
   local h = state.histories[winid] or { index = 0 }
+  local num_bufs = h and vim.isarray(h.bufs) and #h.bufs or 0
   if h.index > 1 then
     h.index = h.index - 1
     vim.api.nvim_set_current_buf(h.bufs[h.index].nr)
+    vim.notify("buffer back: " .. h.index .. "/" .. num_bufs)
+  else
+    vim.notify("no more back history: " .. h.index .. "/" .. num_bufs)
   end
 end
 
 M.forward = function()
   local winid = vim.api.nvim_get_current_win()
   local h = state.histories[winid] or { index = 0 }
-  if h.index < #h.bufs then
+  local num_bufs = h and vim.isarray(h.bufs) and #h.bufs or 0
+  if h.index < num_bufs then
     h.index = h.index + 1
     vim.api.nvim_set_current_buf(h.bufs[h.index].nr)
+    vim.notify("buffer forward: " .. h.index .. "/" .. num_bufs)
+  else
+    vim.notify("no more forward history: " .. h.index .. "/" .. num_bufs)
   end
 end
 
@@ -64,75 +74,83 @@ M.select_file_in_history = function()
   local index = vim.api.nvim_win_get_cursor(state.popup_winid)[1]
   M.toggle_popup()
   local winid = vim.api.nvim_get_current_win()
-  vim.api.nvim_set_current_buf(state.histories[winid].bufs[index].nr)
+  vim.api.nvim_set_current_buf(vim.fn.reverse(state.histories[winid].bufs)[index].nr)
 end
 
-M.toggle_popup = function()
+M.close_popup = function()
   if state.popup_winid and vim.api.nvim_win_is_valid(state.popup_winid) then
     vim.api.nvim_win_close(state.popup_winid, true)
     state.popup_winid = nil
-    return
+    return true
   end
+  return false
+end
 
+M.open_popup = function()
   if state.ignores[vim.bo.filetype] then
-    return
+    return false
   end
-
   local winid = vim.api.nvim_get_current_win()
   local h = state.histories[winid]
   if not h then
-    return
+    return false
+  end
+
+  local width = 0
+  for _, buf in ipairs(h.bufs) do
+    width = math.max(width, vim.fn.strdisplaywidth(buf.nm))
   end
 
   local contents = {}
+  local line_width = 0
   for _, buf in ipairs(h.bufs) do
-    table.insert(contents, buf.nm)
+    -- local timeago = os.date("%H:%M", os.time() - buf.time)
+    local buf_time = timeago(buf.time, { include_suffix = false, language = "short" })
+    local line =
+      string.format("%s %-" .. width .. "s %s", devicons.get_icon(buf.ft), buf.nm, buf_time)
+    line_width = math.max(line_width, vim.fn.strdisplaywidth(line) + 4)
+    table.insert(contents, line)
   end
 
-  state.popup_winid = popup.create(contents, {
+  state.popup_winid = popup.create(vim.fn.reverse(contents), {
     title = state.popup_title or "History",
     borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-    width = state.popup_width or vim.api.nvim_win_get_width(winid) - 10,
+    width = state.popup_width
+      or math.min(line_width, math.max(vim.api.nvim_win_get_width(winid) / 2, 50)),
   })
   local bufnr = vim.api.nvim_win_get_buf(state.popup_winid)
   vim.api.nvim_set_option_value("modifiable", false, { buf = bufnr })
   vim.api.nvim_buf_set_keymap(
     bufnr,
     "n",
-    "q",
-    "<Cmd> lua require('history').toggle_popup()<CR>",
-    {}
-  )
-  vim.api.nvim_buf_set_keymap(
-    bufnr,
-    "n",
-    "<Esc>",
-    "<Cmd> lua require('history').toggle_popup()<CR>",
-    {}
-  )
-  vim.api.nvim_buf_set_keymap(
-    bufnr,
-    "n",
-    "<C-c>",
-    "<Cmd> lua require('history').toggle_popup()<CR>",
-    {}
-  )
-  vim.api.nvim_buf_set_keymap(
-    bufnr,
-    "n",
     "<CR>",
-    "<Cmd> lua require('history').select_file_in_history()<CR>",
+    "<Cmd> lua require('commands.buffer').select_file_in_history()<CR>",
     {}
   )
-  vim.api.nvim_buf_add_highlight(bufnr, 0, "Identifier", h.index - 1, 0, -1)
+  vim.api.nvim_buf_add_highlight(bufnr, 0, "Identifier", #h.bufs - h.index, 0, -1)
+  vim.api.nvim_set_option_value(
+    "winhl",
+    "CursorLineNr:Search,CursorLine:Search",
+    { win = state.popup_winid }
+  )
   vim.api.nvim_set_option_value("number", true, { win = state.popup_winid })
-  vim.api.nvim_win_set_cursor(state.popup_winid, { h.index, 0 })
+  vim.api.nvim_set_option_value("cursorline", true, { win = state.popup_winid })
+  vim.api.nvim_win_set_cursor(state.popup_winid, { #h.bufs - h.index + 1, 0 })
   vim.api.nvim_create_autocmd("BufLeave", {
     buffer = bufnr,
     nested = true,
     once = true,
     callback = M.toggle_popup,
   })
+  return true
+end
+
+M.toggle_popup = function()
+  if M.close_popup() then
+    return
+  end
+
+  M.open_popup()
 end
 
 M.setup = function(opts)
@@ -165,17 +183,11 @@ M.setup = function(opts)
     callback = M.push,
   })
 
-  if opts.set_keybinds then
-    vim.keymap.set("n", opts.keybinds.back or "<leader>bb", M.back)
-    vim.keymap.set("n", opts.keybinds.forward or "<leader>bf", M.forward)
-    vim.keymap.set("n", opts.keybinds.view or "<leader>bv", M.toggle_popup)
-  end
+  vim.api.nvim_create_user_command("BufferForward", M.forward, { desc = "󰃰 forward history" })
+  vim.api.nvim_create_user_command("BufferBack", M.back, { desc = "󰃰 back history" })
+  vim.api.nvim_create_user_command("BufferHistory", M.toggle_popup, { desc = "󰃰 view history" })
 end
 
-M.setup({
-  keybinds = {
-    back = "<leader>bp",
-    forward = "<leader>bn",
-    view = "<leader>bv",
-  },
-})
+M.setup({})
+
+return M

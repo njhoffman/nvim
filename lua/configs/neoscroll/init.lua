@@ -1,18 +1,26 @@
 -- /home/nicholas/.local/share/nvim/lazy/cmp-plugins/lua/cmp-plugins/list.lua
 -- /home/nicholas/.local/share/nvim/lazy/tailiscope.nvim/lua/tailiscope/docs/all.lua
 -- nvim --headless -c "PlenaryBustedDirectory lua/tests {minimal_init = 'lua/tests/minimal_init.vim'}"
-local hooks = require('configs.neoscroll.hooks')
-
+local hooks = require("configs.neoscroll.hooks")
+--   mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
+--   hide_cursor = true,
+--   stop_eof = true,
+--   respect_scrolloff = false,
+--   cursor_scrolls_alone = true,
+--   duration_multiplier = 1.0,
+--   performance_mode = false,
+--   easing = "linear",
+--   ignored_events = {'WinScrolled', 'CursorMoved'},
+--   telescope_scroll_opts = { duration = 250 },
 local cfg = {
   -- All these keys will be mapped to their corresponding default scrolling animation
   -- mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>', '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
   mappings = {},
   hide_cursor = false, -- Hide cursor while scrolling
   stop_eof = true, -- Stop at <EOF> when scrolling downwards
-  time_scale = 1.0,
-  respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+  respect_scrolloff = true, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
   cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-  easing_function = 'sine', -- Default easing function
+  easing_function = "sine", -- Default easing function
   use_local_scrolloff = true,
   -- quadratic, cubic, quartic, quintic, circular, sine
   performance_mode = false, -- Disable "Performance Mode" on all buffers.
@@ -20,18 +28,7 @@ local cfg = {
   post_hook = hooks.post_hook,
   steps_hook = hooks.steps_hook,
 }
-require('neoscroll').setup(cfg)
-
-local t = {}
--- t['<C-b>'] =
--- { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '500', [['sine']], [['centercursor']] } }
--- t['<C-f>'] =
--- { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '500', [['sine']], [['centercursor']] } }
--- t['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '7', '35', easing1}}
--- t['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '7', '35', easing1}}
--- t['gg'] = { 'scroll', { '-2*vim.api.nvim_buf_line_count(0)', 'true', '1', '5' } }
--- t['G'] = { 'scroll', { '2*vim.api.nvim_buf_line_count(0)', 'true', '1', '5' } }
-require('neoscroll.config').set_mappings(t)
+require("neoscroll").setup(cfg)
 
 --[[ defaults['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '250' } }
   defaults['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '250' } }

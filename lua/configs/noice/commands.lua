@@ -1,7 +1,10 @@
 local restore_routes = nil
+local lsp_clients = nil
 
 local silence_start = function()
   vim.diagnostic.disable()
+  lsp_clients = vim.lsp.get_clients()
+  vim.lsp.stop_client(lsp_clients)
   local notify_stats = {
     pending = require("notify").pending(),
     history = require("notify").history(),
@@ -34,10 +37,13 @@ local silence_start = function()
 end
 
 local silence_stop = function()
+  require("noice").enable()
+  require("notify").setup({ level = 2 })
   vim.diagnostic.enable()
-  -- require('vim-options')
-  -- require('noice').enable()
-  -- require('notify').setup({ level = 2 })
+  if lsp_clients then
+    vim.lsp.start_client(lsp_clients)
+    lsp_clients = nil
+  end
   if restore_routes then
     require("noice").setup({ routes = restore_routes })
     restore_routes = nil
@@ -73,7 +79,7 @@ local setup = function()
     { desc = "Undo silence command redirects and options" }
   )
 
-  vim.keymap.set("c", "<M-C-C>", function()
+  vim.keymap.set("n", "<M-C-C>", function()
     silence_start()
   end, { desc = "silence messaging and skip noice routes output" })
 

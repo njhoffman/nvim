@@ -27,6 +27,7 @@ local setup_highlights = function()
   vim.api.nvim_set_hl(0, 'CmpSourceNvimLspSignatureHelp',  { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceNvimLua',               { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceOmni',                  { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceRg',                    { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourcePlugin',                { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceSpell',                 { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceTmux',                  { default = true, link = 'CmpSource' })
@@ -47,6 +48,7 @@ end
 -- look = '﬜',
 -- stylua: ignore
 
+--     󰜏       󰦄 󰦅 󰹓 󱦞 󱤇 󱤈 󰺄 󰺅 󱁴 󱁵 󰱼 󰱽 󱎰 󱎱 󱙓 󱙔 󱎸 󱩾 󰥖 󰥗 󰥡 󰥢 󰥷 󰥸 󱇒 󱇓 󱣒 󱣓 󰤏 󰥨 󰥩 󱈆 󱈇 󱈄 󰶚   󰀖 󰤵 󱝩 󱝪 󰨼 󰨽 󰩉 󰩊 󱑗 󱢃 󰥌 󰡦 󱘶 󰾄 󱩯 󰺮 󰺯 󰨭 󰱂 󱘞 󱘟 󱈅 󱊒 󱊓 󱙇 󱙈 󱘢 󱘣
 local source_names = {
   async_path =                { ' ', 'CmpSourceAsyncPath' },
   calc =                      { '󰃬 ', 'CmpSourceCalc' },
@@ -74,7 +76,8 @@ local source_names = {
   nvim_lua =                  { ' ', 'CmpSourceNvimLua' },
   omni =                      { ' ', 'CmpSourceOmni' },
   path =                      { ' ', 'CmpSourcePath' },
-  plugins =                   { '鈴','CmpSourcePlugin' },
+  plugins =                   { '鈴', 'CmpSourcePlugin' },
+  rg =                        { '󱙔 ', 'CmpSourceRg' },
   spell =                     { ' ', 'CmpSourceSpell' },
   tmux =                      { ' ', 'CmpSourceTmux' },
   treesitter =                { '滑', 'CmpSourceTreesitter' }, --   滑
@@ -103,6 +106,8 @@ local source_names = {
 -- 󰋺      󰈠  󰖋  󰬥  󰥝  󰶮  󱀯  󰾜  󰢖  󱘭  󱤭
 -- stylua: ignore
 local lsp_symbols = {
+
+  _Parent              = "",
   Boolean              = "◩",
   CharacterSpecial     = "",
   Class                = '󰌗', --   Class       = "󰠱 ",
@@ -162,8 +167,10 @@ local lsp_symbols = {
   Namespace            = "󰌗",
   None                 = 'ﳠ',
   Number               = "󰎠",
+  NumberFloat          = "󱂡",
   Operator             = '󰃬', --   Operator    = "󰆕 ",
   Parameter            = ' ',
+  Parent               = "",
   Preproc              = '', --   Property    = "󰜢",
   Property             = '󰖷', --   Property    = "󰜢",
   PunctuationSpecial   = "",

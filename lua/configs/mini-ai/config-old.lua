@@ -66,6 +66,7 @@ local opts = {
     around_last = "aN",
     inside_last = "iN",
     -- Move cursor to corresponding edge of `a` textobject
+    -- TODO: after select first with search_method, search next
     goto_left = "g[",
     goto_right = "g]",
   },
@@ -101,7 +102,7 @@ local opts = {
     ["A"] = ts({ a = "@attribute.outer", i = "@attribute.inner" }),
     ["b"] = { { "%b()", "%b[]", "%b{}" }, "^.%s*().-()%s*.$" },
     ["B"] = ts({ a = "@block.outer", i = "@block.inner" }),
-    ["c"] = ts({ a = "@conditional.outer", i = "@conditional.inner" }),
+    ["C"] = ts({ a = "@conditional.outer", i = "@conditional.inner" }),
     ["d"] = extra_ai.diagnostic(),
     ["D"] = extra_ai.number(),
     ["f"] = ts({ a = "@function.outer", i = "@function.inner" }),
@@ -157,14 +158,14 @@ local setup_keymaps = function()
     })
   end
 
-  gen_action("[an")
-  gen_action("]an")
-  gen_action("[aN")
-  gen_action("]aN")
-  gen_action("[in")
-  gen_action("]in")
-  gen_action("[iN")
-  gen_action("]iN")
+  -- gen_action("[an")
+  -- gen_action("]an")
+  -- gen_action("[aN")
+  -- gen_action("]aN")
+  -- gen_action("[in")
+  -- gen_action("]in")
+  -- gen_action("[iN")
+  -- gen_action("]iN")
 
 -- stylua: ignore
   local i = {
@@ -190,24 +191,25 @@ local setup_keymaps = function()
     ['A']    = '  inner attribute',
     ['b']    = '  inner balanced: ), ], }',
     ['B']    = '  inner block',
-    ['c']    = '  inner conditional',
-    ['C']    = '  inner class',
+    -- ['c']    = '  inner class',
+    ['c']    = '  inner chunk',
+    ['C']    = '  inner conditional',
     ['d']    = '  inner diagnostic',
     ['f']    = '  inner function',
     ['g']    = '  inner entire buffer',
-    ['k']    = "  key from kv pair",
+    ['k']    = "  inner key from kv pair",
     ['l']    = '  inner line',
     ['L']    = '  inner loop',
     ['i']    = '  inner indent',
     ['o']    = '  inner block, conditional, loop',
     ['p']    = '  inner paragraph',
-    ['q']    = '  inner quote: `, ", \'',
-    ['s']    = '  scope',
+    ['q']    = '  inner quote: `, \"", \'',
+    ['s']    = '  inner scope',
     ['t']    = '  inner tag',
     ['x']    = '  inner comment',
-    ['v']    = "  value from kv pair",
-    ['w']    = "  word",
-    ['W']    = "  WORD"
+    ['v']    = "  inner value from kv pair",
+    ['w']    = "  inner word",
+    ['W']    = "  inner WORD"
   }
 
   local a = vim.deepcopy(i)
@@ -215,15 +217,19 @@ local setup_keymaps = function()
     a[k] = v:gsub("inside", "around"):gsub(" including.*", "")
   end
 
-  -- local ic = vim.deepcopy(i)
-  -- local ac = vim.deepcopy(a)
-  -- for key, name in pairs({ n = "next", N = "last" }) do
-  --   i[key] = vim.tbl_extend("force", { desc = "  inside " .. name .. " textobject" }, ic)
-  --   a[key] = vim.tbl_extend("force", { desc = "  around " .. name .. " textobject" }, ac)
-  -- end
+  local ic = vim.deepcopy(i, true)
+  local ac = vim.deepcopy(a, true)
+  for key, name in pairs({ n = "next", N = "last" }) do
+    i[key] = vim.tbl_extend("force", { desc = "  inside " .. name .. " textobject" }, ic)
+    a[key] = vim.tbl_extend("force", { desc = "  around " .. name .. " textobject" }, ac)
+  end
 
   for k, v in pairs(i) do
     require("mapper").vmap({ "v", "o" }, "i" .. k, { desc = v })
+    -- iNw   inside last word
+    -- inw   inside next word
+    -- g[w   jump to left edge of word
+    -- g]w   jump to right edge of word
   end
 
   for k, v in pairs(a) do

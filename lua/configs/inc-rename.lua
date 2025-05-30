@@ -1,6 +1,5 @@
 -- vim.keymap.set("n", "<C-r>", api.fs.rename_sub, opts("Rename: Omit Filename"))
 -- vim.keymap.set("n", "e", api.fs.rename_basename, opts("Rename: Basename"))
--- vim.keymap.set("n", "r", api.fs.rename, opts("Rename"))
 
 require("inc_rename").setup({
   -- the name of the command
@@ -20,3 +19,8 @@ require("inc_rename").setup({
   -- callback to run after renaming, receives the result table (from LSP handler) as an argument
   post_hook = nil,
 })
+
+vim.keymap.set("n", "grN", ":IncRename ", { desc = "IncRename" })
+-- vim.keymap.set("n", "grN", function()
+--   return ":IncRename " .. vim.fn.expand("<cword>")
+-- end, { expr = true })

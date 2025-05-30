@@ -63,38 +63,37 @@ local get_substitute_flags = function(cmdline)
   return flags
 end
 
+local function escape_key(key)
+  return vim.api.nvim_replace_termcodes(key, true, false, true)
+end
+
 local function open_cmdline_with_path(path)
   local escaped =
     vim.api.nvim_replace_termcodes(": " .. vim.fn.fnameescape(path) .. "<Home>", true, false, true)
   vim.api.nvim_feedkeys(escaped, "n", false)
 end
 
-local open_last_search = function()
+local keys = {
+  enter = escape_key("<cr>"),
+  cancel = escape_key("<C-c>"),
+  escape = escape_key("<esc>"),
+}
+
+local open_last_search = function(reverse)
   local cmdline = vim.fn.getcmdline() or ""
   local cmdtype = vim.fn.getcmdtype() or ""
-  local last_search = vim.fn.getreg("/")
-  local fullpath = cmdline .. last_search
-  if cmdtype == "/" or cmdtype == "?" then
-    -- vim.api.nvim_feedkeys('/' .. fullpath, 'n', true)
-    -- local escaped = vim.api.nvim_replace_termcodes(
-    --   ': ' .. vim.fn.fnameescape(fullpath) .. '<Home>',
-    --   true,
-    --   false,
-    --   true
-    -- )
-    local key = vim.api.nvim_replace_termcodes("<cr>", true, false, true)
-    vim.api.nvim_feedkeys(key, "n", false)
-    -- vim.api.nvim_feedkeys(escaped, 'n', false)
-    -- if last_search ~= '' then
-    --   vim.fn.setcmdline(fullpath)
-    -- end
-  else
-    local key = vim.api.nvim_replace_termcodes("<C-c>", true, false, true)
-    vim.api.nvim_feedkeys(key, "n", false)
-    -- vim.api.nvim_feedkeys('/' .. fullpath, 'n', true)
-    -- require('flash').jump({ continue = true })
-    -- open_cmdline_with_path(fullpath)
+  local last_search = vim.fn.histget("search", -1)
+  local fullpath = reverse and "?" or "/" .. last_search
+  if cmdtype ~= "" or cmdline ~= "" then
+    vim.api.nvim_feedkeys(keys.cancel, "n", false)
   end
+  -- vim.api.nvim_feedkeys(fullpath, 'n', true)
+  -- vim.api.nvim_feedkeys(keys.enter, "n", false)
+  -- vim.fn.setcmdline(fullpath)
+
+  open_cmdline_with_path(fullpath)
+  -- vim.api.nvim_feedkeys(keys.enter, "n", false)
+  -- require('flash').jump({ continue = true })
 end
 
 local delete_eol = function()

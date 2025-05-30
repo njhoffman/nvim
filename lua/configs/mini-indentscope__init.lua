@@ -16,6 +16,7 @@ local init = function()
         "mason",
         "neo-tree",
         "noice",
+        "noice.log",
         "null-ls-info",
         "qf",
         "sidekick",

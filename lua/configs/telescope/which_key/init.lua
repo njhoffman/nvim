@@ -3,6 +3,7 @@ local conf = require("telescope.config").values
 local utils = require("telescope.utils")
 local action_state = require("telescope.actions.state")
 local popup = require("plenary.popup")
+
 local wk_highlights = require("configs.telescope.which_key.highlights")
 local wk_mappings = require("configs.telescope.which_key.mappings")
 local wk_display = require("configs.telescope.which_key.display")
@@ -56,7 +57,8 @@ local what_key = function(prompt_bufnr, opts)
   end
 
   wk_highlights.setup_highlights()
-  local mappings = wk_mappings.setup_mappings()
+  local mappings = wk_mappings.setup_mappings(prompt_bufnr, opts)
+  local mode = vim.api.nvim_get_mode().mode
 
   local entry_width = #opts.column_padding
     + opts.mode_width
@@ -124,7 +126,7 @@ local what_key = function(prompt_bufnr, opts)
     "Normal:" .. opts.border_hl,
     { win = km_opts.border.win_id }
   )
-  vim.api.nvim_set_option_value("winblend", tostring(opts.winblend), { win = km_win_id })
+  vim.api.nvim_set_option_value("winblend", tonumber(opts.winblend), { win = km_win_id })
   vim.api.nvim_set_option_value("foldenable", false, { win = km_win_id })
 
   vim.api.nvim_create_autocmd("BufLeave", {
@@ -146,7 +148,7 @@ local what_key = function(prompt_bufnr, opts)
   )
 
   local keymap_highlights = vim.api.nvim_create_namespace("telescope_whatkey")
-  local hls = {}
+  local highlights = {}
 
   for index, mapping in ipairs(mappings) do
     local row = utils.cycle(index, opts.num_rows) - 1 + opts.line_padding
@@ -159,21 +161,22 @@ local what_key = function(prompt_bufnr, opts)
     local display, display_hl = wk_display.make_display(mapping, opts)
     local new_line = prev_line .. display .. opts.column_padding -- incl. padding
     vim.api.nvim_buf_set_lines(km_buf, row, row + 1, false, { new_line })
-    table.insert(hls, { hl = display_hl, row = row, col = #prev_line })
+    table.insert(highlights, { hl = display_hl, row = row, col = #prev_line })
   end
 
   -- highlighting only after line setting as vim.api.nvim_buf_set_lines removes hl otherwise
-  for _, hl in pairs(hls) do
-    local highlight = hl.hl
-    local row_ = hl.row
-    local col = hl.col
+  for _, highlight_tbl in pairs(highlights) do
+    local highlight = highlight_tbl.hl
+    local row_ = highlight_tbl.row
+    local col = highlight_tbl.col
     for _, hl_block in ipairs(highlight) do
-      vim.api.nvim_add_highlight(
+      vim.api.nvim_buf_add_highlight(
+        km_buf,
         keymap_highlights,
         hl_block[2],
         row_,
         col + hl_block[1][1],
-        col + hl_block[1][2]({ buf = km_buf })
+        col + hl_block[1][2]
       )
     end
   end

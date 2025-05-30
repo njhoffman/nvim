@@ -116,6 +116,7 @@ local config = {
     "cmp_docs",
     "cmp_menu",
     "noice",
+    "noice.log",
     "prompt",
     "TelescopePrompt",
   },

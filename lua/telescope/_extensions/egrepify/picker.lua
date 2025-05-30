@@ -1,13 +1,13 @@
-local action_state = require "telescope.actions.state"
-local egrep_entry_maker = require "telescope._extensions.egrepify.entry_maker"
-local egrep_utils = require "telescope._extensions.egrepify.utils"
-local finders = require "telescope.finders"
-local pickers = require "telescope.pickers"
-local sorters = require "telescope.sorters"
+local action_state = require("telescope.actions.state")
+local egrep_entry_maker = require("telescope._extensions.egrepify.entry_maker")
+local egrep_utils = require("telescope._extensions.egrepify.utils")
+local finders = require("telescope.finders")
+local pickers = require("telescope.pickers")
+local sorters = require("telescope.sorters")
 local conf = require("telescope.config").values
 local egrep_conf = require("telescope._extensions.egrepify.config").values
-local actions = require "telescope.actions"
-local TSInjector = require "telescope._extensions.egrepify.treesitter"
+local actions = require("telescope.actions")
+local TSInjector = require("telescope._extensions.egrepify.treesitter")
 
 local flatten = vim.tbl_flatten
 
@@ -27,26 +27,26 @@ local flatten = vim.tbl_flatten
 -- ensure picker is accessed where needed (sorter, actions)
 local picker
 
-local empty_sorter = sorters.new {
+local empty_sorter = sorters.new({
   scoring_function = function(_, _, _, entry)
     if entry.kind == "begin" then
-      picker:_decrement "processed" -- do not account for title in matches
+      picker:_decrement("processed") -- do not account for title in matches
     end
     return 1
   end,
-}
+})
 
 -- sorting_strategy "descending" puts title "after" matches, while "ascending" has title "before" matches
-local descending_sorter = sorters.new {
+local descending_sorter = sorters.new({
   scoring_function = function(_, _, _, entry)
     if entry.kind == "begin" then
-      picker:_decrement "processed" -- do not account for title in matches
+      picker:_decrement("processed") -- do not account for title in matches
     end
     -- telescope does not manage entries if score is 1
     -- required to activate `tiebreak`
     return 0
   end,
-}
+})
 
 local descending_tiebreak = function(current_entry, existing_entry)
   if current_entry.filename == existing_entry.filename then
@@ -59,6 +59,7 @@ end
 
 ---@class PickerConfig
 ---@field cwd string directory to run `rg` input
+---@field search_empty boolean start search if query is empty
 ---@field grep_open_files boolean search only open files (default: false)
 ---@field search_dirs string[] directory/directories/files to search, mutually excl. with `grep_open_files`(default: false)
 ---@field vimgrep_arguments table args for `rg`, see |telescope.defaults.vimgrep_arguments|
@@ -111,7 +112,7 @@ function Picker.picker(opts)
 
   ---@diagnostic disable-next-line: undefined-field
   if opts.title_hl then
-    deprecate "title_hl is deprecated, use filename_hl instead"
+    deprecate("title_hl is deprecated, use filename_hl instead")
     ---@diagnostic disable-next-line: undefined-field
     opts.filename_hl = opts.title_hl
   end
@@ -133,10 +134,10 @@ function Picker.picker(opts)
   end
   ---@diagnostic disable-next-line: inject-field
   opts.searches_dirs = searches_dirs -- passthrough to entry maker
-  local args = flatten { vimgrep_arguments, { "--json" } }
+  local args = flatten({ vimgrep_arguments, { "--json" } })
 
   local live_grepper = finders.new_job(function(prompt)
-    if not prompt or prompt == "" then
+    if not opts.search_empty and vim.fn.empty(prompt) == 1 then
       return nil
     end
 
@@ -173,10 +174,13 @@ function Picker.picker(opts)
       prompt = egrep_utils.permutations(tokens)
     end
 
-    return flatten { args, prompt_args, "--", prompt, search_list }
+    local cmd = flatten({ args, prompt_args, "--", prompt, search_list })
+    vim.dbglog("cmd", cmd)
+    return cmd
   end, egrep_entry_maker(opts), opts.max_results, opts.cwd)
 
-  local sorting_strategy = vim.F.if_nil(opts.sorting_strategy, require("telescope.config").values.sorting_strategy)
+  local sorting_strategy =
+    vim.F.if_nil(opts.sorting_strategy, require("telescope.config").values.sorting_strategy)
   local is_descending = sorting_strategy == "descending"
   local tiebreak = is_descending and descending_tiebreak or nil
   local sorter = is_descending and descending_sorter or empty_sorter
@@ -191,7 +195,7 @@ function Picker.picker(opts)
     sorter = sorter,
     tiebreak = tiebreak,
     attach_mappings = function()
-      actions.close:enhance {
+      actions.close:enhance({
         post = function()
           if picker.cache_picker then
             cached_opts._opts = picker._opts
@@ -200,7 +204,7 @@ function Picker.picker(opts)
             cached_opts.permutations = picker.permutations
           end
         end,
-      }
+      })
       return true
     end,
   })
@@ -221,11 +225,15 @@ function Picker.picker(opts)
   local regions = {}
   picker.entry_adder = function(picker_, index, entry, _, insert)
     entry_adder(picker_, index, entry, _, insert)
-    if not opts.results_ts_hl then
-      return
-    end
-
-    if not entry.kind == "match" then
+    if
+      not opts.results_ts_hl
+      or not entry
+      or not entry.kind == "match"
+      or not picker_
+      or not picker_.results_bufnr
+      or not picker_.results_win
+      or not vim.api.nvim_buf_is_valid(picker_.results_bufnr)
+    then
       return
     end
 
@@ -235,7 +243,7 @@ function Picker.picker(opts)
       return
     end
     local line = vim.api.nvim_buf_get_lines(picker_.results_bufnr, row, row + 1, false)[1]
-    local ft = vim.filetype.match { filename = entry.filename }
+    local ft = vim.filetype.match({ filename = entry.filename })
     if ft == nil then
       return
     end
@@ -262,8 +270,7 @@ function Picker.picker(opts)
     return on_input_filter_cb(prompt)
   end
 
-  -- "refreshes" results buffer without retriggering `rg` unlike picker:refresh()
-  -- when `rg` is finished
+  -- "refreshes" results buffer without retriggering `rg` unlike picker:refresh() when `rg` is finished
   table.insert(picker._completion_callbacks, function()
     picker:set_selection(picker:get_selection_row())
   end)

@@ -1355,5 +1355,23 @@ return function(injected_functions)
     MultiCursorDisabledCursor({ Visual }),
     MultiCursorDisabledVisual({ Visual }),
     MultiCursorDisabledSign({ SignColumn }),
+
+    -- leepfrog spidermonkey and psl
+    previewBackground({ fg = "#FFAA66", bg = "#000044" }),
+    pslNegative({ fg = "#B0BAF7" }),
+    pslPositive({ fg = "#B0BAF7" }),
+    pslImport({ fg = "#E2DCBC" }),
+    pslMultiline({ fg = "#FF6600" }),
+    pslValue({ fg = "#B0BAF7" }),
+    spiderCodeBlock({ fg = "#FF0000" }),
+    spiderCodeKeyword({ fg = "#cf6a4c" }),
+    tcfAttrName({ fg = "#7F93E2" }),
+    tcfAttrValue({ fg = "#C8C8C8" }),
+    tcfAttrDiv({ fg = "#AACCFF", gui = "bold" }),
+    tcfAttrRev({ fg = "#888888", gui = "italic" }),
+    tcfAttrRevNum({ fg = "#888888", gui = "italic" }),
+    tcfAttrRevName({ fg = "#888888", gui = "italic" }),
+    tcfAttrRevDiv({ fg = "#888888", gui = "italic" }),
+    tcfAttrRevValue({ fg = "#888888", gui = "italic" }),
   }
 end

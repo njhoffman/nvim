@@ -12,27 +12,27 @@ local pfx = "<leader>m"
 
 -- stylua: ignore
 local keymaps    = {
-  toggle         = {"<C-m>"},                 -- nv  <c-q>
-  escape         = {"<Esc>"},                 -- n   <esc>
-  next           = {"<right>"},               -- nv
-  prev           = {"<left>"},                -- nv
-  -- delete         = {pfx .. "x"},            -- nv  <leader>x
-  restore        = {pfx .. "u"},            -- n   <leader>gv
-  duplicate      = {pfx .. "d"},            -- nv  <leader><c-q>
-  align          = {pfx .. "a"},            -- n   <leader>a
-  split          = {pfx .. "s", "gS"},       -- v   S
-  insertVisual   = {pfx .. "i", "gI"},       -- v   I
-  appendVisual   = {pfx .. "a", "gA"},       -- v   A
-  matchInteract  = {pfx .. "m"},             -- v   M
-  matchAddAbove  = {pfx .. "N"},            -- nv  <leader>n
-  matchAddBelow  = {pfx .. "n"},            -- nv  <leader>N
-  matchSkipAbove = {pfx .. "K"},            -- nv  <leader>s
-  matchSkipBelow = {pfx .. "J"},            -- nv  <leader>S
-  matchAddAll    = {pfx .. "A"},            -- nv  <leader>A
-  lineAddAbove   = {pfx .. "k"},          -- nv
-  lineAddBelow   = {pfx .. "j"},          -- nv
-  lineSkipAbove  = {pfx .. "K"},          -- nv  <leader><up>
-  lineSkipBelow  = {pfx .. "J"},          -- nv  <leader><down>
+  escape         = {pfx .. 'q', "<Esc>"},    -- n   <esc>
+  toggle         = {pfx .. 'm', "<C-m>"},    -- nv  <c-q>
+  next           = {pfx .. "]", "]m"},       -- nv
+  prev           = {pfx .. "[", "[m"},       -- nv
+  delete         = {pfx .. "x"},             -- nv  <leader>x
+  restore        = {pfx .. "u"},             -- n   <leader>gv
+  duplicate      = {pfx .. "gm"},            -- nv  <leader><c-q>
+  align          = {pfx .. "ga"},            -- n   <leader>a
+  split          = {pfx .. "gs"},            -- v   S
+  insertVisual   = {pfx .. "gi"},            -- v   I
+  appendVisual   = {pfx .. "ga"},            -- v   A
+  matchInteract  = {pfx .. "M"},             -- v   M
+  matchAddAll    = {pfx .. "a"},             -- nv  <leader>A
+  matchAddAbove  = {pfx .. "N"},             -- nv  <leader>n
+  matchAddBelow  = {pfx .. "n"},             -- nv  <leader>N
+  matchSkipAbove = {pfx .. "sN"},            -- nv  <leader>s
+  matchSkipBelow = {pfx .. "sn"},            -- nv  <leader>S
+  lineAddAbove   = {pfx .. "k"},             -- nv
+  lineAddBelow   = {pfx .. "j"},             -- nv
+  lineSkipAbove  = {pfx .. "sk"},            -- nv  <leader><up>
+  lineSkipBelow  = {pfx .. "sj"},            -- nv  <leader><down>
   jumpForward    = {"<c-i>" },
   jumpBackward   = {"<c-o>" },
 }
@@ -40,9 +40,10 @@ local keymaps    = {
 local get_key_cmd = function(mode, lhs)
   local keys = vim.api.nvim_get_keymap(mode)
   local old_val = nil
+  lhs = type(lhs) == "table" and lhs[1] or lhs
 
   for _, key in ipairs(keys) do
-    if key.lhs == lhs then
+    if string.lower(key.lhs) == string.lower(lhs) then
       old_val = key.callback or key.rhs
     end
   end
@@ -50,11 +51,12 @@ local get_key_cmd = function(mode, lhs)
 end
 
 local map = require("mapper").map
-local set = function(modes, lhs, rhs, desc)
+local set = function(modes, lhs, rhs, desc, layerSet)
   lhs = type(lhs) == "table" and lhs or { lhs }
   for _, l in ipairs(lhs) do
     if type(l) == "string" and l ~= "" then
-      map(modes, l, rhs, { desc = desc })
+      local mapfunc = layerSet or map
+      mapfunc(modes, l, rhs, { desc = desc })
     end
   end
 end
@@ -81,6 +83,7 @@ local setup_keymaps = function()
   end, "multicursor line skip below")
 
   -- Add or skip adding a new cursor by matching word/selection
+  --     Move only the main cursor by matching the current word/selection.
   set({ "n", "x" }, keymaps.matchAddAbove, function()
     mc.matchAddCursor(1)
   end, "multicursor match add above")
@@ -97,22 +100,36 @@ local setup_keymaps = function()
   -- Add all matches in the document
   set({ "n", "x" }, keymaps.matchAddAll, mc.matchAllAddCursors, "multicursor match add all")
 
-  -- Rotate the main cursor.
-  set({ "n", "x" }, keymaps.next, mc.nextCursor, "multicursor next cursor")
-  set({ "n", "x" }, keymaps.prev, mc.prevCursor, "multicursor prev cursor")
+  mc.addKeymapLayer(function(layerSet)
+    -- Rotate the main cursor.
+    set({ "n", "x" }, keymaps.next, mc.nextCursor, "multicursor next cursor", layerSet)
+    set({ "n", "x" }, keymaps.prev, mc.prevCursor, "multicursor prev cursor", layerSet)
+    -- Delete the main cursor.
+    set({ "n", "x" }, keymaps.delete, mc.deleteCursor, "multicursor delete cursor", layerSet)
+    -- Clone every cursor and disable the originals.
+    set(
+      { "n", "x" },
+      keymaps.duplicate,
+      mc.duplicateCursors,
+      "multicursor duplicate cursor",
+      layerSet
+    )
 
-  -- Delete the main cursor.
-  set(
-    { "n", "x" },
-    keymaps.delete,
-    mc.addKeymapLayer(function(layerSet)
-      layerSet("n", "x", mc.deleteCursor)
-    end),
-    "multicursor delete cursor"
-  )
-
-  -- Clone every cursor and disable the originals.
-  set({ "n", "x" }, keymaps.duplicate, mc.duplicateCursors, "multicursor duplicate cursor")
+    -- save original keymapping of escape
+    local orig_escape = get_key_cmd("n", keymaps.escape)
+    set("n", keymaps.escape, function()
+      if not mc.cursorsEnabled() then
+        mc.enableCursors()
+      elseif mc.hasCursors() then
+        mc.clearCursors()
+      elseif type(orig_escape) == "function" then
+        orig_escape()
+      elseif type(orig_escape) == "string" then
+        local keys = vim.api.nvim_replace_termcodes(orig_escape, true, true, true)
+        vim.api.nvim_feedkeys(keys, "n", false)
+      end
+    end, "multicursors enable or clear cursors", layerSet)
+  end)
 
   -- bring back cursors if you accidentally clear them
   set("n", keymaps.restore, mc.restoreCursors, "multicursor restore cursors")
@@ -139,21 +156,6 @@ local setup_keymaps = function()
   --   mc.matchSkipCursor(-1)
   -- end, "multicursor match skip below")
 
-  -- save original keymapping of escape
-  local orig_escape = get_key_cmd("n", keymaps.escape)
-  set("n", keymaps.escape, function()
-    if not mc.cursorsEnabled() then
-      mc.enableCursors()
-    elseif mc.hasCursors() then
-      mc.clearCursors()
-    elseif type(orig_escape) == "function" then
-      orig_escape()
-    elseif type(orig_escape) == "string" then
-      local keys = vim.api.nvim_replace_termcodes(orig_escape, true, true, true)
-      vim.api.nvim_feedkeys(keys, "n", false)
-    end
-  end, "multicursors enable or clear cursors")
-
   -- You can also add cursors with any motion you prefer:
   -- set("n", "<right>", function()
   --     mc.addCursor("w")
@@ -162,9 +164,6 @@ local setup_keymaps = function()
   --     mc.skipCursor("w")
   -- end)
 
-  -- -- Add and remove cursors with control + left click.
-  -- set("n", "<c-leftmouse>", mc.handleMouse)
-  --
   -- -- match new cursors within visual selections by regex.
   -- set("v", "M", mc.matchCursors)
   --
@@ -248,3 +247,155 @@ vim.api.nvim_create_autocmd("VimEnter", {
 -- {"<Leader>d", "<Cmd>MultipleCursorsAddJumpNextMatch<CR>", mode = {"n", "x"}, desc = "Add cursor and jump to next cword"},
 -- {"<Leader>D", "<Cmd>MultipleCursorsJumpNextMatch<CR>", mode = {"n", "x"}, desc = "Jump to next cword"},
 -- {"<Leader>l", "<Cmd>MultipleCursorsLock<CR>", mode = {"n", "x"}, desc = "Lock virtual cursors"},
+
+--  • mc.addCursor                                        |multicursor-addCursor|
+--  • mc.skipCursor                                      |multicursor-skipCursor|
+--  • mc.toggleCursor                                  |multicursor-toggleCursor|
+--  • mc.lineAddCursor                                |multicursor-lineAddCursor|
+--  • mc.lineSkipCursor                              |multicursor-lineSkipCursor|
+--  • mc.matchAddCursor                              |multicursor-matchAddCursor|
+--  • mc.matchSkipCursor                            |multicursor-matchSkipCursor|
+--  • mc.matchAllAddCursors                      |multicursor-matchAllAddCursors|
+--  • mc.searchAddCursor                            |multicursor-searchAddCursor|
+--  • mc.searchSkipCursor                          |multicursor-searchSkipCursor|
+--  • mc.searchAllAddCursors                    |multicursor-searchAllAddCursors|
+--  • mc.nextCursor                                      |multicursor-nextCursor|
+--  • mc.prevCursor                                      |multicursor-prevCursor|
+--  • mc.firstCursor                                    |multicursor-firstCursor|
+--  • mc.lastCursor                                      |multicursor-lastCursor|
+--  • mc.hasCursors                                      |multicursor-hasCursors|
+--  • mc.deleteCursor                                  |multicursor-deleteCursor|
+--  • mc.clearCursors                                  |multicursor-clearCursors|
+--  • mc.handleMouse                                    |multicursor-handleMouse|
+--  • mc.handleMouseDrag                            |multicursor-handleMouseDrag|
+--  • mc.handleMouseRelease                      |multicursor-handleMouseRelease|
+--  • mc.alignCursors                                  |multicursor-alignCursors|
+--  • mc.splitCursors                                  |multicursor-splitCursors|
+--  • mc.matchCursors                                  |multicursor-matchCursors|
+--  • mc.transposeCursors                          |multicursor-transposeCursors|
+--  • mc.swapCursors                                    |multicursor-swapCursors|
+--  • mc.insertVisual                                  |multicursor-insertVisual|
+--  • mc.appendVisual                                  |multicursor-appendVisual|
+--  • mc.sequenceIncrement                        |multicursor-sequenceIncrement|
+--  • mc.sequenceDecrement                        |multicursor-sequenceDecrement|
+--  • mc.addCursorOperator                        |multicursor-addCursorOperator|
+--  • mc.operator                                          |multicursor-operator|
+--  • mc.diagnosticAddCursor                    |multicursor-diagnosticAddCursor|
+--  • mc.diagnosticSkipCursor                  |multicursor-diagnosticSkipCursor|
+--  • mc.diagnosticMatchCursors              |multicursor-diagnosticMatchCursors|
+--  • mc.jumpForward                                    |multicursor-jumpForward|
+--  • mc.jumpBackward                                  |multicursor-jumpBackward|
+--  • mc.disableCursors                              |multicursor-disableCursors|
+--  • mc.enableCursors                                |multicursor-enableCursors|
+--  • mc.cursorsEnabled                              |multicursor-cursorsEnabled|
+--  • mc.feedkeys                                          |multicursor-feedkeys|
+--  • mc.addKeymapLayer                              |multicursor-addKeymapLayer|
+--  • mc.removeKeymapLayer                        |multicursor-removeKeymapLayer|
+--  • mc.action                                              |multicursor-action|
+--             set({"n", "x"}, "<up>", function() mc.lineAddCursor(-1) end)
+--             set({"n", "x"}, "<down>", function() mc.lineAddCursor(1) end)
+--             set({"n", "x"}, "<leader><up>", function() mc.lineSkipCursor(-1) end)
+--             set({"n", "x"}, "<leader><down>", function() mc.lineSkipCursor(1) end)
+--             set({"n", "x"}, "<leader>n", function() mc.matchAddCursor(1) end)
+--             set({"n", "x"}, "<leader>s", function() mc.matchSkipCursor(1) end)
+--             set({"n", "x"}, "<leader>N", function() mc.matchAddCursor(-1) end)
+--             set({"n", "x"}, "<leader>S", function() mc.matchSkipCursor(-1) end)
+--             set("n", "<c-leftmouse>", mc.handleMouse)
+--             set("n", "<c-leftdrag>", mc.handleMouseDrag)
+--             set("n", "<c-leftrelease>", mc.handleMouseRelease)
+--             set({"n", "x"}, "<c-q>", mc.toggleCursor)
+--             mc.addKeymapLayer(function(layerSet)
+--                 layerSet({"n", "x"}, "<left>", mc.prevCursor)
+--                 layerSet({"n", "x"}, "<right>", mc.nextCursor)
+--                 layerSet({"n", "x"}, "<leader>x", mc.deleteCursor)
+--                     if not mc.cursorsEnabled() then
+--                         mc.enableCursors()
+--                         mc.clearCursors()
+--         vim.keymap.set("n", "<right>", function()
+--             mc.addCursor("w")
+--         vim.keymap.set("n", "<leader><right>", function()
+--             mc.skipCursor("w")
+--         vim.keymap.set("n", "<c-q>", mc.toggleCursor)
+--         vim.keymap.set({"n", "v"}, "<up>", function()
+--             mc.lineAddCursor(-1)
+--         vim.keymap.set({"n", "v"}, "<down>", function()
+--             mc.lineAddCursor(1)
+--         vim.keymap.set({"n", "v"}, "<leader><up>", function()
+--             mc.lineSkipCursor(-1)
+--         vim.keymap.set({"n", "v"}, "<leader><down>", function()
+--             mc.lineSkipCursor(1)
+--         vim.keymap.set({"n", "v"}, "<leader>n", function()
+--             mc.matchAddCursor(1)
+--         vim.keymap.set({"n", "v"}, "<leader>N", function()
+--             mc.matchAddCursor(-1)
+--         vim.keymap.set({"n", "v"}, "<leader>s", function()
+--             mc.matchSkipCursor(1)
+--         vim.keymap.set({"n", "v"}, "<leader>S", function()
+--             mc.matchSkipCursor(-1)
+--         vim.keymap.set({"n", "v"}, "<leader>A", mc.matchAllAddCursors)
+--         vim.keymap.set("n", "<leader>/n", function()
+--             mc.searchAddCursor(1)
+--         vim.keymap.set("n", "<leader>/N", function()
+--             mc.searchAddCursor(-1)
+--         vim.keymap.set("n", "<leader>/s", function()
+--             mc.searchSkipCursor(-1)
+--         vim.keymap.set("n", "<leader>/S", function()
+--             mc.searchSkipCursor(-1)
+--         vim.keymap.set("n", "<leader>/A", mc.searchAllAddCursors)
+--         vim.keymap.set({"n", "v"}, "<left>", mc.nextCursor)
+--         vim.keymap.set({"n", "v"}, "<right>", mc.prevCursor)
+--         vim.keymap.set({"n", "v"}, "H", mc.firstCursor)
+--         vim.keymap.set({"n", "v"}, "L", mc.lastCursor)
+--         vim.keymap.set({ "n", "v" }, "<esc>", function()
+--             if mc.hasCursors() then
+--                 mc.clearCursors()
+--         vim.keymap.set({"n", "v"}, "<leader>x", mc.deleteCursor)
+--         vim.keymap.set({ "n", "v" }, "<esc>", function()
+--             if mc.hasCursors() then
+--                 mc.clearCursors()
+--         vim.keymap.set("n", "<c-leftmouse>", mc.handleMouse)
+--         vim.keymap.set("n", "<c-leftdrag>", mc.handleMouseDrag)
+--         vim.keymap.set("n", "<c-leftrelease>", mc.handleMouseRelease)
+--         vim.keymap.set("n", "<leader>a", mc.alignCursors)
+--         vim.keymap.set("v", "S", mc.splitCursors)
+--         vim.keymap.set("v", "M", mc.matchCursors)
+--         vim.keymap.set("v", "<leader>t", function()
+--             mc.transposeCursors(1)
+--         vim.keymap.set("v", "<leader>T", function()
+--             mc.transposeCursors(-1)
+--         vim.keymap.set("v", "<leader>h", function()
+--             mc.swapCursors(-1)
+--         vim.keymap.set("v", "<leader>l", function()
+--             mc.swapCursors(1)
+--         vim.keymap.set("v", "I", mc.insertVisual)
+--         vim.keymap.set("v", "A", mc.appendVisual)
+--         vim.keymap.set({"x", "n"}, "g<c-a>", mc.sequenceIncrement)
+--         vim.keymap.set({"x", "n"}, "g<c-x>", mc.sequenceDecrement)
+--         vim.keymap.set("n", "ga", mc.addCursorOperator)
+--         vim.keymap.set({ "x", "n" }, "<leader>m", mc.operator)
+--         vim.keymap.set({"n", "x"}, "]d", function()
+--             mc.diagnosticAddCursor(1)
+--         vim.keymap.set({"n", "x"}, "[d", function()
+--             mc.diagnosticAddCursor(-1)
+--         vim.keymap.set({"n", "x"}, "]d", function()
+--             mc.diagnosticAddCursor(1)
+--         vim.keymap.set({"n", "x"}, "[d", function()
+--             mc.diagnosticAddCursor(-1)
+--         vim.keymap.set({"n", "x"}, "md", function()
+--             mc.diagnosticMatchCursors({ severity = vim.diagnostic.severity.ERROR })
+--         vim.keymap.set({"n", "x"}, "<c-i>", mc.jumpForward)
+--         vim.keymap.set({"n", "x"}, "<c-o>", mc.jumpBackward)
+--         vim.keymap.set({"n", "v"}, "<c-q>", mc.disableCursors)
+--         vim.keymap.set({"n", "v"}, "<c-q>", mc.enableCursors)
+--         if not mc.cursorsEnabled() then
+--             mc.enableCursors()
+--     provided function (similar to `vim.keymap.set`) will be automatically
+--         mc.addKeymapLayer(function(layerSet)
+--             layerSet("n", "x", mc.deleteCursor)
+--         Same arguments as |vim.keymap.set()|.
+--       • |vim.keymap.set()|
+--         mc.action(function(ctx)
+--     mc.action(function(ctx)
+--     mc.action(function(ctx)
+--  • numCursors                                     |multicursor-ctx-numCursors|
+-- ctx:numCursors()                                  *multicursor-ctx-numCursors*

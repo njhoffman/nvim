@@ -3,6 +3,9 @@
 -- https://gist.github.com/xzbdmw/fb20eb84655b7c13b9e8aec760c992c0
 local telescope = require("telescope")
 
+local internal = require("telescope.builtin.__internal")
+internal.reloader = require("configs.telescope.reloader")
+
 local commands = require("configs.telescope.commands")
 local mappings = require("configs.telescope.mappings")
 local pickers = require("configs.telescope.pickers")

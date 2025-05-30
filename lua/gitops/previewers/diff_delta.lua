@@ -10,15 +10,15 @@ local previewers = require("telescope.previewers")
 
 local default_git_args = {
   "-c",
-  "core.pager=delta",
+  "core.pager=delta-dynamic",
   "-c",
   "delta.diff-so-fancy=false",
   "-c",
   "delta.navigate=false",
-  "-c",
-  "delta.pager=bat",
-  -- "-c",
+
   -- "delta.pager=less -R",
+  -- "-c",
+  -- "delta.pager=bat",
   -- "core.side-by-side=false",
   -- entry.value .. "^!",
 }
@@ -56,6 +56,7 @@ local diff_delta = function(opts)
 
       --
       if opts.current_file then
+        table.insert(git_args, "--")
         table.insert(git_args, opts.current_file)
       end
 

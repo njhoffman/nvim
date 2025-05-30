@@ -1,21 +1,21 @@
-local pickers = require('telescope.pickers')
-local finders = require('telescope.finders')
-local conf = require('telescope.config').values
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local conf = require("telescope.config").values
 
-local git_utils = require('gitops.utils.git')
-local make_entry = require('gitops.make_entry')
-local mappings = require('gitops.mappings')
-local previewers = require('gitops.previewers')
-local logger = require('gitops.utils.logger')
+local git_utils = require("gitops.utils.git")
+local make_entry = require("gitops.make_entry")
+local mappings = require("gitops.mappings")
+local previewers = require("gitops.previewers")
+local logger = require("gitops.utils.logger")
 
 local build_stats_command = function(method, bufnr)
-  local cmd = git_utils.init_script_command(bufnr, '--method=' .. method)
-  return string.gsub(vim.fn.system(vim.fn.join(cmd, ' ')), '\n', '')
+  local cmd = git_utils.init_script_command(bufnr, "--method=" .. method)
+  return string.gsub(vim.fn.system(vim.fn.join(cmd, " ")), "\n", "")
 end
 
 local commits_stats = function(opts, methods)
   opts = opts or {}
-  methods = methods or { 'range', 'count', 'hash_length', 'author_length', 'subject_length' }
+  methods = methods or { "range", "count", "hash_length", "author_length", "subject_length" }
   local bufnr = opts.bufnr or vim.fn.bufnr()
 
   local results = {}
@@ -49,16 +49,16 @@ local commits = function(opts)
 
   return pickers
     .new(opts, {
-      prompt_title = 'Git Commits',
+      prompt_title = "Git Commits",
       finder = finders.new_oneshot_job(script_command, opts),
       previewer = {
-        previewers.diff_delta(vim.tbl_deep_extend('force', opts, {
-          git_cmd = { 'show', '--stat', '-p' },
-          preview_title = 'Diff to Parent',
+        previewers.diff_delta(vim.tbl_deep_extend("force", opts, {
+          git_cmd = { "show", "--stat", "-p" },
+          preview_title = "Diff to Parent",
         })),
-        previewers.diff_delta(vim.tbl_deep_extend('force', opts, {
-          git_cmd = { 'diff', '--cached', '--stat', '-p' },
-          preview_title = 'Diff to Head',
+        previewers.diff_delta(vim.tbl_deep_extend("force", opts, {
+          git_cmd = { "diff", "--cached", "--stat", "-p" },
+          preview_title = "Diff to Head",
         })),
       },
       sorter = conf.file_sorter(opts),

@@ -21,6 +21,7 @@ local config = {
       "notify",
       "cmp_menu",
       "noice",
+      "noice.log",
       "flash_prompt",
       function(win)
         -- exclude non-focusable windows

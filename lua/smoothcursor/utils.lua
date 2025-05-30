@@ -61,7 +61,7 @@ sc.smoothcursor_start = function(init_fire)
 
   local last_pos_config = config.value.show_last_positions
 
-  if last_pos_config ~= nil then
+  if last_pos_config ~= nil and last_pos_config ~= "" then
     -- Please note that casting the buffer numbers to strings is necessary, otherwise
     -- lua will interpret the buffer numbers as array indices
     -- Add / Remove buffers to `last_positions` table

@@ -1,14 +1,14 @@
-local pfiletype = require('plenary.filetype')
-local conf = require('telescope.config').values
-local Previewer = require('telescope.previewers.previewer')
-local tele_utils = require('telescope.utils')
+local pfiletype = require("plenary.filetype")
+local conf = require("telescope.config").values
+local Previewer = require("telescope.previewers.previewer")
+local tele_utils = require("telescope.utils")
 local buf_delete = tele_utils.buf_delete
 
-local file_util = require('gitops.utils.file')
-local config = require('gitops.utils.config')
-local command_util = require('gitops.utils.command')
-local utils = require('gitops.utils')
-local logger = require('gitops.utils.logger')
+local file_util = require("gitops.utils.file")
+local config = require("gitops.utils.config")
+local command_util = require("gitops.utils.command")
+local utils = require("gitops.utils")
+local logger = require("gitops.utils.logger")
 
 local M = {}
 
@@ -16,20 +16,23 @@ local M = {}
 -- TODO: git grep --all-match -l -e "f[^\s]*\s" -e bar $(git rev-list --all)
 
 local all_commit_hashes = function()
-  local command = 'git rev-list --all'
+  local command = "git rev-list --all"
   local output = command_util.execute(command)
 
-  return tele_utils.split_string(output, '\n')
+  return tele_utils.split_string(output, "\n")
 end
 
 local all_commit_hashes_touching_file = function(git_relative_file_path, source_bufnr)
   local gs_repo = utils.get_repo(source_bufnr) or {}
   -- local repo = file_util.git_dir() or (gs_repo and gs_repo.root) or ''
   local repo = file_util.git_dir()
-  local command = 'cd ' .. repo .. " && git log --all --follow --pretty=format:'%H' -- " .. git_relative_file_path
+  local command = "cd "
+    .. repo
+    .. " && git log --all --follow --pretty=format:'%H' -- "
+    .. git_relative_file_path
 
   local output = command_util.execute(command)
-  return tele_utils.split_string(output, '\n')
+  return tele_utils.split_string(output, "\n")
 end
 
 local git_diff_command = function(command, git_flags_ix, git_diff_flags_ix)
@@ -42,7 +45,7 @@ local git_diff_command = function(command, git_flags_ix, git_diff_flags_ix)
   local git_flags = config.git_flags()
 
   if git_flags_ix > git_diff_flags_ix then
-    vim.notify('git_flags must be inserted before git_diff_flags', vim.log.levels.ERROR)
+    vim.notify("git_flags must be inserted before git_diff_flags", vim.log.levels.ERROR)
   end
 
   if git_diff_flags ~= nil and #git_diff_flags > 0 then
@@ -57,29 +60,30 @@ local git_diff_command = function(command, git_flags_ix, git_diff_flags_ix)
     end
   end
 
+  vim.dbglog("command", command)
   return command
 end
 
 M.git_diff_command = git_diff_command
 
 M.previous_commit_hash = function(commit_hash, source_bufnr)
-  local command = { 'git', 'rev-parse' }
+  local command = { "git", "rev-parse" }
   local repo = utils.get_repo(source_bufnr) or {}
   if repo.gitdir then
-    table.insert(command, '--git-dir=' .. repo.gitdir)
-    table.insert(command, '--work-tree=' .. repo.worktree)
+    table.insert(command, "--git-dir=" .. repo.gitdir)
+    table.insert(command, "--work-tree=" .. repo.worktree)
   end
   table.insert(command, commit_hash)
-  table.insert(command, '~')
-  local output = command_util.execute(vim.fn.join(command, ' '))
-  return string.gsub(output, '\n', '')
+  table.insert(command, "~")
+  local output = command_util.execute(vim.fn.join(command, " "))
+  return string.gsub(output, "\n", "")
 end
 
 M.branch_hash = function(branch)
-  local command = 'git rev-parse ' .. branch
+  local command = "git rev-parse " .. branch
 
   local output = command_util.execute(command)
-  return string.gsub(output, '\n', '')
+  return string.gsub(output, "\n", "")
 end
 
 -- local is_file_renamed = function(git_relative_file_path)
@@ -97,17 +101,17 @@ local file_exists_on_commit = function(commit_hash, git_relative_file_path, sour
   local gs_repo = utils.get_repo(source_bufnr) or {}
   -- local repo = file_util.git_dir() or (gs_repo and gs_repo.gitdir) or ''
   local repo = file_util.git_dir()
-  local command = 'cd '
+  local command = "cd "
     .. repo
-    .. ' && git ls-tree --name-only '
+    .. " && git ls-tree --name-only "
     .. commit_hash
-    .. ' -- '
-    .. (git_relative_file_path or '')
+    .. " -- "
+    .. (git_relative_file_path or "")
 
   local output = command_util.execute(command)
 
-  output = string.gsub(output, '\n', '')
-  return output ~= ''
+  output = string.gsub(output, "\n", "")
+  return output ~= ""
 end
 
 M.file_exists_on_commit = file_exists_on_commit
@@ -159,7 +163,7 @@ local file_name_on_commit = function(commit_hash, git_relative_file_path, source
     return nil
   end
 
-  local command = { 'cd', 'file.git_dir()', '&&', 'git' }
+  local command = { "cd", "file.git_dir()", "&&", "git" }
   -- local repo = utils.get_repo(source_bufnr)
   -- if repo.gitdir then
   --   table.insert(command, '--git-dir=' .. repo.gitdir)
@@ -168,12 +172,12 @@ local file_name_on_commit = function(commit_hash, git_relative_file_path, source
   --
   table.insert(command, "--no-pager log -M --follow --pretty=format:'%H' --name-only")
   table.insert(command, last_touched_hash)
-  table.insert(command, '~.. -- ')
+  table.insert(command, "~.. -- ")
   table.insert(command, git_relative_file_path)
-  table.insert(command, ' | tail -1')
+  table.insert(command, " | tail -1")
 
-  local output = command_util.execute(vim.fn.join(command, ' '))
-  output = string.gsub(output, '\n', '')
+  local output = command_util.execute(vim.fn.join(command, " "))
+  output = string.gsub(output, "\n", "")
 
   if file_exists_on_commit(commit_hash, output, source_bufnr) then
     return output
@@ -195,51 +199,51 @@ M.base_branch = function()
 
   local output = command_util.execute(command)
 
-  return string.gsub(output, '\n', '')
+  return string.gsub(output, "\n", "")
 end
 
 M.current_branch = function()
-  local command = 'git branch --show-current'
+  local command = "git branch --show-current"
 
   local output = command_util.execute(command)
 
-  return string.gsub(output, '\n', '')
+  return string.gsub(output, "\n", "")
 end
 
 M.init_command = function(command, bufnr, args)
-  args = type(args) ~= 'table' and { args } or args
+  args = type(args) ~= "table" and { args } or args
   local repo = utils.get_repo(bufnr)
   if repo and repo.gitdir then
-    table.insert(command, '--git-dir=' .. repo.gitdir)
-    table.insert(command, '--work-tree=' .. repo.worktree)
+    table.insert(command, "--git-dir=" .. repo.gitdir)
+    table.insert(command, "--work-tree=" .. repo.worktree)
   end
   for _, arg in ipairs(args) do
     table.insert(command, arg)
   end
-  local gitdir = repo and type(repo.gitdir) == 'string' and (repo.gitdir .. '\n') or ''
-  logger.trace(gitdir .. vim.fn.join(command, ' '))
+  local gitdir = repo and type(repo.gitdir) == "string" and (repo.gitdir .. "\n") or ""
+  logger.trace(gitdir .. vim.fn.join(command, " "))
   return command
 end
 
 M.init_git_command = function(bufnr, args)
   args = args or {}
-  return M.init_command({ 'git' }, bufnr, args)
+  return M.init_command({ "git" }, bufnr, args)
 end
 
 M.init_script_command = function(bufnr, args)
   args = args or {}
-  local script = vim.fn.stdpath('config') .. '/lua/gitops/scripts/commits.sh'
+  local script = vim.fn.stdpath("config") .. "/lua/gitops/scripts/commits.sh"
   return M.init_command({ script }, bufnr, args)
 end
 
 -- git files count
 M.file_count = function(bufnr, cwd)
-  local cmd = M.init_git_command(bufnr, { 'ls-files' })
-  table.insert(cmd, cwd or vim.fn.getcwd() or vim.fn.getenv('HOME'))
+  local cmd = M.init_git_command(bufnr, { "ls-files" })
+  table.insert(cmd, cwd or vim.fn.getcwd() or vim.fn.getenv("HOME"))
   local output = vim.fn.system(cmd)
   local lines = vim.tbl_filter(function(line)
     return #line > 0
-  end, vim.split(output, '\n'))
+  end, vim.split(output, "\n"))
   return #lines
 end
 
@@ -250,8 +254,8 @@ M.defaulter = function(f, default_opts)
       if conf.preview == false and not opts.preview then
         return false
       end
-      opts.preview = type(opts.preview) ~= 'table' and {} or opts.preview
-      if type(conf.preview) == 'table' then
+      opts.preview = type(opts.preview) ~= "table" and {} or opts.preview
+      if type(conf.preview) == "table" then
         for k, v in pairs(conf.preview) do
           opts.preview[k] = vim.F.if_nil(opts.preview[k], v)
         end
@@ -273,11 +277,11 @@ M.search_cb_jump = function(self, bufnr, query)
   end
   vim.api.nvim_buf_call(bufnr, function()
     pcall(vim.fn.matchdelete, self.state.hl_id, self.state.winid)
-    vim.cmd('norm! gg')
-    vim.fn.search(query, 'W')
-    vim.cmd('norm! zz')
+    vim.cmd("norm! gg")
+    vim.fn.search(query, "W")
+    vim.cmd("norm! zz")
 
-    self.state.hl_id = vim.fn.matchadd('TelescopePreviewMatch', query)
+    self.state.hl_id = vim.fn.matchadd("TelescopePreviewMatch", query)
   end)
 end
 
@@ -304,8 +308,8 @@ end
 M.new_buffer_previewer = function(opts)
   opts = opts or {}
 
-  assert(opts.define_preview, 'define_preview is a required function')
-  assert(not opts.preview_fn, 'preview_fn not allowed')
+  assert(opts.define_preview, "define_preview is a required function")
+  assert(not opts.preview_fn, "preview_fn not allowed")
 
   local opt_setup = opts.setup
   local opt_teardown = opts.teardown
@@ -313,7 +317,7 @@ M.new_buffer_previewer = function(opts)
   local old_bufs = {}
   local bufname_table = {}
 
-  local global_state = require('telescope.state')
+  local global_state = require("telescope.state")
   local preview_window_id
 
   local function get_bufnr(self)
@@ -349,7 +353,7 @@ M.new_buffer_previewer = function(opts)
   function opts.setup(self)
     local state = {}
     if opt_setup then
-      vim.tbl_deep_extend('force', state, opt_setup(self))
+      vim.tbl_deep_extend("force", state, opt_setup(self))
     end
     return state
   end
@@ -361,7 +365,7 @@ M.new_buffer_previewer = function(opts)
 
     local last_nr
     if opts.keep_last_buf then
-      last_nr = global_state.get_global_key('last_preview_bufnr')
+      last_nr = global_state.get_global_key("last_preview_bufnr")
       -- Push in another buffer so the last one will not be cleaned up
       if preview_window_id then
         local bufnr = vim.api.nvim_create_buf(false, true)
@@ -387,7 +391,9 @@ M.new_buffer_previewer = function(opts)
       preview_window_id = status.preview_win
     end
 
-    if opts.get_buffer_by_name and get_bufnr_by_bufname(self, opts.get_buffer_by_name(self, entry)) then
+    if
+      opts.get_buffer_by_name and get_bufnr_by_bufname(self, opts.get_buffer_by_name(self, entry))
+    then
       self.state.bufname = opts.get_buffer_by_name(self, entry)
       self.state.bufnr = get_bufnr_by_bufname(self, self.state.bufname)
       tele_utils.win_set_buf_noautocmd(status.preview_win, self.state.bufnr)
@@ -401,18 +407,18 @@ M.new_buffer_previewer = function(opts)
         end
       end)
 
-      vim.api.nvim_win_set_option(status.preview_win, 'winhl', 'Normal:TelescopePreviewNormal')
-      vim.api.nvim_win_set_option(status.preview_win, 'signcolumn', 'no')
-      vim.api.nvim_win_set_option(status.preview_win, 'foldlevel', 100)
-      vim.api.nvim_win_set_option(status.preview_win, 'wrap', false)
-      vim.api.nvim_win_set_option(status.preview_win, 'scrollbind', false)
+      vim.api.nvim_win_set_option(status.preview_win, "winhl", "Normal:TelescopePreviewNormal")
+      vim.api.nvim_win_set_option(status.preview_win, "signcolumn", "no")
+      vim.api.nvim_win_set_option(status.preview_win, "foldlevel", 100)
+      vim.api.nvim_win_set_option(status.preview_win, "wrap", false)
+      vim.api.nvim_win_set_option(status.preview_win, "scrollbind", false)
 
       self.state.winid = status.preview_win
       self.state.bufname = nil
     end
 
     if opts.keep_last_buf then
-      global_state.set_global_key('last_preview_bufnr', self.state.bufnr)
+      global_state.set_global_key("last_preview_bufnr", self.state.bufnr)
     end
 
     opts.define_preview(self, entry, status)
@@ -424,12 +430,12 @@ M.new_buffer_previewer = function(opts)
 
       if vim.api.nvim_buf_is_valid(self.state.bufnr) then
         vim.api.nvim_buf_call(self.state.bufnr, function()
-          vim.api.nvim_exec_autocmds('User', {
-            pattern = 'TelescopePreviewerLoaded',
+          vim.api.nvim_exec_autocmds("User", {
+            pattern = "TelescopePreviewerLoaded",
             data = {
               title = entry.preview_title,
               bufname = self.state.bufname,
-              filetype = pfiletype.detect(self.state.bufname or ''),
+              filetype = pfiletype.detect(self.state.bufname or ""),
             },
           })
         end)

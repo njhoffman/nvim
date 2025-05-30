@@ -3,6 +3,7 @@ local sorters = require("telescope.sorters")
 local H = require("helpers")
 local actions = require("telescope.actions")
 local mappings = require("configs.telescope.mappings")
+local c_actions = require("configs.telescope.actions")
 
 local extension_configs = {
   -- locally managed
@@ -87,6 +88,14 @@ local extension_configs = {
     -- default mappings
     mappings = {
       i = {
+        ["<M-{>"] = c_actions.switch_grep_pickers_prev,
+        ["<M-}>"] = c_actions.switch_grep_pickers_next,
+        ["<c-space>"] = actions.to_fuzzy_refine,
+        --     ["<M-lt>"] = c_actions.directory_up,
+        -- --     ["<M->>"] = c_actions.directory_picker,
+        -- --     ["<CR>"] = c_actions.multi_open,
+        -- --     -- ['<C-Q>'] = c_actions.multi_to_qflist,
+        -- --     ["<C-Q>"] = send_to_qflist,
         -- toggle prefixes, prefixes is default
         ["<C-z>"] = require("telescope._extensions.egrepify.actions").toggle_prefixes,
         -- toggle AND, AND is default, AND matches tokens and any chars in between

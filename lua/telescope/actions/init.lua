@@ -55,19 +55,19 @@
 local a = vim.api
 
 local conf = require("telescope.config").values
-local state = require "telescope.state"
-local utils = require "telescope.utils"
-local popup = require "plenary.popup"
-local p_scroller = require "telescope.pickers.scroller"
+local state = require("telescope.state")
+local utils = require("telescope.utils")
+local popup = require("plenary.popup")
+local p_scroller = require("telescope.pickers.scroller")
 
-local action_state = require "telescope.actions.state"
-local action_utils = require "telescope.actions.utils"
-local action_set = require "telescope.actions.set"
-local entry_display = require "telescope.pickers.entry_display"
-local from_entry = require "telescope.from_entry"
+local action_state = require("telescope.actions.state")
+local action_utils = require("telescope.actions.utils")
+local action_set = require("telescope.actions.set")
+local entry_display = require("telescope.pickers.entry_display")
+local from_entry = require("telescope.from_entry")
 
 local transform_mod = require("telescope.actions.mt").transform_mod
-local resolver = require "telescope.config.resolve"
+local resolver = require("telescope.config.resolve")
 
 local actions = setmetatable({}, {
   __index = function(_, k)
@@ -112,7 +112,11 @@ end
 actions.move_to_top = function(prompt_bufnr)
   local current_picker = action_state.get_current_picker(prompt_bufnr)
   current_picker:set_selection(
-    p_scroller.top(current_picker.sorting_strategy, current_picker.max_results, current_picker.manager:num_results())
+    p_scroller.top(
+      current_picker.sorting_strategy,
+      current_picker.max_results,
+      current_picker.manager:num_results()
+    )
   )
 end
 
@@ -121,7 +125,11 @@ end
 actions.move_to_middle = function(prompt_bufnr)
   local current_picker = action_state.get_current_picker(prompt_bufnr)
   current_picker:set_selection(
-    p_scroller.middle(current_picker.sorting_strategy, current_picker.max_results, current_picker.manager:num_results())
+    p_scroller.middle(
+      current_picker.sorting_strategy,
+      current_picker.max_results,
+      current_picker.manager:num_results()
+    )
   )
 end
 
@@ -130,7 +138,11 @@ end
 actions.move_to_bottom = function(prompt_bufnr)
   local current_picker = action_state.get_current_picker(prompt_bufnr)
   current_picker:set_selection(
-    p_scroller.bottom(current_picker.sorting_strategy, current_picker.max_results, current_picker.manager:num_results())
+    p_scroller.bottom(
+      current_picker.sorting_strategy,
+      current_picker.max_results,
+      current_picker.manager:num_results()
+    )
   )
 end
 
@@ -166,7 +178,7 @@ actions.select_all = function(prompt_bufnr)
       if current_picker:can_select_row(row) then
         local caret = current_picker:update_prefix(entry, row)
         if current_picker._selection_entry == entry and current_picker._selection_row == row then
-          current_picker.highlighter:hi_selection(row, caret:match "(.*%S)")
+          current_picker.highlighter:hi_selection(row, caret:match("(.*%S)"))
         end
         current_picker.highlighter:hi_multiselect(row, current_picker._multi:is_selected(entry))
       end
@@ -184,7 +196,7 @@ actions.drop_all = function(prompt_bufnr)
     if current_picker:can_select_row(row) then
       local caret = current_picker:update_prefix(entry, row)
       if current_picker._selection_entry == entry and current_picker._selection_row == row then
-        current_picker.highlighter:hi_selection(row, caret:match "(.*%S)")
+        current_picker.highlighter:hi_selection(row, caret:match("(.*%S)"))
       end
       current_picker.highlighter:hi_multiselect(row, current_picker._multi:is_selected(entry))
     end
@@ -202,7 +214,7 @@ actions.toggle_all = function(prompt_bufnr)
     if current_picker:can_select_row(row) then
       local caret = current_picker:update_prefix(entry, row)
       if current_picker._selection_entry == entry and current_picker._selection_row == row then
-        current_picker.highlighter:hi_selection(row, caret:match "(.*%S)")
+        current_picker.highlighter:hi_selection(row, caret:match("(.*%S)"))
       end
       current_picker.highlighter:hi_multiselect(row, current_picker._multi:is_selected(entry))
     end
@@ -262,7 +274,7 @@ end
 --- You can just map `actions.select_default + actions.center`
 ---@param prompt_bufnr number: The prompt bufnr
 actions.center = function(prompt_bufnr)
-  vim.cmd ":normal! zz"
+  vim.cmd(":normal! zz")
 end
 
 --- Perform default action on selection, usually something like<br>
@@ -421,7 +433,7 @@ end
 actions.set_command_line = function(prompt_bufnr)
   local selection = action_state.get_selected_entry()
   if selection == nil then
-    utils.__warn_no_selection "actions.set_command_line"
+    utils.__warn_no_selection("actions.set_command_line")
     return
   end
   actions.close(prompt_bufnr)
@@ -471,7 +483,7 @@ end
 actions.paste_register = function(prompt_bufnr)
   local selection = action_state.get_selected_entry()
   if selection == nil then
-    utils.__warn_no_selection "actions.paste_register"
+    utils.__warn_no_selection("actions.paste_register")
     return
   end
 
@@ -499,7 +511,7 @@ actions.insert_symbol_i = function(prompt_bufnr)
   local symbol = action_state.get_selected_entry().value[1]
   actions.close(prompt_bufnr)
   vim.schedule(function()
-    vim.cmd [[startinsert]]
+    vim.cmd([[startinsert]])
     vim.api.nvim_put({ symbol }, "", true, true)
   end)
 end
@@ -508,7 +520,7 @@ end
 actions.insert_value = function(prompt_bufnr)
   local selection = action_state.get_selected_entry()
   if selection == nil then
-    utils.__warn_no_selection "actions.insert_value"
+    utils.__warn_no_selection("actions.insert_value")
     return
   end
 
@@ -552,7 +564,8 @@ actions.git_create_branch = function(prompt_bufnr)
       level = "ERROR",
     })
   else
-    local confirmation = ask_to_confirm(string.format("Create new branch '%s'? [y/n]: ", new_branch))
+    local confirmation =
+      ask_to_confirm(string.format("Create new branch '%s'? [y/n]: ", new_branch))
     if not confirmation then
       utils.notify("actions.git_create_branch", {
         msg = string.format("branch creation canceled: '%s'", new_branch),
@@ -587,11 +600,12 @@ end
 actions.git_apply_stash = function(prompt_bufnr)
   local selection = action_state.get_selected_entry()
   if selection == nil then
-    utils.__warn_no_selection "actions.git_apply_stash"
+    utils.__warn_no_selection("actions.git_apply_stash")
     return
   end
   actions.close(prompt_bufnr)
-  local _, ret, stderr = utils.get_os_command_output { "git", "stash", "apply", "--index", selection.value }
+  local _, ret, stderr =
+    utils.get_os_command_output({ "git", "stash", "apply", "--index", selection.value })
   if ret == 0 then
     utils.notify("actions.git_apply_stash", {
       msg = string.format("applied: '%s' ", selection.value),
@@ -599,7 +613,11 @@ actions.git_apply_stash = function(prompt_bufnr)
     })
   else
     utils.notify("actions.git_apply_stash", {
-      msg = string.format("Error when applying: %s. Git returned: '%s'", selection.value, table.concat(stderr, " ")),
+      msg = string.format(
+        "Error when applying: %s. Git returned: '%s'",
+        selection.value,
+        table.concat(stderr, " ")
+      ),
       level = "ERROR",
     })
   end
@@ -611,7 +629,7 @@ actions.git_checkout = function(prompt_bufnr)
   local cwd = action_state.get_current_picker(prompt_bufnr).cwd
   local selection = action_state.get_selected_entry()
   if selection == nil then
-    utils.__warn_no_selection "actions.git_checkout"
+    utils.__warn_no_selection("actions.git_checkout")
     return
   end
   actions.close(prompt_bufnr)
@@ -621,7 +639,7 @@ actions.git_checkout = function(prompt_bufnr)
       msg = string.format("Checked out: %s", selection.value),
       level = "INFO",
     })
-    vim.cmd "checktime"
+    vim.cmd("checktime")
   else
     utils.notify("actions.git_checkout", {
       msg = string.format(
@@ -642,7 +660,7 @@ actions.git_switch_branch = function(prompt_bufnr)
   local cwd = action_state.get_current_picker(prompt_bufnr).cwd
   local selection = action_state.get_selected_entry()
   if selection == nil then
-    utils.__warn_no_selection "actions.git_switch_branch"
+    utils.__warn_no_selection("actions.git_switch_branch")
     return
   end
   actions.close(prompt_bufnr)
@@ -675,7 +693,7 @@ actions.git_rename_branch = function(prompt_bufnr)
   local cwd = action_state.get_current_picker(prompt_bufnr).cwd
   local selection = action_state.get_selected_entry()
   if selection == nil then
-    utils.__warn_no_selection "actions.git_rename_branch"
+    utils.__warn_no_selection("actions.git_rename_branch")
     return
   end
   -- Keeps the selected branch name for the input that asks for the new branch name
@@ -687,7 +705,8 @@ actions.git_rename_branch = function(prompt_bufnr)
     })
   else
     actions.close(prompt_bufnr)
-    local _, ret, stderr = utils.get_os_command_output({ "git", "branch", "-m", selection.value, new_branch }, cwd)
+    local _, ret, stderr =
+      utils.get_os_command_output({ "git", "branch", "-m", selection.value, new_branch }, cwd)
     if ret == 0 then
       utils.notify("actions.git_rename_branch", {
         msg = string.format("Renamed branch: '%s'", selection.value),
@@ -717,7 +736,8 @@ local function make_git_branch_action(opts)
 
     local should_confirm = opts.should_confirm
     if should_confirm then
-      local confirmation = ask_to_confirm(string.format(opts.confirmation_question, selection.value), "y")
+      local confirmation =
+        ask_to_confirm(string.format(opts.confirmation_question, selection.value), "y")
       if not confirmation then
         utils.notify(opts.action_name, {
           msg = "action canceled",
@@ -745,7 +765,7 @@ end
 
 --- Tell git to track the currently selected remote branch in Telescope
 ---@param prompt_bufnr number: The prompt bufnr
-actions.git_track_branch = make_git_branch_action {
+actions.git_track_branch = make_git_branch_action({
   should_confirm = false,
   action_name = "actions.git_track_branch",
   success_message = "Tracking branch: %s",
@@ -753,12 +773,13 @@ actions.git_track_branch = make_git_branch_action {
   command = function(branch_name)
     return { "git", "checkout", "--track", branch_name }
   end,
-}
+})
 
 --- Delete all currently selected branches
 ---@param prompt_bufnr number: The prompt bufnr
 actions.git_delete_branch = function(prompt_bufnr)
-  local confirmation = ask_to_confirm("Do you really want to delete the selected branches? [Y/n] ", "y")
+  local confirmation =
+    ask_to_confirm("Do you really want to delete the selected branches? [Y/n] ", "y")
   if not confirmation then
     utils.notify("actions.git_delete_branch", {
       msg = "action canceled",
@@ -772,7 +793,8 @@ actions.git_delete_branch = function(prompt_bufnr)
   picker:delete_selection(function(selection)
     local branch = selection.value
     print("Deleting branch " .. branch)
-    local _, ret, stderr = utils.get_os_command_output({ "git", "branch", "-D", branch }, picker.cwd)
+    local _, ret, stderr =
+      utils.get_os_command_output({ "git", "branch", "-D", branch }, picker.cwd)
     if ret == 0 then
       utils.notify(action_name, {
         msg = string.format("Deleted branch: %s", branch),
@@ -780,7 +802,11 @@ actions.git_delete_branch = function(prompt_bufnr)
       })
     else
       utils.notify(action_name, {
-        msg = string.format("Error when deleting branch: %s. Git returned: '%s'", branch, table.concat(stderr, " ")),
+        msg = string.format(
+          "Error when deleting branch: %s. Git returned: '%s'",
+          branch,
+          table.concat(stderr, " ")
+        ),
         level = "ERROR",
       })
     end
@@ -790,7 +816,7 @@ end
 
 --- Merge the currently selected branch
 ---@param prompt_bufnr number: The prompt bufnr
-actions.git_merge_branch = make_git_branch_action {
+actions.git_merge_branch = make_git_branch_action({
   should_confirm = true,
   action_name = "actions.git_merge_branch",
   confirmation_question = "Do you really wanna merge branch %s? [Y/n] ",
@@ -799,11 +825,11 @@ actions.git_merge_branch = make_git_branch_action {
   command = function(branch_name)
     return { "git", "merge", branch_name }
   end,
-}
+})
 
 --- Rebase to selected git branch
 ---@param prompt_bufnr number: The prompt bufnr
-actions.git_rebase_branch = make_git_branch_action {
+actions.git_rebase_branch = make_git_branch_action({
   should_confirm = true,
   action_name = "actions.git_rebase_branch",
   confirmation_question = "Do you really wanna rebase branch %s? [Y/n] ",
@@ -812,18 +838,20 @@ actions.git_rebase_branch = make_git_branch_action {
   command = function(branch_name)
     return { "git", "rebase", branch_name }
   end,
-}
+})
 
 local git_reset_branch = function(prompt_bufnr, mode)
   local cwd = action_state.get_current_picker(prompt_bufnr).cwd
   local selection = action_state.get_selected_entry()
   if selection == nil then
-    utils.__warn_no_selection "actions.git_reset_branch"
+    utils.__warn_no_selection("actions.git_reset_branch")
     return
   end
 
-  local confirmation =
-    ask_to_confirm("Do you really wanna " .. mode .. " reset to " .. selection.value .. "? [Y/n] ", "y")
+  local confirmation = ask_to_confirm(
+    "Do you really wanna " .. mode .. " reset to " .. selection.value .. "? [Y/n] ",
+    "y"
+  )
   if not confirmation then
     utils.notify("actions.git_reset_branch", {
       msg = "action canceled",
@@ -841,7 +869,11 @@ local git_reset_branch = function(prompt_bufnr, mode)
     })
   else
     utils.notify("actions.git_rebase_branch", {
-      msg = string.format("Rest to: %s. Git returned: '%s'", selection.value, table.concat(stderr, " ")),
+      msg = string.format(
+        "Rest to: %s. Git returned: '%s'",
+        selection.value,
+        table.concat(stderr, " ")
+      ),
       level = "ERROR",
     })
   end
@@ -871,13 +903,16 @@ actions.git_checkout_current_buffer = function(prompt_bufnr)
   local cwd = action_state.get_current_picker(prompt_bufnr).cwd
   local selection = action_state.get_selected_entry()
   if selection == nil then
-    utils.__warn_no_selection "actions.git_checkout_current_buffer"
+    utils.__warn_no_selection("actions.git_checkout_current_buffer")
 
     return
   end
   actions.close(prompt_bufnr)
-  utils.get_os_command_output({ "git", "checkout", selection.value, "--", selection.current_file }, cwd)
-  vim.cmd "checktime"
+  utils.get_os_command_output(
+    { "git", "checkout", selection.value, "--", selection.current_file },
+    cwd
+  )
+  vim.cmd("checktime")
 end
 
 --- Stage/unstage selected file
@@ -886,7 +921,7 @@ actions.git_staging_toggle = function(prompt_bufnr)
   local cwd = action_state.get_current_picker(prompt_bufnr).cwd
   local selection = action_state.get_selected_entry()
   if selection == nil then
-    utils.__warn_no_selection "actions.git_staging_toggle"
+    utils.__warn_no_selection("actions.git_staging_toggle")
     return
   end
   if selection.status:sub(2) == " " then
@@ -1163,14 +1198,14 @@ end
 --- `actions.smart_send_to_qflist + actions.open_qflist`
 ---@param prompt_bufnr number: The prompt bufnr
 actions.open_qflist = function(prompt_bufnr)
-  vim.cmd [[botright copen]]
+  vim.cmd([[botright copen]])
 end
 
 --- Open the location list. It makes sense to use this in combination with one of the send_to_loclist actions
 --- `actions.smart_send_to_qflist + actions.open_qflist`
 ---@param prompt_bufnr number: The prompt bufnr
 actions.open_loclist = function(prompt_bufnr)
-  vim.cmd [[lopen]]
+  vim.cmd([[lopen]])
 end
 
 --- Delete the selected buffer or all the buffers selected using multi selection.
@@ -1232,7 +1267,7 @@ end
 actions.remove_selected_picker = function(prompt_bufnr)
   local curr_picker = action_state.get_current_picker(prompt_bufnr)
   local curr_entry = action_state.get_selected_entry()
-  local cached_pickers = state.get_global_key "cached_pickers"
+  local cached_pickers = state.get_global_key("cached_pickers")
 
   if not curr_entry then
     return
@@ -1286,7 +1321,7 @@ actions.which_key = function(prompt_bufnr, opts)
     local ret = {}
     local bufs = a.nvim_list_bufs()
     for _, buf in ipairs(bufs) do
-      for _, bufname in ipairs { "_TelescopeWhichKey", "_TelescopeWhichKeyBorder" } do
+      for _, bufname in ipairs({ "_TelescopeWhichKey", "_TelescopeWhichKeyBorder" }) do
         if string.find(a.nvim_buf_get_name(buf), bufname) then
           table.insert(ret, buf)
         end
@@ -1305,21 +1340,21 @@ actions.which_key = function(prompt_bufnr, opts)
     return
   end
 
-  local displayer = entry_display.create {
+  local displayer = entry_display.create({
     separator = opts.separator,
     items = {
       { width = opts.mode_width },
       { width = opts.keybind_width },
       { width = opts.name_width },
     },
-  }
+  })
 
   local make_display = function(mapping)
-    return displayer {
+    return displayer({
       { mapping.mode, vim.F.if_nil(opts.mode_hl, "TelescopeResultsConstant") },
       { mapping.keybind, vim.F.if_nil(opts.keybind_hl, "TelescopeResultsVariable") },
       { mapping.name, vim.F.if_nil(opts.name_hl, "TelescopeResultsFunction") },
-    }
+    })
   end
 
   local mappings = {}
@@ -1360,8 +1395,10 @@ actions.which_key = function(prompt_bufnr, opts)
     + opts.name_width
     + (3 * #opts.separator)
   local num_total_columns = math.floor((vim.o.columns - #column_indent) / entry_width)
-  opts.num_rows =
-    math.min(math.ceil(#mappings / num_total_columns), resolver.resolve_height(opts.max_height)(_, _, vim.o.lines))
+  opts.num_rows = math.min(
+    math.ceil(#mappings / num_total_columns),
+    resolver.resolve_height(opts.max_height)(_, _, vim.o.lines)
+  )
   local total_available_entries = opts.num_rows * num_total_columns
   local winheight = opts.num_rows + 2 * opts.line_padding
 
@@ -1390,7 +1427,16 @@ actions.which_key = function(prompt_bufnr, opts)
     line = prompt_pos == true and vim.o.lines - winheight + 1 or 1,
     col = 0,
     border = { prompt_pos and 1 or 0, 0, not prompt_pos and 1 or 0, 0 },
-    borderchars = { prompt_pos and "─" or " ", "", not prompt_pos and "─" or " ", "", "", "", "", "" },
+    borderchars = {
+      prompt_pos and "─" or " ",
+      "",
+      not prompt_pos and "─" or " ",
+      "",
+      "",
+      "",
+      "",
+      "",
+    },
     noautocmd = true,
     title = { { text = title_text, pos = prompt_pos and "N" or "S" } },
     zindex = opts.zindex,
@@ -1414,9 +1460,15 @@ actions.which_key = function(prompt_bufnr, opts)
     end,
   })
 
-  a.nvim_buf_set_lines(km_buf, 0, -1, false, utils.repeated_table(opts.num_rows + 2 * opts.line_padding, column_indent))
+  a.nvim_buf_set_lines(
+    km_buf,
+    0,
+    -1,
+    false,
+    utils.repeated_table(opts.num_rows + 2 * opts.line_padding, column_indent)
+  )
 
-  local keymap_highlights = a.nvim_create_namespace "telescope_whichkey"
+  local keymap_highlights = a.nvim_create_namespace("telescope_whichkey")
   local highlights = {}
   for index, mapping in ipairs(mappings) do
     local row = utils.cycle(index, opts.num_rows) - 1 + opts.line_padding
@@ -1438,7 +1490,14 @@ actions.which_key = function(prompt_bufnr, opts)
     local row_ = highlight_tbl.row
     local col = highlight_tbl.col
     for _, hl_block in ipairs(highlight) do
-      a.nvim_buf_add_highlight(km_buf, keymap_highlights, hl_block[2], row_, col + hl_block[1][1], col + hl_block[1][2])
+      a.nvim_buf_add_highlight(
+        km_buf,
+        keymap_highlights,
+        hl_block[2],
+        row_,
+        col + hl_block[1][1],
+        col + hl_block[1][2]
+      )
     end
   end
 
@@ -1474,27 +1533,28 @@ actions.to_fuzzy_refine = function(prompt_bufnr)
   local line = action_state.get_current_line()
   local opts = (function()
     local opts = {
-      sorter = conf.generic_sorter {},
+      sorter = conf.generic_sorter({}),
     }
 
     local title = action_state.get_current_picker(prompt_bufnr).prompt_title
-    if title == "Live Grep" then
-      opts.prefix = "Find Word"
+    if string.match(title, "^Live Grep") then
+      opts.prefix = vim.fn.empty(line) == 1 and title or title .. " Find Word"
     elseif title == "LSP Dynamic Workspace Symbols" then
       opts.prefix = "LSP Workspace Symbols"
-      opts.sorter = conf.prefilter_sorter {
+      opts.sorter = conf.prefilter_sorter({
         tag = "symbol_type",
         sorter = opts.sorter,
-      }
+      })
     else
-      opts.prefix = "Fuzzy over"
+      opts.prefix = title .. " Fuzzy over"
     end
 
     return opts
   end)()
 
   require("telescope.actions.generate").refine(prompt_bufnr, {
-    prompt_title = string.format("%s (%s)", opts.prefix, line),
+    prompt_title = vim.fn.empty(line) == 1 and string.format("%s", opts.prefix)
+      or string.format("%s (%s)", opts.prefix, line),
     sorter = opts.sorter,
   })
 end
@@ -1509,7 +1569,7 @@ actions.delete_mark = function(prompt_bufnr)
     local mark = selection.ordinal:sub(1, 1)
 
     local success
-    if mark:match "%u" then
+    if mark:match("%u") then
       success = pcall(vim.api.nvim_del_mark, mark)
     else
       success = pcall(vim.api.nvim_buf_del_mark, bufnr, mark)

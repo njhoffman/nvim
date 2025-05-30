@@ -223,7 +223,7 @@ M.directory_picker = function(bufnr)
       if picker_title == "Find Files" then
         pcall(require("telescope.builtin").find_files, opts)
       elseif string.find(picker_title, "%^Grep") then
-        pcall(require("telescope.builtin").live_grep, opts)
+        pcall(require("egrepify").egrepify, opts)
       else
         vim.notify("Error: don't know what picker to open: " .. picker_title)
       end

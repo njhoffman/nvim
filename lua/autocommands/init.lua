@@ -100,7 +100,7 @@ local autocmds = {
   -- RestoreCursor   = { { 'BufRead' },      '*',  windows.restore_cursor },
   -- HighlightYank   = { { 'TextYankPost' }, '*',  windows.highlight_yank },
   TelescopeWinbar = { { 'User' }, 'TelescopeFindPre', telescope.winbar_sync },
-  ReloadOnWrite   = { { 'BufWritePost' }, 'tmux.conf', [[execute ':!tmux source-file % && notify-send "HEY"']] } ,
+  ReloadOnWrite   = { { 'BufWritePost' }, 'tmux.conf', [[execute ':!tmux source-file % && notify-send "TMUX" "Reloading TMUX"']] } ,
 
   -- { 'BufWinLeave', '*', remove_buffer },
   -- TrailingWhitespace =  {
