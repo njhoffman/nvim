@@ -405,7 +405,7 @@ return function(injected_functions)
     DiagnosticSignWarn({ DiagnosticWarn }),
     DiagnosticSignHint({ DiagnosticHint }),
     DiagnosticSignInfo({ DiagnosticInfo }),
-    DiagnosticUnderlineError({ sp = DiagnosticError.fg, gui = "undercurl" }),
+    DiagnosticUnderulineError({ sp = DiagnosticError.fg, gui = "undercurl" }),
     DiagnosticUnderlineWarn({ sp = DiagnosticWarn.fg, gui = "undercurl" }),
     DiagnosticUnderlineHint({ sp = DiagnosticHint.fg, gui = "undercurl" }),
     DiagnosticUnderlineInfo({ sp = DiagnosticInfo.fg, gui = "undercurl" }),
@@ -1016,6 +1016,64 @@ return function(injected_functions)
     GitSignsDelete({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
     GitSignsDeleteNr({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
     GitSignsDeleteLn({ fg = clrs.nord11 }), -- diff mode: Deleted line |diff.txt|
+    -- GitSignsAdd                   `GitGutterAdd`, `SignifySignAdd`, `DiffAddedGutter`, `Added`, `DiffAdd`
+    -- GitSignsAddCul                `GitSignsAdd`
+    -- GitSignsAddInline             `TermCursor`
+    -- GitSignsAddLn                 `GitGutterAddLine`, `SignifyLineAdd`, `DiffAdd`
+    -- GitSignsAddLnInline           `GitSignsAddInline`
+    -- GitSignsAddNr                 `GitGutterAddLineNr`, `GitSignsAdd`
+    -- GitSignsAddPreview            `GitGutterAddLine`, `SignifyLineAdd`, `DiffAdd`
+    -- GitSignsChange                `GitGutterChange`, `SignifySignChange`, `DiffModifiedGutter`, `Changed`, `DiffChange`
+    -- GitSignsChangeCul             `GitSignsChange`
+    -- GitSignsChangeInline          `TermCursor`
+    -- GitSignsChangeLn              `GitGutterChangeLine`, `SignifyLineChange`, `DiffChange`
+    -- GitSignsChangeLnInline        `GitSignsChangeInline`
+    -- GitSignsChangeNr              `GitGutterChangeLineNr`, `GitSignsChange`
+    -- GitSignsChangedelete          `GitSignsChange`
+    -- GitSignsChangedeleteCul       `GitSignsChangeCul`
+    -- GitSignsChangedeleteLn        `GitSignsChangeLn`
+    -- GitSignsChangedeleteNr        `GitSignsChangeNr`
+    -- GitSignsCurrentLineBlame      `NonText`
+    -- GitSignsDelete                `GitGutterDelete`, `SignifySignDelete`, `DiffRemovedGutter`, `Removed`, `DiffDelete`
+    -- GitSignsDeleteCul             `GitSignsDelete`
+    -- GitSignsDeleteInline          `TermCursor`
+    -- GitSignsDeleteLnInline        `GitSignsDeleteInline`
+    -- GitSignsDeleteNr              `GitGutterDeleteLineNr`, `GitSignsDelete`
+    -- GitSignsDeletePreview         `GitGutterDeleteLine`, `SignifyLineDelete`, `DiffDelete`
+    -- GitSignsDeleteVirtLn          `GitGutterDeleteLine`, `SignifyLineDelete`, `DiffDelete`
+    -- GitSignsDeleteVirtLnInLine    `GitSignsDeleteLnInline`
+    -- GitSignsStagedAdd             `GitSignsAdd` (fg=50%)
+    -- GitSignsStagedAddCul          `GitSignsAddCul` (fg=50%)
+    -- GitSignsStagedAddLn           `GitSignsAddLn` (fg=50%)
+    -- GitSignsStagedAddNr           `GitSignsAddNr` (fg=50%)
+    -- GitSignsStagedChange          `GitSignsChange` (fg=50%)
+    -- GitSignsStagedChangeCul       `GitSignsChangeCul` (fg=50%)
+    -- GitSignsStagedChangeLn        `GitSignsChangeLn` (fg=50%)
+    -- GitSignsStagedChangeNr        `GitSignsChangeNr` (fg=50%)
+    -- GitSignsStagedChangedelete    `GitSignsChangedelete` (fg=50%)
+    -- GitSignsStagedChangedeleteCul `GitSignsChangedeleteCul` (fg=50%)
+    -- GitSignsStagedChangedeleteLn  `GitSignsChangedeleteLn` (fg=50%)
+    -- GitSignsStagedChangedeleteNr  `GitSignsChangedeleteNr` (fg=50%)
+    -- GitSignsStagedDelete          `GitSignsDelete` (fg=50%)
+    -- GitSignsStagedDeleteCul       `GitSignsDeleteCul` (fg=50%)
+    -- GitSignsStagedDeleteNr        `GitSignsDeleteNr` (fg=50%)
+    -- GitSignsStagedTopdelete       `GitSignsTopdelete` (fg=50%)
+    -- GitSignsStagedTopdeleteCul    `GitSignsTopdeleteCul` (fg=50%)
+    -- GitSignsStagedTopdeleteLn     `GitSignsTopdeleteLn` (fg=50%)
+    -- GitSignsStagedTopdeleteNr     `GitSignsTopdeleteNr` (fg=50%)
+    -- GitSignsStagedUntracked       `GitSignsUntracked` (fg=50%)
+    -- GitSignsStagedUntrackedCul    `GitSignsUntrackedCul` (fg=50%)
+    -- GitSignsStagedUntrackedLn     `GitSignsUntrackedLn` (fg=50%)
+    -- GitSignsStagedUntrackedNr     `GitSignsUntrackedNr` (fg=50%)
+    -- GitSignsTopdelete             `GitSignsDelete`
+    -- GitSignsTopdeleteCul          `GitSignsDeleteCul`
+    -- GitSignsTopdeleteLn           `GitSignsDeleteLn`
+    -- GitSignsTopdeleteNr           `GitSignsDeleteNr`
+    -- GitSignsUntracked             `GitSignsAdd`
+    -- GitSignsUntrackedCul          `GitSignsAddCul`
+    -- GitSignsUntrackedLn           `GitSignsAddLn`
+    -- GitSignsUntrackedNr           `GitSignsAddNr`
+    -- GitSignsVirtLnum              `GitSignsDeleteVirtLn`
 
     -- CybuFocus guifg=#8396b9 guibg=#101840 Operator
     -- CybuAdjacent guifg=#4a647b
@@ -1349,10 +1407,11 @@ return function(injected_functions)
     SubstituteRange({ VisualRed }),
 
     -- multicursor.nvim
-    MultiCursorCursor({ Cursor }),
+    MultiCursorCursor({ bg = "#40112c", gui = "italic,underline,bold" }),
     MultiCursorVisual({ Visual }),
-    MultiCursorSign({ SignColumn }),
-    MultiCursorDisabledCursor({ Visual }),
+    MultiCursorSign({ fg = Cursor.bg }),
+    MultiCursorMatchPreview({ Search }),
+    MultiCursorDisabledCursor({ reverse = true }),
     MultiCursorDisabledVisual({ Visual }),
     MultiCursorDisabledSign({ SignColumn }),
 

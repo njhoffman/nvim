@@ -18,17 +18,18 @@ end
 
 local M = {}
 M.push = function()
-  local winid = vim.api.nvim_get_current_win()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local bufnm = to_relative_path(vim.api.nvim_buf_get_name(bufnr))
-  if not state.histories[winid] then
-    state.histories[winid] = { index = 0, bufs = {} }
-  end
-  local h = state.histories[winid]
   if state.ignores[vim.bo.filetype] then
     return
   end
 
+  local winid = vim.api.nvim_get_current_win()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local bufnm = to_relative_path(vim.api.nvim_buf_get_name(bufnr))
+
+  if not state.histories[winid] then
+    state.histories[winid] = { index = 0, bufs = {} }
+  end
+  local h = state.histories[winid]
   local buf = h.bufs[h.index]
   if buf and buf.nr == bufnr then
     return
@@ -183,11 +184,29 @@ M.setup = function(opts)
     callback = M.push,
   })
 
+  vim.api.nvim_create_user_command("BufferNext", function(tbl)
+    local bufnr = vim.api.nvim_get_current_buf()
+    if vim.api.nvim_get_option_value("bufhidden", { buf = bufnr, scope = "local" }) ~= "" then
+      require("barbar.bbye").bdelete(false, bufnr)
+    else
+      require("barbar.api").goto_buffer_relative(math.max(1, tbl.count))
+    end
+  end, { count = true, desc = "Go to the next buffer" })
+
+  vim.api.nvim_create_user_command("BufferPrev", function(tbl)
+    local bufnr = vim.api.nvim_get_current_buf()
+    if vim.api.nvim_get_option_value("bufhidden", { scope = "local", buf = bufnr }) ~= "" then
+      require("barbar.bbye").bdelete(false, bufnr)
+    else
+      require("barbar.api").goto_buffer_relative(-math.max(1, tbl.count))
+    end
+  end, { count = true, desc = "Go to the previous buffer" })
+
   vim.api.nvim_create_user_command("BufferForward", M.forward, { desc = "󰃰 forward history" })
   vim.api.nvim_create_user_command("BufferBack", M.back, { desc = "󰃰 back history" })
   vim.api.nvim_create_user_command("BufferHistory", M.toggle_popup, { desc = "󰃰 view history" })
 end
 
-M.setup({})
+vim.defer_fn(M.setup, 500)
 
 return M

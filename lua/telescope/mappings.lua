@@ -125,8 +125,8 @@
 
 local a = vim.api
 
-local actions = require "telescope.actions"
-local config = require "telescope.config"
+local actions = require("telescope.actions")
+local config = require("telescope.config")
 
 local mappings = {}
 
@@ -179,6 +179,10 @@ mappings.default_mappings = config.values.default_mappings
       ["<C-r><C-a>"] = actions.insert_original_cWORD,
       ["<C-r><C-f>"] = actions.insert_original_cfile,
       ["<C-r><C-l>"] = actions.insert_original_cline,
+      ["<C-r><C-p>"] = actions.insert_original_file_path,
+      ["<C-r><C-n>"] = actions.insert_original_file_name,
+      ["<C-r><C-b>"] = actions.insert_original_file_bare_name,
+      ["<C-r><C-d>"] = actions.insert_original_file_dir,
 
       -- disable c-j because we dont want to allow new lines #2123
       ["<C-j>"] = actions.nop,
@@ -252,7 +256,8 @@ local get_desc_for_keyfunc = function(key_func, opts)
     return "telescope|" .. name
   elseif type(key_func) == "function" then
     local info = debug.getinfo(key_func)
-    return "telescopej|" .. vim.json.encode { source = info.source, linedefined = info.linedefined }
+    return "telescopej|"
+      .. vim.json.encode({ source = info.source, linedefined = info.linedefined })
   end
 end
 
@@ -289,11 +294,20 @@ local telescope_map = function(prompt_bufnr, mode, key_bind, key_func, opts)
     end
   end
 
-  vim.keymap.set(mode, key_bind, function()
-    local ret = key_func(prompt_bufnr)
-    vim.api.nvim_exec_autocmds("User", { pattern = "TelescopeKeymap" })
-    return ret
-  end, vim.tbl_extend("force", opts, { buffer = prompt_bufnr, desc = get_desc_for_keyfunc(key_func, opts) }))
+  vim.keymap.set(
+    mode,
+    key_bind,
+    function()
+      local ret = key_func(prompt_bufnr)
+      vim.api.nvim_exec_autocmds("User", { pattern = "TelescopeKeymap" })
+      return ret
+    end,
+    vim.tbl_extend(
+      "force",
+      opts,
+      { buffer = prompt_bufnr, desc = get_desc_for_keyfunc(key_func, opts) }
+    )
+  )
 end
 
 local extract_keymap_opts = function(key_func)

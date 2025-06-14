@@ -1,6 +1,6 @@
 local scheduler = require("plenary.async").util.scheduler
 
-local make_entry = require "telescope.make_entry"
+local make_entry = require("telescope.make_entry")
 
 return function(opts)
   local input_results
@@ -23,9 +23,12 @@ return function(opts)
   end
 
   return setmetatable({
+    time_start = vim.loop.hrtime(),
+    name = "static",
     results = results,
     entry_maker = entry_maker,
     close = function() end,
+    stop_read = function() end,
   }, {
     __call = function(_, _, process_result, process_complete)
       for i, v in ipairs(results) do

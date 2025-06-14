@@ -7,7 +7,6 @@ vim.import("configs.noice")
 vim.import("quickfix")
 
 require("utils.lazy").setup({ cache = true, reload = false, lazy = false })
-
 -- qfSeparator, qfLineNr, qfFilename
 
 for _, mod_name in ipairs({
@@ -46,21 +45,57 @@ end
 
 vim.defer_fn(function()
   -- require("modeman")
-  require("alt").setup()
-  require("live-command.setup")
-  require("sidebar").setup()
-  require("histories").setup()
-  -- require("synshade").setup()
-  require("scrollview.setup")
+  vim.import("alt").setup()
+  vim.import("live-command.setup")
+  vim.import("sidebar").setup()
+  vim.import("histories").setup()
+  vim.import("scrollview.setup")
 
   -- 'lab.setup',
   local llm_config = require("llm-config")
-  require("llm").setup(llm_config)
+  vim.import("llm").setup(llm_config)
   local neoai_cfg = require("neoai.options")
-  require("neoai").setup(neoai_cfg)
+  vim.import("neoai").setup(neoai_cfg)
 
-  require("configs.recall")
+  vim.import("configs.recall")
 
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = "zsh",
+    callback = function(args)
+      vim.treesitter.language.register("bash", { "zsh" })
+      vim.treesitter.start(args.buf, "bash")
+      vim.bo[args.buf].syntax = "on"
+    end,
+  })
+  -- require("nvim-treesitter.parsers").filetype_to_parsername.zsh = "bash"
+  --         local link_pattern = 9 -- from :Inspect!
+  --         local query = vim.treesitter.query.get('vimdoc', 'highlights')
+  --         query.query:disable_pattern(link_pattern)
+  --         local tree = vim.treesitter.get_parser():parse()[1]
+  --         local query = vim.treesitter.query.get('vimdoc', 'highlights')
+  --         query.query:disable_capture("variable.parameter")
+  --         vim.treesitter.get_parser():parse()
+
+  -- for id, node, metadata, match in query:iter_captures(tree:root(), bufnr, first, last) do
+  --   local name = query.captures[id] -- name of the capture in the query
+  --   -- typically useful info about the node:
+  --   local type = node:type() -- type of the captured node
+  --   local row1, col1, row2, col2 = node:range() -- range of the capture
+  --   -- ... use the info here ...
+  -- end
+  -- syn match zshGlobParam /.\{-})/ contained containedin=zshSubstQuoted
+
+  -- require"nvim-treesitter.parsers".filetype_to_parsername.zsh = "bash"
+  --   require("nvim-treesitter.parsers").get_parser_configs().zsh = { install_info = {} }
+  --   require("nvim-treesitter.parsers").get_parser_configs().bash.used_by = { "PKGBUILD" }
+  --   require("nvim-treesitter.parsers").get_parser_configs().bash.used_by = { "PKGBUILD" }
+  -- local ft_to_lang = require('nvim-treesitter.parsers').ft_to_lang
+  -- require('nvim-treesitter.parsers').ft_to_lang = function(ft)
+  --     if ft == 'zsh' then
+  --         return 'bash'
+  --     end
+  --     return ft_to_lang(ft)
+  -- end
   -- require('internals').setup()
   if vim.g.started_by_firenvim then
     vim.api.nvim_set_keymap("n", "<C-z>", "<Cmd>call firenvim#hide_frame()<CR>", {})
@@ -75,6 +110,27 @@ end, 100)
 
 vim.defer_fn(function()
   vim.import("configs.telescope")
-  require("configs.tiny-glimmer")
+  vim.import("garbage-day").setup({
+    notifications = true,
+    excluded_lsp_clients = { "copilot", "dev-tools" },
+    -- aggressive_mode = false,
+    -- aggresive_mode_ignore = {
+    --   filetype = { "", "markdown", "text", "org", "tex", "asciidoc", "rst" },
+    --   buftype = { "nofile" },
+    -- },
+    -- filetype = { "", "markdown", "text", "org", "tex", "asciidoc", "rst" },
+    -- buftype = { "nofile" },
+    -- excluded_lsp_clients = { "null-ls", "jdtls", "marksman", "lua_ls" },
+    -- grace_period = (60 * 15), -- seconds
+    -- notifications = false,
+    -- retries = 3, -- times
+    -- timeout = 1000, -- ms
+    -- wakeup_delay = 0, -- ms
+  })
+
+  vim.import("configs.tiny-glimmer")
+
+  vim.api.nvim_set_keymap("x", "<F10>", "<Cmd>=vim.fn.getpos('v')<CR>", {})
+  vim.api.nvim_set_keymap("n", "<F10>", "<Cmd>Telescope tester script<CR>", {})
 end, 500)
 -- require("notifications.recipes.progress").config()

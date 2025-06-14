@@ -61,27 +61,32 @@ end
 ---@return ROWS_INDENT_RETCODE
 ---@return table<number, number>
 local function get_rows_indent_by_treesitter(range)
-    local rows_indent = {}
-    local ts_indent_status, ts_indent = pcall(require, "nvim-treesitter.indent")
-    if not ts_indent_status then
-        return indentHelper.ROWS_INDENT_RETCODE.NO_TS, {}
-    end
+  local rows_indent = {}
+  local ts_indent_status, ts_indent = pcall(require, "nvim-treesitter.indent")
+  if not ts_indent_status then
+    return indentHelper.ROWS_INDENT_RETCODE.NO_TS, {}
+  end
 
-    local bufnr = range.bufnr
-    for i = range.start, range.finish, 1 do
-        local t1 = vim.api.nvim_buf_call(bufnr, function()
-            return ts_indent.get_indent(i + 1)
-        end)
-        local t2 = cFunc.get_indent(bufnr, i)
-        local line_len = cFunc.get_line_len(bufnr, i)
-        local indent = math.min(t1, t2)
-        if indent == 0 and line_len == 0 then
-            indent = get_virt_indent(bufnr, i)
-        end
-        rows_indent[i] = indent
-    end
+  local bufnr = range.bufnr
+  for i = range.start, range.finish, 1 do
+    local t1 = vim.api.nvim_buf_call(bufnr, function()
+      local ok, indent = pcall(ts_indent.get_indent, i + 1)
+      return ok and indent or nil
+    end)
 
-    return indentHelper.ROWS_INDENT_RETCODE.OK, rows_indent
+    if t1 == nil then
+      goto continue
+    end
+    local t2 = cFunc.get_indent(bufnr, i)
+    local line_len = cFunc.get_line_len(bufnr, i)
+    local indent = math.min(t1, t2)
+    if indent == 0 and line_len == 0 then
+      indent = get_virt_indent(bufnr, i)
+    end
+    rows_indent[i] = indent
+    ::continue::
+  end
+  return indentHelper.ROWS_INDENT_RETCODE.OK, rows_indent
 end
 
 -- when virt_indent is false, there are three cases:

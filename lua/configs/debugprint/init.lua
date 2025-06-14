@@ -102,11 +102,22 @@ require('debugprint').setup({
   -- … Other options
 })
 
+
 require('debugprint').add_custom_filetypes({ lua = lua })
+
+local printtag_ops = require('debugprint.printtag_operations')
 vim.api.nvim_create_user_command('DebugPrintDelete', function(opts)
   -- Note: you must set `range=true` and pass through opts for ranges to work
-  require('debugprint').deleteprints(opts)
+  printtag_ops.deleteprints(opts)
 end, { range = true, desc = ' delete all debug statements' })
+
+vim.api.nvim_create_user_command('DebugPrintCommentToggle', function(opts)
+  printtag_ops.toggle_comment_debugprints(opts)
+end, { range = true, desc = ' toggle commenting debug print lines' })
+
+vim.api.nvim_create_user_command('DebugPrintSearch', function()
+  printtag_ops.show_debug_prints_fuzzy_finder()
+end, { desc = ' show fuzzy finder for debug print statements' })
 
 keymaps.setup_debugprint()
 keymaps.setup_printing_press()

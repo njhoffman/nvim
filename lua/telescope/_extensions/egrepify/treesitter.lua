@@ -1,11 +1,11 @@
-local log = require "telescope.log"
+local log = require("telescope.log")
 
 ---@alias trouble.LangRegions table<string, number[][][]>
 
 local M = {}
 
 M.cache = {} ---@type table<number, table<string,{parser: vim.treesitter.LanguageTree, highlighter:vim.treesitter.highlighter, enabled:boolean}>>
-local ns = vim.api.nvim_create_namespace "egrepify.highlighter"
+local ns = vim.api.nvim_create_namespace("egrepify.highlighter")
 
 local TSHighlighter = vim.treesitter.highlighter
 
@@ -32,8 +32,8 @@ function M.setup()
   M.did_setup = true
 
   vim.api.nvim_set_decoration_provider(ns, {
-    on_win = wrap "_on_win",
-    on_line = wrap "_on_line",
+    on_win = wrap("_on_win"),
+    on_line = wrap("_on_line"),
   })
 
   vim.api.nvim_create_autocmd("BufWipeout", {
@@ -58,6 +58,8 @@ function M.attach(buf, regions)
   end
 end
 
+local messages = {}
+
 ---@param buf number
 ---@param lang? string
 function M._attach_lang(buf, lang, regions)
@@ -69,10 +71,15 @@ function M._attach_lang(buf, lang, regions)
   if not M.cache[buf][lang] then
     local ok, parser = pcall(vim.treesitter.languagetree.new, buf, lang)
     if not ok then
-      local msg = "nvim-treesitter parser missing `" .. lang .. "`"
-      log.debug(msg)
+      local msg = "nvim-treesitter parser missing `" .. lang .. "` for " .. buf
+      local msg_hash = vim.base64.encode(msg)
+      if not messages[msg_hash] then
+        log.debug(msg)
+        messages[msg_hash] = true
+      end
       return
     end
+    -- vim.dbglog(parser:lang())
     parser:set_included_regions(regions)
     M.cache[buf][lang] = {
       parser = parser,

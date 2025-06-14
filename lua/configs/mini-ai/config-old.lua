@@ -1,5 +1,3 @@
-local cache
-
 -- Jump between text objects
 local function user_textobject_id(ai_type)
   -- Get from user single character textobject identifier
@@ -66,7 +64,6 @@ local opts = {
     around_last = "aN",
     inside_last = "iN",
     -- Move cursor to corresponding edge of `a` textobject
-    -- TODO: after select first with search_method, search next
     goto_left = "g[",
     goto_right = "g]",
   },
@@ -74,7 +71,7 @@ local opts = {
   -- cover_or_next    next
   -- cover_or_prev    cover prev
   -- cover_or_nearest nearest
-  search_method = "cover_or_nearest",
+  search_method = "cover_or_next",
   --   assignment.inner  assignment.outer
   --   assignment.lhs    assignment.rhs
   --   call.inner        call.outer
@@ -102,7 +99,8 @@ local opts = {
     ["A"] = ts({ a = "@attribute.outer", i = "@attribute.inner" }),
     ["b"] = { { "%b()", "%b[]", "%b{}" }, "^.%s*().-()%s*.$" },
     ["B"] = ts({ a = "@block.outer", i = "@block.inner" }),
-    ["C"] = ts({ a = "@conditional.outer", i = "@conditional.inner" }),
+    ["c"] = ts({ a = "@comment.outer", i = "@comment.inner" }),
+    -- ["C"] = ts({ a = "@conditional.outer", i = "@conditional.inner" }),
     ["d"] = extra_ai.diagnostic(),
     ["D"] = extra_ai.number(),
     ["f"] = ts({ a = "@function.outer", i = "@function.inner" }),
@@ -139,7 +137,6 @@ local opts = {
     }),
     ["w"] = { "()()%f[%w_][%w_]+()[ \t]*()" },
     ["W"] = { { "()()%f[%w%p][%w%p]+()[ \t]*()" } },
-    ["x"] = ts({ a = "@comment.outer", i = "@comment.inner" }),
   },
 }
 
@@ -149,7 +146,7 @@ local setup_keymaps = function()
     local edge = ({ ["["] = "left", ["]"] = "right" })[seq:sub(1, 1)]
     local ai_type = seq:sub(2, 2)
     local prev_next = ({ ["N"] = "prev", ["n"] = "next" })[seq:sub(3, 3)]
-    vim.keymap.set({ "n", "v" }, seq, function()
+    require("mapper").map({ "n", "x", "o" }, "g" .. seq, function()
       jump_textobject(prev_next, edge, ai_type)
     end, {
       expr = true,
@@ -158,20 +155,11 @@ local setup_keymaps = function()
     })
   end
 
-  -- gen_action("[an")
-  -- gen_action("]an")
-  -- gen_action("[aN")
-  -- gen_action("]aN")
-  -- gen_action("[in")
-  -- gen_action("]in")
-  -- gen_action("[iN")
-  -- gen_action("]iN")
-
 -- stylua: ignore
   local i = {
     ['*']    = '  inner asterisk *',
     ['|']    = '  inner pipe |',
-    ['_']    = '  inner underscore a',
+    ['_']    = '  inner underscore',
     [';']    = '  inner argument',
     [' ']    = '  inner whitespace',
     ['"']    = '  inner quote "',
@@ -191,9 +179,9 @@ local setup_keymaps = function()
     ['A']    = '  inner attribute',
     ['b']    = '  inner balanced: ), ], }',
     ['B']    = '  inner block',
-    -- ['c']    = '  inner class',
-    ['c']    = '  inner chunk',
-    ['C']    = '  inner conditional',
+    ['c']    = '  inner comment',
+    ['C']    = '  inner chunk',
+    -- ['C']    = '  inner conditional',
     ['d']    = '  inner diagnostic',
     ['f']    = '  inner function',
     ['g']    = '  inner entire buffer',
@@ -206,7 +194,7 @@ local setup_keymaps = function()
     ['q']    = '  inner quote: `, \"", \'',
     ['s']    = '  inner scope',
     ['t']    = '  inner tag',
-    ['x']    = '  inner comment',
+    -- ['x']    = '  inner comment',
     ['v']    = "  inner value from kv pair",
     ['w']    = "  inner word",
     ['W']    = "  inner WORD"
@@ -214,18 +202,31 @@ local setup_keymaps = function()
 
   local a = vim.deepcopy(i)
   for k, v in pairs(a) do
-    a[k] = v:gsub("inside", "around"):gsub(" including.*", "")
+    a[k] = v:gsub("inner", "around"):gsub("inside", "around"):gsub(" with .*", "")
   end
 
-  local ic = vim.deepcopy(i, true)
-  local ac = vim.deepcopy(a, true)
-  for key, name in pairs({ n = "next", N = "last" }) do
-    i[key] = vim.tbl_extend("force", { desc = "  inside " .. name .. " textobject" }, ic)
-    a[key] = vim.tbl_extend("force", { desc = "  around " .. name .. " textobject" }, ac)
+  for key, desc in pairs({ n = "next", N = "prev" }) do
+    i[key] = "  inside " .. desc .. " textobject"
+    a[key] = "  around " .. desc .. " textobject"
   end
+
+  -- m({ 'n', 'x', 'o' }, maps.goto_left,  function() return H.expr_motion('left') end,   { desc = 'Move to left "around"' })
+  -- m({ 'n', 'x', 'o' }, maps.goto_right, function() return H.expr_motion('right') end,  { desc = 'Move to right "around"' })
+  -- m('x', maps.around, make_tobj('x', 'a'), { desc = 'Around textobject' })
+  -- m('x', maps.inside, make_tobj('x', 'i'), { desc = 'Inside textobject' })
+  -- m('o', maps.around, make_tobj('o', 'a'), { desc = 'Around textobject' })
+  -- m('o', maps.inside, make_tobj('o', 'i'), { desc = 'Inside textobject' })
+  -- m('x', maps.around_next, make_tobj('x', 'a', 'next'), { desc = 'Around next textobject' })
+  -- m('x', maps.around_last, make_tobj('x', 'a', 'prev'), { desc = 'Around last textobject' })
+  -- m('x', maps.inside_next, make_tobj('x', 'i', 'next'), { desc = 'Inside next textobject' })
+  -- m('x', maps.inside_last, make_tobj('x', 'i', 'prev'), { desc = 'Inside last textobject' })
+  -- m('o', maps.around_next, make_tobj('o', 'a', 'next'), { desc = 'Around next textobject' })
+  -- m('o', maps.around_last, make_tobj('o', 'a', 'prev'), { desc = 'Around last textobject' })
+  -- m('o', maps.inside_next, make_tobj('o', 'i', 'next'), { desc = 'Inside next textobject' })
+  -- m('o', maps.inside_last, make_tobj('o', 'i', 'prev'), { desc = 'Inside last textobject' })
 
   for k, v in pairs(i) do
-    require("mapper").vmap({ "v", "o" }, "i" .. k, { desc = v })
+    require("mapper").vmap({ "x", "o" }, "i" .. k, { desc = v })
     -- iNw   inside last word
     -- inw   inside next word
     -- g[w   jump to left edge of word
@@ -233,8 +234,13 @@ local setup_keymaps = function()
   end
 
   for k, v in pairs(a) do
-    require("mapper").vmap({ "v", "o" }, "a" .. k, { desc = v })
+    require("mapper").vmap({ "x", "o" }, "a" .. k, { desc = v })
   end
+  -- require("which-key").register {
+  --   mode = { "o", "x" },
+  --   i = i,
+  --   a = a,
+  -- }
 end
 
 return { opts = opts, setup_keymaps = setup_keymaps }

@@ -14,20 +14,28 @@ local vmap = function(modes, lhs, opts)
   opts = opts or {}
   modes = type(modes) == "string" and { modes } or modes
   for _, mode in ipairs(modes) do
-    local maps = vim.iter(vim.api.nvim_get_keymap(mode))
-    local existing = maps:find(function(k)
-      return k.lhs == lhs
-    end)
-
+    opts.buffer = opts.buffer == true and 0 or opts.buffer
     local key_opts = { desc = opts.desc }
-    if existing and existing.lhs == lhs then
+    local maps = vim.iter(vim.api.nvim_get_keymap(mode))
+    if opts.buffer then
+      maps = vim.iter(vim.api.nvim_buf_get_keymap(opts.buffer, mode))
+      key_opts.buffer = opts.buffer
+    end
+
+    local existing = maps:find(function(k)
+      return k.lhs == lhs and (not opts.buffer or k.buffer == opts.buffer)
+    end)
+    if existing then
       for _, mod in ipairs({ "remap", "nowait", "script", "expr", "unique" }) do
         key_opts[mod] = existing[mod]
       end
-
-      -- vim.api.nvim_set_keymap(mode, lhs, existing.rhs or "", key_opts)
-      -- vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, existing.rhs or '', opts)
+      if opts.buffer then
+        vim.api.nvim_buf_set_keymap(opts.buffer, mode, lhs, existing.rhs or "", key_opts)
+      else
+        vim.api.nvim_set_keymap(mode, lhs, existing.rhs or "", key_opts)
+      end
     end
+
     whatkey_utils.map(mode, lhs, opts)
     whichkey_utils.map(mode, lhs, opts)
   end

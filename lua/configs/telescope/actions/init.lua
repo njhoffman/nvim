@@ -103,6 +103,12 @@ local _multi_open = function(prompt_bufnr, open_cmd)
         edit_cmd = string.format("%s %s%s", open_cmd, cwd, entry.filename)
       end
       vim.cmd(edit_cmd)
+      if entry.lnum then
+        vim.api.nvim_win_set_cursor(0, {
+          entry.lnum,
+          (entry.col or 1) - 1,
+        })
+      end
     end
   end
 end

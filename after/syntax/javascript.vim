@@ -1,12 +1,10 @@
 if exists('b:current_syntax')
   let s:current_syntax = b:current_syntax
-  unlet b:current_syntax
 endif
 
 if exists('s:current_syntax')
   let b:current_syntax = s:current_syntax
 endif
-
 
 "" Leepfrog spidermonkey keywords and PSL flags in javascript context
 syn match spiderCodeBlock "%spidercode%"

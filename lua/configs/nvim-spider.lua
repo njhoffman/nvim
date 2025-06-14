@@ -1,6 +1,6 @@
 local cfg = {
   skipInsignificantPunctuation = true,
-  consistentOperatorPending = false,
+  consistentOperatorPending = true,
   subwordMovement = true,
 }
 

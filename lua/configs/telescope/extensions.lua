@@ -27,6 +27,17 @@ local extension_configs = {
   ["messages"] = {},
   ["enhanced_find_files"] = {},
   ["egrepify"] = {
+    vimgrep_arguments = {
+      "rg",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
+      "--hidden",
+      "--trim", -- add this value
+    },
     -- intersect tokens in prompt ala "str1.*str2" that ONLY matches
     -- if str1 and str2 are consecutively in line with anything in between (wildcard)
     AND = true, -- default
@@ -85,9 +96,19 @@ local extension_configs = {
         end,
       },
     },
-    -- default mappings
     mappings = {
       i = {
+        ["<M-lt>"] = c_actions.directory_up,
+        ["<M->>"] = c_actions.directory_picker,
+        ["<CR>"] = c_actions.multi_open,
+        -- ['<C-Q>'] = c_actions.multi_to_qflist,
+        ["<C-Q>"] = function(prompt_bufnr)
+          -- actions.send_to_qflist(prompt_bufnr)
+          -- actions.open_qflist(prompt_bufnr)
+          -- actions.center(prompt_bufnr)
+          actions.smart_send_to_qflist(prompt_bufnr) -- sends selected, or if none selected, sends all
+          vim.cmd.cfirst()
+        end,
         ["<M-{>"] = c_actions.switch_grep_pickers_prev,
         ["<M-}>"] = c_actions.switch_grep_pickers_next,
         ["<c-space>"] = actions.to_fuzzy_refine,

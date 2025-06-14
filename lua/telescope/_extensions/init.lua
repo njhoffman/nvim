@@ -3,6 +3,7 @@ local extensions = {}
 extensions._loaded = {}
 extensions._config = {}
 extensions._health = {}
+extensions._has_setup = {}
 
 local load_extension = function(name)
   local ok, ext = pcall(require, "telescope._extensions." .. name)
@@ -16,11 +17,19 @@ extensions.manager = setmetatable({}, {
   __index = function(t, k)
     local ext = load_extension(k)
     t[k] = ext.exports or {}
-    if ext.setup then
+    if ext.setup and not extensions._has_setup[k] then
       ext.setup(extensions._config[k] or {}, require("telescope.config").values)
+      extensions._has_setup[k] = true
     end
     extensions._health[k] = ext.health
-
+    for key, func in pairs(t[k]) do
+      if type(t[k][key]) == "function" then
+        t[k][key] = function(...)
+          local opts = vim.tbl_deep_extend("force", {}, ..., { __name = k .. "." .. key })
+          return func(opts)
+        end
+      end
+    end
     return t[k]
   end,
 })
@@ -60,14 +69,16 @@ end
 
 extensions.load = function(name)
   local ext = load_extension(name)
-  if ext.setup then
+  if ext.setup and not extensions._has_setup[name] then
     ext.setup(extensions._config[name] or {}, require("telescope.config").values)
+    extensions._has_setup[name] = true
   end
+  -- name:  find_pickers { exports = { find_pickers = '<function 1>' }, setup = '<function 2>' }
   return extensions.manager[name]
 end
 
 extensions.set_config = function(extensions_config)
-  extensions._config = extensions_config or {}
+  extensions._config = vim.tbl_deep_extend("force", {}, extensions_config or {})
 end
 
 return extensions

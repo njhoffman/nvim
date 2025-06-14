@@ -1,8 +1,8 @@
 local conf = require("telescope.config").values
-local finders = require "telescope.finders"
-local make_entry = require "telescope.make_entry"
-local pickers = require "telescope.pickers"
-local utils = require "telescope.utils"
+local finders = require("telescope.finders")
+local make_entry = require("telescope.make_entry")
+local pickers = require("telescope.pickers")
+local utils = require("telescope.utils")
 
 local diagnostics = {}
 
@@ -101,23 +101,25 @@ local diagnostics_to_tbl = function(opts)
 
     local root_dir_test = not opts.root_dir
       or string.sub(bufnr_name_map[diagnostic.bufnr], 1, #opts.root_dir) == opts.root_dir
-    local listed_test = not opts.no_unlisted or vim.api.nvim_buf_get_option(diagnostic.bufnr, "buflisted")
+    local listed_test = not opts.no_unlisted
+      or vim.api.nvim_buf_get_option(diagnostic.bufnr, "buflisted")
 
     return root_dir_test and listed_test
   end
 
   local preprocess_diag = function(diagnostic)
+    local source = opts.show_source and " (" .. diagnostic.source .. ")" or ""
     return {
       bufnr = diagnostic.bufnr,
       filename = bufnr_name_map[diagnostic.bufnr],
       lnum = diagnostic.lnum + 1,
       col = diagnostic.col + 1,
-      text = vim.trim(diagnostic.message:gsub("[\n]", "")),
+      text = vim.trim(diagnostic.message:gsub("[\n]", "")) .. source,
       type = severities[diagnostic.severity] or severities[1],
     }
   end
 
-  -- NOTE: vim.diagnostic.get apperas to take severity directly 
+  -- NOTE: vim.diagnostic.get apperas to take severity directly
   for _, d in ipairs(vim.diagnostic.get(opts.bufnr, diagnosis_opts.severity)) do
     if filter_diag(d) then
       table.insert(items, preprocess_diag(d))
@@ -161,15 +163,15 @@ diagnostics.get = function(opts)
   pickers
     .new(opts, {
       prompt_title = opts.bufnr == nil and "Workspace Diagnostics" or "Document Diagnostics",
-      finder = finders.new_table {
+      finder = finders.new_table({
         results = locations,
         entry_maker = opts.entry_maker or make_entry.gen_from_diagnostics(opts),
-      },
+      }),
       previewer = conf.qflist_previewer(opts),
-      sorter = conf.prefilter_sorter {
+      sorter = conf.prefilter_sorter({
         tag = "type",
         sorter = conf.generic_sorter(opts),
-      },
+      }),
     })
     :find()
 end

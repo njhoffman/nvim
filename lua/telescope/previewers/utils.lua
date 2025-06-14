@@ -1,11 +1,11 @@
-local ts_utils = require "telescope.utils"
-local strings = require "plenary.strings"
+local ts_utils = require("telescope.utils")
+local strings = require("plenary.strings")
 local conf = require("telescope.config").values
 
-local Job = require "plenary.job"
-local Path = require "plenary.path"
+local Job = require("plenary.job")
+local Path = require("plenary.path")
 
-local telescope_utils = require "telescope.utils"
+local telescope_utils = require("telescope.utils")
 
 local utils = {}
 
@@ -13,13 +13,13 @@ local detect_from_shebang = function(p)
   local s = p:readbyterange(0, 256)
   if s then
     local lines = telescope_utils.split_lines(s)
-    return vim.filetype.match { contents = lines }
+    return vim.filetype.match({ contents = lines })
   end
 end
 
 local parse_modeline = function(tail)
-  if tail:find "vim:" then
-    return tail:match ".*:ft=([^: ]*):.*$" or ""
+  if tail:find("vim:") then
+    return tail:match(".*:ft=([^: ]*):.*$") or ""
   end
 end
 
@@ -39,7 +39,7 @@ utils.filetype_detect = function(filepath)
     filepath = tostring(filepath)
   end
 
-  local match = vim.filetype.match { filename = filepath }
+  local match = vim.filetype.match({ filename = filepath })
   if match and match ~= "" then
     return match
   end
@@ -71,12 +71,12 @@ utils.job_maker = function(cmd, bufnr, opts)
     local writer = (function()
       if opts.writer ~= nil then
         local wcommand = table.remove(opts.writer, 1)
-        return Job:new {
+        return Job:new({
           command = wcommand,
           args = opts.writer,
           env = opts.env,
           cwd = opts.cwd,
-        }
+        })
       end
     end)()
 
@@ -188,7 +188,7 @@ utils.set_preview_message = function(bufnr, winid, message, fillchar)
     false,
     ts_utils.repeated_table(height, table.concat(ts_utils.repeated_table(width, fillchar), ""))
   )
-  local anon_ns = vim.api.nvim_create_namespace ""
+  local anon_ns = vim.api.nvim_create_namespace("")
   local padding = table.concat(ts_utils.repeated_table(#message + 4, " "), "")
   local formatted_message = "  " .. message .. "  "
   -- Populate lines table based on height
@@ -214,13 +214,11 @@ utils.set_preview_message = function(bufnr, winid, message, fillchar)
   local col = math.floor((width - strings.strdisplaywidth(formatted_message)) / 2)
   for i, line in ipairs(lines) do
     local line_pos = math.floor(height / 2) - 2 + i
-    vim.api.nvim_buf_set_extmark(
-      bufnr,
-      anon_ns,
-      math.max(line_pos, 0),
-      0,
-      { virt_text = { { line, "TelescopePreviewMessage" } }, virt_text_pos = "overlay", virt_text_win_col = col }
-    )
+    vim.api.nvim_buf_set_extmark(bufnr, anon_ns, math.max(line_pos, 0), 0, {
+      virt_text = { { line, "TelescopePreviewMessage" } },
+      virt_text_pos = "overlay",
+      virt_text_win_col = col,
+    })
   end
 end
 
@@ -239,6 +237,52 @@ utils.binary_mime_type = function(mime_type)
     return false
   end
   return true
+end
+
+local CHECK_TIME_INTERVAL = 200
+
+--- Split a string into lines, checking every `CHECK_TIME_INTERVAL` characters
+--- whether to timeout.
+---
+--- Roughly 4-5x faster than using `vim.gsplit` and checking timeout between each line.
+--- The latter approach is also more prone to exceeding timeout if a file has huge lines.
+---@param s string file content to split into lines
+---@param opts {start_time: number, preview: { timeout: number }, file_encoding: string?}
+function utils.timed_split_lines(s, opts)
+  local lines = {}
+  local line_start = 1
+
+  for i = 1, #s do
+    local ch = s:byte(i)
+    if ch == 10 then
+      local line
+      if s:byte(i - 1) ~= 13 then
+        line = s:sub(line_start, i - 1)
+      else
+        line = s:sub(line_start, i - 2)
+      end
+      line_start = i + 1
+      table.insert(
+        lines,
+        opts.file_encoding and vim.iconv(line, opts.file_encoding, "utf8") or line
+      )
+    end
+
+    if i % CHECK_TIME_INTERVAL == 0 then
+      local diff_time = (vim.loop.hrtime() - opts.start_time) / 1e6
+      if diff_time > opts.preview.timeout then
+        return
+      end
+    end
+  end
+
+  table.insert(
+    lines,
+    opts.file_encoding and vim.iconv(s:sub(line_start), opts.file_encoding, "utf8")
+      or s:sub(line_start)
+  )
+
+  return lines
 end
 
 return utils

@@ -33,6 +33,7 @@ local mappings = {
   { "mn", recall.goto_next,        "  marks  go to next " },
   { "mp", recall.goto_prev,        "  marks go to prev " },
   { "mt", ":Telescope recall<CR>", "  marks open telescope" },
+  { "md", recall.clear,            "  marks remove at cursor" },
   { "mx", recall.clear,            "  marks remove cursor" },
   { "mX", recall.clear,            "  marks clear all" },
 }

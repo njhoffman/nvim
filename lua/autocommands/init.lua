@@ -9,6 +9,16 @@ require("autocommands.events")
 require("autocommands.skeletons")
 require("autocommands.startup")
 
+vim.cmd([[
+  au BufNewFile,BufRead *.atj setlocal ft=javascript
+  au BufNewFile,BufRead *.rjs setlocal ft=javascript
+  " au BufNewFile,BufRead *.xml setlocal ft=javascript
+  au BufNewFile,BufRead *.html setlocal indentexpr=JavascriptIndent()
+  au BufNewFile,BufRead *.tcf setlocal ft=tcf
+  au BufNewFile,BufRead *.tca setlocal ft=tcf
+  au BufNewFile,BufRead *.tso setlocal ft=tcf
+]])
+
 -- stylua: ignore start
 
 -- function handlers

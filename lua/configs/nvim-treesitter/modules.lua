@@ -105,11 +105,13 @@ local modules = {
     enable = true,
     use_languagetree = true,
     disable = {
+      "zsh",
       "tmux",
       "css", -- PENDING https://github.com/tree-sitter/tree-sitter-css/issues/34
     },
     additional_vim_regex_highlighting = {
       -- 'md',
+      "javascript",
       "bash",
       -- 'help',
       "make",

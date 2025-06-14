@@ -81,8 +81,8 @@ local main = {
   -- stylua: ignore start
   ["<M-/>"]      = { i = toggle_docs },
   ["<M-C-_>"]    = { i = toggle_docs },
-  ["<C-S-Down>"] = { i = mapping.scroll_docs(1) },
-  ["<C-S-Up>"]   = { i = mapping.scroll_docs(-1) },
+  ["<M-S-Down>"] = { i = mapping.scroll_docs(1) },
+  ["<M-S-Up>"]   = { i = mapping.scroll_docs(-1) },
   ["<C-e>"]      = { i = mapping.close() },
   ["<M-b>"]      = { i = scroll_docs(-6) },
   ["<M-f>"]      = { i = scroll_docs(6) },

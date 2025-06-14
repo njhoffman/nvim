@@ -7,7 +7,7 @@ This file is still WIP, so expect some changes if you're trying to consume these
 This will provide standard mechanism for accessing information from an entry.
 
 --============================================================================= ]]
-local utils = require "telescope.utils"
+local utils = require("telescope.utils")
 
 local from_entry = {}
 
@@ -26,7 +26,7 @@ function from_entry.path(entry, validate, escape)
   end
 
   -- only 0 if neither filereadable nor directory
-  if validate then
+  if validate and path ~= "[No Name]" then
     -- We need to expand for filereadable and isdirectory
     -- TODO(conni2461): we are not going to return the expanded path because
     --                  this would lead to cache misses in the perviewer.

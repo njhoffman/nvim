@@ -32,6 +32,11 @@
 -- end
 
 local sources = {
+  filetypes = {
+    per_filetype = {
+      codecompanion = { "codecompanion" },
+    },
+  },
   main = {
     {
       {
@@ -48,7 +53,7 @@ local sources = {
         name = "nvim_lsp",
         -- max_item_count = 10,
         -- trigger_characters = { '-' },
-        keyword_length = 1,
+        keyword_length = 0,
         entry_filter = function(entry, ctx)
           local kind = require("cmp.types.lsp").CompletionItemKind[entry:get_kind()]
           if kind == "Snippet" and ctx.prev_context.filetype == "java" then
@@ -85,6 +90,24 @@ local sources = {
           end
           return vim_item
         end,
+      },
+      {
+        name = "tags",
+        option = {
+          -- this is the default options, change them if you want.
+          -- Delayed time after user input, in milliseconds.
+          complete_defer = 100,
+          -- Max items when searching `taglist`.
+          max_items = 10,
+          -- The number of characters that need to be typed to trigger
+          -- auto-completion.
+          keyword_length = 3,
+          -- Use exact word match when searching `taglist`, for better searching
+          -- performance.
+          exact_match = false,
+          -- Prioritize searching result for current buffer.
+          current_buffer_only = false,
+        },
       },
     },
     {
@@ -158,7 +181,6 @@ local sources = {
       { name = "plugins" },
       {
         name = "emoji",
-        group_index = 9,
         entry_filter = function()
           if vim.bo.filetype ~= "gitcommit" then
             return false

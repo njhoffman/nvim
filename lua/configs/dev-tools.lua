@@ -51,6 +51,34 @@ local min_defaults = {
   },
 }
 
+local vimlsp = require("dev-tools.lsp")
+vimlsp.start = function(buf, ft)
+  local buftype = vim.api.nvim_get_option_value("buftype", { buf = buf })
+  if
+    vim.tbl_contains({
+      "nofile",
+      "prompt",
+      "file",
+      "quickfix",
+      "terminal",
+    }, buftype) or not buftype
+  then
+    return
+  end
+
+  local Config = require("dev-tools.config")
+  if vim.tbl_contains(Config.filetypes.exclude or {}, ft) then
+    return
+  end
+  if
+    #(Config.filetypes.include or {}) > 0 and not vim.tbl_contains(Config.filetypes.include, ft)
+  then
+    return
+  end
+
+  vimlsp.start_lsp(buf)
+end
+
 require("dev-tools").setup()
 
 -- full convig:

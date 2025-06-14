@@ -7,7 +7,7 @@ local enabled = function(done)
   end
   for _, client in pairs(clients) do
     if client and client.supports_method("textDocument/hover") then
-      local params = util.make_position_params(0)
+      local params = util.make_position_params(0, "utf-16")
       vim.lsp.buf_request(0, "textDocument/hover", params, function(_, result, _, _)
         if result and result.contents then
           return done(true)
@@ -20,7 +20,7 @@ local enabled = function(done)
 end
 
 local execute = function(done)
-  local params = util.make_position_params(0)
+  local params = util.make_position_params(0, "utf-16")
   vim.lsp.buf_request(0, "textDocument/hover", params, function(_, result, _, _)
     local lines
     if not result then

@@ -1,37 +1,49 @@
 
+-- AI calc cmdline cmdline_history cmp_yanky codeium copilot
+-- diag-codes dictionary emoji fuzzy_buffer fuzzy_path fzf-lua
+-- git lazydev luasnip nerdfont npm
+-- nvim_lsp_document_symbol nvim_lsp_signature_help nvim_lua
+-- pandoc_references plugins render-markdown rg spell tags
+-- tmux treesitter vimwiki-tags zsh
+
 -- stylua: ignore
 local setup_highlights = function()
   vim.api.nvim_set_hl(0, 'CmpSource',                      { default = true, link = 'Keyword' })
   vim.api.nvim_set_hl(0, 'CmpSourceAsyncPath',             { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceCalc',                  { default = true, link = 'CmpSource' })
-  vim.api.nvim_set_hl(0, 'CmpSourceDadbod',                { default = true, link = 'CmpSource' })
-  vim.api.nvim_set_hl(0, 'CmpSourceVimWiki',               { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceCmdline',               { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceCmdlineHistory',        { default = true, link = 'CmpSource' })
-  vim.api.nvim_set_hl(0, 'CmpSourceCmpGit',                { default = true, link = 'CmpSource' })
-  vim.api.nvim_set_hl(0, 'CmpSourceCmpRg',                 { default = true, link = 'CmpSource' })
-  vim.api.nvim_set_hl(0, 'CmpSourceCmpTabnine',            { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceCodeium',               { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceCopilot',               { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceDadbod',                { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceDiagCodes',             { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceDictionary',            { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceEmoji',                 { default = true, link = 'CmpSource' })
-  vim.api.nvim_set_hl(0, 'CmpSourcePath',                  { default = true, link = 'CmpSource' })
-  vim.api.nvim_set_hl(0, 'CmpSourceQuickData',             { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceFuzzyBuffer',           { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceFuzzyPath',             { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceFzfLua',                { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceGit',                   { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceLazyDev',               { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceLook',                  { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceLuasnip',               { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceNerdfont',              { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceNpm',                   { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceNvimLsp',               { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceNvimLspDocumentSymbol', { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceNvimLspSignatureHelp',  { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceNvimLua',               { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceOmni',                  { default = true, link = 'CmpSource' })
-  vim.api.nvim_set_hl(0, 'CmpSourceRg',                    { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourcePath',                  { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourcePlugin',                { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceQuickData',             { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceRenderMarkdown',        { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceRg',                    { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceSpell',                 { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceTabnine',               { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceTags',                  { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceTmux',                  { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceTreesitter',            { default = true, link = 'CmpSource' })
+  vim.api.nvim_set_hl(0, 'CmpSourceVimWiki',               { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceYanky',                 { default = true, link = 'CmpSource' })
   vim.api.nvim_set_hl(0, 'CmpSourceZsh',                   { default = true, link = 'CmpSource' })
 end
@@ -54,21 +66,23 @@ local source_names = {
   calc =                      { '󰃬 ', 'CmpSourceCalc' },
   cmdline =                   { ' ', 'CmpSourceCmdline' },
   cmdline_history =           { ' ', 'CmpSourceCmdlineHistory' },
-  cmp_git =                   { ' ', 'CmpSourceCmpGit' },
-  cmp_rg =                    { '󰉸 ', 'CmpSourceCmpRg' },
-  cmp_tabnine =               { '󰘳 ', 'CmpSourceCmpTabnine' },
-  cmp_yanky =                 { ' ','CmpSourceYanky' }, --    ﲇ  
-  codeium =                   { '', 'CmpSourceCodeium' },
+  cmp_git =                   { ' ', 'CmpSourceGit' },
+  cmp_rg =                    { '󰉸 ', 'CmpSourceRg' },
+  cmp_tabnine =               { '󰘳 ', 'CmpSourceTabnine' },
+  cmp_yanky =                 { ' ', 'CmpSourceYanky' }, --    ﲇ  
+  codeium =                   { ' ',  'CmpSourceCodeium' },
   copilot =                   { ' ', 'CmpSourceCopilot' }, -- " 
+  ['diag-codes'] =            { ' ' , 'CmpSourceDiagCodes' },
   dictionary =                { ' ', 'CmpSourceDictionary' },
   emoji =                     { ' ', 'CmpSourceEmoji' },
   ['faker.quick_data'] =      { ' ', 'CmpSourceQuickData' }, --       
   fuzzy_buffer =              { ' ', 'CmpSourceFuzzyBuffer' },
   fuzzy_path =                { ' ', 'CmpSourceFuzzyPath' },
+  ['fzf-lua'] =               { '󱈅 ', 'CmpSourceFzfLua' },
   lazydev =                   { '󰒲 ', 'CmpSourceLazyDev' },
   look =                      { ' ', 'CmpSourceLook' },
   luasnip =                   { ' ', 'CmpSourceLuasnip' },
-  nerdfont =                  { ' ', 'CmpSourceNpm' },
+  nerdfont =                  { ' ', 'CmpSourceNerdfont' },
   npm =                       { ' ', 'CmpSourceNpm' },
   nvim_lsp =                  { ' ', 'CmpSourceNvimLsp' },
   nvim_lsp_document_symbol =  { '󰒕 ', 'CmpSourceNvimLspDocumentSymbol' },
@@ -77,8 +91,10 @@ local source_names = {
   omni =                      { ' ', 'CmpSourceOmni' },
   path =                      { ' ', 'CmpSourcePath' },
   plugins =                   { '鈴', 'CmpSourcePlugin' },
+  ['render-markdown'] =       { ' ', 'CmpSourceRenderMarkdown' },
   rg =                        { '󱙔 ', 'CmpSourceRg' },
   spell =                     { ' ', 'CmpSourceSpell' },
+  tags =                      { '󰜢 ', 'CmpSourceTags' },
   tmux =                      { ' ', 'CmpSourceTmux' },
   treesitter =                { '滑', 'CmpSourceTreesitter' }, --   滑
   ['vim-dadbod-completion'] = { ' ', 'CmpSourceDadbod' },
@@ -106,7 +122,6 @@ local source_names = {
 -- 󰋺      󰈠  󰖋  󰬥  󰥝  󰶮  󱀯  󰾜  󰢖  󱘭  󱤭
 -- stylua: ignore
 local lsp_symbols = {
-
   _Parent              = "",
   Boolean              = "◩",
   CharacterSpecial     = "",

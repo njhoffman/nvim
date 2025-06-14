@@ -1,8 +1,8 @@
-local async = require "plenary.async"
-local async_job = require "telescope._"
+local async = require("plenary.async")
+local async_job = require("telescope._")
 local LinesPipe = require("telescope._").LinesPipe
 
-local make_entry = require "telescope.make_entry"
+local make_entry = require("telescope.make_entry")
 
 local await_count = 1000
 
@@ -24,6 +24,9 @@ return function(opts)
   local job
 
   return setmetatable({
+    name = "oneshot",
+    time_start = vim.loop.hrtime(),
+    cmd = fn_command(),
     close = function()
       if job then
         job:close()
@@ -31,6 +34,7 @@ return function(opts)
     end,
     results = results,
     entry_maker = entry_maker,
+    stop_read = function() end,
   }, {
     __call = function(_, prompt, process_result, process_complete)
       if not job_started then
@@ -45,14 +49,14 @@ return function(opts)
         -- end
 
         stdout = LinesPipe()
-        job = async_job.spawn {
+        job = async_job.spawn({
           command = job_opts.command,
           args = job_opts.args,
           cwd = cwd,
           env = env,
 
           stdout = stdout,
-        }
+        })
 
         job_started = true
       end

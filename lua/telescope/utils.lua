@@ -5,10 +5,10 @@
 --- Utilities for writing telescope pickers
 ---@brief ]]
 
-local Path = require "plenary.path"
-local Job = require "plenary.job"
+local Path = require("plenary.path")
+local Job = require("plenary.job")
 
-local log = require "telescope.log"
+local log = require("telescope.log")
 
 local truncate = require("plenary.strings").truncate
 local get_status = require("telescope.state").get_status
@@ -22,7 +22,7 @@ utils.iswin = vim.loop.os_uname().sysname == "Windows_NT"
 ---@param encoding "utf-8" | "utf-16" | "utf-32"
 ---@return integer
 utils.str_byteindex = function(s, i, encoding)
-  if vim.fn.has "nvim-0.11" == 1 then
+  if vim.fn.has("nvim-0.11") == 1 then
     return vim.str_byteindex(s, encoding, i, false)
   else
     return vim.lsp.util._str_byteindex_enc(s, i, encoding)
@@ -30,11 +30,11 @@ utils.str_byteindex = function(s, i, encoding)
 end
 
 --TODO(clason): Remove when dropping support for Nvim 0.9
-utils.islist = vim.fn.has "nvim-0.10" == 1 and vim.islist or vim.tbl_islist
+utils.islist = vim.fn.has("nvim-0.10") == 1 and vim.islist or vim.tbl_islist
 local flatten = function(t)
   return vim.iter(t):flatten():totable()
 end
-utils.flatten = vim.fn.has "nvim-0.11" == 1 and flatten or vim.tbl_flatten
+utils.flatten = vim.fn.has("nvim-0.11") == 1 and flatten or vim.tbl_flatten
 
 --- Hybrid of `vim.fn.expand()` and custom `vim.fs.normalize()`
 ---
@@ -54,15 +54,15 @@ utils.flatten = vim.fn.has "nvim-0.11" == 1 and flatten or vim.tbl_flatten
 ---@param path string
 ---@return string
 utils.path_expand = function(path)
-  vim.validate {
+  vim.validate({
     path = { path, { "string" } },
-  }
+  })
 
   if utils.is_uri(path) then
     return path
   end
 
-  if path:match "^[%%#<]" then
+  if path:match("^[%%#<]") then
     path = vim.fn.expand(path)
   end
 
@@ -78,7 +78,7 @@ utils.path_expand = function(path)
   path = path:gsub("/+", "/")
   if utils.iswin then
     path = path:gsub("\\+", "\\")
-    if path:match "^%w:\\$" then
+    if path:match("^%w:\\$") then
       return path
     else
       return (path:gsub("(.)\\$", "%1"))
@@ -176,7 +176,10 @@ utils.filter_symbols = function(results, opts, post_filter)
   elseif has_ignore then
     local symbols = table.concat(opts.ignore_symbols, ", ")
     utils.notify("filter_symbols", {
-      msg = string.format("%s ignore_symbol(s) have removed everything from the query result", symbols),
+      msg = string.format(
+        "%s ignore_symbol(s) have removed everything from the query result",
+        symbols
+      ),
       level = "WARN",
     })
   end
@@ -204,7 +207,9 @@ end
 
 local calc_result_length = function(truncate_len)
   local status = get_status(vim.api.nvim_get_current_buf())
-  local len = vim.api.nvim_win_get_width(status.layout.results.winid) - status.picker.selection_caret:len() - 2
+  local len = vim.api.nvim_win_get_width(status.layout.results.winid)
+    - status.picker.selection_caret:len()
+    - 2
   return type(truncate_len) == "number" and len - truncate_len or len
 end
 
@@ -311,11 +316,13 @@ utils.path_tail = (function()
 end)()
 
 utils.is_path_hidden = function(opts, path_display)
-  path_display = path_display or vim.F.if_nil(opts.path_display, require("telescope.config").values.path_display)
+  path_display = path_display
+    or vim.F.if_nil(opts.path_display, require("telescope.config").values.path_display)
 
   return path_display == nil
     or path_display == "hidden"
-    or type(path_display) == "table" and (vim.tbl_contains(path_display, "hidden") or path_display.hidden)
+    or type(path_display) == "table"
+      and (vim.tbl_contains(path_display, "hidden") or path_display.hidden)
 end
 
 utils.is_uri = function(filename)
@@ -366,7 +373,8 @@ utils.transform_path = function(opts, path)
   end
 
   ---@type fun(opts:table, path: string): string, table?
-  local path_display = vim.F.if_nil(opts.path_display, require("telescope.config").values.path_display)
+  local path_display =
+    vim.F.if_nil(opts.path_display, require("telescope.config").values.path_display)
 
   local transformed_path = path
   local path_style = {}
@@ -408,13 +416,18 @@ utils.transform_path = function(opts, path)
       transformed_path = path_truncate(transformed_path, path_display.truncate, opts)
     end
 
-    if vim.tbl_contains(path_display, "filename_first") or path_display["filename_first"] ~= nil then
+    if
+      vim.tbl_contains(path_display, "filename_first") or path_display["filename_first"] ~= nil
+    then
       local reverse_directories = false
 
       if type(path_display["filename_first"]) == "table" then
         local filename_first_opts = path_display["filename_first"]
 
-        if filename_first_opts.reverse_directories == nil or filename_first_opts.reverse_directories == false then
+        if
+          filename_first_opts.reverse_directories == nil
+          or filename_first_opts.reverse_directories == false
+        then
           reverse_directories = false
         else
           reverse_directories = filename_first_opts.reverse_directories
@@ -426,7 +439,10 @@ utils.transform_path = function(opts, path)
 
     return transformed_path, path_style
   else
-    log.warn("`path_display` must be either a function or a table.", "See `:help telescope.defaults.path_display.")
+    log.warn(
+      "`path_display` must be either a function or a table.",
+      "See `:help telescope.defaults.path_display."
+    )
     return transformed_path, path_style
   end
 end
@@ -546,7 +562,7 @@ function utils.data_directory()
 end
 
 function utils.buffer_dir()
-  return vim.fn.expand "%:p:h"
+  return vim.fn.expand("%:p:h")
 end
 
 function utils.display_termcodes(str)
@@ -620,7 +636,8 @@ utils.transform_devicons = load_once(function()
       end
 
       local basename = utils.path_tail(filename)
-      local icon, icon_highlight = devicons.get_icon(basename, utils.file_extension(basename), { default = false })
+      local icon, icon_highlight =
+        devicons.get_icon(basename, utils.file_extension(basename), { default = false })
       if not icon then
         icon, icon_highlight = devicons.get_icon(basename, nil, { default = true })
         icon = icon or " "
@@ -655,7 +672,8 @@ utils.get_devicons = load_once(function()
       end
 
       local basename = utils.path_tail(filename)
-      local icon, icon_highlight = devicons.get_icon(basename, utils.file_extension(basename), { default = false })
+      local icon, icon_highlight =
+        devicons.get_icon(basename, utils.file_extension(basename), { default = false })
       if not icon then
         icon, icon_highlight = devicons.get_icon(basename, nil, { default = true })
       end
@@ -675,7 +693,7 @@ end)
 --- Checks if treesitter parser for language is installed
 ---@param lang string
 utils.has_ts_parser = function(lang)
-  if vim.fn.has "nvim-0.11" == 1 then
+  if vim.fn.has("nvim-0.11") == 1 then
     return vim.treesitter.language.add(lang)
   else
     return pcall(vim.treesitter.language.add, lang)

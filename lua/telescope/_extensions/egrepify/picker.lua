@@ -175,7 +175,6 @@ function Picker.picker(opts)
     end
 
     local cmd = flatten({ args, prompt_args, "--", prompt, search_list })
-    vim.dbglog("cmd", cmd)
     return cmd
   end, egrep_entry_maker(opts), opts.max_results, opts.cwd)
 
@@ -234,6 +233,12 @@ function Picker.picker(opts)
       or not picker_.results_win
       or not vim.api.nvim_buf_is_valid(picker_.results_bufnr)
     then
+      -- vim.dbglog(
+      --   "skipping",
+      --   entry.filename,
+      --   picker_.results_bufnr,
+      --   vim.api.nvim_buf_is_valid(picker_.results_bufnr)
+      -- )
       return
     end
 
@@ -246,6 +251,8 @@ function Picker.picker(opts)
     local ft = vim.filetype.match({ filename = entry.filename })
     if ft == nil then
       return
+    elseif ft == "zsh" then
+      ft = "bash"
     end
     if regions[ft] == nil then
       regions[ft] = {}

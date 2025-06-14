@@ -14,9 +14,6 @@ require("ts_context_commentstring").setup({
   },
 })
 
--- use bash parser for zsh files
--- vim.treesitter.language.register("bash", "zsh")
-
 vim.filetype.add({
   extension = { rasi = "rasi" },
   pattern = {
@@ -38,8 +35,42 @@ vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
   end,
 })
 
--- local parsers = require("nvim-treesitter.parsers")
--- local parser_config = parsers.get_parser_configs()
+-- -- https://neovim.io/doc/user/lua.html#vim.filetype.add()
+-- -- Search for vim.filetype.add
+-- use bash parser for zsh files
+-- vim.treesitter.language.register("bash", "zsh")
+vim.filetype.add({ extension = { hurl = "hurl" } })
+--   local lang = ts_parsers.ft_to_lang(vim.bo.filetype)
+--   local parser = ts_parsers.get_parser(vim.fn.bufnr(), lang)
+
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+if parser_config then
+  parser_config.hurl = {
+    install_info = {
+      url = "~/git/github.com/kjuulh/tree-sitter-hurl",
+      files = { "src/parser.c" },
+      branch = "main",
+      generate_requires_npm = false,
+      requires_generate_from_grammar = false,
+    },
+    filetype = "hurl",
+  }
+  parser_config.gotmpl = {
+    install_info = {
+      url = "https://github.com/ngalaiko/tree-sitter-go-template",
+      files = { "src/parser.c" },
+    },
+    filetype = "gotmpl",
+    used_by = { "gohtmltmpl", "gotexttmpl", "gotmpl", "yaml" },
+  }
+  -- parser_config.zsh = {
+  --   install_info = {
+  --     files = { "src/parser.c", "src/scanner.c" },
+  --     url = "https://github.com/tree-sitter/tree-sitter-bash",
+  --   },
+  -- }
+end
+
 -- parser_config.org = {
 --   install_info = {
 --     url = "https://github.com/milisims/tree-sitter-org",

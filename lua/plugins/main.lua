@@ -101,7 +101,10 @@ local plugins = {
       -- },
     },
   },
+
   { "echasnovski/mini.clue", enabled = false, event = { "VeryLazy" } },
+  { "echasnovski/mini.visits", event = "VeryLazy" },
+  { "echasnovski/mini.diff", event = "VeryLazy" },
   { "echasnovski/mini.trailspace", event = "VeryLazy" },
   {
     "nmac427/guess-indent.nvim",
@@ -177,6 +180,7 @@ local plugins = {
     -- https://github.com/luckasRanarison/tailwind-tools.nvim
     "laytan/tailwind-sorter.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" },
+    enabled = false,
     build = "cd formatter && npm i && npm run build",
     config = function()
       require("tailwind-sorter").setup({
@@ -186,6 +190,26 @@ local plugins = {
     end,
   },
 
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hakonharnes/img-clip.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "ravitemer/codecompanion-history.nvim",
+      {
+        "ravitemer/mcphub.nvim",
+        build = "npm install -g mcp-hub@latest",
+        config = function()
+          require("mcphub").setup()
+        end,
+      },
+    },
+    -- init = function()
+    -- 	require("hanipcode.plugins.codecompanion.fidget_spinner"):init()
+    -- 	adapter.init_config()
+    -- end,
+  },
   -- https://github.com/Aaronik/GPTModels.nvim
   {
     "jackMort/ChatGPT.nvim",
@@ -319,11 +343,11 @@ local plugins = {
         "RRethy/nvim-treesitter-textsubjects",
         config = function()
           require("nvim-treesitter-textsubjects").configure({
-            prev_selection = ",",
+            prev_selection = "<leader>.",
             keymaps = {
-              ["."] = "textsubjects-smart",
-              ["/"] = "textsubjects-container-outer",
-              ["i/"] = "textsubjects-container-inner",
+              ["<leader><leader>"] = "textsubjects-smart",
+              ["<leader>\\]"] = "textsubjects-container-outer",
+              ["<leader>\\["] = "textsubjects-container-inner",
             },
           })
         end,
@@ -337,7 +361,19 @@ local plugins = {
       "nvim-treesitter/playground",
       { "nvim-treesitter/nvim-treesitter-context" },
       "windwp/nvim-ts-autotag",
-      { "ziontee113/query-secretary", keys = { "<leader><BS>" } },
+      {
+        "ziontee113/query-secretary",
+        keys = {
+          {
+            "ghq",
+            function()
+              require("query-secretary").query_window_initiate()
+            end,
+            mode = { "n" },
+            desc = "open treesitter query secretary",
+          },
+        },
+      },
     },
   },
   {
@@ -391,7 +427,7 @@ local plugins = {
   { "s1n7ax/nvim-window-picker", name = "window-picker", event = "VeryLazy", version = "2.*" },
   -- cursor
   -- { "gen740/SmoothCursor.nvim", event = { "BufReadPost", "BufNewFile" } },
-  { "sphamba/smear-cursor.nvim", cond = vim.g.neovide == nil },
+  { "sphamba/smear-cursor.nvim", cond = false and vim.g.neovide == nil },
   { "rasulomaroff/reactive.nvim", enabled = true, dependencies = { "sphamba/smear-cursor.nvim" } },
   { "echasnovski/mini.animate", cond = vim.g.neovide == nil, event = "VeryLazy" },
   -- { 'otavioschwanck/cool-substitute.nvim' },

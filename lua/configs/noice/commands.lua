@@ -2,7 +2,9 @@ local restore_routes = nil
 local lsp_clients = nil
 
 local silence_start = function()
-  vim.diagnostic.disable()
+  if vim.diagnostic.is_enabled() then
+    vim.diagnostic.enable(false)
+  end
   lsp_clients = vim.lsp.get_clients()
   vim.lsp.stop_client(lsp_clients)
   local notify_stats = {
@@ -39,7 +41,6 @@ end
 local silence_stop = function()
   require("noice").enable()
   require("notify").setup({ level = 2 })
-  vim.diagnostic.enable()
   if lsp_clients then
     vim.lsp.start_client(lsp_clients)
     lsp_clients = nil
@@ -47,6 +48,9 @@ local silence_stop = function()
   if restore_routes then
     require("noice").setup({ routes = restore_routes })
     restore_routes = nil
+  end
+  if not vim.diagnostic.is_enabled() then
+    vim.diagnostic.enable(true)
   end
 end
 

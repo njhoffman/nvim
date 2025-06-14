@@ -1,7 +1,7 @@
-local action_state = require "telescope.actions.state"
+local action_state = require("telescope.actions.state")
 local transform_mod = require("telescope.actions.mt").transform_mod
 
-local egrep_utils = require "telescope._extensions.egrepify.utils"
+local egrep_utils = require("telescope._extensions.egrepify.utils")
 
 ---@mod telescope-egrepify.actions Actions
 ---@brief [[

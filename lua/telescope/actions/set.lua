@@ -13,12 +13,12 @@
 
 local a = vim.api
 
-local log = require "telescope.log"
-local Path = require "plenary.path"
-local state = require "telescope.state"
-local utils = require "telescope.utils"
+local log = require("telescope.log")
+local Path = require("plenary.path")
+local state = require("telescope.state")
+local utils = require("telescope.utils")
 
-local action_state = require "telescope.actions.state"
+local action_state = require("telescope.actions.state")
 
 local transform_mod = require("telescope.actions.mt").transform_mod
 
@@ -101,7 +101,9 @@ do
     if buf_command ~= "drop" and buf_command ~= "tab drop" then
       vim.cmd(string.format("%s %d", buf_command, bufnr))
     else
-      vim.cmd(string.format("%s %s", buf_command, vim.fn.fnameescape(vim.api.nvim_buf_get_name(bufnr))))
+      vim.cmd(
+        string.format("%s %s", buf_command, vim.fn.fnameescape(vim.api.nvim_buf_get_name(bufnr)))
+      )
     end
   end
 end
@@ -174,12 +176,12 @@ action_set.edit = function(prompt_bufnr, command)
   local win_id = picker.get_selection_window(picker, entry)
 
   if picker.push_cursor_on_edit then
-    vim.cmd "normal! m'"
+    vim.cmd("normal! m'")
   end
 
   if picker.push_tagstack_on_edit then
-    local from = { vim.fn.bufnr "%", vim.fn.line ".", vim.fn.col ".", 0 }
-    local items = { { tagname = vim.fn.expand "<cword>", from = from } }
+    local from = { vim.fn.bufnr("%"), vim.fn.line("."), vim.fn.col("."), 0 }
+    local items = { { tagname = vim.fn.expand("<cword>"), from = from } }
     vim.fn.settagstack(vim.fn.win_getid(), { items = items }, "t")
   end
 
@@ -198,6 +200,7 @@ action_set.edit = function(prompt_bufnr, command)
     if vim.api.nvim_buf_get_name(0) ~= filename or command ~= "edit" then
       filename = Path:new(filename):normalize(vim.loop.cwd())
       pcall(vim.cmd, string.format("%s %s", command, vim.fn.fnameescape(filename)))
+      -- pcall(vim.cmd[command], vim.fn.fnameescape(filename))
     end
   end
 
@@ -221,13 +224,15 @@ action_set.edit = function(prompt_bufnr, command)
 
   if row and col then
     if vim.api.nvim_buf_get_name(0) == filename then
-      vim.cmd [[normal! m']]
+      vim.cmd([[normal! m']])
     end
     local ok, err_msg = pcall(a.nvim_win_set_cursor, 0, { row, col })
     if not ok then
       log.debug("Failed to move to cursor:", err_msg, row, col)
     end
   end
+
+  -- utils.set_window_cursor(a.nvim_get_current_win(), row, col)
 end
 
 ---@param prompt_bufnr integer

@@ -6,9 +6,9 @@ local enabled = function(done)
     return done(false)
   end
   for _, client in pairs(clients) do
-    if client and client.supports_method('textDocument/signatureHelp') then
-      local params = util.make_position_params(0)
-      vim.lsp.buf_request(0, 'textDocument/signatureHelp', params, function(_, result, _, _)
+    if client and client.supports_method("textDocument/signatureHelp") then
+      local params = util.make_position_params(0, "utf-16")
+      vim.lsp.buf_request(0, "textDocument/signatureHelp", params, function(_, result, _, _)
         if result and result.signatures and #result.signatures > 0 then
           return done(true)
         end
@@ -19,8 +19,8 @@ local enabled = function(done)
 end
 
 local execute = function(done)
-  local params = util.make_position_params(0)
-  vim.lsp.buf_request(0, 'textDocument/signatureHelp', params, function(_, result, _, _)
+  local params = util.make_position_params(0, "utf-16")
+  vim.lsp.buf_request(0, "textDocument/signatureHelp", params, function(_, result, _, _)
     if not result then
       return done()
     end
@@ -34,14 +34,14 @@ local execute = function(done)
     if vim.tbl_isempty(lines) then
       return done()
     end
-    done({ lines = lines, filetype = 'markdown' })
+    done({ lines = lines, filetype = "markdown" })
   end)
 end
 
-require('hover').register({
-  name = 'signature',
-  menu = 'Signature',
-  desc = 'LSP Signature',
+require("hover").register({
+  name = "signature",
+  menu = "Signature",
+  desc = "LSP Signature",
   priority = 200,
   enabled = enabled,
   execute = execute,

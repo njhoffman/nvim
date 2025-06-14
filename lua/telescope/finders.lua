@@ -1,11 +1,11 @@
-local Job = require "plenary.job"
+local Job = require("plenary.job")
 
-local make_entry = require "telescope.make_entry"
-local log = require "telescope.log"
+local make_entry = require("telescope.make_entry")
+local log = require("telescope.log")
 
-local async_static_finder = require "telescope.finders.async_static_finder"
-local async_oneshot_finder = require "telescope.finders.async_oneshot_finder"
-local async_job_finder = require "telescope.finders.async_job_finder"
+local async_static_finder = require("telescope.finders.async_static_finder")
+local async_oneshot_finder = require("telescope.finders.async_oneshot_finder")
+local async_job_finder = require("telescope.finders.async_job_finder")
 
 local finders = {}
 
@@ -58,10 +58,10 @@ function JobFinder:new(opts)
 end
 
 function JobFinder:_find(prompt, process_result, process_complete)
-  log.trace "Finding..."
+  log.trace("Finding...")
 
   if self.job and not self.job.is_shutdown then
-    log.debug "Shutting down old job"
+    log.debug("Shutting down old job")
     self.job:shutdown()
   end
 
@@ -98,7 +98,7 @@ function JobFinder:_find(prompt, process_result, process_complete)
     writer = Job:new(opts.writer)
   end
 
-  self.job = Job:new {
+  self.job = Job:new({
     command = opts.command,
     args = opts.args,
     cwd = opts.cwd or self.cwd,
@@ -115,7 +115,7 @@ function JobFinder:_find(prompt, process_result, process_complete)
     on_exit = function()
       process_complete()
     end,
-  }
+  })
 
   self.job:start()
 end
@@ -161,7 +161,10 @@ end
 -- This opts dictionary is likely to change, but you are welcome to use it right now.
 -- I will try not to change it needlessly, but I will change it sometimes and I won't feel bad.
 finders._new = function(opts)
-  assert(not opts.results, "finder.new is deprecated with `results`. You should use `finder.new_table`")
+  assert(
+    not opts.results,
+    "finder.new is deprecated with `results`. You should use `finder.new_table`"
+  )
   return JobFinder:new(opts)
 end
 
@@ -174,11 +177,11 @@ finders.new_async_job = function(opts)
 end
 
 finders.new_job = function(command_generator, entry_maker, _, cwd)
-  return async_job_finder {
+  return async_job_finder({
     command_generator = command_generator,
     entry_maker = entry_maker,
     cwd = cwd,
-  }
+  })
 end
 
 --- One shot job
@@ -194,7 +197,7 @@ finders.new_oneshot_job = function(command_list, opts)
   command_list = vim.deepcopy(command_list)
   local command = table.remove(command_list, 1)
 
-  return async_oneshot_finder {
+  return async_oneshot_finder({
     entry_maker = opts.entry_maker or make_entry.gen_from_string(opts),
 
     cwd = opts.cwd,
@@ -206,7 +209,7 @@ finders.new_oneshot_job = function(command_list, opts)
         args = command_list,
       }
     end,
-  }
+  })
 end
 
 --- Used to create a finder for a Lua table.

@@ -78,10 +78,23 @@ local get_filename_fn = function()
 end
 
 local handle_entry_index = function(opts, t, k)
+  local overrides = rawget(t, "_overrides")
+
+  if overrides and overrides[k] then
+    return
+  end
+
   local override = ((opts or {}).entry_index or {})[k]
   if not override then
     return
   end
+
+  if overrides == nil then
+    overrides = {}
+    rawset(t, "_overrides", overrides)
+  end
+
+  overrides[k] = true
 
   local val, save = override(t, opts)
   if save then
@@ -315,7 +328,8 @@ do
       cwd = utils.path_expand(opts.cwd or vim.loop.cwd()),
 
       display = function(entry)
-        local display_filename, path_style = utils.transform_path(opts, entry.filename)
+        -- local display_filename, path_style = utils.transform_path(opts, entry.filename)
+        local display_filename, style = utils.transform_path(opts, entry.filename)
 
         local coordinates = ":"
         if not disable_coordinates then
@@ -328,6 +342,13 @@ do
           end
         end
 
+        -- Adds styling to the coordinates
+        style = utils.merge_styles(
+          { { { #display_filename, #display_filename + #coordinates }, "TelescopeResultsLineNr" } },
+          style,
+          0
+        )
+
         local display, hl_group, icon = utils.transform_devicons(
           entry.filename,
           string.format(display_string, display_filename, coordinates, entry.text),
@@ -336,10 +357,10 @@ do
 
         if hl_group then
           local style = { { { 0, #icon }, hl_group } }
-          style = utils.merge_styles(style, path_style, #icon + 1)
+          style = utils.merge_styles({ { { 0, #icon }, hl_group } }, style, #icon + 1)
           return display, style
         else
-          return display, path_style
+          return display, style
         end
       end,
 
@@ -457,12 +478,21 @@ function make_entry.gen_from_quickfix(opts)
 
   local hidden = utils.is_path_hidden(opts)
 
+  local disable_devicons = opts.disable_devicons
+
   local make_display = function(entry)
-    local display_filename, path_style = utils.transform_path(opts, entry.filename)
+    local display_filename, style = utils.transform_path(opts, entry.filename)
     local display_string = string.format("%s:%d:%d", display_filename, entry.lnum, entry.col)
     if hidden then
       display_string = string.format("%4d:%2d", entry.lnum, entry.col)
     end
+
+    -- Adds styling to the coordinates
+    style = utils.merge_styles(
+      { { { #display_filename, #display_string }, "TelescopeResultsLineNr" } },
+      style,
+      0
+    )
 
     if show_line then
       local text = entry.text
@@ -470,10 +500,27 @@ function make_entry.gen_from_quickfix(opts)
         text = vim.trim(text)
       end
       text = text:gsub(".* | ", "")
+
+      -- Accounts for the added ":" after the display_string
+      style = utils.merge_styles(
+        { { { #display_string, #display_string + 1 }, "TelescopeResultsLineNr" } },
+        style,
+        0
+      )
+
       display_string = display_string .. ":" .. text
     end
 
-    return display_string, path_style
+    -- local hl_group, icon
+    -- display_string, hl_group, icon =
+    --   utils.transform_devicons(entry.filename, display_string, disable_devicons)
+
+    -- if hl_group then
+    --   local style = { { { 0, #icon + 1 }, hl_group } }
+    --   style = utils.merge_styles(style, path_style, #icon + 1)
+    --   return display_string, style
+    -- else
+    return display_string, style
   end
 
   local get_filename = get_filename_fn()
@@ -609,17 +656,30 @@ function make_entry.gen_from_buffer(opts)
   local make_display = function(entry)
     -- bufnr_width + modes + icon + 3 spaces + : + lnum
     opts.__prefix = opts.bufnr_width + 4 + icon_width + 3 + 1 + #tostring(entry.lnum)
-    local display_bufname, path_style = utils.transform_path(opts, entry.filename)
+
+    local display_bufname, style = utils.transform_path(opts, entry.filename)
+    local coordinates = ":" .. entry.lnum
+
+    if not opts.disable_coordinates then
+      display_bufname = display_bufname .. ":" .. entry.lnum
+    end
     local icon, hl_group = utils.get_devicons(entry.filename, disable_devicons)
+
+    -- Adds styling to the coordinates
+    style = utils.merge_styles(
+      { { { #display_bufname, #display_bufname + #coordinates }, "TelescopeResultsLineNr" } },
+      style,
+      0
+    )
 
     return displayer({
       { entry.bufnr, "TelescopeResultsNumber" },
       { entry.indicator, "TelescopeResultsComment" },
       { icon, hl_group },
       {
-        display_bufname .. ":" .. entry.lnum,
+        display_bufname .. coordinates,
         function()
-          return path_style
+          return style
         end,
       },
     })
@@ -711,8 +771,10 @@ function make_entry.gen_from_treesitter(opts)
 
       filename = get_filename(bufnr),
       -- need to add one since the previewer substacts one
+      -- convert lnum/col to 1-index (treesitter uses 0-index)
       lnum = start_row + 1,
-      col = start_col,
+      col = start_col + 1,
+      -- col = start_col,
       text = node_text,
       start = start_row,
       finish = end_row,
@@ -1101,7 +1163,9 @@ function make_entry.gen_from_ctags(opts)
   end
 
   local current_file_cache = {}
-  return function(line)
+  local n = 0
+  return function(line, arg2)
+    n = n + 1
     if line == "" or line:sub(1, 1) == "!" then
       return nil
     end
@@ -1113,6 +1177,10 @@ function make_entry.gen_from_ctags(opts)
     if not tag then
       -- hasktags gives us: 'tags\tfile\tlnum'
       tag, file, lnum = string.match(line, "([^\t]+)\t([^\t]+)\t(%d+).*")
+    end
+    if not tag then
+      vim.dbglog("not tag line: " .. n .. "\n  " .. line)
+      return nil
     end
     local kind = string.match(extension_fields or "", "kind:(%S+)")
 

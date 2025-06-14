@@ -42,21 +42,24 @@ internal.builtin = function(opts)
   opts.use_default_opts = vim.F.if_nil(opts.use_default_opts, false)
 
   local objs = {}
-
-  for k, v in pairs(require("telescope.builtin")) do
-    local debug_info = debug.getinfo(v)
-    table.insert(objs, {
-      filename = string.sub(debug_info.source, 2),
-      text = k,
-    })
+  if opts.title == nil then
+    opts.title = "Telescope Builtin"
   end
 
-  local title = "Telescope Builtin"
+  for k, v in pairs(require("telescope.builtin")) do
+    if opts.filter_match == nil or (k:match(opts.filter_match) ~= nil) then
+      local debug_info = debug.getinfo(v)
+      table.insert(objs, {
+        filename = string.sub(debug_info.source, 2),
+        text = k,
+      })
+    end
+  end
 
   if opts.include_extensions then
-    title = "Telescope Pickers"
     for ext, funcs in pairs(require("telescope").extensions) do
       for func_name, func_obj in pairs(funcs) do
+        print(opts.filter_match)
         -- Only include exported functions whose name doesn't begin with an underscore
         if type(func_obj) == "function" and string.sub(func_name, 0, 1) ~= "_" then
           local debug_info = debug.getinfo(func_obj)
@@ -77,7 +80,7 @@ internal.builtin = function(opts)
   opts.winnr = vim.api.nvim_get_current_win()
   pickers
     .new(opts, {
-      prompt_title = title,
+      prompt_title = opts.title,
       finder = finders.new_table({
         results = objs,
         entry_maker = function(entry)
@@ -148,6 +151,17 @@ internal.resume = function(opts)
     })
     return
   end
+  if opts.select_pos then
+    if picker.manager:num_results() <= math.abs(opts.select_pos) then
+      utils.notify("builtin.resume", {
+        msg = string.format("The picker has less entries than supplied pos: %d", opts.select_pos),
+        level = "ERROR",
+      })
+      return
+    end
+    opts._select_pos = opts.select_pos
+    opts.select_pos = nil
+  end
   -- reset layout strategy and get_window_options if default as only one is valid
   -- and otherwise unclear which was actually set
   if picker.layout_strategy == conf.layout_strategy then
@@ -173,6 +187,50 @@ internal.resume = function(opts)
   opts.resumed_picker = true
   pickers.new(opts, picker):find()
 end
+
+-- 	opts = opts or {}
+-- 	opts.cache_index = vim.F.if_nil(opts.cache_index, 1)
+--
+-- 	local cached_pickers = state.get_global_key "cached_pickers"
+-- 	if cached_pickers == nil or vim.tbl_isempty(cached_pickers) then
+-- 		utils.notify("builtin.resume", {
+-- 			msg = "No cached picker(s).",
+-- 			level = "INFO",
+-- 		})
+-- 		return
+-- 	end
+-- 	local picker = cached_pickers[opts.cache_index]
+-- 	if picker == nil then
+-- 		utils.notify("builtin.resume", {
+-- 			msg = string.format("Index too large as there are only '%s' pickers cached", #cached_pickers),
+-- 			level = "ERROR",
+-- 		})
+-- 		return
+-- 	end
+-- 	-- reset layout strategy and get_window_options if default as only one is valid
+-- 	-- and otherwise unclear which was actually set
+-- 	if picker.layout_strategy == conf.layout_strategy then
+-- 		picker.layout_strategy = nil
+-- 	end
+-- 	if picker.get_window_options == p_window.get_window_options then
+-- 		picker.get_window_options = nil
+-- 	end
+-- 	picker.cache_picker.index = opts.cache_index
+--
+-- 	-- avoid partial `opts.cache_picker` at picker creation
+-- 	if opts.cache_picker ~= false then
+-- 		picker.cache_picker = vim.tbl_extend("keep", opts.cache_picker or {}, picker.cache_picker)
+-- 	else
+-- 		picker.cache_picker.disabled = true
+-- 	end
+-- 	opts.cache_picker = nil
+-- 	picker.previewer = picker.all_previewers
+-- 	if picker.hidden_previewer then
+-- 		picker.hidden_previewer = nil
+-- 		opts.previewer = vim.F.if_nil(opts.previewer, false)
+-- 	end
+-- 	opts.resumed_picker = true
+-- 	pickers.new(opts, picker):find()
 
 internal.pickers = function(opts)
   local cached_pickers = state.get_global_key("cached_pickers")
@@ -399,8 +457,10 @@ internal.commands = function(opts)
             local cr = vim.api.nvim_replace_termcodes("<cr>", true, false, true)
             cmd = cmd .. cr
           end
-          vim.cmd([[stopinsert]])
-          vim.api.nvim_feedkeys(cmd, "nt", false)
+          vim.schedule(function()
+            vim.cmd([[stopinsert]])
+            vim.api.nvim_feedkeys(cmd, "t", false)
+          end)
         end)
 
         return true
@@ -410,7 +470,7 @@ internal.commands = function(opts)
 end
 
 internal.quickfix = function(opts)
-  local qf_identifier = opts.id or vim.F.if_nil(opts.nr, "$")
+  local qf_identifier = opts.id or vim.F.if_nil(opts.nr, 0)
   local locations =
     vim.fn.getqflist({ [opts.id and "id" or "nr"] = qf_identifier, items = true }).items
 
@@ -829,20 +889,30 @@ internal.help_tags = function(opts)
 end
 
 internal.man_pages = function(opts)
-  opts.sections = vim.F.if_nil(opts.sections, { "1" })
+  opts.sections = vim.F.if_nil(opts.sections, { "ALL" })
   assert(utils.islist(opts.sections), "sections should be a list")
-  opts.man_cmd = utils.get_lazy_default(opts.man_cmd, function()
-    local uname = vim.loop.os_uname()
-    local sysname = string.lower(uname.sysname)
-    if sysname == "darwin" then
-      local major_version = tonumber(vim.fn.matchlist(uname.release, [[^\(\d\+\)\..*]])[2]) or 0
-      return major_version >= 22 and { "apropos", "." } or { "apropos", " " }
-    elseif sysname == "freebsd" then
-      return { "apropos", "." }
-    else
-      return { "apropos", "" }
-    end
-  end)
+
+  opts.cword = vim.F.if_nil(opts.cword, false)
+  assert(opts.cword == true or opts.cword == false, "cword should be either true or false")
+
+  if opts.cword then
+    opts.man_cmd = { "whatis", vim.fn.expand("<cword>") }
+  else
+    opts.man_cmd = utils.get_lazy_default(opts.man_cmd, function()
+      local uname = vim.loop.os_uname()
+      local sysname = string.lower(uname.sysname)
+
+      if sysname == "darwin" then
+        local major_version = tonumber(vim.fn.matchlist(uname.release, [[^\(\d\+\)\..*]])[2]) or 0
+        return major_version >= 22 and { "apropos", "." } or { "apropos", " " }
+      elseif sysname == "freebsd" then
+        return { "apropos", "." }
+      else
+        return { "apropos", "" }
+      end
+    end)
+  end
+
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_apropos(opts)
   opts.env = { PATH = vim.env.PATH, MANPATH = vim.env.MANPATH }
 
@@ -980,10 +1050,12 @@ internal.buffers = function(opts)
       default_selection_idx = 2
     end
 
+    local info = vim.fn.getbufinfo(bufnr)[1]
+    info.name = info.name:gsub("[/]", "\\")
     local element = {
       bufnr = bufnr,
       flag = flag,
-      info = vim.fn.getbufinfo(bufnr)[1],
+      info = info,
     }
 
     if opts.sort_lastused and (flag == "#" or flag == "%") then
@@ -1200,6 +1272,12 @@ internal.marks = function(opts)
     end
   end
   marks_table = vim.fn.extend(marks_table, marks_others)
+  if opts.cwd_only or opts.cwd then
+    local cwd = opts.cwd_only and vim.loop.cwd() or opts.cwd
+    marks_table = vim.tbl_filter(function(row)
+      return buf_in_cwd(row.filename, cwd)
+    end, marks_table)
+  end
 
   pickers
     .new(opts, {

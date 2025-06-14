@@ -1,8 +1,8 @@
-local async_job = require "telescope._"
+local async_job = require("telescope._")
 local LinesPipe = require("telescope._").LinesPipe
 
-local make_entry = require "telescope.make_entry"
-local log = require "telescope.log"
+local make_entry = require("telescope.make_entry")
+local log = require("telescope.log")
 
 return function(opts)
   log.trace("Creating async_job:", opts)
@@ -41,31 +41,36 @@ return function(opts)
     -- if job_opts.writer and Job.is_job(job_opts.writer) then
     --   writer = job_opts.writer
     if opts.writer then
-      error "async_job_finder.writer is not yet implemented"
+      error("async_job_finder.writer is not yet implemented")
       writer = async_job.writer(opts.writer)
     end
 
     local stdout = LinesPipe()
 
-    job = async_job.spawn {
+    job = async_job.spawn({
       command = job_opts.command,
       args = job_opts.args,
       cwd = job_opts.cwd or opts.cwd,
       env = job_opts.env or opts.env,
       writer = writer,
-
       stdout = stdout,
-    }
+    })
 
-    local line_num = 0
+    -- local line_num = 0
     for line in stdout:iter(true) do
-      line_num = line_num + 1
-      local entry = entry_maker(line)
-      if entry then
-        entry.index = line_num
+      local entries, consider_multiple = entry_maker(line)
+      if not consider_multiple then
+        entries = { entries }
       end
-      if process_result(entry) then
-        return
+      for _, entry in ipairs(entries) do
+        -- line_num = line_num + 1
+        -- local entry = entry_maker(line)
+        -- if entry then
+        --   entry.index = line_num
+        -- end
+        if process_result(entry) then
+          return
+        end
       end
     end
 
@@ -73,7 +78,23 @@ return function(opts)
   end
 
   return setmetatable({
+    name = "job",
+    -- time_start = function()
+    --   if job then
+    --     return job.time_start
+    --   end
+    -- end,
+    -- cmd = function()
+    --   if job then
+    --     return { command = job.command, args = job.args }
+    --   end
+    -- end,
     close = function()
+      if job then
+        job:close(true)
+      end
+    end,
+    stop_read = function()
       if job then
         job:close(true)
       end

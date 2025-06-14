@@ -21,6 +21,7 @@ local cfg = {
   end,
   triggers = {
     { "<leader>", mode = { "n", "v" } },
+    { "go", mode = { "n", "v" } },
     -- { "<auto>", mode = "nxso" },
     -- { "<auto>", mode = "nixsotc" },
   },

@@ -58,9 +58,9 @@
 --- at the code in make_entry.lua.
 ---@brief ]]
 
-local strings = require "plenary.strings"
-local state = require "telescope.state"
-local resolve = require "telescope.config.resolve"
+local strings = require("plenary.strings")
+local state = require("telescope.state")
+local resolve = require("telescope.config.resolve")
 
 local entry_display = {}
 entry_display.truncate = strings.truncate
@@ -73,9 +73,12 @@ entry_display.create = function(configuration)
       local width
       table.insert(generator, function(item)
         if width == nil then
-          local status = state.get_status(vim.F.if_nil(configuration.prompt_bufnr, vim.api.nvim_get_current_buf()))
+          local status = state.get_status(
+            vim.F.if_nil(configuration.prompt_bufnr, vim.api.nvim_get_current_buf())
+          )
           local s = {}
-          s[1] = vim.api.nvim_win_get_width(status.layout.results.winid) - #status.picker.selection_caret
+          s[1] = vim.api.nvim_win_get_width(status.layout.results.winid)
+            - #status.picker.selection_caret
           s[2] = vim.api.nvim_win_get_height(status.layout.results.winid)
           width = resolve.resolve_width(v.width)(nil, s[1], s[2])
         end
@@ -111,7 +114,10 @@ entry_display.create = function(configuration)
 
           if type(hl) == "function" then
             for _, hl_res in ipairs(hl()) do
-              table.insert(highlights, { { hl_res[1][1] + hl_start, hl_res[1][2] + hl_start }, hl_res[2] })
+              table.insert(
+                highlights,
+                { { hl_res[1][1] + hl_start, hl_res[1][2] + hl_start }, hl_res[2] }
+              )
             end
           else
             table.insert(highlights, { { hl_start, hl_end }, hl })
@@ -122,15 +128,24 @@ entry_display.create = function(configuration)
       end
     end
 
-    if configuration.separator_hl then
-      local width = #configuration.separator or 1
+    -- if configuration.separator_hl then
+    --   local width = #configuration.separator or 1
 
-      local hl_start, hl_end
-      for _, v in ipairs(results) do
-        hl_start = (hl_end or 0) + #tostring(v)
-        hl_end = hl_start + width
-        table.insert(highlights, { { hl_start, hl_end }, configuration.separator_hl })
-      end
+    --   local hl_start, hl_end
+    --   for _, v in ipairs(results) do
+    --     hl_start = (hl_end or 0) + #tostring(v)
+    --     hl_end = hl_start + width
+    --     table.insert(highlights, { { hl_start, hl_end }, configuration.separator_hl })
+    --   end
+    -- end
+    configuration.separator_hl =
+      vim.F.if_nil(configuration.separator_hl, "TelescopeResultsEntrySeparator")
+    local width = #configuration.separator or 1
+    local hl_start, hl_end
+    for _, v in ipairs(results) do
+      hl_start = (hl_end or 0) + #tostring(v)
+      hl_end = hl_start + width
+      table.insert(highlights, { { hl_start, hl_end }, configuration.separator_hl })
     end
 
     local final_str = table.concat(results, configuration.separator or "│")
@@ -151,7 +166,7 @@ end
 entry_display.resolve = function(self, entry)
   local display, display_highlights
   if type(entry.display) == "function" then
-    self:_increment "display_fn"
+    self:_increment("display_fn")
     display, display_highlights = entry:display(self)
 
     if type(display) == "string" then

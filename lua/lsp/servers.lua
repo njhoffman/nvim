@@ -134,7 +134,7 @@ require("mason-lspconfig").setup_handlers({
   ["bashls"] = function()
     lspconfig.bashls.setup({
       root_dir = util.root_pattern(".project", ".git"),
-      filetypes = { "sh", "zsh", "bash" },
+      filetypes = { "sh", "bash" },
       logLevel = "debug", -- debug, info, warn, error
       includeAllWorkspaceSymbols = true,
       cmd_env = {

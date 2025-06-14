@@ -160,6 +160,12 @@ local pickers = {
   },
   buffers = {
     -- debounce = 100,
+    path_display = {
+      tail = true,
+      truncate = true,
+    },
+
+    -- path_display = require("configs.telescope.filename-first"),
     prompt_prefix = icons.buffer,
     show_all_buffers = true,
     sort_mru = true,
@@ -229,7 +235,14 @@ local pickers = {
     }),
     layout_config = { horizontal = { height = 0.99 } },
     -- add commit time (%cr) & `--all`
-    git_command = { "git", "log", "--all", "--pretty=%h %s\t%cr", "--", "." },
+    git_command = {
+      "git",
+      "log",
+      "--all",
+      "--pretty=%h %s\t%cr",
+      "--",
+      ".",
+    },
     -- previewer = c_previewers.delta,
   },
   git_branches = {
@@ -238,9 +251,9 @@ local pickers = {
     show_remote_tracking_branches = true,
     previewer = require("telescope.previewers").new_termopen_previewer({
       get_command = function(entry)
+        -- --graph is too expensive
         return {
           "git",
-          "--no-pager",
           "log",
           "--max-count",
           "150",
@@ -255,7 +268,8 @@ local pickers = {
           return
         end
 
-        local input = direction > 0 and [[�]] or [[�]]
+        local input =
+          vim.api.nvim_replace_termcodes(direction > 0 and "<C-e>" or "<C-y>", true, false, true)
         local count = math.abs(direction)
 
         vim.api.nvim_buf_call(self.state.termopen_bufnr, function()

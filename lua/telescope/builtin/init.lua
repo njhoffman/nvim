@@ -33,7 +33,8 @@ local function require_on_exported_call(mod)
   return setmetatable({}, {
     __index = function(_, picker)
       return function(...)
-        return require(mod)[picker](...)
+        local opts = vim.tbl_deep_extend("force", ..., { __name = "builtin." .. picker })
+        return require(mod)[picker](opts)
       end
     end,
   })
@@ -106,7 +107,8 @@ builtin.treesitter = require_on_exported_call("telescope.builtin.__files").trees
 ---@field skip_empty_lines boolean: if true we don't display empty lines (default: false)
 ---@field results_ts_highlight boolean: highlight result entries with treesitter (default: true)
 ---@field file_encoding string: file encoding for the previewer
-builtin.current_buffer_fuzzy_find = require_on_exported_call("telescope.builtin.__files").current_buffer_fuzzy_find
+builtin.current_buffer_fuzzy_find =
+  require_on_exported_call("telescope.builtin.__files").current_buffer_fuzzy_find
 
 --- Lists tags in current directory with tag location file preview (users are required to run ctags -R to generate tags
 --- or update when introducing new changes)
@@ -127,7 +129,8 @@ builtin.tags = require_on_exported_call("telescope.builtin.__files").tags
 ---@field show_kind boolean: if true and kind info is available, show the kind of the tag (default: true)
 ---@field only_sort_tags boolean: if true we will only sort tags (default: false)
 ---@field fname_width number: defines the width of the filename section (default: 30)
-builtin.current_buffer_tags = require_on_exported_call("telescope.builtin.__files").current_buffer_tags
+builtin.current_buffer_tags =
+  require_on_exported_call("telescope.builtin.__files").current_buffer_tags
 
 --
 --
@@ -242,6 +245,8 @@ builtin.git_stash = require_on_exported_call("telescope.builtin.__git").stash
 ---@param opts table: options to pass to the picker
 ---@field include_extensions boolean: if true will show the pickers of the installed extensions (default: false)
 ---@field use_default_opts boolean: if the selected picker should use its default options (default: false)
+---@field type_filter string|table: comma-separated string or string list argument to be used with `--type`, e.g. "rust", see `rg --type-list`
+---@field title string: the title of the picker (default: "Telescope Builtin")
 builtin.builtin = require_on_exported_call("telescope.builtin.__internal").builtin
 
 --- Opens the previous picker in the identical state (incl. multi selections)
@@ -249,6 +254,7 @@ builtin.builtin = require_on_exported_call("telescope.builtin.__internal").built
 ---   - Requires `cache_picker` in setup or when having invoked pickers, see |telescope.defaults.cache_picker|
 ---@param opts table: options to pass to the picker
 ---@field cache_index number: what picker to resume, where 1 denotes most recent (default: 1)
+---@field select_pos number: select the entry that position is specified by this value and do `actions.select_default` (default: nil)
 builtin.resume = require_on_exported_call("telescope.builtin.__internal").resume
 
 --- Opens a picker over previously cached pickers in their preserved states (incl. multi selections)
@@ -332,6 +338,7 @@ builtin.help_tags = require_on_exported_call("telescope.builtin.__internal").hel
 --- Lists manpage entries, opens them in a help window on `<cr>`
 ---@param opts table: options to pass to the picker
 ---@field sections table: a list of sections to search, use `{ "ALL" }` to search in all sections (default: { "1" })
+---@field cword boolean: list man pages for word under cursor (default: false)
 ---@field man_cmd function: that returns the man command. (Default: `apropos ""` on linux, `apropos " "` on macos)
 builtin.man_pages = require_on_exported_call("telescope.builtin.__internal").man_pages
 
@@ -355,6 +362,7 @@ builtin.reloader = require_on_exported_call("telescope.builtin.__internal").relo
 ---@field file_encoding string: file encoding for the previewer
 ---@field sort_buffers function: sort fn(bufnr_a, bufnr_b). true if bufnr_a should go first. Runs after sorting by most recent (if specified)
 ---@field select_current boolean: select current buffer (default: false)
+---@field disable_coordinates boolean: don't show line number (default: false)
 builtin.buffers = require_on_exported_call("telescope.builtin.__internal").buffers
 
 --- Lists available colorschemes and applies them on `<cr>`
@@ -368,6 +376,8 @@ builtin.colorscheme = require_on_exported_call("telescope.builtin.__internal").c
 ---@param opts table: options to pass to the picker
 ---@field file_encoding string: file encoding for the previewer
 ---@field mark_type string: filter marks by type (default: "all", options: "all"|"global"|"local")
+---@field cwd string: specify a working directory to filter marks list by
+---@field cwd_only boolean: if true, only show marks in the current working directory (default: fal
 builtin.marks = require_on_exported_call("telescope.builtin.__internal").marks
 
 --- Lists vim registers, pastes the contents of the register on `<cr>`
@@ -499,7 +509,8 @@ builtin.lsp_document_symbols = require_on_exported_call("telescope.builtin.__lsp
 ---@field ignore_symbols string|table: list of symbols to ignore
 ---@field symbol_highlights table: string -> string. Matches symbol with hl_group
 ---@field file_encoding string: file encoding for the previewer
-builtin.lsp_workspace_symbols = require_on_exported_call("telescope.builtin.__lsp").workspace_symbols
+builtin.lsp_workspace_symbols =
+  require_on_exported_call("telescope.builtin.__lsp").workspace_symbols
 
 --- Dynamically lists LSP for all workspace symbols
 --- - Default keymaps:
@@ -511,7 +522,8 @@ builtin.lsp_workspace_symbols = require_on_exported_call("telescope.builtin.__ls
 ---@field ignore_symbols string|table: list of symbols to ignore
 ---@field symbol_highlights table: string -> string. Matches symbol with hl_group
 ---@field file_encoding string: file encoding for the previewer
-builtin.lsp_dynamic_workspace_symbols = require_on_exported_call("telescope.builtin.__lsp").dynamic_workspace_symbols
+builtin.lsp_dynamic_workspace_symbols =
+  require_on_exported_call("telescope.builtin.__lsp").dynamic_workspace_symbols
 
 --
 --
@@ -539,6 +551,7 @@ builtin.lsp_dynamic_workspace_symbols = require_on_exported_call("telescope.buil
 ---@field namespace number: limit your diagnostics to a specific namespace
 ---@field disable_coordinates boolean: don't show the line & row numbers (default: false)
 ---@field sort_by string: sort order of the diagnostics results; see above notes (default: "buffer")
+---@field show_source boolean: show source of diagnostic entries (default: false)
 builtin.diagnostics = require_on_exported_call("telescope.builtin.__diagnostics").get
 
 local apply_config = function(mod)

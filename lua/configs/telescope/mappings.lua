@@ -103,7 +103,20 @@ local main_maps = {
   -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set [S-F1-9] = add/remove secondary sort #
   -- [??] = clear sort
 }
-
+local fzf_maps = {
+  n = {
+    ["q"] = actions.close,
+    ["down"] = "down",
+    ["up"] = "up",
+    ["ctrl-c"] = "abort",
+    ["ctrl-a"] = "toggle-all",
+    ["ctrl-q"] = "select-all+accept",
+    ["f3"] = "toggle-preview-wrap",
+    ["f4"] = "toggle-preview",
+    ["ctrl-d"] = "preview-page-down",
+    ["ctrl-u"] = "preview-page-up",
+  },
+}
 local grep_maps = {
   i = {
     -- change directory functionality

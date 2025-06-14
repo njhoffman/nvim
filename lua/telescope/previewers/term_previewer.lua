@@ -1,9 +1,9 @@
 local conf = require("telescope.config").values
-local utils = require "telescope.utils"
-local Path = require "plenary.path"
-local from_entry = require "telescope.from_entry"
-local Previewer = require "telescope.previewers.previewer"
-local putil = require "telescope.previewers.utils"
+local utils = require("telescope.utils")
+local Path = require("plenary.path")
+local from_entry = require("telescope.from_entry")
+local Previewer = require("telescope.previewers.previewer")
+local putil = require("telescope.previewers.utils")
 
 local defaulter = utils.make_default_callable
 
@@ -11,14 +11,14 @@ local previewers = {}
 
 -- TODO: Should play with these some more, ty @clason
 local bat_options = { "--style=plain", "--color=always", "--paging=always" }
-local has_less = (vim.fn.executable "less" == 1) and conf.use_less
+local has_less = (vim.fn.executable("less") == 1) and conf.use_less
 
 local get_file_stat = function(filename)
   return vim.loop.fs_stat(utils.path_expand(filename)) or {}
 end
 
 local list_dir = (function()
-  if vim.fn.has "win32" == 1 then
+  if vim.fn.has("win32") == 1 then
     return function(dirname)
       return { "cmd.exe", "/c", "dir", utils.path_expand(dirname) }
     end
@@ -52,12 +52,12 @@ local bat_maker = function(filename, lnum, start, finish)
     end
   end
 
-  return utils.flatten {
+  return utils.flatten({
     command,
     bat_options,
     "--",
     utils.path_expand(filename),
-  }
+  })
 end
 
 local cat_maker = function(filename, _, start, _)
@@ -65,7 +65,7 @@ local cat_maker = function(filename, _, start, _)
     return list_dir(filename)
   end
 
-  if 1 == vim.fn.executable "file" then
+  if 1 == vim.fn.executable("file") then
     local mime_type = utils.get_os_command_output({ "file", "--mime-type", "-b", filename })[1]
     if putil.binary_mime_type(mime_type) then
       return { "echo", "Binary file found. These files cannot be displayed!" }
@@ -89,14 +89,14 @@ end
 
 local get_maker = function(opts)
   local maker = opts.maker
-  if not maker and 1 == vim.fn.executable "bat" then
+  if not maker and 1 == vim.fn.executable("bat") then
     maker = bat_maker
-  elseif not maker and 1 == vim.fn.executable "cat" then
+  elseif not maker and 1 == vim.fn.executable("cat") then
     maker = cat_maker
   end
 
   if not maker then
-    error "Needs maker"
+    error("Needs maker")
   end
 
   return maker
@@ -222,7 +222,10 @@ previewers.new_termopen_previewer = function(opts)
           return
         end
 
-        vim.fn.chansend(term_id, termcode)
+        -- vim.fn.chansend(term_id, termcode)
+        vim.fn.chansend(term_id, termcode .. (utils.is_windows() and "\r\n" or ""))
+        -- vim.fn.chansend(term_id, termcode .. (utils.is_windows() and "\r\n" or ""))
+        -- vim.api.nvim_buf_call(self.state.termopen_bufnr, function() vim.cmd("normal! G") end)
       end
     end
   end
@@ -249,7 +252,7 @@ previewers.cat = defaulter(function(opts)
   local maker = get_maker(opts)
   local cwd = opts.cwd or vim.loop.cwd()
 
-  return previewers.new_termopen_previewer {
+  return previewers.new_termopen_previewer({
     title = "File Preview",
     dyn_title = function(_, entry)
       return Path:new(from_entry.path(entry, false, false)):normalize(cwd)
@@ -263,7 +266,7 @@ previewers.cat = defaulter(function(opts)
 
       return maker(p)
     end,
-  }
+  })
 end, {})
 
 previewers.vimgrep = defaulter(function(opts)
@@ -272,7 +275,7 @@ previewers.vimgrep = defaulter(function(opts)
   local maker = get_maker(opts)
   local cwd = opts.cwd or vim.loop.cwd()
 
-  return previewers.new_termopen_previewer {
+  return previewers.new_termopen_previewer({
     title = "Grep Preview",
     dyn_title = function(_, entry)
       return Path:new(from_entry.path(entry, false, false)):normalize(cwd)
@@ -286,7 +289,10 @@ previewers.vimgrep = defaulter(function(opts)
       if p == nil or p == "" then
         return
       end
-      if entry.bufnr and (p == "[No Name]" or vim.api.nvim_buf_get_option(entry.bufnr, "buftype") ~= "") then
+      if
+        entry.bufnr
+        and (p == "[No Name]" or vim.api.nvim_buf_get_option(entry.bufnr, "buftype") ~= "")
+      then
         return
       end
 
@@ -298,7 +304,7 @@ previewers.vimgrep = defaulter(function(opts)
 
       return maker(p, lnum, start, finish)
     end,
-  }
+  })
 end, {})
 
 previewers.qflist = defaulter(function(opts)
@@ -307,7 +313,7 @@ previewers.qflist = defaulter(function(opts)
   local maker = get_maker(opts)
   local cwd = opts.cwd or vim.loop.cwd()
 
-  return previewers.new_termopen_previewer {
+  return previewers.new_termopen_previewer({
     title = "Grep Preview",
     dyn_title = function(_, entry)
       return Path:new(from_entry.path(entry, false, false)):normalize(cwd)
@@ -335,7 +341,7 @@ previewers.qflist = defaulter(function(opts)
 
       return maker(p, lnum, start, finish)
     end,
-  }
+  })
 end, {})
 
 return previewers

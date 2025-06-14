@@ -1,4 +1,4 @@
-local keymap = require('mapper').map
+local keymap = require("mapper").map
 -- local keymap = vim.keymap.set
 -- local filetypes = require('configs.debugprint.filetypes')
 
@@ -18,61 +18,61 @@ local setup_debugprint = function()
     -- got, goa
   }
 
-  keymap('n', keys.remove, function(opts)
-    require('debugprint').deleteprints(opts)
+  keymap("n", keys.remove, function(opts)
+    require("debugprint").deleteprints(opts)
   end, {
-    label = '󰹝 delete debug',
-    desc = '󰹝 delete debug statements in buffer',
+    label = "󰹝 delete debug",
+    desc = "󰹝 delete debug statements in buffer",
     range = true,
   })
 
   -- Note: setting `expr=true` and returning the value are essential
-  keymap({ 'n', 'x' }, keys.variable_below, function()
-    return require('debugprint').debugprint({ variable = true })
+  keymap({ "n", "x" }, keys.variable_below, function()
+    return require("debugprint").debugprint({ variable = true })
   end, {
     expr = true,
-    label = ' [i]nspect var below',
-    desc = ' [i]nspect variable below cursor or await typed expression',
+    label = " [i]nspect var below",
+    desc = " [i]nspect variable below cursor or await typed expression",
   })
 
-  keymap({ 'n', 'x' }, keys.variable_above, function()
-    return require('debugprint').debugprint({ variable = true, above = true })
+  keymap({ "n", "x" }, keys.variable_above, function()
+    return require("debugprint").debugprint({ variable = true, above = true })
   end, {
     expr = true,
-    label = ' [i]nspect var above',
-    desc = ' [i]nspect variable above cursor or await typed expression',
+    label = " [i]nspect var above",
+    desc = " [i]nspect variable above cursor or await typed expression",
   })
 
-  keymap('n', keys.operator_below, function()
-    return require('debugprint').debugprint({ motion = true })
+  keymap("n", keys.operator_below, function()
+    return require("debugprint").debugprint({ motion = true })
   end, {
     expr = true,
-    label = ' inspect operator above',
-    desc = ' inspect variable below with operator',
+    label = " inspect operator above",
+    desc = " inspect variable below with operator",
   })
 
-  keymap('n', keys.operator_above, function()
-    return require('debugprint').debugprint({ motion = true, above = true })
+  keymap("n", keys.operator_above, function()
+    return require("debugprint").debugprint({ motion = true, above = true })
   end, {
     expr = true,
-    label = ' inspect operator above',
-    desc = ' inspect variable above with operator',
+    label = " inspect operator above",
+    desc = " inspect variable above with operator",
   })
 
-  keymap('n', keys.message_below, function()
-    return require('debugprint').debugprint()
+  keymap("n", keys.message_below, function()
+    return require("debugprint").debugprint()
   end, {
     expr = true,
-    label = ' print message below',
-    desc = ' print custom message below',
+    label = " print message below",
+    desc = " print custom message below",
   })
 
-  keymap('n', keys.message_above, function()
-    return require('debugprint').debugprint({ above = true })
+  keymap("n", keys.message_above, function()
+    return require("debugprint").debugprint({ above = true })
   end, {
     expr = true,
-    label = ' print message above',
-    desc = ' print custom message above',
+    label = " print message above",
+    desc = " print custom message above",
   })
 
   -- local contextprint = require('debugprint.contextprint')
@@ -168,7 +168,7 @@ local setup_printing_press = function()
     function() require(pp_path).assertLog() end, { desc = " assert log" })
 
   keymap("n", keys.remove,
-    function() require(pp_path).removeLogs() end, { desc = "󰹝 remove log" })
+    function() require(pp_path).removeLogs() end, { desc = "󰹝 remove log statements in buffer" })
 
   keymap("n", keys.quickfix,
     function() require(pp_path).quickfix(false, 'project') end, { desc = "󰹝 quickfix log markers in project" })

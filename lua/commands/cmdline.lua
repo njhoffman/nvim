@@ -68,13 +68,15 @@ local function escape_key(key)
 end
 
 local function open_cmdline_with_path(path)
+  path = vim.fn.match(path:sub(1, 1), "\\v(/|:|\\?)") and path or ":" .. path
   local escaped =
-    vim.api.nvim_replace_termcodes(": " .. vim.fn.fnameescape(path) .. "<Home>", true, false, true)
+    vim.api.nvim_replace_termcodes(vim.fn.fnameescape(path) .. "<Home>", true, false, true)
   vim.api.nvim_feedkeys(escaped, "n", false)
 end
 
 local keys = {
   enter = escape_key("<cr>"),
+  clear = escape_key("<C-u>"),
   cancel = escape_key("<C-c>"),
   escape = escape_key("<esc>"),
 }
@@ -85,7 +87,7 @@ local open_last_search = function(reverse)
   local last_search = vim.fn.histget("search", -1)
   local fullpath = reverse and "?" or "/" .. last_search
   if cmdtype ~= "" or cmdline ~= "" then
-    vim.api.nvim_feedkeys(keys.cancel, "n", false)
+    vim.api.nvim_feedkeys(keys.clear, "n", false)
   end
   -- vim.api.nvim_feedkeys(fullpath, 'n', true)
   -- vim.api.nvim_feedkeys(keys.enter, "n", false)
@@ -118,9 +120,12 @@ local toggle = function()
     "%:smagic",
     "%:sno",
     "%:snomagic",
-  } -- '%:g', '%:v', '%:m',
+  }
+  -- '%:g', '%:v', '%:m',
 
   local is_search = cmdtype == "/" or cmdtype == "?"
+  local is_global = cmdtype == ":g" or cmdtype == ":v" or cmdtype == ":m"
+
   local is_substitute = false
   for _, pfx in ipairs(subs_prefixes) do
     if string.sub(cmdline, 1, #pfx) == pfx then
@@ -135,9 +140,13 @@ local toggle = function()
     vim.api.nvim_set_option_value("inccommand", new_inc, { scope = "global" })
     vim.dbglog("inccommand: " .. vim.o.inccommand)
   end
+
   if is_search then
     -- TODO: toggle between search and very magic modes
     -- elseif string.sub(cmdline, 1, 3) == 'vim' then
+    -- new_cmdline = "lua " .. cmdline
+    toggle_inccommand()
+  elseif is_global then
     toggle_inccommand()
   elseif is_substitute then
     toggle_inccommand()

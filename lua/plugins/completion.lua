@@ -44,6 +44,7 @@ local plugins = {
       "dmitmel/cmp-cmdline-history",
       "f3fora/cmp-spell",
       "hrsh7th/cmp-calc",
+      "quangnguyen30192/cmp-nvim-tags",
       "hrsh7th/cmp-cmdline",
       "hrsh7th/cmp-emoji",
       "hrsh7th/cmp-nvim-lsp-document-symbol",

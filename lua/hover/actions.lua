@@ -1,5 +1,5 @@
 local vim = vim
-local state = require('hover.state')
+local state = require("hover.state")
 local M = {}
 
 -- open up a select box with all available providers
@@ -7,7 +7,7 @@ local change_tab = function(direction)
   local max_idx = #vim.tbl_keys(state.enabled)
   local next_idx = nil
   local i = 1
-  if direction == 'right' then
+  if direction == "right" then
     if state.curr_idx + 1 > max_idx then
       next_idx = 1
     else
@@ -34,39 +34,37 @@ local change_tab = function(direction)
     i = i + 1
   end
   state.curr_idx = next_idx
-  require('hover.providers').load_provider(next_provider)
+  require("hover.providers").load_provider(next_provider)
 end
 
 M.change_tab_left = function()
-  change_tab('left')
+  change_tab("left")
 end
 
 M.change_tab_right = function()
-  change_tab('right')
+  change_tab("right")
 end
 
-local scroll_up = vim.api.nvim_replace_termcodes('<Up>', true, false, true)
-local scroll_down = vim.api.nvim_replace_termcodes('<Down>', true, false, true)
-local scroll_page_up = vim.api.nvim_replace_termcodes('<C-b>', true, false, true)
-local scroll_page_down = vim.api.nvim_replace_termcodes('<C-f>', true, false, true)
+local scroll_up = vim.api.nvim_replace_termcodes("<Up>", true, false, true)
+local scroll_down = vim.api.nvim_replace_termcodes("<Down>", true, false, true)
 
 local scroll_float = function(scroll_key)
   if not state.winnr or not vim.api.nvim_win_is_valid(state.winnr) then
     return scroll_key
   end
   local linenr = vim.api.nvim_win_get_cursor(state.winnr)[1]
-  local scrolloff = vim.api.nvim_get_option_value('scrolloff', { win = state.winnr })
+  local scrolloff = vim.api.nvim_get_option_value("scrolloff", { win = state.winnr })
   local bufheight = vim.api.nvim_buf_line_count(state.bufnr)
   if linenr < scrolloff then
-    vim.fn.win_execute(state.winnr, 'normal! ' .. (scrolloff - linenr) .. scroll_down)
+    vim.fn.win_execute(state.winnr, "normal! " .. (scrolloff - linenr) .. scroll_down)
   end
-  if scroll_key == scroll_up then
-    if linenr > scrolloff then
-      vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
+  if scroll_key == scroll_down then
+    if linenr < bufheight - scrolloff then
+      vim.fn.win_execute(state.winnr, "normal! " .. scroll_key)
     end
   else
-    if linenr < bufheight - scrolloff then
-      vim.fn.win_execute(state.winnr, 'normal! ' .. scroll_key)
+    if linenr > scrolloff then
+      vim.fn.win_execute(state.winnr, "normal! " .. scroll_key)
     end
   end
 end
@@ -104,8 +102,8 @@ M.scroll_page_down = function()
 end
 
 M.toggle_wrap = function()
-  local wrap = vim.api.nvim_get_option_value('wrap', { win = state.winnr })
-  vim.api.nvim_set_option_value('wrap', not wrap, { win = state.winnr })
+  local wrap = vim.api.nvim_get_option_value("wrap", { win = state.winnr })
+  vim.api.nvim_set_option_value("wrap", not wrap, { win = state.winnr })
 end
 
 M.toggle_full_size = function()
@@ -116,7 +114,7 @@ M.toggle_full_size = function()
     new_w = winwidth == state.width_full and state.width or state.width_full,
     new_h = state.height,
   }
-  require('hover.ui').resize_window(dims)
+  require("hover.ui").resize_window(dims)
 end
 
 M.toggle_min_size = function()
@@ -129,7 +127,7 @@ M.toggle_min_size = function()
     new_w = is_minimized and state.width or state.width_minimized,
     new_h = is_minimized and state.height or state.height_minimized,
   }
-  require('hover.ui').resize_window(dims)
+  require("hover.ui").resize_window(dims)
 end
 
 return M

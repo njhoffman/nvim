@@ -357,10 +357,16 @@ map(
 )
 
 --  'o<Esc>j'  'm`O<Esc>``'
+map("n", "<CR>", "o<Esc>", {
+  category = "Buffers",
+  label = "󰽙 insert new line below",
+  desc = "󰽙 insert new line below without leaving normal mode",
+})
+
 map("n", "<S-CR>", "O<Esc>", {
   category = "Buffers",
-  label = "󰽙 insert new line",
-  desc = "󰽙 insert new line without leaving insert mode",
+  label = "󰽙 insert new line above",
+  desc = "󰽙 insert new line above without leaving normal mode",
 })
 
 map("n", "<BS>", "<cmd>AltLoad<cr>", {
@@ -1123,7 +1129,7 @@ map('i', '<M-d>', '<cmd>norm d$<cr>', {
 --------------------------------------------------------------------------------------------------
 -- UI --------------------------------------------------------------------------------------------
 
-map('n', '<esc>', '<cmd>noh<cr> | <cmd>call smoothie#stop()<cr>', {
+map('n', '<esc>', '<cmd>noh<cr> | <cmd>call smoothie#stop()<cr> | <cmd>lua MiniJump.stop_jumping()<cr>', {
   category = 'UI',
   nowait = true,
   desc = 'remove highlights and stop scrolling',
@@ -1132,7 +1138,7 @@ map('n', '<esc>', '<cmd>noh<cr> | <cmd>call smoothie#stop()<cr>', {
 map(
   'n',
   '<M-c>',
-  '<cmd>noh<cr> | <cmd>ClosePopups<cr> |  <cmd>lua require("flash.util").exit()<cr>',
+  '<cmd>noh<cr> | <cmd>ClosePopups<cr> |  <cmd>lua require("flash.util").exit()<cr> | <cmd>lua MiniJump.stop_jumping()<cr>',
   { category = 'UI', desc = 'remove hls, close popups and refresh' }
 )
 

@@ -182,6 +182,7 @@ function NotifyView:show()
       content = self:content(),
       messages = self._messages,
     })
+    -- require('noice.view.backend.notify.merge')(self._messages)
   else
     for _, m in ipairs(self._messages) do
       table.insert(todo, {
@@ -196,6 +197,7 @@ function NotifyView:show()
   self:clear()
 
   for _, msg in ipairs(todo) do
+    require("noice.view.backend.notify.logfile")(msg.level, msg.content)
     self:_notify(msg)
   end
 end

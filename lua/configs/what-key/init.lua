@@ -203,8 +203,8 @@ local config = {
     options_menu = '<F2>',       -- launch options menu
     launch_wk    = '<F1>',       -- launch which-key manually
     help_menu    = '<M-C-_>',    -- binding to scroll down inside the popup
-    scroll_down  = '<C-S-Down>', -- binding to scroll down inside the popup
-    scroll_up    = '<C-S-Up>',   -- binding to scroll up inside the popup
+    scroll_down  = '<M-S-Down>', -- binding to scroll down inside the popup
+    scroll_up    = '<M-S-Up>',   -- binding to scroll up inside the popup
     page_down    = '<M-f>',      -- binding to scroll down inside the popup
     page_up      = '<M-b>',      -- binding to scroll up inside the popup
   },

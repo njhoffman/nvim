@@ -18,7 +18,6 @@ syntax case match
 
 if exists('b:current_syntax')
   let s:current_syntax = b:current_syntax
-  unlet b:current_syntax
 endif
 
 if exists('s:current_syntax')

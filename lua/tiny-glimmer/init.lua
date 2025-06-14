@@ -288,42 +288,41 @@ function M.custom_remap(map, mode, callback)
 end
 
 local function setup_hijacks()
-    -- stylua: ignore start
-    if M.config.overwrite.auto_map then
-        local search_config = M.config.overwrite.search
-        if search_config.enabled then
-            M.custom_remap(search_config.next_mapping, "n", function() require("tiny-glimmer").search_next() end)
-            M.custom_remap(search_config.prev_mapping, "n", function() require("tiny-glimmer").search_prev() end)
-            M.custom_remap(search_config.next_under_cursor_mapping, "n", function() require("tiny-glimmer").search_under_cursor() end)
-            M.custom_remap(search_config.prev_under_cursor_mapping, "n", function() require("tiny-glimmer").search_under_cursor() end)
+  -- stylua: ignore start
+  if M.config.overwrite.auto_map then
+    local search_config = M.config.overwrite.search
+    if search_config.enabled then
+      M.custom_remap(search_config.next_mapping, "n", function() require("tiny-glimmer").search_next() end)
+      M.custom_remap(search_config.prev_mapping, "n", function() require("tiny-glimmer").search_prev() end)
+      M.custom_remap(search_config.next_under_cursor_mapping, "n", function() require("tiny-glimmer").search_under_cursor() end)
+      M.custom_remap(search_config.prev_under_cursor_mapping, "n", function() require("tiny-glimmer").search_under_cursor() end)
 
-            if vim.opt.hlsearch then
-                local normal_hl = utils.get_highlight("Normal")
+      if vim.opt.hlsearch then
+        local normal_hl = utils.get_highlight("Normal")
 
-                vim.api.nvim_set_hl(0, "CurSearch", {
-                    bg = "None",
-                    fg = normal_hl.fg
-                })
-            end
-        end
-
-        local paste_config = M.config.overwrite.paste
-        if paste_config.enabled then
-            M.custom_remap(paste_config.paste_mapping, "n", function() require("tiny-glimmer").paste() end)
-            M.custom_remap(paste_config.Paste_mapping, "n", function() require("tiny-glimmer").Paste() end)
-        end
-
-        local undo_config = M.config.overwrite.undo
-        local redo_config = M.config.overwrite.redo
-        if undo_config.enabled then
-            M.custom_remap(undo_config.undo_mapping, "n", function() require("tiny-glimmer").undo() end)
-        end
-
-        if redo_config.enabled then
-      vim.dbglog('custom')
-            M.custom_remap(redo_config.redo_mapping, "n", function() require("tiny-glimmer").redo() end)
-        end
+        vim.api.nvim_set_hl(0, "CurSearch", {
+          bg = "None",
+          fg = normal_hl.fg
+        })
+      end
     end
+
+    local paste_config = M.config.overwrite.paste
+    if paste_config.enabled then
+      M.custom_remap(paste_config.paste_mapping, "n", function() require("tiny-glimmer").paste() end)
+      M.custom_remap(paste_config.Paste_mapping, "n", function() require("tiny-glimmer").Paste() end)
+    end
+
+    local undo_config = M.config.overwrite.undo
+    local redo_config = M.config.overwrite.redo
+    if undo_config.enabled then
+      M.custom_remap(undo_config.undo_mapping, "n", function() require("tiny-glimmer").undo() end)
+    end
+
+    if redo_config.enabled then
+      M.custom_remap(redo_config.redo_mapping, "n", function() require("tiny-glimmer").redo() end)
+    end
+  end
   -- stylua: ignore end
 end
 
@@ -542,7 +541,6 @@ M.undo = function()
       vim.log.levels.WARN
     )
   end
-  vim.dbglog("undo undo")
   overwrite.undo.undo(M.config.overwrite.undo)
 end
 

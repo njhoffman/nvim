@@ -29,7 +29,7 @@ local fancy_1 = {
 -- stylua: ignore
 local cfg = {
   type              = 'exp', -- Cursor movement calculation method, choose "default", "exp" (exponential) or "matrix".
-  always_redraw     = true, -- (true) always redraw screen on update
+  always_redraw     = false, -- (true) always redraw screen on update
   fancy             = fancy_1,
   threshold         = 5,     -- (3) Animate only if cursor moves more than this many lines
   flyin_effect      = 'bottom',   -- Choose "bottom" or "top" for flying effect

@@ -73,15 +73,33 @@ end
 local last_history_cmd = ""
 
 local cmdline = {
-  ["<M-}>"] = { c = toggle_docs },
+  ["<M-?>"] = { c = toggle_docs },
   ["<F37>"] = { c = toggle_docs },
-  ["<C-S-Down>"] = { i = mapping.scroll_docs(1) },
-  ["<C-S-Up>"] = { i = mapping.scroll_docs(-1) },
+  ["<M-S-Down>"] = { c = mapping.scroll_docs(1) },
+  ["<M-S-Up>"] = { c = mapping.scroll_docs(-1) },
   ["<C-e>"] = {
+    c = mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+  },
+  ["<C-Y>"] = mapping({
+    c = mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+  }),
+
+  ["<C-Space>"] = {
     c = function(fallback)
       if cmp.visible() then
         cmp.abort()
       elseif not cmp.complete() then
+        fallback()
+      end
+    end,
+  },
+
+  ["<M-'>"] = {
+    c = function(fallback)
+      if cmp.visible() then
+        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+      end
+      if type(fallback) == "function" then
         fallback()
       end
     end,
@@ -101,6 +119,7 @@ local cmdline = {
       preserve_mapping_verticality = true,
     }),
   },
+
   ["<Esc>"] = {
     c = function(fallback)
       if cmp.get_selected_entry() then
@@ -155,27 +174,6 @@ local cmdline = {
       feedkeys.call(keymap.t("<Down>"), "c")
     end,
   },
-  ["<M-'>"] = {
-    c = function(fallback)
-      if cmp.visible() then
-        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
-      end
-      if type(fallback) == "function" then
-        fallback()
-      end
-    end,
-  },
-
-  ["<C-Space>"] = {
-    c = function(fallback)
-      if cmp.visible() then
-        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
-      end
-      if type(fallback) == "function" then
-        fallback()
-      end
-    end,
-  },
 
   ["<M-BS>"] = {
     c = function(fallback)
@@ -187,9 +185,6 @@ local cmdline = {
       end
     end,
   },
-  ["<C-Y>"] = mapping({
-    c = mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-  }),
 
   ["<CR>"] = mapping(function(fallback)
     local opts = { confirm_opts = { behavior = cmp.ConfirmBehavior.Insert, select = false } }

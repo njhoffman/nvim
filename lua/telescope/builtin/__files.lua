@@ -1,16 +1,16 @@
-local action_state = require "telescope.actions.state"
-local action_set = require "telescope.actions.set"
-local actions = require "telescope.actions"
-local finders = require "telescope.finders"
-local make_entry = require "telescope.make_entry"
-local pickers = require "telescope.pickers"
-local previewers = require "telescope.previewers"
-local sorters = require "telescope.sorters"
-local utils = require "telescope.utils"
+local action_state = require("telescope.actions.state")
+local action_set = require("telescope.actions.set")
+local actions = require("telescope.actions")
+local finders = require("telescope.finders")
+local make_entry = require("telescope.make_entry")
+local pickers = require("telescope.pickers")
+local previewers = require("telescope.previewers")
+local sorters = require("telescope.sorters")
+local utils = require("telescope.utils")
 local conf = require("telescope.config").values
-local log = require "telescope.log"
+local log = require("telescope.log")
 
-local Path = require "plenary.path"
+local Path = require("plenary.path")
 
 local flatten = utils.flatten
 local filter = vim.tbl_filter
@@ -56,6 +56,28 @@ local has_rg_program = function(picker_name, program)
   return false
 end
 
+local get_qf_filelist = function(grep_qf, cwd)
+  if not grep_qf then
+    return nil
+  end
+
+  local qflist = vim.fn.getqflist()
+
+  local filelist = {}
+  local unique_files = {}
+  for _, item in ipairs(qflist) do
+    local file = vim.api.nvim_buf_get_name(item.bufnr)
+    if file and vim.fn.filereadable(file) == 1 then
+      local relpath = Path:new(file):make_relative(cwd)
+      if not unique_files[relpath] then
+        unique_files[relpath] = true
+        table.insert(filelist, relpath)
+      end
+    end
+  end
+  return filelist
+end
+
 local get_open_filelist = function(grep_open_files, cwd)
   if not grep_open_files then
     return nil
@@ -96,7 +118,15 @@ local opts_contain_invert = function(args)
         local vi = v:sub(i, i)
         if vi == "=" then -- ignore option -g=xxx
           break
-        elseif vi == "g" or vi == "f" or vi == "m" or vi == "e" or vi == "r" or vi == "t" or vi == "T" then
+        elseif
+          vi == "g"
+          or vi == "f"
+          or vi == "m"
+          or vi == "e"
+          or vi == "r"
+          or vi == "t"
+          or vi == "T"
+        then
           non_option = true
         elseif non_option == false and vi == "v" then
           invert = true
@@ -119,9 +149,11 @@ files.live_grep = function(opts)
   end
   local search_dirs = opts.search_dirs
   local grep_open_files = opts.grep_open_files
+  local qf_files = opts.quickfix_files
   opts.cwd = opts.cwd and utils.path_expand(opts.cwd) or vim.loop.cwd()
 
   local filelist = get_open_filelist(grep_open_files, opts.cwd)
+  local qf_file_list = get_qf_filelist(qf_files, opts.cwd)
   if search_dirs then
     for i, path in ipairs(search_dirs) do
       search_dirs[i] = utils.path_expand(path)
@@ -138,7 +170,13 @@ files.live_grep = function(opts)
   end
 
   if opts.type_filter then
-    additional_args[#additional_args + 1] = "--type=" .. opts.type_filter
+    local file_types = opts.type_filter
+    if type(opts.type_filter) == "string" then
+      file_types = vim.split(opts.type_filter, ",", { trimempty = true })
+    end
+    for _, file_type in ipairs(file_types) do
+      additional_args[#additional_args + 1] = "--type=" .. file_type
+    end
   end
 
   if type(opts.glob_pattern) == "string" then
@@ -153,7 +191,7 @@ files.live_grep = function(opts)
     additional_args[#additional_args + 1] = "--encoding=" .. opts.file_encoding
   end
 
-  local args = flatten { vimgrep_arguments, additional_args }
+  local args = flatten({ vimgrep_arguments, additional_args })
   opts.__inverted, opts.__matches = opts_contain_invert(args)
 
   local live_grepper = finders.new_job(function(prompt)
@@ -165,11 +203,13 @@ files.live_grep = function(opts)
 
     if grep_open_files then
       search_list = filelist
+    elseif qf_files then
+      search_list = qf_file_list
     elseif search_dirs then
       search_list = search_dirs
     end
 
-    return flatten { args, "--", prompt, search_list }
+    return flatten({ args, "--", prompt, search_list })
   end, opts.entry_maker or make_entry.gen_from_vimgrep(opts), opts.max_results, opts.cwd)
 
   pickers
@@ -198,13 +238,13 @@ files.grep_string = function(opts)
   local visual = vim.fn.mode() == "v"
 
   if visual == true then
-    local saved_reg = vim.fn.getreg "v"
-    vim.cmd [[noautocmd sil norm! "vy]]
-    local sele = vim.fn.getreg "v"
+    local saved_reg = vim.fn.getreg("v")
+    vim.cmd([[noautocmd sil norm! "vy]])
+    local sele = vim.fn.getreg("v")
     vim.fn.setreg("v", saved_reg)
     word = vim.F.if_nil(opts.search, sele)
   else
-    word = vim.F.if_nil(opts.search, vim.fn.expand "<cword>")
+    word = vim.F.if_nil(opts.search, vim.fn.expand("<cword>"))
   end
 
   word = tostring(word)
@@ -226,18 +266,18 @@ files.grep_string = function(opts)
 
   local args
   if visual == true then
-    args = flatten {
+    args = flatten({
       vimgrep_arguments,
       additional_args,
       search_args,
-    }
+    })
   else
-    args = flatten {
+    args = flatten({
       vimgrep_arguments,
       additional_args,
       opts.word_match,
       search_args,
-    }
+    })
   end
 
   opts.__inverted, opts.__matches = opts_contain_invert(args)
@@ -271,15 +311,15 @@ files.find_files = function(opts)
         return opts.find_command(opts)
       end
       return opts.find_command
-    elseif 1 == vim.fn.executable "rg" then
+    elseif 1 == vim.fn.executable("rg") then
       return { "rg", "--files", "--color", "never" }
-    elseif 1 == vim.fn.executable "fd" then
+    elseif 1 == vim.fn.executable("fd") then
       return { "fd", "--type", "f", "--color", "never" }
-    elseif 1 == vim.fn.executable "fdfind" then
+    elseif 1 == vim.fn.executable("fdfind") then
       return { "fdfind", "--type", "f", "--color", "never" }
-    elseif 1 == vim.fn.executable "find" and vim.fn.has "win32" == 0 then
+    elseif 1 == vim.fn.executable("find") and vim.fn.has("win32") == 0 then
       return { "find", ".", "-type", "f" }
-    elseif 1 == vim.fn.executable "where" then
+    elseif 1 == vim.fn.executable("where") then
       return { "where", "/r", ".", "*" }
     end
   end)()
@@ -339,10 +379,12 @@ files.find_files = function(opts)
       find_command = flatten(find_command)
     end
     if no_ignore ~= nil then
-      log.warn "The `no_ignore` key is not available for the `find` command in `find_files`."
+      log.warn("The `no_ignore` key is not available for the `find` command in `find_files`.")
     end
     if no_ignore_parent ~= nil then
-      log.warn "The `no_ignore_parent` key is not available for the `find` command in `find_files`."
+      log.warn(
+        "The `no_ignore_parent` key is not available for the `find` command in `find_files`."
+      )
     end
     if follow then
       table.insert(find_command, 2, "-L")
@@ -359,22 +401,30 @@ files.find_files = function(opts)
     end
   elseif command == "where" then
     if hidden ~= nil then
-      log.warn "The `hidden` key is not available for the Windows `where` command in `find_files`."
+      log.warn("The `hidden` key is not available for the Windows `where` command in `find_files`.")
     end
     if no_ignore ~= nil then
-      log.warn "The `no_ignore` key is not available for the Windows `where` command in `find_files`."
+      log.warn(
+        "The `no_ignore` key is not available for the Windows `where` command in `find_files`."
+      )
     end
     if no_ignore_parent ~= nil then
-      log.warn "The `no_ignore_parent` key is not available for the Windows `where` command in `find_files`."
+      log.warn(
+        "The `no_ignore_parent` key is not available for the Windows `where` command in `find_files`."
+      )
     end
     if follow ~= nil then
-      log.warn "The `follow` key is not available for the Windows `where` command in `find_files`."
+      log.warn("The `follow` key is not available for the Windows `where` command in `find_files`.")
     end
     if search_dirs ~= nil then
-      log.warn "The `search_dirs` key is not available for the Windows `where` command in `find_files`."
+      log.warn(
+        "The `search_dirs` key is not available for the Windows `where` command in `find_files`."
+      )
     end
     if search_file ~= nil then
-      log.warn "The `search_file` key is not available for the Windows `where` command in `find_files`."
+      log.warn(
+        "The `search_file` key is not available for the Windows `where` command in `find_files`."
+      )
     end
   end
 
@@ -422,8 +472,9 @@ files.treesitter = function(opts)
     return
   end
 
-  local parsers = require "nvim-treesitter.parsers"
-  if not parsers.has_parser(parsers.get_buf_lang(opts.bufnr)) then
+  local parsers = require("nvim-treesitter.parsers")
+  local lang = parsers.get_buf_lang(opts.bufnr)
+  if not parsers.has_parser(lang) then
     utils.notify("builtin.treesitter", {
       msg = "No parser for the current buffer",
       level = "ERROR",
@@ -431,7 +482,12 @@ files.treesitter = function(opts)
     return
   end
 
-  local ts_locals = require "nvim-treesitter.locals"
+  -- force evaluation, don't wait for it to lazily load
+  local parser = vim.treesitter.get_parser(opts.bufnr, lang)
+  ---@diagnostic disable-next-line: need-check-nil
+  parser:parse()
+
+  local ts_locals = require("nvim-treesitter.locals")
   local results = {}
   for _, definition in ipairs(ts_locals.get_definitions(opts.bufnr)) do
     local entries = prepare_match(ts_locals.get_local_nodes(definition))
@@ -441,28 +497,36 @@ files.treesitter = function(opts)
     end
   end
 
-  results = utils.filter_symbols(results, opts)
   if vim.tbl_isempty(results) then
-    -- error message already printed in `utils.filter_symbols`
+    utils.notify("builtin.treesitter", {
+      msg = "Parser provided no results",
+      level = "ERROR",
+    })
     return
   end
 
+  results = utils.filter_symbols(results, opts)
+
   if vim.tbl_isempty(results) then
+    utils.notify("builtin.treesitter", {
+      msg = "Parser gave results, but we filtered them all away",
+      level = "ERROR",
+    })
     return
   end
 
   pickers
     .new(opts, {
       prompt_title = "Treesitter Symbols",
-      finder = finders.new_table {
+      finder = finders.new_table({
         results = results,
         entry_maker = opts.entry_maker or make_entry.gen_from_treesitter(opts),
-      },
+      }),
       previewer = conf.grep_previewer(opts),
-      sorter = conf.prefilter_sorter {
+      sorter = conf.prefilter_sorter({
         tag = "kind",
         sorter = conf.generic_sorter(opts),
-      },
+      }),
       push_cursor_on_edit = true,
     })
     :find()
@@ -534,31 +598,32 @@ files.current_buffer_fuzzy_find = function(opts)
   pickers
     .new(opts, {
       prompt_title = "Current Buffer Fuzzy",
-      finder = finders.new_table {
+      finder = finders.new_table({
         results = lines_with_numbers,
         entry_maker = opts.entry_maker or make_entry.gen_from_buffer_lines(opts),
-      },
+      }),
       sorter = conf.generic_sorter(opts),
       previewer = conf.grep_previewer(opts),
       attach_mappings = function()
         actions.select_default:replace(function(prompt_bufnr)
           local selection = action_state.get_selected_entry()
           if not selection then
-            utils.__warn_no_selection "builtin.current_buffer_fuzzy_find"
+            utils.__warn_no_selection("builtin.current_buffer_fuzzy_find")
             return
           end
           local current_picker = action_state.get_current_picker(prompt_bufnr)
           local searched_for = require("telescope.actions.state").get_current_line()
 
           ---@type number[] | {start:number, end:number?, highlight:string?}[]
-          local highlights = current_picker.sorter:highlighter(searched_for, selection.ordinal) or {}
+          local highlights = current_picker.sorter:highlighter(searched_for, selection.ordinal)
+            or {}
           highlights = vim.tbl_map(function(hl)
             if type(hl) == "table" and hl.start then
               return hl.start
             elseif type(hl) == "number" then
               return hl
             end
-            error "Invalid higlighter fn"
+            error("Invalid higlighter fn")
           end, highlights)
 
           local first_col = 0
@@ -568,7 +633,7 @@ files.current_buffer_fuzzy_find = function(opts)
 
           actions.close(prompt_bufnr)
           vim.schedule(function()
-            vim.cmd "normal! m'"
+            vim.cmd("normal! m'")
             vim.api.nvim_win_set_cursor(0, { selection.lnum, first_col })
           end)
         end)
@@ -596,11 +661,11 @@ files.tags = function(opts)
   pickers
     .new(opts, {
       prompt_title = "Tags",
-      finder = finders.new_oneshot_job(flatten { "cat", tagfiles }, opts),
+      finder = finders.new_oneshot_job(flatten({ "cat", tagfiles }), opts),
       previewer = previewers.ctags.new(opts),
       sorter = conf.generic_sorter(opts),
       attach_mappings = function()
-        action_set.select:enhance {
+        action_set.select:enhance({
           post = function()
             local selection = action_state.get_selected_entry()
             if not selection then
@@ -615,14 +680,14 @@ files.tags = function(opts)
                 return "\\" .. x
               end)
 
-              vim.cmd "keepjumps norm! gg"
+              vim.cmd("keepjumps norm! gg")
               vim.fn.search(scode)
-              vim.cmd "norm! zz"
+              vim.cmd("norm! zz")
             else
               vim.api.nvim_win_set_cursor(0, { selection.lnum, 0 })
             end
           end,
-        }
+        })
         return true
       end,
     })

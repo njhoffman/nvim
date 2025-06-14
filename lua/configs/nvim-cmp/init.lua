@@ -102,7 +102,7 @@ local cfg = {
     max_view_entries        = 400,
     async_budget            = 1,
     fetching_timeout        = 500,
-    trigger_debounce        = 300,
+    trigger_debounce        = 50,
   },
   matching = {
     -- disallow_fuzzy_matching = false,
@@ -159,7 +159,7 @@ local cfg = {
     select = true,
   },
   mapping = cmp.mapping.preset.insert(mapping_main), --mapping_main,
-  sources = cmp.config.sources(sources.main[1], sources.main[2]),
+  sources = cmp.config.sources(sources.main[1], sources.main[2], sources.filetypes),
   view = {
     entries = {
       name = 'custom',

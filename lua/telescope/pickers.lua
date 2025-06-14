@@ -31,6 +31,7 @@ local strdisplaywidth = require("plenary.strings").strdisplaywidth
 local ns_telescope_matching = a.nvim_create_namespace("telescope_matching")
 local ns_telescope_prompt = a.nvim_create_namespace("telescope_prompt")
 local ns_telescope_prompt_prefix = a.nvim_create_namespace("telescope_prompt_prefix")
+local ns_telescope_group_by_headers = a.nvim_create_namespace("telescope_group_by_headers")
 
 ---@class telescope_popup_options
 ---@field border table<1|2|3|4, integer>
@@ -137,8 +138,16 @@ local function default_create_layout(picker)
       if vim.api.nvim_win_is_valid(self.prompt.winid) then
         vim.api.nvim_win_close(self.prompt.winid, true)
       end
+
       vim.schedule(function()
+        -- require('telescope.state').set_status(self.prompt.bufnr, nil)
         utils.buf_delete(self.prompt.bufnr)
+        vim.api.nvim_exec_autocmds("User", {
+          pattern = "TelescopePickerClose",
+          data = {
+            prompt_bufnr = self.prompt.bufnr,
+          },
+        })
       end)
     end,
     ---@param self TelescopeLayout
@@ -343,9 +352,14 @@ function Picker:new(opts)
       opts.cache_picker,
       vim.deepcopy(config.values.cache_picker)
     ),
-    __scrolling_limit = tonumber(
-      vim.F.if_nil(opts.temp__scrolling_limit, config.values.scrolling_limit)
-    ),
+    scrolling_limit = tonumber(vim.F.if_nil(opts.scrolling_limit, config.values.scrolling_limit)),
+    group_by = config.resolve_group_by_opts(opts.group_by),
+    -- This is a flag testing for whether group_by needs a workaround for neovim/neovim#16166.
+    -- When it does, we insert an additional buffer line at the top of the results buffer, and
+    -- use it to fake a virt_line at the top of the buffer.
+    _group_by_workaround = opts.group_by ~= nil,
+    _select_pos = opts._select_pos,
+    __name = opts.__name,
     __locations_input = vim.F.if_nil(opts.__locations_input, false),
   }, self)
 
@@ -383,13 +397,29 @@ function Picker:new(opts)
 
   obj.highlighter = p_highlighter.new(obj)
 
+  local on_complete = type(config.values.on_complete) == "table" and config.values.on_complete
+    or type(config.values.on_complete) == "function" and { config.values.on_complete }
+    or {}
   if opts.on_complete then
-    for _, on_complete_item in ipairs(opts.on_complete) do
+    if type(opts.on_complete == "function") then
+      table.insert(on_complete, opts.on_complete)
+    elseif type(opts.on_complete == "table") then
+      for _, on_complete_item in ipairs(opts.on_complete) do
+        table.insert(on_complete, on_complete_item)
+      end
+    end
+  end
+  if on_complete then
+    for _, on_complete_item in ipairs(on_complete) do
       obj:register_completion_callback(on_complete_item)
     end
   end
 
   return obj
+end
+
+function Picker:_group_by_offset()
+  return self._group_by_workaround and 1 or 0
 end
 
 --- Take an index and get a row.
@@ -398,9 +428,9 @@ end
 ---@return number: the row for the picker to display in
 function Picker:get_row(index)
   if self.sorting_strategy == "ascending" then
-    return index - 1
+    return index - 1 + self:_group_by_offset()
   else
-    return self.max_results - index
+    return self.max_results + self:_group_by_offset() - index
   end
 end
 
@@ -410,9 +440,9 @@ end
 ---@return number: The index in line_manager
 function Picker:get_index(row)
   if self.sorting_strategy == "ascending" then
-    return row + 1
+    return row + 1 - self:_group_by_offset()
   else
-    return self.max_results - row
+    return self.max_results + self:_group_by_offset() - row
   end
 end
 
@@ -420,9 +450,9 @@ end
 ---@return number: the number of the "reset" row
 function Picker:get_reset_row()
   if self.sorting_strategy == "ascending" then
-    return 0
+    return 0 + self:_group_by_offset()
   else
-    return self.max_results - 1
+    return self.max_results - 1 + self:_group_by_offset()
   end
 end
 
@@ -448,19 +478,47 @@ function Picker:clear_extra_rows(results_bufnr)
     return
   end
 
-  local worst_line, ok, msg
-  if self.sorting_strategy == "ascending" then
-    local num_results = self.manager:num_results()
-    worst_line = math.min(num_results, self.max_results)
-    ok, msg = pcall(vim.api.nvim_buf_set_lines, results_bufnr, worst_line, -1, false, {})
-  else
-    worst_line = self:get_row(self.manager:num_results())
-    if worst_line <= 0 then
-      return
-    end
+  local num_results = self.manager:num_results()
+  local worst_line = self:get_row(num_results)
+  if worst_line <= 0 and num_results ~= 0 and num_results ~= self.max_results then
+    return
+  end
 
+  local ok, msg
+  if self.sorting_strategy == "ascending" then
+    ok, msg = pcall(
+      vim.api.nvim_buf_set_lines,
+      results_bufnr,
+      vim.fn.min({ num_results, self.max_results }) + self:_group_by_offset(),
+      -1,
+      false,
+      {}
+    )
+    if self.group_by ~= nil then
+      local begin = num_results == 0 and 0 or num_results + self:_group_by_offset()
+      pcall(
+        vim.api.nvim_buf_clear_namespace,
+        results_bufnr,
+        ns_telescope_group_by_headers,
+        begin,
+        -1
+      )
+    end
+  else
     local empty_lines = utils.repeated_table(worst_line, "")
     ok, msg = pcall(vim.api.nvim_buf_set_lines, results_bufnr, 0, worst_line, false, empty_lines)
+    if self.group_by ~= nil then
+      pcall(
+        vim.api.nvim_buf_clear_namespace,
+        results_bufnr,
+        ns_telescope_group_by_headers,
+        0,
+        worst_line + self:_group_by_offset()
+      )
+    end
+    if self.group_by ~= nil then
+      self:_set_headers(self.manager:num_results())
+    end
   end
 
   if not ok then
@@ -518,12 +576,14 @@ end
 ---@param row number: the number of the chosen row in the results buffer
 ---@return boolean
 function Picker:can_select_row(row)
+  local war_offset = self:_group_by_offset()
   if self.sorting_strategy == "ascending" then
-    return row <= self.manager:num_results() and row < self.max_results
+    return row <= vim.fn.min({ self.manager:num_results(), self.max_results }) + war_offset
+      and not (self._group_by_workaround and row == 0)
   else
-    return row >= 0
-      and row <= self.max_results
-      and row >= self.max_results - self.manager:num_results()
+    return row <= self.max_results + war_offset
+      and row >= war_offset
+      and row >= self.max_results + war_offset - self.manager:num_results()
   end
 end
 
@@ -555,7 +615,9 @@ end
 function Picker:find()
   self:close_existing_pickers()
   self:reset_selection()
-
+  if self.results_bufnr and a.nvim_buf_is_valid(self.results_bufnr) then
+    a.nvim_buf_clear_namespace(self.results_bufnr, ns_telescope_group_by_headers, 0, -1)
+  end
   self.__original_mousemoveevent = vim.o.mousemoveevent
   vim.o.mousemoveevent = true
 
@@ -567,6 +629,10 @@ function Picker:find()
   _, self.original_cfile = pcall(vim.fn.expand, "<cfile>")
   _, self.original_cline = pcall(vim.api.nvim_get_current_line)
   _, self.original_cline = pcall(vim.trim, self.original_cline)
+  _, self.original_file_path = pcall(vim.fn.expand, "%")
+  _, self.original_file_name = pcall(vim.fn.expand, "%:t")
+  _, self.original_file_bare_name = pcall(vim.fn.expand, "%:t:r")
+  _, self.original_file_dir = pcall(vim.fn.expand, "%:h")
 
   -- User autocmd run it before create Telescope window
   vim.api.nvim_exec_autocmds("User", { pattern = "TelescopeFindPre" })
@@ -604,16 +670,15 @@ function Picker:find()
   -- want to scroll through more than 10,000 items.
   --
   -- This just lets us stop doing stuff after tons of  things.
-  self.max_results = self.__scrolling_limit
+  self.max_results = self.scrolling_limit
 
   vim.api.nvim_buf_set_lines(
     self.results_bufnr,
     0,
-    self.max_results,
+    self.max_results + self:_group_by_offset(),
     false,
-    utils.repeated_table(self.max_results, "")
+    utils.repeated_table(self.max_results + self:_group_by_offset(), "")
   )
-
   local status_updater = self:get_status_updater(self.prompt_win, self.prompt_bufnr)
   local debounced_status = debounce.throttle_leading(status_updater, 50)
 
@@ -726,6 +791,7 @@ function Picker:find()
         find_id = self:_next_find_id()
 
         status_updater({ completed = false })
+        self.finder:stop_read()
         self._on_lines(...)
       end
     end,
@@ -801,7 +867,7 @@ function Picker:recalculate_layout()
   end
 
   -- Temporarily disabled: Draw the screen ASAP. This makes things feel speedier.
-  -- vim.cmd [[redraw]]
+  -- vim.cmd([[redraw]])
 
   -- self.max_results = popup_opts.results.height
 end
@@ -1089,7 +1155,9 @@ function Picker:set_selection(row)
     return
   end
 
+  row = row - self:_group_by_offset()
   row = self.scroller(self.max_results, self.manager:num_results(), row)
+  row = row + self:_group_by_offset()
 
   if not self:can_select_row(row) then
     -- If the current selected row exceeds number of currently displayed
@@ -1199,11 +1267,34 @@ function Picker:set_selection(row)
   self._selection_entry = entry
   self._selection_row = row
 
+  if
+    self._group_by_workaround and row == 1
+    or (
+      self.sorting_strategy == "descending"
+      and row + self.manager:num_results() == self.max_results + 1
+    )
+  then
+    vim.api.nvim_win_set_cursor(self.results_win, { row, 0 })
+  end
+
   vim.api.nvim_win_set_cursor(self.results_win, { row + 1, 0 })
 end
 
 --- Update prefix for entry on a given row
 function Picker:update_prefix(entry, row)
+  if
+    self._group_by_workaround
+    and (
+      row == 0
+      or (
+        self.sorting_strategy == "descending"
+        and row + self.manager:num_results() == self.max_results
+      )
+    )
+  then
+    return
+  end
+
   local prefix = function(sel, multi)
     local t
     if sel then
@@ -1286,10 +1377,55 @@ function Picker:cycle_previewers(next)
   end
 end
 
+function Picker:_set_headers(index, entry)
+  if index == 0 then
+    return
+  end
+  entry = entry or self.manager:get_entry(index)
+
+  local direction = self.sorting_strategy == "ascending" and 1 or -1
+  local row = self:get_row(index)
+
+  local above = self.manager:get_entry(index - direction)
+  if above == nil then
+    a.nvim_buf_clear_namespace(self.results_bufnr, ns_telescope_group_by_headers, row - 1, row + 1)
+    a.nvim_buf_set_extmark(self.results_bufnr, ns_telescope_group_by_headers, row - 1, 0, {
+      virt_text = self.group_by.header_renderer(self, self.group_by._resolved_group_getter(entry)),
+      virt_text_pos = "overlay",
+      virt_text_win_col = 0,
+    })
+  elseif
+    self.group_by._resolved_group_getter(entry) ~= self.group_by._resolved_group_getter(above)
+  then
+    a.nvim_buf_set_extmark(self.results_bufnr, ns_telescope_group_by_headers, row, 0, {
+      virt_lines = {
+        self.group_by.header_renderer(self, self.group_by._resolved_group_getter(entry)),
+      },
+      virt_lines_above = true,
+    })
+  end
+
+  local below = self.manager:get_entry(index + direction)
+  if below ~= nil then
+    local same_group_below = self.group_by._resolved_group_getter(entry)
+      == self.group_by._resolved_group_getter(below)
+    a.nvim_buf_clear_namespace(self.results_bufnr, ns_telescope_group_by_headers, row + 1, row + 2)
+    if not same_group_below then
+      a.nvim_buf_set_extmark(self.results_bufnr, ns_telescope_group_by_headers, row + 1, 0, {
+        virt_lines = {
+          self.group_by.header_renderer(self, self.group_by._resolved_group_getter(below)),
+        },
+
+        virt_lines_above = true,
+      })
+    end
+  end
+end
 --- Handler for when entries are added by `self.manager`
 ---@param index number: the index to add the entry at
 ---@param entry table: the entry that has been added to the manager
 ---@param insert boolean: whether the entry has been "inserted" or not
+local messages = {}
 function Picker:entry_adder(index, entry, _, insert)
   if not entry then
     return
@@ -1319,7 +1455,12 @@ function Picker:entry_adder(index, entry, _, insert)
 
   local offset = insert and 0 or 1
   if not vim.api.nvim_buf_is_valid(self.results_bufnr) then
-    log.debug("ON_ENTRY: Invalid buffer")
+    local msg = "ON_ENTRY: Invalid buffer " .. self.results_bufnr
+    local msg_hash = vim.base64.encode(msg)
+    if not messages[msg_hash] then
+      log.debug(msg)
+      messages[msg_hash] = true
+    end
     return
   end
 
@@ -1334,6 +1475,13 @@ function Picker:entry_adder(index, entry, _, insert)
     if self.sorting_strategy == "descending" then
       vim.api.nvim_buf_set_lines(self.results_bufnr, 0, 1, false, {})
     end
+  elseif self.group_by ~= nil then
+    vim.api.nvim_buf_clear_namespace(
+      self.results_bufnr,
+      ns_telescope_group_by_headers,
+      row,
+      row + 1
+    )
   end
 
   local set_ok, msg =
@@ -1355,6 +1503,9 @@ function Picker:entry_adder(index, entry, _, insert)
   if not set_ok and display:find("\n") then
     display = display:gsub("\n", " | ")
     vim.api.nvim_buf_set_lines(self.results_bufnr, row, row + 1, false, { display })
+  end
+  if self.group_by ~= nil then
+    self:_set_headers(index, entry)
   end
 end
 
@@ -1471,7 +1622,7 @@ function Picker:get_result_processor(find_id, prompt, status_updater)
 
     -- TODO: Probably should asyncify this / cache this / do something because this probably takes
     -- a ton of time on large results.
-    log.trace("Processing result... ", entry)
+    -- log.trace("Processing result #" .. count, entry)
     for _, v in ipairs(self.file_ignore_patterns or {}) do
       local file = vim.F.if_nil(entry.filename, type(entry.value) == "string" and entry.value) -- false if none is true
       if file then
@@ -1507,11 +1658,22 @@ function Picker:get_result_completor(results_bufnr, _, prompt, status_updater)
 
     if self.sorting_strategy == "descending" then
       local visible_result_rows = vim.api.nvim_win_get_height(self.results_win)
-      vim.api.nvim_win_set_cursor(self.results_win, { self.max_results - visible_result_rows, 1 })
-      vim.api.nvim_win_set_cursor(self.results_win, { self.max_results, 1 })
-    else
-      vim.api.nvim_win_set_cursor(self.results_win, { 1, 0 })
+      vim.api.nvim_win_set_cursor(
+        self.results_win,
+        { self.max_results + self:_group_by_offset() - visible_result_rows, 1 }
+      )
+      vim.api.nvim_win_set_cursor(
+        self.results_win,
+        { self.max_results + self:_group_by_offset(), 1 }
+      )
     end
+
+    vim.defer_fn(function()
+      local wininfo = vim.fn.getwininfo(self.results_win)[1]
+      local buf_maxline = #vim.api.nvim_buf_get_lines(self.results_bufnr, 0, -1, false)
+      update_scroll(self.results_win, wininfo, { 1, 0 }, self.sorting_strategy, buf_maxline)
+    end, 50)
+
     self:_on_complete()
   end)
 end
@@ -1572,8 +1734,10 @@ end
 ---@return Picker
 pickers.new = function(opts, defaults)
   opts = opts or {}
+  opts.attach_mappings = opts.attach_mappings or config.values.attach_mappings
   defaults = defaults or {}
   local result = {}
+  -- Inspect(opts)
 
   for k, v in pairs(opts) do
     assert(
@@ -1675,6 +1839,14 @@ function pickers.on_close_prompt(prompt_bufnr)
     picker.finder:close()
   end
 
+  if picker.group_by ~= nil then
+    a.nvim_buf_clear_namespace(picker.results_bufnr, ns_telescope_group_by_headers, 0, -1)
+    if picker.group_by_workaround_applied then
+      picker.group_by_workaround_applied = false
+      a.nvim_buf_set_lines(picker.results_bufnr, 0, 1, false, {})
+    end
+    picker.group_by = nil
+  end
   -- so we dont call close_windows multiple times we clear that autocmd
   vim.api.nvim_clear_autocmds({
     group = "PickerInsert",
@@ -1756,6 +1928,10 @@ function Picker:_resume_picker()
       vim.api.nvim_buf_call(self.prompt_bufnr, function()
         vim.cmd("do User TelescopeResumePost")
       end)
+    end
+    if self._select_pos then
+      self:move_selection(self._select_pos)
+      vim.schedule_wrap(actions.select_default)(self.prompt_bufnr)
     end
   end
   -- if text changed, required to set anew to restart finder; otherwise hl and selection
