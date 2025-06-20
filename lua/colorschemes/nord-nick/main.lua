@@ -212,15 +212,15 @@ return function(injected_functions)
     Comment({ fg = "#405f88", gui = "italic" }),
     Conceal({ bg = "none" }),
     Conditional({ fg = "#70688a" }),
-    Constant({ fg = "#5599cc" }),
+    Constant({ fg = "#66aae2" }),
     ConstantBuiltin({ fg = "#0698b3" }),
     Delimiter({ fg = "#5f6fa2" }),
     Directory({ fg = "#187298" }),
     Field({ fg = "#467aB8" }), -- fg = '#467aB0', fg = '#4688B0'
-    Function({ fg = "#2d79a7" }), -- fg = '#8c788c',
+    Function({ fg = "#8c788c" }), -- fg = "#2d79a7", fg = "#a78087"
     FunctionCall({ fg = "#4d79c7" }), --fg = '#7f788f'
     Identifier({ fg = "#406faf" }),
-    Include({ fg = "#4774c6" }),
+    Include({ fg = "#4774c6", gui = "italic" }),
     Italic({ gui = "italic" }),
     Keyword({ fg = "#3167a2" }),
     KeywordFunction({ fg = "#2D88BF" }),
@@ -228,7 +228,8 @@ return function(injected_functions)
     Label({ fg = "#3377ba" }),
     NonText({ bg = "none", fg = "#556677" }),
     Operator({ fg = "#4866bf" }), -- fg = '#28567f'
-    PreProc({ fg = "#00769c" }), -- fg = '#806a7f'
+    -- PreProc({ fg = "#00769c" }), -- fg = '#806a7f'
+    PreProc({ fg = Keyword.fg, gui = "italic" }), -- fg = '#806a7f'
     QuickFixLine({ bg = "#172238" }),
     Repeat({ fg = "#806a7f" }),
     Special({ fg = "#487ac8" }),
@@ -312,6 +313,7 @@ return function(injected_functions)
     sym("@comment.documentation")({ Comment }),
     sym("@comment.note")({ fg = "#278d8b" }),
     sym("@comment.warning")({ Warning }),
+    sym("@conditional")({ Conditional }),
     sym("@constant")({ Constant }),
     sym("@constant.builtin")({ ConstantBuiltin }),
     sym("@constant.luap")({ fg = "#2288cc" }),
@@ -595,28 +597,34 @@ return function(injected_functions)
     sym("@bash.specialKeyword")({ fg = "#a67860" }), -- yarn, next, node, etc...
 
     shBrackets({ fg = clr_over.orange }),
-    shStatement({ Keyword }),
+    -- shStatement({ Keyword }),
     shSubst({ fg = "#488aaf" }),
     shSubstDelim({ fg = "#5776bc" }),
     shParentheses({ fg = "#c78087" }),
-    shFunction({ Function }),
+    shFunction({ sym("@keyword.function") }),
     shDeref({ fg = "#488aaf" }),
     shDerefSimple({ fg = "#488aaf" }),
     shLoop({ fg = "#80788a" }),
     shRepeat({ fg = "#80788a" }),
-    shConditional({ fg = "#80788a" }),
+    shConditional({ sym("@conditional") }),
     shVariable({ Normal }),
 
     zshBrackets({ fg = clr_over.orange }),
     zshSubst({ fg = "#488aaf" }),
     zshSubstDelim({ fg = "#5776bc" }),
     zshParentheses({ fg = "#c78087" }),
-    zshFunction({ fg = "#a78087" }),
+    zshConditional({ sym("@keyword") }),
+
+    -- zshFunction({ sym("@function") }),
     zshDeref({ fg = "#488aaf" }),
-    zshRepeat({ fg = "#80788a" }),
-    zshLoop({ fg = "#80788a" }),
-    zshConditional({ fg = "#80788a" }),
-    zshCommands({ fg = "#6180b2" }),
+    zshPreProc({ PreProc }),
+    zshFunction({ sym("@function") }),
+    zshRepeat({ sym("@keyword") }),
+    -- zshRepeat({ fg = "#80788a" }),
+    -- zshLoop({ fg = "#80788a" }),
+    zshCommands({ sym("@function.call") }),
+    zshTypes({ sym("@keyword") }),
+    -- zshCommands({ fg = "#6180b2" }),
     -- zshVariableDef { Normal },
     -- zshDeref { fg = '#2886bf' },
 

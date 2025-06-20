@@ -59,14 +59,14 @@ vim.defer_fn(function()
 
   vim.import("configs.recall")
 
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = "zsh",
-    callback = function(args)
-      vim.treesitter.language.register("bash", { "zsh" })
-      vim.treesitter.start(args.buf, "bash")
-      vim.bo[args.buf].syntax = "on"
-    end,
-  })
+  -- vim.api.nvim_create_autocmd("FileType", {
+  --   pattern = "zsh",
+  --   callback = function(args)
+  --     vim.treesitter.language.register("bash", { "zsh" })
+  --     vim.treesitter.start(args.buf, "bash")
+  --     vim.bo[args.buf].syntax = "on"
+  --   end,
+  -- })
   -- require("nvim-treesitter.parsers").filetype_to_parsername.zsh = "bash"
   --         local link_pattern = 9 -- from :Inspect!
   --         local query = vim.treesitter.query.get('vimdoc', 'highlights')

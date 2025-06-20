@@ -91,7 +91,7 @@ local basecfg = {
     set_env = {
       DFT_DISPLAY = "inline",
       LESS = "",
-      DELTA_PAGER = "less",
+      DELTA_PAGER = "/usr/bin/cat",
       -- Set explicit value of $LESS to make git-delta paging nicer in Telescope.
     },
     preview = {
