@@ -96,6 +96,7 @@ M.NeoComposerComponent = {
 
 -- Display <e> 0x65
 M.AsciiComponent = {
+  update = { "CursorMoved", "CursorMovedI" },
   hl = { fg = "#486088" },
   -- enabled = function()
   --   return vim.api.nvim_win_get_width(0) > 120
@@ -110,6 +111,7 @@ M.AsciiComponent = {
 }
 
 M.ProjectComponent = {
+  update = { "DirChanged" },
   enabled = true,
   provider = {
     name = "project",
@@ -196,6 +198,7 @@ M.FiletypeComponent = {
   enabled = function()
     return vim.api.nvim_get_option_value("columns", { scope = "global" }) > 120
   end,
+  update = { "BufEnter", "WinEnter" },
   hl = { fg = "#988088" },
   provider = {
     name = "file_type",
@@ -230,6 +233,7 @@ M.NoiceComponent = {
 }
 
 M.LinePercentageComponent = {
+  update = { "CursorMoved", "CursorMovedI" },
   provider = "line_percentage",
   hl = { fg = "#4477aa", bg = "bg", style = "none" },
   left_sep = " ",
@@ -238,6 +242,7 @@ M.LinePercentageComponent = {
 vim.opt.showcmdloc = "statusline"
 
 M.FelineCmdComponent = {
+  update = { "CmdlineChanged" },
   enabled = function()
     return vim.api.nvim_get_option_value("showcmd", {}) == true
       and vim.api.nvim_get_option_value("showcmdloc", {}) == "statusline"
@@ -265,7 +270,10 @@ M.MacroComponent = {
 M.SearchCountComponent = {
   provider = "search_count",
   enabled = function()
-    return vim.api.nvim_get_option("cmdheight") == 0
+    return vim.api.nvim_get_option("cmdheight") == 0 and vim.fn.searchcount().total > 0
+  end,
+  update = function()
+    return vim.fn.searchcount().total > 0
   end,
   hl = {
     fg = "cyan",

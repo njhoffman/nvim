@@ -4369,6 +4369,7 @@ buf_set_text 	lua/baleia.lua	/^      buf_set_text = function(buffer, start_row, 
 buffer 	lua/configs/hydra/lsp.lua	/^  buffer = function()$/;"	f
 buffer 	lua/telescope/builtin/__diagnostics.lua	/^    buffer = function(a, b)$/;"	f
 buffer_metatable	lua/smoothcursor/callbacks/buffer.lua	/^local function buffer_metatable()$/;"	f
+buffer_not_empty 	lua/configs/feline/init.lua	/^  buffer_not_empty = function()$/;"	f
 buffer_set_all	lua/smoothcursor/callbacks/init.lua	/^local function buffer_set_all(value)$/;"	f
 buffers[#buffers].last 	lua/configs/feline/reference.lua	/^        buffers[#buffers].last = nil                                                                                       -- --   left_sep = function()$/;"	f
 bufname	lua/commands/bufdelete.lua	/^local function bufname(bufnr)$/;"	f
@@ -4675,6 +4676,7 @@ check_enabled	lua/tint/init.lua	/^local function check_enabled()$/;"	f
 check_enabled 	lua/synshade/state.lua	/^  check_enabled = function()$/;"	f
 check_for_buffer_var_change	lua/utils/options/init.lua	/^local function check_for_buffer_var_change()$/;"	f
 check_for_global_var_change	lua/utils/options/init.lua	/^local function check_for_global_var_change()$/;"	f
+check_git_workspace 	lua/configs/feline/init.lua	/^  check_git_workspace = function()$/;"	f
 check_is_border	lua/tmux/layout/init.lua	/^local function check_is_border(display, id, direction)$/;"	f
 check_magic	plugin/hmts.lua	/^  local function check_magic(str)$/;"	f
 check_nav_split	lua/tmux/setup.lua	/^local function check_nav_split(movement_key)$/;"	f
@@ -5117,6 +5119,7 @@ destructors.dict_values 	lua/utils/destruct.lua	/^destructors.dict_values = func
 detached 	lua/configs/glance.lua	/^  detached = function(winid)$/;"	f
 detect_filetype	lua/smoothcursor/callbacks/init.lua	/^local function detect_filetype()$/;"	f
 determine_win_size	lua/configs/hydra/popup.lua	/^function determine_win_size(choices)$/;"	f
+diagnostic_enable 	lua/configs/feline/init.lua	/^  diagnostic_enable = function(fn, type)$/;"	f
 diagnostic_mapper	lua/scrollbar/handlers/diagnostic.lua	/^    local function diagnostic_mapper(diagnostic)$/;"	f
 diagnostic_mapper	lua/scrollbar/handlers/diagnostic.lua	/^  local function diagnostic_mapper(diagnostic)$/;"	f
 diagnostics	lua/feline/providers/lsp.lua	/^local function diagnostics(severity)$/;"	f

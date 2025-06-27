@@ -357,17 +357,17 @@ map(
 )
 
 --  'o<Esc>j'  'm`O<Esc>``'
-map("n", "<CR>", "o<Esc>", {
+map("n", "<S-CR>", "o<Esc>", {
   category = "Buffers",
   label = "󰽙 insert new line below",
   desc = "󰽙 insert new line below without leaving normal mode",
 })
 
-map("n", "<S-CR>", "O<Esc>", {
-  category = "Buffers",
-  label = "󰽙 insert new line above",
-  desc = "󰽙 insert new line above without leaving normal mode",
-})
+-- map("n", "<S-CR>", "O<Esc>", {
+--   category = "Buffers",
+--   label = "󰽙 insert new line above",
+--   desc = "󰽙 insert new line above without leaving normal mode",
+-- })
 
 map("n", "<BS>", "<cmd>AltLoad<cr>", {
   category = "Buffers",

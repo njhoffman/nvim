@@ -15,6 +15,23 @@ local custom_providers = {
   misc_stats = require("configs.feline.provider-misc-stats").provider,
 }
 
+local conditions = {
+  diagnostic_enable = function(fn, type)
+    return function()
+      local diagnostics_count = fn()[type]
+      return diagnostics_count and diagnostics_count ~= 0
+    end
+  end,
+  buffer_not_empty = function()
+    return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
+  end,
+  check_git_workspace = function()
+    local filepath = vim.fn.expand("%:p:h")
+    local gitdir = vim.fn.finddir(".git", filepath .. ";")
+    return gitdir and #gitdir > 0 and #gitdir < #filepath
+  end,
+}
+
 -- bg_jobs, cmdline and qf components
 -- function M:update_status()
 --     if vim.env.CLEARCASE_CMDLINE then
