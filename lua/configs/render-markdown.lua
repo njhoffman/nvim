@@ -16,7 +16,12 @@ local cfg = {
       },
     },
   },
-  file_types = { "markdown", "vimwiki" },
+  file_types = {
+    "markdown",
+    "vimwiki",
+    "pandoc",
+    "codecompanion",
+  },
   bullet = {
     enabled = true,
     icons = bullets[1],
