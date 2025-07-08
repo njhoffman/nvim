@@ -5,7 +5,6 @@ local previewers = require("telescope.previewers")
 local Path = require("plenary.path")
 local keymaps_previewer = require("configs.telescope.previewers.keymaps")
 local pfiletype = require("plenary.filetype")
--- local putils = require('plenary.utils')
 
 local M = {}
 
@@ -71,17 +70,17 @@ M.delta = previewers.new_termopen_previewer({
 
 local new_maker = function(filepath, bufnr, opts)
   opts = opts or {}
-  local ft = pfiletype.detect(filepath)
-  if ft == "markdown" then
-    -- opts.use_ft_detect = false
-    -- putils.regex_highlighter(bufnr, 'pandoc')
-    -- putils.ts_highlighter(bufnr, 'markdown')
-    vim.schedule(function()
-      vim.api.nvim_set_option_value("syntax", "pandoc", { buf = bufnr })
-      previewers.buffer_previewer_maker(filepath, bufnr, opts)
-    end)
-  end
+  -- if ft == "markdown" then
+  --   -- opts.use_ft_detect = false
+  --   -- putils.regex_highlighter(bufnr, 'pandoc')
+  --   putils.ts_highlighter(bufnr, "markdown")
+  --   -- vim.schedule(function()
+  --   --   vim.api.nvim_set_option_value("syntax", "pandoc", { buf = bufnr })
+  --   --   previewers.buffer_previewer_maker(filepath, bufnr, opts)
+  --   -- end)
+  -- end
   vim.schedule(function()
+    opts.ft = pfiletype.detect(filepath)
     previewers.buffer_previewer_maker(filepath, bufnr, opts)
   end)
 end
@@ -109,16 +108,16 @@ M.buffer_cat = function(opts)
     end,
 
     define_preview = function(self, entry, status)
-      -- local ft = pfiletype.detect(from_entry.path(entry, false))
-      local markdown_cb = function(bufnr)
-        vim.schedule(function()
-          -- vim.treesitter.language.register('markdown', 'pandoc')
-          vim.api.nvim_set_option_value("syntax", "pandoc", { buf = self.state.bufnr })
-          self:scroll_fn(1)
-        end)
-      end
-      local ft =
-        vim.filetype.match({ filename = from_entry.path(entry, false), buf = self.state.bufnr })
+      opts.ft = pfiletype.detect(from_entry.path(entry, false))
+      -- local markdown_cb = function(bufnr)
+      --   vim.schedule(function()
+      --     -- vim.treesitter.language.register('markdown', 'pandoc')
+      --     vim.api.nvim_set_option_value("syntax", "pandoc", { buf = self.state.bufnr })
+      --     self:scroll_fn(1)
+      --   end)
+      -- end
+      -- local ft =
+      --   vim.filetype.match({ filename = from_entry.path(entry, false), buf = self.state.bufnr })
 
       -- local selected_row = 0
       --   -- only set up autocommand after showing preview completed
@@ -138,34 +137,34 @@ M.buffer_cat = function(opts)
       --   end)
       -- end
 
-      local utils = require("telescope.utils")
-      local preview_winid = status.layout.preview and status.layout.preview.winid
-      local other_cb = function()
-        -- local total_lines = vim.api.nvim_buf_line_count(0)
-        -- vim.api.nvim_buf_call(self.state.bufnr, function()
-        --   vim.cmd('norm! zz')
-        -- end)
+      -- local utils = require("telescope.utils")
+      -- local preview_winid = status.layout.preview and status.layout.preview.winid
+      -- local other_cb = function()
+      -- local total_lines = vim.api.nvim_buf_line_count(0)
+      -- vim.api.nvim_buf_call(self.state.bufnr, function()
+      --   vim.cmd('norm! zz')
+      -- end)
 
-        -- require('scrollbar.handlers').register('my_marks', function(bufnr)
-        --   return {
-        --     { line = 0 },
-        --     { line = 1, text = 'x', type = 'Warn' },
-        --     { line = 2, type = 'Error' },
-        --   }
-        -- end)
-        -- vim.api.nvim_win_call(self.state.winid, function()
-        --   vim.cmd([[normal! 10 j ]])
-        -- end)
-        -- utils.win_set_buf_noautocmd(preview_winid, self.state.bufnr)
-        -- pcall(vim.api.nvim_win_set_cursor, preview_winid, { 0, 0 })
+      -- require('scrollbar.handlers').register('my_marks', function(bufnr)
+      --   return {
+      --     { line = 0 },
+      --     { line = 1, text = 'x', type = 'Warn' },
+      --     { line = 2, type = 'Error' },
+      --   }
+      -- end)
+      -- vim.api.nvim_win_call(self.state.winid, function()
+      --   vim.cmd([[normal! 10 j ]])
+      -- end)
+      -- utils.win_set_buf_noautocmd(preview_winid, self.state.bufnr)
+      -- pcall(vim.api.nvim_win_set_cursor, preview_winid, { 0, 0 })
 
-        -- putils.highlighter(bufnr, opts.ft, opts)
-        -- require('telescope.previewers.utils').highlighter(bufnr, 'yaml')
-        -- require('telescope.previewers.utils').regex_highlighter(bufnr, ft)`
-        -- require('telescope.previewers.utils').ts_highlighter(self.state.bufnr, ft)
-        -- vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-        -- self:scroll_fn(-1)
-      end
+      -- putils.highlighter(bufnr, opts.ft, opts)
+      require("telescope.previewers.utils").highlighter(self.state.bufnr, opts.ft)
+      -- require('telescope.previewers.utils').regex_highlighter(bufnr, ft)
+      -- require("telescope.previewers.utils").ts_highlighter(self.state.bufnr, ft)
+      -- vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+      -- self:scroll_fn(-1)
+      -- end
 
       local p = from_entry.path(entry, true)
       if p == nil or p == "" then
@@ -176,6 +175,9 @@ M.buffer_cat = function(opts)
         winid = self.state.winid,
         preview = opts.preview,
         file_encoding = opts.file_encoding,
+        filetype = opts.ft,
+        bufnr = self.state.bufnr,
+        cwd = opts.cwd,
       }
 
       -- vim.api.nvim_set_option_value('scrolloff', 0, { win = self.state.winid })
@@ -186,12 +188,12 @@ M.buffer_cat = function(opts)
       -- self.window:option('scrolloff', 0)
       -- self.window:option('showbreak', 'NONE')
       -- self.window:option('wrap', true)
-      local extension = vim.fn.fnamemodify(p, ":e")
-      if extension == "md" then
-        preview_opts.callback = markdown_cb
-      else
-        preview_opts.callback = other_cb
-      end
+      -- local extension = vim.fn.fnamemodify(p, ":e")
+      -- if extension == "md" then
+      --   preview_opts.callback = markdown_cb
+      -- else
+      --   preview_opts.callback = other_cb
+      -- end
       conf.buffer_previewer_maker(p, self.state.bufnr, preview_opts)
     end,
   })

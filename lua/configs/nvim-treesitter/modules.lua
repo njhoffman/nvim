@@ -85,7 +85,7 @@ local modules = {
       },
     }, -- grr default
     -- highlight_definitions = { enable = true },
-    highlight_current_scope = { enable = false },
+    highlight_current_scope = { enable = true },
     navigation = {
       enable = true,
       keymaps = {
@@ -115,7 +115,7 @@ local modules = {
       -- "bash",
       -- 'help',
       "make",
-      "zsh",
+      -- "zsh",
     },
     custom_captures = {
       -- Highlight the @foo.bar capture group with the "Identifier" highlight group.

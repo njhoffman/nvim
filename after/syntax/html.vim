@@ -19,6 +19,5 @@ syn match pslMultiline '%MULTILINE%'
 
 " SPIDERCODE
 syn include @htmlJavaScript syntax/javascript.vim
-unlet b:current_syntax
 syn region javascript start=+%spidercode%+ keepend end=+%spidercode%+ contains=@htmlJavaScript,htmlCssStyleComment,htmlScriptTag,@htmlPreproc
 

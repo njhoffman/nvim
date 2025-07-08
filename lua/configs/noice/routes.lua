@@ -39,7 +39,7 @@ local routes = {
         -- all "Closed # popup windows" to mini
         { event = "msg_show", find = "^Closed %d+ popup windows" },
         -- all "Cannot make changes, 'modifiable' is off" to mini
-        { event = "msg_show", find = "^E21:" },
+        { event = "msg_show", find = "E21: Cannot make changes" },
         -- Could not apply exmtark to....
         { event = "msg_show", find = "^Could not apply exmtark to " },
         -- all search not found messages to mini

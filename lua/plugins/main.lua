@@ -114,7 +114,9 @@ local plugins = {
   {
     "echasnovski/mini.indentscope",
     event = { "BufReadPre", "BufNewFile" },
-    init = require("configs.mini-indentscope__init"),
+    init = function()
+      require("configs.mini-indentscope__init")
+    end,
   },
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -198,11 +200,38 @@ local plugins = {
       "nvim-treesitter/nvim-treesitter",
       "ravitemer/codecompanion-history.nvim",
       {
+        "Davidyz/VectorCode",
+        build = "pipx upgrade vectorcode", -- If you used pipx to install the CLI
+        dependencies = { "nvim-lua/plenary.nvim" },
+      },
+      {
         "ravitemer/mcphub.nvim",
         build = "npm install -g mcp-hub@latest",
         config = function()
           require("mcphub").setup()
         end,
+      },
+      {
+        "yetone/avante.nvim",
+        -- build from source: `make BUILD_FROM_SOURCE=true, must add this setting
+        build = function()
+          return "make"
+        end,
+        event = "VeryLazy",
+        version = false, -- Never set this value to "*"! Never!
+        dependencies = {
+          "nvim-lua/plenary.nvim",
+          "MunifTanjim/nui.nvim",
+          --- The below dependencies are optional,
+          "echasnovski/mini.pick", -- for file_selector provider mini.pick
+          "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+          "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+          "ibhagwan/fzf-lua", -- for file_selector provider fzf
+          "stevearc/dressing.nvim", -- for input provider dressing
+          "folke/snacks.nvim", -- for input provider snacks
+          "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+          "zbirenbaum/copilot.lua", -- for providers='copilot'
+        },
       },
     },
     -- init = function()
@@ -433,7 +462,13 @@ local plugins = {
   -- { 'otavioschwanck/cool-substitute.nvim' },
   -- matching
 
-  { "andymass/vim-matchup", lazy = false, init = require("configs.vim-matchup__init") },
+  {
+    "andymass/vim-matchup",
+    lazy = false,
+    init = function()
+      require("configs.vim-matchup__init")
+    end,
+  },
   -- pairs
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
   {
@@ -455,7 +490,14 @@ local plugins = {
   { "echasnovski/mini.move", event = "VeryLazy" },
   -- alignment
   { "echasnovski/mini.align", event = "VeryLazy" },
-  { "dhruvasagar/vim-table-mode", event = "VeryLazy", ft = { "markdown", "pandoc", "vimwiki" } },
+
+  --   "dhruvasagar/vim-table-mode",
+  --   lazy = false,
+  --   -- ft = { "markdown", "pandoc", "vimwiki" },
+  --   init = function()
+  --     require("configs.vim-table-mode")
+  --   end,
+  -- },
   { "echasnovski/mini.doc", version = false, event = "VeryLazy" },
   {
     "echasnovski/mini.bracketed" --[[ , event = "VeryLazy" ]],
@@ -746,7 +788,19 @@ local plugins = {
       -- },
     },
   },
-  -- https://github.com/MagicDuck/grug-far.nvim
+  {
+    "MagicDuck/grug-far.nvim",
+    -- Note (lazy loading): grug-far.lua defers all it's requires so it's lazy by default
+    -- additional lazy config to defer loading is not really needed...
+    config = function()
+      -- optional setup call to override plugin options
+      -- alternatively you can set options with vim.g.grug_far = { ... }
+      require("grug-far").setup({
+        -- options, see Configuration section below
+        -- there are no required options atm
+      })
+    end,
+  },
   {
     "chrisgrieser/nvim-rip-substitute",
     cmd = "RipSubstitute",
@@ -776,7 +830,9 @@ local plugins = {
   {
     "glacambre/firenvim",
     build = ":call firenvim#install(0)",
-    init = require("configs.firenvim__init"),
+    init = function()
+      require("configs.firenvim__init")
+    end,
   },
   { "lucamot/chrome-remote.nvim", event = "VeryLazy" },
   { "lucamot/chrome-dev-console.nvim", dependencies = { "lucamot/chrome-remote.nvim" } },
@@ -1065,7 +1121,13 @@ local plugins = {
     -- :Qsave, :Qload:Qbelow, :Qabove, :Lbelow, Labove, etc will navigate to the next or previous entry relative to the cursor.
     -- However, unlike :cabove it will cross buffer boundaries.
   },
-  { "maskudo/devdocs.nvim", enabled = false, lazy = false, dependencies = { "folke/snacks.nvim" } },
+  {
+    "maskudo/devdocs.nvim",
+    lazy = false,
+    enabled = true,
+    cmd = { "DevDocs" },
+    dependencies = { "folke/snacks.nvim" },
+  },
   -- https://github.com/fredrikaverpil/godoc.nvim
   -- https://github.com/fredrikaverpil/pydoc.nvim
   -- https://github.com/Zeioth/markmap.nvim

@@ -16,9 +16,11 @@ local basecfg = {
   scrolling_limit = 20000,
   debounce = 50,
   wrap_results = false,
-  selection_caret = "▶ ",
-  multi_icon = "󰒆 ", --  '◆ 󰒆 ',
+  selection_caret = "▌ ", -- ▶  ┃ ▌󰒆 ▇
+  multi_icon = "┃", --  '◆ 󰒆 ',
   prompt_prefix = " 🔍 ", -- " 🔍 ",'   '
+
+  hl_result_eol = true,
   cycle_layout_list = { "flex", "horizontal", "vertical", "bottom_pane", "center" },
   git_worktrees = {
     {
@@ -26,64 +28,7 @@ local basecfg = {
       gitdir = vim.env.HOME .. "/.cfg",
     },
   },
-  file_ignore_patterns = {
-    "^.git/",
-    "^target/",
-    "^node%_modules/",
-    "^.npm/",
-    "^build/",
-    "%[Cc]ache/",
-    "%-cache",
-    "^.dropbox/",
-    "^.dropbox_trashed/",
-    "%.py[co]",
-    "%.sw?",
-    "%.a",
-    "%.npz",
-    "^.vscode",
-    "%.tags",
-    "%.gemtags",
-    "%.tmp",
-    "%.exe",
-    "%.dat",
-    "^dist",
-    "%.old",
-    "%.plist",
-    "%.pdf",
-    "%.log",
-    "%.jpg",
-    "%.jpeg",
-    "%.png",
-    "%.obj",
-    "^release",
-    "%.tar.gz",
-    "%.tar",
-    "%.zip",
-    "%.class",
-    "%.pdb",
-    "%.dll",
-    "%.bak",
-    "%.lib",
-    "^.idea",
-    "%.scan",
-    "%.mca",
-    "__pycache__",
-    "^.mozilla/",
-    "^.electron/",
-    "^debug",
-    "^.vpython-root/",
-    "^.gradle/",
-    "^.nuget/",
-    "^.cargo/",
-    "^.evernote/",
-    "^Debug",
-    "^.azure-functions-core-tools/",
-    "^yay/",
-    "%.class",
-    "%.o",
-    "%.so",
-    "^Release",
-  },
+  file_ignore_patterns = { "^.git/" },
 
   set_env = {
     DFT_DISPLAY = "inline",
@@ -117,7 +62,24 @@ local basecfg = {
   -- file_sorter = sorters.fuzzy_with_index_bias,
   -- file_sorter = sorters.native_fzf_sorter,
   include_extensions = true,
-  path_display = display_path.init("simple"),
+  -- path_display = display_path.init("simple"),
+  path_display = function(opts, path)
+    local smart = require("telescope.utils").path_smart(path)
+    path = string.format("%s", smart, path)
+
+    local highlights = {
+      {
+        {
+          0, -- highlight start position
+          -1, -- highlight end position
+        },
+        "Comment", -- highlight group name
+      },
+    }
+
+    return path, highlights
+  end,
+
   -- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
   -- file_previewer = require("telescope.previewers").vim_buffer_cat.new,
   -- qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,

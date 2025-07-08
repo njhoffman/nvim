@@ -1,9 +1,9 @@
 local previewers = require("telescope.previewers")
-local transpiler = require("devdocs.transpiler")
-local operations = require("devdocs.operations")
-local plugin_config = require("devdocs.config")
-local plugin_state = require("devdocs.state")
-local log = require("devdocs.log")
+local transpiler = require("devdocs2.transpiler")
+local operations = require("devdocs2.operations")
+local plugin_config = require("devdocs2.config")
+local plugin_state = require("devdocs2.state")
+local log = require("devdocs2.log")
 local utils = require("telescope._extensions.devdocs.utils")
 
 local metadata_previewer = previewers.new_buffer_previewer({
@@ -54,7 +54,6 @@ local doc_previewer = previewers.new_buffer_previewer({
         operations.render_cmd(bufnr, true)
       else
         vim.bo[bufnr].ft = "markdown"
-        vim.bo[bufnr].syntax = "pandoc"
         vim.wo[winid].conceallevel = 3
       end
     end)

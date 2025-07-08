@@ -61,6 +61,11 @@ local cfg = {
     -- animation related
     duration = 200,
     delay = 200,
+    exclude_filetypes = {
+      aerial = true,
+      dashboard = true,
+      markdown = true,
+    },
   },
 }
 

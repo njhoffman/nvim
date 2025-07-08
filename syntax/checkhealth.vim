@@ -7,7 +7,10 @@ if exists("b:current_syntax")
 endif
 
 runtime! syntax/markdown.vim
-unlet! b:current_syntax
+if exists("b:current_syntax")
+  unlet b:current_syntax
+endif
+
 
 syn case match
 

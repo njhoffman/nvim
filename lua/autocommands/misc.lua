@@ -205,18 +205,89 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 --   })
 -- end
 
+local get_winsize = function(win)
+  win.ft = vim.api.nvim_get_option_value("filetype", { buf = win.bufnr })
+  return {
+    win = win,
+    height = vim.api.nvim_win_get_height(win.winid),
+    width = vim.api.nvim_win_get_width(win.winid),
+  }
+end
+
+local get_splits = function(currwin)
+  local dirmap = { left = "h", right = "l", down = "j", up = "k" }
+  local splits = {}
+  for name, dir in pairs(dirmap) do
+    if vim.fn.winnr(dir) ~= currwin.winnr then
+      splits[name] = get_winsize(currwin)
+    end
+  end
+  return splits
+end
+
+local get_windiff = function(curr, last)
+  return {
+    cols = math.floor(curr.width - last.width),
+    rows = math.floor(curr.height - last.height),
+    hpct = math.floor((curr.height - last.height) / last.height * 100) / 100,
+    wpct = math.floor((curr.width - last.width) / last.width * 100) / 100,
+  }
+end
+
+local get_windiffs = function(curr, last)
+  local windiffs = get_windiff(curr, last)
+  windiffs.splits = {}
+  for name, split in pairs(curr.splits) do
+    local last_split = last and last.splits and last.splits[name]
+    if
+      vim.fn.empty(split) == 0
+      and vim.fn.empty(split.height) == 0
+      and vim.fn.empty(split.width) == 0
+      and vim.fn.empty(last_split) == 0
+    then
+      windiffs.splits[name] = get_windiff(split, last_split)
+    end
+  end
+  return windiffs
+end
+
+local resize_splits = function(windiffs)
+  if windiffs and vim.fn.empty(windiffs.splits) == 0 then
+    vim.dbglog("resizing splits", windiffs)
+  else
+    vim.dbglog("skipping splits", windiffs)
+  end
+end
+
 -- resize splits if window got resized
+local last_winsize = { height = 0, width = 0, splits = {} }
+
 vim.api.nvim_create_autocmd({ "VimResized" }, {
   group = vim.api.nvim_create_augroup("resize_splits", { clear = true }),
-  callback = function()
-    vim.cmd("tabdo wincmd =")
+  callback = function(ev)
+    local currwin = {
+      bufnr = ev.buf,
+      winnr = vim.fn.bufwinnr(ev.buf),
+      winid = vim.fn.bufwinid(ev.buf),
+    }
+    local winsize = get_winsize(currwin)
+    if last_winsize.height > 0 and last_winsize.width > 0 then
+      winsize.splits = get_splits(currwin)
+      local windiffs = get_windiffs(winsize, last_winsize)
+      -- resize_splits(windiffs)
+    end
+    last_winsize = winsize
   end,
 })
 
 vim.api.nvim_create_autocmd({ "FocusGained", "CursorHold" }, {
   group = vim.api.nvim_create_augroup("buffer_changes", { clear = true }),
   callback = function()
-    vim.cmd("checktime")
+    -- if regular buffer to update then
+    if vim.bo.filetype ~= "" and vim.bo.buftype == "" then
+      -- check if the file has been changed outside of nvim
+      vim.cmd("checktime")
+    end
   end,
 })
 --

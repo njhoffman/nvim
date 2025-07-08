@@ -18,7 +18,7 @@ for _, mod_name in ipairs({
   "devbox",
   "runner",
   "stats",
-  "devdocs.setup",
+  "devdocs2.setup",
   -- 'configs.cinnamon',
   "tracker.setup",
   "tmux.setup",

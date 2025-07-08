@@ -145,6 +145,18 @@ return function(injected_functions)
     VisualAlt({ fg = "none", bg = "#10083f", gui = "italic" }),
     VisualRed({ fg = "none", bg = "#40112c", gui = "italic" }),
 
+    MiniDiffSignAdd = { fg = palette.base0B, bg = palette.base00 },
+    MiniDiffSignChange = { fg = palette.base0E, bg = palette.base00 },
+    MiniDiffSignDelete = { fg = palette.base08, bg = palette.base00 },
+    MiniDiffOverAdd = { link = "DiffAdd" },
+    MiniDiffOverChange = { link = "DiffText" },
+    MiniDiffOverContext = { link = "DiffChange" },
+    MiniDiffOverDelete = { link = "DiffDelete" },
+    -- DiffAdd        xxx guibg=#273849
+    -- DiffChange     xxx guibg=#252a3f
+    -- DiffDelete     xxx guibg=#3a273a
+    -- DiffText       xxx guibg=#394b70
+
     DiffAdd({ bg = "#003c42" }), -- #00361f #001000 #22bb99
     DiffChange({ bg = "#063054" }), -- #003050 #001030 #646ead
     DiffDelete({ fg = "#444466", bg = "#240000" }), -- #3e0009 #300000 #be6069
@@ -610,7 +622,9 @@ return function(injected_functions)
     shVariable({ Normal }),
 
     zshBrackets({ fg = clr_over.orange }),
-    zshSubst({ fg = "#488aaf" }),
+    -- sym("@punctuation.special")({ fg = "#888698" }), -- #89ddff
+
+    zshSubst({ fg = "#888698" }),
     zshSubstDelim({ fg = "#5776bc" }),
     zshParentheses({ fg = "#c78087" }),
     zshConditional({ sym("@keyword") }),
@@ -648,10 +662,6 @@ return function(injected_functions)
     CSVColumnHeaderEven({ fg = Statement.fg, bg = "none" }),
 
     -- plugins --
-
-    -- matchup
-    MatchParen({ fg = "#fb8b8b", gui = "bold," }),
-    -- highlight MatchParen gui=BOLD guifg=#ffaf00 guibg=#444444
     MatchParenCur({ fg = "#ff9f9f", gui = "bold" }), -- matchparen
     MatchWord({ fg = "#7f6686", gui = "italic" }),
     MatchBackground({ gui = "italic", bg = "#0f2139" }), -- colorcolumn
@@ -942,13 +952,13 @@ return function(injected_functions)
     TelescopePreviewBorder({ fg = "#416191", bg = "none" }),
     TelescopeResults({ bg = "none" }),
     TelescopeResultsBorder({ fg = "#416191", bg = "none" }),
-    TelescopeSelectionCaret({ fg = "#04c9fc" }),
-    TelescopeSelection({ fg = "#008acf", gui = "bold", bg = CursorLine.bg }), -- bg = "#202324"
     TelescopeMatching({ fg = "#4070cc", bg = "none" }),
     TelescopeFrecencyScores({ fg = "#34799c" }),
     TelescopeBufferLoaded({ fg = "#47a0f0" }),
-    TelescopeMultiIcon({ fg = "#20a0ff", gui = "bold" }),
-    TelescopeMultiSelection({ fg = "#2080cf", bg = "none", gui = "italic" }),
+    TelescopeSelectionCaret({ fg = "#04f9cc" }),
+    TelescopeSelection({ fg = "#008acf", gui = "bold", bg = CursorLine.bg }), -- bg = "#202324"
+    TelescopeMultiIcon({ fg = "#0028ff", bg = "#10003c", gui = "bold" }),
+    TelescopeMultiSelection({ fg = "#2080cf", bg = "#001024", gui = "italic" }),
     TelescopeTitle({ fg = "#2299ff", gui = "bold " }),
     TelescopePreviewTitle({ fg = "#47a0f0", bg = "none" }),
     TelescopeResultsTitle({ fg = "#64a9ec", bg = "none" }),
@@ -1337,9 +1347,10 @@ return function(injected_functions)
     sym("@markup.heading.5.markdown")({ fg = RenderMarkdownH5.fg, bg = RenderMarkdownH5Bg.bg }),
     sym("@markup.heading.6.markdown")({ fg = RenderMarkdownH6.fg, bg = RenderMarkdownH6Bg.bg }),
     RenderMarkdownBullet({ fg = "#846d59" }),
-    RenderMarkdownTableRow({ fg = "#804c65" }),
-    RenderMarkdownTableHead({ fg = "#804c65" }),
-    RenderMarkdownTablFill({ fg = "#804c65" }),
+
+    RenderMarkdownTableRow({ fg = "#502c25" }),
+    RenderMarkdownTableHead({ fg = "#502c25" }),
+    RenderMarkdownTableFill({ fg = "#502c25" }),
     RenderMarkdownDash({ fg = "#624b17" }),
     RenderMarkdownInfo({ fg = "#0078a4" }),
     RenderMarkdownSuccess({ fg = "#079c7e" }),
@@ -1348,6 +1359,7 @@ return function(injected_functions)
     RenderMarkdownError({ fg = "#991a1a" }),
 
     RenderMarkdownCode({ CodeBlock }),
+    RenderMarkdownCodeNoFile({ CodeBlock }),
     RenderMarkdownCodeInline({ sym("@markup.raw.markdown_inline") }),
     mkdCode({ CodeBlock }),
     -- mkdCodeEnd({ mkdCode }),

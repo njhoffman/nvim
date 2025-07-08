@@ -37,8 +37,7 @@ vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
 
 -- -- https://neovim.io/doc/user/lua.html#vim.filetype.add()
 -- -- Search for vim.filetype.add
--- use bash parser for zsh files
--- vim.treesitter.language.register("bash", "zsh")
+
 vim.filetype.add({ extension = { hurl = "hurl" } })
 --   local lang = ts_parsers.ft_to_lang(vim.bo.filetype)
 --   local parser = ts_parsers.get_parser(vim.fn.bufnr(), lang)

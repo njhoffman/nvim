@@ -1,22 +1,22 @@
 local M = {}
 
-local finders = require('telescope.finders')
-local pickers = require('telescope.pickers')
-local actions = require('telescope.actions')
-local action_state = require('telescope.actions.state')
-local config = require('telescope.config').values
+local finders = require("telescope.finders")
+local pickers = require("telescope.pickers")
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+local config = require("telescope.config").values
 
-local log = require('devdocs.log')
-local list = require('devdocs.list')
-local operations = require('devdocs.operations')
-local plugin_state = require('devdocs.state')
-local plugin_config = require('devdocs.config')
+local log = require("devdocs2.log")
+local list = require("devdocs2.list")
+local operations = require("devdocs2.operations")
+local plugin_state = require("devdocs2.state")
+local plugin_config = require("devdocs2.config")
 
-local devdoc_actions = require('telescope._extensions.devdocs.actions')
-local previewers = require('telescope._extensions.devdocs.previewers')
-local create_registry_maker = require('telescope._extensions.devdocs.display.registry')
-local create_docitems_maker = require('telescope._extensions.devdocs.display.docitems')
-local docitems_entry_maker = require('telescope._extensions.devdocs.display.docitems-inline')
+local devdoc_actions = require("telescope._extensions.devdocs.actions")
+local previewers = require("telescope._extensions.devdocs.previewers")
+local create_registry_maker = require("telescope._extensions.devdocs.display.registry")
+local create_docitems_maker = require("telescope._extensions.devdocs.display.docitems")
+local docitems_entry_maker = require("telescope._extensions.devdocs.display.docitems-inline")
 
 ---@param prompt string
 ---@param entries RegistryEntry[]
@@ -42,7 +42,7 @@ M.installation_picker = function()
     return
   end
 
-  local picker = new_registry_picker('Install documentation', non_installed, function()
+  local picker = new_registry_picker("Install documentation", non_installed, function()
     actions.select_default:replace(function(prompt_bufnr)
       local selection = action_state.get_selected_entry()
 
@@ -62,10 +62,10 @@ M.uninstallation_picker = function()
     return
   end
 
-  local picker = new_registry_picker('Uninstall documentation', installed, function()
+  local picker = new_registry_picker("Uninstall documentation", installed, function()
     actions.select_default:replace(function(prompt_bufnr)
       local selection = action_state.get_selected_entry()
-      local alias = selection.value.slug:gsub('~', '-')
+      local alias = selection.value.slug:gsub("~", "-")
 
       actions.close(prompt_bufnr)
       operations.uninstall(alias)
@@ -83,10 +83,10 @@ M.update_picker = function()
     return
   end
 
-  local picker = new_registry_picker('Update documentation', updatable, function()
+  local picker = new_registry_picker("Update documentation", updatable, function()
     actions.select_default:replace(function(prompt_bufnr)
       local selection = action_state.get_selected_entry()
-      local alias = selection.value.slug:gsub('~', '-')
+      local alias = selection.value.slug:gsub("~", "-")
 
       actions.close(prompt_bufnr)
       operations.install(alias, true, true)
@@ -101,7 +101,7 @@ end
 ---@param float? boolean
 M.open_picker = function(entries, float)
   local picker = pickers.new(plugin_config.options.telescope, {
-    prompt_title = 'Select an entry',
+    prompt_title = "Select an entry",
     finder = finders.new_table({
       results = entries,
       entry_maker = docitems_entry_maker,
@@ -113,7 +113,7 @@ M.open_picker = function(entries, float)
         actions.close(prompt_bufnr)
         local selection = action_state.get_selected_entry()
         if selection then
-          plugin_state.set('current_doc', selection.value.alias)
+          plugin_state.set("current_doc", selection.value.alias)
           devdoc_actions.open_doc(selection, float)
         end
       end)
@@ -133,9 +133,9 @@ M.open_picker_alias = function(alias, float)
   end
 
   if vim.tbl_isempty(entries) then
-    log.error(alias .. ' documentation is not installed')
+    log.error(alias .. " documentation is not installed")
   else
-    plugin_state.set('current_doc', alias)
+    plugin_state.set("current_doc", alias)
     M.open_picker(entries, float)
   end
 end
@@ -144,10 +144,10 @@ M.open_picker_alias_dyn = function(opts)
   opts = opts or {}
   local installed = list.get_installed_registry()
   opts.entry_maker = (opts.entry_maker or create_docitems_maker)(installed)
-  local script_file = vim.fn.stdpath('config') .. '/luarocks/devdocs/lua_modules/bin/list'
+  local script_file = vim.fn.stdpath("config") .. "/luarocks/devdocs/lua_modules/bin/list"
   local command = { script_file }
   local picker = pickers.new(plugin_config.options.telescope, {
-    prompt_title = 'Select an entry',
+    prompt_title = "Select an entry",
     finder = finders.new_oneshot_job(command, opts),
     previewer = previewers.doc_previewer,
     -- sorter = config.generic_sorter(plugin_config.options.telescope),

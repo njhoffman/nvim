@@ -1,3 +1,6 @@
+-- use bash parser for zsh files
+-- vim.treesitter.language.register("bash", "zsh")
+
 local tsmodules = require("configs.nvim-treesitter.modules")
 
 local ts = require("nvim-treesitter")
