@@ -11,7 +11,7 @@ require("ts_context_commentstring").setup({
       comment = "// %s",
     },
     typescript = { __default = "// %s", __multiline = "/* %s */" },
-  },
+  ;q}
 })
 
 vim.filetype.add({

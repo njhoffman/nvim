@@ -76,6 +76,15 @@ function! s:init_options()
   call s:init_option('matchup_where_separator', '')
 
   call s:init_option('matchup_matchpref', {})
+
+  if has('nvim')
+    call s:init_option('matchup_treesitter_enabled', has('nvim-0.11.2') ? v:true : v:false)
+    call s:init_option('matchup_treesitter_disabled', [])
+    call s:init_option('matchup_treesitter_include_match_words', v:false)
+    call s:init_option('matchup_treesitter_enable_quotes', v:true)
+    call s:init_option('matchup_treesitter_disable_virtual_text', v:false)
+    call s:init_option('matchup_treesitter_stopline', 400)
+  endif
 endfunction
 
 function! s:init_option(option, default)
@@ -244,55 +253,52 @@ function! s:motion_init_module() " {{{1
 
   call matchup#perf#tic('loading_module')
 
-" n  !+    <SNR>104_(wise)      empty(g:v_motion_force) ? 'v' : g:v_motion_force
-" x  !     <SNR>99_(matchup-Z%) :<C-U>call matchup#motion#jump_inside_prev(1)<CR>
-" x  !     <SNR>99_(matchup-[%) :<C-U>call matchup#motion#find_unmatched(1, 0)<CR>
-" x  !     <SNR>99_(matchup-]%) :<C-U>call matchup#motion#find_unmatched(1, 1)<CR>
-" x  !     <SNR>99_(matchup-%)  :<C-U>call matchup#motion#find_matching_pair(1, 1)<CR>
-" x  !     <SNR>99_(matchup-g%) :<C-U>call matchup#motion#find_matching_pair(1, 0)<CR>
-
   " gets the current forced motion type
-  " nnoremap <silent><expr> <sid>(wise)
-  "       \ empty(g:v_motion_force) ? 'v' : g:v_motion_force
-  nnoremap <silent><expr> <plug>(wise)
+  nnoremap <silent><expr> <sid>(wise)
         \ empty(g:v_motion_force) ? 'v' : g:v_motion_force
 
   " the basic motions % and g%
-  nnoremap <silent> <plug>(matchup-%)
-        \ :<c-u>call matchup#motion#find_matching_pair(0, 1)<cr>
-  nnoremap <silent> <plug>(matchup-g%)
-        \ :<c-u>call matchup#motion#find_matching_pair(0, 0)<cr>
+  if has('patch-8.2.1978') || has('nvim')
+    nnoremap <silent> <plug>(matchup-%)
+	  \ <cmd>call matchup#motion#find_matching_pair(0, 1)<cr>
+    nnoremap <silent> <plug>(matchup-g%)
+	  \ <cmd>call matchup#motion#find_matching_pair(0, 0)<cr>
+  else
+    nnoremap <silent> <plug>(matchup-%)
+	  \ :<c-u>call matchup#motion#find_matching_pair(0, 1)<cr>
+    nnoremap <silent> <plug>(matchup-g%)
+	  \ :<c-u>call matchup#motion#find_matching_pair(0, 0)<cr>
+  endif
 
   " visual and operator-pending
-  " xnoremap <silent> <sid>(matchup-%)
-  "       \ :<c-u>call matchup#motion#find_matching_pair(1, 1)<cr>
-  xnoremap <silent> <plug>(matchup-%)
+  xnoremap <silent> <sid>(matchup-%)
         \ :<c-u>call matchup#motion#find_matching_pair(1, 1)<cr>
   xmap     <silent> <plug>(matchup-%) <sid>(matchup-%)
   onoremap <silent> <plug>(matchup-%)
         \ :<c-u>call matchup#motion#op('%')<cr>
 
-  " xnoremap <silent> <sid>(matchup-g%)
-  "       \ :<c-u>call matchup#motion#find_matching_pair(1, 0)<cr>
-  xnoremap <silent> <plug>(matchup-g%)
+  xnoremap <silent> <sid>(matchup-g%)
         \ :<c-u>call matchup#motion#find_matching_pair(1, 0)<cr>
   xmap     <silent> <plug>(matchup-g%) <sid>(matchup-g%)
   onoremap <silent> <plug>(matchup-g%)
         \ :<c-u>call matchup#motion#op('g%')<cr>
 
   " ]% and [%
-  nnoremap <silent> <plug>(matchup-]%)
-        \ :<c-u>call matchup#motion#find_unmatched(0, 1)<cr>
-  nnoremap <silent> <plug>(matchup-[%)
-        \ :<c-u>call matchup#motion#find_unmatched(0, 0)<cr>
+  if has('patch-8.2.1978') || has('nvim')
+    nnoremap <silent> <plug>(matchup-]%)
+	  \ <cmd>call matchup#motion#find_unmatched(0, 1)<cr>
+    nnoremap <silent> <plug>(matchup-[%)
+	  \ <cmd>call matchup#motion#find_unmatched(0, 0)<cr>
+  else
+    nnoremap <silent> <plug>(matchup-]%)
+	  \ :<c-u>call matchup#motion#find_unmatched(0, 1)<cr>
+    nnoremap <silent> <plug>(matchup-[%)
+	  \ :<c-u>call matchup#motion#find_unmatched(0, 0)<cr>
+  endif
 
-  " xnoremap <silent> <sid>(matchup-]%)
-  "       \ :<c-u>call matchup#motion#find_unmatched(1, 1)<cr>
-  " xnoremap <silent> <sid>(matchup-[%)
-  "       \ :<c-u>call matchup#motion#find_unmatched(1, 0)<cr>
-  xnoremap <silent> <plug>(matchup-]%)
+  xnoremap <silent> <sid>(matchup-]%)
         \ :<c-u>call matchup#motion#find_unmatched(1, 1)<cr>
-  xnoremap <silent> <plug>(matchup-[%)
+  xnoremap <silent> <sid>(matchup-[%)
         \ :<c-u>call matchup#motion#find_unmatched(1, 0)<cr>
   xmap     <plug>(matchup-]%) <sid>(matchup-]%)
   xmap     <plug>(matchup-[%) <sid>(matchup-[%)
@@ -302,24 +308,30 @@ function! s:motion_init_module() " {{{1
         \ :<c-u>call matchup#motion#op('[%')<cr>
 
   " jump inside z%
-  nnoremap <silent> <plug>(matchup-z%)
-        \ :<c-u>call matchup#motion#jump_inside(0)<cr>
+  if has('patch-8.2.1978') || has('nvim')
+    nnoremap <silent> <plug>(matchup-z%)
+	  \ <cmd>call matchup#motion#jump_inside(0)<cr>
+  else
+    nnoremap <silent> <plug>(matchup-z%)
+	  \ :<c-u>call matchup#motion#jump_inside(0)<cr>
+  endif
 
-  " xnoremap <silent> <sid>(matchup-z%)
-  "       \ :<c-u>call matchup#motion#jump_inside(1)<cr>
-  xnoremap <silent> <plug>(matchup-z%)
+  xnoremap <silent> <sid>(matchup-z%)
         \ :<c-u>call matchup#motion#jump_inside(1)<cr>
   xmap     <silent> <plug>(matchup-z%) <sid>(matchup-z%)
   onoremap <silent> <plug>(matchup-z%)
         \ :<c-u>call matchup#motion#op('z%')<cr>
 
   " 'opposite' of z%
-  nnoremap <silent> <plug>(matchup-Z%)
-        \ :<c-u>call matchup#motion#jump_inside_prev(0)<cr>
+  if has('patch-8.2.1978') || has('nvim')
+    nnoremap <silent> <plug>(matchup-Z%)
+	  \ <cmd>call matchup#motion#jump_inside_prev(0)<cr>
+  else
+    nnoremap <silent> <plug>(matchup-Z%)
+	  \ :<c-u>call matchup#motion#jump_inside_prev(0)<cr>
+  endif
 
-  " xnoremap <silent> <sid>(matchup-Z%)
-  "       \ :<c-u>call matchup#motion#jump_inside_prev(1)<cr>
-  xnoremap <silent> <plug>(matchup-Z%)
+  xnoremap <silent> <sid>(matchup-Z%)
         \ :<c-u>call matchup#motion#jump_inside_prev(1)<cr>
   xmap     <silent> <plug>(matchup-Z%) <sid>(matchup-Z%)
   onoremap <silent> <plug>(matchup-Z%)
@@ -334,7 +346,6 @@ endfunction
 " TODO redo this
 function! s:snr()
   return str2nr(matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_snr$'))
-  " return matchstr(expand('<SID>'), '<SNR>\zs\d\+\ze_')
 endfunction
 let s:sid = printf("\<SNR>%d_", s:snr())
 
@@ -407,16 +418,31 @@ function! s:treesitter_init_module() " {{{1
     return
   endif
 
-  lua require'treesitter-matchup'.init()
-
-  augroup matchup_filetype_query
-    au!
-    autocmd FileType query
-          \ augroup MatchupTreesitter|augroup END
-          \|autocmd! MatchupTreesitter BufWritePost <buffer>
-          \ call v:lua.require('treesitter-matchup.third-party.query')
-          \.invalidate_query_file(expand('%:p'))
-  augroup END
+  lua <<LUA
+  vim.api.nvim_create_autocmd({'FileType'}, {
+    pattern = {'query'},
+    group = vim.api.nvim_create_augroup('matchup_filetype_query', {
+      clear = true
+    }),
+    callback = function(ftevent)
+      vim.api.nvim_create_autocmd({'BufWritePost'}, {
+        buffer = ftevent.buf,
+        group = vim.api.nvim_create_augroup('MatchupTreesitter', {
+          clear = true
+        }),
+        callback = function(bwpevent)
+          local _, _, query_lang = string.find(bwpevent.file, "([^/]*)/matchup.scm$")
+          if query_lang then
+            vim.treesitter.query.get:clear(
+              query_lang,
+              "matchup"
+            )
+          end
+        end
+      })
+    end
+  })
+LUA
 endfunction
 
 "}}}1

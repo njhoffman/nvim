@@ -141,22 +141,22 @@ local modules = {
   pairs = {
     enable = false,
     disable = {},
-    -- highlight_pair_events = { "CursorMoved" }, -- e.g. {"CursorMoved"}, -- when to highlight the pairs, use {} to deactivate highlighting
-    highlight_self = true, -- whether to highlight also the part of the pair under cursor (or only the partner)
-    goto_right_end = false, -- whether to go to the end of the right partner or the beginning
-    fallback_cmd_normal = "silent! call matchit#Match_wrapper('',1,'n')", -- What command to issue when we can't find a pair (e.g. "normal! %")
-    -- "call matchup#util#patch_match_words",
-    keymaps = {
-      -- goto_partner = "<leader>%",
-      goto_partner = false,
-      delete_balanced = false,
-    },
-    delete_balanced = {
-      only_on_first_char = false, -- whether to trigger balanced delete when on first character of a pair
-      fallback_cmd_normal = nil, -- fallback command when no pair found, can be nil
-      longest_partner = false, -- whether to delete the longest or the shortest pair when multiple found.
-      -- E.g. whether to delete the angle bracket or whole tag in  <pair> </pair>
-    },
+    -- -- highlight_pair_events = { "CursorMoved" }, -- e.g. {"CursorMoved"}, -- when to highlight the pairs, use {} to deactivate highlighting
+    -- highlight_self = true, -- whether to highlight also the part of the pair under cursor (or only the partner)
+    -- goto_right_end = false, -- whether to go to the end of the right partner or the beginning
+    -- fallback_cmd_normal = "silent! call matchit#Match_wrapper('',1,'n')", -- What command to issue when we can't find a pair (e.g. "normal! %")
+    -- -- "call matchup#util#patch_match_words",
+    -- keymaps = {
+    --   -- goto_partner = "<leader>%",
+    --   goto_partner = false,
+    --   delete_balanced = false,
+    -- },
+    -- delete_balanced = {
+    --   only_on_first_char = false, -- whether to trigger balanced delete when on first character of a pair
+    --   fallback_cmd_normal = nil, -- fallback command when no pair found, can be nil
+    --   longest_partner = false, -- whether to delete the longest or the shortest pair when multiple found.
+    --   -- E.g. whether to delete the angle bracket or whole tag in  <pair> </pair>
+    -- },
   },
   rainbow = {
     enable = false,
@@ -262,7 +262,7 @@ local modules = {
   },
   matchup = {
     -- vim-matchup integration with treesitter-pairs
-    enable = true, -- mandatory, false will disable the whole extension
+    enable = false, -- mandatory, false will disable the whole extension
     -- disable = {"c", "ruby"} -- optional, list of language that will be disabled
     disable_virtual_text = true,
   },
