@@ -1,35 +1,76 @@
 -- use bash parser for zsh files
 -- vim.treesitter.language.register("bash", "zsh")
+local parsers = require("configs.nvim-treesitter.parsers")
 
-local tsmodules = require("configs.nvim-treesitter.modules")
+-- https://github.com/github/copilot.vim
 
-local ts = require("nvim-treesitter")
-
-ts.define_modules(tsmodules)
 local cfg = {
-  -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  auto_install = true,
-  ensure_installed = "all",
-  -- ignore_install = { 'comment' },
-  indent = tsmodules.indent,
-  playground = tsmodules.playground,
-  highlight = tsmodules.highlight,
-  refactor = tsmodules.refactor,
-  autotag = tsmodules.autotag,
-  rainbow = tsmodules.rainbow,
-  -- matchup = tsmodules.matchup,
-  pairs = tsmodules.pairs,
-  textobjects = tsmodules.textobjects,
-  textsubjects = tsmodules.textsubjects,
-  incremental_selection = tsmodules.incremental_custom,
-  endwise = tsmodules.endwise,
+  install = parsers.all,
+  skip_highlights = { "zsh" },
+  skip_indent = { "bash", "zsh", "markdown" },
 }
 
--- -- vim.treesitter.language.register("lua", { "log" })
+-- auto-install parsers
+parsers.install(cfg.install)
 
+-- use bash parser for zsh files
+vim.treesitter.language.register("bash", "zsh")
+
+-- auto-start highlights & indentation
+vim.api.nvim_create_autocmd("FileType", {
+  desc = "User: enable treesitter highlighting",
+  callback = function(ctx)
+    -- highlights
+    local hasStarted = nil
+    if not vim.list_contains(cfg.skip_highlights, ctx.match) then
+      hasStarted = pcall(vim.treesitter.start) -- errors for filetypes with no parser
+    end
+
+    -- indent
+    if hasStarted and not vim.list_contains(cfg.skip_indent, ctx.match) then
+      vim.bo[ctx.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+
+    -- folding
+    vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+  end,
+})
+
+-- COMMENTS parser
+vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
+  desc = "User: Highlights for the Treesitter `comments` parser",
+  callback = function()
+    -- FIX todo-comments in languages where LSP overwrites their highlight
+    -- https://github.com/stsewd/tree-sitter-comment/issues/22
+    -- https://github.com/LuaLS/lua-language-server/issues/1809
+    vim.api.nvim_set_hl(0, "@lsp.type.comment", {})
+    -- Define `@comment.bold` for `queries/comment/highlights.scm`
+    vim.api.nvim_set_hl(0, "@comment.bold", { bold = true })
+  end,
+})
+
+-- -- vim.treesitter.language.register("lua", { "log" })
 -- for matcher module
-vim.cmd("packadd matchit")
-require("nvim-treesitter.configs").setup(cfg)
-require("nvim-treesitter.install").prefer_git = true
-require("configs.nvim-treesitter.context")
-require("configs.nvim-treesitter.custom")
+-- vim.cmd("packadd matchit")
+-- require("nvim-treesitter.configs").setup(cfg)
+-- require("nvim-treesitter.install").prefer_git = true
+
+-- require("configs.nvim-treesitter.context")
+-- require("configs.nvim-treesitter.extra-config")
+
+-- {
+--   "RRethy/nvim-treesitter-textsubjects",
+--   config = function()
+--     require("nvim-treesitter-textsubjects").configure({
+--       prev_selection = "<leader>.",
+--       keymaps = {
+--         ["<leader><leader>"] = "textsubjects-smart",
+--         ["<leader>\\]"] = "textsubjects-container-outer",
+--         ["<leader>\\["] = "textsubjects-container-inner",
+--       },
+--     })
+--   end,
+-- },
+-- "HiPhish/nvim-ts-rainbow2",
+-- "nvim-treesitter/nvim-treesitter-refactor",
+-- { "nvim-treesitter/nvim-treesitter-context" },

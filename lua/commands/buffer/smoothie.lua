@@ -1,4 +1,4 @@
-local ts_ctx = require("treesitter-context")
+-- local ts_ctx = require("treesitter-context")
 local state = { started = false }
 -- <cmd>silent! execute "normal! 3<C-d><cr>  <cmd>normal! 3<C-d><cr>
 -- map('n', '<c-f>', '<cmd>execute "normal! "<cr>', {
@@ -79,7 +79,7 @@ local get_state = function()
   local smooth_status = type(package.loaded.smoothcursor) == 'table' and require('smoothcursor.utils').smoothcursor_status()
   return vim.tbl_extend("force", state, {
     relativenumber = vim.api.nvim_get_option_value("relativenumber", { win = 0 }),
-    tscontext = ts_ctx.enabled(),
+    -- tscontext = ts_ctx.enabled(),
     minianimate = type(package.loaded["mini.animate"]) == "table" and not vim.b.minianimate_disable,
     cursor = vim.o.guicursor ~= "a:noCursor",
     smoothcursor = smooth_status,
@@ -113,7 +113,7 @@ local hook_start = function()
       vim.opt_local.relativenumber = false
     end
     if cfg.tscontext_disable and curr.tscontext then
-      ts_ctx.disable()
+      -- ts_ctx.disable()
     end
     if cfg.cursor_hide and curr.cursor then
       state.prev_cursor = vim.o.guicursor
@@ -143,7 +143,7 @@ local hook_stop = function()
       state.prev_relativenumber = nil
     end
     if cfg.tscontext_disable and not curr.tscontext then
-      ts_ctx.enable()
+      -- ts_ctx.enable()
     end
     if cfg.smoothcursor_disable and not curr.smoothcursor and curr.smoothcursor_disabled then
       require("smoothcursor.utils").smoothcursor_start()

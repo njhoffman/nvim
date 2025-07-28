@@ -128,12 +128,19 @@ map({ "n", "x" }, "<M-:>", "q:", {
   desc = " open the command window",
 })
 
--- map('c', '<C-Y>', '<C-\\>ey', {
---   category = 'Command',
---   label = ' yank cmdline',
---   desc = ' yank from command line',
---   remap = true,
--- })
+map("c", "<C-y>", "<cmd>lua require('commands.cmdline').yank_cmdline()<cr>", {
+  category = "Command",
+  label = " yank cmdline",
+  desc = " yank from command line",
+  remap = true,
+})
+
+map("c", "<M-y>", "<cmd>lua require('commands.cmdline').yank_cmdline()<cr>", {
+  category = "Command",
+  label = " yank cmdline",
+  desc = " yank from command line",
+  remap = true,
+})
 
 -- TODO: vmap C-u C-w
 -- TODO: make whichkey screen for cmdline
@@ -1370,12 +1377,6 @@ map('n', '<F17>', '<cmd>MundoToggle<cr>', {
   desc = '  toggle mundo undo',
 })
 
-map('n', '<F6>', '<cmd>TSPlaygroundToggle<cr>', {
-  category = 'UI',
-  plugin = 'treesitter.nvim',
-  desc = '  toggle treesitter playground',
-})
-
 -- Shift-F6
 map('n', '<F18>', '<cmd>InspectTree<cr>', {
   category = 'UI',
@@ -1691,19 +1692,20 @@ map('n', '<M-C-Y>', '<cmd>ChatGPT<cr>', {
   desc = 'toggle chatgpt',
 })
 --
-map('n', '<C-y>', '<cmd>NeoAI<cr>', {
+map('n', '<C-y>', '<cmd>CodeCompanionChat Toggle<cr>', {
   category = 'Other UI',
-  plugin = 'neo-ai',
-  label = 'toggle the side panel of neo ai',
-  desc = 'toggle the side panel of neo ai',
+  desc = "Toggle AI chat (CodeCompanionChat)"
+  -- plugin = 'neo-ai',
+  -- label = 'toggle the side panel of neo ai',
+  -- desc = 'toggle the side panel of neo ai',
 })
 
-map('n', '<M-y>', '<cmd>NeoAIToggle<cr>', {
-  category = 'Other UI',
-  plugin = 'neo-ai',
-  label = 'toggle the side panel of neo ai',
-  desc = 'toggle the side panel of neo ai',
-})
+-- map('n', '<M-y>', '<cmd>NeoAIToggle<cr>', {
+--   category = 'Other UI',
+--   plugin = 'neo-ai',
+--   label = 'toggle the side panel of neo ai',
+--   desc = 'toggle the side panel of neo ai',
+-- })
 
 map('n', '<C-p>', "<cmd>lua require('telescope.run')('builtin', 'find_files')<cr>", {
   category = 'Other UI',
@@ -1977,6 +1979,11 @@ map('x', '>', '>gv', {
   desc = '󰉶 indent repeatedly',
 })
 
+map('n', '<leader>a', '>gv', {
+  category = 'Format',
+  desc = '󰉶 toggle char at end',
+})
+
 -- map('n', '<', '<<', {
 --   category = 'Format',
 --   label = '󰉶 unindent',
@@ -1989,12 +1996,12 @@ map('x', '>', '>gv', {
 --   desc = '󰉶 indent repeatedly',
 -- })
 
-map({ 'n' }, '<M-;>', '<cmd>ISwapNodeWith<cr>', {
-  category = 'Format',
-  label = '易swap node with',
-  desc = '易swap/exchange node objects with',
-  plugin = 'iswap.nvim',
-})
+-- map({ 'n' }, '<M-;>', '<cmd>ISwapNodeWith<cr>', {
+--   category = 'Format',
+--   label = '易swap node with',
+--   desc = '易swap/exchange node objects with',
+--   plugin = 'iswap.nvim',
+-- })
 
 --------------------------------------------------------------------------------------------------
 -- PAIRS -----------------------------------------------------------------------------------------

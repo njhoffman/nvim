@@ -1,27 +1,46 @@
 local set_option = vim.api.nvim_set_option_value
+local logger = require("logger").init("autocmd-win")
+local augroup = vim.api.nvim_create_augroup("AutocmdWindows", { clear = true })
 
--- turn off relative or all line numbering depending on conditions
+-- Indent wrapped lines based on indent settings except for ignored filetypes
+---@alias option_scope "global" | "local" | nil
+---@param scope option_scope
+local function set_breakindentopt(scope)
+  local indent
+  if vim.api.nvim_get_option_value("expandtab", { scope = scope }) then
+    indent = vim.api.nvim_get_option_value("shiftwidth", { scope = scope })
+  else
+    indent = vim.api.nvim_get_option_value("tabstop", { scope = scope })
+  end
 
--- -- Don't want relative no on inactive Windows
--- local relativeNo = vim.api.nvim_create_augroup('RelativeNo', { clear = true })
--- vim.api.nvim_create_autocmd({ 'BufNew', 'BufEnter', 'FocusGained', 'InsertLeave' }, {
---   pattern = '*',
---   group = relativeNo,
---   callback = function()
---     if
---       not vim.g.zen_mode_active
---       and not vim.bo.readonly
---       and vim.bo.buftype ~= 'prompt'
---       and vim.bo.buftype ~= 'nofile'
---       and vim.bo.buftype ~= 'quickfix'
---       and vim.bo.filetype ~= 'nofile'
---     then
---       vim.cmd([[set relativenumber number]])
---     else
---       vim.cmd([[set norelativenumber nonumber]])
---     end
---   end,
--- })
+  local indent_min = 20
+  local indentopt = "shift:" .. indent .. "," .. "min:" .. indent_min
+
+  logger:debug("set breakindentopt to " .. indentopt)
+  vim.api.nvim_set_option_value("breakindentopt", indentopt, { scope = scope })
+end
+
+-- This autocmd implicitly rely on `vim-sleuth` to trigger
+vim.api.nvim_create_autocmd({ "OptionSet" }, {
+  group = augroup,
+  pattern = { "expandtab", "shiftwidth", "tabstop" },
+  desc = "Set 'breakindentopt' based on indent settings",
+  callback = function(args)
+    local ignored_filetypes = { "text", "markdown", "org", "codecompanion" }
+
+    local is_ignored_filetype = vim.tbl_contains(ignored_filetypes, vim.bo[args.buf].filetype)
+    ---@type option_scope
+    local scope = vim.v.option_type
+    if vim.v.option_command == "set" and not is_ignored_filetype then
+      scope = nil
+    end
+
+    if scope == "local" and is_ignored_filetype then
+    else
+      set_breakindentopt(scope)
+    end
+  end,
+})
 
 local line_numbers = function(ev)
   local winid = vim.fn.bufwinid(ev.buf)
@@ -79,8 +98,7 @@ local highlight_yank = function()
   end
 end
 
-local goto_last_pos = function(bufnr)
-  local logger = require("logger").init("buffers")
+local goto_last_pos = function(bufnr, event)
   local options = {
     open_folds = 1,
     ignore = {
@@ -98,13 +116,18 @@ local goto_last_pos = function(bufnr)
   end
 
   local winid = vim.fn.bufwinid(bufnr)
+
+  --     local line, col = unpack(vim.api.nvim_buf_get_mark(bufnr, '"'))
   local pos = {
     exit_line = vim.fn.line([['"]], winid),
     exit_col = vim.fn.col([['"]], winid),
+
     buf_last = vim.fn.line("$", winid),
     win_first = vim.fn.line("w0", winid),
     win_last = vim.fn.line("w$", winid),
+    end_line = vim.api.nvim_buf_line_count(bufnr),
   }
+  pos.end_col = #vim.api.nvim_buf_get_lines(bufnr, pos.end_line - 1, pos.end_line, true)[1]
 
   local buf = {
     name = vim.api.nvim_buf_get_name(bufnr),
@@ -121,37 +144,46 @@ local goto_last_pos = function(bufnr)
     )
   end
 
+  local scroll_cmd = nil
   -- if the last line is set and the less than the last line in the buffer
   if pos.exit_line > 0 and pos.exit_line <= pos.buf_last then
-    logger:debug("restore (" .. bufnr .. ") " .. pos.exit_line .. ":" .. pos.exit_col)
     if pos.win_last == pos.buf_last then
-      vim.api.nvim_command([[keepjumps normal! g`"]])
+      scroll_cmd = [[keepjumps normal! g`"]]
     elseif pos.buf_last - pos.exit_line > ((pos.win_last - pos.win_first) / 2) - 1 then
       -- vim.api.nvim_command([[keepjumps normal! g`"zz]])
-      vim.api.nvim_command([[keepjumps normal! g`"]])
+      scroll_cmd = [[keepjumps normal! g`"]]
     else
-      vim.api.nvim_command([[keepjumps normal! G'"<c-e>]])
+      scroll_cmd = [[keepjumps normal! G'"<c-e>]]
     end
   end
-
-  if vim.fn.foldclosed(vim.fn.line(".")) ~= -1 and options.open_folds == 1 then
-    vim.api.nvim_command([[normal! zvzz]])
+  if scroll_cmd then
+    vim.api.nvim_command(scroll_cmd)
+    logger:debug(event .. ": scroll " .. scroll_cmd)
   end
+
+  if
+    pos.exit_line < pos.end_line or (pos.exit_line == pos.end_line and pos.exit_col <= pos.end_col)
+  then
+    logger:debug(event .. ": restore (" .. bufnr .. ") " .. pos.exit_line .. ":" .. pos.exit_col)
+    vim.api.nvim_win_set_cursor(winid, { pos.exit_line, pos.exit_col })
+  end
+
+  -- if vim.fn.foldclosed(vim.fn.line(".")) ~= -1 and options.open_folds == 1 then
+  --   vim.api.nvim_command([[normal! zvzz]])
+  -- end
   --  -- vim.api.nvim_command('keepjumps normal ' .. pos[2] .. 'G')
   --  -- vim.api.nvim_command('keepjumps normal ' .. pos[3] .. 'l')
-  --     vim.api.nvim_win_set_cursor(pos[1], { pos[2], 0 })
-  --  -- vim.fn.cursor({ pos[2], pos[3] })
 end
 
 local restore_cursor = function(opts)
   -- last selected position  '< and '>  last position before jump  '' ``
   -- last exited position    '" `"      last change position       '. `.
   -- last insert position    '^ `^      last affected text area    '[ and ']
-  vim.api.nvim_create_autocmd("BufWinEnter", {
-    group = "RestoreCursor",
+  vim.api.nvim_create_autocmd("BufRead", {
+    group = augroup,
     buffer = opts.buf,
     callback = function()
-      goto_last_pos(opts.buf)
+      goto_last_pos(opts.buf, opts.event)
     end,
   })
 end

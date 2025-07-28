@@ -6,4 +6,4 @@ local opts = {
   notifications = true,
 }
 
-require("garbage-day").setup(opts)
+-- require("garbage-day").setup(opts)

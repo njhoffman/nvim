@@ -74,7 +74,7 @@ local plugins = {
       },
       "nanotee/sqls.nvim",
       "tami5/lspsaga.nvim",
-      { "Exafunction/codeium.nvim", event = "BufEnter" },
+      { "Exafunction/windsurf.nvim", event = "BufEnter" },
       "rmagatti/goto-preview",
       "kosayoda/nvim-lightbulb",
       "mickael-menu/zk-nvim",

@@ -153,24 +153,24 @@ local sources = {
           minLength = 3,
         },
       },
-      {
-        name = "luasnip",
-        keyword_length = 3,
-        option = { use_show_condition = true },
-        entry_filter = function()
-          local context = require("cmp.config.context")
-          return not context.in_treesitter_capture("string")
-            and not context.in_syntax_group("String")
-        end,
-        -- source.entry_filter = function()
-        --           local context = require("cmp.config.context")
-        --           local string_ctx = context.in_treesitter_capture("string") or context.in_syntax_group("String")
-        --           local comment_ctx = context.in_treesitter_capture("comment") or context.in_syntax_group("Comment")
-        --
-        --           --   Returning `true` will keep the entry, while returning `false` will remove it.
-        --           return not string_ctx and not comment_ctx
-        --         end
-      },
+      -- {
+      --   name = "luasnip",
+      --   keyword_length = 3,
+      --   option = { use_show_condition = true },
+      --   entry_filter = function()
+      --     local context = require("cmp.config.context")
+      --     return not context.in_treesitter_capture("string")
+      --       and not context.in_syntax_group("String")
+      --   end,
+      --   -- source.entry_filter = function()
+      --   --           local context = require("cmp.config.context")
+      --   --           local string_ctx = context.in_treesitter_capture("string") or context.in_syntax_group("String")
+      --   --           local comment_ctx = context.in_treesitter_capture("comment") or context.in_syntax_group("Comment")
+      --   --
+      --   --           --   Returning `true` will keep the entry, while returning `false` will remove it.
+      --   --           return not string_ctx and not comment_ctx
+      --   --         end
+      -- },
       {
         name = "diag-codes",
         -- default completion available only in comment context

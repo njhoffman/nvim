@@ -60,12 +60,12 @@ convenience, the arrows are also available directly on the
 https://en.wikipedia.org/wiki/Touch_typing[keyboard’s home row] underneath your
 right hand:
 
-|===
-| `$mod+j` | left
-| `$mod+k` | down
-| `$mod+l` | up
-| `$mod+;` | right
-|===
+
+| '$mod+j' | left  |
+| '$mod+k' | down  |
+| '$mod+l' | up    |
+| '$mod+;' | right |
+
 
 Note that this differs by one key from the popular text editor `vi`, which was
 https://twitter.com/hillelogram/status/1326600125569961991[developed on an
@@ -366,7 +366,7 @@ exit.
 Since i3 v4.20, it is possible to include other configuration files from your i3
 configuration.
 
-*Syntax*:
+`Syntax:`
 -----------------
 include <pattern>
 -----------------
@@ -374,7 +374,7 @@ include <pattern>
 i3 expands `pattern` using shell-like word expansion, specifically using the
 https://manpages.debian.org/wordexp.3[`wordexp(3)` C standard library function].
 
-*Examples*:
+`Examples:`
 --------------------------------------------------------------------------------
 # Tilde expands to the user’s home directory:
 include ~/.config/i3/assignments.conf
@@ -450,7 +450,7 @@ It is possible and recommended to use comments in your configuration file to
 properly document your setup for later reference. Comments are started with
 a # and can only be used at the beginning of a line:
 
-*Examples*:
+`Examples:`
 -------------------
 # This is a comment
 -------------------
@@ -473,13 +473,13 @@ Unicode glyphs than X core fonts.
 If i3 cannot open the configured font, it will output an error in the logfile
 and fall back to a working font.
 
-*Syntax*:
+`Syntax:`
 ------------------------------
 font <X core font description>
 font pango:<family list> [<style options>] <size>
 ------------------------------
 
-*Examples*:
+`Examples:`
 --------------------------------------------------------------
 font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 font pango:DejaVu Sans Mono 10
@@ -514,13 +514,13 @@ KeyPress event, because the keyboard is still grabbed. For these
 situations, the +--release+ flag can be used, which will execute the command
 after the keys have been released.
 
-*Syntax*:
+`Syntax:`
 ----------------------------------
 bindsym [--release] [<Group>+][<Modifiers>+]<keysym> command
 bindcode [--release] [<Group>+][<Modifiers>+]<keycode> command
 ----------------------------------
 
-*Examples*:
+`Examples:`
 --------------------------------
 # Fullscreen
 bindsym $mod+f fullscreen toggle
@@ -558,7 +558,7 @@ A mouse binding makes i3 execute a command upon pressing a specific mouse
 button in the scope of the clicked container (see <<command_criteria>>). You
 can configure mouse bindings in a similar way to key bindings.
 
-*Syntax*:
+`Syntax:`
 ----------------------------------------------------------------------------------------------------
 bindsym [--release] [--border] [--whole-window] [--exclude-titlebar] [<Modifiers>+]button<n> command
 ----------------------------------------------------------------------------------------------------
@@ -574,7 +574,7 @@ when the border is clicked, specify the +--border+ flag.
 If the +--exclude-titlebar+ flag is given, the titlebar will not be considered
 for the keybinding.
 
-*Examples*:
+`Examples:`
 --------------------------------
 # The middle button over a titlebar kills the window
 bindsym --release button2 kill
@@ -618,7 +618,7 @@ Note that it is possible to use <<pango_markup>> for binding modes, but you
 need to enable it explicitly by passing the +--pango_markup+ flag to the mode
 definition.
 
-*Syntax*:
+`Syntax:`
 ----------------------------
 # config directive
 mode [--pango_markup] <name>
@@ -627,7 +627,7 @@ mode [--pango_markup] <name>
 mode <name>
 ----------------------------
 
-*Example*:
+`Example:`
 ------------------------------------------------------------------------
 # Press $mod+o followed by either f, t, Escape or Return to launch firefox,
 # thunderbird or return to the default mode, respectively.
@@ -658,12 +658,12 @@ pressing the right mouse button on it and moving around while holding it. If
 you hold the shift button as well, the resize will be proportional (the aspect
 ratio will be preserved).
 
-*Syntax*:
+`Syntax:`
 --------------------------------
 floating_modifier <Modifier>
 --------------------------------
 
-*Example*:
+`Example:`
 --------------------------------
 floating_modifier Mod1
 --------------------------------
@@ -677,13 +677,13 @@ will be unconstrained with respect to its maximum value. If either dimension of
 value to constrain the maximum size. +floating_minimum_size+ is treated in a
 manner analogous to +floating_maximum_size+.
 
-*Syntax*:
+`Syntax:`
 ----------------------------------------
 floating_minimum_size <width> x <height>
 floating_maximum_size <width> x <height>
 ----------------------------------------
 
-*Example*:
+`Example:`
 --------------------------------------
 floating_minimum_size 75 x 50
 floating_maximum_size -1 x -1
@@ -698,12 +698,12 @@ New workspaces get a reasonable default orientation: Wide-screen monitors
 With the +default_orientation+ configuration directive, you can override that
 behavior.
 
-*Syntax*:
+`Syntax:`
 --------------------------------------------
 default_orientation horizontal|vertical|auto
 --------------------------------------------
 
-*Example*:
+`Example:`
 ----------------------------
 default_orientation vertical
 ----------------------------
@@ -713,12 +713,12 @@ default_orientation vertical
 This option determines in which mode new containers on workspace level will
 start.
 
-*Syntax*:
+`Syntax:`
 ---------------------------------------------
 workspace_layout default|stacking|tabbed
 ---------------------------------------------
 
-*Example*:
+`Example:`
 ---------------------
 workspace_layout tabbed
 ---------------------
@@ -728,7 +728,7 @@ workspace_layout tabbed
 This option determines the window title's text alignment.
 Default is +left+
 
-*Syntax*:
+`Syntax:`
 ---------------------------------------------
 title_align left|center|right
 ---------------------------------------------
@@ -746,7 +746,7 @@ Setting border style to +pixel+ eliminates title bars in split layouts. The bord
 The title bar is always visible in stacking and tabbed layouts, and this cannot be changed
 through configuration.
 
-*Syntax*:
+`Syntax:`
 ---------------------------------------------
 default_border normal|none|pixel
 default_border normal|pixel <px>
@@ -757,7 +757,7 @@ default_floating_border normal|pixel <px>
 Please note that +new_window+ and +new_float+ have been deprecated in favor of the above options
 and will be removed in a future release. We strongly recommend using the new options instead.
 
-*Example*:
+`Example:`
 ---------------------
 default_border pixel
 ---------------------
@@ -765,7 +765,7 @@ default_border pixel
 The "normal" and "pixel" border styles support an optional border width in
 pixels:
 
-*Example*:
+`Example:`
 ---------------------
 # The same as default_border none
 default_border pixel 0
@@ -793,12 +793,12 @@ are +0+.
 +hide_edge_borders+ has replaced the old +smart_borders+ syntax. Use the former
 instead of the latter.
 
-*Syntax*:
+`Syntax:`
 -----------------------------------------------
 hide_edge_borders none|vertical|horizontal|both|smart|smart_no_gaps
 -----------------------------------------------
 
-*Example*:
+`Example:`
 ----------------------
 hide_edge_borders vertical
 ----------------------
@@ -810,12 +810,12 @@ With the +for_window+ directive, you can let i3 execute any command when it
 encounters a specific window. This can be used to set windows to floating or to
 change their border style, for example.
 
-*Syntax*:
+`Syntax:`
 -------------------------------
 for_window <criteria> <command>
 -------------------------------
 
-*Examples*:
+`Examples:`
 ------------------------------------------------
 # enable floating mode for all XTerm windows
 for_window [class="XTerm"] floating enable
@@ -846,12 +846,12 @@ causing it to request being focused. To configure the behavior in such cases, re
 a reason to not focus the window in this case. This allows for better usability in
 combination with +workspace_layout+.
 
-*Syntax*:
+`Syntax:`
 -------------------
 no_focus <criteria>
 -------------------
 
-*Example*:
+`Example:`
 -------------------------------
 no_focus [window_role="pop-up"]
 -------------------------------
@@ -864,12 +864,12 @@ to configure lots of bindings containing modifier keys. If you want to save
 yourself some typing and be able to change the modifier you use later,
 variables can be handy.
 
-*Syntax*:
+`Syntax:`
 -------------------
 set $<name> <value>
 -------------------
 
-*Example*:
+`Example:`
 ------------------------
 set $m Mod1
 bindsym $m+Shift+r restart
@@ -899,12 +899,12 @@ assign its value to the specified variable. This is done verbatim and the value
 must therefore be in the format that i3 uses. A fallback must be specified in
 case the resource cannot be loaded from the database.
 
-*Syntax*:
+`Syntax:`
 ----------------------------------------------------
 set_from_resource $<name> <resource_name> <fallback>
 ----------------------------------------------------
 
-*Example*:
+`Example:`
 ----------------------------------------------------------------------------
 # The ~/.Xresources should contain a line such as
 #     *color0: #121212
@@ -946,13 +946,10 @@ Assignments are processed by i3 in the order in which they appear in the config
 file. The first one which matches the window wins and later assignments are not
 considered.
 
-*Syntax*:
-------------------------------------------------------------
-assign <criteria> [→] [workspace] [number] <workspace>
-assign <criteria> [→] output left|right|up|down|primary|nonprimary|<output>
-------------------------------------------------------------
-
-*Examples*:
+`Syntax:` >
+  assign <criteria> [→] [workspace] [number] <workspace>
+  assign <criteria> [→] output left|right|up|down|primary|nonprimary|<output>
+`Examples:`
 ----------------------
 # Assign URxvt terminals to workspace 2
 assign [class="URxvt"] 2
@@ -1038,13 +1035,13 @@ See <<command_chaining>> for details on the special meaning of +;+ (semicolon)
 and +,+ (comma): they chain commands together in i3, so you need to use quoted
 strings (as shown in <<exec_quoting>>) if they appear in your command.
 
-*Syntax*:
+`Syntax`
 ---------------------------------------
 exec [--no-startup-id] <command>
 exec_always [--no-startup-id] <command>
 ---------------------------------------
 
-*Examples*:
+`Examples:`
 --------------------------------
 exec chromium
 exec_always ~/my_script.sh
@@ -1064,7 +1061,7 @@ will determine which workspace i3 uses for a new screen when adding screens
 or when starting (e.g., by default it will use 1 for the first screen, 2 for
 the second screen and so on).
 
-*Syntax*:
+`Syntax:`
 -------------------------------------
 workspace <workspace> output <output1> [output2]…
 -------------------------------------
@@ -1089,7 +1086,7 @@ You can specify multiple outputs. The first available will be used.
 
 If you use named workspaces, they must be quoted:
 
-*Examples*:
+`Examples:`
 ---------------------------
 workspace 1 output LVDS1
 workspace 2 output primary
@@ -1102,7 +1099,7 @@ workspace "2: vim" output VGA1
 
 You can change all colors which i3 uses to draw the window decorations.
 
-*Syntax*:
+`Syntax:`
 --------------------------------------------------------------------
 <colorclass> <border> <background> <text> <indicator> <child_border>
 --------------------------------------------------------------------
@@ -1174,7 +1171,7 @@ does the right thing by default. If you decide to change it, it is strongly
 recommended to set this to a location in your home directory so that no other
 user can create that directory.
 
-*Examples*:
+`Examples:`
 ----------------------------
 ipc-socket ~/.i3/i3-ipc.sock
 ----------------------------
@@ -1191,12 +1188,12 @@ completely), you might want to disable 'focus follows mouse' and control focus
 only by using your keyboard.  The mouse will still be useful inside the
 currently active window (for example to click on links in your browser window).
 
-*Syntax*:
+`Syntax:`
 --------------------------
 focus_follows_mouse yes|no
 --------------------------
 
-*Example*:
+`Example:`
 ----------------------
 focus_follows_mouse no
 ----------------------
@@ -1211,12 +1208,12 @@ With the +mouse_warping+ option, you can control when the mouse cursor should
 be warped. +none+ disables warping entirely, whereas +output+ is the default
 behavior described above.
 
-*Syntax*:
+`Syntax:`
 -------------------------
 mouse_warping output|none
 -------------------------
 
-*Example*:
+`Example:`
 ------------------
 mouse_warping none
 ------------------
@@ -1237,12 +1234,12 @@ i3 supports four options for this situation:
 4. +all+: Since i3 4.24: Display all floating windows regardless to which
    application they belong to.
 
-*Syntax*:
+`Syntax:`
 ---------------------------------------------------------
 popup_during_fullscreen smart|ignore|leave_fullscreen|all
 ---------------------------------------------------------
 
-*Example*:
+`Example:`
 ------------------------------
 popup_during_fullscreen smart
 ------------------------------
@@ -1271,7 +1268,7 @@ value +workspace+. You will need to use +focus parent+ until a workspace is
 selected to switch to a different workspace using the focus commands (the
 +workspace+ command will still work as expected).
 
-*Syntax*:
+`Syntax:`
 ---------------------------
 focus_wrapping yes|no|force|workspace
 
@@ -1279,7 +1276,7 @@ focus_wrapping yes|no|force|workspace
 force_focus_wrapping yes
 ---------------------------
 
-*Examples*:
+`Examples:`
 -----------------
 # Disable focus wrapping
 focus_wrapping no
@@ -1300,12 +1297,12 @@ that’s it).
 For people who cannot modify their +~/.xsession+ to add the
 +--force-xinerama+ commandline parameter, a configuration option is provided:
 
-*Syntax*:
+`Syntax:`
 ---------------------
 force_xinerama yes|no
 ---------------------
 
-*Example*:
+`Example:`
 ------------------
 force_xinerama yes
 ------------------
@@ -1323,12 +1320,12 @@ For instance: Assume you are on workspace "1: www" and switch to "2: IM" using
 mod+2 because somebody sent you a message. You don’t need to remember where you
 came from now, you can just press $mod+2 again to switch back to "1: www".
 
-*Syntax*:
+`Syntax:`
 ------------------------------------
 workspace_auto_back_and_forth yes|no
 ------------------------------------
 
-*Example*:
+`Example:`
 ---------------------------------
 workspace_auto_back_and_forth yes
 ---------------------------------
@@ -1347,12 +1344,12 @@ value to 0 disables this feature.
 
 The default is 500ms.
 
-*Syntax*:
+`Syntax:`
 ---------------------------------------
 force_display_urgency_hint <timeout> ms
 ---------------------------------------
 
-*Example*:
+`Example:`
 ---------------------------------
 force_display_urgency_hint 500 ms
 ---------------------------------
@@ -1366,7 +1363,7 @@ to take focus. Since this might not be preferable, different reactions can be co
 Note that this might not affect windows that are being opened. To prevent new windows
 from being focused, see <<no_focus>>.
 
-*Syntax*:
+`Syntax:`
 --------------------------------------------------
 focus_on_window_activation smart|urgent|focus|none
 --------------------------------------------------
@@ -1392,12 +1389,12 @@ not be drawn even if this option is activated.
 
 The default for this option is +yes+.
 
-*Syntax*:
+`Syntax:`
 -----------------
 show_marks yes|no
 -----------------
 
-*Example*:
+`Example:`
 --------------
 show_marks yes
 --------------
@@ -1410,7 +1407,7 @@ backslash character (`\`), the line-break will be ignored by the parser. This
 feature can be used to create more readable configuration files.
 Commented lines are not continued.
 
-*Examples*:
+`Examples:`
 -------------------
 bindsym Mod1+f \
 fullscreen toggle
@@ -1431,14 +1428,14 @@ instead of moving containers when dropping directly onto another container.
 Defaults to +Shift+. Note that you have to be pressing both the floating
 modifier and the swap modifier before the drag is initiated.
 
-*Syntax*:
+`Syntax:`
 --------------------------------
 tiling_drag off
 tiling_drag modifier|titlebar [modifier|titlebar]
 tiling_drag swap_modifier <modifier>
 --------------------------------
 
-*Examples*:
+`Examples:`
 --------------------------------
 # Only initiate a tiling drag when the modifier is held:
 tiling_drag modifier
@@ -1483,7 +1480,7 @@ and inner gaps.
 You can define gaps either globally or per workspace using the following
 syntax.
 
-*Syntax*:
+`Syntax:`
 -----------------------
 # Inner gaps for all windows: space between two adjacent windows (or split containers).
 gaps inner <gap_size>[px]
@@ -1508,7 +1505,7 @@ Outer gaps can be configured for each side individually with the `top`, `left`,
 `bottom` and `right` directive. `horizontal` and `vertical` are shortcuts for
 `left`/`right` and `top`/`bottom`, respectively.
 
-*Example*:
+`Example:`
 -------------------------------------------------
 # Configure 5px of space between windows and to the screen edges.
 gaps inner 5px
@@ -1556,7 +1553,7 @@ configuration infrastructure in place.
 Configuring your workspace bar starts with opening a +bar+ block. You can have
 multiple bar blocks to use different settings for different outputs (monitors):
 
-*Example*:
+`Example:`
 ---------------------------
 bar {
     status_command i3status
@@ -1573,12 +1570,12 @@ tell i3 what to execute.
 The specified command will be passed to +sh -c+, so you can use globbing and
 have to have correct quoting etc.
 
-*Syntax*:
+`Syntax:`
 -----------------------
 i3bar_command <command>
 -----------------------
 
-*Example*:
+`Example:`
 -------------------------------------------------
 bar {
     i3bar_command /home/user/bin/i3bar
@@ -1598,12 +1595,12 @@ your shell (users of dash(1) are known to be affected), you have to use the
 shell’s exec command so that signals are passed to your program, not to the
 shell.
 
-*Syntax*:
+`Syntax:`
 ------------------------
 status_command <command>
 ------------------------
 
-*Example*:
+`Example:`
 -------------------------------------------------
 bar {
     status_command i3status --config ~/.i3status.conf
@@ -1625,12 +1622,12 @@ or change the order of the buttons.
 Also see <<status_command>> for the statusline option and
 https://i3wm.org/docs/i3bar-workspace-protocol.html for the detailed protocol.
 
-*Syntax*:
+`Syntax:`
 ------------------------
 workspace_command <command>
 ------------------------
 
-*Example*:
+`Example:`
 -------------------------------------------------
 bar {
     workspace_command /path/to/script.sh
@@ -1670,14 +1667,14 @@ done by using the +bar hidden_state+ command.
 The default mode is dock mode; in hide mode, the default modifier is Mod4 (usually
 the windows key). The default value for the hidden_state is hide.
 
-*Syntax*:
+`Syntax:`
 -------------------------
 mode dock|hide|invisible
 hidden_state hide|show
 modifier <Modifier>|none
 -------------------------
 
-*Example*:
+`Example:`
 ----------------
 bar {
     mode hide
@@ -1718,12 +1715,12 @@ Please note that the old +wheel_up_cmd+ and +wheel_down_cmd+ commands are deprec
 and will be removed in a future release. We strongly recommend using the more general
 +bindsym+ with +button4+ and +button5+ instead.
 
-*Syntax*:
+`Syntax:`
 ----------------------------
 bindsym [--release] button<n> <command>
 ----------------------------
 
-*Example*:
+`Example:`
 ---------------------------------------------------------
 bar {
     # disable clicking on workspace buttons
@@ -1741,12 +1738,12 @@ Specifies the bar ID for the configured bar instance. If this option is missing,
 the ID is set to 'bar-x', where x corresponds to the position of the embedding
 bar block in the config file ('bar-0', 'bar-1', ...).
 
-*Syntax*:
+`Syntax:`
 ---------------------
 id <bar_id>
 ---------------------
 
-*Example*:
+`Example:`
 ---------------------
 bar {
     id bar-1
@@ -1760,12 +1757,12 @@ This option determines in which edge of the screen i3bar should show up.
 
 The default is bottom.
 
-*Syntax*:
+`Syntax:`
 -------------------
 position top|bottom
 -------------------
 
-*Example*:
+`Example:`
 ---------------------
 bar {
     position top
@@ -1788,12 +1785,12 @@ primary::
 nonprimary::
     Selects every output that is not configured as primary in the X server.
 
-*Syntax*:
+`Syntax:`
 ---------------
 output primary|nonprimary|<output>
 ---------------
 
-*Example*:
+`Example:`
 -------------------------------
 # big monitor: everything
 bar {
@@ -1839,12 +1836,12 @@ of outputs on which you want the tray to appear. The first available output in
 that list as defined by the order of the directives will be used for the tray
 output.
 
-*Syntax*:
+`Syntax:`
 ---------------------------------
 tray_output none|primary|<output>
 ---------------------------------
 
-*Example*:
+`Example:`
 ----------------------------------
 # disable system tray
 bar {
@@ -1878,12 +1875,12 @@ The tray is shown on the right-hand side of the bar. By default, a padding of 2
 pixels is used for the upper, lower and right-hand side of the tray area and
 between the individual icons.
 
-*Syntax*:
+`Syntax:`
 -------------------------
 tray_padding <px> [px]
 -------------------------
 
-*Example*:
+`Example:`
 ---------------------------
 # Obey Fitts's law
 tray_padding 0
@@ -1893,12 +1890,12 @@ tray_padding 0
 
 Specifies the font to be used in the bar. See <<fonts>>.
 
-*Syntax*:
+`Syntax:`
 ---------------------
 font <font>
 ---------------------
 
-*Example*:
+`Example:`
 --------------------------------------------------------------
 bar {
     font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -1911,12 +1908,12 @@ bar {
 Specifies a custom symbol to be used for the separator as opposed to the vertical,
 one pixel thick separator.
 
-*Syntax*:
+`Syntax:`
 -------------------------
 separator_symbol <symbol>
 -------------------------
 
-*Example*:
+`Example:`
 ------------------------
 bar {
     separator_symbol ":|:"
@@ -1930,12 +1927,12 @@ you want to display a statusline-only bar containing additional information.
 
 The default is to show workspace buttons.
 
-*Syntax*:
+`Syntax:`
 ------------------------
 workspace_buttons yes|no
 ------------------------
 
-*Example*:
+`Example:`
 ------------------------
 bar {
     workspace_buttons no
@@ -1959,12 +1956,12 @@ The setting also applies to the current binding mode indicator.
 Note that the specified pixels refer to logical pixels, which might translate
 into more pixels on HiDPI displays.
 
-*Syntax*:
+`Syntax:`
 ------------------------
 workspace_min_width <px> [px]
 ------------------------
 
-*Example*:
+`Example:`
 ------------------------
 bar {
     workspace_min_width 40
@@ -1989,13 +1986,13 @@ The default is to display the full name within the workspace button. Be aware
 that the colon in the workspace name is optional, so `[n][NAME]` will also
 have the workspace name and number stripped correctly.
 
-*Syntax*:
+`Syntax:`
 ------------------------------
 strip_workspace_numbers yes|no
 strip_workspace_name yes|no
 ------------------------------
 
-*Example*:
+`Example:`
 ----------------------------
 bar {
     strip_workspace_numbers yes
@@ -2011,12 +2008,12 @@ modes are and how to use them.
 
 The default is to show the mode indicator.
 
-*Syntax*:
+`Syntax:`
 -----------------------------
 binding_mode_indicator yes|no
 -----------------------------
 
-*Example*:
+`Example:`
 -----------------------------
 bar {
     binding_mode_indicator no
@@ -2062,7 +2059,7 @@ binding_mode::
         Border, background and text color for the binding mode indicator. If not used,
         the colors will be taken from +urgent_workspace+.
 
-*Syntax*:
+`Syntax:`
 ----------------------------------------
 colors {
     background <color>
@@ -2095,7 +2092,7 @@ bar {
 i3bar can support transparency by passing the +--transparency+ flag in the
 configuration:
 
-*Syntax*:
+`Syntax:`
 --------------------------------------
 bar {
     i3bar_command i3bar --transparency
@@ -2116,7 +2113,7 @@ flag will cause all tray icons to have a transparent background.
 To make i3bar higher (without increasing the font size), and/or add padding to
 the left and right side of i3bar, you can use the +padding+ directive:
 
-*Syntax*:
+`Syntax:`
 --------------------------------------
 bar {
     # 2px left/right and 2px top/bottom padding
@@ -2133,7 +2130,7 @@ bar {
 }
 --------------------------------------
 
-*Examples*:
+`Examples:`
 --------------------------------------
 bar {
     # 2px left/right and 2px top/bottom padding
@@ -2160,7 +2157,7 @@ Commands are what you bind to specific keypresses. You can also issue commands
 at runtime without pressing a key by using the IPC interface. An easy way to
 do this is to use the +i3-msg+ utility:
 
-*Example*:
+`Example:`
 --------------------------
 # execute this on your shell to make the current container borderless
 i3-msg border none
@@ -2172,7 +2169,7 @@ Commands can be chained by using +;+ (a semicolon). So, to move a window to a
 specific workspace and immediately switch to that workspace, you can configure
 the following keybinding:
 
-*Example*:
+`Example:`
 --------------------------------------------------------
 bindsym $mod+x move container to workspace 3; workspace 3
 --------------------------------------------------------
@@ -2189,7 +2186,7 @@ a semicolon. Criteria apply only until the next semicolon, so if you use a
 semicolon to separate commands, only the first one will be executed for the
 matched window(s).
 
-*Example*:
+`Example:`
 ------------------------------------
 # if you want to kill all windows which have the class Firefox, use:
 bindsym $mod+x [class="Firefox"] kill
@@ -2291,12 +2288,12 @@ See <<command_chaining>> for details on the special meaning of +;+ (semicolon)
 and +,+ (comma): they chain commands together in i3, so you need to use quoted
 strings (as shown in <<exec_quoting>>) if they appear in your command.
 
-*Syntax*:
+`Syntax:`
 --------------------------------
 exec [--no-startup-id] <command>
 --------------------------------
 
-*Example*:
+`Example:`
 ------------------------------
 # Start the GIMP
 bindsym $mod+g exec gimp
@@ -2319,7 +2316,7 @@ the entire command must be quoted. For example, to have a keybinding for the
 shell command +notify-send Hello, i3+, you would add an entry to your
 configuration file like this:
 
-*Example*:
+`Example:`
 ------------------------------
 # Execute a command with a comma in it
 bindsym $mod+p exec "notify-send Hello, i3"
@@ -2328,7 +2325,7 @@ bindsym $mod+p exec "notify-send Hello, i3"
 If however a command with a comma and/or semicolon itself requires quotes, you
 must escape the internal quotation marks with double backslashes, like this:
 
-*Example*:
+`Example:`
 ------------------------------
 # Execute a command with a comma, semicolon and internal quotes
 bindsym $mod+p exec "notify-send \\"Hello, i3; from $USER\\""
@@ -2351,12 +2348,12 @@ Use +layout toggle split+ to change the layout of any split container from
 splitv to splith or vice-versa. You can also define a custom sequence of layouts
 to cycle through with +layout toggle+, see <<manipulating_layout>>.
 
-*Syntax*:
+`Syntax:`
 --------------------------------
 split vertical|horizontal|toggle
 --------------------------------
 
-*Example*:
+`Example:`
 -------------------------------
 bindsym $mod+v split vertical
 bindsym $mod+h split horizontal
@@ -2383,14 +2380,14 @@ mode use +fullscreen disable+, and to toggle between these two states use
 Likewise, to make the current window floating (or tiling again) use +floating
 enable+ respectively +floating disable+ (or +floating toggle+):
 
-*Syntax*:
+`Syntax:`
 --------------------------------------------
 layout default|tabbed|stacking|splitv|splith
 layout toggle [split|all]
 layout toggle [split|tabbed|stacking|splitv|splith] [split|tabbed|stacking|splitv|splith]…
 --------------------------------------------
 
-*Examples*:
+`Examples:`
 --------------
 bindsym $mod+s layout stacking
 bindsym $mod+l layout toggle split
@@ -2453,7 +2450,7 @@ output::
 	Followed by a direction or an output name, this will focus the
 	corresponding output.
 
-*Syntax*:
+`Syntax:`
 ----------------------------------------------
 <criteria> focus
 <criteria> focus workspace
@@ -2463,7 +2460,7 @@ focus next|prev [sibling]
 focus output left|right|down|up|current|primary|nonprimary|next|<output1> [output2]…
 ----------------------------------------------
 
-*Examples*:
+`Examples:`
 -------------------------------------------------
 # Focus firefox
 bindsym $mod+F1 [class="Firefox"] focus
@@ -2513,7 +2510,7 @@ xrandr --output <output> --primary
 
 Use the +move+ command to move a container.
 
-*Syntax*:
+`Syntax:`
 -----------------------------------------------------
 # Moves the container into the given direction.
 # The optional pixel argument specifies how far the
@@ -2538,7 +2535,7 @@ move [absolute] position center
 move position mouse
 -----------------------------------------------------
 
-*Examples*:
+`Examples:`
 -------------------------------------------------------
 # Move container to the left, bottom, top, right
 bindsym $mod+j move left
@@ -2576,12 +2573,12 @@ using one of the following methods:
 Note that swapping does not work with all containers. Most notably, swapping
 containers that have a parent-child relationship to one another does not work.
 
-*Syntax*:
+`Syntax:`
 ----------------------------------------
 swap container with id|con_id|mark <arg>
 ----------------------------------------
 
-*Examples*:
+`Examples:`
 -----------------------------------------------------------------
 # Swaps the focused container with the container marked »swapee«.
 swap container with mark swapee
@@ -2600,12 +2597,12 @@ window.
 Note that while any window can be made sticky through this command, it will
 only take effect if the window is floating.
 
-*Syntax*:
+`Syntax:`
 ----------------------------
 sticky enable|disable|toggle
 ----------------------------
 
-*Examples*:
+`Examples:`
 ------------------------------------------------------
 # make a terminal sticky that was started as a notepad
 for_window [instance=notepad] sticky enable
@@ -2644,7 +2641,7 @@ To switch back to the previously focused workspace, use +workspace
 back_and_forth+; likewise, you can move containers to the previously focused
 workspace using +move container to workspace back_and_forth+.
 
-*Syntax*:
+`Syntax:`
 --------------------------------------------------------------------------------
 workspace next|prev|next_on_output|prev_on_output
 workspace back_and_forth
@@ -2656,7 +2653,7 @@ move [--no-auto-back-and-forth] [window|container] [to] workspace number <name>
 move [window|container] [to] workspace prev|next|current
 --------------------------------------------------------------------------------
 
-*Examples*:
+`Examples:`
 -------------------------
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
@@ -2683,7 +2680,7 @@ bindsym $mod+F1 [class="Firefox"] move workspace current
 Workspaces are identified by their name. So, instead of using numbers in the
 workspace command, you can use an arbitrary name:
 
-*Example*:
+`Example:`
 -------------------------
 bindsym $mod+1 workspace mail
 ...
@@ -2692,7 +2689,7 @@ bindsym $mod+1 workspace mail
 If you want the workspace to have a number *and* a name, just prefix the
 number, like this:
 
-*Example*:
+`Example:`
 -------------------------
 bindsym $mod+1 workspace 1: mail
 bindsym $mod+2 workspace 2: www
@@ -2716,13 +2713,13 @@ reflect what’s actually on them. You can also omit the old name to rename
 the currently focused workspace. This is handy if you want to use the
 rename command with +i3-input+.
 
-*Syntax*:
+`Syntax:`
 ----------------------------------------------------
 rename workspace <old_name> to <new_name>
 rename workspace to <new_name>
 ----------------------------------------------------
 
-*Examples*:
+`Examples:`
 --------------------------------------------------------------------------
 i3-msg 'rename workspace 5 to 6'
 i3-msg 'rename workspace 1 to "1: www"'
@@ -2734,7 +2731,7 @@ bindsym $mod+r exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 If you want to rename workspaces on demand while keeping the navigation stable,
 you can use a setup like this:
 
-*Example*:
+`Example:`
 -------------------------
 bindsym $mod+1 workspace number "1: www"
 bindsym $mod+2 workspace number "2: mail"
@@ -2762,13 +2759,13 @@ To move a container to another RandR output (addressed by names like +LVDS1+ or
 +VGA1+) or to a RandR output identified by a specific direction (like +left+,
 +right+, +up+ or +down+), there are two commands:
 
-*Syntax*:
+`Syntax:`
 -------------------------------------------------------------------------------------
 move container to output left|right|down|up|current|primary|nonprimary|next|<output1> [output2]…
 move workspace to output left|right|down|up|current|primary|nonprimary|next|<output1> [output2]…
 -------------------------------------------------------------------------------------
 
-*Examples*:
+`Examples:`
 --------------------------------------------------------
 # Move the current workspace to the next output
 # (effectively toggles when you only have two outputs)
@@ -2805,12 +2802,12 @@ in the same position as if you had opened a new window when the marked container
 focused. If the mark is on a split container, the window will appear as a new child
 after the currently focused child within that container.
 
-*Syntax*:
+`Syntax:`
 ------------------------------------
 move window|container to mark <mark>
 ------------------------------------
 
-*Example*:
+`Example:`
 --------------------------------------------------------
 for_window [instance="tabme"] move window to mark target
 --------------------------------------------------------
@@ -2821,7 +2818,7 @@ for_window [instance="tabme"] move window to mark target
 If you want to resize containers/windows using your keyboard, you can use the
 +resize+ command:
 
-*Syntax*:
+`Syntax:`
 -------------------------------------------------------
 resize grow|shrink <direction> [<px> px [or <ppt> ppt]]
 resize set [width] <width> [px | ppt]
@@ -2845,7 +2842,7 @@ See <<binding_modes>> and the example in the i3
 https://github.com/i3/i3/blob/next/etc/config.keycodes[default config] for more
 context.
 
-*Example*:
+`Example:`
 ------------------------------------------------
 for_window [class="urxvt"] resize set 640 480
 ------------------------------------------------
@@ -2859,13 +2856,13 @@ important goal. Instead of figuring out how to navigate to your mail client,
 it would be more convenient to have a shortcut. You can use the +focus+ command
 with criteria for that.
 
-*Syntax*:
+`Syntax:`
 ----------------------------------------------------
 [class="class"] focus
 [title="title"] focus
 ----------------------------------------------------
 
-*Examples*:
+`Examples:`
 ------------------------------------------------
 # Get me to the next open VIM instance
 bindsym $mod+a [class="urxvt" title="VIM"] focus
@@ -2898,7 +2895,7 @@ window.
 
 Refer to <<show_marks>> if you don't want marks to be shown in the window decoration.
 
-*Syntax*:
+`Syntax:`
 ----------------------------------------------
 mark [--add|--replace] [--toggle] <identifier>
 [con_mark="identifier"] focus
@@ -2908,7 +2905,7 @@ unmark <identifier>
 You can use +i3-input+ to prompt for a mark name, then use the +mark+
 and +focus+ commands to create and jump to custom marks:
 
-*Examples*:
+`Examples:`
 ---------------------------------------
 # read 1 character and mark the current window with this character
 bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
@@ -2961,12 +2958,12 @@ following placeholders which will be replaced:
 Using the <<for_window>> directive, you can set the title format for any window
 based on <<command_criteria>>.
 
-*Syntax*:
+`Syntax:`
 ---------------------
 title_format <format>
 ---------------------
 
-*Examples*:
+`Examples:`
 -------------------------------------------------------------------------------------
 # give the focused window a prefix
 bindsym $mod+p title_format "Important | %title"
@@ -2986,13 +2983,13 @@ By default, i3 does not display the window icon in the title bar.
 Starting with i3 v4.20, you can optionally enable window icons either for
 specific windows or for all windows (using the <<for_window>> directive).
 
-*Syntax*:
+`Syntax:`
 ----------------------------------------
 title_window_icon <yes|no|toggle>
 title_window_icon <padding|toggle> <px>
 ----------------------------------------
 
-*Examples*:
+`Examples:`
 -------------------------------------------------------------------------------------
 # show the window icon for the focused window to make it stand out
 bindsym $mod+p title_window_icon on
@@ -3018,7 +3015,7 @@ Note that "pixel" refers to logical pixel. On HiDPI displays, a logical pixel
 is represented by multiple physical pixels, so +pixel 1+ might not
 necessarily translate into a single pixel row wide border.
 
-*Syntax*:
+`Syntax:`
 -----------------------------------------------
 border normal|pixel|toggle [<n>]
 border none
@@ -3027,7 +3024,7 @@ border none
 border 1pixel
 -----------------------------------------------
 
-*Examples*:
+`Examples:`
 ----------------------------------------------
 # use window title, but no border
 bindsym $mod+t border normal 0
@@ -3053,13 +3050,13 @@ allows you to enable or disable the shared memory logging at runtime.
 Note that when using +shmlog <size_in_bytes>+, the current log will be
 discarded and a new one will be started.
 
-*Syntax*:
+`Syntax:`
 ------------------------------
 shmlog <size_in_bytes>
 shmlog on|off|toggle
 ------------------------------
 
-*Examples*:
+`Examples:`
 ---------------
 # Enable/disable logging
 bindsym $mod+x shmlog toggle
@@ -3076,12 +3073,12 @@ runtime. Debug logging is much more verbose than non-debug logging. This
 command does not activate shared memory logging (shmlog), and as such is most
 likely useful in combination with the above-described <<shmlog>> command.
 
-*Syntax*:
+`Syntax:`
 ----------------------
 debuglog on|off|toggle
 ----------------------
 
-*Examples*:
+`Examples:`
 ------------------------
 # Enable/disable logging
 bindsym $mod+x debuglog toggle
@@ -3095,7 +3092,7 @@ restart i3 inplace with the +restart+ command to get it out of some weird state
 your X session. To exit i3 properly, you can use the +exit+ command,
 however you don’t need to (simply killing your X session is fine as well).
 
-*Examples*:
+`Examples:`
 ----------------------------
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+w reload
@@ -3119,14 +3116,14 @@ editor always at hand. However, you can also use this for other permanently
 running applications which you don’t want to see all the time: Your music
 player, alsamixer, maybe even your mail client…?
 
-*Syntax*:
+`Syntax:`
 ---------------
 move scratchpad
 
 scratchpad show
 ---------------
 
-*Examples*:
+`Examples:`
 ------------------------------------------------
 # Make the currently focused window a scratchpad
 bindsym $mod+Shift+minus move scratchpad
@@ -3147,12 +3144,12 @@ the middle mouse button.
 The optional +comment+ argument is ignored, but will be printed to the log file
 for debugging purposes.
 
-*Syntax*:
+`Syntax:`
 ---------------
 nop [<comment>]
 ---------------
 
-*Example*:
+`Example:`
 ----------------------------------------------
 # Disable focus change for clicks on titlebars
 # with the middle mouse button
@@ -3169,14 +3166,14 @@ hide state and show state as well as between dock mode and hide mode. Each
 i3bar instance can be controlled individually by specifying a bar_id, if none
 is given, the command is executed for all bar instances.
 
-*Syntax*:
+`Syntax:`
 ---------------
 bar hidden_state hide|show|toggle [<bar_id>]
 
 bar mode dock|hide|invisible|toggle [<bar_id>]
 ---------------
 
-*Examples*:
+`Examples:`
 ------------------------------------------------
 # Toggle between hide state and show state
 bindsym $mod+m bar hidden_state toggle
@@ -3196,7 +3193,7 @@ bindsym $mod+Shift+b bar mode invisible bar-1
 
 Gaps can be modified at runtime with the following command syntax:
 
-*Syntax*:
+`Syntax:`
 -----------------------------------------------
 # Inner gaps: space between two adjacent windows (or split containers).
 gaps inner current|all set|plus|minus|toggle <gap_size_in_px>
@@ -3208,7 +3205,7 @@ With `current` or `all` you can change gaps either for only the currently
 focused or all currently existing workspaces (note that this does not affect the
 global configuration itself).
 
-*Examples*:
+`Examples:`
 ----------------------------------------------
 gaps inner all set 20
 gaps outer current plus 5

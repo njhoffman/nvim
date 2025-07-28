@@ -145,22 +145,12 @@ return function(injected_functions)
     VisualAlt({ fg = "none", bg = "#10083f", gui = "italic" }),
     VisualRed({ fg = "none", bg = "#40112c", gui = "italic" }),
 
-    MiniDiffSignAdd = { fg = palette.base0B, bg = palette.base00 },
-    MiniDiffSignChange = { fg = palette.base0E, bg = palette.base00 },
-    MiniDiffSignDelete = { fg = palette.base08, bg = palette.base00 },
-    MiniDiffOverAdd = { link = "DiffAdd" },
-    MiniDiffOverChange = { link = "DiffText" },
-    MiniDiffOverContext = { link = "DiffChange" },
-    MiniDiffOverDelete = { link = "DiffDelete" },
-    -- DiffAdd        xxx guibg=#273849
-    -- DiffChange     xxx guibg=#252a3f
-    -- DiffDelete     xxx guibg=#3a273a
-    -- DiffText       xxx guibg=#394b70
-
     DiffAdd({ bg = "#003c42" }), -- #00361f #001000 #22bb99
+    DiffTextAdd({ bg = "#0e2040", fg = "#2f8aaf" }), -- #464b5d #001030 #81a1c1
     DiffChange({ bg = "#063054" }), -- #003050 #001030 #646ead
-    DiffDelete({ fg = "#444466", bg = "#240000" }), -- #3e0009 #300000 #be6069
-    DiffText({ gui = "italic", bg = "#0e2040" }), -- #464b5d #001030 #81a1c1
+    DiffDelete({ bg = "#240000", fg = "#444466" }), -- #3e0009 #300000 #be6069
+    DiffText({ bg = "#0e2040", gui = "italic" }), -- #464b5d #001030 #81a1c1
+    -- DiffAdd DiffChan DiffText DiffTextAdd DiffDele
     diffAdded({ fg = clrs.nord14 }),
     diffRemoved({ fg = clrs.nord11 }),
     diffChanged({ fg = clrs.nord15 }),
@@ -169,6 +159,20 @@ return function(injected_functions)
     diffFile({ fg = clrs.nord7 }),
     diffLine({ fg = "#464B5D" }),
     diffIndexLine({ fg = clrs.nord9 }),
+    -- DiffAdd        xxx guibg=#273849
+    -- DiffChange     xxx guibg=#252a3f
+    -- DiffDelete     xxx guibg=#3a273a
+    -- DiffText       xxx guibg=#394b70
+
+    MiniDiffSignAdd({ fg = "#064044" }),
+    MiniDiffSignChange({ fg = "#063054" }),
+    MiniDiffSignDelete({ fg = "#3a273a" }),
+    MiniDiffOverAdd({ bg = "#003040", fg = "#1180a0" }),
+    MiniDiffOverChange({ bg = "#063064", fg = "#1170b0" }),
+    MiniDiffOverChangeBuf({ bg = "#063064", fg = "#1170b0" }),
+    MiniDiffOverContext({ bg = "#003884" }),
+    MiniDiffOverContext({ bg = "#005894" }),
+    MiniDiffOverDelete({ bg = "#240000", fg = "#444466" }),
 
     -- ui components
     SignColumn({ bg = "none" }),
@@ -252,6 +256,7 @@ return function(injected_functions)
     Structure({ fg = "#3D71AC" }),
     Tag({ fg = "#7c688c" }),
     Type({ fg = "#418cc4" }),
+    TSCurrentScope({ bg = "none", fg = "none" }), --   ReactiveCursorLine@preset.cursorline.@mode.normal, CursorLine
     Variable({ fg = "#5a8ac0" }), -- fg = '#5a8ab0'
 
     -- +--- Quickfix Styles ---+

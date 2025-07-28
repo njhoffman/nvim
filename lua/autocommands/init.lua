@@ -17,6 +17,9 @@ vim.cmd([[
   au BufNewFile,BufRead *.tcf setlocal ft=tcf
   au BufNewFile,BufRead *.tca setlocal ft=tcf
   au BufNewFile,BufRead *.tso setlocal ft=tcf
+
+	" :au SpellFileMissing * call Download_spell_file(expand('<amatch>'))
+
 ]])
 
 -- stylua: ignore start
@@ -45,7 +48,6 @@ local autocmds = {
     { { 'FileType' },              "markdown",            "setlocal syn=markdown" },
     { { 'FileType' },               "fzf",                "tunmap <Esc><Esc>" },
     { {'FileType' },                'checkhealth',        'setlocal ft=help', },
-    { { 'FileType' },               'codecompanion',       'setlocal nonumber norelativenumber signcolumn=' },
     { { 'BufNewFile', 'BufRead' }, '*nvim/option-window', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>', },
     { { 'BufNewFile', 'BufRead' }, '*.jq',                'set ft=jq' },
     { { 'BufNewFile', 'BufRead' }, '*startuptime.tsv',    'setlocal ft=crontab syn=crontab' },

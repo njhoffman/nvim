@@ -65,7 +65,7 @@ local plugins = {
       { "zbirenbaum/copilot-cmp", event = "InsertEnter", dependencies = "zbirenbaum/copilot.lua" },
       { "tzachar/cmp-fuzzy-path", dependencies = { "tzachar/fuzzy.nvim" } },
       { "tzachar/cmp-fuzzy-buffer", dependencies = { "tzachar/fuzzy.nvim" } },
-      { "saadparwaiz1/cmp_luasnip", dependencies = { "L3MON4D3/LuaSnip" } },
+      -- { "saadparwaiz1/cmp_luasnip", dependencies = { "L3MON4D3/LuaSnip" } },
       { "petertriho/cmp-git", dependencies = { "nvim-lua/plenary.nvim" } },
       {
         "KadoBOT/cmp-plugins",
@@ -79,35 +79,36 @@ local plugins = {
     },
   },
   { "zbirenbaum/copilot.lua", cmd = "Copilot", build = ":Copilot auth", event = "InsertEnter" },
-  {
-    "L3MON4D3/LuaSnip",
-    build = "make install_jsregexp",
-    dependencies = {
-      "rafamadriz/friendly-snippets",
-      "molleweide/LuaSnip-snippets.nvim",
-      {
-        "dsznajder/vscode-es7-javascript-react-snippets",
-        build = "yarn install --frozen-lockfile && yarn compile",
-      },
-      "honza/vim-snippets",
-    },
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-    },
-    -- stylua: ignore
-    -- keys = {
-    --   {
-    --     "<tab>",
-    --     function()
-    --       return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-    --     end,
-    --     expr = true, silent = true, mode = "i",
-    --   },
-    --   { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
-    --   { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-    -- },
-  },
+  -- {
+  --   "L3MON4D3/LuaSnip",
+  --   build = "make install_jsregexp",
+  --   enable = false,
+  --   dependencies = {
+  --     "rafamadriz/friendly-snippets",
+  --     "molleweide/LuaSnip-snippets.nvim",
+  --     {
+  --       "dsznajder/vscode-es7-javascript-react-snippets",
+  --       build = "yarn install --frozen-lockfile && yarn compile",
+  --     },
+  --     "honza/vim-snippets",
+  --   },
+  --   opts = {
+  --     history = true,
+  --     delete_check_events = "TextChanged",
+  --   },
+  --   -- stylua: ignore
+  --   -- keys = {
+  --   --   {
+  --   --     "<tab>",
+  --   --     function()
+  --   --       return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+  --   --     end,
+  --   --     expr = true, silent = true, mode = "i",
+  --   --   },
+  --   --   { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
+  --   --   { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+  --   -- },
+  -- },
 }
 
 utils.apply_configs(plugins)

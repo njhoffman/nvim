@@ -1,5 +1,5 @@
 local cmp = require("cmp")
-local luasnip = require("luasnip")
+-- local luasnip = require("luasnip")
 local mapping = require("cmp.config.mapping")
 
 --       節 缾      了ﴰ   ﮕ ﳎ  
@@ -54,12 +54,12 @@ end
 
 local main = {
   ["<C-x><C-o>"] = { i = mapping.complete({ desc = pfx .. "start completion source" }) },
-  ["<C-x><C-s>"] = {
-    i = mapping.complete({
-      desc = pfx .. "start snippets completion",
-      config = { sources = { { name = "luasnip" } } },
-    }),
-  },
+  -- ["<C-x><C-s>"] = {
+  --   i = mapping.complete({
+  --     desc = pfx .. "start snippets completion",
+  --     config = { sources = { { name = "luasnip" } } },
+  --   }),
+  -- },
   ["<C-x><C-f>"] = {
     i = mapping.complete({
       desc = pfx .. "start ai completions",
@@ -189,13 +189,13 @@ local main = {
   ["<Tab>"] = mapping(function(fallback)
     if cmp.visible() then
       cmp.select_next_item()
-    elseif luasnip.expand_or_locally_jumpable() then
-      luasnip.expand_or_jump()
-    elseif luasnip.jumpable(1) then
-      luasnip.jump(1)
-    elseif has_words_before() then
-      -- cmp.complete()
-      fallback()
+    -- elseif luasnip.expand_or_locally_jumpable() then
+    --   luasnip.expand_or_jump()
+    -- elseif luasnip.jumpable(1) then
+    --   luasnip.jump(1)
+    -- elseif has_words_before() then
+    --   -- cmp.complete()
+    --   fallback()
     else
       fallback()
     end
@@ -203,8 +203,8 @@ local main = {
   ["<S-Tab>"] = mapping(function(fallback)
     if cmp.visible() then
       cmp.select_prev_item()
-    elseif luasnip.jumpable(-1) then
-      luasnip.jump(-1)
+    -- elseif luasnip.jumpable(-1) then
+    --   luasnip.jump(-1)
     else
       fallback()
     end

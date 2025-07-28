@@ -119,11 +119,11 @@ local cfg = {
     -- completeopt = "menuone,noselect,preview", -- menu, menuone,noselect
     -- completeopt = 'menuone,preview,noselect,noinsert',
   },
-  snippet = {
-    expand = function(args)
-      require("luasnip").lsp_expand(args.body)
-    end,
-  },
+  -- snippet = {
+  --   expand = function(args)
+  --     require("luasnip").lsp_expand(args.body)
+  --   end,
+  -- },
   sorting = sorting,
   -- experimental = { ghost_text = { hl_group = 'CmpGhostText', }, },
   formatting = formatting,

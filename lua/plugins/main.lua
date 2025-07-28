@@ -194,6 +194,9 @@ local plugins = {
 
   {
     "olimorris/codecompanion.nvim",
+    init = function()
+      require("configs.codecompanion.extensions.notify-noice").init()
+    end,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "hakonharnes/img-clip.nvim",
@@ -201,21 +204,39 @@ local plugins = {
       "ravitemer/codecompanion-history.nvim",
       {
         "Davidyz/VectorCode",
+        -- pipx install git+https://github.com/Davidyz/VectorCode
         build = "pipx upgrade vectorcode", -- If you used pipx to install the CLI
+        -- pipx install chromadb==0.6.3
+        -- build = "uv tool upgrade vectorcode",
+        -- pipx install --force "vectorcode[lsp,mcp]"
+        -- pipx inject vectorcode vectorcode[lsp] --force
+        -- uv tool install vectorcode[lsp,mcp]
+        -- mkdir -p ~/.local/share/vectorcode/chromadb
         dependencies = { "nvim-lua/plenary.nvim" },
+      },
+
+      {
+        -- :PackageUI - Opens the interface, auto-detects your project type
+        -- Type to search packages from the appropriate registry
+        -- Navigate with j/k, Tab between components
+        -- Press Enter to browse available versions
+        -- Press 'i' to install your chosen version
+        -- Press 'u' on installed packages to uninstall
+        -- View real-time dependency info and update notifications
+        "MonsieurTib/package-ui.nvim",
+        config = function()
+          require("package-ui").setup()
+        end,
       },
       {
         "ravitemer/mcphub.nvim",
         build = "npm install -g mcp-hub@latest",
-        config = function()
-          require("mcphub").setup()
-        end,
       },
       {
         "yetone/avante.nvim",
         -- build from source: `make BUILD_FROM_SOURCE=true, must add this setting
         build = function()
-          return "make"
+          return "make BUILD_FROM_SOURCE=true"
         end,
         event = "VeryLazy",
         version = false, -- Never set this value to "*"! Never!
@@ -349,60 +370,19 @@ local plugins = {
   -- https://github.com/ziontee113/query-secretary
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    lazy = false,
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    cmd = { "TSTextobjectSelect", "TSTextobjectGotoPreviousStart" },
     dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      {
-        "JoosepAlviste/nvim-ts-context-commentstring",
-        lazy = true,
-        opts = {
-          enable_autocmd = false,
-        },
-      },
-
-      {
-        -- "RRethy/nvim-treesitter-endwise",
-        -- https://github.com/RRethy/nvim-treesitter-endwise/pull/42
-        "metiulekm/nvim-treesitter-endwise",
-      },
-      "theHamsta/nvim-treesitter-pairs",
-      {
-        "RRethy/nvim-treesitter-textsubjects",
-        config = function()
-          require("nvim-treesitter-textsubjects").configure({
-            prev_selection = "<leader>.",
-            keymaps = {
-              ["<leader><leader>"] = "textsubjects-smart",
-              ["<leader>\\]"] = "textsubjects-container-outer",
-              ["<leader>\\["] = "textsubjects-container-inner",
-            },
-          })
-        end,
-      },
-      "HiPhish/nvim-ts-rainbow2",
+      { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
+      { "JoosepAlviste/nvim-ts-context-commentstring", opts = { enable_autocmd = false } },
+      -- { "metiulekm/nvim-treesitter-endwise" },
+      -- "theHamsta/nvim-treesitter-pairs",
       "jbyuki/tree-sitter-ntangle",
       { "sustech-data/wildfire.nvim", enabled = false },
       "nvim-lua/plenary.nvim",
-      { "ThePrimeagen/refactoring.nvim", dependencies = { { "nvim-lua/plenary.nvim" } } },
-      "nvim-treesitter/nvim-treesitter-refactor",
-      "nvim-treesitter/playground",
-      { "nvim-treesitter/nvim-treesitter-context" },
+      { "ThePrimeagen/refactoring.nvim", dependencies = "nvim-lua/plenary.nvim" },
       "windwp/nvim-ts-autotag",
-      {
-        "ziontee113/query-secretary",
-        keys = {
-          {
-            "ghq",
-            function()
-              require("query-secretary").query_window_initiate()
-            end,
-            mode = { "n" },
-            desc = "open treesitter query secretary",
-          },
-        },
-      },
     },
   },
   {
@@ -447,13 +427,14 @@ local plugins = {
       -- StopInsertPlug enable/disable/toggle/status
     },
   },
-  { "jake-stewart/multicursor.nvim", branch = "1.0" },
+  { "jake-stewart/multicursor.nvim", enabled = false },
   -- movement highlighters
   -- https://github.com/tzachar/local-highlight.nvim
   -- https://github.com/jjshoots/betterf.nvim/tree/main
   { "smoka7/hop.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "folke/flash.nvim", event = "VeryLazy" },
   { "s1n7ax/nvim-window-picker", name = "window-picker", event = "VeryLazy", version = "2.*" },
+
   -- cursor
   -- { "gen740/SmoothCursor.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "sphamba/smear-cursor.nvim", cond = false and vim.g.neovide == nil },
@@ -484,7 +465,7 @@ local plugins = {
   -- surround
   { "echasnovski/mini.surround", event = { "VeryLazy" } },
   -- traversal/swapping
-  { "mizlan/iswap.nvim", event = { "BufReadPost", "BufNewFile" } },
+  -- { "mizlan/iswap.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "gsuuon/tshjkl.nvim", event = "VeryLazy" },
   { "chrisgrieser/nvim-spider", event = "VeryLazy" },
   { "echasnovski/mini.move", event = "VeryLazy" },
@@ -547,10 +528,8 @@ local plugins = {
   { "echasnovski/mini.files", version = false },
   {
     "nvim-neo-tree/neo-tree.nvim",
-    lazy = false,
     cmd = { "Neotree" },
     event = "VimEnter",
-    branch = "v3.x",
     dependencies = { "nvim-lua/plenary.nvim", "nvim-web-devicons", "MunifTanjim/nui.nvim" },
   },
   { "moyiz/git-dev.nvim", event = "VeryLazy", opts = {} },
@@ -579,7 +558,7 @@ local plugins = {
       "LinArcX/telescope-ports.nvim",
       "Zane-/cder.nvim",
       "Zane-/howdoi.nvim",
-      "benfowler/telescope-luasnip.nvim",
+      -- "benfowler/telescope-luasnip.nvim",
       "camgraff/telescope-tmux.nvim",
       "cljoly/telescope-repo.nvim",
       "crispgm/telescope-heading.nvim",
@@ -707,7 +686,7 @@ local plugins = {
   { "rbong/vim-flog", cmd = { "Flog", "Flogsplit" } },
   { "ThePrimeagen/git-worktree.nvim", event = "VeryLazy" },
   { "napisani/nvim-github-codesearch", cmd = "GithubSearch", build = "make" },
-  { "akinsho/git-conflict.nvim", version = "*", lazy = false },
+  { "akinsho/git-conflict.nvim", lazy = false },
   { "pwntester/octo.nvim", cmd = "Octo", dependencies = "nvim-web-devicons" },
   { "kdheepak/lazygit.nvim", cmd = "LazyGit" },
   { "lewis6991/gitsigns.nvim", event = "BufReadPost", dependencies = "nvim-lua/plenary.nvim" },
@@ -978,7 +957,13 @@ local plugins = {
   { "sidebar-nvim/sidebar.nvim", cmd = { "SidebarNvimOpen", "SidebarNvimToggle" } },
   { "nvimtools/hydra.nvim", event = "VeryLazy" }, -- anuvyklack
   { "NvChad/nvim-colorizer.lua", event = { "BufReadPost", "BufNewFile" } },
-  { "nvim-colortils/colortils.nvim", cmd = "Colortils", event = { "BufReadPost", "BufNewFile" } },
+  { "rachartier/tiny-glimmer.nvim", event = { "BufReadPost", "BufNewFile" } },
+  {
+    "DeaconDesperado/colortils.nvim",
+    branch = "fix-gradient",
+    cmd = "Colortils",
+    event = { "BufReadPost", "BufNewFile" },
+  },
   {
     "kawre/leetcode.nvim",
     build = ":TSUpdate html",
@@ -1136,6 +1121,7 @@ local plugins = {
     "MeanderingProgrammer/render-markdown.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons", opts = {} },
   },
+  { "gaoDean/autolist.nvim", ft = { "markdown", "text", "tex", "plaintex", "norg" } },
   {
     "lukas-reineke/headlines.nvim",
     enabled = false,

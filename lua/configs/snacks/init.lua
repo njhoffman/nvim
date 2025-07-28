@@ -7,7 +7,8 @@ local styles_cfg = require("configs.snacks.styles")
 local picker_cfg = require("configs.snacks.picker")
 
 local cfg = {
-  notifier = notifier_cfg,
+  notifier = { enabled = false },
+  -- notifier = notifier_cfg,
   profiler = profiler_cfg,
   scratch = scratch_cfg,
   styles = styles_cfg,

@@ -315,4 +315,47 @@ M.refresh = function(prompt_bufnr)
   current_picker:refresh(finders.new_oneshot_job(cmd, opts), {})
 end
 
+M.codecompanion_add = function()
+  local Path = require("plenary.path")
+  local cc = require("codecompanion")
+  local action_state = require("telescope.actions.state")
+  local fmt = string.format
+  local selection = action_state.get_selected_entry()[1]
+  local cwd = vim.fn.getcwd()
+  local fullpath = cwd .. "/" .. selection
+  local ok, content = pcall(function()
+    return Path.new(fullpath):read()
+  end)
+
+  local ft = vim.filetype.match({ filename = fullpath })
+  local description = fmt(
+    [[%s %s:
+
+							```%s
+							%s
+							```]],
+    "Here is the content of the file",
+    "located at `" .. selection .. "`",
+    ft,
+    content
+  )
+  local id = "<file>" .. selection .. "</file>"
+  local chat = cc.last_chat()
+  if not chat then
+    vim.notify("No active chat session", vim.log.levels.WARN)
+    return
+  end
+
+  chat:add_message({
+    role = require("codecompanion.config").config.constants.USER_ROLE,
+    content = description,
+  }, { reference = id, visible = false })
+  chat.references:add({
+    id = id,
+    path = selection,
+    source = "codecompanion.strategies.chat.slash_commands.file",
+  })
+  vim.notify(selection .. " added to chat")
+end
+
 return M

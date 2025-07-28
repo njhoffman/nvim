@@ -97,6 +97,7 @@ local main_maps = {
     })
   ),
   n = {
+    ["a"] = c_actions.codecompanion_add,
     ["q"] = actions.close,
     ["s"] = c_actions.flash,
   },

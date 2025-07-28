@@ -1,6 +1,11 @@
 local cfg = {
   -- add any opts here
   -- for example
+  suggestion = {
+    debounce = 600,
+    throttle = 2000,
+  },
+
   provider = "claude",
   providers = {
     claude = {

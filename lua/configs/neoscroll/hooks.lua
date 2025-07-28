@@ -2,7 +2,7 @@ local state = require("configs.neoscroll.state")
 
 -- local events = {}
 local events = { "WinScrolled", "CursorMoved" }
-local ts_ctx = require("treesitter-context")
+-- local ts_ctx = require("treesitter-context")
 
 local hooks = {}
 hooks.pre_hook = function(info, params)
@@ -11,7 +11,7 @@ hooks.pre_hook = function(info, params)
   state.start = vim.fn.reltime()
 
   vim.opt.eventignore:append(events)
-  ts_ctx.disable()
+  -- ts_ctx.disable()
   vim.b.minianimate_disable = true
 end
 
@@ -47,7 +47,7 @@ hooks.post_hook = function(info)
     vim.defer_fn(function()
       vim.opt.eventignore:remove(events)
       vim.b.minianimate_disable = false
-      ts_ctx.enable()
+      -- ts_ctx.enable()
     end, 200)
   end
 end

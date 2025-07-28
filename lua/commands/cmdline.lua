@@ -179,8 +179,15 @@ local jump_search_prev = function(path)
   vim.api.nvim_feedkeys(escaped, "n", false)
 end
 
+local yank_cmdline = function()
+  local cmdline = vim.fn.getcmdline()
+  vim.fn.setreg("+", cmdline)
+  return cmdline
+end
+
 return {
   toggle = toggle,
+  yank_cmdline = yank_cmdline,
   jump_search_prev = jump_search_prev,
   open_last_search = open_last_search,
   delete_eol = delete_eol,

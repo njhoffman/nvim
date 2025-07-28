@@ -658,7 +658,7 @@ local extension_configs = {
     -- ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous,
     -- ["<cr>"] = actions.select_default + actions.center,,
   },
-  ["luasnip"] = {},
+  -- ["luasnip"] = {},
   -- ["make"]           = {},
   ["media"] = {
     backend = "viu", -- image/gif backend

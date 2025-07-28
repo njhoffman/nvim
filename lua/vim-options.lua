@@ -1,7 +1,7 @@
 local g = vim.g
 local o, wo, bo = vim.o, vim.wo, vim.bo
 local opt = require("utils.core").opt
-local config = require("config")
+-- local config = require("config")
 
 g.mapleader = [[,]]
 g.maplocalleader = [[,]]
@@ -103,7 +103,10 @@ opt("virtualedit", "block") -- onemore, block, insert, all
 opt("wildignore", "*.o,*~,*.pyc") -- wildchar     /charm for wildmenu  0x1a ^Z, 0x1b
 opt("wildignore", "*.o,*~,*.pyc") -- wildchar	   /charm for wildmenu  0x1a ^Z, 0x1b ^[, 0x0e C-n
 opt("wildmode", "longest:full,full")
--- opt('winminwidth', 1) -- vimade errors when this is larger
+opt("winwidth", 10)
+opt("winminwidth", 7)
+opt("winheight", 5)
+opt("winminheight", 3)
 opt("writebackup", true)
 
 -- opt("diffopt", "internal,filler,closeoff,linematch:60")

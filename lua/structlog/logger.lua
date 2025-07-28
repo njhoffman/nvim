@@ -14,8 +14,8 @@ setmetatable(Logger, {
   end,
 })
 
-local Level = require('structlog.level')
-local pattern_filter = require('structlog.pattern')
+local Level = require("structlog.level")
+local pattern_filter = require("structlog.pattern")
 
 function Logger:new(name, sinks)
   local logger = {}
@@ -30,11 +30,19 @@ function Logger:new(name, sinks)
   return logger
 end
 
-function Logger:clone()
-  local logger = self:new(self.name, self.sinks)
-  logger.context = vim.deepcopy(self.context)
+local function handle_sink(logger, kwargs, msg, level)
+  kwargs.msg = msg
+  for _, sink in ipairs(logger.sinks or {}) do
+    local sink_args = vim.deepcopy(kwargs)
+    for _, processor in ipairs(sink.processors) do
+      sink_args = processor(logger, kwargs)
+    end
+    sink_args = sink.formatter(sink_args)
 
-  return logger
+    if level >= sink.level and sink.level ~= -1 then
+      sink:write(sink_args)
+    end
+  end
 end
 
 local function log(logger, level, msg, events)
@@ -44,26 +52,19 @@ local function log(logger, level, msg, events)
 
   local kwargs = {
     level = Level.name(level),
-    msg = msg,
     events = events or {},
   }
-  for key, value in pairs(logger.context) do
+  for key, value in pairs(logger.context or {}) do
     kwargs[key] = value
   end
+  handle_sink(logger, kwargs, msg, level)
+end
 
-  for _, sink in ipairs(logger.sinks) do
-    if level >= sink.level and sink.level ~= -1 then
-      local sink_kwargs = vim.deepcopy(kwargs)
+function Logger:clone()
+  local logger = self:new(self.name, self.sinks)
+  logger.context = vim.deepcopy(self.context)
 
-      for _, processor in ipairs(sink.processors) do
-        sink_kwargs = processor(logger, sink_kwargs)
-      end
-
-      sink_kwargs = sink.formatter(sink_kwargs)
-
-      sink:write(sink_kwargs)
-    end
-  end
+  return logger
 end
 
 function Logger:log(level, msg, events)

@@ -178,6 +178,46 @@ local function trim_space(opts, preview_ns, preview_buf)
   end
 end
 
+local function delete_spaces_ahead()
+  local line = vim.api.nvim_get_current_line()
+  local col = vim.fn.col(".")
+  local new_line = line:sub(1, col - 1) .. line:sub(col):gsub("^%s+", "")
+  vim.api.nvim_set_current_line(new_line)
+end
+
+-- Function to toggle a character before comments and trailing whitespace
+local function toggle_character(char)
+  -- Get the current line number and the current line content
+  local line_num = vim.fn.line(".")
+  local line = vim.fn.getline(line_num)
+
+  -- Retrieve the commentstring and remove the placeholder '%s'
+  local commentstring = vim.bo.commentstring
+  local comment_prefix = commentstring:gsub("%%s", ""):gsub("%s*$", "")
+
+  -- Find the position of the comment start
+  local comment_start = line:find("%s*" .. comment_prefix)
+
+  -- Determine where to insert the character (before the comment or end of line)
+  local insert_pos = comment_start or (#line + 1)
+
+  -- If there's trailing whitespace before the comment, adjust the insert position
+  insert_pos = line:find("%s*$", math.min(insert_pos, #line)) or insert_pos
+
+  -- Check if the character is already present at the insert position
+  local new_line
+  if insert_pos <= #line and line:sub(insert_pos, insert_pos) == char then
+    -- Character is present at insert position, remove it (toggle off)
+    new_line = line:sub(1, insert_pos - 1) .. line:sub(insert_pos + 1)
+  else
+    -- Character is not present, add it (toggle on)
+    new_line = line:sub(1, insert_pos - 1) .. char .. line:sub(insert_pos)
+  end
+
+  -- Set the modified line back to the buffer
+  vim.fn.setline(line_num, new_line)
+end
+
 local function delete_special()
   if vim.api.nvim_get_current_line():match("^%s*$") then
     return '"_dd'
@@ -206,7 +246,12 @@ local create_cmd_truncate = function(_bufnr)
 end
 -- vim.keymap.set("v", "d", delete_special_v, { noremap = true, expr = true })
 --
-return { format = format, trim_space = trim_space, truncate_log = truncate_log }
+return {
+  format = format,
+  trim_space = trim_space,
+  truncate_log = truncate_log,
+  delete_spaces_ahead = delete_spaces_ahead,
+}
 
 -- return {
 --   "stevearc/conform.nvim",

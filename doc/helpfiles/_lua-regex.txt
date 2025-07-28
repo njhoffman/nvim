@@ -1,0 +1,188 @@
+*_lua-regex.txt* Lua RegEx patterns and functions
+
+==============================================================================
+Table of Contents                            *lua-regex-table-of-contents*
+
+1.  [Introduction](#ftoc-heading-1)
+2.  [Pattern Match Functions](#ftoc-heading-2)
+3.  [Constructing a Pattern](#ftoc-heading-3)
+    a.  [Character Classes](#ftoc-heading-4)
+    b.  [Pattern Items](#ftoc-heading-5)
+    c.  [Pattern](#ftoc-heading-6)
+    d.  [Captures](#ftoc-heading-7)
+4.  [Examples](#ftoc-heading-8)
+5.  [Unicode UTF-8 Encoding](#ftoc-heading-9)
+
+Introduction ~
+
+An  example, the pattern `ABC%d%d%d` (where `%d` matches any digit) will match
+the letters ABC followed by any three digits, such as ABC142 or ABC897 or ABC603,
+but will NOT match ABC93X.
+
+Patterns comprise regular literal text characters that match themselves,
+such as ABC above, and magic or meta characters that have a special meaning,
+such as `%d` above.
+
+Pattern Match Functions ~
+
+Lua has some string [functions](https://www.fhug.org.uk/kb/kb-article/understanding-functions/)
+>lua
+   string.find(string, pattern)
+< finds the first instance of pattern in string and returns its position
+>lua
+   string.gmatch(string, pattern)
+< when called repeatedly, returns each successive instance of pattern in string
+>lua
+   string.gsub(string, pattern, repl)
+< returns a string where all instances of pattern in string have been replaced with repl
+>lua
+  string.match(string, pattern)
+< returns the first instance of pattern in string
+
+Character Classes ~
+
+Lua character classes are:
+
+`Y`   the character Y itself as long as it is not a magic character
+`.`   any single character
+`%a`  all letters A-Z and a-z
+`%c`  all control characters such as Null, Tab, Carr.Return, Linefeed, Delete, etc
+`%d`  all digits 0-9
+`%g`  all printable characters except space (not Lua 5.1)
+`%l`  all lowercase letters a-z
+`%p`  all punctuation characters or symbols such as `. , ? ! : ; @ \[ \] \_ { }~`
+`%s`  all white space characters such as Tab, Carr.Return, Linefeed, Space, etc
+`%u`  all uppercase letters A-Z
+`%w`  all alphanumeric characters A-Z and a-z and 0-9
+`%x`  all hexadecimal digits 0-9 and A-F and a-f
+`%z`  the character with code `\\000` because embedded zeroes in a pattern do not work
+`\\0` the character with code `\\000` because embedded zeroes in a pattern do not work
+
+The upper case letter versions of the above reverses their meaning
+    i.e. %A represents all non-letters and %D represents all non-digits
+
+%Y represents the character Y if it is any non-alphanumeric character
+   This is the standard way to get a magic character to match itself
+   Any punctuation character (even a non magic one) preceded by a % represents itself
+   e.g. %% represents % percent and %+ represents + plus
+
+\[set\] represents the class which is the union of all characters in the set
+  A range of characters is specified by separating first and last character of range with a – hyphen e.g. 1-5
+  All classes described above may also be used as components in the set
+  e.g. \[%w~\] (or \[~%w\]) represents all alphanumeric characters plus the ~ tilde
+
+\[^set\] represents the complement of set, where set is interpreted as above
+  e.g. \[^A-Z\] represents any character except upper case letters
+
+Many patterns are simply made up of a sequence of these classes.
+For example, to match the string ### Abc (where # designates a digit), you would use the pattern `%d%d%d Abc`.
+
+Note: classes `%a` to `%x` and `%A` to `%X` above aren’t strictly necessary, being just shorthand for certain `[set]` or `[^set]` classes.
+  e.g. `%a` is `[A-Za-z]` , `%d` is `[0-9]` , `%l` is `[a-z]` , `%L` is `[^a-z]` , `%U` is `[^A-Z]` , and so on.
+
+Pattern Items ~
+
+By adding modifiers, you can extend the meaning of those [Character Classes](#charclasses) represented by class below.
+
+`class`   matches any single character in the class
+`class\*` matches 0 or more repetitions of class and will always match the longest possible chain
+`class+`  matches 1 or more repetitions of class and will always match the longest possible chain
+`class-`  matches 0 or more repetitions of class and will always match the shortest possible chain
+`class?`  matches 0 or 1 occurrence of class
+
+For example `%d+` will match a string of digits.
+
+There are also two special pattern items.
+%N for N between 1 and 9 matches the Nth captured substring (see [Captures](#captures) below)
+%bXY matches a substring starting with X and ending with Y and the substring also has the same number of X as Y
+
+  For example `%b()` will match balanced nested pairs of ( ) parentheses
+
+Pattern Markers ~
+
+`^` when at the beginning of a pattern, forces the pattern to match the start of a string
+`$` when at the end of a pattern, forces the pattern to match the end of a string
+
+When ^ or $ is elsewhere in a pattern (except in \[^set\]), it has no magic meaning and represents itself
+  For example, `^A%d+Z$` will match a string starting with A, ending with Z, with only digits in between.
+
+Captures ~
+
+A [Pattern](#pattern) may have sub-patterns enclosed by `( )` parentheses, that are counted as matches are found.
+They can be accessed using the `%N` item defined above.
+The empty capture `()` will return the string position where a match is found.
+
+For example `^A(%d+)Z$` will capture just the digits from any matching string,
+and subsequently `%1` represents those captured digits.
+
+So the function `string.gsub(S, "^A(%d+)Z$", "%1")` will return just the digits
+from string `S` as long as it matches the pattern, otherwise it returns the original string `S` unaltered.
+
+Examples ~
+
+Here are a few basic examples of Lua Patterns that match Family Historian text.
+
+
+`^Q\[1-4\] %d%d%d%d$`
+    Quarter [date](https://www.fhug.org.uk/kb/kb-article/using-the-julian-and-gregorian-calendars/)When an Event happened, or an Attrribute was true. e.g. Q2 1987 or Q4 1876
+
+`^\[123\]?%d %u%l+ %d%d%d%d%$`
+    Simple date e.g. 21 March 1765 or 8 June 1678
+
+`^\[1-3\]?%d %u%l+ %d%d%d%d% %(%l%l%l%)$`
+    Qualified date e.g. 19 September 1765 (est)
+    Note how magic ( ) parentheses need % prefix
+
+* [Split a Filename into Path, File, and Extension](https://fhug.org.uk/kb/code-snippet/split-a-filename-into-path-file-and-extension/) 
+* [Split a String into Numbers using Separators](https://fhug.org.uk/kb/code-snippet/split-a-string-into-numbers-using-separators/) 
+* [Plain Text Substitution](https://fhug.org.uk/kb/code-snippet/plain-text-substitution/)
+
+Unicode UTF-8 Encoding ~
+
+Note: In ƒh6 and ƒh7 the native [utf8](https://www.lua.org/manual/5.3/manual.html#6.5) library is available (or can be implemented) to help in this area and can be supplemented with an additional [utf8 library](https://gist.github.com/Stepets/3b4dbaf5e6e6a60f3862)  to access extra functions; see [Lua references and Library Modules](https://fhug.org.uk/kb/kb-article/lua-references-and-library-modules/) for instructions how to include them. If you choose not to use these libraries, read on.
+
+Lua and its pattern matching is designed to work with ANSI encoded strings and does not recognise the special needs of multi-byte UTF-8 encoding. Many of the UTF-8 bytes are treated as members of the character classes described above with highly disruptive effects. So UTF-8 compatible ASCII substitutes must be employed to avoid byte codes above \\127.
+
+`%a \[A-Za-z\]`
+  represents all unaccented letters
+
+`%c \[%z\\001-\\031\\127\]` or `\[\\000\-\\031\\127\]`
+  represents all control characters
+
+`%d \[0-9\]`
+   represents all digits
+
+`%l \[a-z\]`
+   represents all unaccented lowercase letters
+
+`%p \[!-/:-@%\[\\\\%\]^\_\{|}~\]`
+   for all punctuation i.e. \[\\033-\\047\\058-\\064\\091-\\096\\123-\\126\]
+
+`%s \[\\t-\\r \]`
+   represents all white space characters i.e. \[\\009-\\013\\032\]
+
+`%u \[A-Z\]`
+   represents all unaccented uppercase letters
+
+`%w \[A-Za-z0-9\]`
+   represents all unaccented alphanumeric characters
+
+`%x \[0-9A-Fa-f\]`
+    but %x is OK to represent all hexadecimal digits
+
+`%z` or `\\0`
+    OK to represent the character with code \\000
+
+     The inverse classes using capital letters need similar treatment
+     and can be replaced by the ASCII versions above but
+     with a leading `^` e.g. `%A` becomes `[^A-Za-z]` to represent all
+     except unaccented letters. Note that none of the above techniques
+     take account of UTF-8 accented letters or symbols,
+     which being multi-byte codes, are difficult to define as patterns.
+
+`(%W)` 
+   often used to detect non-alphanumerics to prefix with `%` to hide the magic pattern symbols, but can upset UTF-8 text. 
+   `([%^%$%(%)%%%.%[%]%*%+%-%?])` is a safe ASCII substitute.
+
+
+vim:ft=help:tw=80:ts=2:sw=2:cole=2

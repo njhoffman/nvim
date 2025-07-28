@@ -117,6 +117,7 @@ require("mason-lspconfig").setup_handlers({
   end,
   ["cssls"] = function() end,
   -- ['jdtls'] = noop,  root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1]),
+
   ["jqls"] = function()
     lspconfig.jqls.setup({})
   end,
@@ -205,6 +206,55 @@ require("mason-lspconfig").setup_handlers({
         },
       },
     })
+  end,
+  ["awk_ls"] = function()
+    lspconfig.awk_ls.setup({
+      cmd = { "awk-ls" },
+      filetypes = { "awk" },
+      root_dir = util.find_git_ancestor,
+    })
+  end,
+  ["clangd"] = function()
+    lspconfig.clangd.setup({
+      cmd = { "clangd", "--offset-encoding=utf-16" },
+      filetypes = { "c", "cpp", "objc", "objcpp" },
+      root_dir = util.root_pattern("compile_commands.json", ".git"),
+    })
+  end,
+  ["cmake"] = function()
+    lspconfig.cmake.setup({
+      capabilities = require("lsp.capabilities").make(),
+    })
+  end,
+  ["gradle_ls"] = function()
+    lspconfig.gradle_ls.setup({})
+  end,
+  ["helm_ls"] = function()
+    lspconfig.helm_ls.setup({})
+  end,
+  ["intelephense"] = function()
+    lspconfig.intelephense.setup({})
+  end,
+  ["groovyls"] = function()
+    lspconfig.groovyls.setup({})
+  end,
+  ["graphql"] = function()
+    lspconfig.graphql.setup({})
+  end,
+  ["ltex"] = function()
+    lspconfig.ltex.setup({
+      settings = {
+        ltex = {
+          language = "en-US",
+          additionalRules = {
+            enablePickyRulesForLanguageModeling = true,
+          },
+        },
+      },
+    })
+  end,
+  ["marksman"] = function()
+    lspconfig.marksman.setup({})
   end,
   ["yamlls"] = function()
     lspconfig.yamlls.setup({

@@ -49,7 +49,7 @@ vim.defer_fn(function()
   vim.import("live-command.setup")
   vim.import("sidebar").setup()
   vim.import("histories").setup()
-  vim.import("scrollview.setup")
+  -- vim.import("scrollview.setup")
 
   -- 'lab.setup',
   local llm_config = require("llm-config")
@@ -128,7 +128,7 @@ vim.defer_fn(function()
     -- wakeup_delay = 0, -- ms
   })
 
-  vim.import("configs.tiny-glimmer")
+  -- vim.import("configs.tiny-glimmer")
 
   vim.api.nvim_set_keymap("x", "<F10>", "<Cmd>=vim.fn.getpos('v')<CR>", {})
   vim.api.nvim_set_keymap("n", "<F10>", "<Cmd>Telescope tester script<CR>", {})
