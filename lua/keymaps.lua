@@ -1979,10 +1979,6 @@ map('x', '>', '>gv', {
   desc = '󰉶 indent repeatedly',
 })
 
-map('n', '<leader>a', '>gv', {
-  category = 'Format',
-  desc = '󰉶 toggle char at end',
-})
 
 -- map('n', '<', '<<', {
 --   category = 'Format',

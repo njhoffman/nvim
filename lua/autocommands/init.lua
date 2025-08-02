@@ -1,4 +1,3 @@
--- local commands = require('autocommands.commands')
 local buffers = require("autocommands.buffers")
 local telescope = require("autocommands.telescope")
 local windows = require("autocommands.windows")
@@ -17,6 +16,8 @@ vim.cmd([[
   au BufNewFile,BufRead *.tcf setlocal ft=tcf
   au BufNewFile,BufRead *.tca setlocal ft=tcf
   au BufNewFile,BufRead *.tso setlocal ft=tcf
+
+  au FileType checkhealth :set ft=checkhealth.log
 
 	" :au SpellFileMissing * call Download_spell_file(expand('<amatch>'))
 
@@ -48,6 +49,7 @@ local autocmds = {
     { { 'FileType' },              "markdown",            "setlocal syn=markdown" },
     { { 'FileType' },               "fzf",                "tunmap <Esc><Esc>" },
     { {'FileType' },                'checkhealth',        'setlocal ft=help', },
+    { { 'BufNewFile', 'BufRead' }, 'health:*',            'setlocal ft=log', },
     { { 'BufNewFile', 'BufRead' }, '*nvim/option-window', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>', },
     { { 'BufNewFile', 'BufRead' }, '*.jq',                'set ft=jq' },
     { { 'BufNewFile', 'BufRead' }, '*startuptime.tsv',    'setlocal ft=crontab syn=crontab' },
@@ -78,6 +80,7 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, '*.scm',                    'setlocal ft=query.treesitter' },
     { { 'BufNewFile', 'BufRead' }, '*.service',                'setlocal ft=systemd'          },
     { { 'BufNewFile', 'BufRead' }, '*.openvpn',                'setlocal ft=openvpn'          },
+    { { 'BufNewFile', 'BufRead' }, '*.org',                    'setlocal syn=org'          },
     { { 'BufNewFile', 'BufRead' }, '*.sock',                   'setlocal ft=systemd'          },
     { { 'BufNewFile', 'BufRead' }, 'Chart.yaml',               'setlocal ft=helm'             },
     { { 'BufNewFile', 'BufRead' }, 'values.yaml',              'setlocal ft=helm'             },

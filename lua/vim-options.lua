@@ -98,6 +98,7 @@ opt("ttimeout", true) -- 50
 opt("ttimeoutlen", 30) -- 50
 opt("undolevels", 2000)
 opt("updatetime", 500) -- 4000
+opt("spelllang", "en_us")
 opt("whichwrap", "<,>,[,]") -- 'b,s,<,>,[,],h,l'
 opt("virtualedit", "block") -- onemore, block, insert, all
 opt("wildignore", "*.o,*~,*.pyc") -- wildchar     /charm for wildmenu  0x1a ^Z, 0x1b
@@ -106,7 +107,7 @@ opt("wildmode", "longest:full,full")
 opt("winwidth", 10)
 opt("winminwidth", 7)
 opt("winheight", 5)
-opt("winminheight", 3)
+opt("winminheight", 1)
 opt("writebackup", true)
 
 -- opt("diffopt", "internal,filler,closeoff,linematch:60")

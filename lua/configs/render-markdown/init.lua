@@ -1,5 +1,5 @@
 local bullets = {
-  { "", "", "◆", "◇" },
+  { "◆", "◇", "", "" },
   { "", "", "", "" },
 }
 -- ◆ ◇ 󰨑 󱓝    󰄯 󰄰  ● ○ 󰻃   󰧞  󰧟 
@@ -21,11 +21,11 @@ local bullets = {
 --       }):map("<leader>um")
 
 local cfg = {
-  custom_handlers = {
-    org = {
-      parse = require("configs.render-markdown.view-orgmode"),
-    },
-  },
+  -- custom_handlers = {
+  --   org = {
+  --     parse = require("configs.render-markdown.view-orgmode"),
+  --   },
+  -- },
 
   --     render_modes = { 'i', 'n', 'c', 't', 'v', 'V', '\22'  },
   render_modes = true,
@@ -84,7 +84,10 @@ local cfg = {
           sign = false,
         },
         win_options = {
-          concealcursor = { rendered = "nvic" },
+          concealcursor = {
+            rendered = "nvic",
+            default = vim.api.nvim_get_option_value("concealcursor", {}),
+          },
         },
       },
     },
@@ -119,8 +122,8 @@ local cfg = {
     "codecompanion",
     "copilot-chat",
     "markdown",
-    "norg",
-    "org",
+    -- "norg",
+    -- "org",
     "pandoc",
     "quarto",
     "rmd",
@@ -187,6 +190,7 @@ local cfg = {
       --  head_icon, head_background, head_border, code_language, code_background, code_border
       --  dash, bullet, check_icon, check_scope, quote, table_border, callout, link, sign
       bullet = true,
+      check_icon = true,
       head_icon = true,
       head_background = true,
       head_border = true,
@@ -199,12 +203,24 @@ local cfg = {
   checkbox = {
     enabled = true,
     -- Define custom checkbox states, more involved, not part of the markdown grammar.
-    -- As a result this requires neovim >= 0.10.0 since it relies on 'inline' extmarks.
     -- The key is for healthcheck and to allow users to change its values, value type below.
     -- | raw             | matched against the raw text of a 'shortcut_link'           |
     -- | rendered        | replaces the 'raw' value when rendering                     |
     -- | highlight       | highlight for the 'rendered' icon                           |
     -- | scope_highlight | optional highlight for item associated with custom checkbox |
+    unchecked = {
+      -- Replaces '[ ]' of 'task_list_marker_unchecked'.
+      icon = "󰄱 ",
+      highlight = "RenderMarkdownUnchecked",
+      scope_highlight = nil,
+    },
+    checked = {
+      -- Replaces '[x]' of 'task_list_marker_checked'.
+
+      icon = "󰱒 ",
+      highlight = "RenderMarkdownChecked",
+      scope_highlight = nil,
+    },
 
     custom = {
       todo = {
@@ -221,11 +237,7 @@ local cfg = {
     preset = "round", -- heavy, round, double, none
     style = "full", -- none, normal, full
     cell = "padded", -- overlay, raw, padded, trimmed
-    highlight = "RenderMarkdownPipeTable", -- hl for pipe tables
-    highlight_border = "RenderMarkdownPipeTableBorder", -- hl for pipe table borders
     min_width = 0, -- Minimum width of pipe tables
-    left_pad = 1, -- Padding to add to the left of pipe tables
-    right_pad = 1, -- Padding to add to the right of pipe tables
     -- above = "▀", -- Used above pipe tables for thin border.
     -- below = "▀", -- Used below pipe tables for thin border.
 
@@ -267,7 +279,19 @@ local cfg = {
     -- Applied to icon.
     highlight = "RenderMarkdownIndent",
   },
-  completions = { lsp = { enabled = true } },
+  completions = {
+    lsp = { enabled = true },
+    filter = {
+      callout = function()
+        -- example to exclude obsidian callouts
+        -- return value.category ~= 'obsidian'
+        return true
+      end,
+      checkbox = function()
+        return true
+      end,
+    },
+  },
 
   heading = {
     -- border = "thin", highlight = "RenderMarkdownCode", highlight_inline = "RenderMarkdownCodeInline", min_width = 30

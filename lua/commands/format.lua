@@ -1,4 +1,5 @@
 local state = { timer = nil }
+local ns_id = vim.api.nvim_create_namespace("commands/format")
 
 -- local function throttle(func, delay)
 --   if state.timer then
@@ -19,6 +20,66 @@ local state = { timer = nil }
 -- end, { desc = "Paste primary buffer charwise (strip line endings)" })
 -- vim.api.nvim_create_user_command( "PasteLinewise"
 -- )
+
+local checked_character = "x"
+local checked_checkbox = "%[" .. checked_character .. "%]"
+local unchecked_checkbox = "%[ %]"
+
+local line_contains_unchecked = function(line)
+  return line:find(unchecked_checkbox)
+end
+
+local line_contains_checked = function(line)
+  return line:find(checked_checkbox)
+end
+
+local line_with_checkbox = function(line)
+  -- return not line_contains_a_checked_checkbox(line) and not line_contains_an_unchecked_checkbox(line)
+  return line:find("^%s*- " .. checked_checkbox)
+    or line:find("^%s*- " .. unchecked_checkbox)
+    or line:find("^%s*%d%. " .. checked_checkbox)
+    or line:find("^%s*%d%. " .. unchecked_checkbox)
+end
+
+local checkbox = {
+  check = function(line)
+    return line:gsub(unchecked_checkbox, checked_checkbox, 1)
+  end,
+  uncheck = function(line)
+    return line:gsub(checked_checkbox, unchecked_checkbox, 1)
+  end,
+  make_checkbox = function(line)
+    if not line:match("^%s*-%s.*$") and not line:match("^%s*%d%s.*$") then
+      -- "xxx" -> "- [ ] xxx"
+      return line:gsub("(%S+)", "- [ ] %1", 1)
+    else
+      -- "- xxx" -> "- [ ] xxx", "3. xxx" -> "3. [ ] xxx"
+      return line:gsub("(%s*- )(.*)", "%1[ ] %2", 1):gsub("(%s*%d%. )(.*)", "%1[ ] %2", 1)
+    end
+  end,
+}
+
+local toggle_checkbox = function()
+  local bufnr = vim.api.nvim_buf_get_number(0) --
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local start_line = cursor[1] - 1
+  local current_line = vim.api.nvim_buf_get_lines(bufnr, start_line, start_line + 1, false)[1] or ""
+
+  -- If the line contains a checked checkbox then uncheck it.
+  -- Otherwise, if it contains an unchecked checkbox, check it.
+  local new_line = ""
+
+  if not line_with_checkbox(current_line) then
+    new_line = checkbox.make_checkbox(current_line)
+  elseif line_contains_unchecked(current_line) then
+    new_line = checkbox.check(current_line)
+  elseif line_contains_checked(current_line) then
+    new_line = checkbox.uncheck(current_line)
+  end
+
+  vim.api.nvim_buf_set_lines(bufnr, start_line, start_line + 1, false, { new_line })
+  vim.api.nvim_win_set_cursor(0, cursor)
+end
 
 local truncate_log = function()
   local ext = vim.fn.expand("%:e")
@@ -185,30 +246,38 @@ local function delete_spaces_ahead()
   vim.api.nvim_set_current_line(new_line)
 end
 
+-- Find comment start index in a line
+local function get_comment_start_index(line, comment_marker)
+  if comment_marker and comment_marker ~= "" then
+    local start_idx = line:find("%s+" .. vim.pesc(comment_marker), 1)
+    return start_idx
+  end
+  return nil
+end
+
 -- Function to toggle a character before comments and trailing whitespace
-local function toggle_character(char)
+local function toggle_last_char(char)
   -- Get the current line number and the current line content
   local line_num = vim.fn.line(".")
-  local line = vim.fn.getline(line_num)
+  local line = vim.fn.getline(line_num):gsub("%s+$", "") -- Remove trailing whitespace
 
-  -- Retrieve the commentstring and remove the placeholder '%s'
+  -- Get the comment string for current buffer
   local commentstring = vim.bo.commentstring
-  local comment_prefix = commentstring:gsub("%%s", ""):gsub("%s*$", "")
+
+  -- Extract the comment marker (before %s)
+  local comment_marker = commentstring:match("^(.-)%%s")
 
   -- Find the position of the comment start
-  local comment_start = line:find("%s*" .. comment_prefix)
+  local comment_start = get_comment_start_index(line, comment_marker)
 
   -- Determine where to insert the character (before the comment or end of line)
   local insert_pos = comment_start or (#line + 1)
 
-  -- If there's trailing whitespace before the comment, adjust the insert position
-  insert_pos = line:find("%s*$", math.min(insert_pos, #line)) or insert_pos
-
   -- Check if the character is already present at the insert position
   local new_line
-  if insert_pos <= #line and line:sub(insert_pos, insert_pos) == char then
+  if line:sub(insert_pos - 1, insert_pos - 1) == char then
     -- Character is present at insert position, remove it (toggle off)
-    new_line = line:sub(1, insert_pos - 1) .. line:sub(insert_pos + 1)
+    new_line = line:sub(1, insert_pos - 2) .. line:sub(insert_pos)
   else
     -- Character is not present, add it (toggle on)
     new_line = line:sub(1, insert_pos - 1) .. char .. line:sub(insert_pos)
@@ -216,6 +285,22 @@ local function toggle_character(char)
 
   -- Set the modified line back to the buffer
   vim.fn.setline(line_num, new_line)
+end
+
+local end_char_strip = function()
+  local end_chars = { ",", ";", ")", "'", '"', "|", "\\", ".", "}" }
+end
+
+local end_char_toggle = function()
+  local input = vim.fn.getchar()
+  if type(input) == "number" then
+    local char = vim.fn.nr2char(input)
+    -- Handle special keys
+    if char == "\27" then -- ESC key
+      return
+    end
+    toggle_last_char(char)
+  end
 end
 
 local function delete_special()
@@ -238,18 +323,15 @@ local function delete_special_v()
   return "d"
 end
 
-local create_cmd_truncate = function(_bufnr)
-  local bufnr = _bufnr or vim.api.nvim_get_current_buf()
-  vim.api.nvim_buf_create_user_command(bufnr, "Truncate", truncate_log, {
-    desc = "Truncate logfile",
-  })
-end
 -- vim.keymap.set("v", "d", delete_special_v, { noremap = true, expr = true })
 --
 return {
-  format = format,
+  -- format = format,
   trim_space = trim_space,
   truncate_log = truncate_log,
+  end_char_strip = end_char_strip,
+  end_char_toggle = end_char_toggle,
+  toggle_checkbox = toggle_checkbox,
   delete_spaces_ahead = delete_spaces_ahead,
 }
 

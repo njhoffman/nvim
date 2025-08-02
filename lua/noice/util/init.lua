@@ -253,7 +253,10 @@ end
 function M.redraw(opts)
   if vim.api.nvim__redraw then
     opts = opts or { flush = true }
-    vim.api.nvim__redraw(opts)
+    local redraw_ok, redraw_err = pcall(vim.api.nvim__redraw, opts)
+    if not redraw_ok then
+      vim.dbglog("noice: Failed to redraw: ", opts, redraw_err)
+    end
   else
     vim.cmd.redraw()
   end

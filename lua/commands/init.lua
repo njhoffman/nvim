@@ -8,6 +8,8 @@ local reload = require("commands.reload")
 local system = require("commands.system")
 local ansi = require("commands.ansi")
 
+local map = require("mapper").map
+
 local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
 
@@ -20,13 +22,13 @@ vim.api.nvim_create_user_command("Vblock", function()
   -- onemore, block, insert, all, none
 end, { desc = "toggle virtualedit modes", range = true })
 
-vim.api.nvim_set_keymap(
+map(
   "n",
   "<M-C-V>",
   ":Vblock<CR>",
   { noremap = true, silent = true, desc = "toggle virtualedit block" }
 )
-vim.api.nvim_set_keymap(
+map(
   "x",
   "<M-C-V>",
   ":Vblock<CR>",
@@ -52,15 +54,17 @@ cmd(
   { nargs = "*", desc = " reload /  make extended" }
 )
 
+map("n", "<leader>iR", ":Reload<cr>", { noremap = true, silent = true })
+
 cmd("TruncateLog", format.truncate_log, { desc = "Truncate log " })
 -- cmd('Format', format.format, { nargs = '*', desc = 'Format buffer using lsp' })
+cmd("ToggleCheckbox", format.toggle_checkbox, { desc = "Toggle checkbox" })
 cmd("GetPaths", debug.get_paths, { desc = "Get path collections (rtpaths, o.packpath, etc)" })
 cmd("Trash", system.trash_file, { desc = "Send file to system trash" })
 cmd("Delete", system.trash_file, { desc = "Send file to system trash" })
 cmd("YankPath", system.yank_path, { desc = "Yank current file path" })
 cmd("YankCwd", system.yank_cwd, { desc = "Yank current project directory" })
 -- cmd("TrashRecover", system.trash_file, { desc = "Send file to system trash" })
-vim.api.nvim_set_keymap("n", "<leader>iR", ":Reload<cr>", { noremap = true, silent = true })
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "lua",
@@ -74,15 +78,34 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Create lua help utility functions",
 })
 
+-- TODO: handle special [-] and [ ]
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.keymap.set("n", "<CR>", function()
+      local line = vim.api.nvim_get_current_line()
+      -- only if line has a checkbox, otherwise normal enter behavior
+      if line:match("%s*[-*+]%s*%[[ xX]%]") then
+        format.toggle_checkbox()
+      else
+        vim.api.nvim_feedkeys("o", "n", false)
+      end
+    end, { buffer = true, desc = "Toggle checkbox or normal enter" })
+  end,
+})
+
 cmd("HelpExport", help.export_help_files, { desc = "export local help files" })
 cmd("HelpNew", help.edit_new_helpfile, { desc = "edit new local helpfile" })
+
+-- map("n", "<leader>$", format.end_char_strip, { desc = "ﲖ strip end characters" })
+map("n", "<leader>a", format.end_char_toggle, { desc = "ﲖ toggle end character", nowait = true })
 
 cmd("TrimTrailingWhitespace", format.trim_space, {
   nargs = "?",
   range = "%",
   addr = "lines",
   preview = format.trim_space,
-  desc = "Trims trailing whitespace in the current buffer.",
+  desc = "ﲖ trims trailing whitespace in the current buffer",
 })
 
 cmd("Google", function(o)

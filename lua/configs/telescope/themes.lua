@@ -83,7 +83,7 @@ local telenames = {
   "howdoi.howdoi",
   "lazygit.lazygit",
   "live_grep_args.live_grep_args",
-  "luasnip.luasnip",
+  -- "luasnip.luasnip",
   "mapper.mapper",
   "media_files.media_files",
   "neoclip.neoclip",
@@ -101,53 +101,53 @@ local telenames = {
   "tmux.windows",
   "variables.variables",
   "vimwiki.vimwiki",
-  "z.list"
+  "z.list",
 }
 
-local norcalli_dropdown_theme = require('telescope.themes').get_dropdown({
-  results_height = 20;
-  winblend = 20;
-  width = 0.8;
-  prompt_title = '';
-  prompt_prefix = 'Files>';
-  previewer = false;
+local norcalli_dropdown_theme = require("telescope.themes").get_dropdown({
+  results_height = 20,
+  winblend = 20,
+  width = 0.8,
+  prompt_title = "",
+  prompt_prefix = "Files>",
+  previewer = false,
   borderchars = {
-    prompt = { '▀', '▐', '▄', '▌', '▛', '▜', '▟', '▙' };
-    results = { ' ', '▐', '▄', '▌', '▌', '▐', '▟', '▙' };
-    preview = { '▀', '▐', '▄', '▌', '▛', '▜', '▟', '▙' };
-  };
+    prompt = { "▀", "▐", "▄", "▌", "▛", "▜", "▟", "▙" },
+    results = { " ", "▐", "▄", "▌", "▌", "▐", "▟", "▙" },
+    preview = { "▀", "▐", "▄", "▌", "▛", "▜", "▟", "▙" },
+  },
 })
 
 local norcalli_full_theme = {
-  winblend = 20;
-  width = 0.8;
-  show_line = false;
-  prompt_prefix = 'TS Symbols>';
-  prompt_title = '';
-  results_title = '';
-  preview_title = '';
+  winblend = 20,
+  width = 0.8,
+  show_line = false,
+  prompt_prefix = "TS Symbols>",
+  prompt_title = "",
+  results_title = "",
+  preview_title = "",
   borderchars = {
-    prompt = { '▀', '▐', '▄', '▌', '▛', '▜', '▟', '▙' };
-    results = { '▀', '▐', '▄', '▌', '▛', '▜', '▟', '▙' };
-    preview = { '▀', '▐', '▄', '▌', '▛', '▜', '▟', '▙' };
-  };
+    prompt = { "▀", "▐", "▄", "▌", "▛", "▜", "▟", "▙" },
+    results = { "▀", "▐", "▄", "▌", "▛", "▜", "▟", "▙" },
+    preview = { "▀", "▐", "▄", "▌", "▛", "▜", "▟", "▙" },
+  },
 }
 
 local minimalist_box = function()
-  return require('telescope.themes').get_dropdown({
+  return require("telescope.themes").get_dropdown({
     borderchars = {
-      { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
-      prompt = { "─", "│", " ", "│", '┌', '┐', "│", "│" },
+      { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+      prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
       results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-      preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
+      preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
     },
     width = 0.8,
     previewer = false,
-    prompt_title = false
+    prompt_title = false,
   })
 end
 
-local center_list = require "telescope.themes".get_dropdown({
+local center_list = require("telescope.themes").get_dropdown({
   winblend = 10,
   width = 0.5,
   prompt = " ",
@@ -166,7 +166,6 @@ local with_preview = {
   },
 }
 
-
 local main = {}
 
 local cutoff_width = 90
@@ -184,13 +183,12 @@ local ivy_to_dropdown = function()
   print("ivy_to_dropdown", currwidth)
 end
 
-
 local telescopes = {
   fd_nvim = {
     prompt_prefix = "Nvim>",
     fun = "fd",
     theme = center_list,
-    cwd = vim.fn.stdpath("config")
+    cwd = vim.fn.stdpath("config"),
     -- .. other options
   },
   fd = {
@@ -198,7 +196,7 @@ local telescopes = {
     fun = "fd",
     theme = with_preview,
     -- .. other options
-  }
+  },
 }
 
 main.run = function(str, theme)
@@ -216,7 +214,7 @@ main.run = function(str, theme)
     opts = vim.tbl_extend("force", theme, base)
   end
   if str then
-    return require "telescope.builtin"[fun](opts)
+    return require("telescope.builtin")[fun](opts)
   else
     return print("You need to a set a default function")
     -- return require"telescope.builtin".find_files(opts)

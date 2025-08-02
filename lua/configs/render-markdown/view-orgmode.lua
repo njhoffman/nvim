@@ -31,26 +31,28 @@ local org_query = nil
 
 local function parse_org(ctx)
   if not org_query then
-    org_query = vim.treesitter.query.parse(
-      "org",
-      [[
-                (headline (stars) @headline)
+    org_query = vim.treesitter.query.parse("org", [[  ]])
 
-                (
-                    (expr) @dash
-                    (#match? @dash "^-----+$")
-                )
-
-                (block
-                    name: (expr) @_name
-                    (#match? @_name "(SRC|src)")
-                ) @codeblock
-
-                (paragraph . (expr) @quote
-                    (#eq? @quote ">")
-                )
-            ]]
-    )
+    --     org_query = vim.treesitter.query.parse(
+    --       "org",
+    --       [[
+    --                 (headline (stars) @headline)
+    --
+    --                 (
+    --                     (expr) @dash
+    --                     (#match? @dash "^-----+$")
+    --                 )
+    --
+    --                 (block
+    --                     name: (expr) @_name
+    --                     (#match? @_name "(SRC|src)")
+    --                 ) @codeblock
+    --
+    --                 (paragraph . (expr) @quote
+    --                     (#eq? @quote ">")
+    --                 )
+    --             ]]
+    --     )
   end
   local marks = {}
   local dash_highlight = "Dash"
@@ -241,19 +243,19 @@ local function parse_org(ctx)
   return marks
 end
 
--- vim.api.nvim_create_autocmd("FileType", {
---   pattern = "org",
---   callback = function()
---     local hl_groups = {
---         Headline = "OrgHeadline",
---         Dash = "OrgDash",
---         DoubleDash = "OrgDoubleDash",
---         CodeBlock = "OrgCodeBlock",
---         Quote = "OrgQuote",
---       }
---     vim.treesitter.start(0, "org")
---   end,
---   group = vim.api.nvim_create_augroup("OrgMode", { clear = true }),
--- })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "org",
+  callback = function()
+    local hl_groups = {
+      Headline = "OrgHeadline",
+      Dash = "OrgDash",
+      DoubleDash = "OrgDoubleDash",
+      CodeBlock = "OrgCodeBlock",
+      Quote = "OrgQuote",
+    }
+    vim.treesitter.start(0, "org")
+  end,
+  group = vim.api.nvim_create_augroup("OrgMode", { clear = true }),
+})
 
 return parse_org

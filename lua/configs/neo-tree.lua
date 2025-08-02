@@ -73,9 +73,10 @@ local cfg = {
     },
     position = "float",
     -- position = 'right',
-    width = function(state)
-      return math.min(40, math.floor(vim.o.columns * 0.3))
-    end,
+    width = 40, -- applies to left and right positions
+    -- width = function(state)
+    --   return math.min(40, math.floor(vim.o.columns * 0.3))
+    -- end,
     auto_expand_width = false,
     mappings = {
       -- ['oa'] = 'avante_add_files',

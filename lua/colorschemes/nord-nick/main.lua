@@ -502,7 +502,7 @@ return function(injected_functions)
     sym("@markup.link.label.markdown")({ fg = "#5c71cf" }),
     sym("@markup.link.label.markdown_inline")({ fg = "#0081aa", gui = "italic" }),
     sym("@markup.list")({ Special }),
-    sym("@markup.list.checked")({ fg = "#73daca", gui = "bold" }),
+    sym("@markup.list.checked")({ fg = "#33cafa", gui = "bold" }),
     sym("@markup.list.unchecked")({ fg = "#7aa2f7" }),
     -- markdownLinkText({ fg = '#702cff' }),
     pandocAutomaticLink({ gui = "italic" }),
@@ -1333,13 +1333,13 @@ return function(injected_functions)
     -- #1b5b55  #0d171f  { bg = #27182C, fg = #C678DD, gui = "bold" }) { fg = c.yellow }
     -- #544773  #0d171f  { bg = #3e2e1e, fg = #E5C07B, gui = "bold" }) { fg = c.cyan }
 
-    RenderMarkdownH1({ fg = "#4385c0" }),
+    RenderMarkdownH1({ fg = "#23a5f0" }),
     RenderMarkdownH2({ fg = "#917A66" }),
     RenderMarkdownH3({ fg = "#406ff2" }),
     RenderMarkdownH4({ fg = "#1b8b95" }),
     RenderMarkdownH5({ fg = "#725591" }),
     RenderMarkdownH6({ fg = "#725591" }),
-    RenderMarkdownH1Bg({ bg = "#0f162a" }),
+    RenderMarkdownH1Bg({ bg = "#0f162f" }),
     RenderMarkdownH2Bg({ bg = "#141413" }),
     RenderMarkdownH3Bg({ bg = "#12102f" }),
     RenderMarkdownH4Bg({ bg = "#0d1f26" }),
@@ -1351,7 +1351,8 @@ return function(injected_functions)
     sym("@markup.heading.4.markdown")({ fg = RenderMarkdownH4.fg, bg = RenderMarkdownH4Bg.bg }),
     sym("@markup.heading.5.markdown")({ fg = RenderMarkdownH5.fg, bg = RenderMarkdownH5Bg.bg }),
     sym("@markup.heading.6.markdown")({ fg = RenderMarkdownH6.fg, bg = RenderMarkdownH6Bg.bg }),
-    RenderMarkdownBullet({ fg = "#846d59" }),
+    --     RenderMarkdownBullet({ fg = "#846d59" }),
+    RenderMarkdownBullet({ fg = "#0098cf" }),
 
     RenderMarkdownTableRow({ fg = "#502c25" }),
     RenderMarkdownTableHead({ fg = "#502c25" }),

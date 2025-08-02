@@ -318,7 +318,7 @@ M.all = {
   "zig",
   "ziggy",
   "ziggy_schema",
-  "zsh",
+  -- "zsh",
 }
 
 M.grouped = {

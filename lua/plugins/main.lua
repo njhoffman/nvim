@@ -497,7 +497,15 @@ local plugins = {
   },
   -- keep this for block functions
   { "numToStr/Comment.nvim", event = "VeryLazy" },
-  { "andrewferrier/debugprint.nvim", event = "VeryLazy" },
+  {
+    "andrewferrier/debugprint.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "echasnovski/mini.hipatterns", -- Optional: Needed for line highlighting ('fine-grained' hipatterns plugin)
+      "nvim-telescope/telescope.nvim", -- Optional: If you want to use the `:Debugprint search` command with telescope.nvim
+      "folke/snacks.nvim", -- Optional: If you want to use the `:Debugprint search` command with snacks.nvim
+    },
+  },
   -- https://github.com/kr40/nvim-macros
   -- {
   --   "chrisgrieser/nvim-recorder",
@@ -1121,6 +1129,27 @@ local plugins = {
     "MeanderingProgrammer/render-markdown.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons", opts = {} },
   },
+  {
+    "nvim-orgmode/orgmode",
+    event = "VeryLazy",
+    enabled = false,
+    ft = { "org" },
+    config = function()
+      -- Setup orgmode
+      require("orgmode").setup({
+        org_agenda_files = "~/orgfiles/**/*",
+        org_default_notes_file = "~/orgfiles/refile.org",
+      })
+
+      -- NOTE: If you are using nvim-treesitter with ~ensure_installed = "all"~ option
+      -- add ~org~ to ignore_install
+      -- require('nvim-treesitter.configs').setup({
+      --   ensure_installed = 'all',
+      --   ignore_install = { 'org' },
+      -- })
+    end,
+  },
+  { "jceb/vim-orgmode", ft = "org", lazy = lz_syn },
   { "gaoDean/autolist.nvim", ft = { "markdown", "text", "tex", "plaintex", "norg" } },
   {
     "lukas-reineke/headlines.nvim",

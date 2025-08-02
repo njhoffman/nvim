@@ -176,6 +176,9 @@ local lsp_symbols = {
   MarkupHeading6Marker = '',
   MarkupList           = '',
   MarkupLink           = '',
+  MarkupLinkLabel      = '',
+  MarkupLinkUrl        = '󰖟',
+  MarkupQuote          = '',
   MarkupRaw            = '',
   MarkupRawBlock       = '', -- ''
   MarkupRawDelimiter   = '' ,
@@ -200,7 +203,7 @@ local lsp_symbols = {
   StringRegex          = '縷',
   StringRegexp         = '縷',
   StringSpecial        = '',
-  StringSpecialUrl     = '',
+  StringSpecialUrl     = '󰖟',
   Struct               = '󰟦', --   Struct      = "󰙅 ",
   Text                 = '', --   Text        = " ",
   TextLiteral          = '', --   Text        = " ",

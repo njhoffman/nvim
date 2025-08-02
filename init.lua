@@ -2,6 +2,10 @@
 
 require("globals")
 
+local _shell = vim.o.shell or "/bin/sh"
+
+vim.cmd("set shell=/bin/sh")
+
 vim.import("configs.noice")
 -- https://github.com/stevearc/quicker.nvim
 vim.import("quickfix")
@@ -54,8 +58,8 @@ vim.defer_fn(function()
   -- 'lab.setup',
   local llm_config = require("llm-config")
   vim.import("llm").setup(llm_config)
-  local neoai_cfg = require("neoai.options")
-  vim.import("neoai").setup(neoai_cfg)
+  -- local neoai_cfg = require("neoai.options")
+  -- vim.import("neoai").setup(neoai_cfg)
 
   vim.import("configs.recall")
 
@@ -110,27 +114,25 @@ end, 100)
 
 vim.defer_fn(function()
   vim.import("configs.telescope")
-  vim.import("garbage-day").setup({
-    notifications = true,
-    excluded_lsp_clients = { "copilot", "dev-tools" },
-    -- aggressive_mode = false,
-    -- aggresive_mode_ignore = {
-    --   filetype = { "", "markdown", "text", "org", "tex", "asciidoc", "rst" },
-    --   buftype = { "nofile" },
-    -- },
-    -- filetype = { "", "markdown", "text", "org", "tex", "asciidoc", "rst" },
-    -- buftype = { "nofile" },
-    -- excluded_lsp_clients = { "null-ls", "jdtls", "marksman", "lua_ls" },
-    -- grace_period = (60 * 15), -- seconds
-    -- notifications = false,
-    -- retries = 3, -- times
-    -- timeout = 1000, -- ms
-    -- wakeup_delay = 0, -- ms
-  })
-
-  -- vim.import("configs.tiny-glimmer")
+  -- vim.import("garbage-day").setup({
+  --   notifications = true,
+  --   -- excluded_lsp_clients = { "copilot", "dev-tools" },
+  --   -- aggressive_mode = false,
+  --   -- aggresive_mode_ignore = {
+  --   --   filetype = { "", "markdown", "text", "org", "tex", "asciidoc", "rst" },
+  --   --   buftype = { "nofile" },
+  --   -- },
+  --   -- filetype = { "", "markdown", "text", "org", "tex", "asciidoc", "rst" },
+  --   -- buftype = { "nofile" },
+  --   excluded_lsp_clients = { "copilot", "marksman", "lua_ls", "pyright" },
+  --   -- grace_period = (60 * 15), -- seconds
+  --   -- notifications = false,
+  --   -- retries = 3, -- times
+  --   -- timeout = 1000, -- ms
+  --   -- wakeup_delay = 0, -- ms
+  -- })
 
   vim.api.nvim_set_keymap("x", "<F10>", "<Cmd>=vim.fn.getpos('v')<CR>", {})
-  vim.api.nvim_set_keymap("n", "<F10>", "<Cmd>Telescope tester script<CR>", {})
+  -- vim.api.nvim_set_keymap("n", "<F10>", "<Cmd>Telescope tester script<CR>", {})
 end, 500)
 -- require("notifications.recipes.progress").config()

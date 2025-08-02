@@ -99,7 +99,7 @@ local disabled_built_ins = {
   -- 'netrwSettings',
   -- 'netrwFileHandlers',
   "matchit",
-  -- "matchparen",
+  "matchparen",
   "2html_plugin",
   "getscript",
   "getscriptPlugin",
@@ -108,8 +108,8 @@ local disabled_built_ins = {
   -- 'remote_plugins',
   "rrhelper",
   -- "spellfile_plugin",
-  "sql_completion",
-  "syntax_completion",
+  -- "sql_completion",
+  -- "syntax_completion",
   "tar",
   "tarPlugin",
   "vimball",
@@ -121,6 +121,13 @@ local disabled_built_ins = {
 vim.tbl_map(function(plugin)
   vim.g["loaded_" .. plugin] = 1
 end, disabled_built_ins)
+
+vim.cmd([[
+  let g:spellfile_URL = 'https://ftp.nluug.nl/vim/runtime/spell'
+  " autocmd SpellFileMissing * call spellfile#LoadFile(expand('<amatch>'))
+	" au SpellFileMissing * call Spellfile(expand('<amatch>'))
+  " au! SpellFileMissing * call Download_spell_file(expand('<amatch>'))
+]])
 
 _G.__FILE__ = function()
   return debug.getinfo(2, "S").source
