@@ -55,6 +55,8 @@ vim.defer_fn(function()
   vim.import("histories").setup()
   -- vim.import("scrollview.setup")
 
+  vim.import("format_cmdline").setup()
+
   -- 'lab.setup',
   local llm_config = require("llm-config")
   vim.import("llm").setup(llm_config)
@@ -72,13 +74,13 @@ vim.defer_fn(function()
   --   end,
   -- })
   -- require("nvim-treesitter.parsers").filetype_to_parsername.zsh = "bash"
-  --         local link_pattern = 9 -- from :Inspect!
-  --         local query = vim.treesitter.query.get('vimdoc', 'highlights')
-  --         query.query:disable_pattern(link_pattern)
-  --         local tree = vim.treesitter.get_parser():parse()[1]
-  --         local query = vim.treesitter.query.get('vimdoc', 'highlights')
-  --         query.query:disable_capture("variable.parameter")
-  --         vim.treesitter.get_parser():parse()
+  --   local link_pattern = 9 -- from :Inspect!
+  --   local query = vim.treesitter.query.get('vimdoc', 'highlights')
+  --   query.query:disable_pattern(link_pattern)
+  --   local tree = vim.treesitter.get_parser():parse()[1]
+  --   local query = vim.treesitter.query.get('vimdoc', 'highlights')
+  --   query.query:disable_capture("variable.parameter")
+  --   vim.treesitter.get_parser():parse()
 
   -- for id, node, metadata, match in query:iter_captures(tree:root(), bufnr, first, last) do
   --   local name = query.captures[id] -- name of the capture in the query
