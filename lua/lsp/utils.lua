@@ -7,24 +7,25 @@ end
 
 local root_pattern = function(...)
   local patterns = lsp_util.tbl_flatten({ ... })
+  local match = nil
+
   return function(startpath)
-    vim.dbglog(startpath, patterns)
     startpath = lsp_util.strip_archive_subpath(startpath)
     for _, pattern in ipairs(patterns) do
-      local match = lsp_util.search_ancestors(startpath, function(path)
-        for _, p in
-          ipairs(vim.fn.glob(table.concat({ escape_wildcards(path), pattern }, "/"), true, true))
-        do
-          if vim.loop.fs_stat(p) then
-            return path
+      if match == nil then
+        match = lsp_util.search_ancestors(startpath, function(path)
+          for _, p in
+            ipairs(vim.fn.glob(table.concat({ escape_wildcards(path), pattern }, "/"), true, true))
+          do
+            if vim.loop.fs_stat(p) then
+              return path
+            end
           end
-        end
-      end)
-
-      if match ~= nil then
-        return match, pattern
+        end)
       end
     end
+    vim.dbglog(startpath, match)
+    return match
   end
 end
 

@@ -1,6 +1,15 @@
-local utils = require("lsp.utils")
+local lspconfig_util = require("lspconfig.util")
+-- local utils = require("lsp.utils")
+local util = require("lsp.utils")
 
 local formatter_bin = "eslint_d"
+
+local root_file = {
+  "courseleaf.cfg",
+  "tsconfig.json",
+  "jsconfig.json",
+  "package.json",
+}
 
 local opts = {
   init_options = {
@@ -17,16 +26,21 @@ local opts = {
     "typescriptreact",
     "typescript.tsx",
   },
-  root_dir = utils.initRoot("ts_ls", {
-    {
-      "tsconfig.json",
-      "jsconfig.json",
-    },
-    {
-      "package.json",
-    },
-    "git_ancestor",
-  }),
+  root_dir = function(fname)
+    return util.root_pattern(unpack(root_file))(fname)
+  end,
+
+  -- root_dir = utils.initRoot("ts_ls", {
+  --   {
+  --     "tsconfig.json",
+  --     "jsconfig.json",
+  --   },
+  --   {
+  --     "package.json",
+  --     "courseleaf.cfg",
+  --   },
+  --   "git_ancestor",
+  -- }),
   single_file_support = true,
   settings = {
     typescript = {

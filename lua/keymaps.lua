@@ -485,7 +485,14 @@ map({ "n" }, "<leader>fH", "<cmd>lua vim.treesitter.get_parser(0):parse()<cr>", 
   label = "󰽙 reset treesitter highlighting",
 })
 
-map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>silent! w<cr><esc>", {
+-- map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>silent! w<cr><esc>", {
+--   category = "Buffers",
+--   label = "󰽙 write buffer",
+--   desc = "󰽙 write to buffer",
+--   silent = true,
+-- })
+
+map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>noa w<cr><esc>", {
   category = "Buffers",
   label = "󰽙 write buffer",
   desc = "󰽙 write to buffer",

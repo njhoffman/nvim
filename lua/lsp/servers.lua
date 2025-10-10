@@ -1,3 +1,24 @@
+-- https://gpanders.com/blog/whats-new-in-neovim-0-11/#lsp
+-- Neovim 0.11 provided a new LSP API as discussed in this gpanders blog post.
+-- Myself, I did not pay much attention since I was and still am using nvim-lspconfig.
+-- However, just this week I noticed that the README for nvim-lspconfig states that legacy API is deprecated.
+
+-- Legacy API being code such as this that uses setup:
+-- require("lspconfig").ts_ls.setup({
+--   on_attach = my_attach_func,
+--   flags = { debounce_text_changes = 300 },
+-- })
+
+-- Instead it is recommended to do this:
+-- vim.lsp.config("ts_ls", {
+--   flags = { debounce_text_changes = 300 }
+-- })
+-- vim.lsp.enable({"ts_ls"})
+
+-- Also, it appears that on_attach should be replaced by LspAttach auto-command, for example to setup your own LSP-only key mappings.
+-- If you are using nvim-lspconfig than I recommend you check your Neovim configuration and see if you are using the legacy setup API. If so, please change it over to config + enable + LspAttach.
+-- The nvim-lspconfig folks do state that the legacy setup API will be removed at some point. Better to convert over now before that day arrives.
+
 local mason_settings = {
   ui = {
     border = "rounded",
@@ -211,7 +232,7 @@ require("mason-lspconfig").setup_handlers({
     lspconfig.awk_ls.setup({
       cmd = { "awk-ls" },
       filetypes = { "awk" },
-      root_dir = util.find_git_ancestor,
+      root_dir = util.root_pattern(".project", ".git"),
     })
   end,
   ["clangd"] = function()
@@ -349,7 +370,7 @@ require("mason-lspconfig").setup_handlers({
     lspconfig.vimls.setup({
       cmd = { "vim-language-server", "--stdio" },
       filetypes = { "vim" },
-      root_dir = util.find_git_ancestor,
+      root_dir = util.root_pattern(".project", ".git"),
       single_file_support = true,
       init_options = {
         isNeovim = true,

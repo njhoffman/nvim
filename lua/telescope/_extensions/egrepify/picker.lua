@@ -208,37 +208,41 @@ function Picker.picker(opts)
     end,
   })
 
-  local prev = picker.previewer or picker.hidden_previewer
-  local preview_fn = prev.preview
-  prev.preview = function(previewer, entry, status)
-    if entry then
-      if entry.kind ~= "begin" then
+  if picker.previewer then
+    local preview_fn = picker.previewer.preview
+    picker.previewer.preview = function(previewer, entry, status)
+      if entry then
+        if entry.kind ~= "begin" then
+          preview_fn(previewer, entry, status)
+        end
+      else
+        -- required to clear preview in case there is no entry
         preview_fn(previewer, entry, status)
       end
-    else
-      -- required to clear preview in case there is no entry
-      preview_fn(previewer, entry, status)
     end
   end
+  -- local prev = picker.previewer or picker.hidden_previewer
+  -- local preview_fn = prev.preview
+  -- prev.preview = function(previewer, entry, status)
+  --   if entry then
+  --     if entry.kind ~= "begin" then
+  --       preview_fn(previewer, entry, status)
+  --     end
+  --   else
+  --     -- required to clear preview in case there is no entry
+  --     preview_fn(previewer, entry, status)
+  --   end
+  -- end
+
   local entry_adder = picker.entry_adder
   local regions = {}
   picker.entry_adder = function(picker_, index, entry, _, insert)
     entry_adder(picker_, index, entry, _, insert)
-    if
-      not opts.results_ts_hl
-      or not entry
-      or not entry.kind == "match"
-      or not picker_
-      or not picker_.results_bufnr
-      or not picker_.results_win
-      or not vim.api.nvim_buf_is_valid(picker_.results_bufnr)
-    then
-      -- vim.dbglog(
-      --   "skipping",
-      --   entry.filename,
-      --   picker_.results_bufnr,
-      --   vim.api.nvim_buf_is_valid(picker_.results_bufnr)
-      -- )
+    if not opts.results_ts_hl then
+      return
+    end
+
+    if not entry.kind == "match" then
       return
     end
 
@@ -248,11 +252,11 @@ function Picker.picker(opts)
       return
     end
     local line = vim.api.nvim_buf_get_lines(picker_.results_bufnr, row, row + 1, false)[1]
-    local ft = vim.filetype.match({ filename = entry.filename })
+    local ft = vim.filetype.match { filename = entry.filename }
     if ft == nil then
+  --   -- elseif ft == "zsh" then
+  --   --   ft = "bash"
       return
-    elseif ft == "zsh" then
-      ft = "bash"
     end
     if regions[ft] == nil then
       regions[ft] = {}

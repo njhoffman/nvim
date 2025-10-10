@@ -11,7 +11,7 @@ for _, hl_file in ipairs({ "main", "plugins", "nord-nvim" }) do
   if ok then
     table.insert(loaded, { name = hl_file, highlights = hls })
   else
-    vim.notify("Error loading " .. hl_file .. " highlight file\n" .. vim.inspect(hls), 1)
+    vim.notify("Error loading " .. hl_file .. " highlight file\n" .. vim.inspect(hls), 4)
   end
 end
 
@@ -29,7 +29,7 @@ for _, hl_idx in ipairs(vim.fn.reverse(vim.tbl_keys(loaded))) do
 
     local ok, res = pcall(lush.extends({ colors }).with, loaded[hl_idx].highlights)
     if not ok then
-      vim.notify("Error merging highlights from: " .. hl_name .. "\n" .. vim.inspect(res), 1)
+      vim.notify("Error merging highlights from: " .. hl_name .. "\n" .. vim.inspect(res), 4)
     else
       colors = res
     end

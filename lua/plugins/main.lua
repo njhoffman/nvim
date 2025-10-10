@@ -202,18 +202,18 @@ local plugins = {
       "hakonharnes/img-clip.nvim",
       "nvim-treesitter/nvim-treesitter",
       "ravitemer/codecompanion-history.nvim",
-      {
-        "Davidyz/VectorCode",
-        -- pipx install git+https://github.com/Davidyz/VectorCode
-        build = "pipx upgrade vectorcode", -- If you used pipx to install the CLI
-        -- pipx install chromadb==0.6.3
-        -- build = "uv tool upgrade vectorcode",
-        -- pipx install --force "vectorcode[lsp,mcp]"
-        -- pipx inject vectorcode vectorcode[lsp] --force
-        -- uv tool install vectorcode[lsp,mcp]
-        -- mkdir -p ~/.local/share/vectorcode/chromadb
-        dependencies = { "nvim-lua/plenary.nvim" },
-      },
+      -- {
+      --   "Davidyz/VectorCode",
+      --   -- pipx install git+https://github.com/Davidyz/VectorCode
+      --   build = "pipx upgrade vectorcode", -- If you used pipx to install the CLI
+      --   -- pipx install chromadb==0.6.3
+      --   -- build = "uv tool upgrade vectorcode",
+      --   -- pipx install --force "vectorcode[lsp,mcp]"
+      --   -- pipx inject vectorcode vectorcode[lsp] --force
+      --   -- uv tool install vectorcode[lsp,mcp]
+      --   -- mkdir -p ~/.local/share/vectorcode/chromadb
+      --   dependencies = { "nvim-lua/plenary.nvim" },
+      -- },
 
       {
         -- :PackageUI - Opens the interface, auto-detects your project type
@@ -261,6 +261,8 @@ local plugins = {
     -- end,
   },
   -- https://github.com/Aaronik/GPTModels.nvim
+  -- https://www.reddit.com/r/neovim/comments/1mzfb7g/neovim_now_natively_supports_llmbased_completion/
+  -- https://github.com/neovim/neovim/pull/33972
   {
     "jackMort/ChatGPT.nvim",
     enabled = false,
@@ -523,6 +525,8 @@ local plugins = {
   { "Konfekt/vim-alias", event = "VeryLazy" },
   --
   -- pickers
+  -- https://github.com/dmtrKovalenko/fff.nvim
+  -- https://www.reddit.com/r/neovim/comments/1maz9uf/announcing_fffnvim_the_file_picker_youve_been/
   -- https://github.com/axkirillov/easypick.nvim
   -- https://github.com/adoyle-h/telescope-extension-maker.nvim
   -- https://github.com/adoyle-h/ad-telescope-extensions.nvim
@@ -997,7 +1001,65 @@ local plugins = {
     end,
   },
   { "sQVe/sort.nvim" },
-  -- https://github.com/mbbill/undotree
+  {
+    "jiaoshijie/undotree",
+    init = function()
+      vim.api.nvim_create_user_command("Undotree", function(opts)
+        local args = opts.fargs
+        local cmd = args[1]
+
+        if cmd == "toggle" then
+          require("undotree").toggle()
+        elseif cmd == "open" then
+          require("undotree").open()
+        elseif cmd == "close" then
+          require("undotree").close()
+        else
+          vim.notify("Invalid subcommand: " .. (cmd or ""), vim.log.levels.ERROR)
+        end
+      end, {
+        nargs = 1,
+        complete = function(_, line)
+          local subcommands = { "toggle", "open", "close" }
+          local input = vim.split(line, "%s+")
+          local prefix = input[#input]
+
+          return vim.tbl_filter(function(cmd)
+            return vim.startswith(cmd, prefix)
+          end, subcommands)
+        end,
+        desc = "Undotree command with subcommands: toggle, open, close",
+      })
+    end,
+
+    opts = {
+      float_diff = true, -- using float window previews diff, set this `true` will disable layout option
+      layout = "left_bottom", -- "left_bottom", "left_left_bottom"
+      position = "left", -- "right", "bottom"
+      ignore_filetype = {
+        "undotree",
+        "undotreeDiff",
+        "qf",
+      },
+      window = {
+        winblend = 30,
+        border = "rounded", -- The string values are the same as those described in 'winborder'.
+      },
+      keymaps = {
+        j = "move_next",
+        k = "move_prev",
+        gj = "move2parent",
+        J = "move_change_next",
+        K = "move_change_prev",
+        ["<cr>"] = "action_enter",
+        p = "enter_diffbuf",
+        q = "quit",
+      },
+    },
+    keys = { -- load the plugin only when using it's keybinding:
+      { "<leader>ut", "<cmd>lua require('undotree').toggle()<cr>" },
+    },
+  },
   {
     "kevinhwang91/nvim-fundo",
     dependencies = "kevinhwang91/promise-async",

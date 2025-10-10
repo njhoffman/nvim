@@ -156,6 +156,7 @@ local lsp_symbols = {
   KeywordConditional   = 'נּ',
   KeywordCoroutine     = '󰌋', --   Keyword     = "󰔌 ",
   KeywordDirective     = '' ,
+  KeywordException     = '' ,
   KeywordFunction      = '' , --   Keyword    = "󰔌 ",
   KeywordImport        = '󰬥' , --   Keyword    = "󰔌 ",
   KeywordOperator      = '',
@@ -204,6 +205,7 @@ local lsp_symbols = {
   StringRegexp         = '縷',
   StringSpecial        = '',
   StringSpecialUrl     = '󰖟',
+  StringSpecialPath    = '',
   Struct               = '󰟦', --   Struct      = "󰙅 ",
   Text                 = '', --   Text        = " ",
   TextLiteral          = '', --   Text        = " ",
@@ -225,7 +227,8 @@ local lsp_symbols = {
   VariableBuiltin      = '', --   Variable    = "󰈜 ",
   VariableMember       = '', --   Variable    = "󰈜 ",
   VariableParameter    = '', --   Variable    = "󰈜 ",
-  XX                   = ' ', --   Variable   = "󰈜 ",
+  VariableParameterBuiltin = '󰊄', --   Variable  = "󰈜 ",
+  XX                       = ' ', --   Variable = "󰈜 ",
 }
 
 return {

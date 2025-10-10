@@ -1,3 +1,5 @@
+-- https://github.com/Iron-E/nvim-highlite
+
 require("highlite").setup({
   generator = { plugins = false, syntax = false },
   terminal_palette = false,

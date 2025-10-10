@@ -64,6 +64,8 @@ vim.api.nvim_create_autocmd({ "ModeChanged" }, {
       vim.dbglog("mode missing color to: " .. to .. " (from " .. from .. ")")
     end
 
-    set_mode(icon, color)
+    vim.schedule_wrap(function()
+      set_mode(icon, color)
+    end)
   end,
 })

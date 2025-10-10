@@ -1,5 +1,5 @@
 local lspconfig = require("lspconfig")
-local util = lspconfig.util
+local utils = require('lsp.servers.utils')
 
 local default_workspace = {
   library = {
@@ -14,6 +14,22 @@ local default_workspace = {
   preloadFileSize = 10000,
 }
 
+local root_patterns = {
+  ".editorconfig",
+  ".luacheckrc",
+  ".luarc.json",
+  ".luarc.jsonc",
+  ".project",
+  ".stylua.toml",
+  "selene.toml",
+  "selene.yml",
+  "stylua.toml",
+  "vim.toml",
+  "lua/",
+  ".git/",
+}
+
+
 local lua_ls = function()
   -- require('lsp.servers.neodev')
   -- table_insert(default_workspace.library, require("neodev.config").types()),
@@ -22,47 +38,9 @@ local lua_ls = function()
     -- log_level = vim.lsp.protocol.MessageType.Warn,
     -- before_init = require("neodev.lsp").before_init,
     cmd = {
-      "lua-language-server",
-      -- "--logpath",
-      -- vim.fn.stdpath("data"),
-      -- "--loglevel",
-      -- "warn",
+      "lua-language-server", -- "--logpath", vim.fn.stdpath("data"), "--loglevel", "warn",
     },
-    root_dir = function(fname)
-      local root_files = {
-        ".editorconfig",
-        ".stylua.toml",
-        "stylua.toml",
-        "selene.toml",
-        "selene.yml",
-        ".project",
-        ".luarc.json",
-        ".luarc.jsonc",
-        ".luacheckrc",
-        "vim.toml",
-      }
-
-      local pattern_root = nil
-      local lua_root = nil
-      for _, root_file in ipairs(root_files) do
-        pattern_root = pattern_root or util.root_pattern(root_file)(fname)
-        if pattern_root ~= nil then
-          pattern_root = pattern_root ~= vim.env.HOME and pattern_root or nil
-          if pattern_root ~= nil then
-            local pattern_parts = vim.fn.split(pattern_root, "/")
-            if pattern_parts[#pattern_parts] == "lua" then
-              lua_root = pattern_root
-              pattern_root = nil
-            end
-          end
-        end
-      end
-
-      local git_root = util.find_git_ancestor(fname)
-      local final = pattern_root or git_root or lua_root
-      return final
-    end,
-
+    root_dir = utils.find_root(root_patterns),
     on_attach = function(client, bufnr)
       require("lsp.on_attach")(client, bufnr)
       -- client.server_capabilities.semanticTokensProvider = nil

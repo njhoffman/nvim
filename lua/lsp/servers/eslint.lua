@@ -7,6 +7,7 @@ local util = require("lsp.utils")
 local lspconfig_util = require("lspconfig.util")
 
 local root_file = {
+  "courseleaf.cfg",
   ".eslintrc",
   ".eslintrc.js",
   ".eslintrc.cjs",

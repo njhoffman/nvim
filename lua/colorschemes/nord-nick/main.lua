@@ -171,7 +171,7 @@ return function(injected_functions)
     MiniDiffOverChange({ bg = "#063064", fg = "#1170b0" }),
     MiniDiffOverChangeBuf({ bg = "#063064", fg = "#1170b0" }),
     MiniDiffOverContext({ bg = "#003884" }),
-    MiniDiffOverContext({ bg = "#005894" }),
+    -- MiniDiffOverContext({ bg = "#005894" }),
     MiniDiffOverDelete({ bg = "#240000", fg = "#444466" }),
 
     -- ui components

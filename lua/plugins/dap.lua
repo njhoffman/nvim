@@ -20,7 +20,7 @@ local plugins = {
     lazy = true,
     dependencies = {
       "jbyuki/one-small-step-for-vimkind",
-      "mfussenegger/nvim-dap-python",
+      -- "mfussenegger/nvim-dap-python",
       { "jbyuki/dash.nvim", dependencies = "jbyuki/ntangle.nvim" },
       { "LiadOz/nvim-dap-repl-highlights" },
     },
