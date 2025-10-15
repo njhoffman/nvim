@@ -35,6 +35,7 @@ local lua_ls = function()
   -- table_insert(default_workspace.library, require("neodev.config").types()),
 
   lspconfig["lua_ls"].setup({
+  -- vim.lsp.config('lua_ls', {
     -- log_level = vim.lsp.protocol.MessageType.Warn,
     -- before_init = require("neodev.lsp").before_init,
     cmd = {

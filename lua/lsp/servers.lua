@@ -155,6 +155,7 @@ require("mason-lspconfig").setup_handlers({
   end,
   ["bashls"] = function()
     lspconfig.bashls.setup({
+    -- vim.lsp.config('bashls', {
       root_dir = util.root_pattern(".project", ".git"),
       filetypes = { "sh", "bash" },
       logLevel = "debug", -- debug, info, warn, error
