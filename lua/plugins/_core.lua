@@ -1,8 +1,9 @@
 local utils = require("utils.lazy")
 
 local plugins = {
-  { "folke/lazy.nvim", lazy = false },
+  {"folke/lazy.nvim", lazy = false},
   -- colorscheme components should load first
+  {"folke/noice.nvim", event = "VeryLazy",},
   {
     "folke/snacks.nvim",
     priority = 1000,
@@ -77,12 +78,6 @@ local plugins = {
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
   },
   -- https://github.com/VonHeikemen/searchbox.nvim
-  {
-    "folke/noice.nvim",
-    enabled = false,
-    dependencies = { "nvim-notify" },
-    event = { "VeryLazy" },
-  },
   {
     "njhoffman/nvim-notify.nvim",
     name = "nvim-notify",

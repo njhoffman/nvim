@@ -39,11 +39,11 @@ local markdown = {
   -- Markdown.format(message, text) (highlights)
   -- message:render(buf, Config.ns)
   -- Markdown.keys(buf) (hover)
-  hover = {
-    -- noice.text.markdown.keys -- Markdown.keys
-    ["|(%S-)|"] = vim.cmd.help, -- vim help links
-    ["%[.-%]%((%S-)%)"] = require("noice.util").open, -- markdown links
-  },
+  -- hover = {
+  --   -- noice.text.markdown.keys -- Markdown.keys
+  --   ["|(%S-)|"] = vim.cmd.help, -- vim help links
+  --   ["%[.-%]%((%S-)%)"] = require("noice.util").open, -- markdown links
+  -- },
   highlights = {
     -- noice.text.markdown.format --  Markdown.format
     -- ['|%S-|'] = '@markup.link.vimdoc', --  '@markup.link.label.markdown_inline',

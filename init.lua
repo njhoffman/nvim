@@ -6,7 +6,6 @@ local _shell = vim.o.shell or "/bin/sh"
 
 vim.cmd("set shell=/bin/sh")
 
-vim.import("configs.noice")
 -- https://github.com/stevearc/quicker.nvim
 vim.import("quickfix")
 

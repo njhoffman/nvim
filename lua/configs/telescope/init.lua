@@ -62,24 +62,7 @@ local basecfg = {
   -- file_sorter = sorters.fuzzy_with_index_bias,
   -- file_sorter = sorters.native_fzf_sorter,
   include_extensions = true,
-  -- path_display = display_path.init("simple"),
-  path_display = function(opts, path)
-    local smart = require("telescope.utils").path_smart(path)
-    path = string.format("%s", smart, path)
-
-    local highlights = {
-      {
-        {
-          0, -- highlight start position
-          -1, -- highlight end position
-        },
-        "Comment", -- highlight group name
-      },
-    }
-
-    return path, highlights
-  end,
-
+  path_display = display_path.init("simple"),
   -- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
   -- file_previewer = require("telescope.previewers").vim_buffer_cat.new,
   -- qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,

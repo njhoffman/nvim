@@ -212,6 +212,7 @@ local extension_configs = {
   ["gitops"] = {},
   ["gotofile"] = {},
   ["locate"] = {},
+  ["noice"] = {},
   ["tester"] = { example_option = "example_value" },
   ["mapper"] = {
     sorter = sorters.fuzzy_with_index_bias,
