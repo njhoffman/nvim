@@ -23,6 +23,16 @@ vim.cmd([[
 
 ]])
 
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*",
+  group = augroup("FileDetect", {}),
+  desc = "Detect filetype on files with no extension after saving the file",
+  callback = function()
+    if vim.bo.filetype == "" then
+      vim.cmd("filetype detect")
+    end
+  end,
+})
 -- stylua: ignore start
 
 -- function handlers
@@ -58,8 +68,8 @@ local autocmds = {
     { { 'BufNewFile', 'BufRead' }, '*.bash*',             'let b:is_bash = 1 | setfiletype bash' },
     { { 'BufNewFile', 'BufRead' }, '*.theme',             'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, '*.rc',                'setlocal ft=rc syn=rc' },
-    { { 'BufNewFile', 'BufRead' }, '.env.*',              'setlocal ft=bash syn=bash' },
-    { { 'BufNewFile', 'BufRead' }, '*.env',               'setlocal ft=config syn=config' },
+    -- { { 'BufNewFile', 'BufRead' }, '.env.*',              'setlocal ft=bash syn=bash' },
+    -- { { 'BufNewFile', 'BufRead' }, '*.env',               'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, 'conf.*',              'setlocal ft=config syn=config' },
     -- TODO: bring back toggler between indented lines (pandoc vs markdown)
     -- { { 'BufNewFile', 'BufRead' }, '*.md',                'setlocal ft=markdown syn=pandoc' },

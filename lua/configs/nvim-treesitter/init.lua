@@ -1,5 +1,4 @@
 -- use bash parser for zsh files
--- vim.treesitter.language.register("bash", "zsh")
 local parsers = require("configs.nvim-treesitter.parsers")
 
 -- https://github.com/github/copilot.vim
@@ -7,7 +6,7 @@ local parsers = require("configs.nvim-treesitter.parsers")
 local cfg = {
   install = parsers.all,
   skip_highlights = { "zsh" },
-  skip_indent = { "bash", "zsh", "markdown" },
+  skip_indent = { "markdown", "sh", "bash" },
 }
 
 -- auto-install parsers
