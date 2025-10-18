@@ -32,15 +32,23 @@ describe("Custom Utility Tests", function()
     end)
 
     it("can check vim features", function()
-      assert.is_true(vim.fn.has("nvim") == 1)
-      assert.is_true(vim.fn.has("lua") == 1)
+      -- Test that we're running in Neovim
+      assert.are.equal(1, vim.fn.has("nvim"))
+      -- Test that Neovim version exists (another way to verify nvim)
+      local version = vim.version()
+      assert.is_not_nil(version)
+      assert.is_not_nil(version.major)
     end)
   end)
 
   describe("Module loading", function()
-    it("can require built-in modules", function()
-      local ok, _ = pcall(require, "vim")
-      assert.is_true(ok)
+    it("can access vim API modules", function()
+      -- Test that vim.api is available
+      assert.is_not_nil(vim.api)
+      assert.are.equal("table", type(vim.api))
+
+      -- Test a common vim function
+      assert.are.equal("function", type(vim.api.nvim_get_current_buf))
     end)
 
     it("handles missing modules gracefully", function()

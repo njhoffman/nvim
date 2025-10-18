@@ -35,9 +35,10 @@ run_plenary_tests() {
 run_minitest_tests() {
     echo -e "${YELLOW}Running Mini.test (Integration) Tests...${NC}"
     nvim --headless --noplugin -u "$NVIM_CONFIG_DIR/tests/minimal_init.lua" \
-        -c "lua require('mini.test').setup(); MiniTest.run_file('$NVIM_CONFIG_DIR/tests/integration/test_config.lua')"
+        -l "$NVIM_CONFIG_DIR/scripts/run_minitest.lua"
 
-    if [ $? -eq 0 ]; then
+    local exit_code=$?
+    if [ $exit_code -eq 0 ]; then
         echo -e "${GREEN}✓ Mini.test tests passed${NC}"
         return 0
     else
