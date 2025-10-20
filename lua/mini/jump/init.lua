@@ -306,26 +306,23 @@ H.window_matches = {}
 H.setup_config = function(config)
   -- General idea: if some table elements are not present in user-supplied
   -- `config`, take them from default config
-  vim.validate({ config = { config, "table", true } })
+  -- Use new vim.validate syntax (not table-based)
+  vim.validate('config', config, 'table', true)
   config = vim.tbl_deep_extend("force", vim.deepcopy(H.default_config), config or {})
 
   -- Validate per nesting level to produce correct error message
-  vim.validate({
-    mappings = { config.mappings, "table" },
-    delay = { config.delay, "table" },
-    silent = { config.silent, "boolean" },
-  })
+  vim.validate('config.mappings', config.mappings, 'table')
+  vim.validate('config.delay', config.delay, 'table')
+  vim.validate('config.silent', config.silent, 'boolean')
 
-  vim.validate({
-    ["delay.highlight"] = { config.delay.highlight, "number" },
-    ["delay.idle_stop"] = { config.delay.idle_stop, "number" },
+  vim.validate('config.delay.highlight', config.delay.highlight, 'number')
+  vim.validate('config.delay.idle_stop', config.delay.idle_stop, 'number')
 
-    ["mappings.forward"] = { config.mappings.forward, "string" },
-    ["mappings.backward"] = { config.mappings.backward, "string" },
-    ["mappings.forward_till"] = { config.mappings.forward_till, "string" },
-    ["mappings.backward_till"] = { config.mappings.backward_till, "string" },
-    ["mappings.repeat_jump"] = { config.mappings.repeat_jump, "string" },
-  })
+  vim.validate('config.mappings.forward', config.mappings.forward, 'string')
+  vim.validate('config.mappings.backward', config.mappings.backward, 'string')
+  vim.validate('config.mappings.forward_till', config.mappings.forward_till, 'string')
+  vim.validate('config.mappings.backward_till', config.mappings.backward_till, 'string')
+  vim.validate('config.mappings.repeat_jump', config.mappings.repeat_jump, 'string')
 
   return config
 end

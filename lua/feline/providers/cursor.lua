@@ -15,7 +15,8 @@ function M.position(_, opts)
   before_cursor = before_cursor:gsub('\t', string.rep(' ', vim.bo.tabstop))
 
   -- Turn col from byteindex to column number and make it start from 1
-  col = vim.str_utfindex(before_cursor) + 1
+  -- Use vim.str_utfindex with explicit parameters (new API)
+  col = vim.str_utfindex(before_cursor, 'utf-8', #before_cursor, true) + 1
 
   local linenr_min_width, colnr_min_width
 

@@ -145,7 +145,7 @@ require("mason-lspconfig").setup_handlers({
 
   ["sqls"] = function()
     lspconfig.sqls.setup({
-      root_dir = require("lspconfig").util.root_pattern(".git"),
+      root_dir = util.root_pattern(".git"),
       single_file_support = false,
       on_new_config = function(new_config, new_rootdir)
         table.insert(new_config.cmd, "-config")
@@ -156,7 +156,7 @@ require("mason-lspconfig").setup_handlers({
   ["bashls"] = function()
     lspconfig.bashls.setup({
     -- vim.lsp.config('bashls', {
-      root_dir = util.root_pattern(".project", ".git"),
+      root_dir = require('lsp.servers.utils').find_root({ '.project', '.git' }),
       filetypes = { "sh", "bash" },
       logLevel = "debug", -- debug, info, warn, error
       includeAllWorkspaceSymbols = true,
@@ -233,7 +233,7 @@ require("mason-lspconfig").setup_handlers({
     lspconfig.awk_ls.setup({
       cmd = { "awk-ls" },
       filetypes = { "awk" },
-      root_dir = util.root_pattern(".project", ".git"),
+      root_dir = require('lsp.servers.utils').find_root({ '.project', '.git' }),
     })
   end,
   ["clangd"] = function()
@@ -276,7 +276,9 @@ require("mason-lspconfig").setup_handlers({
     })
   end,
   ["marksman"] = function()
-    lspconfig.marksman.setup({})
+    lspconfig.marksman.setup({
+      root_dir = require('lsp.servers.utils').find_root({ '.project', '.git' }),
+    })
   end,
   ["yamlls"] = function()
     lspconfig.yamlls.setup({

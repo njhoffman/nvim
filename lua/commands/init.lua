@@ -7,6 +7,7 @@ local debug = require("commands.debug")
 local reload = require("commands.reload")
 local system = require("commands.system")
 local ansi = require("commands.ansi")
+local quickclose = require("commands.quickclose")
 
 local map = require("mapper").map
 
@@ -14,6 +15,7 @@ local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
 
 require("commands.ui").setup()
+quickclose.setup()
 
 -- TODO: resume visual selection after switching
 vim.api.nvim_create_user_command("Vblock", function()

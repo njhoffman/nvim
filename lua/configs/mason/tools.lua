@@ -117,5 +117,6 @@ local dap = {
   -- 'puppet-editor-services puppet',
 }
 
-local packages = vim.tbl_flatten({ formatters, linters, misc, dap })
+-- Use vim.iter instead of deprecated vim.tbl_flatten
+local packages = vim.iter({ formatters, linters, misc, dap }):flatten():totable()
 return packages

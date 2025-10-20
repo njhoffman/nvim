@@ -9,13 +9,17 @@ local opts = {
   --   severity = { min = vim.diagnostic.severity.WARN },
   -- },
   jump = {
-    float = true,
+    -- Use on_jump callback instead of deprecated float option
+    on_jump = function()
+      vim.diagnostic.open_float()
+    end,
     wrap = true,
   },
   severity_sort = true,
 }
 
-vim.lsp.set_log_level(opts.log_level)
+-- Use vim.lsp.log.set_level() instead of deprecated vim.lsp.set_log_level()
+vim.lsp.log.set_level(opts.log_level)
 
 local diag_defaults = {
   float = true,
@@ -26,7 +30,8 @@ local diag_defaults = {
   virtual_lines = false,
   virtual_text = false,
   jump = {
-    float = false,
+    -- Don't open float on jump by default
+    on_jump = nil,
     wrap = true,
   },
 }

@@ -472,28 +472,32 @@ M.others = {
 }
 
 M.available_adapters = {
-  anthropic = "anthropic",
-  azure_openai = "azure_openai",
-  copilot = "copilot",
-  deepseek = "deepseek",
-  gemini = "gemini",
-  githubmodels = "githubmodels",
-  huggingface = "huggingface",
-  novita = "novita",
-  mistral = "mistral",
-  ollama = "ollama",
-  openai = "openai",
-  xai = "xai",
-  -- Non LLMs
-  jina = "jina",
-  tavily = "tavily",
-  -- OPTIONS ----------------------------------------------------------------
-  opts = {
-    allow_insecure = false, -- Allow insecure connections?
-    cache_models_for = 1800, -- Cache adapter models for this long (seconds)
-    proxy = nil, -- [protocol://]host[:port] e.g. socks5://127.0.0.1:9999
-    show_default_actions = true, -- Show the default actions in the action palette?
-    show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+  -- HTTP-based adapters ------------------------------------------------------
+  http = {
+    -- LLMs -------------------------------------------------------------------
+    anthropic = "anthropic",
+    azure_openai = "azure_openai",
+    copilot = "copilot",
+    deepseek = "deepseek",
+    gemini = "gemini",
+    githubmodels = "githubmodels",
+    huggingface = "huggingface",
+    novita = "novita",
+    mistral = "mistral",
+    ollama = "ollama",
+    openai = "openai",
+    xai = "xai",
+    -- Non LLMs
+    jina = "jina",
+    tavily = "tavily",
+    -- OPTIONS ----------------------------------------------------------------
+    opts = {
+      allow_insecure = false, -- Allow insecure connections?
+      cache_models_for = 1800, -- Cache adapter models for this long (seconds)
+      proxy = nil, -- [protocol://]host[:port] e.g. socks5://127.0.0.1:9999
+      show_default_actions = true, -- Show the default actions in the action palette?
+      show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+    },
   },
 }
 
