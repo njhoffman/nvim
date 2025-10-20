@@ -25,7 +25,7 @@ vim.cmd([[
 
 vim.api.nvim_create_autocmd("BufWritePost", {
   pattern = "*",
-  group = augroup("FileDetect", {}),
+  group = vim.api.nvim_create_augroup("FileDetect", { clear = true }),
   desc = "Detect filetype on files with no extension after saving the file",
   callback = function()
     if vim.bo.filetype == "" then
