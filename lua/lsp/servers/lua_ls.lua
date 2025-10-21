@@ -1,6 +1,3 @@
-local lspconfig = require("lspconfig")
-local utils = require('lsp.servers.utils')
-
 local default_workspace = {
   library = {
     vim.fn.expand("$VIMRUNTIME"),
@@ -29,23 +26,17 @@ local root_patterns = {
   ".git/",
 }
 
-
 local lua_ls = function()
   -- require('lsp.servers.neodev')
   -- table_insert(default_workspace.library, require("neodev.config").types()),
 
-  lspconfig["lua_ls"].setup({
-  -- vim.lsp.config('lua_ls', {
+  vim.lsp.config("lua_ls", {
     -- log_level = vim.lsp.protocol.MessageType.Warn,
     -- before_init = require("neodev.lsp").before_init,
     cmd = {
       "lua-language-server", -- "--logpath", vim.fn.stdpath("data"), "--loglevel", "warn",
     },
-    root_dir = utils.find_root(root_patterns),
-    on_attach = function(client, bufnr)
-      require("lsp.on_attach")(client, bufnr)
-      -- client.server_capabilities.semanticTokensProvider = nil
-    end,
+    root_markers = root_patterns,
 
     settings = {
       Lua = {

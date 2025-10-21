@@ -1,9 +1,3 @@
-local lspconfig_util = require("lspconfig.util")
--- local utils = require("lsp.utils")
-local util = require("lsp.utils")
-
-local formatter_bin = "eslint_d"
-
 local root_file = {
   "courseleaf.cfg",
   "tsconfig.json",
@@ -26,21 +20,7 @@ local opts = {
     "typescriptreact",
     "typescript.tsx",
   },
-  root_dir = function(fname)
-    return util.root_pattern(unpack(root_file))(fname)
-  end,
-
-  -- root_dir = utils.initRoot("ts_ls", {
-  --   {
-  --     "tsconfig.json",
-  --     "jsconfig.json",
-  --   },
-  --   {
-  --     "package.json",
-  --     "courseleaf.cfg",
-  --   },
-  --   "git_ancestor",
-  -- }),
+  root_markers = root_file,
   single_file_support = true,
   settings = {
     typescript = {
@@ -71,32 +51,6 @@ local opts = {
       completeFunctionCalls = true,
     },
   },
-  on_attach = function(client, bufnr)
-    -- require('nvim-lsp-ts-utils').setup({ filter_out_diagnostics_by_code = { 80001 } })
-    -- require('nvim-lsp-ts-utils').setup_client(client)
-    require("lsp.on_attach")(client, bufnr)
-  end,
-  setup = function(_, _opts)
-    vim.dbglog("ts_ls setup", _opts)
-    require("lazyvim.util").on_attach(function(client, buffer)
-      vim.dbglog("lazy handler", client.name)
-      if client.name == "ts_ls" then
-        vim.keymap.set(
-          "n",
-          "<leader>co",
-          "<cmd>TypescriptOrganizeImports<CR>",
-          { buffer = buffer, desc = "Organize Imports" }
-        )
-        vim.keymap.set(
-          "n",
-          "<leader>cR",
-          "<cmd>TypescriptRenameFile<CR>",
-          { desc = "Rename File", buffer = buffer }
-        )
-      end
-    end)
-    require("typescript").setup({ server = _opts })
-  end,
 }
 
 local typescript_wrapper = function()
@@ -172,7 +126,7 @@ local ts_ls = function()
   --   vim.notify("Imports organized.")
   -- end, { buffer = bufnr })
 
-  require("lspconfig").ts_ls.setup(opts)
+  vim.lsp.config("ts_ls", opts)
   -- typescript_tools_wrapper()
   -- typescript_wrapper()
 end

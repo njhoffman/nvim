@@ -5,6 +5,42 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-10-20
+
+### Changed
+
+- **LSP Configuration Migration**: Migrated from deprecated `nvim-lspconfig` API to native Neovim 0.11+ `vim.lsp.config` API
+  - Replaced `require('lspconfig').*. setup()` pattern with `vim.lsp.config()` + `vim.lsp.enable()`
+  - Migrated `on_attach` callback to `LspAttach` autocmd pattern (`lua/lsp/on_attach.lua`)
+  - Updated global LSP configuration using `vim.lsp.config("*", {...})` for default settings
+  - Converted `root_dir` functions to `root_markers` arrays for simpler configuration
+  - Updated all server-specific configurations:
+    - `lua/lsp/servers.lua`: Main server configuration and initialization
+    - `lua/lsp/servers/lua_ls.lua`: Lua language server
+    - `lua/lsp/servers/ts_ls.lua`: TypeScript/JavaScript language server
+    - `lua/lsp/servers/eslint.lua`: ESLint language server
+    - `lua/lsp/servers/jsonls.lua`: JSON language server
+    - `lua/lsp/servers/stylelint_lsp.lua`: Stylelint language server
+  - All 30+ LSP servers now use modern vim.lsp API
+  - Maintained backward compatibility during transition
+
+### Removed
+
+- Removed dependency on deprecated `lspconfig.util` module
+- Removed legacy `on_attach` callback pattern from individual server configurations
+- Removed `mason-lspconfig.setup_handlers()` in favor of `vim.lsp.enable()`
+
+### Project Statistics
+
+| Metric | Value |
+|--------|-------|
+| Total Tests | 5 test files (3 unit, 2 integration) |
+| Total Plugins | 402 installed plugins |
+| Config Lines of Code | ~1,542 lines (Lua/Vim) |
+| Plugin Lines of Code | ~170,267 lines |
+
+---
+
 ## [0.2.0] - 2025-10-20
 
 ### Added

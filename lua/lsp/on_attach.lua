@@ -22,95 +22,67 @@ _G.diagnostic_goto = function(direction, severity)
   end)
 end
 
--- vim.api.nvim_create_autocmd("LspAttach", {
---     group = vim.api.nvim_create_augroup("UserLspConfig", {}),
---     callback = function(args)
---         local client = vim.lsp.get_client_by_id(args.data.client_id)
---         if client.server_capabilities.inlayHintProvider then
---             vim.lsp.inlay_hint.enable(args.buf, true)
---         end
---         -- whatever other lsp config you want
---     end
--- })
+-- LspAttach autocmd replaces the old on_attach callback pattern
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
+  callback = function(args)
+    local bufnr = args.buf
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
 
--- local cache_enable_scroll = MiniAnimate.config.scroll.enable
+    if not client then
+      return
+    end
 
--- local format = require("lsp.format")
--- local original_paste = vim.paste
--- 'MiniAnimate.execute_after("scroll", "normal! zvzz")<CR>'
--- vim.paste = function(lines, phase)
---   if phase == 1 then
---     cache_enable_scroll = MiniAnimate.config.scroll.enable
---     MiniAnimate.config.scroll.enable = false
---   end
+    -- Clear omnifunc and completefunc (handled by completion plugins)
+    vim.api.nvim_set_option_value("omnifunc", nil, { buf = bufnr })
+    vim.api.nvim_set_option_value("completefunc", nil, { buf = bufnr })
 
---   pcall(original_paste, lines, phase)
+    -- Check if LSP is disabled for this buffer
+    local ok, disable_lsp = pcall(vim.api.nvim_buf_get_var, bufnr, "disable_lsp")
+    if ok and disable_lsp == 1 then
+      vim.notify("Skipping buffer lsp", vim.log.levels.INFO)
+      return
+    end
 
---   if phase == 3 then
---     MiniAnimate.config.scroll.enable = cache_enable_scroll
---   end
--- end
+    -- Setup keymappings
+    require("lsp.mapping").setup_mappings(client, bufnr)
 
--- format.setup()
+    -- Per-server capability adjustments
+    if client.name == "lua_ls" then
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    elseif client.name == "ts_ls" then
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    elseif client.name == "bashls" then
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    elseif client.name == "pyright" then
+      client.server_capabilities.hoverProvider = false
+    elseif client.name == "pylsp" then
+      client.server_capabilities.documentSymbolProvider = false
+      client.server_capabilities.renameProvider = false
+      client.server_capabilities.signatureHelpProvider = false
+    elseif client.name == "cssls" then
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end
 
--- exclude is a table of LSP servers that should not format the buffer.
--- Alternatively, you can also just not call on_attach for the clients you don't want to use for formatting.
--- order is a table that determines the order formatting is requested from the LSP server.
--- sync turns on synchronous formatting. The editor will block until the formatting is done.
--- force will write the format result to the buffer, even if the buffer changed after the format request started.
--- vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded', max_width = 80 })
--- vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
+    -- Enable inlay hints if supported
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    end
 
--- Custom on attach function which disables formatting where Conform will instead be used to format.
-local lsp_on_attach_no_formatting = function(client)
-  client.server_capabilities.documentFormattingProvider = false
-  client.server_capabilities.documentRangeFormattingProvider = false
-end
+    -- Resolve capabilities
+    capabilities.resolve(client, bufnr)
+  end,
+})
 
+-- Legacy on_attach function kept for backward compatibility during migration
+-- This should not be used anymore - LspAttach autocmd handles everything
 local on_attach = function(client, bufnr)
-  vim.api.nvim_set_option_value("omnifunc", nil, { buf = bufnr })
-  vim.api.nvim_set_option_value("completefunc", nil, { buf = bufnr })
-
-  -- vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
-  -- vim.lsp.omnifunc = nil
-  -- format.on_attach(client, bufnr)
-
-  local ok, disable_lsp = pcall(vim.api.nvim_buf_get_var, 0, "disable_lsp")
-  if disable_lsp == 1 then
-    return vim.notify("Skipping buffer lsp", 1)
-  end
-  require("lsp.mapping").setup_mappings(client, bufnr)
-
-  -- client.config.flags.debounce_text_changes = 300
-  -- client.config.flags.allow_incremental_sync = true
-
-  if client.name == "lua_ls" then
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
-  elseif client.name == "ts_ls" then
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
-  elseif client.name == "bashls" then
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
-  elseif client.name == "pyright" then
-    client.server_capabilities.hoverProvider = false
-  elseif client.name == "pylsp" then
-    client.server_capabilities.documentSymbolProvider = false
-    client.server_capabilities.renameProvider = false
-    client.server_capabilities.signatureHelpProvider = false
-  elseif client.name == "cssls" then
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
-    client.server_capabilities.textDocument.completion.completionItem.snippetSupport = true
-  end
-
-  -- if client.server_capabilities.inlayHintProvider then
-  --   -- vim.dbglog('INLAY HINTS AVAILABLE')
-  --   vim.lsp.inlay_hint.enable(bufnr, true)
-  -- end
-
-  capabilities.resolve(client, bufnr)
+  -- This function is deprecated and will be removed
+  -- All logic has been moved to the LspAttach autocmd above
 end
 
 return on_attach

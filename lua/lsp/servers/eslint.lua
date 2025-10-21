@@ -2,10 +2,6 @@
 -- https://github.com/stevearc/conform.nvim/issues/364
 -- https://github.com/mantoni/eslint_d.js
 
-local lspconfig = require("lspconfig")
-local util = require("lsp.utils")
-local lspconfig_util = require("lspconfig.util")
-
 local root_file = {
   "courseleaf.cfg",
   ".eslintrc",
@@ -28,24 +24,9 @@ local eslint = function()
     command = "silent! EslintFixAll",
     group = vim.api.nvim_create_augroup("JavaScriptFormatting", {}),
   })
-  -- root_dir = utils.initRoot("eslint", {
-  --   "package_json:eslintConfig",
-  --   {
-  --     ".eslintrc",
-  --     ".eslintrc.js",
-  --     ".eslintrc.cjs",
-  --     ".eslintrc.yaml",
-  --     ".eslintrc.yml",
-  --     ".eslintrc.json",
-  --     "eslint.config.js",
-  --   },
-  -- }),
 
-  lspconfig.eslint.setup({
-    root_dir = function(fname)
-      root_file = lspconfig_util.insert_package_json(root_file, "eslintConfig", fname)
-      return util.root_pattern(unpack(root_file))(fname)
-    end,
+  vim.lsp.config("eslint", {
+    root_markers = root_file,
     filetypes = {
       "javascript",
       "javascriptreact",
@@ -112,9 +93,6 @@ local eslint = function()
       },
       -- workingDirectories = { "./client", "./server" }
     },
-    on_attach = function(client, bufnr)
-      require("lsp.on_attach")(client, bufnr)
-    end,
   })
 end
 
