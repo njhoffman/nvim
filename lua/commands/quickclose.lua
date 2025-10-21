@@ -6,6 +6,7 @@ local special_splits = {
   { buftype = "quickfix" },
   { buftype = "help" },
   { filetype = "neo-tree" },
+  { filetype = "noice" },
   { filetype = "CodeCompanion" },
   { filetype = "Avante.*" }, -- Regex pattern
 }
@@ -108,12 +109,12 @@ function M.quick_close()
       return
     end
 
-    -- No special splits found, just close current window
+    -- No special splits found, close current window
     vim.api.nvim_win_close(current_win, false)
     return
   end
 
-  -- Case 3: No splits - handle buffer deletion
+  -- Case 3: Last window - delete buffer instead of closing window
   local buf_count = count_listed_buffers()
 
   if buf_count > 1 then
