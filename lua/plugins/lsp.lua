@@ -21,11 +21,9 @@ local plugins = {
     opts = { inlay_hints = { enabled = true } },
     event = { "BufReadPost", "BufNewFile", "LspAttach" },
     dependencies = {
-      -- Core package manager – last 1.x commit (May 2 2025)
-      { "williamboman/mason.nvim", commit = "4da89f3" }, -- v1.‑series
-      -- LSP bridge – latest 1.x release tag (Feb 15 2025)
-      { "williamboman/mason-lspconfig.nvim", commit = "1a31f82" }, -- v1.32.0
-      { "WhoIsSethDaniel/mason-tool-installer.nvim", commit = "125551" },
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
       "weilbith/nvim-code-action-menu",
       {
         "adoyle-h/lsp-toggle.nvim",
