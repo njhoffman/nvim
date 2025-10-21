@@ -36,7 +36,14 @@ end
 
 -- Get number of windows in current tab (excluding floating windows)
 local function get_split_count()
-  return vim.fn.tabpagewinnr(vim.fn.tabpagenr(), "$")
+  local count = 0
+  for _, winid in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    local config = vim.api.nvim_win_get_config(winid)
+    if config.relative == "" then -- Not floating
+      count = count + 1
+    end
+  end
+  return count
 end
 
 -- Check if current window is floating
