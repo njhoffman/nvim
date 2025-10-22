@@ -59,7 +59,6 @@ local servers = {
   "tflint",
   "ts_ls",
   "vimls",
-  "volar",
   "yamlls",
   "zk",
   -- 'nginx-language-server',
@@ -245,9 +244,7 @@ vim.lsp.config("ltex", {
 })
 
 -- marksman - Markdown Language Server
-vim.lsp.config("marksman", {
-  root_markers = { ".project", ".git" },
-})
+vim.lsp.config("marksman", {})
 
 -- yamlls - YAML Language Server
 vim.lsp.config("yamlls", {

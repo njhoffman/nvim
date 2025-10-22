@@ -58,10 +58,6 @@ local telemap = {
         prompt_title = "Buffers",
         theme = theme_name,
         entry_maker = leaderf.gen_from_buffer(),
-        path_display = user_opts.path_display or {
-          tail = true,
-          truncate = true,
-        },
       }
     end,
     fun = function(opts)
@@ -171,9 +167,6 @@ local telemap = {
     end,
   },
   builtin_live_grep = {
-    opts = grep_options,
-  },
-  egrepify_egrepify = {
     opts = grep_options,
   },
   messages_messages = {

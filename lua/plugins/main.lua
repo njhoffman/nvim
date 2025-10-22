@@ -1,6 +1,12 @@
 local utils = require("utils.lazy")
 local lz_syn = false
 
+-- https://github.com/alex-popov-tech/store.nvim
+-- https://github.com/nvzone/floaterm
+-- https://github.com/bngarren/checkmate.nvim
+-- https://github.com/oribarilan/lensline.nvim
+-- https://github.com/bennypowers/nvim-regexplainer/releases/tag/v1.1.0
+-- https://github.com/zerochae/endpoint.nvim
 -- NOTE: generate new plugins from https://github.com/ellisonleao/nvim-plugin-template
 -- https://github.com/meznaric/key-analyzer.nvim?tab=readme-ov-file
 -- https://github.com/kovidgoyal/kitty/pull/7681
@@ -694,6 +700,8 @@ local plugins = {
     -- opts = { git = { base_uri_format = "%s" } }
   },
   { "ray-x/forgit.nvim" },
+
+  -- https://www.reddit.com/r/neovim/comments/1nplde4/using_vimdiff_as_a_git_mergetool/
   -- https://www.reddit.com/r/neovim/comments/1broo6b/my_git_github_workflow_an_efficient_yet_messy/
   { "rbong/vim-flog", cmd = { "Flog", "Flogsplit" } },
   { "ThePrimeagen/git-worktree.nvim", event = "VeryLazy" },

@@ -22,8 +22,7 @@ local root_patterns = {
   "selene.yml",
   "stylua.toml",
   "vim.toml",
-  "lua/",
-  ".git/",
+  "lua/"
 }
 
 local lua_ls = function()

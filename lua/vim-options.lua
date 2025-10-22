@@ -93,6 +93,7 @@ opt("shiftwidth", 2)
 opt("tabstop", 2)
 opt("timeout", true)
 opt("shiftwidth", 2)
+opt("softtabstop", -1)
 opt("timeoutlen", 500) -- 1000
 opt("ttimeout", true) -- 50
 opt("ttimeoutlen", 30) -- 50

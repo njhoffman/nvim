@@ -48,16 +48,20 @@ local get_theme = function(theme)
     }),
     ivy = require("telescope.themes").get_ivy({
       winblend = 0,
-      layout_config = { height = 15 },
-      preview = { hide_on_startup = winwidth < 120 },
+      layout_config = {
+        -- preview_cutoff = 120, -- Preview should always show (unless previewer = false)
+        height = function(_, _, max_lines)
+          return math.min(max_lines, 15)
+        end,
+      },
     }),
     cursor = require("telescope.themes").get_cursor({
       winblend = 20,
       layout_config = { height = 15 },
     }),
-    -- minimal = require('telescope.themes').get_minimal({
-    --   winblend = 20,
-    -- }),
+    minimal = require('telescope.themes').get_minimal({
+      winblend = 20,
+    }),
   }
 
   if theme == "" or theme == "default" or theme == "flex" then

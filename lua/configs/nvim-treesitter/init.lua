@@ -6,7 +6,7 @@ local parsers = require("configs.nvim-treesitter.parsers")
 local cfg = {
   install = parsers.all,
   skip_highlights = { "zsh" },
-  skip_indent = { "markdown", "sh", "bash" },
+  skip_indent = { "markdown", "sh", "bash", "vim" },
 }
 
 -- auto-install parsers

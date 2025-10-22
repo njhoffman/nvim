@@ -160,10 +160,10 @@ local pickers = {
   },
   buffers = {
     -- debounce = 100,
-    path_display = {
-      tail = true,
-      truncate = true,
-    },
+    -- path_display = {
+    --   tail = true,
+    --   truncate = true,
+    -- },
 
     -- path_display = require("configs.telescope.filename-first"),
     prompt_prefix = icons.buffer,

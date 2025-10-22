@@ -175,7 +175,10 @@ local function get_buffers(opts)
     default_selection_idx = default_selection_idx,
   }
 end
-return { gen_from_buffer = gen_from_buffer, get_buffers = get_buffers }
+return {
+  gen_from_buffer = gen_from_buffer,
+  get_buffers = get_buffers,
+}
 
 -- Use in telescope buffers
 -- require("telescope.builtin").buffers({

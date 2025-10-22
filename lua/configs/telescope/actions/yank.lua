@@ -34,7 +34,7 @@ local parse_default_entry = function(entry, is_lua)
     or type(entry.display) ~= "nil" and entry.display
     or entry
 
-  value = type(value) == "table" and table.concat(value, "\n") or value
+  value = type(value) == "table" and table.concat(vim.tbl_values(value), "\t") or value
 
   local lines = { tostring(entry) }
   if type(entry) == "table" or is_lua then

@@ -9,21 +9,20 @@ local M = {}
 M.switch_layout = function(prompt_bufnr, _opts)
   local opts = _opts or {}
   local picker = action_state.get_current_picker(prompt_bufnr)
-
+  -- horizontal, center, cursor, vertical, flex, bottom_pane
+  -- dropdown, minimal, cursor, ivy
   if picker.layout_strategy == "bottom_pane" then
-    opts = telethemes.get_theme("dropdown")
+    opts = telethemes.get_theme("dropdown_preview")
   elseif picker.layout_strategy == "center" then
     opts.layout_config = config.values.layout_config
     opts.layout_strategy = "flex"
+    -- opts = telethemes.get_theme("flex")
   elseif picker.layout_strategy == "flex" then
     opts = telethemes.get_theme("cursor")
   elseif picker.layout_strategy == "cursor" then
     opts = telethemes.get_theme("ivy")
-  elseif picker.layout_strategy == "cursor" then
-    opts = telethemes.get_theme("minimal")
   end
   opts.results_title = picker.results_title
-
   actions.close(prompt_bufnr)
 
   vim.api.nvim_set_var("project_buf_skip", 1)

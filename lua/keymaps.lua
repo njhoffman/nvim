@@ -359,7 +359,7 @@ map(
   { "n", "x" },
   "<C-d>",
   -- "<cmd>lua require('funcs.alt-alt').betterClose()<cr>",
-  "<cmd>CloseMulti<cr>",
+  "<cmd>QuickClose<cr>",
   { category = "Buffers", desc = "󰽙 close buffer/window" }
 )
 

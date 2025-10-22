@@ -62,7 +62,15 @@ local basecfg = {
   -- file_sorter = sorters.fuzzy_with_index_bias,
   -- file_sorter = sorters.native_fzf_sorter,
   include_extensions = true,
-  path_display = display_path.init("simple"),
+  -- path_display = display_path.init("simple"),
+  -- path_display = function(opts, path)
+  --   local tail = require("telescope.utils").path_tail(path)
+  --   return string.format("%s (%s)", tail, path)
+  -- end,
+  -- path_display = { 'smart' },
+  -- path_display = { filename_first = { reverse_directories = true } },
+
+  -- path_display = { shorten = { len = 3, exclude = { 1, -1, -2 } } }
   -- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
   -- file_previewer = require("telescope.previewers").vim_buffer_cat.new,
   -- qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
@@ -74,7 +82,11 @@ vim.api.nvim_create_autocmd("VimEnter", {
   pattern = "*",
   callback = function()
     local layout_config =
-      vim.tbl_deep_extend("force", basecfg, require("telescope._layouts.default"))
+      vim.tbl_deep_extend(
+        "force",
+        basecfg,
+        require("telescope._layouts.default")
+      )
     local telescope_config = {
       defaults = layout_config,
       pickers = pickers,

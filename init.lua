@@ -111,9 +111,7 @@ vim.defer_fn(function()
       command = "set filetype=markdown",
     })
   end
-end, 100)
 
-vim.defer_fn(function()
   vim.import("configs.telescope")
   -- vim.import("garbage-day").setup({
   --   notifications = true,
@@ -135,5 +133,5 @@ vim.defer_fn(function()
 
   vim.api.nvim_set_keymap("x", "<F10>", "<Cmd>=vim.fn.getpos('v')<CR>", {})
   -- vim.api.nvim_set_keymap("n", "<F10>", "<Cmd>Telescope tester script<CR>", {})
-end, 500)
+end, 100)
 -- require("notifications.recipes.progress").config()

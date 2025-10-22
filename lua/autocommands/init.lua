@@ -17,10 +17,8 @@ vim.cmd([[
   au BufNewFile,BufRead *.tca setlocal ft=tcf
   au BufNewFile,BufRead *.tso setlocal ft=tcf
 
-  au FileType checkhealth :set ft=checkhealth.log
-
 	" :au SpellFileMissing * call Download_spell_file(expand('<amatch>'))
-
+  au FileType checkhealth :set syn=log.checkhealth
 ]])
 
 vim.api.nvim_create_autocmd("BufWritePost", {
@@ -58,8 +56,7 @@ local autocmds = {
     -- { { 'FileType' },              "pandoc",              "setlocal syn=pandoc" },
     { { 'FileType' },              "markdown",            "setlocal syn=markdown" },
     { { 'FileType' },               "fzf",                "tunmap <Esc><Esc>" },
-    { {'FileType' },                'checkhealth',        'setlocal ft=help', },
-    { { 'BufNewFile', 'BufRead' }, 'health:*',            'setlocal ft=log', },
+    -- { { 'BufNewFile', 'BufRead' }, 'health:*',            'set syn=checkhealth.log', },
     { { 'BufNewFile', 'BufRead' }, '*nvim/option-window', 'nnoremap <buffer><silent> q :q<cr> | nnoremap <buffer><silent>  :q<cr>', },
     { { 'BufNewFile', 'BufRead' }, '*.jq',                'set ft=jq' },
     { { 'BufNewFile', 'BufRead' }, '*startuptime.tsv',    'setlocal ft=crontab syn=crontab' },

@@ -1,32 +1,21 @@
-# Task: Update deprecated code
+# Task: Look at why
 
-Run the command 'checkhealth vim.deprecated'
+[telescope] [WARN  01:21:42] /home/nicholas/.config/nvim/lua/telescope/log.lua:8: Finder failed with msg:  .../nvim/lua/telescope/_extensions/egrepify/entry_maker.lua:264: Expected value but found T_END at character 1514
 
-Go through the deprecated code warnings, and if the location is in ~/.config/nvim update to the
-newer solution.  Add tests if it makes sense (more than a simple syntax change).  Do not address the
-warnings about the lspconfig framework (from 'help lspconfig-nvim-0.11'), those require larger
-changes we will do separate
+vim.schedule callback: /home/nicholas/.config/nvim/lua/telescope/pickers.lua:1673: Invalid buffer id: 51
+stack traceback:
+	[C]: in function 'nvim_buf_get_lines'
+	/home/nicholas/.config/nvim/lua/telescope/pickers.lua:1673: in function ''
+	vim/_editor.lua: in function ''
+	vim/_editor.lua: in function <vim/_editor.lua:0>
 
-# Task: QuickClose command
+Lua callback: /home/nicholas/.config/nvim/lua/telescope/_.lua:148: 75
+stack traceback:
+	[C]: in function 'assert'
+	/home/nicholas/.config/nvim/lua/telescope/_.lua:148: in function </home/nicholas/.config/nvim/lua/telescope/_.lua:147>
 
-Create a new user command 'QuickClose' that will either delete a buffer or close a window depending
-on the following criteria:
-- If current window is floating, close the window.
-- If current window is not floating, and viewport has a split window:
-    - use `vim.fn.tabpagewinnr(1, '$')` to determine if there are splits
-    - if current window matches any of the items in special_slits close the current window
-    - if current window doesn't match but any of the splits do, close the window of that matching split
-    - allow regular expression matching of filetype or buftype 
-- If current window has no splits and is not the last buffer, delete the buffer 
-- If it is the last buffer and last window, run the command 'Alpha' to show startup screen.
-
-```lua
-local special_splits = {
-   { buftype  = 'quickfix' },
-   { buftype = 'help' },
-   { filetype = 'neo-tree' },
-   { filetype  = 'CodeCompanion' },
-   { filetype  = 'Avante.*' },
-}
-
-```
+Lua callback: ...local/share/nvim/runtime/lua/vim/lsp/_changetracking.lua:202: attempt to index local 'buf_state' (a nil value)
+stack traceback:
+	...local/share/nvim/runtime/lua/vim/lsp/_changetracking.lua:202: in function 'reset_buf'
+	...icholas/.local/share/nvim/runtime/lua/vim/lsp/client.lua:1251: in function '_on_detach'
+	/home/nicholas/.local/share/nvim/runtime/lua/vim/lsp.lua:939: in function </home/nicholas/.local/share/nvim/runtime/lua/vim/lsp.lua:936>

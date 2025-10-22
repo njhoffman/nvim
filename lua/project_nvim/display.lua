@@ -16,6 +16,7 @@ local get_icon = function(method, lsp)
   -- stylua: ignore
   local icon_map =     {
     ["null-ls"] =            { get_by_ft("conf") },
+    ansiblels =              { '󱂚' },
     awk_ls =                 { get_by_ft("awk") },
     bashls =                 { get_by_ft("sh") },
     clangd =                 { get_by_ft("c") },
@@ -39,6 +40,7 @@ local get_icon = function(method, lsp)
     pyright =                { get_by_ft("py") },
     pylsp =                  { get_by_ft("py") },
     sqls =                   { get_by_ft("sql") },
+    stylua =                 { get_by_ft("") },
     stylelint_lsp =          { get_by_ft("scss") },
     tailwindcss =            { get_by_ft("less") },
     tsserver =               { get_by_ft("js") },

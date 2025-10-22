@@ -56,7 +56,7 @@ local init_provider = function(scopes)
     or vim.tbl_keys(all_scopes)
   return vim.tbl_extend("force", base_source, {
     name = "variables_" .. vim.fn.join(scopes, ""),
-    icon = "",
+    icon = "",
     fields = { "name", "value", "scope" },
     get = get_variables(scopes),
     -- output    = output_variables,

@@ -5,8 +5,10 @@ local M = {}
 local special_splits = {
   { buftype = "quickfix" },
   { buftype = "help" },
+  { buftype = "nofile" },
   { filetype = "neo-tree" },
   { filetype = "noice" },
+  { filetype = "aerial" },
   { filetype = "CodeCompanion" },
   { filetype = "Avante.*" }, -- Regex pattern
 }
@@ -126,7 +128,9 @@ function M.quick_close()
 
   if buf_count > 1 then
     -- Delete the buffer but keep the window
-    vim.cmd("bdelete")
+    vim.schedule(function()
+      vim.cmd("bdelete")
+    end)
   else
     -- Last buffer and last window - show Alpha startup screen
     local alpha_ok, _ = pcall(vim.cmd, "Alpha")

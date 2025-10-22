@@ -21,6 +21,8 @@ local plugins = {
     opts = { inlay_hints = { enabled = true } },
     event = { "BufReadPost", "BufNewFile", "LspAttach" },
     dependencies = {
+      -- https://github.com/rshkarin/mason-nvim-lint
+      -- https://github.com/zapling/mason-conform.nvim
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",

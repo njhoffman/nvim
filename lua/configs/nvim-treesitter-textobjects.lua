@@ -86,8 +86,8 @@ local keys = {
   { "au", select("@loop.outer"), mode = { "x", "o" }, desc = "󰛤 outer loop" },
   { "al", select("@call.outer"), mode = { "x", "o" }, desc = "󰡱 outer call" },
   { "il", select("@call.inner"), mode = { "x", "o" }, desc = "󰡱 inner call" },
-  { "af", select("@function.outer"), mode = { "x", "o" }, desc = " outer function" },
-  { "if", select("@function.inner"), mode = { "x", "o" }, desc = " inner function" },
+  { "af", select("@function.outer"), mode = { "x", "o" }, desc = "󰊕 outer function" },
+  { "if", select("@function.inner"), mode = { "x", "o" }, desc = "󰊕 inner function" },
   { "ao", select("@conditional.outer"), mode = { "x", "o" }, desc = "󱕆 outer condition" },
   { "io", select("@conditional.inner"), mode = { "x", "o" }, desc = "󱕆 inner condition" },
 
