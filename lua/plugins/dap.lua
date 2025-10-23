@@ -24,19 +24,19 @@ local plugins = {
       { "jbyuki/dash.nvim", dependencies = "jbyuki/ntangle.nvim" },
       { "LiadOz/nvim-dap-repl-highlights" },
     },
-    keys = {
-      m("<F1>", [[DapStepInto]]),
-      m("<F2>", [[DapStepOver]]),
-      m("<F3>", [[DapStepOut]]),
-      m("<F4>", [[DapStepBack]]),
-      m("<F5>", [[DapContinue]]),
-      ---
-      m("<F8>", [[DapStepInto]]),
-      m("<F9>", [[DapStepOver]]),
-      m("<F10>", [[DapStepOut]]),
-      ---
-      m("<F6>", [[DapDisconnect]]),
-    },
+    -- keys = {
+    --   m("<F1>", [[DapStepInto]]),
+    --   m("<F2>", [[DapStepOver]]),
+    --   m("<F3>", [[DapStepOut]]),
+    --   m("<F4>", [[DapStepBack]]),
+    --   m("<F5>", [[DapContinue]]),
+    --   ---
+    --   m("<F8>", [[DapStepInto]]),
+    --   m("<F9>", [[DapStepOver]]),
+    --   m("<F10>", [[DapStepOut]]),
+    --   ---
+    --   m("<F6>", [[DapDisconnect]]),
+    -- },
     init = function()
       local dap = require("dap")
       require("configs.dap.keymaps").setup(dap)

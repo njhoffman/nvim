@@ -9,6 +9,7 @@ local lspconfig_settings = {
     "awk_ls",
     "bashls",
     "clangd",
+    "copilot-language-server",
     "cssls",
     "dockerls",
     -- "efm",

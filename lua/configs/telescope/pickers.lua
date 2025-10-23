@@ -117,7 +117,27 @@ local pickers = {
     prompt_prefix = icons.help,
     -- layout_config = { height = 15 },
     mappings = mappings.help,
-    -- previewer = c_previewers.buffer_cat(),
+    -- prompt_title = "~ Help Tags ~",
+    initial_mode = "insert",
+    sorting_strategy = "ascending",
+    layout_config = {
+      prompt_position = "top",
+      preview_width = 0.75,
+      -- horizontal = {
+      --   preview_width = 0.55,
+      --   results_width = 0.8,
+      -- },
+      -- vertical = {
+      --   mirror = false,
+      -- },
+      -- width = 0.87,
+      height = 0.6,
+    },
+    preview = {
+      preview_cutoff = 120,
+      preview_width = 80,
+      hide_on_startup = false,
+    },
   },
   fd = {
     -- debounce = 100,
@@ -179,6 +199,10 @@ local pickers = {
   },
   keymaps = {
     -- debounce = 100,
+    layout_config = {
+      height = 18,
+      width = 0.5,
+    },
     prompt_prefix = icons.keymap,
     entry_maker = require("configs.telescope.entry_makers.keymaps")({}),
     results_title = "@buf !sil *map  exp  now",
@@ -203,6 +227,15 @@ local pickers = {
   },
   git_status = {
     -- debounce = 100,
+    layout_config = {
+      width = 0.99,
+      height = 0.69,
+      preview_width = 0.7,
+      prompt_position = "top",
+    },
+    preview = {
+      hide_on_startup = true,
+    },
     prompt_prefix = icons.git,
     show_untracked = true,
     enabled = false,
@@ -233,7 +266,11 @@ local pickers = {
         return table.concat(cmd, " ")
       end,
     }),
-    layout_config = { horizontal = { height = 0.99 } },
+    layout_config = {
+      horizontal = {
+        preview_width = 0.55,
+      },
+    },
     -- add commit time (%cr) & `--all`
     git_command = {
       "git",
@@ -297,7 +334,11 @@ local pickers = {
       -- c_previewers.delta
     },
     -- previewer = c_previewers.delta,
-    layout_config = { horizontal = { height = 0.99 } },
+    layout_config = {
+      horizontal = {
+        preview_width = 0.55,
+      },
+    },
     -- layout_strategy = 'vertical',
     -- git_command = { "git", "log", "--date=format:%m-%d-%y", "--format=%h%d %ad %s <%an>" }
     -- git_command = { "git", "log", "--format=%h%d (%ar) %s <%an>" },
@@ -336,6 +377,14 @@ local pickers = {
   },
   lsp_references = {
     -- debounce = 100,
+    layout_config = {
+      -- preview_width = 0.5,
+      height = 0.6,
+      anchor = "S",
+    },
+    preview = {
+      hide_on_startup = false,
+    },
     prompt_prefix = icons.reference,
     include_current_line = false,
     theme = "dropdown",

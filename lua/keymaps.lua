@@ -107,6 +107,24 @@ vim.cmd([[
     tnoremap <C-v><Esc> <Esc>
 ]])
 
+map({ "n" }, "gZ", "zA", {
+  category = "Folds",
+  label = "toggle all folds",
+  desc = "toggle all folds",
+})
+
+map({ "n" }, "gz", "za", {
+  category = "Folds",
+  label = "toggle fold",
+  desc = "toggle fold under cursor",
+})
+
+map({ "n" }, "Z", "za", {
+  category = "Folds",
+  label = "toggle fold",
+  desc = "toggle fold under cursor",
+})
+
 -- TODO: differentiate between vim/lua, auto remove comments
 
 map({ "x" }, "<C-Space>", '"xy:@x<cr>', {
@@ -420,7 +438,7 @@ map("n", "<leader>bn", "<Cmd>BufferNext<cr>", {
   desc = "󰽙 open the buffer to the right",
 })
 
-map("n", "<M-C-L>", "<Cmd>BufferForward<cr>", {
+map("n", "<M-C-O>", "<Cmd>BufferForward<cr>", {
   category = "Buffers",
   label = "󰽙 forward buffer",
   desc = "󰽙 open the next buffer in history",
@@ -438,7 +456,8 @@ map("n", "<leader>bf", "<Cmd>BufferForward<cr>", {
   desc = "󰽙 open the next buffer in history",
 })
 
-map("n", "<M-C-H>", "<Cmd>BufferBack<cr>", {
+-- maybe use <M-{> <M-}>
+map("n", "<M-Tab>", "<Cmd>BufferBack<cr>", {
   category = "Buffers",
   label = "󰽙 back buffer",
   desc = "󰽙 open the previous buffer in history",
@@ -485,19 +504,19 @@ map({ "n" }, "<leader>fH", "<cmd>lua vim.treesitter.get_parser(0):parse()<cr>", 
   label = "󰽙 reset treesitter highlighting",
 })
 
--- map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>silent! w<cr><esc>", {
---   category = "Buffers",
---   label = "󰽙 write buffer",
---   desc = "󰽙 write to buffer",
---   silent = true,
--- })
-
-map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>noa w<cr><esc>", {
+map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>silent! w<cr><esc>", {
   category = "Buffers",
   label = "󰽙 write buffer",
   desc = "󰽙 write to buffer",
   silent = true,
 })
+
+-- map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>noa w<cr><esc>", {
+--   category = "Buffers",
+--   label = "󰽙 write buffer",
+--   desc = "󰽙 write to buffer",
+--   silent = true,
+-- })
 
 map("n", "<leader>f*w", "<cmd>wall<cr>", {
   category = "Buffers",

@@ -1,4 +1,3 @@
-local utils = require("telescope.utils")
 local action_state = require("telescope.actions.state")
 local actions = require("telescope.actions")
 
@@ -159,6 +158,7 @@ local yank_highlights_to_buffer = function(bufnr, opts)
   yank_selection_to_buffer(bufnr, opts)
 end
 
+--- stylua: ignore
 return {
   yank_highlights = yank_highlights,
   yank_highlights_to_buffer = yank_highlights_to_buffer,

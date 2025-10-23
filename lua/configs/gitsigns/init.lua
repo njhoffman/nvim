@@ -109,21 +109,28 @@ local mySettings = {
   -- diff_opts { internal = { title = "gitsigns" } },
 }
 
+local get_git_info = function()
+  return {
+    head_buf = table.pack(pcall(vim.api.nvim_buf_get_var, bufnr, "gitsigns_head")),
+    head_g = table.pack(pcall(vim.api.nvim_get_var, "gitsigns_head")),
+    status_buf = table.pack(pcall(vim.api.nvim_buf_get_var, bufnr, "gitsigns_status_dict")),
+  }
+end
+
 vim.api.nvim_create_autocmd("User", {
   pattern = "GitSignsUpdate",
   callback = function(args)
-    local bufnr = args.data and args.data.buffer or args.buf or 0
-    local gitenv = {
-      head_buf = table.pack(pcall(vim.api.nvim_buf_get_var, bufnr, "gitsigns_head")),
-      head_g = table.pack(pcall(vim.api.nvim_get_var, "gitsigns_head")),
-      status_buf = table.pack(pcall(vim.api.nvim_buf_get_var, bufnr, "gitsigns_status_dict")),
-      -- git_dir = vim.fn.getenv("GIT_DIR"),
-      -- git_work_tree = vim.fn.getenv("GIT_WORK_TREE"),
-    }
-    gitenv.status_buf = gitenv.status_buf[1] and gitenv.status_buf[2] or "nil"
-    gitenv.head_buf = gitenv.head_buf[1] and gitenv.head_buf[2] or "nil"
-    gitenv.head_g = gitenv.head_g[1] and gitenv.head_g[2] or "nil"
-
+    vim.schedule(function()
+      local bufnr = args.data and args.data.buffer or args.buf or 0
+      if vim.api.nvim_buf_is_valid(bufnr) == false then
+        vim.dbglog("gitsigns invalid buffer: " .. bufnr)
+        return
+      end
+      local gitenv = get_git_info()
+      gitenv.status_buf = gitenv.status_buf[1] and gitenv.status_buf[2] or "nil"
+      gitenv.head_buf = gitenv.head_buf[1] and gitenv.head_buf[2] or "nil"
+      gitenv.head_g = gitenv.head_g[1] and gitenv.head_g[2] or "nil"
+    end)
     -- vim.dbglog(not args.data and "**" or "" .. "Gitsigns update: ", bufnr, "\n", gitenv)
   end,
 })
@@ -132,7 +139,7 @@ require("gitsigns").setup(mySettings)
 
 -- local gs = package.loaded.gitsigns
 
-local orig_detach = require("gitsigns.attach").detach
+local orig_detach = vim.schedule_wrap(require("gitsigns.attach").detach)
 require("gitsigns.attach").detach = function(bufnr, keep_signs)
   vim.api.nvim_buf_set_var(bufnr, "gitsigns_status_dict", nil)
   -- vim.fn.setenv("GIT_WORK_TREE", "")

@@ -12,8 +12,25 @@ local pickers = require("configs.telescope.pickers")
 local extensions = require("configs.telescope.extensions")
 local display_path = require("configs.telescope.display-path")
 
+--         sorting_strategy = "ascending",
+--         layout_strategy = "flex",
+--         results_title = false,
+--         preview_title = false,
+--         preview = true,
+--         winblend = 30,
+--         width = 100,
+--         results_height = 15,
+--         results_width = 0.37,
+--         border = false,
+--         borderchars = {
+--             { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+--             prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+--             results = { "─", "│", "─", "│", "├", "┬", "┴", "╰" },
+--             preview = { "─", "│", "─", "│", "╭", "┤", "╯", "╰" },
+--         },
 local basecfg = {
   scrolling_limit = 20000,
+
   debounce = 50,
   wrap_results = false,
   selection_caret = "▌ ", -- ▶  ┃ ▌󰒆 ▇
@@ -36,8 +53,15 @@ local basecfg = {
     DELTA_PAGER = "/usr/bin/cat",
     -- Set explicit value of $LESS to make git-delta paging nicer in Telescope.
   },
-  preview = { filesize_limit = 0.9999, timeout = 500 },
-  cache_picker = { num_pickers = 10, limit_entries = 10000 },
+  preview = {
+    hide_on_startup = true,
+    filesize_limit = 0.9999,
+    timeout = 500,
+  },
+  cache_picker = {
+    num_pickers = 10,
+    limit_entries = 10000,
+  },
   history = {
     handler = require("telescope._extensions.pickers_history.handler").get_history,
     path = vim.fn.stdpath("data") .. "/databases/telescope_history.sqlite3",
@@ -82,11 +106,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
   pattern = "*",
   callback = function()
     local layout_config =
-      vim.tbl_deep_extend(
-        "force",
-        basecfg,
-        require("telescope._layouts.default")
-      )
+      vim.tbl_deep_extend("force", basecfg, require("telescope._layouts.default"))
     local telescope_config = {
       defaults = layout_config,
       pickers = pickers,

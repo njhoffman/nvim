@@ -32,7 +32,7 @@ local cfg = {
     mode = "virtualtext", -- foreground, background,  virtualtext
     sass = { enable = false, parsers = { "css" } }, -- Enable sass colors
     virtualtext = "■",
-    virtualtext_inline = true,
+    virtualtext_inline = false,
     virtualtext_mode = "foreground", -- foreground/background
     -- update color values even if buffer is not focused example use: cmp_menu, cmp_docs
     always_update = false,

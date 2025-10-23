@@ -6,11 +6,24 @@ local special_splits = {
   { buftype = "quickfix" },
   { buftype = "help" },
   { buftype = "nofile" },
+  { buftype = "terminal" },
   { filetype = "neo-tree" },
-  { filetype = "noice" },
   { filetype = "aerial" },
-  { filetype = "CodeCompanion" },
   { filetype = "Avante.*" }, -- Regex pattern
+  { filetype = "CodeCompanion" },
+  { filetype = "TelescopePrompt" },
+  { filetype = "WhichKey" },
+  { filetype = "aerial" },
+  { filetype = "chatgpt-input" },
+  { filetype = "cmp_docs" },
+  { filetype = "cmp_menu" },
+  { filetype = "lazy" },
+  { filetype = "neoai-input" },
+  { filetype = "nerdtree" },
+  { filetype = "noice" },
+  { filetype = "noice.log" },
+  { filetype = "notify" },
+  { filetype = "prompt" },
 }
 
 -- Check if a window matches any special split criteria
@@ -129,7 +142,10 @@ function M.quick_close()
   if buf_count > 1 then
     -- Delete the buffer but keep the window
     vim.schedule(function()
-      vim.cmd("bdelete")
+      local ok, err = pcall("bdelete", buf_count)
+      if not ok then
+        vim.notify("Error deleting buffer: " .. err, vim.log.levels.ERROR)
+      end
     end)
   else
     -- Last buffer and last window - show Alpha startup screen

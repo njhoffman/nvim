@@ -74,7 +74,10 @@ local plugins = {
       },
       "nanotee/sqls.nvim",
       "tami5/lspsaga.nvim",
-      { "Exafunction/windsurf.nvim", event = "BufEnter" },
+      {
+        "Exafunction/windsurf.nvim",
+        event = "BufEnter",
+      },
       "rmagatti/goto-preview",
       "kosayoda/nvim-lightbulb",
       "mickael-menu/zk-nvim",
@@ -96,6 +99,7 @@ local plugins = {
     end,
   },
   { "james1236/backseat.nvim", cmd = { "Backseat", "BackseatAsk", "BackseatClear" } },
+  { "folke/sidekick.nvim" },
   {
     "SmiteshP/nvim-navbuddy",
     dir = "~/git/nvim-navbuddy",

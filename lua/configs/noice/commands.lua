@@ -42,7 +42,9 @@ local silence_stop = function()
   require("noice").enable()
   require("notify").setup({ level = 2 })
   if lsp_clients then
-    vim.lsp.start_client(lsp_clients)
+    vim.schedule(function()
+      vim.lsp.start_client(lsp_clients)
+    end)
     lsp_clients = nil
   end
   if restore_routes then

@@ -17,7 +17,14 @@ vmap({"n"          }, "cs%", { label = " change {n}surround match-words",   d
 -- vmap({"v", "o"}, "a%",  { label = " select {n}open-to-close-block",    desc = " Select nth |open-to-close-block|." })
 -- vmap({"v", "o"}, "i%",  { label = " select in {n}open-to-close-block", desc = " Select nth the inside of an |open-to-close-block|"})
 -- i  !*    <C-G>%
--- n  !*    %
+-- vim.keymap.set(
+--   "i",
+--   "<C-G>%",
+--   "<Esc>g%i%",
+--   { silent = true, desc = " Go backwards to previous matching word in insert mode" }
+-- )
+
+vim.keymap.del("i", "<C-G>%")
 -- n  !*    [%
 -- n  !*    ]%
 -- n  !*    cs%

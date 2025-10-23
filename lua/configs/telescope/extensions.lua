@@ -5,6 +5,29 @@ local actions = require("telescope.actions")
 local mappings = require("configs.telescope.mappings")
 local c_actions = require("configs.telescope.actions")
 
+
+-- M.devdocs_ft = function()
+--     local input = vim.fn.input("Search String: ")
+--     if input == nil or input == "" then
+--         return
+--     end
+--     local input_with_filetype = vim.bo.filetype .. " " .. input
+--     vim.fn.jobstart(string.format("%s 'https://devdocs.io/#q=%s'", open_cmd, input_with_filetype))
+-- end
+-- 
+-- M.devdocs_search = function()
+--     local input = vim.fn.input("Search String: ")
+--     vim.fn.jobstart(string.format("%s 'https://devdocs.io/#q=%s'", open_cmd, input))
+-- end
+-- 
+-- M.google_search = function()
+--     local input = vim.fn.input("Search String: ")
+--     if input == nil or input == "" then
+--         return
+--     end
+--     local path = "https://www.google.com/search?q=" .. input
+--     vim.fn.jobstart({ open_cmd, path }, { detach = true })
+-- end
 local extension_configs = {
   -- locally managed
   ["arecibo"] = {
@@ -229,8 +252,8 @@ local extension_configs = {
         name = "nvim",
         base_dirs = { { path = "~/lazy", max_depth = 2 } },
       },
-      -- theme = "dropdown",
     },
+    theme = "dropdown",
   },
   ["helpgrep"] = {
     prompt_title = "Helptags Grep",
@@ -420,12 +443,12 @@ local extension_configs = {
   ["git_file_history"] = {
     -- Keymaps inside the picker
     mappings = {
-      i = {
-        ["<C-g>"] = require("telescope").extensions.git_file_history.actions.open_in_browser,
-      },
-      n = {
-        ["<C-g>"] = require("telescope").extensions.git_file_history.actions.open_in_browser,
-      },
+      -- i = {
+      --   ["<C-g>"] = require("telescope").extensions.git_file_history.actions.open_in_browser,
+      -- },
+      -- n = {
+      --   ["<C-g>"] = require("telescope").extensions.git_file_history.actions.open_in_browser,
+      -- },
     },
 
     -- The command to use for opening the browser (nil or string)
@@ -563,19 +586,38 @@ local extension_configs = {
   -- -- and the displayed text second. Markdown's order is vice versa. By
   -- -- setting to true URL first schemes are possible.
   -- url_first = false
+
   ["file_browser"] = {
     theme = "ivy",
     mappings = mappings.file,
   },
-  -- ["fzf"] = {
-  --   fuzzy = true, -- false will only do exact matching
-  --   override_generic_sorter = true, -- override the generic sorter
-  --   override_file_sorter = true, -- override the file sorter
-  --   case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-  -- },
+  -- ["neoclip"] = {
+  --   winblend = 10,
+  --   layout_strategy = "flex",
+  --   layout_config = {
+  --     prompt_position = "top",
+  --     width = 0.8,
+  --     height = 0.6,
+  --           horizontal = { width = { padding = 0.15 } },
+  --           vertical = { preview_height = 0.70 },
+  --       },
+  --       borderchars = {
+  --           prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+  --           results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+  --           preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+  --       },
+  --       border = {},
+  --       shorten_path = false,
+  --   },
+  ["fzf"] = {
+    fuzzy = true, -- false will only do exact matching
+    override_generic_sorter = true, -- override the generic sorter
+    override_file_sorter = true, -- override the file sorter
+    case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+  },
   ["fzy_native"] = {
     override_generic_sorter = false,
-    override_file_sorter = true,
+    override_file_sorter = false,
   },
   ["gh"] = {},
   ["ghn"] = {},

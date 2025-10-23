@@ -31,6 +31,7 @@ local plugins = {
   },
   { "declancm/cinnamon.nvim", event = "VeryLazy", enabled = false },
   { "karb94/neoscroll.nvim", event = "VeryLazy", enabled = true },
+
   {
     "00sapo/visual.nvim",
     enabled = false,
@@ -195,6 +196,51 @@ local plugins = {
         on_save_enabled = true, -- If `true`, automatically enables on save sorting.
         node_path = "/home/nicholas/.asdf/shims/node",
       })
+    end,
+  },
+  {
+    "aaronik/treewalker.nvim",
+
+    config = function()
+      require("treewalker").setup({
+        -- Whether to briefly highlight the node after jumping to it
+        highlight = true,
+
+        -- How long should above highlight last (in ms)
+        highlight_duration = 250,
+
+        -- The color of the above highlight. Must be a valid vim highlight group.
+        -- (see :h highlight-group for options)
+        highlight_group = "CursorLine",
+
+        -- Whether to create a visual selection after a movement to a node.
+        -- If true, highlight is disabled and a visual selection is made in
+        -- its place.
+        select = false,
+
+        -- Whether to use vim.notify to warn when there are missing parsers or incorrect options
+        notifications = true,
+
+        -- Whether the plugin adds movements to the jumplist -- true | false | 'left'
+        --  true: All movements more than 1 line are added to the jumplist. This is the default,
+        --        and is meant to cover most use cases. It's modeled on how { and } natively add
+        --        to the jumplist.
+        --  false: Treewalker does not add to the jumplist at all
+        --  "left": Treewalker only adds :Treewalker Left to the jumplist. This is usually the most
+        --          likely one to be confusing, so it has its own mode.
+        jumplist = true,
+      })
+      -- movement
+      vim.keymap.set({ "n", "v" }, "<M-S-Up>", "<cmd>Treewalker Up<cr>", { silent = true })
+      vim.keymap.set({ "n", "v" }, "<M-S-Down>", "<cmd>Treewalker Down<cr>", { silent = true })
+      vim.keymap.set({ "n", "v" }, "<M-C-H>", "<cmd>Treewalker Left<cr>", { silent = true })
+      vim.keymap.set({ "n", "v" }, "<M-C-L>", "<cmd>Treewalker Right<cr>", { silent = true })
+
+      -- swapping
+      -- vim.keymap.set('n', '<C-S-k>', '<cmd>Treewalker SwapUp<cr>', { silent = true })
+      -- vim.keymap.set('n', '<C-S-j>', '<cmd>Treewalker SwapDown<cr>', { silent = true })
+      -- vim.keymap.set('n', '<C-S-h>', '<cmd>Treewalker SwapLeft<cr>', { silent = true })
+      -- vim.keymap.set('n', '<C-S-l>', '<cmd>Treewalker SwapRight<cr>', { silent = true })
     end,
   },
 
@@ -455,7 +501,7 @@ local plugins = {
     "andymass/vim-matchup",
     lazy = false,
     init = function()
-      require("configs.vim-matchup__init")
+      require("configs.vim-matchup__init")()
     end,
   },
   -- pairs
@@ -710,26 +756,6 @@ local plugins = {
   { "pwntester/octo.nvim", cmd = "Octo", dependencies = "nvim-web-devicons" },
   { "kdheepak/lazygit.nvim", cmd = "LazyGit" },
   { "lewis6991/gitsigns.nvim", event = "BufReadPost", dependencies = "nvim-lua/plenary.nvim" },
-  {
-    "lewis6991/satellite.nvim",
-    enabled = false,
-    event = "VeryLazy",
-    init = function()
-      vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
-        desc = "User: Change `SatelliteQuickfix` color",
-        callback = function()
-          vim.api.nvim_set_hl(0, "SatelliteQuickfix", { link = "DiagnosticSignInfo" })
-        end,
-      })
-    end,
-    opts = {
-      winblend = 10, -- only little transparency, since otherwise hard to see in some themes
-      handlers = {
-        cursor = { enable = false },
-        marks = { enable = false },
-      },
-    },
-  },
   { "rhysd/git-messenger.vim", cmd = "GitMessenger" },
   {
     "tpope/vim-fugitive",
@@ -830,7 +856,7 @@ local plugins = {
     "glacambre/firenvim",
     build = ":call firenvim#install(0)",
     init = function()
-      require("configs.firenvim__init")
+      require("configs.firenvim__init")()
     end,
   },
   { "lucamot/chrome-remote.nvim", event = "VeryLazy" },

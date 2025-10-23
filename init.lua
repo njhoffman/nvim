@@ -50,6 +50,8 @@ vim.defer_fn(function()
   -- require("modeman")
   vim.import("alt").setup()
   vim.import("live-command.setup")
+  vim.import("configs.satellite")
+
   vim.import("sidebar").setup()
   vim.import("histories").setup()
   -- vim.import("scrollview.setup")

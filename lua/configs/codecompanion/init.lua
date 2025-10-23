@@ -51,33 +51,33 @@
 local cfg = {
   extensions = require("configs.codecompanion.extensions"),
   prompt_library = require("configs.codecompanion.prompts"),
-  adapters = {
-    anthropic = function()
-      return require("codecompanion.adapters").extend("anthropic", {
-        -- env = { api_key = "cmd:op read op://personal/Anthropic_API/credential --no-newline", },
-        schema = {
-          extended_thinking = {
-            default = true,
-          },
-        },
-      })
-    end,
-    openai = function()
-      return require("codecompanion.adapters").extend("openai", {
-        opts = {
-          stream = true,
-        },
-        -- env = { api_key = "cmd:op read op://personal/OpenAI_API/credential --no-newline", },
-        schema = {
-          model = {
-            default = function()
-              return "gpt-4.1"
-            end,
-          },
-        },
-      })
-    end,
-  },
+  -- adapters = {
+  --   anthropic = function()
+  --     return require("codecompanion.adapters").extend("anthropic", {
+  --       -- env = { api_key = "cmd:op read op://personal/Anthropic_API/credential --no-newline", },
+  --       schema = {
+  --         extended_thinking = {
+  --           default = true,
+  --         },
+  --       },
+  --     })
+  --   end,
+  --   openai = function()
+  --     return require("codecompanion.adapters").extend("openai", {
+  --       opts = {
+  --         stream = true,
+  --       },
+  --       -- env = { api_key = "cmd:op read op://personal/OpenAI_API/credential --no-newline", },
+  --       schema = {
+  --         model = {
+  --           default = function()
+  --             return "gpt-4.1"
+  --           end,
+  --         },
+  --       },
+  --     })
+  --   end,
+  -- },
   display = {
     action_palette = {
       width = 95,

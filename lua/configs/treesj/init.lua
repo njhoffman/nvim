@@ -1,6 +1,19 @@
 local langs = require("configs.treesj.langs")
-
 local treesj = require("treesj")
+
+-- local region = opts.region or H.find_smallest_bracket_region(opts.position, opts.detect.brackets)
+
+-- orig_split_at = vim.fn.deepcopy(MiniSplitjoin.split_at)
+-- MiniSplitjoin.split_at = function(positions)
+--   vim.dbglog("🪚 split positions: ", positions)
+--   -- orig_split_at(positions)
+-- end
+
+-- orig_join_at = vim.fn.deepcopy(MiniSplitjoin.join_at)
+-- MiniSplitjoin.join_at = function(positions)
+--   vim.dbglog("🪚 join positions: ", positions)
+--   -- orig_join_at(positions)
+-- end
 
 treesj.setup({
   use_default_keymaps = false,
@@ -22,7 +35,11 @@ end
 
 local try_mini = function(cmd)
   local pos = vim.fn.getpos(".")
-  return require("mini.splitjoin")[cmd]({ line = pos[1], column = pos[2] })
+
+  return require("mini.splitjoin")[cmd]({
+    line = pos[1],
+    column = pos[2],
+  })
 end
 
 local align_op = function(cmd)

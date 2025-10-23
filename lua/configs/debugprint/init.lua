@@ -86,8 +86,8 @@ require('debugprint').setup({
       delete_debug_prints = "",            --  "",
     },
     insert = {
-      plain = "<C-G>p",
-      variable = "<C-G>v",
+      plain = "<C-v>p",
+      variable = "<C-v>v",
     },
     visual = {
       variable_below = "", --  "g?v",
@@ -101,7 +101,6 @@ require('debugprint').setup({
   },
   -- … Other options
 })
-
 
 require('debugprint').add_custom_filetypes({ lua = lua })
 

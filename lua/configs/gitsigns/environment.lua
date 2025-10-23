@@ -17,8 +17,8 @@ local setup_environment = function(bufnr)
   local missing = string
     .format(
       "%s %s",
-      (vim.fn.isdirectory(gs_status.gitdir) == 0 and "gitdir: " .. gs_status.gitdir or ""),
-      (vim.fn.isdirectory(gs_status.root) == 0 and "root: " .. gs_status.root or "")
+      (vim.fn.isdirectory(gs_status.gitdir) == 0 and "gitdir: " .. tostring(gs_status.gitdir) or ""),
+      (vim.fn.isdirectory(gs_status.root) == 0 and "root: " .. tostring(gs_status.root) or "")
     )
     :gsub("^%s+", "")
 

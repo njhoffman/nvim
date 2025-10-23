@@ -102,10 +102,10 @@ vim.lsp.config("cssls", {
     },
   }),
 })
-  -- { "clangd" }
-  -- capabilities :
-  -- default capabilities, with offsetEncoding utf-8
-  -- cmd : clangd --offset-encoding=utf-16
+-- { "clangd" }
+-- capabilities :
+-- default capabilities, with offsetEncoding utf-8
+-- cmd : clangd --offset-encoding=utf-16
 
 -- kotlin_language_server - Kotlin Language Server
 vim.lsp.config("kotlin_language_server", {

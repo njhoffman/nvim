@@ -86,7 +86,7 @@ local attach_to_lsp = function()
     return
   end
 
-  local start_client = vim.lsp.start_client
+  local start_client = vim.schedule_wrap(vim.lsp.start_client)
   vim.lsp.start_client = function(lsp_config)
     if lsp_config.on_attach == nil then
       lsp_config.on_attach = on_attach_lsp

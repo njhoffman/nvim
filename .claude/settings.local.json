@@ -1,21 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(GIT_WORK_TREE=\"$HOME\" GIT_DIR=\"$HOME/.cfg\" git tag v0.3.0)",
-      "Bash(bash -c 'cd && GIT_WORK_TREE=\"\"$HOME\"\" GIT_DIR=\"\"$HOME/.cfg\"\" git diff --stat HEAD~1')",
-      "Bash(git describe:*)",
-      "Bash(lua:*)",
-      "Bash(luac:*)",
-      "Bash(git fetch:*)",
-      "Bash(git checkout:*)",
-      "Bash(git pull:*)",
-      "Bash(git stash:*)",
-      "Bash(bash -c 'cd && GIT_WORK_TREE=\"\"$HOME\"\" GIT_DIR=\"\"$HOME/.cfg\"\" git status --short .config/nvim/lua/plugins/lsp.lua')",
-      "Bash(GIT_WORK_TREE=\"$HOME\" GIT_DIR=\"$HOME/.cfg\" git add .config/nvim/lua/plugins/lsp.lua)",
-      "Bash(bash -c 'cd && GIT_WORK_TREE=\"\"$HOME\"\" GIT_DIR=\"\"$HOME/.cfg\"\" git show --stat HEAD')",
-      "Bash(bash -c 'cd && GIT_WORK_TREE=\"\"$HOME\"\" GIT_DIR=\"\"$HOME/.cfg\"\" git status --short .config/nvim/lua/commands/quickclose.lua')",
-      "Bash(GIT_WORK_TREE=\"$HOME\" GIT_DIR=\"$HOME/.cfg\" git add .config/nvim/lua/commands/quickclose.lua)",
-      "Bash(GIT_WORK_TREE=\"$HOME\" GIT_DIR=\"$HOME/.cfg\" git commit -m \"$(cat <<''EOF''\nfix: exclude floating windows when determining last window\n\nFixed get_split_count() to properly exclude floating windows when\ncounting splits. Previously used vim.fn.tabpagewinnr() which includes\nfloating windows, causing QuickClose to incorrectly think there were\nmultiple windows when only one non-floating window existed (plus floating\nwindows like notifications, etc.).\n\nNow uses the same logic as get_all_windows() to filter out floating\nwindows by checking if config.relative is empty.\n\nThis ensures QuickClose deletes the buffer instead of closing the window\nwhen there''s only one actual window, even if floating windows are present.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "deny": [],
     "ask": []

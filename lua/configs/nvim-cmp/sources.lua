@@ -62,16 +62,33 @@ local sources = {
           return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text"
         end,
       },
-      { name = "codeium", max_item_count = 3 },
+      {
+        name = "codeium",
+        max_item_count = 3,
+      },
       {
         name = "copilot",
-        keyword_length = 3,
-        -- max_item_count = 5,
-        -- vim.opt.scrollbuf = 999
-        -- trigger_characters = {
-          -- stylua: ignore
-          { '.', ':', '(', "'", '"', '[', ',', '#', '*', '@', '|', '=', '-', '{', '/', '\\', '+', '?', ' ', }, -- "\t", "\n", },
-        -- },
+        max_item_count = 3,
+        -- trigger_characters = {{
+        --     ".",
+        --     ":",
+        --     "(",
+        --     "'",
+        --     '"',
+        --     "[",
+        --     ",",
+        --     "#",
+        --     "*",
+        --     "@",
+        --     "|",
+        --     "=",
+        --     "-",
+        --     "{",
+        --     "/",
+        --     "\\",
+        --     "+",
+        --     "?",
+        -- }},
       },
       { name = "nvim_lsp_document_symbol" },
       { name = "nvim_lsp_signature_help" },

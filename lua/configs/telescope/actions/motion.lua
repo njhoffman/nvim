@@ -10,12 +10,24 @@ M.search_backspace_word = function(_)
 end
 
 M.search_jump_start = function(_)
-  local home_key = vim.api.nvim_replace_termcodes("<Home>", true, true, true)
+  -- local home_key = vim.api.nvim_replace_termcodes("<Home>", true, true, true)
+  local home_key = vim.api.nvim_replace_termcodes("<S-Left>", true, true, true)
   vim.api.nvim_feedkeys(home_key, "i", true)
 end
 
 M.search_jump_end = function(_)
   local end_key = vim.api.nvim_replace_termcodes("<End>", true, true, true)
+  vim.api.nvim_feedkeys(end_key, "i", true)
+end
+
+M.search_jump_left = function(_)
+  -- local home_key = vim.api.nvim_replace_termcodes("<Home>", true, true, true)
+  local home_key = vim.api.nvim_replace_termcodes("L", true, true, true)
+  vim.api.nvim_feedkeys(home_key, "i", true)
+end
+
+M.search_jump_right = function(_)
+  local end_key = vim.api.nvim_replace_termcodes("H", true, true, true)
   vim.api.nvim_feedkeys(end_key, "i", true)
 end
 

@@ -145,15 +145,17 @@ return function(injected_functions)
     VisualAlt({ fg = "none", bg = "#10083f", gui = "italic" }),
     VisualRed({ fg = "none", bg = "#40112c", gui = "italic" }),
 
-    DiffAdd({ bg = "#003c42" }), -- #00361f #001000 #22bb99
-    DiffTextAdd({ bg = "#0e2040", fg = "#2f8aaf" }), -- #464b5d #001030 #81a1c1
-    DiffChange({ bg = "#063054" }), -- #003050 #001030 #646ead
-    DiffDelete({ bg = "#240000", fg = "#444466" }), -- #3e0009 #300000 #be6069
-    DiffText({ bg = "#0e2040", gui = "italic" }), -- #464b5d #001030 #81a1c1
+    DiffAdd({ bg = "#001c26" }), -- #00361f #001000 #22bb99
+    DiffTextAdd({ bg = "#000f20", fg = "#00aabb" }), -- #464b5d #001030 #81a1c1
+
+    -- DiffText guibg=#000f20 guifg=#22ccff
+    DiffChange({ bg = "#000f20", fg = "#00ccff", gui = "italic,bold" }), -- #003050 #001030 #646ead
+    DiffDelete({ bg = "#200000", fg = "#aa4444", gui = "italic,bold" }), -- #3e0009 #300000 #be6069
+    DiffText({ bg = "#000f20", gui = "italic, bold" }), -- #464b5d #001030 #81a1c1
     -- DiffAdd DiffChan DiffText DiffTextAdd DiffDele
-    diffAdded({ fg = clrs.nord14 }),
-    diffRemoved({ fg = clrs.nord11 }),
-    diffChanged({ fg = clrs.nord15 }),
+    diffAdded({ DiffAdd }),
+    diffRemoved({ DiffDelete }),
+    diffChanged({ DiffChange }),
     diffOldFile({ fg = clrs.nord9 }),
     diffNewFile({ fg = clrs.nord12 }),
     diffFile({ fg = clrs.nord7 }),
@@ -1392,6 +1394,10 @@ return function(injected_functions)
 
     NeoTreeTitleBar({ bg = "#1f2342" }),
     NeoTreeFileNameOpened({ gui = "bold" }),
+    NeoTreeGitUntracked({ fg = "#705466", gui = "italic" }),
+    NeoTreeAdded({ fg = "#008888" }),
+    NeoTreeGitStaged({ fg = "#4c68a0" }),
+    NeoTreeGitUnstaged({ fg = "#00aa88" }),
     -- NeoTreeNormal guibg=#010409"
     -- NeoTreeNormalNC guibg=#010409"
 
@@ -1400,6 +1406,24 @@ return function(injected_functions)
     EyelinerSecondary({ fg = "#d19a66", gui = "bold" }),
     EyelinerDimmed({ fg = "#4e5769" }),
 
+    -- SatelliteBar
+    -- SatelliteCursor
+    -- SatelliteDiagnosticError
+    -- SatelliteDiagnosticHint
+    -- SatelliteDiagnosticInfo
+    -- SatelliteDiagnosticWarn
+    -- SatelliteGitSignsAdd
+    -- SatelliteGitSignsChange
+    -- SatelliteGitSignsDelete
+    -- SatelliteMark
+    -- SatelliteQuickfix
+    -- SatelliteSearch
+    -- PmenuSbar({ fg = "#313c84", bg = "#202331" }),
+    -- PmenuSel({ fg = "#44bfcf", bg = "#1a1f2f" }),
+    -- PmenuThumb({ fg = "#1f3352", bg = "#244f7f" }),
+
+    SatelliteBar({ fg = "#1f3352", bg = "#202331" }),
+    SatelliteCursor({ fg = "#313c84", bg = "#244f7f" }),
     -- ScrolllView
     ScrollView({ bg = "#224385" }),
     ScrollViewCursor({ fg = "#334365" }),

@@ -90,7 +90,7 @@ require("copilot").setup({
     },
   },
   panel = {
-    enabled = true,
+    enabled = false,
     auto_refresh = true,
     keymap = {
       jump_prev = "[[",
@@ -109,7 +109,7 @@ require("copilot").setup({
     return vim.fs.dirname(vim.fs.find(".git", { upward = true })[1])
   end,
   workspace_folders = { "/home/nicholas/.config/nvim" },
-  copilot_model = "gpt-4o-copilot", -- Current LSP default is gpt-35-turbo, supports gpt-4o-copilot
+  -- copilot_model = "gpt-4o-copilot", -- Current LSP default is gpt-35-turbo, supports gpt-4o-copilot
 })
 
 -- vim.keymap.set({ 'i', 'n' }, '<M-y>', function()
