@@ -139,20 +139,25 @@ function M.quick_close()
   -- Case 3: Last window - delete buffer instead of closing window
   local buf_count = count_listed_buffers()
 
+  local bufnr = vim.api.nvim_get_current_buf()
   if buf_count > 1 then
     -- Delete the buffer but keep the window
     vim.schedule(function()
-      local ok, err = pcall("bdelete", buf_count)
+      local ok, err = pcall(vim.cmd, "bdelete")
       if not ok then
         vim.notify("Error deleting buffer: " .. err, vim.log.levels.ERROR)
       end
     end)
   else
     -- Last buffer and last window - show Alpha startup screen
-    local alpha_ok, _ = pcall(vim.cmd, "Alpha")
-    if not alpha_ok then
-      -- Fallback if Alpha is not available
-      vim.cmd("enew")
+    if vim.bo[bufnr].filetype == "Alpha" then
+      vim.cmd("q")
+    else
+      local alpha_ok, _ = pcall(vim.cmd, "Alpha")
+      if not alpha_ok then
+        -- Fallback if Alpha is not available
+        vim.cmd("enew")
+      end
     end
   end
 end
