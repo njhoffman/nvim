@@ -1,0 +1,19 @@
+*_lua-metatables.txt* Template for making local helpfiles
+
+
+                                  >lua
+  setmetatable(tbl, {
+    __index = {
+      len = function(len)
+        local incr = 0
+        for _ in pairs(len) do
+          incr = incr + 1
+        end
+        return incr
+      end,
+    },
+  })
+  print(tbl:len())
+<
+
+vim:ft=help:tw=80:ts=8:sw=2:cole=2

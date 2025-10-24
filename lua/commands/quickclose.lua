@@ -1,6 +1,6 @@
 -- QuickClose command - Smart buffer/window closing logic
 local M = {}
-
+-- {
 -- Special splits configuration
 local special_splits = {
   { buftype = "quickfix" },
@@ -10,7 +10,12 @@ local special_splits = {
   { filetype = "neo-tree" },
   { filetype = "aerial" },
   { filetype = "Avante.*" }, -- Regex pattern
-  { filetype = "CodeCompanion" },
+  { filetype = "CompetiTest" },
+  { filetype = "MundoDiff" },
+  { filetype = "SidebarNvim" },
+  { filetype = "^dap." },
+  { filetype = "Trouble" },
+  { filetype = "Mundo" },
   { filetype = "TelescopePrompt" },
   { filetype = "WhichKey" },
   { filetype = "aerial" },
