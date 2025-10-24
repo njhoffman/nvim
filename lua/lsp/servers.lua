@@ -36,7 +36,6 @@ local servers = {
   "gradle_ls",
   -- 'grammarly',
   "graphql",
-  "groovyls",
   "helm_ls",
   "html",
   "intelephense",

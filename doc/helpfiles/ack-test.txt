@@ -1,0 +1,49 @@
+*ack-test.txt*   Plugin that integrates ack with Vim
+
+==============================================================================
+USAGE INSTRUCTIONS                                                 *ack-usage*
+
+:Ack[!] {pattern}                                                       *:Ack*
+
+    Search recursively for {pattern}. See |:AckAdd|.
+    Also see http://beyondgrep.com for more information.
+
+*Todo something to do
+*Error something wrong
+
+|Ack|                Introduction and Feature Summary
+|ack-usage|          Introduction and Feature Summary
+
+*tags*	        Tags
+|link-to-tags|	Links to tags	|:command|
+'vimoption'	Vim option	'textwidth'
+{code-text}	Code text	{Visual}gf
+<code-text>	Code text	<PageDown>
+`code-text`	Code text	`set fo=want`
+
+CTRL-X	Code text
+
+Example monospace code: >
+  This is unlabeled code
+<
+
+Example syntax code: >lua
+    use({
+      "folke/noice.nvim",
+      config = function()
+        require("noice").setup({
+            -- add any options here
+        })
+      end,
+      requires = {
+        -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+        "MunifTanjim/nui.nvim",
+        -- OPTIONAL:
+        --   `nvim-notify` is only needed, if you want to use the notification view.
+        --   If not available, we use `mini` as the fallback
+        "rcarriga/nvim-notify",
+        }
+    })
+<
+
+vim:tw=78:ts=8:ft=help:norl:

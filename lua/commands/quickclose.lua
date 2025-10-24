@@ -1,6 +1,6 @@
 -- QuickClose command - Smart buffer/window closing logic
 local M = {}
-
+-- {
 -- Special splits configuration
 local special_splits = {
   { buftype = "quickfix" },
@@ -10,7 +10,12 @@ local special_splits = {
   { filetype = "neo-tree" },
   { filetype = "aerial" },
   { filetype = "Avante.*" }, -- Regex pattern
-  { filetype = "CodeCompanion" },
+  { filetype = "CompetiTest" },
+  { filetype = "MundoDiff" },
+  { filetype = "SidebarNvim" },
+  { filetype = "^dap." },
+  { filetype = "Trouble" },
+  { filetype = "Mundo" },
   { filetype = "TelescopePrompt" },
   { filetype = "WhichKey" },
   { filetype = "aerial" },
@@ -142,7 +147,7 @@ function M.quick_close()
   if buf_count > 1 then
     -- Delete the buffer but keep the window
     vim.schedule(function()
-      local ok, err = pcall("bdelete", buf_count)
+      local ok, err = pcall(vim.cmd, "bdelete")
       if not ok then
         vim.notify("Error deleting buffer: " .. err, vim.log.levels.ERROR)
       end
