@@ -243,6 +243,10 @@ function s:start_moving()
   endif
   let s:target_view = winsaveview()
   if !exists('s:timer_id')
+    " Benchmark: start tracking operation
+    if exists('*smoothie#benchmark#start_op')
+      call smoothie#benchmark#start_op(s:cursor_movement ? 'cursor' : 'scroll', s:target_displacement)
+    endif
     exe 'sleep ' . g:smoothie_update_interval . ' m'
     execute("doautocmd User ScrollStart")
     let s:timer_id = timer_start(g:smoothie_update_interval, function('s:movement_tick'), {'repeat': -1})
@@ -252,6 +256,11 @@ endfunction
 ""
 " Stop any movement immediately, and disable the animation timer to conserve power.
 function s:stop_moving()
+  " Benchmark: end tracking operation
+  if exists('*smoothie#benchmark#end_op')
+    call smoothie#benchmark#end_op()
+  endif
+
   let s:target_displacement = 0
   let s:subline_position = 0.0
   if &scrolloff && &scrolloff > 0
@@ -321,6 +330,11 @@ endfunction
 " Execute single animation frame.  Called periodically by a timer.  Accepts a
 " throwaway parameter: the timer ID.
 function s:movement_tick(_)
+  " Benchmark: record frame timing
+  if exists('*smoothie#benchmark#record_frame')
+    call smoothie#benchmark#record_frame()
+  endif
+
   if s:target_displacement == 0
     call s:stop_moving()
     return

@@ -1,4 +1,4 @@
- if vim.g.neovide then
+if vim.g.neovide then
   -- vim.opt.linespace = 0
   -- g:neovide_transparency should be 0 if you want to unify transparency of content and title bar.
   -- vim.g.neovide_transparency = 0.0
@@ -36,7 +36,7 @@
   vim.g.neovide_floating_shadow = false
   vim.g.neovide_input_use_logo = true
   vim.g.neovide_no_idle = true
-  vim.g.neovide_opacity = 0.96
+  vim.g.neovide_opacity = 0.56
   vim.g.neovide_profiler = false
   vim.g.neovide_scale_factor = 0.8
   vim.g.neovide_hide_mouse_when_typing = true
@@ -64,9 +64,9 @@
   local font = {
     -- family = "JetBrainsMono Nerd Font Mono",
     -- family = "SauceCodePro Nerd Font Mono",
-   family = 'Maple Mono NF',
-   size = 10,
-   width = 0
+    family = "Maple Mono NF",
+    size = 10,
+    width = 0,
   }
 
   function font:sync(self)
@@ -94,7 +94,7 @@
   --   vim.opt.guifont = string.format("%s:h%s", vim.g.gui_font_face, vim.g.gui_font_size)
   -- end
 
--- Hack
+  -- Hack
   --
   -- ResizeGuiFont = function(delta)
   --   vim.g.gui_font_size = vim.g.gui_font_size + delta

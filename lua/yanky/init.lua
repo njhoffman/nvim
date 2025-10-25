@@ -1,10 +1,10 @@
-local utils = require('yanky.utils')
-local highlight = require('yanky.highlight')
-local system_clipboard = require('yanky.system_clipboard')
-local preserve_cursor = require('yanky.preserve_cursor')
-local picker = require('yanky.picker')
+local utils = require("yanky.utils")
+local highlight = require("yanky.highlight")
+local system_clipboard = require("yanky.system_clipboard")
+local preserve_cursor = require("yanky.preserve_cursor")
+local picker = require("yanky.picker")
 -- local picker = require('telescope._extensions.yank_hstory')
-local textobj = require('yanky.textobj')
+local textobj = require("yanky.textobj")
 
 local yanky = {}
 
@@ -20,19 +20,19 @@ yanky.direction = {
 }
 
 yanky.type = {
-  PUT_BEFORE = 'P',
-  PUT_AFTER = 'p',
-  GPUT_BEFORE = 'gP',
-  GPUT_AFTER = 'gp',
-  PUT_INDENT_AFTER = ']p',
-  PUT_INDENT_BEFORE = '[p',
+  PUT_BEFORE = "P",
+  PUT_AFTER = "p",
+  GPUT_BEFORE = "gP",
+  GPUT_AFTER = "gp",
+  PUT_INDENT_AFTER = "]p",
+  PUT_INDENT_BEFORE = "[p",
 }
 
 function yanky.setup(options)
-  yanky.config = require('yanky.config')
+  yanky.config = require("yanky.config")
   yanky.config.setup(options)
 
-  yanky.history = require('yanky.history')
+  yanky.history = require("yanky.history")
   yanky.history.setup()
 
   system_clipboard.setup()
@@ -40,10 +40,10 @@ function yanky.setup(options)
   preserve_cursor.setup()
   picker.setup()
 
-  local yanky_augroup = vim.api.nvim_create_augroup('Yanky', { clear = true })
-  vim.api.nvim_create_autocmd('TextYankPost', {
+  local yanky_augroup = vim.api.nvim_create_augroup("Yanky", { clear = true })
+  vim.api.nvim_create_autocmd("TextYankPost", {
     group = yanky_augroup,
-    pattern = '*',
+    pattern = "*",
     callback = function(_)
       yanky.on_yank()
     end,
@@ -51,14 +51,14 @@ function yanky.setup(options)
   if vim.v.vim_did_enter == 1 then
     yanky.init_history()
   else
-    vim.api.nvim_create_autocmd('VimEnter', {
+    vim.api.nvim_create_autocmd("VimEnter", {
       group = yanky_augroup,
-      pattern = '*',
+      pattern = "*",
       callback = yanky.init_history,
     })
   end
 
-  vim.api.nvim_create_user_command('YankyClearHistory', yanky.clear_history, {})
+  vim.api.nvim_create_user_command("YankyClearHistory", yanky.clear_history, {})
 end
 
 function yanky.init_history()
@@ -75,8 +75,9 @@ local function do_put(state, _)
     vim.cmd,
     string.format(
       'silent normal! %s"%s%s%s',
-      state.is_visual and 'gv' or '',
-      state.register ~= '=' and state.register or '=' .. vim.api.nvim_replace_termcodes('<CR>', true, false, true),
+      state.is_visual and "gv" or "",
+      state.register ~= "=" and state.register
+        or "=" .. vim.api.nvim_replace_termcodes("<CR>", true, false, true),
       state.count,
       state.type
     )
@@ -91,7 +92,7 @@ end
 
 function yanky.put(type, is_visual, callback)
   if not vim.tbl_contains(vim.tbl_values(yanky.type), type) then
-    vim.notify('Invalid type ' .. type, vim.log.levels.ERROR)
+    vim.notify("Invalid type " .. type, vim.log.levels.ERROR)
     return
   end
 
@@ -101,8 +102,8 @@ function yanky.put(type, is_visual, callback)
 
   -- On Yank event is not triggered when put from expression register,
   -- To allows cycling, we must store value here
-  if vim.v.register == '=' then
-    local entry = utils.get_register_info('=')
+  if vim.v.register == "=" then
+    local entry = utils.get_register_info("=")
     entry.filetype = vim.bo.filetype
 
     yanky.history.push(entry)
@@ -121,10 +122,10 @@ function yanky.clear_ring()
 end
 
 function yanky.attach_cancel()
-  if yanky.config.options.ring.cancel_event == 'move' then
-    yanky.ring.state.augroup = vim.api.nvim_create_augroup('YankyRingClear', { clear = true })
+  if yanky.config.options.ring.cancel_event == "move" then
+    yanky.ring.state.augroup = vim.api.nvim_create_augroup("YankyRingClear", { clear = true })
     vim.schedule(function()
-      vim.api.nvim_create_autocmd('CursorMoved', {
+      vim.api.nvim_create_autocmd("CursorMoved", {
         group = yanky.ring.state.augroup,
         buffer = 0,
         callback = yanky.clear_ring,
@@ -142,18 +143,18 @@ function yanky.attach_cancel()
 end
 
 function yanky.attach_metadata(entry)
-  entry.filetype = vim.bo.filetype or vim.api.nvim_get_option_value('filetype', {})
+  entry.filetype = vim.bo.filetype or vim.api.nvim_get_option_value("filetype", {})
   entry.date = os.date()
-  entry.project_root = require('project_nvim.root').get_project_root()
+  entry.project_root = require("project_nvim.root").get_project_root()
   entry.cwd = vim.fn.getcwd()
-  entry.filename = vim.fn.expand('%:p')
+  entry.filename = vim.fn.expand("%:p")
 end
 
 function yanky.init_ring(type, register, count, is_visual, callback)
-  register = (register ~= '"' and register ~= '_') and register or utils.get_default_register()
+  register = (register ~= '"' and register ~= "_") and register or utils.get_default_register()
 
   local reg_content = vim.fn.getreg(register)
-  if nil == reg_content or '' == reg_content then
+  if nil == reg_content or "" == reg_content then
     vim.notify(string.format('Register "%s" is empty', register), vim.log.levels.WARN)
     return
   end
@@ -185,13 +186,13 @@ end
 
 function yanky.cycle(direction)
   if not yanky.can_cycle() then
-    vim.notify('Your last action was not put, ignoring cycle', vim.log.levels.INFO)
+    vim.notify("Your last action was not put, ignoring cycle", vim.log.levels.INFO)
     return
   end
 
   direction = direction or yanky.direction.FORWARD
   if not vim.tbl_contains(vim.tbl_values(yanky.direction), direction) then
-    vim.notify('Invalid direction for cycle', vim.log.levels.ERROR)
+    vim.notify("Invalid direction for cycle", vim.log.levels.ERROR)
     return
   end
 
@@ -215,25 +216,25 @@ function yanky.cycle(direction)
   if direction == yanky.direction.FORWARD then
     next_content = yanky.history.next()
     if nil == next_content then
-      vim.notify('Reached oldest item', vim.log.levels.INFO)
+      vim.notify("Reached oldest item", vim.log.levels.INFO)
       yanky.attach_cancel()
       return
     end
   else
     next_content = yanky.history.previous()
     if nil == next_content then
-      vim.notify('Reached first item', vim.log.levels.INFO)
+      vim.notify("Reached first item", vim.log.levels.INFO)
       yanky.attach_cancel()
       return
     end
   end
 
-  yanky.ring.state.register = yanky.ring.state.register ~= '=' and yanky.ring.state.register
+  yanky.ring.state.register = yanky.ring.state.register ~= "=" and yanky.ring.state.register
     or utils.get_default_register()
 
   utils.use_temporary_register(yanky.ring.state.register, next_content, function()
     if new_state.use_repeat then
-      local ok, val = pcall(vim.cmd, 'silent normal! u.')
+      local ok, val = pcall(vim.cmd, "silent normal! u.")
       if not ok then
         vim.notify(val, vim.log.levels.WARN)
         yanky.attach_cancel()
@@ -241,7 +242,7 @@ function yanky.cycle(direction)
       end
       highlight.highlight_put(new_state)
     else
-      local ok, val = pcall(vim.cmd, 'silent normal! u')
+      local ok, val = pcall(vim.cmd, "silent normal! u")
       if not ok then
         vim.notify(val, vim.log.levels.WARN)
         yanky.attach_cancel()
@@ -267,7 +268,7 @@ function yanky.on_yank()
   end
 
   -- Only historize first delete in visual mode
-  if vim.v.event.visual and vim.v.event.operator == 'd' and yanky.ring.is_cycling then
+  if vim.v.event.visual and vim.v.event.operator == "d" and yanky.ring.is_cycling then
     return
   end
   local entry = utils.get_register_info(vim.v.event.regname)
@@ -282,7 +283,7 @@ function yanky.yank(options)
   options = options or {}
   preserve_cursor.yank()
 
-  return string.format('%sy', options.register and '"' .. options.register or '')
+  return string.format("%sy", options.register and '"' .. options.register or "")
 end
 
 function yanky.clear_history()
@@ -290,122 +291,140 @@ function yanky.clear_history()
 end
 
 function yanky.register_plugs()
-  local yanky_wrappers = require('yanky.wrappers')
+  local yanky_wrappers = require("yanky.wrappers")
 
-  vim.keymap.set('n', '<Plug>(YankyCycleForward)', function()
+  vim.keymap.set("n", "<Plug>(YankyCycleForward)", function()
     yanky.cycle(1)
   end, { silent = true })
 
-  vim.keymap.set('n', '<Plug>(YankyCycleBackward)', function()
+  vim.keymap.set("n", "<Plug>(YankyCycleBackward)", function()
     yanky.cycle(-1)
   end, { silent = true })
 
-  vim.keymap.set('n', '<Plug>(YankyPreviousEntry)', function()
+  vim.keymap.set("n", "<Plug>(YankyPreviousEntry)", function()
     yanky.cycle(1)
   end, { silent = true })
 
-  vim.keymap.set('n', '<Plug>(YankyNextEntry)', function()
+  vim.keymap.set("n", "<Plug>(YankyNextEntry)", function()
     yanky.cycle(-1)
   end, { silent = true })
 
-  vim.keymap.set({ 'n', 'x' }, '<Plug>(YankyYank)', yanky.yank, { silent = true, expr = true })
+  vim.keymap.set({ "n", "x" }, "<Plug>(YankyYank)", yanky.yank, { silent = true, expr = true })
 
   for type, type_text in pairs({
-    p = 'PutAfter',
-    P = 'PutBefore',
-    gp = 'GPutAfter',
-    gP = 'GPutBefore',
-    [']p'] = 'PutIndentAfter',
-    ['[p'] = 'PutIndentBefore',
+    p = "PutAfter",
+    P = "PutBefore",
+    gp = "GPutAfter",
+    gP = "GPutBefore",
+    ["]p"] = "PutIndentAfter",
+    ["[p"] = "PutIndentBefore",
   }) do
-    vim.keymap.set('n', string.format('<Plug>(Yanky%s)', type_text), function()
+    vim.keymap.set("n", string.format("<Plug>(Yanky%s)", type_text), function()
       yanky.put(type, false)
     end, { silent = true })
 
-    vim.keymap.set('x', string.format('<Plug>(Yanky%s)', type_text), function()
+    vim.keymap.set("x", string.format("<Plug>(Yanky%s)", type_text), function()
       yanky.put(type, true)
     end, { silent = true })
 
-    vim.keymap.set('n', string.format('<Plug>(Yanky%sJoined)', type_text), function()
+    vim.keymap.set("n", string.format("<Plug>(Yanky%sJoined)", type_text), function()
       yanky.put(type, false, yanky_wrappers.trim_and_join_lines())
     end, { silent = true })
 
-    vim.keymap.set('x', string.format('<Plug>(Yanky%sJoined)', type_text), function()
+    vim.keymap.set("x", string.format("<Plug>(Yanky%sJoined)", type_text), function()
       yanky.put(type, true, yanky_wrappers.trim_and_join_lines())
     end, { silent = true })
 
-    vim.keymap.set('n', string.format('<Plug>(Yanky%sLinewise)', type_text), function()
+    vim.keymap.set("n", string.format("<Plug>(Yanky%sLinewise)", type_text), function()
       yanky.put(type, false, yanky_wrappers.linewise())
     end, { silent = true })
 
-    vim.keymap.set('x', string.format('<Plug>(Yanky%sLinewise)', type_text), function()
+    vim.keymap.set("x", string.format("<Plug>(Yanky%sLinewise)", type_text), function()
       yanky.put(type, true, yanky_wrappers.linewise())
     end, { silent = true })
 
-    vim.keymap.set('n', string.format('<Plug>(Yanky%sLinewiseJoined)', type_text), function()
+    vim.keymap.set("n", string.format("<Plug>(Yanky%sLinewiseJoined)", type_text), function()
       yanky.put(type, false, yanky_wrappers.linewise(yanky_wrappers.trim_and_join_lines()))
     end, { silent = true })
 
-    vim.keymap.set('x', string.format('<Plug>(Yanky%sLinewiseJoined)', type_text), function()
+    vim.keymap.set("x", string.format("<Plug>(Yanky%sLinewiseJoined)", type_text), function()
       yanky.put(type, true, yanky_wrappers.linewise(yanky_wrappers.trim_and_join_lines()))
     end, { silent = true })
 
-    vim.keymap.set('n', string.format('<Plug>(Yanky%sCharwise)', type_text), function()
+    vim.keymap.set("n", string.format("<Plug>(Yanky%sCharwise)", type_text), function()
       yanky.put(type, false, yanky_wrappers.charwise())
     end, { silent = true })
 
-    vim.keymap.set('x', string.format('<Plug>(Yanky%sCharwise)', type_text), function()
+    vim.keymap.set("x", string.format("<Plug>(Yanky%sCharwise)", type_text), function()
       yanky.put(type, true, yanky_wrappers.charwise())
     end, { silent = true })
 
-    vim.keymap.set('n', string.format('<Plug>(Yanky%sCharwiseJoined)', type_text), function()
+    vim.keymap.set("n", string.format("<Plug>(Yanky%sCharwiseJoined)", type_text), function()
       yanky.put(type, false, yanky_wrappers.charwise(yanky_wrappers.trim_and_join_lines()))
     end, { silent = true })
 
-    vim.keymap.set('x', string.format('<Plug>(Yanky%sCharwiseJoined)', type_text), function()
+    vim.keymap.set("x", string.format("<Plug>(Yanky%sCharwiseJoined)", type_text), function()
       yanky.put(type, true, yanky_wrappers.charwise(yanky_wrappers.trim_and_join_lines()))
     end, { silent = true })
 
-    vim.keymap.set('n', string.format('<Plug>(Yanky%sBlockwise)', type_text), function()
+    vim.keymap.set("n", string.format("<Plug>(Yanky%sBlockwise)", type_text), function()
       yanky.put(type, false, yanky_wrappers.blockwise())
     end, { silent = true })
 
-    vim.keymap.set('x', string.format('<Plug>(Yanky%sBlockwise)', type_text), function()
+    vim.keymap.set("x", string.format("<Plug>(Yanky%sBlockwise)", type_text), function()
       yanky.put(type, true, yanky_wrappers.blockwise())
     end, { silent = true })
 
-    vim.keymap.set('n', string.format('<Plug>(Yanky%sBlockwiseJoined)', type_text), function()
+    vim.keymap.set("n", string.format("<Plug>(Yanky%sBlockwiseJoined)", type_text), function()
       yanky.put(type, false, yanky_wrappers.blockwise(yanky_wrappers.trim_and_join_lines()))
     end, { silent = true })
 
-    vim.keymap.set('x', string.format('<Plug>(Yanky%sBlockwiseJoined)', type_text), function()
+    vim.keymap.set("x", string.format("<Plug>(Yanky%sBlockwiseJoined)", type_text), function()
       yanky.put(type, true, yanky_wrappers.blockwise(yanky_wrappers.trim_and_join_lines()))
     end, { silent = true })
 
-    for change, change_text in pairs({ ['>>'] = 'ShiftRight', ['<<'] = 'ShiftLeft', ['=='] = 'Filter' }) do
-      vim.keymap.set('n', string.format('<Plug>(Yanky%s%s)', type_text, change_text), function()
+    for change, change_text in pairs({
+      [">>"] = "ShiftRight",
+      ["<<"] = "ShiftLeft",
+      ["=="] = "Filter",
+    }) do
+      vim.keymap.set("n", string.format("<Plug>(Yanky%s%s)", type_text, change_text), function()
         yanky.put(type, false, yanky_wrappers.linewise(yanky_wrappers.change(change)))
       end, { silent = true })
 
-      vim.keymap.set('x', string.format('<Plug>(Yanky%s%s)', type_text, change_text), function()
+      vim.keymap.set("x", string.format("<Plug>(Yanky%s%s)", type_text, change_text), function()
         yanky.put(type, true, yanky_wrappers.linewise(yanky_wrappers.change(change)))
       end, { silent = true })
 
-      vim.keymap.set('n', string.format('<Plug>(Yanky%s%sJoined)', type_text, change_text), function()
-        yanky.put(
-          type,
-          false,
-          yanky_wrappers.linewise(yanky_wrappers.trim_and_join_lines(yanky_wrappers.change(change)))
-        )
-      end, { silent = true })
+      vim.keymap.set(
+        "n",
+        string.format("<Plug>(Yanky%s%sJoined)", type_text, change_text),
+        function()
+          yanky.put(
+            type,
+            false,
+            yanky_wrappers.linewise(
+              yanky_wrappers.trim_and_join_lines(yanky_wrappers.change(change))
+            )
+          )
+        end,
+        { silent = true }
+      )
 
-      vim.keymap.set('x', string.format('<Plug>(Yanky%s%sJoined)', type_text, change_text), function()
-        yanky.put(
-          type,
-          true,
-          yanky_wrappers.linewise(yanky_wrappers.trim_and_join_lines(yanky_wrappers.change(change)))
-        )
-      end, { silent = true })
+      vim.keymap.set(
+        "x",
+        string.format("<Plug>(Yanky%s%sJoined)", type_text, change_text),
+        function()
+          yanky.put(
+            type,
+            true,
+            yanky_wrappers.linewise(
+              yanky_wrappers.trim_and_join_lines(yanky_wrappers.change(change))
+            )
+          )
+        end,
+        { silent = true }
+      )
     end
   end
 end

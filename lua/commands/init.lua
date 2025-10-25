@@ -8,6 +8,7 @@ local reload = require("commands.reload")
 local system = require("commands.system")
 local ansi = require("commands.ansi")
 local quickclose = require("commands.quickclose")
+local colorscheme_export = require("commands.colorscheme_export")
 
 local map = require("mapper").map
 
@@ -99,6 +100,28 @@ vim.api.nvim_create_autocmd("FileType", {
 cmd("HelpExport", help.export_help_files, { desc = "export local help files" })
 cmd("HelpNew", help.edit_new_helpfile, { desc = "edit new local helpfile" })
 
+cmd("ColorschemeExport", function(opts)
+  colorscheme_export.export({
+    colorscheme = opts.args ~= "" and opts.args or nil,
+  })
+end, {
+  nargs = "?",
+  desc = "󰏘 export colorscheme to bat theme format",
+  complete = function(_, _, _)
+    -- Get available colorschemes for completion
+    local paths = vim.api.nvim_get_runtime_file("colors/*.{vim,lua}", true)
+    local schemes = {}
+    for _, path in ipairs(paths) do
+      local scheme = path:match("colors/(.*)%..*$")
+      if scheme then
+        table.insert(schemes, scheme)
+      end
+    end
+    table.sort(schemes)
+    return schemes
+  end,
+})
+
 -- map("n", "<leader>$", format.end_char_strip, { desc = "ﲖ strip end characters" })
 map("n", "<leader>a", format.end_char_toggle, { desc = "ﲖ toggle end character", nowait = true })
 
@@ -123,94 +146,3 @@ cmd("Reddit", function(o)
   local url = ("https://www.google.com/search?q=site:reddit.com%20%s"):format(escaped)
   vim.ui.open(url)
 end, { nargs = 1, desc = "search in reddit" })
-
-local web_query = function(engine)
-  local engines = {
-    google = { prompt = " Google: ", url = "https://www.google.com/search?q=" },
-  }
-
-  local selected = engines[engine or "google"]
-  local input = vim.fn.input(selected.prompt)
-  local response = not (input == nil or input == "")
-
-  -- Start off with the current buf type. This will add lua for lua files ruby for rb files and so on.
-  local query = vim.bo.filetype
-  if response then
-    query = query .. " " .. input
-  else
-    query = query .. " " .. vim.fn.expand("<cword>")
-  end
-
-  os.execute([[open ']] .. selected.url .. query .. "'")
-end
-
--- -- Mapping for dd that doesn't yank an empty line into your default register:
--- keymap.set("n", "dd", function()
---   if vim.api.nvim_get_current_line():match("^%s*$") then
---     return '"_dd'
---   else
---     return "dd"
---   end
--- end, { expr = true })
---
--- -- greatest remap ever
--- keymap.set("x", "p", "P")
---
--- -- using delete without yank
--- keymap.set({ "n", "v" }, "<leader>d", "\"_d", { desc = "Delete without yank" })
--- cmd(
---   "PasteNoYank",
---   paste.visual_paste_without_yank,
---   { desc = "Paste to visual selection buffer without overwriting register" }
--- )
--- vim.keymap.set("v", "p", paste.visual_paste_without_yank, { noremap = true, silent = true })
-
--- {
---     name = "LvimCacheReset",
---     fn = function()
---       require("lvim.utils.hooks").reset_cache()
---     end,
---   },
---   {
---     name = "LvimReload",
---     fn = function()
---       require("lvim.config"):reload()
---     end,
---   },
-
--- vim.g.scriptpath,vim.g.loaded_remote_plugins,script_path,scripts_dir
--- vim.o.argv, vim.o.packpath, vim.o.runtimepath, undodir, viewdir, directory, backupdir, helpfile,
--- -- nvim --cmd "set rtp+=." lua/NeovimConf.lua
-
--- cmd("LogFiles", function(cmd_props)
---
---     -- logfiles["auth"]="/var/log/auth.log"
---     -- logfiles["boot"]="/var/log/boot.log"
---     -- logfiles["dmesg"]="/var/log/dmesg"
---     -- logfiles["kern"]="/var/log/kern.log"
---     -- logfiles["mpd"]="$HOME/.mpd/mpd.log"
---     -- logfiles["postgresql"]="/var/log/postgresql/postgresql-12-main.log"
---     -- logfiles["syslog"]="/var/log/syslog"
---     -- logfiles["nvim-dap"]="$HOME/.cache/nvim/dap.log"
---     -- logfiles["nvim-packer"]="$HOME/.cache/nvim/packer.nvim.log"
---     -- logfiles["nvim-telescope"]="$HOME/.cache/nvim/telescope.log"
---     -- logfiles["nvim-lsp-installer"]="$HOME/.cache/nvim/lsp-installer.log"
---     -- logfiles["nvim-inspect"]="$HOME/.local/share/nvim/inspect.log"
---     -- logfiles["nvim"]="$HOME/.local/share/nvim/nvim.log"
---     -- logfiles["nvim-efm"]="$HOME/.local/share/nvim/lsp-efm.log"
---     -- logfiles["nvim-lsp"]="$HOME/.local/state/nvim/lsp.log"
---   end
--- end, { desc = "Open a pre-configured log file for display" })
---
--- cmd_props
--- • args:  (string)  The args passed to the command, if any |<args>|
--- • fargs: (table)   The args split by unescaped whitespace (when more than one argument is allowed), if any |<f-args>|
--- • bang:  (boolean) "true" if the command was executed with a ! modifier |<bang>|
--- • line1: (number)  The starting line of the command range |<line1>|
--- • line2: (number)  The final line of the command range |<line2>|
--- • range: (number)  The number of items in the command range: 0, 1, or 2 |<range>|
--- • count: (number)  Any count supplied |<count>|
--- • reg:   (string)  The optional register, if specified |<reg>|
--- • mods:  (string)  Command modifiers, if any |<mods>|
--- • smods: (table)   Command modifiers in a structured format. Has the same structure as the "mods" key of |nvim_parse_cmd()|.
---
