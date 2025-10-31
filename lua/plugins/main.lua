@@ -507,8 +507,9 @@ local plugins = {
   -- pairs
   -- { 'windwp/nvim-autopairs', event = 'InsertEnter', enabled = false, dependencies = { 'nvim-cmp' } },
   {
-    "njhoffman/ultimate-autopair.nvim",
-    dir = "~/git/ultimate-autopair.nvim",
+    -- "njhoffman/ultimate-autopair.nvim",
+    "altermo/ultimate-autopair.nvim",
+    -- dir = "~/git/ultimate-autopair.nvim",
     event = { "InsertEnter", "CmdlineEnter" },
     branch = "v0.6",
   },
