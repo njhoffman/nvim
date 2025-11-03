@@ -1422,8 +1422,12 @@ return function(injected_functions)
     -- PmenuSel({ fg = "#44bfcf", bg = "#1a1f2f" }),
     -- PmenuThumb({ fg = "#1f3352", bg = "#244f7f" }),
 
-    SatelliteBar({ fg = "#1f3352", bg = "#202331" }),
-    SatelliteCursor({ fg = "#313c84", bg = "#244f7f" }),
+    SatelliteBar({ bg = "#203361" }),
+    -- SatelliteBarInactive({ fg = "#405f88" }),
+    SatelliteBarInactive({ bg = "#203361" }),
+    SatelliteBarScrolling({ bg = "#224385" }),
+    SatelliteCursor({ fg = "#313c84", bg = "#224385" }),
+
     -- ScrolllView
     ScrollView({ bg = "#224385" }),
     ScrollViewCursor({ fg = "#334365" }),

@@ -1,3 +1,6 @@
+-- ▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'  '░'  '' '' '󰔶' '' '' '󰍝' 󰄼   󰶹 󰶡   󰮷 }
+-- "•"  "┆", "▁", "", "", " ", ﹘‐ ‑ ‒ – — ― ‖ ‗﹉ ﹊ ﹋ ﹌ ﹍ ﹎ ﹏
+--  '─│─│╭╮╯╰'            
 local cfg = {
   current_only = false,
   zindex = 40,
@@ -9,25 +12,20 @@ local cfg = {
   -- States: active (focused window), inactive (unfocused), scrolling (during scroll)
   states = {
     active = {
-      shape = {
-        head = "▎",
-        body = "▎",
-        tail = "▎",
-      },
+      -- shape = { head = "▎", body = "▎", tail = "▎" },
+      shape = { head = "░", body = "░", tail = "░" },
+      -- shape = { head = "█", body = "█", tail = "█" },
       -- Highlight groups for each segment
       highlight = {
         head = "SatelliteBar",
         body = "SatelliteBar",
         tail = "SatelliteBar",
       },
-      winblend = 50,
+      winblend = 70,
     },
     inactive = {
-      shape = {
-        head = "▎",
-        body = "░",
-        tail = "▎",
-      },
+      shape = { head = "░", body = "░", tail = "░" },
+      -- shape = { head = "▎", body = "░", tail = "▎" },
       highlight = {
         head = "SatelliteBarInactive",
         body = "SatelliteBarInactive",
@@ -36,17 +34,15 @@ local cfg = {
       winblend = 70,
     },
     scrolling = {
-      shape = {
-        head = "▲",
-        body = "█",
-        tail = "▼",
-      },
+      -- shape = { head = "▲", body = "█", tail = "▼" },
+      -- shape = { head = "█", body = "█", tail = "█" },
+      shape = { head = "░", body = "░", tail = "░" },
       highlight = {
         head = "SatelliteBarScrolling",
         body = "SatelliteBarScrolling",
         tail = "SatelliteBarScrolling",
       },
-      winblend = 30,
+      winblend = 0,
     },
   },
 
@@ -68,7 +64,8 @@ local cfg = {
     cursor = {
       enable = false,
       -- Supports any number of symbols
-      symbols = { "⎺", "⎻", "⎼", "⎽" },
+      -- symbols = { "⎺", "⎻", "⎼", "⎽" },
+      symbols = { "•" },
       -- symbols = { "█" },
       -- symbols = { '⎻', '⎼' }
       -- Highlights: - SatelliteCursor (default links to NonText
@@ -102,7 +99,7 @@ local cfg = {
       -- - SatelliteDiagnosticHint (default links to DiagnosticHint)
     },
     gitsigns = {
-      enable = true,
+      enable = false,
       signs = { -- can only be a single character (multibyte is okay)
         add = "│",
         change = "│",

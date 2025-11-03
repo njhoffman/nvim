@@ -240,7 +240,7 @@ function M.setup(cfg)
   api.nvim_set_hl(0, "SatelliteBarInactive", { default = true, link = "Comment" })
 
   -- Scrolling state scrollbar (default: brighter, more visible)
-  api.nvim_set_hl(0, "SatelliteBarScrolling", { default = true, link = "IncSearch" })
+  api.nvim_set_hl(0, "SatelliteBarScrolling", { default = true, link = "PmenuSbar" })
 
   enable()
 end
