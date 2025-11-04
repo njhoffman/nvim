@@ -5,6 +5,64 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-11-03
+
+### Added
+
+- **Smoothie Code Reorganization**: Consolidated all smoothie code into `lua/smoothie/` directory
+  - Moved VimL code from `plugin/` and `autoload/` to `lua/smoothie/` for better organization
+  - Added `lua/smoothie/load_viml.lua` loader for VimL version
+  - Maintained autoload compatibility with wrapper file
+  - Both Lua and VimL versions now coexist in same directory structure
+
+- **Consolidated Benchmark Commands**: Unified command interface for both VimL and Lua implementations
+  - `SBEnable`, `SBDisable`, `SBToggle`, `SBReset`, `SBStats` now work with active implementation
+  - `SmoothieBenchmarkEnable`, `SmoothieBenchmarkDisable`, etc. for explicit control
+  - Commands automatically detect and call correct implementation (VimL or Lua)
+  - Maintained backward compatibility with legacy Lua-specific commands
+
+- **Visual Lines Support**: New `use_visual_lines` config option
+  - Accounts for wrapped lines and visual decorations when scrolling
+  - Uses `gj`/`gk` movements instead of `j`/`k` when enabled
+  - Better handling of markdown code blocks and long wrapped lines
+  - Available in both Lua and VimL versions
+  - Default: disabled (set `use_visual_lines = true` to enable)
+
+### Fixed
+
+- **Freeze Prevention for G/gg Commands**: Resolved infinite loop issue near buffer boundaries
+  - Added timeout mechanism with max 10,000 iterations
+  - Detects stuck animations after 50 iterations without movement
+  - Early exit when already at target position
+  - Proper cleanup when animation is stopped or completes
+  - Fixes hanging issue when pressing `G` or `gg` near top/bottom of buffer
+
+- **Benchmark Stats Display**: Improved table formatting and readability
+  - Fixed border alignment (all lines now exactly 53 characters)
+  - Added syntax highlighting for better visual distinction:
+    - Blue borders (bold)
+    - Red headers (bold)
+    - Yellow labels
+    - Green values (bold)
+    - Cyan units (italic)
+  - Consistent padding and formatting across all metrics
+  - Applied to both Lua and VimL implementations
+
+### Changed
+
+- **Smoothie Toggle System**: Enhanced implementation switching
+  - `SmoothieUseVimL` and `SmoothieUseLua` remain separate for explicit control
+  - All benchmark commands now auto-detect active implementation
+  - Improved state management between implementations
+
+### Tests
+
+- **Extended Test Coverage**: Added tests for new features
+  - Freeze fix validation (ensures G/gg complete in < 5 seconds)
+  - Consolidated commands verification
+  - `use_visual_lines` config option testing
+  - Edge case handling (already at target position)
+
 ## [0.3.0] - 2025-10-20
 
 ### Changed

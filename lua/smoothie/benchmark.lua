@@ -260,23 +260,23 @@ function M.format_stats()
   table.insert(lines, "╔═══════════════════════════════════════════════════╗")
   table.insert(lines, "║         SMOOTHIE BENCHMARK STATISTICS (Lua)       ║")
   table.insert(lines, "╠═══════════════════════════════════════════════════╣")
-  table.insert(lines, string.format("║ Operations:              %20d ║", stats.operation_count))
-  table.insert(lines, string.format("║ Total Lines Scrolled:    %20d ║", stats.total_lines))
-  table.insert(lines, string.format("║ Total Time:              %17.2f ms ║", stats.total_time_ms))
+  table.insert(lines, string.format("║ Operations:                             %9d ║", stats.operation_count))
+  table.insert(lines, string.format("║ Total Lines Scrolled:                   %9d ║", stats.total_lines))
+  table.insert(lines, string.format("║ Total Time:                          %9.2f ms ║", stats.total_time_ms))
   table.insert(lines, "╠═══════════════════════════════════════════════════╣")
   table.insert(lines, "║                 SPEED METRICS                     ║")
   table.insert(lines, "╠═══════════════════════════════════════════════════╣")
-  table.insert(lines, string.format("║ Avg Lines/Minute:        %20.2f ║", stats.avg_lines_per_minute))
-  table.insert(lines, string.format("║ Avg Speed:               %17.2f l/s ║", stats.avg_speed_lps))
-  table.insert(lines, string.format("║ Min Speed:               %17.2f l/s ║", stats.min_speed_lps))
-  table.insert(lines, string.format("║ Max Speed:               %17.2f l/s ║", stats.max_speed_lps))
-  table.insert(lines, string.format("║ Speed StdDev:            %17.2f l/s ║", stats.speed_stddev))
+  table.insert(lines, string.format("║ Avg Lines/Minute:                   %12.2f ║", stats.avg_lines_per_minute))
+  table.insert(lines, string.format("║ Avg Speed:                           %9.2f l/s ║", stats.avg_speed_lps))
+  table.insert(lines, string.format("║ Min Speed:                           %9.2f l/s ║", stats.min_speed_lps))
+  table.insert(lines, string.format("║ Max Speed:                           %9.2f l/s ║", stats.max_speed_lps))
+  table.insert(lines, string.format("║ Speed StdDev:                        %9.2f l/s ║", stats.speed_stddev))
   table.insert(lines, "╠═══════════════════════════════════════════════════╣")
   table.insert(lines, "║              SMOOTHNESS METRICS                   ║")
   table.insert(lines, "╠═══════════════════════════════════════════════════╣")
-  table.insert(lines, string.format("║ Turbulence Events:       %20d ║", stats.turbulence_events))
-  table.insert(lines, string.format("║ Avg Turbulence Score:    %17.2f ms ║", stats.avg_turbulence))
-  table.insert(lines, string.format("║ Consistency Score:       %18.2f%% ║", stats.consistency_score))
+  table.insert(lines, string.format("║ Turbulence Events:                          %5d ║", stats.turbulence_events))
+  table.insert(lines, string.format("║ Avg Turbulence Score:                %9.2f ms ║", stats.avg_turbulence))
+  table.insert(lines, string.format("║ Consistency Score:                    %9.2f%% ║", stats.consistency_score))
   table.insert(lines, "╚═══════════════════════════════════════════════════╝")
   table.insert(lines, "")
   table.insert(lines, "Turbulence: Frame timing deviations from expected interval")
@@ -304,6 +304,50 @@ function M.show_stats()
   vim.api.nvim_buf_set_option(buf, "modifiable", false)
   vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
   vim.api.nvim_buf_set_option(buf, "filetype", "smoothie-benchmark")
+
+  -- Define highlights
+  local ns_id = vim.api.nvim_create_namespace("smoothie_benchmark")
+
+  -- Define highlight groups
+  vim.api.nvim_set_hl(0, "SmoothieBenchmarkBorder", { fg = "#61AFEF", bold = true })
+  vim.api.nvim_set_hl(0, "SmoothieBenchmarkHeader", { fg = "#E06C75", bold = true })
+  vim.api.nvim_set_hl(0, "SmoothieBenchmarkLabel", { fg = "#E5C07B" })
+  vim.api.nvim_set_hl(0, "SmoothieBenchmarkValue", { fg = "#98C379", bold = true })
+  vim.api.nvim_set_hl(0, "SmoothieBenchmarkUnit", { fg = "#56B6C2", italic = true })
+
+  -- Apply highlights
+  for i, line in ipairs(lines) do
+    local line_num = i - 1 -- 0-indexed
+
+    -- Borders
+    if line:match("^[╔╠╚═]") then
+      vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkBorder", line_num, 0, -1)
+    -- Main header
+    elseif line:match("BENCHMARK STATISTICS") then
+      vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkHeader", line_num, 0, -1)
+    -- Section headers
+    elseif line:match("METRICS") then
+      vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkHeader", line_num, 0, -1)
+    -- Data rows
+    elseif line:match("║.*:.*║") then
+      local colon_pos = line:find(":")
+      if colon_pos then
+        -- Highlight label (before colon)
+        vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkLabel", line_num, 1, colon_pos)
+        -- Highlight value (after colon, excluding units)
+        local value_start = colon_pos
+        local value_end = #line - 1
+        -- Check for units
+        local unit_start = line:find(" [lm]/s", value_start) or line:find(" ms", value_start) or line:find("%%", value_start)
+        if unit_start then
+          vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkValue", line_num, value_start, unit_start)
+          vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkUnit", line_num, unit_start, value_end)
+        else
+          vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkValue", line_num, value_start, value_end)
+        end
+      end
+    end
+  end
 
   -- Center window
   local ui = vim.api.nvim_list_uis()[1]

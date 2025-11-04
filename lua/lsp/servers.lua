@@ -43,7 +43,6 @@ local servers = {
   "jsonls",
   "jqls",
   "kotlin_language_server",
-  "ltex",
   "lua_ls",
   "marksman",
   "pylsp",

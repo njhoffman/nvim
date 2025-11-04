@@ -1,3 +1,9 @@
+" Guard to prevent loading multiple times
+if exists('g:smoothie_loaded')
+  finish
+endif
+let g:smoothie_loaded = 1
+
 " vim.g.smoothie_speed_constant_factor = 5
 " vim.g.smoothie_minimum_speed = 0.9
 let g:smoothie_enabled = 1
@@ -10,21 +16,9 @@ let g:smoothie_speed_exponentiation_factor = 0.9 " 0.9
 let g:smoothie_minimum_speed = 0.9
 let g:smoothie_break_on_reverse = 1
 let g:smoothie_hide_cursor = 0
-let g:smoothie_redraw_at_finish = 0
+let g:smoothie_redraw_at_finish = 0 " 1
+let g:smoothie_use_visual_lines = 0 " Account for wrapped lines and visual decorations
 
-
-" vim.g.smoothie_enabled = 1
-" vim.g.smoothie_no_default_mappings = 1
-" vim.g.smoothie_experimental_mappings = 0
-" vim.g.smoothie_update_interval = 20
-"       -- vim.g.smoothie_update_interval = 10 -- 20
-" vim.g.smoothie_speed_constant_factor = 10
-" vim.g.smoothie_speed_linear_factor = 10
-"       -- vim.g.smoothie_speed_linear_factor = 8 -- 10
-" vim.g.smoothie_speed_exponentiation_factor = 0.9
-" vim.g.redraw_at_finish = 1
-" vim.g.smoothie_minimum_speed = 0.9
-""
 " This variable is used to inform the s:step_*() functions about whether the
 " current movement is a cursor movement or a scroll movement.  Used for
 " motions like gg and G
@@ -149,9 +143,14 @@ endfunction
 " Scroll the window up by one line, or move the cursor up if the window is already at the top.
 " Return 1 if cannot move any higher.
 function s:step_up()
-  if line('.') > 1
+  if line('.') > 1 || (g:smoothie_use_visual_lines && winline() > 1)
     if s:cursor_movement || (s:scrolloffset > 0 && line('$') - line('.') < s:scrolloffset)
-      exe 'normal! k'
+      " Use visual line movement if enabled
+      if g:smoothie_use_visual_lines
+        exe 'normal! gk'
+      else
+        exe 'normal! k'
+      endif
       return 0
     endif
     call s:execute_preserving_scroll("normal! 1\<C-U>")
@@ -166,16 +165,27 @@ endfunction
 " already at the bottom.  Return 1 if cannot move any lower.
 function s:step_down()
   let l:initial_winline = winline()
+  let l:at_bottom = line('.') >= line('$')
 
-  if line('.') < line('$')
+  " When using visual lines, check screen position instead of line number
+  if g:smoothie_use_visual_lines
+    let l:at_bottom = l:at_bottom && winline() >= winheight(0)
+  endif
+
+  if !l:at_bottom
     if s:cursor_movement || (s:scrolloffset > 0 && line('.') < s:scrolloffset)
-      exe 'normal! j'
+      " Use visual line movement if enabled
+      if g:smoothie_use_visual_lines
+        exe 'normal! gj'
+      else
+        exe 'normal! j'
+      endif
       return 0
     endif
 
     " NOTE: the three lines of code following this comment block have been implemented as a temporary
     " workaround for a vim issue regarding Ctrl-D and folds. See: neovim/neovim#13080
-    if foldclosedend('.') != -1
+    if !g:smoothie_use_visual_lines && foldclosedend('.') != -1
       call cursor(foldclosedend('.'), col('.'))
     endif
     call s:execute_preserving_scroll("normal! 1\<C-D>")
@@ -495,22 +505,22 @@ function smoothie#stop()
 " TODO: debug gg animating twice up and no animation for jump down
 function smoothie#cursor_movement(movement)
   let l:movements = {
-        \'gg': {
-                \'target_expr':   'v:count1',
-                \'startofline':   &startofline,
-                \'jump_commmand': v:true,
-                \},
-        \'G' :  {
-                \'target_expr':   "(v:count ? v:count : line('$'))",
-                \'startofline':   &startofline,
-                \'jump_commmand': v:true,
-                \},
-        \'-' :  {
-                \'target_expr':   "line('.') - v:count1",
-                \'startofline':   v:true,
-                \'jump_commmand': v:false,
-                \},
-        \}
+     \'gg': {
+        \'target_expr':   'v:count1',
+        \'startofline':   &startofline,
+        \'jump_commmand': v:true,
+       \},
+     \'G' : {
+        \'target_expr':   "(v:count ? v:count : line('$'))",
+        \'startofline':   &startofline,
+        \'jump_commmand': v:true,
+        \},
+     \'-' : {
+       \'target_expr':   "line('.') - v:count1",
+       \'startofline':   v:true,
+       \'jump_commmand': v:false,
+     \},
+   \}
   if !has_key(l:movements, a:movement)
     return 1
   endif
@@ -546,13 +556,47 @@ function s:do_vertical_cursor_movement(movement, properties)
     execute "normal! m'"
   endif
 
-  call s:update_target(s:calculate_screen_lines(line('.'), l:target))
+  " Calculate screen lines to move
+  let l:screen_lines = s:calculate_screen_lines(line('.'), l:target)
+
+  " Early exit if already at target
+  if l:screen_lines == 0
+    let s:cursor_movement = v:false
+    return
+  endif
+
+  call s:update_target(l:screen_lines)
   let l:search = [v:hlsearch, @/, v:searchforward]
 
-  " suspend further commands till the destination is reached
+  " suspend further commands till the destination is reached with timeout
   " see point (3) of https://github.com/psliwka/vim-smoothie/issues/1#issuecomment-560158642
-  while line('.') != l:target
+  let l:max_iterations = 10000
+  let l:iterations = 0
+  let l:last_line = line('.')
+  let l:stuck_count = 0
+
+  while line('.') != l:target && l:iterations < l:max_iterations
     exe 'sleep ' . g:smoothie_update_interval . ' m'
+    let l:iterations += 1
+
+    " Detect if animation is stuck
+    let l:curr_line = line('.')
+    if l:curr_line == l:last_line
+      let l:stuck_count += 1
+      " If stuck for more than 50 iterations, break out
+      if l:stuck_count > 50
+        call s:stop_moving()
+        break
+      endif
+    else
+      let l:stuck_count = 0
+      let l:last_line = l:curr_line
+    endif
+
+    " Check if we've stopped moving (no active timer)
+    if !exists('s:timer_id')
+      break
+    endif
   endwhile
   let s:cursor_movement = v:false   " reset s:cursor_movement to false
   if a:properties['startofline']

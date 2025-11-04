@@ -16,31 +16,43 @@ local function paste()
 end
 
 vim.g.start_time = vim.fn.reltime()
--- let g:clipboard = {
---    'name': 'myClipboard',
---    'copy': {
---       '+': ['tmux', 'load-buffer', '-'],
---       ["+"] = "xclip -f -sel clip",
---       '*': ['tmux', 'load-buffer', '-'],
---      ['+'] = require('vim.clipboard.osc52').copy,
---     },
---    'paste': {
---       '+': ['tmux', 'save-buffer', '-'],
---       '*': ['tmux', 'save-buffer', '-'],
---         ["*"] = "xclip -o -sel clip",
---         ['*'] = require('vim.clipboard.osc52').paste,
---    },
---    'cache_enabled': 1,
---  }
 vim.g.clipboard = {
-  name = "xsel",
+  name = "xsel_tmux",
   copy = {
-    ["+"] = { "xsel", "--nodetach", "-i", "-b" },
-    ["*"] = { "xsel", "--nodetach", "-i", "-p" },
+    ["+"] = function(lines)
+      local text = table.concat(lines, "\n")
+      -- Copy to both xsel and tmux buffer
+      vim.fn.system("xsel -i -b", text)
+      vim.fn.system("tmux load-buffer -", text)
+    end,
+    ["*"] = function(lines)
+      local text = table.concat(lines, "\n")
+      -- Copy to both xsel and tmux buffer
+      vim.fn.system("xsel -i -p", text)
+      vim.fn.system("tmux load-buffer -", text)
+    end,
   },
   paste = {
-    ["+"] = { "xsel", "-o", "-b" },
-    ["*"] = { "xsel", "-o", "-p" },
+    ["+"] = function()
+      -- Try xsel first, fallback to tmux
+      local xsel_result = vim.fn.system("xsel -o -b")
+      if vim.v.shell_error == 0 and xsel_result ~= "" then
+        return vim.split(xsel_result, "\n")
+      else
+        local tmux_result = vim.fn.system("tmux save-buffer - 2>/dev/null")
+        return vim.split(tmux_result, "\n")
+      end
+    end,
+    ["*"] = function()
+      -- Try xsel first, fallback to tmux
+      local xsel_result = vim.fn.system("xsel -o -p")
+      if vim.v.shell_error == 0 and xsel_result ~= "" then
+        return vim.split(xsel_result, "\n")
+      else
+        local tmux_result = vim.fn.system("tmux save-buffer - 2>/dev/null")
+        return vim.split(tmux_result, "\n")
+      end
+    end,
   },
   cache_enabled = 1,
 }
@@ -48,21 +60,7 @@ vim.g.qf_disable_statusline = true -- This should be the default
 vim.g.Eunuch_find_executable = "fd" -- I use my fork of vim-eunuch
 vim.g.Illuminate_ftblacklist = { ".*" } -- Only use lsp highlighting from the plugin
 
-vim.g.tex_flavor = "latex"
-vim.g.vimtex_view_method = "skim"
-vim.g.vimtex_quickfix_mode = true
-vim.g.vimtex_compiler_latexmk = {
-  options = {
-    "-pdf",
-    "-shell-escape",
-    "-verbose",
-    "-file-line-error",
-    "-synctex=1",
-    "-interaction=nonstopmode",
-  },
-}
 vim.g["test#strategy"] = "neovim"
-vim.g.tex_flavor = "latex"
 vim.g.indent_blankline_char = "│"
 vim.g.indent_blankline_filetype = { "rust", "go", "lua", "json", "ruby" }
 vim.g.indent_blankline_use_treesitter = true

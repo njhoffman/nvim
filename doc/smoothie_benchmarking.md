@@ -363,6 +363,7 @@ end
 ### Reducing Turbulence
 
 **Short-term fixes**:
+
 ```vim
 let g:smoothie_update_interval = 25  " Increase tolerance
 let g:smoothie_speed_linear_factor = 6  " Reduce speed (fewer frames)
@@ -413,6 +414,7 @@ require("smoothie").setup({
 ### VimL Timing
 
 Uses `reltime()` and `reltimefloat()`:
+
 ```vim
 let start = reltime()
 " ... operation ...
@@ -424,6 +426,7 @@ let duration_ms = reltimefloat(reltime(start)) * 1000.0
 ### Lua Timing
 
 Uses `vim.loop.hrtime()`:
+
 ```lua
 local start = vim.loop.hrtime()  -- nanoseconds
 -- ... operation ...
@@ -436,6 +439,7 @@ local duration_ms = duration_ns / 1000000.0
 ### Benchmark Data Structure
 
 **VimL**:
+
 ```vim
 {
   'enabled': 1,

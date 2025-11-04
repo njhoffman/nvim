@@ -1,4 +1,3 @@
-
 I have a modified vimscript scroller that I would like to update to lua with some new features.  However I don't want to
 add any features at the cost of overall speed.  So first I would like my vimscript plugin cleaned up with some added
 benchmarking functions.  Then Convert the file to lua, but we are going to continue to maintiain the vimscript for a
@@ -99,6 +98,190 @@ Detects timing irregularities when frame intervals deviate >50% from `g:smoothie
 Expected: 20ms
 Actual: 35ms → TURBULENCE (deviation = 15ms)
 ```
+
+---
+
+# Recent Updates (v0.4.0 - 2025-11-03) ✨
+
+## Code Organization
+
+All smoothie code now lives in `lua/smoothie/` directory:
+
+```
+lua/smoothie/
+├── init.lua              # Lua implementation
+├── benchmark.lua         # Lua benchmarking
+├── smoothie.vim          # VimL implementation
+├── benchmark_viml.vim    # VimL benchmarking
+├── smoothie_benchmark.vim # VimL command definitions
+└── load_viml.lua         # VimL loader
+```
+
+The VimL code was moved from `plugin/` and `autoload/` for better organization while maintaining full compatibility.
+
+## Consolidated Commands
+
+All benchmark commands now work with both implementations automatically:
+
+### Unified Commands (detect active implementation)
+- `:SBEnable` - Enable benchmarking
+- `:SBDisable` - Disable benchmarking
+- `:SBToggle` - Toggle benchmarking
+- `:SBReset` - Reset benchmark data
+- `:SBStats` - Show benchmark stats
+
+### Implementation Switching
+- `:SmoothieUseVimL` - Switch to VimL version
+- `:SmoothieUseLua` - Switch to Lua version
+- `:SmoothieToggle` - Toggle between versions
+- `:SmoothieStatus` - Show current version
+
+### Full Command Names
+- `:SmoothieBenchmarkEnable` / `:SmoothieBenchmarkDisable`
+- `:SmoothieBenchmarkToggle` / `:SmoothieBenchmarkReset`
+- `:SmoothieBenchmarkStats`
+
+## New Features
+
+### Visual Lines Support
+
+New `use_visual_lines` config option for handling wrapped lines:
+
+**Lua:**
+```lua
+require("smoothie").setup({
+  use_visual_lines = true,  -- Account for wrapped lines
+})
+```
+
+**VimL:**
+```vim
+let g:smoothie_use_visual_lines = 1
+```
+
+When enabled:
+- Uses `gj`/`gk` for visual line movements instead of `j`/`k`
+- Better handling of long wrapped lines
+- Proper scrolling in markdown code blocks
+- Accounts for visual decorations
+
+### Improved Benchmark Display
+
+**Fixed Issues:**
+- Border alignment (all lines exactly 53 characters)
+- Consistent padding across all metrics
+
+**Added Syntax Highlighting:**
+- 🔵 Blue borders (bold)
+- 🔴 Red headers (bold)
+- 🟡 Yellow labels
+- 🟢 Green values (bold)
+- 🔵 Cyan units (italic)
+
+Example output:
+```
+╔═══════════════════════════════════════════════════╗
+║         SMOOTHIE BENCHMARK STATISTICS (Lua)       ║
+╠═══════════════════════════════════════════════════╣
+║ Operations:                                     3 ║
+║ Total Lines Scrolled:                         860 ║
+║ Total Time:                              2311.98 ms ║
+╠═══════════════════════════════════════════════════╣
+║                 SPEED METRICS                     ║
+╠═══════════════════════════════════════════════════╣
+║ Avg Lines/Minute:                       22318.48 ║
+║ Avg Speed:                               305.46 l/s ║
+║ Min Speed:                                47.12 l/s ║
+║ Max Speed:                               450.91 l/s ║
+║ Speed StdDev:                            183.15 l/s ║
+╠═══════════════════════════════════════════════════╣
+║              SMOOTHNESS METRICS                   ║
+╠═══════════════════════════════════════════════════╣
+║ Turbulence Events:                               10 ║
+║ Avg Turbulence Score:                      3.22 ms ║
+║ Consistency Score:                         40.04% ║
+╚═══════════════════════════════════════════════════╝
+```
+
+## Bug Fixes
+
+### Freeze Prevention (G/gg Commands)
+
+Fixed infinite loop issue when using `G` or `gg` near buffer boundaries:
+
+**What Was Fixed:**
+- Added timeout mechanism (max 10,000 iterations)
+- Detects stuck animations (50 iterations without movement)
+- Early exit when already at target position
+- Proper cleanup when animation stops
+
+**Before:**
+```vim
+" Could freeze indefinitely
+gg  " at top of buffer - FREEZE!
+G   " at bottom - FREEZE!
+```
+
+**After:**
+```vim
+" Always completes in < 5 seconds
+gg  " Quick exit if already at top
+G   " Quick exit if already at bottom
+```
+
+## Testing
+
+New test coverage in `tests/manual/test_smoothie_benchmark.lua`:
+
+```lua
+-- Freeze fix tests
+test_freeze_fix()  -- Ensures G/gg complete in < 5 seconds
+
+-- Consolidated commands
+test_consolidated_commands()  -- Verifies unified command interface
+
+-- Visual lines
+test_smoothie_core()  -- Tests use_visual_lines config
+```
+
+Run tests:
+```bash
+nvim -l tests/manual/test_smoothie_benchmark.lua
+```
+
+## Configuration Examples
+
+### Lua Setup with New Options
+```lua
+require("smoothie").setup({
+  enabled = true,
+  update_interval = 20,
+  speed_constant_factor = 10,
+  speed_linear_factor = 8,
+  speed_exponentiation_factor = 0.9,
+  break_on_reverse = true,
+  hide_cursor = true,
+  use_visual_lines = true,  -- NEW: Handle wrapped lines
+  benchmark_enabled = false,
+})
+```
+
+### VimL Configuration
+```vim
+let g:smoothie_enabled = 1
+let g:smoothie_update_interval = 20
+let g:smoothie_speed_constant_factor = 10
+let g:smoothie_speed_linear_factor = 8
+let g:smoothie_speed_exponentiation_factor = 0.9
+let g:smoothie_use_visual_lines = 1  " NEW: Handle wrapped lines
+```
+
+## Upgrade Notes
+
+1. **Commands Still Work**: All old commands maintained for backward compatibility
+2. **Config Compatible**: Existing configs work without changes
+3. **File Locations**: VimL files moved but autoload still works via wrapper
+4. **Tests Extended**: New tests added, old tests still pass
 
 ## Benchmark Display
 

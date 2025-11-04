@@ -15,6 +15,7 @@ local M = {}
 ---@field hide_cursor boolean Hide cursor during scrolling (Neovim only)
 ---@field minimum_speed number Minimum scrolling speed (lines/sec)
 ---@field benchmark_enabled boolean Enable benchmarking
+---@field use_visual_lines boolean Account for wrapped lines and visual decorations
 
 ---@class SmoothieState
 ---@field target_displacement number Lines remaining to scroll
@@ -37,6 +38,7 @@ M.config = {
   hide_cursor = true,
   minimum_speed = 0.9,
   benchmark_enabled = false,
+  use_visual_lines = false,
 }
 
 -- Animation state
@@ -128,9 +130,14 @@ end
 local function step_up()
   local line = vim.fn.line(".")
 
-  if line > 1 then
+  if line > 1 or (M.config.use_visual_lines and vim.fn.winline() > 1) then
     if M.state.cursor_movement or (M.state.scrolloffset > 0 and vim.fn.line("$") - line < M.state.scrolloffset) then
-      vim.cmd("normal! k")
+      -- Use visual line movement if enabled
+      if M.config.use_visual_lines then
+        vim.cmd("normal! gk")
+      else
+        vim.cmd("normal! k")
+      end
       return false
     end
 
@@ -147,17 +154,30 @@ local function step_down()
   local initial_winline = vim.fn.winline()
   local line = vim.fn.line(".")
   local last_line = vim.fn.line("$")
+  local at_bottom = line >= last_line
 
-  if line < last_line then
+  -- When using visual lines, check screen position instead of line number
+  if M.config.use_visual_lines then
+    at_bottom = at_bottom and vim.fn.winline() >= vim.fn.winheight(0)
+  end
+
+  if not at_bottom then
     if M.state.cursor_movement or (M.state.scrolloffset > 0 and line < M.state.scrolloffset) then
-      vim.cmd("normal! j")
+      -- Use visual line movement if enabled
+      if M.config.use_visual_lines then
+        vim.cmd("normal! gj")
+      else
+        vim.cmd("normal! j")
+      end
       return false
     end
 
     -- Handle folds (workaround for Neovim issue #13080)
-    local fold_end = vim.fn.foldclosedend(".")
-    if fold_end ~= -1 then
-      vim.fn.cursor(fold_end, vim.fn.col("."))
+    if not M.config.use_visual_lines then
+      local fold_end = vim.fn.foldclosedend(".")
+      if fold_end ~= -1 then
+        vim.fn.cursor(fold_end, vim.fn.col("."))
+      end
     end
 
     execute_preserving_scroll("normal! 1\x04") -- Ctrl-D
@@ -501,11 +521,43 @@ function M.cursor_movement(movement)
   -- Start animation
   local current_line = vim.fn.line(".")
   local screen_lines = calculate_screen_lines(current_line, target)
+
+  -- Early exit if already at target
+  if screen_lines == 0 then
+    M.state.cursor_movement = false
+    return
+  end
+
   update_target(screen_lines)
 
-  -- Wait for animation to complete
-  while vim.fn.line(".") ~= target do
+  -- Wait for animation to complete with timeout
+  local max_iterations = 10000 -- Prevent infinite loops
+  local iterations = 0
+  local last_line = vim.fn.line(".")
+  local stuck_count = 0
+
+  while vim.fn.line(".") ~= target and iterations < max_iterations do
     vim.cmd("sleep " .. M.config.update_interval .. "m")
+    iterations = iterations + 1
+
+    -- Detect if animation is stuck
+    local curr_line = vim.fn.line(".")
+    if curr_line == last_line then
+      stuck_count = stuck_count + 1
+      -- If stuck for more than 50 iterations, break out
+      if stuck_count > 50 then
+        M.stop_moving()
+        break
+      end
+    else
+      stuck_count = 0
+      last_line = curr_line
+    end
+
+    -- Check if we've stopped moving (no active timer)
+    if not M.state.timer_id then
+      break
+    end
   end
 
   M.state.cursor_movement = false

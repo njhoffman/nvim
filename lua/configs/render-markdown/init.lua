@@ -33,6 +33,7 @@ local cfg = {
   -- The level of logs to write to file: vim.fn.stdpath('state') .. '/render-markdown.log'.
   log_level = "info",
   -- Print runtime of main update method.
+  debounce = 50,
   log_runtime = false,
   -- Takes buffer as input, if it returns true this plugin will not attach to the buffer
   -- ignore = function()
@@ -185,7 +186,7 @@ local cfg = {
     -- highlight_inline = "RenderMarkdownCodeInline",     -- hl for inline code.
   },
   anti_conceal = {
-    enabled = true,
+    enabled = false,
     ignore = {
       --  head_icon, head_background, head_border, code_language, code_background, code_border
       --  dash, bullet, check_icon, check_scope, quote, table_border, callout, link, sign

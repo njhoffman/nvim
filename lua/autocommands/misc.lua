@@ -141,7 +141,6 @@ vim.api.nvim_create_autocmd("FileType", {
     -- "man",
     "noice",
     "startuptime",
-    "vim",
     -- "",
   },
   callback = quick_close,

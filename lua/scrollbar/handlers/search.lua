@@ -74,7 +74,6 @@ end
 
 M.setup = function(overrides)
   local ok, hlslens = pcall(require, "hlslens")
-  vim.dbglog("SCROLLBAR")
 
   if not ok then
     vim.notify(

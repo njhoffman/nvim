@@ -20,16 +20,8 @@ local function setup_viml_keymaps()
     return
   end
 
-  -- These are already set up in lua/commands/buffer/smoothie.lua
-  -- Just ensure they're calling the vimscript functions
-  vim.cmd([[
-    noremap <silent> <Plug>(SmoothieDownwards) <cmd>call smoothie#downwards()           <CR>
-    noremap <silent> <Plug>(SmoothieUpwards)   <cmd>call smoothie#upwards()             <CR>
-    noremap <silent> <Plug>(SmoothieForwards)  <cmd>call smoothie#forwards()            <CR>
-    noremap <silent> <Plug>(SmoothieBackwards) <cmd>call smoothie#backwards()           <CR>
-    noremap <silent> <Plug>(Smoothie_gg)       <cmd>call smoothie#cursor_movement('gg') <CR>
-    noremap <silent> <Plug>(Smoothie_G)        <cmd>call smoothie#cursor_movement('G')  <CR>
-  ]])
+  -- Setup VimL <Plug> mappings (defined in lua/smoothie/load_viml.lua)
+  require("smoothie.load_viml").setup_plug_mappings()
 
   state.viml_keymaps_active = true
   state.lua_keymaps_active = false
@@ -69,6 +61,11 @@ function M.use_viml()
   -- Stop any active Lua scrolling
   local smoothie_lua = require("smoothie")
   smoothie_lua.stop()
+
+  -- Load VimL smoothie if not already loaded
+  if vim.g.smoothie_loaded ~= 1 then
+    require("smoothie.load_viml").load()
+  end
 
   -- Setup VimL keymaps
   setup_viml_keymaps()
@@ -137,8 +134,62 @@ function M.status()
   )
 end
 
+---Enable benchmarking for current implementation
+function M.benchmark_enable()
+  if state.implementation == "viml" then
+    vim.fn["smoothie#benchmark#enable"]()
+  else
+    local smoothie_lua = require("smoothie")
+    smoothie_lua.benchmark.enable()
+    smoothie_lua.config.benchmark_enabled = true
+  end
+end
+
+---Disable benchmarking for current implementation
+function M.benchmark_disable()
+  if state.implementation == "viml" then
+    vim.fn["smoothie#benchmark#disable"]()
+  else
+    local smoothie_lua = require("smoothie")
+    smoothie_lua.benchmark.disable()
+    smoothie_lua.config.benchmark_enabled = false
+  end
+end
+
+---Toggle benchmarking for current implementation
+function M.benchmark_toggle()
+  if state.implementation == "viml" then
+    vim.fn["smoothie#benchmark#toggle"]()
+  else
+    local smoothie_lua = require("smoothie")
+    smoothie_lua.benchmark.toggle()
+    smoothie_lua.config.benchmark_enabled = not smoothie_lua.config.benchmark_enabled
+  end
+end
+
+---Reset benchmark data for current implementation
+function M.benchmark_reset()
+  if state.implementation == "viml" then
+    vim.fn["smoothie#benchmark#reset"]()
+  else
+    local smoothie_lua = require("smoothie")
+    smoothie_lua.benchmark.reset()
+  end
+end
+
+---Show benchmark stats for current implementation
+function M.benchmark_stats()
+  if state.implementation == "viml" then
+    vim.fn["smoothie#benchmark#show_stats"]()
+  else
+    local smoothie_lua = require("smoothie")
+    smoothie_lua.benchmark.show_stats()
+  end
+end
+
 ---Setup commands
 function M.setup_commands()
+  -- Version switching commands
   vim.api.nvim_create_user_command("SmoothieUseVimL", M.use_viml, {
     desc = "Switch to VimL smoothie implementation",
   })
@@ -155,7 +206,49 @@ function M.setup_commands()
     desc = "Show current smoothie implementation",
   })
 
-  -- Lua benchmarking commands
+  -- Consolidated benchmark commands (work for both VimL and Lua)
+  vim.api.nvim_create_user_command("SmoothieBenchmarkEnable", M.benchmark_enable, {
+    desc = "Enable smoothie benchmarking (current implementation)",
+  })
+
+  vim.api.nvim_create_user_command("SmoothieBenchmarkDisable", M.benchmark_disable, {
+    desc = "Disable smoothie benchmarking (current implementation)",
+  })
+
+  vim.api.nvim_create_user_command("SmoothieBenchmarkToggle", M.benchmark_toggle, {
+    desc = "Toggle smoothie benchmarking (current implementation)",
+  })
+
+  vim.api.nvim_create_user_command("SmoothieBenchmarkReset", M.benchmark_reset, {
+    desc = "Reset smoothie benchmark data (current implementation)",
+  })
+
+  vim.api.nvim_create_user_command("SmoothieBenchmarkStats", M.benchmark_stats, {
+    desc = "Show smoothie benchmark stats (current implementation)",
+  })
+
+  -- Shorter aliases (also consolidated)
+  vim.api.nvim_create_user_command("SBEnable", M.benchmark_enable, {
+    desc = "Enable smoothie benchmarking",
+  })
+
+  vim.api.nvim_create_user_command("SBDisable", M.benchmark_disable, {
+    desc = "Disable smoothie benchmarking",
+  })
+
+  vim.api.nvim_create_user_command("SBToggle", M.benchmark_toggle, {
+    desc = "Toggle smoothie benchmarking",
+  })
+
+  vim.api.nvim_create_user_command("SBReset", M.benchmark_reset, {
+    desc = "Reset smoothie benchmark data",
+  })
+
+  vim.api.nvim_create_user_command("SBStats", M.benchmark_stats, {
+    desc = "Show smoothie benchmark stats",
+  })
+
+  -- Legacy Lua-specific commands (for backwards compatibility)
   vim.api.nvim_create_user_command("SmoothieBenchmarkEnableLua", function()
     local smoothie_lua = require("smoothie")
     smoothie_lua.benchmark.enable()
@@ -197,5 +290,12 @@ end
 
 -- Auto-setup commands
 M.setup_commands()
+
+-- Initialize default implementation (VimL) on startup
+if state.implementation == "viml" then
+  -- Load VimL smoothie and setup plug mappings
+  require("smoothie.load_viml").load()
+  state.viml_keymaps_active = true
+end
 
 return M

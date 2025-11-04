@@ -195,17 +195,8 @@ end
 local mapper = require("mapper")
 local map = mapper.map
 local setup_keymaps = function()
-  vim.cmd([[
-    noremap <silent> <Plug>(SmoothieDownwards) <cmd>call smoothie#downwards()           <CR>
-    noremap <silent> <Plug>(SmoothieUpwards)   <cmd>call smoothie#upwards()             <CR>
-    noremap <silent> <Plug>(SmoothieForwards)  <cmd>call smoothie#forwards()            <CR>
-    noremap <silent> <Plug>(SmoothieBackwards) <cmd>call smoothie#backwards()           <CR>
-    noremap <silent> <Plug>(Smoothie_gg)       <cmd>call smoothie#cursor_movement('gg') <CR>
-    noremap <silent> <Plug>(Smoothie_G)        <cmd>call smoothie#cursor_movement('G')  <CR>
-
-    " nnoremap <unique> <C-D> <cmd>call smoothie#do("\<C-D>") <CR>
-    " vnoremap <unique> <C-D> <cmd>call smoothie#do("\<C-D>") <CR>
-  ]])
+  -- Note: <Plug> mappings are defined in lua/smoothie/load_viml.lua
+  -- when VimL version is loaded
 
   map({ "n", "x" }, "gg", "<Plug>(Smoothie_gg)", {
     category = "Motion",

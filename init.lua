@@ -65,6 +65,8 @@ vim.defer_fn(function()
   -- vim.import("neoai").setup(neoai_cfg)
 
   vim.import("configs.recall")
+  vim.import("commands.buffer.smoothie_toggle")
+  vim.cmd.SmoothieUseLua()
 
   -- vim.api.nvim_create_autocmd("FileType", {
   --   pattern = "zsh",

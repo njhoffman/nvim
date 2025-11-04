@@ -217,14 +217,12 @@ M.on_scroll = function(ev)
     end
   end
   for _, win in ipairs(wins) do
-    -- vim.dbglog(ev.match, vim.v.event)
     -- local win = vim.api.nvim_get_current_win() or 0
     if tonumber(ev.match) ~= nil then
       win = tonumber(ev.match) or win
     elseif type(ev.buf) == "number" then
       win = vim.fn.bufwinid(ev.buf) or win
     end
-    vim.dbglog(ev.event .. " : " .. win .. " " .. ev.match)
     if vim.api.nvim_win_is_valid(win) then
       vim.api.nvim_win_call(win, function()
         handlers.show()
