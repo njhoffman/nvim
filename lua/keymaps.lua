@@ -734,6 +734,12 @@ map('n', '<M-X>', '<cmd>silent! tabclose | qa<cr>', {
   desc = 'quick exit with prompt for save',
 })
 
+map('n', '<M-d>', '<cmd>silent! tabclose | qa<cr>', {
+  category = 'Exiting',
+  label = 'exit save',
+  desc = 'quick exit with prompt for save',
+})
+
 -- map('n', '<M-C-X>', '<cmd>silent! tabclose | xa<cr>', {
 --   category = 'Exiting',
 --   label = 'exit nosave',
@@ -1775,12 +1781,12 @@ map('n', '<C-g>', "<cmd>lua require('telescope.run')('leaderf', { theme = 'dropd
   desc = 'buffers in telescope',
 })
 
--- map('n', '<C-t>', "<cmd>lua require('telescope.run')('builtin','diagnostics')<cr>", {
---   category = 'Pickers',
---   plugin = 'telescope.nvim',
---   label = 'frecency files',
---   desc = 'frecency files in telescope',
--- })
+map('n', '<C-t>', "<cmd>lua require('telescope.run')('builtin','diagnostics')<cr>", {
+  category = 'Pickers',
+  plugin = 'telescope.nvim',
+  label = 'frecency files',
+  desc = 'frecency files in telescope',
+})
 
 map('n', '<C-u>', "<cmd>lua require('telescope.run')('frecency','frecency')<cr>", {
   category = 'Pickers',

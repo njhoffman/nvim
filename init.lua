@@ -39,6 +39,7 @@ for _, mod_name in ipairs({
   "hover.setup",
   -- "NeoComposer._setup",
   "configs.feline",
+  -- "configs.lualine",
   "configs.definition-or-references",
   "baleia.setup",
   -- "demicolon.setup",
@@ -65,8 +66,8 @@ vim.defer_fn(function()
   -- vim.import("neoai").setup(neoai_cfg)
 
   vim.import("configs.recall")
-  vim.import("commands.buffer.smoothie_toggle")
-  vim.cmd.SmoothieUseLua()
+
+  vim.import("configs.smoothie").setup()
 
   -- vim.api.nvim_create_autocmd("FileType", {
   --   pattern = "zsh",
@@ -117,23 +118,6 @@ vim.defer_fn(function()
   end
 
   vim.import("configs.telescope")
-  -- vim.import("garbage-day").setup({
-  --   notifications = true,
-  --   -- excluded_lsp_clients = { "copilot", "dev-tools" },
-  --   -- aggressive_mode = false,
-  --   -- aggresive_mode_ignore = {
-  --   --   filetype = { "", "markdown", "text", "org", "tex", "asciidoc", "rst" },
-  --   --   buftype = { "nofile" },
-  --   -- },
-  --   -- filetype = { "", "markdown", "text", "org", "tex", "asciidoc", "rst" },
-  --   -- buftype = { "nofile" },
-  --   excluded_lsp_clients = { "copilot", "marksman", "lua_ls", "pyright" },
-  --   -- grace_period = (60 * 15), -- seconds
-  --   -- notifications = false,
-  --   -- retries = 3, -- times
-  --   -- timeout = 1000, -- ms
-  --   -- wakeup_delay = 0, -- ms
-  -- })
 
   vim.api.nvim_set_keymap("x", "<F10>", "<Cmd>=vim.fn.getpos('v')<CR>", {})
   -- vim.api.nvim_set_keymap("n", "<F10>", "<Cmd>Telescope tester script<CR>", {})

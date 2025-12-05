@@ -2,11 +2,6 @@
 
 local timeago = require("commands.timeago")
 local devicons = require("nvim-web-devicons")
-local smoothie = require("commands.buffer.smoothie")
-
-smoothie.setup_aucmds()
-smoothie.setup_keymaps()
-
 local Path = require("plenary.path")
 local popup = require("plenary.popup")
 

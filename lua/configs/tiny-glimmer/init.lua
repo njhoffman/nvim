@@ -3,7 +3,7 @@ local glimmer = require("tiny-glimmer")
 
 local cfg = {
   disable_warnings = false,
-  refresh_interval_ms = 1,
+  refresh_interval_ms = 5,
   -- transparency_color = nil,
   transparency_color = "#000000",
   default_animation = {
@@ -15,16 +15,20 @@ local cfg = {
       -- to_color = "Normal",
     },
   },
-
   presets = {
     pulsar = {
-      enabled = true,
-      on_event = { "WinEnter", "CmdlineLeave", "BufEnter" },
+      enabled = false,
+      -- on_event = { "WinEnter", "CmdlineLeave", "BufEnter" },
+      on_events = {
+        -- "CursorMoved",
+        "CmdlineEnter",
+        -- "WinEnter",
+      },
       default_animation = {
         name = "fade",
         settings = {
-          max_duration = 500,
-          min_duration = 500,
+          max_duration = 700,
+          min_duration = 700,
           -- from_color = "TinyGlimmerPulsarFrom",
           -- to_color = "TinyGlimmerPulsarTo",
           from_color = "VisualAlt",
@@ -56,26 +60,6 @@ local cfg = {
       },
     },
   },
-  -- overwrite = {
-  --        search = {
-  --          enabled = true,
-  --          default_animation = {
-  --            name = "rainbow",
-  --            settings = {
-  --              to_color = vim.opt.hlsearch and "CurSearch" or "Search",
-  --            },
-  --          },
-  --        },
-  --      },
-  --      default_animation = "rainbow",
-  --      animations = {
-  --        rainbow = {
-  --          max_duration = 200,
-  --          min_duration = 100,
-  --          chars_for_max_duration = 20,
-  --        },
-  --      }
-  --    },
   overwrite = {
     auto_map = true,
     search = {
@@ -89,7 +73,7 @@ local cfg = {
         name = "pulse",
         settings = {
           from_color = "TinyGlimmerSearchFrom",
-          to_color = "TinyGlimmerSearchTo",
+          -- to_color = "TinyGlimmerSearchTo",
           max_duration = 600,
           min_duration = 400,
           -- pulse_count = 2,
@@ -169,37 +153,17 @@ local cfg = {
 }
 
 glimmer.setup(cfg)
+require("configs.tiny-glimmer.autocmds").setup()
 
-local view_buffers = function()
-  local buffers = require("tiny-glimmer.animation.factory").instance.buffers
-  local empty = {}
-  for bufnr, bufobj in pairs(buffers) do
-    if bufobj.animations == {} and bufobj.named_animations == {} then
-      table.insert(empty, bufnr)
-    else
-      vim.dbglog(bufnr, bufobj)
-    end
-  end
-  vim.dbglog(empty)
-end
-
--- require('tiny-glimmer').enable()  -- Enable animations
--- require('tiny-glimmer').disable() -- Disable animations
--- require('tiny-glimmer').toggle()  -- Toggle animations
--- -- require('tiny-glimmer').change_hl('fade', { from_color = '#FF0000', to_color = '#0000FF' })
--- -- require('tiny-glimmer').change_hl('all', { from_color = '#FF0000', to_color = '#0000FF' })
--- -- require('tiny-glimmer').change_hl({'fade', 'pulse'}, { from_color = '#FF0000', to_color = '#0000FF' })
--- require('tiny-glimmer').change_hl(animation_name, hl)
-
--- -- When overwrite.search.enabled is true
--- require('tiny-glimmer').search_next() -- Same as `n`
--- require('tiny-glimmer').search_prev() -- Same as `N`
--- require('tiny-glimmer').search_under_cursor() -- Same as `*`
-
--- -- When overwrite.paste.enabled is true
--- require('tiny-glimmer').paste() -- Same as `p`
--- require('tiny-glimmer').Paste() -- Same as `P`
-
--- -- Undo operations (requires undo.enabled = true)
--- require('tiny-glimmer').undo()   -- Undo changes
--- require('tiny-glimmer').redo()   -- Redo changes
+-- Animate search results
+-- vim.keymap.set("n", "n", function()
+--   vim.cmd("normal! n")
+--   local pos = vim.api.nvim_win_get_cursor(0)
+--   glimmer.create_animation({
+--     range = glimmer.get_cursor_range(),
+--     duration = 400,
+--     from_color = "IncSearch",
+--     to_color = "Normal",
+--     effect = "pulse",
+--   })
+-- end)

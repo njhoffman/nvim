@@ -19,7 +19,7 @@ local winids = {}
 --- @param value string|boolean|integer
 local function set_winlocal_opt(win, opt, value)
   -- Set local=scope so options are never inherited in new windows
-  vim.dbglog("win", win, opt, value)
+  -- vim.dbglog("win", win, opt, value)
   api.nvim_set_option_value(opt, value, { win = win, scope = "local" })
 end
 
@@ -75,20 +75,28 @@ local function render_scrollbar(winid, bwinid)
   local state_config = user_config.states and user_config.states[window_state]
 
   -- Fallback to legacy shape config if states not configured
-  local shape = state_config and state_config.shape or user_config.shape or {
-    head = "▎",
-    body = "▎",
-    tail = "▎",
-  }
-  local highlight = state_config and state_config.highlight or {
-    head = "SatelliteBar",
-    body = "SatelliteBar",
-    tail = "SatelliteBar",
-  }
+  local shape = state_config and state_config.shape
+    or user_config.shape
+    or {
+      head = "▎",
+      body = "▎",
+      tail = "▎",
+    }
+  local highlight = state_config and state_config.highlight
+    or {
+      head = "SatelliteBar",
+      body = "SatelliteBar",
+      tail = "SatelliteBar",
+    }
 
   -- Update window blend based on state
   if state_config and state_config.winblend then
-    pcall(api.nvim_set_option_value, "winblend", state_config.winblend, { win = bwinid, scope = "local" })
+    pcall(
+      api.nvim_set_option_value,
+      "winblend",
+      state_config.winblend,
+      { win = bwinid, scope = "local" }
+    )
   end
 
   api.nvim_buf_clear_namespace(bbufnr, ns, 0, -1)

@@ -5,7 +5,6 @@ local actions = require("telescope.actions")
 local mappings = require("configs.telescope.mappings")
 local c_actions = require("configs.telescope.actions")
 
-
 -- M.devdocs_ft = function()
 --     local input = vim.fn.input("Search String: ")
 --     if input == nil or input == "" then
@@ -14,12 +13,12 @@ local c_actions = require("configs.telescope.actions")
 --     local input_with_filetype = vim.bo.filetype .. " " .. input
 --     vim.fn.jobstart(string.format("%s 'https://devdocs.io/#q=%s'", open_cmd, input_with_filetype))
 -- end
--- 
+--
 -- M.devdocs_search = function()
 --     local input = vim.fn.input("Search String: ")
 --     vim.fn.jobstart(string.format("%s 'https://devdocs.io/#q=%s'", open_cmd, input))
 -- end
--- 
+--
 -- M.google_search = function()
 --     local input = vim.fn.input("Search String: ")
 --     if input == nil or input == "" then
@@ -433,12 +432,6 @@ local extension_configs = {
     grep_open_files = false, -- search in opened files
     lang = nil, -- string value, sepcify language for ast-grep `nil` for default
   },
-  -- ['bookmarks'] = {
-  --   selected_browser = 'chrome',
-  --   url_open_command = 'xdg-open',
-  --   url_open_plugin = nil, -- vim_external, open_browser
-  --   firefox_profile_name = nil,
-  -- },
   ["changes"] = {},
   ["git_file_history"] = {
     -- Keymaps inside the picker

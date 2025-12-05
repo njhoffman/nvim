@@ -1,7 +1,12 @@
 local jsonls = function()
   vim.lsp.config("jsonls", {
     filetypes = { "json", "jsonc" },
-    root_markers = { "package.json", ".git" },
+    root_markers = {
+      "package.json",
+      ".project",
+      ".git",
+      "CLAUDE.md",
+    },
     init_options = {
       provideFormatter = true,
       -- customCapabilities = { rangeFormatting = { editLimit = 50 } }

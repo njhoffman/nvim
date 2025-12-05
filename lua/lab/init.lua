@@ -1,8 +1,9 @@
-local process = require('lab.process')
-local code_runner = require('lab.code_runner')
-local logger = require('logger').init('lab')
-local commands = require('lab.commands')
+local process = require("lab.process")
+local code_runner = require("lab.code_runner")
+local logger = require("logger").init("lab")
+local commands = require("lab.commands")
 
+-- https://www.npmjs.com/package/lab
 -- output sinks
 --   enhanced or basic virtual text: can set padding, right align fixed,
 --      after longest with limit, or edge of screen
@@ -28,29 +29,29 @@ local default_opts = {
 
 function lab.setup(opts)
   if state.active == true then
-    logger:debug('setting up but already active')
+    logger:debug("setting up but already active")
     return
   end
 
-  opts = vim.tbl_deep_extend('force', default_opts, opts or {})
+  opts = vim.tbl_deep_extend("force", default_opts, opts or {})
 
   if opts.code_runner.enabled or opts.quick_data.enabled then
-    logger:debug('setting up process')
+    logger:debug("setting up process")
     process:start()
   end
 
   if opts.code_runner.enabled then
-    logger:debug('setting up code runner')
+    logger:debug("setting up code runner")
     code_runner.setup(opts)
   end
 
   if opts.quick_data.enabled then
-    local has_cmp, cmp = pcall(require, 'cmp')
+    local has_cmp, cmp = pcall(require, "cmp")
     if has_cmp then
-      logger:debug('setting up quick data')
-      require('lab.quick_data').init()
+      logger:debug("setting up quick data")
+      require("lab.quick_data").init()
     else
-      vim.notify('Quick data feature requires nvim cmp', 'error', { title = 'lab.nvim' })
+      vim.notify("Quick data feature requires nvim cmp", "error", { title = "lab.nvim" })
     end
   end
 

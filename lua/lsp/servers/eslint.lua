@@ -16,6 +16,9 @@ local root_file = {
   "eslint.config.ts",
   "eslint.config.mts",
   "eslint.config.cts",
+  ".project",
+  ".git",
+  "CLAUDE.md",
 }
 
 local eslint = function()

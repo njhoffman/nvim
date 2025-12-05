@@ -35,6 +35,7 @@ require('mini.bracketed').setup({
   buffer     = { suffix = 'gb', options = {} },
   comment    = { suffix = 'c', options  = {} },
   conflict   = { suffix = 'x', options  = {} },
+  diagnostic = {  },
   -- diagnostic = { suffix = 'd', options  = {} },
   file       = { suffix = 'gf', options = {} },
   indent     = { suffix = 'gi', options = {} },

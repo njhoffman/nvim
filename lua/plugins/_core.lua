@@ -1,9 +1,9 @@
 local utils = require("utils.lazy")
 
 local plugins = {
-  {"folke/lazy.nvim", lazy = false},
+  { "folke/lazy.nvim", lazy = false },
   -- colorscheme components should load first
-  {"folke/noice.nvim", event = "VeryLazy",},
+  { "folke/noice.nvim", event = "VeryLazy" },
   {
     "folke/snacks.nvim",
     priority = 1000,

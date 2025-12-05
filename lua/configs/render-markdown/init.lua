@@ -27,8 +27,8 @@ local cfg = {
   --   },
   -- },
 
-  --     render_modes = { 'i', 'n', 'c', 't', 'v', 'V', '\22'  },
-  render_modes = true,
+  render_modes = { "i", "n", "c", "t", "v", "V", "\22" },
+  -- render_modes = true,
   preset = "none", -- obsidian, lazy, none
   -- The level of logs to write to file: vim.fn.stdpath('state') .. '/render-markdown.log'.
   log_level = "info",

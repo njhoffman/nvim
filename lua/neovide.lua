@@ -23,11 +23,11 @@ if vim.g.neovide then
   -- vim.g.neovide_floating_z_height = 10
   -- vim.g.neovide_light_angle_degrees = 45
   -- vim.g.neovide_light_radius = 5
-  --
-  vim.g.neovide_padding_top = 0
-  vim.g.neovide_padding_bottom = 0
-  vim.g.neovide_padding_right = 0
-  vim.g.neovide_padding_left = 0
+  local scale_factor = 0.8
+  vim.g.neovide_padding_top = 1
+  vim.g.neovide_padding_bottom = 1
+  vim.g.neovide_padding_right = 1
+  vim.g.neovide_padding_left = 1
 
   vim.g.neovide_underline_stroke_scale = 1.0
   vim.g.neovide_floating_blur_amount_x = 5.0
@@ -36,9 +36,9 @@ if vim.g.neovide then
   vim.g.neovide_floating_shadow = false
   vim.g.neovide_input_use_logo = true
   vim.g.neovide_no_idle = true
-  vim.g.neovide_opacity = 0.56
+  vim.g.neovide_opacity = 100
   vim.g.neovide_profiler = false
-  vim.g.neovide_scale_factor = 0.8
+  vim.g.neovide_scale_factor = scale_factor
   vim.g.neovide_hide_mouse_when_typing = true
   vim.g.neovide_refresh_rate = 75
   vim.g.neovide_scroll_animation_length = 0.06
@@ -59,7 +59,7 @@ if vim.g.neovide then
   vim.g.neovide_cursor_vfx_particle_curl = 1.0
   vim.g.neovide_cursor_vfx_particle_speed = 10.0
 
-  vim.g.gui_font_default_size = 12
+  vim.g.gui_font_default_size = 8
 
   local font = {
     -- family = "JetBrainsMono Nerd Font Mono",
@@ -79,13 +79,18 @@ if vim.g.neovide then
     )
     vim.o.linespace = self.linespace or 0
   end
+
+  vim.defer_fn(function()
+    vim.cmd("hi Normal guibg=#0a0020")
+  end, 5000)
+
   -- font:sync()
 
   -- vim.o.guifont = { "Maple Mono NF:h10" }
   -- vim.g.gui_font_face = "Fira Code Retina"
   -- family = "JetBrainsMono Nerd Font Mono", linespace = -3, size = 16, width = -2,  -- letter spacing: neovide/neovide#1227
   -- vim.opt.guifont = "FiraCode Nerd Font:h8" -- text below applies for VimScript
-  vim.opt.guifont = "Hack Nerd Font Mono:h9" -- text below applies for VimScript
+  vim.opt.guifont = "Hack Nerd Font Mono:h8" -- text below applies for VimScript
   -- vim.opt.guifont = "DejaVuSansMono Nerd Font:h12" -- text below applies for VimScript
   -- vim.opt.guifont = 'DejaVuSansMono Nerd Font:h10' -- text below applies for VimScript
   -- vim.opt.guifont = { "Font name", ":size" }
@@ -104,38 +109,38 @@ if vim.g.neovide then
   vim.api.nvim_set_keymap(
     "n",
     "<C-=>",
-    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>",
+    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.05<CR>",
     { silent = true, nowait = true }
   )
   vim.api.nvim_set_keymap(
     "n",
     "<C-->",
-    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>",
+    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.05<CR>",
     { silent = true, nowait = true }
   )
   vim.api.nvim_set_keymap(
     "n",
     "<C-0>",
-    ":lua vim.g.neovide_scale_factor = 1<CR>",
+    ":lua vim.g.neovide_scale_factor = " .. scale_factor .. "<CR>",
     { silent = true, nowait = true }
   )
 
   vim.api.nvim_set_keymap(
     "v",
     "<C-=>",
-    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>",
+    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.05<CR>",
     { silent = true, nowait = true }
   )
   vim.api.nvim_set_keymap(
     "v",
     "<C-->",
-    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>",
+    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.05<CR>",
     { silent = true, nowait = true }
   )
   vim.api.nvim_set_keymap(
     "v",
     "<C-0>",
-    ":lua vim.g.neovide_scale_factor = 1<CR>",
+    ":lua vim.g.neovide_scale_factor = " .. scale_factor .. "<CR>",
     { silent = true }
   )
 

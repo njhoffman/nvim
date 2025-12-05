@@ -4,7 +4,17 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(mv:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(luac:*)",
+      "Bash(lua:*)",
+      "Bash(luacheck:*)",
+      "Bash(nvim:*)",
+      "Bash(test:*)",
+      "Bash(~/.config/claude/statusline.sh)",
+      "Bash(cat:*)",
+      "Bash(chmod:*)",
+      "Bash(ls:*)",
+      "Bash(/home/nicholas/.config/claude/statusline.sh)"
     ],
     "deny": [],
     "ask": []

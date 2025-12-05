@@ -9,6 +9,7 @@ local system = require("commands.system")
 local ansi = require("commands.ansi")
 local quickclose = require("commands.quickclose")
 local colorscheme_export = require("commands.colorscheme_export")
+local silence = require("commands.silence")
 
 local map = require("mapper").map
 
@@ -146,3 +147,24 @@ cmd("Reddit", function(o)
   local url = ("https://www.google.com/search?q=site:reddit.com%20%s"):format(escaped)
   vim.ui.open(url)
 end, { nargs = 1, desc = "search in reddit" })
+
+-- Silence commands
+cmd("Silence", silence.silence_start, {
+  desc = "󰝟 silence messaging by disabling noice, clearing history, and hiding errors",
+})
+cmd("SilenceStop", silence.silence_stop, {
+  desc = " restore messaging after silence mode",
+})
+cmd("SilenceToggle", silence.silence_toggle, {
+  desc = " toggle silence mode",
+})
+cmd("NoiceFlush", silence.flush_noice, {
+  desc = " flush noice message history",
+})
+
+-- Silence keymap
+map("n", "<M-C-C>", silence.silence_toggle, {
+  desc = " toggle silence mode",
+  noremap = true,
+  silent = true,
+})

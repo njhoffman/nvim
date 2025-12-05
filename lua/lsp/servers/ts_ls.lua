@@ -3,6 +3,9 @@ local root_file = {
   "tsconfig.json",
   "jsconfig.json",
   "package.json",
+  ".project",
+  ".git",
+  "CLAUDE.md",
 }
 
 local opts = {

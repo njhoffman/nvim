@@ -23,7 +23,7 @@ opt("clipboard", "unnamedplus")
 opt("cmdheight", 0) -- 0
 opt("cmdwinheight", 15)
 opt("completeopt", "menuone,noselect,fuzzy") -- noselect, noinsert
-opt("complete", "") -- no omnifunc, completefunc, tagfunc, etc
+-- opt("complete", "") -- no omnifunc, completefunc, tagfunc, etc
 opt("confirm", true)
 opt("cpoptions", "aABceFs_r") -- C causes certain vim programs to screw up, x makes command execute even if exiting
 opt("encoding", "UTF-8")

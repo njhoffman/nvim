@@ -1,6 +1,12 @@
 local stylelint_lsp = function()
   vim.lsp.config("stylelint_lsp", {
-    root_markers = { ".stylelintrc", "package.json" },
+    root_markers = {
+      ".stylelintrc",
+      "package.json",
+      ".project",
+      ".git",
+      "CLAUDE.md",
+    },
     filetypes = {
       "css",
       "less",

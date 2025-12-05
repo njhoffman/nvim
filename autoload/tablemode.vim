@@ -1,6 +1,4 @@
 
-echom 'autoload table'
-
 " Private Functions {{{1
 function! s:SetBufferOptDefault(opt, val) "{{{2
   if !exists('b:' . a:opt)
@@ -25,7 +23,6 @@ function! s:UnMap(map, mode) "{{{2
 endfunction
 
 function! s:CustomMapping() "{{{2
-  echom 'IM HERE'
 lua << EOF
 -- vim.g.table_mode_toggle_map         m
 -- table_mode_corner_corner            |

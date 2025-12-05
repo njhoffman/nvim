@@ -81,8 +81,10 @@ function M.use_lua()
     return
   end
 
-  -- Stop any active VimL scrolling
-  vim.fn["smoothie#stop"]()
+  if vim.g.smoothie_loaded == 1 then
+    -- Stop any active VimL scrolling
+    vim.fn["smoothie#stop"]()
+  end
 
   -- Setup Lua implementation
   local smoothie_lua = require("smoothie")

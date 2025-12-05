@@ -124,11 +124,11 @@ if !g:table_mode_disable_tableize_mappings
   endif
 endif
 
-augroup TableMode "{{{1
-  au!
-  autocmd User TableModeEnabled call tablemode#logger#log('Table Mode Enabled')
-  autocmd User TableModeDisabled call tablemode#logger#log('Table Mode Disabled')
-augroup END
+" augroup TableMode "{{{1
+"   au!
+"   autocmd User TableModeEnabled call tablemode#logger#log('Table Mode Enabled')
+"   autocmd User TableModeDisabled call tablemode#logger#log('Table Mode Disabled')
+" augroup END
 
 
  call tablemode#Enable()

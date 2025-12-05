@@ -51,6 +51,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     if client.name == "lua_ls" then
       client.server_capabilities.documentFormattingProvider = false
       client.server_capabilities.documentRangeFormattingProvider = false
+      client.server_capabilities.colorProvider = false
     elseif client.name == "ts_ls" then
       client.server_capabilities.documentFormattingProvider = false
       client.server_capabilities.documentRangeFormattingProvider = false

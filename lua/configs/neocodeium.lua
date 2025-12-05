@@ -1,24 +1,34 @@
 local filetypes = { "lua", "python" }
 
-local cfg = {}
+local cfg = {
+  silent = true,
+}
 
 local keymaps = function()
-  vim.keymap.set("i", "<A-f>", function()
+  vim.keymap.set("i", "<M-Space>", function()
     require("neocodeium").accept()
   end)
-  vim.keymap.set("i", "<A-w>", function()
+  vim.keymap.set("i", "<F8>", function()
+    require("neocodeium").accept()
+  end)
+  vim.keymap.set("i", "<M-'>", function()
     require("neocodeium").accept_word()
   end)
-  vim.keymap.set("i", "<A-a>", function()
+  vim.keymap.set("i", '<M-">', function()
     require("neocodeium").accept_line()
   end)
-  vim.keymap.set("i", "<A-e>", function()
+
+  -- C-S-j
+  vim.keymap.set("i", "<M-S-Down>", function()
     require("neocodeium").cycle_or_complete()
   end)
-  vim.keymap.set("i", "<A-r>", function()
+
+  -- C-S-k
+  vim.keymap.set("i", "<M-S-Up>", function()
     require("neocodeium").cycle_or_complete(-1)
   end)
-  vim.keymap.set("i", "<A-c>", function()
+
+  vim.keymap.set("i", "<M-c>", function()
     require("neocodeium").clear()
   end)
 
@@ -32,6 +42,7 @@ local keymaps = function()
 end
 
 require("neocodeium").setup(cfg)
+keymaps()
 
 -- local neocodeium = require("neocodeium")
 -- -- Accepts the suggestion

@@ -35,7 +35,7 @@ local cfg = {
     virtualtext_inline = false,
     virtualtext_mode = "foreground", -- foreground/background
     -- update color values even if buffer is not focused example use: cmp_menu, cmp_docs
-    always_update = false,
+    always_update = true,
   },
   hooks = {
     -- called before line parsing.  Accepts boolean or function that returns boolean see hooks section below

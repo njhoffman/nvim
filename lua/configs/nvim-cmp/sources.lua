@@ -233,12 +233,12 @@ local sources = {
   },
   cmdline = {
     {
+      { name = "nvim_lsp" },
+      { name = "nvim_lsp_document_symbol" },
       {
         name = "cmdline",
         option = { ignore_cmds = { "Man", "!" } },
       },
-      { name = "nvim_lsp" },
-      { name = "nvim_lsp_document_symbol" },
     },
     {
       { name = "fuzzy_path", option = { fd_timeout_msec = 1500 } },

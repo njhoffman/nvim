@@ -1435,7 +1435,7 @@ return function(injected_functions)
 
     -- TinyGlimmer({ bg = "#1f2342" }),
 
-    TinyGlimmerFrom({ bg = VisualAlt.bg }),
+    TinyGlimmerFrom({ VisualAlt }),
     TinyGlimmerTo({ bg = Normal.bg }),
 
     TinyGlimmerDelete({ bg = "#583042" }),
@@ -1486,5 +1486,9 @@ return function(injected_functions)
     tcfAttrRevName({ fg = "#888888", gui = "italic" }),
     tcfAttrRevDiv({ fg = "#888888", gui = "italic" }),
     tcfAttrRevValue({ fg = "#888888", gui = "italic" }),
+
+    NeoCodeiumLabel({ fg = "#0d81bc" }), -- guifg=#0d81bc bold,reverse
+    -- NeoCodeiumSingleLineLabel({}), -- guifg=#808080 bold
+    NeoCodeiumSuggestion({ fg = "#804243", gui = "italic" }), -- guifg=#808080
   }
 end

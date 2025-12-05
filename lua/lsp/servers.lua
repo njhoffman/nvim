@@ -117,7 +117,7 @@ vim.lsp.config("jqls", {})
 
 -- sqls - SQL Language Server
 vim.lsp.config("sqls", {
-  root_markers = { ".git" },
+  root_markers = { ".git", "CLAUDE.md" },
   single_file_support = false,
   on_new_config = function(new_config, new_rootdir)
     table.insert(new_config.cmd, "-config")
@@ -126,7 +126,7 @@ vim.lsp.config("sqls", {
 })
 -- bashls - Bash Language Server
 vim.lsp.config("bashls", {
-  root_markers = { ".project", ".git" },
+  root_markers = { ".project", ".git", "CLAUDE.md" },
   filetypes = { "sh", "bash" },
   logLevel = "debug", -- debug, info, warn, error
   includeAllWorkspaceSymbols = true,
@@ -202,14 +202,14 @@ vim.lsp.config("ansiblels", {
 vim.lsp.config("awk_ls", {
   cmd = { "awk-ls" },
   filetypes = { "awk" },
-  root_markers = { ".project", ".git" },
+  root_markers = { ".project", ".git", "CLAUDE.md" },
 })
 
 -- clangd - C/C++ Language Server
 vim.lsp.config("clangd", {
   cmd = { "clangd", "--offset-encoding=utf-16" },
   filetypes = { "c", "cpp", "objc", "objcpp" },
-  root_markers = { "compile_commands.json", ".git" },
+  root_markers = { "compile_commands.json", ".git", "CLAUDE.md" },
 })
 
 -- cmake - CMake Language Server
@@ -335,7 +335,7 @@ vim.lsp.config("pyright", {
 vim.lsp.config("vimls", {
   cmd = { "vim-language-server", "--stdio" },
   filetypes = { "vim" },
-  root_markers = { ".project", ".git" },
+  root_markers = { ".project", ".git", "CLAUDE.md" },
   single_file_support = true,
   init_options = {
     isNeovim = true,

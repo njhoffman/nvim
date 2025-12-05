@@ -1,19 +1,21 @@
-local lspconfig = require('lspconfig')
+local lspconfig = require("lspconfig")
 local util = lspconfig.util
 
 local tailwindcss = function()
   lspconfig.tailwindcss.setup({
     root_pattern = util.root_pattern(
-      'tailwind.config.js',
-      'tailwind.config.ts',
-      'postcss.config.js',
-      'postcss.config.ts',
-      'package.json',
-      'node_modules',
-      '.git'
+      "tailwind.config.js",
+      "tailwind.config.ts",
+      "postcss.config.js",
+      "postcss.config.ts",
+      "package.json",
+      "node_modules",
+      ".project",
+      ".git",
+      "CLAUDE.md"
     ),
     tailwindCSS = {
-      classAttributes = { 'class', 'className', 'classList', 'ngClass' },
+      classAttributes = { "class", "className", "classList", "ngClass" },
       rootFontSize = 16,
       colorDecorators = true,
       hovers = true,
@@ -23,17 +25,17 @@ local tailwindcss = function()
       inspect_port = nil,
       showPixelEquivalent = true,
       lint = {
-        cssConflict = 'warning',
-        invalidApply = 'error',
-        invalidConfigPath = 'error',
-        invalidScreen = 'error',
-        invalidTailwindDirective = 'error',
-        invalidVariant = 'error',
-        recommendedVariantOrder = 'warning',
+        cssConflict = "warning",
+        invalidApply = "error",
+        invalidConfigPath = "error",
+        invalidScreen = "error",
+        invalidTailwindDirective = "error",
+        invalidVariant = "error",
+        recommendedVariantOrder = "warning",
       },
     },
     on_attach = function(client, bufnr)
-      require('lsp.on_attach')(client, bufnr)
+      require("lsp.on_attach")(client, bufnr)
     end,
   })
 end

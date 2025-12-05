@@ -1,4 +1,13 @@
 local default_workspace = {
+  ignoreDir = {
+    ".direnv",
+    ".git",
+    "build",
+    "dist",
+    "flake.lock",
+    "flake.nix",
+    "node_modules",
+  },
   library = {
     vim.fn.expand("$VIMRUNTIME"),
     vim.fn.stdpath("config"),
@@ -6,7 +15,6 @@ local default_workspace = {
     "${3rd}/luassert/library",
     "${3rd}/luv/library",
   },
-
   maxPreload = 5000,
   preloadFileSize = 10000,
 }
@@ -22,7 +30,9 @@ local root_patterns = {
   "selene.yml",
   "stylua.toml",
   "vim.toml",
-  "lua/"
+  "lua/",
+  ".git",
+  "CLAUDE.md",
 }
 
 local lua_ls = function()
@@ -37,6 +47,9 @@ local lua_ls = function()
     },
     root_markers = root_patterns,
 
+    on_attach = function(client, bufnr)
+      client.server_capabilities.colorProvider = false
+    end,
     settings = {
       Lua = {
         format = {
@@ -74,6 +87,8 @@ local lua_ls = function()
           enable = false,
         },
         runtime = {
+          path = { "?.lua", "?/init.lua" },
+          pathStrict = true,
           version = "LuaJIT",
         },
       },

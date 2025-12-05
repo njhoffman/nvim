@@ -103,6 +103,15 @@ require("noice").setup({
       ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
     },
   },
+  cmdline = {
+    enabled = true, -- enables the Noice cmdline UI
+    view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom of the screen
+    opts = {}, -- global options for the cmdline. See section on views
+  },
+  popupmenu = {
+    enabled = true,
+    backend = "nui",
+  },
   views = {
     split = {
       scrollbar = false,

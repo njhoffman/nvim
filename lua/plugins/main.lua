@@ -46,6 +46,22 @@ local plugins = {
     event = "VeryLazy",
     dependencies = { "nvim-lua/plenary.nvim" },
   },
+  -- add this to the file where you setup your other plugins:
+  {
+    "monkoose/neocodeium",
+    event = "VeryLazy",
+    config = function()
+      local neocodeium = require("neocodeium")
+      neocodeium.setup()
+      vim.keymap.set("i", "<A-f>", neocodeium.accept)
+    end,
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    enabled = false,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
+  { "windwp/windline.nvim", enabled = false },
   {
     "LintaoAmons/scratch.nvim",
     event = "VeryLazy",
@@ -59,14 +75,16 @@ local plugins = {
   {
     "chrishrb/gx.nvim",
     keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" } } },
-    cmd = { "Browse" },
     init = function()
       vim.g.netrw_nogx = 1 -- disable netrw gx
     end,
     dependencies = { "nvim-lua/plenary.nvim" },
   },
-  { "rmagatti/gx-extended.nvim" },
-  { "OXY2DEV/helpview.nvim", ft = "help", dependencies = { "nvim-treesitter/nvim-treesitter" } },
+  {
+    "OXY2DEV/helpview.nvim",
+    ft = "help",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+  },
   { "monaqa/dial.nvim", event = { "VeryLazy" }, dependencies = { "nvim-lua/plenary.nvim" } },
   { "tris203/hawtkeys.nvim", event = { "VeryLazy" } },
   { "nvzone/showkeys", cmd = "ShowkeysToggle" },
@@ -106,6 +124,20 @@ local plugins = {
       -- disabled_fts = {
       --     "startify",
       -- },
+    },
+  },
+
+  {
+    "alex-popov-tech/store.nvim",
+    dependencies = {
+      "OXY2DEV/markview.nvim", -- optional, for pretty readme preview / help window
+    },
+    cmd = "Store",
+    keys = {
+      { "<leader>i/", "<cmd>Store<cr>", desc = "Open Plugin Store" },
+    },
+    opts = {
+      -- optional configuration here
     },
   },
 
@@ -489,6 +521,8 @@ local plugins = {
   { "folke/flash.nvim", event = "VeryLazy" },
   { "s1n7ax/nvim-window-picker", name = "window-picker", event = "VeryLazy", version = "2.*" },
 
+  { "XXiaoA/atone.nvim", event = "VeryLazy" },
+
   -- cursor
   -- { "gen740/SmoothCursor.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "sphamba/smear-cursor.nvim", cond = false and vim.g.neovide == nil },
@@ -627,7 +661,6 @@ local plugins = {
       "camgraff/telescope-tmux.nvim",
       "cljoly/telescope-repo.nvim",
       "crispgm/telescope-heading.nvim",
-      "dhruvmanila/telescope-bookmarks.nvim",
       "jonarrien/telescope-cmdline.nvim",
       "elianiva/telescope-npm.nvim",
       "frenchtoasters/telescope-kubectl.nvim",
@@ -1004,7 +1037,7 @@ local plugins = {
   { "sidebar-nvim/sidebar.nvim", cmd = { "SidebarNvimOpen", "SidebarNvimToggle" } },
   { "nvimtools/hydra.nvim", event = "VeryLazy" }, -- anuvyklack
   { "NvChad/nvim-colorizer.lua", event = { "BufReadPost", "BufNewFile" } },
-  { "rachartier/tiny-glimmer.nvim", event = { "BufReadPost", "BufNewFile" } },
+  { "rachartier/tiny-glimmer.nvim", event = "VeryLazy" },
   {
     "DeaconDesperado/colortils.nvim",
     branch = "fix-gradient",

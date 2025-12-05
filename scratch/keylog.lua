@@ -1,6 +1,13 @@
 vim.on_key(function(key, typed)
-  vim.dbglog.log(key, typed)
+  local key_s = vim.fn.strtrans(key)
+  if tostring(key_s) == "<t_ýg>" then
+    key_s = ""
+  end
 
+  local typed_s = vim.fn.keytrans(typed)
+  local trans = { key = vim.fn.keytrans(key), typed = vim.fn.strtrans(typed) }
+
+  vim.dbglog(key_s, typed_s, trans.key, trans.typed)
   -- local statusline_enabled = vim.g.screenkey_statusline_component
   -- if not active and not statusline_enabled then
   --   kill_timer()

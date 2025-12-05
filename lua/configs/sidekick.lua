@@ -6,6 +6,9 @@ local cfg = {
       level = vim.log.levels.WARN,
     },
   },
+  nes = {
+    enabled = false,
+  },
   cli = {
     mux = {
       backend = "tmux",
