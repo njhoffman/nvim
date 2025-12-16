@@ -126,7 +126,7 @@ vim.lsp.config("sqls", {
 })
 -- bashls - Bash Language Server
 vim.lsp.config("bashls", {
-  root_markers = { ".project", ".git", "CLAUDE.md" },
+  root_markers = { ".project", "courseleaf.cfg", ".git", "CLAUDE.md" },
   filetypes = { "sh", "bash" },
   logLevel = "debug", -- debug, info, warn, error
   includeAllWorkspaceSymbols = true,
@@ -202,7 +202,7 @@ vim.lsp.config("ansiblels", {
 vim.lsp.config("awk_ls", {
   cmd = { "awk-ls" },
   filetypes = { "awk" },
-  root_markers = { ".project", ".git", "CLAUDE.md" },
+  root_markers = { ".project", "coursealeaf.cfg", ".git", "CLAUDE.md" },
 })
 
 -- clangd - C/C++ Language Server
@@ -335,7 +335,7 @@ vim.lsp.config("pyright", {
 vim.lsp.config("vimls", {
   cmd = { "vim-language-server", "--stdio" },
   filetypes = { "vim" },
-  root_markers = { ".project", ".git", "CLAUDE.md" },
+  root_markers = { ".project", ".git", "courseleaf.ccfg", "CLAUDE.md" },
   single_file_support = true,
   init_options = {
     isNeovim = true,
@@ -347,7 +347,15 @@ vim.lsp.config("vimls", {
       runtimepath = true,
       gap = 100,
       count = 3,
-      projectRootPatterns = { "runtime", "nvim", ".git", "autoload", "plugin" },
+      projectRootPatterns = {
+        "runtime",
+        "nvim",
+        ".project",
+        "coursealeaf.cfg",
+        ".git",
+        "autoload",
+        "plugin",
+      },
     },
     suggest = { fromVimruntime = true, fromRuntimepath = true },
   },

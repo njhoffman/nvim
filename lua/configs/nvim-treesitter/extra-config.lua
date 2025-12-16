@@ -63,6 +63,15 @@ if parser_config then
     filetype = "gotmpl",
     used_by = { "gohtmltmpl", "gotexttmpl", "gotmpl", "yaml" },
   }
+  parser_config.spidercode = {
+    install_info = {
+      url = vim.fn.stdpath("data") .. "/tree-sitter-spidercode",
+      files = { "src/parser.c", "src/scanner.c" },
+      generate_requires_npm = false,
+      requires_generate_from_grammar = false,
+    },
+    filetype = "spidercode",
+  }
   -- parser_config.zsh = {
   --   install_info = {},
   --   -- install_info = {

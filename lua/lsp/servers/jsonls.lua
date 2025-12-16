@@ -3,6 +3,7 @@ local jsonls = function()
     filetypes = { "json", "jsonc" },
     root_markers = {
       "package.json",
+      "courseleaf.cfg",
       ".project",
       ".git",
       "CLAUDE.md",

@@ -24,15 +24,16 @@ local root_patterns = {
   ".luacheckrc",
   ".luarc.json",
   ".luarc.jsonc",
-  ".project",
   ".stylua.toml",
   "selene.toml",
   "selene.yml",
   "stylua.toml",
   "vim.toml",
-  "lua/",
+  ".project",
+  "courseleaf.cfg",
   ".git",
   "CLAUDE.md",
+  "lua/",
 }
 
 local lua_ls = function()

@@ -1,9 +1,9 @@
 local root_file = {
   "courseleaf.cfg",
+  ".project",
   "tsconfig.json",
   "jsconfig.json",
   "package.json",
-  ".project",
   ".git",
   "CLAUDE.md",
 }

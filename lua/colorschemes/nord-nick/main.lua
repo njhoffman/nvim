@@ -1470,14 +1470,16 @@ return function(injected_functions)
     MultiCursorDisabledSign({ SignColumn }),
 
     -- leepfrog spidermonkey and psl
-    previewBackground({ fg = "#FFAA66", bg = "#000044" }),
-    pslNegative({ fg = "#B0BAF7" }),
-    pslPositive({ fg = "#B0BAF7" }),
-    pslImport({ fg = "#E2DCBC" }),
-    pslMultiline({ fg = "#FF6600" }),
-    pslValue({ fg = "#B0BAF7" }),
-    spiderCodeBlock({ fg = "#FF0000" }),
-    spiderCodeKeyword({ fg = "#cf6a4c" }),
+
+    sym("@lsp.type.enum")({ sym("@type") }),
+    spidercodeTag({ fg = "#990000" }),
+    sym("@keyword.directive.spidercode")({ spidercodeTag }),
+    pslDirective({ spidercodeTag }),
+    pslNegative({ fg = "#804A67" }),
+    pslPositive({ fg = "#00aAa7" }),
+    pslImport({ fg = "#c86040" }),
+    pslMultiline({ fg = "#a7a7a7" }),
+    pslVariable({ fg = "#008AF7" }),
     tcfAttrName({ fg = "#7F93E2" }),
     tcfAttrValue({ fg = "#C8C8C8" }),
     tcfAttrDiv({ fg = "#AACCFF", gui = "bold" }),
@@ -1486,9 +1488,7 @@ return function(injected_functions)
     tcfAttrRevName({ fg = "#888888", gui = "italic" }),
     tcfAttrRevDiv({ fg = "#888888", gui = "italic" }),
     tcfAttrRevValue({ fg = "#888888", gui = "italic" }),
-
-    NeoCodeiumLabel({ fg = "#0d81bc" }), -- guifg=#0d81bc bold,reverse
-    -- NeoCodeiumSingleLineLabel({}), -- guifg=#808080 bold
-    NeoCodeiumSuggestion({ fg = "#804243", gui = "italic" }), -- guifg=#808080
+    NeoCodeiumLabel({ fg = "#0d81bc" }),
+    NeoCodeiumSuggestion({ fg = "#804243", gui = "italic" }),
   }
 end

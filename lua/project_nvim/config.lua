@@ -7,10 +7,10 @@ local defaults = {
   -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
   -- order matters: if one is not detected, the other is used as fallback. You
   -- can also delete or rearangne the detection methods.
-  detection_methods = { 'lsp', 'pattern' },
+  detection_methods = { "lsp", "pattern" },
   -- All the patterns used to detect root dir, when **"pattern"** is in
   -- detection_methods
-  patterns = { '.git', '_darcs', '.hg', '.bzr', '.svn', 'Makefile', 'package.json' },
+  patterns = { ".project", "courseleaf.cfg", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile" },
   -- Table of lsp clients to ignore by name
   -- eg: { "efm", ... }
   ignore_lsp = {},
@@ -26,7 +26,7 @@ local defaults = {
   chdir_func = true,
   -- Path where project.nvim will store the project history for use in
   -- telescope
-  datapath = vim.fn.stdpath('data'),
+  datapath = vim.fn.stdpath("data"),
   -- Allows the user to declare a custom callback to execute before project selection
   -- occurs, such as when moving from one project to another
   before_project_selection_callback = function() end,
@@ -42,23 +42,23 @@ local defaults = {
   -- Overwrite some of Session Manager options
   session_manager_opts = {
     autosave_ignore_dirs = {
-      vim.fn.expand('~'), -- don't create a session for $HOME/
-      '/tmp',
+      vim.fn.expand("~"), -- don't create a session for $HOME/
+      "/tmp",
     },
     autosave_ignore_filetypes = {
       -- All buffers of these file types will be closed before the session is saved
-      'ccc-ui',
-      'gitcommit',
-      'gitrebase',
-      'qf',
-      'toggleterm',
+      "ccc-ui",
+      "gitcommit",
+      "gitrebase",
+      "qf",
+      "toggleterm",
     },
   },
   -- Project directories
   projects = {
-    '~/lazy/*',
-    '~/git/*',
-    '~/.config/*',
+    "~/lazy/*",
+    "~/git/*",
+    "~/.config/*",
   },
 }
 
@@ -66,13 +66,13 @@ local defaults = {
 local options = {}
 
 local init = function(_options)
-  options = vim.tbl_deep_extend('force', defaults, _options or {})
+  options = vim.tbl_deep_extend("force", defaults, _options or {})
 
-  local glob = require('project_nvim.utils.globtopattern')
-  local home = vim.fn.expand('~')
+  local glob = require("project_nvim.utils.globtopattern")
+  local home = vim.fn.expand("~")
   options.exclude_dirs = vim.tbl_map(function(pattern)
-    if vim.startswith(pattern, '~/') then
-      pattern = home .. '/' .. pattern:sub(3, #pattern)
+    if vim.startswith(pattern, "~/") then
+      pattern = home .. "/" .. pattern:sub(3, #pattern)
     end
     return glob.globtopattern(pattern)
   end, options.exclude_dirs)

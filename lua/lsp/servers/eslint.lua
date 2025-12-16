@@ -16,6 +16,7 @@ local root_file = {
   "eslint.config.ts",
   "eslint.config.mts",
   "eslint.config.cts",
+  "courseleaf.cfg",
   ".project",
   ".git",
   "CLAUDE.md",

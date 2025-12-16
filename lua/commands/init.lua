@@ -6,10 +6,12 @@ local debug = require("commands.debug")
 -- local paste = require('commands.paste')
 local reload = require("commands.reload")
 local system = require("commands.system")
-local ansi = require("commands.ansi")
+-- local ansi = require("commands.ansi")
 local quickclose = require("commands.quickclose")
 local colorscheme_export = require("commands.colorscheme_export")
 local silence = require("commands.silence")
+local range_history = require("commands.range-history")
+-- require("commands.html-psl")
 
 local map = require("mapper").map
 
@@ -18,6 +20,7 @@ local bufcmd = vim.api.nvim_buf_create_user_command
 
 require("commands.ui").setup()
 quickclose.setup()
+range_history.setup()
 
 -- TODO: resume visual selection after switching
 vim.api.nvim_create_user_command("Vblock", function()

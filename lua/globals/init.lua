@@ -4,10 +4,10 @@
 
 -- profiling startup setup : PROF=1 nvim
 if vim.env.PROF then
-  local local_path = vim.fn.getenv("home") .. "/git/snacks.nvim"
-  local lazy_path = vim.fn.stdpath("data") .. "/lazy/snacks.nvim"
-  local snacks = vim.fn.isdirectory(local_path) == 1 and local_path
-    or vim.fn.isdirectory(lazy_path) and lazy_path
+  -- local local_path = vim.fn.getenv("HOME") .. "/git/snacks.nvim"
+  -- local lazy_path = vim.fn.stdpath("data") .. "/lazy/snacks.nvim"
+  -- local snacks = vim.fn.isdirectory(local_path) == 1 and local_path
+  local snacks = vim.fn.stdpath("data") .. "/lazy/snacks.nvim"
   if snacks then
     vim.opt.rtp:append(snacks)
     require("snacks.profiler").startup({

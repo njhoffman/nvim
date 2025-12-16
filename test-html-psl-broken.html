@@ -1,0 +1,86 @@
+<html>
+<div>
+  <p>HEY</p>
+</div>
+
+%?user?%<div class="section section--description">
+	<script>
+		var progdir = "%progdir%";
+		var progname = "%progname%";
+		var lf = lf || {};
+		lf.verbose = "%verbose%";
+    for(var table in trigger) {
+      trigger[table].forEach(function(trg) {
+        createTrigger(db, table, trg);
+      });
+    }
+	</script>
+</div>
+
+%spidercode%
+qryStr = getenv("QUERY_STRING").split("&");
+var sccontainer = false;
+var isstructuredstep = false;
+for(var j=0; j < qryStr.length; j++) {
+	var tmp = qryStr[j].split();
+	if(tmp[0] == "type" && tmp[1] == "sc")
+		isstructuredstep = true;
+	else if (tmp[0] == "sccontainer" && tmp[1])
+		sccontainer = tmp[1];
+}
+})();
+%spidercode%
+
+<!-- Block 1: This works correctly with syntax highlighting -->
+<head>
+  <title>PSL and SPIDERCODE Test</title>
+</head>
+<div class="section section--description">
+	<script>
+    var progdir = "%progdir%";
+    var progname = "%progname%";
+    var lf = lf || {};
+		lf.verbose = "%verbose%";
+    for(var table in trigger) {
+      trigger[table].forEach(function(trg) {
+        createTrigger(db, table, trg);
+      });
+    }
+	</script>
+</div>
+<!-- end Block 1 -->
+
+%spidercode%
+qryStr = getenv("QUERY_STRING").split("&");
+var sccontainer = false;
+var isstructuredstep = false;
+for(var j=0; j < qryStr.length; j++) {
+	var tmp = qryStr[j].split("";
+	if(tmp[0] == "type" && tmp[1] == "sc")
+		isstructuredstep = true;
+	else if (tmp[0] == "sccontainer" && tmp[1])
+		sccontainer = tmp[1];
+}
+})();
+%spidercode%
+
+<!-- Block 2: This does not work, only @tag.delimiter.html and pslValue are being recognized -->
+<head>
+  <title>PSL and SPIDERCODE Test</title>
+</head>
+<div class="section section--description">
+  <script>
+    var progdir = "%progdir%";
+    var progname = "%progname%";
+    var lf = lf || {};
+    lf.verbose = "%verbose%";
+    for(var table in trigger) {
+      trigger[table].forEach(function(trg) {
+        createTrigger(db, table, trg);
+      });
+    }
+  </script>
+</div>
+<!-- end Block 2 -->
+</html
+

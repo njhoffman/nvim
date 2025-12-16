@@ -3,6 +3,7 @@ local stylelint_lsp = function()
     root_markers = {
       ".stylelintrc",
       "package.json",
+      "courseleaf.cfg",
       ".project",
       ".git",
       "CLAUDE.md",

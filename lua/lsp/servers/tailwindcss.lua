@@ -10,6 +10,7 @@ local tailwindcss = function()
       "postcss.config.ts",
       "package.json",
       "node_modules",
+      "courseleaf.cfg",
       ".project",
       ".git",
       "CLAUDE.md"

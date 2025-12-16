@@ -76,113 +76,153 @@ end
 
 function M.find_pattern_root()
   local options = require("project_nvim.config").get()
+  local start_dir = vim.fn.expand("%:p:h", true)
 
-  local search_dir = vim.fn.expand("%:p:h", true)
+  -- Cache for directory listings (persists across all searches)
+  local dir_cache = {}
+  -- Cache for compiled glob patterns
+  local glob_cache = {}
 
-  local last_dir_cache = ""
-  local curr_dir_cache = {}
-
-  local function get_parent(_path)
-    _path = _path:match("^(.*)/")
-    if _path == "" then
-      _path = "/"
-    end
-    return _path
+  local function get_parent(path)
+    local parent = path:match("^(.*)/")
+    return (parent == "" or not parent) and "/" or parent
   end
 
-  local function get_files(file_dir)
-    last_dir_cache = file_dir
-    curr_dir_cache = {}
-
-    local dir = uv.fs_scandir(file_dir)
-    if dir == nil then
-      return
-    end
-
-    while true do
-      local file = uv.fs_scandir_next(dir)
-      if file == nil then
-        return
-      end
-
-      table.insert(curr_dir_cache, file)
-    end
+  local function get_dir_name(path)
+    return path:match("([^/]+)$")
   end
 
-  local function is(dir, identifier)
-    dir = dir:match(".*/(.*)")
-    return dir == identifier
-  end
+  local function get_files(dir)
+    local cached = dir_cache[dir]
+    if cached then
+      return cached
+    end
 
-  local function sub(dir, identifier)
-    local _path = get_parent(dir)
-    while true do
-      if is(_path, identifier) then
-        return true
-      end
-      local current = _path
-      _path = get_parent(_path)
-      if current == _path then
-        return false
+    local files = {}
+    local handle = uv.fs_scandir(dir)
+    if handle then
+      local name = uv.fs_scandir_next(handle)
+      while name do
+        files[#files + 1] = name
+        name = uv.fs_scandir_next(handle)
       end
     end
+    dir_cache[dir] = files
+    return files
   end
 
-  local function child(dir, identifier)
-    local _path = get_parent(dir)
-    return is(_path, identifier)
-  end
-
-  local function has(dir, identifier)
-    if last_dir_cache ~= dir then
-      get_files(dir)
+  local function get_glob_pattern(identifier)
+    local cached = glob_cache[identifier]
+    if cached then
+      return cached
     end
     local pattern = glob.globtopattern(identifier)
-    for _, file in ipairs(curr_dir_cache) do
-      if file:match(pattern) ~= nil then
+    glob_cache[identifier] = pattern
+    return pattern
+  end
+
+  -- Match functions for different pattern types
+  local function is_dir_name(dir, identifier)
+    return get_dir_name(dir) == identifier
+  end
+
+  local function is_subdir_of(dir, identifier)
+    local path = get_parent(dir)
+    while path and path ~= "/" do
+      if get_dir_name(path) == identifier then
+        return true
+      end
+      local parent = get_parent(path)
+      if parent == path then
+        break
+      end
+      path = parent
+    end
+    return get_dir_name("/") == identifier
+  end
+
+  local function is_child_of(dir, identifier)
+    return get_dir_name(get_parent(dir)) == identifier
+  end
+
+  local function has_file(dir, identifier)
+    local files = get_files(dir)
+    local pattern = get_glob_pattern(identifier)
+    for i = 1, #files do
+      if files[i]:match(pattern) then
         return true
       end
     end
     return false
   end
 
-  local function match(dir, pattern)
+  local function match_pattern(dir, pattern)
     local first_char = pattern:sub(1, 1)
     if first_char == "=" then
-      return is(dir, pattern:sub(2))
+      return is_dir_name(dir, pattern:sub(2))
     elseif first_char == "^" then
-      return sub(dir, pattern:sub(2))
+      return is_subdir_of(dir, pattern:sub(2))
     elseif first_char == ">" then
-      return child(dir, pattern:sub(2))
+      return is_child_of(dir, pattern:sub(2))
     else
-      return has(dir, pattern)
+      return has_file(dir, pattern)
     end
   end
 
-  -- breadth-first search
-  while true do
-    for _, pattern in ipairs(options.patterns) do
-      local exclude = false
-      if pattern:sub(1, 1) == "!" then
-        exclude = true
-        pattern = pattern:sub(2)
-      end
-      if match(search_dir, pattern) then
-        if exclude then
-          break
-        else
-          return search_dir, "pattern " .. pattern
+  -- Search all parent directories for any pattern in the given list
+  -- Patterns in a group are checked together at each directory level
+  local function search_parents_for_group(patterns)
+    local dir = start_dir
+
+    while dir do
+      for i = 1, #patterns do
+        local pattern = patterns[i]
+
+        -- Skip nil or non-string patterns
+        if type(pattern) ~= "string" then
+          goto continue
         end
+
+        local exclude = false
+        if pattern:sub(1, 1) == "!" then
+          exclude = true
+          pattern = pattern:sub(2)
+        end
+
+        if match_pattern(dir, pattern) then
+          if exclude then
+            -- Exclusion matched: skip this directory, continue to parent
+            break
+          else
+            return dir, patterns[i]
+          end
+        end
+
+        ::continue::
       end
+
+      local parent = get_parent(dir)
+      if parent == dir then
+        break
+      end
+      dir = parent
     end
 
-    local parent = get_parent(search_dir)
-    if parent == search_dir or parent == nil then
-      return nil
-    end
-
-    search_dir = parent
+    return nil, nil
   end
+
+  -- Process patterns/groups in order
+  -- Groups (tables) search all parents for any pattern in the group before moving on
+  -- Single patterns (strings) are treated as a group of one
+  for _, entry in ipairs(options.patterns) do
+    local patterns = type(entry) == "table" and entry or { entry }
+    local result_dir, matched_pattern = search_parents_for_group(patterns)
+    if result_dir then
+      return result_dir, "pattern " .. matched_pattern
+    end
+  end
+
+  return nil
 end
 
 function M.find_dotbare_root()
@@ -213,7 +253,11 @@ function M.get_project_root()
         return root, 'lsp "' .. lsp_name .. '"'
       end
     elseif detection_method == "pattern" then
+      local time_start = vim.loop.hrtime()
       local root, method = M.find_pattern_root()
+      local time_end = vim.loop.hrtime()
+      local time_ms = (time_end - time_start) / 1000000
+      vim.dbglog("pattern time: " .. time_ms .. " ms", root, method)
       if root ~= nil then
         return root, method
       end

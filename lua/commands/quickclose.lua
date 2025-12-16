@@ -148,7 +148,7 @@ function M.quick_close()
   if buf_count > 1 then
     -- Delete the buffer but keep the window
     vim.schedule(function()
-      local ok, err = pcall(vim.cmd, "bdelete")
+      local ok, err = pcall(vim.cmd.bdelete)
       if not ok then
         vim.notify("Error deleting buffer: " .. err, vim.log.levels.ERROR)
       end

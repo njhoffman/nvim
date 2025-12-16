@@ -16,6 +16,16 @@ local plugins = {
   -- https://gist.github.com/GnikDroy/62556534324f9dc9192f7bba5a88cc43
   { "dundalek/bloat.nvim", cmd = "Bloat" },
   { "goolord/alpha-nvim", event = "VimEnter", dependencies = "nvim-web-devicons" },
+  {
+    "Dronakurl/injectme.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    -- This is for lazy load and more performance on startup only
+    cmd = { "InjectmeToggle", "InjectmeSave", "InjectmeInfo", "InjectmeLeave" },
+  },
   { "tamton-aquib/zone.nvim", enabled = false },
   -- https://github.com/romgrk/barbar.nvim/pull/540
   -- { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
@@ -179,7 +189,27 @@ local plugins = {
       "DiffviewFileHistory",
     },
   },
-  { "m00qek/baleia.nvim", lazy = false, commit = "56ad00d" },
+  {
+    "m00qek/baleia.nvim",
+    lazy = false,
+    config = function()
+      vim.g.baleia = require("baleia").setup({})
+
+      -- Command to colorize the current buffer
+      vim.api.nvim_create_user_command("BaleiaColorize", function()
+        vim.g.baleia.once(vim.api.nvim_get_current_buf())
+      end, { bang = true })
+
+      -- Command to show logs
+      vim.api.nvim_create_user_command("BaleiaLogs", vim.g.baleia.logger.show, { bang = true })
+      vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+        pattern = "*.txt",
+        callback = function()
+          vim.g.baleia.automatically(vim.api.nvim_get_current_buf())
+        end,
+      })
+    end,
+  },
   { "folke/zen-mode.nvim", cmd = "ZenMode" },
   { "folke/twilight.nvim", cmd = { "Twilight", "TwilightEnable" } },
   -- { 'benlubas/wrapping-paper.nvim' },
@@ -281,6 +311,7 @@ local plugins = {
     init = function()
       require("configs.codecompanion.extensions.notify-noice").init()
     end,
+    event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "hakonharnes/img-clip.nvim",
@@ -1016,6 +1047,7 @@ local plugins = {
   { "yochem/jq-playground.nvim", opts = { cmd = { "gojq" } } },
   {
     "linrongbin16/fzfx.nvim",
+    enabled = false,
     dependencies = {
       "nvim-tree/nvim-web-devicons",
       {

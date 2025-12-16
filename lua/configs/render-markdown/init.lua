@@ -1,3 +1,9 @@
+-- printf "%b\n\n" "\x1b[7;32mTEST    \x1b[0m"
+-- printf "%b\n\n" "\x1b[1;32mTEST \x1b[7;32m    \x1b[0m"
+
+-- # TEST    
+-- # TEST     
+
 local bullets = {
   { "◆", "◇", "", "" },
   { "", "", "", "" },
@@ -293,7 +299,8 @@ local cfg = {
       end,
     },
   },
-
+  --   󰼎 󰎡 󰎢 󰎣     󰬺 󰎤 󰼏 󰎥 󰎦 󰲠 󰲡 󰬻 󰎧 󰼐 󰎨 󰎩 󰲢 󰲣 󰬼 󰎪 󰼑 󰎫 󰎬 󰲤 󰲥 󰬽 󰎭 󰼒 󰎲 󰎮 󰲦 󰲧 󰬾 󰎱 󰼓 󰎯 󰎰 󰲨 󰲩
+  -- 󰬿 󰎳 󰼔 󰎴 󰎵 󰲪 󰲫 󰭀 󰎶 󰼕 󰎷 󰎸 󰲬 󰲭 󰭁 󰎹 󰼖 󰎺 󰎻 󰲮 󰲯 󰭂 󰎼 󰼗 󰎽 󰎾 󰲰 󰲱 󰿩 󰽽 󰿪 󰿫 󰽾 󰿬 󰿭 󰿮 󰎿 󰼘 󰏀 󰏁 󰲲 󰲳
   heading = {
     -- border = "thin", highlight = "RenderMarkdownCode", highlight_inline = "RenderMarkdownCodeInline", min_width = 30
     border_virtual = true, -- Always use virtual lines for heading borders instead of attempting to use empty lines

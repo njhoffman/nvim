@@ -41,7 +41,7 @@ for _, mod_name in ipairs({
   "configs.feline",
   -- "configs.lualine",
   "configs.definition-or-references",
-  "baleia.setup",
+  -- "baleia.setup",
   -- "demicolon.setup",
 }) do
   vim.import(mod_name)

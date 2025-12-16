@@ -23,6 +23,7 @@ end
 local set_cwd = function(dir, method)
   local options = require("project_nvim.config").get()
   vim.api.nvim_set_current_dir(dir)
+  vim.dbglog("cwd", dir, method)
   logger:info("cwd " .. path.home_path(dir) .. " (" .. tostring(method) .. ")")
   if options.silent_chdir == false then
     if type(options.chdir_func) == "function" then

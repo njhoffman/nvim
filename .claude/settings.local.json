@@ -14,7 +14,17 @@
       "Bash(cat:*)",
       "Bash(chmod:*)",
       "Bash(ls:*)",
-      "Bash(/home/nicholas/.config/claude/statusline.sh)"
+      "Bash(/home/nicholas/.config/claude/statusline.sh)",
+      "Bash(tree-sitter generate:*)",
+      "Bash(tree-sitter parse:*)",
+      "Bash(tree-sitter build:*)",
+      "Bash(git add:*)",
+      "Bash(tree-sitter-spidercode/ )",
+      "Bash(queries/spidercode/ )",
+      "Bash(filetype.lua )",
+      "Bash(after/queries/html/injections.scm )",
+      "Bash(lua/configs/nvim-treesitter/init.lua)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

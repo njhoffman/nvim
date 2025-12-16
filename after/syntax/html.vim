@@ -1,23 +1,33 @@
-if exists('b:current_syntax')
-  let s:current_syntax = b:current_syntax
+" PSL (Percent Substitution Language) syntax highlighting for HTML
+" These patterns highlight special %...% tokens used in template files
+
+if exists('b:psl_syntax_loaded')
+  finish
 endif
+let b:psl_syntax_loaded = 1
 
-if exists('s:current_syntax')
-  let b:current_syntax = s:current_syntax
-endif
+" Literal MULTILINE directive - must be on its own line
+syntax match pslMultiline /^%MULTILINE%$/
 
+" Directive tokens (typically at line start, can be chained)
+" pslNegative: %!variable!%
+syntax match pslNegative /%![^!]\+!%/
 
-"" Leepfrog psl and spidercode syntax additions for html file/region
+" pslPositive: %?variable?%
+syntax match pslPositive /%?[^?]\+?%/
 
-" PSL
-syn clear htmlHead
-syn match pslPositive '%?\w\+?%'
-syn match pslNegative '%!\w\+!%'
-syn match pslValue '"%\S\+%"'
-syn match pslImport '%import .*$'
-syn match pslMultiline '%MULTILINE%'
+" pslImport: %import path%
+syntax match pslImport /%import [^%]\+%/
 
-" SPIDERCODE
-syn include @htmlJavaScript syntax/javascript.vim
-syn region javascript start=+%spidercode%+ keepend end=+%spidercode%+ contains=@htmlJavaScript,htmlCssStyleComment,htmlScriptTag,@htmlPreproc
+" pslVariable: %variable% - general variable substitution
+" Match %word% but exclude patterns that match the special forms above
+" Uses negative lookahead-style exclusion via pattern order (defined last)
+syntax match pslVariable /%[a-zA-Z_][a-zA-Z0-9_]*%/
 
+" Define highlight groups with sensible defaults
+" Users can override these in their colorscheme or after/colors
+highlight default pslMultiline  guifg=#b48ead ctermfg=139
+highlight default pslNegative   guifg=#bf616a ctermfg=131
+highlight default pslPositive   guifg=#a3be8c ctermfg=144
+highlight default pslImport     guifg=#81a1c1 ctermfg=109
+highlight default pslVariable   guifg=#ebcb8b ctermfg=222
