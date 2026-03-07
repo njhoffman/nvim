@@ -17,30 +17,30 @@ local setup = function(overrides)
       { group = augroup, callback = utils.set_highlights }
     )
 
-    vim.cmd([[
-        augroup scrollbar_setup_highlights
-            autocmd!
-            autocmd ColorScheme * lua require('scrollbar.utils').set_highlights()
-        augroup END
-        ]])
+    -- vim.cmd([[
+    --     augroup scrollbar_setup_highlights
+    --         autocmd!
+    --         autocmd ColorScheme * lua require('scrollbar.utils').set_highlights()
+    --     augroup END
+    --     ]])
   end
 
   utils.set_commands()
 
   if config.autocmd and config.autocmd.render and #config.autocmd.render > 0 then
-    vim.api.nvim_create_autocmd(
-      config.autocmd.render,
-      { group = augroup, callback = scrollbar.on_scroll }
-    )
-    vim.cmd(string.format(
-      [[
-        augroup scrollbar_render
-            autocmd!
-            autocmd %s * lua require('scrollbar.scrollbar').on_scroll()
-        augroup END
-        ]],
-      table.concat(config.autocmd.render, ",")
-    ))
+    vim.api.nvim_create_autocmd(config.autocmd.render, {
+      group = augroup,
+      callback = scrollbar.on_scroll,
+    })
+    -- vim.cmd(string.format(
+    --   [[
+    --     augroup scrollbar_render
+    --         autocmd!
+    --         autocmd %s * lua require('scrollbar.scrollbar').on_scroll()
+    --     augroup END
+    --     ]],
+    --   table.concat(config.autocmd.render, ",")
+    -- ))
   end
 
   if config.handlers.cursor then

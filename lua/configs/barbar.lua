@@ -43,9 +43,9 @@ require("barbar").setup({
 --  }
 --
 
-vim.opt.sessionoptions:append("globals")
-vim.api.nvim_create_user_command("Mksession", function(attr)
-  vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })
-  -- Neovim 0.8<=
-  vim.cmd.mksession({ bang = attr.bang, args = attr.fargs })
-end, { bang = true, complete = "file", nargs = "?" })
+-- vim.opt.sessionoptions:append("globals")
+-- vim.api.nvim_create_user_command("Mksession", function(attr)
+--   vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })
+--   -- Neovim 0.8<=
+--   vim.cmd.mksession({ bang = attr.bang, args = attr.fargs })
+-- end, { bang = true, complete = "file", nargs = "?" })

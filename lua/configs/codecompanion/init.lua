@@ -155,7 +155,7 @@ local cfg = {
       provider = "mini_diff", -- default|mini_diff
     },
   },
-  strategies = {
+  interactions = {
     chat = {
       adapter = "anthropic",
       tools = {

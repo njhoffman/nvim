@@ -165,6 +165,16 @@ local setup_search_mappings = function()
     { noremap = true, silent = true, desc = "⚡flash jump full words" }
   )
 
+    vim.keymap.set({"x", "o"}, "v", function()
+      require("flash").treesitter({
+        actions = {
+          ["v"] = "next",
+          ["V"] = "prev"
+        }
+      })
+    end, { desc = "Treesitter incremental selection" })
+
+
   map(
     { "n", "o", "x" },
     pfx .. "e",

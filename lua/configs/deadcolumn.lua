@@ -23,4 +23,4 @@ local opts = {
     follow_tw = "+1",
   },
 }
-require("deadcolumn").setup(opts)
+-- require("deadcolumn").setup(opts)

@@ -4,26 +4,9 @@ local history = require("project_nvim.utils.history")
 local path = require("project_nvim.utils.path")
 local logger = require("logger").init("project")
 
-local set_user_option = function(dir, method)
-  local opt = vim.import("utils.options")
-  if type(opt) == "table" then
-    local bufnr = vim.api.nvim_get_current_buf()
-    local project_path = string.gsub(dir, os.getenv("HOME") or "", "~")
-    local project_name = ""
-    if project_path ~= nil and project_path ~= "" then
-      project_path, project_name = string.match(project_path, "(.*)%/(.*)")
-      -- last_buffer = vim.fn.bufnr()
-    end
-    opt.set_local("projectmethod", method, bufnr)
-    opt.set_local("projectpath", project_path, bufnr)
-    opt.set_local("projectname", project_name, bufnr)
-  end
-end
-
 local set_cwd = function(dir, method)
   local options = require("project_nvim.config").get()
   vim.api.nvim_set_current_dir(dir)
-  vim.dbglog("cwd", dir, method)
   logger:info("cwd " .. path.home_path(dir) .. " (" .. tostring(method) .. ")")
   if options.silent_chdir == false then
     if type(options.chdir_func) == "function" then
@@ -37,7 +20,7 @@ local set_pwd = function(dir, method)
   if dir ~= nil then
     state.last_project = dir
     history.add_session_project(dir, method)
-    set_user_option(dir, method)
+    -- set_user_option(dir, method)
     logger:trace("pwd " .. path.home_path(dir) .. " (" .. tostring(method) .. ")")
     if vim.fn.getcwd() ~= dir then
       history.write_projects_to_history(true)

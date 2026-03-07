@@ -1,89 +1,131 @@
 -- use bash parser for zsh files
--- local parsers = require("configs.nvim-treesitter.parsers")
 
--- Register custom spidercode parser with nvim-treesitter (for :TSInstall, etc.)
-local spidercode_path = vim.fn.stdpath("config") .. "/tree-sitter-spidercode"
-
--- local parser_config = require("nvim-treesitter.parsers")
--- parser_config.spidercode = {
---   install_info = {
---     -- url = spidercode_path,
---     path = spidercode_path,
---     -- files = { "src/parser.c", "src/scanner.c" },
---     -- generate_requires_npm = false,
---     -- requires_generate_from_grammar = false,
---   },
---   tier = 2,
---   filetype = "spidercode",
--- }
-
--- Add custom parser path for queries
-vim.opt.runtimepath:append(spidercode_path)
-
-local spidercode_parser = {
-  install_info = {
-    path = spidercode_path,
-    -- generate = true, -- only needed if repo does not contain pre-generated `src/parser.c`
-    -- generate_from_json = false, -- only needed if repo does not contain `src/grammar.json` either
-    -- queries = 'queries/neovim', -- also install queries from given directory
-  },
-}
-
-require("nvim-treesitter.parsers").spidercode = spidercode_parser
-
-local languages = require("nvim-treesitter.config").norm_languages("all", { unsupported = true })
+local logger = require("logger").init("treesitter")
 
 local cfg = {
-  install = languages,
   skip_folding = {},
-  skip_highlights = { "zsh" },
-  vim_regex_highlights = { "make", "html", "spidercode" },
+  skip_highlights = { "zsh", "tmux" },
+  vim_regex_highlights = { "make", "html", "spidercode", "tmux" },
   skip_indent = { "markdown", "sh", "bash", "vim" },
 }
 
+---|fS "config: Parser info"
+local update_stack = {}
+
+---@class parser_register_opts
+---@field lange string Language name.
+---@field path? string Local path to parser
+---@field url? string URL to parser
+---@field name? string Custom name of parser `directory` or `repository`.
+---@param opts parser_register_opts
+local function register(opts)
+  local path = opts.path and opts.path .. (opts.name or opts.lang)
+  local url = opts.url and opts.url .. (opts.name or opts.lang)
+
+  -- Add custom parser path for queries
+  if path then
+    vim.opt.runtimepath:append(path)
+  end
+
+  update_stack[opts.lang] = { url = url, path = path }
+
+  if opts.name and opts.name ~= opts.lang then
+    vim.treesitter.language.register(opts.name, opts.lang)
+  end
+end
+
+local function update_parsers()
+  for lang, info in pairs(update_stack) do
+    require("nvim-treesitter.parsers")[lang] = { install_info = info }
+  end
+end
+
+local function install_parsers()
+  -- auto-install parsers
+  update_parsers()
+  local ts_config = require("nvim-treesitter.config")
+  logger:info(
+    "Registered  "
+      .. vim.fn.len(update_stack)
+      .. " parsers ("
+      .. vim.fn.len(ts_config.get_available())
+      .. " available)"
+  )
+
+  local languages = ts_config.norm_languages("all", { unsupported = true, not_installed = true })
+  require("nvim-treesitter").install(languages)
+
+  logger:info(
+    "Installed "
+      .. #languages
+      .. " parsers ("
+      .. vim.fn.len(ts_config.get_available())
+      .. " available)"
+  )
+end
+
+local url_pfx = "https://github.com/OXY2DEV/tree-sitter-"
+local path_pfx = vim.fn.stdpath("config") .. "/parsers/tree-sitter-"
+-- register({ lang = "doctext", url = url_pfx })
+-- register({ lang = "comment", url = url_pfx, name = "doctext" })
+register({ lang = "lua_patterns", url = url_pfx })
+register({ lang = "vhs", url = url_pfx })
+register({ lang = "qf", url = url_pfx })
+register({ lang = "kitty", url = url_pfx })
+register({ lang = "spidercode", path = path_pfx })
+-- vim.treesitter.language.register("bash", "zsh")
+
+install_parsers()
+
+local function apply_parser(ctx)
+  local ft = vim.bo.filetype
+  local lang = vim.treesitter.language.get_lang(ft)
+
+  if not lang or not vim.treesitter.language.add(lang) then
+    return
+  end
+
+  -- -- highlights
+  if not vim.list_contains(cfg.skip_highlights, ctx.match) then
+    -- pcall(vim.treesitter.start) -- errors for filetypes with no parser
+    vim.treesitter.start()
+  end
+
+  -- Set folding if available
+  if vim.treesitter.query.get(lang, "folds") then
+    vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+  end
+
+  -- Set indentation if available (overrides traditional indent)
+  if vim.treesitter.query.get(lang, "indents") then
+    vim.bo.indentexpr = "nvim_treesitter#indent()"
+  end
+
+  -- -- indent
+  -- if hasStarted and not vim.list_contains(cfg.skip_indent, ctx.match) then
+  --   vim.bo[ctx.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  -- end
+
+  -- -- folding
+  -- if hasStarted and not vim.list_contains(cfg.skip_folding, ctx.match) then
+  --   vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+  --   vim.wo.foldmethod = "expr"
+  -- end
+  --   if hasStarted and vim.list_contains(cfg.vim_regex_highlights, ctx.match) then
+  --     -- vim.bo[ctx.buf].syntax = ctx.match
+  --     -- vim.cmd.syntax("enable")
+  --   end
+end
+
 vim.api.nvim_create_autocmd("User", {
   pattern = "TSUpdate",
-  callback = function()
-    require("nvim-treesitter.parsers").spidercode = spidercode_parser
-  end,
+  desc = "-- update additional parsers",
+  callback = update_parsers,
 })
 
--- auto-install parsers
-require("nvim-treesitter").install(cfg.install)
-
--- use bash parser for zsh files
-vim.treesitter.language.register("bash", "zsh")
-
--- auto-start highlights & indentation
 vim.api.nvim_create_autocmd("FileType", {
-  desc = "User: enable treesitter highlighting",
-  callback = function(ctx)
-    -- highlights
-    local hasStarted = nil
-    if not vim.list_contains(cfg.skip_highlights, ctx.match) then
-      hasStarted = pcall(vim.treesitter.start) -- errors for filetypes with no parser
-    end
-
-    -- indent
-    if hasStarted and not vim.list_contains(cfg.skip_indent, ctx.match) then
-      vim.bo[ctx.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-    end
-
-    -- folding
-    if hasStarted and not vim.list_contains(cfg.skip_folding, ctx.match) then
-      vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-      vim.wo.foldmethod = "expr"
-    end
-
-    -- -- vim regex highlights
-    -- vim.schedule(function()
-    --   if hasStarted and vim.list_contains(cfg.vim_regex_highlights, ctx.match) then
-    --     vim.dbglog("enabling vim regex highlights for filetype: " .. ctx.match, ctx)
-    --     -- vim.bo[ctx.buf].syntax = ctx.match
-    --     -- vim.cmd.syntax("enable")
-    --   end
-    -- end)
-  end,
+  desc = "Enable treesitter highlighting and indentation",
+  callback = apply_parser,
 })
 
 -- -- COMMENTS parser

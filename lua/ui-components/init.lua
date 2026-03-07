@@ -1,0 +1,8 @@
+-- require("ui.lsp_signature").setup()
+-- require("ui.motions").setup()
+-- require("ui.lsp_hover").setup()
+-- require("ui.diagnostics").setup()
+-- require("ui.inspect_tree").setup()
+-- require("ui.quickfix").setup()
+-- require("ui.beacon").setup()
+-- require("ui.cmdline").setup()

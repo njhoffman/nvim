@@ -1,0 +1,61 @@
+[
+  {
+    "type": "document",
+    "named": true,
+    "root": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "spidercode_block",
+          "named": true
+        },
+        {
+          "type": "text_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "spidercode_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "code_content",
+          "named": true
+        },
+        {
+          "type": "tag_close",
+          "named": true
+        },
+        {
+          "type": "tag_open",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "code_content",
+    "named": true
+  },
+  {
+    "type": "tag_close",
+    "named": true
+  },
+  {
+    "type": "tag_open",
+    "named": true
+  },
+  {
+    "type": "text_content",
+    "named": true
+  }
+]

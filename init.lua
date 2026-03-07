@@ -6,6 +6,8 @@ local _shell = vim.o.shell or "/bin/sh"
 
 vim.cmd("set shell=/bin/sh")
 
+-- vim.fn.stdpath
+
 -- https://github.com/stevearc/quicker.nvim
 vim.import("quickfix")
 
@@ -50,6 +52,26 @@ end
 vim.defer_fn(function()
   -- require("modeman")
   vim.import("alt").setup()
+  -- vim.import("ui.cmdline").setup()
+  vim.import("ui-components.lsp_hover").setup({
+    default = {
+      callback = function(lines)
+        --       "```lua",
+        --       "function vim.api.nvim_win_is_valid(window: integer)",
+        --       "  -> boolean",
+        --       "```",
+        --       "",
+        --       "---",
+        --       "",
+        --       " Checks if a window is valid",
+        --       "",
+        --       "@*param* `window` — `window-ID`, or 0 for current window",
+        --       "",
+        --       "@*return* — true if the window is valid, false otherwise"
+        return lines
+      end,
+    },
+  })
   vim.import("live-command.setup")
   vim.import("configs.satellite")
 
@@ -116,10 +138,8 @@ vim.defer_fn(function()
       command = "set filetype=markdown",
     })
   end
-
   vim.import("configs.telescope")
-
-  vim.api.nvim_set_keymap("x", "<F10>", "<Cmd>=vim.fn.getpos('v')<CR>", {})
-  -- vim.api.nvim_set_keymap("n", "<F10>", "<Cmd>Telescope tester script<CR>", {})
+  vim.api.nvim_set_keymap("x", "<F10>", "<Cmd>=vim.fn.getpos('v')<CR>", {}) -- vim.api.nvim_set_keymap("n", "<F10>", "<Cmd>Telescope tester script<CR>", {})
+  -- escape sequence in your terminal
 end, 100)
 -- require("notifications.recipes.progress").config()

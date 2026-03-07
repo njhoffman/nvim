@@ -1,0 +1,285 @@
+--- Maps motions to callbacks.
+---@class motions.map
+---
+---@field [string] fun(quqntifier: integer): nil
+
+------------------------------------------------------------------------------
+
+--[[
+Allows running `callbacks` when triggering `motions`.
+
+		h  j  k  l
+		0  ^  $  |
+		G
+		;  ,
+		w  W  e  E  b  B
+		(  )  {  }
+		%
+		H  M  L
+		n  N
+		~
+
+    g_  g0  g^
+    gm  gM
+    g$
+    gk  gj
+    gg
+    ge  gE
+    g;  g,
+
+		[]  [[          ][
+		['  [`          ]'  ]`
+		[)  [}          ])  ]}
+		[m  [M          ]m  ]M
+		[#              ]#  ]
+		[*  [/          ]*  ]/
+
+		iw  iW          aw   aW
+		is              as   a
+		ip              ap   a
+		i]  i[          a]   a[
+		i(  i)  ib      a(   a)   ab
+		i>  i<          a>   a<
+		it              at   a
+		i{  i}  iB      a{   a}   aB
+		i'  i'  i`      a'   a'   a`
+
+Usage
+```lua
+require("motions").add_event_listener({
+	gg = function ()
+		vim.print("hello world!");
+	end
+});
+```
+]]
+local motions = {}
+
+---@type string Current mode shorthand.
+motions.mode = "n"
+
+vim.api.nvim_create_autocmd("ModeChanged", {
+  callback = function(event)
+    motions.mode = string.match(event.match, ":(.)$") or event.match
+  end,
+})
+
+---@type string Previous keys. Must be cleared after each motion!
+motions.previous = ""
+
+---@type string Last successfully run motion.
+motions.last = ""
+
+--- Parses key presses.
+---@param map motions.map
+---@param _ string
+---@param key string
+motions.parse = function(map, _, key)
+  ---|fS
+
+  map = map or {}
+
+  local quantifier = tonumber(string.match(motions.previous, "%d+$")) or 0
+
+  ---@param clear boolean
+  ---@param motion string
+  ---@param alt? string
+  ---@param ... any
+  local function exec_callback(clear, motion, alt, ...)
+    if type(map) ~= "table" then
+      return
+    elseif clear then
+      motions.previous = ""
+    end
+
+    motions.last = motion
+
+    if alt and map[alt] then
+      pcall(map[alt], ...)
+    else
+      pcall(map[motion], ...)
+    end
+  end
+
+  -- stylua: ignore
+  local single_keys = {
+		"h", "j", "k", "l",
+		"0", "^", "$", "|",
+		"G",
+		";", ",",
+		"w", "W", "e", "E", "b", "B",
+		"(", ")", "{", "}",
+		"%",
+		"H", "M", "L",
+		"n", "N",
+		"~",
+	}
+
+  if motions.mode ~= "n" then
+    -- Wrong mode.
+    motions.previous = ""
+  elseif motions.previous == "" and string.match(key, "%d") then
+    -- Quantifier.
+    motions.previous = motions.previous .. key
+  elseif string.match(motions.previous, "%d*[fFtT]") then
+    -- Character finder.
+    exec_callback(true, string.match(motions.previous, "[fFtT]$"), nil, quantifier, key)
+  elseif vim.list_contains(single_keys, key) then
+    -- Single letter motions.
+    exec_callback(true, key, nil, quantifier)
+  elseif string.match(motions.previous, "g['`]$") then
+    -- g'{mark} or g`{mark}
+    exec_callback(true, "g" .. key, nil, quantifier)
+  elseif string.match(motions.previous, "g$") then
+    -- stylua: ignore
+		local actions = {
+			"_", "0", "^",
+			"m", "M",
+			"$",
+			"k", "j",
+			"g",
+			"e", "E",
+			";", ",",
+		}
+
+    if vim.list_contains(actions, key) then
+      exec_callback(true, "g" .. key, nil, quantifier)
+    elseif key == "'" or key == "`" then
+      motions.previous = motions.previous .. key
+    else
+      motions.previous = ""
+    end
+  elseif vim.list_contains({ "(", ")", "{", "}" }, key) then
+    -- Sentence & paragraph movements.
+    exec_callback(true, key, nil, quantifier)
+  elseif string.match(motions.previous, "%]$") then
+    -- stylua: ignore
+		local actions = {
+			"]", "[",
+			"'", "`",
+			")", "}",
+			"m", "M",
+			"#",
+			"*", "/",
+		}
+
+    if vim.list_contains(actions, key) then
+      exec_callback(true, "]" .. key, nil, quantifier)
+    else
+      motions.previous = ""
+    end
+  elseif string.match(motions.previous, "%[$") then
+    -- stylua: ignore
+		local actions = {
+			"[", "]",
+			"'", "`",
+			"(", "{",
+			"m", "M",
+			"#",
+			"*", "/",
+		}
+
+    if vim.list_contains(actions, key) then
+      exec_callback(true, "[" .. key, nil, quantifier)
+    else
+      motions.previous = ""
+    end
+  elseif string.match(motions.previous, "a$") then
+    -- stylua: ignore
+		local actions = {
+			"w", "W",
+			"s",
+			"p",
+			"]", "[",
+			"(", ")", "b",
+			">", "<",
+			"t",
+			"{", "}", "B",
+			'"', "'", "`",
+		}
+
+    if vim.list_contains(actions, key) then
+      exec_callback(true, "a" .. key, nil, quantifier)
+    else
+      motions.previous = ""
+    end
+  elseif string.match(motions.previous, "i$") then
+    -- stylua: ignore
+		local actions = {
+			"w", "W",
+			"s",
+			"p",
+			"]", "[",
+			"(", ")", "b",
+			">", "<",
+			"t",
+			"{", "}", "B",
+			'"', "'", "`",
+		}
+
+    if vim.list_contains(actions, key) then
+      exec_callback(true, "i" .. key, nil, quantifier)
+    else
+      motions.previous = ""
+    end
+  elseif string.match(motions.previous, "['`]$") then
+    local marker = string.match(motions.previous, "['`]$")
+    -- stylua: ignore
+		local special = {
+			"[", "]",
+			"<", ">",
+			"'", "`", '"',
+			"^", ".",
+			"(", ")",
+			"{", "}",
+		}
+
+    if string.match(key, "[%a%d]") or vim.list_contains(special, key) then
+      -- '{mark} or `{mark}
+      exec_callback(true, marker .. key, nil, quantifier)
+    else
+      motions.previous = ""
+    end
+  else
+    motions.previous = motions.previous .. key
+
+    local keys = vim.tbl_keys(map)
+    table.sort(keys)
+
+    for _, _key in ipairs(keys) do
+      if string.match(motions.previous, vim.pesc(_key) .. "$") then
+        exec_callback(true, _key, nil, quantifier)
+        motions.previous = ""
+      end
+    end
+  end
+
+  ---|fE
+end
+
+--- An instance of motion parser.
+---@class motions.instance
+---
+---@field map motions.map
+---@field id integer ID of this handler.
+local instance = {}
+instance.__index = instance
+
+instance.map = {}
+instance.id = nil
+
+--- Creates a new key press event listener.
+---@param map motions.map
+---@return table
+motions.add_event_listener = function(map)
+  local new = setmetatable({}, instance)
+  new.map = map
+
+  new.id = vim.on_key(function(key, pressed)
+    motions.parse(map, key, pressed)
+  end, 0, {})
+
+  return new
+end
+
+return motions

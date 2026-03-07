@@ -17,7 +17,6 @@ local formatters = {
   "markdown-toc",
   "markdownlint",
   "prettier",
-  "prettier",
   "prettierd",
   "remark-cli",
   "rubocop",

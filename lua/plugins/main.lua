@@ -15,6 +15,54 @@ local lz_syn = false
 local plugins = {
   -- https://gist.github.com/GnikDroy/62556534324f9dc9192f7bba5a88cc43
   { "dundalek/bloat.nvim", cmd = "Bloat" },
+  {
+    "danymat/neogen",
+    config = function()
+      require("neogen").setup({
+        enabled = true,
+        input_after_comment = true, -- (default: true) automatic jump (with insert mode) on inserted annotation
+        -- jump_map = "<C-e>"       -- (DROPPED SUPPORT, see [here](#cycle-between-annotations) !) The keymap in order to jump in the annotation fields (in insert mode)
+      })
+
+      vim.api.nvim_set_keymap(
+        "n",
+        "g@@",
+        ":lua require('neogen').generate()<CR>",
+        { noremap = true, silent = true, desc = "neogen annotation for func" }
+      )
+      vim.api.nvim_set_keymap(
+        "n",
+        "g@%",
+        ":lua require('neogen').generate({ type = 'file' })<CR>",
+        { noremap = true, silent = true, desc = "neogen annotation for file" }
+      )
+      vim.api.nvim_set_keymap(
+        "n",
+        "<Leader>@@",
+        ":lua require('neogen').generate()<CR>",
+        { noremap = true, silent = true, desc = "neogen annotation for func" }
+      )
+      vim.api.nvim_set_keymap(
+        "n",
+        "<Leader>@f",
+        ":lua require('neogen').generate({ type = 'file' })<CR>",
+        { noremap = true, silent = true, desc = "neogen annotation for file" }
+      )
+      vim.api.nvim_set_keymap(
+        "n",
+        "<Leader>@c",
+        ":lua require('neogen').generate({ type = 'class' })<CR>",
+        { noremap = true, silent = true, desc = "neogen annotation for class" }
+      )
+      vim.api.nvim_set_keymap(
+        "n",
+        "<Leader>@t",
+        ":lua require('neogen').generate({ type = 'type' })<CR>",
+        { noremap = true, silent = true, desc = "neogen annotation for type" }
+      )
+    end,
+  },
+
   { "goolord/alpha-nvim", event = "VimEnter", dependencies = "nvim-web-devicons" },
   {
     "Dronakurl/injectme.nvim",
@@ -35,6 +83,129 @@ local plugins = {
     -- branch = 'fix-telescope-insert',
     init = function()
       vim.g.barbar_auto_setup = false
+      vim.cmd([[
+function! s:h (name, ...)
+  let fg = ''
+  let bg = ''
+  let attr = ''
+  let sp = ''
+
+  if type(a:1) == 3
+    let fg   = get(a:1, 0, '')
+    let bg   = get(a:1, 1, '')
+    let attr = get(a:1, 2, '')
+    let sp   = get(a:1, 3, '')
+  else
+    let fg   = get(a:000, 0, '')
+    let bg   = get(a:000, 1, '')
+    let attr = get(a:000, 2, '')
+    let sp   = get(a:000, 3, '')
+  end
+
+  let has_props = v:false
+
+  let cmd = 'hi! ' . a:name
+  if !empty(fg) && fg != 'none'
+    let cmd .= ' guifg=' . fg
+    let has_props = v:true
+  end
+  if !empty(bg) && bg != 'none'
+    let cmd .= ' guibg=' . bg
+    let has_props = v:true
+  end
+  if !empty(attr) && attr != 'none'
+    let cmd .= ' gui=' . attr
+    let has_props = v:true
+  end
+  if !empty(sp) && sp != 'none'
+    let cmd .= ' guisp=' . sp
+    let has_props = v:true
+  end
+  execute 'hi! clear ' a:name
+  if has_props
+    execute cmd
+  end
+endfunc
+
+" }}}
+" Colors                                                                     {{{
+
+let s:base0      = '#1b2229'
+let s:base1      = '#1c1f24'
+let s:base2      = '#202328'
+let s:base3      = '#23272e'
+let s:base4      = '#3f444a'
+let s:base5      = '#5B6268'
+let s:base6      = '#73797e'
+let s:base7      = '#9ca0a4'
+let s:base8      = '#b1b1b1'
+let s:base9      = '#e6e6e6'
+
+let s:grey       = s:base4
+let s:red        = '#ff6c6b'
+let s:orange     = '#da8548'
+let s:green      = '#98be65'
+let s:teal       = '#4db5bd'
+let s:yellow     = '#ECBE7B'
+let s:blue       = '#51afef'
+let s:dark_blue  = '#2257A0'
+let s:magenta    = '#c678dd'
+let s:violet     = '#a9a1e1'
+let s:cyan       = '#46D9FF'
+let s:dark_cyan  = '#5699AF'
+let s:white      = '#efefef'
+
+let s:green_alt  = '#799033'
+
+let s:bg             = '#181c24'
+let s:bg_alt         = '#21242b'
+let s:bg_highlight   = '#2E323C'
+let s:bg_popup       = '#3E4556'
+let s:bg_widget      = s:bg
+let s:bg_statusline  = s:bg_popup
+let s:bg_selection   = s:dark_blue
+let s:bg_highlighted = '#4A4A45'
+
+let s:fg           = '#bbc2cf'
+let s:fg_alt       = '#5B6268'
+let s:fg_popup     = '#D1D6DF'
+let s:fg_widget    = s:fg
+let s:fg_conceal   = s:base4
+let s:fg_subtle    = s:base7
+let s:fg_separator = s:base4
+
+let s:bg_current = s:bg
+let s:bg_visible = s:bg
+let s:bg_other   = s:base1
+
+call s:h('TabLine',             s:base9, s:bg_alt,     '')
+call s:h('TabLineSel',          s:blue,  s:bg_current, 'bold')
+call s:h('TabLineFill',         'none',  s:bg_other,   'bold')
+
+call s:h('BufferCurrent',       s:base9,          s:bg_current,  'none')
+call s:h('BufferCurrentIndex',  s:base6,          s:bg_current,  'none')
+call s:h('BufferCurrentMod',    s:yellow,         s:bg_current,  'none')
+call s:h('BufferCurrentSign',   s:blue,           s:bg_current,  'none')
+call s:h('BufferCurrentTarget', s:red,            s:bg_current,  'bold')
+
+call s:h('BufferVisible',       s:base7,          s:bg_visible,  'none')
+call s:h('BufferVisibleIndex',  s:base9,          s:bg_visible,  'none')
+call s:h('BufferVisibleMod',    s:yellow,         s:bg_visible,  'none')
+call s:h('BufferVisibleSign',   s:base4,          s:bg_visible,  'none')
+call s:h('BufferVisibleTarget', s:red,            s:bg_visible,  'bold')
+
+call s:h('BufferInactive',       s:base6,          s:bg_other,    'none')
+call s:h('BufferInactiveIndex',  s:base6,          s:bg_other,    'none')
+call s:h('BufferInactiveMod',    s:yellow,         s:bg_other,    'none')
+call s:h('BufferInactiveSign',   s:base4,          s:bg_other,    'none')
+call s:h('BufferInactiveTarget', s:red,            s:bg_other,    'bold')
+
+call s:h('BufferTabpages',       s:blue,           s:bg_statusline, 'bold')
+call s:h('BufferTabpageFill',    s:base4,          s:bg_other,    'bold')
+call s:h('BufferOffset',         s:base6,          s:bg,          'bold')
+call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
+
+]])
     end,
     event = "VimEnter",
     dependencies = "nvim-web-devicons",
@@ -60,11 +231,11 @@ local plugins = {
   {
     "monkoose/neocodeium",
     event = "VeryLazy",
-    config = function()
-      local neocodeium = require("neocodeium")
-      neocodeium.setup()
-      vim.keymap.set("i", "<A-f>", neocodeium.accept)
-    end,
+    -- config = function()
+    --   local neocodeium = require("neocodeium")
+    --   neocodeium.setup()
+    --   vim.keymap.set("i", "<A-f>", neocodeium.accept)
+    -- end,
   },
   {
     "nvim-lualine/lualine.nvim",
@@ -172,7 +343,11 @@ local plugins = {
     main = "ibl",
     event = { "BufReadPre", "BufNewFile" },
   },
-  { "shellRaining/hlchunk.nvim", event = { "BufReadPre", "BufNewFile" } },
+  {
+    "njhoffman/hlchunk.nvim",
+    dir = "~/git/hlchunk.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+  },
   {
     "huy-hng/anyline.nvim",
     enabled = false,
@@ -262,7 +437,6 @@ local plugins = {
   },
   {
     "aaronik/treewalker.nvim",
-
     config = function()
       require("treewalker").setup({
         -- Whether to briefly highlight the node after jumping to it
@@ -308,6 +482,7 @@ local plugins = {
 
   {
     "olimorris/codecompanion.nvim",
+    enabled = true,
     init = function()
       require("configs.codecompanion.extensions.notify-noice").init()
     end,
@@ -345,6 +520,7 @@ local plugins = {
       },
       {
         "ravitemer/mcphub.nvim",
+        event = "VeryLazy",
         build = "npm install -g mcp-hub@latest",
       },
       {
@@ -359,8 +535,7 @@ local plugins = {
           "nvim-lua/plenary.nvim",
           "MunifTanjim/nui.nvim",
           --- The below dependencies are optional,
-          "echasnovski/mini.pick", -- for file_selector provider mini.pick
-          "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+          "nvim-mini/mini.pick", -- for file_selector provider mini.pick
           "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
           "ibhagwan/fzf-lua", -- for file_selector provider fzf
           "stevearc/dressing.nvim", -- for input provider dressing
@@ -370,14 +545,7 @@ local plugins = {
         },
       },
     },
-    -- init = function()
-    -- 	require("hanipcode.plugins.codecompanion.fidget_spinner"):init()
-    -- 	adapter.init_config()
-    -- end,
   },
-  -- https://github.com/Aaronik/GPTModels.nvim
-  -- https://www.reddit.com/r/neovim/comments/1mzfb7g/neovim_now_natively_supports_llmbased_completion/
-  -- https://github.com/neovim/neovim/pull/33972
   {
     "jackMort/ChatGPT.nvim",
     enabled = false,
@@ -471,6 +639,7 @@ local plugins = {
   {
     "kevinhwang91/nvim-hlslens",
     event = { "VimEnter" },
+    enabled = true,
     init = function()
       -- cannot use my utility, as the value of IncSearch needs to be retrieved dynamically
       vim.api.nvim_create_autocmd("ColorScheme", {
@@ -544,7 +713,7 @@ local plugins = {
       -- StopInsertPlug enable/disable/toggle/status
     },
   },
-  { "jake-stewart/multicursor.nvim", enabled = false },
+  { "jake-stewart/multicursor.nvim", enabled = true },
   -- movement highlighters
   -- https://github.com/tzachar/local-highlight.nvim
   -- https://github.com/jjshoots/betterf.nvim/tree/main

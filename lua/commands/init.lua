@@ -11,6 +11,7 @@ local quickclose = require("commands.quickclose")
 local colorscheme_export = require("commands.colorscheme_export")
 local silence = require("commands.silence")
 local range_history = require("commands.range-history")
+local scroll = require("commands.scroll")
 -- require("commands.html-psl")
 
 local map = require("mapper").map

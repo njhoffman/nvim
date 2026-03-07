@@ -57,9 +57,7 @@ local is_not_luasnip = function()
 end
 
 local is_enabled = function()
-  local disabled = {
-    IncRename = true,
-  }
+  local disabled = { IncRename = true }
 
   -- enabled = function()
   -- local buftype = vim.bo.buftype
@@ -70,14 +68,26 @@ local is_enabled = function()
   --
   -- return true
   -- end
+  local neostate = package.loaded["neocodeium"] and package.loaded["neocodeium.state"]
+
+  -- vim.dbglog(
+  --   neostate.active,
+  --   neostate.matching,
+  --   neostate.pending,
+  --   neostate.data and neostate.data.items and vim.fn.len(neostate.data.items),
+  --   require("neocodeium").get_status()
+  -- )
+  if neostate and neostate.active then
+    return false
+  end
   -- Get first word of cmdline
   local cmd = vim.fn.getcmdline():match("%S+")
   -- Return true if cmd isn't disabled else call/return cmp.close(), which returns false
+  --       -- and is_not_luasnip()
   -- return false
   return is_not_comment()
       and is_not_buftype()
       and is_not_filetype()
-      and is_not_luasnip()
       and vim.fn.reg_recording() == ""
       and vim.fn.reg_executing() == ""
       and not disabled[cmd]

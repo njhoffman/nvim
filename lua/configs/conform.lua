@@ -15,47 +15,60 @@ local linterConfig = vim.fn.stdpath("config") .. "/.linter_configs"
 local eslint = "eslint_d" -- "eslint"
 local prettier = "prettierd" -- prettier
 
--- stylua: ignore
+-- Use the "*" filetype to run formatters on all filetypes.
+-- Use the "_" filetype to run formatters on filetypes that don't
+-- ["*"]        = { "codespell" },
+
 local formatters_by_ft = {
-	-- Use the "*" filetype to run formatters on all filetypes.
-	-- Use the "_" filetype to run formatters on filetypes that don't
-	-- ["*"]        = { "codespell" },
-	asm             = { "asmfmt" },
-	-- bash            = { "shfmt", "shellharden" },
-  bash = {"shfmt"},
-	-- zsh             = { "shfmt" },
-	bzl             = { "buildifier" },
-	c               = { "uncrustify", "clang_format" },
-	cpp             = { "clang_format" },
-	css             = { prettier },
-	cuda            = { "clang_format" },
-	fish            = { "fish_indent" },
-	go              = { "goimports", "gofmt", "gofumpt" },
-	graphql         = { prettier },
-	handlebars      = { prettier },
-	html            = { prettier },
-	htmlangular     = { prettier },
-	javascript      = { eslint },
-	javascriptreact = { eslint },
-	json            = { "jq", prettier },
-	jsonc           = { "jq", prettier },
-	just            = { "just" },
-	lua             = { "stylua" },
-	markdown        = { "cbfmt", "markdownlint" },
-	nasm            = { "asmfmt" },
-	nix             = { "nixpkgs_fmt" },
-	proto           = { "buf", "protolint" },
-	rust            = { "rustfmt" },
-	scss            = { prettier },
-  sh = {"shfmt"},
-	-- sh              = { "shfmt", "shellharden" },
-	sql             = { "sql-formatter" },
-	toml            = { "taplo", prettier },
-	tsx             = { prettier },
-	typescript      = { eslint, prettier },
-	typescriptreact = { eslint, prettier },
-	vue             = { eslint },
-	["_"]        = { "trim_whitespace" },
+  asm = { "asmfmt" },
+  bash = { "shfmt" },
+  zsh = { "shfmt" },
+  bzl = { "buildifier" },
+  c = { "uncrustify", "clang_format" },
+  cpp = { "clang_format" },
+  css = { prettier },
+  cuda = { "clang_format" },
+  fish = { "fish_indent" },
+  go = { "goimports", "gofmt", "gofumpt" },
+  graphql = { prettier },
+  handlebars = { prettier },
+  html = { prettier, eslint },
+  htmlangular = { prettier },
+  javascript = { eslint },
+  javascriptreact = { eslint },
+  json = { "fixjson", "jq", prettier },
+  jsonc = { "fixjson", "jq", prettier },
+  json5 = { "fixjson", "jq", prettier },
+  just = { "just" },
+  lua = { "stylua" },
+  markdown = { "cbfmt", "markdownlint", "injected" },
+  less = { "prettierd" },
+  sass = { "prettierd" },
+
+  nasm = { "asmfmt" },
+  yaml = { "prettierd" },
+
+  nix = { "nixpkgs_fmt" },
+  proto = { "buf", "protolint" },
+  python = {
+    -- "ruff_fix",
+    "ruff_format",
+    "ruff_organize_imports",
+  },
+
+  rust = { "rustfmt", lsp_format = "fallback" },
+
+  scss = { prettier },
+  sh = { "shfmt" },
+  -- sh              = { "shfmt", "shellharden" },
+  sql = { "sql-formatter" },
+  toml = { "taplo", prettier },
+  tsx = { prettier },
+  typescript = { eslint, prettier },
+  typescriptreact = { eslint, prettier },
+
+  vue = { eslint },
+  ["_"] = { "trim_whitespace" },
 }
 
 local formatters = {
@@ -66,32 +79,46 @@ local formatters = {
   flake8 = {
     command = "flake8",
     stdin = false,
-    args = { "--ignore=E203,E501,E402,F401,F821,W503,W292" },
+    args = { "--ignore=e203,e501,e402,f401,f821,w503,w292" },
   },
-  markdownlint = {
-    command = "markdownlint",
-    stdin = false,
-    args = { "--fix", "--config", linterConfig .. "/markdownlint.yaml", "$FILENAME" },
-  },
+  -- markdownlint = {
+  --   command = "markdownlint",
+  --   stdin = false,
+  --   args = { "--fix", "--config", linterconfig .. "/markdownlint.yaml", "$filename" },
+  -- },
   shellcheck = {
     command = "shellcheck",
-    arg = "--shell=bash --format=diff '$FILENAME' | git apply",
+    arg = "--shell=bash --format=diff '$filename' | git apply",
     -- arg = "--shell=bash",
     stdin = false,
   },
   rustfmt = {
     meta = {
       url = "https://github.com/rust-lang/rustfmt",
-      description = "A tool for formatting rust code according to style guidelines.",
+      description = "a tool for formatting rust code according to style guidelines.",
     },
     command = "rustfmt",
     args = { "--emit=stdout", "--edition=2021" },
   },
   shfmt = { args = { "-i", "2", "-bn", "-ci", "-sr" } },
+  injected = {
+    ignore_errors = false,
+    lang_to_ft = {
+      bash = "sh",
+    },
+    lang_to_ext = {
+      bash = "sh",
+      javascript = "js",
+      markdown = "md",
+      python = "py",
+      typescript = "ts",
+    },
+  },
+
   uncrustify = {
     meta = {
       url = "https://github.com/uncrustify/uncrustify",
-      description = "A source code beautifier for C, C++, C#, ObjectiveC, D, Java, Pawn and Vala.",
+      description = "a source code beautifier for c, c++, c#, objectivec, d, java, pawn and vala.",
     },
     command = "uncrustify",
     args = function(self, ctx)

@@ -2,6 +2,21 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Git Configuration
+
+This directory is tracked by a dotbare/bare git repo at `~/.cfg`. Do NOT use regular git commands. Always use these environment variables for all git operations:
+
+```bash
+GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git <command>
+```
+
+Example:
+```bash
+GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git status
+GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git add .config/nvim/somefile.lua
+GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git commit -m "message"
+```
+
 ## Overview
 
 This is a heavily customized Neovim configuration written in Lua (~282k lines). It uses lazy.nvim for plugin management with an extensive collection of plugins and custom modules.

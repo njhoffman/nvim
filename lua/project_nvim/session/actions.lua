@@ -1,8 +1,8 @@
-local manager = require('session_manager')
-local utils = require('session_manager.utils')
-local state = require('project_nvim.state')
-local history = require('project_nvim.utils.history')
-local path = require('project_nvim.utils.path')
+local manager = require("session_manager")
+local utils = require("session_manager.utils")
+local state = require("project_nvim.state")
+local history = require("project_nvim.utils.history")
+local path = require("project_nvim.utils.path")
 
 local delete_session = function(dir)
   if utils.is_session and dir == path.cwd() then
@@ -11,7 +11,7 @@ local delete_session = function(dir)
   local sessions = utils.get_sessions()
   for idx, session in ipairs(sessions) do
     if path.short_path(session.dir.filename) == dir then
-      local Path = require('plenary.path')
+      local Path = require("plenary.path")
       return Path:new(sessions[idx].filename):rm()
     end
   end
@@ -28,11 +28,11 @@ local start_session_here = function()
     return
   end
   local fullpath = vim.fn.expand(cwd)
-  local session = require('session_manager.config').dir_to_session_filename(fullpath)
+  local session = require("session_manager.config").dir_to_session_filename(fullpath)
   if session:exists() then
     manager.load_current_dir_session(false)
   else
-    vim.cmd('silent! %bd') -- close all buffers from previous session
+    vim.cmd("silent! %bd") -- close all buffers from previous session
     -- create empty session
     manager.save_current_session()
   end
@@ -81,8 +81,8 @@ local switch_project = function(dir)
 end
 
 local setup = function()
-  local session_manager_config = require('session_manager.config')
-  local options = require('project_nvim.config').get()
+  local session_manager_config = require("session_manager.config")
+  local options = require("project_nvim.config").get()
   local AutoLoadMode = session_manager_config.AutoloadMode
   -- Disable session autoload by default
   options.session_manager_opts.autoload_mode = AutoLoadMode.Disabled
@@ -95,7 +95,7 @@ local setup = function()
         _start_session_here = true
       else
         vim.defer_fn(function()
-          vim.notify('project.nvim: session autoload is disabled', vim.log.levels.TRACE)
+          vim.notify("project.nvim: session autoload is disabled", vim.log.levels.TRACE)
         end, 200)
       end
     else
@@ -106,7 +106,7 @@ local setup = function()
     end
   end
 
-  local open_path = path.resolve('%:p')
+  local open_path = path.resolve("%:p")
   if open_path ~= nil and path.dir_matches_project(open_path) then
     vim.api.nvim_set_current_dir(open_path)
     _start_session_here = true
@@ -115,14 +115,14 @@ local setup = function()
   options.session_manager_opts.sessions_dir = path.sessionspath
 
   -- Session Manager setup
-  require('session_manager').setup(options.session_manager_opts)
+  require("session_manager").setup(options.session_manager_opts)
 
   -- Register Telescope extension
   -- require("telescope").load_extension("neovim-project")
 
   -- unset session_manager_opts
   ---@diagnostic disable-next-line: inject-field
-  options.session_manager_opts = nil
+  -- options.session_manager_opts = nil
 
   if _start_session_here then
     start_session_here()

@@ -1,0 +1,25 @@
+{
+  "name": "tree-sitter-spidercode",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for spidercode blocks",
+  "main": "bindings/node",
+  "keywords": ["tree-sitter", "parser", "spidercode"],
+  "tree-sitter": [
+    {
+      "scope": "source.spidercode",
+      "injection-regex": "spidercode",
+      "file-types": ["spidercode"],
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm"
+    }
+  ],
+  "devDependencies": {
+    "tree-sitter-cli": "^0.22.0"
+  },
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "build": "tree-sitter generate && tree-sitter build",
+    "test": "tree-sitter test",
+    "parse": "tree-sitter parse"
+  }
+}

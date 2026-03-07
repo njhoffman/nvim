@@ -390,6 +390,7 @@ M.MiscStats = {
     return vim.api.nvim_get_option_value("columns", { scope = "global" }) > 80
   end,
   provider = {
+    update = { "User", "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI" },
     name = "misc_stats",
   },
   left_sep = " ",

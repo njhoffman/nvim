@@ -257,7 +257,7 @@ function M.get_project_root()
       local root, method = M.find_pattern_root()
       local time_end = vim.loop.hrtime()
       local time_ms = (time_end - time_start) / 1000000
-      vim.dbglog("pattern time: " .. time_ms .. " ms", root, method)
+      -- vim.dbglog("pattern time: " .. time_ms .. " ms", root, method)
       if root ~= nil then
         return root, method
       end

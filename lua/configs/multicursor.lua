@@ -208,6 +208,11 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
 })
 
+return {
+  setup_keymaps = setup_keymaps,
+  setup_hls = setup_hls,
+}
+
 -- -- smoka7 mappings
 -- <Esc> Clear the selections and go back to normal mode
 -- <C-c> Clear the selections and go back to normal mode

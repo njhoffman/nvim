@@ -1,12 +1,24 @@
+-- local styles = {
+-- normal = {
+--   { fg = "#005678", bg = "#001018" },
+--   { fg = "#4056a7", bg = "#100018" },
+--   { fg = "#806d9c", bg = "#180010" },
+-- },
+-- error = {
+--   { fg = "#7a0000", bg = "#200610" },
+--   { fg = "#f35336", bg = "#201410" },
+-- },
+-- }
+
 local styles = {
   normal = {
-    { fg = "#005678", bg = "#001018" },
-    { fg = "#4056a7", bg = "#100018" },
-    { fg = "#806d9c", bg = "#180010" },
+    { fg = "#005678", bg = "none" },
+    { fg = "#4056a7", bg = "none" },
+    { fg = "#806d9c", bg = "none" },
   },
   error = {
-    { fg = "#7a0000", bg = "#200610" },
-    { fg = "#f35336", bg = "#201410" },
+    { fg = "#7a0000", bg = "none" },
+    { fg = "#f35336", bg = "none" },
   },
 }
 local cfg = {
@@ -42,11 +54,15 @@ local cfg = {
   },
   chunk = {
     enable = true,
-    priority = 10,
+    priority = 5,
     use_treesitter = true,
     chars = {
+      -- 󱞩 	󱞪 	󱦰 	󱞫 	󱞬 	 	 	󱞿 	󱟀 	󱞣 	󱞤 	  ┌ └ ─ ─ │ ╭ ╰ >
+      left_arrow = "─",
       horizontal_line = "─",
       vertical_line = "│",
+      -- left_top = "╭",
+      -- left_bottom = "╰",
       left_top = "┌",
       left_bottom = "└",
       right_arrow = "─",

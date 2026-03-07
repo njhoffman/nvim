@@ -52,6 +52,6 @@ let &cpo = s:save_cpo
 unlet s:save_cpo
 " }}}
 " __END__  {{{
-" vim: expandtab softtabstop=4 shiftwidth=4
+" vim: expandtab softtabstop=2 shiftwidth=2
 " vim: foldmethod=marker
 " }}}

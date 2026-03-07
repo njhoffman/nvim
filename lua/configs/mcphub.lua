@@ -49,11 +49,11 @@ local cfg = {
   ---Chat-plugin related options-----------------
   auto_approve = false, -- Auto approve mcp tool calls
   auto_toggle_mcp_servers = true, -- Let LLMs start and stop MCP servers automatically
-  extensions = {
-    avante = {
-      make_slash_commands = true, -- make /slash commands from MCP server prompts
-    },
-  },
+  -- extensions = {
+  --   avante = {
+  --     make_slash_commands = true, -- make /slash commands from MCP server prompts
+  --   },
+  -- },
   --- Plugin specific options-------------------
   native_servers = {}, -- add your custom lua native servers here
   builtin_tools = {

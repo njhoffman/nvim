@@ -57,19 +57,19 @@ if debuglog then
   end
 
   vim.dbgout.ns = function()
-    log_lines(debuglog.namespaces({ buf_id = -1, show_extmarks = false }))
+    log_lines(debuglog.namespaces({ buf = -1, show_extmarks = false }))
   end
 
   vim.dbgout.buf = function()
-    log_lines(debuglog.namespaces({ buf_id = 0, show_extmarks = false }))
+    log_lines(debuglog.namespaces({ buf = 0, show_extmarks = false }))
   end
 
   vim.dbgout.extmarks = function(ns)
-    log_lines(debuglog.namespaces({ buf_id = -1, show_extmarks = true, ns = ns }))
+    log_lines(debuglog.namespaces({ buf = -1, show_extmarks = true, ns = ns }))
   end
 
   vim.dbgout.extmarks_buf = function(ns)
-    log_lines(debuglog.namespaces({ buf_id = 0, show_extmarks = true, ns = ns }))
+    log_lines(debuglog.namespaces({ buf = 0, show_extmarks = true, ns = ns }))
   end
 end
 

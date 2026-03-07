@@ -8,7 +8,6 @@ local TINT = require("vimade.style.tint")
 local TYPE = require("vimade.util.type")
 
 local EXCLUDE_NAMES = {
-  -- "CursorLineNr",
   -- "ReactiveCursorLineNr",
   -- "ReactiveCursorLineNr@preset.cursorline.@mode.i",
   -- "ReactiveCursorLineNr@preset.cursorline.@mode.n",
@@ -16,13 +15,10 @@ local EXCLUDE_NAMES = {
   -- "ReactiveCursorLineNr@preset.cursorline.@mode.no.@op.d",
   -- "ReactiveCursorLine@preset.cursorline.@static.current",
   -- "ReactiveCursorLine",
-  "LineNr",
-  "LineNrBelow",
-  "LineNrAbove",
-  "EndOfBuffer",
+  "CursorLineNr",
 }
+
 local NO_VISIBILITY_NAMES = {
-  -- "CursorLineNr",
   -- "ReactiveCursorLineNr",
   -- "ReactiveCursorLineNr@preset.cursorline.@mode.i",
   -- "ReactiveCursorLineNr@preset.cursorline.@mode.n",
@@ -30,13 +26,14 @@ local NO_VISIBILITY_NAMES = {
   -- "ReactiveCursorLineNr@preset.cursorline.@mode.no.@op.d",
   -- "ReactiveCursorLine@preset.cursorline.@static.current",
   -- "ReactiveCursorLine",
-  "CursorLine",
-  "ColorColumn",
+  -- "CursorLineNr",
   "LineNr",
   "LineNrBelow",
   "LineNrAbove",
   "EndOfBuffer",
+  "ColorColumn",
 }
+
 local LOW_VISIBILITY_NAMES = {
   "WinSeparator",
 }

@@ -1,4 +1,6 @@
 ---@diagnostic disable undefined-globalcolor/nick
+-- *bold*      *inverse*   *italic*      *standout*    *strikethrough* *altfont* *nocombine*
+-- *underline* *undercurl* *underdouble* *underdotted* *underdashed*
 
 local lush = require("lush")
 local hsl = lush.hsl
@@ -116,8 +118,8 @@ return function(injected_functions)
     -- DiffChange     xxx guibg=#252a3f
     -- DiffDelete     xxx guibg=#3a273a
     -- DiffText       xxx guibg=#394b70
-    Normal({ fg = "#4f7aaf", bg = "none" }),
-    NormalNC({ fg = "#4C84b8" }),
+    Normal({ fg = "#4f7aaf", bg = "#000000" }),
+    NormalNC({ fg = "#4C84b8", bg = "#000000" }),
 
     Todo({ fg = "none", bg = "none", gui = "none" }),
     TodoMsg({ fg = "#2583cB", gui = "italic" }),
@@ -203,7 +205,7 @@ return function(injected_functions)
     Title({ fg = "#88aee9", gui = "NONE" }),
     WinSeparator({ fg = "#444464", bg = "#090919", gui = "bold" }),
     -- CodeBlock({ bg = '#090909' }),
-    CodeBlock({ bg = "#081018" }), -- bg = "#101018"
+    CodeBlock({ bg = "#040812" }), -- bg = "#101018"
     CodeBlockInline({ bg = "#040814" }), -- bg = "#101018"
 
     Cursor({ bg = "#3f56ff" }), -- bg = '#4B5Bff'
@@ -355,10 +357,13 @@ return function(injected_functions)
     sym("@keyword.luap")({ fg = "#5886ff" }),
     sym("@keyword.operator")({ Operator }),
     sym("@keyword.return")({ KeywordReturn }),
+    sym("@keyword.directive.define.c")({ fg = "#5886ff", gui = "italic" }),
+    sym("@keyword.import.c")({ fg = "#5886ff", gui = "italic" }),
     sym("@label")({ Label }), -- For labels: `label:` in C and `:label:` in Lua.
     sym("@method")({ Function }),
     sym("@method.call")({ FunctionCall }),
     sym("@module")({ PreProc }),
+    sym("@module.c")({ fg = "#2288cc", gui = "italic" }),
     sym("@module.builtin")({ Keyword }),
     sym("@nospell")({ fg = "none", bg = "none", gui = "none" }),
     sym("@number")({ Number }),
@@ -390,6 +395,8 @@ return function(injected_functions)
     sym("@tag.end.tsx")({ Statement }),
     sym("@type")({ Type }),
     sym("@type.builtin")({ fg = "#487795" }),
+    sym("@type.builtin.c")({ Type }),
+    sym("@lsp.typemod.type.defaultLibrary")({ Type }),
     sym("@uri")({ fg = "#8eb9f6", gui = "none" }),
     sym("@variable")({ Variable }),
     sym("@variable.builtin")({ Identifier }),
@@ -669,11 +676,12 @@ return function(injected_functions)
     CSVColumnHeaderEven({ fg = Statement.fg, bg = "none" }),
 
     -- plugins --
-    MatchParenCur({ fg = "#ff9f9f", gui = "bold" }), -- matchparen
-    MatchWord({ fg = "#7f6686", gui = "italic" }),
-    MatchBackground({ gui = "italic", bg = "#0f2139" }), -- colorcolumn
-    -- MatchParenCursor({ fg = "#fb8b8b" }),
-
+    MatchWord({ fg = "#aa6699", gui = "italic" }),
+    MatchWordCur({ fg = "#aa6699", gui = "italic" }),
+    -- MatchParen({ fg = "#fb8b8b", gui = "bold" }),
+    MatchParen({ fg = "#f35050", gui = "bold" }),
+    MatchParenCur({ fg = "#ff66ff", gui = "bold" }),
+    MatchParenCursor({ MatchParenCur }), -- matchparen
     -- Indent Blankline / MiniIndent
     -- IblScope, IblIndent, IblWhitespace
     -- IndentBlanklineChar({ fg = '#102030', gui = 'nocombine' }),
@@ -684,9 +692,9 @@ return function(injected_functions)
     -- IndentBlanklineIndent2({ bg = '#1f1f1f', gui = 'nocombine' }),
     IndentGuidesEven({ bg = clrs.nord1 }),
     IndentGuidesOdd({ bg = clrs.nord2 }),
-    MiniIndentscopeSymbol({ fg = "#162a3a", bg = "#000816" }),
-    -- MiniIndentscopeSymbol({ fg = "#003460", bg = "#000f18" }),
-    MiniIndentscopeSymbolOff({ fg = "#162f58" }),
+    MiniIndentscopeSymbol({ fg = "#162a3a", bg = "#000000" }),
+    -- MiniIndentscopeSymbol({ fg = "#003460", bg = "#000000" }),
+    MiniIndentscopeSymbolOff({ fg = "#000000" }),
     -- [[hi default link MiniIndentscopeSymbol Delimiter
     --   hi default link MiniIndentscopeSymbolOff MiniIndentscopeSymbol]],
     -- highlight IndentBlanklineChar guifg=#303030
@@ -1108,9 +1116,9 @@ return function(injected_functions)
 
     -- flash.nvim
     FlashBackdrop({ fg = "#405560" }), -- #1a1f2a
-    FlashLabel({ fg = "#cc0044", bg = "#000000", gui = "bold,italic" }), -- #0d314c
+    FlashLabel({ fg = "#cc0044", bg = "none", gui = "bold,italic" }), -- #0d314c
     FlashCharMatch({ fg = "#33c78a", bg = "#0a331a" }),
-    FlashCharLabel({ fg = "#33aaff", bg = "#001122", gui = "bold,italic" }),
+    FlashCharLabel({ fg = "#33aaff", bg = "none", gui = "bold,italic" }),
     -- FlashCharLabel({ fg = '#ff00ff', bg = '#000000', gui = 'bold,italic' }),
     -- FlashBackdrop({	Comment	}), -- backdrop -- fg=#666666
     -- FlashMatch({	Search	}), -- search matches -- fg=#EEEEEE
@@ -1488,7 +1496,9 @@ return function(injected_functions)
     tcfAttrRevName({ fg = "#888888", gui = "italic" }),
     tcfAttrRevDiv({ fg = "#888888", gui = "italic" }),
     tcfAttrRevValue({ fg = "#888888", gui = "italic" }),
-    NeoCodeiumLabel({ fg = "#0d81bc" }),
-    NeoCodeiumSuggestion({ fg = "#804243", gui = "italic" }),
+    NeoCodeiumSingleLineLabel({ fg = "#c86040", gui = "bold,italic", bg = "none" }),
+    NeoCodeiumLabel({ fg = "#aa4488", gui = "bold,italic", bg = "none" }),
+    NeoCodeiumSuggestion({ fg = "#008866", gui = "italic", bg = "none" }),
+    -- NeoCodeiumSuggestion({ fg = "#804243", gui = "italic" }),
   }
 end

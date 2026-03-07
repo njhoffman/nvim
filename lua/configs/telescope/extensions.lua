@@ -234,7 +234,7 @@ local extension_configs = {
   ["gitops"] = {},
   ["gotofile"] = {},
   ["locate"] = {},
-  ["noice"] = {},
+  -- ["noice"] = {},
   ["tester"] = { example_option = "example_value" },
   ["mapper"] = {
     sorter = sorters.fuzzy_with_index_bias,
@@ -245,11 +245,31 @@ local extension_configs = {
     workspaces = {
       {
         name = "ghq",
-        base_dirs = { { path = "~/ghq", max_depth = 4 } },
+        base_dirs = { {
+          path = "~/git",
+          max_depth = 2,
+        } },
       },
       {
         name = "nvim",
-        base_dirs = { { path = "~/lazy", max_depth = 2 } },
+        base_dirs = {
+          {
+            path = "~/lazy",
+            max_depth = 2,
+          },
+          {
+            path = "~/.local/share/nvim/runtime",
+            max_depth = 2,
+          },
+          {
+            path = "~/.local/share/nvim/site",
+            max_depth = 2,
+          },
+          {
+            path = "~/.local/share/nvim/mason",
+            max_depth = 2,
+          },
+        },
       },
     },
     theme = "dropdown",

@@ -1,10 +1,41 @@
 -- ▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'  '░'  '' '' '󰔶' '' '' '󰍝' 󰄼   󰶹 󰶡   󰮷 }
 -- "•"  "┆", "▁", "", "", " ", ﹘‐ ‑ ‒ – — ― ‖ ‗﹉ ﹊ ﹋ ﹌ ﹍ ﹎ ﹏
 --  '─│─│╭╮╯╰'            
+
+--   autocmd = {
+--     render = {
+--       "BufWinEnter",
+--       "CmdwinLeave",
+--       "TabEnter",
+--       "TermEnter",
+--       "TextChanged",
+--       -- 'User',
+--       "VimResized",
+--       "WinEnter",
+--       "WinScrolled",
+--     },
+--     clear = {
+--       "BufWinLeave",
+--       "TabLeave",
+--       "TermLeave",
+--       "WinLeave",
+--     },
+--   },
 local cfg = {
   current_only = false,
   zindex = 40,
-  excluded_filetypes = {},
+  excluded_filetypes = {
+    "WhichKey",
+    "TelescopePrompt",
+    "chatgpt-input",
+    "cmp_docs",
+    "cmp_menu",
+    "lazy",
+    "neoai-input",
+    "noice",
+    -- 'notify',
+    "prompt",
+  },
   width = 1,
   show_in_floating = true, -- Show scrollbar in floating windows
 

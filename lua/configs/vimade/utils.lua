@@ -17,7 +17,7 @@
 -- local Default = require("vimade.recipe.default").Default({ animate = true })
 local Minimalist = require("configs.vimade.minimalist").Minimalist({
   animate = false,
-  low_visibility_fadelevel = 0.5,
+  -- low_visibility_fadelevel = 0.5,
   -- exclude_names ={'LineNr', 'LineNrBelow', 'LineNrAbove', 'EndOfBuffer'
   -- low_visibility_names = {'WinSeparator'},
   -- no_visibility_names = {'LineNr', 'LineNrBelow', 'LineNrAbove', 'EndOfBuffer'},

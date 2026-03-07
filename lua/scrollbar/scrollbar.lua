@@ -14,6 +14,7 @@ M.render = function()
   M.clear()
 
   local config = require("scrollbar.config").get()
+  vim.dbglog("render", vim.bo.filetype)
 
   if not config.show then
     return
@@ -207,6 +208,7 @@ M.throttled_render = M.render
 --     {all =  { height = 51, leftcol = 0, skipcol = 0, topfill = 0, topline = 27, width = 122 }
 
 M.on_scroll = function(ev)
+  vim.dbglog("on_scroll", ev)
   local wins = { 0 }
   if vim.v.event.all ~= nil then
     wins = {}
@@ -216,6 +218,7 @@ M.on_scroll = function(ev)
       end
     end
   end
+  vim.dbglog("on_scroll", wins)
   for _, win in ipairs(wins) do
     -- local win = vim.api.nvim_get_current_win() or 0
     if tonumber(ev.match) ~= nil then
@@ -225,6 +228,7 @@ M.on_scroll = function(ev)
     end
     if vim.api.nvim_win_is_valid(win) then
       vim.api.nvim_win_call(win, function()
+        vim.dbglog("on_scroll in win", win)
         handlers.show()
         M.render()
       end)

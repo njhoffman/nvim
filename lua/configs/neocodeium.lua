@@ -1,47 +1,53 @@
 local filetypes = { "lua", "python" }
 
 local cfg = {
-  silent = true,
+  silent = false,
+  filter = function(bufnr)
+    if vim.tbl_contains(filetypes, vim.api.nvim_get_option_value("filetype", { buf = bufnr })) then
+      return require("cmp").get_selected_index() ~= ""
+    end
+  end,
+  debounce = true,
+  single_line = {
+    enabled = true,
+    label = "...", -- Label indicating that there is multi-line suggestion.
+  },
 }
+
+require("neocodeium").setup(cfg)
 
 local keymaps = function()
   vim.keymap.set("i", "<M-Space>", function()
     require("neocodeium").accept()
-  end)
+  end, { desc = "neocodeium accept suggestion" })
+
   vim.keymap.set("i", "<F8>", function()
     require("neocodeium").accept()
-  end)
+  end, { desc = "neocodeium accept suggestion" })
+
   vim.keymap.set("i", "<M-'>", function()
     require("neocodeium").accept_word()
-  end)
+  end, { desc = "neocodeium accept word suggestion" })
+
   vim.keymap.set("i", '<M-">', function()
     require("neocodeium").accept_line()
-  end)
+  end, { desc = "neocodeium accept line suggestion" })
 
   -- C-S-j
   vim.keymap.set("i", "<M-S-Down>", function()
     require("neocodeium").cycle_or_complete()
-  end)
+  end, { desc = "neocodeium next suggestion" })
 
   -- C-S-k
   vim.keymap.set("i", "<M-S-Up>", function()
     require("neocodeium").cycle_or_complete(-1)
-  end)
+  end, { desc = "neocodeium prev suggestion" })
 
   vim.keymap.set("i", "<M-c>", function()
     require("neocodeium").clear()
-  end)
-
-  -- Disable NeoCodeium in .env files
-  local filter = function(bufnr)
-    if vim.tbl_contains(filetypes, vim.api.nvim_get_option_value("filetype", { buf = bufnr })) then
-      return true
-    end
-    -- function accepts one argument `bufnr`
-  end
+  end, { desc = "neocodeium clear suggestion" })
 end
 
-require("neocodeium").setup(cfg)
 keymaps()
 
 -- local neocodeium = require("neocodeium")

@@ -1,0 +1,16 @@
+{
+  "grammars": [
+    {
+      "name": "spidercode",
+      "scope": "source.spidercode",
+      "path": ".",
+      "injection-regex": "spidercode",
+      "file-types": ["spidercode"],
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0"
+  }
+}

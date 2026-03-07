@@ -47,9 +47,9 @@ local mason_settings = {
 }
 
 -- ORDER IS IMPORTANT HERE
--- require("mason").setup(mason_settings)
--- require("mason-lspconfig").setup(lspconfig_settings)
--- require("mason-tool-installer").setup(tool_settings)
+require("mason").setup(mason_settings)
+require("mason-lspconfig").setup(lspconfig_settings)
+require("mason-tool-installer").setup(tool_settings)
 --
 -- -- local default_lsp_on_attach = function(client, bufnr)
 -- --   -- require("mappings").keys_lsp()

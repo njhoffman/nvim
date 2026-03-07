@@ -89,10 +89,8 @@ opt("switchbuf", "useopen,usetab")
 opt("termguicolors", true)
 
 opt("textwidth", 120)
-opt("shiftwidth", 2)
 opt("tabstop", 2)
 opt("timeout", true)
-opt("shiftwidth", 2)
 opt("softtabstop", -1)
 opt("timeoutlen", 500) -- 1000
 opt("ttimeout", true) -- 50
@@ -158,7 +156,8 @@ opt("pumblend", 10)
 
 opt("concealcursor", "nc", window)
 opt("conceallevel", 0, window)
-opt("colorcolumn", "+1", window)
+opt("colorcolumn", "0", window)
+-- opt("colorcolumn", "+1", window)
 opt("cursorcolumn", false, window)
 opt("cursorline", true, window)
 opt("number", true, window)

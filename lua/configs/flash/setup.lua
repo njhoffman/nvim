@@ -16,7 +16,7 @@ local config = {
     wrap = true,
     multi_window = true,
     multi_line = false,
-    incremental = false,
+    incremental = true,
     exclude = {
       "notify",
       "cmp_menu",
@@ -64,6 +64,10 @@ local config = {
     -- 0: default
     -- 1: when pos == "end" and pos < current position
     offset = nil, ---@type number
+  },
+  {
+    enabled = false,
+    highlight = { backdrop = true },
   },
   label = {
     format = function(opts)

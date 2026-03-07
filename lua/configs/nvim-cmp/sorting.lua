@@ -74,7 +74,7 @@ local _sorting_1 = {
     compare.exact,
     compare.score, -- Matching score (see https://github.com/hrsh7th/nvim-cmp/blob/ae644feb7b67bf1ce4260c231d1d4300b19c6f30/lua/cmp/matcher.lua)
     -- 2. Sort based on the type and content of the matched string
-    deprioritize_snippets,
+    -- deprioritize_snippets,
     compare.kind,
     sort_by_label,
     compare.sort_text, -- Text provided by an LSP server for sorting

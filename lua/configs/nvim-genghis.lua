@@ -1,7 +1,6 @@
 -- default config
 require("genghis").setup({
   -- default is ` "trash" ` on Mac/Windows, and `{ "gio", "trash" }` on Linux
-  trashCmd = "trash",
   icons = {
     chmodx = "󰒃",
     copyFile = "󱉥",
@@ -14,6 +13,9 @@ require("genghis").setup({
     prevFile = "󰖿",
     rename = "󰑕",
     trash = "󰩹",
+  },
+  fileOperations = {
+    trashCmd = "trash",
   },
   navigation = {
     ignoreExt = { "png", "svg", "webp", "jpg", "jpeg", "gif", "pdf", "zip" },

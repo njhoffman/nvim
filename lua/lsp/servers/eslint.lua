@@ -1,8 +1,6 @@
--- https://github.com/stevearc/conform.nvim/issues/515
--- https://github.com/stevearc/conform.nvim/issues/364
--- https://github.com/mantoni/eslint_d.js
+-- eslint (ESLint Language Server) Configuration
 
-local root_file = {
+local root_markers = {
   "courseleaf.cfg",
   ".eslintrc",
   ".eslintrc.js",
@@ -16,145 +14,64 @@ local root_file = {
   "eslint.config.ts",
   "eslint.config.mts",
   "eslint.config.cts",
-  "courseleaf.cfg",
   ".project",
   ".git",
   "CLAUDE.md",
 }
 
-local eslint = function()
-  vim.api.nvim_create_autocmd("BufWritePost", {
-    pattern = { "*.tsx", "*.ts", "*.jsx", "*.js" },
-    command = "silent! EslintFixAll",
-    group = vim.api.nvim_create_augroup("JavaScriptFormatting", {}),
-  })
+-- Setup auto-fix on save
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = { "*.tsx", "*.ts", "*.jsx", "*.js" },
+  command = "silent! EslintFixAll",
+  group = vim.api.nvim_create_augroup("EslintAutoFix", { clear = true }),
+})
 
-  vim.lsp.config("eslint", {
-    root_markers = root_file,
-    filetypes = {
+return {
+  root_markers = root_markers,
+  filetypes = {
+    "javascript",
+    "javascriptreact",
+    "javascript.jsx",
+    "typescript",
+    "typescriptreact",
+    "typescript.tsx",
+    "vue",
+    "svelte",
+    "astro",
+  },
+  settings = {
+    enable = true,
+    packageManager = "yarn",
+    probe = {
       "javascript",
       "javascriptreact",
-      "javascript.jsx",
       "typescript",
       "typescriptreact",
-      "typescript.tsx",
+      "html",
       "vue",
-      "svelte",
-      "astro",
+      "markdown",
     },
-    -- handlers = {
-    --   {
-    --     ["eslint/confirmESLintExecution"] = <function 1>,
-    --     ["eslint/noLibrary"] = <function 2>,
-    --     ["eslint/openDoc"] = <function 3>,
-    --     ["eslint/probeFailed"] = <function 4>
-    --   }
-    -- },
-    settings = {
+    codeAction = {
+      disableRuleComment = {
+        enable = true,
+        location = "separateLine",
+      },
+      showDocumentation = { enable = true },
+    },
+    codeActionOnSave = {
       enable = true,
-      packageManager = "yarn",
-      probe = {
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "html",
-        "vue",
-        "markdown",
-      },
-      tslint = {
-        enable = true,
-      },
-      codeAction = {
-        disableRuleComment = {
-          enable = true,
-          location = "separateLine",
-        },
-        showDocumentation = {
-          enable = true,
-        },
-      },
-      codeActionOnSave = {
-        enable = true,
-        mode = "all",
-      },
-      experimental = {
-        useFlatConfig = false,
-      },
-      format = true,
-      nodePath = "",
-      onIgnoredFiles = "off",
-      problems = {
-        shortenToSingleLine = false,
-      },
-      quiet = false,
-      rulesCustomizations = {},
-      run = "onType",
-      useESLintClass = false,
-      validate = "on",
-      workingDirectory = {
-        mode = "location",
-      },
-      -- workingDirectories = { "./client", "./server" }
+      mode = "all",
     },
-  })
-end
-
---   "eslint",
---     lspconfig.eslint.setup({
---       cmd = { "vscode-eslint-language-server", "--stdio" },
---       capabilities = capabilities,
---       handlers = handlers,
---       filetypes = {
---         "javascript",
---         "javascriptreact",
---         "javascript.jsx",
---         "typescript",
---         "typescriptreact",
---         "typescript.tsx",
---         "vue",
---         "svelte",
---         "astro",
---       },
---       root_dir = require("lspconfig.util").root_pattern(".git"),
---       settings = {
---         codeAction = {
---           disableRuleComment = {
---             enable = true,
---             location = "separateLine",
---           },
---           showDocumentation = {
---             enable = true,
---           },
---         },
---         codeActionOnSave = {
---           enable = false,
---           mode = "all",
---         },
---         experimental = {
---           useFlatConfig = false,
---         },
---         format = true,
---         nodePath = "",
---         onIgnoredFiles = "off",
---         packageManager = "npm",
---         problems = {
---           shortenToSingleLine = false,
---         },
---         quiet = false,
---         rulesCustomizations = {},
---         run = "onType",
---         useESLintClass = false,
---         validate = "on",
---         workingDirectory = {
---           mode = "location",
---         },
---       },
---       on_attach = function(_, bufnr)
---         api.nvim_create_autocmd("BufWritePre", {
---           buffer = bufnr,
---           command = "EslintFixAll",
---         })
---       end,
---     })
-return eslint
+    experimental = { useFlatConfig = false },
+    format = true,
+    nodePath = "",
+    onIgnoredFiles = "off",
+    problems = { shortenToSingleLine = false },
+    quiet = false,
+    rulesCustomizations = {},
+    run = "onType",
+    useESLintClass = false,
+    validate = "on",
+    workingDirectory = { mode = "location" },
+  },
+}

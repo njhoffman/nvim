@@ -1,5 +1,5 @@
-local autocmds = require('project_nvim.session.autocmds')
-local actions = require('project_nvim.session.actions')
+local autocmds = require("project_nvim.session.autocmds")
+local actions = require("project_nvim.session.actions")
 
 local init = function()
   actions.setup()

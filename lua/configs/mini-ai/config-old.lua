@@ -145,7 +145,7 @@ local setup_keymaps = function()
   local gen_action = function(seq)
     local edge = ({ ["["] = "left", ["]"] = "right" })[seq:sub(1, 1)]
     local ai_type = seq:sub(2, 2)
-    local prev_next = ({ ["N"] = "prev", ["n"] = "next" })[seq:sub(3, 3)]
+    local prev_next = ({ ["{"] = "prev", ["}"] = "next" })[seq:sub(3, 3)]
     require("mapper").map({ "n", "x", "o" }, "g" .. seq, function()
       jump_textobject(prev_next, edge, ai_type)
     end, {
@@ -205,7 +205,7 @@ local setup_keymaps = function()
     a[k] = v:gsub("inner", "around"):gsub("inside", "around"):gsub(" with .*", "")
   end
 
-  for key, desc in pairs({ n = "next", N = "prev" }) do
+  for key, desc in pairs({ ["]"] = "next", ["["] = "prev" }) do
     i[key] = "  inside " .. desc .. " textobject"
     a[key] = "  around " .. desc .. " textobject"
   end

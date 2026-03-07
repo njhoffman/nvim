@@ -1,20 +1,16 @@
 local uv = vim.loop
 local M = {}
 
-M.datapath = vim.fn.stdpath('data') -- directory
-M.projectpath = M.datapath .. '/project_nvim' -- directory
-M.historyfile = M.projectpath .. '/project_history' -- file
-M.sessionspath = M.datapath .. '/project_sessions' --directory
+M.historyfile = nil
+M.sessionspath = nil
 M.homedir = nil
 M.dir_pretty = nil -- directory of current project (respects user defined symlinks in config)
 
 function M.init()
-  local options = require('project_nvim.config').get()
-  M.datapath = vim.fn.expand(options.datapath)
-  M.projectpath = M.datapath .. '/project_nvim' -- directory
-  M.historyfile = M.projectpath .. '/project_history' -- file
-  M.sessionspath = M.datapath .. '/project_sessions' --directory
-  M.homedir = vim.fn.expand('~')
+  local options = require("project_nvim.config").get()
+  M.historyfile = options.paths.history or vim.fn.stpath("data") .. "/project_history"
+  M.sessionspath = options.paths.sessions or vim.fn.stdpath("data") .. "/project_sessions"
+  M.homedir = vim.fn.expand("~")
 end
 
 M.dir_matches_project = function(dir)
@@ -33,7 +29,7 @@ end
 M.get_all_projects = function()
   -- Get all existing projects from patterns
   local projects = {}
-  local patterns = require('project_nvim.config').get().projects
+  local patterns = require("project_nvim.config").get().projects
   for _, pattern in ipairs(patterns) do
     local tbl = vim.fn.glob(pattern, true, true, true)
     for _, path in ipairs(tbl) do
@@ -48,7 +44,7 @@ end
 M.short_path = function(path)
   -- Reduce file name to be relative to the home directory, if possible.
   path = M.resolve(path)
-  return vim.fn.fnamemodify(path, ':~')
+  return vim.fn.fnamemodify(path, ":~")
 end
 
 M.cwd = function()
@@ -100,9 +96,9 @@ M.fix_symlinks_for_history = function(dirs)
 end
 
 function M.is_file()
-  local buf_type = vim.api.nvim_buf_get_option(0, 'buftype')
+  local buf_type = vim.api.nvim_buf_get_option(0, "buftype")
 
-  local whitelisted_buf_type = { '', 'acwrite' }
+  local whitelisted_buf_type = { "", "acwrite" }
   local is_in_whitelist = false
   for _, wtype in ipairs(whitelisted_buf_type) do
     if buf_type == wtype then
@@ -118,15 +114,20 @@ function M.is_file()
 end
 
 function M.create_scaffolding(callback)
-  if callback ~= nil then -- async
-    uv.fs_mkdir(M.projectpath, 448, callback)
-  else -- sync
-    uv.fs_mkdir(M.projectpath, 448)
-  end
+  vim.defer_fn(function()
+    vim.fn.mkdir(M.sessionspath, "p")
+    vim.fn.mkdir(vim.fs.dirname(M.historyfile), "p")
+    if callback ~= nil then -- async
+      uv.fs_mkdir(vim.fs.dirname(M.historyfile), 448, callback)
+      -- uv.fs_mkdir(M.projectpath, 448, callback)
+      -- else -- sync
+      -- uv.fs_mkdir(vim.fs.dirname(M.historyfile), 448, callback)
+    end
+  end, 0)
 end
 
 function M.is_excluded(dir)
-  local options = require('project_nvim.config').get()
+  local options = require("project_nvim.config").get()
   for _, dir_pattern in ipairs(options.exclude_dirs or {}) do
     if dir:match(dir_pattern) ~= nil then
       return true
@@ -137,7 +138,7 @@ function M.is_excluded(dir)
 end
 
 function M.home_path(dir)
-  return dir.gsub(dir, os.getenv('HOME') or '', '~')
+  return dir.gsub(dir, os.getenv("HOME") or "", "~")
 end
 
 return M
