@@ -5,6 +5,31 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-03-09
+
+### Removed
+
+- **Unreferenced module cleanup**: Moved 29 unreferenced lua modules to `~/.local/backup/nvim-refactor/`
+  - 12 top-level dead modules: `evaluate`, `formatter-nvim`, `keyutils`, `layouts`, `oputils`,
+    `random-colorscheme`, `shebang`, `splitter`, `test_runner`, `tmp-dap`, `tmpts`, `unicode`
+  - 5 unused utils: `autofunc`, `blink_animate`, `bufopt`, `chainsaw`, `gradient_utils`
+  - 6 test/scratch scripts: `notify-remote`, `test-options`, `test-timer`, `import-test`,
+    `test-scratch`, `test-scratch2`
+  - 5 treesitter reference/backup files: `bash_zsh`, `variousobj`, `tstextobj`, `miniai`,
+    `js-template-string`
+  - 1 misc: `remote/eample_errors`
+
+### Project Statistics
+
+| Metric | Value |
+|--------|-------|
+| Total Tests | 10 test files (6 unit, 2 integration), 99 tests |
+| Total Plugins | 406 installed plugins |
+| Config Lines of Code | ~267,173 lines (Lua/Vim) |
+| Plugin Lines of Code | ~2,126,243 lines |
+
+---
+
 ## [0.5.0] - 2026-03-09
 
 ### Removed
