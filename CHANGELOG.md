@@ -5,6 +5,34 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-03-09
+
+### Removed
+
+- **Dead code cleanup**: Removed 9 unused old/backup files (~1,990 lines)
+  - `lua/tracker/diff/init_old.lua`, `lua/tracker/defaults_old.lua`
+  - `lua/reactive/commands-old.lua`, `lua/reactive/old_snapshot.lua`, `lua/reactive/snapshot-old.lua`, `lua/reactive/old_commands.lua`
+  - `lua/yanky/init-old.lua`
+  - `lua/configs/nvim-cmp/reference/backup2.lua`
+  - `lua/scripts/test-old-options.lua`
+
+- **Duplicate profiler**: Removed `lua/utils/debug/profile/p.lua` (identical copy of `lua/plenary/profile/p.lua`)
+
+- **Bundled project source**: Removed `lab/lab.nvim-main/` directory (95 files, full lab.nvim GPLv3 source)
+
+- **Empty directories**: Removed `lua/tmp/`, `lua/ui/`, `lua/conform/`
+
+### Project Statistics
+
+| Metric | Value |
+|--------|-------|
+| Total Tests | 10 test files (6 unit, 2 integration), 99 tests |
+| Total Plugins | 406 installed plugins |
+| Config Lines of Code | ~269,024 lines (Lua/Vim) |
+| Plugin Lines of Code | ~2,126,243 lines |
+
+---
+
 ## [0.4.0] - 2025-11-03
 
 ### Added
