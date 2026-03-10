@@ -211,9 +211,9 @@ function M.pinWin(width, height)
     title = "  " .. vim.fs.basename(vim.api.nvim_buf_get_name(bufnr)) .. " ",
     title_pos = "center",
   })
-  vim.api.nvim_win_set_option(pinWinNr, "scrolloff", 2)
-  vim.api.nvim_win_set_option(pinWinNr, "sidescrolloff", 2)
-  vim.api.nvim_win_set_option(pinWinNr, "signcolumn", "no")
+  vim.wo[pinWinNr].scrolloff = 2
+  vim.wo[pinWinNr].sidescrolloff = 2
+  vim.wo[pinWinNr].signcolumn = "no"
 end
 
 --------------------------------------------------------------------------------

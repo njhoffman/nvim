@@ -68,10 +68,10 @@ keymap("n", "X", "<cmd>normal!mz$x`z<CR>", { desc = "󱎘 Delete char at EoL" })
 
 -- COMMENTS
 keymap("n", "qw", function()
-  require("funcs.quality-of-life").commentHr()
+  require("utils.quality-of-life").commentHr()
 end, { desc = " Horizontal Divider" })
 keymap("n", "wq", function()
-  require("funcs.quality-of-life").duplicateAsComment()
+  require("utils.quality-of-life").duplicateAsComment()
 end, { desc = " Duplicate Line as Comment" })
 
 -- WHITESPACE & INDENTATION
@@ -91,7 +91,7 @@ keymap("n", "zz", "<cmd>%foldclose<CR>", { desc = "󰘖 Close toplevel folds" })
 
 -- [O]pen new scope / brace
 keymap({ "n", "i" }, "<D-o>", function()
-  require("funcs.quality-of-life").openNewScope()
+  require("utils.quality-of-life").openNewScope()
 end, { desc = " Open new scope" })
 
 -- Spelling
@@ -212,7 +212,7 @@ keymap({ "n", "x" }, "<D-l>", function()
   fn.system({ "open", "-R", expand("%:p") })
 end, { desc = "󰀶 Reveal in Finder" })
 keymap({ "n", "x" }, "<D-5>", function()
-  require("funcs.quality-of-life").openAlfredPref()
+  require("utils.quality-of-life").openAlfredPref()
 end, { desc = "󰮤 Reveal in Alfred" })
 
 -- cmd+e: inline code
@@ -376,12 +376,12 @@ keymap("n", "<leader>r", function()
   vim.cmd.lmake()
 end, { desc = " Make" })
 keymap("n", "<leader>R", function()
-  require("funcs.quality-of-life").selectMake()
+  require("utils.quality-of-life").selectMake()
 end, { desc = " Select Make" })
 
 -- TERMINAL
 keymap({ "n", "x" }, "<leader>t", function()
-  require("funcs.quality-of-life").sendToWezTerm()
+  require("utils.quality-of-life").sendToWezTerm()
 end, { desc = " Send to WezTerm" })
 
 --------------------------------------------------------------------------------

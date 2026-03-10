@@ -330,35 +330,35 @@ map("c", "<M-C-e>", [[<c-\>expandcmd(getcmdline())<CR>]], {
 --------------------------------------------------------------------------------------------------
 -- COMMENTS ---------------------------------------------------------------------------------------
 map("n", "gch", function()
-  require("funcs.quality-of-life").commentHr()
+  require("utils.quality-of-life").commentHr()
 end, { category = "Comments", desc = "  horizontal divider" })
 
 map({ "n", "x" }, "gC", function()
-  require("funcs.quality-of-life").duplicateAsComment()
+  require("utils.quality-of-life").duplicateAsComment()
 end, { category = "Comments", desc = "  duplicate line as comment" })
 
 map({ "n", "x" }, "gcC", function()
-  require("funcs.quality-of-life").duplicateAsComment()
+  require("utils.quality-of-life").duplicateAsComment()
 end, { category = "Comments", desc = "  duplicate line as comment" })
 
 map({ "n", "x" }, "gc<space>", function()
-  require("funcs.quality-of-life").duplicateAsComment()
+  require("utils.quality-of-life").duplicateAsComment()
 end, { category = "Comments", desc = "  duplicate line as comment" })
 
 map({ "n", "x" }, "`p", function()
-  require("funcs.quality-of-life").pasteAsComment(true)
+  require("utils.quality-of-life").pasteAsComment(true)
 end, { category = "Comments", desc = "  paste as comment after" })
 
 map({ "n", "x" }, "`P", function()
-  require("funcs.quality-of-life").pasteAsComment(false)
+  require("utils.quality-of-life").pasteAsComment(false)
 end, { category = "Comments", desc = "  paste as comment before" })
 
 map({ "n", "x" }, "gcp", function()
-  require("funcs.quality-of-life").pasteAsComment(true)
+  require("utils.quality-of-life").pasteAsComment(true)
 end, { category = "Comments", desc = "  paste as comment after" })
 
 map({ "n", "x" }, "gcP", function()
-  require("funcs.quality-of-life").pasteAsComment(false)
+  require("utils.quality-of-life").pasteAsComment(false)
 end, { category = "Comments", desc = "  paste as comment before" })
 
 -- map('n', '<leader>pc', '<cmd>normal p`[v`]gc<cr>',       { category = 'Motion',  desc = '  paste as a comment' })
@@ -366,7 +366,7 @@ end, { category = "Comments", desc = "  paste as comment before" })
 map({ "n", "x" }, "gc<cr>", function()
   -- switch to visual line mode
   vim.cmd("normal! V")
-  require("funcs.quality-of-life").duplicateAsComment()
+  require("utils.quality-of-life").duplicateAsComment()
 end, { category = "Comments", desc = "  duplicate line as comment, force line mode" })
 -- TODO: make operator mapping, map shift/ctrl enter in visual mode
 
@@ -631,7 +631,7 @@ map("n", "<leader>cd", "<cmd>cd %:h<cr>", {
 -- keymap(
 --   "n",
 --   "<leader>R",
---   function() require("funcs.quality-of-life").selectMake() end,
+--   function() require("utils.quality-of-life").selectMake() end,
 --   { desc = " Select Make" }
 -- )
 --
@@ -639,7 +639,7 @@ map("n", "<leader>cd", "<cmd>cd %:h<cr>", {
 -- keymap(
 --   { "n", "x" },
 --   "<leader>t",
---   function() require("funcs.quality-of-life").sendToWezTerm() end,
+--   function() require("utils.quality-of-life").sendToWezTerm() end,
 --   { desc = " Send to WezTerm" }
 -- )
 --
@@ -1148,10 +1148,11 @@ vim.api.nvim_set_keymap("x", "g!!", searching_google_in_visual, { silent = true,
 -- keymap("n", "<Up>", [[<cmd>. move -2<CR>==]], { desc = "󰜷 Move Line Up" })
 -- keymap("n", "<Right>", [["zx"zp]], { desc = "➡️ Move Char Right" })
 -- keymap("n", "<Left>", [["zdh"zph]], { desc = "⬅ Move Char Left" })
--- keymap("x", "<Down>", [[:move '>+1<CR>gv=gv]], { desc = "󰜮 Move Selection down", silent = true })
--- keymap("x", "<Up>", [[:move '<-2<CR>gv=gv]], { desc = "󰜷 Move Selection up", silent = true })
--- keymap("x", "<Right>", [["zx"zpgvlolo]], { desc = "➡️ Move Selection right" })
--- keymap("x", "<Left>", [["zdh"zPgvhoho]],):format()):format()):format()):format()):format() { desc = "⬅ Move Selection left" })
+
+-- map("x", "<Down>",  [[:move '>+1<CR>gv=gv]], { desc = "󰜮 Move Selection down", silent = true })
+-- map("x", "<Up>",    [[:move '<-2<CR>gv=gv]], { desc = "󰜷 Move Selection up",   silent = true })
+-- map("x", "<Right>", [["zx"zpgvlolo]],        { desc = "➡️ Move Selection right" })
+-- map("x", "<Left>",  [["zdh"zPgvhoho]],       { desc = "⬅ Move Selection left" })
 
 
 --------------------------------------------------------------------------------------------------
@@ -2205,11 +2206,11 @@ end, { desc = '⌨️ Edit ' .. vim.fs.basename(pathOfThisFile) })
 
 -- open new scope / brace
 -- map({ 'i' }, 'g{', function()
---   require('funcs.quality-of-life').openNewScope()
+--   require('utils.quality-of-life').openNewScope()
 -- end, { desc = ' Open new scope' })
 
 map({ 'n' }, 'g{', function()
-  require('funcs.quality-of-life').openNewScope()
+  require('utils.quality-of-life').openNewScope()
 end, { desc = ' Open new scope' })
 
 --------------------------------------------------------------------------------
