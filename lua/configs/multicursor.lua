@@ -14,7 +14,7 @@ local pfx = "<leader>m"
 -- stylua: ignore
 local keymaps    = {
   escape         = {pfx .. 'q', "<Esc>"},    -- n   <esc>
-  toggle         = {pfx .. 'm', "<C-m>"},    -- nv  <c-q>
+  toggle         = {pfx .. 'm', "<M-M>"},    -- nv  <c-q>
   next           = {pfx .. "]", "]m"},       -- nv
   prev           = {pfx .. "[", "[m"},       -- nv
   delete         = {pfx .. "x"},             -- nv  <leader>x

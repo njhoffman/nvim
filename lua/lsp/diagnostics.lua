@@ -7,7 +7,7 @@ local M = {}
 
 -- Configuration options
 local opts = {
-  log_level = 2,
+  log_level = vim.lsp.log.levels.WARN,
   signs_priority = 6,
   underline = false,
   jump = {

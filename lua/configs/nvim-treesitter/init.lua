@@ -1,11 +1,9 @@
--- use bash parser for zsh files
-
 local logger = require("logger").init("treesitter")
 
 local cfg = {
   skip_folding = {},
   skip_highlights = { "zsh", "tmux" },
-  vim_regex_highlights = { "make", "html", "spidercode", "tmux" },
+  vim_regex_highlights = { "make", "html", "spidercode", "tmux", "checkhealth" },
   skip_indent = { "markdown", "sh", "bash", "vim" },
 }
 
@@ -68,53 +66,65 @@ local url_pfx = "https://github.com/OXY2DEV/tree-sitter-"
 local path_pfx = vim.fn.stdpath("config") .. "/parsers/tree-sitter-"
 -- register({ lang = "doctext", url = url_pfx })
 -- register({ lang = "comment", url = url_pfx, name = "doctext" })
-register({ lang = "lua_patterns", url = url_pfx })
-register({ lang = "vhs", url = url_pfx })
-register({ lang = "qf", url = url_pfx })
-register({ lang = "kitty", url = url_pfx })
-register({ lang = "spidercode", path = path_pfx })
+-- register({ lang = "lua_patterns", url = url_pfx })
+-- register({ lang = "vhs", url = url_pfx })
+-- register({ lang = "qf", url = url_pfx })
+-- register({ lang = "kitty", url = url_pfx })
+-- register({ lang = "spidercode", path = path_pfx })
 -- vim.treesitter.language.register("bash", "zsh")
 
 install_parsers()
 
 local function apply_parser(ctx)
+  local bufnr = ctx.buf
   local ft = vim.bo.filetype
   local lang = vim.treesitter.language.get_lang(ft)
 
-  if not lang or not vim.treesitter.language.add(lang) then
+  if lang == nil or lang == "" or lang == "none" then
     return
   end
 
-  -- -- highlights
-  if not vim.list_contains(cfg.skip_highlights, ctx.match) then
-    -- pcall(vim.treesitter.start) -- errors for filetypes with no parser
-    vim.treesitter.start()
+  local has_parser, parser_err = vim.treesitter.language.add(lang)
+
+  if not has_parser then
+    logger:debug(parser_err)
+    return
   end
 
-  -- Set folding if available
-  if vim.treesitter.query.get(lang, "folds") then
-    vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+  if vim.list_contains(cfg.skip_highlights, ctx.match) then
+    return
+  end
+
+  -- highlights
+  local has_started, start_err = pcall(vim.treesitter.start, bufnr, lang) -- errors for filetypes with no parser
+  if not has_started then
+    logger:warn('Error starting treesitter for "' .. lang .. '": ' .. tostring(start_err))
+    return
   end
 
   -- Set indentation if available (overrides traditional indent)
-  if vim.treesitter.query.get(lang, "indents") then
-    vim.bo.indentexpr = "nvim_treesitter#indent()"
+  if
+    not vim.list_contains(cfg.skip_indent, ctx.match)
+    and vim.treesitter.query.get(lang, "indents")
+  then
+    -- vim.bo.indentexpr = "nvim_treesitter#indent()"
+    vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
   end
 
-  -- -- indent
-  -- if hasStarted and not vim.list_contains(cfg.skip_indent, ctx.match) then
-  --   vim.bo[ctx.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-  -- end
+  -- folding
+  if
+    not vim.list_contains(cfg.skip_folding, ctx.match)
+    and vim.treesitter.query.get(lang, "folds")
+  then
+    vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    vim.wo.foldmethod = "expr"
+  end
 
-  -- -- folding
-  -- if hasStarted and not vim.list_contains(cfg.skip_folding, ctx.match) then
-  --   vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-  --   vim.wo.foldmethod = "expr"
-  -- end
-  --   if hasStarted and vim.list_contains(cfg.vim_regex_highlights, ctx.match) then
-  --     -- vim.bo[ctx.buf].syntax = ctx.match
-  --     -- vim.cmd.syntax("enable")
-  --   end
+  -- legacy regex
+  if vim.list_contains(cfg.vim_regex_highlights, ctx.match) then
+    vim.bo[bufnr].syntax = ctx.match
+    vim.cmd.syntax("enable")
+  end
 end
 
 vim.api.nvim_create_autocmd("User", {

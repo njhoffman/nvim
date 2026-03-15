@@ -14,8 +14,8 @@ local function cht_on_open(term)
   vim.cmd('stopinsert')
   vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
   vim.api.nvim_buf_set_name(term.bufnr, 'cheatsheet-' .. term.bufnr)
-  vim.api.nvim_buf_set_option(term.bufnr, 'filetype', 'cheat')
-  vim.api.nvim_buf_set_option(term.bufnr, 'syntax', lang)
+  vim.bo[term.bufnr].filetype = 'cheat'
+  vim.bo[term.bufnr].syntax = lang
 end
 
 local function cht_on_exit(_)
@@ -44,7 +44,7 @@ end
 function M.cht()
   local buf = vim.api.nvim_get_current_buf()
   lang = ''
-  file_type = vim.api.nvim_buf_get_option(buf, 'filetype')
+  file_type = vim.bo[buf].filetype
   vim.ui.input({ prompt = 'cht.sh input: ', default = file_type .. ' ' }, function(input)
     local cmd = ''
     if input == '' or not input then
@@ -77,7 +77,7 @@ end
 
 function M.stack_overflow()
   local buf = vim.api.nvim_get_current_buf()
-  file_type = vim.api.nvim_buf_get_option(buf, 'filetype')
+  file_type = vim.bo[buf].filetype
   vim.ui.input({ prompt = 'so input: ', default = file_type .. ' ' }, function(input)
     local cmd = ''
     if input == '' or not input then

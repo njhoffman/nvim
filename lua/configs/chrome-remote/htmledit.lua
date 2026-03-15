@@ -19,7 +19,7 @@ local function start(client, url)
     local ui = vim.api.nvim_list_uis()[1]
     local bufnr = vim.api.nvim_create_buf(true, true)
     vim.api.nvim_buf_set_lines(bufnr, 0, #initial_lines, false, initial_lines)
-    vim.api.nvim_buf_set_option(bufnr, 'filetype', 'html')
+    vim.bo[bufnr].filetype = 'html'
     local winnr = vim.api.nvim_open_win(bufnr, true, {
       title = request.documentURL,
       border = 'double',

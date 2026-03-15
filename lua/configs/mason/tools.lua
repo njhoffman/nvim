@@ -92,12 +92,10 @@ local linters = {
 
 local dap = {
   "bash-debug-adapter",
-  "chrome-debug-adapter",
   "debugpy",
   "delve",
   "go-debug-adapter",
   "js-debug-adapter",
-  "node-debug2-adapter",
   -- 'bzl',
   -- 'codelldb',
   -- 'cpptools',

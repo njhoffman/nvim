@@ -260,7 +260,7 @@ M.FelineCmdComponent = {
 M.MacroComponent = {
   provider = "macro",
   enabled = function()
-    return vim.api.nvim_get_option("cmdheight") == 0
+    return (vim.api.nvim_get_option_value("cmdheight", {}) or 0) == 0
   end,
   hl = { fg = "orange", bg = "base" },
   left_sep = invi_sep,
@@ -270,7 +270,8 @@ M.MacroComponent = {
 M.SearchCountComponent = {
   provider = "search_count",
   enabled = function()
-    return vim.api.nvim_get_option("cmdheight") == 0 and vim.fn.searchcount().total > 0
+    return (vim.api.nvim_get_option_value("cmdheight", {}) or 0) == 0
+      and (vim.fn.searchcount().total or 0) > 0
   end,
   update = function()
     return vim.fn.searchcount().total > 0

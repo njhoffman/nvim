@@ -89,7 +89,7 @@ end
 local highlight_yank = function()
   if vim.v.event.operator == "y" then
     -- Highlight the yanked area
-    vim.highlight.on_yank({
+    vim.hl.on_yank({
       hlgroup = "Visual", -- IncRename
       on_visual = true,
       on_macro = true,
@@ -99,6 +99,7 @@ local highlight_yank = function()
 end
 
 local goto_last_pos = function(bufnr, event)
+  vim.dbglog("last_pos", bufnr, event)
   local options = {
     open_folds = 1,
     ignore = {
@@ -111,7 +112,9 @@ local goto_last_pos = function(bufnr, event)
   if vim.v.vim_did_enter == 0 then
     local last_arg = vim.v.argv[#vim.v.argv]
     if last_arg:match("^%+%d+$") then
-      return vim.api.nvim_command("keepjumps normal " .. last_arg:gsub("%+", "") .. "G")
+      local full_cmd = "keepjumps normal " .. last_arg:gsub("%+", "") .. "G"
+      vim.dbglog("goto_last_pos" .. full_cmd)
+      return vim.api.nvim_command(full_cmd)
     end
   end
 
@@ -139,7 +142,7 @@ local goto_last_pos = function(bufnr, event)
     vim.tbl_contains(options.ignore.buftypes, buf.type)
     or vim.tbl_contains(options.ignore.filetypes, buf.ft)
   then
-    return logger:debug(
+    return logger:info(
       "restore skip (" .. bufnr .. ") - " .. buf.name .. " " .. buf.type .. " " .. buf.ft
     )
   end

@@ -30,7 +30,7 @@ local update_title = function()
   parts.mid = string.rep('', state.popup.size.width - #parts.left - #parts.right, ' ')
 
   local title = vim.fn.join({ parts.left, parts.mid, parts.right }, '')
-  vim.api.nvim_win_set_option(state.popup.winnr, 'winbar', title)
+  vim.wo[state.popup.winnr].winbar = title
 end
 
 local create_popup = function(winsize)

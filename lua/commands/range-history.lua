@@ -8,8 +8,8 @@ local M = {}
 local MAX_HISTORY = 10
 
 -- State
-local history = {}  -- List of {bufnr, start_line, start_col, end_line, end_col, type}
-local current_index = 0  -- 0 means not navigating, 1 = most recent, etc.
+local history = {} -- List of {bufnr, start_line, start_col, end_line, end_col, type}
+local current_index = 0 -- 0 means not navigating, 1 = most recent, etc.
 
 -- Helper: Get buffer-local history (filter by current buffer)
 local function get_buffer_history(bufnr)
@@ -27,7 +27,8 @@ local function add_to_history(bufnr, start_line, start_col, end_line, end_col, r
   -- Don't add if identical to the most recent entry
   if #history > 0 then
     local last = history[1]
-    if last.bufnr == bufnr
+    if
+      last.bufnr == bufnr
       and last.start_line == start_line
       and last.start_col == start_col
       and last.end_line == end_line
@@ -104,8 +105,10 @@ local function select_range(entry)
   local end_line = math.min(entry.end_line, line_count)
 
   -- Get line lengths to validate columns
-  local start_line_text = vim.api.nvim_buf_get_lines(entry.bufnr, start_line - 1, start_line, false)[1] or ""
-  local end_line_text = vim.api.nvim_buf_get_lines(entry.bufnr, end_line - 1, end_line, false)[1] or ""
+  local start_line_text = vim.api.nvim_buf_get_lines(entry.bufnr, start_line - 1, start_line, false)[1]
+    or ""
+  local end_line_text = vim.api.nvim_buf_get_lines(entry.bufnr, end_line - 1, end_line, false)[1]
+    or ""
   local start_col = math.min(entry.start_col, #start_line_text + 1)
   local end_col = math.min(entry.end_col, #end_line_text + 1)
 
@@ -142,7 +145,10 @@ function M.prev_range()
       M.prev_range()
       return
     end
-    vim.notify(string.format("Range %d/%d (%s)", current_index, #history, entry.type), vim.log.levels.INFO)
+    vim.notify(
+      string.format("Range %d/%d (%s)", current_index, #history, entry.type),
+      vim.log.levels.INFO
+    )
   end
 end
 
@@ -170,7 +176,10 @@ function M.next_range()
       M.next_range()
       return
     end
-    vim.notify(string.format("Range %d/%d (%s)", current_index, #history, entry.type), vim.log.levels.INFO)
+    vim.notify(
+      string.format("Range %d/%d (%s)", current_index, #history, entry.type),
+      vim.log.levels.INFO
+    )
   end
 end
 
@@ -185,13 +194,17 @@ function M.show_history()
   for i, entry in ipairs(history) do
     local marker = (i == current_index) and " -> " or "    "
     local bufname = vim.api.nvim_buf_is_valid(entry.bufnr)
-      and vim.fn.fnamemodify(vim.api.nvim_buf_get_name(entry.bufnr), ":t")
+        and vim.fn.fnamemodify(vim.api.nvim_buf_get_name(entry.bufnr), ":t")
       or "[invalid]"
     lines[#lines + 1] = string.format(
       "%s%d. %s L%d:%d-L%d:%d (%s)",
-      marker, i, bufname,
-      entry.start_line, entry.start_col,
-      entry.end_line, entry.end_col,
+      marker,
+      i,
+      bufname,
+      entry.start_line,
+      entry.start_col,
+      entry.end_line,
+      entry.end_col,
       entry.type
     )
   end
@@ -215,7 +228,7 @@ function M.setup(opts)
   -- Track visual selections when leaving visual mode
   vim.api.nvim_create_autocmd("ModeChanged", {
     group = group,
-    pattern = "[vV\x16]*:*",  -- From any visual mode to any other mode
+    pattern = "[vV\x16]*:*", -- From any visual mode to any other mode
     callback = function()
       -- Defer to ensure '< and '> marks are set
       vim.schedule(record_visual_selection)
@@ -223,33 +236,37 @@ function M.setup(opts)
   })
 
   -- Create wrapper for paste commands to record paste ranges
-  local paste_keys = { "p", "P", "]p", "[p", "]P", "[P" }
-  for _, key in ipairs(paste_keys) do
-    vim.keymap.set("n", key, function()
-      -- Execute the paste
-      local count = vim.v.count1
-      vim.cmd("normal! " .. count .. key)
-      -- Record the paste range after a small delay
-      vim.schedule(record_paste_range)
-    end, { desc = "Paste and record range" })
-  end
+  -- local paste_keys = { "p", "P", "]p", "[p", "]P", "[P" }
+  -- for _, key in ipairs(paste_keys) do
+  --   vim.keymap.set("n", key, function()
+  --     -- Execute the paste
+  --     local count = vim.v.count1
+  --     vim.cmd("normal! " .. count .. key)
+  --     -- Record the paste range after a small delay
+  --     vim.schedule(record_paste_range)
+  --   end, { desc = "Paste and record range" })
+  -- end
 
-  -- Setup keymaps
-  vim.keymap.set({ "n", "x" }, "gv", function()
-    -- If not currently navigating, record current visual selection first
-    if current_index == 0 and vim.fn.mode():match("[vV\x16]") then
-      record_visual_selection()
-    end
-    M.prev_range()
-  end, { desc = "Previous range in history" })
+  -- -- Setup keymaps
+  -- vim.keymap.set({ "n", "x" }, "gv", function()
+  --   -- If not currently navigating, record current visual selection first
+  --   if current_index == 0 and vim.fn.mode():match("[vV\x16]") then
+  --     record_visual_selection()
+  --   end
+  --   M.prev_range()
+  -- end, { desc = "Previous range in history" })
 
-  vim.keymap.set({ "n", "x" }, "gV", function()
-    M.next_range()
-  end, { desc = "Next range in history" })
+  -- vim.keymap.set({ "n", "x" }, "gV", function()
+  --   M.next_range()
+  -- end, { desc = "Next range in history" })
 
   -- Commands
   vim.api.nvim_create_user_command("RangeHistory", M.show_history, { desc = "Show range history" })
-  vim.api.nvim_create_user_command("RangeHistoryClear", M.clear_history, { desc = "Clear range history" })
+  vim.api.nvim_create_user_command(
+    "RangeHistoryClear",
+    M.clear_history,
+    { desc = "Clear range history" }
+  )
 end
 
 return M

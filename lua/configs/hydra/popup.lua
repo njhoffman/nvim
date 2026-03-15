@@ -15,8 +15,8 @@ end
 function create_buffer(choices)
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, choices)
-  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
-  vim.api.nvim_buf_set_option(buf, 'modified', false)
+  vim.bo[buf].modifiable = false
+  vim.bo[buf].modified = false
   return buf
 end
 
@@ -42,8 +42,8 @@ function create_window(bufnr, height, width)
     focusable = true,
     noautocmd = true,
   })
-  vim.api.nvim_win_set_option(winid, 'cursorline', true)
-  vim.api.nvim_win_set_option(winid, 'winhl', 'NormalFloat:TelescopePromptNormal,FloatBorder:TelescopePromptBorder')
+  vim.wo[winid].cursorline = true
+  vim.wo[winid].winhl = 'NormalFloat:TelescopePromptNormal,FloatBorder:TelescopePromptBorder'
   vim.api.nvim_exec('stopinsert', true)
   return winid
 end

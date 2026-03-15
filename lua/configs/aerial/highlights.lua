@@ -3,13 +3,11 @@ local function link(group1, group2)
 end
 
 local setup_highlights = function()
-  ---@diagnostic disable-next-line: undefined-field
-  local ok, aerial_def = pcall(vim.api.nvim_get_hl_by_name, 'AerialDefault', true)
-  if not ok then
-    ---@diagnostic disable-next-line: undefined-field
-    local normal_def = vim.api.nvim_get_hl_by_name('Normal', true)
-    if normal_def ~= '' then
-      if type(normal_def) == 'table' and (normal_def.foreground or normal_def.background) then
+  local aerial_def = vim.api.nvim_get_hl(0, { name = 'AerialDefault', link = false })
+  if vim.tbl_isempty(aerial_def) then
+    local normal_def = vim.api.nvim_get_hl(0, { name = 'Normal', link = false })
+    if not vim.tbl_isempty(normal_def) then
+      if normal_def.fg or normal_def.bg then
         vim.api.nvim_set_hl(0, 'AerialDefault', normal_def)
         -- else
         --   vim.dbglog('aerial invalid normal_def', normal_def)

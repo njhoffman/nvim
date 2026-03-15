@@ -466,17 +466,20 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
         --          likely one to be confusing, so it has its own mode.
         jumplist = true,
       })
+
+      -- stylua: ignore start
+      -- TODO: create plugin that has persistent mode
       -- movement
-      vim.keymap.set({ "n", "v" }, "<M-S-Up>", "<cmd>Treewalker Up<cr>", { silent = true })
-      vim.keymap.set({ "n", "v" }, "<M-S-Down>", "<cmd>Treewalker Down<cr>", { silent = true })
-      vim.keymap.set({ "n", "v" }, "<M-C-H>", "<cmd>Treewalker Left<cr>", { silent = true })
-      vim.keymap.set({ "n", "v" }, "<M-C-L>", "<cmd>Treewalker Right<cr>", { silent = true })
+      vim.keymap.set({ "n", "v" }, "<S-Up>",    "<cmd>Treewalker Up<cr>",    { silent = true })
+      vim.keymap.set({ "n", "v" }, "<S-Down>",  "<cmd>Treewalker Down<cr>",  { silent = true })
+      vim.keymap.set({ "n", "v" }, "<S-Left>",  "<cmd>Treewalker Left<cr>",  { silent = true })
+      vim.keymap.set({ "n", "v" }, "<S-Right>", "<cmd>Treewalker Right<cr>", { silent = true })
 
       -- swapping
-      -- vim.keymap.set('n', '<C-S-k>', '<cmd>Treewalker SwapUp<cr>', { silent = true })
-      -- vim.keymap.set('n', '<C-S-j>', '<cmd>Treewalker SwapDown<cr>', { silent = true })
-      -- vim.keymap.set('n', '<C-S-h>', '<cmd>Treewalker SwapLeft<cr>', { silent = true })
-      -- vim.keymap.set('n', '<C-S-l>', '<cmd>Treewalker SwapRight<cr>', { silent = true })
+      vim.keymap.set('n', '<M-C-Up>',    '<cmd>Treewalker SwapUp<cr>',    { silent = true })
+      vim.keymap.set('n', '<M-C-Down>',  '<cmd>Treewalker SwapDown<cr>',  { silent = true })
+      vim.keymap.set('n', '<M-C-Left>',  '<cmd>Treewalker SwapLeft<cr>',  { silent = true })
+      vim.keymap.set('n', '<M-C-Right>', '<cmd>Treewalker SwapRight<cr>', { silent = true })
     end,
   },
 
@@ -1489,276 +1492,20 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     ft = { "markdown", "pandoc", "pandoc.markdown", "markdown.pandoc" },
   },
   { "njhoffman/markpan.nvim", enabled = false },
-  -- "martinlroth/vim-acpi-asl"                # ACPI ASL
-  -- "pearofducks/ansible-vim"                 # Ansible 2.x
-  -- "sheerun/apiblueprint.vim"                # API Blueprint
-  -- "mityu/vim-applescript"                   # AppleScript
-  -- "sudar/vim-arduino-syntax"                # Arduino
-  -- "asciidoc/vim-asciidoc"                   # AsciiDoc
-  -- "aliou/bats.vim"                          # BATS
-  -- "bazelbuild/vim-bazel"                    # Bazel
-  -- "google/vim-maktaba"                      # Bazel
-  -- "jwalton512/vim-blade"                    # Blade templates
-  -- "bfontaine/Brewfile.vim"                  # Brewfile
-  -- "vim-jp/vim-cpp"                          # C++
-  -- "octol/vim-cpp-enhanced-highlight"        # C++
-  -- "OrangeT/vim-csharp"                      # C#
-  -- "OmniSharp/omnisharp-vim"                 # C#
-  -- "isobit/vim-caddyfile"                    # Caddyfile
-  -- "nastevens/vim-cargo-make"                # Cargo Make (Rust cargo extension)
-  -- "mhinz/vim-crates"                        # Cargo.toml (Rust)
-  -- "hellerve/carp-vim"                       # Carp
-  -- "vadv/vim-chef"                           # Chef
-  -- "mtscout6/vim-cjsx"                       # CJSX (JSX equivalent in CoffeeScript)
-  -- "guns/vim-clojure-static"                 # Clojure
-  -- "tpope/vim-fireplace"                     # Clojure
-  -- "guns/vim-clojure-highlight"              # Clojure
-  -- "pboettch/vim-cmake-syntax"               # Cmake
-  -- "vhdirk/vim-cmake"                        # Cmake
-  -- "kchmck/vim-coffee-script"                # CoffeScript
-  -- "elubow/cql-vim"                          # Cassandra CQL
-  -- "victoredwardocallaghan/cryptol.vim"      # Cryptol
-  -- "vim-crystal/vim-crystal"                 # Crystal
-  -- "hail2u/vim-css3-syntax"                  # CSS
-  -- "chrisbra/csv.vim"                        # CSV
-  -- "tpope/vim-cucumber"                      # Cucumber
-  -- "mgrabovsky/vim-cuesheet"                 # Cue
-  -- "jjaderberg/vim-syntax-cipher"            # Cypher
-  -- "JesseKPhillips/d.vim"                    # D Lang
-  -- "mlr-msft/vim-loves-dafny"                # Dafny
-  -- "dart-lang/dart-vim-plugin"               # Dart
-  -- "vmchale/dhall-vim"                       # Dhall
-  -- "ekalinin/Dockerfile.vim"                 # Dockerfile
-  -- "nastevens/vim-duckscript"                # Duckscript
-  -- "elixir-editors/vim-elixir"               # Elixir
-  -- "yalesov/vim-emblem"				      # Emblem
-  -- "vim-erlang/vim-erlang-runtime"           # Erlang
-  -- "vim-scripts/ferm.vim"                    # Ferm
-  -- "georgewitteman/vim-fish"                 # Fish
-  -- "dcharbon/vim-flatbuffers"                # Flatbuffers
-  -- "kblin/vim-fountain"                      # Fountain
-  -- "calviken/vim-gdscript3"                  # GDScript 3
-  -- "tikhomirov/vim-glsl"                     # OpenGL Shading Language
-  -- "gleam-lang/gleam.vim"                    # Gleam
-  -- "maelvls/gmpl.vim"                        # GMPL
-  -- "vim-scripts/gnuplot-syntax-highlighting" # GNUPlot
-  -- "fatih/vim-go"                            # Go
-  -- "tfnico/vim-gradle"                       # Gradle
-  -- "jparise/vim-graphql"                     # GraphQL
-  -- "hhvm/vim-hack"                           # Hack
-  -- "sheerun/vim-haml"                        # Haml
-  -- "mustache/vim-mustache-handlebars"        # Handlebars
-  -- "CH-DanReif/haproxy.vim"                  # HAProxy
-  -- "neovimhaskell/haskell-vim"               # Haskel
-  -- "yaymukund/vim-haxe"                      # Haxe
-  -- "b4b4r07/vim-hcl"                         # HCL
-  -- "towolf/vim-helm"                         # Helm Templates
-  -- "zebradil/hive.vim"                       # Hive
-  -- "othree/html5.vim"                        # HTML5
-  -- "mboughaba/i3config.vim"                  # i3
-  -- "chutzpah/icalendar.vim"                  # icalendar
-  -- "idris-hackers/idris-vim"                 # Idris
-  -- "HiPhish/info.vim"                        # Info
-  -- "vmchale/ion-vim"                         # Ion
-  -- "jez/vim-ispc"                            # ISPC
-  -- "pangloss/vim-javascript"                 # Javascript
-  -- "briancollins/vim-jst"                    # JST
-  -- "maxmellon/vim-jsx-pretty"                # JSX
-  -- "martinda/Jenkinsfile-vim-syntax"         # Jenkins
-  -- "lepture/vim-jinja"                       # Jinja
-  -- "elzr/vim-json"                           # Json
-  -- "GutenYe/json5.vim"                       # Json5
-  -- "JuliaEditorSupport/julia-vim"            # Julia
-  -- "udalov/kotlin-vim"                       # Kotlin
-  -- "lervag/vimtex"                           # Latex
-  -- "xuhdev/vim-latex-live-preview"           # Latex
-  -- "ledger/vim-ledger"                       # Ledger
-  -- "groenewege/vim-less"                     # Less
-  -- "sersorrel/vim-lilypond"                  # Lilypond
-  -- "gkz/vim-ls"                              # LiveScript
-  -- "MTDL9/vim-log-highlighting"              # Log
-  -- "tbastos/vim-lua"                         # Lua
-  -- "jstrater/mpvim"                          # Macports
-  -- "sophacles/vim-bundle-mako"               # Mako
-  -- "plasticboy/vim-markdown"                 # Markdown
-  -- "rhysd/vim-gfm-syntax"                    # Markdown (github)
-  -- "voldikss/vim-mma"                        # Mathematica
-  -- "daeyun/vim-matlab"                       # Matlab
-  -- "jxnblk/vim-mdx-js"                       # MDX
-  -- "stewy33/mercury-vim"                     # Mercury
-  -- "leafo/moonscript-vim"                    # MoonScript
-  -- "chr4/nginx.vim"                          # Nginx
-  -- "zah/nim.vim"                             # Nim
-  -- "LnL7/vim-nix"                            # Nix
-  -- "b4winckler/vim-objc"                     # Objective-C
-  -- "ocaml/vim-ocaml"                         # OCaml
-  -- "McSinyx/vim-octave"                      # Octave
-  -- "mcnelson/vim-pawn"                       # Pawn
-  -- "vim-pandoc/vim-pandoc"                   # Pandoc
-  -- "vim-pandoc/vim-pandoc-syntax"            # Pandoc
-  -- "vim-perl/vim-perl"                       # PERL
-  -- "lifepillar/pgsql.vim"                    # PostgreSQL
-  -- "StanAngeloff/php.vim"                    # PHP
-  -- "aklt/plantuml-syntax"                    # PlantUML
-  -- "jakwings/vim-pony"                       # Ponylang
-  -- "PProvost/vim-ps1"                        # PowerShell
-  -- "adimit/prolog.vim"                       # Prolog
-  -- "uarun/vim-protobuf"                      # Protocol Buffers
-  -- "digitaltoad/vim-pug"                     # Pug template
-  -- "rodjek/vim-puppet"                       # Puppet
-  -- "purescript-contrib/purescript-vim"       # PureScript
-  -- "vim-python/python-syntax"                # Python
-  -- "Vimjas/vim-python-pep8-indent"           # Python
-  -- "artoj/qmake-syntax-vim"                  # QMake
-  -- "peterhoeg/vim-qml"                       # QML
-  -- "jalvesaq/Nvim-R"                         # R
-  -- "wlangstroth/vim-racket"                  # Racket
-  -- "jneen/ragel.vim"                         # Ragel
-  -- "Raku/vim-raku"                           # Raku
-  -- "IN3D/vim-raml"                           # RAML
-  -- "adamclerk/vim-razor"                     # Razor view engine
-  -- "reasonml-editor/vim-reason-plus"         # Reason
-  -- "keith/rspec.vim"                         # RSpec
-  -- "marshallward/vim-restructuredtext"       # reStructuredText
-  -- "vim-ruby/vim-ruby"                       # Ruby
-  -- "rust-lang/rust.vim"                      # Rust
-  -- "arzg/vim-rust-syntax-ext"                # Rust
-  -- "derekwyatt/vim-sbt"                      # SBT
-  -- "derekwyatt/vim-scala"                    # Scala
-  -- "cakebaker/scss-syntax.vim"               # SCSS
-  -- "arzg/vim-sh"                             # Shell
-  -- "slim-template/vim-slim"                  # Slim
-  -- "slime-lang/vim-slime-syntax"             # Slime
-  -- "jez/vim-better-sml"                      # SML
-  -- "bohlender/vim-smt2"                      # SMT-LIB2
-  -- "tomlion/vim-solidity"                    # Solidity
-  -- "tpope/vim-dotenv"                        # SQl
-  -- "tpope/vim-dadbod"                        # SQl
-  -- "kristijanhusak/vim-dadbod-completion"    # SQl
-  -- "kristijanhusak/vim-dadbod-ui"            # SQl
-  -- "cappyzawa/starlark.vim"                  # Starlark
-  -- "hhsnopek/vim-sugarss"                    # Sugarss
-  -- "wavded/vim-stylus"                       # Stylus
-  -- "leafOfTree/vim-svelte-plugin"            # Svelte
-  -- "jasonshell/vim-svg-indent"               # SVG
-  -- "vim-scripts/svg.vim"                     # SVG
-  -- "keith/swift.vim"                         # Swift
-  -- "wgwoods/vim-systemd-syntax"              # Systemd
-  -- "baskerville/vim-sxhkdrc"                 # SXHKD (bspwm)
-  -- "hashivim/vim-terraform"                  # Terraform
-  -- "timcharper/textile.vim"                  # Textile
-  -- "solarnz/thrift.vim"                      # Thrift
-  -- "ericpruitt/tmux.vim"                     # Tmux
-  -- "wellbredgrapefruit/tomdoc.vim"           # TomDoc
-  -- "cespare/vim-toml"                        # TOML
-  -- "c-cube/vim-tptp"                         # TPTP
-  -- "lumiliet/vim-twig"                       # Twig
-  -- "HerringtonDarkholme/yats.vim"            # TypeScript
-  -- "ollykel/v-vim"                           # V
-  -- "arrufat/vala.vim"                        # Vala
-  -- "vim-scripts/vbnet.vim"                   # VB.NET
-  -- "smerrill/vcl-vim-plugin"                 # VCL
-  -- "lepture/vim-velocity"                    # Velocity
-  -- "vifm/vifm.vim"                           # vifm
-  -- "suoto/vim-hdl"                           # VHDL
-  -- "posva/vim-vue"                           # Vue
-  -- "amal-khailtash/vim-xdc-syntax"           # XDC
-  -- "vim-scripts/XSLT-syntax"                 # XSL
-  -- "amadeus/vim-xml"                         # XML
-  -- "stephpy/vim-yaml"                        # YAML
-  -- "nathanalderson/yang.vim"                 # YANG
-  -- "sheerun/vim-yardoc"                      # YARD Documentation
-  -- "xwsoul/vim-zephir"                       # Zephir
-  -- "ziglang/zig.vim"                         # Zig
-  -- "zinit-zsh/zinit-vim-syntax"              # Zinit
-  -- Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': ['Jenkinsfile', 'groovy'] }
-  -- Plug 'jvirtanen/vim-hcl', { 'for': ['nomad', 'hcl'] }
-  -- KcPlug8 'puremourning/vimspector', {'on': '<Plug>VimspectorContinue'}  " Debugger
-  -- KcPlugCoc 'neoclide/coc.nvim', {'branch': 'release'} " coc-nvim, for language server
-  -- KcPlugCoc 'antoinemadec/coc-fzf', {'branch': 'release'} " Use FZF instead of coc.nvim built-in fuzzy finder
-  -- KcPlugCoc 'kamilcuk/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp'], 'dir': plugdir.'kamilcuk-vim-lsp-cxx-highlight'}
-  -- " KcPlugCoc 'stefantb/vim-lsp-cxx-highlight', {'for': ['c', 'cpp'], 'dir': plugdir.'stefantb-vim-lsp-cxx-highlight'}
-  -- Plug 'mrk21/yaml-vim', { 'for': [ 'yml', 'yaml' ] }
-  -- Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
-  -- hail2u/vim-css3-syntax	CSS3 syntax support to vim's built-in syntax/css.vim
-  -- othree/csscomplete.vim	Updated built-in CSS complete with latest standards
-  -- groenewege/vim-less	Syntax for LESS
-  -- iloginow/vim-stylus	Syntax, indentation and autocomplete for Stylus
-  -- mustache/vim-mustache-handlebars	Mustache and handlebars syntax
-  -- digitaltoad/vim-pug	Pug (formerly Jade) syntax and indentation
-  -- othree/html5.vim	HTML5 omnicomplete and syntax
-  -- plasticboy/vim-markdown	Markdown syntax highlighting
-  -- rhysd/vim-gfm-syntax	GitHub Flavored Markdown syntax highlight extension
-  -- pangloss/vim-javascript	Enhanced Javascript syntax
-  -- HerringtonDarkholme/yats.vim	Advanced TypeScript Syntax Highlighting
-  -- MaxMEllon/vim-jsx-pretty	React JSX syntax pretty highlighting
-  -- leafOfTree/vim-svelte-plugin	Syntax and indent plugin for Svelte
-  -- heavenshell/vim-jsdoc	Generate JSDoc to your JavaScript code
-  -- moll/vim-node	Superb development with Node.js
-  -- posva/vim-vue	Syntax Highlight for Vue.js components
-  -- fatih/vim-go	Go development
-  -- vim-python/python-syntax	Enhanced version of the original Python syntax
-  -- Vimjas/vim-python-pep8-indent	A nicer Python indentation style
-  -- vim-scripts/python_match.vim	Extend the % motion for Python files
-  -- StanAngeloff/php.vim	Up-to-date PHP syntax file (5.3 – 7.1 support)
-  -- keith/swift.vim	Swift support
-  -- rust-lang/rust.vim	Rust support
-  -- vim-jp/syntax-vim-ex	Improved Vim syntax highlighting
-  -- chrisbra/csv.vim	Handling column separated data
-  -- tpope/vim-git	Git runtime files
-  -- MTDL9/vim-log-highlighting	Syntax highlighting for generic log files
-  -- cespare/vim-toml	Syntax for TOML
-  -- mboughaba/i3config.vim	i3 window manager config syntax
-  -- dag/vim-fish	Fish shell edit support
-  -- jstrater/mpvim	Macports portfile configuration files
-  -- robbles/logtash.vim	Highlights logstash configuration files
-  -- IN3D/vim-raml	Syntax and language settings for RAML
-  -- towolf/vim-helm	Syntax for Helm templates (yaml + gotmpl + sprig)
   { "iamcco/markdown-preview.nvim", build = "cd app && yarn install", cmd = "MarkdownPreview" },
   -- https://github.com/kiyoon/jupynium.nvim
   { "vuki656/package-info.nvim", dependencies = "MunifTanjim/nui.nvim", ft = "json" },
   { "serenevoid/kiwi.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
-  { "herringtondarkholme/yats.vim", ft = "typescript", lazy = lz_syn },
   -- https://github.com/AndrewRadev/inline_edit.vim
-  { "njhoffman/vim-liquid", ft = "liquid", lazy = lz_syn },
-  -- { 'moll/vim-node', ft = { 'javascript' }, lazy = lz_syn },
-  { "bfrg/vim-jq", ft = "jq", lazy = lz_syn },
-  -- { 'maxmellon/vim-jsx-pretty', ft = { 'javascript', 'jsx', 'javascriptreact' }, lazy = lz_syn },
-  { "yuezk/vim-js", ft = { "javascript", "jsx", "javascriptreact" }, lazy = lz_syn },
   { "zdharma-continuum/zinit-vim-syntax", ft = "zsh", lazy = lz_syn },
-  { "wgwoods/vim-systemd-syntax", ft = "systemd", lazy = lz_syn },
   { "aliou/bats.vim", ft = "bats", lazy = lz_syn },
-  { "alx741/vim-hindent", ft = "haskell", lazy = lz_syn },
-  { "cakebaker/scss-syntax.vim", ft = "scss", lazy = lz_syn },
-  { "chr4/nginx.vim", ft = "nginx", lazy = lz_syn },
-  { "ekalinin/dockerfile.vim", ft = "dockerfile", lazy = lz_syn },
-  { "elzr/vim-json", ft = "json", lazy = lz_syn },
-  { "ericpruitt/tmux.vim", ft = "tmux", lazy = lz_syn },
-  { "euclidianace/betterlua.vim", ft = "lua", lazy = lz_syn },
-  { "gisphm/vim-gitignore", ft = "gitignore", lazy = lz_syn },
-  { "glench/vim-jinja2-syntax", ft = "jinja", lazy = lz_syn },
-  { "gutenye/json5.vim", ft = "json5", lazy = lz_syn },
-  { "jparise/vim-graphql", ft = "graphql", lazy = lz_syn },
   { "kchmck/vim-coffee-script", ft = "coffee", lazy = lz_syn },
   { "lifepillar/pgsql.vim", ft = "pgsql", lazy = lz_syn },
-  { "lnl7/vim-nix", ft = "nix", lazy = lz_syn },
-  { "neoclide/jsonc.vim", ft = "jsonc", lazy = lz_syn },
-  { "neovimhaskell/haskell-vim", ft = "haskell", lazy = lz_syn },
-  { "octol/vim-cpp-enhanced-highlight", ft = "cpp", lazy = lz_syn },
   { "pearofducks/ansible-vim", ft = "ansible", lazy = lz_syn },
   { "potatoesmaster/i3-vim-syntax", ft = "i3", lazy = lz_syn },
   { "rodjek/vim-puppet", ft = "puppet", lazy = lz_syn },
-  { "stanangeloff/php.vim", ft = "php", lazy = lz_syn },
-  { "tbastos/vim-lua", ft = "lua", lazy = lz_syn },
-  { "tikhomirov/vim-glsl", ft = "glsl", lazy = lz_syn },
-  { "vim-utils/vim-man", ft = "man", lazy = lz_syn },
-  { "vim-crystal/vim-crystal", ft = "crystal", lz_sym = lz_syn },
-  { "vimwiki/vimwiki", ft = { "markdown", "vimwiki" }, lazy = lz_syn },
+  { "vim-crystal/vim-crystal", ft = "crystal", lazy = lz_syn },
   { "raimon49/requirements.txt.vim", event = "VeryLazy", lazy = lz_syn },
-  { "godlygeek/tabular", event = "VeryLazy", lazy = lz_syn },
-  { "preservim/vim-markdown", commit = "df4be86", dependencies = { "godlygeek/tabular" } },
-  { "mtdl9/vim-log-highlighting", ft = { "log", "LOG" }, event = { "BufReadPost", "BufNewFile" } },
-  { "hashivim/vim-terraform", ft = "terraform", event = { "BufReadPost", "BufNewFile" } },
 }
 
 utils.apply_configs(plugins)

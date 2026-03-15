@@ -265,7 +265,6 @@ local cfg = {
     -- Highlight for everything else, main table rows and the line below.
     row = "RenderMarkdownTableRow",
     -- Highlight for inline padding used to add back concealed space.
-    filler = "RenderMarkdownTableFill",
   },
   indent = {
     -- Mimic org-indent-mode behavior by indenting everything under a heading based on the

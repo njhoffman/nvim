@@ -11,6 +11,7 @@ end
 
 local setup = function()
   create_commands()
+  require("histories.extmarks")
   for _, provider in pairs(providers.providers) do
     if type(provider) == "table" and type(provider.init) == "function" then
       provider.init()

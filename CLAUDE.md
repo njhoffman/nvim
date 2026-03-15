@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Overview
+
+This is a heavily customized Neovim configuration written in Lua (~282k lines). It uses lazy.nvim for plugin management with an extensive collection of plugins and custom modules.
+
 ## Git Configuration
 
 This directory is tracked by a dotbare/bare git repo at `~/.cfg`. Do NOT use regular git commands. Always use these environment variables for all git operations:
@@ -11,15 +15,32 @@ GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git <command>
 ```
 
 Example:
+
 ```bash
 GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git status
 GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git add .config/nvim/somefile.lua
 GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git commit -m "message"
 ```
 
-## Overview
+### Before each commit, run these commands for a report
 
-This is a heavily customized Neovim configuration written in Lua (~282k lines). It uses lazy.nvim for plugin management with an extensive collection of plugins and custom modules.
+- do not run the report or commit if there are failing tests
+
+```bash
+dir="$HOME/.config/nvim/.reports/$(date '+%Y-%m-%d.%H:%M')"
+
+# code stats: https://github.com/AlDanial/cloc
+cloc --json --follow-links --report-file="main.json" "$HOME/.nvim"
+cloc --json --follow-links --report-file="lazy.json" "$HOME/.local/share/nvim/lazy"
+
+# test coverage: laucov and cluacov https://github.com/luvit/laucov
+# load this before running the tests, after tests are done run the report
+# move report to `~/.config/nvim/.reports/`, remove the generated stats file
+```
+
+- summarize the report/coverage in a visually appealing way in markdown format
+- also include counts of enabled plugins and tests, and differences from last run
+- make sure the reports and data are not analyzed as part of the repo
 
 ## Core Architecture
 
@@ -40,6 +61,7 @@ init.lua loads in order:
 ```
 
 Key directories:
+
 - **lua/plugins/**: Plugin specifications (main.lua, lsp.lua, completion.lua, dap.lua, colorscheme.lua)
 - **lua/configs/**: Per-plugin configuration files (automatically loaded by lazy.nvim wrapper)
 - **lua/commands/**: Custom user commands and command utilities
@@ -51,11 +73,13 @@ Key directories:
 ### Plugin Configuration System
 
 The config uses a custom lazy.nvim wrapper (`lua/utils/lazy/configs.lua`) that:
+
 1. Automatically discovers config files in `lua/configs/` matching plugin names
 2. Applies config functions to plugins based on name matching
 3. Tracks loaded/failed configs via state management
 
 To add a new plugin config:
+
 - Create `lua/configs/{plugin-name}.lua` (name normalized: lowercase, `.nvim` suffix removed)
 - Return configuration table or setup function
 - The wrapper automatically applies it when plugin loads
@@ -63,6 +87,7 @@ To add a new plugin config:
 ### Custom Import System
 
 `vim.import()` is a wrapper around `require()` that:
+
 - Provides better error reporting with vim.notify
 - Can be used for hot-reloading modules during development
 - Available globally after globals module loads
@@ -81,6 +106,7 @@ To add a new plugin config:
 ### Filetype Customizations
 
 See `filetype.lua` for custom filetype patterns:
+
 - `.aliases*` → bash
 - `.env*` → dotenv (treesitter: bash)
 - `.env*.example` → conf
@@ -118,6 +144,7 @@ See `filetype.lua` for custom filetype patterns:
 ```
 
 Project root detection (via project_nvim):
+
 - Detection methods: LSP, then pattern-based
 - Patterns: .git, _darcs, .hg, .bzr, .svn, Makefile, package.json
 - Ignores LSP: null-ls, copilot
@@ -127,6 +154,7 @@ Project root detection (via project_nvim):
 ### Telescope
 
 Heavy Telescope usage with 30+ custom extensions in `lua/telescope/_extensions/`:
+
 - Custom pickers for fences, devhints, variables, options, etc.
 - All extensions auto-loaded by configs/telescope.lua
 
@@ -139,6 +167,7 @@ Heavy Telescope usage with 30+ custom extensions in `lua/telescope/_extensions/`
 ### AI/LLM Integrations
 
 Multiple AI plugin integrations:
+
 - codecompanion.nvim (primary)
 - avante.nvim
 - gp.nvim
@@ -147,6 +176,7 @@ Multiple AI plugin integrations:
 ### Git Workflow
 
 Extensive git tooling:
+
 - fugitive, gitsigns, git-conflict, lazygit, octo
 - diffview.nvim for diff/merge workflows
 - git-worktree.nvim integration
@@ -168,6 +198,7 @@ Extensive git tooling:
 ### Custom Modules
 
 Most custom functionality is in self-contained modules:
+
 - `lua/watcher/`: File watching system
 - `lua/runner/`: Command runner with tmux/notify output
 - `lua/stats/`: Info panels and statistics

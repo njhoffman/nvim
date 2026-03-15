@@ -104,7 +104,7 @@ lambda.augroup('TextYankHighlight', {
     -- don't execute silently in clambda. of errors
     event = { 'TextYankPost' },
     command = function()
-      vim.highlight.on_yank({ timeout = 500, on_visual = false, higroup = 'Visual' })
+      vim.hl.on_yank({ timeout = 500, on_visual = false, higroup = 'Visual' })
     end,
   },
 })

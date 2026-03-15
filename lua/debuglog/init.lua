@@ -31,7 +31,7 @@ M.buf = function(...)
   -- 3:[:lua]:1  = command line
   vim.api.nvim_set_current_buf(bufnr)
   vim.api.nvim_buf_set_name(bufnr, "inspect-" .. bufnr)
-  vim.api.nvim_buf_set_option(bufnr, "filetype", "lua")
+  vim.bo[bufnr].filetype = "lua"
   msg = logutils.make_string(msg)
   local lines = vim.split(msg, "\n")
   vim.api.nvim_buf_set_lines(bufnr, 0, #lines, false, lines)
@@ -54,7 +54,7 @@ M.dbg = function(...)
   args.hide_from_history = true
   args.on_open = function(notify_win)
     local buf = vim.api.nvim_win_get_buf(notify_win)
-    vim.api.nvim_buf_set_option(buf, "filetype", "lua")
+    vim.bo[buf].filetype = "lua"
     local cb_close = function()
       vim.api.nvim_set_current_win(currwin)
       vim.api.nvim_win_close(notify_win, true)

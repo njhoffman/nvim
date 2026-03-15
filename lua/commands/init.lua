@@ -12,6 +12,8 @@ local colorscheme_export = require("commands.colorscheme_export")
 local silence = require("commands.silence")
 local range_history = require("commands.range-history")
 local scroll = require("commands.scroll")
+local lsp_fallbacks = require("commands.lsp_fallbacks")
+
 -- require("commands.html-psl")
 
 local map = require("mapper").map
@@ -151,6 +153,13 @@ cmd("Reddit", function(o)
   local url = ("https://www.google.com/search?q=site:reddit.com%20%s"):format(escaped)
   vim.ui.open(url)
 end, { nargs = 1, desc = "search in reddit" })
+
+-- Lsp and Treesitter fallback
+-- cmd("Rename", lsp_fallbacks.rename, { desc = "" })
+-- cmd("GotoDefinition", lsp_fallbacks.goto_definition, { desc = "" })
+-- cmd("References", lsp_fallbacks.references, { desc = "" })
+-- cmd("DocumentHighlight", lsp_fallbacks.document_highlight, { desc = "" })
+-- cmd("IncrementalSelect", lsp_fallbacks.incremental_select, { desc = "" })
 
 -- Silence commands
 cmd("Silence", silence.silence_start, {

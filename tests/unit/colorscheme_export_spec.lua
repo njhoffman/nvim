@@ -280,9 +280,9 @@ describe("ColorschemeExport", function()
       -- If we extracted string contents, they shouldn't have < or >
       -- (unless properly escaped as &lt; or &gt;)
       for _, content in ipairs(content_sections) do
-        -- Allow empty strings, hex colors, alphanumeric content, and dots (for scopes)
+        -- Allow empty strings, hex colors, alphanumeric content, dots (for scopes), and commas (for scope lists)
         assert.is_true(
-          content:match("^[%w%s%-_#%.]*$") ~= nil or content == "",
+          content:match("^[%w%s%-_#%.,]*$") ~= nil or content == "",
           "String content should not have unescaped XML characters: " .. content
         )
       end

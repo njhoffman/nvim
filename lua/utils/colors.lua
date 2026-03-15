@@ -104,17 +104,20 @@ function termcolors.show()
   local buf = vim.api.nvim_create_buf(true, true)
   vim.api.nvim_buf_set_name(buf, 'Termcolors')
   vim.api.nvim_buf_set_lines(buf, 0, 1, true, termcolors.generate_kitty_config())
-  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
-  vim.api.nvim_buf_set_option(buf, 'readonly', true)
-  vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
-  vim.api.nvim_buf_set_option(buf, 'filetype', 'conf')
+  vim.bo[buf].modifiable = false
+  vim.bo[buf].readonly = true
+  vim.bo[buf].bufhidden = 'wipe'
+  vim.bo[buf].filetype = 'conf'
   vim.cmd('buffer ' .. buf)
 end
 
 function termcolors.get_color_from_hl(name)
   local result = {}
-  for k, v in pairs(vim.api.nvim_get_hl_by_name(name, true)) do
-    result[k] = string.format('#%06x', v)
+  local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
+  for k, v in pairs(hl) do
+    if type(v) == "number" then
+      result[k] = string.format('#%06x', v)
+    end
   end
   return result
 end

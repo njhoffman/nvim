@@ -85,27 +85,31 @@ local key_defs = {
   { method_name = "to_path_case",     quick_replace = "gttf", operator = "gtof", lsp_rename = "gtrf" },
 }
 
+-- TODO:
+
 local map = require("mapper").map
 local prefix = require("mapper").prefix
 
 local register_keys = function(methods, keys, opts)
   prefix({ "x", "n" }, "gtt", "text case replace  ")
-  prefix("n", "gtr", "text case lsp rename  ")
-  prefix("n", "gto", "text case operator  ")
+  prefix({ "n" }, "gtr", "text case lsp replace  ")
+  prefix({ "n" }, "gto", "text case operator  ")
 
   local ns = "textcase"
   for _, feature in ipairs({ "line", "eol", "visual", "operator", "lsp_rename", "current_word" }) do
     if keys[feature] ~= nil then
       local mode = "n"
-      if feature == "visual" then
-        mode = "x"
-      end
       local desc = methods.desc
 
       if feature == "current_word" then
         desc = "convert " .. desc
       elseif feature == "lsp_rename" then
         desc = "LSP rename " .. desc
+      end
+
+      if feature == "visual" then
+        mode = "x"
+        desc = desc .. " (visual mode)"
       end
 
       map(

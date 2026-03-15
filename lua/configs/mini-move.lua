@@ -1,3 +1,5 @@
+-- TODO: replace this and unimpaired with custom command, add new lines if at end of file
+--
 local default_cfg = {
   mappings = {
     -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
@@ -112,9 +114,8 @@ vim.cmd([[
   exe s:Map('n', ']<Space>', '<Plug>(unimpaired-blank-down)')
   exe s:Map('n', '[k', '<Plug>(unimpaired-move-up)')
   exe s:Map('n', '[j', '<Plug>(unimpaired-move-down)')
-  " exe s:Map('n', ']j', '<Plug>(unimpaired-move-down)')
-  exe s:Map('x', '[e', '<Plug>(unimpaired-move-selection-up)')
-  exe s:Map('x', ']e', '<Plug>(unimpaired-move-selection-down)')
+  exe s:Map('x', '[k', '<Plug>(unimpaired-move-selection-up)')
+  exe s:Map('x', ']j', '<Plug>(unimpaired-move-selection-down)')
 ]])
 
 -- local M = {}

@@ -74,7 +74,7 @@ M.inspect = function(...)
       end
       vim.api.nvim_buf_set_keymap(buf, "n", "gf", "", { callback = cb })
       vim.api.nvim_buf_set_keymap(buf, "n", "<2-LeftMouse>", "", { callback = cb })
-      vim.api.nvim_buf_set_option(buf, "filetype", "lua")
+      vim.bo[buf].filetype = "lua"
     end,
   }
 

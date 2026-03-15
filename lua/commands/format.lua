@@ -21,9 +21,11 @@ local ns_id = vim.api.nvim_create_namespace("commands/format")
 -- vim.api.nvim_create_user_command( "PasteLinewise"
 -- )
 
-local checked_character = "x"
-local checked_checkbox = "%[" .. checked_character .. "%]"
+local checked_checkbox = "%[[xX]%]"
 local unchecked_checkbox = "%[ %]"
+
+local bullet_prefix = "^%s*[%-%*%+] "
+local numbered_prefix = "^%s*%d+%. "
 
 local line_contains_unchecked = function(line)
   return line:find(unchecked_checkbox)
@@ -34,27 +36,29 @@ local line_contains_checked = function(line)
 end
 
 local line_with_checkbox = function(line)
-  -- return not line_contains_a_checked_checkbox(line) and not line_contains_an_unchecked_checkbox(line)
-  return line:find("^%s*- " .. checked_checkbox)
-    or line:find("^%s*- " .. unchecked_checkbox)
-    or line:find("^%s*%d%. " .. checked_checkbox)
-    or line:find("^%s*%d%. " .. unchecked_checkbox)
+  return line:find(bullet_prefix .. checked_checkbox)
+    or line:find(bullet_prefix .. unchecked_checkbox)
+    or line:find(numbered_prefix .. checked_checkbox)
+    or line:find(numbered_prefix .. unchecked_checkbox)
 end
 
 local checkbox = {
   check = function(line)
-    return line:gsub(unchecked_checkbox, checked_checkbox, 1)
+    return line:gsub(unchecked_checkbox, "[x]", 1)
   end,
   uncheck = function(line)
-    return line:gsub(checked_checkbox, unchecked_checkbox, 1)
+    return line:gsub(checked_checkbox, "[ ]", 1)
   end,
   make_checkbox = function(line)
-    if not line:match("^%s*-%s.*$") and not line:match("^%s*%d%s.*$") then
+    if line:match("^%s*[%-%*%+]%s") then
+      -- "- xxx" / "* xxx" / "+ xxx" -> "- [ ] xxx" etc.
+      return line:gsub("^(%s*[%-%*%+] )(.*)", "%1[ ] %2", 1)
+    elseif line:match("^%s*%d+%.%s") then
+      -- "1. xxx" -> "1. [ ] xxx"
+      return line:gsub("^(%s*%d+%. )(.*)", "%1[ ] %2", 1)
+    else
       -- "xxx" -> "- [ ] xxx"
       return line:gsub("(%S+)", "- [ ] %1", 1)
-    else
-      -- "- xxx" -> "- [ ] xxx", "3. xxx" -> "3. [ ] xxx"
-      return line:gsub("(%s*- )(.*)", "%1[ ] %2", 1):gsub("(%s*%d%. )(.*)", "%1[ ] %2", 1)
     end
   end,
 }
@@ -174,8 +178,9 @@ end
 -- end, { range = true })
 
 local function trim_space(opts, preview_ns, preview_buf)
-  local line1 = opts.line1
-  local line2 = opts.line2
+  opts = opts or {}
+  local line1 = opts.line1 or 1
+  local line2 = opts.line2 or vim.api.nvim_buf_line_count(0)
   local buf = vim.api.nvim_get_current_buf()
   local lines = vim.api.nvim_buf_get_lines(buf, line1 - 1, line2, false)
   local new_lines = {}

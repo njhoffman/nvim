@@ -49,35 +49,6 @@
 --
 
 local cfg = {
-  extensions = require("configs.codecompanion.extensions"),
-  prompt_library = require("configs.codecompanion.prompts"),
-  -- adapters = {
-  --   anthropic = function()
-  --     return require("codecompanion.adapters").extend("anthropic", {
-  --       -- env = { api_key = "cmd:op read op://personal/Anthropic_API/credential --no-newline", },
-  --       schema = {
-  --         extended_thinking = {
-  --           default = true,
-  --         },
-  --       },
-  --     })
-  --   end,
-  --   openai = function()
-  --     return require("codecompanion.adapters").extend("openai", {
-  --       opts = {
-  --         stream = true,
-  --       },
-  --       -- env = { api_key = "cmd:op read op://personal/OpenAI_API/credential --no-newline", },
-  --       schema = {
-  --         model = {
-  --           default = function()
-  --             return "gpt-4.1"
-  --           end,
-  --         },
-  --       },
-  --     })
-  --   end,
-  -- },
   display = {
     action_palette = {
       width = 95,
@@ -157,29 +128,29 @@ local cfg = {
   },
   interactions = {
     chat = {
-      adapter = "anthropic",
-      tools = {
-        groups = {
-          ["github_pr_workflow"] = {
-            description = "GitHub operations from issue to PR",
-            tools = {
-              -- File operations
-              "neovim__read_multiple_files",
-              "neovim__write_file",
-              "neovim__edit_file",
-              -- GitHub operations
-              "github__list_issues",
-              "github__get_issue",
-              "github__get_issue_comments",
-              "github__create_issue",
-              "github__create_pull_request",
-              "github__get_file_contents",
-              "github__create_or_update_file",
-              "github__search_code",
-            },
-          },
-        },
-      },
+      -- adapter = "anthropic",
+      -- tools = {
+      --   groups = {
+      --     ["github_pr_workflow"] = {
+      --       description = "GitHub operations from issue to PR",
+      --       tools = {
+      --         -- File operations
+      --         "neovim__read_multiple_files",
+      --         "neovim__write_file",
+      --         "neovim__edit_file",
+      --         -- GitHub operations
+      --         "github__list_issues",
+      --         "github__get_issue",
+      --         "github__get_issue_comments",
+      --         "github__create_issue",
+      --         "github__create_pull_request",
+      --         "github__get_file_contents",
+      --         "github__create_or_update_file",
+      --         "github__search_code",
+      --       },
+      --     },
+      --   },
+      -- },
       keymaps = {
         send = {
           modes = {
@@ -216,7 +187,7 @@ local cfg = {
     },
 
     inline = {
-      adapter = "anthropic",
+      -- adapter = "anthropic",
       --           adapter = { name = "copilot", model = "gpt-4.1", },
       -- layout = 'vertical' -- vertical, horizontal, buffer
       keymaps = {
@@ -230,7 +201,8 @@ local cfg = {
         },
       },
     },
-    cmd = { adapter = "deepseek" },
+    -- cmd = { adapter = "anthropic" },
+    -- cmd = { adapter = "deepseek" },
 
     -- https://github.com/olimorris/codecompanion.nvim/discussions/1013
     -- chat = {

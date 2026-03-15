@@ -11,20 +11,20 @@ local frecency = require("telescope._extensions.frecency.frecency")
 local config = require("telescope._extensions.frecency.config")
 local util = require("telescope._extensions.frecency.util")
 
-local function checkhealth()
-  local has_sql, _ = pcall(require, "sqlite")
-  if has_sql then
-    vim.health.report_ok("sql.nvim installed.")
-    -- return "MOOP"
-  else
-    vim.health.report_error("Need sql.nvim to be installed.")
-  end
-  if pcall(require, "nvim-web-devicons") then
-    vim.health.report_ok("nvim-web-devicons installed.")
-  else
-    vim.health.report_info("nvim-web-devicons is not installed.")
-  end
-end
+-- local function checkhealth()
+--   local has_sql, _ = pcall(require, "sqlite")
+--   if has_sql then
+--     vim.health.report_ok("sql.nvim installed.")
+--     -- return "MOOP"
+--   else
+--     vim.health.report_error("Need sql.nvim to be installed.")
+--   end
+--   if pcall(require, "nvim-web-devicons") then
+--     vim.health.report_ok("nvim-web-devicons installed.")
+--   else
+--     vim.health.report_info("nvim-web-devicons is not installed.")
+--   end
+-- end
 
 return telescope.register_extension({
   setup = config.setup,
@@ -35,5 +35,5 @@ return telescope.register_extension({
       require("telescope._extensions.frecency.db_client").validate(...)
     end,
   },
-  health = checkhealth,
+  -- health = checkhealth,
 })

@@ -42,8 +42,19 @@ describe("QuickClose", function()
       -- Should have at least 2 listed buffers
       assert.is_true(count_before >= 2)
 
-      -- Quick close should delete the buffer
+      -- Quick close should delete the buffer (bdelete is called via vim.schedule)
       quickclose.quick_close()
+
+      -- Wait for the scheduled bdelete to execute
+      vim.wait(200, function()
+        local count = 0
+        for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.bo[bufnr].buflisted then
+            count = count + 1
+          end
+        end
+        return count < count_before
+      end)
 
       -- Count buffers after
       local count_after = 0

@@ -79,8 +79,8 @@ local function show_environment_variables(opts)
         entry_maker = function(entry)
           local columns = vim.o.columns
           local width = conf.width
-            or conf.layout_config.width
-            or conf.layout_config[conf.layout_strategy].width
+            or vim.tbl_get(conf, "layout_config", "width")
+            or vim.tbl_get(conf, "layout_config", conf.layout_strategy, "width")
             or columns
           local telescope_width = width
           if width < 1 then

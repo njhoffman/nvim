@@ -81,7 +81,7 @@ if vim.g.neovide then
   end
 
   vim.defer_fn(function()
-    vim.cmd("hi Normal guibg=#0a0020")
+    vim.cmd("hi Normal guibg=#02000a")
   end, 5000)
 
   -- font:sync()

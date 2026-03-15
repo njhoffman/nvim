@@ -1,0 +1,59 @@
+{"header" : {
+  "cloc_url"           : "github.com/AlDanial/cloc",
+  "cloc_version"       : "2.04",
+  "elapsed_seconds"    : 7.07959794998169,
+  "n_files"            : 2041,
+  "n_lines"            : 301897,
+  "files_per_second"   : 288.293207385496,
+  "lines_per_second"   : 42643.2407790588,
+  "report_file"        : "/home/nicholas/.config/nvim/.reports/2026-03-09.19:17/main.json"},
+"Lua" :{
+  "nFiles": 1947,
+  "blank": 26856,
+  "comment": 54019,
+  "code": 203150},
+"Text" :{
+  "nFiles": 3,
+  "blank": 518,
+  "comment": 0,
+  "code": 9130},
+"vim script" :{
+  "nFiles": 61,
+  "blank": 670,
+  "comment": 1013,
+  "code": 3462},
+"Markdown" :{
+  "nFiles": 8,
+  "blank": 419,
+  "comment": 0,
+  "code": 1760},
+"Scheme" :{
+  "nFiles": 12,
+  "blank": 30,
+  "comment": 154,
+  "code": 212},
+"Python" :{
+  "nFiles": 2,
+  "blank": 39,
+  "comment": 0,
+  "code": 168},
+"Bourne Shell" :{
+  "nFiles": 5,
+  "blank": 17,
+  "comment": 27,
+  "code": 145},
+"JavaScript" :{
+  "nFiles": 2,
+  "blank": 9,
+  "comment": 14,
+  "code": 80},
+"JSON" :{
+  "nFiles": 1,
+  "blank": 0,
+  "comment": 0,
+  "code": 5},
+"SUM": {
+  "blank": 28558,
+  "comment": 55227,
+  "code": 218112,
+  "nFiles": 2041} }

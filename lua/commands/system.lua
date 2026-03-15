@@ -1,7 +1,11 @@
 local yank_path = function()
   local path = vim.fn.expand('%:p')
   vim.fn.setreg('+', path)
-  local display_path = path:gsub(vim.fn.getenv('HOME'), '~')
+  local home = vim.fn.getenv('HOME')
+  local display_path = path
+  if type(home) == "string" and home ~= "" then
+    display_path = path:gsub(vim.pesc(home), '~')
+  end
   vim.notify('`' .. display_path .. '` yanked to "+"', vim.log.levels.INFO)
 end
 
