@@ -1,32 +1,9 @@
-local telescope = require("telescope")
 local sorters = require("telescope.sorters")
 local H = require("helpers")
 local actions = require("telescope.actions")
 local mappings = require("configs.telescope.mappings")
 local c_actions = require("configs.telescope.actions")
 
--- M.devdocs_ft = function()
---     local input = vim.fn.input("Search String: ")
---     if input == nil or input == "" then
---         return
---     end
---     local input_with_filetype = vim.bo.filetype .. " " .. input
---     vim.fn.jobstart(string.format("%s 'https://devdocs.io/#q=%s'", open_cmd, input_with_filetype))
--- end
---
--- M.devdocs_search = function()
---     local input = vim.fn.input("Search String: ")
---     vim.fn.jobstart(string.format("%s 'https://devdocs.io/#q=%s'", open_cmd, input))
--- end
---
--- M.google_search = function()
---     local input = vim.fn.input("Search String: ")
---     if input == nil or input == "" then
---         return
---     end
---     local path = "https://www.google.com/search?q=" .. input
---     vim.fn.jobstart({ open_cmd, path }, { detach = true })
--- end
 local extension_configs = {
   -- locally managed
   ["arecibo"] = {
@@ -134,12 +111,6 @@ local extension_configs = {
         ["<M-{>"] = c_actions.switch_grep_pickers_prev,
         ["<M-}>"] = c_actions.switch_grep_pickers_next,
         ["<c-space>"] = actions.to_fuzzy_refine,
-        --     ["<M-lt>"] = c_actions.directory_up,
-        -- --     ["<M->>"] = c_actions.directory_picker,
-        -- --     ["<CR>"] = c_actions.multi_open,
-        -- --     -- ['<C-Q>'] = c_actions.multi_to_qflist,
-        -- --     ["<C-Q>"] = send_to_qflist,
-        -- toggle prefixes, prefixes is default
         ["<C-z>"] = require("telescope._extensions.egrepify.actions").toggle_prefixes,
         -- toggle AND, AND is default, AND matches tokens and any chars in between
         ["<C-a>"] = require("telescope._extensions.egrepify.actions").toggle_and,
@@ -193,36 +164,6 @@ local extension_configs = {
     defaultScope = "CWD", -- CurrentBuffer, CWD or Global
   },
 
-  -- frecency_new = function()
-  --   local baseDirs = {
-  --     home = vim.fn.expand('$HOME'),
-  --     config = vim.fn.stdpath('config'),
-  --     data = vim.fn.stdpath('data'),
-  --   }
-  --   local frecency_cfg = {
-  --     -- db_root = "/home/my_username/path/to/db_root",
-  --     auto_validate = true,
-  --     show_scores = true,
-  --     show_unindexed = true,
-  --     disable_devicons = false,
-  --     ignore_patterns = { '*.git/*', '*/tmp/*' },
-  --     -- stylua: ignore
-  --     workspaces = {
-  --       ['etc']     = '/etc',
-  --       ['home']    = baseDirs.home,
-  --       ['bin']     = baseDirs.home .. '/bin',
-  --       ['git']     = baseDirs.home .. '/git',
-  --       ['config']  = baseDirs.home .. '/.config',
-  --       ['nvim']    = baseDirs.config,
-  --       ['lazy']    = baseDirs.data .. '/lazy',
-  --       ['runtime'] = baseDirs.data .. '/runtime',
-  --       ['zettel']  = baseDirs.home .. '/zettelkasten',
-  --       ['zinit']   = baseDirs.home .. '/.zinit',
-  --       ['zsh']     = baseDirs.home .. '/.config/zsh',
-  --     },
-  --   }
-  --   return frecency_cfg
-  -- end,
   ["file_history"] = function()
     local cfg = {
       backup_dir = "~/.file-history-git",
@@ -294,103 +235,9 @@ local extension_configs = {
     },
     default_grep = require("telescope.builtin").live_grep,
   },
-  -- ['zf-native'] = {
-  --   -- options for sorting file-like items
-  --   file = {
-  --     -- override default telescope file sorter
-  --     enable = true,
-
-  --     -- highlight matching text in results
-  --     highlight_results = true,
-
-  --     -- enable zf filename match priority
-  --     match_filename = true,
-
-  --     -- optional function to define a sort order when the query is empty
-  --     initial_sort = nil,
-  --   },
-
-  --   -- options for sorting all other items
-  --   generic = {
-  --     -- override default telescope generic item sorter
-  --     enable = true,
-
-  --     -- highlight matching text in results
-  --     highlight_results = true,
-
-  --     -- disable zf filename match priority
-  --     match_filename = false,
-
-  --     -- optional function to define a sort order when the query is empty
-  --     initial_sort = nil,
-  --   },
-  -- },
   ["variables"] = {},
   ["what-key"] = {},
 
-  -- 3rd party to sort through
-  -- ["feed"] = {
-  --   ---@type string
-  --   db_dir = vim.fn.stdpath("data") .. "/feed",
-  --   ---@type string
-  --   colorscheme = "morning",
-  --   ---@type string
-  --   date_format = "%Y-%m-%d",
-  --   ---@type string
-  --   split_cmd = "13split",
-  --   ---@type boolean
-  --   enable_default_keybindings = true,
-  --   options = {
-  --     ---@type table<string, any>
-  --     index = {
-  --       conceallevel = 0,
-  --       wrap = false,
-  --       number = false,
-  --       relativenumber = false,
-  --       modifiable = false,
-  --       listchars = "tab:> ,nbsp:+",
-  --     },
-
-  --     ---@type table<string, any>
-  --     entry = {
-  --       conceallevel = 3,
-  --       concealcursor = "nvc",
-  --       wrap = true,
-  --       number = false,
-  --       relativenumber = false,
-  --       modifiable = false,
-  --       filetype = "markdown",
-  --     },
-  --   },
-  --   ---@type table<string, any>
-  --   layout = {
-  --     {
-  --       "feed",
-  --       width = 25,
-  --       color = "Title",
-  --     },
-  --     {
-  --       "tags",
-  --       width = 25,
-  --       color = "WhiteSpace",
-  --     },
-  --     {
-  --       "title",
-  --       right_justify = false,
-  --       width = 80,
-  --       color = "@markup.strong",
-  --     },
-  --     header = "Hint: <M-CR> open in split | <CR> open | + add tag | - remove tag | ? help", -- TODO: placeholder set to nil
-  --   },
-  --   search = {
-  --     default_query = "@6-months-ago +unread",
-  --   },
-  --   ---@type feed.feed[]
-  --   feeds = {},
-  --   integrations = {
-  --     telescope = {},
-  --   },
-  -- },
   ["cmdline"] = {
     -- Adjust telescope picker size and layout
     picker = {
@@ -574,54 +421,10 @@ local extension_configs = {
   ["docker"] = {},
   -- ["dap"]= {},
   ["filelinks"] = {},
-  -- -- The working directory to search for files.
-  -- -- Set to your wiki directory to create links (further examples below)
-  -- working_dir = vim.fn.getcwd(),
-  -- -- specify your own find_command according to telescope's find_command syntax, f. i. { "rg", "--files", "--color", "never" }. Default is nil because telescope's find_files function has it's own default/fall back find_command logic.
-  -- find_command = nil,
-  -- -- First letter in display name upper or lower case, i.e. `[Plugins](…)`
-  -- -- or `[plugins](…)`
-  -- first_upper = true,
-  -- -- Format string for inserting file links. Default is Markdown syntax.
-  -- -- When you are using some wiki syntax, change it to its syntax.
-  -- -- Lua regex is used. Formatting only works when there are exactly two
-  -- -- `%s`. Currently, no checks for a proper Lua regex are performed, so
-  -- -- keep an eye on having exactly two `%s` and nothing else/more.
-  -- format_string = '[%s](%s)',
-  -- -- Append space to format_string for better typography and continuous typing
-  -- format_string_append = " ",
-  -- -- Title for the telescope prompt
-  -- prompt_title = 'File Finder',
-  -- -- Display file links with or without extension, f. i. `[Plugins](…)`
-  -- -- or `[Plugins.lua](…)`
-  -- remove_extension = true,
-  -- -- Some link schemes like Wiki, Orgmode or AsciiDoc expect the URL first
-  -- -- and the displayed text second. Markdown's order is vice versa. By
-  -- -- setting to true URL first schemes are possible.
-  -- url_first = false
-
   ["file_browser"] = {
     theme = "ivy",
     mappings = mappings.file,
   },
-  -- ["neoclip"] = {
-  --   winblend = 10,
-  --   layout_strategy = "flex",
-  --   layout_config = {
-  --     prompt_position = "top",
-  --     width = 0.8,
-  --     height = 0.6,
-  --           horizontal = { width = { padding = 0.15 } },
-  --           vertical = { preview_height = 0.70 },
-  --       },
-  --       borderchars = {
-  --           prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-  --           results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-  --           preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-  --       },
-  --       border = {},
-  --       shorten_path = false,
-  --   },
   ["fzf"] = {
     fuzzy = true, -- false will only do exact matching
     override_generic_sorter = true, -- override the generic sorter
@@ -750,24 +553,7 @@ local extension_configs = {
       },
     },
   },
-  ["menufacture"] = {
-    -- add menu to menufecture
-    -- vim.keymap.set( 'n', '<leader>sf',
-    --   require('telescope').extensions.menufacture.add_menu_with_default_mapping(
-    --     require('telescope.builtin').find_files,
-    --     vim.tbl_extend('force', require('telescope').extensions.menufacture.find_files_menu, {
-    --       ['change cwd to parent'] = function(opts, callback)
-    --         local cwd = opts.cwd and vim.fn.expand(opts.cwd) or vim.loop.cwd()
-    --         opts.cwd = vim.fn.fnamemodify(cwd, ':p:h:h')
-    --         callback(opts)
-    --       end,
-    --     })
-    --   )
-    -- )
-    -- mappings = {
-    --   main_menu = { [{ 'i', 'n' }] = '<M-Bslash>' },
-    -- },
-  },
+  ["menufacture"] = {},
   ["node_modules"] = {},
   ["npm"] = {},
   ["openbrowser"] = {
@@ -840,44 +626,12 @@ end
 local load_extensions = function()
   local installed = {}
   for ext_name, _ in pairs(extension_configs) do
-    local res = require("telescope").load_extension(ext_name)
-    -- vim.dbglog('res', ext_name, #vim.tbl_keys(res))
+    require("telescope").load_extension(ext_name)
     table.insert(installed, ext_name)
-    -- local ok, err = pcall(telescope.load_extension, ext_name)
-    -- if ok then
-    -- else
-    --   local err_str = vim.split(err, '\n')
-    --   local err_msg = 'Error loading telescope plugin: ' .. ext_name .. ' - ' .. err_str[1]
-    --   vim.notify(err_msg, 4)
-    -- end
   end
-  -- TODO: output later or investigate preload messages
-  local end_msg = "Loaded "
-    .. H.table_len(installed)
-    .. " out of "
-    .. H.table_len(extension_configs)
-    .. " telescope plugins"
-  -- vim.notify(end_msg, 2)
 end
-
--- vim.keymap.set("n", "<leader>fS", function()
---         vim.ui.input({ prompt = "Workspace symbols: " }, function(query)
---                 ts.lsp_workspace_symbols({ query = query })
---         end)
--- end, { desc = "LSP workspace symbols" })
 
 return {
   load = load_extensions,
   get = get_extensions,
 }
-
---  FZF Syntax:
---  Token	Match type	Description
---  sbtrkt	fuzzy-match	Items that match sbtrkt
---  'wild	exact-match (quoted)	Items that include wild
---  ^music	prefix-exact-match	Items that start with music
---  .mp3$	suffix-exact-match	Items that end with .mp3
---  !fire	inverse-exact-match	Items that do not include fire
---  !^music	inverse-prefix-exact-match	Items that do not start with music
---  !.mp3$	inverse-suffix-exact-match	Items that do not end with .mp3
---  A single bar character term acts as an OR ope

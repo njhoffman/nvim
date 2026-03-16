@@ -1,0 +1,499 @@
+{"header" : {
+  "cloc_url"           : "github.com/AlDanial/cloc",
+  "cloc_version"       : "2.04",
+  "elapsed_seconds"    : 47.6088581085205,
+  "n_files"            : 17357,
+  "n_lines"            : 2606594,
+  "files_per_second"   : 364.575011659304,
+  "lines_per_second"   : 54750.1894302628,
+  "report_file"        : "/home/nicholas/.config/nvim/.reports/2026-03-16.13:35/lazy.json"},
+"Lua" :{
+  "nFiles": 9309,
+  "blank": 153463,
+  "comment": 204745,
+  "code": 1073348},
+"JSON" :{
+  "nFiles": 510,
+  "blank": 521,
+  "comment": 0,
+  "code": 234845},
+"Markdown" :{
+  "nFiles": 1168,
+  "blank": 59364,
+  "comment": 1463,
+  "code": 178695},
+"Text" :{
+  "nFiles": 492,
+  "blank": 39398,
+  "comment": 0,
+  "code": 148719},
+"vim script" :{
+  "nFiles": 1070,
+  "blank": 14002,
+  "comment": 10174,
+  "code": 81070},
+"Scheme" :{
+  "nFiles": 1300,
+  "blank": 14492,
+  "comment": 4846,
+  "code": 61698},
+"JavaScript" :{
+  "nFiles": 431,
+  "blank": 9529,
+  "comment": 13281,
+  "code": 43966},
+"YAML" :{
+  "nFiles": 784,
+  "blank": 5250,
+  "comment": 598,
+  "code": 36729},
+"C" :{
+  "nFiles": 59,
+  "blank": 683,
+  "comment": 471,
+  "code": 24738},
+"Python" :{
+  "nFiles": 271,
+  "blank": 5906,
+  "comment": 5572,
+  "code": 23432},
+"XML" :{
+  "nFiles": 55,
+  "blank": 81,
+  "comment": 75,
+  "code": 22943},
+"Rust" :{
+  "nFiles": 98,
+  "blank": 1860,
+  "comment": 929,
+  "code": 14993},
+"TypeScript" :{
+  "nFiles": 210,
+  "blank": 1639,
+  "comment": 2143,
+  "code": 14322},
+"Go" :{
+  "nFiles": 176,
+  "blank": 2074,
+  "comment": 501,
+  "code": 9442},
+"CSV" :{
+  "nFiles": 1,
+  "blank": 0,
+  "comment": 0,
+  "code": 9119},
+"TOML" :{
+  "nFiles": 258,
+  "blank": 1112,
+  "comment": 482,
+  "code": 7464},
+"SQL" :{
+  "nFiles": 14,
+  "blank": 148,
+  "comment": 149,
+  "code": 6968},
+"Fennel" :{
+  "nFiles": 57,
+  "blank": 582,
+  "comment": 841,
+  "code": 6145},
+"HTML" :{
+  "nFiles": 55,
+  "blank": 160,
+  "comment": 98,
+  "code": 5871},
+"CSS" :{
+  "nFiles": 41,
+  "blank": 850,
+  "comment": 194,
+  "code": 5673},
+"Bourne Shell" :{
+  "nFiles": 152,
+  "blank": 1094,
+  "comment": 547,
+  "code": 4740},
+"C/C++ Header" :{
+  "nFiles": 16,
+  "blank": 610,
+  "comment": 875,
+  "code": 3572},
+"make" :{
+  "nFiles": 124,
+  "blank": 853,
+  "comment": 186,
+  "code": 2847},
+"INI" :{
+  "nFiles": 72,
+  "blank": 346,
+  "comment": 3,
+  "code": 1442},
+"Bourne Again Shell" :{
+  "nFiles": 48,
+  "blank": 263,
+  "comment": 166,
+  "code": 1245},
+"SVG" :{
+  "nFiles": 58,
+  "blank": 4,
+  "comment": 14,
+  "code": 1148},
+"Perl" :{
+  "nFiles": 7,
+  "blank": 535,
+  "comment": 608,
+  "code": 1081},
+"Ruby" :{
+  "nFiles": 58,
+  "blank": 184,
+  "comment": 47,
+  "code": 859},
+"PHP" :{
+  "nFiles": 37,
+  "blank": 127,
+  "comment": 250,
+  "code": 760},
+"C++" :{
+  "nFiles": 71,
+  "blank": 188,
+  "comment": 71,
+  "code": 751},
+"Fish Shell" :{
+  "nFiles": 25,
+  "blank": 42,
+  "comment": 79,
+  "code": 693},
+"Nix" :{
+  "nFiles": 14,
+  "blank": 92,
+  "comment": 51,
+  "code": 660},
+"Java" :{
+  "nFiles": 46,
+  "blank": 131,
+  "comment": 43,
+  "code": 617},
+"Vuejs Component" :{
+  "nFiles": 16,
+  "blank": 52,
+  "comment": 43,
+  "code": 533},
+"JSX" :{
+  "nFiles": 10,
+  "blank": 47,
+  "comment": 38,
+  "code": 525},
+"Lisp" :{
+  "nFiles": 1,
+  "blank": 73,
+  "comment": 34,
+  "code": 408},
+"PowerShell" :{
+  "nFiles": 7,
+  "blank": 83,
+  "comment": 54,
+  "code": 354},
+"Dockerfile" :{
+  "nFiles": 13,
+  "blank": 103,
+  "comment": 29,
+  "code": 338},
+"DOS Batch" :{
+  "nFiles": 4,
+  "blank": 50,
+  "comment": 6,
+  "code": 276},
+"Svelte" :{
+  "nFiles": 9,
+  "blank": 32,
+  "comment": 13,
+  "code": 272},
+"TeX" :{
+  "nFiles": 8,
+  "blank": 104,
+  "comment": 15,
+  "code": 259},
+"ReScript" :{
+  "nFiles": 4,
+  "blank": 45,
+  "comment": 0,
+  "code": 251},
+"zsh" :{
+  "nFiles": 5,
+  "blank": 96,
+  "comment": 298,
+  "code": 231},
+"Swift" :{
+  "nFiles": 6,
+  "blank": 43,
+  "comment": 3,
+  "code": 209},
+"R" :{
+  "nFiles": 11,
+  "blank": 48,
+  "comment": 59,
+  "code": 194},
+"SCSS" :{
+  "nFiles": 5,
+  "blank": 37,
+  "comment": 23,
+  "code": 192},
+"C#" :{
+  "nFiles": 14,
+  "blank": 24,
+  "comment": 9,
+  "code": 189},
+"Crystal" :{
+  "nFiles": 1,
+  "blank": 45,
+  "comment": 90,
+  "code": 179},
+"Dart" :{
+  "nFiles": 8,
+  "blank": 30,
+  "comment": 60,
+  "code": 165},
+"Typst" :{
+  "nFiles": 8,
+  "blank": 59,
+  "comment": 2,
+  "code": 157},
+"PureScript" :{
+  "nFiles": 1,
+  "blank": 29,
+  "comment": 21,
+  "code": 155},
+"Haskell" :{
+  "nFiles": 2,
+  "blank": 33,
+  "comment": 199,
+  "code": 149},
+"D" :{
+  "nFiles": 21,
+  "blank": 56,
+  "comment": 0,
+  "code": 145},
+"CoffeeScript" :{
+  "nFiles": 4,
+  "blank": 26,
+  "comment": 18,
+  "code": 139},
+"AsciiDoc" :{
+  "nFiles": 3,
+  "blank": 74,
+  "comment": 0,
+  "code": 138},
+"Gleam" :{
+  "nFiles": 19,
+  "blank": 19,
+  "comment": 215,
+  "code": 136},
+"Elm" :{
+  "nFiles": 1,
+  "blank": 75,
+  "comment": 26,
+  "code": 125},
+"Solidity" :{
+  "nFiles": 2,
+  "blank": 31,
+  "comment": 80,
+  "code": 115},
+"Julia" :{
+  "nFiles": 8,
+  "blank": 20,
+  "comment": 36,
+  "code": 106},
+"reStructuredText" :{
+  "nFiles": 7,
+  "blank": 95,
+  "comment": 203,
+  "code": 101},
+"Elixir" :{
+  "nFiles": 2,
+  "blank": 34,
+  "comment": 30,
+  "code": 95},
+"GraphQL" :{
+  "nFiles": 2,
+  "blank": 8,
+  "comment": 0,
+  "code": 94},
+"Properties" :{
+  "nFiles": 4,
+  "blank": 16,
+  "comment": 28,
+  "code": 80},
+"HCL" :{
+  "nFiles": 10,
+  "blank": 6,
+  "comment": 6,
+  "code": 78},
+"Scala" :{
+  "nFiles": 2,
+  "blank": 8,
+  "comment": 0,
+  "code": 77},
+"CMake" :{
+  "nFiles": 2,
+  "blank": 18,
+  "comment": 1,
+  "code": 75},
+"Zig" :{
+  "nFiles": 3,
+  "blank": 12,
+  "comment": 1,
+  "code": 73},
+"Astro" :{
+  "nFiles": 1,
+  "blank": 4,
+  "comment": 0,
+  "code": 64},
+"WGSL" :{
+  "nFiles": 2,
+  "blank": 9,
+  "comment": 0,
+  "code": 62},
+"Snakemake" :{
+  "nFiles": 4,
+  "blank": 11,
+  "comment": 6,
+  "code": 54},
+"Yang" :{
+  "nFiles": 1,
+  "blank": 11,
+  "comment": 0,
+  "code": 47},
+"Clojure" :{
+  "nFiles": 2,
+  "blank": 35,
+  "comment": 59,
+  "code": 46},
+"Protocol Buffers" :{
+  "nFiles": 2,
+  "blank": 10,
+  "comment": 29,
+  "code": 43},
+"Prisma Schema" :{
+  "nFiles": 1,
+  "blank": 8,
+  "comment": 15,
+  "code": 40},
+"ERB" :{
+  "nFiles": 2,
+  "blank": 12,
+  "comment": 0,
+  "code": 39},
+"Kotlin" :{
+  "nFiles": 2,
+  "blank": 5,
+  "comment": 11,
+  "code": 36},
+"Fortran 90" :{
+  "nFiles": 2,
+  "blank": 16,
+  "comment": 0,
+  "code": 29},
+"Meson" :{
+  "nFiles": 1,
+  "blank": 6,
+  "comment": 0,
+  "code": 28},
+"CUDA" :{
+  "nFiles": 2,
+  "blank": 9,
+  "comment": 1,
+  "code": 26},
+"Gradle" :{
+  "nFiles": 1,
+  "blank": 7,
+  "comment": 3,
+  "code": 22},
+"Linker Script" :{
+  "nFiles": 1,
+  "blank": 0,
+  "comment": 0,
+  "code": 20},
+"diff" :{
+  "nFiles": 2,
+  "blank": 2,
+  "comment": 28,
+  "code": 18},
+"JSON5" :{
+  "nFiles": 1,
+  "blank": 0,
+  "comment": 4,
+  "code": 16},
+"Mustache" :{
+  "nFiles": 2,
+  "blank": 0,
+  "comment": 0,
+  "code": 14},
+"GDScript" :{
+  "nFiles": 1,
+  "blank": 3,
+  "comment": 0,
+  "code": 13},
+"Jinja Template" :{
+  "nFiles": 3,
+  "blank": 9,
+  "comment": 32,
+  "code": 12},
+"Nickel" :{
+  "nFiles": 1,
+  "blank": 1,
+  "comment": 1,
+  "code": 12},
+"Pascal" :{
+  "nFiles": 1,
+  "blank": 1,
+  "comment": 26,
+  "code": 12},
+"Sass" :{
+  "nFiles": 2,
+  "blank": 4,
+  "comment": 0,
+  "code": 12},
+"Starlark" :{
+  "nFiles": 3,
+  "blank": 1,
+  "comment": 11,
+  "code": 10},
+"Templ" :{
+  "nFiles": 1,
+  "blank": 4,
+  "comment": 0,
+  "code": 9},
+"Godot Shaders" :{
+  "nFiles": 1,
+  "blank": 3,
+  "comment": 16,
+  "code": 7},
+"Pug" :{
+  "nFiles": 1,
+  "blank": 1,
+  "comment": 2,
+  "code": 5},
+"Handlebars" :{
+  "nFiles": 1,
+  "blank": 0,
+  "comment": 0,
+  "code": 4},
+"Verilog-SystemVerilog" :{
+  "nFiles": 1,
+  "blank": 1,
+  "comment": 2,
+  "code": 4},
+"Haml" :{
+  "nFiles": 1,
+  "blank": 0,
+  "comment": 0,
+  "code": 3},
+"Puppet" :{
+  "nFiles": 1,
+  "blank": 0,
+  "comment": 2,
+  "code": 2},
+"SUM": {
+  "blank": 317287,
+  "comment": 251390,
+  "code": 2037917,
+  "nFiles": 17357} }

@@ -5,6 +5,43 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-03-16
+
+### Removed
+
+- **Telescope shadow file cleanup**: Moved 25 stale plugin shadow files from `lua/telescope/` to `~/.local/backup/telescope/`
+  - Removed `config.lua` that shadowed plugin's config (caused startup errors after upstream merge deleted `telescope.deprecated` module)
+  - Removed 5 underscore-prefixed directory copies: `_actions/`, `_builtin/` (6 files), `_finders/` (3 files), `_pickers/` (2 files), `_previewers/` (5 files)
+  - Removed 7 standalone unreferenced files: `__.lua`, `_config.lua`, `_command.lua`, `_from_entry.lua`, `_make_entry.lua`, `_pickers.lua`, `issues.txt`
+  - Kept: `run.lua`, `telemap.lua`, `telethemes.lua`, `log.lua` (custom functionality), `_extensions/init.lua` (custom enhancements), `_layouts/` (custom layouts)
+
+- **Telescope config cleanup**: Moved 22 unused config files from `lua/configs/telescope/` to `~/.local/backup/nvim-refactor/`
+  - Entire `pickers2/` directory (10 experimental pickers: code-action, command-palette, glance, harpoon, marks, mind, nvim-tree, ollama, terminal, timetracker)
+  - 12 standalone files: `backdrop.lua`, `symbol_highlights.lua`, `filename-first.lua`, `layout-fused.lua`, `minimal.lua`, `sorters.lua`, `_which_key.lua`, `launchkeys.lua`, `reference.lua`, `stickybuf.lua`, `display-path.lua`, `previewers/delta.lua`
+  - 2 unused entry makers: `entry_makers/file.lua`, `entry_makers/quickfix.lua`
+  - 2 unused actions: `actions/directory.lua` (empty), `actions/reference.lua`
+
+- **Dead code removal**: Removed ~377 lines of commented-out/unused code from active config files
+  - `init.lua`: unused requires, dead functions, commented-out autocmd blocks
+  - `extensions.lua`: 8 commented-out extension configs, unused `telescope` require
+  - `pickers.lua`: commented-out option blocks, symbols_highlights blocks
+  - `mappings.lua`: 67-line LazyVim example keymaps
+
+### Fixed
+
+- **Startup error**: Fixed `telescope.deprecated` module-not-found error after upstream merge by removing stale shadow `config.lua`
+
+### Project Statistics
+
+| Metric | Value |
+|--------|-------|
+| Total Tests | 11 test files, 132 tests (132 passing) |
+| Total Plugins | 378 installed plugins |
+| Config Lines of Code | 204,063 lines (Lua/Vim) |
+| Plugin Lines of Code | 2,037,917 lines |
+
+---
+
 ## [0.6.0] - 2026-03-09
 
 ### Removed

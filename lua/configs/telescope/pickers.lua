@@ -63,74 +63,18 @@ local pickers = {
     end,
   },
   find_files = {
-    -- previewer = c_previewers.buffer_cat(),
-    -- debounce = 100,
     prompt_prefix = icons.file,
     mappings = mappings.file,
     find_command = commands.rg,
-    -- path_display = require('configs.telescope.filetype-first'),
-    -- sorting_strategy = 'ascending',
-    -- layout_strategy = 'horizontal',
-    -- layout_config = {
-    --   preview_cutoff = 180,
-    --   horizontal = {
-    --     prompt_position = 'top',
-    --     preview_width = 0.5,
-    --     results_width = 0.5,
-    --   },
-    -- },
-    -- extensions_list = { 'fzf' },
-    -- extensions = {
-    --   fzf = {
-    --     fuzzy = true,
-    --     override_generic_sorter = true,
-    --     override_file_sorter = true,
-    --     case_mode = 'smart_case',
-    --   },
-    -- },
   },
-
-  -- | `User TelescopeFindPre`         | Do it before Telescope creates all the floating windows |
-  -- | `User TelescopePreviewerLoaded` | Do it after Telescope previewer window is created       |
-  -- | `User TelescopeResumePost`      | Do it after Telescope resume action is fully completed  |
-  -- vim.api.nvim_create_autocmd("User", {
-  --   pattern = "TelescopePreviewerLoaded",
-  --   callback = function(args)
-  --     if args.data.filetype ~= "help" then
-  --       vim.wo.number = true
-  --     elseif args.data.bufname:match("*.csv") then
-  --       vim.wo.wrap = false
-  --     end
-  --   end,
-  -- })
-  -- ```
-  -- vim.opt.signcolumn = "no"
-  -- vim.opt_local.number = false
-  -- vim.cmd[[
-  -- wincmd L
-  -- vert resize 78
-  -- ]]
-
   help_tags = {
-    -- debounce = 500,
-    -- file_sorter = require('telescope.sorters').get_fzy_sorter,
     prompt_prefix = icons.help,
-    -- layout_config = { height = 15 },
     mappings = mappings.help,
-    -- prompt_title = "~ Help Tags ~",
     initial_mode = "insert",
     sorting_strategy = "ascending",
     layout_config = {
       prompt_position = "top",
       preview_width = 0.75,
-      -- horizontal = {
-      --   preview_width = 0.55,
-      --   results_width = 0.8,
-      -- },
-      -- vertical = {
-      --   mirror = false,
-      -- },
-      -- width = 0.87,
       height = 0.6,
     },
     preview = {
@@ -179,23 +123,12 @@ local pickers = {
     additional_args = { "--trim", "--hidden", "--glob=!.git", "-j1" },
   },
   buffers = {
-    -- debounce = 100,
-    -- path_display = {
-    --   tail = true,
-    --   truncate = true,
-    -- },
-
-    -- path_display = require("configs.telescope.filename-first"),
     prompt_prefix = icons.buffer,
     show_all_buffers = true,
     sort_mru = true,
     mappings = mappings.buffer,
     ignore_current_buffer = false,
     only_cwd = false,
-    -- previewer = false,
-    -- layout_config = {
-    -- 	horizontal = { anchor = "W", width = 0.5, height = 0.5 },
-    -- },
   },
   keymaps = {
     -- debounce = 100,
@@ -356,17 +289,6 @@ local pickers = {
       "constant",
       "package",
     },
-    -- symbols_highlights = {
-    --   'Class',
-    --   'Function',
-    --   'Method',
-    --   'Constructor',
-    --   'Interface',
-    --   'Module',
-    --   'Struct',
-    --   'Trait',
-    --   'Field',
-    -- },
   },
   spell_suggest = {
     initial_mode = "normal",
@@ -410,17 +332,6 @@ local pickers = {
       "constant",
       "package",
     },
-    -- symbols_highlights = {
-    --   'Class',
-    --   'Function',
-    --   'Method',
-    --   'Constructor',
-    --   'Interface',
-    --   'Module',
-    --   'Struct',
-    --   'Trait',
-    --   'Field',
-    -- },
   },
 }
 

@@ -1,4 +1,0 @@
-https://github.com/nvim-telescope/telescope.nvim/pull/2536
-https://github.com/nvim-telescope/telescope.nvim/pull/1853
-https://github.com/nvim-telescope/telescope.nvim/pull/1491
-https://github.com/nvim-telescope/telescope.nvim/pull/2705
