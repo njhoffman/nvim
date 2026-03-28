@@ -13,6 +13,13 @@ local lz_syn = false
 -- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/debug.lua
 
 local plugins = {
+  {
+    dir = vim.fn.expand("~/git/hover.nvim"),
+    config = function()
+      require("configs.hover")
+    end,
+    cmd = { "Hover", "HoverCursor", "HoverSticky", "HoverInspect", "HoverClose" },
+  },
   -- https://gist.github.com/GnikDroy/62556534324f9dc9192f7bba5a88cc43
   { "dundalek/bloat.nvim", cmd = "Bloat" },
   {
@@ -24,42 +31,13 @@ local plugins = {
         -- jump_map = "<C-e>"       -- (DROPPED SUPPORT, see [here](#cycle-between-annotations) !) The keymap in order to jump in the annotation fields (in insert mode)
       })
 
-      vim.api.nvim_set_keymap(
-        "n",
-        "g@@",
-        ":lua require('neogen').generate()<CR>",
-        { noremap = true, silent = true, desc = "neogen annotation for func" }
-      )
-      vim.api.nvim_set_keymap(
-        "n",
-        "g@%",
-        ":lua require('neogen').generate({ type = 'file' })<CR>",
-        { noremap = true, silent = true, desc = "neogen annotation for file" }
-      )
-      vim.api.nvim_set_keymap(
-        "n",
-        "<Leader>@@",
-        ":lua require('neogen').generate()<CR>",
-        { noremap = true, silent = true, desc = "neogen annotation for func" }
-      )
-      vim.api.nvim_set_keymap(
-        "n",
-        "<Leader>@f",
-        ":lua require('neogen').generate({ type = 'file' })<CR>",
-        { noremap = true, silent = true, desc = "neogen annotation for file" }
-      )
-      vim.api.nvim_set_keymap(
-        "n",
-        "<Leader>@c",
-        ":lua require('neogen').generate({ type = 'class' })<CR>",
-        { noremap = true, silent = true, desc = "neogen annotation for class" }
-      )
-      vim.api.nvim_set_keymap(
-        "n",
-        "<Leader>@t",
-        ":lua require('neogen').generate({ type = 'type' })<CR>",
-        { noremap = true, silent = true, desc = "neogen annotation for type" }
-      )
+      local map = require("mapper").map
+      map("n", "g@@", ":lua require('neogen').generate()<CR>", { desc = "neogen annotation for func" })
+      map("n", "g@%", ":lua require('neogen').generate({ type = 'file' })<CR>", { desc = "neogen annotation for file" })
+      map("n", "<Leader>@@", ":lua require('neogen').generate()<CR>", { desc = "neogen annotation for func" })
+      map("n", "<Leader>@f", ":lua require('neogen').generate({ type = 'file' })<CR>", { desc = "neogen annotation for file" })
+      map("n", "<Leader>@c", ":lua require('neogen').generate({ type = 'class' })<CR>", { desc = "neogen annotation for class" })
+      map("n", "<Leader>@t", ":lua require('neogen').generate({ type = 'type' })<CR>", { desc = "neogen annotation for type" })
     end,
   },
 
@@ -174,7 +152,7 @@ let s:fg_conceal   = s:base4
 let s:fg_subtle    = s:base7
 let s:fg_separator = s:base4
 
-let s:bg_current = s:bg
+let s:bg_current = s:dark_blue
 let s:bg_visible = s:bg
 let s:bg_other   = s:base1
 
@@ -470,16 +448,17 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
       -- stylua: ignore start
       -- TODO: create plugin that has persistent mode
       -- movement
-      vim.keymap.set({ "n", "v" }, "<S-Up>",    "<cmd>Treewalker Up<cr>",    { silent = true })
-      vim.keymap.set({ "n", "v" }, "<S-Down>",  "<cmd>Treewalker Down<cr>",  { silent = true })
-      vim.keymap.set({ "n", "v" }, "<S-Left>",  "<cmd>Treewalker Left<cr>",  { silent = true })
-      vim.keymap.set({ "n", "v" }, "<S-Right>", "<cmd>Treewalker Right<cr>", { silent = true })
+      local map = require("mapper").map
+      map({ "n", "v" }, "<S-Up>",    "<cmd>Treewalker Up<cr>")
+      map({ "n", "v" }, "<S-Down>",  "<cmd>Treewalker Down<cr>")
+      map({ "n", "v" }, "<S-Left>",  "<cmd>Treewalker Left<cr>")
+      map({ "n", "v" }, "<S-Right>", "<cmd>Treewalker Right<cr>")
 
       -- swapping
-      vim.keymap.set('n', '<M-C-Up>',    '<cmd>Treewalker SwapUp<cr>',    { silent = true })
-      vim.keymap.set('n', '<M-C-Down>',  '<cmd>Treewalker SwapDown<cr>',  { silent = true })
-      vim.keymap.set('n', '<M-C-Left>',  '<cmd>Treewalker SwapLeft<cr>',  { silent = true })
-      vim.keymap.set('n', '<M-C-Right>', '<cmd>Treewalker SwapRight<cr>', { silent = true })
+      map('n', '<M-C-Up>',    '<cmd>Treewalker SwapUp<cr>')
+      map('n', '<M-C-Down>',  '<cmd>Treewalker SwapDown<cr>')
+      map('n', '<M-C-Left>',  '<cmd>Treewalker SwapLeft<cr>')
+      map('n', '<M-C-Right>', '<cmd>Treewalker SwapRight<cr>')
     end,
   },
 
@@ -1506,6 +1485,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   { "rodjek/vim-puppet", ft = "puppet", lazy = lz_syn },
   { "vim-crystal/vim-crystal", ft = "crystal", lazy = lz_syn },
   { "raimon49/requirements.txt.vim", event = "VeryLazy", lazy = lz_syn },
+  { "ericpruitt/tmux.vim", ft = "tmux", lazy = lz_syn },
 }
 
 utils.apply_configs(plugins)

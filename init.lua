@@ -1,8 +1,11 @@
 -- require('internals').init()
 
 require("globals")
+
 local _shell = vim.o.shell or "/bin/sh"
-vim.cmd("set shell=/bin/sh")
+vim.cmd("set shell=" .. _shell)
+
+vim.cmd("colorscheme nord-nick")
 
 require("components").init()
 
@@ -14,7 +17,6 @@ for _, mod_name in ipairs({
   "commands",
   "abbreviations",
   "autocommands",
-  "devbox",
   "runner",
   "stats",
   "devdocs2.setup",
@@ -27,9 +29,9 @@ for _, mod_name in ipairs({
   "oldfiles",
   "tail",
   "configs.mini-comment",
-  "hover.setup",
-  "configs.feline",
+  (vim.g.statusline_backend or "feline") == "feline" and "configs.feline" or "configs.bars",
   "configs.definition-or-references",
+  "unicode",
   -- "baleia.setup",
   -- "demicolon.setup",
 }) do
@@ -40,17 +42,11 @@ vim.defer_fn(function()
   vim.import("alt").setup()
   vim.import("live-command.setup")
   vim.import("configs.satellite")
+  vim.import("configs.convey")
+  vim.import("configs.recall")
 
   vim.import("sidebar").setup()
-  vim.import("histories").setup()
-  -- vim.import("scrollview.setup")
-
   vim.import("format_cmdline").setup()
-
-  local llm_config = require("llm-config")
-  vim.import("llm").setup(llm_config)
-
-  vim.import("configs.recall")
   vim.import("configs.smoothie").setup()
 
   if vim.g.started_by_firenvim then

@@ -1,5 +1,5 @@
 local parsers = require('nvim-treesitter.parsers')
-local ts_utils = require('nvim-treesitter.ts_utils')
+local ts_helpers = require('utils.treesitter')
 
 local function get_node(opts)
   opts = opts or {}
@@ -49,7 +49,7 @@ local function get_node(opts)
       local anonymous_node = root:descendant_for_range(line, col, line, col)
       node_under_cursor = node
 
-      local srow, scol, erow, ecol = ts_utils.get_vim_range({ node:range() }, bufnr)
+      local srow, scol, erow, ecol = ts_helpers.get_vim_range({ node:range() }, bufnr)
 
       local text = vim.api.nvim_buf_get_text(0, srow - 1, scol - 1, erow - 1, ecol, {})
       local result = {
@@ -133,6 +133,6 @@ end
 
 return {
   get_node = get_node,
-  highlight_node = ts_utils.highlight_node,
+  highlight_node = ts_helpers.highlight_node,
   get_node_columns_around_cursor = get_node_columns_around_cursor,
 }

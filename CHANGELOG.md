@@ -5,6 +5,70 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-03-28
+
+### Added
+
+- **hover.nvim plugin** (`~/git/hover.nvim`): Extracted hover and devbox modules into standalone plugin
+  - Multi-provider floating window system with tab navigation
+  - 9 hover providers: lsp-hover, lsp-signature, lsp-definition, lsp-type-definition, help, man, dictionary, syntax, GitHub issues
+  - Commands: `:Hover`, `:HoverCursor`, `:HoverSticky`, `:HoverInspect`, `:HoverClose`
+  - `cursor_delay` / `sticky_delay` config for independent timing control
+  - Devbox inspection panel integrated as `:HoverInspect`
+  - 102 tests (49 hover + 53 devbox)
+
+- **Devbox provider system**: Dynamic provider filtering with `enabled` functions
+  - LSP providers: hover, definition, signature, completion, codeAction
+  - Conditional providers: man (shell filetypes), help (lua filetype), LSP (capability check)
+  - Two-pass execution for correct batch timing
+  - Dynamic popup sizing based on active providers
+  - Right-aligned provider names with calculated max width
+
+### Changed
+
+- **Devbox display**: Formatting now owned by display layer (time + padded name + detail)
+  - Provider names right-aligned to longest active name
+  - Progressive title: `N/M finished` updates as each handler completes
+  - Batch timing scoped to active providers only
+
+### Removed
+
+- **nvim-treesitter.ts_utils dependency**: All references replaced with builtins or inlined functions
+  - `get_node_at_cursor()` replaced by `vim.treesitter.get_node()`
+  - `get_vim_range`, `highlight_node`, `highlight_range` moved to shared `utils/treesitter.lua`
+  - `swap_nodes` inlined into selectease
+  - Fixed broken references in `vue.lua`, `devbox/handlers/treesitter.lua`
+
+- **Local hover/devbox modules**: Migrated to `~/git/hover.nvim` plugin, loaded via lazy.nvim
+
+### Fixed
+
+- **Deprecated function cleanup** across hover and devbox:
+  - `vim.lsp.get_active_clients()` -> `vim.lsp.get_clients()`
+  - `vim.lsp.util.trim_empty_lines()` -> `vim.tbl_filter`
+  - `vim.lsp.util.make_position_params()` -> explicit `offset_encoding` parameter
+  - `vim.lsp.buf_request()` -> `client:request()` (avoids dev-tools.nvim handler conflicts)
+  - `nvim_buf_add_highlight()` -> `nvim_buf_set_extmark()` with `hl_group`
+  - `require("nvim-treesitter.parsers")` -> `pcall(vim.treesitter.get_parser)`
+  - `require("vim.treesitter.highlighter")` -> `vim.treesitter.highlighter`
+  - `vim.loop` -> `(vim.uv or vim.loop)`
+  - `nvim-treesitter-playground.internal.clear_highlights` -> `nvim_buf_clear_namespace`
+
+- **LSP handler bugs**: Fixed operator precedence in provider targeting, codeAction params (range vs position)
+- **Devbox man handler**: Fixed duplicate `done()` calls (missing returns)
+- **Devbox state**: Fixed `heigt` typo, `state.base_bufnr` -> `state.source.bufnr`
+
+### Project Statistics
+
+| Metric | Value |
+|--------|-------|
+| Total Tests | 22 test files, 250 tests (config) + 102 tests (hover.nvim) |
+| Total Plugins | 378 installed plugins |
+| Config Lines of Code | 280,414 lines (Lua/Vim) |
+| Plugin Lines of Code | 276,719 lines |
+
+---
+
 ## [0.7.0] - 2026-03-16
 
 ### Removed

@@ -1,5 +1,85 @@
-local ts_utils = require('nvim-treesitter.ts_utils')
 local lib_get_ts_nodes = require('SelectEase.lib.get_ts_nodes')
+
+local function get_node_text(node, bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  if not node then
+    return {}
+  end
+  local start_row, start_col, end_row, end_col = vim.treesitter.get_node_range(node)
+  if start_row ~= end_row then
+    local lines = vim.api.nvim_buf_get_lines(bufnr, start_row, end_row + 1, false)
+    if next(lines) == nil then
+      return {}
+    end
+    lines[1] = string.sub(lines[1], start_col + 1)
+    if #lines == end_row - start_row + 1 then
+      lines[#lines] = string.sub(lines[#lines], 1, end_col)
+    end
+    return lines
+  else
+    local line = vim.api.nvim_buf_get_lines(bufnr, start_row, start_row + 1, false)[1]
+    return line and { string.sub(line, start_col + 1, end_col) } or {}
+  end
+end
+
+local function node_to_lsp_range(node)
+  local start_line, start_col, end_line, end_col = vim.treesitter.get_node_range(node)
+  return {
+    start = { line = start_line, character = start_col },
+    ["end"] = { line = end_line, character = end_col },
+  }
+end
+
+local function swap_ts_nodes(node_or_range1, node_or_range2, bufnr, cursor_to_second)
+  if not node_or_range1 or not node_or_range2 then
+    return
+  end
+  local range1 = node_to_lsp_range(node_or_range1)
+  local range2 = node_to_lsp_range(node_or_range2)
+
+  local text1 = get_node_text(node_or_range1, bufnr)
+  local text2 = get_node_text(node_or_range2, bufnr)
+
+  local edit1 = { range = range1, newText = table.concat(text2, "\n") }
+  local edit2 = { range = range2, newText = table.concat(text1, "\n") }
+  bufnr = bufnr == 0 and vim.api.nvim_get_current_buf() or bufnr
+  vim.lsp.util.apply_text_edits({ edit1, edit2 }, bufnr, "utf-8")
+
+  if cursor_to_second then
+    vim.cmd("normal! m'")
+
+    local char_delta = 0
+    local line_delta = 0
+    if
+      range1["end"].line < range2.start.line
+      or (
+        range1["end"].line == range2.start.line
+        and range1["end"].character <= range2.start.character
+      )
+    then
+      line_delta = #text2 - #text1
+    end
+
+    if
+      range1["end"].line == range2.start.line
+      and range1["end"].character <= range2.start.character
+    then
+      if line_delta ~= 0 then
+        char_delta = #text2[#text2] - range1["end"].character
+        if range1.start.line == range2.start.line + line_delta then
+          char_delta = char_delta + range1.start.character
+        end
+      else
+        char_delta = #text2[#text2] - #text1[#text1]
+      end
+    end
+
+    vim.api.nvim_win_set_cursor(
+      vim.api.nvim_get_current_win(),
+      { range2.start.line + 1 + line_delta, range2.start.character + char_delta }
+    )
+  end
+end
 
 local get_sequential_jump_target = function(opts, nodes, cursor_row, cursor_col)
   local jump_target
@@ -183,7 +263,7 @@ local swap_nodes = function(opts)
     local target_node = get_jump_target(opts)
 
     local bufnr = vim.api.nvim_get_current_buf()
-    ts_utils.swap_nodes(first_node, target_node, bufnr, opts.jump_to_target_after_swap or true)
+    swap_ts_nodes(first_node, target_node, bufnr, opts.jump_to_target_after_swap or true)
   end
 end
 

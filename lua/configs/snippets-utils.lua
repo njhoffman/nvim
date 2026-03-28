@@ -1,6 +1,5 @@
 local M = {}
 local ls = require("luasnip")
-local ts_utils = require("nvim-treesitter.ts_utils")
 local augroup = vim.api.nvim_create_augroup("Custom Luasnip", { clear = true })
 
 local t = ls.text_node
@@ -31,10 +30,10 @@ function M.create_snippet(opts)
           if error then
             vim.api.nvim_buf_set_var(0, "luasnip1", true)
 
-            vim.keymap.set(keymap[1], keymap[2], function()
+            require("mapper").map(keymap[1], keymap[2], function()
               ls.snip_expand(snippet)
               LAST_TRIGGERED_SNIPPET = snippet
-            end, { silent = true, buffer = true })
+            end, { buffer = true, desc = "expand snippet" })
           end
 
           -- if not vim.tbl_contains(USER_MAPPINGS, keymap[2]) then
@@ -49,11 +48,13 @@ function M.create_snippet(opts)
 end
 
 function M.get_top_node()
-  local node = ts_utils.get_node_at_cursor()
-  local root = ts_utils.get_root_for_node(node)
-  local parent = node:parent()
+  local node = vim.treesitter.get_node()
+  if not node then
+    return
+  end
 
-  while parent ~= nil and parent ~= root do
+  local parent = node:parent()
+  while parent ~= nil and parent:parent() ~= nil do
     node = parent
     parent = node:parent()
   end
