@@ -5,6 +5,64 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-03-29
+
+### Added
+
+- **Vimade fade controller** (`lua/configs/vimade/fade_controller.lua`): State management layer for per-buffer fade levels
+  - Scenario-aware fadelevel function: cmdline (0.2), split (0.6), popup (0.6), configurable per scenario
+  - Public API: `fade(bufnr, level, source)`, `unfade(bufnr)`, `get(bufnr)`, `fadetint(bufnr, level)`
+  - Relative fade values: `"+0.2"`, `"-0.1"` syntax applied against current level, clamped to [0, 1]
+  - Buffer variable sync: `vim.b.fadelevel` and `vim.b.fade_source` updated on every mutation
+  - Forces immediate vimade update on API calls (bypasses 500ms polling)
+  - User commands: `:VimadeFade [bufnr] [level] [source]`, `:VimadeUnfade [bufnr]`
+
+- **Per-range highlight module** (`lua/configs/vimade/range_hl.lua`): Decoration provider for range-level highlight control
+  - `restore_range(bufnr, start, col, end, col)`: Restore original highlights in a faded buffer range
+  - `transform_range(bufnr, start, col, end, col, transforms)`: Apply color transforms to a range
+  - Visual mode auto-restore with 50ms delay (shows original colors for visual selection in faded buffers)
+  - Uses `nvim_set_decoration_provider` with ephemeral extmarks (same approach as snacks.dim)
+  - Treesitter + extmark highlight source extraction for accurate per-token restoration
+
+- **Color math module** (`lua/configs/vimade/color_math.lua`): HSL color transforms with derived highlight caching
+  - `lighten(color, amount)`, `darken(color, amount)`, `saturate(color, amount)`, `hue_shift(color, degrees)`
+  - RGB-HSL conversion utilities
+  - `apply_transforms(color, {lighten=0.2, darken=0.1, saturate=0.3, hue=90})` composable pipeline
+  - Derived highlight cache keyed by `group:transform`, cleared on ColorScheme change
+  - Imports vimade's bitwise color utilities for base operations
+
+- **Benchmark suite** (`lua/configs/vimade/bench.lua`): 7-scenario comparison of fade/tint approaches
+  - Vimade tick cost, custom namespace clone+fade, decoration provider cost, combined
+  - tint.nvim setup cost (namespace generation), tint.nvim hot path (O(1) namespace swap)
+  - Color math head-to-head: vimade bitwise vs tint.nvim string-based pipeline (per-color ns timing)
+  - Namespace stats tracking (total count, highlights per ns, vimade/tint-specific counts)
+  - Run with `:lua require("configs.vimade.bench").run()`
+
+- **Performance analysis notes** (`lua/configs/vimade/NOTES.md`): Detailed comparison of vimade vs tint.nvim architectures
+
+### Changed
+
+- **Vimade config**: Replaced flat `fadelevel = 0.45` with `fade_controller.make_fadelevel(cfg)` for scenario-aware fading
+- **Vimade minimalist style**: Moved CursorLineNr/LineNr/Scrollbar/Satellite groups to LOW_VISIBILITY_NAMES, set low_visibility_fadelevel to 0.5
+- **Vimade init**: Added BufDelete cleanup autocmd, visual restore setup, VimadeFade/VimadeUnfade commands
+- **Vimade utils**: Removed old fadelevel function and get_active_info (replaced by fade_controller)
+
+### Fixed
+
+- **VimadeUnfadeAll command**: Fixed reference to undefined `M` variable (was `M.vimade_unfade_global()`, now `v_utils.vimade_unfade_global()`)
+- **VimadeInfo command cleanup**: Wrapped `nvim_del_user_command` in pcall to avoid error on first load
+
+### Project Statistics
+
+| Metric | Value |
+|--------|-------|
+| Total Tests | 25 test files, 304 tests (287 unit + 17 integration) |
+| Total Plugins | 377 installed plugins |
+| Config Lines of Code | 284,472 lines (Lua/Vim) |
+| Plugin Lines of Code | 276,274 lines |
+
+---
+
 ## [0.8.0] - 2026-03-28
 
 ### Added

@@ -1,9 +1,11 @@
 local v_utils = require("configs.vimade.utils")
+local fade_controller = require("configs.vimade.fade_controller")
+local range_hl = require("configs.vimade.range_hl")
 
 local setup_user_cmds = function()
   local clear_commands = { "VimadeInfo" }
   for _, cmd in ipairs(clear_commands) do
-    vim.api.nvim_del_user_command(cmd)
+    pcall(vim.api.nvim_del_user_command, cmd)
   end
   vim.api.nvim_create_user_command("VimadeInfo", v_utils.vimade_info, { desc = "vimade info" })
 
@@ -18,25 +20,50 @@ local setup_user_cmds = function()
   end, { desc = "apply global fade to all windows uniformly" })
 
   vim.api.nvim_create_user_command("VimadeUnfadeAll", function()
-    M.vimade_unfade_global()
+    v_utils.vimade_unfade_global()
   end, { desc = "remove global fade from all windows" })
+
+  vim.api.nvim_create_user_command("VimadeFade", function(opts)
+    local args = vim.split(opts.args, "%s+")
+    local bufnr = tonumber(args[1]) or vim.api.nvim_get_current_buf()
+    local level = args[2] or "0.5"
+    local source = args[3] or "cmd"
+    fade_controller.fade(bufnr, level, source)
+  end, { nargs = "*", desc = "fade a buffer: VimadeFade [bufnr] [level] [source]" })
+
+  vim.api.nvim_create_user_command("VimadeUnfade", function(opts)
+    local bufnr = tonumber(opts.args) or vim.api.nvim_get_current_buf()
+    fade_controller.unfade(bufnr)
+  end, { nargs = "?", desc = "unfade a buffer: VimadeUnfade [bufnr]" })
+end
+
+local setup_autocommands = function()
+  local augroup = vim.api.nvim_create_augroup("vimade_fade_controller", { clear = true })
+
+  -- Clean up state for deleted buffers.
+  vim.api.nvim_create_autocmd("BufDelete", {
+    group = augroup,
+    callback = function()
+      fade_controller._cleanup()
+      range_hl._cleanup()
+    end,
+  })
 end
 
 local setup = function()
   local fadelevel_cfg = {
     dimmed = 0.5,
     popup = 0.6,
-    split = 0.7,
+    split = 0.6,
     global = 0.6,
-    cmdline = 0.7,
+    cmdline = 0.2,
     neotree = 0.8,
     whichkey = 0.8,
   }
 
   local vimade_cfg = {
     style = v_utils.style,
-    -- fadelevel = v_utils.fadelevel(fadelevel_cfg),
-    fadelevel = 0.45,
+    fadelevel = fade_controller.make_fadelevel(fadelevel_cfg),
     -- ncmode = "focus",
     enablefocusfading = true,
     checkinterval = 500,
@@ -119,6 +146,8 @@ local setup = function()
   vim.defer_fn(function()
     require("vimade").setup(vimade_cfg)
     setup_user_cmds()
+    setup_autocommands()
+    range_hl.enable_visual_restore()
   end, setup_delay)
 end
 

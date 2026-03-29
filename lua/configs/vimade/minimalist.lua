@@ -15,7 +15,6 @@ local EXCLUDE_NAMES = {
   -- "ReactiveCursorLineNr@preset.cursorline.@mode.no.@op.d",
   -- "ReactiveCursorLine@preset.cursorline.@static.current",
   -- "ReactiveCursorLine",
-  "CursorLineNr",
 }
 
 local NO_VISIBILITY_NAMES = {
@@ -27,7 +26,6 @@ local NO_VISIBILITY_NAMES = {
   -- "ReactiveCursorLine@preset.cursorline.@static.current",
   -- "ReactiveCursorLine",
   -- "CursorLineNr",
-  "LineNr",
   "LineNrBelow",
   "LineNrAbove",
   "EndOfBuffer",
@@ -35,6 +33,13 @@ local NO_VISIBILITY_NAMES = {
 }
 
 local LOW_VISIBILITY_NAMES = {
+  "CursorLineNr",
+  "LineNr",
+  "Scrollbar",
+  "SatelliteBar",
+  "SatelliteCursor",
+  "SatelliteBarInactive",
+  "SatelliteBarScrolling",
   "WinSeparator",
 }
 
@@ -130,7 +135,7 @@ M.Minimalist = function(config)
   config.exclude_names = config.exclude_names or EXCLUDE_NAMES
   config.no_visibility_names = config.no_visibility_names or NO_VISIBILITY_NAMES
   config.low_visibility_names = config.low_visibility_names or LOW_VISIBILITY_NAMES
-  config.low_visibility_fadelevel = config.low_visibility_fadelevel or 0.1
+  config.low_visibility_fadelevel = config.low_visibility_fadelevel or 0.5
 
   return {
     style = config.animate and animate_minimalist(config) or minimalist(config),

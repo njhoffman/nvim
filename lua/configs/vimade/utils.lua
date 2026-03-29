@@ -17,7 +17,7 @@
 -- local Default = require("vimade.recipe.default").Default({ animate = true })
 local Minimalist = require("configs.vimade.minimalist").Minimalist({
   animate = false,
-  -- low_visibility_fadelevel = 0.5,
+  low_visibility_fadelevel = 0.5,
   -- exclude_names ={'LineNr', 'LineNrBelow', 'LineNrAbove', 'EndOfBuffer'
   -- low_visibility_names = {'WinSeparator'},
   -- no_visibility_names = {'LineNr', 'LineNrBelow', 'LineNrAbove', 'EndOfBuffer'},
@@ -28,28 +28,6 @@ local Minimalist = require("configs.vimade.minimalist").Minimalist({
     -- return style.win.nc == true or style._animating == true
   end,
 })
-
-local default_fadelevel = function()
-  return 0.4
-end
-
-local get_active_info = function(curr)
-  curr = vim.tbl_deep_extend("force", curr, {
-    buf_opts = {},
-    buf_info = vim.fn.getbufinfo(curr.bufnr)[1],
-    win_info = vim.fn.getwininfo(curr.winid)[1],
-    win_cfg = vim.api.nvim_win_get_config(curr.winid),
-  })
-  for name, val in pairs(vim.api.nvim_get_all_options_info()) do
-    if val.scope == "buf" then
-      curr.buf_opts[name] = vim.api.nvim_get_option_value(name, { buf = curr.bufnr })
-    end
-  end
-  curr.wintype = vim.fn.win_gettype(curr.win_info.winnr)
-  return curr
-end
--- local global_vars = "vimade_init", "vimade_timer", "vimade_loaded", "vimade_paused",
--- "vimade_running", "vimade_error_count", "vimade_fade_active", "vimade_python_setup",
 
 local M = {
   debug_flag = false,
@@ -72,17 +50,6 @@ M.vimade_reload = function()
   require("vimade").setup({ fadelevel = 0.6 })
 end
 
--- M.vimade_fade_buffers = function(opts)
---   local bufnrs = type(opts.buf) == "number" and { opts.buf }
---     or type(opts.buf) == "table" and opts.buf
---     or vim.api.nvim_list_bufs()
---   local match = opts.match or { win_config = "relative" }
-
--- end
--- M.vimade_unfade_buffers = function(opts) end
-
--- M.vimade_fade_windows = function(opts) end
--- M.vimade_unfade_windows = function(opts) end
 M.vimade_fade_global = function(fade_level)
   fade_level = fade_level or 0.4
   vim.api.nvim_set_var("vimade_fade_level", fade_level)
@@ -90,24 +57,6 @@ end
 
 M.vimade_unfade_global = function()
   vim.api.nvim_del_var("vimade_fade_level")
-end
-
-M.fadelevel = function(fadelevel_cfg)
-  return function(style, _) --style, state
-    local fadelevel = 1
-    if style.win.is_active_win == false then
-      local curr = get_active_info(require("vimade.state.globals").current)
-      -- if style.win.buf_opts.filetype == "neo-tree" then
-      fadelevel = fadelevel_cfg.split or default_fadelevel()
-      if curr.wintype == "popup" then
-        fadelevel = fadelevel_cfg.popup or default_fadelevel()
-      end
-    elseif vim.fn.getcmdtype() ~= "" then
-      fadelevel = fadelevel_cfg.cmdline or default_fadelevel()
-    end
-    vim.dbglog(fadelevel)
-    return fadelevel
-  end
 end
 
 M.style = Minimalist.style
