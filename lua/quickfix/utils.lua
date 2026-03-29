@@ -1,11 +1,13 @@
-vim.keymap.set(
+local map = require("mapper").map
+
+map(
   'n',
   '<leader><leader>da',
   '<Cmd>TodoQuickFix<CR>',
   { desc = 'open all TODOs in QuickFix window' }
 )
 
-vim.keymap.set(
+map(
   'n',
   '<leader><leader>dc',
   "<Cmd>exe ':TodoQuickFix cwd=' .. fnameescape(expand('%:p'))<CR>",
@@ -29,14 +31,14 @@ function _G.jumpToQuickfix()
   vim.cmd('copen')
 end
 
-vim.keymap.set(
+map(
   '',
   '<leader><leader>qj',
   '<Cmd>lua _G.jumpToQuickfix()<CR>',
   { desc = 'populate quickfix with jumplist' }
 )
 
-vim.keymap.set('n', '<leader><leader>qd', function()
+map('n', '<leader><leader>qd', function()
   vim.diagnostic.setqflist({
     open = true,
     title = 'Diagnostics',
@@ -66,7 +68,7 @@ function _G.qfSort()
   fn.setqflist(items, 'r')
 end
 
-vim.keymap.set(
+map(
   '',
   '<leader><leader>qs',
   '<Cmd>lua _G.qfSort()<CR>',

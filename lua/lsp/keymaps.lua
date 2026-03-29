@@ -5,12 +5,7 @@ local log = require("logger").init("lsp.keymaps")
 
 local M = {}
 
-local map = function(mode, lhs, rhs, opts)
-  opts = opts or {}
-  opts.noremap = opts.noremap ~= false
-  opts.silent = opts.silent ~= false
-  vim.keymap.set(mode, lhs, rhs, opts)
-end
+local map = require("mapper").map
 
 -- Setup keymaps for a buffer when LSP attaches
 function M.setup(client, bufnr)

@@ -1,4 +1,14 @@
-local whichkey = require("which-key")
+local whichkey
+
+local function ensure_loaded()
+  if not whichkey then
+    local ok, wk = pcall(require, "which-key")
+    if ok then
+      whichkey = wk
+    end
+  end
+  return whichkey ~= nil
+end
 
 -- - **[1]**(`string`) lhs **(required)**
 -- - **[2]**(`string|fun()`) rhs **(optional)**when present, it will create the mapping
@@ -25,6 +35,9 @@ local whichkey = require("which-key")
 -- })
 
 local map = function(mode, lhs, opts)
+  if not ensure_loaded() then
+    return
+  end
   local key = vim.tbl_deep_extend("force", opts, {
     [1] = lhs,
     desc = opts.label or opts.desc or "",
@@ -37,6 +50,9 @@ local map = function(mode, lhs, opts)
 end
 
 local prefix = function(mode, prefix, name)
+  if not ensure_loaded() then
+    return
+  end
   whichkey.add({ prefix, group = name, mode = mode })
 end
 

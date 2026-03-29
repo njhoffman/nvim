@@ -1,4 +1,14 @@
-local wkutils = require("mapper.whichkey")
+local wkutils
+
+local function ensure_wkutils()
+  if not wkutils then
+    local ok, m = pcall(require, "mapper.whichkey")
+    if ok then
+      wkutils = m
+    end
+  end
+  return wkutils ~= nil
+end
 
 -- local function total(counts)
 --   return counts.normal + counts.visual + counts.insert + counts.operator + counts.command
@@ -71,7 +81,17 @@ local wkutils = require("mapper.whichkey")
 --   return keystats
 -- end
 
-local wk_keys = require("what-key.keys")
+local wk_keys
+
+local function ensure_wk_keys()
+  if not wk_keys then
+    local ok, m = pcall(require, "what-key.keys")
+    if ok then
+      wk_keys = m
+    end
+  end
+  return wk_keys ~= nil
+end
 
 local get_stats = function()
   local function length(T)
@@ -120,6 +140,9 @@ local get_stats = function()
   }
   neovim.total = total(neovim)
 
+  if not ensure_wkutils() then
+    return { neovim = neovim, whichkey = {}, mapper = mapper }
+  end
   local todo, ok, conflicts, dupes = wkutils.dump()
   local whichkey = {}
   whichkey.ok = {
@@ -193,6 +216,9 @@ local get_stats = function()
 end
 
 local function dump_out(opt)
+  if not ensure_wkutils() then
+    return {}
+  end
   local todo, ok, conflicts = dump()
   opt = opt
     or {
@@ -219,7 +245,7 @@ local function dump_out(opt)
     end
   end
 
-  if vim.tbl_contains(opt.key_types, "duplicates") then
+  if vim.tbl_contains(opt.key_types, "duplicates") and ensure_wk_keys() then
     for _, dup in pairs(wk_keys.duplicates) do
       local msg = ""
       if dup.buf == dup.other.buffer then

@@ -63,8 +63,7 @@ local supports_method_for_filetype = function(filetype, method)
 end
 
 local map_buf = function(bufnr, lhs, rhs)
-  local opts = { buffer = bufnr, silent = true }
-  vim.keymap.set("n", lhs, rhs, opts)
+  require("mapper").map("n", lhs, rhs, { buffer = bufnr })
 end
 
 -- local handlers = require('lsp.handlers')

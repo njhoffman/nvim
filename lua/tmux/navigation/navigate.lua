@@ -42,6 +42,7 @@ function M.to(direction)
   elseif not is_float and not is_nvim_border then
     nvim.wincmd(direction, vim.v.count)
   elseif i3_directions[direction] ~= nil then
+    -- Last resort: delegate to i3 window manager
     vim.fn.system("i3-msg 'focus " .. i3_directions[direction] .. "'")
   end
 end

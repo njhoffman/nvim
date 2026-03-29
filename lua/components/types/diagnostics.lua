@@ -18,7 +18,6 @@
 ---@field decoration_width integer Width of the decorations.
 ---@field decorations table<integer, diagnostics.decorations> Decorations for each diagnostic severity.
 
-
 ---@class diagnostics.decorations
 ---
 ---@field width integer Width of the decoration.
@@ -28,7 +27,6 @@
 ---@field icon diagnostics.decoration_fragment[] | fun(item: table, current: boolean): diagnostics.decoration_fragment[] Decoration for the start line.
 ---@field padding? diagnostics.decoration_fragment[] | fun(item: table, current: boolean): diagnostics.decoration_fragment[] Decoration for the other line(s).
 
-
 ---@class diagnostics.decorations__static
 ---
 ---@field width integer Width of the decoration.
@@ -37,12 +35,10 @@
 ---@field icon diagnostics.decoration_fragment[] Decoration for the start line.
 ---@field padding? diagnostics.decoration_fragment[] Decoration for the other line(s).
 
-
 ---@class diagnostics.decoration_fragment Virtual text fragment.
 ---
 ---@field [1] string Text to show
 ---@field [2] string? Highlight group.
-
 
 --- Internal representation of a diagnostic. Used by the custom sign column.
 ---@class diagnostics.signs.entry
@@ -54,4 +50,3 @@
 ---@field icon diagnostics.decoration_fragment[]
 ---@field line_hl_group string
 ---@field padding diagnostics.decoration_fragment[]
-

@@ -131,31 +131,31 @@ local yank_selection_to_buffer = function(prompt_bufnr, opts)
 end
 
 local yank_keymaps = function(bufnr, opts)
-  opts.parse_fn = function(entry)
-    return entry
-  end
+  -- opts.parse_fn = function(entry)
+  --   return entry
+  -- end
   yank_selection(bufnr, opts)
 end
 
 local yank_keymaps_to_buffer = function(bufnr, opts)
-  opts.parse_fn = function(entry)
-    return entry
-  end
-  yank_selection_to_buffer(bufnr, opts)
+  -- opts.parse_fn = function(entry)
+  --   return entry
+  -- end
+  return yank_selection_to_buffer(bufnr, opts)
 end
 
 local yank_highlights = function(bufnr, opts)
   opts.parse_fn = function(entry)
     return entry
   end
-  yank_selection(bufnr, opts)
+  return yank_selection(bufnr, opts)
 end
 
 local yank_highlights_to_buffer = function(bufnr, opts)
   opts.parse_fn = function(entry)
     return entry
   end
-  yank_selection_to_buffer(bufnr, opts)
+  return yank_selection_to_buffer(bufnr, opts)
 end
 
 --- stylua: ignore

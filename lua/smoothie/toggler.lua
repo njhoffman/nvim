@@ -1,4 +1,5 @@
 -- smoothie_toggle.lua: Toggle between VimL and Lua smoothie implementations
+local map = require("mapper").map
 local M = {}
 
 -- State to track which implementation is active
@@ -36,16 +37,16 @@ local function setup_lua_keymaps()
   local smoothie = require("smoothie")
 
   -- Override the plug mappings to use Lua functions
-  vim.keymap.set({ "n", "x" }, "<Plug>(SmoothieDownwards)", smoothie.downwards, { silent = true })
-  vim.keymap.set({ "n", "x" }, "<Plug>(SmoothieUpwards)", smoothie.upwards, { silent = true })
-  vim.keymap.set({ "n", "x" }, "<Plug>(SmoothieForwards)", smoothie.forwards, { silent = true })
-  vim.keymap.set({ "n", "x" }, "<Plug>(SmoothieBackwards)", smoothie.backwards, { silent = true })
-  vim.keymap.set({ "n", "x" }, "<Plug>(Smoothie_gg)", function()
+  map({ "n", "x" }, "<Plug>(SmoothieDownwards)", smoothie.downwards)
+  map({ "n", "x" }, "<Plug>(SmoothieUpwards)", smoothie.upwards)
+  map({ "n", "x" }, "<Plug>(SmoothieForwards)", smoothie.forwards)
+  map({ "n", "x" }, "<Plug>(SmoothieBackwards)", smoothie.backwards)
+  map({ "n", "x" }, "<Plug>(Smoothie_gg)", function()
     smoothie.cursor_movement("gg")
-  end, { silent = true })
-  vim.keymap.set({ "n", "x" }, "<Plug>(Smoothie_G)", function()
+  end)
+  map({ "n", "x" }, "<Plug>(Smoothie_G)", function()
     smoothie.cursor_movement("G")
-  end, { silent = true })
+  end)
 
   state.lua_keymaps_active = true
   state.viml_keymaps_active = false

@@ -1,4 +1,5 @@
 local telescope = require("telescope")
+local logger = require("logger").init("telescope")
 
 local internal = require("telescope.builtin.__internal")
 internal.reloader = require("configs.telescope.reloader")
@@ -18,7 +19,8 @@ end
 
 local basecfg = {
   scrolling_limit = 20000,
-
+  debug = false,
+  enable_timing = true,
   debounce = 50,
   wrap_results = false,
   selection_caret = "▌ ", -- ▶  ┃ ▌󰒆 ▇
@@ -40,6 +42,7 @@ local basecfg = {
     LESS = "",
     DELTA_PAGER = "/usr/bin/cat",
   },
+
   layout_config = {
     prompt_position = "top",
     preview_cutoff = 30,
@@ -108,6 +111,8 @@ local basecfg = {
   color_devicons = true,
   use_less = true,
   mappings = mappings.main,
+  -- hidden tail absolute smart shorten truncate filename_first
+  path_display = { "smart" },
   generic_sorter = require("mini.fuzzy").get_telescope_sorter,
   file_sorter = require("mini.fuzzy").get_telescope_sorter,
   include_extensions = true,
@@ -123,17 +128,27 @@ vim.api.nvim_create_autocmd("VimEnter", {
       pickers = pickers,
       extensions = extensions.get(),
     }
-    vim.dbglog("pre-layout: ", telescope_config.defaults.layout_config)
+    if telescope_config.debug then
+      logger:info("pre-layout: ", vim.inspect(telescope_config.defaults.layout_config))
+    end
+
     telescope.setup(telescope_config)
-    vim.dbglog("post-layout: ", require("telescope.config").values.layout_config)
+
+    if telescope_config.debug then
+      logger:info("post-layout: ", vim.inspect(require("telescope.config").values.layout_config))
+    end
+
     extensions.load()
   end,
   desc = "Create startup time notification when vim is finished loading",
 })
+
 vim.api.nvim_create_autocmd("VimResized", {
   pattern = "*",
   callback = function()
-    vim.dbglog("size: " .. vim.o.columns .. "x" .. vim.o.lines)
+    if require("telescope.config").values.debug then
+      logger:info("size: " .. vim.o.columns .. "x" .. vim.o.lines)
+    end
   end,
   desc = "Create startup time notification when vim is finished loading",
 })

@@ -57,8 +57,9 @@ local next = function()
   utils.select_range(mark_range, select.type)
 end
 local setup_keymaps = function()
-  vim.keymap.set("n", "<C-5>", next, { noremap = true, silent = true })
-  vim.keymap.set("x", "<C-5>", next, { noremap = true, silent = true })
+  local map = require("mapper").map
+  map("n", "<C-5>", next, { desc = "Next selection history" })
+  map("x", "<C-5>", next, { desc = "Next selection history" })
 end
 
 -- return visual_str[tostring(vim.fn.mode())]

@@ -6,37 +6,39 @@ Usage,
 require("color_sync");
 ```
 ]]
-_G.terminal_color_sync = function()
-  ---|fS
-
-  local BG = vim.api.nvim_get_hl(0, { name = "Normal" }).bg or 1973806
-  local FG = vim.api.nvim_get_hl(0, { name = "Normal" }).fg or 13489908
-
-  if not BG or not FG then
-    return
-  end
-
-  if _G.is_within_termux() then
-    pcall(io.write, string.format("\x1b]11;#%06x\x1b\\", BG))
-    pcall(io.write, string.format("\x1b]10;#%06x\x1b\\", FG))
-  end
-
-  ---|fE
-end
-
---- Restores terminal's default colors.
-_G.terminal_color_restore = function()
-  ---|fS
-
-  if _G.is_within_termux() then
-    pcall(io.write, "\x1b]110\x1b\\")
-    pcall(io.write, "\x1b]111\x1b\\")
-  end
-
-  ---|fE
-end
 
 return {
+  init = function()
+    _G.terminal_color_sync = function()
+      ---|fS
+
+      local BG = vim.api.nvim_get_hl(0, { name = "Normal" }).bg or 1973806
+      local FG = vim.api.nvim_get_hl(0, { name = "Normal" }).fg or 13489908
+
+      if not BG or not FG then
+        return
+      end
+
+      if _G.is_within_termux() then
+        pcall(io.write, string.format("\x1b]11;#%06x\x1b\\", BG))
+        pcall(io.write, string.format("\x1b]10;#%06x\x1b\\", FG))
+      end
+
+      ---|fE
+    end
+
+    --- Restores terminal's default colors.
+    _G.terminal_color_restore = function()
+      ---|fS
+
+      if _G.is_within_termux() then
+        pcall(io.write, "\x1b]110\x1b\\")
+        pcall(io.write, "\x1b]111\x1b\\")
+      end
+
+      ---|fE
+    end
+  end,
   setup = function()
     --- Changes the background to match neovim's colorscheme
     vim.api.nvim_create_autocmd({ "UIEnter", "Colorscheme" }, {

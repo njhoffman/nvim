@@ -217,16 +217,17 @@ function Renderer:render(tree) -- {{{
         local extmark = tag.attributes.extmark
 
         -- Set any necessary keymaps:
+        local map = require("mapper").map
         for _, mode in ipairs { 'i', 'n', 'v', 'x', 'o' } do
           for lhs, _ in pairs(tag.attributes[mode .. 'map'] or {}) do
             -- Force creating an extmark if there are key handlers. To accurately
             -- sense the bounds of the text, we need an extmark:
             extmark = extmark or {}
-            vim.keymap.set(
+            map(
               'n',
               lhs,
               function() return self:_expr_map_callback('n', lhs) end,
-              { buffer = self.bufnr, expr = true, replace_keycodes = true }
+              { buffer = self.bufnr, expr = true }
             )
           end
         end

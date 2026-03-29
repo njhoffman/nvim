@@ -1,645 +1,512 @@
-local hsl = require("lush").hsl
+local M = {}
 
----@diagnostic disable undefined-global
---luacheck: ignore
+function M.apply(p)
+  local set = vim.api.nvim_set_hl
 
-local tokyoColors = {}
+  -- MatchParen / MatchWord
+  set(0, "MatchWord", { fg = "#aa6699", italic = true })
+  set(0, "MatchWordCur", { fg = "#aa6699", italic = true })
+  set(0, "MatchParen", { fg = "#f35050", bold = true })
+  set(0, "MatchParenCur", { fg = "#ff66ff", bold = true })
+  set(0, "MatchParenCursor", { link = "MatchParenCur" })
+  set(0, "NvimTreesitterPairsSelf", { fg = "#f35050" })
+  set(0, "NvimTreesitterPairsPartner", { fg = "#f79000" })
 
-tokyoColors = {
-  none = "NONE",
-  bg_dark = "#1c1f24",
-  bg = "#24283b",
-  bg_highlight = "#292e42",
-  terminal_black = "#414868",
-  fg = "#c0caf5",
-  fg_dark = "#a9b1d6",
-  fg_gutter = "#3b4261",
-  dark3 = "#545c7e",
-  comment = "#565f89",
-  dark5 = "#737aa2",
-  blue0 = "#3d59a1",
-  blue = "#7aa2f7",
-  cyan = "#7dcfff",
-  blue1 = "#2ac3de",
-  blue2 = "#0db9d7",
-  blue5 = "#89ddff",
-  blue6 = "#B4F9F8",
-  blue7 = "#394b70",
-  magenta = "#bb9af7",
-  magenta2 = "#ff007c",
-  purple = "#9d7cd8",
-  orange = "#ff9e64",
-  yellow = "#e0af68",
-  green = "#9ece6a",
-  green1 = "#73daca",
-  green2 = "#41a6b5",
-  teal = "#1abc9c",
-  red = "#f7768e",
-  red1 = "#db4b4b",
-  git = { change = "#6183bb", add = "#449dab", delete = "#914c54", conflict = "#bb7a61" },
-  gitSigns = { add = "#164846", change = "#394b70", delete = "#823c41" },
-}
+  -- Indent guides
+  set(0, "IblIndent", { fg = "#102030", nocombine = true })
+  set(0, "IndentGuidesEven", { bg = p.nord1 })
+  set(0, "IndentGuidesOdd", { bg = p.nord2 })
+  set(0, "MiniIndentscopeSymbol", { fg = "#162a3a", bg = "#000000" })
+  set(0, "MiniIndentscopeSymbolOff", { fg = "#000000" })
 
-return function()
-  local colors = {
-    fg = "#C8D0E0",
-    fg_light = "#E5E9F0",
-    bg_dark = "#1c1f24",
-    bg = "#2E3440",
-    gray = "#646A76",
-    light_gray = "#6C7A96",
-    cyan = "#88C0D0",
-    blue = "#81A1C1",
-    dark_blue = "#5E81AC",
-    green = "#A3BE8C",
-    light_green = "#8FBCBB",
-    dark_red = "#BF616A",
-    red = "#D57780",
-    light_red = "#DE878F",
-    pink = "#E85B7A",
-    dark_pink = "#E44675",
-    orange = "#D08F70",
-    yellow = "#EBCB8B",
-    purple = "#B988B0",
-    light_purple = "#B48EAD",
-    none = "NONE",
-    highlight = hsl("#101c39"),
-  }
+  -- InfoWindow
+  set(0, "InfoWindowFloat", { fg = "#2886bf" })
 
-  local clr_over = {
-    -- select ion = "#2F3243",
-    -- -selection = "#0f2a56",
-    selection = "#122244",
-    orange = "#cc8877",
-    yellow = "#bdb994",
-    yellow_faded = "#7B6B3B",
-    purple_faded = "#6A6CAB",
-    red_faded = "#7F212A",
-    green_faded = "#128A67",
-    blue_faded = "#5171A1",
-  }
-  return {
+  -- BQF
+  set(0, "BqfPreviewFloat", { fg = "#4f7aaf", bg = "#000000" })
+  set(0, "BqfPreviewBorder", { fg = "#4f7aaf", bg = "#000000" })
+  set(0, "BqfPreviewRange", { link = "IncSearch" })
+  set(0, "BqfSign", { fg = "cyan" })
 
-    -- +--- DAP ---+
-    DAPLogPointSign({ fg = "#00f1f5" }),
-    DAPBreakpointSign({ fg = "#4790ff" }),
-    DAPStopSign({ fg = "#07ffc0" }),
-    DAPStopSignText({ bg = "#280000" }),
-    DapUIScope({ fg = "#00F1F5" }),
-    DapUIType({ fg = "#74b4cF" }),
-    DapUIDecoration({ fg = "#00F1F5" }),
-    DapUIThread({ fg = "#A9FF68" }),
-    DapUIStoppedThread({ fg = "#00f1f5" }),
-    DapUISource({ fg = "#8484FF" }),
-    DapUILineNumber({ fg = "#00f1f5" }),
-    DapUIFloatBorder({ fg = "#00F1F5" }),
-    DapUIWatchesHeader({ fg = "#00F1F5" }),
-    DapUIWatchesEmpty({ fg = "#F70067" }),
-    DapUIWatchesValue({ fg = "#A9FF68" }),
-    DapUIWatchesError({ fg = "#F70067" }),
-    DapUIBreakpointsPath({ fg = "#00F1F5" }),
-    DapUIBreakpointsInfo({ fg = "#A9FF68" }),
-    DapUIBreakpointsCurrentLine({ fg = "#A9FF68", gui = "bold" }),
-    DapUIVariable({ fg = "#6484cF" }),
-    -- DapUIFrameName { Normal },
-    -- DapUIBreakpointsLive { DapUILineNumber },
-    -- DapVariableTreeType { Comment },
-    -- DapVariableTreeOperator { Operator },
-    -- DapVariableTreeString { String },
-    -- DapVariableTreeNumber { Number },
+  -- Dashboard
+  set(0, "DashboardHeader", { fg = "#8AFF80" })
+  set(0, "DashboardKey", { fg = "#FF9580" })
+  set(0, "DashboardCenter", { fg = "#87BFCF" })
+  set(0, "DashboardDesc", { fg = "#87FEF8" })
+  set(0, "DashboardIcon", { fg = "#FCFC7F" })
+  set(0, "DashboardShortCut", { fg = p.tokyo.cyan })
+  set(0, "DashboardFooter", { fg = "#5D5D65" })
 
-    -- +--- PackageInfo ---+
-    PackageInfoOutdatedVersion({ fg = "#d19a66" }),
-    PackageInfoUpToDateVersion({ fg = "#3C4048" }),
+  -- Notify
+  set(0, "NotifyBackground", { bg = "#000000" })
+  set(0, "NotifyRepeatCount", { link = "Comment" })
+  set(0, "NotifySTATUSBorder", { fg = "#3a3286" })
+  set(0, "NotifySTATUSTitle", { fg = "#3a3286" })
+  set(0, "NotifySTATUSIcon", { fg = "#2a76b7" })
+  set(0, "NotifyINSPECTBorder", { fg = "#2A70fF" })
+  set(0, "NotifyINSPECTIcon", { fg = "#67b0f7" })
+  set(0, "NotifyINSPECTTitle", { fg = "#2760f7" })
+  set(0, "NotifyINFOBorder", { fg = "#008Fa8" })
+  set(0, "NotifyINFOIcon", { fg = "#19aFc8" })
+  set(0, "NotifyINFOTitle", { fg = "#19aFc8" })
+  set(0, "NotifyDEBUGBorder", { fg = "#4B6BBB" })
+  set(0, "NotifyDEBUGIcon", { fg = "#6B8BFF" })
+  set(0, "NotifyDEBUGTitle", { fg = "#6B8BFF" })
+  set(0, "NotifyTRACEBorder", { fg = "#637699" })
+  set(0, "NotifyTRACEIcon", { fg = "#637699" })
+  set(0, "NotifyTRACEBody", { fg = "#637699" })
+  set(0, "NotifyTRACETitle", { fg = "#7BABFF" })
+  set(0, "NotifyERRORBorder", { fg = "#8A1F1F" })
+  set(0, "NotifyERRORIcon", { fg = "#F74047" })
+  set(0, "NotifyERRORTitle", { fg = "#F74047" })
+  set(0, "NotifyWARNBorder", { fg = "#79491D" })
+  set(0, "NotifyWARNIcon", { fg = "#C77700" })
+  set(0, "NotifyWARNTitle", { fg = "#C77000" })
+  set(0, "NotifyRUNBorder", { fg = "#1f87c2" })
+  set(0, "NotifyRUNTitle", { fg = "#06c0f6" })
+  set(0, "NotifyRUNIcon", { fg = "#c6b087" })
+  set(0, "NotifyRunSuccessOutput", { fg = "#405f88" })
 
-    -- Folding Highlights
-    -- UfoPreviewSbar({ PmenuSbar }),
-    -- UfoPreviewThumb({ PmenuThumb }),
-    -- UfoFoldedEllipsis({ Comment }),
+  -- WhatKey
+  set(0, "WhatKeyKey", { fg = "#07c0f7" })
+  set(0, "WhatKeyOperator", { fg = "#917ccf" })
+  set(0, "WhatKeyGroup", { fg = "#418cf4" })
+  set(0, "WhatKeyDesc", { fg = "#5d79a1", italic = true })
+  set(0, "WhatKeySeperator", { fg = "#334664", bold = true })
+  set(0, "WhatKeyFloat", {})
+  set(0, "WhatKeyCursorLine", { bg = "#0a2446", bold = true })
 
-    -- +--- CMP ---+
+  -- WhichKey
+  set(0, "WhichKeyKey", { fg = "#07c0f7" })
+  set(0, "WhichKeyOperator", { fg = "#917ccf" })
+  set(0, "WhichKeyGroup", { fg = "#418cf4" })
+  set(0, "WhichKeyDesc", { fg = "#5d79a1", italic = true })
+  set(0, "WhichKeySeperator", { fg = "#334664", bold = true })
+  set(0, "WhichKeyFloat", {})
+  set(0, "WhichKeyCursorLine", { bg = "#0a2446", bold = true })
 
-    --   " gray
-    --   " {✅Class, ✅Module, ✅Interface, Struct, ✅Function, ✅Method, ✅Constructor,
-    --   "  ✅Variable, ✅Property, Field, ✅Unit, Value, Enum, EnumMember, Event,
-    --   "  ✅Keyword, Color, File, Reference, Folder, Constant, Operator, TypeParameter,
-    --   "  ✅Snippet, ✅Text}
-    -- +--- Notify ---+
-    -- NotifyINSPECTMsgArea{ Normal},
-    -- NotifyERRORMsgArea { Normal },
-    -- NotifyWARNMsgArea { Normal },
-    -- NotifyINFOMsgArea { Normal },
-    -- NotifyDEBUGMsgArea { Normal },
-    -- NotifyTRACEMsgArea { Normal },
-    -- NotifyERRORBorder = { fg = colors.error },
-    -- NotifyWARNBorder = { fg = colors.warn },
-    -- NotifyINFOBorder = { fg = colors.info },
-    -- NotifyDEBUGBorder = { fg = colors.light_gray },
-    -- NotifyTRACEBorder = { fg = colors.hint },
-    -- NotifyERRORIcon = { fg = colors.error },
-    -- NotifyWARNIcon = { fg = colors.warn },
-    -- NotifyINFOIcon = { fg = colors.info },
-    -- NotifyDEBUGIcon = { fg = colors.light_gray },
-    -- NotifyTRACEIcon = { fg = colors.hint },
-    -- NotifyERRORTitle = { fg = colors.error },
-    -- NotifyWARNTitle = { fg = colors.warn },
-    -- NotifyINFOTitle = { fg = colors.info },
-    -- NotifyDEBUGTitle = { fg = colors.light_gray },
-    -- NotifyTRACETitle = { fg = colors.hint },
+  -- TSRainbow
+  set(0, "TSRainbowRed", { fg = p.rainbow_red })
+  set(0, "TSRainbowYellow", { fg = p.rainbow_yellow })
+  set(0, "TSRainbowBlue", { fg = p.rainbow_blue })
+  set(0, "TSRainbowOrange", { fg = p.rainbow_orange })
+  set(0, "TSRainbowGreen", { fg = p.rainbow_green })
+  set(0, "TSRainbowViolet", { fg = p.rainbow_violet })
+  set(0, "TSRainbowCyan", { fg = p.rainbow_cyan })
 
-    -- -- NeoTree
-    NeoTreeIndentMarker({ fg = "#222222" }),
-    -- -- Trouble
-    -- TroubleCount = { fg = colors.purple },
-    -- TroubleNormal = { fg = colors.fg },
-    -- TroubleText = { fg = colors.fg },
+  -- nvim-cmp
+  set(0, "CmpCursorLine", { bg = "#142446" })
+  set(0, "CmpNormal", { fg = "#667da9", bg = "#06061a" })
+  set(0, "CmpFloatBorder", { fg = "#3f5382", bg = "#000a1a" })
+  set(0, "CmpGhostLight", { fg = "#1f4f94" })
+  set(0, "CmpGhostDark", { fg = "#27476c" })
+  set(0, "CmpGhostText", { fg = "#1f4f94" })
+  set(0, "CmpPmenu", { bg = "#001020" })
+  set(0, "CmpPmenuBorder", { bg = "#242a30" })
+  set(0, "CmpItemMenu", { fg = "#6C7A96" })
+  set(0, "CmpItemAbbr", { fg = "#4c74a4" })
+  set(0, "CmpItemAbbrDeprecated", { fg = "#3c6494", strikethrough = true })
+  set(0, "CmpItemAbbrMatch", { fg = "#208Ff8", italic = true })
+  set(0, "CmpItemAbbrMatchFuzzy", { fg = "#008Fb8", italic = true })
+  set(0, "CmpItemKindArray", { fg = p.tokyo.blue })
+  set(0, "CmpItemKindBoolean", { fg = p.tokyo.orange })
+  set(0, "CmpItemKindClass", { fg = p.yellow })
+  set(0, "CmpItemKindConstant", { fg = p.orange })
+  set(0, "CmpItemKindConstructor", { fg = p.yellow })
+  set(0, "CmpItemKindCodeium", { fg = "#6460ff" })
+  set(0, "CmpItemKindCopilot", { fg = p.tokyo.green2 })
+  set(0, "CmpItemKindDefault", { fg = p.tokyo.fg })
+  set(0, "CmpItemKindEnum", { fg = p.yellow })
+  set(0, "CmpItemKindEnumMember", { fg = p.cyan })
+  set(0, "CmpItemKindEvent", { fg = p.tokyo.orange })
+  set(0, "CmpItemKindField", { fg = p.blue })
+  set(0, "CmpItemKindFile", { fg = p.blue })
+  set(0, "CmpItemKindKey", { fg = p.fg })
+  set(0, "CmpItemKindFunction", { fg = p.purple })
+  set(0, "CmpItemKindInterface", { fg = p.yellow })
+  set(0, "CmpItemKindKeyword", { fg = p.tokyo.cyan })
+  set(0, "CmpItemKindMethod", { fg = p.purple })
+  set(0, "CmpItemKindModule", { fg = p.blue })
+  set(0, "CmpItemKindNamespace", { fg = p.tokyo.purple })
+  set(0, "CmpItemKindNumber", { fg = p.tokyo.orange })
+  set(0, "CmpItemKindNull", { fg = p.tokyo.orange })
+  set(0, "CmpItemKindObject", { fg = p.tokyo.blue })
+  set(0, "CmpItemKindOperator", { fg = p.tokyo.green1 })
+  set(0, "CmpItemKindPackage", { fg = p.tokyo.orange })
+  set(0, "CmpItemKindProperty", { fg = p.blue })
+  set(0, "CmpItemKindReference", { fg = p.tokyo.magenta })
+  set(0, "CmpItemKindSnippet", { fg = p.tokyo.green2 })
+  set(0, "CmpItemKindString", { fg = p.tokyo.green2 })
+  set(0, "CmpItemKindStruct", { fg = p.yellow })
+  set(0, "CmpItemKindText", { fg = "#489aac" })
+  set(0, "CmpItemKindTypeParameter", { fg = p.yellow })
+  set(0, "CmpItemKindUnit", { fg = p.orange })
+  set(0, "CmpItemKindValue", { fg = p.orange })
+  set(0, "CmpItemKindVariable", { fg = p.tokyo.blue2 })
 
-    -- -- Diff
-    -- diffAdded = { fg = colors.diff_add },
-    -- diffRemoved = { fg = colors.diff_remove },
-    -- diffChanged = { fg = colors.diff_change },
-    -- diffOldFile = { fg = colors.yellow },
-    -- diffNewFile = { fg = colors.orange },
-    -- diffFile = { fg = colors.blue },
-    -- diffLine = { fg = colors.light_gray },
-    -- diffIndexLine = { fg = colors.purple },
+  -- Cmp sources
+  set(0, "CmpSourceNvimLsp", { fg = "#0ca6ff" })
+  set(0, "CmpSourceLuasnip", { fg = "#8fa080" })
+  set(0, "CmpSourceTreesitter", { fg = "#4C86a4" })
+  set(0, "CmpSourceCodeium", { fg = "#6460ff" })
+  set(0, "CmpSourceCopilot", { fg = p.tokyo.green2 })
+  set(0, "CmpSourceAsyncPath", { fg = "#6F65f0" })
+  set(0, "CmpSourcePath", { fg = "#6F65f0" })
+  set(0, "CmpSourceFuzzyPath", { fg = "#6F65f0" })
+  set(0, "CmpSourceCmdline", { fg = "#8F65a0" })
+  set(0, "CmpSourceCmdlineHistory", { fg = "#4482fc" })
+  set(0, "CmpSourceQuickData", { fg = "#6462cc" })
+  set(0, "CmpSourceYanky", { fg = "#24a2ac" })
 
-    -- -- Neogit
-    -- NeogitBranch = { fg = colors.purple },
-    -- NeogitRemote = { fg = colors.orange },
-    -- NeogitHunkHeader = { fg = colors.fg, bg = colors.highlight },
-    -- NeogitHunkHeaderHighlight = { fg = colors.yellow, bg = colors.highlight },
-    -- NeogitDiffContextHighlight = { bg = colors.active },
-    -- NeogitDiffDeleteHighlight = { fg = colors.diff_remove, bg = colors.diff_remove_bg },
-    -- NeogitDiffAddHighlight = { fg = colors.diff_add, bg = colors.diff_add_bg },
+  -- nvim-navic
+  set(0, "NavicSeparator", { fg = p.tokyo.fg })
+  set(0, "NavicText", { fg = p.tokyo.fg })
+  set(0, "NavicIconsArray", { link = "CmpItemKindArray" })
+  set(0, "NavicIconsBoolean", { link = "CmpItemKindBoolean" })
+  set(0, "NavicIconsClass", { link = "CmpItemKindClass" })
+  set(0, "NavicIconsConstant", { link = "CmpItemKindConstant" })
+  set(0, "NavicIconsConstructor", { link = "CmpItemKindConstructor" })
+  set(0, "NavicIconsEnum", { link = "CmpItemKindEnum" })
+  set(0, "NavicIconsEnumMember", { link = "CmpItemKindEnumMember" })
+  set(0, "NavicIconsEvent", { link = "CmpItemKindEvent" })
+  set(0, "NavicIconsField", { link = "CmpItemKindField" })
+  set(0, "NavicIconsFile", { link = "CmpItemKindFile" })
+  set(0, "NavicIconsFunction", { link = "CmpItemKindFunction" })
+  set(0, "NavicIconsInterface", { link = "CmpItemKindInterface" })
+  set(0, "NavicIconsKey", { link = "CmpItemKindKey" })
+  set(0, "NavicIconsMethod", { link = "CmpItemKindMethod" })
+  set(0, "NavicIconsModule", { link = "CmpItemKindModule" })
+  set(0, "NavicIconsNamespace", { link = "CmpItemKindNamespace" })
+  set(0, "NavicIconsNull", { link = "CmpItemKindNull" })
+  set(0, "NavicIconsNumber", { link = "CmpItemKindNumber" })
+  set(0, "NavicIconsOperator", { link = "CmpItemKindOperator" })
+  set(0, "NavicIconsObject", { link = "CmpItemKindObject" })
+  set(0, "NavicIconsPackage", { link = "CmpItemKindPackage" })
+  set(0, "NavicIconsProperty", { link = "CmpItemKindProperty" })
+  set(0, "NavicIconsString", { link = "CmpItemKindString" })
+  set(0, "NavicIconsStruct", { link = "CmpItemKindStruct" })
+  set(0, "NavicIconsTypeParameter", { link = "CmpItemKindTypeParameter" })
+  set(0, "NavicIconsVariable", { link = "CmpItemKindVariable" })
 
-    -- NeogitNotificationInfo = { fg = colors.info },
-    -- NeogitNotificationWarning = { fg = colors.warn },
-    -- NeogitNotificationError = { fg = colors.error },
+  -- Aerial
+  set(0, "AerialDefault", {})
+  set(0, "AerialGuide", { fg = "#182838" })
+  set(0, "AerialLine", { fg = "#00aacc", bg = "#002233", bold = true })
+  set(0, "AerialLineNC", { fg = "#00ff88", bg = "blue" })
+  set(0, "AerialArrayIcon", { link = "CmpItemKindArray" })
+  set(0, "AerialBooleanIcon", { link = "CmpItemKindBoolean" })
+  set(0, "AerialClassIcon", { link = "CmpItemKindClass" })
+  set(0, "AerialConstantIcon", { link = "CmpItemKindConstant" })
+  set(0, "AerialFileIcon", { link = "CmpItemKindFile" })
+  set(0, "AerialFunctionIcon", { link = "CmpItemKindFunction" })
+  set(0, "AerialInterfaceIcon", { link = "CmpItemKindInterface" })
+  set(0, "AerialKeyIcon", { link = "CmpItemKindKey" })
+  set(0, "AerialMethodIcon", { link = "CmpItemKindMethod" })
+  set(0, "AerialModuleIcon", { link = "CmpItemKindModule" })
+  set(0, "AerialNamespaceIcon", { link = "CmpItemKindNamespace" })
+  set(0, "AerialNullIcon", { link = "CmpItemKindNull" })
+  set(0, "AerialNumberIcon", { link = "CmpItemKindNumber" })
+  set(0, "AerialObjectIcon", { link = "CmpItemKindObject" })
+  set(0, "AerialOperatorIcon", { link = "CmpItemKindOperator" })
+  set(0, "AerialPackageIcon", { link = "CmpItemKindPackage" })
+  set(0, "AerialPropertyIcon", { link = "CmpItemKindProperty" })
+  set(0, "AerialStringIcon", { link = "CmpItemKindString" })
+  set(0, "AerialStructIcon", { link = "CmpItemKindStruct" })
+  set(0, "AerialTypeParameterIcon", { link = "CmpItemKindTypeParameter" })
+  set(0, "AerialVariableIcon", { link = "CmpItemKindVariable" })
 
-    -- -- GitGutter
-    -- GitGutterAdd = { fg = colors.diff_add }, -- diff mode: Added line |diff.txt|
-    -- GitGutterChange = { fg = colors.diff_change }, -- diff mode: Changed line |diff.txt|
-    -- GitGutterDelete = { fg = colors.diff_remove }, -- diff mode: Deleted line |diff.txt|
+  -- Telescope
+  set(0, "TelescopeNormal", { fg = "#4f6f9f" })
+  set(0, "TelescopeComment", { link = "Comment" })
+  set(0, "TelescopeBorder", { fg = "#2299cc" })
+  set(0, "TelescopePrompt", {})
+  set(0, "TelescopePromptTitle", { fg = "#07a0ff" })
+  set(0, "TelescopePromptCounter", { fg = "#4d577a" })
+  set(0, "TelescopePromptNormal", { fg = "#2299cc" })
+  set(0, "TelescopePromptBorder", { fg = "#416191" })
+  set(0, "TelescopePromptPrefix", { fg = "#2977FF" })
+  set(0, "TelescopePreviewBorder", { fg = "#416191" })
+  set(0, "TelescopeResults", {})
+  set(0, "TelescopeResultsBorder", { fg = "#416191" })
+  set(0, "TelescopeMatching", { fg = "#4070cc" })
+  set(0, "TelescopeFrecencyScores", { fg = "#34799c" })
+  set(0, "TelescopeBufferLoaded", { fg = "#47a0f0" })
+  set(0, "TelescopeSelectionCaret", { fg = "#04f9cc" })
+  set(0, "TelescopeSelection", { fg = "#008acf", bold = true, bg = "#061028" })
+  set(0, "TelescopeMultiIcon", { fg = "#0028ff", bg = "#10003c", bold = true })
+  set(0, "TelescopeMultiSelection", { fg = "#2080cf", bg = "#001024", italic = true })
+  set(0, "TelescopeTitle", { fg = "#2299ff", bold = true })
+  set(0, "TelescopePreviewTitle", { fg = "#47a0f0" })
+  set(0, "TelescopeResultsTitle", { fg = "#64a9ec" })
+  set(0, "TelescopeResultsIdentifier", { fg = "#6476ce" })
+  set(0, "TelescopeResultsSpecialComment", { fg = "#4488cc" })
+  set(0, "TelescopeResultsField", { fg = "#4090ff" })
+  set(0, "TelescopeResultsSeparator", { fg = "#1f3f5f" })
+  set(0, "TelescopeWhichKeyBind", { fg = "#07c0f7" })
+  set(0, "TelescopeWhichKeyBindCustom", { fg = "#07c0f7", bold = true })
+  set(0, "TelescopeWhichKeyName", { fg = "#5d79a1", italic = true })
+  set(0, "TelescopeWhichKeyNameCustom", { fg = "#88aee9", bold = true })
+  set(0, "TelescopeWhichKeyBorder", { fg = "#5d79a1", italic = true })
 
-    -- -- GitSigns
-    -- GitSignsAdd = { fg = colors.diff_add }, -- diff mode: Added line |diff.txt|
-    -- GitSignsAddNr = { fg = colors.diff_add }, -- diff mode: Added line |diff.txt|
-    -- GitSignsAddLn = { fg = colors.diff_add }, -- diff mode: Added line |diff.txt|
-    -- GitSignsChange = { fg = colors.diff_change }, -- diff mode: Changed line |diff.txt|
-    -- GitSignsChangeNr = { fg = colors.diff_change }, -- diff mode: Changed line |diff.txt|
-    -- GitSignsChangeLn = { fg = colors.diff_change }, -- diff mode: Changed line |diff.txt|
-    -- GitSignsDelete = { fg = colors.diff_remove }, -- diff mode: Deleted line |diff.txt|
-    -- GitSignsDeleteNr = { fg = colors.diff_remove }, -- diff mode: Deleted line |diff.txt|
-    -- GitSignsDeleteLn = { fg = colors.diff_remove }, -- diff mode: Deleted line |diff.txt|
-    -- -- NvimTree
-    -- NvimTreeSymlink = { fg = colors.cyan, gui = "bold" },
-    -- NvimTreeRootFolder = { fg = colors.green, gui = "bold" },
-    -- NvimTreeFolderName = { fg = colors.blue },
-    -- NvimTreeFolderIcon = { fg = colors.dark_blue },
-    -- NvimTreeEmptyFolderName = { fg = colors.light_gray },
-    -- NvimTreeOpenedFolderName = { fg = colors.yellow, gui = "italic" },
-    -- NvimTreeIndentMarker = { fg = colors.blue },
-    -- NvimTreeGitDirty = { fg = colors.yellow },
-    -- NvimTreeGitNew = { fg = colors.diff_add },
-    -- NvimTreeGitStaged = { fg = colors.purple },
-    -- NvimTreeGitDeleted = { fg = colors.diff_remove },
-    -- NvimTreeExecFile = { fg = colors.green, gui = "bold" },
-    -- NvimTreeOpenedFile = { fg = colors.none },
-    -- NvimTreeSpecialFile = { fg = colors.orange, gui = "underline" },
-    -- NvimTreeImageFile = { fg = colors.purple, gui = "bold" },
-    -- NvimTreeNormal = { fg = colors.fg, bg = colors.active },
-    -- NvimTreeCursorLine = { bg = colors.float },
-    -- NvimTreeVertSplit = { fg = colors.active, bg = colors.active },
+  -- Navbuddy
+  set(0, "NavbuddyName", { bg = "#40112f", bold = true })
+  set(0, "NavbuddyTitleBorder", { fg = "#222222" })
+  set(0, "NavbuddyScope", { bg = "#061026", italic = true })
 
-    -- -- BufferLine
-    -- BufferLineIndicatorSelected = { fg = colors.yellow },
-    -- BufferLineFill = { bg = colors.bg },
+  -- Illuminate
+  set(0, "IlluminatedWordRead", { bg = "#101c39" })
+  set(0, "IlluminatedWordText", { bg = "#101c39" })
+  set(0, "IlluminatedWordWrite", { bg = "#101c39" })
 
-    TabLineFill({ fg = "NONE", bg = colors.bg_dark }),
-    TabLine({ fg = colors.bg, bg = colors.bg_dark }),
-    TabLineSel({ fg = colors.bg, bg = colors.bg_dark }),
-    -- Illuminate
-    -- illuminatedCurWord = { bg = colors.highlight },
+  -- Highlight-undo
+  set(0, "HighlightUndo", { fg = "#b7001e", bg = "#0f2139" })
+  set(0, "HighlightRedo", { fg = "#00ffdd", bg = "#003149" })
 
-    -- -- Sneak
-    -- Sneak = { fg = colors.bg, bg = colors.fg },
-    -- SneakScope = { bg = colors.selection },
+  -- Git-conflict
+  set(0, "GitConflictCurrent", { bg = "#203d5e" })
+  set(0, "GitConflictIncoming", { bg = "#003723" })
+  set(0, "GitConflictAncestor", { bg = "#28218A" })
 
-    -- -- Nvim dap
-    -- DapBreakpoint = { fg = colors.red },
-    -- DapStopped = { fg = colors.green },
+  -- GitSigns
+  set(0, "GitSignsAddFaded", { fg = p.green_faded })
+  set(0, "GitSignsAddNrFaded", { fg = p.green_faded })
+  set(0, "GitSignsAddLnFaded", { fg = p.green_faded })
+  set(0, "GitSignsChangeFaded", { fg = p.blue_faded })
+  set(0, "GitSignsChangeNrFaded", { fg = p.blue_faded })
+  set(0, "GitSignsChangeLnFaded", { fg = p.blue_faded })
+  set(0, "GitSignsChangeDeleteFaded", { fg = p.purple_faded })
+  set(0, "GitSignsChangeDeleteNrFaded", { fg = p.purple_faded })
+  set(0, "GitSignsChangeDeleteLnFaded", { fg = p.purple_faded })
+  set(0, "GitSignsDeleteFaded", { fg = p.red_faded })
+  set(0, "GitSignsDeleteNrFaded", { fg = p.red_faded })
+  set(0, "GitSignsDeleteLnFaded", { fg = p.red_faded })
+  set(0, "GitSignsAdd", { fg = p.nord14 })
+  set(0, "GitSignsAddNr", { fg = p.nord14 })
+  set(0, "GitSignsAddLn", { fg = p.nord14 })
+  set(0, "GitSignsChange", { fg = p.nord15 })
+  set(0, "GitSignsChangeNr", { fg = p.nord15 })
+  set(0, "GitSignsChangeLn", { fg = p.nord15 })
+  set(0, "GitSignsDelete", { fg = p.nord11 })
+  set(0, "GitSignsDeleteNr", { fg = p.nord11 })
+  set(0, "GitSignsDeleteLn", { fg = p.nord11 })
 
-    -- -- Hop
-    -- HopNextKey = { fg = colors.fg_light, gui = "bold" },
-    -- HopNextKey1 = { fg = colors.cyan, gui = "bold" },
-    -- HopNextKey2 = { fg = colors.purple },
-    -- HopUnmatched = { fg = colors.light_gray },
+  -- GitGutter (from nord-nvim)
+  set(0, "GitGutterAdd", { fg = p.nord14 })
+  set(0, "GitGutterChange", { fg = p.nord15 })
+  set(0, "GitGutterDelete", { fg = p.nord11 })
 
-    -- -- Fern
-    -- FernBranchText = { fg = colors.blue },
+  -- Neogit (from nord-nvim)
+  set(0, "NeogitBranch", { fg = p.nord10 })
+  set(0, "NeogitRemote", { fg = p.nord9 })
+  set(0, "NeogitHunkHeaderHighlight", { fg = p.nord7 })
+  set(0, "NeogitDiffDeleteHighlight", { fg = p.nord11 })
+  set(0, "NeogitDiffAddHighlight", { fg = p.nord14 })
 
-    -- WFComment({ fg = "#2aa1ae"}),
-    -- WFWhichRem({ fg = "#2aa1ae"}),
-    -- WFFreeze({ fg = "#2aa1ae"}),
-    -- WFSeparator({ fg = "#2aa1ae"}),
-    -- WFTitleOutput({ fg = "#67b11d"}),
-    -- WFTitleWhich({ fg = "#67b11d"}),
-    -- WFTitleFuzzy({ fg = "#67b11d"}),
-    -- WFNormal({ fg = "#4583a0"}),
-    -- WFWhichDesc({fg = "#4583a0" }),
-    -- WFFocus({fg = "#4583a0"}),
-    -- WFWhichUnique({fg = "#ce537a"}),
-    -- WFExpandable({fg = "#ce537a"}),
-    -- WFFloatBorder({fg = "#2d9574"}),
-    -- WFFloatBorderFocus({fg = "#2d9574"}),
-    -- WFTitleFreeze({fg = "#2aa1ae"}),
-    -- WFWhichOn({fg = "#4f97d7"}),
-    -- WFFuzzy({fg = "#bc6ec5"}),
-    -- WFGroup({fg = "#bc6ec5"}),
-    -- WFWhichObjCounter({fg = "#44505c"}),
-    -- WFFuzzyPrompt({fg = "#f2241f"}),
+  -- Flash
+  set(0, "FlashBackdrop", { fg = "#405560" })
+  set(0, "FlashLabel", { fg = "#cc0044", bold = true, italic = true })
+  set(0, "FlashCharMatch", { fg = "#33c78a", bg = "#0a331a" })
+  set(0, "FlashCharLabel", { fg = "#33aaff", bold = true, italic = true })
 
-    --  WFNormal({Normal}),
-    --  WFFloatBorder({FloatBorder}),
-    --  WFFloatBorderFocus({FloatBorder}),
-    --  WFComment({Comment}),
-    --  WFWhichRem({Comment}),
-    --  WFWhichOn({Keyword}),
-    --  WFFuzzy({String}),
-    --  WFFuzzyPrompt({Error}),
-    --  WFFocus({WFNormal}),
-    --  WFFreeze({Comment}),
-    --  WFWhichObjCounter({NonText}),
-    --  WFWhichDesc({Normal}),
-    --  WFSeparator({Comment}),
-    --  WFGroup({Function}),
-    --  WFWhichUnique({Type}),
-    --  WFExpandable({Type}),
-    --  WFTitleOutput({Title}),
-    --  WFTitleWhich({Title}),
-    --  WFTitleFuzzy({Title}),
-    --  WFTitleFreeze({WFFreeze}),
+  -- Dressing
+  set(0, "TaskFloat", { fg = "#2a8ccb" })
+  set(0, "TaskFloatBorder", { fg = "#2151a1" })
 
-    -- betterlua
-    -- set g:lua_subversion to change the highlighting of the standard library
-    -- set g:BetterLua_enable_emmylua to 0 to turn off EmmyLua comment highlighting
-    -- luaAttrib
-    -- luaFuncCall
-    -- luaEmmyKeyword The @ directives like @param, @type
-    -- luaEmmyClassName
-    -- luaEmmyAliasName
-    -- luaEmmyParamName
-    -- luaEmmyFieldName
-    -- luaEmmyFieldExposure: public, protected, or private after a @field directive
-    -- luaEmmyGenericName
-    -- luaEmmyGenericParentName
-    -- luaEmmyFieldName
-    -- luaEmmyLang
-    -- luaEmmyType:  Type names the string in @param foo string or @type string for var annotations
-    -- luaSelf - Self, while not a keyword, has a highlight group
-    -- luaSymbol - Operator symbols are now highlighted
-    -- Varargs has a separate highlight group to not get highlighted as a partial concatenation operator
-    -- luaVarargs
+  -- MiniClue
+  set(0, "MiniClueNextKey", { fg = "#07c0f7" })
+  set(0, "MiniClueDescSingle", { italic = true })
+  set(0, "MiniClueSeparator", { fg = "#333344" })
+  set(0, "MiniClueTitle", { fg = "#f38080" })
 
-    -- -- Lightspeed
-    -- LightspeedLabel = { fg = colors.pink, gui = "bold,underline" },
-    -- LightspeedLabelOverlapped = { fg = colors.dark_pink, gui = "underline" },
-    -- LightspeedLabelDistant = { fg = colors.cyan, gui = "bold,underline" },
-    -- LightspeedLabelDistantOverlapped = { fg = colors.blue, gui = "underline" },
-    -- LightspeedShortcut = { fg = "#E5E9F0", bg = colors.pink, gui = "bold,underline" },
-    -- LightspeedMaskedChar = { fg = colors.light_purple },
-    -- LightspeedGreyWash = { fg = colors.gray },
-    -- LightspeedUnlabeledMatch = { fg = colors.fg_light, gui = "bold" },
-    -- LightspeedOneCharMatch = { fg = colors.yellow, gui = "bold,reverse" },
-  }
+  -- Symbol-usage
+  set(0, "SymbolInlay", { fg = "#004466", italic = true })
 
-  --   OctoDirty	ErrorMsg
-  --   OctoIssueTitle	PreProc
-  --   OctoIssueId	Question
-  --   OctoEmpty	Comment
-  --   OctoFloat	NormalNC
-  --   OctoDate	Comment
-  --   OctoSymbol	Comment
-  --   OctoTimelineItemHeading	Comment
-  --   OctoDetailsLabel	Title
-  --   OctoMissingDetails	Comment
-  --   OctoDetailsValue	Identifier
-  --   OctoDiffHunkPosition	NormalFloat
-  --   OctoCommentLine	TabLineSel
-  --   OctoEditable	NormalFloat
-  --   OctoViewer	GitHub color
-  --   OctoBubble	NormalFloat
-  --   OctoBubbleGreen	GitHub color
-  --   OctoBubbleRed	GitHub color
-  --   OctoUser	OctoBubble
-  --   OctoUserViewer	OctoViewer
-  --   OctoReaction	OctoBubble
-  --   OctoReactionViewer	OctoViewer
-  --   OctoPassingTest	GitHub color
-  --   OctoFailingTest	GitHub color
-  --   OctoPullAdditions	GitHub color
-  --   OctoPullDeletions	GitHub color
-  --   OctoPullModifications	GitHub color
-  --   OctoStateOpen	GitHub color
-  --   OctoStateClosed	GitHub color
-  --   OctoStateMerge	GitHub color
-  --   OctoStatePending	GitHub color
-  --   OctoStateApproved	OctoStateOpen
-  --   OctoStateChangesRequested	OctoStateClosed
-  --   OctoStateCommented	Normal
-  --   OctoStateDismissed	OctoStateClosed
+  -- BackseatText
+  set(0, "BackseatText", { fg = "#206b8b", italic = true })
 
-  -- DiffAdd {
-  --   fg = clrs.nord14,
-  --   bg = cfg.nord_uniform_diff_background == 0 and clrs.nord0 or clrs.nord1,
-  --   gui = spec.inverse,
-  -- },
-  -- DiffChange {
-  --   fg = clrs.nord13,
-  --   bg = cfg.nord_uniform_diff_background == 0 and clrs.nord0 or clrs.nord1,
-  --   gui = spec.inverse,
-  -- },
-  -- DiffDelete {
-  --   fg = clrs.nord11,
-  --   bg = cfg.nord_uniform_diff_background == 0 and clrs.nord0 or clrs.nord1,
-  --   gui = spec.inverse,
-  -- },
-  -- DiffText {
-  --   fg = clrs.nord9,
-  --   bg = cfg.nord_uniform_diff_background == 0 and clrs.nord0 or clrs.nord1,
-  --   gui = spec.inverse,
-  -- },
+  -- Renamer
+  set(0, "RenamerBorder", { fg = "#4466ff" })
 
-  -- gitDiff, gitcommitDiff, gitDiffMerge, gitDiffRemoved
-  -- DiffAdd        xxx ctermbg=4 guibg=#00361f
-  -- DiffviewDiffAddAsDelete xxx guibg=#3E0009
-  --
-  -- DiffviewDim1   xxx guifg=#495a74
-  -- DiffviewPrimary xxx guifg=#6e99c6
-  -- DiffviewNormal xxx links to Normal
-  -- DiffviewSecondary xxx guifg=#5679b3
-  -- DiffviewNonText xxx links to NonText
-  -- DiffviewSignColumn xxx links to Normal
-  -- DiffviewDiffDelete xxx links to Comment
-  -- DiffviewFolderSign xxx links to PreProc
-  -- DiffviewVertSplit xxx links to VertSplit
-  -- DiffviewDiffAddAsDelete xxx guibg=#3E0009
-  -- DiffviewFolderName xxx links to Directory
-  -- DiffviewCursorLine xxx links to CursorLine
-  -- DiffviewStatusLine xxx links to StatusLine
-  -- DiffviewStatusAdded xxx links to diffAdded
-  -- DiffviewFilePanelPath xxx links to Comment
-  -- DiffviewStatusIgnored xxx links to Comment
-  -- DiffviewFilePanelFileName xxx guifg=#8396B9
-  -- DiffviewEndOfBuffer xxx links to EndOfBuffer
-  -- DiffviewStatusCopied xxx links to diffChanged
-  -- DiffviewStatusBroken xxx links to diffRemoved
-  -- DiffviewStatusRenamed xxx links to diffChanged
-  -- DiffviewStatusLineNC xxx links to StatusLineNC
-  -- DiffviewStatusUntracked xxx links to diffAdded
-  -- DiffviewStatusDeleted xxx links to diffRemoved
-  -- DiffviewStatusUnknown xxx links to diffRemoved
-  -- DiffviewStatusModified xxx links to diffChanged
-  -- DiffviewStatusUnmerged xxx links to diffChanged
-  -- DiffviewFilePanelTitle xxx gui=bold guifg=#187298
-  -- DiffviewStatusTypeChange xxx links to diffChanged
-  -- DiffviewFilePanelInsertions xxx links to diffAdded
-  -- DiffviewFilePanelCounter xxx gui=bold guifg=#6e99c6
-  -- DiffviewFilePanelDeletions xxx links to diffRemoved
-  -- DiffviewFilePanelRootPath xxx links to
-  -- DiffviewFilePanelTitle
-  -- DiffviewDim1   xxx guifg=#495a74 DiffviewPrimary xxx guifg=#6e99c6 DiffviewNormal xxx links to Normal DiffviewSecondary xxx guifg=#5679b3 DiffviewNonText xxx links to NonText DiffviewSignColumn xxx links to Normal DiffviewDiffDelete xxx links to Comment DiffviewFolderSign xxx links to PreProc DiffviewVertSplit xxx links to VertSplit DiffviewDiffAddAsDelete xxx guibg=#3E0009 DiffviewFolderName xxx links to Directory DiffviewCursorLine xxx links to CursorLine DiffviewStatusLine xxx links to StatusLine DiffviewStatusAdded xxx links to diffAdded DiffviewFilePanelPath xxx links to Comment DiffviewStatusIgnored xxx links to Comment DiffviewFilePanelFileName xxx guifg=#8396B9 DiffviewEndOfBuffer xxx links to EndOfBuffer gitDiff        xxx cleared gitDiffMerge   xxx cleared gitcommitDiff  xxx cleared
+  -- Registers
+  set(0, "RegistersPreview", { fg = "#009ac8" })
 
-  -- -- Neogit
-  -- NeogitBranch = { fg = clrs.nord10 },
-  -- NeogitRemote = { fg = clrs.nord9 },
-  -- NeogitHunkHeader = { fg = clrs.fg, bg = clrs.highlight },
-  -- NeogitHunkHeaderHighlight = { fg = clrs.nord7, bg = clrs.contrast },
-  -- NeogitDiffContextHighlight = { fg = clrs.bg_alt, bg = clrs.contrast },
-  -- NeogitDiffDeleteHighlight = { fg = clrs.nord11 },
-  -- NeogitDiffAddHighlight = { fg = clrs.nord14 },
-  -- -- GitGutter
-  -- GitGutterAdd = { fg = clrs.nord14 }, -- diff mode: Added line |diff.txt|
-  -- GitGutterChange = { fg = clrs.nord15 }, -- diff mode: Changed line |diff.txt|
-  -- GitGutterDelete = { fg = clrs.nord11 }, -- diff mode: Deleted line |diff.txt|
-  -- -- GitSigns
-  -- GitSignsAdd = { fg = clrs.nord14 }, -- diff mode: Added line |diff.txt|
-  -- GitSignsAddNr = { fg = clrs.nord14 }, -- diff mode: Added line |diff.txt|
-  -- GitSignsAddLn = { fg = clrs.nord14 }, -- diff mode: Added line |diff.txt|
-  -- GitSignsChange = { fg = clrs.nord15 }, -- diff mode: Changed line |diff.txt|
-  -- GitSignsChangeNr = { fg = clrs.nord15 }, -- diff mode: Changed line |diff.txt|
-  -- GitSignsChangeLn = { fg = clrs.nord15 }, -- diff mode: Changed line |diff.txt|
-  -- GitSignsDelete = { fg = clrs.nord11 }, -- diff mode: Deleted line |diff.txt|
-  -- GitSignsDeleteNr = { fg = clrs.nord11 }, -- diff mode: Deleted line |diff.txt|
-  -- GitSignsDeleteLn = { fg = clrs.nord11 }, -- diff mode: Deleted line |diff.txt|
-  -- -- NvimTree
-  -- NvimTreeRootFolder = { fg = clrs.nord7, gui = "bold" },
-  -- NvimTreeGitDirty = { fg = clrs.nord15 },
-  -- NvimTreeGitNew = { fg = clrs.nord14 },
-  -- NvimTreeImageFile = { fg = clrs.nord15 },
-  -- NvimTreeExecFile = { fg = clrs.nord14 },
-  -- NvimTreeSpecialFile = { fg = clrs.nord9, gui = spec.underline },
-  -- NvimTreeFolderName = { fg = clrs.nord10 },
-  -- NvimTreeEmptyFolderName = { fg = clrs.disabled },
-  -- NvimTreeFolderIcon = { fg = clrs.accent },
-  -- NvimTreeIndentMarker = { fg = clrs.disabled },
+  -- Leap
+  set(0, "LeapMatch", { fg = "#00ffdd" })
+
+  -- Barbar
+  -- set(0, "BufferTabpages", { fg = "#51afef", bg = "#3e4556", bold = true })
+  -- set(0, "BufferTabpagesFill", { fg = "#3f444a", bg = "#1c1f24", bold = true })
+  -- set(0, "BufferCurrentError", { bg = "#003d79" })
+  set(0, "BuffertCurrent", { fg = "#a8c0f0", bg = "#003d79", bold = true })
+  -- set(0, "BufferCurrentIcon", { fg = p.yellow, bg = "#003d79", bold = true })
+  -- set(0, "BufferCurrentMod", { fg = p.yellow, bg = "#003d79", bold = true })
+  -- set(0, "BufferCurrentSign", { fg = "#51afff", bg = "#003d79" })
+  set(0, "BufferAlternate", { bg = "#162343" })
+  set(0, "BufferAlternateMod", { bg = "#162343", fg = "#988881" })
+  set(0, "BufferAlternateIcon", { bg = "#162343", fg = "#3a5677" })
+
+  -- Noice
+  set(0, "NoiceCmdlinePopupTitle", { bold = true, fg = "#82b4ff" })
+  set(0, "NoiceCmdlinePopupTitleFilter", { fg = "#b48ead" })
+  set(0, "NoiceCmdlinePopupBorderFilter", { fg = "#845e6d" })
+  set(0, "NoiceCmdlineIconFilter", { fg = "#845e6d", bold = true })
+  set(0, "NoiceCmdlinePopupTitleEval_lua", { fg = "#44a0ff" })
+  set(0, "NoiceCmdlinePopupBorderEval_lua", { fg = "#2080ff" })
+  set(0, "NoiceCmdlineIconEval_lua", { fg = "#2080ff", bold = true })
+  set(0, "NoiceCmdlinePopupTitleLua", { fg = "#22aafF" })
+  set(0, "NoiceCmdlinePopupBorderLua", { fg = "#0099fF" })
+  set(0, "NoiceCmdlineIconLua", { fg = "#0099fF", bold = true })
+  set(0, "NoiceCmdlinePopupTitleHelp", { fg = "#8898FF" })
+  set(0, "NoiceCmdlinePopupBorderHelp", { fg = "#6B7BFF" })
+  set(0, "NoiceCmdlineIconHelp", { fg = "#6B7BFF", bold = true })
+  set(0, "NoiceCmdlinePopupTitleGlobal", { fg = "#60afff" })
+  set(0, "NoiceCmdlinePopupBorderGlobal", { fg = "#00afef" })
+  set(0, "NoiceCmdlineIconGlobal", { fg = "#00afef", bold = true })
+
+  -- render-markdown
+  set(0, "RenderMarkdownH1", { fg = "#23a5f0" })
+  set(0, "RenderMarkdownH2", { fg = "#917A66" })
+  set(0, "RenderMarkdownH3", { fg = "#406ff2" })
+  set(0, "RenderMarkdownH4", { fg = "#1b8b95" })
+  set(0, "RenderMarkdownH5", { fg = "#725591" })
+  set(0, "RenderMarkdownH6", { fg = "#725591" })
+  set(0, "RenderMarkdownH1Bg", { bg = "#0f162f" })
+  set(0, "RenderMarkdownH2Bg", { bg = "#141413" })
+  set(0, "RenderMarkdownH3Bg", { bg = "#12102f" })
+  set(0, "RenderMarkdownH4Bg", { bg = "#0d1f26" })
+  set(0, "RenderMarkdownH5Bg", { bg = "#181416" })
+  set(0, "RenderMarkdownH6Bg", { bg = "#0a0608" })
+  set(0, "RenderMarkdownBullet", { fg = "#0098cf" })
+  set(0, "RenderMarkdownTableRow", { fg = "#502c25" })
+  set(0, "RenderMarkdownTableHead", { fg = "#502c25" })
+  set(0, "RenderMarkdownTableFill", { fg = "#502c25" })
+  set(0, "RenderMarkdownDash", { fg = "#624b17" })
+  set(0, "RenderMarkdownInfo", { fg = "#0078a4" })
+  set(0, "RenderMarkdownSuccess", { fg = "#079c7e" })
+  set(0, "RenderMarkdownHint", { fg = "#276cce" })
+  set(0, "RenderMarkdownWarn", { fg = "#83601f" })
+  set(0, "RenderMarkdownError", { fg = "#991a1a" })
+  set(0, "RenderMarkdownCode", { bg = "#040812" })
+  set(0, "RenderMarkdownCodeNoFile", { bg = "#040812" })
+  set(0, "RenderMarkdownCodeInline", { fg = "#2779aa" })
+
+  -- Helpview
+  set(0, "HelpviewTitle", { fg = "#a5707B", bg = "#100606", italic = true })
+  set(0, "HelpviewHeading1", { fg = "#1b8b95", bg = "#001808" })
+  set(0, "HelpviewHeading2", { fg = "#826591", bg = "#080406" })
+  set(0, "HelpviewHeading3", { fg = "#688cce", bg = "#182c4e" })
+  set(0, "HelpviewHeading4", { fg = "#448c8e", bg = "#08162b" })
+  set(0, "HelpviewCode", { bg = "#040812" })
+  set(0, "HelpviewInlineCode", { bg = "#040814" })
+  set(0, "HelpviewCodeLanguage", { fg = "#5f798a", italic = true })
+  set(0, "HelpviewKeycode", { fg = "#836681" })
+  set(0, "HelpviewTaglink", { fg = "#01aab5", italic = true, nocombine = true })
+  set(0, "HelpviewOptionlink", { fg = "#3388cc", nocombine = true })
+  set(0, "HelpviewMentionlink", { fg = "#3388cc", italic = true })
+
+  -- RecallMark / MiniJump
+  set(0, "RecallMark", { fg = "#00baca" })
+  set(0, "MiniJump", { fg = "#ff00a0" })
+
+  -- Codeium / NeoCodeium
+  set(0, "CodeiumSuggestion", { fg = "#e06c75", italic = true })
+  set(0, "NeoCodeiumSingleLineLabel", { fg = "#c86040", bold = true, italic = true })
+  set(0, "NeoCodeiumLabel", { fg = "#aa4488", bold = true, italic = true })
+  set(0, "NeoCodeiumSuggestion", { fg = "#008866", italic = true })
+
+  -- NeoTree
+  set(0, "NeoTreeTitleBar", { bg = "#1f2342" })
+  set(0, "NeoTreeFileNameOpened", { bold = true })
+  set(0, "NeoTreeGitUntracked", { fg = "#705466", italic = true })
+  set(0, "NeoTreeAdded", { fg = "#008888" })
+  set(0, "NeoTreeGitStaged", { fg = "#4c68a0" })
+  set(0, "NeoTreeGitUnstaged", { fg = "#00aa88" })
+  set(0, "NeoTreeIndentMarker", { fg = "#222222" })
+
+  -- NvimTree (from nord-nvim)
+  set(0, "NvimTreeRootFolder", { fg = p.nord7, bold = true })
+  set(0, "NvimTreeGitDirty", { fg = p.nord15 })
+  set(0, "NvimTreeGitNew", { fg = p.nord14 })
+  set(0, "NvimTreeImageFile", { fg = p.nord15 })
+  set(0, "NvimTreeExecFile", { fg = p.nord14 })
+  set(0, "NvimTreeSpecialFile", { fg = p.nord9 })
+  set(0, "NvimTreeFolderName", { fg = p.nord10 })
+  set(0, "NvimTreeEmptyFolderName", { fg = p.disabled })
+  set(0, "NvimTreeFolderIcon", { fg = p.accent })
+  set(0, "NvimTreeIndentMarker", { fg = p.disabled })
+
+  -- Eyeliner
+  set(0, "EyelinerPrimary", { fg = "#e06c75", bold = true })
+  set(0, "EyelinerSecondary", { fg = "#d19a66", bold = true })
+  set(0, "EyelinerDimmed", { fg = "#4e5769" })
+
+  -- Satellite / ScrollView
+  set(0, "SatelliteBar", { bg = "#203361" })
+  set(0, "SatelliteBarInactive", { bg = "#203361" })
+  set(0, "SatelliteBarScrolling", { bg = "#224385" })
+  set(0, "SatelliteCursor", { fg = "#313c84", bg = "#224385" })
+  set(0, "ScrollView", { bg = "#224385" })
+  set(0, "ScrollViewCursor", { fg = "#334365" })
+  set(0, "ScrollViewSearch", { fg = "#3373c5" })
+
+  -- TinyGlimmer
+  set(0, "TinyGlimmerFrom", { bg = "#10083f", italic = true })
+  set(0, "TinyGlimmerTo", { bg = "#000000" })
+  set(0, "TinyGlimmerDelete", { bg = "#583042" })
+  set(0, "TinyGlimmerAdd", { bg = "#065C6C" })
+  set(0, "TinyGlimmerYankFrom", { bg = "#032568" })
+  set(0, "TinyGlimmerYankTo", { bg = "#000000" })
+  set(0, "TinyGlimmerSubFrom", { bg = "#3303a5" })
+  set(0, "TinyGlimmerSubTo", { bg = "#000000" })
+  set(0, "TinyGlimmerPasteFrom", { bg = "#001c26" })
+  set(0, "TinyGlimmerPasteTo", { bg = "#000000" })
+  set(0, "TinyGlimmerSearchFrom", { bg = "#3373c5" })
+  set(0, "TinyGlimmerSearchTo", { bg = "#000000" })
+  set(0, "TinyGlimmerPulsarFrom", { bg = "#123448" })
+  set(0, "TinyGlimmerPulsarTo", { bg = "#000000" })
+
+  -- Substitute / Abolish
+  set(0, "SubstituteExchange", { bg = "#40112c", italic = true })
+  set(0, "SubstituteRange", { bg = "#40112c", italic = true })
+
+  -- Multicursor
+  set(0, "MultiCursorCursor", { bg = "#40112c", italic = true, underline = true, bold = true })
+  set(0, "MultiCursorVisual", { bg = "#08204f", italic = true, bold = true })
+  set(0, "MultiCursorSign", { fg = "#3f56ff" })
+  set(0, "MultiCursorMatchPreview", { link = "Search" })
+  set(0, "MultiCursorDisabledCursor", { reverse = true })
+  set(0, "MultiCursorDisabledVisual", { bg = "#08204f", italic = true, bold = true })
+  set(0, "MultiCursorDisabledSign", {})
+
+  -- DAP (from plugins.lua)
+  set(0, "DAPLogPointSign", { fg = "#00f1f5" })
+  set(0, "DAPBreakpointSign", { fg = "#4790ff" })
+  set(0, "DAPStopSign", { fg = "#07ffc0" })
+  set(0, "DAPStopSignText", { bg = "#280000" })
+  set(0, "DapUIScope", { fg = "#00F1F5" })
+  set(0, "DapUIType", { fg = "#74b4cF" })
+  set(0, "DapUIDecoration", { fg = "#00F1F5" })
+  set(0, "DapUIThread", { fg = "#A9FF68" })
+  set(0, "DapUIStoppedThread", { fg = "#00f1f5" })
+  set(0, "DapUISource", { fg = "#8484FF" })
+  set(0, "DapUILineNumber", { fg = "#00f1f5" })
+  set(0, "DapUIFloatBorder", { fg = "#00F1F5" })
+  set(0, "DapUIWatchesHeader", { fg = "#00F1F5" })
+  set(0, "DapUIWatchesEmpty", { fg = "#F70067" })
+  set(0, "DapUIWatchesValue", { fg = "#A9FF68" })
+  set(0, "DapUIWatchesError", { fg = "#F70067" })
+  set(0, "DapUIBreakpointsPath", { fg = "#00F1F5" })
+  set(0, "DapUIBreakpointsInfo", { fg = "#A9FF68" })
+  set(0, "DapUIBreakpointsCurrentLine", { fg = "#A9FF68", bold = true })
+  set(0, "DapUIVariable", { fg = "#6484cF" })
+
+  -- PackageInfo
+  set(0, "PackageInfoOutdatedVersion", { fg = "#d19a66" })
+  set(0, "PackageInfoUpToDateVersion", { fg = "#3C4048" })
+
+  -- LspTrouble (from nord-nvim)
+  set(0, "LspTroubleText", { fg = p.tokyo.fg })
+  set(0, "LspTroubleCount", { fg = p.nord9 })
 end
 
--- local function load_treesitter()
---   -- TreeSitter highlight groups
-
---   local treesitter = {
---     -- Annotations that can be attached to the code to denote some kind of meta information. e.g. C++/Dart attributes.
---     TSAttribute = { fg = colors.purple },
---     -- Boolean literals: `True` and `False` in Python.
---     TSBoolean = { fg = colors.orange },
---     -- Character literals: `'a'` in C.
---     TSCharacter = { fg = colors.green },
---     -- Line comments and block comments.
---     TSComment = { fg = colors.light_gray, gui = config.styles.comments },
---     -- Keywords related to conditionals: `if`, `when`, `cond`, etc.
---     TSConditional = { fg = colors.purple, gui = config.styles.keywords },
---     -- Constants identifiers. These might not be semantically constant. E.g. uppercase variables in Python.
---     TSConstant = { fg = colors.cyan },
---     -- Built-in constant values: `nil` in Lua.
---     TSConstBuiltin = { fg = colors.orange },
---     -- Constants defined by macros: `NULL` in C.
---     TSConstMacro = { fg = colors.red },
---     -- Constructor calls and definitions: `{}` in Lua, and Java constructors.
---     TSConstructor = { fg = colors.yellow },
---     -- Syntax/parser errors. This might highlight large sections of code while the user is typing
---     -- still incomplete code, use a sensible highlight.
---     TSError = { fg = colors.error },
---     -- Exception related keywords: `try`, `except`, `finally` in Python.
---     TSException = { fg = colors.purple },
---     -- Object and struct fields.
---     TSField = { fg = colors.blue },
---     -- Floating-point number literals.
---     TSFloat = { fg = colors.orange },
---     -- Function calls and definitions.
---     TSFunction = { fg = colors.blue, gui = config.styles.functions },
---     -- Built-in functions: `print` in Lua.
---     TSFuncBuiltin = { fg = colors.cyan, gui = config.styles.functions },
---     -- Macro defined functions (calls and definitions): each `macro_rules` in Rust.
---     TSFuncMacro = { fg = colors.blue },
---     -- File or module inclusion keywords: `#include` in C, `use` or `extern crate` in Rust.
---     TSInclude = { fg = colors.blue },
---     -- Keywords that don't fit into other categories.
---     TSKeyword = { fg = colors.purple, gui = config.styles.keywords },
---     -- Keywords used to define a function: `function` in Lua, `def` and `lambda` in Python.
---     TSKeywordFunction = { fg = colors.purple, gui = config.styles.keywords },
---     -- Unary and binary operators that are English words: `and`, `or` in Python; `sizeof` in C.
---     TSKeywordOperator = { fg = colors.purple },
---     -- Keywords like `return` and `yield`.
---     TSKeywordReturn = { fg = colors.purple },
---     -- GOTO labels: `label:` in C, and `::label::` in Lua.
---     TSLabel = { fg = colors.purple },
---     -- Method calls and definitions.
---     TSMethod = { fg = colors.blue, gui = config.styles.functions },
---     -- Identifiers referring to modules and namespaces.
---     TSNamespace = { fg = colors.yellow },
---     -- Numeric literals that don't fit into other categories.
---     TSNumber = { fg = colors.orange },
---     -- Binary or unary operators: `+`, and also `->` and `*` in C.
---     TSOperator = { fg = colors.purple },
---     -- Parameters of a function.
---     TSParameter = { fg = colors.red },
---     -- References to parameters of a function.
---     TSParameterReference = { fg = colors.red },
---     -- Same as `TSField`.
---     TSProperty = { fg = colors.blue },
---     -- Punctuation delimiters: Periods, commas, semicolons, etc.
---     TSPunctDelimiter = { fg = colors.dark_blue },
---     -- Brackets, braces, parentheses, etc.
---     TSPunctBracket = { fg = colors.dark_blue },
---     -- Special punctuation that doesn't fit into the previous categories.
---     TSPunctSpecial = { fg = colors.dark_blue },
---     -- Keywords related to loops: `for`, `while`, etc.
---     TSRepeat = { fg = colors.purple, gui = config.styles.keywords },
---     -- String literals.
---     TSString = { fg = colors.green, gui = config.styles.strings },
---     -- Regular expression literals.
---     TSStringRegex = { fg = colors.orange },
---     -- Escape characters within a string: `\n`, `\t`, etc.
---     TSStringEscape = { fg = colors.orange },
---     -- Identifiers referring to symbols or atoms.
---     TSSymbol = { fg = colors.cyan },
---     -- Tags like HTML tag names.
---     TSTag = { fg = colors.yellow },
---     -- HTML tag attributes.
---     TSTagAttribute = { fg = colors.blue },
---     -- Tag delimiters like `<` `>` `/`.
---     TSTagDelimiter = { fg = colors.dark_blue },
---     -- Non-structured text. Like text in a markup language.
---     TSText = { fg = colors.fg },
---     -- Text to be represented in bold.
---     TSStrong = { fg = colors.purple, gui = "bold" },
---     -- Text to be represented with emphasis.
---     TSEmphasis = { fg = colors.yellow, gui = "italic" },
---     -- Text to be represented with an underline.
---     TSUnderline = { gui = "underline" },
---     -- Text that is part of a title.
---     TSTitle = { fg = colors.blue, gui = "bold" },
---     -- Literal or verbatim text.
---     TSLiteral = { fg = colors.green },
---     -- URIs like hyperlinks or email addresses.
---     TSURI = { fg = colors.cyan, gui = "underline" },
---     -- Math environments like LaTeX's `$ ... $`
---     TSMath = { fg = colors.fg },
---     -- Footnotes, text references, citations, etc.
---     TSTextReference = { fg = colors.purple },
---     -- Text environments of markup languages.
---     TSEnvironment = { fg = colors.fg },
---     -- Text/string indicating the type of text environment. Like the name of a `\begin` block in LaTeX.
---     TSEnvironmentName = { fg = colors.fg },
---     -- Text representation of an informational note.
---     TSNote = { fg = colors.info, gui = "bold" },
---     -- Text representation of a warning note.
---     TSWarning = { fg = colors.warn, gui = "bold" },
---     -- Text representation of a danger note.
---     TSDanger = { fg = colors.error, gui = "bold" },
---     -- Type (and class) definitions and annotations.
---     TSType = { fg = colors.yellow },
---     -- Built-in types: `i32` in Rust.
---     TSTypeBuiltin = { fg = colors.orange },
---     -- Variable names that don't fit into other categories.
---     TSVariable = { fg = colors.fg, gui = config.styles.variables },
---     -- Variable names defined by the language: `this` or `self` in Javascript.
---     TSVariableBuiltin = { fg = colors.red, gui = config.styles.variables },
---   }
-
---   return treesitter
--- end
-
--- local function load_lsp()
---   -- Lsp highlight groups
-
---   local lsp = {
---     -- used for "Error" diagnostic virtual text
---     LspDiagnosticsDefaultError = { fg = colors.error },
---     -- used for "Error" diagnostic signs in sign column
---     LspDiagnosticsSignError = { fg = colors.error },
---     -- used for "Error" diagnostic messages in the diagnostics float
---     LspDiagnosticsFloatingError = { fg = colors.error },
---     -- Virtual text "Error"
---     LspDiagnosticsVirtualTextError = { fg = colors.error },
---     -- used to underline "Error" diagnostics.
---     LspDiagnosticsUnderlineError = { gui = config.styles.diagnostics, sp = colors.error },
---     -- used for "Warning" diagnostic signs in sign column
---     LspDiagnosticsDefaultWarning = { fg = colors.warn },
---     -- used for "Warning" diagnostic signs in sign column
---     LspDiagnosticsSignWarning = { fg = colors.warn },
---     -- used for "Warning" diagnostic messages in the diagnostics float
---     LspDiagnosticsFloatingWarning = { fg = colors.warn },
---     -- Virtual text "Warning"
---     LspDiagnosticsVirtualTextWarning = { fg = colors.warn },
---     -- used to underline "Warning" diagnostics.
---     LspDiagnosticsUnderlineWarning = { gui = config.styles.diagnostics, sp = colors.warn },
---     -- used for "Information" diagnostic virtual text
---     LspDiagnosticsDefaultInformation = { fg = colors.info },
---     -- used for "Information" diagnostic signs in sign column
---     LspDiagnosticsSignInformation = { fg = colors.info },
---     -- used for "Information" diagnostic messages in the diagnostics float
---     LspDiagnosticsFloatingInformation = { fg = colors.info },
---     -- Virtual text "Information"
---     LspDiagnosticsVirtualTextInformation = { fg = colors.info },
---     -- used to underline "Information" diagnostics.
---     LspDiagnosticsUnderlineInformation = { gui = config.styles.diagnostics, sp = colors.info },
---     -- used for "Hint" diagnostic virtual text
---     LspDiagnosticsDefaultHint = { fg = colors.hint },
---     -- used for "Hint" diagnostic signs in sign column
---     LspDiagnosticsSignHint = { fg = colors.hint },
---     -- used for "Hint" diagnostic messages in the diagnostics float
---     LspDiagnosticsFloatingHint = { fg = colors.hint },
---     -- Virtual text "Hint"
---     LspDiagnosticsVirtualTextHint = { fg = colors.hint },
---     -- used to underline "Hint" diagnostics.
---     LspDiagnosticsUnderlineHint = { gui = config.styles.diagnostics, sp = colors.hint },
-
---     LspSignatureActiveParameter = { fg = colors.none, bg = colors.highlight_dark, gui = "bold" },
---     LspCodeLens = { fg = colors.light_gray },
-
---     DiagnosticError = { link = "LspDiagnosticsDefaultError" },
---     DiagnosticWarn = { link = "LspDiagnosticsDefaultWarning" },
---     DiagnosticInfo = { link = "LspDiagnosticsDefaultInformation" },
---     DiagnosticHint = { link = "LspDiagnosticsDefaultHint" },
---     DiagnosticVirtualTextWarn = { link = "LspDiagnosticsVirtualTextWarning" },
---     DiagnosticUnderlineWarn = { link = "LspDiagnosticsUnderlineWarning" },
---     DiagnosticFloatingWarn = { link = "LspDiagnosticsFloatingWarning" },
---     DiagnosticSignWarn = { link = "LspDiagnosticsSignWarning" },
---     DiagnosticVirtualTextError = { link = "LspDiagnosticsVirtualTextError" },
---     DiagnosticUnderlineError = { link = "LspDiagnosticsUnderlineError" },
---     DiagnosticFloatingError = { link = "LspDiagnosticsFloatingError" },
---     DiagnosticSignError = { link = "LspDiagnosticsSignError" },
---     DiagnosticVirtualTextInfo = { link = "LspDiagnosticsVirtualTextInformation" },
---     DiagnosticUnderlineInfo = { link = "LspDiagnosticsUnderlineInformation" },
---     DiagnosticFloatingInfo = { link = "LspDiagnosticsFloatingInformation" },
---     DiagnosticSignInfo = { link = "LspDiagnosticsSignInformation" },
---     DiagnosticVirtualTextHint = { link = "LspDiagnosticsVirtualTextHint" },
---     DiagnosticUnderlineHint = { link = "LspDiagnosticsUnderlineHint" },
---     DiagnosticFloatingHint = { link = "LspDiagnosticsFloatingHint" },
---     DiagnosticSignHint = { link = "LspDiagnosticsSignHint" },
---   }
---   return lsp
--- end
+return M

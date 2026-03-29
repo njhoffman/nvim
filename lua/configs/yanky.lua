@@ -136,36 +136,19 @@ local map = require("mapper").map
 --   end
 -- end
 
----ensures unique keymaps https://www.reddit.com/r/neovim/comments/16h2lla/can_you_make_neovim_warn_you_if_your_config_maps/
----@alias vimMode "n"|"v"|"x"|"i"|"o"|"c"|"t"|"ia"|"ca"|"!a"
----@param modes vimMode|vimMode[]
----@param lhs string
----@param rhs string|function
----@param opts? { unique: boolean, desc: string, buffer: boolean, nowait: boolean, remap: boolean }
-function uniqueKeymap(modes, lhs, rhs, opts)
-  if not opts then
-    opts = {}
-  end
-  if opts.unique == nil then
-    opts.unique = true
-  end
-  vim.keymap.set(modes, lhs, rhs, opts)
-end
-
-local keymap = uniqueKeymap
 -- do not clutter register with x
 -- keymap({ 'n', 'x' }, 'x', '"_x')
 -- do not clutter register with c/C (like substitute command)
-keymap({ "n", "x" }, "c", '"_c', { nowait = true })
-keymap("n", "C", '"_C', { nowait = true })
+map({ "n", "x" }, "c", '"_c', { unique = true, nowait = true, desc = "Change to black hole register" })
+map("n", "C", '"_C', { unique = true, nowait = true, desc = "Change to end to black hole register" })
 
 -- do not clutter the register if blank line is deleted
-keymap("n", "dd", function()
+map("n", "dd", function()
   if vim.api.nvim_get_current_line():find("^%s*$") then
     return '"_dd'
   end
   return "dd"
-end, { expr = true, nowait = true })
+end, { unique = true, expr = true, nowait = true, desc = "Smart dd (blank line to black hole)" })
 
 --  TODO: gcp/gcP/gbp/gbP new line with indent, gc< and gb< inline
 

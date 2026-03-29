@@ -96,10 +96,11 @@ Hydra({
           -- the next line in the file, but not to the next row on the
           -- screen under your previous position as in other editors. These
           -- bindings fixes this.
-          vim.keymap.set("n", "k", function()
+          local map = require("mapper").map
+          map("n", "k", function()
                            return vim.v.count > 0 and "k" or "gk"
                          end, { expr = true, desc = "k or gk" })
-          vim.keymap.set("n", "j", function()
+          map("n", "j", function()
                            return vim.v.count > 0 and "j" or "gj"
                          end, { expr = true, desc = "j or gj" })
         else

@@ -189,8 +189,9 @@ function M.selector(items, opts, on_choice)
   vim.wo[winid].concealcursor = "nvic"
 
   -- KEYMAPS
+  local mapper = require("mapper")
   local function map(lhs, rhs)
-    vim.keymap.set("n", lhs, rhs, { buffer = bufnr, nowait = true })
+    mapper.map("n", lhs, rhs, { buffer = bufnr, nowait = true })
   end
   for _, key in ipairs(config.keymaps.abort) do
     map(key, vim.cmd.bwipeout)

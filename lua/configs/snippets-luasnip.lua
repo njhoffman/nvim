@@ -1,5 +1,6 @@
 -- https://github.com/ziontee113/luasnip-tutorial/
 local ls = require("luasnip") --{{{
+local map = require("mapper").map
 
 -- require("luasnip.loaders.from_vscode").lazy_load()
 require("luasnip.loaders.from_lua").load({
@@ -37,22 +38,22 @@ ls.config.set_config({ --{{{
 }) --}}}
 
 -- Key Mapping --{{{
-vim.keymap.set({ "i", "s" }, "<c-k>", function()
+map({ "i", "s" }, "<c-k>", function()
   if ls.expand_or_jumpable() then
     ls.expand_or_jump()
   else
     vim.cmd([[exe "normal \<Esc>O"]])
   end
-end, { silent = true, desc = "luasnip jump" })
+end, { desc = "luasnip jump" })
 
-vim.keymap.set({ "i", "s" }, "<c-s>", "<Esc>:w<cr>")
-vim.keymap.set({ "i", "s" }, "<c-u>", '<cmd>lua require("luasnip.extras.select_choice")()<cr><C-c><C-c>')
+map({ "i", "s" }, "<c-s>", "<Esc>:w<cr>")
+map({ "i", "s" }, "<c-u>", '<cmd>lua require("luasnip.extras.select_choice")()<cr><C-c><C-c>')
 
-vim.keymap.set({ "i", "s" }, "<A-p>", function()
+map({ "i", "s" }, "<A-p>", function()
   if ls.expand_or_jumpable() then
     ls.expand()
   end
-end, { silent = true })
+end)
 -- vim.keymap.set({ "i", "s" }, "<C-k>", function()
 -- 	if ls.expand_or_jumpable() then
 -- 		ls.expand_or_jump()
@@ -64,20 +65,20 @@ end, { silent = true })
 -- 	end
 -- end, { silent = true })
 
-vim.keymap.set({ "i", "s" }, "<A-y>", "<Esc>o", { silent = true })
+map({ "i", "s" }, "<A-y>", "<Esc>o")
 
-vim.keymap.set({ "i", "s" }, "<A-k>", function()
+map({ "i", "s" }, "<A-k>", function()
   if ls.jumpable(1) then
     ls.jump(1)
   end
-end, { silent = true })
-vim.keymap.set({ "i", "s" }, "<A-j>", function()
+end)
+map({ "i", "s" }, "<A-j>", function()
   if ls.jumpable(-1) then
     ls.jump(-1)
   end
-end, { silent = true })
+end)
 
-vim.keymap.set({ "i", "s" }, "<A-l>", function()
+map({ "i", "s" }, "<A-l>", function()
   if ls.choice_active() then
     ls.change_choice(1)
   else
@@ -87,7 +88,7 @@ vim.keymap.set({ "i", "s" }, "<A-l>", function()
     print(time)
   end
 end)
-vim.keymap.set({ "i", "s" }, "<A-h>", function()
+map({ "i", "s" }, "<A-h>", function()
   if ls.choice_active() then
     ls.change_choice(-1)
   end
@@ -95,7 +96,7 @@ end) --}}}
 
 -- More Settings --
 
-vim.keymap.set("n", "<Leader><CR>", "<cmd>LuaSnipEdit<cr>", { silent = true, noremap = true })
+map("n", "<Leader><CR>", "<cmd>LuaSnipEdit<cr>")
 
 -- ls.add_snippets("all", require("snippets.all"))
 -- -- ls.add_snippets("go", require("snippets.go"))
@@ -127,7 +128,7 @@ ls.config.set_config({ --{{{
   },
 }) --}}}
 
-vim.keymap.set({ "i", "s" }, "<C-l>", function()
+map({ "i", "s" }, "<C-l>", function()
   if ls.choice_active() then
     ls.change_choice(1)
   else
@@ -135,7 +136,7 @@ vim.keymap.set({ "i", "s" }, "<C-l>", function()
   end
 end)
 
-vim.keymap.set({ "i", "s" }, "<C-h>", function()
+map({ "i", "s" }, "<C-h>", function()
   if ls.choice_active() then
     ls.change_choice(-1)
   else

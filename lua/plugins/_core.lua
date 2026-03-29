@@ -17,68 +17,28 @@ local plugins = {
   },
   {
     "OXY2DEV/bars.nvim",
-    enabled = false,
+    enabled = true,
     lazy = false,
-    config = function()
-      return {
-        statuscolumn = false,
-        statusline = false,
-        tabline = false,
-        winbar = false,
-      }
-    end,
   },
-  { "folke/noice.nvim", event = "VeryLazy", enabled = true },
+  {
+    "njhoffman/noice.nvim",
+    event = "VeryLazy",
+    dir = "~/git/noice.nvim",
+    enabled = true,
+  },
   {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
-    ---@type snacks.Config
     init = function()
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "VeryLazy",
-        callback = function()
-          -- Setup some globals for debugging (lazy-loaded)
-          _G.dd = function(...)
-            Snacks.debug.inspect(...)
-          end
-          _G.bt = function()
-            Snacks.debug.backtrace()
-          end
-          -- vim.print = _G.dd -- Override print to use snacks for `:=` command
-          Snacks.toggle({
-            name = "Mini Animate",
-            get = function()
-              return not vim.g.minianimate_disable
-            end,
-            set = function(state)
-              vim.g.minianimate_disable = not state
-            end,
-          }):map("<leader>ua")
-
-          -- -- Create some toggle mappings
-          Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>_s")
-          Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>_w")
-          Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>_L")
-          Snacks.toggle.diagnostics():map("<leader>_d")
-          Snacks.toggle.line_number():map("<leader>_l")
-          Snacks.toggle
-            .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
-            :map("<leader>_c")
-          Snacks.toggle.treesitter():map("<leader>_T")
-          Snacks.toggle
-            .option("background", { off = "light", on = "dark", name = "Dark Background" })
-            :map("<leader>_b")
-          Snacks.toggle.inlay_hints():map("<leader>_h")
-        end,
-      })
+      require("configs.snacks.snacks__init")
     end,
   },
+  -- lush.nvim removed: nord-nick colorscheme is now native Lua
+  -- Colorscheme picker keybinding preserved below
   {
-    "rktjmp/lush.nvim",
-    dependencies = { "Iron-E/nvim-highlite" },
-    priority = 1000,
-    lazy = false,
+    "nvim-telescope/telescope.nvim",
+    optional = true,
     keys = {
       {
         "<Leader>cs",
@@ -238,12 +198,6 @@ local plugins = {
       -- Set preferred_picker for local/remote pickers to force specific file picker(s) instead of auto-detection
     end,
   },
-  {
-    "m4xshen/hardtime.nvim",
-    enabled = false,
-    lazy = false,
-    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-  },
   -- https://github.com/VonHeikemen/searchbox.nvim
   {
     "njhoffman/nvim-notify.nvim",
@@ -252,6 +206,11 @@ local plugins = {
     event = { "VeryLazy" },
     -- "rcarriga/nvim-notify",
     -- lazy = false,
+  },
+  {
+    "njhoffman/convey.nvim",
+    dir = "~/git/convey.nvim",
+    event = "VeryLazy",
   },
   { "famiu/bufdelete.nvim" },
   { "nvim-tree/nvim-web-devicons", dependencies = { "DaikyXendo/nvim-material-icon" } },

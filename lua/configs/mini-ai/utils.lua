@@ -24,14 +24,14 @@ UpdateKeymap(keymap, 'n', 'yy', '"_y', { noremap = true, silent = true })
 local update_desc = function(key, value)
   local existing_x = vim.api.nvim_get_keymap('x')[key]
   local existing_o = vim.api.nvim_get_keymap('o')[key]
-  vim.keymap.set({ 'x' }, existing_x.lhs, existing_x.rhs, { desc = value })
-  vim.keymap.set({ 'o' }, existing_o.lhs, existing_o.rhs, { desc = value })
+  require("mapper").map({ 'x' }, existing_x.lhs, existing_x.rhs, { desc = value })
+  require("mapper").map({ 'o' }, existing_o.lhs, existing_o.rhs, { desc = value })
 end
 
 -- Function to apply keymaps --
 function ApplyKeymaps(tbl)
-  for _, map in pairs(tbl) do
-    vim.api.nvim_set_keymap(map.mode, map.keys, map.action, map.options)
+  for _, m in pairs(tbl) do
+    require("mapper").map(m.mode, m.keys, m.action, m.options)
   end
 end
 

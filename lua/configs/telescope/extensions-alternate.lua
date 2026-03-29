@@ -292,36 +292,12 @@ local config = {
 -- using `<Leader> c`, `h`, `r`, and `t`.
 
 local create_keymaps = function()
-  vim.api.nvim_set_keymap(
-    'n',
-    '<Leader>c',
-    ':Telescope telescope-alternate alternate_file focus=code<cr>',
-    { noremap = true }
-  )
-  vim.api.nvim_set_keymap(
-    'n',
-    '<Leader>h',
-    ':Telescope telescope-alternate alternate_file focus=template<cr>',
-    { noremap = true }
-  )
-  vim.api.nvim_set_keymap(
-    'n',
-    '<Leader>r',
-    ':Telescope telescope-alternate alternate_file focus=route<cr>',
-    { noremap = true }
-  )
-  vim.api.nvim_set_keymap(
-    'n',
-    '<Leader>t',
-    ':Telescope telescope-alternate alternate_file focus=test<cr>',
-    { noremap = true }
-  )
-  vim.api.nvim_set_keymap(
-    'n',
-    '<Leader>a',
-    ':Telescope telescope-alternate alternate_file<cr>',
-    { noremap = true }
-  )
+  local map = require("mapper").map
+  map('n', '<Leader>c', ':Telescope telescope-alternate alternate_file focus=code<cr>')
+  map('n', '<Leader>h', ':Telescope telescope-alternate alternate_file focus=template<cr>')
+  map('n', '<Leader>r', ':Telescope telescope-alternate alternate_file focus=route<cr>')
+  map('n', '<Leader>t', ':Telescope telescope-alternate alternate_file focus=test<cr>')
+  map('n', '<Leader>a', ':Telescope telescope-alternate alternate_file<cr>')
 end
 
 -- create_keymaps()

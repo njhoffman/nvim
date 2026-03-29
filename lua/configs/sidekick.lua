@@ -254,7 +254,7 @@ local accept_nes = function()
   -- fall back to normal tab
   return "<tab>"
 end
-vim.keymap.set({ "i", "n" }, "<F8>", function()
+require("mapper").map({ "i", "n" }, "<F8>", function()
   -- if there is a next edit, jump to it, otherwise apply it if any
   if require("sidekick").nes_jump_or_apply() then
     return -- jumped or applied

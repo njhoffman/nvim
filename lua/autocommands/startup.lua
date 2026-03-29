@@ -1,3 +1,5 @@
+local logger = require("logger").init("startup")
+
 -- TODO: handle startup messages and v:errmsg
 local get_load_time = function()
   local load_time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
@@ -7,7 +9,8 @@ local get_load_time = function()
   vim.defer_fn(function()
     vim.api.nvim_command("Tip")
     vim.defer_fn(function()
-      vim.dbglog("servername: " .. vim.v.servername .. " argv: " .. vim.inspect(vim.v.argv))
+      logger:info("servername: " .. vim.v.servername)
+      logger:info("argv: " .. vim.inspect(vim.v.argv))
       vim.notify("Loaded in `" .. load_time .. "s`", 2, { filetype = "markdown" })
       -- vim.cmd("VimadeReload")
     end, 2000)

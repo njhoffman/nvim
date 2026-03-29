@@ -56,14 +56,14 @@ local function find_previous_non_whitespace()
   return nil
 end
 
-vim.keymap.set({ "n" }, "<leader>W", function()
+require("mapper").map({ "n" }, "<leader>W", function()
   local row, col = find_previous_non_whitespace()
   vim.dbglog(row, col)
 
   -- if row and col then
   --   vim.api.nvim_win_set_cursor(0, { row, col })
   -- end
-end)
+end, { desc = "find previous non-whitespace" })
 
 -- MiniExtra.gen_ai_spec.whitespace = function()
 --   local whitespace_pattern = "%s"

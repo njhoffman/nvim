@@ -24,37 +24,46 @@ local keymaps = function()
   -- -- Same as `cycle()`, but also tries to show a suggestion if none is visible.
   -- -- Mostly useful with the enabled `manual` option
   -- neocodeium.cycle_or_complete(n)
-  vim.keymap.set("i", "<C-t>", function()
+  local map = require("mapper").map
+  map("i", "<C-t>", function()
     require("neocodeium").accept()
-  end, { desc = "start and cycle" })
+  end, { desc = "neocodeium start and cycle" })
 
-  vim.keymap.set("i", "<CR>", function()
-    require("neocodeium").accept()
-  end, { desc = "neocodeium accept suggestion" })
-
-  vim.keymap.set("i", "<Space>", function()
-    require("neocodeium").accept_line()
-  end, { desc = "neocodeium accept line suggestion" })
-
-  vim.keymap.set("i", "<M-'>", function()
+  map("i", "<M-'>", function()
     require("neocodeium").accept_word()
   end, { desc = "neocodeium accept word suggestion" })
 
+  map("i", "<Tab>", function()
+    require("neocodeium").accept_line()
+  end, { desc = "neocodeium accept line suggestion" })
+
+  map("i", '<M-">', function()
+    require("neocodeium").accept()
+  end, { desc = "neocodeium accept suggestion" })
+
   -- C-S-j
-  vim.keymap.set("i", "<C-S-j>", function()
+  map("i", "<M-NL>", function()
     require("neocodeium").cycle_or_complete()
   end, { desc = "neocodeium next suggestion" })
 
-  -- C-S-k
-  vim.keymap.set("i", "<C-S-k>", function()
+  map("i", "<M-n>", function()
+    require("neocodeium").cycle_or_complete()
+  end, { desc = "neocodeium next suggestion" })
+
+  -- M-S-k
+  map("i", "<M-S-k>", function()
     require("neocodeium").cycle_or_complete(-1)
   end, { desc = "neocodeium prev suggestion" })
 
-  vim.keymap.set("i", "<M-c>", function()
+  map("i", "<M-P>", function()
+    require("neocodeium").cycle_or_complete(-1)
+  end, { desc = "neocodeium prev suggestion" })
+
+  map("i", "<M-c>", function()
     require("neocodeium").clear()
   end, { desc = "neocodeium clear suggestion" })
 
-  vim.keymap.set("i", "<C-c>", function()
+  map("i", "<C-c>", function()
     require("neocodeium").clear()
   end, { desc = "neocodeium clear suggestion" })
 end

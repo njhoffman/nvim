@@ -1,3 +1,4 @@
+local map = require("mapper").map
 local log = require("debuglog")
 local logutils = require("debuglog.utils")
 local config = require("debuglog.config")
@@ -72,8 +73,8 @@ M.inspect = function(...)
       local cb = function()
         dump_buffer(currwin, notify_win, msg)
       end
-      vim.api.nvim_buf_set_keymap(buf, "n", "gf", "", { callback = cb })
-      vim.api.nvim_buf_set_keymap(buf, "n", "<2-LeftMouse>", "", { callback = cb })
+      map("n", "gf", cb, { buffer = buf })
+      map("n", "<2-LeftMouse>", cb, { buffer = buf })
       vim.bo[buf].filetype = "lua"
     end,
   }

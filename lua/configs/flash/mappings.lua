@@ -18,7 +18,7 @@ local setup_char_mappings = function()
       o = vim.fn.maparg(key, "o", false, false),
       s = vim.fn.maparg(key, "s", false, false),
     }
-    vim.keymap.set({ "n", "o", "x" }, key, function()
+    mapper.map({ "n", "o", "x" }, key, function()
       local Config = require("flash.config")
       local Repeat = require("flash.repeat")
       local char = require("flash.plugins.char")
@@ -50,7 +50,7 @@ local setup_char_mappings = function()
       elseif exists and exists ~= "" then
         vim.api.nvim_feedkeys(exists, "n", true)
       end
-    end, { remap = true, silent = true })
+    end, { remap = true })
   end
 end
 
@@ -96,11 +96,11 @@ local setup_remote_mappings = function()
 
   map({ "o" }, keys.op_remote_restore, function()
     require("flash").remote({ restore = true })
-  end, { noremap = true, desc = "⚡remote flash operator" })
+  end, { desc = "⚡remote flash operator" })
 
   map({ "o" }, keys.op_remote_norestore, function()
     require("flash").remote({ restore = false })
-  end, { noremap = true, desc = "⚡remote flash operator (norestore)" })
+  end, { desc = "⚡remote flash operator (norestore)" })
 
   map({ "n" }, keys.remote_restore, function()
     local state = require("flash").jump({
@@ -113,13 +113,13 @@ local setup_remote_mappings = function()
         state:restore()
       end,
     })
-  end, { noremap = true, silent = true, desc = "⚡remote flash command" })
+  end, { desc = "⚡remote flash command" })
 
   map({ "n" }, keys.remote_norestore, function()
     local state = require("flash").jump({
       remote_op = { restore = false },
     })
-  end, { noremap = true, silent = true, desc = "⚡remote flash no restore" })
+  end, { desc = "⚡remote flash no restore" })
 end
 
 -- stylua:ignore
@@ -127,70 +127,68 @@ local setup_search_mappings = function()
   map({ "c" }, "<C-\\>", function()
     require("flash.plugins.search").toggle_current_search()
   end, {
-    noremap = true,
-    silent = true,
     desc = "⚡toggle flash current search",
   })
 
   map({ "n", "o", "x" }, "\\", function()
     require("flash").jump()
-  end, { noremap = true, silent = true, desc = "⚡flash jump" })
+  end, { desc = "⚡flash jump" })
 
   map({ "n", "o", "x" }, pfx .. "s", function()
     require("flash").jump()
-  end, { noremap = true, silent = true, desc = "⚡flash jump" })
+  end, { desc = "⚡flash jump" })
 
   map({ "n", "o", "x" }, pfx .. "S", function()
     require("flash").treesitter()
-  end, { noremap = true, silent = true, desc = "⚡flash jump treesitter" })
+  end, { desc = "⚡flash jump treesitter" })
 
   map(
     { "n", "x", "o" },
     pfx .. "l",
     actions.jump_line,
-    { noremap = true, silent = true, desc = "⚡flash jump to line" }
+    { desc = "⚡flash jump to line" }
   )
 
   map(
     { "n", "o", "x" },
     pfx .. "w",
     actions.jump_start_words,
-    { noremap = true, silent = true, desc = "⚡flash jump start words" }
+    { desc = "⚡flash jump start words" }
   )
 
   map(
     { "n", "o", "x" },
     pfx .. "W",
     actions.jump_words,
-    { noremap = true, silent = true, desc = "⚡flash jump full words" }
+    { desc = "⚡flash jump full words" }
   )
 
-    vim.keymap.set({"x", "o"}, "v", function()
-      require("flash").treesitter({
-        actions = {
-          ["v"] = "next",
-          ["V"] = "prev"
-        }
-      })
-    end, { desc = "Treesitter incremental selection" })
+  map({"x", "o"}, "v", function()
+    require("flash").treesitter({
+      actions = {
+        ["v"] = "next",
+        ["V"] = "prev"
+      }
+    })
+  end, { desc = "Treesitter incremental selection" })
 
 
   map(
     { "n", "o", "x" },
     pfx .. "e",
     actions.jump_diag,
-    { noremap = true, silent = true, desc = "⚡flash jump diagnostics" }
+    { desc = "⚡flash jump diagnostics" }
   )
 
   map({ "o", "x" }, pfx .. "v", function()
     require("flash").treesitter_search()
-  end, { noremap = true, silent = true, desc = "⚡flash treesitter range" })
+  end, { desc = "⚡flash treesitter range" })
 
   map(
     { "n", "o", "x" },
     pfx .. "c",
     actions.search_words_2char,
-    { noremap = true, silent = true, desc = "⚡flash search 2chars" }
+    { desc = "⚡flash search 2chars" }
   )
 
   -- mapper.map({ 'n', 'x' }, 'rx', function()

@@ -50,10 +50,23 @@ M.state = {
   ctrl_f_invoked = false,
   scrolloffset = 0,
   target_view = nil,
+  target_winid = nil,
 }
 
 -- Load benchmarking module
 M.benchmark = require("smoothie.benchmark")
+
+---Run a function in the target window context if one is set, otherwise in current window.
+---@param fn function
+---@return any
+local function in_target_win(fn)
+  local winid = M.state.target_winid
+  if winid and vim.api.nvim_win_is_valid(winid) then
+    return vim.api.nvim_win_call(winid, fn)
+  else
+    return fn()
+  end
+end
 
 ---Setup smoothie with user configuration
 ---@param opts SmoothieConfig|nil
@@ -229,8 +242,8 @@ local function compute_velocity()
   end
 end
 
----Animation tick callback
-local function movement_tick()
+---Animation tick callback (inner, runs in target window context)
+local function movement_tick_inner()
   -- Benchmark: record frame
   if M.config.benchmark_enabled then
     M.benchmark.record_frame()
@@ -263,6 +276,16 @@ local function movement_tick()
   end
 end
 
+---Animation tick callback (dispatches to target window if set)
+local function movement_tick()
+  -- If target window became invalid, stop
+  if M.state.target_winid and not vim.api.nvim_win_is_valid(M.state.target_winid) then
+    M.stop_moving()
+    return
+  end
+  in_target_win(movement_tick_inner)
+end
+
 ---Start smooth scrolling animation
 function M.start_moving()
   -- Calculate scrolloffset
@@ -278,7 +301,7 @@ function M.start_moving()
   end
 
   -- Save view state
-  M.state.target_view = vim.fn.winsaveview()
+  M.state.target_view = in_target_win(vim.fn.winsaveview)
 
   -- Start timer if not already running
   if not M.state.timer_id then
@@ -313,6 +336,7 @@ function M.stop_moving()
   end
 
   M.state.target_view = nil
+  M.state.target_winid = nil
 
   if M.state.timer_id then
     vim.fn.timer_stop(M.state.timer_id)
@@ -393,73 +417,97 @@ local function calculate_screen_lines(from, to)
 end
 
 ---Smooth scroll downwards (Ctrl-D)
-function M.downwards()
-  if vim.fn.line(".") >= vim.fn.line("$") then
-    return
-  end
+---@param window_id number|nil Optional window ID to scroll (defaults to current window)
+function M.downwards(window_id)
+  M.state.target_winid = window_id
+  in_target_win(function()
+    if vim.fn.line(".") >= vim.fn.line("$") then
+      M.state.target_winid = nil
+      return
+    end
 
-  if not M.config.enabled then
-    vim.cmd("normal! \x04") -- Ctrl-D
-    return
-  end
+    if not M.config.enabled then
+      vim.cmd("normal! \x04") -- Ctrl-D
+      M.state.target_winid = nil
+      return
+    end
 
-  M.state.ctrl_f_invoked = false
+    M.state.ctrl_f_invoked = false
 
-  if vim.v.count > 0 then
-    vim.o.scroll = vim.v.count
-  end
+    if vim.v.count > 0 then
+      vim.o.scroll = vim.v.count
+    end
 
-  update_target(vim.o.scroll)
+    update_target(vim.o.scroll)
+  end)
 end
 
 ---Smooth scroll upwards (Ctrl-U)
-function M.upwards()
-  if vim.fn.winline() <= 1 then
-    return
-  end
+---@param window_id number|nil Optional window ID to scroll (defaults to current window)
+function M.upwards(window_id)
+  M.state.target_winid = window_id
+  in_target_win(function()
+    if vim.fn.winline() <= 1 then
+      M.state.target_winid = nil
+      return
+    end
 
-  if not M.config.enabled then
-    vim.cmd("normal! \x15") -- Ctrl-U
-    return
-  end
+    if not M.config.enabled then
+      vim.cmd("normal! \x15") -- Ctrl-U
+      M.state.target_winid = nil
+      return
+    end
 
-  M.state.ctrl_f_invoked = false
+    M.state.ctrl_f_invoked = false
 
-  if vim.v.count > 0 then
-    vim.o.scroll = vim.v.count
-  end
+    if vim.v.count > 0 then
+      vim.o.scroll = vim.v.count
+    end
 
-  update_target(-vim.o.scroll)
+    update_target(-vim.o.scroll)
+  end)
 end
 
 ---Smooth scroll forwards (Ctrl-F / Page Down)
-function M.forwards()
-  if vim.fn.line(".") >= vim.fn.line("$") then
-    return
-  end
+---@param window_id number|nil Optional window ID to scroll (defaults to current window)
+function M.forwards(window_id)
+  M.state.target_winid = window_id
+  in_target_win(function()
+    if vim.fn.line(".") >= vim.fn.line("$") then
+      M.state.target_winid = nil
+      return
+    end
 
-  if not M.config.enabled then
-    vim.cmd("normal! \x06") -- Ctrl-F
-    return
-  end
+    if not M.config.enabled then
+      vim.cmd("normal! \x06") -- Ctrl-F
+      M.state.target_winid = nil
+      return
+    end
 
-  M.state.ctrl_f_invoked = true
-  update_target(vim.fn.winheight(0) * math.max(vim.v.count, 1))
+    M.state.ctrl_f_invoked = true
+    update_target(vim.fn.winheight(0) * math.max(vim.v.count, 1))
+  end)
 end
 
 ---Smooth scroll backwards (Ctrl-B / Page Up)
-function M.backwards()
-  if vim.fn.winline() <= 1 then
-    return
-  end
+---@param window_id number|nil Optional window ID to scroll (defaults to current window)
+function M.backwards(window_id)
+  M.state.target_winid = window_id
+  in_target_win(function()
+    if vim.fn.winline() <= 1 then
+      M.state.target_winid = nil
+      return
+    end
 
-  if not M.config.enabled then
-    vim.cmd("normal! \x02") -- Ctrl-B
-    return
-  end
+    if not M.config.enabled then
+      vim.cmd("normal! \x02") -- Ctrl-B
+      M.state.target_winid = nil
+      return
+    end
 
-  M.state.ctrl_f_invoked = false
-  update_target(-vim.fn.winheight(0) * math.max(vim.v.count, 1))
+    M.state.ctrl_f_invoked = false
+    update_target(-vim.fn.winheight(0) * math.max(vim.v.count, 1))
+  end)
 end
 
 ---Smooth cursor movement (gg, G, -)

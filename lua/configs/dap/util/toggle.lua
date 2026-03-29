@@ -1,3 +1,4 @@
+local map = require("mapper").map
 local utils = require("configs.dap.util.utils")
 
 local M = {}
@@ -20,13 +21,7 @@ function M.toggleterm_opts(added_opts)
     shade_terminals = true,
     hide_numbers = false,
     on_open = function(term)
-      vim.api.nvim_buf_set_keymap(
-        term.bufnr,
-        "n",
-        "q",
-        [[<cmd>close<cr>]],
-        { noremap = true, silent = true }
-      )
+      map("n", "q", [[<cmd>close<cr>]], { buffer = term.bufnr })
     end,
     on_close = function() end,
   }

@@ -10,6 +10,6 @@ local cfg = {
 
 require("trevj").setup()
 
-vim.keymap.set("n", "<leader>j", function()
+require("mapper").map("n", "<leader>j", function()
   require("trevj").format_at_cursor()
-end)
+end, { desc = "trevj format at cursor" })

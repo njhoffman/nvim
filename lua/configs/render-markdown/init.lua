@@ -33,7 +33,7 @@ local cfg = {
   --   },
   -- },
 
-  render_modes = { "i", "n", "c", "t", "v", "V", "\22" },
+  render_modes = { "n", "c", "t", "v", "V", "\22" },
   -- render_modes = true,
   preset = "none", -- obsidian, lazy, none
   -- The level of logs to write to file: vim.fn.stdpath('state') .. '/render-markdown.log'.
@@ -159,7 +159,7 @@ local cfg = {
     right_pad = 2, -- < 1 is percentage (only for block width)
     left_pad = 2,
     language_pad = 2,
-    style = "normal",
+    style = "full",
     min_width = 60,
     below = "", --''─',
     above = "", --''─', '-'' '▀', '󱋰'
@@ -209,6 +209,12 @@ local cfg = {
   },
   checkbox = {
     enabled = true,
+    render_modes = false,
+    bullet = false,
+    left_pad = 0,
+    right_pad = 0,
+    scope_priority = nil,
+
     -- Define custom checkbox states, more involved, not part of the markdown grammar.
     -- The key is for healthcheck and to allow users to change its values, value type below.
     -- | raw             | matched against the raw text of a 'shortcut_link'           |
@@ -217,24 +223,38 @@ local cfg = {
     -- | scope_highlight | optional highlight for item associated with custom checkbox |
     unchecked = {
       -- Replaces '[ ]' of 'task_list_marker_unchecked'.
-      icon = "󰄱 ",
+      -- icon = "󰄱 ",
+      icon = " ",
       highlight = "RenderMarkdownUnchecked",
       scope_highlight = nil,
     },
     checked = {
       -- Replaces '[x]' of 'task_list_marker_checked'.
 
-      icon = "󰱒 ",
+      icon = " ",
+      -- icon = "󰱒 ",
       highlight = "RenderMarkdownChecked",
       scope_highlight = nil,
     },
+    -- unchecked = { icon = '✘ ' },
+    -- checked = { icon = '✔ ' },
+    -- custom = { todo = { rendered = '◯ ' }
+    -- = "󰗠", "󰰄", "", "", "󰔵", "✔", "", "󰗠",
+    -- 󱋬  󱋭  󰄱  󰡖  󰄲  󰄳  󰄴  󱤧  󰄵  󰄶  󰘻  󰘼  󰄷  󰄸
+    -- 󰘽  󰘾  󰄹  󰱑  󰱒        󰥪  󰄮  󱅶  󰄗  󰄯  󰄰
 
     custom = {
+      important = {
+        raw = "[~]",
+        rendered = "󰓎 ",
+        highlight = "DiagnosticWarn",
+      },
       todo = {
         raw = "[-]",
         rendered = "󰥔 ",
         highlight = "RenderMarkdownTodo",
         scope_highlight = nil,
+        -- scope_highlight = "@markup.strikethrough",
       },
     },
   },
@@ -243,7 +263,8 @@ local cfg = {
     enabled = true, -- Enable pipe table rendering
     preset = "round", -- heavy, round, double, none
     style = "full", -- none, normal, full
-    cell = "padded", -- overlay, raw, padded, trimmed
+    -- cell = "padded", -- overlay, raw, padded, trimmed
+    cell = "trimmed", -- overlay, raw, padded, trimmed
     min_width = 0, -- Minimum width of pipe tables
     -- above = "▀", -- Used above pipe tables for thin border.
     -- below = "▀", -- Used below pipe tables for thin border.

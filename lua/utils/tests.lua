@@ -3,10 +3,9 @@
 -- ]]
 local test_runner = {}
 
-local keymap = function(mode, key, map, opts)
+local keymap = function(mode, key, cmd, opts)
   opts = opts or {}
-
-  vim.api.nvim_set_keymap(mode, key, ":lua " .. map .. "<CR>", opts)
+  require("mapper").map(mode, key, ":lua " .. cmd .. "<CR>", opts)
 end
 
 test_runner.setup = function()

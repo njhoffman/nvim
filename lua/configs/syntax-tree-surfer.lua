@@ -38,7 +38,7 @@ sts.setup({
   },
 })
 
-vim.keymap.set('n', ';f', function() -- jump to all that you specify
+require("mapper").map('n', ';f', function() -- jump to all that you specify
   sts.targeted_jump({
     'function',
     'function_definition',
@@ -53,7 +53,7 @@ vim.keymap.set('n', ';f', function() -- jump to all that you specify
     'while_statement',
     'switch_statement',
   })
-end, { noremap = true, silent = true, desc = 'Node Jumps ' })
+end, { desc = 'Node Jumps' })
 
 lambda.command('STSJumpToTop', function()
   require('syntax-tree-surfer').go_to_top_node_and_execute_commands(

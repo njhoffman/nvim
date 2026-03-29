@@ -112,10 +112,12 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 --
 
 -- close some filetypes with q or <esc>
+local map = require("mapper").map
+
 local quick_close = function(event)
   -- vim.bo[event.buf].buflisted = false
-  vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-  vim.keymap.set("n", "<esc>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+  map("n", "q", "<cmd>q<cr>", { buffer = event.buf, desc = "Close window" })
+  map("n", "<esc>", "<cmd>q<cr>", { buffer = event.buf, desc = "Close window" })
 end
 
 -- close some filetypes with q or ctrl-shift-esc
@@ -125,8 +127,8 @@ local long_close = function(event)
   -- vim.api.nvim_command("close")
   -- end,
   -- })
-  vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = event.buf, silent = true })
-  vim.keymap.set("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, silent = true })
+  map("n", "q", "<cmd>q<cr>", { buffer = event.buf, desc = "Close window" })
+  map("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, desc = "Close window" })
 end
 
 local winclose_group = vim.api.nvim_create_augroup("WinClose_q", { clear = true })

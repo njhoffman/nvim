@@ -88,7 +88,7 @@ require("ts-node-action").setup({
 })
 
 local trigger_key = "+" -- T
-vim.keymap.set(
+require("mapper").map(
   "n",
   trigger_key,
   require("ts-node-action").node_action,

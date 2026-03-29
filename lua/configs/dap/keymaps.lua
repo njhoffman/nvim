@@ -107,8 +107,9 @@ function M.setup(dap)
   end)
 
   -- keybindings
+  local map = require("mapper").map
   local function set_km(key, cmd)
-    vim.keymap.set("n", "<leader>" .. key, cmd, { noremap = true })
+    map("n", "<leader>" .. key, cmd)
   end
   local keymaps = {
     ds = "DapScopesFloat",
@@ -131,7 +132,7 @@ function M.setup(dap)
   end
 
   c("DapOsvLaunch", launch_osv)
-  vim.keymap.set("n", "<leader>dl", launch_osv, { noremap = true })
+  map("n", "<leader>dl", launch_osv)
 end
 
 return M

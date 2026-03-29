@@ -106,43 +106,15 @@ if vim.g.neovide then
   --   RefreshGuiFont()
   -- end
   --
-  vim.api.nvim_set_keymap(
-    "n",
-    "<C-=>",
-    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.05<CR>",
-    { silent = true, nowait = true }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "<C-->",
-    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.05<CR>",
-    { silent = true, nowait = true }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "<C-0>",
-    ":lua vim.g.neovide_scale_factor = " .. scale_factor .. "<CR>",
-    { silent = true, nowait = true }
-  )
+  local map = require("mapper").map
 
-  vim.api.nvim_set_keymap(
-    "v",
-    "<C-=>",
-    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.05<CR>",
-    { silent = true, nowait = true }
-  )
-  vim.api.nvim_set_keymap(
-    "v",
-    "<C-->",
-    ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.05<CR>",
-    { silent = true, nowait = true }
-  )
-  vim.api.nvim_set_keymap(
-    "v",
-    "<C-0>",
-    ":lua vim.g.neovide_scale_factor = " .. scale_factor .. "<CR>",
-    { silent = true }
-  )
+  map("n", "<C-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.05<CR>", { nowait = true })
+  map("n", "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.05<CR>", { nowait = true })
+  map("n", "<C-0>", ":lua vim.g.neovide_scale_factor = " .. scale_factor .. "<CR>", { nowait = true })
+
+  map("v", "<C-=>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.05<CR>", { nowait = true })
+  map("v", "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.05<CR>", { nowait = true })
+  map("v", "<C-0>", ":lua vim.g.neovide_scale_factor = " .. scale_factor .. "<CR>")
 
   -- vim.api.nvim_set_keymap("n", "<C-=>", ":lua vim.g.neovide_scale_factor = math.min(vim.g.neovide_scale_factor + 0.1,  1.0)<CR>", { silent = true })
   -- vim.api.nvim_set_keymap("n", "<C-->", ":lua vim.g.neovide_scale_factor = math.max(vim.g.neovide_scale_factor - 0.1,  0.1)<CR>", { silent = true })

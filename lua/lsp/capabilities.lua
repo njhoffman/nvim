@@ -1,6 +1,7 @@
 -- LSP Capabilities
 -- Handles capability creation and display
 
+local map = require("mapper").map
 local log = require("logger").init("lsp.capabilities")
 
 local M = {}
@@ -80,7 +81,7 @@ function M.show()
 
   local configs_pattern = [[\%(]] .. table.concat(buf_client_names, [[\|]]) .. [[\)]]
   vim.cmd([[syntax match Title /\%(Client\):.*\zs]] .. configs_pattern .. "/")
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<esc>", "<cmd>bd<CR>", { noremap = true })
+  map("n", "<esc>", "<cmd>bd<CR>", { buffer = bufnr })
 
   log:debug("Displayed capabilities for " .. #buf_clients .. " clients")
 end

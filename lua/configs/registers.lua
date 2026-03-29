@@ -156,9 +156,5 @@ registers.setup({
 })
 
 -- -- Define a custom for opening the register window when pressing "r"
-vim.api.nvim_set_keymap("n", "pr", "", {
-  -- The "paste" argument means that when a register is selected it will automatically be pasted
-  callback = require("registers.ui").show_window({ mode = "paste" }),
-  -- This is required for the registers window to function
-  expr = true,
-})
+local map = require("mapper").map
+map("n", "pr", require("registers.ui").show_window({ mode = "paste" }), { expr = true })

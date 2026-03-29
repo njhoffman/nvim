@@ -17,6 +17,12 @@ if vim.fn.isdirectory(minitest_path) == 1 then
   vim.opt.rtp:append(minitest_path)
 end
 
+-- Add bars.nvim (local source)
+local bars_path = vim.fn.expand("~/.local/src/bars.nvim")
+if vim.fn.isdirectory(bars_path) == 1 then
+  vim.opt.rtp:append(bars_path)
+end
+
 -- Set up basic test environment
 vim.o.swapfile = false
 vim.o.backup = false

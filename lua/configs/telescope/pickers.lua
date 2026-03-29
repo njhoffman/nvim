@@ -136,6 +136,7 @@ local pickers = {
       height = 18,
       width = 0.5,
     },
+    layout_strategy = "bottom_pane",
     prompt_prefix = icons.keymap,
     entry_maker = require("configs.telescope.entry_makers.keymaps")({}),
     results_title = "@buf !sil *map  exp  now",

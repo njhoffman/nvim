@@ -106,6 +106,8 @@ local cfg = {
       ["<M-f>"] = { "scroll_preview", config = { direction = -10 } },
       ["<C-p>"] = "move_cursor_up",
       ["<C-n>"] = "move_cursor_down",
+      ["<C-b>"] = "",
+      ["<C-f>"] = "",
       -- ["<C-b>"] = "move_cursor_page_up",
       -- ["<C-f>"] = "move_cursor_page_down",
     },

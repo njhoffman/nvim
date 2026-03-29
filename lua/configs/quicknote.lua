@@ -5,12 +5,8 @@ require("quicknote").setup({
   git_branch_recognizable = false,
 })
 
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>N",
-  "<cmd>:lua require('quicknote').NewNoteAtCurrentLine()<cr>",
-  {}
-)
+local map = require("mapper").map
+map("n", "<leader>N", "<cmd>:lua require('quicknote').NewNoteAtCurrentLine()<cr>")
 
 -- Description
 -- NewNoteAtCWD()                 	create a note at current working directory

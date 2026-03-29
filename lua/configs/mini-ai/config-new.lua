@@ -311,7 +311,7 @@ require('mini.bracketed').setup({
 local put_keys = { 'p', 'P' }
 for _, lhs in ipairs(put_keys) do
   local rhs = 'v:lua.MiniBracketed.register_put_region("' .. lhs .. '")'
-  vim.keymap.set({ 'n', 'x' }, lhs, rhs, { expr = true })
+  require("mapper").map({ 'n', 'x' }, lhs, rhs, { expr = true })
 end
 -- need to put this after targets
 Map('x', 'i', '<Plug>(niceblock-I)', { remap = true, nowait = true })

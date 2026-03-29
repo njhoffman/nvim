@@ -73,16 +73,7 @@ end
 
 -- mappings
 function utils.map(modes, key, result, opts)
-  local options = { noremap = true, silent = true }
-  if opts then
-    options = vim.tbl_extend('force', options, opts)
-  end
-  if type(modes) == 'string' then
-    modes = { modes }
-  end
-  for _, mode in ipairs(modes) do
-    vim.api.nvim_set_keymap(mode, key, result, options)
-  end
+  require("mapper").map(modes, key, result, opts or {})
 end
 
 -- Terminal
@@ -145,10 +136,10 @@ end
 -- @param mode string 'n' | 'i' | 'v'
 -- @param lhs string key to map
 -- @param rhs string command to run
-utils.keymap = function(map)
-  map = map or {}
-  local opts = map[4] or {}
-  return vim.api.nvim_set_keymap(map[1], map[2], map[3], opts)
+utils.keymap = function(m)
+  m = m or {}
+  local opts = m[4] or {}
+  return require("mapper").map(m[1], m[2], m[3], opts)
 end
 
 -- @param maps list of keymaps

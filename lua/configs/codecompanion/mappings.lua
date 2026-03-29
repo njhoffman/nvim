@@ -1,21 +1,23 @@
 local adapters = require("configs.codecompanion.adapters")
 
+local map = require("mapper").map
+
 local maps_1 = function()
-  vim.keymap.set(
+  map(
     { "n", "v" },
     "<leader>ck",
     "<cmd>CodeCompanionActions<cr>",
-    { noremap = true, silent = true }
+    { desc = "CodeCompanion actions" }
   )
-  vim.keymap.set(
+  map(
     { "n", "v" },
     "<leader>a",
     "<cmd>CodeCompanionChat Toggle<cr>",
-    { noremap = true, silent = true }
+    { desc = "Toggle CodeCompanion chat" }
   )
-  vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+  map("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { desc = "Add selection to CodeCompanion chat" })
 
-  vim.keymap.set("n", "<leader>cs", adapters.select_model, { desc = "Select Gemini Model" })
+  map("n", "<leader>cs", adapters.select_model, { desc = "Select Gemini Model" })
   -- Expand 'cc' into 'CodeCompanion' in the command line
   vim.cmd([[cab cc CodeCompanion]])
 end

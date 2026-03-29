@@ -160,8 +160,9 @@ local foldmaps = {
 }
 
 local function apply_keymaps()
+  local map = require("mapper").map
   if vim.fn.maparg("<leftmouse>") == "" then
-    vim.keymap.set({ "n", "v", "o", "i" }, "<leftmouse>", function()
+    map({ "n", "v", "o", "i" }, "<leftmouse>", function()
       require("satellite.mouse").handle_leftmouse()
     end)
   end
@@ -185,14 +186,14 @@ local function apply_keymaps()
     -- === Fold command synchronization workarounds ===
     -- zf takes a motion in normal mode, so it requires a g@ mapping.
     if vim.fn.maparg("zf") == "" then
-      vim.keymap.set("n", "zf", function()
+      map("n", "zf", function()
         vim.o.operatorfunc = "v:lua.package.loaded.satellite.zf_operator"
         return "g@"
       end, { unique = true, expr = true })
     end
     for seq in pairs(foldmaps) do
       if vim.fn.maparg(seq) == "" then
-        vim.keymap.set({ "n", "x" }, seq, function()
+        map({ "n", "x" }, seq, function()
           util.invalidate_virtual_line_count_cache(0)
           vim.schedule(view.refresh_bars)
           return seq

@@ -45,7 +45,7 @@ local notify_handler = function(changes, curr_idx, opts)
     local text = vim.trim(line and line:sub(change.col + 1, change.col + 20) or "")
     -- TODO: if first item is string assume its a highlight for the whole line
     table.insert(rows, {
-      { change.curr and "" or " ", hls.icon },
+      { change.curr and ">" or " ", hls.icon },
       { tostring(change.idx), hls.number },
       { tostring(change.lnum), hls.number },
       { tostring(change.col), hls.number },
@@ -87,9 +87,16 @@ local notify_handler = function(changes, curr_idx, opts)
 end
 
 local load = function(changes, curr_idx, opts)
+  curr_idx = curr_idx or 0
   if curr_idx >= 0 then
     notify_handler(changes, curr_idx, opts)
   end
 end
 
-return { load = load }
+local close = function()
+  if type(state.notify_id) == "number" then
+    notify.close(state.notify_id)
+  end
+end
+
+return { load = load, close = close }

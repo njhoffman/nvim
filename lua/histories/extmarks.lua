@@ -107,7 +107,7 @@ local function ext_clear()
   print("Extmarks cleared")
 end
 
-vim.keymap.set("x", "<F5>", add_mark, { noremap = true, silent = true, desc = "Add extmark at visual selection" })
+require("mapper").map("x", "<F5>", add_mark, { desc = "Add extmark at visual selection" })
 vim.api.nvim_create_user_command("ExtInfo", ext_info, { desc = "Print info about active extmarks" })
 vim.api.nvim_create_user_command("ExtClear", ext_clear, { desc = "Clear all extmark highlights" })
 

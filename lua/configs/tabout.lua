@@ -30,5 +30,6 @@ require('tabout').setup({
 })
 
 -- A multiline tabout setup could look like this
-vim.api.nvim_set_keymap('i', '<Tab>', '<Plug>(TaboutMulti)', { silent = true })
-vim.api.nvim_set_keymap('i', '<S-Tab>', '<Plug>(TaboutBackMulti)', { silent = true })
+local map = require("mapper").map
+map('i', '<Tab>', '<Plug>(TaboutMulti)', { remap = true })
+map('i', '<S-Tab>', '<Plug>(TaboutBackMulti)', { remap = true })

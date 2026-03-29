@@ -150,6 +150,8 @@ local cfg = {
 --     scrollbar = opts.scrollbar == nil and true or opts.scrollbar,
 --     max_width = opts.max_width or 0,
 --     max_height = opts.max_height or 0,
+       -- border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }, "├" "┤" ╷ ╵
+      border = { "", "", "", "│", "╯", "─", "╰", "│" },
       winhighlight = WIN_HIGHLIGHT,
       scrollbar = true,
       winblend = 10,
@@ -160,6 +162,7 @@ local cfg = {
       -- max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
       -- max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
       winhighlight = WIN_HIGHLIGHT,
+      border = 'rounded',
       scrollbar = true,
       winblend = 10,
     }),

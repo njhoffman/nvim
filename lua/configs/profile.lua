@@ -24,5 +24,5 @@ if should_profile then
     end
   end
 
-  vim.keymap.set('', '<F37>', toggle_profile)
+  require("mapper").map('', '<F37>', toggle_profile, { desc = "Toggle profile recording" })
 end

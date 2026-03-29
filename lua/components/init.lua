@@ -2,10 +2,10 @@ return {
   -- loaded before plugin manager for global preferences and resources that may be triggered early by event handlers
   init = function()
     -- WARN: do not include any plugins in this file, any require calls should be local
-    require("components.quickfix").init()
-    require("components.lsp_hover").init()
-    require("components.diagnostics").init()
-    require("components.beacon").init()
+    require("components.quickfix").setup()
+    require("components.lsp_hover").setup()
+    require("components.diagnostics").setup()
+    require("components.beacon").setup()
   end,
 
   -- loaded after plugin manager

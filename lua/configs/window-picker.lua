@@ -1,7 +1,7 @@
 local picker = require("window-picker")
 picker.setup({ fg_color = "#000000" })
 
-vim.keymap.set("n", "ghW", function()
+require("mapper").map("n", "ghW", function()
   local picked_window_id = picker.pick_window({
     hint = "floating-big-letter",
   }) or vim.api.nvim_get_current_win()

@@ -1,3 +1,4 @@
+local map = require("mapper").map
 local state = require("registers.state")
 local config = require("registers.config")
 local ui = require("registers.ui")
@@ -25,14 +26,12 @@ local _set_bindings = function()
   local set_keymap_all_modes = function(key, callback)
     local map_options = {
       nowait = true,
-      noremap = true,
-      silent = true,
-      callback = callback,
+      buffer = state._buffer,
     }
 
-    vim.api.nvim_buf_set_keymap(state._buffer, "n", key, "", map_options)
-    vim.api.nvim_buf_set_keymap(state._buffer, "i", key, "", map_options)
-    vim.api.nvim_buf_set_keymap(state._buffer, "x", key, "", map_options)
+    map("n", key, callback, map_options)
+    map("i", key, callback, map_options)
+    map("x", key, callback, map_options)
   end
 
   -- Map all register keys
@@ -60,22 +59,19 @@ end
 
 local _bind_global_key = function(index, key, mode)
   if _key_should_be_bound(index) then
-    vim.api.nvim_set_keymap(mode, key, "", {
-      callback = function()
-        -- Don't open the registers window in a telescope prompt or in a non-modifiable buffer
-        if
-          not vim.bo.modifiable
-          or vim.bo.filetype == "TelescopePrompt"
-          or vim.bo.filetype == "DressingInput"
-        then
-          return vim.api.nvim_replace_termcodes(key, true, true, true)
-        else
-          -- Call the callback function passed to the options
-          return options.bind_keys[index]()
-        end
-      end,
-      expr = true,
-    })
+    map(mode, key, function()
+      -- Don't open the registers window in a telescope prompt or in a non-modifiable buffer
+      if
+        not vim.bo.modifiable
+        or vim.bo.filetype == "TelescopePrompt"
+        or vim.bo.filetype == "DressingInput"
+      then
+        return vim.api.nvim_replace_termcodes(key, true, true, true)
+      else
+        -- Call the callback function passed to the options
+        return options.bind_keys[index]()
+      end
+    end, { expr = true })
   end
 end
 
@@ -88,22 +84,19 @@ local _bind_global_key = function(index, key, mode)
   local options = config.get()
 
   if _key_should_be_bound(index) then
-    vim.api.nvim_set_keymap(mode, key, "", {
-      callback = function()
-        -- Don't open the registers window in a telescope prompt or in a non-modifiable buffer
-        if
-          not vim.bo.modifiable
-          or vim.bo.filetype == "TelescopePrompt"
-          or vim.bo.filetype == "DressingInput"
-        then
-          return vim.api.nvim_replace_termcodes(key, true, true, true)
-        else
-          -- Call the callback function passed to the options
-          return options.bind_keys[index]()
-        end
-      end,
-      expr = true,
-    })
+    map(mode, key, function()
+      -- Don't open the registers window in a telescope prompt or in a non-modifiable buffer
+      if
+        not vim.bo.modifiable
+        or vim.bo.filetype == "TelescopePrompt"
+        or vim.bo.filetype == "DressingInput"
+      then
+        return vim.api.nvim_replace_termcodes(key, true, true, true)
+      else
+        -- Call the callback function passed to the options
+        return options.bind_keys[index]()
+      end
+    end, { expr = true })
   end
 end
 

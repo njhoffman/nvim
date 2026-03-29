@@ -101,11 +101,12 @@ Snacks.toggle.profiler():map("<leader>iP")
 -- -- Toggle the profiler highlights
 Snacks.toggle.profiler_highlights():map("<leader>iH")
 
-vim.keymap.set("n", "<leader>iS", function()
+local map = require("mapper").map
+map("n", "<leader>iS", function()
   Snacks.profiler.scratch()
 end, { desc = "Profiler Scratch Bufer" })
 
-vim.keymap.set("n", "<leader><", function()
+map("n", "<leader><", function()
   Snacks.scratch()
 end, { desc = "Toggle scratch buffer" })
 

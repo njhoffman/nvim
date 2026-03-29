@@ -30,6 +30,7 @@ M.servers = {
   "marksman",
   "pylsp",
   "pyright",
+  "rust_analyzer",
   "solargraph",
   "sqlls",
   "stylelint_lsp",
@@ -223,7 +224,21 @@ local function load_server_configs()
           pyflakes = { enabled = false },
           pycodestyle = {
             enabled = true,
-            ignore = { "E226", "E266", "E302", "E303", "E304", "E305", "E402", "C0103", "W0104", "W0621", "W391", "W503", "W504" },
+            ignore = {
+              "E226",
+              "E266",
+              "E302",
+              "E303",
+              "E304",
+              "E305",
+              "E402",
+              "C0103",
+              "W0104",
+              "W0621",
+              "W391",
+              "W503",
+              "W504",
+            },
             maxLineLength = 119,
           },
         },
@@ -248,6 +263,7 @@ local function load_server_configs()
       },
     },
   })
+  vim.lsp.config("rust_analyzer", {})
 
   vim.lsp.config("vimls", {
     cmd = { "vim-language-server", "--stdio" },
@@ -262,7 +278,15 @@ local function load_server_configs()
         runtimepath = true,
         gap = 100,
         count = 3,
-        projectRootPatterns = { "runtime", "nvim", ".project", "courseleaf.cfg", ".git", "autoload", "plugin" },
+        projectRootPatterns = {
+          "runtime",
+          "nvim",
+          ".project",
+          "courseleaf.cfg",
+          ".git",
+          "autoload",
+          "plugin",
+        },
       },
       suggest = { fromVimruntime = true, fromRuntimepath = true },
     },

@@ -49,6 +49,7 @@ function create_window(bufnr, height, width)
 end
 
 function handle_window(bufnr, winid, selection_callback)
+  local map = require("mapper").map
   vim.api.nvim_create_autocmd({ 'BufEnter', 'BufLeave', 'FocusLost' }, {
     buffer = bufnr,
     callback = function()
@@ -57,19 +58,19 @@ function handle_window(bufnr, winid, selection_callback)
     end,
   })
   for _, k in ipairs({ '<Esc>', 'q' }) do
-    vim.keymap.set('', k, function()
+    map('', k, function()
       vim.api.nvim_exec_autocmds('FocusLost', { buffer = bufnr })
     end, { buffer = bufnr })
   end
 
-  vim.keymap.set('', '<Tab>', function()
+  map('', '<Tab>', function()
     scroll(bufnr, winid, false)
   end, { buffer = bufnr })
-  vim.keymap.set('', '<S-Tab>', function()
+  map('', '<S-Tab>', function()
     scroll(bufnr, winid, true)
   end, { buffer = bufnr })
 
-  vim.keymap.set('', '<CR>', function()
+  map('', '<CR>', function()
     local line = vim.api.nvim_get_current_line()
     vim.api.nvim_exec_autocmds('FocusLost', { buffer = bufnr })
     selection_callback(line)

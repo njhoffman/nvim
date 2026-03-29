@@ -2,8 +2,10 @@ local M = {}
 
 local config = require('devdocs2.config')
 
+local map = require("mapper").map
+
 local function set_buf_keymap(key, action, bufnr, description)
-  vim.keymap.set('n', key, action, { buffer = bufnr, desc = description })
+  map('n', key, action, { buffer = bufnr, desc = description })
 end
 
 local mappings = {

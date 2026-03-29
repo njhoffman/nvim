@@ -102,9 +102,10 @@ local cfg = {
   },
 }
 
-vim.keymap.set('n', '<leader>ld', '<CMD>Glance definitions<CR>')
-vim.keymap.set('n', '<leader>lr', '<CMD>Glance references<CR>')
-vim.keymap.set('n', '<leader>lt', '<CMD>Glance type_definitions<CR>')
-vim.keymap.set('n', '<leader>li', '<CMD>Glance implementations<CR>')
+local map = require("mapper").map
+map('n', '<leader>ld', '<CMD>Glance definitions<CR>', { desc = "Glance definitions" })
+map('n', '<leader>lr', '<CMD>Glance references<CR>', { desc = "Glance references" })
+map('n', '<leader>lt', '<CMD>Glance type_definitions<CR>', { desc = "Glance type definitions" })
+map('n', '<leader>li', '<CMD>Glance implementations<CR>', { desc = "Glance implementations" })
 
 glance.setup(cfg)

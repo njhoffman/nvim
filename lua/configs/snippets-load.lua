@@ -136,49 +136,51 @@ luasnip.config.set_config({
 })
 
 -- Keymaps
-vim.keymap.set({ 'i', 's' }, '<a-p>', function()
+local map = require("mapper").map
+
+map({ 'i', 's' }, '<a-p>', function()
   if luasnip.expand_or_jumpable() then
     luasnip.expand()
   end
-end, { silent = true })
+end, { desc = "Expand snippet" })
 
-vim.keymap.set({ 'i', 's' }, '<a-k>', function()
+map({ 'i', 's' }, '<a-k>', function()
   if luasnip.jumpable(1) then
     luasnip.jump(1)
   end
-end, { silent = true })
-vim.keymap.set({ 'i', 's' }, '<a-j>', function()
+end, { desc = "Jump to next snippet node" })
+map({ 'i', 's' }, '<a-j>', function()
   if luasnip.jumpable(-1) then
     luasnip.jump(-1)
   end
-end, { silent = true })
+end, { desc = "Jump to previous snippet node" })
 
 -- special function
-vim.keymap.set({ 'i', 's' }, '<a-l>', function()
+map({ 'i', 's' }, '<a-l>', function()
   if luasnip.choice_active() then
     luasnip.change_choice(1)
   end
-end)
+end, { desc = "Next snippet choice" })
 
-vim.keymap.set({ 'i', 's' }, '<a-h>', function()
+map({ 'i', 's' }, '<a-h>', function()
   if luasnip.choice_active() then
     luasnip.change_choice(-1)
   end
-end)
+end, { desc = "Previous snippet choice" })
 
-vim.keymap.set('i', '<A-CR>', function()
+map('i', '<A-CR>', function()
   if LAST_TRIGGERED_SNIPPET then
     vim.api.nvim_input('<A-o>')
     vim.schedule(function()
       luasnip.expand_repeat()
     end)
   end
-end, {})
-vim.keymap.set('i', '<A-S-CR>', function()
+end, { desc = "Repeat last snippet on new line below" })
+map('i', '<A-S-CR>', function()
   if LAST_TRIGGERED_SNIPPET then
     vim.api.nvim_input('<A-S-O>')
     vim.schedule(function()
       luasnip.expand_repeat()
     end)
   end
-end, {})
+end, { desc = "Repeat last snippet on new line above" })

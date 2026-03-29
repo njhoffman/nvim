@@ -25,17 +25,18 @@ local config = defaults
 
 -- update global keymaps that are dependent on state
 local function refresh(open, commands)
+  local map = require("mapper").map
   local sidebar_commands = { "next", "prev" }
   for _, key in ipairs(sidebar_commands) do
     local lhs = config.mapping.global[key] or ""
     if vim.fn.empty(lhs) == 0 then
       if open == true then
         config.mapping.old[key] = utils.get_key_cmd("n", lhs)
-        vim.keymap.set("n", lhs, commands[key], { noremap = true })
+        map("n", lhs, commands[key])
       else
         local rhs = config.mapping.old[key]
         if vim.fn.empty(rhs) == 0 then
-          vim.keymap.set("n", lhs, rhs, { noremap = true })
+          map("n", lhs, rhs)
         else
           vim.keymap.del("n", lhs)
         end

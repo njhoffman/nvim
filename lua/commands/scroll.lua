@@ -351,17 +351,19 @@ end, {
 
 -- Keymaps
 
+local map = require("mapper").map
+
 -- Changelist: g, (next) and g; (prev)
-vim.keymap.set("n", "g,", "<Cmd>ScrollNext change<CR>", { desc = "Next change" })
-vim.keymap.set("n", "g;", "<Cmd>ScrollPrev change<CR>", { desc = "Prev change" })
+map("n", "g,", "<Cmd>ScrollNext change<CR>", { desc = "Next change" })
+map("n", "g;", "<Cmd>ScrollPrev change<CR>", { desc = "Prev change" })
 
 -- Jumplist: <C-i> (next) and <C-o> (prev)
-vim.keymap.set("n", "<c-i>", "<c-i>", { desc = "Next jump" })
-vim.keymap.set("n", "<C-i>", "<Cmd>ScrollNext jump<CR>", { desc = "Next jump" })
-vim.keymap.set("n", "<C-o>", "<Cmd>ScrollPrev jump<CR>", { desc = "Prev jump" })
+map("n", "<c-i>", "<c-i>", { desc = "Next jump" })
+map("n", "<C-i>", "<Cmd>ScrollNext jump<CR>", { desc = "Next jump" })
+map("n", "<C-o>", "<Cmd>ScrollPrev jump<CR>", { desc = "Prev jump" })
 
 -- Search: n (next) and N (prev)
-vim.keymap.set("n", "n", "<Cmd>ScrollNext search<CR>", { desc = "Next search match" })
-vim.keymap.set("n", "N", "<Cmd>ScrollPrev search<CR>", { desc = "Prev search match" })
+map("n", "n", "<Cmd>ScrollNext search<CR>", { desc = "Next search match" })
+map("n", "N", "<Cmd>ScrollPrev search<CR>", { desc = "Prev search match" })
 
 return M

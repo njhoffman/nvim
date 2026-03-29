@@ -511,6 +511,13 @@ map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>silent! w<cr><esc>", {
   silent = true,
 })
 
+map({ "n", "s", "v", "i" }, "<M-S>", "<cmd>silent! wq<cr>", {
+  category = "Buffers",
+  label = "󰽙 write to buffer and quit",
+  desc = "󰽙 write to buffer and quit",
+  silent = true,
+})
+
 -- map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>noa w<cr><esc>", {
 --   category = "Buffers",
 --   label = "󰽙 write buffer",
@@ -840,15 +847,16 @@ map({"n", "x", "o"}, "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev s
 -- nmap [[ ?^.section <CR>
 -- nmap ]] /?section /<CR>
 
-local function open_last_search(reverse)
-  return function()
-    local last_search = vim.fn.getreg('/')
-    local prefix = reverse and "?" or '/'
-    vim.cmd('normal ' .. prefix .. last_search)
-  end
-end
+-- local function open_last_search(reverse)
+--   return function()
+--     local last_search = vim.fn.getreg('/')
+--     local prefix = reverse and "?" or '/'
+--     vim.cmd('normal ' .. prefix .. last_search)
+--   end
+-- end
 
-map('n', '<M-f>', open_last_search(), {noremap = true, silent = true})
+
+-- map('n', '<M-f>', open_last_search(), {noremap = true, silent = true})
 
 -- map('n', '<esc>', "<cmd>getcmdtype() =~ '^[/?]$'<cr>", {
 --   silent = true,
@@ -1090,8 +1098,8 @@ map('x', 'A', function() return vim.fn.mode() == 'V' and '$<C-v>A' or 'A' end, {
 
 local searching_google_in_normal = [[:lua fn.system({'open', 'https://google.com/search?q=' .. vim.fn.expand("<cword>")})<CR>]]
 local searching_google_in_visual = [[<ESC>gv"gy<ESC>:lua fn.system({'open', 'https://google.com/search?q=' .. vim.fn.getreg('g')})<CR>]]
-vim.api.nvim_set_keymap("n", "g!!", searching_google_in_normal, { silent = true, noremap = true })
-vim.api.nvim_set_keymap("x", "g!!", searching_google_in_visual, { silent = true, noremap = true })
+map("n", "g!!", searching_google_in_normal)
+map("x", "g!!", searching_google_in_visual)
 
 -- TODO: create function to save last visual selection before undoing
 -- map('n', 'Uv', 'u"`[" . strpart(getregtype(), 0, 1) . "`]"gA', {

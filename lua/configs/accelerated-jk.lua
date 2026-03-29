@@ -17,5 +17,6 @@ require('accelerated-jk').setup({
   -- when 'enable_deceleration = true', 'deceleration_table = { {200, 3}, {300, 7}, {450, 11}, {600, 15}, {750, 21}, {900, 9999} }'
   deceleration_table = { { 150, 9999 } },
 })
-vim.api.nvim_set_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
-vim.api.nvim_set_keymap('n', 'k', '<Plug>(accelerated_jk_gk)', {})
+local map = require("mapper").map
+map('n', 'j', '<Plug>(accelerated_jk_gj)', { remap = true })
+map('n', 'k', '<Plug>(accelerated_jk_gk)', { remap = true })

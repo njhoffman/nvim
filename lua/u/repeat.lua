@@ -16,7 +16,8 @@ end
 function M.is_repeating() return IS_REPEATING end
 
 function M.setup()
-  vim.keymap.set('n', '.', function()
+  local map = require("mapper").map
+  map('n', '.', function()
     IS_REPEATING = true
     for _ = 1, vim.v.count1 do
       if is_repeatable_last_mutator() and type(REPEAT_ACTION) == 'function' then
@@ -27,7 +28,7 @@ function M.setup()
     end
     IS_REPEATING = false
   end)
-  vim.keymap.set('n', 'u', function()
+  map('n', 'u', function()
     local was_repeatable_last_mutator = is_repeatable_last_mutator()
     for _ = 1, vim.v.count1 do
       vim.cmd { cmd = 'normal', args = { 'u' }, bang = true }

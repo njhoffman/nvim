@@ -307,39 +307,16 @@ local cfg = {
 
 require('other-nvim').setup(cfg)
 
-vim.api.nvim_set_keymap(
-  'n',
-  '<leader>fa',
-  '<cmd>:Other<CR>',
-  { noremap = true, silent = true, desc = 'l open other' }
-)
+local map = require("mapper").map
+
+map('n', '<leader>fa', '<cmd>:Other<CR>', { desc = 'l open other' })
 -- vim.api.nvim_set_keymap('n', '<leader>ftn', '<cmd>:OtherTabNew<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap(
-  'n',
-  '<leader>fN',
-  '<cmd>:OtherSplit<CR>',
-  { noremap = true, silent = true, desc = 'l other split' }
-)
-vim.api.nvim_set_keymap(
-  'n',
-  '<leader>fV',
-  '<cmd>:OtherVSplit<CR>',
-  { noremap = true, silent = true, desc = 'l other vsplit' }
-)
-vim.api.nvim_set_keymap(
-  'n',
-  '<leader>fc',
-  '<cmd>:OtherClear<CR>',
-  { noremap = true, silent = true, desc = 'l other clear' }
-)
+map('n', '<leader>fN', '<cmd>:OtherSplit<CR>', { desc = 'l other split' })
+map('n', '<leader>fV', '<cmd>:OtherVSplit<CR>', { desc = 'l other vsplit' })
+map('n', '<leader>fc', '<cmd>:OtherClear<CR>', { desc = 'l other clear' })
 
 -- Context specific bindings
-vim.api.nvim_set_keymap(
-  'n',
-  '<leader>ft',
-  '<cmd>:Other test<CR>',
-  { noremap = true, silent = true, desc = 'l open other test context' }
-)
+map('n', '<leader>ft', '<cmd>:Other test<CR>', { desc = 'l open other test context' })
 
 -- vim.api.nvim_set_keymap(
 --   'n',

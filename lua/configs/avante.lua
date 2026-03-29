@@ -5,7 +5,10 @@ local cfg = {
     debounce = 600,
     throttle = 2000,
   },
-
+  selection = {
+    enabled = false,
+    hint_display = "delayed", -- delayed, immediate, none
+  },
   behaviour = {
     auto_set_keymaps = false,
   },

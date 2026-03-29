@@ -506,7 +506,7 @@ M.motion = nil
 
 --- Configuration for beacon.
 ---@param config? beacon.config
-M.init = function(config)
+M.setup = function(config)
   ---|fS
 
   if type(config) == "table" then
@@ -536,7 +536,7 @@ M.init = function(config)
     if M.motion then
       -- Remove the current listener.
       vim.on_key(M.motion.id, nil)
-    elseif not pcall(require, "scripts.motions") then
+    elseif not pcall(require, "components.motions") then
       return
     end
 
@@ -557,7 +557,7 @@ M.init = function(config)
       end
     end
 
-    M.motion = require("scripts.motions").add_event_listener(map)
+    M.motion = require("components.motions").add_event_listener(map)
 
     ---|fE
   end

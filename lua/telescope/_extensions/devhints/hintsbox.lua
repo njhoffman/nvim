@@ -42,19 +42,20 @@ local init_aucommands = function(winnr)
 end
 
 local init_keymaps = function(winnr)
-  vim.keymap.set({ "n" }, "q", function()
+  local map = require("mapper").map
+  map({ "n" }, "q", function()
     vim.api.nvim_win_close(winnr, true)
-  end, { noremap = true, silent = true })
+  end)
 
   local scroll_up = vim.api.nvim_replace_termcodes("<Up>", true, false, true)
   local scroll_down = vim.api.nvim_replace_termcodes("<Down>", true, false, true)
 
-  vim.keymap.set({ "i", "n" }, "<C-Up>", function()
+  map({ "i", "n" }, "<C-Up>", function()
     scroll_float(scroll_up, winnr)
-  end, { noremap = true, silent = true })
-  vim.keymap.set({ "i", "n" }, "<C-Down>", function()
+  end)
+  map({ "i", "n" }, "<C-Down>", function()
     scroll_float(scroll_down, winnr)
-  end, { noremap = true, silent = true })
+  end)
 end
 
 local update_preview = function(bufnr, topics)

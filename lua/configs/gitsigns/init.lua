@@ -141,7 +141,7 @@ require("gitsigns").setup(mySettings)
 
 local orig_detach = vim.schedule_wrap(require("gitsigns.attach").detach)
 require("gitsigns.attach").detach = function(bufnr, keep_signs)
-  vim.api.nvim_buf_set_var(bufnr, "gitsigns_status_dict", nil)
+  pcall(vim.api.nvim_buf_del_var, bufnr, "gitsigns_status_dict")
   -- vim.fn.setenv("GIT_WORK_TREE", "")
   -- vim.fn.setenv("GIT_DIR", "")
   -- vim.dbglog("detach", bufnr, keep_signs)

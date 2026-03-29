@@ -105,7 +105,7 @@ vim.api.nvim_create_autocmd("User", {
   pattern = "MiniFilesBufferCreate",
   callback = function(args)
     local b = args.data.buf_id
-    vim.keymap.set(
+    require("mapper").map(
       "n",
       "ga",
       add_path_to_codecompanion_chat,

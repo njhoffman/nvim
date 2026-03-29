@@ -8,7 +8,7 @@ local reload = require("commands.reload")
 local system = require("commands.system")
 -- local ansi = require("commands.ansi")
 local quickclose = require("commands.quickclose")
-local colorscheme_export = require("commands.colorscheme_export")
+-- colorscheme_export moved to commands.colors module
 local silence = require("commands.silence")
 local range_history = require("commands.range-history")
 local scroll = require("commands.scroll")
@@ -22,6 +22,7 @@ local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
 
 require("commands.ui").setup()
+require("commands.colors").setup()
 quickclose.setup()
 range_history.setup()
 
@@ -80,7 +81,7 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "lua",
   callback = function()
     bufcmd(0, "Help", help.get_help_cursor, { desc = "Jump to helpfile under cursor" })
-    vim.keymap.set("n", "gH", "<cmd>Help<cr>", {
+    require("mapper").map("n", "gH", "<cmd>Help<cr>", {
       desc = "open help item under cursor",
       buffer = 0,
     })
@@ -88,46 +89,28 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Create lua help utility functions",
 })
 
+local toggle_checkbox = function()
+  local line = vim.api.nvim_get_current_line()
+  -- only if line has a checkbox, otherwise normal enter behavior
+  if line:match("%s*[-*+]%s*%[[ xX]%]") then
+    format.toggle_checkbox()
+  else
+    vim.api.nvim_feedkeys("o", "n", false)
+  end
+end
+
 -- TODO: handle special [-] and [ ]
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function()
-    vim.keymap.set("n", "<CR>", function()
-      local line = vim.api.nvim_get_current_line()
-      -- only if line has a checkbox, otherwise normal enter behavior
-      if line:match("%s*[-*+]%s*%[[ xX]%]") then
-        format.toggle_checkbox()
-      else
-        vim.api.nvim_feedkeys("o", "n", false)
-      end
-    end, { buffer = true, desc = "Toggle checkbox or normal enter" })
+    map("n", "<CR>", toggle_checkbox, { buffer = true, desc = "Toggle checkbox or normal enter" })
   end,
 })
 
 cmd("HelpExport", help.export_help_files, { desc = "export local help files" })
 cmd("HelpNew", help.edit_new_helpfile, { desc = "edit new local helpfile" })
 
-cmd("ColorschemeExport", function(opts)
-  colorscheme_export.export({
-    colorscheme = opts.args ~= "" and opts.args or nil,
-  })
-end, {
-  nargs = "?",
-  desc = "󰏘 export colorscheme to bat theme format",
-  complete = function(_, _, _)
-    -- Get available colorschemes for completion
-    local paths = vim.api.nvim_get_runtime_file("colors/*.{vim,lua}", true)
-    local schemes = {}
-    for _, path in ipairs(paths) do
-      local scheme = path:match("colors/(.*)%..*$")
-      if scheme then
-        table.insert(schemes, scheme)
-      end
-    end
-    table.sort(schemes)
-    return schemes
-  end,
-})
+-- ColorschemeExport now registered in commands.colors.init
 
 -- map("n", "<leader>$", format.end_char_strip, { desc = "ﲖ strip end characters" })
 map("n", "<leader>a", format.end_char_toggle, { desc = "ﲖ toggle end character", nowait = true })

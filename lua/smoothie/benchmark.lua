@@ -373,8 +373,9 @@ function M.show_stats()
   vim.api.nvim_win_set_option(win, "winhl", "Normal:Normal,FloatBorder:FloatBorder")
 
   -- Close mappings
-  vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = buf, nowait = true, noremap = true, silent = true })
-  vim.keymap.set("n", "<Esc>", "<cmd>close<CR>", { buffer = buf, nowait = true, noremap = true, silent = true })
+  local map = require("mapper").map
+  map("n", "q", "<cmd>close<CR>", { buffer = buf, nowait = true })
+  map("n", "<Esc>", "<cmd>close<CR>", { buffer = buf, nowait = true })
 end
 
 return M

@@ -38,14 +38,10 @@ local mappings = {
   { "mX", recall.clear,            "  marks clear all" },
 }
 
+local map = require("mapper").map
 local create_mappings = function()
   for _, mapping in ipairs(mappings) do
-    vim.keymap.set(
-      "n",
-      mapping[1],
-      mapping[2],
-      { noremap = true, silent = true, desc = mapping[3] }
-    )
+    map("n", mapping[1], mapping[2], { desc = mapping[3] })
   end
 end
 

@@ -32,7 +32,7 @@ local cfg = {
     "cmp_menu",
     "lazy",
     "neoai-input",
-    "noice",
+    -- "noice",
     -- 'notify',
     "prompt",
   },

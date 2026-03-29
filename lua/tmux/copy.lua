@@ -50,18 +50,10 @@ local function sync_registers(passed_key)
 end
 
 local function resolve_content(regtype, regcontents)
-    local result = ""
-    for index, value in ipairs(regcontents) do
-        if index > 1 then
-            result = result .. "\n"
-        end
-        result = result .. value
-    end
-
+    local result = table.concat(regcontents, "\n")
     if regtype == "V" then
         result = result .. "\n"
     end
-
     return result
 end
 

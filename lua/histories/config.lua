@@ -1,4 +1,4 @@
-local providers = require('histories.providers')
+local providers = require("histories.providers")
 
 -- stylua: ignore
 local config = {

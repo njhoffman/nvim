@@ -8,8 +8,7 @@ local map = function(modes, lhs, rhs, opts)
   elseif opts and opts.desc then
     opts.desc = "韛" .. opts.desc
   end
-  local options = vim.tbl_extend("keep", opts or {}, { silent = true })
-  vim.keymap.set(modes, lhs, rhs, options)
+  require("mapper").map(modes, lhs, rhs, opts)
 end
 
 local helpers = require("configs.nvim-various-textobjs.helpers")

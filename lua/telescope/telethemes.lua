@@ -4,32 +4,12 @@ local get_theme = function(theme)
   -- builtin.find_files(themes.get_dropdown(opts))
   -- local flex = {
   --   layout_config = {
-  --     bottom_pane = {
-  --       height = 25,
-  --     },
-  --     center = {
-  --       preview_height = 0.5,
-  --       height = 0.4,
-  --       width = 0.5,
-  --     },
-  --     cursor = {
-  --       height = 0.9,
-  --       width = 0.8,
-  --     },
-  --     horizontal = {
-  --       height = 0.9,
-  --       width = 0.8,
-  --       preview_width = 0.5,
-  --     },
-  --     vertical = {
-  --       height = 0.9,
-  --       width = 0.8,
-  --       mirror = true,
-  --       preview_height = 0.5,
-  --     },
-  --     flex = {
-  --       flip_columns = 130,
-  --     },
+  --     bottom_pane = { height = 25, },
+  --     center = { preview_height = 0.5, height = 0.4, width = 0.5, },
+  --     cursor = { height = 0.9, width = 0.8, },
+  --     horizontal = { height = 0.9, width = 0.8, preview_width = 0.5, },
+  --     vertical = { height = 0.9, width = 0.8, mirror = true, preview_height = 0.5, },
+  --     flex = { flip_columns = 130, },
   --   },
   --   layout_strategy = "flex", -- flex, horizontal, veritical, center
   -- }
@@ -57,9 +37,13 @@ local get_theme = function(theme)
     }),
     cursor = require("telescope.themes").get_cursor({
       winblend = 20,
-      layout_config = { height = 15 },
+      layout_config = {
+        height = function(_, _, max_lines)
+          return math.min(max_lines, 15)
+        end,
+      },
     }),
-    minimal = require('telescope.themes').get_minimal({
+    minimal = require("telescope.themes").get_minimal({
       winblend = 20,
     }),
   }

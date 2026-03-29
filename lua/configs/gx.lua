@@ -57,6 +57,6 @@ local example_config = {
     end,
   },
 }
-vim.keymap.set({ "n", "x" }, "gx", "<cmd>Browse<cr>", { silent = true })
+require("mapper").map({ "n", "x" }, "gx", "<cmd>Browse<cr>", { desc = "Browse URL under cursor" })
 
 require("gx").setup(example_config)

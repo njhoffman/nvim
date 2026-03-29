@@ -38,7 +38,7 @@ local function Format(format, entries, opts)
       end
     end
 
-    if not vim.tbl_isempty(events) then
+    if type("events") == "table" and not vim.tbl_isempty(events) then
       events = vim.inspect(events, { newline = "", indent = " " }):sub(2, -2)
       -- TODO: Implement our own inspect to avoid modifying user message
       kwargs.msg = kwargs.msg .. events:gsub(" = ", "=")

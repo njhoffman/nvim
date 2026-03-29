@@ -12,7 +12,7 @@ local utils = require("configs.alpha.utils")
 --        end,
 --      })
 
-vim.keymap.set("n", "<C-CR>", "<cmd>Alpha<cr>", { nowait = true, desc = "load alpha start screen" })
+require("mapper").map("n", "<C-CR>", "<cmd>Alpha<cr>", { nowait = true, desc = "load alpha start screen" })
 local header =
   { type = "text", val = headers.big_header, opts = { position = "center", hl = "Type" } }
 

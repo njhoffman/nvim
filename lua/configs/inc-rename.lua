@@ -20,7 +20,7 @@ require("inc_rename").setup({
   post_hook = nil,
 })
 
-vim.keymap.set("n", "grN", ":IncRename ", { desc = "IncRename" })
+require("mapper").map("n", "grN", ":IncRename ", { desc = "IncRename", silent = false })
 -- vim.keymap.set("n", "grN", function()
 --   return ":IncRename " .. vim.fn.expand("<cword>")
 -- end, { expr = true })

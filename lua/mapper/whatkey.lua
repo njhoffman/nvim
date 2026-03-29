@@ -1,23 +1,39 @@
-local wk_mapper = require("what-key.mapper")
-local wk = require("what-key")
+local wk_mapper, wk
 
--- wk.register({ ["<leader>f"] = { name = "+file" }, ["<leader>ff"] = { "<cmd>Telescope find_files<cr>", "Find File" }}, opts)
+local function ensure_loaded()
+  if not wk then
+    local ok1, m = pcall(require, "what-key.mapper")
+    local ok2, w = pcall(require, "what-key")
+    if ok1 and ok2 then
+      wk_mapper = m
+      wk = w
+    end
+  end
+  return wk ~= nil
+end
+
 local map = function(mode, lhs, opts)
+  if not ensure_loaded() then
+    return
+  end
   local label = opts.label or opts.desc or ""
   opts.buffer = opts.buffer == true and 0 or opts.buffer
-  -- if mode == "" then
-  --   whatkey.register({ [lhs] = { label } }, vim.tbl_deep_extend("force", opts, { mode = "n" }))
-  -- elseif mode == "v" then
-  --   whatkey.register({ [lhs] = { label } }, vim.tbl_deep_extend("force", opts, { mode = "x" }))
-  --   whatkey.register({ [lhs] = { label } }, vim.tbl_deep_extend("force", opts, { mode = "s" }))
-  -- else
   wk.register({ [lhs] = { label } }, vim.tbl_deep_extend("force", opts, { mode = mode }))
-  -- end
 end
 
 local prefix = function(mode, prefix, name)
+  if not ensure_loaded() then
+    return
+  end
   local desc = "+" .. name
   wk.register({ [prefix] = { name = desc } }, { mode = mode })
 end
 
-return { map = map, prefix = prefix, dump = wk_mapper.dump }
+local dump = function(...)
+  if not ensure_loaded() then
+    return
+  end
+  return wk_mapper.dump(...)
+end
+
+return { map = map, prefix = prefix, dump = dump }

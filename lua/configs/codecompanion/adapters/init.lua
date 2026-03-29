@@ -1,3 +1,5 @@
+local map = require("mapper").map
+
 local M = {}
 
 local fmt = string.format
@@ -35,25 +37,17 @@ function open_textarea(callback)
 
   local win = vim.api.nvim_open_win(buf, true, win_opts)
 
-  vim.api.nvim_buf_set_keymap(buf, "n", "<CR>", "", {
-    callback = function()
-      local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-      vim.api.nvim_win_close(win, true)
-      callback(lines[1], table.concat(lines, "\n"))
-    end,
-    noremap = true,
-    silent = true,
-  })
+  map("n", "<CR>", function()
+    local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    vim.api.nvim_win_close(win, true)
+    callback(lines[1], table.concat(lines, "\n"))
+  end, { buffer = buf })
 
   -- Optional: Esc to cancel
-  vim.api.nvim_buf_set_keymap(buf, "n", "<Esc>", "", {
-    callback = function()
-      vim.api.nvim_win_close(win, true)
-      vim.notify("Adding reference canceled")
-    end,
-    noremap = true,
-    silent = true,
-  })
+  map("n", "<Esc>", function()
+    vim.api.nvim_win_close(win, true)
+    vim.notify("Adding reference canceled")
+  end, { buffer = buf })
 end
 
 -- Internal function to get Path object

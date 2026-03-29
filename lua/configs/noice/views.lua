@@ -73,7 +73,10 @@ local errorView = {
 local popupView = {
   backend = "popup",
   relative = "editor",
-  buf_options = { filetype = ft_noice },
+  buf_options = {
+    filetype = ft_noice,
+    syntax = "noice.log.lua",
+  },
   close = {
     events = { "BufLeave" },
     keys = { "q", "<esc>" },
@@ -207,9 +210,13 @@ local splitView = {
   close = {
     keys = { "q" },
   },
-  buf_options = { filetype = ft_noice },
+  buf_options = {
+    filetype = ft_noice,
+    syntax = "noice.log.lua",
+  },
   win_options = {
     winhighlight = { Normal = "NoiceSplit", FloatBorder = "NoiceSplitBorder" },
+    scrolloff = 9999,
     wrap = true,
   },
 }

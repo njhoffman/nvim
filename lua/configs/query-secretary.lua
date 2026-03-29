@@ -30,6 +30,6 @@ require('query-secretary').setup({
   },
 })
 
-vim.keymap.set('n', '<leader><BS>', function()
-  require('query-secretary').query_window_initiate()
-end, {})
+require("mapper").map("n", "<leader><BS>", function()
+  require("query-secretary").query_window_initiate()
+end, { desc = "query secretary" })

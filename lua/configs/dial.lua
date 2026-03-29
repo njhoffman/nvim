@@ -90,18 +90,17 @@ local rhs_func = function(direction, op)
   end
 end
 
+local map = require("mapper").map
+
 local dial_map = function(mode, lhs, direction, op, desc)
-  vim.keymap.set(mode, lhs, rhs_func(direction, op), {
-    -- buffer = true,
-    noremap = true,
-    silent = true,
+  map(mode, lhs, rhs_func(direction, op), {
     desc = desc,
   })
 end
 
 -- disable default C-A / C-X behavior because it changes values to easily
-vim.keymap.set("n", "<C-a>", "<nop>")
-vim.keymap.set("n", "<C-x>", "<nop>")
+map("n", "<C-a>", "<nop>")
+map("n", "<C-x>", "<nop>")
 dial_map("n", "<M-a>", "increment", "normal", " dial increment normal")
 dial_map("n", "<M-x>", "decrement", "normal", " dial increment normal")
 dial_map("v", "<M-a>", "increment", "visual", " dial increment visual")

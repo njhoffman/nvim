@@ -1,4 +1,5 @@
 -- TODO: move over to lua/lazy
+local map = require("mapper").map
 local setup = require("utils.lazy.setup")
 local configs = require("utils.lazy.configs")
 
@@ -15,7 +16,7 @@ end
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "lazy",
   callback = function(ev)
-    vim.api.nvim_buf_set_keymap(ev.buf, "n", "<ESC>", "q", {})
+    map("n", "<ESC>", "q", { buffer = ev.buf })
   end,
 })
 

@@ -17,13 +17,14 @@ local yanky_hydra = Hydra({
 })
 
 -- choose/change the mappings if you want
+local map = require("mapper").map
 for key, putAction in pairs({
   ['p'] = '<Plug>(YankyPutAfter)',
   ['P'] = '<Plug>(YankyPutBefore)',
   ['gp'] = '<Plug>(YankyGPutAfter)',
   ['gP'] = '<Plug>(YankyGPutBefore)',
 }) do
-  vim.keymap.set({ 'n', 'x' }, key, function()
+  map({ 'n', 'x' }, key, function()
     vim.fn.feedkeys(t(putAction))
     yanky_hydra:activate()
   end)
@@ -44,7 +45,7 @@ for key, putAction in pairs({
   ['=p'] = '<Plug>(YankyPutAfterFilter)',
   ['=P'] = '<Plug>(YankyPutBeforeFilter)',
 }) do
-  vim.keymap.set('n', key, function()
+  map('n', key, function()
     vim.fn.feedkeys(t(putAction))
     yanky_hydra:activate()
   end)

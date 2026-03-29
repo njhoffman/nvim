@@ -15,9 +15,10 @@ end
 --- @param key string
 --- @param m string mark name
 local function mark_set_keymap(key, m)
+  local map = require("mapper").map
   local mkey = key .. m
   if fn.maparg(mkey) == '' then
-    vim.keymap.set({ 'n', 'x' }, mkey, function()
+    map({ 'n', 'x' }, mkey, function()
       exec_autocmd { key = mkey }
       return mkey
     end, { unique = true, expr = true })

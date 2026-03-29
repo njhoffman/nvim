@@ -85,15 +85,17 @@ local setup = function()
     { desc = "Undo silence command redirects and options" }
   )
 
-  vim.keymap.set("n", "<M-C-C>", function()
+  local map = require("mapper").map
+
+  map("n", "<M-C-C>", function()
     silence_start()
   end, { desc = "silence messaging and skip noice routes output" })
 
-  vim.keymap.set("c", "<S-CR>", function()
+  map("c", "<S-CR>", function()
     redirect_cmd()
   end, { desc = "fork cmdline output to popup view" })
 
-  vim.keymap.set("c", "<C-CR>", function()
+  map("c", "<C-CR>", function()
     redirect_cmd(true)
   end, { desc = "redirect cmdline output to popup view" })
 end

@@ -65,20 +65,6 @@
 --     telescope = views.telescopeViewFormat,
 --     level = { icons = { error = "", warn = "", info = "", debug = "", trace = "" } },
 --   },
---   commands = {
---     history = views.historyView,
---     -- :Noice last
---     last = vim.tbl_extend("force", views.historyView, { filter_opts = { count = 10 } }),
---     -- :Noice errors
---     -- errors = {
---     --   -- options for the message history that you get with `:Noice errors`
---     --   -- view = 'popup',
---     --   view = views.errorView,
---     --   -- opts = { enter = true, format = views.errorViewFormat },
---     --   filter = { error = true },
---     --   filter_opts = { reverse = true },
---     -- },
---   },
 -- }
 
 -- local error_message = function(message, opts)
@@ -113,6 +99,66 @@ require("noice").setup({
     },
     popup = {
       scrollbar = false,
+    },
+  },
+  commands = {
+    history = {
+      -- options for the message history that you get with `:Noice`
+      view = "split",
+      opts = {
+        enter = true,
+        format = "details",
+        tail = true,
+        win_options = { winbar = "Noice History" },
+      },
+      filter = {
+        any = {
+          { event = "notify" },
+          { error = true },
+          { warning = true },
+          { event = "msg_show", kind = { "" } },
+          { event = "lsp", kind = "message" },
+        },
+      },
+    },
+    -- :Noice last
+    last = {
+      view = "popup",
+      opts = { enter = true, format = "details", win_options = { winbar = "Noice Details" } },
+      filter = {
+        any = {
+          { event = "notify" },
+          { error = true },
+          { warning = true },
+          { event = "msg_show", kind = { "" } },
+          { event = "lsp", kind = "message" },
+        },
+      },
+      filter_opts = { count = 1 },
+    },
+    -- :Noice errors
+    errors = {
+      -- options for the message history that you get with `:Noice`
+      view = "popup",
+      opts = {
+        tail = true,
+        enter = true,
+        format = "details",
+        win_options = { winbar = "Noice Errors" },
+      },
+      filter = { error = true },
+      filter_opts = { reverse = true },
+    },
+    all = {
+      -- options for the message history that you get with `:Noice`
+      view = "split",
+      opts = {
+        tail = true,
+        enter = true,
+        format = "details",
+        win_options = { winbar = "Noice All" },
+      },
+      filter = {},
     },
   },
 

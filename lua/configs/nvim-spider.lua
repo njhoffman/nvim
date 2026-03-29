@@ -74,12 +74,12 @@ spider_map({ "n", "o", "x" }, "w", "w", { desc = "󱇫 Spider-w" })
 spider_map({ "n", "o", "x" }, "e", "e", { desc = "󱇫 Spider-e" })
 spider_map({ "n", "o", "x" }, "b", "b", { desc = "󱇫 Spider-b" })
 spider_map({ "n", "o", "x" }, "ge", "ge", { desc = "󱇫 Spider-ge" })
-local m = vim.keymap.set
-m("i", "<C-f>", "<Esc>l<cmd>lua require('spider').motion('w')<CR>i", { desc = "󱇫 spider-w ins" })
-m("i", "<C-b>", "<Esc><cmd>lua require('spider').motion('b')<CR>i", { desc = "󱇫 spider-b ins" })
+local map = mapper.map
+map("i", "<C-f>", "<Esc>l<cmd>lua require('spider').motion('w')<CR>i", { desc = "󱇫 spider-w ins" })
+map("i", "<C-b>", "<Esc><cmd>lua require('spider').motion('b')<CR>i", { desc = "󱇫 spider-b ins" })
 -- delete subword before cursor
 -- vim.keymap.set('i', '<C-w>', '<Esc>cvb', { remap = true })
-m("i", "<C-w>", "<Esc>cb")
+map("i", "<C-w>", "<Esc>cb")
 
 -- skipInsignificantPunctuation = true for operators
 -- cw and dw: Spider should remove the word up to, but not including, the punctuation when using cw on the last word of the last line.

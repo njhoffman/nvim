@@ -95,7 +95,8 @@ REPL commands:
     },
   },
 })
-vim.keymap.set('n', ';;r', utils.send_a_code_chunk, {
+local map = require("mapper").map
+map('n', ';;r', utils.send_a_code_chunk, {
   desc = 'send a code chunk',
   expr = true,
   buffer = 0,

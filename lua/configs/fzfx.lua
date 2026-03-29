@@ -348,275 +348,116 @@ local defaults = {
 }
 
 local recommended_keys = function()
+  local map = require("mapper").map
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>f",
-    "<cmd>FzfxFiles<cr>",
-    { silent = true, noremap = true, desc = "Find files" }
-  )
+  map("n", "<space>f", "<cmd>FzfxFiles<cr>", { desc = "Find files" })
   -- by visual select
-  vim.keymap.set(
-    "x",
-    "<space>f",
-    "<cmd>FzfxFiles visual<CR>",
-    { silent = true, noremap = true, desc = "Find files" }
-  )
+  map("x", "<space>f", "<cmd>FzfxFiles visual<CR>", { desc = "Find files" })
   -- by cursor word
-  vim.keymap.set(
-    "n",
-    "<space>wf",
-    "<cmd>FzfxFiles cword<cr>",
-    { silent = true, noremap = true, desc = "Find files by cursor word" }
-  )
+  map("n", "<space>wf", "<cmd>FzfxFiles cword<cr>", { desc = "Find files by cursor word" })
   -- by yank text
-  vim.keymap.set(
-    "n",
-    "<space>pf",
-    "<cmd>FzfxFiles put<cr>",
-    { silent = true, noremap = true, desc = "Find files by yank text" }
-  )
+  map("n", "<space>pf", "<cmd>FzfxFiles put<cr>", { desc = "Find files by yank text" })
   -- by resume
-  vim.keymap.set(
-    "n",
-    "<space>rf",
-    "<cmd>FzfxFiles resume<cr>",
-    { silent = true, noremap = true, desc = "Find files by resume last" }
-  )
+  map("n", "<space>rf", "<cmd>FzfxFiles resume<cr>", { desc = "Find files by resume last" })
 
   -- ======== live grep ========
 
   -- live grep
-  vim.keymap.set(
-    "n",
-    "<space>l",
-    "<cmd>FzfxLiveGrep<cr>",
-    { silent = true, noremap = true, desc = "Live grep" }
-  )
+  map("n", "<space>l", "<cmd>FzfxLiveGrep<cr>", { desc = "Live grep" })
   -- by visual select
-  vim.keymap.set(
-    "x",
-    "<space>l",
-    "<cmd>FzfxLiveGrep visual<cr>",
-    { silent = true, noremap = true, desc = "Live grep" }
-  )
+  map("x", "<space>l", "<cmd>FzfxLiveGrep visual<cr>", { desc = "Live grep" })
   -- by cursor word
-  vim.keymap.set(
-    "n",
-    "<space>wl",
-    "<cmd>FzfxLiveGrep cword<cr>",
-    { silent = true, noremap = true, desc = "Live grep by cursor word" }
-  )
+  map("n", "<space>wl", "<cmd>FzfxLiveGrep cword<cr>", { desc = "Live grep by cursor word" })
   -- by yank text
-  vim.keymap.set(
-    "n",
-    "<space>pl",
-    "<cmd>FzfxLiveGrep put<cr>",
-    { silent = true, noremap = true, desc = "Live grep by yank text" }
-  )
+  map("n", "<space>pl", "<cmd>FzfxLiveGrep put<cr>", { desc = "Live grep by yank text" })
   -- by resume
-  vim.keymap.set(
-    "n",
-    "<space>rl",
-    "<cmd>FzfxLiveGrep resume<cr>",
-    { silent = true, noremap = true, desc = "Live grep by resume last" }
-  )
+  map("n", "<space>rl", "<cmd>FzfxLiveGrep resume<cr>", { desc = "Live grep by resume last" })
 
   -- ======== buffers ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>bf",
-    "<cmd>FzfxBuffers<cr>",
-    { silent = true, noremap = true, desc = "Find buffers" }
-  )
+  map("n", "<space>bf", "<cmd>FzfxBuffers<cr>", { desc = "Find buffers" })
 
   -- ======== git files ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>gf",
-    "<cmd>FzfxGFiles<cr>",
-    { silent = true, noremap = true, desc = "Find git files" }
-  )
+  map("n", "<space>gf", "<cmd>FzfxGFiles<cr>", { desc = "Find git files" })
 
   -- ======== git live grep ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>gl",
-    "<cmd>FzfxGLiveGrep<cr>",
-    { silent = true, noremap = true, desc = "Git live grep" }
-  )
+  map("n", "<space>gl", "<cmd>FzfxGLiveGrep<cr>", { desc = "Git live grep" })
   -- by visual select
-  vim.keymap.set(
-    "x",
-    "<space>gl",
-    "<cmd>FzfxGLiveGrep visual<cr>",
-    { silent = true, noremap = true, desc = "Git live grep" }
-  )
+  map("x", "<space>gl", "<cmd>FzfxGLiveGrep visual<cr>", { desc = "Git live grep" })
   -- by cursor word
-  vim.keymap.set(
-    "n",
-    "<space>wgl",
-    "<cmd>FzfxGLiveGrep cword<cr>",
-    { silent = true, noremap = true, desc = "Git live grep by cursor word" }
-  )
+  map("n", "<space>wgl", "<cmd>FzfxGLiveGrep cword<cr>", { desc = "Git live grep by cursor word" })
   -- by yank text
-  vim.keymap.set(
-    "n",
-    "<space>pgl",
-    "<cmd>FzfxGLiveGrep put<cr>",
-    { silent = true, noremap = true, desc = "Git live grep by yank text" }
-  )
+  map("n", "<space>pgl", "<cmd>FzfxGLiveGrep put<cr>", { desc = "Git live grep by yank text" })
   -- by resume
-  vim.keymap.set(
-    "n",
-    "<space>rgl",
-    "<cmd>FzfxGLiveGrep resume<cr>",
-    { silent = true, noremap = true, desc = "Git live grep by resume last" }
-  )
+  map("n", "<space>rgl", "<cmd>FzfxGLiveGrep resume<cr>", { desc = "Git live grep by resume last" })
 
   -- ======== git changed files (status) ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>gs",
-    "<cmd>FzfxGStatus<cr>",
-    { silent = true, noremap = true, desc = "Find git changed files (status)" }
-  )
+  map("n", "<space>gs", "<cmd>FzfxGStatus<cr>", { desc = "Find git changed files (status)" })
 
   -- ======== git branches ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>br",
-    "<cmd>FzfxGBranches<cr>",
-    { silent = true, noremap = true, desc = "Search git branches" }
-  )
+  map("n", "<space>br", "<cmd>FzfxGBranches<cr>", { desc = "Search git branches" })
 
   -- ======== git commits ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>gc",
-    "<cmd>FzfxGCommits<cr>",
-    { silent = true, noremap = true, desc = "Search git commits" }
-  )
+  map("n", "<space>gc", "<cmd>FzfxGCommits<cr>", { desc = "Search git commits" })
 
   -- ======== git blame ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>gb",
-    "<cmd>FzfxGBlame<cr>",
-    { silent = true, noremap = true, desc = "Search git blame" }
-  )
+  map("n", "<space>gb", "<cmd>FzfxGBlame<cr>", { desc = "Search git blame" })
 
   -- ======== lsp diagnostics ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>dg",
-    "<cmd>FzfxLspDiagnostics<cr>",
-    { silent = true, noremap = true, desc = "Search lsp diagnostics" }
-  )
+  map("n", "<space>dg", "<cmd>FzfxLspDiagnostics<cr>", { desc = "Search lsp diagnostics" })
 
   -- ======== lsp symbols ========
 
   -- lsp definitions
-  vim.keymap.set(
-    "n",
-    "gd",
-    "<cmd>FzfxLspDefinitions<cr>",
-    { silent = true, noremap = true, desc = "Goto lsp definitions" }
-  )
+  map("n", "gd", "<cmd>FzfxLspDefinitions<cr>", { desc = "Goto lsp definitions" })
 
   -- lsp type definitions
-  vim.keymap.set(
-    "n",
-    "gt",
-    "<cmd>FzfxLspTypeDefinitions<cr>",
-    { silent = true, noremap = true, desc = "Goto lsp type definitions" }
-  )
+  map("n", "gt", "<cmd>FzfxLspTypeDefinitions<cr>", { desc = "Goto lsp type definitions" })
 
   -- lsp references
-  vim.keymap.set(
-    "n",
-    "gr",
-    "<cmd>FzfxLspReferences<cr>",
-    { silent = true, noremap = true, desc = "Goto lsp references" }
-  )
+  map("n", "gr", "<cmd>FzfxLspReferences<cr>", { desc = "Goto lsp references" })
 
   -- lsp implementations
-  vim.keymap.set(
-    "n",
-    "gi",
-    "<cmd>FzfxLspImplementations<cr>",
-    { silent = true, noremap = true, desc = "Goto lsp implementations" }
-  )
+  map("n", "gi", "<cmd>FzfxLspImplementations<cr>", { desc = "Goto lsp implementations" })
 
   -- lsp incoming calls
-  vim.keymap.set(
-    "n",
-    "gI",
-    "<cmd>FzfxLspIncomingCalls<cr>",
-    { silent = true, noremap = true, desc = "Goto lsp incoming calls" }
-  )
+  map("n", "gI", "<cmd>FzfxLspIncomingCalls<cr>", { desc = "Goto lsp incoming calls" })
 
   -- lsp outgoing calls
-  vim.keymap.set(
-    "n",
-    "gO",
-    "<cmd>FzfxLspOutgoingCalls<cr>",
-    { silent = true, noremap = true, desc = "Goto lsp outgoing calls" }
-  )
+  map("n", "gO", "<cmd>FzfxLspOutgoingCalls<cr>", { desc = "Goto lsp outgoing calls" })
 
   -- ======== vim commands ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>cm",
-    "<cmd>FzfxCommands<cr>",
-    { silent = true, noremap = true, desc = "Search vim commands" }
-  )
+  map("n", "<space>cm", "<cmd>FzfxCommands<cr>", { desc = "Search vim commands" })
 
   -- ======== vim key maps ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>km",
-    "<cmd>FzfxKeyMaps<cr>",
-    { silent = true, noremap = true, desc = "Search vim keymaps" }
-  )
+  map("n", "<space>km", "<cmd>FzfxKeyMaps<cr>", { desc = "Search vim keymaps" })
 
   -- ======== vim marks ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>mk",
-    "<cmd>FzfxMarks<cr>",
-    { silent = true, noremap = true, desc = "Search vim marks" }
-  )
+  map("n", "<space>mk", "<cmd>FzfxMarks<cr>", { desc = "Search vim marks" })
 
   -- ======== file explorer ========
 
   -- by args
-  vim.keymap.set(
-    "n",
-    "<space>xp",
-    "<cmd>FzfxFileExplorer<cr>",
-    { silent = true, noremap = true, desc = "File explorer" }
-  )
+  map("n", "<space>xp", "<cmd>FzfxFileExplorer<cr>", { desc = "File explorer" })
 end

@@ -26,9 +26,9 @@ local scopes = {
   -- project              = { main = 0 },
   lab                     = { main = 2 },
   root                    = { main = 0 },
-  -- telescope            = { main = -1 },
   reactive                = { main = -1, module = 1 },
   tail                    = { main = 0 },
+  telescope               = { main = 3, module = 1 },
   whichkey                = { main = 1 },
 }
 

@@ -1,6 +1,6 @@
-vim.keymap.set("n", "<leader>ca", function()
+require("mapper").map("n", "<leader>ca", function()
   require("tiny-code-action").code_action()
-end, { noremap = true, silent = true })
+end, { desc = "Code action (tiny-code-action)" })
 
 local defaults = {
   --- The backend to use, currently only "vim", "delta", "difftastic", "diffsofancy" are supported

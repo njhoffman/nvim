@@ -18,7 +18,8 @@ function M.define(key_seq, fn, opts)
     end
     range:set_visual_selection()
   end
-  vim.keymap.set({ 'x' }, key_seq, handle_visual, opts and { buffer = opts.buffer } or nil)
+  local map = require("mapper").map
+  map({ 'x' }, key_seq, handle_visual, opts and { buffer = opts.buffer } or nil)
 
   local function handle_normal()
     local range = fn(key_seq)
@@ -39,7 +40,7 @@ function M.define(key_seq, fn, opts)
       Range.new(p, p, 'v'):set_visual_selection()
     end
   end
-  vim.keymap.set({ 'o' }, key_seq, handle_normal, opts and { buffer = opts.buffer } or nil)
+  map({ 'o' }, key_seq, handle_normal, opts and { buffer = opts.buffer } or nil)
 end
 
 return M

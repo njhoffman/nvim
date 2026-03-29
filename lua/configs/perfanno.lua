@@ -90,22 +90,21 @@ telescope.setup({
   },
 })
 
-local keymap = vim.api.nvim_set_keymap
-local opts = { noremap = true, silent = true }
+local map = require("mapper").map
 
-keymap("n", "<LEADER>plf", ":PerfLoadFlat<CR>", opts)
-keymap("n", "<LEADER>plg", ":PerfLoadCallGraph<CR>", opts)
-keymap("n", "<LEADER>plo", ":PerfLoadFlameGraph<CR>", opts)
+map("n", "<LEADER>plf", ":PerfLoadFlat<CR>")
+map("n", "<LEADER>plg", ":PerfLoadCallGraph<CR>")
+map("n", "<LEADER>plo", ":PerfLoadFlameGraph<CR>")
 
-keymap("n", "<LEADER>pe", ":PerfPickEvent<CR>", opts)
+map("n", "<LEADER>pe", ":PerfPickEvent<CR>")
 
-keymap("n", "<LEADER>pa", ":PerfAnnotate<CR>", opts)
-keymap("n", "<LEADER>pf", ":PerfAnnotateFunction<CR>", opts)
-keymap("v", "<LEADER>pa", ":PerfAnnotateSelection<CR>", opts)
+map("n", "<LEADER>pa", ":PerfAnnotate<CR>")
+map("n", "<LEADER>pf", ":PerfAnnotateFunction<CR>")
+map("v", "<LEADER>pa", ":PerfAnnotateSelection<CR>")
 
-keymap("n", "<LEADER>pt", ":PerfToggleAnnotations<CR>", opts)
+map("n", "<LEADER>pt", ":PerfToggleAnnotations<CR>")
 
-keymap("n", "<LEADER>ph", ":PerfHottestLines<CR>", opts)
-keymap("n", "<LEADER>ps", ":PerfHottestSymbols<CR>", opts)
-keymap("n", "<LEADER>pc", ":PerfHottestCallersFunction<CR>", opts)
-keymap("v", "<LEADER>pc", ":PerfHottestCallersSelection<CR>", opts)
+map("n", "<LEADER>ph", ":PerfHottestLines<CR>")
+map("n", "<LEADER>ps", ":PerfHottestSymbols<CR>")
+map("n", "<LEADER>pc", ":PerfHottestCallersFunction<CR>")
+map("v", "<LEADER>pc", ":PerfHottestCallersSelection<CR>")

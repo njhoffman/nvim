@@ -14,8 +14,8 @@ local cfg  =  {
     opts = function(_, opts)
       if LazyVim.has("yanky.nvim") then
         -- for tiny-glimmer.nvim to hijack
-        vim.keymap.set("n", "p", "<Plug>(YankyPutAfter)", { desc = "Put Text After Cursor" })
-        vim.keymap.set("n", "P", "<Plug>(YankyPutBefore)", { desc = "Put Text Before Cursor" })
+        require("mapper").map("n", "p", "<Plug>(YankyPutAfter)", { desc = "Put Text After Cursor" })
+        require("mapper").map("n", "P", "<Plug>(YankyPutBefore)", { desc = "Put Text Before Cursor" })
       end
 
       return vim.tbl_deep_extend("force", opts, {

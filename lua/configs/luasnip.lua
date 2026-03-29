@@ -27,7 +27,7 @@ local opts = {
 }
 
 vim.cmd([[command! LuaSnipEdit :lua require("luasnip.loaders.from_lua").edit_snippet_files()]]) --}}}
-vim.keymap.set("n", "<Leader><CR>", "<cmd>LuaSnipEdit<cr>", { silent = true, noremap = true })
+require("mapper").map("n", "<Leader><CR>", "<cmd>LuaSnipEdit<cr>", { desc = "Edit LuaSnip snippets" })
 
 vim.schedule(function()
   require("luasnip.loaders.from_vscode").lazy_load()

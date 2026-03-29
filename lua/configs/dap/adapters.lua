@@ -12,52 +12,58 @@ function M.setup(dap)
   end
 
   -- javascript/typescript
-  if not dap.adapters["pwa-chrome"] then
-    dap.adapters["pwa-chrome"] = {
-      type = "server",
-      host = host,
-      port = "${port}",
-      executable = {
-        command = "node",
-        args = {
-          h.get_install_path("js-debug-adapter") .. "/js-debug/src/dapDebugServer.js",
-          "${port}",
-        },
+  local js_debug_server = {
+    type = "server",
+    host = host,
+    port = "${port}",
+    executable = {
+      command = "node",
+      args = {
+        h.get_install_path("js-debug-adapter") .. "/js-debug/src/dapDebugServer.js",
+        "${port}",
       },
-    }
+    },
+  }
+
+  if not dap.adapters.chrome then
+    dap.adapters.chrome = js_debug_server
   end
+
+  if not dap.adapters.node then
+    dap.adapters.node = js_debug_server
+  end
+
   for _, lang in ipairs({
     "typescript",
     "javascript",
   }) do
-    dap.configurations[lang] = dap.configurations[lang] or {}
-    -- table.insert(dap.configurations[lang], {
-    --   type = "pwa-chrome",
-    --   request = "launch",
-    --   name = "Launch Chrome",
-    --   url = string.format("http://%s:4200", "localhost"),
-    --   sourceMaps = true,
-    --   resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
-    --   protocol = "inspector",
-    --   port = 9222,
-    -- })
     dap.configurations[lang] = {
-      -- {
-      --   type = "pwa-node",
-      --   request = "launch",
-      --   name = "Launch file",
-      --   program = "${file}",
-      --   cwd = "${workspaceFolder}",
-      -- },
-      -- {
-      --   type = "pwa-node",
-      --   request = "attach",
-      --   name = "Attach",
-      --   processId = require("dap.utils").pick_process,
-      --   cwd = "${workspaceFolder}",
-      -- },
       {
-        type = "pwa-chrome",
+        type = "node",
+        request = "launch",
+        name = "Launch file",
+        program = "${file}",
+        cwd = "${workspaceFolder}",
+      },
+      {
+        type = "node",
+        request = "attach",
+        name = "Attach",
+        processId = require("dap.utils").pick_process,
+        cwd = "${workspaceFolder}",
+      },
+      {
+        type = "chrome",
+        request = "launch",
+        name = "Launch Chrome",
+        url = "http://localhost:4200",
+        sourceMaps = true,
+        resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+        protocol = "inspector",
+        port = 9222,
+      },
+      {
+        type = "chrome",
         request = "launch",
         name = 'Start Chrome with "localhost"',
         url = "http://localhost:4200",

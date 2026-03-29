@@ -77,8 +77,21 @@ end
 local preview_scroll_page = function(prompt_bufnr, delta)
   local status = state.get_status(prompt_bufnr)
   local winid = vim.tbl_get(status, "layout", "preview", "winid")
-  local preview_height = vim.api.nvim_win_get_height(winid)
-  preview_scroll_line(prompt_bufnr, winid, delta * preview_height)
+  if not winid or not vim.api.nvim_win_is_valid(winid) then
+    return
+  end
+
+  local ok, smoothie = pcall(require, "smoothie")
+  if ok and smoothie.config and smoothie.config.enabled then
+    if delta > 0 then
+      smoothie.downwards(winid)
+    else
+      smoothie.upwards(winid)
+    end
+  else
+    local preview_height = vim.api.nvim_win_get_height(winid)
+    preview_scroll_line(prompt_bufnr, winid, delta * preview_height)
+  end
 end
 
 local M = {}

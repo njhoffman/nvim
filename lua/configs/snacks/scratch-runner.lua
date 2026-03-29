@@ -214,7 +214,7 @@ H.run_command = function(command, show_output, next_cmd)
         H.result_window.opts.footer = {}
         footer_insert_key(H.config.output_switch_key, "Show stderr")
         footer_add_close()
-        vim.keymap.set("n", H.config.output_switch_key, function()
+        require("mapper").map("n", H.config.output_switch_key, function()
           H.result_window.opts.footer = {}
           vim.bo[H.result_window.buf].modifiable = true
           if showing_stderr then
@@ -245,7 +245,7 @@ H.run_command = function(command, show_output, next_cmd)
     end)
   )
 
-  vim.keymap.set("n", "q", function()
+  require("mapper").map("n", "q", function()
     if running then
       process:kill(15)
       killed = true

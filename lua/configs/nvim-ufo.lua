@@ -66,13 +66,14 @@ vim.o.foldmethod = "manual"
 -- m("]z", lua_ufo("goNextClosedFold")),
 --   m("[z", lua_ufo("goPreviousClosedFold")),
 
-vim.keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "󰘖 open all folds" })
-vim.keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "󰘖 close all folds" })
-vim.keymap.set("n", "zr", function()
+local map = require("mapper").map
+map("n", "zR", require("ufo").openAllFolds, { desc = "󰘖 open all folds" })
+map("n", "zM", require("ufo").closeAllFolds, { desc = "󰘖 close all folds" })
+map("n", "zr", function()
   require("ufo").openFoldsExceptKinds({ "comment", "imports" })
 end, { desc = "󰘖 open regular folds" })
-vim.keymap.set("n", "zm", require("ufo").closeFoldsWith, { desc = "󰘖 close folds with" }) -- closeAllFolds == closeFoldsWith(0)
-vim.keymap.set("n", "zK", function()
+map("n", "zm", require("ufo").closeFoldsWith, { desc = "󰘖 close folds with" }) -- closeAllFolds == closeFoldsWith(0)
+map("n", "zK", function()
   local winid = require("ufo").peekFoldedLinesUnderCursor()
   if not winid then
     -- choose one of coc.nvim and nvim lsp
@@ -89,7 +90,7 @@ vim.keymap.set("n", "zK", function()
 end, { desc = "󰘖 peek folded lines under cursor" })
 
 local toggle = 1
-vim.keymap.set("n", "Z", function()
+map("n", "Z", function()
   if toggle == 0 then
     require("ufo").openAllFolds()
     toggle = 1
@@ -111,7 +112,7 @@ local inspect_level = function()
     vim.notify(table.concat(msg, "\n"), vim.log.levels.INFO)
   end
 end
-vim.keymap.set("n", "z?", inspect_level, { desc = "󰘖 inspect folds" })
+map("n", "z?", inspect_level, { desc = "󰘖 inspect folds" })
 
 -- { "z1", function() require("ufo").closeFoldsWith(1) end, desc = "󱃄 Close L1 folds" },
 -- { "z2", function() require("ufo").closeFoldsWith(2) end, desc = "󱃄 Close L2 folds" },

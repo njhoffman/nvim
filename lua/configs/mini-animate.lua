@@ -21,10 +21,10 @@ end
 local mouse_scrolled = false
 for _, scroll in ipairs({ "Up", "Down" }) do
   local key = "<ScrollWheel" .. scroll .. ">"
-  vim.keymap.set({ "", "i" }, key, function()
+  require("mapper").map({ "", "i" }, key, function()
     mouse_scrolled = true
     return key
-  end, { expr = true })
+  end, { expr = true, desc = "Disable animate on mouse " .. scroll:lower() .. " scroll" })
 end
 
 local cfg = {
@@ -39,22 +39,20 @@ local cfg = {
   scroll = {
     enable = true,
     -- Animate for 200 milliseconds with linear easing
-    timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
     -- timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
-    -- timing = function(_, n)
-    --   return math.min(5, 250 / n)
-    -- end,
+    --- INFO: race condition - next scroll is done before first step of current one finishes
+    --- INFO: ensuring maximum value of step duration to be lower than between repeated keys
+    timing = function(next_step, total_steps)
+      return math.min(10, 250 / total_steps)
+    end,
     subscroll = animate.gen_subscroll.equal({
-      -- max_output_steps = 60,
-      -- Animate equally but with at most 120 steps instead of default 60
-      -- max_output_steps = 80,
-      -- predicate = function(destination) return destination[1] < -2 or 2 < destination[1] end,
+      max_output_steps = 80,
       predicate = function(total_scroll)
         if mouse_scrolled then
           mouse_scrolled = false
           return false
         end
-        return total_scroll > 3
+        return total_scroll > 1
       end,
     }),
   },

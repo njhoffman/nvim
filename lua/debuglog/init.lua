@@ -1,3 +1,4 @@
+local map = require("mapper").map
 local coreutils = require("utils.core")
 local logutils = require("debuglog.utils")
 local log = require("debuglog.log")
@@ -59,25 +60,17 @@ M.dbg = function(...)
       vim.api.nvim_set_current_win(currwin)
       vim.api.nvim_win_close(notify_win, true)
       if type(orig_map) == "table" and type(orig_map.lhs) == "string" then
-        pcall(vim.api.nvim_del_keymap, { "n", "gF" })
-        pcall(vim.api.nvim_set_keymap, {
-          orig_map.mode,
-          orig_map.lhs,
-          orig_map.rhs,
-          {
-            nowait = orig_map.nowait,
-            noremap = orig_map.noremap,
-            silent = 1,
-            callback = function() end,
-          },
+        pcall(vim.api.nvim_del_keymap, "n", "gF")
+        pcall(map, orig_map.mode, orig_map.lhs, orig_map.rhs, {
+          nowait = orig_map.nowait,
         })
       end
       -- notify.dismiss()
       M.buf(msg)
     end
 
-    vim.api.nvim_buf_set_keymap(buf, "n", "gf", "", { callback = cb_close })
-    vim.api.nvim_set_keymap("n", "gF", "", { callback = cb_close })
+    map("n", "gf", cb_close, { buffer = buf })
+    map("n", "gF", cb_close)
   end
 
   local lines = vim.split(notify_msg, "\n")

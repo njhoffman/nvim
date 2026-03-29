@@ -41,7 +41,7 @@ local setup_environment = function(bufnr)
 
   if error_msg then
     vim.notify(error_msg, vim.log.levels.WARN)
-    vim.api.nvim_buf_set_var(bufnr, "gitsigns_status_dict", nil)
+    pcall(vim.api.nvim_buf_del_var, bufnr, "gitsigns_status_dict")
     return false
   end
 

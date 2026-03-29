@@ -16,6 +16,7 @@ local extension_configs = {
   -- ["devdocs"] = {},
   ["devhints"] = {},
   ["nerdy"] = {},
+  ["unicode"] = {},
 
   ["oldfiles"] = {
     mappings = mappings.file,

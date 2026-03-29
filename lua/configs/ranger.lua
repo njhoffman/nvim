@@ -1,7 +1,6 @@
+local map = require("mapper").map
+
 require('ranger-nvim').setup({ replace_netrw = true })
-vim.api.nvim_set_keymap('n', '<leader>ef', '', {
-  noremap = true,
-  callback = function()
-    require('ranger-nvim').open(true)
-  end,
-})
+map('n', '<leader>ef', function()
+  require('ranger-nvim').open(true)
+end)

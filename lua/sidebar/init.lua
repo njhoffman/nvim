@@ -16,11 +16,12 @@ function exports.setup(_opts)
 
   -- initialize global keymaps
   -- TODO: do this in config and merge into exports
+  local map = require("mapper").map
   for _, key in ipairs({ 'toggle', 'open', 'close' }) do
     local lhs = vim.tbl_get(opts, 'mapping', 'global', key)
     if type(lhs) == 'string' and #lhs > 0 then
       opts.mapping.old[key] = utils.get_key_cmd('n', lhs)
-      vim.keymap.set('n', lhs, commands[key], { noremap = true })
+      map('n', lhs, commands[key])
     end
     exports[key] = commands[key]
   end

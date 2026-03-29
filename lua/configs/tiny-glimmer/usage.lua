@@ -1,19 +1,20 @@
 local usage_examples = function(glimmer)
-  vim.keymap.set("n", "<leader>agt", function()
+  local map = require("mapper").map
+  map("n", "<leader>agt", function()
     glimmer.cursor_line("typewriter")
   end, { desc = "Animate cursor line with typewriter effect" })
 
-  vim.keymap.set("n", "<leader>agf", function()
+  map("n", "<leader>agf", function()
     glimmer.cursor_line("fire")
   end, { desc = "Animate cursor line with fire effect" })
 
-  vim.keymap.set("v", "<leader>agn", function()
+  map("v", "<leader>agn", function()
     glimmer.visual_selection("neon_glow")
   end, { desc = "Animate selection with neon glow" })
 
   -- Override registered effect settings at runtime
   -- Pass table with name and settings to customize behavior
-  vim.keymap.set("n", "<leader>agc", function()
+  map("n", "<leader>agc", function()
     glimmer.cursor_line({
       name = "neon_glow",
       settings = {
@@ -25,7 +26,7 @@ local usage_examples = function(glimmer)
   end, { desc = "Custom neon glow with purple color" })
 
   -- Alternative syntax: pass settings as second argument
-  vim.keymap.set("n", "<leader>agc2", function()
+  map("n", "<leader>agc2", function()
     glimmer.cursor_line("neon_glow", {
       base_color = "#0000FF",
       intensity = 3.0,
@@ -51,7 +52,7 @@ local usage_examples = function(glimmer)
   })
 
   -- Named animations with custom effects for manual control
-  vim.keymap.set("n", "<leader>ans", function()
+  map("n", "<leader>ans", function()
     local line = vim.fn.line(".")
     local range = {
       start_line = line - 1,
@@ -62,7 +63,7 @@ local usage_examples = function(glimmer)
     glimmer.named_animate_range("my_custom_anim", "neon_glow", range)
   end, { desc = "Start named neon glow animation" })
 
-  vim.keymap.set("n", "<leader>anx", function()
+  map("n", "<leader>anx", function()
     glimmer.stop_animation("my_custom_anim")
   end, { desc = "Stop named animation" })
 
@@ -73,7 +74,7 @@ local usage_examples = function(glimmer)
 
   -- Animate multiple ranges simultaneously
   -- Creates animations for current line and 2 lines above/below
-  vim.keymap.set("n", "<leader>amr", function()
+  map("n", "<leader>amr", function()
     local current_line = vim.api.nvim_win_get_cursor(0)[1]
     for offset = -2, 2 do
       local line = current_line + offset
@@ -89,7 +90,7 @@ local usage_examples = function(glimmer)
 
   -- Search and highlight all matches of word under cursor
   -- Iterates through buffer finding all occurrences
-  vim.keymap.set("n", "<leader>ash", function()
+  map("n", "<leader>ash", function()
     local word = vim.fn.expand("<cword>")
     local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
     for line_num, line_text in ipairs(lines) do
@@ -129,35 +130,35 @@ local usage_examples = function(glimmer)
     end
   end
 
-  vim.keymap.set("n", "<leader>ap1", function()
+  map("n", "<leader>ap1", function()
     animate_progress(25)
   end, { desc = "Show 25% progress" })
-  vim.keymap.set("n", "<leader>ap2", function()
+  map("n", "<leader>ap2", function()
     animate_progress(50)
   end, { desc = "Show 50% progress" })
-  vim.keymap.set("n", "<leader>ap3", function()
+  map("n", "<leader>ap3", function()
     animate_progress(75)
   end, { desc = "Show 75% progress" })
-  vim.keymap.set("n", "<leader>ap4", function()
+  map("n", "<leader>ap4", function()
     animate_progress(100)
   end, { desc = "Show 100% progress" })
 
   -- Diff-style highlighting for added/changed/deleted lines
-  vim.keymap.set("n", "<leader>ada", function()
+  map("n", "<leader>ada", function()
     glimmer.cursor_line("fade")
   end, { desc = "Highlight as added" })
 
-  vim.keymap.set("n", "<leader>adc", function()
+  map("n", "<leader>adc", function()
     glimmer.cursor_line("fade")
   end, { desc = "Highlight as changed" })
 
-  vim.keymap.set("n", "<leader>add", function()
+  map("n", "<leader>add", function()
     glimmer.cursor_line("fade")
   end, { desc = "Highlight as deleted" })
 
   -- Example 1: Infinite loop animation on current line
   -- Animation will loop forever until stopped manually
-  vim.keymap.set("n", "<leader>li", function()
+  map("n", "<leader>li", function()
     glimmer.named_animate_range("infinite_pulse", "pulse", glimmer.get_line_range(0), {
       loop = true,
       loop_count = 0, -- 0 = infinite
@@ -165,12 +166,12 @@ local usage_examples = function(glimmer)
   end)
 
   -- Stop the infinite animation
-  vim.keymap.set("n", "<leader>ls", function()
+  map("n", "<leader>ls", function()
     glimmer.stop_animation("infinite_pulse")
   end)
 
   -- Example 2: Loop animation 3 times on cursor line
-  vim.keymap.set("n", "<leader>l3", function()
+  map("n", "<leader>l3", function()
     glimmer.cursor_line("bounce", {
       loop = true,
       loop_count = 3,
@@ -178,7 +179,7 @@ local usage_examples = function(glimmer)
   end)
 
   -- Example 3: Loop animation 5 times on visual selection
-  vim.keymap.set("v", "<leader>l5", function()
+  map("v", "<leader>l5", function()
     glimmer.visual_selection("fade", {
       loop = true,
       loop_count = 5,
@@ -186,7 +187,7 @@ local usage_examples = function(glimmer)
   end)
 
   -- Example 4: Create an infinite rainbow effect that can be stopped
-  vim.keymap.set("n", "<leader>lr", function()
+  map("n", "<leader>lr", function()
     glimmer.named_animate_range("rainbow_loop", "rainbow", glimmer.get_line_range(0), {
       loop = true,
       loop_count = 0,
@@ -194,7 +195,7 @@ local usage_examples = function(glimmer)
   end)
 
   -- Example 5: Create multiple looping animations on different lines
-  vim.keymap.set("n", "<leader>lm", function()
+  map("n", "<leader>lm", function()
     local line = vim.api.nvim_win_get_cursor(0)[1]
 
     -- First line loops 2 times
@@ -217,7 +218,7 @@ local usage_examples = function(glimmer)
   end)
 
   -- Example 6: Use loop with create_animation for precise control
-  vim.keymap.set("n", "<leader>lc", function()
+  map("n", "<leader>lc", function()
     glimmer.create_animation({
       range = glimmer.get_line_range(0),
       duration = 500,
@@ -234,7 +235,7 @@ local usage_examples = function(glimmer)
   end)
 
   -- Example 7: Create a pulsing search highlight effect
-  vim.keymap.set("n", "<leader>lh", function()
+  map("n", "<leader>lh", function()
     local word = vim.fn.expand("<cword>")
     local matches = {}
 
@@ -267,7 +268,7 @@ local usage_examples = function(glimmer)
   end)
 
   -- Stop all search highlights
-  vim.keymap.set("n", "<leader>lH", function()
+  map("n", "<leader>lH", function()
     for i = 1, 100 do
       glimmer.stop_animation("search_" .. i)
     end

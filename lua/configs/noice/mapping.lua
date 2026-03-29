@@ -36,17 +36,19 @@ local function scroll_popup(key, scroll_height)
 end
 
 local setup = function()
-  vim.keymap.set(
+  local map = require("mapper").map
+
+  map(
     { "n", "i", "s" },
     "<M-f>",
     scroll_popup("<M-f>", 4),
-    { silent = true, expr = true }
+    { expr = true, desc = "Scroll noice popup down" }
   )
-  vim.keymap.set(
+  map(
     { "n", "i", "s" },
     "<M-b>",
     scroll_popup("<M-b>", -4),
-    { silent = true, expr = true }
+    { expr = true, desc = "Scroll noice popup up" }
   )
 
   -- vim.keymap.set({ 'n', 'i', 's' }, '<C-S-Up>', scroll_lsp_popups('<C-S-Up>', -2), { silent = true, expr = true })

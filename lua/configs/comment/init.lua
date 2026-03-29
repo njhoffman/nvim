@@ -73,11 +73,11 @@ local setup_mappings = function()
     vim.api.nvim_feedkeys(esc, "nx", false)
     api.toggle.blockwise(vim.fn.visualmode())
   end, { desc = "comment block toggle selection" })
-  vim.keymap.set(
+  mapper.map(
     "i",
     "<M-?>",
     '<c-o>:execute "normal \\<Plug>(comment_toggle_linewise_current)"<cr>',
-    { noremap = true, desc = "comment toggle insert" }
+    { desc = "comment toggle insert" }
   )
 end
 

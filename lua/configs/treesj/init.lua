@@ -83,9 +83,10 @@ local split_mapping = function()
   --   H.map('x', maps.join,   ':<C-u>lua MiniSplitjoin.join({ region = MiniSplitjoin.get_visual_region() })<CR>',   { desc = 'Join arguments' })
 
   -- TODO: if not toggleable node (node identifier is not configured) go to first parenthesis
-  vim.keymap.set("n", "gs", align_op("toggle"), { buffer = false, desc = "split toggle cursor" })
-  vim.keymap.set("n", "gJ", align_op("join"), { buffer = false, desc = "split join cursor" })
-  vim.keymap.set("n", "gS", align_op("split"), { buffer = false, desc = "split split cursor" })
+  local map = require("mapper").map
+  map("n", "gs", align_op("toggle"), { desc = "split toggle cursor" })
+  map("n", "gJ", align_op("join"), { desc = "split join cursor" })
+  map("n", "gS", align_op("split"), { desc = "split split cursor" })
   -- TODO: make hover information about node format
   -- utils.check_ts_node()
 end

@@ -21,18 +21,21 @@ local remote_commands = function(cmds, ignore_error)
 
   local next_server = string.gsub(vim.v.servername, 'nvim', 'nvim_linked')
   local addr = next_server
-  local nvr_cmd = 'nvr --servername "' .. addr .. '"'
 
+  local cmd_lines = {}
   for _, cmd in pairs(cmds) do
-    nvr_cmd = nvr_cmd .. '\t' .. ' -c "' .. cmd .. '"'
+    cmd_lines[#cmd_lines + 1] = cmd
   end
 
-  local cmd_txt = table.concat(string.split(nvr_cmd, '\t'), '\n')
-  vim.notify('nvr send: ' .. addr .. '\n' .. cmd_txt, 2)
-  local res = vim.fn.system(nvr_cmd)
-  -- TODO: ignore_error only if expected EOF error returned
-  if string.len(res) > 0 and not ignore_error then
-    output_error(res)
+  vim.notify('remote send: ' .. addr .. '\n' .. table.concat(cmd_lines, '\n'), 2)
+
+  for _, cmd in ipairs(cmd_lines) do
+    local escaped = cmd:gsub('"', '\\"')
+    local remote_cmd = 'nvim --server "' .. addr .. '" --remote-send ":' .. escaped .. '<CR>"'
+    local res = vim.fn.system(remote_cmd)
+    if string.len(res) > 0 and not ignore_error then
+      output_error(res)
+    end
   end
 end
 

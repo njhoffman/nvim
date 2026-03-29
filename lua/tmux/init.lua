@@ -10,10 +10,10 @@ local options = {
         enable = true,
     },
     navigation = {
-        enable_default_keybindings = true,
+        default_keymaps = true,
     },
     resize = {
-        enable_default_keybindings = true,
+        default_keymaps = true,
     },
 }
 
