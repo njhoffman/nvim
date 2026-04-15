@@ -5,6 +5,63 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2026-04-15
+
+### Changed
+
+- **Logging consolidation**: Merged `lua/structlog/` and `lua/debuglog/` under `lua/logger/` as subdirectories
+  - `lua/structlog/` -> `lua/logger/structlog/` (structured logging framework, 19 files)
+  - `lua/debuglog/` -> `lua/logger/debug/` (inspect, dump, traceback, timer, namespace helpers; 15 files; dropped `globals.lua` and `test.lua` as superseded)
+  - Internal requires rewritten to use new paths; zero consumers outside `lua/logger/` reference the old paths
+  - Updated 11 consumers to new paths: `logger/{init,sinks,parsers,notify}.lua`, `watcher/logger.lua`, `tracker/{init,au_events}.lua`, `configs/chrome-remote/scratch.lua`, `import/benchmarks/commands.lua`
+  - Removed 4 dead `require("debuglog")` imports in `import/benchmarks/variables.lua`, `import/ui/{init,lines,summary}.lua` (imported but never used)
+
+- **Registers module refactor** (v0.10.0 scope, moved from v0.9.0 in-progress work):
+  - Fade state in `fade_controller` with scenario-aware levels, buffer-variable sync, relative values
+  - `range_hl` decoration provider for per-range restoration and color transforms
+  - `color_math` HSL transform pipeline + derived highlight cache
+  - 23 new tests in `tests/unit/registers_spec.lua`
+
+### Removed
+
+- **Dead code in `lua/globals/`**:
+  - `lua/globals/modules/` (entire directory): `buffers.lua` had a broken load-time `vim.dbglog()` side-effect, `filter.lua` / `format.lua` / `utils.lua` / `windows.lua` were stubs or broken
+  - `lua/globals/overrides.lua` (unreferenced), `preload.lua` (standalone `/tmp/nvim-preload.log` system, never wired in), `record-events.lua` (only referenced in a commented-out line)
+  - Unused `N` and `D` globals from `globals/init.lua` (scan showed zero usage)
+  - Commented-out code blocks in `globals/init.lua`
+
+- **`lua/structlog/`** (moved to `lua/logger/structlog/`)
+- **`lua/debuglog/`** (moved to `lua/logger/debug/`, minus `globals.lua` and `test.lua`)
+
+### Fixed
+
+- **`logger/debug/timer.lua`**: Fixed two latent bugs discovered during the move
+  - `finished[_]` used global lodash table as key instead of string `"_"`
+  - `stop_time(anon_timer, vim.loop.hrtime())` passed timestamp as `name` parameter
+  - Function now also returns the elapsed time (previously side-effect only)
+
+- **Registers key-binding crash with scrolloff=0**: `upwards()` / `backwards()` no longer exit early when cursor is at window top but buffer has content above (fixes `winline <= 1` guard)
+
+### Modernized
+
+- `vim.loop.hrtime()` -> `(vim.uv or vim.loop).hrtime()` in `logger/debug/timer.lua`
+- `vim.loop` fallback via `vim.uv or vim.loop` in `logger/structlog/{formatters/sinks,sinks/rotating_file}.lua`
+
+### Added
+
+- **`tests/unit/logger_spec.lua`** — 23 tests covering scope management, level filtering, sinks, debug helpers, `:LogScopes` command, structlog API smoke, globals integration
+
+### Project Statistics
+
+| Metric | Value |
+|--------|-------|
+| Total Tests | 33 test files, 372 tests (355 unit + 17 integration; 1 pre-existing fail unrelated) |
+| Total Plugins | 380 installed plugins |
+| Config Lines of Code | 285,454 lines (Lua/Vim) |
+| Plugin Lines of Code | 1,640,391 lines |
+
+---
+
 ## [0.9.0] - 2026-03-29
 
 ### Added

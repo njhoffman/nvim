@@ -1,6 +1,6 @@
 local util = require("import.util")
 
-local debuglog = require("debuglog")
+local debuglog = require("logger.debug")
 
 local provider = {
   name = "commands",

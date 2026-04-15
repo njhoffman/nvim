@@ -1,5 +1,4 @@
 local util = require("import.util")
-local debuglog = require("debuglog")
 
 local ignored = {
   buffer = {},
@@ -54,12 +53,18 @@ local provider = {
       out = out .. "\n" .. " + var add " .. path .. " " .. added.event .. " " .. added.pattern
     end
     for _, removed in ipairs(delta.removed or {}) do
-      out = out .. "\n" .. " - var rem " or {} .. path .. " " .. removed.event .. " " .. removed.pattern
+      out = out .. "\n" .. " - var rem "
+        or {} .. path .. " " .. removed.event .. " " .. removed.pattern
     end
 
     local summary = ""
     if delta and delta.added and #delta.added > 0 then
-      summary = path .. "  +" .. (#delta.added > 0 and #delta.added) .. ":-" .. #delta.removed .. " items for variables"
+      summary = path
+        .. "  +"
+        .. (#delta.added > 0 and #delta.added)
+        .. ":-"
+        .. #delta.removed
+        .. " items for variables"
     end
     return summary .. out
   end,

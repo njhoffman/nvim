@@ -12,8 +12,6 @@
 --   )))
 -- end
 
-local debuglog = require("debuglog")
-
 local get_widths = function(part_lines)
   local widths = {}
   for _, line in ipairs(part_lines) do

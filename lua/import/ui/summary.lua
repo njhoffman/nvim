@@ -14,7 +14,6 @@ local title_line = function(imported, view_width)
   return title
 end
 
-local debuglog = require("debuglog")
 local build_failed_parts = function(imported)
   local part_lines = {}
   for _, name in ipairs(imported.failures) do

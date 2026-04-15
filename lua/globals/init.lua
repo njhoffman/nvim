@@ -1,21 +1,10 @@
--- debugging init scripts
--- require('globals.record-events')
--- require('globals.overrides')
-
--- profiling startup setup : PROF=1 nvim
+-- profiling startup setup: PROF=1 nvim
 if vim.env.PROF then
-  -- local local_path = vim.fn.getenv("HOME") .. "/git/snacks.nvim"
-  -- local lazy_path = vim.fn.stdpath("data") .. "/lazy/snacks.nvim"
-  -- local snacks = vim.fn.isdirectory(local_path) == 1 and local_path
   local snacks = vim.fn.stdpath("data") .. "/lazy/snacks.nvim"
   if snacks then
     vim.opt.rtp:append(snacks)
     require("snacks.profiler").startup({
-      startup = {
-        event = "VimEnter", -- stop profiler on this event. Defaults to `VimEnter`
-        -- event = "UIEnter",
-        -- event = "VeryLazy",
-      },
+      startup = { event = "VimEnter" },
     })
   end
 end
@@ -32,11 +21,10 @@ local _nil = function()
 end
 
 -- setup lodash global
+vim._ = require("lodash")
 
-local lodash = require("lodash")
-vim._ = lodash
-
-local debuglog = vim.import("debuglog")
+-- Wire the debug helpers from logger.debug onto the vim table
+local debuglog = vim.import("logger.debug")
 if debuglog then
   vim.inspect = debuglog.inspect or vim.inspect
   vim.dbg = debuglog.dbg or _nil()
@@ -44,8 +32,6 @@ if debuglog then
   vim.dbgbuf = debuglog.buf or _nil()
   vim.dbgtime = debuglog.timer or _nil()
   vim.print = debuglog.dbg
-  -- _G.print = debuglog.dbg
-  -- vim.dbg.log = vim.dbglog
 
   local log_lines = function(lines)
     debuglog.log(type(lines) == "string" and lines or table.concat(lines, "\n  "))
@@ -73,10 +59,7 @@ if debuglog then
   end
 end
 
-N = vim.dbg
-
-D = vim.dbglog
-
+-- luacheck: globals RELOAD R
 RELOAD = function(...)
   return require("plenary.reload").reload_module(...)
 end
@@ -85,27 +68,3 @@ R = function(...)
   RELOAD(...)
   return require(...)
 end
-
--- setup module helpers to attach to lodash global
--- --stylua: ignore
--- local mods_map = {
---   -- { "buffers",    "buf", "Buffers functions" },
---   { require('globals.mods.windows'),    "win", "Windows functions" },
---   -- { "treesitter", "ts",  "Treesiter helpers" },
---   -- { "extmarks",   "ext", "Highlights and extmarks" },
---   -- { "trace",      "tr", "Tracing functions and utilities" },
--- }
-
--- for i, modkeys in ipairs(mods_map) do
---   mods[i][4] = win_fns
--- end
-
--- _G._mods = mods
-
--- local logger = vim.import('logger')
--- if logger ~= nil and logger.init ~= nil then
---   vim.logger = logger.init('root')
---   vim.notify = logger.notify
--- end
-
--- _ = require("lodash")
