@@ -4,8 +4,10 @@ function M.apply(p)
   local set = vim.api.nvim_set_hl
 
   -- Normal
-  set(0, "Normal", { fg = "#4f7aaf", bg = "#000000" })
-  set(0, "NormalNC", { fg = "#4C84b8", bg = "#000000" })
+  -- set(0, "Normal", { fg = "#4f7aaf", bg = "#000000" })
+  -- set(0, "NormalNC", { fg = "#4C84b8", bg = "#000000" })
+  set(0, "Normal", { fg = "#4f7aaf" })
+  set(0, "NormalNC", { fg = "#4C84b8" })
   set(0, "NormalFloat", { fg = "#4f7aaf" })
   set(0, "NormalWindow", { fg = "#4f7aaf" })
 
@@ -26,9 +28,9 @@ function M.apply(p)
   set(0, "healthWarning", { fg = "#EBCA89" })
 
   -- Search
-  set(0, "Search", { bg = "#0e1c36", fg = "#008fff", italic = true })
-  set(0, "IncSearch", { bg = "#23518b", fg = "#88aaff", italic = true })
-  set(0, "CurSearch", { bg = "#4e3ce6", fg = "#aaffff" })
+  set(0, "Search", { fg = "#00cac8", bg = "none", italic = true })
+  set(0, "IncSearch", { fg = "#c24a48", bg = "none", italic = true })
+  set(0, "CurSearch", { fg = "#f28060", italic = true })
 
   -- Visual
   set(0, "Visual", { bg = "#08204f", italic = true, bold = true })

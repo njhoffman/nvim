@@ -60,7 +60,6 @@ local git_diff_command = function(command, git_flags_ix, git_diff_flags_ix)
     end
   end
 
-  vim.dbglog("command", command)
   return command
 end
 

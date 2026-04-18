@@ -32,7 +32,7 @@ local git_log_location = function(bufnr, opts)
 
     finder_utils.set_last_prompt(prompt)
 
-    return vim.tbl_flatten(command)
+    return command
   end, entry_maker)
 end
 

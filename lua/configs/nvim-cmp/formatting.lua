@@ -3,23 +3,6 @@ local icons = require("configs.nvim-cmp.icons")
 local MIN_LABEL_WIDTH = 20
 local ELLIPSIS_CHAR = "…"
 local MAX_LABEL_WIDTH = 35
-local SYMBOL_MAP = require("utils.lspkind").SYMBOL_MAP
-
-local function get_lsp_completion_context(completion, source)
-  local ok, source_name = pcall(function()
-    return source.source.client.config.name
-  end)
-  if not ok then
-    return nil
-  end
-  if source_name == "ts_ls" then
-    return completion.detail
-  elseif source_name == "pyright" then
-    if completion.labelDetails ~= nil then
-      return completion.labelDetails.description
-    end
-  end
-end
 
 local config = {
   color_square_width = 2,
@@ -90,9 +73,6 @@ local format_tailwind = function(vim_item)
   return vim_item
 end
 
--- vim_item.menu = ({ nvim_lsp = '', buffer   = '', })[entry.source.name]
--- vim_item.kind = ({ Text          = '', TypeParameter = '', })[vim_item.kind]
--- format = require('tailwindcss-colorizer-cmp').formatter,
 local format = function(entry, vim_item)
   local label = vim_item.abbr or ""
   local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
@@ -112,8 +92,6 @@ local format = function(entry, vim_item)
   end
 
   if type(icons.symbols[vim_item.kind]) == "nil" then
-    vim.notify("Missing kind property: " .. vim.inspect(vim_item), 4)
-  elseif type(icons.symbols[vim_item.kind]) == "nil" then
     vim.notify("No symbol icon: " .. (vim_item.kind or vim.inspect(vim_item)), 2)
   else
     vim_item.kind_hl_group = "CmpItemKind" .. vim_item.kind
@@ -125,25 +103,6 @@ local format = function(entry, vim_item)
   end
   return vim_item
 end
-
--- format = function(entry, vim_item)
---   local item_with_kind = require('lspkind').cmp_format({
---     mode = 'symbol_text',
---     maxwidth = MAX_LABEL_WIDTH,
---     symbol_map = SYMBOL_MAP,
---   })(entry, vim_item)
---
---   local kind_s_menu = vim.split(item_with_kind.kind, '%s', { trimempty = true })
---   item_with_kind.kind = ' ' .. (kind_s_menu[1] or '') .. ' '
---   item_with_kind.menu = '    (' .. (kind_s_menu[2] or '') .. ')'
---   item_with_kind.menu = vim.trim(item_with_kind.menu)
---
---   local completion_context = get_lsp_completion_context(entry.completion_item, entry.source)
---   if completion_context ~= nil and completion_context ~= '' then
---     item_with_kind.menu = item_with_kind.menu .. [[ -> ]]):):):format()format()format()):format() .. completion_context):):format()format()
---   end
---   return item_with_kind
--- end,
 
 return {
   expandable_indicator = true,

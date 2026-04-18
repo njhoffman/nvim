@@ -22,6 +22,35 @@ local plugins = {
   },
   -- https://gist.github.com/GnikDroy/62556534324f9dc9192f7bba5a88cc43
   { "dundalek/bloat.nvim", cmd = "Bloat" },
+  { "Wansmer/sibling-swap.nvim" },
+  {
+    "saxon1964/neovim-tips",
+    version = "*", -- Only update on tagged releases
+    lazy = true, -- Load only when keybinds are triggered
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL: Choose your preferred markdown renderer (or omit for raw markdown)
+      "MeanderingProgrammer/render-markdown.nvim", -- Clean rendering
+      -- OR: "OXY2DEV/markview.nvim", -- Rich rendering with advanced features
+    },
+    opts = {
+      -- IMPORTANT: Daily tip DOES NOT WORK with lazy = true
+      -- Reason: lazy = true loads plugin only when keybinds are triggered,
+      --         but daily_tip needs plugin loaded at startup
+      -- Solution: Keep daily_tip = 0 here, or use Option 2 below for daily tips
+      daily_tip = 0, -- 0 = off, 1 = once per day, 2 = every startup
+      -- Other optional settings...
+      bookmark_symbol = "🌟 ",
+    },
+    keys = {
+      { "<leader>ito", ":NeovimTips<CR>", desc = "Neovim tips" },
+      { "<leader>itb", ":NeovimTipsBookmarks<CR>", desc = "Bookmarked tips" },
+      { "<leader>itr", ":NeovimTipsRandom<CR>", desc = "Show random tip" },
+      { "<leader>ite", ":NeovimTipsEdit<CR>", desc = "Edit your tips" },
+      { "<leader>ita", ":NeovimTipsAdd<CR>", desc = "Add your tip" },
+      { "<leader>itp", ":NeovimTipsPdf<CR>", desc = "Open tips PDF" },
+    },
+  },
   {
     "danymat/neogen",
     config = function()
@@ -32,12 +61,42 @@ local plugins = {
       })
 
       local map = require("mapper").map
-      map("n", "g@@", ":lua require('neogen').generate()<CR>", { desc = "neogen annotation for func" })
-      map("n", "g@%", ":lua require('neogen').generate({ type = 'file' })<CR>", { desc = "neogen annotation for file" })
-      map("n", "<Leader>@@", ":lua require('neogen').generate()<CR>", { desc = "neogen annotation for func" })
-      map("n", "<Leader>@f", ":lua require('neogen').generate({ type = 'file' })<CR>", { desc = "neogen annotation for file" })
-      map("n", "<Leader>@c", ":lua require('neogen').generate({ type = 'class' })<CR>", { desc = "neogen annotation for class" })
-      map("n", "<Leader>@t", ":lua require('neogen').generate({ type = 'type' })<CR>", { desc = "neogen annotation for type" })
+      map(
+        "n",
+        "g@@",
+        ":lua require('neogen').generate()<CR>",
+        { desc = "neogen annotation for func" }
+      )
+      map(
+        "n",
+        "g@%",
+        ":lua require('neogen').generate({ type = 'file' })<CR>",
+        { desc = "neogen annotation for file" }
+      )
+      map(
+        "n",
+        "<Leader>@@",
+        ":lua require('neogen').generate()<CR>",
+        { desc = "neogen annotation for func" }
+      )
+      map(
+        "n",
+        "<Leader>@f",
+        ":lua require('neogen').generate({ type = 'file' })<CR>",
+        { desc = "neogen annotation for file" }
+      )
+      map(
+        "n",
+        "<Leader>@c",
+        ":lua require('neogen').generate({ type = 'class' })<CR>",
+        { desc = "neogen annotation for class" }
+      )
+      map(
+        "n",
+        "<Leader>@t",
+        ":lua require('neogen').generate({ type = 'type' })<CR>",
+        { desc = "neogen annotation for type" }
+      )
     end,
   },
 
@@ -189,7 +248,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     dependencies = "nvim-web-devicons",
   },
   { "declancm/cinnamon.nvim", event = "VeryLazy", enabled = false },
-  { "karb94/neoscroll.nvim", event = "VeryLazy", enabled = true },
+  { "karb94/neoscroll.nvim", event = "VeryLazy", enabled = false },
 
   {
     "00sapo/visual.nvim",
@@ -221,6 +280,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   { "windwp/windline.nvim", enabled = false },
+  { "alexpasmantier/tv.nvim" },
   {
     "LintaoAmons/scratch.nvim",
     event = "VeryLazy",
@@ -231,6 +291,10 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
 
   -- https://www.reddit.com/r/neovim/comments/1jelzey/pathfindernvim_a_multiline_gfgf_replacement/
   -- https://github.com/hawkinst/pathfinder.nvim
+  {
+    "mizlan/iswap.nvim",
+    event = "VeryLazy",
+  },
   {
     "chrishrb/gx.nvim",
     keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" } } },
@@ -583,7 +647,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   { "nacro90/numb.nvim", event = { "BufReadPost", "BufNewFile" } },
   -- https://github.com/tzachar/local-highlight.nvim
   { "winston0410/range-highlight.nvim", event = { "CmdlineEnter" } },
-  -- { 'petertriho/nvim-scrollbar', event = { 'BufReadPost', 'BufNewFile' } },
   {
     "echasnovski/mini.jump2d",
     version = false,
@@ -619,14 +682,24 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
 
   { "miversen33/sunglasses.nvim", enabled = false },
   {
-    "kevinhwang91/nvim-hlslens",
+    "njhoffman/nvim-hlslens",
+    dir = "~/git/nvim-hlslens",
     event = { "VimEnter" },
     enabled = true,
     init = function()
       -- cannot use my utility, as the value of IncSearch needs to be retrieved dynamically
       vim.api.nvim_create_autocmd("ColorScheme", {
         callback = function()
-          local reversed = require("utils.core").getHighlightValue("CurSearch", "bg")
+          local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = "CurSearch" })
+          if not ok then
+            return
+          end
+          local value = hl["bg"]
+          if not value then
+            return
+          end
+          local reversed = string.format("#%06x", value)
+
           vim.api.nvim_set_hl(0, "HlSearchReversed", { fg = reversed })
         end,
       })
@@ -1327,6 +1400,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
         -- },
       }
       require("fundo").install()
+      require("fundo").setup({})
     end,
   },
   -- https://github.com/nfrid/due.nvim

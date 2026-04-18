@@ -210,12 +210,12 @@ local config = {
   },
   mappings_user = {
     ['<M-C-T>'] = function(key, mode)
-      require('telescope.builtin').keymaps {
+      Snacks.picker.keymaps({
         modes = { mode },
-        lhs_filter = function(lhs)
-          return vim.startswith(lhs, key)
+        filter = function(item)
+          return item.lhs and vim.startswith(item.lhs, key)
         end,
-      }
+      })
     end,
   },
   window = {

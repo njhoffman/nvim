@@ -1,36 +1,3 @@
--- if vim.o.ft == 'sql' then
---   table.insert(sources, { name = 'vim-dadbod-completion' })
--- end
---
--- if vim.o.ft == 'norg' then
---   table.insert(sources, { name = 'neorg' })
---   table.insert(sources, { name = 'spell' })
---   table.insert(sources, { name = 'look' })
--- end
---
--- if vim.o.ft == 'org' then
---   table.insert(sources, { name = 'org' })
---   table.insert(sources, { name = 'spell' })
---   table.insert(sources, { name = 'look' })
--- end
--- if
---   vim.o.ft == 'markdown'
---   or vim.o.ft == 'txt'
---   or vim.o.ft == 'html'
---   or vim.o.ft == 'gitcommit'
--- then
---   table.insert(sources, { name = 'spell' })
---   table.insert(sources, { name = 'look' })
--- end
--- if vim.o.ft == 'lua' then
---   table.insert(sources, { name = 'nvim_lua' })
--- end
---
--- if vim.o.ft == 'zsh' or vim.o.ft == 'sh' or vim.o.ft == 'fish' or vim.o.ft == 'proto' then
---   table.insert(sources, { name = 'buffer', keyword_length = 3 })
---   table.insert(sources, { name = 'calc' })
--- end
-
 local sources = {
   filetypes = {
     per_filetype = {
@@ -41,7 +8,6 @@ local sources = {
     {
       {
         name = "lazydev",
-        -- group_index = 0,
         entry_filter = function()
           if vim.bo.filetype ~= "lua" then
             return false
@@ -51,8 +17,6 @@ local sources = {
       },
       {
         name = "nvim_lsp",
-        -- max_item_count = 10,
-        -- trigger_characters = { '-' },
         keyword_length = 0,
         entry_filter = function(entry, ctx)
           local kind = require("cmp.types.lsp").CompletionItemKind[entry:get_kind()]
@@ -69,26 +33,6 @@ local sources = {
       {
         name = "copilot",
         max_item_count = 3,
-        -- trigger_characters = {{
-        --     ".",
-        --     ":",
-        --     "(",
-        --     "'",
-        --     '"',
-        --     "[",
-        --     ",",
-        --     "#",
-        --     "*",
-        --     "@",
-        --     "|",
-        --     "=",
-        --     "-",
-        --     "{",
-        --     "/",
-        --     "\\",
-        --     "+",
-        --     "?",
-        -- }},
       },
       { name = "nvim_lsp_document_symbol" },
       { name = "nvim_lsp_signature_help" },
@@ -132,9 +76,6 @@ local sources = {
       {
         name = "fuzzy_buffer",
         option = {
-          -- get_bufnrs = function()
-          --   return { vim.api.nvim_get_current_buf() }
-          -- end
           get_bufnrs = function()
             local bufs = {}
             for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -160,7 +101,6 @@ local sources = {
         -- TODO: make sure duplicates prioritize this over nvim_lsp
         name = "faker.quick_data",
         keyword_pattern = "@.*",
-        -- keyword_pattern = [[@\k*.\?\k*.\?\k*.\?\k*]],
       },
       {
         name = "cmp_yanky",
@@ -170,24 +110,6 @@ local sources = {
           minLength = 3,
         },
       },
-      -- {
-      --   name = "luasnip",
-      --   keyword_length = 3,
-      --   option = { use_show_condition = true },
-      --   entry_filter = function()
-      --     local context = require("cmp.config.context")
-      --     return not context.in_treesitter_capture("string")
-      --       and not context.in_syntax_group("String")
-      --   end,
-      --   -- source.entry_filter = function()
-      --   --           local context = require("cmp.config.context")
-      --   --           local string_ctx = context.in_treesitter_capture("string") or context.in_syntax_group("String")
-      --   --           local comment_ctx = context.in_treesitter_capture("comment") or context.in_syntax_group("Comment")
-      --   --
-      --   --           --   Returning `true` will keep the entry, while returning `false` will remove it.
-      --   --           return not string_ctx and not comment_ctx
-      --   --         end
-      -- },
       {
         name = "diag-codes",
         -- default completion available only in comment context
@@ -205,12 +127,6 @@ local sources = {
           return true
         end,
       },
-      -- { name = "spell" },
-      -- { name = "dictionary" },
-      -- {
-      --   name = 'crates',
-      --   group_index = 2,
-      -- },
     },
   },
   gitcommit = {
@@ -258,42 +174,7 @@ local sources = {
         },
       },
       { name = "cmdline_history" },
-      -- { name = 'path', options = { trailing_slash = false, label_trailing_slash = false } },
-      -- { name = "dictionary" },
-      -- { name = "buffer" },
     },
   },
 }
 return sources
-
--- if vim.o.ft == 'sql' then
---   table.insert(sources, { name = 'vim-dadbod-completion' })
--- end
--- if vim.o.ft == 'norg' then
---   table.insert(sources, { name = 'neorg' })
---   table.insert(sources, { name = 'spell' })
---   table.insert(sources, { name = 'look' })
--- end
---
--- if vim.o.ft == 'org' then
---   table.insert(sources, { name = 'org' })
---   table.insert(sources, { name = 'spell' })
---   table.insert(sources, { name = 'look' })
--- end
--- if
---   vim.o.ft == 'markdown'
---   or vim.o.ft == 'txt'
---   or vim.o.ft == 'html'
---   or vim.o.ft == 'gitcommit'
--- then
---   table.insert(sources, { name = 'spell' })
---   table.insert(sources, { name = 'look' })
--- end
--- if vim.o.ft == 'lua' then
---   table.insert(sources, { name = 'nvim_lua' })
--- end
---
--- if vim.o.ft == 'zsh' or vim.o.ft == 'sh' or vim.o.ft == 'fish' or vim.o.ft == 'proto' then
---   table.insert(sources, { name = 'buffer', keyword_length = 3 })
---   table.insert(sources, { name = 'calc' })
--- end

@@ -1,30 +1,71 @@
-# nvim task list
+# nvim-hlslens
 
-- this file contains a wrapper/alias for nvim
-  - /home/nicholas/.config/zsh/config/functions/nvim.sh
-- config that maps to environment variables in nvim.sh
+I want to enable templating the hlslens virtual text.
+There will be three modes:
+
+- default: base template that can be shared between all modes
+- near: template for the virtual text lens of of matches that are near the cursor but not the nearest
+- nearest: template for the virtual text lens of of the nearest match
+
+HlSearchNear CurSearch rename to HlSearchCur
+HlSearchLens WildMenu rename to HlSearchLens
+HlSearchLensNear CurSearch rename to HlSearchLensCur
+
+HlSearch IncSearch rename to HlSearch
 
 ```lua
-config = {
-  log_file = "/tmp/nvimsocket.log",
-  remote = {
-    sockets_dir = "/tmp",
-    -- 'tmux_window', 'tmux_session', or empty for always new instances (NVIM_UNIQUE)
-    attach_on = "tmux_window",
+
+  render = render_formats(formats.default, formats.nearest, formats.near),
+local styles = {
+  bubble = { { "", "HlSearchReversed" }, { "", "HlSearchReversed" } },
+  arrow = {
+    { "", "HlSearchReversed" },
+    { "", "HlSearchReversed" },
   },
-  sessions = {
-    saved_dir = "$HOME/.local/share/nvim/sessions/saved",
-    load_dir = "$HOME/.local/share/nvim/sessions/load",
-    temp_dir = "/tmp/sessions",
+  none = {
+    { " ", "Ignore" },
+    { " ", "Ignore" }, -- = padding
   },
-aliases = {
-  sync = "nvim --headless '+Lazy! sync' +qa"
+}
+
+local lens_style = "bubble" -- bubble/arrows/none
+local render_formats = function(default_fmt, nearest_fmt, near_fmt)
+  return function(render, plist, nearest, idx, r_idx)
+    if nearest then
+      return override_lens_2(render, plist, nearest, idx, r_idx)
+    else
+      return override_lens(render, plist, nearest, idx, r_idx)
+    end
+  end
+end
+
+local formats = {
+  default = {
+    { "", "HlSearchReversed" },
+    { "%icon%", "HlSearchIcon" },
+    { " " },
+    { "%index%", "HlSearchIndex" },
+    { "/", "HlSearch" },
+    { "%total%", "HlSearchTotal" },
+    { "", "HlSearchReversed" },
+  },
+  nearest = {
+    { "", "HlSearchReversed" },
+    { "%indicator%", "HlSearchIndicator}" },
+    { " " },
+    { "%index%", "HlSearchIndex" },
+    { "", "HlSearchReversed" },
+  },
+  near = {
+    { "", "HlSearchReversed" },
+    { "%indicator%", "HlSearchIndicator}" },
+    { " " },
+    { "%index%", "HlSearchIndex" },
+    { "", "HlSearchReversed" },
+  },
 }
 ```
 
-- i would like to extract this code into `config/nvim/loader.lua`
-- handles parsing arguments and initializing or connecting to existing nvim instances through '--listen' and '--server' flags
-- previously used neovim-remote but this is no longer necessary, just use vanilla nvim args
-- if saved_dir contains a session, automatically load it, when neovim exits check if there is a session to load and load
-  it or exit
-- add tests and documentation after migrating the code
+## Snacks.nvim
+
+- Migrate as much as possible of my telescope configuration to Snacks.nvim (escpecially the mappings)

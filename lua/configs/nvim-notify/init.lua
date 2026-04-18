@@ -25,7 +25,8 @@ local cfg = {
     RUN = "",
     STATUS = "",
   },
-  render = require("notify.render._entry"),
+  render = "auto",
+  -- render = require("notify.render._entry"),
   on_open = events.on_open,
   on_replace = events.on_replace,
 }

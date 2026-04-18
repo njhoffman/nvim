@@ -9,8 +9,6 @@ local entry_display = require('telescope.pickers.entry_display')
 
 local M = {}
 
---- Opens all a selector for all advanced git search functions
-
 local menu_entry_maker = function(widths)
   local displayer = entry_display.create({
     separator = ' ',
@@ -25,14 +23,13 @@ local menu_entry_maker = function(widths)
     })
   end
   return function(menu_obj)
-    local entry = {
+    return {
       display = make_display,
       summary = menu_obj[1],
       name = menu_obj[2],
       desc = menu_obj[3],
       ordinal = string.format('%s', menu_obj[2]),
     }
-    return entry
   end
 end
 
@@ -40,7 +37,7 @@ M.show_menu = function()
   local bufnr = vim.api.nvim_get_current_buf()
   local git_pickers, widths = generate.get_git_pickers(bufnr)
   pickers
-    .new({
+    .new({}, {
       results_title = 'Git Pickers',
       finder = finders.new_table({
         results = git_pickers,
@@ -51,14 +48,18 @@ M.show_menu = function()
         ags_mappings.omnimap(map, '<CR>', function(prompt_bufnr)
           actions.close(prompt_bufnr)
           local selection = action_state.get_selected_entry()
-          -- execute_git_function(selection.value)
+          local picker_entry = generate.get_git_pickers(bufnr)
+          for _, entry in ipairs(picker_entry) do
+            if entry[2] == selection.name then
+              -- Find the matching function from the generate module
+              break
+            end
+          end
         end)
         return true
       end,
-    }, {})
+    })
     :find()
 end
 
-M.show_menu()
-
--- return M
+return M

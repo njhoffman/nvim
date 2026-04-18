@@ -30,7 +30,7 @@ local git_log_file = function(bufnr, opts)
     table.insert(command, filename)
 
     finder_utils.set_last_prompt(prompt)
-    return vim.tbl_flatten(command)
+    return command
   end, entry_maker)
 end
 

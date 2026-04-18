@@ -17,7 +17,7 @@ end
 local function after_scroll(callback)
   if has_mini_animate() then
     MiniAnimate.execute_after("scroll", function()
-      vim.schedule(callback)
+      vim.defer_fn(callback, 100)
     end)
   else
     vim.schedule(callback)
@@ -31,6 +31,9 @@ require("convey").setup({
     end)
   end,
   providers = {
+    changes = {
+      cycle = true,
+    },
     visual = {
       on_navigate = function(pos)
         if pos.end_lnum and pos.end_col then

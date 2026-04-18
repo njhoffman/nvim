@@ -28,6 +28,12 @@ function M.apply(p)
   set(0, "BqfPreviewRange", { link = "IncSearch" })
   set(0, "BqfSign", { fg = "cyan" })
 
+  -- hllens
+  set(0, "HlSearchNear", { link = "HlSearchReversed", reverse = true })
+  set(0, "HlSearchLensNear", { link = "HlSearchReversed", reverse = true})
+  -- set(0, "HlSearchLens", { link = "WildMenu" })
+  set(0, "HlSearchLens", { link = "HlSearchReversed", reverse = true })
+
   -- Dashboard
   set(0, "DashboardHeader", { fg = "#8AFF80" })
   set(0, "DashboardKey", { fg = "#FF9580" })

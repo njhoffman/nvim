@@ -21,6 +21,7 @@ local ui = require("registers.ui")
 local mappings = require("registers.mappings")
 local state = require("registers.state")
 local config = require("registers.config")
+local log = require("logger").init("registers")
 
 ---@class registers
 ---@field options options
@@ -125,6 +126,8 @@ function registers.setup(options)
   -- Create a namespace for the highlights and signs
   state._namespace = vim.api.nvim_create_namespace("registers")
   mappings.setup()
+
+  log:info("registers.nvim setup complete")
 end
 
 return registers

@@ -24,6 +24,7 @@ local scopes = {
   -- mru                  = { main = -1 },
   notifier                = { main = 1, module = 0 },
   notify                  = { main = 0 },
+  nvim_notify             = { main = 1 },
   registers               = { main = 2 },
   -- project              = { main = 0 },
   lab                     = { main = 2 },

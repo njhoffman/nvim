@@ -11,10 +11,10 @@ local select_picker = function(bufnr)
   actions.close(bufnr)
   -- vim.dbglog('picker', value)
   if value.extension == false then
-    require('telescope.run')('builtin', value.command, picker_opts)
+    require('configs.telescope.launcher')('builtin', value.command, picker_opts)
     -- require('telescope.builtin')[value.command](picker_opts)
   else
-    require('telescope.run')(value.extension, value.command, picker_opts)
+    require('configs.telescope.launcher')(value.extension, value.command, picker_opts)
     -- require('telescope._extensions').manager[value.extension][value.command](picker_opts)
   end
 end

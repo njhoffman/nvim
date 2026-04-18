@@ -13,6 +13,7 @@ local silence = require("commands.silence")
 local range_history = require("commands.range-history")
 local scroll = require("commands.scroll")
 local lsp_fallbacks = require("commands.lsp_fallbacks")
+local termints = require("commands.termints")
 
 -- require("commands.html-psl")
 

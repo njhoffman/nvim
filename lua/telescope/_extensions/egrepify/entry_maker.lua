@@ -261,8 +261,8 @@ return function(opts)
   local ts_highlights = {}
 
   return function(stream)
-    local json_line = vim.json.decode(stream)
-    if json_line == nil then
+    local ok, json_line = pcall(vim.json.decode, stream)
+    if not ok or json_line == nil then
       return nil
     end
     local kind = json_line["type"]

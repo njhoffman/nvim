@@ -5,15 +5,6 @@ local mappings = require("configs.telescope.mappings")
 local c_actions = require("configs.telescope.actions")
 
 local extension_configs = {
-  -- locally managed
-  ["arecibo"] = {
-    ["selected_engine"] = "google",
-    ["url_open_command"] = "xdg-open",
-    ["show_http_headers"] = false,
-    ["show_domain_icons"] = true,
-  },
-  ["telescope-alternate"] = require("configs.telescope.extensions-alternate"),
-  -- ["devdocs"] = {},
   ["devhints"] = {},
   ["nerdy"] = {},
   ["unicode"] = {},
@@ -101,11 +92,7 @@ local extension_configs = {
         ["<M-lt>"] = c_actions.directory_up,
         ["<M->>"] = c_actions.directory_picker,
         ["<CR>"] = c_actions.multi_open,
-        -- ['<C-Q>'] = c_actions.multi_to_qflist,
         ["<C-Q>"] = function(prompt_bufnr)
-          -- actions.send_to_qflist(prompt_bufnr)
-          -- actions.open_qflist(prompt_bufnr)
-          -- actions.center(prompt_bufnr)
           actions.smart_send_to_qflist(prompt_bufnr) -- sends selected, or if none selected, sends all
           vim.cmd.cfirst()
         end,
@@ -121,10 +108,9 @@ local extension_configs = {
     },
   },
   ["env"] = {},
-  -- ['fences'] = {},
   ["filetypes"] = {},
+  ["syntax"] = {},
   ["pickers_history"] = {},
-  -- ['smart_history'] = {},
 
   ["find_pickers"] = {},
   ["frecency"] = function()
@@ -136,7 +122,6 @@ local extension_configs = {
     }
 
     local frecency_cfg = {
-      -- default_workspace = "$HOME/.config",
       db_safe_mode = false,
       auto_validate = true,
       show_scores = true,
@@ -174,13 +159,10 @@ local extension_configs = {
     require("file_history").setup(cfg)
   end,
   ["gitops"] = {},
-  ["gotofile"] = {},
   ["locate"] = {},
-  -- ["noice"] = {},
   ["tester"] = { example_option = "example_value" },
   ["mapper"] = {
     sorter = sorters.fuzzy_with_index_bias,
-    -- sorter = sorters.highlighter_only
   },
   ["options"] = {},
   ["projects"] = {
@@ -218,9 +200,6 @@ local extension_configs = {
   },
   ["helpgrep"] = {
     prompt_title = "Helptags Grep",
-    -- glob_pattern = "*.txt",
-    -- disable_coordinates = true,
-    -- path_display = { "tail" },
     ignore_paths = {
       vim.fn.stdpath("state") .. "/lazy/readme",
     },
@@ -260,7 +239,6 @@ local extension_configs = {
   },
   ["undo"] = {
     use_delta = true,
-    -- side_by_side = true,
     layout_strategy = "bottom_pane",
     layout_config = {
       height = 0.4,
@@ -270,8 +248,6 @@ local extension_configs = {
       width = 0.8,
     },
     diff_context_lines = vim.o.scrolloff,
-    -- entry_format = '$NODE ($STAT) [$ID] $TIME',
-    -- entry_format = 'state #$ID ($STAT): $TIME',
   },
   gpt = {
     title = "Gpt Actions",
@@ -302,18 +278,8 @@ local extension_configs = {
   },
   ["changes"] = {},
   ["git_file_history"] = {
-    -- Keymaps inside the picker
-    mappings = {
-      -- i = {
-      --   ["<C-g>"] = require("telescope").extensions.git_file_history.actions.open_in_browser,
-      -- },
-      -- n = {
-      --   ["<C-g>"] = require("telescope").extensions.git_file_history.actions.open_in_browser,
-      -- },
-    },
-
-    -- The command to use for opening the browser (nil or string)
-    -- If nil, it will check if xdg-open, open, start, wslview are available, in that order.
+    mappings = {},
+    -- If nil, checks xdg-open, open, start, wslview in order.
     browser_command = nil,
   },
   ["cheatsheet"] = function()
@@ -345,7 +311,6 @@ local extension_configs = {
   end,
   ["cder"] = {
     prompt_title = "cder",
-    --   dir_command = { 'fd', '--hidden', '--type=d', '.', os.getenv('HOME') },
     dir_command = { "fd", "--type=d", ".", os.getenv("HOME") },
     command_executer = { "bash", "-c" },
     previewer_command = "exa "
@@ -420,7 +385,6 @@ local extension_configs = {
   },
   ["color_names"] = {},
   ["docker"] = {},
-  -- ["dap"]= {},
   ["filelinks"] = {},
   ["file_browser"] = {
     theme = "ivy",
@@ -442,12 +406,9 @@ local extension_configs = {
   ["git_diffs"] = {},
   ["glyph"] = {
     action = function(glyph)
-      -- argument glyph is a table.
-      -- {name="", value="", category="", description=""}
+      -- argument glyph is a table: {name, value, category, description}
       vim.fn.setreg("*", glyph.value)
       print([[Press p or "*p to paste this glyph]] .. glyph.value)
-      -- insert glyph when picked
-      -- vim.api.nvim_put({ glyph.value }, 'c', false, true)
     end,
   },
   ["heading"] = {},
@@ -509,17 +470,7 @@ local extension_configs = {
         ["<C-space>"] = actions.to_fuzzy_refine,
       },
     },
-    -- ... Your other configuration ...
-    -- ['<C-Space>'] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Insert, select = true, },
-    -- ["<c-f>"] = function(prompt_bufnr) actions_set.shift_selection(prompt_bufnr, 10) end,
-    -- ["<c-b>"] = function(prompt_bufnr) actions_set.shift_selection(prompt_bufnr, -10) end,
-    -- ["<c-u>"] = false,
-    -- ["<a-n>"] = actions.toggle_selection + actions.move_selection_next,
-    -- ["<a-p>"] = actions.toggle_selection + actions.move_selection_previous,
-    -- ["<cr>"] = actions.select_default + actions.center,,
   },
-  -- ["luasnip"] = {},
-  -- ["make"]           = {},
   ["media"] = {
     backend = "viu", -- image/gif backend
     flags = {
@@ -527,9 +478,6 @@ local extension_configs = {
         move = true, -- GIF preview
       },
     },
-    -- on_confirm_single = canned.single.copy_path,
-    -- on_confirm_muliple = canned.multiple.bulk_copy,
-    -- cache_path = vim.fn.stdpath('cache') .. '/media',
   },
 
   ["media_files"] = {
@@ -567,9 +515,7 @@ local extension_configs = {
   ["ports"] = {},
   ["recent_files"] = {},
   ["repo"] = {},
-  -- ["session-lens"]= {},
   ["smart_open"] = {
-    -- require('telescope').extensions.smart_open.smart_open({cwd_only = true})
     show_scores = true,
     max_unindexed = 2000,
     ignore_patterns = { "*.git/*", "*/tmp/*" },
@@ -603,12 +549,10 @@ local extension_configs = {
   },
   ["terraform"] = {},
   ["tmux"] = {},
-  -- ['ui-select'] = require('telescope.telethemes').get_theme('dropdown'),
   ["yank_history"] = {},
   ["vimwiki"] = {},
   ["z"] = {
     cmd = { "z", "-l" },
-    -- cmd = { vim.o.shell, '-c', 'z -l' },
   },
 }
 

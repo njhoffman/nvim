@@ -16,7 +16,7 @@ local transfrom_file = function(opts)
 end
 
 local get_buffer_of_orig = function(selection, opts)
-  local value = selection.value .. ':' .. transfrom_file()
+  local value = selection.value .. ':' .. transfrom_file(opts)
   local command = git_utils.init_git_command(opts.bufnr, {
     '--no-pager',
     'show',
@@ -35,7 +35,7 @@ local vimdiff = function(selection, cmd, opts)
   local ft = vim.bo.filetype
   vim.cmd('diffthis')
 
-  local _bufnr = get_buffer_of_orig(selection)
+  local _bufnr = get_buffer_of_orig(selection, opts)
   vim.cmd(string.format('%s %s', cmd, _bufnr))
   vim.bo.filetype = ft
   vim.cmd('diffthis')

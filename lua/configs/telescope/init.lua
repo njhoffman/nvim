@@ -1,6 +1,9 @@
 local telescope = require("telescope")
 local logger = require("logger").init("telescope")
 
+local launcher = require("configs.telescope.launcher")
+telescope.run = launcher
+
 local internal = require("telescope.builtin.__internal")
 internal.reloader = require("configs.telescope.reloader")
 
@@ -47,10 +50,10 @@ local basecfg = {
     prompt_position = "top",
     preview_cutoff = 30,
     width = function(_, cols, _)
-      return math.floor(0.8 * cols)
+      return math.floor(0.90 * cols)
     end,
     height = function(_, _, rows)
-      return math.floor(0.9 * rows)
+      return math.floor(0.95 * rows)
     end,
     horizontal = {
       preview_cutoff = 120,
@@ -76,7 +79,7 @@ local basecfg = {
   preview = {
     hide_on_startup = vim.o.columns < 80,
     filesize_limit = 25,
-    timeout = 500,
+    timeout = 1500,
     filesize_hook = function(filepath, bufnr, opts)
       local path = require("plenary.path"):new(filepath)
       local height = vim.api.nvim_win_get_height(opts.winid) * 3 / 2
@@ -111,7 +114,6 @@ local basecfg = {
   color_devicons = true,
   use_less = true,
   mappings = mappings.main,
-  -- hidden tail absolute smart shorten truncate filename_first
   path_display = { "smart" },
   generic_sorter = require("mini.fuzzy").get_telescope_sorter,
   file_sorter = require("mini.fuzzy").get_telescope_sorter,

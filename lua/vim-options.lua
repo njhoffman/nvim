@@ -40,7 +40,6 @@ opt("grepprg", "set grepprg=rg --vimgrep --no-heading --smart-case")
 --     "rg --smart-case --vimgrep --no-heading --follow --multiline-dotall --hidden --pcre2 --regexp" -- IMPORTANT: pipes should be escaped! e.g. `"text\.(Success\|Info)\("`
 opt("helpheight", 25)
 opt("hidden", true)
-opt("hlsearch", true)
 opt("ignorecase", true)
 opt("inccommand", "split")
 opt("incsearch", true)

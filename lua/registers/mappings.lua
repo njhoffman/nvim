@@ -2,6 +2,7 @@ local map = require("mapper").map
 local state = require("registers.state")
 local config = require("registers.config")
 local ui = require("registers.ui")
+local log = require("logger").init("registers")
 
 ---@private
 ---Whether a key should be bound.
@@ -24,6 +25,11 @@ local _set_bindings = function()
 
   -- Helper function for setting the keymap for all buffer modes
   local set_keymap_all_modes = function(key, callback)
+    if callback == nil then
+      log:warn(string.format("no callback for key '%s', skipping", key))
+      return
+    end
+
     local map_options = {
       nowait = true,
       buffer = state._buffer,
@@ -34,6 +40,19 @@ local _set_bindings = function()
     map("x", key, callback, map_options)
   end
 
+  -- Resolve a bind_keys callback by trying multiple key name variants.
+  local resolve_binding = function(...)
+    if type(options.bind_keys) ~= "table" then
+      return nil
+    end
+    for _, name in ipairs({ ... }) do
+      if options.bind_keys[name] ~= nil then
+        return options.bind_keys[name]
+      end
+    end
+    return nil
+  end
+
   -- Map all register keys
   if _key_should_be_bound("registers") then
     for key, callback in pairs(state._mappings) do
@@ -41,38 +60,22 @@ local _set_bindings = function()
     end
   end
 
-  -- TODO: fix this in configuration
-  -- Map the keys for moving up and down
+  -- Map the keys for moving up and down. The user config may use either
+  -- snake_case (ctrl_k) or angle-bracket notation (<C-k>, k, j), so try both.
   if _key_should_be_bound("k") then
-    set_keymap_all_modes("k", options.bind_keys.ctrl_k)
+    set_keymap_all_modes("k", resolve_binding("k", "ctrl_k", "<C-k>"))
   end
   if _key_should_be_bound("j") then
-    set_keymap_all_modes("j", options.bind_keys.ctrl_j)
+    set_keymap_all_modes("j", resolve_binding("j", "ctrl_j", "<C-j>"))
   end
   if _key_should_be_bound("ctrl_p") then
-    set_keymap_all_modes("<c-p>", options.bind_keys.ctrl_p)
+    set_keymap_all_modes("<c-p>", resolve_binding("ctrl_p", "<C-p>"))
   end
   if _key_should_be_bound("ctrl_n") then
-    set_keymap_all_modes("<c-n>", options.bind_keys.ctrl_n)
+    set_keymap_all_modes("<c-n>", resolve_binding("ctrl_n", "<C-n>"))
   end
-end
 
-local _bind_global_key = function(index, key, mode)
-  if _key_should_be_bound(index) then
-    map(mode, key, function()
-      -- Don't open the registers window in a telescope prompt or in a non-modifiable buffer
-      if
-        not vim.bo.modifiable
-        or vim.bo.filetype == "TelescopePrompt"
-        or vim.bo.filetype == "DressingInput"
-      then
-        return vim.api.nvim_replace_termcodes(key, true, true, true)
-      else
-        -- Call the callback function passed to the options
-        return options.bind_keys[index]()
-      end
-    end, { expr = true })
-  end
+  log:debug(string.format("set window bindings on buffer %s", tostring(state._buffer)))
 end
 
 ---@private
@@ -97,6 +100,7 @@ local _bind_global_key = function(index, key, mode)
         return options.bind_keys[index]()
       end
     end, { expr = true })
+    log:debug(string.format("bound global key '%s' in mode '%s'", key, mode))
   end
 end
 
@@ -171,6 +175,8 @@ local _fill_mappings = function()
       end
     end
   end
+
+  log:debug(string.format("built mappings for %d keys", vim.tbl_count(state._mappings)))
 end
 
 local setup = function()

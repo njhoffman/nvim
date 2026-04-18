@@ -11,6 +11,20 @@
 --   vim.keymap.set('x', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], {})
 -- end
 
+local styles = {
+  bubble = { { "", "HlSearchReversed" }, { "", "HlSearchReversed" } },
+  arrow = {
+    { "", "HlSearchReversed" },
+    { "", "HlSearchReversed" },
+  },
+  none = {
+    { " ", "Ignore" },
+    { " ", "Ignore" }, -- = padding
+  },
+}
+
+local lens_style = "bubble" -- bubble/arrows/none
+
 -- local kopts = {noremap = true, silent = true}
 --
 -- vim.api.nvim_set_keymap('n', 'n', [[<Cmd>lua Scroll("n", 1, 1); require('hlslens').start()<CR>]], kopts)
@@ -24,14 +38,7 @@ local override_lens = function(render, posList, nearest, idx, _)
   -- formats virtual text as a bubble
   local lnum, col = unpack(posList[idx])
   local text = ("%d/%d"):format(idx, #posList)
-  local chunks = {
-    { " ", "Ignore" }, -- = padding
-    -- { "", "HlSearchReversed" },
-    { "", "HlSearchReversed" },
-    { text, "HlSearchLensNear" },
-    { "", "HlSearchReversed" },
-    -- { "", "HlSearchReversed" },
-  }
+  local chunks = { styles[lens_style][1], { text, "HlSearchLens" }, styles[lens_style][2] }
   render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
 end
 
@@ -64,17 +71,18 @@ local override_lens_2 = function(render, plist, nearest, idx, r_idx)
 end
 
 local hlslens_config = {
-  override_lens = override_lens,
+  -- render = render_formats(formats.default, formats.nearest, formats.near),
+  -- override_lens = override_lens_2,
+  float_shadow_blend = 50,
   auto_enable = true,
   calm_down = true,
-  nearest_only = true,
+  nearest_only = false,
   nearest_float_when = "auto",
   virt_priority = 100,
   build_position_cb = function(plist, _, _, _)
-    require("scrollbar.handlers.search").handler.show(plist.start_pos)
+    require("satellite.handlers.search").handler.show(plist.start_pos)
   end,
 }
-
 require("hlslens").setup(hlslens_config)
 
 -- vim.cmd([[

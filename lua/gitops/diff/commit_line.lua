@@ -1,27 +1,26 @@
 local pickers = require('telescope.pickers')
 local sorters = require('telescope.sorters')
 local ags_finders = require('gitops.finders')
+local ags_previewers = require('gitops.previewers')
 local ags_mappings = require('gitops.mappings')
 
 local M = {}
 
---- Opens a Telescope window with a list of previous commit logs with respect to selected lines
-M.diff_commit_line = function()
+M.diff_commit_line = function(opts)
+  opts = opts or {}
   local bufnr = vim.fn.bufnr()
-  local opts = {
+  local picker_opts = {
     bufnr = bufnr,
-    s_start = vim.fn.getpos("'<")[2],
-    s_end = vim.fn.getpos("'>")[2],
+    s_start = opts.s_start or vim.fn.getpos("'<")[2],
+    s_end = opts.s_end or vim.fn.getpos("'>")[2],
   }
 
-  -- git log -L741,751:'app/models/patients/patient.rb'\
-  -- --format='%C(auto)%h \t %as \t %C(green)%an _ %Creset %s'
   pickers
-    .new({
+    .new(opts, {
       results_title = 'BCommits',
       prompt_title = 'Git Commits for Selected Lines',
-      finder = ags_finders.git_log_location_finder(bufnr, opts),
-      -- previewer = ags_previewers.git_diff_commit_file_previewer(bufnr),
+      finder = ags_finders.git_log_location(bufnr, picker_opts),
+      previewer = ags_previewers.diff_commit_file_previewer(bufnr),
       sorter = sorters.highlighter_only(),
       attach_mappings = function(_, map)
         ags_mappings.open_diff_view_current_file_selected_commit(map)
@@ -30,7 +29,7 @@ M.diff_commit_line = function()
         ags_mappings.show_entire_commit(map)
         return true
       end,
-    }, {})
+    })
     :find()
 end
 
@@ -40,14 +39,7 @@ M.diff_commit_line_summary = function(bufnr, _opts)
     s_start = vim.fn.getpos("'<")[2],
     s_end = vim.fn.getpos("'>")[2],
   }, _opts or {})
-
-  local count = 0
-  opts.entry_maker = function(arg1, arg2, arg3)
-    count = count + 1
-    vim.dbglog('EM', arg1, arg2, arg3)
-  end
-  local results = ags_finders.git_log_location_finder(bufnr, opts).results
-  return tostring(results)
+  return tostring(ags_finders.git_log_location(bufnr, opts).results)
 end
 
 return M

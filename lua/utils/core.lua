@@ -124,11 +124,10 @@ end
 --   return result
 -- end
 
--- Telescope
 function utils.search_nvim()
-  require('telescope.builtin').find_files({
-    prompt_title = 'Neovim Config',
-    cwd = '$HOME/.config/nvim/profiles/default/lua',
+  Snacks.picker.files({
+    title = 'Neovim Config',
+    cwd = vim.fn.expand('$HOME/.config/nvim/profiles/default/lua'),
   })
 end
 

@@ -26,13 +26,15 @@ end
 
 local finder = function(scope)
     if utils.config.GetMode() ~= "resident" and scope == "Global" then
-        error("Global scope is only available in resident mode")
+        vim.notify("Global scope is only available in resident mode", vim.log.levels.ERROR)
+        return nil
     end
     local func = "getNoteDirPathFor" .. scope
     local noteDirPath = utils.path[func]()
     local notes = listNotes(noteDirPath)
     if not notes or #notes == 0 then
-        error("No notes found")
+        vim.notify("No notes found", vim.log.levels.WARN)
+        return nil
     end
     return finders.new_table({
         results = notes,

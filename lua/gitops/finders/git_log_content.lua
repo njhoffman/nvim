@@ -37,7 +37,7 @@ local git_log_content = function(bufnr, opts)
 
     finder_utils.set_last_prompt(prompt)
     logger.debug('git_log_content \n  ' .. vim.fn.join(command, '\n  '))
-    return vim.tbl_flatten(command)
+    return command
   end, entry_maker)
 end
 

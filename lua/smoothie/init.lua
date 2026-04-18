@@ -195,7 +195,11 @@ local function step_down()
 
     execute_preserving_scroll("normal! 1\x04") -- Ctrl-D
 
-    if M.state.ctrl_f_invoked and vim.fn.winline() > initial_winline then
+    if
+      M.state.ctrl_f_invoked
+      and vim.fn.winline() > initial_winline
+      and vim.fn.line("w$") < vim.fn.line("$")
+    then
       execute_preserving_scroll("normal! \x05") -- Ctrl-E
     end
 

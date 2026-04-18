@@ -112,10 +112,10 @@ map('n', '<Leader>tiC', ':<C-U>call tablemode#spreadsheet#InsertColumn(1)<CR>', 
 map('n', '<Leader>ts',  ':<C-U>call tablemode#spreadsheet#Sort()<CR>',          { noremap = true,  silent = true, desc = "TableMode Sort" })
 map('n', '<Leader>t?',  ':<C-U>call tablemode#spreadsheet#EchoCell()<CR>',      { noremap = true,  silent = true, desc = "TableMode Echo Cell" })
 
-map('n', '{<Bar>',      ':<C-U>call tablemode#spreadsheet#Motion("k")<CR>',     { noremap = true,  silent = true, desc = "TableMode Move Up" })
-map('n', '}<Bar>',      ':<C-U>call tablemode#spreadsheet#Motion("j")<CR>',     { noremap = true,  silent = true, desc = "TableMode Move Down" })
-map('n', '[<Bar>',      ':<C-U>call tablemode#spreadsheet#Motion("h")<CR>',     { noremap = true,  silent = true, desc = "TableMode Move Left" })
-map('n', ']<Bar>',      ':<C-U>call tablemode#spreadsheet#Motion("l")<CR>',     { noremap = true,  silent = true, desc = "TableMode Move Right" })
+map('n', '<Leader>t{',      ':<C-U>call tablemode#spreadsheet#Motion("k")<CR>',     { noremap = true,  silent = true, desc = "TableMode Move Up" })
+map('n', '<Leader>t}',      ':<C-U>call tablemode#spreadsheet#Motion("j")<CR>',     { noremap = true,  silent = true, desc = "TableMode Move Down" })
+map('n', '<Leader>t[',      ':<C-U>call tablemode#spreadsheet#Motion("h")<CR>',     { noremap = true,  silent = true, desc = "TableMode Move Left" })
+map('n', '<Leader>t]',      ':<C-U>call tablemode#spreadsheet#Motion("l")<CR>',     { noremap = true,  silent = true, desc = "TableMode Move Right" })
 
 map('n', '<Leader>ta',  '<Plug>(table-mode-cell-text-object-a)',                { noremap = true,  silent = true, desc = "TableMode textobj-around" })
 map('n', '<Leader>ti',  '<Plug>(table-mode-cell-text-object-i)',                { noremap = true,  silent = true, desc = "TableMode textobj-inner"})

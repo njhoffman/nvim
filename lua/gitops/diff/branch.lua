@@ -1,24 +1,25 @@
 local pickers = require('telescope.pickers')
 local sorters = require('telescope.sorters')
 local ags_finders = require('gitops.finders')
+local ags_previewers = require('gitops.previewers')
 local git_utils = require('gitops.utils.git')
 
 local M = {}
 
---- Opens a Telescope window with all files changed on the current branch
---- Only committed changes will be displayed
-M.diff_branch = function()
+M.diff_branch = function(opts)
+  opts = opts or {}
+  local bufnr = vim.fn.bufnr()
   pickers
-    .new({
+    .new(opts, {
       results_title = 'Modified ' .. git_utils.base_branch() .. ' -> ' .. git_utils.current_branch(),
       sorter = sorters.get_fuzzy_file(),
-      finder = ags_finders.changed_files_on_current_branch_finder(),
-      -- previewer = ags_previewers.changed_files_on_current_branch_previewer(),
-    }, {})
+      finder = ags_finders.changed_files_on_branch(bufnr),
+      previewer = ags_previewers.changed_files_on_current_branch(),
+    })
     :find()
 end
 
-M.diff_branch_summary = function(bufnr)
+M.diff_branch_summary = function()
   return 'diff branch'
 end
 

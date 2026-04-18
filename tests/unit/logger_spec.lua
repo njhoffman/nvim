@@ -221,6 +221,53 @@ describe("Logger", function()
     end)
   end)
 
+  describe("hybrid call syntax", function()
+    it("colon call writes to the module sink file", function()
+      local logger = require("logger")
+      local scope = "test_hybrid_colon"
+      local scoped = logger.init(scope, { module = 0 })
+      local path = vim.fn.stdpath("data") .. "/nvim-" .. scope .. ".log"
+      local f = io.open(path, "w")
+      if f then
+        f:close()
+      end
+      scoped:info("probe_colon_xyz")
+      local content = table.concat(vim.fn.readfile(path), "\n")
+      assert.is_not_nil(content:find("probe_colon_xyz", 1, true))
+    end)
+
+    it("dot call writes to the module sink file", function()
+      local logger = require("logger")
+      local scope = "test_hybrid_dot"
+      local scoped = logger.init(scope, { module = 0 })
+      local path = vim.fn.stdpath("data") .. "/nvim-" .. scope .. ".log"
+      local f = io.open(path, "w")
+      if f then
+        f:close()
+      end
+      scoped.info("probe_dot_xyz")
+      local content = table.concat(vim.fn.readfile(path), "\n")
+      assert.is_not_nil(content:find("probe_dot_xyz", 1, true))
+    end)
+
+    it("dot call binds to the instance, not a static fallback", function()
+      local logger = require("logger")
+      local scope = "test_hybrid_bind"
+      local scoped = logger.init(scope, { module = 0 })
+      local path = vim.fn.stdpath("data") .. "/nvim-" .. scope .. ".log"
+      local f = io.open(path, "w")
+      if f then
+        f:close()
+      end
+      scoped:info("colon_bind_probe")
+      scoped.info("dot_bind_probe")
+      local content = table.concat(vim.fn.readfile(path), "\n")
+      assert.is_not_nil(content:find("colon_bind_probe", 1, true))
+      assert.is_not_nil(content:find("dot_bind_probe", 1, true))
+      assert.is_not_nil(content:find(scope, 1, true))
+    end)
+  end)
+
   describe("structlog framework (smoke)", function()
     it("logger.structlog is loadable with the expected API", function()
       local sl = require("logger.structlog")

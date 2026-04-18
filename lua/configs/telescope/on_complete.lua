@@ -1,18 +1,6 @@
 local action_state = require("telescope.actions.state")
 
--- TODO : unique id for picker
-
 local timing = { fetch = {}, reload = {}, time_last = nil, bufnr = nil }
-
-local log_picker = function(picker)
-  -- local pickerObj = {}
-  local pickerObj =
-    vim.fn.deepcopy(vim._.omit(picker, { "finder", "highlighter", "layout", "manager" }))
-  pickerObj.finder = vim._.omit(picker.finder, { "results", "linked_states" })
-  pickerObj.layout = vim._.omit(picker.layout, { "picker" })
-  pickerObj.manager = vim._.omit(picker.manager, { "results", "linked_states" })
-  vim.dbglog(pickerObj)
-end
 
 local on_complete = function(picker)
   -- processed, displayed, looped, previewed
@@ -33,9 +21,6 @@ local on_complete = function(picker)
     local rate = picker.stats.processed / (time_diff / 1000)
     table.insert(timing.fetch, { rate = rate, diff = time_diff, cmd = cmd })
     log_msg = string.format("󰇚 %-20s %6.0f/s", picker_name .. ":" .. finder_name, rate)
-    -- if cmd then
-    --   vim.dbglog(cmd.command .. " ", table.concat(cmd.args, " "))
-    -- end
   elseif timing.time_last then
     local time_diff = (vim.loop.hrtime() - timing.time_last) / 1e6
     local rate = picker.stats.processed / (time_diff / 1000)

@@ -14,6 +14,8 @@
 ---@field private _operator_count integer
 ---@field private _key_interrupt_timer? userdata
 ---@field private _current_layout? integer
+---@field private _has_determined_register boolean
+---@field private _keys_to_press_at_the_very_end string
 
 local state = {
   _mode = nil,
@@ -31,16 +33,18 @@ local state = {
   _operator_count = nil,
   _key_interrupt_timer = nil,
   _current_layout = nil,
+  _has_determined_register = false,
+  _keys_to_press_at_the_very_end = "",
 }
 
 ---@private
 ---Whether the previous mode is any of the visual selections.
 ---@return boolean is_visual Whether the previous mode is a visual selection.
 state._previous_mode_is_visual = function()
-  return state._previous_mode == 'v'
-    or state._previous_mode == '^V'
-    or state._previous_mode == 'V'
-    or state._previous_mode == '\22'
+  return state._previous_mode == "v"
+    or state._previous_mode == "^V"
+    or state._previous_mode == "V"
+    or state._previous_mode == "\22"
 end
 
 return state

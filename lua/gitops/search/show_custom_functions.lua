@@ -35,35 +35,50 @@ local git_functions = {
     func = require('gitops.core.stash').stash,
   },
   {
+    id = 'status',
+    value = 'Git status',
+    func = require('gitops.core.status').status,
+  },
+  {
+    id = 'branches',
+    value = 'Git branches',
+    func = require('gitops.core.branches').branches,
+  },
+  {
     id = 'search_commits',
-    value = 'Search:    Search in content history',
+    value = 'Search:   Search in content history',
     func = require('gitops.search.search_commits').search_commits,
   },
   {
     id = 'search_commits_file',
-    value = 'BSearch:   Search in file content history',
+    value = 'BSearch:  Search in file content history',
     func = require('gitops.search.search_commits_file').search_commits_file,
   },
-  -- {
-  --   value = 'Changed on current branch',
-  --   func = require('gitops.diff').diff_branch,
-  -- },
-  -- {
-  --   value = 'Diff file with branch',
-  --   func = require('gitops.diff').diff_branch_file,
-  -- },
-  -- {
-  --   value = 'Diff file with previous commit',
-  --   func = require('gitops.diff').diff_commit_line,
-  -- },
-  -- {
-  --   value = 'Diff file with selected line history',
-  --   func = M.diff_commit_line,
-  -- },
-  -- {
-  --   value = 'Checkout from reflog',
-  --   require('gitops.search.checkout_reflog').checkout_reflog,
-  -- },
+  {
+    id = 'diff_branch',
+    value = 'Changed files on current branch',
+    func = require('gitops.diff').diff_branch,
+  },
+  {
+    id = 'diff_branch_file',
+    value = 'Diff file with branch',
+    func = require('gitops.diff').diff_branch_file,
+  },
+  {
+    id = 'diff_commit_file',
+    value = 'Diff file with previous commit',
+    func = require('gitops.diff').diff_commit_file,
+  },
+  {
+    id = 'diff_commit_line',
+    value = 'Diff file selected line history',
+    func = require('gitops.diff').diff_commit_line,
+  },
+  {
+    id = 'checkout_reflog',
+    value = 'Checkout from reflog',
+    func = require('gitops.search.checkout_reflog').checkout_reflog,
+  },
 }
 
 local function execute_git_function(id)
@@ -75,31 +90,22 @@ local function execute_git_function(id)
   end
 end
 
-local function map_item(git_functions_table, f)
-  local t = {}
-  for k, v in pairs(git_functions_table) do
-    t[k] = f(v)
-  end
-  return t
-end
-
 local M = {}
---- Opens all a selector for all advanced git search functions
+
 M.show_custom_functions = function()
   pickers
-    .new({
+    .new({}, {
       results_title = 'Git action',
       finder = finders.new_table({
-        results = map_item(git_functions, function(item)
+        results = vim.tbl_map(function(item)
           if type(item['value']) == 'function' then
             return { item['id'], item['value']() }
           else
             return { item['id'], item['value'] }
           end
-        end),
+        end, git_functions),
         entry_maker = function(entry)
           local displayer = entry_display.create({
-            -- separator = " ▏",
             items = {
               { remaining = true },
             },
@@ -126,7 +132,7 @@ M.show_custom_functions = function()
         end)
         return true
       end,
-    }, {})
+    })
     :find()
 end
 

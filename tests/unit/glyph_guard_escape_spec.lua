@@ -1,0 +1,42 @@
+local escape = require("glyph-guard.escape")
+
+describe("glyph_guard.escape", function()
+  it("maps shell filetypes to shell lang", function()
+    assert.are.equal("shell", escape.lang_of("sh"))
+    assert.are.equal("shell", escape.lang_of("bash"))
+    assert.are.equal("shell", escape.lang_of("zsh"))
+    assert.are.equal("lua", escape.lang_of("lua"))
+    assert.are.equal("lua", escape.lang_of(""))
+  end)
+
+  it("formats lua escapes as \\u{XXXX}", function()
+    assert.are.equal("\\u{E0B0}", escape.format(0xE0B0, "lua"))
+    assert.are.equal("\\u{2713}", escape.format(0x2713, "lua"))
+  end)
+
+  it("formats shell BMP escapes as $'\\uXXXX'", function()
+    assert.are.equal("$'\\uE0B0'", escape.format(0xE0B0, "shell"))
+  end)
+
+  it("formats shell supplementary escapes as $'\\UXXXXXXXX'", function()
+    assert.are.equal("$'\\U0001F600'", escape.format(0x1F600, "shell"))
+  end)
+
+  it("wraps shell replacements with the finding's quote", function()
+    local repl, warn = escape.replacement({ cp = 0xE0B0, quote = '"' }, "shell")
+    assert.are.equal('"$\'\\uE0B0\'"', repl)
+    assert.is_false(warn)
+  end)
+
+  it("falls back to lua form with warn flag when shell quote unknown", function()
+    local repl, warn = escape.replacement({ cp = 0xE0B0, quote = nil }, "shell")
+    assert.are.equal("\\u{E0B0}", repl)
+    assert.is_true(warn)
+  end)
+
+  it("emits lua form without warn when lang is lua", function()
+    local repl, warn = escape.replacement({ cp = 0xE0B0 }, "lua")
+    assert.are.equal("\\u{E0B0}", repl)
+    assert.is_false(warn)
+  end)
+end)

@@ -1,14 +1,14 @@
-local previewers = require('telescope.previewers')
+local previewers = require("telescope.previewers")
 
 local function get_anon_function_name(func_ref)
-  local Path = require('plenary.path')
+  local Path = require("plenary.path")
   local info = debug.getinfo(func_ref)
   local fname
   -- if fn defined in string (ie loadstring) source is string
   -- if fn defined in file, source is file name prefixed with a `@´
-  local path = Path:new((info.source:gsub('@', '')))
+  local path = Path:new((info.source:gsub("@", "")))
   if not path:exists() then
-    return '<anonymous>'
+    return "<anonymous>"
   end
   for i, line in ipairs(path:readlines()) do
     if i == info.linedefined then
@@ -18,24 +18,24 @@ local function get_anon_function_name(func_ref)
   end
 
   -- test if assignment or named function, otherwise anon
-  if (fname:match('=') == nil) and (fname:match('function %S+%(') == nil) then
-    return '<anonymous>'
+  if (fname:match("=") == nil) and (fname:match("function %S+%(") == nil) then
+    return "<anonymous>"
   else
     local patterns = {
-      { 'function', '' }, -- remove function
-      { 'local', '' }, -- remove local
-      { '[%s=]', '' }, -- remove whitespace and =
-      { [=[%[["']]=], '' }, -- remove left-hand bracket of table assignment
-      { [=[["']%]]=], '' }, -- remove right-ahnd bracket of table assignment
-      { '%((.+)%)', '' }, -- remove function arguments
-      { '(.+)%.', '' }, -- remove TABLE. prefix if available
+      { "function", "" }, -- remove function
+      { "local", "" }, -- remove local
+      { "[%s=]", "" }, -- remove whitespace and =
+      { [=[%[["']]=], "" }, -- remove left-hand bracket of table assignment
+      { [=[["']%]]=], "" }, -- remove right-ahnd bracket of table assignment
+      { "%((.+)%)", "" }, -- remove function arguments
+      { "(.+)%.", "" }, -- remove TABLE. prefix if available
     }
     for _, tbl in ipairs(patterns) do
       fname = (fname:gsub(tbl[1], tbl[2])) -- make sure only string is returned
     end
     -- not sure if this can happen, catch all just in case
-    if fname == nil or fname == '' then
-      return '<anonymous>'
+    if fname == nil or fname == "" then
+      return "<anonymous>"
     end
     return fname
   end
@@ -43,14 +43,14 @@ end
 
 local normalize_html = function(str)
   local symbol_map = {
-    ['&lt;'] = '<',
-    ['&gt;'] = '>',
-    ['&amp;'] = '&',
-    ['&quot;'] = '"',
-    ['&apos;'] = "'",
-    ['&nbsp;'] = ' ',
-    ['&copy;'] = '©',
-    ['&ndash;'] = '–',
+    ["&lt;"] = "<",
+    ["&gt;"] = ">",
+    ["&amp;"] = "&",
+    ["&quot;"] = '"',
+    ["&apos;"] = "'",
+    ["&nbsp;"] = " ",
+    ["&copy;"] = "©",
+    ["&ndash;"] = "–",
   }
 
   for key, value in pairs(symbol_map) do
@@ -60,65 +60,38 @@ local normalize_html = function(str)
   return str
 end
 
--- local to_yaml = function(entry)
---   local lines = {}
---
---   for key, value in pairs(entry) do
---     if key == 'attribution' then
---       value = normalize_html(value)
---       value = value:gsub('<a.*>(.*)</a>', '%1')
---       value = value:gsub('<br>', '')
---       value = value:gsub('\n *', ' ')
---     end
---     if key == 'links' then
---       value = vim.fn.json_encode(value)
---     end
---     table.insert(lines, key .. ': ' .. value)
---   end
---
---   return table.concat(lines, '\n')
--- end
 local to_yaml = function(entry)
   local lines = {}
 
   for key, value in pairs(entry) do
-    if type(value) == 'function' then
+    if type(value) == "function" then
       get_anon_function_name(value)
     end
     value = tostring(value)
 
-    if key == 'attribution' then
+    if key == "attribution" then
       value = normalize_html(value)
-      value = value:gsub('<a.*>(.*)</a>', '%1')
-      value = value:gsub('<br>', '')
-      value = value:gsub('\n *', ' ')
+      value = value:gsub("<a.*>(.*)</a>", "%1")
+      value = value:gsub("<br>", "")
+      value = value:gsub("\n *", " ")
     end
-    if key == 'links' then
+    if key == "links" then
       value = vim.fn.json_encode(value)
     end
-    table.insert(lines, key .. ': ' .. value)
+    table.insert(lines, key .. ": " .. value)
   end
-  return table.concat(lines, '\n')
+  return table.concat(lines, "\n")
 end
--- abbr = 0, buffer = 0, desc = "remove highlights and refresh", expr = 0,
--- lhs = "<Esc>", lhsraw = "\27",
--- lnum = 0, mode = "n", mode_bits = 1, noremap = 1, nowait = 0,
--- rhs = "<Cmd>noh<CR> | <Cmd>lua require(\"flash.util\").exit()<CR>",
--- script = 0, scriptversion = 1, sid = -8, silent = 0
--- mode, lhs, rhs, desc, buffer, expr, silent, abbr, noremap, nowait, mode_bits,
--- lnum, lhsraw, script, scriptversion, sid,
 local keymaps_previewer = previewers.new_buffer_previewer({
-  title = 'Keymaps',
+  title = "Keymaps",
   define_preview = function(self, entry)
     local bufnr = self.state.bufnr
     local transpiled = to_yaml(entry.value)
-    local lines = vim.split(transpiled, '\n')
+    local lines = vim.split(transpiled, "\n")
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-    vim.bo[bufnr].ft = 'yaml'
+    vim.bo[bufnr].ft = "yaml"
 
-    require('telescope.previewers.utils').highlighter(bufnr, 'yaml')
-    -- require('telescope.previewers.utils').regex_highlighter(bufnr, ft)`
-    -- require('telescope.previewers.utils').ts_highlighter(bufnr, ft)`
+    require("telescope.previewers.utils").highlighter(bufnr, "yaml")
   end,
 })
 

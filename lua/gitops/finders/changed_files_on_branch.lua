@@ -13,7 +13,7 @@ local changed_files_on_branch = function(bufnr, opts)
   table.insert(command, '--merge-base')
   table.insert(command, git_utils.base_branch())
   table.insert(command, '--relative')
-  return finders.new_oneshot_job(vim.tbl_flatten(command))
+  return finders.new_oneshot_job(command)
 end
 
 return changed_files_on_branch

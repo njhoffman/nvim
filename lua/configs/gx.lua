@@ -12,7 +12,7 @@ local example_config = {
   handlers = {
     plugin = true, -- open plugin links in lua (e.g. packer, lazy, ..)
     github = true, -- open github issues
-    brewfile = true, -- open Homebrew formulaes and casks
+    brewfile = false, -- open Homebrew formulaes and casks
     package_json = true, -- open dependencies from package.json
     search = true, -- search the web/selection on the web if nothing else is found
     go = true, -- open pkg.go.dev from an import statement (uses treesitter)
@@ -59,4 +59,8 @@ local example_config = {
 }
 require("mapper").map({ "n", "x" }, "gx", "<cmd>Browse<cr>", { desc = "Browse URL under cursor" })
 
-require("gx").setup(example_config)
+local config = {
+  open_browser_args = {},
+}
+
+require("gx").setup(config)

@@ -27,12 +27,12 @@ end
 local stats_overview = function(view)
   view = view or "notify"
   local counts = utils.get_counts()
-  -- local lines, hls = list_align(counts)
-  -- FIX:  error when title is not array
-  -- output[view](lines, nil, hls)
-
-  local lines, hls = utils.align_list(counts)
-  output[view](lines, "Overview", hls)
+  if view == "notify" then
+    output.notify(counts, "Overview")
+  else
+    local lines = utils.align_list(counts)
+    output[view](lines, "Overview")
+  end
 end
 
 local command = function(cmd)

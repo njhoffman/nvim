@@ -6,7 +6,7 @@ local finder = require('telescope._extensions.projects.finder')
 local history = require('project_nvim.utils.history')
 local project = require('project_nvim.project')
 
-local run = require('telescope.run')
+local run = require('configs.telescope.launcher')
 
 -- TODO: 'lock project directory' until original bufnr triggers project change
 local function change_working_directory(prompt_bufnr)

@@ -33,7 +33,7 @@ local opts = {
   end,
   mappings = {
     default = function(directory)
-      print(directory)
+      vim.notify(directory)
     end,
     ["<M-.>"] = nil,
     ["<M-,>"] = nil,
@@ -103,5 +103,5 @@ end
 
 return telescope.register_extension({
   run = run,
-  sestup = setup,
+  setup = setup,
 })

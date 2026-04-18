@@ -145,8 +145,6 @@ local pickers = {
     previewer = c_previewers.keymaps,
     modes = { "n", "i", "c", "x", "o", "t", "s", "l" },
     lhs_filter = function(lhs)
-      -- remove which-key mappings
-      -- return not lhs:find('Þ')
       return true
     end,
     only_buf = false,
@@ -172,12 +170,10 @@ local pickers = {
     },
     prompt_prefix = icons.git,
     show_untracked = true,
-    enabled = false,
     previewer = c_previewers.delta,
     theme = "dropdown",
   },
   git_commits = {
-    enabled = false,
     prompt_prefix = icons.git,
     -- debounce = 100,
     previewer = require("telescope.previewers").new_termopen_previewer({

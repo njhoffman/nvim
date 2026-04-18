@@ -4,7 +4,7 @@ local actions = require("telescope.actions")
 local config = require("telescope.config")
 local dirpicker = require("configs.telescope.dirpicker")
 local finders = require("telescope.finders")
-local run = require("telescope.run")
+local run = require("configs.telescope.launcher")
 local state = require("telescope.state")
 
 local groups = {
@@ -23,8 +23,6 @@ for _, group in ipairs(groups) do
     M[k] = mod[k]
   end
 end
--- stylua: ignore start
--- stylua: ignore end
 
 M.launch_projects = function(prompt_bufnr)
   vim.api.nvim_set_var("project_buf_skip", 1)
@@ -63,18 +61,13 @@ local _open_buffer = function(open_cmd, prompt_bufnr)
   elseif open_cmd == "tabe" then
     actions.file_tab(prompt_bufnr)
   else
-    -- actions.file_edit(prompt_bufnr)
     actions.select_default(prompt_bufnr)
   end
 end
 
 local _multi_open_qf = function(targets, prompt_bufnr)
-  -- actions.smart_send_to_qflist(prompt_bufnr)
   for _, target in ipairs(targets) do
     vim.cmd("caddexpr '" .. target.ordinal .. "'")
-    -- vim.cmd("qfdo " .. target.ordinal)
-    -- actions.smart_add_to_qflist(prompt_bufnr)
-    -- -- actions.send_selected_to_qflist(prompt_bufnr)
   end
 end
 
@@ -85,7 +78,6 @@ local _multi_open = function(prompt_bufnr, open_cmd)
   local num_selections = #multi_targets
 
   if not num_selections or num_selections <= 1 then
-    -- actions.add_selection(prompt_bufnr)
     actions.select_default(prompt_bufnr)
   elseif open_cmd == "quickfix" then
     _multi_open_qf(multi_targets, prompt_bufnr)
@@ -135,17 +127,9 @@ end
 
 vim.g.telescope_cache_index = 1
 M.resume_picker_prev = function(prompt_bufnr)
-  -- local cached_pickers = #state.get_global_key('cached_pickers')
-  -- local picker = action_state.get_current_picker(prompt_bufnr) -- picker state
-  -- local opts = {}
-  -- if idx then
-  --   opts.cache_index = idx + 1 > cached_pickers and 1 or idx + 1
-  -- end
-
   local picker = action_state.get_current_picker(prompt_bufnr)
   local cached_pickers_num = #state.get_global_key("cached_pickers")
 
-  -- local idx = picker.cache_picker and picker.cache_picker.index
   local idx = vim.g.telescope_cache_index
   if cached_pickers_num > 0 then
     idx = idx + 1
@@ -154,10 +138,7 @@ M.resume_picker_prev = function(prompt_bufnr)
     end
   end
   local opts = { cache_index = idx, initial_mode = picker.initial_mode }
-
-  -- opts._cache_picker = opts.cache_picker
   opts.cache_picker = false
-  -- run('builtin', 'resume', opts)
   run("builtin", "resume")
   vim.g.telescope_cache_index = idx
 end
@@ -170,26 +151,10 @@ end
 M.toggle_whichkey = function(prompt_bufnr)
   local whichkey_opts = {
     separator = " ➜ ",
-    -- separator = " -> ",
     column_padding = " ",
-    -- column_padding = "  "
-    -- max_height = 0.4,
-    -- only_show_current_mode = true,
     keybind_width = 9,
-    -- keybind_width = 5,
     name_width = 25,
     winblend = 25,
-    -- name_width = 30,
-    -- line_padding = 1,
-    -- close_with_action = true,
-    -- mode_hl = "",
-    -- name_hl = 'TelescopeWhichKeyName',
-    -- keybind_hl = 'TelescopeWhichKeyKey',
-    -- normal_hl = 'TelescopeWhichKeyNormal',
-    -- border_hl = 'TelescopeWhichKeyBorder',
-    -- normal_hl = "TelescopePrompt",
-    -- border_hl = "TelescopePromptBorder",
-    -- winblend = 15, --  config.values.winblend,
   }
   require("configs.telescope.which_key")(prompt_bufnr, whichkey_opts)
 end
@@ -266,28 +231,13 @@ M.directory_up = function(prompt_bufnr)
     }
 
     actions.close(prompt_bufnr)
-    require("telescope.run")("builtin", "find_files", opts)
+    run("builtin", "find_files", opts)
   end
 end
 
 M.search_reset = function(prompt_bufnr, opts)
   local picker = action_state.get_current_picker(prompt_bufnr)
   picker:reset_prompt()
-  -- picker.cache_picker.limit_entries, picker.__scrolling_limit, picker.max_results,
-  -- TODO: detect if search is refined "Fuzzy match over" and reset
-  -- local new_title = vim.tbl_get(picker, 'prompt_border', '_border_win_options', 'title')
-  -- vim.dbglog('RESET', new_title, picker.prompt_title, picker.results_title, opts)
-  -- local new_finder = finders.new_table { results = results, entry_maker = function(x) return x end }
-  -- if not opts.reset_multi_selection and current_line ~= "" then
-  --   opts.multi = current_picker._multi
-  -- end
-  -- if opts.prompt_to_prefix then
-  --   local current_prefix = current_picker.prompt_prefix
-  --   local suffix = current_prefix ~= opts.prompt_prefix and current_prefix or ""
-  --   opts.new_prefix = suffix .. current_line .. " " .. opts.prompt_prefix
-  -- end
-  -- current_picker:refresh(new_finder, opts)
-  -- current_picker:set_prompt(entry)
 end
 
 --- Delete the selected buffer or all the buffers selected using multi selection.

@@ -39,9 +39,9 @@ local extra = {
   search_up = {
     kind = "search",
     -- show in classic bottom cmdline view
-    -- view = 'cmdline',
+    view = "cmdline",
   },
-  search_down = { kind = "search" },
+  search_down = { kind = "search", view = "cmdline" },
 }
 
 local formatters = {}

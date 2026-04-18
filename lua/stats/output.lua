@@ -21,9 +21,8 @@ local logfile = function(lines, title)
   sinks.logfile(lines, title)
 end
 
-local notify = function(lines, title, render)
-  -- local notify = require('notify')
-  sinks.notify(lines, title, render)
+local notify = function(rows, title)
+  sinks.notify(rows, title)
 end
 
 local popup = function(lines, title)

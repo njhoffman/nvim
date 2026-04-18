@@ -64,7 +64,7 @@ local function edit_environment_value(prompt_bufnr)
   if value == "" then
     return
   end
-  vim.notify({ "Setting env %s=%s", selection.value[1], value }, "debug")
+  vim.notify(string.format("Setting env %s=%s", selection.value[1], value), vim.log.levels.DEBUG)
   -- Only works for the current session
   vim.fn.setenv(selection.value[1], value)
 end

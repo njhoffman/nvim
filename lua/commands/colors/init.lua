@@ -35,15 +35,9 @@ function M.setup()
     end,
   })
 
-  -- Open telescope highlight picker
   cmd("HlPick", function()
-    local ok, _ = pcall(require, "telescope")
-    if ok then
-      require("telescope").extensions.highlights.all()
-    else
-      vim.notify("Telescope not available", vim.log.levels.WARN)
-    end
-  end, { desc = "Pick highlights with telescope" })
+    Snacks.picker.highlights()
+  end, { desc = "Pick highlights" })
 
   -- Save edit buffer to colorscheme files
   cmd("HlSave", function()

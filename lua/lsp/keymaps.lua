@@ -15,14 +15,19 @@ function M.setup(client, bufnr)
 
   -- Diagnostics
   map("n", "<C-t>", function()
-    require("telescope.builtin").diagnostics({ bufnr = 0 })
+    Snacks.picker.diagnostics_buffer()
   end, vim.tbl_extend("force", opts, { desc = "Buffer diagnostics" }))
 
   map("n", "<M-T>", function()
-    require("telescope.builtin").diagnostics()
+    Snacks.picker.diagnostics()
   end, vim.tbl_extend("force", opts, { desc = "Workspace diagnostics" }))
 
-  map("n", "<Leader>e", vim.diagnostic.open_float, vim.tbl_extend("force", opts, { desc = "Open diagnostic float" }))
+  map(
+    "n",
+    "<Leader>e",
+    vim.diagnostic.open_float,
+    vim.tbl_extend("force", opts, { desc = "Open diagnostic float" })
+  )
 
   map("n", "[d", function()
     require("commands.scroll").diag_scroll("prev")
@@ -52,30 +57,55 @@ function M.setup(client, bufnr)
   end
 
   if client.server_capabilities.signatureHelpProvider then
-    map("n", "gK", vim.lsp.buf.signature_help, vim.tbl_extend("force", opts, { desc = "Signature help" }))
-    map("n", "glH", vim.lsp.buf.signature_help, vim.tbl_extend("force", opts, { desc = "LSP signature help" }))
+    map(
+      "n",
+      "gK",
+      vim.lsp.buf.signature_help,
+      vim.tbl_extend("force", opts, { desc = "Signature help" })
+    )
+    map(
+      "n",
+      "glH",
+      vim.lsp.buf.signature_help,
+      vim.tbl_extend("force", opts, { desc = "LSP signature help" })
+    )
   end
 
   -- Navigation
   if client.server_capabilities.definitionProvider then
     map("n", "gld", function()
-      require("telescope.builtin").lsp_definitions()
-    end, vim.tbl_extend("force", opts, { desc = "LSP definitions (telescope)" }))
-    map("n", "glD", vim.lsp.buf.definition, vim.tbl_extend("force", opts, { desc = "LSP definition" }))
+      Snacks.picker.lsp_definitions()
+    end, vim.tbl_extend("force", opts, { desc = "LSP definitions" }))
+    map(
+      "n",
+      "glD",
+      vim.lsp.buf.definition,
+      vim.tbl_extend("force", opts, { desc = "LSP definition" })
+    )
     map("n", "gpd", function()
       require("goto-preview").goto_preview_definition()
     end, vim.tbl_extend("force", opts, { desc = "Preview definition" }))
   end
 
   if client.server_capabilities.declarationProvider then
-    map("n", "gly", vim.lsp.buf.declaration, vim.tbl_extend("force", opts, { desc = "LSP declaration" }))
+    map(
+      "n",
+      "gly",
+      vim.lsp.buf.declaration,
+      vim.tbl_extend("force", opts, { desc = "LSP declaration" })
+    )
   end
 
   if client.server_capabilities.referencesProvider then
     map("n", "glr", function()
-      require("telescope.builtin").lsp_references()
-    end, vim.tbl_extend("force", opts, { desc = "LSP references (telescope)" }))
-    map("n", "glR", vim.lsp.buf.references, vim.tbl_extend("force", opts, { desc = "LSP references (quickfix)" }))
+      Snacks.picker.lsp_references()
+    end, vim.tbl_extend("force", opts, { desc = "LSP references" }))
+    map(
+      "n",
+      "glR",
+      vim.lsp.buf.references,
+      vim.tbl_extend("force", opts, { desc = "LSP references (quickfix)" })
+    )
     map("n", "gpr", function()
       require("goto-preview").goto_preview_references()
     end, vim.tbl_extend("force", opts, { desc = "Preview references" }))
@@ -83,9 +113,14 @@ function M.setup(client, bufnr)
 
   if client.server_capabilities.implementationProvider then
     map("n", "gli", function()
-      require("telescope.builtin").lsp_implementations()
-    end, vim.tbl_extend("force", opts, { desc = "LSP implementations (telescope)" }))
-    map("n", "glI", vim.lsp.buf.implementation, vim.tbl_extend("force", opts, { desc = "LSP implementation" }))
+      Snacks.picker.lsp_implementations()
+    end, vim.tbl_extend("force", opts, { desc = "LSP implementations" }))
+    map(
+      "n",
+      "glI",
+      vim.lsp.buf.implementation,
+      vim.tbl_extend("force", opts, { desc = "LSP implementation" })
+    )
     map("n", "gpi", function()
       require("goto-preview").goto_preview_implementation()
     end, vim.tbl_extend("force", opts, { desc = "Preview implementation" }))
@@ -93,9 +128,14 @@ function M.setup(client, bufnr)
 
   if client.server_capabilities.typeDefinitionProvider then
     map("n", "glt", function()
-      require("telescope.builtin").lsp_type_definitions()
-    end, vim.tbl_extend("force", opts, { desc = "LSP type definitions (telescope)" }))
-    map("n", "glT", vim.lsp.buf.type_definition, vim.tbl_extend("force", opts, { desc = "LSP type definition" }))
+      Snacks.picker.lsp_type_definitions()
+    end, vim.tbl_extend("force", opts, { desc = "LSP type definitions" }))
+    map(
+      "n",
+      "glT",
+      vim.lsp.buf.type_definition,
+      vim.tbl_extend("force", opts, { desc = "LSP type definition" })
+    )
     map("n", "gpt", function()
       require("goto-preview").goto_preview_type_definition()
     end, vim.tbl_extend("force", opts, { desc = "Preview type definition" }))
@@ -103,8 +143,18 @@ function M.setup(client, bufnr)
 
   -- Code actions
   if client.server_capabilities.codeActionProvider then
-    map("n", "glc", "<cmd>CodeActionMenu<cr>", vim.tbl_extend("force", opts, { desc = "Code action menu" }))
-    map("n", "gla", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { desc = "Code action" }))
+    map(
+      "n",
+      "glc",
+      "<cmd>CodeActionMenu<cr>",
+      vim.tbl_extend("force", opts, { desc = "Code action menu" })
+    )
+    map(
+      "n",
+      "gla",
+      vim.lsp.buf.code_action,
+      vim.tbl_extend("force", opts, { desc = "Code action" })
+    )
     map("n", "glA", function()
       require("actions-preview").code_actions()
     end, vim.tbl_extend("force", opts, { desc = "Code actions preview" }))

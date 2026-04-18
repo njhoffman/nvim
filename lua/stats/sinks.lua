@@ -20,20 +20,36 @@ local split = function(lines, title)
   vim.api.nvim_buf_set_lines(0, 0, 0, lines, {})
 end
 
-local notify = function(lines, title, highlights)
-  require("notify").notify(lines, "inspect", {
+local notify = function(rows_or_lines, title)
+  local opts = {
     timeout = 10000,
     title = { title, "" },
-    -- render = 'default',
     highlights = {
       body = "NotifyINFOBody",
       border = "NotifyINFOBorder",
       icon = "NotifyINFOIcon",
       title = "NotifyINFOTitle",
-      inline = highlights,
     },
     hide_from_history = true,
-  })
+  }
+
+  local is_rows = type(rows_or_lines) == "table" and type(rows_or_lines[1]) == "table"
+  if is_rows then
+    opts.payload = {
+      kind = "columns",
+      data = {
+        rows = rows_or_lines,
+        columns = {
+          { align = "left", highlight = "Keyword" },
+          { align = "right", highlight = "Comment" },
+        },
+        separator = " ",
+      },
+    }
+    require("notify").notify("", "inspect", opts)
+  else
+    require("notify").notify(rows_or_lines, "inspect", opts)
+  end
 end
 
 return {

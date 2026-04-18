@@ -1,5 +1,6 @@
 local state = require("registers.state")
 local config = require("registers.config")
+local log = require("logger").init("registers")
 
 local highlight_lines = function(lines)
   local options = config.get()
@@ -27,6 +28,8 @@ local preview_register = function(options)
     if type(register_info) ~= "table" then
       return
     end
+
+    log:debug("preview register: " .. tostring(register_info.register))
 
     local register_lines = register_info.regcontents
 

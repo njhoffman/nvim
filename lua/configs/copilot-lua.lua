@@ -89,6 +89,7 @@ require("copilot").setup({
       accept_line = false,
     },
   },
+  -- copilot_node_command = { "nvm", "exec", "default", "node" },
   panel = {
     enabled = false,
     auto_refresh = true,

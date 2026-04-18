@@ -242,7 +242,11 @@ function Picker.picker(opts)
       return
     end
 
-    if not entry.kind == "match" then
+    if entry.kind ~= "match" then
+      return
+    end
+
+    if not vim.api.nvim_buf_is_valid(picker_.results_bufnr) then
       return
     end
 

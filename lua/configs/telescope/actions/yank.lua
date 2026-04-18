@@ -14,18 +14,6 @@ local create_scratch_win = function(filetype, lines)
   vim.api.nvim_buf_set_lines(bufnr, 0, #lines, false, lines)
 end
 
--- local winnr = vim.api.nvim_get_current_win()
--- local bufnr = vim.api.nvim_win_get_buf(winnr)
---   local current_picker = action_state.get_current_picker(prompt_bufnr)
---   action_utils.map_entries(prompt_bufnr, function(entry, _, row)
---     current_picker._multi:toggle(entry)
---     if current_picker:can_select_row(row) then end
---   end)
---   local curr_entry = action_state.get_selected_entry()
---   filename = from_entry.path(entry, false, false)
---   local entry = self.manager and self.manager:get_entry(self:get_index(row))
---   if not current_picker._multi:is_selected(entry) then current_picker._multi:add(entry)
-
 local parse_default_entry = function(entry, is_lua)
   local value = type(entry) == "table" and type(entry.value) ~= "nil" and entry.value
     or type(entry) == "function" and entry()
@@ -73,7 +61,6 @@ local parse_default_entries = function(entries)
 end
 
 local get_selected_items = function(picker, parse_fn)
-  -- local cached_pickers = state.get_global_key "cached_pickers"
   local entries = picker:get_multi_selection()
     or { action_state.get_selected_entry() or picker:get_selected_entry() }
     or {}
@@ -131,16 +118,10 @@ local yank_selection_to_buffer = function(prompt_bufnr, opts)
 end
 
 local yank_keymaps = function(bufnr, opts)
-  -- opts.parse_fn = function(entry)
-  --   return entry
-  -- end
   yank_selection(bufnr, opts)
 end
 
 local yank_keymaps_to_buffer = function(bufnr, opts)
-  -- opts.parse_fn = function(entry)
-  --   return entry
-  -- end
   return yank_selection_to_buffer(bufnr, opts)
 end
 

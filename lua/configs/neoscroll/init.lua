@@ -12,6 +12,7 @@ local hooks = require("configs.neoscroll.hooks")
 --   easing = "linear",
 --   ignored_events = {'WinScrolled', 'CursorMoved'},
 --   telescope_scroll_opts = { duration = 250 },
+
 local cfg = {
   -- All these keys will be mapped to their corresponding default scrolling animation
   -- mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>', '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },

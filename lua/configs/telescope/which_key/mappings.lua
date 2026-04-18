@@ -2,16 +2,6 @@ local utils = require("telescope.utils")
 local parse = require("configs.telescope.which_key.parse")
 -- TODO: get function name desc like get_registered_mappings
 local get_default_mappings = function()
-  -- local default_mappings = conf.mappings
-  -- <Up> { [1] = "preview_scrolling_up" }
-  -- <M-p> function: 0x7fd1b2a82b10
-  -- <M-}> false
-  -- for key, name in pairs(default_mappings.i) do
-  --   local fname = _get_anon_function_name(vim.json.decode(mapping.desc:sub(12)))
-  --   fname = fname:lower() == mapping.lhs:lower() and '<anonymous>' or fname
-  --   vim.dbglog(key, name, fname)
-  -- end
-
   -- stylua: ignore
   return {
     i = {
@@ -51,59 +41,12 @@ local get_default_mappings = function()
     },
     n = {
       ['<Esc>'] = 'close',
-      --     desc = "toggle_selection + move_selection_worse",
-      --     keybind = "<Tab>",
-      --     desc = "select_default",
-      --     keybind = "<CR>",
-      --     desc = "close",
-      --     keybind = "<Esc>",
-      --     desc = "which_key",
-      --     keybind = "?",
-      --     desc = "move_to_bottom",
-      --     keybind = "G",
-      --     desc = "move_to_top",
-      --     keybind = "H",
-      --     mode = "n"
-      --     desc = "move_to_bottom",
-      --     keybind = "L",
-      --     desc = "move_to_middle",
-      --     keybind = "M",
-      --     desc = "move_to_top",
-      --     keybind = "gg",
-      --     desc = "move_selection_next",
-      --     keybind = "j",
-      --     desc = "move_selection_previous",
-      --     keybind = "k",
-      --     desc = "select_tab",
-      --     keybind = "<C-T>",
-      --     desc = "send_to_qflist + open_qflist",
-      --     keybind = "<C-Q>",
-      --     desc = "send_selected_to_qflist + open_qflist",
-      --     keybind = "<M-q>",
-      --     desc = "select_horizontal",
-      --     keybind = "<C-X>",
-      --     desc = "select_vertical",
-      --     keybind = "<C-V>",
-      --     desc = "preview_scrolling_down",
-      --     keybind = "<C-D>",
-      --     desc = "results_scrolling_up",
-      --     keybind = "<PageUp>",
-      --     desc = "results_scrolling_down",
-      --     keybind = "<PageDown>",
-      --     desc = "move_selection_previous",
-      --     keybind = "<Up>",
-      --     desc = "move_selection_next",
-      --     keybind = "<Down>",
-      --     desc = "preview_scrolling_up",
-      --     keybind = "<C-U>",
-      -- }
     },
   }
 end
 --- Utility to collect mappings of prompt buffer in array of `{mode, keybind, name}`.
 ---@param prompt_bufnr number: The prompt bufnr
 local function get_registered_mappings(prompt_bufnr)
-  -- require('telescope.actions.utils').get_registered_mappings
   local ret = {}
   for _, mode in ipairs({ "n", "i" }) do
     local keymaps = vim.api.nvim_buf_get_keymap(prompt_bufnr, mode)

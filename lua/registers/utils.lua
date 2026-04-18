@@ -1,5 +1,6 @@
 local config = require("registers.config")
 local state = require("registers.state")
+local log = require("logger").init("registers")
 
 ---@private
 ---Fill the arrays with the register values.
@@ -75,6 +76,10 @@ local _read_registers = function()
       state._empty_registers[#state._empty_registers + 1] = register
     end
   end
+
+  log:debug(
+    string.format("read %d registers, %d empty", #state._register_values, #state._empty_registers)
+  )
 end
 
 ---@private
@@ -153,8 +158,11 @@ local _register_info = function(register)
   if register == nil then
     -- A register is selected by the cursor, get it based on the current line
     local cursor = unpack(vim.api.nvim_win_get_cursor(state._window))
-
-    return state._register_values[cursor]
+    local info = state._register_values[cursor]
+    if info == nil then
+      log:debug(string.format("no register info at cursor line %d", cursor))
+    end
+    return info
   else
     -- Otherwise find it by looking up the register in the list
     for i = 1, #state._register_values do
@@ -164,6 +172,7 @@ local _register_info = function(register)
     end
   end
 
+  log:debug(string.format("no register info for name '%s'", tostring(register)))
   return nil
 end
 
@@ -193,6 +202,7 @@ local _is_interrupted = function()
     return false
   end
 
+  log:debug(string.format("window creation interrupted by key %s", tostring(state._interrupted_by)))
   -- Press the key that's interrupted again
   vim.api.nvim_feedkeys(state._interrupted_by, "n", true)
   return true
@@ -235,6 +245,7 @@ local _apply_register = function(register, keep_open_until_keypress)
 
   -- Do nothing if no valid register is chosen
   if not register then
+    log:warn("_apply_register called with no valid register")
     return
   end
 
@@ -245,6 +256,7 @@ local _apply_register = function(register, keep_open_until_keypress)
   end
 
   state._has_determined_register = true
+  log:info(string.format("applying register '%s' in mode '%s'", register, tostring(state._mode)))
 
   local key_to_press_at_the_end
   if state._mode == "paste" then
@@ -321,7 +333,8 @@ local _apply_register = function(register, keep_open_until_keypress)
     if vim.fn.has("clipboard") == 1 then
       vim.cmd("let @+=@" .. register)
     else
-      vim.api.nvim_err_writeln("No clipboard available")
+      log:error("no clipboard available")
+      vim.notify("registers.nvim: no clipboard available", vim.log.levels.ERROR)
     end
   end
 end
@@ -337,7 +350,7 @@ local apply_register = function(options)
   return _handle_callback_options(options --[[@as callback_options]], function(register, mode)
     -- When the current line needs to be selected a window also needs to be open
     if register == nil and state._window == nil then
-      vim.api.nvim_err_writeln("registers window isn't open, can't apply register")
+      log:error("apply_register called with no register and window is closed")
       return
     end
 

@@ -4,31 +4,20 @@ local actions_layout = require("telescope.actions.layout")
 local c_actions = require("configs.telescope.actions")
 
 local send_to_qflist = function(prompt_bufnr)
-  -- actions.send_to_qflist(prompt_bufnr)
-  -- actions.open_qflist(prompt_bufnr)
-  -- actions.center(prompt_bufnr)
-  actions.smart_send_to_qflist(prompt_bufnr) -- sends selected, or if none selected, sends all
+  actions.smart_send_to_qflist(prompt_bufnr)
   vim.cmd.cfirst()
 end
 
-local select_default = function(prompt_bufnr)
-  actions.select_default(prompt_bufnr)
-  actions.center(prompt_bufnr)
-end
-
-local logger = require("logger").init("telescope")
 local ignore_keys = function(keys)
   local ignore_map = {}
   for _, key in ipairs(keys) do
-    -- ignore_map[key] = function(prompt_bufnr)
-    --   logger:trace('ignoring ' .. key .. ' for ' .. prompt_bufnr)
-    --   return false
-    -- end
     ignore_map[key] = "nop"
   end
   return ignore_map
 end
 
+--   - actions.preview_smoothscrolling_up_line / _down_line — ±1 line
+--   - actions.preview_smoothscrolling_page_up / _page_down — ±1 preview-window page
 local main_maps = {
   -- stylua: ignore
   -- NOTE: have to assign all possible custom keys here and filter later from lazy loading
@@ -47,19 +36,13 @@ local main_maps = {
     ["<Down>"]      = actions.cycle_history_next,
     ["<C-S-Up>"]    = c_actions.preview_scroll_up,
     ["<C-S-Down>"]  = c_actions.preview_scroll_down,
-    ["<M-b>"]       = c_actions.preview_page_up,
-    ["<M-f>"]       = c_actions.preview_page_down,
+    ["<M-b>"]       = actions.preview_scrolling_page_up,
+    ["<M-f>"]       = actions.preview_scrolling_page_down,
     ["<M-w>"]       = c_actions.preview_toggle_wrap,
 
     ["<M-/>"]       = actions_layout.toggle_preview,
     ["<M-?>"]       = c_actions.toggle_whichkey,
     ["<M-_>"]       = actions.cycle_previewers_next,
-    -- ["<M-(>"]       = actions.cycle_previewers_prev, -- Ctrl-Shift-(
-    -- ["<M-)>"]       = actions.cycle_previewers_next, -- Ctrl-Shift-)
-    -- ["<M-(>"]       = actions.cycle_previewers_prev, -- Ctrl-Shift-(
-    -- ["<M-)>"]       = actions.cycle_previewers_next, -- Ctrl-Shift-)
-    -- ["<C-B>"]    = c_actions.results_page_up,
-    -- ["<C-F>"]    = c_actions.results_page_down,
     ["<C-B>"]       = actions.results_scrolling_up,
     ["<C-F>"]       = actions.results_scrolling_down,
     ["<M-P>"]       = c_actions.results_toggle_up,
@@ -69,7 +52,6 @@ local main_maps = {
     ["<C-c>"]       = actions.drop_all,
     ["<C-Y>"]       = c_actions.yank_selection,
     ["<M-y>"]       = c_actions.yank_selection_to_buffer,
-    -- ["<M-g>"]       = c_actions.launch_projects,
     ["<C-e>"]       = c_actions.launch_buffers,
     ["<M-e>"]       = c_actions.launch_live_grep,
     ["<M-u>"]       = c_actions.launch_find_files,
@@ -86,7 +68,6 @@ local main_maps = {
     ["<Esc>"]       = c_actions.close,
     ["<M-c>"]       = actions.close,
     ["<C-X>"]       = c_actions.close,
-    -- ["<M-d>"]    = actions.close,
   }, ignore_keys({
       '<C-Space>',
       "<M-d>",
@@ -107,8 +88,6 @@ local main_maps = {
     ["q"] = actions.close,
     ["s"] = c_actions.flash,
   },
-  -- [F1-9] = set primary sort if # not set, toggle primary/secondary if set [S-F1-9] = add/remove secondary sort #
-  -- [??] = clear sort
 }
 local fzf_maps = {
   n = {
@@ -132,7 +111,6 @@ local grep_maps = {
     ["<M-lt>"] = c_actions.directory_up,
     ["<M->>"] = c_actions.directory_picker,
     ["<CR>"] = c_actions.multi_open,
-    -- ['<C-Q>'] = c_actions.multi_to_qflist,
     ["<C-Q>"] = send_to_qflist,
   },
 }
@@ -144,7 +122,6 @@ local file_maps = {
     ["<M-lt>"] = c_actions.directory_up,
     ["<M->>"] = c_actions.directory_picker,
     ["<CR>"] = c_actions.multi_open,
-    -- ['<C-Q>'] = c_actions.multi_to_qflist,
     ["<C-Q>"] = send_to_qflist,
   },
 }
@@ -153,8 +130,6 @@ local buffer_maps = {
   i = {
     ["<C-Del>"] = c_actions.delete_buffer,
     ["<M-d>"] = c_actions.delete_buffer,
-    -- ['<C-Del>'] = 'delete_buffer',
-    -- ['<M-d>'] = 'delete_buffer',
   },
 }
 

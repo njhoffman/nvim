@@ -1,0 +1,32 @@
+local ignore = require("glyph-guard.ignore")
+
+describe("glyph_guard.ignore", function()
+  it("returns false matcher for empty list", function()
+    local m = ignore.matcher({})
+    assert.is_false(m("anything/here"))
+  end)
+
+  it("matches path segments by plain name", function()
+    local m = ignore.matcher({ ".git", "node_modules" })
+    assert.is_true(m("/repo/.git/HEAD"))
+    assert.is_true(m("/repo/node_modules/foo/bar.js"))
+    assert.is_false(m("/repo/src/main.lua"))
+  end)
+
+  it("does not match partial segments", function()
+    local m = ignore.matcher({ "git" })
+    assert.is_false(m("/repo/.git/HEAD"))
+  end)
+
+  it("matches ** glob across path separators", function()
+    local m = ignore.matcher({ "**/dist/**" })
+    assert.is_true(m("/a/b/dist/x/y.js"))
+    assert.is_false(m("/a/b/src/x.js"))
+  end)
+
+  it("matches single * within a segment", function()
+    local m = ignore.matcher({ "*.min.js" })
+    assert.is_true(m("app.min.js"))
+    assert.is_false(m("lib/app.min.js"))
+  end)
+end)

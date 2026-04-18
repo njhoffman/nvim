@@ -36,9 +36,14 @@ end
 ---Scroll to diagnostic with optional severity filter
 ---@param direction "next"|"prev"
 ---@param severity? string Severity name (e.g., "ERROR", "WARN")
-function M.diag_scroll(direction, severity)
+---@param count? integer Number of items to advance (default 1)
+function M.diag_scroll(direction, severity, count)
+  count = count or 1
   severity = severity and vim.diagnostic.severity[severity] or nil
-  vim.diagnostic.jump({ count = (direction == "prev" and -1 or 1), severity = severity })
+  vim.diagnostic.jump({
+    count = (direction == "prev" and -count or count),
+    severity = severity,
+  })
   after_scroll(function()
     vim.defer_fn(vim.diagnostic.open_float, 100)
   end)
@@ -57,13 +62,11 @@ end
 
 ---Scroll to search match
 ---@param direction "next"|"prev"
-function M.search_scroll(direction)
+---@param count? integer Number of matches to advance (default 1)
+function M.search_scroll(direction, count)
+  count = count or 1
   local ok, err = pcall(function()
-    if direction == "prev" then
-      vim.cmd("normal! N")
-    else
-      vim.cmd("normal! n")
-    end
+    vim.cmd("normal! " .. count .. (direction == "prev" and "N" or "n"))
   end)
 
   if not ok then
@@ -85,12 +88,14 @@ end
 
 ---Scroll through jumplist
 ---@param direction "next"|"prev"
-function M.jump_scroll(direction)
+---@param count? integer Number of jumps to advance (default 1)
+function M.jump_scroll(direction, count)
+  count = count or 1
   local ok, err = pcall(function()
     if direction == "prev" then
-      vim.cmd("normal! 1\x0f") -- <C-o>
+      vim.cmd("normal! " .. count .. "\x0f") -- <C-o>
     else
-      vim.cmd("normal! 1\x09") -- <C-i>
+      vim.cmd("normal! " .. count .. "\x09") -- <C-i>
     end
   end)
 
@@ -101,13 +106,11 @@ end
 
 ---Scroll through changelist
 ---@param direction "next"|"prev"
-function M.changes_scroll(direction)
+---@param count? integer Number of changes to advance (default 1)
+function M.changes_scroll(direction, count)
+  count = count or 1
   local ok, err = pcall(function()
-    if direction == "prev" then
-      vim.cmd("normal! g;")
-    else
-      vim.cmd("normal! g,")
-    end
+    vim.cmd("normal! " .. count .. (direction == "prev" and "g;" or "g,"))
   end)
 
   if not ok then
@@ -117,13 +120,11 @@ end
 
 ---Scroll to next/prev tag
 ---@param direction "next"|"prev"
-function M.tag_scroll(direction)
+---@param count? integer Number of tags to advance (default 1)
+function M.tag_scroll(direction, count)
+  count = count or 1
   local ok, err = pcall(function()
-    if direction == "prev" then
-      vim.cmd("tprev")
-    else
-      vim.cmd("tnext")
-    end
+    vim.cmd(count .. (direction == "prev" and "tprev" or "tnext"))
   end)
 
   if not ok then
@@ -249,21 +250,24 @@ vim.api.nvim_create_user_command("ScrollNext", function(opts)
     return
   end
 
+  local count = opts.count > 0 and opts.count or 1
+
   if scroll_type == "diag" then
-    M.diag_scroll("next", opts.fargs[2])
+    M.diag_scroll("next", opts.fargs[2], count)
   elseif scroll_type == "jump" then
-    M.jump_scroll("next")
+    M.jump_scroll("next", count)
   elseif scroll_type == "change" then
-    M.changes_scroll("next")
+    M.changes_scroll("next", count)
   elseif scroll_type == "tag" then
-    M.tag_scroll("next")
+    M.tag_scroll("next", count)
   elseif scroll_type == "search" then
-    M.search_scroll("next")
+    M.search_scroll("next", count)
   else
     vim.notify("Unknown scroll type: " .. scroll_type, vim.log.levels.ERROR)
   end
 end, {
   nargs = "+",
+  count = 0,
   complete = function(arg_lead, cmd_line, cursor_pos)
     local args = vim.split(cmd_line, "%s+")
     if #args == 2 then
@@ -291,21 +295,24 @@ vim.api.nvim_create_user_command("ScrollPrev", function(opts)
     return
   end
 
+  local count = opts.count > 0 and opts.count or 1
+
   if scroll_type == "diag" then
-    M.diag_scroll("prev", opts.fargs[2])
+    M.diag_scroll("prev", opts.fargs[2], count)
   elseif scroll_type == "jump" then
-    M.jump_scroll("prev")
+    M.jump_scroll("prev", count)
   elseif scroll_type == "change" then
-    M.changes_scroll("prev")
+    M.changes_scroll("prev", count)
   elseif scroll_type == "tag" then
-    M.tag_scroll("prev")
+    M.tag_scroll("prev", count)
   elseif scroll_type == "search" then
-    M.search_scroll("prev")
+    M.search_scroll("prev", count)
   else
     vim.notify("Unknown scroll type: " .. scroll_type, vim.log.levels.ERROR)
   end
 end, {
   nargs = "+",
+  count = 0,
   complete = function(arg_lead, cmd_line, cursor_pos)
     local args = vim.split(cmd_line, "%s+")
     if #args == 2 then
@@ -354,16 +361,28 @@ end, {
 local map = require("mapper").map
 
 -- Changelist: g, (next) and g; (prev)
-map("n", "g,", "<Cmd>ScrollNext change<CR>", { desc = "Next change" })
-map("n", "g;", "<Cmd>ScrollPrev change<CR>", { desc = "Prev change" })
+map("n", "g,", function()
+  M.changes_scroll("next", vim.v.count1)
+end, { desc = "Next change" })
+map("n", "g;", function()
+  M.changes_scroll("prev", vim.v.count1)
+end, { desc = "Prev change" })
 
 -- Jumplist: <C-i> (next) and <C-o> (prev)
 map("n", "<c-i>", "<c-i>", { desc = "Next jump" })
-map("n", "<C-i>", "<Cmd>ScrollNext jump<CR>", { desc = "Next jump" })
-map("n", "<C-o>", "<Cmd>ScrollPrev jump<CR>", { desc = "Prev jump" })
+map("n", "<C-i>", function()
+  M.jump_scroll("next", vim.v.count1)
+end, { desc = "Next jump" })
+map("n", "<C-o>", function()
+  M.jump_scroll("prev", vim.v.count1)
+end, { desc = "Prev jump" })
 
 -- Search: n (next) and N (prev)
-map("n", "n", "<Cmd>ScrollNext search<CR>", { desc = "Next search match" })
-map("n", "N", "<Cmd>ScrollPrev search<CR>", { desc = "Prev search match" })
+map("n", "n", function()
+  M.search_scroll("next", vim.v.count1)
+end, { desc = "Next search match" })
+map("n", "N", function()
+  M.search_scroll("prev", vim.v.count1)
+end, { desc = "Prev search match" })
 
 return M

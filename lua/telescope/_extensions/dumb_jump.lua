@@ -77,8 +77,6 @@ local dumb_jump = function(opts)
     var = word
   end
 
-  lprint(var)
-
   local search = var
   local word_match = opts.word_match
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)

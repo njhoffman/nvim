@@ -793,11 +793,6 @@ map('n', '<M-!>', '<cmd>RestartTarget<cr>', {
   desc = 'ﲵ restart target of remote neovim instannce',
 })
 
-vmap('n', 'gx', {
-  category = 'Execute',
-  label = 'ﲵ xdg-open file',
-  desc = 'ﲵ open file with xdg-open under cursor',
-})
 --------------------------------------------------------------------------------------------------
 -- SEARCH ----------------------------------------------------------------------------------------
 
@@ -841,8 +836,8 @@ map('n', 'g.', [[/\V\C<C-r>"<CR>cgn<C-a><Esc>]], {
 })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
-map({"n", "x", "o"}, "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-map({"n", "x", "o"}, "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
+-- map({"n", "x", "o"}, "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+-- map({"n", "x", "o"}, "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
 
 -- nmap [[ ?^.section <CR>
 -- nmap ]] /?section /<CR>
@@ -1190,7 +1185,7 @@ map(
   { category = 'UI', desc = 'remove hls, close popups and refresh' }
 )
 
-map('n', '<F1>', "<cmd>lua require('telescope.run')('builtin', 'help_tags')<cr>", {
+map('n', '<F1>', "<cmd>lua require('configs.telescope.launcher')('builtin', 'help_tags')<cr>", {
   plugin = 'telescope.nvim',
   category = 'UI',
   desc = '  toggle help',
@@ -1320,7 +1315,7 @@ map('n', '<F40>', '<cmd>lua require("oil").open_float<cr>', {
   desc = '  toggle oil file manager',
 })
 
--- map('n', '<F5>', "<cmd>lua require('telescope.run')('undo', 'undo')<cr>", {
+-- map('n', '<F5>', "<cmd>lua require('configs.telescope.launcher')('undo', 'undo')<cr>", {
 --   plugin = 'telescope.nvim',
 --   category = 'UI',
 --   desc = '  toggle telescope undo',
@@ -1748,14 +1743,14 @@ map('n', '<C-y>', '<cmd>CodeCompanionChat Toggle<cr>', {
 --   desc = 'toggle the side panel of neo ai',
 -- })
 
-map('n', '<C-p>', "<cmd>lua require('telescope.run')('builtin', 'find_files')<cr>", {
+map('n', '<C-p>', "<cmd>lua require('configs.telescope.launcher')('builtin', 'find_files')<cr>", {
   category = 'Other UI',
   plugin = 'telescope.nvim',
   label = 'files project',
   desc = 'find files in project telescope',
 })
 
-map('n', '<C-\\>', "<cmd>lua require('telescope.run')('fd_cwd')<cr>", {
+map('n', '<C-\\>', "<cmd>lua require('configs.telescope.launcher')('fd_cwd')<cr>", {
   category = 'Other UI',
   plugin = 'telescope.nvim',
   label = 'files curr dir',
@@ -1783,21 +1778,21 @@ map('n', '<M-Bslash>', '<cmd>MiniFiles<cr>', {
 -- })
 -- vim.keymap.set('n', '-', require('oil').open_float, { desc = 'Open parent directory' })
 
-map('n', '<C-g>', "<cmd>lua require('telescope.run')('leaderf', { theme = 'dropdown' })<cr>", {
+map('n', '<C-g>', "<cmd>lua require('configs.telescope.launcher')('leaderf', { theme = 'dropdown' })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'buffers',
   desc = 'buffers in telescope',
 })
 
-map('n', '<C-t>', "<cmd>lua require('telescope.run')('builtin','diagnostics')<cr>", {
+map('n', '<C-t>', "<cmd>lua require('configs.telescope.launcher')('builtin','diagnostics')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'frecency files',
   desc = 'frecency files in telescope',
 })
 
-map('n', '<C-u>', "<cmd>lua require('telescope.run')('frecency','frecency')<cr>", {
+map('n', '<C-u>', "<cmd>lua require('configs.telescope.launcher')('frecency','frecency')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'frecency files',
@@ -1811,7 +1806,7 @@ map('n', '<M-C-Space>', '<cmd>Navbuddy<cr>', {
   desc = 'explore symbols with navbuddy',
 })
 
-map('n', '<C-e>', "<cmd>lua require('telescope.run')('egrepify','egrepify', { grep_open_files = true })<cr>", {
+map('n', '<C-e>', "<cmd>lua require('configs.telescope.launcher')('egrepify','egrepify', { grep_open_files = true })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'grep buffers',
@@ -1819,14 +1814,14 @@ map('n', '<C-e>', "<cmd>lua require('telescope.run')('egrepify','egrepify', { gr
 })
 
 
-map('n', '<M-e>', "<cmd>lua require('telescope.run')('egrepify','egrepify')<cr>", {
+map('n', '<M-e>', "<cmd>lua require('configs.telescope.launcher')('egrepify','egrepify')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'grep project',
   desc = 'live grep project in telescope',
 })
 
-map('n', '<M-u>', "<cmd>lua require('telescope.run')('oldfiles', 'oldfiles')<cr>", {
+map('n', '<M-u>', "<cmd>lua require('configs.telescope.launcher')('oldfiles', 'oldfiles')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'mru files',
@@ -1836,42 +1831,42 @@ map('n', '<M-u>', "<cmd>lua require('telescope.run')('oldfiles', 'oldfiles')<cr>
 -- ^[[105;5u
  -- :map <YourKeyCombination> <C-v>uXXXX
 
-map('n', '<M-i>', "<cmd>lua require('telescope.run')('messages', 'messages')<cr>", {
+map('n', '<M-i>', "<cmd>lua require('configs.telescope.launcher')('messages', 'messages')<cr>", {
   category = 'Pickers',
   plugin = 'notify.nvim',
   label = 'notifications',
   desc = 'notifications in telescope',
 })
 
--- map('n', '<M-space>', "<cmd>lua require('telescope.run')('builtin','grep_string', { theme = 'ivy' })<cr>", {
+-- map('n', '<M-space>', "<cmd>lua require('configs.telescope.launcher')('builtin','grep_string', { theme = 'ivy' })<cr>", {
 --   category = 'Pickers',
 --   plugin = 'telescope.nvim',
 --   label = 'grep cursor',
 --   desc = 'grep string under cursor in telescope',
 -- })
 
-map('n', '<M-/>', "<cmd>lua require('telescope.run')('builtin','help_tags', { theme = 'ivy', preview = true })<cr>", {
+map('n', '<M-/>', "<cmd>lua require('configs.telescope.launcher')('builtin','help_tags', { theme = 'ivy', preview = true })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'helptags',
   desc = 'helptags in telescope',
 })
 
-map('n', '<M-?>', "<cmd>lua require('telescope.run')('builtin','help_tags', { theme = 'ivy', preview = true })<cr>", {
+map('n', '<M-?>', "<cmd>lua require('configs.telescope.launcher')('builtin','help_tags', { theme = 'ivy', preview = true })<cr>", {
     category = 'Pickers',
     plugin = 'telescope.nvim',
     label = 'helptags',
     desc = 'helptags in telescope',
   })
 
-map('n', '<M-g>', "<cmd>lua require('telescope.run')('projects','projects')<cr>", {
+map('n', '<M-g>', "<cmd>lua require('configs.telescope.launcher')('projects','projects')<cr>", {
   category = 'Pickers',
   plugin = 'projects_nvim',
   label = 'find projects',
   desc = 'find projects telescope',
 })
 
-map({ 'n' }, '<C-Space>', "<cmd>lua require('telescope.run')('find_pickers','find_pickers')<cr>", {
+map({ 'n' }, '<C-Space>', "<cmd>lua require('configs.telescope.launcher')('find_pickers','find_pickers')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'find pickers',
@@ -1888,7 +1883,7 @@ map({ 'n' }, '<leader><space>', "<cmd>lua Snacks.picker.pickers()<cr>", {
 })
 
 -- map({ 'n' }, '<M-,>', "<cmd>lua require('configs.telescope.actions.picker-history').prev_picker()<cr>", {
-map({ 'n' }, '<M-,>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = prev })<cr>", {
+map({ 'n' }, '<M-,>', "<cmd>lua require('configs.telescope.launcher')('builtin','resume', { cache_direction = prev })<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
   label = 'find pickers',
@@ -1896,7 +1891,7 @@ map({ 'n' }, '<M-,>', "<cmd>lua require('telescope.run')('builtin','resume', { c
 })
 
 
-map({ 'n' }, '<M-.>', "<cmd>lua require('telescope.run')('builtin','resume', { cache_direction = next })<cr>", {
+map({ 'n' }, '<M-.>', "<cmd>lua require('configs.telescope.launcher')('builtin','resume', { cache_direction = next })<cr>", {
     category = 'Pickers',
     plugin = 'telescope.nvim',
     label = 'find pickers',
@@ -1908,35 +1903,35 @@ map({ 'n' }, '<M-.>', "<cmd>lua require('telescope.run')('builtin','resume', { c
 -- GIT -------------------------------------------------------------------------------------------
 -- TODO: add precheck function to ensure in git dir
 
-map('n', '<leader>gf', "<cmd>require('telescope.run')('builtin', 'git_files')<cr>", {
+map('n', '<leader>gf', "<cmd>require('configs.telescope.launcher')('builtin', 'git_files')<cr>", {
   category = 'Git',
   plugin = 'telescope.nvim',
   label = '󰊢 git files',
   desc = '󰊢 show git files in telescope',
 })
 
-map('n', '<leader>gb', "<cmd>require('telescope.run')('builtin', 'git_files')<cr>", {
+map('n', '<leader>gb', "<cmd>require('configs.telescope.launcher')('builtin', 'git_files')<cr>", {
   category = 'Git',
   plugin = 'telescope.nvim',
   label = '󰊢 git branches',
   desc = '󰊢 show git branches in telescope',
 })
 
-map('n', '<leader>gs', "<cmd>require('telescope.run')('builtin', 'git_files')<cr>", {
+map('n', '<leader>gs', "<cmd>require('configs.telescope.launcher')('builtin', 'git_files')<cr>", {
   category = 'Git',
   plugin = 'telescope.nvim',
   label = '󰊢 git status',
   desc = '󰊢 show git status in telescope',
 })
 
-map('n', '<leader>gc', "<cmd>require('telescope.run')('builtin', 'git_commits')<cr>", {
+map('n', '<leader>gc', "<cmd>require('configs.telescope.launcher')('builtin', 'git_commits')<cr>", {
   category = 'Git',
   plugin = 'telescope.nvim',
   label = '󰊢 git commits',
   desc = '󰊢 show git commits in telescope',
 })
 
-map('n', '<leader>gC', "<cmd>require('telescope.run')('builtin', 'git_bcommits')<cr>", {
+map('n', '<leader>gC', "<cmd>require('configs.telescope.launcher')('builtin', 'git_bcommits')<cr>", {
   category = 'Git',
   plugin = 'telescope.nvim',
   label = '󰊢 git bcommits',
@@ -2020,38 +2015,18 @@ map('x', '>', '>gv', {
   desc = '󰉶 indent repeatedly',
 })
 
-
--- map('n', '<', '<<', {
---   category = 'Format',
---   label = '󰉶 unindent',
---   desc = '󰉶 unindent repeatedly',
--- })
-
--- map('n', '>', '>>', {
---   category = 'Format',
---   label = '󰉶 indent',
---   desc = '󰉶 indent repeatedly',
--- })
-
--- map({ 'n' }, '<M-;>', '<cmd>ISwapNodeWith<cr>', {
---   category = 'Format',
---   label = '易swap node with',
---   desc = '易swap/exchange node objects with',
---   plugin = 'iswap.nvim',
--- })
-
---------------------------------------------------------------------------------------------------
--- PAIRS -----------------------------------------------------------------------------------------
-
-map('n', ']a', '<cmd>execute ":" . v:count . "next"<CR>', {
-  category = 'Pairs',
-  desc = 'execute next argument ',
+map('n', '<', '<<', {
+  category = 'Format',
+  label = '󰉶 unindent',
+  desc = '󰉶 unindent repeatedly',
 })
 
-map('n', '[a', '<cmd>execute ":" . v:count . "previous"<CR>', {
-  category = 'Pairs',
-  desc = 'execute prev argument ',
+map('n', '>', '>>', {
+  category = 'Format',
+  label = '󰉶 indent',
+  desc = '󰉶 indent repeatedly',
 })
+
 
 --------------------------------------------------------------------------------------------------
 -- TERMINAL --------------------------------------------------------------------------------------
@@ -2175,7 +2150,7 @@ map('n', '<leader>ip', '<cmd>Lazy profile<cr>', {
   desc = '  show lazy.nvim plugins profile',
 })
 
-map('n', '<leader>it', "<cmd>lua require('telescope.run')('lazy', 'lazy')<cr>", {
+map('n', '<leader>it', "<cmd>lua require('configs.telescope.launcher')('lazy', 'lazy')<cr>", {
   category = 'System',
   plugin = 'lazy.nvim',
   label = '  lazy.nvim telescope',

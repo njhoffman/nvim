@@ -236,9 +236,3 @@ return require('telescope').register_extension({
   },
   setup = setup,
 })
-
--- oldfiles({
---   include_current_session = true,
---   show_time = true,
---   show_size = false,
--- })

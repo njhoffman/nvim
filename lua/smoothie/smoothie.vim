@@ -189,7 +189,7 @@ function s:step_down()
       call cursor(foldclosedend('.'), col('.'))
     endif
     call s:execute_preserving_scroll("normal! 1\<C-D>")
-    if s:ctrl_f_invoked && winline() > l:initial_winline
+    if s:ctrl_f_invoked && winline() > l:initial_winline && line('w$') < line('$')
       " ^F is pressed, and the last motion caused cursor postion to change scroll window to keep cursor position fixed
       call s:execute_preserving_scroll("normal! \<C-E>")
     endif

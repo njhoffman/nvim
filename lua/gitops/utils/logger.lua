@@ -14,27 +14,11 @@ local timing = function(opts, timing, num)
   end
 end
 
-local get_logger = function(level)
-  return function(msg, meta)
-    if level == 'trace' then
-      logger:trace(msg, meta)
-    elseif level == 'debug' then
-      logger:debug(msg, meta)
-    elseif level == 'info' then
-      logger:info(msg, meta)
-    elseif level == 'warn' then
-      logger:warn(msg, meta)
-    elseif level == 'error' then
-      logger:error(msg, meta)
-    end
-  end
-end
-
 return {
   timing = timing,
-  trace = get_logger('trace'),
-  debug = get_logger('debug'),
-  info = get_logger('info'),
-  warn = get_logger('warn'),
-  error = get_logger('error'),
+  trace = logger.trace,
+  debug = logger.debug,
+  info = logger.info,
+  warn = logger.warn,
+  error = logger.error,
 }

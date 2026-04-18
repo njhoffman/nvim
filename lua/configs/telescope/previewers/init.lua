@@ -8,7 +8,6 @@ local pfiletype = require("plenary.filetype")
 
 local M = {}
 
--- NOTE: go check if file is in specific git repo: dotbare ls-files --error-unmatch ~/.zlua
 M.keymaps = keymaps_previewer
 
 M.git_status = function(opts)
@@ -31,7 +30,6 @@ M.git_status = function(opts)
     end,
   })
 
-  -- Use icons that resemble the `git status` command line.
   opts.git_icons = {
     added = "A",
     changed = "M",
@@ -51,8 +49,6 @@ M.git_bcommits = previewers.new_termopen_previewer({
       "git",
       "-c",
       "core.pager=delta",
-      -- "-c",
-      -- "delta.pager=less -R",
       "show",
       entry.value,
     }
@@ -70,15 +66,6 @@ M.delta = previewers.new_termopen_previewer({
 
 local new_maker = function(filepath, bufnr, opts)
   opts = opts or {}
-  -- if ft == "markdown" then
-  --   -- opts.use_ft_detect = false
-  --   -- putils.regex_highlighter(bufnr, 'pandoc')
-  --   putils.ts_highlighter(bufnr, "markdown")
-  --   -- vim.schedule(function()
-  --   --   vim.api.nvim_set_option_value("syntax", "pandoc", { buf = bufnr })
-  --   --   previewers.buffer_previewer_maker(filepath, bufnr, opts)
-  --   -- end)
-  -- end
   vim.schedule(function()
     opts.ft = pfiletype.detect(filepath)
     previewers.buffer_previewer_maker(filepath, bufnr, opts)
@@ -97,7 +84,6 @@ M.buffer_cat = function(opts)
         else
           local bytes_to_megabytes = math.pow(1024, 2)
           local mb_filesize = stat.size / bytes_to_megabytes
-          -- print(mb_filesize * 1000)
         end
       end)
       return Path:new(from_entry.path(entry, false, false)):normalize(cwd)
@@ -109,62 +95,7 @@ M.buffer_cat = function(opts)
 
     define_preview = function(self, entry, status)
       opts.ft = pfiletype.detect(from_entry.path(entry, false))
-      -- local markdown_cb = function(bufnr)
-      --   vim.schedule(function()
-      --     -- vim.treesitter.language.register('markdown', 'pandoc')
-      --     vim.api.nvim_set_option_value("syntax", "pandoc", { buf = self.state.bufnr })
-      --     self:scroll_fn(1)
-      --   end)
-      -- end
-      -- local ft =
-      --   vim.filetype.match({ filename = from_entry.path(entry, false), buf = self.state.bufnr })
-
-      -- local selected_row = 0
-      --   -- only set up autocommand after showing preview completed
-      --   vim.schedule(function()
-      --     vim.api.nvim_create_autocmd(close_event, {
-      --       pattern = close_pattern,
-      --       buffer = close_buffer,
-      --       once = true,
-      --       callback = function()
-      --         vim.schedule(function()
-      --           pcall(vim.api.nvim_win_close, km_win_id, true)
-      --           pcall(vim.api.nvim_win_close, km_opts.border.win_id, true)
-      --           utils.buf_delete(km_buf)
-      --         end)
-      --       end,
-      --     })
-      --   end)
-      -- end
-
-      -- local utils = require("telescope.utils")
-      -- local preview_winid = status.layout.preview and status.layout.preview.winid
-      -- local other_cb = function()
-      -- local total_lines = vim.api.nvim_buf_line_count(0)
-      -- vim.api.nvim_buf_call(self.state.bufnr, function()
-      --   vim.cmd('norm! zz')
-      -- end)
-
-      -- require('scrollbar.handlers').register('my_marks', function(bufnr)
-      --   return {
-      --     { line = 0 },
-      --     { line = 1, text = 'x', type = 'Warn' },
-      --     { line = 2, type = 'Error' },
-      --   }
-      -- end)
-      -- vim.api.nvim_win_call(self.state.winid, function()
-      --   vim.cmd([[normal! 10 j ]])
-      -- end)
-      -- utils.win_set_buf_noautocmd(preview_winid, self.state.bufnr)
-      -- pcall(vim.api.nvim_win_set_cursor, preview_winid, { 0, 0 })
-
-      -- putils.highlighter(bufnr, opts.ft, opts)
       require("telescope.previewers.utils").highlighter(self.state.bufnr, opts.ft)
-      -- require('telescope.previewers.utils').regex_highlighter(bufnr, ft)
-      -- require("telescope.previewers.utils").ts_highlighter(self.state.bufnr, ft)
-      -- vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-      -- self:scroll_fn(-1)
-      -- end
 
       local p = from_entry.path(entry, true)
       if p == nil or p == "" then
@@ -180,20 +111,6 @@ M.buffer_cat = function(opts)
         cwd = opts.cwd,
       }
 
-      -- vim.api.nvim_set_option_value('scrolloff', 0, { win = self.state.winid })
-      -- self.window:option('conceallevel', 2)
-      -- self.window:option('concealcursor', 'n')
-      -- self.window:option('foldenable', false)
-      -- self.window:option('linebreak', true)
-      -- self.window:option('scrolloff', 0)
-      -- self.window:option('showbreak', 'NONE')
-      -- self.window:option('wrap', true)
-      -- local extension = vim.fn.fnamemodify(p, ":e")
-      -- if extension == "md" then
-      --   preview_opts.callback = markdown_cb
-      -- else
-      --   preview_opts.callback = other_cb
-      -- end
       conf.buffer_previewer_maker(p, self.state.bufnr, preview_opts)
     end,
   })

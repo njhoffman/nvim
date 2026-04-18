@@ -54,7 +54,7 @@ local function make_display(entry)
   return displayer({
     {
       -- strings.align_str(entry.hash, widths.name, true),
-      entry.value.hash,
+      entry.value.sha,
       'TelescopeResultsClass',
     },
     {
@@ -85,7 +85,7 @@ M.git_log_entry_maker = function(entry)
   local author = split[4]
   return {
     value = {
-      hash = hash,
+      sha = hash,
       date = date,
       message = message,
       author = author,

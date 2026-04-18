@@ -1,5 +1,3 @@
-local linterConfig = vim.fn.stdpath("config") .. "/.linter_configs"
-
 -- function config.get_lsp_fallback(bufnr)
 --   local formatters = require("conform").list_formatters(bufnr)
 --   if #formatters > 0 and formatters[1].name == "trim_whitespace" then
@@ -12,9 +10,6 @@ local linterConfig = vim.fn.stdpath("config") .. "/.linter_configs"
 
 -- code_action = { "eslint_d", "gitrebase", "refactoring" },
 
-local eslint = "eslint_d" -- "eslint"
-local prettier = "prettierd" -- prettier
-
 -- Use the "*" filetype to run formatters on all filetypes.
 -- Use the "_" filetype to run formatters on filetypes that don't
 -- ["*"]        = { "codespell" },
@@ -26,28 +21,26 @@ local formatters_by_ft = {
   bzl = { "buildifier" },
   c = { "uncrustify", "clang_format" },
   cpp = { "clang_format" },
-  css = { prettier },
+  css = { "prettierd" },
   cuda = { "clang_format" },
   fish = { "fish_indent" },
   go = { "goimports", "gofmt", "gofumpt" },
-  graphql = { prettier },
-  handlebars = { prettier },
-  html = { prettier, eslint },
-  htmlangular = { prettier },
-  javascript = { eslint },
-  javascriptreact = { eslint },
-  json = { "fixjson", "jq", prettier },
-  jsonc = { "fixjson", "jq", prettier },
-  json5 = { "fixjson", "jq", prettier },
+  graphql = { "prettierd" },
+  handlebars = { "prettierd" },
+  html = { "prettierd" },
+  htmlangular = { "prettierd" },
+  javascript = { "prettierd_js" },
+  javascriptreact = { "prettierd_js" },
+  json = { "fixjson", "jq", "prettierd" },
+  jsonc = { "fixjson", "jq", "prettierd" },
+  json5 = { "fixjson", "jq", "prettierd" },
   just = { "just" },
   lua = { "stylua" },
   markdown = { "cbfmt", "markdownlint", "injected" },
   less = { "prettierd" },
   sass = { "prettierd" },
-
   nasm = { "asmfmt" },
-  yaml = { "prettierd" },
-
+  yaml = { "prettierd" }, -- yamlfix
   nix = { "nixpkgs_fmt" },
   proto = { "buf", "protolint" },
   python = {
@@ -55,19 +48,16 @@ local formatters_by_ft = {
     "ruff_format",
     "ruff_organize_imports",
   },
-
   rust = { "rustfmt", lsp_format = "fallback" },
-
-  scss = { prettier },
+  scss = { "prettierd" },
   sh = { "shfmt" },
   -- sh              = { "shfmt", "shellharden" },
   sql = { "sql-formatter" },
-  toml = { "taplo", prettier },
-  tsx = { prettier },
-  typescript = { eslint, prettier },
-  typescriptreact = { eslint, prettier },
-
-  vue = { eslint },
+  toml = { "taplo", "prettierd_toml" },
+  tsx = { "prettierd_js" },
+  typescript = { "prettierd_js" },
+  typescriptreact = { "prettierd_js" },
+  vue = { "prettierd_vue" },
   ["_"] = { "trim_whitespace" },
 }
 
@@ -86,6 +76,31 @@ local formatters = {
   --   stdin = false,
   --   args = { "--fix", "--config", linterconfig .. "/markdownlint.yaml", "$filename" },
   -- },
+  prettierd = {
+    command = "prettierd",
+    stdin = false,
+    args = { "--print-width", "100" },
+  },
+  prettierd_toml = {
+    command = "prettierd",
+    stdin = false,
+    args = { "--print-width", "100", "--plugin", "prettier-plugin-toml" },
+  },
+  prettierd_js = {
+    command = "prettierd",
+    stdin = false,
+    args = { "--print-width", "100", "--plugin", "prettier-plugin-organize-imports" },
+  },
+  prettierd_vue = {
+    command = "prettierd",
+    stdin = false,
+    args = { "--print-width", "100", "--plugin", "prettier-plugin-organize-imports" },
+  },
+  prettierd_packagejson = {
+    command = "prettierd",
+    stdin = false,
+    args = { "--print-width", "100", "--plugin", "prettier-plugin-packagejson" },
+  },
   shellcheck = {
     command = "shellcheck",
     arg = "--shell=bash --format=diff '$filename' | git apply",
@@ -131,6 +146,14 @@ local formatters = {
       }
     end,
   },
+  yamlfix = {
+    -- Change where to find the command
+    command = "yamlfix",
+    -- Adds environment args to the yamlfix formatter
+    env = {
+      YAMLFIX_SEQUENCE_STYLE = "block_style",
+    },
+  },
 }
 
 local cfg = {
@@ -158,6 +181,7 @@ if vim.g.started_by_firenvim then
   cfg.format_on_save = false
   cfg.format_after_save = false
 end
+
 require("conform").setup(cfg)
 
 vim.api.nvim_create_user_command("FormatDisable", function(args)
@@ -195,6 +219,22 @@ vim.api.nvim_create_user_command("ConformLog", "e " .. vim.fn.stdpath("data") ..
   desc = "Open the conform log file",
 })
 
+-- run eslint on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
+  callback = function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local clients = vim.lsp.get_clients({ buf = bufnr })
+    for _, client in ipairs(clients) do
+      if client.name == "eslint" then
+        vim.b.autoformat = false
+        vim.cmd("silent! LspEslintFixAll")
+        return
+      end
+    end
+  end,
+})
+
 -- local event = 'BufWritePost'
 -- if format_options.sync then
 --   event = 'BufWritePre'
@@ -206,46 +246,3 @@ vim.api.nvim_create_user_command("ConformLog", "e " .. vim.fn.stdpath("data") ..
 --     require("conform").format({ bufnr = args.buf })
 --   end,
 -- })
--- null_ls.builtins.formatting.stylua.with({
---   _config_file = get_config_file(root_files.stylua),
---   filetypes = { 'lua' },
---   condition = function()
---     if vim.bo.filetype ~= 'lua' then
---       return false
---     end
---     local config_file = get_config_file(root_files.stylua)
---     return vim.fn.executable('stylua') > 0 and config_file
---   end,
---   -- -- cwd = h.cache.by_bufnr(function(params)
---   -- --   local util = require "lspconfig/util"
---   -- --   return stylua_found
---   -- -- end),
---   -- -- params.bufnr, client_id, command, content, cwd, lsp_method, method, options, root
---   extra_args = function(params)
---     local local_config = get_config_file(root_files.stylua)
---     local bufnr = params.bufnr or 0
---     local column_width = vim.api.nvim_buf_get_option(bufnr, 'textwidth')
---     column_width = column_width > 0 and column_width or 100
---     local args = {
---       '--call-parentheses',
---       'Always',
---       '--collapse-simple-statement',
---       'Never',
---       '--quote-style',
---       'AutoPreferSingle',
---       '--column-width',
---       column_width,
---       '--indent-width',
---       vim.api.nvim_buf_get_option(bufnr, 'shiftwidth'),
---     }
---     if local_config ~= nil then
---       table.insert(args, '--config-path')
---       table.insert(args, local_config)
---     end
---     return args
---     -- sources.root, sources.cwd
---     -- editorconfig generator.opts._last_args, _last_command, _last_cwd
---     -- local sources = require("null-ls.sources")
---     -- local lua_src = sources.get_available('lua')
---   end,
--- }),

@@ -9,7 +9,7 @@ local attach_mappings = function(prompt_bufnr)
   actions.select_default:replace(function()
     local selection = action_state.get_selected_entry()
     if selection == nil then
-      print "[telescope] Nothing currently selected"
+      vim.notify("[telescope] Nothing currently selected", vim.log.levels.WARN)
       return
     end
 

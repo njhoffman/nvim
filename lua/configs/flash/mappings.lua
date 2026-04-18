@@ -142,12 +142,7 @@ local setup_search_mappings = function()
     require("flash").treesitter()
   end, { desc = "⚡flash jump treesitter" })
 
-  map(
-    { "n", "x", "o" },
-    pfx .. "l",
-    actions.jump_line,
-    { desc = "⚡flash jump to line" }
-  )
+  map({ "n", "x", "o" }, pfx .. "l", actions.jump_line, { desc = "⚡flash jump to line" })
 
   map(
     { "n", "o", "x" },
@@ -156,29 +151,18 @@ local setup_search_mappings = function()
     { desc = "⚡flash jump start words" }
   )
 
-  map(
-    { "n", "o", "x" },
-    pfx .. "W",
-    actions.jump_words,
-    { desc = "⚡flash jump full words" }
-  )
+  map({ "n", "o", "x" }, pfx .. "W", actions.jump_words, { desc = "⚡flash jump full words" })
 
-  map({"x", "o"}, "v", function()
-    require("flash").treesitter({
-      actions = {
-        ["v"] = "next",
-        ["V"] = "prev"
-      }
-    })
-  end, { desc = "Treesitter incremental selection" })
+  -- map({"x", "o"}, "v", function()
+  --   require("flash").treesitter({
+  --     actions = {
+  --       ["v"] = "next",
+  --       ["V"] = "prev"
+  --     }
+  --   })
+  -- end, { desc = "Treesitter incremental selection" })
 
-
-  map(
-    { "n", "o", "x" },
-    pfx .. "e",
-    actions.jump_diag,
-    { desc = "⚡flash jump diagnostics" }
-  )
+  map({ "n", "o", "x" }, pfx .. "e", actions.jump_diag, { desc = "⚡flash jump diagnostics" })
 
   map({ "o", "x" }, pfx .. "v", function()
     require("flash").treesitter_search()

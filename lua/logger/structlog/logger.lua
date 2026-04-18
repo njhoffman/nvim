@@ -3,6 +3,7 @@
 --- The logger class.
 -- @type Logger
 local Logger = {}
+Logger.__index = Logger
 
 --- Create a new logger.
 -- @function Logger
@@ -17,18 +18,7 @@ setmetatable(Logger, {
 local Level = require("logger.structlog.level")
 local pattern_filter = require("logger.structlog.pattern")
 
-function Logger:new(name, sinks)
-  local logger = {}
-
-  logger.name = name
-  logger.sinks = sinks
-  logger.context = {}
-
-  Logger.__index = Logger
-  setmetatable(logger, Logger)
-
-  return logger
-end
+local levels = { "trace", "debug", "info", "warn", "error" }
 
 local function handle_sink(logger, kwargs, msg, level)
   kwargs.msg = msg
@@ -60,6 +50,27 @@ local function log(logger, level, msg, events)
   handle_sink(logger, kwargs, msg, level)
 end
 
+function Logger:new(name, sinks)
+  local logger = setmetatable({
+    name = name,
+    sinks = sinks,
+    context = {},
+  }, Logger)
+
+  for _, lvl in ipairs(levels) do
+    local level_const = Level[lvl:upper()]
+    logger[lvl] = function(first, msg, events)
+      if first == logger then
+        log(logger, level_const, msg, events)
+      else
+        log(logger, level_const, first, msg)
+      end
+    end
+  end
+
+  return logger
+end
+
 function Logger:clone()
   local logger = self:new(self.name, self.sinks)
   logger.context = vim.deepcopy(self.context)
@@ -69,26 +80,6 @@ end
 
 function Logger:log(level, msg, events)
   log(self, level, msg, events)
-end
-
-function Logger:trace(msg, events)
-  log(self, Level.TRACE, msg, events)
-end
-
-function Logger:debug(msg, events)
-  log(self, Level.DEBUG, msg, events)
-end
-
-function Logger:info(msg, events)
-  log(self, Level.INFO, msg, events)
-end
-
-function Logger:warn(msg, events)
-  log(self, Level.WARN, msg, events)
-end
-
-function Logger:error(msg, events)
-  log(self, Level.ERROR, msg, events)
 end
 
 return Logger

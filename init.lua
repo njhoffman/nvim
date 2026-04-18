@@ -12,7 +12,7 @@ require("components").init()
 require("utils.lazy").setup({ cache = true, reload = false, lazy = false })
 
 for _, mod_name in ipairs({
-  "project",
+  "configs.project",
   "keymaps",
   "commands",
   "abbreviations",
@@ -47,7 +47,12 @@ vim.defer_fn(function()
 
   vim.import("sidebar").setup()
   vim.import("format_cmdline").setup()
-  vim.import("configs.smoothie").setup()
+
+  vim.import("configs.smoothie").setup({
+    implementation = "viml",
+  })
+
+  vim.import("configs.glyph-guard")
 
   if vim.g.started_by_firenvim then
     vim.api.nvim_set_keymap("n", "<C-z>", "<Cmd>call firenvim#hide_frame()<CR>", {})
@@ -58,8 +63,16 @@ vim.defer_fn(function()
       command = "set filetype=markdown",
     })
   end
+  vim.keymap.set("x", "v", function()
+    require("vim.treesitter._select").select_parent(vim.v.count1)
+  end, { desc = "Expand treesitter selection" })
+  vim.keymap.set("x", "V", function()
+    require("vim.treesitter._select").select_child(vim.v.count1)
+  end, { desc = "Shrink treesitter selection" })
 
   require("components").setup()
 end, 100)
+
+-- http://www.google.com
 
 -- require("notifications.recipes.progress").config()
