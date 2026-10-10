@@ -582,7 +582,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
           "MunifTanjim/nui.nvim",
           --- The below dependencies are optional,
           "nvim-mini/mini.pick", -- for file_selector provider mini.pick
-          "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+          "njhoffman/nvim-cmp", -- autocompletion for avante commands and mentions
           "ibhagwan/fzf-lua", -- for file_selector provider fzf
           "stevearc/dressing.nvim", -- for input provider dressing
           "folke/snacks.nvim", -- for input provider snacks

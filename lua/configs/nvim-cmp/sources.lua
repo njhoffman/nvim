@@ -15,6 +15,8 @@ local sources = {
           return true
         end,
       },
+    },
+    {
       {
         name = "nvim_lsp",
         keyword_length = 0,
@@ -33,6 +35,31 @@ local sources = {
       {
         name = "copilot",
         max_item_count = 3,
+        trigger_characters = {
+          {
+            ".",
+            ":",
+            "(",
+            "'",
+            '"',
+            "[",
+            ",",
+            "#",
+            "*",
+            "@",
+            "|",
+            "=",
+            "-",
+            "{",
+            "/",
+            "\\",
+            "+",
+            "?",
+            " ",
+            -- "\t",
+            -- "\n",
+          },
+        },
       },
       { name = "nvim_lsp_document_symbol" },
       { name = "nvim_lsp_signature_help" },

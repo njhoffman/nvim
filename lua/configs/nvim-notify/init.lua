@@ -25,6 +25,7 @@ local cfg = {
     RUN = "",
     STATUS = "",
   },
+  compact = true,
   render = "auto",
   -- render = require("notify.render._entry"),
   on_open = events.on_open,

@@ -1,11 +1,20 @@
-local convey_logger = require("logger").init("convey")
-local convey_log = function(level)
+local logger = require("logger").init("convey")
+local c_log = function(level)
   return function(msg)
-    if convey_logger and convey_logger[level] ~= nil then
-      convey_logger[level](convey_logger, msg)
+    if logger and logger[level] ~= nil then
+      msg = msg or ""
+      if string.sub(msg, 1, 10) == "[convey] " then
+        msg = string.sub(msg, 11)
+      end
+      logger[level](logger, msg)
     end
   end
 end
+local c_logger = {}
+for _, level in ipairs({ "error", "warn", "info", "debug", "trace" }) do
+  c_logger[level] = c_log(level)
+end
+
 ---Check if MiniAnimate is available and enabled
 ---@return boolean
 local function has_mini_animate()
@@ -30,6 +39,7 @@ require("convey").setup({
       provider_cb()
     end)
   end,
+  logger = c_logger,
   providers = {
     changes = {
       cycle = true,
@@ -43,12 +53,5 @@ require("convey").setup({
         end
       end,
     },
-  },
-  logger = {
-    error = convey_log("error"),
-    warn = convey_log("warn"),
-    info = convey_log("info"),
-    debug = convey_log("debug"),
-    trace = convey_log("trace"),
   },
 })

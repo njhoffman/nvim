@@ -99,7 +99,7 @@ local cfg = {
     select = true,
   },
   mapping = cmp.mapping.preset.insert(mapping_main),
-  sources = cmp.config.sources(sources.main[1], sources.main[2], sources.filetypes),
+  sources = cmp.config.sources(sources.main[1], sources.main[2], sources.main[3], sources.filetypes),
   view = {
     entries = {
       name = 'custom',
@@ -117,6 +117,17 @@ cmp.setup(cfg)
 cmp.setup.cmdline(":", {
   mapping = mapping_cmdline,
   sources = cmp.config.sources(sources.cmdline[1], sources.cmdline[2]),
+  window = {
+    completion = cmp.config.window.bordered({
+      border = { "", "", "", "│", "╯", "─", "╰", "│" },
+      winhighlight = WIN_HIGHLIGHT,
+      scrollbar = true,
+      winblend = 10,
+      col_offset = -3,
+      side_padding = 0,
+      top_padding = 1,
+    }),
+  },
 })
 
 cmp.setup.cmdline({ "/", "?" }, {

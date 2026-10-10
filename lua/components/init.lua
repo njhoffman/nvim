@@ -6,6 +6,7 @@ return {
     require("components.lsp_hover").setup()
     require("components.diagnostics").setup()
     require("components.beacon").setup()
+    require("components.term_sync").init()
   end,
 
   -- loaded after plugin manager
