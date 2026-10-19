@@ -20,7 +20,7 @@ end
 
 local function oldfiles_list(opts)
   opts = apply_cwd_only_aliases(opts)
-  opts.include_current_session = vim.F.if_nil(opts.include_current_session, true)
+  opts.include_current_session = vim.nonnil(opts.include_current_session, true)
 
   local current_buffer = vim.api.nvim_get_current_buf()
   local current_file = vim.api.nvim_buf_get_name(current_buffer)

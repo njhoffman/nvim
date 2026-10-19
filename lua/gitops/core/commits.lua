@@ -38,12 +38,12 @@ local commits = function(opts)
   opts.bufnr = vim.fn.bufnr()
   opts.winnr = vim.fn.bufwinid(opts.bufnr)
   -- opts.current_line = (opts.current_file == nil) and get_current_buf_line(opts.winnr) or nil
-  -- opts.current_file = vim.F.if_nil(opts.current_file, vim.api.nvim_buf_get_name(opts.bufnr))
+  -- opts.current_file = vim.nonnil(opts.current_file, vim.api.nvim_buf_get_name(opts.bufnr))
 
   local stats = commits_stats(opts)
 
   opts.preview_side_width = opts.preview_side_width or 100
-  opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_commits(opts, stats))
+  opts.entry_maker = vim.nonnil(opts.entry_maker, make_entry.gen_from_git_commits(opts, stats))
 
   local script_command = git_utils.init_script_command(opts.bufnr)
 

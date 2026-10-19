@@ -14,22 +14,22 @@ local wk_display = require("configs.telescope.which_key.display")
 ---@param prompt_bufnr number: The prompt bufnr
 local what_key = function(prompt_bufnr, opts)
   opts = opts or {}
-  opts.max_height = vim.F.if_nil(opts.max_height, 0.4)
-  opts.only_show_current_mode = vim.F.if_nil(opts.only_show_current_mode, true)
-  opts.mode_width = vim.F.if_nil(opts.mode_width, 1)
-  opts.keybind_width = vim.F.if_nil(opts.keybind_width, 7)
-  opts.name_width = vim.F.if_nil(opts.name_width, 30)
-  opts.line_padding = vim.F.if_nil(opts.line_padding, 1)
-  opts.separator = vim.F.if_nil(opts.separator, " -> ")
-  opts.close_with_action = vim.F.if_nil(opts.close_with_action, true)
-  opts.normal_hl = vim.F.if_nil(opts.normal_hl, "TelescopeWhichKeyNormal")
-  opts.border_hl = vim.F.if_nil(opts.border_hl, "TelescopeWhichKeyBorder")
-  opts.winblend = vim.F.if_nil(opts.winblend, conf.winblend)
-  opts.column_padding = vim.F.if_nil(opts.column_padding, "  ")
+  opts.max_height = vim.nonnil(opts.max_height, 0.4)
+  opts.only_show_current_mode = vim.nonnil(opts.only_show_current_mode, true)
+  opts.mode_width = vim.nonnil(opts.mode_width, 1)
+  opts.keybind_width = vim.nonnil(opts.keybind_width, 7)
+  opts.name_width = vim.nonnil(opts.name_width, 30)
+  opts.line_padding = vim.nonnil(opts.line_padding, 1)
+  opts.separator = vim.nonnil(opts.separator, " -> ")
+  opts.close_with_action = vim.nonnil(opts.close_with_action, true)
+  opts.normal_hl = vim.nonnil(opts.normal_hl, "TelescopeWhichKeyNormal")
+  opts.border_hl = vim.nonnil(opts.border_hl, "TelescopeWhichKeyBorder")
+  opts.winblend = vim.nonnil(opts.winblend, conf.winblend)
+  opts.column_padding = vim.nonnil(opts.column_padding, "  ")
 
   -- Assigning into 'opts.column_indent' would override a number with a string and
   -- cause issues with subsequent calls, keep a local copy of the string instead
-  local column_indent = table.concat(utils.repeated_table(vim.F.if_nil(opts.column_indent, 4), " "))
+  local column_indent = table.concat(utils.repeated_table(vim.nonnil(opts.column_indent, 4), " "))
 
   -- close on repeated keypress
   local km_bufs = (function()

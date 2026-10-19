@@ -5,6 +5,53 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.0] - 2026-10-19
+
+### Added
+
+- `scripts/smoke.lua`: headless smoke test of the full config.
+  - Runs startup and VeryLazy, then opens a sample file for each common filetype.
+  - Optionally force-loads plugins (`SMOKE_PLUGINS=a,b` or `all`) and adds healthcheck sections (`SMOKE_HEALTH`).
+  - Records `vim.deprecate` calls and WARN/ERROR notifications, and runs `:checkhealth vim.deprecated`.
+  - A watchdog answers blocking prompts.
+
+### Fixed
+
+Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verified headless with all 404 plugins loaded:
+
+- **Removed upstream repos**: dropped `telescope-changes`, `telescope-command-palette`, `telescope-ports` (LinArcX) and `telescope-docker` (lpoto), along with their extension configs
+- **yazi.nvim**: re-cloned after the interrupted update left a corrupt submodule
+- **rest.nvim rock**: system luarocks 3.8 can't load the `treesitter-parser` build backend, so the
+  `tree-sitter-http` rock was pre-installed into `lazy-rocks/rest.nvim` with the backend on `LUA_PATH`.
+  Lazy then built rest.nvim normally. Hererocks was tried first and also fails to load that backend.
+- **oxocarbon.nvim**: `build = false`; its rockspec needs fennel, which fails to build on Lua 5.1 (prebuilt `lua/` ships with the plugin)
+- **E201 on first file open**: indent-blankline lazy-loads on `BufReadPost` instead of `BufReadPre`. Loading it inside `BufReadPre` changed the current buffer.
+- **cmp-git**: callback `trigger_actions` migrated to named `actions`
+- **codecompanion v20**:
+  - removed the unsupported `mini_diff` diff provider
+  - dropped the obsolete `interactions.inline.keymaps` (diff keymaps now live in `shared.keymaps`)
+  - `:CodeCompanionShare` uses `chat.context:add` with `opts.sync_all` and the `interactions.*.builtin.file` source
+- **octo**: `file_panel.use_icons` -> `file_panel.icons`; `timeline_indent` is a number
+- **undotree**: keymaps use the `{ [action] = lhs }` format
+- **sshfs.nvim**: `ui.file_picker` -> `ui.local_picker`
+- **nvim-dap-view**: `windows.height` -> `windows.size`; removed the unsupported `terminal.start_hidden`, in both the spec opts and `configs/nvim-dap-view.lua`
+- **competitest**: removed `runner_ui.viewer.close_mappings`; viewer close keys come from `runner_ui.mappings.close`
+- **nvim-rip-substitute**:
+  - `keymaps.confirm` -> `confirmAndSubstituteInBuffer`
+  - `keymaps.insertModeConfirm` -> `insertModeConfirmAndSubstituteInBuffer`
+  - `rangeBackdrop` -> `rangeBackdropBrightness`
+
+### Changed
+
+- **kulala.nvim replaced with rest.nvim (v3)**:
+  - kulala moved to a new org and its tooling now requires a license token; `.http` buffers prompted for it on open
+  - `configs/rest.lua` rewritten for the v3 API (`vim.g.rest_nvim`, `:Rest ...`)
+  - `:RESTRun`, `:RESTRunLast` and `:RESTPreview` kept as aliases (results open in a vertical split)
+  - Removed the orphaned v1-era `configs/rest-nvim.lua`
+- **avante.nvim**: added its new required dependencies `ColinKennedy/mega.cmdparse` and `mega.logging`; avante failed to load without them
+- `vim.F.if_nil` -> `vim.nonnil` across 30 in-repo files, including the vendored `lua/plenary/` (deprecated, removal in Nvim 0.15)
+- `vim.validate{}` table form -> `vim.validate(name, value, validator)` in `live-command/config_validator.lua` and `mini/surround/Config.lua`
+
 ## [0.11.1] - 2026-10-19
 
 ### Added

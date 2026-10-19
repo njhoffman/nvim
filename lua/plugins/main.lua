@@ -383,7 +383,8 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
-    event = { "BufReadPre", "BufNewFile" },
+    -- not BufReadPre: loading ibl inside it changes the current buffer (E201)
+    event = { "BufReadPost", "BufNewFile" },
   },
   {
     "njhoffman/hlchunk.nvim",
@@ -588,6 +589,8 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
           "folke/snacks.nvim", -- for input provider snacks
           "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
           "zbirenbaum/copilot.lua", -- for providers='copilot'
+          -- required: avante's :Avante command parser
+          { "ColinKennedy/mega.cmdparse", dependencies = { "ColinKennedy/mega.logging" } },
         },
       },
     },
@@ -609,13 +612,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   { "BlackLight/nvim-http" },
   -- https://github.com/oysandvik94/curl.nvim
   { "oysandvik94/curl.nvim", cmd = { "CurlOpen" }, dependencies = { "nvim-lua/plenary.nvim" } },
-  {
-    "mistweaverco/kulala.nvim",
-    config = function()
-      -- Setup is required, even if you don't pass any options
-      require("kulala").setup()
-    end,
-  },
+  { "rest-nvim/rest.nvim", ft = "http", cmd = "Rest" },
   {
     "jellydn/hurl.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },
@@ -907,9 +904,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     dependencies = {
       "HPRIOR/telescope-gpt",
       "ElPiloto/telescope-vimwiki.nvim",
-      "LinArcX/telescope-changes.nvim",
-      "LinArcX/telescope-command-palette.nvim",
-      "LinArcX/telescope-ports.nvim",
       "Zane-/cder.nvim",
       "Zane-/howdoi.nvim",
       -- "benfowler/telescope-luasnip.nvim",
@@ -920,7 +914,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
       "elianiva/telescope-npm.nvim",
       "frenchtoasters/telescope-kubectl.nvim",
       "nvim-web-devicons",
-      "lpoto/telescope-docker.nvim",
       "molecule-man/telescope-menufacture",
       "smartpde/telescope-recent-files",
       "ghassan0/telescope-glyph.nvim",
@@ -1370,14 +1363,14 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
         border = "rounded", -- The string values are the same as those described in 'winborder'.
       },
       keymaps = {
-        j = "move_next",
-        k = "move_prev",
-        gj = "move2parent",
-        J = "move_change_next",
-        K = "move_change_prev",
-        ["<cr>"] = "action_enter",
-        p = "enter_diffbuf",
-        q = "quit",
+        move_next = "j",
+        move_prev = "k",
+        move2parent = "gj",
+        move_change_next = "J",
+        move_change_prev = "K",
+        action_enter = "<cr>",
+        enter_diffbuf = "p",
+        quit = "q",
       },
     },
     keys = { -- load the plugin only when using it's keybinding:

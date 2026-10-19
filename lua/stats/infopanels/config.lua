@@ -1,7 +1,7 @@
 local utils = require "infopanels.utils"
 local deprecated = require "infopanels.deprecated"
 local sorters = require "telescope.sorters"
-local if_nil = vim.F.if_nil
+local if_nil = vim.nonnil
 
 -- Keep the values around between reloads
 _TelescopeConfigurationValues = _TelescopeConfigurationValues or {}

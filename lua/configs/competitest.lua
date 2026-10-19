@@ -154,8 +154,8 @@ local mySettings = {
       -- close = { "q", "Q", "<esc>" },
       close = { "q", "Q" },
     },
+    -- viewer close keys come from mappings.close (viewer.close_mappings was removed)
     viewer = {
-      close_mappings = { "q", "Q", "<esc>" },
       show_nu = false,
       show_rnu = false,
     },

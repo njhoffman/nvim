@@ -15,8 +15,8 @@ local get_help_tags = function()
   end)()
 
   local opts = {}
-  opts.lang = vim.F.if_nil(opts.lang, vim.o.helplang)
-  opts.fallback = vim.F.if_nil(opts.fallback, true)
+  opts.lang = vim.nonnil(opts.lang, vim.o.helplang)
+  opts.fallback = vim.nonnil(opts.fallback, true)
   opts.file_ignore_patterns = {}
 
   local langs = vim.split(opts.lang, ',', true)

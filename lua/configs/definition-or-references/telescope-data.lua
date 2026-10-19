@@ -8,7 +8,7 @@ local function filter_entries(results)
     return true
   end
 
-  return vim.tbl_filter(should_include_entry, vim.F.if_nil(results, {}))
+  return vim.tbl_filter(should_include_entry, vim.nonnil(results, {}))
 end
 
 --- @return table

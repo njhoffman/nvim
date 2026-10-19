@@ -62,8 +62,8 @@ local previewer = previewers.new_buffer_previewer({
 
 local reloader = function(opts)
   local reload_list, column_len = data(opts)
-  opts.column_len = vim.F.if_nil(opts.column_len, column_len)
-  opts.entry_maker = vim.F.if_nil(opts.entry_maker, display(opts, reload_list))
+  opts.column_len = vim.nonnil(opts.column_len, column_len)
+  opts.entry_maker = vim.nonnil(opts.entry_maker, display(opts, reload_list))
 
   pickers
     .new(opts, {

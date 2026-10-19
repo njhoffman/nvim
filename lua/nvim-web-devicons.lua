@@ -265,7 +265,7 @@ function M.has_loaded()
   return loaded
 end
 
-local if_nil = vim.F.if_nil
+local if_nil = vim.nonnil
 function M.setup(opts)
   if loaded then
     return

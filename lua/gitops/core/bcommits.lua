@@ -22,7 +22,7 @@ local bcommits_stats = function(opts, methods)
   methods = methods or { 'range', 'count', 'hash_length', 'author_length', 'subject_length' }
 
   local bufnr = opts.bufnr or vim.fn.bufnr()
-  local current_file = vim.F.if_nil(opts.current_file, vim.api.nvim_buf_get_name(bufnr or 0))
+  local current_file = vim.nonnil(opts.current_file, vim.api.nvim_buf_get_name(bufnr or 0))
 
   local results = {}
   for _, method in ipairs(methods) do
@@ -40,12 +40,12 @@ local bcommits = function(opts)
   opts.bufnr = vim.fn.bufnr()
   opts.winnr = vim.fn.bufwinid(opts.bufnr)
   opts.current_line = (opts.current_file == nil) and get_current_buf_line(opts.winnr) or nil
-  opts.current_file = vim.F.if_nil(opts.current_file, vim.api.nvim_buf_get_name(opts.bufnr))
+  opts.current_file = vim.nonnil(opts.current_file, vim.api.nvim_buf_get_name(opts.bufnr))
 
   local stats = bcommits_stats(opts)
 
   opts.preview_side_width = opts.preview_side_width or 100
-  opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_commits(opts, stats))
+  opts.entry_maker = vim.nonnil(opts.entry_maker, make_entry.gen_from_git_commits(opts, stats))
 
   local script_command = git_utils.init_script_command(opts.bufnr, opts.current_file)
 

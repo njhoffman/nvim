@@ -68,7 +68,7 @@ local test_infopanels = function(args)
   }
 
 
-  local if_nil = vim.F.if_nil
+  local if_nil = vim.nonnil
 
   local panel1 = {
     name = 'Buffer',

@@ -18,8 +18,8 @@ local frecency = function(user_opts)
   db_client.init(
     opts.db_root,
     opts.ignore_patterns,
-    vim.F.if_nil(opts.db_safe_mode, true),
-    vim.F.if_nil(opts.auto_validate, true)
+    vim.nonnil(opts.db_safe_mode, true),
+    vim.nonnil(opts.auto_validate, true)
   )
 
   state.previous_buffer = vim.fn.bufnr('%')

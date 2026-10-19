@@ -13,7 +13,7 @@ function TextInput:init(props, form)
       "force",
       props,
       {
-        default_value = vim.F.if_nil(props.default_value, "")
+        default_value = vim.nonnil(props.default_value, "")
       }
     ),
     {

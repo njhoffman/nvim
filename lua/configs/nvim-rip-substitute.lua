@@ -15,19 +15,16 @@ local default_settings = {
   },
   keymaps = {
     -- normal & visual mode
-    confirm = "<CR>",
+    confirmAndSubstituteInBuffer = "<CR>",
     abort = "q",
     prevSubst = "<Up>",
     nextSubst = "<Down>",
     openAtRegex101 = "R",
-    insertModeConfirm = "<C-CR>", -- (except this one, obviously)
+    insertModeConfirmAndSubstituteInBuffer = "<C-CR>", -- (except this one, obviously)
   },
   incrementalPreview = {
     matchHlGroup = "IncSearch",
-    rangeBackdrop = {
-      enabled = true,
-      blend = 50, -- between 0 and 100
-    },
+    rangeBackdropBrightness = 50, -- 0-100, false disables the backdrop
   },
   regexOptions = {
     -- pcre2 enables lookarounds and backreferences, but performs slower

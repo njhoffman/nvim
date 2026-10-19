@@ -20,7 +20,7 @@ function Component:init(form, props, popup_options)
       },
       zindex = 100
     },
-    vim.F.if_nil(popup_options, {})
+    vim.nonnil(popup_options, {})
   )
 
   if not self:disable_label() then

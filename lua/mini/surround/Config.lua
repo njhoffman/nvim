@@ -84,20 +84,17 @@ Config.cache = {}
 Config.setup_config = function(user_config)
   -- General idea: if some table elements are not present in user-supplied
   -- `config`, take them from default config
-  vim.validate({ config = { user_config, 'table', true } })
+  vim.validate('config', user_config, 'table', true)
   local config = vim.tbl_deep_extend('force', vim.deepcopy(default_config), user_config or {})
 
   -- Validate per nesting level to produce correct error message
-  -- stylua: ignore
-  vim.validate({
-    custom_surroundings    = { config.custom_surroundings, 'table' },
-    ['mappings.highlight']      = { config.mappings.highlight, 'string' },
-    ['mappings.replace']        = { config.mappings.replace, 'string' },
-    ['mappings.update_n_lines'] = { config.mappings.update_n_lines, 'string' },
+  vim.validate('custom_surroundings', config.custom_surroundings, 'table')
+  vim.validate('mappings.highlight', config.mappings.highlight, 'string')
+  vim.validate('mappings.replace', config.mappings.replace, 'string')
+  vim.validate('mappings.update_n_lines', config.mappings.update_n_lines, 'string')
 
-    ['mappings.suffix_last']    = { config.mappings.suffix_last, 'string' },
-    ['mappings.suffix_next']    = { config.mappings.suffix_next, 'string' },
-  })
+  vim.validate('mappings.suffix_last', config.mappings.suffix_last, 'string')
+  vim.validate('mappings.suffix_next', config.mappings.suffix_next, 'string')
 
   return config
 end

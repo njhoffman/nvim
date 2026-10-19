@@ -123,7 +123,6 @@ local cfg = {
       --   "followwrap",
       --   "linematch:120",
       -- },
-      provider = "mini_diff", -- default|mini_diff
     },
   },
   interactions = {
@@ -190,16 +189,6 @@ local cfg = {
       -- adapter = "anthropic",
       --           adapter = { name = "copilot", model = "gpt-4.1", },
       -- layout = 'vertical' -- vertical, horizontal, buffer
-      keymaps = {
-        accept_change = {
-          modes = { n = "ga" },
-          description = "Accept the suggested change",
-        },
-        reject_change = {
-          modes = { n = "gr" },
-          description = "Reject the suggested change",
-        },
-      },
     },
     -- cmd = { adapter = "anthropic" },
     -- cmd = { adapter = "deepseek" },
@@ -274,12 +263,12 @@ vim.api.nvim_create_autocmd({ "User" }, {
 
 -- https://github.com/olimorris/codecompanion.nvim/discussions/641
 vim.api.nvim_create_user_command("CodeCompanionShare", function(opts)
-  require("codecompanion").last_chat().references:add({
+  require("codecompanion").last_chat().context:add({
     id = opts.args,
     path = opts.args,
-    source = "codecompanion.strategies.chat.slash_commands.file",
+    source = "codecompanion.interactions.chat.slash_commands.builtin.file",
     opts = {
-      pinned = true,
+      sync_all = true,
     },
   })
 end, { nargs = 1 })

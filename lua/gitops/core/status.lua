@@ -18,7 +18,7 @@ M.status = function(opts)
   end
 
   local gen_new_finder = function()
-    local expand_dir = vim.F.if_nil(opts.expand_dir, true)
+    local expand_dir = vim.nonnil(opts.expand_dir, true)
 
     local bufnr = vim.fn.bufnr()
     local args = { 'status', '-z', '--', '.' }
@@ -27,7 +27,7 @@ M.status = function(opts)
     end
     local git_command = opts.git_command or git_utils.init_git_command(bufnr, args)
 
-    opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_status(opts))
+    opts.entry_maker = vim.nonnil(opts.entry_maker, make_entry.gen_from_git_status(opts))
     opts.split_char = '\0'
     return finders.new_oneshot_job(git_command, opts)
   end

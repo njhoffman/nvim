@@ -25,14 +25,14 @@ local make_display = function(mapping, opts)
   local name_hl = mapping.custom and "TelescopeWhichKeyNameCustom" or "TelescopeWhichKeyName"
   if opts.only_show_current_mode then
     return displayer({
-      { mapping.keybind, vim.F.if_nil(opts.keybind_hl, bind_hl) },
-      { mapping.name, vim.F.if_nil(opts.name_hl, name_hl) },
+      { mapping.keybind, vim.nonnil(opts.keybind_hl, bind_hl) },
+      { mapping.name, vim.nonnil(opts.name_hl, name_hl) },
     })
   end
   return displayer({
-    { mapping.mode, vim.F.if_nil(opts.mode_hl, mode_hl) },
-    { mapping.keybind, vim.F.if_nil(opts.keybind_hl, bind_hl) },
-    { mapping.name, vim.F.if_nil(opts.name_hl, name_hl) },
+    { mapping.mode, vim.nonnil(opts.mode_hl, mode_hl) },
+    { mapping.keybind, vim.nonnil(opts.keybind_hl, bind_hl) },
+    { mapping.name, vim.nonnil(opts.name_hl, name_hl) },
   })
 end
 

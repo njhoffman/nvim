@@ -12,15 +12,15 @@ M.files = function(opts)
     return
   end
 
-  local show_untracked = vim.F.if_nil(opts.show_untracked, false)
-  local recurse_submodules = vim.F.if_nil(opts.recurse_submodules, false)
+  local show_untracked = vim.nonnil(opts.show_untracked, false)
+  local recurse_submodules = vim.nonnil(opts.recurse_submodules, false)
 
   if show_untracked and recurse_submodules then
     vim.notify('Git does not support both --others and --recurse-submodules', vim.log.levels.ERROR)
     return
   end
 
-  opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_file(opts))
+  opts.entry_maker = vim.nonnil(opts.entry_maker, make_entry.gen_from_file(opts))
 
   local bufnr = vim.fn.bufnr()
   local command = git_utils.init_git_command(bufnr, {

@@ -157,7 +157,7 @@ end
 local oldfiles = function(user_opts)
   local opts = apply_cwd_only_aliases(config)
   opts = vim.tbl_extend('force', opts, user_opts or {})
-  opts.include_current_session = vim.F.if_nil(opts.include_current_session, true)
+  opts.include_current_session = vim.nonnil(opts.include_current_session, true)
 
   vim.cmd('silent! rshada!')
 

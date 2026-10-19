@@ -10,8 +10,8 @@ local M = {}
 
 M.stash = function(opts)
   opts = opts or {}
-  opts.show_branch = vim.F.if_nil(opts.show_branch, true)
-  opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_stash(opts))
+  opts.show_branch = vim.nonnil(opts.show_branch, true)
+  opts.entry_maker = vim.nonnil(opts.entry_maker, make_entry.gen_from_git_stash(opts))
 
   local bufnr = vim.fn.bufnr()
   local git_command = opts.git_command or git_utils.init_git_command(bufnr, {

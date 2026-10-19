@@ -37,6 +37,18 @@ Release steps:
 
 Report data in `.reports/` is excluded from cloc and must not be analyzed as part of the repo.
 
+After plugin or Neovim updates, also run the headless smoke test. Use an isolated state dir so
+sessions and shada stay untouched. `SMOKE_HEALTH="rest-nvim avante"` appends those healthcheck
+sections to the output.
+
+```bash
+out=$(mktemp -d)
+SMOKE_OUT=$out SMOKE_PLUGINS=all XDG_STATE_HOME=$out/state XDG_CACHE_HOME=$out/cache \
+  nvim --headless -i NONE --cmd "luafile scripts/smoke.lua"
+# $out/report.txt: deprecations, warnings, errors, :messages
+# $out/checkhealth.txt: :checkhealth vim.deprecated with stack traces
+```
+
 ## Core Architecture
 
 ### Entry Point & Module Loading

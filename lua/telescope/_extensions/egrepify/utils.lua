@@ -57,7 +57,7 @@ end
 M.notify = function(funname, opts)
   -- avoid circular require
   local egrep_config = require "telescope._extensions.egrepify.config"
-  local quiet = vim.F.if_nil(opts.quiet, egrep_config.values.quiet)
+  local quiet = vim.nonnil(opts.quiet, egrep_config.values.quiet)
   if not quiet then
     local level = vim.log.levels[opts.level]
     if not level then

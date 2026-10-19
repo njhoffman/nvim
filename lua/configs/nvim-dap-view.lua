@@ -8,11 +8,10 @@ require("dap-view").setup({
     default_section = "watches",
   },
   windows = {
-    height = 12,
+    size = 12,
     terminal = {
       position = "left",
       hide = {},
-      start_hidden = false,
     },
   },
 })

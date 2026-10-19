@@ -26,7 +26,7 @@ M.branches = function(opts)
   table.insert(command, opts.pattern)
   local git_command = opts and opts.git_command or command
   local output = utils.get_os_command_output(git_command, opts.cwd)
-  local show_remote_tracking_branches = vim.F.if_nil(opts.show_remote_tracking_branches, true)
+  local show_remote_tracking_branches = vim.nonnil(opts.show_remote_tracking_branches, true)
 
   local results = {}
 

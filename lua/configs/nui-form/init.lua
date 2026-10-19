@@ -18,7 +18,7 @@ local set_default_options = function(options)
       validate = fn.always(true),
       hidden = fn.always(false)
     },
-    vim.F.if_nil(options, {})
+    vim.nonnil(options, {})
   )
 end
 
@@ -26,11 +26,11 @@ function NuiForm:new(options)
   options = options or {}
   self.__index = self
 
-  options.width = vim.F.if_nil(options.width, 80)
+  options.width = vim.nonnil(options.width, 80)
 
   options.default_options = {
-    label_align = vim.F.if_nil(options.label_align, "left"),
-    style = vim.F.if_nil(options.style, "rounded")
+    label_align = vim.nonnil(options.label_align, "left"),
+    style = vim.nonnil(options.style, "rounded")
   }
 
   options.keymap =
@@ -40,13 +40,13 @@ function NuiForm:new(options)
       submit = "<D-CR>",
       close = "<Esc>"
     },
-    vim.F.if_nil(options.keymap, {})
+    vim.nonnil(options.keymap, {})
   )
 
-  options.position = vim.F.if_nil(options.position, "50%")
-  options.relative = vim.F.if_nil(options.relative, "editor")
-  options.on_submit = vim.F.if_nil(options.on_submit, fn.ignore)
-  options.on_close = vim.F.if_nil(options.on_close, fn.ignore)
+  options.position = vim.nonnil(options.position, "50%")
+  options.relative = vim.nonnil(options.relative, "editor")
+  options.on_submit = vim.nonnil(options.on_submit, fn.ignore)
+  options.on_close = vim.nonnil(options.on_close, fn.ignore)
 
   self.focusable_components = {}
   self.state = {}

@@ -256,7 +256,7 @@ M.defaulter = function(f, default_opts)
       opts.preview = type(opts.preview) ~= "table" and {} or opts.preview
       if type(conf.preview) == "table" then
         for k, v in pairs(conf.preview) do
-          opts.preview[k] = vim.F.if_nil(opts.preview[k], v)
+          opts.preview[k] = vim.nonnil(opts.preview[k], v)
         end
       end
       return f(opts)

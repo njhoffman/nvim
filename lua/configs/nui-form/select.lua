@@ -31,7 +31,7 @@ local separator = function(content)
     {
       _id = tostring(math.random()),
       _type = "separator",
-      text = vim.F.if_nil(content, "")
+      text = vim.nonnil(content, "")
     }
   )
 end
@@ -77,7 +77,7 @@ function Select:init(props, form)
       "force",
       props,
       {
-        default_value = vim.F.if_nil(props.default_value, {})
+        default_value = vim.nonnil(props.default_value, {})
       }
     ),
     {

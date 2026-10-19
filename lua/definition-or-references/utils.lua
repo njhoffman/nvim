@@ -27,7 +27,7 @@ end
 function M.get_filename_fn()
   local bufnr_name_cache = {}
   return function(bufnr)
-    bufnr = vim.F.if_nil(bufnr, 0)
+    bufnr = vim.nonnil(bufnr, 0)
     local c = bufnr_name_cache[bufnr]
     if c then
       return c

@@ -9,7 +9,7 @@ local telescope_sorter = require('configs.definition-or-references.telescope-sor
 local get_filename_fn = function()
   local bufnr_name_cache = {}
   return function(bufnr)
-    bufnr = vim.F.if_nil(bufnr, 0)
+    bufnr = vim.nonnil(bufnr, 0)
     local c = bufnr_name_cache[bufnr]
     if c then
       return c
@@ -23,11 +23,11 @@ end
 
 local gen_from_quickfix = function(opts)
   opts = opts or {}
-  local show_line = vim.F.if_nil(opts.show_line, true)
+  local show_line = vim.nonnil(opts.show_line, true)
 
   local hidden = utils.is_path_hidden(opts)
   local items = {
-    { width = vim.F.if_nil(opts.fname_width, 30) },
+    { width = vim.nonnil(opts.fname_width, 30) },
     { remaining = true },
   }
   if hidden then
@@ -61,7 +61,7 @@ local gen_from_quickfix = function(opts)
   local get_filename = get_filename_fn()
 
   return function(entry)
-    local filename = vim.F.if_nil(entry.filename, get_filename(entry.bufnr))
+    local filename = vim.nonnil(entry.filename, get_filename(entry.bufnr))
     return {
       value = entry,
       ordinal = (not hidden and filename or '') .. ' ' .. entry.text,

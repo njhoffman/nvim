@@ -24,7 +24,7 @@ local function get_desc(entry)
   if type(entry.callback) == 'function' and not entry.desc then
     return require('telescope.actions.utils')._get_anon_function_name(debug.getinfo(entry.callback))
   end
-  return unescape(vim.F.if_nil(entry.desc, entry.rhs))
+  return unescape(vim.nonnil(entry.desc, entry.rhs))
 end
 
 local function get_lhs(entry)

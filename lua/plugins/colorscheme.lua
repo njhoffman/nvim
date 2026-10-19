@@ -13,7 +13,8 @@ local plugins = {
     dependencies = { "tjdevries/colorbuddy.nvim", branch = "dev" },
   },
   { "olimorris/onedarkpro.nvim", event = "User ColorSchemeLoad" },
-  { "nyoom-engineering/oxocarbon.nvim", event = "User ColorSchemeLoad" },
+  -- build = false: the rockspec needs fennel, which fails to build on lua 5.1; lua/ ships prebuilt
+  { "nyoom-engineering/oxocarbon.nvim", event = "User ColorSchemeLoad", build = false },
   { "bluz71/vim-moonfly-colors", event = "User ColorSchemeLoad" },
   { "bluz71/vim-nightfly-colors", event = "User ColorSchemeLoad" },
   { "Everblush/nvim", name = "Everblush.nvim", event = "User ColorSchemeLoad" },
