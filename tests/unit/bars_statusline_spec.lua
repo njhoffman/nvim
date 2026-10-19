@@ -351,10 +351,10 @@ describe("Bars Statusline", function()
       themes = require("configs.bars.themes")
     end)
 
-    it("lists all 6 available themes", function()
+    it("lists all 7 available themes", function()
       assert.is_not_nil(themes.available)
-      assert.are.equal(6, #themes.available)
-      local expected = { "slashed", "minimal", "stealth", "bubble", "rainbow", "pure" }
+      assert.are.equal(7, #themes.available)
+      local expected = { "slashed", "minimal", "stealth", "bubble", "rainbow", "pure", "feline" }
       for _, name in ipairs(expected) do
         assert.is_truthy(
           vim.tbl_contains(themes.available, name),

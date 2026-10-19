@@ -8,39 +8,34 @@ This is a heavily customized Neovim configuration written in Lua (~282k lines). 
 
 ## Git Configuration
 
-This directory is tracked by a dotbare/bare git repo at `~/.cfg`. Do NOT use regular git commands. Always use these environment variables for all git operations:
+This directory is its own git repository (`origin` = `git@github.com:njhoffman/nvim.git`, branch `main`).
+Use plain `git` commands from `~/.config/nvim`. The old `~/.cfg` bare repo no longer tracks this directory.
 
-```bash
-GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git <command>
-```
+### Versioning and releases
 
-Example:
+The config uses semver with annotated `vX.Y.Z` tags and a Keep a Changelog `CHANGELOG.md`.
+Every verified, completed change is released automatically: commit, bump, tag, push.
 
-```bash
-GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git status
-GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git add .config/nvim/somefile.lua
-GIT_WORK_TREE="$HOME" GIT_DIR="$HOME/.cfg" git commit -m "message"
-```
+Bump rules (pre-1.0):
 
-### Before each commit, run these commands for a report
+- **patch**: bug fixes, formatting, small cleanups, test-only changes
+- **minor**: new features or modules, refactors, removals, anything breaking
+- **major**: only when explicitly requested (1.0.0)
 
-- do not run the report or commit if there are failing tests
+Release steps:
 
-```bash
-dir="$HOME/.config/nvim/.reports/$(date '+%Y-%m-%d.%H:%M')"
+1. `./scripts/report.sh` runs all tests with coverage, then cloc. It prints the report directory
+   (`.reports/<timestamp>/`). If any test fails it aborts: do not commit, tag or push.
+2. Write `<report dir>/summary.md`: code stats, coverage, counts of installed plugins and tests,
+   and deltas against the previous report.
+3. Add a `## [X.Y.Z] - YYYY-MM-DD` section to `CHANGELOG.md`.
+4. Stage the change, the report directory and `CHANGELOG.md`, then
+   `./scripts/release.sh X.Y.Z "<summary>"`. It refuses a version that is not newer than the
+   latest tag or that lacks a changelog section, then commits as `vX.Y.Z: <summary>`, creates the
+   annotated tag and runs `git push origin HEAD --follow-tags`. Set `RELEASE_TRAILER` to append a
+   `Co-Authored-By` line.
 
-# code stats: https://github.com/AlDanial/cloc
-cloc --json --follow-links --report-file="main.json" "$HOME/.nvim"
-cloc --json --follow-links --report-file="lazy.json" "$HOME/.local/share/nvim/lazy"
-
-# test coverage: laucov and cluacov https://github.com/luvit/laucov
-# load this before running the tests, after tests are done run the report
-# move report to `~/.config/nvim/.reports/`, remove the generated stats file
-```
-
-- summarize the report/coverage in a visually appealing way in markdown format
-- also include counts of enabled plugins and tests, and differences from last run
-- make sure the reports and data are not analyzed as part of the repo
+Report data in `.reports/` is excluded from cloc and must not be analyzed as part of the repo.
 
 ## Core Architecture
 

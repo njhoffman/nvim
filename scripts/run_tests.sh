@@ -20,8 +20,15 @@ echo ""
 
 run_plenary_tests() {
     echo -e "${YELLOW}Running Plenary (Unit) Tests...${NC}"
+    # Coverage runs write to one stats file, so run spec files sequentially;
+    # the pure-Lua coverage hook is slow, so allow a longer per-file timeout
+    local sequential="false" timeout=50000
+    if [ -n "${NVIM_COVERAGE:-}" ]; then
+        sequential="true"
+        timeout=600000
+    fi
     nvim --headless --noplugin -u "$NVIM_CONFIG_DIR/tests/minimal_init.lua" \
-        -c "PlenaryBustedDirectory $NVIM_CONFIG_DIR/tests/unit/ { minimal_init = '$NVIM_CONFIG_DIR/tests/minimal_init.lua' }"
+        -c "PlenaryBustedDirectory $NVIM_CONFIG_DIR/tests/unit/ { minimal_init = '$NVIM_CONFIG_DIR/tests/minimal_init.lua', sequential = $sequential, timeout = $timeout }"
 
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}✓ Plenary tests passed${NC}"

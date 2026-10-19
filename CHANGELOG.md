@@ -5,6 +5,35 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0] - 2026-10-19
+
+### Added
+
+- **Release tooling**: `scripts/report.sh` (tests with coverage, cloc stats into `.reports/<timestamp>/`)
+  and `scripts/release.sh` (semver-guarded commit, annotated tag, `push --follow-tags`)
+- **Test coverage**: `NVIM_COVERAGE=<statsfile>` enables luacov in `tests/minimal_init.lua`;
+  `run_tests.sh` runs specs sequentially with a longer timeout in that mode
+- Refactoring Telescope extension (`lua/telescope/_extensions/refactoring.lua`)
+
+### Changed
+
+- `configs/refactoring.lua`, `neovide.lua`, `vim-options.lua`, nvim-cmp sources and `configs/convey.lua` reworked
+- `notifications/recipes/command.lua`: StyLua formatting; mpc recipe sources `~/.aliases/shell/audio.sh`
+- Large cleanup across `configs/`, `telescope/`, `gitops/`, `scrollview/`, `scrollbar/`, `glyph-guard/`
+  (233 files, -28k lines)
+
+### Removed
+
+- `lua/notify/_demo/`, `lua/notify/_render/`, `lua/notify/render/_*` and `lua/notify/util/render.lua`
+  (unused notify demo and renderer copies)
+- `tmp.sh` and `luacov.stats.out` from version control (now ignored)
+
+### Fixed
+
+- `bars_statusline_spec` theme test still expected 6 themes after `feline` was added in v0.9.0
+- Pre-commit report referenced nonexistent `~/.nvim`; cloc now targets the config directory
+- `quickclose_spec` reads the command `desc`; newer Neovim returns an empty `definition` for Lua callbacks
+
 ## [0.10.0] - 2026-04-15
 
 ### Changed

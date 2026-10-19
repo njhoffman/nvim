@@ -147,7 +147,10 @@ describe("QuickClose", function()
       -- Check if command exists
       local commands = vim.api.nvim_get_commands({})
       assert.is_not_nil(commands.QuickClose)
-      assert.equals("Smart close: close window, special split, or delete buffer", commands.QuickClose.definition)
+      assert.equals(
+        "Smart close: close window, special split, or delete buffer",
+        commands.QuickClose.desc
+      )
     end)
   end)
 

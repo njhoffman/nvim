@@ -2,8 +2,7 @@ local function notify_output(command, opts)
   local output = ""
   local notification
   local notify = function(msg, level)
-    local notify_opts =
-    vim.tbl_extend(
+    local notify_opts = vim.tbl_extend(
       "keep",
       opts or {},
       { title = table.concat(command, " "), replace = notification }
@@ -22,24 +21,24 @@ local function notify_output(command, opts)
     notify(output, "error")
   end
 
-  vim.fn.jobstart(
-    command,
-    {
-      stdout_buffered = true,
-      stderr_buffered = true,
-      on_stdout = on_data,
-      -- on_stderr = on_error,
-      on_exit = function(_, code)
-        if #output == 0 then
-          notify("No output of command, exit code: " .. code, "warn")
-        end
+  vim.fn.jobstart(command, {
+    stdout_buffered = true,
+    stderr_buffered = true,
+    on_stdout = on_data,
+    -- on_stderr = on_error,
+    on_exit = function(_, code)
+      if #output == 0 then
+        notify("No output of command, exit code: " .. code, "warn")
       end
-    }
-  )
+    end,
+  })
 end
 
 -- notify_output({ "echo", "hello world" })
 -- notify_output("echo hello world")
 -- notify_output({ "pidstat" })
 -- /usr/bin/time -f "%E real\t%x exit"
-notify_output({ "/usr/bin/zsh", "-c", ". ~/.aliases/audio.sh && eval mpc" }, { title = "mpc" })
+notify_output(
+  { "/usr/bin/zsh", "-c", ". ~/.aliases/shell/audio.sh && eval mpc" },
+  { title = "mpc" }
+)
