@@ -5,6 +5,18 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.1] - 2026-10-19
+
+### Added
+
+- `TODO.md` roadmap:
+  - deprecated Neovim API inventory, with hit counts and replacements, after the v0.13.0-dev-1915 update
+  - orphaned module and config candidates
+  - folder and config simplification
+  - custom dashboard spec to replace alpha-nvim
+  - additional suggestions (track `lazy-lock.json`, CI, coverage speed and targets, startup budget, health check)
+- Existing hlslens and Snacks notes kept under "Existing notes"
+
 ## [0.11.0] - 2026-10-19
 
 ### Added

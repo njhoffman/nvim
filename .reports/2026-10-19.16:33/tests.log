@@ -1,0 +1,681 @@
+Running Neovim Configuration Tests
+========================================
+
+Running Plenary (Unit) Tests...
+Starting...
+Scheduling: /home/nicholas/.config/nvim/tests/unit/loader_config_spec.lua
+Scheduling: /home/nicholas/.config/nvim/tests/unit/colorscheme_export_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/loader_config_spec.lua	
+Success	||	loader/config returns default config	
+Success	||	loader/config expands $HOME in paths	
+Success	||	loader/config maps NVIM_UNIQUE=session to tmux_session	
+Success	||	loader/config maps NVIM_UNIQUE=0 to none	
+Success	||	loader/config maps NVIM_LISTEN_ADDRESS and forces attach_on to none	
+Success	||	loader/config maps NVIM_STARTUPTIME=1 to file path	
+	
+Success: 	6	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/loader_session_spec.lua
+Exported colorscheme 'test-theme' to bat theme format (512 lines)
+Exported colorscheme 'test-theme' to bat theme format (512 lines)
+Exported colorscheme 'my-theme' to bat theme format (512 lines)
+Exported colorscheme 'test-theme' to bat theme format (512 lines)
+Exported colorscheme 'default' to bat theme format (512 lines)
+Exported colorscheme 'test-theme' to bat theme format (512 lines)
+Exported colorscheme 'test-theme' to bat theme format (512 lines)
+Exported colorscheme 'default' to bat theme format (512 lines)
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/colorscheme_export_spec.lua	
+Success	||	ColorschemeExport Module structure exports required functions	
+Success	||	ColorschemeExport generate_tmtheme generates valid XML output	
+Success	||	ColorschemeExport generate_tmtheme includes theme name	
+Success	||	ColorschemeExport generate_tmtheme includes settings array	
+Success	||	ColorschemeExport generate_tmtheme includes global background and foreground	
+Success	||	ColorschemeExport generate_tmtheme handles missing highlight groups gracefully	
+Success	||	ColorschemeExport export function creates a new buffer	
+Success	||	ColorschemeExport export function sets correct buffer options	
+Success	||	ColorschemeExport export function sets buffer name with .tmTheme extension	
+Success	||	ColorschemeExport export function uses custom filename when provided	
+Success	||	ColorschemeExport export function uses current colorscheme when not specified	
+Success	||	ColorschemeExport export function populates buffer with XML content	
+Success	||	ColorschemeExport export function returns buffer number	
+Success	||	ColorschemeExport Highlight group mapping exports common syntax groups	
+Success	||	ColorschemeExport Highlight group mapping handles font styles (bold, italic)	
+Success	||	ColorschemeExport Highlight group mapping exports UI highlight groups	
+Success	||	ColorschemeExport Color conversion generates valid hex colors	
+Success	||	ColorschemeExport Edge cases handles empty colorscheme name	
+Success	||	ColorschemeExport Edge cases handles nil colorscheme in export	
+Success	||	ColorschemeExport Edge cases handles special characters in theme name	
+Success	||	ColorschemeExport XML validity produces well-formed XML	
+Success	||	ColorschemeExport XML validity properly escapes XML characters if present	
+	
+Success: 	22	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/bars_statusline_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/loader_session_spec.lua	
+Success	||	loader/session get_reload finds _runonce.vim matching prefix	
+Success	||	loader/session get_reload returns nil when no match	
+Success	||	loader/session get_reload returns nil for nil prefix	
+Success	||	loader/session get_saved finds session by tmux session name	
+Success	||	loader/session get_saved returns nil for unknown session name	
+Success	||	loader/session get_saved returns nil for nil session name	
+Success	||	loader/session clean_temp removes matching _temp.vim files	
+Success	||	loader/session prepare_reload renames _runonce.vim to _temp.vim	
+	
+Success: 	8	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/glyph_guard_scanner_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/bars_statusline_spec.lua	
+Success	||	Bars Statusline Components file_size returns empty for unnamed buffer	
+Success	||	Bars Statusline Components file_size returns formatted size for a file	
+Success	||	Bars Statusline Components cursor_position returns line:col format	
+Success	||	Bars Statusline Components line_count returns %%L in normal mode	
+Success	||	Bars Statusline Components filetype returns lowercase filetype	
+Success	||	Bars Statusline Components encoding returns empty for utf-8	
+Success	||	Bars Statusline Components fileformat returns a format string	
+Success	||	Bars Statusline Components search_count returns empty when no search active	
+Success	||	Bars Statusline Components line_percentage returns Top at first line	
+Success	||	Bars Statusline Components line_percentage returns Bot at last line	
+Success	||	Bars Statusline Components line_percentage returns All for single-line buffer	
+Success	||	Bars Statusline Components scroll_bar returns block characters	
+Success	||	Bars Statusline Components git_diff returns empty when no gitsigns data	
+Success	||	Bars Statusline Components git_diff returns count when gitsigns data exists	
+Success	||	Bars Statusline Components misc_stats returns a string with throttle behavior	
+Success	||	Bars Statusline Components hostname returns a non-empty string	
+Success	||	Bars Statusline Components datetime returns a time string	
+Success	||	Bars Statusline Components tabs returns empty with single tab	
+Success	||	Bars Statusline Components selection_count returns empty in normal mode	
+Success	||	Bars Statusline Highlights defines color palette	
+Success	||	Bars Statusline Highlights sets up highlight groups without error	
+Success	||	Bars Statusline Highlights creates expected highlight groups	
+Success	||	Bars Statusline Statusline Config has a default style with components	
+Success	||	Bars Statusline Statusline Config has all 6 theme styles	
+Success	||	Bars Statusline Statusline Config has help and quickfix styles	
+Success	||	Bars Statusline Statusline Config all default components have valid kind field	
+Success	||	Bars Statusline Statusline Config all condition functions are callable	
+Success	||	Bars Statusline Statusline Config all theme components have valid kind field	
+Success	||	Bars Statusline Themes lists all 7 available themes	
+Success	||	Bars Statusline Themes returns config for all known themes	
+Success	||	Bars Statusline Themes returns nil for unknown theme	
+	
+Success: 	31	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/unicode_completion_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/glyph_guard_scanner_spec.lua	
+Success	||	glyph_guard.scanner finds PUA codepoints in a buffer	
+Success	||	glyph_guard.scanner ignores non-PUA characters when only pua detection is enabled	
+Success	||	glyph_guard.scanner detects non-ascii when enabled	
+Success	||	glyph_guard.scanner survives malformed UTF-8 without crashing	
+Success	||	glyph_guard.scanner reports byte columns zero-indexed	
+	
+Success: 	5	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/glyph_guard_fixer_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/unicode_completion_spec.lua	
+Success	||	unicode.completion module structure exports completion functions	
+Success	||	unicode.completion complete_unicode returns empty string (for C-R= mapping)	
+Success	||	unicode.completion complete_html_entity returns empty string	
+	
+Success: 	3	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/tmux_options_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/glyph_guard_fixer_spec.lua	
+Success	||	glyph_guard.fixer.parse_comment returns the whole line as code when prefix is absent	
+Success	||	glyph_guard.fixer.parse_comment extracts base comment when no glyph section present	
+Success	||	glyph_guard.fixer.parse_comment splits base comment and glyph section	
+Success	||	glyph_guard.fixer.parse_comment returns nil base when only a glyph section exists	
+Success	||	glyph_guard.fixer.parse_comment does not consume user U+HEX text without following glyph token	
+	
+Success: 	5	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/tmux_version_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/tmux_options_spec.lua	
+Success	||	tmux.configuration.options has default copy_sync options	
+Success	||	tmux.configuration.options has default navigation options	
+Success	||	tmux.configuration.options has default resize options	
+Success	||	tmux.configuration.options merges user options via set()	
+Success	||	tmux.configuration.options does not overwrite with wrong types	
+Success	||	tmux.configuration.options ignores nil and empty string	
+Success	||	tmux.configuration.options deep merges nested tables	
+	
+Success: 	7	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/logger_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/tmux_version_spec.lua	
+Success	||	tmux.version parse parses major.minor version	
+Success	||	tmux.version parse parses version with patch letter	
+Success	||	tmux.version parse parses version with later patch letter	
+Success	||	tmux.version parse strips next- prefix	
+Success	||	tmux.version parse strips next prefix without hyphen	
+Success	||	tmux.version parse returns empty table for nil	
+Success	||	tmux.version parse returns empty table for invalid format	
+Success	||	tmux.version compare returns 0 for equal versions	
+Success	||	tmux.version compare returns 1 when base is greater (major)	
+Success	||	tmux.version compare returns -1 when base is lesser (major)	
+Success	||	tmux.version compare compares minor versions	
+Success	||	tmux.version compare compares patch versions	
+Success	||	tmux.version compare returns error for invalid base	
+Success	||	tmux.version compare returns error for invalid relative	
+Success	||	tmux.version compare returns error when version field is not a number	
+	
+Success: 	15	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/utils_spec.lua
+spec_timer: 0.07 ms
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/logger_spec.lua	
+Success	||	Logger scope management init(scope) returns a logger with all level methods	
+Success	||	Logger scope management tracks scopes in logger.scopes after init	
+Success	||	Logger scope management scope level overrides from levels.lua are applied	
+Success	||	Logger scope management unknown scope falls back to '*' default (main=2 info)	
+Success	||	Logger scope management init twice returns a functional logger both times	
+Success	||	Logger level filtering info-level message writes to the module sink file	
+Success	||	Logger level filtering message below module sink level does not produce output	
+Success	||	Logger level filtering error writes when module sink level is set to warn	
+Success	||	Logger sinks module sink writes to stdpath('data')/nvim-<scope>.log	
+Success	||	Logger sinks log content contains the logged message	
+Success	||	Logger debug helpers logger.debug module exposes expected API	
+Success	||	Logger debug helpers inspect returns a string for a simple table	
+Success	||	Logger debug helpers dump returns Lua-readable string for a table	
+Success	||	Logger debug helpers dump handles cyclic tables without stack overflow	
+Success	||	Logger debug helpers traceback returns a non-empty array of frame strings	
+Success	||	Logger debug helpers namespaces returns a table of lines	
+Success	||	Logger debug helpers timer with a name can be started and stopped	
+Success	||	Logger globals integration vim.dbglog is installed and callable	
+Success	||	Logger globals integration vim.dbgout has the expected helper methods	
+Success	||	Logger globals integration vim.dbgtime is a function	
+Success	||	Logger globals integration old require paths are not present in package.loaded	
+Success	||	Logger public command :LogScopes user command is registered	
+Success	||	Logger hybrid call syntax colon call writes to the module sink file	
+Success	||	Logger hybrid call syntax dot call writes to the module sink file	
+Success	||	Logger hybrid call syntax dot call binds to the instance, not a static fallback	
+Success	||	Logger structlog framework (smoke) logger.structlog is loadable with the expected API	
+	
+Success: 	26	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/unicode_digraph_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/utils_spec.lua	
+Success	||	Custom Utility Tests Path utilities can work with filesystem paths	
+Success	||	Custom Utility Tests Path utilities can expand paths	
+Success	||	Custom Utility Tests Configuration helpers can access vim options	
+Success	||	Custom Utility Tests Configuration helpers can check vim features	
+Success	||	Custom Utility Tests Module loading can access vim API modules	
+Success	||	Custom Utility Tests Module loading handles missing modules gracefully	
+Success	||	Custom Utility Tests Async operations can use vim.schedule	
+Success	||	Custom Utility Tests Async operations can use vim.defer_fn	
+	
+Success: 	8	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/quickclose_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/unicode_digraph_spec.lua	
+Success	||	unicode.digraph parse_digraphs parses sample digraph output	
+Success	||	unicode.digraph parse_digraphs returns a table	
+Success	||	unicode.digraph get_chars returns empty string for unknown codepoint	
+Success	||	unicode.digraph get_chars returns formatted string with parens for known digraphs	
+Success	||	unicode.digraph get_dict returns a non-empty table	
+Success	||	unicode.digraph get_dict caches the dict on subsequent calls	
+	
+Success: 	6	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/unicode_search_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/quickclose_spec.lua	
+Success	||	QuickClose buffer operations can delete buffer when multiple listed buffers exist	
+Success	||	QuickClose window operations can close floating window	
+Success	||	QuickClose window operations can close split window	
+Success	||	QuickClose special split detection can identify quickfix buffer	
+Success	||	QuickClose special split detection can identify help buffer	
+Success	||	QuickClose command registration registers QuickClose command	
+Success	||	QuickClose count_listed_buffers function (syntax fix test) correctly counts listed buffers with multiple buffers	
+Success	||	QuickClose count_listed_buffers function (syntax fix test) handles empty buffer list gracefully	
+Success	||	QuickClose special split scenarios closes special split when in normal window with split	
+Success	||	QuickClose special split scenarios closes current window when it's a special split	
+Success	||	QuickClose last buffer edge case handles last buffer scenario appropriately	
+Success	||	QuickClose regex pattern matching for filetypes matches Avante.* filetype pattern	
+	
+Success: 	12	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/unicode_data_spec.lua
+Error in command line:
+UnicodePlugin: Argument is empty or unspecified
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/unicode_search_spec.lua	
+Success	||	unicode.search find_unicode_by finds characters by name substring	
+Success	||	unicode.search find_unicode_by returns empty table for empty input	
+Success	||	unicode.search find_unicode_by finds by decimal codepoint	
+Success	||	unicode.search find_unicode_by finds by hex codepoint with U+ prefix	
+Success	||	unicode.search find_unicode_by returns sorted results by decimal value	
+Success	||	unicode.search find_unicode_by result entries have required fields	
+Success	||	unicode.search get_html_entity returns named entity for known codepoints	
+Success	||	unicode.search get_html_entity generates numeric entity for valid range	
+Success	||	unicode.search get_html_entity returns empty for surrogate range	
+Success	||	unicode.search get_html_entity returns empty for disallowed control chars	
+Success	||	unicode.search get_html_entity allows tab, newline, carriage return	
+	
+Success: 	11	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/tmux_resize_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/unicode_data_spec.lua	
+Success	||	unicode.data parse parses UnicodeData.txt into a dictionary	
+Success	||	unicode.data parse maps decimal codepoints to names	
+Success	||	unicode.data parse appends general category to name	
+Success	||	unicode.data parse uses Unicode_1_Name for control characters	
+Success	||	unicode.data parse returns an index of decimal keys	
+Success	||	unicode.data parse handles high codepoints (>= U+10000)	
+Success	||	unicode.data parse trims trailing spaces from names	
+Success	||	unicode.data cache roundtrip writes and reads cache correctly	
+Success	||	unicode.data cache roundtrip returns nil for non-existent cache file	
+Success	||	unicode.data cache roundtrip returns nil for invalid cache file	
+	
+Success: 	10	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/glyph_guard_escape_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/tmux_resize_spec.lua	
+Success	||	tmux.resize.resize with nvim splits moves separator left when split exists to the left	
+Success	||	tmux.resize.resize with nvim splits moves separator left when only split to the right (resize left)	
+Success	||	tmux.resize.resize with nvim splits moves separator right when split exists to the right	
+Success	||	tmux.resize.resize with nvim splits moves separator right via left window when only split to the left	
+Success	||	tmux.resize.resize with nvim splits moves statusline up when split exists above	
+Success	||	tmux.resize.resize with nvim splits moves statusline down when split exists below	
+Success	||	tmux.resize.resize with nvim splits moves statusline down from above window when only split above (resize down)	
+Success	||	tmux.resize.resize with nvim splits moves statusline up via current window when only split below (resize up)	
+Success	||	tmux.resize.resize with tmux panes resizes tmux pane when no nvim splits and tmux target available	
+Success	||	tmux.resize.resize with tmux panes resizes tmux when at border but only one nvim window	
+Success	||	tmux.resize.resize with tmux panes maps directions to hjkl for tmux	
+Success	||	tmux.resize.resize large resize uses large step sizes for horizontal	
+Success	||	tmux.resize.resize large resize uses large step for vertical	
+Success	||	tmux.resize.resize nvim split priority over tmux resizes nvim split even when tmux target exists	
+	
+Success: 	14	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/loader_socket_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/glyph_guard_escape_spec.lua	
+Success	||	glyph_guard.escape maps shell filetypes to shell lang	
+Success	||	glyph_guard.escape formats lua escapes as \u{XXXX}	
+Success	||	glyph_guard.escape formats shell BMP escapes as $'\uXXXX'	
+Success	||	glyph_guard.escape formats shell supplementary escapes as $'\UXXXXXXXX'	
+Success	||	glyph_guard.escape wraps shell replacements with the finding's quote	
+Success	||	glyph_guard.escape falls back to lua form with warn flag when shell quote unknown	
+Success	||	glyph_guard.escape emits lua form without warn when lang is lua	
+	
+Success: 	7	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/tmux_navigate_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/loader_socket_spec.lua	
+Success	||	loader/socket get_prefix returns nil when tmux is not active	
+Success	||	loader/socket get_prefix builds prefix with session and window for tmux_window mode	
+Success	||	loader/socket get_prefix builds prefix with session only for tmux_session mode	
+Success	||	loader/socket get_prefix uses listen_address when set	
+Success	||	loader/socket find_existing finds matching socket in directory	
+Success	||	loader/socket find_existing returns nil when no match	
+Success	||	loader/socket find_existing returns nil for nil prefix	
+Success	||	loader/socket create returns correct socket path	
+	
+Success: 	8	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/example_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/tmux_navigate_spec.lua	
+Success	||	tmux.navigation.navigate has_tmux_target returns false when not in tmux	
+Success	||	tmux.navigation.navigate has_tmux_target returns false when zoomed and persist_zoom is true	
+Success	||	tmux.navigation.navigate has_tmux_target returns true when not at tmux border	
+Success	||	tmux.navigation.navigate has_tmux_target returns true at border with cycle_navigation and opposite not at border	
+Success	||	tmux.navigation.navigate has_tmux_target returns false at border without cycle_navigation	
+Success	||	tmux.navigation.navigate to changes tmux pane when at nvim border with tmux target	
+Success	||	tmux.navigation.navigate to moves within nvim when not at border	
+Success	||	tmux.navigation.navigate to cycles to opposite edge when at nvim border with no tmux target	
+	
+Success: 	8	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/tmux_layout_parse_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/example_spec.lua	
+Success	||	Example Unit Tests Vim API can access vim global	
+Success	||	Example Unit Tests Vim API can get neovim version	
+Success	||	Example Unit Tests Vim API can create and delete buffer	
+Success	||	Example Unit Tests Lua Standard Library can perform table operations	
+Success	||	Example Unit Tests Lua Standard Library can perform string operations	
+Success	||	Example Unit Tests Lua Standard Library can use math operations	
+Success	||	Example Unit Tests Vim Utility Functions can use vim.fn functions	
+Success	||	Example Unit Tests Vim Utility Functions can use vim.tbl_ utilities	
+Success	||	Example Unit Tests Vim Utility Functions can use vim.split	
+Success	||	Example Unit Tests Vim Utility Functions can use vim.startswith and vim.endswith	
+	
+Success: 	10	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/registers_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/tmux_layout_parse_spec.lua	
+Success	||	tmux.layout.parse returns nil for empty string	
+Success	||	tmux.layout.parse returns nil for nil input	
+Success	||	tmux.layout.parse parses single pane layout	
+Success	||	tmux.layout.parse parses two vertical panes	
+Success	||	tmux.layout.parse parses two horizontal panes	
+Success	||	tmux.layout.parse parses three panes in complex layout	
+	
+Success: 	6	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/unicode_names_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/registers_spec.lua	
+Success	||	Registers config get() returns nil before setup	
+Success	||	Registers config setup() returns a fully populated options table	
+Success	||	Registers config user override wins over default (show_empty)	
+Success	||	Registers config get() returns the same table after setup	
+Success	||	Registers state _previous_mode_is_visual returns true for visual modes	
+Success	||	Registers state _previous_mode_is_visual returns false for non-visual modes	
+Success	||	Registers state initializes new fields to sane defaults	
+Success	||	Registers utils._read_registers populates filled registers into _register_values	
+Success	||	Registers utils._read_registers places empty registers into _empty_registers	
+Success	||	Registers utils._read_registers treats whitespace-only registers as empty when hide_only_whitespace=true	
+Success	||	Registers utils._read_registers replaces newline characters with the configured symbol	
+Success	||	Registers utils._handle_callback_options calls the callback immediately when delay is 0	
+Success	||	Registers utils._handle_callback_options skips callback when current mode is not in if_mode	
+Success	||	Registers utils._handle_callback_options runs the callback when current mode matches if_mode	
+Success	||	Registers utils._handle_callback_options runs the 'after' callback after the main cb	
+Success	||	Registers utils._longest_register_length returns 0 when no registers are loaded	
+Success	||	Registers utils._longest_register_length returns the length of the longest register line	
+Success	||	Registers highlights._highlight_for_sign returns the 'named' highlight for letter registers	
+Success	||	Registers highlights._highlight_for_sign returns the 'yank' highlight for register 0	
+Success	||	Registers highlights._highlight_for_sign returns the 'read_only' highlight for ':' register	
+Success	||	Registers mappings._fill_mappings populates lowercase register keys into state._mappings	
+Success	||	Registers mappings._fill_mappings does not populate reserved keys (normal/visual/insert/registers)	
+Success	||	Registers mappings._fill_mappings adds uppercase variants for named registers	
+	
+Success: 	23	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/loader_gods_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/unicode_names_spec.lua	
+Success	||	unicode.names resolve returns name from dictionary when available	
+Success	||	unicode.names resolve falls back to ranges when not in dictionary	
+Success	||	unicode.names resolve identifies Hangul Syllables	
+Success	||	unicode.names resolve identifies Ideograph Extension A	
+Success	||	unicode.names resolve identifies Ideograph Extension B	
+Success	||	unicode.names resolve identifies Ideograph Extension C	
+Success	||	unicode.names resolve identifies surrogates	
+Success	||	unicode.names resolve identifies Private Use Zone	
+Success	||	unicode.names resolve identifies exact special codepoints	
+Success	||	unicode.names resolve identifies plane boundary no-characters	
+Success	||	unicode.names resolve identifies Tangut Ideographs	
+Success	||	unicode.names resolve identifies Plane 15 private use	
+Success	||	unicode.names resolve identifies Plane 16 private use	
+Success	||	unicode.names resolve returns 'Character not found' for unknown codepoints	
+Success	||	unicode.names resolve prefers dictionary over range fallback	
+Success	||	unicode.names resolve handles nil dictionary	
+Success	||	unicode.names resolve identifies <No Character> range (FDD0-FDEF)	
+	
+Success: 	17	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/glyph_guard_ignore_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/loader_gods_spec.lua	
+Success	||	loader/gods parses greekgods.txt format	
+Success	||	loader/gods returns lowercase names	
+Success	||	loader/gods returns 'unknown' for missing file	
+Success	||	loader/gods returns a name from the real gods file	
+	
+Success: 	4	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/unicode_html_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/glyph_guard_ignore_spec.lua	
+Success	||	glyph_guard.ignore returns false matcher for empty list	
+Success	||	glyph_guard.ignore matches path segments by plain name	
+Success	||	glyph_guard.ignore does not match partial segments	
+Success	||	glyph_guard.ignore matches ** glob across path separators	
+Success	||	glyph_guard.ignore matches single * within a segment	
+	
+Success: 	5	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/components_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/unicode_html_spec.lua	
+Success	||	unicode.html_entities data structure is a table	
+Success	||	unicode.html_entities data structure has entries	
+Success	||	unicode.html_entities data structure keys are numbers	
+Success	||	unicode.html_entities data structure values are lists of strings	
+Success	||	unicode.html_entities known entities contains &amp; for U+0026	
+Success	||	unicode.html_entities known entities contains &lt; for U+003C	
+Success	||	unicode.html_entities known entities contains &gt; for U+003E	
+Success	||	unicode.html_entities known entities contains &nbsp; for U+00A0	
+Success	||	unicode.html_entities multiple entities per codepoint some codepoints have multiple entity names	
+Success	||	unicode.search.get_html_entity numeric fallback generates &#xHH; for printable ASCII without named entity	
+Success	||	unicode.search.get_html_entity numeric fallback returns empty for control characters < 32 (except 9, 10, 13)	
+Success	||	unicode.search.get_html_entity numeric fallback allows tab (9), newline (10), carriage return (13)	
+Success	||	unicode.search.get_html_entity numeric fallback returns empty for surrogate range	
+Success	||	unicode.search.get_html_entity numeric fallback returns empty for range 127-159	
+Success	||	unicode.search.get_html_entity numeric fallback returns all entities when all=true	
+	
+Success: 	15	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/system_spec.lua
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/components_spec.lua	
+Success	||	Components init exports init and setup functions	
+Success	||	Components beacon exports new and setup functions	
+Success	||	Components beacon has config table	
+Success	||	Components beacon config has default settings	
+Success	||	Components beacon new creates a beacon instance	
+Success	||	Components beacon config has on_motions	
+Success	||	Components color exports setup and color_line functions	
+Success	||	Components color has config with max_lines	
+Success	||	Components color has color_style config	
+Success	||	Components diagnostics exports setup, hover, and close functions	
+Success	||	Components diagnostics has config table	
+Success	||	Components diagnostics config has decoration settings	
+Success	||	Components highlights exports setup and utility functions	
+Success	||	Components highlights srgb_to_oklab converts correctly	
+Success	||	Components highlights oklab_to_srgb roundtrips	
+Success	||	Components highlights rgb_to_hex produces valid hex	
+Success	||	Components highlights mix blends two colors	
+Success	||	Components inspect_tree exports setup and utility functions	
+Success	||	Components inspect_tree has config table	
+Success	||	Components inspect_tree has instances tracking table	
+Success	||	Components inspect_tree stringify handles nil node gracefully	
+Success	||	Components motions exports add_event_listener function	
+Success	||	Components motions has mode and previous properties	
+Success	||	Components motions add_event_listener returns an id	
+Success	||	Components quickfix exports setup and core functions	
+Success	||	Components quickfix has namespace	
+Success	||	Components quickfix has should_decorate flag	
+Success	||	Components quickfix text returns formatted quickfix text	
+Success	||	Components tree_maps exports injections, anon, and named tables	
+Success	||	Components tree_maps injections has default entry	
+Success	||	Components tree_maps injections has language entries	
+Success	||	Components tree_maps named has language entries	
+Success	||	Components lsp_hover exports setup, hover, and config	
+Success	||	Components lsp_hover has update_quad function	
+Success	||	Components term_sync module loads without error	
+Success	||	Components tscli_sync exports setup and regenerate functions	
+Success	||	Components tscli_sync has config with parser directories	
+	
+Success: 	37	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Scheduling: /home/nicholas/.config/nvim/tests/unit/format_spec.lua
+`/tmp/nvim.nicholas/xfri7v/0` yanked to "+"
+`` yanked to "+"
+`~/test.txt` yanked to "+"
+Error in command line:
+Bad config file ...{}
+`/home/nicholas/.config/nvim` yanked to "+"
+Bad config file ...{}
+`/home/nicholas/.config/nvim` yanked to "+"
+Bad config file ...{}
+`/home/nicholas/.config/nvim` yanked to "+"
+Cannot trash: buffer has no associated file
+"nonexistent_file_12345.txt" sent to trash
+`/tmp/test.txt` yanked to "+"
+`/tmp/test with spaces & special.txt` yanked to "+"
+`/tmp/nvim.nicholas/xfri7v/1` yanked to "+"
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/system_spec.lua	
+Success	||	System Commands Module structure exports required functions	
+Success	||	System Commands yank_path yanks current file path to clipboard	
+Success	||	System Commands yank_path handles buffers with no file	
+Success	||	System Commands yank_path replaces HOME with tilde in notifications	
+Success	||	System Commands yank_cwd yanks current working directory	
+Success	||	System Commands yank_cwd handles missing project_nvim gracefully	
+Success	||	System Commands yank_cwd falls back to getcwd when project_nvim unavailable	
+Success	||	System Commands trash_file handles buffer with no file	
+Success	||	System Commands trash_file checks if file exists before trashing	
+Success	||	System Commands Edge cases handles empty HOME environment variable	
+Success	||	System Commands Edge cases handles special characters in file paths	
+Success	||	System Commands Register handling uses + register (system clipboard)	
+	
+Success: 	12	
+Failed : 	0	
+Errors : 	0	
+========================================	
+Not truncating log, wrong extension: txt
+
+========================================	
+Testing: 	/home/nicholas/.config/nvim/tests/unit/format_spec.lua	
+Success	||	Format Commands Module structure exports required functions	
+Success	||	Format Commands toggle_checkbox creates checkbox on plain line	
+Success	||	Format Commands toggle_checkbox creates checkbox on list item	
+Success	||	Format Commands toggle_checkbox creates checkbox on numbered list	
+Success	||	Format Commands toggle_checkbox checks unchecked checkbox	
+Success	||	Format Commands toggle_checkbox unchecks checked checkbox	
+Success	||	Format Commands toggle_checkbox handles checkbox with capital X	
+Success	||	Format Commands toggle_checkbox handles indented checkboxes	
+Success	||	Format Commands toggle_checkbox preserves cursor position	
+Success	||	Format Commands toggle_checkbox handles empty line	
+Success	||	Format Commands toggle_checkbox handles bullet points with asterisk	
+Success	||	Format Commands toggle_checkbox handles bullet points with plus	
+Success	||	Format Commands truncate_log only works on .log files	
+Success	||	Format Commands trim_space removes trailing whitespace	
+Success	||	Format Commands trim_space handles empty lines	
+Success	||	Format Commands trim_space preserves leading whitespace	
+Success	||	Format Commands trim_space handles buffer with no trailing whitespace	
+Success	||	Format Commands Edge cases handles modifiable buffer check	
+	
+Success: 	18	
+Failed : 	0	
+Errors : 	0	
+========================================	
+✓ Plenary tests passed
+
+Running Mini.test (Integration) Tests...
+Running integration tests from: /home/nicholas/.config/nvim/tests/integration
+
+
+Tests completed
+Total number of cases: 17
+Total number of groups: 9
+
+/home/nicholas/.config/nvim/tests/integration/test_config.lua | buffer_operations: oo
+/home/nicholas/.config/nvim/tests/integration/test_config.lua | window_operations: oo
+/home/nicholas/.config/nvim/tests/integration/test_config.lua | autocommands: o
+/home/nicholas/.config/nvim/tests/integration/test_config.lua | keymaps: o
+/home/nicholas/.config/nvim/tests/integration/test_config.lua | options: oo
+/home/nicholas/.config/nvim/tests/integration/test_plugin_loading.lua | module_loading: ooo
+/home/nicholas/.config/nvim/tests/integration/test_plugin_loading.lua | filesystem: ooo
+/home/nicholas/.config/nvim/tests/integration/test_plugin_loading.lua | commands: Command not found: TestUnit
+Command not found: TestIntegration
+Command not found: TestAll
+Command not found: TestFile
+Command not found: TestNearesto
+/home/nicholas/.config/nvim/tests/integration/test_plugin_loading.lua | highlights: oo
+
+Fails (0) and Notes (0)
+✓ Mini.test tests passed
+
+========================================
+All tests passed!
