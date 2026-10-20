@@ -197,5 +197,19 @@
     ],
     "deny": [],
     "ask": []
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/todo-reminder.py 2>/dev/null || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }

@@ -5,6 +5,14 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.1] - 2026-10-19
+
+### Added
+
+- Claude Code `SessionStart` hook (`.claude/hooks/todo-reminder.py`, registered in `.claude/settings.local.json`).
+  On each new session it shows a one-line count of open `TODO.md` items per section, and passes the full
+  list to Claude as context so it can remind you and ask what to work on.
+
 ## [0.12.0] - 2026-10-19
 
 ### Added
