@@ -2,7 +2,7 @@ local null_ls = vim.F.npcall(require, 'null-ls')
 local uv = vim.uv
 
 local is_absolute = function(path)
-    vim.validate { path = { path, 'string' } }
+    vim.validate("path", path, 'string')
     assert(path ~= '', debug.traceback 'Empty path')
     if path:sub(1, 1) == '~' then
         path = path:gsub('~', uv.os_homedir())

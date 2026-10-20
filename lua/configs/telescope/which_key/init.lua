@@ -170,7 +170,7 @@ local what_key = function(prompt_bufnr, opts)
     local row_ = highlight_tbl.row
     local col = highlight_tbl.col
     for _, hl_block in ipairs(highlight) do
-      vim.api.nvim_buf_add_highlight(
+      require("utils.hl").add_highlight(
         km_buf,
         keymap_highlights,
         hl_block[2],

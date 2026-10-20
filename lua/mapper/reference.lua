@@ -32,8 +32,12 @@ keymap("n", "-", "/")
 keymap("x", "-", "<Esc>/\\%V", { desc = "Search IN sel" })
 
 -- Diagnostics
-keymap("n", "ge", vim.diagnostic.goto_next, { desc = "󰒕 Next Diagnostic" })
-keymap("n", "gE", vim.diagnostic.goto_prev, { desc = "󰒕 Previous Diagnostic" })
+keymap("n", "ge", function()
+  vim.diagnostic.jump({ count = 1, float = true })
+end, { desc = "󰒕 Next Diagnostic" })
+keymap("n", "gE", function()
+  vim.diagnostic.jump({ count = -1, float = true })
+end, { desc = "󰒕 Previous Diagnostic" })
 keymap({ "n", "v", "i" }, "<D-g>", vim.lsp.buf.signature_help, { desc = "󰏪 Signature" })
 
 -- needs remapping since `gf` is used for LSP-references

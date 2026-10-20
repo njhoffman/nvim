@@ -4,7 +4,7 @@ local default_cfg = {
   editSnippetPopup = {
     height = 0.4, -- relative to the window, between 0-1
     width = 0.6,
-    border = vim.fn.has("nvim-0.11") == 1 and vim.o.winborder or "rounded",
+    border = vim.o.winborder,
     keymaps = {
       -- if not mentioned otherwise, the keymaps apply to normal mode
       cancel = "q",

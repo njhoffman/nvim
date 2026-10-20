@@ -9,16 +9,10 @@ M.add = function(fn)
 end
 --Validates args for `throttle()` and  `debounce()`.
 local function td_validate(fn, ms)
-  vim.validate({
-    fn = { fn, 'f' },
-    ms = {
-      ms,
-      function(ms)
+  vim.validate("fn", fn, 'function')
+  vim.validate("ms", ms, function(ms)
         return type(ms) == 'number' and ms > 0
-      end,
-      'number > 0',
-    },
-  })
+      end, 'number > 0')
 end
 
 --https://gist.github.com/runiq/31aa5c4bf00f8e0843cd267880117201
@@ -33,16 +27,10 @@ local M = {}
 
 ---Validates args for `throttle()` and  `debounce()`.
 local function td_validate(fn, ms)
-  vim.validate({
-    fn = { fn, 'f' },
-    ms = {
-      ms,
-      function(inner_ms)
+  vim.validate("fn", fn, 'function')
+  vim.validate("ms", ms, function(inner_ms)
         return type(inner_ms) == 'number' and inner_ms > 0
-      end,
-      'number > 0',
-    },
-  })
+      end, 'number > 0')
 end
 
 --- Throttles a function on the leading edge. Automatically `schedule_wrap()`s.

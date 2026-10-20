@@ -37,7 +37,6 @@ local diag_cfg = {
 -- Configure diagnostic signs
 local function setup_signs()
   local icons = require("lsp.icons").get_icons("diagnostics")
-  local is_legacy = not vim.fn.has("nvim-0.10.0")
 
   if type(diag_cfg.signs) ~= "table" then
     diag_cfg.signs = { priority = opts.signs_priority }
@@ -52,13 +51,9 @@ local function setup_signs()
       priority = opts.signs_priority,
     }
 
-    if is_legacy then
-      vim.fn.sign_define(name, props)
-    else
-      for _, attr in ipairs({ "text", "texthl", "numhl" }) do
-        diag_cfg.signs[attr] = diag_cfg.signs[attr] or {}
-        diag_cfg.signs[attr][idx] = props[attr]
-      end
+    for _, attr in ipairs({ "text", "texthl", "numhl" }) do
+      diag_cfg.signs[attr] = diag_cfg.signs[attr] or {}
+      diag_cfg.signs[attr][idx] = props[attr]
     end
   end
 

@@ -9,9 +9,9 @@ before starting an item.
 The nvim build jumped from v0.13.0-dev-167 to v0.13.0-dev-1915. The `nvim_get_commands()`
 `definition` change already broke one test. Counts exclude the vendored `lua/plenary/`.
 
-- [ ] Run `:checkhealth vim.deprecated` after a full startup to catch runtime-only usages,
+- [x] Run `:checkhealth vim.deprecated` after a full startup to catch runtime-only usages,
       including ones coming from plugins and shadowed plugin modules
-- [ ] Replace deprecated APIs (hits / files):
+- [x] Replace deprecated APIs (hits / files):
 
 | Deprecated                                          | Replacement                                         | Hits | Files |
 | --------------------------------------------------- | --------------------------------------------------- | ---- | ----- |
@@ -40,10 +40,19 @@ The nvim build jumped from v0.13.0-dev-167 to v0.13.0-dev-1915. The `nvim_get_co
 | `vim.region`                                        | `vim.fn.getregionpos`                               | 1    | 1     |
 | `nvim-treesitter.ts_utils`, `query.get_node_text`   | `vim.treesitter.get_node_text`, `vim.treesitter.*`  | 20   | 9     |
 
-- [ ] Audit `nvim_get_commands()` consumers for the empty `definition` on Lua-callback commands
+- [x] Audit `nvim_get_commands()` consumers for the empty `definition` on Lua-callback commands
       (read `desc` instead)
-- [ ] Drop `vim.fn.has("nvim-0.x")` guards for versions older than the current build
-- [ ] Add a test or lint rule that fails on the patterns above so they don't come back
+- [x] Drop `vim.fn.has("nvim-0.x")` guards for versions older than the current build
+- [x] Add a test or lint rule that fails on the patterns above so they don't come back
+
+**Status (v0.13.0-v0.14.0):** done for the config repo. `tests/unit/deprecated_api_spec.lua` now fails on any of
+these patterns. Not cleaned up:
+
+- Deprecations inside third-party plugins in `lazy/`: copilot-cmp, hydra, git-conflict, bigfile, colortils,
+  telescope-import, alpha, rest.nvim and a few telescope extensions. Fixing these means upstream issues or PRs.
+- `~/git/telescope.nvim`: left its 180 `vim.F.if_nil` calls alone. Its CI tests stable and v0.10.4, but
+  `vim.nonnil` needs 0.13, and the edit would conflict with upstream merges. They only warn until 0.15.
+- `~/git/nvim-hlslens` and `~/git/what-key.nvim`: their remaining hits are in files with uncommitted work.
 
 ## 2. Remove orphaned config and code
 

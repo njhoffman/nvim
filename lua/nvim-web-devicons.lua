@@ -141,13 +141,8 @@ local function highlight_exists(group)
     return
   end
 
-  if vim.fn.has "nvim-0.9" == 1 then
-    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
-    return not vim.tbl_isempty(hl)
-  else
-    local ok, hl = pcall(vim.api.nvim_get_hl_by_name, group, true) ---@diagnostic disable-line: deprecated
-    return ok and not (hl or {})[true]
-  end
+  local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+  return not vim.tbl_isempty(hl)
 end
 
 function M.set_up_highlights(allow_override)
@@ -173,12 +168,7 @@ local function get_highlight_foreground(icon_data)
 
   local higroup = get_highlight_name(icon_data)
 
-  local fg
-  if vim.fn.has "nvim-0.9" == 1 then
-    fg = vim.api.nvim_get_hl(0, { name = higroup, link = false }).fg
-  else
-    fg = vim.api.nvim_get_hl_by_name(higroup, true).foreground ---@diagnostic disable-line: deprecated
-  end
+  local fg = vim.api.nvim_get_hl(0, { name = higroup, link = false }).fg
 
   return string.format("#%06x", fg)
 end
@@ -190,13 +180,9 @@ local function get_highlight_ctermfg(icon_data)
 
   local higroup = get_highlight_name(icon_data)
 
-  if vim.fn.has "nvim-0.9" == 1 then
-    --- @type string
-    --- @diagnostic disable-next-line: undefined-field  vim.api.keyset.hl_info specifies cterm, not ctermfg
-    return vim.api.nvim_get_hl(0, { name = higroup, link = false }).ctermfg
-  else
-    return vim.api.nvim_get_hl_by_name(higroup, false).foreground ---@diagnostic disable-line: deprecated
-  end
+  --- @type string
+  --- @diagnostic disable-next-line: undefined-field  vim.api.keyset.hl_info specifies cterm, not ctermfg
+  return vim.api.nvim_get_hl(0, { name = higroup, link = false }).ctermfg
 end
 
 local function apply_user_icons()

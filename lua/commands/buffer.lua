@@ -118,7 +118,7 @@ M.open_popup = function()
   local bufnr = vim.api.nvim_win_get_buf(state.popup_winid)
   vim.api.nvim_set_option_value("modifiable", false, { buf = bufnr })
   map("n", "<CR>", "<Cmd> lua require('commands.buffer').select_file_in_history()<CR>", { buffer = bufnr })
-  vim.api.nvim_buf_add_highlight(bufnr, 0, "Identifier", #h.bufs - h.index, 0, -1)
+  require("utils.hl").add_highlight(bufnr, 0, "Identifier", #h.bufs - h.index, 0, -1)
   vim.api.nvim_set_option_value(
     "winhl",
     "CursorLineNr:Search,CursorLine:Search",

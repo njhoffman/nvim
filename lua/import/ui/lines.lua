@@ -62,7 +62,7 @@ end
 local apply_highlights = function(highlights, linenum, bufnr)
   for i, line in pairs(highlights) do
     for _, hl in pairs(line) do
-      vim.api.nvim_buf_add_highlight(bufnr, 0, hl[1], linenum - 1 + i, hl[2], hl[3])
+      require("utils.hl").add_highlight(bufnr, 0, hl[1], linenum - 1 + i, hl[2], hl[3])
     end
   end
 end

@@ -192,7 +192,7 @@ local function trim_space(opts, preview_ns, preview_buf)
     if startidx ~= nil then
       -- Highlight the match if in command preview mode
       if preview_ns ~= nil then
-        vim.api.nvim_buf_add_highlight(
+        require("utils.hl").add_highlight(
           buf,
           preview_ns,
           "Substitute",
@@ -213,7 +213,7 @@ local function trim_space(opts, preview_ns, preview_buf)
             0,
             { prefix .. line }
           )
-          vim.api.nvim_buf_add_highlight(
+          require("utils.hl").add_highlight(
             preview_buf,
             preview_ns,
             "Substitute",

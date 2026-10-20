@@ -10,8 +10,6 @@ end
 M.lsp_format = function()
   if type(vim.lsp.buf.format) == 'function' then
     vim.lsp.buf.format()
-  elseif type(vim.lsp.buf.formatting_sync) == 'function' then
-    vim.lsp.buf.formatting_sync()
   end
 end
 

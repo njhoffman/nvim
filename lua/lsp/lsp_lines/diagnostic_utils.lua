@@ -61,10 +61,8 @@ local function prefix_source(diagnostics)
 end
 
 local function reformat_diagnostics(format, diagnostics)
-  vim.validate({
-    format = { format, "function" },
-    diagnostics = { diagnostics, "table" },
-  })
+  vim.validate("format", format, "function")
+  vim.validate("diagnostics", diagnostics, "table")
 
   local formatted = vim.deepcopy(diagnostics)
   for _, diagnostic in ipairs(formatted) do

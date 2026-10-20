@@ -129,7 +129,7 @@ local function silence_stop()
     vim.schedule(function()
       for _, client in ipairs(state.lsp_clients) do
         if client and client.name then
-          vim.lsp.start_client(client)
+          vim.lsp.start(client.config)
         end
       end
     end)

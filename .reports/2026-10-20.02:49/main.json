@@ -1,0 +1,104 @@
+{"header" : {
+  "cloc_url"           : "github.com/AlDanial/cloc",
+  "cloc_version"       : "2.04",
+  "elapsed_seconds"    : 6.04113411903381,
+  "n_files"            : 2035,
+  "n_lines"            : 291263,
+  "files_per_second"   : 336.857278766303,
+  "lines_per_second"   : 48213.2980763193,
+  "report_file"        : "/home/nicholas/.config/nvim/.reports/2026-10-20.02:49/main.json"},
+"Lua" :{
+  "nFiles": 1760,
+  "blank": 22507,
+  "comment": 44539,
+  "code": 184399},
+"vim script" :{
+  "nFiles": 146,
+  "blank": 2271,
+  "comment": 2419,
+  "code": 10880},
+"Text" :{
+  "nFiles": 18,
+  "blank": 1744,
+  "comment": 0,
+  "code": 10147},
+"Markdown" :{
+  "nFiles": 25,
+  "blank": 1143,
+  "comment": 0,
+  "code": 4943},
+"Scheme" :{
+  "nFiles": 32,
+  "blank": 212,
+  "comment": 251,
+  "code": 900},
+"JSON" :{
+  "nFiles": 11,
+  "blank": 0,
+  "comment": 0,
+  "code": 887},
+"TOML" :{
+  "nFiles": 9,
+  "blank": 241,
+  "comment": 21,
+  "code": 650},
+"YAML" :{
+  "nFiles": 6,
+  "blank": 189,
+  "comment": 31,
+  "code": 628},
+"C" :{
+  "nFiles": 2,
+  "blank": 40,
+  "comment": 13,
+  "code": 478},
+"C/C++ Header" :{
+  "nFiles": 3,
+  "blank": 91,
+  "comment": 64,
+  "code": 476},
+"Bourne Shell" :{
+  "nFiles": 10,
+  "blank": 85,
+  "comment": 35,
+  "code": 456},
+"JavaScript" :{
+  "nFiles": 4,
+  "blank": 28,
+  "comment": 39,
+  "code": 168},
+"INI" :{
+  "nFiles": 2,
+  "blank": 58,
+  "comment": 0,
+  "code": 113},
+"Python" :{
+  "nFiles": 2,
+  "blank": 11,
+  "comment": 4,
+  "code": 39},
+"HTML" :{
+  "nFiles": 1,
+  "blank": 6,
+  "comment": 1,
+  "code": 33},
+"TypeScript" :{
+  "nFiles": 2,
+  "blank": 5,
+  "comment": 0,
+  "code": 16},
+"AppleScript" :{
+  "nFiles": 1,
+  "blank": 0,
+  "comment": 0,
+  "code": 1},
+"zsh" :{
+  "nFiles": 1,
+  "blank": 0,
+  "comment": 0,
+  "code": 1},
+"SUM": {
+  "blank": 28631,
+  "comment": 47417,
+  "code": 215215,
+  "nFiles": 2035} }

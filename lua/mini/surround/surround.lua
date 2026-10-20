@@ -313,9 +313,7 @@ H.get_matched_node_pairs_builtin = function(captures)
     Config.error_treesitter("parser", lang)
   end
 
-  local get_query = vim.fn.has("nvim-0.9") == 1 and vim.treesitter.query.get
-    or vim.treesitter.get_query
-  local query = get_query(lang, "textobjects")
+  local query = vim.treesitter.query.get(lang, "textobjects")
   if query == nil then
     Config.error_treesitter("query", lang)
   end
@@ -503,7 +501,7 @@ H.get_marks_pos = function(mode)
     -- Use `math.min()` because it might lead to 'index out of range' error
     -- when mark is positioned at the end of line (that extra space which is
     -- selected when selecting with `v$`)
-    local utf_index = vim.str_utfindex(line2, math.min(#line2, pos2[2]))
+    local utf_index = vim.str_utfindex(line2, "utf-32", math.min(#line2, pos2[2]), false)
     -- This returns the last byte inside character because `vim.str_byteindex()`
     -- 'rounds upwards to the end of that sequence'.
     pos2[2] = vim.str_byteindex(line2, utf_index)

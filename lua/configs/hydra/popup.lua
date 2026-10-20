@@ -44,7 +44,7 @@ function create_window(bufnr, height, width)
   })
   vim.wo[winid].cursorline = true
   vim.wo[winid].winhl = 'NormalFloat:TelescopePromptNormal,FloatBorder:TelescopePromptBorder'
-  vim.api.nvim_exec('stopinsert', true)
+  vim.cmd.stopinsert()
   return winid
 end
 

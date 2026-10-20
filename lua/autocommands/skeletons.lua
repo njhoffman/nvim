@@ -332,7 +332,7 @@ vim.api.nvim_create_autocmd("FileType", {
 --         local row = vim.fn.readfile(fname, '', 1)[1]
 --         local lang = vim.split(row, '%s')[2]
 --         vim.treesitter.start(opt.buf, lang)
---         api.nvim_buf_add_highlight(opt.buf, 0, 'Comment', 0, 0, -1)
+--         require("utils.hl").add_highlight(opt.buf, 0, 'Comment', 0, 0, -1)
 --         return
 --       end
 --

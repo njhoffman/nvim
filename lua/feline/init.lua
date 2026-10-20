@@ -1,11 +1,5 @@
 local api = vim.api
 
--- Check if Neovim version is 0.9 or greater
-if vim.fn.has('nvim-0.9') ~= 1 then
-  api.nvim_echo({ { 'Feline is only available for Neovim versions 0.9 and above.' } }, true, { err = true })
-  return
-end
-
 local utils = require('feline.utils')
 local defaults = require('feline.defaults')
 local themes = utils.lazy_require('feline.themes')

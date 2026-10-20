@@ -44,8 +44,8 @@ local yank_surround_indent = function()
 
   -- highlight yanked text
   local ns = vim.api.nvim_create_namespace("ysii")
-  vim.api.nvim_buf_add_highlight(0, ns, "IncSearch", startLn, 0, -1)
-  vim.api.nvim_buf_add_highlight(0, ns, "IncSearch", endLn, 0, -1)
+  require("utils.hl").add_highlight(0, ns, "IncSearch", startLn, 0, -1)
+  require("utils.hl").add_highlight(0, ns, "IncSearch", endLn, 0, -1)
   vim.defer_fn(function()
     vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
   end, 1000)

@@ -64,15 +64,6 @@ local H = {}
 ---   require('mini.comment').setup({}) -- replace {} with your config table
 --- <
 MiniComment.setup = function(config)
-  -- TODO: Remove after Neovim=0.8 support is dropped
-  if vim.fn.has("nvim-0.9") == 0 then
-    vim.notify(
-      "(mini.comment) Neovim<0.9 is soft deprecated (module works but not supported)."
-        .. ' It will be deprecated after next "mini.nvim" release (module might not work).'
-        .. " Please update your Neovim version."
-    )
-  end
-
   -- Export module
   _G.MiniComment = MiniComment
 
@@ -401,11 +392,6 @@ end
 ---@return string Relevant value of 'commentstring'.
 MiniComment.get_commentstring = function(ref_position)
   local buf_cs = vim.bo.commentstring
-
-  -- Neovim<0.9 can only have buffer 'commentstring'
-  if vim.fn.has("nvim-0.9") == 0 then
-    return buf_cs
-  end
 
   -- TODO: Remove `opts.error` after compatibility with Neovim=0.11 is dropped
   local has_parser, parser = pcall(vim.treesitter.get_parser, 0, nil, { error = false })

@@ -1,4 +1,15 @@
-local ts_utils = require("nvim-treesitter.ts_utils")
+-- Port of nvim-treesitter.ts_utils.get_vim_range (removed on nvim-treesitter main):
+-- 0-indexed, end-exclusive TS range -> 1-indexed, end-inclusive vim range
+local function get_vim_range(range, buf)
+  local srow, scol, erow, ecol = unpack(range)
+  srow, scol, erow = srow + 1, scol + 1, erow + 1
+  if ecol == 0 then
+    erow = erow - 1
+    local line = vim.api.nvim_buf_get_lines(buf or 0, erow - 1, erow, false)[1] or ""
+    ecol = math.max(#line, 1)
+  end
+  return srow, scol, erow, ecol
+end
 
 local hl_stub = function()
   local bufnr = vim.api.nvim_get_current_buf()
@@ -35,7 +46,7 @@ local function ts_range_highlights(bufnr, buf_range)
       local name = query.captures[id]
       for _, node in ipairs(nodes) do
         local node_data = metadata[id] -- Node level metadata
-        local node_range = table.pack(ts_utils.get_vim_range({ node:range() }, bufnr))
+        local node_range = table.pack(get_vim_range({ node:range() }, bufnr))
         if
           (range[1] <= 0 or node_range[1] >= range[1])
           and (range[2] <= 0 or node_range[2] <= range[2])

@@ -279,7 +279,7 @@ function popup.create(what, vim_options)
   if vim_options.wrap ~= nil then
     -- set_option wrap should/will trigger autocmd, see https://github.com/neovim/neovim/pull/13247
     if vim_options.noautocmd then
-      vim.cmd(string.format("noautocmd lua vim.api.nvim_set_option(%s, wrap, %s)", win_id, vim_options.wrap))
+      vim.cmd(string.format("noautocmd lua vim.api.nvim_set_option_value('wrap', %s, { win = %s })", vim_options.wrap, win_id))
     else
       vim.api.nvim_set_option_value("wrap", vim_options.wrap, { win = win_id })
     end

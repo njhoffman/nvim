@@ -7,10 +7,7 @@ local parser_installed = function(parser_name)
     or vim.treesitter.query.get(parser_name, "highlights")
 end
 
-if vim.fn.has("nvim-0.10") == 0 then
-  warn(" [ Helpview.nvim ] : This plugin is only available for Neovim 0.10 and above! Aborting.")
-  return
-elseif not parser_installed("vimdoc") then
+if not parser_installed("vimdoc") then
   warn(" [ Helpview.nvim ] : Treesitter parser for vimdoc isn't installed! Aborting.")
   return
 end

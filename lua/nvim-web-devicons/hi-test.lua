@@ -50,7 +50,7 @@ function IconDisplay:render(bufnr, max_tag_len, max_group_len, l)
   if vim.fn.has "nvim-0.11" == 1 and vim.hl and vim.hl.range then
     vim.hl.range(bufnr, namespace_hi_test_id, self.group, { l, 0 }, { l, -1 }, {})
   else
-    vim.api.nvim_buf_add_highlight(bufnr, -1, self.group, l, 0, -1) ---@diagnostic disable-line: deprecated
+    require("utils.hl").add_highlight(bufnr, -1, self.group, l, 0, -1)
   end
 
   return l + 1

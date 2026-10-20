@@ -302,19 +302,19 @@ function! smoothie#benchmark#show_stats()
   for l:line in l:lines
     " Borders
     if l:line =~# '^[╔╠╚═]'
-      call nvim_buf_add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkBorder', l:line_num, 0, -1)
+      call v:lua.require'utils.hl'.add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkBorder', l:line_num, 0, -1)
     " Main header
     elseif l:line =~# 'BENCHMARK STATISTICS'
-      call nvim_buf_add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkHeader', l:line_num, 0, -1)
+      call v:lua.require'utils.hl'.add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkHeader', l:line_num, 0, -1)
     " Section headers
     elseif l:line =~# 'METRICS'
-      call nvim_buf_add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkHeader', l:line_num, 0, -1)
+      call v:lua.require'utils.hl'.add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkHeader', l:line_num, 0, -1)
     " Data rows
     elseif l:line =~# '║.*:.*║'
       let l:colon_pos = stridx(l:line, ':')
       if l:colon_pos >= 0
         " Highlight label (before colon)
-        call nvim_buf_add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkLabel', l:line_num, 1, l:colon_pos)
+        call v:lua.require'utils.hl'.add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkLabel', l:line_num, 1, l:colon_pos)
         " Highlight value (after colon, excluding units)
         let l:value_start = l:colon_pos
         let l:value_end = len(l:line) - 1
@@ -330,10 +330,10 @@ function! smoothie#benchmark#show_stats()
           endif
         endfor
         if l:unit_start >= 0
-          call nvim_buf_add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkValue', l:line_num, l:value_start, l:unit_start)
-          call nvim_buf_add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkUnit', l:line_num, l:unit_start, l:value_end)
+          call v:lua.require'utils.hl'.add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkValue', l:line_num, l:value_start, l:unit_start)
+          call v:lua.require'utils.hl'.add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkUnit', l:line_num, l:unit_start, l:value_end)
         else
-          call nvim_buf_add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkValue', l:line_num, l:value_start, l:value_end)
+          call v:lua.require'utils.hl'.add_highlight(l:buf, l:ns_id, 'SmoothieBenchmarkValue', l:line_num, l:value_start, l:value_end)
         endif
       endif
     endif

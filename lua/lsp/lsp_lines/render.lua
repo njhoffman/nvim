@@ -55,16 +55,10 @@ function M.show(namespace, bufnr, diagnostics, opts, source)
   if not vim.api.nvim_buf_is_loaded(bufnr) then
     return
   end
-  vim.validate({
-    namespace = { namespace, "number" },
-    bufnr = { bufnr, "number" },
-    diagnostics = {
-      diagnostics,
-      vim.islist,
-      "a list of diagnostics",
-    },
-    opts = { opts, "table", true },
-  })
+  vim.validate("namespace", namespace, "number")
+  vim.validate("bufnr", bufnr, "number")
+  vim.validate("diagnostics", diagnostics, vim.islist, "a list of diagnostics")
+  vim.validate("opts", opts, "table", true)
 
   table.sort(diagnostics, function(a, b)
     if a.lnum ~= b.lnum then

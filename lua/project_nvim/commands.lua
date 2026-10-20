@@ -59,10 +59,9 @@ local on_buf_enter = function(ev)
   set_pwd(root_path, method)
 end
 
----@diagnostic disable-next-line: unused-local
 local on_attach_lsp = function(client, bufnr)
   logger:trace("attaching lsp: " .. client.name)
-  on_buf_enter() -- Recalculate root dir after lsp attaches
+  on_buf_enter({ event = "LspAttach", buf = bufnr }) -- Recalculate root dir after lsp attaches
 end
 
 local attach_to_lsp = function()
@@ -70,19 +69,17 @@ local attach_to_lsp = function()
     return
   end
 
-  local start_client = vim.schedule_wrap(vim.lsp.start_client)
-  vim.lsp.start_client = function(lsp_config)
-    if lsp_config.on_attach == nil then
-      lsp_config.on_attach = on_attach_lsp
-    else
-      local _on_attach = lsp_config.on_attach
-      lsp_config.on_attach = function(client, bufnr)
-        on_attach_lsp(client, bufnr)
-        _on_attach(client, bufnr)
+  -- LspAttach fires for clients started by vim.lsp.start/vim.lsp.enable; the old
+  -- vim.lsp.start_client monkey-patch never ran for those (and returned nil)
+  vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("project_nvim_lsp_attach", { clear = true }),
+    callback = function(args)
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      if client then
+        on_attach_lsp(client, args.buf)
       end
-    end
-    return start_client(lsp_config)
-  end
+    end,
+  })
   state.attached_lsp = true
 end
 

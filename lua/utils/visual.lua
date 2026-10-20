@@ -11,7 +11,7 @@ local defaults = {
   -- Works on older versions but has to trigger redraws during animation.
   ---@type snacks.animate.Config|{enabled?: boolean}
   animate = {
-    enabled = vim.fn.has("nvim-0.10") == 1,
+    enabled = true,
     easing = "outQuad",
     duration = {
       step = 20, -- ms per step

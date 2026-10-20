@@ -263,7 +263,7 @@ local function command_preview(opts, preview_ns, preview_buf)
   for _, hl in ipairs(highlights) do
     local hl_group = command.hl_groups[hl.kind]
     if hl_group ~= false then
-      api.nvim_buf_add_highlight(
+      require("utils.hl").add_highlight(
         bufnr,
         preview_ns,
         hl_group,
@@ -325,10 +325,8 @@ end
 
 local validate_config = function(config)
   local defaults = config.defaults
-  vim.validate({
-    defaults = { defaults, "table", true },
-    commands = { config.commands, "table" },
-  })
+  vim.validate("defaults", defaults, "table", true)
+  vim.validate("commands", config.commands, "table")
   local possible_opts = { "enable_highlighting", "inline_highlighting", "hl_groups" }
   for _, command in pairs(config.commands) do
     for _, opt in ipairs(possible_opts) do
@@ -340,14 +338,12 @@ local validate_config = function(config)
     end
     command.hl_groups = vim.tbl_deep_extend("force", {}, M.defaults.hl_groups, command.hl_groups)
 
-    vim.validate({
-      cmd = { command.cmd, "string" },
-      args = { command.args, { "string", "function" }, true },
-      range = { command.range, { "string" }, true },
-      ["command.enable_highlighting"] = { command.enable_highlighting, "boolean", true },
-      ["command.inline_highlighting"] = { command.inline_highlighting, "boolean", true },
-      ["command.hl_groups"] = { command.hl_groups, "table", true },
-    })
+    vim.validate("cmd", command.cmd, "string")
+    vim.validate("args", command.args, { "string", "function" }, true)
+    vim.validate("range", command.range, { "string" }, true)
+    vim.validate("command.enable_highlighting", command.enable_highlighting, "boolean", true)
+    vim.validate("command.inline_highlighting", command.inline_highlighting, "boolean", true)
+    vim.validate("command.hl_groups", command.hl_groups, "table", true)
   end
 end
 
@@ -399,14 +395,6 @@ end
 M.setup = function(user_config)
   -- Avoid an infinite loop when invoked from a child process
   if vim.env.LIVECOMMAND_NVIM_SERVER == "1" then
-    return
-  end
-
-  if vim.fn.has("nvim-0.8.0") ~= 1 then
-    vim.notify(
-      "[live-command] This plugin requires at least Neovim 0.8. Please upgrade your Neovim version.",
-      vim.log.levels.ERROR
-    )
     return
   end
 

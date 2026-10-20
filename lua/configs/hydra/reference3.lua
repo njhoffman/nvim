@@ -373,10 +373,10 @@ for _, value in pairs({
       on_enter = function()
         if value == ',d' then
           -- diag.goto_next()
-          vim.cmd([[lua vim.diagnostic.goto_next({float = false})]])
+          vim.diagnostic.jump({ count = 1 })
         elseif value == ',D' then
           -- diag.goto_prev()
-          vim.cmd([[lua vim.diagnostic.goto_prev({float = false})]])
+          vim.diagnostic.jump({ count = -1 })
         elseif value == ',s' then
           aerial.open()
         end
@@ -406,9 +406,7 @@ for _, value in pairs({
           --[[ if ok then
                             diag.goto_next()
                         else ]]
-          vim.diagnostic.goto_next({
-            float = false,
-          })
+          vim.diagnostic.jump({ count = 1 })
           -- end
         end,
       },
@@ -418,9 +416,7 @@ for _, value in pairs({
           --[[ if ok then
                             diag.goto_prev()
                         else ]]
-          vim.diagnostic.goto_prev({
-            float = false,
-          })
+          vim.diagnostic.jump({ count = -1 })
           -- end
         end,
       },

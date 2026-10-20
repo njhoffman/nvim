@@ -74,7 +74,7 @@ local render_current_file = function(bufnr, notif, highlights)
   local msgs = { line }
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, msgs)
   for _, hl in pairs(hlmap) do
-    vim.api.nvim_buf_add_highlight(bufnr, ns_id, hl[1], 0, hl[2], hl[3])
+    require("utils.hl").add_highlight(bufnr, ns_id, hl[1], 0, hl[2], hl[3])
   end
 end
 

@@ -35,7 +35,7 @@ local commit_message = git_utils.defaulter(function(opts)
           for k, v in ipairs(hl_map) do
             local _, s = content[k]:find('%s')
             if s then
-              vim.api.nvim_buf_add_highlight(bufnr, ns_previewer, v, k - 1, s, #content[k])
+              require("utils.hl").add_highlight(bufnr, ns_previewer, v, k - 1, s, #content[k])
             end
           end
         end,

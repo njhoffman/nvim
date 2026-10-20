@@ -23,7 +23,7 @@ recall.setup({
     },
   },
 
-  wshada = vim.fn.has("nvim-0.10") == 0,
+  wshada = false,
 })
 
 -- stylua: ignore

@@ -300,12 +300,12 @@ local lsp_hydra = Hydra({
 
     {
       '[',
-      '<cmd>lua vim.diagnostic.goto_prev({ border = "rounded" })<CR>',
+      '<cmd>lua vim.diagnostic.jump({ count = -1, float = { border = "rounded" } })<CR>',
       { nowait = true, desc = 'diagnostic prev' },
     },
     {
       ']',
-      '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>',
+      '<cmd>lua vim.diagnostic.jump({ count = 1, float = { border = "rounded" } })<CR>',
       { nowait = true, desc = 'diagnostic next' },
     },
     { 'f', '<cmd>lua vim.diagnostic.open_float()<CR>', { nowait = true, desc = 'diagnostics float' } },

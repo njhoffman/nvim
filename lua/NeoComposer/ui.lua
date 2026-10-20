@@ -116,7 +116,7 @@ function ui.get_menu_items()
 end
 
 function ui.get_bg_color()
-	local output = vim.api.nvim_exec("highlight Normal", true)
+	local output = vim.api.nvim_exec2("highlight Normal", { output = true }).output
 	local bg_color = output:match("guibg=(#[0-9a-fA-F]+)")
 	return bg_color
 end

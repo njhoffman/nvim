@@ -129,16 +129,14 @@ local handler = {
 local function setup_hl()
   api.nvim_set_hl(0, HIGHLIGHT, {
     default = true,
-    --- @diagnostic disable-next-line: deprecated
-    fg = api.nvim_get_hl_by_name('Search', true).background,
+    fg = api.nvim_get_hl(0, { name = 'Search', link = false }).bg,
   })
 
-  --- @diagnostic disable-next-line: deprecated
-  local has_sc, sc_hl = pcall(api.nvim_get_hl_by_name, 'SearchCurrent', true)
-  if has_sc then
+  local sc_hl = api.nvim_get_hl(0, { name = 'SearchCurrent', link = false })
+  if not vim.tbl_isempty(sc_hl) then
     api.nvim_set_hl(0, HIGHLIGHT_CURRENT, {
       default = true,
-      fg = sc_hl.background,
+      fg = sc_hl.bg,
     })
   end
 end

@@ -298,73 +298,59 @@ end
 local function setup_user_config()
   __.user_config = vim.tbl_extend("force", __.default_config, get_user_config(__.user_config or {}))
 
-  vim.validate({
-    tint = { __.user_config.tint, "number" },
-    saturation = { __.user_config.saturation, "number" },
-    transforms = {
-      __.user_config.transforms,
-      function(val)
-        if type(val) == "string" then
-          return __.transforms[val]
-        elseif type(val) == "table" then
-          for _, v in ipairs(val) do
-            if type(v) ~= "function" then
-              return false
-            end
-          end
-
-          return true
-        elseif val == nil then
-          return true
+  vim.validate("tint", __.user_config.tint, "number")
+  vim.validate("saturation", __.user_config.saturation, "number")
+  vim.validate("transforms", __.user_config.transforms, function(val)
+    if type(val) == "string" then
+      return __.transforms[val]
+    elseif type(val) == "table" then
+      for _, v in ipairs(val) do
+        if type(v) ~= "function" then
+          return false
         end
+      end
 
+      return true
+    elseif val == nil then
+      return true
+    end
+
+    return false
+  end, "'tint' passed invalid value for option 'transforms'")
+  vim.validate("tint_background_colors", __.user_config.tint_background_colors, "boolean")
+  vim.validate("highlight_ignore_patterns", __.user_config.highlight_ignore_patterns, function(val)
+    for _, v in ipairs(val) do
+      if type(v) ~= "string" then
         return false
-      end,
-      "'tint' passed invalid value for option 'transforms'",
-    },
-    tint_background_colors = { __.user_config.tint_background_colors, "boolean" },
-    highlight_ignore_patterns = {
-      __.user_config.highlight_ignore_patterns,
-      function(val)
-        for _, v in ipairs(val) do
-          if type(v) ~= "string" then
-            return false
-          end
-        end
+      end
+    end
 
-        return true
-      end,
-      "'tint' passed invalid value for option 'highlight_ignore_patterns'",
-    },
-    window_ignore_function = { __.user_config.window_ignore_function, "function", true },
-    focus_change_events = {
-      __.user_config.focus_change_events,
-      function(val)
-        if type(val) ~= "table" then
-          return false
-        end
+    return true
+  end, "'tint' passed invalid value for option 'highlight_ignore_patterns'")
+  vim.validate("window_ignore_function", __.user_config.window_ignore_function, "function", true)
+  vim.validate("focus_change_events", __.user_config.focus_change_events, function(val)
+    if type(val) ~= "table" then
+      return false
+    end
 
-        if not val.focus or not val.unfocus then
-          return false
-        end
+    if not val.focus or not val.unfocus then
+      return false
+    end
 
-        for _, v in ipairs(val.focus) do
-          if type(v) ~= "string" then
-            return false
-          end
-        end
+    for _, v in ipairs(val.focus) do
+      if type(v) ~= "string" then
+        return false
+      end
+    end
 
-        for _, v in ipairs(val.unfocus) do
-          if type(v) ~= "string" then
-            return false
-          end
-        end
+    for _, v in ipairs(val.unfocus) do
+      if type(v) ~= "string" then
+        return false
+      end
+    end
 
-        return true
-      end,
-      "'tint' passed invalid value for option 'focus_change_events'",
-    },
-  })
+    return true
+  end, "'tint' passed invalid value for option 'focus_change_events'")
 
   __.user_config.transforms = get_transforms()
 end

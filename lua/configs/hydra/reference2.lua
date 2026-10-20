@@ -478,8 +478,8 @@ return function(use)
           end,
         },
         heads = {
-          { 'n', vim.diagnostic.goto_next, { exit = true } },
-          { 'p', vim.diagnostic.goto_prev, { exit = true } },
+          { 'n', function() vim.diagnostic.jump({ count = 1, float = true }) end, { exit = true } },
+          { 'p', function() vim.diagnostic.jump({ count = -1, float = true }) end, { exit = true } },
 
           { 'D', vim.lsp.buf.declaration, { exit = true } },
           { 'K', vim.lsp.buf.hover, { exit = true } },

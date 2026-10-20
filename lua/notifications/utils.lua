@@ -17,7 +17,7 @@ local build_line = function(bufnr, linenum, parts)
   -- vim.api.nvim_buf_set_lines(bufnr, linenum, -1, false, { line })
   baleia.buf_set_lines(bufnr, linenum, -1, false, { line })
   for _, hl in pairs(hls) do
-    vim.api.nvim_buf_add_highlight(bufnr, ns_id, hl[1], linenum, hl[2], hl[3])
+    require("utils.hl").add_highlight(bufnr, ns_id, hl[1], linenum, hl[2], hl[3])
   end
 end
 
@@ -51,7 +51,7 @@ local render_box = function(bufnr, highlights, title, width)
   local left_icon = ' '
   local right_title = title[2]
   local left_title = title[1]
-  local title_accum = vim.str_utfindex(left_icon) + vim.str_utfindex(right_title) + vim.str_utfindex(left_title)
+  local title_accum = vim.str_utfindex(left_icon, "utf-32") + vim.str_utfindex(right_title, "utf-32") + vim.str_utfindex(left_title, "utf-32")
 
   local left_buffer = string.rep(' ', math.max(0, width - title_accum))
   vim.api.nvim_buf_set_lines(bufnr, 0, 1, false, { '', '' })
@@ -72,7 +72,7 @@ local render_box = function(bufnr, highlights, title, width)
   vim.api.nvim_buf_set_extmark(bufnr, ns_id, 1, 0, {
     virt_text = {
       {
-        string.rep('━', math.max(vim.str_utfindex(left_buffer) + title_accum + 2, minimum_width)),
+        string.rep('━', math.max(vim.str_utfindex(left_buffer, "utf-32") + title_accum + 2, minimum_width)),
         highlights.border,
       },
     },

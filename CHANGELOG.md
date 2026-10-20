@@ -5,6 +5,47 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.14.0] - 2026-10-20
+
+TODO item 1 (deprecated Neovim APIs) is complete for the config repo.
+
+### Added
+
+- `lua/utils/hl.lua`: `add_highlight()`, an extmark-based replacement for `nvim_buf_add_highlight` with the same contract:
+  - `col_end = -1` highlights to end of line
+  - namespace 0 or -1 maps to a shared namespace
+  - out-of-range columns are clamped
+  - the namespace id is returned
+
+  Tests are in `tests/unit/utils_hl_spec.lua`.
+- `tests/unit/deprecated_api_spec.lua`: fails on any use of a deprecated or removed Neovim API in
+  `lua/`, `after/`, `plugin/` or `ftplugin/` (comments are ignored), listing each file and line.
+
+### Changed
+
+- `nvim_buf_add_highlight` -> `utils.hl.add_highlight`: 27 Lua sites, plus 7 VimL sites via `v:lua`
+- `nvim_get_hl_by_name` -> `nvim_get_hl` (devicons, satellite search handler); a missing group now returns `{}` instead of raising
+- `vim.diagnostic.goto_next` / `goto_prev` -> `vim.diagnostic.jump` with `float = true`, which keeps the old float default
+- Table-form `vim.validate{}` -> `vim.validate(name, value, validator, optional)`: 16 sites. Short type names (`'f'`) are expanded, since the new form rejects them.
+- Old-signature `vim.str_utfindex(s[, i])` -> explicit `"utf-32"` encoding
+- `nvim_exec` -> `nvim_exec2`
+- Dropped dead `vim.fn.has("nvim-0.8".."0.12")` guards and their legacy branches (qf ftplugin, telescope plugin, helpview, feline, live-command, mini.comment/surround, egrepify, recall, nvim-scissors, matchup hl-info)
+
+### Fixed
+
+- `project_nvim`: the `vim.lsp.start_client` monkey-patch never ran for clients started by `vim.lsp.start` / `vim.lsp.enable`, and it returned `nil` to callers. It is now an `LspAttach` autocmd, so the project root is actually recalculated when an LSP attaches.
+- `:Silence` / noice silence toggle: restarting LSP clients passed client objects (or a list) to `start_client`; now uses `vim.lsp.start(client.config)` per client
+- `tint` highlights required `nvim-treesitter.ts_utils`, which doesn't exist on the nvim-treesitter `main` branch; ported `get_vim_range` locally
+- `lsp/diagnostics.lua`: `not vim.fn.has(...)` was always false (0 is truthy in Lua); the dead legacy sign branch was removed
+- `gitops` LSP format helpers: removed fallbacks to the removed `vim.lsp.buf.formatting` / `formatting_sync`
+- Vendored plenary popup: a broken `nvim_set_option` format string (unquoted option name) now uses `nvim_set_option_value("wrap", ...)`
+
+### Linked `~/git` repos (committed locally, not pushed)
+
+- nvim-cmp, nvim-notify, noice.nvim: explicit encodings for `vim.str_utfindex`. This removes the runtime deprecation warnings from nvim-notify.
+- nvim-navbuddy, convey.nvim: `nvim_buf_add_highlight` -> extmarks
+- nvim-cmp, nvim-notify, ultimate-autopair, nvim-navbuddy, telescope: `vim.loop` -> `vim.uv` and the other mechanical renames. telescope gets `vim.uv` only, to stay within its CI floor of v0.10.4.
+
 ## [0.13.0] - 2026-10-19
 
 ### Fixed

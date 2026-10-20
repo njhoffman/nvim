@@ -321,29 +321,29 @@ function M.show_stats()
 
     -- Borders
     if line:match("^[╔╠╚═]") then
-      vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkBorder", line_num, 0, -1)
+      require("utils.hl").add_highlight(buf, ns_id, "SmoothieBenchmarkBorder", line_num, 0, -1)
     -- Main header
     elseif line:match("BENCHMARK STATISTICS") then
-      vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkHeader", line_num, 0, -1)
+      require("utils.hl").add_highlight(buf, ns_id, "SmoothieBenchmarkHeader", line_num, 0, -1)
     -- Section headers
     elseif line:match("METRICS") then
-      vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkHeader", line_num, 0, -1)
+      require("utils.hl").add_highlight(buf, ns_id, "SmoothieBenchmarkHeader", line_num, 0, -1)
     -- Data rows
     elseif line:match("║.*:.*║") then
       local colon_pos = line:find(":")
       if colon_pos then
         -- Highlight label (before colon)
-        vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkLabel", line_num, 1, colon_pos)
+        require("utils.hl").add_highlight(buf, ns_id, "SmoothieBenchmarkLabel", line_num, 1, colon_pos)
         -- Highlight value (after colon, excluding units)
         local value_start = colon_pos
         local value_end = #line - 1
         -- Check for units
         local unit_start = line:find(" [lm]/s", value_start) or line:find(" ms", value_start) or line:find("%%", value_start)
         if unit_start then
-          vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkValue", line_num, value_start, unit_start)
-          vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkUnit", line_num, unit_start, value_end)
+          require("utils.hl").add_highlight(buf, ns_id, "SmoothieBenchmarkValue", line_num, value_start, unit_start)
+          require("utils.hl").add_highlight(buf, ns_id, "SmoothieBenchmarkUnit", line_num, unit_start, value_end)
         else
-          vim.api.nvim_buf_add_highlight(buf, ns_id, "SmoothieBenchmarkValue", line_num, value_start, value_end)
+          require("utils.hl").add_highlight(buf, ns_id, "SmoothieBenchmarkValue", line_num, value_start, value_end)
         end
       end
     end

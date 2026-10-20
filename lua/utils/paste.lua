@@ -136,7 +136,7 @@ return { visual_paste_without_yank = visual_paste_without_yank }
 --
 --     if start_idx then
 --       -- Highlight the match
---       vim.api.nvim_buf_add_highlight(
+--       require("utils.hl").add_highlight(
 --         buf,
 --         preview_ns,
 --         'Substitute',
@@ -157,7 +157,7 @@ return { visual_paste_without_yank = visual_paste_without_yank }
 --           false,
 --           { prefix .. line }
 --         )
---         vim.api.nvim_buf_add_highlight(
+--         require("utils.hl").add_highlight(
 --           preview_buf,
 --           preview_ns,
 --           'Substitute',

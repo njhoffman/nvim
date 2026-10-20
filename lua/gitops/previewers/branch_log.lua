@@ -11,7 +11,7 @@ local branch_log = git_utils.defaulter(function(opts)
         local hend = hstart + 7
         if hend < #line then
           pcall(
-            vim.api.nvim_buf_add_highlight,
+            require("utils.hl").add_highlight,
             bufnr,
             ns_previewer,
             'TelescopeResultsIdentifier',
@@ -26,7 +26,7 @@ local branch_log = git_utils.defaulter(function(opts)
         local cend = string.find(line, '%) ')
         if cend then
           pcall(
-            vim.api.nvim_buf_add_highlight,
+            require("utils.hl").add_highlight,
             bufnr,
             ns_previewer,
             'TelescopeResultsConstant',
@@ -39,7 +39,7 @@ local branch_log = git_utils.defaulter(function(opts)
       local dstart, _ = line:find(' %(%d')
       if dstart then
         pcall(
-          vim.api.nvim_buf_add_highlight,
+          require("utils.hl").add_highlight,
           bufnr,
           ns_previewer,
           'TelescopeResultsSpecialComment',

@@ -33,7 +33,7 @@ local apply_highlights = function(bufnr, preview_ns, highlights, hl_groups)
   for _, hl in ipairs(highlights) do
     local hl_group = hl_groups[hl.kind]
     if hl_group ~= false then
-      api.nvim_buf_add_highlight(
+      require("utils.hl").add_highlight(
         bufnr,
         preview_ns,
         hl_group,
@@ -132,13 +132,6 @@ end
 
 ---@param user_config livecmd.Config?
 M.setup = function(user_config)
-  if vim.fn.has("nvim-0.8.0") ~= 1 then
-    vim.notify(
-      "[live-command] This plugin requires at least Neovim 0.8. Please upgrade to a more recent version of Neovim.",
-      vim.log.levels.ERROR
-    )
-    return
-  end
   cmd_executor = require("live-command.cmd_executor")
   merged_config = vim.tbl_deep_extend("force", M.default_config, user_config or {})
   require("live-command.config_validator").validate_config(merged_config)

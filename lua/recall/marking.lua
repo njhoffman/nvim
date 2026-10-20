@@ -24,7 +24,7 @@ M.on_mark_update = function()
 end
 
 M.is_mark_set = function(mark)
-  local marks = vim.api.nvim_exec("marks", true)
+  local marks = vim.api.nvim_exec2("marks", { output = true }).output
   return string.find(marks, "%s" .. mark .. " ")
 end
 

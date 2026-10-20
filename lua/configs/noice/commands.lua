@@ -43,7 +43,9 @@ local silence_stop = function()
   require("notify").setup({ level = 2 })
   if lsp_clients then
     vim.schedule(function()
-      vim.lsp.start_client(lsp_clients)
+      for _, client in ipairs(lsp_clients) do
+        vim.lsp.start(client.config)
+      end
     end)
     lsp_clients = nil
   end

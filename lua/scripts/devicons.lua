@@ -1571,8 +1571,7 @@ end
 local function highlight_exists(group)
   if not group then return end
 
-  local ok, hl = pcall(vim.api.nvim_get_hl_by_name, group, true)
-  return ok and not (hl or {})[true]
+  return not vim.tbl_isempty(vim.api.nvim_get_hl(0, { name = group, link = false }))
 end
 
 local function set_up_highlights()
@@ -1586,7 +1585,7 @@ local function set_up_highlights()
 end
 
 local function get_highlight_foreground(icon_data)
-  return string.format("#%06x", vim.api.nvim_get_hl_by_name(get_highlight_name(icon_data), true).foreground)
+  return string.format("#%06x", vim.api.nvim_get_hl(0, { name = get_highlight_name(icon_data), link = false }).fg)
 end
 
 local function get_highlight_ctermfg(icon_data)

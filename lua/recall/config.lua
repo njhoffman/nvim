@@ -24,7 +24,7 @@ M.opts = {
 
   -- https://github.com/neovim/neovim/issues/4295
   -- https://github.com/neovim/neovim/pull/24936 (0.10-only)
-  wshada = vim.fn.has("nvim-0.10") == 0,
+  wshada = false,
 }
 
 function M.setup(opts)
