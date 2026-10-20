@@ -9,7 +9,7 @@ local popup = require("plenary.popup")
 local state = require("commands.buffer.state")
 
 local function to_relative_path(path)
-  return Path:new(path):make_relative(vim.loop.cwd())
+  return Path:new(path):make_relative(vim.uv.cwd())
 end
 
 local M = {}

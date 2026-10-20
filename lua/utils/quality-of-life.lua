@@ -220,8 +220,8 @@ end
 
 function M.selectMake()
   -- GUARD
-  local makefile = vim.loop.cwd() .. "/Makefile"
-  local fileExists = vim.loop.fs_stat(makefile)
+  local makefile = vim.uv.cwd() .. "/Makefile"
+  local fileExists = vim.uv.fs_stat(makefile)
   if not fileExists then
     u.notify("Makefile not found", "warn")
     return

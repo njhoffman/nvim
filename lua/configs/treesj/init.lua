@@ -44,7 +44,7 @@ end
 
 local align_op = function(cmd)
   return function()
-    local start_time = vim.loop.hrtime()
+    local start_time = vim.uv.hrtime()
     local treesj_results = false
     local mini_results = try_mini(cmd)
     if not mini_results then
@@ -60,7 +60,7 @@ local align_op = function(cmd)
     --   require("treesj")[cmd]()
     -- end
     -- calculate diff time in ms
-    local diff_time = (vim.loop.hrtime() - start_time) / 1e6
+    local diff_time = (vim.uv.hrtime() - start_time) / 1e6
     vim.dbglog(
       diff_time,
       "mini: " .. vim.fn.empty(mini_results) and "false"

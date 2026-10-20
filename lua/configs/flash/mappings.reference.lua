@@ -131,7 +131,7 @@ local function walk_dir(dir)
   for _, file in ipairs(files) do
     if file ~= "init.lua" then
       local path = dir .. "/" .. file
-      local stat = vim.loop.fs_stat(path)
+      local stat = vim.uv.fs_stat(path)
       if stat.type == "directory" then
         walk_dir(path)
       else

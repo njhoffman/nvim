@@ -284,7 +284,7 @@ comps.search_count = {
     text = { "cyan", "black" },
   },
   text = function()
-    if vim.api.nvim_get_option("cmdheight") ~= 0 then
+    if vim.api.nvim_get_option_value("cmdheight", { scope = "global" }) ~= 0 then
       return ""
     end
     local ok, result = pcall(vim.fn.searchcount)

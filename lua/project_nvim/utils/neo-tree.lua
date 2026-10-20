@@ -69,7 +69,7 @@ M.get_state_as_lua_string = function()
 
   if vim.tbl_count(restore) > 0 then
     -- join all keys with a comma
-    local cwd = vim.loop.cwd()
+    local cwd = vim.uv.cwd()
     local data = {}
     for dir, _ in pairs(restore) do
       if vim.startswith(dir, cwd) then -- path belongs to current project directory

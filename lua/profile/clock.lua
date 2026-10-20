@@ -1,4 +1,4 @@
-local hrtime = vim.loop.hrtime
+local hrtime = vim.uv.hrtime
 
 local start = hrtime()
 

@@ -12,7 +12,7 @@ end
 
 -- Get default register ("unnamed" or "unnamedplus")
 M.get_default_register = function()
-  local clipboardFlags = vim.split(vim.api.nvim_get_option("clipboard"), ",")
+  local clipboardFlags = vim.split(vim.api.nvim_get_option_value("clipboard", { scope = "global" }), ",")
   if vim.tbl_contains(clipboardFlags, "unnamedplus") then
     return "+"
   end

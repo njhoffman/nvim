@@ -97,7 +97,7 @@ local is_popup = function(winnr)
 end
 
 local watch_changes = function(opts, get_items, view)
-  local timer = vim.loop.new_timer()
+  local timer = vim.uv.new_timer()
   local last = { hash = 0, idx = -1 }
   if timer then
     timer:start(

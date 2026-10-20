@@ -106,7 +106,7 @@ function win_float.percentage_range_window(col_range, row_range, options)
 
   local bufnr = options.bufnr or api.nvim_create_buf(false, true)
   local win_id = api.nvim_open_win(bufnr, true, win_opts)
-  api.nvim_win_set_option(win_id, "winhl", "FloatBorder:LspInfoBorder")
+  api.nvim_set_option_value("winhl", "FloatBorder:LspInfoBorder", { win = win_id })
 
   for k, v in pairs(win_float.default_options) do
     if k ~= "border" then
@@ -116,9 +116,9 @@ function win_float.percentage_range_window(col_range, row_range, options)
 
   api.nvim_win_set_buf(win_id, bufnr)
 
-  api.nvim_win_set_option(win_id, "cursorcolumn", false)
-  api.nvim_buf_set_option(bufnr, "tabstop", 2)
-  api.nvim_buf_set_option(bufnr, "shiftwidth", 2)
+  api.nvim_set_option_value("cursorcolumn", false, { win = win_id })
+  api.nvim_set_option_value("tabstop", 2, { buf = bufnr })
+  api.nvim_set_option_value("shiftwidth", 2, { buf = bufnr })
 
   return {
     bufnr = bufnr,

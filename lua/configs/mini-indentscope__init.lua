@@ -2,8 +2,8 @@ local init = function()
   vim.api.nvim_create_autocmd("FileType", {
     pattern = "*",
     callback = function()
-      local ft = vim.api.nvim_buf_get_option(0, "filetype")
-      local bt = vim.api.nvim_buf_get_option(0, "buftype")
+      local ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
+      local bt = vim.api.nvim_get_option_value("buftype", { buf = 0 })
       local ft_exclude = {
         "alpha",
         "dap.*",

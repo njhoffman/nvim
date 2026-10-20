@@ -8,7 +8,7 @@ function toggle_comment_custom_commentstring(...)
     args[2],
     require("kommentary.config").get_modes().normal
   )
-  vim.api.nvim_buf_set_option(0, "commentstring", commentstring)
+  vim.api.nvim_set_option_value("commentstring", commentstring, { buf = 0 })
 end
 
 require("kommentary.config").configure_language(

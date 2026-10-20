@@ -74,11 +74,11 @@ end
 
 M.buffer_cat = function(opts)
   opts = opts or {}
-  local cwd = opts.cwd or vim.loop.cwd()
+  local cwd = opts.cwd or vim.uv.cwd()
   return previewers.new_buffer_previewer({
     title = "File Preview",
     dyn_title = function(_, entry)
-      vim.loop.fs_stat(from_entry.path(entry, false), function(_, stat)
+      vim.uv.fs_stat(from_entry.path(entry, false), function(_, stat)
         if not stat then
           return
         else

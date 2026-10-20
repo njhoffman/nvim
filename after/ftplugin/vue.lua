@@ -43,7 +43,7 @@ vim.keymap.set('i', '/', function()
 
   local is_start_tag = first_sibling_node:type() == 'start_tag'
 
-  local start_tag_text = vim.treesitter.query.get_node_text(first_sibling_node, 0)
+  local start_tag_text = vim.treesitter.get_node_text(first_sibling_node, 0)
   local tag_is_already_terminated = string.match(start_tag_text, '>$')
 
   if is_tag_writing_in_progress and is_start_tag and not tag_is_already_terminated then

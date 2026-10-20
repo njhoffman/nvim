@@ -53,7 +53,7 @@ function M.altOldfile()
       return nil
     end
     oldfile = vim.v.oldfiles[i]
-    local fileExists = vim.loop.fs_stat(oldfile) ~= nil
+    local fileExists = vim.uv.fs_stat(oldfile) ~= nil
     local isCurrentFile = oldfile == vim.fn.expand("%:p")
     local commitMsg = oldfile:find("COMMIT_EDITMSG$")
   until fileExists and not commitMsg and not isCurrentFile

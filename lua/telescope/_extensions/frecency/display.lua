@@ -2,7 +2,7 @@ local has_devicons, devicons = pcall(require, "nvim-web-devicons")
 local entry_display = require("telescope.pickers.entry_display")
 local state = require("telescope._extensions.frecency.state")
 local utils = require("telescope.utils")
-local os_home = vim.loop.os_homedir()
+local os_home = vim.uv.os_homedir()
 local Path = require("plenary.path")
 
 local function filepath_formatter(_path_opts)

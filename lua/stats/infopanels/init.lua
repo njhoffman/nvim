@@ -94,7 +94,7 @@ local new_panel = function(popup_opts, lines)
       timer:close()
     end)
 
-    timer = vim.loop.new_timer()
+    timer = vim.uv.new_timer()
 
     local timer_n = 0
 

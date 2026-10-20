@@ -85,7 +85,7 @@ end
 
 local gen_from_file = function(opts)
   opts = opts or {}
-  local cwd = vim.fn.expand(opts.cwd or vim.loop.cwd())
+  local cwd = vim.fn.expand(opts.cwd or vim.uv.cwd())
 
   local mt_file_entry = {}
   mt_file_entry.cwd = cwd
@@ -103,7 +103,7 @@ local gen_from_file = function(opts)
 
     if k == 'path' then
       local retpath = Path:new({ t.cwd, t.value }):absolute()
-      if not vim.loop.fs_access(retpath, 'R', nil) then
+      if not vim.uv.fs_access(retpath, 'R', nil) then
         retpath = t.value
       end
       return retpath
@@ -171,7 +171,7 @@ local oldfiles = function(user_opts)
       local open_by_lsp = string.match(buffer, 'line 0$')
       if match and not open_by_lsp then
         local file = vim.api.nvim_buf_get_name(match)
-        local file_stat = vim.loop.fs_stat(file)
+        local file_stat = vim.uv.fs_stat(file)
         file_meta[file] = file_stat
         if file_stat and match ~= current_buffer then
           table.insert(results, file)
@@ -181,7 +181,7 @@ local oldfiles = function(user_opts)
   end
 
   for _, file in ipairs(vim.v.oldfiles) do
-    local file_stat = vim.loop.fs_stat(file)
+    local file_stat = vim.uv.fs_stat(file)
     if not vim.tbl_contains(results, file) and file ~= current_file then
       if file_stat and file_stat.type == 'file' then
         file_meta[file] = file_stat
@@ -193,7 +193,7 @@ local oldfiles = function(user_opts)
   end
 
   if opts.cwd_only or opts.cwd then
-    local cwd = opts.cwd_only and vim.loop.cwd() or opts.cwd
+    local cwd = opts.cwd_only and vim.uv.cwd() or opts.cwd
     cwd = cwd .. utils.get_separator()
     cwd = cwd:gsub([[\]], [[\\]])
     results = vim.tbl_filter(function(result)

@@ -702,7 +702,7 @@ H.region_highlight = function(buf_id, region)
   -- Indexing is zero-based. Rows - end-inclusive, columns - end-exclusive.
   local from_line, from_col, to_line, to_col =
     region.from.line - 1, region.from.col - 1, region.to.line - 1, region.to.col
-  vim.highlight.range(buf_id, ns_id, "MiniSurround", { from_line, from_col }, { to_line, to_col })
+  vim.hl.range(buf_id, ns_id, "MiniSurround", { from_line, from_col }, { to_line, to_col })
 end
 
 H.region_unhighlight = function(buf_id, region)

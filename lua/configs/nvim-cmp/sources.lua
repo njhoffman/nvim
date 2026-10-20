@@ -106,7 +106,7 @@ local sources = {
           get_bufnrs = function()
             local bufs = {}
             for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-              local buftype = vim.api.nvim_buf_get_option(buf, "buftype")
+              local buftype = vim.api.nvim_get_option_value("buftype", { buf = buf })
               if buftype ~= "nofile" and buftype ~= "prompt" then
                 bufs[#bufs + 1] = buf
               end
@@ -191,7 +191,7 @@ local sources = {
           get_bufnrs = function()
             local bufs = {}
             for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-              local buftype = vim.api.nvim_buf_get_option(buf, "buftype")
+              local buftype = vim.api.nvim_get_option_value("buftype", { buf = buf })
               if buftype ~= "nofile" and buftype ~= "prompt" then
                 bufs[#bufs + 1] = buf
               end

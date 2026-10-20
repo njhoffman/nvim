@@ -177,9 +177,9 @@ end
 ---setup icons, modified status for buffer
 function Buffer:get_props()
   self.file = modules.utils.stl_escape(vim.api.nvim_buf_get_name(self.bufnr))
-  self.buftype = vim.api.nvim_buf_get_option(self.bufnr, 'buftype')
-  self.filetype = vim.api.nvim_buf_get_option(self.bufnr, 'filetype')
-  local modified = self.options.show_modified_status and vim.api.nvim_buf_get_option(self.bufnr, 'modified')
+  self.buftype = vim.api.nvim_get_option_value('buftype', { buf = self.bufnr })
+  self.filetype = vim.api.nvim_get_option_value('filetype', { buf = self.bufnr })
+  local modified = self.options.show_modified_status and vim.api.nvim_get_option_value('modified', { buf = self.bufnr })
   self.modified_icon = modified and self.options.symbols.modified or ''
   self.alternate_file_icon = self:is_alternate() and self.options.symbols.alternate_file or ''
   self.icon = ''
@@ -387,8 +387,8 @@ local function get_hl(section, is_active)                                       
     section = highlight.highlight_exists(section .. suffix) and section or section_redirects[section]
   end                                                                                                                      function M:should_hide(winnr)
   return section .. suffix                                                                                                   local bufnr = vim.api.nvim_win_get_buf(winnr)
-end                                                                                                                          local filetype = vim.api.nvim_buf_get_option(bufnr, 'filetype')
-                                                                                                                             local buftype = vim.api.nvim_buf_get_option(bufnr, 'buftype')
+end                                                                                                                          local filetype = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
+                                                                                                                             local buftype = vim.api.nvim_get_option_value('buftype', { buf = bufnr })
 function M:init(options)                                                                                                     local is_filetype_disabled = vim.tbl_contains(self.options.disabled_filetypes, filetype)
   M.super.init(self, options)                                                                                                local is_buftype_disabled = vim.tbl_contains(self.options.disabled_buftypes, buftype)
   -- if use_mode_colors is set, use a function so that the colors update                                                     local is_floating = '' ~= vim.api.nvim_win_get_config(winnr).relative
@@ -425,7 +425,7 @@ function M:buffers()                                                            
   local buffers = {}                                                                                                       -- --       "fugitive",
   M.bufpos2nr = {}                                                                                                         -- --       "fugitiveblame",
   for b = 1, vim.fn.bufnr('$') do                                                                                          -- --       "dashboard",
-    if vim.fn.buflisted(b) ~= 0 and vim.api.nvim_buf_get_option(b, 'buftype') ~= 'quickfix' then                           -- --     },
+    if vim.fn.buflisted(b) ~= 0 and vim.api.nvim_get_option_value('buftype', { buf = b }) ~= 'quickfix' then                           -- --     },
       buffers[#buffers + 1] = self:new_buffer(b, #buffers + 1)                                                             -- --   },
       M.bufpos2nr[#buffers] = b                                                                                            -- -- }
     end

@@ -69,7 +69,7 @@ M.install = function(entry, verbose, is_update)
       end
     end
 
-    local start_time = vim.loop.hrtime()
+    local start_time = vim.uv.hrtime()
     local index_callback = function(doc_index)
       local doc_dir, section_map = build.init_docs(alias, doc_index)
       local doc_url = string.format("%s/%s/db.json?%s", devdocs_cdn_url, entry.slug, entry.mtime)
@@ -80,7 +80,7 @@ M.install = function(entry, verbose, is_update)
           local docs = vim.fn.json_decode(response.body)
           local doc_files = build.build_docs(doc_dir, doc_index, docs, section_map)
           build.write_docs(alias, entry, doc_index, doc_files)
-          log.info(alias .. " installed in " .. (vim.loop.hrtime() - start_time) / 1000000 .. "ms")
+          log.info(alias .. " installed in " .. (vim.uv.hrtime() - start_time) / 1000000 .. "ms")
         end),
         on_error = function(error)
           log.error("(" .. alias .. ") Error during download, exit code: " .. error.exit)

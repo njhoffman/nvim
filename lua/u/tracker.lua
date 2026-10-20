@@ -115,7 +115,7 @@ end
 --- @return u.Signal -- <T>
 function Signal:debounce(ms)
   local function set_timeout(timeout, callback)
-    local timer = (vim.uv or vim.loop).new_timer()
+    local timer = (vim.uv).new_timer()
     timer:start(timeout, 0, function()
       timer:stop()
       timer:close()
@@ -143,7 +143,7 @@ function Signal:debounce(ms)
   local unsubscribe_from_self = self:subscribe(function(value)
     -- Stop any previously running timer:
     if state.timer then clear_timeout() end
-    local now_ms = (vim.uv or vim.loop).hrtime() / 1e6
+    local now_ms = (vim.uv).hrtime() / 1e6
 
     -- If there is anything older than `ms` in our queue, emit it:
     local older_than_ms = vim

@@ -109,9 +109,9 @@ local bench = function(name, opts)
       fun[2]()
     end
     for j = 1, opts.runs do
-      local start = vim.loop.hrtime()
+      local start = vim.uv.hrtime()
       fun[2]()
-      res[i].results[j] = vim.loop.hrtime() - start
+      res[i].results[j] = vim.uv.hrtime() - start
     end
     res[i].stats = get_stats(res[i].results)
     table.insert(output, get_output(i, res[i], opts.runs))

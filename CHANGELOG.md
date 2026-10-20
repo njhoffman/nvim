@@ -5,6 +5,35 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.13.0] - 2026-10-19
+
+### Fixed
+
+Calls to APIs already removed from Neovim v0.13.0-dev (they raised errors when reached):
+
+- `vim.lsp.get_active_clients()` / `vim.lsp.buf_get_clients()` -> `vim.lsp.get_clients()` (14 sites: feline providers, stats panels, LSP notifications, workspace-diagnostics, python ftplugin, text-case)
+- `vim.lsp.util.jump_to_location()` -> `vim.lsp.util.show_document()` in definition-or-references
+- `vim.diagnostic.disable()` / `is_disabled()` and the old `enable(bufnr)` signature -> `vim.diagnostic.enable(bool, filter)` / `is_enabled()` in the hydra toggles and the mapper keymap
+- `vim.lsp.buf.formatting()` -> `vim.lsp.buf.format()`
+- `vim.treesitter.query.get_node_text()` -> `vim.treesitter.get_node_text()` (vue ftplugin, snippets-utils)
+- `client.supports_method(...)` -> `client:supports_method(...)`
+
+### Changed
+
+Mechanical replacements of deprecated APIs (302 call sites, 174 files), done with an argument-aware rewriter that skips comments and strings:
+
+- `vim.loop` -> `vim.uv` (144)
+- `nvim_buf_*_option` / `nvim_win_*_option` -> `nvim_get_option_value` / `nvim_set_option_value` with `{ buf = }` / `{ win = }` (108)
+- `nvim_get_option` / `nvim_set_option` -> `*_option_value` with `{ scope = "global" }`, which keeps the global-only semantics (9)
+- `nvim_err_writeln(msg)` -> `nvim_echo({ { msg } }, true, { err = true })` (27)
+- `vim.tbl_flatten(t)` -> `vim.iter(t):flatten(math.huge):totable()` (13). `dumb_jump` and `egrepify` get a local helper with `tbl_flatten`'s exact semantics, because their argument lists can contain `nil` holes.
+- `vim.highlight.*` -> `vim.hl.*`, `vim.tbl_islist` -> `vim.islist`
+- Aliased references (`local bufOpt = vim.api.nvim_buf_get_option` etc.) replaced with equivalent wrappers
+
+### Known issues
+
+- 8 files already failed to parse before this change: `stats/commands/*/init.lua` (5), `configs/feline/reference.lua`, `configs/none-ls/services.lua` and `scratch/tmpactions.lua`. They are orphan candidates for TODO item 2.
+
 ## [0.12.1] - 2026-10-19
 
 ### Added

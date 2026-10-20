@@ -31,19 +31,19 @@ local function oldfiles_list(opts)
     local open_by_lsp = string.match(buffer, 'line 0$')
     if match and not open_by_lsp then
       local file = vim.api.nvim_buf_get_name(match)
-      if vim.loop.fs_stat(file) and match ~= current_buffer then
+      if vim.uv.fs_stat(file) and match ~= current_buffer then
         table.insert(results, file)
       end
     end
   end
 
   for _, file in ipairs(vim.v.oldfiles) do
-    if vim.loop.fs_stat(file) and not vim.tbl_contains(results, file) and file ~= current_file then
+    if vim.uv.fs_stat(file) and not vim.tbl_contains(results, file) and file ~= current_file then
       table.insert(results, file)
     end
   end
 
-  local cwd = vim.loop.cwd()
+  local cwd = vim.uv.cwd()
   cwd = cwd:gsub([[\]], [[\\]])
   results = vim.tbl_filter(function(file)
     return vim.fn.matchstrpos(file, cwd)[2] ~= -1

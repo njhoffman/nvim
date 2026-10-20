@@ -25,7 +25,7 @@ end
 function M.highlight_range(range, buf, hl_namespace, hl_group)
   local start_row, start_col, end_row, end_col = unpack(range)
   ---@diagnostic disable-next-line: missing-parameter
-  vim.highlight.range(buf, hl_namespace, hl_group, { start_row, start_col }, { end_row, end_col })
+  vim.hl.range(buf, hl_namespace, hl_group, { start_row, start_col }, { end_row, end_col })
 end
 
 function M.highlight_node(node, buf, hl_namespace, hl_group)

@@ -2,7 +2,7 @@ local ui = {}
 
 local api = vim.api
 local autocmd = api.nvim_create_autocmd
-local preview_timer = vim.loop.new_timer()
+local preview_timer = vim.uv.new_timer()
 
 local popup = require("plenary.popup")
 local state = require("NeoComposer.state")
@@ -124,7 +124,7 @@ end
 function ui.clear_preview()
 	if preview_timer then
 		if preview_timer:is_closing() then
-			preview_timer = vim.loop.new_timer()
+			preview_timer = vim.uv.new_timer()
 		end
 	end
 	if preview_timer then
@@ -168,7 +168,7 @@ function ui.create_window()
 	for hl, val in pairs(config.window.winhl) do
 		winhl = winhl .. hl .. ":" .. val .. ","
 	end
-	api.nvim_win_set_option(WIN_ID, "winhl", winhl:sub(1, -2))
+	api.nvim_set_option_value("winhl", winhl:sub(1, -2), { win = WIN_ID })
 
 	return {
 		bufnr = bufnr,
@@ -228,8 +228,8 @@ function ui.toggle_macro_menu()
 	end
 
 	api.nvim_buf_set_name(BUFH, "neocomposer-menu")
-	api.nvim_buf_set_option(BUFH, "buftype", "acwrite")
-	api.nvim_buf_set_option(BUFH, "bufhidden", "delete")
+	api.nvim_set_option_value("buftype", "acwrite", { buf = BUFH })
+	api.nvim_set_option_value("bufhidden", "delete", { buf = BUFH })
 	api.nvim_buf_set_lines(BUFH, 0, #contents, false, contents)
 
 	map("n", "q", "<Cmd>lua require('NeoComposer.ui').toggle_macro_menu()<CR>")
@@ -270,10 +270,10 @@ function ui.edit_macros()
 
 	local bg_color = ui.get_bg_color()
 	vim.cmd(string.format("highlight MacroEditorNormal guibg=%s", bg_color))
-	api.nvim_win_set_option(win_id, "winhl", "Normal:MacroEditorNormal")
+	api.nvim_set_option_value("winhl", "Normal:MacroEditorNormal", { win = win_id })
 
-	api.nvim_win_set_option(win_id, "number", true)
-	api.nvim_buf_set_option(bufnr, "bufhidden", "wipe")
+	api.nvim_set_option_value("number", true, { win = win_id })
+	api.nvim_set_option_value("bufhidden", "wipe", { buf = bufnr })
 
 	local macros = state.get_macros()
 	local contents = {}

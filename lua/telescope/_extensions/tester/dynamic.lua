@@ -62,7 +62,7 @@ local async_job = require('telescope._')
 --     return results
 --   end
 
-local timer = vim.loop.new_timer()
+local timer = vim.uv.new_timer()
 local fn = function(opts)
   local entry_maker = opts.entry_maker or make_entry.gen_from_string(opts)
   return function(_, prompt, process_result, process_complete)

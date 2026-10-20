@@ -78,14 +78,12 @@ function M.parse_config(config_dict, defaults)
     if config_dict[config_name] == nil then
       parsed_config[config_name] = config_info.default_value
     elseif not config_has_correct_type(config_name, config_info.type) then
-      api.nvim_err_writeln(
-        string.format(
+      api.nvim_echo({ { string.format(
           "Feline: expected type '%s' for config option '%s', got '%s'",
           config_info.type,
           config_name,
           type(config_dict[config_name])
-        )
-      )
+        ) } }, true, { err = true })
 
       parsed_config[config_name] = config_info.default_value
     elseif config_info.update_default then
@@ -113,7 +111,7 @@ function M._use_theme(themes, name_or_tbl, set)
 
   if type(name_or_tbl) == 'string' then
     if not themes[name_or_tbl] then
-      api.nvim_err_writeln(string.format("Theme '%s' not found!", name_or_tbl))
+      api.nvim_echo({ { string.format("Theme '%s' not found!", name_or_tbl) } }, true, { err = true })
       return
     end
 

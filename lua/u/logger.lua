@@ -22,7 +22,7 @@ function Logger.new(name)
   vim.fn.mkdir(vim.fs.dirname(file_path), 'p')
   local self = setmetatable({
     name = name,
-    fd = (vim.uv or vim.loop).fs_open(file_path, 'a', tonumber('644', 8)),
+    fd = (vim.uv).fs_open(file_path, 'a', tonumber('644', 8)),
   }, Logger)
   return self
 end
@@ -32,7 +32,7 @@ end
 function Logger:write(level, ...)
   local data = { ... }
   if #data == 1 then data = data[1] end
-  (vim.uv or vim.loop).fs_write(
+  (vim.uv).fs_write(
     self.fd,
     vim.json.encode { ts = os.date(), level = level, data = data } .. '\n'
   )

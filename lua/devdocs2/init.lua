@@ -58,9 +58,9 @@ M.open_doc_current_file = function(float)
     aliases = { aliases }
   end
 
-  local docs = vim.tbl_flatten(vim.tbl_map(function(alias)
+  local docs = vim.iter(vim.tbl_map(function(alias)
     return list.get_doc_variants(alias)
-  end, aliases))
+  end, aliases)):flatten(math.huge):totable()
   local entries = list.get_doc_entries(docs)
 
   if entries and not vim.tbl_isempty(entries) then

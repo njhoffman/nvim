@@ -47,10 +47,10 @@ local function handle_references_response(context)
     then
       vim.notify("No definition but single reference found")
     end
-    vim.lsp.util.jump_to_location(
+    vim.lsp.util.show_document(
       result_entries[1],
       vim.lsp.get_client_by_id(context.client_id).offset_encoding,
-      true
+      { reuse_win = true, focus = true }
     )
 
     return
@@ -105,7 +105,7 @@ local function send_implementations_request()
 
   local method_supported = false
   vim.lsp.for_each_buffer_client(0, function(client, client_id)
-    if client.supports_method(methods.implementations.name) then
+    if client:supports_method(methods.implementations.name) then
       method_supported = true
       return
     end

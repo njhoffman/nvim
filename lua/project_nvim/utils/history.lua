@@ -1,7 +1,7 @@
 local path = require("project_nvim.utils.path")
 local state = require("project_nvim.state")
 
-local uv = vim.loop
+local uv = vim.uv
 
 local function open_history(mode, callback)
   if callback ~= nil then -- async

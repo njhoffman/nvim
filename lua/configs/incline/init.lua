@@ -32,7 +32,7 @@ local cfg = {
       local bufname = vim.api.nvim_buf_get_name(props.buf)
       local filename = vim.fn.fnamemodify(bufname, ':t')
       local diagnostics = get_diagnostic_label(props)
-      local buf_modified = vim.api.nvim_buf_get_option(props.buf, 'modified')
+      local buf_modified = vim.api.nvim_get_option_value('modified', { buf = props.buf })
       local modified = buf_modified and 'bold,italic' or 'None'
       local filetype_icon, color = require('nvim-web-devicons').get_icon_color(filename)
       local buffer = {

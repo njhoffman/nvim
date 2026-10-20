@@ -8,7 +8,7 @@ local M = {}
 ---@param convert fun(line:string):string
 function M.apply_converter(convert)
   operatorfunc.convert = convert
-  api.nvim_set_option('operatorfunc', "v:lua.require'utils.escape.operatorfunc'.operatorfunc")
+  api.nvim_set_option_value('operatorfunc', "v:lua.require'utils.escape.operatorfunc'.operatorfunc", { scope = "global" })
   api.nvim_feedkeys('g@', '', '')
 end
 

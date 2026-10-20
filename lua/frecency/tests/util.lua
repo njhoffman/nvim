@@ -1,4 +1,4 @@
-local uv = vim.uv or vim.loop
+local uv = vim.uv
 local async = require "plenary.async" --[[@as PlenaryAsync]]
 local Path = require "plenary.path"
 local Job = require "plenary.job"

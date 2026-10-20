@@ -392,8 +392,7 @@ keymap("n", "<leader>ow", "<cmd>set wrap!<CR>", { desc = "󰖶 Wrap" })
 keymap("n", "<leader>ol", vim.cmd.LspRestart, { desc = "󰒕 LspRestart" })
 
 keymap("n", "<leader>od", function() -- codespell-ignore
-  local change = vim.diagnostic.is_disabled(0) and "enable" or "disable"
-  vim.diagnostic[change](0)
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled({ bufnr = 0 }), { bufnr = 0 })
 end, { desc = " Diagnostics" })
 keymap("n", "<leader>oh", function()
   local enabled = vim.lsp.inlay_hint.is_enabled(0)

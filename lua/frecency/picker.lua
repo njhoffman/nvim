@@ -7,7 +7,7 @@ local config_values = require("telescope.config").values
 local pickers = require "telescope.pickers"
 local sorters = require "telescope.sorters"
 local utils = require "telescope.utils" --[[@as TelescopeUtils]]
-local uv = vim.loop or vim.uv
+local uv = vim.uv
 
 ---@class FrecencyPicker
 ---@field private config FrecencyPickerConfig

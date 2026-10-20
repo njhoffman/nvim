@@ -27,7 +27,7 @@ function RotatingFile:new(level, path, opts)
   file.max_age = opts.max_age
   file.time_format = opts.time_format or "%F-%H:%M:%S"
 
-  file.uv = opts.uv or vim.uv or vim.loop
+  file.uv = opts.uv or vim.uv
 
   RotatingFile.__index = RotatingFile
   setmetatable(file, RotatingFile)

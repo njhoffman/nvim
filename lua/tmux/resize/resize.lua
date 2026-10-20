@@ -42,7 +42,7 @@ local function disable_animation()
   if vim.g.minianimate_disable ~= true then
     vim.g.minianimate_disable = true
     if state.timer == nil or not state.timer:is_active() then
-      state.timer = vim.loop.new_timer()
+      state.timer = vim.uv.new_timer()
       state.timer:start(100, timer_delay, function()
         vim.schedule(function()
           if

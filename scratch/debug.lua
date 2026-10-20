@@ -53,7 +53,7 @@ function M.dump(...)
   if vim.tbl_isempty(value) then
     value = nil
   else
-    value = (vim.islist or vim.tbl_islist)(value) and vim.tbl_count(value) <= 1 and value[1]
+    value = (vim.islist)(value) and vim.tbl_count(value) <= 1 and value[1]
       or value
   end
   M._dump(value)
@@ -64,7 +64,7 @@ function M.bt(...)
   if vim.tbl_isempty(value) then
     value = nil
   else
-    value = (vim.islist or vim.tbl_islist)(value) and vim.tbl_count(value) <= 1 and value[1]
+    value = (vim.islist)(value) and vim.tbl_count(value) <= 1 and value[1]
       or value
   end
   M._dump(value, { bt = true })

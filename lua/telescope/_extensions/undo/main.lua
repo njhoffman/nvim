@@ -10,7 +10,7 @@ local build_undolist = require('undo.generate')
 
 mock_data = false
 local undo = function(opts)
-  if not vim.api.nvim_buf_get_option(0, 'modifiable') then
+  if not vim.api.nvim_get_option_value('modifiable', { buf = 0 }) then
     print('telescope-undo.nvim: Current buffer is not modifiable.')
     return
   end

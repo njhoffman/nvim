@@ -60,7 +60,7 @@ require("textcase").setup({
 -- setup_textcase_keymaps('<space>', 'to_phrase_case', 'phrase case', 'to phrase case')
 
 local toSnakeCase = function()
-  local clients = vim.lsp.get_active_clients()
+  local clients = vim.lsp.get_clients()
   for _, client in ipairs(clients) do
     if client.server_capabilities.renameProvider then
       require("textcase").lsp_rename("to_snake_case")

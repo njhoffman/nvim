@@ -4,7 +4,7 @@ local M = {}
 ---@type Logger
 local logger
 
-local uv = vim.loop
+local uv = vim.uv
 local tmp_file = os.tmpname()
 local dirty = true
 

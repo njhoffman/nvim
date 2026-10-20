@@ -2,7 +2,7 @@ local api = vim.api
 
 -- Check if Neovim version is 0.9 or greater
 if vim.fn.has('nvim-0.9') ~= 1 then
-  api.nvim_err_writeln('Feline is only available for Neovim versions 0.9 and above.')
+  api.nvim_echo({ { 'Feline is only available for Neovim versions 0.9 and above.' } }, true, { err = true })
   return
 end
 
@@ -64,7 +64,7 @@ end
 -- Check if component with `name` in the statusline of window `winid` is truncated or hidden
 local function is_component_truncated(generator, winid, name)
   if generator.component_truncated[winid][name] == nil then
-    api.nvim_err_writeln(string.format("Component with name '%s' not found", name))
+    api.nvim_echo({ { string.format("Component with name '%s' not found", name) } }, true, { err = true })
     return
   end
 
@@ -74,7 +74,7 @@ end
 -- Check if component with `name` in the statusline of window `winid` is hidden
 local function is_component_hidden(generator, winid, name)
   if generator.component_hidden[winid][name] == nil then
-    api.nvim_err_writeln(string.format("Component with name '%s' not found", name))
+    api.nvim_echo({ { string.format("Component with name '%s' not found", name) } }, true, { err = true })
     return
   end
 
@@ -179,10 +179,8 @@ end
 function M.setup(config)
   -- Check if termguicolors is enabled
   if not vim.o.termguicolors and vim.version().minor < 10 then
-    api.nvim_err_writeln(
-      "Feline needs 'termguicolors' to be enabled to work properly\n"
-        .. "Please do `:help 'termguicolors'` in Neovim for more information"
-    )
+    api.nvim_echo({ { "Feline needs 'termguicolors' to be enabled to work properly\n"
+        .. "Please do `:help 'termguicolors'` in Neovim for more information" } }, true, { err = true })
     return
   end
 

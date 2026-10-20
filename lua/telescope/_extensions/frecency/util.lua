@@ -1,5 +1,5 @@
 local state = require("telescope._extensions.frecency.state")
-local uv = vim.loop
+local uv = vim.uv
 
 local util = {}
 

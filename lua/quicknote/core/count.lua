@@ -2,7 +2,7 @@ local utils= require("quicknote.utils")
 
 local getNotesCount = function(noteDirPath)
     -- check if note dir exist
-    vim.loop.fs_stat(noteDirPath, function(err, _)
+    vim.uv.fs_stat(noteDirPath, function(err, _)
         if err then
             print("No notes for current buffer found.")
         else

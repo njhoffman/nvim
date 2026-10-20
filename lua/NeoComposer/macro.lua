@@ -164,7 +164,7 @@ end
 
 function macro.play_macro()
   local count = get_count()
-  local timer = vim.loop.new_timer()
+  local timer = vim.uv.new_timer()
   local current_count = 0
 
   local start_pos = start_pos_in_selection()
@@ -235,7 +235,7 @@ end
 
 function macro.play_macro_with_delay()
   local count = get_count()
-  local timer = vim.loop.new_timer()
+  local timer = vim.uv.new_timer()
 
   local start_pos = start_pos_in_selection()
   enter_normal_mode()

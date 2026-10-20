@@ -178,11 +178,11 @@ local reload = function(cfg)
   return function(cmd)
     local reload_cfg = vim.tbl_deep_extend("force", default_config, cfg or {})
     vim.cmd("silent update")
-    local is_nvim_config = vim.loop.cwd() == vim.fn.stdpath("config")
+    local is_nvim_config = vim.uv.cwd() == vim.fn.stdpath("config")
 
     local filepath = vim.fn.expand("%:p") or ""
     if cmd and cmd.fargs and cmd.fargs[1] then
-      filepath = vim.loop.cwd() .. cmd.fargs[1]
+      filepath = vim.uv.cwd() .. cmd.fargs[1]
     end
 
     --- GUARD

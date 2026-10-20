@@ -1,5 +1,5 @@
 local null_ls = vim.F.npcall(require, 'null-ls')
-local uv = vim.loop
+local uv = vim.uv
 
 local is_absolute = function(path)
     vim.validate { path = { path, 'string' } }

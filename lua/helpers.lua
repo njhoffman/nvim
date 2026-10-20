@@ -8,7 +8,7 @@ function H.create_augroup(group_name, definition)
   cmd('augroup ' .. group_name)
   cmd('autocmd!')
   for _, def in ipairs(definition) do
-    local command = table.concat(vim.tbl_flatten({ 'autocmd', def }), ' ')
+    local command = table.concat(vim.iter({ 'autocmd', def }):flatten(math.huge):totable(), ' ')
     cmd(command)
   end
   cmd('augroup END')

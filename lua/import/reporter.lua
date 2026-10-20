@@ -4,14 +4,14 @@ local n = 0
 local simple_metrics = function(metrics)
   if metrics == nil then
     metrics = {
-      start = vim.loop.hrtime(),
+      start = vim.uv.hrtime(),
       finish = nil,
       duration = nil,
     }
   else
     n = n + 1
     metrics.load_n = n
-    metrics.finish = vim.loop.hrtime()
+    metrics.finish = vim.uv.hrtime()
     metrics.duration = metrics.finish - metrics.start
   end
   return metrics

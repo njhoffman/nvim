@@ -100,7 +100,7 @@ local function get_nodes_text_tbl(opts)
     for id, node in pairs(matches) do
       local curr_capture_name = query.captures[id]
       if opts.capture_name == curr_capture_name then
-        local node_text = vim.treesitter.query.get_node_text(node, 0)
+        local node_text = vim.treesitter.get_node_text(node, 0)
         table.insert(node_text_tbl, node_text)
       end
     end

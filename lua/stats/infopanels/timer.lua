@@ -1,5 +1,5 @@
 
-local timer = vim.loop.new_timer()
+local timer = vim.uv.new_timer()
 timer:start(1000, 0, vim.schedule_wrap(function()
   vim.api.nvim_command('echomsg "test"')
 end))
@@ -11,7 +11,7 @@ end))
 -- 2. Execute it with ":luafile %".
 
 -- Create a timer handle (implementation detail: uv_timer_t).
-local timer = vim.loop.new_timer()
+local timer = vim.uv.new_timer()
 local i = 0
 -- Waits 1000ms, then repeats every 750ms until timer:close().
 timer:start(1000, 750, function()
@@ -32,7 +32,7 @@ print('sleeping');
 -- 5. Observe that the file reloads in Nvim (because on_change() calls
 --    |:checktime|).
 
-local w = vim.loop.new_fs_event()
+local w = vim.uv.new_fs_event()
 local function on_change(err, fname, status)
   -- Do work...
   vim.api.nvim_command('checktime')
@@ -57,11 +57,11 @@ vim.api.nvim_command(
 -- 4. Connect from any TCP client (e.g. "nc 0.0.0.0 36795"):
 
 local function create_server(host, port, on_connect)
-  local server = vim.loop.new_tcp()
+  local server = vim.uv.new_tcp()
   server:bind(host, port)
   server:listen(128, function(err)
     assert(not err, err)  -- Check for errors.
-    local sock = vim.loop.new_tcp()
+    local sock = vim.uv.new_tcp()
     server:accept(sock)  -- Accept client connection.
     on_connect(sock)  -- Start reading messages.
   end)

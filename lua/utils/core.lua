@@ -54,7 +54,7 @@ function utils.define_augroups(definitions) -- {{{1
     vim.cmd('augroup ' .. group_name)
     vim.cmd('autocmd!')
     for _, def in pairs(definition) do
-      local command = table.concat(vim.tbl_flatten({ 'autocmd', def }), ' ')
+      local command = table.concat(vim.iter({ 'autocmd', def }):flatten(math.huge):totable(), ' ')
       vim.cmd(command)
     end
 

@@ -248,7 +248,7 @@ LspProgress.setup_spinner = function(self)
   self.spinner.index = 0
   self.spinner.symbol_mod = #self.options.spinner_symbols
   self.spinner.symbol = self.options.spinner_symbols[1]
-  local timer = vim.loop.new_timer()
+  local timer = vim.uv.new_timer()
   timer:start(0, self.options.timer.spinner, function()
     self.spinner.index = (self.spinner.index % self.spinner.symbol_mod) + 1
     self.spinner.symbol = self.options.spinner_symbols[self.spinner.index]

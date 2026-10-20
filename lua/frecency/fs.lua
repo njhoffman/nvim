@@ -1,7 +1,7 @@
 local Path = require "plenary.path" --[[@as PlenaryPath]]
 local scandir = require "plenary.scandir"
 local log = require "plenary.log"
-local uv = vim.uv or vim.loop
+local uv = vim.uv
 
 ---@class FrecencyFS
 ---@field os_homedir string

@@ -6,7 +6,7 @@ local full_opts = {
   on_close = function()
     vim.api.nvim_buf_set_var(0, 'miniindentscope_disable', false)
     vim.api.nvim_buf_set_var(0, 'indent_blankline_enabled', true)
-    vim.api.nvim_win_set_option(0, 'cursorline', true)
+    vim.api.nvim_set_option_value('cursorline', true, { win = 0 })
   end,
   window = {
     backdrop = 0.85, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal

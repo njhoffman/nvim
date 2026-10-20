@@ -35,7 +35,7 @@ M.HelpTagsComponent = {
 -- M.LspCodeActionsComponent = {
 --   enabled = function()
 --     local ft_enabled = { 'lua', 'sh', 'typescript', 'javascript', 'go', 'python' }
---     return vim.tbl_contains(ft_enabled, vim.bo.filetype) and #vim.lsp.get_active_clients() > 0
+--     return vim.tbl_contains(ft_enabled, vim.bo.filetype) and #vim.lsp.get_clients() > 0
 --   end,
 --   provider = {
 --     name = 'lsp_code_actions',
@@ -54,7 +54,7 @@ M.HelpTagsComponent = {
 M.LspReferencesComponent = {
   enabled = function()
     local ft_enabled = { "lua", "sh", "typescript", "javascript", "go", "python" }
-    return vim.tbl_contains(ft_enabled, vim.bo.filetype) and #vim.lsp.get_active_clients() > 0
+    return vim.tbl_contains(ft_enabled, vim.bo.filetype) and #vim.lsp.get_clients() > 0
   end,
   provider = {
     name = "lsp_references",

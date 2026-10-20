@@ -94,7 +94,7 @@ utils.cartesian_product = function(arr)
       table.insert(cur_item, arr[level][i])
       if level == #arr then
         -- Flatten array to allow tables as elements of step tables
-        table.insert(res, vim.tbl_flatten(cur_item))
+        table.insert(res, vim.iter(cur_item):flatten(math.huge):totable())
       else
         process(level + 1)
       end

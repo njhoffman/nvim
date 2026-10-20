@@ -49,7 +49,7 @@ local get_buffer = function(bufnr, bufobj)
   return {
     bufnr = bufnr,
     curr = curr_buf == bufnr,
-    timesi = vim.loop.now(),
+    timesi = vim.uv.now(),
     valid = vim.api.nvim_buf_is_valid(bufnr),
     loaded = vim.api.nvim_buf_is_loaded(bufnr),
     lines = vim.api.nvim_buf_line_count(bufnr),

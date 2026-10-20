@@ -5,7 +5,7 @@ local config = {
   filename = 'llm-history.sqlite',
   path = vim.fn.stdpath('data'),
 }
-config.url = vim.loop.fs_realpath(config.path .. '/' .. config.filename)
+config.url = vim.uv.fs_realpath(config.path .. '/' .. config.filename)
 
 -- TODO: autocommand nvim-dbee on main window close
 if vim.fn.filereadable(config.url) == 1 then

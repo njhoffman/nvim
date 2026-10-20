@@ -142,7 +142,7 @@ end
 
 ---@diagnostic disable-next-line: unused-local
 function M.setup(options)
-  vim.api.nvim_set_option('quickfixtextfunc', "v:lua.require'quickfix.qfview'.qftextfunc")
+  vim.api.nvim_set_option_value('quickfixtextfunc', "v:lua.require'quickfix.qfview'.qftextfunc", { scope = "global" })
 end
 
 return M

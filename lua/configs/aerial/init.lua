@@ -103,7 +103,7 @@ local cfg = {
   },
   {
     open_automatic = function(bufnr)
-      local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+      local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
       return ft == 'help' or 'man'
       -- Enforce a minimum line count
       -- return vim.api.nvim_buf_line_count(bufnr) > 80

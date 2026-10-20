@@ -34,7 +34,7 @@ vim.api.nvim_create_autocmd(
     desc = "LSP progress notification",
     callback = function()
       local bufnr = vim.api.nvim_get_current_buf() -- get buffer number
-      for _, client in pairs(vim.lsp.buf_get_clients()) do -- loop over each client to check notifications
+      for _, client in pairs(vim.lsp.get_clients({ bufnr = 0 })) do -- loop over each client to check notifications
         if not client_notifs[bufnr] then -- create buffer specific notification table if not exists
           client_notifs[bufnr] = {}
         end

@@ -139,13 +139,13 @@ end
 function M.list_files(dir_path, pattern)
   pattern = pattern or ""
   local files = {}
-  local handle = vim.loop.fs_scandir(dir_path)
+  local handle = vim.uv.fs_scandir(dir_path)
   if not handle then
     return nil, "Cannot open directory"
   end
 
   while true do
-    local name, type = vim.loop.fs_scandir_next(handle)
+    local name, type = vim.uv.fs_scandir_next(handle)
     if not name then
       break
     end

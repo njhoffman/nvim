@@ -79,8 +79,8 @@ require("dial.config").augends:register_group({
 local rhs_func = function(direction, op)
   return function()
     local buf = vim.api.nvim_get_current_buf()
-    local is_readonly = vim.api.nvim_buf_get_option(buf, "readonly")
-    local is_modifiable = vim.api.nvim_buf_get_option(buf, "modifiable")
+    local is_readonly = vim.api.nvim_get_option_value("readonly", { buf = buf })
+    local is_modifiable = vim.api.nvim_get_option_value("modifiable", { buf = buf })
     -- vim.dbglog(buf, is_readonly, is_modifiable)
     if not is_readonly and is_modifiable then
       return require("dial.map").manipulate(direction, op)

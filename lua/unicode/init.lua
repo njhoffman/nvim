@@ -311,7 +311,7 @@ end
 function M.mk_digraph_new(arg)
   local chars, charname = arg:match("^(%S%S)%s+(.+%S)%s*$")
   if not chars then
-    vim.api.nvim_err_writeln("Usage: DigraphNew {char1}{char2} {Unicode name}")
+    vim.api.nvim_echo({ { "Usage: DigraphNew {char1}{char2} {Unicode name}" } }, true, { err = true })
     return
   end
 
@@ -359,13 +359,11 @@ function M.mk_digraph_new(arg)
         for _, u in ipairs(unichars) do
           names_list[#names_list + 1] = '"' .. u.name .. '"'
         end
-        vim.api.nvim_err_writeln(
-          "Unicode name ambiguous: " .. charname .. " matches " .. table.concat(names_list, ",")
-        )
+        vim.api.nvim_echo({ { "Unicode name ambiguous: " .. charname .. " matches " .. table.concat(names_list, ",") } }, true, { err = true })
         return
       end
     end
-    vim.api.nvim_err_writeln("Unicode name not found: " .. charname)
+    vim.api.nvim_echo({ { "Unicode name not found: " .. charname } }, true, { err = true })
   end
 end
 

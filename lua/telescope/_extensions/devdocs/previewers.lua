@@ -37,10 +37,10 @@ local doc_previewer = previewers.new_buffer_previewer({
   title = "Preview",
   keep_last_buf = true,
   define_preview = function(self, entry)
-    local time_start = vim.loop.hrtime()
+    local time_start = vim.uv.hrtime()
     local read_async = utils.debounce(operations.read_entry_async, 10)
     read_async(entry.value, function(filtered_lines)
-      local time_diff = vim.loop.hrtime() - time_start
+      local time_diff = vim.uv.hrtime() - time_start
       log_entry(entry, time_diff, filtered_lines)
       local bufnr = self.state.bufnr
       local winid = self.state.winid

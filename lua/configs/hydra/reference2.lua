@@ -486,7 +486,7 @@ return function(use)
           { 'R', vim.lsp.buf.rename, { exit = true } },
           { 'a', vim.lsp.buf.code_action, { exit = true } },
           { 'd', vim.lsp.buf.definition, { exit = true } },
-          { 'f', vim.lsp.buf.formatting, { exit = true } },
+          { 'f', vim.lsp.buf.format, { exit = true } },
           { 'i', vim.lsp.buf.implementation, { exit = true } },
           { 'l', vim.diagnostic.setloclist, { exit = true } },
           { 'r', vim.lsp.buf.references, { exit = true } },

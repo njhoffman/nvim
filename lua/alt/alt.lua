@@ -17,15 +17,15 @@ function M.altStatusline(opts)
 
   local altBufNr = vim.fn.bufnr("#") ---@diagnostic disable-line: param-type-mismatch
   local specialFile = vim.api.nvim_buf_is_valid(altBufNr)
-    and vim.api.nvim_buf_get_option(altBufNr, "buftype") ~= ""
-  local fileExists = vim.loop.fs_stat(altPath) ~= nil
+    and vim.api.nvim_get_option_value("buftype", { buf = altBufNr }) ~= ""
+  local fileExists = vim.uv.fs_stat(altPath) ~= nil
   local hasAltFile = altFile ~= "" and altPath ~= curPath and (fileExists or specialFile)
 
   local name, icon
   if hasAltFile then
     -- icon
     local ext = vim.fn.expand("#:e")
-    local altBufFt = vim.api.nvim_buf_get_option(altBufNr, "filetype") ---@diagnostic disable-line: param-type-mismatch
+    local altBufFt = vim.api.nvim_get_option_value("filetype", { buf = altBufNr }) ---@diagnostic disable-line: param-type-mismatch
     local ftOrExt = ext ~= "" and ext or altBufFt
     local ok, devicons = pcall(require, "nvim-web-devicons")
     icon = ok and devicons.get_icon(altFile, ftOrExt) or "#"
@@ -65,8 +65,8 @@ function M.gotoAltBuffer()
   local curPath = vim.fn.expand("%:p")
   local altBufNr = vim.fn.bufnr("#") ---@diagnostic disable-line: param-type-mismatch
   local specialFile = vim.api.nvim_buf_is_valid(altBufNr)
-    and vim.api.nvim_buf_get_option(altBufNr, "buftype") ~= ""
-  local fileExists = vim.loop.fs_stat(altPath) ~= nil
+    and vim.api.nvim_get_option_value("buftype", { buf = altBufNr }) ~= ""
+  local fileExists = vim.uv.fs_stat(altPath) ~= nil
   local hasAltFile = altFile ~= "" and altPath ~= curPath and (fileExists or specialFile)
 
   if hasAltFile and (altPath ~= curPath) then
@@ -87,7 +87,7 @@ function M.betterClose()
   end
 
   local absPath = vim.fn.expand("%:p")
-  local fileExists = vim.loop.fs_stat(absPath) ~= nil
+  local fileExists = vim.uv.fs_stat(absPath) ~= nil
   if fileExists then
     vim.cmd("silent update " .. absPath)
   end

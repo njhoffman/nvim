@@ -265,7 +265,7 @@ parse.response = function(lines, dump_path, code)
   end
 
   local body = F.join(lines, "\n")
-  vim.loop.fs_unlink(dump_path)
+  vim.uv.fs_unlink(dump_path)
 
   return {
     status = status or 0,

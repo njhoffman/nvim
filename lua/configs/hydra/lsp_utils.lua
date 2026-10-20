@@ -52,17 +52,9 @@ local toggle_diagnostic = function(type)
     local old_config = vim.diagnostic.config()
     -- TODO: make into a map, add virtual text handler
     if type == "buffer" then
-      if vim.diagnostic.is_disabled(0) then
-        vim.diagnostic.enable(0)
-      else
-        vim.diagnostic.disable(0)
-      end
+      vim.diagnostic.enable(not vim.diagnostic.is_enabled({ bufnr = 0 }), { bufnr = 0 })
     elseif type == "global" then
-      if vim.diagnostic.is_disabled() then
-        vim.diagnostic.enable()
-      else
-        vim.diagnostic.disable()
-      end
+      vim.diagnostic.enable(not vim.diagnostic.is_enabled())
     elseif type == "format" then
       vim.b.format_on_write = vim.b.format_on_write == 0 and 1 or 0
     elseif type == "virtual_lines" then

@@ -18,7 +18,7 @@ if not vim.g.venv_lualine_added then
 	u.addToLuaLine("tabline", "lualine_a", function()
 		-- GUARD python ft, pyright attached, has custom python_path
 		if vim.bo.ft ~= "python" then return "" end
-		local pyright = vim.lsp.get_active_clients({ name = "pyright" })[1]
+		local pyright = vim.lsp.get_clients({ name = "pyright" })[1]
 		if not pyright then return "" end
 		local pythonPath = pyright.config.settings.python.pythonPath
 		if not pythonPath then return "" end

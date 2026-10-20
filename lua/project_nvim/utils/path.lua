@@ -1,4 +1,4 @@
-local uv = vim.loop
+local uv = vim.uv
 local M = {}
 
 M.historyfile = nil
@@ -96,7 +96,7 @@ M.fix_symlinks_for_history = function(dirs)
 end
 
 function M.is_file()
-  local buf_type = vim.api.nvim_buf_get_option(0, "buftype")
+  local buf_type = vim.api.nvim_get_option_value("buftype", { buf = 0 })
 
   local whitelisted_buf_type = { "", "acwrite" }
   local is_in_whitelist = false

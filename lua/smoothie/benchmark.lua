@@ -87,7 +87,7 @@ function M.start_op(operation_type, target_lines)
 
   data.current_op = {
     type = operation_type,
-    start_time = vim.loop.hrtime(),
+    start_time = vim.uv.hrtime(),
     start_line = vim.fn.line("."),
     target_lines = target_lines,
     frames = {},
@@ -102,7 +102,7 @@ function M.record_frame()
     return
   end
 
-  local now = vim.loop.hrtime()
+  local now = vim.uv.hrtime()
   local current_line = vim.fn.line(".")
 
   ---@type BenchmarkFrame
@@ -140,7 +140,7 @@ function M.end_op()
     return
   end
 
-  data.current_op.end_time = vim.loop.hrtime()
+  data.current_op.end_time = vim.uv.hrtime()
   data.current_op.end_line = vim.fn.line(".")
 
   -- Calculate actual lines scrolled
@@ -301,9 +301,9 @@ function M.show_stats()
   vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
 
   -- Buffer options
-  vim.api.nvim_buf_set_option(buf, "modifiable", false)
-  vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
-  vim.api.nvim_buf_set_option(buf, "filetype", "smoothie-benchmark")
+  vim.api.nvim_set_option_value("modifiable", false, { buf = buf })
+  vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = buf })
+  vim.api.nvim_set_option_value("filetype", "smoothie-benchmark", { buf = buf })
 
   -- Define highlights
   local ns_id = vim.api.nvim_create_namespace("smoothie_benchmark")
@@ -370,7 +370,7 @@ function M.show_stats()
   local win = vim.api.nvim_open_win(buf, true, opts)
 
   -- Set window highlight
-  vim.api.nvim_win_set_option(win, "winhl", "Normal:Normal,FloatBorder:FloatBorder")
+  vim.api.nvim_set_option_value("winhl", "Normal:Normal,FloatBorder:FloatBorder", { win = win })
 
   -- Close mappings
   local map = require("mapper").map

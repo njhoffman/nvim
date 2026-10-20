@@ -54,11 +54,7 @@ M.preview_toggle_wrap = function(prompt_bufnr)
   if type(previewer) ~= "table" or previewer.scroll_fn == nil or preview_winid == nil then
     return
   end
-  vim.api.nvim_win_set_option(
-    preview_winid,
-    "wrap",
-    not vim.api.nvim_win_get_option(preview_winid, "wrap")
-  )
+  vim.api.nvim_set_option_value("wrap", not vim.api.nvim_get_option_value("wrap", { win = preview_winid }), { win = preview_winid })
 end
 
 return M

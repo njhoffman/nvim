@@ -9,7 +9,22 @@ local egrep_conf = require("telescope._extensions.egrepify.config").values
 local actions = require("telescope.actions")
 local TSInjector = require("telescope._extensions.egrepify.treesitter")
 
-local flatten = vim.tbl_flatten
+-- vim.tbl_flatten replacement: same list semantics (nil holes and dict-like tables are skipped)
+local function flatten(t)
+  local result = {}
+  local function _flatten(_t)
+    for i = 1, #_t do
+      local v = _t[i]
+      if type(v) == "table" then
+        _flatten(v)
+      elseif v ~= nil then
+        result[#result + 1] = v
+      end
+    end
+  end
+  _flatten(t)
+  return result
+end
 
 ---@mod telescope-egrepify.picker Picker
 ---@brief [[
@@ -118,7 +133,7 @@ function Picker.picker(opts)
   end
 
   local vimgrep_arguments = opts.vimgrep_arguments or conf.vimgrep_arguments
-  opts.cwd = opts.cwd and vim.fn.expand(opts.cwd) or vim.loop.cwd()
+  opts.cwd = opts.cwd and vim.fn.expand(opts.cwd) or vim.uv.cwd()
   local open_files = vim.nonnil(opts.grep_open_files, egrep_conf.grep_open_files)
       and egrep_utils._get_open_files(opts.cwd)
     or {}

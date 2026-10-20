@@ -108,7 +108,7 @@ local function file_history(opts)
   pickers.new(opts, {
     prompt_title = "FileHistory",
     finder = finders.new_table({
-      results = vim.tbl_flatten(results),
+      results = vim.iter(results):flatten(math.huge):totable(),
       entry_maker = function(entry)
         if not entry or entry == '' then
           return
@@ -149,7 +149,7 @@ local function file_history_files(opts)
   pickers.new(opts, {
     prompt_title = "FileHistoryFiles",
     finder = finders.new_table({
-      results = vim.tbl_flatten(results),
+      results = vim.iter(results):flatten(math.huge):totable(),
       entry_maker = function(entry)
         if not entry or entry == '' then
           return
@@ -195,7 +195,7 @@ local function file_history_query(opts)
   pickers.new(opts, {
     prompt_title = "FileHistoryQuery",
     finder = finders.new_table({
-      results = vim.tbl_flatten(results),
+      results = vim.iter(results):flatten(math.huge):totable(),
       entry_maker = function(entry)
         if not entry or entry == '' then
           return

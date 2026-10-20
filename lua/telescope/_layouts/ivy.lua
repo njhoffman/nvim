@@ -56,7 +56,7 @@ return function(picker)
     relative = "editor",
     anchor = "SW",
     position = {
-      row = vim.api.nvim_get_option("lines") - 2,
+      row = vim.api.nvim_get_option_value("lines", { scope = "global" }) - 2,
       col = 0,
     },
     size = {

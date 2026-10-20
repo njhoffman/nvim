@@ -1,6 +1,6 @@
 local async = require "plenary.async" --[[@as PlenaryAsync]]
 local log = require "plenary.log"
-local uv = vim.loop or vim.uv
+local uv = vim.uv
 
 ---@class FrecencyNativeWatcherMtime
 ---@field sec integer

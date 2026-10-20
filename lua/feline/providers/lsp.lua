@@ -3,7 +3,7 @@ local lsp_severity = vim.diagnostic.severity
 local diagnostic = vim.diagnostic
 
 function M.is_lsp_attached()
-  return next(vim.lsp.get_active_clients({ bufnr = 0 })) ~= nil
+  return next(vim.lsp.get_clients({ bufnr = 0 })) ~= nil
 end
 
 -- function M.get_diagnostics_count(severity)
@@ -29,7 +29,7 @@ end
 function M.lsp_client_names()
   local clients = {}
 
-  for _, client in pairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
+  for _, client in pairs(vim.lsp.get_clients({ bufnr = 0 })) do
     clients[#clients + 1] = client.name
   end
 

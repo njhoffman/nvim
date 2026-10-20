@@ -3,7 +3,7 @@ local os_sep = Path.path.sep
 local F = require "plenary.functional"
 local compat = require "plenary.compat"
 
-local uv = vim.loop
+local uv = vim.uv
 
 local m = {}
 

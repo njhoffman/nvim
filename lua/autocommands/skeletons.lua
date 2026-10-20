@@ -28,7 +28,7 @@ end
 local load_skeleton = function(ctx)
   vim.defer_fn(function()
     if ctx.match and skeletons[ctx.match] then
-      local fileStats = vim.loop.fs_stat(vim.fn.expand("%"))
+      local fileStats = vim.uv.fs_stat(vim.fn.expand("%"))
       local specialBuffer = vim.bo.buftype ~= ""
       -- if specialBuffer or not fileStats then
       if specialBuffer then
@@ -37,7 +37,7 @@ local load_skeleton = function(ctx)
       local filetype = ctx.match
       local ext = skeletons[filetype]
       local skeletonFile = vim.fn.stdpath("config") .. "/templates/skeleton." .. ext
-      local noSkeleton = vim.loop.fs_stat(skeletonFile) == nil
+      local noSkeleton = vim.uv.fs_stat(skeletonFile) == nil
       if noSkeleton then
         vim.notify("Skeleton", "Skeleton file not found.", "error")
         return

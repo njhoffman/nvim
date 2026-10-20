@@ -10,7 +10,7 @@ local highlighter = require "vim.treesitter.highlighter"
 local M = {}
 
 function M.debounce(fn, debounce_time)
-  local timer = vim.loop.new_timer()
+  local timer = vim.uv.new_timer()
   local is_debounce_fn = type(debounce_time) == "function"
 
   return function(...)

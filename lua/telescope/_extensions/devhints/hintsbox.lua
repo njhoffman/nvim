@@ -10,7 +10,7 @@ local scroll_float = function(mapping, winnr)
     local scroll_up = vim.api.nvim_replace_termcodes("<Up>", true, false, true)
     if mapping == scroll_up then
       local linenr = vim.api.nvim_win_get_cursor(winnr)[1]
-      local scrolloff = vim.api.nvim_get_option("scrolloff")
+      local scrolloff = vim.api.nvim_get_option_value("scrolloff", { scope = "global" })
       local winheight = vim.api.nvim_win_get_height(winnr)
       if linenr > (winheight - scrolloff) then
         vim.fn.win_execute(winnr, "normal! " .. mapping)
@@ -120,7 +120,7 @@ local init = function(topics)
     zindex = 2,
     style = "minimal",
   })
-  vim.api.nvim_win_set_option(winnr, "winblend", 20)
+  vim.api.nvim_set_option_value("winblend", 20, { win = winnr })
 
   init_aucommands(winnr)
   init_keymaps(winnr)
@@ -128,13 +128,13 @@ local init = function(topics)
   local bufnr = vim.api.nvim_create_buf(false, true)
 
   vim.api.nvim_win_set_buf(winnr, bufnr)
-  vim.api.nvim_buf_set_option(bufnr, "filetype", "markdown")
+  vim.api.nvim_set_option_value("filetype", "markdown", { buf = bufnr })
 
   update_preview(bufnr, topics)
 
   vim.diagnostic.reset(nil, bufnr)
 
-  local scrolloff = vim.api.nvim_get_option("scrolloff")
+  local scrolloff = vim.api.nvim_get_option_value("scrolloff", { scope = "global" })
   local scroll_down = vim.api.nvim_replace_termcodes("<Down>", true, false, true)
   if window.height > scrolloff then
     for _ = 1, window.height - scrolloff do

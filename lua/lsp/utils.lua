@@ -17,7 +17,7 @@ local root_pattern = function(...)
           for _, p in
             ipairs(vim.fn.glob(table.concat({ escape_wildcards(path), pattern }, "/"), true, true))
           do
-            if vim.loop.fs_stat(p) then
+            if vim.uv.fs_stat(p) then
               return path
             end
           end

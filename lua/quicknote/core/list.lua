@@ -4,7 +4,7 @@ local path = require("plenary.path")
 -- list all notes in a note dir
 local listNotes = function(noteDirPath)
     -- check if note dir exist
-    vim.loop.fs_stat(noteDirPath, function(err, _)
+    vim.uv.fs_stat(noteDirPath, function(err, _)
         if err then
             print("No notes for current buffer found.")
         else
@@ -68,7 +68,7 @@ local ListNotesForAFileOrWDInCWD = function()
     local existedFilePaths = {}
     for _, filePath in ipairs(filePaths) do
         local noteDirPath = utils.path.getHashedNoteDirPath(filePath)
-        local stat = vim.loop.fs_stat(noteDirPath)
+        local stat = vim.uv.fs_stat(noteDirPath)
         if stat then
             -- list notes
             table.insert(noteDirPaths, noteDirPath)

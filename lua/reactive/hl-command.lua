@@ -100,7 +100,7 @@ function M.setup(options)
 end
 
 function M.highlight()
-  vim.highlight.range(
+  vim.hl.range(
     0,
     namespace,
     M.defaults.hl_group,

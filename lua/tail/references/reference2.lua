@@ -45,7 +45,7 @@ end
 
 function Neotail:start()
   if not self.active or not self.timer then
-    self.timer = vim.loop.new_timer()
+    self.timer = vim.uv.new_timer()
     self.timer:start(
       0,
       g.neotail_loop_period,

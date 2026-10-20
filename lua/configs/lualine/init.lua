@@ -112,7 +112,7 @@ local conditions = {
     return vim.api.nvim_get_option_value("columns", { scope = "global" }) > 120
   end,
   cmdheight_zero = function()
-    return vim.api.nvim_get_option("cmdheight") == 0
+    return vim.api.nvim_get_option_value("cmdheight", { scope = "global" }) == 0
   end,
   search_active = function()
     return vim.fn.searchcount().total > 0

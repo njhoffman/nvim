@@ -76,7 +76,7 @@ local function gen_from_buffer(opts)
   return function(entry)
     local bufname = entry.info.name ~= "" and entry.info.name or "[No Name]"
     local hidden = entry.info.hidden == 1 and "h" or "a"
-    local readonly = vim.api.nvim_buf_get_option(entry.bufnr, "readonly") and "=" or " "
+    local readonly = vim.api.nvim_get_option_value("readonly", { buf = entry.bufnr }) and "=" or " "
     local modified = entry.info.changed == 1 and "+" or " "
     local indicator = entry.flag .. hidden .. readonly .. modified
 
@@ -127,7 +127,7 @@ local function get_buffers(opts)
     if opts.ignore_current_buffer and b == vim.api.nvim_get_current_buf() then
       return false
     end
-    if opts.cwd_only and not string.find(vim.api.nvim_buf_get_name(b), vim.loop.cwd(), 1, true) then
+    if opts.cwd_only and not string.find(vim.api.nvim_buf_get_name(b), vim.uv.cwd(), 1, true) then
       return false
     end
     if

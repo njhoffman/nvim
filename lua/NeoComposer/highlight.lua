@@ -3,7 +3,7 @@ local config = require("NeoComposer.config")
 local highlight = {}
 
 function highlight.setup()
-  highlight.timer = vim.loop.new_timer()
+  highlight.timer = vim.uv.new_timer()
   highlight.config = { on_yank = true, timer = 500 }
   highlight.hl_yank = vim.api.nvim_create_namespace("NeoComposerYank")
   vim.api.nvim_set_hl(0, "NeoComposerYanked", { link = "Search", default = true })
@@ -27,7 +27,7 @@ function highlight.highlight_yank(start_pos, end_pos)
   highlight.timer:stop()
   vim.api.nvim_buf_clear_namespace(0, highlight.hl_yank, 0, -1)
 
-  vim.highlight.range(
+  vim.hl.range(
     0,
     highlight.hl_yank,
     "NeoComposerYanked",

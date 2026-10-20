@@ -34,7 +34,7 @@ local function append_environment_name(prompt_bufnr)
   if selection.value == '' then
     return
   end
-  if vim.api.nvim_buf_get_option(vim.api.nvim_get_current_buf(), 'modifiable') then
+  if vim.api.nvim_get_option_value('modifiable', { buf = vim.api.nvim_get_current_buf() }) then
     vim.api.nvim_put({ selection.value[1] }, 'b', true, true)
   end
 end
@@ -45,7 +45,7 @@ local function append_environment_value(prompt_bufnr)
   if selection.value == '' then
     return
   end
-  if vim.api.nvim_buf_get_option(vim.api.nvim_get_current_buf(), 'modifiable') then
+  if vim.api.nvim_get_option_value('modifiable', { buf = vim.api.nvim_get_current_buf() }) then
     vim.api.nvim_put({ selection.value[2] }, 'b', true, true)
   end
 end

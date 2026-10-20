@@ -83,11 +83,11 @@ local detail_lines = function()
     output_report(lines, details.report)
   end
 
-  vim.api.nvim_buf_set_option(ui_state.view_buf_handle, "modifiable", true)
+  vim.api.nvim_set_option_value("modifiable", true, { buf = ui_state.view_buf_handle })
   vim.api.nvim_buf_set_lines(ui_state.view_buf_handle, 0, -1, false, {})
   vim.api.nvim_buf_set_lines(ui_state.view_buf_handle, 0, -1, false, lines)
-  vim.api.nvim_buf_set_option(ui_state.view_buf_handle, "modifiable", false)
-  vim.api.nvim_buf_set_option(ui_state.view_buf_handle, "modified", false)
+  vim.api.nvim_set_option_value("modifiable", false, { buf = ui_state.view_buf_handle })
+  vim.api.nvim_set_option_value("modified", false, { buf = ui_state.view_buf_handle })
 end
 
 return detail_lines

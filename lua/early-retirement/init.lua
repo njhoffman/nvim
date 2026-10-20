@@ -1,7 +1,9 @@
 #!/usr/bin/env lua
 
 local M = {}
-local bufOpt = vim.api.nvim_buf_get_option
+local bufOpt = function(bufnr, name)
+  return vim.api.nvim_get_option_value(name, { buf = bufnr })
+end
 
 local timerDelay = 10
 local state = {
@@ -51,7 +53,7 @@ local function deleteBufferWhenFileDeleted()
 
         local bufname = vim.api.nvim_buf_get_name(bufnr)
         local isSpecialBuffer = bufOpt(bufnr, 'buftype') ~= ''
-        local fileExists = vim.loop.fs_stat(bufname) ~= nil
+        local fileExists = vim.uv.fs_stat(bufname) ~= nil
         local isNewBuffer = bufname == ''
         if fileExists or isSpecialBuffer or isNewBuffer then
           return
@@ -181,7 +183,7 @@ function M.setup(userConfig)
   }
   local config = vim.tbl_deep_extend('keep', userConfig, defaultConfig)
 
-  state.timer = vim.loop.new_timer()
+  state.timer = vim.uv.new_timer()
   startTimer(config)
   setupAutocmds(config)
   if config.deleteBufferWhenFileDeleted then

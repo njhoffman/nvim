@@ -293,11 +293,11 @@ local function parse_provider(gen, provider, component, is_short, winid, section
     local provider_fn, provider_opts
 
     if not provider.name then
-      api.nvim_err_writeln("Provider table doesn't have the provider name")
+      api.nvim_echo({ { "Provider table doesn't have the provider name" } }, true, { err = true })
     elseif type(provider.name) ~= 'string' then
-      api.nvim_err_writeln(string.format("Expected 'string' for provider name, got '%s' instead", type(provider.name)))
+      api.nvim_echo({ { string.format("Expected 'string' for provider name, got '%s' instead", type(provider.name)) } }, true, { err = true })
     elseif not feline.providers[provider.name] then
-      api.nvim_err_writeln(string.format("Provider with name '%s' doesn't exist", provider.name))
+      api.nvim_echo({ { string.format("Provider with name '%s' doesn't exist", provider.name) } }, true, { err = true })
     else
       provider_fn = feline.providers[provider.name]
       provider_opts = provider.opts or {}
@@ -380,7 +380,7 @@ local function parse_provider(gen, provider, component, is_short, winid, section
   end
 
   if type(str) ~= 'string' then
-    api.nvim_err_writeln(string.format("Provider must evaluate to string, got type '%s' instead", type(provider)))
+    api.nvim_echo({ { string.format("Provider must evaluate to string, got type '%s' instead", type(provider)) } }, true, { err = true })
 
     str = ''
   end
@@ -462,8 +462,7 @@ local function parse_component_handle_errors(
   local ok, result = pcall(parse_component, gen, component, use_short_provider, winid, section_nr, component_nr)
 
   if not ok then
-    api.nvim_err_writeln(
-      string.format(
+    api.nvim_echo({ { string.format(
         'Feline: error while processing %s component number %d on section %d of type ' .. "'%s' for window %d: %s",
         gen.name,
         component_nr,
@@ -471,8 +470,7 @@ local function parse_component_handle_errors(
         focus_type,
         winid,
         result
-      )
-    )
+      ) } }, true, { err = true })
 
     return ''
   end
@@ -560,13 +558,11 @@ function Generator:generate(is_active, maxwidth)
     for j, component in ipairs(section) do
       if component.name then
         if self.component_truncated[winid][component.name] ~= nil then
-          api.nvim_err_writeln(
-            string.format(
+          api.nvim_echo({ { string.format(
               'Feline: error while parsing components for window %d: ' .. "Multiple components with name '%s'",
               winid,
               component.name
-            )
-          )
+            ) } }, true, { err = true })
           return ''
         end
         self.component_truncated[winid][component.name] = false

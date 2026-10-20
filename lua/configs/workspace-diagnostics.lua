@@ -5,7 +5,7 @@ require("workspace-diagnostics").setup({
 })
 
 local get_workspace_diags = function()
-  for _, client in ipairs(vim.lsp.buf_get_clients()) do
+  for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
     require("workspace-diagnostics").populate_workspace_diagnostics(client, 0)
   end
 end

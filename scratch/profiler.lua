@@ -130,7 +130,7 @@ function M.start_hook()
       info = debug.getinfo(3, "Sf")
     end
     if what == "call" then
-      starts[info.func] = vim.loop.hrtime()
+      starts[info.func] = vim.uv.hrtime()
       return
     end
     names[info.func] = names[info.func]
@@ -140,7 +140,7 @@ function M.start_hook()
       or { count = 0, time = 0, source = info.source, line = info.linedefined }
     M.stats[name].count = M.stats[name].count + 1
     if starts[info.func] then
-      M.stats[name].time = M.stats[name].time + (vim.loop.hrtime() - starts[info.func])
+      M.stats[name].time = M.stats[name].time + (vim.uv.hrtime() - starts[info.func])
     end
   end, "cr")
 end

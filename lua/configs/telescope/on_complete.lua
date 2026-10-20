@@ -17,17 +17,17 @@ local on_complete = function(picker)
   if time_start and (#timing.fetch == 0 or type(time_start) == "function") then
     time_start = type(time_start) == "function" and time_start() or time_start
     local cmd = type(picker.finder.cmd) == "function" and picker.finder.cmd() or picker.finder.cmd
-    local time_diff = (vim.loop.hrtime() - time_start) / 1e6
+    local time_diff = (vim.uv.hrtime() - time_start) / 1e6
     local rate = picker.stats.processed / (time_diff / 1000)
     table.insert(timing.fetch, { rate = rate, diff = time_diff, cmd = cmd })
     log_msg = string.format("󰇚 %-20s %6.0f/s", picker_name .. ":" .. finder_name, rate)
   elseif timing.time_last then
-    local time_diff = (vim.loop.hrtime() - timing.time_last) / 1e6
+    local time_diff = (vim.uv.hrtime() - timing.time_last) / 1e6
     local rate = picker.stats.processed / (time_diff / 1000)
     table.insert(timing.reload, { diff = time_diff, rate = rate })
     log_msg = string.format("󰑓 %-20s %6.0f/s", picker_name .. ":" .. finder_name, rate)
   end
-  timing.time_last = vim.loop.hrtime()
+  timing.time_last = vim.uv.hrtime()
 
   if log_msg ~= "" then
     vim.dbglog(log_msg .. string.format(

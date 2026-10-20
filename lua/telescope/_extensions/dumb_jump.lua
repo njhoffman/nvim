@@ -6,7 +6,22 @@ local pickers = require('telescope.pickers')
 local make_entry = require('telescope.make_entry')
 local conf = require('telescope.config').values
 local global = require('core.global')
-local flatten = vim.tbl_flatten
+-- vim.tbl_flatten replacement: same list semantics (nil holes and dict-like tables are skipped)
+local function flatten(t)
+  local result = {}
+  local function _flatten(_t)
+    for i = 1, #_t do
+      local v = _t[i]
+      if type(v) == 'table' then
+        _flatten(v)
+      elseif v ~= nil then
+        result[#result + 1] = v
+      end
+    end
+  end
+  _flatten(t)
+  return result
+end
 
 local escape_chars = function(string)
   return string.gsub(string, '[%(|%)|\\|%[|%]|%-|%{%}|%?|%+|%*|%^|%$]', {

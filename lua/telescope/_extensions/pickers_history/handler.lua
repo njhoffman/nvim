@@ -59,9 +59,9 @@ local get_history = function()
     append = function(self, line, picker, no_reset)
       local title = picker.prompt_title
       local selection_index = picker:get_index(picker:get_selection_row())
-      local cwd = picker.cwd or vim.loop.cwd()
+      local cwd = picker.cwd or vim.uv.cwd()
 
-      local project_name = require('project_nvim').get_project_root() or vim.loop.cwd()
+      local project_name = require('project_nvim').get_project_root() or vim.uv.cwd()
       if project_name ~= '' then
         project_name = vim.fn.split(project_name, ' ')[1]
         local fileparts = vim.fn.split(project_name, '/')
@@ -156,7 +156,7 @@ local get_smart_history = function()
     end,
     append = function(self, line, picker, no_reset)
       local title = picker.prompt_title
-      local cwd = picker.cwd or vim.loop.cwd()
+      local cwd = picker.cwd or vim.uv.cwd()
       if line ~= '' then
         -- ensure_content(self, title, cwd)
         if self.content[#self.content] ~= line then
@@ -187,7 +187,7 @@ local get_smart_history = function()
   })
 end
 
-local uv = vim.loop
+local uv = vim.uv
 local write_async = function(path, txt, flag)
   vim.dbglog('write_async', path, txt, flag)
   uv.fs_open(path, flag, 438, function(open_err, fd)

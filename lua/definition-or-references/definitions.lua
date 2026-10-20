@@ -34,10 +34,10 @@ local function definitions()
           methods.clear_references()
           methods.clear_implementations()
           log.trace("definitions", "Current cursor not on result")
-          vim.lsp.util.jump_to_location(
+          vim.lsp.util.show_document(
             first_definition,
             vim.lsp.get_client_by_id(context.client_id).offset_encoding,
-            true
+            { reuse_win = true, focus = true }
           )
           return
         end

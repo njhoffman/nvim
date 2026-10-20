@@ -7,11 +7,11 @@ m.flatten = (function()
     end
   else
     return function(t)
-      return vim.tbl_flatten(t)
+      return vim.iter(t):flatten(math.huge):totable()
     end
   end
 end)()
 
-m.islist = vim.islist or vim.tbl_islist
+m.islist = vim.islist
 
 return m

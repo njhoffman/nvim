@@ -6,7 +6,7 @@ local utils = require("quicknote.utils")
 local path = require("plenary.path")
 
 local listNotes = function(noteDirPath)
-    if not vim.loop.fs_stat(noteDirPath) then
+    if not vim.uv.fs_stat(noteDirPath) then
         return
     end
     local notes = {}

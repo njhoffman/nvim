@@ -16,7 +16,7 @@ local exportNotesToDestination = function(noteDirPath)
     destinationDir = path.new(destinationDir):absolute()
 
     -- check if destination dir exists, if exists, do nothing and return
-    local stat = vim.loop.fs_stat(destinationDir)
+    local stat = vim.uv.fs_stat(destinationDir)
     if stat ~= nil then
         print("Destination dir has already existed")
         return
@@ -63,7 +63,7 @@ local importNotesFromDestination = function(noteDirPath)
     sourceDir = path.new(sourceDir):absolute()
 
     -- check if source dir exists, if not exist, do nothing and return
-    local stat = vim.loop.fs_stat(sourceDir)
+    local stat = vim.uv.fs_stat(sourceDir)
     if stat == nil then
         print("Source dir does not exist")
         return

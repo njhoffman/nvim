@@ -1,19 +1,19 @@
 local glob = require("project_nvim.utils.globtopattern")
-local uv = vim.loop
+local uv = vim.uv
 
 local M = {}
 
 function M.lsp_workspace_root(client, fname)
   local root_dir = false
   local workspace_folders = client.workspace_folders or client.workspaceFolders
-  local is_windows = vim.loop.os_uname().version:match("Windows")
+  local is_windows = vim.uv.os_uname().version:match("Windows")
   fname = vim.fn.fnamemodify(vim.fn.resolve(fname), ":p")
   local sep = is_windows and "\\" or "/"
   local fname_parts = vim.split(fname, sep, { trimempty = true })
   if workspace_folders then
     for _, schema in pairs(workspace_folders) do
       local matched = true
-      local root = vim.loop.fs_realpath(schema.name)
+      local root = vim.uv.fs_realpath(schema.name)
       local root_parts = vim.split(root, sep, { trimempty = true })
 
       for i = 1, #root_parts do
@@ -38,7 +38,7 @@ function M.find_lsp_root()
   local options = require("project_nvim.config").get()
 
   local original_bufnr = vim.api.nvim_get_current_buf()
-  local buf_ft = vim.api.nvim_buf_get_option(original_bufnr, "filetype")
+  local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = original_bufnr })
   local clients = vim.lsp.get_clients({ bufnr = original_bufnr })
   -- local clients = vim.lsp.get_active_clients()
   local fname = vim.api.nvim_buf_get_name(original_bufnr)
@@ -253,9 +253,9 @@ function M.get_project_root()
         return root, 'lsp "' .. lsp_name .. '"'
       end
     elseif detection_method == "pattern" then
-      local time_start = vim.loop.hrtime()
+      local time_start = vim.uv.hrtime()
       local root, method = M.find_pattern_root()
-      local time_end = vim.loop.hrtime()
+      local time_end = vim.uv.hrtime()
       local time_ms = (time_end - time_start) / 1000000
       -- vim.dbglog("pattern time: " .. time_ms .. " ms", root, method)
       if root ~= nil then

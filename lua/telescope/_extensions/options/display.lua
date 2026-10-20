@@ -53,7 +53,7 @@ local entry_maker = function(opt)
     ordinal = string.format('%s %s %s', opt.name, opt.type, opt.scope),
   }
 
-  local ok, value = pcall(vim.api.nvim_get_option, opt.name)
+  local ok, value = pcall(vim.api.nvim_get_option_value, opt.name, { scope = "global" })
   if ok then
     entry.value.value = value
     entry.ordinal = entry.ordinal .. ' ' .. utils.display_termcodes(tostring(value))

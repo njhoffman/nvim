@@ -9,7 +9,7 @@ local frecency = function(user_opts)
   local futil = require('telescope._extensions.frecency.util')
   local db_client = require('telescope._extensions.frecency.db_client')
 
-  local os_home = vim.loop.os_homedir()
+  local os_home = vim.uv.os_homedir()
   local opts = config.setup(user_opts)
 
   local display = require('telescope._extensions.frecency.display').init(opts)
@@ -140,7 +140,7 @@ local frecency = function(user_opts)
   })
   state.picker:find()
 
-  vim.api.nvim_buf_set_option(state.picker.prompt_bufnr, 'filetype', 'TelescopePrompt')
+  vim.api.nvim_set_option_value('filetype', 'TelescopePrompt', { buf = state.picker.prompt_bufnr })
   -- vim.api.nvim_buf_set_option(state.picker.prompt_bufnr, 'completefunc', 'frecency#FrecencyComplete')
   vim.api.nvim_buf_set_keymap(
     state.picker.prompt_bufnr,

@@ -9,7 +9,7 @@ M.format_msg = function(s)
 end
 M.error = function(s)
   local msg = M.format_msg(s)
-  vim.api.nvim_err_writeln(msg)
+  vim.api.nvim_echo({ { msg } }, true, { err = true })
 end
 
 return M

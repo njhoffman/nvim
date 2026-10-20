@@ -435,7 +435,7 @@ M.delete_buffer = function(prompt_bufnr)
   local current_picker = action_state.get_current_picker(prompt_bufnr)
   local removed = {}
   current_picker:delete_selection(function(selection)
-    local force = vim.api.nvim_buf_get_option(selection.bufnr, 'buftype') == 'terminal'
+    local force = vim.api.nvim_get_option_value('buftype', { buf = selection.bufnr }) == 'terminal'
     local ok = pcall(vim.api.nvim_buf_delete, selection.bufnr, { force = force })
     table.insert(removed, selection.value)
     return ok
@@ -453,10 +453,10 @@ local function create_scratch_win(filetype, lines)
 
   vim.api.nvim_buf_set_name(0, 'telecope-out #' .. buf)
 
-  vim.api.nvim_buf_set_option(0, 'buftype', 'nofile')
-  vim.api.nvim_buf_set_option(0, 'swapfile', false)
-  vim.api.nvim_buf_set_option(0, 'filetype', filetype)
-  vim.api.nvim_buf_set_option(0, 'bufhidden', 'wipe')
+  vim.api.nvim_set_option_value('buftype', 'nofile', { buf = 0 })
+  vim.api.nvim_set_option_value('swapfile', false, { buf = 0 })
+  vim.api.nvim_set_option_value('filetype', filetype, { buf = 0 })
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = 0 })
 
   vim.api.nvim_command('setlocal wrap')
   vim.api.nvim_command('setlocal cursorline')

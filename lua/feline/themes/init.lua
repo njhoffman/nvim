@@ -18,7 +18,7 @@ local themes_mt = {
     end,
     __newindex = function(_, key, val)
         if default_themes[key] or custom_themes[key] then
-            api.nvim_err_writeln(string.format("Theme '%s' already exists!", key))
+            api.nvim_echo({ { string.format("Theme '%s' already exists!", key) } }, true, { err = true })
         else
             custom_themes[key] = val
         end

@@ -1,7 +1,7 @@
 local M = {}
 
 local ns = vim.api.nvim_create_namespace('houdini')
-local timer = vim.loop.new_timer()
+local timer = vim.uv.new_timer()
 
 local combinations = {}
 local last_char = ''
@@ -60,19 +60,19 @@ function M.setup(opts)
     local mappings = vim.tbl_filter(function(m)
       local valid = #m == 2
       if not valid then
-        vim.api.nvim_err_writeln('[Houdini] The mapping "' .. m .. '" is not valid!')
+        vim.api.nvim_echo({ { '[Houdini] The mapping "' .. m .. '" is not valid!' } }, true, { err = true })
       end
       return valid
     end, config.mappings)
     if #mappings == 0 then
-      vim.api.nvim_err_writeln('[Houdini] There are no valid mappings! Use defaults')
+      vim.api.nvim_echo({ { '[Houdini] There are no valid mappings! Use defaults' } }, true, { err = true })
       mappings = defaults.mappings
     end
     config.mappings = mappings
 
     -- check that timeout is actually a number
     if type(config.timeout) ~= 'number' then
-      vim.api.nvim_err_writeln('[Houdini] The value for "timeout" has to be a number! Use default value')
+      vim.api.nvim_echo({ { '[Houdini] The value for "timeout" has to be a number! Use default value' } }, true, { err = true })
       config.timeout = defaults.timeout
     end
 
@@ -94,13 +94,11 @@ function M.setup(opts)
 
       local type = type(seq)
       if type ~= 'string' and type ~= 'function' and seq ~= false then
-        vim.api.nvim_err_writeln(
-          '[Houdini] Escape sequence for "'
+        vim.api.nvim_echo({ { '[Houdini] Escape sequence for "'
             .. mode
             .. '" has to be either a string, a function or `false` (not '
             .. type
-            .. ')! Use default value (if present)'
-        )
+            .. ')! Use default value (if present)' } }, true, { err = true })
         config.escape_sequences[mode] = defaults.escape_sequences[mode]
       end
     end

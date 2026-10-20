@@ -1,4 +1,4 @@
-local uv = vim.uv or vim.loop
+local uv = vim.uv
 local config = require("registers.config")
 local state = require("registers.state")
 local highlights = require("registers.highlights")

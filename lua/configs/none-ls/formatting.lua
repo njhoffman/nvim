@@ -26,7 +26,7 @@ local lsp_util = require("lspconfig/util")
 -- local stylua_found = util.root_pattern({'stylua.toml', '.stylua.toml'})(params.bufname)
 
 function search_ancestors(path, patterns)
-  local stats = vim.loop.fs_stat(path)
+  local stats = vim.uv.fs_stat(path)
   local parent = vim.fn.fnamemodify(path, ":h")
   if stats and stats.type == "directory" then
     local matched_files = scan.scan_dir(path, {
@@ -62,7 +62,7 @@ return {
     extra_args = function(params)
       return {
         "--indent-size",
-        vim.api.nvim_buf_get_option(params.bufnr, "shiftwidth"),
+        vim.api.nvim_get_option_value("shiftwidth", { buf = params.bufnr }),
       }
     end,
   }),
@@ -170,7 +170,7 @@ return {
         "--language-dialect",
         "bash",
         "--indent",
-        vim.api.nvim_buf_get_option(params.bufnr, "shiftwidth"),
+        vim.api.nvim_get_option_value("shiftwidth", { buf = params.bufnr }),
       }
     end,
   }),
@@ -198,7 +198,7 @@ return {
         "--dialect",
         "postgres",
         "--indentation",
-        vim.api.nvim_buf_get_option(params.bufnr, "shiftwidth"),
+        vim.api.nvim_get_option_value("shiftwidth", { buf = params.bufnr }),
       }
     end,
   }),

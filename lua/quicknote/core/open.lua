@@ -5,7 +5,7 @@ local M = {}
 
 -- check if note file exist, if exists, open it
 local checkAndOpenNoteFile = function(noteFilePath)
-    vim.loop.fs_stat(noteFilePath, function(err, _)
+    vim.uv.fs_stat(noteFilePath, function(err, _)
         if err then
             print("Note not found.")
         else
