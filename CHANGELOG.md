@@ -5,6 +5,14 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.14.2] - 2026-10-20
+
+### Changed
+
+- `TODO.md`: items now carry priorities read by `todo-status`, `/todo` and `todo-fzf` (same
+  `(p1)` / `(p3)` / `(due YYYY-MM-DD)` tags as `~/.shell`). P1: shadowed plugin modules and
+  tracking `lazy-lock.json`. 11 cleanup and tooling items are P3; the other 12 stay P2.
+
 ## [0.14.1] - 2026-10-20
 
 ### Changed

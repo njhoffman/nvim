@@ -3,6 +3,9 @@
 Each completed item is its own release (see CLAUDE.md "Versioning and releases"). Counts below
 were measured on 2026-10-19 against NVIM v0.13.0-dev-1915 and v0.11.0 of this config; re-measure
 before starting an item.
+Tag an item `(p1)` (high) or `(p3)` (low); untagged items are `p2` (normal).
+`(due YYYY-MM-DD)` adds a date and an OVERDUE flag. `scripts/todo-status`, `/todo` and
+`todo-fzf` (sorted by urgency) read both.
 
 ## 1. Update deprecated code after the Neovim update
 
@@ -69,16 +72,16 @@ by grepping and doing a startup smoke test before removing it. Move removals to
       `heirline-example`, `luasnip-example`, `hydra/reference2`, `feline/reference`, `tmp/`
 - [ ] The 31 `enabled = false` and 1 `cond = false` plugin specs: delete the spec and its config
       unless it's being kept on purpose (then add a reason comment)
-- [ ] `*.defaults.lua` copies of upstream plugin defaults (avante, helpview, mini-diff,
+- [ ] (p3) `*.defaults.lua` copies of upstream plugin defaults (avante, helpview, mini-diff,
       mini-files, mini-jump2d, mini-visits, neo-tree, neocodeium, nvim-colorizer, navbuddy, oil,
       yazi): decide whether to keep these as reference or delete them
-- [ ] `scratch/` and `lua/configs/tmp/` are committed scratch space: move them out of the repo
+- [ ] (p3) `scratch/` and `lua/configs/tmp/` are committed scratch space: move them out of the repo
       or gitignore them
-- [ ] Commented-out code blocks (e.g. `configs/alpha/init.lua` 131-200)
+- [ ] (p3) Commented-out code blocks (e.g. `configs/alpha/init.lua` 131-200)
 
 ## 3. Simplify folder structure and config setup
 
-- [ ] **Shadowed plugin modules.** These `lua/` directories have the same module name as an
+- [ ] **Shadowed plugin modules.** (p1) These `lua/` directories have the same module name as an
       installed plugin, so whichever comes first on the runtimepath wins and plugin updates
       silently diverge: `plenary` (500K vendored copy), `nvim-web-devicons`, `mini`,
       `telescope`, `yanky`, `frecency`, `file_history`, `import`, `helpview`, `nerdy`,
@@ -99,12 +102,12 @@ by grepping and doing a startup smoke test before removing it. Move removals to
   - dashboard: alpha (active), `configs/startup.lua`, snacks dashboard (disabled); replaced by
     item 4
   - pickers: telescope and snacks (see the existing Snacks note below)
-- [ ] **Root clutter.** `unicode_table.txt`, `glyphs.json` (also `lua/glyphs.json`),
+- [ ] **Root clutter.** (p3) `unicode_table.txt`, `glyphs.json` (also `lua/glyphs.json`),
       `pnpm-lock.yaml`, `pyproject.toml`, `directives.lua`, `matchup.lua`; plus
       `parser/` + `parsers/` + `tree-sitter-spidercode/` for one parser
-- [ ] **Lint/format configs.** `.luacheckrc`, `selene.toml`, `.lua-format`, `.stylua.toml`:
+- [ ] **Lint/format configs.** (p3) `.luacheckrc`, `selene.toml`, `.lua-format`, `.stylua.toml`:
       keep StyLua plus one linter
-- [ ] Update CLAUDE.md "Core Architecture" after the restructure
+- [ ] (p3) Update CLAUDE.md "Core Architecture" after the restructure
 
 ## 4. Custom dashboard
 
@@ -191,21 +194,21 @@ questions before implementing.
 
 ## 5. Additional suggestions
 
-- [ ] **Track `lazy-lock.json`.** It's gitignored, so tags don't pin plugin versions and an older
+- [ ] **Track `lazy-lock.json`.** (p1) It's gitignored, so tags don't pin plugin versions and an older
       release can't be reproduced. Track it now that the config has its own repo.
 - [ ] **CI.** Add a GitHub Actions workflow that runs `scripts/run_tests.sh all` and
       `stylua --check` on push and tags, with a pinned nvim nightly so upstream breakage like
       the `nvim_get_commands()` change shows up as a CI failure instead of a local surprise.
-- [ ] **Faster coverage.** Build cluacov against LuaJIT; the pure-Lua hook makes
+- [ ] **Faster coverage.** (p3) Build cluacov against LuaJIT; the pure-Lua hook makes
       `scripts/report.sh` take about 3 minutes.
-- [ ] **Coverage targets.** Add tests for the least-covered modules that tests already load:
+- [ ] **Coverage targets.** (p3) Add tests for the least-covered modules that tests already load:
       `project_nvim/root.lua` (8.6%), `components/diagnostics.lua` (12.8%),
       `utils/core.lua` (13.9%).
-- [ ] **`scripts/run_tests.sh` cleanup.** `set -e` makes the `if [ $? -eq 0 ]` checks after each
+- [ ] **`scripts/run_tests.sh` cleanup.** (p3) `set -e` makes the `if [ $? -eq 0 ]` checks after each
       nvim call dead code; restructure it to use the exit status directly.
-- [ ] **Startup budget.** Record `--startuptime` in `scripts/report.sh` and track it across
+- [ ] **Startup budget.** (p3) Record `--startuptime` in `scripts/report.sh` and track it across
       releases alongside cloc and coverage.
-- [ ] **Health check.** Add `lua/health/config.lua` for `:checkhealth config`: failed configs from
+- [ ] **Health check.** (p3) Add `lua/health/config.lua` for `:checkhealth config`: failed configs from
       `utils.lazy.state`, missing external tools, shadowed modules.
 
 ## Existing notes
