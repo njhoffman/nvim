@@ -5,6 +5,12 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.14.1] - 2026-10-20
+
+### Changed
+
+- `tests/unit/colorscheme_export_spec.lua` and `tests/manual/test_colorscheme_export.lua`: `nvim_buf_get_option` -> `nvim_get_option_value`. These were rewritten in v0.13.0 but left out of that commit.
+
 ## [0.14.0] - 2026-10-20
 
 TODO item 1 (deprecated Neovim APIs) is complete for the config repo.

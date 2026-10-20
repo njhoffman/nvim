@@ -11,7 +11,7 @@ describe("ColorschemeExport", function()
   after_each(function()
     -- Clean up any test buffers
     for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-      if vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_buf_get_option(bufnr, "buftype") == "nofile" then
+      if vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_get_option_value("buftype", { buf = bufnr }) == "nofile" then
         pcall(vim.api.nvim_buf_delete, bufnr, { force = true })
       end
     end
@@ -98,10 +98,10 @@ describe("ColorschemeExport", function()
       local bufnr = colorscheme_export.export({ colorscheme = "test-theme" })
 
       assert.is_true(vim.api.nvim_buf_is_valid(bufnr))
-      assert.are.equal("nofile", vim.api.nvim_buf_get_option(bufnr, "buftype"))
-      assert.are.equal("hide", vim.api.nvim_buf_get_option(bufnr, "bufhidden"))
-      assert.are.equal(false, vim.api.nvim_buf_get_option(bufnr, "swapfile"))
-      assert.are.equal("xml", vim.api.nvim_buf_get_option(bufnr, "filetype"))
+      assert.are.equal("nofile", vim.api.nvim_get_option_value("buftype", { buf = bufnr }))
+      assert.are.equal("hide", vim.api.nvim_get_option_value("bufhidden", { buf = bufnr }))
+      assert.are.equal(false, vim.api.nvim_get_option_value("swapfile", { buf = bufnr }))
+      assert.are.equal("xml", vim.api.nvim_get_option_value("filetype", { buf = bufnr }))
     end)
 
     it("sets buffer name with .tmTheme extension", function()
