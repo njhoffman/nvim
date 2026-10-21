@@ -4,34 +4,17 @@ local state = require("action-hints.state")
 
 local function codeactions(config)
   local options = config or {}
-  local function range_from_selection(bufnr, mode)
-    -- TODO: Use `vim.region()` instead https://github.com/neovim/neovim/pull/13896
-    -- [bufnum, lnum, col, off]; both row and column 1-indexed
-    local start = vim.fn.getpos("v") or vim.fn.getpos("V") or { 0, 1, 1, 0 }
-    local end_ = vim.fn.getpos(".") or { 0, 1, 1, 0 }
-    local start_row = start[2]
-    local start_col = start[3]
-    local end_row = end_[2]
-    local end_col = end_[3]
-
-    -- A user can start visual selection at the end and move backwards
-    -- Normalize the range to start < end
-    if start_row == end_row and end_col < start_col then
-      end_col, start_col = start_col, end_col
-    elseif end_row < start_row then
-      start_row, end_row = end_row, start_row
-      start_col, end_col = end_col, start_col
-    end
-
-    if mode == "V" then
-      start_col = 1
-      local lines = vim.api.nvim_buf_get_lines(bufnr, end_row - 1, end_row, true)
-      end_col = #lines[1]
-    end
-
+  -- Mark-indexed range ({row, col}, 1-based rows, 0-based cols) of the active selection.
+  -- Empty lines report col 1 (or 0 for linewise), so clamp to keep vim.range.mark in bounds.
+  local function range_from_selection(mode)
+    local region = vim.fn.getregionpos(vim.fn.getpos("v"), vim.fn.getpos("."), {
+      type = mode,
+      eol = false,
+    })
+    local first, last = region[1][1], region[#region][2]
     return {
-      ["start"] = { start_row, start_col - 1 },
-      ["end"] = { end_row, end_col - 1 },
+      ["start"] = { first[2], math.max(first[3] - 1, 0) },
+      ["end"] = { last[2], math.max(last[3] - 1, 0) },
     }
   end
 
@@ -56,7 +39,7 @@ local function codeactions(config)
     local end_ = assert(options.range["end"], "range must have a `end` property")
     params = vim.lsp.util.make_given_range_params(start, end_, 0, "utf-8")
   elseif mode == "v" or mode == "V" then
-    local range = range_from_selection(0, mode)
+    local range = range_from_selection(mode)
     params = vim.lsp.util.make_given_range_params(range.start, range["end"], 0, "utf-8")
   else
     params = vim.lsp.util.make_range_params(0, "utf-8")

@@ -5,6 +5,26 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.0] - 2026-10-21
+
+### Fixed
+
+- action-hints no longer throws "index out of range" from `vim.range` when a visual selection
+  starts or ends on an empty line; the code action range now comes from `getregionpos()`.
+
+### Added
+
+- `docs/` for reference material and specs, separate from `doc/` (vim help files):
+  the deprecated API migration record, the custom dashboard spec and the hlslens templating
+  notes, all moved out of `TODO.md`.
+- `tests/unit/action_hints_codeactions_spec.lua` covering selection ranges on empty lines.
+
+### Changed
+
+- `TODO.md`: every item now has a title, priority and category (bug, feature, refactor, docs,
+  test, chore, perf). New projects: 6 Bugs, 7 Docs and code consistency, 8 Editing behavior,
+  9 Integrations plugin, plus a report-size item in project 5.
+
 ## [0.14.2] - 2026-10-20
 
 ### Changed
