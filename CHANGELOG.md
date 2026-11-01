@@ -5,6 +5,20 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.3] - 2026-11-01
+
+### Fixed
+
+- A deleted file buffer that you return to (jumplist, `<C-o>`, `:buffer`, a picker) is listed
+  again, so it shows in the tabline.
+
+### Added
+
+- `lua/jumpguard`: records buffer deletions and appends a report to
+  `~/.local/state/nvim/jumpguard.log` whenever a deleted buffer is entered again or a jumplist
+  jump fails (jumplist around the cursor, the deletion, the last messages), to catch the
+  "buffer not found" error on `<C-o>`.
+
 ## [0.16.2] - 2026-11-01
 
 ### Fixed

@@ -158,10 +158,13 @@ Resolve these before implementing.
       `lua/action-hints/providers/codeactions.lua` now uses `getregionpos()` and clamps columns.
 - [ ] **Reopening a deleted buffer with Ctrl-O.** (p1) [bug] After deleting a buffer, `<C-o>`
       to jump back gives "buffer not found", and when the file does reopen it is missing from
-      the tabline. Check the bdelete command in use (`lua/commands/buffer.lua`, bufferline or
-      the bars tabline) against how the jumplist keeps entries for wiped buffers: `:bwipeout`
-      drops the buffer number the jumplist points at, `:bdelete` keeps it unlisted, and an
-      unlisted buffer that is reloaded is not shown until `buflisted` is set again.
+      the tabline. Not reproduced headless (full config; `:bdelete`, `QuickClose`,
+      `BufferDelete`, `BufferClose`, then `<C-o>`): the file reopens listed and in barbar.
+      `<C-o>` / `<C-i>` belong to convey.nvim (`~/git/convey.nvim`, `keepjumps buffer N`),
+      which shadows `jump_scroll` in `lua/commands/scroll.lua`. Since v0.16.3, `lua/jumpguard`
+      lists a deleted file buffer again when it's entered and appends each return (and each
+      failed `jump_scroll`) to `~/.local/state/nvim/jumpguard.log` with the jumplist, the
+      deletion and the last messages. Next occurrence: read that log, then fix the cause.
 - [x] **Snacks overrides telescope keymaps.** (p1) [bug] `lua/lsp/keymaps.lua` bound
       buffer-local `<C-t>` / `<M-T>` to Snacks diagnostics pickers on LSP attach, shadowing the
       global telescope `<C-t>`. They now open telescope diagnostics (buffer / workspace),

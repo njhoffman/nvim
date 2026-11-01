@@ -77,3 +77,29 @@ date	kind	version	commit	load1	nvim	metric	unit	median	min	runs
 2026-11-01T19:15Z	release	0.16.2	711cce57-dirty	4.50	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lua lines	count	184569	184569	1
 2026-11-01T19:15Z	release	0.16.2	711cce57-dirty	4.50	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lines	count	216433	216433	1
 2026-11-01T19:15Z	release	0.16.2	711cce57-dirty	4.50	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugin lines	count	2222516	2222516	1
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	startup ready	ms	5090.7	4765.8	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	startup settled	ms	13093.9	12513.8	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	small.md open	ms	579.7	426.1	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	small.md render	ms	1047.9	676.5	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	medium.md open	ms	569.3	411.1	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	medium.md render	ms	2907.5	1595.0	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	large.md open	ms	506.4	355.2	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	large.md render	ms	10039.2	6747.9	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	code.md open	ms	835.3	315.5	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	code.md render	ms	6419.7	5183.6	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.lua open	ms	465.2	191.7	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.lua render	ms	1116.1	884.1	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.py open	ms	638.0	591.4	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.py render	ms	1127.9	1005.8	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.ts open	ms	451.7	353.0	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.ts render	ms	917.7	682.5	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.json open	ms	487.5	359.5	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.json render	ms	874.9	843.2	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	rss settled	MiB	123.7	114.4	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	rss peak	MiB	220.6	217.5	3
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugins installed	count	386	386	1
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugins loaded	count	276	276	1
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	config files	count	2051	2051	1
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lua lines	count	184943	184943	1
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lines	count	216820	216820	1
+2026-11-01T20:20Z	release	0.16.3	c3685316-dirty	12.16	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugin lines	count	2222516	2222516	1

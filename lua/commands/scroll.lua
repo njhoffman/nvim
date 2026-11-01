@@ -91,17 +91,8 @@ end
 ---@param count? integer Number of jumps to advance (default 1)
 function M.jump_scroll(direction, count)
   count = count or 1
-  local ok, err = pcall(function()
-    if direction == "prev" then
-      vim.cmd("normal! " .. count .. "\x0f") -- <C-o>
-    else
-      vim.cmd("normal! " .. count .. "\x09") -- <C-i>
-    end
-  end)
-
-  if not ok then
-    vim.notify(tostring(err), vim.log.levels.WARN)
-  end
+  -- jumpguard notifies and logs failures, and logs jumps onto deleted buffers
+  require("jumpguard").jump(count .. (direction == "prev" and "\x0f" or "\x09"))
 end
 
 ---Scroll through changelist
