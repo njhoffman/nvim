@@ -5,6 +5,20 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.18.0] - 2026-11-01
+
+### Added
+
+- In Markdown, `` ` `` in visual mode toggles backticks around the selection and keeps it
+  selected:
+  - a selection within one line becomes an inline code span;
+  - a linewise selection, or one spanning lines, gets a ``` fence around the whole lines,
+    indented like its first line (so code inside list items stays in the item);
+  - on a selection that is already a code span or fenced block, it removes that wrapping
+    (backticks inside the code are kept); otherwise, if the selection contains backticks, it
+    removes all of them, including fence lines. Unwrapping shows a notification, and pressing
+    `` ` `` again wraps normally.
+
 ## [0.17.2] - 2026-11-01
 
 ### Fixed

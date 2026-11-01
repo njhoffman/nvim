@@ -207,9 +207,9 @@ Resolve these before implementing.
       which `vim-options.lua` now sets (v0.17.2). The global default was already 2 and visual
       `<` / `>` already keep the selection (`keymaps.lua`). Other filetypes with their own
       recommended style (e.g. Python's 4) are unchanged on purpose.
-- [ ] **Wrap code blocks in markdown.** (p3) [feature] A quicker way to wrap a visual selection
-      or the current paragraph in a fenced block, prompting for the language (e.g. a
-      mini.surround / nvim-surround custom surrounding or a dedicated keymap).
+- [x] **Wrap code blocks in markdown.** (p3) [feature] Visual `` ` `` in Markdown toggles a code
+      span (charwise, one line) or a ``` fence (linewise or multi-line), keeping the selection;
+      on a wrapped selection it unwraps (`lua/md_backtick.lua`, v0.18.0). No language prompt.
 - [ ] **Empty nested list item renders as a heading.** (p3) [bug] Starting an indented line
       with `-` under a list item styles the line above as an H2 until text follows the dash.
       This is CommonMark: a line of only `-` under paragraph text is a setext H2 underline, and
