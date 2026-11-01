@@ -36,7 +36,8 @@ local formatters_by_ft = {
   json5 = { "fixjson", "jq", "prettierd" },
   just = { "just" },
   lua = { "stylua" },
-  markdown = { "cbfmt", "markdownlint", "injected" },
+  -- prettierd reflows prose (proseWrap/printWidth from ~/.prettierrc.yml or a project config)
+  markdown = { "prettierd_md", "cbfmt", "markdownlint", "injected" },
   less = { "prettierd" },
   sass = { "prettierd" },
   nasm = { "asmfmt" },
@@ -80,6 +81,12 @@ local formatters = {
     command = "prettierd",
     stdin = false,
     args = { "--print-width", "100" },
+  },
+  -- prettierd reads the file from stdin and needs its path to find the parser and config
+  prettierd_md = {
+    command = "prettierd",
+    args = { "$FILENAME" },
+    stdin = true,
   },
   prettierd_toml = {
     command = "prettierd",

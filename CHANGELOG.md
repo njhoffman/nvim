@@ -2,102 +2,112 @@
 
 All notable changes to this Neovim configuration will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.19.0] - 2026-11-01
+
+### Added
+
+- Markdown hard wrapping stays consistent:
+  - saving reflows prose with prettierd, at the width from `~/.prettierrc.yml` (120, `proseWrap: always`) or a project's
+    own prettier config;
+  - typing wraps at `textwidth` even on a line that was already longer (`formatoptions` no longer has `l`);
+  - `J` joins lines and reflows the paragraph, keeping the cursor at the join point; in code blocks, tables and headings
+    it only joins.
+
+### Changed
+
+- The repo's Markdown docs were reflowed once to the new width, so later diffs don't carry the reflow.
+- Paths moved with the shell config: the greek-gods name list is read from `~/.shell/share/greekgods.txt` (dashboard
+  loader and its test), and comments point to `~/.shell/scripts/` for `asynctask` and `wshada.sh`.
+
+### Fixed
+
+- tailwind-sorter's node path pointed at an asdf shim that no longer exists; it now uses `exepath("node")`.
 
 ## [0.18.0] - 2026-11-01
 
 ### Added
 
-- In Markdown, `` ` `` in visual mode toggles backticks around the selection and keeps it
-  selected:
+- In Markdown, `` ` `` in visual mode toggles backticks around the selection and keeps it selected:
   - a selection within one line becomes an inline code span;
-  - a linewise selection, or one spanning lines, gets a ``` fence around the whole lines,
-    indented like its first line (so code inside list items stays in the item);
-  - on a selection that is already a code span or fenced block, it removes that wrapping
-    (backticks inside the code are kept); otherwise, if the selection contains backticks, it
-    removes all of them, including fence lines. Unwrapping shows a notification, and pressing
-    `` ` `` again wraps normally.
+  - a linewise selection, or one spanning lines, gets a ``` fence around the whole lines, indented like its first line
+    (so code inside list items stays in the item);
+  - on a selection that is already a code span or fenced block, it removes that wrapping (backticks inside the code are
+    kept); otherwise, if the selection contains backticks, it removes all of them, including fence lines. Unwrapping
+    shows a notification, and pressing `` ` `` again wraps normally.
 
 ## [0.17.2] - 2026-11-01
 
 ### Fixed
 
-- Markdown indented by 4 spaces, so `>` / `<` on list items moved them two levels at once:
-  Neovim's markdown ftplugin applied its "recommended style" (`shiftwidth=4`). It's turned off,
-  so Markdown uses the global 2.
+- Markdown indented by 4 spaces, so `>` / `<` on list items moved them two levels at once: Neovim's markdown ftplugin
+  applied its "recommended style" (`shiftwidth=4`). It's turned off, so Markdown uses the global 2.
 
 ## [0.17.1] - 2026-11-01
 
 ### Fixed
 
-- Opening Markdown files no longer blocks the editor for seconds: the scrollbar (satellite)
-  measured wrapped and concealed text with `nvim_win_text_height`, which ran the treesitter
-  highlighter over the whole buffer. It now counts rows (closed folds count once). Render times
-  in `benchmarks/run`: large.md 5058 -> 423 ms, code.md 3007 -> 574 ms, medium.md 1136 ->
-  436 ms, small.md 645 -> 386 ms. In soft-wrapped prose the bar can sit slightly off.
+- Opening Markdown files no longer blocks the editor for seconds: the scrollbar (satellite) measured wrapped and
+  concealed text with `nvim_win_text_height`, which ran the treesitter highlighter over the whole buffer. It now counts
+  rows (closed folds count once). Render times in `benchmarks/run`: large.md 5058 -> 423 ms, code.md 3007 -> 574 ms,
+  medium.md 1136 -> 436 ms, small.md 645 -> 386 ms. In soft-wrapped prose the bar can sit slightly off.
 - The scrollbar's row count found closed folds one line off.
 
 ## [0.17.0] - 2026-11-01
 
 ### Added
 
-- `lua/tmux/pane_flag.lua` (loaded from `plugin/tmux_pane_flag.lua`): inside tmux, Neovim sets the
-  pane option `@pane-is-vim` while it holds the terminal (set on start and resume, cleared on
-  suspend and exit). The tmux config (0.19.0) reads it to decide whether alt-hjkl and ctrl-hjkl go
-  to Neovim, instead of running `ps` on every keypress, so held resize keys no longer queue up
-  under load. Headless Neovim and Neovim in another Neovim's `:terminal` leave the flag alone.
+- `lua/tmux/pane_flag.lua` (loaded from `plugin/tmux_pane_flag.lua`): inside tmux, Neovim sets the pane option
+  `@pane-is-vim` while it holds the terminal (set on start and resume, cleared on suspend and exit). The tmux config
+  (0.19.0) reads it to decide whether alt-hjkl and ctrl-hjkl go to Neovim, instead of running `ps` on every keypress, so
+  held resize keys no longer queue up under load. Headless Neovim and Neovim in another Neovim's `:terminal` leave the
+  flag alone.
 
 ## [0.16.3] - 2026-11-01
 
 ### Fixed
 
-- A deleted file buffer that you return to (jumplist, `<C-o>`, `:buffer`, a picker) is listed
-  again, so it shows in the tabline.
+- A deleted file buffer that you return to (jumplist, `<C-o>`, `:buffer`, a picker) is listed again, so it shows in the
+  tabline.
 
 ### Added
 
-- `lua/jumpguard`: records buffer deletions and appends a report to
-  `~/.local/state/nvim/jumpguard.log` whenever a deleted buffer is entered again or a jumplist
-  jump fails (jumplist around the cursor, the deletion, the last messages), to catch the
-  "buffer not found" error on `<C-o>`.
+- `lua/jumpguard`: records buffer deletions and appends a report to `~/.local/state/nvim/jumpguard.log` whenever a
+  deleted buffer is entered again or a jumplist jump fails (jumplist around the cursor, the deletion, the last
+  messages), to catch the "buffer not found" error on `<C-o>`.
 
 ## [0.16.2] - 2026-11-01
 
 ### Fixed
 
-- In buffers with an LSP attached, `<C-t>` and `<M-T>` opened Snacks diagnostics pickers instead
-  of telescope: the LSP attach handler bound them buffer-locally, which shadowed the global
-  telescope mapping. `<C-t>` now opens telescope diagnostics for the current buffer and `<M-T>`
-  for the workspace.
+- In buffers with an LSP attached, `<C-t>` and `<M-T>` opened Snacks diagnostics pickers instead of telescope: the LSP
+  attach handler bound them buffer-locally, which shadowed the global telescope mapping. `<C-t>` now opens telescope
+  diagnostics for the current buffer and `<M-T>` for the workspace.
 - The global `<C-t>` mapping was labeled "frecency files" although it opens diagnostics.
 
 ## [0.16.1] - 2026-11-01
 
 ### Changed
 
-- `lazy-lock.json` is tracked, so every release tag pins the plugin versions it shipped with.
-  Restore an older release's plugins with `git checkout vX.Y.Z -- lazy-lock.json` and
-  `:Lazy restore`.
-- `TODO.md` review: added a hardcoded home paths item, and more detail on the report.sh
-  timeout and on root clutter.
-- Removed four one-off Claude Code allow rules from `.claude/settings.local.json` whose
-  literal `*` was read as a wildcard, which caused warnings at startup.
+- `lazy-lock.json` is tracked, so every release tag pins the plugin versions it shipped with. Restore an older release's
+  plugins with `git checkout vX.Y.Z -- lazy-lock.json` and `:Lazy restore`.
+- `TODO.md` review: added a hardcoded home paths item, and more detail on the report.sh timeout and on root clutter.
+- Removed four one-off Claude Code allow rules from `.claude/settings.local.json` whose literal `*` was read as a
+  wildcard, which caused warnings at startup.
 
 ## [0.16.0] - 2026-11-01
 
 ### Added
 
-- Startup and rendering benchmarks, recorded with every release: `benchmarks/run` drives
-  Neovim through an attached UI and times startup (first screen and fully idle), plus open and
-  render times for Markdown in four sizes, Lua, Python, TypeScript and JSON. Render time counts
-  the time the editor stays blocked after `:edit` returns. `docs/PERFORMANCE.md` shows the
-  latest release against the average of the previous 10 releases and against a baseline taken
-  under low load (`benchmarks/run --baseline`), plus plugin, file and line counts. See
-  `benchmarks/README.md`.
-- `scripts/report.sh X.Y.Z` runs the benchmarks after the tests and records them as release
-  X.Y.Z (`BENCH=0` skips them); `scripts/run_tests.sh python` runs the harness's unit tests,
-  which are also part of `all`.
+- Startup and rendering benchmarks, recorded with every release: `benchmarks/run` drives Neovim through an attached UI
+  and times startup (first screen and fully idle), plus open and render times for Markdown in four sizes, Lua, Python,
+  TypeScript and JSON. Render time counts the time the editor stays blocked after `:edit` returns. `docs/PERFORMANCE.md`
+  shows the latest release against the average of the previous 10 releases and against a baseline taken under low load
+  (`benchmarks/run --baseline`), plus plugin, file and line counts. See `benchmarks/README.md`.
+- `scripts/report.sh X.Y.Z` runs the benchmarks after the tests and records them as release X.Y.Z (`BENCH=0` skips
+  them); `scripts/run_tests.sh python` runs the harness's unit tests, which are also part of `all`.
 
 ### Changed
 
@@ -107,10 +117,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- tmux navigation no longer logs "window_layout returned no valid panes" when moving out of
-  Neovim into another tmux pane. tmux next-3.9 prints `#{window_layout}` as JSON, and
-  `tmux.layout.parse` now reads it alongside the classic `WxH,x,y,id` format, so border
-  detection works again.
+- tmux navigation no longer logs "window_layout returned no valid panes" when moving out of Neovim into another tmux
+  pane. tmux next-3.9 prints `#{window_layout}` as JSON, and `tmux.layout.parse` now reads it alongside the classic
+  `WxH,x,y,id` format, so border detection works again.
 
 ### Added
 
@@ -120,35 +129,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- action-hints no longer throws "index out of range" from `vim.range` when a visual selection
-  starts or ends on an empty line; the code action range now comes from `getregionpos()`.
+- action-hints no longer throws "index out of range" from `vim.range` when a visual selection starts or ends on an empty
+  line; the code action range now comes from `getregionpos()`.
 
 ### Added
 
-- `docs/` for reference material and specs, separate from `doc/` (vim help files):
-  the deprecated API migration record, the custom dashboard spec and the hlslens templating
-  notes, all moved out of `TODO.md`.
+- `docs/` for reference material and specs, separate from `doc/` (vim help files): the deprecated API migration record,
+  the custom dashboard spec and the hlslens templating notes, all moved out of `TODO.md`.
 - `tests/unit/action_hints_codeactions_spec.lua` covering selection ranges on empty lines.
 
 ### Changed
 
-- `TODO.md`: every item now has a title, priority and category (bug, feature, refactor, docs,
-  test, chore, perf). New projects: 6 Bugs, 7 Docs and code consistency, 8 Editing behavior,
-  9 Integrations plugin, plus a report-size item in project 5.
+- `TODO.md`: every item now has a title, priority and category (bug, feature, refactor, docs, test, chore, perf). New
+  projects: 6 Bugs, 7 Docs and code consistency, 8 Editing behavior, 9 Integrations plugin, plus a report-size item in
+  project 5.
 
 ## [0.14.2] - 2026-10-20
 
 ### Changed
 
-- `TODO.md`: items now carry priorities read by `todo-status`, `/todo` and `todo-fzf` (same
-  `(p1)` / `(p3)` / `(due YYYY-MM-DD)` tags as `~/.shell`). P1: shadowed plugin modules and
-  tracking `lazy-lock.json`. 11 cleanup and tooling items are P3; the other 12 stay P2.
+- `TODO.md`: items now carry priorities read by `todo-status`, `/todo` and `todo-fzf` (same `(p1)` / `(p3)` /
+  `(due YYYY-MM-DD)` tags as `~/.shell`). P1: shadowed plugin modules and tracking `lazy-lock.json`. 11 cleanup and
+  tooling items are P3; the other 12 stay P2.
 
 ## [0.14.1] - 2026-10-20
 
 ### Changed
 
-- `tests/unit/colorscheme_export_spec.lua` and `tests/manual/test_colorscheme_export.lua`: `nvim_buf_get_option` -> `nvim_get_option_value`. These were rewritten in v0.13.0 but left out of that commit.
+- `tests/unit/colorscheme_export_spec.lua` and `tests/manual/test_colorscheme_export.lua`: `nvim_buf_get_option` ->
+  `nvim_get_option_value`. These were rewritten in v0.13.0 but left out of that commit.
 
 ## [0.14.0] - 2026-10-20
 
@@ -156,40 +165,54 @@ TODO item 1 (deprecated Neovim APIs) is complete for the config repo.
 
 ### Added
 
-- `lua/utils/hl.lua`: `add_highlight()`, an extmark-based replacement for `nvim_buf_add_highlight` with the same contract:
+- `lua/utils/hl.lua`: `add_highlight()`, an extmark-based replacement for `nvim_buf_add_highlight` with the same
+  contract:
   - `col_end = -1` highlights to end of line
   - namespace 0 or -1 maps to a shared namespace
   - out-of-range columns are clamped
   - the namespace id is returned
 
   Tests are in `tests/unit/utils_hl_spec.lua`.
-- `tests/unit/deprecated_api_spec.lua`: fails on any use of a deprecated or removed Neovim API in
-  `lua/`, `after/`, `plugin/` or `ftplugin/` (comments are ignored), listing each file and line.
+
+- `tests/unit/deprecated_api_spec.lua`: fails on any use of a deprecated or removed Neovim API in `lua/`, `after/`,
+  `plugin/` or `ftplugin/` (comments are ignored), listing each file and line.
 
 ### Changed
 
 - `nvim_buf_add_highlight` -> `utils.hl.add_highlight`: 27 Lua sites, plus 7 VimL sites via `v:lua`
-- `nvim_get_hl_by_name` -> `nvim_get_hl` (devicons, satellite search handler); a missing group now returns `{}` instead of raising
-- `vim.diagnostic.goto_next` / `goto_prev` -> `vim.diagnostic.jump` with `float = true`, which keeps the old float default
-- Table-form `vim.validate{}` -> `vim.validate(name, value, validator, optional)`: 16 sites. Short type names (`'f'`) are expanded, since the new form rejects them.
+- `nvim_get_hl_by_name` -> `nvim_get_hl` (devicons, satellite search handler); a missing group now returns `{}` instead
+  of raising
+- `vim.diagnostic.goto_next` / `goto_prev` -> `vim.diagnostic.jump` with `float = true`, which keeps the old float
+  default
+- Table-form `vim.validate{}` -> `vim.validate(name, value, validator, optional)`: 16 sites. Short type names (`'f'`)
+  are expanded, since the new form rejects them.
 - Old-signature `vim.str_utfindex(s[, i])` -> explicit `"utf-32"` encoding
 - `nvim_exec` -> `nvim_exec2`
-- Dropped dead `vim.fn.has("nvim-0.8".."0.12")` guards and their legacy branches (qf ftplugin, telescope plugin, helpview, feline, live-command, mini.comment/surround, egrepify, recall, nvim-scissors, matchup hl-info)
+- Dropped dead `vim.fn.has("nvim-0.8".."0.12")` guards and their legacy branches (qf ftplugin, telescope plugin,
+  helpview, feline, live-command, mini.comment/surround, egrepify, recall, nvim-scissors, matchup hl-info)
 
 ### Fixed
 
-- `project_nvim`: the `vim.lsp.start_client` monkey-patch never ran for clients started by `vim.lsp.start` / `vim.lsp.enable`, and it returned `nil` to callers. It is now an `LspAttach` autocmd, so the project root is actually recalculated when an LSP attaches.
-- `:Silence` / noice silence toggle: restarting LSP clients passed client objects (or a list) to `start_client`; now uses `vim.lsp.start(client.config)` per client
-- `tint` highlights required `nvim-treesitter.ts_utils`, which doesn't exist on the nvim-treesitter `main` branch; ported `get_vim_range` locally
-- `lsp/diagnostics.lua`: `not vim.fn.has(...)` was always false (0 is truthy in Lua); the dead legacy sign branch was removed
+- `project_nvim`: the `vim.lsp.start_client` monkey-patch never ran for clients started by `vim.lsp.start` /
+  `vim.lsp.enable`, and it returned `nil` to callers. It is now an `LspAttach` autocmd, so the project root is actually
+  recalculated when an LSP attaches.
+- `:Silence` / noice silence toggle: restarting LSP clients passed client objects (or a list) to `start_client`; now
+  uses `vim.lsp.start(client.config)` per client
+- `tint` highlights required `nvim-treesitter.ts_utils`, which doesn't exist on the nvim-treesitter `main` branch;
+  ported `get_vim_range` locally
+- `lsp/diagnostics.lua`: `not vim.fn.has(...)` was always false (0 is truthy in Lua); the dead legacy sign branch was
+  removed
 - `gitops` LSP format helpers: removed fallbacks to the removed `vim.lsp.buf.formatting` / `formatting_sync`
-- Vendored plenary popup: a broken `nvim_set_option` format string (unquoted option name) now uses `nvim_set_option_value("wrap", ...)`
+- Vendored plenary popup: a broken `nvim_set_option` format string (unquoted option name) now uses
+  `nvim_set_option_value("wrap", ...)`
 
 ### Linked `~/git` repos (committed locally, not pushed)
 
-- nvim-cmp, nvim-notify, noice.nvim: explicit encodings for `vim.str_utfindex`. This removes the runtime deprecation warnings from nvim-notify.
+- nvim-cmp, nvim-notify, noice.nvim: explicit encodings for `vim.str_utfindex`. This removes the runtime deprecation
+  warnings from nvim-notify.
 - nvim-navbuddy, convey.nvim: `nvim_buf_add_highlight` -> extmarks
-- nvim-cmp, nvim-notify, ultimate-autopair, nvim-navbuddy, telescope: `vim.loop` -> `vim.uv` and the other mechanical renames. telescope gets `vim.uv` only, to stay within its CI floor of v0.10.4.
+- nvim-cmp, nvim-notify, ultimate-autopair, nvim-navbuddy, telescope: `vim.loop` -> `vim.uv` and the other mechanical
+  renames. telescope gets `vim.uv` only, to stay within its CI floor of v0.10.4.
 
 ## [0.13.0] - 2026-10-19
 
@@ -197,36 +220,43 @@ TODO item 1 (deprecated Neovim APIs) is complete for the config repo.
 
 Calls to APIs already removed from Neovim v0.13.0-dev (they raised errors when reached):
 
-- `vim.lsp.get_active_clients()` / `vim.lsp.buf_get_clients()` -> `vim.lsp.get_clients()` (14 sites: feline providers, stats panels, LSP notifications, workspace-diagnostics, python ftplugin, text-case)
+- `vim.lsp.get_active_clients()` / `vim.lsp.buf_get_clients()` -> `vim.lsp.get_clients()` (14 sites: feline providers,
+  stats panels, LSP notifications, workspace-diagnostics, python ftplugin, text-case)
 - `vim.lsp.util.jump_to_location()` -> `vim.lsp.util.show_document()` in definition-or-references
-- `vim.diagnostic.disable()` / `is_disabled()` and the old `enable(bufnr)` signature -> `vim.diagnostic.enable(bool, filter)` / `is_enabled()` in the hydra toggles and the mapper keymap
+- `vim.diagnostic.disable()` / `is_disabled()` and the old `enable(bufnr)` signature ->
+  `vim.diagnostic.enable(bool, filter)` / `is_enabled()` in the hydra toggles and the mapper keymap
 - `vim.lsp.buf.formatting()` -> `vim.lsp.buf.format()`
 - `vim.treesitter.query.get_node_text()` -> `vim.treesitter.get_node_text()` (vue ftplugin, snippets-utils)
 - `client.supports_method(...)` -> `client:supports_method(...)`
 
 ### Changed
 
-Mechanical replacements of deprecated APIs (302 call sites, 174 files), done with an argument-aware rewriter that skips comments and strings:
+Mechanical replacements of deprecated APIs (302 call sites, 174 files), done with an argument-aware rewriter that skips
+comments and strings:
 
 - `vim.loop` -> `vim.uv` (144)
-- `nvim_buf_*_option` / `nvim_win_*_option` -> `nvim_get_option_value` / `nvim_set_option_value` with `{ buf = }` / `{ win = }` (108)
-- `nvim_get_option` / `nvim_set_option` -> `*_option_value` with `{ scope = "global" }`, which keeps the global-only semantics (9)
+- `nvim_buf_*_option` / `nvim_win_*_option` -> `nvim_get_option_value` / `nvim_set_option_value` with `{ buf = }` /
+  `{ win = }` (108)
+- `nvim_get_option` / `nvim_set_option` -> `*_option_value` with `{ scope = "global" }`, which keeps the global-only
+  semantics (9)
 - `nvim_err_writeln(msg)` -> `nvim_echo({ { msg } }, true, { err = true })` (27)
-- `vim.tbl_flatten(t)` -> `vim.iter(t):flatten(math.huge):totable()` (13). `dumb_jump` and `egrepify` get a local helper with `tbl_flatten`'s exact semantics, because their argument lists can contain `nil` holes.
+- `vim.tbl_flatten(t)` -> `vim.iter(t):flatten(math.huge):totable()` (13). `dumb_jump` and `egrepify` get a local helper
+  with `tbl_flatten`'s exact semantics, because their argument lists can contain `nil` holes.
 - `vim.highlight.*` -> `vim.hl.*`, `vim.tbl_islist` -> `vim.islist`
 - Aliased references (`local bufOpt = vim.api.nvim_buf_get_option` etc.) replaced with equivalent wrappers
 
 ### Known issues
 
-- 8 files already failed to parse before this change: `stats/commands/*/init.lua` (5), `configs/feline/reference.lua`, `configs/none-ls/services.lua` and `scratch/tmpactions.lua`. They are orphan candidates for TODO item 2.
+- 8 files already failed to parse before this change: `stats/commands/*/init.lua` (5), `configs/feline/reference.lua`,
+  `configs/none-ls/services.lua` and `scratch/tmpactions.lua`. They are orphan candidates for TODO item 2.
 
 ## [0.12.1] - 2026-10-19
 
 ### Added
 
-- Claude Code `SessionStart` hook (`.claude/hooks/todo-reminder.py`, registered in `.claude/settings.local.json`).
-  On each new session it shows a one-line count of open `TODO.md` items per section, and passes the full
-  list to Claude as context so it can remind you and ask what to work on.
+- Claude Code `SessionStart` hook (`.claude/hooks/todo-reminder.py`, registered in `.claude/settings.local.json`). On
+  each new session it shows a one-line count of open `TODO.md` items per section, and passes the full list to Claude as
+  context so it can remind you and ask what to work on.
 
 ## [0.12.0] - 2026-10-19
 
@@ -240,15 +270,19 @@ Mechanical replacements of deprecated APIs (302 call sites, 174 files), done wit
 
 ### Fixed
 
-Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verified headless with all 404 plugins loaded:
+Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verified headless with all 404 plugins
+loaded:
 
-- **Removed upstream repos**: dropped `telescope-changes`, `telescope-command-palette`, `telescope-ports` (LinArcX) and `telescope-docker` (lpoto), along with their extension configs
+- **Removed upstream repos**: dropped `telescope-changes`, `telescope-command-palette`, `telescope-ports` (LinArcX) and
+  `telescope-docker` (lpoto), along with their extension configs
 - **yazi.nvim**: re-cloned after the interrupted update left a corrupt submodule
-- **rest.nvim rock**: system luarocks 3.8 can't load the `treesitter-parser` build backend, so the
-  `tree-sitter-http` rock was pre-installed into `lazy-rocks/rest.nvim` with the backend on `LUA_PATH`.
-  Lazy then built rest.nvim normally. Hererocks was tried first and also fails to load that backend.
-- **oxocarbon.nvim**: `build = false`; its rockspec needs fennel, which fails to build on Lua 5.1 (prebuilt `lua/` ships with the plugin)
-- **E201 on first file open**: indent-blankline lazy-loads on `BufReadPost` instead of `BufReadPre`. Loading it inside `BufReadPre` changed the current buffer.
+- **rest.nvim rock**: system luarocks 3.8 can't load the `treesitter-parser` build backend, so the `tree-sitter-http`
+  rock was pre-installed into `lazy-rocks/rest.nvim` with the backend on `LUA_PATH`. Lazy then built rest.nvim normally.
+  Hererocks was tried first and also fails to load that backend.
+- **oxocarbon.nvim**: `build = false`; its rockspec needs fennel, which fails to build on Lua 5.1 (prebuilt `lua/` ships
+  with the plugin)
+- **E201 on first file open**: indent-blankline lazy-loads on `BufReadPost` instead of `BufReadPre`. Loading it inside
+  `BufReadPre` changed the current buffer.
 - **cmp-git**: callback `trigger_actions` migrated to named `actions`
 - **codecompanion v20**:
   - removed the unsupported `mini_diff` diff provider
@@ -257,7 +291,8 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 - **octo**: `file_panel.use_icons` -> `file_panel.icons`; `timeline_indent` is a number
 - **undotree**: keymaps use the `{ [action] = lhs }` format
 - **sshfs.nvim**: `ui.file_picker` -> `ui.local_picker`
-- **nvim-dap-view**: `windows.height` -> `windows.size`; removed the unsupported `terminal.start_hidden`, in both the spec opts and `configs/nvim-dap-view.lua`
+- **nvim-dap-view**: `windows.height` -> `windows.size`; removed the unsupported `terminal.start_hidden`, in both the
+  spec opts and `configs/nvim-dap-view.lua`
 - **competitest**: removed `runner_ui.viewer.close_mappings`; viewer close keys come from `runner_ui.mappings.close`
 - **nvim-rip-substitute**:
   - `keymaps.confirm` -> `confirmAndSubstituteInBuffer`
@@ -271,9 +306,12 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
   - `configs/rest.lua` rewritten for the v3 API (`vim.g.rest_nvim`, `:Rest ...`)
   - `:RESTRun`, `:RESTRunLast` and `:RESTPreview` kept as aliases (results open in a vertical split)
   - Removed the orphaned v1-era `configs/rest-nvim.lua`
-- **avante.nvim**: added its new required dependencies `ColinKennedy/mega.cmdparse` and `mega.logging`; avante failed to load without them
-- `vim.F.if_nil` -> `vim.nonnil` across 30 in-repo files, including the vendored `lua/plenary/` (deprecated, removal in Nvim 0.15)
-- `vim.validate{}` table form -> `vim.validate(name, value, validator)` in `live-command/config_validator.lua` and `mini/surround/Config.lua`
+- **avante.nvim**: added its new required dependencies `ColinKennedy/mega.cmdparse` and `mega.logging`; avante failed to
+  load without them
+- `vim.F.if_nil` -> `vim.nonnil` across 30 in-repo files, including the vendored `lua/plenary/` (deprecated, removal in
+  Nvim 0.15)
+- `vim.validate{}` table form -> `vim.validate(name, value, validator)` in `live-command/config_validator.lua` and
+  `mini/surround/Config.lua`
 
 ## [0.11.1] - 2026-10-19
 
@@ -291,23 +329,23 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 ### Added
 
-- **Release tooling**: `scripts/report.sh` (tests with coverage, cloc stats into `.reports/<timestamp>/`)
-  and `scripts/release.sh` (semver-guarded commit, annotated tag, `push --follow-tags`)
-- **Test coverage**: `NVIM_COVERAGE=<statsfile>` enables luacov in `tests/minimal_init.lua`;
-  `run_tests.sh` runs specs sequentially with a longer timeout in that mode
+- **Release tooling**: `scripts/report.sh` (tests with coverage, cloc stats into `.reports/<timestamp>/`) and
+  `scripts/release.sh` (semver-guarded commit, annotated tag, `push --follow-tags`)
+- **Test coverage**: `NVIM_COVERAGE=<statsfile>` enables luacov in `tests/minimal_init.lua`; `run_tests.sh` runs specs
+  sequentially with a longer timeout in that mode
 - Refactoring Telescope extension (`lua/telescope/_extensions/refactoring.lua`)
 
 ### Changed
 
 - `configs/refactoring.lua`, `neovide.lua`, `vim-options.lua`, nvim-cmp sources and `configs/convey.lua` reworked
 - `notifications/recipes/command.lua`: StyLua formatting; mpc recipe sources `~/.aliases/shell/audio.sh`
-- Large cleanup across `configs/`, `telescope/`, `gitops/`, `scrollview/`, `scrollbar/`, `glyph-guard/`
-  (233 files, -28k lines)
+- Large cleanup across `configs/`, `telescope/`, `gitops/`, `scrollview/`, `scrollbar/`, `glyph-guard/` (233 files, -28k
+  lines)
 
 ### Removed
 
-- `lua/notify/_demo/`, `lua/notify/_render/`, `lua/notify/render/_*` and `lua/notify/util/render.lua`
-  (unused notify demo and renderer copies)
+- `lua/notify/_demo/`, `lua/notify/_render/`, `lua/notify/render/_*` and `lua/notify/util/render.lua` (unused notify
+  demo and renderer copies)
 - `tmp.sh` and `luacov.stats.out` from version control (now ignored)
 
 ### Fixed
@@ -322,10 +360,13 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 - **Logging consolidation**: Merged `lua/structlog/` and `lua/debuglog/` under `lua/logger/` as subdirectories
   - `lua/structlog/` -> `lua/logger/structlog/` (structured logging framework, 19 files)
-  - `lua/debuglog/` -> `lua/logger/debug/` (inspect, dump, traceback, timer, namespace helpers; 15 files; dropped `globals.lua` and `test.lua` as superseded)
+  - `lua/debuglog/` -> `lua/logger/debug/` (inspect, dump, traceback, timer, namespace helpers; 15 files; dropped
+    `globals.lua` and `test.lua` as superseded)
   - Internal requires rewritten to use new paths; zero consumers outside `lua/logger/` reference the old paths
-  - Updated 11 consumers to new paths: `logger/{init,sinks,parsers,notify}.lua`, `watcher/logger.lua`, `tracker/{init,au_events}.lua`, `configs/chrome-remote/scratch.lua`, `import/benchmarks/commands.lua`
-  - Removed 4 dead `require("debuglog")` imports in `import/benchmarks/variables.lua`, `import/ui/{init,lines,summary}.lua` (imported but never used)
+  - Updated 11 consumers to new paths: `logger/{init,sinks,parsers,notify}.lua`, `watcher/logger.lua`,
+    `tracker/{init,au_events}.lua`, `configs/chrome-remote/scratch.lua`, `import/benchmarks/commands.lua`
+  - Removed 4 dead `require("debuglog")` imports in `import/benchmarks/variables.lua`,
+    `import/ui/{init,lines,summary}.lua` (imported but never used)
 
 - **Registers module refactor** (v0.10.0 scope, moved from v0.9.0 in-progress work):
   - Fade state in `fade_controller` with scenario-aware levels, buffer-variable sync, relative values
@@ -336,8 +377,10 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 ### Removed
 
 - **Dead code in `lua/globals/`**:
-  - `lua/globals/modules/` (entire directory): `buffers.lua` had a broken load-time `vim.dbglog()` side-effect, `filter.lua` / `format.lua` / `utils.lua` / `windows.lua` were stubs or broken
-  - `lua/globals/overrides.lua` (unreferenced), `preload.lua` (standalone `/tmp/nvim-preload.log` system, never wired in), `record-events.lua` (only referenced in a commented-out line)
+  - `lua/globals/modules/` (entire directory): `buffers.lua` had a broken load-time `vim.dbglog()` side-effect,
+    `filter.lua` / `format.lua` / `utils.lua` / `windows.lua` were stubs or broken
+  - `lua/globals/overrides.lua` (unreferenced), `preload.lua` (standalone `/tmp/nvim-preload.log` system, never wired
+    in), `record-events.lua` (only referenced in a commented-out line)
   - Unused `N` and `D` globals from `globals/init.lua` (scan showed zero usage)
   - Commented-out code blocks in `globals/init.lua`
 
@@ -351,7 +394,8 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
   - `stop_time(anon_timer, vim.loop.hrtime())` passed timestamp as `name` parameter
   - Function now also returns the elapsed time (previously side-effect only)
 
-- **Registers key-binding crash with scrolloff=0**: `upwards()` / `backwards()` no longer exit early when cursor is at window top but buffer has content above (fixes `winline <= 1` guard)
+- **Registers key-binding crash with scrolloff=0**: `upwards()` / `backwards()` no longer exit early when cursor is at
+  window top but buffer has content above (fixes `winline <= 1` guard)
 
 ### Modernized
 
@@ -360,16 +404,17 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 ### Added
 
-- **`tests/unit/logger_spec.lua`** — 23 tests covering scope management, level filtering, sinks, debug helpers, `:LogScopes` command, structlog API smoke, globals integration
+- **`tests/unit/logger_spec.lua`** — 23 tests covering scope management, level filtering, sinks, debug helpers,
+  `:LogScopes` command, structlog API smoke, globals integration
 
 ### Project Statistics
 
-| Metric | Value |
-|--------|-------|
-| Total Tests | 33 test files, 372 tests (355 unit + 17 integration; 1 pre-existing fail unrelated) |
-| Total Plugins | 380 installed plugins |
-| Config Lines of Code | 285,454 lines (Lua/Vim) |
-| Plugin Lines of Code | 1,640,391 lines |
+| Metric               | Value                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| Total Tests          | 33 test files, 372 tests (355 unit + 17 integration; 1 pre-existing fail unrelated) |
+| Total Plugins        | 380 installed plugins                                                               |
+| Config Lines of Code | 285,454 lines (Lua/Vim)                                                             |
+| Plugin Lines of Code | 1,640,391 lines                                                                     |
 
 ---
 
@@ -377,7 +422,8 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 ### Added
 
-- **Vimade fade controller** (`lua/configs/vimade/fade_controller.lua`): State management layer for per-buffer fade levels
+- **Vimade fade controller** (`lua/configs/vimade/fade_controller.lua`): State management layer for per-buffer fade
+  levels
   - Scenario-aware fadelevel function: cmdline (0.2), split (0.6), popup (0.6), configurable per scenario
   - Public API: `fade(bufnr, level, source)`, `unfade(bufnr)`, `get(bufnr)`, `fadetint(bufnr, level)`
   - Relative fade values: `"+0.2"`, `"-0.1"` syntax applied against current level, clamped to [0, 1]
@@ -385,7 +431,8 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
   - Forces immediate vimade update on API calls (bypasses 500ms polling)
   - User commands: `:VimadeFade [bufnr] [level] [source]`, `:VimadeUnfade [bufnr]`
 
-- **Per-range highlight module** (`lua/configs/vimade/range_hl.lua`): Decoration provider for range-level highlight control
+- **Per-range highlight module** (`lua/configs/vimade/range_hl.lua`): Decoration provider for range-level highlight
+  control
   - `restore_range(bufnr, start, col, end, col)`: Restore original highlights in a faded buffer range
   - `transform_range(bufnr, start, col, end, col, transforms)`: Apply color transforms to a range
   - Visual mode auto-restore with 50ms delay (shows original colors for visual selection in faded buffers)
@@ -406,28 +453,32 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
   - Namespace stats tracking (total count, highlights per ns, vimade/tint-specific counts)
   - Run with `:lua require("configs.vimade.bench").run()`
 
-- **Performance analysis notes** (`lua/configs/vimade/NOTES.md`): Detailed comparison of vimade vs tint.nvim architectures
+- **Performance analysis notes** (`lua/configs/vimade/NOTES.md`): Detailed comparison of vimade vs tint.nvim
+  architectures
 
 ### Changed
 
-- **Vimade config**: Replaced flat `fadelevel = 0.45` with `fade_controller.make_fadelevel(cfg)` for scenario-aware fading
-- **Vimade minimalist style**: Moved CursorLineNr/LineNr/Scrollbar/Satellite groups to LOW_VISIBILITY_NAMES, set low_visibility_fadelevel to 0.5
+- **Vimade config**: Replaced flat `fadelevel = 0.45` with `fade_controller.make_fadelevel(cfg)` for scenario-aware
+  fading
+- **Vimade minimalist style**: Moved CursorLineNr/LineNr/Scrollbar/Satellite groups to LOW_VISIBILITY_NAMES, set
+  low_visibility_fadelevel to 0.5
 - **Vimade init**: Added BufDelete cleanup autocmd, visual restore setup, VimadeFade/VimadeUnfade commands
 - **Vimade utils**: Removed old fadelevel function and get_active_info (replaced by fade_controller)
 
 ### Fixed
 
-- **VimadeUnfadeAll command**: Fixed reference to undefined `M` variable (was `M.vimade_unfade_global()`, now `v_utils.vimade_unfade_global()`)
+- **VimadeUnfadeAll command**: Fixed reference to undefined `M` variable (was `M.vimade_unfade_global()`, now
+  `v_utils.vimade_unfade_global()`)
 - **VimadeInfo command cleanup**: Wrapped `nvim_del_user_command` in pcall to avoid error on first load
 
 ### Project Statistics
 
-| Metric | Value |
-|--------|-------|
-| Total Tests | 25 test files, 304 tests (287 unit + 17 integration) |
-| Total Plugins | 377 installed plugins |
-| Config Lines of Code | 284,472 lines (Lua/Vim) |
-| Plugin Lines of Code | 276,274 lines |
+| Metric               | Value                                                |
+| -------------------- | ---------------------------------------------------- |
+| Total Tests          | 25 test files, 304 tests (287 unit + 17 integration) |
+| Total Plugins        | 377 installed plugins                                |
+| Config Lines of Code | 284,472 lines (Lua/Vim)                              |
+| Plugin Lines of Code | 276,274 lines                                        |
 
 ---
 
@@ -437,7 +488,8 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 - **hover.nvim plugin** (`~/git/hover.nvim`): Extracted hover and devbox modules into standalone plugin
   - Multi-provider floating window system with tab navigation
-  - 9 hover providers: lsp-hover, lsp-signature, lsp-definition, lsp-type-definition, help, man, dictionary, syntax, GitHub issues
+  - 9 hover providers: lsp-hover, lsp-signature, lsp-definition, lsp-type-definition, help, man, dictionary, syntax,
+    GitHub issues
   - Commands: `:Hover`, `:HoverCursor`, `:HoverSticky`, `:HoverInspect`, `:HoverClose`
   - `cursor_delay` / `sticky_delay` config for independent timing control
   - Devbox inspection panel integrated as `:HoverInspect`
@@ -486,12 +538,12 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 ### Project Statistics
 
-| Metric | Value |
-|--------|-------|
-| Total Tests | 22 test files, 250 tests (config) + 102 tests (hover.nvim) |
-| Total Plugins | 378 installed plugins |
-| Config Lines of Code | 280,414 lines (Lua/Vim) |
-| Plugin Lines of Code | 276,719 lines |
+| Metric               | Value                                                      |
+| -------------------- | ---------------------------------------------------------- |
+| Total Tests          | 22 test files, 250 tests (config) + 102 tests (hover.nvim) |
+| Total Plugins        | 378 installed plugins                                      |
+| Config Lines of Code | 280,414 lines (Lua/Vim)                                    |
+| Plugin Lines of Code | 276,719 lines                                              |
 
 ---
 
@@ -499,15 +551,24 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 ### Removed
 
-- **Telescope shadow file cleanup**: Moved 25 stale plugin shadow files from `lua/telescope/` to `~/.local/backup/telescope/`
-  - Removed `config.lua` that shadowed plugin's config (caused startup errors after upstream merge deleted `telescope.deprecated` module)
-  - Removed 5 underscore-prefixed directory copies: `_actions/`, `_builtin/` (6 files), `_finders/` (3 files), `_pickers/` (2 files), `_previewers/` (5 files)
-  - Removed 7 standalone unreferenced files: `__.lua`, `_config.lua`, `_command.lua`, `_from_entry.lua`, `_make_entry.lua`, `_pickers.lua`, `issues.txt`
-  - Kept: `run.lua`, `telemap.lua`, `telethemes.lua`, `log.lua` (custom functionality), `_extensions/init.lua` (custom enhancements), `_layouts/` (custom layouts)
+- **Telescope shadow file cleanup**: Moved 25 stale plugin shadow files from `lua/telescope/` to
+  `~/.local/backup/telescope/`
+  - Removed `config.lua` that shadowed plugin's config (caused startup errors after upstream merge deleted
+    `telescope.deprecated` module)
+  - Removed 5 underscore-prefixed directory copies: `_actions/`, `_builtin/` (6 files), `_finders/` (3 files),
+    `_pickers/` (2 files), `_previewers/` (5 files)
+  - Removed 7 standalone unreferenced files: `__.lua`, `_config.lua`, `_command.lua`, `_from_entry.lua`,
+    `_make_entry.lua`, `_pickers.lua`, `issues.txt`
+  - Kept: `run.lua`, `telemap.lua`, `telethemes.lua`, `log.lua` (custom functionality), `_extensions/init.lua` (custom
+    enhancements), `_layouts/` (custom layouts)
 
-- **Telescope config cleanup**: Moved 22 unused config files from `lua/configs/telescope/` to `~/.local/backup/nvim-refactor/`
-  - Entire `pickers2/` directory (10 experimental pickers: code-action, command-palette, glance, harpoon, marks, mind, nvim-tree, ollama, terminal, timetracker)
-  - 12 standalone files: `backdrop.lua`, `symbol_highlights.lua`, `filename-first.lua`, `layout-fused.lua`, `minimal.lua`, `sorters.lua`, `_which_key.lua`, `launchkeys.lua`, `reference.lua`, `stickybuf.lua`, `display-path.lua`, `previewers/delta.lua`
+- **Telescope config cleanup**: Moved 22 unused config files from `lua/configs/telescope/` to
+  `~/.local/backup/nvim-refactor/`
+  - Entire `pickers2/` directory (10 experimental pickers: code-action, command-palette, glance, harpoon, marks, mind,
+    nvim-tree, ollama, terminal, timetracker)
+  - 12 standalone files: `backdrop.lua`, `symbol_highlights.lua`, `filename-first.lua`, `layout-fused.lua`,
+    `minimal.lua`, `sorters.lua`, `_which_key.lua`, `launchkeys.lua`, `reference.lua`, `stickybuf.lua`,
+    `display-path.lua`, `previewers/delta.lua`
   - 2 unused entry makers: `entry_makers/file.lua`, `entry_makers/quickfix.lua`
   - 2 unused actions: `actions/directory.lua` (empty), `actions/reference.lua`
 
@@ -519,16 +580,17 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 ### Fixed
 
-- **Startup error**: Fixed `telescope.deprecated` module-not-found error after upstream merge by removing stale shadow `config.lua`
+- **Startup error**: Fixed `telescope.deprecated` module-not-found error after upstream merge by removing stale shadow
+  `config.lua`
 
 ### Project Statistics
 
-| Metric | Value |
-|--------|-------|
-| Total Tests | 11 test files, 132 tests (132 passing) |
-| Total Plugins | 378 installed plugins |
-| Config Lines of Code | 204,063 lines (Lua/Vim) |
-| Plugin Lines of Code | 2,037,917 lines |
+| Metric               | Value                                  |
+| -------------------- | -------------------------------------- |
+| Total Tests          | 11 test files, 132 tests (132 passing) |
+| Total Plugins        | 378 installed plugins                  |
+| Config Lines of Code | 204,063 lines (Lua/Vim)                |
+| Plugin Lines of Code | 2,037,917 lines                        |
 
 ---
 
@@ -537,23 +599,22 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 ### Removed
 
 - **Unreferenced module cleanup**: Moved 29 unreferenced lua modules to `~/.local/backup/nvim-refactor/`
-  - 12 top-level dead modules: `evaluate`, `formatter-nvim`, `keyutils`, `layouts`, `oputils`,
-    `random-colorscheme`, `shebang`, `splitter`, `test_runner`, `tmp-dap`, `tmpts`, `unicode`
+  - 12 top-level dead modules: `evaluate`, `formatter-nvim`, `keyutils`, `layouts`, `oputils`, `random-colorscheme`,
+    `shebang`, `splitter`, `test_runner`, `tmp-dap`, `tmpts`, `unicode`
   - 5 unused utils: `autofunc`, `blink_animate`, `bufopt`, `chainsaw`, `gradient_utils`
-  - 6 test/scratch scripts: `notify-remote`, `test-options`, `test-timer`, `import-test`,
-    `test-scratch`, `test-scratch2`
-  - 5 treesitter reference/backup files: `bash_zsh`, `variousobj`, `tstextobj`, `miniai`,
-    `js-template-string`
+  - 6 test/scratch scripts: `notify-remote`, `test-options`, `test-timer`, `import-test`, `test-scratch`,
+    `test-scratch2`
+  - 5 treesitter reference/backup files: `bash_zsh`, `variousobj`, `tstextobj`, `miniai`, `js-template-string`
   - 1 misc: `remote/eample_errors`
 
 ### Project Statistics
 
-| Metric | Value |
-|--------|-------|
-| Total Tests | 10 test files (6 unit, 2 integration), 99 tests |
-| Total Plugins | 406 installed plugins |
-| Config Lines of Code | ~267,173 lines (Lua/Vim) |
-| Plugin Lines of Code | ~2,126,243 lines |
+| Metric               | Value                                           |
+| -------------------- | ----------------------------------------------- |
+| Total Tests          | 10 test files (6 unit, 2 integration), 99 tests |
+| Total Plugins        | 406 installed plugins                           |
+| Config Lines of Code | ~267,173 lines (Lua/Vim)                        |
+| Plugin Lines of Code | ~2,126,243 lines                                |
 
 ---
 
@@ -563,7 +624,8 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 - **Dead code cleanup**: Removed 9 unused old/backup files (~1,990 lines)
   - `lua/tracker/diff/init_old.lua`, `lua/tracker/defaults_old.lua`
-  - `lua/reactive/commands-old.lua`, `lua/reactive/old_snapshot.lua`, `lua/reactive/snapshot-old.lua`, `lua/reactive/old_commands.lua`
+  - `lua/reactive/commands-old.lua`, `lua/reactive/old_snapshot.lua`, `lua/reactive/snapshot-old.lua`,
+    `lua/reactive/old_commands.lua`
   - `lua/yanky/init-old.lua`
   - `lua/configs/nvim-cmp/reference/backup2.lua`
   - `lua/scripts/test-old-options.lua`
@@ -576,12 +638,12 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 ### Project Statistics
 
-| Metric | Value |
-|--------|-------|
-| Total Tests | 10 test files (6 unit, 2 integration), 99 tests |
-| Total Plugins | 406 installed plugins |
-| Config Lines of Code | ~269,024 lines (Lua/Vim) |
-| Plugin Lines of Code | ~2,126,243 lines |
+| Metric               | Value                                           |
+| -------------------- | ----------------------------------------------- |
+| Total Tests          | 10 test files (6 unit, 2 integration), 99 tests |
+| Total Plugins        | 406 installed plugins                           |
+| Config Lines of Code | ~269,024 lines (Lua/Vim)                        |
+| Plugin Lines of Code | ~2,126,243 lines                                |
 
 ---
 
@@ -647,7 +709,8 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 ### Changed
 
-- **LSP Configuration Migration**: Migrated from deprecated `nvim-lspconfig` API to native Neovim 0.11+ `vim.lsp.config` API
+- **LSP Configuration Migration**: Migrated from deprecated `nvim-lspconfig` API to native Neovim 0.11+ `vim.lsp.config`
+  API
   - Replaced `require('lspconfig').*. setup()` pattern with `vim.lsp.config()` + `vim.lsp.enable()`
   - Migrated `on_attach` callback to `LspAttach` autocmd pattern (`lua/lsp/on_attach.lua`)
   - Updated global LSP configuration using `vim.lsp.config("*", {...})` for default settings
@@ -670,12 +733,12 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 ### Project Statistics
 
-| Metric | Value |
-|--------|-------|
-| Total Tests | 5 test files (3 unit, 2 integration) |
-| Total Plugins | 402 installed plugins |
-| Config Lines of Code | ~1,542 lines (Lua/Vim) |
-| Plugin Lines of Code | ~170,267 lines |
+| Metric               | Value                                |
+| -------------------- | ------------------------------------ |
+| Total Tests          | 5 test files (3 unit, 2 integration) |
+| Total Plugins        | 402 installed plugins                |
+| Config Lines of Code | ~1,542 lines (Lua/Vim)               |
+| Plugin Lines of Code | ~170,267 lines                       |
 
 ---
 
@@ -718,12 +781,12 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 ### Project Statistics
 
-| Metric | Value |
-|--------|-------|
-| Total Tests | 5 test files (3 unit, 2 integration) |
-| Total Plugins | 402 installed plugins |
-| Config Lines of Code | ~1,542 lines (Lua/Vim) |
-| Plugin Lines of Code | ~170,267 lines |
+| Metric               | Value                                |
+| -------------------- | ------------------------------------ |
+| Total Tests          | 5 test files (3 unit, 2 integration) |
+| Total Plugins        | 402 installed plugins                |
+| Config Lines of Code | ~1,542 lines (Lua/Vim)               |
+| Plugin Lines of Code | ~170,267 lines                       |
 
 ---
 
@@ -748,12 +811,12 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 
 ### Project Statistics
 
-| Metric | Value |
-|--------|-------|
-| Total Tests | 5 test files (2 unit, 3 integration) |
-| Total Plugins | 401 installed plugins |
-| Config Lines of Code | ~1,411 lines (Lua/Vim) |
-| Plugin Lines of Code | ~169,752 lines |
+| Metric               | Value                                |
+| -------------------- | ------------------------------------ |
+| Total Tests          | 5 test files (2 unit, 3 integration) |
+| Total Plugins        | 401 installed plugins                |
+| Config Lines of Code | ~1,411 lines (Lua/Vim)               |
+| Plugin Lines of Code | ~169,752 lines                       |
 
 ---
 
@@ -763,31 +826,37 @@ Breaking changes and errors from the plugin update (`plugin_udpates.txt`), verif
 ## [X.Y.Z] - YYYY-MM-DD
 
 ### Added
+
 - New features
 
 ### Changed
+
 - Changes to existing functionality
 
 ### Deprecated
+
 - Features marked for removal
 
 ### Removed
+
 - Removed features
 
 ### Fixed
+
 - Bug fixes
 
 ### Security
+
 - Security improvements
 
 ### Project Statistics
 
-| Metric | Value |
-|--------|-------|
-| Total Tests | N test files |
-| Total Plugins | N installed plugins |
-| Config Lines of Code | N lines (Lua/Vim) |
-| Plugin Lines of Code | N lines |
+| Metric               | Value               |
+| -------------------- | ------------------- |
+| Total Tests          | N test files        |
+| Total Plugins        | N installed plugins |
+| Config Lines of Code | N lines (Lua/Vim)   |
+| Plugin Lines of Code | N lines             |
 ```
 
 ---

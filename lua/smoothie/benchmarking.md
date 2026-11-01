@@ -1,6 +1,7 @@
 # Smoothie Benchmarking System
 
-Comprehensive benchmarking infrastructure for vim-smoothie to measure and compare scrolling performance between VimL and Lua implementations.
+Comprehensive benchmarking infrastructure for vim-smoothie to measure and compare scrolling performance between VimL and
+Lua implementations.
 
 ## Table of Contents
 
@@ -34,6 +35,7 @@ The smoothie benchmarking system provides detailed performance metrics for smoot
 - Integrated benchmarking hooks
 
 **Files**:
+
 - `plugin/smoothie.vim`: Core scrolling logic (553 lines)
 - `autoload/smoothie/benchmark.vim`: Benchmarking functions (331 lines)
 - `plugin/smoothie_benchmark.vim`: Command definitions (22 lines)
@@ -48,6 +50,7 @@ The smoothie benchmarking system provides detailed performance metrics for smoot
 - Built-in benchmarking module
 
 **Files**:
+
 - `lua/smoothie/init.lua`: Core scrolling logic (~600 lines)
 - `lua/smoothie/benchmark.lua`: Benchmarking module (~330 lines)
 - `lua/commands/buffer/smoothie_toggle.lua`: Toggle system (~200 lines)
@@ -70,6 +73,7 @@ The smoothie benchmarking system provides detailed performance metrics for smoot
 ### Frame-Level Tracking
 
 Each animation frame records:
+
 - Timestamp (high-resolution)
 - Current line number
 - Interval since last frame (ms)
@@ -93,32 +97,32 @@ if deviation > turbulence_threshold:
 
 ### Implementation Switching
 
-| Command | Description |
-|---------|-------------|
-| `:SmoothieUseVimL` | Switch to VimL implementation |
-| `:SmoothieUseLua` | Switch to Lua implementation |
-| `:SmoothieToggle` | Toggle between implementations |
-| `:SmoothieStatus` | Show current implementation |
+| Command            | Description                    |
+| ------------------ | ------------------------------ |
+| `:SmoothieUseVimL` | Switch to VimL implementation  |
+| `:SmoothieUseLua`  | Switch to Lua implementation   |
+| `:SmoothieToggle`  | Toggle between implementations |
+| `:SmoothieStatus`  | Show current implementation    |
 
 ### VimL Benchmarking
 
-| Command | Alias | Description |
-|---------|-------|-------------|
-| `:SmoothieBenchmarkEnable` | `:SBEnable` | Enable VimL benchmarking |
+| Command                     | Alias        | Description               |
+| --------------------------- | ------------ | ------------------------- |
+| `:SmoothieBenchmarkEnable`  | `:SBEnable`  | Enable VimL benchmarking  |
 | `:SmoothieBenchmarkDisable` | `:SBDisable` | Disable VimL benchmarking |
-| `:SmoothieBenchmarkToggle` | `:SBToggle` | Toggle VimL benchmarking |
-| `:SmoothieBenchmarkReset` | `:SBReset` | Reset VimL benchmark data |
-| `:SmoothieBenchmarkStats` | `:SBStats` | Show VimL benchmark stats |
+| `:SmoothieBenchmarkToggle`  | `:SBToggle`  | Toggle VimL benchmarking  |
+| `:SmoothieBenchmarkReset`   | `:SBReset`   | Reset VimL benchmark data |
+| `:SmoothieBenchmarkStats`   | `:SBStats`   | Show VimL benchmark stats |
 
 ### Lua Benchmarking
 
-| Command | Description |
-|---------|-------------|
-| `:SmoothieBenchmarkEnableLua` | Enable Lua benchmarking |
+| Command                        | Description              |
+| ------------------------------ | ------------------------ |
+| `:SmoothieBenchmarkEnableLua`  | Enable Lua benchmarking  |
 | `:SmoothieBenchmarkDisableLua` | Disable Lua benchmarking |
-| `:SmoothieBenchmarkToggleLua` | Toggle Lua benchmarking |
-| `:SmoothieBenchmarkResetLua` | Reset Lua benchmark data |
-| `:SmoothieBenchmarkStatsLua` | Show Lua benchmark stats |
+| `:SmoothieBenchmarkToggleLua`  | Toggle Lua benchmarking  |
+| `:SmoothieBenchmarkResetLua`   | Reset Lua benchmark data |
+| `:SmoothieBenchmarkStatsLua`   | Show Lua benchmark stats |
 
 ## Metrics Explained
 
@@ -129,6 +133,7 @@ if deviation > turbulence_threshold:
 Measures scrolling throughput. Higher is better for productivity workflows.
 
 **Interpretation**:
+
 - **< 1000 LPM**: Slow scrolling (low speed settings)
 - **1000-5000 LPM**: Normal scrolling
 - **> 5000 LPM**: Fast scrolling (high speed settings)
@@ -140,6 +145,7 @@ Measures scrolling throughput. Higher is better for productivity workflows.
 Measures how uniform scroll speeds are across operations.
 
 **Interpretation**:
+
 - **95-100%**: Excellent consistency
 - **85-95%**: Good consistency
 - **70-85%**: Moderate variation
@@ -152,6 +158,7 @@ Measures how uniform scroll speeds are across operations.
 Average deviation (in milliseconds) from expected frame timing.
 
 **Interpretation**:
+
 - **< 2ms**: Negligible turbulence
 - **2-5ms**: Minor turbulence (acceptable)
 - **5-10ms**: Moderate turbulence (may affect smoothness)
@@ -162,6 +169,7 @@ Average deviation (in milliseconds) from expected frame timing.
 Measures variability in scroll speeds across operations.
 
 **Interpretation**:
+
 - **< 5 l/s**: Very consistent
 - **5-15 l/s**: Moderately consistent
 - **> 15 l/s**: Inconsistent (investigate)
@@ -312,12 +320,12 @@ Run identical operations on both implementations:
 
 Compare the key metrics:
 
-| Metric | VimL | Lua | Winner |
-|--------|------|-----|--------|
-| Avg Speed (l/s) | 42.3 | 43.8 | Lua +3.5% |
-| Consistency (%) | 88.5 | 92.1 | Lua +4.1% |
-| Turbulence Score | 3.2ms | 2.1ms | Lua -34.4% |
-| Turbulence Events | 45 | 28 | Lua -37.8% |
+| Metric            | VimL  | Lua   | Winner     |
+| ----------------- | ----- | ----- | ---------- |
+| Avg Speed (l/s)   | 42.3  | 43.8  | Lua +3.5%  |
+| Consistency (%)   | 88.5  | 92.1  | Lua +4.1%  |
+| Turbulence Score  | 3.2ms | 2.1ms | Lua -34.4% |
+| Turbulence Events | 45    | 28    | Lua -37.8% |
 
 **Conclusion**: Lua implementation shows better consistency and lower turbulence.
 
@@ -370,6 +378,7 @@ let g:smoothie_speed_linear_factor = 6  " Reduce speed (fewer frames)
 ```
 
 **Long-term solutions**:
+
 - Profile and optimize autocmds
 - Use lazy loading for plugins
 - Optimize treesitter queries
@@ -470,14 +479,14 @@ local duration_ms = duration_ns / 1000000.0
 
 ### Core Files
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| `plugin/smoothie.vim` | 560 | VimL scrolling core |
-| `autoload/smoothie/benchmark.vim` | 331 | VimL benchmarking |
-| `plugin/smoothie_benchmark.vim` | 22 | VimL commands |
-| `lua/smoothie/init.lua` | ~600 | Lua scrolling core |
-| `lua/smoothie/benchmark.lua` | ~330 | Lua benchmarking |
-| `lua/commands/buffer/smoothie_toggle.lua` | ~200 | Toggle system |
+| File                                      | Lines | Purpose             |
+| ----------------------------------------- | ----- | ------------------- |
+| `plugin/smoothie.vim`                     | 560   | VimL scrolling core |
+| `autoload/smoothie/benchmark.vim`         | 331   | VimL benchmarking   |
+| `plugin/smoothie_benchmark.vim`           | 22    | VimL commands       |
+| `lua/smoothie/init.lua`                   | ~600  | Lua scrolling core  |
+| `lua/smoothie/benchmark.lua`              | ~330  | Lua benchmarking    |
+| `lua/commands/buffer/smoothie_toggle.lua` | ~200  | Toggle system       |
 
 ### Configuration Files
 
@@ -492,6 +501,7 @@ local duration_ms = duration_ns / 1000000.0
 **Problem**: Stats show "No operations recorded"
 
 **Solutions**:
+
 1. Ensure benchmarking is enabled: `:SBEnable` or `:SmoothieBenchmarkEnableLua`
 2. Perform actual scroll operations (Ctrl-D, Ctrl-F, etc.)
 3. Check that smoothie is active: `:SmoothieStatus`
@@ -501,6 +511,7 @@ local duration_ms = duration_ns / 1000000.0
 **Problem**: Turbulence score > 10ms
 
 **Solutions**:
+
 1. Check system load: `top` or `htop`
 2. Disable heavy plugins temporarily
 3. Test with minimal config: `nvim --clean`
@@ -511,6 +522,7 @@ local duration_ms = duration_ns / 1000000.0
 **Problem**: Same operations yield different metrics
 
 **Solutions**:
+
 1. Reset before each test: `:SBReset`
 2. Ensure consistent system state (no background processes)
 3. Run multiple iterations and average results

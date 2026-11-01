@@ -474,7 +474,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     config = function()
       require("tailwind-sorter").setup({
         on_save_enabled = true, -- If `true`, automatically enables on save sorting.
-        node_path = "/home/nicholas/.asdf/shims/node",
+        node_path = vim.fn.exepath("node"),
       })
     end,
   },

@@ -31,7 +31,7 @@ local defaults = {
     load_dir = "$HOME/.local/share/nvim/sessions/restart",
     temp_dir = "/tmp/sessions",
   },
-  gods_file = "$HOME/.config/zsh/greekgods.txt",
+  gods_file = "$HOME/.shell/share/greekgods.txt",
 }
 
 -- Map NVIM_UNIQUE env var to attach_on value

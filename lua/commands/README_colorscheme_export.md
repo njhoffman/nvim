@@ -4,7 +4,9 @@ Export Neovim colorschemes to [bat](https://github.com/sharkdp/bat) theme format
 
 ## Overview
 
-The `ColorschemeExport` command extracts Neovim highlight group definitions and converts them to the tmTheme XML format used by bat for syntax highlighting. This allows you to use your favorite Neovim colorscheme in bat for consistent terminal theming.
+The `ColorschemeExport` command extracts Neovim highlight group definitions and converts them to the tmTheme XML format
+used by bat for syntax highlighting. This allows you to use your favorite Neovim colorscheme in bat for consistent
+terminal theming.
 
 ## Usage
 
@@ -17,6 +19,7 @@ Export the current colorscheme:
 ```
 
 This will:
+
 1. Extract highlight groups from the current colorscheme
 2. Convert them to tmTheme format
 3. Open the result in a new split buffer
@@ -78,14 +81,14 @@ Or set it as default in `~/.config/bat/config`:
 
 The module maps Neovim highlight groups to tmTheme scopes:
 
-| Neovim Group | tmTheme Scope |
-|--------------|---------------|
-| Comment | `comment` |
-| String | `string` |
-| Function | `entity.name.function` |
-| Keyword | `keyword` |
-| Type | `storage.type` |
-| ... | ... |
+| Neovim Group | tmTheme Scope          |
+| ------------ | ---------------------- |
+| Comment      | `comment`              |
+| String       | `string`               |
+| Function     | `entity.name.function` |
+| Keyword      | `keyword`              |
+| Type         | `storage.type`         |
+| ...          | ...                    |
 
 ### API
 
@@ -126,6 +129,7 @@ nvim -l tests/manual/test_colorscheme_export.lua
 ```
 
 This will:
+
 - Test module loading
 - Validate XML generation
 - Check structure and formatting
@@ -176,6 +180,7 @@ This will:
 ### Missing colors
 
 If some elements aren't colored:
+
 1. Check if the corresponding highlight group exists in Neovim (`:hi GroupName`)
 2. Verify the mapping exists in `map_hl_to_scope()` function
 3. Consider adding custom mappings for your use case
@@ -183,6 +188,7 @@ If some elements aren't colored:
 ### Invalid XML error in bat
 
 If bat rejects the theme:
+
 1. Validate the XML structure
 2. Check for unescaped special characters
 3. Ensure all hex colors are properly formatted (#RRGGBB)
@@ -197,7 +203,8 @@ To report issues or suggest improvements, see the project documentation.
 
 ## Problem Summary
 
-The ColorschemeExport command generates tmTheme files but bat rejects them with "Invalid syntax theme settings". After thorough investigation, I've identified the root causes and limitations.
+The ColorschemeExport command generates tmTheme files but bat rejects them with "Invalid syntax theme settings". After
+thorough investigation, I've identified the root causes and limitations.
 
 ## Investigation Results
 
@@ -206,7 +213,8 @@ The ColorschemeExport command generates tmTheme files but bat rejects them with 
 1. **XML Structure** - Validates correctly with xmllint
 2. **DTD Declaration** - Fixed from `//Apple Computer//` to `//Apple//`
 3. **Required Fields** - All present (name, uuid, author, colorSpaceName, semanticClass, settings)
-4. **Global Settings** - Complete (background, foreground, caret, lineHighlight, selection, findHighlight, gutterForeground, misspelling)
+4. **Global Settings** - Complete (background, foreground, caret, lineHighlight, selection, findHighlight,
+   gutterForeground, misspelling)
 5. **Empty fontStyle** - Correctly uses `<string/>` when no style applied
 
 ### What's Missing ✗
@@ -214,6 +222,7 @@ The ColorschemeExport command generates tmTheme files but bat rejects them with 
 **Scope Coverage is Insufficient**
 
 Comparison with working Catppuccin theme:
+
 - **Working theme**: 186 scope definitions (2111 lines)
 - **Our theme**: 36 scope definitions (511 lines)
 - **Difference**: Missing 150+ scope mappings (5x less coverage)
@@ -221,6 +230,7 @@ Comparison with working Catppuccin theme:
 ### Why Bat Rejects Our Theme
 
 Bat themes require extensive, language-specific scope coverage. Our current approach:
+
 - Maps only basic Neovim highlight groups (Comment, String, Function, etc.)
 - Uses generic scopes (`comment`, `string`, `keyword`)
 - Doesn't cover language-specific patterns
@@ -247,7 +257,9 @@ meta.property.object
 1. **Neovim**: Uses ~40 generic highlight groups that work across all languages via TreeSitter
 2. **tmTheme/Sublime**: Uses 150+ language-specific, highly granular scopes
 
-The fundamental issue: We cannot automatically map Neovim's 40 generic groups to tmTheme's 150+ specific scopes. This requires:
+The fundamental issue: We cannot automatically map Neovim's 40 generic groups to tmTheme's 150+ specific scopes. This
+requires:
+
 - Manual curation of scope mappings
 - Understanding of TextMate/Sublime scope naming conventions
 - Knowledge of which scopes are critical for bat rendering
@@ -255,6 +267,7 @@ The fundamental issue: We cannot automatically map Neovim's 40 generic groups to
 ## Technical Details
 
 ### Current Scope Mappings (36)
+
 - Basic: text, source, comment, string, keyword, operator
 - Constants: constant.numeric, constant.character.escape
 - Functions: entity.name.function
@@ -263,6 +276,7 @@ The fundamental issue: We cannot automatically map Neovim's 40 generic groups to
 - Markup: markup.heading, markup.bold, markup.italic
 
 ### Missing Critical Scopes (partial list)
+
 - Method calls: `meta.function-call.method`
 - Class definitions: `entity.name.class`, `entity.other.inherited-class`
 - Type annotations: `meta.type-alias`, `support.type`
@@ -278,30 +292,32 @@ The fundamental issue: We cannot automatically map Neovim's 40 generic groups to
 ## Options Going Forward
 
 ### Option 1: Manual Scope Expansion (Recommended)
-**Effort**: High (several hours of research + testing)
-**Result**: Fully working bat theme
+
+**Effort**: High (several hours of research + testing) **Result**: Fully working bat theme
 
 Steps:
+
 1. Extract all scopes from popular working themes (Catppuccin, Nord, Dracula)
 2. Manually map each scope to nearest Neovim highlight group
 3. Add fallback color logic for unmapped scopes
 4. Test with bat syntax tests from: <https://github.com/sharkdp/bat/tree/master/tests/syntax-tests>
 
-**Pros**: Complete, working solution
-**Cons**: Maintenance burden, requires theme expertise
+**Pros**: Complete, working solution **Cons**: Maintenance burden, requires theme expertise
 
 ### Option 2: Use Existing Highlite Export (Easier)
+
 The nvim-highlite plugin (referenced in original task) already has a bat export:
 
 ```lua
 require("highlite.export").bat("nord-nick", {})
 ```
 
-**Pros**: Already tested and working, maintained by plugin author
-**Cons**: Requires installing highlite plugin
+**Pros**: Already tested and working, maintained by plugin author **Cons**: Requires installing highlite plugin
 
 ### Option 3: Document as "Preview Quality"
+
 Keep current implementation but document limitations:
+
 - Works for basic syntax highlighting
 - Missing advanced language-specific features
 - Best for simple code viewing, not production use
@@ -309,7 +325,9 @@ Keep current implementation but document limitations:
 ## Files Modified
 
 ### lua/commands/colorscheme_export.lua
+
 **Changes Made:**
+
 - Fixed DTD: `//Apple//` (was `//Apple Computer//`)
 - Added UUID generation
 - Added metadata fields: author, colorSpaceName, semanticClass
@@ -318,6 +336,7 @@ Keep current implementation but document limitations:
 - Fixed fontStyle: always include, use `<string/>` when empty
 
 **Current State:**
+
 - Generates valid XML (verified with xmllint)
 - 511 lines, 36 scopes
 - Bat rejects as "Invalid syntax theme settings" due to insufficient scope coverage
@@ -325,9 +344,12 @@ Keep current implementation but document limitations:
 ## Recommendations
 
 ### Immediate Action
-Document the current limitations in README and tests. The command works and generates valid themes, but they need manual scope expansion to work with bat.
+
+Document the current limitations in README and tests. The command works and generates valid themes, but they need manual
+scope expansion to work with bat.
 
 ### Future Work
+
 1. Extract comprehensive scope list from working themes
 2. Create scope mapping database (150+ entries)
 3. Implement fallback color selection for unmapped scopes
@@ -356,12 +378,14 @@ Ours (Nord-Nick):      511 lines,  36 scopes, rejected by bat
 ## Status: ✅ INVESTIGATION COMPLETE - DOCUMENTED
 
 The ColorschemeExport command successfully:
+
 - ✓ Extracts Neovim colors
 - ✓ Generates valid tmTheme XML
 - ✓ Includes all required metadata
 - ⚠️ Lacks sufficient scope coverage for bat (needs 150+ more scopes)
 
 **Three options documented** for bat compatibility:
+
 1. Manual scope expansion (high effort, complete solution)
 2. Use nvim-highlite's existing export (recommended)
 3. Document current as "preview quality"

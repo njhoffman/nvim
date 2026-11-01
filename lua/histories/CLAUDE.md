@@ -1,10 +1,10 @@
 - The histories subproject is now a submodule of the main project.
 - It handles traversing buffer locations from time-based location data from the following providers:
-  - *changes*: from the changelist of the current buffer, this is the furthest implementation
+  - _changes_: from the changelist of the current buffer, this is the furthest implementation
     - configurable
-  - *jumps*
-  - *pastes*
-  - *yanks*
-  - *selections*
-  - *writes*
+  - _jumps_
+  - _pastes_
+  - _yanks_
+  - _selections_
+  - _writes_
 - each

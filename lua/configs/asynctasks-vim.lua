@@ -1,4 +1,4 @@
--- ln ~/.vim/bundle/asynctasks.vim/bin/asynctask ~/bin/asynctask
+-- ln ~/.vim/bundle/asynctasks.vim/bin/asynctask ~/.shell/scripts/asynctask
 -- :AsyncTask file-build
 -- :AsyncTaskEdit(!) to edit (global) files
 -- :AsyncTaskList(!)

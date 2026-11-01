@@ -1,6 +1,4 @@
-
-`({[*] })    )    ({[] })* `
-`({[*] })`
+`({[*] })    )    ({[] })*` `({[*] })`
 
 Ultimate Autopairs
 
@@ -305,8 +303,7 @@ complicated: the only way is to set all `rules.key_map` to `nil`: >lua
 Note that if you add rules after this, then they won't be disabled.
 ```
 
-*auto-pairs*
-<https://github.com/jiangmiao/auto-pairs>
+_auto-pairs_ <https://github.com/jiangmiao/auto-pairs>
 
 ```
 Insert in pair
@@ -406,5 +403,4 @@ Multibyte Pairs
 
 ```
 
-nvim-autopairs
-<https://github.com/windwp/nvim-autopairs>
+nvim-autopairs <https://github.com/windwp/nvim-autopairs>

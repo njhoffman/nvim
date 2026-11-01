@@ -1,10 +1,10 @@
 ---
 date: '2021-08-02T20:11'
 ---
+
 # Vim Mappings and Notes
 
-<https://github.com/neovim/neovim/pull/16251>
-<https://github.com/neovim/neovim/pull/16480>
+<https://github.com/neovim/neovim/pull/16251> <https://github.com/neovim/neovim/pull/16480>
 
 ## Live commands
 
@@ -67,17 +67,18 @@ end, {
 ## Shortcut key mappings
 
 :::{.ui .center .aligned}
-|      VIM KEYS     |                                         |
-|:-----------------:|:---------------------------------------:|
-|  [gzi] [gzz] [gx] |       zettel index, search, launch      |
+
+|     VIM KEYS      |                                         |
+| :---------------: | :-------------------------------------: |
+| [gzi] [gzz] [gx]  |      zettel index, search, launch       |
 | [,tt] [,tm] [,tr] | box toggle , table mode toggle, realign |
-|     [,gn] ,gp]    |            git hunk next/prev           |
+|    [,gn] ,gp]     |           git hunk next/prev            |
 |    [yaw] [daf]    |       yank/delete outer word/func       |
-|    cs'  ds"  S"   |  surround change / delete / visual add  |
-|   cs'<q>   cst"   |   change ' for <q> /  change tag to "   |
-| ysiw' yss"  Vs<p> |       surround word / line / lines      |
-|      ,a,A ,fx     |         swap / interactive swap         |
-|  ctrl-g, ctrl-t   |         search results next/prev        |
+|    cs' ds" S"     |  surround change / delete / visual add  |
+|    cs'<q> cst"    |   change ' for <q> / change tag to "    |
+| ysiw' yss" Vs<p>  |      surround word / line / lines       |
+|     ,a,A ,fx      |         swap / interactive swap         |
+|  ctrl-g, ctrl-t   |        search results next/prev         |
 
 ```
 space: ( [ { B S
@@ -114,15 +115,12 @@ close: ) ] } b s f ' "
 
 TODO: add notes for multiple cursors without multiple cursors
 
-Two main modes: press Tab to switch between «cursor» and «extend» mode
-in cursor mode commands work as they would in normal mode, in extend mode commands work as they would in visual mode
+Two main modes: press Tab to switch between «cursor» and «extend» mode in cursor mode commands work as they would in
+normal mode, in extend mode commands work as they would in visual mode
 
-Most vim commands work as expected (motions, r to replace characters, ~ to change case, etc). Additionally you can:
-  run macros/ex/normal commands at cursors
-  align cursors
-  transpose selections
-  add patterns with regex, or from visual mode
-  And more... of course, you can enter insert mode and autocomplete will work.
+Most vim commands work as expected (motions, r to replace characters, ~ to change case, etc). Additionally you can: run
+macros/ex/normal commands at cursors align cursors transpose selections add patterns with regex, or from visual mode And
+more... of course, you can enter insert mode and autocomplete will work.
 
 ## Remove everything except regex match (ClearAllButMatches)
 
@@ -164,8 +162,8 @@ S         " delete line and start insert
 
 ### Non-greedy line replacing
 
-Delete entire line and replace with matched subgroup
-Assuming <ip> is your regex to match an IP address, I presume you could do something like:
+Delete entire line and replace with matched subgroup Assuming <ip> is your regex to match an IP address, I presume you
+could do something like:
 
 ```vim
 :%s/.\{-}\(<ip>\).*/\1/g
@@ -193,8 +191,10 @@ gg0qac/\v(\d{1,3}\.){3}\d{1,3}<CR><CR><Esc>//e+1<CR>@aq@adG
 4. qa: start writing macros.
 5. c/{pattern}<CR>: change until pattern.
 6. c{motion}<CR><ESC>: replace text with newline (here {motion} is /{pat}<CR>).
-7. //e+1<CR>: search for last pattern, go one character left past its end (wraps around a newline, but if your lines looks like this: IP<newline>IP, there may be problems).
-8. @a: execute @a macros (it is empty when you are recording it, but when you are finished it will repeat steps 1-7 until it gets an error).
+7. //e+1<CR>: search for last pattern, go one character left past its end (wraps around a newline, but if your lines
+   looks like this: IP<newline>IP, there may be problems).
+8. @a: execute @a macros (it is empty when you are recording it, but when you are finished it will repeat steps 1-7
+   until it gets an error).
 9. q: end recording @a.
 10. @a: execute @a macros.
 11. dG: delete to the end of file.
@@ -328,71 +328,31 @@ Character classes: */character-classes*
 
 ### Vim Environment
 
-:abbreviate   - list abbreviations
-:args         - argument list
-:augroup      - augroups
-:autocmd      - list auto-commands
-:buffers      - list buffers
-:breaklist    - list current breakpoints
-:cabbrev      - list command mode abbreviations
-:changes      - changes
-:cmap         - list command mode maps
-:command      - list commands
-:compiler     - list compiler scripts
-:digraphs     - digraphs
-:file         - print filename, cursor position and status (like Ctrl-G)
-:filetype     - on/off settings for filetype detect/plugins/indent
-:function     - list user-defined functions (names and argument lists but not the full code)
-:function Foo - user-defined function Foo() (full code list)
-:highlight    - highlight groups
-:history c    - command history
-:history =    - expression history
-:history s    - search history
-:history      - your commands
-:iabbrev      - list insert mode abbreviations
-:imap         - list insert mode maps
-:intro        - the Vim splash screen, with summary version info
-:jumps        - your movements
-:language     - current language settings
-:let          - all variables
-:let FooBar   - variable FooBar
-:let g:       - global variables
-:let v:       - Vim variables
-:list         - buffer lines (many similar commands)
-:lmap         - language mappings (set by keymap or by lmap)
-:ls           - buffers
-:ls!          - buffers, including "unlisted" buffers
-:map!         - Insert and Command-line mode maps (imap, cmap)
-:map          - Normal and Visual mode maps (nmap, vmap, xmap, smap, omap)
-:map<buffer>  - buffer local Normal and Visual mode maps
-:map!<buffer> - buffer local Insert and Command-line mode maps
-:marks        - marks
-:menu         - menu items
-:messages     - message history
-:nmap         - Normal-mode mappings only
-:omap         - Operator-pending mode mappings only
-:print        - display buffer lines (useful after :g or with a range)
-:reg          - registers
-:scriptnames  - all scripts sourced so far
-:set all      - all options, including defaults
-:setglobal    - global option values
-:setlocal     - local option values
-:set          - options with non-default value
-:set termcap  - list terminal codes and terminal keys
-:smap         - Select-mode mappings only
-:spellinfo    - spellfiles used
-:syntax       - syntax items
-:syn sync     - current syntax sync mode
-:tabs         - tab pages
-:tags         - tag stack contents
-:undolist     - leaves of the undo tree
-:verbose      - show info about where a map or autocmd or function is defined
-:version      - list version and build options
-:vmap         - Visual and Select mode mappings only
-:winpos       - Vim window position (gui)
-:xmap         - visual mode maps only
-Notes
-Additional information is available to a Vim script. For example, :help tabpagebuflist() shows how to list all buffers in all tabs.
+:abbreviate - list abbreviations :args - argument list :augroup - augroups :autocmd - list auto-commands :buffers - list
+buffers :breaklist - list current breakpoints :cabbrev - list command mode abbreviations :changes - changes :cmap - list
+command mode maps :command - list commands :compiler - list compiler scripts :digraphs - digraphs :file - print
+filename, cursor position and status (like Ctrl-G) :filetype - on/off settings for filetype detect/plugins/indent
+:function - list user-defined functions (names and argument lists but not the full code) :function Foo - user-defined
+function Foo() (full code list) :highlight - highlight groups :history c - command history :history = - expression
+history :history s - search history :history - your commands :iabbrev - list insert mode abbreviations :imap - list
+insert mode maps :intro - the Vim splash screen, with summary version info :jumps - your movements :language - current
+language settings :let - all variables :let FooBar - variable FooBar :let g: - global variables :let v: - Vim variables
+:list - buffer lines (many similar commands) :lmap - language mappings (set by keymap or by lmap) :ls - buffers :ls! -
+buffers, including "unlisted" buffers :map! - Insert and Command-line mode maps (imap, cmap) :map - Normal and Visual
+mode maps (nmap, vmap, xmap, smap, omap) :map<buffer> - buffer local Normal and Visual mode maps :map!<buffer> - buffer
+local Insert and Command-line mode maps :marks - marks :menu - menu items :messages - message history :nmap -
+Normal-mode mappings only :omap - Operator-pending mode mappings only :print - display buffer lines (useful after :g or
+with a range) :reg - registers :scriptnames - all scripts sourced so far :set all - all options, including defaults
+:setglobal - global option values :setlocal - local option values :set - options with non-default value :set termcap -
+list terminal codes and terminal keys :smap - Select-mode mappings only :spellinfo - spellfiles used :syntax - syntax
+items :syn sync - current syntax sync mode :tabs - tab pages :tags - tag stack contents :undolist - leaves of the undo
+tree :verbose - show info about where a map or autocmd or function is defined :version - list version and build options
+:vmap - Visual and Select mode mappings only :winpos - Vim window position (gui) :xmap - visual mode maps only Notes
+Additional information is available to a Vim script. For example, :help tabpagebuflist() shows how to list all buffers
+in all tabs.
 
 A script called bugreport.vim is provided with Vim. When run, the script produces a file with information about
+
+```
+
 ```

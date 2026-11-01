@@ -2,16 +2,14 @@
 
 Notes for templating the hlslens virtual text (fork at `~/git/nvim-hlslens`).
 
-I want to enable templating the hlslens virtual text.
-There will be three modes:
+I want to enable templating the hlslens virtual text. There will be three modes:
 
 - default: base template that can be shared between all modes
 - near: template for the virtual text lens of of matches that are near the cursor but not the nearest
 - nearest: template for the virtual text lens of of the nearest match
 
-HlSearchNear CurSearch rename to HlSearchCur
-HlSearchLens WildMenu rename to HlSearchLens
-HlSearchLensNear CurSearch rename to HlSearchLensCur
+HlSearchNear CurSearch rename to HlSearchCur HlSearchLens WildMenu rename to HlSearchLens HlSearchLensNear CurSearch
+rename to HlSearchLensCur
 
 HlSearch IncSearch rename to HlSearch
 
