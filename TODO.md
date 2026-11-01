@@ -202,10 +202,11 @@ Resolve these before implementing.
 
 ## 8. Editing behavior
 
-- [ ] **Shift by 2 spaces.** (p2) [bug] `<<` / `>>` shift by 4. Find what sets `shiftwidth`
-      (global options, ftplugins, editorconfig, or `vim-sleuth`/`guess-indent` detection) and
-      make the default 2. Visual-mode `<` / `>` should shift only the selected block and keep
-      the selection (`vnoremap < <gv`, `> >gv`).
+- [x] **Shift by 2 spaces.** (p2) [bug] `<<` / `>>` shifted Markdown by 4: the runtime
+      `ftplugin/markdown.vim` sets `shiftwidth=4` unless `g:markdown_recommended_style` is 0,
+      which `vim-options.lua` now sets (v0.17.2). The global default was already 2 and visual
+      `<` / `>` already keep the selection (`keymaps.lua`). Other filetypes with their own
+      recommended style (e.g. Python's 4) are unchanged on purpose.
 - [ ] **Wrap code blocks in markdown.** (p3) [feature] A quicker way to wrap a visual selection
       or the current paragraph in a fenced block, prompting for the language (e.g. a
       mini.surround / nvim-surround custom surrounding or a dedicated keymap).

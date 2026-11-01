@@ -175,6 +175,9 @@ opt("smartindent", false, buffer)
 opt("softtabstop", 0, buffer)
 opt("synmaxcol", 2000, buffer)
 opt("tabstop", 2, buffer)
+-- The runtime markdown ftplugin sets shiftwidth/tabstop/softtabstop to 4 unless this is 0;
+-- keep 2 so list items indent one level at a time
+vim.g.markdown_recommended_style = 0
 opt("undofile", true, buffer)
 opt("equalalways", false) -- make windows the samue width when closing one
 opt("cursorlineopt", "both") -- should get cursorline in number too

@@ -5,6 +5,14 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.2] - 2026-11-01
+
+### Fixed
+
+- Markdown indented by 4 spaces, so `>` / `<` on list items moved them two levels at once:
+  Neovim's markdown ftplugin applied its "recommended style" (`shiftwidth=4`). It's turned off,
+  so Markdown uses the global 2.
+
 ## [0.17.1] - 2026-11-01
 
 ### Fixed

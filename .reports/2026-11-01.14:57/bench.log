@@ -1,0 +1,5 @@
+bench: warm-up session
+bench: session 1/3
+bench: session 2/3
+bench: session 3/3
+bench: recorded release 0.17.2 in benchmarks/history.tsv
