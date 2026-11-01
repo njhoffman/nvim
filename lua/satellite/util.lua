@@ -20,6 +20,13 @@ function M.debounce_trailing(f, ms)
   end
 end
 
+--- nvim_win_text_height measures wrapped and concealed text, which forces the treesitter
+--- highlighter (with injections) over the whole buffer: Markdown render times in
+--- benchmarks/run went from 645 / 1136 / 5058 ms (75 / 491 / 1271 lines) to 386 / 436 / 423 ms
+--- without it. Off by default: the fold-aware line count below ignores soft wrapping, which
+--- only shifts the 1-column bar slightly in wrapped prose.
+M.use_text_height = false
+
 --- @type table<integer,table<integer,table<integer,integer>>>
 local virtual_line_count_cache = vim.defaulttable()
 
@@ -48,7 +55,7 @@ function M.virtual_line_count(winid, start, vend)
     return cached
   end
 
-  if api.nvim_win_text_height then
+  if M.use_text_height and api.nvim_win_text_height then
     local res = api.nvim_win_text_height(winid, {
       start_row = start,
       end_row = math.min(vend, max_vend),
@@ -58,18 +65,21 @@ function M.virtual_line_count(winid, start, vend)
     return res.all
   end
 
+  -- start / vend are 0-based rows (as for nvim_win_text_height); foldclosedend() takes
+  -- 1-based line numbers
+  local last = math.min(vend, max_vend)
   return api.nvim_win_call(winid, function()
     local vline = 0
-    local line = start
-    while line <= vend do
+    local row = start
+    while row <= last do
       vline = vline + 1
-      local foldclosedend = fn.foldclosedend(line)
+      local foldclosedend = fn.foldclosedend(row + 1)
       if foldclosedend ~= -1 then
-        line = foldclosedend
+        row = foldclosedend - 1
       end
-      -- This function is called a lot so cache every line
-      virtual_line_count_cache[winid][start][line] = vline
-      line = line + 1
+      -- This function is called a lot so cache every row
+      virtual_line_count_cache[winid][start][row] = vline
+      row = row + 1
     end
     return vline
   end)

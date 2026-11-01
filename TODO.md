@@ -144,14 +144,11 @@ Resolve these before implementing.
 
 ## 6. Bugs
 
-- [ ] **satellite freezes large Markdown buffers.** (p1) [bug] Opening the 1,271-line
-      `benchmarks/fixtures/large.md` blocks the main loop for 4-7 s after `:edit` returns (code.md
-      3-6 s, medium.md about 1 s) with nothing drawn. LuaJIT profile: `lua/satellite/view.lua:181`
-      -> `satellite/util.lua:52/178/200` drive the treesitter highlighter over the whole buffer,
-      forcing a synchronous full injection parse (`languagetree._get_injections`,
-      `query.iter_matches`). Limit the handler to the visible range or skip it for large/markdown
-      buffers, or drop the local copy for upstream satellite.nvim (see "Shadowed plugin modules").
-      Measure with `benchmarks/run`.
+- [x] **satellite freezes large Markdown buffers.** (p1) [bug] `lua/satellite/util.lua` measured
+      the bar with `nvim_win_text_height`, which ran the treesitter highlighter (with injections)
+      over the whole buffer. It now uses its fold-aware row count (`use_text_height = false`),
+      with the fold row offset fixed. Render: large.md 5058 -> 423 ms, code.md 3007 -> 574 ms,
+      medium.md 1136 -> 436 ms, small.md 645 -> 386 ms (v0.17.1).
 - [x] **action-hints code action range crash.** (p1) [bug] Visual selections touching an empty
       line passed column -1 to `vim.lsp.util.make_given_range_params`, so `vim.range.mark`
       threw "index out of range" from a scheduled callback. `range_from_selection` in

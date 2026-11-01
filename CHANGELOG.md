@@ -5,6 +5,17 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.1] - 2026-11-01
+
+### Fixed
+
+- Opening Markdown files no longer blocks the editor for seconds: the scrollbar (satellite)
+  measured wrapped and concealed text with `nvim_win_text_height`, which ran the treesitter
+  highlighter over the whole buffer. It now counts rows (closed folds count once). Render times
+  in `benchmarks/run`: large.md 5058 -> 423 ms, code.md 3007 -> 574 ms, medium.md 1136 ->
+  436 ms, small.md 645 -> 386 ms. In soft-wrapped prose the bar can sit slightly off.
+- The scrollbar's row count found closed folds one line off.
+
 ## [0.17.0] - 2026-11-01
 
 ### Added
