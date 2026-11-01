@@ -5,6 +5,16 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.0] - 2026-11-01
+
+### Added
+
+- `lua/tmux/pane_flag.lua` (loaded from `plugin/tmux_pane_flag.lua`): inside tmux, Neovim sets the
+  pane option `@pane-is-vim` while it holds the terminal (set on start and resume, cleared on
+  suspend and exit). The tmux config (0.19.0) reads it to decide whether alt-hjkl and ctrl-hjkl go
+  to Neovim, instead of running `ps` on every keypress, so held resize keys no longer queue up
+  under load. Headless Neovim and Neovim in another Neovim's `:terminal` leave the flag alone.
+
 ## [0.16.3] - 2026-11-01
 
 ### Fixed
