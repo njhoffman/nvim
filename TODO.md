@@ -161,6 +161,11 @@ Resolve these before implementing.
       comments consistent: a one-line header comment per module, short comments on non-obvious
       code only, StyLua across the tree, and one structure for plugin configs (spec in
       `plugins/`, options in `configs/<name>.lua`). Do this per directory after project 3.
+- [ ] **Stale `lua/tmux/CLAUDE.md`.** (p3) [docs] "Refactoring Status" lists `step_size`,
+      `get_state()` and a broken `vim.tbl_get` in `resize/` and `keymaps.lua`, none of which
+      exist any more, and "Testing" says no tests exist while `tests/unit/tmux_*_spec.lua`
+      has five specs. Rewrite both sections; note that tmux next-3.9 prints `window_layout`
+      as JSON, which `layout/parse.lua` handles alongside the classic format.
 
 ## 8. Editing behavior
 

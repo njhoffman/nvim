@@ -5,6 +5,19 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.1] - 2026-10-31
+
+### Fixed
+
+- tmux navigation no longer logs "window_layout returned no valid panes" when moving out of
+  Neovim into another tmux pane. tmux next-3.9 prints `#{window_layout}` as JSON, and
+  `tmux.layout.parse` now reads it alongside the classic `WxH,x,y,id` format, so border
+  detection works again.
+
+### Added
+
+- JSON layout cases in `tests/unit/tmux_layout_parse_spec.lua`.
+
 ## [0.15.0] - 2026-10-21
 
 ### Fixed
