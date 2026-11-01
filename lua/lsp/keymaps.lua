@@ -14,12 +14,13 @@ function M.setup(client, bufnr)
   log:debug("Setting up keymaps for " .. client.name .. " on buffer " .. bufnr)
 
   -- Diagnostics
+  -- Telescope owns picker keys; these override the global <C-t> only to scope it to the buffer
   map("n", "<C-t>", function()
-    Snacks.picker.diagnostics_buffer()
+    require("configs.telescope.launcher")("builtin", "diagnostics", { bufnr = 0 })
   end, vim.tbl_extend("force", opts, { desc = "Buffer diagnostics" }))
 
   map("n", "<M-T>", function()
-    Snacks.picker.diagnostics()
+    require("configs.telescope.launcher")("builtin", "diagnostics")
   end, vim.tbl_extend("force", opts, { desc = "Workspace diagnostics" }))
 
   map(

@@ -1788,8 +1788,8 @@ map('n', '<C-g>', "<cmd>lua require('configs.telescope.launcher')('leaderf', { t
 map('n', '<C-t>', "<cmd>lua require('configs.telescope.launcher')('builtin','diagnostics')<cr>", {
   category = 'Pickers',
   plugin = 'telescope.nvim',
-  label = 'frecency files',
-  desc = 'frecency files in telescope',
+  label = 'diagnostics',
+  desc = 'workspace diagnostics in telescope',
 })
 
 map('n', '<C-u>', "<cmd>lua require('configs.telescope.launcher')('frecency','frecency')<cr>", {

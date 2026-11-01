@@ -162,10 +162,10 @@ Resolve these before implementing.
       the bars tabline) against how the jumplist keeps entries for wiped buffers: `:bwipeout`
       drops the buffer number the jumplist points at, `:bdelete` keeps it unlisted, and an
       unlisted buffer that is reloaded is not shown until `buflisted` is set again.
-- [ ] **Snacks overrides telescope keymaps.** (p1) [bug] Some telescope mappings are now bound
-      by Snacks, e.g. `<C-t>` / `<C-S-t>` open a Snacks picker instead of telescope. Find
-      where Snacks sets picker keys (snacks spec `keys`, `picker` config, or a keymaps file
-      that loads after `configs/telescope.lua`) and make telescope's mappings take precedence.
+- [x] **Snacks overrides telescope keymaps.** (p1) [bug] `lua/lsp/keymaps.lua` bound
+      buffer-local `<C-t>` / `<M-T>` to Snacks diagnostics pickers on LSP attach, shadowing the
+      global telescope `<C-t>`. They now open telescope diagnostics (buffer / workspace),
+      covered by `tests/unit/lsp_keymaps_spec.lua` (v0.16.2). `<C-S-t>` has no mapping.
 - [ ] **action-hints errors are not contained.** (p3) [bug] `throttle` in
       `lua/action-hints/utils.lua` wraps `pcall` around `vim.schedule_wrap(...)`, which only
       schedules the callback; errors inside a provider still surface on every cursor move.

@@ -7,38 +7,40 @@ through `benchmarks/run`. The table below is rewritten on each recorded run.
 
 <!-- benchmark:start -->
 
-Latest: 2026-11-01T18:59Z, release 0.16.1 (575ee294-dirty), load 6.81, NVIM v0.13.0-dev-1915+gc5641b2bfb. Median of 3 sessions after one warm-up session, 100x40 UI. Average is over the previous 10 releases; no baseline yet (run `benchmarks/run --baseline` under low load). Recorded in [benchmarks/history.tsv](../benchmarks/history.tsv); see [benchmarks/README.md](../benchmarks/README.md).
+Latest: 2026-11-01T19:15Z, release 0.16.2 (711cce57-dirty), load 4.50, NVIM v0.13.0-dev-1915+gc5641b2bfb. Median of 3 sessions after one warm-up session, 100x40 UI. Average is over the previous 10 releases; no baseline yet (run `benchmarks/run --baseline` under low load). Recorded in [benchmarks/history.tsv](../benchmarks/history.tsv); see [benchmarks/README.md](../benchmarks/README.md).
 
 | Metric | Latest | Average | Releases | vs average | Baseline | vs baseline |
 |---|---:|---:|---:|---:|---:|---:|
-| startup ready | 2002 ms | 3801 | 1 | -47% |  |  |
-| startup settled | 8484 ms | 11367 | 1 | -25% |  |  |
-| small.md open | 365 ms | 392 | 1 | -7% |  |  |
-| small.md render | 766 ms | 678 | 1 | +13% |  |  |
-| medium.md open | 394 ms | 424 | 1 | -7% |  |  |
-| medium.md render | 1768 ms | 1999 | 1 | -12% |  |  |
-| large.md open | 277 ms | 506 | 1 | -45% |  |  |
-| large.md render | 5125 ms | 6978 | 1 | -27% |  |  |
-| code.md open | 385 ms | 429 | 1 | -10% |  |  |
-| code.md render | 4045 ms | 4291 | 1 | -6% |  |  |
-| sample.lua open | 204 ms | 237 | 1 | -14% |  |  |
-| sample.lua render | 569 ms | 545 | 1 | +4% |  |  |
-| sample.py open | 161 ms | 357 | 1 | -55% |  |  |
-| sample.py render | 370 ms | 753 | 1 | -51% |  |  |
-| sample.ts open | 197 ms | 326 | 1 | -40% |  |  |
-| sample.ts render | 497 ms | 596 | 1 | -17% |  |  |
-| sample.json open | 270 ms | 252 | 1 | +7% |  |  |
-| sample.json render | 494 ms | 536 | 1 | -8% |  |  |
-| rss settled | 116 MiB | 124 | 1 | -6% |  |  |
-| rss peak | 219 MiB | 219 | 1 | -0% |  |  |
+| startup ready | 2822 ms | 2901 | 2 | -3% |  |  |
+| startup settled | 10031 ms | 9926 | 2 | +1% |  |  |
+| small.md open | 221 ms | 379 | 2 | -42% |  |  |
+| small.md render | 590 ms | 722 | 2 | -18% |  |  |
+| medium.md open | 515 ms | 409 | 2 | +26% |  |  |
+| medium.md render | 1987 ms | 1883 | 2 | +6% |  |  |
+| large.md open | 352 ms | 392 | 2 | -10% |  |  |
+| large.md render | 7456 ms | 6052 | 2 | +23% |  |  |
+| code.md open | 354 ms | 407 | 2 | -13% |  |  |
+| code.md render | 4546 ms | 4168 | 2 | +9% |  |  |
+| sample.lua open | 330 ms | 221 | 2 | +50% |  |  |
+| sample.lua render | 624 ms | 557 | 2 | +12% |  |  |
+| sample.py open | 320 ms | 259 | 2 | +23% |  |  |
+| sample.py render | 727 ms | 562 | 2 | +29% |  |  |
+| sample.ts open | 236 ms | 261 | 2 | -10% |  |  |
+| sample.ts render | 509 ms | 546 | 2 | -7% |  |  |
+| sample.json open | 251 ms | 261 | 2 | -4% |  |  |
+| sample.json render | 455 ms | 515 | 2 | -12% |  |  |
+| rss settled | 116 MiB | 120 | 2 | -3% |  |  |
+| rss peak | 218 MiB | 219 | 2 | -0% |  |  |
 
 | Count | Latest | Previous release | Change |
 |---|---:|---:|---:|
 | plugins installed | 386 | 386 | +0 |
 | plugins loaded | 276 | 276 | +0 |
-| config files | 2,045 | 2,044 | +1 |
-| config lua lines | 184,511 | 184,511 | +0 |
-| config lines | 216,361 | 216,310 | +51 |
+| config files | 2,046 | 2,045 | +1 |
+| config lua lines | 184,569 | 184,511 | +58 |
+| config lines | 216,433 | 216,361 | +72 |
 | plugin lines | 2,222,516 | 2,222,516 | +0 |
+
+Over 25% slower: medium.md open: +26% vs average; sample.lua open: +50% vs average; sample.py render: +29% vs average.
 
 <!-- benchmark:end -->
