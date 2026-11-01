@@ -109,8 +109,23 @@ Resolve these before implementing.
       `.reports/<timestamp>/` folder of about 27k lines (mostly `coverage.txt`), which bloats
       history. Commit only `summary.md` and gitignore the rest; keep the latest full report
       locally so `scripts/report.sh` can still compute deltas.
-- [ ] **Startup budget.** (p3) [perf] Record `--startuptime` in `scripts/report.sh` and track
-      it across releases alongside cloc and coverage.
+- [ ] **report.sh hides why tests failed.** (p2) [bug] On 2026-10-31, at load ~20, the
+      coverage run failed and `scripts/report.sh` printed only "Tests failed; report aborted":
+      its filter only matches `Fail ||`/`Errors ||` lines, and the report dir (with `tests.log`)
+      is deleted. A rerun passed, so it was most likely a Plenary per-file timeout. Keep
+      `tests.log` on failure (move it out of the deleted dir) and also match timeout lines.
+- [x] **Startup budget.** (p3) [perf] Startup and per-filetype render times are recorded with
+      every release by `benchmarks/run` (via `scripts/report.sh X.Y.Z`), against the average of
+      the previous 10 releases and a low-load baseline; table in `docs/PERFORMANCE.md`.
+- [ ] **Record a benchmark baseline.** (p2) [chore] Run `benchmarks/run --baseline` once the
+      machine is quiet (load <= 1.2 on 8 CPUs; it was 11 when the harness landed), so release
+      tables get a "vs baseline" column. Repeat after Neovim upgrades.
+- [ ] **Slow startup.** (p2) [perf] About 2-3 s to `UIEnter` and 8-11 s until idle in
+      `benchmarks/run` (load ~10). Headless `--startuptime`: `init.lua` 2.1 s, of which
+      `utils.helptags` 253 ms (via `commands.help`), `keymaps` 150 ms, `configs.project` 91 ms,
+      `configs.telescope` 70 ms, `devdocs2` 66 ms, and 432 ms in init.lua itself. After the
+      dashboard draws, the main loop blocks for 0.1-1.5 s stretches over about 4.5 s, then an
+      animation flushes at ~30 fps for about 2 s. Defer helptags generation, profile the rest.
 - [ ] **Health check.** (p3) [feature] Add `lua/health/config.lua` for `:checkhealth config`:
       failed configs from `utils.lazy.state`, missing external tools, shadowed modules.
 - [ ] **nvim-hlslens lens templating.** (p3) [feature] Template the lens virtual text with
@@ -119,6 +134,14 @@ Resolve these before implementing.
 
 ## 6. Bugs
 
+- [ ] **satellite freezes large Markdown buffers.** (p1) [bug] Opening the 1,271-line
+      `benchmarks/fixtures/large.md` blocks the main loop for 4-7 s after `:edit` returns (code.md
+      3-6 s, medium.md about 1 s) with nothing drawn. LuaJIT profile: `lua/satellite/view.lua:181`
+      -> `satellite/util.lua:52/178/200` drive the treesitter highlighter over the whole buffer,
+      forcing a synchronous full injection parse (`languagetree._get_injections`,
+      `query.iter_matches`). Limit the handler to the visible range or skip it for large/markdown
+      buffers, or drop the local copy for upstream satellite.nvim (see "Shadowed plugin modules").
+      Measure with `benchmarks/run`.
 - [x] **action-hints code action range crash.** (p1) [bug] Visual selections touching an empty
       line passed column -1 to `vim.lsp.util.make_given_range_params`, so `vim.range.mark`
       threw "index out of range" from a scheduled callback. `range_from_selection` in

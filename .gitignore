@@ -4,3 +4,4 @@ lazy-lock.json
 luacov.stats.out
 luacov.report.out
 tmp.sh
+__pycache__/

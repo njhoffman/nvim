@@ -24,18 +24,29 @@ Bump rules (pre-1.0):
 
 Release steps:
 
-1. `./scripts/report.sh` runs all tests with coverage, then cloc. It prints the report directory
-   (`.reports/<timestamp>/`). If any test fails it aborts: do not commit, tag or push.
+1. `./scripts/report.sh X.Y.Z` runs all tests with coverage (Plenary, mini.test and the Python
+   tests in `tests/bench/`), then cloc, then the benchmarks (about two minutes), recording them
+   as release X.Y.Z in `benchmarks/history.tsv` and rewriting the table in
+   `docs/PERFORMANCE.md`. It prints the report directory (`.reports/<timestamp>/`). If any test
+   or the benchmark run fails it aborts: do not commit, tag or push. Benchmark warnings
+   (a metric over 25% slower than its average or baseline) do not abort; mention them.
 2. Write `<report dir>/summary.md`: code stats, coverage, counts of installed plugins and tests,
-   and deltas against the previous report.
+   and deltas against the previous report, followed by the benchmark tables from
+   `<report dir>/bench.md`.
 3. Add a `## [X.Y.Z] - YYYY-MM-DD` section to `CHANGELOG.md`.
-4. Stage the change, the report directory and `CHANGELOG.md`, then
+4. Stage the change, the report directory, `CHANGELOG.md`, `benchmarks/history.tsv` and
+   `docs/PERFORMANCE.md`, then
    `./scripts/release.sh X.Y.Z "<summary>"`. It refuses a version that is not newer than the
    latest tag or that lacks a changelog section, then commits as `vX.Y.Z: <summary>`, creates the
    annotated tag and runs `git push origin HEAD --follow-tags`. Set `RELEASE_TRAILER` to append a
    `Co-Authored-By` line.
 
-Report data in `.reports/` is excluded from cloc and must not be analyzed as part of the repo.
+Benchmark baseline: `benchmarks/run --baseline` records a new one under low load (it waits up
+to 30 minutes for it). Run it only when asked, or suggest it after a Neovim upgrade. See
+`benchmarks/README.md`.
+
+Report data in `.reports/` and the generated `benchmarks/fixtures/` are excluded from cloc and
+must not be analyzed as part of the repo.
 
 After plugin or Neovim updates, also run the headless smoke test. Use an isolated state dir so
 sessions and shada stay untouched. `SMOKE_HEALTH="rest-nvim avante"` appends those healthcheck

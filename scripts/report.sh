@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
-# Pre-release report: runs tests with coverage, collects cloc stats.
-# Usage: ./scripts/report.sh
+# Pre-release report: runs tests with coverage, collects cloc stats, runs the benchmarks.
+# Usage: ./scripts/report.sh [VERSION]
 # Writes raw data to .reports/<timestamp>/ and prints the directory.
-# Exits non-zero (and removes the directory) if any test fails.
+# With VERSION, the benchmarks are recorded as that release in benchmarks/history.tsv and
+# docs/PERFORMANCE.md is updated; without it they are measured but not recorded.
+# BENCH=0 skips the benchmarks.
+# Exits non-zero (and removes the directory) if any test fails or the benchmarks fail.
 
 set -uo pipefail
 
+VERSION="${1:-}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 NVIM_CONFIG_DIR="$(dirname "$SCRIPT_DIR")"
 REPORT_DIR="$NVIM_CONFIG_DIR/.reports/$(date '+%Y-%m-%d.%H:%M')"
@@ -44,13 +48,28 @@ LUA
 nvim --headless --clean -l "$REPORT_DIR/.luacov.lua" "$REPORT_DIR/.luacov"
 rm -f "$STATS_FILE" "$REPORT_DIR/.luacov" "$REPORT_DIR/.luacov.lua"
 
-# Code stats; the reports themselves are excluded from analysis.
+# Code stats; the reports and the generated benchmark fixtures are excluded from analysis.
 # Relative path on purpose: an absolute path under ~/.config yields {}
-cloc --json --follow-links --exclude-dir=.reports,.git,node_modules \
+cloc --json --follow-links --exclude-dir=.reports,.git,node_modules,__pycache__ \
+  --fullpath --not-match-d='.*benchmarks/fixtures.*' \
   --report-file="$REPORT_DIR/main.json" . >/dev/null
 # No --follow-links here: plugin test fixtures contain symlink loops
 cloc --json \
   --report-file="$REPORT_DIR/lazy.json" "$HOME/.local/share/nvim/lazy" >/dev/null
 
 sed -i 's/\x1b\[[0-9;]*m//g' "$REPORT_DIR/tests.log"
+
+# Startup and rendering benchmarks (benchmarks/README.md); about two minutes
+if [ "${BENCH:-1}" != "0" ]; then
+  bench_args=(--cloc-dir "$REPORT_DIR" --out "$REPORT_DIR/bench.md")
+  [ -n "$VERSION" ] && bench_args+=(--release "$VERSION")
+  if ! "$NVIM_CONFIG_DIR/benchmarks/run" "${bench_args[@]}" >/dev/null 2>"$REPORT_DIR/bench.log"; then
+    cat "$REPORT_DIR/bench.log" >&2
+    echo "Benchmarks failed; report aborted" >&2
+    rm -rf "$REPORT_DIR"
+    exit 1
+  fi
+  grep 'warning:' "$REPORT_DIR/bench.log" >&2 || true
+fi
+
 echo "$REPORT_DIR"

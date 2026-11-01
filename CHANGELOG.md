@@ -5,6 +5,25 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.0] - 2026-11-01
+
+### Added
+
+- Startup and rendering benchmarks, recorded with every release: `benchmarks/run` drives
+  Neovim through an attached UI and times startup (first screen and fully idle), plus open and
+  render times for Markdown in four sizes, Lua, Python, TypeScript and JSON. Render time counts
+  the time the editor stays blocked after `:edit` returns. `docs/PERFORMANCE.md` shows the
+  latest release against the average of the previous 10 releases and against a baseline taken
+  under low load (`benchmarks/run --baseline`), plus plugin, file and line counts. See
+  `benchmarks/README.md`.
+- `scripts/report.sh X.Y.Z` runs the benchmarks after the tests and records them as release
+  X.Y.Z (`BENCH=0` skips them); `scripts/run_tests.sh python` runs the harness's unit tests,
+  which are also part of `all`.
+
+### Changed
+
+- cloc statistics exclude the generated `benchmarks/fixtures/`.
+
 ## [0.15.1] - 2026-10-31
 
 ### Fixed

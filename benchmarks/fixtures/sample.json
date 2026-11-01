@@ -1,0 +1,2082 @@
+{
+  "macro_0": {
+    "id": 0,
+    "enabled": true,
+    "tags": [
+      "fold",
+      "query",
+      "snippet"
+    ],
+    "settings": {
+      "width": 71,
+      "label": "Plugin render event format."
+    }
+  },
+  "cursor_1": {
+    "id": 1,
+    "enabled": false,
+    "tags": [
+      "format",
+      "module",
+      "module"
+    ],
+    "settings": {
+      "width": 185,
+      "label": "Picker plugin completion terminal."
+    }
+  },
+  "motion_2": {
+    "id": 2,
+    "enabled": true,
+    "tags": [
+      "cursor",
+      "format",
+      "session"
+    ],
+    "settings": {
+      "width": 139,
+      "label": "Motion buffer motion render."
+    }
+  },
+  "highlight_3": {
+    "id": 3,
+    "enabled": false,
+    "tags": [
+      "operator",
+      "diagnostic",
+      "cursor"
+    ],
+    "settings": {
+      "width": 157,
+      "label": "Session cursor motion render."
+    }
+  },
+  "buffer_4": {
+    "id": 4,
+    "enabled": true,
+    "tags": [
+      "lazy",
+      "linter",
+      "operator"
+    ],
+    "settings": {
+      "width": 120,
+      "label": "Cursor buffer lazy format."
+    }
+  },
+  "diagnostic_5": {
+    "id": 5,
+    "enabled": false,
+    "tags": [
+      "command",
+      "terminal",
+      "picker"
+    ],
+    "settings": {
+      "width": 136,
+      "label": "Linter query picker project."
+    }
+  },
+  "session_6": {
+    "id": 6,
+    "enabled": true,
+    "tags": [
+      "option",
+      "preview",
+      "layout"
+    ],
+    "settings": {
+      "width": 62,
+      "label": "Session project plugin fold."
+    }
+  },
+  "highlight_7": {
+    "id": 7,
+    "enabled": false,
+    "tags": [
+      "window",
+      "preview",
+      "config"
+    ],
+    "settings": {
+      "width": 89,
+      "label": "Render buffer fold macro."
+    }
+  },
+  "window_8": {
+    "id": 8,
+    "enabled": true,
+    "tags": [
+      "keymap",
+      "completion",
+      "parser"
+    ],
+    "settings": {
+      "width": 167,
+      "label": "Window linter extmark option."
+    }
+  },
+  "buffer_9": {
+    "id": 9,
+    "enabled": false,
+    "tags": [
+      "option",
+      "keymap",
+      "query"
+    ],
+    "settings": {
+      "width": 38,
+      "label": "Linter operator parser operator."
+    }
+  },
+  "keymap_10": {
+    "id": 10,
+    "enabled": true,
+    "tags": [
+      "operator",
+      "command",
+      "lazy"
+    ],
+    "settings": {
+      "width": 54,
+      "label": "Command signature query operator."
+    }
+  },
+  "extmark_11": {
+    "id": 11,
+    "enabled": false,
+    "tags": [
+      "picker",
+      "motion",
+      "render"
+    ],
+    "settings": {
+      "width": 20,
+      "label": "Cursor window linter register."
+    }
+  },
+  "event_12": {
+    "id": 12,
+    "enabled": true,
+    "tags": [
+      "lazy",
+      "extmark",
+      "operator"
+    ],
+    "settings": {
+      "width": 108,
+      "label": "Completion window keymap extmark."
+    }
+  },
+  "project_13": {
+    "id": 13,
+    "enabled": false,
+    "tags": [
+      "snippet",
+      "parser",
+      "diagnostic"
+    ],
+    "settings": {
+      "width": 156,
+      "label": "Command window event keymap."
+    }
+  },
+  "signature_14": {
+    "id": 14,
+    "enabled": true,
+    "tags": [
+      "picker",
+      "diagnostic",
+      "project"
+    ],
+    "settings": {
+      "width": 200,
+      "label": "Linter config layout macro."
+    }
+  },
+  "parser_15": {
+    "id": 15,
+    "enabled": false,
+    "tags": [
+      "render",
+      "snippet",
+      "register"
+    ],
+    "settings": {
+      "width": 115,
+      "label": "Diagnostic layout terminal signature."
+    }
+  },
+  "terminal_16": {
+    "id": 16,
+    "enabled": true,
+    "tags": [
+      "session",
+      "macro",
+      "event"
+    ],
+    "settings": {
+      "width": 166,
+      "label": "Command terminal macro plugin."
+    }
+  },
+  "operator_17": {
+    "id": 17,
+    "enabled": false,
+    "tags": [
+      "option",
+      "event",
+      "config"
+    ],
+    "settings": {
+      "width": 146,
+      "label": "Linter diagnostic render query."
+    }
+  },
+  "operator_18": {
+    "id": 18,
+    "enabled": true,
+    "tags": [
+      "treesitter",
+      "snippet",
+      "picker"
+    ],
+    "settings": {
+      "width": 61,
+      "label": "Module fold cursor event."
+    }
+  },
+  "module_19": {
+    "id": 19,
+    "enabled": false,
+    "tags": [
+      "picker",
+      "event",
+      "picker"
+    ],
+    "settings": {
+      "width": 134,
+      "label": "Project highlight signature signature."
+    }
+  },
+  "picker_20": {
+    "id": 20,
+    "enabled": true,
+    "tags": [
+      "cursor",
+      "motion",
+      "query"
+    ],
+    "settings": {
+      "width": 90,
+      "label": "Parser picker fold treesitter."
+    }
+  },
+  "motion_21": {
+    "id": 21,
+    "enabled": false,
+    "tags": [
+      "treesitter",
+      "project",
+      "plugin"
+    ],
+    "settings": {
+      "width": 117,
+      "label": "Window event module event."
+    }
+  },
+  "format_22": {
+    "id": 22,
+    "enabled": true,
+    "tags": [
+      "picker",
+      "picker",
+      "snippet"
+    ],
+    "settings": {
+      "width": 167,
+      "label": "Snippet terminal fold keymap."
+    }
+  },
+  "buffer_23": {
+    "id": 23,
+    "enabled": false,
+    "tags": [
+      "buffer",
+      "project",
+      "query"
+    ],
+    "settings": {
+      "width": 78,
+      "label": "Window terminal render buffer."
+    }
+  },
+  "session_24": {
+    "id": 24,
+    "enabled": true,
+    "tags": [
+      "linter",
+      "parser",
+      "keymap"
+    ],
+    "settings": {
+      "width": 34,
+      "label": "Macro event event event."
+    }
+  },
+  "macro_25": {
+    "id": 25,
+    "enabled": false,
+    "tags": [
+      "option",
+      "plugin",
+      "render"
+    ],
+    "settings": {
+      "width": 199,
+      "label": "Lazy snippet diagnostic completion."
+    }
+  },
+  "session_26": {
+    "id": 26,
+    "enabled": true,
+    "tags": [
+      "window",
+      "register",
+      "render"
+    ],
+    "settings": {
+      "width": 116,
+      "label": "Motion window fold module."
+    }
+  },
+  "project_27": {
+    "id": 27,
+    "enabled": false,
+    "tags": [
+      "config",
+      "option",
+      "completion"
+    ],
+    "settings": {
+      "width": 90,
+      "label": "Lazy render lazy motion."
+    }
+  },
+  "window_28": {
+    "id": 28,
+    "enabled": true,
+    "tags": [
+      "cursor",
+      "module",
+      "window"
+    ],
+    "settings": {
+      "width": 52,
+      "label": "Highlight linter diagnostic lazy."
+    }
+  },
+  "linter_29": {
+    "id": 29,
+    "enabled": false,
+    "tags": [
+      "window",
+      "config",
+      "project"
+    ],
+    "settings": {
+      "width": 80,
+      "label": "Fold operator register command."
+    }
+  },
+  "terminal_30": {
+    "id": 30,
+    "enabled": true,
+    "tags": [
+      "linter",
+      "motion",
+      "session"
+    ],
+    "settings": {
+      "width": 22,
+      "label": "Option buffer motion operator."
+    }
+  },
+  "window_31": {
+    "id": 31,
+    "enabled": false,
+    "tags": [
+      "window",
+      "option",
+      "module"
+    ],
+    "settings": {
+      "width": 193,
+      "label": "Signature linter treesitter preview."
+    }
+  },
+  "signature_32": {
+    "id": 32,
+    "enabled": true,
+    "tags": [
+      "window",
+      "plugin",
+      "motion"
+    ],
+    "settings": {
+      "width": 117,
+      "label": "Operator operator operator signature."
+    }
+  },
+  "buffer_33": {
+    "id": 33,
+    "enabled": false,
+    "tags": [
+      "config",
+      "layout",
+      "format"
+    ],
+    "settings": {
+      "width": 63,
+      "label": "Highlight buffer session register."
+    }
+  },
+  "lazy_34": {
+    "id": 34,
+    "enabled": true,
+    "tags": [
+      "lazy",
+      "cursor",
+      "operator"
+    ],
+    "settings": {
+      "width": 177,
+      "label": "Option completion option window."
+    }
+  },
+  "config_35": {
+    "id": 35,
+    "enabled": false,
+    "tags": [
+      "motion",
+      "plugin",
+      "session"
+    ],
+    "settings": {
+      "width": 36,
+      "label": "Config diagnostic lazy buffer."
+    }
+  },
+  "event_36": {
+    "id": 36,
+    "enabled": true,
+    "tags": [
+      "highlight",
+      "config",
+      "session"
+    ],
+    "settings": {
+      "width": 43,
+      "label": "Window motion fold preview."
+    }
+  },
+  "query_37": {
+    "id": 37,
+    "enabled": false,
+    "tags": [
+      "completion",
+      "window",
+      "render"
+    ],
+    "settings": {
+      "width": 168,
+      "label": "Option event command event."
+    }
+  },
+  "fold_38": {
+    "id": 38,
+    "enabled": true,
+    "tags": [
+      "register",
+      "motion",
+      "linter"
+    ],
+    "settings": {
+      "width": 39,
+      "label": "Option register project window."
+    }
+  },
+  "highlight_39": {
+    "id": 39,
+    "enabled": false,
+    "tags": [
+      "signature",
+      "diagnostic",
+      "fold"
+    ],
+    "settings": {
+      "width": 184,
+      "label": "Buffer buffer layout cursor."
+    }
+  },
+  "format_40": {
+    "id": 40,
+    "enabled": true,
+    "tags": [
+      "fold",
+      "config",
+      "session"
+    ],
+    "settings": {
+      "width": 21,
+      "label": "Macro picker plugin operator."
+    }
+  },
+  "motion_41": {
+    "id": 41,
+    "enabled": false,
+    "tags": [
+      "render",
+      "highlight",
+      "command"
+    ],
+    "settings": {
+      "width": 87,
+      "label": "Picker signature completion format."
+    }
+  },
+  "fold_42": {
+    "id": 42,
+    "enabled": true,
+    "tags": [
+      "project",
+      "plugin",
+      "command"
+    ],
+    "settings": {
+      "width": 194,
+      "label": "Highlight snippet project parser."
+    }
+  },
+  "module_43": {
+    "id": 43,
+    "enabled": false,
+    "tags": [
+      "terminal",
+      "format",
+      "macro"
+    ],
+    "settings": {
+      "width": 97,
+      "label": "Cursor linter lazy config."
+    }
+  },
+  "lazy_44": {
+    "id": 44,
+    "enabled": true,
+    "tags": [
+      "highlight",
+      "operator",
+      "diagnostic"
+    ],
+    "settings": {
+      "width": 140,
+      "label": "Project macro diagnostic query."
+    }
+  },
+  "motion_45": {
+    "id": 45,
+    "enabled": false,
+    "tags": [
+      "completion",
+      "session",
+      "linter"
+    ],
+    "settings": {
+      "width": 66,
+      "label": "Keymap extmark parser plugin."
+    }
+  },
+  "query_46": {
+    "id": 46,
+    "enabled": true,
+    "tags": [
+      "snippet",
+      "window",
+      "option"
+    ],
+    "settings": {
+      "width": 33,
+      "label": "Linter register lazy operator."
+    }
+  },
+  "event_47": {
+    "id": 47,
+    "enabled": false,
+    "tags": [
+      "extmark",
+      "parser",
+      "motion"
+    ],
+    "settings": {
+      "width": 19,
+      "label": "Module format treesitter lazy."
+    }
+  },
+  "operator_48": {
+    "id": 48,
+    "enabled": true,
+    "tags": [
+      "option",
+      "render",
+      "preview"
+    ],
+    "settings": {
+      "width": 99,
+      "label": "Fold treesitter register treesitter."
+    }
+  },
+  "extmark_49": {
+    "id": 49,
+    "enabled": false,
+    "tags": [
+      "register",
+      "preview",
+      "format"
+    ],
+    "settings": {
+      "width": 148,
+      "label": "Lazy config macro diagnostic."
+    }
+  },
+  "signature_50": {
+    "id": 50,
+    "enabled": true,
+    "tags": [
+      "command",
+      "project",
+      "session"
+    ],
+    "settings": {
+      "width": 199,
+      "label": "Command picker picker config."
+    }
+  },
+  "motion_51": {
+    "id": 51,
+    "enabled": false,
+    "tags": [
+      "session",
+      "motion",
+      "keymap"
+    ],
+    "settings": {
+      "width": 59,
+      "label": "Buffer layout macro config."
+    }
+  },
+  "macro_52": {
+    "id": 52,
+    "enabled": true,
+    "tags": [
+      "lazy",
+      "plugin",
+      "module"
+    ],
+    "settings": {
+      "width": 101,
+      "label": "Format motion completion snippet."
+    }
+  },
+  "terminal_53": {
+    "id": 53,
+    "enabled": false,
+    "tags": [
+      "picker",
+      "signature",
+      "completion"
+    ],
+    "settings": {
+      "width": 179,
+      "label": "Render project completion window."
+    }
+  },
+  "event_54": {
+    "id": 54,
+    "enabled": true,
+    "tags": [
+      "completion",
+      "macro",
+      "completion"
+    ],
+    "settings": {
+      "width": 14,
+      "label": "Snippet layout parser option."
+    }
+  },
+  "module_55": {
+    "id": 55,
+    "enabled": false,
+    "tags": [
+      "layout",
+      "signature",
+      "buffer"
+    ],
+    "settings": {
+      "width": 21,
+      "label": "Completion register preview signature."
+    }
+  },
+  "format_56": {
+    "id": 56,
+    "enabled": true,
+    "tags": [
+      "cursor",
+      "terminal",
+      "option"
+    ],
+    "settings": {
+      "width": 145,
+      "label": "Module highlight command terminal."
+    }
+  },
+  "highlight_57": {
+    "id": 57,
+    "enabled": false,
+    "tags": [
+      "register",
+      "parser",
+      "extmark"
+    ],
+    "settings": {
+      "width": 130,
+      "label": "Preview macro query register."
+    }
+  },
+  "linter_58": {
+    "id": 58,
+    "enabled": true,
+    "tags": [
+      "option",
+      "command",
+      "operator"
+    ],
+    "settings": {
+      "width": 153,
+      "label": "Highlight config snippet snippet."
+    }
+  },
+  "keymap_59": {
+    "id": 59,
+    "enabled": false,
+    "tags": [
+      "linter",
+      "completion",
+      "parser"
+    ],
+    "settings": {
+      "width": 36,
+      "label": "Cursor macro layout buffer."
+    }
+  },
+  "session_60": {
+    "id": 60,
+    "enabled": true,
+    "tags": [
+      "option",
+      "event",
+      "event"
+    ],
+    "settings": {
+      "width": 196,
+      "label": "Treesitter keymap buffer query."
+    }
+  },
+  "motion_61": {
+    "id": 61,
+    "enabled": false,
+    "tags": [
+      "highlight",
+      "diagnostic",
+      "module"
+    ],
+    "settings": {
+      "width": 37,
+      "label": "Lazy plugin config render."
+    }
+  },
+  "picker_62": {
+    "id": 62,
+    "enabled": true,
+    "tags": [
+      "register",
+      "register",
+      "extmark"
+    ],
+    "settings": {
+      "width": 192,
+      "label": "Option module macro keymap."
+    }
+  },
+  "render_63": {
+    "id": 63,
+    "enabled": false,
+    "tags": [
+      "lazy",
+      "extmark",
+      "macro"
+    ],
+    "settings": {
+      "width": 70,
+      "label": "Snippet keymap format motion."
+    }
+  },
+  "config_64": {
+    "id": 64,
+    "enabled": true,
+    "tags": [
+      "register",
+      "terminal",
+      "fold"
+    ],
+    "settings": {
+      "width": 136,
+      "label": "Module linter picker render."
+    }
+  },
+  "motion_65": {
+    "id": 65,
+    "enabled": false,
+    "tags": [
+      "lazy",
+      "linter",
+      "option"
+    ],
+    "settings": {
+      "width": 27,
+      "label": "Module parser layout snippet."
+    }
+  },
+  "fold_66": {
+    "id": 66,
+    "enabled": true,
+    "tags": [
+      "highlight",
+      "macro",
+      "parser"
+    ],
+    "settings": {
+      "width": 12,
+      "label": "Render lazy motion project."
+    }
+  },
+  "keymap_67": {
+    "id": 67,
+    "enabled": false,
+    "tags": [
+      "option",
+      "terminal",
+      "preview"
+    ],
+    "settings": {
+      "width": 71,
+      "label": "Parser linter keymap picker."
+    }
+  },
+  "event_68": {
+    "id": 68,
+    "enabled": true,
+    "tags": [
+      "motion",
+      "render",
+      "operator"
+    ],
+    "settings": {
+      "width": 11,
+      "label": "Module snippet completion option."
+    }
+  },
+  "treesitter_69": {
+    "id": 69,
+    "enabled": false,
+    "tags": [
+      "render",
+      "snippet",
+      "option"
+    ],
+    "settings": {
+      "width": 148,
+      "label": "Diagnostic diagnostic plugin fold."
+    }
+  },
+  "lazy_70": {
+    "id": 70,
+    "enabled": true,
+    "tags": [
+      "parser",
+      "keymap",
+      "completion"
+    ],
+    "settings": {
+      "width": 45,
+      "label": "Picker diagnostic terminal picker."
+    }
+  },
+  "module_71": {
+    "id": 71,
+    "enabled": false,
+    "tags": [
+      "completion",
+      "module",
+      "plugin"
+    ],
+    "settings": {
+      "width": 68,
+      "label": "Layout project diagnostic highlight."
+    }
+  },
+  "window_72": {
+    "id": 72,
+    "enabled": true,
+    "tags": [
+      "diagnostic",
+      "keymap",
+      "command"
+    ],
+    "settings": {
+      "width": 45,
+      "label": "Format cursor operator signature."
+    }
+  },
+  "operator_73": {
+    "id": 73,
+    "enabled": false,
+    "tags": [
+      "render",
+      "highlight",
+      "buffer"
+    ],
+    "settings": {
+      "width": 146,
+      "label": "Config session plugin signature."
+    }
+  },
+  "register_74": {
+    "id": 74,
+    "enabled": true,
+    "tags": [
+      "lazy",
+      "fold",
+      "cursor"
+    ],
+    "settings": {
+      "width": 120,
+      "label": "Cursor plugin treesitter preview."
+    }
+  },
+  "preview_75": {
+    "id": 75,
+    "enabled": false,
+    "tags": [
+      "snippet",
+      "linter",
+      "fold"
+    ],
+    "settings": {
+      "width": 188,
+      "label": "Fold module layout project."
+    }
+  },
+  "buffer_76": {
+    "id": 76,
+    "enabled": true,
+    "tags": [
+      "buffer",
+      "parser",
+      "plugin"
+    ],
+    "settings": {
+      "width": 45,
+      "label": "Option event fold lazy."
+    }
+  },
+  "project_77": {
+    "id": 77,
+    "enabled": false,
+    "tags": [
+      "operator",
+      "lazy",
+      "lazy"
+    ],
+    "settings": {
+      "width": 133,
+      "label": "Config snippet option option."
+    }
+  },
+  "render_78": {
+    "id": 78,
+    "enabled": true,
+    "tags": [
+      "signature",
+      "extmark",
+      "terminal"
+    ],
+    "settings": {
+      "width": 104,
+      "label": "Diagnostic session preview config."
+    }
+  },
+  "extmark_79": {
+    "id": 79,
+    "enabled": false,
+    "tags": [
+      "format",
+      "fold",
+      "query"
+    ],
+    "settings": {
+      "width": 100,
+      "label": "Window fold operator config."
+    }
+  },
+  "session_80": {
+    "id": 80,
+    "enabled": true,
+    "tags": [
+      "config",
+      "format",
+      "layout"
+    ],
+    "settings": {
+      "width": 127,
+      "label": "Signature query project format."
+    }
+  },
+  "command_81": {
+    "id": 81,
+    "enabled": false,
+    "tags": [
+      "session",
+      "motion",
+      "operator"
+    ],
+    "settings": {
+      "width": 71,
+      "label": "Completion register lazy query."
+    }
+  },
+  "event_82": {
+    "id": 82,
+    "enabled": true,
+    "tags": [
+      "option",
+      "lazy",
+      "preview"
+    ],
+    "settings": {
+      "width": 191,
+      "label": "Query lazy extmark preview."
+    }
+  },
+  "module_83": {
+    "id": 83,
+    "enabled": false,
+    "tags": [
+      "event",
+      "query",
+      "snippet"
+    ],
+    "settings": {
+      "width": 69,
+      "label": "Query plugin parser cursor."
+    }
+  },
+  "module_84": {
+    "id": 84,
+    "enabled": true,
+    "tags": [
+      "register",
+      "layout",
+      "lazy"
+    ],
+    "settings": {
+      "width": 110,
+      "label": "Highlight diagnostic project parser."
+    }
+  },
+  "completion_85": {
+    "id": 85,
+    "enabled": false,
+    "tags": [
+      "parser",
+      "operator",
+      "snippet"
+    ],
+    "settings": {
+      "width": 109,
+      "label": "Keymap buffer macro motion."
+    }
+  },
+  "layout_86": {
+    "id": 86,
+    "enabled": true,
+    "tags": [
+      "fold",
+      "event",
+      "register"
+    ],
+    "settings": {
+      "width": 166,
+      "label": "Fold fold window macro."
+    }
+  },
+  "render_87": {
+    "id": 87,
+    "enabled": false,
+    "tags": [
+      "highlight",
+      "lazy",
+      "option"
+    ],
+    "settings": {
+      "width": 154,
+      "label": "Highlight fold plugin treesitter."
+    }
+  },
+  "config_88": {
+    "id": 88,
+    "enabled": true,
+    "tags": [
+      "terminal",
+      "plugin",
+      "snippet"
+    ],
+    "settings": {
+      "width": 19,
+      "label": "Event picker cursor extmark."
+    }
+  },
+  "extmark_89": {
+    "id": 89,
+    "enabled": false,
+    "tags": [
+      "option",
+      "command",
+      "diagnostic"
+    ],
+    "settings": {
+      "width": 165,
+      "label": "Fold lazy keymap preview."
+    }
+  },
+  "project_90": {
+    "id": 90,
+    "enabled": true,
+    "tags": [
+      "session",
+      "keymap",
+      "operator"
+    ],
+    "settings": {
+      "width": 23,
+      "label": "Window session plugin diagnostic."
+    }
+  },
+  "query_91": {
+    "id": 91,
+    "enabled": false,
+    "tags": [
+      "keymap",
+      "project",
+      "project"
+    ],
+    "settings": {
+      "width": 140,
+      "label": "Macro motion query buffer."
+    }
+  },
+  "module_92": {
+    "id": 92,
+    "enabled": true,
+    "tags": [
+      "event",
+      "linter",
+      "motion"
+    ],
+    "settings": {
+      "width": 38,
+      "label": "Motion session highlight parser."
+    }
+  },
+  "query_93": {
+    "id": 93,
+    "enabled": false,
+    "tags": [
+      "option",
+      "render",
+      "motion"
+    ],
+    "settings": {
+      "width": 62,
+      "label": "Session render signature command."
+    }
+  },
+  "command_94": {
+    "id": 94,
+    "enabled": true,
+    "tags": [
+      "command",
+      "layout",
+      "plugin"
+    ],
+    "settings": {
+      "width": 169,
+      "label": "Project command lazy completion."
+    }
+  },
+  "buffer_95": {
+    "id": 95,
+    "enabled": false,
+    "tags": [
+      "operator",
+      "event",
+      "diagnostic"
+    ],
+    "settings": {
+      "width": 72,
+      "label": "Highlight project diagnostic config."
+    }
+  },
+  "session_96": {
+    "id": 96,
+    "enabled": true,
+    "tags": [
+      "register",
+      "event",
+      "window"
+    ],
+    "settings": {
+      "width": 140,
+      "label": "Session signature motion register."
+    }
+  },
+  "parser_97": {
+    "id": 97,
+    "enabled": false,
+    "tags": [
+      "option",
+      "register",
+      "parser"
+    ],
+    "settings": {
+      "width": 23,
+      "label": "Register diagnostic project snippet."
+    }
+  },
+  "treesitter_98": {
+    "id": 98,
+    "enabled": true,
+    "tags": [
+      "event",
+      "picker",
+      "plugin"
+    ],
+    "settings": {
+      "width": 193,
+      "label": "Fold plugin fold command."
+    }
+  },
+  "keymap_99": {
+    "id": 99,
+    "enabled": false,
+    "tags": [
+      "project",
+      "window",
+      "fold"
+    ],
+    "settings": {
+      "width": 163,
+      "label": "Session keymap fold layout."
+    }
+  },
+  "operator_100": {
+    "id": 100,
+    "enabled": true,
+    "tags": [
+      "snippet",
+      "command",
+      "extmark"
+    ],
+    "settings": {
+      "width": 39,
+      "label": "Command treesitter picker query."
+    }
+  },
+  "register_101": {
+    "id": 101,
+    "enabled": false,
+    "tags": [
+      "signature",
+      "event",
+      "completion"
+    ],
+    "settings": {
+      "width": 198,
+      "label": "Window plugin register parser."
+    }
+  },
+  "snippet_102": {
+    "id": 102,
+    "enabled": true,
+    "tags": [
+      "lazy",
+      "terminal",
+      "highlight"
+    ],
+    "settings": {
+      "width": 128,
+      "label": "Keymap option snippet macro."
+    }
+  },
+  "window_103": {
+    "id": 103,
+    "enabled": false,
+    "tags": [
+      "macro",
+      "module",
+      "option"
+    ],
+    "settings": {
+      "width": 185,
+      "label": "Completion plugin window format."
+    }
+  },
+  "macro_104": {
+    "id": 104,
+    "enabled": true,
+    "tags": [
+      "config",
+      "fold",
+      "cursor"
+    ],
+    "settings": {
+      "width": 157,
+      "label": "Render event cursor plugin."
+    }
+  },
+  "lazy_105": {
+    "id": 105,
+    "enabled": false,
+    "tags": [
+      "terminal",
+      "motion",
+      "render"
+    ],
+    "settings": {
+      "width": 83,
+      "label": "Cursor query lazy session."
+    }
+  },
+  "motion_106": {
+    "id": 106,
+    "enabled": true,
+    "tags": [
+      "snippet",
+      "macro",
+      "register"
+    ],
+    "settings": {
+      "width": 160,
+      "label": "Snippet fold preview format."
+    }
+  },
+  "project_107": {
+    "id": 107,
+    "enabled": false,
+    "tags": [
+      "fold",
+      "preview",
+      "event"
+    ],
+    "settings": {
+      "width": 185,
+      "label": "Module buffer linter terminal."
+    }
+  },
+  "macro_108": {
+    "id": 108,
+    "enabled": true,
+    "tags": [
+      "event",
+      "highlight",
+      "terminal"
+    ],
+    "settings": {
+      "width": 123,
+      "label": "Linter layout highlight cursor."
+    }
+  },
+  "session_109": {
+    "id": 109,
+    "enabled": false,
+    "tags": [
+      "operator",
+      "query",
+      "command"
+    ],
+    "settings": {
+      "width": 91,
+      "label": "Format snippet extmark event."
+    }
+  },
+  "config_110": {
+    "id": 110,
+    "enabled": true,
+    "tags": [
+      "signature",
+      "plugin",
+      "highlight"
+    ],
+    "settings": {
+      "width": 126,
+      "label": "Terminal linter diagnostic module."
+    }
+  },
+  "completion_111": {
+    "id": 111,
+    "enabled": false,
+    "tags": [
+      "parser",
+      "diagnostic",
+      "event"
+    ],
+    "settings": {
+      "width": 165,
+      "label": "Format signature signature snippet."
+    }
+  },
+  "picker_112": {
+    "id": 112,
+    "enabled": true,
+    "tags": [
+      "lazy",
+      "render",
+      "parser"
+    ],
+    "settings": {
+      "width": 82,
+      "label": "Layout lazy plugin picker."
+    }
+  },
+  "query_113": {
+    "id": 113,
+    "enabled": false,
+    "tags": [
+      "render",
+      "module",
+      "extmark"
+    ],
+    "settings": {
+      "width": 19,
+      "label": "Diagnostic macro project linter."
+    }
+  },
+  "module_114": {
+    "id": 114,
+    "enabled": true,
+    "tags": [
+      "command",
+      "query",
+      "completion"
+    ],
+    "settings": {
+      "width": 178,
+      "label": "Option completion cursor render."
+    }
+  },
+  "window_115": {
+    "id": 115,
+    "enabled": false,
+    "tags": [
+      "plugin",
+      "module",
+      "option"
+    ],
+    "settings": {
+      "width": 160,
+      "label": "Buffer extmark motion linter."
+    }
+  },
+  "operator_116": {
+    "id": 116,
+    "enabled": true,
+    "tags": [
+      "format",
+      "cursor",
+      "extmark"
+    ],
+    "settings": {
+      "width": 66,
+      "label": "Linter config buffer diagnostic."
+    }
+  },
+  "extmark_117": {
+    "id": 117,
+    "enabled": false,
+    "tags": [
+      "layout",
+      "diagnostic",
+      "linter"
+    ],
+    "settings": {
+      "width": 89,
+      "label": "Config session format lazy."
+    }
+  },
+  "snippet_118": {
+    "id": 118,
+    "enabled": true,
+    "tags": [
+      "module",
+      "session",
+      "picker"
+    ],
+    "settings": {
+      "width": 28,
+      "label": "Motion render completion operator."
+    }
+  },
+  "keymap_119": {
+    "id": 119,
+    "enabled": false,
+    "tags": [
+      "highlight",
+      "linter",
+      "layout"
+    ],
+    "settings": {
+      "width": 167,
+      "label": "Motion parser project render."
+    }
+  },
+  "render_120": {
+    "id": 120,
+    "enabled": true,
+    "tags": [
+      "plugin",
+      "cursor",
+      "fold"
+    ],
+    "settings": {
+      "width": 71,
+      "label": "Extmark lazy linter completion."
+    }
+  },
+  "buffer_121": {
+    "id": 121,
+    "enabled": false,
+    "tags": [
+      "buffer",
+      "session",
+      "layout"
+    ],
+    "settings": {
+      "width": 108,
+      "label": "Terminal lazy keymap picker."
+    }
+  },
+  "command_122": {
+    "id": 122,
+    "enabled": true,
+    "tags": [
+      "extmark",
+      "motion",
+      "diagnostic"
+    ],
+    "settings": {
+      "width": 169,
+      "label": "Query motion motion extmark."
+    }
+  },
+  "buffer_123": {
+    "id": 123,
+    "enabled": false,
+    "tags": [
+      "parser",
+      "event",
+      "linter"
+    ],
+    "settings": {
+      "width": 126,
+      "label": "Command plugin render event."
+    }
+  },
+  "buffer_124": {
+    "id": 124,
+    "enabled": true,
+    "tags": [
+      "config",
+      "signature",
+      "parser"
+    ],
+    "settings": {
+      "width": 97,
+      "label": "Format config lazy format."
+    }
+  },
+  "option_125": {
+    "id": 125,
+    "enabled": false,
+    "tags": [
+      "highlight",
+      "layout",
+      "query"
+    ],
+    "settings": {
+      "width": 36,
+      "label": "Parser snippet completion extmark."
+    }
+  },
+  "window_126": {
+    "id": 126,
+    "enabled": true,
+    "tags": [
+      "snippet",
+      "render",
+      "diagnostic"
+    ],
+    "settings": {
+      "width": 33,
+      "label": "Keymap keymap cursor terminal."
+    }
+  },
+  "window_127": {
+    "id": 127,
+    "enabled": false,
+    "tags": [
+      "command",
+      "signature",
+      "layout"
+    ],
+    "settings": {
+      "width": 78,
+      "label": "Command extmark project preview."
+    }
+  },
+  "diagnostic_128": {
+    "id": 128,
+    "enabled": true,
+    "tags": [
+      "treesitter",
+      "cursor",
+      "project"
+    ],
+    "settings": {
+      "width": 195,
+      "label": "Extmark session query plugin."
+    }
+  },
+  "treesitter_129": {
+    "id": 129,
+    "enabled": false,
+    "tags": [
+      "cursor",
+      "cursor",
+      "picker"
+    ],
+    "settings": {
+      "width": 168,
+      "label": "Parser treesitter macro highlight."
+    }
+  },
+  "terminal_130": {
+    "id": 130,
+    "enabled": true,
+    "tags": [
+      "parser",
+      "snippet",
+      "preview"
+    ],
+    "settings": {
+      "width": 156,
+      "label": "Diagnostic buffer buffer terminal."
+    }
+  },
+  "window_131": {
+    "id": 131,
+    "enabled": false,
+    "tags": [
+      "option",
+      "treesitter",
+      "extmark"
+    ],
+    "settings": {
+      "width": 174,
+      "label": "Highlight parser terminal session."
+    }
+  },
+  "config_132": {
+    "id": 132,
+    "enabled": true,
+    "tags": [
+      "treesitter",
+      "module",
+      "event"
+    ],
+    "settings": {
+      "width": 126,
+      "label": "Format signature keymap fold."
+    }
+  },
+  "parser_133": {
+    "id": 133,
+    "enabled": false,
+    "tags": [
+      "snippet",
+      "format",
+      "snippet"
+    ],
+    "settings": {
+      "width": 75,
+      "label": "Fold layout register event."
+    }
+  },
+  "config_134": {
+    "id": 134,
+    "enabled": true,
+    "tags": [
+      "lazy",
+      "operator",
+      "highlight"
+    ],
+    "settings": {
+      "width": 32,
+      "label": "Plugin picker render query."
+    }
+  },
+  "cursor_135": {
+    "id": 135,
+    "enabled": false,
+    "tags": [
+      "layout",
+      "preview",
+      "buffer"
+    ],
+    "settings": {
+      "width": 53,
+      "label": "Highlight motion treesitter keymap."
+    }
+  },
+  "keymap_136": {
+    "id": 136,
+    "enabled": true,
+    "tags": [
+      "session",
+      "picker",
+      "command"
+    ],
+    "settings": {
+      "width": 126,
+      "label": "Snippet extmark register lazy."
+    }
+  },
+  "terminal_137": {
+    "id": 137,
+    "enabled": false,
+    "tags": [
+      "option",
+      "highlight",
+      "command"
+    ],
+    "settings": {
+      "width": 43,
+      "label": "Command completion macro lazy."
+    }
+  },
+  "treesitter_138": {
+    "id": 138,
+    "enabled": true,
+    "tags": [
+      "linter",
+      "command",
+      "terminal"
+    ],
+    "settings": {
+      "width": 116,
+      "label": "Window treesitter motion signature."
+    }
+  },
+  "highlight_139": {
+    "id": 139,
+    "enabled": false,
+    "tags": [
+      "session",
+      "diagnostic",
+      "lazy"
+    ],
+    "settings": {
+      "width": 85,
+      "label": "Command operator completion extmark."
+    }
+  },
+  "project_140": {
+    "id": 140,
+    "enabled": true,
+    "tags": [
+      "linter",
+      "linter",
+      "config"
+    ],
+    "settings": {
+      "width": 69,
+      "label": "Cursor plugin completion lazy."
+    }
+  },
+  "highlight_141": {
+    "id": 141,
+    "enabled": false,
+    "tags": [
+      "linter",
+      "signature",
+      "keymap"
+    ],
+    "settings": {
+      "width": 29,
+      "label": "Parser preview keymap picker."
+    }
+  },
+  "register_142": {
+    "id": 142,
+    "enabled": true,
+    "tags": [
+      "signature",
+      "format",
+      "picker"
+    ],
+    "settings": {
+      "width": 145,
+      "label": "Format parser project snippet."
+    }
+  },
+  "completion_143": {
+    "id": 143,
+    "enabled": false,
+    "tags": [
+      "config",
+      "plugin",
+      "highlight"
+    ],
+    "settings": {
+      "width": 59,
+      "label": "Extmark query query query."
+    }
+  },
+  "buffer_144": {
+    "id": 144,
+    "enabled": true,
+    "tags": [
+      "snippet",
+      "highlight",
+      "highlight"
+    ],
+    "settings": {
+      "width": 18,
+      "label": "Event snippet linter treesitter."
+    }
+  },
+  "window_145": {
+    "id": 145,
+    "enabled": false,
+    "tags": [
+      "query",
+      "extmark",
+      "fold"
+    ],
+    "settings": {
+      "width": 37,
+      "label": "Session layout linter linter."
+    }
+  },
+  "session_146": {
+    "id": 146,
+    "enabled": true,
+    "tags": [
+      "render",
+      "event",
+      "render"
+    ],
+    "settings": {
+      "width": 173,
+      "label": "Command session format format."
+    }
+  },
+  "diagnostic_147": {
+    "id": 147,
+    "enabled": false,
+    "tags": [
+      "command",
+      "config",
+      "plugin"
+    ],
+    "settings": {
+      "width": 155,
+      "label": "Register window terminal session."
+    }
+  },
+  "completion_148": {
+    "id": 148,
+    "enabled": true,
+    "tags": [
+      "project",
+      "preview",
+      "option"
+    ],
+    "settings": {
+      "width": 116,
+      "label": "Parser buffer window query."
+    }
+  },
+  "snippet_149": {
+    "id": 149,
+    "enabled": false,
+    "tags": [
+      "diagnostic",
+      "project",
+      "plugin"
+    ],
+    "settings": {
+      "width": 20,
+      "label": "Query macro highlight lazy."
+    }
+  },
+  "render_150": {
+    "id": 150,
+    "enabled": true,
+    "tags": [
+      "query",
+      "plugin",
+      "keymap"
+    ],
+    "settings": {
+      "width": 121,
+      "label": "Keymap register treesitter command."
+    }
+  },
+  "layout_151": {
+    "id": 151,
+    "enabled": false,
+    "tags": [
+      "buffer",
+      "preview",
+      "window"
+    ],
+    "settings": {
+      "width": 88,
+      "label": "Fold option extmark cursor."
+    }
+  },
+  "operator_152": {
+    "id": 152,
+    "enabled": true,
+    "tags": [
+      "picker",
+      "command",
+      "diagnostic"
+    ],
+    "settings": {
+      "width": 188,
+      "label": "Session layout extmark picker."
+    }
+  },
+  "motion_153": {
+    "id": 153,
+    "enabled": false,
+    "tags": [
+      "module",
+      "plugin",
+      "highlight"
+    ],
+    "settings": {
+      "width": 170,
+      "label": "Picker preview linter query."
+    }
+  },
+  "query_154": {
+    "id": 154,
+    "enabled": true,
+    "tags": [
+      "treesitter",
+      "plugin",
+      "picker"
+    ],
+    "settings": {
+      "width": 27,
+      "label": "Keymap session format macro."
+    }
+  },
+  "buffer_155": {
+    "id": 155,
+    "enabled": false,
+    "tags": [
+      "macro",
+      "event",
+      "format"
+    ],
+    "settings": {
+      "width": 172,
+      "label": "Module session snippet render."
+    }
+  },
+  "query_156": {
+    "id": 156,
+    "enabled": true,
+    "tags": [
+      "command",
+      "format",
+      "diagnostic"
+    ],
+    "settings": {
+      "width": 177,
+      "label": "Parser preview completion terminal."
+    }
+  },
+  "render_157": {
+    "id": 157,
+    "enabled": false,
+    "tags": [
+      "buffer",
+      "parser",
+      "lazy"
+    ],
+    "settings": {
+      "width": 109,
+      "label": "Snippet preview extmark session."
+    }
+  },
+  "treesitter_158": {
+    "id": 158,
+    "enabled": true,
+    "tags": [
+      "diagnostic",
+      "highlight",
+      "format"
+    ],
+    "settings": {
+      "width": 169,
+      "label": "Option session diagnostic terminal."
+    }
+  },
+  "lazy_159": {
+    "id": 159,
+    "enabled": false,
+    "tags": [
+      "signature",
+      "register",
+      "project"
+    ],
+    "settings": {
+      "width": 96,
+      "label": "Treesitter buffer query window."
+    }
+  }
+}

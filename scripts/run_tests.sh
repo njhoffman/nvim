@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Test runner script for Neovim configuration
-# Usage: ./scripts/run_tests.sh [unit|integration|all]
+# Usage: ./scripts/run_tests.sh [unit|integration|python|all]
 
 set -e
 
@@ -54,12 +54,25 @@ run_minitest_tests() {
     fi
 }
 
+run_python_tests() {
+    echo -e "${YELLOW}Running Python (benchmark harness) Tests...${NC}"
+    if PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s "$NVIM_CONFIG_DIR/tests/bench" -p 'test_*.py'; then
+        echo -e "${GREEN}✓ Python tests passed${NC}"
+        return 0
+    else
+        echo -e "${RED}✗ Python tests failed${NC}"
+        return 1
+    fi
+}
+
 run_all_tests() {
     local failed=0
 
     run_plenary_tests || failed=1
     echo ""
     run_minitest_tests || failed=1
+    echo ""
+    run_python_tests || failed=1
 
     echo ""
     echo "========================================"
@@ -80,12 +93,15 @@ case "$TEST_TYPE" in
     integration)
         run_minitest_tests
         ;;
+    python)
+        run_python_tests
+        ;;
     all)
         run_all_tests
         ;;
     *)
         echo -e "${RED}Invalid test type: $TEST_TYPE${NC}"
-        echo "Usage: $0 [unit|integration|all]"
+        echo "Usage: $0 [unit|integration|python|all]"
         exit 1
         ;;
 esac
