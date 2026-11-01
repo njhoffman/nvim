@@ -5,6 +5,18 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.1] - 2026-11-01
+
+### Changed
+
+- `lazy-lock.json` is tracked, so every release tag pins the plugin versions it shipped with.
+  Restore an older release's plugins with `git checkout vX.Y.Z -- lazy-lock.json` and
+  `:Lazy restore`.
+- `TODO.md` review: added a hardcoded home paths item, and more detail on the report.sh
+  timeout and on root clutter.
+- Removed four one-off Claude Code allow rules from `.claude/settings.local.json` whose
+  literal `*` was read as a wildcard, which caused warnings at startup.
+
 ## [0.16.0] - 2026-11-01
 
 ### Added

@@ -10,6 +10,8 @@ Items: `- [ ] **Title.** (pN) [category] summary`, with details on indented line
 and perf. `(due YYYY-MM-DD)` adds a deadline. `/todo`, `/todo-pop` and `scripts/todo-status`
 read this file.
 
+Reviewed: 2026-11-01
+
 ## 1. Update deprecated code after the Neovim update
 
 - [x] **Deprecated API migration.** (p1) [chore] Replaced every deprecated API in the config
@@ -71,7 +73,9 @@ by grepping and doing a startup smoke test before removing it. Move removals to
     project 6 now makes telescope win on conflicts. Decide which one owns picker keys.
 - [ ] **Root clutter.** (p3) [chore] `unicode_table.txt`, `glyphs.json` (also
       `lua/glyphs.json`), `pnpm-lock.yaml`, `pyproject.toml`, `directives.lua`, `matchup.lua`;
-      plus `parser/` + `parsers/` + `tree-sitter-spidercode/` for one parser
+      plus `parser/` + `parsers/` + `tree-sitter-spidercode/` for one parser; also
+      `plugin_udpates.txt`, a 4,092-line `:Lazy update` log from 2026-10-19 (7 failed builds,
+      e.g. oxocarbon's fennel rock), which belongs outside the repo
 - [ ] **Lint/format configs.** (p3) [chore] `.luacheckrc`, `selene.toml`, `.lua-format`,
       `.stylua.toml`: keep StyLua plus one linter
 - [ ] **Update CLAUDE.md architecture.** (p3) [docs] Rewrite "Core Architecture" after the
@@ -91,9 +95,8 @@ Resolve these before implementing.
 
 ## 5. Additional suggestions
 
-- [ ] **Track `lazy-lock.json`.** (p1) [chore] It's gitignored, so tags don't pin plugin
-      versions and an older release can't be reproduced. Track it now that the config has its
-      own repo.
+- [x] **Track `lazy-lock.json`.** (p1) [chore] Tracked since v0.16.1, so each tag pins the
+      plugin versions it was released with.
 - [ ] **CI.** (p2) [chore] Add a GitHub Actions workflow that runs `scripts/run_tests.sh all`
       and `stylua --check` on push and tags, with a pinned nvim nightly so upstream breakage
       like the `nvim_get_commands()` change shows up as a CI failure instead of a local
@@ -114,6 +117,8 @@ Resolve these before implementing.
       its filter only matches `Fail ||`/`Errors ||` lines, and the report dir (with `tests.log`)
       is deleted. A rerun passed, so it was most likely a Plenary per-file timeout. Keep
       `tests.log` on failure (move it out of the deleted dir) and also match timeout lines.
+      The untracked `.reports/2026-10-21.18:40/tests.log` is an earlier case: 0 failures and 0
+      errors, then `Nvim: Caught deadly signal 'SIGTERM'`, which is the timeout kill.
 - [x] **Startup budget.** (p3) [perf] Startup and per-filetype render times are recorded with
       every release by `benchmarks/run` (via `scripts/report.sh X.Y.Z`), against the average of
       the previous 10 releases and a low-load baseline; table in `docs/PERFORMANCE.md`.
@@ -126,6 +131,11 @@ Resolve these before implementing.
       `configs.telescope` 70 ms, `devdocs2` 66 ms, and 432 ms in init.lua itself. After the
       dashboard draws, the main loop blocks for 0.1-1.5 s stretches over about 4.5 s, then an
       animation flushes at ~30 fps for about 2 s. Defer helptags generation, profile the rest.
+- [ ] **Hardcoded home paths.** (p3) [chore] 22 files under `lua/` hardcode
+      `/home/nicholas` (e.g. `tail/utils.lua`, `configs/kiwi.lua`, `configs/copilot-lua.lua`,
+      `project_nvim/root.lua`, the telescope fork `dir` in `plugins/main.lua`). Use
+      `vim.env.HOME` / `vim.fn.expand("~")`; the old `~/.asdf/shims/node` path no longer
+      exists.
 - [ ] **Health check.** (p3) [feature] Add `lua/health/config.lua` for `:checkhealth config`:
       failed configs from `utils.lazy.state`, missing external tools, shadowed modules.
 - [ ] **nvim-hlslens lens templating.** (p3) [feature] Template the lens virtual text with
@@ -199,6 +209,15 @@ Resolve these before implementing.
 - [ ] **Wrap code blocks in markdown.** (p3) [feature] A quicker way to wrap a visual selection
       or the current paragraph in a fenced block, prompting for the language (e.g. a
       mini.surround / nvim-surround custom surrounding or a dedicated keymap).
+- [ ] **Empty nested list item renders as a heading.** (p3) [bug] Starting an indented line
+      with `-` under a list item styles the line above as an H2 until text follows the dash.
+      This is CommonMark: a line of only `-` under paragraph text is a setext H2 underline, and
+      an empty list item can't interrupt a paragraph. render-markdown `heading.setext = false`
+      isn't enough on its own: treesitter's markdown `highlights.scm` still captures
+      `setext_h2_underline` as `@markup.heading.2`, and about 98 files in `~/zettelkasten` use
+      real setext headings. Options: a markdown-local `-` / `o` mapping that inserts `- ` plus a
+      placeholder until text is typed, or a render-markdown custom handler that skips setext
+      H2s whose underline is a single `-` inside a list item.
 - [ ] **Consistent hard wrapping.** (p2) [feature] Typing wraps automatically at `textwidth`,
       but joining, pasting and moving text leave lines too long or too short, and fixing them
       by hand makes it worse. Options: reformat the paragraph after `J`/paste/move (`gw` on the
