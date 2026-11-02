@@ -5,6 +5,18 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.20.2] - 2026-11-01
+
+### Fixed
+
+- Saving css, scss, less, sass, graphql, handlebars, html, json, yaml, JavaScript/TypeScript and vue files never ran
+  prettier: the config overrode conform's prettierd formatter without passing the file, so it ran and changed nothing.
+  The overrides are gone and these files are formatted on save with your prettier config (`~/.prettierrc.yml`, or the
+  project's own); `:FormatDisable` turns it off. The `--print-width` and `--plugin` options they tried to pass are
+  dropped because prettierd ignores CLI options: imports are no longer meant to be organized on save, and toml is
+  formatted by taplo only.
+- The Python test summary went to the report's progress log instead of `tests.log`.
+
 ## [0.20.1] - 2026-11-01
 
 ### Changed

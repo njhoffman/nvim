@@ -29,15 +29,15 @@ local formatters_by_ft = {
   handlebars = { "prettierd" },
   html = { "prettierd" },
   htmlangular = { "prettierd" },
-  javascript = { "prettierd_js" },
-  javascriptreact = { "prettierd_js" },
+  javascript = { "prettierd" },
+  javascriptreact = { "prettierd" },
   json = { "fixjson", "jq", "prettierd" },
   jsonc = { "fixjson", "jq", "prettierd" },
   json5 = { "fixjson", "jq", "prettierd" },
   just = { "just" },
   lua = { "stylua" },
   -- prettierd reflows prose (proseWrap/printWidth from ~/.prettierrc.yml or a project config)
-  markdown = { "prettierd_md", "cbfmt", "markdownlint", "injected" },
+  markdown = { "prettierd", "cbfmt", "markdownlint", "injected" },
   less = { "prettierd" },
   sass = { "prettierd" },
   nasm = { "asmfmt" },
@@ -54,11 +54,11 @@ local formatters_by_ft = {
   sh = { "shfmt" },
   -- sh              = { "shfmt", "shellharden" },
   sql = { "sql-formatter" },
-  toml = { "taplo", "prettierd_toml" },
-  tsx = { "prettierd_js" },
-  typescript = { "prettierd_js" },
-  typescriptreact = { "prettierd_js" },
-  vue = { "prettierd_vue" },
+  toml = { "taplo" },
+  tsx = { "prettierd" },
+  typescript = { "prettierd" },
+  typescriptreact = { "prettierd" },
+  vue = { "prettierd" },
   ["_"] = { "trim_whitespace" },
 }
 
@@ -77,37 +77,8 @@ local formatters = {
   --   stdin = false,
   --   args = { "--fix", "--config", linterconfig .. "/markdownlint.yaml", "$filename" },
   -- },
-  prettierd = {
-    command = "prettierd",
-    stdin = false,
-    args = { "--print-width", "100" },
-  },
-  -- prettierd reads the file from stdin and needs its path to find the parser and config
-  prettierd_md = {
-    command = "prettierd",
-    args = { "$FILENAME" },
-    stdin = true,
-  },
-  prettierd_toml = {
-    command = "prettierd",
-    stdin = false,
-    args = { "--print-width", "100", "--plugin", "prettier-plugin-toml" },
-  },
-  prettierd_js = {
-    command = "prettierd",
-    stdin = false,
-    args = { "--print-width", "100", "--plugin", "prettier-plugin-organize-imports" },
-  },
-  prettierd_vue = {
-    command = "prettierd",
-    stdin = false,
-    args = { "--print-width", "100", "--plugin", "prettier-plugin-organize-imports" },
-  },
-  prettierd_packagejson = {
-    command = "prettierd",
-    stdin = false,
-    args = { "--print-width", "100", "--plugin", "prettier-plugin-packagejson" },
-  },
+  -- prettierd: conform's built-in definition (file on stdin, its path as the argument so prettier finds the
+  -- parser and config). prettierd ignores CLI options, so width and plugins come from prettier configs.
   shellcheck = {
     command = "shellcheck",
     arg = "--shell=bash --format=diff '$filename' | git apply",

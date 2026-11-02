@@ -139,12 +139,10 @@ implementing.
       Snacks diagnostics pickers on LSP attach, shadowing the global telescope `<C-t>`. They now open telescope
       diagnostics (buffer / workspace), covered by `tests/unit/lsp_keymaps_spec.lua` (v0.16.2). `<C-S-t>` has no
       mapping.
-- [ ] **prettierd formatters are no-ops.** (p1) [bug] `formatters.prettierd` (and `prettierd_js`, `prettierd_toml`,
-      `prettierd_vue`) in `lua/configs/conform.lua` set `stdin = false` with no `$FILENAME` argument, so prettierd gets
-      neither the file nor its path: it exits 0 and nothing changes. Saving `a{color:red;background:blue}` in a .css
-      file leaves it as is. Use `args = { "$FILENAME" }, stdin = true` (as `prettierd_md` does); prettierd ignores
-      `--print-width`, so widths come from prettier configs. Affects css, scss, less, sass, graphql, handlebars, html,
-      json, yaml, toml, js/ts and vue.
+- [x] **prettierd formatters are no-ops.** (p1) [bug] The `prettierd` override and its `_js`/`_toml`/`_vue`/
+      `_packagejson` variants in `lua/configs/conform.lua` passed no file, so nothing was formatted. They're removed in
+      v0.20.2: conform's built-in `prettierd` formats css, html, json, yaml, js/ts, vue, Markdown and the rest; toml is
+      left to taplo, and width/plugins come from prettier configs (`tests/unit/conform_config_spec.lua`).
 - [ ] **action-hints errors are not contained.** (p3) [bug] `throttle` in `lua/action-hints/utils.lua` wraps `pcall`
       around `vim.schedule_wrap(...)`, which only schedules the callback; errors inside a provider still surface on
       every cursor move. `pcall` the provider inside the scheduled function and log failures once.

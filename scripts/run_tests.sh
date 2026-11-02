@@ -142,7 +142,8 @@ run_minitest_tests() {
 run_python_tests() {
     echo -e "${YELLOW}Running Python (benchmark harness) Tests...${NC}"
     progress "python: benchmark harness"
-    if PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s "$NVIM_CONFIG_DIR/tests/bench" -p 'test_*.py'; then
+    # unittest reports on stderr; keep it with the other test output
+    if PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s "$NVIM_CONFIG_DIR/tests/bench" -p 'test_*.py' 2>&1; then
         echo -e "${GREEN}✓ Python tests passed${NC}"
         progress "python: ok"
         return 0
