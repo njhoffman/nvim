@@ -92,18 +92,17 @@ implementing.
       `project_nvim/root.lua` (8.6%), `components/diagnostics.lua` (12.8%), `utils/core.lua` (13.9%).
 - [x] **`scripts/run_tests.sh` cleanup.** (p3) [chore] Rewritten in v0.20.0 without `set -e`; each runner checks the
       exit status directly.
-- [ ] **Commit only report summaries.** (p2) [chore] Each release commits a `.reports/<timestamp>/` folder of about 27k
-      lines (mostly `coverage.txt`), which bloats history. Commit only `summary.md` and gitignore the rest; keep the
-      latest full report locally so `scripts/report.sh` can still compute deltas.
+- [x] **Commit only report summaries.** (p2) [chore] Since v0.20.1 only `.reports/<timestamp>/summary.md` is tracked;
+      the raw data is gitignored and stays local for deltas. 108 raw files (21 MB) were untracked; their blobs stay in
+      history.
 - [x] **report.sh hides why tests failed.** (p2) [bug] Since v0.20.0 a failed run moves the report to
       `.reports/failed/<timestamp>/` (with `tests.log`), prints failing tests and `Timeout:` lines, and shows each
       spec file's result live (`progress:` lines, `TEST_TIMEOUT` per file).
 - [x] **Startup budget.** (p3) [perf] Startup and per-filetype render times are recorded with every release by
       `benchmarks/run` (via `scripts/report.sh X.Y.Z`), against the average of the previous 10 releases and a low-load
       baseline; table in `docs/PERFORMANCE.md`.
-- [ ] **Record a benchmark baseline.** (p2) [chore] Run `benchmarks/run --baseline` once the machine is quiet (load <=
-      1.2 on 8 CPUs; it was 11 when the harness landed), so release tables get a "vs baseline" column. Repeat after
-      Neovim upgrades.
+- [x] **Record a benchmark baseline.** (p2) [chore] Recorded 2026-11-02 at load 0.95 (10 sessions, v0.20.1): startup
+      ready 1062 ms, settled 6460 ms, Markdown render 313-353 ms. Repeat after Neovim upgrades.
 - [ ] **Slow startup.** (p2) [perf] About 2-3 s to `UIEnter` and 8-11 s until idle in `benchmarks/run` (load ~10).
       Headless `--startuptime`: `init.lua` 2.1 s, of which `utils.helptags` 253 ms (via `commands.help`), `keymaps` 150
       ms, `configs.project` 91 ms, `configs.telescope` 70 ms, `devdocs2` 66 ms, and 432 ms in init.lua itself. After the

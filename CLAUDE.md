@@ -35,9 +35,11 @@ Release steps:
    the report to `.reports/failed/<timestamp>/` (gitignored) with `tests.log` and `bench.log`: do not commit, tag or
    push. Benchmark warnings (a metric over 25% slower than its average or baseline) do not abort; mention them.
 2. Write `<report dir>/summary.md`: code stats, coverage, counts of installed plugins and tests, and deltas against the
-   previous report, followed by the benchmark tables from `<report dir>/bench.md`.
+   previous report, followed by the benchmark tables from `<report dir>/bench.md`. Only `summary.md` is committed; the
+   rest of each report (`coverage.txt`, `tests.log`, cloc JSON, bench and progress logs) is gitignored and stays local,
+   so read the previous report's files from disk for the deltas.
 3. Add a `## [X.Y.Z] - YYYY-MM-DD` section to `CHANGELOG.md`.
-4. Stage the change, the report directory, `CHANGELOG.md`, `benchmarks/history.tsv` and `docs/PERFORMANCE.md`, then
+4. Stage the change, `<report dir>/summary.md`, `CHANGELOG.md`, `benchmarks/history.tsv` and `docs/PERFORMANCE.md`, then
    `./scripts/release.sh X.Y.Z "<summary>"`. It refuses a version that is not newer than the latest tag or that lacks a
    changelog section, then commits as `vX.Y.Z: <summary>`, creates the annotated tag and runs
    `git push origin HEAD --follow-tags`. Set `RELEASE_TRAILER` to append a `Co-Authored-By` line.

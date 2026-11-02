@@ -392,7 +392,10 @@ def summarize(history, current_rows, window=AVERAGE_WINDOW):
       "baseline": baseline.get(metric),
       "previous": prior[0] if prior else None,
     })
-  return summary, baseline_date, baseline_rows[-1] if baseline_rows else None
+  # Describe the baseline by its measured rows: count metrics (plugins, lines) record 1 run
+  latest_baseline = [row for row in baseline_rows if row["date"] == baseline_date]
+  baseline_meta = max(latest_baseline, key=lambda row: int(row["runs"])) if latest_baseline else None
+  return summary, baseline_date, baseline_meta
 
 
 def latest_release_rows(history):

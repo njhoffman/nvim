@@ -5,6 +5,20 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.20.1] - 2026-11-01
+
+### Changed
+
+- Releases commit only each report's `summary.md`; the raw report data (`coverage.txt`, `tests.log`, cloc JSON, bench
+  and progress logs, about 27k lines per release) is gitignored and stays local. The 108 raw files already in the repo
+  were untracked.
+- A benchmark baseline is recorded (load 0.95, 10 sessions), so `docs/PERFORMANCE.md` compares each release against it.
+
+### Fixed
+
+- `docs/PERFORMANCE.md` described the baseline as "1 sessions": it took the session count from a count metric's row
+  instead of the measured ones.
+
 ## [0.20.0] - 2026-11-01
 
 ### Changed

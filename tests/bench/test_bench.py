@@ -96,6 +96,13 @@ class Summarize(unittest.TestCase):
     self.assertEqual(by_metric(summary)["startup ready"]["baseline"], 250)
     self.assertEqual(date, "2026-11-01T00:00Z")
 
+  def test_baseline_meta_reports_measured_sessions(self):
+    history = rows("baseline", "0.1.0", {"startup ready": 300}, runs=10)
+    history += rows("baseline", "0.1.0", {"plugins installed": 300}, runs=1)
+    current = rows("release", "0.2.0", {"startup ready": 200})
+    _, _, baseline_meta = bench.summarize(history, current)
+    self.assertEqual(baseline_meta["runs"], "10")
+
   def test_no_history(self):
     current = rows("release", "0.1.0", {"startup ready": 200, "plugins installed": 10})
     summary, date, baseline_meta = bench.summarize([], current)

@@ -6,3 +6,6 @@ tmp.sh
 __pycache__/
 # report.sh moves the report of a failed run here
 .reports/failed/
+# Reports: commit only each report's summary.md; the raw data (about 27k lines each) stays local
+.reports/*/*
+!.reports/*/summary.md
