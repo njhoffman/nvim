@@ -57,7 +57,7 @@ Successfully modernized vim-smoothie with comprehensive benchmarking and dual Vi
 
 ### 3. Documentation & Tests (~3000 lines)
 
-- **doc/smoothie_benchmarking.md** (~2400 lines)
+- **docs/reference/smoothie/benchmarking.md** (~2400 lines)
   - Complete guide with examples
   - Metrics explanation + formulas
   - Performance comparison workflow
@@ -357,7 +357,7 @@ Minimal when benchmarking enabled:
 | lua/smoothie/init.lua                    | ~600      | Lua scrolling core |
 | lua/smoothie/benchmark.lua               | ~330      | Lua benchmarking   |
 | lua/commands/buffer/smoothie_toggle.lua  | ~200      | Toggle system      |
-| doc/smoothie_benchmarking.md             | ~2400     | Documentation      |
+| docs/reference/smoothie/benchmarking.md             | ~2400     | Documentation      |
 | tests/manual/test_smoothie_benchmark.lua | ~300      | Tests              |
 | **Total**                                | **~4483** | **lines added**    |
 

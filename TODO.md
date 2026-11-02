@@ -156,14 +156,19 @@ implementing.
 
 ## 7. Docs and code consistency
 
-- [ ] **Consolidate documentation into `docs/`.** (p2) [docs] Keep `doc/` for vim help files only. Move markdown and
-      notes there into `docs/`: `doc/*.md`, `doc/specs/`, `doc/helpfiles/_*.txt` drafts,
-      `lua/commands/README_colorscheme_export.md`, `lua/commands/tips/notes.md`, `lua/configs/bars/COMPONENTS.md`,
-      `lua/configs/ultimate-autopair/reference.md`, `lua/configs/vimade/NOTES.md`, `lua/smoothie/*.md`,
-      `lua/utils/escape/setup.md`, `neovim_tips/`. Index each in `docs/README.md`.
-- [ ] **Remove implemented or stale specs.** (p2) [docs] `doc/specs/main.md`, `doc/specs/scratch.md` and
-      `doc/specs/todo.md` are old task prompts (feline -> lualine migration, silence command); delete the ones already
-      done and fold anything still open into this file.
+- [x] **Consolidate documentation into `docs/`.** (p2) [docs] v0.22.0 moved the markdown and keymap dumps from
+      `doc/` and `lua/` to `docs/reference/`, indexed in `docs/README.md`. `doc/helpfiles/` stays: it is the source
+      dir of `lua/commands/help.lua` (`_name.txt` is its naming convention, not drafts).
+- [x] **Remove implemented or stale specs.** (p2) [docs] v0.22.0 moved `doc/specs/` to the backup; the open
+      ExportColorscheme work is now in "Highlight exporters" (project 9).
+- [ ] **Duplicate help files.** (p3) [chore] `doc/helpfiles/` has near-copies whose tags differ: `_devhints-bash.txt` /
+      `devhints-bash.txt`, `_lua-regex.txt` / `lua-regex.txt`, `_keybinds-checklist.txt` / `extended-keys.txt`, and
+      `template.txt` (a filled-in `_template.txt`). `doc/ack-test.txt` duplicates `doc/helpfiles/ack-test.txt`, and
+      `doc/mini-surround.txt` and `doc/noice.nvim.txt` are copies of the plugins' own help, so `doc/tags` defines
+      their tags twice. Keep one of each.
+- [ ] **Help export bugs.** (p3) [bug] `export_help_files` in `lua/commands/help.lua` checks `cfg.dir_help`, which
+      doesn't exist (so it always calls mkdir), compares the full glob path to `'_template.txt'` (so the template is
+      always exported), and runs `:helptags` once per file. Fix the checks and run `:helptags` once at the end.
 - [ ] **Fold sub-TODO files into this one.** (p2) [docs] `lua/configs/bars/TODO.md`, `lua/configs/vimade/TODO.md` and
       `lua/histories/TODO.md` hold open work that `/todo` doesn't see. Move open items here, move design notes to
       `docs/`, and delete the files.
@@ -206,9 +211,13 @@ terminal environment.
 
 - [ ] **Plugin skeleton.** (p2) [feature] A module under `lua/modules/integrations/` (see project 3) with one exporter
       per target and `:Integrations export <target>`. Reuse the existing colorscheme export
-      (`lua/commands/README_colorscheme_export.md`).
+      (`docs/reference/colorscheme-export.md`).
 - [ ] **Highlight exporters.** (p2) [feature] Export the active highlights to other formats, starting with a bat /
-      sublime `.tmTheme`, then tmux and fzf colors.
+      sublime `.tmTheme`, then tmux and fzf colors. Open from the old `doc/specs/todo.md`: `bat cache --build` fails
+      on the generated theme with "'Dockerfile (with bash)' ... has unresolved context reference ByScope { scope:
+      <source.json> ... }"; after export, write a report of two Lua tables, the highlight -> scope map used and the map
+      of a full theme (catppuccin or tokyonight) with a best-guess match per scope or `""`, so missing highlights are
+      easy to add.
 - [ ] **Keymap compatibility report.** (p2) [feature] Compare nvim keymaps with zsh (zle and fzf widgets) and tmux
       bindings, list mismatches for the same action (file picker on `<C-p>` in nvim should be the fzf file widget in
       zsh; window navigation keys should match tmux pane navigation), and suggest changes.

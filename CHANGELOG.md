@@ -5,6 +5,23 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.22.0] - 2026-11-01
+
+### Changed
+
+- Markdown notes and keymap dumps moved from `doc/` and `lua/` into `docs/reference/` and are indexed in
+  `docs/README.md`: Neovim's default keymaps and this config's keymap dump (`keymaps/`), the smoothie port spec,
+  benchmarking and notes (`smoothie/`), the ColorschemeExport guide, bars components, vimade notes, ultimate-autopair
+  notes, the escape module's help text and old vim mapping notes. `doc/` now holds only vim help files, and
+  `doc/helpfiles/` stays as the source of `:HelpExport`.
+
+### Removed
+
+- The old task prompts in `doc/specs/` (Silence command, feline -> lualine/windline migration, repo setup), now done
+  or outdated. The still-open ExportColorscheme follow-ups are tracked in TODO.md ("Highlight exporters").
+- `doc/smoothie_benchmarking.md` and `doc/helpfiles/fzf-notes.txt`, exact copies of other files. Both are in
+  `~/.local/backup/nvim/`.
+
 ## [0.21.0] - 2026-11-01
 
 ### Removed
