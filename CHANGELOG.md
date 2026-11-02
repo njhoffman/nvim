@@ -5,6 +5,28 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.21.0] - 2026-11-01
+
+### Removed
+
+- 27 disabled plugin specs (ui.nvim, incline, zone, cinnamon, neoscroll, visual.nvim, mini.clue, anyline, nvim-ufo,
+  tailwind-sorter, ChatGPT.nvim, NeoZoom, sunglasses, wildfire, accelerated-jk, portal, stopinsert, smear-cursor,
+  ed-cmd, feed.nvim, telescope-git-submodules, vim-wakatime, nxwm, trailblazer, fzfx, orgmode, headlines) and their
+  configs. The removed spec text is kept in `~/.local/backup/nvim/lua/plugins/removed-disabled-specs.lua`.
+- 87 configs in `lua/configs/` that match no plugin spec and are required by nothing (e.g. `nvim-lsp-installer`,
+  `kommentary`, `nvim-tree`, `wilder`, `stabilize`, `luasnip`, `dap/`, `tmp/`), and 10 unreferenced `*-example` /
+  `reference` files.
+- 275 Lua modules that nothing requires, among them the old `colorschemes/nord-nvim/` (replaced by `nord-nick`),
+  unused `utils/`, `stats/`, `tracker/` and `notifications/` modules, unloaded hydra, codecompanion and chrome-remote
+  submodules, and `lua/llm-config.lua`.
+- Everything removed is moved to `~/.local/backup/nvim/` under its repo path, so restoring a file is a single `mv`.
+
+### Changed
+
+- lualine, windline, quicknote and markpan stay disabled on purpose; their specs say why.
+- reactive.nvim no longer pulls in smear-cursor as a dependency (smear-cursor was never loaded: its spec had
+  `cond = false`).
+
 ## [0.20.2] - 2026-11-01
 
 ### Fixed

@@ -1,8 +1,8 @@
 # TODO
 
-Open work on this config, grouped by project. Each completed item is its own release (see CLAUDE.md "Versioning and
-releases"). Counts were measured on 2026-10-19 against NVIM v0.13.0-dev-1915; re-measure before starting an item. Specs
-and reference notes live in [docs/](docs/README.md).
+Open work on this config, grouped by project. Each completed item is released (see CLAUDE.md "Versioning and
+releases"); related items can be combined into one release. Counts were measured on 2026-10-19 against NVIM
+v0.13.0-dev-1915; re-measure before starting an item. Specs and reference notes live in [docs/](docs/README.md).
 
 Items: `- [ ] **Title.** (pN) [category] summary`, with details on indented lines. Priority is (p1) high, (p2) normal or
 (p3) low; categories are bug, feature, refactor, docs, test, chore and perf. `(due YYYY-MM-DD)` adds a deadline.
@@ -20,21 +20,24 @@ Reviewed: 2026-11-01
 
 Both counts below come from heuristics and include false positives (relative requires, string-built module names,
 `.defaults` / `__init` naming conventions). Verify each candidate by grepping and doing a startup smoke test before
-removing it. Move removals to `~/.local/backup/` as in v0.5.0 - v0.7.0.
+removing it. Move removals to `~/.local/backup/nvim/`, keeping their repo paths (v0.21.0 on; earlier releases used
+`~/.local/backup/nvim-refactor/` and `~/.local/backup/telescope/`).
 
-- [ ] **Unreferenced Lua modules.** (p2) [chore] 103 candidates out of 1,566, concentrated in `configs/` (31),
-      `telescope/` (11), `utils/` (10), `frecency/` (7), `tracker/` (5), `notifications/` (4), `logger/` (4)
-- [ ] **Configs without a plugin spec.** (p2) [chore] 117 of 300 `lua/configs/` entries, e.g. `nvim-lsp-installer`,
-      `kommentary`, `nvim-comment`, `nvim-tree`, `wilder`, `stabilize`, `heirline-example`, `luasnip-example`,
-      `hydra/reference2`, `feline/reference`, `tmp/`. Delete the dead ones; move the `*-example` and `reference` files
-      to `docs/reference/`.
-- [ ] **Disabled plugin specs.** (p2) [chore] The 31 `enabled = false` and 1 `cond = false` specs: delete the spec and
-      its config unless it's kept on purpose (then add a reason comment)
+- [x] **Unreferenced Lua modules.** (p2) [chore] v0.21.0 moved 275 modules that nothing requires to the backup,
+      among them `colorschemes/nord-nvim/` (57), `utils/` (27), `stats/` (17), `tracker/` (13) and the unloaded
+      `configs/hydra`, `codecompanion` and `chrome-remote` submodules. Kept: modules loaded by a string-built name
+      (`tracker/sources`, `satellite/handlers`, `configs/telescope/actions`), overrides of installed-plugin modules
+      (`lazy/`, `u/`, `yanky/storage/sqlite.lua`, ...) and LuaLS type files.
+- [x] **Configs without a plugin spec.** (p2) [chore] v0.21.0 moved the 87 configs that lazy matches to no spec and
+      nothing requires, plus the 10 unreferenced `*-example` / `reference` files, to the backup.
+- [x] **Disabled plugin specs.** (p2) [chore] v0.21.0 removed 27 disabled specs and backed up their configs (spec text
+      in `~/.local/backup/nvim/lua/plugins/removed-disabled-specs.lua`). Kept with a reason comment: lualine, windline,
+      quicknote, markpan.
 - [ ] **Upstream defaults copies.** (p3) [docs] `*.defaults.lua` copies of upstream plugin defaults (avante, helpview,
       mini-diff, mini-files, mini-jump2d, mini-visits, neo-tree, neocodeium, nvim-colorizer, navbuddy, oil, yazi) are
       loaded by nothing. Move the ones worth keeping to `docs/reference/plugin-defaults/` and delete the rest.
-- [ ] **Committed scratch space.** (p3) [chore] `scratch/` and `lua/configs/tmp/`: move them out of the repo or
-      gitignore them
+- [ ] **Committed scratch space.** (p3) [chore] `scratch/`: move it out of the repo or gitignore it
+      (`lua/configs/tmp/` went to the backup in v0.21.0)
 - [ ] **Commented-out code blocks.** (p3) [refactor] e.g. `configs/alpha/init.lua` 131-200. Delete them, or move blocks
       kept as future implementations to `docs/reference/`.
 
@@ -65,7 +68,8 @@ removing it. Move removals to `~/.local/backup/` as in v0.5.0 - v0.7.0.
       oxocarbon's fennel rock), which belongs outside the repo
 - [ ] **Lint/format configs.** (p3) [chore] `.luacheckrc`, `selene.toml`, `.lua-format`, `.stylua.toml`: keep StyLua
       plus one linter
-- [ ] **Update CLAUDE.md architecture.** (p3) [docs] Rewrite "Core Architecture" after the restructure
+- [ ] **Update CLAUDE.md architecture.** (p3) [docs] Rewrite "Core Architecture" after the restructure; its init.lua
+      load order and "Custom Modules" still list `devbox` and `hover`, which no longer exist under `lua/`
 
 ## 4. Custom dashboard
 
@@ -143,6 +147,9 @@ implementing.
       `_packagejson` variants in `lua/configs/conform.lua` passed no file, so nothing was formatted. They're removed in
       v0.20.2: conform's built-in `prettierd` formats css, html, json, yaml, js/ts, vue, Markdown and the rest; toml is
       left to taplo, and width/plugins come from prettier configs (`tests/unit/conform_config_spec.lua`).
+- [ ] **neovim-tips writes into the config dir.** (p3) [bug] Loading `saxon1964/neovim-tips` creates
+      `neovim_tips/user_tips.md` in `~/.config/nvim` (seen in the smoke test). Set its `user_file` option to a path
+      under `stdpath("data")`.
 - [ ] **action-hints errors are not contained.** (p3) [bug] `throttle` in `lua/action-hints/utils.lua` wraps `pcall`
       around `vim.schedule_wrap(...)`, which only schedules the callback; errors inside a provider still surface on
       every cursor move. `pcall` the provider inside the scheduled function and log failures once.
@@ -205,8 +212,8 @@ terminal environment.
 - [ ] **Keymap compatibility report.** (p2) [feature] Compare nvim keymaps with zsh (zle and fzf widgets) and tmux
       bindings, list mismatches for the same action (file picker on `<C-p>` in nvim should be the fzf file widget in
       zsh; window navigation keys should match tmux pane navigation), and suggest changes.
-- [ ] **AI-assisted analysis.** (p3) [feature] Use the existing LLM setup (codecompanion / `lua/llm-config.lua`) to map
-      actions across tools whose bindings can't be matched by name, and to review other projects' keymaps for ways to
-      make them more like nvim.
+- [ ] **AI-assisted analysis.** (p3) [feature] Use the existing LLM setup (codecompanion, `lua/configs/codecompanion/`)
+      to map actions across tools whose bindings can't be matched by name, and to review other projects' keymaps for
+      ways to make them more like nvim.
 - [ ] **Generate integration code.** (p3) [feature] For the common targets (zsh, tmux, fzf, bat, lazygit), write the
       config snippets automatically from the report, for review before they land in `~/.shell` or `~/.tmux.conf`.

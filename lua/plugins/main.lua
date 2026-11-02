@@ -111,7 +111,6 @@ local plugins = {
     -- This is for lazy load and more performance on startup only
     cmd = { "InjectmeToggle", "InjectmeSave", "InjectmeInfo", "InjectmeLeave" },
   },
-  { "tamton-aquib/zone.nvim", enabled = false },
   -- https://github.com/romgrk/barbar.nvim/pull/540
   -- { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
   { "jrop/u.nvim", lazy = true },
@@ -247,19 +246,12 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     event = "VimEnter",
     dependencies = "nvim-web-devicons",
   },
-  { "declancm/cinnamon.nvim", event = "VeryLazy", enabled = false },
-  { "karb94/neoscroll.nvim", event = "VeryLazy", enabled = false },
 
-  {
-    "00sapo/visual.nvim",
-    enabled = false,
-    dependencies = { "nvim-treesitter", "nvim-various-textobjs", "nvim-treesitter-textobjects" },
-    event = "VeryLazy",
-  },
   { "Makaze/watch.nvim", cmd = { "WatchStart", "WatchStop", "WatchFile" } },
   -- https://www.reddit.com/r/neovim/comments/1aupy8c/a_simple_journaling_system_built_with_mind_and/
   {
     "RutaTang/quicknote.nvim",
+    -- kept disabled: lua/quicknote/ is a local copy of this plugin and is used instead
     enabled = false,
     event = "VeryLazy",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -276,9 +268,11 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   },
   {
     "nvim-lualine/lualine.nvim",
+    -- kept disabled: alternative to bars, see TODO.md "Competing implementations"
     enabled = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
+  -- kept disabled: alternative to bars, see TODO.md "Competing implementations"
   { "windwp/windline.nvim", enabled = false },
   { "alexpasmantier/tv.nvim" },
   {
@@ -364,7 +358,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     },
   },
 
-  { "echasnovski/mini.clue", enabled = false, event = { "VeryLazy" } },
   { "echasnovski/mini.visits", event = "VeryLazy" },
   { "echasnovski/mini.diff", event = "VeryLazy" },
   { "echasnovski/mini.trailspace", event = "VeryLazy" },
@@ -390,12 +383,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     "njhoffman/hlchunk.nvim",
     dir = "~/git/hlchunk.nvim",
     event = { "BufReadPre", "BufNewFile" },
-  },
-  {
-    "huy-hng/anyline.nvim",
-    enabled = false,
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    event = "VeryLazy",
   },
   {
     "sindrets/diffview.nvim",
@@ -432,13 +419,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   { "folke/twilight.nvim", cmd = { "Twilight", "TwilightEnable" } },
   -- { 'benlubas/wrapping-paper.nvim' },
   {
-    "kevinhwang91/nvim-ufo",
-    enabled = false,
-    dependencies = "kevinhwang91/promise-async",
-    cmd = { "UfoEnable", "UfoAttach", "UfoEnableFold" },
-    event = { "UIEnter" },
-  },
-  {
     "soemre/commentless.nvim",
     cmd = "Commentless",
     keys = {
@@ -464,19 +444,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
         return "(" .. folded_count .. " comments)"
       end,
     },
-  },
-  {
-    -- https://github.com/luckasRanarison/tailwind-tools.nvim
-    "laytan/tailwind-sorter.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" },
-    enabled = false,
-    build = "cd formatter && npm i && npm run build",
-    config = function()
-      require("tailwind-sorter").setup({
-        on_save_enabled = true, -- If `true`, automatically enables on save sorting.
-        node_path = vim.fn.exepath("node"),
-      })
-    end,
   },
   {
     "aaronik/treewalker.nvim",
@@ -595,17 +562,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
       },
     },
   },
-  {
-    "jackMort/ChatGPT.nvim",
-    enabled = false,
-    event = "VeryLazy",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "folke/trouble.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-  },
 
   -- lazy.nvim
   { "robitx/gp.nvim" },
@@ -638,7 +594,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     },
   },
   -- https://github.com/jackplus-xyz/monaspace.nvim
-  { "nyngwang/NeoZoom.lua", enabled = false, event = "VeryLazy" },
   { "matbme/JABS.nvim", event = { "BufReadPost", "BufNewFile" } },
   -- { 'ghillb/cybu.nvim', event = { 'BufRead', 'BufNewFile' } },
   { "nacro90/numb.nvim", event = { "BufReadPost", "BufNewFile" } },
@@ -677,7 +632,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     end,
   },
 
-  { "miversen33/sunglasses.nvim", enabled = false },
   {
     "njhoffman/nvim-hlslens",
     dir = "~/git/nvim-hlslens",
@@ -717,7 +671,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
       -- { "metiulekm/nvim-treesitter-endwise" },
       -- "theHamsta/nvim-treesitter-pairs",
       "jbyuki/tree-sitter-ntangle",
-      { "sustech-data/wildfire.nvim", enabled = false },
       "nvim-lua/plenary.nvim",
       { "ThePrimeagen/refactoring.nvim", dependencies = "nvim-lua/plenary.nvim" },
       "windwp/nvim-ts-autotag",
@@ -736,35 +689,11 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   -- motion
 
   -- https://github.com/FluxxField/smart-motion.nvim
-  { "rainbowhxch/accelerated-jk.nvim", enabled = false, event = "VeryLazy" },
   -- https://github.com/AgusDOLARD/backout.nvim
   { "abecodes/tabout.nvim", event = { "InsertEnter" } },
   { "roobert/tabtree.nvim", event = { "BufReadPost", "BufNewFile" } },
   { "Weissle/easy-action" },
   { "gbprod/stay-in-place.nvim" },
-  {
-    "cbochs/portal.nvim",
-    enabled = false,
-    dependencies = { "cbochs/grapple.nvim", "ThePrimeagen/harpoon" },
-  },
-  {
-    "csessh/stopinsert.nvim",
-    enabled = false,
-    opts = {
-      idle_time_jms = 30000,
-      show_popup_msg = false,
-      clear_popup_msg = 5000,
-      disabled_filetypes = {
-        "TelescopePrompt",
-        "checkhealth",
-        "help",
-        "lspinfo",
-        "mason",
-        "neo%-tree*",
-      },
-      -- StopInsertPlug enable/disable/toggle/status
-    },
-  },
   { "jake-stewart/multicursor.nvim", enabled = true },
   -- movement highlighters
   -- https://github.com/tzachar/local-highlight.nvim
@@ -777,8 +706,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
 
   -- cursor
   -- { "gen740/SmoothCursor.nvim", event = { "BufReadPost", "BufNewFile" } },
-  { "sphamba/smear-cursor.nvim", cond = false and vim.g.neovide == nil },
-  { "rasulomaroff/reactive.nvim", enabled = true, dependencies = { "sphamba/smear-cursor.nvim" } },
+  { "rasulomaroff/reactive.nvim", enabled = true },
   { "echasnovski/mini.animate", cond = vim.g.neovide == nil, event = "VeryLazy" },
   -- { 'otavioschwanck/cool-substitute.nvim' },
   -- matching
@@ -858,7 +786,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   --   event = "VeryLazy",
   --   dependencies = { "kkharji/sqlite.lua", "nvim-telescope/telescope.nvim" },
   -- },
-  { "smilhey/ed-cmd.nvim", enabled = false },
   { "tpope/vim-repeat", event = "VeryLazy" },
   -- https://github.com/chentoast/live.nvim/tree/master
   { "Konfekt/vim-alias", event = "VeryLazy" },
@@ -884,7 +811,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     dependencies = { "nvim-lua/plenary.nvim", "nvim-web-devicons", "MunifTanjim/nui.nvim" },
   },
   { "moyiz/git-dev.nvim", event = "VeryLazy", opts = {} },
-  { "neo451/feed.nvim", enabled = false },
   -- Lazy
   {
     "2kabhishek/nerdy.nvim",
@@ -946,27 +872,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
       "doctorfree/cheatsheet.nvim",
       "tamago324/telescope-openbrowser.nvim",
       "tsakirist/telescope-lazy.nvim",
-      {
-        "agoodshort/telescope-git-submodules.nvim",
-        enabled = false,
-        dependencies = {
-          "akinsho/toggleterm.nvim",
-        },
-        config = function()
-          require("telescope").load_extension("git_submodules")
-          -- require("telescope").setup({
-          --     extensions = {
-          --       git_submodules = {
-          --         git_cmd = "lazygit",
-          --         previewer = true,
-          --         terminal_id = 9,
-          --         terminal_display_name = "Lazygit",
-          --         diffview_keymap = "<C-d>",
-          --       },
-          --     },
-          --   })
-        end,
-      },
       -- { "natecraddock/telescope-zf-native.nvim" },
       { "lalitmee/browse.nvim" },
       { "isak102/telescope-git-file-history.nvim", dependencies = { "tpope/vim-fugitive" } },
@@ -1131,7 +1036,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
   },
   -- { 'rmagatti/auto-session', event = 'VimEnter' },
-  { "wakatime/vim-wakatime", enabled = false, event = "VeryLazy" },
   { "LunarVim/bigfile.nvim" },
   -- https://github.com/miversen33/netman.nvim
   {
@@ -1143,7 +1047,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   },
   { "lucamot/chrome-remote.nvim", event = "VeryLazy" },
   { "lucamot/chrome-dev-console.nvim", dependencies = { "lucamot/chrome-remote.nvim" } },
-  { "altermo/nxwm", event = "VeryLazy", enabled = false },
   {
     "nvim-neotest/neotest",
     cmd = { "Neotest", "NeotestSummary", "NeotestNearest", "NeotestAttach" },
@@ -1196,7 +1099,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     },
   },
   -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-visits.md
-  { "LeonHeidelbach/trailblazer.nvim", enabled = false },
   { "kelly-lin/ranger.nvim", lazy = true },
   { "lambdalisue/suda.vim", event = "VeryLazy" },
   { "skywind3000/asynctasks.vim", event = "VeryLazy", dependencies = "skywind3000/asyncrun.vim" },
@@ -1262,23 +1164,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     -- })
   },
   { "yochem/jq-playground.nvim", opts = { cmd = { "gojq" } } },
-  {
-    "linrongbin16/fzfx.nvim",
-    enabled = false,
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-      {
-        "junegunn/fzf",
-        -- optional for the 'fzf' command
-        build = function()
-          vim.fn["fzf#install"]()
-        end,
-      },
-    },
-    config = function()
-      require("fzfx").setup()
-    end,
-  },
   { "npxbr/glow.nvim", cmd = "Glow" },
   -- { "NTBBloodbath/rest.nvim", cmd = { "RESTRunLast", "RESTRun", "RESTPreview" } },
   { "dbeniamine/cheat.sh-vim", cmd = "Cheat" },
@@ -1509,34 +1394,9 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     "MeanderingProgrammer/render-markdown.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons", opts = {} },
   },
-  {
-    "nvim-orgmode/orgmode",
-    event = "VeryLazy",
-    enabled = false,
-    ft = { "org" },
-    config = function()
-      -- Setup orgmode
-      require("orgmode").setup({
-        org_agenda_files = "~/orgfiles/**/*",
-        org_default_notes_file = "~/orgfiles/refile.org",
-      })
-
-      -- NOTE: If you are using nvim-treesitter with ~ensure_installed = "all"~ option
-      -- add ~org~ to ignore_install
-      -- require('nvim-treesitter.configs').setup({
-      --   ensure_installed = 'all',
-      --   ignore_install = { 'org' },
-      -- })
-    end,
-  },
   { "jceb/vim-orgmode", ft = "org", lazy = lz_syn },
   { "gaoDean/autolist.nvim", ft = { "markdown", "text", "tex", "plaintex", "norg" } },
-  {
-    "lukas-reineke/headlines.nvim",
-    enabled = false,
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    ft = { "markdown", "pandoc", "pandoc.markdown", "markdown.pandoc" },
-  },
+  -- kept disabled: own plugin in development (~/git/markpan.nvim)
   { "njhoffman/markpan.nvim", enabled = false },
   { "iamcco/markdown-preview.nvim", build = "cd app && yarn install", cmd = "MarkdownPreview" },
   -- https://github.com/kiyoon/jupynium.nvim

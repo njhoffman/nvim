@@ -191,7 +191,7 @@ Multiple AI plugin integrations:
 - codecompanion.nvim (primary)
 - avante.nvim
 - gp.nvim
-- Custom LLM config in `lua/llm-config.lua`, `lua/llm-providers.lua`, `lua/llm-prompts.lua`
+- Custom LLM providers and prompts in `lua/llm-providers.lua` and `lua/llm-prompts.lua`
 
 ### Git Workflow
 

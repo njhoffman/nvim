@@ -4,18 +4,6 @@ local plugins = {
   { "folke/lazy.nvim", lazy = false },
   -- colorscheme components should load first
   {
-    "OXY2DEV/ui.nvim",
-    lazy = false,
-    enabled = false,
-    config = function()
-      return {
-        popupmenu = false,
-        cmdline = false,
-        message = false,
-      }
-    end,
-  },
-  {
     "OXY2DEV/bars.nvim",
     enabled = true,
     lazy = false,
@@ -220,7 +208,6 @@ local plugins = {
     name = "barbecue",
     dependencies = { "SmiteshP/nvim-navic", "nvim-tree/nvim-web-devicons" },
   },
-  { "b0o/incline.nvim", enabled = false, event = "VeryLazy" },
   {
     -- https://github.com/tamton-aquib/keys.nvim
     "njhoffman/what-key.nvim",
