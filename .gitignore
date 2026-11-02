@@ -4,3 +4,5 @@ luacov.stats.out
 luacov.report.out
 tmp.sh
 __pycache__/
+# report.sh moves the report of a failed run here
+.reports/failed/

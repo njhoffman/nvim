@@ -25,11 +25,15 @@ Bump rules (pre-1.0):
 
 Release steps:
 
-1. `./scripts/report.sh X.Y.Z` runs all tests with coverage (Plenary, mini.test and the Python tests in `tests/bench/`),
-   then cloc, then the benchmarks (about two minutes), recording them as release X.Y.Z in `benchmarks/history.tsv` and
-   rewriting the table in `docs/PERFORMANCE.md`. It prints the report directory (`.reports/<timestamp>/`). If any test
-   or the benchmark run fails it aborts: do not commit, tag or push. Benchmark warnings (a metric over 25% slower than
-   its average or baseline) do not abort; mention them.
+1. `./scripts/report.sh X.Y.Z` runs all tests with coverage (Plenary specs in parallel, mini.test, the Python tests in
+   `tests/bench/` and the bats tests in `tests/scripts/`), then cloc (the plugin tree's cloc is cached by
+   `lazy-lock.json`), then the benchmarks, recording them as release X.Y.Z in `benchmarks/history.tsv` and rewriting
+   the table in `docs/PERFORMANCE.md`. It takes about 10-20 minutes: about 5 for tests, the rest benchmarks, which
+   first wait for the load to drop. Progress goes to stderr as it happens (phases with durations, one line per spec
+   file and each failure, benchmark load waits and sessions); run it in the background and watch that output. It
+   prints the report directory (`.reports/<timestamp>/`). If any test or the benchmark run fails it aborts and moves
+   the report to `.reports/failed/<timestamp>/` (gitignored) with `tests.log` and `bench.log`: do not commit, tag or
+   push. Benchmark warnings (a metric over 25% slower than its average or baseline) do not abort; mention them.
 2. Write `<report dir>/summary.md`: code stats, coverage, counts of installed plugins and tests, and deltas against the
    previous report, followed by the benchmark tables from `<report dir>/bench.md`.
 3. Add a `## [X.Y.Z] - YYYY-MM-DD` section to `CHANGELOG.md`.

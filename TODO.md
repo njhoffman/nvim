@@ -84,21 +84,20 @@ implementing.
 - [ ] **CI.** (p2) [chore] Add a GitHub Actions workflow that runs `scripts/run_tests.sh all` and `stylua --check` on
       push and tags, with a pinned nvim nightly so upstream breakage like the `nvim_get_commands()` change shows up as a
       CI failure instead of a local surprise.
-- [ ] **Faster coverage.** (p3) [perf] Build cluacov against LuaJIT; the pure-Lua hook makes `scripts/report.sh` take
-      about 3 minutes.
+- [ ] **Faster coverage.** (p3) [perf] Spec files run in parallel since v0.20.0 (unit coverage run 14 min -> 4.6 min),
+      so the wall time is now the slowest spec under the pure-Lua hook: `unicode_search_spec` (263 s) and
+      `deprecated_api_spec` (250 s); the next is 16 s. `deprecated_api_spec` scans files as text and covers nothing in
+      `lua/`, so it could run without coverage; for the other, build cluacov against LuaJIT or trim the spec's data.
 - [ ] **Coverage targets.** (p3) [test] Add tests for the least-covered modules that tests already load:
       `project_nvim/root.lua` (8.6%), `components/diagnostics.lua` (12.8%), `utils/core.lua` (13.9%).
-- [ ] **`scripts/run_tests.sh` cleanup.** (p3) [chore] `set -e` makes the `if [ $? -eq 0 ]` checks after each nvim call
-      dead code; restructure it to use the exit status directly.
+- [x] **`scripts/run_tests.sh` cleanup.** (p3) [chore] Rewritten in v0.20.0 without `set -e`; each runner checks the
+      exit status directly.
 - [ ] **Commit only report summaries.** (p2) [chore] Each release commits a `.reports/<timestamp>/` folder of about 27k
       lines (mostly `coverage.txt`), which bloats history. Commit only `summary.md` and gitignore the rest; keep the
       latest full report locally so `scripts/report.sh` can still compute deltas.
-- [ ] **report.sh hides why tests failed.** (p2) [bug] On 2026-10-31, at load ~20, the coverage run failed and
-      `scripts/report.sh` printed only "Tests failed; report aborted": its filter only matches `Fail ||`/`Errors ||`
-      lines, and the report dir (with `tests.log`) is deleted. A rerun passed, so it was most likely a Plenary per-file
-      timeout. Keep `tests.log` on failure (move it out of the deleted dir) and also match timeout lines. The untracked
-      `.reports/2026-10-21.18:40/tests.log` is an earlier case: 0 failures and 0 errors, then
-      `Nvim: Caught deadly signal 'SIGTERM'`, which is the timeout kill.
+- [x] **report.sh hides why tests failed.** (p2) [bug] Since v0.20.0 a failed run moves the report to
+      `.reports/failed/<timestamp>/` (with `tests.log`), prints failing tests and `Timeout:` lines, and shows each
+      spec file's result live (`progress:` lines, `TEST_TIMEOUT` per file).
 - [x] **Startup budget.** (p3) [perf] Startup and per-filetype render times are recorded with every release by
       `benchmarks/run` (via `scripts/report.sh X.Y.Z`), against the average of the previous 10 releases and a low-load
       baseline; table in `docs/PERFORMANCE.md`.

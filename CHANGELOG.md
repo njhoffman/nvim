@@ -5,6 +5,24 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.20.0] - 2026-11-01
+
+### Changed
+
+- `scripts/run_tests.sh` runs unit spec files in parallel, one Neovim each (`TEST_JOBS`, default the CPU count), and
+  prints a `progress:` line per finished spec file with its time, plus the first failing test. With coverage, each spec
+  file writes its own stats file and `scripts/luacov_merge.lua` adds them up: the coverage run went from about 14 to
+  under 5 minutes with the same coverage. `TEST_TIMEOUT` limits each spec file (120 s, 900 s with coverage).
+- `scripts/report.sh` shows its progress as it runs: each phase with its duration, the spec file lines, the coverage
+  total and the benchmark's load waits and sessions. The plugin tree's cloc is cached by `lazy-lock.json`, which saves
+  1.5-3 minutes when plugins haven't changed.
+- `scripts/run_tests.sh scripts` runs the new bats tests in `tests/scripts/` (also part of `all`).
+
+### Fixed
+
+- A failed report kept nothing to debug with: it now moves the report to `.reports/failed/<timestamp>/` (gitignored)
+  with `tests.log` and `bench.log`, and prints timeouts as well as failing tests.
+
 ## [0.19.0] - 2026-11-01
 
 ### Added
