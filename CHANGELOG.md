@@ -5,6 +5,15 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.23.0] - 2026-11-01
+
+### Removed
+
+- The vendored copy of plenary.nvim in `lua/plenary/` (60 files, 500K). It shadowed the installed plugin, so plenary
+  updates never took effect; the config and the test runner now use the plugin from lazy. The copy only carried this
+  config's deprecated-API rewrites, so plenary's own deprecation notices (`nvim_buf_set_option`, `vim.loop`, ...) can
+  show up again in `:checkhealth vim.deprecated`. It is in `~/.local/backup/nvim/lua/plenary/`.
+
 ## [0.22.0] - 2026-11-01
 
 ### Changed

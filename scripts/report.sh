@@ -70,7 +70,7 @@ return {
   statsfile = "$STATS_FILE",
   reportfile = "$REPORT_DIR/coverage.txt",
   include = { "lua/" },
-  exclude = { "lua/plenary/" },
+  exclude = {},
 }
 LUACOV
 # Run the reporter under nvim's LuaJIT; PUC Lua 5.1 cannot parse goto/labels

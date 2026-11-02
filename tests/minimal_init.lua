@@ -39,7 +39,7 @@ if coverage_stats and coverage_stats ~= "" then
     runner.init({
       statsfile = coverage_stats,
       include = { "^" .. vim.pesc(root) .. "lua/", "^%./lua/", "^lua/" },
-      exclude = { "tests/", "lazy/", "lua/plenary/" },
+      exclude = { "tests/", "lazy/" },
     })
     vim.api.nvim_create_autocmd("VimLeavePre", {
       callback = function()

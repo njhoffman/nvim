@@ -44,10 +44,11 @@ removing it. Move removals to `~/.local/backup/nvim/`, keeping their repo paths 
 ## 3. Simplify folder structure and config setup
 
 - [ ] **Shadowed plugin modules.** (p1) [bug] These `lua/` directories have the same module name as an installed plugin,
-      so whichever comes first on the runtimepath wins and plugin updates silently diverge: `plenary` (500K vendored
-      copy), `nvim-web-devicons`, `mini`, `telescope`, `yanky`, `frecency`, `file_history`, `import`, `helpview`,
-      `nerdy`, `reactive`, `baleia`, `bars`, `lazy`, `u`, `utils` (collides with `text-case.nvim`). Options for each:
-      upstream the change, use a fork in the spec (as done for telescope and hover.nvim), or rename the local module.
+      so whichever comes first on the runtimepath wins and plugin updates silently diverge: `nvim-web-devicons`, `mini`,
+      `telescope`, `yanky`, `frecency`, `file_history`, `import`, `helpview`, `nerdy`, `reactive`, `baleia`, `bars`,
+      `lazy`, `u`, `utils` (collides with `text-case.nvim`). Options for each: upstream the change, use a fork in the
+      spec (as done for telescope and hover.nvim), or rename the local module. The vendored `plenary` copy went to the
+      backup in v0.23.0.
 - [ ] **Standard layout for `lua/`.** (p2) [refactor] 83 top-level `lua/` entries. Group them along common Neovim config
       practice: `lua/core/` (globals, options, keymaps, commands, autocommands), `lua/plugins/` (specs), `lua/configs/`
       (plugin config), `lua/modules/` (own plugins-in-progress such as runner, stats, tracker, watcher, tail, unicode,
