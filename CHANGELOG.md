@@ -5,6 +5,15 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.24.0] - 2026-11-03
+
+### Added
+
+- Markdown: `yiC` yanks every fenced code block in the buffer without its fences, and `yaC` yanks them with their
+  fences and language line. Blocks are separated by one blank line, the shared indent of blocks nested in list items
+  is removed, and empty blocks are skipped. The text goes to the unnamed, `0` and `+` registers. `yic` / `yac` still
+  yank the block under the cursor.
+
 ## [0.23.1] - 2026-11-02
 
 ### Changed

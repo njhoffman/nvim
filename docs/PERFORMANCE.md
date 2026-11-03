@@ -7,40 +7,40 @@ through `benchmarks/run`. The table below is rewritten on each recorded run.
 
 <!-- benchmark:start -->
 
-Latest: 2026-11-03T00:02Z, release 0.23.1 (ed6068ee-dirty), load 4.68, NVIM v0.13.0-dev-1915+gc5641b2bfb. Median of 3 sessions after one warm-up session, 100x40 UI. Average is over the previous 10 releases; baseline from 2026-11-02T00:56Z (load 0.95, 10 sessions). Recorded in [benchmarks/history.tsv](../benchmarks/history.tsv); see [benchmarks/README.md](../benchmarks/README.md).
+Latest: 2026-11-03T18:14Z, release 0.24.0 (b5e400b2-dirty), load 4.74, NVIM v0.13.0-dev-1915+gc5641b2bfb. Median of 3 sessions after one warm-up session, 100x40 UI. Average is over the previous 10 releases; baseline from 2026-11-02T00:56Z (load 0.95, 10 sessions). Recorded in [benchmarks/history.tsv](../benchmarks/history.tsv); see [benchmarks/README.md](../benchmarks/README.md).
 
 | Metric | Latest | Average | Releases | vs average | Baseline | vs baseline |
 |---|---:|---:|---:|---:|---:|---:|
-| startup ready | 2381 ms | 1215 | 10 | +96% | 1062 | +124% |
-| startup settled | 8320 ms | 6625 | 10 | +26% | 6460 | +29% |
-| small.md open | 216 ms | 151 | 10 | +43% | 176 | +23% |
-| small.md render | 405 ms | 275 | 10 | +47% | 294 | +37% |
-| medium.md open | 371 ms | 181 | 10 | +105% | 159 | +133% |
-| medium.md render | 708 ms | 358 | 10 | +98% | 313 | +126% |
-| large.md open | 381 ms | 167 | 10 | +128% | 160 | +137% |
-| large.md render | 837 ms | 338 | 10 | +148% | 317 | +164% |
-| code.md open | 294 ms | 152 | 10 | +94% | 173 | +69% |
-| code.md render | 543 ms | 345 | 10 | +57% | 353 | +54% |
-| sample.lua open | 215 ms | 124 | 10 | +73% | 139 | +55% |
-| sample.lua render | 425 ms | 335 | 10 | +27% | 360 | +18% |
-| sample.py open | 190 ms | 147 | 10 | +29% | 124 | +53% |
-| sample.py render | 379 ms | 377 | 10 | +1% | 344 | +10% |
-| sample.ts open | 130 ms | 109 | 10 | +20% | 116 | +12% |
-| sample.ts render | 331 ms | 333 | 10 | -1% | 347 | -5% |
-| sample.json open | 122 ms | 142 | 10 | -14% | 131 | -7% |
-| sample.json render | 324 ms | 338 | 10 | -4% | 347 | -7% |
-| rss settled | 125 MiB | 119 | 10 | +4% | 120 | +4% |
-| rss peak | 193 MiB | 193 | 10 | -0% | 194 | -0% |
+| startup ready | 1475 ms | 1313 | 10 | +12% | 1062 | +39% |
+| startup settled | 6960 ms | 6783 | 10 | +3% | 6460 | +8% |
+| small.md open | 255 ms | 155 | 10 | +65% | 176 | +45% |
+| small.md render | 387 ms | 284 | 10 | +36% | 294 | +31% |
+| medium.md open | 256 ms | 201 | 10 | +27% | 159 | +61% |
+| medium.md render | 490 ms | 392 | 10 | +25% | 313 | +57% |
+| large.md open | 285 ms | 187 | 10 | +53% | 160 | +78% |
+| large.md render | 506 ms | 386 | 10 | +31% | 317 | +60% |
+| code.md open | 189 ms | 164 | 10 | +15% | 173 | +9% |
+| code.md render | 443 ms | 361 | 10 | +23% | 353 | +25% |
+| sample.lua open | 132 ms | 135 | 10 | -2% | 139 | -5% |
+| sample.lua render | 348 ms | 345 | 10 | +1% | 360 | -3% |
+| sample.py open | 169 ms | 142 | 10 | +19% | 124 | +36% |
+| sample.py render | 356 ms | 379 | 10 | -6% | 344 | +3% |
+| sample.ts open | 142 ms | 112 | 10 | +27% | 116 | +22% |
+| sample.ts render | 338 ms | 334 | 10 | +1% | 347 | -3% |
+| sample.json open | 208 ms | 145 | 10 | +44% | 131 | +59% |
+| sample.json render | 426 ms | 338 | 10 | +26% | 347 | +23% |
+| rss settled | 126 MiB | 120 | 10 | +5% | 120 | +5% |
+| rss peak | 196 MiB | 193 | 10 | +2% | 194 | +1% |
 
 | Count | Latest | Previous release | Change |
 |---|---:|---:|---:|
 | plugins installed | 386 | 386 | +0 |
 | plugins loaded | 276 | 276 | +0 |
-| config files | 1,574 | 1,574 | +0 |
-| config lua lines | 140,979 | 140,979 | +0 |
-| config lines | 172,413 | 172,408 | +5 |
-| plugin lines | 2,245,426 | 2,222,516 | +22,910 |
+| config files | 1,576 | 1,574 | +2 |
+| config lua lines | 141,211 | 140,979 | +232 |
+| config lines | 172,657 | 172,413 | +244 |
+| plugin lines | 2,245,426 | 2,245,426 | +0 |
 
-Over 25% slower: startup ready: +96% vs average; startup ready: +124% vs baseline; startup settled: +26% vs average; startup settled: +29% vs baseline; small.md open: +43% vs average; small.md render: +47% vs average; small.md render: +37% vs baseline; medium.md open: +105% vs average; medium.md open: +133% vs baseline; medium.md render: +98% vs average; medium.md render: +126% vs baseline; large.md open: +128% vs average; large.md open: +137% vs baseline; large.md render: +148% vs average; large.md render: +164% vs baseline; code.md open: +94% vs average; code.md open: +69% vs baseline; code.md render: +57% vs average; code.md render: +54% vs baseline; sample.lua open: +73% vs average; sample.lua open: +55% vs baseline; sample.lua render: +27% vs average; sample.py open: +29% vs average; sample.py open: +53% vs baseline.
+Over 25% slower: startup ready: +39% vs baseline; small.md open: +65% vs average; small.md open: +45% vs baseline; small.md render: +36% vs average; small.md render: +31% vs baseline; medium.md open: +27% vs average; medium.md open: +61% vs baseline; medium.md render: +57% vs baseline; large.md open: +53% vs average; large.md open: +78% vs baseline; large.md render: +31% vs average; large.md render: +60% vs baseline; code.md render: +25% vs baseline; sample.py open: +36% vs baseline; sample.ts open: +27% vs average; sample.json open: +44% vs average; sample.json open: +59% vs baseline; sample.json render: +26% vs average.
 
 <!-- benchmark:end -->

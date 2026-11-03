@@ -154,6 +154,11 @@ implementing.
 - [ ] **action-hints errors are not contained.** (p3) [bug] `throttle` in `lua/action-hints/utils.lua` wraps `pcall`
       around `vim.schedule_wrap(...)`, which only schedules the callback; errors inside a provider still surface on
       every cursor move. `pcall` the provider inside the scheduled function and log failures once.
+- [ ] **Full config errors when started headless in a sandboxed shell.** (p3) [bug] `nvim --headless` with the full
+      config (no `-u`) printed `mkdir: cannot create directory '/saved'` and `'/restart'`, bfs errors on the same paths
+      and `Failed to --listen: permission denied: "/nvim_15_@23_cerus"`. A shell path is being built from an empty
+      prefix (likely `stdpath("data")/sessions/{saved,restart}` from `lua/configs/project.lua:51` and
+      `lua/runner/commands/restart.lua:5`, plus a `--listen` socket dir); cause not confirmed. Guard empty prefixes.
 
 ## 7. Docs and code consistency
 
