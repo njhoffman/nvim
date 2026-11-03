@@ -1,0 +1,16 @@
+{
+  "grammars": [
+    {
+      "name": "log",
+      "camelcase": "Log",
+      "scope": "source.log",
+      "path": ".",
+      "file-types": ["log"]
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Free-form log files"
+  }
+}

@@ -1,0 +1,336 @@
+[
+  {
+    "type": "line",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "bracket",
+          "named": true
+        },
+        {
+          "type": "date",
+          "named": true
+        },
+        {
+          "type": "domain",
+          "named": true
+        },
+        {
+          "type": "duration",
+          "named": true
+        },
+        {
+          "type": "file_path",
+          "named": true
+        },
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "hash",
+          "named": true
+        },
+        {
+          "type": "ipv4",
+          "named": true
+        },
+        {
+          "type": "ipv6",
+          "named": true
+        },
+        {
+          "type": "level_debug",
+          "named": true
+        },
+        {
+          "type": "level_error",
+          "named": true
+        },
+        {
+          "type": "level_info",
+          "named": true
+        },
+        {
+          "type": "level_notice",
+          "named": true
+        },
+        {
+          "type": "level_success",
+          "named": true
+        },
+        {
+          "type": "level_trace",
+          "named": true
+        },
+        {
+          "type": "level_warning",
+          "named": true
+        },
+        {
+          "type": "lua_reference",
+          "named": true
+        },
+        {
+          "type": "mac_address",
+          "named": true
+        },
+        {
+          "type": "null",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "separator",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_zone",
+          "named": true
+        },
+        {
+          "type": "timestamp",
+          "named": true
+        },
+        {
+          "type": "url",
+          "named": true
+        },
+        {
+          "type": "uuid",
+          "named": true
+        },
+        {
+          "type": "word",
+          "named": true
+        },
+        {
+          "type": "xml_cdata",
+          "named": true
+        },
+        {
+          "type": "xml_comment",
+          "named": true
+        },
+        {
+          "type": "xml_doctype",
+          "named": true
+        },
+        {
+          "type": "xml_entity",
+          "named": true
+        },
+        {
+          "type": "xml_header",
+          "named": true
+        },
+        {
+          "type": "xml_tag",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "root": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "line",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "timestamp",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "sys_columns",
+          "named": true
+        },
+        {
+          "type": "time",
+          "named": true
+        },
+        {
+          "type": "time_zone",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "boolean",
+    "named": true
+  },
+  {
+    "type": "bracket",
+    "named": true
+  },
+  {
+    "type": "date",
+    "named": true
+  },
+  {
+    "type": "domain",
+    "named": true
+  },
+  {
+    "type": "duration",
+    "named": true
+  },
+  {
+    "type": "file_path",
+    "named": true
+  },
+  {
+    "type": "float",
+    "named": true
+  },
+  {
+    "type": "hash",
+    "named": true
+  },
+  {
+    "type": "ipv4",
+    "named": true
+  },
+  {
+    "type": "ipv6",
+    "named": true
+  },
+  {
+    "type": "level_debug",
+    "named": true
+  },
+  {
+    "type": "level_error",
+    "named": true
+  },
+  {
+    "type": "level_info",
+    "named": true
+  },
+  {
+    "type": "level_notice",
+    "named": true
+  },
+  {
+    "type": "level_success",
+    "named": true
+  },
+  {
+    "type": "level_trace",
+    "named": true
+  },
+  {
+    "type": "level_warning",
+    "named": true
+  },
+  {
+    "type": "lua_reference",
+    "named": true
+  },
+  {
+    "type": "mac_address",
+    "named": true
+  },
+  {
+    "type": "null",
+    "named": true
+  },
+  {
+    "type": "number",
+    "named": true
+  },
+  {
+    "type": "operator",
+    "named": true
+  },
+  {
+    "type": "separator",
+    "named": true
+  },
+  {
+    "type": "string",
+    "named": true
+  },
+  {
+    "type": "sys_columns",
+    "named": true
+  },
+  {
+    "type": "time",
+    "named": true
+  },
+  {
+    "type": "time_zone",
+    "named": true
+  },
+  {
+    "type": "url",
+    "named": true
+  },
+  {
+    "type": "uuid",
+    "named": true
+  },
+  {
+    "type": "word",
+    "named": true
+  },
+  {
+    "type": "xml_cdata",
+    "named": true
+  },
+  {
+    "type": "xml_comment",
+    "named": true
+  },
+  {
+    "type": "xml_doctype",
+    "named": true
+  },
+  {
+    "type": "xml_entity",
+    "named": true
+  },
+  {
+    "type": "xml_header",
+    "named": true
+  },
+  {
+    "type": "xml_tag",
+    "named": true
+  }
+]

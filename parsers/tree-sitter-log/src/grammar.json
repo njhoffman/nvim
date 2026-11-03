@@ -1,0 +1,539 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
+  "name": "log",
+  "rules": {
+    "source_file": {
+      "type": "REPEAT",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "line"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_newline"
+          }
+        ]
+      }
+    },
+    "line": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "REPEAT1",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_item"
+            }
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_newline"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "_newline": {
+      "type": "PATTERN",
+      "value": "\\n"
+    },
+    "_item": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "timestamp"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "time_zone"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "level_error"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "level_warning"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "level_notice"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "level_info"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "level_debug"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "level_trace"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "level_success"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "boolean"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "null"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "lua_reference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "date"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "duration"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "url"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ipv4"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ipv6"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "mac_address"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "uuid"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "hash"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "float"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "file_path"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "domain"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "xml_header"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "xml_doctype"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "xml_tag"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "xml_comment"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "xml_cdata"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "xml_entity"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "separator"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "operator"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "bracket"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "word"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_other"
+        }
+      ]
+    },
+    "timestamp": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "time"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "time_zone"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "sys_columns"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "time": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "\\d{2}:\\d{2}:\\d{2}(\\.\\d{2,9})?([ \\t]?[-+](\\d{1,2}:\\d{2}|\\d{2,4})|Z)?"
+      }
+    },
+    "sys_columns": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[a-z0-9][\\w.-]* [\\w.-]+(\\[\\d+\\])?:"
+      }
+    },
+    "time_zone": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "UTC|GMT|EST|EDT|CST|CDT|MST|MDT|PST|PDT|CET|CEST|BST|IST|JST"
+      }
+    },
+    "level_error": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[fF][aA][tT][aA][lL]|[eE][mM][eE][rR][gG]|[eE][mM][eE][rR][gG][eE][nN][cC][yY]|[aA][lL][eE][rR][tT]|[cC][rR][iI][tT]|[cC][rR][iI][tT][iI][cC][aA][lL]|[eE][rR][rR]|[eE][rR][rR][oO][rR]|[eE][rR][rR][oO][rR][sS]|[fF][aA][iI][lL]|[fF][aA][iI][lL][eE][dD]|[fF][aA][iI][lL][uU][rR][eE]|[fF][aA][uU][lL][tT]|[nN][aA][cC][kK]|[nN][aA][kK]|SEVERE||||[A-Z]+_(FATAL|EMERG(ENCY)?|ALERT|CRIT(ICAL)?|ERR(OR)?|FAIL(URE)?)"
+      }
+    },
+    "level_warning": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[wW][aA][rR][nN]|[wW][aA][rR][nN][iI][nN][gG]|[bB][aA][dD]|||[A-Z]+_(WARN(ING)?)"
+      }
+    },
+    "level_notice": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[nN][oO][tT][iI][cC][eE]|[A-Z]+_(NOTICE)"
+      }
+    },
+    "level_info": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[iI][nN][fF][oO]|||[A-Z]+_(INFO)"
+      }
+    },
+    "level_debug": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[dD][eE][bB][uU][gG]|FINE|||󰌵|[A-Z]+_(DEBUG)"
+      }
+    },
+    "level_trace": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[tT][rR][aA][cC][eE]|[vV][eE][rR][bB][oO][sS][eE]|FINER|FINEST||✎|[A-Z]+_(TRACE)"
+      }
+    },
+    "level_success": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[pP][aA][sS][sS]|[pP][aA][sS][sS][eE][dD]|[sS][uU][cC][cC][eE][eE][dD]|[sS][uU][cC][cC][eE][eE][dD][eE][dD]|[sS][uU][cC][cC][eE][sS][sS]"
+      }
+    },
+    "boolean": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[tT][rR][uU][eE]|[fF][aA][lL][sS][eE]"
+      }
+    },
+    "null": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[nN][uU][lL][lL]|[nN][iI][lL]|[nN][oO][nN][eE]"
+      }
+    },
+    "lua_reference": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "function \\d+|table \\d+|metatable"
+      }
+    },
+    "date": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "\\d{4}[-/]\\d{2}[-/]\\d{2}T?|\\d{2}[-/]\\d{2}[-/]\\d{4}|\\d{2,4}[-/](Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[-/]\\d{2,4}T?|\\d{2}[-/]\\d{2}|(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) {1,2}\\d{1,2}(,? \\d{4})?|\\d{1,2}[- ](Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[- ]\\d{4}|20\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])|(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)|(Mon|Tue|Wed|Thu|Fri|Sat|Sun)"
+      }
+    },
+    "duration": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "((\\d+d)?\\d+h)?(\\d+m)?\\d+(\\.\\d+)?[mun]?s"
+      }
+    },
+    "url": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "https?:\\/\\/\\S+"
+      }
+    },
+    "ipv4": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "\\d{1,3}(\\.\\d{1,3}){3}(\\/\\d+)?"
+      }
+    },
+    "ipv6": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[0-9a-fA-F]{1,4}(:[0-9a-fA-F]{1,4}){7}(\\/\\d+)?"
+      }
+    },
+    "mac_address": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[0-9a-fA-F]{2}([:-][0-9a-fA-F]{2}){5}"
+      }
+    },
+    "uuid": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+      }
+    },
+    "hash": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[0-9a-fA-F]{32}|[0-9a-fA-F]{40}|[0-9a-fA-F]{56}|[0-9a-fA-F]{64}|[0-9a-fA-F]{96}|[0-9a-fA-F]{128}"
+      }
+    },
+    "float": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "\\d+\\.\\d+([eE][-+]?\\d+)?|\\d+[eE][-+]?\\d+"
+      }
+    },
+    "number": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "\\d+|0[xX][0-9a-fA-F]+|0[bB][01]+|0[oO][0-7]+|[a-fA-F]*\\d[0-9a-fA-F]*"
+      }
+    },
+    "file_path": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "(\\.{1,2}|~)?\\/[A-Za-z_.~-][^\\s|,;()'\"\\]{}]*"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[a-zA-Z]:\\\\[^\\s|,;()'\"\\]{}]+"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\\\\\\\[^\\s|,;()'\"\\]{}]+"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[\\w.-]*[A-Za-z_][\\w.-]*\\/[^\\s|,;()'\"\\]{}]+"
+          }
+        ]
+      }
+    },
+    "domain": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[\\w-]+(\\.[\\w-]+)+"
+      }
+    },
+    "string": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "\"([^\"\\\\\\n]|\\\\.)*\"?"
+          },
+          {
+            "type": "PATTERN",
+            "value": "`([^`\\\\\\n]|\\\\.)*`?"
+          },
+          {
+            "type": "PATTERN",
+            "value": "'([^'\\\\\\n]|\\\\.)*'"
+          }
+        ]
+      }
+    },
+    "xml_header": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "<\\?[\\w-]+(\\s+\\w+(=\"[^\"]*\"|='[^']*')?)*\\?>"
+      }
+    },
+    "xml_doctype": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "<!DOCTYPE[^>]*>"
+      }
+    },
+    "xml_tag": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "<\\/?([\\w-]+:)?[A-Za-z_][\\w-]*(\\s+([\\w-]+:)?[A-Za-z_][\\w-]*(=\"[^\"]*\"|='[^']*')?)*\\s*\\/?>"
+      }
+    },
+    "xml_comment": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "<!--([^-]|-[^-]|--[^>])*-->"
+      }
+    },
+    "xml_cdata": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "<!\\[CDATA\\[.*\\]\\]>"
+      }
+    },
+    "xml_entity": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "&#?\\w+;"
+      }
+    },
+    "separator": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "-{3,}|={3,}|#{3,}|\\*{3,}|<{3,}|>{3,}|- -"
+      }
+    },
+    "operator": {
+      "type": "PATTERN",
+      "value": "[;,?:.<=>~\\/@!$%&+\\-|^(){}*#]"
+    },
+    "bracket": {
+      "type": "PATTERN",
+      "value": "[\\[\\]]"
+    },
+    "word": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "\\w+('\\w+)*'?"
+      }
+    },
+    "_other": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[^ \\t\\r\\f\\n]"
+        }
+      }
+    }
+  },
+  "extras": [
+    {
+      "type": "PATTERN",
+      "value": "[ \\t\\r\\f]"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [],
+  "inline": [],
+  "supertypes": [],
+  "reserved": {}
+}

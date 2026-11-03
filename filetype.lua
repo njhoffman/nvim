@@ -27,6 +27,17 @@ vim.filetype.add({ pattern = { [".*/git/config.*"] = "git_config" } })
 -- Set requirements-lock.txt or any variant as "requirements".
 vim.filetype.add({ pattern = { ["requirements.*.txt"] = "requirements" } })
 
+-- Log files: Neovim only detects a few by name, so *.log and *_log get the "log" filetype
+-- (after/ftplugin/log.lua). /var/log/syslog* uses syntax/syslog.vim instead of "messages".
+vim.filetype.add({
+  extension = { log = "log" },
+  filename = { ["/var/log/syslog"] = "syslog" },
+  pattern = {
+    [".*_log"] = "log",
+    ["/var/log/syslog.*"] = "syslog",
+  },
+})
+
 -- Spidercode: HTML files containing %spidercode% blocks use the spidercode parser.
 -- This is necessary because the HTML parser breaks on '<' characters in JavaScript.
 

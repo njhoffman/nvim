@@ -5,6 +5,17 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.29.0] - 2026-11-03
+
+### Added
+
+- Log files are highlighted again: `*.log` and `*_log` get the `log` filetype, which Neovim doesn't assign by default,
+  with a new tree-sitter parser (`parsers/tree-sitter-log`, built to `parser/log.so`). It covers dates, times, durations,
+  levels in any case plus `SEVERE`/`FINE`/`FINER`/`FINEST` and the nerd-font level glyphs, strings, numbers, URLs, IPs,
+  hashes, paths, domains, XML, syslog columns and Lua dump references like `<function 2>`. Colors come from the old
+  nvimpager `syntax/log.vim`, as `@log.*` groups you can override. Without the parser, the runtime syntax still applies.
+- `/var/log/syslog*` uses `syntax/syslog.vim` again instead of the `messages` filetype.
+
 ## [0.28.0] - 2026-11-03
 
 ### Changed
