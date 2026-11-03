@@ -228,7 +228,7 @@ map("c", "<M-f>", "<C-]>", {
   desc = " open command window from the command line in insert mode",
 })
 
-map("c", "<M-S>", "<cmd>w<cr><esc>", {
+map("c", "<M-s>", "<cmd>w<cr><esc>", {
   category = "Command",
   label = " save cmdline",
   desc = " save in command line",
@@ -511,7 +511,7 @@ map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>silent! w<cr><esc>", {
   silent = true,
 })
 
-map({ "n", "s", "v", "i" }, "<M-S>", "<cmd>silent! wq<cr>", {
+map({ "n", "s", "v", "i" }, "<M-s>", "<cmd>silent! wq<cr>", {
   category = "Buffers",
   label = "󰽙 write to buffer and quit",
   desc = "󰽙 write to buffer and quit",

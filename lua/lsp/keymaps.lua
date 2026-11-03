@@ -19,7 +19,7 @@ function M.setup(client, bufnr)
     require("configs.telescope.launcher")("builtin", "diagnostics", { bufnr = 0 })
   end, vim.tbl_extend("force", opts, { desc = "Buffer diagnostics" }))
 
-  map("n", "<M-T>", function()
+  map("n", "<M-t>", function()
     require("configs.telescope.launcher")("builtin", "diagnostics")
   end, vim.tbl_extend("force", opts, { desc = "Workspace diagnostics" }))
 

@@ -411,3 +411,29 @@ date	kind	version	commit	load1	nvim	metric	unit	median	min	runs
 2026-11-02T02:34Z	release	0.23.0	141315c7-dirty	2.11	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lua lines	count	140979	140979	1
 2026-11-02T02:34Z	release	0.23.0	141315c7-dirty	2.11	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lines	count	172408	172408	1
 2026-11-02T02:34Z	release	0.23.0	141315c7-dirty	2.11	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugin lines	count	2222516	2222516	1
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	startup ready	ms	2380.9	1825.9	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	startup settled	ms	8319.9	8166.6	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	small.md open	ms	216.1	201.1	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	small.md render	ms	404.6	358.6	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	medium.md open	ms	371.2	186.8	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	medium.md render	ms	708.0	401.6	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	large.md open	ms	380.6	265.9	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	large.md render	ms	837.3	560.6	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	code.md open	ms	293.6	207.6	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	code.md render	ms	543.3	527.0	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.lua open	ms	215.0	179.3	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.lua render	ms	425.0	404.8	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.py open	ms	189.7	161.3	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.py render	ms	379.1	366.1	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.ts open	ms	130.3	120.8	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.ts render	ms	331.0	327.1	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.json open	ms	122.2	109.3	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.json render	ms	323.7	323.0	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	rss settled	MiB	124.7	117.8	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	rss peak	MiB	192.8	189.8	3
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugins installed	count	386	386	1
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugins loaded	count	276	276	1
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	config files	count	1574	1574	1
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lua lines	count	140979	140979	1
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lines	count	172413	172413	1
+2026-11-03T00:02Z	release	0.23.1	ed6068ee-dirty	4.68	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugin lines	count	2245426	2245426	1

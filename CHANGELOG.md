@@ -5,6 +5,16 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.23.1] - 2026-11-02
+
+### Changed
+
+- Save-and-quit (normal, insert, visual, select) and save from the command line are on `<M-s>` instead of
+  `<M-S>`, matching Alacritty's Ctrl+Shift+S, which now sends Alt+s.
+- Workspace diagnostics (LSP buffers) and Telescope's launch-pickers key are on `<M-t>` instead of `<M-T>`:
+  Alacritty's Ctrl+Shift+T now sends Alt+t, and tmux passes it to Neovim. tmux also passes Alt+i and Alt+o
+  through now, so the existing `<M-i>` (messages) and `<M-o>` (only window) mappings work inside tmux.
+
 ## [0.23.0] - 2026-11-01
 
 ### Removed
