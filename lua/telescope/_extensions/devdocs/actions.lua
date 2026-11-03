@@ -1,7 +1,7 @@
 local state = require("telescope.state")
-local operations = require("devdocs2.operations")
-local plugin_state = require("devdocs2.state")
-local plugin_config = require("devdocs2.config")
+local operations = require("modules.devdocs2.operations")
+local plugin_state = require("modules.devdocs2.state")
+local plugin_config = require("modules.devdocs2.config")
 
 local open_doc = function(selection, float)
   local bufnr = state.get_global_key("last_preview_bufnr")

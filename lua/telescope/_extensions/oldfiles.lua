@@ -3,7 +3,7 @@ local pickers = require('telescope.pickers')
 local utils = require('telescope.utils')
 local Path = require('plenary.path')
 
-local mru_utils = require('oldfiles.utils')
+local mru_utils = require('modules.oldfiles.utils')
 local logger = require('logger').init('mru')
 
 local setup_highlights = function()

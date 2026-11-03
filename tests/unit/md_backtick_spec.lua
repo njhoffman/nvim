@@ -1,5 +1,5 @@
 -- md_backtick: visual ` toggles inline code spans and fenced blocks in Markdown
-local md = require("md_backtick")
+local md = require("modules.markdown.backtick")
 
 local buf, notes, saved_notify
 

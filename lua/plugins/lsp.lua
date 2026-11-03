@@ -91,7 +91,7 @@ local plugins = {
       { "jbyuki/ntangle-lsp.nvim", dependencies = { "jbyuki/ntangle-ts.nvim" } },
     },
     config = function()
-      require("lsp") -- New single entry point
+      require("core.lsp") -- New single entry point
       vim.import("configs.definition-or-references")
     end,
   },

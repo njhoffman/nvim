@@ -6,7 +6,7 @@ local mock_data = require('telescope._extensions.undo.mock_data')
 local highlights = require('telescope._extensions.undo.highlights')
 local get_previewer = require('telescope._extensions.undo.previewer')
 local entry_maker = require('telescope._extensions.undo.entry_maker')
-local build_undolist = require('undo.generate')
+local build_undolist = require('modules.undo.generate')
 
 mock_data = false
 local undo = function(opts)

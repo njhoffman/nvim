@@ -2,7 +2,7 @@ describe("unicode.digraph", function()
   local digraph
 
   before_each(function()
-    digraph = require("unicode.digraph")
+    digraph = require("modules.unicode.digraph")
   end)
 
   describe("parse_digraphs", function()

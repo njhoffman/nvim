@@ -1,5 +1,5 @@
 -- jumpguard: relisting deleted file buffers and jump failure reports
-local jumpguard = require("jumpguard")
+local jumpguard = require("modules.jumpguard")
 
 local tmpdir = vim.fn.tempname()
 vim.fn.mkdir(tmpdir, "p")

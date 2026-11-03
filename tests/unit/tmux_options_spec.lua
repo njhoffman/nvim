@@ -2,8 +2,8 @@ describe("tmux.configuration.options", function()
   local options
 
   before_each(function()
-    package.loaded["tmux.configuration.options"] = nil
-    options = require("tmux.configuration.options")
+    package.loaded["modules.tmux.configuration.options"] = nil
+    options = require("modules.tmux.configuration.options")
   end)
 
   it("has default copy_sync options", function()

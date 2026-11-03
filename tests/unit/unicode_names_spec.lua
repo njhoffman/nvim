@@ -2,7 +2,7 @@ describe("unicode.names", function()
   local names
 
   before_each(function()
-    names = require("unicode.names")
+    names = require("modules.unicode.names")
   end)
 
   describe("resolve", function()

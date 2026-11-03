@@ -1,5 +1,5 @@
 -- md_codeblocks: yiC / yaC yank every fenced code block in a Markdown buffer without / with fences
-local mc = require("md_codeblocks")
+local mc = require("modules.markdown.codeblocks")
 
 local buf
 

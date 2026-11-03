@@ -40,6 +40,11 @@ removing it. Move removals to `~/.local/backup/nvim/`, keeping their repo paths 
       (`lua/configs/tmp/` went to the backup in v0.21.0)
 - [ ] **Commented-out code blocks.** (p3) [refactor] e.g. `configs/alpha/init.lua` 131-200. Delete them, or move blocks
       kept as future implementations to `docs/reference/`.
+- [ ] **Orphaned top-level modules.** (p2) [chore] Nothing requires `lua/quickfix/`, `lua/notifications/` (only a
+      commented-out line in `init.lua`), `lua/histories/`, `lua/watcher/`, `lua/winsizer/`, `lua/llm-prompts.lua` or
+      `lua/llm-providers.lua` (used only by `llm-prompts`). Found during the `lua/` layout refactor, which left them in
+      place. Move the ones worth keeping to `lua/modules/` and wire them up, back up the rest. CLAUDE.md still lists
+      `lua/watcher/` and the llm files as live.
 
 ## 3. Simplify folder structure and config setup
 
@@ -137,10 +142,10 @@ implementing.
       not found", and when the file does reopen it is missing from the tabline. Not reproduced headless (full config;
       `:bdelete`, `QuickClose`, `BufferDelete`, `BufferClose`, then `<C-o>`): the file reopens listed and in barbar.
       `<C-o>` / `<C-i>` belong to convey.nvim (`~/git/convey.nvim`, `keepjumps buffer N`), which shadows `jump_scroll`
-      in `lua/core/commands/scroll.lua`. Since v0.16.3, `lua/jumpguard` lists a deleted file buffer again when it's entered
+      in `lua/core/commands/scroll.lua`. Since v0.16.3, `lua/modules/jumpguard` lists a deleted file buffer again when it's entered
       and appends each return (and each failed `jump_scroll`) to `~/.local/state/nvim/jumpguard.log` with the jumplist,
       the deletion and the last messages. Next occurrence: read that log, then fix the cause.
-- [x] **Snacks overrides telescope keymaps.** (p1) [bug] `lua/lsp/keymaps.lua` bound buffer-local `<C-t>` / `<M-T>` to
+- [x] **Snacks overrides telescope keymaps.** (p1) [bug] `lua/core/lsp/keymaps.lua` bound buffer-local `<C-t>` / `<M-T>` to
       Snacks diagnostics pickers on LSP attach, shadowing the global telescope `<C-t>`. They now open telescope
       diagnostics (buffer / workspace), covered by `tests/unit/lsp_keymaps_spec.lua` (v0.16.2). `<C-S-t>` has no
       mapping.
@@ -158,7 +163,7 @@ implementing.
       config (no `-u`) printed `mkdir: cannot create directory '/saved'` and `'/restart'`, bfs errors on the same paths
       and `Failed to --listen: permission denied: "/nvim_15_@23_cerus"`. A shell path is being built from an empty
       prefix (likely `stdpath("data")/sessions/{saved,restart}` from `lua/configs/project.lua:51` and
-      `lua/runner/commands/restart.lua:5`, plus a `--listen` socket dir); cause not confirmed. Guard empty prefixes.
+      `lua/modules/runner/commands/restart.lua:5`, plus a `--listen` socket dir); cause not confirmed. Guard empty prefixes.
 
 ## 7. Docs and code consistency
 
@@ -184,7 +189,7 @@ implementing.
       one-line header comment per module, short comments on non-obvious code only, StyLua across the tree, and one
       structure for plugin configs (spec in `plugins/`, options in `configs/<name>.lua`). Do this per directory after
       project 3.
-- [ ] **Stale `lua/tmux/CLAUDE.md`.** (p3) [docs] "Refactoring Status" lists `step_size`, `get_state()` and a broken
+- [ ] **Stale `lua/modules/tmux/CLAUDE.md`.** (p3) [docs] "Refactoring Status" lists `step_size`, `get_state()` and a broken
       `vim.tbl_get` in `resize/` and `keymaps.lua`, none of which exist any more, and "Testing" says no tests exist
       while `tests/unit/tmux_*_spec.lua` has five specs. Rewrite both sections; note that tmux next-3.9 prints
       `window_layout` as JSON, which `layout/parse.lua` handles alongside the classic format.
@@ -197,7 +202,7 @@ implementing.
       own recommended style (e.g. Python's 4) are unchanged on purpose.
 - [x] **Wrap code blocks in markdown.** (p3) [feature] Visual `` ` `` in Markdown toggles a code span (charwise, one
       line) or a ``` fence (linewise or multi-line), keeping the selection; on a wrapped selection it unwraps
-      (`lua/md_backtick.lua`, v0.18.0). No language prompt.
+      (`lua/modules/markdown/backtick.lua`, v0.18.0). No language prompt.
 - [ ] **Empty nested list item renders as a heading.** (p3) [bug] Starting an indented line with `-` under a list item
       styles the line above as an H2 until text follows the dash. This is CommonMark: a line of only `-` under paragraph
       text is a setext H2 underline, and an empty list item can't interrupt a paragraph. render-markdown
@@ -207,7 +212,7 @@ implementing.
       a render-markdown custom handler that skips setext H2s whose underline is a single `-` inside a list item.
 - [x] **Consistent hard wrapping.** (p2) [feature] Markdown: prettierd reflows prose on save (`proseWrap`/`printWidth`
       120 from `~/.prettierrc.yml`, or a project's prettier config), typing wraps even on lines that were already too
-      long (`formatoptions` without `l`), and `J` joins and reflows the paragraph with `gw` (`lua/md_prose.lua`,
+      long (`formatoptions` without `l`), and `J` joins and reflows the paragraph with `gw` (`lua/modules/markdown/prose.lua`,
       `after/ftplugin/markdown.lua`, v0.19.0). Repo Markdown was reflowed once in v0.19.0.
 
 ## 9. Integrations plugin

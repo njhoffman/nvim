@@ -23,7 +23,7 @@ Replace alpha-nvim with an in-repo module. This is a draft: the open questions a
    one-line title.
 2. Project: root (project_nvim detection), git branch, dirty file count, ahead/behind. Fetched asynchronously with
    `vim.system`, rendered as a placeholder until it resolves.
-3. Recent files: top N `oldfiles` entries under cwd (reuse `lua/oldfiles`), with icons and paths relative to home
+3. Recent files: top N `oldfiles` entries under cwd (reuse `lua/modules/oldfiles`), with icons and paths relative to home
 4. Sessions: recent sessions from `loader_session`
 5. Actions: single-key actions (new file, find file, live grep, recent, sessions, config, Lazy, Mason, quit)
 6. Footer: startup time and loaded/total plugin counts from `lazy.stats()`, nvim version, and config version from

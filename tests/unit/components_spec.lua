@@ -4,8 +4,8 @@
 describe("Components", function()
   describe("init", function()
     it("exports init and setup functions", function()
-      package.loaded["components"] = nil
-      local components = require("components")
+      package.loaded["modules.components"] = nil
+      local components = require("modules.components")
       assert.are.equal("function", type(components.init))
       assert.are.equal("function", type(components.setup))
     end)
@@ -15,8 +15,8 @@ describe("Components", function()
     local beacon
 
     before_each(function()
-      package.loaded["components.beacon"] = nil
-      beacon = require("components.beacon")
+      package.loaded["modules.components.beacon"] = nil
+      beacon = require("modules.components.beacon")
     end)
 
     it("exports new and setup functions", function()
@@ -55,8 +55,8 @@ describe("Components", function()
     local color
 
     before_each(function()
-      package.loaded["components.color"] = nil
-      color = require("components.color")
+      package.loaded["modules.components.color"] = nil
+      color = require("modules.components.color")
     end)
 
     it("exports setup and color_line functions", function()
@@ -79,8 +79,8 @@ describe("Components", function()
     local diagnostics
 
     before_each(function()
-      package.loaded["components.diagnostics"] = nil
-      diagnostics = require("components.diagnostics")
+      package.loaded["modules.components.diagnostics"] = nil
+      diagnostics = require("modules.components.diagnostics")
     end)
 
     it("exports setup, hover, and close functions", function()
@@ -103,8 +103,8 @@ describe("Components", function()
     local highlights
 
     before_each(function()
-      package.loaded["components.highlights"] = nil
-      highlights = require("components.highlights")
+      package.loaded["modules.components.highlights"] = nil
+      highlights = require("modules.components.highlights")
     end)
 
     it("exports setup and utility functions", function()
@@ -155,8 +155,8 @@ describe("Components", function()
     local tree
 
     before_each(function()
-      package.loaded["components.inspect_tree"] = nil
-      tree = require("components.inspect_tree")
+      package.loaded["modules.components.inspect_tree"] = nil
+      tree = require("modules.components.inspect_tree")
     end)
 
     it("exports setup and utility functions", function()
@@ -187,8 +187,8 @@ describe("Components", function()
     local motions
 
     before_each(function()
-      package.loaded["components.motions"] = nil
-      motions = require("components.motions")
+      package.loaded["modules.components.motions"] = nil
+      motions = require("modules.components.motions")
     end)
 
     it("exports add_event_listener function", function()
@@ -212,8 +212,8 @@ describe("Components", function()
     local quickfix
 
     before_each(function()
-      package.loaded["components.quickfix"] = nil
-      quickfix = require("components.quickfix")
+      package.loaded["modules.components.quickfix"] = nil
+      quickfix = require("modules.components.quickfix")
     end)
 
     it("exports setup and core functions", function()
@@ -246,8 +246,8 @@ describe("Components", function()
     local tree_maps
 
     before_each(function()
-      package.loaded["components.tree_maps"] = nil
-      tree_maps = require("components.tree_maps")
+      package.loaded["modules.components.tree_maps"] = nil
+      tree_maps = require("modules.components.tree_maps")
     end)
 
     it("exports injections, anon, and named tables", function()
@@ -276,8 +276,8 @@ describe("Components", function()
     local hover
 
     before_each(function()
-      package.loaded["components.lsp_hover"] = nil
-      hover = require("components.lsp_hover")
+      package.loaded["modules.components.lsp_hover"] = nil
+      hover = require("modules.components.lsp_hover")
     end)
 
     it("exports setup, hover, and config", function()
@@ -293,8 +293,8 @@ describe("Components", function()
 
   describe("term_sync", function()
     it("module loads without error", function()
-      package.loaded["components.term_sync"] = nil
-      local ok = pcall(require, "components.term_sync")
+      package.loaded["modules.components.term_sync"] = nil
+      local ok = pcall(require, "modules.components.term_sync")
       assert.is_true(ok)
     end)
   end)
@@ -303,8 +303,8 @@ describe("Components", function()
     local regen
 
     before_each(function()
-      package.loaded["components.tscli_sync"] = nil
-      regen = require("components.tscli_sync")
+      package.loaded["modules.components.tscli_sync"] = nil
+      regen = require("modules.components.tscli_sync")
     end)
 
     it("exports setup and regenerate functions", function()

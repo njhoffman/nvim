@@ -5,6 +5,17 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.26.0] - 2026-11-03
+
+### Changed
+
+- The config's own plugins-in-progress live under `lua/modules/`: `alt`, `components`, `devdocs2`, `format_cmdline`,
+  `gitops`, `glyph-guard`, `jumpguard`, `oldfiles`, `registers`, `runner`, `sidebar`, `stats`, `tail`, `tmux`,
+  `tracker`, `undo` and `unicode`. Require them as `modules.<name>`.
+- The Markdown helpers are one module: `md_prose`, `md_backtick` and `md_codeblocks` are now `modules.markdown.prose`,
+  `modules.markdown.backtick` and `modules.markdown.codeblocks`.
+- The LSP entry point moved from `lua/lsp/` to `lua/core/lsp/` (`require("core.lsp")`).
+
 ## [0.25.0] - 2026-11-03
 
 ### Changed

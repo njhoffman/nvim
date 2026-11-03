@@ -1,6 +1,6 @@
 describe("tmux.version", function()
-  local parse = require("tmux.version.parse")
-  local compare = require("tmux.version.compare")
+  local parse = require("modules.tmux.version.parse")
+  local compare = require("modules.tmux.version.compare")
 
   describe("parse", function()
     it("parses major.minor version", function()

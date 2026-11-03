@@ -1,9 +1,9 @@
 local previewers = require("telescope.previewers")
-local transpiler = require("devdocs2.transpiler")
-local operations = require("devdocs2.operations")
-local plugin_config = require("devdocs2.config")
-local plugin_state = require("devdocs2.state")
-local log = require("devdocs2.log")
+local transpiler = require("modules.devdocs2.transpiler")
+local operations = require("modules.devdocs2.operations")
+local plugin_config = require("modules.devdocs2.config")
+local plugin_state = require("modules.devdocs2.state")
+local log = require("modules.devdocs2.log")
 local utils = require("telescope._extensions.devdocs.utils")
 
 local metadata_previewer = previewers.new_buffer_previewer({

@@ -1,7 +1,7 @@
 local make_entry = require('telescope.make_entry')
 local finders = require('telescope.finders')
 local entry_display = require('telescope.pickers.entry_display')
--- local make_entry = require('gitops.make_entry')
+-- local make_entry = require('modules.gitops.make_entry')
 
 local displayer = entry_display.create({
   separator = ' ▏',

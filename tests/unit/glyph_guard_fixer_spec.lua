@@ -1,4 +1,4 @@
-local fixer = require("glyph-guard.fixer")
+local fixer = require("modules.glyph-guard.fixer")
 
 describe("glyph_guard.fixer.parse_comment", function()
   it("returns the whole line as code when prefix is absent", function()

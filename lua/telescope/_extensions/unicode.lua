@@ -11,7 +11,7 @@ local default_opts = {
 }
 
 local function build_entry_list()
-  local data = require("unicode.data")
+  local data = require("modules.unicode.data")
   local uni_dict = data.get()
   local results = {}
 

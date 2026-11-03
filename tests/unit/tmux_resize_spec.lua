@@ -6,7 +6,7 @@ describe("tmux.resize.resize", function()
   before_each(function()
     -- Clear module cache
     for key, _ in pairs(package.loaded) do
-      if key:match("^tmux%.") then
+      if key:match("^modules%.tmux%.") then
         package.loaded[key] = nil
       end
     end
@@ -19,7 +19,7 @@ describe("tmux.resize.resize", function()
       is_tmux = true,
       resize = function() end,
     }
-    package.loaded["tmux.wrapper.tmux"] = mock_tmux
+    package.loaded["modules.tmux.wrapper.tmux"] = mock_tmux
 
     -- Mock nvim wrapper - default: single window (no splits)
     mock_nvim = {
@@ -37,7 +37,7 @@ describe("tmux.resize.resize", function()
         table.insert(statusline_calls, { winnr = winnr, offset = offset })
       end,
     }
-    package.loaded["tmux.wrapper.nvim"] = mock_nvim
+    package.loaded["modules.tmux.wrapper.nvim"] = mock_nvim
 
     -- Mock layout - default: at tmux border
     mock_layout = {
@@ -45,7 +45,7 @@ describe("tmux.resize.resize", function()
         return true
       end,
     }
-    package.loaded["tmux.layout"] = mock_layout
+    package.loaded["modules.tmux.layout"] = mock_layout
 
     -- Mock options
     mock_options = {
@@ -56,10 +56,10 @@ describe("tmux.resize.resize", function()
         large_y = 3,
       },
     }
-    package.loaded["tmux.configuration.options"] = mock_options
+    package.loaded["modules.tmux.configuration.options"] = mock_options
 
     -- Mock log
-    package.loaded["tmux.log"] = {
+    package.loaded["modules.tmux.log"] = {
       debug = function() end,
       information = function() end,
       warning = function() end,
@@ -69,7 +69,7 @@ describe("tmux.resize.resize", function()
     -- Disable mini.animate integration for tests
     vim.g.minianimate_disable = true
 
-    resize = require("tmux.resize.resize")
+    resize = require("modules.tmux.resize.resize")
   end)
 
   describe("with nvim splits", function()

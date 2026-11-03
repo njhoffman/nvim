@@ -59,7 +59,7 @@ require("mason-tool-installer").setup(tool_settings)
 -- --   -- vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
 -- --
 -- --   if type(client.server_capabilities.signatureHelpProvider) == "table" then
--- --     local lsp_sig = require("lsp.signature")
+-- --     local lsp_sig = require("core.lsp.signature")
 -- --     require("lsp_signature").on_attach(lsp_sig.cfg, bufnr)
 -- --   end
 -- --

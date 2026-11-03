@@ -36,7 +36,7 @@ describe("lsp.keymaps diagnostics pickers", function()
     })
     bufnr = vim.api.nvim_create_buf(true, false)
     vim.api.nvim_set_current_buf(bufnr)
-    require("lsp.keymaps").setup(fake_client(), bufnr)
+    require("core.lsp.keymaps").setup(fake_client(), bufnr)
   end)
 
   after_each(function()

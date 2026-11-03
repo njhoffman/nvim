@@ -220,11 +220,11 @@ Extensive git tooling:
 Most custom functionality is in self-contained modules:
 
 - `lua/watcher/`: File watching system
-- `lua/runner/`: Command runner with tmux/notify output
-- `lua/stats/`: Info panels and statistics
+- `lua/modules/runner/`: Command runner with tmux/notify output
+- `lua/modules/stats/`: Info panels and statistics
 - `lua/devbox/`: Development environment utilities
-- `lua/tracker/`: Activity tracking
-- `lua/tail/`: Log file tailing
+- `lua/modules/tracker/`: Activity tracking
+- `lua/modules/tail/`: Log file tailing
 - `lua/hover/`: Hover information system
 
 ## Performance Notes

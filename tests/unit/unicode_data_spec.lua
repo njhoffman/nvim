@@ -4,9 +4,9 @@ describe("unicode.data", function()
   local config
 
   before_each(function()
-    data = require("unicode.data")
-    cache = require("unicode.cache")
-    config = require("unicode.config")
+    data = require("modules.unicode.data")
+    cache = require("modules.unicode.cache")
+    config = require("modules.unicode.config")
     data.clear()
   end)
 

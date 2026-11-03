@@ -5,7 +5,7 @@
 
 local reset_modules = function()
   for mod, _ in pairs(package.loaded) do
-    if mod:match("^registers") then
+    if mod:match("^modules%.registers") then
       package.loaded[mod] = nil
     end
   end
@@ -30,12 +30,12 @@ describe("Registers", function()
 
   describe("config", function()
     it("get() returns nil before setup", function()
-      local config = require("registers.config")
+      local config = require("modules.registers.config")
       assert.is_nil(config.get())
     end)
 
     it("setup() returns a fully populated options table", function()
-      local config = require("registers.config")
+      local config = require("modules.registers.config")
       local opts = config.setup({})
       assert.is_not_nil(opts)
       assert.are.equal("string", type(opts.show))
@@ -48,13 +48,13 @@ describe("Registers", function()
     end)
 
     it("user override wins over default (show_empty)", function()
-      local config = require("registers.config")
+      local config = require("modules.registers.config")
       local opts = config.setup({ show_empty = false })
       assert.is_false(opts.show_empty)
     end)
 
     it("get() returns the same table after setup", function()
-      local config = require("registers.config")
+      local config = require("modules.registers.config")
       local opts = config.setup({})
       assert.are.equal(opts, config.get())
     end)
@@ -62,7 +62,7 @@ describe("Registers", function()
 
   describe("state", function()
     it("_previous_mode_is_visual returns true for visual modes", function()
-      local state = require("registers.state")
+      local state = require("modules.registers.state")
       state._previous_mode = "v"
       assert.is_true(state._previous_mode_is_visual())
       state._previous_mode = "V"
@@ -72,7 +72,7 @@ describe("Registers", function()
     end)
 
     it("_previous_mode_is_visual returns false for non-visual modes", function()
-      local state = require("registers.state")
+      local state = require("modules.registers.state")
       state._previous_mode = "n"
       assert.is_false(state._previous_mode_is_visual())
       state._previous_mode = "i"
@@ -82,7 +82,7 @@ describe("Registers", function()
     end)
 
     it("initializes new fields to sane defaults", function()
-      local state = require("registers.state")
+      local state = require("modules.registers.state")
       assert.is_false(state._has_determined_register)
       assert.are.equal("", state._keys_to_press_at_the_very_end)
     end)
@@ -90,14 +90,14 @@ describe("Registers", function()
 
   describe("utils._read_registers", function()
     before_each(function()
-      local config = require("registers.config")
+      local config = require("modules.registers.config")
       config.setup({ show = "abc", show_empty = true, hide_only_whitespace = true })
     end)
 
     it("populates filled registers into _register_values", function()
       vim.fn.setreg("a", "hello world")
-      local utils = require("registers.utils")
-      local state = require("registers.state")
+      local utils = require("modules.registers.utils")
+      local state = require("modules.registers.state")
       utils._read_registers()
 
       local found_a = false
@@ -114,8 +114,8 @@ describe("Registers", function()
       vim.fn.setreg("a", "")
       vim.fn.setreg("b", "")
       vim.fn.setreg("c", "")
-      local utils = require("registers.utils")
-      local state = require("registers.state")
+      local utils = require("modules.registers.utils")
+      local state = require("modules.registers.state")
       utils._read_registers()
 
       -- All three should be in empty_registers (no regcontents)
@@ -126,8 +126,8 @@ describe("Registers", function()
       vim.fn.setreg("a", "   \t  ")
       vim.fn.setreg("b", "")
       vim.fn.setreg("c", "")
-      local utils = require("registers.utils")
-      local state = require("registers.state")
+      local utils = require("modules.registers.utils")
+      local state = require("modules.registers.state")
       utils._read_registers()
 
       local a_in_values = false
@@ -143,9 +143,9 @@ describe("Registers", function()
 
     it("replaces newline characters with the configured symbol", function()
       vim.fn.setreg("a", "line1\nline2")
-      local utils = require("registers.utils")
-      local state = require("registers.state")
-      local config = require("registers.config")
+      local utils = require("modules.registers.utils")
+      local state = require("modules.registers.state")
+      local config = require("modules.registers.config")
       local opts = config.get()
       utils._read_registers()
 
@@ -163,12 +163,12 @@ describe("Registers", function()
 
   describe("utils._handle_callback_options", function()
     before_each(function()
-      require("registers.config").setup({})
+      require("modules.registers.config").setup({})
     end)
 
     it("calls the callback immediately when delay is 0", function()
-      local utils = require("registers.utils")
-      local state = require("registers.state")
+      local utils = require("modules.registers.utils")
+      local state = require("modules.registers.state")
       state._mode = "motion"
 
       local called = false
@@ -180,8 +180,8 @@ describe("Registers", function()
     end)
 
     it("skips callback when current mode is not in if_mode", function()
-      local utils = require("registers.utils")
-      local state = require("registers.state")
+      local utils = require("modules.registers.utils")
+      local state = require("modules.registers.state")
       state._mode = "motion"
 
       local called = false
@@ -193,8 +193,8 @@ describe("Registers", function()
     end)
 
     it("runs the callback when current mode matches if_mode", function()
-      local utils = require("registers.utils")
-      local state = require("registers.state")
+      local utils = require("modules.registers.utils")
+      local state = require("modules.registers.state")
       state._mode = "motion"
 
       local called = false
@@ -206,8 +206,8 @@ describe("Registers", function()
     end)
 
     it("runs the 'after' callback after the main cb", function()
-      local utils = require("registers.utils")
-      local state = require("registers.state")
+      local utils = require("modules.registers.utils")
+      local state = require("modules.registers.state")
       state._mode = "motion"
 
       local order = {}
@@ -225,19 +225,19 @@ describe("Registers", function()
 
   describe("utils._longest_register_length", function()
     before_each(function()
-      require("registers.config").setup({})
+      require("modules.registers.config").setup({})
     end)
 
     it("returns 0 when no registers are loaded", function()
-      local utils = require("registers.utils")
-      local state = require("registers.state")
+      local utils = require("modules.registers.utils")
+      local state = require("modules.registers.state")
       state._register_values = {}
       assert.are.equal(0, utils._longest_register_length())
     end)
 
     it("returns the length of the longest register line", function()
-      local utils = require("registers.utils")
-      local state = require("registers.state")
+      local utils = require("modules.registers.utils")
+      local state = require("modules.registers.state")
       state._register_values = {
         { line = "short" },
         { line = "a longer line" },
@@ -249,39 +249,39 @@ describe("Registers", function()
 
   describe("highlights._highlight_for_sign", function()
     before_each(function()
-      require("registers.config").setup({})
+      require("modules.registers.config").setup({})
     end)
 
     it("returns the 'named' highlight for letter registers", function()
-      local highlights = require("registers.highlights")
-      local config = require("registers.config")
+      local highlights = require("modules.registers.highlights")
+      local config = require("modules.registers.config")
       local opts = config.get()
       assert.are.equal(opts.sign_highlights.named, highlights._highlight_for_sign("a"))
     end)
 
     it("returns the 'yank' highlight for register 0", function()
-      local highlights = require("registers.highlights")
-      local opts = require("registers.config").get()
+      local highlights = require("modules.registers.highlights")
+      local opts = require("modules.registers.config").get()
       assert.are.equal(opts.sign_highlights.yank, highlights._highlight_for_sign("0"))
     end)
 
     it("returns the 'read_only' highlight for ':' register", function()
-      local highlights = require("registers.highlights")
-      local opts = require("registers.config").get()
+      local highlights = require("modules.registers.highlights")
+      local opts = require("modules.registers.config").get()
       assert.are.equal(opts.sign_highlights.read_only, highlights._highlight_for_sign(":"))
     end)
   end)
 
   describe("mappings._fill_mappings", function()
     before_each(function()
-      require("registers.config").setup({})
+      require("modules.registers.config").setup({})
       -- Force a reload of mappings so _fill_mappings runs against fresh state
-      package.loaded["registers.mappings"] = nil
+      package.loaded["modules.registers.mappings"] = nil
     end)
 
     it("populates lowercase register keys into state._mappings", function()
-      require("registers").setup({})
-      local state = require("registers.state")
+      require("modules.registers").setup({})
+      local state = require("modules.registers.state")
       -- Sanity: a-z and 0-9 should all be present (reserved j/k excluded)
       local expected = { "a", "b", "c", "x", "y", "z", "0", "1", "9", '"', "*", "+" }
       for _, key in ipairs(expected) do
@@ -290,8 +290,8 @@ describe("Registers", function()
     end)
 
     it("does not populate reserved keys (normal/visual/insert/registers)", function()
-      require("registers").setup({})
-      local state = require("registers.state")
+      require("modules.registers").setup({})
+      local state = require("modules.registers.state")
       assert.is_nil(state._mappings["normal"])
       assert.is_nil(state._mappings["visual"])
       assert.is_nil(state._mappings["insert"])
@@ -299,8 +299,8 @@ describe("Registers", function()
     end)
 
     it("adds uppercase variants for named registers", function()
-      require("registers").setup({})
-      local state = require("registers.state")
+      require("modules.registers").setup({})
+      local state = require("modules.registers.state")
       -- At least one uppercase letter mapping should be present
       assert.is_not_nil(state._mappings["A"])
       assert.is_not_nil(state._mappings["Z"])

@@ -5,7 +5,7 @@ describe("tmux.navigation.navigate", function()
   before_each(function()
     -- Clear module cache
     for key, _ in pairs(package.loaded) do
-      if key:match("^tmux%.") then
+      if key:match("^modules%.tmux%.") then
         package.loaded[key] = nil
       end
     end
@@ -18,7 +18,7 @@ describe("tmux.navigation.navigate", function()
       end,
       change_pane = function() end,
     }
-    package.loaded["tmux.wrapper.tmux"] = mock_tmux
+    package.loaded["modules.tmux.wrapper.tmux"] = mock_tmux
 
     -- Mock nvim wrapper
     mock_nvim = {
@@ -30,7 +30,7 @@ describe("tmux.navigation.navigate", function()
         return 1
       end,
     }
-    package.loaded["tmux.wrapper.nvim"] = mock_nvim
+    package.loaded["modules.tmux.wrapper.nvim"] = mock_nvim
 
     -- Mock layout
     mock_layout = {
@@ -38,7 +38,7 @@ describe("tmux.navigation.navigate", function()
         return false
       end,
     }
-    package.loaded["tmux.layout"] = mock_layout
+    package.loaded["modules.tmux.layout"] = mock_layout
 
     -- Mock options
     mock_options = {
@@ -47,17 +47,17 @@ describe("tmux.navigation.navigate", function()
         persist_zoom = false,
       },
     }
-    package.loaded["tmux.configuration.options"] = mock_options
+    package.loaded["modules.tmux.configuration.options"] = mock_options
 
     -- Mock log
-    package.loaded["tmux.log"] = {
+    package.loaded["modules.tmux.log"] = {
       debug = function() end,
       information = function() end,
       warning = function() end,
       error = function() end,
     }
 
-    navigate = require("tmux.navigation.navigate")
+    navigate = require("modules.tmux.navigation.navigate")
   end)
 
   describe("has_tmux_target", function()

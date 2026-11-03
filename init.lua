@@ -7,7 +7,7 @@ vim.cmd("set shell=" .. _shell)
 
 vim.cmd("colorscheme nord-nick")
 
-require("components").init()
+require("modules.components").init()
 
 require("utils.lazy").setup({ cache = true, reload = false, lazy = false })
 
@@ -17,21 +17,21 @@ for _, mod_name in ipairs({
   "core.commands",
   "core.abbreviations",
   "core.autocommands",
-  "runner",
-  "stats",
-  "devdocs2.setup",
-  "tracker.setup",
-  "tmux.setup",
+  "modules.runner",
+  "modules.stats",
+  "modules.devdocs2.setup",
+  "modules.tracker.setup",
+  "modules.tmux.setup",
   "configs.registers",
   "configs.smoothcursor",
   "action-hints.setup",
   "early-retirement.setup",
-  "oldfiles",
-  "tail",
+  "modules.oldfiles",
+  "modules.tail",
   "configs.mini-comment",
   (vim.g.statusline_backend or "feline") == "feline" and "configs.feline" or "configs.bars",
   "configs.definition-or-references",
-  "unicode",
+  "modules.unicode",
   -- "baleia.setup",
   -- "demicolon.setup",
 }) do
@@ -39,14 +39,14 @@ for _, mod_name in ipairs({
 end
 
 vim.defer_fn(function()
-  vim.import("alt").setup()
+  vim.import("modules.alt").setup()
   vim.import("live-command.setup")
   vim.import("configs.satellite")
   vim.import("configs.convey")
   vim.import("configs.recall")
 
-  vim.import("sidebar").setup()
-  vim.import("format_cmdline").setup()
+  vim.import("modules.sidebar").setup()
+  vim.import("modules.format_cmdline").setup()
 
   vim.import("configs.smoothie").setup({
     implementation = "viml",
@@ -70,7 +70,7 @@ vim.defer_fn(function()
     require("vim.treesitter._select").select_child(vim.v.count1)
   end, { desc = "Shrink treesitter selection" })
 
-  require("components").setup()
+  require("modules.components").setup()
 end, 100)
 
 -- http://www.google.com

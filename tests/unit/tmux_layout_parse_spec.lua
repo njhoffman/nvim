@@ -1,5 +1,5 @@
 describe("tmux.layout.parse", function()
-  local parse = require("tmux.layout.parse")
+  local parse = require("modules.tmux.layout.parse")
 
   it("returns nil for empty string", function()
     assert.is_nil(parse.parse(""))

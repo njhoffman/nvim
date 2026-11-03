@@ -1,7 +1,7 @@
-local search_func = require('gitops.search')
-local diff_func = require('gitops.diff')
-local core_func = require('gitops.core')
-local config = require('gitops.utils.config')
+local search_func = require('modules.gitops.search')
+local diff_func = require('modules.gitops.diff')
+local core_func = require('modules.gitops.core')
+local config = require('modules.gitops.utils.config')
 
 return require('telescope').register_extension({
   setup = function(ext_config, _)

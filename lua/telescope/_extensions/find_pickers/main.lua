@@ -51,7 +51,7 @@ local conf_opts = {
   override = {
     gitops_commits = {
       title = function()
-        local stats = require('gitops.core.commits').stats()
+        local stats = require('modules.gitops.core.commits').stats()
         return stats.count
           .. ' commits over '
           .. stats.duration

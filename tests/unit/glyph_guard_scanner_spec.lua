@@ -1,4 +1,4 @@
-local scanner = require("glyph-guard.scanner")
+local scanner = require("modules.glyph-guard.scanner")
 
 local function make_buf(lines, ft)
   local buf = vim.api.nvim_create_buf(false, true)

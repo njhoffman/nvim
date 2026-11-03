@@ -1,4 +1,4 @@
-require("glyph-guard").setup({
+require("modules.glyph-guard").setup({
   registry_path = vim.fn.stdpath("config") .. "/glyphs.json",
 
   detect = {

@@ -2,7 +2,7 @@ describe("unicode.html_entities", function()
   local html
 
   before_each(function()
-    html = require("unicode.html_entities")
+    html = require("modules.unicode.html_entities")
   end)
 
   describe("data structure", function()
@@ -103,7 +103,7 @@ describe("unicode.search.get_html_entity", function()
   local search
 
   before_each(function()
-    search = require("unicode.search")
+    search = require("modules.unicode.search")
   end)
 
   describe("numeric fallback", function()

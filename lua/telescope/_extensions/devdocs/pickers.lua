@@ -6,11 +6,11 @@ local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local config = require("telescope.config").values
 
-local log = require("devdocs2.log")
-local list = require("devdocs2.list")
-local operations = require("devdocs2.operations")
-local plugin_state = require("devdocs2.state")
-local plugin_config = require("devdocs2.config")
+local log = require("modules.devdocs2.log")
+local list = require("modules.devdocs2.list")
+local operations = require("modules.devdocs2.operations")
+local plugin_state = require("modules.devdocs2.state")
+local plugin_config = require("modules.devdocs2.config")
 
 local devdoc_actions = require("telescope._extensions.devdocs.actions")
 local previewers = require("telescope._extensions.devdocs.previewers")

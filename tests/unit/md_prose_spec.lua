@@ -1,5 +1,5 @@
 -- md_prose: J reflows Markdown prose; typing wraps even on lines that were already long
-local md = require("md_prose")
+local md = require("modules.markdown.prose")
 
 local buf
 

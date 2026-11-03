@@ -92,7 +92,7 @@ end
 function M.jump_scroll(direction, count)
   count = count or 1
   -- jumpguard notifies and logs failures, and logs jumps onto deleted buffers
-  require("jumpguard").jump(count .. (direction == "prev" and "\x0f" or "\x09"))
+  require("modules.jumpguard").jump(count .. (direction == "prev" and "\x0f" or "\x09"))
 end
 
 ---Scroll through changelist

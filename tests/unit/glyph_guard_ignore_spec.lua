@@ -1,4 +1,4 @@
-local ignore = require("glyph-guard.ignore")
+local ignore = require("modules.glyph-guard.ignore")
 
 describe("glyph_guard.ignore", function()
   it("returns false matcher for empty list", function()

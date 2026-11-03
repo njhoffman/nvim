@@ -7,8 +7,8 @@ require("core.autocommands.tagstack")
 require("core.autocommands.events")
 require("core.autocommands.skeletons")
 require("core.autocommands.startup")
-require("jumpguard").setup()
-require("md_backtick").setup()
+require("modules.jumpguard").setup()
+require("modules.markdown.backtick").setup()
 
 vim.cmd([[
   au BufNewFile,BufRead *.atj setlocal ft=javascript

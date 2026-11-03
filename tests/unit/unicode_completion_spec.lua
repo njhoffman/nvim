@@ -2,7 +2,7 @@ describe("unicode.completion", function()
   local completion
 
   before_each(function()
-    completion = require("unicode.completion")
+    completion = require("modules.unicode.completion")
   end)
 
   describe("module structure", function()

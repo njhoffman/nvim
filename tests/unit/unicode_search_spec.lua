@@ -4,11 +4,11 @@ describe("unicode.search", function()
 
   before_each(function()
     -- Pre-load data module with fixture data
-    data = require("unicode.data")
+    data = require("modules.unicode.data")
     data.clear()
 
     -- Override config to use fixture
-    local config = require("unicode.config")
+    local config = require("modules.unicode.config")
     config.use_cache = false
 
     -- Manually parse fixture into data module
@@ -18,7 +18,7 @@ describe("unicode.search", function()
     -- Inject the parsed dict by loading it
     -- We need to make data.get() return our fixture data
     -- Load data module fresh and parse the fixture
-    search = require("unicode.search")
+    search = require("modules.unicode.search")
   end)
 
   describe("find_unicode_by", function()
@@ -81,7 +81,7 @@ describe("unicode.search", function()
 
   describe("get_html_entity", function()
     it("returns named entity for known codepoints", function()
-      local html_entities = require("unicode.html_entities")
+      local html_entities = require("modules.unicode.html_entities")
       -- &amp; is 0x26
       if html_entities[0x26] then
         local result = search.get_html_entity(0x26, false)

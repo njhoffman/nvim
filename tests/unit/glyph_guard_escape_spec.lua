@@ -1,4 +1,4 @@
-local escape = require("glyph-guard.escape")
+local escape = require("modules.glyph-guard.escape")
 
 describe("glyph_guard.escape", function()
   it("maps shell filetypes to shell lang", function()

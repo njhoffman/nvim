@@ -72,7 +72,7 @@ LUA
   cat >"$UNIT/cover_spec.lua" <<'LUA'
 describe("cover", function()
   it("loads a config module", function()
-    assert.is_table(require("tmux.layout.parse"))
+    assert.is_table(require("modules.tmux.layout.parse"))
   end)
 end)
 LUA
@@ -80,7 +80,7 @@ LUA
   run_unit NVIM_COVERAGE="$BATS_TEST_TMPDIR/cov.stats"
   [ "$status" -eq 0 ]
   [ -s "$BATS_TEST_TMPDIR/cov.stats" ]
-  grep -q "lua/tmux/layout/parse.lua" "$BATS_TEST_TMPDIR/cov.stats"
+  grep -q "lua/modules/tmux/layout/parse.lua" "$BATS_TEST_TMPDIR/cov.stats"
 }
 
 @test "adds to stats already in NVIM_COVERAGE instead of replacing them" {

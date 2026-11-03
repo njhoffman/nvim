@@ -27,9 +27,9 @@ local init_window = function(default_options)
   -- -- titlepos = 'Center'
 end
 
-local registers = require("registers")
-local preview = require("registers.preview")
-local ui = require("registers.ui")
+local registers = require("modules.registers")
+local preview = require("modules.registers.preview")
+local ui = require("modules.registers.ui")
 
 -- '*+"-/_=#%.0123456789abcdefghilmnopqrstuvwxyz:',
 local layout_1 = function(win_opts)
@@ -68,7 +68,7 @@ local layout_3 = function(win_opts)
   return new_opts, new_reg
 end
 
-local utils = require("registers.utils")
+local utils = require("modules.registers.utils")
 
 registers.setup({
   layouts = { layout_1, layout_2, layout_3 },
@@ -100,7 +100,7 @@ registers.setup({
     ["k"]       = ui.move_cursor_up(),
     ["<Del>"]   = utils.clear_highlighted_register(),
     ["<BS>"]    = utils.clear_highlighted_register(),
-    -- ['<CR>'] = require('registers').apply_register({ mode = 'paste' }),
+    -- ['<CR>'] = require('modules.registers').apply_register({ mode = 'paste' }),
     -- normal = ui.show_window({ mode = "paste" }),
     -- visual = ui.show_window({ mode = "motion" }),
     -- insert = ui.show_window({ mode = "insert" }),
@@ -157,4 +157,4 @@ registers.setup({
 
 -- -- Define a custom for opening the register window when pressing "r"
 local map = require("mapper").map
-map("n", "pr", require("registers.ui").show_window({ mode = "paste" }), { expr = true })
+map("n", "pr", require("modules.registers.ui").show_window({ mode = "paste" }), { expr = true })

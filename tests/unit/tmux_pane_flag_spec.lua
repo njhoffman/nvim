@@ -1,5 +1,5 @@
 -- tmux.pane_flag: marks the tmux pane with @pane-is-vim while Neovim runs
-local pane_flag = require("tmux.pane_flag")
+local pane_flag = require("modules.tmux.pane_flag")
 
 local TMUX_ENV = { TMUX = "/tmp/tmux-1000/default,1,0", TMUX_PANE = "%7" }
 
