@@ -5,6 +5,16 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Clipboard provider moved to `lua/core/globals/clipboard.lua`. `+` is still written at once; a tmux buffer and the
+  history now come from `clipd yank` in the background, with the filetype, file, lines and operator as context and
+  destinations from `~/.config/clipd/config.toml`. By default deletes (`d`, `c`, `x`) reach `+` only, no longer a tmux
+  buffer, and `"*y` reaches PRIMARY only. On Claude Code's prompt file the source is `claude`. Without clipd, yanks
+  still make a tmux buffer.
+
 ## [0.27.0] - 2026-11-03
 
 ### Changed

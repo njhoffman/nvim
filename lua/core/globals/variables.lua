@@ -3,59 +3,8 @@ package.path = package.path .. ";" .. home .. "/.luarocks/share/lua/5.4/?.lua"
 package.path = package.path .. ";" .. home .. "/.luarocks/share/lua/5.4/?/init.lua"
 package.cpath = package.cpath .. ";" .. home .. "/.luarocks/lib/lua/5.4/?.so"
 
--- TODO: send copy to both registers and tmux buffer
-local function copy(lines, _)
-  require("osc52").copy(table.concat(lines, "\n"))
-end
-
-local function paste()
-  return {
-    vim.fn.split(vim.fn.getreg(""), "\n"),
-    vim.fn.getregtype(""),
-  }
-end
-
 vim.g.start_time = vim.fn.reltime()
-vim.g.clipboard = {
-  name = "xsel_tmux",
-  copy = {
-    ["+"] = function(lines)
-      local text = table.concat(lines, "\n")
-      -- Copy to both xsel and tmux buffer
-      vim.fn.system("xsel -i -b", text)
-      vim.fn.system("tmux load-buffer -", text)
-    end,
-    ["*"] = function(lines)
-      local text = table.concat(lines, "\n")
-      -- Copy to both xsel and tmux buffer
-      vim.fn.system("xsel -i -p", text)
-      vim.fn.system("tmux load-buffer -", text)
-    end,
-  },
-  paste = {
-    ["+"] = function()
-      -- Try xsel first, fallback to tmux
-      local xsel_result = vim.fn.system("xsel -o -b")
-      if vim.v.shell_error == 0 and xsel_result ~= "" then
-        return vim.split(xsel_result, "\n")
-      else
-        local tmux_result = vim.fn.system("tmux save-buffer - 2>/dev/null")
-        return vim.split(tmux_result, "\n")
-      end
-    end,
-    ["*"] = function()
-      -- Try xsel first, fallback to tmux
-      local xsel_result = vim.fn.system("xsel -o -p")
-      if vim.v.shell_error == 0 and xsel_result ~= "" then
-        return vim.split(xsel_result, "\n")
-      else
-        local tmux_result = vim.fn.system("tmux save-buffer - 2>/dev/null")
-        return vim.split(tmux_result, "\n")
-      end
-    end,
-  },
-  cache_enabled = 1,
-}
+require("core.globals.clipboard").setup()
 vim.g.qf_disable_statusline = true -- This should be the default
 vim.g.Eunuch_find_executable = "fd" -- I use my fork of vim-eunuch
 vim.g.Illuminate_ftblacklist = { ".*" } -- Only use lsp highlighting from the plugin
