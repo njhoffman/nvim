@@ -5,7 +5,7 @@ describe("Format Commands", function()
   local format
 
   before_each(function()
-    format = require("commands.format")
+    format = require("core.commands.format")
   end)
 
   describe("Module structure", function()

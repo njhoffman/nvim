@@ -1,12 +1,12 @@
 -- TODO: attach to 'alternate' service
 
 local map = require("mapper").map
-local timeago = require("commands.timeago")
+local timeago = require("core.commands.timeago")
 local devicons = require("nvim-web-devicons")
 local Path = require("plenary.path")
 local popup = require("plenary.popup")
 
-local state = require("commands.buffer.state")
+local state = require("core.commands.buffer.state")
 
 local function to_relative_path(path)
   return Path:new(path):make_relative(vim.uv.cwd())
@@ -117,7 +117,7 @@ M.open_popup = function()
   })
   local bufnr = vim.api.nvim_win_get_buf(state.popup_winid)
   vim.api.nvim_set_option_value("modifiable", false, { buf = bufnr })
-  map("n", "<CR>", "<Cmd> lua require('commands.buffer').select_file_in_history()<CR>", { buffer = bufnr })
+  map("n", "<CR>", "<Cmd> lua require('core.commands.buffer').select_file_in_history()<CR>", { buffer = bufnr })
   require("utils.hl").add_highlight(bufnr, 0, "Identifier", #h.bufs - h.index, 0, -1)
   vim.api.nvim_set_option_value(
     "winhl",

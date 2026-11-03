@@ -3,7 +3,7 @@ local M = {}
 --- Get all highlight groups with their current definitions and source info.
 --- @return table List of { name, hl, source }
 function M.get_highlights()
-  local persistence = require("commands.colors.persistence")
+  local persistence = require("core.commands.colors.persistence")
   local source_index = persistence.build_source_index()
 
   local all_hls = vim.api.nvim_get_hl(0, {})
@@ -28,7 +28,7 @@ end
 --- Get only highlights defined in colorscheme source files.
 --- @return table
 function M.get_colorscheme_highlights()
-  local persistence = require("commands.colors.persistence")
+  local persistence = require("core.commands.colors.persistence")
   local source_index = persistence.build_source_index()
   local results = {}
 

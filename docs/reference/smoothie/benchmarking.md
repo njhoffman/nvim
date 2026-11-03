@@ -53,7 +53,7 @@ The smoothie benchmarking system provides detailed performance metrics for smoot
 
 - `lua/smoothie/init.lua`: Core scrolling logic (~600 lines)
 - `lua/smoothie/benchmark.lua`: Benchmarking module (~330 lines)
-- `lua/commands/buffer/smoothie_toggle.lua`: Toggle system (~200 lines)
+- `lua/core/commands/buffer/smoothie_toggle.lua`: Toggle system (~200 lines)
 
 ## Benchmarking Features
 
@@ -486,13 +486,13 @@ local duration_ms = duration_ns / 1000000.0
 | `plugin/smoothie_benchmark.vim`           | 22    | VimL commands       |
 | `lua/smoothie/init.lua`                   | ~600  | Lua scrolling core  |
 | `lua/smoothie/benchmark.lua`              | ~330  | Lua benchmarking    |
-| `lua/commands/buffer/smoothie_toggle.lua` | ~200  | Toggle system       |
+| `lua/core/commands/buffer/smoothie_toggle.lua` | ~200  | Toggle system       |
 
 ### Configuration Files
 
 - `plugin/smoothie.vim`: Global config (lines 1-112)
 - `lua/configs/vim-smoothie.lua`: Integration layer (274 lines)
-- `lua/commands/buffer/smoothie.lua`: Keymap setup (deprecated, use toggle)
+- `lua/core/commands/buffer/smoothie.lua`: Keymap setup (deprecated, use toggle)
 
 ## Troubleshooting
 

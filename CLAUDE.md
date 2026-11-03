@@ -66,7 +66,7 @@ SMOKE_OUT=$out SMOKE_PLUGINS=all XDG_STATE_HOME=$out/state XDG_CACHE_HOME=$out/c
 ### Entry Point & Module Loading
 
 - **init.lua**: Main entry point that loads core modules via `vim.import()`
-- **lua/globals/importer.lua**: Custom import system wrapper that adds `vim.import()` and `vim.reload()` functions with
+- **lua/core/globals/importer.lua**: Custom import system wrapper that adds `vim.import()` and `vim.reload()` functions with
   error handling
 - **lua/utils/lazy/**: Plugin management system that auto-discovers config files
 
@@ -84,9 +84,9 @@ Key directories:
 
 - **lua/plugins/**: Plugin specifications (main.lua, lsp.lua, completion.lua, dap.lua, colorscheme.lua)
 - **lua/configs/**: Per-plugin configuration files (automatically loaded by lazy.nvim wrapper)
-- **lua/commands/**: Custom user commands and command utilities
-- **lua/autocommands/**: Autocommand definitions
-- **lua/keymaps/**: Keymap definitions
+- **lua/core/commands/**: Custom user commands and command utilities
+- **lua/core/autocommands/**: Autocommand definitions
+- **lua/core/keymaps.lua**: Keymap definitions
 - **lua/utils/**: Utility functions and helper modules
 - **lua/telescope/\_extensions/**: Custom Telescope extensions
 
@@ -205,7 +205,7 @@ Extensive git tooling:
 
 ### Adding a New Command
 
-1. Create file in `lua/commands/{name}.lua`
+1. Create file in `lua/core/commands/{name}.lua`
 2. Define command with `vim.api.nvim_create_user_command()`
 3. Module is auto-loaded via init.lua → commands module
 

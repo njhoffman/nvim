@@ -72,8 +72,8 @@ Or set it as default in `~/.config/bat/config`:
 
 ### Module Location
 
-- Command: `lua/commands/colorscheme_export.lua`
-- Registration: `lua/commands/init.lua`
+- Command: `lua/core/commands/colorscheme_export.lua`
+- Registration: `lua/core/commands/init.lua`
 - Tests: `tests/unit/colorscheme_export_spec.lua`
 - Manual test: `tests/manual/test_colorscheme_export.lua`
 
@@ -93,7 +93,7 @@ The module maps Neovim highlight groups to tmTheme scopes:
 ### API
 
 ```lua
-local colorscheme_export = require("commands.colorscheme_export")
+local colorscheme_export = require("core.commands.colorscheme_export")
 
 -- Generate tmTheme XML string
 local xml = colorscheme_export.generate_tmtheme("theme-name")
@@ -195,7 +195,7 @@ If bat rejects the theme:
 
 ## Contributing
 
-To add new highlight group mappings, edit the `map_hl_to_scope()` function in `lua/commands/colorscheme_export.lua`.
+To add new highlight group mappings, edit the `map_hl_to_scope()` function in `lua/core/commands/colorscheme_export.lua`.
 
 To report issues or suggest improvements, see the project documentation.
 
@@ -324,7 +324,7 @@ Keep current implementation but document limitations:
 
 ## Files Modified
 
-### lua/commands/colorscheme_export.lua
+### lua/core/commands/colorscheme_export.lua
 
 **Changes Made:**
 

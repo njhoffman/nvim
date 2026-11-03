@@ -137,7 +137,7 @@ implementing.
       not found", and when the file does reopen it is missing from the tabline. Not reproduced headless (full config;
       `:bdelete`, `QuickClose`, `BufferDelete`, `BufferClose`, then `<C-o>`): the file reopens listed and in barbar.
       `<C-o>` / `<C-i>` belong to convey.nvim (`~/git/convey.nvim`, `keepjumps buffer N`), which shadows `jump_scroll`
-      in `lua/commands/scroll.lua`. Since v0.16.3, `lua/jumpguard` lists a deleted file buffer again when it's entered
+      in `lua/core/commands/scroll.lua`. Since v0.16.3, `lua/jumpguard` lists a deleted file buffer again when it's entered
       and appends each return (and each failed `jump_scroll`) to `~/.local/state/nvim/jumpguard.log` with the jumplist,
       the deletion and the last messages. Next occurrence: read that log, then fix the cause.
 - [x] **Snacks overrides telescope keymaps.** (p1) [bug] `lua/lsp/keymaps.lua` bound buffer-local `<C-t>` / `<M-T>` to
@@ -164,7 +164,7 @@ implementing.
 
 - [x] **Consolidate documentation into `docs/`.** (p2) [docs] v0.22.0 moved the markdown and keymap dumps from
       `doc/` and `lua/` to `docs/reference/`, indexed in `docs/README.md`. `doc/helpfiles/` stays: it is the source
-      dir of `lua/commands/help.lua` (`_name.txt` is its naming convention, not drafts).
+      dir of `lua/core/commands/help.lua` (`_name.txt` is its naming convention, not drafts).
 - [x] **Remove implemented or stale specs.** (p2) [docs] v0.22.0 moved `doc/specs/` to the backup; the open
       ExportColorscheme work is now in "Highlight exporters" (project 9).
 - [ ] **Duplicate help files.** (p3) [chore] `doc/helpfiles/` has near-copies whose tags differ: `_devhints-bash.txt` /
@@ -172,7 +172,7 @@ implementing.
       `template.txt` (a filled-in `_template.txt`). `doc/ack-test.txt` duplicates `doc/helpfiles/ack-test.txt`, and
       `doc/mini-surround.txt` and `doc/noice.nvim.txt` are copies of the plugins' own help, so `doc/tags` defines
       their tags twice. Keep one of each.
-- [ ] **Help export bugs.** (p3) [bug] `export_help_files` in `lua/commands/help.lua` checks `cfg.dir_help`, which
+- [ ] **Help export bugs.** (p3) [bug] `export_help_files` in `lua/core/commands/help.lua` checks `cfg.dir_help`, which
       doesn't exist (so it always calls mkdir), compares the full glob path to `'_template.txt'` (so the template is
       always exported), and runs `:helptags` once per file. Fix the checks and run `:helptags` once at the end.
 - [ ] **Fold sub-TODO files into this one.** (p2) [docs] `lua/configs/bars/TODO.md`, `lua/configs/vimade/TODO.md` and

@@ -181,7 +181,7 @@ describe("Logger", function()
       -- The test runner loads with --noplugin, so globals/init.lua is not
       -- auto-loaded. Load it explicitly to test the vim.* integration.
       if vim.dbglog == nil then
-        pcall(require, "globals")
+        pcall(require, "core.globals")
       end
     end)
 

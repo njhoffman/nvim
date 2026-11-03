@@ -31,19 +31,19 @@ function M.setup(client, bufnr)
   )
 
   map("n", "[d", function()
-    require("commands.scroll").diag_scroll("prev")
+    require("core.commands.scroll").diag_scroll("prev")
   end, vim.tbl_extend("force", opts, { desc = "Previous diagnostic" }))
 
   map("n", "]d", function()
-    require("commands.scroll").diag_scroll("next")
+    require("core.commands.scroll").diag_scroll("next")
   end, vim.tbl_extend("force", opts, { desc = "Next diagnostic" }))
 
   map("n", "[e", function()
-    require("commands.scroll").diag_scroll("prev", "ERROR")
+    require("core.commands.scroll").diag_scroll("prev", "ERROR")
   end, vim.tbl_extend("force", opts, { desc = "Previous error" }))
 
   map("n", "]e", function()
-    require("commands.scroll").diag_scroll("next", "ERROR")
+    require("core.commands.scroll").diag_scroll("next", "ERROR")
   end, vim.tbl_extend("force", opts, { desc = "Next error" }))
 
   map("n", "gqd", function()

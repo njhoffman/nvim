@@ -1,4 +1,4 @@
-local events = require('autocommands.events.groups')
+local events = require('core.autocommands.events.groups')
 
 local processed = { events = {}, records = {} }
 local process_events = function(...)

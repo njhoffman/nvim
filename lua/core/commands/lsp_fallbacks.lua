@@ -1,6 +1,6 @@
 -- handlers for lsp/treesitter fallback functions
 
-local ts_locals = require("commands.treesitter.locals")
+local ts_locals = require("core.commands.treesitter.locals")
 
 local logger = require("logger").init("lsp_fallbacks")
 

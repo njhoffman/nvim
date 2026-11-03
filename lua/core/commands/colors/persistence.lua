@@ -95,7 +95,7 @@ end
 --- Save the edit buffer contents back to colorscheme source files.
 --- @param bufnr number
 function M.save(bufnr)
-  local edit_buffer = require("commands.colors.edit_buffer")
+  local edit_buffer = require("core.commands.colors.edit_buffer")
   local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
   local index = M.build_source_index()
 

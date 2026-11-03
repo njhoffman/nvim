@@ -1,5 +1,5 @@
 local map = vim.keymap.set
-local wez = require("commands.termints.wezterm-cli")
+local wez = require("core.commands.termints.wezterm-cli")
 
 map("n", "<BS><BS><BS>", ":qall!<CR>", {
   noremap = true,
@@ -21,5 +21,5 @@ map("n", "<leader>ls", function()
   })
 end)
 
-require("commands.termints.git")
-require("commands.termints.repl")
+require("core.commands.termints.git")
+require("core.commands.termints.repl")

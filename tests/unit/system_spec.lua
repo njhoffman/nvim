@@ -5,7 +5,7 @@ describe("System Commands", function()
   local system
 
   before_each(function()
-    system = require("commands.system")
+    system = require("core.commands.system")
     -- Clear the + register before each test
     vim.fn.setreg('+', '')
   end)

@@ -1,4 +1,4 @@
-local actions = require("commands.ui.actions")
+local actions = require("core.commands.ui.actions")
 
 local setup_commands = function()
   vim.api.nvim_create_user_command(

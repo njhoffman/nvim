@@ -5,6 +5,21 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.25.0] - 2026-11-03
+
+### Changed
+
+- The config's own startup modules live under `lua/core/`: `globals/`, `keymaps.lua`, `commands/`,
+  `abbreviations.lua`, `autocommands/`, `neovide.lua` and `options/`. Require them as `core.<name>` (for example
+  `require("core.commands.scroll")`); the old top-level names no longer resolve.
+- `user-options.lua` and `vim-options.lua` are now `core/options/user.lua` and `core/options/vim.lua`, loaded together
+  by `core.options`.
+
+### Removed
+
+- `lua/config.lua` and `lua/settings.lua`, leftovers of the Packer-era setup that nothing loaded. They are in
+  `~/.local/backup/nvim/lua/`.
+
 ## [0.24.0] - 2026-11-03
 
 ### Added

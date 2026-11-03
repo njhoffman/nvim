@@ -10,7 +10,7 @@ local default_map_repl_opts = {
   desc = "Open a REPL in wezterm",
 }
 
-local wez = require("commands.termints.wezterm-cli")
+local wez = require("core.commands.termints.wezterm-cli")
 
 ---@param keys string
 ---@param shell string

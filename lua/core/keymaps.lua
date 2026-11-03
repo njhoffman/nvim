@@ -146,14 +146,14 @@ map({ "n", "x" }, "<M-:>", "q:", {
   desc = " open the command window",
 })
 
-map("c", "<C-y>", "<cmd>lua require('commands.cmdline').yank_cmdline()<cr>", {
+map("c", "<C-y>", "<cmd>lua require('core.commands.cmdline').yank_cmdline()<cr>", {
   category = "Command",
   label = " yank cmdline",
   desc = " yank from command line",
   remap = true,
 })
 
-map("c", "<M-y>", "<cmd>lua require('commands.cmdline').yank_cmdline()<cr>", {
+map("c", "<M-y>", "<cmd>lua require('core.commands.cmdline').yank_cmdline()<cr>", {
   category = "Command",
   label = " yank cmdline",
   desc = " yank from command line",
@@ -241,7 +241,7 @@ map("c", "<C-Del>", "<S-Right><C-w>", {
   desc = " delete one word to the right",
 })
 
-map("c", "<C-D>", '<cmd>lua require("commands.cmdline").delete_eol()<cr>', {
+map("c", "<C-D>", '<cmd>lua require("core.commands.cmdline").delete_eol()<cr>', {
   silent = false,
   category = "Command",
   label = " delete eol",
@@ -260,14 +260,14 @@ vmap("c", "<C-g>", {
   label = " next search match",
 })
 
-map("c", "<M-g>", '<cmd>lua require("commands.cmdline").jump_search_prev()<cr>', {
+map("c", "<M-g>", '<cmd>lua require("core.commands.cmdline").jump_search_prev()<cr>', {
   silent = false,
   category = "Command",
   label = " toggle cmdline",
   desc = " toggle cmdline depending on command mode",
 })
 
-map("c", "<M-^>", '<cmd>lua require("commands.cmdline").toggle()<cr>', {
+map("c", "<M-^>", '<cmd>lua require("core.commands.cmdline").toggle()<cr>', {
   silent = false,
   category = "Command",
   label = " toggle cmdline",
@@ -1596,7 +1596,7 @@ map('n', '<leader>s', '<cmd>new<cr>', {
   desc = ' window split vertically',
 })
 
-map({ "n" }, "<C-w><C-CR>", "<cmd>lua require('commands.ui').smart_win_split()<cr>", { desc = " smart window split" })
+map({ "n" }, "<C-w><C-CR>", "<cmd>lua require('core.commands.ui').smart_win_split()<cr>", { desc = " smart window split" })
 
 -- TODO: switch _ and | and make thme toggleable
 map('n', '_', function()

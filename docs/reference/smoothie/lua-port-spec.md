@@ -14,7 +14,7 @@ just in case one breaks.
 <https://github.com/psliwka/vim-smoothie>
 
 There's some additional code involved: /home/nicholas/.config/nvim/plugin/smoothie.vim
-/home/nicholas/.config/nvim/lua/configs/vim-smoothie.lua /home/nicholas/.config/nvim/lua/commands/buffer/smoothie.lua
+/home/nicholas/.config/nvim/lua/configs/vim-smoothie.lua /home/nicholas/.config/nvim/lua/core/commands/buffer/smoothie.lua
 
 ---
 
@@ -50,7 +50,7 @@ Successfully modernized vim-smoothie with comprehensive benchmarking and dual Vi
   - Identical metrics to VimL version
   - Float window display
   - Turbulence detection
-- **lua/commands/buffer/smoothie_toggle.lua** (~200 lines)
+- **lua/core/commands/buffer/smoothie_toggle.lua** (~200 lines)
   - Toggle between VimL/Lua implementations
   - Config synchronization
   - Benchmark command wrappers
@@ -356,7 +356,7 @@ Minimal when benchmarking enabled:
 | plugin/smoothie_benchmark.vim            | 22        | VimL commands      |
 | lua/smoothie/init.lua                    | ~600      | Lua scrolling core |
 | lua/smoothie/benchmark.lua               | ~330      | Lua benchmarking   |
-| lua/commands/buffer/smoothie_toggle.lua  | ~200      | Toggle system      |
+| lua/core/commands/buffer/smoothie_toggle.lua  | ~200      | Toggle system      |
 | docs/reference/smoothie/benchmarking.md             | ~2400     | Documentation      |
 | tests/manual/test_smoothie_benchmark.lua | ~300      | Tests              |
 | **Total**                                | **~4483** | **lines added**    |

@@ -1,4 +1,4 @@
-local tips_list = require("commands.tips.list")
+local tips_list = require("core.commands.tips.list")
 
 local nl = "\n   ➜ "
 local parse_tip_args = function(args)

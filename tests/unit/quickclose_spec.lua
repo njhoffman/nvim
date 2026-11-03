@@ -1,7 +1,7 @@
 -- QuickClose command unit tests
 -- Tests the syntax fix for the count_listed_buffers function (line 76)
 -- and comprehensive functionality of the QuickClose command
-local quickclose = require("commands.quickclose")
+local quickclose = require("core.commands.quickclose")
 
 describe("QuickClose", function()
   before_each(function()

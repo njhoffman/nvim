@@ -4,7 +4,7 @@ describe("markdown indentation", function()
   local buf
 
   before_each(function()
-    require("vim-options")
+    require("core.options.vim")
     vim.cmd("filetype plugin on")
     buf = vim.api.nvim_create_buf(true, false)
     vim.api.nvim_set_current_buf(buf)

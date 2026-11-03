@@ -9,7 +9,7 @@ vim.opt.rtp:prepend(".")
 print("=== ColorschemeExport Manual Test ===\n")
 
 -- Load the module
-local colorscheme_export = require("commands.colorscheme_export")
+local colorscheme_export = require("core.commands.colorscheme_export")
 print("✓ Module loaded successfully")
 
 -- Test 1: Generate tmTheme

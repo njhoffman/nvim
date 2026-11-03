@@ -92,7 +92,7 @@ function M.from_visual(opts)
     table.insert(group_entries, { name = name })
   end
 
-  require("commands.colors.edit_buffer").open(group_entries)
+  require("core.commands.colors.edit_buffer").open(group_entries)
 end
 
 return M

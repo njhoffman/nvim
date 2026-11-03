@@ -5,7 +5,7 @@ describe("ColorschemeExport", function()
   local colorscheme_export
 
   before_each(function()
-    colorscheme_export = require("commands.colorscheme_export")
+    colorscheme_export = require("core.commands.colorscheme_export")
   end)
 
   after_each(function()

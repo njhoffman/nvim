@@ -1,4 +1,4 @@
-local utils = require("commands.ui.utils")
+local utils = require("core.commands.ui.utils")
 
 local config = {
   auto_close_ft = {

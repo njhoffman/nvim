@@ -10,11 +10,10 @@ if vim.env.PROF then
 end
 
 -- global require handler
-require("globals.importer")
-vim.import("globals.variables")
-vim.import("user-options")
-vim.import("vim-options")
-vim.import("neovide")
+require("core.globals.importer")
+vim.import("core.globals.variables")
+vim.import("core.options")
+vim.import("core.neovide")
 
 local _nil = function()
   return nil

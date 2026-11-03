@@ -230,7 +230,7 @@ function M.create()
   vim.api.nvim_create_autocmd("BufWriteCmd", {
     buffer = bufnr,
     callback = function()
-      local persistence = require("commands.colors.persistence")
+      local persistence = require("core.commands.colors.persistence")
       local ok, err = pcall(persistence.save, bufnr)
       if ok then
         vim.bo[bufnr].modified = false
@@ -253,7 +253,7 @@ function M.load(groups, opts)
   local bufnr = M.create()
 
   -- Build source index for section headers
-  local persistence = require("commands.colors.persistence")
+  local persistence = require("core.commands.colors.persistence")
   local source_index = persistence.build_source_index()
 
   -- Group by source file

@@ -1,6 +1,6 @@
 -- require('internals').init()
 
-require("globals")
+require("core.globals")
 
 local _shell = vim.o.shell or "/bin/sh"
 vim.cmd("set shell=" .. _shell)
@@ -13,10 +13,10 @@ require("utils.lazy").setup({ cache = true, reload = false, lazy = false })
 
 for _, mod_name in ipairs({
   "configs.project",
-  "keymaps",
-  "commands",
-  "abbreviations",
-  "autocommands",
+  "core.keymaps",
+  "core.commands",
+  "core.abbreviations",
+  "core.autocommands",
   "runner",
   "stats",
   "devdocs2.setup",

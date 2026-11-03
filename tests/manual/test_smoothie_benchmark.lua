@@ -82,7 +82,7 @@ end
 local function test_toggle_system()
   print("\n=== Testing Toggle System ===\n")
 
-  local ok, toggle = pcall(require, "commands.buffer.smoothie_toggle")
+  local ok, toggle = pcall(require, "core.commands.buffer.smoothie_toggle")
   assert(ok, "Should be able to load toggle module")
   print("✓ Toggle module loads")
 
@@ -209,7 +209,7 @@ end
 local function test_consolidated_commands()
   print("\n=== Testing Consolidated Commands ===\n")
 
-  local toggle = require("commands.buffer.smoothie_toggle")
+  local toggle = require("core.commands.buffer.smoothie_toggle")
 
   -- Test that consolidated commands work for both implementations
   local commands = vim.api.nvim_get_commands({})

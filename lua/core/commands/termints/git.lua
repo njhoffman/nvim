@@ -1,5 +1,5 @@
 local map = vim.keymap.set
-local wez = require("commands.termints.wezterm-cli")
+local wez = require("core.commands.termints.wezterm-cli")
 
 -- map("n", "<leader>Gk", wez.koji(), {
 --   desc = "Open koji to create a conventional commit",

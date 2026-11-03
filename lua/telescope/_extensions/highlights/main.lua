@@ -21,7 +21,7 @@ local function open_in_editor(selections)
   end
 
   if #groups > 0 then
-    require("commands.colors.edit_buffer").open(groups)
+    require("core.commands.colors.edit_buffer").open(groups)
   end
 end
 

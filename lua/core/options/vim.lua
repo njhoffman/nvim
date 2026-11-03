@@ -1,7 +1,6 @@
 local g = vim.g
 local o, wo, bo = vim.o, vim.wo, vim.bo
 local opt = require("utils.core").opt
--- local config = require("config")
 
 g.mapleader = [[,]]
 g.maplocalleader = [[,]]

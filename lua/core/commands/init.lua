@@ -1,29 +1,29 @@
-local format = require("commands.format")
-local buffer = require("commands.buffer")
-local tips = require("commands.tips")
-local help = require("commands.help")
-local debug = require("commands.debug")
--- local paste = require('commands.paste')
-local reload = require("commands.reload")
-local system = require("commands.system")
--- local ansi = require("commands.ansi")
-local quickclose = require("commands.quickclose")
+local format = require("core.commands.format")
+local buffer = require("core.commands.buffer")
+local tips = require("core.commands.tips")
+local help = require("core.commands.help")
+local debug = require("core.commands.debug")
+-- local paste = require('core.commands.paste')
+local reload = require("core.commands.reload")
+local system = require("core.commands.system")
+-- local ansi = require("core.commands.ansi")
+local quickclose = require("core.commands.quickclose")
 -- colorscheme_export moved to commands.colors module
-local silence = require("commands.silence")
-local range_history = require("commands.range-history")
-local scroll = require("commands.scroll")
-local lsp_fallbacks = require("commands.lsp_fallbacks")
-local termints = require("commands.termints")
+local silence = require("core.commands.silence")
+local range_history = require("core.commands.range-history")
+local scroll = require("core.commands.scroll")
+local lsp_fallbacks = require("core.commands.lsp_fallbacks")
+local termints = require("core.commands.termints")
 
--- require("commands.html-psl")
+-- require("core.commands.html-psl")
 
 local map = require("mapper").map
 
 local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
 
-require("commands.ui").setup()
-require("commands.colors").setup()
+require("core.commands.ui").setup()
+require("core.commands.colors").setup()
 quickclose.setup()
 range_history.setup()
 

@@ -1,7 +1,7 @@
-local edit_buffer = require("commands.colors.edit_buffer")
-local inspector = require("commands.colors.inspector")
-local visual = require("commands.colors.visual")
-local colorscheme_export = require("commands.colorscheme_export")
+local edit_buffer = require("core.commands.colors.edit_buffer")
+local inspector = require("core.commands.colors.inspector")
+local visual = require("core.commands.colors.visual")
+local colorscheme_export = require("core.commands.colorscheme_export")
 
 local M = {}
 
@@ -46,7 +46,7 @@ function M.setup()
       vim.notify("No highlight editor buffer open", vim.log.levels.WARN)
       return
     end
-    local persistence = require("commands.colors.persistence")
+    local persistence = require("core.commands.colors.persistence")
     local ok, err = pcall(persistence.save, bufnr)
     if ok then
       vim.bo[bufnr].modified = false

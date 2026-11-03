@@ -23,7 +23,7 @@ on the runtimepath. Vim help files (`:help` tags) stay in `doc/`.
   - [vim-mappings-notes.md](reference/vim-mappings-notes.md): old vim mapping notes (2021).
 
 Personal help files are written in `doc/helpfiles/` (`_name.txt` sources, `_template.txt` for new ones) and exported
-to `stdpath("data")/site/doc` by `lua/commands/help.lua`; they stay in `doc/`.
+to `stdpath("data")/site/doc` by `lua/core/commands/help.lua`; they stay in `doc/`.
 
 Adding reference code: put it in `reference/<topic>.md` (or `reference/<topic>/` for several files), one fenced block
 per snippet with a one-line description above it, and link it here.
