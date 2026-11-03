@@ -42,7 +42,6 @@ local formatters_by_ft = {
   sass = { "prettierd" },
   nasm = { "asmfmt" },
   yaml = { "prettierd" }, -- yamlfix
-  nix = { "nixpkgs_fmt" },
   proto = { "buf", "protolint" },
   python = {
     -- "ruff_fix",

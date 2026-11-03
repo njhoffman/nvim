@@ -169,11 +169,18 @@ implementing.
 - [ ] **action-hints errors are not contained.** (p3) [bug] `throttle` in `lua/action-hints/utils.lua` wraps `pcall`
       around `vim.schedule_wrap(...)`, which only schedules the callback; errors inside a provider still surface on
       every cursor move. `pcall` the provider inside the scheduled function and log failures once.
-- [ ] **Full config errors when started headless in a sandboxed shell.** (p3) [bug] `nvim --headless` with the full
-      config (no `-u`) printed `mkdir: cannot create directory '/saved'` and `'/restart'`, bfs errors on the same paths
-      and `Failed to --listen: permission denied: "/nvim_15_@23_cerus"`. A shell path is being built from an empty
-      prefix (likely `stdpath("data")/sessions/{saved,restart}` from `lua/configs/project.lua:51` and
-      `lua/modules/runner/commands/restart.lua:5`, plus a `--listen` socket dir); cause not confirmed. Guard empty prefixes.
+- [ ] **nvim.run errors in a non-interactive shell.** (p3) [bug] `nvim` is an alias for the zsh function `nvim.run`,
+      so even `nvim --version` from a script or Claude Code's shell printed `mkdir: cannot create directory '/saved'`
+      and `'/restart'`, bfs errors on those paths and `Failed to --listen: permission denied: "/nvim_15_@23_cerus"`.
+      Its session and socket helpers build paths from a variable that is empty there. Not this repo's code: the fix
+      belongs in the shell config, guarding the empty prefix.
+- [ ] **Most gitops pickers error.** (p2) [bug] 8 of the 14 `:Telescope gitops <picker>` exports fail when called:
+      `search_content`, `search_content_file`, `checkout_reflog`, `branches`, `diff_branch`, `diff_branch_file`,
+      `diff_commit_file`, `diff_commit_line`. The six rechecked on v0.24.0 fail the same way, so it predates the layout
+      refactor. Pickers call `open_diff_view_*` and `checkout_reflog_entry` on `modules.gitops.mappings`, but they are
+      defined in `mappings/actions.lua`; `core/branches.lua:15` calls `get_repo` on `utils.git`, but it is in `utils`;
+      `diff_branch` passes `git_utils.base_branch()` to `table.insert`, likely with an extra return value. Bare
+      `:Telescope gitops` also errors because there is no `gitops` export. No test covers these exports.
 
 ## 7. Docs and code consistency
 

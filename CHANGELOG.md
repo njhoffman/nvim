@@ -5,7 +5,7 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.28.0] - 2026-11-03
 
 ### Changed
 
@@ -14,6 +14,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   destinations from `~/.config/clipd/config.toml`. By default deletes (`d`, `c`, `x`) reach `+` only, no longer a tmux
   buffer, and `"*y` reaches PRIMARY only. On Claude Code's prompt file the source is `claude`. Without clipd, yanks
   still make a tmux buffer.
+- Updated 37 plugins in `lazy-lock.json` and dropped `neoscroll.nvim` from it.
+
+### Removed
+
+- The `nixpkgs_fmt` formatter for Nix files in `lua/configs/conform.lua`, so conform no longer formats them.
 
 ## [0.27.0] - 2026-11-03
 
