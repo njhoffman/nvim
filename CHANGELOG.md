@@ -5,6 +5,14 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.30.0] - 2026-11-03
+
+### Changed
+
+- The release report runs when pushing, not with every commit. `scripts/release.sh` now only commits and tags, and the
+  new `scripts/push.sh` runs the report for the latest tag, generates `summary.md`, commits the report files and pushes.
+  A plain `git push` of main is refused by `scripts/hooks/pre-push`; `git push --no-verify` skips the check.
+
 ## [0.29.0] - 2026-11-03
 
 ### Added

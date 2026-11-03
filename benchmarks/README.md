@@ -1,13 +1,13 @@
 # Benchmarks
 
-Startup and rendering times of this config, recorded with every release and compared with the average of the previous 10
+Startup and rendering times of this config, recorded with every push and compared with the average of the previous 10
 releases and with a baseline measured under low load. The latest table is in
 [docs/PERFORMANCE.md](../docs/PERFORMANCE.md).
 
 ```sh
 benchmarks/run                       # measure and print the table; records nothing
 benchmarks/run --baseline            # record a new baseline (see below)
-./scripts/report.sh 0.16.0           # release flow: tests, cloc, then records release 0.16.0
+./scripts/report.sh 0.16.0           # what scripts/push.sh runs: tests, cloc, records release 0.16.0
 BENCH=0 ./scripts/report.sh          # skip the benchmarks
 benchmarks/generate.py               # regenerate the fixtures (deterministic)
 ```

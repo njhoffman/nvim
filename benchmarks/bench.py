@@ -476,7 +476,7 @@ def update_performance_doc(table, path=PERFORMANCE):
   else:
     text = (
       "# Performance\n\n"
-      "Startup and rendering benchmarks, recorded with every release by `scripts/report.sh`\n"
+      "Startup and rendering benchmarks, recorded with every push by `scripts/report.sh`\n"
       "through `benchmarks/run`. The table below is rewritten on each recorded run.\n"
     )
   path.write_text(text.rstrip("\n") + "\n\n## Benchmarks\n\n" + block + "\n")

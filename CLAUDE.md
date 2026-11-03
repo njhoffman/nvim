@@ -15,7 +15,8 @@ This directory is its own git repository (`origin` = `git@github.com:njhoffman/n
 ### Versioning and releases
 
 The config uses semver with annotated `vX.Y.Z` tags and a Keep a Changelog `CHANGELOG.md`. Every verified, completed
-change is released automatically: commit, bump, tag, push.
+change gets its own commit, bump and tag. The report runs when pushing, not on every commit, so changes can pile up
+locally and go out together.
 
 Bump rules (pre-1.0):
 
@@ -23,26 +24,33 @@ Bump rules (pre-1.0):
 - **minor**: new features or modules, refactors, removals, anything breaking
 - **major**: only when explicitly requested (1.0.0)
 
-Release steps:
+Per change:
 
-1. `./scripts/report.sh X.Y.Z` runs all tests with coverage (Plenary specs in parallel, mini.test, the Python tests in
-   `tests/bench/` and the bats tests in `tests/scripts/`), then cloc (the plugin tree's cloc is cached by
-   `lazy-lock.json`), then the benchmarks, recording them as release X.Y.Z in `benchmarks/history.tsv` and rewriting
-   the table in `docs/PERFORMANCE.md`. It takes about 10-20 minutes: about 5 for tests, the rest benchmarks, which
-   first wait for the load to drop. Progress goes to stderr as it happens (phases with durations, one line per spec
-   file and each failure, benchmark load waits and sessions); run it in the background and watch that output. It
-   prints the report directory (`.reports/<timestamp>/`). If any test or the benchmark run fails it aborts and moves
-   the report to `.reports/failed/<timestamp>/` (gitignored) with `tests.log` and `bench.log`: do not commit, tag or
-   push. Benchmark warnings (a metric over 25% slower than its average or baseline) do not abort; mention them.
-2. Write `<report dir>/summary.md`: code stats, coverage, counts of installed plugins and tests, and deltas against the
-   previous report, followed by the benchmark tables from `<report dir>/bench.md`. Only `summary.md` is committed; the
-   rest of each report (`coverage.txt`, `tests.log`, cloc JSON, bench and progress logs) is gitignored and stays local,
-   so read the previous report's files from disk for the deltas.
-3. Add a `## [X.Y.Z] - YYYY-MM-DD` section to `CHANGELOG.md`.
-4. Stage the change, `<report dir>/summary.md`, `CHANGELOG.md`, `benchmarks/history.tsv` and `docs/PERFORMANCE.md`, then
-   `./scripts/release.sh X.Y.Z "<summary>"`. It refuses a version that is not newer than the latest tag or that lacks a
-   changelog section, then commits as `vX.Y.Z: <summary>`, creates the annotated tag and runs
-   `git push origin HEAD --follow-tags`. Set `RELEASE_TRAILER` to append a `Co-Authored-By` line.
+1. Run the tests for what changed (`./scripts/run_tests.sh unit`, or a single spec file).
+2. Add a `## [X.Y.Z] - YYYY-MM-DD` section to `CHANGELOG.md`.
+3. Stage the change, then `./scripts/release.sh X.Y.Z "<summary>"`. It refuses a version that is not newer than the
+   latest tag or that lacks a changelog section, then commits as `vX.Y.Z: <summary>` and creates the annotated tag. It
+   does not push. Set `RELEASE_TRAILER` to append a `Co-Authored-By` line.
+
+To push, run `./scripts/push.sh` (in the background from Claude Code; it takes 10-20 minutes):
+
+1. It refuses uncommitted changes to tracked files, since the report must test what goes out, and a main behind
+   `origin/main`.
+2. `./scripts/report.sh X.Y.Z` runs for the latest tag: all tests with coverage (Plenary specs in parallel, mini.test,
+   the Python tests in `tests/bench/` and the bats tests in `tests/scripts/`), then cloc (the plugin tree's cloc is
+   cached by `lazy-lock.json`), then the benchmarks, recording them as release X.Y.Z in `benchmarks/history.tsv` and
+   rewriting the table in `docs/PERFORMANCE.md`. Progress goes to stderr as it happens (phases with durations, one line
+   per spec file and each failure, benchmark load waits and sessions). If any test or the benchmark run fails, the report
+   moves to `.reports/failed/<timestamp>/` (gitignored) with `tests.log` and `bench.log`, and nothing is committed or
+   pushed. Benchmark warnings (a metric over 25% slower than its average or baseline) do not abort; mention them.
+3. `scripts/report_summary.py` writes `<report dir>/summary.md`: the changelog sections since the last push, code stats,
+   coverage, test counts and deltas against the previous report, and the benchmark tables. Only `summary.md` is
+   committed; the rest of each report is gitignored and stays local.
+4. It commits `summary.md`, `benchmarks/history.tsv` and `docs/PERFORMANCE.md` as `vX.Y.Z: report` with a
+   `Report: passed` line, and runs `git push origin HEAD --follow-tags`.
+
+`scripts/hooks/pre-push` (active through `core.hooksPath`, which `push.sh` sets) refuses a plain `git push` of main whose
+tip is not a report commit. Other branches pass, and `git push --no-verify` skips it.
 
 Benchmark baseline: `benchmarks/run --baseline` records a new one under low load (it waits up to 30 minutes for it). Run
 it only when asked, or suggest it after a Neovim upgrade. See `benchmarks/README.md`.
@@ -137,6 +145,9 @@ See `filetype.lua` for custom filetype patterns:
 - `.env*` → dotenv (treesitter: bash)
 - `.env*.example` → conf
 - `requirements*.txt` → requirements
+- `*.log`, `*_log` → log (tree-sitter parser `parser/log.so`, grammar in `parsers/tree-sitter-log`, query in
+  `queries/log/`, colors in `after/ftplugin/log.lua`)
+- `/var/log/syslog*` → syslog (`syntax/syslog.vim`)
 
 ## Development Commands
 
