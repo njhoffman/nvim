@@ -1,4 +1,4 @@
-local H = require("helpers")
+local H = require("lib.helpers")
 local action_state = require("telescope.actions.state")
 local actions = require("telescope.actions")
 local config = require("telescope.config")

@@ -2,7 +2,7 @@
 
 local ts_locals = require("core.commands.treesitter.locals")
 
-local logger = require("logger").init("lsp_fallbacks")
+local logger = require("lib.logger").init("lsp_fallbacks")
 
 local native_rename = function(target_name) end
 local native_incremental_selection = function()

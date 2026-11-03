@@ -3,7 +3,7 @@ stayinplace.setup({
   set_keymaps = false,
   preserve_visual_selection = true,
 })
-local map = require("mapper").map
+local map = require("lib.mapper").map
 -- vim.keymap.set('n', '>', stayinplace.shift_right, { noremap = true, expr = true, noremap = true })
 -- vim.keymap.set('n', '<', stayinplace.shift_left, { noremap = true, expr = true, noremap = true })
 map('n', '=', stayinplace.filter, { expr = true })

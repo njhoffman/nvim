@@ -1,4 +1,4 @@
-local logger = require('logger').init('git')
+local logger = require('lib.logger').init('git')
 
 local timing = function(opts, timing, num)
   -- command finishes here if async job

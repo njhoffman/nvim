@@ -90,7 +90,7 @@ telescope.setup({
   },
 })
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 map("n", "<LEADER>plf", ":PerfLoadFlat<CR>")
 map("n", "<LEADER>plg", ":PerfLoadCallGraph<CR>")

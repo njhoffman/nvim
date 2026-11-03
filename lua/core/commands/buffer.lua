@@ -1,6 +1,6 @@
 -- TODO: attach to 'alternate' service
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 local timeago = require("core.commands.timeago")
 local devicons = require("nvim-web-devicons")
 local Path = require("plenary.path")

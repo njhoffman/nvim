@@ -102,7 +102,7 @@ local default_options = function()
   }
 end
 
-local log = require("logger").init("registers")
+local log = require("lib.logger").init("registers")
 
 local options = nil
 local setup = function(opts)

@@ -1,4 +1,4 @@
-require("mapper").map("n", "<leader>ca", function()
+require("lib.mapper").map("n", "<leader>ca", function()
   require("tiny-code-action").code_action()
 end, { desc = "Code action (tiny-code-action)" })
 

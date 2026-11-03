@@ -114,7 +114,7 @@ function M.show(iterations)
     title_pos = "center",
   })
 
-  require("mapper").map("n", "q", function()
+  require("lib.mapper").map("n", "q", function()
     vim.api.nvim_win_close(win, true)
   end, { buffer = buf, desc = "close benchmark" })
 end

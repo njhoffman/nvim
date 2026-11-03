@@ -23,7 +23,7 @@ vim.api.nvim_create_autocmd('User', {
   pattern = 'GitConflictDetected',
   callback = function(keys)
     vim.notify('Conflict detected in ' .. keys.file)
-    local map = require("mapper").map
+    local map = require("lib.mapper").map
     map('n', '[[', '<Plug>(git-conflict-prev-conflict)', { buffer = keys.buf, desc = "Previous git conflict" })
     map('n', '[c', '<Plug>(git-conflict-prev-conflict)', { buffer = keys.buf, desc = "Previous git conflict" })
     map('n', ']]', '<Plug>(git-conflict-next-conflict)', { buffer = keys.buf, desc = "Next git conflict" })

@@ -65,7 +65,7 @@ require("spider").setup(cfg)
 --     require("spider").motion("b", { subwordMovement = false })
 --   end, mode = { "n", "o", "x" }, },
 
-local mapper = require("mapper")
+local mapper = require("lib.mapper")
 local spider_map = function(modes, key, cmd_key, opts, flags)
   -- NOTE: for dot repeat to work, must be in form of Ex-commands
   mapper.map(modes, key, "<cmd>lua require('spider').motion('" .. cmd_key .. "')<CR>", opts)

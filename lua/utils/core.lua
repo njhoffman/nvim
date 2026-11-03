@@ -73,7 +73,7 @@ end
 
 -- mappings
 function utils.map(modes, key, result, opts)
-  require("mapper").map(modes, key, result, opts or {})
+  require("lib.mapper").map(modes, key, result, opts or {})
 end
 
 -- Terminal
@@ -138,7 +138,7 @@ end
 utils.keymap = function(m)
   m = m or {}
   local opts = m[4] or {}
-  return require("mapper").map(m[1], m[2], m[3], opts)
+  return require("lib.mapper").map(m[1], m[2], m[3], opts)
 end
 
 -- @param maps list of keymaps

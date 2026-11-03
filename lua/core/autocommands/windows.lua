@@ -1,5 +1,5 @@
 local set_option = vim.api.nvim_set_option_value
-local logger = require("logger").init("autocmd-win")
+local logger = require("lib.logger").init("autocmd-win")
 local augroup = vim.api.nvim_create_augroup("AutocmdWindows", { clear = true })
 
 -- Indent wrapped lines based on indent settings except for ignored filetypes

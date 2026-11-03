@@ -1,4 +1,4 @@
-local logger = require("logger").init("startup")
+local logger = require("lib.logger").init("startup")
 
 -- TODO: handle startup messages and v:errmsg
 local get_load_time = function()

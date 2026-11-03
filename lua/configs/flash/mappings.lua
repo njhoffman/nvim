@@ -73,7 +73,7 @@ local keys = {
   remote_restore = { "gr", "grr", pfx .. "r" },
   remote_norestore = { "grR", pfx .. "R" },
 }
-local mapper = require("mapper")
+local mapper = require("lib.mapper")
 local map = function(modes, lhs, rhs, opts)
   lhs = type(lhs) == "table" and lhs or { lhs }
   for _, key in ipairs(lhs) do

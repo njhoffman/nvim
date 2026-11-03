@@ -25,7 +25,7 @@ local config = defaults
 
 -- update global keymaps that are dependent on state
 local function refresh(open, commands)
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   local sidebar_commands = { "next", "prev" }
   for _, key in ipairs(sidebar_commands) do
     local lhs = config.mapping.global[key] or ""

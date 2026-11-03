@@ -1,4 +1,4 @@
-local logger = require("logger").init("treesitter")
+local logger = require("lib.logger").init("treesitter")
 
 local cfg = {
   skip_folding = {},

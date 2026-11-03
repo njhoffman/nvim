@@ -349,7 +349,7 @@ end, {
 
 -- Keymaps
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 -- Changelist: g, (next) and g; (prev)
 map("n", "g,", function()

@@ -83,7 +83,7 @@ local split_mapping = function()
   --   H.map('x', maps.join,   ':<C-u>lua MiniSplitjoin.join({ region = MiniSplitjoin.get_visual_region() })<CR>',   { desc = 'Join arguments' })
 
   -- TODO: if not toggleable node (node identifier is not configured) go to first parenthesis
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   map("n", "gs", align_op("toggle"), { desc = "split toggle cursor" })
   map("n", "gJ", align_op("join"), { desc = "split join cursor" })
   map("n", "gS", align_op("split"), { desc = "split split cursor" })

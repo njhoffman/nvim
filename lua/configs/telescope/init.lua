@@ -1,5 +1,5 @@
 local telescope = require("telescope")
-local logger = require("logger").init("telescope")
+local logger = require("lib.logger").init("telescope")
 
 local launcher = require("configs.telescope.launcher")
 telescope.run = launcher

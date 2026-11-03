@@ -51,7 +51,7 @@ local get_key_cmd = function(mode, lhs)
   return old_val
 end
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 local set = function(modes, lhs, rhs, desc, layerSet)
   lhs = type(lhs) == "table" and lhs or { lhs }
   for _, l in ipairs(lhs) do

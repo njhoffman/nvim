@@ -1,7 +1,7 @@
 -- LSP Configuration Entry Point
 -- Orchestrates loading of all LSP-related modules
 
-local log = require("logger").init("lsp")
+local log = require("lib.logger").init("lsp")
 
 log:debug("Loading LSP configuration")
 

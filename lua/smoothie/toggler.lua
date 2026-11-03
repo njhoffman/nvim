@@ -1,5 +1,5 @@
 -- smoothie_toggle.lua: Toggle between VimL and Lua smoothie implementations
-local map = require("mapper").map
+local map = require("lib.mapper").map
 local M = {}
 
 -- State to track which implementation is active

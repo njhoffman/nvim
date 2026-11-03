@@ -90,7 +90,7 @@ local rhs_func = function(direction, op)
   end
 end
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 local dial_map = function(mode, lhs, direction, op, desc)
   map(mode, lhs, rhs_func(direction, op), {

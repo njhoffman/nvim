@@ -101,7 +101,7 @@ Snacks.toggle.profiler():map("<leader>iP")
 -- -- Toggle the profiler highlights
 Snacks.toggle.profiler_highlights():map("<leader>iH")
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 map("n", "<leader>iS", function()
   Snacks.profiler.scratch()
 end, { desc = "Profiler Scratch Bufer" })

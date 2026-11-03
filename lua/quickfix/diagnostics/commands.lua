@@ -1,4 +1,4 @@
-local logger = require('logger').init('qf-diagnostics')
+local logger = require('lib.logger').init('qf-diagnostics')
 local q = require('quickfix.diagnostics.qflist')
 
 local setup = function(config)

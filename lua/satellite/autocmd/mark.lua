@@ -15,7 +15,7 @@ end
 --- @param key string
 --- @param m string mark name
 local function mark_set_keymap(key, m)
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   local mkey = key .. m
   if fn.maparg(mkey) == '' then
     map({ 'n', 'x' }, mkey, function()

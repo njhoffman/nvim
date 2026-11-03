@@ -60,7 +60,7 @@ local plugins = {
         -- jump_map = "<C-e>"       -- (DROPPED SUPPORT, see [here](#cycle-between-annotations) !) The keymap in order to jump in the annotation fields (in insert mode)
       })
 
-      local map = require("mapper").map
+      local map = require("lib.mapper").map
       map(
         "n",
         "g@@",
@@ -480,7 +480,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
       -- stylua: ignore start
       -- TODO: create plugin that has persistent mode
       -- movement
-      local map = require("mapper").map
+      local map = require("lib.mapper").map
       map({ "n", "v" }, "<S-Up>",    "<cmd>Treewalker Up<cr>")
       map({ "n", "v" }, "<S-Down>",  "<cmd>Treewalker Down<cr>")
       map({ "n", "v" }, "<S-Left>",  "<cmd>Treewalker Left<cr>")

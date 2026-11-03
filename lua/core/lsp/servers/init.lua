@@ -1,7 +1,7 @@
 -- LSP Server Setup
 -- Configures Mason, mason-lspconfig, and registers all LSP servers
 
-local log = require("logger").init("lsp.servers")
+local log = require("lib.logger").init("lsp.servers")
 
 local M = {}
 

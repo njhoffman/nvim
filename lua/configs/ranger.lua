@@ -1,4 +1,4 @@
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 require('ranger-nvim').setup({ replace_netrw = true })
 map('n', '<leader>ef', function()

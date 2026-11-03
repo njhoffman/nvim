@@ -1,4 +1,4 @@
-local logger = require("logger").init("nvim-notify")
+local logger = require("lib.logger").init("nvim-notify")
 
 local find = function(array, key, val)
   for _, v in ipairs(array) do
@@ -43,7 +43,7 @@ local on_open_old = function(win)
   if file_ok and #notify_file > 0 then
     local orig_map = find(vim.api.nvim_get_keymap("n"), "lhs", "gF")
     logger:debug("file assigned (" .. notify_file .. ":" .. notify_line .. ")")
-    require("mapper").map("n", "gF", function()
+    require("lib.mapper").map("n", "gF", function()
       logger:info("going to error (" .. notify_file .. ":" .. notify_line .. ")")
       open_lua_error(bufnr, notify_file, notify_line, orig_map)
     end)

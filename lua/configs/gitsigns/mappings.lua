@@ -34,7 +34,7 @@ local setup_mappings = function(bufnr)
     local default_opts = { noremap = true, silent = true, buffer = opts.bufnr }
     mode = type(mode) == "table" and mode or mode == "ox" and { "o", "x" } or { mode }
     opts = vim.tbl_deep_extend("force", default_opts, opts or {})
-    require("mapper").map(mode, l, r, opts)
+    require("lib.mapper").map(mode, l, r, opts)
     -- vim.keymap.set(mode, l, r, opts)
   end
 

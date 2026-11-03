@@ -16,7 +16,7 @@ local plenary_log = require("plenary.log").new({
   end,
 })
 
-local logger = require("logger").init("telescope")
+local logger = require("lib.logger").init("telescope")
 
 local log = function(lvl, ...)
   -- notify(message, vim.log.levels.ERROR)

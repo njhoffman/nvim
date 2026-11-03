@@ -30,7 +30,7 @@
 --   },
 -- }
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 map({ "n", "x" }, "<leader>re", function()
   return require("refactoring").extract_func()
 end, { desc = "Extract Function", expr = true })

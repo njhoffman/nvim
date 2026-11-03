@@ -102,7 +102,7 @@ local cfg = {
   },
 }
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 map('n', '<leader>ld', '<CMD>Glance definitions<CR>', { desc = "Glance definitions" })
 map('n', '<leader>lr', '<CMD>Glance references<CR>', { desc = "Glance references" })
 map('n', '<leader>lt', '<CMD>Glance type_definitions<CR>', { desc = "Glance type definitions" })

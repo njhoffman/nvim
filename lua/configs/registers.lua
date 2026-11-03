@@ -156,5 +156,5 @@ registers.setup({
 })
 
 -- -- Define a custom for opening the register window when pressing "r"
-local map = require("mapper").map
+local map = require("lib.mapper").map
 map("n", "pr", require("modules.registers.ui").show_window({ mode = "paste" }), { expr = true })

@@ -55,7 +55,7 @@ function M.selectAltFile()
   end)
 end
 
-local logger = require("logger").init("alt")
+local logger = require("lib.logger").init("alt")
 function M.lookupAltFile(ev)
   if not ev.match or ev.match == "" then
     return

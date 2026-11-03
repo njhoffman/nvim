@@ -160,7 +160,7 @@ local foldmaps = {
 }
 
 local function apply_keymaps()
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   if vim.fn.maparg("<leftmouse>") == "" then
     map({ "n", "v", "o", "i" }, "<leftmouse>", function()
       require("satellite.mouse").handle_leftmouse()

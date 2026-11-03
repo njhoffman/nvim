@@ -1,7 +1,7 @@
 -- LSP Diagnostics Configuration
 -- Configures diagnostic display, signs, and severity
 
-local log = require("logger").init("lsp.diagnostics")
+local log = require("lib.logger").init("lsp.diagnostics")
 
 local M = {}
 

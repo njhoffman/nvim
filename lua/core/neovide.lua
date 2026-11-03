@@ -144,7 +144,7 @@ if vim.g.neovide then
 --     ResizeGuiFont(-1)
 --   end, opts)
   --
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
 
   map(
     "n",

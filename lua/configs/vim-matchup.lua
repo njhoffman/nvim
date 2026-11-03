@@ -1,7 +1,7 @@
 -- :NoMatchParen, :DoMatchParen, :MatchupShowTimes, :MatchupClearTimes
 --  
 --
-local vmap = require("mapper").vmap
+local vmap = require("lib.mapper").vmap
 
 -- stylua: ignore start
 vmap({"n", "x", "o"}, "%",   { label = " forwards match-words",             desc = " Go forwards to next matching word ifword is recognized" })

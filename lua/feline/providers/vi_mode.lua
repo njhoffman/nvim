@@ -48,7 +48,7 @@ end, vim.tbl_values(mode_alias))))
 function M.get_vim_mode()
   local mode = api.nvim_get_mode().mode
   if not mode_alias[mode] then
-    local logger = require("logger").init("feline")
+    local logger = require("lib.logger").init("feline")
     logger:warn("Unknown mode: " .. mode)
     return false
   else

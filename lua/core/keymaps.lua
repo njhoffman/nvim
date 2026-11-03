@@ -1,4 +1,4 @@
-local mapper = require("mapper")
+local mapper = require("lib.mapper")
 local map = mapper.map
 local vmap = mapper.vmap
 local prefix = mapper.prefix

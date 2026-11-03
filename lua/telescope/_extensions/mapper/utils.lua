@@ -116,7 +116,7 @@ end
 -- Fetches mapper information to be passed to picker
 local get_mappers = function()
   -- Initialization
-  local records = require('mapper').records
+  local records = require('lib.mapper').records
 
   if records == nil then
     return {}

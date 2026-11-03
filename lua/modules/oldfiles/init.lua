@@ -1,4 +1,4 @@
-local logger = require('logger').init('mru')
+local logger = require('lib.logger').init('mru')
 local utils = require('modules.oldfiles.utils')
 
 -- | if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' && &buftype =~ hidden | silent! wshada | silent! !~/.shell/scripts/wshada.sh | endif",

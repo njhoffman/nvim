@@ -373,7 +373,7 @@ function M.show_stats()
   vim.api.nvim_set_option_value("winhl", "Normal:Normal,FloatBorder:FloatBorder", { win = win })
 
   -- Close mappings
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   map("n", "q", "<cmd>close<CR>", { buffer = buf, nowait = true })
   map("n", "<Esc>", "<cmd>close<CR>", { buffer = buf, nowait = true })
 end

@@ -1,6 +1,6 @@
 local config = require("modules.registers.config")
 local state = require("modules.registers.state")
-local log = require("logger").init("registers")
+local log = require("lib.logger").init("registers")
 
 ---@private
 ---Fill the arrays with the register values.

@@ -1,8 +1,8 @@
-local map = require("mapper").map
+local map = require("lib.mapper").map
 local state = require("modules.registers.state")
 local config = require("modules.registers.config")
 local ui = require("modules.registers.ui")
-local log = require("logger").init("registers")
+local log = require("lib.logger").init("registers")
 
 ---@private
 ---Whether a key should be bound.

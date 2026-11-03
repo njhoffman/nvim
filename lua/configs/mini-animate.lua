@@ -21,7 +21,7 @@ end
 local mouse_scrolled = false
 for _, scroll in ipairs({ "Up", "Down" }) do
   local key = "<ScrollWheel" .. scroll .. ">"
-  require("mapper").map({ "", "i" }, key, function()
+  require("lib.mapper").map({ "", "i" }, key, function()
     mouse_scrolled = true
     return key
   end, { expr = true, desc = "Disable animate on mouse " .. scroll:lower() .. " scroll" })

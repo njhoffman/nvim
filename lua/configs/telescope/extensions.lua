@@ -1,5 +1,5 @@
 local sorters = require("telescope.sorters")
-local H = require("helpers")
+local H = require("lib.helpers")
 local actions = require("telescope.actions")
 local mappings = require("configs.telescope.mappings")
 local c_actions = require("configs.telescope.actions")

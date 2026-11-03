@@ -16,7 +16,7 @@ local fasd_update = function(args)
     filetypes = { "gitcommit", "gitrebase", "svn", "hgcommit" },
   }
   local ft = vim.api.nvim_get_option_value("filetype", { buf = args.buf })
-  local logger = require("logger").init("fasd")
+  local logger = require("lib.logger").init("fasd")
   local fname = args.match -- args.file
   if
     vim.bo.buftype == ""

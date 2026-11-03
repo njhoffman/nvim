@@ -87,8 +87,8 @@ local key_defs = {
 
 -- TODO:
 
-local map = require("mapper").map
-local prefix = require("mapper").prefix
+local map = require("lib.mapper").map
+local prefix = require("lib.mapper").prefix
 
 local register_keys = function(methods, keys, opts)
   prefix({ "x", "n" }, "gtt", "text case replace  ")

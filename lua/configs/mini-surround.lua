@@ -76,7 +76,7 @@ local extra_mappings = function()
   local get_opts = function(desc)
     return { remap = true, desc = desc }
   end
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   -- vim.keymap.set('x', 'ys', 's', { silent = true, remap = true, desc = '󰅪 mini surround add visual selection' })
   -- vim.keymap.set('x', 'ys', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
   map("n", "ys", "s", get_opts("󰅪 mini surround add operator"))

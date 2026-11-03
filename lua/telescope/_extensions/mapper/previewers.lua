@@ -1,7 +1,7 @@
 local previewers = require('telescope.previewers')
 local utils = require('telescope.utils')
 local defaulter = utils.make_default_callable
-local mapper = require('mapper')
+local mapper = require('lib.mapper')
 
 local M = {}
 

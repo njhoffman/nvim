@@ -12,7 +12,7 @@ local state = {
   counter = 0,
 }
 --------------------------------------------------------------------------------
-local logger = require('logger').init('early-retirement')
+local logger = require('lib.logger').init('early-retirement')
 
 local function updateActiveBuffers(config)
   local currBufferIds = vim.tbl_map(function(buf)

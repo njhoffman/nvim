@@ -1,7 +1,7 @@
 local Config = require("lazy.core.config")
 local Util = require("lazy.util")
 
-local Logger = require("logger")
+local Logger = require("lib.logger")
 local logger = Logger and Logger.init("lazy:docs")
 local M = {}
 

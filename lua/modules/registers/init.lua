@@ -21,7 +21,7 @@ local ui = require("modules.registers.ui")
 local mappings = require("modules.registers.mappings")
 local state = require("modules.registers.state")
 local config = require("modules.registers.config")
-local log = require("logger").init("registers")
+local log = require("lib.logger").init("registers")
 
 ---@class registers
 ---@field options options

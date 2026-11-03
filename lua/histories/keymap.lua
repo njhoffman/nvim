@@ -17,7 +17,7 @@ function M.command_abbrev(trig, command, opts)
     end
     return
   end
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   map('ca', trig, function()
     return vim.fn.getcmdcompltype() == 'command' and command or trig
   end, vim.tbl_deep_extend('keep', { expr = true }, opts or {}))
@@ -29,7 +29,7 @@ end
 ---@param command string
 ---@param opts table?
 function M.command_map(trig, command, opts)
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   map('c', trig, function()
     return vim.fn.getcmdcompltype() == 'command' and command or trig
   end, vim.tbl_deep_extend('keep', { expr = true }, opts or {}))
@@ -141,7 +141,7 @@ end
 ---@return nil
 function M.amend(modes, lhs, rhs, opts)
   modes = type(modes) ~= 'table' and { modes } or modes --[=[@as string[]]=]
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   for _, mode in ipairs(modes) do
     local fallback = M.fallback_fn(M.get(mode, lhs))
     map(mode, lhs, function()

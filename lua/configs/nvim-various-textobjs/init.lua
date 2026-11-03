@@ -8,7 +8,7 @@ local map = function(modes, lhs, rhs, opts)
   elseif opts and opts.desc then
     opts.desc = "韛" .. opts.desc
   end
-  require("mapper").map(modes, lhs, rhs, opts)
+  require("lib.mapper").map(modes, lhs, rhs, opts)
 end
 
 local helpers = require("configs.nvim-various-textobjs.helpers")

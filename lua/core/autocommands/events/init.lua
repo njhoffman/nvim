@@ -68,14 +68,14 @@ end
 local user_events = {}
 
 vim.api.nvim_create_user_command('EventsUser', function()
-  -- local logger = require('logger').init('events')
+  -- local logger = require('lib.logger').init('events')
   vim.notify(vim.inspect(user_events), vim.lsp.log_levels.INFO)
 end, { desc = 'Prints all user events' })
 
 local augroup = vim.api.nvim_create_augroup('LoggerEvents', { clear = true })
 
 local init_event = function(scope, event_group)
-  local logger = require('logger').init(scope)
+  local logger = require('lib.logger').init(scope)
   local target_events = event_group[1] or {}
   local event_levels = event_group[2] or {}
   local filtered_events = vim.tbl_filter(function(event)

@@ -112,7 +112,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 --
 
 -- close some filetypes with q or <esc>
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 local quick_close = function(event)
   -- vim.bo[event.buf].buflisted = false

@@ -27,7 +27,7 @@ local default_cfg = {
 local telescope_handler = require("configs.definition-or-references.telescope")
 local cfg = { on_references_result = telescope_handler, debug = false }
 require("definition-or-references").setup(cfg)
-require("mapper").map(
+require("lib.mapper").map(
   "n",
   "gd",
   require("definition-or-references").definition_or_references,

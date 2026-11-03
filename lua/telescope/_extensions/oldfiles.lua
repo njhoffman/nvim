@@ -4,7 +4,7 @@ local utils = require('telescope.utils')
 local Path = require('plenary.path')
 
 local mru_utils = require('modules.oldfiles.utils')
-local logger = require('logger').init('mru')
+local logger = require('lib.logger').init('mru')
 
 local setup_highlights = function()
   vim.api.nvim_set_hl(0, 'TelescopeMRUDate', { default = true, link = 'SpecialChar' })

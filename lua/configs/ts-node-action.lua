@@ -88,7 +88,7 @@ require("ts-node-action").setup({
 })
 
 local trigger_key = "+" -- T
-require("mapper").map(
+require("lib.mapper").map(
   "n",
   trigger_key,
   require("ts-node-action").node_action,

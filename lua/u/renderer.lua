@@ -217,7 +217,7 @@ function Renderer:render(tree) -- {{{
         local extmark = tag.attributes.extmark
 
         -- Set any necessary keymaps:
-        local map = require("mapper").map
+        local map = require("lib.mapper").map
         for _, mode in ipairs { 'i', 'n', 'v', 'x', 'o' } do
           for lhs, _ in pairs(tag.attributes[mode .. 'map'] or {}) do
             -- Force creating an extmark if there are key handlers. To accurately

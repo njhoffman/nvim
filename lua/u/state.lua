@@ -79,7 +79,7 @@ function State:restore()
     vim.fn.setpos(pos, val)
   end
   for _, km in ipairs(self.keymaps) do
-    require("mapper").map(km.mode, km.lhs, km.rhs, { buffer = km.buffer })
+    require("lib.mapper").map(km.mode, km.lhs, km.rhs, { buffer = km.buffer })
   end
   for nm, val in pairs(self.global_options) do
     vim.go[nm] = val

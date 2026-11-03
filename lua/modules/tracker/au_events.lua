@@ -118,7 +118,7 @@ local all_events = {
   "WinScrolled",
 }
 
-local debuglog = require("logger.debug").log
+local debuglog = require("lib.logger.debug").log
 
 local get_events = function(ignored)
   ignored = ignored or {}

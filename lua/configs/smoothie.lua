@@ -193,7 +193,7 @@ local setup_aucmds = function()
   })
 end
 
-local mapper = require("mapper")
+local mapper = require("lib.mapper")
 local map = mapper.map
 local setup_keymaps = function()
   -- Note: <Plug> mappings are defined in lua/smoothie/load_viml.lua

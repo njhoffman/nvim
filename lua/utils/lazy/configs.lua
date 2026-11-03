@@ -1,5 +1,5 @@
 local state = require('utils.lazy.state')
-local logger = require('logger').init('lazy')
+local logger = require('lib.logger').init('lazy')
 
 local file_exists = function(name)
   local nvim_dir = vim.fn.stdpath('config') .. '/lua/configs/'

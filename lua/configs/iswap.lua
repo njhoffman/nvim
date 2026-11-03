@@ -41,7 +41,7 @@ local defaults = {
   hl_grey_priority = "1000",
 }
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 local swap_with_left = function()
   vim.go.operatorfunc = "v:lua.require'iswap'.iswap_node_with_left"

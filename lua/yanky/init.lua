@@ -292,7 +292,7 @@ end
 
 function yanky.register_plugs()
   local yanky_wrappers = require("yanky.wrappers")
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
 
   map("n", "<Plug>(YankyCycleForward)", function()
     yanky.cycle(1)

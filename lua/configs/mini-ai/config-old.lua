@@ -146,7 +146,7 @@ local setup_keymaps = function()
     local edge = ({ ["["] = "left", ["]"] = "right" })[seq:sub(1, 1)]
     local ai_type = seq:sub(2, 2)
     local prev_next = ({ ["{"] = "prev", ["}"] = "next" })[seq:sub(3, 3)]
-    require("mapper").map({ "n", "x", "o" }, "g" .. seq, function()
+    require("lib.mapper").map({ "n", "x", "o" }, "g" .. seq, function()
       jump_textobject(prev_next, edge, ai_type)
     end, {
       expr = true,
@@ -226,7 +226,7 @@ local setup_keymaps = function()
   -- m('o', maps.inside_last, make_tobj('o', 'i', 'prev'), { desc = 'Inside last textobject' })
 
   for k, v in pairs(i) do
-    require("mapper").vmap({ "x", "o" }, "i" .. k, { desc = v })
+    require("lib.mapper").vmap({ "x", "o" }, "i" .. k, { desc = v })
     -- iNw   inside last word
     -- inw   inside next word
     -- g[w   jump to left edge of word
@@ -234,7 +234,7 @@ local setup_keymaps = function()
   end
 
   for k, v in pairs(a) do
-    require("mapper").vmap({ "x", "o" }, "a" .. k, { desc = v })
+    require("lib.mapper").vmap({ "x", "o" }, "a" .. k, { desc = v })
   end
   -- require("which-key").register {
   --   mode = { "o", "x" },

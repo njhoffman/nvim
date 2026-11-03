@@ -1,4 +1,4 @@
-local map = require("mapper").map
+local map = require("lib.mapper").map
 local opts = require("import.opts")
 local ui_state = require("import.ui.state")
 

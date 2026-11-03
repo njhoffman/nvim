@@ -27,7 +27,7 @@ end
 --- @diagnostic disable-next-line: undefined-doc-name
 --- @param opts? vim.keymap.set.Opts
 local function opkeymap(mode, lhs, rhs, opts)
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   map(mode, lhs, function()
     -- We don't need to wrap the operation in a repeat, because expr mappings are
     -- repeated seamlessly by Vim anyway. In addition, the u.repeat:`.` mapping will

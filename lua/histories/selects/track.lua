@@ -57,7 +57,7 @@ local next = function()
   utils.select_range(mark_range, select.type)
 end
 local setup_keymaps = function()
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   map("n", "<C-5>", next, { desc = "Next selection history" })
   map("x", "<C-5>", next, { desc = "Next selection history" })
 end

@@ -31,7 +31,7 @@ local tag_down = function()
   tagstack_navigate({ direction = 'down' })
 end
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 map('n', ']t', tag_down, { desc = 'Navigate foward(down) with tagstack' })
 map('n', '[t', tag_up, { desc = 'Navigate backwards(up) with tagstack' })
 -- vim.keymap.set('n', '<M-}>', ':pop<cr>', { desc = 'Navigate foward(down) with tagstack' })

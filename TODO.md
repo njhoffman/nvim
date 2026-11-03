@@ -43,8 +43,7 @@ removing it. Move removals to `~/.local/backup/nvim/`, keeping their repo paths 
 - [ ] **Orphaned top-level modules.** (p2) [chore] Nothing requires `lua/quickfix/`, `lua/notifications/` (only a
       commented-out line in `init.lua`), `lua/histories/`, `lua/watcher/`, `lua/winsizer/`, `lua/llm-prompts.lua` or
       `lua/llm-providers.lua` (used only by `llm-prompts`). Found during the `lua/` layout refactor, which left them in
-      place. Move the ones worth keeping to `lua/modules/` and wire them up, back up the rest. CLAUDE.md still lists
-      `lua/watcher/` and the llm files as live.
+      place. Move the ones worth keeping to `lua/modules/` and wire them up, back up the rest.
 
 ## 3. Simplify folder structure and config setup
 
@@ -54,13 +53,23 @@ removing it. Move removals to `~/.local/backup/nvim/`, keeping their repo paths 
       `lazy`, `u`, `utils` (collides with `text-case.nvim`). Options for each: upstream the change, use a fork in the
       spec (as done for telescope and hover.nvim), or rename the local module. The vendored `plenary` copy went to the
       backup in v0.23.0.
-- [ ] **Standard layout for `lua/`.** (p2) [refactor] 83 top-level `lua/` entries. Group them along common Neovim config
+- [x] **Standard layout for `lua/`.** (p2) [refactor] 83 top-level `lua/` entries. Group them along common Neovim config
       practice: `lua/core/` (globals, options, keymaps, commands, autocommands), `lua/plugins/` (specs), `lua/configs/`
       (plugin config), `lua/modules/` (own plugins-in-progress such as runner, stats, tracker, watcher, tail, unicode,
       glyph-guard, registers, quicknote, tmux). Move content between files where a module is split oddly. Candidates for
       extraction into their own repos (like hover.nvim) live in modules/.
-- [ ] **Overlapping option files.** (p2) [refactor] `config.lua`, `settings.lua`, `user-options.lua`, `vim-options.lua`
+      Done in v0.25.0-v0.27.0: `core/` (plus `lsp/`), `modules/` (17 modules and `markdown/`), `lib/` (logger, mapper,
+      lodash, helpers); 81 -> 49 top-level entries. Left in place on purpose: vendored copies and shadowing modules
+      (see "Shadowed plugin modules") and the orphans in project 2.
+- [x] **Overlapping option files.** (p2) [refactor] `config.lua`, `settings.lua`, `user-options.lua`, `vim-options.lua`
       and `helpers.lua`: merge them into one options module plus utils
+      Done: `config.lua` and `settings.lua` were unused and went to the backup (v0.25.0); the other two are
+      `core/options/{user,vim}.lua` behind `core.options`; `helpers.lua` is `lib/helpers.lua` (v0.27.0).
+- [ ] **Local plugins require config modules.** (p3) [refactor] `~/git/convey.nvim` requires `mapper`
+      (`lua/convey/init.lua:64`, `views/status.lua:455`) and `~/git/what-key.nvim` requires `logger`
+      (`lua/what-key/logger/init.lua:10`), both modules of this config, now `lib.mapper` / `lib.logger`.
+      `core/globals/init.lua` aliases the old names with `package.preload` so they keep loading. Make both plugins
+      `pcall` the require and fall back to `vim.keymap.set` / `vim.notify`, then drop the aliases.
 - [ ] **Two loaders.** (p2) [refactor] Clarify `loader.lua` + `loader/` against the `init.lua` -> `vim.import()` chain,
       or document why both exist
 - [ ] **Competing implementations.** (p2) [refactor] Pick one per role:
@@ -74,8 +83,9 @@ removing it. Move removals to `~/.local/backup/nvim/`, keeping their repo paths 
       oxocarbon's fennel rock), which belongs outside the repo
 - [ ] **Lint/format configs.** (p3) [chore] `.luacheckrc`, `selene.toml`, `.lua-format`, `.stylua.toml`: keep StyLua
       plus one linter
-- [ ] **Update CLAUDE.md architecture.** (p3) [docs] Rewrite "Core Architecture" after the restructure; its init.lua
+- [x] **Update CLAUDE.md architecture.** (p3) [docs] Rewrite "Core Architecture" after the restructure; its init.lua
       load order and "Custom Modules" still list `devbox` and `hover`, which no longer exist under `lua/`
+      Done in v0.27.0 for the new layout; revisit after "Two loaders" and "Shadowed plugin modules".
 
 ## 4. Custom dashboard
 

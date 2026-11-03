@@ -80,7 +80,7 @@ local heads = {
         -- around several rows on the screen, then 'j' key moves you to
         -- the next line in the file, but not to the next row on the
         -- screen under your previous position as in other editors.
-        local map = require("mapper").map
+        local map = require("lib.mapper").map
         map('n', 'k', function()
           return vim.v.count > 0 and 'k' or 'gk'
         end, { expr = true, desc = 'k or gk' })

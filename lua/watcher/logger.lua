@@ -1,4 +1,4 @@
-local structlog = require("logger.structlog")
+local structlog = require("lib.logger.structlog")
 local logfile = vim.fn.stdpath("data") .. "/nvim.log"
 
 local init = function(name)

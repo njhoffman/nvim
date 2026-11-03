@@ -1,4 +1,4 @@
-local mapper = require("mapper")
+local mapper = require("lib.mapper")
 
 local move = function(direction)
   return {

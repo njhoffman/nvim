@@ -3,7 +3,7 @@ local sorters = require('telescope._extensions.tester.sorters')
 local finders = require('telescope.finders')
 local make_entry = require('telescope.make_entry')
 
-local logger = require('logger').init('teletester')
+local logger = require('lib.logger').init('teletester')
 
 local async_job = require('telescope._')
 

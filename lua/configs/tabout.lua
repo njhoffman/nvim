@@ -30,6 +30,6 @@ require('tabout').setup({
 })
 
 -- A multiline tabout setup could look like this
-local map = require("mapper").map
+local map = require("lib.mapper").map
 map('i', '<Tab>', '<Plug>(TaboutMulti)', { remap = true })
 map('i', '<S-Tab>', '<Plug>(TaboutBackMulti)', { remap = true })

@@ -63,7 +63,7 @@ local function setup_keymaps()
   local sub = require("substitute")
   local subrange = require("substitute.range")
   local subex = require("substitute.exchange")
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   local subop = function(...)
     require("reactive").set_opfunc("S")
     sub.operator(...)

@@ -24,7 +24,7 @@ local keymaps = function()
   -- -- Same as `cycle()`, but also tries to show a suggestion if none is visible.
   -- -- Mostly useful with the enabled `manual` option
   -- neocodeium.cycle_or_complete(n)
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   map("i", "<C-t>", function()
     require("neocodeium").accept()
   end, { desc = "neocodeium start and cycle" })

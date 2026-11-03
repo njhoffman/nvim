@@ -5,7 +5,7 @@ require("quicknote").setup({
   git_branch_recognizable = false,
 })
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 map("n", "<leader>N", "<cmd>:lua require('quicknote').NewNoteAtCurrentLine()<cr>")
 
 -- Description

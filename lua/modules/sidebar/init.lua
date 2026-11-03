@@ -16,7 +16,7 @@ function exports.setup(_opts)
 
   -- initialize global keymaps
   -- TODO: do this in config and merge into exports
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   for _, key in ipairs({ 'toggle', 'open', 'close' }) do
     local lhs = vim.tbl_get(opts, 'mapping', 'global', key)
     if type(lhs) == 'string' and #lhs > 0 then

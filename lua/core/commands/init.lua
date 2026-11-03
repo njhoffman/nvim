@@ -17,7 +17,7 @@ local termints = require("core.commands.termints")
 
 -- require("core.commands.html-psl")
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 local cmd = vim.api.nvim_create_user_command
 local bufcmd = vim.api.nvim_buf_create_user_command
@@ -82,7 +82,7 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "lua",
   callback = function()
     bufcmd(0, "Help", help.get_help_cursor, { desc = "Jump to helpfile under cursor" })
-    require("mapper").map("n", "gH", "<cmd>Help<cr>", {
+    require("lib.mapper").map("n", "gH", "<cmd>Help<cr>", {
       desc = "open help item under cursor",
       buffer = 0,
     })

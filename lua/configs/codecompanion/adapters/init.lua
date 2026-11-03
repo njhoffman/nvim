@@ -1,4 +1,4 @@
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 local M = {}
 

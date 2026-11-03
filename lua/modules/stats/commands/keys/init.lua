@@ -12,8 +12,8 @@ local keys_overview = function(view, stats)
 end
 
 local stats = function(args)
-  local records = require('mapper.records')
-  local stats = require('mapper.stats').get_stats()
+  local records = require('lib.mapper.records')
+  local stats = require('lib.mapper.stats').get_stats()
   local cmd_map = {
     tree = require('modules.stats.commands.keys.tree').stats,
     list = require('modules.stats.commands.keys.list').stats,

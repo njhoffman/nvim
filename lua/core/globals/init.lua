@@ -9,6 +9,15 @@ if vim.env.PROF then
   end
 end
 
+-- Old top-level names of lib/ modules, still required by local plugins loaded with dir =:
+-- ~/git/convey.nvim requires "mapper", ~/git/what-key.nvim requires "logger".
+package.preload["logger"] = function()
+  return require("lib.logger")
+end
+package.preload["mapper"] = function()
+  return require("lib.mapper")
+end
+
 -- global require handler
 require("core.globals.importer")
 vim.import("core.globals.variables")
@@ -20,10 +29,10 @@ local _nil = function()
 end
 
 -- setup lodash global
-vim._ = require("lodash")
+vim._ = require("lib.lodash")
 
 -- Wire the debug helpers from logger.debug onto the vim table
-local debuglog = vim.import("logger.debug")
+local debuglog = vim.import("lib.logger.debug")
 if debuglog then
   vim.inspect = debuglog.inspect or vim.inspect
   vim.dbg = debuglog.dbg or _nil()

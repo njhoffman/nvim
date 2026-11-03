@@ -80,7 +80,7 @@ end
 
 local set_keys = function(provider, mappings)
   -- https://github.com/pogyomo/submode.nvim
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   local path = "histories." .. provider .. ".actions"
   for key, action in pairs(mappings) do
     map(

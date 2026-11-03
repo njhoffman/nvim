@@ -307,7 +307,7 @@ local cfg = {
 
 require('other-nvim').setup(cfg)
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 map('n', '<leader>fa', '<cmd>:Other<CR>', { desc = 'l open other' })
 -- vim.api.nvim_set_keymap('n', '<leader>ftn', '<cmd>:OtherTabNew<CR>', { noremap = true, silent = true })

@@ -118,7 +118,7 @@ yanky.register_plugs()
 yanky.setup(cfg)
 
 -- local map = vim.keymap.set
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 -- gp = "GPutAfter",
 -- gP = "GPutBefore",

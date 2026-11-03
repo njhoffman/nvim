@@ -1,6 +1,6 @@
 local state = require("modules.registers.state")
 local config = require("modules.registers.config")
-local log = require("logger").init("registers")
+local log = require("lib.logger").init("registers")
 
 local highlight_lines = function(lines)
   local options = config.get()

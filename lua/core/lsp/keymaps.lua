@@ -1,11 +1,11 @@
 -- LSP Keymaps
 -- Buffer-local keymaps set when LSP attaches
 
-local log = require("logger").init("lsp.keymaps")
+local log = require("lib.logger").init("lsp.keymaps")
 
 local M = {}
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 -- Setup keymaps for a buffer when LSP attaches
 function M.setup(client, bufnr)

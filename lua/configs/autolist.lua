@@ -66,7 +66,7 @@ local default_config = {
 local setup = function()
   require("autolist").setup()
 
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   map("i", "<tab>", "<cmd>AutolistTab<cr>")
   map("i", "<s-tab>", "<cmd>AutolistShiftTab<cr>")
   -- vim.keymap.set("i", "<c-t>", "<c-t><cmd>AutolistRecalculate<cr>") -- an example of using <c-t> to indent

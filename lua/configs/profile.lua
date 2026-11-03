@@ -24,5 +24,5 @@ if should_profile then
     end
   end
 
-  require("mapper").map('', '<F37>', toggle_profile, { desc = "Toggle profile recording" })
+  require("lib.mapper").map('', '<F37>', toggle_profile, { desc = "Toggle profile recording" })
 end

@@ -1,4 +1,4 @@
-local keymap = require("mapper").map
+local keymap = require("lib.mapper").map
 -- local keymap = vim.keymap.set
 -- local filetypes = require('configs.debugprint.filetypes')
 

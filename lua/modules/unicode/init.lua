@@ -434,7 +434,7 @@ function M.register()
   end, {})
 
   -- Keymaps (Plug mappings)
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
 
   map("n", "<Plug>(MakeDigraph)", function()
     vim.o.operatorfunc = "v:lua.require'modules.unicode.digraph'.get_digraph"

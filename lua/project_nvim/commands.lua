@@ -2,7 +2,7 @@ local root = require("project_nvim.root")
 local state = require("project_nvim.state")
 local history = require("project_nvim.utils.history")
 local path = require("project_nvim.utils.path")
-local logger = require("logger").init("project")
+local logger = require("lib.logger").init("project")
 
 local set_cwd = function(dir, method)
   local options = require("project_nvim.config").get()

@@ -72,23 +72,29 @@ SMOKE_OUT=$out SMOKE_PLUGINS=all XDG_STATE_HOME=$out/state XDG_CACHE_HOME=$out/c
 
 ### Module Structure
 
-The configuration is organized into top-level modules loaded in init.lua:
+init.lua loads, in order:
 
 ```
-init.lua loads in order:
-  globals → keymaps → commands → abbreviations → autocommands
-  → devbox → runner → stats → tracker → configs → hover
+core.globals (importer, variables, core.options, core.neovide) → colorscheme → modules.components
+  → utils.lazy (plugins) → core.keymaps, core.commands, core.abbreviations, core.autocommands
+  → modules (runner, stats, devdocs2, tracker, tmux, oldfiles, tail, unicode) and some configs.*
+  → deferred 100 ms: modules.alt, modules.sidebar, modules.format_cmdline, more configs.*
 ```
 
-Key directories:
+Layout of `lua/` (require paths follow the directories, e.g. `require("core.commands.scroll")`):
 
+- **lua/core/**: the config's own startup code: `globals/`, `options/` (`user.lua` registered options, `vim.lua`
+  vim options), `keymaps.lua`, `commands/`, `abbreviations.lua`, `autocommands/`, `lsp/`, `neovide.lua`
+- **lua/modules/**: own plugins-in-progress, each self-contained; candidates for their own repos
+- **lua/lib/**: shared libraries: `logger/`, `mapper/` (keymap helper), `lodash/`, `helpers.lua`
 - **lua/plugins/**: Plugin specifications (main.lua, lsp.lua, completion.lua, dap.lua, colorscheme.lua)
 - **lua/configs/**: Per-plugin configuration files (automatically loaded by lazy.nvim wrapper)
-- **lua/core/commands/**: Custom user commands and command utilities
-- **lua/core/autocommands/**: Autocommand definitions
-- **lua/core/keymaps.lua**: Keymap definitions
-- **lua/utils/**: Utility functions and helper modules
-- **lua/telescope/\_extensions/**: Custom Telescope extensions
+- **lua/utils/**: Utility functions and the lazy.nvim wrapper
+- **lua/telescope/\_extensions/**: Custom Telescope extensions (must stay under the `telescope` namespace)
+
+Still at the top level of `lua/`: vendored or forked plugin copies (e.g. `satellite`, `smoothcursor`, `feline`,
+`quicknote`, `action-hints`) and modules that shadow an installed plugin (e.g. `mini`, `yanky`, `nvim-web-devicons`);
+see TODO.md "Shadowed plugin modules". New own code goes in `core/`, `modules/` or `lib/`.
 
 ### Plugin Configuration System
 
@@ -191,7 +197,8 @@ Multiple AI plugin integrations:
 - codecompanion.nvim (primary)
 - avante.nvim
 - gp.nvim
-- Custom LLM providers and prompts in `lua/llm-providers.lua` and `lua/llm-prompts.lua`
+- `lua/llm-providers.lua` and `lua/llm-prompts.lua` are currently loaded by nothing (see TODO.md "Orphaned top-level
+  modules")
 
 ### Git Workflow
 
@@ -217,15 +224,18 @@ Extensive git tooling:
 
 ### Custom Modules
 
-Most custom functionality is in self-contained modules:
+Most custom functionality is in self-contained modules under `lua/modules/`, for example:
 
-- `lua/watcher/`: File watching system
-- `lua/modules/runner/`: Command runner with tmux/notify output
-- `lua/modules/stats/`: Info panels and statistics
-- `lua/devbox/`: Development environment utilities
-- `lua/modules/tracker/`: Activity tracking
-- `lua/modules/tail/`: Log file tailing
-- `lua/hover/`: Hover information system
+- `runner/`: Command runner with tmux/notify output
+- `stats/`: Info panels and statistics
+- `tracker/`: Activity tracking
+- `tail/`: Log file tailing
+- `tmux/`: tmux navigation and resizing (forked from aserowy/tmux.nvim)
+- `unicode/`, `glyph-guard/`: Unicode search and glyph checks
+- `markdown/`: Markdown editing helpers (`prose`, `backtick`, `codeblocks`), attached from
+  `after/ftplugin/markdown.lua`
+
+Hover lives in a local plugin checkout (`~/git/hover.nvim`, loaded with `dir =` in `lua/plugins/main.lua`).
 
 ## Performance Notes
 

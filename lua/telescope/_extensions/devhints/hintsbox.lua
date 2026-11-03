@@ -42,7 +42,7 @@ local init_aucommands = function(winnr)
 end
 
 local init_keymaps = function(winnr)
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   map({ "n" }, "q", function()
     vim.api.nvim_win_close(winnr, true)
   end)

@@ -1,7 +1,7 @@
 local config = require('modules.tail.config')
 local state = require('modules.tail.state')
 local utils = require('modules.tail.utils')
-local log = require('logger').init('tail')
+local log = require('lib.logger').init('tail')
 
 local timing = function(opts, timing, num)
   -- command finishes here if async job

@@ -1,4 +1,4 @@
-local logger = require("logger").init("convey")
+local logger = require("lib.logger").init("convey")
 local c_log = function(level)
   return function(msg)
     if logger and logger[level] ~= nil then

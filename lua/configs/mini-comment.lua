@@ -14,7 +14,7 @@ local is_visual_selection_empty = function()
   return vim.deep_equal(start_pos, end_pos)
 end
 
-local mapper = require("mapper")
+local mapper = require("lib.mapper")
 local map = function(modes, lhs, rhs, opts)
   lhs = type(lhs) == "table" and lhs or { lhs }
   opts = vim.tbl_deep_extend("force", { silent = true }, opts or {})

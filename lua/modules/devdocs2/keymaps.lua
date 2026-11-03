@@ -2,7 +2,7 @@ local M = {}
 
 local config = require('modules.devdocs2.config')
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 
 local function set_buf_keymap(key, action, bufnr, description)
   map('n', key, action, { buffer = bufnr, desc = description })

@@ -38,7 +38,7 @@ local mappings = {
   { "mX", recall.clear,            "  marks clear all" },
 }
 
-local map = require("mapper").map
+local map = require("lib.mapper").map
 local create_mappings = function()
   for _, mapping in ipairs(mappings) do
     map("n", mapping[1], mapping[2], { desc = mapping[3] })

@@ -25,7 +25,7 @@ local cfg = {
 
 Comment.setup(cfg)
 
-local mapper = require("mapper")
+local mapper = require("lib.mapper")
 local setup_mappings = function()
   local api = require("Comment.api")
   local config = require("Comment.config"):get()

@@ -2,7 +2,7 @@ local uv = vim.uv
 local config = require("modules.registers.config")
 local state = require("modules.registers.state")
 local highlights = require("modules.registers.highlights")
-local log = require("logger").init("registers")
+local log = require("lib.logger").init("registers")
 
 ---@private
 ---Close the window.

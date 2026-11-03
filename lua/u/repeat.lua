@@ -16,7 +16,7 @@ end
 function M.is_repeating() return IS_REPEATING end
 
 function M.setup()
-  local map = require("mapper").map
+  local map = require("lib.mapper").map
   map('n', '.', function()
     IS_REPEATING = true
     for _ = 1, vim.v.count1 do

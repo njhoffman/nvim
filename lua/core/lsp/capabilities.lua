@@ -1,8 +1,8 @@
 -- LSP Capabilities
 -- Handles capability creation and display
 
-local map = require("mapper").map
-local log = require("logger").init("lsp.capabilities")
+local map = require("lib.mapper").map
+local log = require("lib.logger").init("lsp.capabilities")
 
 local M = {}
 

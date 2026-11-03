@@ -1,6 +1,6 @@
 local defaults = require("modules.tracker.defaults")
 local sources = require("modules.tracker.sources")
-local log = require("logger.debug").log
+local log = require("lib.logger.debug").log
 
 local get_func = function(self, name)
   return type(self[name]) == "function" and self[name] or defaults[name]
