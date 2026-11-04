@@ -198,8 +198,11 @@ M.base_branch = function()
 
   local output = command_util.execute(command)
 
-  return string.gsub(output, "\n", "")
+  -- gsub also returns the match count; callers pass this straight to table.insert
+  return (string.gsub(output, "\n", ""))
 end
+
+M.get_repo = utils.get_repo
 
 M.current_branch = function()
   local command = "git branch --show-current"

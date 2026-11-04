@@ -8,6 +8,8 @@ return require('telescope').register_extension({
     config.setup(ext_config)
   end,
   exports = {
+    -- Bare :Telescope gitops opens the menu of all pickers
+    gitops                = search_func.show_custom_functions,
     search_content        = search_func.search_commits,
     search_content_file   = search_func.search_commits_file,
     show_custom_functions = search_func.show_custom_functions,

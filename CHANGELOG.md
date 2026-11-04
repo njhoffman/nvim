@@ -5,6 +5,14 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.31.1] - 2026-11-04
+
+### Fixed
+
+- `:Telescope gitops` pickers `search_content`, `search_content_file`, `checkout_reflog`, `branches`, `diff_branch`,
+  `diff_branch_file`, `diff_commit_file` and `diff_commit_line` no longer error when opened.
+- Bare `:Telescope gitops` opens the menu of pickers instead of an error.
+
 ## [0.31.0] - 2026-11-03
 
 ### Changed

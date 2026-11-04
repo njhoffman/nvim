@@ -101,4 +101,8 @@ local build_mappings = function(opts)
   end
 end
 
-return { build_mappings = build_mappings, omnimap = omnimap }
+-- Pickers use the entry-based mappings of mappings/actions.lua through this module too
+return vim.tbl_extend('force', require('modules.gitops.mappings.actions'), {
+  build_mappings = build_mappings,
+  omnimap = omnimap,
+})

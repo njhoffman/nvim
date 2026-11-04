@@ -174,13 +174,10 @@ implementing.
       and `'/restart'`, bfs errors on those paths and `Failed to --listen: permission denied: "/nvim_15_@23_cerus"`.
       Its session and socket helpers build paths from a variable that is empty there. Not this repo's code: the fix
       belongs in the shell config, guarding the empty prefix.
-- [ ] **Most gitops pickers error.** (p2) [bug] 8 of the 14 `:Telescope gitops <picker>` exports fail when called:
-      `search_content`, `search_content_file`, `checkout_reflog`, `branches`, `diff_branch`, `diff_branch_file`,
-      `diff_commit_file`, `diff_commit_line`. The six rechecked on v0.24.0 fail the same way, so it predates the layout
-      refactor. Pickers call `open_diff_view_*` and `checkout_reflog_entry` on `modules.gitops.mappings`, but they are
-      defined in `mappings/actions.lua`; `core/branches.lua:15` calls `get_repo` on `utils.git`, but it is in `utils`;
-      `diff_branch` passes `git_utils.base_branch()` to `table.insert`, likely with an extra return value. Bare
-      `:Telescope gitops` also errors because there is no `gitops` export. No test covers these exports.
+- [x] **Most gitops pickers error.** (p2) [bug] v0.31.1: 8 of the 14 `:Telescope gitops <picker>` exports failed when
+      called, and bare `:Telescope gitops` had no export. `modules.gitops.mappings` now includes `mappings/actions.lua`,
+      `utils.git` has `get_repo`, `base_branch` returns one value, and bare `:Telescope gitops` opens the picker menu.
+      `tests/unit/gitops_spec.lua` opens every export in a scratch repo.
 
 ## 7. Docs and code consistency
 
