@@ -17,25 +17,6 @@ local colors_mode = {
   Replace = { colors.main.red, "bg" },
   Command = { colors.main.yellow, "bg" },
 }
--- local function get_mode_color()
---   local mode = vim.fn.mode()
---   local mode_map = {
---     n = colors.main.cyan,
---     i = colors.main.green,
---     v = colors.main.violet,
---     V = colors.main.violet,
---     ["\22"] = colors.main.violet, -- CTRL-V
---     c = colors.main.yellow,
---     s = colors.main.magenta,
---     S = colors.main.magenta,
---     ["\19"] = colors.main.magenta, -- CTRL-S
---     R = colors.main.red,
---     r = colors.main.cyan,
---     ["!"] = colors.main.red,
---     t = colors.main.red,
---   }
---   return mode_map[mode] or colors.main.fg
--- end
 
 local separators = {
   -- stylua: ignore
@@ -86,11 +67,6 @@ comps.mode_indicator = {
   end,
   text = function()
     return "▊ "
-    -- return {
-    --   { { "▊ ", state.mode[2] } },
-    --   -- { { " ", "" } },
-    --   -- { { " ", state.mode[2] } },
-    -- }
   end,
 }
 

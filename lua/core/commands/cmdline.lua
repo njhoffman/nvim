@@ -44,22 +44,6 @@ end
 
 local get_substitute_flags = function(cmdline)
   local flags = vim.fn.matchstr(cmdline, "%(\\[a-zA-Z]\\)")
-  -- local new_flags = ''
-  -- if flags ~= '' then
-  --   for i = 1, #flags do
-  --     local flag = string.sub(flags, i, i)
-  --     if flag == 'g' then
-  --       new_flags = new_flags .. 'c'
-  --     elseif flag == 'c' then
-  --       new_flags = new_flags .. 'g'
-  --     else
-  --       new_flags = new_flags .. flag
-  --     end
-  --   end
-  --   new_cmdline = vim.fn.substitute(cmdline, '%(\\[a-zA-Z]\\)', new_flags, '')
-  -- else
-  --   new_cmdline = cmdline .. 'c'
-  -- end
   return flags
 end
 

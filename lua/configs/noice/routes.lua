@@ -12,21 +12,9 @@
 -- Guide to messages
 -- https://github.com/folke/noice.nvim/wiki/A-Guide-to-Messages#messages-and-notifications-in-neovim
 local routes = {
-  -- { filter = { event = 'notify.error_error' }, view = 'mini' },
-  -- { filter = { event = 'msg_show.lua_error' }, view = 'mini' },
-  -- { filter = { event = "lsp", kind = "progress",
-  --             cond = function(message)
-  --               local client = vim.tbl_get(message.opts, "progress", "client")
-  --               return client == "lua_ls"
-  --             end }, opts = { skip = true }, }
 
   -- always route any messages with more than 25 lines to the split view
   { view = "cmdline_output", filter = { event = "msg_show", min_height = 25 } },
-  -- {
-  --   view = "notify",
-  --   opts = { level = vim.log.levels.DEBUG },
-  --   filter = { any = { { event = "msg_history_show" } } },
-  -- },
   {
     view = "mini",
     filter = {
@@ -59,22 +47,6 @@ local routes = {
         { event = "msg_show", find = "^:!make" },
         { event = "msg_show", find = "^%(%d+ of %d+%):" },
       },
-      -- -- nvim-treesitter
-      -- { filter = { event = "msg_show", find = "^%[nvim%-treesitter%]" }, view = "mini" },
-      -- { filter = { event = "notify", find = "All parsers are up%-to%-date" }, view = "mini" },
-      -- -- Mason
-      -- { filter = { event = "notify", find = "%[mason%-tool%-installer%]" }, view = "mini" },
-      -- {
-      --   filter = {
-      --     event = "notify",
-      --     cond = function(msg)
-      --       return msg.opts and msg.opts.title and msg.opts.title:find("mason.*.nvim")
-      --     end,
-      --   },
-      --   view = "mini",
-      -- },
-      -- -- DAP
-      -- { filter = { event = "notify", find = "^Session terminated$" }, view = "mini" },
     },
   },
   {

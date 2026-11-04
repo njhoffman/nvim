@@ -21,16 +21,6 @@ end
   --   vim.dbglog(Range.from_motion("$"))
   -- end, { noremap = true, nowait = true })
 
---       print(
---         string.format(
---           "Text object name: %s at [%d, %d] to [%d, %d]",
---           text,
---           s_row + 1,
---           s_col + 1,
---           e_row + 1,
---           e_col + 1
---         )
---       )
 local ts_utils = {}
 ts_utils.get_parent_node = function()
   -- Get the current buffer and cursor position

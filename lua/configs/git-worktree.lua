@@ -6,11 +6,6 @@
 -- clearjumps_on_change: Every time you switch branches, your jumplist will be cleared so that you don't accidentally go backward to a different branch and edit the wrong files.
 -- autopush: When creating a new worktree, it will push the branch to the upstream then perform a git rebase
 require("git-worktree").setup({
-  -- change_directory_command = 'cd',
-  -- update_on_change         = true,
-  -- update_on_change_command = 'e .',
-  -- clearjumps_on_change     = true,
-  -- autopush                 = true,
 })
 require("telescope").load_extension("git_worktree")
 

@@ -31,10 +31,3 @@ local function sendToWezTerm()
     fn.system({ 'wezterm', 'cli', 'send-text', text })
   end
 end
-
--- vim.keymap.set(
---   { 'n', 'x' },
---   '<localleader><localleader>',
---   sendToWezTerm,
---   { desc = ' Send to WezTerm', buffer = true }
--- )

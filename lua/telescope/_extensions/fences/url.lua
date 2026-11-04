@@ -11,11 +11,6 @@ M.build = function(opts)
   return url, nil
 end
 
--- opts = {
---   repo = "chip/dotfiles"
---   file = "README"
---   fetch_service = inject curl as dependency
--- }
 M.fetch = function(opts)
   local url, err = M.build(opts)
   if err then return nil, err end

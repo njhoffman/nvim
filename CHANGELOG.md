@@ -5,6 +5,14 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.31.3] - 2026-11-04
+
+### Removed
+
+- About 5,000 lines of commented-out code in blocks of 5+ lines. Disabled plugin specs moved to
+  `docs/reference/commented-out-plugin-specs.md`. Short disabled options, usage notes, vendored copies and the
+  in-progress `tracker` and `runner` modules are unchanged.
+
 ## [0.31.2] - 2026-11-04
 
 ### Changed

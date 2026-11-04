@@ -247,15 +247,6 @@ function M.setup(opts)
   --   end, { desc = "Paste and record range" })
   -- end
 
-  -- -- Setup keymaps
-  -- vim.keymap.set({ "n", "x" }, "gv", function()
-  --   -- If not currently navigating, record current visual selection first
-  --   if current_index == 0 and vim.fn.mode():match("[vV\x16]") then
-  --     record_visual_selection()
-  --   end
-  --   M.prev_range()
-  -- end, { desc = "Previous range in history" })
-
   -- vim.keymap.set({ "n", "x" }, "gV", function()
   --   M.next_range()
   -- end, { desc = "Next range in history" })

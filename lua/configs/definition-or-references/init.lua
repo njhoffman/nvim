@@ -11,18 +11,6 @@ local default_cfg = {
   -- For example see Wiki pages
   on_references_result = nil,
 }
--- local function handle_references_response(result)
---   require('telescope.pickers')
---     .new({}, {
---       prompt_title = 'LSP References',
---       finder = require('telescope.finders').new_table({
---         results = vim.lsp.util.locations_to_items(result, 'utf-16'),
---         entry_maker = require('telescope.make_entry').gen_from_quickfix(),
---       }),
---       previewer = require('telescope.config').values.qflist_previewer({}),
---     })
---     :find()
--- end
 
 local telescope_handler = require("configs.definition-or-references.telescope")
 local cfg = { on_references_result = telescope_handler, debug = false }

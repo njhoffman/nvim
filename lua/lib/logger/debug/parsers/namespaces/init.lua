@@ -14,15 +14,6 @@ local get_widths = function(tbl)
 end
 
 local parse_extmark = function(extmark, buf_id)
-  -- hl_group = "IlluminatedWordText", hl_eol, priority
-  -- sign_hl_group = 'SmoothCursor', sign_name = 'smoothcursor', sign_text = "> "
-  -- virt_text = { [1] = { [1] = "│", [2] = "HLChunk1" } },
-  -- virt_text = {
-  --     [1] = { [1] = "│", [2] = { [1] = "@ibl.whitespace.char.1", [2] = "@ibl.indent.char.1" } },
-  --     [2] = { [1] = " ", [2] = "@ibl.whitespace.char.1" } },
-  --     hl_mode = "combine", priority = 100, virt_text_pos, virt_text_hide,
-  --     virt_text_repeat_linebreak, virt_text_win_col
-  -- virt_lines = {}
 
   local props = {
     buf_id = tostring(buf_id),

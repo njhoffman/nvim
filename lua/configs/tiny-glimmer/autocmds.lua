@@ -11,17 +11,6 @@ local setup = function(glimmer)
   --   end,
   -- })
 
-  -- vim.api.nvim_create_autocmd("TextYankPost", {
-  --   callback = function()
-  --     if vim.v.event.operator == "y" then
-  --       local range = glimmer.get_yank_range()
-  --       if range then
-  --         glimmer.animate_range("fade", range)
-  --       end
-  --     end
-  --   end,
-  -- })
-
   -- Pulsar effect on cursor movement
   -- local last_line = vim.api.nvim_win_get_cursor(0)[1]
   -- vim.api.nvim_create_autocmd("CursorMoved", {

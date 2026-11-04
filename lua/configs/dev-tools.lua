@@ -35,11 +35,6 @@ local min_defaults = {
         name = "Log vars under cursor",
         opts = {
           keymap = nil, -- action keymap, e.g.
-          -- {
-          --   global = "<leader>dl" | { "<leader>dl", mode = { "n", "x" } },
-          --   picker = "<M-l>",
-          --   hide = true,  -- hide the action from the picker
-          -- }
         },
       },
     },

@@ -1,16 +1,3 @@
--- allows_duplicates = true,
--- commalist = false,
--- default = true,
--- flaglist = false,
--- global_local = false,
--- last_set_chan = 0,
--- last_set_linenr = 0,
--- last_set_sid = 0,
--- name = "autoindent",
--- scope = "buf",
--- shortname = "ai",
--- type = "boolean",
--- was_set = true
 local get_options = function(scope, conf_opts)
   local res = {}
   scope = scope or 'all'

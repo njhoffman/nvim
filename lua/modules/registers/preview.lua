@@ -50,18 +50,6 @@ local preview_register = function(options)
       { virt_lines = lines }
       -- { virt_text = lines, virt_text_win_col = col }
     )
-    -- if #lines == 1 then
-    --   -- Display the register content
-    --   vim.api.nvim_buf_set_extmark(
-    --     state._preview_buffer,
-    --     state._namespace,
-    --     line - 1,
-    --     col,
-    --     { virt_text = lines, virt_text_win_col = col }
-    --   )
-    -- else
-    --   -- Display the register content
-    -- end
   end)
 end
 -- • virt_lines : virtual lines to add next to this mark This

@@ -38,18 +38,6 @@ function utils.define_augroups(definitions) -- {{{1
   -- })
 
   for group_name, definition in pairs(definitions) do
-    -- vim.dbglog(group_name)
-    -- vim.api.nvim_create_augroup(group_name, { clear = true })
-    -- for _, def in pairs(definition) do
-    --   vim.api.nvim_create_autocmd(
-    --     def[1],
-    --     {
-    --       pattern = def[2],
-    --       callback = def[3],
-    --       desc = def[4]
-    --     }
-    --   )
-    -- end
 
     vim.cmd('augroup ' .. group_name)
     vim.cmd('autocmd!')
@@ -93,22 +81,7 @@ end
 
 -- virtual text
 
--- local opts = {
---   end_line = 10,
---   id = 1,
---   virt_text = {{"demo", "IncSearch"}},
---   virt_text_pos = 'overlay',
---   -- virt_text_win_col = 20,
--- }
-
 -- local mark_id = vim.api.nvim_buf_set_extmark(bnr, ns_id, line_num, col_num, opts)
-
--- local ts_utils = require("nvim-treesitter.ts_utils")
--- utils.find_virtual_text_nodes = function(validator, ft, opts)
---   local result = {}
---   local node = ts_utils.get_node_at_cursor()
---   -- local config = require('nvim_context_vt.config')
---   local config = {}
 
 --   while node ~= nil and not vim.tbl_contains(config.ignore_root_targets, node:type()) do
 --     if validator(node, ft, opts) then

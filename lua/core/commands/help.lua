@@ -1,12 +1,6 @@
 local helputils = require('utils.helptags')
 local function get_help_cursor()
   require('configs.telescope.launcher')('builtin', 'help_tags')
-  -- local match, word = helputils.search_cursor_word()
-  -- if match then
-  --   vim.cmd('help ' .. word)
-  -- else
-  --   require('configs.telescope.launcher')('builtin', 'help_tags')
-  -- end
 end
 
 

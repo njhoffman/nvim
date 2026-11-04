@@ -4,22 +4,6 @@ local config = {
   show_keys = false,
   plugins = {
     registers = false,
-    -- marks = true,
-    -- spelling = {
-    --   enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
-    --   suggestions = 20, -- how many suggestions should be shown in the list?
-    -- },
-    -- presets = {
-    --   operators = true, -- adds help for operators like d, y, ...
-    --   motions = true, -- adds help for motions
-    --   text_objects = true, -- help for text objects triggered after entering an operator
-    --   windows = true, -- default bindings on <c-w>
-    --   nav = true, -- misc bindings to work with windows
-    --   z = true, -- bindings for folds, spelling and others prefixed with z
-    --   g = true, -- bindings for prefixed with g
-    --   mouse = false,
-    --   extra = false
-    -- },
   },
 
   -- stylua: ignore
@@ -39,20 +23,6 @@ local config = {
     X = 'exchange  ',
     cx = 'exchange  ',
     s    = 'add surround 󰅪',
-    -- ys   = 'yank surround 󰅪',
-    -- ds   = 'delete surround 󰅪',
-    -- cs   = 'change surround 󰅪',
-    -- sF   = 'surround find right 󰅪',
-    -- sf   = 'surround find left 󰅪',
-    -- evaluate = { prefix = 'g=' },
-    -- -- Exchange text regions
-    -- exchange = { prefix = 'gtx', reindent_linewise = true },
-    -- -- Multiply (duplicate) text
-    -- multiply = { prefix = 'gtm', func = nil },
-    -- -- Replace text with register
-    -- replace = { prefix = 'gtr', reindent_linewise = true },
-    -- -- Sort text
-    -- sort = { prefix = 'gts' },
     gb   = 'comments (block)  ',
     gc   = 'comments (line)  ',
     goo  = 'debugprint out t',
@@ -154,18 +124,6 @@ local config = {
       { "^lua%s+", "" },
       { "^call%s+", "" },
       { "^:%s*", "" },
---     '<silent>',
---     '<cmd>',
---     '<Cmd>',
---     '<CR>',
---     '^call',
---     '^lua',
---     '^:',
---     '^ ',
---     'require',
---     'escope',
---     'erator',
---     '"',
     },
   },
 
@@ -177,15 +135,6 @@ local config = {
     ['<space>']         = 'SPC',
     ['<S-PageDown>']    = '<S-PgDn>',
     ['<S-PageUp>']      = '<S-PgUp>',
-    -- ['<M-Bslash>']    = '<M-\\>',
-    -- ['<C-Bslash>']    = '<C-\\>',
-    -- ['<M-Space>']    = 'M-SPC',
-    -- ['<C-Space>']    = 'C-SPC',
-    -- ['<M-C-Space>']  = 'M-C-SPC',
-    -- ['<M-C-S-Down>']    = '<C-M-J>',
-    -- ['<M-C-S-Up>']      = '<C-M-K>',
-    -- ['<M-C-S-Left>']    = '<C-M-H>',
-    -- ['<M-C-S-Right>']   = '<C-M-L>',
     ['<C-S-Down>']      = '<C-S-j>',
     ['<C-S-Up>']        = '<C-S-k>',
     ['<C-S-Left>']      = '<C-S-h>',
@@ -264,15 +213,6 @@ local config = {
     separator = "➜", -- symbol used between a key and it's label
     group = "+", -- symbol prepended to a group
     ellipsis = "…",
-    -- ellipsis = "…",
-    -- -- set to false to disable all mapping icons, both those explicitly added in a mapping and those from rules
-    -- mappings = true,
-    -- --- Set to `false` to disable keymap icons from rules
-    -- ---@type wk.IconRule[]|false
-    -- rules = {},
-    -- -- use the highlights from mini.icons When `false`, it will use `WhichKeyIcon` instead
-    -- colors = true,
-    -- -- used by key format
     keys = {
       -- , , , , 󰁝, , , , , 󰁅, 󰁍, 󰁔,
       Up = "",

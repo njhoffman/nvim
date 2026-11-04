@@ -124,12 +124,6 @@ local autocmds = {
   TelescopeWinbar = { { 'User' }, 'TelescopeFindPre', telescope.winbar_sync },
   ReloadOnWrite   = { { 'BufWritePost' }, 'tmux.conf', [[execute ':!tmux source-file % && notify-send "TMUX" "Reloading TMUX"']] } ,
 
-  -- { 'BufWinLeave', '*', remove_buffer },
-  -- TrailingWhitespace =  {
-  --   { 'BufWritePre', '*', windows.remove_trailing_whitespace },
-  --   { 'InsertEnter', '*', windows.enable_list },
-  --   { 'InsertLeave', '*', windows.disable_list },
-  -- }
 }
 
 -- autocommands

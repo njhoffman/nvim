@@ -125,37 +125,6 @@ local cfg = {
     -- Raw indentation
     whitespace = '  ',
   },
-  -- filter_kind = {
-  --   ["_"] = {
-  --     "Array",
-  --     "Boolean",
-  --     "Class",
-  --     "Constant",
-  --     "Constructor",
-  --     "Enum",
-  --     "EnumMember",
-  --     "Event",
-  --     "Field",
-  --     "File",
-  --     "Function",
-  --     "Interface",
-  --     "Key",
-  --     "Method",
-  --     "Module",
-  --     "Namespace",
-  --     "Null",
-  --     "Number",
-  --     "Object",
-  --     "Operator",
-  --     "Package",
-  --     "Property",
-  --     "String",
-  --     "Struct",
-  --     "TypeParameter",
-  --     "Variable",
-  --   },
-  --   -- markdown = { "String" },
-  -- },
 }
 
 local aucmds = require('configs.aerial.autocmds')

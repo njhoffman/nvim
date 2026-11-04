@@ -16,11 +16,6 @@ local default_git_args = {
   "-c",
   "delta.navigate=false",
 
-  -- "delta.pager=less -R",
-  -- "-c",
-  -- "delta.pager=bat",
-  -- "core.side-by-side=false",
-  -- entry.value .. "^!",
 }
 
 local diff_delta = function(opts)
@@ -47,12 +42,6 @@ local diff_delta = function(opts)
       else
         table.insert(git_args, entry.value.sha)
       end
-
-      -- if entry.value.status == '??' or 'A ' then
-      --   table.insert(git_args, entry.value.sha)
-      -- else
-      --   table.insert(git_args, entry.value.sha .. '^!')
-      -- end
 
       --
       if opts.current_file then

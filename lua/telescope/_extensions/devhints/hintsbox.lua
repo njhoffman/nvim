@@ -89,11 +89,6 @@ local get_dimensions = function(topics, parent)
   window.height = 14
   window.width = window.width > maxWidth and maxWidth or window.width
   window.scrolloff = 7
-  -- local scrolloff = get_height("50%")
-  -- if scrolloff > 7 then
-  --   scrolloff = 7
-  -- end
-  -- vim.api.nvim_set_option_value("scrolloff", scrolloff, {})
 
   return window
 end

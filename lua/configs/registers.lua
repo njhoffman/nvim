@@ -16,14 +16,6 @@
 -- bind_keys["k"] = registers.move_cursor_up()
 
 local init_window = function(default_options)
-  -- -- ⌜⌟⌜⌝ ┘｢｣  ┒┑┓┏┌┍┎ 🭼 🭿 └ ┕ ┖ ┗   ⎡ ⎣ ⎤ ⎦ ˨   ◝ ◟ ◞ ╰ 「」ꜚ﹁ ⇱ ﹂｢｣ ╮ ╯╰ ╭ 𛲖─ ━ ━ ─ ＿ ⎽⎯🭻▁
-  -- -- border = { "↖", "─", "╮", "│", "╯", "─", "╰", "│" },
-  -- -- border = { "↖", "─", "╮", "│", "│", "_", "│", "│" },
-  -- border = { '╭', '─', '╮', '│', '│', '_', '│', '│' },
-  -- zindex = 2,
-  -- style = 'minimal',
-  -- -- title = "Hover",
-  -- -- titlepos = 'Center'
 end
 
 local registers = require("modules.registers")

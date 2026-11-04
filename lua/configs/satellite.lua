@@ -2,25 +2,6 @@
 -- "•"  "┆", "▁", "", "", " ", ﹘‐ ‑ ‒ – — ― ‖ ‗﹉ ﹊ ﹋ ﹌ ﹍ ﹎ ﹏
 --  '─│─│╭╮╯╰'            
 
---   autocmd = {
---     render = {
---       "BufWinEnter",
---       "CmdwinLeave",
---       "TabEnter",
---       "TermEnter",
---       "TextChanged",
---       -- 'User',
---       "VimResized",
---       "WinEnter",
---       "WinScrolled",
---     },
---     clear = {
---       "BufWinLeave",
---       "TabLeave",
---       "TermLeave",
---       "WinLeave",
---     },
---   },
 local cfg = {
   current_only = false,
   zindex = 40,
@@ -161,28 +142,3 @@ require("satellite").setup(cfg)
 -- head ='🮇',
 -- 	body ='🮇',
 -- 	tail ='🮇',
-
---         head = '▲',
---         body = '█',
---         tail = '▼',
--- vim.g.scrollbar_shape = {
--- 	head ='▎',
--- 	body ='▎',
--- 	tail ='▎',
--- }
-
--- init = function()
--- 	vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
--- 		desc = "User: Change `SatelliteQuickfix` color",
--- 		callback = function()
--- 			vim.api.nvim_set_hl(0, "SatelliteQuickfix", { link = "DiagnosticSignInfo" })
--- 		end,
--- 	})
--- end,
--- opts = {
--- 	winblend = 10, -- only little transparency, since otherwise hard to see in some themes
--- 	handlers = {
--- 		cursor = { enable = false },
--- 		marks = { enable = false },
--- 	},
--- },

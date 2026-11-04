@@ -10,28 +10,7 @@ local bullets = {
 }
 -- ◆ ◇ 󰨑 󱓝    󰄯 󰄰  ● ○ 󰻃   󰧞  󰧟 
 
---       require("render-markdown").setup(opts)
---       Snacks.toggle({
---         name = "Render Markdown",
---         get = function()
---           return require("render-markdown.state").enabled
---         end,
---         set = function(enabled)
---           local m = require("render-markdown")
---           if enabled then
---             m.enable()
---           else
---             m.disable()
---           end
---         end,
---       }):map("<leader>um")
-
 local cfg = {
-  -- custom_handlers = {
-  --   org = {
-  --     parse = require("configs.render-markdown.view-orgmode"),
-  --   },
-  -- },
 
   render_modes = { "n", "c", "t", "v", "V", "\22" },
   -- render_modes = true,
@@ -170,26 +149,6 @@ local cfg = {
     -- -- | thin  | when lines are empty overlay the above & below icons |
     -- -- | hide  | conceal lines unless language name or icon is added  |
     border = "thin",
-    -- -- Determines how code blocks & inline code are rendered.
-    -- -- | none     | disables all rendering                                                    |
-    -- -- | normal   | highlight group to code blocks & inline code, adds padding to code blocks |
-    -- -- | language | language icon to sign column if enabled and icon + name above code blocks |
-    -- -- | full     | normal + language                                                         |
-    -- style = "full",
-    -- language_icon = true,            -- Whether to include the language icon above code blocks.
-    -- language_name = true,            -- Whether to include the language name above code blocks.
-    -- disable_background = { "diff" }, -- language names to render borders but no background
-    -- left_margin = 0,                 -- < 1 is percentage
-    -- min_width = 0,                   -- < 1 is percentage (only for block width)
-    -- above = "▄",                     -- Used above code blocks for thin border.
-    -- below = "▀",                     -- Used below code blocks for thin border.
-    -- inline_left = "",                -- Icon to add to the left of inline code.
-    -- inline_right = "",               -- Icon to add to the right of inline code.
-    -- inline_pad = 0,                  -- Padding to add to the left & right of inline code.
-    -- highlight = "RenderMarkdownCode",                  -- hl for code blocks.
-    -- highlight_border = "RenderMarkdownCodeBorder",     -- hl for border,   use false to add no highlight.
-    -- highlight_fallback = "RenderMarkdownCodeFallback", -- hl for language, used if icon provider does not have a value.
-    -- highlight_inline = "RenderMarkdownCodeInline",     -- hl for inline code.
   },
   anti_conceal = {
     enabled = false,
@@ -328,30 +287,7 @@ local cfg = {
     -- | inline  | '#'s are concealed and icon is inlined on left side                            |
     -- | overlay | icon is left padded with spaces and inserted on left hiding any additional '#' |
     position = "inline", -- inline: icons left aligned, overlay: L
-    -- -- Replaces '#+' of 'atx_h._marker': function `value(context)` | string[] `cycle(value, context.level)` |
-    -- icons = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },  { '󰼏 ', '󰎨 ' }
-    -- atx = true,             -- Turn on / off atx heading rendering.
-    -- setext = true,          -- Turn on / off setext heading rendering.
-    -- sign = true,            -- Turn on / off any sign column related rendering.
-    -- width = 'block',        -- background width block (only text) or full
-    -- min_width = 0,          -- Minimum width to use for headings when width is 'block', can be level integers list
-    -- border = false,         -- Determines if a border is added above and below headings
-    -- border_prefix = false,  -- Highlight the start of the border using the foreground highlight
-    -- above = "▄",            -- Used above heading for border
-    -- below = "▀",            -- Used below heading for border
-    -- signs = { "󰫎 " },       -- sign column if enabled, can use levels
-    -- left_margin = 0,        -- < 1 is percentage, can be levels
-    -- left_pad = 0,           -- < 1 is percentage, can be levels
-    -- right_pad = 0,          --  < 1 is percentage, can be levels (only when width is block)
-    -- backgrounds = { "RenderMarkdownH1Bg", "RenderMarkdownH2Bg", "RenderMarkdownH3Bg", "RenderMarkdownH4Bg", "RenderMarkdownH5Bg", "RenderMarkdownH6Bg", },
-    -- foregrounds = { "RenderMarkdownH1", "RenderMarkdownH2", "RenderMarkdownH3", "RenderMarkdownH4", "RenderMarkdownH5", "RenderMarkdownH6", },
   },
-  -- on = {
-  --   attach = function() end,
-  --   initial = function() end,
-  --   render = function() end,
-  --   clear = function() end,
-  -- },
 }
 
 require("render-markdown").setup(cfg)

@@ -1,11 +1,5 @@
 local modes = require("configs.flash.modes")
 
--- FlashBackdrop = { fg = "#545c7e" },
--- FlashCurrent = { bg = "#ff966c", fg = "#1b1d2b" },
--- FlashLabel = { bg = "#ff007c", bold = true, fg = "#c8d3f5" },
--- FlashMatch = { bg = "#3e68d7", fg = "#c8d3f5" },
--- FlashCursor = { reverse = true },
-
 local config = {
   labels = "asdfghjklqwertyuiopzxcvbnm",
   use_upper_select_visual_line = false,
@@ -106,14 +100,6 @@ local config = {
     -- `nil`: act as `true` for remote windows, `false` for the current window
     motion = true,
   },
-  -- action = function(match, self)
-  --   local Jump = require("flash.jump")
-  --   vim.dbglog("action", match.label, match.pos[1], match.pos[2])
-  --   Jump.jump(match, self)
-  --   vim.schedule(function()
-  --     Jump.on_jump(self)
-  --   end)
-  -- end,
 }
 -- vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#000000", bg = "#ff007c" })
 vim.api.nvim_set_hl(0, "FlashBackdrop", { fg = "#243c6e" })

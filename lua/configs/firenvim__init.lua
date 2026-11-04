@@ -22,14 +22,6 @@ local init = function()
   }
 end
 return init
--- vim.api.nvim_create_autocmd({ "UIEnter" }, {
---   callback = function(event)
---     local client = vim.api.nvim_get_chan_info(vim.v.event.chan).client
---     if client ~= nil and client.name == "Firenvim" then
---       vim.o.laststatus = 0
---     end
---   end,
--- })
 
 -- ### Interacting with the page
 -- You can execute javascript in the page by using `firenvim#eval_js`. The code has to be a valid javascript expression (NOT a statement). You can provide the name of a function that should be executed with the result of the expression. Note that some pages prevent evaluating JavaScript with their [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) and this can't be worked around. Here's an example:

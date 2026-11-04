@@ -9,14 +9,6 @@ local opfuncs = {
   ['v:lua.MiniSurround.replace'] = { { 'cs' }, 'surround replace 󰅪' },
   ['v:lua.MiniSurround.delete'] = { { 'ds' }, 'surround delete 󰅪' },
 
-  -- [''] = {
-  --   { 'cr' },
-  --   'change remote object',
-  -- },
-  -- [''] = {
-  --   { 'dr' },
-  --   'delete remote object',
-  -- },
   ['v:lua.require"textcase".operator_callback'] = {
     { 'gtoc', 'gtod', 'gtoD', 'gtof', 'gton', 'gtop', 'gtoP', 'gtos', 'gtot', 'gtou', 'gtoU' },
     'change text case  ',

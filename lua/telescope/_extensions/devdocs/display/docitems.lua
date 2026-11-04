@@ -1,9 +1,3 @@
--- alias = "python-3.12",
--- link = "library/asyncio-subprocess#asyncio.subprocess.Process",
--- name = "asyncio.subprocess.Process",
--- next_path = "46,`coroutine wait()`",
--- path = "46,`class asyncio.subprocess.Process`"
--- 1821: asyncio.subprocess.Process      library/asyncio-subprocess#asyncio.subprocess.Process   37      21      0
 
 local utils = require('telescope._extensions.devdocs.utils')
 local entry_display = require('telescope.pickers.entry_display')

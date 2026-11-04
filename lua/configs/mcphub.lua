@@ -49,11 +49,6 @@ local cfg = {
   ---Chat-plugin related options-----------------
   auto_approve = false, -- Auto approve mcp tool calls
   auto_toggle_mcp_servers = true, -- Let LLMs start and stop MCP servers automatically
-  -- extensions = {
-  --   avante = {
-  --     make_slash_commands = true, -- make /slash commands from MCP server prompts
-  --   },
-  -- },
   --- Plugin specific options-------------------
   native_servers = {}, -- add your custom lua native servers here
   builtin_tools = {
@@ -92,11 +87,6 @@ local cfg = {
       winhl = "Normal:MCPHubNormal,FloatBorder:MCPHubBorder",
     },
   },
-  -- on_ready = function(hub)
-  --   -- Called when hub is ready
-  -- end,
-  -- on_error = function(err) -- Called on errors
-  -- end,
   log = {
     level = vim.log.levels.WARN,
     to_file = false,

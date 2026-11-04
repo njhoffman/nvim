@@ -1,15 +1,3 @@
--- 		-- for keymaps like `<C-a>`
--- 		{ "<", ">", ft = { "vim" } },
--- 		{
--- 			"<",
--- 			">",
--- 			ft = { "lua" },
--- 			cond = function(fn)
--- 				-- FIX https://github.com/altermo/ultimate-autopair.nvim/issues/88
--- 				local inLuaLua = vim.endswith(vim.api.nvim_buf_get_name(0), "/ftplugin/lua.lua")
--- 				return not inLuaLua and fn.in_string()
--- 			end,
--- 		},
 local exclude = {
   buftype = {
     "prompt",
@@ -120,23 +108,6 @@ local cfg = {
       cmap = "<M-0>",
       rcmap = "<M-9>",
     },
-    -- {
-    --   faster = true,
-    --   nocursormove = true,
-    --   map = "<M-'>",
-    --   rmap = '<M-;>',
-    --   cmap = "<M-'>",
-    --   rcmap = '<M-;>',
-    -- },
-    -- {
-    --   faster = true,
-    --   nocursormove = true,
-    --   map = '<M-.>',
-    --   rmap = '<M-,>',
-    --   cmap = '<M-.>',
-    --   rcmap = '<M-,>',
-    -- },
-    -- which nodes to skip for tsnode filtering
     conf = {},
   },
   tabout = { -- *ultimate-autopair-map-tabout-config*
@@ -189,23 +160,6 @@ local cfg = {
     disable_end = true,
   },
   extensions = {
-    -- -- disable in comments
-    -- rules = {
-    --   rules = {
-    --     {
-    --       'call',
-    --       function(o)
-    --         local status, node =
-    --           pcall(vim.treesitter.get_node, { pos = { o.linenr - 1, o.col - 2 } })
-    --         return o.incmd
-    --           or o.col == 1
-    --           or not status
-    --           or not node
-    --           or node:type() ~= 'comment' and node:type() ~= 'html_block'
-    --       end,
-    --     },
-    --   },
-    -- },
     cmdtype = { skip = { "/", "?", "@", "-", ":" }, p = 100 },
     escape = { filter = true, p = 80 },
     utf8 = { p = 70 },
@@ -251,12 +205,6 @@ local cfg = {
       filter = true,
     },
     alpha = {
-      -- p = 30,
-      -- filter = false,
-      -- alpha = false,
-      -- after = true,
-      -- no_python = false, -- Weather to disable f-string detection.
-      -- all = false, -- Weather to check for all in-characters, not just start pairs.
     },
     suround = {
       p = 20,
@@ -351,27 +299,6 @@ require("ultimate-autopair").init({
     -- profile = require("ultimate-autopair.experimental.cmpair").init,
   },
 })
-
--- local cmp = require('cmp')
--- local ind = cmp.lsp.CompletionItemKind
---
--- local function ls_name_from_event(event)
---   return event.entry.source.source.client.config.name
--- end
---
--- -- Add parenthesis on completion confirmation
--- cmp.event:on('confirm_done', function(event)
---   local ok, ls_name = pcall(ls_name_from_event, event)
---   if ok and vim.tbl_contains({ 'rust_analyzer', 'lua_ls' }, ls_name) then
---     return
---   end
---
---   local completion_kind = event.entry:get_completion_item().kind
---   if vim.tbl_contains({ ind.Function, ind.Method }, completion_kind) then
---     local left = vim.api.nvim_replace_termcodes('<Left>', true, true, true)
---     vim.api.nvim_feedkeys('()' .. left, 'n', false)
---   end
--- end)
 
 -- require('configs.ultimate-autopair.esc-disable')
 

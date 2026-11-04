@@ -131,16 +131,6 @@ local hydra = function()
     },
     mode = { 'n', 'x' },
     body = '<leader>!o',
-    -- buffer = true,
-    -- on_enter = function()
-    --   print("Hydra enter")
-    --   -- temporary set `nomodifiable` while Hydra is active
-    --   vim.bo.modifiable = false
-    -- end,
-    -- on_exit = function()
-    --   print("Hydra exit")
-    --   -- No need to set modifiable back here
-    -- end,
   })
 end
 

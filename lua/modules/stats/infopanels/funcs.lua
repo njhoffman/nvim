@@ -1,15 +1,6 @@
 local M = {}
 
 
--- vim.api.nvim_get_var, mark, mode, proc, vvar, keymap, option, context, commands, hl_by_id, chan_info, color_map, hl_by_name, namespaces, current_buf, current_win, option_info, current_line, runtime_file, color_by_name, hl_id_by_name, proc_children, current_tabpage, all_options_info
--- vim.api.nvim__get_hl_defs, lib_dir, runtime
--- vim.api.nvim_buf_get_var, buf, mark, name, lines, keymap, number, offset, option, commands, extmarks, changedtick, extmark_by_id
--- vim.api.nvim_win_get_buf, var, width, config, cursor, height, number, option, tabpage, position,
--- vim.api.nvim_tabpage_get_var, win, number
--- local cmd_output = vim.fn.execute("verb autocmd *", "silent")
--- local locations = vim.fn.getqflist()
-
-
 -- local lazy_plugins_size  = vim.fn.systemlist('du -shc * ' .. vim.fn.stdpath('data') .. '/site/pack/packer/opt | tail -n1')
 
 M.get_packer_lines = function()

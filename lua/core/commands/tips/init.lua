@@ -39,15 +39,6 @@ end
 local complete = function(query, cmd)
   if query == "" then
     local cmds = vim.tbl_keys(tips_list)
-    -- local args = vim.split(query, ' ')
-    -- local cat = args[1] and tips_list[args[1]] and args[1] or ''
-    -- local tip = args[2] and tips_list[cat][tonumber(args[2])] and args[2] or ''
-    -- local tips = {}
-    -- for cat, tips_list in pairs(tips_list) do
-    --   for i, tip in ipairs(tips_list) do
-    --     table.insert(tips, cat .. ' ' .. i)
-    --   end
-    -- end
     return cmds
   end
 end

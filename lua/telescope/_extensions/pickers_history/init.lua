@@ -1,18 +1,6 @@
 local telescope = require('telescope')
 local handlers = require('telescope._extensions.pickers_history.handler')
 
--- local stopinsert = function(callback)
---   return function(prompt_bufnr)
---     vim.cmd.stopinsert()
---     vim.schedule(function()
---       callback(prompt_bufnr)
---     end)
---   end
--- end
---
--- luarocks install luv
--- luarocks install sqlite3
--- sudo apt-get install sqlite3 libsqlite3-dev # Ubuntu
 local sources = {
   history = function()
     return handlers.get_history()
@@ -53,12 +41,6 @@ end
 local extension = {
   setup = function(_, config)
     config = config or {}
-    -- if config.history ~= false then
-    --   config.history.handler = function()
-    --     handlers.get_simple_history()
-    --     -- handler.get_smart_history()
-    --   end
-    -- end
   end,
   exports = vim.tbl_deep_extend('force', sources, { status = db_status }),
 }

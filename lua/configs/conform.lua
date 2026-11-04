@@ -1,9 +1,3 @@
--- function config.get_lsp_fallback(bufnr)
---   local formatters = require("conform").list_formatters(bufnr)
---   if #formatters > 0 and formatters[1].name == "trim_whitespace" then
---     return "always"
---   else
---     return true
 
 --   end
 -- end
@@ -71,13 +65,6 @@ local formatters = {
     stdin = false,
     args = { "--ignore=e203,e501,e402,f401,f821,w503,w292" },
   },
-  -- markdownlint = {
-  --   command = "markdownlint",
-  --   stdin = false,
-  --   args = { "--fix", "--config", linterconfig .. "/markdownlint.yaml", "$filename" },
-  -- },
-  -- prettierd: conform's built-in definition (file on stdin, its path as the argument so prettier finds the
-  -- parser and config). prettierd ignores CLI options, so width and plugins come from prettier configs.
   shellcheck = {
     command = "shellcheck",
     arg = "--shell=bash --format=diff '$filename' | git apply",
@@ -211,15 +198,3 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end
   end,
 })
-
--- local event = 'BufWritePost'
--- if format_options.sync then
---   event = 'BufWritePre'
--- end
--- vim.api.nvim_create_autocmd("BufWritePre", {
---   pattern = "*",
---   callback = function(args)
---     -- vim.dbglog("format", args.buf)
---     require("conform").format({ bufnr = args.buf })
---   end,
--- })

@@ -31,11 +31,6 @@ local attach_mappings = function()
     --   esc = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
     -- end
 
-    -- vim.api.nvim_feedkeys(
-    --   string.format("%s:set %s=%s", esc, selection.value.name, selection.value.value),
-    --   "m",
-    --   true
-    -- )
   end)
   return true
 end

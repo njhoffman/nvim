@@ -46,11 +46,6 @@ local cfg = {
         name = "left_to_right",
         --   -- name = "bounce",
         settings = {
-          -- max_duration = 350,
-          -- min_duration = 350,
-          -- min_progress = 0.85,
-          -- chars_for_max_duration = 25,
-          -- lingering_time = 50,
           max_duration = 600,
           min_duration = 600,
           lingering_time = 200,
@@ -64,11 +59,6 @@ local cfg = {
     auto_map = true,
     search = {
       enabled = false,
-      -- next_mapping = { lhs = "n", rhs = "'Nn'[v:searchforward].'zv'" },
-      -- -- Keys to navigate to the next match
-      --  next_mapping = "n",
-      --  -- Keys to navigate to the previous match
-      --  prev_mapping = "N",
       default_animation = {
         name = "pulse",
         settings = {

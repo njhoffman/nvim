@@ -25,43 +25,4 @@ local winbar_sync = function(ev)
   })
 end
 
--- vim.api.nvim_create_autocmd('User', {
---   pattern = 'TelescopePreviewerLoaded',
---   callback = function(args)
---     -- require('scrollbar.handlers').show()
---
---     vim.defer_fn(function()
---       require('scrollbar.handlers.search').handler.show({})
---       vim.cmd('ScrollbarShow')
---     end, 1000)
---     vim.dbglog('PREVIEWER', args)
---   end,
--- })
--- Enable indent-guides in telescope preview
--- vim.api.nvim_create_autocmd('User', {
---   pattern = 'TelescopePreviewerLoaded',
---   group = vim.api.nvim_create_augroup('rafi_telescope', {}),
---   callback = function(args)
---     if args.buf ~= vim.api.nvim_win_get_buf(0) then
---       return
---     end
---     vim.opt_local.listchars = vim.wo.listchars .. ',tab:▏\\ '
---     vim.opt_local.list = true
---     vim.opt_local.number = true
---   end,
--- })
---
--- Enable indent-guides in telescope preview
--- vim.api.nvim_create_autocmd('User', {
---   pattern = 'TelescopePreviewerLoaded',
---   group = vim.api.nvim_create_augroup('rafi_telescope', {}),
---   callback = function(args)
---     if args.buf ~= vim.api.nvim_win_get_buf(0) then
---       return
---     end
---     vim.opt_local.listchars = vim.wo.listchars .. ',tab:▏\\ '
---     vim.opt_local.list = true
---     vim.opt_local.number = true
---   end,
--- })
 return { winbar_sync = winbar_sync }

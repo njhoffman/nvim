@@ -66,12 +66,6 @@ local cursorline_preset = {
     },
     -- visual
     [{ "v", "V", "\x16" }] = {
-      -- from = function()
-      --   vim.opt.relativenumber = false
-      -- end,
-      -- to = function()
-      --   vim.opt.relativenumber = true
-      -- end,
       hl = {
         -- [Cursor] = { bg = '#7000ff', bold = true, italic = true },
         [Cursor] = { bg = "#5620ff", bold = true, italic = true },
@@ -101,12 +95,6 @@ local cursorline_preset = {
       },
     },
     no = {
-      -- from = function()
-      --   vim.opt.relativenumber = false
-      -- end,
-      -- to = function()
-      --   vim.opt.relativenumber = true
-      -- end,
       hl = {
         -- WhichKeyKey = { fg = '#00ccaa' },
         -- barbecue_basename = { fg = '#00ccaa' },

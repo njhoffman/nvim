@@ -150,18 +150,6 @@ M.open_picker_alias_dyn = function(opts)
     prompt_title = "Select an entry",
     finder = finders.new_oneshot_job(command, opts),
     previewer = previewers.doc_previewer,
-    -- sorter = config.generic_sorter(plugin_config.options.telescope),
-    -- attach_mappings = function(prompt_bufnr)
-    --   actions.select_default:replace(function()
-    --     actions.close(prompt_bufnr)
-    --     local selection = action_state.get_selected_entry()
-    --     if selection then
-    --       plugin_state.set('current_doc', selection.value.alias)
-    --       devdoc_actions.open_doc(selection, float)
-    --     end
-    --   end)
-    --   return true
-    -- end,
   })
   picker:find()
 end

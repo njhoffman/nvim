@@ -76,14 +76,6 @@ end
 
 local stats = function(args)
   stats_files()
-  -- local cmd_map = {
-  --   configs = stats_configs,
-  -- }
-  -- if cmd_map[args[2]] then
-  --   cmd_map[args[2]](args)
-  -- else
-  --   stats_overview(args)
-  -- end
 end
 return {
   stats = stats,

@@ -1,26 +1,6 @@
 local state = { timer = nil }
 local ns_id = vim.api.nvim_create_namespace("commands/format")
 
--- local function throttle(func, delay)
---   if state.timer then
---     return
---   end
---   state.timer = vim.fn.timer_start(delay, function()
---     -- local args = { ... }
---     pcall(vim.schedule_wrap(function()
---       func(config)
---     end))
---     vim.fn.timer_stop(state.timer)
---     state.timer = nil
---   end)
--- end
-
--- vim.api.nvim_create_user_command("PasteChar", function()
---   local txt = vim.g
--- end, { desc = "Paste primary buffer charwise (strip line endings)" })
--- vim.api.nvim_create_user_command( "PasteLinewise"
--- )
-
 local checked_checkbox = "%[[xX]%]"
 local unchecked_checkbox = "%[ %]"
 
@@ -105,29 +85,6 @@ local truncate_log = function()
   end
 end
 
--- local slow_format_filetypes = {}
--- require("conform").setup({
---   format_on_save = function(bufnr)
---     if slow_format_filetypes[vim.bo[bufnr].filetype] then
---       return
---     end
---     local function on_format(err)
---       if err and err:match("timeout$") then
---         slow_format_filetypes[vim.bo[bufnr].filetype] = true
---       end
---     end
---
---     return { timeout_ms = 200, lsp_fallback = true }, on_format
---   end,
---
---   format_after_save = function(bufnr)
---     if not slow_format_filetypes[vim.bo[bufnr].filetype] then
---       return
---     end
---     return { lsp_fallback = true }
---   end,
--- })
-
 -- Autoformat with extra features
 -- If you want more complex logic than the basic format_on_save option allows, you can use a function instead.
 --
@@ -164,18 +121,6 @@ end
 --     return { lsp_fallback = true }
 --   end,
 -- })
-
--- vim.api.nvim_create_user_command('Format', function(args)
---   local range = nil
---   if args.count ~= -1 then
---     local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
---     range = {
---       start = { args.line1, 0 },
---       ['end'] = { args.line2, end_line:len() },
---     }
---   end
---   require('conform').format({ async = true, lsp_fallback = true, range = range })
--- end, { range = true })
 
 local function trim_space(opts, preview_ns, preview_buf)
   opts = opts or {}
@@ -339,43 +284,3 @@ return {
   toggle_checkbox = toggle_checkbox,
   delete_spaces_ahead = delete_spaces_ahead,
 }
-
--- return {
---   "stevearc/conform.nvim",
---   event = { "BufWritePre" },
---   cmd = { "ConformInfo" },
---   keys = {
---     {
---       -- Customize or remove this keymap to your liking
---       "<leader>f",
---       function()
---         require("conform").format({ async = true, lsp_fallback = true })
---       end,
---       mode = "",
---       desc = "Format buffer",
---     },
---   },
---   -- Everything in opts will be passed to setup()
---   opts = {
---     -- Define your formatters
---     formatters_by_ft = {
---       lua = { "stylua" },
---       python = { "isort", "black" },
---       javascript = { { "prettierd", "prettier" } },
---     },
---     -- Set up format-on-save
---     format_on_save = { timeout_ms = 500, lsp_fallback = true },
---     -- Customize formatters
---     formatters = {
---       shfmt = {
---         prepend_args = { "-i", "2" },
---       },
---     },
---   },
---   init = function()
---     -- If you want the formatexpr, here is the place to set it
---     vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
---   end,
--- }
---
---

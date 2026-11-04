@@ -100,18 +100,6 @@ local popupView = {
     width = "auto",
   },
   border = { style = "rounded", padding = { left = 1, right = 1 } },
-  -- win_options = {
-  --      winbar = "",
-  --      foldenable = false,
-  --      cursorline = true,
-  --      cursorlineopt = "line",
-  --      winhighlight = {
-  --        Normal = "NoicePopupmenu", -- change to NormalFloat to make it look like other floats
-  --        FloatBorder = "NoicePopupmenuBorder", -- border highlight
-  --        CursorLine = "NoicePopupmenuSelected", -- used for highlighting the selected item
-  --        PmenuMatch = "NoicePopupmenuMatch", -- used to highlight the part of the item that matches the input
-  --      },
-  -- },
 }
 
 local hover_changes = {

@@ -145,18 +145,6 @@ highlights.set_hl = function(name, value)
   local success, err = pcall(vim.api.nvim_set_hl, 0, name, value)
 
   if success == false and err then
-    -- require("config.health").print({
-    -- 	kind = "hl",
-    --
-    -- 	from = "highlights.lua",
-    -- 	fn = "set_hl() -> " .. tostring(name),
-    --
-    -- 	name = name,
-    -- 	value = value,
-    -- 	message = {
-    -- 		{ tostring(err), "DiagnosticError" }
-    -- 	}
-    -- });
   end
 
   ---|fE

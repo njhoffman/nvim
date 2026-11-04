@@ -209,21 +209,6 @@ local setup_keymaps = function()
     a[key] = "  around " .. desc .. " textobject"
   end
 
-  -- m({ 'n', 'x', 'o' }, maps.goto_left,  function() return H.expr_motion('left') end,   { desc = 'Move to left "around"' })
-  -- m({ 'n', 'x', 'o' }, maps.goto_right, function() return H.expr_motion('right') end,  { desc = 'Move to right "around"' })
-  -- m('x', maps.around, make_tobj('x', 'a'), { desc = 'Around textobject' })
-  -- m('x', maps.inside, make_tobj('x', 'i'), { desc = 'Inside textobject' })
-  -- m('o', maps.around, make_tobj('o', 'a'), { desc = 'Around textobject' })
-  -- m('o', maps.inside, make_tobj('o', 'i'), { desc = 'Inside textobject' })
-  -- m('x', maps.around_next, make_tobj('x', 'a', 'next'), { desc = 'Around next textobject' })
-  -- m('x', maps.around_last, make_tobj('x', 'a', 'prev'), { desc = 'Around last textobject' })
-  -- m('x', maps.inside_next, make_tobj('x', 'i', 'next'), { desc = 'Inside next textobject' })
-  -- m('x', maps.inside_last, make_tobj('x', 'i', 'prev'), { desc = 'Inside last textobject' })
-  -- m('o', maps.around_next, make_tobj('o', 'a', 'next'), { desc = 'Around next textobject' })
-  -- m('o', maps.around_last, make_tobj('o', 'a', 'prev'), { desc = 'Around last textobject' })
-  -- m('o', maps.inside_next, make_tobj('o', 'i', 'next'), { desc = 'Inside next textobject' })
-  -- m('o', maps.inside_last, make_tobj('o', 'i', 'prev'), { desc = 'Inside last textobject' })
-
   for k, v in pairs(i) do
     require("lib.mapper").vmap({ "x", "o" }, "i" .. k, { desc = v })
     -- iNw   inside last word
@@ -235,11 +220,6 @@ local setup_keymaps = function()
   for k, v in pairs(a) do
     require("lib.mapper").vmap({ "x", "o" }, "a" .. k, { desc = v })
   end
-  -- require("which-key").register {
-  --   mode = { "o", "x" },
-  --   i = i,
-  --   a = a,
-  -- }
 end
 
 return { opts = opts, setup_keymaps = setup_keymaps }

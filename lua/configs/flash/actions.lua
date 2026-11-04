@@ -149,11 +149,6 @@ local jump_diag = function()
   })
 end
 
--- require("flash").jump({
--- search = { mode = "search", max_length = 0 },
--- label = { after = { 0, 0 } },
--- pattern = "^", -- replace with $ for end of line
--- })
 local jump_line_above = function()
   -- move to lines above the cursor
   local col = vim.api.nvim_win_get_cursor(0)[2]

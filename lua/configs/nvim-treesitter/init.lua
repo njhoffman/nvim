@@ -64,14 +64,6 @@ end
 
 local url_pfx = "https://github.com/OXY2DEV/tree-sitter-"
 local path_pfx = vim.fn.stdpath("config") .. "/parsers/tree-sitter-"
--- register({ lang = "doctext", url = url_pfx })
--- register({ lang = "comment", url = url_pfx, name = "doctext" })
--- register({ lang = "lua_patterns", url = url_pfx })
--- register({ lang = "vhs", url = url_pfx })
--- register({ lang = "qf", url = url_pfx })
--- register({ lang = "kitty", url = url_pfx })
--- register({ lang = "spidercode", path = path_pfx })
--- vim.treesitter.language.register("bash", "zsh")
 
 install_parsers()
 
@@ -138,19 +130,6 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = apply_parser,
 })
 
--- -- COMMENTS parser
--- vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
---   desc = "User: Highlights for the Treesitter `comments` parser",
---   callback = function()
---     -- FIX todo-comments in languages where LSP overwrites their highlight
---     -- https://github.com/stsewd/tree-sitter-comment/issues/22
---     -- https://github.com/LuaLS/lua-language-server/issues/1809
---     vim.api.nvim_set_hl(0, "@lsp.type.comment", {})
---     -- Define `@comment.bold` for `queries/comment/highlights.scm`
---     vim.api.nvim_set_hl(0, "@comment.bold", { bold = true })
---   end,
--- })
-
 -- -- vim.treesitter.language.register("lua", { "log" })
 -- for matcher module
 -- vim.cmd("packadd matchit")
@@ -159,20 +138,3 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- require("configs.nvim-treesitter.context")
 -- require("configs.nvim-treesitter.extra-config")
-
--- {
---   "RRethy/nvim-treesitter-textsubjects",
---   config = function()
---     require("nvim-treesitter-textsubjects").configure({
---       prev_selection = "<leader>.",
---       keymaps = {
---         ["<leader><leader>"] = "textsubjects-smart",
---         ["<leader>\\]"] = "textsubjects-container-outer",
---         ["<leader>\\["] = "textsubjects-container-inner",
---       },
---     })
---   end,
--- },
--- "HiPhish/nvim-ts-rainbow2",
--- "nvim-treesitter/nvim-treesitter-refactor",
--- { "nvim-treesitter/nvim-treesitter-context" },

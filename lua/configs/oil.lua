@@ -57,14 +57,6 @@ local cfg = {
     "icon",
   }, -- "permissions", "size", "mtime"
   win_options = {
-    --     wrap = false,
-    --     signcolumn = "no",
-    --     cursorcolumn = false,
-    --     foldcolumn = "0",
-    --     spell = false,
-    --     list = false,
-    --     conceallevel = 3,
-    --     concealcursor = "nvic",
     relativenumber = false,
     number = false,
     -- winbar = "%!v:lua.get_oil_winbar()",
@@ -98,14 +90,6 @@ local cfg = {
     ["<C-h>"] = "actions.parent",
     ["<C-l>"] = "actions.select",
     ["<BS>"] = "actions.parent",
-    -- ["-"] = "actions.parent",
-    -- ["_"] = "actions.open_cwd",
-    -- ["`"] = "actions.cd",
-    -- ["~"] = "actions.tcd",
-    -- ["gs"] = "actions.change_sort",
-    -- ["gx"] = "actions.open_external",
-    -- ["g."] = "actions.toggle_hidden",
-    -- ["g\\"] = "actions.toggle_trash",
     ["g?"] = "actions.show_help",
     ["ga"] = {
       desc = "share file with code companion",
@@ -122,30 +106,6 @@ local cfg = {
         end
       end,
     },
-    -- -- Mappings can be a string
-    -- ["~"] = "<cmd>edit $HOME<CR>",
-    -- -- You can pass additional opts to vim.keymap.set by using a table with the mapping as the first element.
-    -- ["<leader>ff"] = {
-    --     function()
-    --         require("telescope.builtin").find_files({
-    --             cwd = require("oil").get_current_dir()
-    --         })
-    --     end,
-    --     mode = "n",
-    --     nowait = true,
-    --     desc = "Find files in the current directory"
-    -- },
-    -- -- Mappings that are a string starting with "actions." will be one of the built-in actions, documented below.
-    -- ["`"] = "actions.tcd",
-    -- -- Some actions have parameters. These are passed in via the `opts` key.
-    -- ["<leader>:"] = {
-    --     "actions.open_cmdline",
-    --     opts = {
-    --         shorten_path = true,
-    --         modify = ":h",
-    --     },
-    --     desc = "Open the command line with the current directory as an argument",
-    -- },
   },
 }
 require("oil").setup(cfg)

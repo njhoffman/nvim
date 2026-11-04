@@ -75,22 +75,6 @@ return {
   get_finder = get_finder,
 }
 
--- local function get_workspace_symbols_requester(bufnr)
---   local cancel = function() end
---
---   return async(function(prompt)
---     local tx, rx = channel.oneshot()
---     cancel()
---     _, cancel = vim.lsp.buf_request(bufnr, "workspace/symbol", { query = prompt }, tx)
---
---     local err, _, results_lsp = await(rx())
---     assert(not err, err)
---
---     local locations = vim.lsp.util.symbols_to_items(results_lsp or {}, bufnr) or {}
---     return locations
---   end)
--- end
-
 -- finder = finders.new_dynamic {
 --   entry_maker = opts.entry_maker or make_entry.gen_from_lsp_symbols(opts),
 --   fn = get_workspace_symbols_requester(curr_bufnr),

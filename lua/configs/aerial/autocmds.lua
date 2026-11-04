@@ -45,11 +45,4 @@ local setup_cmds = function()
   -- setup_backend_cmds()
 end
 
---
--- vim.api.nvim_create_autocmd({ "BufEnter" }, {
---   group = "AerialBuffer",
---   desc = "Create commands depending on aerial backend capabilities",
---   callback = setup_cmds,
--- })
--- --
 return { setup = setup_cmds }

@@ -26,16 +26,6 @@ local cfg = {
 require('qf').setup(cfg)
 require('configs.qf.render')
 
--- -- vim.api.nvim_create_autocmd('QuickFixCmdPost', { expr = true, cwindow = true })
--- vim.cmd([[
--- augroup quickfix
---     autocmd!
---     " autocmd QuickFixCmdPost cexpr cwindow
---     autocmd QuickFixCmdPost [^l]* cwindow
---     autocmd QuickFixCmdPost l* lwindow
--- augroup END
--- ]])
-
 -- nnoremap <leader>lo <cmd>lua require'qf'.open('l')<CR> " Open location list
 -- nnoremap <leader>lc <cmd>lua require'qf'.close('l')<CR> " Close location list
 -- nnoremap <leader>ll <cmd>lua require'qf'.toggle('l', true)<CR> " Toggle location list and stay in current window

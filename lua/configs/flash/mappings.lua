@@ -1,8 +1,3 @@
--- local is_jumping = require('flash.plugins.char').jumping
--- local is_search = require('flash.plugins.char').state.is_search()
--- local prompt_visible = require('flash.prompt').visible()
--- local is_visible = require('flash.plugins.char').state.visible
--- don't override ;, mappings if they exist
 
 -- Perform a remote yank: <esc>yrt<cr>e
 --  gc operator-pending mode  => r flash remote mode => jump => c
@@ -54,17 +49,6 @@ local setup_char_mappings = function()
   end
 end
 
--- 'ygw',
--- function()
---   require('flash').jump {
---     action = function(match, state)
---       vim.api.nvim_set_current_win(match.win)
---       vim.api.nvim_win_set_cursor(match.win, match.pos)
---       vim.cmd.norm { args = { 'yiw' }, bang = true }
---       state:restore()
---     end,
---   }
--- end,
 local pfx = "g\\"
 
 local keys = {
@@ -153,15 +137,6 @@ local setup_search_mappings = function()
 
   map({ "n", "o", "x" }, pfx .. "W", actions.jump_words, { desc = "⚡flash jump full words" })
 
-  -- map({"x", "o"}, "v", function()
-  --   require("flash").treesitter({
-  --     actions = {
-  --       ["v"] = "next",
-  --       ["V"] = "prev"
-  --     }
-  --   })
-  -- end, { desc = "Treesitter incremental selection" })
-
   map({ "n", "o", "x" }, pfx .. "e", actions.jump_diag, { desc = "⚡flash jump diagnostics" })
 
   map({ "o", "x" }, pfx .. "v", function()
@@ -175,16 +150,6 @@ local setup_search_mappings = function()
     { desc = "⚡flash search 2chars" }
   )
 
-  -- mapper.map({ 'n', 'x' }, 'rx', function()
-  -- vim.keymap.set({ 'n', 'x' }, 'rx', function()
-  --   M.swap_with({
-  --     -- Customize the flash remote options for selecting the second range
-  --   })
-  -- end, {
-  --   noremap = true,
-  --   silent = true,
-  --   desc = 'flash remote  exchange',
-  -- })
 end
 
 local setup = function()

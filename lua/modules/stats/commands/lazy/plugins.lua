@@ -9,15 +9,6 @@
 local output = require('modules.stats.output')
 local stats_plugins = function(argsi, state)
   vim.dbglog('STATS CONFIG', state.lazy)
-  -- zenburn = {
-  --     [1] = "phha/zenburn.nvim",
-  --     _ = { installed = true },
-  --     dir = "/home/nicholas/.local/share/nvim/lazy/zenburn.nvim",
-  --     event = { [1] = "User ColorSchemeLoad" },
-  --     lazy = true,
-  --     name = "zenburn.nvim",
-  --     url = "https://github.com/phha/zenburn.nvim.git" }
-  -- loaded = { plugin = "cmp_luasnip", time = 7339086 },
 end
 
 return { stats_plugins = stats_plugins }

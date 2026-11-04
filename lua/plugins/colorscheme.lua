@@ -47,11 +47,3 @@ local plugins = {
 
 utils.apply_configs(plugins)
 return plugins
-
--- { "edluffy/hologram.nvim", cond = os.getenv("KITTY_WINDOW_ID") ~= nil
--- ["nvim-highlight-colors"] = { "brenoprata10/nvim-highlight-color" },
--- ["icon-picker.nvim"] = { "ziontee113/icon-picker.nvim"}
--- ["codewindow.nvim"] = { "gorbit99/codewindow.nvim" },
--- https://github.com/anuvyklack/windows.nvim
--- ["yank-history"] = {"yazgoo/yank-history"},
--- https://github.com/gbprod/yanky.nvim

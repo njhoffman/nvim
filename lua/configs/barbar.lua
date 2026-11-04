@@ -66,29 +66,6 @@ local apply_highlights = function()
   }
 
   local highlights = {
-    -- BufferCurrent = { fg = palette.base9, bg = palette.bg_current, style = "" },
-    -- BufferCurrentIndex = { fg = palette.base6, bg = palette.bg_current, style = "" },
-    -- BufferCurrentMod = { fg = palette.yellow, bg = palette.bg_current, style = "" },
-    -- BufferCurrentSign = { fg = palette.blue, bg = palette.bg_current, style = "" },
-    -- BufferCurrentTarget = { fg = palette.red, bg = palette.bg_current, style = "bold" },
-
-    -- BufferVisible = { fg = palette.base7, bg = palette.bg_visible, style = "" },
-    -- BufferVisibleIndex = { fg = palette.base9, bg = palette.bg_visible, style = "" },
-    -- BufferVisibleMod = { fg = palette.yellow, bg = palette.bg_visible, style = "" },
-    -- BufferVisibleSign = { fg = palette.base4, bg = palette.bg_visible, style = "" },
-    -- BufferVisibleTarget = { fg = palette.red, bg = palette.bg_visible, style = "bold" },
-
-    -- BufferAlternate = { fg = palette.base6, bg = palette.bg_alternate, style = "" },
-    -- BufferAlternateIndex = { fg = palette.base6, bg = palette.bg_alternate, style = "" },
-    -- BufferAlternateMod = { fg = palette.yellow, bg = palette.bg_alternate, style = "" },
-    -- BufferAlternateSign = { fg = palette.base4, bg = palette.bg_alternate, style = "" },
-    -- BufferAlternateTarget = { fg = palette.red, bg = palette.bg_alternate, style = "bold" },
-
-    -- BufferInactive = { fg = palette.base6, bg = palette.bg_other, style = "" },
-    -- BufferInactiveIndex = { fg = palette.base6, bg = palette.bg_other, style = "" },
-    -- BufferInactiveMod = { fg = palette.yellow, bg = palette.bg_other, style = "" },
-    -- BufferInactiveSign = { fg = palette.base4, bg = palette.bg_other, style = "" },
-    -- BufferInactiveTarget = { fg = palette.red, bg = palette.bg_other, style = "bold" },
 
     -- BufferTabpages = { fg = palette.blue, bg = palette.bg_statusline, style = "bold" },
     -- BufferTabpageFill = { fg = palette.base4, bg = palette.bg_other, style = "bold" },
@@ -109,20 +86,6 @@ local apply_highlights = function()
   end
 
   local set = vim.api.nvim_set_hl
-  -- -- Barbar
-  -- set(0, "TabLine", { bg = "none" })
-  -- set(0, "TabLineFill", { bg = "none" })
-  -- set(0, "TabLineSel", { bg = "none" })
-  -- set(0, "BufferTabpages", { fg = "#51afef", bg = "#3e4556", bold = true })
-  -- set(0, "BufferTabpagesFill", { fg = "#3f444a", bg = "#1c1f24", bold = true })
-  -- set(0, "BufferDefaultCurrent", { bg = "#003d79", bold = true })
-  -- set(0, "BufferCurrentError", { bg = "#003d79" })
-  -- set(0, "BufferDefaultCurrentError", { bg = "#003d79" })
-  -- set(0, "BufferDefaultCurrent", { bg = "#003d79", bold = true })
-  -- set(0, "BufferDefaultCurrentIndex", { bg = "#003d79" })
-  -- set(0, "BufferDefaultCurrentIcon", { fg = "#a8c0f0", bg = "#003d79", bold = true })
-  -- set(0, "BufferDefaultCurrentMod", { fg = "#ecbe7b", bg = "#003d79", bold = true })
-  -- set(0, "BufferDefaultCurrentSign", { fg = "#51afff", bg = "#003d79" })
 
   -- set(0, "BufferCurrent", { bg = "#003d79", bold = true })
   -- set(0, "BufferCurrentIndex", { bg = "#003d79" })
@@ -136,10 +99,3 @@ local apply_highlights = function()
 end
 
 apply_highlights()
-
--- vim.opt.sessionoptions:append("globals")
--- vim.api.nvim_create_user_command("Mksession", function(attr)
---   vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })
---   -- Neovim 0.8<=
---   vim.cmd.mksession({ bang = attr.bang, args = attr.fargs })
--- end, { bang = true, complete = "file", nargs = "?" })

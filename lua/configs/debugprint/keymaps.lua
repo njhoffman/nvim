@@ -75,26 +75,6 @@ local setup_debugprint = function()
     desc = " print custom message above",
   })
 
-  -- local contextprint = require('debugprint.contextprint')
-  -- contextprint.setup({ log = {
-  --   typescript = 'console.log',
-  -- } })
-  --
-  -- vim.keymap.set('n', 'goc', function()
-  --   local tmp = 3
-  --   contextprint.add_statement()
-  -- end, { expr = true, desc = 'contextprint' })
-
-  -- require('contextprint').setup({
-  --     separator_char = "#",  // Global
-  --     <filetype> = {
-  --         separator = "#", // filetype specific
-  --         query = [[ <language specific queries> ]]):format(),
-  --         log = function(contents) to return print statement to insert
-  --         type_defaults = vim.tbl_extend to change name defaults
-  --     }
-  -- })
-  --
 end
 
 local setup_printing_press = function()

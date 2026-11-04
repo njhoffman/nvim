@@ -334,12 +334,6 @@ append(
       return ""
     end
 
-    -- local status_icon
-    -- if opts.completed then
-    --   status_icon = "✔️"
-    -- else
-    --   status_icon = "*"
-    -- end
     return string.format("%s / %s", xx, yy)
   end,
   [[

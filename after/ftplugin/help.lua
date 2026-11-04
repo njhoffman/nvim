@@ -1,14 +1,6 @@
 -- https://github.com/njhoffman/dotfiles/tree/cf9784d18e8bbef06c414bf920d1aa967d4fccce/.config/nvim/lua/helpview
 -- https://www.reddit.com/r/neovim/comments/1ee6oqt/helpviewnvim_an_impractical_way_to_view_help_files/
 
--- local setup_autocmds = function()
---   vim.api.nvim_create_autocmd('BufWinEnter', {
---     pattern = '*',
---     callback = init_state,
---   })
--- end
--- init_bufstate()
-
 local get_state = function()
   local state = {
     vert_cutoff = 0.5, -- under this width ratio switch to vertical layout
@@ -23,11 +15,6 @@ end
 
 local set_options = function()
   local state = get_state()
-  -- local formatoptions = vim.api.nvim_get_option_value("formatoptions", { buf = state.src_bufnr })
-  --   or ""
-  -- if not string.find(formatoptions, "c") then
-  --   vim.api.nvim_set_option_value("formatoptions", formatoptions .. "c", { buf = state.src_bufnr })
-  -- end
 
   vim.cmd([[
     setlocal winbar=%<%f\ %1*%r%*%=\ %=%2*0x%02B%*\ %3*󰇙%*\ %4*%3l:%02c%*\ %5*%=%L%*\ %6*%y%*\ %7*%P%*
@@ -85,12 +72,6 @@ local set_keymaps = function()
 end
 
 local set_syntax = function()
-  -- local putils = require('telescope.previewers.utils')
-  -- putils.ts_highlighter(state.src_bufnr, 'markdown')
-  -- putils.regex_highlighter(state.src_bufnr, 'pandoc')
-  -- vim.treesitter.language.register('help', 'markdown')
-  -- vim.treesitter.language.register('help', { 'txt', 'text' })
-  -- vim.treesitter.start()
 end
 
 local init = function()

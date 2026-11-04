@@ -205,9 +205,3 @@ local reload = function(cfg)
   end
 end
 return reload
-
--- local filepath = vim.fn.expand('%:p')
--- local filepath = vim.fn.expand('/home/nicholas/.config/nvim/lua/telescope/_extensions/arecibo.lua')
--- local filepath = vim.fn.expand('/home/nicholas/.config/nvim/lua/configs/telescope/init.lua')
--- local filepath = vim.fn.expand('/home/nicholas/.config/nvim/lua/tracker/sources/variables.lua')
--- reload_package_chain(filepath)

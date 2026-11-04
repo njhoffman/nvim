@@ -1,57 +1,3 @@
--- local ts_ctx = require("treesitter-context")
--- <cmd>silent! execute "normal! 3<C-d><cr>  <cmd>normal! 3<C-d><cr>
--- map('n', '<c-f>', '<cmd>execute "normal! "<cr>', {
---   category = 'Motion',
---   plugin = 'vim-smoothie',
---   label = ' scroll forwards',
---   desc = ' smoothie scroll forwards',
---   noremap = false,
---    silent = true
---  })
---  map('n', '<c-b>', '<cmd>execute "normal! "<cr>', {
---    category = 'Motion',
---    plugin = 'vim-smoothie',
---    label = ' scroll forwards',
--- desc = ' smoothie scroll forwards',
--- noremap = false,
---   silent = true
--- })
-
--- map('n', '<c-b>', '<Plug>(SmoothieBackwards)', {
---   category = 'Motion',
---   plugin = 'vim-smoothie',
---   label = ' scroll backwards',
---   desc = ' smoothie scroll backwards',
---   noremap = false,
---   silent = true
--- })
-
--- map('n', '<c-f>', '<Plug>(SmoothieDownwards)', {
---   category = 'Motion',
---   plugin = 'vim-smoothie',
---   label = ' scroll forwards',
---   desc = ' smoothie scroll forwards',
---   noremap = false,
---   silent = true
--- })
-
--- map('n', '<M-f>', '<Plug>(SmoothieDownwards)', {
---   category = 'Motion',
---   plugin = 'vim-smoothie',
---   label = ' scroll forwards',
---   desc = ' smoothie scroll forwards',
---   noremap = false,
---   silent = true
--- })
-
--- map('n', '<M-b>', '<Plug>(SmoothieUpwards)', {
---   category = 'Motion',
---   plugin = 'vim-smoothie',
---   label = ' scroll forwards',
---   desc = ' smoothie scroll forwards',
---   noremap = false,
---   silent = true
--- })
 
 --[[
    '<C-D>'                  'z+'
@@ -179,16 +125,6 @@ local setup_aucmds = function()
   vim.api.nvim_create_autocmd({ "WinScrolled", "CursorHold", "CursorHoldI" }, {
     callback = function(ev)
 
-      -- if state.started == true and ev.event == "CursorHold" or ev.event == "CursorHoldI" then
-      --   vim.dbglog(" hold:", ev.event, get_state())
-      -- elseif not state.started and ev.event == "WinScrolled" then
-      --   vim.dbglog(" scroll:", get_state())
-      -- end
-      -- if ev.match == "WinScrolled" then
-      --   hook_start()
-      -- else
-      --   hook_stop()
-      -- end
     end,
   })
 end

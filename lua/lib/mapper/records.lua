@@ -44,53 +44,6 @@ local function add(virtual, mode, lhs, rhs, opts, meta)
   records.tree[mode][lhs] = rhs
 end
 
--- local function get_key_cmd(mode, lhs)
---   local keys = vim.api.nvim_get_keymap(mode)
---   local rhs, opt = '', {}
---   for _, key in ipairs(keys) do
---     if key.lhs == lhs then
---       rhs = key.callback or key.rhs
---       opt = key
---     end
---   end
---   return rhs, opt
--- end
-
--- buffer_only = false,
--- category = "Buffers",
--- description = "write to buffer",
--- history = {},
--- idx = 25,
--- keymap_opts = {
---     desc = "write to buffer",
---     remap = false,
---     silent = true
--- },
--- label = "write buffer",
--- lhs = "<C-s>",
--- mode = "v",
--- n = 0,
--- options = {
---     category = "Buffers",
---     desc = "write to buffer",
---     label = "write buffer",
---     silent = true
--- },
--- rhs = "<cmd>silent! w<cr><esc>",
--- time = "  0.263733",
--- unique_identifier = -1861693099,
--- virtual = false
-
--- idx = 25,
--- lhs = "<C-s>",
--- rhs = "<cmd>silent!<esc>",
--- mode = 'n'
--- options = { desc = '', remap = false, silent = true, callback = {}}
--- meta = { label = '', category = '', plugin = '', time = '', uid = -1235235321, virtual = true/false }
--- history = { n, previous = {}}
--- "<buffer>", "<nowait>", "<silent>", "<script>", "<expr>" and
--- "<unique>" can be used in any order.  They must appear right after the
-
 return {
   tree = records.tree,
   list = records.list,

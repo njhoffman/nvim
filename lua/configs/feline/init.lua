@@ -67,30 +67,6 @@ local conditions = {
 --     return ''
 -- end
 
--- -- Current vi mode ------>
--- local vi_mode_hl = function()
---   return {
---     fg = sett.text,
---     bg = mode_colors[vim.fn.mode()][2],
---     style = "bold",
---   }
--- end
---
--- components.active[1][1] = {
--- 	provider = " " .. assets.mode_icon .. " ",
--- 	hl = function()
--- 		return {
--- 			fg = sett.text,
--- 			bg = mode_colors[vim.fn.mode()][2],
--- 		}
--- 	end,
--- }
--- components.active[1][2] = {
--- 	provider = function() return mode_colors[vim.fn.mode()][1] .. " " end,
--- 	hl = vi_mode_hl,
--- }
--- { "selectioncount", fmt = function(str) return str ~= "" and "礪" .. str or "" end },
-
 local status_comps = vim.deepcopy(defaults)
 table.insert(status_comps.active[1], 3, custom_status_comps.ProjectComponent)
 status_comps.active[1][4].left_sep = {
@@ -107,12 +83,6 @@ status_comps.active[1][4].left_sep = {
 -- { provider = 'diagnostic_info', hl = { fg = 'skyblue' } },
 table.insert(status_comps.active[1], 7, custom_status_comps.AsciiComponent)
 table.insert(status_comps.active[1], 8, custom_status_comps.LineCountComponent)
--- -- status_comps.active[2][2] = custom_status_comps.NeoComposerComponent
--- status_comps.active[2][1] = custom_status_comps.HelpTagsComponent
--- status_comps.active[2][2] = custom_status_comps.LspReferencesComponent
--- status_comps.active[2][2] = custom_status_comps.LspCodeActionsComponent
--- status_comps.active[2][1] = custom_status_comps.MacroComponent
--- status_comps.active[2][2] = custom_status_comps.FelineCmdComponent
 status_comps.active[2][1] = custom_status_comps.MiscStats
 status_comps.active[2][2] = custom_status_comps.FiletypeComponent
 status_comps.active[2][3] = custom_status_comps.NoiceComponent

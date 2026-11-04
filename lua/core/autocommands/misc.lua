@@ -70,17 +70,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.opt.backupext = "-" .. vim.fn.strftime("%Y%m%d%H%M")
   end,
 })
---
--- M.reload_lua = function()
---   -- /etc/tmpfiles.d/nvim-backup.conf
---   -- # systemd-tmpfiles configuration for /tmp/nvim-backup/ directory
---   -- # Create directory at boot and clean files with Age parameter
---   -- d /tmp/nvim-backup 755 <user> <user> 3d
---   for _, file in ipairs(M.get_config_modules()) do
---     R('config.' .. file)
---   end
---   cmd.nohlsearch()
--- end
 
 -- M.diag_error = function()
 --   return #diag.get(0, { severity = diag.severity.ERROR }) ~= 0
@@ -122,11 +111,6 @@ end
 
 -- close some filetypes with q or ctrl-shift-esc
 local long_close = function(event)
-  -- vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "", {
-  -- callback = function()
-  -- vim.api.nvim_command("close")
-  -- end,
-  -- })
   map("n", "q", "<cmd>q<cr>", { buffer = event.buf, desc = "Close window" })
   map("n", "<M-{>", "<cmd>q<cr>", { buffer = event.buf, desc = "Close window" })
 end
@@ -189,22 +173,6 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 --     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
 --   end,
 -- })
-
---
--- function M.enable_reload_config_on_save()
---   -- autocmds require forward slashes (even on windows)
---   local pattern = get_config_dir():gsub("\\", "/") .. "/*.lua"
---
---   vim.api.nvim_create_augroup("lvim_reload_config_on_save", {})
---   vim.api.nvim_create_autocmd("BufWritePost", {
---     group = "lvim_reload_config_on_save",
---     pattern = pattern,
---     desc = "Trigger LvimReload on saving config.lua",
---     callback = function()
---       require("lvim.config"):reload()
---     end,
---   })
--- end
 
 local get_winsize = function(win)
   win.ft = vim.api.nvim_get_option_value("filetype", { buf = win.bufnr })
@@ -291,48 +259,6 @@ vim.api.nvim_create_autocmd({ "FocusGained", "CursorHold" }, {
     end
   end,
 })
---
---
--- local all_filetypes = augroup('AllFileTypesLocalOptions')
--- autocmd({ 'FileType' }, {
---   group = all_filetypes,
---   pattern = { '*' },
---   callback = function()
---     opt_local.formatoptions = opt_local.formatoptions - 't' + 'c' - 'r' - 'o' - 'q' - 'a' + 'n' - '2' + 'l' + 'j'
---   end,
--- })
---
--- autocmd({ 'FileType' }, {
---   group = all_filetypes,
---   pattern = { '*' },
---   callback = function()
---     u.restore_cmdheight()
---   end,
--- })
---
--- local terminal = augroup('TerminalLocalOptions')
--- autocmd({ 'TermOpen' }, {
---   group = terminal,
---   pattern = { '*' },
---   callback = function(event)
---     opt_local.number = false
---     opt_local.relativenumber = false
---     opt_local.cursorline = false
---     opt_local.signcolumn = 'no'
---     opt_local.statuscolumn = ''
---     for _, key in ipairs({ 'h', 'j', 'k', 'l' }) do
---       vim.keymap.set('t', '<C-' .. key .. '>', function()
---         local code_term_esc = api.nvim_replace_termcodes('<C-\\><C-n>', true, true, true)
---         local code_dir = api.nvim_replace_termcodes('<C-' .. key .. '>', true, true, true)
---         api.nvim_feedkeys(code_term_esc .. code_dir, 't', true)
---       end, { noremap = true })
---     end
---     if bo.filetype == '' then
---       api.nvim_buf_set_option(event.buf, 'filetype', 'terminal')
---       cmd.startinsert()
---     end
---   end,
--- })
 
 -- #{?pane_in_mode,#[fg=white#,bg=red],#[fg=red#,bg=white]}#W .
 

@@ -36,45 +36,7 @@ prefix("n", "<leader>m", "multi-cursor ")
 prefix("n", "<leader>u", "undo 漏")
 prefix("n", "<leader>cl", "conceal 󰈉 ")
 
--- 	u = { name = "" },
--- -- leader prefixes normal mode
--- require("which-key").register({
--- 	o = { name = "  Options" },
--- 	p = { name = " 󰏗 Package" },
--- }, { prefix = "<leader>" })
---
--- -- leader prefixes normal+visual mode
--- require("which-key").register({
--- 	f = { name = " 󱗘 Refactor" },
--- 	l = { name = "  Log / Cmdline" },
--- 	g = { name = " 󰊢 Git" },
--- }, { prefix = "<leader>", mode = { "x", "n" } })
---
--- -- needed so localleader prefixes work with whichkey
--- require("which-key").register {
--- 	["<localleader>"] = { name = "filetype-specific", mode = { "n", "x" } },
--- }
-
 -- vim.cmd([[nnoremap <C-l> :syntax sync fromstart<CR>:redraw<CR>]])
-
--- ["<leader><tab>"] = { name = "+tabs" },
--- ["<leader>b"] = { name = "+buffer" },
--- ["<leader>c"] = { name = "+code" },
--- ["<leader>f"] = { name = "+file/find" },
--- ["<leader>g"] = { name = "+git" },
--- ["<leader>gh"] = { name = "+hunks" },
--- ["<leader>q"] = { name = "+quit/session" },
--- ["<leader>s"] = { name = "+search" },
--- ["<leader>u"] = { name = "+ui" },
--- ["<leader>w"] = { name = "+windows" },
--- ["<leader>x"] = { name = "+diagnostics/quickfix" },
-
--- vim.keymap.set("n", "<leader>hh", ":h <CR>")
--- vim.keymap.set("x", "<leader>hh", 'y:h "<CR>')
---
--- vim.keymap.set("x", "C", function()
---     vim.api.nvim_input('y/"<CR>Ncgn')
--- end, { silent = true })
 
 --------------------------------------------------------------------------------------------------
 
@@ -157,12 +119,6 @@ map("c", "<M-y>", "<cmd>lua require('core.commands.cmdline').yank_cmdline()<cr>"
   desc = " yank from command line",
   remap = true,
 })
-
--- map('c', '<C-t>', '<Right><Del><Left>', {
---   category = 'Command',
---   label = ' delete char',
---   desc = ' delete character to the right of cmdline',
--- })
 
 -- CTRL-\ e {expr}       :cmap <F7> <C-\>eAppendSome()<CR>
 -- CTRL-R
@@ -383,12 +339,6 @@ map("n", "<S-CR>", "o<Esc>", {
   desc = "󰽙 insert new line below without leaving normal mode",
 })
 
--- map("n", "<S-CR>", "O<Esc>", {
---   category = "Buffers",
---   label = "󰽙 insert new line above",
---   desc = "󰽙 insert new line above without leaving normal mode",
--- })
-
 map("n", "<BS>", "<cmd>AltLoad<cr>", {
   category = "Buffers",
   label = "󰽙 goto alt-buffer",
@@ -400,14 +350,6 @@ map("n", "<C-^>", "<cmd>AltLoad<cr>", {
   label = "󰽙 goto alt-buffer",
   desc = "󰽙 goto alternative/last buffer",
 })
-
--- keymap({ "n", "x", "i" }, "<C-CR>", "<C-w>w", { desc = " Next Window" })
--- map('n', '<BS>', '<cmd>e #<cr>', {
---   category = 'Buffers',
---   label = '󰽙 last buffer',
---   desc = '󰽙 open the last buffer',
---   silent = true,
--- })
 
 map("n", "H", "<Cmd>BufferPrev<cr>", {
   category = "Buffers",
@@ -512,13 +454,6 @@ map({ "n", "s", "v", "i" }, "<M-s>", "<cmd>silent! wq<cr>", {
   desc = "󰽙 write to buffer and quit",
   silent = true,
 })
-
--- map({ "n", "s", "v", "i" }, "<C-s>", "<cmd>noa w<cr><esc>", {
---   category = "Buffers",
---   label = "󰽙 write buffer",
---   desc = "󰽙 write to buffer",
---   silent = true,
--- })
 
 map("n", "<leader>f*w", "<cmd>wall<cr>", {
   category = "Buffers",
@@ -742,12 +677,6 @@ map('n', '<M-d>', '<cmd>silent! tabclose | qa<cr>', {
   desc = 'quick exit with prompt for save',
 })
 
--- map('n', '<M-C-X>', '<cmd>silent! tabclose | xa<cr>', {
---   category = 'Exiting',
---   label = 'exit nosave',
---   desc = 'quick exit without saving',
--- })
-
 --------------------------------------------------------------------------------------------------
 -- EXECUTE ---------------------------------------------------------------------------------------
 -- map('n', '<C-1>', '<cmd>RunFile<cr>', {
@@ -758,12 +687,6 @@ map('n', '<M-d>', '<cmd>silent! tabclose | qa<cr>', {
 --   silent = true
 -- })
 -- vim.api.nvim_set_keymap('n', '<localleader>1', '<cmd>luafile %<cr>', { silent = true })
-
--- map('n', '!~', '<cmd>RunSelect<cr>', {
---   category = 'Execute',
---   label = 'ﲵ select runner task',
---   desc = 'ﲵ assign task to runner',
--- })
 
 map('n', '!@', '<cmd>@:<cr>', {
   category = 'Execute',
@@ -802,14 +725,6 @@ local opts = { noremap = true, silent = true, desc = ' search' }
 -- map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n') <bar> lua require('hlslens').start()<CR>]], opts)
 -- map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N') <bar> lua require('hlslens').start()<CR>]], opts)
 map('n', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
--- map('n', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
--- map('n', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], opts)
--- map('n', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], opts)
---
--- map('x', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], opts)
--- map('x', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], opts)
--- map('x', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], opts)
--- map('x', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], opts)
 
 map('n', 'cg*', '*Ncgn', {
   silent = true,
@@ -837,42 +752,12 @@ map('n', 'g.', [[/\V\C<C-r>"<CR>cgn<C-a><Esc>]], {
 -- nmap [[ ?^.section <CR>
 -- nmap ]] /?section /<CR>
 
--- local function open_last_search(reverse)
---   return function()
---     local last_search = vim.fn.getreg('/')
---     local prefix = reverse and "?" or '/'
---     vim.cmd('normal ' .. prefix .. last_search)
---   end
--- end
-
-
 -- map('n', '<M-f>', open_last_search(), {noremap = true, silent = true})
-
--- map('n', '<esc>', "<cmd>getcmdtype() =~ '^[/?]$'<cr>", {
---   silent = true,
---   category = 'Search',
---   label = '  jump replace (dot)',
---   desc = '  jump to next match and replace (dot)',
--- })
--- switch escape and enter in search mode to 'accept' it for smoother operation
 
 -- vim.cmd[[
 --   cnoremap <expr> <Esc> getcmdtype() =~ '^[/?]$' ? '<Enter>' : '<C-C>'
 -- ]]
 --------------------------------------------------------------------------------------------------
--- map('c', '<esc>', function()
---   local regtype = vim.fn.getregtype('/')
---   local regval  = vim.fn.getreg('/')
---   local cmdtype = vim.fn.getcmdtype()
---   local reginfo = vim.fn.getreginfo('/')
---   if cmdtype == '/' or cmdtype == '?'  then
---     local cmdline = vim.fn.getcmdline()
---     cmdline = vim.fn.trim(cmdline and #tostring(cmdline) > 0 and cmdline:sub(2))
---     if not cmdline or cmdline == '' or cmdline == 'v:false' then
---       -- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Enter>', true, false, true), 'c')
---       -- vim.fn.setcmdline(regval)
---       vim.dbglog('1', cmdline, cmdtype, regval)
---       local searchcount = vim.fn.searchcount({ maxcount = 0 })
 
 --       -- schedule a <cr> input to trigger the search
 --       vim.schedule(function()
@@ -1089,18 +974,6 @@ local searching_google_in_visual = [[<ESC>gv"gy<ESC>:lua fn.system({'open', 'htt
 map("n", "g!!", searching_google_in_normal)
 map("x", "g!!", searching_google_in_visual)
 
--- map('n', 'Uv', 'u"`[" . strpart(getregtype(), 0, 1) . "`]"gA', {
---   category = 'Motion',
---   label = 'undo align, re-select interactive',
---   desc = 'undo align, re-select visual range and align interactive',
--- })
-
--- map('n', 'Ua', 'u"`[" . strpart(getregtype(), 0, 1) . "`]"gA', {
---   category = 'Motion',
---   label = 'undo align, re-select interactive',
---   desc = 'undo align, re-select visual range and align interactive',
--- })
-
 -- Shift-CR, Ctrl-CR in alacritty
 -- - { key: Return,   mods: Shift,   chars: "\x1b[13;2u" }
 -- - { key: Return,   mods: Control, chars: "\x1b[13;5u" }
@@ -1281,12 +1154,6 @@ map('n', '<F14>', '<cmd>WhatKeyBackground<cr>', {
   desc = '  toggle whichkey background',
 })
 
--- map('n', '<F6>', '<Leader>Wk', {
---   plugin = 'wf.nvim',
---   category = 'UI',
---   desc = '  toggle wf.nvim',
--- })
-
 -- ctrl+shift F2 = <F38>
 -- map('n', '<F3>', '<cmd>AerialToggle!float<cr>', {
 --   plugin = 'aerial.nvim',
@@ -1294,13 +1161,6 @@ map('n', '<F14>', '<cmd>WhatKeyBackground<cr>', {
 --   desc = '  toggle aerial sidebar',
 -- })
 
--- map('n', '<F4>', '<cmd>Neotree show toggle<cr>', {
---   plugin = 'neo-tree',
---   category = 'UI',
---   desc = '  toggle neotree',
--- })
---
--- ctrl+shift+f4
 map('n', '<F40>', '<cmd>lua require("oil").open_float<cr>', {
   plugin = 'oil.nvim',
   category = 'UI',
@@ -1373,32 +1233,6 @@ map('n', '<F40>', '<cmd>lua require("oil").open_float<cr>', {
 -- )
 
 
--- vim.keymap.set('v', 'YOUR_MAPPING', [[y`>pgv:norm gcc<CR>`>j^]], { noremap = true, silent = true })
--- M.comment_yank_paste = function()
--- 	local win = api.nvim_get_current_win()
--- 	local cur = api.nvim_win_get_cursor(win)
--- 	local vstart = fn.getpos("v")[2]
--- 	local current_line = fn.line(".")
--- 	if vstart == current_line then
--- 		cmd.yank()
--- 		require("Comment.api").toggle.linewise.current()
--- 		cmd.put()
--- 		set_cur(win, { cur[1] + 1, cur[2] })
--- 	else
--- 		if vstart < current_line then
--- 			cmd(":" .. vstart .. "," .. current_line .. "y")
--- 			cmd.put()
--- 			set_cur(win, { fn.line("."), cur[2] })
--- 		else
--- 			cmd(":" .. current_line .. "," .. vstart .. "y")
--- 			set_cur(win, { vstart, cur[2] })
--- 			cmd.put()
--- 			set_cur(win, { fn.line("."), cur[2] })
--- 		end
--- 		require("Comment.api").toggle.linewise(fn.visualmode())
--- 	end
--- end
--- Shift-F5
 map('n', '<F17>', '<cmd>MundoToggle<cr>', {
   plugin = 'mundo',
   category = 'UI',
@@ -1646,29 +1480,6 @@ map('n', '<leader>|', '<c-w>|', {
   desc = ' maximize width of horizontal split',
 })
 
--- map('n', '<M-S-Right>', '<cmd>wincmd l<cr>', {
---   category = 'Window',
---   label = ' select right window',
---   desc = ' move to right window',
--- })
-
--- map('n', '<M-S-Left>', '<cmd>wincmd h<cr>', {
---   category = 'Window',
---   label = ' select left window',
---   desc = ' move to left window',
--- })
--- map('n', '<M-S-Down>', '<cmd>wincmd j<cr>', {
---   category = 'Window',
---   label = ' select down window',
---   desc = ' move to bottom  window',
--- })
-
--- map('n', '<M-S-Up>', '<cmd>wincmd k<cr>', {
---   category = 'Window',
---   label = ' select up window',
---   desc = ' move to up window',
--- })
-
 map('n', '<leader>q', '<cmd>silent! tabclose | Sayonara<cr>', {
   category = 'Window',
   label = ' close window',
@@ -1727,13 +1538,6 @@ map('n', '<C-y>', '<cmd>CodeCompanionChat Toggle<cr>', {
   -- desc = 'toggle the side panel of neo ai',
 })
 
--- map('n', '<M-y>', '<cmd>NeoAIToggle<cr>', {
---   category = 'Other UI',
---   plugin = 'neo-ai',
---   label = 'toggle the side panel of neo ai',
---   desc = 'toggle the side panel of neo ai',
--- })
-
 map('n', '<C-p>', "<cmd>lua require('configs.telescope.launcher')('builtin', 'find_files')<cr>", {
   category = 'Other UI',
   plugin = 'telescope.nvim',
@@ -1760,13 +1564,6 @@ map('n', '<M-Bslash>', '<cmd>MiniFiles<cr>', {
 
 --------------------------------------------------------------------------------------------------
 -- PICKERS ---------------------------------------------------------------------------------------
-
--- map('n', '-', require("oil").toggle_float, {
---   plugin = 'oil.nvim',
---   category = 'Pickers',
---   desc = 'toggle oil file manager',
--- })
--- vim.keymap.set('n', '-', require('oil').open_float, { desc = 'Open parent directory' })
 
 map('n', '<C-g>', "<cmd>lua require('configs.telescope.launcher')('leaderf', { theme = 'dropdown' })<cr>", {
   category = 'Pickers',
@@ -1827,13 +1624,6 @@ map('n', '<M-i>', "<cmd>lua require('configs.telescope.launcher')('messages', 'm
   label = 'notifications',
   desc = 'notifications in telescope',
 })
-
--- map('n', '<M-space>', "<cmd>lua require('configs.telescope.launcher')('builtin','grep_string', { theme = 'ivy' })<cr>", {
---   category = 'Pickers',
---   plugin = 'telescope.nvim',
---   label = 'grep cursor',
---   desc = 'grep string under cursor in telescope',
--- })
 
 map('n', '<M-/>', "<cmd>lua require('configs.telescope.launcher')('builtin','help_tags', { theme = 'ivy', preview = true })<cr>", {
   category = 'Pickers',

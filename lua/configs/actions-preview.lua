@@ -67,19 +67,6 @@ local cfg = {
     -- "patience" patience diff algorithm
     -- "histogram" histogram diff algorithm
   },
-  -- telescope = {
-  --   sorting_strategy = 'ascending',
-  --   layout_strategy = 'vertical',
-  --   layout_config = {
-  --     width = 0.8,
-  --     height = 0.9,
-  --     prompt_position = 'top',
-  --     preview_cutoff = 20,
-  --     preview_height = function(_, _, max_lines)
-  --       return max_lines - 15
-  --     end,
-  --   },
-  -- },
   telescope = require('telescope.themes').get_ivy({ winblend = 10, layout_config = { height = 10 } }),
   -- telescope = vim.tbl_extend('force', require('telescope.themes').get_cursor({ winblend = 10 }), {
   -- telescope = vim.tbl_extend('force', require('telescope.themes').get_dropdown({ winblend = 10 }), {

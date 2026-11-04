@@ -29,20 +29,6 @@ end
 
 local window_adjust = function(w)
   return function()
-    -- vim.defer_fn(function()
-    --   local sidebar_open = require('modules.sidebar.state').open
-    --   local width = vim.api.nvim_get_option_value('columns', {})
-    --   if width < w.barbar.off and barbar_enabled() and w.barbar.off ~= -1 then
-    --     require('barbar.events').disable()
-    --   elseif width > w.barbar.on and not barbar_enabled() and w.barbar.on ~= -1 then
-    --     require('barbar.events').enable()
-    --   end
-    --   if width > w.sidebar.on and not sidebar_open and w.sidebar.on ~= -1 then
-    --     require('modules.sidebar').open()
-    --   elseif width < w.sidebar.off and sidebar_open and w.sidebar.off ~= -1 then
-    --     require('modules.sidebar').close()
-    --   end
-    -- end, 10)
   end
 end
 

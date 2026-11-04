@@ -47,27 +47,7 @@ local setup_environment = function(bufnr)
 
   -- -- For debugging purposes, we can log the environment variables
   vim.api.nvim_buf_set_var(bufnr, "gitsigns_status_dict", gs_status)
-  -- vim.dbglog(
-  --   "gitsigns_status_dict",
-  --   gs_status,
-  --   bufnr,
-  --   vim.fn.getenv("GIT_WORK_TREE"),
-  --   vim.fn.getenv("GIT_DIR")
-  -- )
 
-  -- if vim.fn.getenv("GIT_WORK_TREE") ~= env.root or vim.fn.getenv("GIT_DIR") ~= env.gitdir then
-  --   vim.notify(
-  --     string.format("gitsigns: GIT_WORK_TREE=%s, GIT_DIR=%s", env.root, env.gitdir),
-  --     vim.log.levels.INFO
-  --   )
-  --   -- vim.fn.setenv("GIT_WORK_TREE", env.root)
-  --   -- vim.fn.setenv("GIT_DIR", env.gitdir)
-  -- else
-  --   vim.notify(
-  --     string.format("gitsigns attached to root `%s` with wok tree `%s`", env.root, env.gitdir),
-  --     vim.log.levels.DEBUG
-  --   )
-  -- end
 end
 
 return setup_environment

@@ -3,18 +3,6 @@ local treesj = require("treesj")
 
 -- local region = opts.region or H.find_smallest_bracket_region(opts.position, opts.detect.brackets)
 
--- orig_split_at = vim.fn.deepcopy(MiniSplitjoin.split_at)
--- MiniSplitjoin.split_at = function(positions)
---   vim.dbglog("🪚 split positions: ", positions)
---   -- orig_split_at(positions)
--- end
-
--- orig_join_at = vim.fn.deepcopy(MiniSplitjoin.join_at)
--- MiniSplitjoin.join_at = function(positions)
---   vim.dbglog("🪚 join positions: ", positions)
---   -- orig_join_at(positions)
--- end
-
 treesj.setup({
   use_default_keymaps = false,
   cursor_behavior = "hold",
@@ -53,13 +41,6 @@ local align_op = function(cmd)
       fallback_log("treesj", cmd, treesj_results)
     end
 
-    -- if not try_treesj(cmd) then
-    --   local results = require("mini.splitjoin")[cmd]()
-    --   fallback_log(cmd, results)
-    -- else
-    --   require("treesj")[cmd]()
-    -- end
-    -- calculate diff time in ms
     local diff_time = (vim.uv.hrtime() - start_time) / 1e6
     vim.dbglog(
       diff_time,
@@ -75,12 +56,6 @@ vim.api.nvim_create_user_command("SplitSplit", align_op("split"), {})
 vim.api.nvim_create_user_command("SplitJoin", align_op("join"), {})
 
 local split_mapping = function()
-  --   H.map('n', maps.toggle, 'v:lua.MiniSplitjoin.operator("toggle") . " "', { expr = true, desc = 'Toggle arguments' })
-  --   H.map('n', maps.split,  'v:lua.MiniSplitjoin.operator("split") . " "',  { expr = true, desc = 'Split arguments' })
-  --   H.map('n', maps.join,   'v:lua.MiniSplitjoin.operator("join") . " "',   { expr = true, desc = 'Join arguments' })
-  --   H.map('x', maps.toggle, ':<C-u>lua MiniSplitjoin.toggle({ region = MiniSplitjoin.get_visual_region() })<CR>', { desc = 'Toggle arguments' })
-  --   H.map('x', maps.split,  ':<C-u>lua MiniSplitjoin.split({ region = MiniSplitjoin.get_visual_region() })<CR>',  { desc = 'Split arguments' })
-  --   H.map('x', maps.join,   ':<C-u>lua MiniSplitjoin.join({ region = MiniSplitjoin.get_visual_region() })<CR>',   { desc = 'Join arguments' })
 
   local map = require("lib.mapper").map
   map("n", "gs", align_op("toggle"), { desc = "split toggle cursor" })

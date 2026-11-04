@@ -239,16 +239,6 @@ local php_mappings = {
 }
 
 local lua_mappings = {
-  -- {
-  --   context = 'lua main module',
-  --   pattern = '.*.lua$',
-  --   target = '.*/init.lua',
-  -- },
-  -- {
-  --   context = "file of same name, but in different directory",
-  --   pattern = ".*/(.-)$",
-  --   target = ".*/%1",
-  -- },
   {
     pattern = '(.*)/(.*).spec.lua$',
     target = '%1/%2.lua',
@@ -269,15 +259,6 @@ local lua_mappings = {
 }
 
 local cfg = {
-  -- keybindings = {
-  --   ['<cr>'] = 'open_file_by_command()',
-  --   ['<esc>'] = 'close_window()',
-  --   t = 'open_file_tabnew()',
-  --   o = 'open_file()',
-  --   q = 'close_window()',
-  --   v = 'open_file_vs()',
-  --   s = 'open_file_sp()',
-  -- },
   style = {
     -- How the plugin paints its window borders
     border = 'rounded',

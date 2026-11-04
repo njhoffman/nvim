@@ -79,20 +79,3 @@ local cfg = {
   },
 }
 navic.setup(cfg)
-
--- local ignore_clients = { 'copilot', 'ltex', 'tailwindcss', 'eslint' }
--- vim.api.nvim_create_autocmd('LspAttach', {
---   callback = function(args)
---     local bufnr = args.buf
---     local client = vim.lsp.get_client_by_id(args.data.client_id)
---     vim.dbglog('trying', client.name, bufnr)
---     if
---       not vim.tbl_contains(ignore_clients, client.name)
---       and client.server_capabilities.documentSymbolProvider
---       and navic.is_available(bufnr)
---     then
---       vim.dbglog('attaching', client.name, bufnr)
---       require('nvim-navic').attach(client, bufnr)
---     end
---   end,
--- })

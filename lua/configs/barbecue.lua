@@ -255,15 +255,6 @@ local cfg = {
   show_dirname = true,
   show_navic = false,
   context_follow_icon_color = true,
-  -- project  = { show = false },
-  -- dirname  = { show = true },
-  -- basename = { show = true, show_modified = true },
-  -- context  = { show = false },
-  -- context = {
-  --   show = true,
-  --   align = "right",
-  --   follow_icon_color = true,
-  -- },
   symbols = {
     -- separators = { '󰅁', '󰅂' },
     separators = '󰅂',
@@ -292,20 +283,3 @@ vim.api.nvim_create_autocmd({
     require("barbecue.ui").update()
   end,
 })
-
--- vim.api.nvim_create_autocmd({
---   "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
---   "BufWinEnter",
---   "CursorHold",
---   "InsertLeave",
---
---   -- include these if you have set `show_modified` to `true`
---   "BufWritePost",
---   "TextChanged",
---   "TextChangedI",
--- }, {
---   group = vim.api.nvim_create_augroup("barbecue.updater", {}),
---   callback = function()
---     require("barbecue.ui").update()
---   end,
--- })

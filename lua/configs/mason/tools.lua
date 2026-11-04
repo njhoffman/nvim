@@ -33,17 +33,6 @@ local formatters = {
   "xmlformatter",
   "yamlfix",
   "yamlfmt",
-  -- 'asmfmt',
-  -- 'black',
-  -- 'isort',
-  -- 'mdformat',
-  -- 'nginx_beautifier',
-  -- 'pg_format',
-  -- 'rubyfmt',
-  -- 'standardts',
-  -- 'terrafmt',
-  -- 'tidy',
-  -- terraform_fmt,
 }
 
 local misc = {
@@ -80,14 +69,6 @@ local linters = {
   "vint",
   "write-good",
   "yamllint",
-  -- 'clang_check',
-  -- 'gospel',
-  -- 'markuplint',
-  -- 'mdl',
-  -- 'puppet-lint',
-  -- 'pylint',
-  -- 'tsc',
-  -- Linter
 }
 
 local dap = {
@@ -96,22 +77,6 @@ local dap = {
   "delve",
   "go-debug-adapter",
   "js-debug-adapter",
-  -- 'bzl',
-  -- 'codelldb',
-  -- 'cpptools',
-  -- 'dart-debug-adapter',
-  -- 'elixir-ls elixirls',
-  -- 'erlang-ls erlangls',
-  -- 'firefox-debug-adapter',
-  -- 'haskell-debug-adapter',
-  -- 'java-debug-adapter',
-  -- 'java-language-server java_language_server',
-  -- 'java-test',
-  -- 'kotlin-debug-adapter',
-  -- 'mockdebug',
-  -- 'netcoredbg',
-  -- 'php-debug-adapter',
-  -- 'puppet-editor-services puppet',
 }
 
 -- Use vim.iter instead of deprecated vim.tbl_flatten

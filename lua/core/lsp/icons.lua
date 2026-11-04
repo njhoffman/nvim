@@ -120,29 +120,6 @@ return {
   icons = icons,
   get_icons = get_icons
 }
--- M.icons       = {
---   Class       = " ",
---   Color       = " ",
---   Constant    = " ",
---   Constructor = " ",
---   Enum        = "了 ",
---   EnumMember  = " ",
---   Field       = " ",
---   File        = " ",
---   Folder      = " ",
---   Function    = " ",
---   Interface   = "ﰮ ",
---   Keyword     = " ",
---   Method      = "ƒ ",
---   Module      = " ",
---   Property    = " ",
---   Snippet     = "﬌ ",
---   Struct      = " ",
---   Text        = " ",
---   Unit        = " ",
---   Value       = " ",
---   Variable    = " ",
--- }
 
 --   lsp_ts = {
 --     active_lsp = "",

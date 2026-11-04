@@ -4,19 +4,6 @@ local load_main = function()
   require("flash").setup(config)
 end
 
--- local load_lambda = function()
---   require('movement.globals')
---   -- require('core.pack')
---   -- createdir()
---   -- disable_distribution_plugins()
---   -- leader_map()
---   -- require('core.options')
---   require('movement.cmd')
---   require('movement.autocmd')
---   -- require('core.autocmd_optional')
---   local config = require('movement.flash.setup')
--- end
-
 load_main()
 -- load_lambda()
 

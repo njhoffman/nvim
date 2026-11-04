@@ -80,22 +80,6 @@ local function script(opts)
       -- previewer = conf.file_previewer(opts),
       -- sorter = sorters.get_sorter(opts),
       sorter = conf.generic_sorter(opts),
-      -- previewer = previewers.new_buffer_previewer({
-      --   define_preview = function(self, entry, status)
-      --     -- Execute another command using the highlighted entry
-      --     return require('telescope.previewers.utils').job_maker(
-      --       { 'terraform', 'state', 'list', entry.value },
-      --       self.state.bufnr,
-      --       {
-      --         callback = function(bufnr, content)
-      --           if content ~= nil then
-      --             require('telescope.previewers.utils').regex_highlighter(bufnr, 'terraform')
-      --           end
-      --         end,
-      --       }
-      --     )
-      --   end,
-      -- }),
     })
     :find()
 end

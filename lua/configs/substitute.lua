@@ -71,13 +71,6 @@ local function setup_keymaps()
   -- :Subs/orig/replace/g
   -- :%S/{,un}nec{ce,ces,e}sar{y,ily}/{}nec{es}sar{}/g
 
-  -- modifiers={ register = "a", expand = "<cword>", last_search = true, motion = "iw" }
-  -- If you want to trim text but only if you substitute text in a charwise motion, you can use:
-  -- modifiers = function(state)
-  --   if state.vmode == 'char' then
-  --     return { 'trim' }
-  --   end
-
   -- If you always want to reindent text when making a linewise substitution, you can use:
   -- require('substitute').operator({
   --   modifiers = function(state)

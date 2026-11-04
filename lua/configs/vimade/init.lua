@@ -93,53 +93,6 @@ local setup = function()
         },
       },
     },
-    -- usecursorhold = true,
-    -- nohlcheck = false,
-    -- blocklist = {
-    -- only_behind_float_windows = function(win, current)
-    --   -- current can be nil
-    --   if (win.win_config.relative == "") and (current and current.win_config.relative ~= "") then
-    --     return false
-    --   end
-    --   return true
-    -- end,
-    -- buf_opts = {
-    --   buftype = { "terminal" },
-    --   filetype = {},
-    -- },
-    -- wintype = true,
-    -- win_config = {},
-    -- win_config = { relative = true }, },
-    -- filetype = {
-    --   "CompetiTest",
-    --   "Mundo",
-    --   "MundoDiff",
-    --   "NvimTree",
-    --   "SidebarNvim",
-    --   "Trouble",
-    --   "aerial",
-    --   "cmp_menu",
-    --   "dap-log",
-    --   "dap-repl",
-    --   "dapui_breakpoints",
-    --   "dapui_console",
-    --   "dapui_scopes",
-    --   "dapui_stacks",
-    --   "dapui_watches",
-    --   "neo-tree",
-    --   "nerdtree",
-    --   "noice",
-    --   "tablegen",
-    -- },
-    -- normalncid = 0,
-    -- ncmode = "buffers",
-    -- nc_windows = true,
-    -- nc_buffers = true,
-    -- link = {},
-    -- groupdiff = 1,
-    -- groupscrollbind = 0,
-    -- normalid = "",
-    -- normalncid = "",
   }
 
   local setup_delay = vim.v.vim_did_enter == 1 and 500 or 3000

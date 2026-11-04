@@ -10,26 +10,6 @@
 -- hit a upper label of above labels to select a visual by line in range jumps,
 -- if label is upper, do nothing.
 
--- matcher = function(win)
---   -- limit matches to the current label
---   return vim.tbl_filter(function(m)
---     return m.label == match.label and m.win == win
---   end, state.results)
--- end,
--- labeler = function(matches)
---   for _, m in ipairs(matches) do
---     m.label = m.label2 -- use the second label
---   end
--- end,
-
--- labeler = function(matches, state)
---   local labels = state:labels()
---   for m, match in ipairs(matches) do
---     match.label1 = labels[math.floor((m - 1) / #labels) + 1]
---     match.label2 = labels[(m - 1) % #labels + 1]
---     match.label = match.label1
---   end
--- end,
 local modes = {
   -- config = function() end
   search = {
@@ -52,13 +32,6 @@ local modes = {
       [","] = "-",
     },
     label = {
-      -- format = function(opts)
-      --   -- always show first and second label
-      --   return {
-      --     { opts.match.label1, 'FlashMatch' },
-      --     { opts.match.label2, 'FlashLabel' },
-      --   }
-      -- end,
       style = "overlay",
       current = false,
       after = false,
@@ -125,22 +98,6 @@ local modes = {
       [";"] = "+",
       [","] = "-",
     },
-    -- search = { multi_window = false, wrap = true, incremental = true, max_length = 0 },
-    -- matcher = lib.custom_ts,
-    -- actions = lib.ts_actions,
-    -- multi_line = true,
-    -- label = {
-    --   distance = true,
-    --   min_pattern_length = 0,
-    --   before = true,
-    --   after = true,
-    --   style = 'inline',
-    --   rainbow = {
-    --     enabled = true,
-    --     -- number between 1 and 9
-    --     shade = 5,
-    --   },
-    -- },
   },
   treesitter_search = {
     jump = { pos = "range" },

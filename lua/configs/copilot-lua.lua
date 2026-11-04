@@ -113,15 +113,6 @@ require("copilot").setup({
   -- copilot_model = "gpt-4o-copilot", -- Current LSP default is gpt-35-turbo, supports gpt-4o-copilot
 })
 
--- vim.keymap.set({ 'i', 'n' }, '<M-y>', function()
---   local panel = require('copilot.panel')
---   if panel.winid and vim.api.nvim_win_is_valid(panel.winid) then
---     panel.close()
---   else
---     panel.open()
---   end
--- end, { silent = true, desc = '[copilot] toggle panel' })
-
 -- require("copilot.command").enable()
 -- require("copilot.panel").accept()
 -- require("copilot.panel").jump_next()

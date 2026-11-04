@@ -38,8 +38,13 @@ removing it. Move removals to `~/.local/backup/nvim/`, keeping their repo paths 
       loaded by nothing. Move the ones worth keeping to `docs/reference/plugin-defaults/` and delete the rest.
 - [ ] **Committed scratch space.** (p3) [chore] `scratch/`: move it out of the repo or gitignore it
       (`lua/configs/tmp/` went to the backup in v0.21.0)
-- [ ] **Commented-out code blocks.** (p3) [refactor] e.g. `configs/alpha/init.lua` 131-200. Delete them, or move blocks
-      kept as future implementations to `docs/reference/`.
+- [ ] **Commented-out code blocks.** (p3) [refactor] v0.31.3 removed 355 blocks of 5+ lines (about 5,000 lines) that parse
+      as Lua or are clearly code, outside vendored copies, `*.defaults.lua` and the in-progress `tracker` and `runner`;
+      disabled plugin specs moved to `docs/reference/commented-out-plugin-specs.md`, the rest is in
+      `~/.local/backup/nvim/commented-code-2026-11-04.md`. Left: about 2,200 lines of mixed notes and code that need
+      reading, and blocks under 5 lines, kept on purpose as option toggles.
+- [ ] **`lib/mapper/utils.lua` does not parse.** (p3) [bug] Line 6-7 has a statement after `return`, and nothing requires
+      the file. Fix or back it up.
 - [ ] **Orphaned top-level modules.** (p2) [chore] Nothing requires `lua/quickfix/`, `lua/notifications/` (only a
       commented-out line in `init.lua`), `lua/histories/`, `lua/watcher/`, `lua/winsizer/`, `lua/llm-prompts.lua` or
       `lua/llm-providers.lua` (used only by `llm-prompts`). Found during the `lua/` layout refactor, which left them in

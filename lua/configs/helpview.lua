@@ -10,14 +10,6 @@ local cfg = {
     -- ignore_buftypes = {},
     -- condition = nil,
 
-    --   draw_range = { 2 * vim.o.lines, 2 * vim.o.lines },
-    --   edit_range = { 0, 0 },
-    -- max_buf_lines = 500,
-    -- debounce = 150,
-    -- callbacks = {},
-    -- icon_provider = "internal",
-    -- splitview_winopts = { split = "right" },
-    -- preview_winopts = { width = math.floor(80) }
   },
   vimdoc = {
     optionlinks = {
@@ -70,17 +62,6 @@ local cfg = {
         -- block_hl = "HelpviewCode",
         -- language_hl = "HelpviewCodeLanguage",
       },
-      -- ["diff"] = {
-      --   block_hl = function (_, line)
-      --     if line:match("^%s*%+") then
-      --       return "HelpviewPalette4";
-      --     elseif line:match("^%s*%-") then
-      --       return "HelpviewPalette1";
-      --     else
-      --       return "HelpviewCode";
-      --     end
-      --   end
-      -- }
     },
     highlight_groups = {
       enable = true,

@@ -134,16 +134,6 @@ opt("diffopt", "internal,filler,closeoff,linematch:60,algorithm:histogram,contex
 --  patience   patience diff algorithm
 --  histogram  histogram diff algorithm
 
--- opt("display", "msgsep")
--- opt("shortmess", o.shortmess .. "cS")
--- -- opt("shortmess", "filnxtToOcSIs")
--- opt("more", false) -- dont pause when message finished
--- opt("wildmenu", 1)
--- opt("wildmode", "longest:full,full")
--- opt("wildmode", "") -- full, longest, list, lastused, list:longest, list:full, longest:full
--- opt("wc", 0x0e)
--- opt("wcm", 0x0e)
-
 -- opt('list', true) -- Define which helper symbols to show
 -- opt('listchars', 'extends:…,precedes:…,nbsp:␣') -- Define which helper symbols to show
 --[[ vim.opt.listchars:append({ nbsp = '󰚌', precedes = '…', extends = '…', multispace = '·', tab = '│ ', conceal = '?', lead = ' ', trail = ' ', }) ]]
@@ -181,40 +171,6 @@ opt("undofile", true, buffer)
 opt("equalalways", false) -- make windows the samue width when closing one
 opt("cursorlineopt", "both") -- should get cursorline in number too
 opt("guifont", "FiraCode Nerd Font:h12,DejaVuSansM Nerd Font Mono:h12,monospace") -- "Source Code Pro,DejaVu Sans Mono,Courier New,monospace"
--- vim.g.gui_font_default_size = 10
--- vim.g.gui_font_size = vim.g.gui_font_default_size
--- vim.g.gui_font_face = "JetBrainsMono Nerd Font"
---
--- RefreshGuiFont = function()
---   vim.opt.guifont = string.format("%s:h%s", vim.g.gui_font_face, vim.g.gui_font_size)
--- end
---
--- ResizeGuiFont = function(delta)
---   vim.g.gui_font_size = vim.g.gui_font_size + delta
---   RefreshGuiFont()
--- end
---
--- ResetGuiFont = function()
---   vim.g.gui_font_size = vim.g.gui_font_default_size
---   RefreshGuiFont()
--- end
---
--- -- Call function on startup to set default value
--- ResetGuiFont()
---
--- -- Keymaps
---
--- local opts = { noremap = true, silent = true }
---
--- vim.keymap.set({ "n", "i" }, "<C-+>", function()
---   ResizeGuiFont(1)
--- end, opts)
--- vim.keymap.set({ "n", "i" }, "<C-->", function()
---   ResizeGuiFont(-1)
--- end, opts)
--- vim.keymap.set({ "n", "i" }, "<C-BS>", function()
---   ResetGuiFont()
--- end, opts)
 opt(
   "guicursor",
   vim.fn.join({

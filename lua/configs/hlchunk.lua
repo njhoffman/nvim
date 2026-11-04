@@ -1,14 +1,3 @@
--- local styles = {
--- normal = {
---   { fg = "#005678", bg = "#001018" },
---   { fg = "#4056a7", bg = "#100018" },
---   { fg = "#806d9c", bg = "#180010" },
--- },
--- error = {
---   { fg = "#7a0000", bg = "#200610" },
---   { fg = "#f35336", bg = "#201410" },
--- },
--- }
 
 local styles = {
   normal = {
@@ -39,13 +28,6 @@ local cfg = {
   },
   indent = {
     enable = false,
-    -- style = { vim.api.nvim_get_hl(0, { name = "Whitespace" }) },
-    -- priority = 10,
-    -- use_treesitter = false,
-    -- chars = { "│" },
-    -- ahead_lines = 5,
-    -- delay = 100,
-    -- filter_list = {},
   },
   blank = {
     enable = false,

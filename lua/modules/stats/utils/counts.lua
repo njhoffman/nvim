@@ -1,8 +1,3 @@
--- getcompletion({pat}, {type} [, {filtered}])
--- { arglist, augroup, buffer, breakpoint, cmdline, color, command, compiler, diff_buffer}
--- { dir, environment, event, expression, file, file_in_path, filetype, function, help }
--- { highlight, history, locale, mapclear, mapping, menu, messages, option, packadd  }
--- { runtime, scriptnames, shellcmd, sign, syntax, syntime, tag, tag_listfiles, user, var  }
 
 local counts = {}
 
@@ -48,34 +43,6 @@ counts.extmarks = function()
 end
 
 counts.extmarks_leaked = function()
-  -- for name, ns in pairs(namespaces) do
-  --   local row = { ns, name, 0, 0 }
-  --   ns_highlights[ns] = vim.api.nvim_get_hl(ns, {})
-  --   row[3] = row[3] + #vim.tbl_keys(ns_highlights[ns])
-  --   ns_extmarks[ns] = {}
-  --   if ns ~= 0 then
-  --     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-  --       local extmarks = vim.api.nvim_buf_get_extmarks(buf, ns, 0, -1, {
-  --         -- type = 'highlight', -- highlight, sign, virt_text, virt_lines
-  --         details = true,
-  --         hl_name = true,
-  --       })
-  --       ns_extmarks[ns][buf] = extmarks
-  --       row[4] = row[4] + #extmarks
-  --       -- extmarks[1][4] = { end_col = 68, end_right_gravity = false, end_row = 4, hl_eol = false, hl_group = "MatchParen", ns_id = 15, priority = 4096, right_gravity = true }
-  --       -- extmarks[1][4].virtual_text = { [1] = { [1] = "", [2] = "ActionHintsDefinition" }, [2] = { [1] = "", [2] = "ActionHintsReferences" }, [3] = { [1] = " 9", [2] = "ActionHintsCodeActions" } }, virt_text_hide = false, virt_text_pos = "eol"virt_text = { [1] = { [1] = " ", [2] = "ScrollbarHandle" } }, virt_text_hide = false, virt_text_pos = "right_align" }
-  --     end
-  --   end
-  --   if vim.tbl_isempty(filter) then
-  --     table.insert(ns_table, row)
-  --   else
-  --     if filter.has_hls and row[3] ~= 0 then
-  --       table.insert(ns_table, row)
-  --     elseif filter.has_leaked and row[4] ~= 0 then
-  --       table.insert(ns_table, row)
-  --     end
-  --   end
-  -- end
 
   local nsn = vim.api.nvim_get_namespaces()
   local count = 0
@@ -123,11 +90,6 @@ counts.options = function()
 end
 
 counts.packages = function()
-  -- return #package.loaders   7
-  -- return #package.path      345
-  -- return #package.cpath     163
-  -- return #package.config    10
-  -- return #vim.tbl_keys(package.preload)
   return #vim.tbl_keys(package.loaded)
 end
 
@@ -187,21 +149,6 @@ local get_counts = function(keys)
     "augroups",
     "aucommands",
     "variables",
-    -- 'variables_predef',
-    -- 'variables_buffer',
-    -- 'variables_window',
-    -- 'variables_global',
-    -- 'options',
-    -- 'options_buffer',
-    -- 'options_window',
-    -- 'options_global',
-    -- "functions",
-    -- "commands",
-    -- "packages",
-    -- "scriptnames",
-    -- 'oldfiles',
-    -- 'changes',
-    -- 'history',
     "namespaces",
     "highlights",
     "extmarks",

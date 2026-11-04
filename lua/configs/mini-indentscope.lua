@@ -47,14 +47,6 @@ local default_opts = {
 
 local opts = {
   draw = {
-    -- animation = function(s, n)
-    --   return 20
-    -- end, -- cubic, quartic, quadratic, linear, exponential, none
-    -- animation = require("mini.indentscope").gen_animation.quadratic({
-    --   easing = "in-out", -- in, out, in-out
-    --   duration = 20,
-    --   unit = "step", -- step, total
-    -- }),
     animation = require("mini.indentscope").gen_animation.none(),
 
     -- Delay (in ms) between event and start of drawing scope indicator

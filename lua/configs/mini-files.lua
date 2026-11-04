@@ -128,29 +128,4 @@ vim.api.nvim_create_autocmd("User", {
 -- buf_map('n', mappings.trim_right,  MiniFiles.trim_right,  'Trim branch right')
 --
 
--- vim.api.nvim_create_autocmd('User', {
---   pattern = 'MiniFilesWindowOpen',
---   callback = function(args)
---     local win_id = args.data.win_id
---
---     -- Customize window-local settings
---     vim.wo[win_id].winblend = 50
---     vim.api.nvim_win_set_config(win_id, { border = 'double' })
---   end,
--- })
--- set cwd
--- local files_set_cwd = function(path)
---   -- Works only if cursor is on the valid file system entry
---   local cur_entry_path = MiniFiles.get_fs_entry().path
---   local cur_directory = vim.fs.dirname(cur_entry_path)
---   vim.fn.chdir(cur_directory)
--- end
---
--- vim.api.nvim_create_autocmd('User', {
---   pattern = 'MiniFilesBufferCreate',
---   callback = function(args)
---     vim.keymap.set('n', 'g~', files_set_cwd, { buffer = args.data.buf_id })
---   end,
--- })
-
 require("mini.files").setup(cfg)

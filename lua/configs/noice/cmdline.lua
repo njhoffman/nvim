@@ -68,14 +68,6 @@ local config = {
   },
   win_options = {
     winblend = 0,
-    -- winhighlight = {
-    --   Normal = 'NoiceCmdlinePopup',
-    --   FloatBorder = 'NoiceCmdlinePopupBorder',
-    --   FloatTitle = 'NoiceCmdlinePopupTitle',
-    --   CursorLine = 'NoicePopupmenuSelected', -- used for highlighting the selected item
-    --   PmenuMatch = 'NoicePopupmenuMatch', -- used to highlight the part of the item that matches the input
-    -- },
-    -- Normal:Normal,FloatBorder:Comment,CursorLine:Visual,Search:None
   },
 }
 -- vim.api.nvim_set_hl(0, 'NoicePopupmenuBorder', { blend = 20 })

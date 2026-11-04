@@ -23,28 +23,7 @@ various_textobjs.setup({
   keymaps = {
     useDefaults = true,
     ---**inner/outer**
-    -- number                 = "n",
-    -- value                  = "v",
-    -- key                    = "k",
-    -- notebookCell           = "N",
-    -- closedFold             = "z", -- z is the common prefix for folds
-    -- chainMember            = "m",
-    -- greedyOuterIndentation = "g",
-    -- anyQuote               = "q",
-    -- anyBracket             = "o",
     ---**single**
-    -- nearEoL              = "n", -- does override the builtin "to next search match" textobj, but nobody really uses that
-    -- visibleInWindow      = "gw",
-    -- toNextClosingBracket = "C", -- % has a race condition with vim's builtin matchit plugin
-    -- toNextQuotationMark  = "Q",
-    -- restOfParagraph      = "r",
-    -- restOfIndentation    = "R",
-    -- restOfWindow         = "gW",
-    -- diagnostic           = "!",
-    -- column               = "|",
-    -- entireBuffer         = "gG", -- G + gg
-    -- url                  = "L", -- gu, gU, and U would conflict with gugu, gUgU, and gUU. u would conflict with gcu (undo comment)
-    -- lastChange = "g;", -- consistent with g; movement
     ---**filetype**
     -- { map = { mdLink = "l" },               fts = { "markdown", "toml" } },
     -- { map = { mdEmphasis = "e" },           fts = { "markdown" } },
@@ -144,23 +123,6 @@ vim.api.nvim_create_autocmd("FileType", {
 
 map("n", "dsi", helpers.delete_surround_indent, { desc = "delete surrounding indentation" })
 
--- map('n', 'P', function()
---   require('various-textobjs').lastChange()
---   local changeFound = vim.fn.mode():find('v')
---   if changeFound then
---     vim.fn.normal({ '>', bang = true })
---   end
--- end, {})
---
--- when on unindented line, `ii` should select entire buffer
--- map('o', 'ii', function()
---   if tonumber(vim.fn.indent('.')) == 0 then
---     require('various-textobjs').entireBuffer()
---   else
---     require('various-textobjs').indentation('inner', 'inner')
---   end
--- end)
-
 map("n", "gX", helpers.url_opener, { desc = "URL Opener" })
 map("n", "<leader>p>", function()
   require("various-textobjs").lastChange()
@@ -172,20 +134,3 @@ end, { desc = "Indent last paste" })
 
 map("n", "ysii", helpers.yank_surround_indent, { desc = "Yank surrounding indent" })
 -- map(ox, "ih", helpers.inner_chunk, { desc = "operate around hlchunk" })
-
--- { "im", ft = { "markdown", "toml" }, mode = { "o", "x" }, function() require("various-textobjs").mdlink("inner") end, desc = "Markdown Link" },
--- { "am", ft = { "markdown", "toml" }, mode = { "o", "x" }, function() require("various-textobjs").mdlink("outer") end, desc = "Markdown Link" },
--- { "iC", ft = { "markdown" }, mode = { "o", "x" }, function() require("various-textobjs").mdFencedCodeBlock("inner") end, desc = "CodeBlock" },
--- { "aC", ft = { "markdown" }, mode = { "o", "x" }, function() require("various-textobjs").mdFencedCodeBlock("outer") end, desc = "CodeBlock" },
--- { "ie", ft = { "markdown" }, mode = { "o", "x" }, function() require("various-textobjs").mdEmphasis("inner") end, desc = "Emphasis" },
--- { "ae", ft = { "markdown" }, mode = { "o", "x" }, function() require("various-textobjs").mdEmphasis("outer") end, desc = "Emphasis" },
--- { "gd", mode = { "o", "x" }, function() require("various-textobjs").diagnostics() end, desc = "Diagnostics" },
--- { "iy", ft = { "python" }, mode = { "o", "x" }, function() require("various-textobjs").pyTripleQuotes("inner") end, desc = "Triple Quotes" },
--- { "ay", ft = { "python" }, mode = { "o", "x" }, function() require("various-textobjs").pyTripleQuotes("outer") end, desc = "Triple Quotes" },
--- { "iC", ft = { "css", "scss", "less" }, mode = { "o", "x" }, function() require("various-textobjs").cssSelector("inner") end, desc = "CSS Selector" },
--- { "aC", ft = { "css", "scss", "less" }, mode = { "o", "x" }, function() require("various-textobjs").cssSelector("outer") end, desc = "CSS Selector" },
--- { "i#", ft = { "css", "scss", "less" }, mode = { "o", "x" }, function() require("various-textobjs").cssColor("inner") end, desc = "CSS Color" },
--- { "a#", ft = { "css", "scss", "less" }, mode = { "o", "x" }, function() require("various-textobjs").cssColor("outer") end, desc = "CSS Color" },
--- { "iP", ft = { "sh" }, mode = { "o", "x" }, function() require("various-textobjs").shellPipe("inner") end, desc = "Pipe" },
--- { "aP", ft = { "sh" }, mode = { "o", "x" }, function() require("various-textobjs").shellPipe("outer") end, desc = "Pipe" },
--- { "iH", ft = { "html, xml, css, scss, less" }, mode = { "o", "x" }, function() require("various-textobjs").htmlAttribute("inner") end, desc = "HTML Attribute" },

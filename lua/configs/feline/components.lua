@@ -32,25 +32,6 @@ M.HelpTagsComponent = {
   },
 }
 
--- M.LspCodeActionsComponent = {
---   enabled = function()
---     local ft_enabled = { 'lua', 'sh', 'typescript', 'javascript', 'go', 'python' }
---     return vim.tbl_contains(ft_enabled, vim.bo.filetype) and #vim.lsp.get_clients() > 0
---   end,
---   provider = {
---     name = 'lsp_code_actions',
---     update = { 'User' },
---     opts = {},
---   },
---   hl = provider_lsp_code_actions.hl,
---   left_sep = {
---     str = ' ',
---     hl = {
---       fg = 'NONE',
---     },
---   },
--- }
-
 M.LspReferencesComponent = {
   enabled = function()
     local ft_enabled = { "lua", "sh", "typescript", "javascript", "go", "python" }

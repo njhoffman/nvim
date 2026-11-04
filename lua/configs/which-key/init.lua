@@ -1,8 +1,3 @@
--- -- Show hydra mode for changing windows
--- require("which-key").show({
--- keys = "<c-w>",
--- loop = true, -- this will keep the popup open until you hit <esc>
--- })
 
 local cfg = {
   debug = false, -- enable wk.log in the current directory
@@ -37,11 +32,6 @@ local cfg = {
   },
   win = {
     no_overlap = true,
-    -- width = 1,
-    -- height = { min = 4, max = 25 },
-    -- col = 0,
-    -- row = math.huge,
-    -- border = "none",
     padding = { 0, 1 }, -- extra window padding [top/bottom, right/left]
     title = true,
     title_pos = "center",
@@ -123,18 +113,6 @@ local cfg = {
       F12 = "󱊶",
     },
   },
-  -- expand = function(node)
-  --   return not node.desc -- expand all nodes without a description
-  -- end,
-  -- delay = function(ctx)
-  --   return ctx.plugin and 0 or 200
-  -- end,
-  -- defer = function(ctx)
-  --   return ctx.mode == "V" or ctx.mode == "<C-V>"
-  -- end,
-  -- filter = function(mapping)
-  --   return true
-  -- end,
 }
 
 require("which-key").setup(cfg)

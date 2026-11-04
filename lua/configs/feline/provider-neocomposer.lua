@@ -30,11 +30,6 @@ local neocomposer = function(_, opts)
   if queued ~= nil then
     status = '󰯁' .. ' ' .. status
   end
-  -- status = '󰯁' .. #state.get_macros() .. ' ' .. status
-  -- local delay_enabled = state.get_delay()
-  -- if delay_enabled then
-  --   status = (status == '' and '' or (status .. ' ')) .. '%#DelaySymbol# 󱎫%#StatusLabel#DELAY '
-  -- end
 
   return status
 end

@@ -12,26 +12,6 @@ require("browse").setup({
     grouped_bookmarks = "->", -- if you have nerd fonts, you can set this to 
   },
 })
--- local bookmarks = {
---   ["github"] = {
---       ["name"] = "search github from neovim",
---       ["code_search"] = "https://github.com/search?q=%s&type=code",
---       ["repo_search"] = "https://github.com/search?q=%s&type=repositories",
---       ["issues_search"] = "https://github.com/search?q=%s&type=issues",
---       ["pulls_search"] = "https://github.com/search?q=%s&type=pullrequests",
---   },
--- }
--- local bookmarks = {
---   "https://github.com/search?q=%s&type=code",
---   "https://github.com/search?q=%s&type=repositories",
--- }
--- local bookmarks = {
---   "https://github.com/hoob3rt/lualine.nvim",
---   "https://github.com/neovim/neovim",
---   "https://neovim.discourse.group/",
---   "https://github.com/nvim-telescope/telescope.nvim",
---   "https://github.com/rockerBOO/awesome-neovim",
--- }
 
 --   function command(name, rhs, opts)
 --     opts = opts or {}
@@ -41,12 +21,6 @@ require("browse").setup({
 --   command('InputSearch', function()
 --     browse.input_search()
 --   end, {})
-
---   -- this will open telescope using dropdown theme with all the available options
---   -- in which `browse.nvim` can be used
---   command('Browse', function()
---     browse.browse({ bookmarks = bookmarks })
---   end)
 
 --   command('Bookmarks', function()
 --     browse.open_bookmarks({ bookmarks = bookmarks })

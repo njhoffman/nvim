@@ -105,44 +105,4 @@ local function lineToStartShiftGradient(lines)
   return out
 end
 
--- local cool = lineToStartPopGradient(coolLines)
--- local robust = lineToStartShiftGradient(robustLines)
--- local efficient = lineToStartGradient(efficientLines)
---
--- local headers = { cool, robust, efficient }
---
--- local function header_chars()
---   math.randomseed(os.time())
---   return headers[math.random(#headers)]
--- end
---
--- -- Map over the headers, setting a different color for each line.
--- -- This is done by setting the Highligh to StartLogoN, where N is the row index.
--- -- Define StartLogo1..StartLogoN to get a nice gradient.
--- local function header_color()
---   local lines = {}
---   for i, lineConfig in pairs(header_chars()) do
---     local hi = lineConfig.hi
---     local line_chars = lineConfig.line
---     local line = {
---       type = 'text',
---       val = line_chars,
---       opts = {
---         hl = hi,
---         shrink_margin = false,
---         position = 'center',
---       },
---     }
---     table.insert(lines, line)
---   end
---
---   local output = {
---     type = 'group',
---     val = lines,
---     opts = { position = 'center' },
---   }
---
---   return output
--- end
-
 return { col = col }

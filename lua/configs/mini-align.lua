@@ -34,40 +34,7 @@ local user_input = function(prompt, text)
 end
 
 local opts = {
-  -- options = {
-  --   split_pattern = '',
-  --   justify_side = 'left',
-  --   merge_delimiter = '',
-  -- },
-  -- steps = {
-  --   pre_justify = { align.gen_step.filter('n == 1') },
-  --   pre_split = {},
-  --   split = nil,
-  --   pre_justify = {},
-  --   justify = nil,
-  --   pre_merge = {},
-  --   merge = nil,
-  -- },
   modifiers = {
-    --   -- Main option modifiers
-    --   ['s'] = --<function: enter split pattern>,
-    --   ['j'] = --<function: choose justify side>,
-    --   ['m'] = --<function: enter merge delimiter>,
-    --
-    --   -- Modifiers adding pre-steps
-    --   ['f'] = --<function: filter parts by entering Lua expression>,
-    --   ['i'] = --<function: ignore some split matches>,
-    --   ['p'] = --<function: pair parts>,
-    --   ['t'] = --<function: trim parts>,
-    --
-    --   -- Delete some last pre-step
-    --   ['<BS>'] = --<function: delete some last pre-step>,
-    --
-    --   -- Special configurations for common splits
-    --   ['='] = --<function: enhanced setup for '='>,
-    --   [','] = --<function: enhanced setup for ','>,
-    --   [' '] = --<function: enhanced setup for ' '>,
-    -- - Tweak `j` modifier to cycle through available "justify_side" options (like in 'vim-easy-align'):
     j = function(_, opts)
       local next_option = ({
         left = 'center',
@@ -138,20 +105,6 @@ require('mini.align').setup(opts)
 -- Press p to pair neighboring parts so they be aligned together.
 -- Press t to trim whitespace from parts.
 -- Press <BS> (backspace) to delete some last pre-step.
-
--- [' '] = function(steps, opts)
---   table.insert(
---     steps.pre_split,
---     MiniAlign.new_step('squash', function(strings)
---       -- Replace all space sequences with single space (except indent)
---       for i, s in ipairs(strings) do
---         strings[i] = s:gsub('()(%s+)', function(n, space) return n == 1 and space or ' ' end)
---       end
---     end)
---   )
---   -- Don't use `' '` to respect indent
---   opts.split_pattern = '%s+'
--- end,
 
 -- NOTE: gAip then these key sequences:
 --       =  =jc  =jr  =m!<CR>  =p  =i  =<BS>  =<BS>p

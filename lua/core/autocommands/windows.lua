@@ -171,11 +171,6 @@ local goto_last_pos = function(bufnr, event)
     vim.api.nvim_win_set_cursor(winid, { pos.exit_line, pos.exit_col })
   end
 
-  -- if vim.fn.foldclosed(vim.fn.line(".")) ~= -1 and options.open_folds == 1 then
-  --   vim.api.nvim_command([[normal! zvzz]])
-  -- end
-  --  -- vim.api.nvim_command('keepjumps normal ' .. pos[2] .. 'G')
-  --  -- vim.api.nvim_command('keepjumps normal ' .. pos[3] .. 'l')
 end
 
 local restore_cursor = function(opts)

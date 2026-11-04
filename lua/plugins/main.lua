@@ -260,11 +260,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   {
     "monkoose/neocodeium",
     event = "VeryLazy",
-    -- config = function()
-    --   local neocodeium = require("neocodeium")
-    --   neocodeium.setup()
-    --   vim.keymap.set("i", "<A-f>", neocodeium.accept)
-    -- end,
   },
   {
     "nvim-lualine/lualine.nvim",
@@ -318,29 +313,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     --event = "VeryLazy",
     opts = {
       startVisible = false,
-      -- showBlankVirtLine = true,
-      -- highlightColor = { link = "Comment" },
-      -- hints = {
-      --      Caret = { text = "^", prio = 2 },
-      --      Dollar = { text = "$", prio = 1 },
-      --      MatchingPair = { text = "%", prio = 5 },
-      --      Zero = { text = "0", prio = 1 },
-      --      w = { text = "w", prio = 10 },
-      --      b = { text = "b", prio = 9 },
-      --      e = { text = "e", prio = 8 },
-      --      W = { text = "W", prio = 7 },
-      --      B = { text = "B", prio = 6 },
-      --      E = { text = "E", prio = 5 },
-      -- },
-      -- gutterHints = {
-      --     G = { text = "G", prio = 10 },
-      --     gg = { text = "gg", prio = 9 },
-      --     PrevParagraph = { text = "{", prio = 8 },
-      --     NextParagraph = { text = "}", prio = 8 },
-      -- },
-      -- disabled_fts = {
-      --     "startify",
-      -- },
     },
   },
 
@@ -505,18 +477,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
       "hakonharnes/img-clip.nvim",
       "nvim-treesitter/nvim-treesitter",
       "ravitemer/codecompanion-history.nvim",
-      -- {
-      --   "Davidyz/VectorCode",
-      --   -- pipx install git+https://github.com/Davidyz/VectorCode
-      --   build = "pipx upgrade vectorcode", -- If you used pipx to install the CLI
-      --   -- pipx install chromadb==0.6.3
-      --   -- build = "uv tool upgrade vectorcode",
-      --   -- pipx install --force "vectorcode[lsp,mcp]"
-      --   -- pipx inject vectorcode vectorcode[lsp] --force
-      --   -- uv tool install vectorcode[lsp,mcp]
-      --   -- mkdir -p ~/.local/share/vectorcode/chromadb
-      --   dependencies = { "nvim-lua/plenary.nvim" },
-      -- },
 
       {
         -- :PackageUI - Opens the interface, auto-detects your project type
@@ -572,16 +532,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     "jellydn/hurl.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },
     ft = "hurl",
-    -- keys = {
-    --   -- Run API request
-    --   { "<leader>A", "<cmd>HurlRunner<CR>", desc = "Run All requests" },
-    --   { "<leader>a", "<cmd>HurlRunnerAt<CR>", desc = "Run Api request" },
-    --   { "<leader>te", "<cmd>HurlRunnerToEntry<CR>", desc = "Run Api request to entry" },
-    --   { "<leader>tm", "<cmd>HurlToggleMode<CR>", desc = "Hurl Toggle Mode" },
-    --   { "<leader>tv", "<cmd>HurlVerbose<CR>", desc = "Run Api in verbose mode" },
-    --   -- Run Hurl request in visual mode
-    --   { "<leader>h", ":HurlRunner<CR>", desc = "Hurl Runner", mode = "v" },
-    -- },
   },
   {
     "MaximilianLloyd/tw-values.nvim",
@@ -740,13 +690,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   -- alignment
   { "echasnovski/mini.align", event = "VeryLazy" },
 
-  --   "dhruvasagar/vim-table-mode",
-  --   lazy = false,
-  --   -- ft = { "markdown", "pandoc", "vimwiki" },
-  --   init = function()
-  --     require("configs.vim-table-mode")
-  --   end,
-  -- },
   { "echasnovski/mini.doc", version = false, event = "VeryLazy" },
   {
     "echasnovski/mini.bracketed" --[[ , event = "VeryLazy" ]],
@@ -915,21 +858,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     -- https://vi.stackexchange.com/questions/42785/how-to-do-fuzzy-live-grep-on-git-files
     "moyiz/git-dev.nvim",
     config = function()
-      -- local repo = vim.fn.input('Repository name / URI: ')
-      -- git = {
-      --    base_uri_format = "https://git.home.arpa/%s.git",
-      --  }
-      -- if repo ~= '' then
-      --   require('git-dev').open(repo)
-      -- end
     end,
-    -- -- Change default URI
-    -- opts = { git = { base_uri_format = "https://git.home.arpa/%s.git" } }
-    -- -- Open my own repositories by name with SSH.
-    -- -- E.g. "git-dev.nvim" rather than "moyiz/git-dev.nvim"
-    -- opts = { git = { default_org = "moyiz", base_uri_format = "git@github.com:%s.git" } }
-    -- -- Enforce only full URIs (do not accept partial names).
-    -- opts = { git = { base_uri_format = "%s" } }
   },
   { "ray-x/forgit.nvim" },
 
@@ -1266,15 +1195,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     dependencies = "kevinhwang91/promise-async",
     config = function()
       local default_cfg = {
-        -- archives_dir = {
-        --   description = [[The directory to store the archives]],
-        --   default = vim.fn.stdpath('cache') .. path.separator .. 'fundo',
-        -- },
-        -- limit_archives_size = {
-        --   description = [[Limit the archives directory size, unit is MB(megabyte), elder files will be
-        -- removed based on their modified time]],
-        --   default = 512,
-        -- },
       }
       require("fundo").install()
       require("fundo").setup({})

@@ -66,14 +66,6 @@ require("sibling-swap").setup({
 -- local move = require("nvim-treesitter-textobjects.move")
 -- local swap = require("nvim-treesitter-textobjects.swap")
 
--- -- custom moves
--- map({ "n", "x", "o" }, "]a", function()
---   move.goto_next_start("@parameter.inner", "textobjects")
--- end, { desc = "Next Parameter Start" })
--- map({ "n", "x", "o" }, "]A", function()
---   move.goto_next_end("@parameter.inner", "textobjects")
--- end, { desc = "Next Parameter End" })
-
 -- map({ "n", "x", "o" }, "[a", function()
 --   move.goto_previous_start({ "@parameter.inner", "@loop.outer" }, "textobjects")
 -- end, { desc = "Previous Parameter Start" })

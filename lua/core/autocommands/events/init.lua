@@ -135,13 +135,3 @@ local init_event = function(scope, event_group)
     end,
   })
 end
-
--- init_event('events-buf', events.buf)
--- init_event('events-cmd', events.cmd)
--- init_event('events-file', events.file)
--- init_event('events-mode', events.mode)
--- init_event('events-startup', events.startup)
--- init_event('events-user', events.user)
--- vim.dbglog('active', processed.events, processed.records)
--- init_event('events-win', events.win)
--- init_event('events', events.all)

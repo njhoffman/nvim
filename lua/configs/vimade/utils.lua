@@ -1,17 +1,3 @@
--- local Fade = require("vimade.style.fade").Fade
--- local animate = require("vimade.style.value.animate")
--- local direction = require("vimade.style.value.direction")
--- local ease = require("vimade.style.value.ease")
--- local fade2 = Fade({
---   value = animate.Number({
---     start = 1,
---     to = 0.2,
---     direction = direction.IN_OUT,
---     ease = ease.OUT_BOUNCE,
---     duration = 1000,
---     delay = 100,
---   }),
--- })
 
 -- local fade1 = Fade({ value = animate.Number({ start = 1, to = 0.2, }) })
 -- local Default = require("vimade.recipe.default").Default({ animate = true })

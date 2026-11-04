@@ -79,15 +79,6 @@ local cfg = {
         -- relative = "editor",
         -- full_height = true,
         opts = {
-          -- breakindent = true,
-          -- cursorcolumn = false,
-          -- cursorline = false,
-          -- foldcolumn = "0",
-          -- linebreak = true,
-          -- list = false,
-          -- numberwidth = 1,
-          -- signcolumn = "no",
-          -- spell = false,
           relativenumber = false,
           number = false,
           wrap = false,
@@ -112,44 +103,10 @@ local cfg = {
       end,
     },
     diff = {
-      -- enabled = true,
-      -- close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
-      -- layout = "vertical", -- vertical|horizontal split for default provider
-      -- opts = {
-      --   "internal",
-      --   "filler",
-      --   "closeoff",
-      --   "algorithm:patience",
-      --   "followwrap",
-      --   "linematch:120",
-      -- },
     },
   },
   interactions = {
     chat = {
-      -- adapter = "anthropic",
-      -- tools = {
-      --   groups = {
-      --     ["github_pr_workflow"] = {
-      --       description = "GitHub operations from issue to PR",
-      --       tools = {
-      --         -- File operations
-      --         "neovim__read_multiple_files",
-      --         "neovim__write_file",
-      --         "neovim__edit_file",
-      --         -- GitHub operations
-      --         "github__list_issues",
-      --         "github__get_issue",
-      --         "github__get_issue_comments",
-      --         "github__create_issue",
-      --         "github__create_pull_request",
-      --         "github__get_file_contents",
-      --         "github__create_or_update_file",
-      --         "github__search_code",
-      --       },
-      --     },
-      --   },
-      -- },
       keymaps = {
         send = {
           modes = {
@@ -236,17 +193,6 @@ vim.cmd.cabbr("cch", "CodeCompanionHistory")
 -- CodeCompanionVirtualText - All other virtual text in the plugin
 
 -- local group = vim.api.nvim_create_augroup("CodeCompanionFidgetHooks", {})
-
--- vim.api.nvim_create_autocmd({ "User" }, {
---   pattern = "CodeCompanionRequest*",
---   group = group,
---   callback = function(request)
---     if request.match == "CodeCompanionRequestStarted" then
---       print(vim.inspect(request.data))
---       print(require("codecompanion").buf_get_chat(request.data.bufnr))
---     end
---   end,
--- })
 
 local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
 

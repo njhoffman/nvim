@@ -165,29 +165,10 @@ local setup_keymaps = function()
   --     mc.skipCursor("w")
   -- end)
 
-  -- -- match new cursors within visual selections by regex.
-  -- set("v", "M", mc.matchCursors)
-  --
-  -- -- Rotate visual selection contents.
-  -- set("v", "<leader>t", function()
-  --   mc.transposeCursors(1)
-  -- end)
-  -- set("v", "<leader>T", function()
-  --   mc.transposeCursors(-1)
-  -- end)
-
   -- It starts with <c-n> to select a word then it seems to
   -- add keymaps with single keystrokes like `n` `N` `q` `Q`
   -- to go the next previous skip and remove actions respectively
 
-  -- vim.keymap.set("n", "n", function()
-  --     if (mc.hasCursors()) {
-  --         mc.addCursor("*")
-  --     }
-  --     else {
-  --         vim.cmd.norm("n")
-  --     }
-  -- end)
 end
 
 function setup_hls()

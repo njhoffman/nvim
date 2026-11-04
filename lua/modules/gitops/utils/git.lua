@@ -83,17 +83,6 @@ M.branch_hash = function(branch)
   return string.gsub(output, "\n", "")
 end
 
--- local is_file_renamed = function(git_relative_file_path)
---     local command = "cd "
---         .. file.git_dir()
---         .. " && git log --all --follow --diff-filter=R --pretty=format:'%H' -- "
---         .. git_relative_file_path
---
---     local output = command_util.execute(command)
---     output = utils.split_string(output, "\n")
---     return #output > 0
--- end
-
 local file_exists_on_commit = function(commit_hash, git_relative_file_path, source_bufnr)
   local gs_repo = utils.get_repo(source_bufnr) or {}
   -- local repo = file_util.git_dir() or (gs_repo and gs_repo.gitdir) or ''
@@ -161,12 +150,6 @@ local file_name_on_commit = function(commit_hash, git_relative_file_path, source
   end
 
   local command = { "cd", "file.git_dir()", "&&", "git" }
-  -- local repo = utils.get_repo(source_bufnr)
-  -- if repo.gitdir then
-  --   table.insert(command, '--git-dir=' .. repo.gitdir)
-  --   table.insert(command, '--work-tree=' .. repo.worktree)
-  -- end
-  --
   table.insert(command, "--no-pager log -M --follow --pretty=format:'%H' --name-only")
   table.insert(command, last_touched_hash)
   table.insert(command, "~.. -- ")

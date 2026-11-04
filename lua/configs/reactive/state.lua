@@ -17,10 +17,5 @@ local state = {
     transformed_winhl = {},
   },
 }
--- local reset_state = function()
---   state.last_mode =
---   state.last_op = nil
---   state.last_opfunc = nil
--- end
 
 return state
