@@ -1,6 +1,6 @@
 local M = {}
 
-local list = require('modules.devdocs2.list')
+local list = require("modules.devdocs2.list")
 
 ---@param args string[]
 ---@param arg_lead string

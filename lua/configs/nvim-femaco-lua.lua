@@ -1,6 +1,5 @@
-local parsers = require('nvim-treesitter.parsers')
-local clip_val = require('femaco.utils').clip_val
-
+local parsers = require("nvim-treesitter.parsers")
+local clip_val = require("femaco.utils").clip_val
 
 local default_settings = {
   -- should return options passed to nvim_open_win
@@ -11,14 +10,14 @@ local default_settings = {
   --   * lang
   float_opts = function(code_block)
     return {
-      relative = 'cursor',
-      width = clip_val(5, 120, vim.api.nvim_win_get_width(0) - 10),  -- TODO how to offset sign column etc?
+      relative = "cursor",
+      width = clip_val(5, 120, vim.api.nvim_win_get_width(0) - 10), -- TODO how to offset sign column etc?
       height = clip_val(5, #code_block.lines, vim.api.nvim_win_get_height(0) - 6),
-      anchor = 'NW',
+      anchor = "NW",
       row = 0,
       col = 0,
-      style = 'minimal',
-      border = 'rounded',
+      style = "minimal",
+      border = "rounded",
       zindex = 1,
     }
   end,
@@ -29,27 +28,25 @@ local default_settings = {
   end,
   -- what to do after opening the float
   post_open_float = function(winnr)
-    vim.wo.signcolumn = 'no'
-  end
+    vim.wo.signcolumn = "no"
+  end,
 }
 
 local settings = {
-  float_opts = function(code_block) 
+  float_opts = function(code_block)
     return {
       row = 0,
       col = 0,
-      relative = 'cursor',
-      width = clip_val(5, 120, vim.api.nvim_win_get_width(0) - 10),  -- TODO how to offset sign column etc?
+      relative = "cursor",
+      width = clip_val(5, 120, vim.api.nvim_win_get_width(0) - 10), -- TODO how to offset sign column etc?
       height = clip_val(5, #code_block.lines, vim.api.nvim_win_get_height(0) - 6),
-      border = 'rounded',
-      anchor = 'NW',
-      style = 'minimal',
-      border = 'rounded',
+      border = "rounded",
+      anchor = "NW",
+      style = "minimal",
+      border = "rounded",
       zindex = 1,
     }
-  end
+  end,
 }
 
-
-require('femaco').setup(settings)
-
+require("femaco").setup(settings)

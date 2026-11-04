@@ -2,19 +2,19 @@ local M = {}
 
 ---@param registry string
 M.write_registry = function(registry)
-  REGISTRY_PATH:write(registry, 'w')
+  REGISTRY_PATH:write(registry, "w")
 end
 
 ---@param index IndexTable
 M.write_index = function(index)
   local encoded = vim.fn.json_encode(index)
-  INDEX_PATH:write(encoded, 'w')
+  INDEX_PATH:write(encoded, "w")
 end
 
 ---@param lockfile LockTable
 M.write_lockfile = function(lockfile)
   local encoded = vim.fn.json_encode(lockfile)
-  LOCK_PATH:write(encoded, 'w')
+  LOCK_PATH:write(encoded, "w")
 end
 
 ---@return RegistryEntry[]?

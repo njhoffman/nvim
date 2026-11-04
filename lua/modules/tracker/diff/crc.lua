@@ -91,5 +91,5 @@ end
 M.bit = bit -- bit library used
 
 return {
-  get_crc = M.crc32_string
+  get_crc = M.crc32_string,
 }

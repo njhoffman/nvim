@@ -1,7 +1,7 @@
-local entry_display = require('telescope.pickers.entry_display')
+local entry_display = require("telescope.pickers.entry_display")
 
 local displayer = entry_display.create({
-  separator = ' ',
+  separator = " ",
   items = {
     { remaining = true },
     { remaining = true },
@@ -13,11 +13,11 @@ local entry_maker = function(entry)
     value = entry,
     display = function()
       return displayer({
-        { string.format('[%s]', entry.alias), 'TelescopeDevdocsCategory' },
-        { entry.name, 'TelescopeDevdocsTitle' },
+        { string.format("[%s]", entry.alias), "TelescopeDevdocsCategory" },
+        { entry.name, "TelescopeDevdocsTitle" },
       })
     end,
-    ordinal = string.format('[%s] %s', entry.alias, entry.name),
+    ordinal = string.format("[%s] %s", entry.alias, entry.name),
   }
 end
 

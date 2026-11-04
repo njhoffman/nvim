@@ -7,8 +7,7 @@ local FADE = require("vimade.style.fade")
 local TINT = require("vimade.style.tint")
 local TYPE = require("vimade.util.type")
 
-local EXCLUDE_NAMES = {
-}
+local EXCLUDE_NAMES = {}
 
 local NO_VISIBILITY_NAMES = {
   "LineNrBelow",

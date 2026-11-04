@@ -11,7 +11,8 @@ vim.g.asynctasks_term_pos = "bottom" -- vim, quickfix, tab, top, bottom, left, r
 vim.g.asynctasks_term_rows = 10 -- set height for the horizontal terminal split
 vim.g.asynctasks_term_cols = 80 -- set width for vertical terminal split
 vim.g.asynctasks_config_name = ".vimtasks"
-vim.g.asynctasks_extra_config = { "~/.config/asynctask/shared.ini", "~/.config/asynctask/vimtasks.ini" }
+vim.g.asynctasks_extra_config =
+  { "~/.config/asynctask/shared.ini", "~/.config/asynctask/vimtasks.ini" }
 
 -- The g:asynctasks_term_cols option
 -- Internal terminal width when using vertical split.

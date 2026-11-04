@@ -1,9 +1,9 @@
-local make_entry = require('telescope.make_entry')
-local conf = require('telescope.config').values
-local sorters = require('telescope.sorters')
+local make_entry = require("telescope.make_entry")
+local conf = require("telescope.config").values
+local sorters = require("telescope.sorters")
 
 local get_sorter = function(opts)
-  local sorter_type = opts.sorter_type or 'highlighter'
+  local sorter_type = opts.sorter_type or "highlighter"
   local _sorters = {
     substr = sorters.get_substr_matcher(),
     conf_file = conf.file_sorter(opts),

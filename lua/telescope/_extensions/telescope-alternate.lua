@@ -1,6 +1,6 @@
-return require("telescope").register_extension {
-  setup = require('telescope-alternate').setup,
+return require("telescope").register_extension({
+  setup = require("telescope-alternate").setup,
   exports = {
-    alternate_file = require('telescope-alternate.telescope').alternate
-  }
-}
+    alternate_file = require("telescope-alternate.telescope").alternate,
+  },
+})

@@ -1,10 +1,10 @@
 local run_file_handler = function(ev)
   local handlers = {
     lua = function(f)
-      vim.cmd('luafile %')
+      vim.cmd("luafile %")
     end,
     vim = function()
-      vim.cmd('source %')
+      vim.cmd("source %")
     end,
     javascript = function() end,
   }

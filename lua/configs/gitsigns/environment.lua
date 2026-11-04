@@ -47,7 +47,6 @@ local setup_environment = function(bufnr)
 
   -- -- For debugging purposes, we can log the environment variables
   vim.api.nvim_buf_set_var(bufnr, "gitsigns_status_dict", gs_status)
-
 end
 
 return setup_environment

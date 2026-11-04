@@ -1,33 +1,33 @@
-local should_profile = os.getenv('NVIM_PROFILE')
+local should_profile = os.getenv("NVIM_PROFILE")
 
 if should_profile then
-  require('profile').instrument_autocmds()
-  if should_profile:lower():match('^start') then
-    require('profile').start('*')
+  require("profile").instrument_autocmds()
+  if should_profile:lower():match("^start") then
+    require("profile").start("*")
   else
-    require('profile').instrument('*')
+    require("profile").instrument("*")
   end
 end
 
 local function toggle_profile()
-  local prof = require('profile')
+  local prof = require("profile")
   if prof.is_recording() then
     prof.stop()
     vim.ui.input(
-      { prompt = 'Save profile to:', completion = 'file', default = 'profile.json' },
+      { prompt = "Save profile to:", completion = "file", default = "profile.json" },
       function(filename)
         if filename then
           prof.export(filename)
-          vim.notify(string.format('Wrote %s', filename))
+          vim.notify(string.format("Wrote %s", filename))
         end
       end
     )
   else
-    prof.start('*')
+    prof.start("*")
   end
 end
 
-require("lib.mapper").map('', '<f1>', toggle_profile)
+require("lib.mapper").map("", "<f1>", toggle_profile)
 
 -- When you want to run Neovim and profile something, start it with NVIM_PROFILE=1 nvim.
 -- Then you can tap <F1> to start a profile, and <F1> again to complete the profile and save it to a file.

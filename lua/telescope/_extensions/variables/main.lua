@@ -24,7 +24,6 @@ local attach_mappings = function()
     -- if vim.fn.mode() == "i" then
     --   esc = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
     -- end
-
   end)
   return true
 end

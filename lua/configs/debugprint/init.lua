@@ -1,6 +1,5 @@
 local keymaps = require("configs.debugprint.keymaps")
 
-
 local lua = {
   left = 'vim.dbglog("',
   right = '")',

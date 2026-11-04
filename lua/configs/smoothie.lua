@@ -1,4 +1,3 @@
-
 --[[
    '<C-D>'                  'z+'
    '<C-U>'                   'z^'
@@ -123,9 +122,7 @@ local setup_aucmds = function()
   })
 
   vim.api.nvim_create_autocmd({ "WinScrolled", "CursorHold", "CursorHoldI" }, {
-    callback = function(ev)
-
-    end,
+    callback = function(ev) end,
   })
 end
 

@@ -204,8 +204,7 @@ local cfg = {
       p = 40,
       filter = true,
     },
-    alpha = {
-    },
+    alpha = {},
     suround = {
       p = 20,
       dosuround = true, -- {dosuround} `boolean`: Weather to do surround

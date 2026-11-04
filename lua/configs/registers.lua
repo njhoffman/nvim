@@ -15,8 +15,7 @@
 -- bind_keys["j"] = registers.move_cursor_down()
 -- bind_keys["k"] = registers.move_cursor_up()
 
-local init_window = function(default_options)
-end
+local init_window = function(default_options) end
 
 local registers = require("modules.registers")
 local preview = require("modules.registers.preview")

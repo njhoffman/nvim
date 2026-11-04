@@ -1,24 +1,24 @@
 local fn = vim.fn
 local signMap = {
-  E = ' ',
-  W = ' ',
-  I = ' ',
-  H = ' ',
-  N = ' ',
+  E = " ",
+  W = " ",
+  I = " ",
+  H = " ",
+  N = " ",
 }
 
 -- :vimgrep /\w\+/j % | copen
 local format_filename = function(filename, limit, right_align)
-  local fnameFmt1 = (right_align and '%' or '%-') .. (limit == nil and '' or limit) .. 's'
-  local fnameFmt2 = '…%.' .. (type(limit) ~= 'number' and '' or limit - 1) .. 's'
+  local fnameFmt1 = (right_align and "%" or "%-") .. (limit == nil and "" or limit) .. "s"
+  local fnameFmt2 = "…%." .. (type(limit) ~= "number" and "" or limit - 1) .. "s"
   local cwd = fn.getcwd()
   if filename:sub(1, #cwd) == cwd then
     filename = filename:sub(#cwd + 2)
   end
-  if filename == '' then
-    filename = '[No Name]'
+  if filename == "" then
+    filename = "[No Name]"
   else
-    filename = filename:gsub('^' .. vim.env.HOME, '~')
+    filename = filename:gsub("^" .. vim.env.HOME, "~")
   end
   -- char in filename may occur more than 1 width, ignore this issue in order to keep performance
   if limit == nil or #filename <= limit then
@@ -33,7 +33,7 @@ local get_max_widths = function(items)
   local w = { fname = 0, line = 0, col = 0 }
   for _, v in ipairs(items) do
     -- bufnr, col, end_col, end_lumn, lnum, module, nr, pattern, text, type, validid, vcol
-    local fname = ''
+    local fname = ""
     if v.valid == 1 then
       if v.bufnr > 0 then
         fname = format_filename(fn.bufname(v.bufnr))
@@ -48,7 +48,7 @@ end
 
 local config = {
   qf_width_limit = 40,
-  fname_align = 'right',
+  fname_align = "right",
 }
 
 -- info.quickfix	set to 1 when called for a quickfix list and 0 when called for a location list.
@@ -76,18 +76,18 @@ _G.qftf = function(info)
   widths.fname = widths.fname > config.qf_width_limit and config.qf_width_limit or widths.fname
 
   -- local validFmt = '%s │%5d:%-3d│%s %s'
-  local validFmt = '%s │%' .. (widths.line + 1) .. 'd:%-' .. (widths.col + 1) .. 'd│%s %s'
+  local validFmt = "%s │%" .. (widths.line + 1) .. "d:%-" .. (widths.col + 1) .. "d│%s %s"
   for i = info.start_idx, info.end_idx do
     local e = items[i]
-    local fname = ''
+    local fname = ""
     local str
     if e.valid == 1 then
       if e.bufnr > 0 then
-        fname = format_filename(fn.bufname(e.bufnr), widths.fname, config.fname_align == 'right')
+        fname = format_filename(fn.bufname(e.bufnr), widths.fname, config.fname_align == "right")
       end
       local lnum = e.lnum > 99999 and -1 or e.lnum
       local col = e.col > 999 and -1 or e.col
-      local qtype = e.type == '' and '' or ' ' .. signMap[e.type:sub(1, 1):upper()]
+      local qtype = e.type == "" and "" or " " .. signMap[e.type:sub(1, 1):upper()]
       -- local qtype = e.type == '' and '' or ' ' .. e.type:sub(1, 1):upper()
       str = validFmt:format(fname, lnum, col, qtype, e.text)
     else
@@ -98,4 +98,4 @@ _G.qftf = function(info)
   return ret
 end
 
-vim.o.qftf = '{info -> v:lua._G.qftf(info)}'
+vim.o.qftf = "{info -> v:lua._G.qftf(info)}"

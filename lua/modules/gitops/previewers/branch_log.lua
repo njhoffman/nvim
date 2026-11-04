@@ -1,12 +1,12 @@
-local putils = require('telescope.previewers.utils')
-local ns_previewer = vim.api.nvim_create_namespace('telescope.previewers')
-local git_utils = require('modules.gitops.utils.git')
+local putils = require("telescope.previewers.utils")
+local ns_previewer = vim.api.nvim_create_namespace("telescope.previewers")
+local git_utils = require("modules.gitops.utils.git")
 
 local branch_log = git_utils.defaulter(function(opts)
   local highlight_buffer = function(bufnr, content)
     for i = 1, #content do
       local line = content[i]
-      local _, hstart = line:find('[%*%s|]*')
+      local _, hstart = line:find("[%*%s|]*")
       if hstart then
         local hend = hstart + 7
         if hend < #line then
@@ -14,35 +14,35 @@ local branch_log = git_utils.defaulter(function(opts)
             require("utils.hl").add_highlight,
             bufnr,
             ns_previewer,
-            'TelescopeResultsIdentifier',
+            "TelescopeResultsIdentifier",
             i - 1,
             hstart - 1,
             hend
           )
         end
       end
-      local _, cstart = line:find('- %(')
+      local _, cstart = line:find("- %(")
       if cstart then
-        local cend = string.find(line, '%) ')
+        local cend = string.find(line, "%) ")
         if cend then
           pcall(
             require("utils.hl").add_highlight,
             bufnr,
             ns_previewer,
-            'TelescopeResultsConstant',
+            "TelescopeResultsConstant",
             i - 1,
             cstart - 1,
             cend
           )
         end
       end
-      local dstart, _ = line:find(' %(%d')
+      local dstart, _ = line:find(" %(%d")
       if dstart then
         pcall(
           require("utils.hl").add_highlight,
           bufnr,
           ns_previewer,
-          'TelescopeResultsSpecialComment',
+          "TelescopeResultsSpecialComment",
           i - 1,
           dstart,
           #line
@@ -52,18 +52,18 @@ local branch_log = git_utils.defaulter(function(opts)
   end
 
   return git_utils.new_buffer_previewer({
-    title = 'Git Branch Preview',
+    title = "Git Branch Preview",
     get_buffer_by_name = function(_, entry)
       return entry.value
     end,
 
     define_preview = function(self, entry, status)
       local cmd = git_utils.init_git_command(opts.source_bufnr, {
-        'log',
-        '--graph',
-        '--pretty=format:%h -%d %s (%cr)',
-        '--abbrev-commit',
-        '--date=relative',
+        "log",
+        "--graph",
+        "--pretty=format:%h -%d %s (%cr)",
+        "--abbrev-commit",
+        "--date=relative",
         entry.value.sha,
       })
 

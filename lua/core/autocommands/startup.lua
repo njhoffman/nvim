@@ -28,8 +28,7 @@ local barbar_enabled = function()
 end
 
 local window_adjust = function(w)
-  return function()
-  end
+  return function() end
 end
 
 local w_start = {

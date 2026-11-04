@@ -4,12 +4,12 @@ local stats_track = function(args) end
 -- @param recursive - Whether or not to scan subdirectories recursively (default value = true)
 -- @param extensions - List of extensions to collect, if blank all will be collected
 function scandir(directory, recursive, extensions)
-  directory = directory or ''
+  directory = directory or ""
   recursive = recursive or false
   local current_directory = directory
-  local command = 'ls ' .. current_directory .. ' -p'
+  local command = "ls " .. current_directory .. " -p"
   if recursive then
-    command = command .. 'R'
+    command = command .. "R"
   end
 
   local fileList = {}
@@ -18,9 +18,9 @@ function scandir(directory, recursive, extensions)
 
   local add_file = function(file_name)
     local path = current_directory .. file_name
-    local lines_cmd = table.remove(vim.fn.systemlist('wc -l ' .. path .. '| cut -f1 -d" "'), 1)
-    if type(tonumber(lines_cmd)) == 'nil' then
-      vim.dbglog('NIL', path)
+    local lines_cmd = table.remove(vim.fn.systemlist("wc -l " .. path .. '| cut -f1 -d" "'), 1)
+    if type(tonumber(lines_cmd)) == "nil" then
+      vim.dbglog("NIL", path)
     else
       lines = lines + tonumber(lines_cmd)
     end
@@ -28,20 +28,20 @@ function scandir(directory, recursive, extensions)
   end
 
   for fileName in io.popen(command):lines() do
-    if string.sub(fileName, -1) == '/' then
+    if string.sub(fileName, -1) == "/" then
       table.insert(dirList, fileName)
-    elseif string.sub(fileName, -1) == ':' then
+    elseif string.sub(fileName, -1) == ":" then
       current_directory = string.sub(fileName, 1, -2)
-      current_directory = current_directory .. '/'
+      current_directory = current_directory .. "/"
     elseif string.len(fileName) == 0 then
       -- Blank line
       current_directory = directory
       -- elseif string.find(fileName,"%.lua$") then
       -- File is a .lua file
     else
-      if type(extensions) == 'table' then
+      if type(extensions) == "table" then
         for _, extension in ipairs(extensions) do
-          if string.find(fileName, '%.' .. extension .. '$') then
+          if string.find(fileName, "%." .. extension .. "$") then
             vim.fn.add_file(fileName)
           end
         end
@@ -54,14 +54,14 @@ function scandir(directory, recursive, extensions)
 end
 
 local get_dir_size = function(path)
-  return table.remove(vim.fn.systemlist('du -shc * ' .. path .. '| tail -n1 | cut -f1'), 1)
+  return table.remove(vim.fn.systemlist("du -shc * " .. path .. "| tail -n1 | cut -f1"), 1)
 end
 
 local stats_files = function(args, state)
-  local plugins_size = get_dir_size(vim.fn.stdpath('data') .. '/lazy')
-  local nvim_size = get_dir_size(vim.fn.stdpath('config'))
-  local nvim_files, nvim_dirs, nvim_lines = scandir(vim.fn.stdpath('config'), true)
-  local plugin_files, plugin_dirs, plugin_lines = scandir(vim.fn.stdpath('data') .. '/lazy', true)
+  local plugins_size = get_dir_size(vim.fn.stdpath("data") .. "/lazy")
+  local nvim_size = get_dir_size(vim.fn.stdpath("config"))
+  local nvim_files, nvim_dirs, nvim_lines = scandir(vim.fn.stdpath("config"), true)
+  local plugin_files, plugin_dirs, plugin_lines = scandir(vim.fn.stdpath("data") .. "/lazy", true)
   vim.dbglog({
     plugins_size = plugins_size,
     plugin_dirs = #plugin_dirs,

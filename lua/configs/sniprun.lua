@@ -16,7 +16,6 @@ require("sniprun").setup({
     --@format disable
     "TempFloatingWindow", --# display results in the command-line  area
     -- "VirtualTextOk" --# display ok results as virtual text (multiline is shortened)
-
   },
   display_options = {
     terminal_width = 65, --# change the terminal display option width

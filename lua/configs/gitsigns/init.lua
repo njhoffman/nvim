@@ -89,7 +89,6 @@ local mySettings = {
   --     toplevel = vim.env.HOME,
   --   })
   -- end,
-
 }
 
 local get_git_info = function()

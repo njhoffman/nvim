@@ -57,7 +57,12 @@ local example_config = {
     end,
   },
 }
-require("lib.mapper").map({ "n", "x" }, "gx", "<cmd>Browse<cr>", { desc = "Browse URL under cursor" })
+require("lib.mapper").map(
+  { "n", "x" },
+  "gx",
+  "<cmd>Browse<cr>",
+  { desc = "Browse URL under cursor" }
+)
 
 local config = {
   open_browser_args = {},

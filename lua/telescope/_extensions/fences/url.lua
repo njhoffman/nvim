@@ -1,7 +1,7 @@
 local M = {}
 
 M.build = function(opts)
-  if not opts or opts.repo == '' or opts.repo == nil then
+  if not opts or opts.repo == "" or opts.repo == nil then
     return nil, "Please run plugin again and enter a repo name when prompted."
   end
   local service = opts.service or "https://raw.githubusercontent.com"
@@ -13,16 +13,17 @@ end
 
 M.fetch = function(opts)
   local url, err = M.build(opts)
-  if err then return nil, err end
+  if err then
+    return nil, err
+  end
 
   local res = opts.fetch_service.request({
     url = url,
     method = "get",
-    accept = "text/plain"
+    accept = "text/plain",
   })
   if res.status ~= 200 then
-    err = string.format("Fetch failed for Github repo %s with %s", opts.repo,
-      res.body)
+    err = string.format("Fetch failed for Github repo %s with %s", opts.repo, res.body)
     return nil, err
   end
   return res.body, nil

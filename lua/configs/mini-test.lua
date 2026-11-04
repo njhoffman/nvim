@@ -8,7 +8,7 @@ local default_cfg = {
     -- Function returning array of file paths to be collected.
     -- Default: all Lua files in 'tests' directory starting with 'test_'.
     find_files = function()
-      return vim.fn.globpath('tests', '**/test_*.lua', true, true)
+      return vim.fn.globpath("tests", "**/test_*.lua", true, true)
     end,
 
     -- Predicate function indicating if test case should be executed
@@ -28,10 +28,10 @@ local default_cfg = {
 
   -- Path (relative to current directory) to script which handles project
   -- specific test running
-  script_path = 'scripts/minitest.lua',
+  script_path = "scripts/minitest.lua",
 
   -- Whether to disable showing non-error feedback
   silent = false,
 }
 
-require('mini-test').setup(default_cfg)
+require("mini-test").setup(default_cfg)

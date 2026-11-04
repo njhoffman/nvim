@@ -5,9 +5,9 @@ end
 
 local main = require("telescope._extensions.fences.main")
 local health = require("telescope._extensions.fences.health")
-return telescope.register_extension {
+return telescope.register_extension({
   exports = {
     fences = main.find,
     health = health.check,
-  }
-}
+  },
+})

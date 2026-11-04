@@ -1,8 +1,8 @@
-local telescope = require('telescope')
-local finders = require('telescope.finders')
-local pickers = require('telescope.pickers')
-local make_entry = require('telescope.make_entry')
-local conf = require('telescope.config').values
+local telescope = require("telescope")
+local finders = require("telescope.finders")
+local pickers = require("telescope.pickers")
+local make_entry = require("telescope.make_entry")
+local conf = require("telescope.config").values
 
 -- Makes sure aliased options are set correctly
 local function apply_cwd_only_aliases(opts)
@@ -26,9 +26,9 @@ local function oldfiles_list(opts)
   local current_file = vim.api.nvim_buf_get_name(current_buffer)
   local results = {}
 
-  for _, buffer in ipairs(vim.split(vim.fn.execute(':buffers! t'), '\n')) do
-    local match = tonumber(string.match(buffer, '%s*(%d+)'))
-    local open_by_lsp = string.match(buffer, 'line 0$')
+  for _, buffer in ipairs(vim.split(vim.fn.execute(":buffers! t"), "\n")) do
+    local match = tonumber(string.match(buffer, "%s*(%d+)"))
+    local open_by_lsp = string.match(buffer, "line 0$")
     if match and not open_by_lsp then
       local file = vim.api.nvim_buf_get_name(match)
       if vim.uv.fs_stat(file) and match ~= current_buffer then
@@ -58,8 +58,8 @@ local enhanced_find_files = function(opts)
 
   pickers
     .new(opts, {
-      prompt_title = 'Enhanced Find Files',
-      results_title = 'Files',
+      prompt_title = "Enhanced Find Files",
+      results_title = "Files",
       finder = finders.new_table({
         results = results,
         entry_maker = make_entry.gen_from_file(opts),
@@ -67,7 +67,7 @@ local enhanced_find_files = function(opts)
       previewer = conf.file_previewer(opts),
       sorter = conf.file_sorter(opts),
       on_input_filter_cb = function(prompt)
-        local is_empty = prompt == nil or prompt == ''
+        local is_empty = prompt == nil or prompt == ""
         if is_empty then
           return {
             prompt = prompt,
@@ -79,16 +79,16 @@ local enhanced_find_files = function(opts)
         end
 
         local find_command = {
-          'fd',
-          '--type=file',
-          '--hidden',
-          '--exclude=.git',
-          '--exclude=.idea',
-          '--exclude=node_modules',
-          '--exclude=dist',
-          '--exclude=out',
-          '--exclude=.next',
-          '--exclude=.cache',
+          "fd",
+          "--type=file",
+          "--hidden",
+          "--exclude=.git",
+          "--exclude=.idea",
+          "--exclude=node_modules",
+          "--exclude=dist",
+          "--exclude=out",
+          "--exclude=.next",
+          "--exclude=.cache",
         }
 
         local command = find_command[1]
@@ -105,30 +105,30 @@ local enhanced_find_files = function(opts)
           end
         end
 
-        if command == 'fd' or command == 'fdfind' or command == 'rg' then
+        if command == "fd" or command == "fdfind" or command == "rg" then
           if hidden then
-            table.insert(find_command, '--hidden')
+            table.insert(find_command, "--hidden")
           end
           if no_ignore then
-            table.insert(find_command, '--no-ignore')
+            table.insert(find_command, "--no-ignore")
           end
           if no_ignore_parent then
-            table.insert(find_command, '--no-ignore-parent')
+            table.insert(find_command, "--no-ignore-parent")
           end
           if follow then
-            table.insert(find_command, '-L')
+            table.insert(find_command, "-L")
           end
           if search_file then
-            if command == 'rg' then
-              table.insert(find_command, '-g')
-              table.insert(find_command, '*' .. search_file .. '*')
+            if command == "rg" then
+              table.insert(find_command, "-g")
+              table.insert(find_command, "*" .. search_file .. "*")
             else
               table.insert(find_command, search_file)
             end
           end
           if search_dirs then
-            if command ~= 'rg' and not search_file then
-              table.insert(find_command, '.')
+            if command ~= "rg" and not search_file then
+              table.insert(find_command, ".")
             end
             for _, v in pairs(search_dirs) do
               table.insert(find_command, v)

@@ -1,5 +1,5 @@
-local telescope = require('telescope')
-local handlers = require('telescope._extensions.pickers_history.handler')
+local telescope = require("telescope")
+local handlers = require("telescope._extensions.pickers_history.handler")
 
 local sources = {
   history = function()
@@ -19,18 +19,18 @@ local db_status = function()
     local handler = source() or {}
     if not handler or not handler.enabled then
       vim.notify(
-        'history error (' .. name .. ') - no db\n' .. tostring(vim.inspect(handler)),
+        "history error (" .. name .. ") - no db\n" .. tostring(vim.inspect(handler)),
         vim.lsp.log_levels.WARN
       )
     else
       print(
-        'success: ('
+        "success: ("
           .. name
-          .. ') '
+          .. ") "
           .. tostring(handler.index)
-          .. '/'
+          .. "/"
           .. tostring(handler.limit)
-          .. '\n      '
+          .. "\n      "
           .. tostring(handler.path)
       )
     end
@@ -42,7 +42,7 @@ local extension = {
   setup = function(_, config)
     config = config or {}
   end,
-  exports = vim.tbl_deep_extend('force', sources, { status = db_status }),
+  exports = vim.tbl_deep_extend("force", sources, { status = db_status }),
 }
 -- extension.setup(_, { history = {} })
 return telescope.register_extension(extension)

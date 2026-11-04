@@ -1,8 +1,8 @@
 local M = {}
 
-local fs = require('modules.devdocs2.fs')
-local log = require('modules.devdocs2.log')
-local utils = require('modules.devdocs2.utils')
+local fs = require("modules.devdocs2.fs")
+local log = require("modules.devdocs2.log")
+local utils = require("modules.devdocs2.utils")
 
 ---@return string[]
 M.get_installed_alias = function()
@@ -22,7 +22,7 @@ M.get_non_installed_alias = function()
   end
 
   for _, entry in pairs(registry) do
-    local alias = entry.slug:gsub('~', '-')
+    local alias = entry.slug:gsub("~", "-")
     if not vim.tbl_contains(installed, alias) then
       table.insert(results, alias)
     end
@@ -34,7 +34,7 @@ end
 ---@param aliases string[]
 ---@return DocEntry[] | nil
 M.get_doc_entries = function(aliases, opts)
-  local operations = require('modules.devdocs2.operations')
+  local operations = require("modules.devdocs2.operations")
   opts = opts or {}
   local entries = {}
 
@@ -82,7 +82,7 @@ local function get_registry_entry(predicate)
   local registry = fs.read_registry()
 
   if not registry then
-    log.error('DevDocs registry not found, please run :DevdocsFetch')
+    log.error("DevDocs registry not found, please run :DevdocsFetch")
     return
   end
 
@@ -92,7 +92,7 @@ end
 M.get_installed_registry = function()
   local installed = M.get_installed_alias()
   local predicate = function(entry)
-    local alias = entry.slug:gsub('~', '-')
+    local alias = entry.slug:gsub("~", "-")
     return vim.tbl_contains(installed, alias)
   end
   return utils.get_alias_filetypes(get_registry_entry(predicate))
@@ -101,7 +101,7 @@ end
 M.get_non_installed_registry = function()
   local installed = M.get_installed_alias()
   local predicate = function(entry)
-    local alias = entry.slug:gsub('~', '-')
+    local alias = entry.slug:gsub("~", "-")
     return not vim.tbl_contains(installed, alias)
   end
   return utils.get_alias_filetypes(get_registry_entry(predicate))
@@ -110,7 +110,7 @@ end
 M.get_updatable_registry = function()
   local updatable = M.get_updatable()
   local predicate = function(entry)
-    local alias = entry.slug:gsub('~', '-')
+    local alias = entry.slug:gsub("~", "-")
     return vim.tbl_contains(updatable, alias)
   end
   return utils.get_alias_filetypes(get_registry_entry(predicate))
@@ -150,7 +150,7 @@ M.get_doc_variants = function(name)
 
   for _, entry in pairs(entries) do
     if vim.startswith(entry.slug, name) then
-      local alias = entry.slug:gsub('~', '-')
+      local alias = entry.slug:gsub("~", "-")
       table.insert(variants, alias)
     end
   end

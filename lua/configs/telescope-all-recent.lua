@@ -1,7 +1,7 @@
 local default_config = {
   database = {
-    folder = vim.fn.stdpath('data'),
-    file = 'telescope-all-recent.sqlite3',
+    folder = vim.fn.stdpath("data"),
+    file = "telescope-all-recent.sqlite3",
     max_timestamps = 10,
   },
   scoring = {
@@ -18,7 +18,7 @@ local default_config = {
   default = {
     disable = true,
     use_cwd = true,
-    sorting = 'recent',
+    sorting = "recent",
   },
   debug = false,
   -- does not make sense for:
@@ -63,11 +63,11 @@ local default_config = {
     -- using cwd
     find_files = {
       disable = false,
-      sorting = 'frecency',
+      sorting = "frecency",
     },
     git_files = {
       disable = false,
-      sorting = 'frecency',
+      sorting = "frecency",
     },
     tags = {
       disable = false,
@@ -98,7 +98,7 @@ local default_config = {
     kinds = {
       overseer_template = {
         use_cwd = true,
-        prompt = 'Task template',
+        prompt = "Task template",
         name_include_prompt = true,
       },
       overseer_task_options = {
@@ -109,14 +109,14 @@ local default_config = {
     },
     -- some plugins don't set a kind. The prompt contents can be used as fallback!
     prompts = {
-      ['My Prompt'] = {
+      ["My Prompt"] = {
         use_cwd = false,
       },
     },
   },
   -- lua require'telescope-all-recent'.toggle_debug()
 }
-require('telescope-all-recent').setup(default_config)
+require("telescope-all-recent").setup(default_config)
 
 -- Telescope does not provide the relevant hooks/callback functions to build this nicely. So, this plugin first stores some of the original functions and then overrides them:
 -- calls to telescope.builtin and telescope.extensions[extension_name] are overriden. This allows us to get the name of the called picker.

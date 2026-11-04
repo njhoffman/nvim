@@ -1,6 +1,6 @@
-local entry_display = require('telescope.pickers.entry_display')
-local state = require('telescope.state')
-local ops_utils = require('modules.gitops.utils')
+local entry_display = require("telescope.pickers.entry_display")
+local state = require("telescope.state")
+local ops_utils = require("modules.gitops.utils")
 
 -- stylua: ignore
 local setup_highlights = function()
@@ -30,37 +30,37 @@ local parse_date = function(time_ago, short_level)
   --  1y.11m     1 yr 11 mo                                  1.9y
   --    2y        2 years                                      2y
 
-  local date = string.gsub(time_ago, '[)(]+', '')
+  local date = string.gsub(time_ago, "[)(]+", "")
   if short_level == 1 then
-    date = string.gsub(date, ' ago', '')
-    if string.match(date, 'years?,') then
-      date = string.gsub(date, ' years?,? ?', 'yr ')
-      date = string.gsub(date, ' months? ?', 'mo')
+    date = string.gsub(date, " ago", "")
+    if string.match(date, "years?,") then
+      date = string.gsub(date, " years?,? ?", "yr ")
+      date = string.gsub(date, " months? ?", "mo")
     end
   elseif short_level >= 2 then
-    date = string.gsub(date, ' ago', '')
-    local mins = string.match(date, '(%d+) minutes?')
+    date = string.gsub(date, " ago", "")
+    local mins = string.match(date, "(%d+) minutes?")
     if mins then
       local hrs = math.floor(tonumber(mins) / 60 * 10) / 10
-      date = string.gsub(date, mins .. ' minutes?', hrs .. 'h')
+      date = string.gsub(date, mins .. " minutes?", hrs .. "h")
     end
-    date = string.gsub(date, ' ?hours?', 'h')
-    date = string.gsub(date, ' ?weeks?', 'w')
-    date = string.gsub(date, ' ?days?', 'd')
-    if string.match(date, 'years?, ') then
+    date = string.gsub(date, " ?hours?", "h")
+    date = string.gsub(date, " ?weeks?", "w")
+    date = string.gsub(date, " ?days?", "d")
+    if string.match(date, "years?, ") then
       if short_level == 3 then
-        date = string.gsub(date, ' years?,? ?', 'y')
-        date = string.gsub(date, ' ?months? ?', '')
+        date = string.gsub(date, " years?,? ?", "y")
+        date = string.gsub(date, " ?months? ?", "")
       else
-        date = string.gsub(date, ' years?,? ?', 'y.')
-        date = string.gsub(date, ' ?months? ?', 'm')
+        date = string.gsub(date, " years?,? ?", "y.")
+        date = string.gsub(date, " ?months? ?", "m")
       end
     end
-    date = string.gsub(date, ' years?', 'y')
-    date = string.gsub(date, ' months?', 'm')
+    date = string.gsub(date, " years?", "y")
+    date = string.gsub(date, " months?", "m")
   end
   local width = short_level == 3 and 4 or short_level == 2 and 6 or short_level == 1 and 12 or 24
-  return ops_utils.align_text(date, 'center', width, ' ')
+  return ops_utils.align_text(date, "center", width, " ")
   -- return date
 end
 
@@ -68,35 +68,43 @@ end
 -- 4   20   5 
 local parse_log_line = function(line)
   local parsed = {}
-  for _, key in pairs({ 'sha', 'date', 'message', 'author', 'stat_files', 'stat_insert', 'stat_delete' }) do
-    parsed[key] = '--'
+  for _, key in pairs({
+    "sha",
+    "date",
+    "message",
+    "author",
+    "stat_files",
+    "stat_insert",
+    "stat_delete",
+  }) do
+    parsed[key] = "--"
   end
 
   -- vim.dbglog('line: ' .. line)
-  local parts = vim.fn.split(line, ' ')
-  if type(parts) ~= 'table' or vim.tbl_count(parts) < 5 then
-    vim.notify('Bad response: ' .. vim.inspect(parts), 4)
+  local parts = vim.fn.split(line, " ")
+  if type(parts) ~= "table" or vim.tbl_count(parts) < 5 then
+    vim.notify("Bad response: " .. vim.inspect(parts), 4)
   else
     -- vim.dbglog('parts: ' .. vim.inspect(parts))
-    parsed = vim.tbl_deep_extend('force', parsed, {
+    parsed = vim.tbl_deep_extend("force", parsed, {
       sha = parts[1],
       date = parse_date(parts[2], 2),
-      message = parts[3] or '<empty commit>',
+      message = parts[3] or "<empty commit>",
       author = parse_author(parts[4]),
-      stat_files = parts[5] and string.match(parts[5], '(%d+) files? changed') or '0',
-      stat_insert = parts[5] and string.match(parts[5], '(%d+) insertions?') or '0',
-      stat_delete = parts[5] and string.match(parts[5], '(%d+) deletions?') or '0',
+      stat_files = parts[5] and string.match(parts[5], "(%d+) files? changed") or "0",
+      stat_insert = parts[5] and string.match(parts[5], "(%d+) insertions?") or "0",
+      stat_delete = parts[5] and string.match(parts[5], "(%d+) deletions?") or "0",
     })
   end
   return parsed
 end
 
-local config = require('telescope.config')
+local config = require("telescope.config")
 
 local resolve_widths = function(opts, widths, stats)
   stats = stats or {}
-  local pct = opts.theme == 'ivy' and 1 or 0.8
-  pct = opts.theme == 'horizontal' and 0.5 or pct
+  local pct = opts.theme == "ivy" and 1 or 0.8
+  pct = opts.theme == "horizontal" and 0.5 or pct
   local winwidth = math.floor(vim.api.nvim_win_get_width(0) * pct)
 
   local defaults = {
@@ -120,8 +128,8 @@ local resolve_widths = function(opts, widths, stats)
   local res = {}
 
   for key, default_width in pairs(defaults) do
-    res[key] = type(widths[key]) == 'number' and widths[key] or default_width
-    if type(maximums[key]) == 'number' and (maximums[key] < res[key] or res[key] == -1) then
+    res[key] = type(widths[key]) == "number" and widths[key] or default_width
+    if type(maximums[key]) == "number" and (maximums[key] < res[key] or res[key] == -1) then
       res[key] = maximums[key]
     end
   end
@@ -141,7 +149,7 @@ local function gen_from_git_commits(opts, stats)
   opts = opts or {}
   local w = resolve_widths(opts, {}, stats)
   local displayer = entry_display.create({
-    separator = ' ',
+    separator = " ",
     items = {
       { width = w.sha },
       { width = w.date, right_justify = true },
@@ -162,25 +170,25 @@ local function gen_from_git_commits(opts, stats)
     -- strings.align_str(entry.hash, widths.name, true),
 
     return displayer({
-      { entry.value.sha, 'TelescopeGitSha' },
-      { entry.value.date, 'TelescopeGitDate' },
-      { entry.value.message, 'TelescopeGitMessage' },
-      { entry.value.author, 'TelescopeGitAuthor' },
-      { entry.value.stat_files .. '  ', 'TelescopeGitStatsFiles' },
-      { entry.value.stat_insert .. '  ', 'TelescopeGitStatsInsert' },
-      { entry.value.stat_delete .. '  ', 'TelescopeGitStatsDelete' },
+      { entry.value.sha, "TelescopeGitSha" },
+      { entry.value.date, "TelescopeGitDate" },
+      { entry.value.message, "TelescopeGitMessage" },
+      { entry.value.author, "TelescopeGitAuthor" },
+      { entry.value.stat_files .. "  ", "TelescopeGitStatsFiles" },
+      { entry.value.stat_insert .. "  ", "TelescopeGitStatsInsert" },
+      { entry.value.stat_delete .. "  ", "TelescopeGitStatsDelete" },
       -- { entry., 'TelescopeResultsIdentifier' },
     })
   end
 
   setup_highlights()
 
-  local conf = require('telescope.config').values
+  local conf = require("telescope.config").values
   return function(line)
     local entry = parse_log_line(line)
     return {
       value = entry,
-      ordinal = (entry.sha or '') .. ' ' .. (entry.message or ''),
+      ordinal = (entry.sha or "") .. " " .. (entry.message or ""),
       display = make_display,
       current_file = opts.current_file,
     }

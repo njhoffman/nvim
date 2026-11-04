@@ -15,7 +15,6 @@ local default_git_args = {
   "delta.diff-so-fancy=false",
   "-c",
   "delta.navigate=false",
-
 }
 
 local diff_delta = function(opts)

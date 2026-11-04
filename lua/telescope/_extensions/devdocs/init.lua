@@ -1,8 +1,8 @@
-local has_telescope, telescope = pcall(require, 'telescope')
-local pickers = require('telescope._extensions.devdocs.pickers')
+local has_telescope, telescope = pcall(require, "telescope")
+local pickers = require("telescope._extensions.devdocs.pickers")
 
 if not has_telescope then
-  error('This plugins requires nvim-telescope/telescope.nvim')
+  error("This plugins requires nvim-telescope/telescope.nvim")
 end
 
 return telescope.register_extension({

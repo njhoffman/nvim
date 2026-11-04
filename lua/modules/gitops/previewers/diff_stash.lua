@@ -1,18 +1,18 @@
-local putils = require('telescope.previewers.utils')
-local git_utils = require('modules.gitops.utils.git')
+local putils = require("telescope.previewers.utils")
+local git_utils = require("modules.gitops.utils.git")
 
 local diff_stash = git_utils.defaulter(function(opts)
   return git_utils.new_buffer_previewer({
-    title = 'Git Stash Preview',
+    title = "Git Stash Preview",
     get_buffer_by_name = function(_, entry)
       return entry.value
     end,
 
     define_preview = function(self, entry, _)
       local cmd = git_utils.init_git_command(opts.source_bufnr, {
-        'stash',
-        'show',
-        '-p',
+        "stash",
+        "show",
+        "-p",
         entry.value.sha,
       })
 
@@ -22,7 +22,7 @@ local diff_stash = git_utils.defaulter(function(opts)
         cwd = opts.cwd,
         callback = function(bufnr)
           if vim.api.nvim_buf_is_valid(bufnr) then
-            putils.regex_highlighter(bufnr, 'diff')
+            putils.regex_highlighter(bufnr, "diff")
           end
         end,
       })

@@ -10,9 +10,9 @@ local function round(x, n)
 end
 
 local time_labels = {
-  { '  secs', '  mins', ' hours', '  days', ' weeks', ' month', ' years' },
-  { ' s', ' m', ' h', ' d', ' w', ' M', ' Y' },
-  { ' sec', ' min', ' hrs', ' day', ' wks', ' mon', ' yrs' },
+  { "  secs", "  mins", " hours", "  days", " weeks", " month", " years" },
+  { " s", " m", " h", " d", " w", " M", " Y" },
+  { " sec", " min", " hrs", " day", " wks", " mon", " yrs" },
 }
 
 local function time_ago(time)
@@ -53,7 +53,7 @@ local function time_ago(time)
 end
 
 local file_size = function(size, path)
-  local suffix = { 'b', 'k', 'M', 'G', 'T', 'P', 'E' }
+  local suffix = { "b", "k", "M", "G", "T", "P", "E" }
   local index = 1
 
   local fsize = size or vim.fn.getfsize(path or vim.api.nvim_buf_get_name(0))
@@ -67,7 +67,7 @@ local file_size = function(size, path)
     index = index + 1
   end
 
-  return string.format(index == 1 and '%g%s' or '%.2f%s', fsize, suffix[index])
+  return string.format(index == 1 and "%g%s" or "%.2f%s", fsize, suffix[index])
 end
 
 ---@param text string
@@ -75,7 +75,7 @@ end
 ---@return string
 local truncate = function(text, max_length)
   if vim.api.nvim_strwidth(text) > max_length then
-    return string.sub(text, 1, max_length - 1) .. '…'
+    return string.sub(text, 1, max_length - 1) .. "…"
   end
   return text
 end
@@ -87,20 +87,20 @@ end
 ---@return string
 local align = function(text, length, align, gap_char)
   text = tostring(text)
-  align = align or 'left'
-  gap_char = gap_char or ' '
+  align = align or "left"
+  gap_char = gap_char or " "
 
   local gap_length = length - vim.api.nvim_strwidth(text)
 
-  local gap_left = ''
-  local gap_right = ''
+  local gap_left = ""
+  local gap_right = ""
 
-  if align == 'left' then
+  if align == "left" then
     gap_right = string.rep(gap_char, gap_length)
-  elseif align == 'center' then
+  elseif align == "center" then
     gap_left = string.rep(gap_char, math.ceil(gap_length / 2))
     gap_right = string.rep(gap_char, math.floor(gap_length / 2))
-  elseif align == 'right' then
+  elseif align == "right" then
     gap_left = string.rep(gap_char, gap_length)
   end
 
@@ -108,7 +108,7 @@ local align = function(text, length, align, gap_char)
 end
 
 local file_exists = function(path)
-  local f = io.open(path, 'r')
+  local f = io.open(path, "r")
   if f ~= nil then
     io.close(f)
     return true

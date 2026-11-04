@@ -1,13 +1,13 @@
-local defaults = require('modules.tracker.defaults')
+local defaults = require("modules.tracker.defaults")
 
 local function assign_defaults(user_cfg, type)
   local cfg = nil
-  if type == 'provider' then
-    cfg = vim.tbl_deep_extend('keep', user_cfg or {}, defaults.provider)
-  elseif type == 'provider_state' then
-    cfg = vim.tbl_deep_extend('keep', user_cfg or {}, defaults.provider_state)
+  if type == "provider" then
+    cfg = vim.tbl_deep_extend("keep", user_cfg or {}, defaults.provider)
+  elseif type == "provider_state" then
+    cfg = vim.tbl_deep_extend("keep", user_cfg or {}, defaults.provider_state)
   else
-    cfg = vim.tbl_deep_extend('keep', user_cfg or {}, defaults.config)
+    cfg = vim.tbl_deep_extend("keep", user_cfg or {}, defaults.config)
     cfg.outputs = defaults.assign_config_outputs(user_cfg.outputs or {})
     cfg.metrics = defaults.assign_config_metrics(user_cfg.metrics or {})
   end
@@ -17,7 +17,7 @@ end
 local config = {}
 
 local function setup(opts)
-  config = assign_defaults(opts or {}, 'config')
+  config = assign_defaults(opts or {}, "config")
   return config
 end
 

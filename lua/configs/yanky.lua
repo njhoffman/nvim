@@ -76,8 +76,18 @@ local map = require("lib.mapper").map
 -- do not clutter register with x
 -- keymap({ 'n', 'x' }, 'x', '"_x')
 -- do not clutter register with c/C (like substitute command)
-map({ "n", "x" }, "c", '"_c', { unique = true, nowait = true, desc = "Change to black hole register" })
-map("n", "C", '"_C', { unique = true, nowait = true, desc = "Change to end to black hole register" })
+map(
+  { "n", "x" },
+  "c",
+  '"_c',
+  { unique = true, nowait = true, desc = "Change to black hole register" }
+)
+map(
+  "n",
+  "C",
+  '"_C',
+  { unique = true, nowait = true, desc = "Change to end to black hole register" }
+)
 
 -- do not clutter the register if blank line is deleted
 map("n", "dd", function()

@@ -1,11 +1,11 @@
-local pickers = require('telescope.pickers')
-local finders = require('telescope.finders')
-local conf = require('telescope.config').values
-local actions = require('telescope.actions')
-local action_state = require('telescope.actions.state')
-local previewers = require('telescope.previewers')
-local entry_display = require('telescope.pickers.entry_display')
-local notify = require('notify')
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local conf = require("telescope.config").values
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+local previewers = require("telescope.previewers")
+local entry_display = require("telescope.pickers.entry_display")
+local notify = require("notify")
 
 local widths = {
   time = 8,
@@ -16,7 +16,7 @@ local widths = {
 }
 
 local displayer = entry_display.create({
-  separator = ' ',
+  separator = " ",
   items = {
     { width = widths.time },
     { width = widths.title },
@@ -27,16 +27,16 @@ local displayer = entry_display.create({
 })
 
 local telescope_notifications = function(opts)
-  local time_format = require('notify')._config().time_formats().notification
-  local notifs = require('notify').history()
+  local time_format = require("notify")._config().time_formats().notification
+  local notifs = require("notify").history()
   local reversed = {}
   for i, notif in ipairs(notifs) do
     reversed[#notifs - i + 1] = notif
   end
   pickers
     .new(opts, {
-      results_title = 'Notifications',
-      prompt_title = 'Filter Notifications',
+      results_title = "Notifications",
+      prompt_title = "Filter Notifications",
       finder = finders.new_table({
         results = reversed,
         entry_maker = function(notif)
@@ -44,14 +44,17 @@ local telescope_notifications = function(opts)
             value = notif,
             display = function(entry)
               return displayer({
-                { vim.fn.strftime(time_format, entry.value.time), 'NotifyLogTime' },
-                { entry.value.title[1], 'NotifyLogTitle' },
-                { entry.value.icon, 'Notify' .. entry.value.level .. 'Title' },
-                { entry.value.level, 'Notify' .. entry.value.level .. 'Title' },
-                { entry.value.message[1], 'Notify' .. entry.value.level .. 'Body' },
+                { vim.fn.strftime(time_format, entry.value.time), "NotifyLogTime" },
+                { entry.value.title[1], "NotifyLogTitle" },
+                { entry.value.icon, "Notify" .. entry.value.level .. "Title" },
+                { entry.value.level, "Notify" .. entry.value.level .. "Title" },
+                { entry.value.message[1], "Notify" .. entry.value.level .. "Body" },
               })
             end,
-            ordinal = notif.title[1] .. ' ' .. notif.title[2] .. ' ' .. table.concat(notif.message, ' '),
+            ordinal = notif.title[1] .. " " .. notif.title[2] .. " " .. table.concat(
+              notif.message,
+              " "
+            ),
           }
         end,
       }),
@@ -68,7 +71,7 @@ local telescope_notifications = function(opts)
           local opened_buffer = notify.open(notification)
 
           if notification.filetype then
-            vim.api.nvim_set_option_value('filetype', notification.filetype, {
+            vim.api.nvim_set_option_value("filetype", notification.filetype, {
               buf = opened_buffer.buffer,
             })
           end
@@ -77,13 +80,13 @@ local telescope_notifications = function(opts)
           local cols = vim.opt.columns:get()
 
           local win = vim.api.nvim_open_win(opened_buffer.buffer, true, {
-            relative = 'editor',
+            relative = "editor",
             row = (lines - opened_buffer.height) / 2,
             col = (cols - opened_buffer.width) / 2,
             height = opened_buffer.height,
             width = opened_buffer.width,
-            border = 'rounded',
-            style = 'minimal',
+            border = "rounded",
+            style = "minimal",
           })
           -- vim.wo does not behave like setlocal, thus we use setwinvar to set local
           -- only options. Otherwise our changes would affect subsequently opened
@@ -91,19 +94,22 @@ local telescope_notifications = function(opts)
           -- see e.g. neovim#14595
           vim.fn.setwinvar(
             win,
-            '&winhl',
-            'Normal:' .. opened_buffer.highlights.body .. ',FloatBorder:' .. opened_buffer.highlights.border
+            "&winhl",
+            "Normal:"
+              .. opened_buffer.highlights.body
+              .. ",FloatBorder:"
+              .. opened_buffer.highlights.border
           )
-          vim.fn.setwinvar(win, '&wrap', 0)
+          vim.fn.setwinvar(win, "&wrap", 0)
         end)
         return true
       end,
       previewer = previewers.new_buffer_previewer({
-        title = 'Message',
+        title = "Message",
         define_preview = function(self, entry, status)
           local notification = entry.value
           if notification.filetype then
-            vim.api.nvim_set_option_value('filetype', notification.filetype, {
+            vim.api.nvim_set_option_value("filetype", notification.filetype, {
               buf = self.state.bufnr,
             })
           end
@@ -118,7 +124,7 @@ local telescope_notifications = function(opts)
     :find()
 end
 
-return require('telescope').register_extension({
+return require("telescope").register_extension({
   exports = {
     notify = telescope_notifications,
   },

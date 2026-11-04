@@ -11,19 +11,19 @@ local cfg = {
   },
   select = {
     backend = {
-      'telescope',
-      'nui',
+      "telescope",
+      "nui",
     },
-    telescope = require('telescope.themes').get_dropdown(),
+    telescope = require("telescope.themes").get_dropdown(),
     get_config = function(opts)
       if opts.select_options then
         return opts.select_options
       end
-      if opts.kind == 'codeaction' then
+      if opts.kind == "codeaction" then
         return {
-          backend = 'nui',
+          backend = "nui",
           nui = {
-            relative = 'cursor',
+            relative = "cursor",
             max_width = 40,
           },
         }
@@ -32,7 +32,7 @@ local cfg = {
   },
 }
 
-require('dressing').setup(cfg)
+require("dressing").setup(cfg)
 --
 -- vim.ui.input({opts}, {on_confirm})                            *vim.ui.input()*
 --     Prompts the user for input, allowing arbitrary (potentially asynchronous)

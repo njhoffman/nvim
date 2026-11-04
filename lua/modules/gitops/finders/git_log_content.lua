@@ -1,9 +1,9 @@
-local git_utils = require('modules.gitops.utils.git')
-local finders = require('telescope.finders')
+local git_utils = require("modules.gitops.utils.git")
+local finders = require("telescope.finders")
 --
-local logger = require('modules.gitops.utils.logger')
-local file = require('modules.gitops.utils.file')
-local finder_utils = require('modules.gitops.finders.utils')
+local logger = require("modules.gitops.utils.logger")
+local file = require("modules.gitops.utils.file")
+local finder_utils = require("modules.gitops.finders.utils")
 
 --- Returns all commits that contains the prompt string in the commit content
 --- @param opts table with optional key `bufnr` to filter on the file of the buffer
@@ -16,27 +16,27 @@ local git_log_content = function(bufnr, opts)
 
   return finders.new_job(function(query)
     local command = git_utils.init_git_command(bufnr)
-    table.insert(command, 'log')
-    table.insert(command, '--format=%C(blue)%h|%C(green)(%ar)%Creset|%s|%C(dim white)%an')
+    table.insert(command, "log")
+    table.insert(command, "--format=%C(blue)%h|%C(green)(%ar)%Creset|%s|%C(dim white)%an")
     local prompt, author = finder_utils.split_query_from_author(query)
 
-    if author and author ~= '' then
-      table.insert(command, '--author=' .. author)
+    if author and author ~= "" then
+      table.insert(command, "--author=" .. author)
     end
 
-    if prompt and prompt ~= '' then
-      table.insert(command, '-G' .. prompt)
-      table.insert(command, '--pickaxe-all')
+    if prompt and prompt ~= "" then
+      table.insert(command, "-G" .. prompt)
+      table.insert(command, "--pickaxe-all")
     end
 
     if opts.bufnr then
-      table.insert(command, '--follow')
+      table.insert(command, "--follow")
       filename = file.relative_path(opts.bufnr)
       table.insert(command, filename)
     end
 
     finder_utils.set_last_prompt(prompt)
-    logger.debug('git_log_content \n  ' .. vim.fn.join(command, '\n  '))
+    logger.debug("git_log_content \n  " .. vim.fn.join(command, "\n  "))
     return command
   end, entry_maker)
 end

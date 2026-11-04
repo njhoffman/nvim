@@ -3,24 +3,24 @@ local traverse = function()
   local aucounts = { commands = 0, groups = 0 }
 
   local pattern = {}
-  pattern.BUFFER = '<buffer=%d+>'
-  pattern.EVENT = '[%a]+'
-  pattern.GROUP = '[%a%d_:]+'
-  pattern.INDENT = '^%s%s%s%s' -- match indentation of 4 spaces
+  pattern.BUFFER = "<buffer=%d+>"
+  pattern.EVENT = "[%a]+"
+  pattern.GROUP = "[%a%d_:]+"
+  pattern.INDENT = "^%s%s%s%s" -- match indentation of 4 spaces
 
   local event, group, ft_pat, cmd, source_file, source_lnum
   local current_event, current_group, current_ft
 
   local inner_loop = function(line)
     -- capture group and event
-    group, event = line:match('^(' .. pattern.GROUP .. ')%s+(' .. pattern.EVENT .. ')')
+    group, event = line:match("^(" .. pattern.GROUP .. ")%s+(" .. pattern.EVENT .. ")")
     -- ..or just an event
     if event == nil then
-      event = line:match('^(' .. pattern.EVENT .. ')')
+      event = line:match("^(" .. pattern.EVENT .. ")")
     end
 
     if event then
-      group = group or '<anonymous>'
+      group = group or "<anonymous>"
       if event ~= current_event or group ~= current_group then
         current_event = event
         current_group = group
@@ -29,26 +29,26 @@ local traverse = function()
     end
 
     -- non event/group lines
-    ft_pat = line:match(pattern.INDENT .. '(%S+)')
+    ft_pat = line:match(pattern.INDENT .. "(%S+)")
     if ft_pat then
-      if ft_pat:match('^%d+') then
-        ft_pat = '<buffer=' .. ft_pat .. '>'
+      if ft_pat:match("^%d+") then
+        ft_pat = "<buffer=" .. ft_pat .. ">"
       end
       current_ft = ft_pat
 
       -- is there a command on the same line?
-      cmd = line:match(pattern.INDENT .. '%S+%s+(.+)')
+      cmd = line:match(pattern.INDENT .. "%S+%s+(.+)")
       return
     end
 
     if current_ft and cmd == nil then
       -- trim leading spaces
-      cmd = line:gsub('^%s+', '')
+      cmd = line:gsub("^%s+", "")
       return
     end
 
     if current_ft and cmd then
-      source_file, source_lnum = line:match('Last set from (.*) line (.*)')
+      source_file, source_lnum = line:match("Last set from (.*) line (.*)")
       if source_file then
         local autocmd = {}
         autocmd.event = current_event
@@ -64,16 +64,16 @@ local traverse = function()
     end
   end
 
-  local cmd_output = vim.fn.execute('verb autocmd *', 'silent')
-  for line in cmd_output:gmatch('[^\r\n]+') do
+  local cmd_output = vim.fn.execute("verb autocmd *", "silent")
+  for line in cmd_output:gmatch("[^\r\n]+") do
     inner_loop(line)
   end
 
-  for line in cmd_output:gmatch('[^\r\n]+') do
+  for line in cmd_output:gmatch("[^\r\n]+") do
     inner_loop(line)
   end
 
-  for i, _ in pairs(vim.fn.getcompletion('', 'augroup')) do
+  for i, _ in pairs(vim.fn.getcompletion("", "augroup")) do
     aucounts.groups = i
   end
   aucounts.total = #vim.api.nvim_get_autocmds({})

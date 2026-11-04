@@ -7,7 +7,7 @@ local cfg = {
     auto_close = true,
     auto_open = false,
     follow_slow = false,
-    auto_follow = 'nearest',
+    auto_follow = "nearest",
     auto_follow_limit = false,
     wide = true,
   },
@@ -17,14 +17,14 @@ local cfg = {
     auto_close = true,
     auto_open = false,
     follow_slow = false, -- Only follow on CursorHold
-    auto_follow = 'nearest', -- Follow current entry, possible values: prev,next,nearest, or false to disable
+    auto_follow = "nearest", -- Follow current entry, possible values: prev,next,nearest, or false to disable
     auto_follow_limit = false, -- Do not follow if entry is further away than x lines
     wide = true, -- Open list at the very bottom of the screen, stretching the whole width.
   },
 }
 
-require('qf').setup(cfg)
-require('configs.qf.render')
+require("qf").setup(cfg)
+require("configs.qf.render")
 
 -- nnoremap <leader>lo <cmd>lua require'qf'.open('l')<CR> " Open location list
 -- nnoremap <leader>lc <cmd>lua require'qf'.close('l')<CR> " Close location list

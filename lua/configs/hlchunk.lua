@@ -1,4 +1,3 @@
-
 local styles = {
   normal = {
     { fg = "#005678", bg = "none" },

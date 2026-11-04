@@ -1,13 +1,13 @@
-local previewers = require('telescope.previewers')
-local utils = require('telescope.utils')
+local previewers = require("telescope.previewers")
+local utils = require("telescope.utils")
 local defaulter = utils.make_default_callable
-local mapper = require('lib.mapper')
+local mapper = require("lib.mapper")
 
 local M = {}
 
 M.previewer = defaulter(function(_)
   return previewers.new_buffer_previewer({
-    title = 'Mapping details',
+    title = "Mapping details",
     define_preview = function(self, entry, _)
       -- Find the mapping corresponding to the entry
       if mapper.records[entry.unique_id] == nil then
@@ -19,36 +19,36 @@ M.previewer = defaulter(function(_)
       vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, lines)
 
       -- Set wrap for the preview window
-      vim.api.nvim_set_option_value('wrap', true, { win = self.state.winid })
+      vim.api.nvim_set_option_value("wrap", true, { win = self.state.winid })
 
       -- Color
       local syntax_matches = {
-        nvim_mapper_id = '^Id',
-        nvim_mapper_cat = '^Category',
-        nvim_mapper_mode = '^Mode',
-        nvim_mapper_keys = '^Keys',
-        nvim_mapper_cmd = '^Command',
-        nvim_mapper_buf_only = '^Buffer only',
-        nvim_mapper_description = '^Description',
-        nvim_mapper_opts = '^Options',
-        nvim_mapper_definition = '^Definition',
+        nvim_mapper_id = "^Id",
+        nvim_mapper_cat = "^Category",
+        nvim_mapper_mode = "^Mode",
+        nvim_mapper_keys = "^Keys",
+        nvim_mapper_cmd = "^Command",
+        nvim_mapper_buf_only = "^Buffer only",
+        nvim_mapper_description = "^Description",
+        nvim_mapper_opts = "^Options",
+        nvim_mapper_definition = "^Definition",
       }
 
       -- Syntax colors
       for key, value in pairs(syntax_matches) do
         vim.api.nvim_buf_call(self.state.bufnr, function()
-          vim.cmd(':syntax match ' .. key .. ' "' .. value .. '"')
+          vim.cmd(":syntax match " .. key .. ' "' .. value .. '"')
         end)
         vim.api.nvim_buf_call(self.state.bufnr, function()
-          vim.cmd(':hi link ' .. key .. ' Operator')
+          vim.cmd(":hi link " .. key .. " Operator")
         end)
 
         if
-          key == 'nvim_mapper_keys'
-          or key == 'nvim_mapper_cmd'
-          or key == 'nvim_mapper_opts'
-          or key == 'nvim_mapper_id'
-          or key == 'nvim_mapper_definition'
+          key == "nvim_mapper_keys"
+          or key == "nvim_mapper_cmd"
+          or key == "nvim_mapper_opts"
+          or key == "nvim_mapper_id"
+          or key == "nvim_mapper_definition"
         then
           vim.api.nvim_buf_call(self.state.bufnr, function()
             -- "\(^Definition: \+\)\@<=.*"
@@ -56,7 +56,7 @@ M.previewer = defaulter(function(_)
           end)
         end
         vim.api.nvim_buf_call(self.state.bufnr, function()
-          vim.cmd(':hi link MapperCode Comment')
+          vim.cmd(":hi link MapperCode Comment")
         end)
       end
     end,

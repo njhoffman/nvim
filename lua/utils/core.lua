@@ -3,18 +3,18 @@ local utils = {}
 
 function utils.error(modl, message)
   vim.cmd([[echohl ErrorMsg]])
-  vim.cmd('echo "[' .. modl .. ']: ' .. message .. '"')
+  vim.cmd('echo "[' .. modl .. "]: " .. message .. '"')
   vim.cmd([[echohl Normal]])
 end
 
 function utils.warning(modl, message)
   vim.cmd([[echohl WarningMsg]])
-  vim.cmd('echo "[' .. modl .. ']: ' .. message .. '"')
+  vim.cmd('echo "[' .. modl .. "]: " .. message .. '"')
   vim.cmd([[echohl Normal]])
 end
 
 function utils.info(modl, message)
-  vim.cmd('echo "[' .. modl .. ']: ' .. message .. '"')
+  vim.cmd('echo "[' .. modl .. "]: " .. message .. '"')
 end
 
 -- Creating an autocommand in 0.7
@@ -38,15 +38,14 @@ function utils.define_augroups(definitions) -- {{{1
   -- })
 
   for group_name, definition in pairs(definitions) do
-
-    vim.cmd('augroup ' .. group_name)
-    vim.cmd('autocmd!')
+    vim.cmd("augroup " .. group_name)
+    vim.cmd("autocmd!")
     for _, def in pairs(definition) do
-      local command = table.concat(vim.iter({ 'autocmd', def }):flatten(math.huge):totable(), ' ')
+      local command = table.concat(vim.iter({ "autocmd", def }):flatten(math.huge):totable(), " ")
       vim.cmd(command)
     end
 
-    vim.cmd('augroup END')
+    vim.cmd("augroup END")
   end
 end
 
@@ -65,12 +64,12 @@ function utils.map(modes, key, result, opts)
 end
 
 -- Terminal
-local has_toggleterm, toggleterm = pcall(require, 'toggleterm.terminal')
+local has_toggleterm, toggleterm = pcall(require, "toggleterm.terminal")
 if has_toggleterm then
   local Terminal = toggleterm.Terminal
   local lazygit = Terminal:new({
-    cmd = 'lazygit',
-    direction = 'float',
+    cmd = "lazygit",
+    direction = "float",
     hidden = true,
   })
 
@@ -99,8 +98,8 @@ end
 
 function utils.search_nvim()
   Snacks.picker.files({
-    title = 'Neovim Config',
-    cwd = vim.fn.expand('$HOME/.config/nvim/profiles/default/lua'),
+    title = "Neovim Config",
+    cwd = vim.fn.expand("$HOME/.config/nvim/profiles/default/lua"),
   })
 end
 
@@ -123,13 +122,13 @@ end
 
 utils.log_to_file = function(logfile)
   return function(log_value)
-    local file = io.open(logfile, 'a')
+    local file = io.open(logfile, "a")
     if not file then
       file:close()
       return
     end
 
-    file:write(log_value .. '\n')
+    file:write(log_value .. "\n")
     file:close()
   end
 end
@@ -144,8 +143,8 @@ end
 
 -- Iterator that splits a string o a given delimiter
 utils.split = function(str, delim)
-  delim = delim or '%s'
-  return string.gmatch(str, string.format('[^%s]+', delim))
+  delim = delim or "%s"
+  return string.gmatch(str, string.format("[^%s]+", delim))
 end
 
 -- vim.keymap.set('ca', 'neovimisfun', 'Neovim is Fun!')
@@ -162,7 +161,7 @@ end
 --    endfunc
 --    iabbr <silent> if if ()<Left><C-R>=Eatchar('\s')<CR>
 utils.ftAbbr = function(lhs, rhs)
-  vim.cmd.inoreabbrev(('<buffer> %s %s'):format(lhs, rhs))
+  vim.cmd.inoreabbrev(("<buffer> %s %s"):format(lhs, rhs))
 end
 
 ---@param str string
@@ -175,7 +174,7 @@ utils.writeToFile = function(filePath, str, mode)
   if not file then
     return error
   end
-  file:write(str .. '\n')
+  file:write(str .. "\n")
   file:close()
 end
 
@@ -193,7 +192,7 @@ function utils.getHighlightValue(name, key)
   if not value then
     return
   end
-  return string.format('#%06x', value)
+  return string.format("#%06x", value)
 end
 
 ---Adds a component to the lualine after lualine was already set up. Useful for lazyloading.
@@ -201,35 +200,35 @@ end
 ---@param location "tabline"|"sections" tabline = top, sections = bottom
 ---@param section "lualine_a"|"lualine_b"|"lualine_c"|"lualine_x"|"lualine_y"|"lualine_z"
 utils.addToLuaLine = function(location, section, component)
-  local topSeparators = { left = '', right = '' }
+  local topSeparators = { left = "", right = "" }
 
-  local ok, lualine = pcall(require, 'lualine')
+  local ok, lualine = pcall(require, "lualine")
   if not ok then
     return
   end
   local sectionConfig = lualine.get_config()[location][section] or {}
 
-  local componentObj = type(component) == 'table' and component or { component }
-  if location == 'tabline' then
+  local componentObj = type(component) == "table" and component or { component }
+  if location == "tabline" then
     componentObj.section_separators = topSeparators
   end
   table.insert(sectionConfig, componentObj)
   lualine.setup({ [location] = { [section] = sectionConfig } })
 
   -- Theming needs to be re-applied, since the lualine-styling can change
-  require('config.theme-customization').reloadTheming()
+  require("config.theme-customization").reloadTheming()
 end
 
 utils.load_env_file = function()
-  local env_file = require('core.global').home .. '/.env'
+  local env_file = require("core.global").home .. "/.env"
   local env_contents = {}
   if vim.fn.filereadable(env_file) ~= 1 then
-    print('.env file does not exist')
+    print(".env file does not exist")
     return
   end
   local contents = vim.fn.readfile(env_file)
   for _, item in pairs(contents) do
-    local line_content = vim.fn.split(item, '=')
+    local line_content = vim.fn.split(item, "=")
     env_contents[line_content[1]] = line_content[2]
   end
 
@@ -240,8 +239,8 @@ utils.load_dbs = function()
   local env_contents = utils.load_env_file()
   local dbs = {}
   for key, value in pairs(env_contents) do
-    if vim.fn.stridx(key, 'DB_CONNECTION_') >= 0 then
-      local db_name = vim.fn.split(key, '_')[3]:lower()
+    if vim.fn.stridx(key, "DB_CONNECTION_") >= 0 then
+      local db_name = vim.fn.split(key, "_")[3]:lower()
       dbs[db_name] = value
     end
   end
@@ -250,48 +249,52 @@ end
 
 utils.worktree = function()
   local function git_worktree(arg)
-    if arg == 'create' then
-      require('telescope').extensions.git_worktree.create_git_worktree()
+    if arg == "create" then
+      require("telescope").extensions.git_worktree.create_git_worktree()
     else
-      require('telescope').extensions.git_worktree.git_worktrees()
+      require("telescope").extensions.git_worktree.git_worktrees()
     end
   end
 
-  require('git-worktree').setup({})
-  vim.api.nvim_create_user_command('Worktree', "lua require'modules.tools.config'.worktree()(<f-args>)", {
-    nargs = '*',
-    complete = function()
-      return { 'create' }
-    end,
-  })
+  require("git-worktree").setup({})
+  vim.api.nvim_create_user_command(
+    "Worktree",
+    "lua require'modules.tools.config'.worktree()(<f-args>)",
+    {
+      nargs = "*",
+      complete = function()
+        return { "create" }
+      end,
+    }
+  )
 
-  local Worktree = require('git-worktree')
+  local Worktree = require("git-worktree")
   Worktree.on_tree_change(function(op, metadata)
     if op == Worktree.Operations.Switch then
-      print('Switched from ' .. metadata.prev_path .. ' to ' .. metadata.path)
+      print("Switched from " .. metadata.prev_path .. " to " .. metadata.path)
     end
 
     if op == Worktree.Operations.Create then
-      print('Create worktree ' .. metadata.path)
+      print("Create worktree " .. metadata.path)
     end
 
     if op == Worktree.Operations.Delete then
-      print('Delete worktree ' .. metadata.path)
+      print("Delete worktree " .. metadata.path)
     end
   end)
   return { git_worktree = git_worktree }
 end
 
 utils.diffview = function()
-  local cb = require('diffview.config').diffview_callback
-  require('diffview').setup({
+  local cb = require("diffview.config").diffview_callback
+  require("diffview").setup({
     diff_binaries = false, -- Show diffs for binaries
     use_icons = true, -- Requires nvim-web-devicons
     enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
-    signs = { fold_closed = '', fold_open = '' },
+    signs = { fold_closed = "", fold_open = "" },
     file_panel = {
       win_config = {
-        position = 'left', -- One of 'left', 'right', 'top', 'bottom'
+        position = "left", -- One of 'left', 'right', 'top', 'bottom'
         width = 35, -- Only applies when position is 'left' or 'right'
       },
     },
@@ -299,23 +302,23 @@ utils.diffview = function()
       -- The `view` bindings are active in the diff buffers, only when the current
       -- tabpage is a Diffview.
       view = {
-        ['<tab>'] = cb('select_next_entry'), -- Open the diff for the next file
-        ['<s-tab>'] = cb('select_prev_entry'), -- Open the diff for the previous file
-        ['<leader>e'] = cb('focus_files'), -- Bring focus to the files panel
-        ['<leader>b'] = cb('toggle_files'), -- Toggle the files panel.
+        ["<tab>"] = cb("select_next_entry"), -- Open the diff for the next file
+        ["<s-tab>"] = cb("select_prev_entry"), -- Open the diff for the previous file
+        ["<leader>e"] = cb("focus_files"), -- Bring focus to the files panel
+        ["<leader>b"] = cb("toggle_files"), -- Toggle the files panel.
       },
       file_panel = {
-        ['j'] = cb('next_entry'), -- Bring the cursor to the next file entry
-        ['<down>'] = cb('next_entry'),
-        ['k'] = cb('prev_entry'), -- Bring the cursor to the previous file entry.
-        ['<up>'] = cb('prev_entry'),
-        ['<cr>'] = cb('select_entry'), -- Open the diff for the selected entry.
-        ['o'] = cb('select_entry'),
-        ['R'] = cb('refresh_files'), -- Update stats and entries in the file list.
-        ['<tab>'] = cb('select_next_entry'),
-        ['<s-tab>'] = cb('select_prev_entry'),
-        ['<leader>e'] = cb('focus_files'),
-        ['<leader>b'] = cb('toggle_files'),
+        ["j"] = cb("next_entry"), -- Bring the cursor to the next file entry
+        ["<down>"] = cb("next_entry"),
+        ["k"] = cb("prev_entry"), -- Bring the cursor to the previous file entry.
+        ["<up>"] = cb("prev_entry"),
+        ["<cr>"] = cb("select_entry"), -- Open the diff for the selected entry.
+        ["o"] = cb("select_entry"),
+        ["R"] = cb("refresh_files"), -- Update stats and entries in the file list.
+        ["<tab>"] = cb("select_next_entry"),
+        ["<s-tab>"] = cb("select_prev_entry"),
+        ["<leader>e"] = cb("focus_files"),
+        ["<leader>b"] = cb("toggle_files"),
       },
     },
   })

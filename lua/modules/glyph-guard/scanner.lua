@@ -46,10 +46,7 @@ local function utf8_iter(str)
           and b4 >= 0x80
           and b4 < 0xC0
         then
-          local cp = (b1 - 0xF0) * 0x40000
-            + (b2 - 0x80) * 0x1000
-            + (b3 - 0x80) * 0x40
-            + (b4 - 0x80)
+          local cp = (b1 - 0xF0) * 0x40000 + (b2 - 0x80) * 0x1000 + (b3 - 0x80) * 0x40 + (b4 - 0x80)
           i = i + 4
           return start, cp, 4
         end

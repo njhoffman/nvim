@@ -1,4 +1,3 @@
-
 local styles = {
   bubble = { { "", "HlSearchReversed" }, { "", "HlSearchReversed" } },
   arrow = {

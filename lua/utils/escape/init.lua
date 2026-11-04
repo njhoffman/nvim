@@ -1,5 +1,5 @@
-local converters = require('utils.escape.converters')
-local operatorfunc = require('utils.escape.operatorfunc')
+local converters = require("utils.escape.converters")
+local operatorfunc = require("utils.escape.operatorfunc")
 
 local api = vim.api
 local M = {}
@@ -8,8 +8,12 @@ local M = {}
 ---@param convert fun(line:string):string
 function M.apply_converter(convert)
   operatorfunc.convert = convert
-  api.nvim_set_option_value('operatorfunc', "v:lua.require'utils.escape.operatorfunc'.operatorfunc", { scope = "global" })
-  api.nvim_feedkeys('g@', '', '')
+  api.nvim_set_option_value(
+    "operatorfunc",
+    "v:lua.require'utils.escape.operatorfunc'.operatorfunc",
+    { scope = "global" }
+  )
+  api.nvim_feedkeys("g@", "", "")
 end
 
 function M.escape()

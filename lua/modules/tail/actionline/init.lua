@@ -1,6 +1,6 @@
-local logger = require('modules.tail.logger')
-local actions = require('modules.tail.actionline.actions')
-local parser = require('modules.tail.actionline.parser')
+local logger = require("modules.tail.logger")
+local actions = require("modules.tail.actionline.actions")
+local parser = require("modules.tail.actionline.parser")
 
 local run_action = function(actionline)
   logger.log_action(actionline.match, actionline.args)

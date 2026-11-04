@@ -1,9 +1,9 @@
-local pickers = require('telescope.pickers')
-local sorters = require('telescope.sorters')
-local ags_finders = require('modules.gitops.finders')
-local ags_previewers = require('modules.gitops.previewers')
-local ags_mappings = require('modules.gitops.mappings')
-local git_utils = require('modules.gitops.utils.git')
+local pickers = require("telescope.pickers")
+local sorters = require("telescope.sorters")
+local ags_finders = require("modules.gitops.finders")
+local ags_previewers = require("modules.gitops.previewers")
+local ags_mappings = require("modules.gitops.mappings")
+local git_utils = require("modules.gitops.utils.git")
 
 local M = {}
 
@@ -14,8 +14,8 @@ M.diff_branch_file = function(opts)
 
   pickers
     .new(opts, {
-      results_title = 'Local branches :: *' .. current_branch,
-      prompt_title = 'Branch name',
+      results_title = "Local branches :: *" .. current_branch,
+      prompt_title = "Branch name",
       finder = ags_finders.git_branches(bufnr),
       sorter = sorters.get_fuzzy_file(),
       previewer = ags_previewers.diff_branch_file_previewer(bufnr),

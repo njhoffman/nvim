@@ -1,10 +1,10 @@
-local Hydra = require('hydra')
-local utils = require('configs.hydra.lsp_utils')
+local Hydra = require("hydra")
+local utils = require("configs.hydra.lsp_utils")
 
 local hints = function(type)
-  local level_hints = '^   LSP '
+  local level_hints = "^   LSP "
     .. string.upper(type)
-    .. '     ^'
+    .. "     ^"
     .. [[
 
    ──────────────^
@@ -21,19 +21,19 @@ end
 local exit = true
 local heads = function(type)
   return {
-    { '4', utils.update_diagnostic(type, 4), { desc = 'hint', exit = exit } },
-    { '3', utils.update_diagnostic(type, 3), { desc = 'info', exit = exit } },
-    { '2', utils.update_diagnostic(type, 2), { desc = 'warn', exit = exit } },
-    { '1', utils.update_diagnostic(type, 1), { desc = 'error', exit = exit } },
-    { '0', utils.update_diagnostic(type, 0), { desc = 'off', exit = exit } },
-    { '<Esc>', nil, { exit = true } },
+    { "4", utils.update_diagnostic(type, 4), { desc = "hint", exit = exit } },
+    { "3", utils.update_diagnostic(type, 3), { desc = "info", exit = exit } },
+    { "2", utils.update_diagnostic(type, 2), { desc = "warn", exit = exit } },
+    { "1", utils.update_diagnostic(type, 1), { desc = "error", exit = exit } },
+    { "0", utils.update_diagnostic(type, 0), { desc = "off", exit = exit } },
+    { "<Esc>", nil, { exit = true } },
   }
 end
 
 local get_toggle = function(level, severity)
   local toggles = {
-    yes = '  ',
-    no = '  ',
+    yes = "  ",
+    no = "  ",
   }
   return function()
     return level == severity and toggles.yes or toggles.no
@@ -53,26 +53,26 @@ end
 
 local hydra = function(type)
   return Hydra({
-    name = 'Levels',
+    name = "Levels",
     hint = hints(type),
     heads = heads(type),
     config = {
-      color = 'amaranth', -- amaranth, teal, pink, red, blue
+      color = "amaranth", -- amaranth, teal, pink, red, blue
       invoke_on_body = true,
       hint = {
         funcs = funcs(type),
         float_opts = {
           -- row, col, height, width, relative, and anchor should not be
           -- overridden
-          border = 'rounded',
-          style = 'minimal',
+          border = "rounded",
+          style = "minimal",
           focusable = false,
           noautocmd = true,
         },
-        position = 'middle',
+        position = "middle",
       },
     },
-    mode = { 'n', 'x' },
+    mode = { "n", "x" },
   })
 end
 

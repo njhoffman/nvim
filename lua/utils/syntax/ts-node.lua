@@ -1,5 +1,5 @@
-local parsers = require('nvim-treesitter.parsers')
-local ts_helpers = require('utils.treesitter')
+local parsers = require("nvim-treesitter.parsers")
+local ts_helpers = require("utils.treesitter")
 
 local function get_node(opts)
   opts = opts or {}
@@ -12,17 +12,17 @@ local function get_node(opts)
       local reverse = vim.tbl_map(function(index)
         return array[#array + 1 - index]:type()
       end, vim.tbl_keys(array))
-      return table.concat(reverse, ' -> ')
+      return table.concat(reverse, " -> ")
     end
     return get_full_path(parent, vim.list_extend(array or {}, { node }))
   end
 
-  opts = vim.tbl_deep_extend('keep', opts or {}, {
+  opts = vim.tbl_deep_extend("keep", opts or {}, {
     full_path = false,
     show_range = true,
     include_anonymous = false,
     highlight_node = true,
-    hl_group = 'TSPlaygroundFocus',
+    hl_group = "TSPlaygroundFocus",
   })
 
   if not parsers.has_parser() then
@@ -69,7 +69,7 @@ end
 -- Get column positions of all nodes to the left and right of cursor
 local function get_node_columns_around_cursor()
   local cursor = vim.api.nvim_win_get_cursor(0)
-  local current_line = cursor[1] - 1  -- Convert to 0-indexed
+  local current_line = cursor[1] - 1 -- Convert to 0-indexed
   local cursor_col = cursor[2]
 
   local bufnr = vim.api.nvim_get_current_buf()

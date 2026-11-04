@@ -1,4 +1,4 @@
-local handlers = require('modules.runner.handlers')
+local handlers = require("modules.runner.handlers")
 
 local setup_commands = function()
   local cmd = vim.api.nvim_create_user_command
@@ -13,9 +13,9 @@ local setup_commands = function()
   --   desc = 'Run a the visual selected portion of a script',
   -- })
   --
-  cmd('RunFile', handlers.file, {
-    nargs = '?',
-    desc = 'Run/execute a file based on filetype',
+  cmd("RunFile", handlers.file, {
+    nargs = "?",
+    desc = "Run/execute a file based on filetype",
   })
   --
   -- cmd('RunSelect', handlers.run_file, {

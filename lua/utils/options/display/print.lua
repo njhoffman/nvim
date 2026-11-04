@@ -42,8 +42,13 @@ local function serialize_options(bufnr, state, get_option_info, get_buffer_optio
       end
 
       local message = string.rep(" ", 2)
-        .. key .. "=" .. val_str .. " "
-        .. "[source: " .. option_info.source .. "]"
+        .. key
+        .. "="
+        .. val_str
+        .. " "
+        .. "[source: "
+        .. option_info.source
+        .. "]"
 
       table.insert(processed, key)
       if option_info.buffer_local then
@@ -79,8 +84,13 @@ local function serialize_options(bufnr, state, get_option_info, get_buffer_optio
         end
 
         local message = string.rep(" ", 2)
-          .. key .. "=" .. val_str .. " "
-          .. "[source: " .. option_info.source .. "]"
+          .. key
+          .. "="
+          .. val_str
+          .. " "
+          .. "[source: "
+          .. option_info.source
+          .. "]"
 
         table.insert(processed, key)
         if option_info.buffer_local then
@@ -138,5 +148,5 @@ end
 
 return {
   notify_options = notify_options,
-  notify_option = notify_option
+  notify_option = notify_option,
 }

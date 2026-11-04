@@ -170,7 +170,6 @@ local goto_last_pos = function(bufnr, event)
     logger:debug(event .. ": restore (" .. bufnr .. ") " .. pos.exit_line .. ":" .. pos.exit_col)
     vim.api.nvim_win_set_cursor(winid, { pos.exit_line, pos.exit_col })
   end
-
 end
 
 local restore_cursor = function(opts)

@@ -73,7 +73,10 @@ function M.load()
 
   -- Parse from source file
   if vim.fn.filereadable(data_file) == 0 or vim.fn.getfsize(data_file) == 0 then
-    vim.notify("UnicodePlugin: " .. data_file .. " not found. Run :UnicodeDownload", vim.log.levels.WARN)
+    vim.notify(
+      "UnicodePlugin: " .. data_file .. " not found. Run :UnicodeDownload",
+      vim.log.levels.WARN
+    )
     uni_dict = {}
     return uni_dict
   end

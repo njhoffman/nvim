@@ -31,33 +31,33 @@ end
 local function append_environment_name(prompt_bufnr)
   local selection = action_state.get_selected_entry()
   actions.close(prompt_bufnr)
-  if selection.value == '' then
+  if selection.value == "" then
     return
   end
-  if vim.api.nvim_get_option_value('modifiable', { buf = vim.api.nvim_get_current_buf() }) then
-    vim.api.nvim_put({ selection.value[1] }, 'b', true, true)
+  if vim.api.nvim_get_option_value("modifiable", { buf = vim.api.nvim_get_current_buf() }) then
+    vim.api.nvim_put({ selection.value[1] }, "b", true, true)
   end
 end
 
 local function append_environment_value(prompt_bufnr)
   local selection = action_state.get_selected_entry()
   actions.close(prompt_bufnr)
-  if selection.value == '' then
+  if selection.value == "" then
     return
   end
-  if vim.api.nvim_get_option_value('modifiable', { buf = vim.api.nvim_get_current_buf() }) then
-    vim.api.nvim_put({ selection.value[2] }, 'b', true, true)
+  if vim.api.nvim_get_option_value("modifiable", { buf = vim.api.nvim_get_current_buf() }) then
+    vim.api.nvim_put({ selection.value[2] }, "b", true, true)
   end
 end
 
 local function edit_environment_value(prompt_bufnr)
   local selection = action_state.get_selected_entry()
   actions.close(prompt_bufnr)
-  local value = vim.fn.input('[ENV] Enter new value: ', selection.value[2])
-  if value == '' then
+  local value = vim.fn.input("[ENV] Enter new value: ", selection.value[2])
+  if value == "" then
     return
   end
-  vim.notify(string.format('Setting env %s=%s', selection.value[1], value), 'debug')
+  vim.notify(string.format("Setting env %s=%s", selection.value[1], value), "debug")
   -- Only works for the current session
   vim.fn.setenv(selection.value[1], value)
 end
@@ -66,7 +66,7 @@ local function show_environment_variables(opts)
   opts = opts or {}
   pickers
     .new(opts, {
-      prompt_title = 'Environment Variables',
+      prompt_title = "Environment Variables",
       finder = finders.new_table({
         results = prepare_environment_variables(),
         entry_maker = function(entry)
@@ -84,7 +84,7 @@ local function show_environment_variables(opts)
 
           -- NOTE: the width calculating logic is not exact, but approx enough
           local displayer = entry_display.create({
-            separator = ' ▏',
+            separator = " ▏",
             items = {
               { width = env_name_width },
               { width = telescope_width - env_name_width - env_value_width },
@@ -94,9 +94,9 @@ local function show_environment_variables(opts)
 
           local function make_display()
             -- concatenating multiline env values
-            local concatenated_width = entry[2]:gsub('\r?\n', ' ')
+            local concatenated_width = entry[2]:gsub("\r?\n", " ")
             return displayer({
-              { entry[1], 'TelescopeResultsClass' },
+              { entry[1], "TelescopeResultsClass" },
               { concatenated_width },
             })
           end
@@ -104,7 +104,7 @@ local function show_environment_variables(opts)
           return {
             value = entry,
             display = make_display,
-            ordinal = string.format('%s %s', entry[1], entry[2]),
+            ordinal = string.format("%s %s", entry[1], entry[2]),
           }
         end,
       }),
@@ -118,8 +118,8 @@ local function show_environment_variables(opts)
         --     end
 
         actions.select_default:replace(append_environment_name)
-        map('i', '<c-a>', append_environment_value)
-        map('i', '<c-e>', edit_environment_value)
+        map("i", "<c-a>", append_environment_value)
+        map("i", "<c-e>", edit_environment_value)
         return true
       end,
     })

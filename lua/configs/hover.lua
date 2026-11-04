@@ -1,30 +1,30 @@
-require('hover').setup({
+require("hover").setup({
   init = function()
     -- LSP providers
-    require('hover.providers.lsp-hover')
-    require('hover.providers.lsp-signature')
-    require('hover.providers.lsp-definition')
-    require('hover.providers.lsp-type-definition')
+    require("hover.providers.lsp-hover")
+    require("hover.providers.lsp-signature")
+    require("hover.providers.lsp-definition")
+    require("hover.providers.lsp-type-definition")
 
     -- Documentation providers
-    require('hover.providers.help')
-    require('hover.providers.man')
-    require('hover.providers.dictionary')
+    require("hover.providers.help")
+    require("hover.providers.man")
+    require("hover.providers.dictionary")
 
     -- Code inspection providers
-    require('hover.providers.syntax')
+    require("hover.providers.syntax")
 
     -- External providers
-    require('hover.providers.gh')
+    require("hover.providers.gh")
   end,
-  border = 'rounded',
+  border = "rounded",
   focusable = false,
   -- cursor_delay = 300,  -- ms before HoverCursor shows (nil = use updatetime/CursorHold)
   -- sticky_delay = 500,  -- ms before HoverSticky refreshes (nil = use updatetime/CursorHold)
   devbox = {
     popup = {
       width = 40,
-      position = 'SE', -- SE, SW, NE, NW
+      position = "SE", -- SE, SW, NE, NW
     },
   },
 })

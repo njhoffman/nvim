@@ -102,8 +102,7 @@ local cfg = {
         return " (" .. tokens .. " tokens)"
       end,
     },
-    diff = {
-    },
+    diff = {},
   },
   interactions = {
     chat = {

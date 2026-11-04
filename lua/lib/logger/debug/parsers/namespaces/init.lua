@@ -14,7 +14,6 @@ local get_widths = function(tbl)
 end
 
 local parse_extmark = function(extmark, buf_id)
-
   local props = {
     buf_id = tostring(buf_id),
     ext_id = tostring(extmark[1]),

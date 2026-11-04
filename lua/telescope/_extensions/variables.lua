@@ -13,5 +13,5 @@ return telescope.register_extension({
     predef = main.predef,
     global = main.global,
     window = main.window,
-  }
+  },
 })

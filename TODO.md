@@ -205,10 +205,10 @@ implementing.
 - [x] **Triage TODO/FIXME comments.** (p2) [chore] v0.31.2: comments in own code moved to "Ideas from old code comments"
       below, stale ones deleted. What remains: comments from upstream in vendored copies (frecency, egrepify, undo,
       find_pickers, lsp_lines, structlog and others), linked `HACK` notes, and the ones inside dead code.
-- [ ] **Consistent comments, style and structure.** (p2) [refactor] Make module layout and comments consistent: a
-      one-line header comment per module, short comments on non-obvious code only, StyLua across the tree, and one
-      structure for plugin configs (spec in `plugins/`, options in `configs/<name>.lua`). Do this per directory after
-      project 3.
+- [ ] **Consistent comments, style and structure.** (p2) [refactor] v0.31.4 ran StyLua over own code. Left: 12 files StyLua
+      cannot parse because they use `goto` (this build only has Lua 5.1 syntax; `stylua --check` lists them), one-line
+      header comments (551 files have none), and one structure for plugin configs (spec in `plugins/`, options in
+      `configs/<name>.lua`), to do per directory after project 3.
 - [ ] **Stale `lua/modules/tmux/CLAUDE.md`.** (p3) [docs] "Refactoring Status" lists `step_size`, `get_state()` and a broken
       `vim.tbl_get` in `resize/` and `keymaps.lua`, none of which exist any more, and "Testing" says no tests exist
       while `tests/unit/tmux_*_spec.lua` has five specs. Rewrite both sections; note that tmux next-3.9 prints

@@ -1,4 +1,4 @@
 local stats = function(args, state)
-  return 'extmarks stats'
+  return "extmarks stats"
 end
 return { stats = stats }

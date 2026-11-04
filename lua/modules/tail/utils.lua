@@ -1,11 +1,11 @@
-local state = require('modules.tail.state')
+local state = require("modules.tail.state")
 
 local start_test_timer = function()
   state._test_timer = vim.fn.timer_start(1000, function()
     vim.fn.writefile({
-      os.time() .. ' ' .. os.date(),
-    }, '/home/nicholas/.local/share/nvim/inspect.log', 'a')
-  end, { ['repeat'] = -1 })
+      os.time() .. " " .. os.date(),
+    }, "/home/nicholas/.local/share/nvim/inspect.log", "a")
+  end, { ["repeat"] = -1 })
 end
 
 local stop_test_timer = function()
@@ -15,13 +15,13 @@ end
 
 local human_size = function(bytes)
   if bytes < 1024 then
-    return bytes .. ' B'
+    return bytes .. " B"
   elseif bytes < 1048576 then
-    return string.format('%.1f KB', bytes / 1024)
+    return string.format("%.1f KB", bytes / 1024)
   elseif bytes < 1073741824 then
-    return string.format('%.1f MB', bytes / 1048576)
+    return string.format("%.1f MB", bytes / 1048576)
   else
-    return string.format('%.1f GB', bytes / 1073741824)
+    return string.format("%.1f GB", bytes / 1073741824)
   end
 end
 

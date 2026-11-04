@@ -300,7 +300,10 @@ function M.register_option(opts)
 
   assert(
     type(opts.default) == opts.type_info,
-    "Type of the default value does not match type_info: " .. type(opts.default) .. " != " .. opts.type_info
+    "Type of the default value does not match type_info: "
+      .. type(opts.default)
+      .. " != "
+      .. opts.type_info
   )
 
   opts.buffer_local = opts.buffer_local or false
@@ -328,9 +331,17 @@ function M.register_option(opts)
     init_variable_sync()
   end
 
-  if opts.target_variable ~= nil and opts.global and is_target_variable_set(opts.target_variable) then
+  if
+    opts.target_variable ~= nil
+    and opts.global
+    and is_target_variable_set(opts.target_variable)
+  then
     set_option(opts.name, get_target_variable_value(opts.target_variable))
-  elseif opts.target_variable ~= nil and opts.global and not is_target_variable_set(opts.target_variable) then
+  elseif
+    opts.target_variable ~= nil
+    and opts.global
+    and not is_target_variable_set(opts.target_variable)
+  then
     set_target_variable(opts.target_variable, opts.default)
   end
 end

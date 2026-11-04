@@ -12,9 +12,13 @@ local state = {
 
 ---@param key nvim_devdocs.StateKey
 ---@return any
-M.get = function(key) return state[key] end
+M.get = function(key)
+  return state[key]
+end
 
 ---@param key nvim_devdocs.StateKey
-M.set = function(key, value) state[key] = value end
+M.set = function(key, value)
+  state[key] = value
+end
 
 return M

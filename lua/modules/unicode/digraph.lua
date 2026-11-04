@@ -111,7 +111,13 @@ function M.digraph(char_pair)
   -- Use the ex command to get the digraph
   local result = ""
   local ok = pcall(function()
-    vim.cmd(string.format([[norm! :""\<C-k>%s%s\<C-\>eextend(g:, {'_unicode_dig': getcmdline()})._unicode_dig\n]], c[1], c[2]))
+    vim.cmd(
+      string.format(
+        [[norm! :""\<C-k>%s%s\<C-\>eextend(g:, {'_unicode_dig': getcmdline()})._unicode_dig\n]],
+        c[1],
+        c[2]
+      )
+    )
     result = vim.g._unicode_dig or ""
     vim.g._unicode_dig = nil
   end)
@@ -131,7 +137,7 @@ function M.get_digraph(type, visual)
   local reg_save = { vim.fn.getreg("a"), vim.fn.getregtype("a") }
 
   if visual then
-    vim.cmd('silent normal! `<' .. type .. '`>"ay')
+    vim.cmd("silent normal! `<" .. type .. '`>"ay')
   elseif type == "line" then
     vim.cmd([[silent normal! '[V']"ay]])
   elseif type == "block" then

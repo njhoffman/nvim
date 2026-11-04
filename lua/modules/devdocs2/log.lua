@@ -1,20 +1,20 @@
 local M = {}
 
-local log = require('plenary.log').new({
-  plugin = 'devdocs',
+local log = require("plenary.log").new({
+  plugin = "devdocs",
   use_console = false, -- use vim.notify instead
-  outfile = vim.fn.stdpath('data') .. '/devdocs/log.txt',
+  outfile = vim.fn.stdpath("data") .. "/devdocs/log.txt",
   fmt_msg = function(_, mode_name, src_path, src_line, message)
     local mode = mode_name:upper()
-    local timestamp = os.date('%Y-%m-%d %H:%M:%S')
-    local source = vim.fn.fnamemodify(src_path, ':t') .. ':' .. src_line
+    local timestamp = os.date("%Y-%m-%d %H:%M:%S")
+    local source = vim.fn.fnamemodify(src_path, ":t") .. ":" .. src_line
 
-    return string.format('[%s][%s] %s: %s\n', mode, timestamp, source, message)
+    return string.format("[%s][%s] %s: %s\n", mode, timestamp, source, message)
   end,
 }, false)
 
 local notify = vim.schedule_wrap(function(message, level)
-  vim.notify('[devdocs] ' .. message, level)
+  vim.notify("[devdocs] " .. message, level)
 end)
 
 M.trace = function(message)

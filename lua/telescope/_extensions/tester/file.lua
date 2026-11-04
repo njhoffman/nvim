@@ -1,6 +1,6 @@
-local pickers = require('telescope.pickers')
-local finders = require('telescope.finders')
-local conf = require('telescope.config').values
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local conf = require("telescope.config").values
 
 -- opts.file needs to have spaces scaped, for example:
 -- :Telescope locate file=*/Vulkan\ *
@@ -8,12 +8,12 @@ local conf = require('telescope.config').values
 local function locate(opts)
   opts = opts or {}
   if not opts.file then
-    opts.file = '.'
+    opts.file = "."
   end
   pickers
     .new(opts, {
-      prompt_title = 'Locate',
-      finder = finders.new_oneshot_job({ 'locate', opts.file }, opts),
+      prompt_title = "Locate",
+      finder = finders.new_oneshot_job({ "locate", opts.file }, opts),
       previewer = conf.file_previewer(opts),
       sorter = conf.file_sorter(opts),
     })

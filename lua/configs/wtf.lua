@@ -1,2 +1,1 @@
-
-require('wtf').setup({})
+require("wtf").setup({})

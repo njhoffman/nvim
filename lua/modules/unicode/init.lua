@@ -59,7 +59,10 @@ function M.mk_cache()
   if vim.fn.filereadable(cache_file) == 1 and vim.fn.getfsize(cache_file) > 100 then
     vim.notify("UnicodePlugin: Cache successfully created", vim.log.levels.WARN)
   else
-    vim.notify("UnicodePlugin: Something went wrong when trying to create the cache file", vim.log.levels.WARN)
+    vim.notify(
+      "UnicodePlugin: Something went wrong when trying to create the cache file",
+      vim.log.levels.WARN
+    )
   end
 end
 
@@ -125,7 +128,10 @@ function M.get_uni_char(register, type_filter)
   if type_filter and type_filter ~= "" then
     local valid = type_filter:match("^[dDrRnNhHvV]")
     if not valid then
-      vim.notify("UnicodePlugin: No item (digraph/html/name/regex/value) specified", vim.log.levels.WARN)
+      vim.notify(
+        "UnicodePlugin: No item (digraph/html/name/regex/value) specified",
+        vim.log.levels.WARN
+      )
       return
     end
     type_char = type_filter:sub(1, 1):lower()
@@ -179,8 +185,8 @@ function M.get_uni_char(register, type_filter)
         local nerd = nerds[dec] or ""
         local hexl = #string.format("%X", dec)
         local pat = "/" .. M.regex(dec)
-        local str = dec <= 0xFFFF and string.format('\"\\u%04x\"', dec)
-          or string.format('\"\\U%0' .. hexl .. 'x\"', dec)
+        local str = dec <= 0xFFFF and string.format('"\\u%04x"', dec)
+          or string.format('"\\U%0' .. hexl .. 'x"', dec)
         local info = config.extra_info[dec] or ""
 
         -- Append trailing space to non-empty values
@@ -298,7 +304,11 @@ function M.print_unicode(match, bang)
       end
     end
     if #rejected > 0 then
-      vim.api.nvim_echo({ { "\ninvalid numbers skipped: " .. table.concat(rejected, ", "), "" } }, false, {})
+      vim.api.nvim_echo(
+        { { "\ninvalid numbers skipped: " .. table.concat(rejected, ", "), "" } },
+        false,
+        {}
+      )
     end
     if result ~= "" then
       vim.cmd("normal! a" .. result .. [[\<Esc>]])
@@ -311,7 +321,11 @@ end
 function M.mk_digraph_new(arg)
   local chars, charname = arg:match("^(%S%S)%s+(.+%S)%s*$")
   if not chars then
-    vim.api.nvim_echo({ { "Usage: DigraphNew {char1}{char2} {Unicode name}" } }, true, { err = true })
+    vim.api.nvim_echo(
+      { { "Usage: DigraphNew {char1}{char2} {Unicode name}" } },
+      true,
+      { err = true }
+    )
     return
   end
 
@@ -336,7 +350,8 @@ function M.mk_digraph_new(arg)
     local thescript, thename = charname:match("^(%S.-%S)%s*:%s*(%S.*%S)%s*$")
     if thescript and thename then
       local thecase = thename:match("%u") and "capital" or "small"
-      search_names[#search_names + 1] = string.format("%s %s letter %s", thescript, thecase, thename)
+      search_names[#search_names + 1] =
+        string.format("%s %s letter %s", thescript, thecase, thename)
       search_names[#search_names + 1] = string.format("%s letter %s", thescript, thename)
     else
       search_names[#search_names + 1] = charname
@@ -359,7 +374,11 @@ function M.mk_digraph_new(arg)
         for _, u in ipairs(unichars) do
           names_list[#names_list + 1] = '"' .. u.name .. '"'
         end
-        vim.api.nvim_echo({ { "Unicode name ambiguous: " .. charname .. " matches " .. table.concat(names_list, ",") } }, true, { err = true })
+        vim.api.nvim_echo({
+          {
+            "Unicode name ambiguous: " .. charname .. " matches " .. table.concat(names_list, ","),
+          },
+        }, true, { err = true })
         return
       end
     end

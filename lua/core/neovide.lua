@@ -178,5 +178,4 @@ if vim.g.neovide then
     { nowait = true }
   )
   map("v", "<C-0>", ":lua vim.g.neovide_scale_factor = " .. scale_factor .. "<CR>")
-
 end

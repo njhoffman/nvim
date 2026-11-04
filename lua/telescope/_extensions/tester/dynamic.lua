@@ -1,11 +1,11 @@
-local pickers = require('telescope.pickers')
-local sorters = require('telescope._extensions.tester.sorters')
-local finders = require('telescope.finders')
-local make_entry = require('telescope.make_entry')
+local pickers = require("telescope.pickers")
+local sorters = require("telescope._extensions.tester.sorters")
+local finders = require("telescope.finders")
+local make_entry = require("telescope.make_entry")
 
-local logger = require('lib.logger').init('teletester')
+local logger = require("lib.logger").init("teletester")
 
-local async_job = require('telescope._')
+local async_job = require("telescope._")
 
 local timer = vim.uv.new_timer()
 local fn = function(opts)
@@ -41,12 +41,12 @@ local function dynamic_picker(opts)
   })
   pickers
     .new(opts, {
-      prompt_title = 'Dynamic Async Tester',
+      prompt_title = "Dynamic Async Tester",
       finder = finder,
       sorter = sorters.get_sorter(opts),
       on_complete = {
         function(picker)
-          logger:info('COMPLETE', picker.stats.processed)
+          logger:info("COMPLETE", picker.stats.processed)
         end,
       },
     })

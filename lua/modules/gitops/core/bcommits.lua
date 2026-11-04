@@ -1,25 +1,27 @@
-local pickers = require('telescope.pickers')
-local finders = require('telescope.finders')
-local conf = require('telescope.config').values
-local git_utils = require('modules.gitops.utils.git')
-local make_entry = require('modules.gitops.make_entry')
-local mappings = require('modules.gitops.mappings')
-local previewers = require('modules.gitops.previewers')
-local logger = require('modules.gitops.utils.logger')
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local conf = require("telescope.config").values
+local git_utils = require("modules.gitops.utils.git")
+local make_entry = require("modules.gitops.make_entry")
+local mappings = require("modules.gitops.mappings")
+local previewers = require("modules.gitops.previewers")
+local logger = require("modules.gitops.utils.logger")
 
 local get_current_buf_line = function(winnr)
   local lnum = vim.api.nvim_win_get_cursor(winnr)[1]
-  return vim.trim(vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(winnr), lnum - 1, lnum, false)[1])
+  return vim.trim(
+    vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(winnr), lnum - 1, lnum, false)[1]
+  )
 end
 
 local build_stats_command = function(method, bufnr, file)
-  local cmd = git_utils.init_script_command(bufnr, '--method=' .. method .. ' ' .. file)
-  return string.gsub(vim.fn.system(vim.fn.join(cmd, ' ')), '\n', '')
+  local cmd = git_utils.init_script_command(bufnr, "--method=" .. method .. " " .. file)
+  return string.gsub(vim.fn.system(vim.fn.join(cmd, " ")), "\n", "")
 end
 
 local bcommits_stats = function(opts, methods)
   opts = opts or {}
-  methods = methods or { 'range', 'count', 'hash_length', 'author_length', 'subject_length' }
+  methods = methods or { "range", "count", "hash_length", "author_length", "subject_length" }
 
   local bufnr = opts.bufnr or vim.fn.bufnr()
   local current_file = vim.nonnil(opts.current_file, vim.api.nvim_buf_get_name(bufnr or 0))
@@ -36,7 +38,7 @@ local bcommits = function(opts)
   local timing = { total = vim.fn.reltime(_, _) }
   opts = opts or {}
 
-  local relative_file_name = vim.fn.expand('%:~:.')
+  local relative_file_name = vim.fn.expand("%:~:.")
   opts.bufnr = vim.fn.bufnr()
   opts.winnr = vim.fn.bufwinid(opts.bufnr)
   opts.current_line = (opts.current_file == nil) and get_current_buf_line(opts.winnr) or nil
@@ -51,16 +53,16 @@ local bcommits = function(opts)
 
   return pickers
     .new(opts, {
-      prompt_title = 'Git BCommits (' .. relative_file_name .. ')',
+      prompt_title = "Git BCommits (" .. relative_file_name .. ")",
       finder = finders.new_oneshot_job(script_command, opts),
       previewer = {
-        previewers.diff_delta(vim.tbl_deep_extend('force', opts, {
-          git_cmd = { 'show', '--stat', '-p' },
-          preview_title = 'Diff to Parent',
+        previewers.diff_delta(vim.tbl_deep_extend("force", opts, {
+          git_cmd = { "show", "--stat", "-p" },
+          preview_title = "Diff to Parent",
         })),
-        previewers.diff_delta(vim.tbl_deep_extend('force', opts, {
-          git_cmd = { 'diff', '--cached', '--stat', '-p' },
-          preview_title = 'Diff to Head',
+        previewers.diff_delta(vim.tbl_deep_extend("force", opts, {
+          git_cmd = { "diff", "--cached", "--stat", "-p" },
+          preview_title = "Diff to Head",
         })),
       },
       sorter = conf.file_sorter(opts),

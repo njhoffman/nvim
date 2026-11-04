@@ -24,7 +24,7 @@ local kind_symbols = {
   Event = "󱦅",
   Operator = "󰆕",
   TypeParameter = " ",
-  Default = ""
+  Default = "",
 }
 
 local CompletionItemKind = {
@@ -53,7 +53,7 @@ local CompletionItemKind = {
   "󱦅 ",
   " ",
   " ",
-  " "
+  " ",
 }
 
 -- A symbol kind.
@@ -83,7 +83,7 @@ local SymbolKind = {
   Struct = 23,
   Event = 24,
   Operator = 25,
-  TypeParameter = 26
+  TypeParameter = 26,
 }
 
 local SymbolItemKind = {
@@ -113,7 +113,7 @@ local SymbolItemKind = {
   "󱦅 ",
   "󰆕 ",
   " ",
-  " "
+  " ",
 }
 
 local lspkind = {}

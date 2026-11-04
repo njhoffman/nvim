@@ -1,9 +1,9 @@
 local api = vim.api
 local M = {}
 
-local VISUAL = 'char'
-local VISUAL_LINE = 'line'
-local VISUAL_BLOCK = 'block'
+local VISUAL = "char"
+local VISUAL_LINE = "line"
+local VISUAL_BLOCK = "block"
 
 local unpack_table = table.unpack or unpack
 
@@ -43,7 +43,9 @@ function M.apply_converter_to_range(convert, start_position, end_position, mode)
       print(lines[1] .. start_row .. start_col .. end_row .. end_col)
       table.insert(
         new_lines,
-        lines[1]:sub(1, start_col - 1) .. convert(lines[1]:sub(start_col, end_col)) .. lines[1]:sub(end_col + 1, -1)
+        lines[1]:sub(1, start_col - 1)
+          .. convert(lines[1]:sub(start_col, end_col))
+          .. lines[1]:sub(end_col + 1, -1)
       )
     end
     lines = new_lines
@@ -51,7 +53,9 @@ function M.apply_converter_to_range(convert, start_position, end_position, mode)
     local left_col = math.min(start_col, end_col)
     local right_col = math.max(start_col, end_col)
     lines = vim.tbl_map(function(line)
-      return line:sub(1, left_col - 1) .. convert(line:sub(left_col, right_col)) .. line:sub(right_col + 1, -1)
+      return line:sub(1, left_col - 1)
+        .. convert(line:sub(left_col, right_col))
+        .. line:sub(right_col + 1, -1)
     end, lines)
   end
 

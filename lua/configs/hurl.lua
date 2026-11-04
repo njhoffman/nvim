@@ -3,14 +3,14 @@ local default_config = {
   debug = false, -- If true, logs will be saved at ~/.cache/nvim/hurl.nvim.log
 
   -- Set the display mode for the response: 'split' or 'popup'
-  mode = 'split',
+  mode = "split",
 
   -- Split settings
-  split_position = 'right',
-  split_size = '50%',
+  split_position = "right",
+  split_size = "50%",
 
   -- Popup settings
-  popup_position = '50%',
+  popup_position = "50%",
   popup_size = {
     width = 80,
     height = 40,
@@ -18,34 +18,34 @@ local default_config = {
 
   -- Default environment file name
   env_file = {
-    'vars.env',
+    "vars.env",
   },
 
   -- Specify formatters for different response types
   formatters = {
-    json = { 'jq' }, -- Uses jq to format JSON responses
+    json = { "jq" }, -- Uses jq to format JSON responses
     html = {
-      'prettier', -- Uses prettier to format HTML responses
-      '--parser',
-      'html',
+      "prettier", -- Uses prettier to format HTML responses
+      "--parser",
+      "html",
     },
   },
 }
 
 local cfg = {
   debug = true, -- Enable to show detailed logs
-  mode = 'popup', -- Change to 'popup' to display responses in a popup window
-  env_file = { 'vars.env' }, -- Change this to use a different environment file name
+  mode = "popup", -- Change to 'popup' to display responses in a popup window
+  env_file = { "vars.env" }, -- Change this to use a different environment file name
   formatters = {
-    json = { 'jq' }, -- Customize the JSON formatter command
+    json = { "jq" }, -- Customize the JSON formatter command
     html = {
-      'prettier', -- Customize the HTML formatter command
-      '--parser',
-      'html',
+      "prettier", -- Customize the HTML formatter command
+      "--parser",
+      "html",
     },
   },
 }
-require('hurl').setup(cfg)
+require("hurl").setup(cfg)
 
 -- https://github.com/rest-nvim/rest.nvim/blob/main/after/queries/http/injections.scm
 -- https://github.com/rest-nvim/rest.nvim/blob/main/after/queries/http/highlights.scm

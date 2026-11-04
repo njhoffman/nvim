@@ -27,7 +27,6 @@ local default_cfg = {
   -- 'cover_or_nearest', 'next', 'prev', 'nearest'
 }
 
-
 local custom_surroundings = {
   -- Lua long brackets - ysiwS
   B = {

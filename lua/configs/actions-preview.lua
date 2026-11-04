@@ -4,7 +4,7 @@ local default_cfg = {
     ctxlen = 3,
   },
   -- priority list of preferred backend
-  backend = { 'telescope', 'nui' },
+  backend = { "telescope", "nui" },
   -- -- options related to telescope.nvim
   -- telescope = vim.tbl_extend("force",
   --   -- telescope theme: https://github.com/nvim-telescope/telescope.nvim#themes
@@ -24,33 +24,33 @@ local default_cfg = {
   -- options for nui.nvim components
   nui = {
     -- component direction. "col" or "row"
-    dir = 'col',
+    dir = "col",
     -- keymap for selection component: https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/menu#keymap
     keymap = nil,
     -- options for nui Layout component: https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/layout
     layout = {
-      position = '50%',
+      position = "50%",
       size = {
-        width = '60%',
-        height = '90%',
+        width = "60%",
+        height = "90%",
       },
       min_width = 40,
       min_height = 10,
-      relative = 'editor',
+      relative = "editor",
     },
     -- options for preview area: https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup
     preview = {
-      size = '60%',
+      size = "60%",
       border = {
-        style = 'rounded',
+        style = "rounded",
         padding = { 0, 1 },
       },
     },
     -- options for selection area: https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/menu
     select = {
-      size = '40%',
+      size = "40%",
       border = {
-        style = 'rounded',
+        style = "rounded",
         padding = { 0, 1 },
       },
     },
@@ -59,7 +59,7 @@ local default_cfg = {
 
 local cfg = {
   diff = {
-    algorithm = 'minimal',
+    algorithm = "minimal",
     ignore_blank_lines = true,
     ignore_whitespace = true,
     -- "myers" the default algorithm
@@ -67,7 +67,10 @@ local cfg = {
     -- "patience" patience diff algorithm
     -- "histogram" histogram diff algorithm
   },
-  telescope = require('telescope.themes').get_ivy({ winblend = 10, layout_config = { height = 10 } }),
+  telescope = require("telescope.themes").get_ivy({
+    winblend = 10,
+    layout_config = { height = 10 },
+  }),
   -- telescope = vim.tbl_extend('force', require('telescope.themes').get_cursor({ winblend = 10 }), {
   -- telescope = vim.tbl_extend('force', require('telescope.themes').get_dropdown({ winblend = 10 }), {
   -- a function to make a table containing the values to be displayed.
@@ -79,5 +82,5 @@ local cfg = {
   -- make_make_display = nil,
 }
 
-require('actions-preview').setup(cfg)
+require("actions-preview").setup(cfg)
 -- require("actions-preview").code_actions({ context = { only = { "source" } } })

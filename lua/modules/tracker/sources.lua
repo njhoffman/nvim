@@ -1,5 +1,5 @@
 local req_path = function(name)
-  return require('modules.tracker.sources.' .. name)
+  return require("modules.tracker.sources." .. name)
 end
 
 -- stylua: ignore

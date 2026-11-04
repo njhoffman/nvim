@@ -1,14 +1,14 @@
-local M = {P}
+local M = { P }
 
 M.dedent = function(str, leave_indent)
   -- Check each line and detect the minimum indent.
   local indent
   local info = {}
-  for line in str:gmatch "[^\n]*\n?" do
+  for line in str:gmatch("[^\n]*\n?") do
     -- It matches '' for the last line.
     if line ~= "" then
       local chars, width
-      local line_indent = line:match "^[ \t]+"
+      local line_indent = line:match("^[ \t]+")
       if line_indent then
         chars = #line_indent
         width = M.strdisplaywidth(line_indent)

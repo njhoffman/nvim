@@ -1,4 +1,3 @@
-
 local cfg = {
   debug = false, -- enable wk.log in the current directory
   presets = {

@@ -1,23 +1,23 @@
 -- local helputils = require('utils.help.lazy')
-local state = require('utils.lazy.state')
+local state = require("utils.lazy.state")
 
 local setup = function(opts)
   opts = opts or { cache = true, reload = true, lazy = false, dev_patterns = {} }
-  local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
-      'git',
-      'clone',
-      '--filter=blob:none',
-      'https://github.com/folke/lazy.nvim.git',
-      '--branch=stable', -- latest stable release
+      "git",
+      "clone",
+      "--filter=blob:none",
+      "https://github.com/folke/lazy.nvim.git",
+      "--branch=stable", -- latest stable release
       lazypath,
     })
   end
 
   vim.opt.rtp:prepend(lazypath)
-  local _stats = require('lazy.stats')._stats
-  state = vim.tbl_deep_extend('force', state, _stats)
+  local _stats = require("lazy.stats")._stats
+  state = vim.tbl_deep_extend("force", state, _stats)
 
   -- stylua: ignore
   require("lazy").setup("plugins", {

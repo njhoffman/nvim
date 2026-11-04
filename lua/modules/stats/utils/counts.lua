@@ -1,4 +1,3 @@
-
 local counts = {}
 
 counts.aucommands = function()
@@ -43,7 +42,6 @@ counts.extmarks = function()
 end
 
 counts.extmarks_leaked = function()
-
   local nsn = vim.api.nvim_get_namespaces()
   local count = 0
   for name, ns in pairs(nsn) do

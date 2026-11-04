@@ -40,10 +40,10 @@
 ---@class lc.UserConfig
 local default_config = {
   ---@type string
-  arg = 'leetcode.nvim',
+  arg = "leetcode.nvim",
 
   ---@type lc.lang
-  lang = 'cpp',
+  lang = "cpp",
 
   cn = { -- leetcode.cn
     enabled = false, ---@type boolean
@@ -52,7 +52,7 @@ local default_config = {
   },
 
   ---@type string
-  directory = vim.fn.stdpath('data') .. '/leetcode/',
+  directory = vim.fn.stdpath("data") .. "/leetcode/",
 
   ---@type boolean
   logging = true,
@@ -64,28 +64,28 @@ local default_config = {
   console = {
     open_on_runcode = true, ---@type boolean
 
-    dir = 'row', ---@type lc.direction
+    dir = "row", ---@type lc.direction
 
     size = { ---@type lc.size
-      width = '90%',
-      height = '75%',
+      width = "90%",
+      height = "75%",
     },
 
     result = {
-      size = '60%', ---@type lc.size
+      size = "60%", ---@type lc.size
     },
 
     testcase = {
       virt_text = true, ---@type boolean
 
-      size = '40%', ---@type lc.size
+      size = "40%", ---@type lc.size
     },
   },
 
   description = {
-    position = 'left', ---@type lc.position
+    position = "left", ---@type lc.position
 
-    width = '40%', ---@type lc.size
+    width = "40%", ---@type lc.size
 
     show_stats = true, ---@type boolean
   },
@@ -102,17 +102,17 @@ local default_config = {
   image_support = false, -- setting this to `true` will disable question description wrap
 }
 
-local leet_arg = 'leetcode.nvim'
+local leet_arg = "leetcode.nvim"
 local cfg = {
   ---@type lc.lang
-  lang = 'javascript',
+  lang = "javascript",
   lazy = leet_arg ~= vim.fn.argv()[1],
   opts = {
     arg = leet_arg,
   },
 }
 
-require('leetcode').setup(cfg)
+require("leetcode").setup(cfg)
 
 -- Leet opens menu dashboard
 -- menu same as Leet

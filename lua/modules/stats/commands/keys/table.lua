@@ -1,18 +1,18 @@
-local output = require('modules.stats.output')
+local output = require("modules.stats.output")
 
 local all = function(view, stats)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = {}
   local p = function(line)
     table.insert(lines, line)
   end
 
-  p('             total normal visual insert operator command select term vis_sel')
-  p('-----------------------------------------------------------------------------')
+  p("             total normal visual insert operator command select term vis_sel")
+  p("-----------------------------------------------------------------------------")
 
   local function gen_row(name, keymap)
     p(
-      (name .. ' %4d   %4d   %4d   %4d    %4d   %4d   %4d   %4d   %4d'):format(
+      (name .. " %4d   %4d   %4d   %4d    %4d   %4d   %4d   %4d   %4d"):format(
         keymap.total,
         keymap.normal,
         keymap.visual,
@@ -27,13 +27,13 @@ local all = function(view, stats)
   end
 
   local s = stats.get_stats()
-  gen_row('neovim      ', s.neovim)
-  gen_row('mapper      ', s.mapper)
-  gen_row('wk ok       ', s.whichkey.ok)
-  gen_row('wk todo     ', s.whichkey.todo)
-  gen_row('wk dupes    ', s.whichkey.duplicates)
-  gen_row('wk conflicts', s.whichkey.conflicts)
-  output[view](lines, 'Keys Table')
+  gen_row("neovim      ", s.neovim)
+  gen_row("mapper      ", s.mapper)
+  gen_row("wk ok       ", s.whichkey.ok)
+  gen_row("wk todo     ", s.whichkey.todo)
+  gen_row("wk dupes    ", s.whichkey.duplicates)
+  gen_row("wk conflicts", s.whichkey.conflicts)
+  output[view](lines, "Keys Table")
 end
 
 local neovim = function(view, stats) end

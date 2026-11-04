@@ -1,38 +1,38 @@
-local lang_utils = require('treesj.langs.utils')
-local langs = require('treesj.langs')['presets']
+local lang_utils = require("treesj.langs.utils")
+local langs = require("treesj.langs")["presets"]
 local presets = {
-  bash = require('treesj.langs.bash'),
-  css = require('treesj.langs.css'),
-  go = require('treesj.langs.go'),
-  javascript = require('treesj.langs.javascript'),
-  kotlin = require('treesj.langs.kotlin'),
-  lua = require('treesj.langs.lua'),
-  python = require('treesj.langs.python'),
-  ruby = require('treesj.langs.ruby'),
-  rust = require('treesj.langs.rust'),
-  tsx = require('treesj.langs.tsx'),
+  bash = require("treesj.langs.bash"),
+  css = require("treesj.langs.css"),
+  go = require("treesj.langs.go"),
+  javascript = require("treesj.langs.javascript"),
+  kotlin = require("treesj.langs.kotlin"),
+  lua = require("treesj.langs.lua"),
+  python = require("treesj.langs.python"),
+  ruby = require("treesj.langs.ruby"),
+  rust = require("treesj.langs.rust"),
+  tsx = require("treesj.langs.tsx"),
 }
 
 langs.default_preset = {
   both = {
     no_format_with = {},
     fallback = function(_)
-      vim.dbglog('falling back to mini')
+      vim.dbglog("falling back to mini")
       MiniSplitjoin.toggle()
     end,
     format_tree = function(tsj)
-      if tsj:type() ~= 'statement_block' then
+      if tsj:type() ~= "statement_block" then
         local body = tsj:child(2)
         if body:will_be_formatted() then
           local set_return
-          if body:has_preset('split') then
+          if body:has_preset("split") then
             set_return = body:child(1)
           else
             set_return = body:child(1):child(1)
           end
-          set_return:update_text('return ' .. set_return:text())
+          set_return:update_text("return " .. set_return:text())
         else
-          body:update_text('return ' .. body:text())
+          body:update_text("return " .. body:text())
         end
       end
     end,
@@ -49,14 +49,14 @@ langs.kotlin = lang_utils.merge_preset(presets.kotlin, {
   function_declaration = lang_utils.set_preset_for_args({
     both = {
       non_bracket_node = true,
-      shrink_node = { from = '(', to = ')' },
+      shrink_node = { from = "(", to = ")" },
     },
   }),
   -- Kotlin's 'statements' should be separated with ';' after each child
   -- when it joins, but for the last named child it is not necessary, and we want to skip it
   statements = lang_utils.set_preset_for_non_bracket({
     join = {
-      force_insert = ';',
+      force_insert = ";",
       no_insert_if = {
         lang_utils.helpers.if_penultimate,
       },
@@ -72,9 +72,9 @@ langs.javascript = lang_utils.merge_preset(presets.javascript, {
   statement_block = lang_utils.set_preset_for_statement({
     join = {
       no_insert_if = {
-        'function_declaration',
-        'try_statement',
-        'if_statement',
+        "function_declaration",
+        "try_statement",
+        "if_statement",
       },
     },
   }),
@@ -106,14 +106,14 @@ langs.go = lang_utils.merge_preset(presets.go, {
       -- If the parent is a 'import_spec_list', then skip this node and
       -- look for a suitable one for formatting further
       enable = function(tsn)
-        return tsn:parent():type() ~= 'import_spec_list'
+        return tsn:parent():type() ~= "import_spec_list"
       end,
     },
     split = {
       -- If the parent was something else, then wrap the import in parentheses,
       -- which actually converts the 'import_spec' into the 'import_spec_list'
       format_tree = function(tsj)
-        tsj:wrap({ left = '(', right = ')' })
+        tsj:wrap({ left = "(", right = ")" })
       end,
     },
   }),
@@ -125,7 +125,7 @@ langs.go = lang_utils.merge_preset(presets.go, {
       end,
       format_tree = function(tsj)
         -- If there was only one named element, then remove the brackets
-        tsj:remove_child({ '(', ')' })
+        tsj:remove_child({ "(", ")" })
       end,
     },
   }),
@@ -159,9 +159,9 @@ langs.ruby = lang_utils.merge_preset(presets.ruby, {
       omit = { lang_utils.helpers.if_second },
       format_tree = function(tsj)
         local children = tsj:children()
-        table.insert(children, tsj:create_child({ text = 'end', type = 'end' }))
-        tsj:child('?'):update_text('if ')
-        tsj:child(':'):update_text('else')
+        table.insert(children, tsj:create_child({ text = "end", type = "end" }))
+        tsj:child("?"):update_text("if ")
+        tsj:child(":"):update_text("else")
         local first, second = tsj:child(1), tsj:child(2)
         children[1] = second
         children[2] = first
@@ -170,9 +170,9 @@ langs.ruby = lang_utils.merge_preset(presets.ruby, {
       format_resulted_lines = function(lines)
         return vim.tbl_map(function(line)
           -- Need to remove one indent on `else` element
-          if line:match('%s.else$') then
-            local rgx = '^' .. (' '):rep(vim.fn.shiftwidth())
-            return line:gsub(rgx, '')
+          if line:match("%s.else$") then
+            local rgx = "^" .. (" "):rep(vim.fn.shiftwidth())
+            return line:gsub(rgx, "")
           else
             return line
           end
@@ -186,13 +186,13 @@ langs.rust = lang_utils.merge_preset(presets.rust, {
   --   `integer_literal` is not configured and can't be configured
   --   but you can transform this field into a `block` node
   match_arm = {
-    target_nodes = { 'value' },
+    target_nodes = { "value" },
   },
   value = lang_utils.set_preset_for_statement({
     split = {
       format_tree = function(tsj)
-        if tsj:type() ~= 'block' then
-          tsj:wrap({ left = '{', right = '}' })
+        if tsj:type() ~= "block" then
+          tsj:wrap({ left = "{", right = "}" })
         end
       end,
     },
@@ -200,10 +200,10 @@ langs.rust = lang_utils.merge_preset(presets.rust, {
       no_insert_if = { lang_utils.helpers.if_penultimate },
       format_tree = function(tsj)
         local node = tsj:tsnode()
-        local parents = { 'match_arm', 'closure_expression' }
+        local parents = { "match_arm", "closure_expression" }
         local has_parent = vim.tbl_contains(parents, node:parent():type())
         if has_parent and node:named_child_count() == 1 then
-          tsj:remove_child({ '{', '}' })
+          tsj:remove_child({ "{", "}" })
         end
       end,
     },
@@ -217,26 +217,26 @@ langs.python = lang_utils.merge_preset(presets.python, {
     both = {
       -- There is no need to wrap the second element, the 'import' node,
       -- and the first parenthesis, which does not already exist.
-      omit = { lang_utils.helpers.if_second, 'import', ' (' },
+      omit = { lang_utils.helpers.if_second, "import", " (" },
     },
     split = {
       last_separator = true,
       format_tree = function(tsj)
         -- If there are no brackets, then create them
-        if not tsj:has_children({ '(', ')' }) then
-          tsj:create_child({ text = ' (' }, 4)
-          tsj:create_child({ text = ')' }, #tsj:children() + 1)
+        if not tsj:has_children({ "(", ")" }) then
+          tsj:create_child({ text = " (" }, 4)
+          tsj:create_child({ text = ")" }, #tsj:children() + 1)
           -- Since the elements have moved, you need to add the penultimate
           -- separator manually
           local penult = tsj:child(-2)
-          penult:update_text(penult:text() .. ',')
+          penult:update_text(penult:text() .. ",")
         end
       end,
     },
     join = {
       format_tree = function(tsj)
         -- Remove brackets
-        tsj:remove_child({ '(', ')' })
+        tsj:remove_child({ "(", ")" })
       end,
     },
   }),

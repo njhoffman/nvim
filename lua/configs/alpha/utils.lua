@@ -5,9 +5,9 @@ local col = function(strlist, opts)
   -- column spacing
   local padding = 12
   -- fill lines up to the maximim length with 'fillchar'
-  local fillchar = ' '
+  local fillchar = " "
   -- columns padding char (for testing)
-  local padchar = ' '
+  local padchar = " "
 
   -- define maximum string length in a table
   local maxlen = function(str)
@@ -38,7 +38,7 @@ local col = function(strlist, opts)
   local values = {}
   -- process all the lines
   for i = 1, maxlen(strlist) do
-    local str = ''
+    local str = ""
     -- process all the columns but last, because we dont wand extra padding
     -- after last column
     for column = 1, #strlist - 1 do
@@ -63,7 +63,7 @@ local col = function(strlist, opts)
     end
 
     -- insert result into output table
-    table.insert(values, { type = 'text', val = str, opts = opts })
+    table.insert(values, { type = "text", val = str, opts = opts })
   end
 
   return values
@@ -72,7 +72,7 @@ end
 local function lineToStartGradient(lines)
   local out = {}
   for i, line in ipairs(lines) do
-    table.insert(out, { hi = 'StartLogo' .. i, line = line })
+    table.insert(out, { hi = "StartLogo" .. i, line = line })
   end
   return out
 end
@@ -80,11 +80,11 @@ end
 local function lineToStartPopGradient(lines)
   local out = {}
   for i, line in ipairs(lines) do
-    local hi = 'StartLogo' .. i
+    local hi = "StartLogo" .. i
     if i <= 6 then
-      hi = 'StartLogo' .. i + 6
+      hi = "StartLogo" .. i + 6
     elseif i > 6 and i <= 12 then
-      hi = 'StartLogoPop' .. i - 6
+      hi = "StartLogoPop" .. i - 6
     end
     table.insert(out, { hi = hi, line = line })
   end
@@ -100,7 +100,7 @@ local function lineToStartShiftGradient(lines)
     elseif i > 12 then
       n = i - 6
     end
-    table.insert(out, { hi = 'StartLogo' .. n, line = line })
+    table.insert(out, { hi = "StartLogo" .. n, line = line })
   end
   return out
 end

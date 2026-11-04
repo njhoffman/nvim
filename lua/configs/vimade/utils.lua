@@ -1,4 +1,3 @@
-
 -- local fade1 = Fade({ value = animate.Number({ start = 1, to = 0.2, }) })
 -- local Default = require("vimade.recipe.default").Default({ animate = true })
 local Minimalist = require("configs.vimade.minimalist").Minimalist({

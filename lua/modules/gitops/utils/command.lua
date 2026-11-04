@@ -1,5 +1,5 @@
 local M = {}
-local logger = require('modules.gitops.utils.logger')
+local logger = require("modules.gitops.utils.logger")
 
 --- Executes a command and returns the output
 --- @param command string
@@ -8,13 +8,13 @@ M.execute = function(command)
   local handle = io.popen(command)
 
   if handle == nil then
-    return ''
+    return ""
   end
 
-  local output = handle:read('*a')
+  local output = handle:read("*a")
   handle:close()
 
-  logger.debug('exe ' .. command .. ' (' .. #output .. ')')
+  logger.debug("exe " .. command .. " (" .. #output .. ")")
   return output
 end
 

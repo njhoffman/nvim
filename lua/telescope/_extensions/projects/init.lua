@@ -1,10 +1,10 @@
-local has_telescope, telescope = pcall(require, 'telescope')
-local main = require('telescope._extensions.projects.main')
+local has_telescope, telescope = pcall(require, "telescope")
+local main = require("telescope._extensions.projects.main")
 if not has_telescope then
   return
 end
 
-require('telescope._extensions.projects.highlights').setup()
+require("telescope._extensions.projects.highlights").setup()
 
 return telescope.register_extension({
   setup = main.setup,

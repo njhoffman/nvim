@@ -1,8 +1,8 @@
-local pickers = require('telescope.pickers')
-local sorters = require('telescope.sorters')
-local ags_finders = require('modules.gitops.finders')
-local ags_previewers = require('modules.gitops.previewers')
-local ags_mappings = require('modules.gitops.mappings')
+local pickers = require("telescope.pickers")
+local sorters = require("telescope.sorters")
+local ags_finders = require("modules.gitops.finders")
+local ags_previewers = require("modules.gitops.previewers")
+local ags_mappings = require("modules.gitops.mappings")
 
 local M = {}
 
@@ -11,8 +11,8 @@ M.diff_commit_file = function(opts)
   local bufnr = vim.fn.bufnr()
   pickers
     .new(opts, {
-      results_title = 'BCommits',
-      prompt_title = 'Git Commits for File',
+      results_title = "BCommits",
+      prompt_title = "Git Commits for File",
       finder = ags_finders.git_log_file(bufnr, { bufnr = bufnr }),
       previewer = ags_previewers.diff_commit_file_previewer(bufnr),
       sorter = sorters.highlighter_only(),

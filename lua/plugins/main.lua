@@ -857,8 +857,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   {
     -- https://vi.stackexchange.com/questions/42785/how-to-do-fuzzy-live-grep-on-git-files
     "moyiz/git-dev.nvim",
-    config = function()
-    end,
+    config = function() end,
   },
   { "ray-x/forgit.nvim" },
 
@@ -1194,8 +1193,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     "kevinhwang91/nvim-fundo",
     dependencies = "kevinhwang91/promise-async",
     config = function()
-      local default_cfg = {
-      }
+      local default_cfg = {}
       require("fundo").install()
       require("fundo").setup({})
     end,

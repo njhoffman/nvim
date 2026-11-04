@@ -1,7 +1,7 @@
-local autocmd = require('profile.autocmd')
-local clock = require('profile.clock')
-local instrument = require('profile.instrument')
-local util = require('profile.util')
+local autocmd = require("profile.autocmd")
+local clock = require("profile.clock")
+local instrument = require("profile.instrument")
+local util = require("profile.util")
 local M = {}
 
 local event_defaults = {
@@ -42,7 +42,7 @@ M.start = function(...)
   instrument.clear_events()
   clock.reset()
   instrument.recording = true
-  vim.api.nvim_exec_autocmds('User', { pattern = 'ProfileStart', modeline = false })
+  vim.api.nvim_exec_autocmds("User", { pattern = "ProfileStart", modeline = false })
 end
 
 ---@return boolean
@@ -53,7 +53,7 @@ end
 ---@param filename? string If present, write the profile data to this file
 M.stop = function(filename)
   instrument.recording = false
-  vim.api.nvim_exec_autocmds('User', { pattern = 'ProfileStop', modeline = false })
+  vim.api.nvim_exec_autocmds("User", { pattern = "ProfileStop", modeline = false })
   if filename then
     M.export(filename)
   end
@@ -69,8 +69,8 @@ M.log_start = function(name, ...)
   instrument.add_event({
     name = name,
     args = util.format_args(...),
-    cat = 'function,manual',
-    ph = 'B',
+    cat = "function,manual",
+    ph = "B",
     ts = clock(),
   })
 end
@@ -85,8 +85,8 @@ M.log_end = function(name, ...)
   instrument.add_event({
     name = name,
     args = util.format_args(...),
-    cat = 'function,manual',
-    ph = 'E',
+    cat = "function,manual",
+    ph = "E",
     ts = clock(),
   })
 end
@@ -101,10 +101,10 @@ M.log_instant = function(name, ...)
   instrument.add_event({
     name = name,
     args = util.format_args(...),
-    cat = '',
-    ph = 'i',
+    cat = "",
+    ph = "i",
     ts = clock(),
-    s = 'g',
+    s = "g",
   })
 end
 
@@ -116,11 +116,11 @@ end
 ---Write the trace to a file
 ---@param filename string
 M.export = function(filename)
-  local file = assert(io.open(filename, 'w'))
+  local file = assert(io.open(filename, "w"))
   local events = instrument.get_events()
-  file:write('[')
+  file:write("[")
   for i, event in ipairs(events) do
-    local e = vim.tbl_extend('keep', event, event_defaults)
+    local e = vim.tbl_extend("keep", event, event_defaults)
     local ok, jse = pcall(vim.json.encode, e)
     if not ok and e.args then
       e.args = nil
@@ -129,14 +129,14 @@ M.export = function(filename)
     if ok then
       file:write(jse)
       if i < #events then
-        file:write(',\n')
+        file:write(",\n")
       end
     else
-      local err = string.format('Could not encode event: %s\n%s', jse, vim.inspect(e))
-      vim.api.nvim_echo({ { err, 'Error' } }, true, {})
+      local err = string.format("Could not encode event: %s\n%s", jse, vim.inspect(e))
+      vim.api.nvim_echo({ { err, "Error" } }, true, {})
     end
   end
-  file:write(']')
+  file:write("]")
   file:close()
 end
 

@@ -3,8 +3,8 @@ local state = {
   popup_width = false,
   histories = {},
   ignores = {
-    [''] = true,
-    ['netrw'] = true,
+    [""] = true,
+    ["netrw"] = true,
   },
   popup_winid = nil,
 }

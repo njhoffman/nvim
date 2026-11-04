@@ -56,7 +56,6 @@ vim.api.nvim_create_user_command("SplitSplit", align_op("split"), {})
 vim.api.nvim_create_user_command("SplitJoin", align_op("join"), {})
 
 local split_mapping = function()
-
   local map = require("lib.mapper").map
   map("n", "gs", align_op("toggle"), { desc = "split toggle cursor" })
   map("n", "gJ", align_op("join"), { desc = "split join cursor" })

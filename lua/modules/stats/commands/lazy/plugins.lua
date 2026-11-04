@@ -6,9 +6,9 @@
 -- --     dir = "/home/nicholas/.local/share/nvim/lazy/debugprint.nvim",
 -- --     url = "https://github.com/andrewferrier/debugprint.nvim.git" },
 
-local output = require('modules.stats.output')
+local output = require("modules.stats.output")
 local stats_plugins = function(argsi, state)
-  vim.dbglog('STATS CONFIG', state.lazy)
+  vim.dbglog("STATS CONFIG", state.lazy)
 end
 
 return { stats_plugins = stats_plugins }

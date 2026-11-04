@@ -86,7 +86,6 @@ map({ "n" }, "Z", "za", {
   desc = "toggle fold under cursor",
 })
 
-
 map({ "x" }, "<C-Space>", '"xy:@x<cr>', {
   category = "Command",
   label = " execute selected",

@@ -75,10 +75,17 @@ local function run(o)
       finder = finders.new_oneshot_job(o.dir_command, o),
       previewer = previewers.new_termopen_previewer({
         get_command = function(entry)
-          return vim.iter({
-            o.command_executer,
-            o.previewer_command .. " " .. o.entry_value_fn(entry.value) .. " | " .. o.pager_command,
-          }):flatten(math.huge):totable()
+          return vim
+            .iter({
+              o.command_executer,
+              o.previewer_command
+                .. " "
+                .. o.entry_value_fn(entry.value)
+                .. " | "
+                .. o.pager_command,
+            })
+            :flatten(math.huge)
+            :totable()
         end,
       }),
       sorter = sorters.get_fuzzy_file(),

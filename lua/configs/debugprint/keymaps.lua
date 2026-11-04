@@ -74,7 +74,6 @@ local setup_debugprint = function()
     label = " print message above",
     desc = " print custom message above",
   })
-
 end
 
 local setup_printing_press = function()

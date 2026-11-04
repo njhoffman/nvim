@@ -1,4 +1,3 @@
-
 local map = require("lib.mapper").map
 local timeago = require("core.commands.timeago")
 local devicons = require("nvim-web-devicons")
@@ -116,7 +115,12 @@ M.open_popup = function()
   })
   local bufnr = vim.api.nvim_win_get_buf(state.popup_winid)
   vim.api.nvim_set_option_value("modifiable", false, { buf = bufnr })
-  map("n", "<CR>", "<Cmd> lua require('core.commands.buffer').select_file_in_history()<CR>", { buffer = bufnr })
+  map(
+    "n",
+    "<CR>",
+    "<Cmd> lua require('core.commands.buffer').select_file_in_history()<CR>",
+    { buffer = bufnr }
+  )
   require("utils.hl").add_highlight(bufnr, 0, "Identifier", #h.bufs - h.index, 0, -1)
   vim.api.nvim_set_option_value(
     "winhl",

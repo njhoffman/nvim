@@ -205,7 +205,10 @@ function M.generate_tmtheme(colorscheme_name)
 
   if cursor.bg or cursor.fg then
     table.insert(lines, "          <key>caret</key>")
-    table.insert(lines, "          <string>" .. (cursor.fg or cursor.bg or normal.fg or "#ffffff") .. "</string>")
+    table.insert(
+      lines,
+      "          <string>" .. (cursor.fg or cursor.bg or normal.fg or "#ffffff") .. "</string>"
+    )
   end
 
   if cursor_line.bg then

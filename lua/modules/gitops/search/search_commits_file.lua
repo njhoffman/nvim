@@ -1,19 +1,19 @@
-local pickers = require('telescope.pickers')
-local ags_finders = require('modules.gitops.finders')
-local ags_previewers = require('modules.gitops.previewers')
-local ags_mappings = require('modules.gitops.mappings')
+local pickers = require("telescope.pickers")
+local ags_finders = require("modules.gitops.finders")
+local ags_previewers = require("modules.gitops.previewers")
+local ags_mappings = require("modules.gitops.mappings")
 
 local M = {}
 
 M.search_commits_file = function(opts)
   opts = opts or {}
-  local relative_file_name = vim.fn.expand('%:~:.')
+  local relative_file_name = vim.fn.expand("%:~:.")
   local bufnr = vim.fn.bufnr()
 
   pickers
     .new(opts, {
-      prompt_title = 'Git Grep BCommits',
-      results_title = 'Git Grep (' .. relative_file_name .. ')',
+      prompt_title = "Git Grep BCommits",
+      results_title = "Git Grep (" .. relative_file_name .. ")",
       finder = ags_finders.git_log_content(bufnr, { bufnr = bufnr }),
       previewer = ags_previewers.diff_content_previewer(),
       attach_mappings = function(_, map)
@@ -28,7 +28,7 @@ M.search_commits_file = function(opts)
 end
 
 M.search_commits_file_summary = function()
-  return 'search file content history'
+  return "search file content history"
 end
 
 return M

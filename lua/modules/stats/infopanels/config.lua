@@ -1,6 +1,6 @@
-local utils = require "infopanels.utils"
-local deprecated = require "infopanels.deprecated"
-local sorters = require "telescope.sorters"
+local utils = require("infopanels.utils")
+local deprecated = require("infopanels.deprecated")
+local sorters = require("telescope.sorters")
 local if_nil = vim.nonnil
 
 -- Keep the values around between reloads
@@ -54,7 +54,6 @@ local resolve_table_opts = function(priority, base)
   end
   return smarter_depth_2_extend(priority, base)
 end
-
 
 local config = {}
 config.smarter_depth_2_extend = smarter_depth_2_extend
@@ -367,7 +366,7 @@ append(
 append(
   "history",
   {
-    path = vim.fn.stdpath "data" .. os_sep .. "telescope_history",
+    path = vim.fn.stdpath("data") .. os_sep .. "telescope_history",
     limit = 100,
     handler = function(...)
       return require("telescope.actions.history").get_simple_history(...)
@@ -528,7 +527,15 @@ append(
 
 append(
   "vimgrep_arguments",
-  { "rg", "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case" },
+  {
+    "rg",
+    "--color=never",
+    "--no-heading",
+    "--with-filename",
+    "--line-number",
+    "--column",
+    "--smart-case",
+  },
   [[
     Defines the command that will be used for `live_grep` and `grep_string`
     pickers.
@@ -648,8 +655,6 @@ append(
   and use your own.
   ]]
 )
-
-
 
 -- append(
 --   "file_previewer",

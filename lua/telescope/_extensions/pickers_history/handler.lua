@@ -1,20 +1,20 @@
-local histories = require('telescope.actions.history')
-local Path = require('plenary.path')
+local histories = require("telescope.actions.history")
+local Path = require("plenary.path")
 local escape = function(content)
   return string.format("__ESCAPED__'%s'", content)
 end
 
 local unescape = function(content)
-  return content:gsub("^__ESCAPED__'(.*)'$", '%1')
+  return content:gsub("^__ESCAPED__'(.*)'$", "%1")
 end
 
 local get_history = function()
-  local has_sqlite, sqlite = pcall(require, 'sqlite')
+  local has_sqlite, sqlite = pcall(require, "sqlite")
   if not has_sqlite then
-    if type(sqlite) ~= 'string' then
+    if type(sqlite) ~= "string" then
       vim.notify("Coundn't find sqlite.lua. Using simple history", 3)
     else
-      vim.notify('Found sqlite.lua: but got the following error: ' .. sqlite, 3)
+      vim.notify("Found sqlite.lua: but got the following error: " .. sqlite, 3)
     end
     return histories.get_simple_history()
   end
@@ -39,14 +39,14 @@ local get_history = function()
   return histories.new({
     init = function(obj)
       obj.db = sqlite.new(obj.path)
-      obj.data = obj.db:tbl('history', {
+      obj.data = obj.db:tbl("history", {
         id = true,
-        content = 'text',
-        picker = 'text',
-        cwd = 'text',
-        project = 'text',
-        selection_index = 'integer',
-        time = 'integer',
+        content = "text",
+        picker = "text",
+        cwd = "text",
+        project = "text",
+        selection_index = "integer",
+        time = "integer",
       })
 
       obj._current_tbl = nil
@@ -61,14 +61,14 @@ local get_history = function()
       local selection_index = picker:get_index(picker:get_selection_row())
       local cwd = picker.cwd or vim.uv.cwd()
 
-      local project_name = require('project_nvim').get_project_root() or vim.uv.cwd()
-      if project_name ~= '' then
-        project_name = vim.fn.split(project_name, ' ')[1]
-        local fileparts = vim.fn.split(project_name, '/')
+      local project_name = require("project_nvim").get_project_root() or vim.uv.cwd()
+      if project_name ~= "" then
+        project_name = vim.fn.split(project_name, " ")[1]
+        local fileparts = vim.fn.split(project_name, "/")
         project_name = fileparts[#fileparts]
       end
 
-      if line ~= '' then
+      if line ~= "" then
         -- ensure_content(self, title, cwd)
         if self.content[#self.content] ~= line then
           table.insert(self.content, line)
@@ -110,12 +110,12 @@ local get_history = function()
 end
 
 local get_smart_history = function()
-  local has_sqlite, sqlite = pcall(require, 'sqlite')
+  local has_sqlite, sqlite = pcall(require, "sqlite")
   if not has_sqlite then
-    if type(sqlite) ~= 'string' then
+    if type(sqlite) ~= "string" then
       print("Coundn't find sqlite.lua. Using simple history")
     else
-      print('Found sqlite.lua: but got the following error: ' .. sqlite)
+      print("Found sqlite.lua: but got the following error: " .. sqlite)
     end
     return histories.get_simple_history()
   end
@@ -140,11 +140,11 @@ local get_smart_history = function()
   return histories.new({
     init = function(obj)
       obj.db = sqlite.new(obj.path)
-      obj.data = obj.db:tbl('history', {
+      obj.data = obj.db:tbl("history", {
         id = true,
-        content = 'text',
-        picker = 'text',
-        cwd = 'text',
+        content = "text",
+        picker = "text",
+        cwd = "text",
       })
 
       obj._current_tbl = nil
@@ -157,7 +157,7 @@ local get_smart_history = function()
     append = function(self, line, picker, no_reset)
       local title = picker.prompt_title
       local cwd = picker.cwd or vim.uv.cwd()
-      if line ~= '' then
+      if line ~= "" then
         -- ensure_content(self, title, cwd)
         if self.content[#self.content] ~= line then
           table.insert(self.content, line)
@@ -189,7 +189,7 @@ end
 
 local uv = vim.uv
 local write_async = function(path, txt, flag)
-  vim.dbglog('write_async', path, txt, flag)
+  vim.dbglog("write_async", path, txt, flag)
   uv.fs_open(path, flag, 438, function(open_err, fd)
     assert(not open_err, open_err)
     uv.fs_write(fd, txt, -1, function(write_err)
@@ -202,7 +202,7 @@ local write_async = function(path, txt, flag)
 end
 
 local append_async = function(path, txt)
-  write_async(path, txt, 'a')
+  write_async(path, txt, "a")
 end
 
 local get_simple_history = function()
@@ -221,7 +221,7 @@ local get_simple_history = function()
       self.index = #self.content + 1
     end,
     append = function(self, line, _, no_reset)
-      if line ~= '' then
+      if line ~= "" then
         if self.content[#self.content] ~= line then
           table.insert(self.content, line)
 
@@ -231,9 +231,9 @@ local get_simple_history = function()
             for i = diff, 1, -1 do
               table.remove(self.content, i)
             end
-            write_async(self.path, table.concat(self.content, '\n') .. '\n', 'w')
+            write_async(self.path, table.concat(self.content, "\n") .. "\n", "w")
           else
-            append_async(self.path, line .. '\n')
+            append_async(self.path, line .. "\n")
           end
         end
       end

@@ -1,14 +1,14 @@
-local pickers = require "telescope.pickers"
-local finders = require "telescope.finders"
-local previewers = require "telescope.previewers"
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local previewers = require("telescope.previewers")
 local conf = require("telescope.config").values
-local putils = require "telescope.previewers.utils"
-local actions = require "telescope.actions"
+local putils = require("telescope.previewers.utils")
+local actions = require("telescope.actions")
 local entry_display = require("telescope.pickers.entry_display")
-local pfiletype = require "plenary.filetype"
+local pfiletype = require("plenary.filetype")
 local fh_actions = require("file_history.actions")
 
-local fh = require('file_history')
+local fh = require("file_history")
 
 local function split(str, sep)
   local result = {}
@@ -27,9 +27,12 @@ local preview_file_history = function(opts, bufnr)
     define_preview = function(self, entry, status)
       local buffer_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
       local parent_lines = fh.get_file(entry.fields.file, entry.fields.hash)
-      local diff = vim.diff(table.concat(buffer_lines, '\n'), table.concat(parent_lines, '\n'),
-      { result_type = 'unified', ctxlen = 3 })
-      vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, split(diff, '\n'))
+      local diff = vim.diff(
+        table.concat(buffer_lines, "\n"),
+        table.concat(parent_lines, "\n"),
+        { result_type = "unified", ctxlen = 3 }
+      )
+      vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, split(diff, "\n"))
       putils.regex_highlighter(self.state.bufnr, "diff")
     end,
   })
@@ -50,50 +53,50 @@ local preview_file_query = function(opts)
   })
 end
 
-local history_displayer = entry_display.create {
+local history_displayer = entry_display.create({
   separator = " ",
   items = {
     { width = 16 },
     { width = 32 },
     { remaining = true },
   },
-}
+})
 
 local make_history_display = function(data)
-  return history_displayer {
+  return history_displayer({
     { data.fields.time or "", "TelescopeFileHistoryTime" },
     { data.fields.date or "", "TelescopeFileHistoryDate" },
-    { data.fields.tag or "", "TelescopeFileHistoryTag" }
-  }
+    { data.fields.tag or "", "TelescopeFileHistoryTag" },
+  })
 end
 
-local files_displayer = entry_display.create {
+local files_displayer = entry_display.create({
   separator = " ",
   items = {
     { remaining = true },
   },
-}
+})
 local make_files_display = function(data)
-  return files_displayer {
-    { data.fields.file or "", "TelescopeFileHistoryFile" }
-  }
+  return files_displayer({
+    { data.fields.file or "", "TelescopeFileHistoryFile" },
+  })
 end
 
-local query_displayer = entry_display.create {
+local query_displayer = entry_display.create({
   separator = " ",
   items = {
     { width = 32 },
     { width = 24 },
     { remaining = true },
   },
-}
+})
 
 local make_query_display = function(data)
-  return query_displayer {
+  return query_displayer({
     { data.fields.date or "", "TelescopeFileHistoryDate" },
     { data.fields.tag or "", "TelescopeFileHistoryTag" },
     { data.fields.file or "", "TelescopeFileHistoryFile" },
-  }
+  })
 end
 
 local function file_history(opts)
@@ -105,38 +108,44 @@ local function file_history(opts)
 
   local bufnr = vim.fn.bufnr()
 
-  pickers.new(opts, {
-    prompt_title = "FileHistory",
-    finder = finders.new_table({
-      results = vim.iter(results):flatten(math.huge):totable(),
-      entry_maker = function(entry)
-        if not entry or entry == '' then
-          return
-        end
-        local fields = split(entry, '\x09')
-        local result = {}
-        result.value = entry
-        result.fields = {
-          time = fields[1],
-          date = fields[2],
-          hash = fields[3],
-          file = fields[4],
-          tag = fields[5] or ''
-        }
-        result.display = make_history_display
-        result.ordinal = result.fields.tag .. ' ' .. result.fields.time .. ' ' .. result.fields.date
-        return result
+  pickers
+    .new(opts, {
+      prompt_title = "FileHistory",
+      finder = finders.new_table({
+        results = vim.iter(results):flatten(math.huge):totable(),
+        entry_maker = function(entry)
+          if not entry or entry == "" then
+            return
+          end
+          local fields = split(entry, "\x09")
+          local result = {}
+          result.value = entry
+          result.fields = {
+            time = fields[1],
+            date = fields[2],
+            hash = fields[3],
+            file = fields[4],
+            tag = fields[5] or "",
+          }
+          result.display = make_history_display
+          result.ordinal = result.fields.tag
+            .. " "
+            .. result.fields.time
+            .. " "
+            .. result.fields.date
+          return result
+        end,
+      }),
+      previewer = preview_file_history(opts, bufnr),
+      sorter = conf.file_sorter(opts),
+      attach_mappings = function(prompt_bufnr, map)
+        actions.select_default:replace(fh_actions.open_selected_hash)
+        map("i", "<M-d>", fh_actions.open_diff_tab)
+        map("i", "<C-r>", fh_actions.revert_to_selected)
+        return true
       end,
-    }),
-    previewer = preview_file_history(opts, bufnr),
-    sorter = conf.file_sorter(opts),
-    attach_mappings = function(prompt_bufnr, map)
-      actions.select_default:replace(fh_actions.open_selected_hash)
-      map('i', '<M-d>', fh_actions.open_diff_tab)
-      map('i', '<C-r>', fh_actions.revert_to_selected)
-      return true
-    end,
-  }):find()
+    })
+    :find()
 end
 
 local function file_history_files(opts)
@@ -146,40 +155,42 @@ local function file_history_files(opts)
     return
   end
 
-  pickers.new(opts, {
-    prompt_title = "FileHistoryFiles",
-    finder = finders.new_table({
-      results = vim.iter(results):flatten(math.huge):totable(),
-      entry_maker = function(entry)
-        if not entry or entry == '' then
-          return
-        end
-        local result = {}
-        --result.value = entry
-        local hostname = vim.fn.hostname()
-        local index = string.find(entry, '/')
-        -- If file is local, enable preview
-        if hostname == string.sub(entry, 1, index - 1) then
-          result.value = string.sub(entry, index)
-        else
-          result.value = entry
-        end
-        result.fields = {
-          file = entry,
-        }
-        result.display = make_files_display
-        result.ordinal = result.fields.file
-        return result
+  pickers
+    .new(opts, {
+      prompt_title = "FileHistoryFiles",
+      finder = finders.new_table({
+        results = vim.iter(results):flatten(math.huge):totable(),
+        entry_maker = function(entry)
+          if not entry or entry == "" then
+            return
+          end
+          local result = {}
+          --result.value = entry
+          local hostname = vim.fn.hostname()
+          local index = string.find(entry, "/")
+          -- If file is local, enable preview
+          if hostname == string.sub(entry, 1, index - 1) then
+            result.value = string.sub(entry, index)
+          else
+            result.value = entry
+          end
+          result.fields = {
+            file = entry,
+          }
+          result.display = make_files_display
+          result.ordinal = result.fields.file
+          return result
+        end,
+      }),
+      previewer = conf.file_previewer(opts),
+      sorter = conf.file_sorter(opts),
+      attach_mappings = function(_, map)
+        map("i", "<M-d>", fh_actions.delete_history)
+        map("i", "<M-p>", fh_actions.purge_history)
+        return true
       end,
-    }),
-    previewer = conf.file_previewer(opts),
-    sorter = conf.file_sorter(opts),
-    attach_mappings = function(_, map)
-      map('i', '<M-d>', fh_actions.delete_history)
-      map('i', '<M-p>', fh_actions.purge_history)
-      return true
-    end,
-  }):find()
+    })
+    :find()
 end
 
 local function file_history_query(opts)
@@ -192,35 +203,41 @@ local function file_history_query(opts)
     return
   end
 
-  pickers.new(opts, {
-    prompt_title = "FileHistoryQuery",
-    finder = finders.new_table({
-      results = vim.iter(results):flatten(math.huge):totable(),
-      entry_maker = function(entry)
-        if not entry or entry == '' then
-          return
-        end
-        local fields = split(entry, '\x09')
-        local result = {}
-        result.value = entry
-        result.fields = {
-          date = fields[1],
-          hash = fields[2],
-          file = fields[3],
-          tag = fields[4] or ''
-        }
-        result.display = make_query_display
-        result.ordinal = result.fields.date .. ' ' .. result.fields.tag .. ' ' .. result.fields.file
-        return result
+  pickers
+    .new(opts, {
+      prompt_title = "FileHistoryQuery",
+      finder = finders.new_table({
+        results = vim.iter(results):flatten(math.huge):totable(),
+        entry_maker = function(entry)
+          if not entry or entry == "" then
+            return
+          end
+          local fields = split(entry, "\x09")
+          local result = {}
+          result.value = entry
+          result.fields = {
+            date = fields[1],
+            hash = fields[2],
+            file = fields[3],
+            tag = fields[4] or "",
+          }
+          result.display = make_query_display
+          result.ordinal = result.fields.date
+            .. " "
+            .. result.fields.tag
+            .. " "
+            .. result.fields.file
+          return result
+        end,
+      }),
+      previewer = preview_file_query(opts),
+      sorter = conf.file_sorter(opts),
+      attach_mappings = function(prompt_bufnr, map)
+        actions.select_default:replace(fh_actions.open_selected_hash)
+        return true
       end,
-    }),
-    previewer = preview_file_query(opts),
-    sorter = conf.file_sorter(opts),
-    attach_mappings = function(prompt_bufnr, map)
-      actions.select_default:replace(fh_actions.open_selected_hash)
-      return true
-    end,
-  }):find()
+    })
+    :find()
 end
 
 local function file_history_backup(opts)
@@ -232,18 +249,16 @@ local function file_history_backup(opts)
 end
 
 -- Set default values for highlighting groups
-vim.api.nvim_set_hl(0, 'TelescopeFileHistoryTime', { link = 'Number' })
-vim.api.nvim_set_hl(0, 'TelescopeFileHistoryDate', { link = 'Function' })
-vim.api.nvim_set_hl(0, 'TelescopeFileHistoryFile', { link = 'Keyword' })
-vim.api.nvim_set_hl(0, 'TelescopeFileHistoryTag', { link = 'Comment' })
-
+vim.api.nvim_set_hl(0, "TelescopeFileHistoryTime", { link = "Number" })
+vim.api.nvim_set_hl(0, "TelescopeFileHistoryDate", { link = "Function" })
+vim.api.nvim_set_hl(0, "TelescopeFileHistoryFile", { link = "Keyword" })
+vim.api.nvim_set_hl(0, "TelescopeFileHistoryTag", { link = "Comment" })
 
 return require("telescope").register_extension({
   exports = {
     history = file_history,
     files = file_history_files,
     query = file_history_query,
-    backup = file_history_backup
+    backup = file_history_backup,
   },
 })
-

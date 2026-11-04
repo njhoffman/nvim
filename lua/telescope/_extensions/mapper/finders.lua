@@ -1,20 +1,20 @@
-local finders = require('telescope.finders')
-local entry_display = require('telescope.pickers.entry_display')
+local finders = require("telescope.finders")
+local entry_display = require("telescope.pickers.entry_display")
 
 local function display_termcodes(str)
-  return str:gsub(string.char(9), '<TAB>'):gsub('', '<C-F>'):gsub(' ', '<Space>')
+  return str:gsub(string.char(9), "<TAB>"):gsub("", "<C-F>"):gsub(" ", "<Space>")
 end
 
 -- telescope.actions.utils
 local function get_anon_function_name(func_ref)
-  local Path = require('plenary.path')
+  local Path = require("plenary.path")
   local info = debug.getinfo(func_ref)
   local fname
   -- if fn defined in string (ie loadstring) source is string
   -- if fn defined in file, source is file name prefixed with a `@´
-  local path = Path:new((info.source:gsub('@', '')))
+  local path = Path:new((info.source:gsub("@", "")))
   if not path:exists() then
-    return '<anonymous>'
+    return "<anonymous>"
   end
   for i, line in ipairs(path:readlines()) do
     if i == info.linedefined then
@@ -24,38 +24,38 @@ local function get_anon_function_name(func_ref)
   end
 
   -- test if assignment or named function, otherwise anon
-  if (fname:match('=') == nil) and (fname:match('function %S+%(') == nil) then
-    return '<anonymous>'
+  if (fname:match("=") == nil) and (fname:match("function %S+%(") == nil) then
+    return "<anonymous>"
   else
     local patterns = {
-      { 'function', '' }, -- remove function
-      { 'local', '' }, -- remove local
-      { '[%s=]', '' }, -- remove whitespace and =
-      { [=[%[["']]=], '' }, -- remove left-hand bracket of table assignment
-      { [=[["']%]]=], '' }, -- remove right-ahnd bracket of table assignment
-      { '%((.+)%)', '' }, -- remove function arguments
-      { '(.+)%.', '' }, -- remove TABLE. prefix if available
+      { "function", "" }, -- remove function
+      { "local", "" }, -- remove local
+      { "[%s=]", "" }, -- remove whitespace and =
+      { [=[%[["']]=], "" }, -- remove left-hand bracket of table assignment
+      { [=[["']%]]=], "" }, -- remove right-ahnd bracket of table assignment
+      { "%((.+)%)", "" }, -- remove function arguments
+      { "(.+)%.", "" }, -- remove TABLE. prefix if available
     }
     for _, tbl in ipairs(patterns) do
       fname = (fname:gsub(tbl[1], tbl[2])) -- make sure only string is returned
     end
     -- not sure if this can happen, catch all just in case
-    if fname == nil or fname == '' then
-      return '<anonymous>'
+    if fname == nil or fname == "" then
+      return "<anonymous>"
     end
     return fname
   end
 end
 
 local function mode_highlight(mode)
-  if mode == 'i' then
-    return 'Special'
-  elseif mode == 'n' then
-    return 'SpecialChar'
-  elseif mode == 'v' then
-    return 'Visual'
+  if mode == "i" then
+    return "Special"
+  elseif mode == "n" then
+    return "SpecialChar"
+  elseif mode == "v" then
+    return "Visual"
   else
-    return 'Normal'
+    return "Normal"
   end
 end
 
@@ -64,12 +64,12 @@ local function get_lhs(entry)
 end
 
 local function get_attr(entry)
-  local ret = ''
+  local ret = ""
   if entry.noremap ~= 0 then
-    ret = ret .. '*'
+    ret = ret .. "*"
   end
   if entry.buffer ~= 0 then
-    ret = ret .. '@'
+    ret = ret .. "@"
   end
   return ret
 end
@@ -104,10 +104,10 @@ local finder = function(keymaps)
     end
     entry.description = entry.opts.desc or entry.rhs_display
     for key, value in pairs(widths) do
-      if key == 'category' then
-        widths[key] = math.max(value, vim.fn.strdisplaywidth(entry.meta[key] or ''))
+      if key == "category" then
+        widths[key] = math.max(value, vim.fn.strdisplaywidth(entry.meta[key] or ""))
       else
-        widths[key] = math.max(value, vim.fn.strdisplaywidth(entry[key] or ''))
+        widths[key] = math.max(value, vim.fn.strdisplaywidth(entry[key] or ""))
       end
     end
   end
@@ -115,7 +115,7 @@ local finder = function(keymaps)
   -- The mapper display line
   local displayer = entry_display.create({
     -- separator = " | ",
-    separator = ' ▏',
+    separator = " ▏",
     items = {
       { width = widths.category },
       { width = widths.mode },
@@ -127,9 +127,9 @@ local finder = function(keymaps)
 
   local make_display = function(entry)
     return displayer({
-      { entry.meta.category, 'TelescopeResultsClass' },
+      { entry.meta.category, "TelescopeResultsClass" },
       { entry.mode, mode_highlight(entry.mode) },
-      { entry.lhs_display, 'TelescopeResultsComment' },
+      { entry.lhs_display, "TelescopeResultsComment" },
       { entry.opts.desc },
     })
   end
@@ -138,7 +138,13 @@ local finder = function(keymaps)
     results = keymaps,
     entry_maker = function(keymap)
       keymap.value = keymap.description
-      keymap.ordinal = keymap.meta.category .. ' ' .. keymap.mode .. ' ' .. keymap.lhs .. ' ' .. keymap.description
+      keymap.ordinal = keymap.meta.category
+        .. " "
+        .. keymap.mode
+        .. " "
+        .. keymap.lhs
+        .. " "
+        .. keymap.description
       keymap.display = make_display
       keymap.id = keymap.unique_id
       keymap.lines = keymap.lines

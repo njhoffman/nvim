@@ -1,51 +1,51 @@
-local output = require('modules.stats.output')
+local output = require("modules.stats.output")
 
 local all = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = records.tree
-  output[view](lines, 'All Keys Tree')
+  output[view](lines, "All Keys Tree")
 end
 
 local wk_todo = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = records.tree
-  output[view](lines, 'Whichkey Todo Keys Tree')
+  output[view](lines, "Whichkey Todo Keys Tree")
 end
 
 local wk_conflicts = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = records.tree
-  output[view](lines, 'Whichkey Conflicts Keys Tree')
+  output[view](lines, "Whichkey Conflicts Keys Tree")
 end
 
 local wk_ok = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = records.tree
-  output[view](lines, 'Whichkey Ok Keys Tree')
+  output[view](lines, "Whichkey Ok Keys Tree")
 end
 
 local mapper_todo = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = records.tree
-  output[view](lines, 'Mapper TODO Keys Tree')
+  output[view](lines, "Mapper TODO Keys Tree")
 end
 
 local mapper = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = records.tree
-  output[view](lines, 'Mapper Keys Tree')
+  output[view](lines, "Mapper Keys Tree")
 end
 
 local neovim_todo = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = records.tree
-  output[view](lines, 'Neovim TODO Keys Tree')
+  output[view](lines, "Neovim TODO Keys Tree")
 end
 
 local neovim = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = records.tree
-  output[view](lines, 'Neovim Keys Tree')
+  output[view](lines, "Neovim Keys Tree")
 end
 
 local stats = function(args, stats, records)

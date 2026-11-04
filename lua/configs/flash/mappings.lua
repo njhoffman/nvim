@@ -1,4 +1,3 @@
-
 -- Perform a remote yank: <esc>yrt<cr>e
 --  gc operator-pending mode  => r flash remote mode => jump => c
 
@@ -149,7 +148,6 @@ local setup_search_mappings = function()
     actions.search_words_2char,
     { desc = "⚡flash search 2chars" }
   )
-
 end
 
 local setup = function()

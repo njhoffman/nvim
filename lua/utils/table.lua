@@ -3,7 +3,7 @@
 local M = {}
 
 if not debug then
-  _G['debug'] = {
+  _G["debug"] = {
     traceback = function(msg)
       return msg
     end,
@@ -14,7 +14,7 @@ end
 --       I decided to replicate them to use in other apps like wezterm, this way wezterm can import functions from
 --       neovim configs and I don't need to duplicate them
 function M.tbl_contains(tbl, value)
-  assert(type(tbl) == type({}), debug.traceback('Invalid type for tbl: ' .. type(tbl)))
+  assert(type(tbl) == type({}), debug.traceback("Invalid type for tbl: " .. type(tbl)))
   for _, node in pairs(tbl) do
     if node == value then
       return true
@@ -26,7 +26,7 @@ function M.tbl_contains(tbl, value)
 end
 
 function M.list_contains(lst, value)
-  assert(type(lst) == type({}), debug.traceback('Invalid type for lst: ' .. type(lst)))
+  assert(type(lst) == type({}), debug.traceback("Invalid type for lst: " .. type(lst)))
   for _, node in ipairs(lst) do
     if node == value then
       return true
@@ -50,7 +50,7 @@ function M.tbl_islist(tbl)
 end
 
 function M.tbl_keys(tbl)
-  assert(type(tbl) == type({}), debug.traceback('Invalid type for tbl: ' .. type(tbl)))
+  assert(type(tbl) == type({}), debug.traceback("Invalid type for tbl: " .. type(tbl)))
   local keys = {}
   for key, _ in pairs(tbl) do
     table.insert(keys, key)
@@ -59,7 +59,7 @@ function M.tbl_keys(tbl)
 end
 
 function M.tbl_values(tbl)
-  assert(type(tbl) == type({}), debug.traceback('Invalid type for tbl: ' .. type(tbl)))
+  assert(type(tbl) == type({}), debug.traceback("Invalid type for tbl: " .. type(tbl)))
   local values = {}
   for _, value in pairs(tbl) do
     table.insert(values, value)
@@ -68,8 +68,8 @@ function M.tbl_values(tbl)
 end
 
 function M.tbl_filter(func, tbl)
-  assert(type(tbl) == type({}), debug.traceback('Invalid type for tbl: ' .. type(tbl)))
-  assert(type(func) == 'function', debug.traceback('Invalid type for func: ' .. type(tbl)))
+  assert(type(tbl) == type({}), debug.traceback("Invalid type for tbl: " .. type(tbl)))
+  assert(type(func) == "function", debug.traceback("Invalid type for func: " .. type(tbl)))
 
   local tmp = {}
   for k, v in pairs(tbl) do
@@ -82,8 +82,8 @@ function M.tbl_filter(func, tbl)
 end
 
 function M.tbl_map(func, tbl)
-  assert(type(tbl) == type({}), debug.traceback('Invalid type for tbl: ' .. type(tbl)))
-  assert(type(func) == 'function', debug.traceback('Invalid type for func: ' .. type(tbl)))
+  assert(type(tbl) == type({}), debug.traceback("Invalid type for tbl: " .. type(tbl)))
+  assert(type(func) == "function", debug.traceback("Invalid type for func: " .. type(tbl)))
 
   local tmp = {}
   for k, v in pairs(tbl) do
@@ -94,8 +94,8 @@ function M.tbl_map(func, tbl)
 end
 
 function M.list_extend(dest, src)
-  assert(type(src) == type({}), debug.traceback('Invalid type for src: ' .. type(src)))
-  assert(type(dest) == type({}), debug.traceback('Invalid type for dest: ' .. type(dest)))
+  assert(type(src) == type({}), debug.traceback("Invalid type for src: " .. type(src)))
+  assert(type(dest) == type({}), debug.traceback("Invalid type for dest: " .. type(dest)))
 
   for _, node in ipairs(src) do
     table.insert(dest, node)
@@ -106,7 +106,7 @@ end
 -- END OF NEOVIM RUNTIME DUPLICATES
 
 function M.has_attrs(tbl, attrs)
-  assert(type(tbl) == type({}), debug.traceback('Invalid type for tbl: ' .. type(tbl)))
+  assert(type(tbl) == type({}), debug.traceback("Invalid type for tbl: " .. type(tbl)))
 
   if type(attrs) ~= type(tbl) then
     for _, val in pairs(tbl) do
@@ -130,7 +130,7 @@ function M.has_attrs(tbl, attrs)
 end
 
 function M.uniq_list(lst)
-  assert(type(lst) == type({}), debug.traceback('Uniq only works with array-like tables'))
+  assert(type(lst) == type({}), debug.traceback("Uniq only works with array-like tables"))
 
   local tmp = {}
   local tmp_hash = {}
@@ -144,7 +144,7 @@ function M.uniq_list(lst)
 end
 
 function M.uniq_unorder(lst)
-  assert(M.tbl_islist(lst), debug.traceback('Uniq only works with array-like tables'))
+  assert(M.tbl_islist(lst), debug.traceback("Uniq only works with array-like tables"))
 
   local uniq_items = {}
   for _, node in ipairs(lst) do
@@ -155,7 +155,10 @@ function M.uniq_unorder(lst)
 end
 
 function M.merge_uniq_list(dest, src)
-  assert(M.tbl_islist(dest) and M.tbl_islist(src), debug.traceback('Source and dest must be arrays'))
+  assert(
+    M.tbl_islist(dest) and M.tbl_islist(src),
+    debug.traceback("Source and dest must be arrays")
+  )
 
   dest = M.uniq_list(dest)
   for _, node in ipairs(src) do
@@ -167,7 +170,10 @@ function M.merge_uniq_list(dest, src)
 end
 
 function M.merge_uniq_unorder(dest, src)
-  assert(M.tbl_islist(dest) and M.tbl_islist(src), debug.traceback('Source and dest must be arrays'))
+  assert(
+    M.tbl_islist(dest) and M.tbl_islist(src),
+    debug.traceback("Source and dest must be arrays")
+  )
 
   local uniq_items = {}
 
@@ -184,14 +190,14 @@ end
 
 -- NOTE: Should this function also trim trailing spaces ?
 function M.clear_lst(lst)
-  assert(M.tbl_islist(lst), debug.traceback('List must be an array'))
+  assert(M.tbl_islist(lst), debug.traceback("List must be an array"))
   return vim.tbl_map(
     function(v)
-      return type(v) == type('') and v:gsub('%s+$', '') or v
+      return type(v) == type("") and v:gsub("%s+$", "") or v
     end,
     vim.tbl_filter(function(v)
-      if type(v) == type('') then
-        return not v:match('^%s*$')
+      if type(v) == type("") then
+        return not v:match("^%s*$")
       end
       return true
     end, lst)
@@ -199,17 +205,23 @@ function M.clear_lst(lst)
 end
 
 function M.str_to_clean_tbl(cmd_string, sep)
-  assert(type(cmd_string) == type(''), debug.traceback('Invalid type for cmd_string: ' .. type(cmd_string)))
-  assert(sep == nil or type(sep) == type(''), debug.traceback('Invalid type for sep: ' .. type(sep)))
+  assert(
+    type(cmd_string) == type(""),
+    debug.traceback("Invalid type for cmd_string: " .. type(cmd_string))
+  )
+  assert(
+    sep == nil or type(sep) == type(""),
+    debug.traceback("Invalid type for sep: " .. type(sep))
+  )
 
-  local utils = require('utils.strings')
-  sep = sep or '%s+'
+  local utils = require("utils.strings")
+  sep = sep or "%s+"
   return M.clear_lst(utils.split(utils.trim(cmd_string), sep, true))
 end
 
 -- NOTE: Took from http://lua-users.org/wiki/CopyTable
 function M.shallowcopy(orig)
-  assert(type(orig) == type({}), debug.traceback('Invalid type for orig: ' .. type(orig)))
+  assert(type(orig) == type({}), debug.traceback("Invalid type for orig: " .. type(orig)))
 
   local copy
   if type(orig) == type({}) then
@@ -224,58 +236,58 @@ function M.shallowcopy(orig)
 end
 
 function M.isempty(tbl)
-  assert(type(tbl) == type({}), debug.traceback('Invalid type for tbl: ' .. type(tbl)))
+  assert(type(tbl) == type({}), debug.traceback("Invalid type for tbl: " .. type(tbl)))
   return #tbl == 0 and next(tbl) == nil
 end
 
 -- NOTE: This is intendent for wezterm, which does not have inspect
 function M.inspect(t)
   local special = {
-    ['function'] = true,
+    ["function"] = true,
     userdata = true,
   }
   if special[type(t)] then
-    return ('<%s>'):format(type(t))
-  elseif type(t) ~= 'table' then
+    return ("<%s>"):format(type(t))
+  elseif type(t) ~= "table" then
     return t
   end
-  local tbl = '{'
+  local tbl = "{"
   if M.tbl_islist(t) then
     for _, v in ipairs(t) do
-      if type(v) == 'table' or special[type(v)] then
+      if type(v) == "table" or special[type(v)] then
         v = M.inspect(v)
-      elseif type(v) == 'string' then
+      elseif type(v) == "string" then
         v = ('"%s"'):format(v)
       end
-      tbl = tbl .. (' %s,'):format(v)
+      tbl = tbl .. (" %s,"):format(v)
     end
   else
     for k, v in pairs(t) do
-      if type(k) == 'table' or special[type(k)] then
+      if type(k) == "table" or special[type(k)] then
         k = M.inspect(k)
-      elseif type(k) == 'number' then
-        k = ('[%s]'):format(k)
+      elseif type(k) == "number" then
+        k = ("[%s]"):format(k)
       end
-      if type(v) == 'table' or special[type(v)] then
+      if type(v) == "table" or special[type(v)] then
         v = M.inspect(v)
-      elseif type(v) == 'string' then
+      elseif type(v) == "string" then
         v = ('"%s"'):format(v)
       end
-      tbl = tbl .. (' %s = %s,'):format(k, v)
+      tbl = tbl .. (" %s = %s,"):format(k, v)
     end
   end
-  if tbl:sub(-1) == ',' then
+  if tbl:sub(-1) == "," then
     tbl = tbl:sub(1, #tbl - 1)
   end
-  tbl = tbl .. ' }'
+  tbl = tbl .. " }"
   return tbl
 end
 
 function M.remove_empty(lst)
-  assert(type(lst) == type({}), debug.traceback('Invalid type for tbl: ' .. type(lst)))
+  assert(type(lst) == type({}), debug.traceback("Invalid type for tbl: " .. type(lst)))
   local tmp = {}
   for _, v in pairs(lst) do
-    if type(v) ~= type('') or v ~= '' then
+    if type(v) ~= type("") or v ~= "" then
       table.insert(tmp, v)
     end
   end

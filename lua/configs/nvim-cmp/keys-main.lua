@@ -26,7 +26,6 @@ local toggle_docs = function()
   end
 end
 
-
 local main = {
   ["<C-x><C-o>"] = { i = mapping.complete({ desc = pfx .. "start completion source" }) },
   ["<C-x><C-f>"] = {

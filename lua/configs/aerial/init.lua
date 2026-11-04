@@ -5,10 +5,10 @@ local cfg = {
     max_width = { 40, 0.3 },
     width = nil,
     min_width = 30,
-    default_direction = 'prefer_right',
+    default_direction = "prefer_right",
     preserve_equality = false,
   },
-  highlight_mode = 'full_width',
+  highlight_mode = "full_width",
   -- Highlight the closest symbol if the cursor is not exactly on one.
   highlight_closest = true,
   -- Highlight the symbol in the source buffer when cursor is in the aerial win
@@ -20,15 +20,15 @@ local cfg = {
     -- Ignore unlisted buffers. See :help buflisted
     unlisted_buffers = true,
     -- List of filetypes to ignore.
-    filetypes = { 'gitcommit', 'alpha' },
-    buftypes = 'special',
-    wintypes = 'special',
+    filetypes = { "gitcommit", "alpha" },
+    buftypes = "special",
+    wintypes = "special",
   },
   backends = {
     -- ["_"] = { "lsp", "treesitter", "markdown", "man" },
-    ['_'] = { 'lsp', 'treesitter', 'markdown', 'man' },
-    man = { 'man' },
-    markdown = { 'markdown' },
+    ["_"] = { "lsp", "treesitter", "markdown", "man" },
+    man = { "man" },
+    markdown = { "markdown" },
   },
   -- stylua: ignore
   icons = {
@@ -67,44 +67,44 @@ local cfg = {
   },
   nerd_font = true,
   float = {
-    border = 'rounded',
-    relative = 'win',
+    border = "rounded",
+    relative = "win",
     max_height = 0.9,
     height = nil,
     min_height = { 8, 0.1 },
   },
 
   filter_kind = {
-    'Array',
+    "Array",
     -- "Boolean",
-    'Class',
-    'Constructor',
-    'Constant',
-    'Enum',
+    "Class",
+    "Constructor",
+    "Constant",
+    "Enum",
     -- 'EnumMember',
     -- 'Event',
-    'Field',
-    'Function',
-    'Interface',
+    "Field",
+    "Function",
+    "Interface",
     -- 'Key',
-    'Method',
-    'Module',
-    'Namespace',
+    "Method",
+    "Module",
+    "Namespace",
     -- 'Null',
     -- 'Number',
-    'Object',
+    "Object",
     -- 'Operator',
     -- "Package",
     -- 'Property',
     -- 'String',
-    'Struct',
-    'TypeParameter',
-    'Variable',
+    "Struct",
+    "TypeParameter",
+    "Variable",
   },
   {
     open_automatic = function(bufnr)
-      local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
-      return ft == 'help' or 'man'
+      local ft = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+      return ft == "help" or "man"
       -- Enforce a minimum line count
       -- return vim.api.nvim_buf_line_count(bufnr) > 80
       --   -- Enforce a minimum symbol count
@@ -117,19 +117,19 @@ local cfg = {
   -- Customize the characters used when show_guides = true
   guides = {
     -- When the child item has a sibling below it
-    mid_item = '├─',
+    mid_item = "├─",
     -- When the child item is the last in the list
-    last_item = '└─',
+    last_item = "└─",
     -- When there are nested child guides to the right
-    nested_top = '│ ',
+    nested_top = "│ ",
     -- Raw indentation
-    whitespace = '  ',
+    whitespace = "  ",
   },
 }
 
-local aucmds = require('configs.aerial.autocmds')
-local highlights = require('configs.aerial.highlights')
-local aerial = require('aerial')
+local aucmds = require("configs.aerial.autocmds")
+local highlights = require("configs.aerial.highlights")
+local aerial = require("aerial")
 aerial.setup(cfg)
 highlights.setup()
 aucmds.setup()

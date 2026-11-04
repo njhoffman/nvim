@@ -1,9 +1,9 @@
-local actions = require "telescope.actions"
-local action_state = require "telescope.actions.state"
-local finders = require "telescope.finders"
-local sorters = require "telescope.sorters"
-local pickers = require "telescope.pickers"
-local previewers = require "telescope.previewers"
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+local finders = require("telescope.finders")
+local sorters = require("telescope.sorters")
+local pickers = require("telescope.pickers")
+local previewers = require("telescope.previewers")
 
 local attach_mappings = function(prompt_bufnr)
   actions.select_default:replace(function()
@@ -24,9 +24,9 @@ local show_filetypes = function(opts)
   pickers
     .new(opts, {
       prompt_title = "Filetypes",
-      finder = finders.new_table { results = filetypes },
+      finder = finders.new_table({ results = filetypes }),
       sorter = sorters.get_fzy_sorter(),
-      attach_mappings = attach_mappings
+      attach_mappings = attach_mappings,
     })
     :find()
 end

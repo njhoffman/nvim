@@ -60,7 +60,6 @@ local cfg = {
     winconfig = animate.gen_winconfig.wipe({ direction = "from_edge" }),
     -- Make bigger windows more transparent
     winblend = animate.gen_winblend.linear({ from = 50, to = 100 }),
-
   },
 
   close = {
@@ -71,7 +70,6 @@ local cfg = {
     winconfig = animate.gen_winconfig.wipe({ direction = "to_edge" }),
     -- Make bigger windows more transparent
     winblend = animate.gen_winblend.linear({ from = 100, to = 50 }),
-
   },
 }
 

@@ -60,7 +60,10 @@ end
 function M.setup_commands()
   vim.api.nvim_create_user_command("StatuslineTheme", function(opts)
     if vim.g.statusline_backend ~= "bars" then
-      vim.notify("StatuslineTheme requires bars backend (use :StatuslineSwitch bars)", vim.log.levels.WARN)
+      vim.notify(
+        "StatuslineTheme requires bars backend (use :StatuslineSwitch bars)",
+        vim.log.levels.WARN
+      )
       return
     end
     M.apply(opts.args)

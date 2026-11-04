@@ -47,12 +47,7 @@ function M.download(force, silent)
 
   -- Confirm download
   if not silent then
-    local choice = vim.fn.confirm(
-      "Download " .. config.url .. " now?",
-      "&Yes\n&No",
-      1,
-      "Question"
-    )
+    local choice = vim.fn.confirm("Download " .. config.url .. " now?", "&Yes\n&No", 1, "Question")
     if choice == 0 or choice == 2 then
       warn("Not downloading file. You can retry by executing :UnicodeDownload")
       return false

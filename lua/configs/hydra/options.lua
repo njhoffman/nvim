@@ -1,4 +1,4 @@
-local Hydra = require('hydra')
+local Hydra = require("hydra")
 
 local hints = [[
   ^ ^        Options
@@ -16,7 +16,7 @@ local hints = [[
 
 local heads = {
   {
-    'n',
+    "n",
     function()
       if vim.o.number == true then
         vim.o.number = false
@@ -24,10 +24,10 @@ local heads = {
         vim.o.number = true
       end
     end,
-    { desc = 'number' },
+    { desc = "number" },
   },
   {
-    'r',
+    "r",
     function()
       if vim.o.relativenumber == true then
         vim.o.relativenumber = false
@@ -36,21 +36,21 @@ local heads = {
         vim.o.relativenumber = true
       end
     end,
-    { desc = 'relativenumber' },
+    { desc = "relativenumber" },
   },
   {
-    'v',
+    "v",
     function()
-      if vim.o.virtualedit == 'all' then
-        vim.o.virtualedit = 'block'
+      if vim.o.virtualedit == "all" then
+        vim.o.virtualedit = "block"
       else
-        vim.o.virtualedit = 'all'
+        vim.o.virtualedit = "all"
       end
     end,
-    { desc = 'virtualedit' },
+    { desc = "virtualedit" },
   },
   {
-    'i',
+    "i",
     function()
       if vim.o.list == true then
         vim.o.list = false
@@ -58,10 +58,10 @@ local heads = {
         vim.o.list = true
       end
     end,
-    { desc = 'show invisible' },
+    { desc = "show invisible" },
   },
   {
-    's',
+    "s",
     function()
       if vim.o.spell == true then
         vim.o.spell = false
@@ -69,10 +69,10 @@ local heads = {
         vim.o.spell = true
       end
     end,
-    { exit = true, desc = 'spell' },
+    { exit = true, desc = "spell" },
   },
   {
-    'w',
+    "w",
     function()
       if vim.o.wrap ~= true then
         vim.o.wrap = true
@@ -81,22 +81,22 @@ local heads = {
         -- the next line in the file, but not to the next row on the
         -- screen under your previous position as in other editors.
         local map = require("lib.mapper").map
-        map('n', 'k', function()
-          return vim.v.count > 0 and 'k' or 'gk'
-        end, { expr = true, desc = 'k or gk' })
-        map('n', 'j', function()
-          return vim.v.count > 0 and 'j' or 'gj'
-        end, { expr = true, desc = 'j or gj' })
+        map("n", "k", function()
+          return vim.v.count > 0 and "k" or "gk"
+        end, { expr = true, desc = "k or gk" })
+        map("n", "j", function()
+          return vim.v.count > 0 and "j" or "gj"
+        end, { expr = true, desc = "j or gj" })
       else
         vim.o.wrap = false
-        vim.keymap.del('n', 'k')
-        vim.keymap.del('n', 'j')
+        vim.keymap.del("n", "k")
+        vim.keymap.del("n", "j")
       end
     end,
-    { desc = 'wrap' },
+    { desc = "wrap" },
   },
   {
-    'c',
+    "c",
     function()
       if vim.o.cursorline == true then
         vim.o.cursorline = false
@@ -104,33 +104,33 @@ local heads = {
         vim.o.cursorline = true
       end
     end,
-    { desc = 'cursor line' },
+    { desc = "cursor line" },
   },
-  { '<Esc>', nil, { exit = true } },
+  { "<Esc>", nil, { exit = true } },
 }
 
 local hydra = function()
   return Hydra({
-    name = 'Options',
+    name = "Options",
     hint = hints,
     heads = heads,
     config = {
-      color = 'amaranth', -- amaranth, teal, pink, red, blue
+      color = "amaranth", -- amaranth, teal, pink, red, blue
       invoke_on_body = true,
       hint = {
         float_opts = {
           -- row, col, height, width, relative, and anchor should not be
           -- overridden
-          border = 'rounded',
-          style = 'minimal',
+          border = "rounded",
+          style = "minimal",
           focusable = false,
           noautocmd = true,
         },
-        position = 'middle',
+        position = "middle",
       },
     },
-    mode = { 'n', 'x' },
-    body = '<leader>!o',
+    mode = { "n", "x" },
+    body = "<leader>!o",
   })
 end
 

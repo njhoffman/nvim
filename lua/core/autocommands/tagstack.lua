@@ -10,13 +10,13 @@ local tagstack_navigate = function(config)
   if tagstack == nil or tagstack.items == nil or #tagstack.items == 0 then
     return
   end
-  if direction == 'up' then
+  if direction == "up" then
     if tagstack.curidx > tagstack.length then
       return
     end
     vim.cmd.tag()
   end
-  if direction == 'down' then
+  if direction == "down" then
     if tagstack.curidx == 1 then
       return
     end
@@ -25,15 +25,15 @@ local tagstack_navigate = function(config)
 end
 
 local tag_up = function()
-  tagstack_navigate({ direction = 'up' })
+  tagstack_navigate({ direction = "up" })
 end
 local tag_down = function()
-  tagstack_navigate({ direction = 'down' })
+  tagstack_navigate({ direction = "down" })
 end
 
 local map = require("lib.mapper").map
-map('n', ']t', tag_down, { desc = 'Navigate foward(down) with tagstack' })
-map('n', '[t', tag_up, { desc = 'Navigate backwards(up) with tagstack' })
+map("n", "]t", tag_down, { desc = "Navigate foward(down) with tagstack" })
+map("n", "[t", tag_up, { desc = "Navigate backwards(up) with tagstack" })
 -- vim.keymap.set('n', '<M-}>', ':pop<cr>', { desc = 'Navigate foward(down) with tagstack' })
 -- map <C-[> :pop<CR>
 

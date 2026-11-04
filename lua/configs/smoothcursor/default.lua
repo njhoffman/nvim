@@ -1,42 +1,42 @@
 local default_cfg = {
-  type = 'default', -- Cursor movement calculation method, choose "default", "exp" (exponential) or "matrix".
+  type = "default", -- Cursor movement calculation method, choose "default", "exp" (exponential) or "matrix".
 
-  cursor = '', -- Cursor shape (requires Nerd Font). Disabled in fancy mode.
-  texthl = 'SmoothCursor', -- Highlight group. Default is { bg = nil, fg = "#FFD400" }. Disabled in fancy mode.
+  cursor = "", -- Cursor shape (requires Nerd Font). Disabled in fancy mode.
+  texthl = "SmoothCursor", -- Highlight group. Default is { bg = nil, fg = "#FFD400" }. Disabled in fancy mode.
   linehl = nil, -- Highlights the line under the cursor, similar to 'cursorline'. "CursorLine" is recommended. Disabled in fancy mode.
 
   fancy = {
     enable = false, -- enable fancy mode
-    head = { cursor = '▷', texthl = 'SmoothCursor', linehl = nil }, -- false to disable fancy head
+    head = { cursor = "▷", texthl = "SmoothCursor", linehl = nil }, -- false to disable fancy head
     body = {
-      { cursor = '', texthl = 'SmoothCursorRed' },
-      { cursor = '', texthl = 'SmoothCursorOrange' },
-      { cursor = '●', texthl = 'SmoothCursorYellow' },
-      { cursor = '●', texthl = 'SmoothCursorGreen' },
-      { cursor = '•', texthl = 'SmoothCursorAqua' },
-      { cursor = '.', texthl = 'SmoothCursorBlue' },
-      { cursor = '.', texthl = 'SmoothCursorPurple' },
+      { cursor = "", texthl = "SmoothCursorRed" },
+      { cursor = "", texthl = "SmoothCursorOrange" },
+      { cursor = "●", texthl = "SmoothCursorYellow" },
+      { cursor = "●", texthl = "SmoothCursorGreen" },
+      { cursor = "•", texthl = "SmoothCursorAqua" },
+      { cursor = ".", texthl = "SmoothCursorBlue" },
+      { cursor = ".", texthl = "SmoothCursorPurple" },
     },
-    tail = { cursor = nil, texthl = 'SmoothCursor' }, -- false to disable fancy tail
+    tail = { cursor = nil, texthl = "SmoothCursor" }, -- false to disable fancy tail
   },
 
   matrix = { -- Loaded when 'type' is set to "matrix"
     head = {
       -- Picks a random character from this list for the cursor text
-      cursor = require('smoothcursor.matrix_chars'),
+      cursor = require("smoothcursor.matrix_chars"),
       -- Picks a random highlight from this list for the cursor text
       texthl = {
-        'SmoothCursor',
+        "SmoothCursor",
       },
       linehl = nil, -- No line highlight for the head
     },
     body = {
       length = 6, -- Specifies the length of the cursor body
       -- Picks a random character from this list for the cursor body text
-      cursor = require('smoothcursor.matrix_chars'),
+      cursor = require("smoothcursor.matrix_chars"),
       -- Picks a random highlight from this list for each segment of the cursor body
       texthl = {
-        'SmoothCursorGreen',
+        "SmoothCursorGreen",
       },
     },
     tail = {
@@ -44,7 +44,7 @@ local default_cfg = {
       cursor = nil,
       -- Picks a random highlight from this list for the cursor tail
       texthl = {
-        'SmoothCursor',
+        "SmoothCursor",
       },
     },
     unstop = false, -- Determines if the cursor should stop or not (false means it will stop)

@@ -1,5 +1,5 @@
-local state = require('modules.sidebar.state')
-local config = require('modules.sidebar.config')
+local state = require("modules.sidebar.state")
+local config = require("modules.sidebar.config")
 
 local sidebar_cmds = {}
 function sidebar_cmds.prev()

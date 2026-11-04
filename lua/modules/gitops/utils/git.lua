@@ -12,7 +12,6 @@ local logger = require("modules.gitops.utils.logger")
 
 local M = {}
 
-
 local all_commit_hashes = function()
   local command = "git rev-list --all"
   local output = command_util.execute(command)

@@ -1,18 +1,18 @@
-local telescope = require('telescope')
-local finders = require('telescope.finders')
-local pickers = require('telescope.pickers')
-local make_entry = require('telescope.make_entry')
-local conf = require('telescope.config').values
-local global = require('core.global')
+local telescope = require("telescope")
+local finders = require("telescope.finders")
+local pickers = require("telescope.pickers")
+local make_entry = require("telescope.make_entry")
+local conf = require("telescope.config").values
+local global = require("core.global")
 
 local dotfiles_list = function(opts)
-  local dir = opts.path or require('core.global').home .. '/.config'
+  local dir = opts.path or require("core.global").home .. "/.config"
   local list = {}
-  local p = io.popen('rg --files --hidden ' .. dir)
+  local p = io.popen("rg --files --hidden " .. dir)
   for file in p:lines() do
     table.insert(list, file)
   end
-  local nvim_conf = io.popen('rg --files ' .. global.home .. '/.config/nvim')
+  local nvim_conf = io.popen("rg --files " .. global.home .. "/.config/nvim")
   for file in nvim_conf:lines() do
     table.insert(list, file)
   end
@@ -25,8 +25,8 @@ local dotfiles = function(opts)
 
   pickers
     .new(opts, {
-      prompt_title = 'find in dotfiles',
-      results_title = 'Dotfiles',
+      prompt_title = "find in dotfiles",
+      results_title = "Dotfiles",
       finder = finders.new_table({
         results = results,
         entry_maker = make_entry.gen_from_file(opts),

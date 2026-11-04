@@ -21,12 +21,14 @@ function string:split(sep)
   sep = sep or "\n"
   local fields = {}
   local pattern = string.format("([^%s]+)", sep)
-  for match, _ in self:gmatch(pattern) do table.insert(fields, match) end
+  for match, _ in self:gmatch(pattern) do
+    table.insert(fields, match)
+  end
   return fields
 end
 
 M.parse = function(text)
-  if text == '' or text == nil then
+  if text == "" or text == nil then
     return nil, "parsing failed due to lack of data"
   end
   local fences = {}
@@ -43,7 +45,7 @@ M.parse = function(text)
 
   local reader = lunamark.reader.markdown.new(writer, {
     smart = true,
-    fenced_code_blocks = true
+    fenced_code_blocks = true,
   })
   local _, _ = reader(text)
 

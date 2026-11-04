@@ -1,15 +1,15 @@
-local custom_filetypes = require('modules.devdocs2.config.filetypes')
+local custom_filetypes = require("modules.devdocs2.config.filetypes")
 
 ---@class nvim_devdocs.Config
 local defaults = {
-  dir_path = vim.fn.stdpath('data') .. '/devdocs',
-  telescope = require('telescope.themes').get_dropdown(),
+  dir_path = vim.fn.stdpath("data") .. "/devdocs",
+  telescope = require("telescope.themes").get_dropdown(),
   filetypes = custom_filetypes,
   float_win = {
-    relative = 'editor',
+    relative = "editor",
     height = 25,
     width = 100,
-    border = 'rounded',
+    border = "rounded",
   },
   wrap = false,
   cmd_args = {},
@@ -21,7 +21,7 @@ local defaults = {
   preprocess_install = {},
   preprocess_read = {},
   mappings = {
-    open_in_browser = '',
+    open_in_browser = "",
   },
   ---@diagnostic disable-next-line: unused-local
   after_open = function(bufnr) end,

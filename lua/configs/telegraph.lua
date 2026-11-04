@@ -1,8 +1,8 @@
 --  vim :terminal
 local default_config = {
   cmd = "",
-  session_name = '{current_session_name}-{filename}',
-  how = 'tmux_popup'
+  session_name = "{current_session_name}-{filename}",
+  how = "tmux_popup",
 }
 
 require("telegraph").setup(default_config)

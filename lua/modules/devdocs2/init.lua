@@ -1,12 +1,12 @@
 local M = {}
 
-local log = require('modules.devdocs2.log')
-local list = require('modules.devdocs2.list')
-local state = require('modules.devdocs2.state')
-local pickers = require('telescope._extensions.devdocs.pickers')
-local operations = require('modules.devdocs2.operations')
-local config = require('modules.devdocs2.config')
-local completion = require('modules.devdocs2.completion')
+local log = require("modules.devdocs2.log")
+local list = require("modules.devdocs2.list")
+local state = require("modules.devdocs2.state")
+local pickers = require("telescope._extensions.devdocs.pickers")
+local operations = require("modules.devdocs2.operations")
+local config = require("modules.devdocs2.config")
+local completion = require("modules.devdocs2.completion")
 
 M.fetch_registry = operations.fetch
 
@@ -30,13 +30,13 @@ end
 
 M.open_doc = function(args, float)
   if vim.tbl_isempty(args.fargs) then
-    log.debug('Opening all installed entries')
+    log.debug("Opening all installed entries")
     local installed = list.get_installed_alias()
     local entries = list.get_doc_entries(installed)
     pickers.open_picker(entries or {}, float)
   else
     local alias = args.fargs[1]
-    log.debug('Opening ' .. alias .. ' entries')
+    log.debug("Opening " .. alias .. " entries")
     pickers.open_picker_alias(alias, float)
   end
 end
@@ -54,19 +54,22 @@ end
 M.open_doc_current_file = function(float)
   local installed = list.get_installed_alias()
   local aliases = installed
-  if type(aliases) == 'string' then
+  if type(aliases) == "string" then
     aliases = { aliases }
   end
 
-  local docs = vim.iter(vim.tbl_map(function(alias)
-    return list.get_doc_variants(alias)
-  end, aliases)):flatten(math.huge):totable()
+  local docs = vim
+    .iter(vim.tbl_map(function(alias)
+      return list.get_doc_variants(alias)
+    end, aliases))
+    :flatten(math.huge)
+    :totable()
   local entries = list.get_doc_entries(docs)
 
   if entries and not vim.tbl_isempty(entries) then
     pickers.open_picker(entries, float)
   else
-    log.error('No documentation found for the current filetype')
+    log.error("No documentation found for the current filetype")
   end
 end
 
@@ -82,15 +85,15 @@ M.update_all = function()
   local updatable = list.get_updatable()
 
   if vim.tbl_isempty(updatable) then
-    log.info('All documentations are up to date')
+    log.info("All documentations are up to date")
   else
     operations.install_args(updatable, true, true)
   end
 end
 
 M.toggle = function()
-  local buf = state.get('last_buf')
-  local win = state.get('last_win')
+  local buf = state.get("last_buf")
+  local win = state.get("last_win")
 
   if not buf or not vim.api.nvim_buf_is_valid(buf) then
     return
@@ -98,10 +101,10 @@ M.toggle = function()
 
   if win and vim.api.nvim_win_is_valid(win) then
     vim.api.nvim_win_close(win, true)
-    state.set('last_win', nil)
+    state.set("last_win", nil)
   else
     win = vim.api.nvim_open_win(buf, true, config.get_float_options())
-    state.set('last_win', win)
+    state.set("last_win", win)
   end
 end
 
@@ -111,7 +114,7 @@ M.keywordprg = function(args)
   if keyword then
     operations.keywordprg(keyword)
   else
-    log.error('No keyword provided')
+    log.error("No keyword provided")
   end
 end
 
@@ -119,15 +122,15 @@ M.setup_highlights = function()
   local set_hl = function(name, link)
     vim.api.nvim_set_hl(0, name, { default = true, link = link })
   end
-  set_hl('TelescopeDevdocsRegName', 'markdownH1')
-  set_hl('TelescopeDevdocsRegVersion', 'markdownH2')
-  set_hl('TelescopeDevdocsRegSize', 'TelescopeComment')
-  set_hl('TelescopeDevdocsRegModified', 'TelescopeComment')
+  set_hl("TelescopeDevdocsRegName", "markdownH1")
+  set_hl("TelescopeDevdocsRegVersion", "markdownH2")
+  set_hl("TelescopeDevdocsRegSize", "TelescopeComment")
+  set_hl("TelescopeDevdocsRegModified", "TelescopeComment")
 
-  set_hl('TelescopeDevdocsCategory', 'markdownH1')
-  set_hl('TelescopeDevdocsTitle', 'markdownH2')
-  set_hl('TelescopeDevdocsLength', 'TelescopeNormal')
-  set_hl('TelescopeDevdocsLastRead', 'TelescopeComment')
+  set_hl("TelescopeDevdocsCategory", "markdownH1")
+  set_hl("TelescopeDevdocsTitle", "markdownH2")
+  set_hl("TelescopeDevdocsLength", "TelescopeNormal")
+  set_hl("TelescopeDevdocsLastRead", "TelescopeComment")
 end
 
 ---@param opts nvim_devdocs.Config
@@ -142,37 +145,37 @@ M.setup = function(opts)
 
   --    
   local cmd = vim.api.nvim_create_user_command
-  cmd('DevdocsFetch', M.fetch_registry, { desc = ' reload devdocs registry' })
+  cmd("DevdocsFetch", M.fetch_registry, { desc = " reload devdocs registry" })
   cmd(
-    'DevdocsInstall',
+    "DevdocsInstall",
     M.install_doc,
-    { nargs = '*', complete = completion.get_non_installed, desc = ' install devdoc source' }
+    { nargs = "*", complete = completion.get_non_installed, desc = " install devdoc source" }
   )
   cmd(
-    'DevdocsUninstall',
+    "DevdocsUninstall",
     M.uninstall_doc,
-    { nargs = '*', complete = completion.get_installed, desc = ' uninstall devdoc source' }
+    { nargs = "*", complete = completion.get_installed, desc = " uninstall devdoc source" }
   )
   cmd(
-    'DevdocsOpen',
+    "DevdocsOpen",
     M.open_doc,
-    { nargs = '?', complete = completion.get_installed, desc = ' open devdoc file in buffer' }
+    { nargs = "?", complete = completion.get_installed, desc = " open devdoc file in buffer" }
   )
-  cmd(
-    'DevdocsOpenFloat',
-    M.open_doc_float,
-    { nargs = '?', complete = completion.get_installed, desc = ' open devdoc file in popup window' }
-  )
-  cmd('DevdocsOpenCurrent', function()
+  cmd("DevdocsOpenFloat", M.open_doc_float, {
+    nargs = "?",
+    complete = completion.get_installed,
+    desc = " open devdoc file in popup window",
+  })
+  cmd("DevdocsOpenCurrent", function()
     M.open_doc_current_file()
-  end, { desc = ' open devdoc in current buffer' })
-  cmd('DevdocsOpenCurrentFloat', function()
+  end, { desc = " open devdoc in current buffer" })
+  cmd("DevdocsOpenCurrentFloat", function()
     M.open_doc_current_file(true)
-  end, { desc = ' open devdoc in current float' })
-  cmd('DevdocsKeywordprg', M.keywordprg, { nargs = '?' })
-  cmd('DevdocsUpdate', M.update, { nargs = '*', complete = completion.get_updatable })
-  cmd('DevdocsUpdateAll', M.update_all, {})
-  cmd('DevdocsToggle', M.toggle, {})
+  end, { desc = " open devdoc in current float" })
+  cmd("DevdocsKeywordprg", M.keywordprg, { nargs = "?" })
+  cmd("DevdocsUpdate", M.update, { nargs = "*", complete = completion.get_updatable })
+  cmd("DevdocsUpdateAll", M.update_all, {})
+  cmd("DevdocsToggle", M.toggle, {})
 end
 
 return M

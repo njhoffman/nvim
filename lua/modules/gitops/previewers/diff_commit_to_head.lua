@@ -1,9 +1,9 @@
-local putils = require('telescope.previewers.utils')
-local git_utils = require('modules.gitops.utils.git')
+local putils = require("telescope.previewers.utils")
+local git_utils = require("modules.gitops.utils.git")
 
 local diff_commit_to_head = git_utils.defaulter(function(opts)
   return git_utils.new_buffer_previewer({
-    title = 'Git Diff to Head Preview',
+    title = "Git Diff to Head Preview",
     teardown = git_utils.search_teardown,
 
     get_buffer_by_name = function(_, entry)
@@ -13,12 +13,12 @@ local diff_commit_to_head = git_utils.defaulter(function(opts)
     define_preview = function(self, entry, status)
       -- local cmd = { 'git', '--no-pager', 'diff', '--cached', entry.value }
       local cmd = git_utils.init_git_command(opts.bufnr, {
-        'diff',
-        '--cached',
+        "diff",
+        "--cached",
         entry.value.sha,
       })
       if opts.current_file then
-        table.insert(cmd, '--')
+        table.insert(cmd, "--")
         table.insert(cmd, opts.current_file)
       end
 
@@ -29,7 +29,7 @@ local diff_commit_to_head = git_utils.defaulter(function(opts)
         callback = function(bufnr)
           if vim.api.nvim_buf_is_valid(bufnr) then
             git_utils.search_cb_jump(self, bufnr, opts.current_line)
-            putils.regex_highlighter(bufnr, 'diff')
+            putils.regex_highlighter(bufnr, "diff")
           end
         end,
       })

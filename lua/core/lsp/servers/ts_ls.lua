@@ -39,8 +39,8 @@ return {
     diagnostics = {
       ignoredCodes = {
         80001, -- File is a CommonJS module
-        7006,  -- parameter implicitly has any type
-        2571,  -- object is of type 'unknown'
+        7006, -- parameter implicitly has any type
+        2571, -- object is of type 'unknown'
       },
     },
     completions = {

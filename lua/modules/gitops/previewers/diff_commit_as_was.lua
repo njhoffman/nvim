@@ -1,11 +1,11 @@
-local pfiletype = require('plenary.filetype')
-local Path = require('plenary.path')
-local putils = require('telescope.previewers.utils')
-local git_utils = require('modules.gitops.utils.git')
+local pfiletype = require("plenary.filetype")
+local Path = require("plenary.path")
+local putils = require("telescope.previewers.utils")
+local git_utils = require("modules.gitops.utils.git")
 
 local commit_diff_as_was = git_utils.defaulter(function(opts)
   return git_utils.new_buffer_previewer({
-    title = 'Git Show Preview',
+    title = "Git Show Preview",
     teardown = git_utils.search_teardown,
 
     get_buffer_by_name = function(_, entry)
@@ -15,10 +15,10 @@ local commit_diff_as_was = git_utils.defaulter(function(opts)
     define_preview = function(self, entry, status)
       -- local cmd = { 'git', '--no-pager', 'show' }
       local cf = opts.current_file and Path:new(opts.current_file):make_relative(opts.cwd)
-      local value = cf and (entry.value.sha .. ':' .. cf) or entry.value.sha
-      local ft = cf and pfiletype.detect(value) or 'diff'
+      local value = cf and (entry.value.sha .. ":" .. cf) or entry.value.sha
+      local ft = cf and pfiletype.detect(value) or "diff"
       local cmd = git_utils.init_git_command(opts.bufnr, {
-        'show',
+        "show",
         value,
       })
 

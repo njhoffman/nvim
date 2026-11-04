@@ -1,17 +1,17 @@
-local output = require('modules.stats.output')
+local output = require("modules.stats.output")
 
 local get_stray_configs = function(state)
-  local scan = require('plenary.scandir')
-  local basepath = vim.fn.stdpath('config') .. '/lua/configs'
+  local scan = require("plenary.scandir")
+  local basepath = vim.fn.stdpath("config") .. "/lua/configs"
   local files = scan.scan_dir(basepath, {
     depth = 1,
-    search_pattern = '.lua$',
+    search_pattern = ".lua$",
   })
   local strays = {}
   for i, file in ipairs(files) do
-    local name_parts = vim.split(file, '/')
-    local config_name = string.gsub(name_parts[#name_parts], '.lua$', '')
-    if type(state.configs_checked[config_name]) == 'nil' then
+    local name_parts = vim.split(file, "/")
+    local config_name = string.gsub(name_parts[#name_parts], ".lua$", "")
+    if type(state.configs_checked[config_name]) == "nil" then
       local path = state.configs_paths[config_name] or config_name
       table.insert(strays, path)
     end
@@ -65,47 +65,47 @@ local get_dependency_configs = function(state)
 end
 
 local configs_stray = function(view, state)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = get_stray_configs(state)
-  output[view](lines, 'Lazy Configs Stray')
+  output[view](lines, "Lazy Configs Stray")
 end
 
 local configs_checked = function(view, state)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = get_checked_configs(state)
-  output[view](lines, 'Lazy Configs Checked')
+  output[view](lines, "Lazy Configs Checked")
 end
 
 local configs_exist = function(view, state)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = get_exist_configs(state)
-  output[view](lines, 'Lazy Configs Exists')
+  output[view](lines, "Lazy Configs Exists")
 end
 
 local configs_missing = function(view, state)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = get_missing_configs(state)
-  output[view](lines, 'Lazy Configs Missing')
+  output[view](lines, "Lazy Configs Missing")
 end
 
 local configs_dependency = function(view, state)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = get_dependency_configs(state)
-  output[view](lines, 'Lazy Configs Dependency')
+  output[view](lines, "Lazy Configs Dependency")
 end
 
 local configs_all = function(view, state)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = get_exist_configs(state)
-  output[view](lines, 'Lazy Configs All')
+  output[view](lines, "Lazy Configs All")
 end
 
 local configs_overview = function(view, state)
-  view = view or 'notify'
+  view = view or "notify"
   local configs = state.get_numbers().configs
-  local lines = configs.loaded .. ' loaded : ' .. configs.checked .. ' checked'
-  lines = lines .. '\n' .. configs.exist .. ' exist : ' .. configs.noexist .. ' not exist'
-  output[view](lines, 'Lazy Configs')
+  local lines = configs.loaded .. " loaded : " .. configs.checked .. " checked"
+  lines = lines .. "\n" .. configs.exist .. " exist : " .. configs.noexist .. " not exist"
+  output[view](lines, "Lazy Configs")
 end
 
 local stats = function(args, state)

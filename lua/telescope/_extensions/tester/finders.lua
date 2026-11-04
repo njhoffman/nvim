@@ -1,10 +1,10 @@
-local make_entry = require('telescope.make_entry')
-local finders = require('telescope.finders')
-local entry_display = require('telescope.pickers.entry_display')
+local make_entry = require("telescope.make_entry")
+local finders = require("telescope.finders")
+local entry_display = require("telescope.pickers.entry_display")
 -- local make_entry = require('modules.gitops.make_entry')
 
 local displayer = entry_display.create({
-  separator = ' ▏',
+  separator = " ▏",
   items = {
     { width = 5 },
     { remaining = true },
@@ -14,7 +14,7 @@ local displayer = entry_display.create({
 local function make_display(entry)
   -- concatenating multiline env values
   return displayer({
-    { entry.value[1], 'TelescopeResultsClass' },
+    { entry.value[1], "TelescopeResultsClass" },
     { entry.value[2] },
   })
 end
@@ -23,24 +23,24 @@ local results = {}
 
 local entry_maker = function(line)
   table.insert(results, line)
-  local entry = vim.fn.split(line, ' ')
+  local entry = vim.fn.split(line, " ")
   return {
     value = entry,
     display = make_display,
-    ordinal = string.format('%s %s', entry[1], entry[2]),
+    ordinal = string.format("%s %s", entry[1], entry[2]),
   }
 end
 
 local get_finder = function(opts, command)
   -- opts.entry_maker = opts.entry_maker or make_entry.gen_from_git_commits(opts)
   opts.entry_maker = opts.entry_maker or entry_maker
-  local finder_type = opts.finder_type or 'job_finder'
+  local finder_type = opts.finder_type or "job_finder"
   local _finders = {
     one_shot_finder = function(_opts)
       return finders.new_oneshot_job(command, _opts)
     end,
     dynamic_finder = function(_opts)
-      local a = require('plenary.async_lib')
+      local a = require("plenary.async_lib")
       local async = a.async
       _opts.fn = function(prompt)
         return _results
@@ -50,7 +50,7 @@ local get_finder = function(opts, command)
         fn = async(function(prompt)
           return { prompt }
         end),
-        entry_maker = require('telescope.make_entry').gen_from_string({}),
+        entry_maker = require("telescope.make_entry").gen_from_string({}),
       })
 
       -- local _results = {}

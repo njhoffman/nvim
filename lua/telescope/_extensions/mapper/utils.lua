@@ -1,5 +1,5 @@
-local Path = require('plenary.path')
-local job = require('plenary.job')
+local Path = require("plenary.path")
+local job = require("plenary.job")
 
 local M = {}
 
@@ -9,20 +9,20 @@ local record_buf_lines = function(record)
 
   local mode = record.mode
   local mode_str = nil
-  if mode == 'n' then
-    mode_str = 'normal'
-  elseif mode == 'i' then
-    mode_str = 'insert'
-  elseif mode == 'v' then
-    mode_str = 'visual'
-  elseif mode == 't' then
-    mode_str = 'terminal'
-  elseif mode == 'o' then
-    mode_str = 'operator pending'
-  elseif mode == 's' then
-    mode_str = 'select'
-  elseif mode == 'r' then
-    mode_str = 'replace'
+  if mode == "n" then
+    mode_str = "normal"
+  elseif mode == "i" then
+    mode_str = "insert"
+  elseif mode == "v" then
+    mode_str = "visual"
+  elseif mode == "t" then
+    mode_str = "terminal"
+  elseif mode == "o" then
+    mode_str = "operator pending"
+  elseif mode == "s" then
+    mode_str = "select"
+  elseif mode == "r" then
+    mode_str = "replace"
   else
     mode_str = mode
   end
@@ -30,24 +30,27 @@ local record_buf_lines = function(record)
   local filename
   local row
   if record.filename ~= nil then
-    filename = record.filename:gsub(vim.g.mapper_search_path .. '/', '')
+    filename = record.filename:gsub(vim.g.mapper_search_path .. "/", "")
   else
-    filename = ''
+    filename = ""
   end
   if record.row ~= nil then
     row = record.row
   else
-    row = ''
+    row = ""
   end
-  table.insert(lines, 'Id:           ' .. record.unique_id)
-  table.insert(lines, 'Category:     ' .. (record.category or ''))
-  table.insert(lines, 'Mode:         ' .. mode_str)
-  table.insert(lines, 'Keys:         ' .. record.lhs)
-  table.insert(lines, 'Command:      ' .. tostring(record.rhs))
-  table.insert(lines, 'Buffer only:  ' .. tostring(record.buffer_only))
-  table.insert(lines, 'Options:      ' .. vim.inspect(record.options):gsub('\n', ''):gsub('{  ', '{'):gsub('  ', ' '))
-  table.insert(lines, 'Definition:   ' .. filename .. ':' .. row)
-  table.insert(lines, '')
+  table.insert(lines, "Id:           " .. record.unique_id)
+  table.insert(lines, "Category:     " .. (record.category or ""))
+  table.insert(lines, "Mode:         " .. mode_str)
+  table.insert(lines, "Keys:         " .. record.lhs)
+  table.insert(lines, "Command:      " .. tostring(record.rhs))
+  table.insert(lines, "Buffer only:  " .. tostring(record.buffer_only))
+  table.insert(
+    lines,
+    "Options:      " .. vim.inspect(record.options):gsub("\n", ""):gsub("{  ", "{"):gsub("  ", " ")
+  )
+  table.insert(lines, "Definition:   " .. filename .. ":" .. row)
+  table.insert(lines, "")
   table.insert(lines, record.description)
 
   return lines
@@ -65,22 +68,22 @@ local scan_files_for_keymaps = function(records)
   end
 
   -- Use rg to find all of these regex in one run
-  local rg_regex = '(' .. table.concat(regex_table, '|') .. ')'
+  local rg_regex = "(" .. table.concat(regex_table, "|") .. ")"
   job
     :new({
-      command = 'rg',
+      command = "rg",
       args = {
         rg_regex,
         search_dir,
-        '--color=never',
-        '--line-number',
-        '--multiline',
-        '--multiline-dotall',
+        "--color=never",
+        "--line-number",
+        "--multiline",
+        "--multiline-dotall",
       },
-      cwd = '/usr/bin',
+      cwd = "/usr/bin",
       on_exit = function(j, return_val)
         if return_val ~= 0 then
-          print('Rg error')
+          print("Rg error")
           -- return
         end
 
@@ -100,7 +103,7 @@ local merge_scanned_records = function(records)
     for j, _ in pairs(records) do
       if string.find(rg_record, records[j].unique_id) ~= nil then
         -- Get the file path and line number for mappings
-        local rg_record_split = vim.split(rg_record, ':')
+        local rg_record_split = vim.split(rg_record, ":")
 
         -- Get file path
         records[j].filename = rg_record_split[1]
@@ -116,7 +119,7 @@ end
 -- Fetches mapper information to be passed to picker
 local get_mappers = function()
   -- Initialization
-  local records = require('lib.mapper').records
+  local records = require("lib.mapper").records
 
   if records == nil then
     return {}

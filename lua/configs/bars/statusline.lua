@@ -109,8 +109,13 @@ TEMPLATES = {
       nomodifiable_icon_hl = "BarsFt1",
       nomodifiable_icon = "󰌾 ",
       icon_hl = {
-        "BarsFt0", "BarsFt1", "BarsFt2",
-        "BarsFt3", "BarsFt4", "BarsFt5", "BarsFt6",
+        "BarsFt0",
+        "BarsFt1",
+        "BarsFt2",
+        "BarsFt3",
+        "BarsFt4",
+        "BarsFt5",
+        "BarsFt6",
       },
     },
 
@@ -188,8 +193,13 @@ TEMPLATES = {
 
     start_hl = "@comment",
     progress_hl = {
-      "BarsNormal4", "BarsNormal3", "BarsNormal3",
-      "BarsNormal2", "BarsNormal2", "BarsNormal1", "BarsNormal1",
+      "BarsNormal4",
+      "BarsNormal3",
+      "BarsNormal3",
+      "BarsNormal2",
+      "BarsNormal2",
+      "BarsNormal1",
+      "BarsNormal1",
     },
     finish_hl = "DiagnosticOk",
 
@@ -230,9 +240,12 @@ TEMPLATES = {
         return ""
       end
       return table.concat({
-        "%#BarsSL_ProjectLeftSep#", "",
-        "%#BarsSL_Project#", text,
-        "%#BarsSL_ProjectRightSep#", "",
+        "%#BarsSL_ProjectLeftSep#",
+        "",
+        "%#BarsSL_Project#",
+        text,
+        "%#BarsSL_ProjectRightSep#",
+        "",
       })
     end,
 
@@ -642,7 +655,16 @@ local stealth_components = {
     kind = "custom",
     value = function(buffer, window)
       local mode = vim.api.nvim_get_mode().mode:sub(1, 1)
-      local map = { n = "NOR", i = "INS", v = "VIS", V = "VIS", ["\22"] = "VIS", c = "CMD", R = "REP", t = "TER" }
+      local map = {
+        n = "NOR",
+        i = "INS",
+        v = "VIS",
+        V = "VIS",
+        ["\22"] = "VIS",
+        c = "CMD",
+        R = "REP",
+        t = "TER",
+      }
       return "%#StatusLine# " .. (map[mode] or mode) .. " "
     end,
   },
@@ -819,8 +841,14 @@ local pure_components = {
     value = function()
       local mode = vim.api.nvim_get_mode().mode:sub(1, 1)
       local map = {
-        n = "NORMAL", i = "INSERT", v = "VISUAL", V = "V-LINE",
-        ["\22"] = "V-BLOCK", c = "COMMAND", R = "REPLACE", t = "TERMINAL",
+        n = "NORMAL",
+        i = "INSERT",
+        v = "VISUAL",
+        V = "V-LINE",
+        ["\22"] = "V-BLOCK",
+        c = "COMMAND",
+        R = "REPLACE",
+        t = "TERMINAL",
       }
       return "%#BarsSL_PureMode#" .. (map[mode] or mode)
     end,
@@ -863,8 +891,10 @@ local pure_components = {
   {
     kind = "custom",
     value = function(buffer, window)
-      return "%#BarsSL_PurePos#" .. cursor_position.value(buffer, window)
-        .. " " .. line_percentage.value(buffer, window)
+      return "%#BarsSL_PurePos#"
+        .. cursor_position.value(buffer, window)
+        .. " "
+        .. line_percentage.value(buffer, window)
     end,
   },
 

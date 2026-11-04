@@ -1,66 +1,66 @@
-local output = require('modules.stats.output')
-local str_utils = require('plenary.strings')
+local output = require("modules.stats.output")
+local str_utils = require("plenary.strings")
 
 local tolines = function(records)
   local lines = {}
   -- meta.category, label, plugin, source, time
   for _, record in pairs(records.list) do
-    local line = '-- '
+    local line = "-- "
       .. record.mode
-      .. ' '
+      .. " "
       .. str_utils.align_str(record.lhs, 15)
-      .. str_utils.align_str(record.meta.virtual and '<virtual>' or tostring(record.rhs), 15)
-      .. (record.meta.desc or '')
+      .. str_utils.align_str(record.meta.virtual and "<virtual>" or tostring(record.rhs), 15)
+      .. (record.meta.desc or "")
     table.insert(lines, line)
   end
 end
 
 local all = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = tolines(records)
-  output[view](lines, 'All Keys List')
+  output[view](lines, "All Keys List")
 end
 
 local wk_todo = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = tolines(records)
-  output[view](lines, 'Whichkey Todo Keys List')
+  output[view](lines, "Whichkey Todo Keys List")
 end
 
 local wk_conflicts = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = tolines(records)
-  output[view](lines, 'Whichkey Conflicts Keys List')
+  output[view](lines, "Whichkey Conflicts Keys List")
 end
 
 local wk_ok = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = tolines(records)
-  output[view](lines, 'Whichkey Ok Keys List')
+  output[view](lines, "Whichkey Ok Keys List")
 end
 
 local mapper_todo = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = tolines(records)
-  output[view](lines, 'Mapper TODO Keys List')
+  output[view](lines, "Mapper TODO Keys List")
 end
 
 local mapper = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = tolines(records)
-  output[view](lines, 'Mapper Keys List')
+  output[view](lines, "Mapper Keys List")
 end
 
 local neovim_todo = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = tolines(records)
-  output[view](lines, 'Neovim TODO Keys List')
+  output[view](lines, "Neovim TODO Keys List")
 end
 
 local neovim = function(view, _, records)
-  view = view or 'logfile'
+  view = view or "logfile"
   local lines = tolines(records)
-  output[view](lines, 'Neovim Keys List')
+  output[view](lines, "Neovim Keys List")
 end
 
 local stats = function(args, stats, records)

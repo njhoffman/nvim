@@ -5,8 +5,7 @@
 -- update_on_change_command: The vim command to run during the update_on_change event. Note, that this command will only be run when the current file is not found in the new worktree. This option defaults to e . which opens the root directory of the new worktree.
 -- clearjumps_on_change: Every time you switch branches, your jumplist will be cleared so that you don't accidentally go backward to a different branch and edit the wrong files.
 -- autopush: When creating a new worktree, it will push the branch to the upstream then perform a git rebase
-require("git-worktree").setup({
-})
+require("git-worktree").setup({})
 require("telescope").load_extension("git_worktree")
 
 -- -- op = Operations.Switch, Operations.Create, Operations.Delete

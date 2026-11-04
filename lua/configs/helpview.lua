@@ -9,7 +9,6 @@ local cfg = {
     -- ignore_previews = {},
     -- ignore_buftypes = {},
     -- condition = nil,
-
   },
   vimdoc = {
     optionlinks = {

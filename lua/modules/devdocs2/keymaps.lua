@@ -1,19 +1,19 @@
 local M = {}
 
-local config = require('modules.devdocs2.config')
+local config = require("modules.devdocs2.config")
 
 local map = require("lib.mapper").map
 
 local function set_buf_keymap(key, action, bufnr, description)
-  map('n', key, action, { buffer = bufnr, desc = description })
+  map("n", key, action, { buffer = bufnr, desc = description })
 end
 
 local mappings = {
   open_in_browser = {
-    desc = 'Open in the browser',
+    desc = "Open in the browser",
     handler = function(entry)
-      local slug = entry.alias:gsub('-', '~')
-      vim.ui.open('https://devdocs.io/' .. slug .. '/' .. entry.link)
+      local slug = entry.alias:gsub("-", "~")
+      vim.ui.open("https://devdocs.io/" .. slug .. "/" .. entry.link)
     end,
   },
 }
@@ -22,7 +22,7 @@ local mappings = {
 ---@param entry DocEntry
 M.set_keymaps = function(bufnr, entry)
   for map, key in pairs(config.options.mappings) do
-    if type(key) == 'string' and key ~= '' then
+    if type(key) == "string" and key ~= "" then
       local value = mappings[map]
       if value then
         set_buf_keymap(key, function()

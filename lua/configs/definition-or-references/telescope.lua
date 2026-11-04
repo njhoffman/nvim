@@ -1,10 +1,10 @@
-local pickers = require('telescope.pickers')
-local finders = require('telescope.finders')
-local utils = require('telescope.utils')
-local entry_display = require('telescope.pickers.entry_display')
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local utils = require("telescope.utils")
+local entry_display = require("telescope.pickers.entry_display")
 
-local telescope_data = require('configs.definition-or-references.telescope-data')
-local telescope_sorter = require('configs.definition-or-references.telescope-sorter')
+local telescope_data = require("configs.definition-or-references.telescope-data")
+local telescope_sorter = require("configs.definition-or-references.telescope-sorter")
 
 local get_filename_fn = function()
   local bufnr_name_cache = {}
@@ -37,21 +37,24 @@ local gen_from_quickfix = function(opts)
     table.remove(items, 1)
   end
 
-  local displayer = entry_display.create({ separator = '▏', items = items })
+  local displayer = entry_display.create({ separator = "▏", items = items })
   local make_display = function(entry)
     local input = {}
     if not hidden then
-      table.insert(input, string.format('%s:%d:%d', utils.transform_path(opts, entry.filename), entry.lnum, entry.col))
+      table.insert(
+        input,
+        string.format("%s:%d:%d", utils.transform_path(opts, entry.filename), entry.lnum, entry.col)
+      )
     else
-      table.insert(input, string.format('%4d:%2d', entry.lnum, entry.col))
+      table.insert(input, string.format("%4d:%2d", entry.lnum, entry.col))
     end
 
     if show_line then
       local text = entry.text
       if opts.trim_text then
-        text = text:gsub('^%s*(.-)%s*$', '%1')
+        text = text:gsub("^%s*(.-)%s*$", "%1")
       end
-      text = text:gsub('.* | ', '')
+      text = text:gsub(".* | ", "")
       table.insert(input, text)
     end
 
@@ -64,7 +67,7 @@ local gen_from_quickfix = function(opts)
     local filename = vim.nonnil(entry.filename, get_filename(entry.bufnr))
     return {
       value = entry,
-      ordinal = (not hidden and filename or '') .. ' ' .. entry.text,
+      ordinal = (not hidden and filename or "") .. " " .. entry.text,
       display = make_display,
       bufnr = entry.bufnr,
       filename = filename,
@@ -81,21 +84,21 @@ local function handle_references_response(result)
   local locations = telescope_data.get_data(result)
   local opts = {
     include_current_line = false,
-    path_display = { 'tail' },
+    path_display = { "tail" },
   }
 
   pickers
     .new({}, {
-      prompt_title = 'LSP References',
+      prompt_title = "LSP References",
       finder = finders.new_table({
         results = locations,
         entry_maker = gen_from_quickfix(opts),
         -- entry_maker = require('telescope.make_entry').gen_from_quickfix(),
       }),
-      previewer = require('telescope.config').values.qflist_previewer({}),
-      path_display = { 'tail' },
+      previewer = require("telescope.config").values.qflist_previewer({}),
+      path_display = { "tail" },
       sorter = telescope_sorter,
-      theme = 'dropdown',
+      theme = "dropdown",
     })
     :find()
 end

@@ -1,7 +1,12 @@
 local headers = require("configs.alpha.headers")
 local utils = require("configs.alpha.utils")
 
-require("lib.mapper").map("n", "<C-CR>", "<cmd>Alpha<cr>", { nowait = true, desc = "load alpha start screen" })
+require("lib.mapper").map(
+  "n",
+  "<C-CR>",
+  "<cmd>Alpha<cr>",
+  { nowait = true, desc = "load alpha start screen" }
+)
 local header =
   { type = "text", val = headers.big_header, opts = { position = "center", hl = "Type" } }
 

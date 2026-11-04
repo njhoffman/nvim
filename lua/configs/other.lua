@@ -1,4 +1,4 @@
-local transformers = require('other-nvim.builtin.transformers')
+local transformers = require("other-nvim.builtin.transformers")
 
 local default_cfg = {
   -- by default there are no mappings enabled
@@ -23,13 +23,13 @@ local default_cfg = {
   rememberBuffers = true,
 
   keybindings = {
-    ['<cr>'] = 'open_file_by_command()',
-    ['<esc>'] = 'close_window()',
-    t = 'open_file_tabnew()',
-    o = 'open_file()',
-    q = 'close_window()',
-    v = 'open_file_vs()',
-    s = 'open_file_sp()',
+    ["<cr>"] = "open_file_by_command()",
+    ["<esc>"] = "close_window()",
+    t = "open_file_tabnew()",
+    o = "open_file()",
+    q = "close_window()",
+    v = "open_file_vs()",
+    s = "open_file_sp()",
   },
 
   hooks = {
@@ -58,13 +58,13 @@ local default_cfg = {
   style = {
     -- How the plugin paints its window borders
     -- Allowed values are none, single, double, rounded, solid and shadow
-    border = 'solid',
+    border = "solid",
 
     -- Column seperator for the window
-    seperator = '|',
+    seperator = "|",
 
     -- Indicator showing that the file does not yet exist
-    newFileIndicator = '(* new *)',
+    newFileIndicator = "(* new *)",
 
     -- width of the window in percent. e.g. 0.5 is 50%, 1 is 100%
     width = 0.7,
@@ -77,147 +77,147 @@ local default_cfg = {
 
 local ts_mappings = {
   {
-    pattern = '(.*).ts',
+    pattern = "(.*).ts",
     target = {
-      { target = '%1.spec.ts', context = 'test' },
-      { target = '%1.test.ts', context = 'test' },
+      { target = "%1.spec.ts", context = "test" },
+      { target = "%1.test.ts", context = "test" },
     },
   },
   {
-    pattern = '(.*).spec.ts',
-    target = '%1.ts',
-    context = 'test',
+    pattern = "(.*).spec.ts",
+    target = "%1.ts",
+    context = "test",
   },
   {
-    pattern = '(.*).test.ts',
-    target = '%1.ts',
-    context = 'test',
+    pattern = "(.*).test.ts",
+    target = "%1.ts",
+    context = "test",
   },
   {
-    pattern = '/(.*)/(.*).ts',
+    pattern = "/(.*)/(.*).ts",
     target = {
-      { target = '/test/%1/%2.ts', context = 'test' },
+      { target = "/test/%1/%2.ts", context = "test" },
     },
   },
   {
-    pattern = '/src/(.*)/(.*).ts$',
-    target = '/src/%1/%2\\(*.css\\|*.scss\\)',
-    context = 'style',
+    pattern = "/src/(.*)/(.*).ts$",
+    target = "/src/%1/%2\\(*.css\\|*.scss\\)",
+    context = "style",
   },
 }
 
 local js_mappings = {
   {
-    pattern = '/src/app/(.*)/.*.js$',
-    target = '/src/app/%1/%1.component.html',
-    context = 'component',
+    pattern = "/src/app/(.*)/.*.js$",
+    target = "/src/app/%1/%1.component.html",
+    context = "component",
   },
   {
-    pattern = '/src/app/(.*)/.*.html$',
-    target = '/src/app/%1/%1.component.js',
-    context = 'view',
+    pattern = "/src/app/(.*)/.*.html$",
+    target = "/src/app/%1/%1.component.js",
+    context = "view",
   },
   {
-    pattern = '/src/app/(.*)/.*.js$',
-    target = '/src/app/%1/%1.component.html',
-    context = 'component',
+    pattern = "/src/app/(.*)/.*.js$",
+    target = "/src/app/%1/%1.component.html",
+    context = "component",
   },
   {
-    pattern = '/src/app/(.*)/.*.spec.js$',
-    target = '/src/app/%1/%1.component.html',
-    context = 'test',
+    pattern = "/src/app/(.*)/.*.spec.js$",
+    target = "/src/app/%1/%1.component.html",
+    context = "test",
   },
   {
-    pattern = '/src/(.*)/.*.js$',
-    target = '/src/%1/\\(*.css\\|*.scss\\)',
-    context = 'style',
+    pattern = "/src/(.*)/.*.js$",
+    target = "/src/%1/\\(*.css\\|*.scss\\)",
+    context = "style",
   },
 }
 
 local angular_mappings = {
   {
-    pattern = '/(.*)/(.*)/([a-zA-Z-_]*).*.ts$',
+    pattern = "/(.*)/(.*)/([a-zA-Z-_]*).*.ts$",
     target = {
       {
-        target = '/%1/%2/%3.component.html',
-        context = 'html',
+        target = "/%1/%2/%3.component.html",
+        context = "html",
       },
       {
-        target = '/%1/%2/%3.component.scss',
-        context = 'scss',
+        target = "/%1/%2/%3.component.scss",
+        context = "scss",
       },
       {
-        target = '/%1/%2/%3.component.spec.ts',
-        context = 'test',
+        target = "/%1/%2/%3.component.spec.ts",
+        context = "test",
       },
     },
   },
   {
-    pattern = '/(.*)/(.*)/([a-zA-Z-_]*).*html$',
+    pattern = "/(.*)/(.*)/([a-zA-Z-_]*).*html$",
     target = {
       {
-        target = '/%1/%2/%3.component.ts',
-        context = 'component',
+        target = "/%1/%2/%3.component.ts",
+        context = "component",
       },
       {
-        target = '/%1/%2/%3.component.scss',
-        context = 'scss',
+        target = "/%1/%2/%3.component.scss",
+        context = "scss",
       },
       {
-        target = '/%1/%2/%3.component.spec.ts',
-        context = 'test',
+        target = "/%1/%2/%3.component.spec.ts",
+        context = "test",
       },
     },
   },
   {
-    pattern = '/(.*)/(.*)/([a-zA-Z-_]*).*scss$',
+    pattern = "/(.*)/(.*)/([a-zA-Z-_]*).*scss$",
     target = {
       {
-        target = '/%1/%2/%3.component.html',
-        context = 'html',
+        target = "/%1/%2/%3.component.html",
+        context = "html",
       },
       {
-        target = '/%1/%2/%3.component.ts',
-        context = 'component',
+        target = "/%1/%2/%3.component.ts",
+        context = "component",
       },
       {
-        target = '/%1/%2/%3.component.spec.ts',
-        context = 'test',
+        target = "/%1/%2/%3.component.spec.ts",
+        context = "test",
       },
     },
   },
   {
-    pattern = '/(.*)/(.*)/([a-zA-Z-_]*).*spec.ts$',
+    pattern = "/(.*)/(.*)/([a-zA-Z-_]*).*spec.ts$",
     target = {
       {
-        target = '/%1/%2/%3.component.html',
-        context = 'html',
+        target = "/%1/%2/%3.component.html",
+        context = "html",
       },
       {
-        target = '/%1/%2/%3.component.scss',
-        context = 'scss',
+        target = "/%1/%2/%3.component.scss",
+        context = "scss",
       },
       {
-        target = '/%1/%2/%3.component.ts',
-        context = 'component',
+        target = "/%1/%2/%3.component.ts",
+        context = "component",
       },
     },
   },
   {
-    pattern = '/(.*)/(.*).service.ts$',
+    pattern = "/(.*)/(.*).service.ts$",
     target = {
       {
-        target = '/%1/%2.service.spec.ts',
-        context = 'test',
+        target = "/%1/%2.service.spec.ts",
+        context = "test",
       },
     },
   },
   {
-    pattern = '/(.*)/(.*).service.spec.ts$',
+    pattern = "/(.*)/(.*).service.spec.ts$",
     target = {
       {
-        target = '/%1/%2.service.ts',
-        context = 'service',
+        target = "/%1/%2.service.ts",
+        context = "service",
       },
     },
   },
@@ -225,35 +225,35 @@ local angular_mappings = {
 
 local php_mappings = {
   {
-    pattern = '/app/Http/Controllers/(.*)Controller.php$',
-    target = '/resources/views/%1/',
-    context = 'controller',
-    transformer = 'camelToKebap',
+    pattern = "/app/Http/Controllers/(.*)Controller.php$",
+    target = "/resources/views/%1/",
+    context = "controller",
+    transformer = "camelToKebap",
   },
   {
-    pattern = '/resources/views/(.*)/.*',
-    target = '/app/Http/Controllers/%1Controller.php',
-    context = 'view',
-    transformer = 'kebapToCamel',
+    pattern = "/resources/views/(.*)/.*",
+    target = "/app/Http/Controllers/%1Controller.php",
+    context = "view",
+    transformer = "kebapToCamel",
   },
 }
 
 local lua_mappings = {
   {
-    pattern = '(.*)/(.*).spec.lua$',
-    target = '%1/%2.lua',
-    context = 'implementation',
+    pattern = "(.*)/(.*).spec.lua$",
+    target = "%1/%2.lua",
+    context = "implementation",
   },
   {
-    pattern = '(.*)/(.*).test.lua$',
-    target = '%1/%2.lua',
-    context = 'implementation',
+    pattern = "(.*)/(.*).test.lua$",
+    target = "%1/%2.lua",
+    context = "implementation",
   },
   {
-    pattern = '(.*)/(.*).lua$',
+    pattern = "(.*)/(.*).lua$",
     target = {
-      { target = '%1/%2.spec.lua', context = 'test' },
-      { target = '%1/%2.test.lua', context = 'test' },
+      { target = "%1/%2.spec.lua", context = "test" },
+      { target = "%1/%2.test.lua", context = "test" },
     },
   },
 }
@@ -261,18 +261,18 @@ local lua_mappings = {
 local cfg = {
   style = {
     -- How the plugin paints its window borders
-    border = 'rounded',
+    border = "rounded",
   },
   mappings = {
-    'livewire',
+    "livewire",
     -- 'angular',
-    'laravel',
-    'rails',
-    'golang',
+    "laravel",
+    "rails",
+    "golang",
     {
-      pattern = '/path/to/file/src/app/(.*)/.*.ext$',
-      target = '/path/to/file/src/view/%1/',
-      transformer = 'lowercase',
+      pattern = "/path/to/file/src/app/(.*)/.*.ext$",
+      target = "/path/to/file/src/view/%1/",
+      transformer = "lowercase",
     },
     unpack(lua_mappings),
     unpack(ts_mappings),
@@ -286,18 +286,18 @@ local cfg = {
   },
 }
 
-require('other-nvim').setup(cfg)
+require("other-nvim").setup(cfg)
 
 local map = require("lib.mapper").map
 
-map('n', '<leader>fa', '<cmd>:Other<CR>', { desc = 'l open other' })
+map("n", "<leader>fa", "<cmd>:Other<CR>", { desc = "l open other" })
 -- vim.api.nvim_set_keymap('n', '<leader>ftn', '<cmd>:OtherTabNew<CR>', { noremap = true, silent = true })
-map('n', '<leader>fN', '<cmd>:OtherSplit<CR>', { desc = 'l other split' })
-map('n', '<leader>fV', '<cmd>:OtherVSplit<CR>', { desc = 'l other vsplit' })
-map('n', '<leader>fc', '<cmd>:OtherClear<CR>', { desc = 'l other clear' })
+map("n", "<leader>fN", "<cmd>:OtherSplit<CR>", { desc = "l other split" })
+map("n", "<leader>fV", "<cmd>:OtherVSplit<CR>", { desc = "l other vsplit" })
+map("n", "<leader>fc", "<cmd>:OtherClear<CR>", { desc = "l other clear" })
 
 -- Context specific bindings
-map('n', '<leader>ft', '<cmd>:Other test<CR>', { desc = 'l open other test context' })
+map("n", "<leader>ft", "<cmd>:Other test<CR>", { desc = "l open other test context" })
 
 -- vim.api.nvim_set_keymap(
 --   'n',

@@ -168,7 +168,6 @@ local setup_keymaps = function()
   -- It starts with <c-n> to select a word then it seems to
   -- add keymaps with single keystrokes like `n` `N` `q` `Q`
   -- to go the next previous skip and remove actions respectively
-
 end
 
 function setup_hls()

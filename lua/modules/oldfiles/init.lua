@@ -1,25 +1,25 @@
-local logger = require('lib.logger').init('mru')
-local utils = require('modules.oldfiles.utils')
+local logger = require("lib.logger").init("mru")
+local utils = require("modules.oldfiles.utils")
 
 -- | if &bufhidden =~ 'wipe' && &buftype =~ 'nofile' && &buftype =~ hidden | silent! wshada | silent! !~/.shell/scripts/wshada.sh | endif",
 -- local shadaEventsViml = { { "BufWrite", "*", [[call ShadaWrite()]] }, { "Signal", "SIGUSR1", [[call ShadaRead()]] } }
 
 local config = {
   shada_events = {
-    'BufWritePost',
+    "BufWritePost",
     -- 'BufRead',
   },
 }
 
 vim.api.nvim_create_autocmd(config.shada_events, {
-  group = vim.api.nvim_create_augroup('ShaDaEvents', { clear = true }),
+  group = vim.api.nvim_create_augroup("ShaDaEvents", { clear = true }),
   callback = function(args)
     if args.file and #args.file > 0 and utils.file_exists(args.file) then
       local old_count = #vim.v.oldfiles
-      vim.cmd('silent! wshada')
-      os.execute('touch -a ' .. args.file)
-      vim.cmd('silent! rshada!')
-      logger:trace(args.event .. ' ' .. old_count .. ' -> ' .. #vim.v.oldfiles .. ' ' .. args.file)
+      vim.cmd("silent! wshada")
+      os.execute("touch -a " .. args.file)
+      vim.cmd("silent! rshada!")
+      logger:trace(args.event .. " " .. old_count .. " -> " .. #vim.v.oldfiles .. " " .. args.file)
     end
   end,
 })

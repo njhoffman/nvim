@@ -1,5 +1,5 @@
-local output = require('modules.tracker.output')
-local diff_delta = require('modules.tracker.diff.delta')
+local output = require("modules.tracker.output")
+local diff_delta = require("modules.tracker.diff.delta")
 
 -- local get_col_lengths = function(source, data)
 --   local col_lengths = {}

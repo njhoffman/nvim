@@ -1,4 +1,3 @@
-
 local default_config = {
   depth = math.huge,
   newline = "\n",

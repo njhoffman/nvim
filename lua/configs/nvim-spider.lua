@@ -16,8 +16,18 @@ spider_map({ "n", "o", "x" }, "e", "e", { desc = "󱇫 Spider-e" })
 spider_map({ "n", "o", "x" }, "b", "b", { desc = "󱇫 Spider-b" })
 spider_map({ "n", "o", "x" }, "ge", "ge", { desc = "󱇫 Spider-ge" })
 local map = mapper.map
-map("i", "<C-f>", "<Esc>l<cmd>lua require('spider').motion('w')<CR>i", { desc = "󱇫 spider-w ins" })
-map("i", "<C-b>", "<Esc><cmd>lua require('spider').motion('b')<CR>i", { desc = "󱇫 spider-b ins" })
+map(
+  "i",
+  "<C-f>",
+  "<Esc>l<cmd>lua require('spider').motion('w')<CR>i",
+  { desc = "󱇫 spider-w ins" }
+)
+map(
+  "i",
+  "<C-b>",
+  "<Esc><cmd>lua require('spider').motion('b')<CR>i",
+  { desc = "󱇫 spider-b ins" }
+)
 -- delete subword before cursor
 -- vim.keymap.set('i', '<C-w>', '<Esc>cvb', { remap = true })
 map("i", "<C-w>", "<Esc>cb")

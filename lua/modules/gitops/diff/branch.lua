@@ -1,8 +1,8 @@
-local pickers = require('telescope.pickers')
-local sorters = require('telescope.sorters')
-local ags_finders = require('modules.gitops.finders')
-local ags_previewers = require('modules.gitops.previewers')
-local git_utils = require('modules.gitops.utils.git')
+local pickers = require("telescope.pickers")
+local sorters = require("telescope.sorters")
+local ags_finders = require("modules.gitops.finders")
+local ags_previewers = require("modules.gitops.previewers")
+local git_utils = require("modules.gitops.utils.git")
 
 local M = {}
 
@@ -11,7 +11,10 @@ M.diff_branch = function(opts)
   local bufnr = vim.fn.bufnr()
   pickers
     .new(opts, {
-      results_title = 'Modified ' .. git_utils.base_branch() .. ' -> ' .. git_utils.current_branch(),
+      results_title = "Modified "
+        .. git_utils.base_branch()
+        .. " -> "
+        .. git_utils.current_branch(),
       sorter = sorters.get_fuzzy_file(),
       finder = ags_finders.changed_files_on_branch(bufnr),
       previewer = ags_previewers.changed_files_on_current_branch(),
@@ -20,7 +23,7 @@ M.diff_branch = function(opts)
 end
 
 M.diff_branch_summary = function()
-  return 'diff branch'
+  return "diff branch"
 end
 
 return M

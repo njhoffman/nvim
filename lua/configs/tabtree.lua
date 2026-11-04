@@ -6,8 +6,8 @@ local default_cfg = {
   --key_bindings_disabled = true,
 
   key_bindings = {
-    next = '<Tab>',
-    previous = '<S-Tab>',
+    next = "<Tab>",
+    previous = "<S-Tab>",
   },
 
   -- use :InspectTree to discover the (capture group)
@@ -51,8 +51,8 @@ local cfg = {
   debug = false,
   key_bindings_disabled = false,
   key_bindings = {
-    next = '<Tab>',
-    previous = '<S-Tab>',
+    next = "<Tab>",
+    previous = "<S-Tab>",
   },
   language_configs = {
     python = {
@@ -81,4 +81,4 @@ local cfg = {
   default_config = default_query,
 }
 
-require('tabtree').setup(cfg)
+require("tabtree").setup(cfg)

@@ -1,19 +1,19 @@
-local make_entry = require('telescope.make_entry')
-local pickers = require('telescope.pickers')
-local git_utils = require('modules.gitops.utils.git')
-local finders = require('telescope.finders')
-local actions = require('telescope.actions')
-local utils = require('telescope.utils')
-local previewers = require('telescope.previewers')
-local action_state = require('telescope.actions.state')
-local conf = require('telescope.config').values
+local make_entry = require("telescope.make_entry")
+local pickers = require("telescope.pickers")
+local git_utils = require("modules.gitops.utils.git")
+local finders = require("telescope.finders")
+local actions = require("telescope.actions")
+local utils = require("telescope.utils")
+local previewers = require("telescope.previewers")
+local action_state = require("telescope.actions.state")
+local conf = require("telescope.config").values
 
 local M = {}
 
 M.status = function(opts)
   opts = opts or {}
   if opts.is_bare then
-    vim.notify('This operation must be run in a work tree', vim.log.levels.ERROR)
+    vim.notify("This operation must be run in a work tree", vim.log.levels.ERROR)
     return
   end
 
@@ -21,14 +21,14 @@ M.status = function(opts)
     local expand_dir = vim.nonnil(opts.expand_dir, true)
 
     local bufnr = vim.fn.bufnr()
-    local args = { 'status', '-z', '--', '.' }
+    local args = { "status", "-z", "--", "." }
     if expand_dir then
-      table.insert(args, #args, '-uall')
+      table.insert(args, #args, "-uall")
     end
     local git_command = opts.git_command or git_utils.init_git_command(bufnr, args)
 
     opts.entry_maker = vim.nonnil(opts.entry_maker, make_entry.gen_from_git_status(opts))
-    opts.split_char = '\0'
+    opts.split_char = "\0"
     return finders.new_oneshot_job(git_command, opts)
   end
 
@@ -39,7 +39,7 @@ M.status = function(opts)
 
   pickers
     .new(opts, {
-      prompt_title = 'Git Status',
+      prompt_title = "Git Status",
       finder = initial_finder,
       previewer = previewers.git_file_diff.new(opts),
       sorter = conf.file_sorter(opts),
@@ -51,8 +51,8 @@ M.status = function(opts)
               count = count + 1
             end
           end
-          if count == 0 and action_state.get_current_line() == '' then
-            vim.notify('No changes found', vim.log.levels.INFO)
+          if count == 0 and action_state.get_current_line() == "" then
+            vim.notify("No changes found", vim.log.levels.INFO)
           end
         end,
       },
@@ -70,7 +70,7 @@ M.status = function(opts)
           end,
         })
 
-        map({ 'i', 'n' }, '<tab>', actions.git_staging_toggle)
+        map({ "i", "n" }, "<tab>", actions.git_staging_toggle)
         return true
       end,
     })
@@ -78,7 +78,7 @@ M.status = function(opts)
 end
 
 M.status_summary = function(bufnr)
-  return 'status'
+  return "status"
 end
 
 return M

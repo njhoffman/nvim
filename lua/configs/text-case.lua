@@ -85,7 +85,6 @@ local key_defs = {
   { method_name = "to_path_case",     quick_replace = "gttf", operator = "gtof", lsp_rename = "gtrf" },
 }
 
-
 local map = require("lib.mapper").map
 local prefix = require("lib.mapper").prefix
 

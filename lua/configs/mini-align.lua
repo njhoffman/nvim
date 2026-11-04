@@ -1,9 +1,9 @@
 -- No need to copy this inside `setup()`. Will be used automatically.
-local align = require('mini.align')
+local align = require("mini.align")
 
 local ns_id = {
   -- Track user input
-  input = vim.api.nvim_create_namespace('MiniAlignInput'),
+  input = vim.api.nvim_create_namespace("MiniAlignInput"),
 }
 
 local user_input = function(prompt, text)
@@ -12,17 +12,17 @@ local user_input = function(prompt, text)
   local on_key = vim.on_key or vim.register_keystroke_callback
   local was_cancelled = false
   on_key(function(key)
-    if key == '\27' then
+    if key == "\27" then
       was_cancelled = true
     end
   end, ns_id.input)
 
   -- Ask for input
-  local opts = { prompt = '(mini.align) ' .. prompt .. ': ', default = text or '' }
-  vim.cmd('echohl Question')
+  local opts = { prompt = "(mini.align) " .. prompt .. ": ", default = text or "" }
+  vim.cmd("echohl Question")
   -- Use `pcall` to allow `<C-c>` to cancel user input
   local ok, res = pcall(vim.fn.input, opts)
-  vim.cmd('echohl None | redraw')
+  vim.cmd("echohl None | redraw")
 
   -- Stop key listening
   on_key(nil, ns_id.input)
@@ -37,65 +37,65 @@ local opts = {
   modifiers = {
     j = function(_, opts)
       local next_option = ({
-        left = 'center',
-        center = 'right',
-        right = 'none',
-        none = 'left',
+        left = "center",
+        center = "right",
+        right = "none",
+        none = "left",
       })[opts.justify_side]
-      opts.justify_side = next_option or 'left'
+      opts.justify_side = next_option or "left"
     end,
     -- Use 'T' modifier to remove both whitespace and indent
     T = function(steps, _)
-      table.insert(steps.pre_justify, align.gen_step.trim('both', 'remove'))
+      table.insert(steps.pre_justify, align.gen_step.trim("both", "remove"))
     end,
     -- specify columns to align
-    ['n'] = function(steps, _)
-      local input = user_input('Enter column expression')
-      local step = align.gen_step.filter('n == ' .. input)
+    ["n"] = function(steps, _)
+      local input = user_input("Enter column expression")
+      local step = align.gen_step.filter("n == " .. input)
       if step == nil then
         return
       end
       table.insert(steps.pre_justify, step)
     end,
-    ['1'] = function(steps, _)
-      table.insert(steps.pre_justify, align.gen_step.filter('n == 1'))
+    ["1"] = function(steps, _)
+      table.insert(steps.pre_justify, align.gen_step.filter("n == 1"))
     end,
-    ['2'] = function(steps, _)
-      table.insert(steps.pre_justify, align.gen_step.filter('n == 2'))
+    ["2"] = function(steps, _)
+      table.insert(steps.pre_justify, align.gen_step.filter("n == 2"))
     end,
-    ['3'] = function(steps, _)
-      table.insert(steps.pre_justify, align.gen_step.filter('n == 3'))
+    ["3"] = function(steps, _)
+      table.insert(steps.pre_justify, align.gen_step.filter("n == 3"))
     end,
-    ['4'] = function(steps, _)
-      table.insert(steps.pre_justify, align.gen_step.filter('n == 4'))
+    ["4"] = function(steps, _)
+      table.insert(steps.pre_justify, align.gen_step.filter("n == 4"))
     end,
-    ['5'] = function(steps, _)
-      table.insert(steps.pre_justify, align.gen_step.filter('n == 5'))
+    ["5"] = function(steps, _)
+      table.insert(steps.pre_justify, align.gen_step.filter("n == 5"))
     end,
-    ['6'] = function(steps, _)
-      table.insert(steps.pre_justify, align.gen_step.filter('n == 6'))
+    ["6"] = function(steps, _)
+      table.insert(steps.pre_justify, align.gen_step.filter("n == 6"))
     end,
-    ['7'] = function(steps, _)
-      table.insert(steps.pre_justify, align.gen_step.filter('n == 7'))
+    ["7"] = function(steps, _)
+      table.insert(steps.pre_justify, align.gen_step.filter("n == 7"))
     end,
-    ['8'] = function(steps, _)
-      table.insert(steps.pre_justify, align.gen_step.filter('n == 8'))
+    ["8"] = function(steps, _)
+      table.insert(steps.pre_justify, align.gen_step.filter("n == 8"))
     end,
-    ['9'] = function(steps, _)
-      table.insert(steps.pre_justify, align.gen_step.filter('n == 9'))
+    ["9"] = function(steps, _)
+      table.insert(steps.pre_justify, align.gen_step.filter("n == 9"))
     end,
     -- last column
-    ['0'] = function(steps, _)
-      table.insert(steps.pre_justify, align.gen_step.filter('n >= (N - 1)'))
+    ["0"] = function(steps, _)
+      table.insert(steps.pre_justify, align.gen_step.filter("n >= (N - 1)"))
     end,
   },
   mappings = {
-    start = 'ga',
-    start_with_preview = 'gA',
+    start = "ga",
+    start_with_preview = "gA",
   },
 }
 
-require('mini.align').setup(opts)
+require("mini.align").setup(opts)
 
 -- Press s to enter split Lua pattern.
 -- Press j to choose justification side from available ones ("left", "center", "right", "none").

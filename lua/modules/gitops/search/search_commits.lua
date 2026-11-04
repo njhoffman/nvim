@@ -1,9 +1,9 @@
-local pickers = require('telescope.pickers')
-local ags_finders = require('modules.gitops.finders')
-local ags_previewers = require('modules.gitops.previewers')
-local git_utils = require('modules.gitops.utils.git')
+local pickers = require("telescope.pickers")
+local ags_finders = require("modules.gitops.finders")
+local ags_previewers = require("modules.gitops.previewers")
+local git_utils = require("modules.gitops.utils.git")
 
-local ags_mappings = require('modules.gitops.mappings')
+local ags_mappings = require("modules.gitops.mappings")
 
 local M = {}
 
@@ -16,8 +16,8 @@ M.search_commits = function(opts)
   local count = git_utils.file_count(bufnr, opts.cwd or vim.fn.getcwd())
   pickers
     .new({
-      prompt_title = 'Git Grep Contents',
-      results_title = 'Git Grep All (' .. count .. ' files)',
+      prompt_title = "Git Grep Contents",
+      results_title = "Git Grep All (" .. count .. " files)",
       finder = ags_finders.git_log_content(bufnr, {}),
       previewer = ags_previewers.diff_content_previewer(),
       attach_mappings = function(_, map)

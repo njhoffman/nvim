@@ -61,7 +61,8 @@ local function make_display(entry)
     pcall(vim.api.nvim_set_hl, 0, swatch_hl, { fg = hex })
   end
 
-  local source_tag = entry.value.source and ("[" .. entry.value.source:gsub("%.lua$", "") .. "]") or ""
+  local source_tag = entry.value.source and ("[" .. entry.value.source:gsub("%.lua$", "") .. "]")
+    or ""
 
   return displayer({
     { "██", swatch_hl or "NonText" },

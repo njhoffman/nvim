@@ -32,7 +32,10 @@ function M.write(path, data, index)
   if vim.fn.isdirectory(dir) == 0 then
     local ok, err = pcall(vim.fn.mkdir, dir, "p")
     if not ok then
-      vim.notify("UnicodePlugin: Error creating directory: " .. dir .. " " .. (err or ""), vim.log.levels.WARN)
+      vim.notify(
+        "UnicodePlugin: Error creating directory: " .. dir .. " " .. (err or ""),
+        vim.log.levels.WARN
+      )
       return
     end
   end

@@ -1,11 +1,11 @@
-local actions = require('telescope.actions')
-local action_state = require('telescope.actions.state')
-local conf = require('telescope.config').values
-local finders = require('telescope.finders')
-local internal = require('telescope.builtin.__internal')
-local state = require('telescope.state')
-local pickers = require('telescope.pickers')
-local make_entry = require('telescope.make_entry')
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+local conf = require("telescope.config").values
+local finders = require("telescope.finders")
+local internal = require("telescope.builtin.__internal")
+local state = require("telescope.state")
+local pickers = require("telescope.pickers")
+local make_entry = require("telescope.make_entry")
 
 -- local display = require("telescope._extensions.find_pickers.display")
 -- local generate = require("telescope._extensions.find_pickers.generate")
@@ -15,9 +15,9 @@ local make_entry = require('telescope.make_entry')
 -- end
 
 local get_cached_pickers = function(opts)
-  local cached_pickers = state.get_global_key('cached_pickers')
+  local cached_pickers = state.get_global_key("cached_pickers")
   if cached_pickers == nil or vim.tbl_isempty(cached_pickers) then
-    vim.notify('builtin.pickers: No cached picker(s).', 3)
+    vim.notify("builtin.pickers: No cached picker(s).", 3)
     return
   end
   -- clear cache picker for immediate pickers.new and pass option to resumed picker
@@ -34,7 +34,7 @@ return function(opts)
 
   pickers
     .new(opts, {
-      prompt_title = 'Pickers',
+      prompt_title = "Pickers",
       finder = finders.new_table({
         results = cached_pickers,
         entry_maker = opts.entry_maker or make_entry.gen_from_picker(opts),
@@ -48,11 +48,11 @@ return function(opts)
           local selection_index = current_picker:get_index(current_picker:get_selection_row())
           actions.close(prompt_bufnr)
           opts.cache_picker = opts._cache_picker
-          opts['cache_index'] = selection_index
-          opts['initial_mode'] = cached_pickers[selection_index].initial_mode
+          opts["cache_index"] = selection_index
+          opts["initial_mode"] = cached_pickers[selection_index].initial_mode
           internal.resume(opts)
         end)
-        map({ 'i', 'n' }, '<C-x>', actions.remove_selected_picker)
+        map({ "i", "n" }, "<C-x>", actions.remove_selected_picker)
         return true
       end,
     })

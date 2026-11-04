@@ -1,11 +1,10 @@
-
-local utils = require('telescope._extensions.devdocs.utils')
-local entry_display = require('telescope.pickers.entry_display')
+local utils = require("telescope._extensions.devdocs.utils")
+local entry_display = require("telescope.pickers.entry_display")
 
 local create_displayer = function(widths, state)
   local displayer = entry_display.create({
-    separator = ' ▏',
-    separator_hl = 'TelescopeResultsSeparator',
+    separator = " ▏",
+    separator_hl = "TelescopeResultsSeparator",
     items = {
       { width = widths.slug },
       { width = 25 },
@@ -22,7 +21,7 @@ local make_display = function(widths)
       displayer = create_displayer(widths, state)
     end
     return displayer({
-      { entry.value.alias, 'TelescopeResultsClass' },
+      { entry.value.alias, "TelescopeResultsClass" },
       { entry.value.type },
       { entry.value.name },
     })
@@ -32,7 +31,7 @@ end
 local create_entry_maker = function(installed)
   local widths = utils.get_widths(installed)
   local entry_maker = function(line)
-    local parts = vim.fn.split(line, '\t')
+    local parts = vim.fn.split(line, "\t")
     local value = {
       alias = parts[1],
       type = parts[2],
@@ -45,7 +44,7 @@ local create_entry_maker = function(installed)
     return {
       value = value,
       display = make_display(widths),
-      ordinal = string.format('%s', value.alias, value.type, value.name),
+      ordinal = string.format("%s", value.alias, value.type, value.name),
     }
   end
   return entry_maker

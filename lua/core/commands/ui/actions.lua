@@ -56,7 +56,6 @@ local close_multi = function(skip_prompt)
   --   vim.api.nvim_command('silent! ' .. config.cmd .. (skip_prompt == true and '!' or ''))
 end
 
-
 local close_multi_no_prompt = function()
   close_multi(true)
 end
