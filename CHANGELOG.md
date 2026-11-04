@@ -5,6 +5,13 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.30.4] - 2026-11-03
+
+### Changed
+
+- Re-recorded the 0.30.3 benchmarks on a quiet machine (load 0.77, peak 0.9). The row recorded by its push was measured
+  while other compile jobs pushed load past 40, showing startup ready at 3780 ms; it is 739 ms.
+
 ## [0.30.3] - 2026-11-03
 
 ### Changed
