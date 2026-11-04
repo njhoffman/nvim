@@ -1,6 +1,7 @@
 -- Log files: tree-sitter highlighting from parser/log.so and queries/log/highlights.scm (grammar in
 -- parsers/tree-sitter-log). Without the parser, Neovim's runtime syntax/log.vim still applies.
--- Groups are the ones from the old nvimpager syntax/log.vim where it set one, else the runtime's.
+-- nord-nick sets these @log.* groups itself; the links are a fallback for other colorschemes, and
+-- `default` keeps them from overriding it.
 local links = {
   ["@log.date"] = "Identifier",
   ["@log.time"] = "Function",
