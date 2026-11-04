@@ -1,6 +1,5 @@
 local utils = require("telescope.utils")
 local parse = require("configs.telescope.which_key.parse")
--- TODO: get function name desc like get_registered_mappings
 local get_default_mappings = function()
   -- stylua: ignore
   return {

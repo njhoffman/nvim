@@ -1,4 +1,3 @@
--- TODO: replace this and unimpaired with custom command, add new lines if at end of file
 --
 local default_cfg = {
   mappings = {

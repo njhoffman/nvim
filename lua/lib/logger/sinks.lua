@@ -36,8 +36,6 @@ M.notify = function()
   })
 end
 
--- TODO: get tmux pane width
--- TODO: make clear function that wipes history outputs new lines
 local banner_files = {}
 local log_banner = function(file)
   local bar = string.rep("_", 70, "") --

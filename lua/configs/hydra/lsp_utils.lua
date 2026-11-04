@@ -50,7 +50,6 @@ end
 local toggle_diagnostic = function(type)
   return function()
     local old_config = vim.diagnostic.config()
-    -- TODO: make into a map, add virtual text handler
     if type == "buffer" then
       vim.diagnostic.enable(not vim.diagnostic.is_enabled({ bufnr = 0 }), { bufnr = 0 })
     elseif type == "global" then

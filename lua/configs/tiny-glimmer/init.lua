@@ -106,7 +106,6 @@ local cfg = {
       },
     },
     paste = {
-      -- TODO: enable for other paste keys
       enabled = true,
       -- paste_mapping = has_yanky and { lhs = "p", rhs = "<Plug>(YankyPutAfter)" } or nil,
       -- Paste_mapping = has_yanky and { lhs = "P", rhs = "<Plug>(YankyPutBefore)" } or nil,      default_animation = {

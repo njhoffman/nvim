@@ -62,7 +62,6 @@ local get_help_tags = function()
     for _, file in ipairs(tag_files[lang] or {}) do
       local lines = vim.split(Path:new(file):read(), '\n', true)
       for _, line in ipairs(lines) do
-        -- TODO: also ignore tagComment starting with ';'
         if not line:match('^!_TAG_') then
           local fields = vim.split(line, delimiter, true)
           if #fields == 3 and not tags_map[fields[1]] then

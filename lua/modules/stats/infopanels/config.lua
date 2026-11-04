@@ -55,8 +55,6 @@ local resolve_table_opts = function(priority, base)
   return smarter_depth_2_extend(priority, base)
 end
 
--- TODO: Add other major configuration points here.
--- selection_strategy
 
 local config = {}
 config.smarter_depth_2_extend = smarter_depth_2_extend

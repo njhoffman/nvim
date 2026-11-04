@@ -24,7 +24,6 @@ local default_config = {
   -- does not make sense for:
   -- grep string
   -- live grep (too many results)
-  -- TODO: buffers: might be useful for project/session, but: we must allow preprocesseing the string
   --
   -- oldfiles: are per definition already recent. If you need frecency files: use telescope-frecency
   -- command history: already recent

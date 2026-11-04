@@ -14,7 +14,6 @@
 
 -- bind_keys["j"] = registers.move_cursor_down()
 -- bind_keys["k"] = registers.move_cursor_up()
--- TODO: fix j/k mappings, add live preview for paste/insert, add line count
 
 local init_window = function(default_options)
   -- -- ⌜⌟⌜⌝ ┘｢｣  ┒┑┓┏┌┍┎ 🭼 🭿 └ ┕ ┖ ┗   ⎡ ⎣ ⎤ ⎦ ˨   ◝ ◟ ◞ ╰ 「」ꜚ﹁ ⇱ ﹂｢｣ ╮ ╯╰ ╭ 𛲖─ ━ ━ ─ ＿ ⎽⎯🭻▁

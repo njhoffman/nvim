@@ -27,8 +27,6 @@ local default_cfg = {
   -- 'cover_or_nearest', 'next', 'prev', 'nearest'
 }
 
--- TODO: yank surround text-obj
--- TODO: n/N traverses them
 
 local custom_surroundings = {
   -- Lua long brackets - ysiwS

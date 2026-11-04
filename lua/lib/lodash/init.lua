@@ -43,6 +43,5 @@ for l_cat, l_fns in pairs(fn_map.lodash) do
   end
 end
 
--- TODO: merge descriptions and examples with lookups into table
 
 return utils

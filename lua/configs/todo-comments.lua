@@ -42,8 +42,6 @@ local cfg = {
 
 require('todo-comments').setup(cfg)
 
--- TODO: testing
--- HACK: hack
 -- FIX: a fix
 -- WARN: this is a warning
 -- PERF: this is for perf

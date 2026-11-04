@@ -41,7 +41,6 @@ local handlers = {
   -- HighlightSearchOff = buffers.hlsearch_off(),
 }
 
--- TODO: automatically build helptags in doc directory
 
 local autocmds = {
   CursorLine = { { 'BufEnter'}, 'NvimTree', 'setlocal cursorline' },
@@ -69,7 +68,6 @@ local autocmds = {
     -- { { 'BufNewFile', 'BufRead' }, '.env.*',              'setlocal ft=bash syn=bash' },
     -- { { 'BufNewFile', 'BufRead' }, '*.env',               'setlocal ft=config syn=config' },
     { { 'BufNewFile', 'BufRead' }, 'conf.*',              'setlocal ft=config syn=config' },
-    -- TODO: bring back toggler between indented lines (pandoc vs markdown)
     -- { { 'BufNewFile', 'BufRead' }, '*.md',                'setlocal ft=markdown syn=pandoc' },
     { { 'BufNewFile', 'BufRead' }, '.vimtasks',           'setlocal ft=asynctasks' },
     { { 'BufNewFile', 'BufRead' }, '*.cheat',             'setlocal ft=bash | let b:is_bash =1' },

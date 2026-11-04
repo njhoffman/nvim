@@ -206,7 +206,6 @@ local _create_window = function()
     callback = _close_window,
   })
 
-  -- TODO: make hover out optional
   -- Register an autocommand to trigger events when the cursor moves
   if type(options.events.on_register_highlighted) == "function" then
     state._previous_cursor_line = nil
@@ -217,13 +216,11 @@ local _create_window = function()
     })
   end
 
-  -- TODO: save source_ft with register
   -- local source_ft = vim.api.nvim_get_option_value("filetype", {
   --   buf = state._preview_buffer,
   -- }) or "registers"
   local source_ft = "registers"
 
-  -- TODO: add option for this
   vim.api.nvim_set_option_value("syntax", source_ft, { buf = state._buffer })
 
   -- Make the buffer content cut-off instead of starting on new line

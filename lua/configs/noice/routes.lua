@@ -81,7 +81,6 @@ local routes = {
     filter = {
       any = {
         -- hide treesitter out of bounds messages
-        -- TODO: set syn to filetype after this happens
         { event = "msg_show", find = "^Error in decoration provider treesitter/highlighter.line:" },
         -- hide hover no information available
         { event = "msg_show", find = "No information available" },

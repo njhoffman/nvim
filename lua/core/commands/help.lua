@@ -9,9 +9,6 @@ local function get_help_cursor()
   -- end
 end
 
--- TODO: edit command on helpfile should open src on dest
--- TODO: automatic export on file save
--- TODO: consistent tag prefixes
 
 local cfg = {
   dir_src = vim.fn.stdpath('config') .. '/doc/helpfiles',

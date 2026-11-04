@@ -98,7 +98,6 @@ local defaults = {
 }
 
 -- local install_root_dir = table.concat({ vim.fn.stdpath("data"), "lsp_servers" }, "/")
--- TODO: do I need this?
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local config = {

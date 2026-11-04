@@ -52,7 +52,6 @@ local ts = ai.gen_spec.treesitter
 local pair = ai.gen_spec.pair
 
 local opts = {
-  -- TODO: investigate notification errors
   silent = false,
   mappings = {
     -- Main textobject prefixes

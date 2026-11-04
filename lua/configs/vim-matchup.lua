@@ -47,7 +47,6 @@ vim.keymap.del("i", "<C-G>%")
 -- x  !*    z%
 -- stylua: ignore end
 
--- TODO: map C-% to [% 
 --
 -- %                     on a recognized word, go forwards to its next matching word (inclusive)
 --                       If at a close word, cycle back to the corresponding open word.

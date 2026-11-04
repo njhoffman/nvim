@@ -197,8 +197,9 @@ implementing.
 - [ ] **Fold sub-TODO files into this one.** (p2) [docs] `lua/configs/bars/TODO.md`, `lua/configs/vimade/TODO.md` and
       `lua/histories/TODO.md` hold open work that `/todo` doesn't see. Move open items here, move design notes to
       `docs/`, and delete the files.
-- [ ] **Triage TODO/FIXME comments.** (p2) [chore] 248 in `lua/` outside plenary, mostly `configs/` (68 files) and
-      `telescope/` (20). Turn real work into items here and delete the rest.
+- [x] **Triage TODO/FIXME comments.** (p2) [chore] v0.31.2: comments in own code moved to "Ideas from old code comments"
+      below, stale ones deleted. What remains: comments from upstream in vendored copies (frecency, egrepify, undo,
+      find_pickers, lsp_lines, structlog and others), linked `HACK` notes, and the ones inside dead code.
 - [ ] **Consistent comments, style and structure.** (p2) [refactor] Make module layout and comments consistent: a
       one-line header comment per module, short comments on non-obvious code only, StyLua across the tree, and one
       structure for plugin configs (spec in `plugins/`, options in `configs/<name>.lua`). Do this per directory after
@@ -251,3 +252,53 @@ terminal environment.
       ways to make them more like nvim.
 - [ ] **Generate integration code.** (p3) [feature] For the common targets (zsh, tmux, fzf, bat, lazygit), write the
       config snippets automatically from the report, for review before they land in `~/.shell` or `~/.tmux.conf`.
+
+## 10. Ideas from old code comments
+
+Collected from `TODO` comments in the code on 2026-11-04 (v0.31.2). Nothing here has been checked for still being wanted;
+drop what no longer is.
+
+- [ ] **Keymap ideas.** (p3) [feature] `core/keymaps.lua`: detect fold lines for the variable at the old line 82; tell vim
+      and Lua apart and strip comments in the line-execute mapping; visual `<C-u>` / `<C-w>`; a which-key screen for the
+      command line; operator mapping with shift/ctrl enter in visual mode; disable `<C-V>` in alacritty; return to the
+      original position after select all; save the last visual selection before undo; swap and toggle `_` and `|`; a
+      git-dir precheck for git mappings. `oil.open_float` did not work from a `<cmd>` mapping.
+- [ ] **Command ideas.** (p3) [feature] `core/commands/`: attach buffer commands to the alternate service; toggle search
+      and very magic modes in the command line and reopen it to show a notification; resume the visual selection after
+      switching; handle `[-]` and `[ ]` in the Markdown autocmd; start page as last buffer; more `<C-S->` window keys.
+      `help.lua`: editing a helpfile opens its source, export on save, consistent tag prefixes.
+- [ ] **Autocommand and startup ideas.** (p3) [feature] Build helptags in `doc/` automatically; bring back the indented
+      lines toggle (pandoc vs markdown); handle startup messages and `v:errmsg`.
+- [ ] **Use the Lua API for abbreviations.** (p3) [refactor] `core/abbreviations.lua` and `utils/core.lua` `ftAbbr` still
+      call `inoreabbrev`; `vim.keymap.set("ia", ...)` has been available since Neovim 0.10.
+- [ ] **Noice ideas.** (p3) [feature] `configs/noice/`: popup with previous messages collapsed; scrolling and prepending
+      in multiline views; enter on shift+enter, clear on ctrl+enter; a hotkey to toggle notify/popup/split views; a
+      cmdline-and-popup preset; live eval (lua, shell, json, html, sql, git, chrome-remote, awk/grep/sed) with stackable
+      data sources, help and examples; set the syntax to the filetype on the route at `routes.lua:84`.
+- [ ] **Mini plugin ideas.** (p3) [feature] align: a column alignment step and a help screen. bracketed: dynamic `[[` and
+      `]]`. move: replace it and unimpaired with a custom command that adds lines at the end of the file. operators:
+      shift/ctrl enter in visual mode. surround: yank-surround text object, `n`/`N` traversal. visits: project and
+      worktree data.
+- [ ] **Other plugin config ideas.** (p3) [feature] barbecue: gradient arrows, right-hand orientation. bigfile: custom vim
+      options. debugprint: motions before the output line, custom output function, insert on print. hydra: mini-surround
+      search and autopair fast-wrap heads, a map with a virtual text handler, popup windows that are not notify.
+      cmp: `<C-p>` / `<C-n>` with no words after the cursor, prefer this source over `nvim_lsp` on duplicates. dbee:
+      autocmd on main window close. reactive: a different cursorline for the first which-key `d`. recall: more filter
+      keys. registers: `j`/`k`, live paste preview, line count. substitute: a `Subs` description. all-recent: buffers per
+      project. leaderf: directory options, alternate-file highlighting and last-edited time. which-key picker: function
+      names as descriptions. tiny-glimmer: other paste keys. treesj: go to the first parenthesis on a non-toggleable node,
+      hover with the node format. matchup: `<C-%>` as `[%`. yanky: `gcp`/`gbp` with indent, `gc<`/`gb<` inline.
+- [ ] **Plugin config problems.** (p3) [bug] `vimade`: detect when it did not load, and why (`vimade/utils.lua`).
+      `nvim-github-codesearch`: escape characters, highlight labels, the `per_page` problem. `projects` Telescope
+      extension: a highlight sync problem.
+- [ ] **Module ideas.** (p3) [feature] gitops: search all history (`git grep foo $(git rev-list --all)`). registers:
+      optional hover output, keep the source filetype, an option at `ui.lua:226`. runner restart: keep the mode line at
+      the bottom. sidebar: calculate the width, move global keymaps to config. stats info panel: more configuration
+      points such as `selection_strategy`. projects: lock the project directory until the original buffer changes it.
+      A plugin with a persistent mode (`plugins/main.lua`).
+- [ ] **Library ideas.** (p3) [feature] logger: truncating, banner and time format options; only keys and max values in
+      the inspect parser; pull message strings out of keyed objects in `notify.lua`; tmux pane width and a clearing
+      function in `sinks.lua`. lodash: merge descriptions and examples with lookups. helptags: ignore tag comments starting
+      with `;`. options picker: only show `option_str`. quality-of-life: treesitter for pattern and flags. devhints:
+      pixels and percentages in `hintsbox.lua`.
+

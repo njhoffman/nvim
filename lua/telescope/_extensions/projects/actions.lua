@@ -8,7 +8,6 @@ local project = require('project_nvim.project')
 
 local run = require('configs.telescope.launcher')
 
--- TODO: 'lock project directory' until original bufnr triggers project change
 local function change_working_directory(prompt_bufnr)
   local selected_entry = state.get_selected_entry()
   if selected_entry == nil then

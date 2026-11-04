@@ -16,7 +16,6 @@ local modemap = {
   ["no^V"] = {},
 }
 
--- TODO: different cursorline hl for initial WhichKey d and subsequent ones
 local reactive = require("reactive")
 
 reactive.setup({

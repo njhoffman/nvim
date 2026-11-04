@@ -1,8 +1,6 @@
 local devicons = require("nvim-web-devicons")
 local entry_display = require("telescope.pickers.entry_display")
 
--- TODO: make option for directory being common prefix, cwd .. directory, project .. directory
--- TODO: special highlighting for alternate file assignment, add last time edited
 
 local filter = vim.tbl_filter
 local map = vim.tbl_map

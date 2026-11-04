@@ -139,7 +139,6 @@ require('mini.align').setup(opts)
 -- Press t to trim whitespace from parts.
 -- Press <BS> (backspace) to delete some last pre-step.
 
--- TODO: create new step for column alignment (align.new_step('col', func/table))
 -- [' '] = function(steps, opts)
 --   table.insert(
 --     steps.pre_split,
@@ -154,7 +153,6 @@ require('mini.align').setup(opts)
 --   opts.split_pattern = '%s+'
 -- end,
 
--- TODO: make help/tip screen
 -- NOTE: gAip then these key sequences:
 --       =  =jc  =jr  =m!<CR>  =p  =i  =<BS>  =<BS>p
 --       =fn==1<CR>  =<BS>fn==1<CR>t  =frow>7<CR>

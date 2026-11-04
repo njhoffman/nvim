@@ -189,7 +189,6 @@ end
 --    endfunc
 --    iabbr <silent> if if ()<Left><C-R>=Eatchar('\s')<CR>
 utils.ftAbbr = function(lhs, rhs)
-  -- TODO update on nvim 0.10
   vim.cmd.inoreabbrev(('<buffer> %s %s'):format(lhs, rhs))
 end
 

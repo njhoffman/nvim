@@ -5,6 +5,13 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.31.2] - 2026-11-04
+
+### Changed
+
+- `TODO` comments in the config's own code moved to `TODO.md` ("Ideas from old code comments") or were deleted when
+  stale. Comments from upstream in vendored copies stay.
+
 ## [0.31.1] - 2026-11-04
 
 ### Fixed

@@ -1,4 +1,3 @@
--- TODO: escape characters, highlight labels, investigate per_page problem
 
 local gh_search = require('nvim-github-codesearch')
 

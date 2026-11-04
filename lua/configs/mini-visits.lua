@@ -1,4 +1,3 @@
--- TODO: add project data, git/worktree data
 local cfg = {
   -- silent = false,
   -- store = {

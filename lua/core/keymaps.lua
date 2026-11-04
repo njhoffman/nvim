@@ -79,7 +79,6 @@ prefix("n", "<leader>cl", "conceal 󰈉 ")
 --------------------------------------------------------------------------------------------------
 
 -- -- better up/down
--- TODO: test for foldlines and disable variable
 map({ "n", "x" }, "j", "gj", { desc = "Down wrapped", silent = true, noremap = true })
 -- map({ "n", "x" }, "k", function()
 --   return vim.v.count > 0 and "m'" .. vim.v.count .. "k" or "gk"
@@ -125,7 +124,6 @@ map({ "n" }, "Z", "za", {
   desc = "toggle fold under cursor",
 })
 
--- TODO: differentiate between vim/lua, auto remove comments
 
 map({ "x" }, "<C-Space>", '"xy:@x<cr>', {
   category = "Command",
@@ -160,8 +158,6 @@ map("c", "<M-y>", "<cmd>lua require('core.commands.cmdline').yank_cmdline()<cr>"
   remap = true,
 })
 
--- TODO: vmap C-u C-w
--- TODO: make whichkey screen for cmdline
 -- map('c', '<C-t>', '<Right><Del><Left>', {
 --   category = 'Command',
 --   label = ' delete char',
@@ -368,7 +364,6 @@ map({ "n", "x" }, "gc<cr>", function()
   vim.cmd("normal! V")
   require("utils.quality-of-life").duplicateAsComment()
 end, { category = "Comments", desc = "  duplicate line as comment, force line mode" })
--- TODO: make operator mapping, map shift/ctrl enter in visual mode
 
 --------------------------------------------------------------------------------------------------
 -- BUFFERS ---------------------------------------------------------------------------------------
@@ -942,8 +937,6 @@ map('n', 'D', 'd$', {
 })
 
 
--- TODO: disable <C-V> in alacritty
--- TODO: go back to original position after select all
 
 map('n', '<leader>%', 'ggv$G$', {
     category = 'Motion',
@@ -1096,7 +1089,6 @@ local searching_google_in_visual = [[<ESC>gv"gy<ESC>:lua fn.system({'open', 'htt
 map("n", "g!!", searching_google_in_normal)
 map("x", "g!!", searching_google_in_visual)
 
--- TODO: create function to save last visual selection before undoing
 -- map('n', 'Uv', 'u"`[" . strpart(getregtype(), 0, 1) . "`]"gA', {
 --   category = 'Motion',
 --   label = 'undo align, re-select interactive',
@@ -1598,7 +1590,6 @@ map('n', '<leader>s', '<cmd>new<cr>', {
 
 map({ "n" }, "<C-w><C-CR>", "<cmd>lua require('core.commands.ui').smart_win_split()<cr>", { desc = " smart window split" })
 
--- TODO: switch _ and | and make thme toggleable
 map('n', '_', function()
   local winid = vim.api.nvim_get_current_win()
   local win_max = vim.api.nvim_get_option_value('lines', {
@@ -1770,7 +1761,6 @@ map('n', '<M-Bslash>', '<cmd>MiniFiles<cr>', {
 --------------------------------------------------------------------------------------------------
 -- PICKERS ---------------------------------------------------------------------------------------
 
--- TODO: why does this not work? <cmd>lua require('oil').open_float<cr>
 -- map('n', '-', require("oil").toggle_float, {
 --   plugin = 'oil.nvim',
 --   category = 'Pickers',
@@ -1901,7 +1891,6 @@ map({ 'n' }, '<M-.>', "<cmd>lua require('configs.telescope.launcher')('builtin',
 -- lua require('configs.telescope.actions').prev_picker()
 --------------------------------------------------------------------------------------------------
 -- GIT -------------------------------------------------------------------------------------------
--- TODO: add precheck function to ensure in git dir
 
 map('n', '<leader>gf', "<cmd>require('configs.telescope.launcher')('builtin', 'git_files')<cr>", {
   category = 'Git',

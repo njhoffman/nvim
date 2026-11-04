@@ -43,7 +43,6 @@ M.vimade_info = function()
 end
 
 M.vimade_reload = function()
-  -- TODO: figure out how to detect if it isn't loaded correctly and why it isn't loading
   require("plenary.reload").reload_module("vimade", false)
   -- require("plenary.reload").reload_module("configs.vimade")
   vim.dbglog("reloading vimade")

@@ -142,7 +142,6 @@ local toggle = function()
   end
 
   if is_search then
-    -- TODO: toggle between search and very magic modes
     -- elseif string.sub(cmdline, 1, 3) == 'vim' then
     -- new_cmdline = "lua " .. cmdline
     toggle_inccommand()
@@ -150,7 +149,6 @@ local toggle = function()
     toggle_inccommand()
   elseif is_substitute then
     toggle_inccommand()
-    -- TODO: close command line and re-open it to show notification
   elseif cmdline[1] == "!" then
     new_cmdline = cmdline:sub(2)
   elseif string.sub(cmdline, 1, 3) == "vim" then

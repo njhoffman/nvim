@@ -16,7 +16,6 @@ M.notify = function(message, level, ...)
   end
   local args = ... or {}
   local tb = traceback()
-  -- TODO: pull msg strings out, vim.inspect rest of keyed objects
 
   local notif_time = vim.fn.strftime("%H:%M")
   if type(level) == "number" then

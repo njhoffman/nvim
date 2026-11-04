@@ -2,7 +2,7 @@
 -- defaults
 require "regexplainer".setup {
   -- 'narrative'
-  mode = "narrative", -- TODO: 'ascii', 'graphical'
+  mode = "narrative",
   -- automatically show the explainer when the cursor enters a regexp
   auto = false,
   -- Whether to log debug messages

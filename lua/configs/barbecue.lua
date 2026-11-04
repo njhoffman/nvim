@@ -200,8 +200,6 @@ local theme = {
   -- bg_1 = "#101026",
   modified_fg = '#fb6b6b',
 --     󰅁                       
--- TODO: gradient arrow sections
--- TODO: right-hand orientation
 -- {"",""} {"󰅁" "󰅂"}
 }
 

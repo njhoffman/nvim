@@ -80,7 +80,6 @@ local get_dimensions = function(topics, parent)
     end
   end
 
-  -- TODO: handle pixels and perentile
   local configWidth = string.gsub(config.window.width, "%%", "")
   local maxWidth = math.floor((tonumber(configWidth) / 100) * parent.w)
   local configHeight = string.gsub(config.window.height, "%%", "")

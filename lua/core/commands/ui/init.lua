@@ -21,7 +21,6 @@ local setup_commands = function()
 end
 
 -- vim.fn.feedkeys(vim.api.nvim_replace_termcodes('...',true,true,true))
--- TODO: c-s-d , c-s-f, c-s-h,l,j,k, c-s-|, c-s-+
 
 local setup = function()
   setup_commands()

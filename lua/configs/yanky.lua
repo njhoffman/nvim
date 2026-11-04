@@ -150,7 +150,6 @@ map("n", "dd", function()
   return "dd"
 end, { unique = true, expr = true, nowait = true, desc = "Smart dd (blank line to black hole)" })
 
---  TODO: gcp/gcP/gbp/gbP new line with indent, gc< and gb< inline
 
 -- stylua: ignore start
 -- base mappings

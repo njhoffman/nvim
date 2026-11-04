@@ -1,6 +1,5 @@
 -- No need to copy this inside `setup()`. Will be used automatically.
 
--- TODO: dynamic [[, ]] mapping
 
 -- stylua: ignore
 local default = {

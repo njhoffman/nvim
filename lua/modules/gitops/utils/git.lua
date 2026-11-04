@@ -12,8 +12,6 @@ local logger = require("modules.gitops.utils.logger")
 
 local M = {}
 
--- TODO: git grep foo $(git rev-list --all)
--- TODO: git grep --all-match -l -e "f[^\s]*\s" -e bar $(git rev-list --all)
 
 local all_commit_hashes = function()
   local command = "git rev-list --all"

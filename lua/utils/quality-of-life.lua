@@ -168,7 +168,6 @@ function M.openAtRegex101()
   -- selene: allow(mixed_table)
   vim.cmd.normal({ "vi/", bang = false }) -- select inner regex for easy replacement
 
-  -- TODO use treesitter to get pattern and flags
   local regex = vim.fn.getreg("z")
   local pattern = regex:match("/(.*)/")
   local flags = regex:match("/.*/(%l*)")

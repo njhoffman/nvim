@@ -31,7 +31,6 @@ function commands.open(name)
     local section = state.get_section(name)
     section.open()
     state.open = true
-    -- TODO: calculate width
     -- state.width = config.get_width()
   end
   config.refresh(state.open, sidebar_cmds)

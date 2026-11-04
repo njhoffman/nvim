@@ -151,7 +151,6 @@ end
 local function pre_process_set_option(name, value, bufnr)
   name = name or ""
   if name == "" then
-    -- TODO: only show option_str output
     output_options(bufnr)
     return true
   end
@@ -445,7 +444,6 @@ function M.run_set_cmd(option_str, bufnr)
   if option_str == nil or option_str == "" then
     output_options(bufnr)
   elseif not string.match(option_str, "=") then
-    -- TODO: only show option_str output
     output_options(bufnr)
     -- display_print.echo_option(bufnr, option_str)
   else

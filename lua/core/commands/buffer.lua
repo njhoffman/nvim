@@ -1,4 +1,3 @@
--- TODO: attach to 'alternate' service
 
 local map = require("lib.mapper").map
 local timeago = require("core.commands.timeago")

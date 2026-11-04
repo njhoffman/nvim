@@ -26,7 +26,6 @@ local toggle_docs = function()
   end
 end
 
--- TODO: if no words after, C-P = S-Up, C-N = completion open
 
 local main = {
   ["<C-x><C-o>"] = { i = mapping.complete({ desc = pfx .. "start completion source" }) },

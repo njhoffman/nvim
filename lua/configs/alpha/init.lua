@@ -62,7 +62,6 @@ if not vim.g.load_time then
 else
   load_time = "⚡neovim loaded in " .. vim.g.load_time .. "s"
 end
--- TODO: 174 commits over 3 weeks from nightly
 
 local stats = require("lazy").stats()
 local plugins = " Loaded " .. stats.loaded .. " out of " .. stats.count .. " plugins"

@@ -86,7 +86,6 @@ local rhs_func = function(direction, op)
       return require("dial.map").manipulate(direction, op)
     end
     return ""
-    -- TODO: should we disable the default <C-a> mappings too?
   end
 end
 

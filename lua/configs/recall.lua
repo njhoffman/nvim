@@ -5,7 +5,6 @@ recall.setup({
   -- sign_highlight = "@comment.note",
   sign = "",
   sign_highlight = "RecallMark",
-  -- TODO: make more keybindings and commands for filters
   filters = {
     -- Read more about `exrc`: `:h exrc`.
     same_project = false,

@@ -68,7 +68,6 @@ local function setup_keymaps()
     require("reactive").set_opfunc("S")
     sub.operator(...)
   end
-  -- TODO: make Subs command desc
   -- :Subs/orig/replace/g
   -- :%S/{,un}nec{ce,ces,e}sar{y,ily}/{}nec{es}sar{}/g
 

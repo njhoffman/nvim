@@ -478,7 +478,6 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
       })
 
       -- stylua: ignore start
-      -- TODO: create plugin that has persistent mode
       -- movement
       local map = require("lib.mapper").map
       map({ "n", "v" }, "<S-Up>",    "<cmd>Treewalker Up<cr>")

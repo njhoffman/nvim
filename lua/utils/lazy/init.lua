@@ -1,4 +1,3 @@
--- TODO: move over to lua/lazy
 local map = require("lib.mapper").map
 local setup = require("utils.lazy.setup")
 local configs = require("utils.lazy.configs")

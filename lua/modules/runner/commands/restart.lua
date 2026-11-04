@@ -12,7 +12,6 @@ vim.cmd([[
     if exists("g:argv")
       for arg in g:argv
         let l:cmds += [arg]
-        " TODO: append line to length -1 to keep mode line at botom
         call writefile([arg], l:session_path, "a")
       endfor
     endif
@@ -29,14 +28,12 @@ vim.cmd([[
       if arg =~ '^+.*'
         let l:cmd = substitute(arg, "\+", "", "")
         let l:cmds += [l:cmd]
-        " TODO: append line to length -1 to keep mode line at botom
         call writefile([l:cmd], l:session_path, "a")
       endif
     endfor
     if exists("g:argv")
       for arg in g:argv
         let l:cmds += [arg]
-        " TODO: append line to length -1 to keep mode line at botom
         call writefile([arg], l:session_path, "a")
       endfor
     endif

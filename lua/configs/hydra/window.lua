@@ -76,7 +76,6 @@ local function move_split_size()
     mode = "n",
     body = "g!w",
     heads = {
-      -- TODO: enable popup windows if they are not notify
       -- Move focus
       { "h", "<C-w>h" },
       { "j", "<C-w>j" },

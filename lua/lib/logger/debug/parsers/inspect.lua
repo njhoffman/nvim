@@ -1,5 +1,3 @@
--- TODO:  option for only keys without counts
--- TODO:  option for max values per key
 
 local default_config = {
   depth = math.huge,

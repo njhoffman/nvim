@@ -230,13 +230,6 @@ local splitView = {
 --   messages       split      vsplit    split
 -- ['notify_error'] = views.errorView,
 
--- TODO: make popup view with previous messages collapsed
--- TODO: create view option to scroll multiline view
--- TODO: create view option to prepend instead of append
--- TODO: enter on shift+enter
--- TODO: clear cmdline on ctrl+enter
--- TODO: hotkey to toggle notify/popup/split views
--- TODO: cmdline and popup together preset
 -- cmdline_popup = { position = { row = 5, col = "50%", }, size = { width = 60, height = "auto", }, },
 -- popupmenu = { relative = "editor", position = { row = 8, col = "50%", }, size = { width = 60, height = 10, },
 --              border = { style = "rounded", padding = { 0, 1 }, },

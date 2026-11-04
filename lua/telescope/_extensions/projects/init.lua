@@ -4,7 +4,6 @@ if not has_telescope then
   return
 end
 
--- TODO: figure out highlight sync problem
 require('telescope._extensions.projects.highlights').setup()
 
 return telescope.register_extension({

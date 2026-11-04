@@ -125,7 +125,6 @@ local sources = {
         group_index = 3,
       },
       {
-        -- TODO: make sure duplicates prioritize this over nvim_lsp
         name = "faker.quick_data",
         keyword_pattern = "@.*",
       },

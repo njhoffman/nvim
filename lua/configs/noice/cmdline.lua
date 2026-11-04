@@ -21,8 +21,6 @@ local cmdlines = {
   { 'search_down', ' ', 'Search Down',    'regex', '^/'             },
   -- { 'line',       '礪',  'range',      'vim',   '^:%d+$'    },
   -- { 'range',      '礪',  'range',      'vim',   '^:%d+,%d+$'    },
-  -- TODO: eval_live: lua, shell, json, html, sql, git, chrome-remote, awk/grep/sed
-  -- TODO: stackable data sources, help and examples
 }
 
 local extra = {

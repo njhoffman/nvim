@@ -55,7 +55,6 @@ local defaults = {
   },
 }
 
--- TODO: map shift/ctrl enter in visual mode
 
 -- require("lib.mapper").map({ "n", "x" }, "gtml", "<cmd>normal gtmm<cr>", { desc = "Multiply line" })
 -- require("lib.mapper").map({ "n", "x" }, "gtm<cr>", "<cmd>normal gtmm<cr>", { desc = "Multiply line" })

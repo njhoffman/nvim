@@ -27,7 +27,6 @@ require("core.commands.colors").setup()
 quickclose.setup()
 range_history.setup()
 
--- TODO: resume visual selection after switching
 vim.api.nvim_create_user_command("Vblock", function()
   vim.o.virtualedit = vim.o.virtualedit == "block" and "none" or "block"
   vim.notify("virtualedit: " .. vim.o.virtualedit)
@@ -100,7 +99,6 @@ local toggle_checkbox = function()
   end
 end
 
--- TODO: handle special [-] and [ ]
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function()

@@ -1,8 +1,5 @@
 local keymaps = require("configs.debugprint.keymaps")
 
--- TODO: add capability to do premotions before output of debug line '%'
--- TODO: custom output with function
--- TODO: insert on print message action
 
 local lua = {
   left = 'vim.dbglog("',
