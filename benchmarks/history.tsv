@@ -593,3 +593,29 @@ date	kind	version	commit	load1	nvim	metric	unit	median	min	runs
 2026-11-04T03:56Z	release	0.30.2	f0249253	2.47	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lua lines	count	141368	141368	1
 2026-11-04T03:56Z	release	0.30.2	f0249253	2.47	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lines	count	220618	220618	1
 2026-11-04T03:56Z	release	0.30.2	f0249253	2.47	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugin lines	count	2245426	2245426	1
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	startup ready	ms	3779.7	1207.8	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	startup settled	ms	15194.1	2018.8	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	small.md open	ms	705.9	548.9	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	small.md render	ms	1089.3	875.8	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	medium.md open	ms	710.3	568.8	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	medium.md render	ms	1259.6	986.3	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	large.md open	ms	516.8	468.4	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	large.md render	ms	1307.8	753.0	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	code.md open	ms	791.2	598.1	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	code.md render	ms	1226.0	942.1	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.lua open	ms	620.0	307.5	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.lua render	ms	1096.3	787.0	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.py open	ms	404.1	348.8	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.py render	ms	684.2	579.0	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.ts open	ms	465.9	334.1	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.ts render	ms	1094.5	1042.6	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.json open	ms	527.9	145.1	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	sample.json render	ms	755.8	728.7	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	rss settled	MiB	114.4	111.5	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	rss peak	MiB	196.1	195.8	3
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugins installed	count	386	386	1
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugins loaded	count	276	276	1
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	config files	count	1588	1588	1
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lua lines	count	141368	141368	1
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lines	count	220622	220622	1
+2026-11-04T04:01Z	release	0.30.3	6e85d87b	4.39	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugin lines	count	2245426	2245426	1
