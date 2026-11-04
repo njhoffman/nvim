@@ -5,6 +5,13 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.30.3] - 2026-11-03
+
+### Changed
+
+- Reran the 0.30.2 benchmarks at low load (2.47). The recorded run had a load of 4.71 and showed `small.md` and
+  `sample.py` over 25% slower than average; the rerun has no warnings, so that was load and not a regression.
+
 ## [0.30.2] - 2026-11-03
 
 ### Changed
