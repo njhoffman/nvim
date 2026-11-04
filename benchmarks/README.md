@@ -1,14 +1,12 @@
 # Benchmarks
 
-Startup and rendering times of this config, recorded with every push and compared with the average of the previous 10
-releases and with a baseline measured under low load. The latest table is in
-[docs/PERFORMANCE.md](../docs/PERFORMANCE.md).
+Size and startup and rendering times of this config, recorded with every push, so progress shows over time. The trend,
+one row per push, is in [docs/PERFORMANCE.md](../docs/PERFORMANCE.md); every metric is in `history.tsv`.
 
 ```sh
 benchmarks/run                       # measure and print the table; records nothing
+benchmarks/run --release 0.16.0      # what scripts/push.sh runs: records release 0.16.0
 benchmarks/run --baseline            # record a new baseline (see below)
-./scripts/report.sh 0.16.0           # what scripts/push.sh runs: tests, cloc, records release 0.16.0
-BENCH=0 ./scripts/report.sh          # skip the benchmarks
 benchmarks/generate.py               # regenerate the fixtures (deterministic)
 ```
 
@@ -35,7 +33,9 @@ fences, and about 600 lines each of Lua, Python and TypeScript, plus 2,082 lines
 filetype is opened first, so lazy-loaded plugins are not charged to the first measured fixture.
 
 Counts (no averages): plugins installed and loaded at startup (`lazy.stats()`), and config files, Lua lines, all lines
-and installed plugin lines from the cloc data of `scripts/report.sh`.
+and installed plugin lines from cloc. Sizes: `config size` is the tracked files of this repo, `plugin size` the disk use
+of `~/.local/share/nvim/lazy`, `.git` directories included. Plugins loaded with `dir =` from elsewhere (11 of 386 today)
+count as plugins but not in the plugin lines or size.
 
 ## Isolation
 
@@ -49,17 +49,18 @@ and installed plugin lines from the cloc data of `scripts/report.sh`.
 
 ## Runs, averages and the baseline
 
-A release run waits up to 10 minutes for the 1-minute load to drop to 0.6 x CPUs (then measures anyway; the load is in
-the table), runs one unrecorded warm-up session and records the medians of 3 sessions in `history.tsv`. A rerun for the
-same version replaces its rows.
+A release run records counts, sizes and memory on every push, and times only from a quiet machine. With a 1-minute load
+over 0.4 x CPUs at the start it measures nothing and takes seconds; if the load goes over 0.6 x CPUs during the run it
+drops the times, since the check at the start cannot see a later spike. Otherwise it runs one unrecorded warm-up session
+and records the medians of 3 sessions. A rerun for the same version replaces only the metrics it measured, so a busy
+rerun keeps the recorded times. An adhoc run waits up to 10 minutes for 0.6 x CPUs, then measures anyway.
 
 The average covers the previous 10 releases, never the current one. Plugin and Neovim updates shift it over time; the
 baseline does not. `benchmarks/run --baseline` waits up to 30 minutes for a load of 0.15 x CPUs (and records nothing if
 it never gets there), then records the medians of 10 sessions. Rerun it by hand now and then, for example after a Neovim
 upgrade. The table compares the latest release with the newest baseline.
 
-A metric more than 25% slower than its average or baseline is listed under the table and printed as a warning by
-`scripts/report.sh`; it does not block a release, since this desktop's load alone moves the numbers by about 20%.
+A metric more than 25% slower than its average or baseline is listed under the table and printed as a warning; it does not block a push, since this desktop's load alone moves the numbers by about 20%.
 
 ## history.tsv
 

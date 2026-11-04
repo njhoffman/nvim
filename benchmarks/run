@@ -2,8 +2,8 @@
 """Benchmark startup and rendering of this Neovim config; record and tabulate the results.
 
   benchmarks/run                          measure and print the table; record nothing
-  benchmarks/run --release 0.16.0 --cloc-dir .reports/<ts>
-                                          record a release (scripts/report.sh does this)
+  benchmarks/run --release 0.16.0         record a release (scripts/push.sh does this): counts and
+                                          sizes always, times only from a quiet machine
   benchmarks/run --baseline               record a new baseline: waits for a low load,
                                           more sessions; rerun by hand now and then
 
@@ -30,15 +30,13 @@ def main():
   mode = parser.add_mutually_exclusive_group()
   mode.add_argument("--release", metavar="VERSION", help="record the results as this release")
   mode.add_argument("--baseline", action="store_true", help="record a new baseline under low load")
-  parser.add_argument("--cloc-dir", type=Path, help="report dir holding cloc main.json and lazy.json")
   parser.add_argument("--runs", type=int, help="measured sessions (default 3, baseline 10)")
-  parser.add_argument("--out", type=Path, help="also write the tables to this file")
-  parser.add_argument("--no-wait", action="store_true", help="skip the load gate")
+  parser.add_argument("--no-wait", action="store_true", help="skip the load gate of an adhoc run or baseline")
   args = parser.parse_args()
 
   runs = args.runs or (10 if args.baseline else 3)
-  if not args.no_wait:
-    # Baselines need a quiet machine; releases wait a while, then go ahead and say so.
+  if not args.release and not args.no_wait:
+    # Baselines need a quiet machine; adhoc runs wait a while, then go ahead and say so.
     limit, max_wait = (0.15 * CPUS, 1800) if args.baseline else (0.6 * CPUS, 600)
     if not bench.wait_for_load(limit, max_wait, log=log):
       if args.baseline:
@@ -49,16 +47,20 @@ def main():
   kind = "baseline" if args.baseline else "release" if args.release else "adhoc"
   version = args.release or bench.git("describe", "--tags", "--abbrev=0").lstrip("v") + "+dev"
   meta = bench.metadata(kind, version)
-  try:
-    measured = bench.measure(runs, log=log)
-  except bench.BenchError as error:
-    log(f"failed: {error}")
-    return 1
+  if args.release:
+    measured = bench.measure_release(runs, log=log)
+  else:
+    try:
+      measured = bench.measure(runs, log=log)
+    except bench.BenchError as error:
+      log(f"failed: {error}")
+      return 1
 
-  counts = {name: measured.pop(name)[0] for name in ("plugins installed", "plugins loaded")}
-  cloc_dir = args.cloc_dir
-  if cloc_dir and (cloc_dir / "main.json").exists() and (cloc_dir / "lazy.json").exists():
-    counts.update(bench.code_counts(cloc_dir / "main.json", cloc_dir / "lazy.json"))
+  counts = {name: measured.pop(name)[0] for name in ("plugins installed", "plugins loaded") if name in measured}
+  if kind != "adhoc":
+    counts.update(bench.collect_code_counts(log=log))
+    counts["config size"] = bench.config_size_mib()
+    counts["plugin size"] = bench.plugin_size_mib()
 
   rows = bench.to_rows(meta, measured, counts, runs)
   history = bench.read_history()
@@ -69,13 +71,7 @@ def main():
     history = bench.record(history, rows)
     bench.write_history(history)
     log(f"recorded {kind} {version} in {bench.HISTORY.relative_to(bench.ROOT)}")
-    # The doc always shows the latest release, against the latest baseline.
-    release_rows = bench.latest_release_rows(history)
-    if release_rows:
-      doc_table, _ = bench.table_for(history, release_rows, int(release_rows[0]["runs"]))
-      bench.update_performance_doc(doc_table)
-  if args.out:
-    args.out.write_text(table + "\n")
+    bench.update_performance_doc(bench.trend_table(history))
   print(table)
   for warning in warnings:
     log(f"warning: {warning}")

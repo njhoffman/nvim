@@ -1,46 +1,43 @@
 # Performance
 
-Startup and rendering benchmarks, recorded with every release by `scripts/report.sh`
-through `benchmarks/run`. The table below is rewritten on each recorded run.
+Size and speed of this config after every push, recorded by `scripts/push.sh` through `benchmarks/run`. The table is
+rewritten on each recorded run, newest first; every metric is in
+[benchmarks/history.tsv](../benchmarks/history.tsv), and [benchmarks/README.md](../benchmarks/README.md) explains them.
 
-## Benchmarks
+- **Plugins, Loaded:** installed, and loaded once started. **Files, Lines:** the config, from cloc.
+- **Config MiB, Plugins MiB:** tracked config files; disk use of the plugin directory.
+- **Ready, Settled:** startup until usable and until idle. **Open, Render:** mean over the 8 fixtures.
+- **Load:** of the run that measured the times. High values mean noisy times. Blank times: the machine was too busy.
+
+## Trend
 
 <!-- benchmark:start -->
 
-Latest: 2026-11-04T05:48Z, release 0.30.4 (7e7fdc75), load 1.56, NVIM v0.13.0-dev-1915+gc5641b2bfb. Median of 3 sessions after one warm-up session, 100x40 UI. Average is over the previous 10 releases; baseline from 2026-11-02T00:56Z (load 0.95, 10 sessions). Recorded in [benchmarks/history.tsv](../benchmarks/history.tsv); see [benchmarks/README.md](../benchmarks/README.md).
-
-| Metric | Latest | Average | Releases | vs average | Baseline | vs baseline |
-|---|---:|---:|---:|---:|---:|---:|
-| startup ready | 1410 ms | 1650 | 10 | -15% | 1062 | +33% |
-| startup settled | 6892 ms | 7015 | 10 | -2% | 6460 | +7% |
-| small.md open | 134 ms | 186 | 10 | -28% | 176 | -24% |
-| small.md render | 225 ms | 336 | 10 | -33% | 294 | -24% |
-| medium.md open | 163 ms | 249 | 10 | -35% | 159 | +2% |
-| medium.md render | 338 ms | 473 | 10 | -29% | 313 | +8% |
-| large.md open | 132 ms | 266 | 10 | -50% | 160 | -17% |
-| large.md render | 279 ms | 493 | 10 | -43% | 317 | -12% |
-| code.md open | 144 ms | 203 | 10 | -29% | 173 | -17% |
-| code.md render | 291 ms | 423 | 10 | -31% | 353 | -17% |
-| sample.lua open | 118 ms | 170 | 10 | -30% | 139 | -15% |
-| sample.lua render | 335 ms | 419 | 10 | -20% | 360 | -7% |
-| sample.py open | 110 ms | 175 | 10 | -37% | 124 | -12% |
-| sample.py render | 333 ms | 404 | 10 | -18% | 344 | -3% |
-| sample.ts open | 96 ms | 148 | 10 | -35% | 116 | -17% |
-| sample.ts render | 335 ms | 403 | 10 | -17% | 347 | -3% |
-| sample.json open | 134 ms | 158 | 10 | -16% | 131 | +2% |
-| sample.json render | 328 ms | 437 | 10 | -25% | 347 | -5% |
-| rss settled | 125 MiB | 121 | 10 | +4% | 120 | +4% |
-| rss peak | 197 MiB | 194 | 10 | +2% | 194 | +2% |
-
-| Count | Latest | Previous release | Change |
-|---|---:|---:|---:|
-| plugins installed | 386 | 386 | +0 |
-| plugins loaded | 276 | 276 | +0 |
-| config files | 1,588 | 1,588 | +0 |
-| config lua lines | 141,368 | 141,368 | +0 |
-| config lines | 220,626 | 220,622 | +4 |
-| plugin lines | 2,245,426 | 2,245,426 | +0 |
-
-Over 25% slower: startup ready: +33% vs baseline.
+| Version | Date | Load | Plugins | Loaded | Files | Lua lines | Lines | Plugin lines | Config MiB | Plugins MiB | Ready ms | Settled ms | Open ms | Render ms | RSS MiB | Peak MiB |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0.30.4 | 2026-11-04 | 1.56 | 386 | 276 | 1,588 | 141,368 | 220,626 | 2,245,426 |  |  | 1,410 | 6,892 | 129 | 308 | 125 | 197 |
+| 0.30.3 | 2026-11-04 | 0.77 | 386 | 276 | 1,588 | 141,368 | 220,622 | 2,245,426 |  |  | 739 | 6,162 | 102 | 268 | 117 | 195 |
+| 0.30.2 | 2026-11-04 | 2.47 | 386 | 276 | 1,588 | 141,368 | 220,618 | 2,245,426 |  |  | 802 | 6,201 | 112 | 298 | 127 | 192 |
+| 0.30.0 | 2026-11-03 | 4.58 | 386 | 276 | 1,588 | 141,318 | 220,560 | 2,245,426 |  |  | 1,296 | 6,356 | 130 | 321 | 115 | 191 |
+| 0.27.0 | 2026-11-03 | 14.46 | 386 | 276 | 1,576 | 141,036 | 172,532 | 2,245,426 |  |  | 3,508 | 11,201 | 377 | 767 | 126 | 193 |
+| 0.26.0 | 2026-11-03 | 4.40 | 386 | 274 | 1,576 | 141,030 | 172,500 | 2,245,426 |  |  | 1,064 | 1,835 | 139 | 322 | 101 | 191 |
+| 0.25.0 | 2026-11-03 | 2.87 | 386 | 276 | 1,576 | 141,030 | 172,487 | 2,245,426 |  |  | 3,048 | 10,136 | 352 | 679 | 122 | 201 |
+| 0.24.0 | 2026-11-03 | 4.74 | 386 | 276 | 1,576 | 141,211 | 172,657 | 2,245,426 |  |  | 1,475 | 6,960 | 204 | 412 | 126 | 196 |
+| 0.23.1 | 2026-11-03 | 4.68 | 386 | 276 | 1,574 | 140,979 | 172,413 | 2,245,426 |  |  | 2,381 | 8,320 | 240 | 494 | 125 | 193 |
+| 0.23.0 | 2026-11-02 | 2.11 | 386 | 276 | 1,574 | 140,979 | 172,408 | 2,222,516 |  |  | 823 | 6,214 | 96 | 269 | 124 | 193 |
+| 0.22.0 | 2026-11-02 | 1.76 | 386 | 276 | 1,633 | 148,403 | 179,825 | 2,222,516 |  |  | 1,370 | 6,761 | 192 | 406 | 124 | 191 |
+| 0.21.0 | 2026-11-02 | 2.00 | 386 | 276 | 1,633 | 148,403 | 179,812 | 2,222,516 |  |  | 806 | 6,170 | 106 | 273 | 118 | 195 |
+| 0.20.2 | 2026-11-02 | 2.26 | 386 | 276 | 2,062 | 185,564 | 217,666 | 2,222,516 |  |  | 1,110 | 6,439 | 142 | 342 | 117 | 195 |
+| 0.20.1 | 2026-11-02 | 2.07 | 386 | 276 | 2,061 | 185,542 | 217,638 | 2,222,516 |  |  | 1,047 | 6,491 | 150 | 335 | 124 | 193 |
+| 0.20.0 | 2026-11-02 | 4.09 | 386 | 276 | 2,061 | 185,542 | 217,619 | 2,222,516 |  |  | 1,592 | 7,137 | 160 | 364 | 116 | 191 |
+| 0.19.0 | 2026-11-01 | 4.73 | 386 | 276 | 2,059 | 185,477 | 217,416 | 2,222,516 |  |  | 1,594 | 7,227 | 160 | 380 | 124 | 195 |
+| 0.18.0 | 2026-11-01 | 4.74 | 386 | 276 | 2,055 | 185,339 | 217,244 | 2,222,516 |  |  | 1,140 | 6,464 | 160 | 332 | 117 | 194 |
+| 0.17.2 | 2026-11-01 | 2.92 | 386 | 276 | 2,053 | 185,047 | 216,941 | 2,222,516 |  |  | 1,271 | 6,608 | 144 | 330 | 115 | 191 |
+| 0.17.1 | 2026-11-01 | 4.74 | 386 | 276 | 2,052 | 185,012 | 216,900 | 2,222,516 |  |  | 1,396 | 6,742 | 154 | 343 | 117 | 192 |
+| 0.17.0 | 2026-11-01 | 4.50 | 386 | 276 | 2,051 | 184,943 | 216,827 | 2,222,516 |  |  | 2,524 | 8,467 | 213 | 471 | 124 | 192 |
+| 0.16.3 | 2026-11-01 | 12.16 | 386 | 276 | 2,051 | 184,943 | 216,820 | 2,222,516 |  |  | 5,091 | 13,094 | 567 | 3,056 | 124 | 221 |
+| 0.16.2 | 2026-11-01 | 4.50 | 386 | 276 | 2,046 | 184,569 | 216,433 | 2,222,516 |  |  | 2,822 | 10,031 | 322 | 2,112 | 116 | 218 |
+| 0.16.1 | 2026-11-01 | 6.81 | 386 | 276 | 2,045 | 184,511 | 216,361 | 2,222,516 |  |  | 2,002 | 8,484 | 282 | 1,704 | 116 | 219 |
+| 0.16.0 | 2026-11-01 | 22.31 | 386 | 276 | 2,044 | 184,511 | 216,310 | 2,222,516 |  |  | 3,801 | 11,367 | 366 | 2,047 | 124 | 219 |
 
 <!-- benchmark:end -->

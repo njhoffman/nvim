@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-# scripts/release.sh, scripts/push.sh and the pre-push hook, in a scratch repo with a stub report.
+# scripts/release.sh, scripts/push.sh and the pre-push hook, in a scratch repo with a stub benchmarks/run.
 
 setup() {
   ROOT="$(cd "$BATS_TEST_DIRNAME/../.." && pwd)"
@@ -10,24 +10,18 @@ setup() {
   git config user.email t@example.com
   git config user.name t
   mkdir -p scripts/hooks benchmarks docs tests/unit
-  cp "$ROOT/scripts/release.sh" "$ROOT/scripts/push.sh" "$ROOT/scripts/report_summary.py" scripts/
+  cp "$ROOT/scripts/release.sh" "$ROOT/scripts/push.sh" scripts/
   cp "$ROOT/scripts/hooks/pre-push" scripts/hooks/
-  # What report.sh does: write the report and the benchmark files, print the directory
-  cat >scripts/report.sh <<'STUB'
+  # What benchmarks/run --release does: write the two recorded files
+  cat >benchmarks/run <<'STUB'
 #!/usr/bin/env bash
-[ -z "${REPORT_FAILS:-}" ] || { echo "report: failed" >&2; exit 1; }
-d="$PWD/.reports/2026-01-02.03:04"
-mkdir -p "$d"
-echo "version $1" >"$d/args"
-printf 'Success: \t3\t\nTotal number of cases: 2\nRan 1 test in 0s\nok 1 a\nok 2 b\n' >"$d/tests.log"
-printf 'Total   10 5  66.67%%\n' >"$d/coverage.txt"
-echo '{"Lua":{"code":100,"nFiles":2},"Markdown":{"code":5,"nFiles":1},"SUM":{"code":105,"nFiles":3}}' >"$d/main.json"
-echo 'bench table' >"$d/bench.md"
-echo "$1" >>benchmarks/history.tsv
-echo "$1" >>docs/PERFORMANCE.md
-echo "$d"
+[ -z "${RECORD_FAILS:-}" ] || { echo "bench: failed" >&2; exit 1; }
+echo "$*" >"$T_ARGS"
+echo "$2" >>benchmarks/history.tsv
+echo "$2" >>docs/PERFORMANCE.md
 STUB
-  chmod +x scripts/report.sh
+  chmod +x benchmarks/run
+  export T_ARGS="$T/args"
   printf '.reports/*\n' >.gitignore
   printf '# Changelog\n\n## [0.1.0] - 2026-01-01\n\n### Added\n\n- First.\n' >CHANGELOG.md
   touch benchmarks/history.tsv docs/PERFORMANCE.md
@@ -73,40 +67,32 @@ remote_tip() {
   git push -q --no-verify origin main
 }
 
-@test "push.sh reports the latest version, commits the report and pushes it with the tags" {
+@test "push.sh records the latest version, commits the metrics and pushes them with the tags" {
   release 0.2.0
   release 0.3.0
   run ./scripts/push.sh
   [ "$status" -eq 0 ]
-  [ "$(cat .reports/2026-01-02.03:04/args)" = "version 0.3.0" ]
+  [ "$(cat "$T_ARGS")" = "--release 0.3.0" ]
   [ "$(remote_tip)" = "$(git rev-parse HEAD)" ]
-  git log -1 --format=%B | grep -q '^Report: passed$'
+  git log -1 --format=%B | grep -q '^Metrics: recorded$'
+  git log -1 --format=%s | grep -qF 'v0.3.0: metrics'
   git --git-dir="$T/origin.git" rev-parse -q --verify refs/tags/v0.2.0
   git --git-dir="$T/origin.git" rev-parse -q --verify refs/tags/v0.3.0
-  git show --stat --format= HEAD | grep -q summary.md
-  git show --stat --format= HEAD | grep -q history.tsv
+  [ "$(git show --name-only --format= HEAD | sort | tr '\n' ' ')" = "benchmarks/history.tsv docs/PERFORMANCE.md " ]
   [ -z "$(git status --porcelain --untracked-files=no)" ]
 }
 
-@test "the summary has every version since the last push, stats and benchmarks" {
+@test "push.sh appends the trailer to the metrics commit" {
   release 0.2.0
-  release 0.3.0
-  ./scripts/push.sh
-  summary=.reports/2026-01-02.03:04/summary.md
-  head -1 "$summary" | grep -qF '(v0.3.0)'
-  grep -q 'Change 0.2.0' "$summary"
-  grep -q 'Change 0.3.0' "$summary"
-  ! grep -q 'First\.' "$summary"
-  grep -q '8/8 (3 plenary, 2 mini.test, 1 Python, 2 bats)' "$summary"
-  grep -q '66.67%' "$summary"
-  grep -q 'bench table' "$summary"
+  RELEASE_TRAILER="Co-Authored-By: X <x@example.com>" ./scripts/push.sh
+  git log -1 --format=%B | grep -q '^Co-Authored-By: X'
 }
 
-@test "a failed report commits and pushes nothing" {
+@test "a failed recording commits and pushes nothing" {
   release 0.2.0
   head_before="$(git rev-parse HEAD)"
   remote_before="$(remote_tip)"
-  REPORT_FAILS=1 run ./scripts/push.sh
+  RECORD_FAILS=1 run ./scripts/push.sh
   [ "$status" -ne 0 ]
   [ "$(git rev-parse HEAD)" = "$head_before" ]
   [ "$(remote_tip)" = "$remote_before" ]
@@ -136,11 +122,10 @@ remote_tip() {
   [[ "$output" == *"nothing to push"* ]]
 }
 
-@test "push.sh retries a failed push without rerunning the report" {
+@test "push.sh retries a failed push without recording again" {
   release 0.2.0
-  git commit -q --allow-empty -m "v0.2.0: report" -m "Report: passed"
-  rm scripts/report.sh
-  run ./scripts/push.sh
+  git commit -q --allow-empty -m "v0.2.0: metrics" -m "Metrics: recorded"
+  RECORD_FAILS=1 run ./scripts/push.sh
   [ "$status" -eq 0 ]
   [ "$(remote_tip)" = "$(git rev-parse HEAD)" ]
 }

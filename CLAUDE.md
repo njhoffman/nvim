@@ -15,8 +15,8 @@ This directory is its own git repository (`origin` = `git@github.com:njhoffman/n
 ### Versioning and releases
 
 The config uses semver with annotated `vX.Y.Z` tags and a Keep a Changelog `CHANGELOG.md`. Every verified, completed
-change gets its own commit, bump and tag. The report runs when pushing, not on every commit, so changes can pile up
-locally and go out together.
+change gets its own commit, bump and tag. Changes can pile up locally and go out together; each push records the size
+and speed of the config.
 
 Bump rules (pre-1.0):
 
@@ -32,30 +32,29 @@ Per change:
    latest tag or that lacks a changelog section, then commits as `vX.Y.Z: <summary>` and creates the annotated tag. It
    does not push. Set `RELEASE_TRAILER` to append a `Co-Authored-By` line.
 
-To push, run `./scripts/push.sh` (in the background from Claude Code; it takes 10-20 minutes):
+Test command: `./scripts/run_tests.sh all` (Plenary specs in parallel, mini.test, the Python tests in `tests/bench/` and
+the bats tests in `tests/scripts/`). `./scripts/coverage.sh` is the same with line coverage.
 
-1. It refuses uncommitted changes to tracked files, since the report must test what goes out, and a main behind
+To push, run `./scripts/push.sh` (in the background from Claude Code; it takes 2-3 minutes). It runs no tests.
+
+1. It refuses uncommitted changes to tracked files, since the metrics must measure what goes out, and a main behind
    `origin/main`.
-2. `./scripts/report.sh X.Y.Z` runs for the latest tag: all tests with coverage (Plenary specs in parallel, mini.test,
-   the Python tests in `tests/bench/` and the bats tests in `tests/scripts/`), then cloc (the plugin tree's cloc is
-   cached by `lazy-lock.json`), then the benchmarks, recording them as release X.Y.Z in `benchmarks/history.tsv` and
-   rewriting the table in `docs/PERFORMANCE.md`. Progress goes to stderr as it happens (phases with durations, one line
-   per spec file and each failure, benchmark load waits and sessions). If any test or the benchmark run fails, the report
-   moves to `.reports/failed/<timestamp>/` (gitignored) with `tests.log` and `bench.log`, and nothing is committed or
-   pushed. Benchmark warnings (a metric over 25% slower than its average or baseline) do not abort; mention them.
-3. `scripts/report_summary.py` writes `<report dir>/summary.md`: the changelog sections since the last push, code stats,
-   coverage, test counts and deltas against the previous report, and the benchmark tables. Only `summary.md` is
-   committed; the rest of each report is gitignored and stays local.
-4. It commits `summary.md`, `benchmarks/history.tsv` and `docs/PERFORMANCE.md` as `vX.Y.Z: report` with a
-   `Report: passed` line, and runs `git push origin HEAD --follow-tags`.
+2. `benchmarks/run --release X.Y.Z` runs for the latest tag and records in `benchmarks/history.tsv`: plugins, files,
+   lines (cloc; the plugin tree's result is cached by `lazy-lock.json`), config and plugin sizes, memory and benchmark
+   times. `docs/PERFORMANCE.md` is rewritten: one row per push, newest first.
+3. Times are left out when the machine is busy: 1-minute load over 0.4 x CPUs at the start (no benchmark runs, the push
+   takes seconds) or over 0.6 x CPUs during the run, or a failed benchmark. Warnings (a metric over 25% slower than its
+   average or baseline) do not abort; mention them.
+4. It commits both files as `vX.Y.Z: metrics` with a `Metrics: recorded` line, and runs
+   `git push origin HEAD --follow-tags`.
 
 `scripts/hooks/pre-push` (active through `core.hooksPath`, which `push.sh` sets) refuses a plain `git push` of main whose
-tip is not a report commit. Other branches pass, and `git push --no-verify` skips it.
+tip is not a metrics commit. Other branches pass, and `git push --no-verify` skips it.
 
 Benchmark baseline: `benchmarks/run --baseline` records a new one under low load (it waits up to 30 minutes for it). Run
 it only when asked, or suggest it after a Neovim upgrade. See `benchmarks/README.md`.
 
-Report data in `.reports/` and the generated `benchmarks/fixtures/` are excluded from cloc and must not be analyzed as
+Old report data in `.reports/` and the generated `benchmarks/fixtures/` are excluded from cloc and must not be analyzed as
 part of the repo.
 
 After plugin or Neovim updates, also run the headless smoke test. Use an isolated state dir so sessions and shada stay

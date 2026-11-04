@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Refuse to push main unless its tip is a report commit from scripts/push.sh. Other branches, tags
+# Refuse to push main unless its tip is a metrics commit from scripts/push.sh. Other branches, tags
 # and deletions pass. `git push --no-verify` skips this.
 
 zero="0000000000000000000000000000000000000000"
 while read -r _local_ref local_sha remote_ref _remote_sha; do
   [ "$remote_ref" = "refs/heads/main" ] || continue
   [ "$local_sha" != "$zero" ] || continue
-  if ! git log -1 --format=%B "$local_sha" | grep -q '^Report: passed$'; then
-    echo "pre-push: main goes out through ./scripts/push.sh, which runs the report first" >&2
+  if ! git log -1 --format=%B "$local_sha" | grep -q '^Metrics: recorded$'; then
+    echo "pre-push: main goes out through ./scripts/push.sh, which records the metrics first" >&2
     exit 1
   fi
 done

@@ -5,6 +5,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "benchmarks"))
 import bench  # noqa: E402
@@ -16,8 +17,8 @@ def meta(kind, version, date="2026-10-31T00:00Z"):
 
 
 def rows(kind, version, values, date="2026-10-31T00:00Z", runs=3):
-  measured = {k: (v, v) for k, v in values.items() if k not in bench.COUNTS}
-  counts = {k: v for k, v in values.items() if k in bench.COUNTS}
+  measured = {k: (v, v) for k, v in values.items() if k not in bench.COUNTS + bench.SIZES}
+  counts = {k: v for k, v in values.items() if k in bench.COUNTS + bench.SIZES}
   return bench.to_rows(meta(kind, version, date), measured, counts, runs)
 
 
@@ -35,6 +36,10 @@ class ToRows(unittest.TestCase):
     self.assertEqual(result[2]["runs"], "1")
     self.assertEqual(result[0]["runs"], "3")
 
+  def test_sizes_keep_a_decimal_and_are_not_averaged_runs(self):
+    result = rows("release", "0.1.0", {"plugin size": 1234.56})
+    self.assertEqual((result[0]["unit"], result[0]["median"], result[0]["runs"]), ("MiB", "1234.6", "1"))
+
   def test_unknown_metrics_are_dropped(self):
     self.assertEqual(rows("release", "0.1.0", {"bogus": 1.0}), [])
 
@@ -44,6 +49,11 @@ class Record(unittest.TestCase):
     history = rows("release", "0.1.0", {"startup ready": 100})
     history = bench.record(history, rows("release", "0.1.0", {"startup ready": 120}))
     self.assertEqual([r["median"] for r in history], ["120.0"])
+
+  def test_rerun_without_times_keeps_the_recorded_times(self):
+    history = rows("release", "0.1.0", {"startup ready": 100, "plugins installed": 5})
+    history = bench.record(history, rows("release", "0.1.0", {"plugins installed": 6}))
+    self.assertEqual({r["metric"]: r["median"] for r in history}, {"startup ready": "100.0", "plugins installed": "6"})
 
   def test_baselines_accumulate(self):
     history = rows("baseline", "0.1.0", {"startup ready": 100}, date="2026-10-01T00:00Z")
@@ -148,6 +158,96 @@ class Tables(unittest.TestCase):
     self.assertIn("benchmarks/run --baseline", table)
 
 
+  def test_sizes_go_in_the_count_table_without_warnings(self):
+    history = rows("release", "0.1.0", {"plugin size": 100.0})
+    table, warnings = bench.table_for(history, rows("release", "0.2.0", {"plugin size": 200.5}), 3)
+    self.assertIn("| plugin size | 200.5 MiB | 100.0 MiB | +100.5 |", table)
+    self.assertEqual(warnings, [])
+
+  def test_a_run_without_times_has_no_timing_table(self):
+    table, _ = bench.table_for([], rows("release", "0.1.0", {"plugins installed": 5}), 3)
+    self.assertNotIn("| Metric |", table)
+    self.assertIn("| plugins installed | 5 |", table)
+
+
+class Trend(unittest.TestCase):
+  def test_one_row_per_release_newest_first(self):
+    history = rows("release", "0.1.0", {"startup ready": 100, "plugins installed": 300}, date="2026-10-01T00:00Z")
+    history += rows("baseline", "0.1.0", {"startup ready": 50}, date="2026-10-02T00:00Z")
+    history += rows("release", "0.2.0", {"startup ready": 1250, "plugins installed": 290, "plugin size": 1100.4},
+                    date="2026-10-03T00:00Z")
+    table = bench.trend_table(history).splitlines()
+    self.assertEqual(len(table), 4)
+    self.assertIn("| 0.2.0 | 2026-10-03 | 0.50 | 290 |", table[2])
+    self.assertIn("| 1,100 |", table[2])
+    self.assertIn("| 1,250 |", table[2])
+    self.assertIn("| 0.1.0 | 2026-10-01 | 0.50 | 300 |", table[3])
+
+  def test_open_and_render_are_means_over_the_fixtures(self):
+    values = {"small.md open": 100, "sample.py open": 300, "small.md render": 1000}
+    row = bench.trend_table(rows("release", "0.1.0", values)).splitlines()[2]
+    self.assertIn("| 200 | 1,000 |", row)
+
+  def test_a_push_without_times_leaves_them_and_the_load_blank(self):
+    row = bench.trend_table(rows("release", "0.1.0", {"plugins installed": 5})).splitlines()[2]
+    self.assertIn("| 0.1.0 | 2026-10-31 |  | 5 |", row)
+    self.assertTrue(row.endswith("|  |  |  |  |  |  |"))
+
+
+class MeasureRelease(unittest.TestCase):
+  MEASURED = {"startup ready": (100.0, 90.0), "rss peak": (190.0, 190.0), "plugins installed": (5, 5)}
+  COUNTS = {"plugins installed": (5, 5)}
+
+  def run_release(self, loads, measure=None):
+    loads = iter(loads)
+    with mock.patch.object(bench, "load1", lambda: next(loads)), \
+        mock.patch.object(bench, "measure", measure or (lambda runs, log: dict(self.MEASURED))), \
+        mock.patch.object(bench, "plugin_counts", lambda log: dict(self.COUNTS)), \
+        mock.patch.object(bench.LoadWatch, "_watch", lambda watch: None):
+      return bench.measure_release(3, log=lambda _: None, cpus=10)
+
+  def test_a_quiet_machine_records_everything(self):
+    self.assertEqual(self.run_release([1.0, 1.0]), self.MEASURED)
+
+  def test_a_busy_start_measures_nothing(self):
+    def fail(runs, log):
+      raise AssertionError("must not measure")
+    self.assertEqual(self.run_release([4.5], fail), self.COUNTS)
+
+  def test_a_spike_during_the_run_drops_times_but_keeps_the_rest(self):
+    result = self.run_release([1.0, 6.5])
+    self.assertNotIn("startup ready", result)
+    self.assertEqual(result["rss peak"], (190.0, 190.0))
+    self.assertEqual(result["plugins installed"], (5, 5))
+
+  def test_a_failed_run_still_records_counts(self):
+    def fail(runs, log):
+      raise bench.BenchError("boom")
+    self.assertEqual(self.run_release([1.0, 1.0], fail), self.COUNTS)
+
+
+class LoadWatchPeak(unittest.TestCase):
+  def test_catches_a_spike_that_ends_before_the_block_does(self):
+    loads = iter([1.0, 9.0, 2.0, 2.0, 2.0, 2.0])
+    with mock.patch.object(bench, "load1", lambda: next(loads, 2.0)):
+      with bench.LoadWatch(interval=0.01) as watch:
+        import time
+        time.sleep(0.05)
+    self.assertEqual(watch.peak, 9.0)
+
+
+class Sizes(unittest.TestCase):
+  def test_plugin_size_is_disk_use_in_mib(self):
+    with mock.patch.object(bench.subprocess, "run", return_value=mock.Mock(stdout="2048\t/x\n")):
+      self.assertEqual(bench.plugin_size_mib("/x"), 2.0)
+
+  def test_config_size_sums_tracked_files_and_skips_deleted_ones(self):
+    with tempfile.TemporaryDirectory() as directory:
+      (Path(directory) / "a").write_bytes(b"x" * (1 << 20))
+      with mock.patch.object(bench, "ROOT", Path(directory)), mock.patch.object(bench, "git", lambda *_: "a\0gone\0"):
+        self.assertEqual(bench.config_size_mib(), 1.0)
+
+
 class PerformanceDoc(unittest.TestCase):
   def test_creates_then_replaces_only_the_marked_block(self):
     with tempfile.TemporaryDirectory() as directory:
@@ -173,15 +273,6 @@ class CodeCounts(unittest.TestCase):
       self.assertEqual(bench.code_counts(main, lazy), {
         "config files": 10, "config lua lines": 900, "config lines": 1000, "plugin lines": 50000,
       })
-
-
-class Releases(unittest.TestCase):
-  def test_latest_release_rows(self):
-    history = rows("release", "0.1.0", {"startup ready": 1})
-    history += rows("baseline", "0.1.0", {"startup ready": 2})
-    history += rows("release", "0.2.0", {"startup ready": 3})
-    self.assertEqual({r["version"] for r in bench.latest_release_rows(history)}, {"0.2.0"})
-    self.assertEqual(bench.latest_release_rows([]), [])
 
 
 if __name__ == "__main__":

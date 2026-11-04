@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Commit staged changes and create an annotated semver tag. Nothing is pushed: scripts/push.sh
-# runs the report and pushes everything that piled up.
+# records the metrics and pushes everything that piled up.
 # Usage: ./scripts/release.sh <X.Y.Z> "<summary>"
 # Requires: a "## [X.Y.Z]" CHANGELOG.md section.
 # RELEASE_TRAILER (optional) is appended to the commit message, e.g. a Co-Authored-By line.
@@ -40,4 +40,4 @@ commit_args=(-m "$tag: $summary")
 [ -n "${RELEASE_TRAILER:-}" ] && commit_args+=(-m "$RELEASE_TRAILER")
 git commit "${commit_args[@]}"
 git tag -a "$tag" -m "$tag: $summary"
-echo "released $tag locally; scripts/push.sh reports and pushes it"
+echo "released $tag locally; scripts/push.sh records metrics and pushes it"

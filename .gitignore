@@ -4,8 +4,7 @@ luacov.stats.out
 luacov.report.out
 tmp.sh
 __pycache__/
-# report.sh moves the report of a failed run here
+# Old report data and scripts/coverage.sh output; only the old summaries are tracked
 .reports/failed/
-# Reports: commit only each report's summary.md; the raw data (about 27k lines each) stays local
 .reports/*/*
 !.reports/*/summary.md

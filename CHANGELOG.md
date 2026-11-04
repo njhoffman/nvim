@@ -5,6 +5,25 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.31.0] - 2026-11-03
+
+### Changed
+
+- `scripts/push.sh` takes 2-3 minutes instead of 6-7: it only records metrics and pushes. It no longer runs the tests or
+  coverage; run tests with each change, and `scripts/coverage.sh` when you want the coverage number.
+- `docs/PERFORMANCE.md` is now a trend: one row per push with plugins, files, lines, sizes, memory and benchmark times.
+- A busy machine no longer records bad times. With high load at the start, or a spike during the run, a push records
+  counts and sizes and leaves the times blank.
+- Metrics commits are `vX.Y.Z: metrics` with a `Metrics: recorded` line, which the `pre-push` guard checks for.
+
+### Added
+
+- Config size and plugin directory size in `benchmarks/history.tsv`.
+
+### Removed
+
+- `scripts/report.sh`, `scripts/report_summary.py` and the per-push `summary.md`. Past summaries stay in the repo.
+
 ## [0.30.4] - 2026-11-03
 
 ### Changed

@@ -17,6 +17,7 @@ charged to the first measured fixture. CursorHold is ignored (idle popups are no
 
 import csv
 import datetime
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -25,6 +26,7 @@ import shutil
 import statistics
 import subprocess
 import tempfile
+import threading
 import time
 
 import msgpack
@@ -34,12 +36,17 @@ ROOT = HERE.parent
 FIXTURES = HERE / "fixtures"
 HISTORY = HERE / "history.tsv"
 PERFORMANCE = ROOT / "docs" / "PERFORMANCE.md"
+LAZY_DIR = Path.home() / ".local" / "share" / "nvim" / "lazy"
+CLOC_CACHE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "nvim-report"
 
 COLUMNS, LINES = 100, 40
 STARTUP_QUIET_MS, RENDER_QUIET_MS = 1000, 300
 PING_SLACK_MS = 50  # a ping answered slower than this means the main loop was busy
 STARTUP_CAP_S, RENDER_CAP_S = 20, 10
 AVERAGE_WINDOW = 10
+# A push records times only from a quiet machine: 1-minute load per CPU at the start, and at most
+# during the run. The run itself adds well under 1 to the load.
+START_LOAD_PER_CPU, PEAK_LOAD_PER_CPU = 0.4, 0.6
 
 WARMUPS = ["warmup.md", "warmup.lua", "warmup.py", "warmup.ts", "warmup.json"]
 SAMPLES = ["small.md", "medium.md", "large.md", "code.md", "sample.lua", "sample.py", "sample.ts", "sample.json"]
@@ -50,6 +57,7 @@ TIMINGS = ["startup ready", "startup settled"] + [
 ]
 MEMORY = ["rss settled", "rss peak"]
 COUNTS = ["plugins installed", "plugins loaded", "config files", "config lua lines", "config lines", "plugin lines"]
+SIZES = ["config size", "plugin size"]
 
 FIELDS = ["date", "kind", "version", "commit", "load1", "nvim", "metric", "unit", "median", "min", "runs"]
 START, END = "<!-- benchmark:start -->", "<!-- benchmark:end -->"
@@ -93,6 +101,31 @@ def wait_for_load(limit, max_wait, interval=15, log=print):
     log(f"load {current:.2f} > {limit:.2f}; waiting {interval}s")
     time.sleep(interval)
   return True
+
+
+class LoadWatch:
+  """Tracks the highest 1-minute load while the block runs: the gate before a run misses a spike."""
+
+  def __init__(self, interval=5):
+    self.interval = interval
+    self.peak = 0.0
+    self._done = threading.Event()
+
+  def _watch(self):
+    while True:
+      self.peak = max(self.peak, load1())
+      if self._done.wait(self.interval):
+        return
+
+  def __enter__(self):
+    self._thread = threading.Thread(target=self._watch, daemon=True)
+    self._thread.start()
+    return self
+
+  def __exit__(self, *_):
+    self._done.set()
+    self._thread.join()
+    self.peak = max(self.peak, load1())
 
 
 def rss_mib(pid, field):
@@ -282,8 +315,45 @@ def measure(runs, samples=SAMPLES, log=print):
   return {metric: (statistics.median(values), min(values)) for metric, values in collected.items()}
 
 
+def plugin_counts(log=print):
+  """Plugin counts from one started session, for a run that measures no times. {} if it fails."""
+  with tempfile.TemporaryDirectory(prefix="nvim-bench-") as state_dir:
+    session = None
+    try:
+      session = Session(state_dir)
+      uienter = session.wait_uienter()
+      session.settle(STARTUP_QUIET_MS, STARTUP_CAP_S * 3, uienter)
+      stats = session.lua("local s = require('lazy').stats() return { count = s.count, loaded = s.loaded }")
+    except BenchError as error:
+      log(f"no plugin counts: {error}")
+      return {}
+    finally:
+      if session:
+        session.close()
+  return {"plugins installed": (stats["count"],) * 2, "plugins loaded": (stats["loaded"],) * 2}
+
+
+def measure_release(runs, log=print, cpus=os.cpu_count() or 1):
+  """What a push records. Times from a busy machine would only skew the trend, so a high load at
+  the start or during the run, or a failed run, leaves them out; the counts are still recorded."""
+  start_limit, peak_limit = START_LOAD_PER_CPU * cpus, PEAK_LOAD_PER_CPU * cpus
+  if (current := load1()) > start_limit:
+    log(f"load {current:.2f} > {start_limit:.2f}: too busy, recording no times")
+    return plugin_counts(log)
+  try:
+    with LoadWatch() as watch:
+      measured = measure(runs, log=log)
+  except BenchError as error:
+    log(f"failed: {error}; recording no times")
+    return plugin_counts(log)
+  if watch.peak > peak_limit:
+    log(f"load peaked at {watch.peak:.2f} > {peak_limit:.2f} during the run: recording no times")
+    return {metric: value for metric, value in measured.items() if metric not in TIMINGS}
+  return measured
+
+
 def code_counts(cloc_main, cloc_lazy):
-  """File and line counts from the cloc JSON that scripts/report.sh writes."""
+  """File and line counts from cloc JSON reports."""
   main = json.loads(Path(cloc_main).read_text())
   lazy = json.loads(Path(cloc_lazy).read_text())
   return {
@@ -294,8 +364,49 @@ def code_counts(cloc_main, cloc_lazy):
   }
 
 
+def run_cloc(report, *arguments):
+  # Relative paths on purpose: an absolute path under ~/.config yields {}
+  subprocess.run(["cloc", "--json", f"--report-file={report}", *arguments], cwd=ROOT, check=True,
+                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
+def collect_code_counts(log=print):
+  """Run cloc over the config and the plugin tree. The tree only changes with plugin updates, so its
+  result is cached by lazy-lock.json and the plugin directories. {} if cloc fails."""
+  key_source = (ROOT / "lazy-lock.json").read_bytes() + "\n".join(sorted(os.listdir(LAZY_DIR))).encode()
+  cached = CLOC_CACHE / f"lazy-{hashlib.sha256(key_source).hexdigest()[:16]}.json"
+  with tempfile.TemporaryDirectory(prefix="nvim-cloc-") as directory:
+    main = Path(directory) / "main.json"
+    try:
+      run_cloc(main, "--follow-links", "--exclude-dir=.reports,.git,node_modules,__pycache__",
+               "--fullpath", "--not-match-d=.*benchmarks/fixtures.*", ".")
+      if not cached.is_file() or cached.stat().st_size == 0:
+        CLOC_CACHE.mkdir(parents=True, exist_ok=True)
+        # No --follow-links here: plugin test fixtures contain symlink loops
+        partial = Path(directory) / "lazy.json"
+        run_cloc(partial, str(LAZY_DIR))
+        shutil.move(partial, cached)
+    except (OSError, subprocess.CalledProcessError) as error:
+      log(f"no code counts: {error}")
+      return {}
+    return code_counts(main, cached)
+
+
+def config_size_mib():
+  """Tracked files of the config, without the old report summaries."""
+  paths = git("ls-files", "-z", "--", ".", ":!.reports").split("\0")
+  # A tracked file can be deleted in the work tree; lstat so a symlink counts as itself
+  return sum((ROOT / path).lstat().st_size for path in paths if path and os.path.lexists(ROOT / path)) / (1 << 20)
+
+
+def plugin_size_mib(path=LAZY_DIR):
+  """Disk use of the plugin tree, .git directories included."""
+  output = subprocess.run(["du", "-sk", str(path)], capture_output=True, text=True, check=True).stdout
+  return int(output.split()[0]) / 1024
+
+
 def git(*arguments):
-  return subprocess.run(["git", "-C", str(ROOT), *arguments], capture_output=True, text=True).stdout.strip()
+  return subprocess.run(["git", "-C", str(ROOT), *arguments], capture_output=True, text=True).stdout.rstrip("\n")
 
 
 def metadata(kind, version):
@@ -314,14 +425,14 @@ def metadata(kind, version):
 def unit_of(metric):
   if metric in COUNTS:
     return "count"
-  if metric in MEMORY:
+  if metric in MEMORY or metric in SIZES:
     return "MiB"
   return "ms"
 
 
 def to_rows(meta, measured, counts, runs):
   rows = []
-  for metric in TIMINGS + MEMORY + COUNTS:
+  for metric in TIMINGS + MEMORY + COUNTS + SIZES:
     if metric in measured:
       median, minimum = measured[metric]
     elif metric in counts:
@@ -350,10 +461,13 @@ def write_history(rows, path=HISTORY):
 
 
 def record(history, new_rows):
-  """Append new_rows, replacing earlier rows of the same release (a re-run of report.sh)."""
+  """Append new_rows, replacing the same metrics of the same release: a re-run that was too busy to
+  measure times keeps the times already recorded."""
   kind, version = new_rows[0]["kind"], new_rows[0]["version"]
   if kind == "release":
-    history = [row for row in history if not (row["kind"] == "release" and row["version"] == version)]
+    metrics = {row["metric"] for row in new_rows}
+    history = [row for row in history
+               if not (row["kind"] == "release" and row["version"] == version and row["metric"] in metrics)]
   return history + new_rows
 
 
@@ -398,13 +512,6 @@ def summarize(history, current_rows, window=AVERAGE_WINDOW):
   return summary, baseline_date, baseline_meta
 
 
-def latest_release_rows(history):
-  versions = [row["version"] for row in history if row["kind"] == "release"]
-  if not versions:
-    return []
-  return [row for row in history if row["kind"] == "release" and row["version"] == versions[-1]]
-
-
 def table_for(history, rows, runs):
   """Tables for `rows` against the history recorded before them."""
   if rows[0]["kind"] == "baseline":
@@ -427,8 +534,8 @@ def number(value, unit):
 
 
 def render_tables(summary, meta, baseline_date, baseline_meta, runs, warn_pct=25):
-  timed = [s for s in summary if s["unit"] != "count"]
-  counted = [s for s in summary if s["unit"] == "count"]
+  timed = [s for s in summary if s["unit"] != "count" and s["metric"] not in SIZES]
+  counted = [s for s in summary if s["unit"] == "count" or s["metric"] in SIZES]
   baseline_text = (
     f"baseline from {baseline_date} (load {baseline_meta['load1']}, {baseline_meta['runs']} sessions)"
     if baseline_date else "no baseline yet (run `benchmarks/run --baseline` under low load)"
@@ -439,10 +546,13 @@ def render_tables(summary, meta, baseline_date, baseline_meta, runs, warn_pct=25
     f"Average is over the previous {AVERAGE_WINDOW} releases; {baseline_text}. "
     "Recorded in [benchmarks/history.tsv](../benchmarks/history.tsv); see "
     "[benchmarks/README.md](../benchmarks/README.md).",
-    "",
-    "| Metric | Latest | Average | Releases | vs average | Baseline | vs baseline |",
-    "|---|---:|---:|---:|---:|---:|---:|",
   ]
+  if timed:
+    lines += [
+      "",
+      "| Metric | Latest | Average | Releases | vs average | Baseline | vs baseline |",
+      "|---|---:|---:|---:|---:|---:|---:|",
+    ]
   warnings = []
   for s in timed:
     unit = " MiB" if s["unit"] == "MiB" else " ms"
@@ -456,11 +566,55 @@ def render_tables(summary, meta, baseline_date, baseline_meta, runs, warn_pct=25
         warnings.append(f"{s['metric']}: {percent(s['latest'], reference)} vs {label}")
   lines += ["", "| Count | Latest | Previous release | Change |", "|---|---:|---:|---:|"]
   for s in counted:
-    change = "" if s["previous"] is None else f"{int(s['latest'] - s['previous']):+,}"
-    lines.append(f"| {s['metric']} | {number(s['latest'], 'count')} | {number(s['previous'], 'count')} | {change} |")
+    if s["unit"] == "count":
+      shown = [number(s["latest"], "count"), number(s["previous"], "count")]
+      change = "" if s["previous"] is None else f"{int(s['latest'] - s['previous']):+,}"
+    else:
+      shown = [f"{s['latest']:,.1f} MiB", "" if s["previous"] is None else f"{s['previous']:,.1f} MiB"]
+      change = "" if s["previous"] is None else f"{s['latest'] - s['previous']:+,.1f}"
+    lines.append(f"| {s['metric']} | {shown[0]} | {shown[1]} | {change} |")
   if warnings:
     lines += ["", f"Over {warn_pct}% slower: " + "; ".join(warnings) + "."]
   return "\n".join(lines), warnings
+
+
+def trend_table(history):
+  """One row per recorded push, newest first; blank where a run recorded no such metric."""
+  by_version = {}
+  for row in history:
+    if row["kind"] == "release":
+      by_version.setdefault(row["version"], []).append(row)
+
+  def whole(values, metric):
+    return f"{float(values[metric]):,.0f}" if metric in values else ""
+
+  def mean(values, phase):
+    samples = [float(values[f"{name} {phase}"]) for name in SAMPLES if f"{name} {phase}" in values]
+    return f"{statistics.mean(samples):,.0f}" if samples else ""
+
+  columns = [
+    ("Version", None), ("Date", None), ("Load", None),
+    ("Plugins", "plugins installed"), ("Loaded", "plugins loaded"), ("Files", "config files"),
+    ("Lua lines", "config lua lines"), ("Lines", "config lines"), ("Plugin lines", "plugin lines"),
+    ("Config MiB", "config size"), ("Plugins MiB", "plugin size"),
+    ("Ready ms", "startup ready"), ("Settled ms", "startup settled"),
+    ("Open ms", "open"), ("Render ms", "render"),
+    ("RSS MiB", "rss settled"), ("Peak MiB", "rss peak"),
+  ]
+  lines = [
+    "| " + " | ".join(name for name, _ in columns) + " |",
+    "|---|---|" + "---:|" * (len(columns) - 2),
+  ]
+  for version, rows in reversed(by_version.items()):
+    values = {row["metric"]: row["median"] for row in rows}
+    timed = [row for row in rows if row["metric"] in TIMINGS]
+    # The load only explains times, so it is the load of the run that measured them
+    load = timed[-1]["load1"] if timed else ""
+    cells = [version, rows[-1]["date"][:10], load]
+    for _, metric in columns[3:]:
+      cells.append(mean(values, metric) if metric in ("open", "render") else whole(values, metric))
+    lines.append("| " + " | ".join(cells) + " |")
+  return "\n".join(lines)
 
 
 def update_performance_doc(table, path=PERFORMANCE):
@@ -476,7 +630,7 @@ def update_performance_doc(table, path=PERFORMANCE):
   else:
     text = (
       "# Performance\n\n"
-      "Startup and rendering benchmarks, recorded with every push by `scripts/report.sh`\n"
-      "through `benchmarks/run`. The table below is rewritten on each recorded run.\n"
+      "Size and speed of this config after every push, recorded by `scripts/push.sh` through\n"
+      "`benchmarks/run`. The table below is rewritten on each recorded run.\n"
     )
   path.write_text(text.rstrip("\n") + "\n\n## Benchmarks\n\n" + block + "\n")
