@@ -5,6 +5,13 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.30.2] - 2026-11-03
+
+### Changed
+
+- Documented the links that let nvcat (`vt`, `vc`) use the log parser and query. nvcat itself got the `log` filetype and
+  a fix for losing its colors when a followed file reloads, in its own repo.
+
 ## [0.30.1] - 2026-11-03
 
 ### Fixed

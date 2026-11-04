@@ -146,7 +146,8 @@ See `filetype.lua` for custom filetype patterns:
 - `.env*.example` → conf
 - `requirements*.txt` → requirements
 - `*.log`, `*_log` → log (tree-sitter parser `parser/log.so`, grammar in `parsers/tree-sitter-log`, query in
-  `queries/log/`, colors in `after/ftplugin/log.lua`)
+  `queries/log/`, colors in `lua/colorschemes/nord-nick/syntax.lua`). nvcat (`vt`, `vc`) renders these too, through
+  links to the parser and query in `~/.local/share/nvim/site` (commands in `grammar.js`)
 - `/var/log/syslog*` → syslog (`syntax/syslog.vim`)
 
 ## Development Commands

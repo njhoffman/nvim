@@ -4,6 +4,9 @@
 // checks precedence before length, so one would beat longer matches and split hashes and words.
 // The longest match wins, and on a tie the rule defined first, so the order of the rules matters.
 // Rebuild: cd parsers/tree-sitter-log && tree-sitter generate && tree-sitter build -o ../../parser/log.so
+// nvcat has its own runtimepath, so it needs these links once per machine:
+//   ln -s ~/.config/nvim/parser/log.so ~/.local/share/nvim/site/parser/log.so
+//   ln -s ~/.config/nvim/queries/log ~/.local/share/nvim/site/queries/log
 
 const MONTH = "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)";
 const DAY = "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)";
