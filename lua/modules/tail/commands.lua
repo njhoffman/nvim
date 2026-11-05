@@ -1,3 +1,5 @@
+-- Starts and stops tailing, polling the file for size and modification changes.
+
 local config = require("modules.tail.config")
 local utils = require("modules.tail.utils")
 local state = require("modules.tail.state")

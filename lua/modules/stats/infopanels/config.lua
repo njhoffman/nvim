@@ -1,3 +1,5 @@
+-- Copy of Telescope's config module, adapted for the info panels.
+
 local utils = require("infopanels.utils")
 local deprecated = require("infopanels.deprecated")
 local sorters = require("telescope.sorters")

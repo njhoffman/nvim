@@ -1,3 +1,5 @@
+-- Commits picker for the current buffer, with a summary of commit stats.
+
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local conf = require("telescope.config").values

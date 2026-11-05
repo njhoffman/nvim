@@ -1,3 +1,5 @@
+-- Highlight groups and sign highlighting for the registers window.
+
 local config = require("modules.registers.config")
 local state = require("modules.registers.state")
 

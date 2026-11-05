@@ -1,3 +1,5 @@
+-- Walks all autocommands and counts them by group and pattern.
+
 local traverse = function()
   local autocmd_table = {}
   local aucounts = { commands = 0, groups = 0 }

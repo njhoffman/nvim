@@ -1,3 +1,5 @@
+-- Collects keymap statistics across Neovim, the mapper and which-key.
+
 local wkutils
 
 local function ensure_wkutils()

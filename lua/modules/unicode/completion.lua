@@ -1,3 +1,5 @@
+-- Insert-mode completion of Unicode names, digraphs and HTML entities.
+
 local config = require("modules.unicode.config")
 local data = require("modules.unicode.data")
 local digraph = require("modules.unicode.digraph")

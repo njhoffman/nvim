@@ -1,3 +1,5 @@
+-- Previewer diffing the selected commit against its parent.
+
 local putils = require("telescope.previewers.utils")
 local git_utils = require("modules.gitops.utils.git")
 

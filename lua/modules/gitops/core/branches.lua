@@ -1,3 +1,5 @@
+-- Branches picker, with a summary line.
+
 local strings = require("plenary.strings")
 local make_entry = require("telescope.make_entry")
 local pickers = require("telescope.pickers")

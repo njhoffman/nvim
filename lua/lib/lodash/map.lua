@@ -1,3 +1,5 @@
+-- Maps lodash-style function names to their lodash and underscore implementations.
+
 local underscore = require("lib.lodash.underscore")
 local lodash = require("lib.lodash.lodash")
 

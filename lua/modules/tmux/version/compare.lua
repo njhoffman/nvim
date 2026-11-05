@@ -1,3 +1,5 @@
+-- Compares tmux versions by major, minor and patch.
+
 local keys = {
     "major",
     "minor",

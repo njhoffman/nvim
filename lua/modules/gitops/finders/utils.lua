@@ -1,3 +1,5 @@
+-- Finder helpers: author queries, git log entries and the last prompt.
+
 local utils = require("modules.gitops.utils")
 local strings = require("plenary.strings")
 

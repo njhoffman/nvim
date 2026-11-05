@@ -1,3 +1,5 @@
+-- Keymaps for the registers window and the keys that open it.
+
 local map = require("lib.mapper").map
 local state = require("modules.registers.state")
 local config = require("modules.registers.config")

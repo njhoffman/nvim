@@ -1,3 +1,5 @@
+-- Turns log messages of any type into text for the sinks.
+
 local M = {}
 local logutils = require("lib.logger.debug.utils")
 

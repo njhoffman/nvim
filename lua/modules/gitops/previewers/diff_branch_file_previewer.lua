@@ -1,3 +1,5 @@
+-- Previewer diffing the current buffer with a selected branch.
+
 local previewers = require("telescope.previewers")
 local file = require("modules.gitops.utils.file")
 local git_utils = require("modules.gitops.utils.git")

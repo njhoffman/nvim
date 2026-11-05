@@ -1,3 +1,5 @@
+-- Matches paths against glob ignore patterns.
+
 local M = {}
 
 local function glob_to_pattern(glob)

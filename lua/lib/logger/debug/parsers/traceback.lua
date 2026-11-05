@@ -1,3 +1,5 @@
+-- Builds a readable traceback from debug.getinfo.
+
 local traceback = function()
   -- The main introspective function in the debug library is the debug.getinfo function. Its first parameter may be a function or a stack level. When you call debug.getinfo(foo) for some function foo, you get a table with some data about that function. The table may have the following fields:
   -- source --- Where the function was defined. If the function was defined in a string (through loadstring), source is that string. If the function was defined in a file, source is the file name prefixed with a `@´.

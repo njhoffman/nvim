@@ -1,3 +1,5 @@
+-- Log channel that writes to a file in the cache directory.
+
 local log_dir
 local function get_logdir()
     if log_dir == nil then

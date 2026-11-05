@@ -1,3 +1,5 @@
+-- Thin wrappers over Neovim window functions for navigation and resizing.
+
 local M = {}
 function M.is_nvim_border(border)
   return M.winnr() == M.winnr("1" .. border)

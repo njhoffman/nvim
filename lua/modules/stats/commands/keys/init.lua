@@ -1,3 +1,5 @@
+-- :Stats keys: overview of keymap counts by source.
+
 local output = require("modules.stats.output")
 local stats_track = function() end
 

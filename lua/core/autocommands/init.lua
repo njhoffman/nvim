@@ -1,3 +1,5 @@
+-- Loads the autocommand submodules and provides the create_augroups helper.
+
 local buffers = require("core.autocommands.buffers")
 local telescope = require("core.autocommands.telescope")
 local windows = require("core.autocommands.windows")

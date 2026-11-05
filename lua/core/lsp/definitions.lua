@@ -1,3 +1,5 @@
+-- Server capability names shown by the LSP capabilities view.
+
 local display_keys = {
   "callHierarchyProvider",
   "codeActionProvider",

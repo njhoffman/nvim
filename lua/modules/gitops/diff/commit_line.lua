@@ -1,3 +1,5 @@
+-- Picker of commits that changed the selected lines.
+
 local pickers = require("telescope.pickers")
 local sorters = require("telescope.sorters")
 local ags_finders = require("modules.gitops.finders")

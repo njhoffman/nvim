@@ -1,3 +1,5 @@
+-- Entry point for lib.mapper; also registers :KeymapsTree.
+
 local records = require("lib.mapper.records")
 local commands = require("lib.mapper.commands")
 local output = require("lib.mapper.output")

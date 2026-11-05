@@ -5,6 +5,12 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.31.5] - 2026-11-05
+
+### Changed
+
+- Added a one-line header comment to 243 files in `lua/core`, `lua/lib` and `lua/modules`. No behavior change.
+
 ## [0.31.4] - 2026-11-04
 
 ### Changed

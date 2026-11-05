@@ -1,3 +1,5 @@
+-- Exports the gitops previewers.
+
 return {
   diff_delta = require("modules.gitops.previewers.diff_delta"),
   diff_commit_to_parent = require("modules.gitops.previewers.diff_commit_to_parent"),

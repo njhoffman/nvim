@@ -1,3 +1,5 @@
+-- Prints tracker diffs and counts.
+
 local output_diff = function(props, delta)
   local lineout = props.lineout or print
   local fields_out = function(item, fields)

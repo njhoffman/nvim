@@ -1,3 +1,5 @@
+-- Finds characters by name or code point, plus digraph and HTML entity lookups.
+
 local config = require("modules.unicode.config")
 local data = require("modules.unicode.data")
 local digraph = require("modules.unicode.digraph")

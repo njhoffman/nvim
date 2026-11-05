@@ -1,3 +1,5 @@
+-- Sidebar sections, each one backed by an installed plugin.
+
 local is_installed = function(name)
   local plugins = require("lazy.core.config").spec.plugins
   return plugins[name] and plugins[name]._.installed

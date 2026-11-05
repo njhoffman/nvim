@@ -1,3 +1,5 @@
+-- Unicode module options and the paths of its data and cache files.
+
 local M = {
   url = "https://www.unicode.org/Public/UNIDATA/UnicodeData.txt",
   data_dir = vim.fn.stdpath("data") .. "/site/unicode",

@@ -1,3 +1,5 @@
+-- Counts loaded buffers, windows and splits for the window management commands.
+
 local function get_loaded_buffers()
   local buffers = {}
   local len = 0

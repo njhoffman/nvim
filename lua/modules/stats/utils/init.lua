@@ -1,3 +1,5 @@
+-- Stats helpers: rounding, alignment and number formatting.
+
 local align_str = require("plenary.strings").align_str
 
 local function round(x, n)

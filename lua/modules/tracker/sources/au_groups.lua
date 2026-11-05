@@ -1,3 +1,5 @@
+-- Tracker source for augroups.
+
 local base_source = require("modules.tracker.sources._base")
 
 local get_augroups = function(self)

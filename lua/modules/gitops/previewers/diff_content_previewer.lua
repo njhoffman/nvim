@@ -1,3 +1,5 @@
+-- Previewer showing commit changes that include the prompt string.
+
 local previewers = require("telescope.previewers")
 local git_utils = require("modules.gitops.utils.git")
 

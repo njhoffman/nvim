@@ -1,3 +1,5 @@
+-- Icons and highlights per node type for the inspect_tree component.
+
 local tree_maps = {}
 
 tree_maps.injections = {

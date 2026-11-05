@@ -1,3 +1,5 @@
+-- vim.notify replacement that queues messages until startup has finished.
+
 local logutils = require("lib.logger.debug.utils")
 local logparsers = require("lib.logger.parsers")
 local get_opt = require("utils.options").get_option_value

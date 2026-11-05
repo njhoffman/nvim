@@ -1,3 +1,5 @@
+-- Diagnostics as virtual lines, with a toggle and current-line-only mode.
+
 local M = {}
 
 local diagnostic_utils = require("core.lsp.lsp_lines.diagnostic_utils")

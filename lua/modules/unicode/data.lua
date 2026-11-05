@@ -1,3 +1,5 @@
+-- Parses and holds UnicodeData.txt.
+
 local config = require("modules.unicode.config")
 local cache = require("modules.unicode.cache")
 

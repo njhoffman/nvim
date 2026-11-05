@@ -1,3 +1,5 @@
+-- DevDocs operations: fetch the registry, install, uninstall, read and open docs.
+
 local M = {}
 
 local job = require("plenary.job")

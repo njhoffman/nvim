@@ -1,3 +1,5 @@
+-- Window autocommands: breakindent, line numbers, list chars, yank highlight, cursor restore.
+
 local set_option = vim.api.nvim_set_option_value
 local logger = require("lib.logger").init("autocmd-win")
 local augroup = vim.api.nvim_create_augroup("AutocmdWindows", { clear = true })

@@ -1,3 +1,5 @@
+-- Calls the DevDocs setup with this config's options.
+
 local default_cfg = {
   dir_path = vim.fn.stdpath("data") .. "/devdocs", -- installation directory
   telescope = {}, -- passed to the telescope picker

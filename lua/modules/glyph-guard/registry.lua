@@ -1,3 +1,5 @@
+-- Loads glyphs.json, the registry of known code points.
+
 local M = {}
 
 local function normalize(str)

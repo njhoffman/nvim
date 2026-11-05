@@ -1,3 +1,5 @@
+-- :Stats keys tree: keymaps as trees, by source and status.
+
 local output = require("modules.stats.output")
 
 local all = function(view, _, records)

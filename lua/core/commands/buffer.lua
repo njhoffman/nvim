@@ -1,3 +1,5 @@
+-- Per-window buffer history with back, forward and a popup to pick from it.
+
 local map = require("lib.mapper").map
 local timeago = require("core.commands.timeago")
 local devicons = require("nvim-web-devicons")

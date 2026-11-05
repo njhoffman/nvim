@@ -1,3 +1,5 @@
+-- Assorted autocommands: window title, write hooks, quick-close and filetype tweaks.
+
 local set_window_title = function()
   if not os.getenv("TMUX") then
     os.execute("tmux setenv custom_path " .. vim.fn.getcwd())

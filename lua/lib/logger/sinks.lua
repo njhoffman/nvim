@@ -1,3 +1,5 @@
+-- Logger outputs: console, notifications and log files.
+
 local structlog = require("lib.logger.structlog")
 
 local sinks_config = {

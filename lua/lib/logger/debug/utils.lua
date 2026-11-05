@@ -1,3 +1,5 @@
+-- Debug logger helpers: message formatting, rounding and level names.
+
 local M = {}
 local config = require("lib.logger.debug.config")
 

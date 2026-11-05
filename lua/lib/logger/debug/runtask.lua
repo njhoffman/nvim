@@ -1,3 +1,5 @@
+-- Runs a shell command and streams its output to a notification.
+
 local function notify_output(command, opts)
   local output = ""
   local notification

@@ -1,3 +1,5 @@
+-- Gitops options: diff plugin, git flags and diff flags.
+
 local M = {}
 
 local config = {}

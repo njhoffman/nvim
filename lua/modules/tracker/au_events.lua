@@ -1,3 +1,5 @@
+-- Records fired autocommand events and reports them on a timer.
+
 local all_events = {
   "BufAdd",
   "BufDelete",

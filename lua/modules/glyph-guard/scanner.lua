@@ -1,3 +1,5 @@
+-- Scans buffers, files and paths for private-use and non-ASCII characters.
+
 local M = {}
 local treesitter = require("modules.glyph-guard.treesitter")
 local ignore = require("modules.glyph-guard.ignore")

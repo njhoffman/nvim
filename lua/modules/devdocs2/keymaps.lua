@@ -1,3 +1,5 @@
+-- Buffer-local keymaps for DevDocs windows.
+
 local M = {}
 
 local config = require("modules.devdocs2.config")

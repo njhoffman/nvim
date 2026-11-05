@@ -1,3 +1,5 @@
+-- Sets up navigation keymaps and exposes the directional moves.
+
 local keymaps = require("modules.tmux.keymaps")
 local navigate = require("modules.tmux.navigation.navigate")
 local options = require("modules.tmux.configuration.options")

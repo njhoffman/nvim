@@ -1,3 +1,5 @@
+-- Default options for the tmux module.
+
 local function copy(source, target)
   if source == nil or target == nil then
     return

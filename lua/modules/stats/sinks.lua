@@ -1,3 +1,5 @@
+-- Low-level stats outputs used by output.lua.
+
 local logfile = function(lines, title)
   vim.dbglog(title .. vim.fn.join(lines, "\n  "))
 end

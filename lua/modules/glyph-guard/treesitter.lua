@@ -1,3 +1,5 @@
+-- Finds string nodes in Lua and shell, where a glyph can be replaced by an escape.
+
 local M = {}
 
 local QUERIES = {

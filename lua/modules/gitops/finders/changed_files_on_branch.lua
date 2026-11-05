@@ -1,3 +1,5 @@
+-- Finder for files changed on the branch since its fork point.
+
 local finders = require("telescope.finders")
 local git_utils = require("modules.gitops.utils.git")
 

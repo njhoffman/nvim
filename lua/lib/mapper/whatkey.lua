@@ -1,3 +1,5 @@
+-- lib.mapper backend for what-key, loaded on first use.
+
 local wk_mapper, wk
 
 local function ensure_loaded()

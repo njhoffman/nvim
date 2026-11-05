@@ -1,3 +1,5 @@
+-- Tracker source for the values of a table in a Lua module.
+
 local base_source = require("modules.tracker.sources._base")
 
 local get_code_target = function(self)

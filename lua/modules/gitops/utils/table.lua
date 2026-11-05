@@ -1,3 +1,5 @@
+-- Table helpers for gitops.
+
 local M = {}
 
 --- @param array table

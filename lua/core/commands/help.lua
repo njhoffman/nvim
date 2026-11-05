@@ -1,3 +1,5 @@
+-- Help commands: help tags, and creating and exporting files from doc/helpfiles.
+
 local helputils = require("utils.helptags")
 local function get_help_cursor()
   require("configs.telescope.launcher")("builtin", "help_tags")

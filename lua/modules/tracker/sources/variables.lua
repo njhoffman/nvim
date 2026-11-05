@@ -1,3 +1,5 @@
+-- Tracker source for Vim variables, by scope.
+
 local base_source = require("modules.tracker.sources._base")
 
 local all_scopes = {

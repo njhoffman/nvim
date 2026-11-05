@@ -1,3 +1,4 @@
+-- Treesitter text-object helpers. Does not parse and nothing requires it; see TODO.md.
 
 local conf_utils = {}
 

@@ -1,3 +1,5 @@
+-- Registers the :Stats command.
+
 local stats_map = require("modules.stats.commands-stats")
 -- local watch_map = require('modules.stats.commands-watch')
 -- local track_map = require('modules.stats.commands-track')

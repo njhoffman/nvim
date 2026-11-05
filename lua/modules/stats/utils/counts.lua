@@ -1,3 +1,5 @@
+-- Counts Neovim state: autocommands, namespaces, extmarks, timers, memory and options.
+
 local counts = {}
 
 counts.aucommands = function()

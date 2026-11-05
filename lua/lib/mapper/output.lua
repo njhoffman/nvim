@@ -1,3 +1,5 @@
+-- Prints keymap statistics as trees, tables and lists.
+
 local records = require("lib.mapper.records")
 local stats = require("lib.mapper.stats")
 

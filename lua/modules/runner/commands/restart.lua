@@ -1,3 +1,5 @@
+-- Restart commands: save the session and quit so the next start can restore it.
+
 local utils = require("modules.runner.utils")
 
 vim.cmd([[

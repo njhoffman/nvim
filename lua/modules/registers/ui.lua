@@ -1,3 +1,5 @@
+-- The registers window: creating, filling, moving through and closing it.
+
 local uv = vim.uv
 local config = require("modules.registers.config")
 local state = require("modules.registers.state")

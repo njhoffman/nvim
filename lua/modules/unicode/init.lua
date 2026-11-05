@@ -1,3 +1,5 @@
+-- Unicode module entry point: its public API and user commands.
+
 local config = require("modules.unicode.config")
 local data = require("modules.unicode.data")
 local names = require("modules.unicode.names")

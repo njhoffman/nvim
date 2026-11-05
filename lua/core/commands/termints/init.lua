@@ -1,3 +1,5 @@
+-- Keymaps for quitting, clearing search and launching terminal tools through WezTerm.
+
 local map = vim.keymap.set
 local wez = require("core.commands.termints.wezterm-cli")
 

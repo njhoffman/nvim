@@ -1,3 +1,5 @@
+-- State of the buffer being tailed: name, line count and size.
+
 local state = {
   bufname = nil,
   bufnr = nil,

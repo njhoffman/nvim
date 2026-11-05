@@ -1,3 +1,5 @@
+-- Sidebar helpers: look up an existing keymap and validate sections.
+
 local M = {}
 
 function M.get_key_cmd(mode, lhs)

@@ -1,3 +1,5 @@
+-- Registers the window management commands such as CloseMulti.
+
 local actions = require("core.commands.ui.actions")
 
 local setup_commands = function()

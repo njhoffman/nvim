@@ -1,3 +1,5 @@
+-- System helpers: yank the file path or cwd, and trash the current file.
+
 local yank_path = function()
   local path = vim.fn.expand("%:p")
   vim.fn.setreg("+", path)

@@ -1,3 +1,5 @@
+-- Applies and validates the tmux module's options and log levels.
+
 local log = require("modules.tmux.log")
 local logging = require("modules.tmux.configuration.logging")
 local options = require("modules.tmux.configuration.options")

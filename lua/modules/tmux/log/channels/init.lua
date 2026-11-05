@@ -1,3 +1,5 @@
+-- Registers log channels and sends messages to them.
+
 local config = require("modules.tmux.configuration.logging")
 local severity = require("modules.tmux.log.severity")
 

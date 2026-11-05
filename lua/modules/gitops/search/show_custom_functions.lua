@@ -1,3 +1,5 @@
+-- The gitops main menu: lists each picker with its live stats and runs the choice.
+
 local pickers = require("telescope.pickers")
 local sorters = require("telescope.sorters")
 local finders = require("telescope.finders")

@@ -1,3 +1,5 @@
+-- Sets up the alternate file module and its BufEnter lookup.
+
 local assign = require("modules.alt.assign")
 local alt = require("modules.alt.alt")
 local state = require("modules.alt.state")

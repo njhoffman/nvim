@@ -1,3 +1,5 @@
+-- Dispatches and completes the :Stats subcommands.
+
 local output = require("modules.stats.output")
 local utils = require("modules.stats.utils")
 -- local list_align = require("notify.parsers.list_align")

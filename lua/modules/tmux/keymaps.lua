@@ -1,3 +1,5 @@
+-- Keymap definitions and registration for tmux navigation and resizing.
+
 local mapper = require("lib.mapper")
 
 local move = function(direction)

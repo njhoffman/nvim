@@ -1,3 +1,5 @@
+-- :Stats lazy: overview of plugin state and load errors.
+
 local output = require("modules.stats.output")
 local utils = require("modules.stats.utils")
 

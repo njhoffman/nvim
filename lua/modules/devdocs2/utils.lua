@@ -1,3 +1,5 @@
+-- Matches DevDocs aliases to Neovim filetypes.
+
 local vim_filetypes = {}
 for _, ft in ipairs(vim.fn.getcompletion("", "filetype")) do
   vim_filetypes[ft] = true

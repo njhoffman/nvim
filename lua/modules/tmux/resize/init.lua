@@ -1,3 +1,5 @@
+-- Sets up resize keymaps and exposes the directional resizes.
+
 local keymaps = require("modules.tmux.keymaps")
 local options = require("modules.tmux.configuration.options")
 local resize = require("modules.tmux.resize.resize")

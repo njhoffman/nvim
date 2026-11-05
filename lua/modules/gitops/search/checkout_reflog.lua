@@ -1,3 +1,5 @@
+-- Reflog picker that checks out the selected entry.
+
 local pickers = require("telescope.pickers")
 local sorters = require("telescope.sorters")
 local finders = require("telescope.finders")

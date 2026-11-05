@@ -1,3 +1,5 @@
+-- Named and anonymous timers for measuring code from log calls.
+
 local uv = vim.uv
 
 local timers = {}

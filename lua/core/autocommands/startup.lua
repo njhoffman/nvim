@@ -1,3 +1,5 @@
+-- Startup autocommands: load time, VimEnter setup and window layout on resize.
+
 local logger = require("lib.logger").init("startup")
 
 local get_load_time = function()

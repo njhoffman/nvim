@@ -1,3 +1,5 @@
+-- Syncs Neovim registers with tmux buffers and the clipboard.
+
 local options = require("modules.tmux.configuration.options")
 local keymaps = require("modules.tmux.keymaps")
 local log = require("modules.tmux.log")

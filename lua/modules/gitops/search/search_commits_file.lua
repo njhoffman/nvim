@@ -1,3 +1,5 @@
+-- Searches the commits of the current file.
+
 local pickers = require("telescope.pickers")
 local ags_finders = require("modules.gitops.finders")
 local ags_previewers = require("modules.gitops.previewers")

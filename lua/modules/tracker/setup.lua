@@ -1,3 +1,5 @@
+-- The events and sources this config tracks.
+
 local events = {
   -- 'BufAdd',
   "BufDelete",

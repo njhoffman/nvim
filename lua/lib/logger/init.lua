@@ -1,3 +1,5 @@
+-- Creates scoped loggers, with levels per scope and sink.
+
 local sinks = require("lib.logger.sinks")
 local structlog = require("lib.logger.structlog")
 

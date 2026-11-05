@@ -1,3 +1,5 @@
+-- Finder for commits touching a line range of the current file.
+
 local finders = require("telescope.finders")
 local git_utils = require("modules.gitops.utils.git")
 local file = require("modules.gitops.utils.file")

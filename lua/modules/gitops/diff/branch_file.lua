@@ -1,3 +1,5 @@
+-- Picker comparing the current buffer with a selected branch.
+
 local pickers = require("telescope.pickers")
 local sorters = require("telescope.sorters")
 local ags_finders = require("modules.gitops.finders")

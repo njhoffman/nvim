@@ -1,3 +1,5 @@
+-- Drops log messages that match a scope's filter pattern in lib.logger.levels.
+
 local pattern_filter = function(name, level, msg)
   -- additional filtering based on scope and pattern
   local skip = false

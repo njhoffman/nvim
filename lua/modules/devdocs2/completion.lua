@@ -1,3 +1,5 @@
+-- Command-line completion of installed, available and updatable docs.
+
 local M = {}
 
 local list = require("modules.devdocs2.list")

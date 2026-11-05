@@ -1,3 +1,5 @@
+-- Tracker source for options, by scope.
+
 local base_source = require("modules.tracker.sources._base")
 local all_scopes = { g = "global", b = "buf", w = "win" }
 

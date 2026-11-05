@@ -1,3 +1,5 @@
+-- Log channel that writes through vim.notify.
+
 local CTOR = {}
 
 function CTOR.create(notify_func, severity_map)

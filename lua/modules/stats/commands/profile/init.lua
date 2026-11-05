@@ -1,3 +1,5 @@
+-- :Stats profile: overview of the profile views.
+
 local output = require("modules.stats.output")
 
 local stats_overview = function(view)

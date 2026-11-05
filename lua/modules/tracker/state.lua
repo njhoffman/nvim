@@ -1,3 +1,5 @@
+-- Shared tracker state: initialized sources, history, timers and timings.
+
 local state = {
   initialized = {},
   history = {},

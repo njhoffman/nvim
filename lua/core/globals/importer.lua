@@ -1,3 +1,5 @@
+-- Defines vim.import and vim.reload, require wrappers that report load errors.
+
 local backup_import = function(mod_name, cb)
   local mod_ok, mod = pcall(require, mod_name)
   if not mod_ok then

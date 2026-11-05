@@ -1,3 +1,5 @@
+-- Alt module helpers: notifications, setting the alternate buffer and path formatting.
+
 local M = {}
 
 ---@param msg string

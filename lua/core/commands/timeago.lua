@@ -1,3 +1,5 @@
+-- Formats a time difference as a relative string such as "3 hours ago".
+
 local language_long = {
   justnow = "just now",
   second = { singular = "a second ago", plural = "seconds ago" },

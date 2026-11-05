@@ -1,3 +1,5 @@
+-- Writes edited highlight groups back to the colorscheme's source files.
+
 local M = {}
 
 local COLORSCHEME_DIR = vim.fn.stdpath("config") .. "/lua/colorschemes/nord-nick"

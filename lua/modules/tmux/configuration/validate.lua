@@ -1,3 +1,5 @@
+-- Checks that the options are supported by the running tmux version.
+
 local version = require("modules.tmux.version")
 local log = require("modules.tmux.log")
 

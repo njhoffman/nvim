@@ -1,3 +1,5 @@
+-- Parses tmux window layouts from JSON or the classic format.
+
 local log = require("modules.tmux.log")
 
 local M = {}

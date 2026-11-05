@@ -1,3 +1,5 @@
+-- Picker keymaps: open in browser, diff, show commit, copy hash and checkout.
+
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local ags_actions = require("modules.gitops.actions")

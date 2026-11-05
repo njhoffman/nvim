@@ -1,3 +1,5 @@
+-- General helpers: augroups, tables, strings, plugin checks and the global dump.
+
 local cmd = vim.cmd
 local tbl_map = vim.tbl_map
 local fnamemodify = vim.fn.fnamemodify

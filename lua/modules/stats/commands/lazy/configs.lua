@@ -1,3 +1,5 @@
+-- :Stats lazy configs: stray, missing and loaded files in lua/configs.
+
 local output = require("modules.stats.output")
 
 local get_stray_configs = function(state)

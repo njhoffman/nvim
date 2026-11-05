@@ -1,3 +1,5 @@
+-- Resizes Neovim windows and tmux panes, pausing animations while it runs.
+
 local log = require("modules.tmux.log")
 local options = require("modules.tmux.configuration.options")
 local tmux = require("modules.tmux.wrapper.tmux")

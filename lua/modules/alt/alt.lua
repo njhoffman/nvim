@@ -1,3 +1,5 @@
+-- Alternate buffer actions: statusline text, jumping, closing and reopening.
+
 local state = require("modules.alt.state")
 local utils = require("modules.alt.utils")
 

@@ -1,3 +1,5 @@
+-- Tracker entry point: loads sources and diffs them on a timer.
+
 local defaults = require("modules.tracker.defaults")
 local sources = require("modules.tracker.sources")
 local log = require("lib.logger.debug").log

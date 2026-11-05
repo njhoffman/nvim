@@ -1,3 +1,5 @@
+-- Moves between Neovim windows, tmux panes and i3 windows.
+
 local layout = require("modules.tmux.layout")
 local log = require("modules.tmux.log")
 local nvim = require("modules.tmux.wrapper.nvim")

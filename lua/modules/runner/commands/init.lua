@@ -1,3 +1,5 @@
+-- Registers the runner's user commands.
+
 local handlers = require("modules.runner.handlers")
 
 local setup_commands = function()

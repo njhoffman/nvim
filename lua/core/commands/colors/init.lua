@@ -1,3 +1,5 @@
+-- Registers the highlight editor commands (HlEdit and friends).
+
 local edit_buffer = require("core.commands.colors.edit_buffer")
 local inspector = require("core.commands.colors.inspector")
 local visual = require("core.commands.colors.visual")

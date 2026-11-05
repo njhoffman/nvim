@@ -1,3 +1,5 @@
+-- Sidebar defaults and setup.
+
 local utils = require("modules.sidebar.utils")
 
 local defaults = {

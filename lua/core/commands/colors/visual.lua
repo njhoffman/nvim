@@ -1,3 +1,5 @@
+-- Collects the highlight groups inside a visual selection.
+
 local M = {}
 
 local highlighter = require("vim.treesitter.highlighter")

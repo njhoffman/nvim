@@ -1,3 +1,5 @@
+-- :Stats files: scans directories and reports file counts and sizes.
+
 local stats_track = function(args) end
 --- Create a flat list of all files in a directory
 -- @param directory - The directory to scan (default value = './')

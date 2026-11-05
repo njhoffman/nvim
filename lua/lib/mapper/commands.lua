@@ -1,3 +1,5 @@
+-- The map, vmap and prefix functions behind lib.mapper.
+
 local records = require("lib.mapper.records")
 local whatkey_utils = require("lib.mapper.whatkey")
 local whichkey_utils = require("lib.mapper.whichkey")

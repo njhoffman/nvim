@@ -1,3 +1,5 @@
+-- Logs the timing of gitops picker commands.
+
 local logger = require("lib.logger").init("git")
 
 local timing = function(opts, timing, num)

@@ -1,3 +1,5 @@
+-- Glyph-guard defaults and setup: flags private-use glyphs in code.
+
 local M = {}
 
 local defaults = {

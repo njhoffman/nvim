@@ -1,3 +1,5 @@
+-- Shared state for the alt module: pairs, patterns and the last closed buffer.
+
 local state = {
   alts = {},
   patterns = {},

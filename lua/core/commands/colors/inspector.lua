@@ -1,3 +1,5 @@
+-- Finds where a highlight group is used in a buffer through its treesitter highlighter.
+
 local M = {}
 
 local highlighter = require("vim.treesitter.highlighter")

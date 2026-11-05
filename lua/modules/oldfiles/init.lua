@@ -1,3 +1,5 @@
+-- Writes and rereads shada on save so the oldfiles list stays current.
+
 local logger = require("lib.logger").init("mru")
 local utils = require("modules.oldfiles.utils")
 

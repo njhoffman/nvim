@@ -1,3 +1,5 @@
+-- Scratch "hledit" buffer for editing highlight groups and applying them live.
+
 local M = {}
 
 local FILETYPE = "hledit"

@@ -1,3 +1,5 @@
+-- :Stats keys list: keymaps as lines, by source and status.
+
 local output = require("modules.stats.output")
 local str_utils = require("plenary.strings")
 

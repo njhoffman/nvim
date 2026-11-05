@@ -1,3 +1,5 @@
+-- Built-in Neovim options and the leader keys.
+
 local g = vim.g
 local o, wo, bo = vim.o, vim.wo, vim.bo
 local opt = require("utils.core").opt

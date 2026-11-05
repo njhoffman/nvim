@@ -1,3 +1,5 @@
+-- Keymaps that open git TUIs and tools in WezTerm panes.
+
 local map = vim.keymap.set
 local wez = require("core.commands.termints.wezterm-cli")
 

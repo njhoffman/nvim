@@ -1,3 +1,5 @@
+-- Builds the gitops picker mappings, including the vimdiff action.
+
 local utils = require("telescope.utils")
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")

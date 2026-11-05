@@ -1,3 +1,5 @@
+-- Default tracker callbacks: output, serialize, diff and init.
+
 local output = require("modules.tracker.output")
 local diff_delta = require("modules.tracker.diff.delta")
 

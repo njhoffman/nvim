@@ -1,3 +1,5 @@
+-- Glyph commands: check, escape, preview and send findings to the quickfix list.
+
 local M = {}
 local preview_ns = vim.api.nvim_create_namespace("glyph-guard_preview")
 

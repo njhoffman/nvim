@@ -1,3 +1,5 @@
+-- Formats a code point as an escape sequence for Lua or shell.
+
 local M = {}
 
 local function fmt_lua(cp)

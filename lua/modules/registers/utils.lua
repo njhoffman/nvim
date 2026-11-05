@@ -1,3 +1,5 @@
+-- Reads registers, formats their info and applies the selected one.
+
 local config = require("modules.registers.config")
 local state = require("modules.registers.state")
 local log = require("lib.logger").init("registers")

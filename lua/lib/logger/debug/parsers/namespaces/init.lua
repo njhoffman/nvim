@@ -1,3 +1,5 @@
+-- Formats namespaces and their extmarks as aligned tables for debugging.
+
 local get_widths = function(tbl)
   local widths = {}
   for _, row in ipairs(tbl) do

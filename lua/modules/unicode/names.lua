@@ -1,3 +1,5 @@
+-- Resolves names for code points in ranges UnicodeData.txt leaves out, such as CJK.
+
 local M = {}
 
 -- Special Unicode ranges that aren't in UnicodeData.txt individually

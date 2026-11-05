@@ -1,3 +1,5 @@
+-- Formats character information for the screen.
+
 local M = {}
 
 local output_width = 1

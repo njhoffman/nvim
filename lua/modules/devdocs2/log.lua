@@ -1,3 +1,5 @@
+-- Logger for the DevDocs module, writing to devdocs/log.txt.
+
 local M = {}
 
 local log = require("plenary.log").new({

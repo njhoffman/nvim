@@ -1,3 +1,5 @@
+-- Keymaps that open language REPLs in WezTerm panes.
+
 local map = vim.keymap.set
 
 ---@class ReplOpts

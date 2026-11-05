@@ -1,3 +1,5 @@
+-- Previewer diffing a selected file against the branch's fork point.
+
 local previewers = require("telescope.previewers")
 local git_utils = require("modules.gitops.utils.git")
 

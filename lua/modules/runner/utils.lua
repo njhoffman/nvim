@@ -1,3 +1,5 @@
+-- Runner helpers: shorten paths and send commands to a linked Neovim server.
+
 local path_home = function(file)
   local home = os.getenv("HOME") or ""
   if string.len(home) > 0 then

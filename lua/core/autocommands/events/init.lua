@@ -1,3 +1,5 @@
+-- Autocommand event recording: tracks which event groups fired and with which fields.
+
 local events = require('core.autocommands.events.groups')
 
 local processed = { events = {}, records = {} }

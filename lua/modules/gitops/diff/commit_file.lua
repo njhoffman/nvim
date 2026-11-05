@@ -1,3 +1,5 @@
+-- Picker of commits that changed the current file.
+
 local pickers = require("telescope.pickers")
 local sorters = require("telescope.sorters")
 local ags_finders = require("modules.gitops.finders")

@@ -1,3 +1,5 @@
+-- Full table inspector with cycle handling and sorted keys, in the style of inspect.lua.
+
 local default_config = {
   depth = math.huge,
   newline = "\n",

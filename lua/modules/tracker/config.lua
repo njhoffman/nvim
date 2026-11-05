@@ -1,3 +1,5 @@
+-- Merges tracker options with the provider defaults.
+
 local defaults = require("modules.tracker.defaults")
 
 local function assign_defaults(user_cfg, type)

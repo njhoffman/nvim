@@ -1,3 +1,5 @@
+-- Keeps the winbar in sync when entering Telescope buffers.
+
 local set_option = vim.api.nvim_set_option_value
 local get_option = vim.api.nvim_get_option_value
 

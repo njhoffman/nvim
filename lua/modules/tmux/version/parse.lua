@@ -1,3 +1,5 @@
+-- Parses a tmux version string, including letter suffixes such as 3.3a.
+
 local log = require("modules.tmux.log")
 
 local function get_order(char)

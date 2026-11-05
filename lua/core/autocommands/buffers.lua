@@ -1,3 +1,5 @@
+-- Buffer autocommands: fasd history updates and automatic hlsearch toggling.
+
 local set_option = vim.api.nvim_set_option_value
 
 local function file_exists(name)

@@ -1,3 +1,5 @@
+-- Previewer showing the current file's changes in the selected commit.
+
 local previewers = require("telescope.previewers")
 local file = require("modules.gitops.utils.file")
 local git_utils = require("modules.gitops.utils.git")

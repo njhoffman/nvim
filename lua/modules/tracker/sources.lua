@@ -1,3 +1,5 @@
+-- Index of the tracker's sources, by name and scope.
+
 local req_path = function(name)
   return require("modules.tracker.sources." .. name)
 end

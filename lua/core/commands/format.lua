@@ -1,3 +1,5 @@
+-- Text formatting commands: checkbox toggles, line-end characters and whitespace cleanup.
+
 local state = { timer = nil }
 local ns_id = vim.api.nvim_create_namespace("commands/format")
 

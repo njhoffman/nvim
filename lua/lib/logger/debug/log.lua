@@ -1,3 +1,5 @@
+-- Builds one log method per configured debug level.
+
 local output_log = require("lib.logger.debug.output")
 local logutils = require("lib.logger.debug.utils")
 local config = require("lib.logger.debug.config")

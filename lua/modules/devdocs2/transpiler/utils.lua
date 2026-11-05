@@ -1,3 +1,5 @@
+-- HTML helpers for the transpiler: entity decoding and tag classification.
+
 local normalize_html = function(str)
   local symbol_map = {
     ['&lt;'] = '<',

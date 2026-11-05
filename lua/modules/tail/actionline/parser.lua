@@ -1,3 +1,5 @@
+-- Parses an action line's name and arguments.
+
 local actions = require("modules.tail.actionline.actions")
 local config = require("modules.tail.config")
 local logger = require("modules.tail.logger")

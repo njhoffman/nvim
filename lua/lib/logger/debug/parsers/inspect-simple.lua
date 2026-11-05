@@ -1,3 +1,5 @@
+-- Compact depth-limited table inspector for log messages.
+
 local M = {}
 M.inspect = function(tbl, depth, n)
   n = n or 2

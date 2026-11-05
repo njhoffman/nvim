@@ -1,3 +1,5 @@
+-- Data for the info panels: startup time, memory, plugin size and Vim state counts.
+
 local M = {}
 
 -- local lazy_plugins_size  = vim.fn.systemlist('du -shc * ' .. vim.fn.stdpath('data') .. '/site/pack/packer/opt | tail -n1')

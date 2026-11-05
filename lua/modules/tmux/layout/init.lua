@@ -1,3 +1,5 @@
+-- Decides from the window layout whether a pane is at a tmux border.
+
 local log = require("modules.tmux.log")
 local parse = require("modules.tmux.layout.parse")
 local tmux = require("modules.tmux.wrapper.tmux")

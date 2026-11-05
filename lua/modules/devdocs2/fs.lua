@@ -1,3 +1,5 @@
+-- Reads and writes the DevDocs registry, index and lockfile, and removes docs.
+
 local M = {}
 
 ---@param registry string

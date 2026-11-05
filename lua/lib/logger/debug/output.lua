@@ -1,3 +1,5 @@
+-- Writes a debug log message to the configured console and file sinks.
+
 local M = {}
 local config = require("lib.logger.debug.config")
 

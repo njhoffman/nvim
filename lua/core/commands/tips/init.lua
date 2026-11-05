@@ -1,3 +1,5 @@
+-- Shows a random tip, or one from a chosen category.
+
 local tips_list = require("core.commands.tips.list")
 
 local nl = "\n   ➜ "

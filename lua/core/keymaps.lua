@@ -1,3 +1,5 @@
+-- Global keymaps, registered through lib.mapper.
+
 local mapper = require("lib.mapper")
 local map = mapper.map
 local vmap = mapper.vmap

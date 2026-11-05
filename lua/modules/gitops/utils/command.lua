@@ -1,3 +1,5 @@
+-- Runs a shell command through io.popen and returns its output.
+
 local M = {}
 local logger = require("modules.gitops.utils.logger")
 

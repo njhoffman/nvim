@@ -1,3 +1,5 @@
+-- Rewrites a buffer's flagged glyphs as escapes, keeping or updating the line's comment.
+
 local M = {}
 local escape = require("modules.glyph-guard.escape")
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env lua
+-- Dumps runtimepath, packpath and scriptnames for debugging load order.
 
 local get_runtime_files = function()
   local rtpaths = vim.api.nvim_list_runtime_paths()

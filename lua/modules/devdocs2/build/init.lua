@@ -1,3 +1,5 @@
+-- Transpiles fetched DevDocs HTML to Markdown and writes the sorted entries to files.
+
 local M = {}
 
 local fs = require("modules.devdocs2.fs")

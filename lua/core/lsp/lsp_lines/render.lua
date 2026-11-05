@@ -1,3 +1,5 @@
+-- Draws the virtual lines for lsp_lines.
+
 local M = {}
 
 vim.cmd([[

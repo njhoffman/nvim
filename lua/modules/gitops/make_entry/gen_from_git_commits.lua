@@ -1,3 +1,5 @@
+-- Telescope entry maker for commits, with sha, date, author and message columns.
+
 local entry_display = require("telescope.pickers.entry_display")
 local state = require("telescope.state")
 local ops_utils = require("modules.gitops.utils")

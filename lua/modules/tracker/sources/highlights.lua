@@ -1,3 +1,5 @@
+-- Tracker source for highlight groups.
+
 local base_source = require("modules.tracker.sources._base")
 -- :so $VIMRUNTIME/syntax/hitest.vim
 

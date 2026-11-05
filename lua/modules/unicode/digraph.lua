@@ -1,3 +1,5 @@
+-- Parses :digraphs output and looks up digraphs.
+
 local names = require("modules.unicode.names")
 
 local M = {}

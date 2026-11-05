@@ -1,3 +1,5 @@
+-- Finder for local branch names.
+
 local git_utils = require("modules.gitops.utils.git")
 local finders = require("telescope.finders")
 

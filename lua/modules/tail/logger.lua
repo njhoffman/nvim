@@ -1,3 +1,5 @@
+-- Logs tail starts, actions and diffs.
+
 local config = require("modules.tail.config")
 local state = require("modules.tail.state")
 local utils = require("modules.tail.utils")

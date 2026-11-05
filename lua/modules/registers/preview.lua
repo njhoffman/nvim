@@ -1,3 +1,5 @@
+-- Previews a register's contents at the cursor before it is applied.
+
 local state = require("modules.registers.state")
 local config = require("modules.registers.config")
 local log = require("lib.logger").init("registers")

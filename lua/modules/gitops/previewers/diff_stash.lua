@@ -1,3 +1,5 @@
+-- Previewer showing a stash's diff.
+
 local putils = require("telescope.previewers.utils")
 local git_utils = require("modules.gitops.utils.git")
 

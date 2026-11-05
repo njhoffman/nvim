@@ -1,3 +1,5 @@
+-- Log levels per channel for the tmux module.
+
 local M = {
     file = "warning",
     notify = "warning",

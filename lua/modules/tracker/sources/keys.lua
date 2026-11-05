@@ -1,3 +1,5 @@
+-- Tracker source for keymaps, by scope and mode.
+
 local base_source = require("modules.tracker.sources._base")
 
 local all_scopes = { g = "global", b = "buffer" }

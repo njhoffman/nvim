@@ -1,3 +1,5 @@
+-- Git helpers: hashes, branches, command builders and previewer utilities.
+
 local pfiletype = require("plenary.filetype")
 local conf = require("telescope.config").values
 local Previewer = require("telescope.previewers.previewer")

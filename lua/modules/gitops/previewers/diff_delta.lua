@@ -1,3 +1,5 @@
+-- Previewer rendering diffs through delta.
+
 local git_utils = require("modules.gitops.utils.git")
 local previewers = require("telescope.previewers")
 

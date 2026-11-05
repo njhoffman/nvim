@@ -1,3 +1,5 @@
+-- Tmux module entry point: sets up copy sync, navigation and resizing.
+
 local config = require("modules.tmux.configuration")
 local copy = require("modules.tmux.copy")
 local log = require("modules.tmux.log")

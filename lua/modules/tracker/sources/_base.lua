@@ -1,3 +1,5 @@
+-- Base tracker source: options, init, diff, serialize and result building.
+
 local diff_delta = require("modules.tracker.diff.delta")
 
 local build_fields = function(items)

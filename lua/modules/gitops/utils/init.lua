@@ -1,3 +1,5 @@
+-- General gitops helpers: LSP format, repo lookup and text alignment.
+
 local logger = require("modules.gitops.utils.logger")
 local M = {}
 

@@ -1,3 +1,5 @@
+-- DevDocs entry point: install, open, update and keywordprg, plus the setup function.
+
 local M = {}
 
 local log = require("modules.devdocs2.log")

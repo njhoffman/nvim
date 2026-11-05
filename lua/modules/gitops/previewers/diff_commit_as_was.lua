@@ -1,3 +1,5 @@
+-- Previewer showing a file as it was at the selected commit.
+
 local pfiletype = require("plenary.filetype")
 local Path = require("plenary.path")
 local putils = require("telescope.previewers.utils")

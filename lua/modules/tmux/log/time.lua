@@ -1,3 +1,5 @@
+-- Timestamps for the tmux module's logger.
+
 local M = {}
 function M.now()
     return os.date("%c")

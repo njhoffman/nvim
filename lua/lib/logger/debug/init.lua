@@ -1,3 +1,5 @@
+-- Debug logging entry point: log levels, timers, inspect and buffer dumps.
+
 local map = require("lib.mapper").map
 local coreutils = require("utils.core")
 local logutils = require("lib.logger.debug.utils")

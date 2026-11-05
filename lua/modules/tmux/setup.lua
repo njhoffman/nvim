@@ -1,3 +1,5 @@
+-- Calls the tmux module's setup with this config's options.
+
 require("modules.tmux").setup({
   copy_sync = {
     enable = false,

@@ -1,3 +1,5 @@
+-- Shows glyph findings in a buffer through a namespace.
+
 local M = {}
 local ns = vim.api.nvim_create_namespace("glyph-guard")
 

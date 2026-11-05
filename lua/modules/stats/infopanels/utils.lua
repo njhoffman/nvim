@@ -1,3 +1,5 @@
+-- Info panel helpers, currently only dedent.
+
 local M = { P }
 
 M.dedent = function(str, leave_indent)

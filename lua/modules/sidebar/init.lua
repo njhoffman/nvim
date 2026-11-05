@@ -1,3 +1,5 @@
+-- Sidebar entry point: validates the sections and applies the options.
+
 local config = require("modules.sidebar.config")
 local state = require("modules.sidebar.state")
 local sections = require("modules.sidebar.sections")

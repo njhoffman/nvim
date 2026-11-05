@@ -1,3 +1,5 @@
+-- Opens a diff of a commit or file with the configured diff plugin.
+
 local config = require("modules.gitops.utils.config")
 
 local M = {}

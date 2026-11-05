@@ -1,3 +1,5 @@
+-- Early globals: luarocks paths, start time and debug helpers such as __FILE__.
+
 local home = vim.fn.expand("$HOME")
 package.path = package.path .. ";" .. home .. "/.luarocks/share/lua/5.4/?.lua"
 package.path = package.path .. ";" .. home .. "/.luarocks/share/lua/5.4/?/init.lua"

@@ -1,3 +1,5 @@
+-- Window actions: close tab, window, buffer or popups in order, and smart splits.
+
 local utils = require("core.commands.ui.utils")
 
 local config = {

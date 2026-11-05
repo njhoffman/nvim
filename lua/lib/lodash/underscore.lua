@@ -1,3 +1,5 @@
+-- Underscore-style functional helpers for tables and strings.
+
 local table, ipairs, pairs, math, string = table, ipairs, pairs, math, string
 
 local _ = {}

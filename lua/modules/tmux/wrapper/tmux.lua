@@ -1,3 +1,5 @@
+-- Runs tmux commands: panes, buffers, layouts and zoom state.
+
 local log = require("modules.tmux.log")
 
 local tmux_directions = {

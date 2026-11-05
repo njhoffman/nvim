@@ -1,3 +1,5 @@
+-- Sidebar commands: open, close, toggle, select and step between sections.
+
 local state = require("modules.sidebar.state")
 local config = require("modules.sidebar.config")
 

@@ -1,3 +1,5 @@
+-- Deprecated option check kept from Telescope's config; it reports nothing now.
+
 local deprecated = {}
 
 deprecated.options = function(opts)

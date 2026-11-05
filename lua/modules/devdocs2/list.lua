@@ -1,3 +1,5 @@
+-- Lists installed, available and updatable docs from the lockfile and registry.
+
 local M = {}
 
 local fs = require("modules.devdocs2.fs")

@@ -1,3 +1,5 @@
+-- Tracks whether the sidebar is open, its current section and its width.
+
 local sections = require("modules.sidebar.sections")
 
 local state = {

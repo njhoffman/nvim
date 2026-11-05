@@ -1,3 +1,5 @@
+-- File and path helpers for gitops: relative paths, git paths and existence checks.
+
 local uv = vim.uv
 local validate = vim.validate
 local utils = require("modules.gitops.utils")

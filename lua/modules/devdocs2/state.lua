@@ -1,3 +1,5 @@
+-- Shared DevDocs state: the current doc, preview lines and last window.
+
 local M = {}
 
 ---@alias nvim_devdocs.StateKey "current_doc" | "preview_lines" | "last_win" | "last_mode" | "last_buf"

@@ -1,3 +1,5 @@
+-- Reloads Lua modules together with their siblings and dependent chain.
+
 local get_reload_type = function(cfg)
   local type = "basic   "
   if cfg.extended == true then

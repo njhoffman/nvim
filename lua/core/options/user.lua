@@ -1,3 +1,5 @@
+-- Registers the config's own named options (indent size and so on).
+
 local opt = require("utils.options")
 local cmd = vim.cmd
 

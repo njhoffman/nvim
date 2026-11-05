@@ -1,3 +1,5 @@
+-- Sets up the command submodules and registers the general user commands.
+
 local format = require("core.commands.format")
 local buffer = require("core.commands.buffer")
 local tips = require("core.commands.tips")

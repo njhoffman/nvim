@@ -1,3 +1,5 @@
+-- Reads, writes and cleans up the Unicode data caches.
+
 local config = require("modules.unicode.config")
 
 local M = {}

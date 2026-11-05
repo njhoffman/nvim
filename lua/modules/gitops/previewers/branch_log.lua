@@ -1,3 +1,5 @@
+-- Previewer showing a branch's log, highlighted.
+
 local putils = require("telescope.previewers.utils")
 local ns_previewer = vim.api.nvim_create_namespace("telescope.previewers")
 local git_utils = require("modules.gitops.utils.git")

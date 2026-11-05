@@ -1,3 +1,5 @@
+-- Merges DevDocs options and holds the data paths and float window options.
+
 local M = {}
 
 local path = require("plenary.path")

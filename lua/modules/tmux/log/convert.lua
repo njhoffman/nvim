@@ -1,3 +1,5 @@
+-- Converts log messages and tables to strings.
+
 local function table_print(tt, indent, done)
     done = done or {}
     indent = indent or 0

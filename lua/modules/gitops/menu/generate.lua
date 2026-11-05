@@ -1,3 +1,5 @@
+-- Builds the menu of git pickers, one per picker with its summary.
+
 local search_func = require("modules.gitops.search")
 local diff_func = require("modules.gitops.diff")
 local core_func = require("modules.gitops.core")

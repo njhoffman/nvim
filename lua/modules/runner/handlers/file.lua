@@ -1,3 +1,5 @@
+-- Runs the current file with the handler for its filetype.
+
 local run_file_handler = function(ev)
   local handlers = {
     lua = function(f)

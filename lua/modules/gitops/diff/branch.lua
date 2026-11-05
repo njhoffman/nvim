@@ -1,3 +1,5 @@
+-- Picker of files changed on the current branch, with a diff preview.
+
 local pickers = require("telescope.pickers")
 local sorters = require("telescope.sorters")
 local ags_finders = require("modules.gitops.finders")

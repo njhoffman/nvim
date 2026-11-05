@@ -1,3 +1,5 @@
+-- Sends stats lines to a buffer, split, log file, notification or popup.
+
 local sinks = require("modules.stats.sinks")
 
 local buffer = function(lines, title)

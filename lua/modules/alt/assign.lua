@@ -1,3 +1,5 @@
+-- Chooses the alternate file for a buffer from configured pairs and patterns.
+
 local state = require("modules.alt.state")
 local utils = require("modules.alt.utils")
 

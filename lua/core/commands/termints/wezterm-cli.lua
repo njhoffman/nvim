@@ -1,3 +1,5 @@
+-- Wrappers around `wezterm cli` for splitting panes and spawning tools.
+
 local M = {}
 
 ---@alias wez.cli.Direction

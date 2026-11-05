@@ -1,3 +1,5 @@
+-- Shows the Unicode table in a dedicated window.
+
 local config = require("modules.unicode.config")
 local data = require("modules.unicode.data")
 local digraph = require("modules.unicode.digraph")

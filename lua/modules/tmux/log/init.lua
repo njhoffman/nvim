@@ -1,3 +1,5 @@
+-- Tmux module logger with one function per severity.
+
 local channels = require("modules.tmux.log.channels")
 
 local function convert(...)

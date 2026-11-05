@@ -1,3 +1,5 @@
+-- Components loaded before the plugin manager; they must not require any plugin.
+
 return {
   -- loaded before plugin manager for global preferences and resources that may be triggered early by event handlers
   init = function()

@@ -1,3 +1,5 @@
+-- Finds action lines in new output and runs their actions.
+
 local logger = require("modules.tail.logger")
 local actions = require("modules.tail.actionline.actions")
 local parser = require("modules.tail.actionline.parser")

@@ -1,3 +1,5 @@
+-- lib.mapper backend for which-key, loaded on first use.
+
 local whichkey
 
 local function ensure_loaded()

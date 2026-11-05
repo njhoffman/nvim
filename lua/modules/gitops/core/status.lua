@@ -1,3 +1,5 @@
+-- Git status picker, with a summary line.
+
 local make_entry = require("telescope.make_entry")
 local pickers = require("telescope.pickers")
 local git_utils = require("modules.gitops.utils.git")

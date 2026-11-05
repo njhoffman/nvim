@@ -1,3 +1,5 @@
+-- Log severities and checks against the configured level.
+
 local valid_severities = {
     disabled = 0,
     debug = 1,

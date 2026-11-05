@@ -1,3 +1,5 @@
+-- Defaults for the debug logger: precision, highlights and output sinks.
+
 local default_config = require("lib.logger.debug.config-default")
 
 local config = {

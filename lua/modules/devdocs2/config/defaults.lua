@@ -1,3 +1,5 @@
+-- Default DevDocs options.
+
 local custom_filetypes = require("modules.devdocs2.config.filetypes")
 
 ---@class nvim_devdocs.Config

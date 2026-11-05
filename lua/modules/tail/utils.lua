@@ -1,3 +1,5 @@
+-- Tail helpers: a test timer that appends to a log, and human-readable sizes.
+
 local state = require("modules.tail.state")
 
 local start_test_timer = function()

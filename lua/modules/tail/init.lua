@@ -1,3 +1,5 @@
+-- Registers the TailStart and TailStop commands.
+
 local commands = require("modules.tail.commands")
 
 vim.api.nvim_create_user_command(

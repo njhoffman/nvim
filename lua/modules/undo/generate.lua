@@ -1,3 +1,5 @@
+-- Walks the undo tree and builds a list of entries with their diffs.
+
 local function _traverse_undotree(opts, entries, level)
   local undolist = {}
   -- create diffs for each entry in our undotree
