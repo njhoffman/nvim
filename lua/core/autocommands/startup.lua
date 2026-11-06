@@ -7,22 +7,17 @@ local get_load_time = function()
   load_time = string.sub(string.gsub(load_time, " ", ""), 1, 5)
   vim.g.load_time = load_time
 
-  vim.defer_fn(function()
-    vim.api.nvim_command("Tip")
-    vim.defer_fn(function()
-      logger:info("servername: " .. vim.v.servername)
-      logger:info("argv: " .. vim.inspect(vim.v.argv))
-      vim.notify("Loaded in `" .. load_time .. "s`", 2, { filetype = "markdown" })
-      -- vim.cmd("VimadeReload")
-    end, 2000)
-  end, 2000)
+  logger:info("servername: " .. vim.v.servername)
+  logger:info("argv: " .. vim.inspect(vim.v.argv))
 end
 
 vim.api.nvim_create_autocmd("VimEnter", {
   pattern = "*",
   callback = get_load_time,
-  desc = "Create startup time notification when vim is finished loading",
+  desc = "Record the load time shown on the dashboard",
 })
+
+require("core.load_time").setup()
 
 local barbar_enabled = function()
   local aucmds = vim.api.nvim_get_autocmds({ group = "barbar_render" })

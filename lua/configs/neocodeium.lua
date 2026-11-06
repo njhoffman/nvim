@@ -1,7 +1,7 @@
 local filetypes = { "lua", "python" }
 
 local cfg = {
-  silent = false,
+  silent = true,
   filter = function(bufnr)
     if vim.tbl_contains(filetypes, vim.api.nvim_get_option_value("filetype", { buf = bufnr })) then
       return require("cmp").get_selected_index() ~= ""

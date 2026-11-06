@@ -5,6 +5,24 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.32.0] - 2026-11-05
+
+### Added
+
+- `core/load_time.lua`: every start shows one notification without animation, such as "Ready in 0.47s, loaded in 0.68s
+  (210/386 plugins)". The numbers are also in `vim.g.startup_ready_ms` and `vim.g.startup_loaded_ms`.
+
+### Changed
+
+- Startup is faster and quieter. nvim-cmp, nvim-lspconfig, mason, codecompanion, avante, mcphub and nvim-navbuddy no longer
+  load at startup, which takes it from 276 to 210 plugins loaded. The first file, first insert and first `:` of a session pay
+  for them instead, once.
+- The startup tip no longer shows by itself; run `:Tip` to see one. NeoCodeium no longer announces that its server started.
+
+### Removed
+
+- An unused `utils.helptags` require that scanned help tags at startup.
+
 ## [0.31.8] - 2026-11-05
 
 ### Fixed

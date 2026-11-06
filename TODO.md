@@ -136,13 +136,14 @@ implementing.
       stderr output and the events still arrive. Fixed in v0.31.8 with a local fork, `~/git/mcphub.nvim`. Running sessions need a restart to pick it up.
 - [ ] **Publish the mcphub fork and report the bug upstream.** (p2) [chore] `~/git/mcphub.nvim` has the `--silent` fix but only
       an `upstream` remote. Create `njhoffman/mcphub.nvim`, push it and open an issue or PR on `ravitemer/mcphub.nvim`.
-- [ ] **Startup notifications hold "settled" at 6 s.** (p1) [perf] The main loop is idle from about 1.2 s, then about 130
+- [x] **Startup notifications hold "settled" at 6 s.** (p1) [perf] The main loop is idle from about 1.2 s, then about 130
       screen flushes (one per 36 ms) run until 6.2 s, all notification animation. Sources: the chain in
       `core/autocommands/startup.lua:10` (`:Tip` at +2 s, "Loaded in" at +4 s) and NeoCodeium's "Server started"
       (`silent = false` in `configs/neocodeium.lua`). In 7 sessions per step, removing the chain took settled from about
       6400 to 3400 ms, and also silencing NeoCodeium took it to 1800 ms. Decide whether the tip stays: it could show on
       demand or without animating. Do this first: until it is done, "settled" cannot show any other improvement.
-- [ ] **The completion and LSP stacks load at startup through five separate triggers.** (p1) [perf] Removing them together,
+      Done in v0.32.0: `:Tip` is on demand, NeoCodeium is silent and the load time shows through `core/load_time.lua` with `animate = false`.
+- [x] **The completion and LSP stacks load at startup through five separate triggers.** (p1) [perf] Removing them together,
       plus the `utils.helptags` item below, gave these medians over 9 alternating sessions per config (notification
       changes included): ready 1137 -> 697 ms, settled 6490 -> 1745 ms, RSS 125 -> 76 MiB, plugins loaded 276 -> 210. The
       cost moves rather than disappears: first file open 386 -> 961 ms, first render 659 -> 1159 ms, first insert 39 ->
@@ -152,15 +153,17 @@ implementing.
       and `avante` on `VeryLazy` (`plugins/main.lua:474`, `:505`, avante depends on `nvim-cmp`), `nvim-navbuddy`
       (`plugins/lsp.lua:89`), and `mcphub` (`plugins/main.lua:496`, whose avante extension requires avante). The test
       used `cmd` triggers; check the keymaps and `nvim-cmp` sources that reference these plugins.
+      Done in v0.32.0, with Navbuddy on `LspAttach` and `cmd` so it still attaches to the first server.
 - [ ] **Telescope and its 64 plugins load at startup.** (p1) [perf] 125-188 ms, the largest cost left after the item above.
       Removing `lazy = false` (`plugins/main.lua:769`) is not enough, since eager requires still load it. Found so far:
       `modules/devdocs2/init.lua:8`, `modules/devdocs2/config/defaults.lua:8`, and
       `configs/definition-or-references/telescope.lua:1`; each fix exposed the next, so sweep for all of them. The saving
       is not measured. Keymaps already go through `configs.telescope.launcher`, which should make loading on first use
       possible.
-- [ ] **`utils.helptags` scans help tags when required.** (p1) [perf] 41-79 ms before the first screen:
+- [x] **`utils.helptags` scans help tags when required.** (p1) [perf] 41-79 ms before the first screen:
       `utils/helptags.lua:96` runs `get_help_tags()` at module level and `core/commands/help.lua:3` requires it at
       startup. Require it inside the commands that use it.
+      Done in v0.32.0: nothing used the require, so it is gone.
 - [ ] **Hardcoded home paths.** (p3) [chore] 22 files under `lua/` hardcode `/home/nicholas` (e.g. `tail/utils.lua`,
       `configs/kiwi.lua`, `configs/copilot-lua.lua`, `project_nvim/root.lua`, the telescope fork `dir` in
       `plugins/main.lua`). Use `vim.env.HOME` / `vim.fn.expand("~")`; the old `~/.asdf/shims/node` path no longer

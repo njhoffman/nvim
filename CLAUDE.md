@@ -91,7 +91,8 @@ core.globals (importer, variables, core.options, core.neovide) â†’ colorscheme â
 Layout of `lua/` (require paths follow the directories, e.g. `require("core.commands.scroll")`):
 
 - **lua/core/**: the config's own startup code: `globals/`, `options/` (`user.lua` registered options, `vim.lua`
-  vim options), `keymaps.lua`, `commands/`, `abbreviations.lua`, `autocommands/`, `lsp/`, `neovide.lua`
+  vim options), `keymaps.lua`, `commands/`, `abbreviations.lua`, `autocommands/`, `lsp/`, `neovide.lua`, `load_time.lua` (the
+  startup time notification)
 - **lua/modules/**: own plugins-in-progress, each self-contained; candidates for their own repos
 - **lua/lib/**: shared libraries: `logger/`, `mapper/` (keymap helper), `lodash/`, `helpers.lua`
 - **lua/plugins/**: Plugin specifications (main.lua, lsp.lua, completion.lua, dap.lua, colorscheme.lua)

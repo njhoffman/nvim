@@ -471,7 +471,14 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
     init = function()
       require("configs.codecompanion.extensions.notify-noice").init()
     end,
-    event = "VeryLazy",
+    cmd = {
+      "CodeCompanion",
+      "CodeCompanionActions",
+      "CodeCompanionChat",
+      "CodeCompanionCLI",
+      "CodeCompanionCmd",
+      "CodeCompanionCodeReview",
+    },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "hakonharnes/img-clip.nvim",
@@ -494,7 +501,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
       {
         "ravitemer/mcphub.nvim",
         dir = "~/git/mcphub.nvim",
-        event = "VeryLazy",
+        cmd = "MCPHub",
         build = "npm install -g mcp-hub@latest",
       },
       {
@@ -503,7 +510,25 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
         build = function()
           return "make BUILD_FROM_SOURCE=true"
         end,
-        event = "VeryLazy",
+        cmd = {
+          "AvanteACPModels",
+          "AvanteACPModes",
+          "AvanteAsk",
+          "AvanteChat",
+          "AvanteChatNew",
+          "AvanteClear",
+          "AvanteEdit",
+          "AvanteFocus",
+          "AvanteHistory",
+          "AvanteModels",
+          "AvanteRefresh",
+          "AvanteShowRepoMap",
+          "AvanteStop",
+          "AvanteSwitchInputProvider",
+          "AvanteSwitchProvider",
+          "AvanteSwitchSelectorProvider",
+          "AvanteToggle",
+        },
         version = false, -- Never set this value to "*"! Never!
         dependencies = {
           "nvim-lua/plenary.nvim",

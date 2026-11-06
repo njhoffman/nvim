@@ -508,7 +508,7 @@ endfunction
 
 if has('nvim')
   function s:pumvisible() abort
-    return pumvisible() || luaeval('pcall(require, "cmp")')
+    return pumvisible() || luaeval('package.loaded["cmp"] ~= nil')
           \ && luaeval('require"cmp".visible()')
   endfunction
 else

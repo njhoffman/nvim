@@ -86,7 +86,8 @@ local plugins = {
   {
     "SmiteshP/nvim-navbuddy",
     dir = "~/git/nvim-navbuddy",
-    event = { "VeryLazy" },
+    event = "LspAttach",
+    cmd = "Navbuddy",
     dependencies = { "neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
   },
   { "mfussenegger/nvim-lint", event = { "BufReadPre", "BufNewFile" } },
