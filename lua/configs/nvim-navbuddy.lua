@@ -2,7 +2,8 @@ local opts = {
   window = {
     -- { "╔", "═" ,"╗", "║", "╝", "═", "╚", "║" }.
     border = "rounded",
-    size = "60%", -- 60%
+    size = { width = "60%" }, -- no height: fits the lists, up to max_height
+    max_height = "21%", -- 14 rows on a 68-row terminal
     position = "100%", -- 50%
     sections = {
       left = { size = "30%", hide_empty = true },
