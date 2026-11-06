@@ -165,7 +165,7 @@ end
 -- ============================================================================
 M.misc_stats = function()
   local ok_notify, notify = pcall(require, "notify")
-  local ok_noice, noice = pcall(require, "noice.message.manager")
+  local ok_noice, noice = pcall(require, "noice")
 
   local notif = {
     pending = 0,
@@ -179,8 +179,8 @@ M.misc_stats = function()
     notif.history = hist and #hist or 0
   end
 
-  if ok_noice and noice and noice._history then
-    notif.noice = #noice._history
+  if ok_noice and noice then
+    notif.noice = noice.api.history.count()
   end
 
   local animate = vim.b.minianimate_disable == true and " " or ""

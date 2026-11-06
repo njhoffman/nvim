@@ -45,7 +45,7 @@ end
 
 -- Start silence mode
 local function silence_start()
-  local ok, _, notify = check_plugins()
+  local ok, noice, notify = check_plugins()
   if not ok then
     vim.notify("Silence requires noice and nvim-notify plugins", vim.log.levels.WARN)
     return
@@ -76,11 +76,7 @@ local function silence_start()
   }
 
   -- Get noice history count
-  local noice_count = 0
-  local ok_manager, manager = pcall(require, "noice.message.manager")
-  if ok_manager and manager._history then
-    noice_count = #manager._history
-  end
+  local noice_count = noice.api.history.count()
 
   -- Clear all pending notifications
   notify.dismiss({ silent = true, pending = true })
@@ -109,9 +105,7 @@ local function silence_start()
   add_skip_route()
 
   -- Clear noice message history
-  if ok_manager and manager._history then
-    manager._history = {}
-  end
+  noice.api.history.clear()
 
   state.is_silenced = true
 end
@@ -172,14 +166,13 @@ end
 
 -- Flush noice history
 local function flush_noice()
-  local ok_manager, manager = pcall(require, "noice.message.manager")
-  if not ok_manager or not manager._history then
+  local ok, noice = pcall(require, "noice")
+  if not ok then
     vim.notify("Could not access noice message history", vim.log.levels.WARN)
     return
   end
 
-  local count = #manager._history
-  manager._history = {}
+  local count = noice.api.history.clear()
   vim.notify(string.format("Flushed %d noice history entries", count), vim.log.levels.INFO)
 end
 
@@ -187,7 +180,7 @@ end
 local function get_status()
   return {
     is_silenced = state.is_silenced,
-    has_restore_routes = state.restore_routes ~= nil,
+    has_skip_route = state.route ~= nil,
     has_lsp_clients = state.lsp_clients ~= nil and #state.lsp_clients > 0,
     diagnostics_enabled = state.diagnostics_enabled,
   }

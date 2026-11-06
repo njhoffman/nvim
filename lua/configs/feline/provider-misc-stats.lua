@@ -4,7 +4,7 @@
 -- pending = require("notify").pending(),
 -- history = #(require("notify").history({ include_hidden = true }) or {}),
 -- -- { filetype = "markdown", icon = "", id = 3, level = "INFO", message = { "Live commands", "   ➜ `Norm <keys>`", "   ➜ `5Reg a`", "   ➜ `G/^$/d`", "   ➜ `%Spattern/replace`" }, render = <function 3>, time = 1707851316, title = { "format", "13:08:36" } }
--- noice = #require("noice.message.manager")._history,
+-- noice = require("noice").api.history.count(),
 
 -- ## getting cpu usage
 -- # Sample every 1 second for 10 samples, then average
@@ -80,7 +80,7 @@ local misc_stats = function()
 
   last_update = now
 
-  local noice = package.loaded["noice"] and #require("noice.message.manager")._history or 0
+  local noice = package.loaded["noice"] and require("noice").api.history.count() or 0
   local pending = package.loaded["notify"] and require("notify").pending() or 0
   local history = package.loaded["notify"]
     and #(require("notify").history({ include_hidden = true }) or {})

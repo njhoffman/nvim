@@ -5,6 +5,18 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.33.1] - 2026-11-05
+
+### Fixed
+
+- Noice message counts in the statusline (bars, feline, lualine, windline) and `:Silence` are correct. They used `#` on a
+  table keyed by message id, which could report 0, and stayed near 0 after `:NoiceFlush`.
+
+### Changed
+
+- `:Silence` and `:NoiceFlush` clear noice's history through its public API, so the change registers and messages not
+  yet shown are kept. Requires noice.nvim with `api.history`.
+
 ## [0.33.0] - 2026-11-05
 
 ### Changed

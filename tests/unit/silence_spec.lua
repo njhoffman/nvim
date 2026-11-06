@@ -99,6 +99,60 @@ describe("silence", function()
     assert.equal(1, #Router._routes)
   end)
 
+  describe("history", function()
+    local Manager = require("noice.message.manager")
+    local notes
+
+    -- A gap in the ids is what made `#_history` report 0
+    local function routed_messages()
+      for _, content in ipairs({ "one", "skipped", "two", "three" }) do
+        local m = Message("msg_show", "echo")
+        m:set(content)
+        Manager.add(m)
+        Manager.clear({ message = m })
+        if content == "skipped" then
+          Manager.remove(m)
+        end
+      end
+    end
+
+    before_each(function()
+      Manager._messages = {}
+      Manager._history = {}
+      notes = {}
+      vim.notify = function(msg)
+        notes[#notes + 1] = msg
+      end
+    end)
+
+    it("flush reports the real count and empties the history", function()
+      routed_messages()
+      silence.flush_noice()
+      assert.equal("Flushed 3 noice history entries", notes[1])
+      assert.equal(0, require("noice").api.history.count())
+    end)
+
+    it("start reports the real count and empties the history", function()
+      routed_messages()
+      silence.silence_start()
+      assert.truthy(notes[1]:find("noice: 3", 1, true))
+      assert.equal(0, require("noice").api.history.count())
+    end)
+
+    it("is reached only through the public API", function()
+      for _, path in ipairs({
+        "lua/bars/components/misc_stats.lua",
+        "lua/configs/feline/provider-misc-stats.lua",
+        "lua/configs/lualine/providers.lua",
+        "lua/configs/windline/providers.lua",
+        "lua/core/commands/silence.lua",
+      }) do
+        local text = table.concat(vim.fn.readfile(path), "\n")
+        assert.is_nil(text:find("._history", 1, true), path)
+      end
+    end)
+  end)
+
   it("never calls noice.setup, which would reset the user's options", function()
     silence.silence_start()
     silence.silence_stop()

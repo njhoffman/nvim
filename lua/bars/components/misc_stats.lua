@@ -3,7 +3,6 @@
 --- Throttled at a configurable interval (default 100ms).
 ---@module "bars.components.misc_stats"
 
-
 local M = {}
 
 ---@type table<integer, string>
@@ -79,7 +78,7 @@ M.value = function(buffer, window)
 
   last_update = now
 
-  local noice_count = package.loaded["noice"] and #require("noice.message.manager")._history or 0
+  local noice_count = package.loaded["noice"] and require("noice").api.history.count() or 0
   local pending = package.loaded["notify"] and require("notify").pending() or 0
   local history = package.loaded["notify"]
       and #(require("notify").history({ include_hidden = true }) or {})
