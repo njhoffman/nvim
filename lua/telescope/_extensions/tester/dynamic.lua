@@ -5,7 +5,7 @@ local make_entry = require("telescope.make_entry")
 
 local logger = require("lib.logger").init("teletester")
 
-local async_job = require("telescope._")
+local async_job = require("telescope.async_job")
 
 local timer = vim.uv.new_timer()
 local fn = function(opts)
