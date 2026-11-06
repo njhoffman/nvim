@@ -128,11 +128,29 @@ implementing.
       baseline; table in `docs/PERFORMANCE.md`.
 - [x] **Record a benchmark baseline.** (p2) [chore] Recorded 2026-11-02 at load 0.95 (10 sessions, v0.20.1): startup
       ready 1062 ms, settled 6460 ms, Markdown render 313-353 ms. Repeat after Neovim upgrades.
-- [ ] **Slow startup.** (p2) [perf] About 2-3 s to `UIEnter` and 8-11 s until idle in `benchmarks/run` (load ~10).
-      Headless `--startuptime`: `init.lua` 2.1 s, of which `utils.helptags` 253 ms (via `commands.help`), `keymaps` 150
-      ms, `configs.project` 91 ms, `configs.telescope` 70 ms, `devdocs2` 66 ms, and 432 ms in init.lua itself. After the
-      dashboard draws, the main loop blocks for 0.1-1.5 s stretches over about 4.5 s, then an animation flushes at ~30
-      fps for about 2 s. Defer helptags generation, profile the rest.
+- [ ] **Startup notifications hold "settled" at 6 s.** (p1) [perf] Measured 2026-11-05: the main loop is idle from about
+      1.2 s, then about 130 screen flushes (one per 36 ms) run until 6.2 s, all notification animation. Sources: the
+      chain in `core/autocommands/startup.lua:10` (`:Tip` at +2 s, "Loaded in" at +4 s) and NeoCodeium's "Server started"
+      (`silent = false` in `configs/neocodeium.lua`). Removing the chain took settled from 6211 to 3154 ms, also silencing
+      NeoCodeium took it to 2007 ms (3 sessions each). Decide whether the tip stays: it could show on demand or without
+      animating. Do this first: until it is done, "settled" cannot show any other improvement.
+- [ ] **`VeryLazy` plugins pull in the LSP and completion stacks.** (p1) [perf] Most of the 300-430 ms stall right after
+      the first screen. `codecompanion` -> `avante` -> `nvim-cmp` loads 42 plugins (about 245 ms) and `nvim-navbuddy` ->
+      `nvim-lspconfig` -> `mason`, `lazydev` loads 24 (about 225 ms), which defeats `nvim-cmp`'s `InsertEnter` trigger.
+      Load them on `cmd`, `keys` or `LspAttach` (`plugins/main.lua:474`, `:505`, `plugins/lsp.lua:89`). Check the keymaps
+      and the `nvim-cmp` sources that reference them. Savings are profiled, not yet measured with the change in place.
+- [ ] **vim-matchup loads nvim-cmp before the first screen.** (p1) [perf] `s:pumvisible()` in
+      `autoload/matchup/matchparen.vim:511` calls `pcall(require, "cmp")`, which loads the plugin it is checking for.
+      alpha's `set` triggers it during `VimEnter`, costing about 210 ms of the 750 ms "ready" (`nvim-cmp` and its
+      dependencies). Check `package.loaded["cmp"]` instead. Alone this only moves the load after the first screen; the
+      `VeryLazy` item above removes it. "Ready" is noisy (499-1212 ms over 3 sessions), so measure with more sessions.
+- [ ] **Telescope loads at start with 64 plugins.** (p1) [perf] 68-157 ms before the first screen, the largest cost left
+      once the two items above are done, and 64 of the 274 plugins loaded at startup hang off it. Its keymaps already go
+      through `configs.telescope.launcher`, so `cmd` plus a load on first use looks possible. Untested: find what requires
+      it at startup first (`plugins/main.lua:766`, `configs/telescope`).
+- [ ] **`utils.helptags` scans help tags when required.** (p1) [perf] 41-79 ms before the first screen:
+      `utils/helptags.lua:96` runs `get_help_tags()` at module level and `core/commands/help.lua:3` requires it at
+      startup. Require it inside the commands that use it.
 - [ ] **Hardcoded home paths.** (p3) [chore] 22 files under `lua/` hardcode `/home/nicholas` (e.g. `tail/utils.lua`,
       `configs/kiwi.lua`, `configs/copilot-lua.lua`, `project_nvim/root.lua`, the telescope fork `dir` in
       `plugins/main.lua`). Use `vim.env.HOME` / `vim.fn.expand("~")`; the old `~/.asdf/shims/node` path no longer
