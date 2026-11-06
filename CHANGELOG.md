@@ -5,6 +5,13 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.35.1] - 2026-11-05
+
+### Changed
+
+- New benchmark baseline, recorded at load 0.81 on v0.35.0, replacing the one from 0.20.0: `medium.md` render 235 ms
+  (was 313), startup ready 446 ms (was 1062), startup settled 1290 ms (was 6460), memory 74 MiB (was 120).
+
 ## [0.35.0] - 2026-11-05
 
 ### Changed
