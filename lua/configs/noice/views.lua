@@ -170,6 +170,9 @@ local notifyView = {
   format = "notify",
   replace = false,
   merge = false,
+  on_notify = function(info)
+    require("configs.noice.logfile")(info.level, info.content)
+  end,
 }
 
 local cmdlinePopupView = {

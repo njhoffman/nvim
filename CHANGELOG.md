@@ -5,6 +5,18 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.33.0] - 2026-11-05
+
+### Changed
+
+- Notifications are logged through noice's `on_notify` option instead of a replaced copy of its notify backend, so
+  plugin fixes to that file now apply. Requires noice.nvim with `on_notify`.
+
+### Fixed
+
+- The notify log records the level a notification is shown at; routes that set `level` were logged at the message's
+  original level.
+
 ## [0.32.4] - 2026-11-05
 
 ### Fixed
