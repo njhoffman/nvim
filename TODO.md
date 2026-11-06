@@ -128,26 +128,35 @@ implementing.
       baseline; table in `docs/PERFORMANCE.md`.
 - [x] **Record a benchmark baseline.** (p2) [chore] Recorded 2026-11-02 at load 0.95 (10 sessions, v0.20.1): startup
       ready 1062 ms, settled 6460 ms, Markdown render 313-353 ms. Repeat after Neovim upgrades.
-- [ ] **Startup notifications hold "settled" at 6 s.** (p1) [perf] Measured 2026-11-05: the main loop is idle from about
-      1.2 s, then about 130 screen flushes (one per 36 ms) run until 6.2 s, all notification animation. Sources: the
-      chain in `core/autocommands/startup.lua:10` (`:Tip` at +2 s, "Loaded in" at +4 s) and NeoCodeium's "Server started"
-      (`silent = false` in `configs/neocodeium.lua`). Removing the chain took settled from 6211 to 3154 ms, also silencing
-      NeoCodeium took it to 2007 ms (3 sessions each). Decide whether the tip stays: it could show on demand or without
-      animating. Do this first: until it is done, "settled" cannot show any other improvement.
-- [ ] **`VeryLazy` plugins pull in the LSP and completion stacks.** (p1) [perf] Most of the 300-430 ms stall right after
-      the first screen. `codecompanion` -> `avante` -> `nvim-cmp` loads 42 plugins (about 245 ms) and `nvim-navbuddy` ->
-      `nvim-lspconfig` -> `mason`, `lazydev` loads 24 (about 225 ms), which defeats `nvim-cmp`'s `InsertEnter` trigger.
-      Load them on `cmd`, `keys` or `LspAttach` (`plugins/main.lua:474`, `:505`, `plugins/lsp.lua:89`). Check the keymaps
-      and the `nvim-cmp` sources that reference them. Savings are profiled, not yet measured with the change in place.
-- [ ] **vim-matchup loads nvim-cmp before the first screen.** (p1) [perf] `s:pumvisible()` in
-      `autoload/matchup/matchparen.vim:511` calls `pcall(require, "cmp")`, which loads the plugin it is checking for.
-      alpha's `set` triggers it during `VimEnter`, costing about 210 ms of the 750 ms "ready" (`nvim-cmp` and its
-      dependencies). Check `package.loaded["cmp"]` instead. Alone this only moves the load after the first screen; the
-      `VeryLazy` item above removes it. "Ready" is noisy (499-1212 ms over 3 sessions), so measure with more sessions.
-- [ ] **Telescope loads at start with 64 plugins.** (p1) [perf] 68-157 ms before the first screen, the largest cost left
-      once the two items above are done, and 64 of the 274 plugins loaded at startup hang off it. Its keymaps already go
-      through `configs.telescope.launcher`, so `cmd` plus a load on first use looks possible. Untested: find what requires
-      it at startup first (`plugins/main.lua:766`, `configs/telescope`).
+- [ ] **mcphub's `curl` makes every session allocate more the longer it runs.** (p1) [bug] Measured 2026-11-05. `connect_sse`
+      in `mcphub/hub.lua:1210` starts `curl` without `--silent`, so its progress meter goes to stderr once a second using
+      `\r`. Plenary strips the `\r`, never sees a newline and appends to one string forever (`plenary/job.lua:309`),
+      copying all of it on every update. A 48 h session held a 13.6 MB line and made 18 MB/s of Lua garbage; a 77 h one
+      made 33 MB/s and peaked at 6.1 GB RSS. Fresh sessions look fine, so benchmarks cannot see it. `--silent` removes the
+      stderr output and the events still arrive. The plugin is third-party, so fix it in a fork or a config-level shim,
+      and report it upstream. Running sessions need a restart to pick it up.
+- [ ] **Startup notifications hold "settled" at 6 s.** (p1) [perf] The main loop is idle from about 1.2 s, then about 130
+      screen flushes (one per 36 ms) run until 6.2 s, all notification animation. Sources: the chain in
+      `core/autocommands/startup.lua:10` (`:Tip` at +2 s, "Loaded in" at +4 s) and NeoCodeium's "Server started"
+      (`silent = false` in `configs/neocodeium.lua`). In 7 sessions per step, removing the chain took settled from about
+      6400 to 3400 ms, and also silencing NeoCodeium took it to 1800 ms. Decide whether the tip stays: it could show on
+      demand or without animating. Do this first: until it is done, "settled" cannot show any other improvement.
+- [ ] **The completion and LSP stacks load at startup through five separate triggers.** (p1) [perf] Removing them together,
+      plus the `utils.helptags` item below, gave these medians over 9 alternating sessions per config (notification
+      changes included): ready 1137 -> 697 ms, settled 6490 -> 1745 ms, RSS 125 -> 76 MiB, plugins loaded 276 -> 210. The
+      cost moves rather than disappears: first file open 386 -> 961 ms, first render 659 -> 1159 ms, first insert 39 ->
+      159 ms, once per session. Starting with a file on the command line may get less of the gain; untested. Decide if
+      that trade is wanted. All five must go, since each loads the stack alone: `autoload/matchup/matchparen.vim:511`
+      (`pcall(require, "cmp")` loads what it checks for, before the first screen; use `package.loaded`), `codecompanion`
+      and `avante` on `VeryLazy` (`plugins/main.lua:474`, `:505`, avante depends on `nvim-cmp`), `nvim-navbuddy`
+      (`plugins/lsp.lua:89`), and `mcphub` (`plugins/main.lua:496`, whose avante extension requires avante). The test
+      used `cmd` triggers; check the keymaps and `nvim-cmp` sources that reference these plugins.
+- [ ] **Telescope and its 64 plugins load at startup.** (p1) [perf] 125-188 ms, the largest cost left after the item above.
+      Removing `lazy = false` (`plugins/main.lua:769`) is not enough, since eager requires still load it. Found so far:
+      `modules/devdocs2/init.lua:8`, `modules/devdocs2/config/defaults.lua:8`, and
+      `configs/definition-or-references/telescope.lua:1`; each fix exposed the next, so sweep for all of them. The saving
+      is not measured. Keymaps already go through `configs.telescope.launcher`, which should make loading on first use
+      possible.
 - [ ] **`utils.helptags` scans help tags when required.** (p1) [perf] 41-79 ms before the first screen:
       `utils/helptags.lua:96` runs `get_help_tags()` at module level and `core/commands/help.lua:3` requires it at
       startup. Require it inside the commands that use it.
