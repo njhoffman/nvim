@@ -489,13 +489,12 @@ def best_run(row):
 
 def summarize(history, current_rows, window=AVERAGE_WINDOW):
   """Per metric: latest, the average over the previous `window` releases, and the latest baseline.
-  The `best` fields hold the same comparison by best run, which is what warnings use."""
+  The `best` fields hold the best runs that warnings compare."""
   version = current_rows[0]["version"]
   previous = releases_before(history, version)[-window:]
   baseline_rows = [row for row in history if row["kind"] == "baseline"]
   baseline_date = baseline_rows[-1]["date"] if baseline_rows else None
   baseline = {row["metric"]: float(row["median"]) for row in baseline_rows if row["date"] == baseline_date}
-  baseline_best = {row["metric"]: best_run(row) for row in baseline_rows if row["date"] == baseline_date}
   last_release = previous[-1] if previous else None
   summary = []
   for row in current_rows:
@@ -520,7 +519,6 @@ def summarize(history, current_rows, window=AVERAGE_WINDOW):
       "best": best_run(row),
       "prior_best": best_run(releases[ordered[-1]]) if ordered else None,
       "average_best": statistics.mean(older) if older else None,
-      "baseline_best": baseline_best.get(metric),
     })
   # Describe the baseline by its measured rows: count metrics (plugins, lines) record 1 run
   latest_baseline = [row for row in baseline_rows if row["date"] == baseline_date]
@@ -578,7 +576,8 @@ def render_tables(summary, meta, baseline_date, baseline_meta, runs, warn_pct=25
       f"{percent(s['latest'], s['baseline'])} |"
     )
     # One noisy release is normal, so the best run has to be slower twice against the same reference.
-    for label, reference in (("average", s["average_best"]), ("baseline", s["baseline_best"])):
+    # The baseline's median, not its best: that comes from 10 sessions and a release's from 3.
+    for label, reference in (("average", s["average_best"]), ("baseline", s["baseline"])):
       if reference and s["prior_best"] is not None and all(
         (value - reference) / reference * 100 > warn_pct for value in (s["best"], s["prior_best"])
       ):

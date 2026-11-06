@@ -5,6 +5,13 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.35.2] - 2026-11-05
+
+### Fixed
+
+- Benchmark warnings compare a release's best session with the baseline's median instead of its best. The baseline's
+  best comes from 10 sessions and a release's from 3, so a normal release could warn.
+
 ## [0.35.1] - 2026-11-05
 
 ### Changed

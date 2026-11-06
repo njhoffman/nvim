@@ -187,7 +187,21 @@ class Tables(unittest.TestCase):
     history = self.warn_history((100, 100), (100, 100), (150, 150))
     self.assertEqual(self.warnings_for(history, 100, 100), [])
 
-  def test_warns_against_the_baseline_best_run(self):
+  def baseline_with(self, median, best):
+    baseline = rows("baseline", "0.0.0", {"startup ready": median})
+    baseline[0]["min"] = str(best)
+    return baseline
+
+  def test_a_lucky_baseline_best_run_is_not_a_warning(self):
+    # A baseline's best comes from 10 sessions and a release's from 3, so they are not comparable.
+    history = self.baseline_with(235, 155) + self.warn_history((267, 199))
+    self.assertEqual(self.warnings_for(history, 267, 199), [])
+
+  def test_warns_when_the_best_run_is_slower_than_the_baseline_median(self):
+    history = self.baseline_with(100, 60) + self.warn_history((150, 130))
+    self.assertEqual(self.warnings_for(history, 150, 130), ["startup ready: best run +30% vs baseline, 2 releases in a row"])
+
+  def test_warns_against_the_baseline_median(self):
     history = rows("baseline", "0.0.0", {"startup ready": 100}) + self.warn_history((150, 150))
     warnings = self.warnings_for(history, 150, 150)
     self.assertEqual(warnings, ["startup ready: best run +50% vs baseline, 2 releases in a row"])

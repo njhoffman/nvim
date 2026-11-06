@@ -60,7 +60,7 @@ baseline does not. `benchmarks/run --baseline` waits up to 30 minutes for a load
 it never gets there), then records the medians of 10 sessions. Rerun it by hand now and then, for example after a Neovim
 upgrade. The table compares the latest release with the newest baseline.
 
-A metric whose best session is more than 25% slower than its average or baseline, in this release and the one before it, is listed under the table and printed as a warning; it does not block a push, since this desktop's load alone moves the numbers by about 20%. Best sessions and two releases are used because a median of 3 sessions swings far more than 25% on a busy machine. The average for this excludes the earlier of the two releases, so a slowdown cannot raise its own reference.
+A metric whose best session is more than 25% slower than the average of earlier best sessions or the baseline's median, in this release and the one before it, is listed under the table and printed as a warning; it does not block a push, since this desktop's load alone moves the numbers by about 20%. Best sessions and two releases are used because a median of 3 sessions swings far more than 25% on a busy machine. The average for this excludes the earlier of the two releases, so a slowdown cannot raise its own reference. The baseline's median is used because its best session comes from 10 sessions and is not comparable with a release's best of 3.
 
 ## history.tsv
 

@@ -44,7 +44,7 @@ To push, run `./scripts/push.sh` (in the background from Claude Code; it takes 2
    times. `docs/PERFORMANCE.md` is rewritten: one row per push, newest first.
 3. Times are left out when the machine is busy: 1-minute load over 0.4 x CPUs at the start (no benchmark runs, the push
    takes seconds) or over 0.6 x CPUs during the run, or a failed benchmark. Warnings (the best session of a metric over 25% slower
-   than its average or baseline, two releases in a row) do not abort; mention them.
+   than the average of earlier best sessions or the baseline median, two releases in a row) do not abort; mention them.
 4. It commits both files as `vX.Y.Z: metrics` with a `Metrics: recorded` line, and runs
    `git push origin HEAD --follow-tags`.
 
