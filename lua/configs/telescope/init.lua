@@ -120,6 +120,8 @@ local basecfg = {
   include_extensions = true,
 }
 
+require("configs.telescope.log").setup()
+
 vim.api.nvim_create_augroup("Hacks", { clear = true })
 vim.api.nvim_create_autocmd("VimEnter", {
   pattern = "*",

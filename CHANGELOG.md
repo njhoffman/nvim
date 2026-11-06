@@ -5,6 +5,23 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.34.0] - 2026-11-05
+
+### Added
+
+- `tests/unit/telescope_shadow_spec.lua`: fails if a module here replaces one of the telescope fork's, and opens a
+  picker with timing on through the configured log.
+
+### Changed
+
+- `configs/telescope/log.lua` configures the telescope fork's log at setup, keeping it file-only and sending it to
+  `lib.logger`, instead of a module that replaced it.
+
+### Removed
+
+- `lua/telescope/log.lua` and `lua/telescope/_extensions/init.lua`, which replaced the fork's modules. The extension
+  features moved into the fork. The deletions were committed in 0.33.1 by accident; this release completes them.
+
 ## [0.33.1] - 2026-11-05
 
 ### Fixed
