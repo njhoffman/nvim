@@ -145,8 +145,61 @@ class Tables(unittest.TestCase):
     table, warnings = bench.table_for(history, current, 3)
     self.assertIn("| startup ready | 150 ms | 100 | 1 | +50% | 100 | +50% |", table)
     self.assertIn("| plugins installed | 310 | 300 | +10 |", table)
-    self.assertEqual(warnings, ["startup ready: +50% vs average", "startup ready: +50% vs baseline"])
-    self.assertIn("Over 25% slower", table)
+    self.assertEqual(warnings, [])
+    self.assertNotIn("Over 25% slower", table)
+
+  def warn_history(self, *medians_and_mins):
+    history = []
+    for index, (median, best) in enumerate(medians_and_mins):
+      history += rows("release", f"0.{index + 1}.0", {"startup ready": median})
+      history[-1]["min"] = str(best)
+    return history
+
+  def warnings_for(self, history, median, best, version="9.0.0"):
+    current = rows("release", version, {"startup ready": median})
+    current[0]["min"] = str(best)
+    return bench.table_for(history, current, 3)[1]
+
+  def test_warns_when_the_best_run_is_slower_two_releases_in_a_row(self):
+    history = self.warn_history((100, 100), (100, 100), (150, 150))
+    self.assertEqual(self.warnings_for(history, 150, 150), ["startup ready: best run +50% vs average, 2 releases in a row"])
+    current = rows("release", "9.0.0", {"startup ready": 150})
+    self.assertIn("Over 25% slower", bench.table_for(history, current, 3)[0])
+
+  def test_one_slow_release_is_not_a_warning(self):
+    history = self.warn_history((100, 100), (100, 100), (100, 100))
+    self.assertEqual(self.warnings_for(history, 150, 150), [])
+
+  def test_a_noisy_median_with_a_normal_best_run_is_not_a_warning(self):
+    history = self.warn_history((100, 100), (100, 100), (300, 101))
+    self.assertEqual(self.warnings_for(history, 300, 101), [])
+
+  def test_the_earlier_slow_release_does_not_raise_the_reference(self):
+    history = self.warn_history((100, 100), (100, 100), (1000, 1000))
+    self.assertEqual(len(self.warnings_for(history, 1000, 1000)), 1)
+
+  def test_a_release_without_times_does_not_break_the_streak(self):
+    history = self.warn_history((100, 100), (100, 100), (150, 150))
+    history += rows("release", "0.4.0", {"plugins installed": 300})
+    self.assertEqual(len(self.warnings_for(history, 150, 150)), 1)
+
+  def test_recovery_clears_the_warning(self):
+    history = self.warn_history((100, 100), (100, 100), (150, 150))
+    self.assertEqual(self.warnings_for(history, 100, 100), [])
+
+  def test_warns_against_the_baseline_best_run(self):
+    history = rows("baseline", "0.0.0", {"startup ready": 100}) + self.warn_history((150, 150))
+    warnings = self.warnings_for(history, 150, 150)
+    self.assertEqual(warnings, ["startup ready: best run +50% vs baseline, 2 releases in a row"])
+
+  def test_too_little_history_is_not_a_warning(self):
+    self.assertEqual(self.warnings_for(self.warn_history((100, 100)), 500, 500), [])
+
+  def test_rows_without_a_best_run_use_the_median(self):
+    history = self.warn_history((100, 100), (100, 100), (150, 150))
+    for row in history:
+      del row["min"]
+    self.assertEqual(len(self.warnings_for(history, 150, 150)), 1)
 
   def test_faster_is_not_a_warning(self):
     history = rows("release", "0.1.0", {"startup ready": 200})

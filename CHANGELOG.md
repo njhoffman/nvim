@@ -5,6 +5,15 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.35.0] - 2026-11-05
+
+### Changed
+
+- Benchmark warnings compare a metric's best session, and fire only when it is over 25% slower than its average or
+  baseline two releases in a row. Medians of 3 sessions swing past 25% on a busy machine, which made most warnings
+  false alarms. Against recorded history this takes warnings from 152 in 13 releases to 50 in 5. The tables still show
+  medians.
+
 ## [0.34.0] - 2026-11-05
 
 ### Added

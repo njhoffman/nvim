@@ -482,13 +482,20 @@ def releases_before(history, version):
   return order
 
 
+def best_run(row):
+  """The fastest session of a row: unlike the median, it stays stable while the machine is busy."""
+  return float(row.get("min") or row["median"])
+
+
 def summarize(history, current_rows, window=AVERAGE_WINDOW):
-  """Per metric: latest, the average over the previous `window` releases, and the latest baseline."""
+  """Per metric: latest, the average over the previous `window` releases, and the latest baseline.
+  The `best` fields hold the same comparison by best run, which is what warnings use."""
   version = current_rows[0]["version"]
   previous = releases_before(history, version)[-window:]
   baseline_rows = [row for row in history if row["kind"] == "baseline"]
   baseline_date = baseline_rows[-1]["date"] if baseline_rows else None
   baseline = {row["metric"]: float(row["median"]) for row in baseline_rows if row["date"] == baseline_date}
+  baseline_best = {row["metric"]: best_run(row) for row in baseline_rows if row["date"] == baseline_date}
   last_release = previous[-1] if previous else None
   summary = []
   for row in current_rows:
@@ -497,6 +504,11 @@ def summarize(history, current_rows, window=AVERAGE_WINDOW):
               if r["kind"] == "release" and r["version"] in previous and r["metric"] == metric]
     prior = [float(r["median"]) for r in history
              if r["kind"] == "release" and r["version"] == last_release and r["metric"] == metric]
+    # The newest earlier release that has this metric: a push on a busy machine records no times.
+    releases = {r["version"]: r for r in history
+                if r["kind"] == "release" and r["version"] in previous and r["metric"] == metric}
+    ordered = [version for version in previous if version in releases]
+    older = [best_run(releases[version]) for version in ordered[:-1]]
     summary.append({
       "metric": metric,
       "unit": row["unit"],
@@ -505,6 +517,10 @@ def summarize(history, current_rows, window=AVERAGE_WINDOW):
       "averaged": len(values),
       "baseline": baseline.get(metric),
       "previous": prior[0] if prior else None,
+      "best": best_run(row),
+      "prior_best": best_run(releases[ordered[-1]]) if ordered else None,
+      "average_best": statistics.mean(older) if older else None,
+      "baseline_best": baseline_best.get(metric),
     })
   # Describe the baseline by its measured rows: count metrics (plugins, lines) record 1 run
   latest_baseline = [row for row in baseline_rows if row["date"] == baseline_date]
@@ -561,9 +577,12 @@ def render_tables(summary, meta, baseline_date, baseline_meta, runs, warn_pct=25
       f"{s['averaged']} | {percent(s['latest'], s['average'])} | {number(s['baseline'], s['unit'])} | "
       f"{percent(s['latest'], s['baseline'])} |"
     )
-    for label, reference in (("average", s["average"]), ("baseline", s["baseline"])):
-      if reference and (s["latest"] - reference) / reference * 100 > warn_pct:
-        warnings.append(f"{s['metric']}: {percent(s['latest'], reference)} vs {label}")
+    # One noisy release is normal, so the best run has to be slower twice against the same reference.
+    for label, reference in (("average", s["average_best"]), ("baseline", s["baseline_best"])):
+      if reference and s["prior_best"] is not None and all(
+        (value - reference) / reference * 100 > warn_pct for value in (s["best"], s["prior_best"])
+      ):
+        warnings.append(f"{s['metric']}: best run {percent(s['best'], reference)} vs {label}, 2 releases in a row")
   lines += ["", "| Count | Latest | Previous release | Change |", "|---|---:|---:|---:|"]
   for s in counted:
     if s["unit"] == "count":
