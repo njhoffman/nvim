@@ -5,6 +5,17 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.32.4] - 2026-11-05
+
+### Fixed
+
+- `:Silence` hides messages and notifications and no longer resets noice to its default options until restart.
+  `:SilenceStop` restores them. Confirm-type prompts stay visible while silenced.
+
+### Removed
+
+- Local copy of noice's Telescope extension, which hid the plugin's newer version and its message preview fixes.
+
 ## [0.32.3] - 2026-11-05
 
 ### Fixed

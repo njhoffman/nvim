@@ -5,12 +5,35 @@ local M = {}
 
 -- State tracking
 local state = {
-  restore_routes = nil,
+  route = nil,
   lsp_clients = nil,
   diagnostics_enabled = nil,
   notify_level = nil,
   is_silenced = false,
 }
+
+-- Blocking prompts keep their dialog: hiding them would leave Neovim waiting on an invisible question
+local PROMPT_KINDS = { "confirm", "confirm_sub", "number_prompt", "return_prompt" }
+
+-- Skip messages through a route at the front of the router's list, since the first match wins. Not
+-- through noice.setup(): at runtime that resets every option to its default and appends routes last.
+local function add_skip_route()
+  state.route = require("noice.message.router").add({
+    filter = { event = { "msg_show", "notify" }, ["not"] = { kind = PROMPT_KINDS } },
+    opts = { skip = true },
+  }, 1)
+end
+
+local function remove_skip_route()
+  local routes = require("noice.message.router")._routes
+  for i, route in ipairs(routes) do
+    if route == state.route then
+      table.remove(routes, i)
+      break
+    end
+  end
+  state.route = nil
+end
 
 -- Check if required plugins are available
 local function check_plugins()
@@ -22,7 +45,7 @@ end
 
 -- Start silence mode
 local function silence_start()
-  local ok, noice, notify = check_plugins()
+  local ok, _, notify = check_plugins()
   if not ok then
     vim.notify("Silence requires noice and nvim-notify plugins", vim.log.levels.WARN)
     return
@@ -82,19 +105,8 @@ local function silence_start()
   state.notify_level = vim.log.levels.OFF
   notify.setup({ level = vim.log.levels.OFF })
 
-  -- Save current noice routes
-  local ok_config, config = pcall(require, "noice.config")
-  if ok_config and config.routes then
-    state.restore_routes = vim.fn.deepcopy(config.routes)
-  end
-
   -- Configure noice to skip all messages
-  noice.setup({
-    routes = {
-      { filter = { event = "msg_show.*", kind = "" }, opts = { skip = true } },
-      { filter = { event = "notify.*", kind = "" }, opts = { skip = true } },
-    },
-  })
+  add_skip_route()
 
   -- Clear noice message history
   if ok_manager and manager._history then
@@ -106,7 +118,7 @@ end
 
 -- Stop silence mode and restore previous state
 local function silence_stop()
-  local ok, noice, notify = check_plugins()
+  local ok, _, notify = check_plugins()
   if not ok then
     vim.notify("Silence requires noice and nvim-notify plugins", vim.log.levels.WARN)
     return
@@ -117,9 +129,6 @@ local function silence_stop()
     vim.notify("Not currently in silence mode", vim.log.levels.INFO)
     return
   end
-
-  -- Re-enable noice
-  noice.enable()
 
   -- Restore notify level
   notify.setup({ level = vim.log.levels.INFO })
@@ -135,10 +144,8 @@ local function silence_stop()
     end)
   end
 
-  -- Restore noice routes
-  if state.restore_routes then
-    noice.setup({ routes = state.restore_routes })
-  end
+  -- Let noice show messages again
+  remove_skip_route()
 
   -- Restore diagnostic state
   if state.diagnostics_enabled and not vim.diagnostic.is_enabled() then
@@ -146,7 +153,6 @@ local function silence_stop()
   end
 
   -- Reset state
-  state.restore_routes = nil
   state.lsp_clients = nil
   state.diagnostics_enabled = nil
   state.notify_level = nil
