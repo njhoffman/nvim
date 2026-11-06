@@ -128,13 +128,14 @@ implementing.
       baseline; table in `docs/PERFORMANCE.md`.
 - [x] **Record a benchmark baseline.** (p2) [chore] Recorded 2026-11-02 at load 0.95 (10 sessions, v0.20.1): startup
       ready 1062 ms, settled 6460 ms, Markdown render 313-353 ms. Repeat after Neovim upgrades.
-- [ ] **mcphub's `curl` makes every session allocate more the longer it runs.** (p1) [bug] Measured 2026-11-05. `connect_sse`
+- [x] **mcphub's `curl` makes every session allocate more the longer it runs.** (p1) [bug] Measured 2026-11-05. `connect_sse`
       in `mcphub/hub.lua:1210` starts `curl` without `--silent`, so its progress meter goes to stderr once a second using
       `\r`. Plenary strips the `\r`, never sees a newline and appends to one string forever (`plenary/job.lua:309`),
       copying all of it on every update. A 48 h session held a 13.6 MB line and made 18 MB/s of Lua garbage; a 77 h one
       made 33 MB/s and peaked at 6.1 GB RSS. Fresh sessions look fine, so benchmarks cannot see it. `--silent` removes the
-      stderr output and the events still arrive. The plugin is third-party, so fix it in a fork or a config-level shim,
-      and report it upstream. Running sessions need a restart to pick it up.
+      stderr output and the events still arrive. Fixed in v0.31.8 with a local fork, `~/git/mcphub.nvim`. Running sessions need a restart to pick it up.
+- [ ] **Publish the mcphub fork and report the bug upstream.** (p2) [chore] `~/git/mcphub.nvim` has the `--silent` fix but only
+      an `upstream` remote. Create `njhoffman/mcphub.nvim`, push it and open an issue or PR on `ravitemer/mcphub.nvim`.
 - [ ] **Startup notifications hold "settled" at 6 s.** (p1) [perf] The main loop is idle from about 1.2 s, then about 130
       screen flushes (one per 36 ms) run until 6.2 s, all notification animation. Sources: the chain in
       `core/autocommands/startup.lua:10` (`:Tip` at +2 s, "Loaded in" at +4 s) and NeoCodeium's "Server started"

@@ -493,6 +493,7 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
       },
       {
         "ravitemer/mcphub.nvim",
+        dir = "~/git/mcphub.nvim",
         event = "VeryLazy",
         build = "npm install -g mcp-hub@latest",
       },
