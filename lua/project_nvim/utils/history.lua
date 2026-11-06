@@ -104,6 +104,19 @@ local read_projects = function(fd)
   end
 end
 
+local function read_projects_sync()
+  local fd = open_history("r")
+  if fd == nil then
+    return
+  end
+  local stat = uv.fs_fstat(fd)
+  local data = stat and uv.fs_read(fd, stat.size, -1)
+  uv.fs_close(fd)
+  if data then
+    deserialize_history(data)
+  end
+end
+
 local function setup_watch()
   if state.has_watch_setup == false then
     state.has_watch_setup = true
@@ -235,6 +248,11 @@ local function write_projects_to_history(skip_number)
 end
 
 local function get_recent_projects()
+  -- A caller during startup, such as `nvim "+Telescope projects"`, can get here before the
+  -- asynchronous read from setup has finished.
+  if state.recent_projects == nil then
+    read_projects_sync()
+  end
   local tbl = sanitize_table()
   return tbl, state.projects_meta
 end

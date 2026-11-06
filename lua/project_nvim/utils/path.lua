@@ -8,7 +8,7 @@ M.dir_pretty = nil -- directory of current project (respects user defined symlin
 
 function M.init()
   local options = require("project_nvim.config").get()
-  M.historyfile = options.paths.history or vim.fn.stpath("data") .. "/project_history"
+  M.historyfile = options.paths.history or vim.fn.stdpath("data") .. "/project_history"
   M.sessionspath = options.paths.sessions or vim.fn.stdpath("data") .. "/project_sessions"
   M.homedir = vim.fn.expand("~")
 end
