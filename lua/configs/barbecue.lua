@@ -270,16 +270,17 @@ local cfg = {
 
 require('barbecue').setup(cfg)
 
+local update_group = vim.api.nvim_create_augroup("barbecue.updater", {})
+local function update()
+  require("barbecue.ui").update()
+end
+
 vim.api.nvim_create_autocmd({
-  "WinResized", -- or WinResized on NVIM-v0.9 and higher
+  "WinResized",
   "BufWinEnter",
   "CursorHold",
   "InsertLeave",
-  -- include this if you have set `show_modified` to `true`
-  "BufModifiedSet",
-}, {
-  group = vim.api.nvim_create_augroup("barbecue.updater", {}),
-  callback = function()
-    require("barbecue.ui").update()
-  end,
-})
+}, { group = update_group, callback = update })
+
+-- The modified marker; BufModifiedSet was removed in Neovim 0.13
+vim.api.nvim_create_autocmd("OptionSet", { group = update_group, pattern = "modified", callback = update })

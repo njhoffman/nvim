@@ -1,3 +1,10 @@
+-- Neovide draws the command line and messages itself (ext_cmdline,
+-- ext_messages), so noice's setup refuses to run there, and its two error
+-- messages left every Neovide start on a hit-enter prompt. Skip it instead.
+if vim.g.neovide then
+  return
+end
+
 local sections = require("configs.noice.sections")
 
 require("noice").setup({

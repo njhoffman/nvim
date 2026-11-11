@@ -148,6 +148,22 @@ if vim.g.neovide then
   --
   require("core.neovide_keys").setup()
 
+  -- noice does not run under Neovide (configs/noice), so messages are nvim's
+  -- own: give them a command-line row (cmdheight 0 turns every message into a
+  -- hit-enter prompt) and show notifications as nvim-notify popups
+  -- (on VimEnter: nvim-notify is not loadable this early)
+  vim.o.cmdheight = 1
+  vim.api.nvim_create_autocmd("VimEnter", {
+    once = true,
+    callback = function()
+      vim.o.cmdheight = 1
+      local notify_ok, notify = pcall(require, "notify")
+      if notify_ok then
+        vim.notify = notify
+      end
+    end,
+  })
+
   local map = require("lib.mapper").map
 
   map(

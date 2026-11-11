@@ -5,6 +5,18 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.36.1] - 2026-11-10
+
+### Fixed
+
+- Neovide no longer starts on a "Press ENTER" prompt. noice cannot run there (Neovide draws the command line and
+  messages itself), so `configs/noice` skips its setup under Neovide instead of letting it print two errors; Neovide
+  gets a command-line row (`cmdheight` 1) and its notifications go to nvim-notify popups.
+- The barbecue config failed to load (in every UI; noice hid the "error with your imports" notice in a terminal):
+  `BufModifiedSet` was removed in Neovim 0.13, and the modified marker now updates on `OptionSet modified`.
+- `guifont` uses Neovide's syntax, one size after the font list; the per-font sizes made Neovide report "Failed to
+  parse guifont: Invalid size".
+
 ## [0.36.0] - 2026-11-10
 
 ### Added

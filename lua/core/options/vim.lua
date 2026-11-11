@@ -172,7 +172,7 @@ vim.g.markdown_recommended_style = 0
 opt("undofile", true, buffer)
 opt("equalalways", false) -- make windows the samue width when closing one
 opt("cursorlineopt", "both") -- should get cursorline in number too
-opt("guifont", "FiraCode Nerd Font:h12,DejaVuSansM Nerd Font Mono:h12,monospace") -- "Source Code Pro,DejaVu Sans Mono,Courier New,monospace"
+opt("guifont", "FiraCode Nerd Font,DejaVuSansM Nerd Font Mono,monospace:h12") -- Neovide: one size after the list
 opt(
   "guicursor",
   vim.fn.join({
