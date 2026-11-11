@@ -215,6 +215,13 @@ implementing.
       `utils.git` has `get_repo`, `base_branch` returns one value, and bare `:Telescope gitops` opens the picker menu.
       `tests/unit/gitops_spec.lua` opens every export in a scratch repo.
 
+- [ ] **Neovide starts on a hit-enter prompt.** (p2) [bug] noice.nvim switches itself off under Neovide (it uses
+      `ext_cmdline` / `ext_messages`, see its two warnings), so startup errors that noice hides in a terminal show as
+      "Press ENTER". Seen 2026-11-10 with `:set verbosefile`: vim-matchup's `E216: No such group or event:
+      matchparen<SNR>3_setOpfunc` (terminal nvim hits it too) and, in Neovide only, `E31: No such mapping` from a
+      markdown buffer's `undo_ftplugin` during init (likely a notification window changing filetype). Fix both
+      errors, and decide whether noice should load under Neovide at all (`cond = not vim.g.neovide`).
+
 ## 7. Docs and code consistency
 
 - [x] **Consolidate documentation into `docs/`.** (p2) [docs] v0.22.0 moved the markdown and keymap dumps from

@@ -101,8 +101,8 @@ if vim.g.neovide then
 --     { "Terminus", 10 },
 
   vim.opt.guifont = fonts[1][1] .. ":h" .. fonts[1][2]
-  vim.opt.gui_font_default_size = fonts[1][2]
-  vim.opt.gui_font_size = vim.opt.gui_font_default_size
+  vim.g.gui_font_default_size = fonts[1][2]
+  vim.g.gui_font_size = vim.g.gui_font_default_size
   -- vim.opt.gui_font_width = 0
   -- vim.opt.gui_font_height = 0
 
@@ -121,7 +121,7 @@ if vim.g.neovide then
 
   vim.defer_fn(function()
     vim.cmd("hi Normal guibg=#02000a")
-    vim.notify("neovide loaded: " + vim.g.neovide_version, vim.log.levels.INFO, { title = "neovide" })
+    vim.notify("neovide loaded: " .. tostring(vim.g.neovide_version), vim.log.levels.INFO, { title = "neovide" })
   end, 5000)
 
   -- font:sync()
@@ -146,6 +146,8 @@ if vim.g.neovide then
 --     ResizeGuiFont(-1)
 --   end, opts)
   --
+  require("core.neovide_keys").setup()
+
   local map = require("lib.mapper").map
 
   map(

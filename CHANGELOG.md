@@ -5,6 +5,22 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.36.0] - 2026-11-10
+
+### Added
+
+- Neovide sends the same keys as the terminals: `lua/core/neovide_keys.lua` maps the chords Alacritty, kitty and
+  wezterm turn into other keys (Ctrl+Shift+letter to Alt+letter, Ctrl+punctuation, Ctrl+, / Ctrl+; and Super+, /
+  Super+; to Ctrl+Shift+Tab / Ctrl+Tab, Super+[ / ] / Backspace / P, Shift+Backspace to Delete) in every mode. This
+  replaces the AutoKey items that replayed them through XTest. Chords Neovide delivers as an existing key (Ctrl+[,
+  Ctrl+Shift+[ / ] / \\ / 6, Ctrl+M) are left alone. Tests: `tests/unit/neovide_keys_spec.lua`.
+
+### Fixed
+
+- `lua/core/neovide.lua` stopped at `vim.opt.gui_font_default_size` (not an option), so nothing after it ran in
+  Neovide: the Ctrl+= / Ctrl+- / Ctrl+0 zoom mappings and the "neovide loaded" notice, which also added strings
+  with `+`. The font sizes are `vim.g` values now.
+
 ## [0.35.4] - 2026-11-06
 
 ### Removed
