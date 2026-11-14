@@ -5,6 +5,14 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.36.3] - 2026-11-14
+
+### Changed
+
+- rest.nvim follows its lazy.nvim install notes: no build step, with fidget.nvim, nvim-nio, nvim-treesitter, xml2lua
+  (added to `package.path`, since lazy.nvim does not read its rockspec) and lua-mimetypes as dependencies.
+  lua-mimetypes' build needs the Lua headers (`liblua5.1-0-dev`).
+
 ## [0.36.2] - 2026-11-14
 
 ### Fixed

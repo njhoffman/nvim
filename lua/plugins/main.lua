@@ -553,7 +553,25 @@ call s:h('BufferScrollArrow',    s:base8,          s:bg_other,       'bold')
   { "BlackLight/nvim-http" },
   -- https://github.com/oysandvik94/curl.nvim
   { "oysandvik94/curl.nvim", cmd = { "CurlOpen" }, dependencies = { "nvim-lua/plenary.nvim" } },
-  { "rest-nvim/rest.nvim", ft = "http", cmd = "Rest" },
+  {
+    "rest-nvim/rest.nvim",
+    ft = "http",
+    build = false,
+    dependencies = {
+      "j-hui/fidget.nvim",
+      "nvim-neotest/nvim-nio",
+      "nvim-treesitter/nvim-treesitter",
+      {
+        -- Lazy.nvim does not recognize this library's rocksfile, so add it
+        -- to package path manually.
+        "manoelcampos/xml2lua",
+        config = function(plugin)
+          package.path = package.path .. ";" .. plugin.dir .. "/?.lua"
+        end,
+      },
+      "lunarmodules/lua-mimetypes",
+    },
+  },
   {
     "jellydn/hurl.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },
