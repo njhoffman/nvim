@@ -5,6 +5,14 @@ All notable changes to this Neovim configuration will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.36.2] - 2026-11-14
+
+### Fixed
+
+- mason.nvim was set up twice (by `configs/mason` when the plugin loads, then by `core/lsp/servers`), so every start
+  logged "Ignoring duplicate registry entry" for both registries. `core/lsp/servers` now skips `mason.setup` when it
+  has already run; the settings are the same in both places.
+
 ## [0.36.1] - 2026-11-10
 
 ### Fixed

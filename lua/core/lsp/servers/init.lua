@@ -70,7 +70,11 @@ local lspconfig_settings = {
 local function setup_mason()
   local tool_packages = require("configs.mason.tools")
   require("mason-tool-installer").setup({ ensure_installed = tool_packages })
-  require("mason").setup(mason_settings)
+  -- configs/mason (loaded with the plugin) may have set mason up already;
+  -- a second setup appends the registries again ("Ignoring duplicate registry entry").
+  if not require("mason").has_setup then
+    require("mason").setup(mason_settings)
+  end
   require("mason-lspconfig").setup(lspconfig_settings)
   log:debug("Mason setup complete")
 end
