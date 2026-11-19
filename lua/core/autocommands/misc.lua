@@ -1,11 +1,17 @@
 -- Assorted autocommands: window title, write hooks, quick-close and filetype tweaks.
 
+-- Outside tmux the title ends in a zero-width space, the mark tmux puts on its
+-- own title (~/.config/tmux/conf.d/display.conf): xremap then leaves Ctrl+hjkl
+-- to this terminal, and navigate.lua hands them to i3 at the last split.
+local XREMAP_MARK = "\226\128\139"
+
 local set_window_title = function()
   if not os.getenv("TMUX") then
     os.execute("tmux setenv custom_path " .. vim.fn.getcwd())
   end
   local path = vim.split(vim.fn.getcwd(), "/", {})
-  vim.opt.titlestring = [[%{v:progname}: ]] .. vim.fn.join({ path[#path - 1], path[#path] }, "/")
+  local mark = os.getenv("TMUX") and "" or XREMAP_MARK
+  vim.opt.titlestring = [[%{v:progname}: ]] .. vim.fn.join({ path[#path - 1], path[#path] }, "/") .. mark
   vim.opt.title = true
 end
 

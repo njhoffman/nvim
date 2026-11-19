@@ -50,6 +50,12 @@ removing it. Move removals to `~/.local/backup/nvim/`, keeping their repo paths 
       `lua/llm-providers.lua` (used only by `llm-prompts`). Found during the `lua/` layout refactor, which left them in
       place. Move the ones worth keeping to `lua/modules/` and wire them up, back up the rest.
 
+- [ ] **Drop the `tmux setenv custom_path` call in `set_window_title`.** (p3) [bug]
+  `lua/core/autocommands/misc.lua` runs `tmux setenv custom_path <cwd>` only when `$TMUX` is unset (inverted), so
+  it writes to whatever default server is running, blocks startup with `os.execute`, and splits a cwd with spaces.
+  Nothing reads `custom_path` any more (only archived tmux snippets and a commented line in `dirhistory.zsh`).
+  Remove the call; `tests/unit/window_title_spec.lua` stubs `os.execute` because of it.
+
 ## 3. Simplify folder structure and config setup
 
 - [ ] **Shadowed plugin modules.** (p1) [bug] These `lua/` directories have the same module name as an installed plugin,
