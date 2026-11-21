@@ -15,6 +15,7 @@ rewritten on each recorded run, newest first; every metric is in
 
 | Version | Date | Load | Plugins | Loaded | Files | Lua lines | Lines | Plugin lines | Config MiB | Plugins MiB | Ready ms | Settled ms | Open ms | Render ms | RSS MiB | Peak MiB |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0.37.2 | 2026-11-21 |  | 389 | 212 | 1,599 | 144,357 | 224,120 | 2,223,289 | 34 | 1,081 |  |  |  |  |  |  |
 | 0.37.1 | 2026-11-19 |  | 389 | 212 | 1,598 | 144,317 | 224,065 | 2,223,289 | 34 | 1,081 |  |  |  |  |  |  |
 | 0.37.0 | 2026-11-15 |  | 389 | 212 |  |  |  |  | 34 | 1,023 |  |  |  |  |  |  |
 | 0.36.1 | 2026-11-11 |  | 386 | 211 | 1,597 | 144,271 | 223,990 | 2,215,549 | 34 | 1,079 |  |  |  |  |  |  |
