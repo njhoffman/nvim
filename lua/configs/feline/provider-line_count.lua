@@ -66,11 +66,11 @@ local is_visual = function()
   }
   return visual_str[tostring(vim.fn.mode())]
 end
---  礪 
+--  󰒆 
 local get_line_count = function()
   if is_visual() then
     state = "visual"
-    return line_count() .. " " .. char_count() .. "ﮜ"
+    return line_count() .. " " .. char_count() .. "󰚞"
   else
     state = "default"
     return "%L"

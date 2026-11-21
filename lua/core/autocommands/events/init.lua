@@ -102,7 +102,7 @@ local init_event = function(scope, event_group)
         }
         opt.old = type(vim.v.option_old) == 'string' and ('"' .. opt.old .. '"') or opt.old
         opt.new = type(vim.v.option_new) == 'string' and ('"' .. opt.new .. '"') or opt.new
-        --     ﯀ ﰲ 
+        --  󰁔   󰛂 󰜴 󰁕
         data.data = opt.cmd .. ' ' .. opt.old .. '  ' .. opt.new .. ''
       end
 

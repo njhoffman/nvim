@@ -1,7 +1,7 @@
 local cmp = require("cmp")
 local mapping = require("cmp.config.mapping")
 
-local pfx = " "
+local pfx = "󰋲 "
 
 local scroll_docs = function(direction)
   return function(fallback)

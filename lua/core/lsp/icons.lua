@@ -6,10 +6,10 @@
 
 local icons = {
   diagnostics = {
-    error = { '', ''}, -- '✎    󰒡    𥉉﮻  ﱥ           
-    warn  = { '', ''}, --     
-    info  = { '', ''}, --     󰌵 󰌶       ﯧ ﯦ  ﯧ  כֿ 
-    hint  = { '󰌵', ''}, --  󰋼  𥉉    ﴕ       
+    error = { '', ''}, -- '✎    󰒡  󰀧 󰀨 󰗖󰚽 󰀩 󰝧  󰀪 󰀥 󰀦 󰅗 󰅘 󰅙 󰅚 󰅛 󰅜 󰅝
+    warn  = { '', '󰀪'}, --     
+    info  = { '', ''}, --     󰌵 󰌶    󰋽 󰌵  󰛩 󰛨 󰌶 󰛩  󰙎 󰌵
+    hint  = { '󰌵', ''}, --  󰋼  󰗖󰅾  󰆄 󰆅 󰠗 󰆆 󰆇     
   },
   lsp = {
     Array         = {"󰅪 ", " "},
@@ -18,7 +18,7 @@ local icons = {
     Color         = {" ", "󰏘 "},
     Constant      = {"󰏿 ", " ", "󰞂 ", "󰐀 ", '󰇽 ', " "},
     Copilot       = ' ',
-    Comment =      {' ', ' ',  ' ',' ' , ' '  ,' ' ,' '  },
+    Comment =      {' ', '󰅺 ',  ' ',' ' , ' '  ,' ' ,' '  },
     Constructor   = {" ", " ", "⌘ ", " ", " "},
     Default       = {" "},
     Enum          = {" ", "󰕘", " ", "了"},
@@ -32,7 +32,7 @@ local icons = {
     Interface     = {" ", "󰕘", "󰜰 ", " "},
     Key           = {" ", "󰌋 ", "󰔌", "󰌆 "},
     Keyword       = {" ", "󰌋 ", "󰔌", "󰌆 "},
-    KeywordReturn = {'' },
+    KeywordReturn = {'󰌑' },
     Macro         = {"󰉨 "},
     Method        = {" ", " ", "󰆧 ", " "},
     Module        = {" ", " ", "󰏓 ", ' '},
@@ -47,13 +47,13 @@ local icons = {
     Regex         = {'󰑑 '},
     Repeat        = {' '},
     Snippet       = {" ", "󰅱 ", " ", " "},
-    String        = {" ", " "},
+    String        = {"󰀬 ", " "},
     Struct        = {" ", " ", "󰟦 ", "󰌗 ", '󰙅 ', " "},
     Text          = {'󰉿 ', " ", " ", " ", "󰊄 "},
     TypeParameter = {" ", "󰊄 ", " "},
     Unit          = {" ", " ", "󰑭", ' '},
     Value         = {" ", "󰎠 "},
-    Variable      = {" ", "󰆧 ", " ", "󰈜 ", " "},
+    Variable      = {" ", "󰆧 ", " ", "󰈜 ", "󰀫 "},
   },
   git = {
     git           = "󰊢",
@@ -126,7 +126,7 @@ return {
 --     active_ts = "",
 --     lsp_loaded = "",
 --     lsp_loading1 = "",
---     lsp_loading2 = "",
+--     lsp_loading2 = "󰀚",
 --     lsp_loading3 = "",
 --   },
 --   dap = {
@@ -452,7 +452,7 @@ return {
 --           Operator      = "󰆕 ",
 --           Package       = " ", -- 
 --           Property      = " ", -- 
---           String        = "𝓢 ", -- 
+--           String        = "𝓢 ", -- 󰀬
 --           Struct        = " ", -- 󰌗
 --           TypeParameter = "󰊄 ",
 --           Variable      = "", -- 󰆧 
@@ -577,7 +577,7 @@ return {
 --       Heart =                     ' ',
 --       History =                   ' ',
 --       Home =                      ' ',
---       Incoming =                  ' ',
+--       Incoming =                  '󰏷 ',
 --       Keyboard =                  '  ',
 --       List =                      '',
 --       Lock =                      ' ',
@@ -587,7 +587,7 @@ return {
 --       NewFile =                   ' ',
 --       None =                      ' ',
 --       Note =                      ' ',
---       Outgoing =                  ' ',
+--       Outgoing =                  '󰏻 ',
 --       Package =                   ' ',
 --       Paint =                     ' ',
 --       Pause =                     ' ',

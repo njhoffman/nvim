@@ -9,7 +9,7 @@ local state = {
 }
 
 local references_count = function()
-  -- 󰈇    󰈝                   秊 
+  -- 󰈇    󰈝  󰁜                 󰒖 
   local count = 0
   local ok, ref_count = pcall(vim.api.nvim_buf_get_var, 0, "lsp_cursor_references")
   if ok then

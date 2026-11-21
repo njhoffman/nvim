@@ -60,7 +60,7 @@ return {
     [12] = "󰊕 ", -- Function
     [13] = "󰆧 ", -- Variable
     [14] = "󰏿 ", -- Constant
-    [15] = " ", -- String
+    [15] = "󰀬 ", -- String
     [16] = "󰎠 ", -- Number
     [17] = "◩ ", -- Boolean
     [18] = "󰅪 ", -- Array

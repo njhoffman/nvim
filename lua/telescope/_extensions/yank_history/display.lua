@@ -2,8 +2,8 @@ local devicons = require('nvim-web-devicons')
 local entry_display = require('telescope.pickers.entry_display')
 
 --  --     7 min  local visual_str = {\ ['v'] = true, -- Visual by character\ ['vs'] = true, -- Visual by character using |v_CTRL-O| in Select mode\
---  2L    18 hrs  local visual_str = {\ ['v'] = true, -- Visual by character\ ['vs'] = true, -- Visual by character using |v_CTRL-O| in Select mode\
---  4L 麗  2 days  local visual_str = {\ ['v'] = true, -- Visual by character\ ['vs'] = true, -- Visual by character using |v_CTRL-O| in Select mode\
+--  2L 󰉻   18 hrs  local visual_str = {\ ['v'] = true, -- Visual by character\ ['vs'] = true, -- Visual by character using |v_CTRL-O| in Select mode\
+--  4L 󰒉  2 days  local visual_str = {\ ['v'] = true, -- Visual by character\ ['vs'] = true, -- Visual by character using |v_CTRL-O| in Select mode\
 --  entry.value.cwd           = "/home/nicholas/.config/nvim",
 --  entry.value.date          = "Wed 21 Nov 2023 03:15:04 PM CST",
 --  entry.value.filename      = "/home/nicholas/.config/nvim/lua/telescope/_extensions/yank_history/yank_history.lua",
@@ -14,12 +14,12 @@ local entry_display = require('telescope.pickers.entry_display')
 --  entry.value.regtype       = "V",
 -- TelescopeResultsClass, Number, Comment, Field, Title, Border, Method, Normal, Constant, Function, Special
 -- Operator, Variable, Struct
---                                 ﭨ  ﭨ  ﭨ  ﭨ  ﮜ  ﮜ  ﮜ  ﮜ        
---  麗 濾ﮜ        縷 ﮜ          ﭟ   ﲵ  ﭟ
+--                         󰊄  󰊄  󰊄  󰊄  󰙩  󰙩  󰙩  󰙩  󰚞  󰚞  󰚞  󰚞  󰊆  󰊆  󰊆  󰊆
+--  󰒉 󰒅󰚞    󰄱 󰆏   󰑑󰊄 󰚞      󰉻   󰀁 󰙠 󰆐  󰞷  󰙠
 local icons = {
   ['v'] = '', -- Visual by character
-  ['V'] = '', -- Visual by line
-  ['vs'] = '麗', -- Visual by character using |v_CTRL-O| in Select mode
+  ['V'] = '󰉻', -- Visual by line
+  ['vs'] = '󰒉', -- Visual by character using |v_CTRL-O| in Select mode
   ['nl'] = '↳',
 }
 

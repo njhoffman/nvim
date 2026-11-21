@@ -59,8 +59,8 @@ map("n", "[s", swap_with_left, { desc = "Swap with [count] left node", expr = tr
 map("n", "]s", swap_with_right, { desc = "Swap with [count] right node", expr = true })
 map({ "n" }, "<M-;>", "<cmd>ISwapNodeWith<cr>", {
   category = "Format",
-  label = "易swap node with",
-  desc = "易swap/exchange node objects with",
+  label = "󰓡swap node with",
+  desc = "󰓡swap/exchange node objects with",
   plugin = "iswap.nvim",
 })
 

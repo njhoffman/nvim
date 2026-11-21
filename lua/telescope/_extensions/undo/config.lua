@@ -36,7 +36,7 @@ local default_config = {
 -- ┆ ├─
 -- ┆ └─
 -- └─   ┃ │ ┊ ┊ ╯ ╮ 󰕡 󰓁 󰜘 󰘬 󰿟 󰤃 󰤂 󰺕 󰕞     󰤂  󰤂 ● ○ 󰺕
---  ﱣ    喙 כּ   ⭘         
+--  󰝥    喙 󰘼 󰄰  ⭘         
 -- the following prefix should work out to this graph structure:
 -- state #1
 -- └─state #2

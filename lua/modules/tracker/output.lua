@@ -33,13 +33,13 @@ local output_diff = function(props, delta)
   local added = vim.tbl_get(delta, "added") or {}
   local removed = vim.tbl_get(delta, "removed") or {}
 
-  --      
+  --     󰍴 󰍴
   if #added > 0 or #removed > 0 then
     for _, add_item in ipairs(added) do
       output("  ", add_item)
     end
     for _, rm_item in ipairs(removed) do
-      output("  ", rm_item)
+      output(" 󰍴 ", rm_item)
     end
   end
 end

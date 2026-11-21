@@ -9,10 +9,10 @@ local Level = {
   WARN = 4,
   ERROR = 5,
 }
--- { '', ''} { '', ''} { '', ''} { '󰌵', ''}
+-- { '', ''} { '', '󰀪'} { '', ''} { '󰌵', ''}
 --     ✎  
 
-local names = { "", "", "", "", "" }
+local names = { "", "", "", "󰀪", "" }
 
 --- Convert log level to string representation.
 -- @function name

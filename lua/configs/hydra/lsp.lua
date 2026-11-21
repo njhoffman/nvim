@@ -44,7 +44,7 @@ local heads = {
 
 local toggles = {
   --    󰄬  󰄭       󰅚 󰙧 
-  --            
+  -- 󰎡 󰎤 󰎧 󰎪 󰎭 󰎱 󰎣 󰎦 󰎩 󰎬 󰎮 󰎰
   yes = "  ",
   no = "  ",
   num = function(num)

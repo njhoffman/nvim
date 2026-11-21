@@ -113,15 +113,15 @@ cmd("HelpNew", help.edit_new_helpfile, { desc = "edit new local helpfile" })
 
 -- ColorschemeExport now registered in commands.colors.init
 
--- map("n", "<leader>$", format.end_char_strip, { desc = "ﲖ strip end characters" })
-map("n", "<leader>a", format.end_char_toggle, { desc = "ﲖ toggle end character", nowait = true })
+-- map("n", "<leader>$", format.end_char_strip, { desc = "󰞘 strip end characters" })
+map("n", "<leader>a", format.end_char_toggle, { desc = "󰞘 toggle end character", nowait = true })
 
 cmd("TrimTrailingWhitespace", format.trim_space, {
   nargs = "?",
   range = "%",
   addr = "lines",
   preview = format.trim_space,
-  desc = "ﲖ trims trailing whitespace in the current buffer",
+  desc = "󰞘 trims trailing whitespace in the current buffer",
 })
 
 cmd("Google", function(o)

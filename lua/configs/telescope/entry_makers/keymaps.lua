@@ -32,7 +32,7 @@ local function get_lhs(entry)
 end
 
 local gen_from_keymaps = function(opts)
-  -- @(buffer) !silent *noremap +expr  nowait
+  -- @(buffer) !silent *noremap +expr 󰥔 nowait
 
   -- stylua: ignore
   local attr_map = {
@@ -40,7 +40,7 @@ local gen_from_keymaps = function(opts)
     { 'silent',  '!' },
     { 'remap',   '*' },
     { 'expr',    '+' },
-    { 'nowait',  '' },
+    { 'nowait',  '󰥔' },
     -- unique
   }
   local function get_attr(entry)

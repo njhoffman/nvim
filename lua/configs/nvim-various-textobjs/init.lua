@@ -4,9 +4,9 @@
 
 local map = function(modes, lhs, rhs, opts)
   if type(opts) == "string" then
-    opts = { desc = "韛" .. opts } --  鶴 韛     ﱕ 
+    opts = { desc = "󰗊" .. opts } -- 󰅳 󰔮 󰗊 󰉿  󰅴  󰝗 󰉾
   elseif opts and opts.desc then
-    opts.desc = "韛" .. opts.desc
+    opts.desc = "󰗊" .. opts.desc
   end
   require("lib.mapper").map(modes, lhs, rhs, opts)
 end

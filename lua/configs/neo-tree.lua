@@ -187,7 +187,7 @@ local cfg = {
     },
     git_status = {
       symbols = {
-        unstaged = "ﯰ", --  ﯰ 
+        unstaged = "󰛲", --  󰛲 󰄱
         -- staged = "",
         -- conflict = "",
       },

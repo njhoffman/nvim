@@ -89,9 +89,9 @@ local map = require("lib.mapper").map
 local prefix = require("lib.mapper").prefix
 
 local register_keys = function(methods, keys, opts)
-  prefix({ "x", "n" }, "gtt", "text case replace  ")
-  prefix({ "n" }, "gtr", "text case lsp replace  ")
-  prefix({ "n" }, "gto", "text case operator  ")
+  prefix({ "x", "n" }, "gtt", "text case replace 󰄓 ")
+  prefix({ "n" }, "gtr", "text case lsp replace 󰄓 ")
+  prefix({ "n" }, "gto", "text case operator 󰄓 ")
 
   local ns = "textcase"
   for _, feature in ipairs({ "line", "eol", "visual", "operator", "lsp_rename", "current_word" }) do
@@ -114,7 +114,7 @@ local register_keys = function(methods, keys, opts)
         mode,
         keys[feature],
         "<cmd>lua require('" .. ns .. "')." .. feature .. "('" .. methods.method_name .. "')<cr>",
-        { desc = " " .. desc }
+        { desc = "󰄓 " .. desc }
       )
     end
   end
@@ -130,8 +130,8 @@ local register_keys = function(methods, keys, opts)
       .. methods.method_name
       .. "')<cr>"
 
-    map("n", keybind, command, { desc = " " .. desc })
-    map("x", keybind, command, { desc = " " .. desc })
+    map("n", keybind, command, { desc = "󰄓 " .. desc })
+    map("x", keybind, command, { desc = "󰄓 " .. desc })
   end
 end
 
@@ -148,9 +148,9 @@ map(
   { "n", "v" },
   "gt.",
   "<cmd>TextCaseOpenTelescope<CR>",
-  { desc = " telescope convert current" }
+  { desc = "󰄓 telescope convert current" }
 )
-map("n", "gtr.", "<cmd>TextCaseOpenTelescopeLSPChange<CR>", { desc = " telescope convert lsp" })
+map("n", "gtr.", "<cmd>TextCaseOpenTelescopeLSPChange<CR>", { desc = "󰄓 telescope convert lsp" })
 
 -- '<cmd>TextCaseOpenTelescopeLSPChange<CR>',
 -- '<cmd>TextCaseOpenTelescopeQuickChange<CR>',

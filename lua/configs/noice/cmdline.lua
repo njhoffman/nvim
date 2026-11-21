@@ -2,25 +2,25 @@
 -- stylua: ignore
 local cmdlines = {
   { 'cmdline',     '',   'Vimcmd',         "vim",   "^:"             }, -- "^:%s*"
-  { 'visual',      '礪',  'Visual',         "vim",   "^:'<,'>"        },
+  { 'visual',      '󰒆',  'Visual',         "vim",   "^:'<,'>"        },
   { 'filter',      '',   'Shell',          "bash",  "^:!"            }, -- "^:%s*!"    
   { 'lua',         '',   'Lua',            "lua",   "^:lua%s+"       },
   { 'eval_lua',    ' ',  'Inspect Lua',    "lua",   {"^:=%s*", "^:lua%s=%s*"} }, --
-  { 'help',        '',   'Help',           "vim",   "^:he?l?p?%s+"   },
+  { 'help',        '󰋖',   'Help',           "vim",   "^:he?l?p?%s+"   },
   { 'inc_rename',  ' ',  'Rename',         'vim',   '^:RenameInc%s+' },
   { 'preview',     '󰻏 ',  'Preview Command','vim',   '^:Preview%s+'   },
   { 'subs',        '',   'Replace',        'regex', '^:s/'           },
-  -- { 'visual',      '礪',  'visual',         "vim",   "^:'<,'>"        },
+  -- { 'visual',      '󰒆',  'visual',         "vim",   "^:'<,'>"        },
   { 'subs_all',    ' ',  'Replace Buffer', 'regex', '^:%%s/'         },
   { 'global',      ' ',  'Global',         'regex', '^:g/'           },
-  -- { 'visual',      '礪',  'visual',         "vim",   "^:'<,'>"        },
+  -- { 'visual',      '󰒆',  'visual',         "vim",   "^:'<,'>"        },
   { 'global_inv',  ' ',  'Global Inverse', 'regex', '^:g!/'           },
   { 'global_all',  ' ',  'Global Buffer',  'regex', '^:%%g/'         },
   { 'input',       ' ',  'Input',          'vim',   '^:/'            },
   { 'search_up',   ' ', 'Search Up',      'regex', '^%?'            },
   { 'search_down', ' ', 'Search Down',    'regex', '^/'             },
-  -- { 'line',       '礪',  'range',      'vim',   '^:%d+$'    },
-  -- { 'range',      '礪',  'range',      'vim',   '^:%d+,%d+$'    },
+  -- { 'line',       '󰒆',  'range',      'vim',   '^:%d+$'    },
+  -- { 'range',      '󰒆',  'range',      'vim',   '^:%d+,%d+$'    },
 }
 
 local extra = {

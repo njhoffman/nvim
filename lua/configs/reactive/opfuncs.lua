@@ -1,7 +1,7 @@
 local opfuncs = {
-  ["v:lua.MiniAlign.align_user"] = { { "ga" }, "align content " },
+  ["v:lua.MiniAlign.align_user"] = { { "ga" }, "align content 󰉠" },
 
-  ['v:lua.require"treesj".__repeat'] = { { "gs", "gJ" }, "split/join content " },
+  ['v:lua.require"treesj".__repeat'] = { { "gs", "gJ" }, "split/join content 󰇘󰇙" },
   ['v:lua.require"ts-node-action.repeat".repeat_action'] = { { "+" }, "do node action  " },
 
   ["v:lua.MiniSurround.add"] = { { "s" }, "surround add 󰅪" },
@@ -11,7 +11,7 @@ local opfuncs = {
 
   ['v:lua.require"textcase".operator_callback'] = {
     { "gtoc", "gtod", "gtoD", "gtof", "gton", "gtop", "gtoP", "gtos", "gtot", "gtou", "gtoU" },
-    "change text case  ",
+    "change text case 󰄓 ",
   },
 
   ['v:lua.require"substitute".operator_callback'] = { { "S" }, "substitute  " },

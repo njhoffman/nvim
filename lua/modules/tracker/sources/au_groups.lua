@@ -41,7 +41,7 @@ end
 return vim.tbl_extend("force", base_source, {
   name = "au_groups",
   label = "auto groups",
-  icon = "", --     
+  icon = "", --   󰄘  
   fields = {
     "name",
     "global_cmds",

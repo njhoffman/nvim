@@ -145,35 +145,35 @@ M.setup = function(opts)
     operations.install_args(config.options.ensure_installed)
   end, 3000)
 
-  --    
+  --    󰈞
   local cmd = vim.api.nvim_create_user_command
-  cmd("DevdocsFetch", M.fetch_registry, { desc = " reload devdocs registry" })
+  cmd("DevdocsFetch", M.fetch_registry, { desc = "󰈞 reload devdocs registry" })
   cmd(
     "DevdocsInstall",
     M.install_doc,
-    { nargs = "*", complete = completion.get_non_installed, desc = " install devdoc source" }
+    { nargs = "*", complete = completion.get_non_installed, desc = "󰈞 install devdoc source" }
   )
   cmd(
     "DevdocsUninstall",
     M.uninstall_doc,
-    { nargs = "*", complete = completion.get_installed, desc = " uninstall devdoc source" }
+    { nargs = "*", complete = completion.get_installed, desc = "󰈞 uninstall devdoc source" }
   )
   cmd(
     "DevdocsOpen",
     M.open_doc,
-    { nargs = "?", complete = completion.get_installed, desc = " open devdoc file in buffer" }
+    { nargs = "?", complete = completion.get_installed, desc = "󰈞 open devdoc file in buffer" }
   )
   cmd("DevdocsOpenFloat", M.open_doc_float, {
     nargs = "?",
     complete = completion.get_installed,
-    desc = " open devdoc file in popup window",
+    desc = "󰈞 open devdoc file in popup window",
   })
   cmd("DevdocsOpenCurrent", function()
     M.open_doc_current_file()
-  end, { desc = " open devdoc in current buffer" })
+  end, { desc = "󰈞 open devdoc in current buffer" })
   cmd("DevdocsOpenCurrentFloat", function()
     M.open_doc_current_file(true)
-  end, { desc = " open devdoc in current float" })
+  end, { desc = "󰈞 open devdoc in current float" })
   cmd("DevdocsKeywordprg", M.keywordprg, { nargs = "?" })
   cmd("DevdocsUpdate", M.update, { nargs = "*", complete = completion.get_updatable })
   cmd("DevdocsUpdateAll", M.update_all, {})

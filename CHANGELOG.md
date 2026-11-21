@@ -7,6 +7,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.37.2] - 2026-11-20
+
+### Fixed
+
+- 509 Nerd Font icons in 48 files moved from the v2 Material Design positions (U+F500-U+FD46), which Nerd
+  Fonts v3 dropped, to their v3 `md-` positions (U+F0000+): LSP and diagnostic signs, completion kinds,
+  statusline providers, which-key and other plugin configs. They had rendered only through a v2 font
+  fontconfig fell back to; with the v2 FiraCode and Hack files retired (2026-11-20) they would draw blank or
+  as another font's glyph. Mapped by icon name from the v2 font; five renamed in v3 (settings to cog,
+  settings-box to cog_box, markdown to language_markdown, format-list-numbers to format_list_numbered,
+  dictionary to book_alphabet). Six with no v3 icon (brand and removed icons) stay, all in comments.
+  `modules/unicode/nerd_chars.lua` (describes both sets) and `nerdy/icons.lua` (v3 Octicons, which reuse
+  U+F400-U+F533) are unchanged.
+
+### Added
+
+- `tests/unit/nerd_icons_spec.lua`: no v2-only icon (U+F534-U+FD46) in code outside comments and those two
+  tables.
+
 ## [0.37.1] - 2026-11-19
 
 ### Changed

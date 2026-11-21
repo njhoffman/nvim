@@ -69,7 +69,7 @@ local notify_handler = function(changes, curr_idx, opts)
     local line = vim.api.nvim_buf_get_lines(0, change.lnum - 1, change.lnum, false)[1]
     local text = line and line:sub(change.col + 1, change.col + 20) or ""
     table.insert(rows, {
-      { change.curr and "" or " ", hls.icon },
+      { change.curr and "󰁕" or " ", hls.icon },
       { tostring(change.idx), hls.number },
       { tostring(change.lnum), hls.number },
       { tostring(change.col), hls.number },

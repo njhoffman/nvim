@@ -94,7 +94,7 @@ end
 M.line_count = function()
   if is_visual() then
     line_count_state = "visual"
-    return get_visual_line_count() .. " " .. get_char_count() .. "ﮜ"
+    return get_visual_line_count() .. " " .. get_char_count() .. "󰚞"
   else
     line_count_state = "default"
     return tostring(vim.fn.line("$"))

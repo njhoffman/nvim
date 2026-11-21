@@ -1,6 +1,6 @@
 require("quicknote").setup({
   mode = "portable", -- "portable" | "resident"
-  sign = " ", --                      
+  sign = " ", -- 󰎞  󰆈       󰅺            󰆉
   filetype = "md",
   git_branch_recognizable = false,
 })

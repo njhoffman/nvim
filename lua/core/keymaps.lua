@@ -5,37 +5,37 @@ local map = mapper.map
 local vmap = mapper.vmap
 local prefix = mapper.prefix
 
---       况  ﱔ  ﯕ            ﮝ    ﬠ ﬡ ײַ יִ  不 ﬆ       בּ 易    ﮒ   ﴞ  ﯓ ﭹ 難 ﱒ 
---  朗浪  狼ﰅ         諾蠟廊 降    者     ﱒ ﯕ ﬡ 玲 癩ﰈ ﰺ  裸憎降   ײַ ﰲ ﰲ    隷濾 礪 閭 驪 麗 ﱵ  料
--- 繁 署 者 臭ﳺ 禎 穀祐 ﱒ ﮒ ﮭ 󰘖 ﲖ 祖 ﮮ 祝 ﴻ ﯴ ﰌ 省 異  什  輪   ﭕ  ﱿ  蝹 ﬡ 李  惡   祉
--- 隷שּׂ  שּׂ  שּׂ  שּׂ ﱕ      侮  滑 פּ 串     
+--       󰕲  󰝖 󰉻 󰛗 󰆃   󰂥 󰆑 󰆏 󰍺 󰆑  󰉹 󰊅 󰚟 󰆀  󰉿 󰘡 󰘢 󰘠 󰘞  󰑨 󰘇 󰉳 󰉵 󰉶 󰊋 󰅒 󰅕 󰘲 󰓡 󰉈   󰚔 󰉁 󰉂 ﴞ 󰉃 󰛕 󰙻 󰗈󰉳 󰝔 󰉸
+--  󰐪󰐫󰅦 󰅥 󰐬󰜇 󰅦   󰀴     󰑞󰐨󰐩 󰔊  󰄘  󰕜 󰆑   󰁭 󰝔 󰛗 󰘢 󰒮󰋷 󰐏󰜊 󰜼  󰐓󰖊󰔊   󰘠 󰜴 󰜴  󰅕 󰃦 󱁥󰒅 󰒆 󰒇 󰒈 󰒉 󰝷  󰒿
+-- 󰕚 󰕛 󰕜 󰕝󰟼 󰕔 󰕕󰕐 󰝔 󰚔 󰚯 󰘖 󰞘 祖 󰚰 󰕒 󰠽 󰛶 󰜎 󰑮 󰑣  󰓾  󰓘  󰆾 󰙖  󰞁  󰖶 󰘢 󰓢  󰒺   󰕎
+-- 󱁥󰘮  󰘮  󰘮  󰘮 󰝗 󰉾     󰔱  󰐅 󰙅 󰐆 󰅲  󰅩  󰅴
 -- 󱋿 Jump back"
---         
+--       󰈤 󰈢 󰈔
 
 prefix({ "n", "x", "o" }, ",", "leader")
-prefix({ "n", "x", "o" }, "]", "next ")
-prefix({ "n", "x", "o" }, "[", "previous 丹")
+prefix({ "n", "x", "o" }, "]", "next 󰈑")
+prefix({ "n", "x", "o" }, "[", "previous 󰑟")
 prefix({ "n", "x", "o" }, "<leader>\\", "flash ⚡")
 
 prefix("n", "m", "marks ⚑")
-prefix("n", "g", "go 隷")
-prefix("n", "z", "folds ﱒ")
-prefix("n", "gh", "hover ")
+prefix("n", "g", "go 󱁥")
+prefix("n", "z", "folds 󰝔")
+prefix("n", "gh", "hover 󰀽")
 prefix("n", "gl", "lsp 󰃤")
 prefix("n", "gq", "quickfix  ")
-prefix("n", "gp", "preview  ")
+prefix("n", "gp", "preview 󰄘 ")
 prefix("n", "go", "debug out  ")
 prefix("n", "gt", "text ops  ")
 prefix("n", "g\\", "flash ⚡")
 
 prefix("n", "<c-w>", "window ")
-prefix("n", "<leader>s", "snacks ")
+prefix("n", "<leader>s", "snacks 󰉛")
 prefix("n", "<leader>g", "git 󰊢")
 prefix("n", "<leader>f", "file ")
 prefix("n", "<leader>p", "paste ") --  
 prefix("n", "<leader>i", "internal ")
 prefix("n", "<leader>m", "multi-cursor ")
-prefix("n", "<leader>u", "undo 漏")
+prefix("n", "<leader>u", "undo 󰑏")
 prefix("n", "<leader>cl", "conceal 󰈉 ")
 
 -- vim.cmd([[nnoremap <C-l> :syntax sync fromstart<CR>:redraw<CR>]])
@@ -617,23 +617,23 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 
 map("n", "<leader>ur", function()
   vim.cmd("silent later " .. tostring(vim.opt.undolevels:get()))
-end, { desc = "漏redo all" })
+end, { desc = "󰑏redo all" })
 
 map("n", "<leader>uo", function()
   local now = os.time()
   local secsPassed = now - vim.b.timeOpened
   vim.cmd.earlier(tostring(secsPassed) .. "s")
-end, { desc = "漏undo since last open" })
+end, { desc = "󰑏undo since last open" })
 
-map({ "n", "x" }, "<leader>ub", "<cmd>AltReopen<cr>", { desc = "漏 undo buffer closing" })
+map({ "n", "x" }, "<leader>ub", "<cmd>AltReopen<cr>", { desc = "󰑏 undo buffer closing" })
 
-map({ "n", "x" }, "<leader>ul", "<cmd>undolist<cr>", { desc = "漏 undo show list" })
+map({ "n", "x" }, "<leader>ul", "<cmd>undolist<cr>", { desc = "󰑏 undo show list" })
 
 map(
   { "i" },
   "<C-r>",
   '<cmd>silent! execute "normal <C-g>u<C-r><cr>"',
-  { desc = "漏 insert register without undo sequence", silent = true }
+  { desc = "󰑏 insert register without undo sequence", silent = true }
 )
 
 
@@ -683,33 +683,33 @@ map('n', '<M-d>', '<cmd>silent! tabclose | qa<cr>', {
 -- map('n', '<C-1>', '<cmd>RunFile<cr>', {
 -- map('n', '<C-1>', '<cmd>luafile %<cr>', {
 --   category = 'Execute',
---   label = 'ﲵ luafile bufer',
---   desc = 'ﲵ luafile buffer',
+--   label = '󰞷 luafile bufer',
+--   desc = '󰞷 luafile buffer',
 --   silent = true
 -- })
 -- vim.api.nvim_set_keymap('n', '<localleader>1', '<cmd>luafile %<cr>', { silent = true })
 
 map('n', '!@', '<cmd>@:<cr>', {
   category = 'Execute',
-  label = 'ﲵ repeat last command',
+  label = '󰞷 repeat last command',
 })
 
 map('n', '!!', '<cmd>@:<cr>', {
   category = 'Execute',
-  label = 'ﲵ repeat runner command',
-  desc = 'ﲵ execute configured runner task',
+  label = '󰞷 repeat runner command',
+  desc = '󰞷 execute configured runner task',
 })
 
 map('n', '<M-r>', '<cmd>Restart<cr>', {
   category = 'Execute',
-  label = 'ﲵ restart',
-  desc = 'ﲵ restart neovim instance',
+  label = '󰞷 restart',
+  desc = '󰞷 restart neovim instance',
 })
 
 map('n', '<M-!>', '<cmd>RestartTarget<cr>', {
   category = 'Execute',
-  label = 'ﲵ restart target',
-  desc = 'ﲵ restart target of remote neovim instannce',
+  label = '󰞷 restart target',
+  desc = '󰞷 restart target of remote neovim instannce',
 })
 
 --------------------------------------------------------------------------------------------------
@@ -717,7 +717,7 @@ map('n', '<M-!>', '<cmd>RestartTarget<cr>', {
 
 local opts = { noremap = true, silent = true, desc = ' search' }
 
--- --   ﰍ  
+-- --   󰜏  󰀖
 -- local icon = ' '
 -- map("n", "g*", "*Ncgn", { desc = "Change word with . repeat" })
 
@@ -826,37 +826,37 @@ map('n', 'D', 'd$', {
 
 map('n', '<leader>%', 'ggv$G$', {
     category = 'Motion',
-    label = ' visual select entire buffer',
+    label = '󰊅 visual select entire buffer',
   })
 
 --
 vmap('n', 'gi', {
   category = 'Motion',
-  label = ' goto last insert',
-  desc = ' goto last mark of insertion',
+  label = '󰊅 goto last insert',
+  desc = '󰊅 goto last mark of insertion',
 })
 
 vmap('n', 'gI', {
   category = 'Motion',
-  label = ' goto begin insert',
-  desc = ' goto beginning mark of insertion',
+  label = '󰊅 goto begin insert',
+  desc = '󰊅 goto beginning mark of insertion',
 })
 
 map('n', 'gy', "'[,']", {
   category = 'Motion',
-  label = ' select last visual',
-  desc = ' select last visual block afrom bracket marks',
+  label = '󰊅 select last visual',
+  desc = '󰊅 select last visual block afrom bracket marks',
 })
 
 vmap('n', 'gv', {
   category = 'Motion',
-  label = ' select last visual',
-  desc = ' select last visual block afrom bracket marks',
+  label = '󰊅 select last visual',
+  desc = '󰊅 select last visual block afrom bracket marks',
 })
 
 map('i', '<esc>', '<Esc>`^', {
   category = 'Motion',
-  desc = ' convenience cursor placement after insert',
+  desc = '󰊅 convenience cursor placement after insert',
   silent = true,
 })
 -- Map({ "n", "x", "o" }, "gV", "`[v`]")
@@ -865,14 +865,14 @@ map('i', '<esc>', '<Esc>`^', {
 
 -- Map({ "n", "x", "o" }, "gV", "`[v`]")
 -- map("n", "gV", "`[v`]", { desc = "visually select the block of text", silent = true })
--- map('n', 'gV', "'`['.strpart(getregtype(), 0, 1).'`]'", { expr = true, desc = ' re-select latest changed, put, or yanked text' })
+-- map('n', 'gV', "'`['.strpart(getregtype(), 0, 1).'`]'", { expr = true, desc = '󰊅 re-select latest changed, put, or yanked text' })
 
 -- map({ "n", "x", "o" }, "gV", "`[v`]")
 -- nnoremap <expr> gV '`[' . strpart(getregtype(), 0, 1) . '`]'
 map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
   category = 'Motion',
-  label = ' select changed text',
-  desc = ' re-select latest changed, put, or yanked text',
+  label = '󰊅 select changed text',
+  desc = '󰊅 re-select latest changed, put, or yanked text',
   expr = true,
 })
 
@@ -892,80 +892,80 @@ map('n', 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
 
 map('i', '<C-f>', '<Esc>ea', {
   category = 'Motion',
-  label = ' jump over word',
-  desc = '  jump over word while staying in insert mode',
+  label = '󰊅 jump over word',
+  desc = ' 󰊅 jump over word while staying in insert mode',
   noremap = true,
 })
 
 map('i', '<M-f>', '<Esc>bi', {
   category = 'Motion',
-  label = ' jump prev word',
-  desc = '  jump prev word while staying in insert mode',
+  label = '󰊅 jump prev word',
+  desc = ' 󰊅 jump prev word while staying in insert mode',
   noremap = true,
 })
 
 map('n', 'U', '<c-r>', {
   category = 'Motion',
-  label = '漏asssign line undo',
-  desc = '漏assign line undo',
+  label = '󰑏asssign line undo',
+  desc = '󰑏assign line undo',
 })
 
 map('n', 'U', '', {
   category = 'Motion',
-  label = '漏disable line undo',
-  desc = '漏disable line undo so it can prefix other commands',
+  label = '󰑏disable line undo',
+  desc = '󰑏disable line undo so it can prefix other commands',
 })
 
 map({ 'n' }, "<M-BS>", '<cmd>pop<cr>', {
   category = 'Motion',
-  desc = ' jump to previous tag',
+  desc = '󰊅 jump to previous tag',
 })
 
 vmap({ 'n' }, "<C-]>",  {
   category = 'Motion',
-  desc = ' jump to next tag',
+  desc = '󰊅 jump to next tag',
 })
 
 
 -- map({'n'}, '<M-{>', '<cmd>norm v{<cr>', {
 --   category = 'Motion',
---   desc = ' visual select previous block ',
+--   desc = '󰊅 visual select previous block ',
 -- })
 
 -- map({'n'}, '<M-}>', '<cmd>norm v}<cr>', {
 --   category = 'Motion',
---   desc = ' visual select next block',
+--   desc = '󰊅 visual select next block',
 -- })
 
 
 map({'x'}, '<M-{>', '<cmd>norm {<cr>', {
   category = 'Motion',
-  desc = ' select previous block',
+  desc = '󰊅 select previous block',
 })
 
 map({'x'}, '<M-}>', '<cmd>norm }<cr>', {
   category = 'Motion',
-  desc = ' select next block',
+  desc = '󰊅 select next block',
 })
 
 map({'n', 'o', 'x'}, '[[', '?{<CR>w99[{', {
   category = 'Motion',
-  desc = ' traverse backward to section {',
+  desc = '󰊅 traverse backward to section {',
 })
 
 map({'n', 'o', 'x'}, ']]', 'j0[[%/{<CR>', {
   category = 'Motion',
-  desc = ' traverse forward to section {',
+  desc = '󰊅 traverse forward to section {',
 })
 
 map({'n', 'o', 'x'}, '][', '/}<CR>b99]}', {
   category = 'Motion',
-  desc = ' traverse forward to section }',
+  desc = '󰊅 traverse forward to section }',
 })
 
 map({'n', 'o', 'x'}, '[]', 'k$][%?}<CR>', {
   category = 'Motion',
-  desc = ' traverse backward to section {',
+  desc = '󰊅 traverse backward to section {',
 })
 map('x', 'I', function() return vim.fn.mode() == 'V' and '^<C-v>I' or 'I' end, { expr = true, desc = "Block insert in line visual mode" })
 map('x', 'A', function() return vim.fn.mode() == 'V' and '$<C-v>A' or 'A' end, { expr = true, desc = "Block insert in line visual mode" })

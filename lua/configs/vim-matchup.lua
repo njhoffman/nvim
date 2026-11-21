@@ -1,27 +1,27 @@
 -- :NoMatchParen, :DoMatchParen, :MatchupShowTimes, :MatchupClearTimes
---  
+-- 󰏰 
 --
 local vmap = require("lib.mapper").vmap
 
 -- stylua: ignore start
-vmap({"n", "x", "o"}, "%",   { label = " forwards match-words",             desc = " Go forwards to next matching word ifword is recognized" })
-vmap({"n", "x", "o"}, "g%",  { label = " backwards {n}match-words",         desc = " Go backwards to nth previous matching word" })
-vmap({"n", "x", "o"}, "[%",  { label = " prev {n}outer-open-word",          desc = " Go to nth previous outer open word" })
-vmap({"n", "x", "o"}, "]%",  { label = " next {n}outer-close-word",         desc = " Go to nth next outer close word" })
-vmap({"n", "x", "o"}, "z%",  { label = " to inside nearest block",          desc = " Go to inside nth nearest block" })
-vmap({     "x", "o"}, "a%",  { label = " select any-block",                 desc = " Select an |any-block| like built-in |ab|" })
-vmap({     "x", "o"}, "i%",  { label = " select in any-block",              desc = " Select an |open-to-close-block| like built-in |ib|" })
-vmap({"n"          }, "ds%", { label = " delete {n}surround match-words",   desc = " Delete nth surrounding matching words" })
-vmap({"n"          }, "cs%", { label = " change {n}surround match-words",   desc = " Change nth surrounding matching words" })
--- vmap({"n", "v", "o"}, "%",   { label = " forwards {n}match-words",          desc = " If {n} < 7, go forwards {n}), else go forwards {n}percent" })
--- vmap({"v", "o"}, "a%",  { label = " select {n}open-to-close-block",    desc = " Select nth |open-to-close-block|." })
--- vmap({"v", "o"}, "i%",  { label = " select in {n}open-to-close-block", desc = " Select nth the inside of an |open-to-close-block|"})
+vmap({"n", "x", "o"}, "%",   { label = "󰏰 forwards match-words",             desc = "󰏰 Go forwards to next matching word ifword is recognized" })
+vmap({"n", "x", "o"}, "g%",  { label = "󰏰 backwards {n}match-words",         desc = "󰏰 Go backwards to nth previous matching word" })
+vmap({"n", "x", "o"}, "[%",  { label = "󰏰 prev {n}outer-open-word",          desc = "󰏰 Go to nth previous outer open word" })
+vmap({"n", "x", "o"}, "]%",  { label = "󰏰 next {n}outer-close-word",         desc = "󰏰 Go to nth next outer close word" })
+vmap({"n", "x", "o"}, "z%",  { label = "󰏰 to inside nearest block",          desc = "󰏰 Go to inside nth nearest block" })
+vmap({     "x", "o"}, "a%",  { label = "󰏰 select any-block",                 desc = "󰏰 Select an |any-block| like built-in |ab|" })
+vmap({     "x", "o"}, "i%",  { label = "󰏰 select in any-block",              desc = "󰏰 Select an |open-to-close-block| like built-in |ib|" })
+vmap({"n"          }, "ds%", { label = "󰏰 delete {n}surround match-words",   desc = "󰏰 Delete nth surrounding matching words" })
+vmap({"n"          }, "cs%", { label = "󰏰 change {n}surround match-words",   desc = "󰏰 Change nth surrounding matching words" })
+-- vmap({"n", "v", "o"}, "%",   { label = "󰏰 forwards {n}match-words",          desc = "󰏰 If {n} < 7, go forwards {n}), else go forwards {n}percent" })
+-- vmap({"v", "o"}, "a%",  { label = "󰏰 select {n}open-to-close-block",    desc = "󰏰 Select nth |open-to-close-block|." })
+-- vmap({"v", "o"}, "i%",  { label = "󰏰 select in {n}open-to-close-block", desc = "󰏰 Select nth the inside of an |open-to-close-block|"})
 -- i  !*    <C-G>%
 -- vim.keymap.set(
 --   "i",
 --   "<C-G>%",
 --   "<Esc>g%i%",
---   { silent = true, desc = " Go backwards to previous matching word in insert mode" }
+--   { silent = true, desc = "󰏰 Go backwards to previous matching word in insert mode" }
 -- )
 
 vim.keymap.del("i", "<C-G>%")

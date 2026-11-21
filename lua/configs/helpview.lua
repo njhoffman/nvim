@@ -38,7 +38,7 @@ local cfg = {
     arguments = {
       enable = true,
       default = {
-        icon = " ",
+        icon = "󰅲 ",
         hl = "@variable.parameter.vimdoc",
       },
     },

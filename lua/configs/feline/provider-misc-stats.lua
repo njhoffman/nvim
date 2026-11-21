@@ -1,4 +1,4 @@
---  ﲉ   ﬤ
+--  󰞋   󰘥
 -- { filetype = "markdown", icon = "", id = 3, level = "INFO", message = { "Live commands", "   ➜ `Norm <keys>`", "   ➜ `5Reg a`", "   ➜ `G/^$/d`", "   ➜ `%Spattern/replace`" }, render = <function 3>, time = 1707851316, title = { "format", "13:08:36" } }
 
 -- pending = require("notify").pending(),
@@ -108,7 +108,7 @@ local misc_stats = function()
   return cached_result
 end
 
--- " ﬤ " .. notif.pending
+-- " 󰘥 " .. notif.pending
 
 return {
   provider = misc_stats,

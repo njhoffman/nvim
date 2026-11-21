@@ -7,7 +7,7 @@ require("backseat").setup({
   split_threshold = 100,
   -- additional_instruction = "Respond snarkily", -- (GPT-3 will probably deny this request, but GPT-4 complies)
   highlight = {
-    icon = "", -- ''
+    icon = "󰌶", -- '󰌵'
     group = "BackseatText",
   },
 })

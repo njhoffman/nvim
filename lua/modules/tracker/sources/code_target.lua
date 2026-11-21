@@ -28,7 +28,7 @@ end
 -- stylua: ignore
   return vim.tbl_extend('force', base_source, {
     name      = 'code_target',
-    icon      = '', --   什
+    icon      = '', --   󰓾
     get       = get_code_target,
     -- get       = demo_code_target('tables', 1)
     -- output    = output_highlights,

@@ -36,7 +36,7 @@ local init_source = function(scopes)
   return vim.tbl_extend("force", base_source, {
     name = "au_commands",
     label = "auto commands",
-    icon = "",
+    icon = "󰌧",
     fields = {
       "group_name",
       "pattern",

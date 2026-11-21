@@ -487,7 +487,7 @@ local extension_configs = {
     default = "base",
     -- icon indicates an item which can be opened in tailwind docs
     -- can be icon or false
-    doc_icon = " ",
+    doc_icon = "󰈙 ",
     -- if you would prefer to copy with/without class selector
     -- dot is maintained in display to differentiate class from other pickers
     no_dot = true,

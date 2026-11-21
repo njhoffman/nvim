@@ -9,13 +9,13 @@ local config = {
   -- stylua: ignore
   operators = {
     ['!'] = 'filter external',
-    ['='] = 'indent  ',
-    ['>'] = 'indent right ﲒ ',
-    ['<'] = 'indent left ﲑ ',
-    ['zf'] = 'create fold  ', --    ﬡ
-    ['g~'] = 'toggle case  ',
-    ['gu'] = 'lowercase  ',
-    ['gU'] = 'uppercase  ',
+    ['='] = 'indent 󰉠 ',
+    ['>'] = 'indent right 󰞔 ',
+    ['<'] = 'indent left 󰞓 ',
+    ['zf'] = 'create fold 󰈶 ', -- 󰈶 󰁭 󰉻 󰘢
+    ['g~'] = 'toggle case 󰄓 ',
+    ['gu'] = 'lowercase 󰄓 ',
+    ['gU'] = 'uppercase 󰄓 ',
     d = 'delete ',
     c = 'change ',
     y = 'yank  ',
@@ -28,17 +28,17 @@ local config = {
     goo  = 'debugprint out t',
     gtf = 'format',
     gtF = 'format (restore cursor)',
-    gtoc = 'change toCamelCase  ',
-    gtod = 'change to-dash-case  ',
-    gtoD = 'change to.dot.case  ',
-    gtof = 'change to/path/case  ',
-    gton = 'change TO_CONSTANT_CASE  ',
-    gtop = 'change ToPascalCase  ',
-    gtoP = 'change To phrase case  ',
-    gtos = 'change to_snake_case  ',
-    gtot = 'change To Title Case  ',
-    gtou = 'change to lower case  ',
-    gtoU = 'change TO UPPER CASE  ',
+    gtoc = 'change toCamelCase 󰄓 ',
+    gtod = 'change to-dash-case 󰄓 ',
+    gtoD = 'change to.dot.case 󰄓 ',
+    gtof = 'change to/path/case 󰄓 ',
+    gton = 'change TO_CONSTANT_CASE 󰄓 ',
+    gtop = 'change ToPascalCase 󰄓 ',
+    gtoP = 'change To phrase case 󰄓 ',
+    gtos = 'change to_snake_case 󰄓 ',
+    gtot = 'change To Title Case 󰄓 ',
+    gtou = 'change to lower case 󰄓 ',
+    gtoU = 'change TO UPPER CASE 󰄓 ',
   },
   presets = {
     'text_objects',
@@ -95,12 +95,12 @@ local config = {
     -- -- spelling
     -- 'z=',
   },
- -- <M-C-A> הּ דּ A
- -- <C-M-K> דּ הּ K
---  בּ וּ הּ גּ דּ     壟   
+ -- <M-C-A> 󰘵 󰘴 A
+ -- <C-M-K> 󰘴 󰘵 K
+-- 󰌍 󰘲 󰘶 󰘵 󰘳 󰘴 󰌋 󰇘 󰊅  󰑃 󰉳  󰌆
   key_brackets = false,  -- { '<','>' } {'', ''} false
   key_connector = ' ', -- '-' ' '
-  key_metakeys = { M = 'הּ', C = 'דּ', S = 'וּ' },
+  key_metakeys = { M = '󰘵', C = '󰘴', S = '󰘶' },
 
   replace = {
     key = {
@@ -130,7 +130,7 @@ local config = {
   key_labels = {
     ["<ScrollWheelDown>"] = "󱕐",
     ["<ScrollWheelUp>"]   = "󱕑",
-    ['<leader>']        = ',', -- ' ',
+    ['<leader>']        = ',', -- '󰁩 ',
     -- ['<space>']      = '󱁐',
     ['<space>']         = 'SPC',
     ['<S-PageDown>']    = '<S-PgDn>',

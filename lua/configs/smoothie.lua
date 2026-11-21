@@ -135,20 +135,20 @@ local setup_keymaps = function()
   map({ "n", "x" }, "gg", "<Plug>(Smoothie_gg)", {
     category = "Motion",
     plugin = "vim-smoothie",
-    desc = " scroll top",
+    desc = "󰊅 scroll top",
   })
 
   map({ "n", "x" }, "G", "<Plug>(Smoothie_G)", {
     category = "Motion",
     plugin = "vim-smoothie",
-    desc = " scroll bottom",
+    desc = "󰊅 scroll bottom",
   })
 
   -- map({ "n", "x" }, "<C-f>", "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)", {
   map({ "n", "x" }, "<C-f>", "<Plug>(SmoothieForwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
-    desc = " scroll downwards",
+    desc = "󰊅 scroll downwards",
     remap = false,
   })
 
@@ -156,35 +156,35 @@ local setup_keymaps = function()
   map({ "n", "x" }, "<C-b>", "<Plug>(SmoothieBackwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
-    desc = " scroll upwards",
+    desc = "󰊅 scroll upwards",
     remap = false,
   })
 
   map({ "n", "x" }, "<PageUp>", "<Plug>(SmoothieUpwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
-    desc = " scroll upwards",
+    desc = "󰊅 scroll upwards",
     remap = false,
   })
 
   map({ "n", "x" }, "<PageDown>", "<Plug>(SmoothieDownwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
-    desc = " scroll forwards",
+    desc = "󰊅 scroll forwards",
     remap = false,
   })
 
   map({ "n", "x" }, "<S-PageUp>", "<Plug>(SmoothieForwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
-    desc = " scroll upwards",
+    desc = "󰊅 scroll upwards",
     remap = true,
   })
 
   map({ "n", "x" }, "<S-PageDown>", "<Plug>(SmoothieBackwards)", {
     category = "Motion",
     plugin = "vim-smoothie",
-    desc = " scroll forwards",
+    desc = "󰊅 scroll forwards",
     remap = true,
   })
 
@@ -194,7 +194,7 @@ local setup_keymaps = function()
     "<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)<Plug>(SmoothieDownwards)",
     {
       category = "Motion",
-      desc = " scroll forwards x,2",
+      desc = "󰊅 scroll forwards x,2",
       remap = true,
     }
   )

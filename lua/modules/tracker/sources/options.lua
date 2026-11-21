@@ -65,7 +65,7 @@ end
 
 --
 local init_source = function(scopes)
-  -- 漣   煉
+  -- 󰒓   󰒔
   scopes = type(scopes) == "table" and scopes
     or type(scopes) == "string" and { scopes }
     or vim.tbl_keys(all_scopes)

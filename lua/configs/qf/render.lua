@@ -3,8 +3,8 @@ local signMap = {
   E = " ",
   W = " ",
   I = " ",
-  H = " ",
-  N = " ",
+  H = "󰌵 ",
+  N = "󰌵 ",
 }
 
 -- :vimgrep /\w\+/j % | copen

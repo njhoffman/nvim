@@ -75,9 +75,9 @@ logger.log_diff = function(file_size, lines_diff, lines_total)
     .. " -> "
     .. utils.human_size(state.file_size)
   if lines_diff then
-    log_line = log_line .. "     " .. lines_diff
+    log_line = log_line .. "    󰇂 " .. lines_diff
   else
-    log_line = log_line .. "    濫" .. lines_total
+    log_line = log_line .. "    󰐣" .. lines_total
   end
   logger.debug(log_line)
 end
