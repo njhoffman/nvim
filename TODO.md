@@ -6,9 +6,9 @@ v0.13.0-dev-1915; re-measure before starting an item. Specs and reference notes 
 
 Items: `- [ ] **Title.** (pN) [category] summary`, with details on indented lines. Priority is (p1) high, (p2) normal or
 (p3) low; categories are bug, feature, refactor, docs, test, chore and perf. `(due YYYY-MM-DD)` adds a deadline.
-`/todo`, `/todo-pop` and `scripts/todo-status` read this file.
+`/todo`, `/todo-pop` and `todo-status` (`~/.shell/scripts`) read this file.
 
-Reviewed: 2026-11-01
+Reviewed: 2026-11-27
 
 ## 1. Update deprecated code after the Neovim update
 
@@ -110,8 +110,8 @@ implementing.
 
 ## 5. Additional suggestions
 
-- [x] **Track `lazy-lock.json`.** (p1) [chore] Tracked since v0.16.1, so each tag pins the plugin versions it was
-      released with.
+- [x] **Track `lazy-lock.json`.** (p1) [chore] Tracked from v0.16.1 so each tag pinned its plugin versions; v0.37.0
+      stopped tracking it again (gitignored). Tags from v0.37.0 on no longer pin plugin versions.
 - [ ] **CI.** (p2) [chore] Add a GitHub Actions workflow that runs `scripts/run_tests.sh all` and `stylua --check` on
       push and tags, with a pinned nvim nightly so upstream breakage like the `nvim_get_commands()` change shows up as a
       CI failure instead of a local surprise.
@@ -170,6 +170,20 @@ implementing.
       `utils/helptags.lua:96` runs `get_help_tags()` at module level and `core/commands/help.lua:3` requires it at
       startup. Require it inside the commands that use it.
       Done in v0.32.0: nothing used the require, so it is gone.
+- [ ] **Tests write to the real Neovim data dir.** (p2) [test] Plenary specs run with the user's `stdpath("data")`, so
+      `lib.logger` appends to `~/.local/share/nvim/nvim.log`: 1,750 `git: get_repo failed` warnings by 2026-11-27, in
+      bursts of exactly 45 per run of `gitops_spec` (its scratch repo has no gitsigns), burying real entries.
+      `logger_spec` also leaves `nvim-test_*.log` files there. Set `XDG_DATA_HOME` / `XDG_STATE_HOME` /
+      `XDG_CACHE_HOME` to a temp dir in `scripts/run_tests.sh` (as the smoke test does), keeping the plugin dir
+      reachable through `minimal_init.lua`.
+- [ ] **StyLua is not checked at release.** (p3) [chore] v0.37.1 left `lua/core/autocommands/misc.lua` unformatted
+      (`stylua --check` diffs it), and nothing between editing and tagging catches that. Have `scripts/release.sh` run
+      `stylua --check` on the staged own-code Lua files (`lua/core`, `lua/lib`, `lua/modules`, `tests`) and refuse on a
+      diff, skipping the files listed in "Consistent comments, style and structure" that StyLua cannot parse.
+- [ ] **Untested modules.** (p3) [test] 10 of the 17 `lua/modules/` entries have no spec: `alt`, `devdocs2`, `oldfiles`,
+      `runner`, `sidebar`, `stats`, `tail`, `tracker`, `undo` and `format_cmdline`. Start with the ones loaded at startup
+      (`runner`, `stats`, `tracker`, `tail`, `oldfiles`, `alt`, `sidebar`, `format_cmdline`); a load-and-setup spec per
+      module catches most breakage from plugin or Neovim updates.
 - [ ] **Hardcoded home paths.** (p3) [chore] 22 files under `lua/` hardcode `/home/nicholas` (e.g. `tail/utils.lua`,
       `configs/kiwi.lua`, `configs/copilot-lua.lua`, `project_nvim/root.lua`, the telescope fork `dir` in
       `plugins/main.lua`). Use `vim.env.HOME` / `vim.fn.expand("~")`; the old `~/.asdf/shims/node` path no longer
@@ -205,6 +219,11 @@ implementing.
       `_packagejson` variants in `lua/configs/conform.lua` passed no file, so nothing was formatted. They're removed in
       v0.20.2: conform's built-in `prettierd` formats css, html, json, yaml, js/ts, vue, Markdown and the rest; toml is
       left to taplo, and width/plugins come from prettier configs (`tests/unit/conform_config_spec.lua`).
+- [ ] **gitops `get_repo` warns on every buffer without gitsigns.** (p2) [bug] `modules/gitops/utils/init.lua:27`
+      logs `get_repo failed: { bufnr, "Key not found: gitsigns_status_dict" }` at warn level whenever the buffer has no
+      `gitsigns_status_dict`: non-git files, scratch and picker buffers, or before gitsigns attaches. Every caller
+      already handles the empty result, but then runs git in the cwd instead of the buffer's repo. Fall back to
+      `vim.fs.root(bufnr, ".git")` / `git rev-parse` when gitsigns has no data, and log at debug level.
 - [ ] **neovim-tips writes into the config dir.** (p3) [bug] Loading `saxon1964/neovim-tips` creates
       `neovim_tips/user_tips.md` in `~/.config/nvim` (seen in the smoke test). Set its `user_file` option to a path
       under `stdpath("data")`.
@@ -279,6 +298,14 @@ implementing.
       120 from `~/.prettierrc.yml`, or a project's prettier config), typing wraps even on lines that were already too
       long (`formatoptions` without `l`), and `J` joins and reflows the paragraph with `gw` (`lua/modules/markdown/prose.lua`,
       `after/ftplugin/markdown.lua`, v0.19.0). Repo Markdown was reflowed once in v0.19.0.
+- [ ] **Keep wrapped table rows rendered under the cursor.** (p3) [feature] render-markdown (`pipe_table.wrap`) draws
+      a wrapped row as virtual lines over a `conceal_lines` source line, and `Updater:hide()` in
+      `render-markdown/core/ui.lua` always drops that mark on the cursor row, so the row collapses to its raw line
+      (v0.38.0 only stopped the scroll animation from fighting it). Experiment: override `hide()` so the row stays
+      rendered in normal mode and collapses only on `InsertEnter`. Unknowns to check first: where Neovim draws the
+      cursor when its line is hidden (`concealcursor` has `n`), and whether `j` / `k` skip the line. Patching plugin
+      internals breaks on updates; if it can't be made reliable, the fallback is a read-only rendered reader buffer
+      mapped back to the source. Real per-line movement through wrapped cells needs the reader buffer.
 
 ## 9. Integrations plugin
 

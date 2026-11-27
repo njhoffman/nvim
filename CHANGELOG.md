@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.38.1] - 2026-11-27
+
+### Changed
+
+- TODO.md reviewed: new items for tests that write to the real `nvim.log`, the gitops `get_repo` warning on
+  buffers without gitsigns, StyLua at release, untested modules, and keeping wrapped table rows rendered under the
+  cursor. The `lazy-lock.json` item now says v0.37.0 stopped tracking it.
+
 ## [0.38.0] - 2026-11-27
 
 ### Added
