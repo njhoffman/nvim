@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.38.2] - 2026-11-27
+
+### Fixed
+
+- Tests no longer write to your Neovim data, state and cache dirs: `scripts/run_tests.sh` gives the unit and
+  integration Neovims a temp `NVIM_TEST_HOME` (removed on exit) with the plugin dir linked in. Each run had added
+  45 `git: get_repo failed` warnings and the logger spec's `nvim-test_*.log` files to `~/.local/share/nvim`.
+
 ## [0.38.1] - 2026-11-27
 
 ### Changed

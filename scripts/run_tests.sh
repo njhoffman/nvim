@@ -10,6 +10,8 @@
 #   TEST_JOBS=<n>              spec files run in parallel
 #   TEST_TIMEOUT=<seconds>     limit per spec file (default 120, 900 with coverage)
 #   UNIT_DIR=<dir>             directory holding *_spec.lua (default tests/unit)
+# Unit and integration Neovims run with XDG_DATA_HOME / XDG_STATE_HOME / XDG_CACHE_HOME in a temp
+# dir (NVIM_TEST_HOME), removed on exit; the plugin dir is linked in.
 # Test output goes to stdout; one "progress:" line per finished spec file (and each failure)
 # goes to stderr as it happens.
 
@@ -36,6 +38,27 @@ NC='\033[0m' # No Color
 
 progress() {
     echo "progress: $*" >&2
+}
+
+# The Neovims of the Lua runners get their own data, state and cache dirs, so logs (nvim.log),
+# shada and plugin state stay out of the user's. nvim/lazy links to the real plugin dir, which
+# tests/minimal_init.lua and the specs find through stdpath("data").
+TEST_HOME=""
+TEST_ENV=()
+setup_test_home() {
+    [ -n "$TEST_HOME" ] && return 0
+    local real_data="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
+    TEST_HOME="$(mktemp -d "${TMPDIR:-/tmp}/nvim-tests.XXXXXX")"
+    mkdir -p "$TEST_HOME/data/nvim" "$TEST_HOME/state" "$TEST_HOME/cache"
+    [ -d "$real_data/lazy" ] && ln -s "$(readlink -f "$real_data/lazy")" "$TEST_HOME/data/nvim/lazy"
+    TEST_ENV=(
+        "XDG_DATA_HOME=$TEST_HOME/data"
+        "XDG_STATE_HOME=$TEST_HOME/state"
+        "XDG_CACHE_HOME=$TEST_HOME/cache"
+        "NVIM_TEST_HOME=$TEST_HOME"
+    )
+    # rm -r removes the lazy link, not the plugins behind it
+    trap 'rm -rf "$TEST_HOME"' EXIT
 }
 
 echo -e "${YELLOW}Running Neovim Configuration Tests${NC}"
@@ -94,7 +117,9 @@ run_plenary_tests() {
     export WORK_DIR COVERAGE_OUT TOTAL_SPECS TEST_TIMEOUT NVIM_CONFIG_DIR
     progress "unit: $TOTAL_SPECS spec files, $TEST_JOBS at a time"
 
-    printf '%s\0' "${specs[@]}" | xargs -0 -n1 -P "$TEST_JOBS" bash -c 'run_one_spec "$1"' _
+    setup_test_home
+    printf '%s\0' "${specs[@]}" |
+        env "${TEST_ENV[@]}" xargs -0 -n1 -P "$TEST_JOBS" bash -c 'run_one_spec "$1"' _
 
     # Output in spec order, as the directory runner printed it
     for spec in "${specs[@]}"; do
@@ -128,7 +153,8 @@ run_plenary_tests() {
 run_minitest_tests() {
     echo -e "${YELLOW}Running Mini.test (Integration) Tests...${NC}"
     progress "integration: mini.test"
-    if nvim --headless --noplugin -u "$NVIM_CONFIG_DIR/tests/minimal_init.lua" \
+    setup_test_home
+    if env "${TEST_ENV[@]}" nvim --headless --noplugin -u "$NVIM_CONFIG_DIR/tests/minimal_init.lua" \
         -l "$NVIM_CONFIG_DIR/scripts/run_minitest.lua" 2>&1; then
         echo -e "${GREEN}✓ Mini.test tests passed${NC}"
         progress "integration: ok"

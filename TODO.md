@@ -170,12 +170,14 @@ implementing.
       `utils/helptags.lua:96` runs `get_help_tags()` at module level and `core/commands/help.lua:3` requires it at
       startup. Require it inside the commands that use it.
       Done in v0.32.0: nothing used the require, so it is gone.
-- [ ] **Tests write to the real Neovim data dir.** (p2) [test] Plenary specs run with the user's `stdpath("data")`, so
+- [x] **Tests write to the real Neovim data dir.** (p2) [test] Plenary specs run with the user's `stdpath("data")`, so
       `lib.logger` appends to `~/.local/share/nvim/nvim.log`: 1,750 `git: get_repo failed` warnings by 2026-11-27, in
       bursts of exactly 45 per run of `gitops_spec` (its scratch repo has no gitsigns), burying real entries.
       `logger_spec` also leaves `nvim-test_*.log` files there. Set `XDG_DATA_HOME` / `XDG_STATE_HOME` /
       `XDG_CACHE_HOME` to a temp dir in `scripts/run_tests.sh` (as the smoke test does), keeping the plugin dir
       reachable through `minimal_init.lua`.
+      Done in v0.38.2: unit and integration Neovims get a temp `NVIM_TEST_HOME` with `nvim/lazy` linked to the real
+      plugin dir; `tests/unit/test_isolation_spec.lua` checks it.
 - [ ] **StyLua is not checked at release.** (p3) [chore] v0.37.1 left `lua/core/autocommands/misc.lua` unformatted
       (`stylua --check` diffs it), and nothing between editing and tagging catches that. Have `scripts/release.sh` run
       `stylua --check` on the staged own-code Lua files (`lua/core`, `lua/lib`, `lua/modules`, `tests`) and refuse on a

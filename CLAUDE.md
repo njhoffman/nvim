@@ -33,7 +33,8 @@ Per change:
    does not push. Set `RELEASE_TRAILER` to append a `Co-Authored-By` line.
 
 Test command: `./scripts/run_tests.sh all` (Plenary specs in parallel, mini.test, the Python tests in `tests/bench/` and
-the bats tests in `tests/scripts/`). `./scripts/coverage.sh` is the same with line coverage.
+the bats tests in `tests/scripts/`). Unit and integration Neovims run with data, state and cache in a temp dir
+(`NVIM_TEST_HOME`), so tests never touch `~/.local/share/nvim`. `./scripts/coverage.sh` is the same with line coverage.
 
 To push, run `./scripts/push.sh` (in the background from Claude Code; it takes 2-3 minutes). It runs no tests.
 
