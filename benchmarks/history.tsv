@@ -925,3 +925,11 @@ date	kind	version	commit	load1	nvim	metric	unit	median	min	runs
 2026-11-21T00:00Z	release	0.37.2	03621207	4.00	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugin lines	count	2223289	2223289	1
 2026-11-21T00:00Z	release	0.37.2	03621207	4.00	NVIM v0.13.0-dev-1915+gc5641b2bfb	config size	MiB	34.2	34.2	1
 2026-11-21T00:00Z	release	0.37.2	03621207	4.00	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugin size	MiB	1080.6	1080.6	1
+2026-11-27T12:53Z	release	0.38.4	dec6c45a	5.58	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugins installed	count	389	389	1
+2026-11-27T12:53Z	release	0.38.4	dec6c45a	5.58	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugins loaded	count	212	212	1
+2026-11-27T12:53Z	release	0.38.4	dec6c45a	5.58	NVIM v0.13.0-dev-1915+gc5641b2bfb	config files	count	1603	1603	1
+2026-11-27T12:53Z	release	0.38.4	dec6c45a	5.58	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lua lines	count	144664	144664	1
+2026-11-27T12:53Z	release	0.38.4	dec6c45a	5.58	NVIM v0.13.0-dev-1915+gc5641b2bfb	config lines	count	224506	224506	1
+2026-11-27T12:53Z	release	0.38.4	dec6c45a	5.58	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugin lines	count	2240986	2240986	1
+2026-11-27T12:53Z	release	0.38.4	dec6c45a	5.58	NVIM v0.13.0-dev-1915+gc5641b2bfb	config size	MiB	34.2	34.2	1
+2026-11-27T12:53Z	release	0.38.4	dec6c45a	5.58	NVIM v0.13.0-dev-1915+gc5641b2bfb	plugin size	MiB	1086.6	1086.6	1
