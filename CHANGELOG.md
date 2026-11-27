@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.38.4] - 2026-11-27
+
+### Changed
+
+- "Close other windows" moved from Alt+O to Ctrl+Alt+W: tmux takes Alt+O for the fzx popup, so it never reached
+  Neovim. `<c-w>o` still works, and Ctrl+Alt+O stays on "next buffer in history".
+
 ## [0.38.3] - 2026-11-27
 
 ### Fixed

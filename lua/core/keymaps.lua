@@ -1302,7 +1302,7 @@ vmap('n', '<c-w>o', {
   desc = ' close other windows except current',
 })
 
-map('n', '<M-o>', '<c-w>o', {
+map('n', '<M-C-W>', '<c-w>o', {
   category = 'Window',
   label = ' close other windows',
   desc = ' close other windows except current',
