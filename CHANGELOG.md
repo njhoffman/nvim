@@ -7,6 +7,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.38.3] - 2026-11-27
+
+### Fixed
+
+- gitops pickers no longer log `get_repo failed: ... Key not found: gitsigns_status_dict` for buffers gitsigns has
+  not attached to (non-git files, picker and scratch buffers, files just opened). They now find the repo from the
+  buffer's file, or the cwd for unnamed buffers, including worktrees, instead of running git in the cwd. A buffer
+  outside any repo logs only at debug level.
+
 ## [0.38.2] - 2026-11-27
 
 ### Fixed

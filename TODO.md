@@ -221,11 +221,13 @@ implementing.
       `_packagejson` variants in `lua/configs/conform.lua` passed no file, so nothing was formatted. They're removed in
       v0.20.2: conform's built-in `prettierd` formats css, html, json, yaml, js/ts, vue, Markdown and the rest; toml is
       left to taplo, and width/plugins come from prettier configs (`tests/unit/conform_config_spec.lua`).
-- [ ] **gitops `get_repo` warns on every buffer without gitsigns.** (p2) [bug] `modules/gitops/utils/init.lua:27`
+- [x] **gitops `get_repo` warns on every buffer without gitsigns.** (p2) [bug] `modules/gitops/utils/init.lua:27`
       logs `get_repo failed: { bufnr, "Key not found: gitsigns_status_dict" }` at warn level whenever the buffer has no
       `gitsigns_status_dict`: non-git files, scratch and picker buffers, or before gitsigns attaches. Every caller
       already handles the empty result, but then runs git in the cwd instead of the buffer's repo. Fall back to
       `vim.fs.root(bufnr, ".git")` / `git rev-parse` when gitsigns has no data, and log at debug level.
+      Done in v0.38.3: falls back to the repo of the buffer's file (the cwd for unnamed and non-file buffers),
+      reading `.git` and worktree `gitdir:` files from disk; `tests/unit/gitops_get_repo_spec.lua`.
 - [ ] **neovim-tips writes into the config dir.** (p3) [bug] Loading `saxon1964/neovim-tips` creates
       `neovim_tips/user_tips.md` in `~/.config/nvim` (seen in the smoke test). Set its `user_file` option to a path
       under `stdpath("data")`.
