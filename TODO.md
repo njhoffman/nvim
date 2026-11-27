@@ -90,8 +90,8 @@ removing it. Move removals to `~/.local/backup/nvim/`, keeping their repo paths 
     telescope win on conflicts. Decide which one owns picker keys.
 - [ ] **Root clutter.** (p3) [chore] `unicode_table.txt`, `glyphs.json` (also `lua/glyphs.json`), `pnpm-lock.yaml`,
       `pyproject.toml`, `directives.lua`, `matchup.lua`; plus `parser/` + `parsers/` + `tree-sitter-spidercode/` for one
-      parser; also `plugin_udpates.txt`, a 4,092-line `:Lazy update` log from 2026-10-19 (7 failed builds, e.g.
-      oxocarbon's fennel rock), which belongs outside the repo
+      parser. `plugin_udpates.txt` (the 2026-10-19 `:Lazy update` log, 7 failed builds) moved to
+      `~/.local/backup/nvim/` on 2026-11-27.
 - [ ] **Lint/format configs.** (p3) [chore] `.luacheckrc`, `selene.toml`, `.lua-format`, `.stylua.toml`: keep StyLua
       plus one linter
 - [x] **Update CLAUDE.md architecture.** (p3) [docs] Rewrite "Core Architecture" after the restructure; its init.lua

@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.38.5] - 2026-11-27
+
+### Removed
+
+- The untracked `plugin_udpates.txt` (a 2026-10-19 `:Lazy update` log) moved to `~/.local/backup/nvim/`, and an
+  empty `Untitled` file in the repo root was deleted. TODO.md's "Root clutter" item is updated to match.
+
 ## [0.38.4] - 2026-11-27
 
 ### Changed
