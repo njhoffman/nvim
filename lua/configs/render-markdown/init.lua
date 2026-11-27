@@ -20,6 +20,15 @@ local cfg = {
   -- Print runtime of main update method.
   debounce = 50,
   log_runtime = false,
+  -- No scroll animation while wrapped table rows are shown (they collapse under the cursor)
+  on = {
+    render = function(ctx)
+      require("modules.markdown.wrap_scroll").on_render(ctx)
+    end,
+    clear = function(ctx)
+      require("modules.markdown.wrap_scroll").on_clear(ctx)
+    end,
+  },
   -- Takes buffer as input, if it returns true this plugin will not attach to the buffer
   -- ignore = function()
   --   return false

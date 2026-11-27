@@ -7,6 +7,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.38.0] - 2026-11-27
+
+### Added
+
+- Scroll animation (mini.animate) is off in render-markdown buffers while they show wrapped table rows
+  (`modules.markdown.wrap_scroll`, through render-markdown's `on.render` / `on.clear`). render-markdown
+  always shows the raw line under the cursor, so a wrapped row shrinks to one line when the cursor
+  reaches it; with `scrolloff=999` the animated re-center fought the cursor move and jumped around. It
+  is now one instant re-center. Buffers without wrapped rows, and insert mode, keep the animation.
+
 ## [0.37.2] - 2026-11-20
 
 ### Fixed
