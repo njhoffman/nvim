@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.38.6] - 2026-11-27
+
+### Removed
+
+- The commented-out VectorCode plugin spec in `docs/reference/commented-out-plugin-specs.md`: VectorCode is no
+  longer installed anywhere.
+
 ## [0.38.5] - 2026-11-27
 
 ### Removed

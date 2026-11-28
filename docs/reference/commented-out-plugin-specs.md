@@ -135,23 +135,6 @@ that version.
     -- },
 ```
 
-## lua/plugins/main.lua:508
-
-```lua
-      -- {
-      --   "Davidyz/VectorCode",
-      --   -- pipx install git+https://github.com/Davidyz/VectorCode
-      --   build = "pipx upgrade vectorcode", -- If you used pipx to install the CLI
-      --   -- pipx install chromadb==0.6.3
-      --   -- build = "uv tool upgrade vectorcode",
-      --   -- pipx install --force "vectorcode[lsp,mcp]"
-      --   -- pipx inject vectorcode vectorcode[lsp] --force
-      --   -- uv tool install vectorcode[lsp,mcp]
-      --   -- mkdir -p ~/.local/share/vectorcode/chromadb
-      --   dependencies = { "nvim-lua/plenary.nvim" },
-      -- },
-```
-
 ## lua/plugins/main.lua:321
 
 ```lua
